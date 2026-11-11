@@ -9,7 +9,8 @@
   2. 其他真人到 630 / 1500 拍的去向：在场、已离场（席位成了壳）、已阵亡；
   3. 决策耗时：把累计平均还原成各时段的增量平均，按 600–1500 拍的落地率分三组；和落地率的秩相关；
   4. 给模拟器对账用的一张表：按通道分三组，线上跑的版本的批次占比、重复占比、天然份额、吃到率、人均相对值、被移出的席位；
-  5. 协调器三个版本（扇形半径改过两次）的天然份额：一组现成的自然对照。
+  5. 协调器三个版本（扇形半径改过两次）的天然份额：一组现成的自然对照；它混着大厅人数和随机安放两件事，
+     所以另给按大厅人数分层的表（5b）和有号被引擎随机安放的局（5c）。
 
 用法：python3 scripts/m6_all_lobby.py
 """
@@ -230,7 +231,75 @@ def main():
         print(f"{v}（{S[0]['mid']}–{S[-1]['mid']}）| {FAN[v]} | {len(S)} | {qq(nat, .25):.2f} / {qq(nat, .5):.2f} / {qq(nat, .75):.2f} | {sum(1 for x in nat if x >= 0.75)} | {hum[len(hum) // 2]:.0f} | {clean}")
     z1, p1 = ranksum(NAT['Va'], NAT['Vb'])
     z2, p2 = ranksum(NAT['Va'] + NAT['Vc'], NAT['Vb'])
-    print(f"# 天然份额的秩和检验：Va 对 Vb z = {z1:.2f}（双侧 p ≈ {p1:.3f}）；Va 和 Vc 合起来对 Vb z = {z2:.2f}（p ≈ {p2:.3f}）。三个版本不在同一个时段跑，大厅不同，只能算自然对照")
+    print(f"# 天然份额的秩和检验（不分层）：Va 对 Vb z = {z1:.2f}（双侧 p ≈ {p1:.3f}）；Va 和 Vc 合起来对 Vb z = {z2:.2f}（p ≈ {p2:.3f}）。这个差里混着下面两件事，不能直接算成扇形半径的效果")
+
+    # 两个混杂：大厅人数（第 1 拍在场的真人席位数，land.csv 的 humans）；没有出生指令落地、被引擎随机安放的号（joined.csv 的 noSpawn）。
+    S5 = [r for r in J if r['cohort'] == 'squad10' and r['mid'] in LD and fl(LD[r['mid']]['natRatio']) is not None]
+
+    def nat_of(r):
+        return fl(LD[r['mid']]['natRatio'])
+
+    def hum1(r):
+        return fl(LD[r['mid']]['humans'])
+
+    def nsp(r):
+        return int(fl(r.get('noSpawn')) or 0)
+
+    BINS = ((0, 45, '< 45'), (45, 70, '45–69'), (70, 9999, '≥ 70'))
+
+    def bin_of(r):
+        return next(name for lo, hi, name in BINS if lo <= hum1(r) < hi)
+
+    ok = [r for r in S5 if nsp(r) == 0]
+    okb = [r for r in ok if ver(r['mid']) == 'Vb']
+    print(f"# 混杂一，大厅人数：出生指令全落地的 {len(ok)} 局里，天然份额 ÷ 人头占比和第 1 拍在场真人数的秩相关 "
+          f"{rho([nat_of(r) for r in ok], [hum1(r) for r in ok]):.2f}（只看 Vb 的 {len(okb)} 局 {rho([nat_of(r) for r in okb], [hum1(r) for r in okb]):.2f}）；"
+          f"第 1 拍在场真人数的中位：" + '、'.join(f"{v} {qq([hum1(r) for r in S5 if ver(r['mid']) == v], .5):.0f}" for v in ('Va', 'Vb', 'Vc')))
+    print('5b. 按大厅人数分层（只算出生指令全落地的局；不超过 3 局列出各局的值，否则给局数、中位、最小–最大）')
+    print('第 1 拍在场真人数 | Va | Vb | Vc')
+    for lo, hi, name in BINS:
+        cells = []
+        for v in ('Va', 'Vb', 'Vc'):
+            xs = sorted(nat_of(r) for r in ok if ver(r['mid']) == v and lo <= hum1(r) < hi)
+            if not xs:
+                cells.append('—')
+            elif len(xs) <= 3:
+                cells.append(f"{len(xs)} 局：" + '、'.join(f"{x:.2f}" for x in xs))
+            else:
+                cells.append(f"{len(xs)} 局，中位 {qq(xs, .5):.2f}（{xs[0]:.2f}–{xs[-1]:.2f}）")
+        print(f"{name} | " + ' | '.join(cells))
+    big = [r for r in ok if hum1(r) >= 70]
+    wide = [nat_of(r) for r in big if ver(r['mid']) != 'Vb']
+    narrow = [nat_of(r) for r in big if ver(r['mid']) == 'Vb']
+    z3, p3 = ranksum(wide, narrow)
+    small = [r for r in ok if hum1(r) < 70]
+    z4, p4 = ranksum([nat_of(r) for r in small if ver(r['mid']) != 'Vb'], [nat_of(r) for r in small if ver(r['mid']) == 'Vb'])
+    print(f"# 分层以后：≥ 70 人这一档 Va 和 Vc 的 {len(wide)} 局对 Vb 的 {len(narrow)} 局，秩和 z = {z3:.2f}（双侧 p ≈ {p3:.3f}，样本很小）；"
+          f"70 人以下 Va 和 Vc 的 {sum(1 for r in small if ver(r['mid']) != 'Vb')} 局对 Vb 的 {sum(1 for r in small if ver(r['mid']) == 'Vb')} 局 z = {z4:.2f}（p ≈ {p4:.2f}），看不出差别")
+    rnd = sorted((r for r in S5 if nsp(r) > 0), key=lambda r: r['mid'])
+    print(f"5c. 混杂二，随机安放：有号没有出生指令落地（被引擎随机安放）的 {len(rnd)} 局，和同版本、同一档大厅、出生指令全落地的局比")
+    print('局 | 版本 | 第 1 拍在场真人数 | 随机安放的号 ÷ 本队的号 | 天然份额 ÷ 人头占比 | 同版本同档的局：局数、中位 | 高于其中几局')
+    above_all = 0
+    for r in rnd:
+        v = ver(r['mid'])
+        ref = sorted(nat_of(x) for x in ok if ver(x['mid']) == v and bin_of(x) == bin_of(r))
+        above = sum(1 for x in ref if nat_of(r) > x)
+        above_all += 1 if ref and nat_of(r) > qq(ref, .5) else 0
+        print(f"{r['mid']} | {v} | {hum1(r):.0f} | {nsp(r)}/{int(fl(r['squadN']))} | {nat_of(r):.2f} | {len(ref)} 局，{qq(ref, .5):.2f} | {above}/{len(ref)}")
+    print(f"# 这 {len(rnd)} 局里 {above_all} 局高于同版本同档的中位：号被随机撒开时，名下的地比协调器排的扇形多")
+
+    C = [r for r in S5 if fl(r['nd600_1500']) is not None and 0.9 <= fl(r['nd600_1500']) <= 1.15 and fl(r['rel1530']) is not None]
+    hi = sorted((r for r in C if nat_of(r) >= 0.75), key=lambda r: r['mid'])
+    lo = [r for r in C if nat_of(r) < 0.75]
+    print(f"# 通道干净的 {len(C)} 局里，天然份额 ÷ 人头占比 ≥ 0.75 的 {len(hi)} 局（{' '.join(r['mid'] for r in hi)}）1530 拍人均相对值 "
+          f"{min(fl(r['rel1530']) for r in hi):.2f}–{max(fl(r['rel1530']) for r in hi):.2f}，赢 {sum(1 for r in hi if r['won'] == '1')} 局；低于 0.75 的 {len(lo)} 局 "
+          f"{min(fl(r['rel1530']) for r in lo):.2f}–{max(fl(r['rel1530']) for r in lo):.2f}（中位 {qq([fl(r['rel1530']) for r in lo], .5):.2f}），赢 {sum(1 for r in lo if r['won'] == '1')} 局")
+    rxy = rho([nat_of(r) for r in C], [fl(r['rel1530']) for r in C])
+    rxz = rho([nat_of(r) for r in C], [hum1(r) for r in C])
+    ryz = rho([fl(r['rel1530']) for r in C], [hum1(r) for r in C])
+    part = (rxy - rxz * ryz) / ((1 - rxz ** 2) * (1 - ryz ** 2)) ** 0.5
+    print(f"# 这 {len(C)} 局里 1530 拍人均相对值和天然份额比值的秩相关 {rxy:.2f}，和大厅人数的秩相关 {ryz:.2f}（天然份额比值和大厅人数 {rxz:.2f}）；"
+          f"扣掉大厅人数以后，天然份额比值的偏秩相关 {part:.2f}")
 
 
 if __name__ == '__main__':
