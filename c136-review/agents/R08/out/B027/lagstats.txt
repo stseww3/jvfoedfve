@@ -1,7 +1,11 @@
-Traceback (most recent call last):
-  File "/agent/repos/c136-r08/c136-review/agents/R08/scripts/lagstats.py", line 81, in <module>
-    main()
-  File "/agent/repos/c136-r08/c136-review/agents/R08/scripts/lagstats.py", line 29, in main
-    S = json.load(open(os.path.join(L.OUT, mid, "shadow_peer.json" if peer else "shadow.json"), encoding="utf-8"))
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/agent/repos/c136-r08/c136-review/agents/R08/out/B027/shadow.json'
+[LA] B027 按影子决策拍：窗口 | 影子要发 | 录像里配上（落地率）| 配上的里落地时无效
+  0~540 | 116 | 113（97%）| 0
+  540~1260 | 462 | 352（76%）| 98
+  1260~1800 | 43 | 25（58%）| 3
+[LB] 按执行拍：窗口 | 已执行 | 生效=0 | 配上影子的 | 时延 中位 / P90 / 最大
+  0~540 | 111 | 0（0%）| 111 | 12 / 17 / 29
+  540~1260 | 356 | 94（26%）| 308 | 69 / 184 / 350
+  1260~1800 | 84 | 27（32%）| 71 | 133 / 260 / 363
+[LC] 同一个号在同一个服务器拍落地的指令条数分布（条数:次数）
+  本编队: 1:290 2:12 3:11 4:8 5:9 6:10 7:6 8:2 9:1
+  其它真人: 1:1511 2:40
