@@ -34,6 +34,7 @@ def main():
     relay_out = collections.Counter()               # 每个号又捐出去的（到账）
     relay_tax = collections.Counter()
     by_rcpt = collections.Counter(); by_kind = collections.Counter(); boxed_n = 0
+    over_n = over_cred = over128_n = over128_cred = 0  # 到账后收款人余额 > 100×领土（利息开始被折扣）/ > 128×领土
     for c in M.cmd:
         if c['id'] != 2 or c['p'] not in M.ours or not (t0 <= c['t'] <= t1) or 'q' not in c:
             continue
@@ -50,6 +51,11 @@ def main():
         if d1 <= 32:
             thin += 1
         by_rcpt[M.nm(c['q'])] += cred
+        dq1 = c['balQ1'] / max(1, c['terrQ'])
+        if dq1 > 100:
+            over_n += 1; over_cred += cred
+        if dq1 > 128:
+            over128_n += 1; over128_cred += cred
         if cred < tax:
             under_n += 1; under_tax += tax; under_cred += cred
         pr = pair[(M.nm(c['p']), M.nm(c['q']))]
@@ -72,6 +78,7 @@ def main():
         t0, min(t1, M.last), n, fmt(cred_tot), fmt(tax_tot), thin, boxed_n, dict(by_kind)))
     print('收款人到账：', {k: fmt(v) for k, v in by_rcpt.most_common()})
     print('到账 < 税 的捐款：%d 笔，到账合计 %s，税合计 %s' % (under_n, fmt(under_cred), fmt(under_tax)))
+    print('到账后收款人余额 > 100×领土（软上限，利息开始打折）的捐款：%d 笔 %s；其中 > 128×领土 的 %d 笔 %s' % (over_n, fmt(over_cred), over128_n, fmt(over128_cred)))
     # 来回倒：A→B 之后 100 拍内出现 B→A
     pp = 0; pp_pairs = collections.Counter()
     for i, (t, p, q, _c) in enumerate(seq):

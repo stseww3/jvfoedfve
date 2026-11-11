@@ -28,7 +28,8 @@ def main():
     for b, rs in rows.items():
         A = [r for r in rs if r['nAIweak'] > 0 and r['intents'] == 0 and r['floorAI'] >= 0 and r['floorAI'] > r['bal'] and r['t'] >= 300]
         Apre = [r for r in A if r['t'] < 1500]
-        Bx = [r for r in rs if r['nb'] == 0 and r['neut'] == 0 and r['t'] >= 300]
+        # 领土清零后（号还挂着船没出局）的行不算封死
+        Bx = [r for r in rs if r['terr'] > 0 and r['nb'] == 0 and r['neut'] == 0 and r['t'] >= 300]
         Cx = [r for r in Bx if r['coast'] == 0]
         Dx = [r for r in rs if r['terr'] > 0 and r['bal'] >= 149.5 * r['terr']]
         land = max((r['weakLand'] for r in A), default=0)
@@ -37,6 +38,36 @@ def main():
         print(f'{b:8s} {seg(A):22s} 其中 t<1500 {5*len(Apre):4d} 拍，弱AI地最多 {land:5d}   {seg(Bx):20s} {seg(Cx):20s} {seg(Dx):20s} {lk.get("lockAt")} / {len(lk.get("blocked", []))} 次 {sum(x[2] for x in lk.get("blocked", []))} 兵')
         tot['A'] += 5 * len(A); tot['B'] += 5 * len(Bx); tot['C'] += 5 * len(Cx); tot['D'] += 5 * len(Dx)
     print(f'合计（号·拍）：贴弱AI不出手 {tot["A"]}；封死 {tot["B"]}；封死且无海岸 {tot["C"]}；顶到硬上限 {tot["D"]}')
+    print('封死区间（连续 ≥50 拍的段）：')
+    for b, rs in rows.items():
+        iv = []
+        cur = None
+        for r in rs:
+            bx = r['terr'] > 0 and r['nb'] == 0 and r['neut'] == 0 and r['t'] >= 300
+            if bx and cur is None:
+                cur = [r['t'], r['t']]
+            elif bx:
+                cur[1] = r['t']
+            elif cur is not None:
+                iv.append(cur); cur = None
+        if cur:
+            iv.append(cur)
+        print(f'  {b:8s} ' + '，'.join(f'{x[0]}~{x[1]}' for x in iv if x[1] - x[0] >= 50))
+    ticks = [630, 1080, 1530, 2070, 2520, 2700, 3060, 3600, 4140, 4500, 4860, 5220, 5760, 6030]
+    print('各时刻的号数（有真人邻居 / 只有内置AI或无主地 / 封死 / 已无领土）：')
+    for t in ticks:
+        c = collections.Counter()
+        for b, rs in rows.items():
+            r = min(rs, key=lambda x: abs(x['t'] - t))
+            if abs(r['t'] - t) > 10 or r['terr'] <= 0:
+                c['dead'] += 1
+            elif r['nHum'] > 0:
+                c['hum'] += 1
+            elif r['nb'] == 0 and r['neut'] == 0:
+                c['boxed'] += 1
+            else:
+                c['ai'] += 1
+        print(f'  拍 {t}: {c["hum"]} / {c["ai"]} / {c["boxed"]} / {c["dead"]}')
 
 
 if __name__ == '__main__':

@@ -1,30 +1,30 @@
 {
  "NEW-SP-DISC": {
   "prefix": "SP",
-  "name": "出生点挤成一个紧凑圆盘，内圈的号开局就没地可占",
-  "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 60 像素内有 ≥2 个队友。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。",
-  "detector": "scripts/match_digest.py 第 1 节（出生点距离）与第 3b 节（开局名次、封死快照）",
-  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852（allyMinSep 等尺度）、pickNextTarget L938~991（relaxFactors 逐级放宽 + 紧凑圆盘约束）"
+  "name": "出生点挤成一个紧凑的扇形/圆盘，内圈的号开局就没地可占",
+  "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 1.5×rCell 内有 ≥2 个队友（紧凑阵型）。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。几何条件和后果指标都满足才算。",
+  "detector": "scripts/spawn_geometry.py（13 局的间距、rCell、630/1530 拍领土中位比、2100 拍封死号数，结果在 out/spawn_geometry.txt）；scripts/spawn_churn.py <局号> --fan（点位与角落扇形阵标称几何的拟合）；scripts/match_digest.py 第 1 节与第 3b 节",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（没有 boss 且 ≥6 个号时的角落扇形阵：点间距下限 clamp(0.95×rCell, 42, 68)，三圈半径上限 46 / 108 / 182 像素；注释写明内圈 4 个号是「保证 nb=0 的蓄水池」）、L1093~1133（锚点 = 陆地采样数×18 − 到角落距离×2.2 最大的格点）、L1135~1170（1 顶点 + 3 内弧 + 外弧）、L1187（每个点只查队友间距）、L1262~1268（敌人只进方案打分）；扇形排不满时才走 pickNextTarget L938~991"
  },
  "NEW-SP-RESOLVE": {
   "prefix": "SP",
   "name": "选点阶段反复改点，最后一刻才落定",
   "definition": "选点阶段同一个号被执行的出生指令 ≥ 10 条，或最后一条出生指令落在选点阶段最后 10% 的步数里。",
-  "detector": "scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
-  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（每次大厅状态变化都整体重算）、matchBotsToTargets L1431"
+  "detector": "scripts/spawn_churn.py <局号> [--fan]（求解轮数、阵型中心的移动、点位互换次数、各号最后落点离最后一轮点位的距离）；scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L837~838（rCell 按「当时已选点的真人数」算，每轮都变）、L1103（锚点打分的采样半径 = r2）、L1276（只锁角落名，不锁锚点）、L1346 → matchBotsToTargets L1431~1446（按各号当前位置重新配对）"
  },
  "NEW-SP-SPREAD": {
   "prefix": "SP",
-  "name": "出生点散开、各自有地可占（对照组）",
-  "definition": "我方号出生点到最近队友的距离中位 > 1.25×rCell，且 t=630 时我方号领土中位 ≥ 其他真人领土中位的 80%。",
-  "detector": "scripts/match_digest.py 第 1 节与第 3b 节",
+  "name": "出生阵型没有让号吃亏（对照组）",
+  "definition": "t=630 与 t=1530 时我方号领土中位都 ≥ 其他真人领土中位的 80%（不论最近队友距离是多少；间距与 rCell 的比例照列）。",
+  "detector": "scripts/spawn_geometry.py；scripts/match_digest.py 第 1 节与第 3b 节",
   "codePath": "spawn-coordinator-*.mjs TeamSpawnCoordinator.solve"
  },
  "NEW-OP-DPGOOD": {
   "prefix": "OP",
   "name": "开局占无主地的节奏不落后",
-  "definition": "t=270 时我方号领土中位 ≥ 其他真人领土中位。",
-  "detector": "scripts/match_digest.py 第 3b 节（拍 270 的中位与名次）",
+  "definition": "t=270 或 t=630 时我方号领土中位 ≥ 其他真人领土中位（两个时刻的数都列出）。",
+  "detector": "scripts/match_digest.py 第 3b 节（拍 270、630 的中位与名次）",
   "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）"
  },
  "NEW-OP-ALLYLOCK": {
@@ -45,14 +45,14 @@
   "prefix": "EC",
   "name": "内陆封死憋兵（没有敌邻、没有无主地、没有海岸）",
   "definition": "某号 nb=0 且 neut=0 且海岸像素=0（船也发不了）连续 ≥ 900 拍；或余额顶到 150×领土（硬上限，利息归零）≥ 90 拍。",
-  "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）",
+  "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）；scripts/cap_time.py；scripts/interest_rate.py --win（软上限折扣少拿的利息）；scripts/shadow.mjs --at（发船诊断：searchWater 有没有可登陆的岸）",
   "codePath": "Policy.offers L5072（只遍历 this.nb，报价单为空）、Policy.idleBoats L5019~5070（L5032 boatsAllowed 要求有海岸）"
  },
  "NEW-DN-QUOTABLIND": {
   "prefix": "DN",
   "name": "调度不看收款人的反喂养配额",
   "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
-  "detector": "scripts/match_digest.py 第 7 节（按时段 发出/落地/到账）；scripts/exec_gap.py（捐款落地率）",
+  "detector": "scripts/quota_truth.py <局号>（没落地的调度用真引擎记的收款人配额重判原因）；scripts/match_digest.py 第 7 节",
   "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）"
  },
  "NEW-DN-SQUADONLY": {
@@ -65,8 +65,8 @@
  "NEW-DN-CAPLOOP": {
   "prefix": "DN",
   "name": "给快顶格的队友倒灌 / 两个封死号互相捐",
-  "definition": "一笔捐款的到账额 < 捐款人为它交的税（6.25%×捐款人余额）；或 A→B 与 B→A 的捐款在 100 拍内交替出现。",
-  "detector": "scripts/truth_query.py <局号> cmds <号> <t0> <t1> --id 2（到账、税、对方上限）",
+  "definition": "三种情形任一：一笔捐款的到账额 < 捐款人为它交的税（6.25%×捐款人余额）；A→B 与 B→A 的捐款在 100 拍内交替出现；捐款到账后收款人余额 > 100×领土（过了软上限，利息按超出比例打折）。计数 = 各自的笔数与到账，以及窗口内因软上限折扣少拿的利息。",
+  "detector": "scripts/donation_list.py <局号> [t0 t1]（到账<税、来回倒、被上限截短、到账后收款人密度 >100）；scripts/interest_rate.py <局号> --win …（软上限折扣少拿的利息）",
   "codePath": "Policy.tryDonateToTeammate L4453（封死且对方有海岸就放行）、L4479~4481（封死时 reqD=58、maxAllyD=128/140，「我要比对方密 16」只对非封死号生效）、L4499~4508（不看对方 150×领土 的剩余空间）"
  },
  "NEW-DN-CARRIER": {
@@ -121,8 +121,8 @@
  "NEW-IO-LAGLOSS": {
   "prefix": "IO",
   "name": "客户端落后，指令晚到或丢失",
-  "definition": "某时段我方陆攻指令落地率 < 60%，或落地延迟中位 ≥ 90 拍；并且日志行序显示该号比最快的队友落后 ≥ 180 拍。",
-  "detector": "scripts/exec_gap.py（想发 vs 落地）+ scripts/client_lag.py（日志行序）",
+  "definition": "某 250 拍时段我方陆攻指令落地率 < 60%，或落地延迟（落地拍 − 影子策略的决策拍）中位 ≥ 90 拍。全队一起落后时号与号之间的相对落后量看不出差别，另列。",
+  "detector": "scripts/exec_gap.py <局号> --profile 250；scripts/client_lag.py <局号>",
   "codePath": "Strategy.send L479~487（发出即计数，不跟踪是否落地）+ Policy.act L4838（每 5 拍重新决策，同一指令反复重发）"
  },
  "NEW-IO-DRAINBATCH": {
@@ -157,15 +157,15 @@
   "prefix": "SE",
   "name": "封死后发船开第二战场并站住（有效）",
   "definition": "某号在 nb=0 且 neut=0 时发船，登陆后 300 拍内在新地块净得地 ≥ 500 像素。",
-  "detector": "scripts/match_digest.py 第 8 节（船结果）；ev.tsv 的 land 事件",
+  "detector": "scripts/boat_list.py",
   "codePath": "Policy.idleBoats L5019~5070"
  },
  "NEW-SE-BOATWASTE": {
   "prefix": "SE",
   "name": "发船白送：登陆即被吃或回到自己地上作废",
-  "definition": "一条船的兵 ≥ 发船时余额的 20%，登陆后 300 拍内该登陆点净得地 ≤ 0，或船回到自己/队友地上作废。",
-  "detector": "scripts/match_digest.py 第 8 节（船结果）",
-  "codePath": "Policy.idleBoats L5019~5070、General.boatOut L999~1015"
+  "definition": "(a) 一条船的载兵 ≥ 发船时余额的 15%，登陆后 300 拍内从登陆目标净得地 ≤ 100 像素，或船回到自己地上作废；(b) 载兵 < 发船手续费（引擎按余额的 32/1024 收，与载多少无关）。计数 = 条数、载兵、手续费。",
+  "detector": "scripts/boat_list.py（每条船的载兵、手续费、到岸兵、结果、登陆后净得地）",
+  "codePath": "Policy.idleBoats L5019~5070（封死分支把 boatRange 放到 2500）→ General.boatOut L999~1015：L1007 目标是无主地时最低载兵只有 60，不和手续费挂钩；L1009 载兵 = 3×目标块大小 + 300"
  },
  "NEW-EG-TAXBURN": {
   "prefix": "EG",
@@ -215,5 +215,19 @@
   "definition": "某 600 拍窗口内到账捐款的 ≥ 50% 给了编队里领土最大的号，而同窗口另一个我方号正被敌方真人净拿走 ≥ 20% 领土且收到的捐款 < 窗口总到账的 10%。",
   "detector": "scripts/match_digest.py 第 7 节（收款方）；scripts/shadow.mjs --at（调度诊断逐个候选的得分拆解）",
   "codePath": "Policy.tryDonateToTeammate L4467（救急得分 = 5000 + 被攻比×1200 + 密度差×20 + min(2200, 领土/18)）、L4482~4488（一般得分含 min(3500, 领土/14) 与 crown 1800）、L4455（弃子规则先把小号排除）"
+ },
+ "NEW-DF-SEAFLANK": {
+  "prefix": "DF",
+  "name": "敌方用船在没有陆上敌邻的后排号身上登陆",
+  "definition": "某我方号在被登陆前 300 拍内没有任何非队友陆上邻居（nb=0）、密度 ≤ 45；敌方真人的船登陆兵 ≥ 该号当时余额；该号在登陆后 400 拍内出局或被清空。计数 = 这样被登陆的号数与登陆兵数。",
+  "detector": "scripts/enemy_ledger.py <局号> --strikes t0 t1（标「船」的行）；scripts/idle_scan.py（封死区间）",
+  "codePath": "Policy.tryDonateToTeammate L4355（boxedIn = 没有敌邻也没有无主地）、L4382（封死号留底 32~44×领土 或 22~34×领土）；全文只读自己的船数 g.boatCount[me]（L1001、L5032、L5629 等），没有任何读取别人船只的代码"
+ },
+ "NEW-AT-ENCLAVE": {
+  "prefix": "AT",
+  "name": "被我方围住的敌方孤岛迟迟不吃，等它把兵养起来",
+  "definition": "某敌方真人与 ≥2 个我方号相邻，且窗口内它没有对任何其他玩家发出陆攻（被围住的间接证据）；相邻我方号合计余额 ≥ 影子诊断里吃掉它所需兵力的 1.5 倍，持续 ≥ 300 拍没有任何我方号对它出兵；期间它的余额增长 ≥ 1 倍。计数 = 孤岛个数、拖延拍数、最后实际花的兵与当初所需兵的差。",
+  "detector": "scripts/shadow.mjs <局号> --bots <邻居> --at <拍>（buyLand 报价单里的「需」与 L5359 break）；scripts/enemy_ledger.py <局号> --p <孤岛编号> --win … --strikes t0 t1（它对谁出过兵、被谁吃掉、花了多少兵）；scripts/bot_targets.py",
+  "codePath": "Policy.buyLand L5350~5359（每个号各自比单价：c ≥ worth 且不便宜且余额没过 100×领土 就 break），没有「几个号合起来够吃」的判断；过了软上限（over=true）才不看单价"
  }
 }
