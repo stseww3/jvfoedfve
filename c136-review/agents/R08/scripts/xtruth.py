@@ -34,6 +34,19 @@ out/_run/ 不入库，随时可以按上面两步重建。
   [XT-A] 覆盖与核对  [XT-B] 人均对照走势  [XT-C] AI 的地 / 无主地  [XT-D] 陆攻生效率  [XT-E] 出生点  [XT-F] 发出 vs 落地
   [XT-G] 1800 拍前出局 / 离开  [XT-H] 逐局  [XT-I] 接壤普查（挨着白给的内置 AI 出不出手；不跑策略）
   [XT-J] 买 AI 地规则重算（把 1500 拍前买内置 AI 地的规则照抄到每个样本上：放行 / 已在打 / 槽满 / 不值 / 留底三项）
+  [XT-C] 里另有三张表（600~1500，和吃地账同一批席位）：
+    · 地的收支：人均净增拆成 从内置 AI 吃 / 从无主地吃 / 从真人吃 / 被真人吃走 / 其余
+    · 一条打内置 AI 的生效陆攻换回多少地：人均条数、每条派出的兵、每条吃到的格、烧掉 ÷ 派出
+    · 逐对账：把每个号对同一个内置 AI 的生效陆攻合成一对——人均对几个 AI 下过手、每对几条、派出 ÷ 打垮价、
+      吃到 ÷ 可吃、下手时 AI 有多大；按「独吃 / 和机器号同吃 / 和野人同吃」分
+  [XT-I] 里另有无主地一栏：挨着无主地的样本，90 拍内有没有一条生效的陆攻落在无主地上
+规则重算的口径（[XT-J]）：
+  · 规则 = 1500 拍前（coreFrom = dpEnd = 1500）买非真人邻居的那条路：General.act → Style.pickTarget → V13.allow / floorFor0 →
+    Policy.winFloor → minShare。只重算「对内置 AI 这一拍放不放行」，不重算打分和别的分支（打真人、扩无主地、船）。
+  · 输入全部取自引擎状态（xtruth.mjs 在重演里每 30 拍记一次），不跑策略、不依赖日志；所以野人席位也能套同一把尺子当对照。
+  · c110（squad20）的邻居表不含「受保护的队友」（名字池 / [NPL] / [NOPE]；analyze L440），dpKeep 里不算它们；
+    c116 系（squad10）只排除同队。sb（threatOf）两档都不排除任何人。
+  · 核对：几乎不卡的局里，规则放行的样本 90 拍内出手的比例应当接近 100%（放行了就该发得出去）——见 [XT-J] 的分开看。
 """
 import json
 import math
@@ -271,6 +284,19 @@ def scan(mid, row, pool):
     rec["human600_1500"] = harvest([1, 2, 3], 4) if X["endTick"] >= 1500 else None
     rec["lostToHuman600_1500"] = harvest([1, 2, 3], 6) if X["endTick"] >= 1500 else None
     rec["ai1500_1800"] = harvest([4], 0) if X["endTick"] >= 1800 else None
+    # 地的收支（600 → 1500，同一批席位：600 拍还有地、到 1500 拍没离开；中途出局的号按 0 格算）
+    bd = None
+    c6, c15 = X["cp"].get("600"), X["cp"].get("1500")
+    if X["endTick"] >= 1500 and c6 and c15:
+        bd = {}
+        for g in GROUPS:
+            sel = [q for q in spawned if grp[q] == g and not (0 <= left_t[q] <= 1500) and c6["terr"][q] > 0]
+            bd[g] = dict(heads=len(sel), t600=sum(c6["terr"][q] for q in sel), t1500=sum(c15["terr"][q] for q in sel),
+                         b600=sum(c6["bal"][q] for q in sel), b1500=sum(c15["bal"][q] for q in sel),
+                         ai=sum(gain[k][q][0] for k in (1, 2, 3) for q in sel), neutral=sum(gain[k][q][2] for k in (1, 2, 3) for q in sel),
+                         human=sum(gain[k][q][4] for k in (1, 2, 3) for q in sel), lost=sum(gain[k][q][6] for k in (1, 2, 3) for q in sel),
+                         dead=sum(1 for q in sel if c15["terr"][q] <= 0))
+    rec["budget600_1500"] = bd
 
     # ---- 陆攻生效 ----
     per = X["per"]
@@ -426,10 +452,10 @@ def scan(mid, row, pool):
         for k in range(len(X["reach"])):
             cell = {}
             for g in GROUPS:
-                acc = [0] * 11
+                acc = [0] * 14
                 for q in spawned:
                     if grp[q] == g:
-                        for i in range(11):
+                        for i in range(len(X["reach"][k][q])):
                             acc[i] += X["reach"][k][q][i]
                 cell[g] = acc
             rc.append(cell)
@@ -677,6 +703,33 @@ def main():
     ai_left15 = [(r["ph"][1500]["aiLand"] / r["land"]) for r in full if r["ph"].get(1500) and r["ph"][1500]["aiLand"] is not None]
     P(f"  内置 AI 的地占全图陆地：t=600 中位 {100 * med(ai_left):.1f}%（{len(ai_left)} 局），t=1500 中位 {100 * med(ai_left15):.1f}%（{len(ai_left15)} 局）")
 
+    # 地的收支
+    bsel = [r for r in full if r.get("budget600_1500")]
+    P(f"  地的收支（600 → 1500，人均；{len(bsel)} 局；人头 = t=600 还有地、到 1500 拍没离开的席位，中途出局的按 0 格算）：")
+    P("    范围 | 组 | 人头 | t=600 人均地 | t=1500 人均地 | 净增 | 从内置 AI 吃 | 从无主地吃 | 从真人吃 | 被真人吃走 | 其余（被 AI 吃走、出局时变成无主地等） | t=600 人均兵 | t=1500 人均兵 | 这批人里 1500 拍前出局的")
+    agg_bd = {}
+    for nm, sel in (("全部", bsel), ("几乎不卡的局", [r for r in bsel if calm_of(r)]), ("其余的局", [r for r in bsel if not calm_of(r)]),
+                    ("squad10", [r for r in bsel if r["cohort"] == "squad10"]), ("squad20", [r for r in bsel if r["cohort"] == "squad20"])):
+        for g in ("own", "wild"):
+            a = {k: sum(r["budget600_1500"][g][k] for r in sel) for k in ("heads", "t600", "t1500", "b600", "b1500", "ai", "neutral", "human", "lost", "dead")}
+            h = a["heads"]
+            if not h:
+                continue
+            net = a["t1500"] - a["t600"]
+            rest = net - (a["ai"] + a["neutral"] + a["human"] - a["lost"])
+            P(f"    {nm} | {GROUP_CN[g]} | {h} | {a['t600'] / h:.0f} | {a['t1500'] / h:.0f} | {net / h:+.0f} | {a['ai'] / h:.0f} | {a['neutral'] / h:.0f} | {a['human'] / h:.0f} | {-a['lost'] / h:.0f} | {rest / h:+.0f} | "
+              f"{a['b600'] / h:.0f} | {a['b1500'] / h:.0f} | {a['dead']}（{pct(a['dead'], h)}）")
+            agg_bd[f"{nm}|{g}"] = a
+        o, w = agg_bd.get(f"{nm}|own"), agg_bd.get(f"{nm}|wild")
+        if o and w:
+            go = (o["t1500"] - o["t600"]) / o["heads"]
+            gw = (w["t1500"] - w["t600"]) / w["heads"]
+            parts = []
+            for k, kn in (("ai", "内置 AI"), ("neutral", "无主地"), ("human", "从真人吃"), ("lost", "被真人吃走")):
+                dv = (w[k] / w["heads"] - o[k] / o["heads"]) * (-1 if k == "lost" else 1)
+                parts.append(f"{kn} {dv:+.0f}（{100 * dv / (gw - go):.0f}%）" if gw != go else f"{kn} {dv:+.0f}")
+            P(f"      {nm}：野人人均净增比 own 多 {gw - go:.0f} 格，拆开：" + "；".join(parts))
+
     # 一条陆攻换回多少地
     ysel = [r for r in full if r.get("yield600_1500")]
     P(f"  一条打内置 AI 的生效陆攻换回多少地（600~1500；{len(ysel)} 局；和上面吃地账同一批席位）：组 | 人头 | 人均生效条数 | 每条派出的兵 | 每条派出占余额 | 每条吃到的格 | 人均派出的兵 | 派出的兵 ÷ 吃到的格 | 烧掉的兵 ÷ 吃到的格 | 烧掉 ÷ 派出")
@@ -892,11 +945,11 @@ def main():
     agg_i = {}
 
     def reach_sum(sel, k, g):
-        acc = [0] * 11
+        acc = [0] * 14
         for r in sel:
             ks = range(3) if k == 3 else [k]
             for kk in ks:
-                for i in range(11):
+                for i in range(14):
                     acc[i] += r["reach"][kk][g][i]
         return acc
 
@@ -909,6 +962,20 @@ def main():
                 continue
             P(f"  {nm} | {GROUP_CN[g]} | {sel_n} | {a[0]} | {pct(a[1], a[0])} | {pct(a[2], a[0])} | {pct(a[3], a[0])} || {a[4]} | {pct(a[5], a[4])} | {a[6]} | {pct(a[7], a[6])} | {pct(a[8], a[1])}")
             agg_i[f"{nm}|{g}"] = dict(matches=sel_n, samples=a[0], hasAi=a[1], hasNeutral=a[2], locked=a[3], free=a[4], freeHit=a[5], cheap=a[6], cheapHit=a[7], aiHit=a[8], aiLandAdj=a[9], aiLandCheap=a[10])
+    P("  无主地（挨着无主地的样本里，之后 90 拍内有一条生效的陆攻落在无主地上）：窗 | 组 | 挨着无主地的样本 | 其中 90 拍内打了无主地 | 只挨无主地、不挨内置 AI 的样本 | 其中打了无主地")
+    for k, nm in enumerate(RWN):
+        for g in ("own", "wild"):
+            sel = [r for r in (full if g == "own" else recs) if r.get("reach")]
+            a = reach_sum(sel, k, g)
+            if a[2]:
+                P(f"    {nm} | {GROUP_CN[g]} | {a[2]} | {pct(a[11], a[2])} | {a[12]} | {pct(a[13], a[12])}")
+                agg_i[f"neutral|{nm}|{g}"] = dict(hasNeutral=a[2], hitNeutral=a[11], onlyNeutral=a[12], onlyNeutralHit=a[13])
+    for nm, sel in (("几乎不卡的局", [r for r in full if calm_of(r)]), ("其余的局", [r for r in full if not calm_of(r)])):
+        for g in ("own", "wild"):
+            a = reach_sum([r for r in sel if r.get("reach")], 3, g)
+            if a[2]:
+                P(f"    600~1500·{nm} | {GROUP_CN[g]} | {a[2]} | {pct(a[11], a[2])} | {a[12]} | {pct(a[13], a[12])}")
+                agg_i[f"neutral|{nm}|{g}"] = dict(hasNeutral=a[2], hitNeutral=a[11], onlyNeutral=a[12], onlyNeutralHit=a[13])
     P("  分开看（600~1500 合计）：组 | 局 | 白给的样本 | 其中 90 拍内出手 | 买得起的样本 | 其中出手 | 只剩真人的样本占比")
     splits = [("squad10 的局", [r for r in full if r["cohort"] == "squad10"]), ("squad20 的局", [r for r in full if r["cohort"] == "squad20"]),
               ("几乎不卡的局（own 600~1500 陆攻没生效 ≤5%）", [r for r in full if calm_of(r)]), ("其余的局", [r for r in full if not calm_of(r)]),
@@ -1067,7 +1134,7 @@ def main():
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "_cross", "xtruth.json"), "w", encoding="utf-8") as f:
         json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, perHead=agg_b, dist=agg_dist, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
-                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i, rule=agg_j, aiYield=agg_y, aiPairs=agg_p,
+                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i, rule=agg_j, aiYield=agg_y, aiPairs=agg_p, budget=agg_bd,
                        matches=[{k: v for k, v in r.items()} for r in recs]), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
