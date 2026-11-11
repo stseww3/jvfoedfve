@@ -229,5 +229,19 @@
   "definition": "某敌方真人与 ≥2 个我方号相邻，且窗口内它没有对任何其他玩家发出陆攻（被围住的间接证据）；相邻我方号合计余额 ≥ 影子诊断里吃掉它所需兵力的 1.5 倍，持续 ≥ 300 拍没有任何我方号对它出兵；期间它的余额增长 ≥ 1 倍。计数 = 孤岛个数、拖延拍数、最后实际花的兵与当初所需兵的差。",
   "detector": "scripts/shadow.mjs <局号> --bots <邻居> --at <拍>（buyLand 报价单里的「需」与 L5359 break）；scripts/enemy_ledger.py <局号> --p <孤岛编号> --win … --strikes t0 t1（它对谁出过兵、被谁吃掉、花了多少兵）；scripts/bot_targets.py",
   "codePath": "Policy.buyLand L5350~5359（每个号各自比单价：c ≥ worth 且不便宜且余额没过 100×领土 就 break），没有「几个号合起来够吃」的判断；过了软上限（over=true）才不看单价"
+ },
+ "NEW-IO-ONECMD": {
+  "prefix": "IO",
+  "name": "同一个决策拍出两条指令，后一条不被受理（无主地扩张挤掉买地）",
+  "definition": "影子策略在同一个决策拍对同一个号给出 ≥2 条陆攻（实际都是 expandNeutral 的无主地扩张在前，buyLand 或开局打内置 AI 的陆攻在后），录像里第 2 条没有落地，且真实日志 [HL-TICK] 的 cmds 计数在这一段比影子少 1。计数 = 这样的号·拍数、没落地的第 2 条想出的兵（分 1500 拍前后）。",
+  "detector": "scripts/same_tick.py <局号> [--list]（第 2 条落地 / 没落地 / 分不清）；scripts/cmds_delta_check.py <局号>（策略自己的发令计数：影子比真实多出来的条数 = 同拍第 2 条的条数）",
+  "codePath": "Policy.act L4941（expandNeutral）→ L4942（buyLand），两句之间没有「本拍已发过」的守卫（L4962~4963 的调度和闲置发船有 this.cmds === cmdsBefore）；L4817 的注释写明线上一拍只能发一条；1500 拍前走 L4850 super.act；Strategy.send L479~487（g.attack 不受理时返回 false，本拍不再重发）"
+ },
+ "NEW-IO-ACKREPEAT": {
+  "prefix": "IO",
+  "name": "上一条指令还没在引擎里生效就又下一条：出兵闸门读的是引擎状态，一发脉冲变成两三发",
+  "definition": "出兵串 = 同一个号对同一个目标（真人或内置 AI）的陆攻，相邻两条的落地拍相隔 ≤7 拍。串首那条生效后的两个决策拍里影子策略不再对这个目标下单的叫关闸串（策略一看到第一条生效就停手），串里第 2 条起算重复单。计数 = 重复单的条数与兵、占全部打人/AI 出征兵的比例；整串出兵占串首执行前余额的比例（对比第一条单独的比例）。串里某一拍落 ≥3 条的（指令积压过）同时记 NEW-IO-DRAINBATCH。",
+  "detector": "scripts/blind_reorders.py <局号> [--list N] [--lag]",
+  "codePath": "Policy.buyLand L5459（curAtk = g.attackTroopsOn(me, q)）、L5575 / L5589 / L5596（在途进攻兵 ≥ 4%~8% 余额才不再加）、L5352（over 读当前余额）、L5446（avail 不扣已发未生效的兵）；Strategy.send L479~487（发出后不记「已发未生效」的账）；Policy.act L4838（每 5 拍一个决策拍，而线上指令最快 7 拍、一般 7~15 拍后才在引擎里执行）"
  }
 }
