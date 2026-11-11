@@ -12,6 +12,7 @@
     python3 digest.py <matchId> drops       # 兵力跌 30% 以上的区间与去向
     python3 digest.py <matchId> spawn       # 出生几何
     python3 digest.py <matchId> picks       # 选点指令（录像真值）：每号改点次数、最后两步的改点、撞点
+    python3 digest.py <matchId> spawnlog    # 有录像的局：日志最后一条 HL-SPAWN 是不是真正的出生点（给没有录像的局校准）
     python3 digest.py <matchId> boxed       # 被围（nb=0,neut=0）高密度滞留
     python3 digest.py <matchId> attacks [t0 t1]    # 我方各号被谁打 / 打了谁（录像）
     python3 digest.py <matchId> json        # 写 out/<matchId>/digest.json（复盘 JSON 的数字来源）
@@ -562,6 +563,7 @@ def sec_drops(M):
 def sec_spawn(M):
     print(f"== {M.id} spawn：mapW={M.mapW}")
     if not M.spawnXY:
+        print('  没有录像：下面是每个号日志里最后一条 HL-SPAWN，未必是生效的那一条（有录像的 5 局 90 个号里只有 15 个号对得上，见 spawnlog），不能当出生点用')
         for me in M.squad:
             b = M.bots[me]
             if b.spawns:
@@ -646,6 +648,39 @@ def sec_picks(M):
         if others:
             print(f"   {M.bots[me].name} 的最终坐标 {xy} 还被这些号选过：" + '、'.join(
                 f"{M.bots[o].name}(步{','.join(str(st) for st, x, y in R['per'][o] if (x, y) == xy)})" for o in others))
+
+
+def spawnlog_rows(M):
+    """有录像的局：每个号「日志里最后一条 HL-SPAWN 的坐标」是不是「录像里最后一条生效选点」。
+    用来给没有录像的局校准：只看日志的最后一条选点有多大可能不是真正的出生点。"""
+    R = picks_rows(M)
+    if not R:
+        return None
+    out = []
+    for me in sorted(M.squad):
+        v = R['per'][me]
+        lg = [(s['x'], s['y']) for s in M.bots[me].spawns]
+        if not v or not lg:
+            continue
+        true = (v[-1][1], v[-1][2])
+        # 真正的出生点是日志里倒数第几条（1 = 最后一条；None = 日志里没有这一条）
+        back = next((i + 1 for i, xy in enumerate(reversed(lg)) if xy == true), None)
+        out.append(dict(me=me, name=M.bots[me].name, logPicks=len(lg), effective=len(v), lastLog=list(lg[-1]), true=list(true),
+                        lastIsTrue=(lg[-1] == true), trueBack=back, dist=round(math.hypot(lg[-1][0] - true[0], lg[-1][1] - true[1]), 1)))
+    return out
+
+
+def sec_spawnlog(M):
+    rows = spawnlog_rows(M)
+    if rows is None:
+        print(f"== {M.id} spawnlog：没有录像，没法核对")
+        return
+    ok = sum(1 for r in rows if r['lastIsTrue'])
+    print(f"== {M.id} spawnlog：日志最后一条 HL-SPAWN 的坐标 = 录像里最后一条生效选点 的号 {ok} / {len(rows)}")
+    for r in rows:
+        if not r['lastIsTrue']:
+            print(f"   {r['name']:14s} 日志 {r['logPicks']} 行 / 生效 {r['effective']} 条：日志最后一条 {tuple(r['lastLog'])}，真正出生点 {tuple(r['true'])}（相距 {r['dist']} 格；"
+                  + (f"是日志倒数第 {r['trueBack']} 条" if r['trueBack'] else '日志里没有这一条') + '）')
 
 
 def boxed_rows(M, dens=95):
@@ -886,6 +921,8 @@ def main():
         sec_spawn(M)
     elif sec == 'picks':
         sec_picks(M)
+    elif sec == 'spawnlog':
+        sec_spawnlog(M)
     elif sec == 'boxed':
         sec_boxed(M)
     elif sec == 'attacks':

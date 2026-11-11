@@ -1543,23 +1543,23 @@
  "phases": {
   "opening": {
    "facts": [
-    "地图 14 是固定图（14_0.bin.gz，1000×707，陆地 492,822 格，与卡片一致），主大陆 484,942 格。20 个号的最终选点全在陆地上。日志 HL-SPAWN 176 行（每号 4~14 行），每行都是 squad=20、minSep=145，没有 HL-SPAWN-BACKEND 行：每个号在本机各算一张候选表，按自己的槽位取点。",
-    "最终选点两两相距 <145 的有 17 对（同队 4 对、异队 13 对），<80 的 6 对：Chagatai（队4）–DragonSlayer（队1）5.7、Spiderman–DeepBlue（同在队2）16.0、Subway（队5）–Dahomey（队2）16.0、Anya（队3）–FreeMason（队4）22.6、Scotland–Chagatai（同在队4）24.0、Scotland–DragonSlayer 28.3。",
-    "同一个坐标被不同的号先后选过：(482,18) 先后出现在 Scotland、Chagatai、DragonSlayer 的日志里，最后是 Subway 的落点；Scotland 槽位 13、Chagatai 槽位 7、DragonSlayer 槽位 8，三张各自算的表最后落在 28.3 格之内。",
+    "地图 14 是固定图（陆地 492,822 格，主大陆 484,942 格）。日志 HL-SPAWN 176 行（每号 4~14 行），每行都是 squad=20、minSep=145，没有 HL-SPAWN-BACKEND 行：每个号在本机各算一张候选表，按自己的槽位取点。",
+    "真正的出生点量不出：没有录像，日志只有每个号先后选过的坐标，看不到哪一条生效。校准（digest spawnlog）：有录像的 5 局 90 个号里，日志最后一条 HL-SPAWN 就是真正出生点的只有 15 个，倒数第二条 41 个，其余更靠前。所以本局不给「谁和谁出生在一起」的距离。",
+    "同一个坐标被不同的号先后选过：(482,18) 先后出现在 Scotland、Chagatai、DragonSlayer、Subway 的日志里（槽位 13、7、8 各不相同）——各算各的候选表会报出同一个点；最后谁落在那里看不到。",
     "DragonSlayer 只发出 1 条开局周期指令（t=65），t=180 起四周已无无主地（neut=0）、策略眼里也没有可打的邻居（nb=0）；t=180~3510 一直是 36 格，t=630~1620 密度顶在 150。"
    ],
    "issues": [
-    "选点没有跨号协调：minSep=145 只在一个号自己的候选表里生效，不同号的表互不相干。"
+    "选点没有跨号协调：minSep=145 只在一个号自己的候选表里生效，不同号的表互不相干（代码事实）；本局实际叠了几对量不出。"
    ]
   },
   "expansion": {
    "facts": [
-    "开局周期出兵：19 个号在 t=60~975 各发 5~10 条周期指令（logdigest opening：HL-OPENING 146 行，同号相邻两条间隔中位 95 拍、p10 70、p90 105）。t=630 编队 54,296 格（11.02%），单号领土中位 2,777；最低的七个里六个在 <145 格的成对里：DragonSlayer 36、Chagatai 1,878（t=540 起 neut=0）、Dahomey 2,282、Spiderman 2,487、Wallenstein 2,523、DeepBlue 2,528（另一个是 Maurya 2,198）。",
+    "开局周期出兵：19 个号在 t=60~975 各发 5~10 条周期指令（logdigest opening：HL-OPENING 146 行，同号相邻两条间隔中位 95 拍、p10 70、p90 105）。t=630 编队 54,296 格（11.02%），单号领土中位 2,777；最低的七个：DragonSlayer 36、Chagatai 1,878（t=540 起 neut=0）、Maurya 2,198、Dahomey 2,282、Spiderman 2,487、Wallenstein 2,523、DeepBlue 2,528。",
     "t=630→900→1530：编队领土 54,296→88,080→111,193（11.02%→17.87%→22.56%），兵 11.7 万→38.4 万→290.9 万，密度 2.2→4.4→26.2。t=630~1530 全队出兵/发船指令 1,389 条（每千号·拍 77.2 条）。",
     "没有录像，无法与其余 45 个真人的同拍领土比较。能比的最早一拍是 t=2056 的结算行：存活 53 人，其中我方 19 个号 149,999 格（30.4%），单号平均 7,895；队1 的外人和内置 AI 合计 20.9%。"
    ],
    "issues": [
-    "贴身出生的号在 t=630 就垫底，DragonSlayer 整局没有扩张过。"
+    "DragonSlayer 出生后 180 拍内就被封死（36 格、nb=0、neut=0：四周只有策略不打的地或水），整局没有扩张过；Chagatai t=540 起四周没有无主地。"
    ]
   },
   "midgame": {
@@ -1587,7 +1587,7 @@
     "t=9990 队5、队2 的五个号共有 2,590 万兵，四个有邻居的号密度 111~137。此后 t=9990~12960 的 16,380 号·拍里出兵/发船指令 36 条、捐款 16 条、协防戳 21 条。",
     "逐个被吃：Shimazu（队5）t=9810~11520 的 1,710 拍零指令，密度 97~146，领土 17,840→13,454→10,390→6,752→3,810，t=11621 阵亡（账上 25.7 万）；Spiderman（队2）t=10440~12330 密度 100~145、nb=1，48,274→16,865 格，1,890 拍只有 1 条指令（t=11000 替 Umbreon 的协防戳），t=12933 阵亡（59.2 万）；OldGuard（队5）t=12420~13320 零指令，20,000→5,511，t=13343 阵亡（41.8 万）。",
     "Umbreon t>=9000（logdigest spend 9000 14000）：估算利息收入 9,529 万；无指令的 23 个间隔净支出 2,615 万、丢 103,709 格；只有协防戳的 19 个间隔 3,290 万；只有出兵的 8 个间隔 3,078 万；混合 2 个 947 万。t=13410 121,127 格→t=13770 61,263 格，t=13867 阵亡时账上还有 376.9 万兵。",
-    "Liu Bei（队1）：t=3330~4050 领土 8,741→25,836；t=4050~4320 被 [Uzb] J@høňgî® 打掉 4,611 格；之后被队友围住（92 个快照 nb=0、neut=0），t=7740~14220 的 6,480 拍零指令；t=8370 起一直是 21,131 格、316.9 万兵（密度 150，硬上限）。"
+    "Liu Bei（队1）：t=3330~4050 领土 8,741→25,836；t=4050~4320 被 [Uzb] J@høňgî® 打掉 4,611 格；之后被策略不打的邻居围住（92 个快照 nb=0、neut=0），t=7740~14220 的 6,480 拍零指令；t=8370 起一直是 21,131 格、316.9 万兵（密度 150，硬上限）。"
    ],
    "issues": [
     "t=9126 两边一样大，但我方这一边是两支队里的 5 个号：三个满仓不动，一个靠 10% 的协防戳还手。",
@@ -1832,7 +1832,7 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 169403,
-   "cause": "队3。与 FreeMason（队4）22.6 格出生。本机拍 1080~1710 的 110 条指令没生效，t=1710~1890 清仓：31.2 万→2,407 兵，领土 4,510→6,189（t=2070 8,033）。此后直到阵亡的 2,505 拍没有一条出兵/发船指令（只有 1 条协防戳），nb=2~3：领土 8,033→4,693（t=3510）→1,798（t=4230），密度 5→150。期间收到 Caesar 9 笔捐款（到账约 75 万~89 万）。t=4305 阵亡，账上 169,403 兵。",
+   "cause": "队3。本机拍 1080~1710 的 110 条指令没生效，t=1710~1890 清仓：31.2 万→2,407 兵，领土 4,510→6,189（t=2070 8,033）。此后直到阵亡的 2,505 拍没有一条出兵/发船指令（只有 1 条协防戳），nb=2~3：领土 8,033→4,693（t=3510）→1,798（t=4230），密度 5→150。期间收到 Caesar 9 笔捐款（到账约 75 万~89 万）。t=4305 阵亡，账上 169,403 兵。",
    "patternIds": [
     "NEW:IO-stale-pulse-dump",
     "NEW:AT-worth-gate",
@@ -1969,9 +1969,8 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 122877,
-   "cause": "队4。与同队 Chagatai 24.0 格、DragonSlayer（队1）28.3 格出生。t=1530~3330 的 1,800 拍零指令（密度 12→125）。t=3330~3510 密度 125 时发了 5 条（99 万→44 万兵），领土 7,908→10,917（t=3600）；随后 nb=4~5、密度 46~59，10,518→6,926，t=3867 阵亡（账上 122,877）。谁打的看不到。",
+   "cause": "队4。t=1530~3330 的 1,800 拍零指令（密度 12→125）。t=3330~3510 密度 125 时发了 5 条（99 万→44 万兵），领土 7,908→10,917（t=3600）；随后 nb=4~5、密度 46~59，10,518→6,926，t=3867 阵亡（账上 122,877）。谁打的看不到。",
    "patternIds": [
-    "NEW:SP-squad-stack",
     "NEW:AT-worth-gate",
     "NEW:AT-over-cap-dump"
    ],
@@ -2186,7 +2185,7 @@
    ],
    "stillDonating": [],
    "balanceAtDeath": 592142,
-   "cause": "队2。与同队 DeepBlue 16.0 格出生（DeepBlue 后来被它围在里面）。t=1980~3600 零指令。t=5850~8910 的 20 条指令多在密度 121~141 时发出，20,363→54,453 格（出兵间隔估算支出 1,013 万）。t=9000~9450 被打掉 14,210 格；t=10440~12330 密度 100~145、nb=1，1,890 拍只有 1 条指令（替 Umbreon 的协防戳），48,274→16,865 格、兵 481 万→233 万；Umbreon 整局替它戳了 ☢️SigmaX 14 次。t=12330 起发了 9 条（含 6 条船），t=12933 阵亡（账上 592,142）。估算少拿利息 1,398 万。",
+   "cause": "队2。t=1980~3600 零指令。t=5850~8910 的 20 条指令多在密度 121~141 时发出，20,363→54,453 格（出兵间隔估算支出 1,013 万）。t=9000~9450 被打掉 14,210 格；t=10440~12330 密度 100~145、nb=1，1,890 拍只有 1 条指令（替 Umbreon 的协防戳），48,274→16,865 格、兵 481 万→233 万；Umbreon 整局替它戳了 ☢️SigmaX 14 次。t=12330 起发了 9 条（含 6 条船），t=12933 阵亡（账上 592,142）。估算少拿利息 1,398 万。",
    "patternIds": [
     "NEW:AT-over-cap-dump",
     "NEW:EG-giant-neighbor-freeze",
@@ -2259,9 +2258,8 @@
     "r80→*Aurelian@5520"
    ],
    "balanceAtDeath": 36958,
-   "cause": "队4。与 DragonSlayer（队1）5.7 格、同队 Scotland 24.0 格出生：t=540 起四周已无无主地，t=630 1,878 格（除 DragonSlayer 外最低）。t=2520~3600（密度 69→147）、3960~5130（密度 130~149）两段零指令，领土 3,408→3,070→1,621。t=5080 被 BY（只可能在队5）打，t=5310~5580 1,621→844；FreeMason t=5505 的救援捐款手续费 87,165、到账至多 7.6 万。t=5816 阵亡（账上 36,958）。",
+   "cause": "队4。t=540 起四周已无无主地，t=630 1,878 格（除 DragonSlayer 外最低）。t=2520~3600（密度 69→147）、3960~5130（密度 130~149）两段零指令，领土 3,408→3,070→1,621。t=5080 被 BY（只可能在队5）打，t=5310~5580 1,621→844；FreeMason t=5505 的救援捐款手续费 87,165、到账至多 7.6 万。t=5816 阵亡（账上 36,958）。",
    "patternIds": [
-    "NEW:SP-squad-stack",
     "NEW:EG-cap-idle-death",
     "NEW:DN-fee-exceeds-delivery"
    ],
@@ -2472,7 +2470,7 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 2520,
-   "cause": "队1。与 Chagatai（队4）5.7 格、Scotland（队4）28.3 格出生：只发出 1 条开局指令，t=180 起 nb=0、neut=0，t=180~3510 一直 36 格（t=630~1620 密度 150）。29 条捐款日志（27 条给 Liu Bei，执行 20 条，到账合计约 1.7 万）。t=3780 起 131 格，t=5203 阵亡。",
+   "cause": "队1。只发出 1 条开局指令，t=180 起 nb=0、neut=0（四周只有策略不打的地——同队的号、名字在编队池里的号——或水；出生后 180 拍内就被包住，被谁包住量不出），t=180~3510 一直 36 格（t=630~1620 密度 150）。29 条捐款日志（27 条给 Liu Bei，执行 20 条，到账合计约 1.7 万）。t=3780 起 131 格，t=5203 阵亡。",
    "patternIds": [
     "NEW:SP-squad-stack"
    ],
@@ -2533,7 +2531,7 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 2907,
-   "cause": "队3。与 Macedon（队5）122.1 格出生。t=1800~1890 一个间隔里 7 条指令打掉 80% 的兵（26.9 万→5.4 万），3,443→4,400 格，密度 12、nb=2~3；下一个快照 3,236 格、2.2 万兵，t=2062 阵亡（账上 2,907）。清仓前没有发令不见效的前段。谁打的看不到。",
+   "cause": "队3。t=1800~1890 一个间隔里 7 条指令打掉 80% 的兵（26.9 万→5.4 万），3,443→4,400 格，密度 12、nb=2~3；下一个快照 3,236 格、2.2 万兵，t=2062 阵亡（账上 2,907）。清仓前没有发令不见效的前段。谁打的看不到。",
    "patternIds": [
     "NEW:AT-dump-then-dead"
    ],
@@ -2738,9 +2736,8 @@
     "r155→*Ragnar@1650"
    ],
    "balanceAtDeath": 403,
-   "cause": "队5。与 Dahomey（队2）16.0 格出生。本机拍 1440~1710 的 38 条指令没生效，t=1710~1800 清仓：30.5 万→1.2 万兵，t=1890 只剩 73 兵（nb=3）；领土 4,717→3,955→2,065→1,393，t=2092 阵亡（账上 403）。",
+   "cause": "队5。本机拍 1440~1710 的 38 条指令没生效，t=1710~1800 清仓：30.5 万→1.2 万兵，t=1890 只剩 73 兵（nb=3）；领土 4,717→3,955→2,065→1,393，t=2092 阵亡（账上 403）。",
    "patternIds": [
-    "NEW:SP-squad-stack",
     "NEW:IO-stale-pulse-dump",
     "NEW:AT-dump-then-dead"
    ],
@@ -2886,9 +2883,8 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 8231,
-   "cause": "队2。与同队 Spiderman 16.0 格出生，t=4050 起被 Spiderman 围在 2,806 格里（109 个快照 nb=0、neut=0）。每攒到约 21.8 万兵就给 Spiderman 捐 185/1024：35 条全部执行，到账约 146 万、手续费 50 万。Spiderman 死后 t=13770~13860 一次清仓：40.1 万→97 兵，2,806→17,876 格（每格约 27 兵），密度 0，t=14014 阵亡。",
+   "cause": "队2。t=4050 起被策略不打的邻居围在 2,806 格里（109 个快照 nb=0、neut=0；它的捐款全部给了同队的 Spiderman，围住它的是不是 Spiderman 量不出）。每攒到约 21.8 万兵就给 Spiderman 捐 185/1024：35 条全部执行，到账约 146 万、手续费 50 万。Spiderman 死后 t=13770~13860 一次清仓：40.1 万→97 兵，2,806→17,876 格（每格约 27 兵），密度 0，t=14014 阵亡。",
    "patternIds": [
-    "NEW:SP-squad-stack",
     "NEW:DN-rear-to-front"
    ],
    "statementType": "inferred"
@@ -3029,9 +3025,8 @@
    ],
    "stillDonating": [],
    "balanceAtDeath": 46920,
-   "cause": "队2。与 Subway（队5）16.0 格出生，离水 2 格。整局只有 16 条指令，t=1260 起到阵亡的 2,340 拍零指令：nb=2，密度 23→136，领土 3,215→705。被点名的攻击者：Obsidian Empire（t=1830）、BY（t=2360~3295，只可能在队5）。Spiderman t=3655 的救援捐款手续费 110,582、到账约 7.9 万（它只剩 705 格），13 拍后阵亡（t=3668，账上 46,920）。",
+   "cause": "队2。整局只有 16 条指令，t=1260 起到阵亡的 2,340 拍零指令：nb=2，密度 23→136，领土 3,215→705。被点名的攻击者：Obsidian Empire（t=1830）、BY（t=2360~3295，只可能在队5）。Spiderman t=3655 的救援捐款手续费 110,582、到账约 7.9 万（它只剩 705 格），13 拍后阵亡（t=3668，账上 46,920）。",
    "patternIds": [
-    "NEW:SP-squad-stack",
     "NEW:DF-passive-death",
     "NEW:EG-cap-idle-death",
     "NEW:DN-fee-exceeds-delivery"
@@ -3099,7 +3094,7 @@
    "assistsForMe": [],
    "stillDonating": [],
    "balanceAtDeath": 23214,
-   "cause": "队1。与 Liu Bei（同队）143.2 格、OldGuard（队5）117.4 格出生。t=1080~3240 的 2,160 拍只有 2 条指令（都是给 Maurya 的捐款），nb=2~4：密度 10→142，领土 3,405→1,881（被 🇹🇷MEMO🇹🇷[storm] 打，t=2550~2880）；t=3240~3510 发了 4 条，t=3510~3870 1,266→474，t=3932 阵亡（账上 23,214）。",
+   "cause": "队1。t=1080~3240 的 2,160 拍只有 2 条指令（都是给 Maurya 的捐款），nb=2~4：密度 10→142，领土 3,405→1,881（被 🇹🇷MEMO🇹🇷[storm] 打，t=2550~2880）；t=3240~3510 发了 4 条，t=3510~3870 1,266→474，t=3932 阵亡（账上 23,214）。",
    "patternIds": [
     "NEW:AT-worth-gate",
     "NEW:EG-cap-idle-death"
@@ -3110,15 +3105,15 @@
  "decisions": [
   {
    "t": 50,
-   "bot": "Chagatai/DragonSlayer/Scotland、Spiderman/DeepBlue、Subway/Dahomey、Anya/FreeMason",
+   "bot": "DragonSlayer（及全队选点）",
    "kind": "spawn",
-   "verdict": "error",
-   "state": "最终选点 <80 格的 6 对（5.7~28.3 格），<145 的 17 对（同队 4、异队 13）；HL-SPAWN 176 行、0 行 HL-SPAWN-BACKEND；(482,18) 先后被 Scotland、Chagatai、DragonSlayer 选过，最后是 Subway 的落点",
+   "verdict": "unclear",
+   "state": "HL-SPAWN 176 行、0 行 HL-SPAWN-BACKEND；(482,18) 先后出现在 Scotland、Chagatai、DragonSlayer、Subway 的选点日志里。DragonSlayer t=180 起 36 格、nb=0、neut=0。真正的出生点看不到（校准局里日志最后一条是真出生点的只有 15/90 个号）",
    "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4062-4068 把名字在池里的号从局面里抹掉再算（编队号之间互不排斥）；L4070-4081 候选表每 2.2 秒在本机重算；L4083-4099 按 minSep 贪心取 chosenSlots[slot]",
-   "why": "每个号各算各的候选表：槽位号不同（Scotland 13、Chagatai 7、DragonSlayer 8），三张表里这几个槽位却落在同一片地方",
-   "estCost": "DragonSlayer 整局 36~138 格；Chagatai t=630 1,878 格；Spiderman/DeepBlue、Subway/Dahomey t=630 都低于中位 2,777；DeepBlue 后来被 Spiderman 围在 2,806 格里",
+   "why": "每个号各算各的候选表、编队号之间互不排斥是代码事实；DragonSlayer 出生 180 拍内被策略不打的邻居包住，与「落在别的编队号（或同队的号）旁边」吻合，但包住它的是谁、全队叠了几对，没有录像量不出",
+   "estCost": "DragonSlayer 整局 36~138 格；其余量不出",
    "patternId": "NEW:SP-squad-stack",
-   "evidenceRef": "spawn_geo.py B002；digest.py B002 spawn"
+   "evidenceRef": "digest.py B002 bot 26；digest.py B023|B039|B038|B010|B041 spawnlog（校准）"
   },
   {
    "t": 630,
@@ -3746,31 +3741,11 @@
   {
    "name": "NEW:SP-squad-stack",
    "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
-   "detectionSketch": "spawn_geo.py（HL-SPAWN 最后一行；无录像时是近似）",
+   "detectionSketch": "有录像：spawn_geo.py / digest picks（录像里最后一条生效选点）。没有录像量不出（日志最后一条 HL-SPAWN 不可靠），只能从 t<=270 就 nb=0、neut=0 侧面看到",
    "instances": [
     {
-     "t": 50,
-     "bot": "Chagatai/DragonSlayer"
-    },
-    {
-     "t": 50,
-     "bot": "Spiderman/DeepBlue"
-    },
-    {
-     "t": 50,
-     "bot": "Subway/Dahomey"
-    },
-    {
-     "t": 50,
-     "bot": "Anya/FreeMason"
-    },
-    {
-     "t": 50,
-     "bot": "Scotland/Chagatai"
-    },
-    {
-     "t": 50,
-     "bot": "Scotland/DragonSlayer"
+     "t": 180,
+     "bot": "DragonSlayer"
     }
    ]
   },
@@ -3948,6 +3923,7 @@
   "落后期间清仓的 Shimazu、OldGuard、FreeMason、Aurelian、Anya 没有立刻被打，t=2070 比清仓前共多 29,928 格。"
  ],
  "unknowns": [
+  "20 个号真正的出生点、谁和谁叠在一起：没有录像；日志最后一条 HL-SPAWN 在有录像的 5 局里只有 15/90 个号是真出生点（digest spawnlog）。",
   "没有录像：每个阵亡号是被谁打死的只有 HL-ASSIST 里点到的名字；外人的队号只有排除法；队1 有多少兵、怎么出手完全看不到。",
   "满仓不出手到底停在 buyLand 的哪一行（L5361 的保底线、L5345 的 siegeShrink、L5528 的 chunk）无法区分；isNoFullSend 的真实状态日志不打印。",
   "和平投票：Liu Bei 的 9 次发起有没有外人投票、离通过差多少，日志看不到（0 行 voted YES）。",
@@ -3971,7 +3947,7 @@
   },
   {
    "q": "出生与开局被围",
-   "a": "20 个号各算各的候选表：<80 格的 6 对，其中 4 对异队。t<630 就被封死的只有 DragonSlayer（t=180 起 neut=0、nb=0，36 格）和 Chagatai（t=540 起 neut=0，1,878 格）——两者相距 5.7 格。Spiderman/DeepBlue 同队 16.0 格：DeepBlue t=4050 起被围在 Spiderman 里面。"
+   "a": "出生阵型量不出：没有录像，日志最后一条选点不可靠（校准局 15/90）。代码上 20 个号各算各的候选表、编队号之间互不排斥；日志里 (482,18) 被 4 个号先后选过。t<630 就被封死的只有 DragonSlayer（t=180 起 neut=0、nb=0，36 格）和 Chagatai（t=540 起 neut=0，1,878 格）。DeepBlue t=4050 起被围（nb=0、neut=0）。"
   },
   {
    "q": "前线消耗与底线",
@@ -3990,7 +3966,7 @@
   "python3 c136-review/agents/R06/scripts/digest.py B002 roster|teams|timeline [t ...]|outsiders|bot <me> [t0 t1]|deaths|boxed|spawn|drops|json（日志快照 + 结算行；outsiders = 结算行各队份额拆成我方号 + 其余）",
   "python3 c136-review/agents/R06/scripts/logdigest.py B002 seqlag|stale|wall|silent|cmdmix|fireband [t0 [t1]] [名字 ...]|idleloss|capidle|overcap|drop30|spend [t0 t1]|donlog [me|-1]|foes|assists [t0 t1]|opening|peace|json（只用日志：本机拍落后、发令不见效→集中清仓、零指令时段、指令构成、按密度档的出手率、丢地账、满仓不动、超软上限少拿的利息、兵的去向分账、捐款执行账、协防戳点名的外人）",
   "python3 c136-review/agents/R06/scripts/logdigest.py B023 donval（B039、B038 同：捐款余额链推法与录像真值对表）",
-  "python3 c136-review/agents/R06/scripts/spawn_geo.py B002 [json]（固定地图 14 的地形 + HL-SPAWN 最终选点）",
+  "python3 c136-review/agents/R06/scripts/digest.py B023 spawnlog（B039、B038、B010、B041 同：日志最后一条 HL-SPAWN 与录像里真正出生点的对表——本局不用日志选点下结论的依据）",
   "python3 c136-review/agents/R06/scripts/make_review.py B002（合并 reviews_src/B002.py，自检）"
  ],
  "confidenceOverall": "medium-low：全部数字来自日志快照、日志原文和结算行，可由脚本重算；但没有录像，攻击者、指令是否生效、代码分支都是推断。捐款执行与否的推法在三局有录像的对局上一致率 81%~87%。份额、领土、兵、指令条数、各队领土是直接读数，可信；「为什么不出手」只有与日志一致的解释，没有实测。"

@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
-"""spawn_geo.py — 没有录像时的出生点地形账：只用地图二进制 + HL-SPAWN 日志里每个号最后一次选点。
+"""spawn_geo.py — 出生点地形账：地图二进制 + 每个号的出生点。
+
+出生点的来源（打印在表头）：
+  · 有录像（哪怕只有选点阶段）：录像里每个号最后一条生效的选点指令 = 真正的出生点；
+  · 没有录像：只能拿日志里每个号最后一条 HL-SPAWN。**这不可靠**：有录像的 5 局（B023/B039/B038/B010/B041，90 个号）里，
+    日志最后一条就是真正出生点的只有 15 个号，倒数第二条 41 个，其余更靠前（digest.py <id> spawnlog 可重算）。
+    所以没有录像的局，这张表只能当「候选之一」，不能用来下「谁和谁叠在一起」的结论。
 
 用法：python3 spawn_geo.py <matchId> [json]
-  · 地图：/agent/repos/c136-data/src/sim/maps/<mapId>_<seed>.bin.gz，没有就用 <mapId>_0.bin.gz（固定地图不随种子变）；
+  · 地图：/agent/repos/c136-data/src/sim/maps/<mapId>_<seed>.bin.gz，没有就找 out/_maps/<mapId>_<seed>.bin.gz
+    （随机地图：map_export.mjs 从真引擎导出），再没有就用 <mapId>_0.bin.gz（固定地图不随种子变）；
     陆地格数必须等于对局卡的 mapLand，否则报错退出（防止拿错地图）。
   · 每个号：出生点是否在陆地上、所在连通陆块（4 邻接）多大、到最近水格的直线距离。
   · 号与号：直线距离 < minSep(145) 的全部成对列出，附同队 / 异队。
@@ -29,8 +36,9 @@ MIN_SEP = 145
 
 
 def load_map(map_id, seed):
-    for name in (f"{map_id}_{seed}.bin.gz", f"{map_id}_0.bin.gz"):
-        p = os.path.join(MAPS, name)
+    # 共享目录的 <mapId>_<seed> → 自己从真引擎导出的 out/_maps/<mapId>_<seed>（map_export.mjs）→ 固定地图 <mapId>_0
+    for p in (os.path.join(MAPS, f"{map_id}_{seed}.bin.gz"), os.path.join(OUT, '_maps', f"{map_id}_{seed}.bin.gz"), os.path.join(MAPS, f"{map_id}_0.bin.gz")):
+        name = os.path.basename(p)
         if os.path.exists(p):
             buf = gzip.open(p, 'rb').read()
             if buf[:4] != b'TMAP':
@@ -41,7 +49,10 @@ def load_map(map_id, seed):
 
 
 def geo(mid):
-    M = load_match(mid, with_replay=False)
+    M = load_match(mid)
+    import digest as D
+    R = D.picks_rows(M)
+    true_xy = {me: (v[-1][1], v[-1][2]) for me, v in R['per'].items() if v} if R else {}
     name, W, H, ty = load_map(M.card['mapId'], M.card['mapSeed'])
     land = sum(1 for v in ty if v == T_LAND)
     if land != M.card['mapLand']:
@@ -71,10 +82,14 @@ def geo(mid):
         sizes.append(n)
     bots = []
     for me, b in sorted(M.bots.items()):
-        if not b.spawns:
+        if me in true_xy:
+            x, y = true_xy[me]
+            sp = dict(slot=(b.spawns[-1]['slot'] if b.spawns else None))
+        elif b.spawns and not true_xy:
+            sp = b.spawns[-1]
+            x, y = sp['x'], sp['y']
+        else:
             continue
-        sp = b.spawns[-1]
-        x, y = sp['x'], sp['y']
         idx = y * W + x if 0 <= x < W and 0 <= y < H else None
         on = idx is not None and ty[idx] == T_LAND
         # 最近水格（直线，搜到半径 200 为止）
@@ -142,7 +157,8 @@ def geo(mid):
                 pairs.append(dict(a=a['me'], b=b['me'], aName=a['name'], bName=b['name'], dist=round(d, 1), sameTeam=(a['team'] == b['team']), teams=[a['team'], b['team']],
                                   sameComp=(a['comp'] == b['comp'])))
     pairs.sort(key=lambda p: p['dist'])
-    return dict(matchId=mid, map=name, W=W, H=H, land=land, components=sorted(sizes, reverse=True)[:8], bots=bots, pairs=pairs, minSep=MIN_SEP)
+    return dict(matchId=mid, map=name, W=W, H=H, land=land, components=sorted(sizes, reverse=True)[:8], bots=bots, pairs=pairs, minSep=MIN_SEP,
+                source=('replay' if true_xy else 'log-last-unreliable'))
 
 
 def main():
@@ -158,6 +174,8 @@ def main():
         print('写入', p)
         return 0
     print(f"== {mid} 出生点地形账：地图 {G['map']} {G['W']}x{G['H']}，陆地 {G['land']} 格（与对局卡一致）；最大的几块连通陆地：{G['components']}")
+    print('   出生点来源：' + ('录像里最后一条生效的选点指令（真值）' if G['source'] == 'replay'
+                            else '没有录像，用的是日志最后一条 HL-SPAWN——不可靠（校准局 90 个号里只有 15 个对），下表只能当候选，不能下结论'))
     print('   号 队 出生点 在陆地上? 所在陆块大小 离最近水格 ｜ 20 个号之间「陆上最近」分到的格数（其中 60 步以内）｜ 选点次数 ｜ 去向')
     tot = sum(b['voronoi'] for b in G['bots'])
     for b in sorted(G['bots'], key=lambda b: b['voronoi']):

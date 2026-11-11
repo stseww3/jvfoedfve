@@ -25,6 +25,7 @@
 //   4. 模拟器与实机逐兵一致的范围以 sim_state.json 的 check 为准（B039 全程一致）；本脚本另外打印影子局面与日志快照的核对数。
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { decodeReplay, mapOf } from '/agent/repos/c136-data/src/sim/tools/c102-replay-lib.mjs';
 import { Game, MAX_PLAYERS, NEUTRAL, P_INNER, iV } from '/agent/repos/c136-data/src/sim/sim/game.js';
@@ -67,7 +68,22 @@ const inp = JSON.parse(fs.readFileSync(path.join(OUT, mid, 'sim_in.json'), 'utf8
 const d = decodeReplay(fs.readFileSync(inp.replayPath, 'utf8'));
 const vu = d.vu;
 const { mapIdx, mapSeed } = mapOf(vu);
-const map = loadMap(mapIdx, mapSeed);
+// 共享目录 src/sim/maps 里没有这局的种子地图时，读 map_export.mjs 从真引擎导出的同格式文件（out/_maps/）
+function loadMapAny(index, seed) {
+  try { return loadMap(index, seed); } catch (e) {
+    const file = path.join(OUT, '_maps', `${index}_${seed}.bin.gz`);
+    if (!fs.existsSync(file)) throw new Error(`没有地图 ${index}_${seed}：共享目录和 out/_maps 都没有（先跑 map_export.mjs ${mid}）`);
+    const buf = zlib.gunzipSync(fs.readFileSync(file));
+    if (buf.toString('latin1', 0, 4) !== 'TMAP') throw new Error(`bad map file ${file}`);
+    const w = buf.readUInt16LE(4), h = buf.readUInt16LE(6), n = w * h;
+    const type = new Uint8Array(buf.buffer, buf.byteOffset + 8, n).slice();
+    const id = new Uint16Array(n);
+    let land = 0;
+    for (let p = 0; p < n; p++) { id[p] = buf.readUInt16LE(8 + n + 2 * p); if (type[p] === T_LAND) land++; }
+    return { index, seed, w, h, type, id, land, mountains: [3, 7, 9, 21, 25].includes(index) };
+  }
+}
+const map = loadMapAny(mapIdx, mapSeed);
 const H = vu.humanCount;
 const squad = new Set(inp.squad);
 const TEAM = inp.nTeams > 0 ? { teams: inp.teams, nTeams: inp.nTeams, botTeams: inp.botTeams } : null;
@@ -142,6 +158,43 @@ g.names = names;
 const nm = (p) => (p === NEUTRAL || p >= 512 ? '无主地' : `${names[p] || 'bot' + p}(${p}${p < H ? (g.state[p] === 2 ? '·空壳' : `·队${g.teams[p]}`) : '·AI'})`);
 const k = (v) => (Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + 'M' : Math.abs(v) >= 1e4 ? Math.round(v / 1e3) + 'k' : String(Math.round(v)));
 
+// 真人的「翻山」指令（录像指令号 10；只有山地图有）。干净模拟器只给内置 AI 写了翻山（bots.js mountainAttack），
+// 这里按线上引擎原文 bB.qi.i2(player, pct, 格子, 目标) 补上真人的入口：
+//   目标规范化（rk）→ 点的那一格必须是无主陆地或目标的地（fT；点在无主陆地上时目标改成无主地）→ 那一格四邻里的山体
+//   （按 fb 的 3..0 顺序、同一山体只算一次）里第一个「自己的贴山边界格也挨着」的山体（fI/fK）→ 已有对该目标的进攻线或还有空线（kF/kY）
+//   → 出兵量 m6 = 模拟器的 sendAll（另扣 max(余额/10, 1000)）→ 把那格山推进自己的前线表 → addAttack → schedule(…, true)。
+const T_MOUNTAIN = 5;
+function humanMountain(p, pct, tile, target) {
+  if (!g.canAct(p) || p === target) return false;
+  target = Math.min(target, NEUTRAL);
+  if (target < NEUTRAL && g.alive[target] === 0) target = NEUTRAL;
+  if (target < NEUTRAL && !g.isEnemy(p, target)) return false;
+  const x = tile % g.W, y = Math.floor(tile / g.W);
+  if (!(x > 0 && x < g.W - 1 && y > 0 && y < g.H - 1)) return false;
+  const v = g.px[tile];
+  if (v === T_LAND) target = NEUTRAL;
+  else if (v >= P_INNER) { if (g.own[tile] !== target) return false; } else return false;
+  const ids = [], cells = [];
+  for (let k = 3; k >= 0; k--) {
+    const c = tile + g.dir4[k];
+    if (g.px[c] === T_MOUNTAIN && !ids.includes(g.wid[c])) { ids.push(g.wid[c]); cells.push(c); }
+  }
+  const C = g.cliff[p] || [];
+  const touches = (id) => {
+    for (let i = 0; i < C.length; i++) for (let k = 3; k >= 0; k--) { const c = C[i] + g.dir4[k]; if (g.px[c] === T_MOUNTAIN && g.wid[c] === id) return true; }
+    return false;
+  };
+  let hit = -1;
+  for (let i = 0; i < ids.length; i++) if (touches(ids[i])) { hit = cells[i]; break; }
+  if (hit < 0) return false;
+  if (!g.hasAttack(p, target) && !g.hasFreeSlot(p)) return false;
+  const troops = g.sendAll(p, pct);
+  g.front[p].push(hit);
+  g.addAttack(p, troops, target);
+  g.schedule(p, true);
+  return true;
+}
+
 const actual = []; // 录像里我方影子号实际执行的指令
 const execCmd = (c) => {
   const { id, player, dX, dZ } = c;
@@ -163,6 +216,8 @@ const execCmd = (c) => {
     else g.chase(dX, dZ, player);
   } else if (id === 5) {
     if (dX !== 513) g.retreat(dX, player);
+  } else if (id === 10) {
+    humanMountain(player, dX >> 10, dZ, dX % 1024);
   } else if (id === 8 || id === 9) {
     if (g.spawnPhase) {
       g.eliminate(player);
