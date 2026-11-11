@@ -13,13 +13,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
 
+INT_COLS = ('t', 'terr', 'bal', 'nb', 'nAI', 'nAIweak', 'weakLand', 'nHum', 'neut', 'coast', 'intents', 'floorAI', 'nfs', 'atkOut')
+
+
 def main():
     mid = sys.argv[1]
     sdir = os.path.join(ROOT, 'tmp', 'shadow', mid)
     rows = collections.defaultdict(list)
     with open(os.path.join(sdir, 'rows.tsv'), encoding='utf8') as f:
         for r in csv.DictReader(f, delimiter='\t'):
-            rows[r['bot']].append({k: (v if k == 'bot' else int(v)) for k, v in r.items()})
+            # 后加的几列（bind/sbRef/gate/gateAI…）是文字，只把整数列转成整数
+            rows[r['bot']].append({k: (int(v) if k in INT_COLS else v) for k, v in r.items()})
     check = json.load(open(os.path.join(sdir, 'check.json')))
     lock = {b['bot']: b for b in check['bots']}
     print(f'# {mid} 该动没动的时段（影子策略 {check["ver"]} 的逐行动拍记录；持续拍数 = 行动拍数 × 5）')

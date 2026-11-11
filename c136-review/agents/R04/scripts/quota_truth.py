@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # 没落地的调度，用真引擎里的配额账重新判一遍「为什么没落地」。
-# 用法：python3 scripts/quota_truth.py <局号> [--list N] [--ours id,id,…]
+# 用法：python3 scripts/quota_truth.py <局号> [--list N] [--all] [--ours id,id,…]
+#   --list N 列出前 N 条「仍解释不了」的；--all 把每一条没落地的调度都列出来（拍、谁给谁、要几点、已用/上限、判定）
 # 背景：donation_ledger.py（里程碑 1 的工具）是从录像里的捐款指令按估算金额累加配额点数的，
 #   漏了船移交占的点数，金额也是估的，所以会多出一批「公式解释不了」。
 #   真引擎重放（engine_truth.cjs）在每笔落地的捐款和每次船移交上都记了收款人配额的 已用点数 / 上限，
@@ -73,6 +74,7 @@ def main():
     bands = [(0, 2142, '<2142'), (2142, 3213, '2142~3212'), (3213, 4284, '3213~4283'), (4284, 10 ** 9, '≥4284')]
     out = collections.defaultdict(collections.Counter)
     ex = []
+    allrej = []
     slack_un = []
     for r in rej:
         t = int(r['t']); te = int(r['execTick']); q = int(r['q']); p = int(r['donor']); pct = int(r['pct'])
@@ -103,6 +105,10 @@ def main():
                     ex.append('    拍 %d %s→%s 比例 %d 余额 %s 到账应为 %s，要 %d 点；真引擎已用 %d / 上限 %d（还剩 %d）；旧表记的已用 %s' % (
                         t, r['bot'], r['qname'], pct, fmt(B), fmt(v), c, used, cap, cap - used, r['usedBefore']))
         out[band][why] += 1
+        if '--all' in a:
+            cc = cost_of(te, v, land, sq[0]) if (v >= 1 and te < 4284) else 0
+            allrej.append('    拍 %d（落地拍 %d）%s→%s 比例 %d/1024 余额 %s 应到账 %s，要 %d 点；收款人已用 %d / 上限 %d ⇒ %s' % (
+                t, te, r['bot'], r['qname'], pct, fmt(B), fmt(v), cc, used, cap, why))
     print('%s：我方调度 %d 次，落地 %d，没落地 %d。真引擎配额上限与本脚本公式一致 %d 次、不一致 %d 次。' % (
         mid, len(mine), len(mine) - len(rej), len(rej), capchk[0], capchk[1]))
     tot = collections.Counter()
@@ -122,6 +128,10 @@ def main():
         print('  「仍解释不了」的 %d 次里，按真引擎的账还剩的点数：中位 %d，最小 %d，最大 %d' % (len(s), s[len(s) // 2], s[0], s[-1]))
     for line in ex:
         print(line)
+    if allrej:
+        print('  没落地的调度逐条（--all）：')
+        for line in allrej:
+            print(line)
     # 每个收款人配额用到了哪
     for q in sorted(tl, key=lambda q: -len(tl[q])):
         if q not in M.ours:

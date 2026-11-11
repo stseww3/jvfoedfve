@@ -1,0 +1,13 @@
+# A078 核心期行动拍的去向 [1500,6890)：共 7012 个号·行动拍
+合计：price 4516（64%），nooffer 1138（16%），出手 429（6%），sole 337（5%），floor 277（4%），chunk 143（2%），small 81（1%），donate 39（1%），boat 23（0%），send 22（0%），inflight 6（0%），crowded 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 171，dp 66，keep 32，sf/enemy 8
+  riku_x   1078 拍：price 816（76%），出手 91（8%），sole 69（6%），floor 82（8%），chunk 2（0%），small 10（1%），donate 5（0%），send 3（0%）
+  ryan_m    962 拍：price 782（81%），出手 18（2%），sole 141（15%），floor 10（1%），donate 2（0%），boat 2（0%），send 7（1%）
+  kaito9    832 拍：price 722（87%），出手 38（5%），floor 13（2%），chunk 56（7%），donate 1（0%），inflight 1（0%），crowded 1（0%）
+  sora_w    794 拍：price 327（41%），nooffer 268（34%），出手 35（4%），floor 59（7%），chunk 35（4%），small 56（7%），donate 5（1%），boat 6（1%），inflight 3（0%）
+  zexos1    762 拍：price 287（38%），nooffer 349（46%），出手 42（6%），sole 55（7%），floor 11（1%），small 4（1%），donate 7（1%），boat 3（0%），send 4（1%）
+  zero_7    740 拍：price 471（64%），nooffer 75（10%），出手 78（11%），sole 23（3%），floor 70（9%），chunk 8（1%），donate 4（1%），boat 11（1%）
+  leo_tx    695 拍：price 456（66%），nooffer 89（13%），出手 69（10%），sole 49（7%），floor 26（4%），donate 2（0%），boat 1（0%），send 3（0%）
+  talon5    630 拍：price 237（38%），nooffer 357（57%），出手 15（2%），small 5（1%），donate 13（2%），send 3（0%）
+  alex_k    427 拍：price 357（84%），出手 12（3%），floor 6（1%），chunk 42（10%），small 6（1%），send 2（0%），inflight 2（0%）
+  noah88     92 拍：price 61（66%），出手 31（34%）
