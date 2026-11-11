@@ -312,6 +312,20 @@ export function coreGate(pol, g, offers, ourSet = null) {
   return res;
 }
 
+// tryDonateToTeammate 里随版本变的常数（逐项对过 diff：Va↔Vb 的 L4382~4383 / L4478 / L4502~4505，Vb↔Vc 的 L4329 / L4383~4387 / L4464~4466 / L4479~4481 / L4503~4506）
+//   prodBox / emBox / defReqBox / genMaxBox 都是 [有海岸, 没海岸]；defGapAlways / genGapAlways：密度差条件对封死号是否也生效
+const DON = {
+  va: { minBal: 30000, cool: 12, prodBox: [72, 66], prodFront: 94, emBox: [32, 22], defReqBox: [42, 30], defMaxAlly: Infinity, gap: 16, gapAlways: false, genReqBox: 82, genMaxBox: [140, 128], genMaxFront: 96, pctDef: [260, 190], pctGen: [225, 170], minPct: 128 },
+  vb: { minBal: 30000, cool: 12, prodBox: [44, 34], prodFront: 92, emBox: [32, 22], defReqBox: [42, 30], defMaxAlly: Infinity, gap: 16, gapAlways: false, genReqBox: 58, genMaxBox: [140, 128], genMaxFront: 96, pctDef: [380, 240], pctGen: [320, 220], minPct: 180 },
+  vc: { minBal: 35000, cool: 24, prodBox: [76, 70], prodFront: 94, emBox: [58, 48], defReqBox: [68, 58], defMaxAlly: 85, gap: 15, gapAlways: true, genReqBox: 96, genMaxBox: [94, 88], genMaxFront: 88, pctDef: [260, 190], pctGen: [220, 170], minPct: 150 },
+};
+let DV = DON.vb, DVNAME = 'vb';
+export function setDiagVersion(ver) {
+  if (DON[ver]) { DV = DON[ver]; DVNAME = ver; return true; }
+  DVNAME = ver + '（调度诊断仍按 Vb 的常数，未核对）';
+  return false;
+}
+
 // 捐款/调度门槛（Policy.tryDonateToTeammate L4325~4518 的入口判定）
 export function diagDonate(pol, g, nm) {
   const P = pol.p, me = pol.me;
@@ -320,8 +334,8 @@ export function diagDonate(pol, g, nm) {
   const gate = [];
   if (g.t < 1500) gate.push('t<1500');
   if (g.terr[me] < 1200) gate.push('地<1200');
-  if (B < 30000) gate.push('余额<30000');
-  if (g.t - (pol.lastDonateTick ?? -999) < 12) gate.push('距上次调度<12拍');
+  if (B < DV.minBal) gate.push('余额<' + DV.minBal);
+  if (g.t - (pol.lastDonateTick ?? -999) < DV.cool) gate.push('距上次调度<' + DV.cool + '拍');
   let anyEnemyNb = false;
   for (const q of pol.nb) if (g.alive[q] && !pol.isTeammate(g, q) && pol.person(g, q)) anyEnemyNb = true;
   const boxedIn = !anyEnemyNb && pol.nb.length === 0 && pol.neutral === 0;
@@ -338,11 +352,11 @@ export function diagDonate(pol, g, nm) {
     rows.push(`${nm(p)} 地${g.terr[p]} 密度${dA.toFixed(0)} 敌邻${enemyNbs} 被攻${f(inAtk)} 配额${g.donQuota[p]}/${g.donCap}`);
   }
   out.push('      我方队友：' + rows.join('；'));
-  // 逐个候选照抄 L4414~4496 的分类与打分（Vb 行号；只读）
+  // 逐个候选照抄 L4414~4496 的分类与打分（Vb / Vc 行号，Va 少一行；随版本变的常数在 DON 表里；只读）
   try {
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
-    const prodOptFloor = boxedIn ? (hasExposedCoast ? 44 * L : 34 * L) : Math.max(92 * L, pol.safeAt(g, -1));
-    const emergDefFloor = boxedIn ? (hasExposedCoast ? 32 * L : 22 * L) : Math.max(88 * L, pol.safeAt(g, -1));
+    const prodOptFloor = boxedIn ? (hasExposedCoast ? DV.prodBox[0] * L : DV.prodBox[1] * L) : Math.max(DV.prodFront * L, pol.safeAt(g, -1));
+    const emergDefFloor = boxedIn ? (hasExposedCoast ? DV.emBox[0] * L : DV.emBox[1] * L) : Math.max(88 * L, pol.safeAt(g, -1));
     let maxSquadTerr = 0, topSquadId = -1, maxRandomTeamTerr = 0, fronts = 0;
     for (let p = 0; p < g.humans; p++) {
       if (!g.alive[p] || !pol.isTeammate(g, p)) continue;
@@ -385,15 +399,16 @@ export function diagDonate(pol, g, nm) {
       const push = outH >= 0.06 * Bp && dAlly < 96;
       const opening = enemyNbs > 0 && (prey || minEnemyDens < 0.70 * dAlly) && dAlly < 96;
       if (underFire) {
-        const reqD = boxedIn ? (hasExposedCoast ? 42 : 30) : 102;
-        if (dMe < reqD || B <= 1.12 * emergDefFloor || (!boxedIn && dMe < dAlly + 16)) { cls.push(`${nm(p)}：在挨打（${f(inH)}），但我不够格（我密度 ${dMe.toFixed(0)}，要求 ≥${reqD}${!boxedIn ? '且比对方高 16' : ''}，余额要 > ${f(1.12 * emergDefFloor)}）`); continue; }
+        const reqD = boxedIn ? (hasExposedCoast ? DV.defReqBox[0] : DV.defReqBox[1]) : 102;
+        const gapOn = DV.gapAlways || !boxedIn;
+        if (dMe < reqD || dAlly >= DV.defMaxAlly || B <= 1.12 * emergDefFloor || (gapOn && dMe < dAlly + DV.gap)) { cls.push(`${nm(p)}：在挨打（${f(inH)}），但我不够格（我密度 ${dMe.toFixed(0)}，要求 ≥${reqD}${gapOn ? '且比对方高 ' + DV.gap : ''}${Number.isFinite(DV.defMaxAlly) ? `；对方密度 ${dAlly.toFixed(0)} 要求 <${DV.defMaxAlly}` : ''}，余额要 > ${f(1.12 * emergDefFloor)}）`); continue; }
         const score = 5000 + (inH / Math.max(1, Bp)) * 1200 + (105 - dAlly) * 20 + Math.min(2200, Lp / 18);
         cls.push(`${nm(p)}：救急候选，得分 ${score.toFixed(0)} = 5000 + 被攻比 ${((inH / Math.max(1, Bp)) * 1200).toFixed(0)} + 密度差 ${((105 - dAlly) * 20).toFixed(0)} + 领土项 ${Math.min(2200, Lp / 18).toFixed(0)}`);
         if (!best || score > best.score) best = { p, score, kind: 'defense_dispatch', floor: emergDefFloor };
       } else {
-        const reqD = boxedIn ? 58 : 108;
-        const maxAllyD = boxedIn ? (push || opening || enemyNbs > 0 ? 140 : 128) : 96;
-        if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) { cls.push(`${nm(p)}：一般候选，但不够格（我密度 ${dMe.toFixed(0)} 要求 ≥${reqD}；对方密度 ${dAlly.toFixed(0)} 要求 ≤${maxAllyD}；余额要 > ${f(1.14 * prodOptFloor)}）`); continue; }
+        const reqD = boxedIn ? DV.genReqBox : 108;
+        const maxAllyD = boxedIn ? (push || opening || enemyNbs > 0 ? DV.genMaxBox[0] : DV.genMaxBox[1]) : DV.genMaxFront;
+        if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || ((DV.gapAlways || !boxedIn) && dMe < dAlly + DV.gap)) { cls.push(`${nm(p)}：一般候选，但不够格（我密度 ${dMe.toFixed(0)} 要求 ≥${reqD}；对方密度 ${dAlly.toFixed(0)} 要求 ≤${maxAllyD}；余额要 > ${f(1.14 * prodOptFloor)}）`); continue; }
         const score = (push || opening ? 2500 : 1000) + (crown ? 1800 : 0) + (outH / Math.max(1, Bp)) * 1200 + (prey ? 500 : 0) + (100 - dAlly) * 18 + enemyNbs * 80 + Math.min(3500, Lp / 14);
         cls.push(`${nm(p)}：${push || opening ? '进攻' : '增产'}候选，得分 ${score.toFixed(0)}（领土项 ${Math.min(3500, Lp / 14).toFixed(0)}）`);
         if (!best || score > best.score) best = { p, score, kind: push || opening ? 'offense_dispatch' : 'yield_opt_dispatch', floor: prodOptFloor };
@@ -402,9 +417,9 @@ export function diagDonate(pol, g, nm) {
     for (const c of cls) out.push('        ' + c);
     if (best) {
       const maxSafePct = Math.floor((Math.max(0, B - best.floor) * 1024) / Math.max(1, B));
-      const ideal = best.kind === 'defense_dispatch' ? (boxedIn ? 380 : 240) : (boxedIn ? 320 : 220);
+      const ideal = best.kind === 'defense_dispatch' ? (boxedIn ? DV.pctDef[0] : DV.pctDef[1]) : (boxedIn ? DV.pctGen[0] : DV.pctGen[1]);
       const pct = Math.min(maxSafePct, ideal);
-      out.push(`      ⇒ 选中 ${nm(best.p)}（${best.kind}），比例 min(${maxSafePct}, ${ideal}) = ${pct}/1024${pct < 180 ? '，低于 180 不发（L4506）' : `，捐后我方密度约 ${((B * (1 - pct / 1024) - B * 0.0625) / L).toFixed(0)}`}`);
+      out.push(`      ⇒ 选中 ${nm(best.p)}（${best.kind}），比例 min(${maxSafePct}, ${ideal}) = ${pct}/1024${pct < DV.minPct ? '，低于 ' + DV.minPct + ' 不发（L4506）' : `，捐后我方密度约 ${((B * (1 - pct / 1024) - B * 0.0625) / L).toFixed(0)}`}`);
     } else out.push('      ⇒ 没有合格的收款人');
   } catch (e) { out.push('      调度候选诊断出错 ' + String(e).slice(0, 100)); }
   return out;

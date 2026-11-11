@@ -212,6 +212,7 @@ async function main() {
   const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
   const has = (k) => args.includes(k);
   const ver = opt('--ver', versionOf(mid));
+  DIAG.setDiagVersion(ver);
   const from = +opt('--from', 0), to = +opt('--to', 1e9);
   const every = +opt('--every', 5);
   const nOffers = +opt('--offers', 4);

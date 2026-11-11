@@ -20,19 +20,36 @@ def clamp(v, lo, hi):
     return max(lo, min(hi, v))
 
 
+# 角落扇形阵随版本变的常数（spawn-coordinator-c116-va / -vb / c116.mjs 的 L1076~1077、L1135~1136，逐行对过 diff）
+FANS = {
+    'va': dict(k1=1.38, lo1=78, hi1=132, k2=2.35, lo2=142, hi2=225, div=3.2, inner=lambda K: min(3, max(2, int((K - 1) * 0.34)))),
+    'vb': dict(k1=1.12, lo1=66, hi1=108, k2=1.88, lo2=122, hi2=182, div=3.2, inner=lambda K: min(3, max(2, int((K - 1) * 0.34)))),
+    'vc': dict(k1=1.32, lo1=76, hi1=126, k2=2.28, lo2=145, hi2=220, div=2.55, inner=lambda K: min(2, max(1, int((K - 1) * 0.22)))),
+}
+FAN = FANS['vb']
+
+
+def version_of(mid):
+    # 与 shadow.mjs 的 versionOf 一致：A001~A017 = Va，A018~A095 = Vb，A097~A099 = Vc；B 组用的是 c110 的协调器（没有核对过扇形阵常数，先按 Vb 套）
+    if mid[0] == 'B':
+        return 'vb'
+    n = int(mid[1:])
+    return 'va' if n <= 17 else 'vb' if n <= 95 else 'vc'
+
+
 def fan_radii(rcell):
-    # spawn-coordinator-c116-vb.mjs L1074~1077
+    # spawn-coordinator-c116-*.mjs L1074~1077
     sep = clamp(round(0.95 * rcell), 42, 68)
     r0 = clamp(round(0.48 * rcell), 28, 46)
-    r1 = clamp(round(1.12 * rcell), max(66, r0 + sep), 108)
-    r2 = clamp(round(1.88 * rcell), max(122, r1 + sep), 182)
+    r1 = clamp(round(FAN['k1'] * rcell), max(FAN['lo1'], r0 + sep), FAN['hi1'])
+    r2 = clamp(round(FAN['k2'] * rcell), max(FAN['lo2'], r1 + sep), FAN['hi2'])
     return sep, r0, r1, r2
 
 
 def fan_specs(ax, ay, phi, r0, r1, r2, K):
     # 同文件 L1135~1170：1 个顶点（r0）、innerCount 个内弧点（r1，±0.82×fanHalf）、其余外弧点（r2，±fanHalf）
-    half = math.pi / 3.2
-    inner = min(3, max(2, int((K - 1) * 0.34)))
+    half = math.pi / FAN['div']
+    inner = FAN['inner'](K)
     outer = max(1, K - 1 - inner)
     pts = [(ax + r0 * math.cos(phi), ay + r0 * math.sin(phi))]
     for i in range(inner):
@@ -86,14 +103,15 @@ def fan_fit(solves, land, meta):
             print('    第 %2d 轮的点位：标称 %d 个点里 %d 个在 10 像素内对上；锚点≈%s 朝向 %d°（0°=正东，90°=正南）半径 %s（真人数 %d~%d 时的取值）；各标称点的偏差 %s' % (
                 i + 1, K, best[0][0], best[1], best[2], best[3], best[4][0], best[4][1], best[5]))
             if last:
-                # 扇形面积 = 0.5×r2²×张角（张角 = 2×π/3.2 = 112.5°）；人均地盘 = 陆地像素 / 本局真人数；
+                # 扇形面积 = 0.5×r2²×张角（张角 = 2×fanHalf：Va / Vb 是 2×π/3.2 = 112.5°，Vc 是 2×π/2.55 = 141.2°）；人均地盘 = 陆地像素 / 本局真人数；
                 # 锚点到最近地图角落的距离（角落取 (24,24)、(W-25,24)、(W-25,H-25)、(24,H-25)，与代码 L1078~1083 一致）
-                area = 0.5 * best[3][2] ** 2 * (2 * math.pi / 3.2)
+                ang = 2 * math.pi / FAN['div']
+                area = 0.5 * best[3][2] ** 2 * ang
                 W, H = meta['info']['w'], meta['info']['h']
                 dc = min(math.hypot(best[1][0] - cx, best[1][1] - cy) for cx in (24, W - 25) for cy in (24, H - 25))
-                print('    最后一轮：扇形（外圈半径 %d、张角 112.5°）面积 ≈ %d 格 = %.2f 个人均地盘（%d 格）；外弧相邻点的标称间距 %d 像素；锚点离最近的地图角落 %d 像素' % (
-                    best[3][2], area, area / (land / nh), land / nh,
-                    round(2 * best[3][2] * math.sin((2 * math.pi / 3.2) / max(1, (K - 1 - min(3, max(2, int((K - 1) * 0.34))) - 1)) / 2)), dc))
+                print('    最后一轮：扇形（外圈半径 %d、张角 %.1f°）面积 ≈ %d 格 = %.2f 个人均地盘（%d 格）；外弧相邻点的标称间距 %d 像素；锚点离最近的地图角落 %d 像素' % (
+                    best[3][2], math.degrees(ang), area, area / (land / nh), land / nh,
+                    round(2 * best[3][2] * math.sin(ang / max(1, (K - 1 - FAN['inner'](K) - 1)) / 2)), dc))
         else:
             print('    第 %2d 轮的点位：套不上扇形阵' % (i + 1))
 
@@ -101,6 +119,8 @@ def fan_fit(solves, land, meta):
 def main():
     a = sys.argv[1:]
     mid = a[0]
+    global FAN
+    FAN = FANS[version_of(mid)]
     ours = [int(x) for x in a[a.index('--ours') + 1].split(',')] if '--ours' in a else None
     M = Match(mid, ours)
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
