@@ -151,6 +151,7 @@ export function mapOf(vu) {
 
 // ---- 3) 重演 ----
 // opts: { onTick(g, t), onEvent(ev), maxTick, noTeamColors（调试：不用组队配色）, noTeams（调试） }
+//       skipCmd(cmd, g, idx)：返回 true 的指令不执行（只给「去掉某几条指令」的一阶推演 whatif_drop.mjs 用；正常重演不传）
 export function simulate(matchId, opts = {}) {
   const d = loadReplay(matchId);
   const vu = d.vu, H = vu.humanCount;
@@ -224,7 +225,7 @@ export function simulate(matchId, opts = {}) {
   const step = () => {
     if (iv >= d.ja.length) return false;
     const jZ = d.ja[iv];
-    if (d.jY[iv]) { for (let a = iw; a < iw + jZ; a++) execCmd(d.cmds[a]); iw += jZ; iv++; } else if (++ix >= jZ) { iv++; ix = 0; }
+    if (d.jY[iv]) { for (let a = iw; a < iw + jZ; a++) { if (opts.skipCmd && opts.skipCmd(d.cmds[a], g, a)) continue; execCmd(d.cmds[a]); } iw += jZ; iv++; } else if (++ix >= jZ) { iv++; ix = 0; }
     return true;
   };
   if (vu.selectableSpawn) {

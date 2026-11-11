@@ -17,6 +17,8 @@
 //        [--quiet]              不打每号每窗口的出口路径表
 //        [--don-probe 5200,5300] 在这些拍、对每个号复刻 tryDonateToTeammate 的候选循环（只读），逐个候选队友打印它在哪一行被跳过
 //                               （常数与行号按版本取 Va/Vb；用 --mids tryDonateToTeammate 的行命中数交叉核对）
+//        [--offers 1600,2400]   在这些拍、对每个号打印 buyLand 的报价表（worth / cheap / over 与每条报价的每格价、标志位、safeAt），
+//                               标出 L5359 价格门收口的位置（只在专门的冷启动探针里用）
 //        [--unlock]             对照影子：每拍调用前把 isNoFullSend 清回 false（看「没被误锁」时同一局面下决策差在哪）
 //        [--mids tryDonateToTeammate]  对名字含该串的函数，按号×窗口统计「出口行」和「途中 continue/break 行」各命中多少个决策拍
 //        [--per-tick N]         适配层受理口径：每个号每拍最多受理 N 条指令，超出的返回 false（不计入「影子想发」）。
@@ -40,6 +42,7 @@ const unlock = args.includes('--unlock');
 const PER_TICK = +val('--per-tick', 1);
 const DROPS = [];
 const donT = new Set(String(val('--don-probe', '')).split(',').filter(Boolean).map(Number));
+const offT = new Set(String(val('--offers', '')).split(',').filter(Boolean).map(Number));
 // tryDonateToTeammate 各版本的常数与行号（Va：v27-team-c116-va.js；Vb：v27-team-c116-vb.js）
 const DONC = {
   va: { pofC: 72, pofI: 66, pofF: 94, reqB: 82, lSelf: 4342, lHigh: 4417, lNoNb: 4452, lDoom: 4455, lA: 4465, lB: 4480 },
@@ -104,6 +107,79 @@ function donProbe(g, pol, me, tag) {
       else why = `★ B 类 ${activePush || preyOpen ? 'offense_dispatch' : 'yield_opt_dispatch'} 候选${enemyNbs === 0 && inH === 0 && outH === 0 ? '（对方无敌邻、无战事：走沿海例外）' : ''}`;
     }
     console.log(`   → ${R0.tag(p)} 地 ${Lp} 兵 ${Bp} 密度 ${dAlly.toFixed(0)}｜被真人打 ${inH}（${(inH / Math.max(1, Bp)).toFixed(2)}×兵）在打真人 ${outH}｜敌邻 ${enemyNbs}｜${why}`);
+  }
+}
+// buyLand 报价探针（t≥1500 的主循环；行号按 Vb：L5350-5359 价格门、L5414-5447 留底）。只读：照抄 buyLand 开头的几个量，
+// 再调用策略自己的 offers(g)（已按 rankC 从便宜到贵排好），逐个报价打印 每格价 c、c÷worth、吃掉需要的兵、各标志位、safeAt。
+// 第一条「c ≥ worth 且 c ≥ cheap 且 不 over」的报价就是 L5359 收口的地方（break：它和它后面的报价都不再看）。
+// 注意：offers(g) 里会读策略的记忆（集火目标、记仇对象），所以只在专门的冷启动探针里用，不和出口统计混跑。
+function offersProbe(g, pol, me, tag) {
+  const P = pol.p;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
+  const dMedOther = pol.otherHumanMedDens(g);
+  const m = P.maxW * pol.winRatio(g.t);
+  const refDens = dMedOther !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMedOther) : dMe;
+  const worth = m * refDens;
+  const over = P.surplus > 0 && B > 100 * L;
+  const cheap = P.growth > 0 ? 0.1 / pol.baseRate(g) : 0;
+  const offers = pol.offers(g);
+  const humanNb = (pol.nb || []).filter((q) => g.alive[q] && pol.person(g, q)).length;
+  console.log(`\n-- 报价 ${tag} t=${g.t} 地 ${L} 兵 ${B} 密度 ${dMe.toFixed(1)}｜其他真人密度中位 ${dMedOther === null ? '-' : dMedOther.toFixed(1)} m=${m.toFixed(2)} refDens=${refDens.toFixed(1)} worth=${worth.toFixed(1)} cheap=${cheap.toFixed(1)} over=${over}｜真人邻居 ${humanNb} 个，报价 ${offers.length} 条`);
+  // safeAt 的拆解（botSkip=0、postKill=0、killW=1 时 V17.safeAt = max(safeFinite, dpKeep)，Policy.safeAt 再封顶 oppFloorCap×地）：
+  // safeFinite（L2500-2510）取相邻「机器人」（AI 机器人或已离场的真人，game.js isBot L215-217）里 threatOf.minOther 的最大值；
+  // dpKeep（L2459-2464）=（最强真人邻居的存兵 + 它打我的在途兵 − 1.5×地）÷1.78
+  {
+    const nameOf = (q) => (q >= R0.H ? '机器人#' + q : R0.tag(q) + (g.isBot(q) ? '〔已离场〕' : ''));
+    let sfBest = 0, sfVia = -1, sfMin = 0;
+    for (const q of pol.nb || []) {
+      if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+      const th = pol.threatOf(g, q);
+      if (th.neutral || !Number.isFinite(th.minOther)) continue;
+      const v = th.minOther - g.attackTroopsOn(me, q);
+      if (v > sfBest) { sfBest = v; sfVia = q; sfMin = th.minOther; }
+    }
+    let sfOwner = -1;
+    if (sfVia >= 0) for (let o = 0; o < g.bal.length; o++) { if (o !== me && o !== sfVia && g.alive[o] && g.bal[o] + g.attackTroopsOn(o, sfVia) === sfMin) { sfOwner = o; break; } }
+    let dkM = 0, dkWho = -1;
+    for (const q of pol.nb || []) if (g.alive[q] && pol.person(g, q)) { const v = g.bal[q] + g.attackTroopsOn(q, me); if (v > dkM) { dkM = v; dkWho = q; } }
+    const dk = Math.max(0, (dkM - 1.5 * g.terr[me]) / 1.78);
+    let sAll = NaN;
+    try { sAll = pol.safeAt(g, -1); } catch {}
+    const sfTxt = sfVia < 0 ? '0（没有符合条件的相邻机器人/离场号）' : `${Math.round(sfBest)}（经 ${nameOf(sfVia)}；它「最弱的其它邻居」是 ${sfOwner < 0 ? '?' : nameOf(sfOwner) + (sfOwner < R0.H && pol.isTeammate(g, sfOwner) ? '〔我方号〕' : '')}，存兵+在途 ${Math.round(sfMin)}）`;
+    console.log(`   [safeAt 拆解] safeAt(-1)=${Math.round(sAll)}｜safeFinite=${sfTxt}｜dpKeep=${Math.round(dk)}（最强真人邻居 ${dkWho < 0 ? '无' : nameOf(dkWho) + ' ' + Math.round(dkM)}）｜封顶 ${P.oppFloorCap}×地=${Math.round(P.oppFloorCap * L)}｜定值的是 ${sAll >= P.oppFloorCap * L - 1 ? '封顶' : sfBest >= dk ? (sfBest > 0 ? 'safeFinite' : '无') : 'dpKeep'}｜存兵 ${B}${B - Math.floor(12 * B / 1024) - sAll <= 0 ? ' ≤ 留底：对谁都没有可用兵' : ''}`);
+  }
+  let broke = false;
+  for (const o of offers) {
+    const q = o.q;
+    const gate = o.c >= worth && o.c >= cheap && !over;
+    let safe = NaN;
+    try { safe = pol.safeAt(g, q); } catch {}
+    const flags = [o.person ? '真人' : '非真人', o.nearCollapse ? '将垮' : '', o.bleeding ? '失血' : '', o.pulseMode ? '脉冲' : '', o.onMe ? '正打我' : '', o.isCrowdedHard ? '硬骨头' : '', o.isAgg ? '记仇' : '', o.isDoorSea ? '海门' : ''].filter(Boolean).join('/');
+    // 复刻 L5414-5452 的留底：safe（L5415-5418 封顶）、价格预算 budget 与 minKeep（L5422-5427）、over（L5440-5443，
+    // isSoleHealthyBuffer 按 false 取）、keep=max(keep,safe)（L5444）、avail（L5446）、非真人的 want 与 chunk×B（L5450-5452）
+    const fee = Math.floor(12 * B / 1024);
+    let safe2 = safe;
+    if (!o.person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) {
+      const capPerPx = o.person && o.nearCollapse && (o.inAtk ?? 0) < 0.02 * B && ((o.c < 0.25 * worth && o.need <= 0.10 * B) || (g.bal[q] <= 0.05 * B && o.c < 25)) ? Math.min(P.oppFloorCap, P.collapseFloorCap ?? 85) : P.oppFloorCap;
+      safe2 = Math.min(safe2, capPerPx * L);
+    }
+    let keep = Infinity, budget = NaN, minKeep = NaN;
+    if (o.c < cheap) keep = 0;
+    if (o.c < worth) {
+      const worthOwn = P.ownWorthMinKeep > 0 && g.t >= P.ownWorthFrom && !o.nearCollapse ? m * dMe : worth;
+      budget = Math.max(0, (worthOwn * L - fee * m - o.c * L) / (1 + m));
+      minKeep = o.person && (o.nearCollapse || (P.bleedDiscount < 1 && o.bleeding) || (P.thinDiscount < 1 && o.tD < P.thinMaxTD)) ? (0.70 * o.c * L) / m : (o.c * L) / m;
+      keep = Math.min(keep, P.post > 0 ? Math.max(minKeep, B - fee - budget) : minKeep);
+    }
+    if (over) keep = Math.min(keep, (dMe >= 122 ? 0.82 : P.hold) * 100 * L);
+    const keepPrice = keep;
+    keep = Math.max(keep, safe2);
+    const avail = B - fee - keep;
+    const want = 1.25 * o.need + 3 * (pol.cnt?.[q] ?? 0);
+    const tail = !o.person ? `；非真人：want=${Math.round(want)}，chunk×存兵=${Math.round(P.chunk * B)} → ${avail <= 0 ? 'L5447 跳过' : (Math.min(avail, want) < want && Math.min(avail, want) < P.chunk * B) ? 'L5452 跳过' : 'L5453 发 ' + Math.round(Math.min(avail, want))}` : (avail <= 0 ? ' → L5447 跳过' : '');
+    const note = broke ? '（价格门已收口，不看）' : gate ? '← L5359 价格门在此收口' : `过价格门；价格预算 budget=${Math.round(budget)}、价格留底=${Math.round(keepPrice)}；safeAt=${Math.round(safe)}（封顶后 ${Math.round(safe2)}）→ 留底 ${Math.round(keep)}（${keep === safe2 && safe2 > keepPrice ? 'safeAt 定' : '价格预算定'}），可用 ${Math.round(avail)}${tail}`;
+    console.log(`   ${q >= R0.H ? '机器人#' + q : R0.tag(q)} 地 ${g.terr[q]} 兵 ${g.bal[q]} 密度 ${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} 接触 ${pol.cnt?.[q] ?? '?'}｜每格价 c=${o.c.toFixed(1)}（${(o.c / Math.max(1e-9, worth)).toFixed(2)}×worth）吃掉需 ${Math.round(o.need)}（${(o.need / Math.max(1, B)).toFixed(2)}×存兵）tD=${(o.tD ?? NaN).toFixed(2)} 新暴露真人 ${o.newNbs ?? '-'}｜${flags}｜${note}`);
+    if (gate) broke = true;
   }
 }
 const MIDS = new Map(); // `${bot}|${win}` → { n, exit: Map(line→拍数), mid: Map(line→拍数) }
@@ -304,6 +380,7 @@ const R = simulate(mid, {
         if (!args.includes('--quiet')) console.log(`[留底] t=${t} ${b.name} 兵 ${B} 地 ${g.terr[p]}｜相邻机器人 ${nBot} 个（共 ${botLand} 格，其中几乎没兵的 ${nBotCheap} 个）｜safeFinite=${Math.round(sb)}（${sb >= B ? '≥ 全部存兵' : (100 * sb / Math.max(1, B)).toFixed(0) + '% 存兵'}）${best ? `由 机器人#${best.q}（地 ${g.terr[best.q]} 兵 ${g.bal[best.q]}）决定：它的其它邻居里最弱的是 ${whoTag} 兵 ${best.need}` : ''}｜此刻过得了留底的机器人目标 ${canHit} 个`);
       }
       if (donT.has(t)) { try { donProbe(g, b.policy, p, b.name); } catch (e) { console.log(`调度候选探针异常 ${b.name}: ${e.message}`); } }
+      if (offT.has(t)) { try { offersProbe(g, b.policy, p, b.name); } catch (e) { console.log(`报价探针异常 ${b.name}: ${e.message}`); } }
       if (nbT.has(t)) {
         const pol = b.policy;
         console.log(`\n-- 邻居报价 ${b.name} t=${t} 地 ${g.terr[p]} 兵 ${B} 密度 ${(B / Math.max(1, g.terr[p])).toFixed(1)} neutral=${pol.neutral} idle=${pol.idle ? pol.idle(g) : '?'} held=${pol.held}`);
