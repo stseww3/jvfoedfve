@@ -89,7 +89,7 @@ CATALOG = [
          detect="scripts/patterns.py: ex_burst_drain"),
     dict(id="NEW-EX-03", prefix="EX", name="协防戳刺连发：同一个号对同一个敌人连着发多条 10% 戳刺",
          definition="同一个号的 HL-ASSIST 行，目标敌人相同、相邻两条相差 ≤4 拍，串长 n≥3 命中。"
-                    "每条按执行时余额抽 (102+1)/1024 再付 12/1024 手续费，n 条合计抽走 1-0.8883^n（n=4 是 38%，n=7 是 56%）；"
+                    "每条按执行时余额抽 (102+1)/1024 再付 12/1024 手续费，n 条合计抽走 1-0.8877^n（n=4 是 38%，n=7 是 57%）；"
                     "同时记该号所在快照段的净流出（公式余额 - 实际余额）与预测值的差",
          detect="scripts/patterns.py: ex_assist_burst"),
     dict(id="NEW-EC-04", prefix="EC", name="全队停手囤兵：中立地吃完后领土不涨、余额成倍涨",

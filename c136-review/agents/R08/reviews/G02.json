@@ -1668,7 +1668,7 @@
    "id": "NEW-OP-G1",
    "prefix": "OP",
    "name": "（正面）开局 DP 扩张按期完成",
-   "definition": "OPENING-CHECK 全部 OK 且第一条 HL-TICK（t≤630）人均领土 ≥2500",
+   "definition": "第一条 HL-TICK（t≤630）人均领土 ≥2500；日志里有 OPENING-CHECK 行的局还要求全部 OK（G08 这类没有该行的局只看前一条）",
    "detect": "scripts/patterns.py: op_on_schedule"
   },
   {
