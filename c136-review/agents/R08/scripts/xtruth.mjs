@@ -174,8 +174,12 @@ for (const mid of argv) {
     if (kind !== 1 || !ok || p >= H || dZ < H || dZ === NEUTRAL || t < 600 || t >= 1500) continue;
     const key = p * 1024 + dZ;
     let e = pairMap.get(key);
-    if (!e) { e = [p, dZ, 0, 0, t, t, 0, 0, 0, 0, 0, -1]; pairMap.set(key, e); }
-    e[2]++; e[3] += troops; e[5] = t;
+    if (!e) { e = [p, dZ, 0, 0, t, t, 0, 0, 0, 0, 0, -1, 0, 0, 0]; pairMap.set(key, e); }
+    e[2]++; e[3] += troops;
+    // [12] 落地时这个号已经有兵压在这个 AI 身上的条数（续兵）；[13] 和这一对的上一条落在同一拍的条数；[14] 续兵那些条派出的兵
+    if (c[10] > 0) { e[12]++; e[14] += troops; }
+    if (e[2] > 1 && t === e[5]) e[13]++;
+    e[5] = t;
   }
   for (const [t, atk, dfd, tiles, burnt] of R.pairLog) {
     if (atk >= H || dfd < H || dfd === NEUTRAL) continue;
