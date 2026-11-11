@@ -487,11 +487,16 @@ def sec_ledger(X, me=None, win=500):
         print('整局兵力去向账（单位：兵；得地/失地单位：格）。顶格少拿 = 兵力超过 100×领土后利率被降档、以及撞 150×领土硬顶而少拿的利息；空壳少拿 = 离开后不再有利息')
         for part in (KINDS[:14], KINDS[14:]):
             print(' me 名字            队 ' + ' '.join(f'{KIND_CN[k]:>8s}' for k in part))
+            tot = {k: 0 for k in part}
             for p in X.squad:
                 T = ledger_totals(X, p)
+                for k in part:
+                    tot[k] += T[k]
                 if part is not KINDS[:14] and not any(T[k] for k in part):
                     continue
                 print(f"{p:3d} {X.M.bots[p].name if p in X.M.bots else '?':14s} {X.team[p]:2d} " + ' '.join(f'{fmt(T[k]):>10s}' for k in part))
+            if part is KINDS[:14] or any(tot.values()):
+                print(f"    {'合计（精确值）':14s}    " + ' '.join(f'{tot[k]:>10d}' for k in part))
         print('\n战斗耗兵 / 得地 按对方类别：')
         for p in X.squad:
             sp = X.led_sum(p, 'spent', by='cls')
