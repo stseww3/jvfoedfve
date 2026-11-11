@@ -10,6 +10,7 @@
 输出：out/<mid>/same_tick_batches.txt / .json
   A. 每个号：批数、批里的指令条数、花掉的兵、手续费、其中「第 2 条起」的兵和手续费
   B. 逐批：落地拍、条数、目标、花掉的兵 / 手续费、落地前余额 → 落地后余额（花掉的比例）、对应的发令拍范围（影子）
+  B2. 按 pct 序列配对的发令拍（B 里取「最近几条」只是延迟的下限；这里找 pct 逐条对得上的那一段）
   C. 按 300 拍一档的批数（看卡顿集中在哪一段）
   D. 落地拍 mod 7；别的真人（humans_cmd.tsv，74_side_flow.mjs）同一拍 ≥3 条的批，按 300 拍一档
 """
@@ -37,10 +38,36 @@ def main():
         for r in csv.DictReader(open(sp, encoding='utf-8'), delimiter='\t'):
             shadow[r['bot']].append(r)
     used = defaultdict(set)
+    used2 = defaultdict(set)
     batches = []
+
+    def pct_window(bot, t, L):
+        """按 pct 序列配对：影子里这个号在落地前 150 拍内、还没被前面的批按这个办法用掉的同类指令里，
+        找连续的 len(L) 条，使「排好序的 pct」和落地的这一批差得最少（差一样时取最早的一段：先发的先到）。"""
+        kinds = set(r['kind'] for r in L)
+        cand = [(i, s) for i, s in enumerate(shadow.get(bot, [])) if t - 150 <= int(s['t']) < t and i not in used2[bot] and s['kind'] in kinds]
+        n = len(L)
+        if len(cand) < n:
+            return None
+        want = sorted(int(r['pct']) for r in L)
+        wins = []
+        for k in range(0, len(cand) - n + 1):
+            win = cand[k:k + n]
+            d = sum(abs(a - b) for a, b in zip(want, sorted(int(s['pct']) for _, s in win)))
+            wins.append((d, win))
+        d = min(w[0] for w in wins)
+        same = [w[1] for w in wins if w[0] == d]
+        win = same[0]
+        for i, _ in win:
+            used2[bot].add(i)
+        ts = [int(s['t']) for _, s in win]
+        tl = [int(s['t']) for _, s in same[-1]]
+        return dict(t0=min(ts), t1=max(ts), dist=d, lagMin=t - max(ts), lagMax=t - min(ts), nSame=len(same), lastT0=min(tl), lastT1=max(tl))
+
     for (t, bot), L in sorted(by.items()):
         if len(L) < mn:
             continue
+        pw = pct_window(bot, t, L)
         b0 = int(L[0]['b0']); b1 = int(L[-1]['b1'])
         spent = sum(int(r['spent']) for r in L); fee = sum(int(r['fee']) for r in L); troops = sum(int(r['troops']) for r in L)
         live = [r for r in L if int(r['spent']) > 0]
@@ -60,7 +87,7 @@ def main():
                             extraTroops=troops - int(first['troops']), extraFee=fee - int(first['fee']),
                             targets=[dict(kind=k, target=n, n=v) for (k, n), v in sorted(tg.items(), key=lambda kv: -kv[1])],
                             pcts=[int(r['pct']) for r in L], issueT0=min(ts) if ts else None, issueT1=max(ts) if ts else None, issueN=len(ts),
-                            issueTargets=sorted(set(s.get('targetName', '') for _, s in cand)), issuePcts=[int(s['pct']) for _, s in cand]))
+                            issueTargets=sorted(set(s.get('targetName', '') for _, s in cand)), issuePcts=[int(s['pct']) for _, s in cand], pctWindow=pw))
     T = []
     P = T.append
     P(f'# {mid} 同一拍落地 ≥{mn} 条指令的批（81_same_tick_batches.py）：{len(batches)} 批，{sum(b["n"] for b in batches)} 条指令；全场我方生效指令 {len(rows)} 条')
@@ -84,6 +111,19 @@ def main():
                if b['issueT0'] is not None else '影子里没找到')
         P(f"  t={b['t']} {b['bot']} {b['n']} 条（{b['live']}）| {tg} | {b['troops']:,} / {b['fee']:,} | {b['b0']:,}→{b['b1']:,}（{100 * (b['b0'] - b['b1']) / max(1, b['b0']):.0f}%）| "
           f"{'/'.join(str(x) for x in b['pcts'])} | {iss}")
+    P('')
+    P('B2. 按 pct 序列配对的发令拍（影子里落地前 150 拍内连续的同样条数、排好序的 pct 和落地这一批差得最少的一段；「pct 差」= 各条 pct 之差的绝对值合计，0 = 逐条相同）')
+    P('    B 里的「最近几条」只给延迟的下限；一批指令的 pct 和影子某一段逐条相同时，这里的发令拍才是这一批真正的发令拍')
+    for b in batches:
+        pw = b.get('pctWindow')
+        if not pw:
+            P(f"  t={b['t']} {b['bot']} {b['n']} 条：影子里这段时间同类指令不够 {b['n']} 条")
+            continue
+        amb = '' if pw['nSame'] == 1 else f"；同样对得上的一共 {pw['nSame']} 段（这里取最早的一段，最晚的一段是 {pw['lastT0']}~{pw['lastT1']}，在路上 {b['t'] - pw['lastT1']}~{b['t'] - pw['lastT0']} 拍）"
+        P(f"  t={b['t']} {b['bot']} {b['n']} 条：发令 {pw['t0']}~{pw['t1']}，在路上 {pw['lagMin']}~{pw['lagMax']} 拍，pct 差 {pw['dist']}{amb}")
+    ex = [b for b in batches if b.get('pctWindow') and b['pctWindow']['dist'] == 0 and b['pctWindow']['nSame'] == 1]
+    if ex:
+        P(f"  逐条相同、只有一段对得上的 {len(ex)} 批：在路上最短 {min(b['pctWindow']['lagMin'] for b in ex)} 拍、最长 {max(b['pctWindow']['lagMax'] for b in ex)} 拍")
     P('')
     P('C. 每 300 拍一档的批数 / 指令条数')
     bk = defaultdict(lambda: [0, 0])
