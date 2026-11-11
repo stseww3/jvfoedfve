@@ -2535,6 +2535,32 @@ def sec_foeled(X, top=8, cuts=None):
             print(f"      t={edges[i]}~{edges[i + 1] - 1 if i == len(edges) - 2 else edges[i + 1]}：耗兵 {fmt(s[0])} 得地 {s[1]}｜失地 {s[2]} 被打掉 {fmt(s[3])}｜净 {s[1] - s[2]:+d} 格")
 
 
+def sec_foewho(X, floor=3000):
+    """每个外人与我方各号的得失（账目 spent/gain/lost 按「外人 × 我方号」汇总，整局）：我方哪几个号从它手里得地、它从我方哪几个号手里拿地。
+    用法：simdigest.py <id> foewho [floor]（得地、失地都不到 floor 格的外人不列；默认 3000）"""
+    g = defaultdict(lambda: defaultdict(int))
+    s = defaultdict(lambda: defaultdict(int))
+    lo = defaultdict(lambda: defaultdict(int))
+    for w, me, kind, other, v in X.S['ledger']:
+        if me not in X.squad or other in X.squad or other >= X.H or other < 0:
+            continue
+        if kind == 'gain':
+            g[other][me] += v
+        elif kind == 'spent':
+            s[other][me] += v
+        elif kind == 'lost':
+            lo[other][me] += v
+    who = [p for p in set(g) | set(lo) if sum(g[p].values()) >= floor or sum(lo[p].values()) >= floor]
+    who.sort(key=lambda p: -(sum(lo[p].values()) + sum(g[p].values())))
+    print(f'外人 × 我方号的得失（整局；得地、失地都不到 {floor} 格的外人不列；按得地 + 失地排序）')
+    for p in who:
+        tg, ts, tl = sum(g[p].values()), sum(s[p].values()), sum(lo[p].values())
+        end = '活到终局' if X.deathT[p] < 0 else f'阵亡 t={X.deathT[p]}'
+        gs = '、'.join(f"{X.name(m)} {c}（耗兵 {fmt(s[p][m])}）" for m, c in sorted(g[p].items(), key=lambda kv: -kv[1])[:5] if c > 0)
+        ls = '、'.join(f"{X.name(m)} {c}" for m, c in sorted(lo[p].items(), key=lambda kv: -kv[1])[:5] if c > 0)
+        print(f"   {X.name(p)}（队{X.team[p]}，{end}）：我方从它得地 {tg} 格（耗兵 {fmt(ts)}）← {gs or '-'}｜它从我方拿走 {tl} 格 ← {ls or '-'}")
+
+
 def sec_foepct(X, top=8):
     """外人的出手习惯：录像里每个外人的陆攻 / 捐款 / 发船指令条数和千分比分布（录像指令 id 1 / 2 / 3；dX = 千分比），离开拍（id 9）。
     列出对我方出兵最多的 top 个外人，加上捐款条数 >= 5 的外人。"""
@@ -2696,6 +2722,8 @@ def main():
         sec_foepct(X, int(a[0]) if a else 8)
     elif sec == 'foeled':
         sec_foeled(X, int(a[0]) if a else 8, [int(v) for v in a[1:]] or None)
+    elif sec == 'foewho':
+        sec_foewho(X, int(a[0]) if a else 3000)
     elif sec == 'json':
         doc = build_json(X)
         p = os.path.join(OUT, mid, 'simdigest.json')
