@@ -13,6 +13,8 @@
   lagcurve 全队合计的延迟曲线（按决策拍分窗）
   repeat  正常延迟下同一决策被重复下令几次（在途无记账的常态代价）
   donate  每条捐款决策的去向：落地 / 到了引擎没生效（配额等）/ 堵在通道里；需要先跑 dispatch_audit.mjs 才有配额列
+  overprice 对真人的陆攻令按 发令时余额是否过 100 倍领土（over，buyLand 因此不做 c>=worth 的熔断）× 报价单价 c 是否 >= 愿付价 worth
+          分四类：受理条数、想出的兵、落地条数、落地时实扣；over 且 c>=worth 的一类再按号、按目标列出（需要新版 shadow.mjs 的 c/worth/over 列）
   list    --bot 必填：该号在 [t0,t1] 的逐条决策（t, 类型, pct, 目标, 余额, 想出的兵, 落地拍, 代码行）
 """
 import argparse
@@ -415,6 +417,47 @@ def main():
             for t, b, tn, pct, troops, cls, execT, d in rows_out:
                 q = f"{d['cost']}/{d['used']}/{d['cap']}" if d else '-'
                 print(f'   {t:5d} {b:10s} {tn[:16]:16s} {pct:4d} {troops:8d}  {cls:8s} {execT if execT else "-":>6}  {q}')
+
+    if 'overprice' in secs:
+        print(f'\n== {mid} 高于愿付价的进攻：对真人的陆攻令，按 发令时余额是否过 100 倍领土（over）× 单价 c 是否 >= 愿付价 worth 分类 [{a.t0},{a.t1}]')
+        mrow = {(x['bot'], int(x['tDecide'])): x for x in match if x['uniq'] != '0' and x['kind'] == 'attack'}
+        agg = defaultdict(lambda: [0, 0, 0, 0, [], []])
+        perbot = defaultdict(lambda: [0, 0, 0, 0])
+        pertgt = defaultdict(lambda: [0, 0, 0, 0, [], []])
+        nocol = 0
+        for r in cmds:
+            if r['kind'] != 'attack' or r['ok'] != '1' or (a.bot and r['bot'] not in bots):
+                continue
+            t = int(r['t'])
+            if t < a.t0 or t > a.t1:
+                continue
+            if r.get('c', '') == '':
+                if r['targetName'].strip('"') not in ('NEUTRAL', '') and not r['targetName'].strip('"').startswith('AI#'):
+                    nocol += 1
+                continue
+            if r.get('person') != '1':
+                continue
+            c, w, ov = float(r['c']), float(r['worth']), r['over'] == '1'
+            k = ('over' if ov else 'notover') + ('_hi' if c >= w else '_lo')
+            m = mrow.get((r['bot'], t))
+            spent = int(float(m['spent'] or 0)) if m else 0
+            x = agg[k]; x[0] += 1; x[1] += int(r['troops']); x[2] += 1 if m else 0; x[3] += spent; x[4].append(c); x[5].append(w)
+            if k == 'over_hi':
+                pb = perbot[r['bot']]; pb[0] += 1; pb[1] += int(r['troops']); pb[2] += 1 if m else 0; pb[3] += spent
+                pt = pertgt[r['targetName'].strip('"')]; pt[0] += 1; pt[1] += int(r['troops']); pt[2] += 1 if m else 0; pt[3] += spent; pt[4].append(c); pt[5].append(float(r['tBal']) / max(1, float(r['tTerr'])))
+        lab = {'over_hi': 'over 且 c>=worth（熔断被跳过）', 'over_lo': 'over 且 c<worth', 'notover_lo': '未 over 且 c<worth（正常）', 'notover_hi': '未 over 且 c>=worth（c<cheap 等）'}
+        print('   类别                              受理  想出的兵合计  落地  落地时实扣合计  c 中位  worth 中位')
+        for k in ('over_hi', 'over_lo', 'notover_lo', 'notover_hi'):
+            x = agg.get(k)
+            if not x:
+                print(f'   {lab[k]:30s} {0:5d}')
+                continue
+            print(f'   {lab[k]:30s} {x[0]:5d} {x[1]:12d} {x[2]:5d} {x[3]:14d} {med(x[4]):7.1f} {med(x[5]):9.1f}')
+        if nocol:
+            print(f'   （另有 {nocol} 条对玩家的进攻令没有报价列：不是从 buyLand 报价表出的，或这一版策略没有 offers()）')
+        if perbot:
+            print('   over 且 c>=worth 按号：' + '；'.join(f"{b} {v[0]} 条 想出 {v[1]}，落地 {v[2]} 条 实扣 {v[3]}" for b, v in sorted(perbot.items(), key=lambda kv: -kv[1][1])))
+            print('   over 且 c>=worth 按目标：' + '；'.join(f"{tn[:18]} {v[0]} 条 想出 {v[1]}（c 中位 {med(v[4]):.0f}，对方密度中位 {med(v[5]):.0f}）" for tn, v in sorted(pertgt.items(), key=lambda kv: -kv[1][1])[:a.top]))
 
     if 'list' in secs:
         if not a.bot:

@@ -34,7 +34,8 @@
 //   --accept always（默认）：实机适配层的受理口径 = 能行动就受理、每拍最多 1 条（A059 zexos1 的 cmds 计数 26/26 点相同；
 //                    换成模拟器 Game.attack 的前置条件则少 1 条）。
 // 输出（out/<matchId>/）：
-//   shadow_cmds.csv   每条影子指令：t,bot,p,kind,pct,target,targetName,ok,bal,terr,dens,tBal,tTerr,troops,site,path
+//   shadow_cmds.csv   每条影子指令：t,bot,p,kind,pct,target,targetName,ok,bal,terr,dens,tBal,tTerr,troops,arg,landedAt,site,path,
+//                     c,worth,over,need,onMe,person（进攻令在 buyLand 报价表里的单价、当拍愿付价、余额是否过 100 倍领土、need、对方是否正在打我、是否真人）
 //   shadow_check.csv  与 HL-TICK 的逐点对比：t,bot,logNb,shNb,logNeut,shNeut,logCmds,shCmds,logBoats,shBoats,ok
 //   shadow_log.txt    影子吐出的日志行（与 in_game.log 的同类行对比用）
 //   shadow_match.csv  录像落地指令 ↔ 影子决策：tick,bot,p,kind,pct,target,targetName,n(同拍条数),uniq(0 未定位/1 唯一/2 同组连续/3 唯一窗口),
@@ -182,11 +183,22 @@ export async function runShadow(mid, o = {}) {
     const rec = (kind, pct, target, ok, extra = {}) => {
       const fr = o.noStack ? [] : stackOf(fileTag);
       const bal = g.bal[p];
+      // 这条进攻令在 buyLand 报价表里的单价 c、当拍的愿付价 worth、是否 over（余额 > 100 倍领土，buyLand 因此不做 c>=worth 的熔断）
+      let offer = {};
+      if (kind === 'attack' && target >= 0 && target < NEUTRAL && st.lastOffers && st.lastOffers.t === g.t && typeof pol.winRatio === 'function' && pol.p && pol.p.maxW !== undefined) {
+        const of = st.lastOffers.list.find((x) => x.q === target);
+        if (of && typeof of.c === 'number') {
+          const P = pol.p, L = Math.max(1, g.terr[p]), dMe = bal / L;
+          const dMed = typeof pol.otherHumanMedDens === 'function' ? pol.otherHumanMedDens(gv) : null;
+          const refDens = dMed !== null && dMed !== undefined && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMed) : dMe;
+          offer = { oc: of.c.toFixed(2), oworth: (P.maxW * pol.winRatio(g.t) * refDens).toFixed(2), oover: P.surplus > 0 && bal > 100 * L ? 1 : 0, oneed: Math.round(of.need), oOnMe: of.onMe ? 1 : 0, operson: of.person ? 1 : 0 };
+        }
+      }
       cmds.push({
         t: g.t, bot: label, p, kind, pct, target, ok: ok ? 1 : 0, bal, terr: g.terr[p],
         tBal: target >= 0 && target < NEUTRAL ? g.bal[target] : 0, tTerr: target >= 0 && target < NEUTRAL ? g.terr[target] : 0,
         troops: kind === 'attack' || kind === 'donate' ? Math.floor((bal * (pct + 1)) / 1024) : 0,
-        site: fr[0] || '', path: fr.slice(0, 6).join('<'), ...extra,
+        site: fr[0] || '', path: fr.slice(0, 6).join('<'), ...offer, ...extra,
       });
     };
     const gate = () => {
@@ -242,7 +254,7 @@ export async function runShadow(mid, o = {}) {
       wrap('pickTarget', (r) => JSON.stringify(r && { q: r.q, amount: num(r.amount) }));
       wrap('peopleSafe', (r) => String(num(r)));
       wrap('baseRate', (r) => String(num(r)));
-      for (const nm of ['allow', 'expandNeutral', 'dpNeutral', 'tryDonateToTeammate', 'idleBoats', 'buyLand', 'counterAttack', 'searchWater', 'isMopUp', 'winFloor', 'peopleFloor', 'botMax']) wrap(nm, (r) => JSON.stringify(typeof r === 'number' ? num(r) : r));
+      for (const nm of ['allow', 'expandNeutral', 'dpNeutral', 'tryDonateToTeammate', 'idleBoats', 'boatOut', 'boatFood', 'frontBoat', 'buyLand', 'counterAttack', 'searchWater', 'searchFood', 'isMopUp', 'winFloor', 'peopleFloor', 'botMax']) wrap(nm, (r) => JSON.stringify(typeof r === 'number' ? num(r) : r));
       st.probeState = () => {
         if (!(g.t >= probe.t0 && g.t <= probe.t1)) return;
         const d = (q) => (g.terr[q] > 0 ? (g.bal[q] / g.terr[q]).toFixed(1) : '0');
@@ -257,7 +269,7 @@ export async function runShadow(mid, o = {}) {
             probeOut.push(`t=${g.t}   机器人邻居 ${nm(q)}（地${g.terr[q]} 兵${g.bal[q]} 空槽${g.hasFreeSlot(q) ? 1 : 0} 正打我${g.hasAttack(q, p) ? 1 : 0}）的其他邻居按余额从小到大：${lst.map(([v, o2]) => `${nm(o2)}[T${g.teams ? g.teams[o2] : '-'}${g.state[o2] === 2 ? ' 壳' : ''}${g.hasAttack(q, o2) ? ' 正被它打' : ''}]=${v}`).join(' , ') || '（无）'}`);
           }
         }
-        probeOut.push(`t=${g.t} 状态 bal=${g.bal[p]} terr=${g.terr[p]} dens=${d(p)} neutral=${pol.neutral} coast=${g.coast?.[p]?.length ?? 0} noFull=${pol.isNoFullSend ? 1 : 0} atkOut=${g.atkCount[p]} 邻居: ${nb || '（无）'}`);
+        probeOut.push(`t=${g.t} 状态 bal=${g.bal[p]} terr=${g.terr[p]} dens=${d(p)} neutral=${pol.neutral} coast=${g.coast?.[p]?.length ?? 0} noFull=${pol.isNoFullSend ? 1 : 0} atkOut=${g.atkCount[p]} 船=${g.boatCount[p]}/${pol.p.maxBoats}（可出海 ${g.boatsAllowed(p) ? 1 : 0}，上次出海 ${pol.lastBoat ?? '-'}） 邻居: ${nb || '（无）'}`);
       };
     }
     sh.push(st);
@@ -513,8 +525,8 @@ if (IS_MAIN) {
   const mt = matchReplay(m, sh, cmds, r.exec);
   const landedAt = new Map();
   for (const x of mt) if (x.uniq) landedAt.set(x.bot + '|' + x.seq, x.tick);
-  fs.writeFileSync(path.join(dir, `shadow_cmds${suffix}.csv`), 't,bot,p,kind,pct,target,targetName,ok,bal,terr,dens,tBal,tTerr,troops,arg,landedAt,site,path\n' +
-    cmds.map((c) => [c.t, c.bot, c.p, c.kind, c.pct, c.target, q(c.target >= 0 ? m.label(c.target) : ''), c.ok, c.bal, c.terr, (c.bal / Math.max(1, c.terr)).toFixed(1), c.tBal, c.tTerr, c.troops, c.arg || '', c.seq !== undefined ? (landedAt.get(c.bot + '|' + c.seq) ?? '') : '', c.site, q(c.path)].join(',')).join('\n') + '\n');
+  fs.writeFileSync(path.join(dir, `shadow_cmds${suffix}.csv`), 't,bot,p,kind,pct,target,targetName,ok,bal,terr,dens,tBal,tTerr,troops,arg,landedAt,site,path,c,worth,over,need,onMe,person\n' +
+    cmds.map((c) => [c.t, c.bot, c.p, c.kind, c.pct, c.target, q(c.target >= 0 ? m.label(c.target) : ''), c.ok, c.bal, c.terr, (c.bal / Math.max(1, c.terr)).toFixed(1), c.tBal, c.tTerr, c.troops, c.arg || '', c.seq !== undefined ? (landedAt.get(c.bot + '|' + c.seq) ?? '') : '', c.site, q(c.path), c.oc ?? '', c.oworth ?? '', c.oover ?? '', c.oneed ?? '', c.oOnMe ?? '', c.operson ?? ''].join(',')).join('\n') + '\n');
   fs.writeFileSync(path.join(dir, `shadow_check${suffix}.csv`), 't,bot,logNb,shNb,logNeut,shNeut,logCmds,shCmds,logBoats,shBoats,ok\n' +
     check.map((c) => [c.t, c.bot, c.logNb, c.shNb, c.logNeut, c.shNeut, c.logCmds, c.shCmds, c.logBoats, c.shBoats, c.ok].join(',')).join('\n') + '\n');
   fs.writeFileSync(path.join(dir, `shadow_log${suffix}.txt`), slog.map((l) => `[${l.bot}] ${l.s}`).join('\n') + '\n');

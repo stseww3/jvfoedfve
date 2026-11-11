@@ -66,16 +66,41 @@ while (true) {
 }
 while (i < rows.length) { rows[i].would = 'after-replay'; i++; }
 
-// 与录像落地的捐款配对
+// 与录像落地的捐款配对。
+// 同一个号的指令按发出的先后到达，所以配对必须保序；同一条调度会连发很多遍（每 25 拍一遍、pct 相同），没过引擎校验的不进录像。
+// 做法：每个捐出方单独做一次保序匹配（动态规划），可配条件：受赠方、pct 相同，延迟 = 落地拍 - 决策拍 在 [6, 600]；
+//   代价 = 延迟之和（即尽量配给离落地最近的那一次决策）；落地指令配不上记 1e9。
+// 注意：校验发生在指令到达引擎的那一拍，不是决策拍。配额上限每逢 t%100==99 上调，所以“决策拍算出来会被拒”的调度
+//   也可能落地（例：A055 zero_7 3695 拍决策时 248+10>249，3699 拍上限升到 259，3703 拍落地）。
 const cmds = m.transfers.filter((x) => x.kind === 'cmd');
-const usedCmd = new Set();
-for (const r of rows) {
-  r.exec = null;
-  for (let k = 0; k < cmds.length; k++) {
-    const c = cmds[k];
-    if (usedCmd.has(k) || c.from !== r.p || c.to !== r.to || c.pct !== r.pct) continue;
-    if (c.t < r.t || c.t > r.t + 600) continue;
-    usedCmd.add(k); r.exec = c; break;
+for (const r of rows) r.exec = null;
+const donors = [...new Set(rows.map((r) => r.p))];
+for (const p of donors) {
+  const R = rows.filter((r) => r.p === p), E = cmds.filter((c) => c.from === p).sort((x, y) => x.t - y.t);
+  const n = R.length, k = E.length;
+  if (!k) continue;
+  const INF = 1e15;
+  const dp = Array.from({ length: n + 1 }, () => new Float64Array(k + 1).fill(INF));
+  const ch = Array.from({ length: n + 1 }, () => new Int8Array(k + 1)); // 0 跳过日志行 1 配对 2 跳过落地指令
+  for (let i2 = 0; i2 <= n; i2++) dp[i2][0] = 0;
+  for (let j = 1; j <= k; j++) { dp[0][j] = dp[0][j - 1] + 1e9; ch[0][j] = 2; }
+  for (let i2 = 1; i2 <= n; i2++) {
+    for (let j = 1; j <= k; j++) {
+      let best = dp[i2 - 1][j], c = 0;
+      const r = R[i2 - 1], e = E[j - 1], lag = e.t - r.t;
+      if (e.to === r.to && e.pct === r.pct && lag >= 6 && lag <= 600) {
+        const v = dp[i2 - 1][j - 1] + lag;
+        if (v < best) { best = v; c = 1; }
+      }
+      const v2 = dp[i2][j - 1] + 1e9;
+      if (v2 < best) { best = v2; c = 2; }
+      dp[i2][j] = best; ch[i2][j] = c;
+    }
+  }
+  let i2 = n, j = k;
+  while (j > 0) {
+    const c = ch[i2][j];
+    if (c === 1) { R[i2 - 1].exec = E[j - 1]; i2--; j--; } else if (c === 2) j--; else i2--;
   }
 }
 const out = ['t,bot,tag,kind,pct,to,toName,logBal,simBal,dMe,dAlly,nominal,room,cost,used,cap,free,maxByQuota,would,executed,execTick,lag,received,paid'];
