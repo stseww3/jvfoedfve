@@ -33,6 +33,12 @@
   harvest [t0]  邻居崩盘后收地（NEW:AT-collapse-harvest）：t>=t0（默认 630）相邻快照 neut 从 0 变成 >=8，270 拍内领土 >=1.2 倍
   crumb     开局期被零星无主地卡住（NEW:OP-neutral-crumb-lock）：t<1500 连续 >=270 拍 neut>0、零指令、领土不变
   thinbig   又大又薄（NEW:EC-thin-big-target）的机械判定：密度 <12 连续 >=450 拍、领土到过在场我方号中位 2 倍且 nb>=1、到顶后 300 拍内跌 >=40%
+  wallms    同 wall，但用结算行的毫秒时间戳 at（误差 ±1 拍）：每条结算行落盘时，其余在场号的日志打到了哪一拍
+  noeffect [t0]  发了令却没有任何支出的间隔（NEW:IO-cmd-blackout 的日志侧判据）
+  noefftl [t0 t1]  「发令不见效 / 清仓 / 超发」按 90 拍一档的时间分布：是不是全编队同时发生
+  gaps      缺掉的 HL-TICK 快照（首尾快照之间拍号是 90 的倍数却没有打印）
+  sentchk   结算行的 sent / accepted（外层数的发出 / 被收下的指令条数，含选点）对 策略 cmds + 日志 HL-SPAWN 行数：cmds 计数有没有漏数
+  zerodrop [t0 t1]  零新令的余额下跌：cmds、boats 都没动、领土没丢，而余额 < 纯利息预测 × 0.75 → 更早发的指令到这一段才生效，给出发令到见效的拍数上下界
   json      以上汇总写 out/<id>/logdigest.json
 所有阈值都写在函数开头的常量里。
 """
@@ -41,7 +47,7 @@ import math
 import os
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -1396,6 +1402,92 @@ def sec_noefftl(M, t_from=NOEFF_T_FROM, t_to=3600):
         print(f"      t={lo}~{hi}：指令 {a} 条，不见效 {n} 条（{100 * n / max(1, a):.1f}%）；清仓 {sum(r['dump'] for r in sub)} 段、超发 {sum(r['over'] for r in sub)} 段")
 
 
+def sentchk_rows(M):
+    """结算行的 sent / accepted（外层数的「发给服务器 / 服务器收下」的指令条数，含选点）对
+    策略自己数的 cmds（最后一条快照）+ 日志 HL-SPAWN 行数。
+    两边对得上 = cmds 计数没有漏掉任何一条发出去的指令（策略里有几处不记 cmds 的出兵：
+    handoffFootholds L3537/L3543、reigniteNewBorders L3597、retreat L2126/L4641）。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        r = b.result
+        if not r or not str(r.get('sent', '')).strip().isdigit():
+            continue
+        last = b.traj[-1] if b.traj else None
+        cm = last['cmds'] if last else 0
+        sp = len(b.spawns)
+        acc = int(r['accepted']) if str(r.get('accepted', '')).strip().isdigit() else None
+        out.append(dict(me=me, name=name_of(b), team=b.team, sent=int(r['sent']), accepted=acc, cmds=cm, spawnLines=sp,
+                        diff=int(r['sent']) - cm - sp, lastSnap=(last['t'] if last else None), outT=int(r['tick']), event=r['event']))
+    return out
+
+
+def sec_sentchk(M):
+    rows = sentchk_rows(M)
+    print('外层计数对表：结算行 sent / accepted（发给服务器 / 服务器收下的指令条数，含选点）对 策略 cmds（最后一条快照）+ 日志 HL-SPAWN 行数')
+    print('   号(队)｜sent / accepted｜cmds（最后快照拍）+ HL-SPAWN 行｜差 = sent − (cmds + 选点行)｜最后快照到结算行隔了多少拍')
+    for r in rows:
+        gap = (r['outT'] - r['lastSnap']) if r['lastSnap'] is not None else None
+        print(f"   {r['name']:13s}(队{r['team']})｜{r['sent']:4d} / {r['accepted'] if r['accepted'] is not None else '-':>4}｜{r['cmds']:4d}（t={r['lastSnap']}）+ {r['spawnLines']:2d}｜{r['diff']:+d}｜{gap if gap is not None else '-'}")
+    played = [r for r in rows if r['lastSnap'] is not None]
+    ds = sorted(r['diff'] for r in played)
+    print(f"   有快照的 {len(played)} 个号：sent 合计 {sum(r['sent'] for r in played)}，cmds + 选点行合计 {sum(r['cmds'] + r['spawnLines'] for r in played)}；"
+          f"差的分布 {dict(Counter(ds))}；sent − accepted 合计 {sum(r['sent'] - (r['accepted'] or 0) for r in played)}")
+    nop = [r for r in rows if r['lastSnap'] is None]
+    for r in nop:
+        print(f"   没有任何快照的席位 {r['name']}：sent {r['sent']} / accepted {r['accepted']}，日志 HL-SPAWN {r['spawnLines']} 行（选点全部发出并被收下；录像里生效几条见 digest picks）")
+
+
+ZDROP_RATIO = 0.75        # 余额 < 纯利息预测的几成算「掉了」
+ZDROP_KEEP_LAND = 0.98    # 领土没丢（c.terr >= 这个比例 × a.terr）
+
+
+def zerodrop_rows(M, t_from=NOEFF_T_FROM, t_to=10 ** 9):
+    """零新令的余额下跌（只用日志）：相邻快照 [a, c]（相隔 90 拍）里 cmds 与 boats 计数都没动、没有捐款/戳日志，
+    领土没丢，而余额 < 纯利息预测 × ZDROP_RATIO。配上 sentchk（cmds 没有漏数）⇒ 这笔支出只能来自这一段之前发的指令。
+    发令到见效的间隔：下界 lastCmdGapMin = 这一段起点 − 上一批指令所在间隔的终点（最晚发、最早见效）；
+    上界 lastCmdGap = 这一段终点 − 上一批指令所在间隔的起点（最早发、最晚见效）。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = [x for x in b.traj if x['t'] >= 90]
+        last_change = None          # 最近一个 cmds 有变动的间隔 (a.t, c.t, 条数, 其中发船)
+        for a, c in zip(tr, tr[1:]):
+            dc = c['cmds'] - a['cmds']
+            if dc > 0:
+                last_change = (a['t'], c['t'], dc, c['boats'] - a['boats'])
+                continue
+            if c['t'] - a['t'] != 90 or not (t_from <= a['t'] <= t_to):
+                continue
+            if c['boats'] != a['boats'] or a['bal'] < 1000 or a['terr'] < 50 or c['terr'] < ZDROP_KEEP_LAND * a['terr']:
+                continue
+            ratio = c['bal'] / max(1, pure_interest(a, c, M.land))
+            if ratio >= ZDROP_RATIO:
+                continue
+            out.append(dict(me=me, name=name_of(b), team=b.team, t0=a['t'], t1=c['t'], bal0=a['bal'], bal1=c['bal'], ratio=ratio,
+                            terr0=a['terr'], terr1=c['terr'], nb=a['nb'], neut=a['neut'],
+                            lastCmdIv=last_change, lastCmdGap=(c['t'] - last_change[0]) if last_change else None,
+                            lastCmdGapMin=(a['t'] - last_change[1]) if last_change else None))
+    return out
+
+
+def sec_zerodrop(M, t_from=NOEFF_T_FROM, t_to=10 ** 9):
+    rows = zerodrop_rows(M, t_from, t_to)
+    print(f"零新令的余额下跌（只用日志）：相邻快照间 cmds、boats 都没动、没有捐款/戳日志、领土 >= {ZDROP_KEEP_LAND:.2f}× 起点，而余额 < 纯利息预测 × {ZDROP_RATIO}")
+    print('   号(队)｜间隔｜余额｜余额/纯利息预测｜领土｜nb neut｜上一批指令发在哪个间隔（条数，其中发船）→ 发令到见效隔了多少拍（下界~上界）')
+    for r in rows:
+        lc = r['lastCmdIv']
+        print(f"   {r['name']:13s}(队{r['team']})｜t={r['t0']}~{r['t1']}｜{fmt(r['bal0'])}→{fmt(r['bal1'])}｜{r['ratio']:.2f}｜{r['terr0']}→{r['terr1']}｜{r['nb']} {r['neut']}｜"
+              + (f"t={lc[0]}~{lc[1]}（{lc[2]} 条，船 {lc[3]}）→ {r['lastCmdGapMin']}~{r['lastCmdGap']} 拍" if lc else '此前没有指令'))
+    by = defaultdict(list)
+    for r in rows:
+        by[r['t0']].append(r['name'])
+    print(f"   合计 {len(rows)} 段、{len({r['me'] for r in rows})} 个号；按起点拍：" + '；'.join(f"t={t} {len(v)}（{'、'.join(v)}）" for t, v in sorted(by.items())))
+    for lo, hi in ((630, 1260), (1260, 1890), (1890, 2520), (2520, 3600), (3600, 10 ** 9)):
+        sub = [r for r in rows if lo <= r['t0'] < hi]
+        if sub:
+            print(f"      t={lo}~{hi if hi < 10 ** 9 else '终局'}：{len(sub)} 段、{len({r['me'] for r in sub})} 个号，掉的兵合计 {fmt(sum(r['bal0'] - r['bal1'] for r in sub))}；"
+                  f"发令到见效的下界 中位 {_median([r['lastCmdGapMin'] for r in sub if r['lastCmdGapMin'] is not None])} 拍")
+
+
 def gaps_rows(M):
     """缺掉的 HL-TICK 快照。策略只在「本机拍是 90 的倍数、且这一拍 act() 走到了打印处」时打一条快照（c110 L4797 / L4822）；
     act() 开头有 `if (!g.canAct(me)) return`（L4782）。所以首尾快照之间缺掉的 90 的倍数 = 那一拍策略没被调用或被 canAct 挡回。
@@ -2008,6 +2100,10 @@ def main():
         sec_noefftl(M, *[int(x) for x in sys.argv[3:5]])
     elif sec == 'gaps':
         sec_gaps(M)
+    elif sec == 'sentchk':
+        sec_sentchk(M)
+    elif sec == 'zerodrop':
+        sec_zerodrop(M, *[int(x) for x in sys.argv[3:5]])
     elif sec == 'harvest':
         sec_harvest(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
     elif sec == 'boxboats':
