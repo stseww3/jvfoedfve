@@ -737,8 +737,8 @@ class Dossier:
         R = self.R
         self.p()
         self.p("[L] 本队整局兵力去向总账（每个号只算我方控制期间：开局→离线/灭亡；重放精确值。烧=进攻中真正消耗的兵；对消=进攻兵与对方打过来的兵在槽内 1:1 抵掉）")
-        self.p("  号       到拍 |   利息 | 烧:中立     AI   真人 真人对消 | 攻击费 | 挨打掉兵 反击槽被消 | 捐出到账    税   收捐 | 船出兵  船费 移交路人 | 末余额 在途 | 被真人吃:格 对方烧 每格")
-        keys = ("inc", "burnN", "burnAI", "burnH", "netH", "atkFee", "defBal", "defSlot", "donOut", "donTax", "donIn", "donOutNonSquad", "boatOut", "boatFee", "boatToMate", "balEnd", "outEnd", "lostTiles", "lostBurn", "tilesN", "tilesAI", "tilesH")
+        self.p("  号       到拍 |   利息 | 烧:中立     AI   真人 真人对消 | 攻击费 | 挨打掉兵 反击槽被消 | 捐出到账    税   收捐 | 船出兵  船费 靠队友岸 | 末余额 在途 | 被真人吃:格 对方烧 每格")
+        keys = ("inc", "burnN", "burnAI", "burnH", "netH", "atkFee", "defBal", "defSlot", "donOut", "donTax", "donIn", "donOutNonSquad", "boatOut", "boatFee", "boatToMate", "boatToOutside", "boatOnEnemy", "balEnd", "outEnd", "lostTiles", "lostBurn", "tilesN", "tilesAI", "tilesH")
         tot = {x: 0 for x in keys}
         per = {}
         for b, pl in sorted(self.sq.items(), key=lambda x: x[1]):
@@ -765,7 +765,17 @@ class Dossier:
             r["donOutNonSquad"] = sum(v for q, v in d["don_to"].items() if q not in self.bot_of)
             r["donIn"] = d["don_in"]
             r["boatOut"], r["boatFee"] = d["boat"][0], d["boat"][1]
-            r["boatToMate"] = sum(tr for (t, p, tg, tr, got, q0, cap) in R["landings"] if p == pl and 0 <= tg < self.H and tg != pl and t <= R["endTick"])
+            # 船靠在别的真人席位的地上：同队 = 整船兵移交给对方（受对方硬上限限制）；敌队 = 登陆进攻。
+            # boatToOutside = 靠在「不归编队控制」的队友地上的那部分（编队外的队友，或已离线的编队号空壳）。
+            for (t, p, tg, tr, got, q0, cap) in R["landings"]:
+                if p != pl or not (0 <= tg < self.H) or tg == pl or t > min(end, R["endTick"]):
+                    continue
+                if self.team_game and R["teams"][tg] == R["teams"][pl]:
+                    r["boatToMate"] += tr
+                    if tg not in self.bot_of or 0 <= self.left[tg] <= t:
+                        r["boatToOutside"] += tr
+                else:
+                    r["boatOnEnemy"] += tr
             r["balEnd"], r["outEnd"] = d["bal1"], d["out1"]
             r["giftIn"] = sum(g[3] for g in R.get("botGifts", ()) if g[2] == pl and g[0] <= end)
             for t, att, de, tiles, burnt, dB, dS, n in self.pair_def.get(pl, ()):
@@ -781,7 +791,7 @@ class Dossier:
         self.p(f"  合计          | {k(tot['inc']):>6} | {k(tot['burnN']):>6} {k(tot['burnAI']):>6} {k(tot['burnH']):>6} {k(tot['netH']):>6} | {k(tot['atkFee']):>6} | {k(tot['defBal']):>6} {k(tot['defSlot']):>6} | {k(tot['donOut']):>6} {k(tot['donTax']):>6} {k(tot['donIn']):>6} | {k(tot['boatOut']):>6} {k(tot['boatFee']):>5} {k(tot['boatToMate']):>6} | {k(tot['balEnd']):>6} {k(tot['outEnd']):>5} | {tot['lostTiles']:>6} {k(tot['lostBurn']):>6} {per_tile:>4}")
         inc = max(1, tot["inc"])
         fees = tot["atkFee"] + tot["donTax"] + tot["boatFee"]
-        self.p(f"  占总利息：打中立 {100 * tot['burnN'] / inc:.1f}% 打AI {100 * tot['burnAI'] / inc:.1f}% 打真人 {100 * (tot['burnH'] + tot['netH']) / inc:.1f}%（其中对消 {100 * tot['netH'] / inc:.1f}%） | 三种手续费 {100 * fees / inc:.1f}%（攻击费 {100 * tot['atkFee'] / inc:.1f}% 捐款税 {100 * tot['donTax'] / inc:.1f}% 船费 {100 * tot['boatFee'] / inc:.1f}%） | 挨打掉兵 {100 * tot['defBal'] / inc:.1f}% | 送给编队外 {100 * (tot['donOutNonSquad'] + tot['boatToMate']) / inc:.1f}% | 离线/灭亡时还在手里 {100 * (tot['balEnd'] + tot['outEnd']) / inc:.1f}%")
+        self.p(f"  占总利息：打中立 {100 * tot['burnN'] / inc:.1f}% 打AI {100 * tot['burnAI'] / inc:.1f}% 打真人 {100 * (tot['burnH'] + tot['netH']) / inc:.1f}%（其中对消 {100 * tot['netH'] / inc:.1f}%） | 三种手续费 {100 * fees / inc:.1f}%（攻击费 {100 * tot['atkFee'] / inc:.1f}% 捐款税 {100 * tot['donTax'] / inc:.1f}% 船费 {100 * tot['boatFee'] / inc:.1f}%） | 挨打掉兵 {100 * tot['defBal'] / inc:.1f}% | 送给编队外 {100 * (tot['donOutNonSquad'] + tot['boatToOutside']) / inc:.1f}%（捐款 {k(tot['donOutNonSquad'])} + 船靠编队外队友/空壳的岸 {k(tot['boatToOutside'])}）| 船靠编队内队友岸 {k(tot['boatToMate'] - tot['boatToOutside'])}，登陆敌方真人 {k(tot['boatOnEnemy'])} | 离线/灭亡时还在手里 {100 * (tot['balEnd'] + tot['outEnd']) / inc:.1f}%")
         self.p(f"  得地：中立 {tot['tilesN']} 格（{tot['burnN'] / max(1, tot['tilesN']):.1f} 兵/格） AI {tot['tilesAI']} 格（{tot['burnAI'] / max(1, tot['tilesAI']):.1f} 兵/格） 真人 {tot['tilesH']} 格（{tot['burnH'] / max(1, tot['tilesH']):.1f} 兵/格，不含对消）；带 * 的号是掉线后交给内置 AI（末余额即移交给 AI 的兵）")
         gifts = [g for g in R.get("botGifts", ()) if g[2] in self.bot_of]
         gift_tot = sum(per[b].get("giftIn", 0) for b in per)

@@ -77,6 +77,26 @@ DEFS["NEW-R03-EX01"] = {
     "detect": "resim.mjs 的 botGifts（挂在引擎 botGive 上）→ dossier.py [L]「表外进项」、[N]「表外」；dbg/husk-gifts.mjs <局> 单独列全场。",
 }
 
+DEFS["NEW-R03-DN02"] = {
+    "prefix": "DN",
+    "name": "捐款被接收方的硬上限截短：税按捐出方整笔余额收，到账只有对方剩下的余量",
+    "sameAs": ["NEW-DN-14（R08，喂给已经超软上限的号；这条说的是到账被截短、税照收）", "NEW-R01-DN10（相近：yield_opt_dispatch 落地后双方利息合计下降）"],
+    "definition": "引擎 transfer（game.js L388-400）：税 = 捐出方余额的 64/1024，与实际到账无关；到账 = min(指令兵数, 接收方 150×领土 − 余额)（receiverRoom L340-345）。"
+                  "tryDonateToTeammate 算 pct 时（L4500-4505）只看自己的留底，不看对方还能收多少。"
+                  "一笔捐款的到账比指令兵数（(pct+1)/1024×捐出方余额）少 1 个兵以上记为被截短。计：笔数、到账、税、税/到账（没被截短的 pct 320 捐款是 0.20）、接收方落地后的密度。",
+    "detect": "pingpong.py <局>（只读重放 cmdLog 的捐款行：逐对的笔数/到账/税、接收方落地前后密度、顶到硬上限与被截短的笔数）。",
+}
+
+DEFS["NEW-R03-SE03"] = {
+    "prefix": "SE",
+    "name": "扫尾分支发船不设间隔、找落点不看在途的船：同一个小岛连发几条，后面的船靠在自己刚打下的地上",
+    "sameAs": ["NEW-SE-06（R08，扫尾船被在途上限卡住、先挑最大的岛；这条是同一落点的重复船）", "NEW:BT-own-shore（R06，船靠回自己的岸，白付 32/1024）", "NEW-R01-SE04（装兵比船费少的小船）"],
+    "definition": "Policy.idleBoats 的扫尾分支（L5045-5052）每个决策拍都调 boatOut，没有被围分支 L5033 那样的间隔检查；boatOut（L999-1015）只看页面上的 boatCount < maxBoats（本地船数比发令晚 7~20 拍才变），"
+                  "searchWater（L1020-1079）每次从头找，不记已经在路上的船。同一个号对同一落点、相邻间隔 ≤60 拍的发船并成一串，串里第一条之外的记为多余。"
+                  "计：串数、多余条数、多余船的船费（每条 = 当时余额的 32/1024，与装兵无关）、靠岸时落点已是自己的地的条数。",
+    "detect": "boat-audit.py <局> [--cuts ..] [--burst 60]（重放 cmdLog 的发船行按 dZ 同落点分串 + landings 按落点归属分类）；dbg/idle-boats.mjs <局> <号> <t0> <t1>（影子逐决策拍归类：哪个分支、被哪一道拦、落点水路步数与岛的大小）。",
+}
+
 
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]
