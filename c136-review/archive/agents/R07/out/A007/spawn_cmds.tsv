@@ -1,0 +1,357 @@
+# A007 录像里全部出生指令（55_spawn_cmds.mjs）；真人位 97，出生阶段 = 第 0~50 步，地图宽 1756，第一条进攻指令在第 65 步，录像共 5596 步
+step	phase	order	player	bot	x	y
+0	spawn	0	31		268	320
+0	spawn	1	89		974	343
+0	spawn	3	27		978	181
+0	spawn	4	10		1450	216
+0	spawn	5	51		1225	361
+0	spawn	6	30		1534	669
+0	spawn	7	49		195	112
+0	spawn	8	64		657	62
+0	spawn	9	0		1247	310
+0	spawn	10	38		923	337
+0	spawn	11	2		928	555
+0	spawn	13	28		522	551
+0	spawn	15	7		497	689
+0	spawn	16	55		173	104
+0	spawn	17	3		1023	617
+0	spawn	18	15		1549	658
+0	spawn	19	27		974	186
+0	spawn	20	60		1098	226
+0	spawn	21	61		1453	216
+0	spawn	22	19		939	580
+0	spawn	23	35		910	517
+0	spawn	24	12		906	983
+0	spawn	25	10		1454	201
+0	spawn	27	93		746	354
+0	spawn	28	2		926	548
+0	spawn	29	42		495	191
+0	spawn	30	58		523	560
+0	spawn	31	27		970	181
+0	spawn	32	89		958	347
+0	spawn	33	77		1031	294
+0	spawn	34	28		523	548
+1	spawn	0	67		440	93
+1	spawn	1	45		960	254
+1	spawn	2	22		1057	255
+1	spawn	3	38		943	349
+1	spawn	4	16		1188	299
+2	spawn	0	78	riku_x	1186	283
+2	spawn	1	39		397	208
+2	spawn	2	85	kaito9	1238	345
+2	spawn	3	79	zexos1	1195	125
+2	spawn	4	82	leo_tx	1236	208
+2	spawn	5	80	sora_w	1170	205
+2	spawn	6	27		979	181
+2	spawn	7	75	ryan_m	1302	211
+2	spawn	8	81	alex_k	1269	138
+2	spawn	9	83	zero_7	1263	280
+2	spawn	10	76	noah88	1323	88
+2	spawn	11	28		513	555
+2	spawn	12	90		1031	287
+2	spawn	13	46		1259	224
+2	spawn	14	86	talon5	1257	66
+2	spawn	15	37		287	228
+2	spawn	16	9		1038	291
+3	spawn	0	75	ryan_m	1385	278
+3	spawn	1	81	alex_k	1467	257
+3	spawn	2	83	zero_7	1340	366
+3	spawn	3	76	noah88	1471	182
+3	spawn	4	78	riku_x	1226	336
+3	spawn	5	79	zexos1	1341	234
+3	spawn	6	86	talon5	1412	210
+3	spawn	7	19		945	582
+3	spawn	8	8		175	264
+3	spawn	9	80	sora_w	1317	305
+3	spawn	10	85	kaito9	1275	380
+3	spawn	11	60		1120	232
+3	spawn	12	34		828	211
+4	spawn	0	78	riku_x	1314	280
+4	spawn	1	6		812	221
+4	spawn	2	80	sora_w	1224	289
+4	spawn	3	82	leo_tx	1424	311
+4	spawn	4	85	kaito9	1286	332
+4	spawn	5	70		917	258
+4	spawn	6	75	ryan_m	1388	265
+4	spawn	7	26		1206	946
+4	spawn	8	11		880	306
+4	spawn	9	83	zero_7	1359	339
+4	spawn	10	81	alex_k	1463	266
+4	spawn	11	76	noah88	1480	200
+4	spawn	12	86	talon5	1420	214
+4	spawn	13	79	zexos1	1350	221
+4	spawn	14	52		981	229
+4	spawn	15	82	leo_tx	1414	334
+4	spawn	16	93		1011	312
+4	spawn	17	60		1125	232
+5	spawn	0	32		984	467
+5	spawn	1	75	ryan_m	1350	280
+5	spawn	2	81	alex_k	1361	224
+5	spawn	3	76	noah88	1457	308
+5	spawn	4	83	zero_7	1394	336
+5	spawn	5	78	riku_x	1260	291
+5	spawn	6	86	talon5	1416	267
+5	spawn	7	80	sora_w	1216	248
+5	spawn	8	79	zexos1	1224	187
+5	spawn	9	2		940	623
+5	spawn	10	48		697	41
+5	spawn	11	85	kaito9	1322	332
+5	spawn	12	77		1040	294
+5	spawn	13	60		1131	232
+5	spawn	15	28		513	618
+5	spawn	16	29		851	447
+6	spawn	0	28		513	647
+6	spawn	1	23		804	354
+6	spawn	2	78	riku_x	1278	307
+6	spawn	3	82	leo_tx	1303	248
+6	spawn	4	80	sora_w	1243	265
+6	spawn	5	81	alex_k	1478	284
+6	spawn	6	75	ryan_m	1360	278
+6	spawn	7	66		764	420
+6	spawn	8	76	noah88	1436	320
+6	spawn	9	83	zero_7	1383	337
+6	spawn	10	79	zexos1	1365	224
+6	spawn	11	86	talon5	1421	258
+6	spawn	12	82	leo_tx	1294	242
+7	spawn	0	83	zero_7	1328	332
+7	spawn	1	76	noah88	1478	284
+7	spawn	2	42		1056	993
+7	spawn	3	22		1080	83
+7	spawn	4	78	riku_x	1303	248
+7	spawn	5	29		817	442
+7	spawn	6	82	leo_tx	1383	337
+7	spawn	7	90		1170	261
+7	spawn	8	85	kaito9	1278	307
+7	spawn	9	45		957	253
+7	spawn	10	81	alex_k	1436	320
+7	spawn	11	38		870	357
+8	spawn	0	78	riku_x	1278	307
+8	spawn	1	52		982	231
+8	spawn	2	50		1047	290
+8	spawn	3	82	leo_tx	1436	320
+8	spawn	4	55		350	125
+8	spawn	5	83	zero_7	1383	337
+8	spawn	6	81	alex_k	1365	224
+8	spawn	7	6		814	217
+8	spawn	8	79	zexos1	1305	246
+8	spawn	9	85	kaito9	1328	332
+9	spawn	0	79	zexos1	1365	224
+9	spawn	1	82	leo_tx	1306	246
+9	spawn	2	29		817	442
+9	spawn	3	15		428	553
+9	spawn	4	95		1061	367
+9	spawn	5	81	alex_k	1478	284
+9	spawn	6	76	noah88	1436	320
+10	spawn	0	45		958	253
+10	spawn	1	79	zexos1	1306	246
+10	spawn	3	0		1083	113
+10	spawn	4	83	zero_7	1328	332
+10	spawn	5	90		1167	272
+10	spawn	6	81	alex_k	1436	320
+10	spawn	7	76	noah88	1478	284
+10	spawn	8	60		989	262
+10	spawn	9	85	kaito9	1383	337
+11	spawn	0	93		1021	303
+11	spawn	1	2		1273	116
+11	spawn	2	81	alex_k	1478	284
+11	spawn	3	32		752	461
+11	spawn	4	76	noah88	1418	255
+11	spawn	6	82	leo_tx	1436	320
+11	spawn	7	9		1152	288
+11	spawn	8	6		851	235
+11	spawn	9	60		982	264
+11	spawn	10	30		1548	659
+11	spawn	11	93		1031	300
+11	spawn	12	81	alex_k	1365	224
+11	spawn	13	83	zero_7	1383	337
+11	spawn	14	85	kaito9	1328	332
+12	spawn	0	11		883	273
+12	spawn	1	93		1021	303
+12	spawn	2	52		980	231
+12	spawn	3	73		953	680
+12	spawn	4	31		204	305
+12	spawn	5	86	talon5	1365	224
+13	spawn	0	33		948	698
+13	spawn	1	93		1021	303
+13	spawn	2	83	zero_7	1328	332
+13	spawn	3	76	noah88	1478	284
+13	spawn	4	86	talon5	1418	255
+13	spawn	5	35		965	544
+13	spawn	6	82	leo_tx	1365	224
+13	spawn	7	85	kaito9	1383	337
+13	spawn	8	36		1071	622
+13	spawn	9	88		221	295
+13	spawn	10	81	alex_k	1436	320
+14	spawn	0	76	noah88	1478	284
+14	spawn	1	29		481	659
+14	spawn	2	82	leo_tx	1360	275
+14	spawn	3	72		1034	155
+14	spawn	4	60		974	261
+14	spawn	5	6		846	217
+14	spawn	6	75	ryan_m	1436	320
+14	spawn	7	93		1019	307
+14	spawn	8	81	alex_k	1365	224
+14	spawn	9	83	zero_7	1383	337
+14	spawn	10	76	noah88	1419	255
+14	spawn	11	86	talon5	1478	284
+14	spawn	12	85	kaito9	1328	332
+15	spawn	0	52		983	230
+15	spawn	1	35		974	584
+15	spawn	2	9		1112	246
+15	spawn	3	86	talon5	1418	255
+15	spawn	4	82	leo_tx	1436	320
+15	spawn	5	60		977	260
+15	spawn	6	93		1015	309
+15	spawn	7	27		995	159
+15	spawn	8	75	ryan_m	1360	274
+16	spawn	0	93		1011	315
+16	spawn	1	61		1189	183
+16	spawn	2	29		442	702
+16	spawn	3	60		978	258
+16	spawn	4	42		434	535
+16	spawn	5	76	noah88	1418	255
+16	spawn	6	67		517	85
+16	spawn	7	86	talon5	1478	284
+17	spawn	0	88		251	311
+17	spawn	1	6		857	212
+17	spawn	2	82	leo_tx	1360	274
+17	spawn	3	75	ryan_m	1436	320
+18	spawn	0	94		1192	98
+18	spawn	1	65		890	411
+18	spawn	2	44		354	265
+18	spawn	3	82	leo_tx	1436	320
+18	spawn	4	75	ryan_m	1360	274
+18	spawn	5	52		981	229
+18	spawn	6	68		591	554
+19	spawn	0	43		1446	343
+19	spawn	1	48		697	61
+19	spawn	2	71		594	561
+19	spawn	3	2		1271	115
+19	spawn	4	33		903	633
+19	spawn	5	58		1031	254
+20	spawn	0	6		812	256
+20	spawn	1	19		944	577
+20	spawn	2	65		915	454
+20	spawn	3	93		990	316
+20	spawn	4	0		962	192
+21	spawn	0	49		214	139
+21	spawn	1	9		1136	226
+21	spawn	2	13		1410	140
+21	spawn	3	42		377	466
+21	spawn	4	16		1359	169
+21	spawn	5	82	leo_tx	1360	274
+21	spawn	6	10		1459	105
+21	spawn	7	37		1257	969
+21	spawn	8	75	ryan_m	1436	320
+21	spawn	9	15		429	531
+22	spawn	0	71		550	550
+22	spawn	1	82	leo_tx	1436	320
+22	spawn	2	67		519	81
+22	spawn	4	52		984	228
+22	spawn	5	41		1420	129
+22	spawn	6	75	ryan_m	1360	274
+23	spawn	0	73		231	279
+23	spawn	1	57		674	73
+23	spawn	2	6		844	178
+23	spawn	3	12		1355	145
+24	spawn	0	60		979	256
+24	spawn	1	71		529	546
+24	spawn	2	27		965	161
+24	spawn	3	59		225	198
+24	spawn	4	60		980	257
+25	spawn	0	89		956	333
+25	spawn	1	9		971	271
+25	spawn	3	96		1036	482
+25	spawn	4	18		297	417
+26	spawn	0	77		1031	293
+26	spawn	1	60		979	257
+26	spawn	2	31		218	189
+26	spawn	3	6		839	205
+27	spawn	0	69		674	58
+27	spawn	1	37		969	960
+27	spawn	2	60		979	256
+27	spawn	3	19		939	585
+27	spawn	4	90		1078	184
+27	spawn	5	16		1301	180
+28	spawn	0	12		1112	134
+28	spawn	1	60		979	256
+28	spawn	2	50		1073	470
+28	spawn	3	66		768	389
+29	spawn	0	26		459	171
+29	spawn	1	48		697	82
+29	spawn	2	90		1122	248
+29	spawn	3	49		193	112
+29	spawn	4	53		961	470
+30	spawn	0	31		212	174
+30	spawn	1	21		875	970
+30	spawn	2	59		329	215
+31	spawn	0	47		466	574
+31	spawn	1	18		244	405
+31	spawn	2	38		882	344
+31	spawn	3	77		1070	304
+31	spawn	4	90		1125	231
+31	spawn	5	9		955	272
+31	spawn	6	59		329	215
+32	spawn	0	60		977	260
+32	spawn	2	56		1098	226
+33	spawn	0	6		810	226
+33	spawn	1	93		806	168
+33	spawn	2	59		342	208
+33	spawn	3	1		1593	691
+33	spawn	4	19		946	578
+34	spawn	0	18		296	411
+34	spawn	1	36		360	294
+34	spawn	2	58		1011	405
+34	spawn	3	20		821	311
+34	spawn	4	48		687	89
+34	spawn	5	16		1351	188
+34	spawn	6	30		1566	630
+35	spawn	0	50		1073	458
+35	spawn	1	46		909	390
+35	spawn	2	6		878	195
+36	spawn	0	6		850	206
+36	spawn	1	96		1028	473
+36	spawn	2	64		1211	960
+36	spawn	3	21		1164	311
+37	spawn	0	93		1011	297
+37	spawn	1	6		835	226
+37	spawn	2	47		468	578
+38	spawn	0	48		725	107
+38	spawn	1	53		1264	185
+38	spawn	2	14		1111	334
+39	spawn	0	63		283	222
+39	spawn	1	2		1274	117
+39	spawn	2	61		900	514
+39	spawn	3	6		847	176
+40	spawn	0	29		462	705
+40	spawn	1	6		855	182
+41	spawn	0	27		1009	142
+41	spawn	1	6		837	203
+42	spawn	0	6		847	209
+43	spawn	0	29		462	705
+43	spawn	1	6		840	213
+43	spawn	2	31		214	210
+44	spawn	0	16		1354	171
+44	spawn	1	6		848	209
+44	spawn	2	1		1585	698
+44	spawn	3	90		1156	225
+45	spawn	0	6		853	206
+46	spawn	0	42		443	970
+46	spawn	1	6		852	214
+47	spawn	0	61		487	507
+47	spawn	1	26		519	586
+47	spawn	2	6		852	219
+47	spawn	3	92		1082	396
+47	spawn	4	9		986	291
+47	spawn	5	90		1175	215
+47	spawn	6	29		455	686
+48	spawn	0	77		1071	297
+48	spawn	1	6		853	213
+49	spawn	0	47		947	704
+49	spawn	1	92		1077	392
+49	spawn	2	39		324	181
+50	spawn	0	49		227	142
+50	spawn	1	35		1013	531
+50	spawn	2	68		585	555
+50	spawn	3	48		718	103
+50	spawn	4	6		861	224

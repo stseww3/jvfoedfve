@@ -1,0 +1,341 @@
+{
+ "matchId": "B019",
+ "step": 30,
+ "perBot": {
+  "Barbary": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Swiss Guard": {
+   "team": 1,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "EZ_Clap": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Charlemagne": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Zenobia": {
+   "team": 1,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Sukuna": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Leif Erikson": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Raiden": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Denmark": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "New York": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Mansa Musa": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "CJ": {
+   "team": 1,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "xX_Shadow_Xx": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Kandy": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "bruh": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Carthage": {
+   "team": 3,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Goguryeo": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Genos": {
+   "team": 2,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Watermelon": {
+   "team": 1,
+   "samples": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Farnese": {
+   "team": 1,
+   "samples": 6,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  }
+ },
+ "timeline": [
+  {
+   "t": 0,
+   "bots": 20,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 229,
+   "balA": 0,
+   "balAll": 10240,
+   "over100": 0,
+   "protect": false
+  },
+  {
+   "t": 270,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 6956,
+   "balA": 0,
+   "balAll": 28435,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 540,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 36122,
+   "balA": 0,
+   "balAll": 81016,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 810,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 90055,
+   "balA": 0,
+   "balAll": 294005,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1080,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 110937,
+   "balA": 0,
+   "balAll": 949875,
+   "over100": 0,
+   "protect": true
+  }
+ ],
+ "pairs": [
+  {
+   "a": "Swiss Guard",
+   "b": "Barbary",
+   "samples": 26,
+   "t0": 480,
+   "t1": 1230,
+   "maxCells": 77,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "bruh",
+   "b": "Leif Erikson",
+   "samples": 17,
+   "t0": 750,
+   "t1": 1230,
+   "maxCells": 96,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Mansa Musa",
+   "b": "Zenobia",
+   "samples": 4,
+   "t0": 1140,
+   "t1": 1230,
+   "maxCells": 42,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Kandy",
+   "b": "Watermelon",
+   "samples": 4,
+   "t0": 1140,
+   "t1": 1230,
+   "maxCells": 66,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  }
+ ],
+ "border": [
+  {
+   "t": 0,
+   "bots": 20,
+   "neutral": 227,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 540,
+   "bots": 19,
+   "neutral": 1135,
+   "ai": 871,
+   "foe": 60,
+   "mateX": 52,
+   "own": 181,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1080,
+   "bots": 19,
+   "neutral": 68,
+   "ai": 3365,
+   "foe": 631,
+   "mateX": 289,
+   "own": 688,
+   "teamAi": 0,
+   "peer": 0
+  }
+ ],
+ "total": {
+  "samples": 804,
+  "sealedA": 0,
+  "botTicksA": 0,
+  "botsEverA": 0
+ },
+ "pairCount": 4,
+ "inSealA": {
+  "botTicks": 0,
+  "boats": 0,
+  "boatTroops": 0,
+  "boatFees": 0,
+  "boatsFeeOverTroops": 0,
+  "donations": 0,
+  "donArrived": 0,
+  "donTax": 0,
+  "over100": 0,
+  "hardCap": 0
+ }
+}

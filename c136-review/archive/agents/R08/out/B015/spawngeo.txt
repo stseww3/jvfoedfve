@@ -1,0 +1,33 @@
+[QA] B015 出生点离地图边的距离（地图 1541×1080，短边的 12% = 130 像素）
+  编队 11 个号：中位 22、下四分位 22、上四分位 135；离边 ≤130 的 8 个（73%）
+  其他真人 33 个：中位 264、下四分位 173、上四分位 380；离边 ≤130 的 4 个（12%）
+  逐号（离边从近到远）：Panzergrenadier(T2) 11（下）；Aurelian(T2) 18（左）；Cataphract(T5) 22（下）；ProGamer99(T8) 22（下）；Luigi(T5) 22（下）；Yi Sun-sin(T8) 22（下）；Guts(T4) 35（右）；Darius(T7) 67（右）；Kaiser(T8) 135（右）；System32(T7) 290（上）；Don(T5) 434（上）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 165｜最近的编队友 中位 230｜最近的非编队真人 中位 176｜最近的真人就是编队友的 3/11 个
+  其他真人：最近的任意真人 中位 97
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：6 团；≥3 个号的团 2 个，装了 6 个号
+  3 个号（中心 1371,246）：System32(T7) Kaiser(T8) Darius(T7)｜队的构成 T7×2 T8×1｜≤260 像素的号对：异队 2、同队 0
+  3 个号（中心 1159,1058）：Luigi(T5) Cataphract(T5) Yi Sun-sin(T8)｜队的构成 T5×2 T8×1｜≤260 像素的号对：异队 1、同队 1
+  2 个号（中心 512,1064）：Panzergrenadier(T2) ProGamer99(T8)｜队的构成 T2×1 T8×1｜≤260 像素的号对：异队 1、同队 0
+  1 个号（中心 1506,882）：Guts(T4)｜队的构成 T4×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 962,434）：Don(T5)｜队的构成 T5×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 18,98）：Aurelian(T2)｜队的构成 T2×1｜≤260 像素的号对：异队 0、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤130 像素；沿边相邻间距 ≤520）
+  下沿 5 个号：Panzergrenadier(T2)@383 ProGamer99(T8)@642 Luigi(T5)@978 Cataphract(T5)@1186 Yi Sun-sin(T8)@1314｜相邻间距 [259, 336, 208, 128]｜队 T2 T5 T8
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Kaiser           | [Titan]/)/)1nHT4 165≠；System32*T7 178≠；Player 814~T7 218≠
+    Panzergrenadier  | Cascadia~T6 172≠；𐱅𐰇𐰼𐰰🐺T6 212≠；ProGamer99*T8 259≠
+    Guts             | 365T1 176≠；Yi Sun-sin*T8 260≠；Cataphract*T5 365≠
+    Cataphract       | Yi Sun-sin*T8 128≠；Luigi*T5 208=；365T1 241≠
+    System32         | Player 814~T7 84=；[Titan]/)/)1nHT4 129≠；KOKUTEKT2 143≠
+    ProGamer99       | Empire Monkey🏴~T7 252≠；Panzergrenadie*T2 259≠；bigosT3 280≠
+    Luigi            | Empire Monkey🏴~T7 197≠；Cataphract*T5 208=；bigosT3 228≠
+    Yi Sun-sin       | Cataphract*T5 128≠；365T1 194≠；Guts*T4 260≠
+    Don              | [OG] Phoenix AT2 135≠；NameT8 145≠；SONion🥀T8 156≠
+    Aurelian         | [SOLO]MINOLOT3 144≠；HitIerRapíst67T4 200≠；[PL] IslandsT4 221≠
+    Darius           | Kaiser*T8 230≠；System32*T7 298=；[Titan]/)/)1nHT4 368≠
+  最近 3 个真人里是异队编队友的：9 / 33

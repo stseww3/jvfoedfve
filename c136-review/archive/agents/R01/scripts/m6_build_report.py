@@ -103,14 +103,46 @@ def check_text(label, prose, hay_digits=None):
     prose = re.sub(r'```.*?```', '', prose, flags=re.S)   # 代码块（命令）不查
     prose = re.sub(r'`[^`]*`', '', prose)                 # 路径、命令、标识符里的数字不查
     prose = re.sub(r'L\d+(?:[–-]\d+)?', '', prose)        # 代码行号不查
+    prose = re.sub(r'广播 \d{4}', '', prose)               # 总部广播的编号不查
     nums = set(re.findall(r'(?<![\d.])\d{4,}(?![\d.])', prose.replace(',', '')))
     miss = sorted({x for x in nums if x not in hay_digits}, key=int)
     print(f'{label}：≥4 位的整数 {len(nums)} 个，在数据文件、逐局报告、analysis 里找不到的 {len(miss)} 个：{" ".join(miss)}')
     return miss
 
 
+def wide_check(files):
+    """更严的核对：正文里 ≥3 位的整数和所有小数，逐个到 m6-data、逐局报告、analysis 里找原样的数字串。
+    找不到的要人工看：可能是过期的数，也可能是正文里现算的数（比值、合计）。"""
+    hay = ''
+    for f in (glob.glob(os.path.join(D, '*')) + glob.glob(os.path.join(R, 'reviews', '*.md'))
+              + glob.glob(os.path.join(R, 'analysis', '*.json'))):
+        if f.endswith('SUMMARY.tmpl.md'):
+            continue
+        hay += open(f, encoding='utf8', errors='replace').read()
+    hay = hay.replace(',', '')
+    toks = set(re.findall(r'\d+(?:\.\d+)?', hay))
+    ints = set(re.findall(r'\d+', hay))
+    for f in files:
+        prose = open(f, encoding='utf8').read()
+        prose = re.sub(r'```.*?```', '', prose, flags=re.S)
+        prose = re.sub(r'`[^`]*`', '', prose)
+        prose = re.sub(r'L\d+(?:[–-]\d+)?', '', prose)
+        prose = re.sub(r'广播 \d{4}', '', prose)
+        prose = re.sub(r'[A-Z]\d{2,3}', '', prose)            # 局号、卡号、模式号
+        miss = []
+        for x in sorted(set(re.findall(r'(?<![\d.])\d+(?:\.\d+)?(?![\d.])', prose.replace(',', ''))), key=float):
+            if '.' in x:
+                if x not in toks and x.rstrip('0').rstrip('.') not in toks:
+                    miss.append(x)
+            elif len(x) >= 3 and x not in ints:
+                miss.append(x)
+        print(f'{os.path.relpath(f, R)}：找不到原样数字串的 {len(miss)} 个：{" ".join(miss)}')
+
+
 if __name__ == '__main__':
-    if '--check-file' in sys.argv:
+    if '--wide-check' in sys.argv:
+        wide_check(sys.argv[sys.argv.index('--wide-check') + 1:])
+    elif '--check-file' in sys.argv:
         H = haystack()
         for f in sys.argv[sys.argv.index('--check-file') + 1:]:
             check_text(os.path.relpath(f, R), open(f, encoding='utf8').read(), H)

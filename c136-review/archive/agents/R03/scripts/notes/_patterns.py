@@ -137,6 +137,36 @@ DEFS["NEW-R03-DN03"] = {
 }
 
 
+# ---- A090 起新增 ----
+DEFS["NEW-R03-AT05"] = {
+    "prefix": "AT",
+    "name": "隔壁的空壳（或 AI）几万兵就能吃完，却一直判「留底不够」：为身边最强真人留的底吃掉了几乎整个余额",
+    "sameAs": ["NEW-R03-OP01（同一道 safeAt 留底：那条是 1500 拍前买 AI 地被编队友/路人的余额冻住 safeFinite，这条是 1500 拍后被敌方真人的余额冻住 dpKeep）",
+               "R07-EC-IDLE-RICH（有兵不花）", "暂无完全对应的条目（R03 在 A090 第一次单列；请统筹归并）"],
+    "definition": "V13.dpKeep（Vb L2459-2464）= (身边最强的真人的余额 + 它压在我身上的兵 − 1.5×我的领土) ÷ 1.78。V17.safeAt（L2728-2738）在 killW=1 时取 max(safeFinite, dpKeep)，"
+                  "Policy.safeAt（L4543-4560）再封顶到 oppFloorCap(88)×领土。Policy.buyLand 对非真人目标（内置 AI、离线后由内置 AI 托管的空壳）：keep = max(keep, safe)（L5444），"
+                  "avail = 余额 − 手续费 − keep（L5446），want = 1.25×need + 3×接壤数（L5450），avail < want 且 avail < chunk(0.2)×余额 就跳过（L5452）。"
+                  "于是身边站着一个余额比我高的真人时，留底跟着它的余额涨，我的余额要涨过 88×领土 这条封顶线再加上 want，才会去吃隔壁那个几万兵就能吃完的空壳；在那之前每个决策拍都判留底不够。"
+                  "计：空壳在场的拍数、其间它的地/兵、我方该号的余额与密度、buy-why 的分类计数（单独去掉 safe / chunk 能不能出手）、最终出手的拍与兵力、空壳最后归谁。",
+    "detect": "dbg/buy-why.mjs <局> <号> <t0> <t1>（逐决策拍：最便宜的报价是不是非真人目标、单独去掉哪一道闸就能出手）+ dbg/act-trace.mjs（那一拍的 safeFinite、dpKeep、safeAt、各邻居的 elimCost）"
+              "+ freeze-scan.mjs 第二段「卡真人留底」的区间 + cmdq.py <局> all <t0> <t1> --kind 1 --target <空壳名>（谁在什么时候打了它）+ snapq.py（空壳和我方该号的地/兵）。",
+}
+
+DEFS["NEW-R03-AT06"] = {
+    "prefix": "AT",
+    "name": "出手的大小只看余额和对方整个号的 need，不看接壤多宽：对着十几到几十格的滩头压上百万兵，烧掉一小部分、其余原路退回，手续费每条照收",
+    "sameAs": ["NEW-R03-IO01（同一串里上一条没落地就重发；这条说的是每条的大小和前线宽度不匹配）", "NEW-AT-CAPDUMP / R08:超软上限后高价倾泻（过软上限后对高价目标出手）",
+               "NEW:FE-tiny-cmd-fee（手续费按整笔余额收）", "暂无完全对应的条目（R03 在 A090 第一次单列；请统筹归并）"],
+    "definition": "Policy.buyLand 的真人分支（Vb L5530-5608）：脉冲档 L5595-5607 每条 = min(1.20×need + 3×接壤数, pulseFrac(0.12)×余额)；3800 拍后对 bleeding/nearCollapse 的目标走 L5574-5585，"
+                  "每条 = max(min(0.85×need + 3×接壤数, 0.12×余额) − 在途, 0.08×余额)。need 是 offers 里吃掉对方整个号的 elimCost，不是眼前这段前线后面那块地；"
+                  "按前线宽度修剪的三段代码（alignMultiRing L5555-5572、canZeroPulse L5539-5551、tryNarrowBoatFirst L5470-5528）在 Vb 的参数里都是关的（exactRingMode=0、zeroPulseMode=0、narrowBoatFirstMode=0）。"
+                  "引擎里进攻兵沿前线格逐格推进，接壤的那一小块（对方船登陆的滩头、被切下来的飞地）吃完、和目标不再相邻时，槽里剩下的兵退回余额；每条陆攻的手续费 = 发令时余额的 12/1024，与送多少无关。"
+                  "于是对一块十几到几十格宽的滩头连发 3~4 条（在途检查在第一条落地前是 0），槽里压上百万兵，烧掉 2~15%，其余 20~60 拍后退回；其间本体的余额少一截，手续费付 3~4 份。"
+                  "计：对真人的陆攻按时段、按号的 条数/送出/手续费/烧掉/槽内对消/得地 和 退回余额的兵；逐串的接壤格数、槽里兵的变化、退回的拍。",
+    "detect": "retq.py <局> [切点]（和卷宗[E] 同一套区间账：对真人 条数/出/费/烧/对消/得地 与 退兵）+ dbg/attack-state.mjs <局> <号> <t0> <t1> <目标席位>（逐拍：和目标接壤的边界格数、进攻槽里的兵、余额）"
+              "+ shadow-digest [S6]（同步串的首条/多花与其中的手续费）+ dbg/params.mjs <局> 'exactRing|zeroPulse|narrow'。",
+}
+
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]
     return {"proposedId": pid, "prefix": d["prefix"], "name": d["name"], "sameAs": list(d["sameAs"]) + list(extra_same or []),

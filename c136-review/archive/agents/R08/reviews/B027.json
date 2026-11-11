@@ -5416,7 +5416,7 @@
   },
   {
    "id": "D15",
-   "t": "4320~9662",
+   "t": "3780~9662",
    "bot": "Davout / Habsburg / player_007 / Hashashin / New England / Kuban",
    "decision": "满仓挨打时不出手：6 个号的下坡里合计 0 条指令。Habsburg 1620 拍从 22838 格掉到 4871 格；player_007 25354 格 / 250 万兵 349 拍出局。",
    "codePath": "src/strategy/v27-team-c110.js: counterAttack L871-887（L650 counterK = 0、L825 只在 counterK > 0 时才调用——专门的反击分支是关着的；挨打时只剩 buyLand 的报价 / 留底几道闸）；src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）",

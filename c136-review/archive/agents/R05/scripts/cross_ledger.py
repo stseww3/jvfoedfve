@@ -353,6 +353,13 @@ def render(RS):
     s = tot['sent']
     w(f"| 合计 | | | {tot['n']:.0f} | {k(s)} | {pc(tot['overSent'], s)} | {pc(tot['overVolleySent'], s)} | {pc(tot['tgtGE1Sent'], s)} | {pc(tot['tgtGE2Sent'], s)} | {pc(tot['leftTargetSent'], s)} | {tot['volleys']:.0f} | | {pc(tot['volleysGE3Sent'], s)} | | |")
     w('')
+
+    def med_share(rs, key):
+        v = [100 * R['humanAtk']['all'][key] / R['humanAtk']['all']['sent'] for R in rs if R['humanAtk']['all']['sent']]
+        return f"{st.median(v):.0f}%" if v else '–'
+    for nm, rs in (('输的', [R for R in RS if R['result'] != 'won']), ('赢的', [R for R in RS if R['result'] == 'won'])):
+        w(f"- {nm} {len(rs)} 局各局占比的中位：放行口（按轮）{med_share(rs, 'overVolleySent')}、目标更强 {med_share(rs, 'tgtGE1Sent')}、目标 ≥2 倍 {med_share(rs, 'tgtGE2Sent')}。")
+    w('')
     w('按时段（13 局合计）：')
     w('')
     w('| 时段 | 条数 | 打出 | 放行口占（逐条） | 放行口占（按轮） | 目标更强占 | 目标 ≥2 倍占 | ≥3 条的轮占 |')

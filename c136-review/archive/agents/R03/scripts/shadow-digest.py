@@ -315,8 +315,10 @@ class Digest:
             if c[2] == 1:
                 rows_by[(c[1], c[0], c[3])].append(c)
         tot = {"syncBursts": 0, "syncCmds": 0, "syncFirst": 0, "syncExtra": 0, "syncExtraCmds": 0,
-               "lagBursts": 0, "lagIssued": 0, "lagExecuted": 0, "deadBursts": 0, "deadIssued": 0}
+               "lagBursts": 0, "lagIssued": 0, "lagExecuted": 0, "deadBursts": 0, "deadIssued": 0,
+               "syncFirstFee": 0, "syncExtraFee": 0}
         lst = []
+        per_bot = {}
         for bot, b in self.S["bots"].items():
             me = b["me"]
             cm, ex = b["cmds"], b["match"]["execOf"]
@@ -348,6 +350,7 @@ class Digest:
                 if len(before) < 2:
                     continue
                 spent = []
+                fees = []
                 b0 = b1 = None
                 for (e, t, i) in sorted(before):
                     pool = rows_by.get((me, e, cm[i][2]))
@@ -355,6 +358,7 @@ class Digest:
                         continue
                     r = pool.pop(0)
                     spent.append(r[6] + r[7])
+                    fees.append(r[7])
                     if b0 is None:
                         b0 = r[8]
                     b1 = r[8] - r[6] - r[7]
@@ -362,9 +366,12 @@ class Digest:
                     continue
                 tot["syncBursts"] += 1; tot["syncCmds"] += len(spent); tot["syncExtraCmds"] += len(spent) - 1
                 tot["syncFirst"] += spent[0]; tot["syncExtra"] += sum(spent[1:])
+                tot["syncFirstFee"] += fees[0]; tot["syncExtraFee"] += sum(fees[1:])
+                pb = per_bot.setdefault(bot, {"bursts": 0, "first": 0, "extra": 0, "extraFee": 0, "extraCmds": 0})
+                pb["bursts"] += 1; pb["first"] += spent[0]; pb["extra"] += sum(spent[1:]); pb["extraFee"] += sum(fees[1:]); pb["extraCmds"] += len(spent) - 1
                 item = {"bot": bot, "t0": t0, "t1": t1, "target": self.nm(bu["key"][0]), "site": bu["key"][1], "issued": n,
                         "beforeFirstExec": len(spent), "firstLag": lag, "firstExec": first_exec, "B0": b0, "B1": b1,
-                        "first": spent[0], "extra": sum(spent[1:])}
+                        "first": spent[0], "extra": sum(spent[1:]), "firstFee": fees[0], "extraFee": sum(fees[1:])}
                 lst.append(item)
         lst.sort(key=lambda x: -x["extra"])
         for it in sorted(lst[:40], key=lambda x: (x["bot"], x["t0"])):
@@ -372,7 +379,12 @@ class Digest:
                    f" 余额 {k(it['B0'])}→{k(it['B1'])}：首条 {k(it['first'])}，多花 {k(it['extra'])}")
         self.w(f"  合计：同步串 {tot['syncBursts']} 个、{tot['syncCmds']} 条，首条共 {k(tot['syncFirst'])}，重发多花 {k(tot['syncExtra'])}（{tot['syncExtraCmds']} 条）"
                f" | 落后串（首条延迟 >45 拍）{tot['lagBursts']} 个：发 {tot['lagIssued']} 成交 {tot['lagExecuted']} | 整串没有成交 {tot['deadBursts']} 个共 {tot['deadIssued']} 条")
-        self.facts["reissue"] = dict(tot, list=lst)
+        if per_bot:
+            self.w(f"  其中手续费（每条 = 当时余额的 12/1024）：首条共 {k(tot['syncFirstFee'])}，重发的 {tot['syncExtraCmds']} 条共 {k(tot['syncExtraFee'])}")
+            self.w("  按号（同步串数：首条 / 重发多花，其中手续费）：" + "；".join(
+                f"{b} {v['bursts']} 串：{k(v['first'])} / {k(v['extra'])}（{v['extraCmds']} 条，手续费 {k(v['extraFee'])}）"
+                for b, v in sorted(per_bot.items(), key=lambda kv: -kv[1]["extra"])))
+        self.facts["reissue"] = dict(tot, list=lst, perBot=per_bot)
         self.w()
 
     # ---------- S7 ----------

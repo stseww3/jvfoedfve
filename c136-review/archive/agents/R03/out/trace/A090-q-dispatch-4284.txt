@@ -1,0 +1,7 @@
+# A090 events.csv 的调度行 拍段 4284~7000：合计 53 条：defense_dispatch 35，yield_opt_dispatch 13，offense_dispatch 5
+  按受捐方：zexos1 defense_dispatch×24 offense_dispatch×4 yield_opt_dispatch×3；zero_7 defense_dispatch×5 yield_opt_dispatch×4；ryan_m defense_dispatch×3 yield_opt_dispatch×2 offense_dispatch×1；leo_tx defense_dispatch×3；sora_w yield_opt_dispatch×2；kaito9 yield_opt_dispatch×2
+  按捐方是否被围：boxedIn=False yield_opt_dispatch×13 defense_dispatch×9 offense_dispatch×4；boxedIn=True defense_dispatch×26 offense_dispatch×1
+  捐方发令时的密度 dMe（最小/中位/最大）：defense_dispatch boxedIn=False 107/110/113（9 条）；defense_dispatch boxedIn=True 31/42/103（26 条）；offense_dispatch boxedIn=False 113/116/120（4 条）；offense_dispatch boxedIn=True 61/61/61（1 条）；yield_opt_dispatch boxedIn=False 112/113/128（13 条）
+  受捐方当时的密度 dAlly（最小/中位/最大）：defense_dispatch boxedIn=False 50/80/91（9 条）；defense_dispatch boxedIn=True 49/91/104（26 条）；offense_dispatch boxedIn=False 73/81/95（4 条）；offense_dispatch boxedIn=True 48/48/48（1 条）；yield_opt_dispatch boxedIn=False 49/91/95（13 条）
+  受捐方比捐方密（dAlly > dMe）的条数：defense_dispatch 25/35；yield_opt_dispatch 0/13；offense_dispatch 0/5｜受捐方已过软上限（dAlly ≥ 100）的条数：defense_dispatch 6/35；yield_opt_dispatch 0/13；offense_dispatch 0/5
+  按 1000 拍：4000~4999 yield_opt_dispatch×12 defense_dispatch×11 offense_dispatch×1；5000~5999 defense_dispatch×23 offense_dispatch×4 yield_opt_dispatch×1；6000~6999 defense_dispatch×1
