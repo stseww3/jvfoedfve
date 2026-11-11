@@ -2510,6 +2510,31 @@ def sec_foedon(X):
     print('   最大的几笔：' + '；'.join(f"t={x['t']} {X.name(x['from'])}→{X.name(x['to'])} {x['pct']}‰ 到账 {fmt(x['delivered'])}（捐前 {fmt(x['B0'])}，收款人当时 地 {x['toTerr']} 兵 {fmt(x['toBal'])}）" for x in big))
 
 
+def sec_foeled(X, top=8, cuts=None):
+    """我方全体与每个外人的战斗账（账目 spent/gain/lost/dmg 按对方汇总；100 拍一格）：我方耗兵、得地、失地、被打掉兵，按时间段。
+    用法：simdigest.py <id> foeled [top] [t1 t2 ...]（切点；默认 3000 5000 7000 9000）"""
+    cuts = cuts or [3000, 5000, 7000, 9000]
+    edges = [0] + cuts + [X.endT + 1]
+    tot = defaultdict(lambda: defaultdict(lambda: [0, 0, 0, 0]))
+    kinds = {'spent': 0, 'gain': 1, 'lost': 2, 'dmg': 3}
+    for w, me, kind, other, v in X.S['ledger']:
+        if kind not in kinds or me not in X.squad or other in X.squad or other >= X.H or other < 0:
+            continue
+        seg = max(i for i in range(len(edges) - 1) if w >= edges[i])
+        tot[other][seg][kinds[kind]] += v
+        tot[other]['all'][kinds[kind]] += v
+    who = sorted(tot, key=lambda p: -(tot[p]['all'][2]))[:top]
+    print('我方全体与外人的战斗账（按我方失地排序；耗兵 = 我方打它花掉的兵，得地 / 失地 = 格，被打掉 = 我方被它打掉的兵；账按 100 拍一格记）')
+    for p in who:
+        a = tot[p]['all']
+        print(f"   {X.name(p)}（队{X.team[p]}）整局：我方耗兵 {fmt(a[0])} 得地 {a[1]}（{a[0] / max(1, a[1]):.0f} 兵/格）｜失地 {a[2]} 被打掉 {fmt(a[3])}（它每拿 1 格我方掉 {a[3] / max(1, a[2]):.0f} 兵）")
+        for i in range(len(edges) - 1):
+            s = tot[p][i]
+            if not any(s):
+                continue
+            print(f"      t={edges[i]}~{edges[i + 1] - 1 if i == len(edges) - 2 else edges[i + 1]}：耗兵 {fmt(s[0])} 得地 {s[1]}｜失地 {s[2]} 被打掉 {fmt(s[3])}｜净 {s[1] - s[2]:+d} 格")
+
+
 def sec_foepct(X, top=8):
     """外人的出手习惯：录像里每个外人的陆攻 / 捐款 / 发船指令条数和千分比分布（录像指令 id 1 / 2 / 3；dX = 千分比），离开拍（id 9）。
     列出对我方出兵最多的 top 个外人，加上捐款条数 >= 5 的外人。"""
@@ -2669,6 +2694,8 @@ def main():
         sec_foedon(X)
     elif sec == 'foepct':
         sec_foepct(X, int(a[0]) if a else 8)
+    elif sec == 'foeled':
+        sec_foeled(X, int(a[0]) if a else 8, [int(v) for v in a[1:]] or None)
     elif sec == 'json':
         doc = build_json(X)
         p = os.path.join(OUT, mid, 'simdigest.json')

@@ -544,6 +544,24 @@ def sec_natwho(X, me, ticks):
     return 0
 
 
+def sec_heldby(X, p, t0, ticks):
+    """玩家 p 在 t0 那一拍手里的格，到后面各拍分别在谁手里。用法：landcap.py <id> heldby <p> <t0> [t ...]
+    p 可以是真人号（<humans）也可以是内置 AI 的编号。"""
+    ta = tick_for(X, t0)
+    m = X.grid[ta] == p
+    n = int(m.sum())
+    label = name(X, p) if p < X.H else f"bot{p}"
+    print(f"{label} 在 t={ta} 手里的 {n} 格，后来的归属（格；内置 AI 合并成一项；网格快照只有 {X.gt}，要的拍取不晚于它的最后一张）")
+    for t in sorted({tick_for(X, want) for want in ticks}):
+        o = X.grid[t][m].astype(np.int64)
+        cnt = np.bincount(o, minlength=NEUTRAL + 1)[:NEUTRAL + 1]
+        ai = int(cnt[X.H:NEUTRAL].sum())
+        rows = sorted(((int(cnt[q]), q) for q in range(X.H) if cnt[q] > 0), reverse=True)
+        parts = [f"{'*' if q in X.squad else ''}{name(X, q).lstrip('*')}(队{X.team[q]}) {c}" for c, q in rows[:7]]
+        print(f"   t={t}：内置 AI {ai}、无主地 {int(cnt[NEUTRAL])}；真人：" + '、'.join(parts))
+    return 0
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -556,6 +574,8 @@ def main():
         return 0
     if sec == 'natwho':
         return sec_natwho(X, int(sys.argv[3]), [int(a) for a in sys.argv[4:]] or [630, 1500])
+    if sec == 'heldby':
+        return sec_heldby(X, int(sys.argv[3]), int(sys.argv[4]), [int(a) for a in sys.argv[5:]] or [X.last])
     doc = dict(matchId=mid, gridTicks=X.gt, replayLast=X.last)
     if sec in ('voronoi', 'all', 'json'):
         doc['voronoi'] = sec_voronoi(X)
