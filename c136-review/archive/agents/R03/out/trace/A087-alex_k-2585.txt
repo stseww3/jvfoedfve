@@ -1,0 +1,52 @@
+t=2585 B=632k L=6327 密=99.9 在途中立=0 槽=0 nfs=1 sq=158k | 决策后 nb=1 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→1
+        报价 [off] Star#11：c=490.13 need=1.55M inAtk=0 tD=1 person
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→483k
+      · [off] Star#11 地 8738 兵 869k 我压它 0 它压我 0 接壤 27：elimCost=1.55M×2
+      · （不针对目标）：safeAt=483k
+t=2590 B=639k L=6327 密=101.1 在途中立=0 槽=0 nfs=1 sq=158k | 决策后 nb=1 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→1
+        报价 [off] Star#11：c=479 need=1.57M inAtk=0 tD=1.01 person
+    tryDonateToTeammate→false
+    safeFinite→0
+    dpKeep→489k
+    safeFinite→0
+    dpKeep→489k
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→489k
+      · [off] Star#11 地 8738 兵 880k 我压它 0 它压我 0 接壤 27：elimCost=1.57M×2
+      · （不针对目标）：safeAt=489k×3
+t=2595 B=639k L=6327 密=101.1 在途中立=0 槽=0 nfs=1 sq=160k | 决策后 nb=1 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→1
+        报价 [off] Star#11：c=171.96 need=1.48M inAtk=91k tD=0.9 person/onMe
+    safeFinite→0
+    dpKeep→483k
+      send([off] Star#11, 63k)→true
+    safeFinite→0
+    dpKeep→483k
+      · [off] Star#11 地 8738 兵 778k 我压它 0 它压我 91k 接壤 27：elimCost=1.39M safeAt=483k
+      · （不针对目标）：safeAt=483k
+t=2600 B=649k L=6300 密=103.0 在途中立=0 槽=0 nfs=1 sq=159k | 决策后 nb=1 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→1
+        报价 [off] Star#11：c=174.04 need=1.51M inAtk=82k tD=0.9 person/onMe
+    safeFinite→0
+    dpKeep→488k
+      send([off] Star#11, 74k)→true
+    safeFinite→0
+    dpKeep→488k
+      · [off] Star#11 地 8765 兵 796k 我压它 0 它压我 82k 接壤 27：elimCost=1.42M safeAt=488k
+      · （不针对目标）：safeAt=488k

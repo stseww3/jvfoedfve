@@ -1,0 +1,28 @@
+# A015 核心期行动拍的去向 [1500,2250)：共 600 个号·行动拍
+合计：出手 364（61%），floor 178（30%），nooffer 42（7%），send 13（2%），chunk 3（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：sf/squad 173，sf/ally 5
+  ryan_m    150 拍：出手 32（21%），floor 118（79%）
+          按目标：floor→475 53，floor→338 48，floor→488 17
+  sora_w    150 拍：出手 99（66%），floor 41（27%），send 10（7%）
+          按目标：floor→167 28，floor→359 13，send→359 3，send→167 3，send→488 2，send→281 2
+  noah88    150 拍：出手 106（71%），floor 9（6%），nooffer 34（23%），send 1（1%）
+          按目标：floor→48 5，floor→468 4，send→468 1
+  leo_tx    150 拍：出手 127（85%），floor 10（7%），nooffer 8（5%），send 2（1%），chunk 3（2%）
+          按目标：floor→338 5，floor→364 5，chunk→488 3，send→338 2
+# A015 核心期行动拍的去向 [2250,3060)：共 648 个号·行动拍
+合计：nooffer 303（47%），出手 160（25%），floor 136（21%），inflight 20（3%），donate 13（2%），send 11（2%），small 5（1%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：sf/squad 76，cap+sf/squad 35，dp 25
+  ryan_m    162 拍：出手 60（37%），floor 66（41%），inflight 20（12%），send 11（7%），small 5（3%）
+          按目标：floor→15 38，floor→475 28，inflight→15 20，send→15 11，small→15 5
+  sora_w    162 拍：nooffer 72（44%），出手 20（12%），floor 70（43%）
+          按目标：floor→167 53，floor→237 17
+  noah88    162 拍：nooffer 157（97%），donate 5（3%）
+  leo_tx    162 拍：nooffer 74（46%），出手 80（49%），donate 8（5%）
+# A015 核心期贴着内置 AI 的行动拍 [1500,3060)：共 922 个号·行动拍，其中贴着弱 AI（兵 < 地）的 855 个
+第一条 AI 报价的去向：send 521（57%），floor/sf/squad 249（27%），covered 113（12%），floor/cap+sf/squad 28（3%），chunk 6（1%），floor/sf/ally 5（1%）
+其中贴着弱 AI 的：send 506（59%），floor/sf/squad 225（26%），covered 85（10%），floor/cap+sf/squad 28（3%），chunk 6（1%），floor/sf/ally 5（1%）
+safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：squad:19 228，squad:18 30，squad:16 19，ally:0 5
+  sora_w    312 拍（1500~3055）：send 129，floor/sf/squad 111，covered 72
+  ryan_m    241 拍（1500~2700）：send 77，floor/sf/squad 124，covered 10，floor/cap+sf/squad 28，chunk 2
+  leo_tx    241 拍（1500~2700）：send 208，floor/sf/squad 10，covered 19，chunk 4
+  noah88    128 拍（1500~2155）：send 107，floor/sf/squad 4，covered 12，floor/sf/ally 5

@@ -1,0 +1,44 @@
+# A062 ryan_m 影子决策明细 t=2610~2880（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 52 拍（t=2610~2880）
+#   出手打人/bot: 3 拍（t=2860~2870）；可用兵 92689~103953，一条指令下限(20%余额) 193188~195467，比值 48%~53%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 290804 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 290804 兵，c/worth = 1.17~1.17
+t=2610 ryan_m B=694744 L=9577 d=72.5 nb=1 neut=0 cmds=77 noFull=0 shQ=173686 | m=0.900 worth=65.3 cheap=8.3 over=0 dMedOther=58.8 safe(-1)=484544
+    → [FLR] さっしー#43[T3] terr=24145 bal=876853 dq=36.3 cnt=60 | c=88.3 rankC=88.3 need=1599100 tD=0.62 人 pulse | safe=484544 keep=Inf avail=-Inf chunkB=138949 pulseB=83369 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2640 ryan_m B=722857 L=9577 d=75.5 nb=1 neut=0 cmds=77 noFull=0 shQ=180714 | m=0.900 worth=67.9 cheap=8.3 over=0 dMedOther=55.0 safe(-1)=504467
+    → [FLR] さっしー#43[T3] terr=24399 bal=912317 dq=37.4 cnt=60 | c=90.9 rankC=90.9 need=1662719 tD=0.68 人 pulse | safe=504467 keep=Inf avail=-Inf chunkB=144571 pulseB=86743 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2670 ryan_m B=749192 L=9577 d=78.2 nb=1 neut=0 cmds=77 noFull=0 shQ=187298 | m=0.900 worth=70.4 cheap=8.3 over=0 dMedOther=56.8 safe(-1)=518309
+    → [FLR] さっしー#43[T3] terr=24202 bal=936956 dq=38.7 cnt=60 | c=94.1 rankC=94.1 need=1703860 tD=0.68 人 pulse | safe=518309 keep=Inf avail=-Inf chunkB=149838 pulseB=89903 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2700 ryan_m B=786064 L=9577 d=82.1 nb=1 neut=0 cmds=77 noFull=0 shQ=194178 | m=0.900 worth=73.9 cheap=8.3 over=0 dMedOther=59.7 safe(-1)=550100
+    → [FLR] さっしー#43[T3] terr=24118 bal=993544 dq=41.2 cnt=60 | c=100.0 rankC=100.0 need=1803668 tD=0.69 人 pulse | safe=550100 keep=Inf avail=-Inf chunkB=157213 pulseB=94328 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2730 ryan_m B=818380 L=9577 d=85.5 nb=1 neut=0 cmds=77 noFull=0 shQ=204595 | m=0.900 worth=76.9 cheap=8.3 over=0 dMedOther=61.7 safe(-1)=569509
+    → [FLR] さっしー#43[T3] terr=24036 bal=1028092 dq=42.8 cnt=59 | c=103.8 rankC=103.8 need=1864161 tD=0.69 人 pulse | safe=569509 keep=Inf avail=-Inf chunkB=163676 pulseB=98206 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2760 ryan_m B=848195 L=9577 d=88.6 nb=1 neut=0 cmds=77 noFull=0 shQ=212048 | m=0.900 worth=79.7 cheap=8.3 over=0 dMedOther=63.8 safe(-1)=562152
+    → [FLR] さっしー#43[T3] terr=24587 bal=1014996 dq=41.3 cnt=59 | c=100.2 rankC=100.2 need=1846016 tD=0.65 人 pulse | safe=562152 keep=Inf avail=-Inf chunkB=169639 pulseB=101783 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2790 ryan_m B=879097 L=9577 d=91.8 nb=1 neut=0 cmds=77 noFull=0 shQ=219774 | m=0.900 worth=82.6 cheap=8.3 over=0 dMedOther=65.9 safe(-1)=585382
+    → [FLR] さっしー#43[T3] terr=25647 bal=1056346 dq=41.2 cnt=59 | c=99.9 rankC=99.9 need=1921306 tD=0.62 人 pulse | safe=585382 keep=Inf avail=-Inf chunkB=175819 pulseB=105492 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2820 ryan_m B=920933 L=9577 d=96.2 nb=1 neut=0 cmds=77 noFull=0 shQ=230233 | m=0.900 worth=86.5 cheap=8.3 over=0 dMedOther=69.1 safe(-1)=621373
+    → [FLR] さっしー#43[T3] terr=26164 bal=1120410 dq=42.8 cnt=59 | c=103.8 rankC=103.8 need=2036223 tD=0.62 人 pulse | safe=621373 keep=Inf avail=-Inf chunkB=184187 pulseB=110512 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2850 ryan_m B=954485 L=9577 d=99.7 nb=1 neut=0 cmds=77 noFull=0 shQ=238621 | m=0.900 worth=89.7 cheap=8.3 over=0 dMedOther=70.2 safe(-1)=640576
+    → [FLR] さっしー#43[T3] terr=26472 bal=1154591 dq=43.6 cnt=59 | c=105.7 rankC=105.7 need=2097608 tD=0.62 人 pulse | safe=640576 keep=Inf avail=-Inf chunkB=190897 pulseB=114538 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2860 ryan_m B=965938 L=9577 d=100.9 nb=1 neut=0 cmds=78 noFull=0 shQ=241470 | m=0.900 worth=90.8 cheap=8.3 over=1 dMedOther=70.6 safe(-1)=649268
+    → [FLR] さっしー#43[T3] terr=26603 bal=1170062 dq=44.0 cnt=59 | c=106.6 rankC=106.6 need=2125426 tD=0.62 人 pulse | safe=649268 keep=861930 avail=92689 chunkB=193188 pulseB=115913 
+    ⇒ 影子指令 attack pct=98 → [FLR] さっしー#43[T3]（约 93386 兵）
+t=2865 ryan_m B=965938 L=9577 d=100.9 nb=1 neut=0 cmds=79 noFull=0 shQ=241484 | m=0.900 worth=90.8 cheap=8.3 over=1 dMedOther=70.6 safe(-1)=649268
+    → [FLR] さっしー#43[T3] terr=26670 bal=1170062 dq=43.9 cnt=59 | c=106.3 rankC=106.3 need=2125511 tD=0.62 人 pulse | safe=649268 keep=861930 avail=92689 chunkB=193188 pulseB=115913 
+    ⇒ 影子指令 attack pct=98 → [FLR] さっしー#43[T3]（约 93386 兵）
+t=2870 ryan_m B=977336 L=9577 d=102.1 nb=1 neut=0 cmds=80 noFull=0 shQ=244293 | m=0.900 worth=91.8 cheap=8.3 over=1 dMedOther=71.5 safe(-1)=658076
+    → [FLR] さっしー#43[T3] terr=26710 bal=1185740 dq=44.4 cnt=59 | c=107.5 rankC=107.5 need=2153515 tD=0.62 人 pulse | safe=658076 keep=861930 avail=103953 chunkB=195467 pulseB=117280 
+    ⇒ 影子指令 attack pct=108 → [FLR] さっしー#43[T3]（约 104032 兵）
+t=2880 ryan_m B=696286 L=9636 d=72.3 nb=1 neut=0 cmds=80 noFull=0 shQ=145322 | m=0.900 worth=65.0 cheap=8.2 over=0 dMedOther=72.4 safe(-1)=664640
+    → [FLR] さっしー#43[T3] terr=26742 bal=1197513 dq=44.8 cnt=50 | c=95.8 rankC=95.8 need=1920152 tD=0.62 人 pulse | safe=664640 keep=Inf avail=-Inf chunkB=139257 pulseB=83554 价高(c>=worth)→break
+    ⇒ 本拍没有指令

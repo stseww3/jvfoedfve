@@ -1,0 +1,382 @@
+# A039 zero_7 影子决策明细 t=1500~3100（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 36 拍（t=1500~2610）
+#   出手打人/bot: 50 拍（t=1510~2720）；可用兵 1~165767，一条指令下限(20%余额) 0~34140，比值 72%~500%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 34 拍（t=1520~2760）；可用兵 9506~164037，一条指令下限(20%余额) 2089~33196，比值 73%~494%
+#   首选目标无可用兵（avail<=0）: 188 拍（t=1615~3100）；可用兵 -759000~0，一条指令下限(20%余额) 0~62384，比值 NaN%~NaN%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 5 拍（t=1700~2545）；可用兵 78~7278，一条指令下限(20%余额) 11343~16034，比值 0%~64%
+#   没有可打的邻居: 3 拍（t=2195~2785）
+#   只打无主地: 5 拍（t=2470~2775）；可用兵 3345~6560，一条指令下限(20%余额) 16973~17280，比值 19%~39%
+#   └ 「出手打人/bot」里：50 条对人/bot 的出兵共约 1112947 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 30 条约 369508 兵，c/worth = 1.02~122344.49
+t=1500 zero_7 B=53366 L=21534 d=2.5 nb=8 neut=19 cmds=75 noFull=1 shQ=308 | m=1.500 worth=3.7 cheap=4.3 over=0 dMedOther=3.5 safe(-1)=4606
+    → AI#296 terr=3997 bal=4256 dq=1.1 cnt=29 | c=4.7 rankC=4.7 need=13582 tD=0.30 机 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    → AI#505 terr=2347 bal=2407 dq=1.0 cnt=50 | c=4.8 rankC=4.8 need=7765 tD=0.29 机 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    → AI#22 terr=1439 bal=1484 dq=1.0 cnt=33 | c=4.9 rankC=4.9 need=4806 tD=0.29 机 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    → AI#219 terr=2042 bal=2214 dq=1.1 cnt=55 | c=4.9 rankC=4.9 need=6990 tD=0.31 机 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    → AI#182 terr=829 bal=856 dq=1.0 cnt=90 | c=5.3 rankC=5.3 need=2770 tD=0.29 机 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=24584 bal=40500 dq=1.6 cnt=86 | c=5.9 rankC=5.9 need=109062 tD=0.47 人 | safe=4606 keep=Inf avail=-Inf chunkB=10673 pulseB=6404 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1510 zero_7 B=45878 L=21738 d=2.1 nb=8 neut=2 cmds=76 noFull=1 shQ=3116 | m=1.498 worth=3.2 cheap=4.4 over=0 dMedOther=3.6 safe(-1)=14109
+    → AI#505 terr=1991 bal=4270 dq=2.1 cnt=52 | c=3.1 rankC=3.1 need=3805 tD=0.60 机 | safe=14109 keep=14109 avail=31232 chunkB=9176 pulseB=5505 
+    → AI#219 terr=2106 bal=2103 dq=1.0 cnt=56 | c=4.7 rankC=4.7 need=6882 tD=0.28 机 | safe=14109 keep=Inf avail=-Inf chunkB=9176 pulseB=5505 价高(c>=worth)→break
+    → AI#22 terr=1519 bal=1517 dq=1.0 cnt=33 | c=4.8 rankC=4.8 need=4985 tD=0.28 机 | safe=14109 keep=Inf avail=-Inf chunkB=9176 pulseB=5505 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=1948 dq=1.1 cnt=88 | c=4.8 rankC=4.8 need=5775 tD=0.30 机 | safe=14109 keep=Inf avail=-Inf chunkB=9176 pulseB=5505 价高(c>=worth)→break
+    → AI#182 terr=848 bal=875 dq=1.0 cnt=92 | c=5.1 rankC=5.1 need=2832 tD=0.29 机 | safe=14109 keep=Inf avail=-Inf chunkB=9176 pulseB=5505 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=25342 bal=41503 dq=1.6 cnt=93 | c=5.9 rankC=5.9 need=111989 tD=0.46 人 | safe=14109 keep=Inf avail=-Inf chunkB=9176 pulseB=5505 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=109 → AI#505（约 4928 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1515 zero_7 B=47262 L=22001 d=2.1 nb=8 neut=0 cmds=77 noFull=1 shQ=4426 | m=1.498 worth=3.2 cheap=4.4 over=0 dMedOther=3.5 safe(-1)=14567
+    → AI#505 terr=1737 bal=3406 dq=2.0 cnt=51 | c=3.0 rankC=3.0 need=2939 tD=0.56 机 | safe=14567 keep=14567 avail=32142 chunkB=9452 pulseB=5671 
+    → AI#219 terr=2136 bal=2003 dq=0.9 cnt=58 | c=4.5 rankC=4.5 need=6751 tD=0.27 机 | safe=14567 keep=Inf avail=-Inf chunkB=9452 pulseB=5671 价高(c>=worth)→break
+    → AI#22 terr=1577 bal=1517 dq=1.0 cnt=33 | c=4.7 rankC=4.7 need=5070 tD=0.27 机 | safe=14567 keep=Inf avail=-Inf chunkB=9452 pulseB=5671 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=1948 dq=1.1 cnt=88 | c=4.8 rankC=4.8 need=5778 tD=0.30 机 | safe=14567 keep=Inf avail=-Inf chunkB=9452 pulseB=5671 价高(c>=worth)→break
+    → AI#182 terr=856 bal=875 dq=1.0 cnt=92 | c=5.1 rankC=5.1 need=2844 tD=0.29 机 | safe=14567 keep=Inf avail=-Inf chunkB=9452 pulseB=5671 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=25601 bal=41503 dq=1.6 cnt=100 | c=5.9 rankC=5.9 need=112376 tD=0.46 人 | safe=14567 keep=Inf avail=-Inf chunkB=9452 pulseB=5671 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=82 → AI#505（约 3830 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1525 zero_7 B=42569 L=22398 d=1.9 nb=7 neut=25 cmds=78 noFull=1 shQ=2781 | m=1.496 worth=2.8 cheap=4.5 over=0 dMedOther=3.5 safe(-1)=4138
+    → AI#219 terr=2151 bal=1883 dq=0.9 cnt=61 | c=4.3 rankC=4.3 need=6559 tD=0.25 机 | safe=4138 keep=4138 avail=37933 chunkB=8514 pulseB=5108 
+    → AI#22 terr=1671 bal=1551 dq=0.9 cnt=33 | c=4.5 rankC=4.5 need=5273 tD=0.26 机 | safe=4138 keep=Inf avail=-Inf chunkB=8514 pulseB=5108 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=1991 dq=1.1 cnt=88 | c=4.8 rankC=4.8 need=5862 tD=0.31 机 | safe=4138 keep=Inf avail=-Inf chunkB=8514 pulseB=5108 价高(c>=worth)→break
+    → AI#182 terr=876 bal=894 dq=1.0 cnt=93 | c=5.0 rankC=5.0 need=2907 tD=0.29 机 | safe=4138 keep=Inf avail=-Inf chunkB=8514 pulseB=5108 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=25301 bal=40962 dq=1.6 cnt=107 | c=5.9 rankC=5.9 need=110527 tD=0.46 人 | safe=4138 keep=Inf avail=-Inf chunkB=8514 pulseB=5108 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=16428 dq=4.1 cnt=47 | c=11.6 rankC=11.6 need=35309 tD=1.15 机 | safe=4138 keep=Inf avail=-Inf chunkB=8514 pulseB=5108 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=201 → AI#219（约 8397 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1540 zero_7 B=31912 L=23037 d=1.4 nb=8 neut=13 cmds=79 noFull=1 shQ=2502 | m=1.494 worth=2.1 cheap=4.6 over=0 dMedOther=3.5 safe(-1)=1085
+    → AI#22 terr=1855 bal=1619 dq=0.9 cnt=33 | c=4.3 rankC=4.3 need=5671 tD=0.25 机 | safe=1085 keep=1085 avail=30454 chunkB=6382 pulseB=3829 
+    → AI#182 terr=925 bal=932 dq=1.0 cnt=97 | c=4.8 rankC=4.8 need=3050 tD=0.29 机 | safe=1085 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2079 dq=1.1 cnt=88 | c=4.9 rankC=4.9 need=6026 tD=0.32 机 | safe=1085 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#325 terr=962 bal=984 dq=1.0 cnt=5 | c=4.9 rankC=4.9 need=3199 tD=0.29 机 | safe=1085 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=25934 bal=33564 dq=1.3 cnt=108 | c=5.1 rankC=5.1 need=98726 tD=0.37 人 | safe=1085 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=17159 dq=4.3 cnt=53 | c=11.9 rankC=11.9 need=36612 tD=1.22 机 | safe=1085 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=230 → AI#22（约 7198 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1545 zero_7 B=31912 L=23379 d=1.4 nb=8 neut=9 cmds=80 noFull=1 shQ=3367 | m=1.493 worth=2.0 cheap=4.6 over=0 dMedOther=3.5 safe(-1)=3771
+    → AI#22 terr=1939 bal=1619 dq=0.8 cnt=33 | c=4.2 rankC=4.2 need=5797 tD=0.24 机 | safe=3771 keep=3771 avail=27768 chunkB=6382 pulseB=3829 
+    → AI#182 terr=938 bal=932 dq=1.0 cnt=99 | c=4.7 rankC=4.7 need=3070 tD=0.29 机 | safe=3771 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2079 dq=1.1 cnt=88 | c=4.9 rankC=4.9 need=6030 tD=0.33 机 | safe=3771 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#325 terr=962 bal=984 dq=1.0 cnt=9 | c=4.9 rankC=4.9 need=3199 tD=0.29 机 | safe=3771 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=26146 bal=41781 dq=1.6 cnt=109 | c=7.8 rankC=7.8 need=113690 tD=0.46 人 crowdedHard | safe=3771 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=17159 dq=4.3 cnt=54 | c=11.9 rankC=11.9 need=36612 tD=1.23 机 | safe=3771 keep=Inf avail=-Inf chunkB=6382 pulseB=3829 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=235 → AI#22（约 7354 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1550 zero_7 B=32598 L=23588 d=1.4 nb=7 neut=44 cmds=81 noFull=1 shQ=4233 | m=1.492 worth=2.1 cheap=4.6 over=0 dMedOther=3.3 safe(-1)=4099
+    → AI#22 terr=1984 bal=1653 dq=0.8 cnt=33 | c=4.2 rankC=4.2 need=5922 tD=0.25 机 | safe=4099 keep=4099 avail=28117 chunkB=6520 pulseB=3912 
+    → AI#182 terr=963 bal=952 dq=1.0 cnt=101 | c=4.7 rankC=4.7 need=3144 tD=0.30 机 | safe=4099 keep=Inf avail=-Inf chunkB=6520 pulseB=3912 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2123 dq=1.2 cnt=88 | c=4.9 rankC=4.9 need=6108 tD=0.36 机 | safe=4099 keep=Inf avail=-Inf chunkB=6520 pulseB=3912 价高(c>=worth)→break
+    → AI#325 terr=962 bal=1005 dq=1.0 cnt=11 | c=5.0 rankC=5.0 need=3236 tD=0.32 机 | safe=4099 keep=Inf avail=-Inf chunkB=6520 pulseB=3912 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=26465 bal=42679 dq=1.6 cnt=109 | c=7.9 rankC=7.9 need=115768 tD=0.49 人 crowdedHard | safe=4099 keep=Inf avail=-Inf chunkB=6520 pulseB=3912 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=17527 dq=4.4 cnt=55 | c=12.1 rankC=12.1 need=37268 tD=1.33 机 | safe=4099 keep=Inf avail=-Inf chunkB=6520 pulseB=3912 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=235 → AI#22（约 7512 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1560 zero_7 B=19242 L=24139 d=0.8 nb=7 neut=33 cmds=81 noFull=1 shQ=502 | m=1.491 worth=1.2 cheap=4.7 over=0 dMedOther=3.3 safe(-1)=4143
+    → AI#182 terr=989 bal=972 dq=1.0 cnt=106 | c=4.5 rankC=4.5 need=3217 tD=0.30 机 | safe=4143 keep=4143 avail=14874 chunkB=3848 pulseB=2309 
+    → AI#325 terr=962 bal=1026 dq=1.1 cnt=14 | c=4.8 rankC=4.8 need=3273 tD=0.32 机 | safe=4143 keep=Inf avail=-Inf chunkB=3848 pulseB=2309 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2168 dq=1.2 cnt=88 | c=4.9 rankC=4.9 need=6196 tD=0.36 机 | safe=4143 keep=Inf avail=-Inf chunkB=3848 pulseB=2309 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=27011 bal=43583 dq=1.6 cnt=109 | c=7.9 rankC=7.9 need=118200 tD=0.49 人 crowdedHard | safe=4143 keep=Inf avail=-Inf chunkB=3848 pulseB=2309 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=17898 dq=4.5 cnt=60 | c=12.2 rankC=12.2 need=37929 tD=1.34 机 | safe=4143 keep=Inf avail=-Inf chunkB=3848 pulseB=2309 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1565 zero_7 B=14583 L=24462 d=0.6 nb=7 neut=25 cmds=82 noFull=1 shQ=909 | m=1.490 worth=0.9 cheap=4.7 over=0 dMedOther=3.0 safe(-1)=0
+    → AI#182 terr=1003 bal=972 dq=1.0 cnt=110 | c=4.4 rankC=4.4 need=3239 tD=0.32 机 | safe=0 keep=0 avail=14413 chunkB=2917 pulseB=1750 
+    → AI#325 terr=962 bal=1026 dq=1.1 cnt=15 | c=4.8 rankC=4.8 need=3273 tD=0.35 机 | safe=0 keep=Inf avail=-Inf chunkB=2917 pulseB=1750 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2168 dq=1.2 cnt=88 | c=4.8 rankC=4.8 need=6199 tD=0.39 机 | safe=0 keep=Inf avail=-Inf chunkB=2917 pulseB=1750 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=27633 bal=34306 dq=1.2 cnt=109 | c=6.7 rankC=6.7 need=102596 tD=0.41 人 crowdedHard | safe=0 keep=Inf avail=-Inf chunkB=2917 pulseB=1750 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=17898 dq=4.5 cnt=60 | c=12.2 rankC=12.2 need=37929 tD=1.47 机 | safe=0 keep=Inf avail=-Inf chunkB=2917 pulseB=1750 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=307 → AI#182（约 4386 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1570 zero_7 B=14887 L=24667 d=0.6 nb=7 neut=24 cmds=83 noFull=1 shQ=1290 | m=1.490 worth=0.9 cheap=4.8 over=0 dMedOther=3.1 safe(-1)=0
+    → AI#182 terr=1025 bal=992 dq=1.0 cnt=112 | c=4.4 rankC=4.4 need=3306 tD=0.32 机 | safe=0 keep=0 avail=14713 chunkB=2977 pulseB=1786 
+    → AI#325 terr=962 bal=1047 dq=1.1 cnt=16 | c=4.8 rankC=4.8 need=3311 tD=0.35 机 | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    → AI#472 terr=1825 bal=2213 dq=1.2 cnt=88 | c=4.9 rankC=4.9 need=6280 tD=0.40 机 | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=28497 bal=35022 dq=1.2 cnt=109 | c=6.6 rankC=6.6 need=105168 tD=0.40 人 crowdedHard | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=18272 dq=4.6 cnt=60 | c=12.4 rankC=12.4 need=38596 tD=1.48 机 | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=307 → AI#182（约 4477 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1575 zero_7 B=14887 L=24960 d=0.6 nb=7 neut=18 cmds=84 noFull=1 shQ=1675 | m=1.489 worth=0.9 cheap=4.8 over=0 dMedOther=3.0 safe(-1)=0
+    → AI#182 terr=1050 bal=20 dq=0.0 cnt=114 | c=2.2 rankC=2.2 need=1612 tD=0.01 机 | safe=0 keep=0 avail=14713 chunkB=2977 pulseB=1786 
+    → AI#325 terr=962 bal=1047 dq=1.1 cnt=24 | c=4.8 rankC=4.8 need=3311 tD=0.36 机 | safe=0 keep=0 avail=14713 chunkB=2977 pulseB=1786 
+    → AI#472 terr=1825 bal=2213 dq=1.2 cnt=88 | c=4.9 rankC=4.9 need=6284 tD=0.40 机 | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=28856 bal=34865 dq=1.2 cnt=109 | c=6.6 rankC=6.6 need=105341 tD=0.40 人 crowdedHard | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    → AI#296 terr=4015 bal=18272 dq=4.6 cnt=60 | c=12.4 rankC=12.4 need=38596 tD=1.51 机 | safe=0 keep=Inf avail=-Inf chunkB=2977 pulseB=1786 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=162 → AI#182（约 2369 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1585 zero_7 B=5935 L=25902 d=0.2 nb=8 neut=5 cmds=85 noFull=1 shQ=438 | m=1.487 worth=0.3 cheap=4.9 over=0 dMedOther=2.8 safe(-1)=166
+    → AI#325 terr=962 bal=1068 dq=1.1 cnt=41 | c=4.7 rankC=4.7 need=3348 tD=0.40 机 | safe=166 keep=166 avail=5700 chunkB=1187 pulseB=712 
+    → AI#472 terr=1825 bal=2258 dq=1.2 cnt=88 | c=4.9 rankC=4.9 need=6372 tD=0.44 机 | safe=166 keep=166 avail=5700 chunkB=1187 pulseB=712 
+    → AI#312 terr=1008 bal=1142 dq=1.1 cnt=9 | c=4.9 rankC=4.9 need=3140 tD=0.41 机 | safe=166 keep=Inf avail=-Inf chunkB=1187 pulseB=712 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=29488 bal=35102 dq=1.2 cnt=109 | c=6.5 rankC=6.5 need=106796 tD=0.43 人 crowdedHard | safe=166 keep=Inf avail=-Inf chunkB=1187 pulseB=712 价高(c>=worth)→break
+    → AI#296 terr=4074 bal=373 dq=0.1 cnt=58 | c=7.7 rankC=7.7 need=24309 tD=0.03 机 | safe=166 keep=Inf avail=-Inf chunkB=1187 pulseB=712 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=743 → AI#325（约 4312 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1590 zero_7 B=6035 L=26194 d=0.2 nb=7 neut=46 cmds=86 noFull=1 shQ=643 | m=1.486 worth=0.3 cheap=4.9 over=0 dMedOther=2.8 safe(-1)=1165
+    → AI#325 terr=962 bal=1089 dq=1.1 cnt=48 | c=4.7 rankC=4.7 need=3386 tD=0.40 机 | safe=1165 keep=1165 avail=4800 chunkB=1207 pulseB=724 
+    → AI#472 terr=1825 bal=2303 dq=1.3 cnt=88 | c=4.9 rankC=4.9 need=6452 tD=0.45 机 | safe=1165 keep=1165 avail=4800 chunkB=1207 pulseB=724 
+    → AI#312 terr=1008 bal=1165 dq=1.2 cnt=13 | c=5.0 rankC=5.0 need=3185 tD=0.41 机 | safe=1165 keep=Inf avail=-Inf chunkB=1207 pulseB=724 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=29870 bal=28080 dq=0.9 cnt=109 | c=5.7 rankC=5.7 need=94855 tD=0.33 人 crowdedHard | safe=1165 keep=Inf avail=-Inf chunkB=1207 pulseB=724 价高(c>=worth)→break
+    → AI#296 terr=4131 bal=380 dq=0.1 cnt=57 | c=7.6 rankC=7.6 need=24253 tD=0.03 机 | safe=1165 keep=Inf avail=-Inf chunkB=1207 pulseB=724 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=742 → AI#325（约 4378 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1595 zero_7 B=5993 L=26525 d=0.2 nb=6 neut=57 cmds=87 noFull=1 shQ=848 | m=1.486 worth=0.3 cheap=5.0 over=0 dMedOther=3.8 safe(-1)=1165
+    → AI#325 terr=962 bal=1089 dq=1.1 cnt=48 | c=4.7 rankC=4.7 need=3386 tD=0.30 机 | safe=1165 keep=1165 avail=4758 chunkB=1199 pulseB=719 
+    → AI#472 terr=1825 bal=2303 dq=1.3 cnt=88 | c=4.9 rankC=4.9 need=6456 tD=0.33 机 | safe=1165 keep=1165 avail=4758 chunkB=1199 pulseB=719 
+    → AI#312 terr=1008 bal=1165 dq=1.2 cnt=17 | c=5.0 rankC=5.0 need=3189 tD=0.31 机 | safe=1165 keep=Inf avail=-Inf chunkB=1199 pulseB=719 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=30184 bal=28024 dq=0.9 cnt=109 | c=5.6 rankC=5.6 need=95225 tD=0.25 人 crowdedHard | safe=1165 keep=Inf avail=-Inf chunkB=1199 pulseB=719 价高(c>=worth)→break
+    → AI#296 terr=4247 bal=380 dq=0.1 cnt=57 | c=7.3 rankC=7.3 need=24111 tD=0.02 机 | safe=1165 keep=Inf avail=-Inf chunkB=1199 pulseB=719 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=747 → AI#325（约 4377 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1620 zero_7 B=1904 L=27192 d=0.1 nb=6 neut=8 cmds=87 noFull=1 shQ=1317 | m=1.482 worth=0.1 cheap=5.2 over=0 dMedOther=4.1 safe(-1)=35875
+    → AI#472 terr=2280 bal=1946 dq=0.9 cnt=92 | c=4.6 rankC=4.6 need=8108 tD=0.21 机 | safe=35875 keep=35875 avail=-33993 chunkB=381 pulseB=228 无可用(avail<=0)
+    → AI#312 terr=949 bal=2072 dq=2.2 cnt=32 | c=7.4 rankC=7.4 need=4496 tD=0.53 机 | safe=35875 keep=Inf avail=-Inf chunkB=381 pulseB=228 价高(c>=worth)→break
+    → AI#296 terr=4694 bal=4875 dq=1.0 cnt=50 | c=8.6 rankC=8.6 need=31442 tD=0.25 机 | safe=35875 keep=Inf avail=-Inf chunkB=381 pulseB=228 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=30898 bal=64404 dq=2.1 cnt=120 | c=9.3 rankC=9.3 need=161141 tD=0.51 人 crowdedHard | safe=35875 keep=Inf avail=-Inf chunkB=381 pulseB=228 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1680 zero_7 B=1946 L=27045 d=0.1 nb=5 neut=2 cmds=87 noFull=1 shQ=2048 | m=1.473 worth=0.1 cheap=5.7 over=0 dMedOther=3.6 safe(-1)=55882
+    → AI#312 terr=889 bal=42 dq=0.0 cnt=55 | c=2.1 rankC=2.1 need=1172 tD=0.01 机 | safe=55882 keep=55882 avail=-53958 chunkB=389 pulseB=234 无可用(avail<=0)
+    → AI#472 terr=2770 bal=2313 dq=0.8 cnt=102 | c=3.9 rankC=3.9 need=8279 tD=0.23 机 | safe=55882 keep=55882 avail=-53958 chunkB=389 pulseB=234 无可用(avail<=0)
+    → AI#296 terr=5761 bal=5431 dq=0.9 cnt=68 | c=7.1 rankC=7.1 need=31680 tD=0.26 机 | safe=55882 keep=Inf avail=-Inf chunkB=389 pulseB=234 价高(c>=worth)→break
+    → AI#385 terr=901 bal=1797 dq=2.0 cnt=15 | c=7.2 rankC=7.2 need=3520 tD=0.55 机 | safe=55882 keep=Inf avail=-Inf chunkB=389 pulseB=234 价高(c>=worth)→break
+    → [Cat]Cat need food#0[T1] terr=32326 bal=55882 dq=1.7 cnt=197 | c=8.2 rankC=8.2 need=148045 tD=0.48 人 crowdedHard | safe=55882 keep=Inf avail=-Inf chunkB=389 pulseB=234 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1690 zero_7 B=52224 L=26757 d=2.0 nb=5 neut=0 cmds=88 noFull=1 shQ=3387 | m=1.472 worth=2.9 cheap=5.8 over=0 dMedOther=4.5 safe(-1)=44084
+    → AI#312 terr=928 bal=43 dq=0.0 cnt=56 | c=3.1 rankC=3.1 need=1259 tD=0.01 机 | safe=44084 keep=44084 avail=7528 chunkB=10445 pulseB=6267 
+    → AI#472 terr=2770 bal=2352 dq=0.8 cnt=102 | c=4.2 rankC=4.2 need=8349 tD=0.19 机 | safe=44084 keep=44084 avail=7528 chunkB=10445 pulseB=6267 不够一条
+    → [Cat]Cat need food#0[T1] terr=32675 bal=44084 dq=1.3 cnt=197 | c=5.2 rankC=5.2 need=127589 tD=0.30 人 | safe=44084 keep=44084 avail=7528 chunkB=10445 pulseB=6267 不够一条
+    → AI#296 terr=6053 bal=5524 dq=0.9 cnt=76 | c=6.7 rankC=6.7 need=30740 tD=0.20 机 | safe=44084 keep=Inf avail=-Inf chunkB=10445 pulseB=6267 价高(c>=worth)→break
+    → AI#385 terr=862 bal=1701 dq=2.0 cnt=14 | c=8.5 rankC=8.5 need=3246 tD=0.44 机 | safe=44084 keep=Inf avail=-Inf chunkB=10445 pulseB=6267 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=34 → AI#312（约 1785 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1695 zero_7 B=51981 L=26679 d=1.9 nb=5 neut=0 cmds=89 noFull=1 shQ=4498 | m=1.471 worth=2.9 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=43866
+    → AI#312 terr=1008 bal=43 dq=0.0 cnt=57 | c=2.9 rankC=2.9 need=1423 tD=0.01 机 | safe=43866 keep=43866 avail=7506 chunkB=10396 pulseB=6238 
+    → AI#472 terr=2770 bal=2352 dq=0.8 cnt=102 | c=4.2 rankC=4.2 need=8349 tD=0.19 机 | safe=43866 keep=43866 avail=7506 chunkB=10396 pulseB=6238 不够一条
+    → [Cat]Cat need food#0[T1] terr=32933 bal=43866 dq=1.3 cnt=197 | c=5.1 rankC=5.1 need=127586 tD=0.30 人 | safe=43866 keep=43866 avail=7506 chunkB=10396 pulseB=6238 不够一条
+    → AI#296 terr=6131 bal=5524 dq=0.9 cnt=78 | c=6.5 rankC=6.5 need=30217 tD=0.20 机 | safe=43866 keep=Inf avail=-Inf chunkB=10396 pulseB=6238 价高(c>=worth)→break
+    → AI#385 terr=782 bal=1453 dq=1.9 cnt=13 | c=8.6 rankC=8.6 need=2604 tD=0.42 机 | safe=43866 keep=Inf avail=-Inf chunkB=10396 pulseB=6238 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=38 → AI#312（约 1979 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1705 zero_7 B=74587 L=26373 d=2.8 nb=5 neut=0 cmds=90 noFull=1 shQ=7288 | m=1.469 worth=4.2 cheap=6.0 over=0 dMedOther=5.5 safe(-1)=12223
+    → AI#312 terr=1092 bal=1124 dq=1.0 cnt=58 | c=2.1 rankC=2.1 need=745 tD=0.19 机 | safe=12223 keep=12223 avail=61490 chunkB=14917 pulseB=8950 
+    → AI#472 terr=2770 bal=104 dq=0.0 cnt=102 | c=4.7 rankC=4.7 need=9338 tD=0.01 机 | safe=12223 keep=12223 avail=61490 chunkB=14917 pulseB=8950 
+    → [Cat]Cat need food#0[T1] terr=33914 bal=61316 dq=1.8 cnt=186 | c=6.3 rankC=6.3 need=160161 tD=0.33 人 | safe=12223 keep=Inf avail=-Inf chunkB=14917 pulseB=8950 价高(c>=worth)→break
+    → AI#296 terr=6437 bal=11901 dq=1.8 cnt=77 | c=8.0 rankC=8.0 need=39089 tD=0.33 机 | safe=12223 keep=Inf avail=-Inf chunkB=14917 pulseB=8950 价高(c>=worth)→break
+    → AI#385 terr=698 bal=1859 dq=2.7 cnt=12 | c=12.2 rankC=12.2 need=2707 tD=0.48 机 | safe=12223 keep=Inf avail=-Inf chunkB=14917 pulseB=8950 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=15 → AI#312（约 1165 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1710 zero_7 B=71245 L=26248 d=2.7 nb=5 neut=0 cmds=91 noFull=1 shQ=5626 | m=1.468 worth=4.0 cheap=6.0 over=0 dMedOther=5.6 safe(-1)=5442
+    → AI#472 terr=2874 bal=105 dq=0.0 cnt=104 | c=4.1 rankC=4.1 need=8384 tD=0.01 机 | safe=5442 keep=5442 avail=64969 chunkB=14249 pulseB=8549 
+    → [Cat]Cat need food#0[T1] terr=34559 bal=49059 dq=1.4 cnt=186 | c=5.4 rankC=5.4 need=139282 tD=0.25 人 | safe=5442 keep=5442 avail=64969 chunkB=14249 pulseB=8549 
+    → AI#296 terr=6501 bal=12053 dq=1.9 cnt=77 | c=7.9 rankC=7.9 need=38570 tD=0.33 机 | safe=5442 keep=Inf avail=-Inf chunkB=14249 pulseB=8549 价高(c>=worth)→break
+    → AI#385 terr=698 bal=1889 dq=2.7 cnt=13 | c=12.2 rankC=12.2 need=2750 tD=0.48 机 | safe=5442 keep=Inf avail=-Inf chunkB=14249 pulseB=8549 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=155 → AI#472（约 10853 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1730 zero_7 B=56443 L=26291 d=2.1 nb=5 neut=0 cmds=92 noFull=1 shQ=3998 | m=1.466 worth=3.1 cheap=6.3 over=0 dMedOther=5.7 safe(-1)=335
+    → [Cat]Cat need food#0[T1] terr=36699 bal=39863 dq=1.1 cnt=204 | c=4.6 rankC=4.6 need=126101 tD=0.19 人 | safe=335 keep=335 avail=55447 chunkB=11289 pulseB=6773 
+    → AI#296 terr=6792 bal=11586 dq=1.7 cnt=87 | c=6.3 rankC=6.3 need=32363 tD=0.30 机 | safe=335 keep=Inf avail=-Inf chunkB=11289 pulseB=6773 价高(c>=worth)→break
+    → AI#385 terr=698 bal=1949 dq=2.8 cnt=19 | c=11.7 rankC=11.7 need=2861 tD=0.49 机 | safe=335 keep=Inf avail=-Inf chunkB=11289 pulseB=6773 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=1005 → [Cat]Cat need food#0[T1]（约 55450 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1735 zero_7 B=55846 L=26543 d=2.1 nb=5 neut=0 cmds=93 noFull=1 shQ=5107 | m=1.465 worth=3.1 cheap=6.3 over=0 dMedOther=5.7 safe(-1)=207
+    → [Cat]Cat need food#0[T1] terr=37195 bal=39863 dq=1.1 cnt=213 | c=4.5 rankC=4.5 need=126845 tD=0.19 人 | safe=207 keep=207 avail=54985 chunkB=11169 pulseB=6702 
+    → AI#296 terr=6871 bal=11327 dq=1.6 cnt=86 | c=5.9 rankC=5.9 need=30521 tD=0.29 机 | safe=207 keep=207 avail=54985 chunkB=11169 pulseB=6702 
+    → AI#385 terr=698 bal=1949 dq=2.8 cnt=30 | c=11.5 rankC=11.5 need=2878 tD=0.49 机 | safe=207 keep=Inf avail=-Inf chunkB=11169 pulseB=6702 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=1008 → [Cat]Cat need food#0[T1]（约 55027 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1740 zero_7 B=56717 L=26805 d=2.1 nb=4 neut=33 cmds=93 noFull=1 shQ=6205 | m=1.464 worth=3.1 cheap=6.4 over=0 dMedOther=5.8 safe(-1)=48830
+    → [Cat]Cat need food#0[T1] terr=37734 bal=40735 dq=1.1 cnt=220 | c=4.5 rankC=4.5 need=129207 tD=0.19 人 | safe=48830 keep=48830 avail=7223 chunkB=11343 pulseB=6806 不够一条
+    → AI#296 terr=6716 bal=11113 dq=1.7 cnt=82 | c=5.9 rankC=5.9 need=29722 tD=0.28 机 | safe=48830 keep=48830 avail=7223 chunkB=11343 pulseB=6806 不够一条
+    → AI#385 terr=698 bal=1979 dq=2.8 cnt=31 | c=11.6 rankC=11.6 need=2921 tD=0.49 机 | safe=48830 keep=Inf avail=-Inf chunkB=11343 pulseB=6806 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1790 zero_7 B=2704 L=34277 d=0.1 nb=2 neut=67 cmds=94 noFull=1 shQ=2048 | m=1.457 worth=0.1 cheap=6.9 over=0 dMedOther=5.3 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=35639 bal=27322 dq=0.8 cnt=255 | c=3.5 rankC=3.5 need=68498 tD=0.15 人 crowdedHard | safe=0 keep=0 avail=2673 chunkB=541 pulseB=324 
+    → AI#296 terr=5564 bal=179 dq=0.0 cnt=68 | c=4.3 rankC=4.3 need=16865 tD=0.01 机 | safe=0 keep=0 avail=2673 chunkB=541 pulseB=324 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 2674 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1795 zero_7 B=2695 L=35063 d=0.1 nb=2 neut=58 cmds=95 noFull=1 shQ=2048 | m=1.456 worth=0.1 cheap=6.8 over=0 dMedOther=5.3 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=34907 bal=26205 dq=0.8 cnt=261 | c=3.6 rankC=3.6 need=68143 tD=0.14 人 crowdedHard | safe=0 keep=0 avail=2664 chunkB=539 pulseB=323 
+    → AI#296 terr=5525 bal=175 dq=0.0 cnt=74 | c=4.2 rankC=4.2 need=16616 tD=0.01 机 | safe=0 keep=0 avail=2664 chunkB=539 pulseB=323 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 2666 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1800 zero_7 B=35466 L=35465 d=1.0 nb=2 neut=50 cmds=96 noFull=1 shQ=2177 | m=1.455 worth=1.5 cheap=6.8 over=0 dMedOther=6.3 safe(-1)=1005
+    → [Cat]Cat need food#0[T1] terr=34441 bal=54987 dq=1.6 cnt=261 | c=6.5 rankC=6.5 need=121261 tD=0.25 人 crowdedHard | safe=1005 keep=1005 avail=34046 chunkB=7093 pulseB=4256 
+    → AI#296 terr=5574 bal=5747 dq=1.0 cnt=86 | c=6.6 rankC=6.6 need=25818 tD=0.16 机 | safe=1005 keep=1005 avail=34046 chunkB=7093 pulseB=4256 
+    ⇒ 影子指令 attack pct=982 → [Cat]Cat need food#0[T1]（约 34045 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1805 zero_7 B=35153 L=36119 d=1.0 nb=2 neut=39 cmds=97 noFull=1 shQ=2822 | m=1.454 worth=1.4 cheap=6.8 over=0 dMedOther=6.3 safe(-1)=0
+    → AI#296 terr=5773 bal=5747 dq=1.0 cnt=108 | c=6.1 rankC=6.1 need=25290 tD=0.16 机 | safe=0 keep=0 avail=34742 chunkB=7031 pulseB=4218 
+    → [Cat]Cat need food#0[T1] terr=33625 bal=52763 dq=1.6 cnt=259 | c=6.7 rankC=6.7 need=120755 tD=0.25 人 crowdedHard | safe=0 keep=0 avail=34742 chunkB=7031 pulseB=4218 
+    ⇒ 影子指令 attack pct=930 → AI#296（约 31960 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1810 zero_7 B=1 L=36569 d=0.0 nb=2 neut=33 cmds=98 noFull=1 shQ=90 | m=1.454 worth=0.0 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=32977 bal=51703 dq=1.6 cnt=257 | c=4.9 rankC=4.9 need=86107 tD=0.27 人 crowdedHard | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    → AI#296 terr=5886 bal=5824 dq=1.0 cnt=117 | c=5.9 rankC=5.9 need=25476 tD=0.17 机 | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    ⇒ 影子指令 attack pct=1023 → [Cat]Cat need food#0[T1]（约 1 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1835 zero_7 B=3481 L=38454 d=0.1 nb=2 neut=0 cmds=99 noFull=1 shQ=839 | m=1.450 worth=0.1 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=29066 bal=16587 dq=0.6 cnt=252 | c=4.1 rankC=4.1 need=60419 tD=0.10 人 crowdedHard | safe=0 keep=0 avail=3441 chunkB=696 pulseB=418 
+    → AI#296 terr=7312 bal=5975 dq=0.8 cnt=199 | c=4.6 rankC=4.6 need=25811 tD=0.14 机 | safe=0 keep=0 avail=3441 chunkB=696 pulseB=418 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 3443 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1840 zero_7 B=3503 L=38757 d=0.1 nb=2 neut=0 cmds=100 noFull=1 shQ=989 | m=1.449 worth=0.1 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=28353 bal=16147 dq=0.6 cnt=254 | c=4.2 rankC=4.2 need=60003 tD=0.10 人 crowdedHard | safe=0 keep=0 avail=3462 chunkB=701 pulseB=420 
+    → AI#296 terr=7515 bal=6049 dq=0.8 cnt=209 | c=4.5 rankC=4.5 need=25785 tD=0.14 机 | safe=0 keep=0 avail=3462 chunkB=701 pulseB=420 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 3465 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1845 zero_7 B=3633 L=38577 d=0.1 nb=2 neut=0 cmds=101 noFull=1 shQ=1139 | m=1.448 worth=0.1 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=27989 bal=12355 dq=0.4 cnt=229 | c=4.1 rankC=4.1 need=57510 tD=0.08 人 crowdedHard | safe=0 keep=0 avail=3591 chunkB=727 pulseB=436 
+    → AI#296 terr=7949 bal=6049 dq=0.8 cnt=251 | c=4.1 rankC=4.1 need=25441 tD=0.13 机 | safe=0 keep=0 avail=3591 chunkB=727 pulseB=436 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 3593 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1850 zero_7 B=1 L=38111 d=0.0 nb=2 neut=0 cmds=102 noFull=1 shQ=30 | m=1.448 worth=0.0 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=27989 bal=27231 dq=1.0 cnt=229 | c=3.4 rankC=2.4 need=85395 tD=0.17 人 pulse onMe | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    → AI#296 terr=8415 bal=6122 dq=0.7 cnt=264 | c=3.9 rankC=3.9 need=25271 tD=0.12 机 | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    ⇒ 影子指令 attack pct=1023 → AI#296（约 1 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1855 zero_7 B=1 L=37867 d=0.0 nb=2 neut=0 cmds=103 noFull=1 shQ=180 | m=1.447 worth=0.0 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=27989 bal=27231 dq=1.0 cnt=229 | c=3.4 rankC=2.4 need=85435 tD=0.17 人 pulse onMe | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    → AI#296 terr=8659 bal=6122 dq=0.7 cnt=270 | c=3.8 rankC=3.8 need=25149 tD=0.12 机 | safe=0 keep=0 avail=1 chunkB=0 pulseB=0 
+    ⇒ 影子指令 attack pct=1023 → AI#296（约 1 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1860 zero_7 B=2 L=36942 d=0.0 nb=2 neut=0 cmds=103 noFull=1 shQ=330 | m=1.446 worth=0.0 cheap=6.8 over=0 dMedOther=5.8 safe(-1)=21736
+    → [Cat]Cat need food#0[T1] terr=28664 bal=21736 dq=0.8 cnt=223 | c=3.1 rankC=2.2 need=82161 tD=0.13 人 pulse onMe | safe=21736 keep=21736 avail=-21734 chunkB=0 pulseB=0 无可用(avail<=0)
+    → AI#296 terr=8909 bal=6952 dq=0.8 cnt=277 | c=3.7 rankC=3.7 need=25755 tD=0.13 机 | safe=21736 keep=21736 avail=-21734 chunkB=0 pulseB=0 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=1905 zero_7 B=29367 L=31538 d=0.9 nb=2 neut=0 cmds=104 noFull=1 shQ=2118 | m=1.439 worth=1.3 cheap=7.0 over=0 dMedOther=7.2 safe(-1)=1845
+    → [Cat]Cat need food#0[T1] terr=33526 bal=47101 dq=1.4 cnt=224 | c=4.1 rankC=2.9 need=133931 tD=0.20 人 pulse onMe | safe=1845 keep=1845 avail=27178 chunkB=5873 pulseB=3524 
+    → AI#296 terr=9451 bal=9039 dq=1.0 cnt=278 | c=4.6 rankC=4.6 need=33547 tD=0.13 机 | safe=1845 keep=1845 avail=27178 chunkB=5873 pulseB=3524 
+    ⇒ 影子指令 attack pct=122 → [Cat]Cat need food#0[T1]（约 3527 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1920 zero_7 B=24616 L=30316 d=0.8 nb=2 neut=0 cmds=104 noFull=1 shQ=1367 | m=1.437 worth=1.2 cheap=7.0 over=0 dMedOther=7.4 safe(-1)=48588
+    → AI#296 terr=10026 bal=9676 dq=1.0 cnt=287 | c=4.2 rankC=4.2 need=32287 tD=0.13 机 | safe=48588 keep=48588 avail=-24260 chunkB=4923 pulseB=2954 无可用(avail<=0)
+    → [Cat]Cat need food#0[T1] terr=34097 bal=48588 dq=1.4 cnt=211 | c=7.1 rankC=7.1 need=131200 tD=0.19 人 crowdedHard | safe=48588 keep=Inf avail=-Inf chunkB=4923 pulseB=2954 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1980 zero_7 B=27437 L=30739 d=0.9 nb=2 neut=0 cmds=104 noFull=1 shQ=6859 | m=1.428 worth=1.3 cheap=7.0 over=0 dMedOther=8.0 safe(-1)=50404
+    → AI#296 terr=10026 bal=10415 dq=1.0 cnt=292 | c=4.4 rankC=4.4 need=33604 tD=0.13 机 | safe=50404 keep=50404 avail=-23288 chunkB=5487 pulseB=3292 无可用(avail<=0)
+    → [Cat]Cat need food#0[T1] terr=33064 bal=50404 dq=1.5 cnt=211 | c=7.6 rankC=7.6 need=135222 tD=0.19 人 crowdedHard | safe=50404 keep=Inf avail=-Inf chunkB=5487 pulseB=3292 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1995 zero_7 B=27829 L=30739 d=0.9 nb=2 neut=0 cmds=105 noFull=1 shQ=6957 | m=1.426 worth=1.3 cheap=7.0 over=0 dMedOther=8.1 safe(-1)=2524
+    → AI#296 terr=10026 bal=211 dq=0.0 cnt=292 | c=3.3 rankC=3.3 need=25626 tD=0.00 机 | safe=2524 keep=2524 avail=24979 chunkB=5566 pulseB=3339 
+    → [Cat]Cat need food#0[T1] terr=32849 bal=50602 dq=1.5 cnt=211 | c=7.6 rankC=7.6 need=135062 tD=0.19 人 crowdedHard | safe=2524 keep=Inf avail=-Inf chunkB=5566 pulseB=3339 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=919 → AI#296（约 25002 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2000 zero_7 B=58965 L=30739 d=1.9 nb=2 neut=0 cmds=106 noFull=1 shQ=7167 | m=1.425 worth=2.7 cheap=7.0 over=0 dMedOther=9.2 safe(-1)=21206
+    → AI#296 terr=10026 bal=10239 dq=1.0 cnt=292 | c=5.7 rankC=5.7 need=43500 tD=0.11 机 | safe=21206 keep=21206 avail=37069 chunkB=11793 pulseB=7076 
+    → [Cat]Cat need food#0[T1] terr=32756 bal=83855 dq=2.6 cnt=211 | c=9.6 rankC=9.6 need=192550 tD=0.28 人 crowdedHard agg | safe=21206 keep=Inf avail=-Inf chunkB=11793 pulseB=7076 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=643 → AI#296（约 37083 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2040 zero_7 B=1886 L=32065 d=0.1 nb=2 neut=0 cmds=106 noFull=1 shQ=2048 | m=1.383 worth=0.1 cheap=7.0 over=0 dMedOther=9.8 safe(-1)=12829
+    → [Cat]Cat need food#0[T1] terr=34144 bal=43005 dq=1.3 cnt=219 | c=6.7 rankC=6.7 need=125289 tD=0.13 人 crowdedHard | safe=12829 keep=12829 avail=-10965 chunkB=377 pulseB=226 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2095 zero_7 B=2025 L=36710 d=0.1 nb=1 neut=51 cmds=107 noFull=1 shQ=2048 | m=1.325 worth=0.1 cheap=6.8 over=0 dMedOther=10.5 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=37976 bal=46299 dq=1.2 cnt=268 | c=6.5 rankC=6.5 need=139486 tD=0.12 人 crowdedHard | safe=0 keep=0 avail=2002 chunkB=405 pulseB=243 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 2003 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2100 zero_7 B=38862 L=36808 d=1.1 nb=1 neut=47 cmds=107 noFull=1 shQ=2190 | m=1.320 worth=1.4 cheap=6.8 over=0 dMedOther=11.6 safe(-1)=16784
+    → [Cat]Cat need food#0[T1] terr=38109 bal=85088 dq=2.2 cnt=270 | c=9.7 rankC=9.7 need=208822 tD=0.19 人 crowdedHard | safe=16784 keep=Inf avail=-Inf chunkB=7772 pulseB=4663 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2160 zero_7 B=170698 L=40830 d=4.2 nb=1 neut=0 cmds=108 noFull=1 shQ=14776 | m=1.257 worth=5.3 cheap=6.7 over=0 dMedOther=12.6 safe(-1)=2931
+    → [Cat]Cat need food#0[T1] terr=35096 bal=59169 dq=1.7 cnt=250 | c=4.0 rankC=2.8 need=161941 tD=0.13 人 pulse onMe agg | safe=2931 keep=2931 avail=165767 chunkB=34140 pulseB=20484 
+    ⇒ 影子指令 attack pct=122 → [Cat]Cat need food#0[T1]（约 20503 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2180 zero_7 B=145475 L=40328 d=3.6 nb=1 neut=0 cmds=109 noFull=1 shQ=9642 | m=1.236 worth=4.5 cheap=6.7 over=0 dMedOther=13.0 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=35937 bal=47542 dq=1.3 cnt=253 | c=4.0 rankC=4.0 need=119737 tD=0.10 人 agg | safe=0 keep=0 avail=143771 chunkB=29095 pulseB=17457 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 143912 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2185 zero_7 B=145475 L=40830 d=3.6 nb=1 neut=0 cmds=110 noFull=1 shQ=12355 | m=1.231 worth=4.4 cheap=6.7 over=0 dMedOther=13.0 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=35514 bal=46485 dq=1.3 cnt=250 | c=4.0 rankC=4.0 need=119943 tD=0.10 人 agg | safe=0 keep=0 avail=143771 chunkB=29095 pulseB=17457 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 143912 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2190 zero_7 B=147642 L=41579 d=3.6 nb=1 neut=0 cmds=111 noFull=1 shQ=15088 | m=1.226 worth=4.4 cheap=6.7 over=0 dMedOther=13.1 safe(-1)=0
+    → [Cat]Cat need food#0[T1] terr=34800 bal=45580 dq=1.3 cnt=251 | c=4.2 rankC=4.2 need=121204 tD=0.10 人 agg | safe=0 keep=0 avail=145912 chunkB=29528 pulseB=17717 
+    ⇒ 影子指令 attack pct=1012 → [Cat]Cat need food#0[T1]（约 146056 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2215 zero_7 B=43230 L=44657 d=1.0 nb=1 neut=0 cmds=112 noFull=1 shQ=2794 | m=1.199 worth=1.2 cheap=6.6 over=0 dMedOther=14.5 safe(-1)=2554
+    → [Cat]Cat need food#0[T1] terr=31961 bal=71532 dq=2.2 cnt=265 | c=2.3 rankC=2.3 need=37869 tD=0.15 人 crowdedHard | safe=2554 keep=2554 avail=40170 chunkB=8646 pulseB=5188 
+    ⇒ 影子指令 attack pct=951 → [Cat]Cat need food#0[T1]（约 40190 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2220 zero_7 B=43887 L=45437 d=1.0 nb=2 neut=0 cmds=112 noFull=1 shQ=3616 | m=1.194 worth=1.2 cheap=6.6 over=0 dMedOther=14.7 safe(-1)=108583
+    → [Cat]Cat need food#0[T1] terr=31212 bal=69739 dq=2.2 cnt=258 | c=2.4 rankC=2.4 need=39706 tD=0.15 人 crowdedHard | safe=108583 keep=108583 avail=-65210 chunkB=8777 pulseB=5266 无可用(avail<=0)
+    → 🇨🇰#1[T1] terr=16415 bal=261433 dq=15.9 cnt=12 | c=100.2 rankC=100.2 need=462056 tD=1.08 人 crowdedHard | safe=108583 keep=Inf avail=-Inf chunkB=8777 pulseB=5266 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2280 zero_7 B=2789 L=52595 d=0.1 nb=2 neut=12 cmds=112 noFull=1 shQ=2048 | m=1.131 worth=0.1 cheap=6.4 over=0 dMedOther=10.9 safe(-1)=108123
+    → [Cat]Cat need food#0[T1] terr=23525 bal=53650 dq=2.3 cnt=264 | c=1.5 rankC=1.5 need=15937 tD=0.21 人 crowdedHard | safe=108123 keep=108123 avail=-105366 chunkB=558 pulseB=335 无可用(avail<=0)
+    → 🇨🇰#1[T1] terr=16857 bal=183849 dq=10.9 cnt=52 | c=27.0 rankC=18.9 need=423505 tD=1.00 人 pulse onMe | safe=108123 keep=Inf avail=-Inf chunkB=558 pulseB=335 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2340 zero_7 B=57120 L=57016 d=1.0 nb=2 neut=16 cmds=112 noFull=1 shQ=11222 | m=1.068 worth=1.1 cheap=6.3 over=0 dMedOther=11.1 safe(-1)=116103
+    → [Cat]Cat need food#0[T1] terr=16014 bal=45572 dq=2.8 cnt=247 | c=9.5 rankC=9.5 need=51711 tD=0.26 人 crowdedHard | safe=116103 keep=Inf avail=-Inf chunkB=11424 pulseB=6854 价高(c>=worth)→break
+    → 🇨🇰#1[T1] terr=19675 bal=217440 dq=11.1 cnt=115 | c=25.0 rankC=17.5 need=488314 tD=1.00 人 pulse onMe | safe=116103 keep=Inf avail=-Inf chunkB=11424 pulseB=6854 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2400 zero_7 B=107151 L=53156 d=2.0 nb=3 neut=16 cmds=112 noFull=1 shQ=13711 | m=1.005 worth=2.0 cheap=6.4 over=0 dMedOther=12.7 safe(-1)=132574
+    → [Cat]Cat need food#0[T1] terr=16435 bal=32502 dq=2.0 cnt=176 | c=6.6 rankC=4.6 need=70063 tD=0.16 人 pulse onMe | safe=132574 keep=Inf avail=-Inf chunkB=21430 pulseB=12858 价高(c>=worth)→break
+    → AI#384 terr=4015 bal=4136 dq=1.0 cnt=21 | c=4.9 rankC=4.9 need=13039 tD=0.08 机 | safe=132574 keep=132574 avail=-26678 chunkB=21430 pulseB=12858 无可用(avail<=0)
+    → 🇨🇰#1[T1] terr=23114 bal=258815 dq=11.2 cnt=120 | c=23.8 rankC=16.7 need=552883 tD=0.88 人 pulse onMe | safe=132574 keep=Inf avail=-Inf chunkB=21430 pulseB=12858 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2460 zero_7 B=87755 L=44461 d=2.0 nb=3 neut=14 cmds=112 noFull=1 shQ=21938 | m=0.942 worth=1.9 cheap=6.6 over=0 dMedOther=13.6 safe(-1)=91388
+    → AI#384 terr=4614 bal=89 dq=0.0 cnt=8 | c=2.3 rankC=2.3 need=7081 tD=0.00 机 | safe=91388 keep=91388 avail=-4661 chunkB=17551 pulseB=10531 无可用(avail<=0)
+    → [Cat]Cat need food#0[T1] terr=20326 bal=6427 dq=0.3 cnt=178 | c=2.5 rankC=2.5 need=33125 tD=0.02 人 pulse agg | safe=91388 keep=91388 avail=-4661 chunkB=17551 pulseB=10531 无可用(avail<=0)
+    → 🇨🇰#1[T1] terr=22873 bal=207506 dq=9.1 cnt=168 | c=11.3 rankC=5.7 need=421421 tD=0.67 人 pulse bleeding onMe | safe=91388 keep=Inf avail=-Inf chunkB=17551 pulseB=10531 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2470 zero_7 B=86402 L=43621 d=2.0 nb=3 neut=14 cmds=113 noFull=1 shQ=21600 | m=0.931 worth=1.8 cheap=6.6 over=0 dMedOther=13.8 safe(-1)=82045
+    → AI#384 terr=4914 bal=90 dq=0.0 cnt=14 | c=2.3 rankC=2.3 need=7532 tD=0.00 机 | safe=82045 keep=82045 avail=3345 chunkB=17280 pulseB=10368 不够一条
+    → [Cat]Cat need food#0[T1] terr=20026 bal=6361 dq=0.3 cnt=169 | c=2.5 rankC=2.5 need=32441 tD=0.02 人 pulse agg | safe=82045 keep=82045 avail=3345 chunkB=17280 pulseB=10368 
+    → 🇨🇰#1[T1] terr=22746 bal=196570 dq=8.6 cnt=164 | c=11.3 rankC=5.7 need=394555 tD=0.63 人 pulse bleeding onMe | safe=82045 keep=Inf avail=-Inf chunkB=17280 pulseB=10368 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 4050 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2475 zero_7 B=84864 L=43134 d=2.0 nb=3 neut=14 cmds=114 noFull=1 shQ=642 | m=0.926 worth=1.8 cheap=6.6 over=0 dMedOther=13.8 safe(-1)=77310
+    → AI#384 terr=4988 bal=90 dq=0.0 cnt=15 | c=2.3 rankC=2.3 need=7642 tD=0.00 机 | safe=77310 keep=77310 avail=6560 chunkB=16973 pulseB=10184 不够一条
+    → [Cat]Cat need food#0[T1] terr=19952 bal=6324 dq=0.3 cnt=167 | c=2.5 rankC=2.5 need=32263 tD=0.02 人 pulse agg | safe=77310 keep=77310 avail=6560 chunkB=16973 pulseB=10184 
+    → 🇨🇰#1[T1] terr=22858 bal=191461 dq=8.4 cnt=154 | c=11.1 rankC=5.6 need=382103 tD=0.61 人 pulse bleeding onMe | safe=77310 keep=Inf avail=-Inf chunkB=16973 pulseB=10184 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 3978 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2505 zero_7 B=124301 L=41911 d=3.0 nb=3 neut=0 cmds=115 noFull=1 shQ=8754 | m=0.900 worth=11.6 cheap=6.7 over=0 dMedOther=15.2 safe(-1)=73182
+    → [Cat]Cat need food#0[T1] terr=19650 bal=26034 dq=1.3 cnt=165 | c=4.8 rankC=4.8 need=61119 tD=0.09 人 pulse agg | safe=73182 keep=73182 avail=49663 chunkB=24860 pulseB=14916 
+    → AI#384 terr=5290 bal=5407 dq=1.0 cnt=17 | c=4.8 rankC=4.8 need=17574 tD=0.07 机 | safe=73182 keep=73182 avail=49663 chunkB=24860 pulseB=14916 
+    → 🇨🇰#1[T1] terr=22028 bal=193131 dq=8.8 cnt=123 | c=10.0 rankC=5.0 need=369867 tD=0.58 人 pulse bleeding | safe=73182 keep=463864 avail=-341019 chunkB=24860 pulseB=14916 无可用(avail<=0)
+    ⇒ 影子指令 attack pct=122 → [Cat]Cat need food#0[T1]（约 14930 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2510 zero_7 B=126165 L=41911 d=3.0 nb=3 neut=0 cmds=116 noFull=1 shQ=11091 | m=0.900 worth=11.8 cheap=6.7 over=0 dMedOther=15.4 safe(-1)=70775
+    → AI#384 terr=5290 bal=5470 dq=1.0 cnt=17 | c=4.8 rankC=4.8 need=17686 tD=0.07 机 | safe=70775 keep=70775 avail=53912 chunkB=25233 pulseB=15140 
+    → 🇨🇰#1[T1] terr=21539 bal=188846 dq=8.8 cnt=123 | c=10.4 rankC=5.2 need=359707 tD=0.57 人 pulse bleeding agg | safe=70775 keep=482185 avail=-357498 chunkB=25233 pulseB=15140 无可用(avail<=0)
+    → [Cat]Cat need food#0[T1] terr=19650 bal=26382 dq=1.3 cnt=165 | c=5.4 rankC=5.4 need=61714 tD=0.09 人 pulse | safe=70775 keep=70775 avail=53912 chunkB=25233 pulseB=15140 
+    ⇒ 影子指令 attack pct=179 → AI#384（约 22177 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2520 zero_7 B=111175 L=41911 d=2.7 nb=3 neut=0 cmds=116 noFull=1 shQ=2466 | m=0.900 worth=11.9 cheap=6.7 over=0 dMedOther=15.6 safe(-1)=65995
+    → [Cat]Cat need food#0[T1] terr=19650 bal=26735 dq=1.4 cnt=165 | c=3.7 rankC=3.7 need=47237 tD=0.09 人 pulse agg | safe=65995 keep=65995 avail=43878 chunkB=22235 pulseB=13341 
+    → AI#384 terr=5290 bal=5533 dq=1.0 cnt=17 | c=4.8 rankC=4.8 need=17799 tD=0.07 机 | safe=65995 keep=65995 avail=43878 chunkB=22235 pulseB=13341 
+    → 🇨🇰#1[T1] terr=20753 bal=180337 dq=8.7 cnt=123 | c=10.9 rankC=5.5 need=340533 tD=0.56 人 pulse bleeding | safe=65995 keep=508455 avail=-398582 chunkB=22235 pulseB=13341 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2530 zero_7 B=91685 L=42804 d=2.1 nb=3 neut=0 cmds=117 noFull=1 shQ=5864 | m=0.900 worth=18.1 cheap=6.6 over=0 dMedOther=23.7 safe(-1)=62442
+    → [Cat]Cat need food#0[T1离] terr=18852 bal=25018 dq=1.3 cnt=151 | c=4.5 rankC=4.5 need=47396 tD=0.06 机 | safe=62442 keep=62442 avail=28169 chunkB=18337 pulseB=11002 
+    → 🇨🇰#1[T1] terr=20239 bal=175352 dq=8.7 cnt=123 | c=11.4 rankC=5.7 need=329054 tD=0.37 人 pulse bleeding | safe=62442 keep=540957 avail=-450346 chunkB=18337 pulseB=11002 无可用(avail<=0)
+    ⇒ 影子指令 attack pct=314 → [Cat]Cat need food#0[T1离]（约 28203 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2535 zero_7 B=91685 L=43330 d=2.1 nb=3 neut=0 cmds=118 noFull=1 shQ=7594 | m=0.900 worth=15.6 cheap=6.6 over=0 dMedOther=20.4 safe(-1)=60459
+    → [Cat]Cat need food#0[T1离] terr=18395 bal=24054 dq=1.3 cnt=151 | c=4.7 rankC=4.7 need=47479 tD=0.06 机 | safe=60459 keep=60459 avail=30152 chunkB=18337 pulseB=11002 
+    → 🇨🇰#1[T1] terr=20041 bal=172612 dq=8.6 cnt=123 | c=11.5 rankC=5.7 need=323240 tD=0.42 人 pulse bleeding | safe=60459 keep=553572 avail=-462961 chunkB=18337 pulseB=11002 无可用(avail<=0)
+    ⇒ 影子指令 attack pct=336 → [Cat]Cat need food#0[T1离]（约 30173 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2540 zero_7 B=93069 L=43680 d=2.1 nb=3 neut=0 cmds=119 noFull=1 shQ=9329 | m=0.900 worth=15.8 cheap=6.6 over=0 dMedOther=20.7 safe(-1)=58946
+    → [Cat]Cat need food#0[T1离] terr=18024 bal=23284 dq=1.3 cnt=149 | c=4.8 rankC=4.8 need=47121 tD=0.06 机 | safe=58946 keep=58946 avail=33033 chunkB=18614 pulseB=11168 
+    → 🇨🇰#1[T1] terr=19719 bal=170444 dq=8.6 cnt=123 | c=11.9 rankC=5.9 need=317669 tD=0.42 人 pulse bleeding | safe=58946 keep=575987 avail=-484008 chunkB=18614 pulseB=11168 无可用(avail<=0)
+    ⇒ 影子指令 attack pct=363 → [Cat]Cat need food#0[T1离]（约 33083 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2580 zero_7 B=26387 L=45396 d=0.6 nb=3 neut=0 cmds=119 noFull=1 shQ=4656 | m=0.900 worth=15.6 cheap=6.6 over=0 dMedOther=20.3 safe(-1)=45888
+    → 🇨🇰#1[T1] terr=19886 bal=126737 dq=6.4 cnt=151 | c=14.3 rankC=10.0 need=267602 tD=0.31 人 pulse onMe | safe=45888 keep=718776 avail=-692698 chunkB=5277 pulseB=3166 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2620 zero_7 B=67793 L=45289 d=1.5 nb=3 neut=0 cmds=120 noFull=1 shQ=11845 | m=0.900 worth=17.2 cheap=6.6 over=0 dMedOther=22.5 safe(-1)=49475
+    → 🇨🇰#1[T1] terr=23775 bal=155234 dq=6.5 cnt=227 | c=6.2 rankC=3.1 need=313119 tD=0.29 人 pulse bleeding onMe | safe=49475 keep=49475 avail=17524 chunkB=13559 pulseB=8135 
+    ⇒ 影子指令 attack pct=122 → 🇨🇰#1[T1]（约 8143 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2625 zero_7 B=67678 L=45869 d=1.5 nb=3 neut=0 cmds=121 noFull=1 shQ=13133 | m=0.900 worth=17.2 cheap=6.6 over=0 dMedOther=22.5 safe(-1)=47642
+    → 🇨🇰#1[T1] terr=23612 bal=153606 dq=6.5 cnt=227 | c=6.2 rankC=3.1 need=308767 tD=0.29 人 pulse bleeding | safe=47642 keep=47642 avail=19243 chunkB=13536 pulseB=8121 
+    ⇒ 影子指令 attack pct=122 → 🇨🇰#1[T1]（约 8129 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2630 zero_7 B=68706 L=46259 d=1.5 nb=3 neut=0 cmds=122 noFull=1 shQ=14427 | m=0.900 worth=17.5 cheap=6.6 over=0 dMedOther=22.9 safe(-1)=47821
+    → 🇨🇰#1[T1] terr=23498 bal=154509 dq=6.6 cnt=227 | c=4.5 rankC=2.2 need=309894 tD=0.29 人 pulse nearCollapse bleeding | safe=47821 keep=47821 avail=20080 chunkB=13741 pulseB=8245 
+    ⇒ 影子指令 attack pct=299 → 🇨🇰#1[T1]（约 20128 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2640 zero_7 B=36703 L=47902 d=0.8 nb=3 neut=0 cmds=122 noFull=1 shQ=1335 | m=0.900 worth=17.7 cheap=6.5 over=0 dMedOther=23.2 safe(-1)=38686
+    → 🇨🇰#1[T1] terr=21980 bal=140714 dq=6.4 cnt=216 | c=0.4 rankC=0.2 need=263612 tD=0.28 人 pulse nearCollapse bleeding | safe=38686 keep=38686 avail=-2413 chunkB=7341 pulseB=4404 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2680 zero_7 B=39135 L=51315 d=0.8 nb=3 neut=0 cmds=123 noFull=1 shQ=7160 | m=0.900 worth=18.8 cheap=6.4 over=0 dMedOther=24.5 safe(-1)=11820
+    → 🇨🇰#1[T1] terr=16999 bal=98012 dq=5.8 cnt=205 | c=0.4 rankC=0.2 need=182200 tD=0.24 人 pulse nearCollapse bleeding | safe=11820 keep=11820 avail=26857 chunkB=7827 pulseB=4696 
+    ⇒ 影子指令 attack pct=702 → 🇨🇰#1[T1]（约 26867 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2685 zero_7 B=39135 L=51596 d=0.8 nb=3 neut=0 cmds=124 noFull=1 shQ=7918 | m=0.900 worth=18.8 cheap=6.4 over=0 dMedOther=24.5 safe(-1)=7861
+    → 🇨🇰#1[T1] terr=16273 bal=91386 dq=5.6 cnt=205 | c=0.3 rankC=0.1 need=167596 tD=0.23 人 pulse nearCollapse bleeding | safe=7861 keep=7861 avail=30816 chunkB=7827 pulseB=4696 
+    ⇒ 影子指令 attack pct=806 → 🇨🇰#1[T1]（约 30841 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2700 zero_7 B=56972 L=53365 d=1.1 nb=2 neut=0 cmds=124 noFull=1 shQ=739 | m=0.900 worth=20.1 cheap=6.4 over=0 dMedOther=26.2 safe(-1)=77119
+    → 🇨🇰#1[T1] terr=13567 bal=83591 dq=6.2 cnt=184 | c=0.0 rankC=0.0 need=120610 tD=0.24 人 pulse nearCollapse bleeding agg | safe=77119 keep=77119 avail=-20814 chunkB=11394 pulseB=6837 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2710 zero_7 B=58019 L=54491 d=1.1 nb=1 neut=76 cmds=125 noFull=1 shQ=2974 | m=0.900 worth=20.3 cheap=6.4 over=0 dMedOther=26.6 safe(-1)=0
+    → 🇨🇰#1[T1] terr=11990 bal=68033 dq=5.7 cnt=171 | c=0.1 rankC=0.0 need=105420 tD=0.21 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=57340 chunkB=11604 pulseB=6962 
+    ⇒ 影子指令 attack pct=0 → 🇨🇰#1[T1]（约 56 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2715 zero_7 B=58019 L=54721 d=1.1 nb=1 neut=78 cmds=126 noFull=1 shQ=4109 | m=0.900 worth=20.3 cheap=6.4 over=0 dMedOther=26.6 safe(-1)=0
+    → 🇨🇰#1[T1] terr=11524 bal=63841 dq=5.5 cnt=171 | c=0.1 rankC=0.0 need=96304 tD=0.21 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=57340 chunkB=11604 pulseB=6962 
+    ⇒ 影子指令 attack pct=509 → 🇨🇰#1[T1]（约 28896 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2720 zero_7 B=58929 L=54873 d=1.1 nb=1 neut=73 cmds=127 noFull=1 shQ=5255 | m=0.900 worth=20.6 cheap=6.3 over=0 dMedOther=27.0 safe(-1)=0
+    → 🇨🇰#1[T1] terr=11227 bal=61987 dq=5.5 cnt=171 | c=0.1 rankC=0.0 need=91667 tD=0.20 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=58239 chunkB=11786 pulseB=7071 
+    ⇒ 影子指令 attack pct=477 → 🇨🇰#1[T1]（约 27507 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2760 zero_7 B=103947 L=58331 d=1.8 nb=1 neut=33 cmds=127 noFull=1 shQ=3186 | m=0.900 worth=21.8 cheap=6.3 over=0 dMedOther=28.5 safe(-1)=0
+    → 🇨🇰#1[T1] terr=5703 bal=21815 dq=3.8 cnt=127 | c=2.7 rankC=1.4 need=554 tD=0.13 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=102729 chunkB=20789 pulseB=12474 
+    ⇒ 本拍没有指令
+t=2765 zero_7 B=103947 L=58427 d=1.8 nb=0 neut=159 cmds=128 noFull=1 shQ=5251 | m=0.900 worth=21.8 cheap=6.3 over=0 dMedOther=28.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 4872 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2770 zero_7 B=105599 L=58491 d=1.8 nb=0 neut=158 cmds=129 noFull=1 shQ=7322 | m=0.900 worth=22.1 cheap=6.3 over=0 dMedOther=28.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 4949 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2775 zero_7 B=105681 L=58491 d=1.8 nb=0 neut=158 cmds=130 noFull=1 shQ=9422 | m=0.900 worth=22.1 cheap=6.3 over=0 dMedOther=28.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 4953 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2820 zero_7 B=156271 L=59980 d=2.6 nb=2 neut=24 cmds=130 noFull=1 shQ=22005 | m=0.900 worth=19.4 cheap=6.2 over=0 dMedOther=25.3 safe(-1)=257699
+    → Its [Nikko]#16[T1] terr=57854 bal=498553 dq=8.6 cnt=14 | c=13.7 rankC=6.8 need=1020184 tD=0.34 人 pulse bleeding onMe | safe=257699 keep=911590 avail=-757150 chunkB=31254 pulseB=18753 无可用(avail<=0)
+    → AI#384 terr=2256 bal=4392 dq=1.9 cnt=21 | c=8.7 rankC=8.7 need=8492 tD=0.08 机 | safe=257699 keep=581734 avail=-427294 chunkB=31254 pulseB=18753 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2880 zero_7 B=173725 L=58421 d=3.0 nb=2 neut=0 cmds=130 noFull=1 shQ=43431 | m=0.900 worth=20.7 cheap=6.3 over=0 dMedOther=27.1 safe(-1)=304131
+    → AI#384 terr=2712 bal=129 dq=0.0 cnt=47 | c=3.2 rankC=3.2 need=3273 tD=0.00 机 | safe=304131 keep=304131 avail=-132441 chunkB=34745 pulseB=20847 无可用(avail<=0)
+    → Its [Nikko]#16[T1] terr=59112 bal=542172 dq=9.2 cnt=67 | c=19.3 rankC=13.5 need=1141118 tD=0.34 人 pulse onMe | safe=304131 keep=1252280 avail=-1080590 chunkB=34745 pulseB=20847 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2940 zero_7 B=228266 L=54717 d=4.2 nb=2 neut=0 cmds=130 noFull=1 shQ=57066 | m=0.900 worth=23.0 cheap=6.4 over=0 dMedOther=30.1 safe(-1)=331932
+    → AI#384 terr=2712 bal=2970 dq=1.1 cnt=47 | c=6.1 rankC=6.1 need=7534 tD=0.04 机 | safe=331932 keep=331932 avail=-106340 chunkB=45653 pulseB=27392 无可用(avail<=0)
+    → Its [Nikko]#16[T1] terr=63359 bal=525458 dq=8.3 cnt=82 | c=18.6 rankC=13.0 need=1179061 tD=0.28 人 pulse onMe | safe=331932 keep=1129307 avail=-903715 chunkB=45653 pulseB=27392 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=3000 zero_7 B=249048 L=47780 d=5.2 nb=2 neut=0 cmds=130 noFull=1 shQ=50745 | m=0.900 worth=25.4 cheap=6.5 over=0 dMedOther=33.2 safe(-1)=312475
+    → AI#384 terr=2865 bal=2954 dq=1.0 cnt=52 | c=5.9 rankC=5.9 need=8002 tD=0.03 机 | safe=312475 keep=312475 avail=-66345 chunkB=49810 pulseB=29886 无可用(avail<=0)
+    → Its [Nikko]#16[T1] terr=72027 bal=585414 dq=8.1 cnt=126 | c=16.5 rankC=11.6 need=1193932 tD=0.24 人 pulse onMe | safe=312475 keep=877076 avail=-630946 chunkB=49810 pulseB=29886 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=3060 zero_7 B=251723 L=45511 d=5.5 nb=2 neut=0 cmds=130 noFull=1 shQ=62930 | m=0.900 worth=27.2 cheap=6.6 over=0 dMedOther=35.5 safe(-1)=324993
+    → AI#384 terr=2920 bal=64 dq=0.0 cnt=55 | c=4.5 rankC=4.5 need=5642 tD=0.00 机 | safe=324993 keep=324993 avail=-76219 chunkB=50345 pulseB=30207 无可用(avail<=0)
+    → Its [Nikko]#16[T1] terr=77305 bal=646754 dq=8.4 cnt=121 | c=34.9 rankC=34.9 need=1268711 tD=0.24 人 pulse | safe=324993 keep=Inf avail=-Inf chunkB=50345 pulseB=30207 价高(c>=worth)→break
+    ⇒ 本拍没有指令

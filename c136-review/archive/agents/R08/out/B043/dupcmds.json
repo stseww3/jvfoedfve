@@ -1,0 +1,925 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 197,
+     "clusters": 180,
+     "dupClusters": 11,
+     "dupCmds": 28,
+     "extraCmds": 17,
+     "sizes": {
+      "1": 169,
+      "3": 4,
+      "2": 6,
+      "4": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 24,
+     "name": "Jordan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 322,
+     "t1": 329,
+     "n": 3,
+     "pcts": [
+      485,
+      439,
+      449
+     ],
+     "first": 0.4746,
+     "comb": 0.832
+    },
+    {
+     "me": 17,
+     "name": "Celtic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 679,
+     "t1": 679,
+     "n": 3,
+     "pcts": [
+      91,
+      94,
+      465
+     ],
+     "first": 0.0898,
+     "comb": 0.55
+    },
+    {
+     "me": 41,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "237",
+     "targetName": "bot#237",
+     "t0": 749,
+     "t1": 749,
+     "n": 3,
+     "pcts": [
+      178,
+      186,
+      175
+     ],
+     "first": 0.1748,
+     "comb": 0.4414
+    },
+    {
+     "me": 14,
+     "name": "Janissary",
+     "kind": "attack",
+     "target": "449",
+     "targetName": "bot#449",
+     "t0": 714,
+     "t1": 714,
+     "n": 3,
+     "pcts": [
+      164,
+      145,
+      129
+     ],
+     "first": 0.1611,
+     "comb": 0.372
+    },
+    {
+     "me": 19,
+     "name": "Yoshi",
+     "kind": "attack",
+     "target": "266",
+     "targetName": "bot#266",
+     "t0": 742,
+     "t1": 742,
+     "n": 4,
+     "pcts": [
+      94,
+      103,
+      109,
+      113
+     ],
+     "first": 0.0928,
+     "comb": 0.3535
+    },
+    {
+     "me": 12,
+     "name": "deRuyter",
+     "kind": "attack",
+     "target": "333",
+     "targetName": "bot#333",
+     "t0": 679,
+     "t1": 679,
+     "n": 2,
+     "pcts": [
+      123,
+      127
+     ],
+     "first": 0.1211,
+     "comb": 0.231
+    },
+    {
+     "me": 29,
+     "name": "ProGamer99",
+     "kind": "attack",
+     "target": "180",
+     "targetName": "bot#180",
+     "t0": 784,
+     "t1": 784,
+     "n": 2,
+     "pcts": [
+      124,
+      119
+     ],
+     "first": 0.1221,
+     "comb": 0.225
+    },
+    {
+     "me": 26,
+     "name": "Kokand",
+     "kind": "attack",
+     "target": "231",
+     "targetName": "bot#231",
+     "t0": 686,
+     "t1": 686,
+     "n": 2,
+     "pcts": [
+      130,
+      111
+     ],
+     "first": 0.1279,
+     "comb": 0.2233
+    },
+    {
+     "me": 23,
+     "name": "Bongcloud",
+     "kind": "attack",
+     "target": "494",
+     "targetName": "bot#494",
+     "t0": 742,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      89,
+      136
+     ],
+     "first": 0.0879,
+     "comb": 0.2099
+    },
+    {
+     "me": 18,
+     "name": "KGB",
+     "kind": "attack",
+     "target": "215",
+     "targetName": "bot#215",
+     "t0": 777,
+     "t1": 791,
+     "n": 2,
+     "pcts": [
+      81,
+      101
+     ],
+     "first": 0.0801,
+     "comb": 0.1717
+    },
+    {
+     "me": 23,
+     "name": "Bongcloud",
+     "kind": "attack",
+     "target": "138",
+     "targetName": "bot#138",
+     "t0": 679,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      93,
+      87
+     ],
+     "first": 0.0918,
+     "comb": 0.1698
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 197,
+     "clusters": 184,
+     "dupClusters": 8,
+     "dupCmds": 21,
+     "extraCmds": 13,
+     "sizes": {
+      "1": 176,
+      "3": 3,
+      "2": 4,
+      "4": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 24,
+     "name": "Jordan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 322,
+     "t1": 322,
+     "n": 2,
+     "pcts": [
+      485,
+      439
+     ],
+     "first": 0.4746,
+     "comb": 0.7004
+    },
+    {
+     "me": 17,
+     "name": "Celtic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 679,
+     "t1": 679,
+     "n": 3,
+     "pcts": [
+      91,
+      94,
+      465
+     ],
+     "first": 0.0898,
+     "comb": 0.55
+    },
+    {
+     "me": 41,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "237",
+     "targetName": "bot#237",
+     "t0": 749,
+     "t1": 749,
+     "n": 3,
+     "pcts": [
+      178,
+      186,
+      175
+     ],
+     "first": 0.1748,
+     "comb": 0.4414
+    },
+    {
+     "me": 14,
+     "name": "Janissary",
+     "kind": "attack",
+     "target": "449",
+     "targetName": "bot#449",
+     "t0": 714,
+     "t1": 714,
+     "n": 3,
+     "pcts": [
+      164,
+      145,
+      129
+     ],
+     "first": 0.1611,
+     "comb": 0.372
+    },
+    {
+     "me": 19,
+     "name": "Yoshi",
+     "kind": "attack",
+     "target": "266",
+     "targetName": "bot#266",
+     "t0": 742,
+     "t1": 742,
+     "n": 4,
+     "pcts": [
+      94,
+      103,
+      109,
+      113
+     ],
+     "first": 0.0928,
+     "comb": 0.3535
+    },
+    {
+     "me": 12,
+     "name": "deRuyter",
+     "kind": "attack",
+     "target": "333",
+     "targetName": "bot#333",
+     "t0": 679,
+     "t1": 679,
+     "n": 2,
+     "pcts": [
+      123,
+      127
+     ],
+     "first": 0.1211,
+     "comb": 0.231
+    },
+    {
+     "me": 29,
+     "name": "ProGamer99",
+     "kind": "attack",
+     "target": "180",
+     "targetName": "bot#180",
+     "t0": 784,
+     "t1": 784,
+     "n": 2,
+     "pcts": [
+      124,
+      119
+     ],
+     "first": 0.1221,
+     "comb": 0.225
+    },
+    {
+     "me": 26,
+     "name": "Kokand",
+     "kind": "attack",
+     "target": "231",
+     "targetName": "bot#231",
+     "t0": 686,
+     "t1": 686,
+     "n": 2,
+     "pcts": [
+      130,
+      111
+     ],
+     "first": 0.1279,
+     "comb": 0.2233
+    }
+   ]
+  }
+ },
+ "squad10:A062": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 134,
+     "clusters": 95,
+     "dupClusters": 18,
+     "dupCmds": 57,
+     "extraCmds": 39,
+     "sizes": {
+      "1": 77,
+      "5": 1,
+      "2": 9,
+      "9": 1,
+      "3": 5,
+      "6": 1,
+      "4": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 34,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 798,
+     "t1": 798,
+     "n": 9,
+     "pcts": [
+      196,
+      198,
+      273,
+      122,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.1924,
+     "comb": 0.6702
+    },
+    {
+     "me": 40,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "233",
+     "targetName": "bot#233",
+     "t0": 693,
+     "t1": 693,
+     "n": 6,
+     "pcts": [
+      136,
+      140,
+      138,
+      142,
+      136,
+      141
+     ],
+     "first": 0.1338,
+     "comb": 0.5856
+    },
+    {
+     "me": 33,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 728,
+     "t1": 735,
+     "n": 4,
+     "pcts": [
+      180,
+      161,
+      159,
+      180
+     ],
+     "first": 0.1768,
+     "comb": 0.5186
+    },
+    {
+     "me": 34,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 623,
+     "t1": 623,
+     "n": 2,
+     "pcts": [
+      47,
+      482
+     ],
+     "first": 0.0469,
+     "comb": 0.4964
+    },
+    {
+     "me": 36,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 686,
+     "t1": 686,
+     "n": 5,
+     "pcts": [
+      216,
+      47,
+      81,
+      85,
+      84
+     ],
+     "first": 0.2119,
+     "comb": 0.4196
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "210",
+     "targetName": "bot#210",
+     "t0": 805,
+     "t1": 805,
+     "n": 3,
+     "pcts": [
+      167,
+      135,
+      178
+     ],
+     "first": 0.1641,
+     "comb": 0.4018
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "343",
+     "targetName": "bot#343",
+     "t0": 721,
+     "t1": 721,
+     "n": 3,
+     "pcts": [
+      151,
+      154,
+      150
+     ],
+     "first": 0.1484,
+     "comb": 0.3839
+    },
+    {
+     "me": 33,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "410",
+     "targetName": "bot#410",
+     "t0": 378,
+     "t1": 392,
+     "n": 3,
+     "pcts": [
+      152,
+      143,
+      143
+     ],
+     "first": 0.1494,
+     "comb": 0.3718
+    },
+    {
+     "me": 35,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "214",
+     "targetName": "bot#214",
+     "t0": 364,
+     "t1": 371,
+     "n": 3,
+     "pcts": [
+      140,
+      130,
+      160
+     ],
+     "first": 0.1377,
+     "comb": 0.3662
+    },
+    {
+     "me": 33,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 728,
+     "t1": 728,
+     "n": 3,
+     "pcts": [
+      130,
+      134,
+      132
+     ],
+     "first": 0.1279,
+     "comb": 0.3412
+    },
+    {
+     "me": 40,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "306",
+     "targetName": "bot#306",
+     "t0": 378,
+     "t1": 385,
+     "n": 2,
+     "pcts": [
+      151,
+      172
+     ],
+     "first": 0.1484,
+     "comb": 0.2923
+    },
+    {
+     "me": 40,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "501",
+     "targetName": "bot#501",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      158,
+      162
+     ],
+     "first": 0.1553,
+     "comb": 0.2897
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 455,
+     "t1": 455,
+     "n": 2,
+     "pcts": [
+      152,
+      140
+     ],
+     "first": 0.1494,
+     "comb": 0.2665
+    },
+    {
+     "me": 34,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "367",
+     "targetName": "bot#367",
+     "t0": 623,
+     "t1": 630,
+     "n": 2,
+     "pcts": [
+      135,
+      130
+     ],
+     "first": 0.1328,
+     "comb": 0.2438
+    },
+    {
+     "me": 38,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "480",
+     "targetName": "bot#480",
+     "t0": 399,
+     "t1": 406,
+     "n": 2,
+     "pcts": [
+      124,
+      118
+     ],
+     "first": 0.1221,
+     "comb": 0.2241
+    },
+    {
+     "me": 38,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "480",
+     "targetName": "bot#480",
+     "t0": 518,
+     "t1": 532,
+     "n": 2,
+     "pcts": [
+      106,
+      106
+     ],
+     "first": 0.1045,
+     "comb": 0.1981
+    },
+    {
+     "me": 36,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "495",
+     "targetName": "bot#495",
+     "t0": 595,
+     "t1": 595,
+     "n": 2,
+     "pcts": [
+      105,
+      102
+     ],
+     "first": 0.1035,
+     "comb": 0.1937
+    },
+    {
+     "me": 38,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "480",
+     "targetName": "bot#480",
+     "t0": 196,
+     "t1": 203,
+     "n": 2,
+     "pcts": [
+      84,
+      116
+     ],
+     "first": 0.083,
+     "comb": 0.1878
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 134,
+     "clusters": 104,
+     "dupClusters": 12,
+     "dupCmds": 42,
+     "extraCmds": 30,
+     "sizes": {
+      "1": 92,
+      "5": 1,
+      "2": 5,
+      "9": 1,
+      "3": 4,
+      "6": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 34,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 798,
+     "t1": 798,
+     "n": 9,
+     "pcts": [
+      196,
+      198,
+      273,
+      122,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.1924,
+     "comb": 0.6702
+    },
+    {
+     "me": 40,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "233",
+     "targetName": "bot#233",
+     "t0": 693,
+     "t1": 693,
+     "n": 6,
+     "pcts": [
+      136,
+      140,
+      138,
+      142,
+      136,
+      141
+     ],
+     "first": 0.1338,
+     "comb": 0.5856
+    },
+    {
+     "me": 34,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 623,
+     "t1": 623,
+     "n": 2,
+     "pcts": [
+      47,
+      482
+     ],
+     "first": 0.0469,
+     "comb": 0.4964
+    },
+    {
+     "me": 36,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 686,
+     "t1": 686,
+     "n": 5,
+     "pcts": [
+      216,
+      47,
+      81,
+      85,
+      84
+     ],
+     "first": 0.2119,
+     "comb": 0.4196
+    },
+    {
+     "me": 33,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 728,
+     "t1": 728,
+     "n": 3,
+     "pcts": [
+      180,
+      161,
+      159
+     ],
+     "first": 0.1768,
+     "comb": 0.4153
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "210",
+     "targetName": "bot#210",
+     "t0": 805,
+     "t1": 805,
+     "n": 3,
+     "pcts": [
+      167,
+      135,
+      178
+     ],
+     "first": 0.1641,
+     "comb": 0.4018
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "343",
+     "targetName": "bot#343",
+     "t0": 721,
+     "t1": 721,
+     "n": 3,
+     "pcts": [
+      151,
+      154,
+      150
+     ],
+     "first": 0.1484,
+     "comb": 0.3839
+    },
+    {
+     "me": 33,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 728,
+     "t1": 728,
+     "n": 3,
+     "pcts": [
+      130,
+      134,
+      132
+     ],
+     "first": 0.1279,
+     "comb": 0.3412
+    },
+    {
+     "me": 40,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "501",
+     "targetName": "bot#501",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      158,
+      162
+     ],
+     "first": 0.1553,
+     "comb": 0.2897
+    },
+    {
+     "me": 30,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 455,
+     "t1": 455,
+     "n": 2,
+     "pcts": [
+      152,
+      140
+     ],
+     "first": 0.1494,
+     "comb": 0.2665
+    },
+    {
+     "me": 35,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "214",
+     "targetName": "bot#214",
+     "t0": 364,
+     "t1": 364,
+     "n": 2,
+     "pcts": [
+      140,
+      130
+     ],
+     "first": 0.1377,
+     "comb": 0.248
+    },
+    {
+     "me": 36,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "495",
+     "targetName": "bot#495",
+     "t0": 595,
+     "t1": 595,
+     "n": 2,
+     "pcts": [
+      105,
+      102
+     ],
+     "first": 0.1035,
+     "comb": 0.1937
+    }
+   ]
+  }
+ }
+}

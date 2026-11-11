@@ -1,0 +1,25 @@
+# A033 zero_7 影子决策明细 t=4400~4420（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 3 拍（t=4400~4410）；可用兵 260196~295229，一条指令下限(20%余额) 537097~544187，比值 48%~54%
+#   首选目标价高（c>=worth）: 2 拍（t=4415~4420）
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 822110 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 822110 兵，c/worth = 3.56~3.59
+t=4400 zero_7 B=2685486 L=26598 d=101.0 nb=2 neut=0 cmds=66 noFull=1 shQ=664794 | m=0.900 worth=90.9 cheap=7.4 over=1 dMedOther=100.2 safe(-1)=1687565
+    → Thy Hoarders#15[T3] terr=7036 bal=944894 dq=134.3 cnt=32 | c=326.1 rankC=326.1 need=1694697 tD=1.34 人 pulse | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    → [furry]嗷呜#18[T1] terr=30372 bal=3043763 dq=100.2 cnt=63 | c=296.7 rankC=430.2 need=5470647 tD=1.00 人 pulse agg | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    ⇒ 影子指令 attack pct=99 → Thy Hoarders#15[T3]（约 262254 兵）
+t=4405 zero_7 B=2685486 L=26598 d=101.0 nb=2 neut=0 cmds=67 noFull=1 shQ=671371 | m=0.900 worth=90.9 cheap=7.4 over=1 dMedOther=100.2 safe(-1)=1687565
+    → Thy Hoarders#15[T3] terr=7036 bal=944894 dq=134.3 cnt=32 | c=326.1 rankC=326.1 need=1694697 tD=1.34 人 pulse | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    → [furry]嗷呜#18[T1] terr=30372 bal=3043763 dq=100.2 cnt=63 | c=296.7 rankC=430.2 need=5470647 tD=1.00 人 pulse agg | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    ⇒ 影子指令 attack pct=99 → Thy Hoarders#15[T3]（约 262254 兵）
+t=4410 zero_7 B=2720934 L=26598 d=102.3 nb=2 neut=0 cmds=68 noFull=1 shQ=680146 | m=0.900 worth=92.1 cheap=7.4 over=1 dMedOther=101.6 safe(-1)=1710992
+    → Thy Hoarders#15[T3] terr=7036 bal=948390 dq=134.8 cnt=32 | c=327.4 rankC=327.4 need=1700929 tD=1.33 人 pulse | safe=1710992 keep=2393820 avail=295229 chunkB=544187 pulseB=326512 
+    → [furry]嗷呜#18[T1] terr=30375 bal=3085462 dq=101.6 cnt=63 | c=300.7 rankC=436.0 need=5545081 tD=1.00 人 pulse agg | safe=1710992 keep=2393820 avail=295229 chunkB=544187 pulseB=326512 
+    ⇒ 影子指令 attack pct=111 → Thy Hoarders#15[T3]（约 297602 兵）
+t=4415 zero_7 B=2423333 L=26598 d=91.1 nb=2 neut=0 cmds=68 noFull=1 shQ=372829 | m=0.900 worth=82.0 cheap=7.4 over=0 dMedOther=101.5 safe(-1)=1710992
+    → Thy Hoarders#15[T3] terr=7036 bal=948390 dq=134.8 cnt=32 | c=276.5 rankC=276.5 need=1435213 tD=1.33 人 pulse | safe=1710992 keep=Inf avail=-Inf chunkB=484667 pulseB=290800 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30384 bal=3085462 dq=101.5 cnt=63 | c=477.1 rankC=691.8 need=5544987 tD=1.00 人 pulse crowdedHard | safe=1710992 keep=Inf avail=-Inf chunkB=484667 pulseB=290800 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4420 zero_7 B=1922346 L=26661 d=72.1 nb=2 neut=0 cmds=68 noFull=1 shQ=408476 | m=0.900 worth=78.7 cheap=7.4 over=0 dMedOther=102.8 safe(-1)=1733992
+    → Thy Hoarders#15[T3] terr=6973 bal=938282 dq=134.6 cnt=32 | c=189.5 rankC=189.5 need=968561 tD=1.31 人 pulse | safe=1733992 keep=Inf avail=-Inf chunkB=384469 pulseB=230682 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30410 bal=3126498 dq=102.8 cnt=63 | c=482.5 rankC=699.6 need=5618240 tD=1.00 人 pulse crowdedHard | safe=1733992 keep=Inf avail=-Inf chunkB=384469 pulseB=230682 价高(c>=worth)→break
+    ⇒ 本拍没有指令

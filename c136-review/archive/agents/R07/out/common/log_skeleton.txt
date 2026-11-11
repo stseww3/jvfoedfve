@@ -1,0 +1,216 @@
+85	INIT bot=ryan_m [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=21
+86	COORD x1 (lines 86..86) [BACKEND-SPAWN-COORD] Solved 8 bots in 218.18ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+87	INIT bot=kevin_k [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=23
+88	INIT bot=ethan21 [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=25
+89	INIT bot=lucas94 [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=22
+90	INIT bot=leo_tx [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=34
+91	INIT bot=mark07 [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=26
+92	INIT bot=dave_w [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=28
+105	INIT bot=noah88 [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=27
+109	COORD x29 (lines 109..252) [BACKEND-SPAWN-COORD] Solved 8 bots in 100.12ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+269	[OPENING-CHECK 8 bots @ tick 184] [Nope] mark07:tick=181,terr=144,sent=27(OK) | [Nope] kevin_k:tick=184,terr=164,sent=21(OK) | [Nope] ethan2 …
+399	ERROR-RUN bot=kevin_k x13 (lines 399..456) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+410	ERROR-RUN bot=leo_tx x10 (lines 410..458) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+444	ERROR-RUN bot=mark07 x4 (lines 444..457) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+464	[RESULT [Nope] noah88] result=lost event=died place=52 peak=9116 team={"mine":3,"best":2,"totals":{"0":3717,"1":183610,"2":197936,"3":156687}}
+465	ERROR-RUN bot=leo_tx x1 (lines 465..465) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+466	ERROR-RUN bot=kevin_k x1 (lines 466..466) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+467	ERROR-RUN bot=mark07 x1 (lines 467..467) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+468	[RESULT [Nope] lucas94] result=lost event=died place=51 peak=5821 team={"mine":3,"best":2,"totals":{"0":3717,"1":184341,"2":199714,"3":154781}}
+469	ERROR-RUN bot=mark07 x5 (lines 469..489) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+470	ERROR-RUN bot=kevin_k x5 (lines 470..487) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+471	ERROR-RUN bot=leo_tx x5 (lines 471..488) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+491	[RESULT [Nope] ethan21] result=lost event=died place=50 peak=11917 team={"mine":3,"best":2,"totals":{"0":3717,"1":184363,"2":211831,"3":142879}}
+493	ERROR-RUN bot=kevin_k x10 (lines 493..534) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+494	ERROR-RUN bot=leo_tx x10 (lines 494..532) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+495	ERROR-RUN bot=mark07 x10 (lines 495..533) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+535	[RESULT [Nope] ryan_m] result=lost event=died place=44 peak=4958 team={"mine":3,"best":2,"totals":{"1":186876,"2":217646,"3":138090}}
+537	ERROR-RUN bot=dave_w x34 (lines 537..675) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+538	ERROR-RUN bot=leo_tx x29 (lines 538..673) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+539	ERROR-RUN bot=mark07 x33 (lines 539..674) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+540	ERROR-RUN bot=kevin_k x11 (lines 540..637) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+676	[RESULT [Nope] kevin_k] result=lost event=died place=32 peak=6757 team={"mine":3,"best":1,"totals":{"1":285725,"2":195551,"3":64604}}
+677	ERROR-RUN bot=leo_tx x1 (lines 677..677) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+678	ERROR-RUN bot=mark07 x9 (lines 678..698) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+679	ERROR-RUN bot=dave_w x9 (lines 679..697) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+700	[RESULT [Nope] dave_w] result=lost event=died place=28 peak=9832 team={"mine":3,"best":1,"totals":{"1":288301,"2":198525,"3":55966}}
+701	ERROR-RUN bot=mark07 x22 (lines 701..733) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+735	[RESULT [Nope] mark07] result=lost event=died place=24 peak=15980 team={"mine":3,"best":1,"totals":{"1":321413,"2":192798,"3":28154}}
+736	[RESULT [Nope] leo_tx] result=left event=left place=23 peak=3511 team=null
+755	INIT bot=ryan_m [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=19
+756	COORD x1 (lines 756..756) [BACKEND-SPAWN-COORD] Solved 8 bots in 184.81ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+757	INIT bot=kevin_k [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=18
+758	INIT bot=ethan21 [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=15
+759	INIT bot=lucas94 [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=21
+760	INIT bot=leo_tx [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=17
+761	INIT bot=dave_w [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=16
+762	INIT bot=noah88 [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=20
+765	INIT bot=mark07 [HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=9
+778	COORD x32 (lines 778..1010) [BACKEND-SPAWN-COORD] Solved 8 bots in 89.96ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas94
+1027	[OPENING-CHECK 8 bots @ tick 220] [Nope] mark07:tick=219,terr=345,sent=30(OK) | [Nope] kevin_k:tick=218,terr=364,sent=30(OK) | [Nope] ethan2 …
+1195	ERROR-RUN bot=mark07 x57 (lines 1195..1591) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1198	ERROR-RUN bot=lucas94 x39 (lines 1198..1588) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1241	ERROR-RUN bot=ethan21 x48 (lines 1241..1589) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1242	ERROR-RUN bot=kevin_k x48 (lines 1242..1590) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1255	ERROR-RUN bot=ryan_m x46 (lines 1255..1592) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1306	ERROR-RUN bot=leo_tx x38 (lines 1306..1587) msg=ERROR: Strategy bot stopped: TypeError: rnd is not a function
+1595	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] mark07 live!
+1596	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] kevin_k live!
+1597	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] ethan21 live!
+1598	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] lucas94 live!
+1599	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] dave_w live!
+1600	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] ryan_m live!
+1601	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] noah88 live!
+1602	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] leo_tx live!
+1742	[RESULT [Nope] mark07] result=lost event=died place=28 peak=12039 team={"mine":4,"best":4,"totals":{"1":132955,"2":70478,"3":25392,"4":151096,"5":50376,"6":113174}}
+1759	[RESULT [Nope] noah88] result=lost event=died place=26 peak=28284 team={"mine":4,"best":1,"totals":{"1":139322,"2":65712,"3":27348,"4":128849,"5":50696,"6":127798}}
+1786	[RESULT [Nope] dave_w] result=lost event=died place=24 peak=13216 team={"mine":4,"best":1,"totals":{"1":159214,"2":47032,"3":26290,"4":92853,"5":64933,"6":152808}}
+1787	[RESULT [Nope] lucas94] result=lost event=died place=22 peak=13554 team={"mine":4,"best":1,"totals":{"1":161017,"2":41599,"3":25844,"4":87010,"5":67940,"6":154547}}
+1792	[RESULT [Nope] ethan21] result=lost event=died place=21 peak=7237 team={"mine":4,"best":1,"totals":{"1":163379,"2":41095,"3":25734,"4":71753,"5":78019,"6":161274}}
+1793	[RESULT [Nope] ryan_m] result=lost event=died place=20 peak=51217 team={"mine":4,"best":6,"totals":{"1":165021,"2":40108,"3":22549,"4":55168,"5":82135,"6":168660}}
+1794	[RESULT [Nope] kevin_k] result=lost event=died place=19 peak=17038 team={"mine":4,"best":6,"totals":{"1":165487,"2":39775,"3":21807,"4":50240,"5":82974,"6":170375}}
+1798	[RESULT [Nope] leo_tx] result=lost event=died place=17 peak=19686 team={"mine":4,"best":6,"totals":{"1":183873,"2":30595,"4":29389,"5":91205,"6":206287}}
+1817	INIT bot=ethan21 [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=45
+1818	INIT bot=kevin_k [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=48
+1819	INIT bot=ryan_m [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=49
+1820	INIT bot=leo_tx [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=53
+1821	INIT bot=lucas94 [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=46
+1822	INIT bot=dave_w [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=51
+1823	COORD x1 (lines 1823..1823) [BACKEND-SPAWN-COORD] Solved 8 bots in 109.06ms (map=1541x1080, minSep=102px, boss=none): [Nope] mark07(BANK)->(596,64) | [Nope] kevin_k(BANK)->(96,76) | [Nope] ethan21(BANK)->(1080,84) | [Nope] lucas
+1824	INIT bot=mark07 [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=56
+1825	INIT bot=noah88 [HL-GAME-INIT] mode=3 map=22 mapSeed=1985 players=61 me=47
+1842	COORD x25 (lines 1842..1924) [BACKEND-SPAWN-COORD] Solved 8 bots in 53.82ms (map=1541x1080, minSep=102px, boss=none): [Nope] mark07(BANK)->(596,64) | [Nope] kevin_k(BANK)->(96,76) | [Nope] ethan21(BANK)->(1080,84) | [Nope] lucas9
+1945	[OPENING-CHECK 8 bots @ tick 225] [Nope] mark07:tick=216,terr=363,sent=14(OK) | [Nope] kevin_k:tick=225,terr=364,sent=7(OK) | [Nope] ethan21 …
+2211	[RESULT [Nope] ryan_m] result=lost event=died place=52 peak=19135 team={"mine":2,"best":1,"totals":{"0":7409,"1":204109,"2":84451,"3":46331,"4":156750,"5":152624}}
+2237	[RESULT [Nope] noah88] result=lost event=died place=48 peak=11324 team={"mine":2,"best":1,"totals":{"0":7337,"1":201272,"2":74825,"3":39345,"4":162113,"5":170358}}
+2312	[RESULT [Nope] leo_tx] result=lost event=died place=39 peak=13773 team={"mine":2,"best":1,"totals":{"0":7998,"1":245776,"2":65399,"3":34425,"4":139388,"5":164978}}
+2336	[RESULT [Nope] lucas94] result=lost event=died place=36 peak=24267 team={"mine":2,"best":1,"totals":{"0":4040,"1":262108,"2":52719,"3":43735,"4":125701,"5":165481}}
+2368	[RESULT [Nope] ethan21] result=lost event=died place=31 peak=7599 team={"mine":2,"best":1,"totals":{"0":2248,"1":342383,"2":32394,"3":25056,"4":118844,"5":132349}}
+2371	[RESULT [Nope] mark07] result=lost event=died place=29 peak=11651 team={"mine":2,"best":1,"totals":{"0":1791,"1":350300,"2":25890,"3":25056,"4":117274,"5":131637}}
+2372	[RESULT [Nope] kevin_k] result=lost event=died place=28 peak=15911 team={"mine":2,"best":1,"totals":{"0":1829,"1":356396,"2":21487,"3":25056,"4":116201,"5":129983}}
+2373	[RESULT [Nope] dave_w] result=left event=left place=25 peak=7131 team=null
+2393	INIT bot=ryan_m [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=24
+2394	COORD x1 (lines 2394..2394) [BACKEND-SPAWN-COORD] Solved 8 bots in 101.41ms (map=690x925, minSep=112px, boss=none): [Nope] mark07(BANK)->(196,142) | [Nope] kevin_k(BANK)->(130,290) | [Nope] ethan21(BANK)->(330,238) | [Nope] luca
+2395	INIT bot=kevin_k [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=22
+2396	INIT bot=leo_tx [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=23
+2397	INIT bot=lucas94 [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=26
+2398	INIT bot=ethan21 [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=25
+2399	INIT bot=noah88 [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=34
+2401	INIT bot=mark07 [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=21
+2403	INIT bot=dave_w [HL-GAME-INIT] mode=2 map=17 mapSeed=5336 players=58 me=27
+2416	COORD x37 (lines 2416..2631) [BACKEND-SPAWN-COORD] Solved 8 bots in 59.28ms (map=690x925, minSep=112px, boss=none): [Nope] mark07(BANK)->(196,142) | [Nope] kevin_k(BANK)->(130,290) | [Nope] ethan21(BANK)->(330,238) | [Nope] lucas
+2649	[OPENING-CHECK 8 bots @ tick 194] [Nope] mark07:tick=186,terr=144,sent=35(OK) | [Nope] kevin_k:tick=194,terr=216,sent=33(OK) | [Nope] ethan2 …
+2834	[RESULT [Nope] mark07] result=lost event=died place=44 peak=10573 team={"mine":3,"best":1,"totals":{"1":124568,"2":44618,"3":73102,"4":48144}}
+2958	[RESULT [Nope] lucas94] result=lost event=died place=35 peak=6993 team={"mine":3,"best":1,"totals":{"1":142341,"2":11040,"3":62301,"4":75472}}
+3022	[RESULT [Nope] leo_tx] result=lost event=died place=31 peak=15999 team={"mine":3,"best":1,"totals":{"1":142331,"2":18629,"3":58154,"4":71315}}
+3166	[RESULT [Nope] ryan_m] result=lost event=died place=26 peak=12034 team={"mine":3,"best":1,"totals":{"1":179458,"2":21256,"3":43042,"4":46208}}
+3171	[RESULT [Nope] ethan21] result=lost event=died place=24 peak=10472 team={"mine":3,"best":1,"totals":{"1":187221,"2":21256,"3":37266,"4":43902}}
+3176	[RESULT [Nope] noah88] result=lost event=died place=23 peak=8770 team={"mine":3,"best":1,"totals":{"1":193281,"2":21256,"3":31122,"4":44357}}
+3185	[RESULT [Nope] kevin_k] result=lost event=died place=21 peak=9129 team={"mine":3,"best":1,"totals":{"1":202128,"2":21256,"3":22664,"4":43718}}
+3188	[RESULT [Nope] dave_w] result=left event=left place=18 peak=6400 team=null
+3207	INIT bot=kevin_k [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=8
+3208	COORD x1 (lines 3208..3208) [BACKEND-SPAWN-COORD] Solved 8 bots in 181.31ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+3209	INIT bot=ethan21 [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=7
+3210	INIT bot=lucas94 [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=10
+3211	INIT bot=leo_tx [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=12
+3212	INIT bot=ryan_m [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=13
+3213	INIT bot=noah88 [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=11
+3214	INIT bot=mark07 [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=17
+3215	INIT bot=dave_w [HL-GAME-INIT] mode=1 map=10 mapSeed=3070 players=48 me=14
+3230	COORD x24 (lines 3230..3359) [BACKEND-SPAWN-COORD] Solved 8 bots in 111.83ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+3376	[OPENING-CHECK 8 bots @ tick 185] [Nope] mark07:tick=183,terr=182,sent=16(OK) | [Nope] kevin_k:tick=184,terr=179,sent=15(OK) | [Nope] ethan2 …
+3547	[RESULT [Nope] dave_w] result=lost event=died place=42 peak=7697 team={"mine":1,"best":1,"totals":{"0":8162,"1":203114,"2":173358,"3":158083}}
+3548	[RESULT [Nope] ethan21] result=lost event=died place=41 peak=6813 team={"mine":1,"best":1,"totals":{"0":7159,"1":202401,"2":173797,"3":159267}}
+3935	[RESULT [Nope] kevin_k] result=lost event=died place=19 peak=8122 team={"mine":1,"best":1,"totals":{"0":4,"1":248433,"2":226797,"3":66931}}
+4078	[RESULT [Nope] lucas94] result=lost event=died place=16 peak=18243 team={"mine":1,"best":2,"totals":{"0":18,"1":227372,"2":310205}}
+4092	[RESULT [Nope] leo_tx] result=lost event=died place=14 peak=28816 team={"mine":1,"best":2,"totals":{"0":18,"1":192702,"2":343841}}
+4101	[RESULT [Nope] noah88] result=lost event=died place=13 peak=20018 team={"mine":1,"best":2,"totals":{"0":18,"1":182137,"2":360770}}
+4138	[RESULT [Nope] mark07] result=lost event=died place=10 peak=9637 team={"mine":1,"best":2,"totals":{"0":25,"1":12,"2":543409}}
+4140	[RESULT [Nope] ryan_m] result=left event=left place=9 peak=4116 team=null
+4160	INIT bot=kevin_k [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=22
+4161	INIT bot=ryan_m [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=18
+4162	COORD x1 (lines 4162..4162) [BACKEND-SPAWN-COORD] Solved 8 bots in 129.86ms (map=1541x1080, minSep=102px, boss=none): [Nope] mark07(BANK)->(596,64) | [Nope] kevin_k(BANK)->(96,76) | [Nope] ethan21(BANK)->(1080,84) | [Nope] lucas
+4163	INIT bot=lucas94 [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=20
+4164	INIT bot=leo_tx [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=25
+4165	INIT bot=ethan21 [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=21
+4166	INIT bot=mark07 [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=24
+4167	INIT bot=dave_w [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=23
+4172	INIT bot=noah88 [HL-GAME-INIT] mode=5 map=22 mapSeed=1511 players=55 me=28
+4182	COORD x21 (lines 4182..4257) [BACKEND-SPAWN-COORD] Solved 8 bots in 51.43ms (map=1541x1080, minSep=102px, boss=none): [Nope] mark07(BANK)->(596,64) | [Nope] kevin_k(BANK)->(96,76) | [Nope] ethan21(BANK)->(1080,84) | [Nope] lucas9
+4275	[OPENING-CHECK 8 bots @ tick 225] [Nope] mark07:tick=215,terr=354,sent=6(OK) | [Nope] kevin_k:tick=217,terr=359,sent=12(OK) | [Nope] ethan21 …
+4524	[RESULT [Nope] lucas94] result=lost event=died place=50 peak=11301 team={"mine":2,"best":5,"totals":{"0":6190,"1":146490,"2":35169,"3":93641,"4":119484,"5":152143,"6":100255}}
+4573	[RESULT [Nope] ryan_m] result=lost event=died place=43 peak=7227 team={"mine":2,"best":5,"totals":{"0":1912,"1":138693,"2":17970,"3":104395,"4":122999,"5":171403,"6":102451}}
+4593	[RESULT [Nope] noah88] result=lost event=died place=40 peak=8924 team={"mine":2,"best":5,"totals":{"0":2119,"1":148356,"2":10400,"3":110349,"4":118680,"5":170861,"6":98195}}
+4604	[RESULT [Nope] ethan21] result=lost event=died place=39 peak=1254 team={"mine":2,"best":5,"totals":{"0":2119,"1":148650,"2":8804,"3":111756,"4":122476,"5":168266,"6":99788}}
+4614	[RESULT [Nope] dave_w] result=lost event=died place=38 peak=16638 team={"mine":2,"best":5,"totals":{"0":2116,"1":139127,"2":2994,"3":114985,"4":131843,"5":166585,"6":102556}}
+4629	[RESULT [Nope] leo_tx] result=lost event=died place=34 peak=7837 team={"mine":2,"best":5,"totals":{"0":2119,"1":122550,"2":409,"3":117728,"4":144670,"5":165195,"6":109001}}
+4630	[RESULT [Nope] kevin_k] result=left event=left place=32 peak=9603 team=null
+4631	[RESULT [Nope] mark07] result=left event=left place=31 peak=8598 team=null
+4650	INIT bot=ryan_m [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=14
+4651	COORD x1 (lines 4651..4651) [BACKEND-SPAWN-COORD] Solved 8 bots in 120.93ms (map=1900x764, minSep=112px, boss=none): [Nope] mark07(BANK)->(328,132) | [Nope] kevin_k(BANK)->(188,216) | [Nope] ethan21(BANK)->(488,68) | [Nope] luca
+4652	INIT bot=lucas94 [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=16
+4653	INIT bot=kevin_k [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=9
+4654	INIT bot=ethan21 [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=15
+4655	INIT bot=leo_tx [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=17
+4657	INIT bot=mark07 [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=18
+4659	INIT bot=dave_w [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=13
+4664	INIT bot=noah88 [HL-GAME-INIT] mode=4 map=24 mapSeed=10375 players=44 me=26
+4672	COORD x33 (lines 4672..4862) [BACKEND-SPAWN-COORD] Solved 8 bots in 68.24ms (map=1900x764, minSep=112px, boss=none): [Nope] mark07(BANK)->(328,132) | [Nope] kevin_k(BANK)->(188,216) | [Nope] ethan21(BANK)->(488,68) | [Nope] lucas
+4879	[OPENING-CHECK 8 bots @ tick 183] [Nope] mark07:tick=179,terr=144,sent=26(OK) | [Nope] kevin_k:tick=177,terr=144,sent=26(OK) | [Nope] ethan2 …
+5593	[RESULT [Nope] ryan_m] result=lost event=died place=26 peak=21211 team={"mine":1,"best":4,"totals":{"1":138757,"2":71873,"3":57826,"4":377496,"5":110604}}
+5644	[RESULT [Nope] lucas94] result=lost event=died place=24 peak=19932 team={"mine":1,"best":4,"totals":{"1":112165,"2":44588,"3":68354,"4":423367,"5":109378}}
+5671	[RESULT [Nope] dave_w] result=lost event=died place=23 peak=13344 team={"mine":1,"best":4,"totals":{"1":85052,"2":46607,"3":59019,"4":473551,"5":90833}}
+5683	[RESULT [Nope] mark07] result=lost event=died place=21 peak=22466 team={"mine":1,"best":4,"totals":{"1":68156,"2":41771,"3":51843,"4":499843,"5":90857}}
+5689	[RESULT [Nope] leo_tx] result=lost event=died place=20 peak=23867 team={"mine":1,"best":4,"totals":{"1":48355,"2":34244,"3":52617,"4":526076,"5":90866}}
+5759	[RESULT [Nope] kevin_k] result=over event=end place=9 peak=31058 team={"mine":1,"best":4,"totals":{"1":1854,"2":331,"3":19,"4":758040}}
+5760	[RESULT [Nope] ethan21] result=over event=end place=14 peak=59347 team={"mine":1,"best":4,"totals":{"1":1854,"2":331,"3":19,"4":758040}}
+5761	[RESULT [Nope] noah88] result=over event=end place=10 peak=20286 team={"mine":1,"best":4,"totals":{"1":1854,"2":331,"3":19,"4":758040}}
+5782	INIT bot=ryan_m [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=18
+5783	COORD x1 (lines 5783..5783) [BACKEND-SPAWN-COORD] Solved 8 bots in 163.42ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+5784	INIT bot=kevin_k [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=21
+5785	INIT bot=lucas94 [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=24
+5786	INIT bot=leo_tx [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=22
+5787	INIT bot=ethan21 [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=23
+5788	INIT bot=mark07 [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=19
+5790	INIT bot=dave_w [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=20
+5797	INIT bot=noah88 [HL-GAME-INIT] mode=0 map=10 mapSeed=3327 players=59 me=29
+5804	COORD x34 (lines 5804..6018) [BACKEND-SPAWN-COORD] Solved 8 bots in 117.14ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas9
+6035	[OPENING-CHECK 8 bots @ tick 218] [Nope] mark07:tick=210,terr=239,sent=28(OK) | [Nope] kevin_k:tick=218,terr=361,sent=23(OK) | [Nope] ethan2 …
+6188	[RESULT [Nope] leo_tx] result=lost event=died place=50 peak=1623 team={"mine":2,"best":2,"totals":{"0":4577,"1":249729,"2":290666}}
+6353	[RESULT [Nope] ryan_m] result=lost event=died place=39 peak=21912 team={"mine":2,"best":2,"totals":{"1":237551,"2":304624}}
+6364	[RESULT [Nope] dave_w] result=lost event=died place=37 peak=6731 team={"mine":2,"best":2,"totals":{"1":238408,"2":306022}}
+6412	[RESULT [Nope] ethan21] result=lost event=died place=33 peak=10714 team={"mine":2,"best":2,"totals":{"1":196353,"2":348224}}
+6448	[RESULT [Nope] noah88] result=left event=left place=27 peak=8862 team=null
+6491	[RESULT [Nope] kevin_k] result=won event=end place=16 peak=1710 team={"mine":2,"best":2,"totals":{"1":7,"2":545700}}
+6492	[RESULT [Nope] lucas94] result=won event=end place=12 peak=19659 team={"mine":2,"best":2,"totals":{"1":7,"2":545700}}
+6493	[RESULT [Nope] mark07] result=won event=end place=15 peak=6977 team={"mine":2,"best":2,"totals":{"1":7,"2":545700}}
+6508	INIT bot=ryan_m [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=7
+6509	COORD x1 (lines 6509..6509) [BACKEND-SPAWN-COORD] Solved 8 bots in 112ms (map=833x930, minSep=112px, boss=none): [Nope] mark07(BANK)->(280,136) | [Nope] kevin_k(BANK)->(144,226) | [Nope] ethan21(BANK)->(468,174) | [Nope] lucas94
+6510	INIT bot=kevin_k [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=8
+6511	INIT bot=lucas94 [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=1
+6512	INIT bot=ethan21 [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=13
+6513	INIT bot=leo_tx [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=10
+6514	INIT bot=mark07 [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=15
+6515	INIT bot=dave_w [HL-GAME-INIT] mode=4 map=13 mapSeed=15650 players=49 me=12
+6529	COORD x29 (lines 6529..6710) [BACKEND-SPAWN-COORD] Solved 8 bots in 90.84ms (map=833x930, minSep=112px, boss=none): [Nope] mark07(BANK)->(280,136) | [Nope] kevin_k(BANK)->(144,226) | [Nope] ethan21(BANK)->(468,174) | [Nope] lucas
+6928	[RESULT [Nope] leo_tx] result=lost event=died place=36 peak=13539 team={"mine":1,"best":2,"totals":{"1":78026,"2":88365,"3":82987,"4":36372,"5":56206,"6":85376}}
+7089	[RESULT [Nope] kevin_k] result=lost event=died place=24 peak=10835 team={"mine":1,"best":2,"totals":{"1":78080,"2":119930,"3":56144,"4":27908,"5":85882,"6":56504}}
+7105	[RESULT [Nope] mark07] result=lost event=died place=21 peak=21323 team={"mine":1,"best":2,"totals":{"1":57614,"2":123346,"3":62292,"4":29933,"5":102652,"6":47274}}
+7106	[RESULT [Nope] dave_w] result=lost event=died place=20 peak=11765 team={"mine":1,"best":2,"totals":{"1":56500,"2":123299,"3":62292,"4":29825,"5":102811,"6":47499}}
+7119	[RESULT [Nope] ethan21] result=lost event=died place=18 peak=26023 team={"mine":1,"best":5,"totals":{"1":35446,"2":103805,"3":62357,"4":29327,"5":149942,"6":42477}}
+7139	[RESULT [Nope] ryan_m] result=lost event=died place=14 peak=22211 team={"mine":1,"best":5,"totals":{"1":12303,"2":75154,"3":66004,"4":29825,"5":205799,"6":35815}}
+7145	[RESULT [Nope] lucas94] result=over event=end place=4 peak=22014 team={"mine":1,"best":5,"totals":{"1":12089,"3":66087,"5":314300,"6":36637}}
+7160	INIT bot=ryan_m [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=33
+7161	COORD x1 (lines 7161..7161) [BACKEND-SPAWN-COORD] Solved 8 bots in 75.16ms (map=956x873, minSep=112px, boss=none): [Nope] mark07(BANK)->(238,154) | [Nope] kevin_k(BANK)->(346,280) | [Nope] ethan21(BANK)->(472,172) | [Nope] lucas
+7162	INIT bot=kevin_k [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=32
+7163	INIT bot=lucas94 [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=34
+7164	INIT bot=leo_tx [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=35
+7166	INIT bot=ethan21 [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=37
+7168	INIT bot=mark07 [HL-GAME-INIT] mode=3 map=16 mapSeed=8468 players=41 me=38
+7178	COORD x29 (lines 7178..7332) [BACKEND-SPAWN-COORD] Solved 8 bots in 50.27ms (map=956x873, minSep=112px, boss=none): [Nope] mark07(BANK)->(238,154) | [Nope] kevin_k(BANK)->(346,280) | [Nope] ethan21(BANK)->(472,172) | [Nope] lucas
+7515	[RESULT [Nope] kevin_k] result=lost event=died place=37 peak=9575 team={"mine":2,"best":1,"totals":{"0":3346,"1":134541,"2":59361,"3":78383,"4":51419,"5":91415}}
+7522	[RESULT [Nope] mark07] result=lost event=died place=35 peak=7742 team={"mine":2,"best":1,"totals":{"0":1530,"1":137440,"2":55962,"3":79747,"4":53035,"5":90505}}
+7647	[RESULT [Nope] ethan21] result=lost event=died place=22 peak=15328 team={"mine":3,"best":1,"totals":{"1":150535,"2":63978,"3":47600,"4":47647,"5":108841}}
+7657	[RESULT [Nope] ryan_m] result=lost event=died place=21 peak=12303 team={"mine":3,"best":1,"totals":{"1":155179,"2":70276,"3":37092,"4":47482,"5":109972}}
+7805	[RESULT [Nope] leo_tx] result=left event=left place=11 peak=3692 team=null
+7992	[RESULT [Nope] lucas94] result=over event=end place=3 peak=19832 team={"mine":2,"best":1,"totals":{"1":413429,"2":6061,"5":332}}

@@ -1,0 +1,1424 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 376,
+     "clusters": 285,
+     "dupClusters": 42,
+     "dupCmds": 133,
+     "extraCmds": 91,
+     "sizes": {
+      "1": 243,
+      "3": 8,
+      "8": 2,
+      "2": 23,
+      "6": 2,
+      "5": 4,
+      "4": 2,
+      "7": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 12,
+     "name": "Cao Cao",
+     "kind": "attack",
+     "target": "321",
+     "targetName": "bot#321",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 7,
+     "pcts": [
+      91,
+      159,
+      186,
+      193,
+      214,
+      203,
+      202
+     ],
+     "first": 0.0898,
+     "comb": 0.7419
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1169,
+     "t1": 1169,
+     "n": 6,
+     "pcts": [
+      93,
+      66,
+      143,
+      151,
+      174,
+      250
+     ],
+     "first": 0.0918,
+     "comb": 0.6112
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "339",
+     "targetName": "bot#339",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      385,
+      346
+     ],
+     "first": 0.377,
+     "comb": 0.5881
+    },
+    {
+     "me": 22,
+     "name": "Mansa Musa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1232,
+     "t1": 1232,
+     "n": 8,
+     "pcts": [
+      73,
+      47,
+      47,
+      47,
+      47,
+      207,
+      167,
+      173
+     ],
+     "first": 0.0723,
+     "comb": 0.5766
+    },
+    {
+     "me": 11,
+     "name": "EZ_Clap",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1001,
+     "t1": 1015,
+     "n": 5,
+     "pcts": [
+      162,
+      152,
+      186,
+      59,
+      193
+     ],
+     "first": 0.1592,
+     "comb": 0.5539
+    },
+    {
+     "me": 10,
+     "name": "Charlemagne",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 6,
+     "pcts": [
+      183,
+      101,
+      95,
+      105,
+      83,
+      193
+     ],
+     "first": 0.1797,
+     "comb": 0.5535
+    },
+    {
+     "me": 8,
+     "name": "Kandy",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1204,
+     "t1": 1204,
+     "n": 8,
+     "pcts": [
+      63,
+      58,
+      138,
+      93,
+      94,
+      47,
+      48,
+      65
+     ],
+     "first": 0.0625,
+     "comb": 0.4659
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "450",
+     "targetName": "bot#450",
+     "t0": 728,
+     "t1": 735,
+     "n": 3,
+     "pcts": [
+      155,
+      155,
+      231
+     ],
+     "first": 0.1523,
+     "comb": 0.4443
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 4,
+     "pcts": [
+      99,
+      97,
+      173,
+      148
+     ],
+     "first": 0.0977,
+     "comb": 0.4212
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 910,
+     "t1": 924,
+     "n": 4,
+     "pcts": [
+      47,
+      138,
+      151,
+      140
+     ],
+     "first": 0.0469,
+     "comb": 0.3951
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "221",
+     "targetName": "bot#221",
+     "t0": 1071,
+     "t1": 1085,
+     "n": 3,
+     "pcts": [
+      89,
+      179,
+      142
+     ],
+     "first": 0.0879,
+     "comb": 0.3532
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "170",
+     "targetName": "bot#170",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      161,
+      230
+     ],
+     "first": 0.1582,
+     "comb": 0.3481
+    },
+    {
+     "me": 10,
+     "name": "Charlemagne",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      210,
+      164
+     ],
+     "first": 0.2061,
+     "comb": 0.334
+    },
+    {
+     "me": 19,
+     "name": "Nelson",
+     "kind": "attack",
+     "target": "452",
+     "targetName": "bot#452",
+     "t0": 1134,
+     "t1": 1134,
+     "n": 2,
+     "pcts": [
+      202,
+      171
+     ],
+     "first": 0.1982,
+     "comb": 0.3329
+    },
+    {
+     "me": 12,
+     "name": "Cao Cao",
+     "kind": "attack",
+     "target": "95",
+     "targetName": "bot#95",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 2,
+     "pcts": [
+      221,
+      137
+     ],
+     "first": 0.2168,
+     "comb": 0.3223
+    },
+    {
+     "me": 20,
+     "name": "bruh",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 987,
+     "t1": 987,
+     "n": 2,
+     "pcts": [
+      183,
+      172
+     ],
+     "first": 0.1797,
+     "comb": 0.3183
+    },
+    {
+     "me": 23,
+     "name": "Leif Erikson",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 987,
+     "t1": 994,
+     "n": 5,
+     "pcts": [
+      47,
+      134,
+      52,
+      59,
+      61
+     ],
+     "first": 0.0469,
+     "comb": 0.3061
+    },
+    {
+     "me": 8,
+     "name": "Kandy",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 945,
+     "t1": 952,
+     "n": 3,
+     "pcts": [
+      83,
+      186,
+      60
+     ],
+     "first": 0.082,
+     "comb": 0.2944
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 994,
+     "t1": 994,
+     "n": 2,
+     "pcts": [
+      152,
+      155
+     ],
+     "first": 0.1494,
+     "comb": 0.279
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "170",
+     "targetName": "bot#170",
+     "t0": 777,
+     "t1": 777,
+     "n": 2,
+     "pcts": [
+      157,
+      148
+     ],
+     "first": 0.1543,
+     "comb": 0.2774
+    },
+    {
+     "me": 28,
+     "name": "Goguryeo",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      173,
+      126
+     ],
+     "first": 0.1699,
+     "comb": 0.2729
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "382",
+     "targetName": "bot#382",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 3,
+     "pcts": [
+      99,
+      101,
+      105
+     ],
+     "first": 0.0977,
+     "comb": 0.2716
+    },
+    {
+     "me": 27,
+     "name": "CJ",
+     "kind": "attack",
+     "target": "440",
+     "targetName": "bot#440",
+     "t0": 994,
+     "t1": 994,
+     "n": 5,
+     "pcts": [
+      47,
+      48,
+      54,
+      59,
+      96
+     ],
+     "first": 0.0469,
+     "comb": 0.2681
+    },
+    {
+     "me": 26,
+     "name": "Zenobia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1113,
+     "t1": 1113,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      52,
+      109
+     ],
+     "first": 0.0469,
+     "comb": 0.2671
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "177",
+     "targetName": "bot#177",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      141,
+      147
+     ],
+     "first": 0.1387,
+     "comb": 0.2632
+    },
+    {
+     "me": 28,
+     "name": "Goguryeo",
+     "kind": "attack",
+     "target": "378",
+     "targetName": "bot#378",
+     "t0": 1043,
+     "t1": 1057,
+     "n": 2,
+     "pcts": [
+      141,
+      129
+     ],
+     "first": 0.1387,
+     "comb": 0.248
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "486",
+     "targetName": "bot#486",
+     "t0": 770,
+     "t1": 770,
+     "n": 2,
+     "pcts": [
+      126,
+      138
+     ],
+     "first": 0.124,
+     "comb": 0.2429
+    },
+    {
+     "me": 15,
+     "name": "CIA",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 2,
+     "pcts": [
+      113,
+      135
+     ],
+     "first": 0.1113,
+     "comb": 0.2294
+    },
+    {
+     "me": 30,
+     "name": "Raiden",
+     "kind": "attack",
+     "target": "504",
+     "targetName": "bot#504",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 3,
+     "pcts": [
+      113,
+      62,
+      60
+     ],
+     "first": 0.1113,
+     "comb": 0.2157
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "207",
+     "targetName": "bot#207",
+     "t0": 686,
+     "t1": 700,
+     "n": 2,
+     "pcts": [
+      118,
+      113
+     ],
+     "first": 0.1162,
+     "comb": 0.2146
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "263",
+     "targetName": "bot#263",
+     "t0": 1169,
+     "t1": 1169,
+     "n": 2,
+     "pcts": [
+      107,
+      111
+     ],
+     "first": 0.1055,
+     "comb": 0.2033
+    },
+    {
+     "me": 13,
+     "name": "Makima",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1078,
+     "t1": 1078,
+     "n": 3,
+     "pcts": [
+      116,
+      47,
+      47
+     ],
+     "first": 0.1143,
+     "comb": 0.1953
+    },
+    {
+     "me": 11,
+     "name": "EZ_Clap",
+     "kind": "attack",
+     "target": "146",
+     "targetName": "bot#146",
+     "t0": 679,
+     "t1": 679,
+     "n": 2,
+     "pcts": [
+      104,
+      92
+     ],
+     "first": 0.1025,
+     "comb": 0.184
+    },
+    {
+     "me": 26,
+     "name": "Zenobia",
+     "kind": "attack",
+     "target": "376",
+     "targetName": "bot#376",
+     "t0": 1113,
+     "t1": 1113,
+     "n": 2,
+     "pcts": [
+      102,
+      91
+     ],
+     "first": 0.1006,
+     "comb": 0.1814
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 770,
+     "t1": 770,
+     "n": 2,
+     "pcts": [
+      73,
+      94
+     ],
+     "first": 0.0723,
+     "comb": 0.1583
+    },
+    {
+     "me": 22,
+     "name": "Mansa Musa",
+     "kind": "attack",
+     "target": "59",
+     "targetName": "bot#59",
+     "t0": 959,
+     "t1": 959,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      69
+     ],
+     "first": 0.0469,
+     "comb": 0.1537
+    },
+    {
+     "me": 30,
+     "name": "Raiden",
+     "kind": "attack",
+     "target": "178",
+     "targetName": "bot#178",
+     "t0": 616,
+     "t1": 630,
+     "n": 2,
+     "pcts": [
+      82,
+      76
+     ],
+     "first": 0.0811,
+     "comb": 0.1502
+    },
+    {
+     "me": 23,
+     "name": "Leif Erikson",
+     "kind": "attack",
+     "target": "184",
+     "targetName": "bot#184",
+     "t0": 728,
+     "t1": 728,
+     "n": 2,
+     "pcts": [
+      76,
+      68
+     ],
+     "first": 0.0752,
+     "comb": 0.1375
+    },
+    {
+     "me": 15,
+     "name": "CIA",
+     "kind": "attack",
+     "target": "108",
+     "targetName": "bot#108",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 11,
+     "name": "EZ_Clap",
+     "kind": "attack",
+     "target": "146",
+     "targetName": "bot#146",
+     "t0": 840,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      49,
+      56
+     ],
+     "first": 0.0488,
+     "comb": 0.1018
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "459",
+     "targetName": "bot#459",
+     "t0": 658,
+     "t1": 658,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Raiden",
+     "kind": "attack",
+     "target": "76",
+     "targetName": "bot#76",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 376,
+     "clusters": 295,
+     "dupClusters": 38,
+     "dupCmds": 119,
+     "extraCmds": 81,
+     "sizes": {
+      "1": 257,
+      "3": 6,
+      "8": 2,
+      "2": 22,
+      "6": 2,
+      "4": 3,
+      "5": 2,
+      "7": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 12,
+     "name": "Cao Cao",
+     "kind": "attack",
+     "target": "321",
+     "targetName": "bot#321",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 7,
+     "pcts": [
+      91,
+      159,
+      186,
+      193,
+      214,
+      203,
+      202
+     ],
+     "first": 0.0898,
+     "comb": 0.7419
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1169,
+     "t1": 1169,
+     "n": 6,
+     "pcts": [
+      93,
+      66,
+      143,
+      151,
+      174,
+      250
+     ],
+     "first": 0.0918,
+     "comb": 0.6112
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "339",
+     "targetName": "bot#339",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      385,
+      346
+     ],
+     "first": 0.377,
+     "comb": 0.5881
+    },
+    {
+     "me": 22,
+     "name": "Mansa Musa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1232,
+     "t1": 1232,
+     "n": 8,
+     "pcts": [
+      73,
+      47,
+      47,
+      47,
+      47,
+      207,
+      167,
+      173
+     ],
+     "first": 0.0723,
+     "comb": 0.5766
+    },
+    {
+     "me": 10,
+     "name": "Charlemagne",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 6,
+     "pcts": [
+      183,
+      101,
+      95,
+      105,
+      83,
+      193
+     ],
+     "first": 0.1797,
+     "comb": 0.5535
+    },
+    {
+     "me": 8,
+     "name": "Kandy",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1204,
+     "t1": 1204,
+     "n": 8,
+     "pcts": [
+      63,
+      58,
+      138,
+      93,
+      94,
+      47,
+      48,
+      65
+     ],
+     "first": 0.0625,
+     "comb": 0.4659
+    },
+    {
+     "me": 11,
+     "name": "EZ_Clap",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 4,
+     "pcts": [
+      162,
+      152,
+      186,
+      59
+     ],
+     "first": 0.1592,
+     "comb": 0.4497
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 4,
+     "pcts": [
+      99,
+      97,
+      173,
+      148
+     ],
+     "first": 0.0977,
+     "comb": 0.4212
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "170",
+     "targetName": "bot#170",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      161,
+      230
+     ],
+     "first": 0.1582,
+     "comb": 0.3481
+    },
+    {
+     "me": 10,
+     "name": "Charlemagne",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      210,
+      164
+     ],
+     "first": 0.2061,
+     "comb": 0.334
+    },
+    {
+     "me": 19,
+     "name": "Nelson",
+     "kind": "attack",
+     "target": "452",
+     "targetName": "bot#452",
+     "t0": 1134,
+     "t1": 1134,
+     "n": 2,
+     "pcts": [
+      202,
+      171
+     ],
+     "first": 0.1982,
+     "comb": 0.3329
+    },
+    {
+     "me": 12,
+     "name": "Cao Cao",
+     "kind": "attack",
+     "target": "95",
+     "targetName": "bot#95",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 2,
+     "pcts": [
+      221,
+      137
+     ],
+     "first": 0.2168,
+     "comb": 0.3223
+    },
+    {
+     "me": 20,
+     "name": "bruh",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 987,
+     "t1": 987,
+     "n": 2,
+     "pcts": [
+      183,
+      172
+     ],
+     "first": 0.1797,
+     "comb": 0.3183
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 910,
+     "t1": 910,
+     "n": 3,
+     "pcts": [
+      47,
+      138,
+      151
+     ],
+     "first": 0.0469,
+     "comb": 0.2985
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "450",
+     "targetName": "bot#450",
+     "t0": 728,
+     "t1": 728,
+     "n": 2,
+     "pcts": [
+      155,
+      155
+     ],
+     "first": 0.1523,
+     "comb": 0.2815
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 994,
+     "t1": 994,
+     "n": 2,
+     "pcts": [
+      152,
+      155
+     ],
+     "first": 0.1494,
+     "comb": 0.279
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "170",
+     "targetName": "bot#170",
+     "t0": 777,
+     "t1": 777,
+     "n": 2,
+     "pcts": [
+      157,
+      148
+     ],
+     "first": 0.1543,
+     "comb": 0.2774
+    },
+    {
+     "me": 28,
+     "name": "Goguryeo",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      173,
+      126
+     ],
+     "first": 0.1699,
+     "comb": 0.2729
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "382",
+     "targetName": "bot#382",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 3,
+     "pcts": [
+      99,
+      101,
+      105
+     ],
+     "first": 0.0977,
+     "comb": 0.2716
+    },
+    {
+     "me": 27,
+     "name": "CJ",
+     "kind": "attack",
+     "target": "440",
+     "targetName": "bot#440",
+     "t0": 994,
+     "t1": 994,
+     "n": 5,
+     "pcts": [
+      47,
+      48,
+      54,
+      59,
+      96
+     ],
+     "first": 0.0469,
+     "comb": 0.2681
+    },
+    {
+     "me": 26,
+     "name": "Zenobia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1113,
+     "t1": 1113,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      52,
+      109
+     ],
+     "first": 0.0469,
+     "comb": 0.2671
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "177",
+     "targetName": "bot#177",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      141,
+      147
+     ],
+     "first": 0.1387,
+     "comb": 0.2632
+    },
+    {
+     "me": 23,
+     "name": "Leif Erikson",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 987,
+     "t1": 987,
+     "n": 4,
+     "pcts": [
+      47,
+      134,
+      52,
+      59
+     ],
+     "first": 0.0469,
+     "comb": 0.2613
+    },
+    {
+     "me": 8,
+     "name": "Kandy",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 945,
+     "t1": 945,
+     "n": 2,
+     "pcts": [
+      83,
+      186
+     ],
+     "first": 0.082,
+     "comb": 0.2497
+    },
+    {
+     "me": 14,
+     "name": "Three Kingdoms",
+     "kind": "attack",
+     "target": "221",
+     "targetName": "bot#221",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      89,
+      179
+     ],
+     "first": 0.0879,
+     "comb": 0.2482
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "486",
+     "targetName": "bot#486",
+     "t0": 770,
+     "t1": 770,
+     "n": 2,
+     "pcts": [
+      126,
+      138
+     ],
+     "first": 0.124,
+     "comb": 0.2429
+    },
+    {
+     "me": 15,
+     "name": "CIA",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 2,
+     "pcts": [
+      113,
+      135
+     ],
+     "first": 0.1113,
+     "comb": 0.2294
+    },
+    {
+     "me": 30,
+     "name": "Raiden",
+     "kind": "attack",
+     "target": "504",
+     "targetName": "bot#504",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 3,
+     "pcts": [
+      113,
+      62,
+      60
+     ],
+     "first": 0.1113,
+     "comb": 0.2157
+    },
+    {
+     "me": 29,
+     "name": "Genos",
+     "kind": "attack",
+     "target": "263",
+     "targetName": "bot#263",
+     "t0": 1169,
+     "t1": 1169,
+     "n": 2,
+     "pcts": [
+      107,
+      111
+     ],
+     "first": 0.1055,
+     "comb": 0.2033
+    },
+    {
+     "me": 13,
+     "name": "Makima",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1078,
+     "t1": 1078,
+     "n": 3,
+     "pcts": [
+      116,
+      47,
+      47
+     ],
+     "first": 0.1143,
+     "comb": 0.1953
+    },
+    {
+     "me": 11,
+     "name": "EZ_Clap",
+     "kind": "attack",
+     "target": "146",
+     "targetName": "bot#146",
+     "t0": 679,
+     "t1": 679,
+     "n": 2,
+     "pcts": [
+      104,
+      92
+     ],
+     "first": 0.1025,
+     "comb": 0.184
+    },
+    {
+     "me": 26,
+     "name": "Zenobia",
+     "kind": "attack",
+     "target": "376",
+     "targetName": "bot#376",
+     "t0": 1113,
+     "t1": 1113,
+     "n": 2,
+     "pcts": [
+      102,
+      91
+     ],
+     "first": 0.1006,
+     "comb": 0.1814
+    },
+    {
+     "me": 18,
+     "name": "Cascadia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 770,
+     "t1": 770,
+     "n": 2,
+     "pcts": [
+      73,
+      94
+     ],
+     "first": 0.0723,
+     "comb": 0.1583
+    },
+    {
+     "me": 22,
+     "name": "Mansa Musa",
+     "kind": "attack",
+     "target": "59",
+     "targetName": "bot#59",
+     "t0": 959,
+     "t1": 959,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      69
+     ],
+     "first": 0.0469,
+     "comb": 0.1537
+    },
+    {
+     "me": 23,
+     "name": "Leif Erikson",
+     "kind": "attack",
+     "target": "184",
+     "targetName": "bot#184",
+     "t0": 728,
+     "t1": 728,
+     "n": 2,
+     "pcts": [
+      76,
+      68
+     ],
+     "first": 0.0752,
+     "comb": 0.1375
+    },
+    {
+     "me": 15,
+     "name": "CIA",
+     "kind": "attack",
+     "target": "108",
+     "targetName": "bot#108",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 17,
+     "name": "Barbary",
+     "kind": "attack",
+     "target": "459",
+     "targetName": "bot#459",
+     "t0": 658,
+     "t1": 658,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Raiden",
+     "kind": "attack",
+     "target": "76",
+     "targetName": "bot#76",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  }
+ }
+}

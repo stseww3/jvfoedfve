@@ -1,0 +1,36 @@
+# A099 影子策略（v27-team-c116.js），号：noah88=20 talon5=23 alex_k=24 kaito9=26，拍段 1250~1305
+拍 1260 noah88：领土 8592 余额 95.1k 密度 11.1 nb=1 neut=0 ⇒ 发船  11.9k（127/1024）
+拍 1300 noah88：领土 8592 余额 98.9k 密度 11.5 nb=1 neut=0 ⇒ 不出手
+    底线 safeAt(-1)=48.5k（5.6×地） isNoFullSend=false shadowQuota=22.7k
+    [核心期前] 闲置线 idleCap×100×地=1.07M（idle=false） held=false 在打的非无主目标 0/4 最小指令 4632 单价上限 maxCost=338.1478 AI 单价上限 botMax=60 邻居均兵 99.2k
+      🫥#49 地 15610 兵 99.2k 接触 54 单价 22.3 需 200.2k 底线 185.5k → 不打：可用兵不足：余额 98.9k − 底线 185.5k = -86.7k（需 > 21.2k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=371.1k = floorK 1×min(859.2k, max(reserve 项 319.7k, ref 0×邻居均兵 0, defenseNeed 371.1k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 kaito9#26（余额+正在打它的兵 92.8k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+    [winFloor 拆解] 项2 dpKeep=48.5k 项3 sb=safeFinite=0（余额 98.9k）
+拍 1300 talon5：领土 5515 余额 118.9k 密度 21.6 nb=3 neut=0 ⇒ 不出手
+    底线 safeAt(-1)=57.8k（10.5×地） isNoFullSend=false shadowQuota=28.4k
+    [核心期前] 闲置线 idleCap×100×地=689.4k（idle=false） held=false 在打的非无主目标 0/4 最小指令 5568 单价上限 maxCost=338.1478 AI 单价上限 botMax=60 邻居均兵 100.3k
+      Player 944#69 地 11578 兵 90.6k 接触 86 单价 27.0 需 178.8k 底线 185.5k → 不打：可用兵不足：余额 118.9k − 底线 185.5k = -66.7k（需 > 25.4k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=371.1k = floorK 1×min(551.5k, max(reserve 项 248.4k, ref 0×邻居均兵 0, defenseNeed 371.1k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 kaito9#26（余额+正在打它的兵 92.8k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+      RUSSIA=EVIL[UA]#71 地 9710 兵 111.2k 接触 48 单价 38.6 需 212.7k 底线 185.5k → 不打：可用兵不足：余额 118.9k − 底线 185.5k = -66.7k（需 > 25.4k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=371.1k = floorK 1×min(551.5k, max(reserve 项 355.1k, ref 0×邻居均兵 0, defenseNeed 371.1k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 kaito9#26（余额+正在打它的兵 92.8k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+      🫥#49 地 15610 兵 99.2k 接触 131 单价 22.3 需 200.2k 底线 185.5k → 不打：可用兵不足：余额 118.9k − 底线 185.5k = -66.7k（需 > 25.4k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=371.1k = floorK 1×min(551.5k, max(reserve 项 205.2k, ref 0×邻居均兵 0, defenseNeed 371.1k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 kaito9#26（余额+正在打它的兵 92.8k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+    [winFloor 拆解] 项2 dpKeep=57.8k 项3 sb=safeFinite=0（余额 118.9k）
+拍 1300 alex_k：领土 4434 余额 123.9k 密度 27.9 nb=1 neut=0 ⇒ 不出手
+    底线 safeAt(-1)=52.0k（11.7×地） isNoFullSend=false shadowQuota=29.9k
+    [核心期前] 闲置线 idleCap×100×地=554.3k（idle=false） held=false 在打的非无主目标 0/4 最小指令 5808 单价上限 maxCost=338.1478 AI 单价上限 botMax=60 邻居均兵 99.2k
+      🫥#49 地 15610 兵 99.2k 接触 10 单价 22.3 需 200.2k 底线 185.5k → 不打：可用兵不足：余额 123.9k − 底线 185.5k = -61.6k（需 > 26.5k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=371.1k = floorK 1×min(443.4k, max(reserve 项 165.0k, ref 0×邻居均兵 0, defenseNeed 371.1k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 kaito9#26（余额+正在打它的兵 92.8k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+    [winFloor 拆解] 项2 dpKeep=52.0k 项3 sb=safeFinite=0（余额 123.9k）
+拍 1300 kaito9：领土 4319 余额 92.8k 密度 21.5 nb=1 neut=0 ⇒ 不出手
+    底线 safeAt(-1)=52.1k（12.1×地） isNoFullSend=false shadowQuota=22.2k
+    [核心期前] 闲置线 idleCap×100×地=539.9k（idle=false） held=false 在打的非无主目标 0/4 最小指令 4348 单价上限 maxCost=338.1478 AI 单价上限 botMax=60 邻居均兵 99.2k
+      🫥#49 地 15610 兵 99.2k 接触 152 单价 22.3 需 200.2k 底线 189.8k → 不打：可用兵不足：余额 92.8k − 底线 189.8k = -97.1k（需 > 19.9k）；amount=0 < 最小指令
+        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=379.6k = floorK 1×min(431.9k, max(reserve 项 160.7k, ref 0×邻居均兵 0, defenseNeed 379.6k))；defenseNeed 来自：🫥#49 的别的邻居里最弱的是 ADA#60（余额+正在打它的兵 94.9k）→ kDef 4×它；food=false motive=null（null 时再乘 preyFloor 0.5）
+    [winFloor 拆解] 项2 dpKeep=52.1k 项3 sb=safeFinite=0（余额 92.8k）
+# 自检：相邻快照之间的发令数增量 一致 0 / 差 1 以内 0 / 不一致 0（共 0 段）
+# 自检：nb/neut 与真实日志一致 4 点，不一致 0 点；调度同拍都有 0（其中对象和比例完全相同 0），只有影子有 0，只有真实日志有 0
+# noah88 影子指令计数 cmds=1 boats=1；isNoFullSend 全程未锁，此后被它拦掉的出兵 0 次，改成 1 兵试探 0 次
+# talon5 影子指令计数 cmds=0 boats=0；isNoFullSend 全程未锁，此后被它拦掉的出兵 0 次，改成 1 兵试探 0 次
+# alex_k 影子指令计数 cmds=0 boats=0；isNoFullSend 全程未锁，此后被它拦掉的出兵 0 次，改成 1 兵试探 0 次
+# kaito9 影子指令计数 cmds=0 boats=0；isNoFullSend 全程未锁，此后被它拦掉的出兵 0 次，改成 1 兵试探 0 次

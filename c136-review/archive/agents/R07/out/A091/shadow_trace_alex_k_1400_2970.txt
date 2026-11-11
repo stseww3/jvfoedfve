@@ -1,0 +1,958 @@
+# A091 alex_k 影子决策明细 t=1400~2970（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 18 拍（t=1400~1495）
+#   出手打人/bot: 14 拍（t=1475~2860）；可用兵 10165~527563，一条指令下限(20%余额) 35052~113857，比值 27%~463%
+#   首选目标价高（c>=worth）: 221 拍（t=1500~2730）
+#   其他指令: 4 拍（t=1885~2300）
+#   首选目标已有在途进攻（curAtk 过门槛）: 7 拍（t=2005~2865）；可用兵 6459~389573，一条指令下限(20%余额) 34645~85816，比值 17%~454%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 21 拍（t=2425~2820）；可用兵 132~9936，一条指令下限(20%余额) 35671~91332，比值 0%~23%
+#   首选目标无可用兵（avail<=0）: 2 拍（t=2450~2735）；可用兵 -1084~-914，一条指令下限(20%余额) 36518~81026，比值 -3%~-1%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 7 拍（t=2790~2845）；可用兵 14131~26492，一条指令下限(20%余额) 86882~93482，比值 16%~28%
+#   没有可打的邻居: 20 拍（t=2870~2970）
+#   捐兵: 1 拍（t=2965~2965）
+#   └ 「出手打人/bot」里：14 条对人/bot 的出兵共约 444817 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 alex_k B=134590 L=3365 d=40.0 nb=1 neut=9 cmds=19 noFull=0 shQ=32852 | m=1.400 worth=56.0 cheap=3.8 over=0 dMedOther=5.2 safe(-1)=68051
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 alex_k B=134590 L=3383 d=39.8 nb=1 neut=9 cmds=19 noFull=0 shQ=33647 | m=1.405 worth=55.9 cheap=3.8 over=0 dMedOther=5.2 safe(-1)=68036
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 alex_k B=138075 L=3402 d=40.6 nb=1 neut=11 cmds=19 noFull=0 shQ=34518 | m=1.410 worth=57.2 cheap=3.9 over=0 dMedOther=5.3 safe(-1)=69856
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 alex_k B=138075 L=3413 d=40.5 nb=1 neut=13 cmds=19 noFull=0 shQ=34518 | m=1.415 worth=57.2 cheap=3.9 over=0 dMedOther=5.2 safe(-1)=69846
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 alex_k B=141609 L=3437 d=41.2 nb=1 neut=11 cmds=19 noFull=0 shQ=35402 | m=1.420 worth=58.5 cheap=3.9 over=0 dMedOther=5.4 safe(-1)=71687
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 alex_k B=141609 L=3460 d=40.9 nb=1 neut=13 cmds=19 noFull=0 shQ=35402 | m=1.425 worth=58.3 cheap=3.9 over=0 dMedOther=5.3 safe(-1)=71668
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 alex_k B=145191 L=3473 d=41.8 nb=1 neut=12 cmds=19 noFull=0 shQ=36297 | m=1.430 worth=59.8 cheap=4.0 over=0 dMedOther=5.2 safe(-1)=73544
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 alex_k B=145191 L=3496 d=41.5 nb=1 neut=12 cmds=19 noFull=0 shQ=36297 | m=1.435 worth=59.6 cheap=4.0 over=0 dMedOther=5.1 safe(-1)=73524
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 alex_k B=148820 L=3520 d=42.3 nb=1 neut=12 cmds=19 noFull=0 shQ=37205 | m=1.440 worth=60.9 cheap=4.0 over=0 dMedOther=5.1 safe(-1)=75415
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 alex_k B=148820 L=3532 d=42.1 nb=1 neut=13 cmds=19 noFull=0 shQ=37205 | m=1.445 worth=60.9 cheap=4.0 over=0 dMedOther=4.9 safe(-1)=75405
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 alex_k B=152495 L=3558 d=42.9 nb=1 neut=13 cmds=19 noFull=0 shQ=38123 | m=1.450 worth=62.1 cheap=4.1 over=0 dMedOther=4.8 safe(-1)=77319
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 alex_k B=152495 L=3584 d=42.5 nb=1 neut=13 cmds=19 noFull=0 shQ=38123 | m=1.455 worth=61.9 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=77297
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 alex_k B=156215 L=3597 d=43.4 nb=1 neut=13 cmds=19 noFull=0 shQ=39053 | m=1.460 worth=63.4 cheap=4.1 over=0 dMedOther=5.1 safe(-1)=79246
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 alex_k B=156215 L=3624 d=43.1 nb=1 neut=15 cmds=19 noFull=0 shQ=39053 | m=1.465 worth=63.1 cheap=4.1 over=0 dMedOther=5.1 safe(-1)=79223
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 alex_k B=159964 L=3653 d=43.8 nb=1 neut=14 cmds=19 noFull=0 shQ=39991 | m=1.470 worth=64.4 cheap=4.2 over=0 dMedOther=5.1 safe(-1)=81173
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 alex_k B=159964 L=3667 d=43.6 nb=2 neut=4 cmds=20 noFull=0 shQ=39991 | m=1.475 worth=64.3 cheap=4.2 over=0 dMedOther=5.1 safe(-1)=81161
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=173 → AI#332（约 27181 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1480 alex_k B=163755 L=3675 d=44.6 nb=2 neut=4 cmds=21 noFull=0 shQ=40938 | m=1.480 worth=65.9 cheap=4.2 over=0 dMedOther=5.2 safe(-1)=77171
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=172 → AI#332（约 27665 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1485 alex_k B=134011 L=3694 d=36.3 nb=2 neut=3 cmds=21 noFull=0 shQ=5677 | m=1.485 worth=53.9 cheap=4.2 over=0 dMedOther=4.9 safe(-1)=77155
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 alex_k B=137146 L=3709 d=37.0 nb=2 neut=3 cmds=21 noFull=0 shQ=9630 | m=1.490 worth=55.1 cheap=4.3 over=0 dMedOther=4.9 safe(-1)=79021
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 alex_k B=112369 L=3742 d=30.0 nb=2 neut=3 cmds=21 noFull=0 shQ=13051 | m=1.495 worth=44.9 cheap=4.3 over=0 dMedOther=4.9 safe(-1)=78993
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 alex_k B=118725 L=3779 d=31.4 nb=2 neut=2 cmds=21 noFull=0 shQ=16343 | m=1.500 worth=47.1 cheap=4.3 over=0 dMedOther=6.0 safe(-1)=83255
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=153862 dq=36.1 cnt=67 | c=117.6 rankC=117.6 need=280648 tD=6.00 人 crowdedHard | safe=83255 keep=Inf avail=-Inf chunkB=23745 pulseB=14247 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1505 alex_k B=118725 L=3797 d=31.3 nb=2 neut=1 cmds=21 noFull=0 shQ=19759 | m=1.499 worth=46.9 cheap=4.4 over=0 dMedOther=6.3 safe(-1)=83240
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=153862 dq=36.1 cnt=67 | c=117.6 rankC=117.6 need=280648 tD=5.74 人 crowdedHard | safe=83240 keep=Inf avail=-Inf chunkB=23745 pulseB=14247 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1510 alex_k B=121431 L=3831 d=31.7 nb=2 neut=1 cmds=21 noFull=0 shQ=23164 | m=1.498 worth=47.5 cheap=4.4 over=0 dMedOther=6.4 safe(-1)=85182
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=157370 dq=36.9 cnt=67 | c=120.2 rankC=120.2 need=286901 tD=5.74 人 crowdedHard | safe=85182 keep=Inf avail=-Inf chunkB=24286 pulseB=14572 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1515 alex_k B=121882 L=3862 d=31.6 nb=2 neut=0 cmds=21 noFull=0 shQ=26617 | m=1.498 worth=47.3 cheap=4.4 over=0 dMedOther=6.4 safe(-1)=85156
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=157370 dq=36.9 cnt=67 | c=120.2 rankC=120.2 need=286901 tD=5.74 人 crowdedHard | safe=85156 keep=Inf avail=-Inf chunkB=24376 pulseB=14626 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1520 alex_k B=124624 L=3877 d=32.1 nb=2 neut=0 cmds=21 noFull=0 shQ=30067 | m=1.497 worth=48.1 cheap=4.4 over=0 dMedOther=6.6 safe(-1)=87132
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=160910 dq=37.7 cnt=67 | c=122.9 rankC=122.9 need=293211 tD=5.74 人 crowdedHard | safe=87132 keep=Inf avail=-Inf chunkB=24925 pulseB=14955 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1525 alex_k B=124624 L=3906 d=31.9 nb=2 neut=0 cmds=21 noFull=0 shQ=31156 | m=1.496 worth=47.7 cheap=4.5 over=0 dMedOther=6.6 safe(-1)=87107
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=160910 dq=37.7 cnt=67 | c=122.9 rankC=122.9 need=293211 tD=5.74 人 crowdedHard | safe=87107 keep=Inf avail=-Inf chunkB=24925 pulseB=14955 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1530 alex_k B=127390 L=3936 d=32.4 nb=2 neut=0 cmds=21 noFull=0 shQ=31847 | m=1.496 worth=48.4 cheap=4.5 over=0 dMedOther=6.7 safe(-1)=89089
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=164482 dq=38.6 cnt=67 | c=125.5 rankC=125.5 need=299578 tD=5.74 人 crowdedHard | safe=89089 keep=Inf avail=-Inf chunkB=25478 pulseB=15287 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1535 alex_k B=127390 L=3951 d=32.2 nb=2 neut=0 cmds=21 noFull=0 shQ=31847 | m=1.495 worth=48.2 cheap=4.5 over=0 dMedOther=6.7 safe(-1)=82669
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=153078 dq=35.9 cnt=67 | c=117.1 rankC=117.1 need=279251 tD=5.34 人 crowdedHard | safe=82669 keep=Inf avail=-Inf chunkB=25478 pulseB=15287 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1540 alex_k B=130179 L=3978 d=32.7 nb=2 neut=0 cmds=21 noFull=0 shQ=32544 | m=1.494 worth=48.9 cheap=4.6 over=0 dMedOther=6.9 safe(-1)=84530
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=156430 dq=36.7 cnt=67 | c=119.6 rankC=119.6 need=285226 tD=5.34 人 crowdedHard | safe=84530 keep=Inf avail=-Inf chunkB=26036 pulseB=15621 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1545 alex_k B=130179 L=4005 d=32.5 nb=2 neut=0 cmds=21 noFull=0 shQ=32544 | m=1.493 worth=48.5 cheap=4.6 over=0 dMedOther=6.1 safe(-1)=84507
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=156430 dq=36.7 cnt=67 | c=119.6 rankC=119.6 need=285226 tD=6.02 人 crowdedHard | safe=84507 keep=Inf avail=-Inf chunkB=26036 pulseB=15621 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1550 alex_k B=132977 L=4018 d=33.1 nb=2 neut=0 cmds=21 noFull=0 shQ=33244 | m=1.492 worth=49.4 cheap=4.6 over=0 dMedOther=6.2 safe(-1)=86385
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=159793 dq=37.5 cnt=67 | c=122.1 rankC=122.1 need=291220 tD=6.04 人 crowdedHard | safe=86385 keep=Inf avail=-Inf chunkB=26595 pulseB=15957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1555 alex_k B=132977 L=4045 d=32.9 nb=2 neut=0 cmds=21 noFull=0 shQ=33244 | m=1.492 worth=49.0 cheap=4.7 over=0 dMedOther=6.2 safe(-1)=86363
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=159793 dq=37.5 cnt=67 | c=122.1 rankC=122.1 need=291220 tD=6.05 人 crowdedHard | safe=86363 keep=Inf avail=-Inf chunkB=26595 pulseB=15957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1560 alex_k B=135796 L=4071 d=33.4 nb=2 neut=0 cmds=21 noFull=0 shQ=33949 | m=1.491 worth=49.7 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=88244
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=163180 dq=38.3 cnt=67 | c=124.6 rankC=124.6 need=297257 tD=5.47 人 crowdedHard | safe=88244 keep=Inf avail=-Inf chunkB=27159 pulseB=16296 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1565 alex_k B=135796 L=4083 d=33.3 nb=2 neut=0 cmds=21 noFull=0 shQ=33949 | m=1.490 worth=49.6 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=88233
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=163180 dq=38.3 cnt=67 | c=124.6 rankC=124.6 need=297257 tD=5.47 人 crowdedHard | safe=88233 keep=Inf avail=-Inf chunkB=27159 pulseB=16296 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1570 alex_k B=138634 L=4109 d=33.7 nb=2 neut=0 cmds=21 noFull=0 shQ=34658 | m=1.490 worth=50.3 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=90127
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=166590 dq=39.1 cnt=67 | c=184.4 rankC=267.3 need=303335 tD=5.47 人 crowdedHard | safe=90127 keep=Inf avail=-Inf chunkB=27727 pulseB=16636 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1575 alex_k B=138634 L=4138 d=33.5 nb=2 neut=0 cmds=21 noFull=0 shQ=34658 | m=1.489 worth=49.9 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=90103
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=166590 dq=39.1 cnt=67 | c=184.4 rankC=267.3 need=303335 tD=5.47 人 crowdedHard | safe=90103 keep=Inf avail=-Inf chunkB=27727 pulseB=16636 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1580 alex_k B=141489 L=4152 d=34.1 nb=2 neut=0 cmds=21 noFull=0 shQ=35372 | m=1.488 worth=50.7 cheap=4.8 over=0 dMedOther=7.3 safe(-1)=92019
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=170021 dq=39.9 cnt=67 | c=188.1 rankC=272.7 need=309451 tD=5.47 人 crowdedHard | safe=92019 keep=Inf avail=-Inf chunkB=28298 pulseB=16979 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1585 alex_k B=141489 L=4179 d=33.9 nb=2 neut=0 cmds=21 noFull=0 shQ=35372 | m=1.487 worth=50.4 cheap=4.9 over=0 dMedOther=6.5 safe(-1)=91996
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=170021 dq=39.9 cnt=67 | c=188.1 rankC=272.7 need=309451 tD=6.17 人 crowdedHard | safe=91996 keep=Inf avail=-Inf chunkB=28298 pulseB=16979 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1590 alex_k B=144361 L=4205 d=34.3 nb=2 neut=0 cmds=21 noFull=0 shQ=36090 | m=1.486 worth=51.0 cheap=4.9 over=0 dMedOther=6.6 safe(-1)=93913
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=173472 dq=40.7 cnt=67 | c=191.8 rankC=278.1 need=315602 tD=6.18 人 crowdedHard | safe=93913 keep=Inf avail=-Inf chunkB=28872 pulseB=17323 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1595 alex_k B=144361 L=4218 d=34.2 nb=2 neut=0 cmds=21 noFull=0 shQ=36090 | m=1.486 worth=50.8 cheap=5.0 over=0 dMedOther=6.6 safe(-1)=93902
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=173472 dq=40.7 cnt=67 | c=191.8 rankC=278.1 need=315602 tD=6.20 人 crowdedHard | safe=93902 keep=Inf avail=-Inf chunkB=28872 pulseB=17323 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1600 alex_k B=151492 L=4244 d=35.7 nb=2 neut=0 cmds=21 noFull=0 shQ=36847 | m=1.485 worth=53.0 cheap=5.0 over=0 dMedOther=7.7 safe(-1)=98225
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=181206 dq=42.5 cnt=67 | c=200.2 rankC=290.3 need=329388 tD=5.55 人 crowdedHard | safe=98225 keep=Inf avail=-Inf chunkB=30298 pulseB=18179 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1605 alex_k B=151492 L=4266 d=35.5 nb=2 neut=0 cmds=21 noFull=0 shQ=37873 | m=1.484 worth=52.7 cheap=5.0 over=0 dMedOther=7.6 safe(-1)=98206
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=181206 dq=42.5 cnt=67 | c=200.2 rankC=290.3 need=329388 tD=5.58 人 crowdedHard | safe=98206 keep=Inf avail=-Inf chunkB=30298 pulseB=18179 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1610 alex_k B=154476 L=4276 d=36.1 nb=2 neut=0 cmds=21 noFull=0 shQ=38619 | m=1.484 worth=53.6 cheap=5.1 over=0 dMedOther=7.7 safe(-1)=100203
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=184775 dq=43.3 cnt=67 | c=204.1 rankC=295.9 need=335749 tD=5.61 人 crowdedHard | safe=100203 keep=Inf avail=-Inf chunkB=30895 pulseB=18537 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1615 alex_k B=154476 L=4296 d=36.0 nb=2 neut=0 cmds=21 noFull=0 shQ=38619 | m=1.483 worth=53.3 cheap=5.1 over=0 dMedOther=7.7 safe(-1)=100186
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=184775 dq=43.3 cnt=67 | c=204.1 rankC=295.9 need=335749 tD=5.63 人 crowdedHard | safe=100186 keep=Inf avail=-Inf chunkB=30895 pulseB=18537 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1620 alex_k B=157472 L=4313 d=36.5 nb=2 neut=0 cmds=21 noFull=0 shQ=39368 | m=1.482 worth=54.1 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=102185
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=188359 dq=44.2 cnt=67 | c=208.0 rankC=301.5 need=342137 tD=5.67 人 crowdedHard | safe=102185 keep=Inf avail=-Inf chunkB=31494 pulseB=18897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1625 alex_k B=157472 L=4320 d=36.5 nb=2 neut=0 cmds=21 noFull=0 shQ=39368 | m=1.481 worth=54.0 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=102179
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=188359 dq=44.2 cnt=67 | c=208.0 rankC=301.5 need=342137 tD=5.70 人 crowdedHard | safe=102179 keep=Inf avail=-Inf chunkB=31494 pulseB=18897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1630 alex_k B=160463 L=4330 d=37.1 nb=2 neut=0 cmds=21 noFull=0 shQ=40115 | m=1.480 worth=54.9 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=104181
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=191937 dq=45.0 cnt=67 | c=211.8 rankC=307.2 need=348515 tD=5.74 人 crowdedHard | safe=104181 keep=Inf avail=-Inf chunkB=32093 pulseB=19256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1635 alex_k B=160463 L=4334 d=37.0 nb=2 neut=0 cmds=21 noFull=0 shQ=40115 | m=1.480 worth=54.8 cheap=5.3 over=0 dMedOther=6.9 safe(-1)=104178
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=191937 dq=45.0 cnt=67 | c=211.8 rankC=307.2 need=348515 tD=6.50 人 crowdedHard | safe=104178 keep=Inf avail=-Inf chunkB=32093 pulseB=19256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1640 alex_k B=163463 L=4335 d=37.7 nb=2 neut=0 cmds=21 noFull=0 shQ=40865 | m=1.479 worth=55.8 cheap=5.3 over=0 dMedOther=6.3 safe(-1)=106193
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=195526 dq=45.8 cnt=67 | c=148.8 rankC=148.8 need=354912 tD=7.32 人 crowdedHard | safe=106193 keep=Inf avail=-Inf chunkB=32693 pulseB=19616 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1645 alex_k B=188253 L=4336 d=43.4 nb=1 neut=0 cmds=21 noFull=0 shQ=42615 | m=1.478 worth=64.2 cheap=5.4 over=0 dMedOther=6.3 safe(-1)=106192
+    → [IND]Magadha Empire#6[T1] terr=4265 bal=195526 dq=45.8 cnt=67 | c=110.3 rankC=110.3 need=354912 tD=7.33 人 | safe=106192 keep=Inf avail=-Inf chunkB=37651 pulseB=22590 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1650 alex_k B=191716 L=4336 d=44.2 nb=1 neut=0 cmds=21 noFull=0 shQ=46981 | m=1.478 worth=65.3 cheap=5.4 over=0 dMedOther=6.4 safe(-1)=108213
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=199123 dq=46.7 cnt=67 | c=112.3 rankC=112.3 need=361342 tD=7.34 人 | safe=108213 keep=Inf avail=-Inf chunkB=38343 pulseB=23006 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1655 alex_k B=191716 L=4336 d=44.2 nb=1 neut=0 cmds=21 noFull=0 shQ=47929 | m=1.477 worth=65.3 cheap=5.5 over=0 dMedOther=6.3 safe(-1)=110678
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=203511 dq=47.7 cnt=67 | c=114.7 rankC=114.7 need=369164 tD=7.51 人 | safe=110678 keep=Inf avail=-Inf chunkB=38343 pulseB=23006 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1660 alex_k B=195186 L=4336 d=45.0 nb=1 neut=0 cmds=21 noFull=0 shQ=48796 | m=1.476 worth=66.4 cheap=5.5 over=0 dMedOther=6.5 safe(-1)=112747
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=207194 dq=48.6 cnt=67 | c=116.7 rankC=116.7 need=375729 tD=7.52 人 | safe=112747 keep=Inf avail=-Inf chunkB=39037 pulseB=23422 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1665 alex_k B=195186 L=4336 d=45.0 nb=1 neut=0 cmds=21 noFull=0 shQ=48796 | m=1.475 worth=66.4 cheap=5.6 over=0 dMedOther=6.5 safe(-1)=112747
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=207194 dq=48.6 cnt=67 | c=116.7 rankC=116.7 need=375729 tD=7.53 人 | safe=112747 keep=Inf avail=-Inf chunkB=39037 pulseB=23422 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1670 alex_k B=198660 L=4336 d=45.8 nb=1 neut=0 cmds=21 noFull=0 shQ=49665 | m=1.474 worth=67.6 cheap=5.6 over=0 dMedOther=6.6 safe(-1)=114819
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=210882 dq=49.4 cnt=67 | c=118.8 rankC=118.8 need=382303 tD=7.54 人 | safe=114819 keep=Inf avail=-Inf chunkB=39732 pulseB=23839 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1675 alex_k B=198660 L=4336 d=45.8 nb=1 neut=0 cmds=21 noFull=0 shQ=49665 | m=1.474 worth=67.5 cheap=5.7 over=0 dMedOther=6.6 safe(-1)=114819
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=210882 dq=49.4 cnt=67 | c=118.8 rankC=118.8 need=382303 tD=7.55 人 | safe=114819 keep=Inf avail=-Inf chunkB=39732 pulseB=23839 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1680 alex_k B=202136 L=4336 d=46.6 nb=1 neut=0 cmds=21 noFull=0 shQ=50534 | m=1.473 worth=68.7 cheap=5.7 over=0 dMedOther=6.7 safe(-1)=116892
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=214572 dq=50.3 cnt=67 | c=120.8 rankC=120.8 need=388880 tD=7.56 人 | safe=116892 keep=Inf avail=-Inf chunkB=40427 pulseB=24256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1685 alex_k B=202136 L=4336 d=46.6 nb=1 neut=0 cmds=21 noFull=0 shQ=50534 | m=1.472 worth=68.6 cheap=5.8 over=0 dMedOther=6.6 safe(-1)=116892
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=214572 dq=50.3 cnt=67 | c=120.8 rankC=120.8 need=388880 tD=7.57 人 | safe=116892 keep=Inf avail=-Inf chunkB=40427 pulseB=24256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1690 alex_k B=205612 L=4336 d=47.4 nb=1 neut=0 cmds=21 noFull=0 shQ=51403 | m=1.472 worth=69.8 cheap=5.8 over=0 dMedOther=6.7 safe(-1)=118965
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=218262 dq=51.2 cnt=67 | c=122.8 rankC=122.8 need=395458 tD=7.58 人 | safe=118965 keep=Inf avail=-Inf chunkB=41122 pulseB=24673 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1695 alex_k B=205612 L=4336 d=47.4 nb=1 neut=0 cmds=21 noFull=0 shQ=51403 | m=1.471 worth=69.7 cheap=5.9 over=0 dMedOther=6.7 safe(-1)=118965
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=218262 dq=51.2 cnt=67 | c=122.8 rankC=122.8 need=395458 tD=7.64 人 | safe=118965 keep=Inf avail=-Inf chunkB=41122 pulseB=24673 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1700 alex_k B=213422 L=4336 d=49.2 nb=1 neut=0 cmds=21 noFull=0 shQ=52304 | m=1.470 worth=72.4 cheap=5.9 over=0 dMedOther=7.7 safe(-1)=123434
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=226216 dq=53.0 cnt=67 | c=127.2 rankC=127.2 need=409636 tD=6.85 人 | safe=123434 keep=Inf avail=-Inf chunkB=42684 pulseB=25611 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1705 alex_k B=213422 L=4336 d=49.2 nb=1 neut=0 cmds=21 noFull=0 shQ=53355 | m=1.469 worth=72.3 cheap=6.0 over=0 dMedOther=7.6 safe(-1)=123434
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=226216 dq=53.0 cnt=67 | c=127.2 rankC=127.2 need=409636 tD=6.95 人 | safe=123434 keep=Inf avail=-Inf chunkB=42684 pulseB=25611 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1710 alex_k B=216943 L=4336 d=50.0 nb=1 neut=0 cmds=21 noFull=0 shQ=54235 | m=1.468 worth=73.5 cheap=6.0 over=0 dMedOther=7.7 safe(-1)=125530
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=229948 dq=53.9 cnt=67 | c=129.3 rankC=129.3 need=416288 tD=6.98 人 | safe=125530 keep=Inf avail=-Inf chunkB=43389 pulseB=26033 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1715 alex_k B=216943 L=4336 d=50.0 nb=1 neut=0 cmds=21 noFull=0 shQ=54235 | m=1.468 worth=73.4 cheap=6.1 over=0 dMedOther=7.7 safe(-1)=125530
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=229948 dq=53.9 cnt=67 | c=129.3 rankC=129.3 need=416288 tD=6.98 人 | safe=125530 keep=Inf avail=-Inf chunkB=43389 pulseB=26033 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1720 alex_k B=220457 L=4336 d=50.8 nb=1 neut=0 cmds=21 noFull=0 shQ=55114 | m=1.467 worth=74.6 cheap=6.2 over=0 dMedOther=7.9 safe(-1)=127623
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=233673 dq=54.8 cnt=67 | c=131.4 rankC=131.4 need=422928 tD=6.98 人 | safe=127623 keep=Inf avail=-Inf chunkB=44091 pulseB=26455 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1725 alex_k B=220457 L=4336 d=50.8 nb=1 neut=0 cmds=21 noFull=0 shQ=55114 | m=1.466 worth=74.5 cheap=6.2 over=0 dMedOther=7.9 safe(-1)=127623
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=233673 dq=54.8 cnt=67 | c=131.4 rankC=131.4 need=422928 tD=6.98 人 | safe=127623 keep=Inf avail=-Inf chunkB=44091 pulseB=26455 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1730 alex_k B=223962 L=4336 d=51.7 nb=1 neut=0 cmds=21 noFull=0 shQ=55990 | m=1.466 worth=75.7 cheap=6.3 over=0 dMedOther=8.0 safe(-1)=129710
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=237388 dq=55.6 cnt=67 | c=133.4 rankC=133.4 need=429550 tD=6.98 人 | safe=129710 keep=Inf avail=-Inf chunkB=44792 pulseB=26875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1735 alex_k B=223962 L=4336 d=51.7 nb=1 neut=0 cmds=21 noFull=0 shQ=55990 | m=1.465 worth=75.7 cheap=6.3 over=0 dMedOther=8.0 safe(-1)=129710
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=237388 dq=55.6 cnt=67 | c=133.4 rankC=133.4 need=429550 tD=6.98 人 | safe=129710 keep=Inf avail=-Inf chunkB=44792 pulseB=26875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1740 alex_k B=227455 L=4336 d=52.5 nb=1 neut=0 cmds=21 noFull=0 shQ=56863 | m=1.464 worth=76.8 cheap=6.4 over=0 dMedOther=7.2 safe(-1)=131790
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=241091 dq=56.5 cnt=67 | c=135.5 rankC=135.5 need=436151 tD=7.90 人 | safe=131790 keep=Inf avail=-Inf chunkB=45491 pulseB=27295 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1745 alex_k B=227455 L=4336 d=52.5 nb=1 neut=0 cmds=21 noFull=0 shQ=56863 | m=1.463 worth=76.8 cheap=6.5 over=0 dMedOther=7.1 safe(-1)=131790
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=241091 dq=56.5 cnt=67 | c=135.5 rankC=135.5 need=436151 tD=7.91 人 | safe=131790 keep=Inf avail=-Inf chunkB=45491 pulseB=27295 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1750 alex_k B=230935 L=4336 d=53.3 nb=1 neut=0 cmds=21 noFull=0 shQ=57733 | m=1.462 worth=77.9 cheap=6.5 over=0 dMedOther=7.2 safe(-1)=133862
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=244779 dq=57.4 cnt=67 | c=137.5 rankC=137.5 need=442725 tD=7.93 人 | safe=133862 keep=Inf avail=-Inf chunkB=46187 pulseB=27712 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1755 alex_k B=230935 L=4336 d=53.3 nb=1 neut=0 cmds=21 noFull=0 shQ=57733 | m=1.462 worth=77.9 cheap=6.6 over=0 dMedOther=7.2 safe(-1)=133862
+    → [IND]Magadha Empire#6[T1] terr=4266 bal=244779 dq=57.4 cnt=67 | c=137.5 rankC=137.5 need=442725 tD=7.94 人 | safe=133862 keep=Inf avail=-Inf chunkB=46187 pulseB=27712 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1760 alex_k B=234399 L=4336 d=54.1 nb=1 neut=0 cmds=21 noFull=0 shQ=58599 | m=1.461 worth=79.0 cheap=6.7 over=0 dMedOther=6.9 safe(-1)=135925
+    → [IND]Magadha Empire#6[T1] terr=4268 bal=248450 dq=58.2 cnt=67 | c=139.5 rankC=139.5 need=449230 tD=8.40 人 | safe=135925 keep=Inf avail=-Inf chunkB=46880 pulseB=28128 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1765 alex_k B=234399 L=4336 d=54.1 nb=1 neut=0 cmds=21 noFull=0 shQ=58599 | m=1.460 worth=78.9 cheap=6.7 over=0 dMedOther=6.6 safe(-1)=135925
+    → [IND]Magadha Empire#6[T1] terr=4278 bal=248450 dq=58.1 cnt=67 | c=139.2 rankC=139.2 need=449286 tD=8.77 人 | safe=135925 keep=Inf avail=-Inf chunkB=46880 pulseB=28128 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1770 alex_k B=237844 L=4336 d=54.9 nb=1 neut=0 cmds=21 noFull=0 shQ=59461 | m=1.460 worth=80.1 cheap=6.8 over=0 dMedOther=6.7 safe(-1)=137976
+    → [IND]Magadha Empire#6[T1] terr=4287 bal=252102 dq=58.8 cnt=67 | c=141.0 rankC=141.0 need=455831 tD=8.76 人 | safe=137976 keep=Inf avail=-Inf chunkB=47569 pulseB=28541 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1775 alex_k B=237844 L=4336 d=54.9 nb=1 neut=0 cmds=21 noFull=0 shQ=59461 | m=1.459 worth=80.0 cheap=6.9 over=0 dMedOther=6.7 safe(-1)=137976
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=252102 dq=58.5 cnt=67 | c=140.3 rankC=140.3 need=455844 tD=8.73 人 | safe=137976 keep=Inf avail=-Inf chunkB=47569 pulseB=28541 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1780 alex_k B=241268 L=4336 d=55.6 nb=1 neut=0 cmds=21 noFull=0 shQ=60317 | m=1.458 worth=81.1 cheap=7.0 over=0 dMedOther=6.8 safe(-1)=140016
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=255733 dq=59.3 cnt=67 | c=142.2 rankC=142.2 need=462316 tD=8.73 人 | safe=140016 keep=Inf avail=-Inf chunkB=48254 pulseB=28952 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1785 alex_k B=241268 L=4336 d=55.6 nb=1 neut=0 cmds=21 noFull=0 shQ=60317 | m=1.457 worth=81.1 cheap=7.0 over=0 dMedOther=6.8 safe(-1)=140016
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=255733 dq=59.3 cnt=67 | c=142.2 rankC=142.2 need=462316 tD=8.74 人 | safe=140016 keep=Inf avail=-Inf chunkB=48254 pulseB=28952 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1790 alex_k B=244645 L=4336 d=56.4 nb=1 neut=0 cmds=21 noFull=0 shQ=61161 | m=1.457 worth=82.2 cheap=7.1 over=0 dMedOther=6.9 safe(-1)=142028
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=259313 dq=60.2 cnt=67 | c=144.2 rankC=144.2 need=468698 tD=8.75 人 | safe=142028 keep=Inf avail=-Inf chunkB=48929 pulseB=29357 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1795 alex_k B=244645 L=4336 d=56.4 nb=1 neut=0 cmds=21 noFull=0 shQ=61161 | m=1.456 worth=82.1 cheap=7.2 over=0 dMedOther=6.9 safe(-1)=142028
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=259313 dq=60.2 cnt=67 | c=144.2 rankC=144.2 need=468698 tD=8.75 人 | safe=142028 keep=Inf avail=-Inf chunkB=48929 pulseB=29357 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1800 alex_k B=252332 L=4336 d=58.2 nb=1 neut=0 cmds=21 noFull=0 shQ=62031 | m=1.455 worth=84.7 cheap=7.3 over=0 dMedOther=7.9 safe(-1)=146444
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=267175 dq=62.0 cnt=67 | c=148.5 rankC=148.5 need=482712 tD=7.82 人 | safe=146444 keep=Inf avail=-Inf chunkB=50466 pulseB=30280 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1805 alex_k B=252332 L=4336 d=58.2 nb=1 neut=0 cmds=21 noFull=0 shQ=63083 | m=1.454 worth=84.6 cheap=7.4 over=0 dMedOther=7.9 safe(-1)=146444
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=267175 dq=62.0 cnt=67 | c=148.5 rankC=148.5 need=482712 tD=7.87 人 | safe=146444 keep=Inf avail=-Inf chunkB=50466 pulseB=30280 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1810 alex_k B=255713 L=4336 d=59.0 nb=1 neut=0 cmds=21 noFull=0 shQ=63928 | m=1.454 worth=85.7 cheap=7.4 over=0 dMedOther=7.6 safe(-1)=148456
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=270755 dq=62.8 cnt=67 | c=150.5 rankC=150.5 need=489093 tD=8.29 人 | safe=148456 keep=Inf avail=-Inf chunkB=51143 pulseB=30686 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1815 alex_k B=255713 L=4336 d=59.0 nb=1 neut=0 cmds=21 noFull=0 shQ=63928 | m=1.453 worth=85.7 cheap=7.5 over=0 dMedOther=7.6 safe(-1)=148456
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=270755 dq=62.8 cnt=67 | c=150.5 rankC=150.5 need=489093 tD=8.30 人 | safe=148456 keep=Inf avail=-Inf chunkB=51143 pulseB=30686 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1820 alex_k B=259062 L=4336 d=59.7 nb=1 neut=0 cmds=21 noFull=0 shQ=64765 | m=1.452 worth=86.8 cheap=7.6 over=0 dMedOther=7.6 safe(-1)=150448
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=274301 dq=63.6 cnt=67 | c=152.4 rankC=152.4 need=495414 tD=8.38 人 | safe=150448 keep=Inf avail=-Inf chunkB=51812 pulseB=31087 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1825 alex_k B=259062 L=4336 d=59.7 nb=1 neut=0 cmds=21 noFull=0 shQ=64765 | m=1.451 worth=86.7 cheap=7.7 over=0 dMedOther=7.4 safe(-1)=150448
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=274301 dq=63.6 cnt=67 | c=152.4 rankC=152.4 need=495414 tD=8.59 人 | safe=150448 keep=Inf avail=-Inf chunkB=51812 pulseB=31087 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1830 alex_k B=262377 L=4336 d=60.5 nb=1 neut=0 cmds=21 noFull=0 shQ=65594 | m=1.451 worth=87.8 cheap=7.8 over=0 dMedOther=7.4 safe(-1)=152420
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=277812 dq=64.5 cnt=67 | c=154.4 rankC=154.4 need=501673 tD=8.72 人 | safe=152420 keep=Inf avail=-Inf chunkB=52475 pulseB=31485 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1835 alex_k B=262377 L=4336 d=60.5 nb=1 neut=0 cmds=21 noFull=0 shQ=65594 | m=1.450 worth=87.7 cheap=7.9 over=0 dMedOther=7.4 safe(-1)=144648
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=263977 dq=61.2 cnt=67 | c=146.8 rankC=146.8 need=477011 tD=8.28 人 | safe=144648 keep=Inf avail=-Inf chunkB=52475 pulseB=31485 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1840 alex_k B=265656 L=4336 d=61.3 nb=1 neut=0 cmds=21 noFull=0 shQ=66414 | m=1.449 worth=88.8 cheap=8.0 over=0 dMedOther=7.5 safe(-1)=146501
+    → [IND]Magadha Empire#6[T1] terr=4310 bal=267276 dq=62.0 cnt=67 | c=148.6 rankC=148.6 need=482892 tD=8.25 人 | safe=146501 keep=Inf avail=-Inf chunkB=53131 pulseB=31879 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1845 alex_k B=265656 L=4336 d=61.3 nb=1 neut=0 cmds=21 noFull=0 shQ=66414 | m=1.448 worth=88.7 cheap=8.1 over=0 dMedOther=7.5 safe(-1)=146501
+    → [IND]Magadha Empire#6[T1] terr=4337 bal=267276 dq=61.6 cnt=67 | c=147.7 rankC=147.7 need=482910 tD=8.20 人 | safe=146501 keep=Inf avail=-Inf chunkB=53131 pulseB=31879 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1850 alex_k B=268897 L=4336 d=62.0 nb=1 neut=0 cmds=21 noFull=0 shQ=67224 | m=1.448 worth=89.8 cheap=8.2 over=0 dMedOther=7.6 safe(-1)=140763
+    → [IND]Magadha Empire#6[T1] terr=4353 bal=257063 dq=59.1 cnt=67 | c=141.7 rankC=141.7 need=464730 tD=7.76 人 | safe=140763 keep=Inf avail=-Inf chunkB=53779 pulseB=32268 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1855 alex_k B=268897 L=4336 d=62.0 nb=1 neut=0 cmds=21 noFull=0 shQ=67224 | m=1.447 worth=89.7 cheap=8.3 over=0 dMedOther=7.6 safe(-1)=140763
+    → [IND]Magadha Empire#6[T1] terr=4353 bal=257063 dq=59.1 cnt=67 | c=141.7 rankC=141.7 need=464730 tD=7.76 人 | safe=140763 keep=Inf avail=-Inf chunkB=53779 pulseB=32268 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1860 alex_k B=272096 L=4336 d=62.8 nb=1 neut=0 cmds=21 noFull=0 shQ=68024 | m=1.446 worth=90.7 cheap=8.4 over=0 dMedOther=7.7 safe(-1)=141623
+    → [IND]Magadha Empire#6[T1] terr=4337 bal=258593 dq=59.6 cnt=67 | c=143.1 rankC=143.1 need=467178 tD=7.73 人 | safe=141623 keep=Inf avail=-Inf chunkB=54419 pulseB=32652 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1865 alex_k B=272096 L=4336 d=62.8 nb=1 neut=0 cmds=21 noFull=0 shQ=68024 | m=1.445 worth=90.7 cheap=8.5 over=0 dMedOther=7.7 safe(-1)=140293
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=256225 dq=59.3 cnt=67 | c=142.3 rankC=142.3 need=462726 tD=7.69 人 | safe=140293 keep=Inf avail=-Inf chunkB=54419 pulseB=32652 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1870 alex_k B=275225 L=4336 d=63.5 nb=1 neut=0 cmds=21 noFull=0 shQ=68806 | m=1.445 worth=91.7 cheap=8.6 over=0 dMedOther=7.6 safe(-1)=131853
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=241202 dq=55.8 cnt=67 | c=134.1 rankC=134.1 need=436135 tD=7.38 人 | safe=131853 keep=Inf avail=-Inf chunkB=55045 pulseB=33027 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1875 alex_k B=275225 L=4336 d=63.5 nb=1 neut=0 cmds=21 noFull=0 shQ=68806 | m=1.444 worth=91.6 cheap=8.8 over=0 dMedOther=7.6 safe(-1)=131853
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=241202 dq=55.8 cnt=67 | c=134.1 rankC=134.1 need=436214 tD=7.38 人 | safe=131853 keep=Inf avail=-Inf chunkB=55045 pulseB=33027 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1880 alex_k B=278362 L=4336 d=64.2 nb=1 neut=0 cmds=21 noFull=0 shQ=69590 | m=1.443 worth=92.6 cheap=8.8 over=0 dMedOther=7.7 safe(-1)=133397
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=243951 dq=56.4 cnt=67 | c=135.6 rankC=135.6 need=441193 tD=7.37 人 | safe=133397 keep=Inf avail=-Inf chunkB=55672 pulseB=33403 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1885 alex_k B=278362 L=4336 d=64.2 nb=1 neut=0 cmds=22 noFull=0 shQ=69590 | m=1.442 worth=92.6 cheap=8.8 over=0 dMedOther=7.7 safe(-1)=133397
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=243951 dq=56.4 cnt=67 | c=135.6 rankC=135.6 need=441273 tD=7.37 人 | safe=133397 keep=Inf avail=-Inf chunkB=55672 pulseB=33403 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#935594（约 34795 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1890 alex_k B=281535 L=4336 d=64.9 nb=1 neut=0 cmds=22 noFull=0 shQ=70383 | m=1.442 worth=93.6 cheap=8.8 over=0 dMedOther=7.7 safe(-1)=134960
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=246732 dq=57.1 cnt=67 | c=137.1 rankC=137.1 need=446311 tD=7.37 人 | safe=134960 keep=Inf avail=-Inf chunkB=56307 pulseB=33784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1895 alex_k B=281535 L=4336 d=64.9 nb=1 neut=0 cmds=22 noFull=0 shQ=70383 | m=1.441 worth=93.5 cheap=8.8 over=0 dMedOther=7.7 safe(-1)=134960
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=246732 dq=57.1 cnt=67 | c=137.1 rankC=137.1 need=446311 tD=7.37 人 | safe=134960 keep=Inf avail=-Inf chunkB=56307 pulseB=33784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1900 alex_k B=244591 L=4336 d=56.4 nb=1 neut=0 cmds=22 noFull=0 shQ=60083 | m=1.440 worth=81.2 cheap=8.8 over=0 dMedOther=8.8 safe(-1)=131986
+    → [IND]Magadha Empire#6[T1] terr=4323 bal=241439 dq=55.8 cnt=67 | c=194.4 rankC=281.9 need=436876 tD=6.32 人 | safe=131986 keep=Inf avail=-Inf chunkB=48918 pulseB=29351 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1905 alex_k B=244591 L=4338 d=56.4 nb=2 neut=0 cmds=22 noFull=0 shQ=61147 | m=1.439 worth=81.1 cheap=8.8 over=0 dMedOther=8.8 safe(-1)=125229
+    → [IND]Magadha Empire#6[T1] terr=4337 bal=229415 dq=52.9 cnt=67 | c=127.1 rankC=127.1 need=415425 tD=5.98 人 | safe=125229 keep=Inf avail=-Inf chunkB=48918 pulseB=29351 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1910 alex_k B=247379 L=4346 d=56.9 nb=2 neut=0 cmds=22 noFull=0 shQ=61844 | m=1.439 worth=81.9 cheap=8.8 over=0 dMedOther=9.0 safe(-1)=126692
+    → [IND]Magadha Empire#6[T1] terr=4353 bal=232030 dq=53.3 cnt=67 | c=128.1 rankC=128.1 need=420110 tD=5.96 人 | safe=126692 keep=Inf avail=-Inf chunkB=49476 pulseB=29685 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1915 alex_k B=247379 L=4357 d=56.8 nb=2 neut=0 cmds=22 noFull=0 shQ=61844 | m=1.438 worth=81.6 cheap=8.8 over=0 dMedOther=9.0 safe(-1)=126682
+    → [IND]Magadha Empire#6[T1] terr=4385 bal=232030 dq=52.9 cnt=67 | c=127.2 rankC=127.2 need=420158 tD=5.91 人 | safe=126682 keep=Inf avail=-Inf chunkB=49476 pulseB=29685 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1920 alex_k B=250199 L=4360 d=57.4 nb=2 neut=0 cmds=22 noFull=0 shQ=62549 | m=1.437 worth=82.5 cheap=8.8 over=0 dMedOther=9.1 safe(-1)=128166
+    → [IND]Magadha Empire#6[T1] terr=4414 bal=234675 dq=53.2 cnt=67 | c=127.8 rankC=127.8 need=424935 tD=5.85 人 | safe=128166 keep=Inf avail=-Inf chunkB=50040 pulseB=30024 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1925 alex_k B=250199 L=4367 d=57.3 nb=2 neut=0 cmds=22 noFull=0 shQ=62549 | m=1.436 worth=82.3 cheap=8.8 over=0 dMedOther=9.1 safe(-1)=128160
+    → [IND]Magadha Empire#6[T1] terr=4425 bal=234675 dq=53.0 cnt=67 | c=127.4 rankC=127.4 need=424932 tD=5.84 人 | safe=128160 keep=Inf avail=-Inf chunkB=50040 pulseB=30024 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1930 alex_k B=253051 L=4371 d=57.9 nb=1 neut=0 cmds=22 noFull=0 shQ=63262 | m=1.435 worth=83.1 cheap=8.8 over=0 dMedOther=9.2 safe(-1)=129659
+    → [IND]Magadha Empire#6[T1] terr=4442 bal=237350 dq=53.4 cnt=67 | c=128.4 rankC=128.4 need=429745 tD=5.82 人 | safe=129659 keep=Inf avail=-Inf chunkB=50610 pulseB=30366 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1935 alex_k B=281762 L=4371 d=64.5 nb=1 neut=0 cmds=22 noFull=0 shQ=65671 | m=1.435 worth=92.5 cheap=8.8 over=0 dMedOther=9.2 safe(-1)=129659
+    → [IND]Magadha Empire#6[T1] terr=4456 bal=237350 dq=53.3 cnt=67 | c=128.1 rankC=128.1 need=429728 tD=5.81 人 | safe=129659 keep=Inf avail=-Inf chunkB=56352 pulseB=33811 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1940 alex_k B=284974 L=4371 d=65.2 nb=1 neut=0 cmds=22 noFull=0 shQ=69695 | m=1.434 worth=93.5 cheap=8.8 over=0 dMedOther=9.3 safe(-1)=131179
+    → [IND]Magadha Empire#6[T1] terr=4464 bal=240055 dq=53.8 cnt=67 | c=129.3 rankC=129.3 need=434561 tD=5.80 人 | safe=131179 keep=Inf avail=-Inf chunkB=56995 pulseB=34197 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1945 alex_k B=284974 L=4371 d=65.2 nb=1 neut=0 cmds=23 noFull=0 shQ=71243 | m=1.433 worth=93.4 cheap=8.8 over=0 dMedOther=9.3 safe(-1)=131179
+    → [IND]Magadha Empire#6[T1] terr=4479 bal=240055 dq=53.6 cnt=67 | c=128.8 rankC=128.8 need=434641 tD=5.78 人 | safe=131179 keep=Inf avail=-Inf chunkB=56995 pulseB=34197 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#933862（约 35621 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1950 alex_k B=288222 L=4371 d=65.9 nb=1 neut=0 cmds=23 noFull=0 shQ=72055 | m=1.433 worth=94.5 cheap=8.8 over=0 dMedOther=9.4 safe(-1)=132716
+    → [IND]Magadha Empire#6[T1] terr=4495 bal=242791 dq=54.0 cnt=67 | c=129.8 rankC=129.8 need=439542 tD=5.76 人 | safe=132716 keep=Inf avail=-Inf chunkB=57644 pulseB=34587 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1955 alex_k B=243189 L=4371 d=55.6 nb=1 neut=0 cmds=23 noFull=0 shQ=60797 | m=1.432 worth=79.7 cheap=8.8 over=0 dMedOther=9.4 safe(-1)=123259
+    → [IND]Magadha Empire#6[T1] terr=4505 bal=225958 dq=50.2 cnt=67 | c=120.6 rankC=120.6 need=409514 tD=5.36 人 | safe=123259 keep=Inf avail=-Inf chunkB=48638 pulseB=29183 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1960 alex_k B=245961 L=4371 d=56.3 nb=1 neut=0 cmds=23 noFull=0 shQ=61490 | m=1.431 worth=80.5 cheap=8.8 over=0 dMedOther=9.5 safe(-1)=124706
+    → [IND]Magadha Empire#6[T1] terr=4532 bal=228533 dq=50.4 cnt=67 | c=121.3 rankC=121.3 need=414127 tD=5.32 人 | safe=124706 keep=Inf avail=-Inf chunkB=49192 pulseB=29515 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1965 alex_k B=245961 L=4371 d=56.3 nb=1 neut=0 cmds=23 noFull=0 shQ=61490 | m=1.430 worth=80.5 cheap=8.8 over=0 dMedOther=9.5 safe(-1)=124706
+    → [IND]Magadha Empire#6[T1] terr=4560 bal=228533 dq=50.1 cnt=67 | c=120.6 rankC=120.6 need=414169 tD=5.29 人 | safe=124706 keep=Inf avail=-Inf chunkB=49192 pulseB=29515 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1970 alex_k B=248764 L=4371 d=56.9 nb=1 neut=0 cmds=23 noFull=0 shQ=62191 | m=1.429 worth=81.4 cheap=8.8 over=0 dMedOther=10.4 safe(-1)=131049
+    → [IND]Magadha Empire#6[T1] terr=4571 bal=239823 dq=52.5 cnt=67 | c=126.1 rankC=126.1 need=434364 tD=5.06 人 | safe=131049 keep=Inf avail=-Inf chunkB=49753 pulseB=29852 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1975 alex_k B=248764 L=4371 d=56.9 nb=1 neut=0 cmds=23 noFull=0 shQ=62191 | m=1.429 worth=81.3 cheap=8.8 over=0 dMedOther=10.4 safe(-1)=131049
+    → [IND]Magadha Empire#6[T1] terr=4592 bal=239823 dq=52.2 cnt=67 | c=125.5 rankC=125.5 need=434339 tD=5.04 人 | safe=131049 keep=Inf avail=-Inf chunkB=49753 pulseB=29852 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1980 alex_k B=251599 L=4371 d=57.6 nb=1 neut=0 cmds=23 noFull=0 shQ=62899 | m=1.428 worth=82.2 cheap=8.8 over=0 dMedOther=10.5 safe(-1)=132584
+    → [IND]Magadha Empire#6[T1] terr=4607 bal=242556 dq=52.6 cnt=67 | c=126.5 rankC=126.5 need=439290 tD=5.01 人 | safe=132584 keep=Inf avail=-Inf chunkB=50320 pulseB=30192 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1985 alex_k B=251599 L=4371 d=57.6 nb=1 neut=0 cmds=23 noFull=0 shQ=62899 | m=1.427 worth=82.2 cheap=8.8 over=0 dMedOther=10.5 safe(-1)=132584
+    → [IND]Magadha Empire#6[T1] terr=4613 bal=242556 dq=52.6 cnt=67 | c=126.3 rankC=126.3 need=439261 tD=5.01 人 | safe=132584 keep=Inf avail=-Inf chunkB=50320 pulseB=30192 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1990 alex_k B=254467 L=4371 d=58.2 nb=1 neut=0 cmds=24 noFull=0 shQ=63616 | m=1.427 worth=83.0 cheap=8.8 over=0 dMedOther=10.6 safe(-1)=134137
+    → [IND]Magadha Empire#6[T1] terr=4625 bal=245321 dq=53.0 cnt=67 | c=61.9 rankC=30.9 need=444207 tD=4.98 人 pulse bleeding | safe=134137 keep=215112 avail=36373 chunkB=50893 pulseB=30536  x=30536 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 30565 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1995 alex_k B=254467 L=4375 d=58.2 nb=2 neut=0 cmds=25 noFull=0 shQ=63616 | m=1.426 worth=82.9 cheap=8.8 over=0 dMedOther=10.6 safe(-1)=134134
+    → [IND]Magadha Empire#6[T1] terr=4638 bal=245321 dq=52.9 cnt=67 | c=61.7 rankC=30.9 need=444246 tD=4.97 人 pulse bleeding | safe=134134 keep=214972 avail=36513 chunkB=50893 pulseB=30536  x=30536 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 30565 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2000 alex_k B=261747 L=4380 d=59.8 nb=2 neut=0 cmds=26 noFull=0 shQ=64361 | m=1.425 worth=85.2 cheap=8.8 over=0 dMedOther=11.8 safe(-1)=135690
+    → [IND]Magadha Empire#6[T1] terr=4590 bal=248098 dq=54.1 cnt=67 | c=54.9 rankC=27.4 need=448272 tD=4.59 人 pulse bleeding | safe=135690 keep=205792 avail=52888 chunkB=52349 pulseB=31410  x=31409 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 31440 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2005 alex_k B=197283 L=4460 d=44.2 nb=2 neut=0 cmds=26 noFull=0 shQ=1124 | m=1.420 worth=62.8 cheap=8.8 over=0 dMedOther=11.8 safe(-1)=129974
+    → [IND]Magadha Empire#6[T1] terr=4484 bal=238044 dq=53.1 cnt=65 | c=46.2 rankC=23.1 need=381176 tD=4.50 人 pulse bleeding | safe=129974 keep=165642 avail=29330 chunkB=39457 pulseB=23674 在途(curAtk=47071)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2010 alex_k B=173227 L=4610 d=37.6 nb=2 neut=0 cmds=26 noFull=0 shQ=3865 | m=1.415 worth=53.2 cheap=8.8 over=0 dMedOther=11.3 safe(-1)=124042
+    → [IND]Magadha Empire#6[T1] terr=4340 bal=227709 dq=52.5 cnt=64 | c=41.0 rankC=20.5 need=358568 tD=4.65 人 pulse bleeding | safe=124042 keep=149278 avail=21919 chunkB=34645 pulseB=20787 在途(curAtk=48448)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2015 alex_k B=173227 L=4685 d=37.0 nb=2 neut=0 cmds=26 noFull=0 shQ=6330 | m=1.409 worth=52.1 cheap=8.8 over=0 dMedOther=11.3 safe(-1)=118955
+    → [IND]Magadha Empire#6[T1] terr=4236 bal=218768 dq=51.6 cnt=63 | c=42.2 rankC=21.1 need=351462 tD=4.57 人 pulse bleeding | safe=118955 keep=153110 avail=18087 chunkB=34645 pulseB=20787 在途(curAtk=37610)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2020 alex_k B=175201 L=4834 d=36.2 nb=2 neut=0 cmds=26 noFull=0 shQ=8801 | m=1.404 worth=50.9 cheap=8.8 over=0 dMedOther=11.4 safe(-1)=112005
+    → [IND]Magadha Empire#6[T1] terr=4064 bal=206620 dq=50.8 cnt=60 | c=38.0 rankC=19.0 need=346992 tD=4.44 人 pulse bleeding | safe=112005 keep=148437 avail=24711 chunkB=35040 pulseB=21024 在途(curAtk=17014)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2025 alex_k B=175259 L=4923 d=35.6 nb=2 neut=0 cmds=27 noFull=0 shQ=11296 | m=1.399 worth=49.8 cheap=8.8 over=0 dMedOther=11.4 safe(-1)=106150
+    → [IND]Magadha Empire#6[T1] terr=3985 bal=196331 dq=49.3 cnt=60 | c=39.2 rankC=19.6 need=344419 tD=4.30 人 pulse bleeding | safe=106150 keep=152600 avail=20606 chunkB=35052 pulseB=21031  x=20606 hNb=1
+    ⇒ 影子指令 attack pct=120 → [IND]Magadha Empire#6[T1]（约 20709 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2030 alex_k B=177256 L=4941 d=35.9 nb=2 neut=0 cmds=28 noFull=0 shQ=13797 | m=1.393 worth=50.0 cheap=8.8 over=0 dMedOther=11.6 safe(-1)=105407
+    → [IND]Magadha Empire#6[T1] terr=3946 bal=195036 dq=49.4 cnt=59 | c=40.3 rankC=20.1 need=341413 tD=4.26 人 pulse bleeding | safe=105407 keep=156370 avail=18809 chunkB=35451 pulseB=21271  x=18809 hNb=1
+    ⇒ 影子指令 attack pct=108 → [IND]Magadha Empire#6[T1]（约 18868 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2035 alex_k B=177256 L=4984 d=35.6 nb=2 neut=0 cmds=29 noFull=0 shQ=16322 | m=1.388 worth=49.4 cheap=8.8 over=0 dMedOther=11.5 safe(-1)=103517
+    → [IND]Magadha Empire#6[T1] terr=3924 bal=191736 dq=48.9 cnt=58 | c=40.5 rankC=20.3 need=335284 tD=4.23 人 pulse bleeding | safe=103517 keep=157927 avail=17252 chunkB=35451 pulseB=21271  x=17252 hNb=1
+    ⇒ 影子指令 attack pct=99 → [IND]Magadha Empire#6[T1]（约 17310 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2040 alex_k B=137560 L=5095 d=27.0 nb=2 neut=0 cmds=29 noFull=0 shQ=785 | m=1.383 worth=37.3 cheap=8.6 over=0 dMedOther=11.7 safe(-1)=175991
+    → [IND]Magadha Empire#6[T1] terr=3859 bal=203158 dq=52.6 cnt=63 | c=39.9 rankC=20.0 need=326024 tD=4.50 人 pulse bleeding | safe=175991 keep=Inf avail=-Inf chunkB=27512 pulseB=16507 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2045 alex_k B=122515 L=5179 d=23.7 nb=2 neut=0 cmds=29 noFull=0 shQ=2732 | m=1.378 worth=32.6 cheap=8.6 over=0 dMedOther=11.7 safe(-1)=167307
+    → [IND]Magadha Empire#6[T1] terr=3762 bal=194446 dq=51.7 cnt=62 | c=38.3 rankC=19.1 need=305939 tD=4.42 人 pulse bleeding | safe=167307 keep=Inf avail=-Inf chunkB=24503 pulseB=14702 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2050 alex_k B=123923 L=5350 d=23.2 nb=2 neut=0 cmds=29 noFull=0 shQ=4511 | m=1.373 worth=31.8 cheap=8.6 over=0 dMedOther=11.9 safe(-1)=155990
+    → [IND]Magadha Empire#6[T1] terr=3610 bal=183059 dq=50.7 cnt=59 | c=41.2 rankC=20.6 need=303297 tD=4.28 人 pulse bleeding | safe=155990 keep=Inf avail=-Inf chunkB=24785 pulseB=14871 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2055 alex_k B=123981 L=5460 d=22.7 nb=2 neut=0 cmds=29 noFull=0 shQ=6306 | m=1.367 worth=31.0 cheap=8.6 over=0 dMedOther=11.9 safe(-1)=147828
+    → [IND]Magadha Empire#6[T1] terr=3544 bal=167846 dq=47.4 cnt=60 | c=38.7 rankC=19.4 need=285508 tD=3.99 人 pulse bleeding | safe=147828 keep=Inf avail=-Inf chunkB=24796 pulseB=14878 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2060 alex_k B=125406 L=5486 d=22.9 nb=2 neut=0 cmds=29 noFull=0 shQ=8105 | m=1.362 worth=31.1 cheap=8.6 over=0 dMedOther=12.0 safe(-1)=144506
+    → [IND]Magadha Empire#6[T1] terr=3510 bal=158156 dq=45.1 cnt=60 | c=36.5 rankC=18.3 need=268505 tD=3.75 人 pulse bleeding | safe=144506 keep=Inf avail=-Inf chunkB=25081 pulseB=15049 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2065 alex_k B=125406 L=5540 d=22.6 nb=2 neut=0 cmds=29 noFull=0 shQ=9920 | m=1.357 worth=30.7 cheap=8.6 over=0 dMedOther=12.0 safe(-1)=141211
+    → [IND]Magadha Empire#6[T1] terr=3487 bal=154797 dq=44.4 cnt=61 | c=36.8 rankC=18.4 need=262388 tD=3.69 人 pulse bleeding | safe=141211 keep=Inf avail=-Inf chunkB=25081 pulseB=15049 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2070 alex_k B=126848 L=5595 d=22.7 nb=2 neut=0 cmds=29 noFull=0 shQ=11739 | m=1.352 worth=30.6 cheap=8.6 over=0 dMedOther=12.2 safe(-1)=141209
+    → [IND]Magadha Empire#6[T1] terr=3494 bal=154745 dq=44.3 cnt=62 | c=37.5 rankC=18.7 need=262630 tD=3.64 人 pulse bleeding | safe=141209 keep=Inf avail=-Inf chunkB=25370 pulseB=15222 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2075 alex_k B=126848 L=5622 d=22.6 nb=2 neut=0 cmds=29 noFull=0 shQ=13574 | m=1.346 worth=30.4 cheap=8.6 over=0 dMedOther=12.2 safe(-1)=137709
+    → [IND]Magadha Empire#6[T1] terr=3462 bal=151225 dq=43.7 cnt=61 | c=37.8 rankC=18.9 need=256026 tD=3.59 人 pulse bleeding | safe=137709 keep=Inf avail=-Inf chunkB=25370 pulseB=15222 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2080 alex_k B=128306 L=5669 d=22.6 nb=2 neut=0 cmds=29 noFull=0 shQ=15414 | m=1.341 worth=30.4 cheap=8.6 over=0 dMedOther=12.3 safe(-1)=135937
+    → [IND]Magadha Empire#6[T1] terr=3445 bal=149423 dq=43.4 cnt=61 | c=38.7 rankC=19.3 need=252671 tD=3.52 人 pulse bleeding | safe=135937 keep=Inf avail=-Inf chunkB=25661 pulseB=15397 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2085 alex_k B=128306 L=5706 d=22.5 nb=2 neut=0 cmds=29 noFull=0 shQ=17274 | m=1.336 worth=30.0 cheap=8.6 over=0 dMedOther=12.3 safe(-1)=134364
+    → [IND]Magadha Empire#6[T1] terr=3452 bal=147836 dq=42.8 cnt=62 | c=38.6 rankC=19.3 need=250285 tD=3.47 人 pulse bleeding | safe=134364 keep=Inf avail=-Inf chunkB=25661 pulseB=15397 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2090 alex_k B=129781 L=5722 d=22.7 nb=2 neut=0 cmds=29 noFull=0 shQ=19138 | m=1.331 worth=30.2 cheap=8.6 over=0 dMedOther=12.0 safe(-1)=133263
+    → [IND]Magadha Empire#6[T1] terr=3428 bal=146735 dq=42.8 cnt=59 | c=39.6 rankC=19.8 need=247996 tD=3.56 人 pulse bleeding | safe=133263 keep=Inf avail=-Inf chunkB=25956 pulseB=15574 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2095 alex_k B=129781 L=5751 d=22.6 nb=2 neut=0 cmds=29 noFull=0 shQ=21018 | m=1.325 worth=29.9 cheap=8.6 over=0 dMedOther=11.4 safe(-1)=131021
+    → [IND]Magadha Empire#6[T1] terr=3426 bal=144497 dq=42.2 cnt=60 | c=39.6 rankC=19.8 need=244305 tD=3.71 人 pulse bleeding | safe=131021 keep=Inf avail=-Inf chunkB=25956 pulseB=15574 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2100 alex_k B=137039 L=5781 d=23.7 nb=2 neut=0 cmds=29 noFull=0 shQ=22919 | m=1.320 worth=31.3 cheap=8.6 over=0 dMedOther=12.5 safe(-1)=134985
+    → [IND]Magadha Empire#6[T1] terr=3439 bal=148455 dq=43.2 cnt=61 | c=41.5 rankC=20.8 need=251276 tD=3.45 人 pulse bleeding | safe=134985 keep=Inf avail=-Inf chunkB=27408 pulseB=16445 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2105 alex_k B=137039 L=5796 d=23.6 nb=2 neut=0 cmds=29 noFull=0 shQ=24904 | m=1.315 worth=31.1 cheap=8.6 over=0 dMedOther=12.5 safe(-1)=132792
+    → [IND]Magadha Empire#6[T1] terr=3421 bal=146256 dq=42.8 cnt=61 | c=41.8 rankC=20.9 need=247241 tD=3.41 人 pulse bleeding | safe=132792 keep=Inf avail=-Inf chunkB=27408 pulseB=16445 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2110 alex_k B=138614 L=5824 d=23.8 nb=2 neut=0 cmds=29 noFull=0 shQ=26893 | m=1.310 worth=31.2 cheap=8.6 over=0 dMedOther=12.7 safe(-1)=121880
+    → [IND]Magadha Empire#6[T1] terr=3413 bal=135344 dq=39.7 cnt=62 | c=38.4 rankC=19.2 need=229082 tD=3.12 人 pulse bleeding | safe=121880 keep=Inf avail=-Inf chunkB=27723 pulseB=16634 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2115 alex_k B=138614 L=5850 d=23.7 nb=2 neut=0 cmds=29 noFull=0 shQ=28898 | m=1.304 worth=30.9 cheap=8.6 over=0 dMedOther=12.7 safe(-1)=120599
+    → [IND]Magadha Empire#6[T1] terr=3423 bal=134083 dq=39.2 cnt=63 | c=38.3 rankC=19.2 need=227290 tD=3.09 人 pulse bleeding | safe=120599 keep=Inf avail=-Inf chunkB=27723 pulseB=16634 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2120 alex_k B=140208 L=5862 d=23.9 nb=2 neut=0 cmds=29 noFull=0 shQ=30908 | m=1.299 worth=31.1 cheap=8.6 over=0 dMedOther=12.9 safe(-1)=119498
+    → [IND]Magadha Empire#6[T1] terr=3398 bal=133002 dq=39.1 cnt=63 | c=39.2 rankC=19.6 need=224980 tD=3.04 人 pulse bleeding | safe=119498 keep=Inf avail=-Inf chunkB=28042 pulseB=16825 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2125 alex_k B=140208 L=5885 d=23.8 nb=2 neut=0 cmds=29 noFull=0 shQ=32938 | m=1.294 worth=30.8 cheap=8.6 over=0 dMedOther=12.9 safe(-1)=116791
+    → [IND]Magadha Empire#6[T1] terr=3387 bal=130339 dq=38.5 cnt=64 | c=39.4 rankC=19.7 need=220377 tD=2.99 人 pulse bleeding | safe=116791 keep=Inf avail=-Inf chunkB=28042 pulseB=16825 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2130 alex_k B=141820 L=5904 d=24.0 nb=2 neut=0 cmds=29 noFull=0 shQ=34973 | m=1.288 worth=31.0 cheap=8.6 over=0 dMedOther=13.7 safe(-1)=116812
+    → [IND]Magadha Empire#6[T1] terr=3400 bal=130438 dq=38.4 cnt=66 | c=39.8 rankC=19.9 need=220972 tD=2.79 人 pulse bleeding | safe=116812 keep=Inf avail=-Inf chunkB=28364 pulseB=17018 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2135 alex_k B=141820 L=5912 d=24.0 nb=2 neut=0 cmds=29 noFull=0 shQ=35455 | m=1.283 worth=30.8 cheap=8.6 over=0 dMedOther=13.7 safe(-1)=66859
+    → [IND]Magadha Empire#6[T1] terr=3376 bal=127877 dq=37.9 cnt=66 | c=40.2 rankC=20.1 need=216243 tD=2.76 人 pulse bleeding | safe=66859 keep=Inf avail=-Inf chunkB=28364 pulseB=17018 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2140 alex_k B=143450 L=5926 d=24.2 nb=2 neut=0 cmds=29 noFull=0 shQ=35862 | m=1.278 worth=30.9 cheap=8.6 over=0 dMedOther=13.9 safe(-1)=66121
+    → [IND]Magadha Empire#6[T1] terr=3369 bal=126585 dq=37.6 cnt=67 | c=40.9 rankC=20.4 need=214009 tD=2.70 人 pulse bleeding | safe=66121 keep=Inf avail=-Inf chunkB=28690 pulseB=17214 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2145 alex_k B=143450 L=5937 d=24.2 nb=2 neut=0 cmds=29 noFull=0 shQ=35862 | m=1.273 worth=30.8 cheap=8.6 over=0 dMedOther=13.9 safe(-1)=110623
+    → [IND]Magadha Empire#6[T1] terr=3386 bal=125153 dq=37.0 cnt=68 | c=40.7 rankC=20.4 need=212082 tD=2.65 人 pulse bleeding | safe=110623 keep=Inf avail=-Inf chunkB=28690 pulseB=17214 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2150 alex_k B=145099 L=5942 d=24.4 nb=2 neut=0 cmds=29 noFull=0 shQ=36274 | m=1.268 worth=31.0 cheap=8.6 over=0 dMedOther=14.1 safe(-1)=109201
+    → [IND]Magadha Empire#6[T1] terr=3360 bal=123763 dq=36.8 cnt=66 | c=41.7 rankC=20.8 need=209326 tD=2.61 人 pulse bleeding | safe=109201 keep=Inf avail=-Inf chunkB=29020 pulseB=17412 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2155 alex_k B=145099 L=5950 d=24.4 nb=2 neut=0 cmds=29 noFull=0 shQ=36274 | m=1.262 worth=30.8 cheap=8.6 over=0 dMedOther=14.1 safe(-1)=106403
+    → [IND]Magadha Empire#6[T1] terr=3354 bal=121031 dq=36.1 cnt=67 | c=41.8 rankC=20.9 need=204734 tD=2.56 人 pulse bleeding | safe=106403 keep=Inf avail=-Inf chunkB=29020 pulseB=17412 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2160 alex_k B=146767 L=5957 d=24.6 nb=2 neut=0 cmds=29 noFull=0 shQ=36691 | m=1.257 worth=31.0 cheap=8.6 over=0 dMedOther=14.3 safe(-1)=106241
+    → [IND]Magadha Empire#6[T1] terr=3371 bal=120939 dq=35.9 cnt=69 | c=42.1 rankC=21.1 need=205014 tD=2.51 人 pulse bleeding | safe=106241 keep=Inf avail=-Inf chunkB=29353 pulseB=17612 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2165 alex_k B=146767 L=5960 d=24.6 nb=2 neut=0 cmds=29 noFull=0 shQ=36691 | m=1.252 worth=30.8 cheap=8.6 over=0 dMedOther=14.3 safe(-1)=103186
+    → [IND]Magadha Empire#6[T1] terr=3339 bal=117920 dq=35.3 cnt=69 | c=42.6 rankC=21.3 need=199385 tD=2.47 人 pulse bleeding | safe=103186 keep=Inf avail=-Inf chunkB=29353 pulseB=17612 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2170 alex_k B=148454 L=5964 d=24.9 nb=2 neut=0 cmds=29 noFull=0 shQ=37113 | m=1.247 worth=31.0 cheap=8.6 over=0 dMedOther=14.5 safe(-1)=101327
+    → [IND]Magadha Empire#6[T1] terr=3326 bal=116141 dq=34.9 cnt=70 | c=43.4 rankC=21.7 need=196286 tD=2.41 人 pulse bleeding | safe=101327 keep=Inf avail=-Inf chunkB=29691 pulseB=17814 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2175 alex_k B=148454 L=5966 d=24.9 nb=2 neut=0 cmds=29 noFull=0 shQ=37113 | m=1.241 worth=30.9 cheap=8.6 over=0 dMedOther=14.5 safe(-1)=99634
+    → [IND]Magadha Empire#6[T1] terr=3340 bal=114534 dq=34.3 cnt=71 | c=43.2 rankC=21.6 need=193985 tD=2.36 人 pulse bleeding | safe=99634 keep=Inf avail=-Inf chunkB=29691 pulseB=17814 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2180 alex_k B=150161 L=5967 d=25.2 nb=1 neut=0 cmds=30 noFull=0 shQ=37540 | m=1.236 worth=31.1 cheap=8.6 over=0 dMedOther=14.7 safe(-1)=58275
+    → [IND]Magadha Empire#6[T1] terr=3305 bal=112680 dq=34.1 cnt=71 | c=44.3 rankC=22.1 need=190244 tD=2.32 人 pulse bleeding | safe=58275 keep=Inf avail=-Inf chunkB=30032 pulseB=18019 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#749536（约 18770 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2185 alex_k B=181737 L=5967 d=30.5 nb=1 neut=0 cmds=30 noFull=0 shQ=40175 | m=1.231 worth=37.5 cheap=8.6 over=0 dMedOther=14.7 safe(-1)=56464
+    → [IND]Magadha Empire#6[T1] terr=3291 bal=109457 dq=33.3 cnt=69 | c=44.7 rankC=22.3 need=184696 tD=2.26 人 pulse bleeding | safe=56464 keep=Inf avail=-Inf chunkB=36347 pulseB=21808 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2190 alex_k B=183826 L=5967 d=30.8 nb=1 neut=0 cmds=30 noFull=0 shQ=42816 | m=1.226 worth=37.8 cheap=8.6 over=0 dMedOther=14.9 safe(-1)=56224
+    → [IND]Magadha Empire#6[T1] terr=3305 bal=109030 dq=33.0 cnt=68 | c=45.0 rankC=22.5 need=184394 tD=2.21 人 | safe=56224 keep=Inf avail=-Inf chunkB=36765 pulseB=22059 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2195 alex_k B=155104 L=5967 d=26.0 nb=1 neut=0 cmds=30 noFull=0 shQ=38776 | m=1.220 worth=31.7 cheap=8.6 over=0 dMedOther=14.9 safe(-1)=54373
+    → [IND]Magadha Empire#6[T1] terr=3265 bal=105734 dq=32.4 cnt=66 | c=45.6 rankC=22.8 need=178203 tD=2.17 人 | safe=54373 keep=Inf avail=-Inf chunkB=31021 pulseB=18612 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2200 alex_k B=162854 L=5967 d=27.3 nb=1 neut=0 cmds=30 noFull=0 shQ=39248 | m=1.215 worth=33.2 cheap=8.6 over=0 dMedOther=16.1 safe(-1)=55961
+    → [IND]Magadha Empire#6[T1] terr=3291 bal=108561 dq=33.0 cnt=59 | c=47.2 rankC=23.6 need=183448 tD=2.05 人 | safe=55961 keep=Inf avail=-Inf chunkB=32571 pulseB=19542 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2205 alex_k B=162854 L=5967 d=27.3 nb=1 neut=0 cmds=30 noFull=0 shQ=40713 | m=1.210 worth=33.0 cheap=8.6 over=0 dMedOther=16.1 safe(-1)=55667
+    → [IND]Magadha Empire#6[T1] terr=3326 bal=108038 dq=32.5 cnt=58 | c=46.7 rankC=23.3 need=183346 tD=2.02 人 | safe=55667 keep=Inf avail=-Inf chunkB=32571 pulseB=19542 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2210 alex_k B=164726 L=5967 d=27.6 nb=1 neut=0 cmds=30 noFull=0 shQ=41181 | m=1.205 worth=33.3 cheap=8.6 over=0 dMedOther=16.3 safe(-1)=55729
+    → [IND]Magadha Empire#6[T1] terr=3324 bal=108149 dq=32.5 cnt=57 | c=47.2 rankC=23.6 need=183602 tD=1.99 人 | safe=55729 keep=Inf avail=-Inf chunkB=32945 pulseB=19767 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2215 alex_k B=164726 L=5967 d=27.6 nb=1 neut=0 cmds=30 noFull=0 shQ=41181 | m=1.199 worth=33.1 cheap=8.6 over=0 dMedOther=16.3 safe(-1)=55632
+    → [IND]Magadha Empire#6[T1] terr=3357 bal=107975 dq=32.2 cnt=57 | c=116.7 rankC=169.2 need=184016 tD=1.97 人 | safe=55632 keep=Inf avail=-Inf chunkB=32945 pulseB=19767 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2220 alex_k B=166620 L=5967 d=27.9 nb=1 neut=0 cmds=30 noFull=0 shQ=41655 | m=1.194 worth=33.3 cheap=8.6 over=0 dMedOther=16.5 safe(-1)=56311
+    → [IND]Magadha Empire#6[T1] terr=3381 bal=109184 dq=32.3 cnt=57 | c=116.9 rankC=169.5 need=186546 tD=1.95 人 | safe=56311 keep=Inf avail=-Inf chunkB=33324 pulseB=19994 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2225 alex_k B=166620 L=5967 d=27.9 nb=1 neut=0 cmds=30 noFull=0 shQ=41655 | m=1.189 worth=33.2 cheap=8.6 over=0 dMedOther=16.5 safe(-1)=56311
+    → [IND]Magadha Empire#6[T1] terr=3391 bal=109184 dq=32.2 cnt=57 | c=116.5 rankC=168.9 need=186792 tD=1.95 人 | safe=56311 keep=Inf avail=-Inf chunkB=33324 pulseB=19994 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2230 alex_k B=168536 L=5967 d=28.2 nb=1 neut=0 cmds=30 noFull=0 shQ=42134 | m=1.183 worth=33.4 cheap=8.6 over=0 dMedOther=16.8 safe(-1)=56997
+    → [IND]Magadha Empire#6[T1] terr=3412 bal=110406 dq=32.4 cnt=57 | c=117.0 rankC=169.6 need=189342 tD=1.93 人 | safe=56997 keep=Inf avail=-Inf chunkB=33707 pulseB=20224 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2235 alex_k B=168536 L=5967 d=28.2 nb=1 neut=0 cmds=30 noFull=0 shQ=42134 | m=1.178 worth=33.3 cheap=8.6 over=0 dMedOther=16.7 safe(-1)=56997
+    → [IND]Magadha Empire#6[T1] terr=3437 bal=110406 dq=32.1 cnt=57 | c=80.0 rankC=80.0 need=189865 tD=1.92 人 | safe=56997 keep=Inf avail=-Inf chunkB=33707 pulseB=20224 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2240 alex_k B=170474 L=5967 d=28.6 nb=1 neut=0 cmds=30 noFull=0 shQ=42618 | m=1.173 worth=33.5 cheap=8.6 over=0 dMedOther=17.0 safe(-1)=57692
+    → [IND]Magadha Empire#6[T1] terr=3447 bal=111642 dq=32.4 cnt=57 | c=80.6 rankC=80.6 need=192179 tD=1.91 人 | safe=57692 keep=Inf avail=-Inf chunkB=34095 pulseB=20457 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2245 alex_k B=170474 L=5967 d=28.6 nb=1 neut=0 cmds=30 noFull=0 shQ=42618 | m=1.168 worth=33.4 cheap=8.6 over=0 dMedOther=17.0 safe(-1)=57692
+    → [IND]Magadha Empire#6[T1] terr=3469 bal=111642 dq=32.2 cnt=57 | c=80.1 rankC=80.1 need=192640 tD=1.90 人 | safe=57692 keep=Inf avail=-Inf chunkB=34095 pulseB=20457 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2250 alex_k B=172434 L=5967 d=28.9 nb=1 neut=0 cmds=30 noFull=0 shQ=43108 | m=1.163 worth=33.6 cheap=8.6 over=0 dMedOther=17.2 safe(-1)=58394
+    → [IND]Magadha Empire#6[T1] terr=3501 bal=112892 dq=32.2 cnt=57 | c=80.2 rankC=80.2 need=195436 tD=1.88 人 | safe=58394 keep=Inf avail=-Inf chunkB=34487 pulseB=20692 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2255 alex_k B=172434 L=5967 d=28.9 nb=1 neut=0 cmds=30 noFull=0 shQ=43108 | m=1.157 worth=33.4 cheap=8.6 over=0 dMedOther=17.2 safe(-1)=58394
+    → [IND]Magadha Empire#6[T1] terr=3524 bal=112892 dq=32.0 cnt=57 | c=79.7 rankC=79.7 need=195901 tD=1.86 人 | safe=58394 keep=Inf avail=-Inf chunkB=34487 pulseB=20692 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2260 alex_k B=174416 L=5967 d=29.2 nb=1 neut=0 cmds=30 noFull=0 shQ=43604 | m=1.152 worth=33.7 cheap=8.6 over=0 dMedOther=17.4 safe(-1)=59104
+    → [IND]Magadha Empire#6[T1] terr=3580 bal=114156 dq=31.9 cnt=57 | c=79.3 rankC=79.3 need=199080 tD=1.83 人 | safe=59104 keep=Inf avail=-Inf chunkB=34883 pulseB=20930 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2265 alex_k B=174416 L=5967 d=29.2 nb=1 neut=0 cmds=30 noFull=0 shQ=43604 | m=1.147 worth=33.5 cheap=8.6 over=0 dMedOther=17.4 safe(-1)=59104
+    → [IND]Magadha Empire#6[T1] terr=3645 bal=114156 dq=31.3 cnt=57 | c=77.7 rankC=77.7 need=200231 tD=1.80 人 | safe=59104 keep=Inf avail=-Inf chunkB=34883 pulseB=20930 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2270 alex_k B=176421 L=5967 d=29.6 nb=1 neut=0 cmds=30 noFull=0 shQ=44105 | m=1.142 worth=33.7 cheap=8.6 over=0 dMedOther=17.7 safe(-1)=59822
+    → [IND]Magadha Empire#6[T1] terr=3681 bal=115434 dq=31.4 cnt=57 | c=77.7 rankC=77.7 need=203112 tD=1.78 人 | safe=59822 keep=Inf avail=-Inf chunkB=35284 pulseB=21171 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2275 alex_k B=176421 L=5967 d=29.6 nb=1 neut=0 cmds=30 noFull=0 shQ=44105 | m=1.136 worth=33.6 cheap=8.6 over=0 dMedOther=17.7 safe(-1)=59822
+    → [IND]Magadha Empire#6[T1] terr=3755 bal=115434 dq=30.7 cnt=57 | c=76.0 rankC=76.0 need=204341 tD=1.74 人 | safe=59822 keep=Inf avail=-Inf chunkB=35284 pulseB=21171 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2280 alex_k B=178449 L=5967 d=29.9 nb=1 neut=0 cmds=30 noFull=0 shQ=44612 | m=1.131 worth=33.8 cheap=8.6 over=0 dMedOther=16.2 safe(-1)=60548
+    → [IND]Magadha Empire#6[T1] terr=3820 bal=116726 dq=30.6 cnt=57 | c=75.4 rankC=75.4 need=207619 tD=1.88 人 | safe=60548 keep=Inf avail=-Inf chunkB=35690 pulseB=21414 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2285 alex_k B=178449 L=5967 d=29.9 nb=1 neut=0 cmds=30 noFull=0 shQ=44612 | m=1.126 worth=33.7 cheap=8.6 over=0 dMedOther=16.1 safe(-1)=60548
+    → [IND]Magadha Empire#6[T1] terr=3846 bal=116726 dq=30.3 cnt=57 | c=74.7 rankC=74.7 need=208056 tD=1.89 人 | safe=60548 keep=Inf avail=-Inf chunkB=35690 pulseB=21414 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2290 alex_k B=180501 L=5967 d=30.2 nb=1 neut=0 cmds=30 noFull=0 shQ=45125 | m=1.121 worth=33.9 cheap=8.6 over=0 dMedOther=16.1 safe(-1)=61282
+    → [IND]Magadha Empire#6[T1] terr=3884 bal=118033 dq=30.4 cnt=57 | c=74.6 rankC=74.6 need=210983 tD=1.88 人 | safe=61282 keep=Inf avail=-Inf chunkB=36100 pulseB=21660 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2295 alex_k B=180501 L=5967 d=30.2 nb=1 neut=0 cmds=30 noFull=0 shQ=45125 | m=1.115 worth=33.7 cheap=8.6 over=0 dMedOther=16.2 safe(-1)=70054
+    → [IND]Magadha Empire#6[T1] terr=3914 bal=133647 dq=34.1 cnt=57 | c=112.6 rankC=112.6 need=238690 tD=2.11 人 crowdedHard | safe=70054 keep=Inf avail=-Inf chunkB=36100 pulseB=21660 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2300 alex_k B=188543 L=5967 d=31.6 nb=1 neut=0 cmds=31 noFull=0 shQ=45671 | m=1.110 worth=35.1 cheap=8.6 over=0 dMedOther=17.4 safe(-1)=67837
+    → [IND]Magadha Empire#6[T1] terr=3926 bal=129700 dq=33.0 cnt=57 | c=80.7 rankC=80.7 need=232045 tD=1.90 人 | safe=67837 keep=Inf avail=-Inf chunkB=37709 pulseB=22625 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#749536（约 23567 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2305 alex_k B=188543 L=5967 d=31.6 nb=1 neut=0 cmds=31 noFull=0 shQ=47135 | m=1.105 worth=34.9 cheap=8.6 over=0 dMedOther=17.4 safe(-1)=67837
+    → [IND]Magadha Empire#6[T1] terr=3952 bal=129700 dq=32.8 cnt=57 | c=80.1 rankC=80.1 need=232494 tD=1.89 人 | safe=67837 keep=Inf avail=-Inf chunkB=37709 pulseB=22625 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2310 alex_k B=190711 L=5967 d=32.0 nb=1 neut=0 cmds=31 noFull=0 shQ=47677 | m=1.099 worth=35.1 cheap=8.6 over=0 dMedOther=17.6 safe(-1)=68653
+    → [IND]Magadha Empire#6[T1] terr=3972 bal=131152 dq=33.0 cnt=57 | c=80.5 rankC=80.5 need=235439 tD=1.88 人 | safe=68653 keep=Inf avail=-Inf chunkB=38142 pulseB=22885 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2315 alex_k B=160914 L=5967 d=27.0 nb=1 neut=0 cmds=31 noFull=0 shQ=40228 | m=1.094 worth=29.5 cheap=8.6 over=0 dMedOther=17.6 safe(-1)=68653
+    → [IND]Magadha Empire#6[T1] terr=3980 bal=131152 dq=33.0 cnt=57 | c=108.2 rankC=108.2 need=235610 tD=1.87 人 crowdedHard | safe=68653 keep=Inf avail=-Inf chunkB=32183 pulseB=19310 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2320 alex_k B=162764 L=5967 d=27.3 nb=1 neut=0 cmds=31 noFull=0 shQ=40691 | m=1.089 worth=29.7 cheap=8.6 over=0 dMedOther=17.0 safe(-1)=69477
+    → [IND]Magadha Empire#6[T1] terr=3991 bal=132620 dq=33.2 cnt=57 | c=109.0 rankC=109.0 need=238400 tD=1.95 人 crowdedHard | safe=69477 keep=Inf avail=-Inf chunkB=32553 pulseB=19532 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2325 alex_k B=162764 L=5967 d=27.3 nb=1 neut=0 cmds=31 noFull=0 shQ=40691 | m=1.084 worth=29.6 cheap=8.6 over=0 dMedOther=17.0 safe(-1)=69477
+    → [IND]Magadha Empire#6[T1] terr=3997 bal=132620 dq=33.2 cnt=57 | c=108.8 rankC=108.8 need=238541 tD=1.95 人 crowdedHard | safe=69477 keep=Inf avail=-Inf chunkB=32553 pulseB=19532 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2330 alex_k B=164635 L=5967 d=27.6 nb=1 neut=0 cmds=31 noFull=0 shQ=41158 | m=1.079 worth=29.8 cheap=8.6 over=0 dMedOther=17.2 safe(-1)=70312
+    → [IND]Magadha Empire#6[T1] terr=4000 bal=134105 dq=33.5 cnt=57 | c=109.9 rankC=109.9 need=241293 tD=1.94 人 crowdedHard | safe=70312 keep=Inf avail=-Inf chunkB=32927 pulseB=19756 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2335 alex_k B=164635 L=5967 d=27.6 nb=1 neut=0 cmds=31 noFull=0 shQ=41158 | m=1.073 worth=29.6 cheap=8.6 over=0 dMedOther=17.2 safe(-1)=70312
+    → [IND]Magadha Empire#6[T1] terr=4008 bal=134105 dq=33.5 cnt=57 | c=109.7 rankC=109.7 need=241464 tD=1.94 人 crowdedHard | safe=70312 keep=Inf avail=-Inf chunkB=32927 pulseB=19756 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2340 alex_k B=166528 L=5967 d=27.9 nb=1 neut=0 cmds=31 noFull=0 shQ=41632 | m=1.068 worth=29.8 cheap=8.6 over=0 dMedOther=17.5 safe(-1)=71155
+    → [IND]Magadha Empire#6[T1] terr=4019 bal=135606 dq=33.7 cnt=57 | c=110.5 rankC=110.5 need=244319 tD=1.93 人 crowdedHard | safe=71155 keep=Inf avail=-Inf chunkB=33306 pulseB=19983 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2345 alex_k B=166528 L=5968 d=27.9 nb=1 neut=2 cmds=31 noFull=0 shQ=41632 | m=1.063 worth=29.7 cheap=8.6 over=0 dMedOther=17.5 safe(-1)=71154
+    → [IND]Magadha Empire#6[T1] terr=4024 bal=135606 dq=33.7 cnt=57 | c=110.4 rankC=110.4 need=244445 tD=1.93 人 crowdedHard | safe=71154 keep=Inf avail=-Inf chunkB=33306 pulseB=19983 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2350 alex_k B=168443 L=5973 d=28.2 nb=1 neut=4 cmds=31 noFull=0 shQ=42110 | m=1.058 worth=29.8 cheap=8.6 over=0 dMedOther=17.7 safe(-1)=72003
+    → [IND]Magadha Empire#6[T1] terr=4034 bal=137124 dq=34.0 cnt=57 | c=111.2 rankC=111.2 need=247368 tD=1.92 人 crowdedHard | safe=72003 keep=Inf avail=-Inf chunkB=33689 pulseB=20213 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2355 alex_k B=168443 L=5982 d=28.2 nb=1 neut=6 cmds=31 noFull=0 shQ=42110 | m=1.052 worth=29.6 cheap=8.6 over=0 dMedOther=17.7 safe(-1)=71995
+    → [IND]Magadha Empire#6[T1] terr=4043 bal=137124 dq=33.9 cnt=57 | c=111.0 rankC=111.0 need=247554 tD=1.91 人 crowdedHard | safe=71995 keep=Inf avail=-Inf chunkB=33689 pulseB=20213 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2360 alex_k B=170380 L=5988 d=28.5 nb=1 neut=5 cmds=31 noFull=0 shQ=42595 | m=1.047 worth=29.8 cheap=8.6 over=0 dMedOther=18.0 safe(-1)=67452
+    → [IND]Magadha Empire#6[T1] terr=4047 bal=129046 dq=31.9 cnt=57 | c=104.5 rankC=104.5 need=233425 tD=1.77 人 crowdedHard | safe=67452 keep=Inf avail=-Inf chunkB=34076 pulseB=20446 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2365 alex_k B=170380 L=5999 d=28.4 nb=1 neut=5 cmds=31 noFull=0 shQ=42595 | m=1.042 worth=29.6 cheap=8.6 over=0 dMedOther=18.0 safe(-1)=67442
+    → [IND]Magadha Empire#6[T1] terr=4053 bal=129046 dq=31.8 cnt=57 | c=104.3 rankC=104.3 need=233557 tD=1.77 人 crowdedHard | safe=67442 keep=Inf avail=-Inf chunkB=34076 pulseB=20446 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2370 alex_k B=172339 L=6011 d=28.7 nb=1 neut=8 cmds=31 noFull=0 shQ=43084 | m=1.036 worth=29.7 cheap=8.6 over=0 dMedOther=18.2 safe(-1)=68259
+    → [IND]Magadha Empire#6[T1] terr=4058 bal=130517 dq=32.2 cnt=57 | c=105.3 rankC=105.3 need=236319 tD=1.77 人 crowdedHard | safe=68259 keep=Inf avail=-Inf chunkB=34468 pulseB=20681 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2375 alex_k B=172339 L=6019 d=28.6 nb=1 neut=9 cmds=31 noFull=0 shQ=43084 | m=1.031 worth=29.5 cheap=8.6 over=0 dMedOther=18.2 safe(-1)=68252
+    → [IND]Magadha Empire#6[T1] terr=4061 bal=130517 dq=32.1 cnt=57 | c=105.2 rankC=105.2 need=236409 tD=1.76 人 crowdedHard | safe=68252 keep=Inf avail=-Inf chunkB=34468 pulseB=20681 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2380 alex_k B=174320 L=6038 d=28.9 nb=1 neut=13 cmds=31 noFull=0 shQ=43580 | m=1.026 worth=29.6 cheap=8.6 over=0 dMedOther=18.5 safe(-1)=69071
+    → [IND]Magadha Empire#6[T1] terr=4068 bal=132004 dq=32.4 cnt=57 | c=106.2 rankC=106.2 need=239182 tD=1.76 人 crowdedHard | safe=69071 keep=Inf avail=-Inf chunkB=34864 pulseB=20918 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2385 alex_k B=174320 L=6062 d=28.8 nb=1 neut=10 cmds=31 noFull=0 shQ=43580 | m=1.021 worth=29.4 cheap=8.6 over=0 dMedOther=18.5 safe(-1)=63910
+    → [IND]Magadha Empire#6[T1] terr=4076 bal=122852 dq=30.1 cnt=57 | c=73.2 rankC=73.2 need=223167 tD=1.63 人 | safe=63910 keep=Inf avail=-Inf chunkB=34864 pulseB=20918 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2390 alex_k B=176324 L=6072 d=29.0 nb=1 neut=9 cmds=31 noFull=0 shQ=44081 | m=1.016 worth=29.5 cheap=8.6 over=0 dMedOther=18.7 safe(-1)=59848
+    → [IND]Magadha Empire#6[T1] terr=4080 bal=115638 dq=28.3 cnt=57 | c=69.0 rankC=69.0 need=210551 tD=1.51 人 | safe=59848 keep=Inf avail=-Inf chunkB=35265 pulseB=21159 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2395 alex_k B=176324 L=6091 d=28.9 nb=1 neut=13 cmds=31 noFull=0 shQ=44081 | m=1.010 worth=29.2 cheap=8.5 over=0 dMedOther=18.7 safe(-1)=59832
+    → [IND]Magadha Empire#6[T1] terr=4088 bal=115638 dq=28.3 cnt=57 | c=68.8 rankC=68.8 need=210693 tD=1.51 人 | safe=59832 keep=Inf avail=-Inf chunkB=35265 pulseB=21159 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2400 alex_k B=184490 L=6119 d=30.2 nb=1 neut=13 cmds=31 noFull=0 shQ=44620 | m=1.005 worth=30.3 cheap=8.5 over=0 dMedOther=20.0 safe(-1)=62847
+    → [IND]Magadha Empire#6[T1] terr=4095 bal=121047 dq=29.6 cnt=57 | c=71.8 rankC=71.8 need=220399 tD=1.48 人 pulse | safe=62847 keep=Inf avail=-Inf chunkB=36898 pulseB=22139 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2405 alex_k B=184490 L=6132 d=30.1 nb=1 neut=14 cmds=31 noFull=0 shQ=46122 | m=1.000 worth=30.1 cheap=8.5 over=0 dMedOther=20.0 safe(-1)=62837
+    → [IND]Magadha Empire#6[T1] terr=4100 bal=121047 dq=29.5 cnt=57 | c=71.7 rankC=71.7 need=220507 tD=1.48 人 pulse | safe=62837 keep=Inf avail=-Inf chunkB=36898 pulseB=22139 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2410 alex_k B=186648 L=6159 d=30.3 nb=1 neut=13 cmds=31 noFull=0 shQ=46662 | m=0.995 worth=30.1 cheap=8.5 over=0 dMedOther=19.5 safe(-1)=63588
+    → [IND]Magadha Empire#6[T1] terr=4110 bal=122426 dq=29.8 cnt=57 | c=34.8 rankC=17.4 need=223167 tD=1.52 人 pulse bleeding | safe=63588 keep=Inf avail=-Inf chunkB=37330 pulseB=22398 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2415 alex_k B=186648 L=6185 d=30.2 nb=1 neut=14 cmds=31 noFull=0 shQ=46662 | m=0.989 worth=29.9 cheap=8.5 over=0 dMedOther=19.5 safe(-1)=63567
+    → [IND]Magadha Empire#6[T1] terr=4114 bal=122426 dq=29.8 cnt=57 | c=34.8 rankC=17.4 need=223263 tD=1.52 人 pulse bleeding | safe=63567 keep=Inf avail=-Inf chunkB=37330 pulseB=22398 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2420 alex_k B=188831 L=6199 d=30.5 nb=1 neut=14 cmds=32 noFull=0 shQ=47207 | m=0.984 worth=30.0 cheap=8.5 over=0 dMedOther=19.7 safe(-1)=58663
+    → [IND]Magadha Empire#6[T1] terr=4085 bal=113718 dq=27.8 cnt=57 | c=26.4 rankC=13.2 need=207508 tD=1.41 人 pulse bleeding | safe=58663 keep=176454 avail=10165 chunkB=37766 pulseB=22660  x=10165 hNb=1
+    ⇒ 影子指令 attack pct=55 → [IND]Magadha Empire#6[T1]（约 10326 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2425 alex_k B=188831 L=6227 d=30.3 nb=1 neut=12 cmds=32 noFull=0 shQ=47207 | m=0.979 worth=29.7 cheap=8.5 over=0 dMedOther=19.6 safe(-1)=57692
+    → [IND]Magadha Empire#6[T1] terr=4056 bal=112032 dq=27.6 cnt=57 | c=26.5 rankC=13.3 need=204211 tD=1.41 人 pulse bleeding | safe=57692 keep=177837 avail=8782 chunkB=37766 pulseB=22660 低于最小指令(x=8782<8848)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2430 alex_k B=178355 L=6305 d=28.3 nb=1 neut=8 cmds=32 noFull=0 shQ=44588 | m=0.974 worth=27.5 cheap=8.5 over=0 dMedOther=19.8 safe(-1)=56405
+    → [IND]Magadha Empire#6[T1] terr=3987 bal=109858 dq=27.6 cnt=58 | c=25.5 rankC=12.8 need=194465 tD=1.39 人 pulse bleeding | safe=56405 keep=170829 avail=5436 chunkB=35671 pulseB=21403 低于最小指令(x=5436<8360)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2435 alex_k B=178391 L=6313 d=28.3 nb=1 neut=7 cmds=32 noFull=0 shQ=44597 | m=0.968 worth=27.4 cheap=8.5 over=0 dMedOther=19.7 safe(-1)=53923
+    → [IND]Magadha Empire#6[T1] terr=3948 bal=105452 dq=26.7 cnt=58 | c=25.9 rankC=12.9 need=191402 tD=1.36 人 pulse bleeding | safe=53923 keep=172556 avail=3745 chunkB=35678 pulseB=21407 低于最小指令(x=3745<8360)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2440 alex_k B=180478 L=6326 d=28.5 nb=1 neut=6 cmds=32 noFull=0 shQ=45119 | m=0.963 worth=27.5 cheap=8.5 over=0 dMedOther=19.9 safe(-1)=53463
+    → [IND]Magadha Empire#6[T1] terr=3910 bal=104653 dq=26.8 cnt=58 | c=26.5 rankC=13.3 need=189569 tD=1.35 人 pulse bleeding | safe=53463 keep=176365 avail=1999 chunkB=36096 pulseB=21657 低于最小指令(x=1999<8456)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2445 alex_k B=180478 L=6337 d=28.5 nb=1 neut=3 cmds=32 noFull=0 shQ=45119 | m=0.958 worth=27.3 cheap=8.5 over=0 dMedOther=19.8 safe(-1)=52878
+    → [IND]Magadha Empire#6[T1] terr=3907 bal=103628 dq=26.5 cnt=58 | c=26.6 rankC=13.3 need=187772 tD=1.34 人 pulse bleeding | safe=52878 keep=177201 avail=1163 chunkB=36096 pulseB=21657 低于最小指令(x=1163<8456)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2450 alex_k B=182589 L=6340 d=28.8 nb=1 neut=2 cmds=32 noFull=0 shQ=45647 | m=0.953 worth=27.4 cheap=8.5 over=0 dMedOther=19.9 safe(-1)=52231
+    → [IND]Magadha Empire#6[T1] terr=3868 bal=102482 dq=26.5 cnt=58 | c=27.3 rankC=13.6 need=185359 tD=1.33 人 pulse bleeding | safe=52231 keep=181534 avail=-1084 chunkB=36518 pulseB=21911 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2455 alex_k B=182589 L=6343 d=28.8 nb=1 neut=0 cmds=32 noFull=0 shQ=45647 | m=0.947 worth=27.3 cheap=8.5 over=0 dMedOther=19.8 safe(-1)=50742
+    → [IND]Magadha Empire#6[T1] terr=3834 bal=99836 dq=26.0 cnt=58 | c=27.5 rankC=13.7 need=180341 tD=1.31 人 pulse bleeding | safe=50742 keep=Inf avail=-Inf chunkB=36518 pulseB=21911 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2460 alex_k B=221690 L=6343 d=35.0 nb=1 neut=0 cmds=33 noFull=0 shQ=48105 | m=0.942 worth=32.9 cheap=8.5 over=0 dMedOther=20.0 safe(-1)=50544
+    → [IND]Magadha Empire#6[T1] terr=3812 bal=99483 dq=26.1 cnt=58 | c=28.1 rankC=14.1 need=179490 tD=1.31 人 pulse bleeding | safe=50544 keep=204647 avail=14446 chunkB=44338 pulseB=26603  x=14446 hNb=1
+    ⇒ 影子指令 attack pct=66 → [IND]Magadha Empire#6[T1]（约 14505 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2465 alex_k B=221690 L=6343 d=35.0 nb=1 neut=0 cmds=34 noFull=0 shQ=51345 | m=0.937 worth=32.7 cheap=8.5 over=0 dMedOther=19.9 safe(-1)=48722
+    → [IND]Magadha Empire#6[T1] terr=3739 bal=96240 dq=25.7 cnt=58 | c=28.7 rankC=14.3 need=172953 tD=1.29 人 pulse bleeding | safe=48722 keep=207032 avail=12061 chunkB=44338 pulseB=26603  x=12061 hNb=1
+    ⇒ 影子指令 attack pct=55 → [IND]Magadha Empire#6[T1]（约 12123 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2470 alex_k B=224283 L=6343 d=35.4 nb=1 neut=0 cmds=34 noFull=0 shQ=54593 | m=0.931 worth=32.9 cheap=8.5 over=0 dMedOther=20.1 safe(-1)=47305
+    → [IND]Magadha Empire#6[T1] terr=3661 bal=93717 dq=25.6 cnt=58 | c=29.7 rankC=14.9 need=167653 tD=1.27 人 pulse bleeding | safe=47305 keep=212302 avail=9353 chunkB=44857 pulseB=26914 低于最小指令(x=9353<10512)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2475 alex_k B=206981 L=6343 d=32.6 nb=1 neut=0 cmds=34 noFull=0 shQ=41448 | m=0.926 worth=30.2 cheap=8.5 over=0 dMedOther=20.1 safe(-1)=46225
+    → [IND]Magadha Empire#6[T1] terr=3622 bal=91795 dq=25.3 cnt=58 | c=26.8 rankC=13.4 need=149187 tD=1.26 人 pulse bleeding | safe=46225 keep=194346 avail=10210 chunkB=41396 pulseB=24838 在途(curAtk=14674)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2480 alex_k B=195497 L=6401 d=30.5 nb=1 neut=0 cmds=34 noFull=0 shQ=44399 | m=0.921 worth=28.1 cheap=8.5 over=0 dMedOther=20.4 safe(-1)=43172
+    → [IND]Magadha Empire#6[T1] terr=3468 bal=86448 dq=24.9 cnt=52 | c=25.9 rankC=12.9 need=131445 tD=1.22 人 pulse bleeding | safe=43172 keep=186748 avail=6459 chunkB=39099 pulseB=23460 在途(curAtk=21217)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2485 alex_k B=195497 L=6506 d=30.0 nb=1 neut=0 cmds=34 noFull=0 shQ=47254 | m=0.916 worth=27.5 cheap=8.5 over=0 dMedOther=20.4 safe(-1)=38757
+    → [IND]Magadha Empire#6[T1] terr=3278 bal=78746 dq=24.0 cnt=53 | c=27.7 rankC=13.9 need=124277 tD=1.18 人 pulse bleeding | safe=38757 keep=Inf avail=-Inf chunkB=39099 pulseB=23460 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2490 alex_k B=197784 L=6559 d=30.2 nb=1 neut=0 cmds=34 noFull=0 shQ=49446 | m=0.911 worth=27.5 cheap=8.5 over=0 dMedOther=19.2 safe(-1)=37123
+    → [IND]Magadha Empire#6[T1] terr=3186 bal=75917 dq=23.8 cnt=55 | c=29.1 rankC=14.6 need=122465 tD=1.24 人 pulse bleeding | safe=37123 keep=Inf avail=-Inf chunkB=39557 pulseB=23734 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2495 alex_k B=197784 L=6668 d=29.7 nb=1 neut=0 cmds=34 noFull=0 shQ=49446 | m=0.905 worth=26.9 cheap=8.5 over=0 dMedOther=19.2 safe(-1)=32937
+    → [IND]Magadha Empire#6[T1] terr=2994 bal=68629 dq=22.9 cnt=54 | c=31.6 rankC=15.8 need=116027 tD=1.19 人 pulse | safe=32937 keep=Inf avail=-Inf chunkB=39557 pulseB=23734 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2500 alex_k B=206870 L=6668 d=31.0 nb=1 neut=0 cmds=34 noFull=0 shQ=50076 | m=0.900 worth=27.9 cheap=8.5 over=0 dMedOther=20.5 safe(-1)=33393
+    → [IND]Magadha Empire#6[T1] terr=2920 bal=69442 dq=23.8 cnt=53 | c=34.3 rankC=17.2 need=116319 tD=1.16 人 pulse | safe=33393 keep=Inf avail=-Inf chunkB=41374 pulseB=24824 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2505 alex_k B=206870 L=6668 d=31.0 nb=1 neut=0 cmds=34 noFull=0 shQ=51717 | m=0.900 worth=27.9 cheap=8.5 over=0 dMedOther=20.5 safe(-1)=32667
+    → [IND]Magadha Empire#6[T1] terr=2890 bal=68150 dq=23.6 cnt=53 | c=34.7 rankC=17.4 need=113777 tD=1.15 人 pulse | safe=32667 keep=Inf avail=-Inf chunkB=41374 pulseB=24824 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2510 alex_k B=209290 L=6668 d=31.4 nb=1 neut=0 cmds=34 noFull=0 shQ=52322 | m=0.900 worth=28.2 cheap=8.5 over=0 dMedOther=20.7 safe(-1)=30118
+    → [IND]Magadha Empire#6[T1] terr=2891 bal=63612 dq=22.0 cnt=53 | c=56.5 rankC=56.5 need=106544 tD=1.06 人 pulse | safe=30118 keep=Inf avail=-Inf chunkB=41858 pulseB=25115 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2515 alex_k B=209290 L=6668 d=31.4 nb=1 neut=0 cmds=34 noFull=0 shQ=52322 | m=0.900 worth=28.2 cheap=8.5 over=0 dMedOther=20.7 safe(-1)=40683
+    → [IND]Magadha Empire#6[T1] terr=2892 bal=82417 dq=28.5 cnt=53 | c=72.2 rankC=72.2 need=137010 tD=1.37 人 pulse | safe=40683 keep=Inf avail=-Inf chunkB=41858 pulseB=25115 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2520 alex_k B=211738 L=6668 d=31.8 nb=1 neut=0 cmds=34 noFull=0 shQ=52934 | m=0.900 worth=28.6 cheap=8.5 over=0 dMedOther=21.0 safe(-1)=41192
+    → [IND]Magadha Empire#6[T1] terr=2898 bal=83323 dq=28.8 cnt=53 | c=72.9 rankC=72.9 need=138645 tD=1.37 人 pulse | safe=41192 keep=Inf avail=-Inf chunkB=42348 pulseB=25409 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2525 alex_k B=211738 L=6668 d=31.8 nb=1 neut=0 cmds=34 noFull=0 shQ=52934 | m=0.900 worth=28.6 cheap=8.5 over=0 dMedOther=21.0 safe(-1)=37947
+    → [IND]Magadha Empire#6[T1] terr=2905 bal=77547 dq=26.7 cnt=53 | c=68.0 rankC=68.0 need=129469 tD=1.27 人 pulse | safe=37947 keep=Inf avail=-Inf chunkB=42348 pulseB=25409 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2530 alex_k B=214215 L=6668 d=32.1 nb=1 neut=0 cmds=34 noFull=0 shQ=53553 | m=0.900 worth=28.9 cheap=8.5 over=0 dMedOther=21.2 safe(-1)=38426
+    → [IND]Magadha Empire#6[T1] terr=2928 bal=78400 dq=26.8 cnt=53 | c=68.2 rankC=68.2 need=131365 tD=1.26 人 pulse | safe=38426 keep=Inf avail=-Inf chunkB=42843 pulseB=25706 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2535 alex_k B=214215 L=6668 d=32.1 nb=1 neut=0 cmds=34 noFull=0 shQ=53553 | m=0.900 worth=28.9 cheap=8.5 over=0 dMedOther=21.2 safe(-1)=38426
+    → [IND]Magadha Empire#6[T1] terr=2960 bal=78400 dq=26.5 cnt=53 | c=67.5 rankC=67.5 need=131980 tD=1.25 人 pulse | safe=38426 keep=Inf avail=-Inf chunkB=42843 pulseB=25706 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2540 alex_k B=216721 L=6668 d=32.5 nb=1 neut=0 cmds=34 noFull=0 shQ=54180 | m=0.900 worth=29.3 cheap=8.5 over=0 dMedOther=21.5 safe(-1)=38910
+    → [IND]Magadha Empire#6[T1] terr=2981 bal=79262 dq=26.6 cnt=53 | c=67.7 rankC=67.7 need=133804 tD=1.24 人 pulse | safe=38910 keep=Inf avail=-Inf chunkB=43344 pulseB=26007 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2545 alex_k B=216721 L=6668 d=32.5 nb=1 neut=0 cmds=34 noFull=0 shQ=54180 | m=0.900 worth=29.3 cheap=8.5 over=0 dMedOther=21.5 safe(-1)=38910
+    → [IND]Magadha Empire#6[T1] terr=3023 bal=79262 dq=26.2 cnt=53 | c=66.7 rankC=66.7 need=134567 tD=1.22 人 pulse | safe=38910 keep=Inf avail=-Inf chunkB=43344 pulseB=26007 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2550 alex_k B=219256 L=6668 d=32.9 nb=1 neut=0 cmds=34 noFull=0 shQ=54814 | m=0.900 worth=29.6 cheap=8.5 over=0 dMedOther=21.8 safe(-1)=39361
+    → [IND]Magadha Empire#6[T1] terr=3064 bal=80065 dq=26.1 cnt=53 | c=66.4 rankC=66.4 need=136665 tD=1.20 人 pulse | safe=39361 keep=Inf avail=-Inf chunkB=43851 pulseB=26311 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2555 alex_k B=219256 L=6668 d=32.9 nb=1 neut=0 cmds=34 noFull=0 shQ=54814 | m=0.900 worth=29.6 cheap=8.5 over=0 dMedOther=21.8 safe(-1)=39361
+    → [IND]Magadha Empire#6[T1] terr=3086 bal=80065 dq=25.9 cnt=53 | c=65.9 rankC=65.9 need=137067 tD=1.19 人 pulse | safe=39361 keep=Inf avail=-Inf chunkB=43851 pulseB=26311 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2560 alex_k B=221821 L=6668 d=33.3 nb=1 neut=0 cmds=34 noFull=0 shQ=55455 | m=0.900 worth=29.9 cheap=8.5 over=0 dMedOther=22.0 safe(-1)=39865
+    → [IND]Magadha Empire#6[T1] terr=3121 bal=80961 dq=25.9 cnt=53 | c=65.7 rankC=65.7 need=139161 tD=1.18 人 pulse | safe=39865 keep=Inf avail=-Inf chunkB=44364 pulseB=26619 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2565 alex_k B=221821 L=6668 d=33.3 nb=1 neut=0 cmds=34 noFull=0 shQ=55455 | m=0.900 worth=29.9 cheap=8.5 over=0 dMedOther=22.0 safe(-1)=39865
+    → [IND]Magadha Empire#6[T1] terr=3144 bal=80961 dq=25.8 cnt=53 | c=65.1 rankC=65.1 need=139566 tD=1.17 人 pulse | safe=39865 keep=Inf avail=-Inf chunkB=44364 pulseB=26619 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2570 alex_k B=224416 L=6668 d=33.7 nb=1 neut=0 cmds=34 noFull=0 shQ=56104 | m=0.900 worth=30.3 cheap=8.5 over=0 dMedOther=22.3 safe(-1)=40374
+    → [IND]Magadha Empire#6[T1] terr=3154 bal=81867 dq=26.0 cnt=53 | c=65.5 rankC=65.5 need=141325 tD=1.16 人 pulse | safe=40374 keep=Inf avail=-Inf chunkB=44883 pulseB=26930 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2575 alex_k B=224416 L=6668 d=33.7 nb=1 neut=0 cmds=34 noFull=0 shQ=56104 | m=0.900 worth=30.3 cheap=8.5 over=0 dMedOther=22.3 safe(-1)=40374
+    → [IND]Magadha Empire#6[T1] terr=3167 bal=81867 dq=25.9 cnt=53 | c=65.2 rankC=65.2 need=141569 tD=1.16 人 pulse | safe=40374 keep=Inf avail=-Inf chunkB=44883 pulseB=26930 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2580 alex_k B=227041 L=6668 d=34.0 nb=1 neut=0 cmds=34 noFull=0 shQ=56760 | m=0.900 worth=30.6 cheap=8.5 over=0 dMedOther=22.6 safe(-1)=40888
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=82783 dq=26.1 cnt=53 | c=65.6 rankC=65.6 need=143273 tD=1.15 人 pulse | safe=40888 keep=Inf avail=-Inf chunkB=45408 pulseB=27245 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2585 alex_k B=227041 L=6668 d=34.0 nb=1 neut=0 cmds=34 noFull=0 shQ=56760 | m=0.900 worth=30.6 cheap=8.5 over=0 dMedOther=22.6 safe(-1)=39117
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=79630 dq=25.1 cnt=53 | c=63.2 rankC=63.2 need=138023 tD=1.11 人 pulse | safe=39117 keep=Inf avail=-Inf chunkB=45408 pulseB=27245 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2590 alex_k B=229697 L=6668 d=34.4 nb=1 neut=0 cmds=34 noFull=0 shQ=57424 | m=0.900 worth=31.0 cheap=8.5 over=0 dMedOther=22.9 safe(-1)=39617
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=80521 dq=25.4 cnt=53 | c=63.9 rankC=63.9 need=139605 tD=1.11 人 pulse | safe=39617 keep=Inf avail=-Inf chunkB=45939 pulseB=27564 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2595 alex_k B=229697 L=6668 d=34.4 nb=1 neut=0 cmds=34 noFull=0 shQ=57424 | m=0.900 worth=31.0 cheap=8.5 over=0 dMedOther=22.9 safe(-1)=36481
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=74939 dq=23.6 cnt=53 | c=59.6 rankC=59.6 need=130267 tD=1.03 人 pulse | safe=36481 keep=Inf avail=-Inf chunkB=45939 pulseB=27564 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2600 alex_k B=239052 L=6668 d=35.9 nb=1 neut=0 cmds=34 noFull=0 shQ=58123 | m=0.900 worth=32.3 cheap=8.5 over=0 dMedOther=24.9 safe(-1)=38737
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=78953 dq=24.9 cnt=53 | c=62.7 rankC=62.7 need=137055 tD=1.00 人 pulse | safe=38737 keep=Inf avail=-Inf chunkB=47810 pulseB=28686 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2605 alex_k B=239052 L=6668 d=35.9 nb=1 neut=0 cmds=34 noFull=0 shQ=59763 | m=0.900 worth=32.3 cheap=8.5 over=0 dMedOther=24.9 safe(-1)=38737
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=78953 dq=24.9 cnt=53 | c=62.7 rankC=62.7 need=137097 tD=1.00 人 pulse | safe=38737 keep=Inf avail=-Inf chunkB=47810 pulseB=28686 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2610 alex_k B=241848 L=6668 d=36.3 nb=1 neut=0 cmds=34 noFull=0 shQ=60462 | m=0.900 worth=32.6 cheap=8.5 over=0 dMedOther=25.1 safe(-1)=39233
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=79837 dq=25.1 cnt=53 | c=63.4 rankC=63.4 need=138668 tD=1.00 人 pulse | safe=39233 keep=Inf avail=-Inf chunkB=48370 pulseB=29022 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2615 alex_k B=241848 L=6668 d=36.3 nb=1 neut=0 cmds=34 noFull=0 shQ=60462 | m=0.900 worth=32.6 cheap=8.5 over=0 dMedOther=25.1 safe(-1)=39233
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=79837 dq=25.1 cnt=53 | c=63.4 rankC=63.4 need=138710 tD=1.00 人 pulse | safe=39233 keep=Inf avail=-Inf chunkB=48370 pulseB=29022 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2620 alex_k B=244677 L=6668 d=36.7 nb=1 neut=0 cmds=34 noFull=0 shQ=61169 | m=0.900 worth=33.0 cheap=8.5 over=0 dMedOther=24.7 safe(-1)=36592
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=75135 dq=23.7 cnt=53 | c=86.7 rankC=125.8 need=130837 tD=0.96 人 pulse | safe=36592 keep=Inf avail=-Inf chunkB=48935 pulseB=29361 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2625 alex_k B=244677 L=6668 d=36.7 nb=1 neut=0 cmds=34 noFull=0 shQ=61169 | m=0.900 worth=33.0 cheap=8.5 over=0 dMedOther=24.7 safe(-1)=36592
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=75135 dq=23.7 cnt=53 | c=86.7 rankC=125.8 need=130877 tD=0.96 人 pulse | safe=36592 keep=Inf avail=-Inf chunkB=48935 pulseB=29361 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2630 alex_k B=247539 L=6668 d=37.1 nb=1 neut=0 cmds=34 noFull=0 shQ=61884 | m=0.900 worth=33.4 cheap=8.5 over=0 dMedOther=25.0 safe(-1)=37064
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=75976 dq=23.9 cnt=53 | c=87.7 rankC=127.1 need=132373 tD=0.96 人 pulse | safe=37064 keep=Inf avail=-Inf chunkB=49508 pulseB=29705 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2635 alex_k B=247539 L=6668 d=37.1 nb=1 neut=0 cmds=34 noFull=0 shQ=61884 | m=0.900 worth=33.4 cheap=8.5 over=0 dMedOther=25.0 safe(-1)=37064
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=75976 dq=23.9 cnt=53 | c=87.6 rankC=127.1 need=132414 tD=0.96 人 pulse | safe=37064 keep=Inf avail=-Inf chunkB=49508 pulseB=29705 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2640 alex_k B=250435 L=6668 d=37.6 nb=1 neut=0 cmds=34 noFull=0 shQ=62608 | m=0.900 worth=33.8 cheap=8.5 over=0 dMedOther=25.4 safe(-1)=34549
+    → [IND]Magadha Empire#6[T1] terr=3175 bal=71500 dq=22.5 cnt=53 | c=82.8 rankC=120.0 need=124907 tD=0.89 人 pulse | safe=34549 keep=Inf avail=-Inf chunkB=50087 pulseB=30052 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2645 alex_k B=250435 L=6668 d=37.6 nb=1 neut=0 cmds=34 noFull=0 shQ=62608 | m=0.900 worth=33.8 cheap=8.5 over=0 dMedOther=25.4 safe(-1)=34448
+    → [IND]Magadha Empire#6[T1] terr=3170 bal=71320 dq=22.5 cnt=53 | c=82.8 rankC=120.0 need=124575 tD=0.89 人 pulse | safe=34448 keep=Inf avail=-Inf chunkB=50087 pulseB=30052 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2650 alex_k B=253365 L=6668 d=38.0 nb=1 neut=0 cmds=34 noFull=0 shQ=63341 | m=0.900 worth=34.2 cheap=8.5 over=0 dMedOther=25.7 safe(-1)=34897
+    → [IND]Magadha Empire#6[T1] terr=3170 bal=72118 dq=22.8 cnt=53 | c=83.6 rankC=121.3 need=125997 tD=0.89 人 pulse | safe=34897 keep=Inf avail=-Inf chunkB=50673 pulseB=30404 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2655 alex_k B=253365 L=6668 d=38.0 nb=1 neut=0 cmds=34 noFull=0 shQ=63341 | m=0.900 worth=34.2 cheap=8.5 over=0 dMedOther=25.7 safe(-1)=32088
+    → [IND]Magadha Empire#6[T1] terr=3170 bal=67119 dq=21.2 cnt=53 | c=78.1 rankC=113.3 need=117601 tD=0.82 人 pulse | safe=32088 keep=Inf avail=-Inf chunkB=50673 pulseB=30404 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2660 alex_k B=256329 L=6668 d=38.4 nb=1 neut=0 cmds=34 noFull=0 shQ=64082 | m=0.900 worth=34.6 cheap=8.5 over=0 dMedOther=26.0 safe(-1)=32510
+    → [IND]Magadha Empire#6[T1] terr=3170 bal=67870 dq=21.4 cnt=53 | c=79.0 rankC=114.5 need=118904 tD=0.82 人 pulse | safe=32510 keep=Inf avail=-Inf chunkB=51266 pulseB=30759 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2665 alex_k B=256329 L=6668 d=38.4 nb=1 neut=0 cmds=34 noFull=0 shQ=64082 | m=0.900 worth=34.6 cheap=8.5 over=0 dMedOther=26.0 safe(-1)=32510
+    → [IND]Magadha Empire#6[T1] terr=3170 bal=67870 dq=21.4 cnt=53 | c=79.0 rankC=114.5 need=118940 tD=0.82 人 pulse | safe=32510 keep=Inf avail=-Inf chunkB=51266 pulseB=30759 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2670 alex_k B=259328 L=6668 d=38.9 nb=1 neut=0 cmds=34 noFull=0 shQ=64832 | m=0.900 worth=35.0 cheap=8.5 over=0 dMedOther=26.3 safe(-1)=30265
+    → [IND]Magadha Empire#6[T1] terr=3171 bal=63873 dq=20.1 cnt=53 | c=74.6 rankC=108.2 need=112272 tD=0.77 人 pulse | safe=30265 keep=Inf avail=-Inf chunkB=51866 pulseB=31119 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2675 alex_k B=259328 L=6668 d=38.9 nb=1 neut=0 cmds=34 noFull=0 shQ=64832 | m=0.900 worth=35.0 cheap=8.5 over=0 dMedOther=26.3 safe(-1)=30265
+    → [IND]Magadha Empire#6[T1] terr=3173 bal=63873 dq=20.1 cnt=53 | c=74.5 rankC=108.1 need=112330 tD=0.77 人 pulse | safe=30265 keep=Inf avail=-Inf chunkB=51866 pulseB=31119 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2680 alex_k B=262362 L=6668 d=39.3 nb=1 neut=0 cmds=34 noFull=0 shQ=65590 | m=0.900 worth=35.4 cheap=8.5 over=0 dMedOther=26.6 safe(-1)=30666
+    → [IND]Magadha Empire#6[T1] terr=3180 bal=64588 dq=20.3 cnt=53 | c=75.2 rankC=109.1 need=113657 tD=0.76 人 pulse | safe=30666 keep=Inf avail=-Inf chunkB=52472 pulseB=31483 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2685 alex_k B=262362 L=6668 d=39.3 nb=1 neut=0 cmds=34 noFull=0 shQ=65590 | m=0.900 worth=35.4 cheap=8.5 over=0 dMedOther=26.6 safe(-1)=28151
+    → [IND]Magadha Empire#6[T1] terr=3189 bal=60111 dq=18.8 cnt=53 | c=70.2 rankC=101.8 need=106216 tD=0.71 人 pulse | safe=28151 keep=Inf avail=-Inf chunkB=52472 pulseB=31483 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2690 alex_k B=265431 L=6668 d=39.8 nb=1 neut=0 cmds=34 noFull=0 shQ=66357 | m=0.900 worth=35.8 cheap=8.5 over=0 dMedOther=27.0 safe(-1)=28529
+    → [IND]Magadha Empire#6[T1] terr=3214 bal=60784 dq=18.9 cnt=53 | c=70.4 rankC=102.1 need=107701 tD=0.70 人 pulse | safe=28529 keep=Inf avail=-Inf chunkB=53086 pulseB=31852 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2695 alex_k B=265431 L=6668 d=39.8 nb=1 neut=0 cmds=34 noFull=0 shQ=66357 | m=0.900 worth=35.8 cheap=8.5 over=0 dMedOther=27.0 safe(-1)=28529
+    → [IND]Magadha Empire#6[T1] terr=3229 bal=60784 dq=18.8 cnt=53 | c=69.9 rankC=101.3 need=107899 tD=0.70 人 pulse | safe=28529 keep=Inf avail=-Inf chunkB=53086 pulseB=31852 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2700 alex_k B=275204 L=6668 d=41.3 nb=1 neut=0 cmds=34 noFull=0 shQ=67161 | m=0.900 worth=37.1 cheap=8.5 over=0 dMedOther=28.3 safe(-1)=30726
+    → [IND]Magadha Empire#6[T1] terr=3230 bal=64694 dq=20.0 cnt=53 | c=74.1 rankC=107.4 need=114595 tD=0.71 人 pulse | safe=30726 keep=Inf avail=-Inf chunkB=55041 pulseB=33024 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2705 alex_k B=275204 L=6668 d=41.3 nb=1 neut=0 cmds=34 noFull=0 shQ=68801 | m=0.900 worth=37.1 cheap=8.5 over=0 dMedOther=28.3 safe(-1)=30726
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=64694 dq=20.0 cnt=53 | c=51.0 rankC=51.0 need=114652 tD=0.71 人 pulse | safe=30726 keep=Inf avail=-Inf chunkB=55041 pulseB=33024 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2710 alex_k B=278423 L=6668 d=41.8 nb=1 neut=0 cmds=34 noFull=0 shQ=69605 | m=0.900 worth=37.6 cheap=8.5 over=0 dMedOther=28.6 safe(-1)=32182
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=67286 dq=20.8 cnt=53 | c=52.9 rankC=52.9 need=119134 tD=0.73 人 pulse | safe=32182 keep=Inf avail=-Inf chunkB=55685 pulseB=33411 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2715 alex_k B=278423 L=6668 d=41.8 nb=1 neut=0 cmds=34 noFull=0 shQ=69605 | m=0.900 worth=37.6 cheap=8.5 over=0 dMedOther=28.6 safe(-1)=32182
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=67286 dq=20.8 cnt=53 | c=52.9 rankC=52.9 need=119169 tD=0.73 人 pulse | safe=32182 keep=Inf avail=-Inf chunkB=55685 pulseB=33411 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2720 alex_k B=281680 L=6668 d=42.2 nb=1 neut=0 cmds=34 noFull=0 shQ=70420 | m=0.900 worth=38.0 cheap=8.5 over=0 dMedOther=29.0 safe(-1)=32605
+    → [IND]Magadha Empire#6[T1] terr=3239 bal=68039 dq=21.0 cnt=53 | c=53.3 rankC=53.3 need=120570 tD=0.72 人 pulse | safe=32605 keep=Inf avail=-Inf chunkB=56336 pulseB=33802 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2725 alex_k B=281680 L=6668 d=42.2 nb=1 neut=0 cmds=34 noFull=0 shQ=70420 | m=0.900 worth=38.0 cheap=8.5 over=0 dMedOther=29.0 safe(-1)=32605
+    → [IND]Magadha Empire#6[T1] terr=3240 bal=68039 dq=21.0 cnt=53 | c=53.2 rankC=53.2 need=120617 tD=0.72 人 pulse | safe=32605 keep=Inf avail=-Inf chunkB=56336 pulseB=33802 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2730 alex_k B=284975 L=6668 d=42.7 nb=1 neut=0 cmds=34 noFull=0 shQ=71243 | m=0.900 worth=38.5 cheap=8.5 over=0 dMedOther=29.3 safe(-1)=33033
+    → [IND]Magadha Empire#6[T1] terr=3247 bal=68801 dq=21.2 cnt=53 | c=53.7 rankC=53.7 need=122071 tD=0.72 人 pulse | safe=33033 keep=Inf avail=-Inf chunkB=56995 pulseB=34197 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2735 alex_k B=405129 L=6668 d=60.8 nb=1 neut=0 cmds=34 noFull=0 shQ=77163 | m=0.900 worth=54.7 cheap=8.5 over=0 dMedOther=29.3 safe(-1)=33033
+    → [IND]Magadha Empire#6[T1] terr=3257 bal=68801 dq=21.1 cnt=53 | c=54.2 rankC=54.2 need=122224 tD=0.72 人 pulse | safe=33033 keep=401296 avail=-914 chunkB=81026 pulseB=48615 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2740 alex_k B=409869 L=6668 d=61.5 nb=1 neut=0 cmds=34 noFull=0 shQ=83097 | m=0.900 worth=55.3 cheap=8.5 over=0 dMedOther=29.7 safe(-1)=33466
+    → [IND]Magadha Empire#6[T1] terr=3262 bal=69571 dq=21.3 cnt=53 | c=54.6 rankC=54.6 need=123635 tD=0.72 人 pulse | safe=33466 keep=404934 avail=132 chunkB=81974 pulseB=49184 低于最小指令(x=132<19212)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2745 alex_k B=409869 L=6668 d=61.5 nb=1 neut=0 cmds=34 noFull=0 shQ=89087 | m=0.900 worth=55.3 cheap=8.5 over=0 dMedOther=29.7 safe(-1)=33466
+    → [IND]Magadha Empire#6[T1] terr=3273 bal=69571 dq=21.3 cnt=53 | c=54.5 rankC=54.5 need=123800 tD=0.72 人 pulse | safe=33466 keep=404375 avail=691 chunkB=81974 pulseB=49184 低于最小指令(x=691<19212)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2750 alex_k B=414664 L=6668 d=62.2 nb=1 neut=0 cmds=34 noFull=0 shQ=95091 | m=0.900 worth=56.0 cheap=8.5 over=0 dMedOther=30.1 safe(-1)=33903
+    → [IND]Magadha Empire#6[T1] terr=3293 bal=70350 dq=21.4 cnt=53 | c=54.7 rankC=54.7 need=125440 tD=0.71 人 pulse | safe=33903 keep=407715 avail=2090 chunkB=82933 pulseB=49760 低于最小指令(x=2090<19436)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2755 alex_k B=414664 L=6668 d=62.2 nb=1 neut=0 cmds=34 noFull=0 shQ=101151 | m=0.900 worth=56.0 cheap=8.5 over=0 dMedOther=30.1 safe(-1)=33903
+    → [IND]Magadha Empire#6[T1] terr=3303 bal=70350 dq=21.3 cnt=53 | c=54.5 rankC=54.5 need=125591 tD=0.71 人 pulse | safe=33903 keep=407008 avail=2797 chunkB=82933 pulseB=49760 低于最小指令(x=2797<19436)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2760 alex_k B=419515 L=6668 d=62.9 nb=1 neut=0 cmds=34 noFull=0 shQ=104878 | m=0.900 worth=56.6 cheap=8.5 over=0 dMedOther=30.4 safe(-1)=34346
+    → [IND]Magadha Empire#6[T1] terr=3316 bal=71137 dq=21.5 cnt=53 | c=54.8 rankC=54.8 need=127130 tD=0.70 人 pulse | safe=34346 keep=410592 avail=4007 chunkB=83903 pulseB=50342 低于最小指令(x=4007<19664)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2765 alex_k B=419515 L=6668 d=62.9 nb=1 neut=0 cmds=34 noFull=0 shQ=104878 | m=0.900 worth=56.6 cheap=8.5 over=0 dMedOther=30.4 safe(-1)=34346
+    → [IND]Magadha Empire#6[T1] terr=3329 bal=71137 dq=21.4 cnt=53 | c=54.6 rankC=54.6 need=127314 tD=0.70 人 pulse | safe=34346 keep=409805 avail=4794 chunkB=83903 pulseB=50342 低于最小指令(x=4794<19664)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2770 alex_k B=424423 L=6668 d=63.7 nb=1 neut=0 cmds=34 noFull=0 shQ=106105 | m=0.900 worth=57.3 cheap=8.5 over=0 dMedOther=30.8 safe(-1)=34793
+    → [IND]Magadha Empire#6[T1] terr=3334 bal=71933 dq=21.6 cnt=53 | c=55.1 rankC=55.1 need=128813 tD=0.70 人 pulse | safe=34793 keep=414011 avail=5439 chunkB=84885 pulseB=50931 低于最小指令(x=5439<19892)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2775 alex_k B=424423 L=6668 d=63.7 nb=1 neut=0 cmds=34 noFull=0 shQ=106105 | m=0.900 worth=57.3 cheap=8.5 over=0 dMedOther=30.8 safe(-1)=34793
+    → [IND]Magadha Empire#6[T1] terr=3340 bal=71933 dq=21.5 cnt=53 | c=54.9 rankC=54.9 need=128917 tD=0.70 人 pulse | safe=34793 keep=413385 avail=6065 chunkB=84885 pulseB=50931 低于最小指令(x=6065<19892)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2780 alex_k B=429388 L=6668 d=64.4 nb=1 neut=0 cmds=34 noFull=0 shQ=107347 | m=0.900 worth=58.0 cheap=8.5 over=0 dMedOther=31.2 safe(-1)=36518
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75004 dq=22.4 cnt=53 | c=57.0 rankC=57.0 need=134266 tD=0.72 人 pulse | safe=36518 keep=423525 avail=832 chunkB=85878 pulseB=51527 低于最小指令(x=832<20124)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2785 alex_k B=429388 L=6668 d=64.4 nb=1 neut=0 cmds=34 noFull=0 shQ=107347 | m=0.900 worth=58.0 cheap=8.5 over=0 dMedOther=31.2 safe(-1)=36518
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75004 dq=22.4 cnt=53 | c=57.0 rankC=57.0 need=134302 tD=0.72 人 pulse | safe=36518 keep=423501 avail=856 chunkB=85878 pulseB=51527 低于最小指令(x=856<20124)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2790 alex_k B=434411 L=6668 d=65.1 nb=1 neut=0 cmds=34 noFull=0 shQ=108602 | m=0.900 worth=58.6 cheap=8.5 over=0 dMedOther=31.6 safe(-1)=34036
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=70586 dq=21.1 cnt=53 | c=53.9 rankC=53.9 need=126739 tD=0.67 人 | safe=34036 keep=415190 avail=14131 chunkB=86882 pulseB=52129 不够一条(x=14131)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2795 alex_k B=434411 L=6668 d=65.1 nb=1 neut=0 cmds=34 noFull=0 shQ=108602 | m=0.900 worth=58.6 cheap=8.5 over=0 dMedOther=31.6 safe(-1)=34036
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=70586 dq=21.1 cnt=53 | c=53.9 rankC=53.9 need=126773 tD=0.67 人 | safe=34036 keep=415166 avail=14155 chunkB=86882 pulseB=52129 不够一条(x=14155)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2800 alex_k B=446161 L=6668 d=66.9 nb=1 neut=0 cmds=34 noFull=0 shQ=109907 | m=0.900 worth=60.2 cheap=8.5 over=0 dMedOther=33.0 safe(-1)=36357
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=74717 dq=22.4 cnt=53 | c=56.9 rankC=56.9 need=133950 tD=0.68 人 pulse | safe=36357 keep=431697 avail=9236 chunkB=89232 pulseB=53539 低于最小指令(x=9236<20912)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2805 alex_k B=446161 L=6668 d=66.9 nb=1 neut=0 cmds=34 noFull=0 shQ=111540 | m=0.900 worth=60.2 cheap=8.5 over=0 dMedOther=33.0 safe(-1)=36357
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=74717 dq=22.4 cnt=53 | c=56.9 rankC=56.9 need=133985 tD=0.68 人 pulse | safe=36357 keep=431672 avail=9261 chunkB=89232 pulseB=53539 低于最小指令(x=9261<20912)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2810 alex_k B=451381 L=6668 d=67.7 nb=1 neut=0 cmds=34 noFull=0 shQ=112845 | m=0.900 worth=60.9 cheap=8.5 over=0 dMedOther=33.4 safe(-1)=36826
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75553 dq=22.6 cnt=53 | c=57.5 rankC=57.5 need=135504 tD=0.68 人 pulse | safe=36826 keep=436497 avail=9595 chunkB=90276 pulseB=54166 低于最小指令(x=9595<21156)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2815 alex_k B=451381 L=6668 d=67.7 nb=1 neut=0 cmds=34 noFull=0 shQ=112845 | m=0.900 worth=60.9 cheap=8.5 over=0 dMedOther=33.4 safe(-1)=36826
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75553 dq=22.6 cnt=53 | c=57.5 rankC=57.5 need=135540 tD=0.68 人 pulse | safe=36826 keep=436472 avail=9620 chunkB=90276 pulseB=54166 低于最小指令(x=9620<21156)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2820 alex_k B=456662 L=6668 d=68.5 nb=1 neut=0 cmds=34 noFull=0 shQ=114165 | m=0.900 worth=61.6 cheap=8.5 over=0 dMedOther=33.8 safe(-1)=37302
+    → [IND]Magadha Empire#6[T1] terr=3342 bal=76399 dq=22.9 cnt=53 | c=58.1 rankC=58.1 need=137052 tD=0.68 人 pulse | safe=37302 keep=441375 avail=9936 chunkB=91332 pulseB=54799 低于最小指令(x=9936<21404)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2825 alex_k B=456662 L=6668 d=68.5 nb=1 neut=0 cmds=34 noFull=0 shQ=114165 | m=0.900 worth=61.6 cheap=8.5 over=0 dMedOther=33.8 safe(-1)=34326
+    → [IND]Magadha Empire#6[T1] terr=3350 bal=71103 dq=21.2 cnt=53 | c=54.3 rankC=54.3 need=128006 tD=0.63 人 | safe=34326 keep=427951 avail=23360 chunkB=91332 pulseB=54799 不够一条(x=23360)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2830 alex_k B=462004 L=6668 d=69.3 nb=1 neut=0 cmds=34 noFull=0 shQ=115501 | m=0.900 worth=62.4 cheap=8.5 over=0 dMedOther=34.2 safe(-1)=34774
+    → [IND]Magadha Empire#6[T1] terr=3357 bal=71899 dq=21.4 cnt=53 | c=54.7 rankC=54.7 need=129532 tD=0.63 人 | safe=34774 keep=432356 avail=24234 chunkB=92401 pulseB=55440 不够一条(x=24234)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2835 alex_k B=462004 L=6668 d=69.3 nb=1 neut=0 cmds=34 noFull=0 shQ=115501 | m=0.900 worth=62.4 cheap=8.5 over=0 dMedOther=34.2 safe(-1)=34774
+    → [IND]Magadha Empire#6[T1] terr=3370 bal=71899 dq=21.3 cnt=53 | c=54.5 rankC=54.5 need=129709 tD=0.62 人 | safe=34774 keep=431477 avail=25113 chunkB=92401 pulseB=55440 不够一条(x=25113)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2840 alex_k B=467409 L=6668 d=70.1 nb=1 neut=0 cmds=34 noFull=0 shQ=116852 | m=0.900 worth=63.1 cheap=8.5 over=0 dMedOther=34.6 safe(-1)=35226
+    → [IND]Magadha Empire#6[T1] terr=3379 bal=72704 dq=21.5 cnt=53 | c=54.9 rankC=54.9 need=131241 tD=0.62 人 | safe=35226 keep=435720 avail=26212 chunkB=93482 pulseB=56089 不够一条(x=26212)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2845 alex_k B=467409 L=6668 d=70.1 nb=1 neut=0 cmds=34 noFull=0 shQ=116852 | m=0.900 worth=63.1 cheap=8.5 over=0 dMedOther=34.6 safe(-1)=35226
+    → [IND]Magadha Empire#6[T1] terr=3384 bal=72704 dq=21.5 cnt=53 | c=54.8 rankC=54.8 need=131330 tD=0.62 人 | safe=35226 keep=435440 avail=26492 chunkB=93482 pulseB=56089 不够一条(x=26492)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2850 alex_k B=562702 L=6668 d=84.4 nb=1 neut=0 cmds=35 noFull=0 shQ=118497 | m=0.900 worth=75.9 cheap=8.5 over=0 dMedOther=35.0 safe(-1)=37092
+    → [IND]Magadha Empire#6[T1] terr=3389 bal=76026 dq=22.4 cnt=53 | c=1.5 rankC=0.8 need=137235 tD=0.64 人 pulse nearCollapse bleeding | safe=37092 keep=37092 avail=519016 chunkB=112540 pulseB=67524  x=67524 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 67590 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2855 alex_k B=562702 L=6668 d=84.4 nb=1 neut=0 cmds=36 noFull=0 shQ=126722 | m=0.900 worth=75.9 cheap=8.5 over=0 dMedOther=35.0 safe(-1)=35788
+    → [IND]Magadha Empire#6[T1] terr=3331 bal=73704 dq=22.1 cnt=52 | c=1.6 rankC=0.8 need=132577 tD=0.63 人 pulse nearCollapse bleeding | safe=35788 keep=35788 avail=520320 chunkB=112540 pulseB=67524  x=67524 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 67590 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2860 alex_k B=569285 L=6668 d=85.4 nb=1 neut=0 cmds=37 noFull=0 shQ=134967 | m=0.900 worth=76.8 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=35051
+    → [IND]Magadha Empire#6[T1] terr=3275 bal=72392 dq=22.1 cnt=52 | c=1.6 rankC=0.8 need=129696 tD=0.62 人 pulse nearCollapse bleeding | safe=35051 keep=35051 avail=527563 chunkB=113857 pulseB=68314  x=68314 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 68380 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2865 alex_k B=429078 L=6668 d=64.3 nb=1 neut=0 cmds=37 noFull=0 shQ=1255 | m=0.900 worth=57.9 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=34477
+    → [IND]Magadha Empire#6[T1] terr=3256 bal=71371 dq=21.9 cnt=52 | c=1.2 rankC=0.6 need=3 tD=0.62 人 pulse nearCollapse bleeding | safe=34477 keep=34477 avail=389573 chunkB=85816 pulseB=51489 在途(curAtk=127745)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2870 alex_k B=434098 L=6668 d=65.1 nb=1 neut=0 cmds=37 noFull=0 shQ=7544 | m=0.900 worth=58.6 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=33874
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2875 alex_k B=376869 L=6772 d=55.7 nb=1 neut=0 cmds=37 noFull=0 shQ=13054 | m=0.900 worth=50.1 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=30771
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2880 alex_k B=381278 L=6879 d=55.4 nb=1 neut=0 cmds=37 noFull=0 shQ=18577 | m=0.900 worth=49.9 cheap=8.5 over=0 dMedOther=36.4 safe(-1)=28582
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 alex_k B=381278 L=6933 d=55.0 nb=1 neut=0 cmds=37 noFull=0 shQ=24152 | m=0.900 worth=49.5 cheap=8.5 over=0 dMedOther=36.4 safe(-1)=24458
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2890 alex_k B=385738 L=7046 d=54.7 nb=1 neut=0 cmds=37 noFull=0 shQ=29740 | m=0.900 worth=49.3 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=22052
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2895 alex_k B=385738 L=7151 d=53.9 nb=1 neut=0 cmds=37 noFull=0 shQ=35456 | m=0.900 worth=48.5 cheap=8.4 over=0 dMedOther=36.8 safe(-1)=19911
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 alex_k B=397486 L=7197 d=55.2 nb=1 neut=0 cmds=37 noFull=0 shQ=41226 | m=0.900 worth=49.7 cheap=8.4 over=0 dMedOther=38.3 safe(-1)=18481
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2905 alex_k B=397486 L=7285 d=54.6 nb=1 neut=0 cmds=37 noFull=0 shQ=47136 | m=0.900 worth=49.1 cheap=8.4 over=0 dMedOther=38.3 safe(-1)=16497
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2910 alex_k B=402176 L=7365 d=54.6 nb=1 neut=0 cmds=37 noFull=0 shQ=53060 | m=0.900 worth=49.1 cheap=8.4 over=0 dMedOther=38.7 safe(-1)=13771
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2915 alex_k B=402176 L=7392 d=54.4 nb=1 neut=0 cmds=37 noFull=0 shQ=59040 | m=0.900 worth=49.0 cheap=8.4 over=0 dMedOther=38.7 safe(-1)=12913
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2920 alex_k B=406921 L=7430 d=54.8 nb=1 neut=0 cmds=37 noFull=0 shQ=65034 | m=0.900 worth=49.3 cheap=8.4 over=0 dMedOther=39.2 safe(-1)=12169
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2925 alex_k B=406921 L=7461 d=54.5 nb=1 neut=0 cmds=37 noFull=0 shQ=71084 | m=0.900 worth=49.1 cheap=8.4 over=0 dMedOther=39.2 safe(-1)=11541
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2930 alex_k B=411722 L=7476 d=55.1 nb=1 neut=0 cmds=37 noFull=0 shQ=77148 | m=0.900 worth=49.6 cheap=8.4 over=0 dMedOther=39.7 safe(-1)=9930
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2935 alex_k B=411722 L=7503 d=54.9 nb=1 neut=0 cmds=37 noFull=0 shQ=83268 | m=0.900 worth=49.4 cheap=8.4 over=0 dMedOther=39.7 safe(-1)=9258
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2940 alex_k B=416580 L=7525 d=55.4 nb=1 neut=0 cmds=37 noFull=0 shQ=89403 | m=0.900 worth=49.8 cheap=8.4 over=0 dMedOther=40.2 safe(-1)=9013
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2945 alex_k B=416580 L=7537 d=55.3 nb=1 neut=0 cmds=37 noFull=0 shQ=95598 | m=0.900 worth=49.7 cheap=8.4 over=0 dMedOther=40.2 safe(-1)=8635
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2950 alex_k B=421495 L=7556 d=55.8 nb=1 neut=0 cmds=37 noFull=0 shQ=101807 | m=0.900 worth=50.2 cheap=8.4 over=0 dMedOther=40.7 safe(-1)=8461
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2955 alex_k B=421495 L=7570 d=55.7 nb=1 neut=0 cmds=37 noFull=0 shQ=105373 | m=0.900 worth=50.1 cheap=8.4 over=0 dMedOther=40.7 safe(-1)=9331
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2960 alex_k B=426468 L=7571 d=56.3 nb=1 neut=0 cmds=37 noFull=0 shQ=106617 | m=0.900 worth=50.7 cheap=8.4 over=0 dMedOther=41.2 safe(-1)=9491
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2965 alex_k B=553725 L=7572 d=73.1 nb=0 neut=0 cmds=38 noFull=0 shQ=109911 | m=0.900 worth=65.8 cheap=8.4 over=0 dMedOther=41.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 173579 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2970 alex_k B=560258 L=7572 d=74.0 nb=0 neut=0 cmds=38 noFull=0 shQ=118165 | m=0.900 worth=66.6 cheap=8.4 over=0 dMedOther=41.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

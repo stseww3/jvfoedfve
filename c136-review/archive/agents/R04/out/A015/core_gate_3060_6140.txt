@@ -1,0 +1,34 @@
+# A015 核心期行动拍的去向 [3060,3670)：共 488 个号·行动拍
+合计：nooffer 413（85%），boat 18（4%），floor 17（3%），inflight 15（3%），donate 13（3%），出手 9（2%），send 2（0%），small 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 16，keep 1
+  ryan_m    122 拍：nooffer 78（64%），floor 17（14%），inflight 15（12%），出手 9（7%），send 2（2%），small 1（1%）
+          按目标：floor→15 17，inflight→15 15，send→15 2，small→15 1
+  sora_w    122 拍：nooffer 122（100%）
+  noah88    122 拍：nooffer 101（83%），boat 11（9%），donate 10（8%）
+  leo_tx    122 拍：nooffer 112（92%），boat 7（6%），donate 3（2%）
+# A015 核心期行动拍的去向 [3670,4500)：共 664 个号·行动拍
+合计：nooffer 577（87%），boat 53（8%），donate 34（5%）
+  ryan_m    166 拍：nooffer 157（95%），boat 8（5%），donate 1（1%）
+  sora_w    166 拍：nooffer 135（81%），boat 18（11%），donate 13（8%）
+  noah88    166 拍：nooffer 142（86%），boat 17（10%），donate 7（4%）
+  leo_tx    166 拍：nooffer 143（86%），boat 10（6%），donate 13（8%）
+# A015 核心期行动拍的去向 [4500,5310)：共 621 个号·行动拍
+合计：nooffer 310（50%），price 139（22%），出手 91（15%），donate 28（5%），send 15（2%），boat 14（2%），inflight 11（2%），floor 7（1%），small 4（1%），sole 2（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 7
+  sora_w    162 拍：nooffer 48（30%），price 51（31%），出手 22（14%），donate 6（4%），send 10（6%），boat 8（5%），inflight 11（7%），small 4（2%），sole 2（1%）
+          按目标：price→4 51，inflight→4 11，send→4 10，small→4 4，sole→4 2
+  noah88    162 拍：nooffer 122（75%），price 19（12%），donate 8（5%），boat 6（4%），floor 7（4%）
+          按目标：price→4 19，floor→4 7
+  leo_tx    162 拍：nooffer 72（44%），price 11（7%），出手 65（40%），donate 11（7%），send 3（2%）
+          按目标：price→4 11，send→4 3
+  ryan_m    135 拍：nooffer 68（50%），price 58（43%），出手 4（3%），donate 3（2%），send 2（1%）
+          按目标：price→4 58，send→4 2
+# A015 核心期行动拍的去向 [5310,6140)：共 361 个号·行动拍
+合计：nooffer 129（36%），出手 105（29%），price 91（25%），send 12（3%），boat 9（2%），floor 7（2%），small 7（2%），inflight 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 7
+  noah88    166 拍：nooffer 129（78%），price 29（17%），boat 4（2%），floor 4（2%）
+          按目标：price→4 29，floor→4 4
+  leo_tx    130 拍：出手 105（81%），send 12（9%），boat 2（2%），floor 3（2%），small 7（5%），inflight 1（1%）
+          按目标：send→4 12，small→4 7，floor→4 3，inflight→4 1
+  sora_w     65 拍：price 62（95%），boat 3（5%）
+          按目标：price→4 62

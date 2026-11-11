@@ -1,0 +1,1724 @@
+{
+ "matchId": "G02",
+ "reviewer": "R08",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad8",
+  "strategyFile": "v27-team-g09.js",
+  "mapId": 22,
+  "mapSeed": 1985,
+  "mapLand": 664497,
+  "mode": 3,
+  "seededPlayers": 61,
+  "nominalTeams": 5,
+  "actualTeams": 5,
+  "baseWinExpectation": 0.2,
+  "squadBots": 8,
+  "ourPrimaryTeam": 2,
+  "teamSplitCounts": {
+   "2": 7
+  },
+  "teamSplit": false,
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": false,
+   "tickSnapshots": 43
+  },
+  "anomaliesSummary": {
+   "drop30Count": 47,
+   "totalTransfers": 7,
+   "likelyRejectedTransfers": 3,
+   "boxedHighDensSnapshots": 0,
+   "strategyErrors": 0,
+   "teamSplit": false
+  },
+  "squad": [
+   {
+    "me": 45,
+    "name": "ethan21",
+    "labels": [
+     "ethan21"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     1480,
+     748
+    ],
+    "spawnResolves": 16,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 646,
+     "voronoi": 500
+    }
+   },
+   {
+    "me": 46,
+    "name": "lucas94",
+    "labels": [
+     "lucas94"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     352,
+     92
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 102,
+     "voronoi": 6728
+    }
+   },
+   {
+    "me": 47,
+    "name": "noah88",
+    "labels": [
+     "noah88"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     910,
+     1060
+    ],
+    "spawnResolves": 18,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 650,
+     "voronoi": 500
+    }
+   },
+   {
+    "me": 48,
+    "name": "kevin_k",
+    "labels": [
+     "kevin_k"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     132,
+     88
+    ],
+    "spawnResolves": 4,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 220,
+     "voronoi": 12971
+    }
+   },
+   {
+    "me": 49,
+    "name": "ryan_m",
+    "labels": [
+     "ryan_m"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     340,
+     742
+    ],
+    "spawnResolves": 12,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 653,
+     "voronoi": 500
+    }
+   },
+   {
+    "me": 51,
+    "name": "dave_w",
+    "labels": [
+     "dave_w"
+    ],
+    "team": 2,
+    "teamInferred": true,
+    "spawn": [
+     452,
+     72
+    ],
+    "spawnResolves": 1,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 102,
+     "voronoi": 2331
+    }
+   },
+   {
+    "me": 53,
+    "name": "leo_tx",
+    "labels": [
+     "leo_tx"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     1436,
+     104
+    ],
+    "spawnResolves": 4,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 646,
+     "voronoi": 8230
+    }
+   },
+   {
+    "me": 56,
+    "name": "mark07",
+    "labels": [
+     "mark07"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     934,
+     448
+    ],
+    "spawnResolves": 11,
+    "spawnInfo": {
+     "bossDist": -1,
+     "minAllyDist": 609,
+     "voronoi": 500
+    }
+   }
+  ],
+  "replay": "无（G 组对局包没有 replay.txt，敌方身份与逐条指令看不到）",
+  "fairSharePerCapita": "编队 8/61 人 = 13.1%；整队 T2 按 5 队均分 = 20%",
+  "notes": "结算行 dave_w 为 left、team=null；本局未拆队，按主队 T2 计（推断）。HL-TICK 的 bal 是本土余额，不含在途进攻兵。"
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "lost",
+  "primaryTeamWon": false,
+  "anyBotWon": false,
+  "winnerTeam": 1,
+  "endTick": 4470,
+  "peakSquadLandShare": 0.1265,
+  "peakPrimaryTeamShareSeen": 0.1271,
+  "ourFinalTeamShare": 0.0323,
+  "placements": [
+   {
+    "bot": "ethan21",
+    "me": 45,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 4338,
+    "place": 31
+   },
+   {
+    "bot": "lucas94",
+    "me": 46,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 3781,
+    "place": 36
+   },
+   {
+    "bot": "noah88",
+    "me": 47,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 2690,
+    "place": 48
+   },
+   {
+    "bot": "kevin_k",
+    "me": 48,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 4467,
+    "place": 28
+   },
+   {
+    "bot": "ryan_m",
+    "me": 49,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 2356,
+    "place": 52
+   },
+   {
+    "bot": "dave_w",
+    "me": 51,
+    "team": 2,
+    "event": "left",
+    "result": "left",
+    "tick": 4470,
+    "place": 25
+   },
+   {
+    "bot": "leo_tx",
+    "me": 53,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 3486,
+    "place": 39
+   },
+   {
+    "bot": "mark07",
+    "me": 56,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 4411,
+    "place": 29
+   }
+  ]
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "src": "HL-OPENING(各号最近一条开局指令时的领土)",
+   "botsWithSnapshot": 8,
+   "sqTerr": 85,
+   "sqSharePct": 0.013
+  },
+  {
+   "t": 225,
+   "src": "OPENING-CHECK L1945",
+   "botsWithSnapshot": 8,
+   "sqTerr": 2841,
+   "sqSharePct": 0.428,
+   "allOk": true
+  },
+  {
+   "t": 270,
+   "src": "HL-OPENING(各号最近一条开局指令时的领土)",
+   "botsWithSnapshot": 8,
+   "sqTerr": 2842,
+   "sqSharePct": 0.428
+  },
+  {
+   "t": 450,
+   "src": "HL-OPENING(各号最近一条开局指令时的领土)",
+   "botsWithSnapshot": 8,
+   "sqTerr": 9044,
+   "sqSharePct": 1.361
+  },
+  {
+   "t": 630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 22636,
+   "sqSharePct": 3.41,
+   "sqBal": 39572,
+   "sqDens": 1.7,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 900,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 39515,
+   "sqSharePct": 5.95,
+   "sqBal": 82702,
+   "sqDens": 2.1,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 1260,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 65151,
+   "sqSharePct": 9.8,
+   "sqBal": 283219,
+   "sqDens": 4.3,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 1530,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 80132,
+   "sqSharePct": 12.06,
+   "sqBal": 568223,
+   "sqDens": 7.1,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 1620,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 84073,
+   "sqSharePct": 12.65,
+   "sqBal": 683771,
+   "sqDens": 8.1,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "note": "编队领土份额峰值"
+  },
+  {
+   "t": 1800,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 83479,
+   "sqSharePct": 12.56,
+   "sqBal": 991936,
+   "sqDens": 11.9,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 2070,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 70415,
+   "sqSharePct": 10.6,
+   "sqBal": 1086828,
+   "sqDens": 15.4,
+   "boxedIn": 1,
+   "overSoftCap": 0
+  },
+  {
+   "t": 2356,
+   "src": "RESULT L2211 + 最近快照 t=2340",
+   "botsWithSnapshot": 8,
+   "sqTerr": 63505,
+   "sqSharePct": 9.56,
+   "sqBal": 1103642,
+   "sqDens": 17.4,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "event": "ryan_m died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 12.71,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 30.72,
+    "allPct": {
+     "T0": 1.1,
+     "T1": 30.7,
+     "T2": 12.7,
+     "T3": 7.0,
+     "T4": 23.6,
+     "T5": 23.0
+    }
+   }
+  },
+  {
+   "t": 2520,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 7,
+   "sqTerr": 57649,
+   "sqSharePct": 8.68,
+   "sqBal": 1442872,
+   "sqDens": 25.0,
+   "boxedIn": 1,
+   "overSoftCap": 0
+  },
+  {
+   "t": 2690,
+   "src": "RESULT L2237 + 最近快照 t=2610",
+   "botsWithSnapshot": 7,
+   "sqTerr": 55999,
+   "sqSharePct": 8.43,
+   "sqBal": 1597010,
+   "sqDens": 28.5,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "event": "noah88 died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 11.26,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 30.29,
+    "allPct": {
+     "T0": 1.1,
+     "T1": 30.3,
+     "T2": 11.3,
+     "T3": 5.9,
+     "T4": 24.4,
+     "T5": 25.6
+    }
+   }
+  },
+  {
+   "t": 3060,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 6,
+   "sqTerr": 59781,
+   "sqSharePct": 9.0,
+   "sqBal": 804477,
+   "sqDens": 13.5,
+   "boxedIn": 1,
+   "overSoftCap": 0
+  },
+  {
+   "t": 3486,
+   "src": "RESULT L2312 + 最近快照 t=3420",
+   "botsWithSnapshot": 6,
+   "sqTerr": 50077,
+   "sqSharePct": 7.54,
+   "sqBal": 1069670,
+   "sqDens": 21.4,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "leo_tx died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 9.84,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 36.99,
+    "allPct": {
+     "T0": 1.2,
+     "T1": 37.0,
+     "T2": 9.8,
+     "T3": 5.2,
+     "T4": 21.0,
+     "T5": 24.8
+    }
+   }
+  },
+  {
+   "t": 3510,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 5,
+   "sqTerr": 46579,
+   "sqSharePct": 7.01,
+   "sqBal": 1043298,
+   "sqDens": 22.4,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 3781,
+   "src": "RESULT L2336 + 最近快照 t=3780",
+   "botsWithSnapshot": 4,
+   "sqTerr": 33054,
+   "sqSharePct": 4.97,
+   "sqBal": 446060,
+   "sqDens": 13.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "lucas94 died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 7.93,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 39.44,
+    "allPct": {
+     "T0": 0.6,
+     "T1": 39.4,
+     "T2": 7.9,
+     "T3": 6.6,
+     "T4": 18.9,
+     "T5": 24.9
+    }
+   }
+  },
+  {
+   "t": 4050,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 34295,
+   "sqSharePct": 5.16,
+   "sqBal": 556733,
+   "sqDens": 16.2,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 4338,
+   "src": "RESULT L2368 + 最近快照 t=4320",
+   "botsWithSnapshot": 4,
+   "sqTerr": 13841,
+   "sqSharePct": 2.08,
+   "sqBal": 217779,
+   "sqDens": 15.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "ethan21 died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 4.87,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 51.53,
+    "allPct": {
+     "T0": 0.3,
+     "T1": 51.5,
+     "T2": 4.9,
+     "T3": 3.8,
+     "T4": 17.9,
+     "T5": 19.9
+    }
+   }
+  },
+  {
+   "t": 4410,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 2,
+   "sqTerr": 4325,
+   "sqSharePct": 0.65,
+   "sqBal": 55085,
+   "sqDens": 12.7,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 4411,
+   "src": "RESULT L2371 + 最近快照 t=4410",
+   "botsWithSnapshot": 2,
+   "sqTerr": 4325,
+   "sqSharePct": 0.65,
+   "sqBal": 55085,
+   "sqDens": 12.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "mark07 died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 3.9,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 52.72,
+    "allPct": {
+     "T0": 0.3,
+     "T1": 52.7,
+     "T2": 3.9,
+     "T3": 3.8,
+     "T4": 17.6,
+     "T5": 19.8
+    }
+   }
+  },
+  {
+   "t": 4467,
+   "src": "RESULT L2372 + 最近快照 t=4410",
+   "botsWithSnapshot": 2,
+   "sqTerr": 4325,
+   "sqSharePct": 0.65,
+   "sqBal": 55085,
+   "sqDens": 12.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "kevin_k died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 3.23,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 53.63,
+    "allPct": {
+     "T0": 0.3,
+     "T1": 53.6,
+     "T2": 3.2,
+     "T3": 3.8,
+     "T4": 17.5,
+     "T5": 19.6
+    }
+   }
+  },
+  {
+   "t": 4470,
+   "src": "RESULT L2373 + 最近快照 t=4410",
+   "botsWithSnapshot": 2,
+   "sqTerr": 4325,
+   "sqSharePct": 0.65,
+   "sqBal": 55085,
+   "sqDens": 12.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "dave_w left"
+  }
+ ],
+ "phases": {
+  "spawn": {
+   "window": "t=0~90",
+   "facts": [
+    "协调器在出生倒计时内重解 26 次（[BACKEND-SPAWN-COORD] L1823 首解、L1924 末解）。首解是沿北岸一排（y=64~116，x=96~1408）；末解只剩西北角 kevin_k(132,88)/lucas94(352,92)/dave_w(452,72) 三个号相邻（minAllyDist 102~220）。",
+    "末解里 4/8 个号 voronoi=500：mark07(934,448)、ryan_m(340,742)、noah88(910,1060)、ethan21(1480,748)，离最近队友 609~653 像素；这 4 个号改点 11~18 次（digest [B] [K]）。",
+    "leo_tx(1436,104) 独处东北角，voronoi=8230，离最近队友 646。"
+   ],
+   "problems": [
+    "voronoi=500 是协调器兜底分支写死的值：pickNextTarget 四档放宽都无解后，在全图陆地上取『离已选队友（和 boss）最远』的格子，目标函数里没有敌人距离项——结果是把号撒到队友够不着的地方。",
+    "ethan21 落在小陆块：t=630 仅 1984 格（nb=0），t=720 nb=0/neut=0 被水围住，靠船一点点挪，t=1530 才 2978 格（其余号同期 4668~20170）。"
+   ]
+  },
+  "opening": {
+   "window": "t=90~630",
+   "facts": [
+    "8 个号 cyc0 在 t=54~70 发出第一条开局指令，其后约每 100 拍一条（digest [K]）。OPENING-CHECK@225 全部 OK，单号 275~395 格、合计 2841 格（L1945）。",
+    "t=630：编队 22636 格 = 3.41%，余额合计 39572，密度 1.7；单号 1984~3517 格（L1983~L1991）。"
+   ],
+   "problems": [
+    "除 ethan21 外没有号在 t<630 被围；问题不在开局速度，而在出生几何（上一阶段）。"
+   ]
+  },
+  "midgame": {
+   "window": "t=630~3500",
+   "facts": [
+    "t=630→1620 编队份额 3.41%→12.65%（峰值，84073 格），接近人均应得 13.1%；但密度只有 1.7→8.1。扩张主力：ryan_m 3106→19123（177 条指令）、lucas94 3316→20170（79 条）。",
+    "t=1260 起 leo_tx、dave_w 都只剩 1 个敌邻且无中立地，停止出手：leo_tx 在 t=1170~2880 的 1710 拍里只发了 2 条指令（都是船，其中一条是 t=1730 的拦截），本土余额 20570→1079225。",
+    "t=1620~2690 三个号被吃：ryan_m 19123→4089（t=2356 阵亡），dave_w 7131→0（t≈2000 被清空，靠海上的船留了个残号），noah88 10890→3716（t=2690 阵亡）。编队份额 12.65%→8.06%。",
+    "ryan_m、noah88 开始失地时，全队没有任何一个号 dens≥40（digest [M]）；整局 7 笔捐款全部出自 dave_w 的 4~12 格残号，单笔到账 18~91 兵。",
+    "t=2880~3060 leo_tx 把本土余额 1079225 打到 90：16 条指令，两段合计净流出 1208953 兵换 3791 格（319 兵/格）；t=3150~3240 丢 5040 格，t=3486 阵亡。"
+   ],
+   "problems": [
+    "全队余额向 3 个单邻号集中（t=2520：leo_tx 698k + kevin_k 247k + mark07 144k = 全队 1443k 的 75%），而正在被吃的号密度只有 4~12。",
+    "救援捐款门槛（有海岸的号先留 68×领土，再要求 dMe≥106）在队友阵亡的时间窗（t=1600~2700，全队密度 8~31）里够不着。"
+   ]
+  },
+  "endgame": {
+   "window": "t>3500",
+   "facts": [
+    "lucas94 t=3330~3510 两段合计净流出 453277 兵只换 1256 格（361 兵/格），本土密度 24.4→1.9→3.2；t=3510~3690 丢 8825 格，t=3781 阵亡。",
+    "kevin_k、mark07 在 t=3600~4050 各自又买了一轮地（179、148、165 兵/格），t=4140 起 330 拍内被推平：kevin_k 15911→4260（t=4467 阵亡），mark07 11651→4857（t=4411 阵亡）；ethan21 t=4338 阵亡。",
+    "T1 从 39.4%（t=3781）涨到 53.6%（t=4467），我方 T2 从 7.9% 掉到 3.2%。"
+   ],
+   "problems": [
+    "最后三个大号被推时密度只有 15~23，对方每格只需付 2+3.2×密度 ≈ 50~76 兵。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 1620,
+   "t1": 2340,
+   "shareBefore": 12.65,
+   "shareAfter": 9.56,
+   "shareUnit": "编队领土占全图 %",
+   "what": "编队份额见顶后，三个密度最低的号（ryan_m、dave_w、noah88）被相邻真人连续吃掉，富余的号没有任何动作。",
+   "evidence": [
+    "ryan_m：t=1620 19123 格/余额 67758/dens 3.5/nb=4（L2116）→ t=2160 5394 格（L2186）→ t=2340 4089 格（L2203），整个失地过程 Δcmds=0（digest [E]）。",
+    "dave_w：t=1530 6203 格/99563 → t=1980 1913 格/23727 → t=2070 0 格/0（L2110~L2175）；t=1800~1980 失地 3530 格、余额比公式少 133000~137949，与 [X15] 估计的掉血 131033 吻合（balcheck）。",
+    "同窗 leo_tx 本土余额 183k→548k（dens 19→58），整窗只发 1 条指令（t=1730 拦截船，L2137）；kevin_k 70k→127k、mark07 43k→102k（matrix）。",
+    "t=2356 结算行：T1 30.7% / T4 23.6% / T5 23.0% / T2（我方）12.7% / T3 7.0%（L2211），我方排 4/5。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1260~1620",
+     "bot": "ryan_m",
+     "decision": "密度 2~4 时继续买地：t=1260~1440 两段净流出 56895 兵换 1655 格（34.4 兵/格，是自身密度 3.8 的 9 倍），t=1530~1620 再扩 3044 格，t=1620 余额只有 67758。",
+     "codePath": "src/strategy/v27-team-g09.js: Policy.act L5277-5318（t<coreFrom=1500 走 super.act → V13.act L1791 → General.act L770-776 → Style.pickTarget L1122-1155）：人机要过 botOk L2443-2449（botPx ≤ 0.002×t×自身密度），留底 winFloor L4957-4965；真人留底 floorFor0 L2211-2217（0.5×floorAt）。t≥1500 走 Policy.act L5349-5350 expandNeutral + buyLand L5715（非真人目标 L5858-5866 只比较报价 c 与 worth）",
+     "why": "t=1350 时 botOk 只放行约 10 兵/格以内的人机地（0.002×1350×密度 3.8），实测 34.4 兵/格是这条线的 3 倍多：规则本身不允许这么买，是执行时没守住（见 D17，推断），或其中一部分兵是被别人打掉的，没有录像分不清。门槛也只和自己当前的密度比，不看买完之后自己还剩多少。"
+    },
+    {
+     "t": "1260~2340",
+     "bot": "leo_tx",
+     "decision": "只有 1 个敌邻、无中立地，1710 拍里不进攻、不捐款。",
+     "codePath": "src/strategy/v27-team-g09.js: offers L5663（t<2400 且对方没打我方、非濒死/失血、rawNeed>0.35B → continue）；buyLand L5737（c≥worth → break）；tryDonateToTeammate L4799-4802（有海岸且 t≥1100：B≤1.10×68×领土 直接 return）、L4852（救援要 dMe≥106 且 ≥dAlly+25）、L4877（盈余捐要 dMe≥132）",
+     "why": "t=2340 时 leo_tx dens=58，离 74.8/106/132 三道门槛都差得远；t=2790 才过 100。"
+    },
+    {
+     "t": "1620~2340",
+     "bot": "kevin_k/mark07/lucas94",
+     "decision": "没有对被打的 ryan_m/noah88/dave_w 做协防戳刺。",
+     "codePath": "src/strategy/v27-team-g09.js: tryDonateToTeammate L4864（HL-ASSIST 要求 dMe≥65 且与主攻手陆地接壤）",
+     "why": "三个号当时 dens 4~25（matrix），不满足 dMe≥65；本局 HL-ASSIST 0 条。"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 2880,
+   "t1": 3510,
+   "shareBefore": 8.3,
+   "shareAfter": 7.01,
+   "shareUnit": "编队领土占全图 %",
+   "what": "leo_tx 囤到 dens=114 后 180 拍内把 107.9 万兵全部派出（占当时全队余额 62%），本土余额 90，新邻居趁空吃掉它。全队余额 1732965→1043298。",
+   "evidence": [
+    "t=2880 leo_tx 9448 格/余额 1079225/dens 114.2/nb=1（L2250）；全队余额 1732965（digest [C]）。",
+    "t=2970 11392 格/290566（6 条指令）；t=3060 13239 格/余额 90（再 10 条指令）（L2260、L2270）。两段合计比公式少 1208953 兵，净增 3791 格 = 319 兵/格（digest [F] 两段口径）。",
+    "t=3060→3150 没有指令，按利息+地租公式应到 14163，实际 11125，少 3038（balcheck）——与『入账先抵欠款』[E14][E16] 一致，推断最后一笔把余额打穿进了欠款。",
+    "t=3150 nb=3、dens 0.8；t=3150→3240 丢 5040 格，同段余额反而比公式多 79751（在途兵回流，digest [N]）；t=3420 4923 格；t=3486 阵亡（L2279~L2312）。",
+    "t=2880→3240 合计：本土余额 1079225→106032，领土 9448→8181——花掉约 97 万兵，地反而少了 1267 格。",
+    "按代码，over 时一笔出兵只该派出 B-手续费-0.9×100×领土 = 1079225-12647-850320 = 216258（余额的 20.0%）。把这笔 20% 的单按执行时余额连扣 6 次（每次另付 12/1024 手续费），余额剩 23.9% = 258186，再滚 80 拍利息是 29.4~29.6 万；实测 t=2970 余额 290566、Δcmds=6，差 1~2%。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2790~2880",
+     "bot": "leo_tx",
+     "decision": "余额越过软上限（100×领土）后仍等到 dens≈116 才出手，然后不计价格地打。",
+     "codePath": "src/strategy/v27-team-g09.js: buyLand L5726 over=B>100L → L5737 的 c≥worth break 失效；L5833-5842 over 时 keep 上限 = 0.9×100L（P.hold）；L5869-5870 over 时不走脉冲分支；L6026-6031 x=min(avail, want)，x<want 时要求 x ≥ chunk×B（0.2B）才发；L5764-5766 组队局对 isCrowdedHard 邻居另有 1.16×100L 的线（单邻时不适用，offers L5645-5658）",
+     "why": "over 分支打真人，要求这一笔 x = B−手续费−0.9×100L 至少是余额的 20%，即密度 ≥ 90/(1−0.2−12/1024) = 114.17 才出手。t=2790 密度 103.7 没打，t=2880 密度 114.23 刚过线，吻合。第一段 449 兵/格 ≈ 2+3.2×140，说明对面也是囤到 140 密度的号。"
+    },
+    {
+     "t": "2880~3060",
+     "bot": "leo_tx",
+     "decision": "把唯一的敌邻打退后暴露给新邻居（nb 1→2→3），自己本土余额为 0。",
+     "codePath": "src/strategy/v27-team-g09.js: buyLand L5753-5757 isSoleHealthyBuffer = !isTeamMode && …（组队局恒为 false，『唯一缓冲邻居不打』这条保护不生效）；offers L5621-5623 soleBufferPenalty 只把报价乘 1.6；safeAt L4939-4954 / L2891-2900 的底线只按现有邻居算",
+     "why": "nb 由 1（L2250）→2（L2260）→3（L2279）。防御量只看本土余额 [X11]，兵在途中时本土每格只值 2 兵。"
+    },
+    {
+     "t": "2880~3060",
+     "bot": "leo_tx",
+     "decision": "一笔『留 90×领土在家』的出兵变成了清仓：第一段 6 条指令派掉 76%，第二段 10 条指令把剩下的 29 万也派光。",
+     "codePath": "src/strategy/v27-team-g09.js: Strategy.send L479-487（发令后不记还在路上的指令；pct 按当时余额折算，引擎按执行时余额抽兵）；Policy.act L5320 每 2 拍决策一次（period=2）；buyLand L5845-5855 avail = min(B-fee, B+在途兵-fee-keep)：在途兵算进留底",
+     "why": "指令十几拍后才生效（有录像的局中位 12~16 拍），期间策略每 2 拍看到的还是旧余额，于是同一笔单连下 6 次（12 拍 ÷ 2 拍 = 6 条）（推断：G 组没有录像，但 6 次连扣的算术与实测吻合，B 组录像里能直接看到同一拍对同一目标的重复单）。第一批兵上路后，在途兵（约 78 万）已经超过 keep，L5855 的 avail 退化成 B-fee，家里剩下的兵可以全部派出。"
+    }
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "t0": 4140,
+   "t1": 4467,
+   "shareBefore": 4.85,
+   "shareAfter": 0.65,
+   "shareUnit": "编队领土占全图 %",
+   "what": "T1 过半后的收割：kevin_k、mark07、ethan21 在 330 拍内被推平。",
+   "evidence": [
+    "kevin_k：15911（t=4140，余额 295270，dens 18.6）→11025→7173→4260（t=4410），t=4467 阵亡（L2354~L2372）。",
+    "mark07：11651（t=4140，余额 271058，dens 23.3）→8210→4857，t=4411 阵亡，失地段 Δcmds=0（L2357~L2371）。",
+    "结算行 T1：t=3781 39.4% → t=4338 51.5% → t=4467 53.6%；T2：7.9%→4.9%→3.2%（L2336、L2368、L2372）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3600~4050",
+     "bot": "kevin_k",
+     "decision": "dens 48.7 时花 411297 兵买 2295 格（179 兵/格），t=3960 再花 197768 兵买 1200 格（165 兵/格），被推前密度降到 15.7~18.6。",
+     "codePath": "src/strategy/v27-team-g09.js: buyLand L5723-5725 worth=m×max(dMe, 0.85×其他真人密度中位数)（t≥marketFrom=2500，m=0.9）；offers L5486-5487 报价 c=(elimCost+fee)/可得领土，L5549-5557 濒死/失血/薄目标折扣；buyLand L6010-6022 pulseMode 每次 ≤12%B",
+     "why": "报价 c 用的是『一路打到崩溃线的平均价』（elimCost L464-469 是 2B(1-x^1.6)+2T(1-x) 的积分，均价约 2+2.4×对方密度），实际每一口付的是当前边际价 2+3.2×对方密度 [X10][X11]；没打死就停，等于按最贵的价零买。"
+    },
+    {
+     "t": "3600~3780",
+     "bot": "mark07",
+     "decision": "dens 45 时两段净流出 350278 兵买 2373 格（148 兵/格），密度降到 11.8。",
+     "codePath": "src/strategy/v27-team-g09.js: 同上 buyLand L5715-6031",
+     "why": "同上。"
+    }
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "ryan_m",
+   "me": 49,
+   "labels": [
+    "ryan_m"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 2356,
+   "place": 52,
+   "resultPeak": 19135,
+   "logPeakTerr": 19123,
+   "logPeakTick": 1620,
+   "lastSnapshots": [
+    {
+     "t": 2070,
+     "terr": 6536,
+     "bal": 58541,
+     "dens": 9.0,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 183
+    },
+    {
+     "t": 2160,
+     "terr": 5394,
+     "bal": 53048,
+     "dens": 9.8,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 183
+    },
+    {
+     "t": 2250,
+     "terr": 5335,
+     "bal": 63368,
+     "dens": 11.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 183
+    },
+    {
+     "t": 2340,
+     "terr": 4089,
+     "bal": 48531,
+     "dens": 11.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 183
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 2211,
+   "cause": "开局扩到 19123 格但 dens 只有 3.5（t=1620），被相邻真人吃：t=1620~2340 丢 15034 格、余额从 165476（t=1800）被打掉到 48531；全程 0 指令、0 收款。对方每格成本约 2+3.2×9 ≈ 31 兵。",
+   "chain": [
+    "t=1260~1620 低密度继续扩张（177 条指令）",
+    "t=1620 起失地，t=1800~2160 丢 11736 格，余额按 [X15] 掉血（balcheck：估计 182142，实际比公式少 217155~269197）",
+    "t=2356 领土跌破峰值/4 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "noah88",
+   "me": 47,
+   "labels": [
+    "noah88"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 2690,
+   "place": 48,
+   "resultPeak": 11324,
+   "logPeakTerr": 10890,
+   "logPeakTick": 1890,
+   "lastSnapshots": [
+    {
+     "t": 2340,
+     "terr": 6271,
+     "bal": 60142,
+     "dens": 9.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 100
+    },
+    {
+     "t": 2430,
+     "terr": 4540,
+     "bal": 43550,
+     "dens": 9.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 100
+    },
+    {
+     "t": 2520,
+     "terr": 4504,
+     "bal": 51984,
+     "dens": 11.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 100
+    },
+    {
+     "t": 2610,
+     "terr": 3716,
+     "bal": 20969,
+     "dens": 5.6,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 105
+    }
+   ],
+   "donationsReceivedLogged": 2,
+   "donationsReceivedAccepted": 2,
+   "donationsGivenLast500": 0,
+   "resultLine": 2237,
+   "cause": "t=1710~1890 两段净流出 102669 兵只换 1109 格（92.6 兵/格，是自身密度 11.3 的 8 倍），密度 11.3→3.6；t=1890 起被吃（t=1890~2430 0 指令，丢 6350 格），t=2520~2610 再丢 788 格、余额 51984→20969，t=2690 出局。期间只有 dave_w 残号发来 2 笔共 ≤53 兵。",
+   "chain": [
+    "t=1710 余额 110271/dens 11.3",
+    "11 条指令把余额打到 49912（L2135~L2147），下一段再流出 16749",
+    "t=1890 dens 3.6 → 失地 6350 格（L2156~L2217）",
+    "t=2690 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "leo_tx",
+   "me": 53,
+   "labels": [
+    "leo_tx"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 3486,
+   "place": 39,
+   "resultPeak": 13773,
+   "logPeakTerr": 13239,
+   "logPeakTick": 3060,
+   "lastSnapshots": [
+    {
+     "t": 3150,
+     "terr": 13221,
+     "bal": 11125,
+     "dens": 0.8,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 3240,
+     "terr": 8181,
+     "bal": 106032,
+     "dens": 13.0,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 3330,
+     "terr": 7723,
+     "bal": 115229,
+     "dens": 14.9,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 3420,
+     "terr": 4923,
+     "bal": 66753,
+     "dens": 13.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 2312,
+   "cause": "囤兵 1710 拍后在 180 拍内把 107.9 万兵全部派出（两段合计 319 兵/格），本土余额 90、dens 0，新邻居贴上来，t=3150~3420 丢 8298 格，t=3486 出局。",
+   "chain": [
+    "t=1170~2880 nb=1/neut=0 不动，dens 2.2→114.2",
+    "t=2880~3060 16 条指令本土余额→90（推断进了欠款）",
+    "t=3150 nb=3；t=3150~3240 丢 5040 格（同段在途兵回流 +79751）",
+    "t=3330~3420 再丢 2800 格、余额按 [X15] 掉 65655~68864（估计 66752）",
+    "t=3486 出局"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "lucas94",
+   "me": 46,
+   "labels": [
+    "lucas94"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 3781,
+   "place": 36,
+   "resultPeak": 24267,
+   "logPeakTerr": 24166,
+   "logPeakTick": 2160,
+   "lastSnapshots": [
+    {
+     "t": 3420,
+     "terr": 17254,
+     "bal": 32838,
+     "dens": 1.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 126
+    },
+    {
+     "t": 3510,
+     "terr": 18604,
+     "bal": 59611,
+     "dens": 3.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 126
+    },
+    {
+     "t": 3600,
+     "terr": 14349,
+     "bal": 110939,
+     "dens": 7.7,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 132
+    },
+    {
+     "t": 3690,
+     "terr": 9779,
+     "bal": 119287,
+     "dens": 12.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 132
+    }
+   ],
+   "donationsReceivedLogged": 4,
+   "donationsReceivedAccepted": 4,
+   "donationsGivenLast500": 0,
+   "resultLine": 2336,
+   "cause": "t=3330~3510 两段净流出 453277 兵只换 1256 格（361 兵/格），本土密度 24.4→1.9；随后 180 拍丢 8825 格，t=3781 出局。打的是谁没有录像无法确认。",
+   "chain": [
+    "t=2160 峰值 24166 格后被吃到 17341（t=2430）",
+    "t=2520~3240 持平并囤到 436540（其间 9 次海上拦截，最大两笔 pct=245、301）",
+    "t=3330~3420 本土余额 423646→32838（5 条指令，其中 1 条是 pct=6 的拦截船）",
+    "t=3510~3690 18604→9779，t=3781 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "ethan21",
+   "me": 45,
+   "labels": [
+    "ethan21"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 4338,
+   "place": 31,
+   "resultPeak": 7599,
+   "logPeakTerr": 7421,
+   "logPeakTick": 3870,
+   "lastSnapshots": [
+    {
+     "t": 4050,
+     "terr": 6668,
+     "bal": 74756,
+     "dens": 11.2,
+     "nb": 4,
+     "neut": 6,
+     "cmds": 95
+    },
+    {
+     "t": 4140,
+     "terr": 4570,
+     "bal": 67701,
+     "dens": 14.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 101
+    },
+    {
+     "t": 4230,
+     "terr": 2091,
+     "bal": 20336,
+     "dens": 9.7,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 102
+    },
+    {
+     "t": 4320,
+     "terr": 1746,
+     "bal": 18458,
+     "dens": 10.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 102
+    }
+   ],
+   "donationsReceivedLogged": 1,
+   "donationsReceivedAccepted": 1,
+   "donationsGivenLast500": 0,
+   "resultLine": 2368,
+   "cause": "出生在小陆块，全程 ≤7421 格、密度 ≤25；t=3600~3870 打掉唯一的邻居后 nb 1→4，t=3870~4320 被吃 7421→1746，t=4338 出局。",
+   "chain": [
+    "t=630 1984 格，t=1530 2978 格",
+    "t=3600~3870 三段净流出 100813 兵、净增 1123 格；t=3780 本土余额 5（L2335），下一段回流 78167",
+    "t=3960 nb=4（L2347）",
+    "t=3870~4320 7421→1746，t=4338 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "mark07",
+   "me": 56,
+   "labels": [
+    "mark07"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 4411,
+   "place": 29,
+   "resultPeak": 11651,
+   "logPeakTerr": 11651,
+   "logPeakTick": 3780,
+   "lastSnapshots": [
+    {
+     "t": 4050,
+     "terr": 11651,
+     "bal": 232492,
+     "dens": 20.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 4140,
+     "terr": 11651,
+     "bal": 271058,
+     "dens": 23.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 4230,
+     "terr": 8210,
+     "bal": 179481,
+     "dens": 21.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 4320,
+     "terr": 4857,
+     "bal": 88510,
+     "dens": 18.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 92
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 2371,
+   "cause": "t=3600~3780 高价买地后密度只有 12~23；T1 过半后被推：t=4140~4320 11651→4857（0 指令），t=4411 出局。",
+   "chain": [
+    "t=3600 余额 417221/dens 45",
+    "t=3690 余额 112807，t=3780 11651 格/dens 11.8",
+    "t=4140 起失地",
+    "t=4411 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "kevin_k",
+   "me": 48,
+   "labels": [
+    "kevin_k"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 4467,
+   "place": 28,
+   "resultPeak": 15911,
+   "logPeakTerr": 15911,
+   "logPeakTick": 4050,
+   "lastSnapshots": [
+    {
+     "t": 4140,
+     "terr": 15911,
+     "bal": 295270,
+     "dens": 18.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 138
+    },
+    {
+     "t": 4230,
+     "terr": 11025,
+     "bal": 185726,
+     "dens": 16.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 139
+    },
+    {
+     "t": 4320,
+     "terr": 7173,
+     "bal": 110384,
+     "dens": 15.4,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 139
+    },
+    {
+     "t": 4410,
+     "terr": 4260,
+     "bal": 54556,
+     "dens": 12.8,
+     "nb": 1,
+     "neut": 19,
+     "cmds": 140
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 2372,
+   "cause": "同 mark07：t=3600~4050 两轮高价买地（179、165 兵/格）后 dens 15.7~18.6，t=4140~4410 15911→4260，t=4467 出局（全队最后一个）。",
+   "chain": [
+    "t=3600 余额 603691/dens 48.7",
+    "t=3690 余额 261406",
+    "t=4050 余额 249316",
+    "t=4140 起失地",
+    "t=4467 出局"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "dave_w",
+   "me": 51,
+   "labels": [
+    "dave_w"
+   ],
+   "team": 2,
+   "event": "left",
+   "tick": 4470,
+   "place": 25,
+   "resultPeak": 7131,
+   "logPeakTerr": 7131,
+   "logPeakTick": 1260,
+   "lastSnapshots": [
+    {
+     "t": 4140,
+     "terr": 65,
+     "bal": 247,
+     "dens": 3.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83
+    },
+    {
+     "t": 4230,
+     "terr": 65,
+     "bal": 333,
+     "dens": 5.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83
+    },
+    {
+     "t": 4320,
+     "terr": 65,
+     "bal": 427,
+     "dens": 6.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83
+    },
+    {
+     "t": 4410,
+     "terr": 65,
+     "bal": 529,
+     "dens": 8.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 2373,
+   "cause": "（未记阵亡，left@4470）t=1260 起被唯一的敌邻吃，t=1800~2070 5443→0，余额 126034 随失地被打掉；因海上有船按 [D2] 只清空不出局，之后以 ≤78 格的残号活到终局，名次 25。",
+   "chain": [
+    "t=1260 峰值 7131 格/dens 6.8",
+    "t=1530~1800 dens 16~23，仍不还手也不外捐（被打时 tryDonateToTeammate L4802 直接 return；反击 tryDeterrentCounter L2720 要 dMe≥58）",
+    "t=2070 领土 0/余额 0",
+    "t=2084~2196 7 笔 pct=51 小额捐款"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "ledger": {
+  "drop30Count": 47,
+  "drop30ByClass": {
+   "ATTACK-GAIN": 25,
+   "BOAT": 2,
+   "LOST-LAND": 16,
+   "PASSIVE-LOSS": 1,
+   "SPEND-NO-LAND": 3
+  },
+  "donationsLogged": 7,
+  "donationsObservedAccepted": 0,
+  "donationsObservedRejected": 0,
+  "donationsUndetermined": 7,
+  "donationsModelRejected": 0,
+  "note": "观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
+  "donatedArrivedUpperBound": 256,
+  "donationTaxUpperBound": 317,
+  "cardLikelyRejected": 3
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "54~630",
+   "bot": "全队",
+   "decision": "开局 DP 扩张按 100 拍一个周期出手，OPENING-CHECK@225 8/8 OK（275~395 格），t=630 人均 2830 格。",
+   "codePath": "src/strategy/v27-team-g09.js: V13.dpNeutral L2362（经 Policy.act L5290 super.act）",
+   "verdict": "good",
+   "patternId": "NEW-OP-G1",
+   "evidence": [
+    "L1945 OPENING-CHECK",
+    "L1983~L1991 t=630 快照",
+    "digest [K]"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "0~50",
+   "bot": "mark07/ryan_m/noah88/ethan21",
+   "decision": "4 个号的出生点走兜底分支（voronoi=500），各离最近队友 609~653 像素。",
+   "codePath": "src/strategy/spawn-coordinator-c110.mjs L1062-1092 / spawn-coordinator-c116.mjs L1291-1326（兜底：全图取离已选队友最远的陆地格，voronoiPixels 写死 500；G 组协调器源码不在数据包里，按相同日志签名对应）",
+   "verdict": "error",
+   "patternId": "NEW-SP-01",
+   "evidence": [
+    "L1924 末解",
+    "digest [B] [K]：四个号 voronoi=500、改点 11~18 次"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D03",
+   "t": "900~1440",
+   "bot": "lucas94",
+   "decision": "两轮低价买地：t=900~1080 两段净流出 23114 兵换 2200 格（10.5 兵/格），t=1260~1440 22577 兵换 7662 格（2.9 兵/格）。",
+   "codePath": "src/strategy/v27-team-g09.js: General.act L770-776（expandNeutral + Style.pickTarget L1122-1155，t<1500；人机要过 botOk L2443-2449）",
+   "verdict": "good",
+   "patternId": "NEW-AT-G1",
+   "evidence": [
+    "L2026~L2036",
+    "L2069~L2089",
+    "digest [F] 两段口径"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "1260~1620",
+   "bot": "ryan_m",
+   "decision": "密度 2~4 时继续扩张到 19123 格：t=1260~1440 两段 34.4 兵/格（自身密度 3.8）；t=1620 dens 3.5、nb=4。",
+   "codePath": "src/strategy/v27-team-g09.js: General.act L772 → Style.pickTarget L1122-1155、botOk L2443-2449、winFloor L4957-4965（t<1500）→ Policy.act L5350 buyLand L5858-5866（t≥1500 非真人目标）",
+   "verdict": "error",
+   "patternId": "NEW-EC-01",
+   "evidence": [
+    "L2075~L2084 DROP30",
+    "L2116 t=1620 快照",
+    "之后 720 拍丢 15034 格"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "1620~2356",
+   "bot": "ryan_m",
+   "decision": "被吃 15034 格的 8 段快照间隔里 Δcmds=0：不反击、不撤、不求援。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L5737（c≥worth → break；t=1800 时 worth=m×dMe=1.455×9.7≈14 兵/格，进攻方密度≳6 报价就高于它）；tryDeterrentCounter L2720（dMe<58 → return）；tryDonateToTeammate L4802（被真人打时不捐）",
+   "verdict": "error",
+   "patternId": "NEW-DF-01",
+   "evidence": [
+    "digest [E] ryan_m 的 S/H 段全部 c+0",
+    "L2116~L2203"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D06",
+   "t": "1260~2880",
+   "bot": "leo_tx",
+   "decision": "nb=1、neut=0 的 1620 拍里只发 2 条船指令，本土余额 54318→1079225（dens 114.2，超软上限），同窗 3 个队友被吃。",
+   "codePath": "src/strategy/v27-team-g09.js: offers L5663（t<2400 的 0.35B 闸）+ buyLand L5737、L5764-5766；tryDonateToTeammate L4799-4802、L4852、L4877（74.8 / 106 / 132 三道密度门槛）",
+   "verdict": "error",
+   "patternId": "NEW-EC-02",
+   "evidence": [
+    "L2073~L2250",
+    "digest [J]：leo_tx 最长持平段 1170-2880",
+    "t=2790、2880 两条快照超软上限"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "1620~2690",
+   "bot": "kevin_k/mark07/lucas94/leo_tx",
+   "decision": "ryan_m、dave_w、noah88 被吃期间全队 0 笔有效捐款、0 次协防。",
+   "codePath": "src/strategy/v27-team-g09.js: Policy.act L5373（捐款排在 buyLand 之后且本拍没发过指令才调用）→ tryDonateToTeammate L4799-4806（有海岸且 t≥1100 时先留 68×领土，B≤1.10×底线或可捐比例<45/1024 直接 return，折合 dMe<76.8 一律不捐）、L4850-4852（dMe≥106）、L4864（协防 dMe≥65）",
+   "verdict": "error",
+   "patternId": "NEW-DN-01",
+   "evidence": [
+    "digest [M]：ryan_m、noah88 开始失地时队友 dens≥106 / ≥65 / ≥40 的个数均为 0/0/0",
+    "digest [G]：7 笔捐款全部出自 dave_w 残号",
+    "HL-ASSIST 0 条"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "2084~2196",
+   "bot": "dave_w",
+   "decision": "4~12 格的残号（余额 374~1800）因 dMe=85~150 被判成『富余』，连发 7 笔 pct=51 的捐款：每笔应到账 18~91、应交税 23~112（税/到账=1.23）；其中 t=2102、2138 两笔在 18 拍后的下一条日志里余额没有减少：要么被引擎拒收，要么指令晚到（G 组没有录像，分不清）。",
+   "codePath": "src/strategy/v27-team-g09.js: tryDonateToTeammate L4852-4854（pct=min(maxSafePct,51)）、L4904（盈余捐 pct=51）；门槛只看密度不看绝对兵力；引擎 donate 税=64/1024×全部余额 [game.js L404-416]",
+   "verdict": "error",
+   "patternId": "NEW-DN-02",
+   "evidence": [
+    "L2177~L2193",
+    "digest [G]",
+    "results.csv：dave_w sent=110 / accepted=108（全场有 2 条指令没被引擎接受，对不上是哪两条）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "1710~1890",
+   "bot": "noah88",
+   "decision": "11 条指令起手，两段净流出 102669 兵只换 1109 格（92.6 兵/格），密度 11.3→3.6，随即开始被吃。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L5869-6031（真人目标：脉冲分支 L6010-6022 或整笔 L6026-6031；无录像不可分）",
+   "verdict": "error",
+   "patternId": "NEW-AT-03",
+   "evidence": [
+    "L2135~L2156",
+    "digest [F] 1710-1800 noah88 两段口径"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D10",
+   "t": "2880~3060",
+   "bot": "leo_tx",
+   "decision": "16 条指令把本土余额 1079225 打到 90：两段合计 1208953 兵换 3791 格（319 兵/格）。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L5726/L5737（over 使价格闸失效）、L6026-6028（x ≥ 0.2B，即密度 ≥114.17 才放行）、L5833-5843（keep=max(min(keep, overKeepMult×100L), safe)）、L5850-5853（isPrimeLand 在 max(keep,safe) 之后再把 keep 压到 10~26×L）、L5954-5966 canZeroPulse",
+   "verdict": "error",
+   "patternId": "NEW-AT-01",
+   "evidence": [
+    "L2250、L2260、L2270",
+    "balcheck G02 leo_tx 2880 3060",
+    "单笔应派 216258（20.0%）；6 次连扣后应剩 29.4~29.6 万，实测 290566"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D11",
+   "t": "3060~3486",
+   "bot": "leo_tx",
+   "decision": "打退唯一邻居后 nb 1→3，本土 dens 0.0~0.8 持续 ≥90 拍；t=3150~3240 丢 5040 格，之后出局。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L5753-5757（isSoleHealthyBuffer 在组队局恒 false）；Policy.safeAt L4939-4954 + V17.safeAt L2891-2900（底线只按现有邻居的余额算 killKeep L2908-2914；被打穿后才贴上来的新邻居不在其中）",
+   "verdict": "error",
+   "patternId": "NEW-AT-04",
+   "evidence": [
+    "L2270~L2312",
+    "balcheck G02 leo_tx 3060 3150（少 3038）/ 3150 3240（回流 79751，同段丢 5040 格）"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D12",
+   "t": "3330~3510",
+   "bot": "lucas94",
+   "decision": "5 条指令（含 1 条 pct=6 的拦截船）派出 92% 余额，两段合计 453277 兵换 1256 格（361 兵/格）；本土密度 24.4→1.9，其后 180 拍丢 8825 格。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L6010-6022（pulseMode：每笔 ≤12%B，counterClearMode=6 不加码）或 L6026-6031（整笔 want=1.25×need+3×cnt）；5 条指令打掉 92% 余额，单靠 12% 脉冲做不到，推断含整笔分支",
+   "verdict": "error",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "L2295~L2313",
+    "digest [F] 3330-3420 lucas94 两段口径"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D13",
+   "t": "2250~4050",
+   "bot": "kevin_k/mark07",
+   "decision": "两个号 6 轮高价零买：kevin_k 739295 兵换 4815 格（均价 153 兵/格，当时自身 dens 27/49/26）；mark07 555875 兵换 5154 格（均价 108 兵/格，自身 dens 25/27/45）。",
+   "codePath": "src/strategy/v27-team-g09.js: offers L5486-5487（c=(elimCost+fee)/baseGain，按打到崩溃线的平均价报价）、L5549-5557（濒死/失血/薄目标折扣）；buyLand L6010-6022（pulseMode 每次 ≤pulseFrac×B）",
+   "verdict": "error",
+   "patternId": "NEW-AT-03",
+   "evidence": [
+    "digest [F] kevin_k 2610-2700 / 3600-3690 / 3960-4050",
+    "digest [F] mark07 2250-2340 / 2790-2880 / 3600-3690（两段口径）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D14",
+   "t": "1530~2610",
+   "bot": "kevin_k/mark07",
+   "decision": "t<2400 没有去打密度更高的单邻，而是持平囤兵（kevin_k dens 4.7→26.8，mark07 12.5→25.4）；这两个号是全队最后阵亡的（t=4467、4411）。",
+   "codePath": "src/strategy/v27-team-g09.js: offers L5663（t<2400 && !onMe && !nearCollapse && !bleeding && rawNeed>0.35B → continue）",
+   "verdict": "good",
+   "patternId": "NEW-EC-G1",
+   "evidence": [
+    "digest [E] kevin_k H 1530-2610、mark07 H 1890-2250",
+    "L2371、L2372 结算"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D15",
+   "t": "2970~3200",
+   "bot": "lucas94",
+   "decision": "大额海上拦截：t=3000~3006 连发 4 条拦截船（pct=245/96/56/3，对 85128/34022/16852/649 兵的船），t=3200 pct=301 对 110258 兵的船。t=2970~3060 余额 377848→237128，下一段回流 111923，净花 93771。",
+   "codePath": "src/strategy/v27-team-g09.js: tryInterceptEnemyBoats L4601（remNeed=1.12×船兵）、L4625-4630（紧急时上限 35%B、留底 12×L）、L4647（pct≤360）；每条船另收 32/1024 全额船费",
+   "verdict": "unclear",
+   "patternId": "NEW-SE-01",
+   "evidence": [
+    "L2264~L2267、L2283",
+    "digest [F] 2970-3060 lucas94",
+    "digest [N] 3060-3150 lucas94 +111923"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "3600~3870",
+   "bot": "ethan21",
+   "decision": "全仓打掉唯一的邻居：三段合计净流出 100813 兵、净增 1123 格（90 兵/格）；t=3780 本土余额只剩 5（兵在途中），下一段回流 78167；打完 nb 1→4，随后 450 拍丢 5675 格。",
+   "codePath": "src/strategy/v27-team-g09.js: buyLand L6026-6031（整笔 want=1.25×need+3×cnt）；L5753-5757 isSoleHealthyBuffer 组队局不生效；引擎 [D6]：目标崩溃后进攻槽改打无主地、[X8] 余兵回余额",
+   "verdict": "unclear",
+   "patternId": "NEW-AT-04",
+   "evidence": [
+    "L2324~L2342",
+    "digest [F] 3600-3690、3690-3780 ethan21",
+    "digest [N] 3780-3870 ethan21 +78167"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D17",
+   "t": "900~3690",
+   "bot": "leo_tx/ethan21/mark07/kevin_k/lucas94",
+   "decision": "一个 90 拍快照段里连发 6~17 条进攻指令、本土余额掉 64%~100%。段首密度 ≥5 的有 4 段：ethan21 1800~1890（7 条，-67%）、leo_tx 2880~2970（6 条，-73%）、leo_tx 2970~3060（10 条，-100%）、mark07 3600~3690（11 条，-73%）；密度不到 5 的还有 5 段（kevin_k 900~990 17 条 -94%、1080~1170 10 条 -99% 等）。按代码，一次出兵要么是 12% 余额的脉冲，要么留够底线（over 时留 90×领土），单条指令做不到这个跌幅。",
+   "codePath": "src/strategy/v27-team-g09.js: Strategy.send L479-487（发令后不记还在路上的指令）；Policy.act L5320（period=2，每 2 拍决策一次）；buyLand 脉冲 L6010-6022 只看 curAtk（引擎里已生效的在途兵）；buyLand L5845-5855（在途兵算进留底）",
+   "verdict": "error",
+   "patternId": "NEW-EX-02",
+   "evidence": [
+    "digest [F]：2880-2970 leo_tx c+6、2970-3060 leo_tx c+10、1800-1890 ethan21 c+7、3600-3690 mark07 c+11",
+    "leo_tx：单笔应派 20.0%，6 次连扣后应剩 29.4~29.6 万，实测 290566",
+    "统筹广播 0003 第 3 条；scripts/dupcmds.py：有录像的 B015 / B034 里，编队 15% / 44% 的进攻指令是『同一执行拍对同一目标的重复单』",
+    "out/params-g09.json：period=2"
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "newPatterns": [
+  {
+   "id": "NEW-SP-01",
+   "prefix": "SP",
+   "name": "出生点走兜底分支被打散",
+   "definition": "该号最后一条 HL-SPAWN-BACKEND 的 voronoi=500（协调器 pickNextTarget 四档放宽都无解后走『离已选队友最远』兜底，voronoiPixels 写死 500）；一局内 ≥2 个号命中记为该局命中",
+   "detect": "scripts/patterns.py: sp_fallback"
+  },
+  {
+   "id": "NEW-EC-01",
+   "prefix": "EC",
+   "name": "开局结束时地大兵薄，随后被吃",
+   "definition": "t∈[1440,1710] 的任一快照 terr≥8000 且 dens<5；命中后 900 拍内领土较该快照跌 ≥30% 记为『兑现』",
+   "detect": "scripts/patterns.py: ec_thin_big"
+  },
+  {
+   "id": "NEW-EC-02",
+   "prefix": "EC",
+   "name": "少邻囤兵：只有 1~2 个敌邻、无中立地，长期不出手",
+   "definition": "连续 ≥8 条快照（≥630 拍）1≤nb≤2 且 neut=0、领土变化 <2%、Δcmds≤2，期间 dens 至少翻倍；同窗内同队有编队友阵亡或领土腰斩记为『有代价』",
+   "detect": "scripts/patterns.py: ec_hoard_1nb"
+  },
+  {
+   "id": "NEW-DN-01",
+   "prefix": "DN",
+   "name": "救援门槛够不着：队友开始失地时全队没有一个号达到捐款密度门槛",
+   "definition": "阵亡号从峰值后第一个失地段开始的那条快照上，同队存活编队友里 dens≥106 的个数为 0，且该号到死没有收到任何成交捐款",
+   "detect": "scripts/patterns.py: dn_threshold_unreachable"
+  },
+  {
+   "id": "NEW-DN-02",
+   "prefix": "DN",
+   "name": "小额捐款税大于到账",
+   "definition": "HL-DONATE 的 pct<63（到账 (pct+1)/1024 < 税 64/1024）；按笔计数并累计 税-到账",
+   "detect": "scripts/patterns.py: dn_tax_gt_gift"
+  },
+  {
+   "id": "NEW-AT-01",
+   "prefix": "AT",
+   "name": "超软上限后高价倾泻",
+   "definition": "某快照 bal>100×terr，其后 180 拍内出现 DROP30 且领土增加、两段口径 ≥150 兵/格",
+   "detect": "scripts/patterns.py: at_overcap_dump"
+  },
+  {
+   "id": "NEW-AT-02",
+   "prefix": "AT",
+   "name": "出手后变薄，随后被吃",
+   "definition": "一段进攻性掉款（相邻快照 bal 跌 ≥30% 且领土增加）结束时 dens ≤ 起点的一半，且下一段没有回流把 dens 拉回一半以上；兑现：其后 450 拍内领土较出手后跌 ≥30% 或阵亡",
+   "detect": "scripts/patterns.py: at_drained"
+  },
+  {
+   "id": "NEW-AT-03",
+   "prefix": "AT",
+   "name": "高价零敲：单段派出 ≥30% 余额，每格花费 ≥90 兵且 ≥3 倍自身密度",
+   "definition": "DROP30 且该段领土增加；每格花费取两段口径（下一段净增 ≤0 时退回单段口径），≥90 且 ≥3×该段起点 dens",
+   "detect": "scripts/patterns.py: at_pricey_bite"
+  },
+  {
+   "id": "NEW-AT-04",
+   "prefix": "AT",
+   "name": "出手后敌邻变多（只有 1 个敌邻时即拆掉唯一缓冲）",
+   "definition": "连续 ≥3 条快照 nb 不变（=k≥1），随后 180 拍内领土 +≥5% 且 nb≥k+1（k=1）或 ≥k+2（k≥2）；兑现：其后 450 拍内领土较峰值跌 ≥30%",
+   "detect": "scripts/patterns.py: at_buffer_removed"
+  },
+  {
+   "id": "NEW-DF-01",
+   "prefix": "DF",
+   "name": "挨打不还手：失地 ≥30% 的过程中指令数为 0",
+   "definition": "从某条快照起连续若干段合计失地 ≥30%（相对起点领土）且全程 Δcmds=0、Δboats=0",
+   "detect": "scripts/patterns.py: df_passive"
+  },
+  {
+   "id": "NEW-SE-01",
+   "prefix": "SE",
+   "name": "大额或连续海上拦截",
+   "definition": "HL-INTERCEPT 的 pct≥200（≥19.6% 余额），或同一个号 900 拍内 ≥5 次拦截；同时记这些段的净花费（公式余额 - 实际余额）",
+   "detect": "scripts/patterns.py: se_big_intercept"
+  },
+  {
+   "id": "NEW-EX-02",
+   "prefix": "EX",
+   "name": "连发清仓：一个快照段里连发多条指令，本土余额掉到策略留底以下",
+   "definition": "相邻两条快照之间非发船指令数 Δcmds-Δboats ≥5，段首密度 ≥5，本土余额下降 ≥60%，且该段领土没有减少 10% 以上（排除被吃空的段）。只看日志就能数，是 NEW-EX-01 在没有录像时的替代口径；兑现口径：此后 450 拍内领土比该段结束时少 ≥30% 或阵亡",
+   "detect": "scripts/patterns.py: ex_burst_drain"
+  },
+  {
+   "id": "NEW-OP-G1",
+   "prefix": "OP",
+   "name": "（正面）开局 DP 扩张按期完成",
+   "definition": "第一条 HL-TICK（t≤630）人均领土 ≥2500；日志里有 OPENING-CHECK 行的局还要求全部 OK（G08 这类没有该行的局只看前一条）",
+   "detect": "scripts/patterns.py: op_on_schedule"
+  },
+  {
+   "id": "NEW-AT-G1",
+   "prefix": "AT",
+   "name": "（正面）低价买地：两段口径 ≤12 兵/格",
+   "definition": "DROP30 且两段净增领土 ≥500，两段口径的每格花费 ≤12",
+   "detect": "scripts/patterns.py: at_cheap_buy"
+  },
+  {
+   "id": "NEW-EC-G1",
+   "prefix": "EC",
+   "name": "（正面）t<2400 不打密度更高的单邻，存活更久",
+   "definition": "t∈[1500,2400] 连续 ≥5 条快照 nb=1、Δcmds≤2，且该号存活到 t≥3500",
+   "detect": "scripts/patterns.py: ec_hold_survive"
+  }
+ ],
+ "lossArchetype": "outscaled",
+ "archetypeNote": "主队 T2 被看到的最高份额只有 12.7%（t=2356，低于 5 队均分的 20%），从第一个结算点起就排 4/5；编队自身峰值 12.65% 接近人均应得 13.1%，输在密度与队内另外几名真人的体量（t=2356 时非编队部分只有 3.2%~3.8%），随后被 T1 逐个吃掉。次要分型：mid-collapse（t=1620~2690 连丢三个号）。",
+ "winnerNotes": "赢家 T1。最早的结算点 t=2356 时 T1 已有 30.7%（T4 23.6%、T5 23.0%、我方 T2 12.7%、T3 7.0%）；t=3486 37.0%，t=3781 39.4%，t=4338 51.5%，t=4467 53.6%。t=2356→4467 T1 增加 22.9 个点，其中我方 T2 贡献 9.5、T3 3.2、T4 6.1、T5 3.4——T1 主要是靠吃最弱的两队（T2、T3）滚起来的，T4/T5 一直保持在 17~25%。t=2356 时 T1 人均约 1.7 万格（按每队约 12 人估），我方编队人均 7.9 千格。我方的日志在 t=4470（最后一个号离场）结束，之后的收官看不到。",
+ "wentWell": [
+  "开局 DP 扩张稳定：8/8 号 OPENING-CHECK OK，t=1620 编队份额 12.65%，接近人均应得 13.1%。",
+  "利息/地租公式与日志逐段吻合：64 个闲置段（无指令、领土不变）的实际余额与公式中位误差 0.00%（digest [L]）；[X15] 失地掉血公式在 dave_w、ryan_m、leo_tx 三处吻合。",
+  "kevin_k、mark07 在 t<2400 没有去硬打高密度单邻，活到了最后。",
+  "lucas94 t=1260~1440 用 2.9 兵/格买到 7662 格，是全局最便宜的一笔。",
+  "dave_w 被清空后靠在海上的船保住席位（[D2]），名次 25，高于其它阵亡号的 28~52。"
+ ],
+ "unknowns": [
+  "吃掉 ryan_m、dave_w、noah88 的是谁、属于哪队：G 组没有录像，日志不记进攻方。",
+  "leo_tx t=2880~3060 的 16 条指令各打了谁、每笔多少：只能从 Δcmds 与兵/格反推（第一段对方密度约 140）。",
+  "lucas94 t=3330~3420 的 5 条指令打到了哪里。",
+  "连发的指令是不是『同一笔出兵被重复下单』：G 组没有录像，只有 leo_tx t=2880~2970 这一段能用算术对上（6 次连扣），其余只能拿 B 组录像类推。",
+  "T2 里非编队真人有几个、何时出局：结算行只给全队合计。",
+  "23 次海上拦截各自是否拦住；dave_w 7 笔捐款各自成交与否都判不了：G 组没有录像，下一次余额观测只隔 18 拍，短于指令延迟的常见范围（有录像的局中位数 12~16 拍、九成位可到上百拍），残号余额还另有船费支出。对局卡标 3 笔疑似被拒。"
+ ],
+ "mechanicsQuestions": [
+  "欠款：[X13] 新发进攻兵不够时从余额补足，余额不够记欠款（上限 5e4，[C1][E16]），入账先抵欠款（[E14]）。leo_tx t=3060~3150 少的 3038 兵是否就是还欠款？需要带地图的重放确认。",
+  "船对船：src/sim/sim/boats.js L328-357 每 2 拍结算一轮，小船掉自己兵的 10% 再加兵差的 1%，大船掉小船兵的 10%，挨打的船几乎停住；按这个公式，1.12 倍兵力的拦截船把对方磨光时自己约剩对方初始兵力的 13%，即拦截方损耗≈对方船上兵力，另付每条 32/1024 全额的船费。lucas94 t=3000 前后拦 136651 兵的船净花 93771，比公式估的少，差额是否来自对方船中途靠岸，需要带地图的重放确认。",
+  "防御量只看本土余额（[X11]）：全仓出击、兵在途中时本土每格只值 2 兵。leo_tx t=3150~3240 丢 5040 格、ethan21 t=3780 余额 5 都处在这种状态；模拟器里 retreat 把该路进攻兵全部退回余额、没有罚没（src/sim/sim/game.js L852-856、L1288-1294），策略只在欠款打法里用它（L5100-5111）；真引擎是否一致需要重放确认。",
+  "被吃的一方每失一格扣 floor(B/(1+floor(10L/16)))（[X11][X15]），即丢 10% 地约丢 15% 兵；被打时把余额捐给队友可以避免这部分被打掉，引擎侧没有限制，策略侧 L4802 禁止。"
+ ],
+ "scripts": [
+  "c136-review/agents/R08/scripts/r08lib.py（读包、身份还原、引擎公式）",
+  "c136-review/agents/R08/scripts/facts.py G02 → out/G02/digest.txt（[A]~[N] 全部数字）",
+  "c136-review/agents/R08/scripts/matrix.py G02（拍×bot 矩阵）",
+  "c136-review/agents/R08/scripts/balcheck.py G02 <bot> <t0> <t1>（收支核对）",
+  "c136-review/agents/R08/scripts/win.py G02 <t0> <t1> <bot>（原始日志窗）",
+  "c136-review/agents/R08/scripts/dump_params.mjs（各策略文件最终生效的参数 → out/params-*.json）",
+  "c136-review/agents/R08/scripts/dupcmds.py <B 组对局>（录像里数重复下单，给 D17 做旁证）",
+  "c136-review/agents/R08/scripts/build_review.py G02（合成本 JSON 并跑 collect-reviews 清单）"
+ ],
+ "confidenceOverall": "medium"
+}

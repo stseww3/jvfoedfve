@@ -1,0 +1,2329 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 726,
+     "clusters": 502,
+     "dupClusters": 70,
+     "dupCmds": 294,
+     "extraCmds": 224,
+     "sizes": {
+      "1": 432,
+      "3": 13,
+      "9": 8,
+      "7": 2,
+      "5": 4,
+      "4": 12,
+      "2": 27,
+      "6": 4
+     }
+    },
+    "boat": {
+     "cmds": 33,
+     "clusters": 30,
+     "dupClusters": 3,
+     "dupCmds": 6,
+     "extraCmds": 3,
+     "sizes": {
+      "1": 27,
+      "2": 3
+     }
+    },
+    "donate": {
+     "cmds": 15,
+     "clusters": 15,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 15
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "341",
+     "targetName": "bot#341",
+     "t0": 1673,
+     "t1": 1680,
+     "n": 9,
+     "pcts": [
+      1012,
+      1012,
+      848,
+      848,
+      846,
+      799,
+      760,
+      736,
+      479
+     ],
+     "first": 0.9893,
+     "comb": 1.0
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 2,
+     "pcts": [
+      1013,
+      53
+     ],
+     "first": 0.9902,
+     "comb": 0.9907
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "354",
+     "targetName": "bot#354",
+     "t0": 1505,
+     "t1": 1505,
+     "n": 9,
+     "pcts": [
+      293,
+      296,
+      319,
+      344,
+      398,
+      401,
+      404,
+      336,
+      334
+     ],
+     "first": 0.2871,
+     "comb": 0.9767
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1736,
+     "t1": 1736,
+     "n": 4,
+     "pcts": [
+      472,
+      476,
+      476,
+      479
+     ],
+     "first": 0.4619,
+     "comb": 0.9184
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 77,
+     "t1": 224,
+     "n": 19,
+     "pcts": [
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.8893
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 245,
+     "t1": 364,
+     "n": 19,
+     "pcts": [
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.8893
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 9,
+     "pcts": [
+      65,
+      90,
+      101,
+      169,
+      114,
+      219,
+      230,
+      359,
+      321
+     ],
+     "first": 0.0645,
+     "comb": 0.8464
+    },
+    {
+     "me": 13,
+     "name": "[NL] Pizza Calzone",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3983,
+     "t1": 4018,
+     "n": 5,
+     "pcts": [
+      585,
+      195,
+      195,
+      195,
+      195
+     ],
+     "first": 0.5723,
+     "comb": 0.8171
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 490,
+     "t1": 504,
+     "n": 5,
+     "pcts": [
+      248,
+      248,
+      248,
+      248,
+      248
+     ],
+     "first": 0.2432,
+     "comb": 0.7517
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 420,
+     "t1": 490,
+     "n": 12,
+     "pcts": [
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.7509
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1890,
+     "t1": 1890,
+     "n": 3,
+     "pcts": [
+      149,
+      248,
+      407
+     ],
+     "first": 0.1465,
+     "comb": 0.6114
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "[APEX] kaito9",
+     "t0": 3556,
+     "t1": 3591,
+     "n": 7,
+     "pcts": [
+      123,
+      123,
+      123,
+      123,
+      123,
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.5949
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 6,
+     "pcts": [
+      401,
+      126,
+      49,
+      52,
+      72,
+      71
+     ],
+     "first": 0.3926,
+     "comb": 0.5856
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "393",
+     "targetName": "bot#393",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 3,
+     "pcts": [
+      268,
+      222,
+      278
+     ],
+     "first": 0.2627,
+     "comb": 0.5804
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "bot#44",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 6,
+     "pcts": [
+      125,
+      126,
+      126,
+      131,
+      134,
+      138
+     ],
+     "first": 0.123,
+     "comb": 0.5602
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 518,
+     "t1": 560,
+     "n": 7,
+     "pcts": [
+      111,
+      111,
+      111,
+      111,
+      111,
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.5555
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "bot#44",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 4,
+     "pcts": [
+      169,
+      171,
+      170,
+      172
+     ],
+     "first": 0.166,
+     "comb": 0.5196
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "464",
+     "targetName": "bot#464",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 2,
+     "pcts": [
+      290,
+      293
+     ],
+     "first": 0.2842,
+     "comb": 0.4897
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "18",
+     "targetName": "Player 642",
+     "t0": 3507,
+     "t1": 3514,
+     "n": 3,
+     "pcts": [
+      204,
+      204,
+      204
+     ],
+     "first": 0.2002,
+     "comb": 0.4884
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "448",
+     "targetName": "bot#448",
+     "t0": 1337,
+     "t1": 1344,
+     "n": 2,
+     "pcts": [
+      302,
+      232
+     ],
+     "first": 0.2959,
+     "comb": 0.4561
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 588,
+     "t1": 609,
+     "n": 5,
+     "pcts": [
+      111,
+      111,
+      111,
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.4396
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "471",
+     "targetName": "bot#471",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      156,
+      340
+     ],
+     "first": 0.1533,
+     "comb": 0.4353
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "18",
+     "targetName": "Player 642",
+     "t0": 3528,
+     "t1": 3535,
+     "n": 3,
+     "pcts": [
+      188,
+      151,
+      187
+     ],
+     "first": 0.1846,
+     "comb": 0.4331
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "171",
+     "targetName": "bot#171",
+     "t0": 1736,
+     "t1": 1736,
+     "n": 9,
+     "pcts": [
+      58,
+      59,
+      59,
+      59,
+      59,
+      59,
+      59,
+      60,
+      60
+     ],
+     "first": 0.0576,
+     "comb": 0.4198
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "35",
+     "targetName": "bot#35",
+     "t0": 2632,
+     "t1": 2653,
+     "n": 4,
+     "pcts": [
+      123,
+      123,
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.4033
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[APEX] noah88",
+     "t0": 3297,
+     "t1": 3325,
+     "n": 4,
+     "pcts": [
+      123,
+      123,
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.4033
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3724,
+     "t1": 3738,
+     "n": 4,
+     "pcts": [
+      123,
+      123,
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.4033
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "464",
+     "targetName": "bot#464",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 3,
+     "pcts": [
+      157,
+      156,
+      157
+     ],
+     "first": 0.1543,
+     "comb": 0.3944
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1337,
+     "t1": 1337,
+     "n": 3,
+     "pcts": [
+      77,
+      47,
+      317
+     ],
+     "first": 0.0762,
+     "comb": 0.3929
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      48,
+      48,
+      49,
+      49,
+      48
+     ],
+     "first": 0.0469,
+     "comb": 0.3555
+    },
+    {
+     "me": 12,
+     "name": "Russian Empire",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3948,
+     "t1": 3983,
+     "n": 4,
+     "pcts": [
+      103,
+      103,
+      103,
+      103
+     ],
+     "first": 0.1016,
+     "comb": 0.3484
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "291",
+     "targetName": "bot#291",
+     "t0": 574,
+     "t1": 581,
+     "n": 2,
+     "pcts": [
+      181,
+      187
+     ],
+     "first": 0.1777,
+     "comb": 0.3287
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "9",
+     "targetName": "[APEX] alex_k",
+     "t0": 3164,
+     "t1": 3171,
+     "n": 3,
+     "pcts": [
+      123,
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.3211
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1316,
+     "t1": 1316,
+     "n": 6,
+     "pcts": [
+      59,
+      58,
+      60,
+      59,
+      60,
+      58
+     ],
+     "first": 0.0586,
+     "comb": 0.3039
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "48",
+     "targetName": "bot#48",
+     "t0": 2107,
+     "t1": 2121,
+     "n": 4,
+     "pcts": [
+      60,
+      112,
+      60,
+      112
+     ],
+     "first": 0.0596,
+     "comb": 0.3
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "404",
+     "targetName": "bot#404",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 2,
+     "pcts": [
+      154,
+      147
+     ],
+     "first": 0.1514,
+     "comb": 0.274
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "469",
+     "targetName": "bot#469",
+     "t0": 462,
+     "t1": 469,
+     "n": 2,
+     "pcts": [
+      120,
+      162
+     ],
+     "first": 0.1182,
+     "comb": 0.2585
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "155",
+     "targetName": "bot#155",
+     "t0": 2009,
+     "t1": 2030,
+     "n": 4,
+     "pcts": [
+      52,
+      98,
+      94,
+      21
+     ],
+     "first": 0.0518,
+     "comb": 0.2396
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "9",
+     "targetName": "[APEX] alex_k",
+     "t0": 3024,
+     "t1": 3031,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[APEX] noah88",
+     "t0": 3388,
+     "t1": 3402,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "[APEX] kaito9",
+     "t0": 3675,
+     "t1": 3689,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 938,
+     "t1": 945,
+     "n": 4,
+     "pcts": [
+      50,
+      52,
+      47,
+      89
+     ],
+     "first": 0.0498,
+     "comb": 0.2167
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 6,
+     "pcts": [
+      30,
+      36,
+      39,
+      43,
+      45,
+      46
+     ],
+     "first": 0.0303,
+     "comb": 0.2167
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "293",
+     "targetName": "bot#293",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 4,
+     "pcts": [
+      61,
+      61,
+      58,
+      55
+     ],
+     "first": 0.0605,
+     "comb": 0.2138
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "18",
+     "targetName": "Player 642",
+     "t0": 3577,
+     "t1": 3591,
+     "n": 2,
+     "pcts": [
+      142,
+      87
+     ],
+     "first": 0.1396,
+     "comb": 0.2136
+    },
+    {
+     "me": 16,
+     "name": "[OG]😎",
+     "kind": "attack",
+     "target": "478",
+     "targetName": "bot#478",
+     "t0": 1120,
+     "t1": 1134,
+     "n": 2,
+     "pcts": [
+      109,
+      109
+     ],
+     "first": 0.1074,
+     "comb": 0.2033
+    },
+    {
+     "me": 16,
+     "name": "[OG]😎",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "[APEX] zexos1",
+     "t0": 3668,
+     "t1": 3675,
+     "n": 2,
+     "pcts": [
+      109,
+      109
+     ],
+     "first": 0.1074,
+     "comb": 0.2033
+    },
+    {
+     "me": 12,
+     "name": "Russian Empire",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3815,
+     "t1": 3829,
+     "n": 2,
+     "pcts": [
+      103,
+      103
+     ],
+     "first": 0.1016,
+     "comb": 0.1928
+    },
+    {
+     "me": 12,
+     "name": "Russian Empire",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3850,
+     "t1": 3864,
+     "n": 2,
+     "pcts": [
+      103,
+      103
+     ],
+     "first": 0.1016,
+     "comb": 0.1928
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 35,
+     "t1": 49,
+     "n": 3,
+     "pcts": [
+      64,
+      64,
+      64
+     ],
+     "first": 0.0635,
+     "comb": 0.1786
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "401",
+     "targetName": "bot#401",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 2,
+     "pcts": [
+      73,
+      115
+     ],
+     "first": 0.0723,
+     "comb": 0.1774
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "146",
+     "targetName": "bot#146",
+     "t0": 574,
+     "t1": 581,
+     "n": 2,
+     "pcts": [
+      88,
+      100
+     ],
+     "first": 0.0869,
+     "comb": 0.177
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1813,
+     "t1": 1813,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3542,
+     "t1": 3556,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] talon5",
+     "t0": 1967,
+     "t1": 1981,
+     "n": 2,
+     "pcts": [
+      86,
+      86
+     ],
+     "first": 0.085,
+     "comb": 0.1627
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] talon5",
+     "t0": 2037,
+     "t1": 2051,
+     "n": 2,
+     "pcts": [
+      86,
+      86
+     ],
+     "first": 0.085,
+     "comb": 0.1627
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1211,
+     "t1": 1211,
+     "n": 3,
+     "pcts": [
+      56,
+      57,
+      55
+     ],
+     "first": 0.0557,
+     "comb": 0.1579
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1225,
+     "t1": 1225,
+     "n": 3,
+     "pcts": [
+      61,
+      52,
+      50
+     ],
+     "first": 0.0605,
+     "comb": 0.1535
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "boat",
+     "target": "19252:0",
+     "targetName": "",
+     "t0": 1953,
+     "t1": 1967,
+     "n": 2,
+     "pcts": [
+      127,
+      23
+     ],
+     "first": 0.125,
+     "comb": 0.1455
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1225,
+     "t1": 1225,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3577,
+     "t1": 3584,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "124",
+     "targetName": "bot#124",
+     "t0": 1337,
+     "t1": 1337,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "boat",
+     "target": "167386:2",
+     "targetName": "",
+     "t0": 2072,
+     "t1": 2079,
+     "n": 2,
+     "pcts": [
+      127,
+      7
+     ],
+     "first": 0.125,
+     "comb": 0.1318
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "boat",
+     "target": "29734:2",
+     "targetName": "",
+     "t0": 2135,
+     "t1": 2142,
+     "n": 2,
+     "pcts": [
+      127,
+      4
+     ],
+     "first": 0.125,
+     "comb": 0.1293
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 2,
+     "pcts": [
+      47,
+      86
+     ],
+     "first": 0.0469,
+     "comb": 0.1279
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "99",
+     "targetName": "bot#99",
+     "t0": 980,
+     "t1": 980,
+     "n": 2,
+     "pcts": [
+      55,
+      61
+     ],
+     "first": 0.0547,
+     "comb": 0.1119
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 805,
+     "t1": 812,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 966,
+     "t1": 966,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1848,
+     "t1": 1855,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "321",
+     "targetName": "bot#321",
+     "t0": 1211,
+     "t1": 1218,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "139",
+     "targetName": "bot#139",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "171",
+     "targetName": "bot#171",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "48",
+     "targetName": "bot#48",
+     "t0": 3003,
+     "t1": 3024,
+     "n": 5,
+     "pcts": [
+      0,
+      0,
+      0,
+      1,
+      0
+     ],
+     "first": 0.001,
+     "comb": 0.0058
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 726,
+     "clusters": 606,
+     "dupClusters": 53,
+     "dupCmds": 173,
+     "extraCmds": 120,
+     "sizes": {
+      "1": 553,
+      "2": 31,
+      "3": 9,
+      "6": 4,
+      "9": 4,
+      "4": 4,
+      "8": 1
+     }
+    },
+    "boat": {
+     "cmds": 33,
+     "clusters": 33,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 33
+     }
+    },
+    "donate": {
+     "cmds": 15,
+     "clusters": 15,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 15
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "341",
+     "targetName": "bot#341",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 8,
+     "pcts": [
+      1012,
+      1012,
+      848,
+      848,
+      846,
+      799,
+      760,
+      736
+     ],
+     "first": 0.9893,
+     "comb": 1.0
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 2,
+     "pcts": [
+      1013,
+      53
+     ],
+     "first": 0.9902,
+     "comb": 0.9907
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "354",
+     "targetName": "bot#354",
+     "t0": 1505,
+     "t1": 1505,
+     "n": 9,
+     "pcts": [
+      293,
+      296,
+      319,
+      344,
+      398,
+      401,
+      404,
+      336,
+      334
+     ],
+     "first": 0.2871,
+     "comb": 0.9767
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1736,
+     "t1": 1736,
+     "n": 4,
+     "pcts": [
+      472,
+      476,
+      476,
+      479
+     ],
+     "first": 0.4619,
+     "comb": 0.9184
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 9,
+     "pcts": [
+      65,
+      90,
+      101,
+      169,
+      114,
+      219,
+      230,
+      359,
+      321
+     ],
+     "first": 0.0645,
+     "comb": 0.8464
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1890,
+     "t1": 1890,
+     "n": 3,
+     "pcts": [
+      149,
+      248,
+      407
+     ],
+     "first": 0.1465,
+     "comb": 0.6114
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 6,
+     "pcts": [
+      401,
+      126,
+      49,
+      52,
+      72,
+      71
+     ],
+     "first": 0.3926,
+     "comb": 0.5856
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "393",
+     "targetName": "bot#393",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 3,
+     "pcts": [
+      268,
+      222,
+      278
+     ],
+     "first": 0.2627,
+     "comb": 0.5804
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "bot#44",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 6,
+     "pcts": [
+      125,
+      126,
+      126,
+      131,
+      134,
+      138
+     ],
+     "first": 0.123,
+     "comb": 0.5602
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "bot#44",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 4,
+     "pcts": [
+      169,
+      171,
+      170,
+      172
+     ],
+     "first": 0.166,
+     "comb": 0.5196
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "464",
+     "targetName": "bot#464",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 2,
+     "pcts": [
+      290,
+      293
+     ],
+     "first": 0.2842,
+     "comb": 0.4897
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "471",
+     "targetName": "bot#471",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      156,
+      340
+     ],
+     "first": 0.1533,
+     "comb": 0.4353
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 490,
+     "t1": 490,
+     "n": 2,
+     "pcts": [
+      248,
+      248
+     ],
+     "first": 0.2432,
+     "comb": 0.4272
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 504,
+     "t1": 504,
+     "n": 2,
+     "pcts": [
+      248,
+      248
+     ],
+     "first": 0.2432,
+     "comb": 0.4272
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "171",
+     "targetName": "bot#171",
+     "t0": 1736,
+     "t1": 1736,
+     "n": 9,
+     "pcts": [
+      58,
+      59,
+      59,
+      59,
+      59,
+      59,
+      59,
+      60,
+      60
+     ],
+     "first": 0.0576,
+     "comb": 0.4198
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "464",
+     "targetName": "bot#464",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 3,
+     "pcts": [
+      157,
+      156,
+      157
+     ],
+     "first": 0.1543,
+     "comb": 0.3944
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1337,
+     "t1": 1337,
+     "n": 3,
+     "pcts": [
+      77,
+      47,
+      317
+     ],
+     "first": 0.0762,
+     "comb": 0.3929
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "18",
+     "targetName": "Player 642",
+     "t0": 3514,
+     "t1": 3514,
+     "n": 2,
+     "pcts": [
+      204,
+      204
+     ],
+     "first": 0.2002,
+     "comb": 0.3603
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      48,
+      48,
+      49,
+      49,
+      48
+     ],
+     "first": 0.0469,
+     "comb": 0.3555
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "18",
+     "targetName": "Player 642",
+     "t0": 3528,
+     "t1": 3528,
+     "n": 2,
+     "pcts": [
+      188,
+      151
+     ],
+     "first": 0.1846,
+     "comb": 0.3056
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1316,
+     "t1": 1316,
+     "n": 6,
+     "pcts": [
+      59,
+      58,
+      60,
+      59,
+      60,
+      58
+     ],
+     "first": 0.0586,
+     "comb": 0.3039
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "404",
+     "targetName": "bot#404",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 2,
+     "pcts": [
+      154,
+      147
+     ],
+     "first": 0.1514,
+     "comb": 0.274
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "9",
+     "targetName": "[APEX] alex_k",
+     "t0": 3164,
+     "t1": 3164,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[APEX] noah88",
+     "t0": 3311,
+     "t1": 3311,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "[APEX] kaito9",
+     "t0": 3584,
+     "t1": 3584,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 18,
+     "name": "Player 642",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[APEX] riku_x",
+     "t0": 3738,
+     "t1": 3738,
+     "n": 2,
+     "pcts": [
+      123,
+      123
+     ],
+     "first": 0.1211,
+     "comb": 0.2275
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 6,
+     "pcts": [
+      30,
+      36,
+      39,
+      43,
+      45,
+      46
+     ],
+     "first": 0.0303,
+     "comb": 0.2167
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "293",
+     "targetName": "bot#293",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 4,
+     "pcts": [
+      61,
+      61,
+      58,
+      55
+     ],
+     "first": 0.0605,
+     "comb": 0.2138
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 133,
+     "t1": 133,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 210,
+     "t1": 210,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 308,
+     "t1": 308,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 322,
+     "t1": 322,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 357,
+     "t1": 357,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 469,
+     "t1": 469,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 525,
+     "t1": 525,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 609,
+     "t1": 609,
+     "n": 2,
+     "pcts": [
+      111,
+      111
+     ],
+     "first": 0.1094,
+     "comb": 0.2068
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "401",
+     "targetName": "bot#401",
+     "t0": 1435,
+     "t1": 1435,
+     "n": 2,
+     "pcts": [
+      73,
+      115
+     ],
+     "first": 0.0723,
+     "comb": 0.1774
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1813,
+     "t1": 1813,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "48",
+     "targetName": "bot#48",
+     "t0": 2114,
+     "t1": 2114,
+     "n": 2,
+     "pcts": [
+      112,
+      60
+     ],
+     "first": 0.1104,
+     "comb": 0.1633
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1211,
+     "t1": 1211,
+     "n": 3,
+     "pcts": [
+      56,
+      57,
+      55
+     ],
+     "first": 0.0557,
+     "comb": 0.1579
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "415",
+     "targetName": "bot#415",
+     "t0": 1225,
+     "t1": 1225,
+     "n": 3,
+     "pcts": [
+      61,
+      52,
+      50
+     ],
+     "first": 0.0605,
+     "comb": 0.1535
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 938,
+     "t1": 938,
+     "n": 3,
+     "pcts": [
+      50,
+      52,
+      47
+     ],
+     "first": 0.0498,
+     "comb": 0.1412
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1225,
+     "t1": 1225,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "124",
+     "targetName": "bot#124",
+     "t0": 1337,
+     "t1": 1337,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 0,
+     "name": "Mali",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 2,
+     "pcts": [
+      47,
+      86
+     ],
+     "first": 0.0469,
+     "comb": 0.1279
+    },
+    {
+     "me": 15,
+     "name": "Amariuchi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 49,
+     "t1": 49,
+     "n": 2,
+     "pcts": [
+      64,
+      64
+     ],
+     "first": 0.0635,
+     "comb": 0.1229
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "99",
+     "targetName": "bot#99",
+     "t0": 980,
+     "t1": 980,
+     "n": 2,
+     "pcts": [
+      55,
+      61
+     ],
+     "first": 0.0547,
+     "comb": 0.1119
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 966,
+     "t1": 966,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3584,
+     "t1": 3584,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3549,
+     "t1": 3549,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "139",
+     "targetName": "bot#139",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 11,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "171",
+     "targetName": "bot#171",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 10,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "48",
+     "targetName": "bot#48",
+     "t0": 3017,
+     "t1": 3017,
+     "n": 2,
+     "pcts": [
+      0,
+      1
+     ],
+     "first": 0.001,
+     "comb": 0.0029
+    }
+   ]
+  }
+ }
+}

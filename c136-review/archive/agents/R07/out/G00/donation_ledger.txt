@@ -1,0 +1,42 @@
+== leo_tx: 捐款 6 笔；观测区间 32 个，整数吻合 14 个，不吻合 18 个
+   MISMATCH 630→720: 观测余额 3280，最近假设差 +10785（领土恒定=False）
+   MISMATCH 720→810: 观测余额 8698，最近假设差 -1063（领土恒定=False）
+   MISMATCH 810→900: 观测余额 21752，最近假设差 -5843（领土恒定=True）
+   MISMATCH 1440→1530: 观测余额 195020，最近假设差 +13813（领土恒定=True）
+   MISMATCH 1530→3364: 观测余额 359505，最近假设差 +167145（领土恒定=True）
+   MISMATCH 3420→3550: 观测余额 270197，最近假设差 +11266（领土恒定=True）
+   MISMATCH 3600→4230: 观测余额 0，最近假设差 +448845（领土恒定=True）
+   MISMATCH 4500→4590: 观测余额 0，最近假设差 +9（领土恒定=True）
+   MISMATCH 4590→4680: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 4680→4770: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 4770→4860: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 4860→4950: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 4950→5040: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 5040→5130: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 5130→5220: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 5220→5310: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 5310→5400: 观测余额 0，最近假设差 +10（领土恒定=True）
+   MISMATCH 5400→5490: 观测余额 0，最近假设差 +9（领土恒定=True）
+   t=3364 DONATE/surplus donate pct=51 → kevin_k myBal=359505 名义到账18256 费22469 | EXEC 执行拍∈[3370,3379] 延迟∈[6,15]
+   t=3382 DONATE/surplus donate pct=51 → mark07 myBal=325799 名义到账16544 费20362 | EXEC 执行拍∈[3383,3399] 延迟∈[1,17]
+   t=3400 DONATE/surplus donate pct=51 → kevin_k myBal=298910 名义到账15179 费18681 | EXEC 执行拍∈[3401,3419] 延迟∈[1,19]
+   t=3420 DONATE/surplus donate pct=51 → kevin_k myBal=271019 名义到账13762 费16938 | UNDETERMINED
+   t=3550 DONATE/surplus donate pct=51 → kevin_k myBal=270197 名义到账13720 费16887 | EXEC 执行拍∈[3570,3578] 延迟∈[20,28] | 预标REJ?
+   t=3568 DONATE/surplus donate pct=51 → kevin_k myBal=273223 名义到账13874 费17076 | EXEC 执行拍∈[3571,3579] 延迟∈[3,11]
+   判定汇总: {'EXEC': 5, 'UNDETERMINED': 1}
+== ryan_m: 捐款 3 笔；观测区间 23 个，整数吻合 16 个，不吻合 7 个
+   MISMATCH 630→720: 观测余额 4435，最近假设差 +2594（领土恒定=False）
+   MISMATCH 720→810: 观测余额 10723，最近假设差 -397（领土恒定=False）
+   MISMATCH 810→900: 观测余额 23420，最近假设差 -3821（领土恒定=False）
+   MISMATCH 900→990: 观测余额 32478，最近假设差 +933（领土恒定=False）
+   MISMATCH 990→1080: 观测余额 24279，最近假设差 +26196（领土恒定=False）
+   MISMATCH 1080→1170: 观测余额 54785，最近假设差 -15848（领土恒定=True）
+   MISMATCH 2440→2520: 观测余额 42，最近假设差 +511419（领土恒定=True）
+   t=2240 DONATE/squad rescue donate pct=51 → dave_w myBal=530279 名义到账26928 费33142 | EXEC 执行拍∈[2241,2249] 延迟∈[1,9]
+   t=2340 DONATE/squad rescue donate pct=51 → dave_w myBal=529941 名义到账26911 费33121 | EXEC 执行拍∈[2350,2359] 延迟∈[10,19]
+   t=2440 DONATE/squad rescue donate pct=51 → dave_w myBal=528933 名义到账26859 费33058 | UNDETERMINED
+   判定汇总: {'EXEC': 2, 'UNDETERMINED': 1}
+
+全局判定: {'EXEC': 7, 'UNDETERMINED': 2}
+预标 likelyRejected 共 1 笔，其中账本判定: {"EXEC": 1}
+指令延迟（决策拍→执行拍）: n=7 下界 min/中位/max = 1/3/20；上界 min/中位/max = 9/17/28

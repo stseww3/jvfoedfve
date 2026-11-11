@@ -1,0 +1,120 @@
+# A062 ryan_m 影子决策明细 t=1515~2379（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 18 拍（t=1515~2225）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 155 拍（t=1555~2375）；可用兵 16765~149650，一条指令下限(20%余额) 32584~154227，比值 19%~97%
+t=1530 ryan_m B=78317 L=6739 d=11.6 nb=2 neut=12 cmds=69 noFull=0 shQ=19579 | m=1.496 worth=17.4 cheap=4.5 over=0 dMedOther=24.6 safe(-1)=109321
+    → [FLR] さっしー#43[T3] terr=20867 bal=204699 dq=9.8 cnt=60 | c=25.3 rankC=25.3 need=395815 tD=0.40 人 | safe=109321 keep=Inf avail=-Inf chunkB=15663 pulseB=9398 价高(c>=worth)→break
+    → Jordan#24[T1] terr=1940 bal=68319 dq=35.2 cnt=13 | c=116.3 rankC=116.3 need=124679 tD=1.43 人 crowdedHard | safe=109321 keep=Inf avail=-Inf chunkB=15663 pulseB=9398 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1560 ryan_m B=166371 L=6805 d=24.4 nb=2 neut=0 cmds=69 noFull=0 shQ=27412 | m=1.491 worth=36.5 cheap=4.7 over=0 dMedOther=26.2 safe(-1)=116670
+    → [FLR] さっしー#43[T3] terr=20867 bal=217880 dq=10.4 cnt=60 | c=26.8 rankC=26.8 need=419422 tD=0.40 人 | safe=116670 keep=139277 avail=25145 chunkB=33274 pulseB=19965 不够一条
+    → Jordan#24[T1] terr=1940 bal=72827 dq=37.5 cnt=27 | c=92.2 rankC=92.2 need=132714 tD=1.43 人 | safe=116670 keep=Inf avail=-Inf chunkB=33274 pulseB=19965 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1590 ryan_m B=176864 L=6805 d=26.0 nb=2 neut=0 cmds=69 noFull=0 shQ=44216 | m=1.486 worth=38.6 cheap=4.9 over=0 dMedOther=26.6 safe(-1)=124391
+    → [FLR] さっしー#43[T3] terr=20867 bal=231623 dq=11.1 cnt=60 | c=28.4 rankC=28.4 need=444027 tD=0.42 人 | safe=124391 keep=147973 avail=26819 chunkB=35373 pulseB=21224 不够一条
+    → Jordan#24[T1] terr=1940 bal=77420 dq=39.9 cnt=27 | c=141.9 rankC=205.8 need=140900 tD=1.50 人 | safe=124391 keep=Inf avail=-Inf chunkB=35373 pulseB=21224 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1620 ryan_m B=194596 L=6805 d=28.6 nb=2 neut=0 cmds=69 noFull=0 shQ=48649 | m=1.482 worth=42.4 cheap=5.2 over=0 dMedOther=27.8 safe(-1)=143250
+    → [FLR] さっしー#43[T3] terr=20779 bal=265192 dq=12.8 cnt=59 | c=32.3 rankC=32.3 need=503436 tD=0.46 人 | safe=143250 keep=166160 avail=26156 chunkB=38919 pulseB=23352 不够一条
+    → Jordan#24[T1] terr=1940 bal=84101 dq=43.4 cnt=27 | c=106.2 rankC=106.2 need=152808 tD=1.56 人 | safe=143250 keep=Inf avail=-Inf chunkB=38919 pulseB=23352 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1650 ryan_m B=205717 L=6805 d=30.2 nb=2 neut=0 cmds=69 noFull=0 shQ=51429 | m=1.478 worth=44.7 cheap=5.4 over=0 dMedOther=29.8 safe(-1)=151764
+    → [FLR] さっしー#43[T3] terr=20779 bal=280348 dq=13.5 cnt=59 | c=34.1 rankC=34.1 need=530575 tD=0.45 人 | safe=151764 keep=175647 avail=27660 chunkB=41143 pulseB=24686 不够一条
+    → Jordan#24[T1] terr=1940 bal=88906 dq=45.8 cnt=27 | c=112.1 rankC=112.1 need=161373 tD=1.54 人 | safe=151764 keep=Inf avail=-Inf chunkB=41143 pulseB=24686 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1680 ryan_m B=216898 L=6805 d=31.9 nb=2 neut=0 cmds=69 noFull=0 shQ=54224 | m=1.473 worth=46.9 cheap=5.7 over=0 dMedOther=32.6 safe(-1)=160324
+    → [FLR] さっしー#43[T3] terr=20779 bal=295585 dq=14.2 cnt=59 | c=35.8 rankC=35.8 need=557894 tD=0.44 人 | safe=160324 keep=185214 avail=29143 chunkB=43380 pulseB=26028 不够一条
+    → Jordan#24[T1] terr=1940 bal=93738 dq=48.3 cnt=27 | c=171.3 rankC=248.3 need=169985 tD=1.48 人 | safe=160324 keep=Inf avail=-Inf chunkB=43380 pulseB=26028 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1710 ryan_m B=234975 L=6805 d=34.5 nb=2 neut=0 cmds=69 noFull=0 shQ=58743 | m=1.468 worth=50.7 cheap=6.0 over=0 dMedOther=34.1 safe(-1)=180735
+    → [FLR] さっしー#43[T3] terr=20779 bal=331916 dq=16.0 cnt=59 | c=40.0 rankC=40.0 need=622781 tD=0.47 人 | safe=180735 keep=204213 avail=28009 chunkB=46995 pulseB=28197 不够一条
+    → Jordan#24[T1] terr=1940 bal=100532 dq=51.8 cnt=27 | c=126.5 rankC=126.5 need=182094 tD=1.52 人 | safe=180735 keep=Inf avail=-Inf chunkB=46995 pulseB=28197 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1740 ryan_m B=246361 L=6805 d=36.2 nb=2 neut=0 cmds=69 noFull=0 shQ=61590 | m=1.464 worth=53.0 cheap=6.4 over=0 dMedOther=29.7 safe(-1)=189771
+    → [FLR] さっしー#43[T3] terr=20779 bal=348000 dq=16.7 cnt=59 | c=41.8 rankC=41.8 need=651450 tD=0.56 人 | safe=189771 keep=214233 avail=29241 chunkB=49272 pulseB=29563 不够一条
+    → Jordan#24[T1] terr=1940 bal=105403 dq=54.3 cnt=27 | c=132.6 rankC=132.6 need=190776 tD=1.83 人 | safe=189771 keep=Inf avail=-Inf chunkB=49272 pulseB=29563 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1770 ryan_m B=257613 L=6805 d=37.9 nb=2 neut=0 cmds=69 noFull=0 shQ=64403 | m=1.460 worth=55.3 cheap=6.8 over=0 dMedOther=33.2 safe(-1)=197268
+    → [FLR] さっしー#43[T3] terr=20688 bal=361345 dq=17.5 cnt=59 | c=43.5 rankC=43.5 need=674500 tD=0.53 人 | safe=197268 keep=223943 avail=30652 chunkB=51523 pulseB=30914 不够一条
+    → Jordan#24[T1] terr=1940 bal=110216 dq=56.8 cnt=27 | c=138.5 rankC=138.5 need=199355 tD=1.71 人 | safe=197268 keep=Inf avail=-Inf chunkB=51523 pulseB=30914 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1800 ryan_m B=275415 L=6805 d=40.5 nb=2 neut=0 cmds=69 noFull=0 shQ=67195 | m=1.455 worth=58.9 cheap=7.3 over=0 dMedOther=32.7 safe(-1)=195190
+    → [FLR] さっしー#43[T3] terr=20604 bal=357645 dq=17.4 cnt=59 | c=43.3 rankC=43.3 need=667441 tD=0.53 人 | safe=195190 keep=230883 avail=41305 chunkB=55083 pulseB=33050 不够一条
+    → Jordan#24[T1] terr=1940 bal=116861 dq=60.2 cnt=27 | c=146.8 rankC=146.8 need=211199 tD=1.84 人 | safe=195190 keep=Inf avail=-Inf chunkB=55083 pulseB=33050 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1830 ryan_m B=286380 L=6805 d=42.1 nb=2 neut=0 cmds=69 noFull=0 shQ=71595 | m=1.451 worth=61.0 cheap=7.8 over=0 dMedOther=30.7 safe(-1)=203230
+    → [FLR] さっしー#43[T3] terr=21198 bal=371957 dq=17.5 cnt=59 | c=43.7 rankC=43.7 need=694772 tD=0.57 人 | safe=203230 keep=236853 avail=46171 chunkB=57276 pulseB=34366 不够一条
+    → Jordan#24[T1] terr=1940 bal=121512 dq=62.6 cnt=27 | c=221.2 rankC=320.8 need=219488 tD=2.04 人 | safe=203230 keep=Inf avail=-Inf chunkB=57276 pulseB=34366 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1860 ryan_m B=296988 L=6805 d=43.6 nb=2 neut=0 cmds=69 noFull=0 shQ=74247 | m=1.446 worth=63.1 cheap=8.4 over=0 dMedOther=31.9 safe(-1)=227082
+    → [FLR] さっしー#43[T3] terr=21155 bal=414413 dq=19.6 cnt=58 | c=48.6 rankC=48.6 need=769802 tD=0.61 人 | safe=227082 keep=255116 avail=38392 chunkB=59398 pulseB=35639 不够一条
+    → Jordan#24[T1] terr=1940 bal=126011 dq=65.0 cnt=27 | c=229.3 rankC=332.5 need=227507 tD=2.03 人 | safe=227082 keep=Inf avail=-Inf chunkB=59398 pulseB=35639 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1890 ryan_m B=307533 L=6805 d=45.2 nb=2 neut=0 cmds=69 noFull=0 shQ=76883 | m=1.442 worth=65.1 cheap=8.5 over=0 dMedOther=32.8 safe(-1)=234099
+    → [FLR] さっしー#43[T3] terr=21060 bal=426903 dq=20.3 cnt=58 | c=50.2 rankC=50.2 need=791426 tD=0.62 人 | safe=234099 keep=264427 avail=39503 chunkB=61507 pulseB=36904 不够一条
+    → Jordan#24[T1] terr=1940 bal=130291 dq=67.2 cnt=27 | c=237.0 rankC=343.6 need=235136 tD=2.05 人 | safe=234099 keep=Inf avail=-Inf chunkB=61507 pulseB=36904 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1920 ryan_m B=325418 L=6805 d=47.8 nb=2 neut=0 cmds=69 noFull=0 shQ=81354 | m=1.437 worth=68.7 cheap=8.5 over=0 dMedOther=37.8 safe(-1)=253705
+    → [FLR] さっしー#43[T3] terr=20957 bal=461802 dq=22.0 cnt=58 | c=54.4 rankC=54.4 need=852772 tD=0.58 人 | safe=253705 keep=283944 avail=37661 chunkB=65084 pulseB=39050 不够一条
+    → Jordan#24[T1] terr=1940 bal=136499 dq=70.4 cnt=27 | c=171.2 rankC=171.2 need=246201 tD=1.86 人 | safe=253705 keep=Inf avail=-Inf chunkB=65084 pulseB=39050 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1950 ryan_m B=336972 L=6805 d=49.5 nb=2 neut=0 cmds=69 noFull=0 shQ=84243 | m=1.433 worth=70.9 cheap=8.5 over=0 dMedOther=39.2 safe(-1)=259548
+    → [FLR] さっしー#43[T3] terr=20771 bal=472203 dq=22.7 cnt=57 | c=56.1 rankC=56.1 need=869672 tD=0.58 人 | safe=259548 keep=293980 avail=39044 chunkB=67394 pulseB=40437 不够一条
+    → Jordan#24[T1] terr=1940 bal=140926 dq=72.6 cnt=27 | c=256.2 rankC=371.4 need=254091 tD=1.85 人 | safe=259548 keep=Inf avail=-Inf chunkB=67394 pulseB=40437 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1980 ryan_m B=348937 L=6805 d=51.3 nb=2 neut=0 cmds=69 noFull=0 shQ=87234 | m=1.428 worth=73.2 cheap=8.5 over=0 dMedOther=39.1 safe(-1)=267883
+    → [FLR] さっしー#43[T3] terr=20670 bal=487040 dq=23.6 cnt=57 | c=58.1 rankC=58.1 need=895216 tD=0.60 人 | safe=267883 keep=305006 avail=39842 chunkB=69787 pulseB=41872 不够一条
+    → Jordan#24[T1] terr=1870 bal=137101 dq=73.3 cnt=27 | c=179.1 rankC=179.1 need=245751 tD=1.87 人 | safe=267883 keep=Inf avail=-Inf chunkB=69787 pulseB=41872 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2010 ryan_m B=368212 L=6805 d=54.1 nb=2 neut=0 cmds=69 noFull=0 shQ=92053 | m=1.415 worth=76.5 cheap=8.5 over=0 dMedOther=41.1 safe(-1)=288438
+    → [FLR] さっしー#43[T3] terr=20582 bal=523628 dq=25.4 cnt=57 | c=62.6 rankC=62.6 need=959475 tD=0.62 人 | safe=288438 keep=327267 avail=36631 chunkB=73642 pulseB=44185 不够一条
+    → Jordan#24[T1] terr=1870 bal=143437 dq=76.7 cnt=27 | c=271.0 rankC=393.0 need=257861 tD=1.87 人 | safe=288438 keep=Inf avail=-Inf chunkB=73642 pulseB=44185 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2040 ryan_m B=381287 L=6805 d=56.0 nb=2 neut=0 cmds=69 noFull=0 shQ=95321 | m=1.383 worth=77.5 cheap=8.5 over=0 dMedOther=39.0 safe(-1)=297191
+    → [FLR] さっしー#43[T3] terr=20482 bal=539207 dq=26.3 cnt=57 | c=64.8 rankC=64.8 need=986231 tD=0.67 人 | safe=297191 keep=343131 avail=33688 chunkB=76257 pulseB=45754 不够一条
+    → Jordan#24[T1] terr=1870 bal=148089 dq=79.2 cnt=27 | c=192.6 rankC=192.6 need=266809 tD=2.03 人 | safe=297191 keep=Inf avail=-Inf chunkB=76257 pulseB=45754 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2070 ryan_m B=394827 L=6805 d=58.0 nb=2 neut=0 cmds=69 noFull=0 shQ=98706 | m=1.352 worth=78.4 cheap=8.5 over=0 dMedOther=39.1 safe(-1)=306723
+    → [FLR] さっしー#43[T3] terr=20383 bal=556175 dq=27.3 cnt=57 | c=67.1 rankC=67.1 need=1015452 tD=0.70 人 | safe=306723 keep=360122 avail=30079 chunkB=78965 pulseB=47379 不够一条
+    → Jordan#24[T1] terr=1870 bal=152892 dq=81.8 cnt=27 | c=288.2 rankC=418.0 need=275372 tD=2.09 人 | safe=306723 keep=Inf avail=-Inf chunkB=78965 pulseB=47379 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2100 ryan_m B=415652 L=6805 d=61.1 nb=2 neut=0 cmds=69 noFull=0 shQ=102244 | m=1.320 worth=80.6 cheap=8.5 over=0 dMedOther=41.2 safe(-1)=328226
+    → [FLR] さっしー#43[T3] terr=20295 bal=594450 dq=29.3 cnt=56 | c=71.9 rankC=71.9 need=1082437 tD=0.71 人 | safe=328226 keep=387998 avail=22784 chunkB=83130 pulseB=49878 不够一条
+    → Jordan#24[T1] terr=1870 bal=159721 dq=85.4 cnt=27 | c=301.0 rankC=436.5 need=287546 tD=2.07 人 | safe=328226 keep=Inf avail=-Inf chunkB=83130 pulseB=49878 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2130 ryan_m B=430412 L=6805 d=63.2 nb=2 neut=0 cmds=69 noFull=0 shQ=107603 | m=1.288 worth=81.5 cheap=8.5 over=0 dMedOther=36.4 safe(-1)=338255
+    → [FLR] さっしー#43[T3] terr=20190 bal=612301 dq=30.3 cnt=56 | c=74.4 rankC=74.4 need=1113018 tD=0.83 人 | safe=338255 keep=407187 avail=18182 chunkB=86082 pulseB=51649 不够一条
+    → Jordan#24[T1] terr=1870 bal=164902 dq=88.2 cnt=27 | c=310.7 rankC=450.5 need=296783 tD=2.42 人 | safe=338255 keep=Inf avail=-Inf chunkB=86082 pulseB=51649 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2160 ryan_m B=597831 L=6805 d=87.9 nb=2 neut=0 cmds=69 noFull=0 shQ=139813 | m=1.257 worth=110.4 cheap=8.5 over=0 dMedOther=36.7 safe(-1)=349210
+    → [FLR] さっしー#43[T3] terr=20097 bal=631801 dq=31.4 cnt=56 | c=77.2 rankC=77.2 need=1146572 tD=0.86 人 | safe=349210 keep=494636 avail=96190 chunkB=119566 pulseB=71740 不够一条
+    → Jordan#24[T1] terr=1870 bal=170251 dq=91.0 cnt=27 | c=322.6 rankC=467.7 need=306318 tD=2.48 人 | safe=349210 keep=Inf avail=-Inf chunkB=119566 pulseB=71740 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2190 ryan_m B=619060 L=6805 d=91.0 nb=2 neut=0 cmds=69 noFull=0 shQ=154765 | m=1.226 worth=111.5 cheap=8.5 over=0 dMedOther=36.3 safe(-1)=357300
+    → [FLR] さっしー#43[T3] terr=19898 bal=646201 dq=32.5 cnt=56 | c=79.8 rankC=79.8 need=1169609 tD=0.89 人 | safe=357300 keep=518960 avail=92846 chunkB=123812 pulseB=74287 不够一条
+    → Jordan#24[T1] terr=1870 bal=175773 dq=94.0 cnt=27 | c=332.9 rankC=482.8 need=316163 tD=2.59 人 | safe=357300 keep=Inf avail=-Inf chunkB=123812 pulseB=74287 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2220 ryan_m B=652193 L=6805 d=95.8 nb=2 neut=0 cmds=69 noFull=0 shQ=163048 | m=1.194 worth=114.4 cheap=8.5 over=0 dMedOther=38.6 safe(-1)=380300
+    → [FLR] さっしー#43[T3] terr=19808 bal=687141 dq=34.7 cnt=56 | c=123.5 rankC=179.0 need=1240856 tD=0.90 人 | safe=380300 keep=Inf avail=-Inf chunkB=130439 pulseB=78263 价高(c>=worth)→break
+    → Jordan#24[T1] terr=1870 bal=183384 dq=98.1 cnt=27 | c=239.5 rankC=239.5 need=329731 tD=2.54 人 | safe=380300 keep=Inf avail=-Inf chunkB=130439 pulseB=78263 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2250 ryan_m B=675352 L=6805 d=99.2 nb=2 neut=0 cmds=69 noFull=0 shQ=168838 | m=1.163 worth=115.4 cheap=8.5 over=0 dMedOther=40.0 safe(-1)=392699
+    → [FLR] さっしー#43[T3] terr=19720 bal=709211 dq=36.0 cnt=55 | c=88.2 rankC=88.2 need=1278828 tD=0.90 人 | safe=392699 keep=586343 avail=81095 chunkB=135070 pulseB=81042 不够一条
+    → Jordan#24[T1] terr=1870 bal=189333 dq=101.2 cnt=27 | c=358.5 rankC=519.8 need=340337 tD=2.53 人 | safe=392699 keep=Inf avail=-Inf chunkB=135070 pulseB=81042 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2280 ryan_m B=699127 L=6805 d=102.7 nb=2 neut=0 cmds=69 noFull=0 shQ=174751 | m=1.131 worth=116.2 cheap=8.5 over=1 dMedOther=41.3 safe(-1)=404799
+    → [FLR] さっしー#43[T3] terr=19662 bal=730749 dq=37.2 cnt=55 | c=91.1 rankC=91.1 need=1316235 tD=0.90 人 | safe=404799 keep=612450 avail=78485 chunkB=139825 pulseB=83895 不够一条
+    → Jordan#24[T1] terr=1870 bal=195222 dq=104.4 cnt=27 | c=254.9 rankC=254.9 need=350835 tD=2.53 人 | safe=404799 keep=612450 avail=78485 chunkB=139825 pulseB=83895 不够一条
+    ⇒ 本拍没有指令
+t=2310 ryan_m B=728755 L=6805 d=107.1 nb=2 neut=0 cmds=69 noFull=0 shQ=182171 | m=1.099 worth=117.7 cheap=8.5 over=1 dMedOther=44.2 safe(-1)=429137
+    → [FLR] さっしー#43[T3] terr=19575 bal=774071 dq=39.5 cnt=55 | c=96.9 rankC=96.9 need=1391538 tD=0.89 人 | safe=429137 keep=612450 avail=107765 chunkB=145751 pulseB=87451 不够一条
+    → Jordan#24[T1] terr=1870 bal=202745 dq=108.4 cnt=27 | c=383.8 rankC=556.5 need=364247 tD=2.45 人 | safe=429137 keep=612450 avail=107765 chunkB=145751 pulseB=87451 不够一条
+    ⇒ 本拍没有指令
+t=2340 ryan_m B=750463 L=6805 d=110.3 nb=2 neut=0 cmds=69 noFull=0 shQ=187615 | m=1.068 worth=117.8 cheap=8.5 over=1 dMedOther=45.5 safe(-1)=443066
+    → [FLR] さっしー#43[T3] terr=19487 bal=798865 dq=41.0 cnt=55 | c=100.4 rankC=100.4 need=1434058 tD=0.90 人 | safe=443066 keep=612450 avail=129219 chunkB=150093 pulseB=90056 不够一条
+    → Jordan#24[T1] terr=1870 bal=208081 dq=111.3 cnt=27 | c=393.8 rankC=571.0 need=373759 tD=2.45 人 | safe=443066 keep=612450 avail=129219 chunkB=150093 pulseB=90056 不够一条
+    ⇒ 本拍没有指令
+t=2370 ryan_m B=771136 L=6805 d=113.3 nb=2 neut=0 cmds=69 noFull=0 shQ=192784 | m=1.036 worth=117.5 cheap=8.5 over=1 dMedOther=47.1 safe(-1)=456919
+    → [FLR] さっしー#43[T3] terr=19431 bal=823523 dq=42.4 cnt=55 | c=103.8 rankC=103.8 need=1476920 tD=0.90 人 | safe=456919 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    → Jordan#24[T1] terr=1870 bal=167635 dq=89.6 cnt=27 | c=165.4 rankC=115.8 need=301655 tD=1.90 人 | safe=456919 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    ⇒ 本拍没有指令
