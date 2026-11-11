@@ -515,6 +515,13 @@ def donlog_rows(M):
             ratio = c['bal'] / max(1, pred)
             spend = pred - c['bal']
             cand = [x for x in st if x['exec'] is None and x['e']['t'] <= a['t'] and a['t'] - x['e']['t'] <= DON_LATE]
+            # 收款人在这一段开始之前已经阵亡（结算行的阵亡拍）：这一段的支出不可能是给它的那条捐款
+            for x in cand:
+                rb0 = M.bots.get(x['e']['to'])
+                dt0 = death_tick(rb0) if rb0 else None
+                if dt0 is not None and dt0 <= a['t']:
+                    x['exec'] = False
+            cand = [x for x in cand if x['exec'] is None]
             if ratio >= DON_NOEXEC:
                 # 这一段没有支出：起点那条捐款若到这一段结束已经过了 DON_LATE 拍，就定为没执行
                 for x in cand:
@@ -566,12 +573,13 @@ def donlog_rows(M):
                 room = 150 * before['terr'] - before['bal']
                 capped = before['dens'] >= CAP_DENS and (after is None or after['dens'] >= CAP_DENS)
             dead = bool(rb and death_tick(rb) is not None and death_tick(rb) <= e['t'])
+            husk = is_husk(rb, e['t'])
             rows.append(dict(me=me, name=name_of(b), t=e['t'], kind=e['kind'], pct=e['pct'], to=e['to'], toName=e['toName'], bal=B, dMe=e['dMe'],
                              fee=fee, vmax=vmax, exec=x['exec'], spend=x['spend'], mixed=x['mixed'], shared=x['shared'], other=x.get('other'),
                              delivered=(min(vmax, max(0, x['spend'] - fee)) if x['exec'] and not x['mixed'] else None),
                              extra=(max(0, x['spend'] - fee - vmax) if x['exec'] and not x['mixed'] else None),
                              recvDens=(before['dens'] if before else None), recvDensAfter=(after['dens'] if after else None),
-                             recvTerr=(before['terr'] if before else None), recvRoom=room, recvCapped=capped, recvDead=dead,
+                             recvTerr=(before['terr'] if before else None), recvRoom=room, recvCapped=capped, recvDead=dead, recvHusk=husk,
                              sameTeam=(rb.team == b.team if rb and rb.team and b.team else None)))
     # 配额账（t<4284 才检查；只数得到「号给号」的捐款，外人给的看不见 → 已用点数是下限）
     used = defaultdict(int)
@@ -602,6 +610,19 @@ def donlog_rows(M):
 
 
 PINGPONG_WIN = 150
+HUSK_GAP = 180            # 收款人最后一条快照比这条捐款早多少拍以上，才算「页面已经停住」
+
+
+def is_husk(rb, t):
+    """NEW:DN-husk-donate / NEW:AS-poke-for-husk 的判据：这个号没有结算行（失联）或结算行是 left，
+    而且它最后一条日志快照比 t 早 HUSK_GAP 拍以上（没有任何快照也算）。阵亡的号不算。"""
+    if rb is None:
+        return False
+    r = rb.result
+    if r and r.get('event') != 'left':
+        return False
+    last = rb.traj[-1]['t'] if rb.traj else None
+    return last is None or t - last >= HUSK_GAP
 
 
 def pingpong_pairs(rows, win=PINGPONG_WIN):
@@ -651,7 +672,42 @@ def sec_donlog(M, detail=None):
     hi = [r for r in ex if r['recvDens'] is not None and r['recvDens'] >= 100]
     lowp = [r for r in ex if r['pct'] < 150]
     print(f"   收款人收款前密度 >=100 的 {len(hi)} 条：手续费 {fmt(sum(r['fee'] for r in hi))}、到账(第二种估法) {fmt(sum(r['byRule'] for r in hi))}、想给 {fmt(sum(r['vmax'] for r in hi))}；"
-          f"pct<150 的 {len(lowp)} 条（日志 {sum(1 for r in rows if r['pct'] < 150)} 条）：手续费 {fmt(sum(r['fee'] for r in lowp))}、到账(第二种估法) {fmt(sum(r['byRule'] for r in lowp))}")
+          f"pct<150 的 {len(lowp)} 条（日志 {sum(1 for r in rows if r['pct'] < 150)} 条）：手续费 {fmt(sum(r['fee'] for r in lowp))}、到账(第二种估法) {fmt(sum(r['byRule'] for r in lowp))}；"
+          f"pct<=63（按规则到账不高于手续费）的 {sum(1 for r in ex if r['pct'] <= 63)} 条（日志 {sum(1 for r in rows if r['pct'] <= 63)} 条）：手续费 {fmt(sum(r['fee'] for r in ex if r['pct'] <= 63))}、想给 {fmt(sum(r['vmax'] for r in ex if r['pct'] <= 63))}")
+    hk = [r for r in rows if r['recvHusk']]
+    hke = [r for r in hk if r['exec']]
+    hkc = [r for r in hke if not r['mixed']]
+    print(f"   给页面已停住/离开的席位（NEW:DN-husk-donate：收款人没有结算行或结算行是 left，且它最后一条快照比这条捐款早 >={HUSK_GAP} 拍）：日志 {len(hk)} 条、执行 {len(hke)} 条，"
+          f"手续费 {fmt(sum(r['fee'] for r in hke))}；其中金额干净的 {len(hkc)} 条：手续费 {fmt(sum(r['fee'] for r in hkc))}、到账（估）{fmt(sum(r['delivered'] for r in hkc))}、想给 {fmt(sum(r['vmax'] for r in hkc))}")
+    if hk:
+        byk = defaultdict(list)
+        for r in hk:
+            byk[r['kind']].append(r)
+        print('      按种类：' + '；'.join(f"{k} 日志 {len(v)} 执行 {sum(1 for r in v if r['exec'])} 手续费 {fmt(sum(r['fee'] for r in v if r['exec']))}" for k, v in sorted(byk.items())))
+        byr = defaultdict(list)
+        for r in hk:
+            byr[r['to']].append(r)
+        for to, v in sorted(byr.items(), key=lambda kv: -sum(r['fee'] for r in kv[1] if r['exec'])):
+            rb = M.bots.get(to)
+            last = rb.traj[-1] if rb and rb.traj else None
+            ev = (rb.result.get('event') + f"@本机拍{rb.result.get('tick')}" if rb and rb.result else '没有结算行')
+            e = [r for r in v if r['exec']]
+            print(f"      →{v[0]['toName'][:12]:12s}（{ev}；最后快照 t={last['t'] if last else '-'} {last['terr'] if last else '-'} 格）：日志 {len(v)} 条、执行 {len(e)} 条、手续费 {fmt(sum(r['fee'] for r in e))}、"
+                  f"到账（估，干净的 {sum(1 for r in e if not r['mixed'])} 条）{fmt(sum(r['delivered'] for r in e if not r['mixed']))}；t={min(r['t'] for r in v)}~{max(r['t'] for r in v)}；捐款人 {'、'.join(sorted({r['name'] for r in v}))}")
+            da = sorted((x['t'], x['dAlly']) for ob in M.bots.values() for x in ob.donations if x['to'] == to and x.get('dAlly') is not None and is_husk(rb, x['t']))
+            if da:
+                print(f"         rescue 日志里捐款人看到的它的密度（dAlly）：{' '.join(f'{t}:{d}' for t, d in da)}")
+        byd = defaultdict(list)
+        for r in hk:
+            byd[r['name']].append(r)
+        print('      按捐款人：' + '；'.join(
+            f"{k} 日志 {len(v)} 执行 {sum(1 for r in v if r['exec'])} 手续费 {fmt(sum(r['fee'] for r in v if r['exec']))} 想给 {fmt(sum(r['vmax'] for r in v if r['exec']))}"
+            f"（pct<64 的 {sum(1 for r in v if r['exec'] and r['pct'] < 64)} 条：手续费 {fmt(sum(r['fee'] for r in v if r['exec'] and r['pct'] < 64))}、想给 {fmt(sum(r['vmax'] for r in v if r['exec'] and r['pct'] < 64))}）"
+            for k, v in sorted(byd.items(), key=lambda kv: -sum(r['fee'] for r in kv[1] if r['exec']))))
+        live = [r for r in rows if not r['recvHusk']]
+        livee = [r for r in live if r['exec']]
+        livec = [r for r in livee if not r['mixed']]
+        print(f"      对照——给还在场的号：日志 {len(live)} 条、执行 {len(livee)} 条、手续费 {fmt(sum(r['fee'] for r in livee))}；金额干净的 {len(livec)} 条到账（估）{fmt(sum(r['delivered'] for r in livec))}")
     pair = defaultdict(list)
     for r in rows:
         pair[(r['me'], r['to'])].append(r)
@@ -1137,6 +1193,92 @@ def sec_crumb(M):
               + (f"；下一个快照 t={r['nextT']} 指令 +{r['nextCmds']}（其中发船 +{r['nextBoats']}）" if r['nextT'] is not None else '；之后没有快照'))
 
 
+
+NOEFF_T_FROM = 630        # 开局周期出兵之后才数
+NOEFF_RATIO = 0.985       # 间隔末余额 >= 纯利息预测 × 这个数 → 这段没有任何支出
+NOEFF_MIN_CMDS = 2        # 这段里至少发了几条「其余指令」（陆攻一条的手续费就是余额的 12/1024 = 1.17%，两条就该低 2.3% 以上）
+NOEFF_SEG = 270           # 连续多少拍以上算一段「断档」
+NOEFF_GROW = 1.01         # 间隔末领土 <= 起点 × 这个数（涨了地就说明有指令生效了）
+
+
+def noeffect_rows(M, t_from=NOEFF_T_FROM, t_to=None):
+    """发了令却没有任何支出（NEW:IO-cmd-blackout 的日志侧判据；只用日志）。
+    间隔 [a, c] = 相邻两条快照（相隔 <=180 拍，a.t >= t_from）。其余指令 = cmds 增量 − 这段里的捐款日志条数 − 协防戳日志条数（发船算在其余里）。
+    不见效间隔：其余指令 >= NOEFF_MIN_CMDS，c.bal >= NOEFF_RATIO × 纯利息预测，且 c.terr <= NOEFF_GROW × a.terr（领土没涨）。
+    这段里有别的我方号给它的捐款日志（下令拍在 [a.t−20, c.t)）时可能有流入盖住支出：单列 inflow，不算不见效。
+    返回每个号：全部间隔的其余指令条数、不见效间隔的条数、连续不见效 >= NOEFF_SEG 拍的段。"""
+    recv = defaultdict(list)
+    for o, ob in M.bots.items():
+        for e in ob.donations:
+            recv[e['to']].append(e['t'])
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = [x for x in b.traj if x['t'] >= t_from and (t_to is None or x['t'] <= t_to)]
+        iv = []
+        for a, c in zip(tr, tr[1:]):
+            if c['t'] - a['t'] > 180:
+                continue
+            logged = sum(1 for e in b.donations if a['t'] <= e['t'] < c['t']) + sum(1 for e in b.assists if a['t'] <= e['t'] < c['t'])
+            other = (c['cmds'] - a['cmds']) - logged
+            if other <= 0:
+                continue
+            ratio = c['bal'] / max(1, pure_interest(a, c, M.land))
+            inflow = any(a['t'] - 20 <= t < c['t'] for t in recv.get(me, ()))
+            iv.append(dict(t0=a['t'], t1=c['t'], other=other, boats=c['boats'] - a['boats'], ratio=ratio, inflow=inflow,
+                           noeff=(other >= NOEFF_MIN_CMDS and ratio >= NOEFF_RATIO and c['terr'] <= NOEFF_GROW * a['terr'] and not inflow),
+                           nb=a['nb'], neut=a['neut'], dens=a['dens'], terr0=a['terr'], terr1=c['terr'], bal0=a['bal'], bal1=c['bal']))
+        if not iv:
+            continue
+        segs = []
+        cur = None
+        for x in iv:
+            if x['noeff'] and cur is not None and x['t0'] == cur['t1']:
+                cur['t1'] = x['t1']
+                cur['cmds'] += x['other']
+                cur['boats'] += x['boats']
+                cur['terr1'] = x['terr1']
+                cur['bal1'] = x['bal1']
+                cur['nbs'].append(x['nb'])
+            elif x['noeff']:
+                cur = dict(t0=x['t0'], t1=x['t1'], cmds=x['other'], boats=x['boats'], terr0=x['terr0'], terr1=x['terr1'], bal0=x['bal0'], bal1=x['bal1'],
+                           dens0=x['dens'], nbs=[x['nb']])
+                segs.append(cur)
+            else:
+                cur = None
+        for g in segs:
+            _, nxt = snap_around(b, g['t1'])
+            s1, _ = snap_around(b, g['t1'])
+            g['next'] = None
+            if s1 and nxt and nxt['t'] - s1['t'] <= 180:
+                g['next'] = dict(t=nxt['t'], ratio=nxt['bal'] / max(1, pure_interest(s1, nxt, M.land)), terr=nxt['terr'], cmds=nxt['cmds'] - s1['cmds'])
+            g['nbMin'], g['nbMax'] = min(g['nbs']), max(g['nbs'])
+            del g['nbs']
+        out.append(dict(me=me, name=name_of(b), team=b.team, total=sum(x['other'] for x in iv), noeff=sum(x['other'] for x in iv if x['noeff']),
+                        nIv=len(iv), nNoeff=sum(1 for x in iv if x['noeff']), inflowCmds=sum(x['other'] for x in iv if x['inflow']),
+                        boatsNoeff=sum(x['boats'] for x in iv if x['noeff']),
+                        segs=[g for g in segs if g['t1'] - g['t0'] >= NOEFF_SEG], died=death_tick(b)))
+    return out
+
+
+def sec_noeffect(M, t_from=NOEFF_T_FROM):
+    rows = noeffect_rows(M, t_from)
+    print(f"发了令却没有任何支出（NEW:IO-cmd-blackout 的日志侧判据；只用日志）：相邻快照间「其余指令」（cmds 增量 − 捐款日志 − 协防戳日志，含发船）>= {NOEFF_MIN_CMDS} 条，"
+          f"而间隔末余额 >= 纯利息预测 × {NOEFF_RATIO}（一条陆攻光手续费就是余额的 1.17%）、领土没涨（<= {NOEFF_GROW} 倍）；起点 t>={t_from}；这段里有别的我方号给它捐款的间隔不算")
+    tot = sum(r['total'] for r in rows)
+    ne = sum(r['noeff'] for r in rows)
+    print(f"  合计：其余指令 {tot} 条，其中落在不见效间隔里的 {ne} 条（{100 * ne / max(1, tot):.1f}%；其中发船 {sum(r['boatsNoeff'] for r in rows)} 条）；涉及 {sum(1 for r in rows if r['noeff'])} 个号；"
+          f"连续 >= {NOEFF_SEG} 拍的段 {sum(len(r['segs']) for r in rows)} 段、{sum(g['cmds'] for r in rows for g in r['segs'])} 条")
+    for r in sorted(rows, key=lambda r: -r['noeff']):
+        if not r['noeff']:
+            continue
+        print(f"   {r['name']:13s}(队{r['team']}) 其余指令 {r['total']} 条 / 不见效 {r['noeff']} 条（{100 * r['noeff'] / max(1, r['total']):.0f}%；{r['nNoeff']}/{r['nIv']} 个间隔）"
+              + (f"；阵亡 t={r['died']}" if r['died'] else ''))
+        for g in r['segs']:
+            nx = g['next']
+            tail = '之后没有快照' if nx is None else f"下一个间隔（到 t={nx['t']}）余额是纯利息预测的 {100 * nx['ratio']:.0f}%、领土 {nx['terr']}、又发 {nx['cmds']} 条"
+            print(f"       t={g['t0']}~{g['t1']}（{g['t1'] - g['t0']} 拍）发了 {g['cmds']} 条（其中发船 {g['boats']} 条）；nb {g['nbMin']}~{g['nbMax']}；领土 {g['terr0']}→{g['terr1']}；余额 {fmt(g['bal0'])}→{fmt(g['bal1'])}；起点密度 {g['dens0']:.0f}；{tail}")
+
+
 THIN_DENS = 12            # 「薄」的密度上限
 THIN_MIN_LEN = 450        # 连续多少拍
 THIN_BIG = 2.0            # 领土 >= 在场我方号中位的几倍
@@ -1450,7 +1592,12 @@ def opening_rows(M):
     for me, b in sorted(M.bots.items()):
         ts = [o['t'] for o in b.opening]
         gaps = [y - x for x, y in zip(ts, ts[1:])]
-        out.append(dict(me=me, name=name_of(b), n=len(ts), t0=(ts[0] if ts else None), t1=(ts[-1] if ts else None), gaps=gaps))
+        # 没生效的开局周期：下一条 HL-OPENING 时领土没变、余额也没少（这条周期指令没有在本机局面里执行）
+        dead = [x['t'] for x, y in zip(b.opening, b.opening[1:]) if y['terr'] == x['terr'] and y['bal'] >= x['bal'] and x['t'] < 630]
+        first_grow = next((y['t'] for x, y in zip(b.opening, b.opening[1:]) if y['terr'] > x['terr']), None)
+        s630 = next((x for x in b.traj if x['t'] == 630), None)
+        out.append(dict(me=me, name=name_of(b), n=len(ts), t0=(ts[0] if ts else None), t1=(ts[-1] if ts else None), gaps=gaps,
+                        dead=dead, firstGrow=first_grow, terr630=(s630['terr'] if s630 else None)))
     return out
 
 
@@ -1462,6 +1609,13 @@ def sec_opening(M):
           f"同一个号相邻两条的间隔 {len(allg)} 个：中位 {_pctl(allg, 0.5)}、p10 {_pctl(allg, 0.1)}、p90 {_pctl(allg, 0.9)}")
     for r in rows:
         print(f"   {r['name']:14s} {r['n']:3d} 条 t={r['t0']}~{r['t1']} 间隔 {' '.join(str(g) for g in r['gaps'])}")
+    late = [r for r in rows if r['dead']]
+    ok = [r for r in rows if not r['dead'] and r['n']]
+    med = lambda v: (sorted(v)[len(v) // 2] if v else None)
+    print(f"   没生效的开局周期（t<630；下一条 HL-OPENING 时领土没变、余额没少）：{sum(len(r['dead']) for r in late)} 条、{len(late)} 个号；"
+          f"这些号 t=630 领土中位 {med([r['terr630'] for r in late if r['terr630'] is not None])}，其余 {len(ok)} 个号中位 {med([r['terr630'] for r in ok if r['terr630'] is not None])}")
+    for r in late:
+        print(f"      {r['name']:14s} 没生效的周期 t={'、'.join(str(t) for t in r['dead'])}；下一条 HL-OPENING 看到领土变大是 t={r['firstGrow']}；t=630 领土 {r['terr630']}")
 
 
 def peace_rows(M):
@@ -1572,7 +1726,9 @@ def issued_rows(M):
             rows.append((s['t'], s['cmds'], sum(1 for t in cm[me] if t <= s['t'])))
         s = snaps[-1]
         rep = sum(1 for t in cm[me] if t <= s['t'])
-        out.append(dict(me=me, name=name_of(b), t=s['t'], issued=s['cmds'], inReplay=rep, lastCmdT=max(cm[me]) if cm[me] else None, series=rows))
+        r = b.result or {}
+        out.append(dict(me=me, name=name_of(b), t=s['t'], issued=s['cmds'], inReplay=rep, lastCmdT=max(cm[me]) if cm[me] else None, series=rows,
+                        resSent=r.get('sent'), resAccepted=r.get('accepted')))
     return out
 
 
@@ -1587,6 +1743,23 @@ def sec_issued(M):
         print(f"   {r['name']:14s} 末快照 t={r['t']}：已发 {r['issued']} 条，录像里 {r['inReplay']} 条（差 {r['issued'] - r['inReplay']}）；录像里最后一条 t={r['lastCmdT']} ｜{ser}")
     ti = sum(r['issued'] for r in R)
     tr = sum(r['inReplay'] for r in R)
+    ne = {x['me']: x for x in noeffect_rows(M, t_to=M.sim['endT'])}
+    print("   对照（每个号）：号｜日志已发 − 录像里（没到的）｜noeffect 判成不见效的（只算 630<=t<=录像末拍 的其余指令）｜结算行 sent/accepted")
+    xs, ys = [], []
+    for r in R:
+        n = ne.get(r['me'])
+        miss = r['issued'] - r['inReplay']
+        nn = n['noeff'] if n else 0
+        xs.append(miss)
+        ys.append(nn)
+        print(f"      {r['name']:14s} 没到 {miss:4d}｜不见效 {nn:4d}｜sent/accepted {r['resSent']}/{r['resAccepted']}")
+    full = all(not b.traj or b.traj[-1]['t'] <= M.sim['endT'] for b in M.bots.values())
+    acc = [(r['resAccepted'], r['inReplay']) for r in R if r['resAccepted'] not in (None, '')]
+    if acc and full:
+        print(f"   结算行 accepted 合计 {sum(int(a) for a, _ in acc)} 条，对应这些号录像里只有 {sum(b for _, b in acc)} 条：accepted 是页面本地接口的返回值，不是服务器收到的条数")
+    elif acc:
+        print("   （录像没盖到终局，结算行 accepted 和录像条数不能直接比）")
+    print(f"   没到合计 {sum(xs)}，noeffect 判成不见效合计 {sum(ys)}（noeffect 只数 t>=630、连着 >=2 条且余额一点没少的间隔，是下界式判据）")
     print(f"合计：已发 {ti} 条，录像里 {tr} 条（{100 * tr / max(1, ti):.1f}%）")
 
 
@@ -1614,6 +1787,7 @@ def build_json(M):
     doc['crumb'] = crumb_rows(M)
     doc['boxboats'] = boxboat_rows(M)
     doc['harvest'] = harvest_rows(M)
+    doc['noeffect'] = noeffect_rows(M)
     doc['freezebound'] = [{k: v for k, v in r.items() if k != 'rows'} for r in freezebound_rows(M)]
     return doc
 
@@ -1673,6 +1847,8 @@ def main():
         sec_thinbig(M)
     elif sec == 'crumb':
         sec_crumb(M)
+    elif sec == 'noeffect':
+        sec_noeffect(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
     elif sec == 'harvest':
         sec_harvest(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
     elif sec == 'boxboats':

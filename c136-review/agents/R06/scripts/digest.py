@@ -17,6 +17,7 @@
     python3 digest.py <matchId> slots       # 日志 HL-SPAWN 的槽位与候选数：槽位是否互不相同、每次重算的候选点个数、走到兜底取点的行数
     python3 digest.py <matchId> boxed       # 被围（nb=0,neut=0）高密度滞留
     python3 digest.py <matchId> attacks [t0 t1]    # 我方各号被谁打 / 打了谁（录像）
+    python3 digest.py <matchId> cohort <t0> <t1> [...]  # 同一批号对比：t1 还有读数的号在 t0 / t1 的地和兵；t0 有读数、t1 没读数的号各自最后一条快照
     python3 digest.py <matchId> json        # 写 out/<matchId>/digest.json（复盘 JSON 的数字来源）
 """
 import json
@@ -128,6 +129,17 @@ def sec_roster(M):
     hows = Counter(p['how'] for p in pres.values())
     early = sorted((p['outT'], M.bots[me].name) for me, p in pres.items() if p['how'] == 'left')
     print(f"   去向统计：{dict(hows)}；离开时刻：{early}")
+    gone = [M.bots[me] for me, p in pres.items() if p['how'] in ('left', 'silent') and M.bots[me].traj]
+    if gone:
+        by_team = defaultdict(lambda: [0, 0, 0])
+        for b in gone:
+            x = by_team[b.team]
+            x[0] += 1
+            x[1] += b.traj[-1]['terr']
+            x[2] += b.traj[-1]['bal']
+        tl = sum(b.traj[-1]['terr'] for b in gone)
+        print(f"   离开/失联的 {len(gone)} 个号最后一条快照合计 {tl} 格（{100 * tl / M.land:.2f}%）、{sum(b.traj[-1]['bal'] for b in gone)} 兵；"
+              + '；'.join(f"队{k} {v[0]} 个 {v[1]} 格 {v[2]} 兵" for k, v in sorted(by_team.items(), key=lambda kv: str(kv[0]))))
 
 
 def team_table(M):
@@ -1012,6 +1024,52 @@ def sec_snap(M, ticks):
             print(f"   队{tm} 小计：{len(rs)} 个号 地 {L}（{100 * L / M.land:.2f}%） 兵 {B} 密度 {B / max(1, L):.1f}；有邻居（nb>=1）的 {sum(1 for r in rs if r['nb'] >= 1)} 个；吃光要花 ≈ {int(1.78 * B + 1.5 * L)}")
 
 
+def cohort_rows(M, t0, t1):
+    """同一批号对比：把「份额掉了」拆成「席位从日志里消失」和「还在的号真的丢了地」。"""
+    pres = presence(M)
+    stay, gone = [], []
+    for me in M.squad:
+        b = M.bots[me]
+        if not active_at(M, pres, me, t0):
+            continue
+        a = b.at(t0, max_age=200)
+        if not a:
+            continue
+        c = b.at(t1, max_age=200) if active_at(M, pres, me, t1) else None
+        r = b.result
+        if c and pres[me]['how'] == 'end' and t1 >= pres[me]['outT'] and r and r.get('territory') is not None and r.get('balance') is not None:
+            c = dict(c, terr=int(r['territory']), bal=int(r['balance']))     # 终局：用结算行（和 timeline 一致）
+        if c:
+            stay.append(dict(me=me, name=pname(M, me), team=b.team, terr0=a['terr'], bal0=a['bal'], terr1=c['terr'], bal1=c['bal']))
+        else:
+            last = b.traj[-1]
+            gone.append(dict(me=me, name=pname(M, me), team=b.team, terr0=a['terr'], bal0=a['bal'], how=pres[me]['how'], outT=pres[me]['outT'],
+                             lastT=last['t'], lastTerr=last['terr'], lastBal=last['bal']))
+    return dict(t0=t0, t1=t1, stay=stay, gone=gone)
+
+
+def sec_cohort(M, ticks):
+    print(f"== {M.id} cohort：同一批号对比（有读数 = 200 拍内有快照且没离开没阵亡）")
+    for t0, t1 in zip(ticks, ticks[1:]):
+        r = cohort_rows(M, t0, t1)
+        st, go = r['stay'], r['gone']
+        a0, a1 = sum(x['terr0'] for x in st), sum(x['terr1'] for x in st)
+        b0, b1 = sum(x['bal0'] for x in st), sum(x['bal1'] for x in st)
+        g0 = sum(x['terr0'] for x in go)
+        print(f"  t={t0}→{t1}：一直有读数的 {len(st)} 个号 地 {a0}→{a1}（{a1 - a0:+d}；{100 * a0 / M.land:.2f}%→{100 * a1 / M.land:.2f}%） 兵 {b0}→{b1}；"
+              f"中途没了读数的 {len(go)} 个号在 t={t0} 时共 {g0} 格（{100 * g0 / M.land:.2f}%）")
+        by = defaultdict(lambda: [0, 0, 0])
+        for x in st:
+            by[x['team']][0] += 1
+            by[x['team']][1] += x['terr0']
+            by[x['team']][2] += x['terr1']
+        print("     一直有读数的按队：" + '；'.join(f"队{k} {v[0]} 个号 {v[1]}→{v[2]}" for k, v in sorted(by.items(), key=lambda kv: str(kv[0]))))
+        up = sorted(st, key=lambda x: x['terr1'] - x['terr0'])
+        print("     涨跌最大的：" + '；'.join(f"{x['name']} {x['terr0']}→{x['terr1']}（{x['terr1'] - x['terr0']:+d}）" for x in (up[:3] + up[-3:] if len(up) > 6 else up)))
+        for x in go:
+            print(f"     没了读数：{x['name']}(队{x['team']}) {x['how']}@{x['outT']}；t={t0} 时 {x['terr0']} 格；最后一条快照 t={x['lastT']} {x['lastTerr']} 格 {x['lastBal']} 兵")
+
+
 def main():
     if len(sys.argv) < 3:
         print(__doc__)
@@ -1053,6 +1111,8 @@ def main():
         sec_lag(M)
     elif sec == 'teamwar':
         sec_teamwar(M, int(a[0]) if a else 900)
+    elif sec == 'cohort':
+        sec_cohort(M, [int(x) for x in a])
     elif sec == 'json':
         pres = presence(M)
         out = dict(matchId=mid, replaySrc=M.replaySrc, replayLast=M.replayLast, endTick=M.endTick, land=M.land, humans=M.humans,
