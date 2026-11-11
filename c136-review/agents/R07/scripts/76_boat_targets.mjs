@@ -12,7 +12,8 @@
 //   3) 同一个号按「发船顺序 = 靠岸顺序里带兵数相同的第一条」配对。
 //
 // 用法（必须套重计算闸；先跑过 65_shadow.mjs）：
-//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/76_boat_targets.mjs <matchId> [--reach t1,t2,…]
+//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/76_boat_targets.mjs <matchId> [--reach t1,t2,…] [--lag N]
+//   --lag：影子决策和真实发船配对的最大间隔（拍，默认 60）。指令晚到的局（A089：船晚 110~240 拍才发出去）要放宽，否则配不上。
 //   --reach：在这些拍上，从每个有海岸的我方号的岸出发沿水路广搜（和策略 searchWater 一样从 coast + border 起步，最远 2500 格），
 //            列出水路能到的岸各是谁的、最近多少格（C 段）。用来回答「当时有没有海路能到的敌岸」。
 // 输出：out/<matchId>/boat_targets.txt / boat_targets.json
@@ -61,6 +62,7 @@ for (const s of shadow) { if (!shByT.has(s.t)) shByT.set(s.t, []); shByT.get(s.t
 
 const argv = process.argv.slice(3);
 const reachTs = new Set((argv.includes('--reach') ? argv[argv.indexOf('--reach') + 1] : '').split(',').filter(Boolean).map(Number));
+const LAG = argv.includes('--lag') ? Math.max(1, Number(argv[argv.indexOf('--lag') + 1]) || 60) : 60;
 const reachOut = [];
 function reachScan(g) {
   const N = g.N, px = g.px, own = g.own, d4 = g.dir4;
@@ -116,7 +118,7 @@ proto.landAt = function (p, troops, c, at) {
   landings.push({ t: g.t, bot: botOf.get(p), p, troops, c, x: c % g.W, y: Math.floor(c / g.W), owner: tgt, ownerName: pname(g, tgt), mate, self: tgt === p,
     delivered: mate ? g.bal[tgt] - tb0 : tgt === p ? g.bal[p] - myB0 : 0, ownerTerr: tgt >= 0 && tgt < NEUTRAL ? g.terr[tgt] : 0, ownerBal: tb0, used: false });
 };
-// 「发船那一拍目标格的主人」：发船拍要等重演完才知道，所以给每个影子目标在决策拍之后 60 拍内逐拍留样，配对后再取
+// 「发船那一拍目标格的主人」：发船拍要等重演完才知道，所以给每个影子目标在决策拍之后 LAG 拍内逐拍留样，配对后再取
 const ownerHist = new Map(); // shadow idx -> Map(t -> owner)
 const origTick = proto.tick;
 proto.tick = function () {
@@ -125,7 +127,7 @@ proto.tick = function () {
   if (ss) for (const s of ss) { s.owner = ownerAt(g, s.c); s.ownerName = pname(g, s.owner); s.x = s.c % g.W; s.y = Math.floor(s.c / g.W); s.ownerTerr = s.owner >= 0 && s.owner < NEUTRAL ? g.terr[s.owner] : 0; s.ownerBal = s.owner >= 0 && s.owner < NEUTRAL ? g.bal[s.owner] : 0; }
   for (let i = 0; i < shadow.length; i++) {
     const s = shadow[i];
-    if (g.t >= s.t && g.t <= s.t + 60) { if (!ownerHist.has(i)) ownerHist.set(i, new Map()); ownerHist.get(i).set(g.t, ownerAt(g, s.c)); }
+    if (g.t >= s.t && g.t <= s.t + LAG) { if (!ownerHist.has(i)) ownerHist.set(i, new Map()); ownerHist.get(i).set(g.t, ownerAt(g, s.c)); }
   }
   origTick.call(this);
   if (reachTs.has(g.t) && !g.spawnPhase) { try { reachScan(g); } catch (e) { if (!reachScan.err) reachScan.err = String(e && e.message); } }
@@ -133,10 +135,10 @@ proto.tick = function () {
 
 await resim(mid, {});
 
-// 配对：影子决策 → 真实发船（同号、同 pct、发船拍在决策拍之后 60 拍内的第一条）
+// 配对：影子决策 → 真实发船（同号、同 pct、发船拍在决策拍之后 LAG 拍内的第一条）
 for (let i = 0; i < shadow.length; i++) {
   const s = shadow[i];
-  const l = launches.find((x) => x.bot === s.bot && x.sh === null && x.pct === s.pct && x.t > s.t && x.t - s.t <= 60);
+  const l = launches.find((x) => x.bot === s.bot && x.sh === null && x.pct === s.pct && x.t > s.t && x.t - s.t <= LAG);
   if (l) { l.sh = i; s.launch = l; }
 }
 // 真实发船 → 靠岸（同号、带兵数相同的第一条；没有就取同号下一条未用的）
