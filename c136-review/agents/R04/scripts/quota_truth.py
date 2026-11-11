@@ -67,9 +67,38 @@ def main():
         arr = tl.get(q, [])
         i = bisect.bisect_left(arr, (t, -1)) - 1
         return arr[i][1] if i >= 0 else 0
+    if '--whatif' in a:
+        # 假设在拍 t 给某个真人（引擎编号 q）捐 v 兵：按引擎的配额公式要多少点、当时还剩多少点、150×领土 还装得下多少
+        i = a.index('--whatif')
+        t, q, v = int(a[i + 1]), int(a[i + 2]), int(a[i + 3])
+        sq = M.state[M.at(t)].get(q)
+        if not sq or sq[0] <= 0:
+            print('拍 %d：%s 不在场' % (t, M.nm(q)))
+            return
+        room = max(0, min(150 * sq[0] - sq[1], 15 * 10 ** 8 - sq[1]))
+        cap = cap_at(t) if t < 4284 else None
+        used = used_at(q, t)
+        c = cost_of(t, min(v, room), land, sq[0])
+        print('%s 拍 %d：假设给 %s（领土 %d、余额 %s、密度 %.1f）捐 %s 兵' % (mid, t, M.nm(q), sq[0], fmt(sq[1]), sq[1] / max(1, sq[0]), fmt(v)))
+        print('  150×领土 还装得下 %s；能到账 %s' % (fmt(room), fmt(min(v, room))))
+        if cap is None:
+            print('  t ≥ 4284：配额已解除')
+        else:
+            print('  配额：上限 %d 点，已用 %d 点，这一笔要 %d 点（%s）→ %s'
+                  % (cap, used, c, 't ≥ 3213：4 + 到账兵 ÷ 收款人领土' if t >= 3213 else 't < 3213：2 + 100×到账兵 ÷（倍数×(1 + 陆地/300)）',
+                     '装得下' if used + c <= cap else '超出 %d 点' % (used + c - cap)))
+            if t >= 3213:
+                print('  按剩下的 %d 点最多还能收 %s 兵' % (cap - used, fmt(max(0, cap - used - 4) * sq[0])))
+        return
     path = os.path.join(here, 'out', 'ledger', mid + '.donations.tsv')
     rows = [r for r in csv.DictReader(open(path, encoding='utf8'), delimiter='\t') if r['t'] != '' and r['donor'] not in ('', 'None')]
     mine = [r for r in rows if r['kind'] != '(日志无此行)']
+    # 日志里可能有不在这份录像里的号（A015：同一支编队被分进两局，录像只有其中一局）；只算录像里有的号
+    in_replay = {M.nm(p) for p in M.ours}
+    off = [r for r in mine if r['bot'] not in in_replay]
+    mine = [r for r in mine if r['bot'] in in_replay]
+    if off:
+        print('（日志里另有 %d 次调度出自不在这份录像里的号 %s，没有计入）' % (len(off), '、'.join(sorted({r['bot'] for r in off}))))
     rej = [r for r in mine if r['accepted'] != 'True']
     bands = [(0, 2142, '<2142'), (2142, 3213, '2142~3212'), (3213, 4284, '3213~4283'), (4284, 10 ** 9, '≥4284')]
     out = collections.defaultdict(collections.Counter)

@@ -69,13 +69,16 @@ def main():
                     except (IndexError, ValueError):
                         arrived = None
                     res = '回到自己地上作废（%s）' % tail
-            rows.append(dict(t=c['t'], p=c['p'], pct=c['a'], bal0=c['bal0'], terr=c['terr0'], troops=troops, fee=fee, te=te, res=res, tgt=tgt, gain=gain, arrived=arrived))
+            dest = int(s[3]) if len(s) > 3 and s[3].lstrip('-').isdigit() else None
+            rows.append(dict(t=c['t'], p=c['p'], pct=c['a'], bal0=c['bal0'], terr=c['terr0'], troops=troops, fee=fee, te=te, res=res, tgt=tgt, gain=gain, arrived=arrived, dest=dest))
     tot = collections.Counter(); cnt = collections.Counter()
+    feeby = collections.Counter(); arrby = collections.Counter()
     tiny_n = tiny_fee = tiny_troops = 0
     for r in rows:
         k = '登陆打敌方/AI' if r['res'].startswith('登陆打') and r['tgt'] is not None and r['tgt'] < 512 else \
             '登陆无主地' if r['res'].startswith('登陆打') else r['res'].split(' ')[0].split('（')[0]
         cnt[k] += 1; tot[k] += r['troops']
+        feeby[k] += r['fee']; arrby[k] += (r['arrived'] or 0)
         tiny = r['fee'] > r['troops']
         if tiny:
             tiny_n += 1; tiny_fee += r['fee']; tiny_troops += r['troops']
@@ -90,7 +93,35 @@ def main():
     print('合计 %d 条船，载兵 %s，手续费 %s。结果：%s' % (
         n, fmt(sum(r['troops'] for r in rows)), fmt(sum(r['fee'] for r in rows)),
         '；'.join('%s %d 条 %s 兵' % (k, v, fmt(tot[k])) for k, v in cnt.most_common())))
+    print('按结果分的手续费和到岸兵：%s' % '；'.join('%s 手续费 %s、到岸 %s' % (k, fmt(feeby[k]), fmt(arrby[k])) for k, v in cnt.most_common()))
+    byp = collections.defaultdict(lambda: [0, 0, 0])
+    for r in rows:
+        byp[M.nm(r['p'])][0] += 1; byp[M.nm(r['p'])][1] += r['troops']; byp[M.nm(r['p'])][2] += r['fee']
+    print('按号（条数 / 载兵 / 手续费）：%s' % '；'.join('%s %d 条 / %s / %s' % (k, v[0], fmt(v[1]), fmt(v[2])) for k, v in sorted(byp.items(), key=lambda kv: -kv[1][1])))
     print('手续费比载兵多的船：%d 条，载兵合计 %s，手续费合计 %s' % (tiny_n, fmt(tiny_troops), fmt(tiny_fee)))
+    # 回到自己地上作废的船：多快回来；它瞄的终点此前是不是已经有我方的船登上去过（同一个终点像素）
+    home = [r for r in rows if r['res'].startswith('回到自己地上作废')]
+    if home:
+        quick = [r for r in home if r['te'] is not None and r['te'] - r['t'] <= 1]
+        landed_at = {}
+        for r in rows:
+            if r['res'].startswith('登陆打') and r['dest'] is not None and r['te'] is not None:
+                landed_at.setdefault(r['dest'], []).append(r['te'])
+        taken = [r for r in home if r['dest'] is not None and any(te <= r['t'] for te in landed_at.get(r['dest'], []))]
+        qt = [r for r in quick if r in taken]
+        print('回到自己地上作废的 %d 条里：发出去下一拍就回来的 %d 条（载兵 %s、手续费 %s）；终点像素此前已经有我方的船登陆过的 %d 条（载兵 %s、手续费 %s；其中下一拍就回来的 %d 条）' % (
+            len(home), len(quick), fmt(sum(r['troops'] for r in quick)), fmt(sum(r['fee'] for r in quick)),
+            len(taken), fmt(sum(r['troops'] for r in taken)), fmt(sum(r['fee'] for r in taken)), len(qt)))
+        hb = collections.defaultdict(lambda: [0, 0, 0])
+        for r in home:
+            hb[M.nm(r['p'])][0] += 1; hb[M.nm(r['p'])][1] += r['troops']; hb[M.nm(r['p'])][2] += r['fee']
+        print('  按号（条数 / 载兵 / 手续费）：%s' % '；'.join('%s %d 条 / %s / %s' % (k, v[0], fmt(v[1]), fmt(v[2])) for k, v in sorted(hb.items(), key=lambda kv: -kv[1][0])))
+    ai = collections.defaultdict(lambda: [0, 0, 0])
+    for r in rows:
+        if r['res'].startswith('登陆打') and r['tgt'] is not None and r['tgt'] < 512:
+            ai[M.nm(r['p'])][0] += 1; ai[M.nm(r['p'])][1] += (r['arrived'] or 0); ai[M.nm(r['p'])][2] += r['fee']
+    if ai:
+        print('登陆打敌方/AI 的船按号（条数 / 到岸兵 / 手续费）：%s' % '；'.join('%s %d 条 / %s / %s' % (k, v[0], fmt(v[1]), fmt(v[2])) for k, v in sorted(ai.items(), key=lambda kv: -kv[1][1])))
     done = [r for r in rows if r['arrived'] is not None]
     if done:
         ld = sum(r['troops'] for r in done); ar = sum(r['arrived'] for r in done)
