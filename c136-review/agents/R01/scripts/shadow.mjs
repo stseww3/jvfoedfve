@@ -575,7 +575,7 @@ if (IS_MAIN) {
   }
   const flags = sh.flatMap((x) => x.flags).sort((a, b) => a.t - b.t);
   fs.writeFileSync(path.join(dir, `shadow_flags${suffix}.csv`), 't,bot,ev,target,targetName,troops,bal,noFull,shadowQuota,note\n' +
-    flags.map((f) => [f.t, f.bot, f.ev, f.target, f.target >= 0 ? JSON.stringify(m.names[f.target] ?? (f.target === 512 ? 'NEUTRAL' : '')) : '', f.troops, f.bal, f.noFull, f.shadowQuota, JSON.stringify(f.note)].join(',')).join('\n') + '\n');
+    flags.map((f) => [f.t, f.bot, f.ev, f.target, f.target >= 0 ? JSON.stringify(m.label(f.target)) : '', f.troops, f.bal, f.noFull, f.shadowQuota, JSON.stringify(f.note)].join(',')).join('\n') + '\n');
   for (const x of sh) {
     const nf = x.flags.find((f) => f.ev === 'isNoFullSend');
     const held = x.flags.filter((f) => f.ev === 'sendHeld');

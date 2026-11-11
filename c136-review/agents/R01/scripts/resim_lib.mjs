@@ -131,13 +131,31 @@ export function readLogSnaps(bundleId, label = '', only = null) {
   return { me, rows };
 }
 
+// sim 镜像的 maps/ 里没有这张图时（A005 的 5_9294），用 map_from_engine.cjs 从真引擎取出来的那份：
+// out/<录像所在局号>/map_<图号>_<种子>.bin，TMAP 格式与镜像相同（解析照抄 sim/map.js 的 loadMap）。
+const MOUNTAIN_MAPS = new Set([3, 7, 9, 21, 25]);
+function loadMapOrLocal(mid, index, seed) {
+  try { return loadMap(index, seed); } catch (e) {
+    const file = new URL(`../out/${mid}/map_${index}_${seed}.bin`, import.meta.url);
+    if (!fs.existsSync(file)) throw e;
+    const buf = fs.readFileSync(file);
+    if (buf.toString('latin1', 0, 4) !== 'TMAP') throw new Error(`bad map file ${file}`);
+    const w = buf.readUInt16LE(4), h = buf.readUInt16LE(6), n = w * h;
+    const type = new Uint8Array(buf.buffer, buf.byteOffset + 8, n).slice();
+    const id = new Uint16Array(n);
+    let land = 0;
+    for (let p = 0; p < n; p++) { id[p] = buf.readUInt16LE(8 + n + 2 * p); if (type[p] === T_LAND) land++; }
+    return { index, seed, w, h, type, id, land, mountains: MOUNTAIN_MAPS.has(index) };
+  }
+}
+
 export function openMatch(mid, { replay = mid, rngFix = true } = {}) {
   const d = decodeReplay(fs.readFileSync(`${BUNDLES}/${replay}/replay.txt`, 'utf8'));
   const vu = d.vu, H = vu.humanCount;
   const names = Array.from(vu.playerNamesData.data ?? vu.playerNamesData);
   const tm = vu.gameMode === 1 ? assignTeams(vu) : null;
   const { mapIdx, mapSeed } = mapOf(vu);
-  const map = loadMap(mapIdx, mapSeed);
+  const map = loadMapOrLocal(replay, mapIdx, mapSeed);
   const colors = vu.colorsData ? Array.from((vu.colorsData.data ?? vu.colorsData).subarray(0, H)) : [0];
   TEAM_RNG_FIX = !!tm && rngFix;
   const g = new Game({
