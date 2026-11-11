@@ -139,6 +139,48 @@
   Barbary      | 从未置位
   Viking       | 从未置位
 
+[SH] 口粮门槛普查（影子按真值每 10 拍一次；t<1500 打内置 AI 的可用兵 = 余额 − max(winFloor 价位底, dpKeep, sb)，c110 L2270-2276 / L4542-4550 / L2532-2541）
+  窗口 | 号·点 | 接壤 AI 的 | 其中至少一个 AI 过门槛 | 全被挡 | 最便宜那个被挡的原因分布
+  300~630 | 616 | 525 | 66 | 459 | botOk(winWorth):362 minShare(floor:winPrice):73 floor:sb:13 minShare(floor:sb):10 need<=0:1
+  630~900 | 434 | 381 | 188 | 193 | floor:sb:76 minShare(floor:sb):65 botOk(winWorth):38 minShare(floor:winPrice):12 need<=0:2
+  900~1260 | 541 | 329 | 192 | 137 | minShare(floor:sb):61 floor:sb:56 minShare(floor:dpKeep):8 need<=0:6 botOk(winWorth):3 floor:dpKeep:3
+  1260~1500 | 341 | 80 | 13 | 67 | floor:sb:32 floor:dpKeep:27 minShare(floor:sb):8
+  1500~1800 | 375 | 9 | 3 | 6 | floor:winPrice:6
+  sb 挡住（全被挡且最便宜那个的原因含 floor:sb）时，sb 由谁的余额定出：窗口 | 号·点 | 本编队同队 / 本编队异队 / 另一支受控编队 / 同队真人 / 敌队真人 / 内置 AI | 其中互锁（对方同一点也被我定的 sb 挡住）| 被挡 AI 的兵为 0 的 | 吃光它所需 ≤ 自己余额 10% 的
+  300~630 | 23 | 7 / 12 / 0 / 0 / 4 / 0 | 4 | 1 | 10
+  630~900 | 141 | 41 / 30 / 0 / 28 / 42 / 0 | 44 | 35 | 100
+  900~1260 | 117 | 31 / 29 / 0 / 11 / 46 / 0 | 30 | 82 | 114
+  1260~1500 | 40 | 0 / 0 / 0 / 0 / 40 / 0 | 0 | 35 | 40
+  1500~1800 | 0 | 0 / 0 / 0 / 0 / 0 / 0 | 0 | 0 | 0
+  逐号（t<1500 全被 sb 挡住的点数 ≥10 的）：号 | 点数 | 首末拍 | 定 sb 的邻居（次数）| 中位：自己余额 / sb / 被挡 AI 的格数·兵·吃光所需
+  Itachi       | 50 | 350~1110 | Yoshi*~T3[squadSameTeam]×40 Trajan*T1[squadOtherTeam]×10 | 21433 / 23213 / 280·0·407
+  Yoshi        | 35 | 350~1040 | Itachi*T3[squadSameTeam]×30 Trajan*T1[squadOtherTeam]×3 [APL] River_zz~T1[enemy]×2 | 22555 / 20554 / 280·0·424
+  Trajan       | 34 | 710~1080 | Itachi*T3[squadOtherTeam]×26 Yoshi*~T3[squadOtherTeam]×6 Zenobia*T1[squadSameTeam]×1 [APL] River_zz~T1[teammate]×1 | 30156 / 29674 / 294·0·442
+  Jordan       | 25 | 560~1250 | Timurid*~T3[squadOtherTeam]×15 122~T2[enemy]×10 | 14589 / 37913 / 668·16·882
+  ProGamer99   | 24 | 810~1490 | ★[OG]Čh!łł çōř~T1[enemy]×24 | 46425 / 116386 / 375·0·476
+  Kokand       | 19 | 580~1140 | Player 384T1[enemy]×9 Player 879~T1[enemy]×7 paimon [vamp]T3[enemy]×3 | 54483 / 60958 / 382·0·574
+  Timurid      | 19 | 780~1020 | [FLR] さっしー~T3[teammate]×19 | 24172 / 21499 / 706·21·1088
+  deRuyter     | 18 | 720~1410 | [OFF] Art raffT1[teammate]×9 [titan] zimT3[enemy]×9 | 104525 / 82912 / 211·29·316
+  Celtic       | 17 | 510~850 | Kneel before 🇵T3[enemy]×17 | 8750 / 15486 / 553·16·857
+  Spiderman    | 17 | 520~1440 | Hacker[OFF]T1[enemy]×8 Player 879~T1[enemy]×5 Bongcloud*T1[squadOtherTeam]×4 | 54607 / 105804 / 308·0·386
+  Zhuge Liang  | 16 | 700~1030 | hearts/wire[OFT1[enemy]×16 | 29246 / 35040 / 655·28·1032
+
+[SI] 同一次 act 里的多条指令：影子一次 act 只发 1 条的 / 发多条时的第 1 条 / 第 2 条及以后，各有多少在录像里配上了
+  单条 529/941（56%） | 多条的第 1 条 11/12（92%） | 多条的第 2 条及以后 1/12（8%）
+  逐次（决策拍 | 号 | 各条：类型 pct 目标 本意兵力 录像里有没有）；按第 2 条及以后的本意兵力排序前 25 次
+  600 | Murat | 攻 183 →空地 1667 有 ; 攻 236 →AI309# 2147 无
+  610 | Viking | 攻 460 →空地 4441 有 ; 攻 216 →AI252# 2091 无
+  710 | ProGamer99 | 攻 481 →空地 4702 有 ; 攻 94 →AI131# 927 无
+  800 | Jordan | 攻 251 →空地 1094 无 ; 攻 210 →AI226# 916 无
+  315 | Jordan | 攻 449 →空地 658 有 ; 攻 500 →AI481# 732 无
+  545 | deRuyter | 攻 482 →空地 2457 有 ; 攻 124 →AI192# 636 无
+  460 | deRuyter | 攻 380 →空地 1335 有 ; 攻 172 →AI192# 606 无
+  550 | Trajan | 攻 454 →空地 2317 有 ; 攻 111 →AI301# 570 无
+  540 | Kokand | 攻 474 →空地 2451 有 ; 攻 93 →AI231# 485 无
+  450 | Barbary | 攻 460 →空地 1627 有 ; 攻 129 →AI307# 459 无
+  440 | Itachi | 攻 458 →空地 1351 有 ; 攻 107 →AI114# 318 无
+  545 | Zenobia | 攻 486 →空地 2630 有 ; 攻 47 →AI238# 259 有
+
 [SF] 全队时延曲线：按执行拍每 180 拍一窗，配上影子的已执行指令的时延 中位 / P90 / 最大，及其中落地时已无效（生效=0）的陆攻占比
       0~  179 | 指令  23 | 时延 中位 12 / P90 14 / 最大 21 | 陆攻 23 条，其中无效 0（0%）
     180~  359 | 指令  41 | 时延 中位 12 / P90 26 / 最大 182 | 陆攻 41 条，其中无效 0（0%）

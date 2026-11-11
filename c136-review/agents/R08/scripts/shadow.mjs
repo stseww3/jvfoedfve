@@ -25,6 +25,7 @@ const DATA = process.env.C136_DATA || '/agent/repos/c136-data';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, '..', 'out');
 const NEUTRAL = 512;
+const T_LAND = 1, P_INNER = 16;   // sim/map.js L11、sim/game.js L11
 
 function ensureStrategy(name) {
   const runDir = path.join(OUT, '_run');
@@ -49,6 +50,7 @@ const { resim } = await import(path.join(HERE, 'resim_r08.mjs'));
 const wantBots = opt('bots', 'all');
 const side = opt('side', 'own');          // own：本编队；peer：同房另一支编队（策略用 --strategy 指定）
 const censusUntil = +opt('census-until', 1800);
+const censusEvery = +opt('census-every', 10);
 const guardTicks = +opt('guard', 8);     // 模拟驱动层 inflight 节流：某拍发过指令后，接下来 guardTicks 拍内不调用策略（0=不模拟）
 const traceSpec = {};
 for (const part of String(opt('trace', '')).split(';').filter(Boolean)) {
@@ -57,6 +59,7 @@ for (const part of String(opt('trace', '')).split(';').filter(Boolean)) {
 }
 const fresh = args.includes('--fresh');
 const bots = [];
+const ownIds = new Set(), peerIds = new Set();
 let names = null;
 const traces = [];
 
@@ -88,6 +91,46 @@ function patch(g, b) {
 }
 function unpatch(g) { for (const k of CMD_KEYS) delete g[k]; }
 
+// safeFinite（防人机留底 sb）是谁定的：逐个接壤的内置 AI 重做一遍 threatOf（c110 L464-490），取出「该 AI 除我之外最弱的邻居」。
+// sb = max over 接壤 AI ( 该邻居的余额 + 它压在这个 AI 上的兵 − 我压在这个 AI 上的兵 )；返回定出 sb 的那个 AI 与那个邻居。
+function sbSource(g, pol) {
+  const me = pol.me, px = g.px, own = g.own, d = g.dir4;
+  let best = null;
+  for (const q of pol.nb) {
+    if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+    const B = g.border[q];
+    const busyNeutral = g.hasAttack(q, NEUTRAL);
+    let minOther = Infinity, who = -1, neutral = false;
+    const seen = new Set();
+    const n = B.length, step = n > 1024 ? Math.ceil(n / 1024) : 1;
+    outer: for (let i = n - 1; i >= 0; i -= step) {
+      const b0 = B[i];
+      for (let k = 0; k < 4; k++) {
+        const c = b0 + d[k], v = px[c];
+        if (v === T_LAND) { if (!busyNeutral) { neutral = true; break outer; } continue; }
+        if (v < P_INNER) continue;
+        const o = own[c];
+        if (o === q || o === me || seen.has(o)) continue;
+        seen.add(o);
+        if (g.hasAttack(q, o)) continue;
+        const sv = g.bal[o] + g.attackTroopsOn(o, q);
+        if (sv < minOther) { minOther = sv; who = o; }
+      }
+    }
+    if (neutral || !Number.isFinite(minOther)) continue;
+    const v = minOther - g.attackTroopsOn(me, q);
+    if (!best || v > best.v) best = { v: Math.round(v), ai: q, who, whoBal: g.bal[who], whoTerr: g.terr[who] };
+  }
+  return best;
+}
+function whoCat(g, me, o) {
+  if (o < 0) return 'none';
+  if (o >= g.humans) return 'ai';
+  if (ownIds.has(o)) return g.teams[o] === g.teams[me] ? 'squadSameTeam' : 'squadOtherTeam';
+  if (peerIds.has(o)) return g.teams[o] === g.teams[me] ? 'peerSameTeam' : 'peerOtherTeam';
+  return g.teams[o] === g.teams[me] ? 'teammate' : 'enemy';
+}
+
 // 口粮门槛普查：对「接壤的内置 AI」逐个按 pickTarget 的顺序过一遍门槛，记下最便宜那个 AI 被哪一关挡住。
 function census(g, b) {
   const pol = b.pol, me = b.id, P = pol.p;
@@ -95,11 +138,11 @@ function census(g, b) {
     pol.analyze(g);
     const fl = pol.floors(g);
     const bal = g.bal[me], min = pol.minCmd(g);
-    let best = null;
+    let best = null, anyOk = 0, nAi = 0;
     for (const q of pol.nb) {
       if (g.alive[q] === 0 || g.terr[q] === 0 || pol.person(g, q)) continue;
       const price = pol.price(g, q);
-      if (best && price >= best.price) continue;
+      nAi++;
       let why = 'ok';
       const allow = pol.allow(g, q);
       const need = pol.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q);
@@ -116,9 +159,13 @@ function census(g, b) {
         why = avail <= 0 ? `floor:${tag}` : `minShare(floor:${tag})`;
       } else if (need <= 0) why = 'need<=0';
       else if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) why = 'slots';
+      if (why === 'ok') anyOk++;
+      if (best && price >= best.price) continue;
       best = { q, price: +price.toFixed(1), terr: g.terr[q], aiBal: g.bal[q], need: Math.round(need), floor: Math.round(floor), avail: Math.round(avail), why };
     }
-    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI']);
+    let src = null;
+    if (best && /floor:sb/.test(best.why)) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
+    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI', src, nAi, anyOk]);
   } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census ' + String(e).slice(0, 200)]); }
 }
 
@@ -188,6 +235,7 @@ const out = resim(mid, {
     names = ctx.names;
     g.online = true;
     g.names = ctx.names;
+    for (const s of Object.values(ctx.squad)) if (s.id >= 0) ((side === 'peer') !== !!s.peer ? peerIds : ownIds).add(s.id);
     for (const [name, s] of Object.entries(ctx.squad)) {
       if (s.id < 0 || (side === 'peer') !== !!s.peer) continue;
       if (wantBots !== 'all' && !wantBots.split(',').includes(name)) continue;
@@ -232,7 +280,7 @@ const out = resim(mid, {
       const f = `${b.pol.isNoFullSend ? 1 : 0}`;
       if (f !== b.lastFlag) { b.flags.push([g.t, b.pol.isNoFullSend ? 1 : 0, Math.round(b.pol.shadowQuota ?? 0)]); b.lastFlag = f; }
       if (traceSpec[b.name]?.has(g.t)) traceOne(g, b);
-      if (g.t % 30 === 0 && g.t >= 450 && g.t <= censusUntil) census(g, b);
+      if (g.t % censusEvery === 0 && g.t >= 300 && g.t <= censusUntil) census(g, b);
       unpatch(g);
     }
     globalThis.window = undefined;

@@ -65,6 +65,110 @@ def match_bot(T, name, sb):
     return real, sh, used, pairs
 
 
+def sec_SH(S, T, w):
+    """[SH] 口粮门槛普查：影子在真值上每隔几拍把「接壤的内置 AI」按 pickTarget 的顺序过一遍门槛（不落后的客户端此刻的代码口径）。
+    重点数：没有任何 AI 过得了门槛、且最便宜那个被防人机留底 sb（safeFinite）挡住的号·点；sb 由谁的余额定出；两个号互相定对方 sb 的互锁。"""
+    WIN = [(300, 630), (630, 900), (900, 1260), (1260, 1500), (1500, 1800)]
+    rows = {}
+    for name, sb in S["bots"].items():
+        for c in sb.get("census", []):
+            if len(c) < 14:
+                return
+            rows[(sb["id"], c[0])] = (name, c)
+    if not rows:
+        return
+    every = sorted({t for (_, t) in rows})
+    step = every[1] - every[0] if len(every) > 1 else 0
+    w("")
+    w(f"[SH] 口粮门槛普查（影子按真值每 {step} 拍一次；t<1500 打内置 AI 的可用兵 = 余额 − max(winFloor 价位底, dpKeep, sb)，c110 L2270-2276 / L4542-4550 / L2532-2541）")
+    w("  窗口 | 号·点 | 接壤 AI 的 | 其中至少一个 AI 过门槛 | 全被挡 | 最便宜那个被挡的原因分布")
+    tot_lock = defaultdict(int)
+    for a, b in WIN:
+        n = nai = ok = 0
+        why = defaultdict(int)
+        for (p, t), (name, c) in rows.items():
+            if not (a <= t < b):
+                continue
+            n += 1
+            if c[10] == "noAI":
+                continue
+            nai += 1
+            if c[13] > 0:
+                ok += 1
+                continue
+            why[c[10]] += 1
+        ws = " ".join(f"{k}:{v}" for k, v in sorted(why.items(), key=lambda kv: -kv[1]))
+        w(f"  {a}~{b} | {n} | {nai} | {ok} | {nai - ok} | {ws}")
+    w("  sb 挡住（全被挡且最便宜那个的原因含 floor:sb）时，sb 由谁的余额定出：窗口 | 号·点 | 本编队同队 / 本编队异队 / 另一支受控编队 / 同队真人 / 敌队真人 / 内置 AI | 其中互锁（对方同一点也被我定的 sb 挡住）| 被挡 AI 的兵为 0 的 | 吃光它所需 ≤ 自己余额 10% 的")
+    for a, b in WIN:
+        n = 0
+        cat = defaultdict(int)
+        mutual = zero = cheap = 0
+        for (p, t), (name, c) in rows.items():
+            if not (a <= t < b) or c[10] == "noAI" or c[13] > 0 or "floor:sb" not in c[10] or not c[11]:
+                continue
+            n += 1
+            src = c[11]
+            cat[src[2]] += 1
+            o = rows.get((src[1], t))
+            if o and o[1][10] != "noAI" and o[1][13] == 0 and "floor:sb" in o[1][10] and o[1][11] and o[1][11][1] == p:
+                mutual += 1
+            if c[7] == 0:
+                zero += 1
+            if c[8] <= 0.10 * c[1]:
+                cheap += 1
+        if n:
+            tot_lock[(a, b)] = n
+        w(f"  {a}~{b} | {n} | {cat['squadSameTeam']} / {cat['squadOtherTeam']} / {cat['peerSameTeam'] + cat['peerOtherTeam']} / {cat['teammate']} / {cat['enemy']} / {cat['ai']} | {mutual} | {zero} | {cheap}")
+    w("  逐号（t<1500 全被 sb 挡住的点数 ≥10 的）：号 | 点数 | 首末拍 | 定 sb 的邻居（次数）| 中位：自己余额 / sb / 被挡 AI 的格数·兵·吃光所需")
+    per = defaultdict(list)
+    for (p, t), (name, c) in rows.items():
+        if t < 1500 and c[10] != "noAI" and c[13] == 0 and "floor:sb" in c[10] and c[11]:
+            per[name].append(c)
+    for name, cs in sorted(per.items(), key=lambda kv: -len(kv[1])):
+        if len(cs) < 10:
+            continue
+        who = defaultdict(int)
+        for c in cs:
+            o = c[11][1]
+            who[f"{T.nm(o)}[{c[11][2]}]"] += 1
+        med = lambda xs: sorted(xs)[len(xs) // 2]
+        ws = " ".join(f"{k}×{v}" for k, v in sorted(who.items(), key=lambda kv: -kv[1])[:4])
+        w(f"  {name:12s} | {len(cs)} | {min(c[0] for c in cs)}~{max(c[0] for c in cs)} | {ws} | {med([c[1] for c in cs])} / {med([c[11][5] for c in cs])} / {med([c[6] for c in cs])}·{med([c[7] for c in cs])}·{med([c[8] for c in cs])}")
+
+
+def sec_SI(S, T, w, allpairs):
+    """[SI] 同一次 act 里发出多条指令时，第 1 条与第 2 条及以后各有多少进了录像（验证「适配层每次 act 只受理 1 条」）。"""
+    KN = {1: "攻", 2: "捐", 3: "船"}
+    stat = defaultdict(lambda: [0, 0])
+    ex = []
+    for name, (real, sh, used, pairs) in allpairs.items():
+        by = defaultdict(list)
+        for i, c in enumerate(sh):
+            by[c[0]].append(i)
+        for t, idx in sorted(by.items()):
+            if len(idx) < 2:
+                stat["single"][0] += 1
+                stat["single"][1] += 1 if used[idx[0]] else 0
+                continue
+            for k, i in enumerate(idx):
+                key = "first" if k == 0 else "later"
+                stat[key][0] += 1
+                stat[key][1] += 1 if used[i] else 0
+            ex.append((t, name, [(KN[sh[i][1]], sh[i][2], (T.nm(sh[i][3]) if sh[i][1] != 3 and sh[i][3] < NEUTRAL else "空地" if sh[i][1] != 3 else "-"),
+                                  round(sh[i][6] * (sh[i][2] + 1) / 1024) if len(sh[i]) > 6 else None, used[i]) for i in idx]))
+    if not stat["first"][0]:
+        return
+    pc = lambda v: f"{v[1]}/{v[0]}（{round(100 * v[1] / max(1, v[0]))}%）"
+    w("")
+    w("[SI] 同一次 act 里的多条指令：影子一次 act 只发 1 条的 / 发多条时的第 1 条 / 第 2 条及以后，各有多少在录像里配上了")
+    w(f"  单条 {pc(stat['single'])} | 多条的第 1 条 {pc(stat['first'])} | 多条的第 2 条及以后 {pc(stat['later'])}")
+    w("  逐次（决策拍 | 号 | 各条：类型 pct 目标 本意兵力 录像里有没有）；按第 2 条及以后的本意兵力排序前 25 次")
+    ex.sort(key=lambda e: -max((x[3] or 0) for x in e[2][1:]))
+    for t, name, lst in ex[:25]:
+        w(f"  {t} | {name} | " + " ; ".join(f"{k} {pct} →{tg} {tr} {'有' if u else '无'}" for (k, pct, tg, tr, u) in lst))
+
+
 def main():
     args = sys.argv[1:]
     mid = args[0]
@@ -189,6 +293,10 @@ def main():
             ex = [c for c in T.R["cmdLog"] if c[1] == p and c[2] in (1, 2, 3) and t0 <= c[0] <= lk["t"]]
             exs = " ".join(f"{c[0]}:{'攻' if c[2] == 1 else '捐' if c[2] == 2 else '船'}:{c[6]}" for c in ex) or "无"
             w(f"  {name:12s} | {lk['t']} | {round(pc.get('want', 0))} | {lk.get('actualSent')} | {exs} | {lk.get('incoming')}")
+
+    # 口粮门槛普查
+    sec_SH(S, T, w)
+    sec_SI(S, T, w, allpairs)
 
     # 全队时延曲线
     w("")

@@ -136,9 +136,10 @@ CATALOG = [
          definition="引擎落点 ≠ 日志里该号最后一条 [HL-SPAWN] 的点；记号数 / 总号数、人均指派条数、『最后一条指派相同』的号对数",
          detect="scripts/spawncheck.py [PC]"),
     # ---- 经济 ----
-    dict(id="NEW-EC-05", prefix="EC", name="贴着白给的人机不出手：防人机留底 × 最小出手比例",
-         definition="t<1500 的影子普查（每 30 拍）里，该号最便宜的人机邻居每格 ≤3 兵、吃光所需 ≤5% 余额，原因栏却是 floor:sb 或 minShare(floor:sb)，连续 ≥3 条（≥60 拍）",
-         detect="scripts/shadow.mjs census + --trace"),
+    dict(id="NEW-EC-05", prefix="EC", name="贴着白给的人机不出手：防人机留底 sb 取了邻居（常是编队友）的余额，互锁",
+         definition="t<1500 的影子普查（按真值每 10 拍）里，该号接壤的内置 AI 没有一个过得了门槛，且最便宜那个的原因是 floor:sb 或 minShare(floor:sb)（可用兵 = 余额 − safeFinite ≤ 最小出手比例×余额）；"
+                    "按 sb 的来源分账（本编队同队 / 异队、另一支受控编队、同队真人、敌队真人），并数互锁（对方同一点也被我定的 sb 挡住）与「吃光该人机所需 ≤10% 余额」的点数。每局记号·点数（×10 拍）",
+         detect="scripts/shadow.mjs census（sbSource）+ shadowcmp.py [SH]"),
     dict(id="NEW-EC-06", prefix="EC", name="人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
          definition="真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
          detect="scripts/harvest.py"),
