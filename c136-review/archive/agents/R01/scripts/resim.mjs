@@ -34,10 +34,12 @@ const { g, H, tm, names } = m;
 // 观测点
 const onlyBots = opt('bots', '') ? new Set(opt('bots', '').split(',')) : null; // --bots a,b：只认这些号（见 readLogSnaps）
 const squad = {}; // label -> p
+const logAlias = {}; // 轮换后的名字 -> p（写进 resim_meta.json 的 alias，给 Python 脚本用）
 const snaps = new Map();
 for (const lb of opt('log', mid).split(',')) {
-  const { me, rows } = readLogSnaps(lb, lb === mid ? '' : lb + ':', onlyBots);
+  const { me, rows, alias } = readLogSnaps(lb, lb === mid ? '' : lb + ':', onlyBots);
   for (const [b, p] of Object.entries(me)) squad[(lb === mid ? '' : lb + ':') + b] = p;
+  for (const [nw, orig] of Object.entries(alias || {})) if (me[orig] !== undefined) logAlias[(lb === mid ? '' : lb + ':') + nw] = me[orig];
   for (const r of rows) { if (!snaps.has(r.t)) snaps.set(r.t, []); snaps.get(r.t).push(r); }
 }
 const sqIds = new Set(Object.values(squad));
@@ -131,7 +133,7 @@ const meta = { matchId: mid, replayOf: rmid, map: m.map, W: g.W, Hh: g.H, land: 
   nTeams: tm ? tm.nTeams : 0, teamCounts: tm ? tm.counts : null, botTeams: tm ? tm.botTeams : null, lastTick: g.t, over: g.over, winnerTeam: g.winnerTeam,
   checkOk: okN, checkBad: badN, firstBad, firstBadTick: firstBadAll, applied: m.applied, rejected: m.rejected, ms,
   teams: tm ? Object.fromEntries(Array.from({ length: H }, (_, p) => [p, tm.fX[p]])) : null,
-  names: names.slice(0, H), squad, spawn: m.spawn };
+  names: names.slice(0, H), squad, alias: logAlias, spawn: m.spawn };
 fs.writeFileSync(path.join(OUT, 'resim_meta.json'), JSON.stringify(meta));
 console.log(`${mid}: map ${m.map} ${g.W}x${g.H} land=${g.land} humans=${H} nTeams=${meta.nTeams} counts=${JSON.stringify(meta.teamCounts)} lastTick=${g.t} over=${g.over} winner=${g.winnerTeam} ${ms}ms`);
 console.log(`  log check: ok=${okN} bad=${badN} firstBad=${JSON.stringify(firstBad)}`);

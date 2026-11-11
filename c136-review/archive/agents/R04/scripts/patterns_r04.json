@@ -255,7 +255,7 @@
   "prefix": "SP",
   "name": "选点指令没有落地，出生点是引擎随机给的",
   "definition": "录像出生阶段里这个号的选点指令（id=0）条数为 0，而日志里有 [HL-SPAWN] / [HL-SPAWN-BACKEND] 选点记录。计数 = 这样的号数。",
-  "detector": "tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
+  "detector": "scripts/spawn_first_cmd.py [局号…] [--list]（日志里想要的点 vs 录像里落地的出生指令，逐号对）；tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
   "codePath": "Policy.chooseSpawn L3983~4129；引擎 qi.i0（只查阶段、存活、格子可用）；出生阶段步数 a7a（真人 ≤2 时 30 步，约 11.8 秒）"
  },
  "NEW-IO-STACK9": {
@@ -361,7 +361,7 @@
   "name": "同一支编队被分进两局同图、几乎同时开的对局：每局只有一部分号，协调器却按全体同场求解",
   "definition": "对局包 results.csv 里各号的开局时刻（结果行的 at − seconds）分成 ≥2 组、组间相差 ≥5 秒；录像里只有其中一组的号，另一组的 meId 在录像里是别的真人（编号相撞）；[HL-SPAWN] 的本地 squad=N 小于编队人数。计数 = 每组的号数、组间相差的秒数、不在录像里的号数。这种局的对局卡把两局的数加在一起（drop30Count、totalTransfers、peakSquadLandShare）或取自另一局（peakPrimaryTeamShareSeen），不能当成录像这一局的数。不在录像里的号只有日志（traj.csv、events.csv、结果行），关于它们的结论一律标 inferred。",
   "detector": "scripts/logonly_bots.py <局号>（按开局时刻分组、meId、本地 squad=N、是否在录像里；不在录像里的号的快照、平台段、余额骤降、结果行里的队伍领土合计）；tmp/truth/<局号>/meta.json 的 ours（录像里的我方号）；对局包 in_game.log 的 [BACKEND-SPAWN-COORD] Solved N bots",
-  "codePath": "分房发生在策略代码之外（上线适配层 / 匹配，不在对局包里）。策略侧与此有关的三处：后端协调器一次给全体号解一个扇形阵（[BACKEND-SPAWN-COORD] Solved 10 bots；spawn-coordinator-c116-va.mjs TeamSpawnCoordinator.solve L790，L797~800 把全体号的 meId 都记成编队号，L818~820 遇到这些编号的真人直接跳过）；Policy.chooseSpawn L3983（L3987~3992 的 squadIds 只数本局里名字对得上的号，L3994 squadCount = max(10, …)）；Policy.tryDonateToTeammate L4411~4412（候选只有本局里的编队号）。Vb / Vc 的行号在 L4298 以后各加 1。"
+  "codePath": "分房发生在策略代码之外（上线适配层 / 匹配，不在对局包里）。策略侧与此有关的三处：后端协调器一次给全体号解一个扇形阵（[BACKEND-SPAWN-COORD] Solved 10 bots；spawn-coordinator-c116-va.mjs TeamSpawnCoordinator.solve L790，L797~800 把全体号的 meId 都记成编队号，L818~820 遇到这些编号的真人直接跳过）；Policy.chooseSpawn L3983（L3987~3992 的 squadIds 只数本局里名字对得上的号，L3994 squadCount = max(10, …)）；Policy.tryDonateToTeammate L4412~4413（候选只有本局里的编队号）。Vb / Vc 的行号在 L4298 以后各加 1。"
  },
  "NEW-SP-ALLYBLIND": {
   "prefix": "SP",
@@ -375,6 +375,48 @@
   "name": "核心期买内置 AI 的地，留兵底线仍取「这个 AI 的其他邻居里余额最小者」，队友也算：两个相邻的我方号互相把对方的余额当底线，夹在中间的 AI 谁也不吃",
   "definition": "核心期（t ≥ coreFrom=1500）某号贴着内置 AI、这一拍没有出手，core_gate_tally.py --ai 把第一条 AI 报价的去向归在 floor，且顶住的是 safeFinite（rows.tsv 的 gate 列 floor/sf/* 与 floor/cap+sf/*：后者是被 oppFloorCap×领土 截住以后仍高于「余额 − 手续费」）。按参照对象分 编队号 / 同队真人 / 敌方真人 计数。后果另记：同一段里内置 AI 从我方号身上拿走的地（ai_nibble.py）。与 NEW-OP-ALLYLOCK 的区别：那一条是核心期前 winFloor 的第 3 项，这一条是核心期 buyLand 的 safeAt。",
   "detector": "scripts/core_gate_tally.py <局号> t0 t1 --ai [--by-target]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt 与「余额−费−底线」）；scripts/ai_nibble.py <局号> t0 t1 [--ai 编号 --bot 号]",
-  "codePath": "Policy.buyLand L5413（let safe = this.safeAt(g, q)）、L5443~5446（keep = max(keep, safe)；avail = B − fee − keep；≤0 就跳过）← Policy.safeAt L4542~4559（L4545 用 oppFloorCap×领土 封顶）← V17.safeAt L2728~2738（L2731：botSkip=0 时不排除当前目标，取 safeFinite）← V13.safeFinite L2500~2510（对每个没在打我的内置 AI 邻居取 threatOf(q).minOther，全体取最大）← Strategy.threatOf L417~444（minOther 不排除队友）。Va 的行号；Vb / Vc 在 L4298 以后各加 1。"
+  "codePath": "Policy.buyLand L5413（let safe = this.safeAt(g, q)）、L5443~5446（keep = max(keep, safe)；avail = B − fee − keep；≤0 就跳过）← Policy.safeAt L4542~4559（L4545 用 oppFloorCap×领土 封顶）← V17.safeAt L2728~2738（L2731：botSkip=0 时不排除当前目标，取 safeFinite）← V17.safeFinite L2757~2758（skip<0 时回到 V13 的版本；botSkip=0 时 skip 恒为 −1，L2753~2756 的注释写的就是这把锁）← V13.safeFinite L2500~2510（对每个没在打我的内置 AI 邻居取 threatOf(q).minOther，全体取最大）← Strategy.threatOf L417~444（minOther 不排除队友）。Va 的行号；Vb / Vc 在 L4298 以后各加 1。"
+ },
+ "NEW-SP-FIRSTLOST": {
+  "prefix": "SP",
+  "name": "第一条出生指令到不了服务器：协调器第一次给的点几乎从不落地，点后来挪过的才落地",
+  "definition": "日志里某号第一条 [HL-SPAWN-BACKEND]（协调器给的点）在录像出生阶段没有对应的落地指令（id=0，落点相差 ≤2 格）。计数 = 这样的号数 / 有协调器点位的号数；对照：后来挪过的点位落地条数 / 挪过的点位条数。点位从头到尾没挪过的号一条都落不了地，另记 NEW-SP-NOEXEC。",
+  "detector": "scripts/spawn_first_cmd.py [局号…] [--list]（结果在 out/spawn/spawn_first_cmd.txt）",
+  "codePath": "Policy.chooseSpawn L3983~4129（每 260 毫秒问一次协调器，返回 window.__tsbAssignedSpawn；点位挪动 >4 格才记一行日志）；出生指令由生产适配层发出（不在对局包里）；引擎 qj.i0（阶段是出生期、号有效、格子在图内就记进录像，不管放不放得下）"
+ },
+ "NEW-AT-PARTALLIN": {
+  "prefix": "AT",
+  "name": "对真人一把全压却吃不死：2400 拍前对「没在打我、吃到出局要 >35% 余额」的真人不走脉冲，底线以上的兵一条指令全送出去",
+  "definition": "同一个号对同一个真人的出兵串（相邻落地拍 ≤7 拍）合计 ≥ 串首执行前余额的 60%，串首落地后 300 拍内目标没有出局，且 450 拍后本号的地比出手前少（或已出局）。计数 = 串数、出兵合计；同时给出打完的密度、密度 <5 的拍数、450 拍内被真人拿走的地。",
+  "detector": "scripts/allin_strikes.py <局号>… [--list]",
+  "codePath": "Policy.offers L5291~5294（pulseMode = nearCollapse || bleeding || ((tD < thinMaxTD || rawNeed > 0.30×B) && !(t < 2400 && !onMe && rawNeed > 0.35×B))）→ Policy.buyLand L5611~5616（非脉冲分支：want = 1.25×need + 3×接触数，x = min(avail, want)；pplKill = 0 时只要 x ≥ chunk×B（20%）就发，不要求 x ≥ want）；avail = B − 手续费 − max(keep, safeAt)。Vb / Vc 的行号，Va 各减 1。"
+ },
+ "NEW-AT-NEUTFEE": {
+  "prefix": "AT",
+  "name": "大号捡无主地：每条指令至少出余额的 4.6%，手续费按余额的 12/1024 收，一轮常连下两三条",
+  "definition": "3000 拍以后我方号对无主地的陆攻（同号相隔 ≤14 拍算一轮）。计数 = 轮数、条数、手续费合计、这一轮之后 150 拍内从无主地流到这个号的格数、每格摊的手续费；另列出手时余额 ≥100 万的轮。",
+  "detector": "scripts/neutral_pickup.py <局号> [--from 3000] [--list]（13 局的结果在 out/neutral_pickup_all.txt）",
+  "codePath": "Policy.act L4941（neutral > 0 就 expandNeutral(g, 余额 − safeAt(-1))）→ General.expandNeutral L944~953（want = min(max(3×ring + 2×nHigh×(ring + nGrow×nHigh/2) − 在途, minCmd), spend)）→ Strategy.minCmd L474（feeK × 12/1024 × 余额）；引擎陆攻手续费 = 余额的 12/1024，与出兵多少无关。"
+ },
+ "NEW-AT-ENEMYFLOOR": {
+  "prefix": "AT",
+  "name": "核心期贴着 0 兵 / 弱的内置 AI 残地不吃：留兵底线取「它的其他邻居里余额最小者」，那个邻居是敌方大号时底线就是对方的整个余额（封顶 88×领土）",
+  "definition": "t ≥ 1500 的号·决策拍里，第一条内置 AI 报价（含离场后按 AI 算的真人）被 safeAt → safeFinite 顶住、且参照对象是敌方真人（core_gate_tally.py --ai 的 floor/sf/enemy 与 floor/cap+sf/enemy 两类）。计数 = 号·决策拍数、参照对象分布、其中封顶 oppFloorCap×领土 之后仍不够的拍数。参照对象是队友的另记 NEW-AT-ALLYFLOOR。",
+  "detector": "scripts/core_gate_tally.py <局号> t0 t1 --ai [--by-target] [--bots …]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt 与「余额−费−底线」）；scripts/idle_scan.py（「贴弱AI不出手」列）",
+  "codePath": "V17.safeAt L2728~2737（botSkip = 0：不排除要买的这个 AI）← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444（minOther）；Policy.buyLand L5413~5417（非真人目标的 safe 封顶 capPerPx×领土）、L5445（avail = 余额 − 手续费 − max(keep, safe)，不分这一单要多少兵）。Vb / Vc 的行号。"
+ },
+ "NEW-SE-SEALFLOOR": {
+  "prefix": "SE",
+  "name": "被封住的号发船要先攒到 68×领土以上（打 AI/真人要到 90.7×领土）：整支编队封在陆块里时，带海岸的大号迟迟发不出船，够密度的小号又没有海岸",
+  "definition": "号·决策拍里 陆上邻居 0 且 无主地 0（rows.tsv 的 nb=0、neut=0）算「封住」。按海岸与密度分档：没有海岸（发不了船）；有海岸且余额 < 68×领土（低于 idleBoats 封死分支的保底线 keepFloor）；68~90.7×领土（过了保底线，但 0.5×(余额−68×领土) 还不到打 AI/真人的最小船量 = 余额/8）；≥90.7×领土。再数 全队活着的号同时封住的决策拍、封住期间实际发的船。只按密度分档，不重放 searchWater；有接敌兄弟时保底线是 92×领土且要本号密度 ≥115，本口径不区分。",
+  "detector": "scripts/seal_floor.py <局号> [<局号> …] [--from t0] [--to t1] [--list]；逐拍看谁被哪一行挡住：scripts/shadow.mjs <局号> --bots <号> --at <拍>（[idleBoats] 一段：searchWater 落点、可装、最小船量）",
+  "codePath": "Policy.idleBoats L5022~5043（封死分支：L5031 有接敌兄弟且本号密度 <115 不发；L5035 keepFloor = 有接敌兄弟 ? 92×领土 : 68×领土；L5038~5040 搜水范围 2500、boatFrac ≥0.24）→ General.boatOut L999~1015（L1002 每次调用都刷新 lastBoat；L1006 可装 = boatFrac×(余额 − floorAt)；L1007 目标不是无主地时最小船量 = feeK×船手续费 = 余额/8；L1008 不够就不发）。「接敌兄弟」只数本编队的号与 boss（L5024~5030），同队其他真人不算。Va L5034 / Vb L5035 / Vc L5035 同一行公式。"
+ },
+ "NEW-DF-DOOMSKIP": {
+  "prefix": "DF",
+  "name": "挨打的号一旦「压在身上的真人兵 > 1.65×自己的余额」就被判成弃子，不再是任何队友的调度对象：后排号先被调度抽薄，敌方大号按一成余额一发逐个点名",
+  "definition": "我方号活着、压在它身上的敌方真人在途兵 > 1.65×它的余额 的时段（中断 ≤30 拍算同一段）。每段记：号当时的地 / 余额 / 密度、在途兵峰值、此前 600 拍它捐出多少、这一段里收到的捐款、段开始时其余我方号「余额 − 88×领土」的正数部分、300 拍内是否出局。计数 = 段数、其中 300 拍内出局的段数、这些段里收到的捐款合计。只用真引擎的状态表，是 isDoomedPocket 第一个条件成立的时段，不是策略走到那一行的次数。 是 NEW-DF-NORESCUE 里能机械计数的一个子类（NORESCUE 还包括配额、不相邻、没兵）。",
+  "detector": "scripts/doomed_pocket.py <局号> [<局号> …] [--list] [--ours id,…]；逐拍看候选人怎么被跳过：scripts/shadow.mjs <局号> --bots <号> --at <拍>（[tryDonateToTeammate] 一段的「判为弃子，跳过」）",
+  "codePath": "Policy.tryDonateToTeammate L4455~4456（isDoomedPocket = 不是滩头 且（被攻 > 1.65×余额 或（t ≥ 4500 且 领土 < 0.22×编队最大领土 且 被攻 > 0.45×余额））→ continue）；救急分支 L4463~4466 还要捐款人密度 ≥102（没封死时）且比对方高 16、余额 > 1.12×救急底线。Vb 的行号。"
  }
 }

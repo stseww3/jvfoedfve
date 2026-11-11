@@ -1428,6 +1428,1404 @@
    "oneCmdPerTickSqueezed": "2 条（ryan_m，打机器人，想出 19k）"
   }
  },
+ "delayAccount": {
+  "source": "scripts/delay_account.py A043（口径见脚本头；延迟 = 录像里的执行拍 − 影子策略做出同一条决策的拍）",
+  "spawnExecution": {
+   "solveRounds": 38,
+   "distinctSolutions": 23,
+   "phaseStart": -41,
+   "verdicts": {
+    "停在旧坐标": 1,
+    "最终坐标落地": 1
+   },
+   "nearestAllyMedian": 70.725,
+   "othersWithSpawnCmd": 16,
+   "others": 18,
+   "stackPairs": 0,
+   "bots": [
+    {
+     "bot": "ryan_m",
+     "assignN": 21,
+     "final": [
+      888,
+      347
+     ],
+     "replaySpawnN": 18,
+     "actual": [
+      932,
+      178
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 175,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "sora_w",
+     "assignN": 25,
+     "final": [
+      981,
+      127
+     ],
+     "replaySpawnN": 23,
+     "actual": [
+      981,
+      127
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 25
+    }
+   ]
+  },
+  "baselineTicks": 7,
+  "delayByPeriod": [
+   {
+    "period": "0–600",
+    "landed": 13,
+    "matched": 13,
+    "unique": 13,
+    "p50": 7,
+    "p90": 12,
+    "max": 13,
+    "uP50": 7,
+    "uP90": 12,
+    "uMax": 13,
+    "hiP50": 7,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   },
+   {
+    "period": "600–1500",
+    "landed": 86,
+    "matched": 85,
+    "unique": 71,
+    "p50": 10,
+    "p90": 14,
+    "max": 24,
+    "uP50": 10,
+    "uP90": 13,
+    "uMax": 24,
+    "hiP50": 10,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   },
+   {
+    "period": "1500–3000",
+    "landed": 21,
+    "matched": 21,
+    "unique": 16,
+    "p50": 11,
+    "p90": 15,
+    "max": 18,
+    "uP50": 10.5,
+    "uP90": 14,
+    "uMax": 15,
+    "hiP50": 11,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   },
+   {
+    "period": "3000+",
+    "landed": 50,
+    "matched": 50,
+    "unique": 32,
+    "p50": 10.0,
+    "p90": 14,
+    "max": 20,
+    "uP50": 10.0,
+    "uP90": 13,
+    "uMax": 14,
+    "hiP50": 10.0,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   }
+  ],
+  "delayBy300": [
+   {
+    "t": 0,
+    "p50": 7.0,
+    "max": 12,
+    "n": 6
+   },
+   {
+    "t": 300,
+    "p50": 8,
+    "max": 13,
+    "n": 7
+   },
+   {
+    "t": 600,
+    "p50": 10,
+    "max": 19,
+    "n": 33
+   },
+   {
+    "t": 900,
+    "p50": 10,
+    "max": 24,
+    "n": 47
+   },
+   {
+    "t": 1200,
+    "p50": 11,
+    "max": 14,
+    "n": 5
+   },
+   {
+    "t": 1500,
+    "p50": 10.5,
+    "max": 15,
+    "n": 12
+   },
+   {
+    "t": 1800,
+    "p50": 10.0,
+    "max": 16,
+    "n": 6
+   },
+   {
+    "t": 2100,
+    "p50": 13,
+    "max": 18,
+    "n": 3
+   },
+   {
+    "t": 3000,
+    "p50": 10,
+    "max": 13,
+    "n": 3
+   },
+   {
+    "t": 3300,
+    "p50": 8.0,
+    "max": 14,
+    "n": 2
+   },
+   {
+    "t": 3600,
+    "p50": 9,
+    "max": 12,
+    "n": 3
+   },
+   {
+    "t": 3900,
+    "p50": 8.0,
+    "max": 14,
+    "n": 2
+   },
+   {
+    "t": 4200,
+    "p50": 9,
+    "max": 12,
+    "n": 3
+   },
+   {
+    "t": 4500,
+    "p50": 9.0,
+    "max": 16,
+    "n": 4
+   },
+   {
+    "t": 4800,
+    "p50": 11,
+    "max": 13,
+    "n": 3
+   },
+   {
+    "t": 5100,
+    "p50": 11,
+    "max": 13,
+    "n": 3
+   },
+   {
+    "t": 5400,
+    "p50": 11,
+    "max": 13,
+    "n": 3
+   },
+   {
+    "t": 5700,
+    "p50": 10,
+    "max": 16,
+    "n": 5
+   },
+   {
+    "t": 6000,
+    "p50": 7,
+    "max": 19,
+    "n": 3
+   },
+   {
+    "t": 6300,
+    "p50": 10,
+    "max": 16,
+    "n": 5
+   },
+   {
+    "t": 6600,
+    "p50": 8.5,
+    "max": 20,
+    "n": 8
+   },
+   {
+    "t": 7200,
+    "p50": 11,
+    "max": 14,
+    "n": 3
+   }
+  ],
+  "lagByBotP50": {
+   "ryan_m": [
+    8,
+    11.0,
+    11,
+    10.0
+   ],
+   "sora_w": [
+    6.5,
+    9,
+    null,
+    8.0
+   ]
+  },
+  "funnel": [
+   {
+    "period": "0–600",
+    "intended": 13,
+    "intendedTroops": 13742,
+    "landed": 13,
+    "asIntended": 13,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 0,
+    "neverLandedTroops": 0
+   },
+   {
+    "period": "600–1500",
+    "intended": 86,
+    "intendedTroops": 160835,
+    "landed": 85,
+    "asIntended": 81,
+    "deadToNeutral": 4,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 1,
+    "neverLandedTroops": 1460
+   },
+   {
+    "period": "1500–3000",
+    "intended": 23,
+    "intendedTroops": 1061829,
+    "landed": 23,
+    "asIntended": 23,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 0,
+    "neverLandedTroops": 0
+   },
+   {
+    "period": "3000+",
+    "intended": 48,
+    "intendedTroops": 23525887,
+    "landed": 48,
+    "asIntended": 48,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 0,
+    "neverLandedTroops": 0
+   }
+  ],
+  "selfReport": {
+   "shadow": 188,
+   "cmds": 188,
+   "landed": 188
+  },
+  "phantomDecisions": {},
+  "lateVoid": [
+   {
+    "period": "0–600",
+    "B": {
+     "landed": 1,
+     "hit": 1,
+     "hitOut": 296,
+     "hitRet": 12.0,
+     "hitTiles": 110,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 12,
+     "hit": 12,
+     "hitOut": 13845,
+     "hitRet": 4278,
+     "hitTiles": 4783,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   },
+   {
+    "period": "600–1500",
+    "B": {
+     "landed": 77,
+     "hit": 73,
+     "hitOut": 133706,
+     "hitRet": 47878,
+     "hitTiles": 19083,
+     "rewrittenOk": 4,
+     "rewrittenOut": 4003,
+     "rewrittenFee": 999,
+     "rewrittenRet": 3544,
+     "rewrittenTiles": 140,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 4063,
+     "staleRewrittenP50": 6.0
+    },
+    "N": {
+     "landed": 8,
+     "hit": 8,
+     "hitOut": 10331,
+     "hitRet": 4942,
+     "hitTiles": 2624,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "unmatched": {
+     "n": 1,
+     "void": 0,
+     "toNeutral": 0,
+     "out": 1258,
+     "ret": 0.0
+    }
+   },
+   {
+    "period": "1500–3000",
+    "B": {
+     "landed": 10,
+     "hit": 10,
+     "hitOut": 81211,
+     "hitRet": 12386,
+     "hitTiles": 9469,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "H": {
+     "landed": 6,
+     "hit": 6,
+     "hitOut": 203135,
+     "hitRet": 235,
+     "hitTiles": 6871,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 2,
+     "hit": 2,
+     "hitOut": 11794,
+     "hitRet": 11598,
+     "hitTiles": 98.0,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   },
+   {
+    "period": "3000+",
+    "H": {
+     "landed": 46,
+     "hit": 46,
+     "hitOut": 21732979,
+     "hitRet": 2199133,
+     "hitTiles": 74874,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 4,
+     "hit": 4,
+     "hitOut": 298456,
+     "hitRet": 292812,
+     "hitTiles": 2822,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   }
+  ],
+  "batches": [
+   {
+    "period": "0–600",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 13
+   },
+   {
+    "period": "600–1500",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 86
+   },
+   {
+    "period": "1500–3000",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 21
+   },
+   {
+    "period": "3000+",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 50
+   }
+  ],
+  "batchSizes": {},
+  "inflightRepeats": [
+   {
+    "period": "0–600",
+    "attackDecisions": 13,
+    "repeatDecisions": 0,
+    "landedRepeats": 0,
+    "landedMatched": 13,
+    "repeatOut": 0,
+    "repeatFee": 0,
+    "repeatRet": 0,
+    "repeatTiles": 0,
+    "allOut": 14141
+   },
+   {
+    "period": "600–1500",
+    "attackDecisions": 86,
+    "repeatDecisions": 36,
+    "landedRepeats": 36,
+    "landedMatched": 85,
+    "repeatOut": 56571,
+    "repeatFee": 6955,
+    "repeatRet": 29449,
+    "repeatTiles": 5585,
+    "allOut": 148040
+   },
+   {
+    "period": "1500–3000",
+    "attackDecisions": 20,
+    "repeatDecisions": 10,
+    "landedRepeats": 9,
+    "landedMatched": 18,
+    "repeatOut": 161433,
+    "repeatFee": 18965,
+    "repeatRet": 10017,
+    "repeatTiles": 7775,
+    "allOut": 296140
+   },
+   {
+    "period": "3000+",
+    "attackDecisions": 48,
+    "repeatDecisions": 29,
+    "landedRepeats": 30,
+    "landedMatched": 50,
+    "repeatOut": 13485354,
+    "repeatFee": 1516774,
+    "repeatRet": 1681059,
+    "repeatTiles": 48846,
+    "allOut": 22031435
+   }
+  ],
+  "neverLanded": [
+   {
+    "period": "0–600",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "600–1500",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 1,
+     "troops": 1460
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "1500–3000",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "3000+",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   }
+  ],
+  "lastLocalTick": {
+   "ryan_m": 7510,
+   "sora_w": 7436
+  }
+ },
+ "landAccount": {
+  "source": "scripts/land_account.mjs A043（每格陆地归离它最近的真人出生点；出生点 = 重放第 0 拍各人领地外接框中心）",
+  "voronoi": {
+   "land": 492822,
+   "humans": 20,
+   "squad": 2,
+   "squadCells": 24811,
+   "landShare": 0.05,
+   "headShare": 0.1,
+   "ratio": 0.503,
+   "squadMedian": 12406,
+   "othersMedian": 23503,
+   "groups": {
+    "敌队T1": {
+     "n": 4,
+     "cells": 117959
+    },
+    "敌队T2": {
+     "n": 4,
+     "cells": 117748
+    },
+    "敌队T4": {
+     "n": 4,
+     "cells": 103783
+    },
+    "路人队友": {
+     "n": 2,
+     "cells": 27289
+    },
+    "敌队T5": {
+     "n": 4,
+     "cells": 101232
+    },
+    "我方号": {
+     "n": 2,
+     "cells": 24811
+    }
+   },
+   "perBot": [
+    {
+     "bot": "ryan_m",
+     "x": 932,
+     "y": 178,
+     "cells": 21828
+    },
+    {
+     "bot": "sora_w",
+     "x": 981,
+     "y": 127,
+     "cells": 2983
+    }
+   ]
+  },
+  "capture": [
+   {
+    "t": 630,
+    "groups": {
+     "敌队T1": {
+      "n": 4,
+      "alive": 4,
+      "land": 12267,
+      "cells": 117959,
+      "ratio": 0.104,
+      "medianRatio": 0.116,
+      "medianLand": 3352
+     },
+     "敌队T2": {
+      "n": 4,
+      "alive": 4,
+      "land": 10876,
+      "cells": 117748,
+      "ratio": 0.092,
+      "medianRatio": 0.109,
+      "medianLand": 2461
+     },
+     "敌队T4": {
+      "n": 4,
+      "alive": 4,
+      "land": 9760,
+      "cells": 103783,
+      "ratio": 0.094,
+      "medianRatio": 0.116,
+      "medianLand": 1842
+     },
+     "路人队友": {
+      "n": 2,
+      "alive": 2,
+      "land": 3608,
+      "cells": 27289,
+      "ratio": 0.132,
+      "medianRatio": 0.133,
+      "medianLand": 1804
+     },
+     "敌队T5": {
+      "n": 4,
+      "alive": 4,
+      "land": 8268,
+      "cells": 101232,
+      "ratio": 0.082,
+      "medianRatio": 0.087,
+      "medianLand": 2034
+     },
+     "我方号": {
+      "n": 2,
+      "alive": 2,
+      "land": 6021,
+      "cells": 24811,
+      "ratio": 0.243,
+      "medianRatio": 0.512,
+      "medianLand": 3010
+     }
+    },
+    "othersMedianRatio": 0.115,
+    "othersMedianLand": 2267,
+    "perBot": [
+     {
+      "bot": "ryan_m",
+      "land": 3436,
+      "cells": 21828,
+      "ratio": 0.157
+     },
+     {
+      "bot": "sora_w",
+      "land": 2585,
+      "cells": 2983,
+      "ratio": 0.867
+     }
+    ]
+   },
+   {
+    "t": 1500,
+    "groups": {
+     "敌队T1": {
+      "n": 4,
+      "alive": 3,
+      "land": 79069,
+      "cells": 117959,
+      "ratio": 0.67,
+      "medianRatio": 0.947,
+      "medianLand": 26370
+     },
+     "敌队T2": {
+      "n": 4,
+      "alive": 4,
+      "land": 75877,
+      "cells": 117748,
+      "ratio": 0.644,
+      "medianRatio": 0.705,
+      "medianLand": 16849
+     },
+     "敌队T4": {
+      "n": 4,
+      "alive": 4,
+      "land": 67244,
+      "cells": 103783,
+      "ratio": 0.648,
+      "medianRatio": 0.699,
+      "medianLand": 17710
+     },
+     "路人队友": {
+      "n": 2,
+      "alive": 2,
+      "land": 22246,
+      "cells": 27289,
+      "ratio": 0.815,
+      "medianRatio": 0.816,
+      "medianLand": 11123
+     },
+     "敌队T5": {
+      "n": 4,
+      "alive": 4,
+      "land": 66858,
+      "cells": 101232,
+      "ratio": 0.66,
+      "medianRatio": 0.745,
+      "medianLand": 16524
+     },
+     "我方号": {
+      "n": 2,
+      "alive": 2,
+      "land": 27758,
+      "cells": 24811,
+      "ratio": 1.119,
+      "medianRatio": 1.755,
+      "medianLand": 13879
+     }
+    },
+    "othersMedianRatio": 0.79,
+    "othersMedianLand": 17800,
+    "perBot": [
+     {
+      "bot": "ryan_m",
+      "land": 20027,
+      "cells": 21828,
+      "ratio": 0.917
+     },
+     {
+      "bot": "sora_w",
+      "land": 7731,
+      "cells": 2983,
+      "ratio": 2.592
+     }
+    ]
+   }
+  ],
+  "cellOwners": [
+   {
+    "t": 600,
+    "自己": 5015,
+    "我方别的号": 267,
+    "路人队友": 16,
+    "敌方真人": 0,
+    "机器人": 9555,
+    "中立": 9958,
+    "total": 24811
+   },
+   {
+    "t": 630,
+    "自己": 5455,
+    "我方别的号": 384,
+    "路人队友": 16,
+    "敌方真人": 0,
+    "机器人": 11151,
+    "中立": 7805,
+    "total": 24811
+   },
+   {
+    "t": 900,
+    "自己": 9742,
+    "我方别的号": 1263,
+    "路人队友": 16,
+    "敌方真人": 0,
+    "机器人": 13790,
+    "中立": 0,
+    "total": 24811
+   },
+   {
+    "t": 1200,
+    "自己": 16577,
+    "我方别的号": 1922,
+    "路人队友": 62,
+    "敌方真人": 0,
+    "机器人": 6250,
+    "中立": 0,
+    "total": 24811
+   },
+   {
+    "t": 1500,
+    "自己": 15765,
+    "我方别的号": 1922,
+    "路人队友": 150,
+    "敌方真人": 0,
+    "机器人": 6974,
+    "中立": 0,
+    "total": 24811
+   },
+   {
+    "t": 1800,
+    "自己": 21906,
+    "我方别的号": 1922,
+    "路人队友": 983,
+    "敌方真人": 0,
+    "机器人": 0,
+    "中立": 0,
+    "total": 24811
+   }
+  ],
+  "botLand": {
+   "A": {
+    "tiles": 9555,
+    "neutralInCells": 9958
+   },
+   "B": {
+    "tiles": 4682,
+    "bots": 11
+   },
+   "C": {
+    "tiles": 219700
+   },
+   "fate": {
+    "A": [
+     {
+      "t": 900,
+      "我方号": 2713,
+      "路人队友": 0,
+      "敌方真人": 0,
+      "机器人": 6842,
+      "中立": 0,
+      "byHuman": {
+       "18": 1804,
+       "19": 909
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 6726,
+      "路人队友": 46,
+      "敌方真人": 0,
+      "机器人": 2783,
+      "中立": 0,
+      "byHuman": {
+       "10": 46,
+       "18": 4762,
+       "19": 1964
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 6421,
+      "路人队友": 79,
+      "敌方真人": 0,
+      "机器人": 3055,
+      "中立": 0,
+      "byHuman": {
+       "4": 33,
+       "10": 46,
+       "18": 4457,
+       "19": 1964
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 9230,
+      "路人队友": 325,
+      "敌方真人": 0,
+      "机器人": 0,
+      "中立": 0,
+      "byHuman": {
+       "4": 279,
+       "10": 46,
+       "18": 7266,
+       "19": 1964
+      }
+     }
+    ],
+    "B": [
+     {
+      "t": 900,
+      "我方号": 2437,
+      "路人队友": 80,
+      "敌方真人": 0,
+      "机器人": 2165,
+      "中立": 0,
+      "byHuman": {
+       "10": 80,
+       "18": 1090,
+       "19": 1347
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 3617,
+      "路人队友": 687,
+      "敌方真人": 0,
+      "机器人": 378,
+      "中立": 0,
+      "byHuman": {
+       "10": 687,
+       "18": 1393,
+       "19": 2224
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 3617,
+      "路人队友": 687,
+      "敌方真人": 0,
+      "机器人": 378,
+      "中立": 0,
+      "byHuman": {
+       "10": 687,
+       "18": 1393,
+       "19": 2224
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 3995,
+      "路人队友": 687,
+      "敌方真人": 0,
+      "机器人": 0,
+      "中立": 0,
+      "byHuman": {
+       "10": 687,
+       "18": 1771,
+       "19": 2224
+      }
+     }
+    ],
+    "C": [
+     {
+      "t": 900,
+      "我方号": 3379,
+      "路人队友": 1875,
+      "敌方真人": 14945,
+      "机器人": 198767,
+      "中立": 734,
+      "byHuman": {
+       "0": 2309,
+       "1": 573,
+       "3": 2189,
+       "4": 870,
+       "5": 2232,
+       "6": 592,
+       "8": 690,
+       "9": 485,
+       "10": 1005,
+       "11": 543,
+       "12": 1202,
+       "13": 178,
+       "14": 1315,
+       "15": 73,
+       "16": 635,
+       "17": 1929,
+       "18": 2029,
+       "19": 1350
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 9188,
+      "路人队友": 5249,
+      "敌方真人": 64250,
+      "机器人": 139761,
+      "中立": 1252,
+      "byHuman": {
+       "0": 8478,
+       "1": 3468,
+       "2": 1356,
+       "3": 6642,
+       "4": 3492,
+       "5": 6261,
+       "6": 3122,
+       "8": 4156,
+       "9": 3630,
+       "10": 1757,
+       "11": 2492,
+       "12": 2918,
+       "13": 5327,
+       "14": 5451,
+       "15": 2742,
+       "16": 4899,
+       "17": 3308,
+       "18": 5601,
+       "19": 3587
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 10136,
+      "路人队友": 10358,
+      "敌方真人": 124989,
+      "机器人": 73096,
+      "中立": 1121,
+      "byHuman": {
+       "0": 15065,
+       "1": 7854,
+       "2": 5234,
+       "3": 13331,
+       "4": 5974,
+       "5": 7825,
+       "6": 8061,
+       "8": 10370,
+       "9": 7348,
+       "10": 4384,
+       "11": 3462,
+       "12": 6353,
+       "13": 10230,
+       "14": 9782,
+       "15": 7385,
+       "16": 6771,
+       "17": 5918,
+       "18": 6549,
+       "19": 3587
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 14985,
+      "路人队友": 10612,
+      "敌方真人": 167118,
+      "机器人": 26519,
+      "中立": 466,
+      "byHuman": {
+       "0": 23154,
+       "1": 9681,
+       "2": 8326,
+       "3": 17249,
+       "4": 6228,
+       "5": 7825,
+       "6": 8061,
+       "8": 11242,
+       "9": 9941,
+       "10": 4384,
+       "11": 3462,
+       "12": 10220,
+       "13": 15584,
+       "14": 10655,
+       "15": 13439,
+       "16": 7718,
+       "17": 10561,
+       "18": 11398,
+       "19": 3587
+      }
+     }
+    ]
+   },
+   "perBotAdj": [
+    {
+     "bot": "ryan_m",
+     "team": 3,
+     "bots": 7,
+     "tiles": 2922,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 1090,
+       "同队真人": 925,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 907,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 1316,
+       "同队真人": 1228,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 378,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1316,
+       "同队真人": 1228,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 378,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1694,
+       "同队真人": 1228,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "sora_w",
+     "team": 3,
+     "bots": 6,
+     "tiles": 2569,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 1075,
+       "同队真人": 236,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 1258,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 1649,
+       "同队真人": 920,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1649,
+       "同队真人": 920,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1649,
+       "同队真人": 920,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    }
+   ],
+   "perGroupLast": {
+    "敌队T1": {
+     "n": 4,
+     "tiles": 48228,
+     "median": 12537
+    },
+    "敌队T2": {
+     "n": 4,
+     "tiles": 38582,
+     "median": 9811
+    },
+    "敌队T4": {
+     "n": 4,
+     "tiles": 38027,
+     "median": 9490
+    },
+    "路人队友": {
+     "n": 2,
+     "tiles": 10612,
+     "median": 5306
+    },
+    "敌队T5": {
+     "n": 4,
+     "tiles": 42281,
+     "median": 10390
+    },
+    "我方号": {
+     "n": 2,
+     "tiles": 14985,
+     "median": 7492
+    }
+   }
+  },
+  "multiTeam": false,
+  "squadTeams": {
+   "3": [
+    "ryan_m",
+    "sora_w"
+   ]
+  }
+ },
+ "tickAttribution": {
+  "source": "scripts/shadow.mjs A043 --quiet --tc 600:1500 → scripts/tick_attrib.py A043（每个决策拍归一类，类别互斥）",
+  "window": [
+   600,
+   1500
+  ],
+  "rows": 360,
+  "cats": {
+   "有效": 81,
+   "迟到·目标已死": 4,
+   "迟到·不接壤": 0,
+   "没落地": 1,
+   "留底锁·无在途": 34,
+   "留底·有在途": 151,
+   "有目标没发": 17,
+   "只剩中立边": 8,
+   "只贴敌方真人": 0,
+   "围在里面": 64
+  },
+  "layers": {
+   "②留底": 185,
+   "有效": 81,
+   "其余": 25,
+   "③执行": 5,
+   "①结构": 64
+  },
+  "floorSetter": {
+   "我方号": 29,
+   "路人队友": 53,
+   "敌方真人": 2
+  },
+  "safeFiniteHalf": {
+   "留底·有在途": 50,
+   "留底锁·无在途": 34
+  },
+  "issuedByClass": {
+   "有效": {
+    "N": 8,
+    "B": 73
+   },
+   "迟到·目标已死": {
+    "B": 4
+   },
+   "没落地": {
+    "B": 1
+   }
+  },
+  "byBot": {
+   "ryan_m": {
+    "有效": 46,
+    "迟到·目标已死": 2,
+    "迟到·不接壤": 0,
+    "没落地": 1,
+    "留底锁·无在途": 33,
+    "留底·有在途": 89,
+    "有目标没发": 9,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "sora_w": {
+    "有效": 35,
+    "迟到·目标已死": 2,
+    "迟到·不接壤": 0,
+    "没落地": 0,
+    "留底锁·无在途": 1,
+    "留底·有在途": 62,
+    "有目标没发": 8,
+    "只剩中立边": 8,
+    "只贴敌方真人": 0,
+    "围在里面": 64
+   }
+  }
+ },
+ "accountsNote": "这三本账只覆盖 X 盘（有录像的那一盘）的 ryan_m、sora_w 两个号；Y 盘的 8 个号没有录像，做不了延迟配对、好地账和决策拍归因（它们的被围、配额拒单见第 6 节）。",
  "squadVsRealHumans": [
   {
    "t": 300,
@@ -2338,6 +3736,11 @@
   "离场真人的地在它阵亡后变中立、对它的进攻槽自动改打中立（redirectAttackToNeutral）：3216 拍 Lascia stare 阵亡后 ryan_m 的槽又拿了 3,378 格才退兵。"
  ],
  "scripts": [
+  "scripts/replay_cmds.mjs A043 → scripts/shadow.mjs A043 --quiet --tc 600:1500 --json /tmp/c136-r05/work/A043-shadow.json → scripts/atk_fate.mjs A043 --json（三本账的输入；批量见 scripts/accounts_batch.sh、scripts/shadow_refresh.sh）",
+  "scripts/delay_account.py A043 --json /tmp/c136-r05/work/A043-delay.json --list-batches（延迟硬账：出生执行、分时段延迟、漏斗、迟到落空、同拍批、在途重复）；scripts/delay_detail.py A043（按号 × 300 拍摊开）",
+  "scripts/land_account.mjs A043 --json /tmp/c136-r05/work/A043-land.json（好地账：名下份额、实际地 ÷ 份额、机器人地去向）",
+  "scripts/tick_attrib.py A043 --json /tmp/c136-r05/work/A043-attrib.json --by-bot --exits（600–1500 拍每个决策拍归一类）；scripts/quota_guard.py A043 --by-bot（Policy.send 拒发与 isNoFullSend 置位拍）",
+  "scripts/accounts_md.py A043（把三本账渲染成 .md 的 6b 节）",
   "scripts/sim_replay.mjs A043 --check（X 盘逐拍重放；与 165 条 [HL-TICK] 的地、兵逐条相等）",
   "scripts/match_truth.mjs A043 → /tmp/c136-r05/truth/A043.json",
   "scripts/review_skel.py A043 → /tmp/c136-r05/skel/A043.json",

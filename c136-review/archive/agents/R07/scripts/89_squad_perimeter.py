@@ -9,7 +9,8 @@
       truth_bots.tsv（每 10 拍我方号的领土 / 余额）、truth_players.tsv（队伍、是否真人、是否我方号）。
 口径：
   · 「接壤格数」= 该号的边界格里与某个邻居相邻的格数（一个边界格可以同时贴两个邻居，所以各项相加可以大于边界格数）。
-  · 敌 = 敌队真人席位（含已离开、由内置 AI 接管的真人席位）；AI = 无队的内置 AI；同队 = 同队但不是我方号的真人；我方 = 我方其他号。
+  · 敌 = 敌队真人席位（含已离开、由内置 AI 接管的真人席位）；AI = 打得了的内置 AI（无队的，或者分在别的队的）；同队 = 同队但不是我方号的真人；我方 = 我方其他号。
+  · 实际队数 ≥8 的局，引擎把内置 AI 也轮流分进各队：和我方同队的 AI 打不了，单独记成「贴同队 AI」，不算「贴 AI」。
   · 「碰不到敌人的号」= 贴敌、贴 AI、贴无主地都为 0 的号（只贴我方 / 同队 / 水）。
 输出：out/<matchId>/squad_perimeter.txt
   A. 每个时刻：全队各类接壤格数合计；碰不到敌人的号有几个、名字、它们的领土和余额占全队的比例。
@@ -47,7 +48,7 @@ def main():
     def classify(r):
         me = int(r["p"])
         my_team = players[me]["team"]
-        e = ai = mate = sq = 0
+        e = ai = mate = sq = mate_ai = 0
         enemies = {}
         for tok in (r["nbs"] or "").split():
             if ":" not in tok:
@@ -56,7 +57,10 @@ def main():
             q, n = int(q), int(n)
             pl = players.get(q)
             if pl is None or pl.get("human") != "1":
-                ai += n
+                if pl is not None and pl["team"] not in ("", "0") and pl["team"] == my_team:
+                    mate_ai += n
+                else:
+                    ai += n
             elif pl["team"] != my_team:
                 e += n
                 enemies[q] = n
@@ -64,25 +68,27 @@ def main():
                 sq += n
             else:
                 mate += n
-        return e, ai, mate, sq, int(r["borderTouchWater"]), int(r["neutralAdj"]), enemies
+        return e, ai, mate, sq, int(r["borderTouchWater"]), int(r["neutralAdj"]), enemies, mate_ai
 
     def fmt(n):
         return f"{n:,}"
 
     L = [f"# {mid} 我方号合起来的外圈（truth_border.tsv，每 90 拍采样；接壤格数口径见脚本抬头）", "",
-         "A. 各时刻全队合计", "t\t在场号\t边界格\t贴敌\t贴AI\t贴无主地\t贴同队非我方\t贴我方号\t贴水\t敌方邻居（接壤格数）\t碰不到敌人的号（领土 / 余额）\t这些号占全队 领土% / 余额%"]
+         "A. 各时刻全队合计", "t\t在场号\t边界格\t贴敌\t贴AI\t贴无主地\t贴同队非我方\t贴我方号\t贴水\t敌方邻居（接壤格数）\t碰不到敌人的号（领土 / 余额）\t这些号占全队 领土% / 余额%\t贴同队AI（打不了）"]
     for t in at:
         tt = max([x for x in ts if x <= t], default=None)
         if tt is None:
             continue
         rs = by_t[tt]
         tot = [0] * 6
+        mate_ai_tot = 0
         border = 0
         enemy_tot = defaultdict(int)
         idle = []
         terr_all = bal_all = 0
         for r in rs:
-            e, ai, mate, sq, water, neut, enemies = classify(r)
+            e, ai, mate, sq, water, neut, enemies, m_ai = classify(r)
+            mate_ai_tot += m_ai
             border += int(r["borderPx"])
             for i, v in enumerate((e, ai, neut, mate, sq, water)):
                 tot[i] += v
@@ -98,7 +104,7 @@ def main():
         it = sum(x[1] for x in idle)
         ib = sum(x[2] for x in idle)
         share = f"{100 * it / terr_all:.1f}% / {100 * ib / bal_all:.1f}%" if terr_all and bal_all else "-"
-        L.append(f"{tt}\t{len(rs)}\t{border}\t{tot[0]}\t{tot[1]}\t{tot[2]}\t{tot[3]}\t{tot[4]}\t{tot[5]}\t{en}\t{len(idle)} 个：{idle_s}\t{share}")
+        L.append(f"{tt}\t{len(rs)}\t{border}\t{tot[0]}\t{tot[1]}\t{tot[2]}\t{tot[3]}\t{tot[4]}\t{tot[5]}\t{en}\t{len(idle)} 个：{idle_s}\t{share}\t{mate_ai_tot}")
 
     L += ["", "B. 每个号「碰不到敌人」（贴敌 = 贴 AI = 贴无主地 = 0）的采样段"]
     by_bot = defaultdict(list)
@@ -108,7 +114,7 @@ def main():
         segs = []
         cur = None
         for r in sorted(by_bot[b], key=lambda r: int(r["t"])):
-            e, ai, mate, sq, water, neut, _ = classify(r)
+            e, ai, mate, sq, water, neut, _, _m = classify(r)
             t = int(r["t"])
             if e == 0 and ai == 0 and neut == 0:
                 if cur is None:
@@ -136,7 +142,7 @@ def main():
             continue
         idle, front = [], []
         for r in by_t[tt]:
-            e, ai, mate, sq, water, neut, _ = classify(r)
+            e, ai, mate, sq, water, neut, _, _m = classify(r)
             terr, bal = bots_state.get((tt, r["bot"]), (0, 0))
             (idle if (e == 0 and ai == 0 and neut == 0) else front).append((r["bot"], terr, bal))
 

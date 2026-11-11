@@ -1,0 +1,11 @@
+out/B043/batch/p_ita.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Itachi --to 1800 --probe "Itachi:650:1800" --tag ita
+out/B043/batch/p_zhu.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots "Zhuge Liang" --to 1900 --probe "Zhuge Liang:650:1900" --tag zhu
+out/B043/batch/p_bar.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Barbary --to 1800 --probe "Barbary:630:1800" --tag bar
+out/B043/batch/p_jan.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Janissary --to 1800 --probe "Janissary:630:1800" --tag jan
+out/B043/batch/p_sri.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Srivijaya --to 1900 --probe "Srivijaya:630:1900" --tag sri
+out/B043/batch/p_jor.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Jordan --to 1500 --probe "Jordan:300:1500" --tag jor
+out/B043/batch/p_hus.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Hussite --to 1800 --probe "Hussite:600:1800" --tag hus
+out/B043/batch/p_spi.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Spiderman --to 1700 --probe "Spiderman:650:1700" --tag spi
+out/B043/batch/p_zen.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Zenobia --to 3300 --probe "Zenobia:3190:3290" --tag zen
+out/B043/batch/p_tra.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Trajan --to 4500 --probe "Trajan:4150:4500" --tag tra
+out/B043/batch/p_kgb.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots KGB --to 5230 --probe "KGB:3900:5230" --tag kgb

@@ -16,12 +16,19 @@
 #      其余各行「按这条线当时服务器走到第几拍 − 上报的本地拍」= 这个号的客户端在上报那一刻落后多少拍
 #   J  日志先后次序：in_game.log 每行带一个全局递增的行号（到达收集器的先后）。同一时刻各号写到第几拍，
 #      就能比出谁的客户端走在前面、谁落在后面（粒度 90 拍）；再用 X 盘 ryan_m 的实测落后量（指令落地拍 − 决策拍）把 Y 盘的绝对落后量锚出来
+#   K  Y 盘分段合计：停住的一段（--stall 1440:2340）九个号的自报指令、净支出、地与兵；清仓的一段（--burst 2340:2970）清仓窗合计；
+#      results.csv 的 sent / accepted；每个号「不发令」的长窗（连续 ≥ 4 个 90 拍窗自报指令 ≤ 2 条且存兵 ≥ 10 万）
+#   M  采样空档：results.csv 的 peak / lastTerritory / balance 是外层程序（不是策略）在阵亡前看到的最大地、最后一次的地和兵。
+#      别的局里 peak 都 ≥ 日志快照的最大地（采样很密）；本局有号的 peak 比快照里的地小 —— 那些拍外层程序一次都没看到，
+#      说明客户端是一口气跑过去的。列出每个号「地比 peak 大」的快照拍段，和「最后一次看到的地」对应的拍到上报阵亡那一拍的空档
+#   L  Y 盘「自己花掉」的窗（比纯收入少的部分扣掉挨打最多能解释的，≥ 2 万且 ≥ 窗前存兵的 10%）逐窗列出；
+#      标出 X 盘 ryan_m 的同拍批（805…2513）换到 Y 盘时间轴（−91 拍）落在哪一窗；每个号自报指令数最后一次增加之后的情况
 import csv, json, sys, math, re, statistics
 from collections import defaultdict
 
 a = sys.argv[1:]
 val = lambda k, d: (a[a.index(k) + 1] if k in a else d)
-SEC = set(val('--sec', 'A,B,C,D,E,F,G,H,I,J').split(','))
+SEC = set(val('--sec', 'A,B,C,D,E,F,G,H,I,J,K,L,M').split(','))
 STREAM = int(val('--stream', 10))
 DUMP = float(val('--dump', 60))
 B = '/agent/repos/c136-data/bundles/A017'
@@ -86,6 +93,22 @@ def windows(bot):
         out.append(dict(t0=x['t'], t1=y['t'], terr0=x['terr'], terr1=y['terr'], bal0=x['bal'], bal1=y['bal'], dens0=x['dens'], nb0=x['nb'], neut0=x['neut'], dcmd=y['cmds'] - x['cmds'], dboat=y['boats'] - x['boats'],
                         pred=p0, pred1=p1, net=y['bal'] - p0, net1=y['bal'] - p1))
     return out
+
+
+def dmg_max(w):
+    """这一窗「挨打」最多能解释掉多少兵：引擎 expandAttack（game.js L1008-1014、damage L1062-1073）每丢 cnt 格，
+    守方存兵扣 def = cnt×存兵÷(1+10×地÷16) ≈ 1.6×密度×cnt；地从 T0 掉到 T1 积分得 存兵×(1−(T1/T0)^1.6)。
+    只有净丢地可用（丢了又拿回来的看不到），地没少就记 0。"""
+    if w['terr1'] >= w['terr0'] or w['terr0'] <= 0:
+        return 0
+    return w['pred'] * (1 - (w['terr1'] / w['terr0']) ** 1.6)
+
+
+def classify(w):
+    short = w['pred'] - w['bal1']
+    dm = dmg_max(w)
+    own = short - dm
+    return ('自己花掉' if own >= 0.5 * short else '被打为主'), dm, own
 
 
 if 'A' in SEC:
@@ -167,8 +190,9 @@ if 'C' in SEC:
                     print(f'      {w["t0"]}–{w["t1"]}: 地 {w["terr0"]}→{w["terr1"]} 兵 {k(w["bal0"])}→{k(w["bal1"])}｜推 {k(w["pred"])}（{k(w["pred1"])}）净 {k(w["net"])}（{100*w["net"]/max(1,w["bal0"]):.0f}%）｜指令 +{w["dcmd"]} 船 +{w["dboat"]}｜nb {w["nb0"]} neut {w["neut0"]}')
 
 if 'D' in SEC:
-    print(f'§D 清仓窗（90 拍内存兵掉 ≥{DUMP:.0f}%，窗前存兵 ≥10 万）')
+    print(f'§D 清仓窗（90 拍内存兵掉 ≥{DUMP:.0f}%，窗前存兵 ≥10 万）｜分类：比纯收入少的那部分里，按引擎公式「挨打」最多能解释的（存兵×(1−(窗末地÷窗前地)^1.6)）不到一半 = 自己花掉；否则 = 被打为主')
     n = 0
+    kinds = defaultdict(list)
     for b in YB + ['ryan_m']:
         W = windows(b)
         g = {r['t']: r for r in traj[b]}
@@ -190,9 +214,15 @@ if 'D' in SEC:
                 spent = w['pred'] - w['bal1']
                 per = spent / max(1, w['terr1'] - w['terr0']) if w['terr1'] > w['terr0'] else float('nan')
                 n += 1
-                print(f'   {b:7s} {w["t0"]}–{w["t1"]}: 兵 {k(w["bal0"])}→{k(w["bal1"])}（−{100*(1-w["bal1"]/w["bal0"]):.0f}%；比纯收入少 {k(spent)}）地 {w["terr0"]}→{w["terr1"]}（密度 {w["dens0"]:.0f}→{w["bal1"]/max(1,w["terr1"]):.0f}）｜这一窗自报指令 +{w["dcmd"]}'
+                kind, dm, own = classify(w)
+                kinds[kind].append((b, w))
+                print(f'   [{kind}：挨打最多解释 {k(dm)}、其余 {k(own)}] {b:7s} {w["t0"]}–{w["t1"]}: 兵 {k(w["bal0"])}→{k(w["bal1"])}（−{100*(1-w["bal1"]/w["bal0"]):.0f}%；比纯收入少 {k(spent)}）地 {w["terr0"]}→{w["terr1"]}（密度 {w["dens0"]:.0f}→{w["bal1"]/max(1,w["terr1"]):.0f}）｜这一窗自报指令 +{w["dcmd"]}'
                       f'｜窗前连续发令窗 {run} 个（其中净支出 ≤10% 的 {runq} 个 = {runq*90} 拍），地连续不变（±3%）{flat} 个窗｜每多一格 {per:.0f} 兵｜其后 {after}｜阵亡 {res[b]["tick"]}')
     print(f'   合计 {n} 个清仓窗')
+    for kd, lst in kinds.items():
+        yl = [(b, w) for b, w in lst if b != 'ryan_m']
+        print(f'   {kd}：{len(lst)} 个窗（Y 盘 {len(yl)} 个、{len({b for b, _ in yl})} 个号：窗前存兵合计 {k(sum(w["bal0"] for _, w in yl))} → 窗后 {k(sum(w["bal1"] for _, w in yl))}；这些窗里自报指令 0–1 条的 {sum(1 for _, w in yl if w["dcmd"] <= 1)} 个）：'
+              + '、'.join(f'{b} {w["t0"]}（−{100*(1-w["bal1"]/w["bal0"]):.0f}%，自报 +{w["dcmd"]}）' for b, w in lst))
     print('   按 0.65^n（每条指令打出当时存兵的 35%）：n=5 剩 12%，n=7 剩 5%，n=9 剩 2%')
 
 if 'E' in SEC:
@@ -411,3 +441,139 @@ if 'J' in SEC:
             f = front_at(sq)
             back = min((tt for s2, b2, tt in allrows if s2 < sq and s2 > sq - 40), default=0)
             print(f'     ryan_m 写 t={t}（实测落后 {lagx(t):.0f}）→ Y 盘服务器约第 {ysrv:.0f} 拍；此刻 Y 盘最靠前的号写到 {f} → 最靠前的号落后 {ysrv - f - 90:.0f}…{ysrv - f:.0f} 拍')
+
+if 'K' in SEC:
+    print('§K Y 盘分段合计')
+    s0, s1 = [int(v) for v in val('--stall', '1440:2340').split(':')]
+    b0, b1 = [int(v) for v in val('--burst', '2340:2970').split(':')]
+    tot = dict(cmd=0, net=0, bal0=0, quiet=0, quietCmd=0, wins=0, streamWins=0, streamCmd=0)
+    for b in YB:
+        for w in windows(b):
+            if s0 <= w['t0'] < s1:
+                tot['wins'] += 1; tot['cmd'] += w['dcmd']; tot['net'] += w['net']
+                if w['dcmd'] >= STREAM:
+                    tot['streamWins'] += 1; tot['streamCmd'] += w['dcmd']
+                    if w['net'] >= -0.10 * w['bal0']:
+                        tot['quiet'] += 1; tot['quietCmd'] += w['dcmd']; tot['bal0'] += w['bal0']
+    at = lambda b, t: next((r for r in traj[b] if r['t'] == t), None)
+    L0 = sum(at(b, s0)['terr'] for b in YB if at(b, s0)); L1 = sum(at(b, s1)['terr'] for b in YB if at(b, s1))
+    B0 = sum(at(b, s0)['bal'] for b in YB if at(b, s0)); B1 = sum(at(b, s1)['bal'] for b in YB if at(b, s1))
+    print(f'   {s0}–{s1} 拍：九个号 地 {L0}（{100*L0/LAND:.1f}%）→ {L1}（{100*L1/LAND:.1f}%），兵 {k(B0)} → {k(B1)}｜90 拍窗 {tot["wins"]} 个，自报指令 +{tot["cmd"]} 条，'
+          f'其中发令窗 {tot["streamWins"]} 个 {tot["streamCmd"]} 条；发令窗里净支出 ≤10% 的 {tot["quiet"]} 个（{tot["quietCmd"]} 条）｜全部窗的净合计 {k(tot["net"])}')
+    per = []
+    for b in YB:
+        ws = [w for w in windows(b) if s0 <= w['t0'] < s1]
+        per.append(f'{b} +{sum(w["dcmd"] for w in ws)} 条、地 {ws[0]["terr0"]}→{ws[-1]["terr1"]}、兵 {k(ws[0]["bal0"])}→{k(ws[-1]["bal1"])}')
+    print('     逐号：' + '；'.join(per))
+    dumps = []
+    for b in YB:
+        for w in windows(b):
+            if b0 <= w['t0'] < b1 and w['bal0'] >= 1e5 and w['bal1'] <= (1 - DUMP / 100) * w['bal0']:
+                dumps.append((b, w))
+    L0 = sum(at(b, b0)['terr'] for b in YB if at(b, b0)); L1 = sum(at(b, b1)['terr'] for b in YB if at(b, b1))
+    B0 = sum(at(b, b0)['bal'] for b in YB if at(b, b0)); B1 = sum(at(b, b1)['bal'] for b in YB if at(b, b1))
+    print(f'   {b0}–{b1} 拍：九个号 地 {L0}（{100*L0/LAND:.1f}%）→ {L1}（{100*L1/LAND:.1f}%），兵 {k(B0)} → {k(B1)}｜清仓窗 {len(dumps)} 个（{len({b for b, _ in dumps})} 个号）：'
+          f'窗前存兵合计 {k(sum(w["bal0"] for _, w in dumps))} → 窗后 {k(sum(w["bal1"] for _, w in dumps))}（比纯收入线少 {k(-sum(w["net"] for _, w in dumps))}）')
+    print('     ' + '；'.join(f'{b} {w["t0"]}–{w["t1"]} {k(w["bal0"])}→{k(w["bal1"])}（−{100*(1-w["bal1"]/w["bal0"]):.0f}%）' for b, w in dumps))
+    snt = sum(int(res[b]['sent']) for b in YB); acc = sum(int(res[b]['accepted']) for b in YB)
+    print(f'   results.csv：Y 盘九个号 sent 合计 {snt}、accepted 合计 {acc}（差 {snt - acc} = 本地没受理的；有录像的局里这个差是同拍第 2 条起被每拍一条的闸挤掉的，Y 盘无从核对）；逐号：' + '、'.join(f'{b} {res[b]["sent"]}/{res[b]["accepted"]}' for b in YB)
+          + f'｜ryan_m（X 盘）{res["ryan_m"]["sent"]}/{res["ryan_m"]["accepted"]}，录像里执行 77 条')
+    print('   不发令的长窗（连续 ≥4 个 90 拍窗、每窗自报指令 ≤2 条、窗前存兵 ≥10 万）：')
+    for b in YB + ['ryan_m']:
+        run = []
+        outs = []
+        for w in windows(b) + [None]:
+            if w and w['dcmd'] <= 2 and w['bal0'] >= 1e5:
+                run.append(w)
+            else:
+                if len(run) >= 4:
+                    outs.append(f'{run[0]["t0"]}–{run[-1]["t1"]}（{len(run)} 窗；自报 +{sum(x["dcmd"] for x in run)} 条；地 {run[0]["terr0"]}→{run[-1]["terr1"]}；兵 {k(run[0]["bal0"])}→{k(run[-1]["bal1"])}；非我方邻居 {min(x["nb0"] for x in run)}–{max(x["nb0"] for x in run)} 个）')
+                run = []
+        if outs:
+            print(f'     {b}: ' + '；'.join(outs))
+
+
+if 'L' in SEC:
+    OFFX = 91
+    XB = [805, 847, 896, 1085, 1274, 1582, 2016, 2513]
+    yb = [x - OFFX for x in XB]
+    print(f'§L Y 盘逐窗「自己花掉」（扣掉挨打最多能解释的部分后 ≥2 万且 ≥ 窗前存兵 10%）；X 盘同拍批换到 Y 盘时间轴（−{OFFX} 拍）：{yb}')
+    W = {b: {w['t0']: w for w in windows(b)} for b in YB}
+    t0s = sorted({t for b in YB for t in W[b]})
+    tot_spend = tot_spend_nocmd = 0
+    nwin = nwin_nocmd = 0
+    for t0 in t0s:
+        hit = []
+        alive = 0
+        for b in YB:
+            w = W[b].get(t0)
+            if not w:
+                continue
+            alive += 1
+            kind, dm, own = classify(w)
+            if own >= 20000 and own >= 0.10 * w['bal0']:
+                hit.append((b, w, own))
+                nwin += 1
+                tot_spend += own
+                if w['dcmd'] <= 1:
+                    nwin_nocmd += 1
+                    tot_spend_nocmd += own
+        mark = [x for x in yb if t0 < x <= t0 + 90]
+        if hit or mark:
+            print(f'   {t0}–{t0+90}（有快照 {alive} 个号）' + (f' ←X 批 {[x + OFFX for x in mark]}' if mark else '') + '：'
+                  + ('；'.join(f'{b} 花 {k(own)}（窗前 {k(w["bal0"])}，自报 +{w["dcmd"]}，地 {w["terr0"]}→{w["terr1"]}）' for b, w, own in hit) if hit else '没有号花兵'))
+    print(f'   合计 {nwin} 个（号×窗）自己花掉 {k(tot_spend)}；其中窗内自报指令 0–1 条的 {nwin_nocmd} 个、{k(tot_spend_nocmd)}')
+    big = [(b, w, classify(w)[2]) for b in YB for w in W[b].values() if w['dcmd'] <= 1 and classify(w)[2] >= 0.30 * w['bal0'] and classify(w)[2] >= 20000]
+    big.sort(key=lambda x: x[1]['t0'])
+    print(f'   其中「窗内自报指令 0–1 条、却自己花掉 ≥ 窗前存兵 30%」的 {len(big)} 个、{k(sum(o for _, _, o in big))}：'
+          + '、'.join(f'{b} {w["t0"]}–{w["t1"]}（{k(o)}/{k(w["bal0"])}，+{w["dcmd"]}）' for b, w, o in big))
+    print('   每个号自报指令数最后一次增加之后（末段）：')
+    for b in YB:
+        rows = traj[b]
+        last = max(i for i, r in enumerate(rows) if i == 0 or r['cmds'] > rows[i - 1]['cmds'])
+        r0 = rows[last]
+        tail = rows[last:]
+        mxb = max(tail, key=lambda r: r['bal'])
+        print(f'      {b:7s} 最后一次增加在 t≤{r0["t"]}（累计 {r0["cmds"]} 条；results.csv sent {res[b]["sent"]} / accepted {res[b]["accepted"]}）｜此后到最后一条快照 t={rows[-1]["t"]} 共 {rows[-1]["t"]-r0["t"]} 拍：'
+              f'地 {r0["terr"]}→{rows[-1]["terr"]}（最多 {max(r["terr"] for r in tail)}），兵 {k(r0["bal"])}→{k(rows[-1]["bal"])}（最多 {k(mxb["bal"])}@{mxb["t"]}），敌邻数 {min(r["nb"] for r in tail)}–{max(r["nb"] for r in tail)}｜{res[b]["event"]}@{res[b]["tick"]}')
+
+
+if 'M' in SEC:
+    print('§M 采样空档（results.csv 的 peak、lastTerritory、balance 对日志快照 / 录像真值）')
+    for b in ['ryan_m'] + YB:
+        r = res[b]
+        peak, lastT, balr, dt = int(r['peak']), int(r['lastTerritory']), int(r['balance']), int(r['tick'])
+        rows = traj[b]
+        over = [x for x in rows if x['terr'] > peak]
+        mx = max(rows, key=lambda x: x['terr'])
+        msg = f'   {b:7s} peak {peak}｜快照最大地 {mx["terr"]}@{mx["t"]}'
+        if over:
+            msg += f'｜地比 peak 大的快照 {len(over)} 条：t={over[0]["t"]}…{over[-1]["t"]}（{over[0]["terr"]}…{max(x["terr"] for x in over)}）→ 这 {over[-1]["t"]-over[0]["t"]} 拍以上外层程序一次没采到'
+        else:
+            msg += '｜没有快照比 peak 大'
+        # 最后一次采到的地：在快照序列（末尾补一段「最后一条快照 → 上报阵亡那一拍，地归 0」）里找跨过 lastTerritory 的段；
+        # 有多段时取存兵也对得上（在两端存兵的 0.5–1.5 倍之间）的最后一段，都对不上就取最后一段
+        segs = []
+        ext = rows + [dict(t=dt, terr=0, bal=0)]
+        for x, y in zip(ext, ext[1:]):
+            lo, hi = sorted((x['terr'], y['terr']))
+            if lo <= lastT <= hi and y['t'] <= dt:
+                blo, bhi = sorted((x['bal'], y['bal']))
+                segs.append((x['t'], y['t'], 0.5 * blo <= balr <= 1.5 * bhi))
+        good = [g for g in segs if g[2]] or segs
+        seg = good[-1]
+        msg += f'｜最后采到 地 {lastT}/兵 {k(balr)}，落在快照 {seg[0]}–{seg[1]} 之间（跨过这个地数的快照段 {len(segs)} 段' + ('，存兵也对得上' if seg[2] else '，存兵对不上') + f'）；上报阵亡的本地拍 {dt} → 空档 {dt-seg[1]}–{dt-seg[0]} 拍'
+        print(msg)
+    try:
+        TR = json.load(open('/tmp/c136-r05/truth/A017.json'))
+        S = TR['S10']['18']
+        tt, te, tb = S['t'], S['terr'], S['bal']
+        pk = int(res['ryan_m']['peak'])
+        ov = [t for t, v in zip(tt, te) if v > pk]
+        lt = int(res['ryan_m']['lastTerritory'])
+        near = [(t, v, bb) for t, v, bb in zip(tt, te, tb) if abs(v - lt) <= 150 and t > 2400]
+        eq = [t for t, v in zip(tt, te) if v == pk]
+        print(f'   ryan_m（录像真值，每 10 拍）：地 = peak {pk} 的拍 {eq[0]}…{eq[-1]}；地 > peak 的拍 {ov[0]}…{ov[-1]}（{len(ov)} 个采样点，最大 {max(te)}）；'
+              f'地在 {lt}±150 的拍（2400 以后）：' + '、'.join(f'{t}（{v} 格/{bb} 兵）' for t, v, bb in near[:6]))
+    except Exception as e:
+        print('   （没有 X 盘真值缓存：', e, '）')

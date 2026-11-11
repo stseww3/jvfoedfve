@@ -3,7 +3,7 @@
 """85_trace_blocked.py — 从影子决策明细里数「目标便宜、却被留底挡住」的决策拍。R07
 
 用法（在 scripts/ 目录下）：
-    python3 85_trace_blocked.py <matchId> <号:t0:t1> [<号:t0:t1> ...] [--dens 10]
+    python3 85_trace_blocked.py <matchId> <号:t0:t1> [<号:t0:t1> ...] [--dens 10] [--any]
 
 输入：out/<matchId>/shadow_trace_<号>_<t0>_<t1>.txt（65_shadow.mjs --trace 号:t0:t1 的输出，不带抽样间隔，每个决策拍一段）。
 口径：一个决策拍算「便宜目标被留底挡住」，要同时满足
@@ -13,7 +13,9 @@
     ④ 这一行的结论是「无可用(avail<=0)」，且本拍没有指令。
 按目标分组，列出拍数、拍号范围、自己的余额 / 密度、目标的领土 / 余额、c、need、safe、safe ÷ 自己的领土、avail 的范围，
 以及这一组之后第一条打它的影子指令。
-输出：out/<matchId>/trace_blocked_<号>_<t0>_<t1>.txt
+--any：条件 ① 放宽成「报价单里任意一条真人报价」（取每拍第一条满足 ②③④ 的）。用在排第一的是内置 AI、
+    后面跟着便宜真人的情形（留底同一个数，两条报价一起被挡）。输出文件名加 _any，不覆盖默认口径的输出。
+输出：out/<matchId>/trace_blocked_<号>_<t0>_<t1>.txt（--any 时 trace_blocked_any_<号>_<t0>_<t1>.txt）
 """
 import os
 import re
@@ -66,11 +68,14 @@ def main():
         sys.exit(1)
     mid = args[0]
     dens = 10.0
+    any_offer = False
     specs = []
     i = 1
     while i < len(args):
         if args[i] == '--dens':
             dens = float(args[i + 1]); i += 2
+        elif args[i] == '--any':
+            any_offer = True; i += 1
         else:
             specs.append(args[i]); i += 1
     out_dir = os.path.join(HERE, '..', 'out', mid)
@@ -79,19 +84,20 @@ def main():
         path = os.path.join(out_dir, f'shadow_trace_{bot}_{t0}_{t1}.txt')
         ticks = parse(path)
         L = [f'# {mid} {bot} t={t0}~{t1}：便宜目标被留底挡住的决策拍（85_trace_blocked.py；输入 shadow_trace_{bot}_{t0}_{t1}.txt，共 {len(ticks)} 个决策拍）',
-             f'# 口径：排第一的报价是真人、c < worth、对方密度 ≤ {dens:g}、结论是「无可用(avail<=0)」、本拍没有指令']
+             f"# 口径：{'报价单里任意一条' if any_offer else '排第一的报价是'}真人{'报价' if any_offer else ''}、c < worth、对方密度 ≤ {dens:g}、结论是「无可用(avail<=0)」、本拍没有指令"]
         groups = {}
         for k in ticks:
             if not k['offers']:
                 continue
-            o = k['offers'][0]
-            if ' 人' not in o['flags'] and '人 ' not in o['flags']:
-                continue
-            if not (o['c'] < k['worth'] and o['dq'] <= dens and '无可用' in o['tail'] and o['avail'] is not None):
-                continue
             if k['cmd'] and '没有指令' not in k['cmd']:
                 continue
-            groups.setdefault(o['name'], []).append((k, o))
+            for o in (k['offers'] if any_offer else k['offers'][:1]):
+                if ' 人' not in o['flags'] and '人 ' not in o['flags']:
+                    continue
+                if not (o['c'] < k['worth'] and o['dq'] <= dens and '无可用' in o['tail'] and o['avail'] is not None):
+                    continue
+                groups.setdefault(o['name'], []).append((k, o))
+                break
         if not groups:
             L.append('没有这样的决策拍')
         for name, rows in sorted(groups.items(), key=lambda kv: -len(kv[1])):
@@ -117,7 +123,7 @@ def main():
                 L.append('   之后区间内没有打它的影子指令')
             for k, o in rows[::max(1, len(rows) // 6)]:
                 L.append(f"     t={k['t']} B={fmt(k['B'])} L={fmt(k['L'])} d={k['d']:.1f} worth={k['worth']:.1f} | 目标 {fmt(o['terr'])} 格 / {fmt(o['bal'])} 兵 c={o['c']:.1f} need={fmt(o['need'])} | safe={fmt(o['safe'])} avail={fmt(o['avail'])}")
-        out = os.path.join(out_dir, f'trace_blocked_{bot}_{t0}_{t1}.txt')
+        out = os.path.join(out_dir, f"trace_blocked_{'any_' if any_offer else ''}{bot}_{t0}_{t1}.txt")
         with open(out, 'w', encoding='utf-8') as fh:
             fh.write('\n'.join(L) + '\n')
         print('\n'.join(L))

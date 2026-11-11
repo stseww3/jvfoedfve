@@ -63,7 +63,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { openMatch, readLogSnaps, NEUTRAL, P_INNER, T_LAND } from './resim_lib.mjs';
+import { openMatch, readLogSnaps, logAliases, NEUTRAL, P_INNER, T_LAND } from './resim_lib.mjs';
 import { P_BORDER } from '/agent/repos/c136-data/src/sim/sim/index.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -138,6 +138,19 @@ export async function runShadow(mid, o = {}) {
   const fileTag = file.replace(/\.js$/, '');
   const m = openMatch(mid, { replay });
   const g = m.g, H = m.H, names = m.names;
+  // 全 512 个席位的名字（engine_names.cjs 从真引擎取出，out/<局号>/names512.json）。录像头只有真人的名字；
+  // c110 的 isOurSquadBot 只看名字、不看席位号，内置 AI 的名字撞上名字池时线上把它当成本队的号（不算邻居、不打）。
+  // B039：不喂 AI 名字时影子的 nb 比日志多 1（HighPing 360 拍：AI#483 = Kalmar Union 在名字池里）。
+  let names512 = null;
+  {
+    const nf = path.join(OUT_ROOT, mid, 'names512.json');
+    if (fs.existsSync(nf) && !o.noAiNames) {
+      const nj = JSON.parse(fs.readFileSync(nf, 'utf8'));
+      if (nj.names.length !== m.g.players && nj.names.length < H) throw new Error('names512.json 的长度不对');
+      for (let p = 0; p < H; p++) if (String(nj.names[p]) !== String(names[p])) throw new Error(`names512.json 第 ${p} 个真人名字和录像头不同：${nj.names[p]} / ${names[p]}`);
+      names512 = nj.names;
+    }
+  }
 
   // 日志里的号：席位号、槽位、HL-TICK 行
   const bots = new Map(); // label -> {p, slot, ticks: Map(t -> {nb, neut, cmds, boats})}
@@ -145,7 +158,11 @@ export async function runShadow(mid, o = {}) {
     const pre = logIds.length > 1 ? id + ':' : '';
     const lp = `${BUNDLES}/${id}/in_game.log`;
     if (!fs.existsSync(lp)) continue;
-    for (const line of fs.readFileSync(lp, 'utf8').split('\n')) {
+    // B 组的行首名字会轮换：轮换后的名字靠 results.csv 的 meId 认回原来的号（resim_lib.logAliases）
+    const alias = logAliases(id, readLogSnaps(id).me);
+    for (const line0 of fs.readFileSync(lp, 'utf8').split('\n')) {
+      let line = line0;
+      { const am = line.match(/\[([^\]]+)\] \[HL-/); if (am && alias[am[1]] !== undefined) line = line.replace(`[${am[1]}] [HL-`, `[${alias[am[1]]}] [HL-`); }
       let x = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*me=(\d+)/);
       if (x) { bots.set(pre + x[1], { p: +x[2], name: x[1], slot: null, ticks: new Map(), logLines: [] }); continue; }
       // 没有 [HL-GAME-INIT] 行的号（A094 的 ryan_m/zexos1/noah88）：席位号取自 [HL-SPAWN-BACKEND] me=
@@ -161,6 +178,7 @@ export async function runShadow(mid, o = {}) {
         const s = x[3].match(/t=(\d+) .*nb=(\d+) neut=(\d+) cmds=(\d+) boats=(\d+)/);
         if (s) b.ticks.set(+s[1], { nb: +s[2], neut: +s[3], cmds: +s[4], boats: +s[5] });
       } else if (x[2] === 'HL-OPENING' || x[2] === 'HL-DISPATCH') b.logLines.push(`[${x[2]}] ${x[3].trim()}`);
+      else if (x[2] === 'HL-DONATE' || x[2] === 'HL-ASSIST') (b.logLines2 ??= []).push(`[${x[2]}] ${x[3].trim()}`);
     }
   }
   let want = o.bots && o.bots !== 'all' ? new Set(o.bots.split(',')) : null;
@@ -177,7 +195,7 @@ export async function runShadow(mid, o = {}) {
     const gv = Object.create(g);
     gv.online = true;
     gv.me = p;
-    gv.names = names;
+    gv.names = names512 ?? names;
     const st = { label, p, pol, win, gv, lastCmdTick: -1, nThisTick: 0, b, nCalls: 0, flags: [] };
     // Policy.send 返回 false 且没有走到 g.attack：被策略自己的闸门（isNoFullSend 配额守卫等）拦下。
     if (typeof pol.send === 'function') {
@@ -544,7 +562,7 @@ if (IS_MAIN) {
   const t0 = Date.now();
   const r = await runShadow(mid, {
     replay: opt('replay', mid), log: opt('log', mid).split(','), bots: opt('bots', 'all'), strategy: opt('strategy', null),
-    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: ['auto', 'cause', 'slot', 'turn', 'land', 'landauto', 'landslot'].includes(opt('pc-shift', 'land')) ? 0 : +opt('pc-shift', 0), pcAuto: ['auto', 'turn', 'landauto'].includes(opt('pc-shift', 'land')), pcTurn: opt('pc-shift', 'land') === 'turn', pcLand: ['land', 'landauto'].includes(opt('pc-shift', 'land')), pcLandSlot: opt('pc-shift', 'land') === 'landslot', pcCause: opt('pc-shift', 'land') === 'cause', pcSlot: opt('pc-shift', 'land') === 'slot', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
+    nocut: argv.includes('--nocut'), noAiNames: argv.includes('--no-ai-names'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: ['auto', 'cause', 'slot', 'turn', 'land', 'landauto', 'landslot'].includes(opt('pc-shift', 'land')) ? 0 : +opt('pc-shift', 0), pcAuto: ['auto', 'turn', 'landauto'].includes(opt('pc-shift', 'land')), pcTurn: opt('pc-shift', 'land') === 'turn', pcLand: ['land', 'landauto'].includes(opt('pc-shift', 'land')), pcLandSlot: opt('pc-shift', 'land') === 'landslot', pcCause: opt('pc-shift', 'land') === 'cause', pcSlot: opt('pc-shift', 'land') === 'slot', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
   });
   const { m, sh, cmds, slog, check, probeOut, idleAgg } = r;
   const dir = path.join(OUT_ROOT, mid);
@@ -609,4 +627,17 @@ if (IS_MAIN) {
       for (const l of onlySh.slice(0, 3)) console.log(`      只在影子: ${l.slice(0, 150)}`);
     }
   }
+  // c110 的 [HL-DONATE] / [HL-ASSIST] 行（c116 没有这两种行）：影子的决策序列对 c110 只是近似（外壳会跳拍），这里只数能逐字对上的
+  const llRows = ['bot,kind,inLog,inShadow,same'];
+  for (const s of sh) {
+    for (const [kind, re, real] of [['OPENING/DISPATCH', /HL-OPENING|HL-DISPATCH/, s.b.logLines], ['DONATE/ASSIST', /HL-DONATE|HL-ASSIST/, s.b.logLines2 ?? []]]) {
+      const mineLog = slog.filter((l) => l.bot === s.label && re.test(l.s)).map((l) => l.s.trim());
+      const setS = new Map(); for (const l of mineLog) setS.set(l, (setS.get(l) || 0) + 1);
+      let both = 0;
+      for (const l of real) if (setS.get(l) > 0) { both++; setS.set(l, setS.get(l) - 1); }
+      llRows.push([JSON.stringify(s.label), kind, real.length, mineLog.length, both].join(','));
+      if (kind === 'DONATE/ASSIST' && (real.length || mineLog.length)) console.log(`${s.label.padEnd(12)} DONATE/ASSIST 行：日志 ${real.length}，影子 ${mineLog.length}，逐字相同 ${both}`);
+    }
+  }
+  fs.writeFileSync(path.join(OUT_ROOT, mid, `shadow_loglines${opt('tag', '') ? '_' + opt('tag', '') : ''}.csv`), llRows.join('\n') + '\n');
 }

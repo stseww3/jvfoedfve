@@ -243,6 +243,27 @@ def donfit_summary(mid, room):
                 old20TickRuleRejectedButExecuted=sum(1 for r in ex if r.get("oldVerdict") == "REJ"))
 
 
+def hard_ledgers(mid):
+    """统筹广播 0007 的两本硬账：lagledger.py（延迟 / 执行延迟）和 landcap.py（好地实际抢到多少）的汇总 JSON，原样并进 ledger。"""
+    out = {}
+    for key, fn, src in (("latencyLedger", "lagledger_sum.json", "scripts/lagledger.py [GA]~[GG]（out/<局>/lagledger.txt）"),
+                         ("latencyLedgerPeer", "lagledger_sum_peer.json", "scripts/lagledger.py --side peer"),
+                         ("landCapture", "landcap_sum.json", "scripts/landcap.mjs + landcap.py [KA]~[KF]（out/<局>/landcap.txt）"),
+                         ("enclosure", "enclose_sum.json", "scripts/enclose.py [EA]~[EE]（out/<局>/enclose.txt）：编队号被受保护的异队编队友封死的账"),
+                         ("troopLedger", "econ_sum.json", "scripts/econ.py [NA]~[ND]（out/<局>/econ.txt）：产兵 / 花兵 / 漏损，编队对其他真人"),
+                         ("donationPairs", "donpairs_sum.json", "scripts/donpairs.py [YA]~[YF]（out/<局>/donpairs.txt）：捐款对子、净转移与来回倒手"),
+                         ("deathDossier", "dossier_sum.json", "scripts/dossier.py（out/<局>/dossier.txt）：每个阵亡号最后一轮下坡里的指令和被打掉的余额"),
+                         ("spawnGeometry", "spawngeo_sum.json", "scripts/spawngeo.py [QA]~[QE]（out/<局>/spawngeo.txt）：出生点贴边、扎堆、异队编队友挨着"),
+                         ("lagLoad", "lagload_sum.json", "scripts/lagload.py [LL-A]~[LL-D]（out/<局>/lagload.txt）：指令时延对全房换手格数，每 180 拍一窗"),
+                         ("gateCensus", "gatecensus_sum.json", "scripts/shadow.mjs --walk-every 30 --tag walk + scripts/gatecensus.py [WA]~[WI]（out/<局>/gatecensus.txt）：1500 拍后对真人邻居 / 进攻者的买地门槛结论普查")):
+        p = os.path.join(ROOT, "out", mid, fn)
+        if os.path.exists(p):
+            d = json.load(open(p, encoding="utf-8"))
+            d["src"] = src
+            out[key] = d
+    return out
+
+
 def build(mid):
     F = facts.build(mid)
     F["dons"] = facts.donation_ledger(F)
@@ -292,6 +313,7 @@ def build(mid):
                     donatedArrivedUpperBound=sum(d["amountEff"] for d in acc), donationTaxUpperBound=sum(d["fee"] for d in acc),
                     cardLikelyRejected=(card.get("anomaliesSummary") or {}).get("likelyRejectedTransfers"),
                     **({"donfit": donfit_summary(mid, None)} if donfit_summary(mid, None) else {}),
+                    **hard_ledgers(mid),
                     **R.get("ledgerExtra", {})),
         decisions=R["decisions"],
         newPatterns=R.get("newPatterns", []),

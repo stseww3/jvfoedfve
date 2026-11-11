@@ -7,6 +7,8 @@
 #   - deathCauses: { "号名": "死因" }，按号名填进骨架 deaths[].cause；骨架里有而这里没写死因的会报错。
 #   - timelineNotes: { "拍号": "一句话" }，贴到时间线最近的那个点的 note 字段。
 #   - decisions[].patternId 用 scripts/patterns_r04.json 里的编号；本局用到的模式定义自动抄进 newPatterns。
+#   - tmp/latency/<局号>.json、tmp/land/<局号>/good_land.json、tmp/attrib/<局号>.json 存在时，原样挂成 latencyLedger / goodLand / captureAttrib 三个键
+#     （hub 0007 要的延迟账、好地账、三层归因；先跑 bash scripts/hub0007_all.sh <局号>）。
 import sys
 sys.dont_write_bytecode = True  # 不往总部的 tools/__pycache__ 里写东西
 import os, json, subprocess, importlib.util
@@ -55,6 +57,13 @@ def main():
         p = dict(pats[pid]); p['id'] = pid
         np_.append(p)
     doc['newPatterns'] = np_ + list(hand.get('newPatterns', []))
+    # hub 0007 的两本账：有就原样挂进去（延迟账 latency_ledger.py、好地账 good_land.mjs、三层归因 capture_attrib.py）
+    for key, rel in (('latencyLedger', ('tmp', 'latency', mid + '.json')), ('goodLand', ('tmp', 'land', mid, 'good_land.json')), ('captureAttrib', ('tmp', 'attrib', mid + '.json')),
+                     ('delayVsRate', ('tmp', 'rate', mid + '.json')), ('slowTicks', ('tmp', 'slow', mid + '.json')),
+                     ('burstChunks', ('tmp', 'chunks', mid + '.json')), ('wallLag', ('tmp', 'wall', mid + '.json'))):
+        fp = os.path.join(ROOT, *rel)
+        if os.path.exists(fp):
+            doc[key] = json.load(open(fp, encoding='utf8'))
     order = ['matchId', 'reviewer', 'protocol', 'context', 'outcome', 'lossArchetype', 'confidenceOverall', 'phases', 'timeline', 'turningPoints', 'deaths', 'decisions', 'newPatterns', 'winnerNotes', 'wentWell', 'unknowns', 'mechanicsQuestions', 'scripts']
     out = {k: doc[k] for k in order if k in doc}
     for k in doc:

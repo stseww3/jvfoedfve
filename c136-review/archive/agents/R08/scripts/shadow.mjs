@@ -53,6 +53,10 @@ const censusUntil = +opt('census-until', 1800);
 const censusEvery = +opt('census-every', 10);
 const coreCensusUntil = +opt('core-census-until', 3000);   // 1500 拍后的买地口径普查（censusCore）做到哪一拍
 const guardTicks = +opt('guard', 8);     // 模拟驱动层 inflight 节流：某拍发过指令后，接下来 guardTicks 拍内不调用策略（0=不模拟）
+// --walk-every N：从 --walk-from（默认策略的 coreFrom）起每 N 拍对每个在线号重走一遍 buyLand（walkBuyLand，不发指令），逐报价记结论，
+// 写进 bots[名].walks。要和 --tag 一起用（例如 --tag walk），不覆盖主产物；gatecensus.py 读它。
+const walkEvery = +opt('walk-every', 0);
+const walkFrom = +opt('walk-from', 0);
 const traceSpec = {};
 for (const part of String(opt('trace', '')).split(';').filter(Boolean)) {
   const i = part.lastIndexOf(':');
@@ -124,12 +128,14 @@ function sbSource(g, pol) {
   }
   return best;
 }
+// 引擎口径（game.js isEnemy）：队号 0 = 没有队（自由混战），谁和谁都不同队
+const sameTeam = (g, a, b) => g.teams[a] !== 0 && g.teams[a] === g.teams[b];
 function whoCat(g, me, o) {
   if (o < 0) return 'none';
   if (o >= g.humans) return 'ai';
-  if (ownIds.has(o)) return g.teams[o] === g.teams[me] ? 'squadSameTeam' : 'squadOtherTeam';
-  if (peerIds.has(o)) return g.teams[o] === g.teams[me] ? 'peerSameTeam' : 'peerOtherTeam';
-  return g.teams[o] === g.teams[me] ? 'teammate' : 'enemy';
+  if (ownIds.has(o)) return sameTeam(g, o, me) ? 'squadSameTeam' : 'squadOtherTeam';
+  if (peerIds.has(o)) return sameTeam(g, o, me) ? 'peerSameTeam' : 'peerOtherTeam';
+  return sameTeam(g, o, me) ? 'teammate' : 'enemy';
 }
 
 // 口粮门槛普查：对「接壤的内置 AI」逐个按 pickTarget 的顺序过一遍门槛，记下最便宜那个 AI 被哪一关挡住。
@@ -140,6 +146,7 @@ function census(g, b) {
     const fl = pol.floors(g);
     const bal = g.bal[me], min = pol.minCmd(g);
     let best = null, anyOk = 0, nAi = 0;
+    const per = [];   // 逐个接壤的内置 AI：[号, 被哪一关挡住]（landcap.py 的逐格归因用）
     for (const q of pol.nb) {
       if (g.alive[q] === 0 || g.terr[q] === 0 || pol.person(g, q)) continue;
       const price = pol.price(g, q);
@@ -161,12 +168,13 @@ function census(g, b) {
       } else if (need <= 0) why = 'need<=0';
       else if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) why = 'slots';
       if (why === 'ok') anyOk++;
+      per.push([q, why]);
       if (best && price >= best.price) continue;
       best = { q, price: +price.toFixed(1), terr: g.terr[q], aiBal: g.bal[q], need: Math.round(need), floor: Math.round(floor), avail: Math.round(avail), why };
     }
     let src = null;
-    if (best && /floor:sb/.test(best.why)) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
-    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI', src, nAi, anyOk]);
+    if ((best && /floor:sb/.test(best.why)) || per.some((x) => /floor:sb/.test(x[1]))) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
+    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI', src, nAi, anyOk, per]);
   } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census ' + String(e).slice(0, 200)]); }
 }
 
@@ -360,6 +368,29 @@ function walkBuyLand(g, pol) {
   return { B, L, fee, worth: +worth.toFixed(1), cheap: +cheap.toFixed(1), over, minCmd, nHumans, humanNbCount, rows };
 }
 
+// 全程买地门槛普查（--walk-every）：一行 = [t, 余额, 领土, worth, over, 活着的真人数, 真人敌邻数, 压在我身上的真人进攻兵, 其中最大的那个进攻者, 贴着的无主地,
+//   在途陆攻槽数, [[q, 是不是真人, 每格报价, 有没有在打我, 结论, safe 原值, avail, 对方余额, 对方领土, 接壤格数, 标记(1 快崩 | 2 流血 | 4 拥挤)] …]]
+function censusWalk(g, b) {
+  const pol = b.pol, me = b.id;
+  try {
+    pol.analyze(g);
+    const w = walkBuyLand(g, pol);
+    let inH = 0, top = -1, topTr = 0;
+    for (const a of g.attackersOf(me)) {
+      if (a >= g.humans || sameTeam(g, a, me)) continue;
+      const tr = g.attackTroopsOn(a, me);
+      inH += tr;
+      if (tr > topTr) { topTr = tr; top = a; }
+    }
+    let active = 0;
+    const base = g.slotBase(me);
+    for (let i = g.atkCount[me] - 1; i >= 0; i--) if (g.atkTarget[base + i] !== NEUTRAL) active++;
+    b.walks.push([g.t, w.B, w.L, w.worth, w.over ? 1 : 0, w.nHumans, w.humanNbCount, inH, top, pol.neutral, active,
+      w.rows.map((r) => [r.q, r.person ? 1 : 0, r.c, r.onMe ? 1 : 0, r.v ?? null, r.safeRaw ?? null, r.avail ?? null, r.bal, r.terr, r.cnt,
+        (r.nearCollapse ? 1 : 0) | (r.bleeding ? 2 : 0) | (r.isCrowdedHard ? 4 : 0)])]);
+  } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'walk ' + String(e).slice(0, 200)]); }
+}
+
 function traceOne(g, b) {
   const pol = b.pol, me = b.id, P = pol.p;
   const o = { t: g.t, bot: b.name, terr: g.terr[me], bal: g.bal[me], cmds: pol.cmds, boats: pol.boats, lastBoat: pol.lastBoat,
@@ -431,7 +462,7 @@ const out = resim(mid, {
     for (const [name, s] of Object.entries(ctx.squad)) {
       if (s.id < 0 || (side === 'peer') !== !!s.peer) continue;
       if (wantBots !== 'all' && !wantBots.split(',').includes(name)) continue;
-      bots.push({ name, id: s.id, pol: new Policy({}, s.id), cmds: [], logs: [], errors: [], flags: [], locks: [], census: [], census2: [], guard: [], lastFlag: null, nAct: 0, lastCmdTick: -999,
+      bots.push({ name, id: s.id, pol: new Policy({}, s.id), cmds: [], logs: [], errors: [], flags: [], locks: [], census: [], census2: [], guard: [], walks: [], lastFlag: null, nAct: 0, lastCmdTick: -999,
         win: null, boatSpot: Object.getPrototypeOf(g).boatSpot ?? g.boatSpot });
     }
     for (const b of bots) b.win = { __hlLog: (s) => b.logs.push([g.t, String(s).slice(0, 400)]) };
@@ -474,6 +505,7 @@ const out = resim(mid, {
       if (traceSpec[b.name]?.has(g.t)) traceOne(g, b);
       if (g.t % censusEvery === 0 && g.t >= 300 && g.t <= censusUntil) census(g, b);
       if (g.t % censusEvery === 0 && g.t >= b.pol.p.coreFrom && g.t <= coreCensusUntil && typeof b.pol.offers === 'function') censusCore(g, b);
+      if (walkEvery > 0 && g.t % walkEvery === 0 && g.t >= Math.max(walkFrom, b.pol.p.coreFrom ?? 0) && typeof b.pol.offers === 'function') censusWalk(g, b);
       unpatch(g);
     }
     globalThis.window = undefined;
@@ -483,7 +515,8 @@ const out = resim(mid, {
 
 const res = {
   matchId: mid, strategy: stratName, guardTicks, endTick: out.endTick, replayFrom: opt('replay-from', null) || mid,
-  bots: Object.fromEntries(bots.map((b) => [b.name, { id: b.id, nAct: b.nAct, cmds: b.cmds, logs: b.logs, errors: b.errors, flags: b.flags, locks: b.locks, census: b.census, census2: b.census2, guard: b.guard,
+  walkEvery,
+  bots: Object.fromEntries(bots.map((b) => [b.name, { id: b.id, nAct: b.nAct, cmds: b.cmds, logs: b.logs, errors: b.errors, flags: b.flags, locks: b.locks, census: b.census, census2: b.census2, guard: b.guard, walks: b.walks,
     final: { cmds: b.pol.cmds, boats: b.pol.boats, isNoFullSend: !!b.pol.isNoFullSend } }])),
   traces,
 };

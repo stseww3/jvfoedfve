@@ -94,7 +94,7 @@ def main():
             if r['kind'] != 'attack' or r['tt'] not in ('H', 'L') or r['target'] != p or not (t0 <= r['t'] <= t1):
                 continue
             g.setdefault(r['p'], []).append(r)
-        tot_n = tot_x = 0
+        tot_n = tot_x = tot_fee = 0
         for a, rs in sorted(g.items(), key=lambda kv: -sum(r['troops'] for r in kv[1])):
             x = sum(r['troops'] for r in rs)
             fee = sum(r['fee'] for r in rs)
@@ -102,8 +102,8 @@ def main():
             pcts = sorted(set(r['pct'] for r in rs))
             L.append(f"  {label(a)}：{len(rs)} 条，发兵 {fmt(x)}，手续费 {fmt(fee)}，pct {pcts[0]}~{pcts[-1]}，t={rs[0]['t']}~{rs[-1]['t']}；"
                      f"最重一条 t={big['t']} pct={big['pct']} 发兵 {fmt(big['troops'])}（发令前余额 {fmt(big['b0'])}、自己 {fmt(big['terr'])} 格；目标当时 {fmt(big['tTerr'])} 格 / {fmt(big['tBal'])} 兵）")
-            tot_n += len(rs); tot_x += x
-        L.append(f'  合计 {tot_n} 条，发兵 {fmt(tot_x)}')
+            tot_n += len(rs); tot_x += x; tot_fee += fee
+        L.append(f'  合计 {tot_n} 条，发兵 {fmt(tot_x)}，手续费 {fmt(tot_fee)}')
         d = [r for r in rows if r['kind'] == 'donate' and r['target'] == p and t0 <= r['t'] <= t1]
         if d:
             byd = defaultdict(list)

@@ -117,18 +117,79 @@ Game.prototype.setupColors = function () {
 // 读某个包的局内日志：号名 -> 席位号（[HL-GAME-INIT] me=），以及每条 [HL-TICK] 的 terr/bal。
 // only：只取这些号（A094 这类“日志里的号分在两个实例、录像只有其中一个实例”的包用）。
 // 没有 [HL-GAME-INIT] 的号退而用 [HL-SPAWN-BACKEND] / [HL-SPAWN] 行里的 me=（A094 的 ryan_m/zexos1/noah88）。
+// B 组（squad20）的日志行首名字会在局中轮换（同一个席位先叫 Bohemia、后来叫 ErenYeager），席位号 me 不变。
+// 轮换后的名字没有 [HL-GAME-INIT] 行，靠 results.csv 的 bot → meId 认回原来的号。返回 { 新名字: 原名字 }。
+export function logAliases(bundleId, me) {
+  const alias = {};
+  const rp = `${BUNDLES}/${bundleId}/results.csv`;
+  if (!fs.existsSync(rp)) return alias;
+  const bySeat = {};
+  for (const [b, p] of Object.entries(me)) if (bySeat[p] === undefined) bySeat[p] = b;
+  const lines = fs.readFileSync(rp, 'utf8').split('\n').filter(Boolean);
+  const head = lines[0].split(',');
+  const iB = head.indexOf('bot'), iM = head.indexOf('meId');
+  if (iB < 0 || iM < 0) return alias;
+  for (const l of lines.slice(1)) {
+    const c = l.split(',');
+    if (c[iM] === '' || me[c[iB]] !== undefined) continue;
+    const orig = bySeat[+c[iM]];
+    if (orig !== undefined) alias[c[iB]] = orig;
+  }
+  midAliases(bundleId, me, alias);
+  return alias;
+}
+
+// 中间名：一个席位轮换两次以上时（B043 的 Trajan → Geralt → Heisenberg），中间那个名字既没有 me= 行也没有 RESULT 行。
+// 认法：这个名字的第一条 [HL-TICK] 接在某个已认出的号的最后一条之后（隔不超过 180 拍），
+// 而且 maxMs（开局以来单次决策的最大耗时，只增不减）、cmds、boats 都不比那一条小；这样的号正好一个才认。
+function midAliases(bundleId, me, alias) {
+  const logp = `${BUNDLES}/${bundleId}/in_game.log`;
+  if (!fs.existsSync(logp)) return;
+  const ser = {}; // label -> [{t, cmds, boats, maxMs}]
+  for (const line of fs.readFileSync(logp, 'utf8').split('\n')) {
+    const m = line.match(/\[([^\]]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+) boats=(\d+) avgMs=[\d.]+ maxMs=([\d.]+)/);
+    if (m) (ser[m[1]] = ser[m[1]] || []).push({ t: +m[2], cmds: +m[3], boats: +m[4], maxMs: +m[5] });
+  }
+  const origOf = (lb) => (me[lb] !== undefined ? lb : alias[lb]);
+  const unknown = Object.keys(ser).filter((lb) => origOf(lb) === undefined).sort((a, b) => ser[a][0].t - ser[b][0].t);
+  for (const u of unknown) {
+    const f = ser[u][0], last = ser[u][ser[u].length - 1];
+    const cands = [];
+    for (const orig of new Set(Object.keys(ser).map(origOf).filter((x) => x !== undefined))) {
+      const rows = Object.keys(ser).filter((lb) => origOf(lb) === orig).flatMap((lb) => ser[lb]).sort((a, b) => a.t - b.t);
+      if (rows.some((r) => r.t >= f.t && r.t <= last.t)) continue;
+      const prev = rows.filter((r) => r.t < f.t).pop();
+      if (!prev || f.t - prev.t > 180) continue;
+      if (prev.maxMs > f.maxMs || prev.cmds > f.cmds || prev.boats > f.boats) continue;
+      cands.push({ orig, same: prev.maxMs === f.maxMs });
+    }
+    const pick = cands.length === 1 ? cands[0] : (cands.filter((c) => c.same).length === 1 ? cands.find((c) => c.same) : null);
+    if (pick) alias[u] = pick.orig;
+  }
+}
+
 export function readLogSnaps(bundleId, label = '', only = null) {
   const logp = `${BUNDLES}/${bundleId}/in_game.log`;
   const me = {}, rows = [];
   if (!fs.existsSync(logp)) return { me, rows };
-  for (const line of fs.readFileSync(logp, 'utf8').split('\n')) {
+  const lines = fs.readFileSync(logp, 'utf8').split('\n');
+  // 先扫一遍只为了认轮换后的名字（B 组）；正式的一遍仍按行序走（A094 一个包里有两个实例，同一个名字先后对应两个席位）
+  const me0 = {};
+  for (const line of lines) {
+    const m = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*me=(\d+)/) || line.match(/\[([^\]]+)\] \[HL-SPAWN(?:-BACKEND)?\] me=(\d+)/);
+    if (m && me0[m[1]] === undefined && (!only || only.has(m[1]))) me0[m[1]] = +m[2];
+  }
+  const alias = logAliases(bundleId, me0);
+  for (const line of lines) {
     let m = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*me=(\d+)/);
     if (!m) { m = line.match(/\[([^\]]+)\] \[HL-SPAWN(?:-BACKEND)?\] me=(\d+)/); if (m && me[m[1]] !== undefined) continue; }
     if (m) { if (!only || only.has(m[1])) me[m[1]] = +m[2]; continue; }
     m = line.match(/\[([^\]]+)\] \[HL-TICK\] t=(\d+) terr=(\d+)\([^)]*\) bal=(\d+)/);
-    if (m && me[m[1]] !== undefined) rows.push({ t: +m[2], bot: label + m[1], p: me[m[1]], terr: +m[3], bal: +m[4] });
+    if (!m) continue;
+    const b = me[m[1]] !== undefined ? m[1] : alias[m[1]];
+    if (b !== undefined && me[b] !== undefined) rows.push({ t: +m[2], bot: label + b, p: me[b], terr: +m[3], bal: +m[4] });
   }
-  return { me, rows };
+  return { me, rows, alias };
 }
 
 // sim 镜像的 maps/ 里没有这张图时（A005 的 5_9294），用 map_from_engine.cjs 从真引擎取出来的那份：

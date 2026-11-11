@@ -111,6 +111,11 @@ def facts(M, X=None):
     how = Counter(p['how'] for p in pres.values())
     lv = {me: p['leaveT'] for me, p in pres.items() if p['how'] == 'left'}
     never_played = [me for me in M.squad if pres[me]['how'] == 'left' and not any(c['player'] == me and c['id'] == 1 for c in M.cmds)] if M.cmds else []
+    never_src = 'replay: left 且录像里没有它的任何出兵指令'
+    if not M.cmds:
+        # 没有对局阶段的录像：只能看日志。整局没有一条 HL-TICK 快照、也没有一条 HL-OPENING 的席位 = 没有走出选点阶段
+        never_played = [me for me in M.squad if not M.bots[me].traj and not M.bots[me].opening]
+        never_src = 'log: 整局没有 HL-TICK 快照、也没有 HL-OPENING 行'
     ctx = dict(
         time=card.get('timeUtc'), squad=card.get('cohort'), bots=len(M.squad), strategyVersion='v27-team-c110', gameVersion='2.17.1',
         map=card.get('mapId'), mapSeed=card.get('mapSeed'), mapLand=M.land, teams=card.get('actualTeams'), humans=M.humans or card.get('seededPlayers'),
@@ -121,6 +126,7 @@ def facts(M, X=None):
         presence=dict(how),
         leftTicks={M.bots[me].name: t for me, t in sorted(lv.items(), key=lambda kv: kv[1] or 0)},
         neverPlayed=[M.bots[me].name for me in never_played],
+        neverPlayedSource=never_src,
         sameMatchPeer=(card.get('sameMatchPeer') or {}).get('peerMatchId'),
         dataCompleteness=dict(results=bool(M.results), squadLog=True,
                               truth=(f"replay({M.replaySrc}) to t={M.replayLast}" if M.cmds else ('replay spawn-phase only' if M.replay else 'none'))),
@@ -132,6 +138,11 @@ def facts(M, X=None):
     outcome = dict(result=result, resultLabel=oc.get('resultLabel'), anyBotWon=oc.get('anyBotWon'), ourTeamRank=team_rank(final_snap['totals'], primary) if final_snap else None,
                    winnerTeam=oc.get('winnerTeam'), endTick=M.endTick, ourFinalShare=oc.get('ourFinalTeamShare'),
                    peakSquadLandShare=oc.get('peakSquadLandShare'), peakPrimaryTeamShareSeen=oc.get('peakPrimaryTeamShareSeen'))
+    # 对局的结束有没有被记录：只有 event=end 的结算行才是终局；没有的局，卡片的 endTick 是最后一条结算行的拍、
+    # winnerTeam 是最后一条带各队领土的结算行里领先的队
+    outcome['endRowSeen'] = any(r.get('event') == 'end' for r in M.results)
+    outcome['lastSnapshotTick'] = max((b.traj[-1]['t'] for b in M.bots.values() if b.traj), default=None)
+    outcome['lastTeamTotalsTick'] = final_snap['t'] if final_snap else None
     deaths_t = sorted({p['outT'] for p in pres.values() if p['how'] == 'died' and p['outT']})
     ticks = sorted(set([t for t in PROTO_TICKS if t <= M.endTick + 60]) | set(deaths_t) | {M.endTick})
     tl = []
@@ -263,8 +274,15 @@ def main():
         return 2
     mid = sys.argv[1]
     M = load_match(mid)
-    X = SD.Sim(mid, M) if M.sim else None
+    # 录像只到选点阶段的局（重放末拍 < 30）：sim_state.json 只当「出生点 / 分队 / t=0 局面」的真值用，
+    # t>0 的时间线、死因、捐款仍然只来自日志和结算行。
+    spawn_only = bool(M.sim) and (M.sim.get('endT') or 0) < 30
+    X = SD.Sim(mid, M) if (M.sim and not spawn_only) else None
     F = facts(M, X)
+    if spawn_only:
+        F['context']['dataCompleteness']['truth'] = (
+            f"录像只有选点阶段（真引擎重放到 t={M.sim.get('endT')}：出生点、分队、t=0 的局面是真值；t>0 没有录像）")
+        F['context']['truthEnd'] = M.sim.get('endT')
     if '--facts' in sys.argv:
         print(json.dumps(F, ensure_ascii=False, indent=1, default=str))
         return 0
@@ -294,6 +312,14 @@ def main():
     doc['deaths'] = F['deaths']
     if 'truthSummary' in F:
         doc['truthSummary'] = F['truthSummary']
+    # 延迟账 / 好地账：latency.py <id> json、landcap.py <id> json 的原样输出（有才带）
+    for key, fn in (('latencyLedger', 'latency.json'), ('landLedger', 'landcap.json')):
+        p = os.path.join(ROOT, 'out', mid, fn)
+        if os.path.exists(p):
+            doc[key] = json.load(open(p))
+    for k in ('latencyNotes', 'landNotes'):
+        if k in A:
+            doc[k] = A[k]
     doc['decisions'] = A['decisions']
     doc['newPatterns'] = A['newPatterns']
     doc['lossArchetype'] = A['lossArchetype']

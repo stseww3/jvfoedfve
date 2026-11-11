@@ -20,6 +20,9 @@
 // 输出：out/<matchId>/shadow_log.txt（影子日志）、shadow_cmds.tsv（影子指令）、shadow_check.txt（与真日志比对）、
 //       shadow_coast.tsv（每 90 拍各号的海岸格数与能否出船，取自模拟器 g.coast / g.boatsAllowed）、
 //       shadow_nofull.tsv（isNoFullSend 何时被锁上、之后挡掉了哪些出兵）、
+//       shadow_quota_checks.tsv（Policy.updateShadowQuota 里每一次「出兵后核对余额」的结果：过期 / 扣减 / 清零，
+//         以及被核对的那条指令打的是谁、想发多少、核对时余额少了多少；判定按源码（Vb L3821-3835）的条件在脚本里重算；
+//         汇总成文字用 99_quota_checks.py）、
 //       shadow_trace_<bot>_<t0>_<t1>.txt（--trace）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -146,6 +149,8 @@ for (const b of bots) {
 const shadowCmds = [];
 const coastRows = [];
 const nfEvents = [];
+const qcRows = [];
+const lastAtkCmd = new Map();
 const pname = (g, q) => (q === NEUTRAL ? '无主地' : q < H ? `${names[q]}#${q}[T${g.teams[q]}${g.state[q] === 2 ? '离' : ''}]` : `AI#${q}`);
 
 // 按 buyLand 的源码公式重算每个报价的 安全底 / 留底 / 可用兵（Vb：L5350-5446；Va/Vc 行号略有出入，公式相同）
@@ -301,6 +306,7 @@ function threatOwner(g, q, me) {
 }
 const early = new Map(); // bot -> 统计
 const earlyEx = [];
+const earlyRows = []; // 逐决策拍的归类（shadow_early.tsv；47_delay_periods.py 按任意时段重新合计）
 function earlyDiag(g, b, p, cmdsNow) {
   const P = p.p, me = p.me;
   if (!(g.t < (P.dpEnd ?? 1500)) || g.t < 300 || g.t % P.period !== 0) return;
@@ -310,8 +316,8 @@ function earlyDiag(g, b, p, cmdsNow) {
   if (!early.has(b)) early.set(b, { dec: 0, fired: 0, neutralOnly: 0, idle: 0, cls: new Map(), idleBal: 0, sbMate: 0, sbMateBal: 0, t0: g.t, t1: g.t });
   const st = early.get(b);
   st.dec++; st.t1 = g.t;
-  if (cmdsNow.some((c) => c.kind === 'attack' && c.target !== NEUTRAL)) { st.fired++; return; }
-  if (cmdsNow.length) { st.neutralOnly++; return; }
+  if (cmdsNow.some((c) => c.kind === 'attack' && c.target !== NEUTRAL)) { st.fired++; earlyRows.push([g.t, b, 'AI邻居', '出手（打 AI / 真人）', g.bal[me], g.terr[me]]); return; }
+  if (cmdsNow.length) { st.neutralOnly++; earlyRows.push([g.t, b, 'AI邻居', '只打无主地 / 其他指令', g.bal[me], g.terr[me]]); return; }
   st.idle++;
   const B = g.bal[me], L = Math.max(1, g.terr[me]);
   st.idleBal += B;
@@ -354,6 +360,7 @@ function earlyDiag(g, b, p, cmdsNow) {
     } else cls = `${top} 底线卡住`;
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+  earlyRows.push([g.t, b, 'AI邻居', cls, B, g.terr[me]]);
 }
 // ---- t<coreFrom（1500）、身边既没有内置 AI 也没有无主地的决策拍：开局逻辑（V13 Style.act → pickTarget → allow）为什么不打贴着的敌方真人
 // 复刻 Style.floors（L819-831）与 defenseNeed / altOf（L899-941），多返回「defenseNeed 参照的是谁」
@@ -422,7 +429,7 @@ function earlyHumanDiag(g, b, p, cmdsNow) {
   if (!earlyH.has(b)) earlyH.set(b, { dec: 0, cmd: 0, cls: new Map(), t0: g.t, t1: g.t, bal0: g.bal[me], bal1: g.bal[me], terr0: g.terr[me], terr1: g.terr[me], cheapest: new Map() });
   const st = earlyH.get(b);
   st.dec++; st.t1 = g.t; st.bal1 = g.bal[me]; st.terr1 = g.terr[me];
-  if (cmdsNow.length) { st.cmd++; return; }
+  if (cmdsNow.length) { st.cmd++; earlyRows.push([g.t, b, '只剩真人', '有指令', g.bal[me], g.terr[me]]); return; }
   const B = g.bal[me], L = Math.max(1, g.terr[me]);
   const hum = p.nb.filter((q) => g.alive[q] && !g.isBot(q) && g.terr[q] > 0 && !g.isTeammate(me, q));
   let cls;
@@ -526,6 +533,7 @@ function earlyHumanDiag(g, b, p, cmdsNow) {
     if (earlyHEx.length < 400 && g.t % 100 === 0) earlyHEx.push(`  t=${g.t} ${b} B=${B} L=${L}（密度 ${(B / L).toFixed(1)}）| 最便宜的敌方真人 ${pname(g, cheapQ)}（${g.terr[cheapQ]} 格 / ${g.bal[cheapQ]} 兵）每格 ${cheapPx.toFixed(1)} | ${cls}${best ? `；底线 ${Math.round(best.fl)}（floorFor0 ${Math.round(best.f0)}、safeP×peopleSafe ${Math.round(best.ps)}${best.fp ? `、dpKeep ${Math.round(best.dp)}、peopleFloor ${Math.round(best.pf)}、floorAt ${Math.round(best.fAt)}〔价格留底 ${Math.round(best.fp.reserveTerm)}、ref×邻居均值 ${Math.round(best.fp.refTerm)}、defenseNeed ${Math.round(best.fp.defNeed)}、keepCap 封顶 ${Math.round(best.fp.keepCap * best.fp.cap)}〕` : ''}${best.refWho >= 0 && best.refWho !== undefined ? `，参照 ${pname(g, best.refWho)} 的 ${g.bal[best.refWho]} 兵（经由 ${pname(g, best.refVia)}）` : ''}）、可用 ${Math.round(best.avail)}、吃光要 ${Math.round(best.need)}${best.send !== undefined ? `、amount=${Number.isFinite(best.send) ? Math.round(best.send) : best.send}、minCmd=${Math.round(min)}` : ''}` : ''}`);
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+  earlyRows.push([g.t, b, '只剩真人', cls, B, g.terr[me]]);
 }
 // ---- t>=dpEnd（1500）吃内置 AI 的诊断（统筹广播 0005-①②）：身边有内置 AI 的决策拍里，为什么没对它出手
 // 按 buyLand 的循环顺序走到第一个非真人报价，用 evalOffers 重算的 worth / safe / keep / avail 归类；
@@ -829,6 +837,7 @@ proto.tick = function () {
       }
       c.site = fr.join('<');
       cmdsNow.push(c); shadowCmds.push(c);
+      if (kind === 'attack') lastAtkCmd.set(b, c);
     };
     g.attack = (pct, target, pl = me) => {
       if (pl !== me) return false;
@@ -846,10 +855,26 @@ proto.tick = function () {
     p.__offers = null;
     const ld0 = p.lastDonateTick;
     const nf0 = p.isNoFullSend, pc0 = p.pendingQuotaCheck ? { ...p.pendingQuotaCheck } : null;
+    const sq0 = p.shadowQuota, lc0 = lastAtkCmd.get(b) || null;
     try { p.act(g); } catch (e) { shadowLog.push({ bot: b, t: g.t, text: `[SHADOW-ERROR] ${e && e.message}` }); }
     if (nf0 === false && p.isNoFullSend) {
       const B = g.bal[me];
       nfEvents.push([g.t, b, '锁上isNoFullSend', pc0 ? `待核对出兵:发令拍=${pc0.t - 1} 想发=${Math.round(pc0.want)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 本拍余额=${B} 推算实发=${Math.max(0, pc0.bal0 - B - pc0.fee)}` : '无待核对记录', '', '', B].join('\t'));
+    }
+    if (pc0 && g.t >= pc0.t && 'shadowQuota' in p) {
+      // 复算 updateShadowQuota 末尾那段核对（余额在 act 里不变：影子指令只记不执行）
+      const B = g.bal[me];
+      let outcome = null, actual = '';
+      if (g.t > pc0.t + 6) outcome = '过期';
+      else if (B < pc0.bal0 - pc0.fee) {
+        actual = Math.max(0, pc0.bal0 - B - pc0.fee);
+        outcome = pc0.want >= 1.12 * actual && actual < pc0.bal0 - pc0.fee - 50 ? '清零' : '扣减';
+      }
+      if (outcome) {
+        const lc = lc0 && lc0.t === pc0.t - 1 ? lc0 : null;
+        qcRows.push({ t: g.t, bot: b, issueT: pc0.t - 1, target: lc ? lc.targetName : '?', pct: lc ? lc.pct : '', want: Math.round(pc0.want), bal0: pc0.bal0, fee: pc0.fee, bal: B, actual, outcome,
+          sq0: Math.round(sq0 ?? 0), sq1: Math.round(p.shadowQuota ?? 0), noFull0: nf0 ? 1 : 0, terr: g.terr[me] });
+      }
     }
     delete g.attack; delete g.donate; delete g.boat; delete g.boatTo; delete g.chase; delete g.recall; delete g.retreat;
     try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
@@ -1001,6 +1026,13 @@ fs.writeFileSync(path.join(OUT, 'shadow_log.txt'), shadowLog.map((l) => `${l.t}\
 fs.writeFileSync(path.join(OUT, 'shadow_cmds.tsv'), 't\tbot\tkind\tpct\ttarget\ttargetName\tbal\tterr\ttroops\tsite\n' + shadowCmds.map((c) => [c.t, c.bot, c.kind, c.pct, c.target, c.targetName, c.bal, c.terr, c.troops, c.site || ''].join('\t')).join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_target\twantTroops\tshadowQuota\tbal\n' + nfEvents.join('\n') + '\n');
 {
+  // 出兵后的余额核对（Policy.updateShadowQuota 末尾）：每次核对的结果
+  const cols = ['t', 'bot', 'issueT', 'target', 'pct', 'want', 'bal0', 'fee', 'bal', 'actual', 'outcome', 'sq0', 'sq1', 'noFull0', 'terr'];
+  fs.writeFileSync(path.join(OUT, 'shadow_quota_checks.tsv'), cols.join('\t') + '\n' + qcRows.map((r) => cols.map((c) => r[c]).join('\t')).join('\n') + '\n');
+  const nz = qcRows.filter((r) => r.outcome === '清零'), bad = nz.filter((r) => r.sq1 !== 0).length;
+  fs.appendFileSync(path.join(OUT, 'shadow_check.txt'), `# 出兵后的余额核对（影子）：${qcRows.length} 次，清零 ${nz.length} 次（策略对象里的影子配额当拍不是 0 的 ${bad} 次）；明细 shadow_quota_checks.tsv，汇总用 99_quota_checks.py\n`);
+}
+{
   const per = new Map();
   for (const r of nfEvents) { const [t, b, ev] = r.split('\t'); const o = per.get(b) || { lock: null, block: 0, poke: 0, firstBlock: null, lastBlock: null }; per.set(b, o); if (ev.startsWith('锁上')) { if (o.lock === null) o.lock = +t; } else { if (ev === '挡掉') o.block++; else o.poke++; if (o.firstBlock === null) o.firstBlock = +t; o.lastBlock = +t; } }
   const line = [...per].map(([b, o]) => `${b}: 锁上@${o.lock ?? '-'} 之后被挡 ${o.block} 次、改 1 兵试探 ${o.poke} 次${o.firstBlock !== null ? `（t=${o.firstBlock}~${o.lastBlock}）` : ''}`).join('；');
@@ -1022,6 +1054,7 @@ fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_
   E.push(`#       「参照我方队友」的 ${T.sbMate} 拍里，最好的目标每格成本 ≤3 兵（几乎是空地）的 ${T.cheap || 0} 拍，这些目标当时平均 ${T.cheap ? Math.round(T.cheapTerr / T.cheap) : 0} 格`);
   if (earlyEx.length) { E.push('# 例子（每 50 拍取一条）'); E.push(...earlyEx.slice(0, 60)); }
   fs.writeFileSync(path.join(OUT, 'shadow_early.txt'), E.join('\n') + '\n');
+  fs.writeFileSync(path.join(OUT, 'shadow_early.tsv'), ['t\tbot\tscene\tcls\tbal\tterr', ...earlyRows.map((r) => r.join('\t'))].join('\n') + '\n');
   {
     const EH = [`# ${mid} t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 ${SRC}；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）`];
     if (earlyHumanDiag.err) EH.push(`# 诊断出错：${earlyHumanDiag.err}`);

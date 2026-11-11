@@ -357,6 +357,7 @@ def load_match(mid, with_replay=True, use_sim=True):
         first = min(ticks, key=lambda s: s['t'])
         last = max(ticks, key=lambda s: s['t'])
         best, bestScore = None, None
+        tight = []
         for me, b in M.bots.items():
             if not b.traj:
                 continue
@@ -378,6 +379,15 @@ def load_match(mid, with_replay=True, use_sim=True):
             score = rel + gap / 4000
             if bestScore is None or score < bestScore:
                 best, bestScore = me, score
+            # 小号的领土 90 拍里能翻倍（B018：Uzbek 228 → 379 格），领土接不上时看计数器：
+            # 紧挨着的下一条快照、cmds 和 boats 几乎没动、这个号在此之前没有阵亡行
+            dead = b.result and b.result.get('event') == 'died' and (b.result.get('tick') or 0) < first['t']
+            if not dead and gap <= 180 and (first['cmds'] - p['cmds']) + (first['boats'] - p['boats']) <= 12:
+                tight.append((me, score))
+        if (best is None or bestScore >= 0.6) and len(tight) == 1:
+            best, bestScore = tight[0]
+            bestScore = min(bestScore, 0.599)
+            M.renameByCounters = getattr(M, 'renameByCounters', []) + [(name, best)]
         if best is not None and bestScore < 0.6:
             name2me[name] = best
             M.bots[best].names.append(name)

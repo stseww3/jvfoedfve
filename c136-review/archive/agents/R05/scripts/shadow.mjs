@@ -20,7 +20,10 @@
 //        [--offers 1600,2400]   在这些拍、对每个号打印 buyLand 的报价表（worth / cheap / over 与每条报价的每格价、标志位、safeAt），
 //                               标出 L5359 价格门收口的位置（只在专门的冷启动探针里用）
 //        [--unlock]             对照影子：每拍调用前把 isNoFullSend 清回 false（看「没被误锁」时同一局面下决策差在哪）
-//        [--mids tryDonateToTeammate]  对名字含该串的函数，按号×窗口统计「出口行」和「途中 continue/break 行」各命中多少个决策拍
+//        [--mids tryDonateToTeammate]  （可逗号分隔多个：--mids buyLand,tryDonateToTeammate）对名字含该串的函数，按号×窗口统计「出口行」和「途中 continue/break 行」各命中多少个决策拍
+//        [--tc 600:1500]        决策拍分类：对窗口内每个号的每个决策拍记一行（写进 --json 的 tc[]）：四周有什么（中立边/机器人/敌方真人/队友）、
+//                               有没有过得了留底的机器人目标（与 --floor 同一套复刻）、safeFinite 占存兵、留底由谁定、当拍影子发了什么。
+//                               tick_attrib.py 用它把 600–1500 的每个决策拍归到「没目标 / 留底锁 / 发了没落地 / 发了迟到落空 / 发了有效」。
 //        [--per-tick N]         适配层受理口径：每个号每拍最多受理 N 条指令，超出的返回 false（不计入「影子想发」）。
 //                               默认 1：按 1 条/拍受理时影子指令数与策略自报 cmds= 逐号相等（A065：2055 对 2054，10 号里 9 号全等；
 //                               不限时 2096）。--per-tick 0 = 不限。汇总行 [每拍限 N 条] 列出同一拍被挤掉的指令及挤掉它的指令。
@@ -38,6 +41,7 @@ const dumpT = new Set(String(val('--dump', '')).split(',').filter(Boolean).map(N
 const nbT = new Set(String(val('--nb', '')).split(',').filter(Boolean).map(Number));
 const cold = args.includes('--cold');
 const midsFn = val('--mids', '');
+const MIDS_FNS = String(midsFn).split(',').filter(Boolean); // 可以逗号分隔多个函数名（子串）
 const unlock = args.includes('--unlock');
 const PER_TICK = +val('--per-tick', 1);
 const DROPS = [];
@@ -225,6 +229,68 @@ function callTree(hits) {
 const short = (fn) => fn.replace(/^Policy\./, '').replace(/^(General|Style|V13|V17|Strategy)\./, '$1.');
 
 const floorT = new Set(String(val('--floor', '')).split(',').filter(Boolean).map(Number));
+const TC = args.includes('--tc') ? String(val('--tc')).split(':').map(Number) : null;
+const SENDX = new Map(); // `${300 拍窗}|${号}|${Policy.send 出口行}|${isNoFullSend}` → 次数
+const SENDB = new Map(); // `${300 拍窗}|${号}|${Strategy.send 出口行}` → 次数（最底层的发送函数）
+const tcOut = [];
+function tickClass(g, b, p, B, t, cmds, tree) {
+  const pol = b.policy;
+  const r = { t, bot: b.name, B, L: g.terr[p], neut: pol.neutral | 0, nBot: 0, botLand: 0, nBotCheap: 0, nEH: 0, nMate: 0, busyBot: 0, busyNeut: g.hasAttack(p, NEUTRAL) ? 1 : 0, slots: g.atkCount[p], canHit: 0, sb: null, setter: '', need: null, cmds: cmds.map((c) => [c.k, c.q === undefined ? -1 : c.q, c.troops || 0]) };
+  let best = null;
+  for (const q of pol.nb || []) {
+    if (!g.alive[q] || !g.terr[q]) continue;
+    if (g.isBot(q)) {
+      r.nBot++; r.botLand += g.terr[q];
+      if (g.bal[q] <= 0.25 * g.terr[q] + 50) r.nBotCheap++;
+      if (g.hasAttack(p, q)) r.busyBot++;
+      try {
+        if (!g.hasFreeSlot(q) || g.hasAttack(q, p)) continue;
+        const th = pol.threatOf(g, q);
+        if (th.neutral || !Number.isFinite(th.minOther)) continue;
+        const tw = threatWho(g, pol, q);
+        let who = tw.who;
+        if (!(who >= 0 && g.bal[who] + g.attackTroopsOn(who, q) === th.minOther)) {
+          who = -1;
+          for (let o = 0; o < g.players; o++) if (o !== p && o !== q && g.alive[o] && g.bal[o] + g.attackTroopsOn(o, q) === th.minOther) { who = o; if (o < R0.H) break; }
+        }
+        const need = th.minOther - g.attackTroopsOn(p, q);
+        if (!best || need > best.need) best = { need, q, who };
+      } catch {}
+    } else if (pol.isTeammate && pol.isTeammate(g, q)) r.nMate++;
+    else r.nEH++;
+  }
+  try { r.sb = pol.safeFinite(g); } catch {}
+  try {
+    const fl = pol.floors(g); const minCmd = pol.minCmd(g);
+    for (const q of pol.nb || []) {
+      if (!g.alive[q] || !g.terr[q] || pol.person(g, q)) continue;
+      if (!pol.allow(g, q)) continue;
+      const price = pol.price(g, q);
+      const avail = B - pol.floorFor(g, q, fl.floorAt(price));
+      if (!(avail <= pol.minShare(g, q) * B || avail < minCmd)) r.canHit++;
+    }
+  } catch { r.canHit = -1; }
+  if (best) {
+    const w = best.who;
+    r.need = best.need;
+    r.setter = w < 0 ? '?' : globalThis.__SQ.has(w) ? '我方号' : w >= R0.H ? '机器人' : (g.teams && g.teams[p] > 0 && g.teams[w] === g.teams[p]) ? '路人队友' : '敌方真人';
+  }
+  const leaf = tree.length ? tree[tree.length - 1] : null;
+  r.exit = leaf ? `${short(leaf.fn)}:${leaf.exit ?? 'end'}` : '';
+  // 通用出手路径（1500 拍前各版本都走 General.act → pickTarget）：General.act 的出口行、pickTarget 循环里命中过的 continue 行
+  const pts = tree.filter((n) => /pickTarget$/.test(n.fn));
+  r.pt = pts.length ? [...new Set(pts.flatMap((n) => n.mids))] : null;
+  const ga = tree.find((n) => n.fn === 'General.act');
+  r.ga = ga ? (ga.exit ?? 'end') : null;
+  // Policy.send 的出口行（配额闸拒发 = 不是最后那句 return ok 的出口）；当拍的 isNoFullSend 标志和影子配额
+  const ps = tree.filter((n) => short(n.fn) === 'send');
+  r.ps = ps.length ? ps.map((n) => n.exit ?? 'end') : null;
+  r.nfs = pol.isNoFullSend ? 1 : 0; r.sq = Math.round(pol.shadowQuota || 0);
+  // 最底层 Strategy.send 的出口行（c110：531 = 同一目标 15 拍冷却拒发；自然结束 = 真的调用了 g.attack）
+  const ss = tree.filter((n) => n.fn === 'Strategy.send');
+  r.ss = ss.length ? ss.map((n) => n.exit ?? 'end') : null;
+  return r;
+}
 // 复刻 threatOf（策略 417–443 行）并返回「机器人 q 的其它邻居里最弱的是谁」
 function threatWho(g, pol, q) {
   const B = g.border[q], px = g.px, own = g.own, d = g.dir4, me = pol.me;
@@ -250,13 +316,16 @@ function threatWho(g, pol, q) {
 }
 const FL = { n: 0, locked: 0, fullLock: 0, setter: {}, botLand: 0, half: 0, halfSetter: {}, lowFloor: 0 };
 // Policy.send 里「isNoFullSend 锁定后 shadowQuota 不够 → 不发」的两个 return false 行（Vb/Vc 3858、3861；Va 同行号；c110 没有这段）
-const GUARD = new Set(ver === 'c110' ? [] : [3858, 3861]);
+const GUARD = new Set(ver === 'c110' ? [3868, 3871] : [3858, 3861]); // Policy.send 里配额闸拒发的两个 return false
 const R0 = { H: 512, names: [], tag: (q) => `${String(R0.names[q] ?? '').slice(0, 14)}#${q}` };
 const R = simulate(mid, {
   maxTick: Math.min(T1, 1e9),
   onStart(g, { names, H }) {
     g.online = true;
-    g.names = names;
+    // 录像头的名字表有 512 项，真人之后的项是「最后一个真人的名字」的填充；c110 按名字认队内兄弟（isOurSquadBot → analyze 里不算邻居），
+    // 最后一个真人恰好是我方号时（B010 的 Khiva#94），全部 AI 机器人都会被影子当成兄弟而永不进攻。真实客户端照常打机器人
+    // （B010 录像里我方号对机器人的进攻 100+ 条），所以这里只给真人名字。
+    g.names = names.slice(0, H);
     R0.H = H; R0.names = names;
     const sq = squadIds(mid, names, H).squad;
     globalThis.__SQ = new Set(sq.keys());
@@ -307,9 +376,11 @@ const R = simulate(mid, {
       if (midsFn) {
         const key = `${b.name}|${Math.floor(t / WIN) * WIN}`;
         for (const n of tree) {
-          if (!n.fn.includes(midsFn)) continue;
-          if (!MIDS.has(key)) MIDS.set(key, { n: 0, exit: new Map(), mid: new Map() });
-          const M = MIDS.get(key); M.n++;
+          const mf = MIDS_FNS.find((x) => n.fn.includes(x));
+          if (!mf) continue;
+          const key2 = MIDS_FNS.length > 1 ? `${mf}@${key}` : key;
+          if (!MIDS.has(key2)) MIDS.set(key2, { n: 0, exit: new Map(), mid: new Map() });
+          const M = MIDS.get(key2); M.n++;
           const ex = n.exit ?? 'end'; M.exit.set(ex, (M.exit.get(ex) || 0) + 1);
           for (const l of new Set(n.mids)) M.mid.set(l, (M.mid.get(l) || 0) + 1);
         }
@@ -322,6 +393,11 @@ const R = simulate(mid, {
       if (tree.length) { W.n++; W.sig.set(sig, (W.sig.get(sig) || 0) + 1); }
       for (const c of cmds) { const key = `${c.k}→${c.q === NEUTRAL ? '中立' : c.q >= R0.H ? '机器人' : c.q === undefined ? '-' : R0.tag(c.q)}`; const e = W.cmds.get(key) || [0, 0]; e[0]++; e[1] += c.troops || 0; W.cmds.set(key, e); }
       if (cmds.length || dumpT.has(t)) ticksOut.push({ t, bot: b.name, bal: B, terr: g.terr[p], cmds, sig });
+      // 配额闸（isNoFullSend）第一次置位的拍；Policy.send 各出口行按 300 拍计数（全程，不限 --tc 窗口）
+      if (b.policy.isNoFullSend && b.nfsAt === undefined) b.nfsAt = t;
+      for (const n of tree) if (short(n.fn) === 'send') { const k = `${Math.floor(t / 300) * 300}|${b.name}|${n.exit ?? 'end'}|${b.policy.isNoFullSend ? 1 : 0}`; SENDX.set(k, (SENDX.get(k) || 0) + 1); }
+      for (const n of tree) if (n.fn === 'Strategy.send') { const k = `${Math.floor(t / 300) * 300}|${b.name}|${n.exit ?? 'end'}`; SENDB.set(k, (SENDB.get(k) || 0) + 1); }
+      if (TC && t >= TC[0] && t < TC[1] && (tree.length > 2 || cmds.length)) { try { tcOut.push(tickClass(g, b, p, B, t, cmds, tree)); } catch (e) { if (!globalThis.__tcErr) { globalThis.__tcErr = 1; console.error('决策拍分类异常', e.stack.split('\n').slice(0, 3).join(' | ')); } } }
       if (dumpT.has(t)) {
         console.log(`\n-- 轨迹 ${b.name} t=${t} 地 ${g.terr[p]} 兵 ${B} nb=${b.policy.nb?.length} neut=${b.policy.neutral} isNoFullSend=${b.policy.isNoFullSend} lastDonateTick=${b.policy.lastDonateTick}`);
         for (const n of tree) console.log(`   ${'  '.repeat(n.depth)}${n.fn} → 出口行 ${n.exit ?? '(自然结束)'}${n.mids.length ? `；途中 continue/break 行 ${n.mids.join(',')}` : ''}`);
@@ -483,8 +559,11 @@ if (PER_TICK > 0) {
   }
   console.log(`[每拍限 ${PER_TICK} 条] ${mid}: 被挤掉的指令 ${DROPS.length} 条｜${[...by.entries()].sort((a, c) => c[1][0] - a[1][0]).map(([k, [n, tr]]) => `${k} ×${n}（想出 ${Math.round(tr / 1000)}k）`).join('；') || '无'}`);
   console.log(`    按号：${[...perBot.entries()].sort((a, c) => c[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(' ') || '无'}`);
+  const w300 = new Map();
+  for (const d of DROPS) { const w = Math.floor(d.t / 300) * 300; w300.set(w, (w300.get(w) || 0) + 1); }
+  if (w300.size) console.log(`    按 300 拍：${[...w300.entries()].sort((a, c) => a[0] - c[0]).map(([w, n]) => `${w}: ${n}`).join('；')}`);
   const ws = [...win.entries()].sort((a, c) => c[1][0] - a[1][0]).slice(0, 12);
   if (ws.length) console.log(`    被挤掉的「打真人」按 号×300 拍（前 12）：${ws.map(([k, [n, tr, tg]]) => `${k}: ×${n}（${Math.round(tr / 1000)}k → ${[...tg].join('/')}）`).join('；')}`);
 }
 if (floorT.size) console.log(`[留底汇总] ${mid} 采样拍 ${[...floorT].join(',')}｜有相邻机器人的(号×拍)样本 ${FL.n}｜其中没有任何机器人目标过得了留底 ${FL.locked}（${(100 * FL.locked / Math.max(1, FL.n)).toFixed(0)}%），留底≥全部存兵 ${FL.fullLock}｜锁死样本里定留底的「最弱其它邻居」：${Object.entries(FL.setter).map(([k, v]) => `${k} ${v}`).join('，')}｜其中 safeFinite ≥ 一半存兵（留底是卡住的原因）${FL.half} 个，按定留底的邻居：${Object.entries(FL.halfSetter).map(([k, v]) => `${k} ${v}`).join('，')}；safeFinite < 一半存兵却仍无目标（别的门槛）${FL.lowFloor} 个`);
-if (args.includes('--json')) { fs.writeFileSync(val('--json'), JSON.stringify({ mid, ver, ticks: ticksOut, logs })); console.log(`→ ${val('--json')}`); }
+if (args.includes('--json')) { fs.writeFileSync(val('--json'), JSON.stringify({ mid, ver, ticks: ticksOut, logs, tc: tcOut, tcWin: TC, nfsAt: Object.fromEntries(bots.map((b) => [b.name, b.nfsAt ?? null])), sendExits: [...SENDX.entries()].map(([k, n]) => { const [w, bot, exit, nfs] = k.split('|'); return { w: +w, bot, exit: /^\d+$/.test(exit) ? +exit : exit, nfs: +nfs, n }; }), baseSendExits: [...SENDB.entries()].map(([k, n]) => { const [w, bot, exit] = k.split('|'); return { w: +w, bot, exit: /^\d+$/.test(exit) ? +exit : exit, n }; }), drops: DROPS.map((d) => ({ t: d.t, bot: d.bot, by: { k: d.by.k, q: d.by.q, pct: d.by.pct }, c: { k: d.c.k, q: d.c.q, pct: d.c.pct, troops: d.c.troops || 0 } })) })); console.log(`→ ${val('--json')}${TC ? `（决策拍分类 ${tcOut.length} 行，窗口 ${TC.join('–')}）` : ''}`); }

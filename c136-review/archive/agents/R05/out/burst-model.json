@@ -1,0 +1,350 @@
+{
+ "A017": {
+  "lost": 112,
+  "lostClass": {
+   "紧跟满回合": 83,
+   "紧跟未满的批": 29
+  },
+  "bursts": {
+   "full": 3,
+   "partial": 5,
+   "single": 16
+  },
+  "lostAfter": {
+   "full": 83,
+   "partial": 29,
+   "single": 0
+  },
+  "fullWithLoss": 3,
+  "partialWithLoss": 2,
+  "singleWithLoss": 0,
+  "fullBurstSize": 23,
+  "fullBurstSpan": 110,
+  "fullLagStart": 482,
+  "fullLagEnd": 213,
+  "fullLagEndMin": 110,
+  "singleLag": 19.0
+ },
+ "A021": {
+  "lost": 491,
+  "lostClass": {
+   "紧跟单条": 76,
+   "紧跟满回合": 314,
+   "紧跟未满的批": 98,
+   "紧跟满窗": 3
+  },
+  "bursts": {
+   "full": 25,
+   "partial": 17,
+   "single": 285
+  },
+  "lostAfter": {
+   "full": 317,
+   "partial": 98,
+   "single": 76
+  },
+  "fullWithLoss": 22,
+  "partialWithLoss": 6,
+  "singleWithLoss": 9,
+  "fullBurstSize": 11,
+  "fullBurstSpan": 75,
+  "fullLagStart": 166,
+  "fullLagEnd": 52,
+  "fullLagEndMin": -194,
+  "singleLag": 12
+ },
+ "A026": {
+  "lost": 1855,
+  "lostClass": {
+   "紧跟满回合": 1400,
+   "紧跟未满的批": 430,
+   "紧跟单条": 25
+  },
+  "bursts": {
+   "full": 43,
+   "partial": 30,
+   "single": 132
+  },
+  "lostAfter": {
+   "full": 1400,
+   "partial": 430,
+   "single": 25
+  },
+  "fullWithLoss": 40,
+  "partialWithLoss": 10,
+  "singleWithLoss": 1,
+  "fullBurstSize": 32,
+  "fullBurstSpan": 165,
+  "fullLagStart": 447,
+  "fullLagEnd": 165,
+  "fullLagEndMin": 2,
+  "singleLag": 16.0
+ },
+ "A034": {
+  "lost": 717,
+  "lostClass": {
+   "紧跟满回合": 513,
+   "紧跟未满的批": 185,
+   "紧跟单条": 19
+  },
+  "bursts": {
+   "full": 34,
+   "partial": 23,
+   "single": 241
+  },
+  "lostAfter": {
+   "full": 513,
+   "partial": 185,
+   "single": 19
+  },
+  "fullWithLoss": 30,
+  "partialWithLoss": 9,
+  "singleWithLoss": 4,
+  "fullBurstSize": 20.0,
+  "fullBurstSpan": 107.5,
+  "fullLagStart": 248.0,
+  "fullLagEnd": 115.0,
+  "fullLagEndMin": -205,
+  "singleLag": 14
+ },
+ "A058": {
+  "lost": 314,
+  "lostClass": {
+   "紧跟单条": 201,
+   "紧跟未满的批": 22,
+   "紧跟满回合": 91
+  },
+  "bursts": {
+   "full": 5,
+   "partial": 16,
+   "single": 171
+  },
+  "lostAfter": {
+   "full": 91,
+   "partial": 22,
+   "single": 201
+  },
+  "fullWithLoss": 5,
+  "partialWithLoss": 3,
+  "singleWithLoss": 13,
+  "fullBurstSize": 19,
+  "fullBurstSpan": 115,
+  "fullLagStart": 233,
+  "fullLagEnd": 95,
+  "fullLagEndMin": 63,
+  "singleLag": 13
+ },
+ "A065": {
+  "lost": 656,
+  "lostClass": {
+   "紧跟未满的批": 168,
+   "紧跟满回合": 452,
+   "紧跟单条": 36
+  },
+  "bursts": {
+   "full": 46,
+   "partial": 58,
+   "single": 372
+  },
+  "lostAfter": {
+   "full": 452,
+   "partial": 168,
+   "single": 36
+  },
+  "fullWithLoss": 36,
+  "partialWithLoss": 19,
+  "singleWithLoss": 6,
+  "fullBurstSize": 20.0,
+  "fullBurstSpan": 97.5,
+  "fullLagStart": 237.0,
+  "fullLagEnd": 141.5,
+  "fullLagEndMin": -1532,
+  "singleLag": 14.0
+ },
+ "A093": {
+  "lost": 248,
+  "lostClass": {
+   "紧跟满回合": 227,
+   "紧跟单条": 3,
+   "紧跟未满的批": 18
+  },
+  "bursts": {
+   "full": 16,
+   "partial": 20,
+   "single": 238
+  },
+  "lostAfter": {
+   "full": 227,
+   "partial": 18,
+   "single": 3
+  },
+  "fullWithLoss": 13,
+  "partialWithLoss": 1,
+  "singleWithLoss": 2,
+  "fullBurstSize": 17.0,
+  "fullBurstSpan": 95.0,
+  "fullLagStart": 253.0,
+  "fullLagEnd": 132.0,
+  "fullLagEndMin": -129,
+  "singleLag": 14.0
+ },
+ "B010": {
+  "lost": 187,
+  "lostClass": {
+   "开头": 1,
+   "紧跟满回合": 25,
+   "紧跟未满的批": 72,
+   "紧跟单条": 89
+  },
+  "bursts": {
+   "full": 6,
+   "partial": 28,
+   "single": 223
+  },
+  "lostAfter": {
+   "full": 25,
+   "partial": 72,
+   "single": 89
+  },
+  "fullWithLoss": 6,
+  "partialWithLoss": 11,
+  "singleWithLoss": 32,
+  "fullBurstSize": 12.0,
+  "fullBurstSpan": 182.5,
+  "fullLagStart": 374.0,
+  "fullLagEnd": 256.5,
+  "fullLagEndMin": 0,
+  "singleLag": 15
+ },
+ "A014": {
+  "lost": 39,
+  "lostClass": {
+   "紧跟未满的批": 18,
+   "紧跟单条": 16,
+   "紧跟满回合": 5
+  },
+  "bursts": {
+   "full": 7,
+   "partial": 21,
+   "single": 339
+  },
+  "lostAfter": {
+   "full": 5,
+   "partial": 18,
+   "single": 16
+  },
+  "fullWithLoss": 2,
+  "partialWithLoss": 5,
+  "singleWithLoss": 7,
+  "fullBurstSize": 9,
+  "fullBurstSpan": 40,
+  "fullLagStart": 124,
+  "fullLagEnd": 84,
+  "fullLagEndMin": 21,
+  "singleLag": 13
+ },
+ "A030": {
+  "lost": 77,
+  "lostClass": {
+   "紧跟单条": 60,
+   "紧跟未满的批": 8,
+   "紧跟满回合": 7,
+   "紧跟满窗": 2
+  },
+  "bursts": {
+   "full": 3,
+   "partial": 21,
+   "single": 367
+  },
+  "lostAfter": {
+   "full": 9,
+   "partial": 8,
+   "single": 60
+  },
+  "fullWithLoss": 2,
+  "partialWithLoss": 2,
+  "singleWithLoss": 12,
+  "fullBurstSize": 7,
+  "fullBurstSpan": 75,
+  "fullLagStart": 50,
+  "fullLagEnd": 20,
+  "fullLagEndMin": -123,
+  "singleLag": 13
+ },
+ "A037": {
+  "lost": 3,
+  "lostClass": {
+   "紧跟单条": 3
+  },
+  "bursts": {
+   "full": 0,
+   "partial": 18,
+   "single": 541
+  },
+  "lostAfter": {
+   "full": 0,
+   "partial": 0,
+   "single": 3
+  },
+  "fullWithLoss": 0,
+  "partialWithLoss": 0,
+  "singleWithLoss": 3,
+  "fullBurstSize": null,
+  "fullBurstSpan": null,
+  "fullLagStart": null,
+  "fullLagEnd": null,
+  "fullLagEndMin": null,
+  "singleLag": 13
+ },
+ "A043": {
+  "lost": 1,
+  "lostClass": {
+   "紧跟单条": 1
+  },
+  "bursts": {
+   "full": 0,
+   "partial": 0,
+   "single": 138
+  },
+  "lostAfter": {
+   "full": 0,
+   "partial": 0,
+   "single": 1
+  },
+  "fullWithLoss": 0,
+  "partialWithLoss": 0,
+  "singleWithLoss": 1,
+  "fullBurstSize": null,
+  "fullBurstSpan": null,
+  "fullLagStart": null,
+  "fullLagEnd": null,
+  "fullLagEndMin": null,
+  "singleLag": 11.0
+ },
+ "A095": {
+  "lost": 12,
+  "lostClass": {
+   "紧跟未满的批": 3,
+   "紧跟单条": 9
+  },
+  "bursts": {
+   "full": 4,
+   "partial": 27,
+   "single": 315
+  },
+  "lostAfter": {
+   "full": 0,
+   "partial": 3,
+   "single": 9
+  },
+  "fullWithLoss": 0,
+  "partialWithLoss": 1,
+  "singleWithLoss": 6,
+  "fullBurstSize": 4.5,
+  "fullBurstSpan": 17.5,
+  "fullLagStart": 72.5,
+  "fullLagEnd": 55.0,
+  "fullLagEndMin": 53,
+  "singleLag": 14
+ }
+}

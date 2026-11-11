@@ -1,0 +1,120 @@
+[探针·开局段] t=800 Levi(34·队4) 地 3683 兵 13k 密 3.4 ｜策略眼里 nb=6 neut=17 ｜dpKeep=4990 safeFinite=14k（经由 Gaza Empire(331·AI)；它的另一个邻居 tu juras :)(1·队5)·敌方真人）
+        邻居 Gaza Empire(331·AI) 非真人 接38 地695 兵760 price=5.5 → L1197 可用兵 -865 <= minSend(0.2141)×兵=2715：底线 14k = max(winR 项 9084, dpKeep 4990, safeFinite 14k〔经由 Gaza Empire(331·AI) 的另一个邻居 tu juras :)(1·队5)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 tu juras :)(1·队5) 真人 接21 地5014 兵14k price=11.2 → L1197 可用兵 -22k 不足（底线 34k）
+        邻居 Afrasiyab Dynasty(138·AI) 非真人 接2 地432 兵1055 price=9.8 → L2147 botOk=false：botPx=6.3 > winWorth=5.5（=winR×t×自己密度）
+        邻居 State of Muskogee(226·AI) 非真人 接18 地829 兵876 price=5.4 → L1197 可用兵 -865 <= minSend(0.2141)×兵=2715：底线 14k = max(winR 项 8933, dpKeep 4990, safeFinite 14k〔经由 Gaza Empire(331·AI) 的另一个邻居 tu juras :)(1·队5)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Qajar Dynasty(425·AI) 非真人 接32 地754 兵2953 price=14.5 → L2147 botOk=false：botPx=9.0 > winWorth=5.5（=winR×t×自己密度）
+        邻居 Supreme Junta(237·AI) 非真人 接27 地677 兵719 price=5.4 → L1197 可用兵 -865 <= minSend(0.2141)×兵=2715：底线 14k = max(winR 项 8955, dpKeep 4990, safeFinite 14k〔经由 Gaza Empire(331·AI) 的另一个邻居 tu juras :)(1·队5)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Transvaal(38·队6) 地 5050 兵 25k 密 4.9 ｜策略眼里 nb=12 neut=0 ｜dpKeep=11k safeFinite=28k（经由 Hephthalite Empire(349·AI)；它的另一个邻居 Player 981(29·队1)·敌方真人）
+        邻居 Transkei(112·AI) 非真人 接13 地177 兵183 price=5.3 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 796(17·队3) 真人 接5 地4250 兵9732 price=9.3 → L1197 可用兵 -39k 不足（底线 64k）
+        邻居 Konbaung Dynasty(379·AI) 非真人 接11 地387 兵402 price=5.3 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Egyptian Empire(322·AI) 非真人 接29 地135 兵149 price=5.5 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Aq Qoyunlu(276·AI) 非真人 接8 地764 兵2348 price=11.8 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 21k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Mahdist State(51·AI) 非真人 接12 地348 兵375 price=5.4 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Libyan Arab Republic(59·AI) 非真人 接32 地555 兵588 price=5.4 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Sheikhdom of Kuwait(141·AI) 非真人 接41 地807 兵853 price=5.4 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Kwararafa(90·AI) 非真人 接45 地776 兵801 price=5.3 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Rozwi Empire(434·AI) 非真人 接40 地983 兵1008 price=5.3 → L1197 可用兵 -2948 <= minSend(0.2141)×兵=5333：底线 28k = max(winR 项 11k, dpKeep 11k, safeFinite 28k〔经由 Hephthalite Empire(349·AI) 的另一个邻居 Player 981(29·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Hephthalite Empire(349·AI) 非真人 接57 地611 兵2498 price=15.1 → L2147 botOk=false：botPx=9.3 > winWorth=8.9（=winR×t×自己密度）
+        邻居 Player 981(29·队1) 真人 接32 地4418 兵28k price=22.2 → L1197 可用兵 -68k 不足（底线 93k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Levi(34·队4) 地 5015 兵 17k 密 3.5 ｜策略眼里 nb=4 neut=26 ｜dpKeep=4572 safeFinite=555（经由 Qajar Dynasty(425·AI)；它的另一个邻居 Afrasiyab Dynasty(138·AI)·内置AI）
+        邻居 Afrasiyab Dynasty(138·AI) 非真人 接16 地503 兵555 price=5.5 → L1200 已在打它
+        邻居 Qajar Dynasty(425·AI) 非真人 接61 地1242 兵1318 price=5.4 → L1208 可出兵 4887
+        邻居 tu juras :)(1·队5) 真人 接61 地6553 兵16k price=9.6 → L1197 可用兵 -23k 不足（底线 40k）
+        邻居 State of Muskogee(226·AI) 非真人 接4 地527 兵566 price=5.4 → L1200 已在打它
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Transvaal(38·队6) 地 5050 兵 40k 密 7.9 ｜策略眼里 nb=10 neut=4 ｜dpKeep=16k safeFinite=33k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Streltsy(40·队2)·我方号·异队）
+        邻居 Player 796(17·队3) 真人 接21 地4723 兵23k price=17.3 → L1197 可用兵 -33k 不足（底线 73k）
+        邻居 Konbaung Dynasty(379·AI) 非真人 接5 地285 兵291 price=5.3 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9639, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Egyptian Empire(322·AI) 非真人 接32 地162 兵176 price=5.5 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9933, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Aq Qoyunlu(276·AI) 非真人 接10 地906 兵994 price=5.5 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9981, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接13 地377 兵390 price=5.3 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9699, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Libyan Arab Republic(59·AI) 非真人 接32 地582 兵647 price=5.6 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 10k, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Sheikhdom of Kuwait(141·AI) 非真人 接41 地843 兵908 price=5.4 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9891, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kwararafa(90·AI) 非真人 接44 地747 兵769 price=5.3 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 9677, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Rozwi Empire(434·AI) 非真人 接40 地856 兵1806 price=8.7 → L1197 可用兵 6383 <= minSend(0.2141)×兵=8521：底线 33k = max(winR 项 15k, dpKeep 16k, safeFinite 33k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 981(29·队1) 真人 接85 地5857 兵37k price=22.0 → L1197 可用兵 -53k 不足（底线 92k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Levi(34·队4) 地 7373 兵 19k 密 2.6 ｜策略眼里 nb=5 neut=18 ｜dpKeep=6666 safeFinite=243（经由 Kachari Kingdom(368·AI)；它的另一个邻居 Dutch Empire(321·AI)·内置AI）
+        邻居 Ghaznavid Dynasty(335·AI) 非真人 接12 地291 兵310 price=5.4 → L1200 已在打它
+        邻居 Dutch Empire(321·AI) 非真人 接20 地243 兵243 price=5.2 → L1199 need<=0
+        邻居 Kachari Kingdom(368·AI) 非真人 接11 地313 兵341 price=5.5 → L1208 可出兵 1184
+        邻居 Durrani Empire(320·AI) 非真人 接20 地610 兵638 price=5.3 → L1208 可出兵 2562
+        邻居 tu juras :)(1·队5) 真人 接91 地7803 兵23k price=11.4 → L1197 可用兵 -51k 不足（底线 70k）
+        影子 act() 这一拍发出：攻→Durrani Empire(320·AI) 135‰ 2567
+[探针·开局段] t=1100 Transvaal(38·队6) 地 6140 兵 52k 密 8.4 ｜策略眼里 nb=8 neut=17 ｜dpKeep=21k safeFinite=44k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Streltsy(40·队2)·我方号·异队）
+        邻居 Libyan Arab Republic(59·AI) 非真人 接26 地224 兵236 price=5.3 → L1197 可用兵 8033 <= minSend(0.2141)×兵=11k：底线 44k = max(winR 项 11k, dpKeep 21k, safeFinite 44k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Sheikhdom of Kuwait(141·AI) 非真人 接43 地317 兵646 price=8.5 → L1197 可用兵 8033 <= minSend(0.2141)×兵=11k：底线 44k = max(winR 项 16k, dpKeep 21k, safeFinite 44k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 796(17·队3) 真人 接43 地4723 兵37k price=27.1 → L1197 可用兵 -87k 不足（底线 139k）
+        邻居 Aq Qoyunlu(276·AI) 非真人 接4 地350 兵0 price=2.0 → L1197 可用兵 8033 <= minSend(0.2141)×兵=11k：底线 44k = max(winR 项 5582, dpKeep 21k, safeFinite 44k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接11 地318 兵697 price=9.0 → L1197 可用兵 8033 <= minSend(0.2141)×兵=11k：底线 44k = max(winR 项 16k, dpKeep 21k, safeFinite 44k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kwararafa(90·AI) 非真人 接50 地806 兵829 price=5.3 → L1197 可用兵 8033 <= minSend(0.2141)×兵=11k：底线 44k = max(winR 项 11k, dpKeep 21k, safeFinite 44k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Streltsy(40·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 518(4·队3) 真人 接12 地8256 兵37k price=16.3 → L1197 可用兵 -31k 不足（底线 83k）
+        邻居 Player 981(29·队1) 真人 接120 地7765 兵47k price=21.2 → L1197 可用兵 -57k 不足（底线 108k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Levi(34·队4) 地 7974 兵 37k 密 4.7 ｜策略眼里 nb=5 neut=0 ｜dpKeep=44k safeFinite=34k（经由 Mauryan Empire(401·AI)；它的另一个邻居 Prussia(37·队5)·我方号·异队）
+        邻居 Ghaznavid Dynasty(335·AI) 非真人 接24 地154 兵70 price=3.4 → L1197 可用兵 -6815 <= minSend(0.2141)×兵=7944：底线 44k = max(winR 项 10k, dpKeep 44k, safeFinite 34k〔经由 Mauryan Empire(401·AI) 的另一个邻居 Prussia(37·队5)·我方号·异队〕)
+        邻居 [NABOO] Theed(23·队2) 真人 接36 地3424 兵90k price=86.2 → L1197 可用兵 -362k 不足（底线 399k）
+        邻居 Travancore(161·AI) 非真人 接11 地1517 兵1555 price=5.3 → L1197 可用兵 -6815 <= minSend(0.2141)×兵=7944：底线 44k = max(winR 项 14k, dpKeep 44k, safeFinite 34k〔经由 Mauryan Empire(401·AI) 的另一个邻居 Prussia(37·队5)·我方号·异队〕)
+        邻居 tu juras :)(1·队5) 真人 接96 地8868 兵26k price=11.5 → L1197 可用兵 -39k 不足（底线 76k）
+        邻居 Mauryan Empire(401·AI) 非真人 接3 地336 兵670 price=8.4 → L1197 可用兵 -6815 <= minSend(0.2141)×兵=7944：底线 44k = max(winR 项 20k, dpKeep 44k, safeFinite 34k〔经由 Mauryan Empire(401·AI) 的另一个邻居 Prussia(37·队5)·我方号·异队〕)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Macedon(32·队4) 地 8250 兵 44k 密 5.3 ｜策略眼里 nb=3 neut=0 ｜dpKeep=48k safeFinite=4051（经由 Muisca Confederation(232·AI)；它的另一个邻居 Duchy of Lucca(259·AI)·内置AI）
+        邻居 [NABOO] Theed(23·队2) 真人 接63 地3775 兵97k price=84.6 → L1197 可用兵 -369k 不足（底线 413k）
+        邻居 Muisca Confederation(232·AI) 非真人 接37 地542 兵1066 price=8.3 → L1197 可用兵 -4200 <= minSend(0.2141)×兵=9333：底线 48k = max(winR 项 20k, dpKeep 48k, safeFinite 4051〔经由 Muisca Confederation(232·AI) 的另一个邻居 Duchy of Lucca(259·AI)·内置AI〕)
+        邻居 Jab13(8·队6) 真人 接87 地7654 兵55k price=25.2 → L1197 可用兵 -129k 不足（底线 173k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Transvaal(38·队6) 地 7322 兵 65k 密 8.9 ｜策略眼里 nb=4 neut=0 ｜dpKeep=31k safeFinite=0
+        邻居 Player 981(29·队1) 真人 接143 地9040 兵67k price=25.7 → L1197 可用兵 -91k 不足（底线 157k）
+        邻居 Player 518(4·队3) 真人 接30 地8876 兵56k price=22.1 → L1197 可用兵 -70k 不足（底线 135k）
+        邻居 Player 796(17·队3) 真人 接59 地5088 兵31k price=21.5 → L1197 可用兵 -66k 不足（底线 131k）
+        邻居 Ashikaga Shogunate(122·AI) 非真人 接23 地1002 兵2670 price=10.5 → L1200 已在打它
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Levi(34·队4) 地 7974 兵 60k 密 7.5 ｜策略眼里 nb=4 neut=0 ｜dpKeep=60k safeFinite=221（经由 Timurid Empire(475·AI)；它的另一个邻居 Kingdom of Matamba(103·AI)·内置AI）
+        邻居 Timurid Empire(475·AI) 非真人 接10 地381 兵412 price=5.4 → L1197 可用兵 -318 <= minSend(0.2141)×兵=13k：底线 60k = max(winR 项 13k, dpKeep 60k, safeFinite 221〔经由 Timurid Empire(475·AI) 的另一个邻居 Kingdom of Matamba(103·AI)·内置AI〕)
+        邻居 [NABOO] Theed(23·队2) 真人 接36 地4209 兵119k price=92.4 → L1197 可用兵 -339k 不足（底线 399k）
+        邻居 Travancore(161·AI) 非真人 接10 地1844 兵4074 price=9.1 → L1197 可用兵 -318 <= minSend(0.2141)×兵=13k：底线 60k = max(winR 项 20k, dpKeep 60k, safeFinite 221〔经由 Timurid Empire(475·AI) 的另一个邻居 Kingdom of Matamba(103·AI)·内置AI〕)
+        邻居 tu juras :)(1·队5) 真人 接111 地10154 兵42k price=15.1 → L1197 可用兵 -41k 不足（底线 100k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1250 Macedon(32·队4) 地 8250 兵 70k 密 8.4 ｜策略眼里 nb=3 neut=0 ｜dpKeep=64k safeFinite=127k（经由 Duchy of Lucca(259·AI)；它的另一个邻居 [NABOO] Theed(23·队2)·敌方真人）
+        邻居 [NABOO] Theed(23·队2) 真人 接63 地4762 兵127k price=87.1 → L1197 可用兵 -343k 不足（底线 413k）
+        邻居 Duchy of Lucca(259·AI) 非真人 接37 地1814 兵5494 price=11.7 → L1197 可用兵 -57k <= minSend(0.2141)×兵=15k：底线 127k = max(winR 项 24k, dpKeep 64k, safeFinite 127k〔经由 Duchy of Lucca(259·AI) 的另一个邻居 [NABOO] Theed(23·队2)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Jab13(8·队6) 真人 接87 地7822 兵90k price=39.0 → L1197 可用兵 -199k 不足（底线 268k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Transvaal(38·队6) 地 7684 兵 102k 密 13.2 ｜策略眼里 nb=4 neut=1 ｜dpKeep=50k safeFinite=5974（经由 North Sea Empire(410·AI)；它的另一个邻居 Player 796(17·队3)·敌方真人）
+        邻居 North Sea Empire(410·AI) 非真人 接5 地1393 兵1398 price=5.2 → L1208 可出兵 4760
+        邻居 Player 796(17·队3) 真人 接79 地5387 兵5974 price=5.5 → L1197 可用兵 -57k 不足（底线 159k）
+        邻居 Player 518(4·队3) 真人 接71 地10308 兵80k price=26.7 → L1197 可用兵 -69k 不足（底线 171k）
+        邻居 Player 981(29·队1) 真人 接143 地9091 兵101k price=37.5 → L1197 可用兵 -139k 不足（底线 240k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Levi(34·队4) 地 8040 兵 85k 密 10.6 ｜策略眼里 nb=2 neut=0 ｜dpKeep=76k safeFinite=0
+        邻居 tu juras :)(1·队5) 真人 接129 地13612 兵42k price=11.8 → L1197 可用兵 6298 不足（底线 79k）
+        邻居 [NABOO] Theed(23·队2) 真人 接38 地5319 兵148k price=91.0 → L1197 可用兵 -317k 不足（底线 402k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1350 Macedon(32·队4) 地 8250 兵 102k 密 12.4 ｜策略眼里 nb=3 neut=0 ｜dpKeep=83k safeFinite=161k（经由 Duchy of Lucca(259·AI)；它的另一个邻居 [NABOO] Theed(23·队2)·敌方真人）
+        邻居 [NABOO] Theed(23·队2) 真人 接62 地5932 兵161k price=88.6 → L1197 可用兵 -310k 不足（底线 413k）
+        邻居 Duchy of Lucca(259·AI) 非真人 接38 地1986 兵0 price=2.0 → L1197 可用兵 -58k <= minSend(0.2141)×兵=22k：底线 161k = max(winR 项 6111, dpKeep 83k, safeFinite 161k〔经由 Duchy of Lucca(259·AI) 的另一个邻居 [NABOO] Theed(23·队2)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Jab13(8·队6) 真人 接87 地7822 兵130k price=55.0 → L1197 可用兵 -276k 不足（底线 378k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Transvaal(38·队6) 地 7797 兵 141k 密 18.1 ｜策略眼里 nb=3 neut=0 ｜dpKeep=73k safeFinite=0
+        邻居 Player 796(17·队3) 真人 接74 地2158 兵1913 price=4.8 → L1197 可用兵 -84k 不足（底线 226k）
+        邻居 Player 518(4·队3) 真人 接76 地10434 兵113k price=36.6 → L1197 可用兵 -96k 不足（底线 238k）
+        邻居 Player 981(29·队1) 真人 接143 地9091 兵142k price=51.9 → L1197 可用兵 -196k 不足（底线 337k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Levi(34·队4) 地 8089 兵 114k 密 14.1 ｜策略眼里 nb=2 neut=0 ｜dpKeep=92k safeFinite=0
+        邻居 tu juras :)(1·队5) 真人 接129 地15504 兵58k price=13.9 → L1197 可用兵 21k 不足（底线 94k）
+        邻居 [NABOO] Theed(23·队2) 真人 接38 地6858 兵176k price=84.2 → L1197 可用兵 -290k 不足（底线 404k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1450 Macedon(32·队4) 地 8250 兵 142k 密 17.2 ｜策略眼里 nb=3 neut=0 ｜dpKeep=98k safeFinite=187k（经由 Duchy of Lucca(259·AI)；它的另一个邻居 [NABOO] Theed(23·队2)·敌方真人）
+        邻居 [NABOO] Theed(23·队2) 真人 接61 地7594 兵187k price=80.7 → L1197 可用兵 -271k 不足（底线 413k）
+        邻居 Duchy of Lucca(259·AI) 非真人 接39 地2154 兵0 price=2.0 → L1197 可用兵 -45k <= minSend(0.2141)×兵=30k：底线 187k = max(winR 项 5690, dpKeep 98k, safeFinite 187k〔经由 Duchy of Lucca(259·AI) 的另一个邻居 [NABOO] Theed(23·队2)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Jab13(8·队6) 真人 接87 地7822 兵177k price=74.2 → L1197 可用兵 -271k 不足（底线 413k）
+        影子 act() 这一拍发出：无
+B021: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=1440，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B021: 影子重演到 t=1460，耗时 1.6s；日志快照核对 182/182；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Macedon@1022，Transvaal@1092，Levi@786｜始终为假：无
