@@ -13,6 +13,7 @@
 节：
   [XD-A] 样本   [XD-B] 秩相关（Spearman）   [XD-C] 按剂量三分位看结果   [XD-D] 几乎没有卡顿的局   [XD-E] 赢的局和没赢的局
   [XD-F] 贴边 / 房间大小 和结果的秩相关（混杂项）   [XD-G] 不靠卡顿的两个量（挨着白给的 AI 出不出手、每条派多少）
+  [XD-H] 留底门槛的剂量（被留底挡住的样本占比）和结果、和卡顿剂量的关系；门槛 × 卡顿 两层交叉
 """
 import json
 import os
@@ -102,6 +103,9 @@ def main():
             d["SIZE"] = sz["own"][2] / sz["own"][0]
         if sz and sz["wild"][0] >= 20:
             d["SIZEW"] = sz["wild"][2] / sz["wild"][0]
+        for k_src, k_dst in (("gateShare", "GATE"), ("sbShare", "SB"), ("allowedHit", "ALLOWHIT")):
+            if r.get(k_src) is not None:
+                d[k_dst] = r[k_src]
         rows.append(d)
     out = []
     P = out.append
@@ -187,10 +191,48 @@ def main():
             pr = [(d[k], d[res]) for d in lowlag if k in d and d.get(res) is not None]
             P(f"    几乎不卡的局里 {k} × {res} | {f2(spearman(*zip(*pr)) if len(pr) >= 5 else None)}（{len(pr)}）")
 
+    P("")
+    P("[XD-H] 留底门槛的剂量（xtruth [XT-J]）：GATE = own 挨着白给的内置 AI 的样本里，被留底（地价项 / dpKeep / sb）挡住的占比；SB = 其中 AI 仇恨项 sb 的占比；")
+    P("  ALLOWHIT = 规则放行的样本里 90 拍内出手的比例（放行了却没出手 = 指令通道那一层）")
+    for k in ("GATE", "SB", "ALLOWHIT"):
+        v = sorted(d[k] for d in rows if k in d)
+        P(f"  {k}：{len(v)} 局，中位 {med(v):.2f}，下四分位 {v[len(v) // 4]:.2f}，上四分位 {v[3 * len(v) // 4]:.2f}，最小 {v[0]:.2f}，最大 {v[-1]:.2f}")
+    gate = {}
+    for k in ("GATE", "SB", "ALLOWHIT"):
+        for res in ("R1500", "DROP", "AISHARE", "ACT"):
+            cells = []
+            for sel_name, sel in (("all", rows), ("squad10", [d for d in rows if d["cohort"] == "squad10"]), ("squad20", [d for d in rows if d["cohort"] == "squad20"])):
+                pr = [(d[k], d[res]) for d in sel if k in d and d.get(res) is not None]
+                rho = spearman(*zip(*pr)) if len(pr) >= 5 else None
+                cells.append(f"{f2(rho)}（{len(pr)}）")
+                gate[f"{k}|{res}|{sel_name}"] = dict(rho=rho, n=len(pr))
+            P(f"  {k} × {res} | 全部 {cells[0]} | squad10 {cells[1]} | squad20 {cells[2]}")
+        for dose in "ABC":
+            pr = [(d[k], d[dose]) for d in rows if k in d and dose in d]
+            P(f"  {k} × 剂量 {dose} | {f2(spearman(*zip(*pr)) if len(pr) >= 5 else None)}（{len(pr)}）")
+    both = [d for d in rows if "GATE" in d and "B" in d and d.get("R1500") is not None]
+    if both:
+        gm, bm = med([d["GATE"] for d in both]), med([d["B"] for d in both])
+        P(f"  两层交叉（{len(both)} 局；GATE 以中位 {gm:.2f} 分、没生效占比 B 以中位 {bm:.2f} 分）：格 | 局数 | R1500 中位 | AISHARE 中位 | ACT 中位 | 主队赢")
+        for gn, gf in (("门槛轻", lambda d: d["GATE"] <= gm), ("门槛重", lambda d: d["GATE"] > gm)):
+            for bn, bf in (("卡得轻", lambda d: d["B"] <= bm), ("卡得重", lambda d: d["B"] > bm)):
+                part = [d for d in both if gf(d) and bf(d)]
+                P(f"    {gn} × {bn} | {len(part)} | {f2(med([d['R1500'] for d in part]))} | {f2(med([d['AISHARE'] for d in part if d.get('AISHARE') is not None]))} | "
+                  f"{f2(med([d['ACT'] for d in part if 'ACT' in d]))} | {sum(1 for d in part if d['won'])}")
+                gate[f"cross|{gn}|{bn}"] = dict(n=len(part), R1500=med([d["R1500"] for d in part]), AISHARE=med([d["AISHARE"] for d in part if d.get("AISHARE") is not None]),
+                                               won=sum(1 for d in part if d["won"]))
+    for k in ("GATE", "SB"):
+        for res in ("R1500", "AISHARE", "ACT"):
+            pr = [(d[k], d[res]) for d in lowlag if k in d and d.get(res) is not None]
+            P(f"    几乎不卡的局里 {k} × {res} | {f2(spearman(*zip(*pr)) if len(pr) >= 5 else None)}（{len(pr)}）")
+    P("  几乎不卡的局逐局：局 | GATE | SB | ALLOWHIT | ACT | R1500 | AISHARE")
+    for d in sorted(lowlag, key=lambda d: d.get("GATE", 9)):
+        P(f"    {d['matchId']}（{d['cohort']}{'，赢' if d['won'] else ''}） | {f2(d.get('GATE'))} | {f2(d.get('SB'))} | {f2(d.get('ALLOWHIT'))} | {f2(d.get('ACT'))} | {f2(d.get('R1500'))} | {f2(d.get('AISHARE'))}")
+
     with open(os.path.join(OUT, "xdose.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "xdose.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm]), f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
 
