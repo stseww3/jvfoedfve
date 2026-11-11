@@ -122,6 +122,21 @@ DEFS["NEW-R03-SE04"] = {
 }
 
 
+# ---- A071 起新增 ----
+DEFS["NEW-R03-DN03"] = {
+    "prefix": "DN",
+    "name": "被围的后排把兵捐给比自己还密的前线号：受捐方已过软上限，税照收，双方利息合计下降",
+    "sameAs": ["NEW-DN-14（R08，喂给已经超软上限的号）", "NEW-R01-DN10（yield_opt_dispatch 落地后双方利息合计下降）", "统筹 0005 号广播第 ④ 项（yield_opt_dispatch 的净利息）",
+               "NEW-R03-EC01（同一件事在捐出方那一头的后果）"],
+    "definition": "Policy.tryDonateToTeammate（Vb L4325-4518）对 boxedIn 的捐方放得很宽：产出档（Case B，L4479-4481）只要自己密度 ≥58，受捐方有敌邻时密度 ≤140（没有敌邻 ≤128）都算合格——L4476-4478 的注释写的是「被围的捐方密度 ≥98、受捐方必须低于 92×领土」，代码里是 58 和 128/140；"
+                  "紧急档（Case A，L4463-4466）受捐方只要正在被真人打（L4457：在途 ≥ 受捐方余额的 6%，或受捐方密度 <88），被围捐方密度 ≥30（有海岸 42）就捐，留底 22/32×领土（L4386-4388）。两档都不比较双方密度（L4481、L4466 的 dMe ≥ dAlly+16 只对没被围的捐方生效）。"
+                  "受捐方过了软上限（100×领土）之后每多一个兵利息是负的，硬上限 150×领土 处利息为零。"
+                  "计：调度条数里受捐方密度 > 捐方密度的条数、受捐方密度 ≥100 的条数；成交笔数、到账、税；落地当拍双方「每 10 拍利息」合计变化 ≤0 的笔数；受捐方随后的出手（报价对 worth、烧兵、得地）。",
+    "detect": "dispatchq.py <局> [--to 号]（events.csv 的调度行：类型、boxedIn、dMe、dAlly；数 dAlly > dMe 与 dAlly ≥ 100 的条数）+ pingpong.py <局> 第 [1][3] 段（逐对到账/税、落地当拍利息合计变化）"
+              "+ acts.py <局> <受捐号> <t0> <t1> --sent（受捐方出手时的 over、报价、worth）。",
+}
+
+
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]
     return {"proposedId": pid, "prefix": d["prefix"], "name": d["name"], "sameAs": list(d["sameAs"]) + list(extra_same or []),
