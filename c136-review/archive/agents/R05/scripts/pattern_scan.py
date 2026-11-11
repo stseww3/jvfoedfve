@@ -39,6 +39,8 @@
  C 时钟落后   同一盘里各号 [HL-TICK] 按日志行号排序，每条：领先号当时的本地拍 − 本号本地拍（≥0，90 拍一档）。
               列：中位、P90、最大；落后 ≥180 拍的号数。只反映「号与号之间」的差，全体一起慢看不出来。
  X 中途离场   录像里我方号的离场指令（早于终局前 60 拍）；results.csv 的 left 行；离场时客户端落后 = 离场指令拍 − 结果行本地拍。
+ P 回合容量   服务器每 7 拍一个回合，指令只在回合的第一拍执行（录像里全部指令的执行拍都是 7 的倍数）。
+              统计「一个玩家在一个回合里执行了几条指令」（选点、离场除外）的分布，我方号和其他真人分开。只进 --agg。
  G 中段增长   timeline.csv：编队合计地 630 拍 → 1500 拍的倍数；1500 拍编队份额 ÷ 人数份额（在录像盘的号数 ÷ 真人数；拆盘局不算）。
 """
 import bisect
@@ -156,12 +158,15 @@ def scan(mid):
     natk = collections.defaultdict(list)    # 号 → [(拍, pct)] 打中立
     atk = collections.defaultdict(list)     # 号 → (拍, 目标)
     leave = {}
+    rnd = (collections.Counter(), collections.Counter())      # (我方号, 其他真人)：(玩家, 执行拍) → 这一个回合执行了几条
     for r in csv.DictReader(open(f'{CMDS}/{mid}.tsv', encoding='utf-8'), delimiter='\t'):
         p = int(r['player'])
         b = pid2bot.get(p)
+        t, i = int(r['tick']), int(r['id'])
+        if t >= 0 and i not in (0, 8, 9) and p < H:
+            rnd[0 if b is not None else 1][(p, t)] += 1
         if b is None:
             continue
-        t, i = int(r['tick']), int(r['id'])
         if i in (1, 3, 5):
             ab[b].append(t)
             if i == 1:
@@ -353,6 +358,7 @@ def scan(mid):
         'baseWin': card.get('baseWinExpectation'), 'won': card['outcome']['resultLabel'] == 'won',
         'L': [{'period': PN[i], 'samples': nsamp[i], 'p50': q(lag[i], 0.5), 'p90': q(lag[i], 0.9), 'max': max(lag[i]) if lag[i] else None,
                'late90': sum(1 for d in lag[i] if d >= 90) + never[i], 'never': never[i], 'backlogMax': max(backlog[i]) if backlog[i] else None} for i in range(len(PER))],
+        'P': [{str(k): v for k, v in sorted(collections.Counter(c.values()).items())} for c in rnd],
         'lateBots': len(bots_late), 'L300': sorted([w, v[0], v[1]] for w, v in w300.items()),
         'O': {'n': len(obase), 'p50': q(obase, 0.5), 'max': max(obase) if obase else None},
         'M': [{'period': PN[i], 'n': len(mdel[i]), 'p50': q(mdel[i], 0.5), 'p90': q(mdel[i], 0.9), 'max': max(mdel[i]) if mdel[i] else None} for i in range(len(PER))],
@@ -555,6 +561,15 @@ if doagg:
                     pool[w][3] += 1 if late / n >= 0.25 else 0
         print('L 每 300 拍（各局采样合并；括号里 = 该窗迟到采样 ≥25% 的局数/有采样的局数）：'
               + '；'.join(f"{w}: {100 * v[1] / v[0]:.0f}%（{v[3]}/{v[2]}）" for w, v in sorted(pool.items())) + '。')
+        for who, idx in (('我方号', 0), ('其他真人', 1)):
+            cc = collections.Counter()
+            for o in G:
+                for kk, v in o['P'][idx].items():
+                    cc[int(kk)] += v
+            tot = sum(cc.values())
+            if tot:
+                print(f"P 回合容量·{who}：有指令的（玩家×回合）{tot:,} 个；一个回合执行的条数 → 个数：" + '、'.join(f"{kk} 条 {cc[kk]:,}" for kk in sorted(cc))
+                      + f"；≥3 条的占 {100 * sum(v for kk, v in cc.items() if kk >= 3) / tot:.2f}%，8–9 条的 {sum(v for kk, v in cc.items() if kk >= 8):,} 个，最大 {max(cc)} 条。")
         C = [o for o in G if o['covered'] and o['N']['issued']]
         if C:
             nv = [o['N']['never'] / o['N']['issued'] for o in C]

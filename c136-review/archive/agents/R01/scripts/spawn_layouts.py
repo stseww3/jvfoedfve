@@ -47,6 +47,7 @@ def main():
     ap.add_argument('--log', default=None)
     ap.add_argument('--near', type=float, default=40)
     ap.add_argument('--brief', action='store_true')
+    ap.add_argument('--json', action='store_true', help='把汇总数写到 out/<mid>/spawn_layouts.json（给 M6 跨局表用）')
     a = ap.parse_args()
     logs = (a.log or a.mid).split(',')
     od = os.path.join(HERE, '..', 'out', a.mid)
@@ -58,6 +59,11 @@ def main():
     my_team = teams[next(iter(squad.values()))]
 
     solves = read_solves(logs)
+    # 同局还有另一支编队时（A057 的重演把 B038 的 20 个号也算进 squad），只留协调器名单里出现过的号
+    roster = {b for sv in solves for b in sv['pos']}
+    if roster:
+        squad = {b: p for b, p in squad.items() if b in roster}
+        seat2bot = {p: b for b, p in squad.items()}
     versions = []          # 不同的落点表
     for s in solves:
         key = tuple(sorted(s['pos'].items()))
@@ -78,7 +84,7 @@ def main():
         cmds[int(r['player'])].append((st, px % W, px // W))
         max_step = max(max_step, st)
     for v in cmds.values():
-        v.sort()
+        v.sort(key=lambda c: c[0])   # 只按步排（稳定排序）：同一步里的多条出生指令保持录像里的先后，最后一条生效
 
     print(f'== {a.mid} 协调器求解 {len(solves)} 次，不同的落点表 {len(versions)} 份；录像里出生指令最晚在出生阶段第 {max_step} 步')
     prev = None
@@ -161,6 +167,26 @@ def main():
             s += '  <<< 落点选在已经落地的敌方真人旁边'
         print(s)
     print(f'   {a.near:.0f} 像素内有“当时已落地的敌方真人”的号：{flagged}/{len(bots)}')
+    if a.json:
+        v1 = versions[0]['pos'] if versions else {}
+        vl = versions[-1]['pos'] if versions else {}
+        landed_of = lambda pos: sum(1 for b, q in pos.items() if b in squad and any((x, y) == q for _, x, y in cmds.get(squad[b], [])))
+        out = {
+            'mid': a.mid, 'solves': len(solves), 'layouts': len(versions), 'lastSpawnStep': max_step,
+            'v1Bots': sum(1 for b in v1 if b in squad), 'v1Landed': landed_of(v1),
+            'squad': len(squad), 'noSpawnCmd': sum(1 for b, q in squad.items() if not cmds.get(q)),
+            'spawnCmdsPerBot': sorted(len(cmds.get(q, [])) for q in squad.values()),
+            # 收场时站在“最后一份表”给的点上的号数；站的点不在任何一份表里的号数；收场的阵由几种版本组合拼成
+            'onLast': sum(1 for b, f in final.items() if vl.get(b) == f['xy']), 'offTable': sum(1 for f in final.values() if not f['v']),
+            'finalGroups': len(by_v),
+            'pairMin': round(pd[0][0]) if pd else None, 'pairMed': round(pd[len(pd) // 2][0]) if pd else None, 'pairMax': round(pd[-1][0]) if pd else None,
+            'nearPairs': sum(1 for d, x, y in pd if d < a.near), 'nearEnemy': flagged, 'near': a.near,
+            # 最后一条落地的出生指令是同一个像素的对；其中两个点不出自同一份表的对
+            'samePixelPairs': sum(1 for d, x, y in pd if d == 0),
+            'samePixelDiffVersion': sum(1 for d, x, y in pd if d == 0 and not [i for i in final[x]['v'] if i in final[y]['v']]),
+        }
+        json.dump(out, open(os.path.join(od, 'spawn_layouts.json'), 'w'), ensure_ascii=False)
+        print(f'# 已写 out/{a.mid}/spawn_layouts.json')
 
 
 if __name__ == '__main__':

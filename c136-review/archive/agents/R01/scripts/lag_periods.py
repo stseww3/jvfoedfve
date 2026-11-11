@@ -2,7 +2,7 @@
 """lag_periods.py — 一局的“延迟硬账”（总部 0007 第 2 条），按时段 0–600 / 600–1500 / 1500–3000 / 3000+ 出四张表。
 只读 out/<局号>/ 下的重演产物：shadow_cmds.csv（影子策略每个决策拍想发的令；ok=1 是页面闸门放行的）、
 shadow_match.csv（录像里本队每条落地指令，能对上影子决策的带决策拍和延迟）、shadow_check.csv（日志 HL-TICK 里页面自己数的 cmds/boats）。
-用法：python3 scripts/lag_periods.py <局号> [--periods 0-600,600-1500,1500-3000,3000-99999] [--confirm 21] [--json]
+用法：python3 scripts/lag_periods.py <局号> [--periods 0-600,600-1500,1500-3000,3000-99999] [--confirm 21] [--tag land] [--json]
   表 1 指令延迟（按决策拍分段）：影子放行的陆攻+捐兵 → 在录像里定位到的落地 → 落地率；延迟 = 落地拍 − 决策拍 的 P50/P90/最大。
   表 2 漏斗（按拍分段）：影子想发（含闸门拦下的）/ 影子放行 / 页面日志 cmds 增量（本地拍）/ 录像落地（陆攻+捐兵+船）。
   表 3 迟到扑空（按落地拍分段，只算陆攻）：落地条数、生效条数、落地时目标已不在（引擎改打无主地）的条数、一兵未扣的条数；
@@ -23,7 +23,9 @@ periods = [tuple(map(int, w.split('-'))) for w in opt('periods', '0-600,600-1500
 confirm = int(opt('confirm', '21'))
 D = os.path.join(HERE, '..', 'out', mid)
 rd = lambda f: list(csv.DictReader(open(os.path.join(D, f), encoding='utf8'))) if os.path.exists(os.path.join(D, f)) else []
-cmds, match, check = rd('shadow_cmds.csv'), rd('shadow_match.csv'), rd('shadow_check.csv')
+tag = opt('tag', '')  # --tag land：读 shadow_*_land.csv（A031 的默认输出是旧核对口径，land 口径才和日志逐点全同）
+sfx = '_' + tag if tag else ''
+cmds, match, check = rd(f'shadow_cmds{sfx}.csv'), rd(f'shadow_match{sfx}.csv'), rd(f'shadow_check{sfx}.csv')
 fnum = lambda x: float(x) if x not in ('', None) else 0.0
 
 
@@ -38,13 +40,20 @@ def pname(t0, t1):
     return f'{t0}+' if t1 >= 99999 else f'{t0}–{t1}'
 
 
-out = {'mid': mid, 'periods': {}}
+out = {'mid': mid, 'tag': tag, 'periods': {}}
 print(f'== {mid} 表 1 指令延迟（按决策拍分段；影子放行的陆攻+捐兵）：放行 / 定位到落地 / 落地率；延迟 P50 / P90 / 最大（拍）')
 for t0, t1 in periods:
     acc = [r for r in cmds if r['ok'] == '1' and r['kind'] in ('attack', 'donate') and t0 <= int(r['t']) < t1]
     lags = [int(r['landedAt']) - int(r['t']) for r in acc if r['landedAt']]
     print(f'   {pname(t0, t1):>10s} 放行 {len(acc):5d} 落地 {len(lags):5d} ({100 * len(lags) / max(1, len(acc)):5.1f}%)  延迟 {q(lags, .5)} / {q(lags, .9)} / {max(lags) if lags else "-"}')
     out['periods'][pname(t0, t1)] = {'accepted': len(acc), 'landed': len(lags), 'p50': q(lags, .5), 'p90': q(lags, .9), 'max': max(lags) if lags else None}
+    # 分开陆攻和捐兵：捐兵不落地多半是引擎的捐款额度拒收（不进录像），和迟到是两回事
+    for kind, key in (('attack', 'a'), ('donate', 'd')):
+        ak = [r for r in acc if r['kind'] == kind]
+        lk = [int(r['landedAt']) - int(r['t']) for r in ak if r['landedAt']]
+        out['periods'][pname(t0, t1)].update({key + 'Acc': len(ak), key + 'Land': len(lk), key + 'P50': q(lk, .5), key + 'P90': q(lk, .9), key + 'Max': max(lk) if lk else None})
+    o = out['periods'][pname(t0, t1)]
+    print(f'   {"":>10s}   其中陆攻 {o["aAcc"]:5d}→{o["aLand"]:5d} ({100 * o["aLand"] / max(1, o["aAcc"]):5.1f}%) 延迟 {o["aP50"]} / {o["aP90"]}；捐兵 {o["dAcc"]:5d}→{o["dLand"]:5d} ({100 * o["dLand"] / max(1, o["dAcc"]):5.1f}%)')
 
 print(f'== {mid} 表 1b 指令延迟（按落地拍分段；录像里本队落地的陆攻+捐兵）：落地 / 能对上决策拍 / 延迟 P50 / P90 / 最大（拍）')
 for t0, t1 in periods:

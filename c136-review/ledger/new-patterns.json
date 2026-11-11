@@ -1007,6 +1007,38 @@
   ]
  },
  {
+  "matchId": "B043",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-OP05",
+  "prefix": "OP",
+  "name": "1500 拍前 dpKeep 按最强真人邻居的全部余额留兵：小号挨着大号时保底线高于余额",
+  "definition": "t < dpEnd(1500)。winFloor = max(每格价项, dpKeep, safeFinite)，其中 dpKeep = (最强真人邻居的余额 + 它打我的在途兵 − 1.5×我的领土) / 1.78，不看接壤长度、对方有没有在打我、对方有没有别的敌邻。判定：连续 ≥30 个决策拍 winFloor ≥ 余额且取自 dpKeep，期间身边有单价 < 5 的 AI 地。",
+  "detect": "shadow.mjs --probe <号>:<t0>:<t1> + probe_view.py --safe（winFloor、dpKeep 两列和“保底线 ≥ 余额”列）；attrib3.py 的 dpKeep 计数",
+  "instances": [
+   {
+    "matchId": "B043",
+    "t": 1285,
+    "note": "Jordan 1285–1495 拍 49 个决策拍：dpKeep 38892–85219（按只接壤 40 格的 さっしー 的余额），自己 33897–60570；全队 600–1500 拍 dpKeep 锁住 89 个决策拍"
+   }
+  ]
+ },
+ {
+  "matchId": "B043",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT14",
+  "prefix": "AT",
+  "name": "进攻线上的兵不撤回：目标死后继续打无主地，家里挨打时余额不到进攻线的一成",
+  "definition": "某号进攻线上的兵 ≥ 家里余额的 5 倍并持续 ≥90 拍，期间被真人进攻、领土掉 ≥30%，本号没有发过 retreat。c110 里 g.retreat 只在 hold()（holdOn=0，关着）和 flash-loan 分支里调用。",
+  "detect": "resim_squad.csv：atkOut 列的兵合计对 bal 列，atkIn 列非空；replay_cmds.csv 里该席位 kind=retreat 的条数",
+  "instances": [
+   {
+    "matchId": "B043",
+    "t": 1890,
+    "note": "Srivijaya 1800–2040 拍进攻线 29.6–30.4 万、家里 0.4–2.4 万；CatNap 一条船（1867 拍登陆 49993 兵）加一条陆攻令（2016 拍约 5.9 万兵），3808→0 格"
+   }
+  ]
+ },
+ {
   "matchId": "A025",
   "reviewer": "R03",
   "proposedId": "NEW-R03-DN02",
@@ -10247,6 +10279,605 @@
    {
     "t": 2100,
     "bot": "Cleopatra"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:SP-seat-never-starts",
+  "definition": "席位在日志里只有 HL-SPAWN 行：整局没有 HL-OPENING、没有 HL-TICK 快照（没有走出选点阶段）",
+  "detectionSketch": "make_review 的 context.neverPlayed（没有对局阶段录像时按日志判）；digest slots 按槽位列生效选点 / 日志行数。本局槽位 15、16、18、19；B045 槽位 16~19",
+  "instances": [
+   {
+    "t": 0,
+    "bot": "Cossack"
+   },
+   {
+    "t": 0,
+    "bot": "Spike"
+   },
+   {
+    "t": 0,
+    "bot": "Impostor"
+   },
+   {
+    "t": 0,
+    "bot": "Swabia"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:SP-squad-stack",
+  "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+  "detectionSketch": "digest picks 的 near 表；digest spawn 末尾两行（叠着的号与其余号 t≈630 的领土）",
+  "instances": [
+   {
+    "t": 0,
+    "bot": "CtrlAltDel"
+   },
+   {
+    "t": 0,
+    "bot": "Merina"
+   },
+   {
+    "t": 0,
+    "bot": "Chagatai"
+   },
+   {
+    "t": 0,
+    "bot": "Schumacher"
+   },
+   {
+    "t": 0,
+    "bot": "JohnMarston"
+   },
+   {
+    "t": 0,
+    "bot": "Maple Leaf"
+   },
+   {
+    "t": 0,
+    "bot": "StarLord"
+   },
+   {
+    "t": 0,
+    "bot": "Creeper"
+   },
+   {
+    "t": 0,
+    "bot": "Cossack"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:SP-stale-pick-lands",
+  "definition": "录像里的出生点不是日志最后一条 HL-SPAWN 的坐标：最后一版选点没赶上选点阶段结束，或同一步落地的一批选点倒序执行、生效的是更早下发的一条",
+  "detectionSketch": "latency.py <id> spawn：本局 13/20 个号",
+  "instances": [
+   {
+    "t": 0,
+    "bot": "13 个号"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:OP-cycle-open",
+  "definition": "开局周期出兵按时执行且 t=630 单号领土中位不低于同局其余真人中位",
+  "detectionSketch": "本局录像只到选点阶段，后一半验证不了",
+  "instances": [
+   {
+    "t": 630,
+    "bot": "16 个在场号"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:PL-protect-box",
+  "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着名字在池里的异队号/空壳或撞名内置 AI",
+  "detectionSketch": "无录像：日志 nb=0 && neut=0 且同局有异队编队号（digest boxed）；本局同像素出生的 3 个号",
+  "instances": [
+   {
+    "t": 810,
+    "bot": "Creeper"
+   },
+   {
+    "t": 900,
+    "bot": "Chagatai"
+   },
+   {
+    "t": 180,
+    "bot": "JohnMarston"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:IO-client-behind",
+  "definition": "本机拍比服务器拍落后 >=90 拍（结算行的墙上时刻 × 各号当时打印到的本机拍）",
+  "detectionSketch": "logdigest wallms：本局服务器拍约 1,132 时 16 个号落后 142~232 拍",
+  "instances": [
+   {
+    "t": 900,
+    "bot": "16 个在场号"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:IO-stale-pulse-dump",
+  "definition": "发令不见效 → 集中清仓：日志 cmds 在涨而余额贴着纯利息预测、领土不动；随后相邻快照间余额跌到预测的一半以下而领土没丢",
+  "detectionSketch": "logdigest stale（有误报，见 contamination）+ zerodrop（零新令的余额下跌：本局 9 段，8 段在 t=1440~1800）+ sentchk（cmds 没有漏数）",
+  "instances": [
+   {
+    "t": 1710,
+    "bot": "CtrlAltDel"
+   },
+   {
+    "t": 1620,
+    "bot": "Merina"
+   },
+   {
+    "t": 1440,
+    "bot": "Batman"
+   },
+   {
+    "t": 1440,
+    "bot": "Kamchatka"
+   },
+   {
+    "t": 1620,
+    "bot": "Samurai"
+   },
+   {
+    "t": 1440,
+    "bot": "StarLord"
+   },
+   {
+    "t": 1440,
+    "bot": "Maple Leaf"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AT-dump-then-dead",
+  "definition": "一个快照间隔内余额跌到纯利息预测的一半以下（出兵所致，领土没丢、没有回弹），之后 300 拍内阵亡",
+  "detectionSketch": "logdigest stale 的清仓行里「N 拍后阵亡」；本局 Batman 142 拍、Maple Leaf 219 拍在 300 拍内，Merina 332 拍、CtrlAltDel 447 拍略超",
+  "instances": [
+   {
+    "t": 1800,
+    "bot": "Batman"
+   },
+   {
+    "t": 1530,
+    "bot": "Maple Leaf"
+   },
+   {
+    "t": 1800,
+    "bot": "Merina"
+   },
+   {
+    "t": 1800,
+    "bot": "CtrlAltDel"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AT-collapse-harvest",
+  "definition": "t>=630，相邻快照无主邻格从 0 跳到 >=8（一个邻居崩盘，剩下的地变成无主地），从跳变前一个快照起 270 拍内领土 >=1.2 倍",
+  "detectionSketch": "logdigest harvest [t0]：本局 7 次 +12,997 格，其中起点 t>=1440 的 4 次 +8,285 格、净支出约 125 万",
+  "instances": [
+   {
+    "t": 1710,
+    "bot": "Samurai"
+   },
+   {
+    "t": 1890,
+    "bot": "Creeper"
+   },
+   {
+    "t": 3330,
+    "bot": "Samurai"
+   },
+   {
+    "t": 3330,
+    "bot": "Kamchatka"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AT-cheap-burst",
+  "definition": "一个快照间隔内 >=3 条出兵/发船指令，这个间隔加下一个间隔领土 +25% 以上，净支出/净得格 <80 兵，且 600 拍后领土仍 >= 扩张前的 1.2 倍（只用日志；对象看不到）",
+  "detectionSketch": "logdigest bursts：本局 16 次，15 次起点在 t<=1260（开局扩张）",
+  "instances": [
+   {
+    "t": 1260,
+    "bot": "Merina"
+   },
+   {
+    "t": 1440,
+    "bot": "Ashikaga"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AT-over-cap-dump",
+  "definition": "兵超过 100×领土后一次出手打掉 >=15% 余额并在 300 拍内领土 +10% 以上",
+  "detectionSketch": "无录像：密度 >100 的快照后相邻快照余额跌 >=15% 且 300 拍内领土 +10%",
+  "instances": [
+   {
+    "t": 1890,
+    "bot": "Creeper"
+   },
+   {
+    "t": 6030,
+    "bot": "JinKazama"
+   },
+   {
+    "t": 6210,
+    "bot": "JinKazama"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AT-worth-gate",
+  "definition": "有可打的邻居（nb>=1）而长时间不出手：没超软上限时 buyLand 的报价停在 L5267",
+  "detectionSketch": "无录像：日志 nb>=1、密度 <100、cmds 计数 >=300 拍不变（logdigest silent / fireband）；本局 >=450 拍的零指令段 29 段、12 个号、21,240 拍",
+  "instances": [
+   {
+    "t": 1440,
+    "bot": "Kamchatka"
+   },
+   {
+    "t": 2520,
+    "bot": "Schumacher"
+   },
+   {
+    "t": 2790,
+    "bot": "Chagatai"
+   },
+   {
+    "t": 1980,
+    "bot": "Creeper"
+   },
+   {
+    "t": 1080,
+    "bot": "Samurai"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:EC-thin-big-target",
+  "definition": "密度 <12 连续 >=450 拍，其间领土到过在场我方号中位的 2 倍以上且 nb>=1；到顶之后 300 拍内领土跌 >=40%",
+  "detectionSketch": "logdigest thinbig：本局 1 段（KUKU）；Merina 的 14,129 格只撑了 152 拍，不满 450 拍",
+  "instances": [
+   {
+    "t": 2250,
+    "bot": "KUKU"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:EC-boxed-cap",
+  "definition": "没有敌方真人邻居、没有无主邻格且密度 >=95 的时段（内陆闲兵）；按该时段因超软上限少拿的利息计量",
+  "detectionSketch": "日志：nb==0 && neut==0 && dens>=95（digest boxed）：本局 66 个快照（Heihachi 38、Ashikaga 16、JinKazama 9、Creeper 3）",
+  "instances": [
+   {
+    "t": 2970,
+    "bot": "Ashikaga"
+   },
+   {
+    "t": 6390,
+    "bot": "Heihachi"
+   },
+   {
+    "t": 2970,
+    "bot": "JinKazama"
+   },
+   {
+    "t": 1620,
+    "bot": "Creeper"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:EG-giant-neighbor-freeze",
+  "definition": "自己超软上限、有可打的邻居（nb>=1），却长时间不出手（有录像的局里这类决策拍停在 L5361：保底线 dpKeep >= 余额）",
+  "detectionSketch": "无录像：logdigest freezebound（本局 8 个号、61 个间隔，其中密度 >=114.2 的 29 个、>=142.1 的 10 个；这些间隔里丢 25,387 格）",
+  "instances": [
+   {
+    "t": 4590,
+    "bot": "JinKazama"
+   },
+   {
+    "t": 4050,
+    "bot": "Samurai"
+   },
+   {
+    "t": 3330,
+    "bot": "Schumacher"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:EG-cap-idle-death",
+  "definition": "连续 >=600 拍没有任何指令、期间密度升到 >=140，段内或之后 600 拍领土跌掉 >=25% 或阵亡",
+  "detectionSketch": "logdigest capidle：本局 1 段",
+  "instances": [
+   {
+    "t": 9000,
+    "bot": "Heihachi"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:EG-boxed-hardcap",
+  "definition": "被队友/受保护的号围住（nb=0、neut=0）且密度 >=149 连续 >=900 拍，零指令：没有邻居可打、没有合格的收款人、船也不发",
+  "detectionSketch": "快照 nb==0 && neut==0 && dens>=149 的连续段；本局 Heihachi t=9000~9720 是 720 拍（不满 900 拍，按近似实例记）",
+  "instances": [
+   {
+    "t": 9000,
+    "bot": "Heihachi"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DF-passive-death",
+  "definition": "阵亡前 >=450 拍没有任何指令，期间 nb>=1 且在丢地",
+  "detectionSketch": "logdigest silent 里「直到阵亡」的段；logdigest idleloss 的连续段（本局 >=270 拍「丢地且零出兵」：Chagatai、KUKU、Samurai、JinKazama、StarLord）",
+  "instances": [
+   {
+    "t": 1530,
+    "bot": "StarLord"
+   },
+   {
+    "t": 4500,
+    "bot": "KUKU"
+   },
+   {
+    "t": 3870,
+    "bot": "JohnMarston"
+   },
+   {
+    "t": 9630,
+    "bot": "Ashikaga"
+   },
+   {
+    "t": 7380,
+    "bot": "JinKazama"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-quota-retry-loop",
+  "definition": "同一个捐款人对同一个收款人连续 >=5 条捐款都没执行，按配额账「已用 + 需要 > 上限」；每条间隔就是捐款冷却（18~20 拍）",
+  "detectionSketch": "logdigest donlog 的「配额不够」行：本局 19 条全是 Creeper（→Schumacher 12、→Heihachi 6、→KUKU 1）",
+  "instances": [
+   {
+    "t": 1500,
+    "bot": "Creeper"
+   },
+   {
+    "t": 1740,
+    "bot": "Creeper"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-rear-to-front",
+  "definition": "被围的后排号把兵（pct>=185）捐给同队有邻居的号，且捐款被执行",
+  "detectionSketch": "logdigest donlog 里 boxedIn=true 的 surplus 行：本局 Ashikaga→JinKazama 31 笔",
+  "instances": [
+   {
+    "t": 3395,
+    "bot": "Ashikaga"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-to-overcap",
+  "definition": "收款人收款时密度已 >=100",
+  "detectionSketch": "logdigest donlog：本局 34 条，手续费 126 万、想给 412 万",
+  "instances": [
+   {
+    "t": 4170,
+    "bot": "Ashikaga"
+   },
+   {
+    "t": 5155,
+    "bot": "Ashikaga"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-pingpong",
+  "definition": "A→B 的捐款执行后 150 拍内 B→A 的捐款也执行",
+  "detectionSketch": "logdigest donlog 的「反向配对」：本局 2 对、4 笔、手续费 19.7 万",
+  "instances": [
+   {
+    "t": 3295,
+    "bot": "Samurai"
+   },
+   {
+    "t": 3315,
+    "bot": "Kamchatka"
+   },
+   {
+    "t": 4060,
+    "bot": "Samurai"
+   },
+   {
+    "t": 4075,
+    "bot": "Chagatai"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-fee-exceeds-delivery",
+  "definition": "已执行的捐款到账 < 手续费：手续费按捐款人余额的 6.25% 收，到账被收款人离硬上限的空间（150×领土−余额）截断；或 pct<64 本来就到账不及手续费",
+  "detectionSketch": "logdigest donlog：按捐款人余额链 5 笔（手续费 21.0 万、到账 16.0 万）；pct<=63 的 4 笔手续费 19.9 万、想给 18.6 万",
+  "instances": [
+   {
+    "t": 3710,
+    "bot": "Samurai"
+   },
+   {
+    "t": 4060,
+    "bot": "Samurai"
+   },
+   {
+    "t": 2840,
+    "bot": "Heihachi"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:DN-dying-donor",
+  "definition": "捐款人自己的领土在 300 拍内已跌 >=25%，仍然往外捐",
+  "detectionSketch": "捐款执行拍回看 300 拍的领土跌幅（digest deaths 的「我死前 600 拍还在捐」）",
+  "instances": [
+   {
+    "t": 4075,
+    "bot": "Chagatai"
+   },
+   {
+    "t": 4105,
+    "bot": "Chagatai"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:AS-cross-team-poke",
+  "definition": "协防戳（HL-ASSIST）是替另一支队的编队号发的",
+  "detectionSketch": "logdigest assists：本局 14 条里 11 条",
+  "instances": [
+   {
+    "t": 3355,
+    "bot": "Schumacher"
+   },
+   {
+    "t": 3945,
+    "bot": "Schumacher"
+   },
+   {
+    "t": 3980,
+    "bot": "Schumacher"
+   },
+   {
+    "t": 4370,
+    "bot": "Samurai"
+   },
+   {
+    "t": 4405,
+    "bot": "JinKazama"
+   },
+   {
+    "t": 1890,
+    "bot": "Creeper"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:BT-boxed-breakout",
+  "definition": "策略眼里 nb=0、neut=0 时发船，之后 500 拍内领土 +50% 以上",
+  "detectionSketch": "logdigest boxboats 的「突围」行：本局 5 段 67 条船、约 6.7 万兵",
+  "instances": [
+   {
+    "t": 180,
+    "bot": "JohnMarston"
+   },
+   {
+    "t": 2970,
+    "bot": "Uzbek"
+   },
+   {
+    "t": 3870,
+    "bot": "Uzbek"
+   },
+   {
+    "t": 6480,
+    "bot": "Uzbek"
+   }
+  ]
+ },
+ {
+  "matchId": "B018",
+  "reviewer": "R06",
+  "name": "NEW:BT-boxed-no-gain",
+  "definition": "被围（起点快照 nb=0 且 neut=0）时发船，相邻的这种间隔并成一段；段首到段尾 +500 拍内最高领土 < 起点的 1.05 倍",
+  "detectionSketch": "logdigest boxboats：本局 26 段 153 条船，其中没换到地的 12 段 65 条（约 232 万兵）",
+  "instances": [
+   {
+    "t": 1800,
+    "bot": "Chagatai"
+   },
+   {
+    "t": 3060,
+    "bot": "KUKU"
+   },
+   {
+    "t": 3780,
+    "bot": "KUKU"
+   },
+   {
+    "t": 2160,
+    "bot": "Heihachi"
+   },
+   {
+    "t": 6660,
+    "bot": "Heihachi"
+   },
+   {
+    "t": 8010,
+    "bot": "Heihachi"
    }
   ]
  },
