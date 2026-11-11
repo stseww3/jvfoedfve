@@ -75,6 +75,7 @@ def accounts(mid, work='/tmp/c136-r05/work'):
         out['landAccount'] = _rd({
             'source': f'scripts/land_account.mjs {mid}（每格陆地归离它最近的真人出生点；出生点 = 重放第 0 拍各人领地外接框中心）',
             'voronoi': L.get('voronoi'), 'capture': L.get('capture'), 'cellOwners': L.get('cellOwners'), 'botLand': L.get('botLand'),
+            **{k: L[k] for k in ('multiTeam', 'squadTeams', 'botTeams') if k in L},
         })
     p = f'{work}/{mid}-attrib.json'
     if os.path.exists(p):
@@ -82,5 +83,6 @@ def accounts(mid, work='/tmp/c136-r05/work'):
         out['tickAttribution'] = _rd({
             'source': f'scripts/shadow.mjs {mid} --quiet --tc 600:1500 → scripts/tick_attrib.py {mid}（每个决策拍归一类，类别互斥）',
             **{k: A.get(k) for k in ('window', 'rows', 'cats', 'layers', 'floorSetter', 'safeFiniteHalf', 'issuedByClass', 'byBot')},
+            **{k: A[k] for k in ('exits', 'ptGates', 'gaExit') if k in A},
         })
     return out

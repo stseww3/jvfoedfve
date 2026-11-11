@@ -57,6 +57,9 @@ rows = 0
 exits = defaultdict(Counter)
 gates = defaultdict(Counter)
 gaex = defaultdict(Counter)
+psx = defaultdict(Counter)      # 没发指令的拍里 Policy.send 被调用过：出口行（配额闸拒发等）
+psbot = defaultdict(Counter)
+nfs_rows = Counter()            # isNoFullSend=1 的决策拍数（全部决策拍 / 没发指令的）
 for r in tc:
     b, t = r['bot'], r['t']
     if t > last.get(b, 10 ** 9):
@@ -93,6 +96,14 @@ for r in tc:
             # pickTarget 循环里各道门（行号各版本相同的相对位置：c110 1192/1193/1195/1197/1199/1200/1202；Va/Vb 行号差几行，按出现的行号原样列）
             gates[cat][','.join(str(x) for x in sorted(pt)) or '(循环里没有 continue)'] += 1
             gaex[cat][str(r.get('ga'))] += 1
+        if r.get('ps'):
+            key = 'Policy.send ' + ','.join(str(x) for x in r['ps']) + (' → Strategy.send ' + ','.join(str(x) for x in r['ss']) if r.get('ss') else ' → 没到 Strategy.send') + ('｜isNoFullSend=1' if r.get('nfs') else '｜isNoFullSend=0')
+            psx[cat][key] += 1
+            psbot[b][key] += 1
+    if r.get('nfs') is not None:
+        nfs_rows['all'] += 1
+        if r.get('nfs'): nfs_rows['nfs1'] += 1
+        if not cmds and r.get('nfs'): nfs_rows['nfs1_nocmd'] += 1
     by_bot[b][cat] += 1
     bank[cat].append(r['B'])
 print(f'===== {mid} 决策拍归因 t={T0}–{T1}：{rows} 个 (号×决策拍)（另有 {skipped} 个是客户端没跑到的拍，不计）=====')
@@ -146,6 +157,17 @@ if '--exits' in a:
                 print(f'      {c}（{sum(gates[c].values())}）: 出口 ' + '、'.join(f'L{x} ×{v}' for x, v in gaex[c].most_common(4)) + '｜continue 行 ' + '；'.join(f'[{x}] ×{v}' for x, v in gates[c].most_common(6)))
         OUT['ptGates'] = {c: dict(v.most_common(12)) for c, v in gates.items()}
         OUT['gaExit'] = {c: dict(v) for c, v in gaex.items()}
+    if psx:
+        tot = sum(sum(v.values()) for v in psx.values())
+        print(f'   -- 没发指令、但当拍调用过 Policy.send 的决策拍 {tot} 个（{100 * tot / max(1, rows):.1f}%；send 返回 false）：Policy.send 出口行 → 最底层 Strategy.send 出口行｜当拍 isNoFullSend')
+        for c in CATS:
+            if psx.get(c):
+                print(f'      {c}（{sum(psx[c].values())}）: ' + '；'.join(f'[{x}] ×{v}' for x, v in psx[c].most_common(6)))
+        print('      逐号：' + '；'.join(f'{b} {sum(v.values())}' for b, v in sorted(psbot.items(), key=lambda kv: -sum(kv[1].values()))))
+        OUT['sendRefused'] = {'rows': tot, 'share': tot / max(1, rows), 'byCat': {c: dict(v) for c, v in psx.items()}, 'byBot': {b: sum(v.values()) for b, v in psbot.items()}}
+    if nfs_rows['all']:
+        print(f"   -- isNoFullSend=1 的决策拍 {nfs_rows['nfs1']}/{nfs_rows['all']}（{100 * nfs_rows['nfs1'] / nfs_rows['all']:.1f}%）；其中没发指令的 {nfs_rows['nfs1_nocmd']}")
+        OUT['noFullSendRows'] = dict(nfs_rows)
 if '--by-bot' in a:
     print('   -- 逐号（决策拍数：' + ' / '.join(CATS) + '）')
     for b, v in by_bot.items():
