@@ -20,6 +20,7 @@ run all_traj.txt      python3 scripts/m6_all_traj.py --csv
 run all_outcomes.txt  python3 scripts/m6_all_outcomes.py --csv
 run all_land.txt      python3 scripts/m6_all_land.py --csv --list
 run all_outcomes.txt  python3 scripts/m6_all_outcomes.py --csv     # land.csv 不参与 joined，但再跑一遍保证次序无关
+run all_coload.txt    python3 scripts/m6_all_coload.py --list
 cp out/_all/pages.csv out/_all/replay_facts.csv out/_all/traj.csv out/_all/joined.csv out/_all/land.csv "$D/"
 
 # —— 我复盘的 15 局 ——

@@ -34,7 +34,7 @@ def pct(a, b, d=0):
 
 def overview():
     jo, pg, rf = allcsv('joined.csv'), allcsv('pages.csv'), allcsv('replay_facts.csv')
-    print('| 局 | 版本·编队 | 图（陆地格）· 真人 · 队数 | 结局（终局拍） | 归类 | 编队人均相对值 630 / 1530 / 3060 / 峰值 | 600–1500 落地/放行 | 页面落后峰值（拍 @ 服务器拍） | 1500 拍前被移出 | 判定 错/对/不清 |')
+    print('| 局 | 版本·编队 | 图（陆地格）· 真人 · 队数 | 结局（终局拍） | 归类 | 编队人均相对值 630 / 1530 / 3060 / 峰值 | 600–1500 落地/放行 | 页面落后峰值（拍 @ 服务器拍；RESULT 锚点口径） | 1500 拍前被移出 | 判定 错/对/不清 |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     for m in MIDS:
         a = json.load(open(os.path.join(R, 'analysis', m + '.json')))
@@ -48,8 +48,12 @@ def overview():
         rel = '（包里混了两场）' if multi else f"{f(j.get('rel630'))} / {f(j.get('rel1530'))} / {f(j.get('rel3060'))} / {f(j.get('relPeak'))}"
         nd = '-' if multi else f(q.get('nd600_1500'))
         lv = '-' if (not q or multi) else f"{f(q.get('left1500'))}/{q.get('squad')}"
+        try:
+            lagtxt = f"{p['lagPeak']} @ {p['srvPeak']}" if float(p['lagPeak']) >= 30 else '不到 30 拍'
+        except (KeyError, ValueError):
+            lagtxt = '没有锚点'
         print(f"| {m} | {ver} · {v['squadN']} 个号 | {card['mapId']}（{card['mapLand']}）· {v['humans']} · {card['actualTeams']} | {card['outcome']['resultLabel']}（{card['outcome']['endTick']}） | {a['lossArchetype']} | "
-              f"{rel} | {nd} | {f(p.get('lagPeak'))} @ {f(p.get('srvPeak'))} | {lv} | {vd.count('error')}/{vd.count('good')}/{vd.count('unclear')} |")
+              f"{rel} | {nd} | {lagtxt} | {lv} | {vd.count('error')}/{vd.count('good')}/{vd.count('unclear')} |")
 
 
 def delay():
@@ -74,13 +78,18 @@ def delay():
     print('| 15 局合计 | ' + ' | '.join(f"{a[0]}→{a[1]}（{pct(a[1], a[0])}）；捐 {a[2]}→{a[3]}（{pct(a[3], a[2])}）" for a in agg.values()) + ' | |')
     # 迟到的代价（600–1500）
     print()
-    print('| 局 | 600–1500 落地的陆攻 | 落地时目标已不在 | 一兵未扣 | 同拍 ≥3 条的批次（条数）| 批次里最重的一拍扣掉余额的 | 21 拍内重复 |')
+    print('| 局 | 落地拍在 600–1500 的陆攻 | 落地时目标已不在 | 一兵未扣 | 同拍 ≥3 条的批次（条数）| 批次里最重的一拍扣掉余额的 | 21 拍内对同一目标重复 |')
     print('|---|---|---|---|---|---|---|')
+    T = dict(a=0, g=0, z=0, b=0, br=0, r=0, zw=0.0, w=0.0, bt=0.0)
     for m in MIDS:
         x = J(m, 'lag_periods.json')['periods'].get('600–1500')
         if not x:
             continue
         print(f"| {m} | {x['atkLanded']} | {x['targetGone']}（{pct(x['targetGone'], x['atkLanded'])}） | {x['zero']}（{pct(x['zero'], x['atkLanded'])}） | {x['batches']}（{x['batchRows']}） | {100 * x['batchWorst']:.0f}% | {x['repeat']} |")
+        T['a'] += x['atkLanded']; T['g'] += x['targetGone']; T['z'] += x['zero']; T['b'] += x['batches']; T['br'] += x['batchRows']; T['r'] += x['repeat']
+        T['zw'] += x['zeroWanted']; T['w'] += x['wantTroops']; T['bt'] += x['batchTroops']
+    print(f"| 15 局合计 | {T['a']} | {T['g']}（{pct(T['g'], T['a'])}） | {T['z']}（{pct(T['z'], T['a'])}） | {T['b']}（{T['br']}，占落地陆攻的 {pct(T['br'], T['a'])}） | | {T['r']}（{pct(T['r'], T['a'])}） |")
+    print(f"\n一兵未扣的令在决策时想出的兵合计 {T['zw']:.0f}，占同期落地令想出的兵 {T['w']:.0f} 的 {pct(T['zw'], T['w'], 1)}；批次里实扣的兵合计 {T['bt']:.0f}。")
 
 
 def land():

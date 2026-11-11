@@ -15,6 +15,7 @@
   D 出生：收场时有同像素的一对号 / 没有；有号没有任何出生指令落地 / 没有
   E 队数：2 队 / 3 队 / 4 队及以上（基准胜率不同）
   F 1530 拍人均相对值三分位
+决策耗时 = traj.csv 的 avgMs（页面自己记的每拍决策耗时的累计平均），取各号在本地 600–1500 拍最后一个快照的值的中位数；一拍的时长是 56 毫秒。
 每组给：局数、主队赢的局数、按队数的基准（各局 card.baseWinExpectation = 1/队数 相加，即“一支平均水平的队”该赢的局数）、
   rel630 / rel1530 / rel3060 的中位数、峰值份额相对值（card.peakSquadLandShare ÷ 人头占比）的中位数。
 一个包里混了两场的（replay_facts 的 multi、或同一个号的快照拍号倒退、或 seededPlayers < 10）不进分组。
@@ -44,7 +45,7 @@ def main():
     rows = []
     for mid in sorted(os.listdir(DATA)):
         card = json.load(open(os.path.join(DATA, mid, 'card.json')))
-        bots0, last_t, back = set(), {}, False
+        bots0, last_t, back, ms = set(), {}, False, {}
         tp = os.path.join(DATA, mid, 'traj.csv')
         if os.path.exists(tp):
             for x in csv.DictReader(open(tp)):
@@ -56,6 +57,11 @@ def main():
                 if t < last_t.get(x['bot'], -1):
                     back = True      # 同一个号的快照拍号倒退 = 包里混了两场
                 last_t[x['bot']] = t
+                if 600 <= t <= 1500:
+                    try:
+                        ms[x['bot']] = (float(x['avgMs']), float(x['maxMs']))   # 页面自己记的每拍决策耗时（累计平均、最大），取 600–1500 拍里最后一个快照
+                    except ValueError:
+                        pass
         q0 = rep.get(mid, {})
         multi = int(q0.get('multi') == '1' or back or (card.get('seededPlayers') or 0) < 10)
         # 编队席位数：有录像的取录像里对上的席位数（没写过快照的号也算），否则取写过快照的号数
@@ -75,6 +81,8 @@ def main():
         for t in (630, 1530, 3060):
             r[f'rel{t}'] = round(share[t] / head, 3) if head and t in share else None
         r['relPeak'] = round(card['outcome']['peakSquadLandShare'] / head, 3) if head and card['outcome'].get('peakSquadLandShare') is not None else None
+        r['avgMs'] = round(statistics.median(v[0] for v in ms.values()), 2) if ms else None
+        r['maxMs'] = round(max(v[1] for v in ms.values()), 1) if ms else None
         p, q, s = pages.get(mid, {}), rep.get(mid, {}), traj.get(mid, {})
         r['nd600_1500'] = None if multi else num(q.get('nd600_1500'))
         if r['nd600_1500'] is not None and r['nd600_1500'] > 1.15:
@@ -105,7 +113,8 @@ def main():
                 continue
             w = sum(r['won'] for r in L)
             e = sum(r['base'] or 0 for r in L)
-            print(f"   {name:<34s} {len(L):3d} 局，主队赢 {w:2d}（{100 * w / len(L):3.0f}%，按队数的基准 {e:4.1f} 局）| rel630 {med(L, 'rel630')}  rel1530 {med(L, 'rel1530')}  rel3060 {med(L, 'rel3060')}  峰值 {med(L, 'relPeak')}")
+            print(f"   {name:<34s} {len(L):3d} 局，主队赢 {w:2d}（{100 * w / len(L):3.0f}%，按队数的基准 {e:4.1f} 局）| rel630 {med(L, 'rel630')}  rel1530 {med(L, 'rel1530')}  rel3060 {med(L, 'rel3060')}  峰值 {med(L, 'relPeak')}"
+                  f" | 决策耗时 {med(L, 'avgMs')} 毫秒/拍")
 
     mm = [r['mid'] for r in rows if r['multi']]
     print(f"# 一个包里混了两场、或开局行人数不可信的 {len(mm)} 局不进下面的分组：{' '.join(mm)}")
