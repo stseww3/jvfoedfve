@@ -46,13 +46,13 @@
  "spans": [
   {
    "t0": 2142,
-   "t1": 4283,
-   "n": 31,
-   "got": 4129038,
-   "fee": 1012361,
-   "dI": 4168,
-   "recvOver": 13,
-   "recvHard": 0,
+   "t1": 4284,
+   "n": 33,
+   "got": 4602040,
+   "fee": 1129256,
+   "dI": -8726,
+   "recvOver": 15,
+   "recvHard": 1,
    "donorHard": 1,
    "lost": 0,
    "relayN": 8,
@@ -62,9 +62,9 @@
     {
      "donor": "zero_7",
      "to": "zexos1",
-     "n": 2,
-     "got": 473081,
-     "fee": 101464
+     "n": 3,
+     "got": 756767,
+     "fee": 163535
     },
     {
      "donor": "talon5",
@@ -114,6 +114,13 @@
      "n": 1,
      "got": 217542,
      "fee": 62998
+    },
+    {
+     "donor": "ryan_m",
+     "to": "zexos1",
+     "n": 1,
+     "got": 189316,
+     "fee": 54824
     },
     {
      "donor": "talon5",
@@ -196,32 +203,25 @@
   },
   {
    "t0": 4284,
-   "t1": 5400,
-   "n": 35,
-   "got": 6756595,
-   "fee": 1380954,
-   "dI": -112105,
-   "recvOver": 32,
+   "t1": 5310,
+   "n": 33,
+   "got": 5438383,
+   "fee": 1118134,
+   "dI": -132741,
+   "recvOver": 30,
    "recvHard": 1,
    "donorHard": 0,
    "lost": 0,
-   "relayN": 3,
-   "relayGot": 1499615,
-   "relayFee": 298987,
+   "relayN": 1,
+   "relayGot": 181403,
+   "relayFee": 36167,
    "pairs": [
     {
      "donor": "zero_7",
      "to": "zexos1",
-     "n": 6,
-     "got": 1496853,
-     "fee": 333531
-    },
-    {
-     "donor": "zexos1",
-     "to": "zero_7",
-     "n": 1,
-     "got": 823387,
-     "fee": 164164
+     "n": 5,
+     "got": 1002028,
+     "fee": 234875
     },
     {
      "donor": "leo_tx",
@@ -289,33 +289,33 @@
    ]
   },
   {
-   "t0": 5401,
-   "t1": 7589,
-   "n": 137,
-   "got": 64521428,
-   "fee": 14997902,
-   "dI": -32755,
-   "recvOver": 129,
+   "t0": 5310,
+   "t1": 7590,
+   "n": 139,
+   "got": 65839640,
+   "fee": 15260722,
+   "dI": -12119,
+   "recvOver": 131,
    "recvHard": 49,
    "donorHard": 49,
    "lost": 0,
-   "relayN": 108,
-   "relayGot": 58246340,
-   "relayFee": 13689743,
+   "relayN": 110,
+   "relayGot": 59564552,
+   "relayFee": 13952563,
    "pairs": [
     {
      "donor": "zexos1",
      "to": "zero_7",
-     "n": 30,
-     "got": 18567380,
-     "fee": 4922969
+     "n": 31,
+     "got": 19390767,
+     "fee": 5087133
     },
     {
      "donor": "zero_7",
      "to": "zexos1",
-     "n": 33,
-     "got": 16866311,
-     "fee": 3395825
+     "n": 34,
+     "got": 17361136,
+     "fee": 3494481
     },
     {
      "donor": "leo_tx",
