@@ -145,13 +145,11 @@
   630~900 | 434 | 381 | 188 | 193 | floor:sb:76 minShare(floor:sb):65 botOk(winWorth):38 minShare(floor:winPrice):12 need<=0:2
   900~1260 | 541 | 329 | 192 | 137 | minShare(floor:sb):61 floor:sb:56 minShare(floor:dpKeep):8 need<=0:6 botOk(winWorth):3 floor:dpKeep:3
   1260~1500 | 341 | 80 | 13 | 67 | floor:sb:32 floor:dpKeep:27 minShare(floor:sb):8
-  1500~1800 | 375 | 9 | 3 | 6 | floor:winPrice:6
   sb 挡住（全被挡且最便宜那个的原因含 floor:sb）时，sb 由谁的余额定出：窗口 | 号·点 | 本编队同队 / 本编队异队 / 另一支受控编队 / 同队真人 / 敌队真人 / 内置 AI | 其中互锁（对方同一点也被我定的 sb 挡住）| 被挡 AI 的兵为 0 的 | 吃光它所需 ≤ 自己余额 10% 的
   300~630 | 23 | 7 / 12 / 0 / 0 / 4 / 0 | 4 | 1 | 10
   630~900 | 141 | 41 / 30 / 0 / 28 / 42 / 0 | 44 | 35 | 100
   900~1260 | 117 | 31 / 29 / 0 / 11 / 46 / 0 | 30 | 82 | 114
   1260~1500 | 40 | 0 / 0 / 0 / 0 / 40 / 0 | 0 | 35 | 40
-  1500~1800 | 0 | 0 / 0 / 0 / 0 / 0 / 0 | 0 | 0 | 0
   逐号（t<1500 全被 sb 挡住的点数 ≥10 的）：号 | 点数 | 首末拍 | 定 sb 的邻居（次数）| 中位：自己余额 / sb / 被挡 AI 的格数·兵·吃光所需
   Itachi       | 50 | 350~1110 | Yoshi*~T3[squadSameTeam]×40 Trajan*T1[squadOtherTeam]×10 | 21433 / 23213 / 280·0·407
   Yoshi        | 35 | 350~1040 | Itachi*T3[squadSameTeam]×30 Trajan*T1[squadOtherTeam]×3 [APL] River_zz~T1[enemy]×2 | 22555 / 20554 / 280·0·424
@@ -164,6 +162,17 @@
   Celtic       | 17 | 510~850 | Kneel before 🇵T3[enemy]×17 | 8750 / 15486 / 553·16·857
   Spiderman    | 17 | 520~1440 | Hacker[OFF]T1[enemy]×8 Player 879~T1[enemy]×5 Bongcloud*T1[squadOtherTeam]×4 | 54607 / 105804 / 308·0·386
   Zhuge Liang  | 16 | 700~1030 | hearts/wire[OFT1[enemy]×16 | 29246 / 35040 / 655·28·1032
+
+[SJ] 1500 拍后的口粮门槛普查（影子按真值每 10 拍一次；Policy.buyLand 对非真人邻居（内置 AI 和已离开的空壳，person() = !isBot）：price = 报价 ≥ worth 被 L5267 截断；safe:sb = 可用兵 ≤ 0 且起作用的是 safeAt 里的 safeFinite（L2744-2754 → L2532-2541，非真人目标按 oppFloorCap×领土封顶）；safe:people = 起作用的是防真人留底；keep = 起作用的是按报价算的留底；minCmd(want) = 吃光它所需 1.25×need+3×边界 小于 minCmd（L5367）；minCmd(avail) / chunk = 可用兵不够；noOffer = 接壤 AI 但没有报价（进攻槽 / 目标数已满））
+  窗口 | 号·点 | 接壤 AI 的 | 至少一个 AI 过门槛或已在打 | 全被挡 | 最便宜那个被挡的原因分布
+  1500~1650 | 186 | 9 | 2 | 7 | noOffer:4 safe:people:2 safe:sb:1
+  1650~1800 | 189 | 0 | 0 | 0 | 
+  1800~2100 | 337 | 0 | 0 | 0 | 
+  2100~3000 | 714 | 16 | 0 | 16 | noOffer:16
+  safe:sb 共 1 个号·点，sb 由谁的余额定出：本编队同队 0 / 本编队异队 0 / 另一支受控编队 0 / 同队真人 0 / 敌队真人 1 / 内置 AI 0；其中按 oppFloorCap 封顶后仍挡住的 0 个
+  逐号（全被挡的点数 ≥5 的）：号 | 点数 | 首末拍 | 原因（次数）| 中位：自己余额 / minCmd / safe / 被挡 AI 的格数·兵·吃光所需
+  Zenobia      | 16 | 2850~3000 | noOffer×16 | 154706 / 7248 / 0 / 0·0·0
+  ProGamer99   | 5 | 1500~1580 | noOffer×4 safe:sb×1 | 107731 / 5048 / 0 / 0·0·0
 
 [SI] 同一次 act 里的多条指令：影子一次 act 只发 1 条的 / 发多条时的第 1 条 / 第 2 条及以后，各有多少在录像里配上了
   单条 569/941（60%） | 多条的第 1 条 12/12（100%） | 多条的第 2 条及以后 1/12（8%）

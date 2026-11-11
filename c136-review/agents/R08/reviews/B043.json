@@ -2565,7 +2565,7 @@
      "t": "1800~4680",
      "bot": "KGB/Janissary/Barbary/Hussite",
      "decision": "t=1500 之后的买地口径下，小号对任何一个邻居都出不了手，余额顶在软上限附近。",
-     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330（worth = maxW 0.5 × winRatio(t) × 参考密度；报价 c ≥ worth 且没超软上限就 break）；offers L5008-5248（c =（击杀成本+手续费）/ 可得领土）；safeAt L4524-4541（对比自己强的邻居留足余额）",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（worth = maxW 0.5 × winRatio(t) × 参考密度；报价 c ≥ worth 且没超软上限就 break）；offers L5008-5248（c =（击杀成本+手续费）/ 可得领土）；safeAt L4524-4541（对比自己强的邻居留足余额）",
      "why": "邻居是 14000~20000 格、145~223 万兵的大号，报价 215~440 兵/格，是 worth（81~105）的 2~4 倍；留底又把可用压到接近 0。4434~5211 格的号软上限只有 44~52 万兵。"
     },
     {
@@ -4523,7 +4523,7 @@
    "t": "2340~2503",
    "bot": "Jordan",
    "decision": "1870 格、密度 111 的号用 78917 兵打 122 换 1455 格，密度掉到 40；123 拍后被 squad10 的 ryan_m 吃光。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330（余额 > 100×领土时价格闸失效）",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（余额 > 100×领土时价格闸失效）",
    "verdict": "error",
    "patternId": "NEW-AT-02",
    "evidence": [
@@ -4552,7 +4552,7 @@
    "t": "2250~5070",
    "bot": "KGB/Janissary",
    "decision": "5000 格左右的号在密度 86~117 上停了 2400 拍；ProGamer99 再捐 674316 兵把 KGB 顶到密度 149.7，300 拍后照样被 Art raffiné 买走。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；safeAt L4524-4541；tryDonateToTeammate L4463-4498（盈余捐，pct=153）",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；safeAt L4524-4541；tryDonateToTeammate L4463-4498（盈余捐，pct=153）",
    "verdict": "error",
    "patternId": "NEW-EG-01",
    "evidence": [
@@ -4581,7 +4581,7 @@
    "t": "3330~6300",
    "bot": "Trajan",
    "decision": "密度到 97 以后持续吃空壳和残血邻居：Daph 6808 格（126 兵/格）、122 6234 格（204）、def helios 5559 格（199），7578→22686 格，活到 T1 获胜。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330（超软上限后放兵）；offers L5008-5248（濒死 / 失血目标报价打折）",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（超软上限后放兵）；offers L5008-5248（濒死 / 失血目标报价打折）",
    "verdict": "good",
    "patternId": "NEW-EG-G1",
    "evidence": [
@@ -4595,7 +4595,7 @@
    "t": "1442~1582",
    "bot": "Barbary",
    "decision": "全队最早从卡顿里恢复的号（1260~1800 时延中位 12 拍）：密度 62 时 5 条指令吃 Arorangi 1832 格（3.4 兵/格）和 🇮🇱 2848 格（38.9 兵/格），3934→9472 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1180-1213；Policy.buyLand L5250-5330（t≥1500）",
+   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1180-1213；Policy.buyLand L5250-5534（t≥1500）",
    "verdict": "good",
    "patternId": "NEW-AT-G1",
    "evidence": [

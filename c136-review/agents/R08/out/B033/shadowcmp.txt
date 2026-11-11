@@ -98,17 +98,31 @@
   630~900 | 222 | 186 | 81 | 105 | botOk(winWorth):62 need<=0:14 minShare(floor:winPrice):12 floor:sb:9 minShare(floor:sb):7 minShare(floor:dpKeep):1
   900~1260 | 282 | 178 | 108 | 70 | minShare(floor:sb):27 floor:sb:19 need<=0:12 floor:dpKeep:9 minShare(floor:winPrice):2 botOk(winWorth):1
   1260~1500 | 192 | 67 | 41 | 26 | floor:dpKeep:12 minShare(floor:dpKeep):7 floor:sb:4 need<=0:2 minShare(floor:sb):1
-  1500~1800 | 228 | 62 | 57 | 5 | floor:other:3 minShare(floor:winPrice):2
   sb 挡住（全被挡且最便宜那个的原因含 floor:sb）时，sb 由谁的余额定出：窗口 | 号·点 | 本编队同队 / 本编队异队 / 另一支受控编队 / 同队真人 / 敌队真人 / 内置 AI | 其中互锁（对方同一点也被我定的 sb 挡住）| 被挡 AI 的兵为 0 的 | 吃光它所需 ≤ 自己余额 10% 的
   300~630 | 4 | 0 / 0 / 0 / 0 / 4 / 0 | 0 | 0 | 2
   630~900 | 16 | 0 / 0 / 0 / 7 / 9 / 0 | 0 | 5 | 8
   900~1260 | 46 | 0 / 30 / 0 / 10 / 6 / 0 | 28 | 0 | 37
   1260~1500 | 5 | 0 / 0 / 0 / 0 / 5 / 0 | 0 | 2 | 3
-  1500~1800 | 0 | 0 / 0 / 0 / 0 / 0 / 0 | 0 | 0 | 0
   逐号（t<1500 全被 sb 挡住的点数 ≥10 的）：号 | 点数 | 首末拍 | 定 sb 的邻居（次数）| 中位：自己余额 / sb / 被挡 AI 的格数·兵·吃光所需
   Lannes       | 16 | 990~1150 | Guderian*T1[squadOtherTeam]×16 | 51463 / 56280 / 536·1361·3230
   Guderian     | 14 | 1010~1150 | Lannes*T2[squadOtherTeam]×14 | 48544 / 47885 / 536·1412·3321
   Kanem-Bornu  | 10 | 1010~1100 | South MacedoniT1[teammate]×10 | 46115 / 39610 / 1485·3514·7222
+
+[SJ] 1500 拍后的口粮门槛普查（影子按真值每 10 拍一次；Policy.buyLand 对非真人邻居（内置 AI 和已离开的空壳，person() = !isBot）：price = 报价 ≥ worth 被 L5267 截断；safe:sb = 可用兵 ≤ 0 且起作用的是 safeAt 里的 safeFinite（L2744-2754 → L2532-2541，非真人目标按 oppFloorCap×领土封顶）；safe:people = 起作用的是防真人留底；keep = 起作用的是按报价算的留底；minCmd(want) = 吃光它所需 1.25×need+3×边界 小于 minCmd（L5367）；minCmd(avail) / chunk = 可用兵不够；noOffer = 接壤 AI 但没有报价（进攻槽 / 目标数已满））
+  窗口 | 号·点 | 接壤 AI 的 | 至少一个 AI 过门槛或已在打 | 全被挡 | 最便宜那个被挡的原因分布
+  1500~1650 | 111 | 36 | 2 | 34 | minCmd(want):27 safe:sb(cap):3 price:2 safe:sb:1 keep:1
+  1650~1800 | 117 | 26 | 0 | 26 | minCmd(want):25 price:1
+  1800~2100 | 233 | 63 | 0 | 63 | minCmd(want):30 noOffer:17 safe:people:15 price:1
+  2100~3000 | 633 | 76 | 5 | 71 | safe:people:26 safe:sb:18 minCmd(want):13 price:7 noOffer:7
+  minCmd(want) 共 95 个号·点：中位 自己余额 187674 / minCmd 8796 / 被挡 AI 1305 格·0 兵·吃光所需 2667；被挡 AI 的兵为 0 的 87 个；被挡 AI 最大 2147 格；被挡的是空壳（离开的真人）的 0 个
+  minCmd(want) 按拍分布（每 150 拍）：1500~1649:27 1650~1799:25 1800~1949:25 1950~2099:5 2100~2249:6 2250~2399:5 2550~2699:2
+  safe:sb 共 22 个号·点，sb 由谁的余额定出：本编队同队 0 / 本编队异队 0 / 另一支受控编队 0 / 同队真人 0 / 敌队真人 22 / 内置 AI 0；其中按 oppFloorCap 封顶后仍挡住的 3 个
+  逐号（全被挡的点数 ≥5 的）：号 | 点数 | 首末拍 | 原因（次数）| 中位：自己余额 / minCmd / safe / 被挡 AI 的格数·兵·吃光所需
+  Livonian     | 107 | 1540~2880 | minCmd(want)×41 safe:people×41 safe:sb×18 noOffer×7 | 51433 / 2408 / 98866 / 1256·0·2481
+  Ainz         | 51 | 1500~2000 | minCmd(want)×49 safe:sb×1 price×1 | 193517 / 9068 / 104178 / 1305·0·2667
+  Lannes       | 17 | 1840~2000 | noOffer×17 | 45530 / 2132 / 0 / 0·0·0
+  Tunis        | 9 | 1530~1650 | minCmd(want)×5 price×3 keep×1 | 146496 / 6864 / 0 / 378·169·185
+  Mossad       | 7 | 2100~2160 | price×7 | 144 / 4 / 0 / 14124·250700·0
 
 [SI] 同一次 act 里的多条指令：影子一次 act 只发 1 条的 / 发多条时的第 1 条 / 第 2 条及以后，各有多少在录像里配上了
   单条 481/709（68%） | 多条的第 1 条 11/13（85%） | 多条的第 2 条及以后 1/13（8%）

@@ -142,13 +142,11 @@
   630~900 | 303 | 300 | 167 | 133 | botOk(winWorth):64 minShare(floor:winPrice):24 floor:sb:22 minShare(floor:sb):15 minShare(floor:dpKeep):4 need<=0:2 floor:dpKeep:2
   900~1260 | 405 | 369 | 196 | 173 | floor:sb:86 minShare(floor:sb):51 minShare(floor:dpKeep):21 floor:dpKeep:13 minShare(floor:winPrice):2
   1260~1500 | 271 | 207 | 135 | 72 | minShare(floor:sb):49 floor:sb:13 floor:dpKeep:5 minShare(floor:dpKeep):3 need<=0:2
-  1500~1800 | 293 | 137 | 91 | 46 | floor:winPrice:18 minShare(floor:winPrice):15 need<=0:7 minShare(floor:other):6
   sb 挡住（全被挡且最便宜那个的原因含 floor:sb）时，sb 由谁的余额定出：窗口 | 号·点 | 本编队同队 / 本编队异队 / 另一支受控编队 / 同队真人 / 敌队真人 / 内置 AI | 其中互锁（对方同一点也被我定的 sb 挡住）| 被挡 AI 的兵为 0 的 | 吃光它所需 ≤ 自己余额 10% 的
   300~630 | 10 | 0 / 1 / 7 / 0 / 2 / 0 | 0 | 2 | 3
   630~900 | 37 | 0 / 6 / 3 / 0 / 28 / 0 | 0 | 13 | 35
   900~1260 | 137 | 0 / 13 / 18 / 7 / 99 / 0 | 2 | 59 | 135
   1260~1500 | 62 | 0 / 0 / 23 / 0 / 39 / 0 | 0 | 51 | 62
-  1500~1800 | 0 | 0 / 0 / 0 / 0 / 0 / 0 | 0 | 0 | 0
   逐号（t<1500 全被 sb 挡住的点数 ≥10 的）：号 | 点数 | 首末拍 | 定 sb 的邻居（次数）| 中位：自己余额 / sb / 被挡 AI 的格数·兵·吃光所需
   Jokic        | 56 | 810~1490 | SalchichadorT3[enemy]×35 Ill full sendT3[enemy]×21 | 66513 / 67898 / 879·0·1320
   Zhuge Liang  | 53 | 640~1310 | [OG]cyankwastaT2[enemy]×46 Tal*~T2[squadOtherTeam]×6 British Empire*~T2[squadOtherTeam]×1 | 36874 / 43342 / 348·15·823
@@ -157,6 +155,25 @@
   Sanada       | 17 | 970~1460 | DeviceT3[enemy]×14 SalchichadorT3[enemy]×3 | 78923 / 96507 / 838·253·686
   British Empire | 13 | 1110~1230 | Zhuge Liang*T3[squadOtherTeam]×8 [OG]cyankwastaT2[teammate]×5 | 65664 / 57703 / 1084·1347·4119
   Pagan        | 10 | 1010~1100 | BanananeninineT1[enemy]×10 | 27584 / 47608 / 895·49·1090
+
+[SJ] 1500 拍后的口粮门槛普查（影子按真值每 10 拍一次；Policy.buyLand 对非真人邻居（内置 AI 和已离开的空壳，person() = !isBot）：price = 报价 ≥ worth 被 L5267 截断；safe:sb = 可用兵 ≤ 0 且起作用的是 safeAt 里的 safeFinite（L2744-2754 → L2532-2541，非真人目标按 oppFloorCap×领土封顶）；safe:people = 起作用的是防真人留底；keep = 起作用的是按报价算的留底；minCmd(want) = 吃光它所需 1.25×need+3×边界 小于 minCmd（L5367）；minCmd(avail) / chunk = 可用兵不够；noOffer = 接壤 AI 但没有报价（进攻槽 / 目标数已满））
+  窗口 | 号·点 | 接壤 AI 的 | 至少一个 AI 过门槛或已在打 | 全被挡 | 最便宜那个被挡的原因分布
+  1500~1650 | 152 | 91 | 24 | 67 | minCmd(want):50 noOffer:8 safe:people:5 safe:sb:4
+  1650~1800 | 141 | 46 | 0 | 46 | minCmd(want):44 noOffer:2
+  1800~2100 | 224 | 43 | 0 | 43 | safe:people:24 minCmd(want):19
+  2100~3000 | 494 | 44 | 0 | 44 | safe:people:21 safe:sb:14 minCmd(want):9
+  minCmd(want) 共 122 个号·点：中位 自己余额 233824 / minCmd 10960 / 被挡 AI 1462 格·0 兵·吃光所需 2705；被挡 AI 的兵为 0 的 108 个；被挡 AI 最大 3010 格；被挡的是空壳（离开的真人）的 0 个
+  minCmd(want) 按拍分布（每 150 拍）：1500~1649:50 1650~1799:44 1800~1949:19 2250~2399:9
+  safe:sb 共 18 个号·点，sb 由谁的余额定出：本编队同队 0 / 本编队异队 0 / 另一支受控编队 14 / 同队真人 0 / 敌队真人 4 / 内置 AI 0；其中按 oppFloorCap 封顶后仍挡住的 0 个
+  逐号（全被挡的点数 ≥5 的）：号 | 点数 | 首末拍 | 原因（次数）| 中位：自己余额 / minCmd / safe / 被挡 AI 的格数·兵·吃光所需
+  East India Co | 101 | 1500~2540 | safe:people×50 minCmd(want)×37 safe:sb×14 | 200448 / 9396 / 198911 / 1376·0·2711
+  Cyrus        | 36 | 1500~1930 | minCmd(want)×36 | 290220 / 13604 / 274439 / 2584·0·5196
+  Jokic        | 20 | 1500~1730 | minCmd(want)×20 | 250520 / 11740 / 228031 / 769·0·1595
+  LightYagami  | 14 | 1540~1740 | minCmd(want)×11 noOffer×2 safe:sb×1 | 207053 / 9704 / 163281 / 1556·0·2715
+  Sanada       | 8 | 1500~1690 | minCmd(want)×5 safe:sb×3 | 198735 / 9312 / 180922 / 2093·1760·7395
+  Levi         | 7 | 1530~1640 | noOffer×4 minCmd(want)×3 | 196847 / 9224 / 0 / 0·0·0
+  Bulgar       | 5 | 1520~1580 | minCmd(want)×5 | 280927 / 13168 / 119349 / 1049·0·1794
+  Fischer      | 5 | 1530~1570 | minCmd(want)×5 | 244960 / 11480 / 121113 / 2233·1215·5944
 
 [SI] 同一次 act 里的多条指令：影子一次 act 只发 1 条的 / 发多条时的第 1 条 / 第 2 条及以后，各有多少在录像里配上了
   单条 581/1075（54%） | 多条的第 1 条 21/35（60%） | 多条的第 2 条及以后 3/35（9%）

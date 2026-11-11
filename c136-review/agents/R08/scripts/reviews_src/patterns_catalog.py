@@ -207,6 +207,10 @@ CATALOG = [
     dict(id="NEW-DN-09", prefix="DN", name="空壳赠兵（引擎规则）：离开的号没有可打的目标时把全部余额交给一个队友",
          definition="真值重演里 bots.js botGive 的每一次成交：记空壳、收款方（在线编队号 / 其它真人 / 另一个空壳）、到账；单笔 ≥ 收款方当时余额的 50% 算命中",
          detect="scripts/truth.py [TM]（resim_r08.mjs 的 huskGifts）"),
+    dict(id="NEW-EC-07", prefix="EC", name="1500 拍后最小指令门槛反过来挡住小人机：吃光它所需的兵小于 minCmd（余额的 4.7%）就跳过，余额越多越吃不动",
+         definition="影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算（c110 L5363-5369）：t≥1500、接壤至少一个内置 AI、没有一个过门槛，"
+                    "且最便宜那个的 want = 1.25×need + 3×边界 < minCmd = feeK×⌊12×余额/1024⌋；一个号累计 ≥5 个点算命中。记被挡 AI 的格数、兵、want、当时余额，以及这块地后来被谁吃走",
+         detect="scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

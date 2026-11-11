@@ -2665,6 +2665,7 @@
     "人机收割（harvest，人均格数 我方 / squad10 / 其它真人）：(630,900] 921 / 647 / 1095；(900,1260] 1483 / 707 / 4377；(1260,1800] 480 / 606 / 4661。t=630~1800 内置 AI 共丢 265544 格，我方吃到 43257 格（16.3%，人头占 33%），squad10 7.4%（人头 22%），其它 20 个真人 76.3%。",
     "人均比：t=630 1.04 → 900 0.96 → 1260 0.82 → 1530 0.67 → 1800 0.65 → 2520 0.57 → 3600 0.46。",
     "防人机留底 sb（shadowcmp [SH]）：t=900~1260 接壤人机的 369 个号·点里 173 个全被挡，其中 137 个挡在 sb 上；sb 由敌队真人的余额定出 99 个、squad10 的号 18 个、异队编队友 13 个、同队真人 7 个。逐号：Jokic 56 个点（t=810~1490）、Zhuge Liang 53、Cyrus 46、Ireland 24。",
+    "1500 拍后的口粮门槛（shadowcmp [SJ]，影子口径 = 不卡的客户端）：t=1500~1800 接壤内置 AI 的 137 个号·点里只有 24 个有 AI 过门槛（都在 t=1650 之前），113 个全被挡，其中 94 个挡在最小指令门槛上：吃光那个 AI 所需的兵（中位 2705）小于 minCmd（余额的 4.7%，中位 10960），买地循环直接跳过。到 t=2400 共 122 个号·点，108 个被挡的 AI 是 0 兵。影子打内置 AI 的陆攻 t<1500 有 641 条，t=1500~1800 只有 11 条，之后 0 条。",
     "六个号中途离开（truth [TI]）：Tal、Ireland、Bulgar t=1603 同一拍；Fischer 1778、British Empire 1785、Levi 1869。离开时合计 39625 格（全图 8.0%）、1822516 兵。这六个号最后一条 HL-TICK 的本地拍是 990 / 1170：离开时本地比服务器晚 520~700 拍。",
     "补拍成批落地（[SB2]、lagstats [LC]）：同一个号同一个服务器拍落地 9 条 19 次、8 条 15 次（squad10 9 条 36 次；其它真人最多 2 条）。",
     "t=1834~2156 五个号的旧单一起冲出去：Zhuge Liang t=1834 一拍 9 条 123193 兵（余额的 99%）、Pagan t=2072 一拍 9 条 437036（97%）、Jokic t=2044 一拍 9 条 297573（93%）、Sanada t=1995 + 2051 九条生效 385810（两拍分别是当时余额的 58% / 82%）、LightYagami t=2093 四条生效 288394（73%）。",
@@ -2678,6 +2679,7 @@
     "同一个决定在卡顿里每 15~20 拍重下一次，补拍时一拍冲出最多 9 条，各自按落地时的余额抽兵：本意 30%~40% 余额的一次买地变成 93%~99%。",
     "本土被抽空后被第三方按 5~20 兵/格吃掉：Zhuge Liang（空壳 Tal 8.6、cyankwastaken 5.1、空壳 British Empire 4.7 兵/格）、Pagan（Bashkort 5.5）、Jokic（kaito9 10.2）、Sanada（Salchichador 20.2、Device 15.8）。",
     "异队编队号离开后变成引擎托管的空壳，照样进攻；在线的编队号仍按名字把它当兄弟，不在可打名单里：Zhuge Liang 被空壳 Tal、British Empire 吃掉 7353 格，对它们一条指令都没有。",
+    "过了 1500 拍，剩下的人机（t=1530 还占全图 10.3%）按代码也吃不动：Cyrus 旁边的 AI394（2341 格 / 0 兵，吃光只要 4753 兵）36 个点没动，后来被 zero_7 用 4536 兵吃走 2268 格；East India Co 旁边的 AI204（911 格 / 0 兵）36 个点没动，反被它啃走 1112 格，后来 zexos1 用 3000 兵吃走 1500 格。",
     "幸存的号被 dpKeep 冻住：买地留底按最强真人邻居的全部余额算（Cyrus 旁边的 KING 94 万→370 万），自己 6481 格怎么囤也够不着。"
    ]
   },
@@ -2766,7 +2768,7 @@
      "t": "1500~1960",
      "bot": "Zhuge Liang / Pagan / Jokic / Sanada / LightYagami",
      "decision": "买地大单发出后看不到落地，15 拍冷却一到就对同一目标原样再下；每条的 pct 都按『这一条是唯一一条』算。",
-     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540（同目标 15 拍冷却，不记在途）；src/sim/sim/game.js L1263-1285",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Strategy.send L526-540（同目标 15 拍冷却，不记在途）；src/sim/sim/game.js L1263-1285",
      "why": "9 条 pct≈30% 连着执行，合计抽走 1−0.7^9 = 96% 的余额。"
     },
     {
@@ -2807,7 +2809,7 @@
      "t": "6300~7110",
      "bot": "Kilwa",
      "decision": "余额到硬上限后仍不出手：买地留底取 dpKeep（按 YK 的全部余额算，4261587~4860551），高于自己的 3681900。",
-     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；src/sim/sim/game.js L739-762（余额超过 100×领土后利率线性降到 0，150×领土封顶）",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；src/sim/sim/game.js L739-762（余额超过 100×领土后利率线性降到 0，150×领土封顶）",
      "why": "shadow.mjs --trace Kilwa:6500,7000：safe 4860551 / 4261587，报价 775 / 727 兵/格。"
     },
     {
@@ -4683,7 +4685,7 @@
    "t": "1530~1834",
    "bot": "Zhuge Liang",
    "decision": "同一个目标每 15 拍重下一条，9 条在 t=1834 同一拍落地：每条本意 39%~41% 余额，合计实发 123193（余额 124296 的 99%），本土剩 1040 兵守 11335 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5330",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5534",
    "verdict": "error",
    "patternId": "NEW-EX-01",
    "evidence": [
@@ -4713,7 +4715,7 @@
    "t": "1500~2072",
    "bot": "Pagan",
    "decision": "对 Mr Bass 连下 9 条 30% 余额的陆攻，t=2072 一拍落地 437036 兵（97%），按 106.0 兵/格拿 3976 格；本土剩 613 兵，被 Bashkort 以 5.5 兵/格吃掉 6308 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.offers L5008-5248；Strategy.send L526-540；V13.act L1853（holdOn=0，被打时不撤回在外的兵）",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Policy.offers L5008-5248；Strategy.send L526-540；V13.act L1853（holdOn=0，被打时不撤回在外的兵）",
    "verdict": "error",
    "patternId": "NEW-AT-05",
    "evidence": [
@@ -4728,7 +4730,7 @@
    "t": "1555~2044",
    "bot": "Jokic",
    "decision": "决策拍 1555~1960 的旧单在 t=1981 / 2044 两拍落地，433153 兵打 Ill full send（30.1 兵/格拿 12678 格）；本土剩 21811 兵守 12495 格，被 squad10 的 kaito9 以 10.2 兵/格吃掉 17675 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Strategy.send L526-540",
    "verdict": "error",
    "patternId": "NEW-AT-02",
    "evidence": [
@@ -4743,7 +4745,7 @@
    "t": "1550~2051",
    "bot": "Sanada",
    "decision": "决策拍 1550~1985 的旧单在 t=1995 / 2051 两拍落地，385810 兵打 Salchichador（75.5 兵/格拿 4635 格）；本土剩 35057 兵，Salchichador 以 20.2 兵/格吃回 5505 格、Device 以 15.8 兵/格拿 3613 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Strategy.send L526-540",
    "verdict": "error",
    "patternId": "NEW-AT-02",
    "evidence": [
@@ -4772,7 +4774,7 @@
    "t": "2093~2390",
    "bot": "LightYagami",
    "decision": "t=2093 一拍旧单把余额从 392975 打到 104581；t=2146 空壳 British Empire 的 295649 兵到账（117935→413584）；t=2156 又一拍 5 条打出 212224 兵。它没有像另外四个号那样被吃掉，从 Salchichador 身上拿 12419 格（43.2 兵/格），到全队峰值 18134 格。",
-   "codePath": "src/sim/sim/bots.js L180-206（botDonate / botGive：空壳没有目标可打时把全部余额交给刚打过仗的队友）；src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330",
+   "codePath": "src/sim/sim/bots.js L180-206（botDonate / botGive：空壳没有目标可打时把全部余额交给刚打过仗的队友）；src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534",
    "verdict": "unclear",
    "patternId": "NEW-DN-09",
    "evidence": [
@@ -4802,7 +4804,7 @@
    "t": "5220~5850",
    "bot": "East India Co",
    "decision": "4715 格、唯一的邻居是 KING（470 万~690 万兵）：余额顶在硬上限 707250 共 540 拍，然后一条陆攻 283176 兵按 239.9 兵/格买 1145 格；KING 以 302.5 兵/格把它买光。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.safeAt L4524-4541；dpKeep L2491-2496",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Policy.safeAt L4524-4541；dpKeep L2491-2496",
    "verdict": "error",
    "patternId": "NEW-EG-01",
    "evidence": [
@@ -4816,7 +4818,7 @@
    "t": "4040~4500",
    "bot": "Kilwa",
    "decision": "闲置时对隔海的 cyankwastaken 发一条 305639 兵的船（t=4046），登陆 237810；t=4270 陆攻 520262 兵，正赶上对方把余额打空：拿 6369 格（80.3 兵/格），结束了 2430 拍的停滞，12435→18775 格。",
-   "codePath": "src/strategy/v27-team-c110.js: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；Policy.buyLand L5250-5330",
+   "codePath": "src/strategy/v27-team-c110.js: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；Policy.buyLand L5250-5534",
    "verdict": "good",
    "patternId": "NEW-EG-G1",
    "evidence": [
@@ -4937,6 +4939,21 @@
     "shadowcmp [SI]"
    ],
    "statementType": "observed"
+  },
+  {
+   "id": "D27",
+   "t": "1500~1930",
+   "bot": "Cyrus / East India Co / Jokic / LightYagami",
+   "decision": "1500 拍后旁边 0 兵的内置 AI 不吃：吃光它所需的兵（1321~5675）小于最小指令 minCmd（余额的 4.7%，6064~11008），买地循环直接跳过。影子口径 122 个号·点（East India Co 37、Cyrus 36、Jokic 20、LightYagami 11）；这些 AI 后来被 zero_7、zexos1、Ill full send、Salchichador 按 2.0~2.7 兵/格吃走。实战里这一段本编队还卡着 300 拍以上，这条是「不卡也吃不到」。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5363-5369（L5367 x < minCmd → continue）；minCmd L521-523（feeK×⌊12×余额/1024⌋，feeK=4）；对照 t<1500 的 amount0 L2367-2393（L2371 把单子抬到 minCmd）",
+   "verdict": "error",
+   "patternId": "NEW-EC-07",
+   "evidence": [
+    "shadowcmp [SJ]",
+    "shadow.json：影子打内置 AI 的陆攻 t<1500 641 条 / 1500~1800 11 条 / 之后 0 条",
+    "truth [TE]：AI394 被 zero_7 吃 2268 格（4536 兵）；AI204 被 zexos1 吃 1500 格（3000 兵）；AI357 被 Ill full send 吃 2436 格（6618 兵）"
+   ],
+   "statementType": "inferred"
   }
  ],
  "newPatterns": [
@@ -5016,6 +5033,13 @@
    "name": "人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
    "definition": "真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
    "detect": "scripts/harvest.py"
+  },
+  {
+   "id": "NEW-EC-07",
+   "prefix": "EC",
+   "name": "1500 拍后最小指令门槛反过来挡住小人机：吃光它所需的兵小于 minCmd（余额的 4.7%）就跳过，余额越多越吃不动",
+   "definition": "影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算（c110 L5363-5369）：t≥1500、接壤至少一个内置 AI、没有一个过门槛，且最便宜那个的 want = 1.25×need + 3×边界 < minCmd = feeK×⌊12×余额/1024⌋；一个号累计 ≥5 个点算命中。记被挡 AI 的格数、兵、want、当时余额，以及这块地后来被谁吃走",
+   "detect": "scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"
   },
   {
    "id": "NEW-EC-G1",

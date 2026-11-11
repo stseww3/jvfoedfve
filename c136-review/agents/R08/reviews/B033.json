@@ -1499,7 +1499,7 @@
      "t": "2815",
      "bot": "Livonian",
      "decision": "邻居只剩空壳和没兵的真人时，留底算出来是 1，把 98.8% 的余额一次派出。",
-     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330（avail 由 safeAt 决定）；Policy.safeAt L4524-4541；V13.safeAt L2744（只看现有陆上邻居的兵）；Policy.offers L5008-5248",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（avail 由 safeAt 决定）；Policy.safeAt L4524-4541；V13.safeAt L2744（只看现有陆上邻居的兵）；Policy.offers L5008-5248",
      "why": "safeAt 不看隔着空壳的真人，也不看自己密度（2.8）远低于全房中位（23.8）。"
     }
    ],
@@ -2271,7 +2271,7 @@
    "t": "1585~1946",
    "bot": "Livonian",
    "decision": "同一个目标每 15 拍重下一条，9 条在 t=1946 同一拍落地：本意每条 4.4~6.7 万兵，合计实发 286731（余额的 89%）。",
-   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5330",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5534",
    "verdict": "error",
    "patternId": "NEW-EX-01",
    "evidence": [
@@ -2316,7 +2316,7 @@
    "t": "2815~2842",
    "bot": "Livonian",
    "decision": "邻居只剩空壳和 1 个兵的真人，留底算成 1，把 98.8% 的余额（33008）打向空壳；下单后 15 拍 Jeriel Chris（173553 兵）接壤。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.safeAt L4524-4541；V13.safeAt L2744",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Policy.safeAt L4524-4541；V13.safeAt L2744",
    "verdict": "error",
    "patternId": "NEW-DF-02",
    "evidence": [
@@ -2403,7 +2403,7 @@
    "t": "2970~3808",
    "bot": "Ainz",
    "decision": "被 Player 896 啃的 600 拍里把兵留在家里（对方为 6578 格付了 877747 兵，133.4 兵/格）；收到 Lannes 的 124837 兵后 t=3591~3808 用 244972 兵吃回 4811 格（50.9 兵/格），之后长到 11300 格活到终局。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.offers L5008-5248；Policy.safeAt L4524-4541",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Policy.offers L5008-5248；Policy.safeAt L4524-4541",
    "verdict": "good",
    "patternId": "NEW-EG-G1",
    "evidence": [
@@ -2431,7 +2431,7 @@
    "t": "1500~2250",
    "bot": "JinKazama",
    "decision": "决策拍 1500~1590 的 6 条陆攻在 t=2016 同一拍落地，86699 兵（87%）打 Duda batut，领土 5423→12568；本土只剩 9903 兵，t=2160~2250 丢 6270 格。",
-   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534；Strategy.send L526-540",
    "verdict": "error",
    "patternId": "NEW-AT-02",
    "evidence": [
@@ -2452,6 +2452,21 @@
    "evidence": [
     "shadow.mjs --guard 0 --tag g0：9/10",
     "shadowcmp [SD]：guard=8 从未置位"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D21",
+   "t": "1500~2000",
+   "bot": "Ainz / Livonian",
+   "decision": "1500 拍后旁边 0 兵的内置 AI 不吃：吃光它所需的兵小于最小指令 minCmd（余额的 4.7%）时买地循环直接跳过。Ainz 旁边的 AI224（1232 格 / 0 兵，吃光只要 2523 兵）t=1570~1990 有 43 个点没动，Ainz 当时 122635~269429 兵（minCmd 5748 起）；AI224 反过来啃走 Ainz 296 格，后来被 Lannes 用 2456 兵吃走 1228 格。影子口径 t=1500~1800 接壤内置 AI 的 62 个号·点里 52 个挡在这一关，全程 95 个（87 个被挡的 AI 是 0 兵）；影子打内置 AI 的陆攻 t<1500 有 270 条，之后只有 2 条。实战里这一段还卡着几百拍，这条是「不卡也吃不到」。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5363-5369（L5367 x < minCmd → continue）；minCmd L521-523（feeK×⌊12×余额/1024⌋，feeK=4）；对照 t<1500 的 amount0 L2367-2393（L2371 把单子抬到 minCmd）",
+   "verdict": "error",
+   "patternId": "NEW-EC-07",
+   "evidence": [
+    "shadowcmp [SJ]",
+    "shadow.json：影子打内置 AI 的陆攻 t<1500 270 条 / 1500~1800 0 条 / 之后 2 条",
+    "truth 逐对战损：AI224 被 Lannes 吃 1228 格（2456 兵）"
    ],
    "statementType": "inferred"
   }
@@ -2526,6 +2541,13 @@
    "name": "人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
    "definition": "真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
    "detect": "scripts/harvest.py"
+  },
+  {
+   "id": "NEW-EC-07",
+   "prefix": "EC",
+   "name": "1500 拍后最小指令门槛反过来挡住小人机：吃光它所需的兵小于 minCmd（余额的 4.7%）就跳过，余额越多越吃不动",
+   "definition": "影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算（c110 L5363-5369）：t≥1500、接壤至少一个内置 AI、没有一个过门槛，且最便宜那个的 want = 1.25×need + 3×边界 < minCmd = feeK×⌊12×余额/1024⌋；一个号累计 ≥5 个点算命中。记被挡 AI 的格数、兵、want、当时余额，以及这块地后来被谁吃走",
+   "detect": "scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"
   },
   {
    "id": "NEW-EX-01",
