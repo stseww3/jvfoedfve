@@ -87,6 +87,8 @@ class Digest:
         self.w(f"[S0] 影子策略校验（{self.S['strategy']}；每拍只收 1 条指令={not self.S['multi']}）——影子=同一份源码在重放的真实状态上逐拍运行")
         v = self.S["validate"]
         self.w(f"  重放状态核对 traj：{v['bothExact']}/{v['rows']} 行地、兵都一致")
+        if self.S.get("minLat", 6) != 6:
+            self.w(f"  成交对齐的最小延迟下界 = {self.S['minLat']} 拍（默认 6；本局有 5 拍落地的指令，按默认值对齐会整段串位）")
         tot = Counter()
         for bot, b in self.S["bots"].items():
             c = b["check"]
