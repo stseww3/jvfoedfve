@@ -1,0 +1,120 @@
+# A039 ryan_m 影子决策明细 t=3560~3720（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 3 拍（t=3560~3720）
+#   出手打人/bot: 6 拍（t=3565~3700）；可用兵 586935~932979，一条指令下限(20%余额) 519128~635808，比值 113%~147%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 24 拍（t=3580~3710）；可用兵 307218~868929，一条指令下限(20%余额) 422652~510500，比值 65%~194%
+#   └ 「出手打人/bot」里：6 条对人/bot 的出兵共约 2090038 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=3560 ryan_m B=3129284 L=57852 d=54.1 nb=1 neut=0 cmds=79 noFull=1 shQ=782321 | m=0.900 worth=48.7 cheap=6.3 over=0 dMedOther=43.3 safe(-1)=485730
+    → Its [Nikko]#16[T1] terr=71788 bal=951378 dq=13.3 cnt=101 | c=53.0 rankC=53.0 need=1642420 tD=0.31 人 pulse | safe=485730 keep=Inf avail=-Inf chunkB=625857 pulseB=375514 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3565 ryan_m B=3129284 L=58165 d=53.8 nb=1 neut=0 cmds=80 noFull=1 shQ=782321 | m=0.900 worth=48.4 cheap=6.3 over=0 dMedOther=43.1 safe(-1)=481742
+    → Its [Nikko]#16[T1] terr=71475 bal=944749 dq=13.2 cnt=109 | c=18.6 rankC=9.3 need=1642803 tD=0.31 人 pulse bleeding | safe=481742 keep=2196622 avail=895991 chunkB=625857 pulseB=375514 
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 375880 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3570 ryan_m B=3179039 L=58382 d=54.5 nb=1 neut=0 cmds=81 noFull=1 shQ=794759 | m=0.900 worth=49.0 cheap=6.3 over=0 dMedOther=43.4 safe(-1)=487698
+    → Its [Nikko]#16[T1] terr=71258 bal=955675 dq=13.4 cnt=109 | c=19.0 rankC=9.5 need=1669707 tD=0.31 人 pulse bleeding | safe=487698 keep=2236639 avail=905146 chunkB=635808 pulseB=381485 
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 381857 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3575 ryan_m B=3179039 L=58714 d=54.1 nb=1 neut=0 cmds=82 noFull=1 shQ=794759 | m=0.900 worth=48.7 cheap=6.3 over=0 dMedOther=43.2 safe(-1)=479554
+    → Its [Nikko]#16[T1] terr=70604 bal=941677 dq=13.3 cnt=116 | c=18.0 rankC=9.0 need=1655662 tD=0.31 人 pulse bleeding | safe=479554 keep=2208806 avail=932979 chunkB=635808 pulseB=381485 
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 381857 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3580 ryan_m B=2434169 L=58948 d=41.3 nb=1 neut=0 cmds=82 noFull=1 shQ=19320 | m=0.900 worth=37.2 cheap=6.3 over=0 dMedOther=43.5 safe(-1)=482658
+    → Its [Nikko]#16[T1] terr=70158 bal=947554 dq=13.5 cnt=122 | c=9.9 rankC=5.0 need=959436 tD=0.31 人 pulse bleeding | safe=482658 keep=1573310 avail=832334 chunkB=486834 pulseB=292100 
+    ⇒ 本拍没有指令
+t=3585 ryan_m B=2113259 L=59321 d=35.6 nb=1 neut=0 cmds=82 noFull=1 shQ=66717 | m=0.900 worth=33.2 cheap=6.3 over=0 dMedOther=43.3 safe(-1)=473882
+    → Its [Nikko]#16[T1] terr=69459 bal=932491 dq=13.4 cnt=132 | c=6.5 rankC=3.2 need=652759 tD=0.31 人 pulse bleeding | safe=473882 keep=1267245 avail=821250 chunkB=422652 pulseB=253591 
+    ⇒ 本拍没有指令
+t=3590 ryan_m B=2146859 L=59586 d=36.0 nb=1 neut=0 cmds=82 noFull=1 shQ=109116 | m=0.900 worth=33.4 cheap=6.3 over=0 dMedOther=43.6 safe(-1)=476250
+    → Its [Nikko]#16[T1] terr=68969 bal=937104 dq=13.6 cnt=134 | c=6.8 rankC=3.4 need=668736 tD=0.31 人 pulse bleeding | safe=476250 keep=1301411 avail=820290 chunkB=429372 pulseB=257623 
+    ⇒ 本拍没有指令
+t=3595 ryan_m B=2146859 L=59994 d=35.8 nb=1 neut=0 cmds=82 noFull=1 shQ=152051 | m=0.900 worth=33.4 cheap=6.2 over=0 dMedOther=43.6 safe(-1)=466846
+    → Its [Nikko]#16[T1] terr=68225 bal=920976 dq=13.5 cnt=140 | c=6.9 rankC=3.5 need=653962 tD=0.31 人 pulse bleeding | safe=466846 keep=1298214 avail=823487 chunkB=429372 pulseB=257623 
+    ⇒ 本拍没有指令
+t=3600 ryan_m B=2241482 L=60416 d=37.1 nb=1 neut=0 cmds=82 noFull=1 shQ=195364 | m=0.900 worth=34.6 cheap=6.2 over=0 dMedOther=45.2 safe(-1)=504920
+    → Its [Nikko]#16[T1] terr=67581 bal=989381 dq=14.6 cnt=144 | c=8.7 rankC=4.4 need=783643 tD=0.32 人 pulse bleeding | safe=504920 keep=1404930 avail=810285 chunkB=448296 pulseB=268978 
+    ⇒ 本拍没有指令
+t=3605 ryan_m B=2241482 L=61158 d=36.7 nb=1 neut=0 cmds=82 noFull=1 shQ=240413 | m=0.900 worth=34.6 cheap=6.2 over=0 dMedOther=45.2 safe(-1)=490196
+    → Its [Nikko]#16[T1] terr=66505 bal=964286 dq=14.5 cnt=155 | c=8.9 rankC=4.5 need=767950 tD=0.32 人 pulse bleeding | safe=490196 keep=1400367 avail=814848 chunkB=448296 pulseB=268978 
+    ⇒ 本拍没有指令
+t=3610 ryan_m B=2277569 L=61937 d=36.8 nb=1 neut=0 cmds=82 noFull=1 shQ=285664 | m=0.900 worth=35.1 cheap=6.2 over=0 dMedOther=45.9 safe(-1)=485124
+    → Its [Nikko]#16[T1] terr=65501 bal=956427 dq=14.6 cnt=158 | c=9.4 rankC=4.7 need=783447 tD=0.32 人 pulse bleeding | safe=485124 keep=1426725 avail=824154 chunkB=455514 pulseB=273308 
+    ⇒ 本拍没有指令
+t=3615 ryan_m B=2277569 L=62731 d=36.3 nb=1 neut=0 cmds=82 noFull=1 shQ=331499 | m=0.900 worth=35.1 cheap=6.2 over=0 dMedOther=45.9 safe(-1)=469615
+    → Its [Nikko]#16[T1] terr=64365 bal=930011 dq=14.4 cnt=164 | c=9.6 rankC=4.8 need=767473 tD=0.31 人 pulse bleeding | safe=469615 keep=1422991 avail=827888 chunkB=455514 pulseB=273308 
+    ⇒ 本拍没有指令
+t=3620 ryan_m B=2314237 L=63586 d=36.4 nb=1 neut=0 cmds=82 noFull=1 shQ=377710 | m=0.900 worth=35.6 cheap=6.2 over=0 dMedOther=46.5 safe(-1)=463117
+    → Its [Nikko]#16[T1] terr=63285 bal=919727 dq=14.5 cnt=183 | c=10.2 rankC=5.1 need=781551 tD=0.31 人 pulse bleeding | safe=463117 keep=1449830 avail=837288 chunkB=462847 pulseB=277708 
+    ⇒ 本拍没有指令
+t=3625 ryan_m B=2314237 L=64517 d=35.9 nb=1 neut=0 cmds=82 noFull=1 shQ=424570 | m=0.900 worth=35.6 cheap=6.2 over=0 dMedOther=46.5 safe(-1)=445857
+    → Its [Nikko]#16[T1] terr=62017 bal=890401 dq=14.4 cnt=188 | c=10.5 rankC=5.2 need=765991 tD=0.31 人 pulse bleeding | safe=445857 keep=1446829 avail=840289 chunkB=462847 pulseB=277708 
+    ⇒ 本拍没有指令
+t=3630 ryan_m B=2351727 L=65466 d=35.9 nb=1 neut=0 cmds=82 noFull=1 shQ=471815 | m=0.900 worth=35.7 cheap=6.1 over=0 dMedOther=46.6 safe(-1)=437744
+    → Its [Nikko]#16[T1] terr=60843 bal=877383 dq=14.4 cnt=197 | c=11.1 rankC=5.5 need=778672 tD=0.31 人 pulse bleeding | safe=437744 keep=1490141 avail=834027 chunkB=470345 pulseB=282207 
+    ⇒ 本拍没有指令
+t=3635 ryan_m B=2351727 L=66491 d=35.4 nb=1 neut=0 cmds=82 noFull=1 shQ=519730 | m=0.900 worth=35.0 cheap=6.1 over=0 dMedOther=45.8 safe(-1)=419395
+    → Its [Nikko]#16[T1] terr=59486 bal=846260 dq=14.2 cnt=214 | c=11.4 rankC=5.7 need=763571 tD=0.31 人 pulse bleeding | safe=419395 keep=1510620 avail=813548 chunkB=470345 pulseB=282207 
+    ⇒ 本拍没有指令
+t=3640 ryan_m B=2390060 L=67561 d=35.4 nb=1 neut=0 cmds=82 noFull=1 shQ=567920 | m=0.900 worth=35.0 cheap=6.1 over=0 dMedOther=45.7 safe(-1)=409401
+    → Its [Nikko]#16[T1] terr=58197 bal=830076 dq=14.3 cnt=213 | c=12.1 rankC=6.1 need=775090 tD=0.31 人 pulse bleeding | safe=409401 keep=1562452 avail=799600 chunkB=478012 pulseB=286807 
+    ⇒ 本拍没有指令
+t=3645 ryan_m B=2390060 L=68632 d=34.8 nb=1 neut=0 cmds=82 noFull=1 shQ=597515 | m=0.900 worth=35.0 cheap=6.1 over=0 dMedOther=45.7 safe(-1)=390665
+    → Its [Nikko]#16[T1] terr=56797 bal=798331 dq=14.1 cnt=217 | c=10.9 rankC=5.4 need=760397 tD=0.31 人 pulse bleeding | safe=390665 keep=1503641 avail=858411 chunkB=478012 pulseB=286807 
+    ⇒ 本拍没有指令
+t=3650 ryan_m B=2429256 L=69743 d=34.8 nb=1 neut=0 cmds=82 noFull=1 shQ=607314 | m=0.900 worth=35.5 cheap=6.1 over=0 dMedOther=46.4 safe(-1)=379874
+    → Its [Nikko]#16[T1] terr=55469 bal=780791 dq=14.1 cnt=232 | c=11.6 rankC=5.8 need=770493 tD=0.30 人 pulse bleeding | safe=379874 keep=1534665 avail=866124 chunkB=485851 pulseB=291511 
+    ⇒ 本拍没有指令
+t=3655 ryan_m B=2429256 L=70937 d=34.2 nb=1 neut=0 cmds=82 noFull=1 shQ=607314 | m=0.900 worth=35.5 cheap=6.0 over=0 dMedOther=46.4 safe(-1)=359764
+    → Its [Nikko]#16[T1] terr=53948 bal=746785 dq=13.8 cnt=250 | c=12.0 rankC=6.0 need=756198 tD=0.30 人 pulse bleeding | safe=359764 keep=1537350 avail=863439 chunkB=485851 pulseB=291511 
+    ⇒ 本拍没有指令
+t=3660 ryan_m B=2469338 L=72174 d=34.2 nb=1 neut=0 cmds=82 noFull=1 shQ=617334 | m=0.900 worth=36.1 cheap=6.0 over=0 dMedOther=47.2 safe(-1)=346996
+    → Its [Nikko]#16[T1] terr=52492 bal=725913 dq=13.8 cnt=248 | c=12.9 rankC=6.4 need=764514 tD=0.29 人 pulse bleeding | safe=346996 keep=1571472 avail=868929 chunkB=493868 pulseB=296321 
+    ⇒ 本拍没有指令
+t=3665 ryan_m B=2469338 L=73439 d=33.6 nb=1 neut=0 cmds=82 noFull=1 shQ=617334 | m=0.900 worth=36.1 cheap=6.0 over=0 dMedOther=47.2 safe(-1)=326287
+    → Its [Nikko]#16[T1] terr=50899 bal=690949 dq=13.6 cnt=256 | c=13.5 rankC=6.7 need=750568 tD=0.29 人 pulse bleeding | safe=326287 keep=1580073 avail=860328 chunkB=493868 pulseB=296321 
+    ⇒ 本拍没有指令
+t=3670 ryan_m B=2510329 L=74748 d=33.6 nb=1 neut=0 cmds=82 noFull=1 shQ=627582 | m=0.900 worth=36.5 cheap=6.0 over=0 dMedOther=47.7 safe(-1)=312400
+    → Its [Nikko]#16[T1] terr=49373 bal=668194 dq=13.5 cnt=270 | c=14.5 rankC=7.2 need=757264 tD=0.28 人 pulse bleeding | safe=312400 keep=1629465 avail=851447 chunkB=502066 pulseB=301239 
+    ⇒ 本拍没有指令
+t=3675 ryan_m B=2510329 L=76139 d=33.0 nb=1 neut=0 cmds=82 noFull=1 shQ=627582 | m=0.900 worth=36.5 cheap=6.0 over=0 dMedOther=47.7 safe(-1)=290627
+    → Its [Nikko]#16[T1] terr=47664 bal=631525 dq=13.2 cnt=289 | c=15.3 rankC=7.7 need=744191 tD=0.28 人 pulse bleeding | safe=290627 keep=1646821 avail=834091 chunkB=502066 pulseB=301239 
+    ⇒ 本拍没有指令
+t=3680 ryan_m B=2552502 L=77566 d=32.9 nb=2 neut=0 cmds=82 noFull=1 shQ=638125 | m=0.900 worth=37.0 cheap=5.9 over=0 dMedOther=48.3 safe(-1)=611677
+    → Its [Nikko]#16[T1] terr=46026 bal=606184 dq=13.2 cnt=286 | c=16.5 rankC=8.3 need=749428 tD=0.27 人 pulse bleeding | safe=611677 keep=1702400 avail=820190 chunkB=510500 pulseB=306300 
+    → Sejong [IND]#4[T1] terr=38339 bal=1205134 dq=31.4 cnt=7 | c=139.9 rankC=139.9 need=2205528 tD=0.65 人 pulse | safe=611677 keep=Inf avail=-Inf chunkB=510500 pulseB=306300 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3685 ryan_m B=2552502 L=79005 d=32.3 nb=3 neut=0 cmds=82 noFull=1 shQ=638125 | m=0.900 worth=37.0 cheap=5.9 over=0 dMedOther=48.3 safe(-1)=1946093
+    → Its [Nikko]#16[T1] terr=44300 bal=570168 dq=12.9 cnt=288 | c=17.7 rankC=8.8 need=738219 tD=0.27 人 pulse bleeding | safe=1946093 keep=1946093 avail=576497 chunkB=510500 pulseB=306300 
+    → Sejong [IND]#4[T1] terr=38339 bal=1205134 dq=31.4 cnt=14 | c=139.9 rankC=139.9 need=2205528 tD=0.65 人 pulse | safe=1946093 keep=Inf avail=-Inf chunkB=510500 pulseB=306300 价高(c>=worth)→break
+    → Player 49#17[T1] terr=73435 bal=3582553 dq=48.8 cnt=2 | c=213.2 rankC=213.2 need=6495613 tD=1.01 人 pulse | safe=1946093 keep=Inf avail=-Inf chunkB=510500 pulseB=306300 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3690 ryan_m B=2595639 L=80448 d=32.3 nb=3 neut=0 cmds=83 noFull=1 shQ=648909 | m=0.900 worth=37.5 cheap=5.9 over=0 dMedOther=49.0 safe(-1)=1978287
+    → Its [Nikko]#16[T1] terr=42678 bal=545135 dq=12.8 cnt=285 | c=19.2 rankC=9.6 need=743173 tD=0.26 人 pulse bleeding | safe=1978287 keep=1978287 avail=586935 chunkB=519128 pulseB=311477 
+    → Sejong [IND]#4[T1] terr=38339 bal=1222969 dq=31.9 cnt=26 | c=78.8 rankC=78.8 need=2237317 tD=0.65 人 pulse | safe=1978287 keep=Inf avail=-Inf chunkB=519128 pulseB=311477 价高(c>=worth)→break
+    → Player 49#17[T1] terr=73435 bal=3642023 dq=49.6 cnt=5 | c=216.6 rankC=216.6 need=6601611 tD=1.01 人 pulse | safe=1978287 keep=Inf avail=-Inf chunkB=519128 pulseB=311477 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 311780 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3695 ryan_m B=2595656 L=81585 d=31.8 nb=3 neut=0 cmds=84 noFull=1 shQ=648914 | m=0.900 worth=37.5 cheap=5.9 over=0 dMedOther=49.0 safe(-1)=1977329
+    → Its [Nikko]#16[T1] terr=41278 bal=516485 dq=12.5 cnt=277 | c=20.4 rankC=10.2 need=734234 tD=0.26 人 pulse bleeding | safe=1977329 keep=1977329 avail=587910 chunkB=519131 pulseB=311479 
+    → Sejong [IND]#4[T1] terr=38339 bal=1222969 dq=31.9 cnt=35 | c=78.7 rankC=78.7 need=2237317 tD=0.65 人 pulse | safe=1977329 keep=Inf avail=-Inf chunkB=519131 pulseB=311479 价高(c>=worth)→break
+    → Player 49#17[T1] terr=73435 bal=3642023 dq=49.6 cnt=10 | c=216.5 rankC=216.5 need=6601611 tD=1.01 人 pulse | safe=1977329 keep=Inf avail=-Inf chunkB=519131 pulseB=311479 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 311782 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3700 ryan_m B=2721367 L=81585 d=33.4 nb=3 neut=0 cmds=85 noFull=1 shQ=660479 | m=0.900 worth=38.8 cheap=5.9 over=0 dMedOther=50.7 safe(-1)=2052549
+    → Its [Nikko]#16[T1] terr=41111 bal=561901 dq=13.7 cnt=277 | c=22.3 rankC=11.2 need=793996 tD=0.27 人 pulse bleeding | safe=2052549 keep=2052549 avail=636927 chunkB=544273 pulseB=326564 
+    → Sejong [IND]#4[T1] terr=38339 bal=1279407 dq=33.4 cnt=35 | c=82.3 rankC=82.3 need=2337912 tD=0.66 人 pulse | safe=2052549 keep=Inf avail=-Inf chunkB=544273 pulseB=326564 价高(c>=worth)→break
+    → Player 49#17[T1] terr=73435 bal=3775915 dq=51.4 cnt=10 | c=224.4 rankC=224.4 need=6840256 tD=1.01 人 pulse | safe=2052549 keep=Inf avail=-Inf chunkB=544273 pulseB=326564 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → Its [Nikko]#16[T1]（约 326882 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3705 ryan_m B=2362594 L=81585 d=29.0 nb=3 neut=0 cmds=85 noFull=1 shQ=273807 | m=0.900 worth=36.2 cheap=5.9 over=0 dMedOther=47.3 safe(-1)=2027690
+    → Its [Nikko]#16[T1] terr=41029 bal=485685 dq=11.8 cnt=277 | c=18.4 rankC=18.4 need=365179 tD=0.25 人 pulse | safe=2027690 keep=2027690 avail=307218 chunkB=472519 pulseB=283511 
+    → Player 49#17[T1] terr=73435 bal=2031767 dq=27.7 cnt=10 | c=74.3 rankC=52.0 need=5431427 tD=0.58 人 pulse onMe | safe=2027690 keep=Inf avail=-Inf chunkB=472519 pulseB=283511 价高(c>=worth)→break
+    → Sejong [IND]#4[T1] terr=38339 bal=1279407 dq=33.4 cnt=35 | c=82.1 rankC=82.1 need=2337912 tD=0.70 人 pulse | safe=2027690 keep=Inf avail=-Inf chunkB=472519 pulseB=283511 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3710 ryan_m B=2402758 L=81585 d=29.5 nb=3 neut=0 cmds=85 noFull=1 shQ=324182 | m=0.900 worth=36.4 cheap=5.9 over=0 dMedOther=47.6 safe(-1)=2046638
+    → Its [Nikko]#16[T1] terr=41029 bal=492921 dq=12.0 cnt=277 | c=18.9 rankC=18.9 need=376273 tD=0.25 人 pulse | safe=2046638 keep=2046638 avail=327963 chunkB=480552 pulseB=288331 
+    → Player 49#17[T1] terr=73435 bal=2065494 dq=28.1 cnt=10 | c=75.1 rankC=52.6 need=5491541 tD=0.59 人 pulse onMe | safe=2046638 keep=Inf avail=-Inf chunkB=480552 pulseB=288331 价高(c>=worth)→break
+    → Sejong [IND]#4[T1] terr=38339 bal=1298342 dq=33.9 cnt=35 | c=83.3 rankC=83.3 need=2371661 tD=0.71 人 pulse | safe=2046638 keep=Inf avail=-Inf chunkB=480552 pulseB=288331 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3715 ryan_m B=1806300 L=82753 d=21.8 nb=3 neut=0 cmds=85 noFull=1 shQ=362749 | m=0.900 worth=36.3 cheap=5.9 over=0 dMedOther=47.4 safe(-1)=2040245
+    → Player 49#17[T1] terr=73568 bal=2065494 dq=28.1 cnt=61 | c=74.4 rankC=52.1 need=5482082 tD=0.59 人 pulse onMe | safe=2040245 keep=Inf avail=-Inf chunkB=361260 pulseB=216756 价高(c>=worth)→break
+    → Sejong [IND]#4[T1] terr=38339 bal=1298342 dq=33.9 cnt=60 | c=112.1 rankC=112.1 need=2371661 tD=0.71 人 pulse crowdedHard | safe=2040245 keep=Inf avail=-Inf chunkB=361260 pulseB=216756 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3720 ryan_m B=1828182 L=83497 d=21.9 nb=3 neut=0 cmds=85 noFull=1 shQ=401378 | m=0.900 worth=36.6 cheap=5.8 over=0 dMedOther=47.8 safe(-1)=2048813
+    → Player 49#17[T1] terr=73818 bal=2099781 dq=28.4 cnt=86 | c=74.6 rankC=52.2 need=5525669 tD=0.59 人 pulse onMe | safe=2048813 keep=Inf avail=-Inf chunkB=365636 pulseB=219382 价高(c>=worth)→break
+    → Sejong [IND]#4[T1] terr=38339 bal=1317557 dq=34.4 cnt=85 | c=113.6 rankC=113.6 need=2405910 tD=0.72 人 pulse crowdedHard | safe=2048813 keep=Inf avail=-Inf chunkB=365636 pulseB=219382 价高(c>=worth)→break
+    ⇒ 本拍没有指令
