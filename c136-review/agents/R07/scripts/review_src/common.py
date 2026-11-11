@@ -316,6 +316,42 @@ PATTERN_DEFS = {
         "detectionSketch": "82_outlet_gap.py：B 节窗口内各组的发兵去向与捐款（给组内 / 给组外），C 节同队其他真人的密度（窗口内最低）、离硬上限的空间、打出去和挨的兵、收到的捐款及来源，"
                            "E 节我方占本队领土 / 余额的比例，F 节全场「我方号 → 同队其他真人」的捐款笔数。",
     },
+    "R07-EC-SOLE-BUFFER-BANK": {
+        "category": "EC",
+        "definition": "只剩一个真人邻居、对方又健康的大号变成银行：buyLand 里 isSoleHealthyBuffer（场上真人 ≥3、自己只贴着一个真人、对方不濒死不失血、没在打我、打掉它会多贴上别的真人）成立时，"
+                      "目标价高就要余额 ≥ overHumanCap(1.28)×100×领土 才出手，过软上限后的留底封顶也从 0.9 抬到 overHumanKeep(1.12)×100×领土；"
+                      "而不是围死号的调度门槛是密度 ≥102（协防）/ ≥108（余粮），一次捐走两成上下的余额、另按全部余额付 6.25% 手续费。"
+                      "于是密度每涨到 108~114 就被调度削回 82~86，永远到不了 128：这个号一条进攻不发、一格地不长，利息的两成多交了手续费，兵流到另一个队友手里。",
+        "detectionSketch": "65_shadow.mjs --trace：决策拍分类里「唯一真人邻居」的拍数与当拍的 B / L / keep / avail（avail 为负），以及这段里出手的拍数；67_troop_flow.mjs B 节：该号同一窗口的进攻条数、"
+                           "捐出笔数 / 到账 / 手续费、利息地租；73_front_width.py：窗口内它接壤的敌方真人只有一个；in_game.log [HL-DISPATCH] 的 dMe（108~114）；80_donation_yield.py：每笔落地前后捐方的密度。",
+    },
+    "R07-OP-PREY-FLOOR": {
+        "category": "OP",
+        "definition": "t<1500 没有内置 AI 邻居、也没有无主地的号打不了贴着的敌方真人。开局逻辑对「没有别的理由要打」的真人只走猎杀规则（preyKill=1、preyFloor=0.5）："
+                      "留下一半常规留底之后，sendFrac(0.746)×可用兵要一次够吃光对方才发，差一点就一个兵都不发；可用兵还得超过 minSend(21.4%)×余额。"
+                      "常规留底 floorAt 里的 defenseNeed = kDef(4)×「我的某个邻居的另一个最弱邻居」的余额，altOf 只排除目标自己和我、不排除队友——"
+                      "几个号围着同一批敌人时，各自按队友余额的 2 倍留底，另外的拍数卡在价格留底（100×领土×单价/60）或 keepCap（100×领土）的一半上。"
+                      "领土几百拍不动、余额越攒越高；t=1500 换成核心逻辑的那一拍这些留底一起消失，几个号同拍把兵打向同一个目标。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_early_humans.txt：t=300~1499 身边没有内置 AI、也没有无主地的决策拍按原因分类（留底由 defenseNeed 参照我方队友 / 敌方真人、价格留底、keepCap 定；"
+                           "过了留底但一次吃不光；四周只有队友），每号最便宜的敌方真人邻居的单价与领土 / 余额，floorAt 逐项复刻并与策略自己的值核对；78_bot_share.py：这些号同期的领土与余额。",
+    },
+    "R07-AT-CARCASS-FLOOR": {
+        "category": "AT",
+        "definition": "贴着一个空壳真人（刚把全部余额压出去，或被别人打空：上万格地、家里几万兵，每格成本十几兵）却发不出指令。buyLand 对真人的留底 safe = min(killW×dpKeep, oppFloorCap(88)×自己的领土)，"
+                      "dpKeep 按最强的那个真人邻居算（(它的余额 + 它压在我身上的兵 − 1.5×我的领土) / 1.78），和这一条要打的是谁无关；目标濒死时也只是把封顶降到 collapseFloorCap(85)~88×领土。"
+                      "身边另有一个余额大得多的邻居时 safe 就顶在 88×领土上，自己密度不到 88 就 avail<0——要等队友的调度把余额垫过这条线才发得出一条。"
+                      "这段时间那块地被第三方（常常就是那个强邻居）用一条船或一条进攻收走。",
+        "detectionSketch": "85_trace_blocked.py（读 65_shadow.mjs --trace 的明细）：排第一的报价是真人、c < worth、对方密度 ≤10、结论是「无可用(avail<=0)」的决策拍数，以及 safe ÷ 自己的领土（84~88）；"
+                           "68_watch.mjs --cmds 1：那个空壳是怎么空的（pct ≥ 900 的进攻）、之后谁的进攻槽压在它身上；60_truth.cjs 的 truth_all.tsv：它的地最后到了谁手里。",
+    },
+    "R07-GOOD-COUNTER-ALLIN": {
+        "category": "DF",
+        "definition": "（正例）对方把全部余额一次压上来（pct=1023）时就地反打：对方家里只剩几千兵，报价里 onMe / nearCollapse / bleeding 同时成立，need 把它压在我身上的兵也算进去，"
+                      "buyLand 的 t≥3800 脉冲分支每个决策拍发一条 12% 余额的脉冲。两边进攻槽里的兵先对消，对消完剩下的直接吃地：几十拍内把对方的进攻磨光，随后吃掉它的领土。"
+                      "72_repeat_sends.py 的「超出吃掉整块所需」不算对方压在进攻槽里的兵，这种组会被误标成多发。",
+        "detectionSketch": "74_side_flow.mjs 的 humans_cmd.tsv：敌方 pct ≥ 900 的进攻；68_watch.mjs --cmds 1：该进攻落地后对方进攻槽逐拍的余量、我方随后的指令与双方领土；"
+                           "65_shadow.mjs --trace：这些决策拍的 need / avail、报价标记（onMe / nearCollapse / bleeding）与发令行（buyLand:5585）。",
+    },
 }
 
 

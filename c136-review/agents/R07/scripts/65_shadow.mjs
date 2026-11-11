@@ -155,8 +155,20 @@ function evalOffers(g, p, lim = 6) {
   const refDens = dMedOther !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMedOther) : dMe;
   const worth = m * refDens, over = P.surplus > 0 && B > 100 * L, cheap = P.growth > 0 ? 0.1 / p.baseRate(g) : 0;
   const rows = [];
+  const nHumans = typeof p.livingHumanCount === 'function' ? p.livingHumanCount(g) : 99;
+  const humanNbCount = p.nb.filter((x) => g.alive[x] && p.person(g, x)).length;
   for (const o of (p.__offers || []).slice(0, lim)) {
     const q = o.q;
+    // buyLand 在算留底之前的几道「价高也不打」的闸（Vb：L5361-5374、L5428-5439）
+    const pricey = o.c >= worth && o.c >= cheap;
+    const soleBuffer = !!(o.person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1);
+    const siegeShrink = !!(P.siegeShrinkRatio > 0 && !p.isNoFullSend && g.t >= P.leaderHardFrom && L < P.siegeShrinkRatio * ((g.peak && g.peak[me]) || L) && nHumans >= 4 && o.person && !o.nearCollapse && !o.bleeding);
+    let gate = '';
+    if (soleBuffer && pricey && B < P.overHumanCap * 100 * L) gate = '唯一缓冲';
+    else if (o.person && !o.isDoorSea && g.terr[q] < 250 && fee > 2 * o.need && o.c > 8 * worth && nHumans >= 3) gate = '残块';
+    else if (o.person && !o.isDoorSea && o.isCrowdedHard && pricey && B < P.crowdedHardCap * 100 * L) gate = '拥挤';
+    else if (P.absorbMode >= 1 && o.person && !o.isDoorSea && !o.nearCollapse && (o.inAtk ?? 0) >= P.absorbWaveMin * B) gate = '吸收';
+    else if (siegeShrink && pricey && B < P.crowdedHardCap * 100 * L) gate = '缩圈';
     let safe = p.safeAt(g, q);
     if (!o.person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) safe = Math.min(safe, P.oppFloorCap * L);
     let keep = Infinity;
@@ -167,11 +179,11 @@ function evalOffers(g, p, lim = 6) {
       const minKeep = o.person && (o.nearCollapse || (P.bleedDiscount < 1 && o.bleeding) || (P.thinDiscount < 1 && o.tD < P.thinMaxTD)) ? (0.70 * o.c * L) / m : (o.c * L) / m;
       keep = Math.min(keep, P.post > 0 ? Math.max(minKeep, B - fee - budget) : minKeep);
     }
-    if (over) keep = Math.min(keep, (dMe >= 122 ? 0.82 : P.hold) * 100 * L);
+    if (over) keep = Math.min(keep, (dMe >= 122 ? 0.82 : soleBuffer ? P.overHumanKeep : P.hold) * 100 * L);
     keep = Math.max(keep, safe);
     const avail = B - fee - keep;
-    const verdict = o.c >= worth && o.c >= cheap && !over ? '价高' : avail <= 0 ? '无可用' : (!o.pulseMode && avail < P.chunk * B && avail < 1.25 * o.need) ? '不够一条' : '';
-    rows.push({ o, q, safe, keep, avail, verdict });
+    const verdict = o.c >= worth && o.c >= cheap && !over ? '价高' : gate ? gate : avail <= 0 ? '无可用' : (!o.pulseMode && avail < P.chunk * B && avail < 1.25 * o.need) ? '不够一条' : '';
+    rows.push({ o, q, safe, keep, avail, verdict, soleBuffer, humanNbCount });
   }
   return { B, L, fee, dMe, dMedOther, m, worth, over, cheap, rows };
 }
@@ -184,6 +196,10 @@ function classify(ev, cmdsNow, hadOffers) {
   if (!hadOffers) return '没走到 buyLand';
   if (!ev.rows.length) return '没有可打的邻居';
   const v = ev.rows[0].verdict;
+  if (v === '唯一缓冲') return '过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）';
+  if (v === '拥挤') return '过了软上限，但首选目标判为 crowdedHard（余额 < crowdedHardCap×100×领土 不打）';
+  if (v === '缩圈') return '过了软上限，但自己领土低于峰值的 siegeShrinkRatio（余额 < crowdedHardCap×100×领土 不打）';
+  if (v === '残块' || v === '吸收') return '首选目标被前置闸跳过（残块 / 吸收波）';
   return v === '价高' ? '首选目标价高（c>=worth）' : v === '无可用' ? '首选目标无可用兵（avail<=0）' : v === '不够一条' ? '首选目标可用兵不够一条指令（avail<chunk*B）' : '有可用兵但没发（脉冲下限/冷却/其他）';
 }
 
@@ -194,7 +210,7 @@ function traceLine(g, b, p, tr, cmdsNow, ev) {
   out.push(`t=${g.t} ${b} B=${B} L=${L} d=${dMe.toFixed(1)} nb=${p.nb.length} neut=${p.neutral} cmds=${p.cmds} noFull=${p.isNoFullSend ? 1 : 0} shQ=${Math.round(p.shadowQuota ?? 0)} | m=${m.toFixed(3)} worth=${worth.toFixed(1)} cheap=${cheap.toFixed(1)} over=${over ? 1 : 0} dMedOther=${dMedOther === null ? '-' : dMedOther.toFixed(1)} safe(-1)=${Math.round(p.safeAt(g, -1))}`);
   for (const r of ev.rows) {
     const o = r.o, q = r.q;
-    out.push(`    → ${pname(g, q)} terr=${g.terr[q]} bal=${g.bal[q]} dq=${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} cnt=${p.cnt[q]} | c=${o.c.toFixed(1)} rankC=${(o.rankC ?? o.c).toFixed(1)} need=${Math.round(o.need)} tD=${(o.tD ?? 0).toFixed(2)} ${o.person ? '人' : '机'}${o.pulseMode ? ' pulse' : ''}${o.nearCollapse ? ' nearCollapse' : ''}${o.bleeding ? ' bleeding' : ''}${o.onMe ? ' onMe' : ''}${o.isCrowdedHard ? ' crowdedHard' : ''}${o.isAgg ? ' agg' : ''} | safe=${Math.round(r.safe)} keep=${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail=${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} chunkB=${Math.round(P.chunk * B)} pulseB=${Math.round(P.pulseFrac * B)} ${r.verdict === '价高' ? '价高(c>=worth)→break' : r.verdict === '无可用' ? '无可用(avail<=0)' : r.verdict}`);
+    out.push(`    → ${pname(g, q)} terr=${g.terr[q]} bal=${g.bal[q]} dq=${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} cnt=${p.cnt[q]} | c=${o.c.toFixed(1)} rankC=${(o.rankC ?? o.c).toFixed(1)} need=${Math.round(o.need)} tD=${(o.tD ?? 0).toFixed(2)} ${o.person ? '人' : '机'}${o.pulseMode ? ' pulse' : ''}${o.nearCollapse ? ' nearCollapse' : ''}${o.bleeding ? ' bleeding' : ''}${o.onMe ? ' onMe' : ''}${o.isCrowdedHard ? ' crowdedHard' : ''}${o.isAgg ? ' agg' : ''} | safe=${Math.round(r.safe)} keep=${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail=${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} chunkB=${Math.round(P.chunk * B)} pulseB=${Math.round(P.pulseFrac * B)} ${r.verdict === '价高' ? '价高(c>=worth)→break' : r.verdict === '无可用' ? '无可用(avail<=0)' : r.verdict === '唯一缓冲' ? `唯一真人邻居(B<${P.overHumanCap}×100×L)→continue` : r.verdict === '拥挤' ? `crowdedHard(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict === '缩圈' ? `siegeShrink(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict}${r.soleBuffer ? ' sole' : ''} hNb=${r.humanNbCount}`);
   }
   if (!ev.rows.length) out.push('    （offers 为空：没有可打的邻居）');
   for (const c of cmdsNow) out.push(`    ⇒ 影子指令 ${c.kind} pct=${c.pct} → ${c.targetName}（约 ${c.troops} 兵）${c.site ? ` 〔${c.site}〕` : ''}`);
@@ -281,6 +297,178 @@ function earlyDiag(g, b, p, cmdsNow) {
       if (kind === '我方队友') { st.sbMate++; st.sbMateBal += B; if (best.perPx <= 3) { st.sbMateCheap = (st.sbMateCheap || 0) + 1; st.sbMateCheapTerr = (st.sbMateCheapTerr || 0) + g.terr[best.q]; } }
       if (earlyEx.length < 400 && g.t % 50 === 0) earlyEx.push(`  t=${g.t} ${b} B=${B} L=${L} | 最好的目标 ${pname(g, best.q)}（${g.terr[best.q]} 格 / ${g.bal[best.q]} 兵）每格 ${best.perPx.toFixed(1)} | 底线 ${Math.round(best.fl)} = max(价格项 ${Math.round(best.terms.价格项)}, dpKeep ${Math.round(best.terms.dpKeep)}, safeFinite ${Math.round(best.terms.safeFinite)}, peopleFloor ${Math.round(best.terms.peopleFloor)}) → 可用 ${Math.round(best.avail)} | safeFinite 参照 ${who >= 0 ? pname(g, who) : '?'}（${who >= 0 ? g.bal[who] : '?'} 兵）`);
     } else cls = `${top} 底线卡住`;
+  }
+  st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+}
+// ---- t<coreFrom（1500）、身边既没有内置 AI 也没有无主地的决策拍：开局逻辑（V13 Style.act → pickTarget → allow）为什么不打贴着的敌方真人
+// 复刻 Style.floors（L819-831）与 defenseNeed / altOf（L899-941），多返回「defenseNeed 参照的是谁」
+function altOwner(g, q, me) {
+  const Bd = g.border[q], px = g.px, own = g.own, d = g.dir4;
+  let minBal = Infinity, minPrice = Infinity, owner = -1;
+  const seen = new Set();
+  const n = Bd.length;
+  const step = n > 1024 ? Math.ceil(n / 1024) : 1;
+  for (let i = n - 1; i >= 0; i -= step) {
+    const b = Bd[i];
+    for (let k = 0; k < 4; k++) {
+      const c = b + d[k];
+      if (px[c] < SIM.P_INNER) continue;
+      const o = own[c];
+      if (o === q || o === me || seen.has(o)) continue;
+      seen.add(o);
+      const v = g.bal[o] + g.attackTroopsOn(o, q);
+      if (v < minBal) { minBal = v; owner = o; }
+      const price = 2 + (2 * g.bal[o]) / (1 + iV(10 * g.terr[o], 16));
+      if (price < minPrice) minPrice = price;
+    }
+  }
+  return { minBal, minPrice, owner };
+}
+function floorParts(g, p, perPx) {
+  const P = p.p, me = p.me, T = g.terr[me], cap = 100 * T;
+  const early = g.t < P.earlyEnd;
+  let avgNb = 0;
+  for (const o of p.nb) avgNb += g.bal[o];
+  if (p.nb.length) avgNb /= p.nb.length; else avgNb = P.lonely * p.avgBotBalance(g);
+  const reserveTerm = (early ? P.reserveEarly : P.reserve) * cap * Math.min(1, perPx / P.cRef);
+  const refTerm = (early ? P.refEarly : P.ref) * avgNb;
+  const bal = g.bal[me], k = 1 + iV(10 * T, 16);
+  let need = 0, via = -1, who = -1, mode = '';
+  for (const o of p.nb) {
+    if (g.alive[o] === 0 || g.bal[o] < P.capMin * bal) continue;
+    const a = altOwner(g, o, me);
+    const sent = g.attackTroopsOn(me, o);
+    let v, m, w = -1;
+    if (a.minBal === Infinity) { v = g.bal[o] > 0 ? P.aloneK * g.bal[o] - sent : 0; m = 'alone'; w = o; }
+    else { const x1 = a.minBal - sent, x2 = (P.denW * (a.minPrice - 2) * k) / 2; v = P.kDef * Math.max(x1, x2); m = x1 >= x2 ? 'minBal' : 'minPrice'; w = a.owner; }
+    if (v > need) { need = v; via = o; who = w; mode = m; }
+  }
+  if (P.defPile !== 1 && p.attackedByOthers(g, me)) need *= P.defPile;
+  const defNeed = Math.min(need, P.defCap * 100 * T);
+  const refFloor = Math.max(refTerm, defNeed);
+  const fk = p.floorK ?? 1;
+  const f = fk * Math.min(P.keepCap * cap, Math.max(reserveTerm, refFloor));
+  let bind;
+  if (P.keepCap * cap <= Math.max(reserveTerm, refFloor)) bind = 'keepCap';
+  else if (reserveTerm >= refFloor) bind = 'reserve';
+  else if (defNeed >= refTerm) bind = defNeed < need ? 'defCap' : 'defenseNeed';
+  else bind = 'ref';
+  return { cap, avgNb, reserveTerm, refTerm, defNeed, via, who, mode, f, bind, kDef: P.kDef, keepCap: P.keepCap };
+}
+const earlyH = new Map();
+const earlyHEx = [];
+function earlyHumanDiag(g, b, p, cmdsNow) {
+  const P = p.p, me = p.me;
+  if (!(g.t < (P.coreFrom ?? 1500)) || g.t < 300 || g.t % P.period !== 0) return;
+  if (typeof p.allow !== 'function' || typeof p.floorFor !== 'function') return;
+  if (!g.alive[me] || g.terr[me] <= 0) return;
+  const nbBots = p.nb.filter((q) => g.alive[q] && g.isBot(q) && g.terr[q] > 0);
+  if (nbBots.length || p.neutral > 0) return;
+  if (!earlyH.has(b)) earlyH.set(b, { dec: 0, cmd: 0, cls: new Map(), t0: g.t, t1: g.t, bal0: g.bal[me], bal1: g.bal[me], terr0: g.terr[me], terr1: g.terr[me], cheapest: new Map() });
+  const st = earlyH.get(b);
+  st.dec++; st.t1 = g.t; st.bal1 = g.bal[me]; st.terr1 = g.terr[me];
+  if (cmdsNow.length) { st.cmd++; return; }
+  const B = g.bal[me], L = Math.max(1, g.terr[me]);
+  const hum = p.nb.filter((q) => g.alive[q] && !g.isBot(q) && g.terr[q] > 0 && !g.isTeammate(me, q));
+  let cls;
+  if (!hum.length) cls = '四周只有队友（没有任何可打的邻居）';
+  else {
+    let floorAt = null;
+    try { floorAt = p.floors(g).floorAt; } catch (e) { floorAt = null; }
+    const min = p.minCmd(g);
+    let best = null, anyAllowed = false, why = new Map();
+    let cheapQ = -1, cheapPx = Infinity;
+    for (const q of hum) {
+      const perPx = p.price(g, q);
+      if (perPx < cheapPx) { cheapPx = perPx; cheapQ = q; }
+      let allow = false;
+      try { allow = p.allow(g, q); } catch (e) { allow = false; }
+      if (!allow) {
+        let r;
+        if (p.held) r = 'held（本拍按兵不动）';
+        else if (P.waitEnd && g.attackTroopsOn(q, me) > 0) r = 'waitEnd（对方正在打我）';
+        else if (typeof p.duelOn === 'function' && p.duelOn(g) && !p.duelOk(g, q)) r = `duel（对方密度 > duelK×我的密度，且我没到 duelCap×100×领土）`;
+        else if (P.reachBan > 0 && typeof p.outOfReach === 'function' && p.outOfReach(g, q)) r = 'reachBan（够不着）';
+        else r = `没有动机（不是 food、单价 ${'>'} personMax=${P.personMax}、没有仇、自己没到 idleCap=${P.idleCap}×100×领土）`;
+        why.set(r, (why.get(r) || 0) + 1);
+        continue;
+      }
+      anyAllowed = true;
+      const fAt = floorAt ? floorAt(perPx) : 0;
+      const fl = p.floorFor(g, q, fAt);
+      const avail = B - fl;
+      const pass = avail > p.minShare(g, q) * B && avail >= min;
+      let need = NaN;
+      try { need = p.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q); } catch (e) { need = NaN; }
+      let f0 = NaN, ps = NaN;
+      try { f0 = p.floorFor0(g, q, fAt); } catch (e) { f0 = NaN; }
+      try { ps = P.safeP > 0 ? P.safeP * p.peopleSafe(g, q) : 0; } catch (e) { ps = NaN; }
+      if (!best || avail > best.avail) best = { q, avail, fl, pass, perPx, need, f0, ps, fAt };
+    }
+    if (!anyAllowed) cls = '敌方真人邻居都不让打：' + [...why.entries()].sort((x, y) => y[1] - x[1])[0][0];
+    else if (best.pass) {
+      earlyHumanDiag.P = P;
+      // pickTarget 里过了底线之后还有三道：need<=0、amount() 不到一条指令、没有空槽 / maxTargets
+      let send = NaN;
+      try { send = p.amount(g, best.q, best.avail, best.need, min); } catch (e) { send = NaN; }
+      let active = 0; const sb0 = g.slotBase(me);
+      for (let i = g.atkCount[me] - 1; i >= 0; i--) if (g.atkTarget[sb0 + i] !== NEUTRAL) active++;
+      const noSlot = !g.hasAttack(me, best.q) && (active >= P.maxTargets || !g.hasFreeSlot(me));
+      const tooDear = best.perPx > P.maxCost;
+      cls = noSlot ? '让打、也过了底线，但没有空槽 / 已到 maxTargets' : tooDear ? `让打、也过了底线，但单价 > maxCost（${P.maxCost}）` : !(best.need > 0) ? '让打、也过了底线，但 need<=0' : !(send >= min) ? (P.preyKill > 0 && p.motive(g, best.q) === null && !(P.sendFrac * best.avail >= P.preyKill * best.need) ? '让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）' : `让打、也过了底线，但 amount() 给出的数额不到一条指令（${Number.isFinite(send) ? Math.round(send) : send}）`) : '让打、也过了底线、数额也够，但没发（pickTarget 之外的原因）';
+      best.send = send;
+    } else {
+      // 留底由哪一项定：floorFor = max(floorFor0, safeP×peopleSafe)
+      let ref = '';
+      if (best.ps >= best.f0 && best.ps > 0) {
+        // 复刻 peopleSafe（L2280-2299）找出参照的是谁
+        const q = best.q;
+        const cands = [];
+        for (const o of p.nb) if (o !== q && g.alive[o] && g.terr[o] > 0 && p.person(g, o)) cands.push(o);
+        for (const o of p.peopleOf(g, q)) if (o !== me && g.terr[o] > 0 && !cands.includes(o)) cands.push(o);
+        let needV = 0, who = -1, via = -1, kind = '';
+        for (const Bc of cands) {
+          const bB = g.bal[Bc];
+          let w = Infinity, wo = -1;
+          for (const o of p.peopleOf(g, Bc)) if (o !== me && o !== q && g.terr[o] > 0 && g.bal[o] < w) { w = g.bal[o]; wo = o; }
+          const line = bB >= P.safeCapD * Math.max(1, g.terr[Bc]) ? Infinity : bB / P.safeRatio;
+          const v = Math.min(w, line);
+          if (v > needV) { needV = v; via = Bc; who = w <= line ? wo : Bc; kind = w <= line ? 'weakest' : 'line'; }
+        }
+        const whoKind = who < 0 ? '未知' : idOfRev.has(who) ? '我方队友' : g.isTeammate(me, who) ? '同队真人' : '敌方真人';
+        ref = kind === 'weakest' ? `safeP×peopleSafe：参照「${via >= 0 ? (idOfRev.has(via) ? '我方队友' : '敌方真人') : '?'}邻居的另一个最弱邻居」= ${whoKind}的余额` : `safeP×peopleSafe：参照邻居自己的余额 ÷ safeRatio（${whoKind}）`;
+        best.refWho = who; best.refVia = via;
+      } else {
+        const fp = floorParts(g, p, best.perPx);
+        best.fp = fp;
+        let dp = NaN, pf = NaN;
+        try { dp = p.dpKeep(g); } catch (e) { dp = NaN; }
+        try { pf = p.peopleFloor(g); } catch (e) { pf = NaN; }
+        best.dp = dp; best.pf = pf;
+        const near = (x, y) => Math.abs(x - y) <= 1 + 1e-6 * Math.abs(y);
+        earlyHumanDiag.fChk = (earlyHumanDiag.fChk || 0) + 1;
+        if (!near(fp.f, best.fAt)) earlyHumanDiag.fBad = (earlyHumanDiag.fBad || 0) + 1;
+        if (near(best.f0, dp) && dp > 0 && !near(best.f0, best.fAt)) ref = 'dpKeep（最强的真人邻居全力打我时守得住的余额）';
+        else if (near(best.f0, pf) && pf > 0 && !near(best.f0, best.fAt)) ref = 'peopleFloor';
+        else if (near(best.f0, best.fAt) || near(best.f0, P.preyFloor * best.fAt)) {
+          const pre = near(best.f0, best.fAt) ? '' : `preyFloor(${P.preyFloor})×`;
+          if (fp.bind === 'defenseNeed') {
+            const whoKind = fp.who < 0 ? '未知' : idOfRev.has(fp.who) ? '我方队友' : fp.who >= H ? '内置 AI' : g.isTeammate(me, fp.who) ? '同队真人' : '敌方真人';
+            ref = fp.mode === 'alone' ? `${pre}defenseNeed：邻居没有别的邻居，按它自己的余额` : fp.mode === 'minPrice' ? `${pre}defenseNeed：按邻居的另一个邻居里最低的单价` : `${pre}defenseNeed = kDef(${fp.kDef})×「某个邻居的另一个最弱邻居」的余额，参照的是${whoKind}`;
+            best.refWho = fp.who; best.refVia = fp.via;
+          } else if (fp.bind === 'keepCap') ref = `${pre}keepCap(${fp.keepCap})×100×领土 封顶（邻居的参照余额更高）`;
+          else if (fp.bind === 'defCap') ref = `${pre}defCap×100×领土 封顶的 defenseNeed`;
+          else if (fp.bind === 'reserve') ref = `${pre}价格留底（reserve×100×领土×min(1, 单价/cRef)）`;
+          else ref = `${pre}ref×邻居平均余额`;
+        } else ref = 'floorFor0 的其他分支（foodRef×邻居均值 等）';
+      }
+      cls = `让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：${ref}`;
+    }
+    const key = cheapQ;
+    const ce = st.cheapest.get(key) || { n: 0, pxMin: Infinity, pxMax: 0, terr0: g.terr[cheapQ], bal0: g.bal[cheapQ], terr1: 0, bal1: 0 };
+    ce.n++; ce.pxMin = Math.min(ce.pxMin, cheapPx); ce.pxMax = Math.max(ce.pxMax, cheapPx); ce.terr1 = g.terr[cheapQ]; ce.bal1 = g.bal[cheapQ];
+    st.cheapest.set(key, ce);
+    if (earlyHEx.length < 400 && g.t % 100 === 0) earlyHEx.push(`  t=${g.t} ${b} B=${B} L=${L}（密度 ${(B / L).toFixed(1)}）| 最便宜的敌方真人 ${pname(g, cheapQ)}（${g.terr[cheapQ]} 格 / ${g.bal[cheapQ]} 兵）每格 ${cheapPx.toFixed(1)} | ${cls}${best ? `；底线 ${Math.round(best.fl)}（floorFor0 ${Math.round(best.f0)}、safeP×peopleSafe ${Math.round(best.ps)}${best.fp ? `、dpKeep ${Math.round(best.dp)}、peopleFloor ${Math.round(best.pf)}、floorAt ${Math.round(best.fAt)}〔价格留底 ${Math.round(best.fp.reserveTerm)}、ref×邻居均值 ${Math.round(best.fp.refTerm)}、defenseNeed ${Math.round(best.fp.defNeed)}、keepCap 封顶 ${Math.round(best.fp.keepCap * best.fp.cap)}〕` : ''}${best.refWho >= 0 && best.refWho !== undefined ? `，参照 ${pname(g, best.refWho)} 的 ${g.bal[best.refWho]} 兵（经由 ${pname(g, best.refVia)}）` : ''}）、可用 ${Math.round(best.avail)}、吃光要 ${Math.round(best.need)}${best.send !== undefined ? `、amount=${Number.isFinite(best.send) ? Math.round(best.send) : best.send}、minCmd=${Math.round(min)}` : ''}` : ''}`);
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
 }
@@ -610,6 +798,7 @@ proto.tick = function () {
     }
     delete g.attack; delete g.donate; delete g.boat; delete g.boatTo; delete g.chase; delete g.recall; delete g.retreat;
     try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
+    try { earlyHumanDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyHumanDiag.err) { earlyHumanDiag.err = String(e && e.stack); } }
     try { lateDiag(g, b, p, cmdsNow); } catch (e) { if (!lateDiag.err) { lateDiag.err = String(e && e.message); } }
     try { donDiag(g, b, p, cmdsNow, ld0); } catch (e) { if (!donDiag.err) { donDiag.err = String(e && e.stack); } }
     try { boatDiag(g, b, p, cmdsNow); } catch (e) { if (!boatDiag.err) { boatDiag.err = String(e && e.stack); } }
@@ -778,6 +967,22 @@ fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_
   E.push(`#       「参照我方队友」的 ${T.sbMate} 拍里，最好的目标每格成本 ≤3 兵（几乎是空地）的 ${T.cheap || 0} 拍，这些目标当时平均 ${T.cheap ? Math.round(T.cheapTerr / T.cheap) : 0} 格`);
   if (earlyEx.length) { E.push('# 例子（每 50 拍取一条）'); E.push(...earlyEx.slice(0, 60)); }
   fs.writeFileSync(path.join(OUT, 'shadow_early.txt'), E.join('\n') + '\n');
+  {
+    const EH = [`# ${mid} t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 ${SRC}；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）`];
+    if (earlyHumanDiag.err) EH.push(`# 诊断出错：${earlyHumanDiag.err}`);
+    EH.push(`# floorAt 复刻核对：${earlyHumanDiag.fChk || 0} 次里不一致 ${earlyHumanDiag.fBad || 0} 次`);
+    { const Pq = (earlyHumanDiag.P) || (pol.values().next().value || {}).p || {}; EH.push(`# 生效参数：preyKill=${Pq.preyKill} preyFloor=${Pq.preyFloor} personMax=${Pq.personMax} idleCap=${Pq.idleCap} minSend=${Pq.minSend} sendFrac=${Pq.sendFrac} feeK=${Pq.feeK} reserve=${Pq.reserve} cRef=${Pq.cRef} keepCap=${Pq.keepCap} kDef=${Pq.kDef} capMin=${Pq.capMin} denW=${Pq.denW} defCap=${Pq.defCap} ref=${Pq.ref} earlyEnd=${Pq.earlyEnd} coreFrom=${Pq.coreFrom} dpEnd=${Pq.dpEnd}`); }
+    let tot = { dec: 0, cmd: 0 }; const totCls = new Map();
+    for (const [b, st] of earlyH) {
+      tot.dec += st.dec; tot.cmd += st.cmd;
+      EH.push(`${b}: 这样的决策拍 ${st.dec}（t=${st.t0}~${st.t1}）；其中有指令 ${st.cmd}；余额 ${st.bal0}→${st.bal1}，领土 ${st.terr0}→${st.terr1}`);
+      for (const [c, n] of [...st.cls.entries()].sort((x, y) => y[1] - x[1])) { EH.push(`    ${c}: ${n} 拍`); totCls.set(c, (totCls.get(c) || 0) + n); }
+      for (const [q, ce] of [...st.cheapest.entries()].sort((x, y) => y[1].n - x[1].n).slice(0, 3)) EH.push(`    最便宜的敌方真人邻居 ${names[q]}#${q}：${ce.n} 拍，每格 ${ce.pxMin.toFixed(1)}~${ce.pxMax.toFixed(1)} 兵；它 ${ce.terr0} 格 / ${ce.bal0} 兵 → ${ce.terr1} 格 / ${ce.bal1} 兵`);
+    }
+    EH.push(`# 合计：决策拍 ${tot.dec}，有指令 ${tot.cmd}；零指令按原因：${[...totCls.entries()].sort((x, y) => y[1] - x[1]).map(([c, n]) => `${c} ${n}`).join('；')}`);
+    if (earlyHEx.length) { EH.push('# 例子（每 100 拍取一条）'); EH.push(...earlyHEx.slice(0, 80)); }
+    fs.writeFileSync(path.join(OUT, 'shadow_early_humans.txt'), EH.join('\n') + '\n');
+  }
   console.log(E.filter((x) => x.startsWith('# 合计') || x.startsWith('#       ')).join('\n'));
 }
 {

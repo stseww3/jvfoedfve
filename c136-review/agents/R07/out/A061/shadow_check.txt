@@ -1,0 +1,36 @@
+# A061 影子运行（策略 v27-team-c116-vb.js；重演 8859 拍，用时 12.6 秒）
+# 重演与 traj.csv 快照核对：476 行，领土一致 476，余额一致 476，都一致 476
+# HL-TICK 比对：真日志 476 条；影子同拍 领土余额一致 476，nb 一致 476，neut 一致 476，cmds 计数一致 310，三项全一致 310
+#   kaito9: 98 条，影子缺 0，nb 一致 98，neut 一致 98，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：455:attack 137→AI#176、460:attack 493→无主地、460:attack 149→AI#176
+#   sora_w: 27 条，影子缺 0，nb 一致 27，neut 一致 27，cmds 一致 27；最后一条 cmds 差（影子-真）0
+#   talon5: 9 条，影子缺 0，nb 一致 9，neut 一致 9，cmds 一致 9；最后一条 cmds 差（影子-真）0
+#   noah88: 9 条，影子缺 0，nb 一致 9，neut 一致 9，cmds 一致 9；最后一条 cmds 差（影子-真）0
+#   alex_k: 97 条，影子缺 0，nb 一致 97，neut 一致 97，cmds 一致 97；最后一条 cmds 差（影子-真）0
+#   ryan_m: 29 条，影子缺 0，nb 一致 29，neut 一致 29，cmds 一致 29；最后一条 cmds 差（影子-真）0
+#   zexos1: 66 条，影子缺 0，nb 一致 66，neut 一致 66，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：470:attack 406→无主地、470:attack 80→AI#213、475:attack 158→AI#448、480:attack 158→AI#448、540:attack 465→无主地
+#   zero_7: 21 条，影子缺 0，nb 一致 21，neut 一致 21，cmds 一致 21；最后一条 cmds 差（影子-真）0
+#   leo_tx: 92 条，影子缺 0，nb 一致 92，neut 一致 92，cmds 一致 92；最后一条 cmds 差（影子-真）0
+#   riku_x: 28 条，影子缺 0，nb 一致 28，neut 一致 28，cmds 一致 16；最后一条 cmds 差（影子-真）6
+#       变化点 (1440,1530] 差 0→3；这一段影子指令：1500:attack 47→无主地、1505:attack 47→无主地、1510:attack 47→无主地、1515:attack 47→无主地、1515:attack 122→Player 625#31[T1]、1520:attack 47→无主地、1520:attack 122→Player 625#31[T1]、1525:attack 47→无主地、1525:attack 122→Player 625#31[T1]、1530:attack 47→无主地、1530:attack 122→Player 625#31[T1]
+#       变化点 (1530,1620] 差 3→4；这一段影子指令：1535:attack 0→Player 625#31[T1]、1540:attack 0→Player 625#31[T1]、1545:attack 0→Player 625#31[T1]、1550:attack 0→Player 625#31[T1]、1555:attack 0→Player 625#31[T1]、1560:attack 122→Player 625#31[T1]、1600:attack 122→Player 625#31[T1]、1605:attack 122→Player 625#31[T1]、1610:attack 122→Player 625#31[T1]、1615:attack 122→Player 625#31[T1]、1620:attack 122→Player 625#31[T1]
+#       变化点 (1980,2070] 差 4→6；这一段影子指令：2025:attack 122→Micha [🇩🇪]#47[T1]、2030:attack 122→Micha [🇩🇪]#47[T1]、2035:attack 47→无主地、2035:attack 122→Micha [🇩🇪]#47[T1]、2040:attack 47→无主地、2040:attack 122→Micha [🇩🇪]#47[T1]、2045:attack 122→Player 625#31[T1]、2050:attack 122→Player 625#31[T1]、2055:attack 122→Player 625#31[T1]、2060:attack 122→Player 625#31[T1]、2065:attack 122→Player 625#31[T1]、2070:attack 122→Player 625#31[T1]
+# HL-DISPATCH 比对：真日志 21 条；影子在同一拍给出同对象同比例 21 条（其中种类也相同 21）；影子多出 0 条
+# HL-OPENING 比对：真日志 73 条；影子同拍同金额 73 条；影子共 73 条
+# 影子策略报错 0 条
+# 影子指令计数：alex_k:attack×71 alex_k:donate×9 kaito9:attack×85 kaito9:donate×9 leo_tx:attack×128 noah88:attack×17 riku_x:attack×62 ryan_m:attack×18 ryan_m:boatTo×1 ryan_m:donate×1 sora_w:attack×33 sora_w:boatTo×2 talon5:attack×13 talon5:boatTo×2 zero_7:attack×17 zexos1:attack×45 zexos1:donate×2
+# 影子指令的发令位置（策略源码行号）：
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5607〕：158 条，约 32,842,436 兵，t=1515~8410
+#   attack→内置AI 〔send:484<send:1827<send:3865<act:796〕：148 条，约 266,232 兵，t=365~1425
+#   attack→无主地 〔send:484<send:1827<send:3865<dpNeutral:2406〕：73 条，约 73,489 兵，t=60~765
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5585〕：50 条，约 9,027,163 兵，t=3800~7980
+#   attack→无主地 〔send:484<send:1827<send:3865<expandNeutral:952〕：34 条，约 1,574,516 兵，t=1500~8365
+#   donate 〔tryDonateToTeammate:4508<act:4962〕：21 条，约 12,617,936 兵，t=2250~8565
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5616〕：13 条，约 1,662,900 兵，t=1500~8025
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5592〕：6 条，约 92,577 兵，t=1515~1650
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5453〕：6 条，约 1,476,903 兵，t=1985~4700
+#   boatTo 〔boatFood:2017<boatFood:5623<act:1822<act:2692〕：4 条，约 40,816 兵，t=855~1060
+#   boatTo 〔boatOut:1011<boatOut:2327<act:806<act:1820〕：1 条，约 6,320 兵，t=850~850
+#   attack→真人 〔send:484<send:1827<send:3865<act:796〕：1 条，约 3,756 兵，t=1140~1140
+# isNoFullSend（影子）：noah88: 锁上@463 之后被挡 1 次、改 1 兵试探 0 次（t=760~760）；leo_tx: 锁上@477 之后被挡 7 次、改 1 兵试探 0 次（t=805~6540）；riku_x: 锁上@571 之后被挡 1 次、改 1 兵试探 5 次（t=950~1555）；talon5: 锁上@610 之后被挡 1 次、改 1 兵试探 0 次（t=610~610）；alex_k: 锁上@750 之后被挡 5 次、改 1 兵试探 0 次（t=3350~7180）；ryan_m: 锁上@958 之后被挡 0 次、改 1 兵试探 0 次；kaito9: 锁上@1014 之后被挡 6 次、改 1 兵试探 0 次（t=1015~4835）；zexos1: 锁上@3837 之后被挡 2 次、改 1 兵试探 0 次（t=5875~5880）
