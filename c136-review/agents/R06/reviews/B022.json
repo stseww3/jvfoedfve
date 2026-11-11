@@ -1,0 +1,6972 @@
+{
+ "matchId": "B022",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T00:49:54Z",
+  "squad": "squad20",
+  "bots": 11,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 12,
+  "mapSeed": 12480,
+  "mapLand": 695915,
+  "teams": 4,
+  "humans": 20,
+  "ourTeam": 4,
+  "teamSplitTrue": {
+   "1": 2,
+   "2": 3,
+   "3": 3,
+   "4": 3
+  },
+  "teamSplitSource": "engine-replay(bj.fX)",
+  "teamSplitCard": {
+   "1": 2,
+   "2": 3,
+   "3": 3,
+   "4": 3
+  },
+  "presence": {
+   "died": 7,
+   "end": 4
+  },
+  "leftTicks": {},
+  "neverPlayed": [],
+  "neverPlayedSource": "replay: left 且录像里没有它的任何出兵指令",
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "真引擎重放（录像 B022）到 t=7932；日志快照指纹 685/685 逐兵一致"
+  },
+  "contamination": [
+   "卡片的编队峰值 42.8% 是日志快照口径；录像逐拍最高是 t=6153 的 298,946 格（42.96%）。日志快照在个别拍缺号（t=2070 只读到 10 个号、211,599 格；录像 237,517 格），本复盘的份额一律用录像",
+   "结算行的阵亡拍比录像清地拍晚 2~11 拍（MasterChief 2633 / 2628、Sever 4323 / 4319、Heisenberg 4431 / 4420、Manchu 5147 / 5145、Kamakura 7681 / 7678、Dixie 7696 / 7690）；Ethereum t=2740 清地后因为有船在海上，t=3101 才算出局。本复盘的阵亡拍用录像清地拍",
+   "日志里的号名会变（BigBrain = Maradona / Mamluk / MaxVerstappen，Kamakura = Oda Nobunaga / Askeladd）；本复盘按玩家编号归并，统一用开局时的名字；Sever 的全名是 Sever (rus)",
+   "延迟的量法：影子策略给出「策略在第 τ 拍会下这条令」，录像给出它实际在第 s 拍执行；影子的指令不执行，所以影子累计 1,207 条比日志 cmds 1,007 条多（单号最多差 68 条：Dixie 日志 167 / 影子 235）。进录像的 921 条里配上 865 条（pct 完全相同 805）；一拍落地多条相同指令时，批内的配对不唯一（只有一个候选的 621 条）",
+   "日志的 nb 只数「非同队、非编队」的邻居；nb=0 且 neut=0 说明四周只有队友、受保护的编队号或水。影子探针每 5 拍决策一次，「决策拍」都是这个口径",
+   "领土网格快照只存了 t=0/150/300/450/630/900/1200/1500/1800/2400/3000/终局；t>3000 的「谁拿走了谁的地」用录像账本（100 拍一格）而不是网格",
+   "影子 dump 里「L5xxx」的出口行号是探针按 buyLand 的分支次序复算的解释，真正的指令来自同一拍跑的原版策略代码（「影子 act() 这一拍发出」那一行）；发船检查里「距上次发船检查 N 拍 < boatEvery 60」是采样拍带来的前置条件，实质原因看 searchWater / L4995 / L4996 / L1044 那一段",
+   "卡片写捐款 57 条、疑似被拒 27 条：录像里我方捐出并执行 47 笔；HL-DONATE 日志按录像判定：已执行 47、校验能过却没执行 5、配额不够 4、配额临界 1。DROP30 卡片 37 次",
+   "各队份额含外人队友；「我方」只指 11 个编队号。密度 = 兵 ÷ 领土（软上限 100、硬上限 150）",
+   "「同像素」指两个号最终生效的选点坐标相同（Ethereum / Heisenberg 都是 (1010,578)，BigBrain / LeBron 都是 (658,722)）；引擎把后到的那个放在旁边，t=0 的网格上两个号相距 6 格（Heisenberg 在 (1014,582)、BigBrain 在 (662,726)）"
+  ],
+  "huskDeaths": [],
+  "truthEnd": 7932
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "anyBotWon": true,
+  "ourTeamRank": null,
+  "winnerTeam": 2,
+  "endTick": 7932,
+  "ourFinalShare": 0.0,
+  "peakSquadLandShare": 0.428,
+  "peakPrimaryTeamShareSeen": 0.281,
+  "endRowSeen": true,
+  "lastSnapshotTick": 7920,
+  "lastTeamTotalsTick": 7932,
+  "note": "卡片标签 split_straggler_won：赢家队2 里的我方号 Rommel（17,282 格）、Eisenhower（31,197 格）、LeBron（56,346 格）活到终局，合计 104,825 格（15.1%）、1,470 万兵（密度 140）；队2 另外 84.4% 在两个外人手里（587,457 格、799 万兵，密度 13.6）。主队队4 的 3 个席位 t=2740 / 5145 / 7678 出局；队1 的 MasterChief、Dixie t=2628 / 7690 出局；队3 的 Sever、Heisenberg t=4319 / 4420 出局，BigBrain 以 12 格留到终局。按「11 个席位里 7 个阵亡、主队出局、赢家队的地 85% 在外人手里」记输局。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 132,
+   "squadLandShare": 0.0002,
+   "teamTroops": 10142,
+   "squadDens": 76.8,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 24,
+     "troops": 1844
+    },
+    "2": {
+     "bots": 3,
+     "land": 36,
+     "troops": 2766
+    },
+    "3": {
+     "bots": 3,
+     "land": 36,
+     "troops": 2766
+    },
+    "4": {
+     "bots": 3,
+     "land": 36,
+     "troops": 2766
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0006,
+     "troops": 3301,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0002,
+     "troops": 4452,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0007,
+     "troops": 2863,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0001,
+     "troops": 4082,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0197,
+   "src": "engine-replay",
+   "teamLandShare": 0.0001,
+   "teamRank": 4,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.0007
+  },
+  {
+   "t": 180,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 664,
+   "squadLandShare": 0.001,
+   "teamTroops": 15455,
+   "squadDens": 23.3,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 24,
+     "troops": 3058
+    },
+    "2": {
+     "bots": 3,
+     "land": 400,
+     "troops": 3607
+    },
+    "3": {
+     "bots": 3,
+     "land": 36,
+     "troops": 4587
+    },
+    "4": {
+     "bots": 3,
+     "land": 204,
+     "troops": 4203
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0015,
+     "troops": 4242,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0011,
+     "troops": 5650,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.001,
+     "troops": 4590,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0006,
+     "troops": 6262,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0365,
+   "src": "engine-replay",
+   "teamLandShare": 0.0006,
+   "teamRank": 4,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.0015
+  },
+  {
+   "t": 270,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 3137,
+   "squadLandShare": 0.0045,
+   "teamTroops": 13281,
+   "squadDens": 4.2,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 708,
+     "troops": 1678
+    },
+    "2": {
+     "bots": 3,
+     "land": 1001,
+     "troops": 3963
+    },
+    "3": {
+     "bots": 3,
+     "land": 451,
+     "troops": 4169
+    },
+    "4": {
+     "bots": 3,
+     "land": 977,
+     "troops": 3471
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0037,
+     "troops": 3878,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.002,
+     "troops": 7755,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0021,
+     "troops": 5065,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0022,
+     "troops": 6721,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0592,
+   "src": "engine-replay",
+   "teamLandShare": 0.0022,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.0037
+  },
+  {
+   "t": 630,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 26950,
+   "squadLandShare": 0.0387,
+   "teamTroops": 53249,
+   "squadDens": 2.0,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 4751,
+     "troops": 9820
+    },
+    "2": {
+     "bots": 3,
+     "land": 8934,
+     "troops": 16106
+    },
+    "3": {
+     "bots": 3,
+     "land": 4658,
+     "troops": 11652
+    },
+    "4": {
+     "bots": 3,
+     "land": 8607,
+     "troops": 15671
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.017,
+     "troops": 27580,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0255,
+     "troops": 24321,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0169,
+     "troops": 15582,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0227,
+     "troops": 31059,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.3667,
+   "src": "engine-replay",
+   "teamLandShare": 0.0227,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0255
+  },
+  {
+   "t": 1170,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 94382,
+   "squadLandShare": 0.1356,
+   "teamTroops": 332480,
+   "squadDens": 3.5,
+   "boxed": 3,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 16522,
+     "troops": 84144
+    },
+    "2": {
+     "bots": 3,
+     "land": 29539,
+     "troops": 107812
+    },
+    "3": {
+     "bots": 3,
+     "land": 17434,
+     "troops": 51459
+    },
+    "4": {
+     "bots": 3,
+     "land": 30887,
+     "troops": 89065
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0576,
+     "troops": 176534,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.082,
+     "troops": 219286,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.058,
+     "troops": 81235,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0897,
+     "troops": 167991,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.6972,
+   "src": "engine-replay",
+   "teamLandShare": 0.0897,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.082
+  },
+  {
+   "t": 1530,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 145031,
+   "squadLandShare": 0.2084,
+   "teamTroops": 1039159,
+   "squadDens": 7.2,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 24453,
+     "troops": 250153
+    },
+    "2": {
+     "bots": 3,
+     "land": 43382,
+     "troops": 353550
+    },
+    "3": {
+     "bots": 3,
+     "land": 29609,
+     "troops": 158054
+    },
+    "4": {
+     "bots": 3,
+     "land": 47587,
+     "troops": 277402
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1045,
+     "troops": 402177,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.1435,
+     "troops": 608047,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0989,
+     "troops": 317691,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.1618,
+     "troops": 509450,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.4756,
+   "src": "engine-replay",
+   "teamLandShare": 0.1618,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1435
+  },
+  {
+   "t": 2070,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 237517,
+   "squadLandShare": 0.3413,
+   "teamTroops": 2136093,
+   "squadDens": 9.0,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 42838,
+     "troops": 623125
+    },
+    "2": {
+     "bots": 3,
+     "land": 58990,
+     "troops": 631233
+    },
+    "3": {
+     "bots": 3,
+     "land": 57280,
+     "troops": 299546
+    },
+    "4": {
+     "bots": 3,
+     "land": 78409,
+     "troops": 582189
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1378,
+     "troops": 963689,
+     "activeHumans": 3,
+     "huskLandShare": 0.0158
+    },
+    "2": {
+     "landShare": 0.2735,
+     "troops": 1224309,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1962,
+     "troops": 676934,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.2897,
+     "troops": 1104712,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.085,
+   "src": "engine-replay",
+   "teamLandShare": 0.2897,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2735
+  },
+  {
+   "t": 2610,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 259939,
+   "squadLandShare": 0.3735,
+   "teamTroops": 5017568,
+   "squadDens": 19.3,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 48223,
+     "troops": 674707
+    },
+    "2": {
+     "bots": 3,
+     "land": 71355,
+     "troops": 1922945
+    },
+    "3": {
+     "bots": 3,
+     "land": 56607,
+     "troops": 979376
+    },
+    "4": {
+     "bots": 3,
+     "land": 83754,
+     "troops": 1440540
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1732,
+     "troops": 1370606,
+     "activeHumans": 3,
+     "huskLandShare": 0.0189
+    },
+    "2": {
+     "landShare": 0.334,
+     "troops": 3606760,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1876,
+     "troops": 1430921,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.28,
+     "troops": 2823350,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0077,
+   "src": "engine-replay",
+   "teamLandShare": 0.28,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.334
+  },
+  {
+   "t": 3060,
+   "alive": 10,
+   "seen": 10,
+   "husks": 0,
+   "squadLand": 246374,
+   "squadLandShare": 0.354,
+   "teamTroops": 9568060,
+   "squadDens": 38.8,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 45737,
+     "troops": 1231309
+    },
+    "2": {
+     "bots": 3,
+     "land": 70855,
+     "troops": 3627546
+    },
+    "3": {
+     "bots": 3,
+     "land": 50996,
+     "troops": 1658150
+    },
+    "4": {
+     "bots": 3,
+     "land": 78786,
+     "troops": 3051055
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1541,
+     "troops": 2616075,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.3663,
+     "troops": 6603827,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1891,
+     "troops": 3022248,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.2808,
+     "troops": 5842558,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0024,
+   "src": "engine-replay",
+   "teamLandShare": 0.2808,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3663
+  },
+  {
+   "t": 3090,
+   "alive": 10,
+   "seen": 10,
+   "husks": 0,
+   "squadLand": 246594,
+   "squadLandShare": 0.3543,
+   "teamTroops": 9954870,
+   "squadDens": 40.4,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 45957,
+     "troops": 1283750
+    },
+    "2": {
+     "bots": 3,
+     "land": 70855,
+     "troops": 3768703
+    },
+    "3": {
+     "bots": 3,
+     "land": 50996,
+     "troops": 1723656
+    },
+    "4": {
+     "bots": 3,
+     "land": 78786,
+     "troops": 3178761
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1544,
+     "troops": 2857162,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.3708,
+     "troops": 6938330,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1891,
+     "troops": 3151750,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.2769,
+     "troops": 5976216,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0024,
+   "src": "engine-replay",
+   "teamLandShare": 0.2769,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3708
+  },
+  {
+   "t": 4050,
+   "alive": 9,
+   "seen": 9,
+   "husks": 0,
+   "squadLand": 267330,
+   "squadLandShare": 0.3841,
+   "teamTroops": 28170451,
+   "squadDens": 105.4,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 49580,
+     "troops": 5436026
+    },
+    "2": {
+     "bots": 3,
+     "land": 90256,
+     "troops": 10560161
+    },
+    "3": {
+     "bots": 3,
+     "land": 42251,
+     "troops": 4995128
+    },
+    "4": {
+     "bots": 2,
+     "land": 85243,
+     "troops": 7179136
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1645,
+     "troops": 11601696,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.4261,
+     "troops": 24198831,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1675,
+     "troops": 8889880,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.2369,
+     "troops": 12005309,
+     "activeHumans": 3,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2369,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.4261
+  },
+  {
+   "t": 4290,
+   "alive": 9,
+   "seen": 9,
+   "husks": 0,
+   "squadLand": 262124,
+   "squadLandShare": 0.3767,
+   "teamTroops": 26079243,
+   "squadDens": 99.5,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 56156,
+     "troops": 5897302
+    },
+    "2": {
+     "bots": 3,
+     "land": 91887,
+     "troops": 11879082
+    },
+    "3": {
+     "bots": 3,
+     "land": 30704,
+     "troops": 2816747
+    },
+    "4": {
+     "bots": 2,
+     "land": 83377,
+     "troops": 5486112
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1754,
+     "troops": 12508042,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.4428,
+     "troops": 27217944,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1454,
+     "troops": 2816752,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.2337,
+     "troops": 5486117,
+     "activeHumans": 3,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2337,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.4428
+  },
+  {
+   "t": 4410,
+   "alive": 8,
+   "seen": 8,
+   "husks": 0,
+   "squadLand": 257573,
+   "squadLandShare": 0.3701,
+   "teamTroops": 23265109,
+   "squadDens": 90.3,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 68909,
+     "troops": 6499574
+    },
+    "2": {
+     "bots": 3,
+     "land": 96935,
+     "troops": 10666580
+    },
+    "3": {
+     "bots": 2,
+     "land": 7347,
+     "troops": 422484
+    },
+    "4": {
+     "bots": 2,
+     "land": 84382,
+     "troops": 5676471
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2011,
+     "troops": 13734542,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.4766,
+     "troops": 23895118,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0949,
+     "troops": 479780,
+     "activeHumans": 2,
+     "huskLandShare": 0.0844
+    },
+    "4": {
+     "landShare": 0.2247,
+     "troops": 5747546,
+     "activeHumans": 3,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2247,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.4766
+  },
+  {
+   "t": 4500,
+   "alive": 7,
+   "seen": 7,
+   "husks": 0,
+   "squadLand": 258540,
+   "squadLandShare": 0.3715,
+   "teamTroops": 19194583,
+   "squadDens": 74.2,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 75678,
+     "troops": 6098643
+    },
+    "2": {
+     "bots": 3,
+     "land": 99504,
+     "troops": 7457312
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 684
+    },
+    "4": {
+     "bots": 2,
+     "land": 83346,
+     "troops": 5637944
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2217,
+     "troops": 13680685,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.5046,
+     "troops": 21310112,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0588,
+     "troops": 72901,
+     "activeHumans": 1,
+     "huskLandShare": 0.0588
+    },
+    "4": {
+     "landShare": 0.2098,
+     "troops": 5700503,
+     "activeHumans": 3,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2098,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.5046
+  },
+  {
+   "t": 5040,
+   "alive": 7,
+   "seen": 7,
+   "husks": 0,
+   "squadLand": 274121,
+   "squadLandShare": 0.3939,
+   "teamTroops": 30396267,
+   "squadDens": 110.9,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 111084,
+     "troops": 14495171
+    },
+    "2": {
+     "bots": 3,
+     "land": 100235,
+     "troops": 11363186
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1209
+    },
+    "4": {
+     "bots": 2,
+     "land": 62790,
+     "troops": 4536701
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3281,
+     "troops": 26283886,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.5778,
+     "troops": 34628899,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1209,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0902,
+     "troops": 4536701,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0902,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.5778
+  },
+  {
+   "t": 5130,
+   "alive": 7,
+   "seen": 7,
+   "husks": 0,
+   "squadLand": 268228,
+   "squadLandShare": 0.3854,
+   "teamTroops": 26604409,
+   "squadDens": 99.2,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 111912,
+     "troops": 10441034
+    },
+    "2": {
+     "bots": 3,
+     "land": 100235,
+     "troops": 12025108
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1318
+    },
+    "4": {
+     "bots": 2,
+     "land": 56069,
+     "troops": 4136949
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3455,
+     "troops": 23655562,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.5717,
+     "troops": 34619202,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1318,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0806,
+     "troops": 4136949,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0806,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.5717
+  },
+  {
+   "t": 6030,
+   "alive": 6,
+   "seen": 6,
+   "husks": 0,
+   "squadLand": 296284,
+   "squadLandShare": 0.4257,
+   "teamTroops": 37564720,
+   "squadDens": 126.8,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 148253,
+     "troops": 16013675
+    },
+    "2": {
+     "bots": 3,
+     "land": 100542,
+     "troops": 14484786
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1796
+    },
+    "4": {
+     "bots": 1,
+     "land": 47477,
+     "troops": 7064463
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2717,
+     "troops": 16048190,
+     "activeHumans": 1,
+     "huskLandShare": 0.0587
+    },
+    "2": {
+     "landShare": 0.6583,
+     "troops": 34745319,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1796,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0682,
+     "troops": 7064463,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0682,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.6583
+  },
+  {
+   "t": 7020,
+   "alive": 6,
+   "seen": 6,
+   "husks": 0,
+   "squadLand": 234214,
+   "squadLandShare": 0.3366,
+   "teamTroops": 26818729,
+   "squadDens": 114.5,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 85793,
+     "troops": 5152229
+    },
+    "2": {
+     "bots": 3,
+     "land": 100932,
+     "troops": 14543150
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1800
+    },
+    "4": {
+     "bots": 1,
+     "land": 47477,
+     "troops": 7121550
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1233,
+     "troops": 5152229,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.8073,
+     "troops": 29270482,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1800,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0682,
+     "troops": 7121550,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0682,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.8073
+  },
+  {
+   "t": 7650,
+   "alive": 6,
+   "seen": 6,
+   "husks": 0,
+   "squadLand": 146396,
+   "squadLandShare": 0.2104,
+   "teamTroops": 17081697,
+   "squadDens": 116.7,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 32184,
+     "troops": 1374649
+    },
+    "2": {
+     "bots": 3,
+     "land": 100970,
+     "troops": 15094202
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1800
+    },
+    "4": {
+     "bots": 1,
+     "land": 13230,
+     "troops": 611046
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0462,
+     "troops": 1374649,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.9336,
+     "troops": 19830353,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1800,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.019,
+     "troops": 611046,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.019,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.9336
+  },
+  {
+   "t": 7680,
+   "alive": 5,
+   "seen": 5,
+   "husks": 0,
+   "squadLand": 126261,
+   "squadLandShare": 0.1814,
+   "teamTroops": 16064436,
+   "squadDens": 127.2,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 25279,
+     "troops": 961006
+    },
+    "2": {
+     "bots": 3,
+     "land": 100970,
+     "troops": 15101630
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1800
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0363,
+     "troops": 961006,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.9491,
+     "troops": 18669297,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1800,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0,
+   "teamRank": 4,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.9491
+  },
+  {
+   "t": 7932,
+   "alive": 4,
+   "seen": 4,
+   "husks": 0,
+   "squadLand": 104837,
+   "squadLandShare": 0.1506,
+   "teamTroops": 14696908,
+   "squadDens": 140.2,
+   "boxed": 2,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 104825,
+     "troops": 14695108
+    },
+    "3": {
+     "bots": 1,
+     "land": 12,
+     "troops": 1800
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.9948,
+     "troops": 22682255,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0,
+     "troops": 1800,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0,
+   "teamRank": 4,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.9948
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "地图 12（陆地 695,915 格）、20 个真人、四队。选点阶段 41 步：日志 HL-SPAWN 70 行（每号 3~8 行），进录像 49 条（70%），后端协调 0 行。「最后一条下发的选点 = 出生点」只有 1/11 个号（LeBron）；另外 10 个号都停在倒数第二条，最后一条下发的坐标离出生点 36~1,256 格（Kamakura 1,256、Manchu 1,225、MasterChief 1,016）。选点延迟下界 0/0/1 步——不是网络慢，是到最后一步还在换点。候选 48 个（50 行）或 5 个（20 行）；槽位 0、3、7、8、9、11、12、13、14、15、18；槽位 0（MasterChief）、3（Manchu）各下发 3 条只落地 1 条。",
+    "撞点：43 个不同坐标里 5 个被 >=2 个号先后选过。最终落点相距 <80 格的 4 对全部异队，其中 2 对在同一个像素：Ethereum（队4）↔Heisenberg（队3）(1010,578)、BigBrain（队3）↔LeBron（队2）(658,722)；Rommel（队2）(994,578) 离前一对 16 格。日志次序：Rommel 第 32 步先选 (1010,578)、第 34 步挪到 (994,578)；Ethereum 第 37 步、Heisenberg 第 38 步先后落在 (1010,578)；LeBron 第 36 步、BigBrain 第 37 步落在 (658,722)；Kamakura 的 (226,18) 是 Eisenhower 第 35 步选过的点。",
+    "11 个号「最近的真人」全部是异队的我方号：西北角 Eisenhower（队2）、Dixie（队1）、Kamakura（队4）、Sever（队3）四个号两两 179~182 格、分属四个队；中部 Rommel / Ethereum / Heisenberg 三个号 16 格之内、分属三个队；东边 MasterChief（队1）↔Manchu（队4）137 格；南边 LeBron（队2）↔BigBrain（队3）同像素。",
+    "按真实出生点做陆路 Voronoi：11 个席位的天然份额合计 282,039 格 = 41.0%，人头占 55.0%（比值 0.74；直线距离版 0.78）；单号中位 24,886 格对其他真人 39,031，人均 25,640 对 45,159。不到全场人均一半的 2 个：BigBrain 4,475 格（全场 19/20）、Ethereum 10,509（18/20）；全场前 4 名没有我方号（Eisenhower 43,181 第 5、Dixie 39,575 第 6、Kamakura 35,712 第 8）。按队：队2 的两个外人天然份额 133,536 格（人均 66,768），队2 我方 3 个号 86,358；队4 两个外人 119,703，队4 我方 3 个号 71,107。",
+    "开局周期出兵：HL-OPENING 93 行（间隔中位 90 拍）。第一个周期（下令拍 65~70）8 个号迟到 133~238 拍才执行：Sever 238、Dixie 161、Eisenhower 154、Ethereum 152、BigBrain 152、Heisenberg 145、MasterChief 133、Kamakura 133；Manchu 63、LeBron 47、Rommel 42。下令拍 150 之后回到 10~16 拍。空转的开局周期 9 个 / 8 个号。",
+    "BigBrain（队3）与 LeBron（队2）同像素：两边的影子都在 t=65 下第一条（470‰）。LeBron 的 t=112 执行，t=160 已有 208 格；BigBrain 的 t=217 才执行（迟到 152 拍），身边已经没有无主地（没生效），t=245 第二条同样。此后 7,700 拍 BigBrain 一直是 12 格：四周 16 格全是 LeBron（保护名单）、岸格 0，兵顶在 1,800（密度 150）。同像素的另一对 Ethereum / Heisenberg（迟到 152 / 145 拍）被先落地的 Rommel（迟到 42 拍，t=160 已有 180 格）占了第一圈：t=300 Rommel 535 格、Heisenberg 647、Ethereum 204。",
+    "t=630（录像）我方 26,950 格（3.87%）= 天然份额的 9.6%（单号中位 10.1%），其他真人 7.4%（10.7%）；在场真人单号领土中位 2,739 对 3,514。80 格内有另一个我方号的 5 个号领土中位 2,014，其余 6 个号 2,798。"
+   ],
+   "issues": [
+    "选点各机各算、互不排斥：10/11 个号停在前一版坐标，2 对落在同一个像素、4 对 <80 格、全部异队；每个号最近的真人都是异队的我方号；天然份额是人头的 74%。",
+    "第一个开局周期迟到 133~238 拍：同像素的两个号里先落地的拿走整圈无主地，BigBrain 一格没扩出去，整局是 12 格。"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "在场真人单号领土中位（我方 对 其他真人）：t=630 2,739 对 3,514；t=900 5,974 对 7,372；t=1170 9,650 对 11,377；t=1530 13,502 对 25,356；t=2070 21,165 对 56,092。内置 AI 的地 36.7%（630）→76.0%（900）→47.6%（1530）→15.1%（1980）→5.6%（2160）→1.0%（2520）；在场 AI 489→109（1530）→12（2070）个。本图 AI 多，分 AI 地一直分到 t≈2500。",
+    "t=1530（录像）：我方 145,031 格（20.84%）、104 万兵（密度 7.2）。领土榜前 5 名全是外人：Major McNade 33,735 格、🤗 31,249、GYRO 31,121、Player 771 28,344、Player 569 25,356；我方最大的 Kamakura 23,384 格排第 6，Manchu 16,101 第 9，Dixie 11,754 第 16，BigBrain 12 格。t=2520：GYRO 92,589 格（13.3%）、Player 569 68,471、Player 771 68,365、🤗 66,753、Rotigus 53,028；我方 Kamakura 47,477（第 6）、Dixie 41,001（第 8）。",
+    "延迟（latency.py）：下令拍 600~1500 的 404 条指令 145/256/392 拍，>=35 拍的 371 条、>=90 拍的 294 条；每 150 拍一格的中位：21（600）→66→127→189→225→227（1350）→252（1500）→251→225→155（1950）→96（2100）→10（2250）。各号 600~1500 的中位/最大：Heisenberg 176/318、Kamakura 173/364、Dixie 168/392、Rommel 158/296、Eisenhower 156/283、Manchu 150/332、Ethereum 143/238、MasterChief 140/266、Sever 140/265、LeBron 108/262；1500~3000：Kamakura 285/390、Dixie 257/517、Sever 244/379、Eisenhower 223/364。没有断档（没有 >=300 拍一条指令都不进录像的号）。",
+    "漏斗：τ=600~1500 影子下令 485 条 → 进录像 404 条（83%）→ 生效 319 条（66%）；τ=1500~3000 474 → 249（53%）→ 162（34%）。",
+    "迟到落空（按执行拍）：t=600~1500 的 345 条陆攻没生效 66 条（19%），其中 59 条是下令时目标 AI 还活着、落地时已出局（想发 13.8 万兵）；打错 47 条（目标已出局、15.5 万兵进了无主地线）。打内置 AI 的 119 条线出兵 89.8 万、得 90,402 格，其中 54.3 万（60%）在目标出局时被改挂到无主地线；打无主地的 20 条线 23.2 万兵退回 19.5 万（84%）。t=1500~3000 的 327 条陆攻没生效 123 条（38%：目标 AI 已出局 35、无主地已经没了 67），打错 34 条（53.3 万兵）；打 AI 的 32 条线 189 万兵里 155 万（82%）被改挂、得 86,189 格；打无主地 17 条线 108 万兵退回 106 万（98%）。",
+    "重复下单（下令拍落在前一条「已下令、还没进录像」的窗口里）：τ=600~1500 229/404（57%，全是打 AI；生效的 167 条 105 万兵、手续费 9.3 万；下令时已有 >=4 条在路上的 53 条）；τ=1500~3000 陆攻 174/218（80%；213 万兵、手续费 24.8 万）。同拍批（同一个号同一个服务器回合进录像 >=3 条）：t=600~1500 41 批 222 条（清仓批 20 批，抽走批前余额 51%~75%，共 59.0 万兵）；t=1500~3000 44 批 301 条（整批没生效 10 批；清仓批 23 批 52%~100%，共 252 万兵）。最大的：Sever t=1904 9 条花掉 15.2 万里的 15.2 万（99.5%；延迟 244~294 拍；打内置 AI 和无主地线）、Heisenberg t=1561 93%、Sever t=1750 92%、Sever t=1575 86%、Rommel t=1554 79%、Manchu t=1554 78%。",
+    "这一段的清仓批没有直接要命：>=3 条同拍指令抽走 >=70% 余额的 13 组（117 万兵 / 6 个号）之后 900 拍内没有一个号阵亡——它们打的是内置 AI 和无主地线（2~5 兵一格），兵要么换成了地、要么从无主地线退回。代价是打完密度塌到 1~3：Sever t=2070 31,479 格、3.4 万兵（密度 1.1），t=2160 37,852 格、7.1 万兵。",
+    "好地账（landcap.py）：t=630 贴着我方或一半以上落在我方天然份额里的内置 AI 195 个、101,750 格。我方拿到 9.6%（t=900）→25.6%（1200）→44.8%（1500）→62.2%（1800）→82.7%（2400），其他真人 0.5%→1.5%→2.4%→6.6%→12.5%。其余 153,464 格 AI 地：其他真人 40.7%（1500）→88.7%（2400），我方 2.7%→9.9%。t=630→1500 我方 +114,608 格（无主地 65,229、AI 49,717），其他 9 个真人 +165,473 格（无主地 100,528、AI 64,945）；人均从 AI 手里拿到 4,519 对 7,216 格，净增长 10,418 对 18,385。t=1500 实抢 = 天然份额的 50.2%（单号中位 59.5%），其他真人 48.1%（61.1%）；到 AI 地分完的 t=2520，我方 265,430 格 = 天然份额的 94.1%，其他真人 401,419 格 = 98.8%。",
+    "策略自己不出兵（影子，t=600~1499，眼里有内置 AI 邻居的 1,800 个决策拍）：可出兵 1,078（59.9%）；地价闸 botOk 271（15.1%）；底线取 winR 项 148（8.2%）、dpKeep 56（3.1%）；底线取 safeFinite 且去掉就能出兵 197（10.9%）——其中 100 拍（5.6%）取的是异队我方号的兵（Eisenhower 28 拍 = 它这类决策拍的 15.6%、MasterChief 20 拍 = 11.1%、Heisenberg 17、Ethereum 15、Manchu 6、Dixie 6；同队 0），LeBron 54 拍取的是外人队友的兵；safeFinite 去掉也不够的 12。",
+    "撞名的内置 AI：Kalmar Union 贴着 Heisenberg 20~543 格（t=360~2340），144 格→9,850 格（t=2190，比同一时刻的 Ethereum 大），密度 0~2.3，Heisenberg 对它 0 兵；Yugoslavia 贴 MasterChief 13~135 格、贴 Manchu 33~147 格（t=630~2520），MasterChief 对它 0 兵；Goguryeo 贴 Eisenhower 45~137 格（峰值 4,082 格）、Austria-Hungary 贴 LeBron（峰值 3,046 格），0 兵。Kalmar Union t=1800 手里的 6,316 格到 t=3000 归 Manchu 4,437、Heisenberg 1,879。"
+   ],
+   "issues": [
+    "到 AI 地分完（t=2520），我方和其他真人的实抢率差不多（天然份额的 94% 对 99%）；差距在起点：天然份额人均 25,640 对 45,159。t=2070 单号领土中位 21,165 对 56,092。",
+    "客户端落后 145~250 拍在这一段带来的是浪费而不是丢地：57%~80% 的指令是重复下单，60%~82% 的兵被改挂到无主地线再退回；同拍批把余额一次打空（43 批清仓 311 万兵），打完密度 1~3。",
+    "不贴着我方的 AI 地（153,464 格）我方只拿到 9.9%，其他真人 88.7%：外人的天然份额大（队2 的两个外人人均 66,768 格），身边的 AI 多。"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "追帧批打在真人身上的两个号（t=2079~2740）。MasterChief（队1）t=2079 一拍落地 8 条（下令拍 1750~1865，延迟 214~329 拍）：4 条打 Player 771（队3；277‰ / 224‰ / 244‰ / 251‰ = 6.4 万 + 3.7 万 + 3.1 万 + 2.4 万）+ 4 条没生效的无主地单，花掉 23.5 万里的 16.3 万（69.4%）→ +6,124 格、密度 2.4；影子在 t=2060 / 2075 的判断是不出兵（L5528：可用 4.1 万不足 chunk 4.6 万~4.7 万）。Player 771（55,613~73,918 格、27 万~45 万兵）t=2142~2597 7 条 35.4 万兵拿走 19,075 格，t=2628 MasterChief 清地。Ethereum（队4，天然份额 10,509 格）t=2170 一拍 3 条（2 条打 Player 569 的 242‰ / 205‰ + 1 条船）花掉 23.9 万里的 13.0 万（54%），t=2184 再 243‰，t=2240 又 3 条（238‰ / 241‰ + 船；52%）：23.6 万→5.2 万兵，对 Player 569 耗兵 18.3 万得 3,761 格；影子 t=2150 / 2165 的判断是 L5267（报价 23.8 对 worth 19.3）。Player 569 t=2247~2709 3 条 212‰（12.2 万 / 14.8 万 / 20.5 万）拿走 17,996 格，t=2740 清地。",
+    "停手（logdigest cmdmix）：出兵/发船指令每千号·拍 45.7（630~1530）→40.3（1530~2070）→3.1（2070~3510；1,440 拍一共 41 条出兵、11 笔捐款；录像里全队的兵 214 万→1,769 万）→4.6（3510~5040）→3.3→3.1。零指令时段（>=450 拍）19 段 26,730 拍 / 10 个号：Sever t=2070~4050（1,980 拍；37,852→16,734 格，密度 1→117）、Kamakura 2070~3510 和 5130~7110、Heisenberg 2880~3780（900 拍；25,505 格不动，密度 28→107）、Manchu 2790~3690、LeBron 2250~3420、Rommel 1620~2700 / 4500~7920、Eisenhower 2250~3060 / 4500~7650。",
+    "异队的我方号互相围住（simdigest protbox；策略眼里 nb=0 且 neut=0）：12 段 27,720 拍，11 段贴着保护名单里的地。Rommel（队2）t=1620 起到终局 6,390 拍：真实邻居是队友 GYRO 295~504 格、Player 569 172~409 格，加上 Ethereum 241 格（到 t=2740）、Heisenberg 189~206 格（到 t=4420）；Eisenhower（队2）t=2250~4230：Kamakura（队4）420 格、Dixie（队1）382、Sever（队3）374；Kamakura（队4）t=2250~4230：Eisenhower 420、队友 🤗 348~371、Sever 121~148、Dixie 35；Kamakura 第二段 t=4410~7110、Eisenhower 第二段 t=4590~7650；LeBron 三段 2,970 拍（t=4230 起）；BigBrain t=630 起到终局；Dixie t=4860~5040；Manchu t=2160~2340（Kalmar Union 123 格、Heisenberg 108、Yugoslavia 106、MasterChief 24；t=2085~2590 有 94 个决策拍 nb=0，靠 6 条船 21,502→28,633 格）。Dixie（队1）t=2340~3330 的陆上邻居也只有 Eisenhower 382 格、Sever 235 格、Kamakura 35 格三个异队的我方号（nb=0；靠零星的无主邻格和 6 条船拿小岛，38,020→46,862 格）。影子 dump1：这些拍 offers 为空；Rommel（岸格 204）、Eisenhower（岸格 7）、Kamakura（岸格 102）的发船检查都是「200 格水程内找不到可登陆的地」。",
+    "t=3060 接敌表：9 个号 957 万兵，贴着敌方真人的 4 个号（396 万兵）；t=4050：9 个号 2,817 万兵（密度 105.4），贴着敌方真人的仍是 4 个号（1,401 万兵：Dixie、Manchu、Heisenberg、Sever），对面 4 个敌方真人 2,236 万兵。同一时刻在场真人单号领土中位 25,505 对 79,611。",
+    "影子闸（t=1500~3000，offers 里有真人报价的 1,330 个决策拍）：L5267（报价 >= worth 且没超软上限）910（68.4%）、L5528（买不起整笔且不足 chunk）155（11.7%）、前一份报价 break 118、出兵 61（4.6%）、L5361 74（保底线取 safeFinite 的 67、取 dpKeep 的 7）。正被真人打的 194 拍里 192 拍（99.0%）没有对任何真人出兵。非真人报价 1,355 拍：出兵 529、L5367（单太小：want < minCmd = 余额的 4.7%）441（Heisenberg 145、LeBron 204）、dpKeep 86、safeFinite（取异队我方号的兵，去掉就能出兵）68。",
+    "Sever（队3，t=4319）：🤗（队4）7 次登陆（t=2045~3298，3.6 万~22.8 万兵）+ 陆攻 106‰ ×5（t=2254~4165，6.1 万~55.4 万）；Sever t=2070~4050 一条指令没有。影子 t=2500 / 3000 / 3500 / 3900：🤗 的报价 27.5 / 79.7 / 142.3 / 181.7 对 worth 10.4 / 22.6 / 44.7 / 89.1 → L5267（t=2500 标「在打我」）；t=4000~4200 超软上限（密度 110~122）→ L5271（唯一的真人缓冲）。t=4116 出兵 259‰ 52.4 万（+2,271 格）、t=4263 228‰ 39.9 万；t=4249 🤗 一条 1023‰ 满仓 497 万（🤗 对它整局陆攻 6 条 666 万 + 登陆 89.7 万）；t=4300 🤗 只剩 8.0 万兵，Sever 的保底线 76.0 万 >= 余额 69.1 万 → L5361。收到捐款 107 万（Heisenberg 3 笔 + BigBrain）。清地时 5,932 格、38.1 万兵。",
+    "Heisenberg（队3，t=4420）：t=2610~4240 25,505 格不动，t=2880~3780 零指令（密度 28→107）。t=2500 身边 0 兵的 AI Holy Roman Empire（2,245 格）：能发 4,319 兵 < minCmd 2.1 万 → 跳过（L5367）。t=3900 / 4000 / 4100 / 4200 超软上限（密度 101~125、257 万~318 万兵）：GYRO（122,226 格、426 万~969 万兵）和 Player 569（84,058 格、581 万~686 万兵）两份报价都是 L5361——dpKeep 376 万 / 379 万 / 454 万 / 542 万 >= 余额。这段时间它给 Sever 捐了 3 笔（t=3815 到账 40.7 万、t=4130 48.8 万、t=4298 16.9 万——最后一笔时 GYRO 已经在打它）。GYRO t=4249~4410 4 条 185‰ 共 614 万兵拿走 19,549 格；Heisenberg 最后 600 拍 0 条出兵。清地时 6,075 格、31.1 万兵。",
+    "队2 三个号之间的捐款（17 笔：到账 718 万、手续费 326 万）。t=3017~3710 被围的 Rommel、Eisenhower 各 4 笔 185‰ 捐给 LeBron（到账 223 万、手续费 76.6 万；Eisenhower t=3100~3180 另有 4 条因为配额不够没执行）：LeBron 当时在吃 Major McNade，整段只花了 32.9 万兵，密度 21→129。t=4284~4522 Rommel 3 笔、LeBron 6 笔反过来捐给 Eisenhower（到账 495 万、手续费 250 万）：前 5 笔（t=4284~4403）时 Eisenhower 密度 124~139，其中 4 笔 280‰ 的到账被它离硬上限的余量截断（t=4284 / 4319 / 4368 / 4403），t=4319 / 4403 两笔只到账 30.5 万 / 29.8 万（LeBron 各付手续费 46.0 万 / 38.1 万）；t=4466 的两笔（到账 134 万）把它补到硬上限（412 万 = 150×27,511），同一拍它的 3 条指令打出去 271 万；t=4501 / 4522 的两笔（86.3 万 + 67.2 万）落在这之后（密度 53 / 86）。",
+    "Eisenhower 的回兵溢出（t=4291~4530）：🤗 t=4280 77,718 格只剩 4 兵。Eisenhower t=4291 / 4298 出 17.5 万 / 29.0 万；t=4389 🤗 一条 1023‰（151 万）打回来；t=4410 Eisenhower 302‰ 112 万；t=4466 一拍落地 3 条（下令拍 4380~4395，延迟 71~86 拍；197‰ + 424‰ + 244‰ = 79.6 万 + 136 万 + 44.9 万，连手续费 271 万 = 批前余额 412 万的 65.9%），而 🤗 这一拍只剩 3 兵。🤗 的地同时被 Dixie 从另一侧收走，Eisenhower t=4500 之后只再得 100 格；线上的兵退回时余额已被 LeBron 的两笔捐款（t=4501 86.3 万、t=4522 67.2 万）补到硬上限：t=4530 余额停在 4,248,600 = 150×28,324，录像账本记「回兵溢出」221 万。整段 Eisenhower 对 🤗 耗兵 269 万得 8,746 格（丢 1,849 格），之后在 28,324 格、密度 150 上停到 t≈7650。",
+    "Manchu（队4，t=5145）与 Kamakura 的捐款：Player 771 t=3374~4375 对 Manchu 10 条 609 万；Manchu t=2790~3690 零指令（t=3400 L5267：报价 66.3 对 worth 61.9，标「在打我」），收到 Kamakura 的 185‰ 之后密度 114~123 才开始还手：7 条 611 万，t=4250 Player 771 只剩 1 兵（68,004 格）时一拍打出 409‰ 163 万 + 122‰ 35.5 万（影子算的 need 约 13.7 万），整局从 Player 771 得 25,868 格（耗兵 324 万）。峰值 38,875 格（t=4151）。随后 GYRO t=4389~4613 4 条 442 万、Player 569 t=4774~5068 3 条 212‰ 824 万：影子 t=4700 L5361（保底线 290 万 >= 余额 274 万）/ L5267，t=4800~5000 L5267（GYRO 报价 91.7~134.8 对 worth 71~77）；t=4320~5130 零指令，900 拍丢 55,947 格、被打掉 857 万兵。Kamakura t=3528~5110 给它 12 笔（到账 550 万、手续费 258 万），最后一笔 t=5110（到账 30.0 万、手续费 24.0 万）35 拍后 Manchu 清地（8,057 格、68.2 万兵）。",
+    "两个号收崩盘。LeBron（队2）t=1967~3493 对 Major McNade（队4；t=1530 33,735 格、密度 2.3，t=3612 离开）7 条 32.9 万兵得 37,042 格（9 兵/格）：14,658→52,327 格。Dixie（队1）t=4140 起打 🤗，t=4320~4860 收它的崩盘：58,061→111,084 格（从 🤗 得 63,064 格、耗兵 198 万，31 兵/格）。🤗 是 t=4249 一条 1023‰ 满仓（497 万）打 Sever 把自己打空的（t=4280 77,718 格只剩 4 兵）。",
+    "协防戳 2 条，都是替异队的 Sever：Dixie t=3715 对 🤗 37.7 万（+2,718 格）；Eisenhower t=4285 对 🤗 29.0 万，之后 🤗 t=4389 一条 1023‰ 满仓 151 万打 Eisenhower（t=4473 再一条 1023‰ 只有 3 兵）。船：MasterChief t=2534 的一条船（7,576 兵）靠在 Manchu（队4）岸上、拿了 111 格；Ethereum 清地后还在海上的 2 条船（8,411 兵）靠在队友 Manchu 岸上并入。"
+   ],
+   "issues": [
+    "t=2070~3510 是全队最安静的 1,440 拍（每千号·拍 3.1 条指令）：一半的号被异队的我方号围着（offers 为空、找不到可登陆的地），另一半贴着比自己大 2~3 倍的外人，报价过不了 L5267。兵从 214 万攒到 1,769 万，领土 237,517→243,407 格。",
+    "贴着外人的四个号里三个（Sever、Heisenberg、Manchu）在被打的时候不还手：没超软上限时 L5267，超了之后 L5271 / L5361（保底线按最强邻居的兵算，GYRO 969 万兵时 Heisenberg 的保底线 542 万、余额 280 万）。Heisenberg 超软上限的 400 拍里唯一发出的指令是 3 笔捐款。",
+    "队2 三个号的兵在彼此之间转了一圈：先 223 万进 LeBron（它用不上），再 495 万进 Eisenhower（它已在硬上限附近），手续费 326 万，最后 221 万在回兵时溢出。"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "份额（录像）：我方 37.40%（t=5145，6 个号）→40.00%（5495）→42.96%（6153，峰值）→31.28%（7110）→18.24%（7678）→15.06%（终局）。各队：队1 32.8%（5040）→34.0%（5550）→27.2%（6030）→21.7%（6150，只剩 Dixie）→12.3%（7020）→0；队2 57.8%→59.0%→65.8%→69.9%→80.7%→99.5%；队4 9.0%（5040）→6.8%（只剩 Kamakura）→0。在场真人单号领土中位（我方 对 其他真人）：t=5040 28,324 对 132,734；t=6030 37,900 对 178,789。",
+    "t=5040 接敌表：7 个号 3,040 万兵，贴着敌方真人的只有 Manchu（110 万兵，对面 Player 569 1,312 万、GYRO 1,015 万）；t=6030：6 个号 3,756 万兵，贴着敌方真人的只有 Dixie（1,601 万）；t=7020：6 个号 2,682 万兵，只有 Dixie（515 万；GYRO 865 万、Player 569 608 万）。其余的号四周只有队友、异队的我方号和水。",
+    "Dixie（队1）突围与一对二：t=4860~5096 被 Eisenhower（811 格）、Kamakura（425）围住，密度 107→133，14 条无主地单没生效；t=5096 一条船 188 万兵（手续费 46.6 万）靠上 GYRO 的岸，t=5117 起每约 180 拍一条超软上限的溢出出兵（205‰~214‰，每条 273 万~300 万）：t=5300 密度 115.6 → 出兵 288 万；t=5400 密度 97.4 → L5267；t=5500 密度 114.2 → 出兵 299 万。t=5000~6000 Dixie 对 GYRO 5 条 1,500 万，GYRO 对 Dixie 3 条 207‰ 775 万；Dixie 111,084→150,835 格（t=6150，全图 21.7%、第 2）。",
+    "队友离场：[RU] Rotigus（队1 的外人，t=5310 131,566 格、1,369 万兵）t=5310~5490 把兵打到 362 万后 t=5495 离开，118,256 格的空壳 t=5550~6150 被 Player 569 吃掉（Player 569 148,207→256,811 格）；同队的 Dixie 按规则打不了它。队1 34.0%（5550）→21.7%（6150）。",
+    "Dixie 垮掉（t=6153~7690）：t=6000~7000 GYRO 9 条 2,172 万 + 登陆 215 万，Player 569 3 条 614 万 + 4 次登陆 843 万（t=6352 250 万、6474 239 万、6564 214 万、6921 141 万）；Dixie 还手 GYRO 2 条 719 万、Player 569 8 条 1,220 万。影子：t=6400（密度 113.5，两个邻居）可用 314 万 < chunk 321 万 → L5528；t=6660→6840 兵 1,334 万→601 万；t=6700（密度 93.2）L5511 / L5267；t=7000 / 7100（密度 61.8 / 62.9）Player 569 的报价 58.6 / 65.8 对 worth 55.6 / 56.6 → L5267，GYRO 标「在打我」也不还手；t=7200 / 7300 L5361（dpKeep 485 万 / 394 万 >= 余额 416 万 / 311 万；t=7300 GYRO 213,537 格只有 378 万兵、报价 30.7 低于 worth 60.2）；t=7400 pulse 12% 26.4 万；t=7500 L5361。t=7020~7380 零指令：85,793→34,808 格、515 万→218 万兵。整局对 GYRO 耗兵 2,111 万得 62,601 格、被它拿走 116,904 格；对 Player 569 917 万得 25,664 格、被拿走 59,942 格。t=7690 清地（22,736 格、81.1 万兵；衰减峰值 90,828 的 1/4 是 22,707）。",
+    "Kamakura（队4）：t=2250~4230、4410~7110 被 Eisenhower（队2）420~499 格和 Dixie（队1）35~425 格围住，47,477 格从 t≈1988 到 t=7110 没变过；Manchu t=5145 阵亡后捐款候选也空了，t≈6000 起 712 万兵顶在硬上限（密度 150；整局顶格少拿 1,590 万，最后 900 拍 491 万）。t=7165 GYRO 吃穿 Dixie 贴上来（9 格）：397‰ 277 万（可用兵 = 余额 − 保底线 427 万），之后密度 91 → L5267（报价 121.0 对 worth 82.1），t=7252~7294 4 条 122‰（56.6 万 / 48.5 万 / 41.7 万 / 37.0 万）：对 GYRO 耗兵 362 万得 1,040 格（与 GYRO t=7210~7385 的 6 条 207‰ 628 万对消）。t=7399~7665 Player 569 7 条 212‰ 563 万拿走 30,367 格：Kamakura 0 条还手——t=7400 / 7500 / 7600 两份报价都是 L5361（dpKeep 315 万 / 207 万 / 173 万 >= 余额 277 万 / 146 万 / 89.5 万；Player 569 当时密度 10~15、报价 24.7~36.4，低于 worth 46~59）。t=7678 清地（10,804 格、45.2 万兵）。",
+    "队2 的三个我方号顶在上限（t=4530 起）：Eisenhower 28,324 格、425 万兵（密度 150）t=4590~7650 的 3,150 拍四周是 Dixie 811 格 + Kamakura 499 格；Rommel 17,282 格 t=4420 之后四周只有队友 GYRO、Player 569（t=5760 起 259 万兵、密度 150）；LeBron 54,629~55,469 格，四周是队友 GYRO 1,383~1,712 格、Dixie 8~534 格、BigBrain 16 格（密度 130~144）。三个号合计 t=5040 1,136 万兵、t=6030 1,448 万、t=7020 1,454 万、t=7500 1,495 万；同一时刻队友 GYRO + Player 569 是 2,327 万 / 2,026 万 / 1,473 万 / 672 万（t=7500 密度 14 / 12）。三个号整局顶格少拿 5,584 万（Eisenhower 2,015 万、LeBron 2,596 万、Rommel 973 万），是它们实得利息 3,203 万的 1.7 倍。",
+    "为什么三条出口都关着（影子 dump1 / dump3）：offers 为空——陆上邻居全在保护名单里（同队，或「场上还有野生外人时」的任何编队号；野生外人就是它们自己的队友 GYRO、Player 569）；捐款——候选必须是同队的 Boss 或编队号，且 t>2200 之后要有敌方真人邻居或在途进攻（L4467 / L4478），三个号互相都不满足，队友外人不在候选里；发船——Rommel、Eisenhower「200 格水程内找不到可登陆的地」，LeBron 能找到无主小岛。",
+    "LeBron 的小船（t=3941~7791 39 条）：37 条是 0‰ 的船，各载 3,211~7,992 兵（余额的 1/1024；合计 24.0 万），每条手续费 10.3 万~25.6 万（按发船时整份余额 329 万~818 万的 32/1024 收；合计 769 万），手续费是载兵的 32 倍；另有 t=7791 一条 1‰（1.4 万兵、手续费 22.1 万）和 t=7784 一条 127‰（104 万兵、手续费 26.0 万）。31 条瞄无主小岛、8 条下令时瞄的格子落地时已是自己的地；18 条靠上无主地、21 条靠在自己岸上（一对船里后到的那条到岸时小岛已归自己）。发船合计 129 万兵、船费 817 万；t>=4500 从无主地得约 2,348 格。出兵不足余额 5% 而余额 >=100 万的 40 条指令：出兵 41.0 万、手续费 798 万。LeBron 整局手续费 1,043 万 = 实得利息 2,133 万的 48.9%。",
+    "整局账（录像账本，精确值）：利息+地租 1 亿 2,863 万；顶格少拿 7,885 万（Eisenhower 2,015 万、LeBron 2,596 万、Kamakura 1,590 万、Rommel 973 万、Dixie 570 万）；陆攻出兵 6,073 万、发船 396 万、陆攻+发船手续费 1,365 万；捐款到账 1,375 万、捐款手续费 635 万；战斗耗兵 4,404 万、被打掉 4,701 万、得地 547,835 格、失地 381,710 格；回兵溢出 221 万（全是 Eisenhower）。单价：无主地 2.0、内置 AI 3.1~4.6 兵/格；对真人 LeBron 9.2（Major McNade）、MasterChief 27.6、Ethereum 48.6、Manchu 168、Dixie 213、Sever 231、Eisenhower 307、Kamakura 3,484。按日志快照的丢地间隔（logdigest idleloss：相邻快照领土少 1% 以上）算，丢的 273,350 格里 207,562 格（76%）在零出兵间隔里。清地时作废的余额 267 万（Dixie 81.1 万、Manchu 68.2 万、Kamakura 45.2 万、Sever 38.1 万、Heisenberg 31.1 万）。",
+    "影子闸（t>=3000，offers 里有真人报价的 1,898 个决策拍；Rommel 0 拍、Eisenhower 13 拍）：L5267 931（49.1%）、L5361 346（18.2%；Heisenberg 160、Dixie 86、Kamakura 65）、L5528 240（12.6%；Dixie 197）、出兵 126（6.6%，其中 29 拍是超软上限后报价 >= worth 的溢出：Dixie 20）、L5271 123（Sever 52、Manchu 71）、pulse 太小 69、在途兵 >=4% 余额（L5511）61。正被真人打的 469 拍里 412 拍（87.8%）没有对任何真人出兵。围攻合计 13 组：敌方出兵 1 亿 775 万，目标自己还手 5,121 万，别的我方号同期打这些敌人 1,080 万。"
+   ],
+   "issues": [
+    "t=6030 全队 3,756 万兵里只有 Dixie 的 1,601 万贴着敌人；Kamakura 的 712 万、队2 三个号的 1,448 万都被异队的我方号或队友围着。Dixie 一对二打了 2,500 拍，对 GYRO、Player 569 耗兵 3,028 万；它身后的 Eisenhower、Kamakura 各自顶着硬上限。",
+    "Dixie 的还手只在超软上限时才稳定发生（约 180 拍一条 20%）；被两面打之后 L5528（t=6400 密度 113.5，可用兵不足 chunk）/ L5267 / L5361 轮流挡住，t=7020~7380 的 360 拍一条没发、丢 50,985 格。清地那一刻两个对手合计只剩 357 万兵（密度 6~7）。",
+    "赢家队里的三个我方号拿着 1,470 万兵（密度 140）看完了终局：队友外人密度 11~15 在前面打，策略里没有一条路能把兵交给他们。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 0,
+   "t1": 630,
+   "what": "选点：10/11 个号停在前一版坐标，2 对同像素、4 对 <80 格、全部异队；每个号最近的真人都是异队的我方号；天然份额是人头的 74%；第一个开局周期迟到 133~238 拍，BigBrain 一格没扩出去",
+   "shareBefore": 0.0,
+   "shareAfter": 0.0387,
+   "ourBots": [
+    "Ethereum",
+    "Heisenberg",
+    "Rommel",
+    "BigBrain",
+    "LeBron",
+    "Eisenhower",
+    "Dixie",
+    "Kamakura",
+    "Sever",
+    "MasterChief",
+    "Manchu"
+   ],
+   "enemies": [
+    "全场其他 9 个真人（天然份额中位 39,031 格；队2 的 GYRO、Player 569 人均 66,768 格）"
+   ],
+   "evidence": [
+    "latency spawn：HL-SPAWN 70 行、进录像 49 条、BACKEND 0 行；最后一条下发的 = 出生点 1/11；停在前一版坐标的 10 个号，最后一条下发的坐标离出生点 36~1,256 格；选点延迟下界 0/0/1 步",
+    "latency spawn / digest picks：最终落点 <80 格 4 对（同像素 2 对、异队 4 对）：Ethereum(队4)↔Heisenberg(队3) 0 格、BigBrain(队3)↔LeBron(队2) 0 格、Rommel(队2) 离 Ethereum / Heisenberg 16 格；43 个不同坐标里 5 个被 >=2 个号选过",
+    "landcap voronoi：我方天然份额 282,039 格 = 41.0%，人头 55.0%，比值 0.74（直线版 0.78）；单号中位 24,886 对 39,031；11 个号「最近的真人」全是异队的我方号；BigBrain 4,475 格全场 19/20、Ethereum 10,509 格 18/20",
+    "simdigest cmdlist 17 / 18 + 影子指令：BigBrain、LeBron 的影子都在 t=65 下第一条 470‰；LeBron 的 t=112 执行（t=160 208 格），BigBrain 的 t=217 / 245 两条都没生效；BigBrain 的领土整局是 12 格",
+    "logdigest oplag / latency delay：第一个开局周期（下令拍 0~99）延迟中位 145、最大 238 拍，8 个号 133~238 拍；τ=0~600 整段 14/145/238；空转的开局周期 9 个 / 8 个号",
+    "landcap capture / digest spawn：t=630 我方领土 = 天然份额的 9.6%（其他真人 7.4%）；80 格内有另一个我方号的 5 个号领土中位 2,014，其余 6 个 2,798"
+   ],
+   "priorDecisions": [
+    {
+     "t": "选点阶段 41 步",
+     "bot": "11 个席位",
+     "what": "每个号在本机每 2.2 秒重算候选表、按自己的槽位取点，生效 1~6 次改点；编队号之间互不排斥",
+     "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4062-4072 把名字在池里的号从局面里抹掉再算；L4074-4085 候选表每 2.2 秒重算；L4090-4116 minSep 贪心；L4117 取 chosenSlots[slot]。把选点发给服务器的外层不在对局包里",
+     "why": "本局没有后端协调行；槽位表按本机看到的局面算，别的编队号被抹掉 → 两台机器可以取到同一个像素（Ethereum / Heisenberg 相隔一步落在 Rommel 两步前刚离开的坐标上）；到最后一步还在换点，最后一版来不及落地"
+    },
+    {
+     "t": "65~245",
+     "bot": "BigBrain、Ethereum、Heisenberg",
+     "what": "开局周期的第一条指令在本机第 65 拍下发，到服务器执行时已晚 145~152 拍",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4820-4860 开局周期 → dpNeutral L2418-2444；Strategy.send L526-539。src/engine/live_game_js.js：陆攻落地时身边没有无主地 → 不生效",
+     "why": "同像素的两个号谁的第一条先落地谁拿走第一圈；策略不知道自己的指令还没生效，也没有「被编队号围死」的出口（保护名单 + 岸格 0）"
+    }
+   ],
+   "alternatives": [
+    "10 个号最后一条下发的坐标离实际出生点 36~1,256 格：如果最后一版落地，阵型是另一副样子（好坏无法从本局判断）",
+    "同像素的两对任何一边落在别处：BigBrain 的天然份额 4,475 格、Ethereum 10,509 格，都不到全场人均（34,423 格）的三分之一"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 600,
+   "t1": 2070,
+   "what": "分内置 AI 地：客户端落后 145~250 拍，57%~80% 的指令是重复下单、60%~82% 的兵被改挂；实抢率与外人持平，但起点小，t=2070 单号领土中位 21,165 对 56,092",
+   "shareBefore": 0.0387,
+   "shareAfter": 0.3413,
+   "ourBots": [
+    "Sever",
+    "Heisenberg",
+    "Kamakura",
+    "Dixie",
+    "Eisenhower",
+    "Rommel",
+    "Manchu",
+    "MasterChief",
+    "Ethereum",
+    "LeBron"
+   ],
+   "enemies": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢（队2）",
+    "Player 569（队2）",
+    "Player 771（队3）",
+    "🤗🤗🤗🤗🤗（队4）",
+    "Major McNade🍋[OFF]（队4）"
+   ],
+   "evidence": [
+    "simdigest medians：在场真人单号领土中位 t=630 2,739 对 3,514 → t=1170 9,650 对 11,377 → t=1530 13,502 对 25,356 → t=2070 21,165 对 56,092；simdigest top 1530：前 5 名全是外人，我方最大的 Kamakura 23,384 格排第 6",
+    "latency delay：τ=600~1500 404 条 145/256/392 拍，>=90 拍的 294 条；每 150 拍一格的中位 21→66→127→189→225→227→252→251→225→155→96→10（t=2250）；funnel：485 → 404 → 319，474 → 249 → 162",
+    "latency void / lines：执行拍 600~1500 的 345 条陆攻没生效 66（59 条是目标 AI 已出局）、打错 47；打 AI 的 89.8 万兵里 54.3 万（60%）被改挂；1500~3000 没生效 123/327、打 AI 的 189 万兵里 155 万（82%）被改挂",
+    "latency dups / batches：重复下单 229/404（57%）、174/218（80%）；同拍批 41 + 44 批，清仓批 20 + 23 批共 311 万兵；Sever t=1904 9 条 99.5%",
+    "landcap ai / flow / capture：身边 195 个 AI 的 101,750 格我方拿 44.8%（t=1500）→82.7%（2400），其他真人 2.4%→12.5%；其余 153,464 格我方 2.7%→9.9%、其他真人 40.7%→88.7%；t=1500 实抢率 50.2% 对 48.1%；t=2520 我方 265,430 格 = 天然份额的 94.1%，其他真人 98.8%",
+    "simdigest gates 600 1500：1,800 个决策拍里可出兵 1,078（59.9%）；safeFinite 且去掉就能出兵 197（100 拍取的是异队我方号的兵：Eisenhower 28、MasterChief 20）；botOk 271、winR 148、dpKeep 56",
+    "simdigest poolai：Kalmar Union 贴着 Heisenberg 20~543 格（t=360~2340），长到 9,850 格，Heisenberg 对它 0 兵；Yugoslavia 贴 MasterChief、Goguryeo 贴 Eisenhower、Austria-Hungary 贴 LeBron，0 兵"
+   ],
+   "priorDecisions": [
+    {
+     "t": "600~2100",
+     "bot": "10 个号",
+     "what": "每 15 个本机拍对同一目标重发一条；本机局面落后服务器 145~250 拍，前一条还没生效就再下一条",
+     "codePath": "src/strategy/v27-team-c110.js General.act L830-833 pickTarget → send；Strategy.send L526-539（L531 同一目标 15 拍内不重发；不记已发未生效的指令）；t>=1500 Policy.act L4899-4902 expandNeutral / buyLand",
+     "why": "策略只看本机局面：指令发出后要等本机追到那一拍才看得见效果，期间按旧局面继续下单；到服务器时目标已被别人或自己前一批打光，兵被改挂到无主地线"
+    },
+    {
+     "t": "700~1450",
+     "bot": "Eisenhower、MasterChief、Heisenberg、Ethereum",
+     "what": "打内置 AI 的底线取 safeFinite：留的兵要比这个 AI 的另一个邻居多；另一个邻居是异队的编队号",
+     "codePath": "src/strategy/v27-team-c110.js Policy.winFloor L4542-4550 → safeFinite L2532-2543（threatOf(q).minOther，不区分编队号）→ Style.pickTarget L1197（可用兵 <= minSend×余额 → 跳过）",
+     "why": "出生点挨着的编队号余额一起涨，互相压不过；影子显示去掉这一项当拍就能出兵"
+    },
+    {
+     "t": "360~2340",
+     "bot": "Heisenberg、MasterChief、Eisenhower、LeBron",
+     "what": "名字在池里的内置 AI 不进邻居表、不打",
+     "codePath": "src/strategy/v27-team-c110.js isOurSquadBot L3973-3976（只按名字查名字池）；chooseSpawn L4062-4072 同样按名字把它们抹掉",
+     "why": "22 个内置 AI 撞名；Kalmar Union 在 Heisenberg 身边从 144 格长到 9,850 格"
+    }
+   ],
+   "alternatives": [
+    "延迟留在 10~16 拍（本局下令拍 150~600 和 t>=2250 的水平）：迟到落空的 94 条、被改挂的 209 万兵、重复下单的手续费 34.1 万不会出现；但这一段的实抢率本来就与外人持平，天然份额的差距不会因此消失",
+    "底线不取异队编队号的兵：100 个决策拍当拍可出兵（影子的 passNoSb 标记）"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 2070,
+   "t1": 2740,
+   "what": "追帧批打在真人身上：MasterChief 一拍花掉 69% 的兵打 Player 771、Ethereum 两批各 52%~54% 打 Player 569，打完密度 2~3，各在 500~550 拍后被对方清地",
+   "shareBefore": 0.3413,
+   "shareAfter": 0.3539,
+   "ourBots": [
+    "MasterChief",
+    "Ethereum"
+   ],
+   "enemies": [
+    "Player 771（队3）",
+    "Player 569（队2）"
+   ],
+   "evidence": [
+    "latency batches：MasterChief t=2079 8 条（生效 4）花掉 235,369 里的 163,285（69.4%），下令拍 1750~1865；Ethereum t=2170 3 条 54.2%（下令拍 1990~2040）、t=2240 3 条 52.1%（下令拍 2065~2085）",
+    "strat_probe dump2：MasterChief t=2060 / 2075 对 Player 771 是 L5528（可用 4.1 万 < chunk 4.6 万~4.7 万）；Ethereum t=2150 / 2165 对 Player 569 是 L5267（报价 23.8 对 worth 19.3）——落地的是 130~330 拍前按当时局面下的指令",
+    "simdigest cmdlist 9 / 12：MasterChief 打完 20,724 格、4.9 万兵（密度 2.4）；Ethereum 23.6 万→5.2 万兵、19,101 格（密度 2.7）；Player 771 7 条 35.4 万拿走 19,075 格，Player 569 3 条 212‰ 47.5 万拿走 17,996 格",
+    "strat_probe dump2：清仓后 MasterChief t=2200 / 2400 / 2600 worth 2.9 / 4.4 / 8.6 对报价 15~22 → L5267；Ethereum t=2300 / 2500 / 2700 worth 4.0 / 5.3 / 9.6 → L5267；logdigest silent：MasterChief 本机拍 2070~2520 没有下新指令（领土最高 22,010→12,378 格）",
+    "simdigest collapse：MasterChief t=2628 清地时 5,041 格（衰减峰值 20,118 的 1/4 是 5,029）；Ethereum t=2740 清地时 3,935 格（线 3,929）。按冲高前 300 拍的领土算，MasterChief 的清地线是 4,030 格（冲高把它抬高了约 1,000 格），Ethereum 是 3,833 格"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1750~2085（下令拍）",
+     "bot": "MasterChief、Ethereum",
+     "what": "t>=1500 buyLand 对同一个真人每 15 拍下一条；本机局面里在途兵不够 4% 余额就再发",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5510-5523（pulse：L5511 只在本机局面里对它的在途兵 >=4% 余额时跳过）、L5526-5531（整笔 min(avail, 1.25×need)）；Strategy.send L526-539",
+     "why": "本机落后 130~330 拍：前几条还没在本机生效，在途兵一直是 0；追帧时这些指令同一拍到服务器，每条按当时的余额取 22%~28%"
+    },
+    {
+     "t": "2100~2700",
+     "bot": "MasterChief、Ethereum",
+     "what": "密度 2~5 时 worth = m×密度 = 3~9，所有真人报价都更贵 → break",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（worth = m×refDens；c >= worth 且没超软上限 → break）",
+     "why": "地价闸拿自己的密度当尺子：越薄越不出手，被打也一样"
+    }
+   ],
+   "alternatives": [
+    "同一批指令按 15 拍一条分开落地、后一条看得见前一条的效果：按影子在落地前一刻的判断（L5528 / L5267），这两批都不会发",
+    "Ethereum 的天然份额只有 10,509 格（与 Heisenberg 同像素）、MasterChief 20,574 格：两个号本来就是全场最小的一档，对面是 5 万~7 万格的外人"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 2740,
+   "t1": 4230,
+   "what": "异队的我方号互相围住 + 贴着外人的号过不了地价闸：每千号·拍 3.1 条指令，兵 603 万→2,993 万，在场真人单号领土中位 25,505 对 79,611；份额 35%~40% 不动",
+   "shareBefore": 0.3539,
+   "shareAfter": 0.3956,
+   "ourBots": [
+    "Rommel",
+    "Eisenhower",
+    "Kamakura",
+    "Dixie",
+    "BigBrain",
+    "Sever",
+    "Heisenberg",
+    "Manchu",
+    "LeBron"
+   ],
+   "enemies": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢（队2）",
+    "Player 569（队2）",
+    "🤗🤗🤗🤗🤗（队4）",
+    "Player 771（队3）",
+    "[RU] Rotigus（队1）"
+   ],
+   "evidence": [
+    "simdigest protbox：12 段 27,720 拍，11 段贴着保护名单里的地；Rommel t=1620 起 6,390 拍、Eisenhower t=2250~4230（Kamakura 420 格、Dixie 382、Sever 374）、Kamakura t=2250~4230 / 4410~7110、LeBron 三段 2,970 拍、Dixie t=4860~5040、BigBrain t=630 起；simdigest neigh 16 2250 3500：Dixie t=2340~3330 的陆上邻居只有 Eisenhower 382 格、Sever 235 格、Kamakura 35 格",
+    "strat_probe dump1（--boatcheck）：Rommel t=2000 / 3000、Eisenhower t=3000、Kamakura t=3000、BigBrain t=3000 offers 为空；发船检查「200 格水程内找不到可登陆的地」（Rommel 岸格 204、Eisenhower 7、Kamakura 102、BigBrain 0）",
+    "logdigest cmdmix / silent：每千号·拍 40.3（1530~2070）→3.1（2070~3510）；零指令时段 19 段 26,730 拍；Sever t=2070~4050 1,980 拍、Heisenberg t=2880~3780、Manchu t=2790~3690",
+    "simdigest gates 1500 3000：1,330 个真人报价决策拍里 L5267 910（68.4%）、出兵 61（4.6%）；被真人打的 194 拍里 192 拍没有对任何真人出兵",
+    "simdigest contact 3060 / 4050：9 个号 957 万 / 2,817 万兵，贴着敌方真人的 4 个号（396 万 / 1,401 万）；simdigest medians：t=3060 25,492 对 77,081、t=4050 25,505 对 79,611",
+    "simdigest don：Rommel / Eisenhower → LeBron t=3017~3710 8 笔 185‰（到账 223 万、手续费 76.6 万）；LeBron 同期对 Major McNade 一共耗兵 32.9 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1620~4230",
+     "bot": "Rommel、Eisenhower、Kamakura、Dixie、BigBrain",
+     "what": "场上还有野生外人时，任何队的编队号都受保护：不进邻居表、不报价、不当登陆点",
+     "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996（同队或 Boss → true；否则 hasWildOutsidersAlive && isOurSquadBot）；hasWildOutsidersAlive L3978-3989（任何 >=80 格的非编队真人）；idleBoats L4979-5006 → boatOut L1035-1051 / searchWater",
+     "why": "四个队里都有我方号，出生点又互相挨着：西北角四个号、中部三个号长大后彼此贴边 121~420 格。保护是为了一起对付外人，结果是半数的号没有任何合法目标"
+    },
+    {
+     "t": "2070~4230",
+     "bot": "Sever、Heisenberg、Manchu、Dixie",
+     "what": "t>=1500 对真人只有两条出手的路：报价低于 worth，或超软上限后的溢出",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4899-4902 → buyLand L5258-5267（worth = m×自己的密度，m 降到 0.90）→ L5269-5273（唯一真人缓冲）→ L5322-5361（keep）",
+     "why": "邻居外人是 6 万~12 万格、密度 12~80：报价约是它密度的 2~4 倍，要自己密度涨过软上限才出得了手；Sever 等到密度 110 时已经丢了一半的地"
+    },
+    {
+     "t": "3017~3710",
+     "bot": "Rommel、Eisenhower",
+     "what": "被围、密度 >=55 的号把 185‰ 捐给同队有敌方邻居的编队号",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4922 → tryDonateToTeammate L4462-4463（被围时 dMe >= 55）、L4466-4489（候选：同队编队号、密度 <132、有敌方真人邻居或在途进攻；pct = 被围 ? (dMe>110 ? 280 : 185) : 153）",
+     "why": "捐款是被围的号唯一还通的出口；候选只看「有没有敌方邻居」，不看对方缺不缺兵"
+    }
+   ],
+   "alternatives": [
+    "这 1,490 拍里 9 个号新增的 2,390 万兵没有变成地：领土 246,319→275,307 格（+11.8%），t=3000→4050 GYRO 96,880→122,226、Player 569 84,207→84,058、🤗 73,584→79,611",
+    "Eisenhower（天然份额全场第 5）t=2250 起停在 20,607 格：它的四个邻居是 Kamakura、Dixie、Sever 和 7 格海岸"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 4230,
+   "t1": 5145,
+   "what": "三个贴着外人的号被吃掉（Sever 4319、Heisenberg 4420、Manchu 5145），自己几乎不还手；队2 三个号 17 笔互捐、Eisenhower 回兵溢出 221 万；Dixie 收下 🤗 的崩盘（+53,023 格）",
+   "shareBefore": 0.3956,
+   "shareAfter": 0.374,
+   "ourBots": [
+    "Sever",
+    "Heisenberg",
+    "Manchu",
+    "Kamakura",
+    "Eisenhower",
+    "LeBron",
+    "Rommel",
+    "Dixie"
+   ],
+   "enemies": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢（队2）",
+    "Player 569（队2）",
+    "🤗🤗🤗🤗🤗（队4）",
+    "Player 771（队3）"
+   ],
+   "evidence": [
+    "strat_probe dump2：Heisenberg t=3900~4200（密度 101~125）GYRO、Player 569 两份报价都是 L5361（dpKeep 376 万~542 万 >= 余额 257 万~318 万）；Sever t=2500~3900 L5267（报价 27.5~181.7 对 worth 10.4~89.1），t=4000~4200 L5271，t=4300 L5361；Manchu t=4700 L5361、t=4800~5000 L5267",
+    "simdigest sieges / deaths：GYRO→Heisenberg 4 条 185‰ 614 万（还手 0 条）；🤗→Sever 陆攻 6 条 666 万 + 登陆 7 次 89.7 万（Sever 还手 2 条 92.4 万）；GYRO→Manchu 4 条 442 万、Player 569→Manchu 3 条 824 万（Manchu 最后 600 拍 0 条出兵，900 拍丢 55,947 格）",
+    "simdigest don：队2 17 笔到账 718 万、手续费 326 万；LeBron→Eisenhower t=4319 / 4403 到账 30.5 万 / 29.8 万、手续费 46.0 万 / 38.1 万（收款人密度 136 / 139）；Heisenberg→Sever t=4298 到账 16.9 万、手续费 13.2 万（GYRO 已在打它）；Kamakura→Manchu 12 笔 550 万 / 258 万",
+    "simdigest cmdlist 15 + latency batches + 逐拍余额：Eisenhower t=4466 一拍 3 条 271 万（65.9%，下令拍 4380~4395）打只剩 3 兵的 🤗；t=4530 余额停在 4,248,600 = 150×28,324；simdigest ledger：t=4500~4999 回兵溢出 2,212,738",
+    "simdigest foewho / ledger：Dixie 从 🤗 得 63,064 格（耗兵 198 万），58,061→111,084 格；Manchu 从 Player 771 得 25,868 格（耗兵 324 万）；simdigest pokes：Eisenhower t=4285 替 Sever 戳 🤗 29.0 万，之后 🤗 两条满仓 151 万打 Eisenhower"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3900~5145",
+     "bot": "Heisenberg、Sever、Manchu",
+     "what": "被围攻时对主攻手的报价要么 >= worth（L5267），要么保底线 >= 余额（L5361），超软上限且只有一个真人邻居时 L5271",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267、L5269-5273；Policy.safeAt L4524-4540（L4528 封顶 88×领土）→ dpKeep L2491-2496；L5348-5361（超软上限时的 keep；avail <= 0 → continue）",
+     "why": "dpKeep 取最强邻居的兵：GYRO 426 万~969 万兵时 Heisenberg 的保底线 376 万~542 万，比它的余额高；对两个邻居是同一条线"
+    },
+    {
+     "t": "4284~4522",
+     "bot": "Rommel、LeBron",
+     "what": "被围、密度 >=55 的号把 185‰ / 280‰ 捐给同队正在出兵的编队号，不看对方离硬上限还有多少",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4466-4489（L4469 只排除密度 >=132 的候选；L4482 被围就捐）；src/engine/live_game_js.js：到账按收款人离硬上限的余量截断，手续费按捐款人余额的 6.25% 收",
+     "why": "Eisenhower 一出兵密度就掉回 132 以下，重新成为候选；9 笔里 2 笔的到账比手续费少"
+    },
+    {
+     "t": "4380~4395（下令拍）",
+     "bot": "Eisenhower",
+     "what": "对将崩的 🤗 连下 3 条（20%~42%），71~86 拍后同一拍落地",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5526-5531（min(avail, 1.25×need)）、L5489-5500；Strategy.send L526-539（不记已发未生效）。src/engine/live_game_js.js：进攻线结束时剩兵退回余额，超过 150×领土的部分作废",
+     "why": "本机局面里 🤗 还有 7.1 万兵、need 120 万；落地时它只剩 3 兵，271 万兵挂在一条没有对手的线上，退回时余额已被捐款补满"
+    }
+   ],
+   "alternatives": [
+    "Heisenberg t=3900~4240 有 257 万~318 万兵（密度 101~125）、0 条出兵；GYRO 随后用 614 万兵在 170 拍里拿走 19,549 格",
+    "队2 三个号的 718 万捐款换来 Eisenhower +7,717 格和 LeBron 的满仓：手续费 326 万 + 溢出 221 万"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 5145,
+   "t1": 7932,
+   "what": "Dixie 一个号对 GYRO + Player 569：长到全图 21.7% 后被两面吃光；队友 Rotigus 离场、地归 Player 569；Kamakura 顶着硬上限等到敌人贴上来，500 拍后清地；队2 三个号 1,470 万兵顶在上限看完终局",
+   "shareBefore": 0.374,
+   "shareAfter": 0.1506,
+   "ourBots": [
+    "Dixie",
+    "Kamakura",
+    "Eisenhower",
+    "Rommel",
+    "LeBron",
+    "BigBrain"
+   ],
+   "enemies": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢（队2）",
+    "Player 569（队2）"
+   ],
+   "evidence": [
+    "simdigest teams / top：队1 34.0%（5550）→21.7%（6150）→12.3%（7020）→0；队2 59.0%→69.9%→80.7%→99.5%；t=6150 Player 569 256,811 格、Dixie 150,835（21.7%）、GYRO 129,384；Rotigus t=5495 离开（118,256 格），t=5550~6150 Player 569 148,207→256,811 格",
+    "simdigest contact：t=6030 6 个号 3,756 万兵，贴着敌方真人的只有 Dixie（1,601 万）；t=7020 只有 Dixie（515 万；GYRO 865 万、Player 569 608 万）；队2 三个号 t=6030 1,448 万兵、t=7500 1,495 万（GYRO + Player 569 当时 672 万）",
+    "strat_probe dump3：Dixie t=5300 / 5500 密度 115.6 / 114.2 出兵 288 万 / 299 万，t=5400 密度 97.4 L5267；t=6400 L5528（可用 314 万 < chunk 321 万）；t=7000 / 7100 L5267（报价 58.6 / 65.8 对 worth 55.6 / 56.6）；t=7200 / 7300 / 7500 L5361（dpKeep 485 万 / 394 万 / 206 万）",
+    "simdigest sieges / foewho / landings：GYRO 对我方出兵 5,361 万、Player 569 2,487 万 + 6 次登陆 1,161 万；Dixie 对 GYRO 耗兵 2,111 万得 62,601 格、丢 116,904 格，对 Player 569 917 万得 25,664 格、丢 59,942 格；logdigest idleloss：Dixie t=7020~7380 零出兵 85,793→34,808 格",
+    "strat_probe dump3 + simdigest protbox：Kamakura t=4410~7110 nb=0（Eisenhower 499 格、Dixie 425 格），t=7150 712 万兵密度 150；t=7165 GYRO 贴上 9 格 → 397‰ 277 万；t=7400 / 7500 / 7600 L5361（dpKeep 315 万 / 207 万 / 173 万）；Player 569 7 条 563 万拿走 30,367 格、还手 0 条",
+    "simdigest ledger / boats 18 / fees：整局顶格少拿 7,885 万（队2 三个号 5,584 万、Kamakura 1,590 万）；LeBron 39 条船：37 条 0‰ 各载 3,211~7,992 兵、每条手续费 10.3 万~25.6 万，船费合计 817 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": "5117~7553",
+     "bot": "Dixie",
+     "what": "超软上限后每约 180 拍一条 20% 的溢出出兵；跌到软上限以下后回到 worth 闸 / 保底线 / chunk",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（over = 余额 > 100×领土 才越过 worth 闸）、L5348-5357（超软上限时 keep 的倍数 0.9）、L5360-5361、L5510-5531（L5528 chunk 20%）；Policy.safeAt L4524-4540 → dpKeep",
+     "why": "出兵的条件是「自己超软上限」而不是「对面有多少兵」：密度 114 以上才有可用兵；两面被打、密度掉到 60 之后，Player 569 的报价 58.6 比 worth 55.6 高 3 就整拍不出手"
+    },
+    {
+     "t": "4530~7932",
+     "bot": "Eisenhower、Rommel、LeBron",
+     "what": "陆上邻居全在保护名单里；捐款候选只有同队的 Boss / 编队号且要有敌方邻居；发船要找得到登陆点",
+     "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996；tryDonateToTeammate L4466-4467（!isTeammate || (!isBossNpl && !isOurSquadBot) → continue）、L4477-4478（t>2200 且候选没有敌方邻居、没有进攻 → continue）；idleBoats L4979-5006、boatOut L1035-1051",
+     "why": "野生外人只剩它们自己的队友 GYRO、Player 569，保护永远不会解除；队友外人不在捐款候选里"
+    },
+    {
+     "t": "5145~7165",
+     "bot": "Kamakura",
+     "what": "被 Eisenhower（队2）和 Dixie（队1）围住，同队的编队号 Manchu 阵亡后捐款候选为空",
+     "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996；tryDonateToTeammate L4466-4467；idleBoats L4979-5006（searchWater 找不到登陆点）",
+     "why": "712 万兵从 t≈6000 顶到 t=7165；等 GYRO 贴上来时它是 21 万格、707 万兵的对手"
+    }
+   ],
+   "alternatives": [
+    "t=7500 GYRO 218,113 格只有 300 万兵（密度 14）、Player 569 315,715 格 372 万兵（密度 12）：同一时刻 Dixie 193 万、Kamakura 146 万兵的保底线都高过余额；队2 三个我方号 1,495 万兵",
+    "Rotigus 不离场：t=5310 队1 是 Rotigus 131,566 格 / 1,369 万兵 + Dixie 119,067 格 / 1,392 万兵，对面 GYRO 161,152 格 / 1,236 万、Player 569 134,897 格 / 1,136 万"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "MasterChief",
+   "me": 9,
+   "team": 1,
+   "t": 2628,
+   "peakLand": 23044,
+   "killers": [
+    "Player 771[敌方真人] 拿走 19075 格",
+    "bot477[内置AI] 拿走 443 格",
+    "bot61[内置AI] 拿走 128 格"
+   ],
+   "densityLast500": [
+    [
+     2070,
+     16920,
+     235369,
+     14
+    ],
+    [
+     2160,
+     22010,
+     70884,
+     3
+    ],
+    [
+     2250,
+     21269,
+     50877,
+     2
+    ],
+    [
+     2340,
+     16895,
+     56608,
+     3
+    ],
+    [
+     2430,
+     15403,
+     69682,
+     4
+    ],
+    [
+     2520,
+     12378,
+     67133,
+     5
+    ],
+    [
+     2610,
+     6917,
+     30290,
+     4
+    ]
+   ],
+   "lastDecisions": [
+    "t2079 攻Player 771/T3 25%",
+    "t2079 攻无主地 5%",
+    "t2079 攻无主地 5%",
+    "t2079 攻无主地 5%",
+    "t2114 攻Player 771/T3 23%",
+    "t2191 船 12%",
+    "t2191 攻Player 771/T3 22%",
+    "t2191 攻Player 771/T3 22%",
+    "t2191 船 12%",
+    "t2534 船 12%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 20112,
+   "cause": "队1。出生点离 Manchu（队4）137 格，天然份额 20,574 格（全场第 17）；600~1499 有 AI 邻居的决策拍 11.1%（20 拍）卡在异队我方号的兵上；撞名的内置 AI Yugoslavia 贴着它 13~135 格（t=630~2520）不打。延迟中位 140（600~1500）/ 216（1500~3000）拍。t=2079 一拍落地 8 条（下令拍 1750~1865，延迟 214~329 拍）：4 条打 Player 771（队3；277‰ / 224‰ / 244‰ / 251‰ = 6.4 万 + 3.7 万 + 3.1 万 + 2.4 万）+ 4 条没生效的无主地单，花掉 23.5 万里的 16.3 万（69.4%）→ +6,124 格（峰值 23,044，t=2141）、密度 2.4；影子在 t=2060 / 2075 的判断是 L5528（可用 4.1 万不足 chunk）。t=2114 再 238‰ 2.2 万，t=2191 又一批（2 条船打 Player 569 的岸 + 2 条 220‰ 共 2.1 万）。Player 771（55,613~73,918 格、27 万~45 万兵）t=2142~2597 7 条 35.4 万兵拿走 19,075 格；清仓后 worth 2.9~8.6 对报价 15~22 → L5267，t=2191 之后对 Player 771 再没有出兵（t=2160~2520 22,010→12,378 格）。t=2534 的一条船（7,576 兵）靠在 Manchu 岸上拿了 111 格。t=2628 清地（还有 5,041 格：衰减峰值 20,118 的 1/4 是 5,029）。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:AT-dump-then-dead",
+    "NEW:EC-thin-big-target",
+    "NEW:AT-worth-gate",
+    "NEW:BT-hit-squadmate"
+   ],
+   "tLog": 2633,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 771",
+      "cls": "敌方真人",
+      "cells": 19075
+     },
+     {
+      "by": "bot477",
+      "cls": "内置AI",
+      "cells": 443
+     },
+     {
+      "by": "bot61",
+      "cls": "内置AI",
+      "cells": 128
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 771",
+      "troops": 111792
+     },
+     {
+      "by": "bot477",
+      "troops": 4506
+     },
+     {
+      "by": "bot61",
+      "troops": 2032
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 256046,
+     "陆攻出兵": 259350,
+     "发船出兵": 19962,
+     "出兵手续费": 22976,
+     "战斗耗兵": 208694,
+     "得地": 8323,
+     "失地": 19646,
+     "被打掉兵": 118330
+    },
+    "ownCmdsLast600": [
+     "t2079:atk→Player 771 244‰ 出31023",
+     "t2079:atk→无主地 54‰ 出0(空)",
+     "t2079:atk→Player 771 251‰ 出23901",
+     "t2079:atk→无主地 49‰ 出0(空)",
+     "t2079:atk→无主地 49‰ 出0(空)",
+     "t2079:atk→无主地 48‰ 出0(空)",
+     "t2114:atk→Player 771 238‰ 出22102",
+     "t2191:boat 127‰ 出8238",
+     "t2191:atk→Player 771 220‰ 出12002",
+     "t2191:atk→Player 771 220‰ 出9271",
+     "t2191:boat 127‰ 出4148",
+     "t2534:boat 127‰ 出7576"
+    ],
+    "ownCmdCountLast600": 14,
+    "attackCmdsOnMeLast600": [
+     "Player 771[敌方真人]×7 共354153兵 t2142~2597"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 2520 地 12378 兵   67k 密  5.4 边176 岸241 无主邻格0 船2 | 邻居3: Player 771[敌方真人] 接226 地68365 密7；bot477[内置AI] 接84 地1351 密0；*Manchu[我方号·异队] 接17 地28633 密18",
+     "t= 2610 地  6917 兵   30k 密  4.4 边183 岸217 无主邻格0 船0 | 邻居2: Player 771[敌方真人] 接222 地73918 密6；*Manchu[我方号·异队] 接116 地29751 密20 | 被攻: Player 771:59k"
+    ]
+   },
+   "peakLandLog": 22010,
+   "landBeforeClear": 5041,
+   "balanceBeforeClear": 18422,
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Sever (rus)",
+   "me": 10,
+   "team": 3,
+   "t": 4319,
+   "peakLand": 37932,
+   "killers": [
+    "🤗🤗🤗🤗🤗[敌方真人] 拿走 18488 格"
+   ],
+   "densityLast500": [
+    [
+     3780,
+     18419,
+     1188468,
+     64
+    ],
+    [
+     3870,
+     16734,
+     1580417,
+     94
+    ],
+    [
+     3960,
+     16734,
+     1778530,
+     106
+    ],
+    [
+     4050,
+     16734,
+     1956486,
+     117
+    ],
+    [
+     4140,
+     19005,
+     2062818,
+     108
+    ],
+    [
+     4230,
+     17603,
+     1987408,
+     113
+    ]
+   ],
+   "lastDecisions": [
+    "t4116 攻🤗🤗🤗🤗🤗/T4 25%",
+    "t4263 攻🤗🤗🤗🤗🤗/T4 22%"
+   ],
+   "donationsReceivedReplay": [
+    "*BigBrain@3752p185",
+    "*Heisenberg@3815p145",
+    "*Heisenberg@4130p153",
+    "*Heisenberg@4298p81"
+   ],
+   "rescueLogsForMe": [
+    "Heisenberg@3805r145",
+    "Heisenberg@4120s153",
+    "Heisenberg@4285r81",
+    "BigBrain@3740s185"
+   ],
+   "assistsForMe": [
+    "Eisenhower@4285→🤗🤗🤗🤗🤗",
+    "Dixie@3715→🤗🤗🤗🤗🤗"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 488033,
+   "cause": "队3。出生点在西北角四个异队我方号中间（离 Eisenhower 181 格），第一个开局周期迟到 238 拍。t=1575~2044 四个清仓批（86% / 92% / 99.5% / 83%，全打内置 AI 和无主地线）换来 37,932 格（t=2168）、密度 1~2。🤗（队4）7 次登陆（t=2045~3298，3.6 万~22.8 万兵）+ 5 条 106‰（t=2254~4165）：Sever t=2070~4050 的 1,980 拍一条指令没有，37,852→16,734 格。影子 t=2500 / 3000 / 3500 / 3900：🤗 的报价 27.5 / 79.7 / 142.3 / 181.7 对 worth 10.4 / 22.6 / 44.7 / 89.1 → L5267（t=2500 标「在打我」）；t=4000~4200 超软上限（密度 110~122）→ L5271（唯一的真人缓冲）；另外三面贴着 Eisenhower 374 格、Dixie 235~270 格、Kamakura 98~121 格（保护名单）。t=4116 出兵 259‰ 52.4 万（+2,271 格）、t=4263 228‰ 39.9 万；t=4249 🤗 一条 1023‰ 满仓 497 万（对 Sever 整局陆攻 6 条 666 万 + 登陆 89.7 万）；t=4300 🤗 只剩 8.0 万兵，保底线 76.0 万 >= 余额 69.1 万 → L5361。收到捐款 107 万（Heisenberg 3 笔，最后一笔 t=4298 在它阵亡前 21 拍）。Dixie t=3715、Eisenhower t=4285 各替它戳 🤗 一条。t=4319 清地（5,932 格、38.1 万兵）。",
+   "patternIds": [
+    "NEW:DF-sea-landing",
+    "NEW:AT-worth-gate",
+    "NEW:DF-passive-death",
+    "NEW:TS-squad-wall",
+    "NEW:DN-dying-donor"
+   ],
+   "tLog": 4323,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "🤗🤗🤗🤗🤗",
+      "cls": "敌方真人",
+      "cells": 18488
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "🤗🤗🤗🤗🤗",
+      "troops": 2688397
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 1618237,
+     "顶格少拿": 170704,
+     "陆攻出兵": 923717,
+     "出兵手续费": 45128,
+     "收到捐款": 1063549,
+     "战斗耗兵": 524114,
+     "得地": 2271,
+     "失地": 18488,
+     "被打掉兵": 2688397
+    },
+    "ownCmdsLast600": [
+     "t4116:atk→🤗🤗🤗🤗🤗 259‰ 出524282",
+     "t4263:atk→🤗🤗🤗🤗🤗 228‰ 出399435"
+    ],
+    "ownCmdCountLast600": 2,
+    "attackCmdsOnMeLast600": [
+     "🤗🤗🤗🤗🤗[敌方真人]×3 共5906662兵 t3801~4249"
+    ],
+    "donationsInLast900": [
+     "*BigBrain@3752 +121(费41)",
+     "*Heisenberg@3815 +406839(费178340)",
+     "*Heisenberg@4130 +487560(费202622)",
+     "*Heisenberg@4298 +169029(费131925)"
+    ],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 4140 地 19005 兵 2.06M 密108.5 边713 岸75 无主邻格0 船0 | 邻居4: 🤗🤗🤗🤗🤗[敌方真人] 接453 地76192 密69；*Eisenhower[我方号·异队] 接374 地20607 密108；*Dixie[我方号·异队] 接324 地50728 密95；*Kamakura[我方号·异队] 接109 地47477 密66 | 在攻: 🤗🤗🤗🤗🤗:23k",
+     "t= 4230 地 17603 兵 1.99M 密112.9 边711 岸59 无主邻格0 船0 | 邻居4: 🤗🤗🤗🤗🤗[敌方真人] 接403 地74374 密68；*Dixie[我方号·异队] 接377 地53948 密102；*Eisenhower[我方号·异队] 接374 地20607 密119；*Kamakura[我方号·异队] 接103 地47477 密76"
+    ]
+   },
+   "peakLandLog": 37852,
+   "landBeforeClear": 5932,
+   "balanceBeforeClear": 381426,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Manchu",
+   "me": 11,
+   "team": 4,
+   "t": 5145,
+   "peakLand": 38875,
+   "killers": [
+    "Player 569[敌方真人] 拿走 28847 格",
+    "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 拿走 23067 格",
+    "Player 771[敌方真人(空壳)] 拿走 4033 格"
+   ],
+   "densityLast500": [
+    [
+     4590,
+     31854,
+     2189583,
+     69
+    ],
+    [
+     4680,
+     32398,
+     2635284,
+     81
+    ],
+    [
+     4770,
+     35399,
+     3008087,
+     85
+    ],
+    [
+     4860,
+     29313,
+     2457506,
+     84
+    ],
+    [
+     4950,
+     17477,
+     1211365,
+     69
+    ],
+    [
+     5040,
+     15313,
+     1103212,
+     72
+    ],
+    [
+     5130,
+     8592,
+     747480,
+     87
+    ]
+   ],
+   "lastDecisions": [],
+   "donationsReceivedReplay": [
+    "*Kamakura@4550p88",
+    "*Kamakura@4557p185",
+    "*Kamakura@4669p108",
+    "*Kamakura@4669p82",
+    "*Kamakura@4669p55",
+    "*Kamakura@5110p79"
+   ],
+   "rescueLogsForMe": [
+    "Kamakura@4530r82",
+    "Kamakura@4550r108",
+    "Kamakura@5100r79"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 704750,
+   "cause": "队4。出生点离 MasterChief（队1）137 格。t=2085~2590 有 94 个决策拍 nb=0（四周是 Kalmar Union、Heisenberg、Yugoslavia、MasterChief），靠 6 条船长到 28,633 格。Player 771（队3）t=3374~4375 对它 10 条 609 万；Manchu t=2790~3690 零指令（t=3400 L5267：报价 66.3 对 worth 61.9，标「在打我」），收到 Kamakura 的 185‰ 后密度 114~123 才还手：7 条 611 万，t=4250 Player 771 只剩 1 兵时一拍打出 409‰ 163 万 + 122‰ 35.5 万；从 Player 771 得 25,868 格（峰值 38,875，t=4151）。随后 GYRO t=4389~4613 4 条 442 万、Player 569 t=4774~5068 3 条 212‰ 824 万（是它兵的 2.7~7.5 倍）：影子 t=4700 L5361（保底线 290 万 >= 余额 274 万）/ L5267，t=4800 / 4900 / 5000 L5267（GYRO 报价 91.7~134.8 对 worth 71~77）；t=4320~5130 的 810 拍零指令，900 拍丢 55,947 格、被打掉 857 万兵。Kamakura 一共给它 12 笔（到账 550 万、手续费 258 万），最后一笔 t=5110 到账 30.0 万。t=5145 清地（8,057 格、68.2 万兵）。",
+   "patternIds": [
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-main-attacker-unanswered",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate",
+    "NEW:DN-frozen-recipient"
+   ],
+   "tLog": 5147,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 569",
+      "cls": "敌方真人",
+      "cells": 28847
+     },
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "cls": "敌方真人",
+      "cells": 23067
+     },
+     {
+      "by": "Player 771",
+      "cls": "敌方真人(空壳)",
+      "cells": 4033
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 569",
+      "troops": 3581817
+     },
+     {
+      "by": "Player 771",
+      "troops": 2795069
+     },
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "troops": 2188742
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 2865155,
+     "顶格少拿": 20280,
+     "陆攻出兵": 2541271,
+     "出兵手续费": 136703,
+     "收到捐款": 2801717,
+     "战斗耗兵": 170039,
+     "得地": 25091,
+     "失地": 55947,
+     "被打掉兵": 8565628
+    },
+    "ownCmdsLast600": [],
+    "ownCmdCountLast600": 0,
+    "attackCmdsOnMeLast600": [
+     "Player 569[敌方真人]×3 共8243757兵 t4774~5068",
+     "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人]×1 共1004513兵 t4613~4613"
+    ],
+    "donationsInLast900": [
+     "*Kamakura@4263 +683072(费235035)",
+     "*Kamakura@4487 +244989(费248878)",
+     "*Kamakura@4550 +338816(费243643)",
+     "*Kamakura@4557 +602289(费207239)",
+     "*Kamakura@4669 +316702(费185953)",
+     "*Kamakura@4669 +200416(费154537)",
+     "*Kamakura@4669 +115809(费132353)",
+     "*Kamakura@5110 +299624(费239699)"
+    ],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 5040 地 15313 兵 1.10M 密 72.0 边261 岸764 无主邻格0 船0 | 邻居2: Player 569[敌方真人] 接402 地132734 密99；𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接97 地169135 密60",
+     "t= 5130 地  8592 兵  747k 密 87.0 边92 岸338 无主邻格0 船0 | 邻居2: 𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接97 地168307 密71；Player 569[敌方真人] 接64 地129310 密82 | 被攻: Player 569:1.18M"
+    ]
+   },
+   "peakLandLog": 38875,
+   "landBeforeClear": 8057,
+   "balanceBeforeClear": 682220,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Ethereum",
+   "me": 12,
+   "team": 4,
+   "t": 3101,
+   "peakLand": 19101,
+   "killers": [
+    "Player 569[敌方真人] 拿走 17996 格"
+   ],
+   "densityLast500": [
+    [
+     2520,
+     6526,
+     29852,
+     5
+    ],
+    [
+     2610,
+     6526,
+     39656,
+     6
+    ],
+    [
+     2700,
+     6526,
+     38730,
+     6
+    ],
+    [
+     2790,
+     0,
+     0,
+     0
+    ],
+    [
+     2880,
+     0,
+     0,
+     0
+    ],
+    [
+     2970,
+     0,
+     0,
+     0
+    ],
+    [
+     3060,
+     0,
+     0,
+     0
+    ]
+   ],
+   "lastDecisions": [
+    "t2660 船 24%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 0,
+   "cause": "队4。与 Heisenberg（队3）同像素出生、离 Rommel（队2）16 格，天然份额 10,509 格（全场 18/20）；第一个开局周期迟到 152 拍，t=300 只有 204 格。t=1530 8,102 格（第 19）。t=2037 一批 8 条无主地单全部没生效；t=2107 一条船 3.3 万兵打 Player 569 的岸。t=2170 一拍 3 条（下令拍 1990~2040：242‰ / 205‰ 打 Player 569 + 197‰ 的船）花掉 23.9 万里的 13.0 万（54%），t=2184 再 243‰，t=2240 又 3 条（238‰ / 241‰ + 船；52%）：23.6 万→5.2 万兵，对 Player 569（56,895 格、52.5 万兵）耗兵 18.3 万得 3,761 格（48.6 兵/格），峰值 19,101 格。影子 t=2150 / 2165 的判断是 L5267（报价 23.8 对 worth 19.3）。Player 569 t=2247 / 2415 / 2709 3 条 212‰（12.2 万 / 14.8 万 / 20.5 万）拿走 17,996 格；清仓后 worth 4.0~9.6 → L5267。t=2740 清地（3,935 格，线 3,929）；海上还有船，t=3101 才出局，2 条船 8,411 兵并入队友 Manchu。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:IO-stale-pulse-dump",
+    "NEW:AT-dump-then-dead",
+    "NEW:EC-thin-big-target",
+    "NEW:AT-worth-gate"
+   ],
+   "tLog": 3102,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 569",
+      "cls": "敌方真人",
+      "cells": 17996
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 569",
+      "troops": 120353
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 81628,
+     "顶格少拿": 36,
+     "陆攻出兵": 44171,
+     "发船出兵": 24639,
+     "出兵手续费": 7206,
+     "战斗耗兵": 142544,
+     "得地": 5145,
+     "失地": 17996,
+     "被打掉兵": 120353,
+     "船兵交友军": 8411
+    },
+    "ownCmdsLast600": [
+     "t2660:boat 240‰ 出9876"
+    ],
+    "ownCmdCountLast600": 1,
+    "attackCmdsOnMeLast600": [
+     "Player 569[敌方真人]×1 共204601兵 t2709~2709"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 2970 地     0 兵     0 密  0.0 边0 岸0 无主邻格0 船1 | 邻居0: ",
+     "t= 3060 地     0 兵     0 密  0.0 边0 岸0 无主邻格0 船1 | 邻居0: "
+    ]
+   },
+   "peakLandLog": 19101,
+   "landBeforeClear": 0,
+   "balanceBeforeClear": 0,
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Heisenberg",
+   "me": 14,
+   "team": 3,
+   "t": 4420,
+   "peakLand": 26850,
+   "killers": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 拿走 19549 格"
+   ],
+   "densityLast500": [
+    [
+     3870,
+     25505,
+     2451042,
+     96
+    ],
+    [
+     3960,
+     25505,
+     2764037,
+     108
+    ],
+    [
+     4050,
+     25505,
+     3038100,
+     119
+    ],
+    [
+     4140,
+     25505,
+     2584952,
+     101
+    ],
+    [
+     4230,
+     25505,
+     2886886,
+     113
+    ],
+    [
+     4320,
+     18848,
+     1700676,
+     90
+    ],
+    [
+     4410,
+     7335,
+     421866,
+     58
+    ]
+   ],
+   "lastDecisions": [
+    "t3815 捐→*Sever (rus) pct=145",
+    "t4130 捐→*Sever (rus) pct=153",
+    "t4298 捐→*Sever (rus) pct=81"
+   ],
+   "donationsReceivedReplay": [
+    "*BigBrain@3997p185",
+    "*BigBrain@4242p185"
+   ],
+   "rescueLogsForMe": [
+    "BigBrain@3990s185",
+    "BigBrain@4230s185"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s153→*Sever (rus)@4120",
+    "r81→*Sever (rus)@4285"
+   ],
+   "balanceAtDeath": 440939,
+   "cause": "队3。与 Ethereum（队4）同像素出生、离 Rommel 16 格；撞名的 Kalmar Union 贴着它 20~543 格长到 9,850 格，它 0 兵。t=2610~4240 25,505 格不动：三面贴着 Manchu 338 格、Rommel 189 格（保护名单），另两个邻居是 GYRO（122,226 格）、Player 569（84,058 格）。t=2500 身边 0 兵的 AI Holy Roman Empire（2,245 格）：能发 4,319 兵 < minCmd 2.1 万 → 跳过；GYRO 报价 26.2 对 worth 16.0 → L5267。t=2880~3780 零指令（密度 28→107）。t=3900 / 4000 / 4100 / 4200 超软上限（密度 101~125、257 万~318 万兵）：两份报价都是 L5361——dpKeep 376 万 / 379 万 / 454 万 / 542 万 >= 余额（GYRO 的兵 426 万→969 万）。这 400 拍唯一发出的指令是给 Sever 的 3 笔捐款（t=3815 到账 40.7 万、手续费 17.8 万；t=4130 48.8 万 / 20.3 万；t=4298 16.9 万 / 13.2 万——GYRO t=4249 已开始打它）。GYRO t=4249~4410 4 条 185‰ 共 614 万兵拿走 19,549 格；Heisenberg 最后 600 拍 0 条出兵；顶格少拿 36.7 万。t=4420 清地（6,075 格、31.1 万兵）。",
+   "patternIds": [
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-main-attacker-unanswered",
+    "NEW:DN-donate-preempts-attack",
+    "NEW:DN-dying-donor",
+    "NEW:EG-mincmd-skips-small-ai"
+   ],
+   "tLog": 4431,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "cls": "敌方真人",
+      "cells": 19549
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "troops": 2622555
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 2629895,
+     "顶格少拿": 367163,
+     "捐出到账": 1063428,
+     "捐款手续费": 512887,
+     "收到捐款": 241,
+     "失地": 19549,
+     "被打掉兵": 2622555
+    },
+    "ownCmdsLast600": [],
+    "ownCmdCountLast600": 0,
+    "attackCmdsOnMeLast600": [
+     "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人]×4 共6140684兵 t4249~4410"
+    ],
+    "donationsInLast900": [
+     "*BigBrain@3997 +120(费41)",
+     "*BigBrain@4242 +121(费41)"
+    ],
+    "donationsOutLast900": [
+     "→*Sever (rus)@3815 406839(费178340)",
+     "→*Sever (rus)@4130 487560(费202622)",
+     "→*Sever (rus)@4298 169029(费131925)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 4320 地 18848 兵 1.70M 密 90.2 边602 岸151 无主邻格0 船0 | 邻居4: *Manchu[我方号·异队] 接338 地34979 密55；𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接304 地128883 密60；Player 569[敌方真人] 接174 地88415 密73；*Rommel[我方号·异队] 接104 地17282 密71 | 被攻: 𓃗 𝐆𝐘𝐑𝐎🟢:1.30M",
+     "t= 4410 地  7335 兵  422k 密 57.5 边423 岸136 无主邻格0 船0 | 邻居4: 𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接344 地141842 密43；Player 569[敌方真人] 接174 地92881 密77；*Manchu[我方号·异队] 接135 地36905 密56；*Rommel[我方号·异队] 接34 地17282 密81"
+    ]
+   },
+   "peakLandLog": 25789,
+   "landBeforeClear": 6075,
+   "balanceBeforeClear": 311449,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Dixie",
+   "me": 16,
+   "team": 1,
+   "t": 7690,
+   "peakLand": 150915,
+   "killers": [
+    "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 拿走 75434 格",
+    "Player 569[敌方真人] 拿走 46808 格"
+   ],
+   "densityLast500": [
+    [
+     7110,
+     69257,
+     4401389,
+     64
+    ],
+    [
+     7200,
+     60957,
+     4156340,
+     68
+    ],
+    [
+     7290,
+     46422,
+     3017978,
+     65
+    ],
+    [
+     7380,
+     34808,
+     2176471,
+     62
+    ],
+    [
+     7470,
+     34610,
+     1816448,
+     52
+    ],
+    [
+     7560,
+     33479,
+     1430283,
+     43
+    ],
+    [
+     7650,
+     32184,
+     1374649,
+     43
+    ]
+   ],
+   "lastDecisions": [
+    "t7406 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%",
+    "t7532 攻Player 569/T2 12%",
+    "t7539 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%",
+    "t7553 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 9%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 839821,
+   "cause": "队1（t=5495 Rotigus 离开后队1 只剩它）。天然份额 39,575 格（全场第 6）；延迟 600~1500 中位 168、最大 392 拍，t=1500 实抢 30.2%。t=2340~3330 陆上邻居只有 Eisenhower、Sever、Kamakura 三个异队的我方号（nb=0；6 条船拿小岛）；t=3420~3690 唯一的邻居 🤗 报价 163~200 对 worth 51.5~70 → L5267，零指令。t=4140 起打 🤗，t=4320~4860 收它的崩盘 58,061→111,084 格（63,064 格、198 万兵）。t=4860~5096 再次被围（Eisenhower 811 格、Kamakura 425 格），t=5096 一条船 188 万靠上 GYRO 的岸；之后每约 180 拍一条超软上限的 20% 出兵，t=6153 150,915 格（全图 21.7%）。队友 Rotigus t=5495 离开，118,256 格归了 Player 569。t=6000~7000 GYRO 9 条 2,172 万 + 登陆 215 万、Player 569 3 条 614 万 + 4 次登陆 843 万；之后各采样拍：t=6400（密度 113.5）L5528、t=6700 L5511 / L5267、t=7000 / 7100 L5267（报价 58.6 / 65.8 对 worth 55.6 / 56.6；GYRO 标「在打我」）、t=7200 / 7300 / 7500 L5361（dpKeep 485 万 / 394 万 / 206 万 >= 余额）；t=7020~7380 零指令 85,793→34,808 格。整局对 GYRO、Player 569 耗兵 3,028 万得 88,265 格，被它们拿走 176,846 格。t=7690 清地（22,736 格、81.1 万兵：峰值 150,915 衰减到 90,828，1/4 线 22,707）；当时 GYRO、Player 569 合计只剩 357 万兵。",
+   "patternIds": [
+    "NEW:AT-over-cap-dump",
+    "NEW:AT-worth-gate",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-passive-death",
+    "NEW:EG-collapse-line-raised"
+   ],
+   "tLog": 7696,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "cls": "敌方真人",
+      "cells": 75434
+     },
+     {
+      "by": "Player 569",
+      "cls": "敌方真人",
+      "cells": 46808
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "troops": 7463641
+     },
+     {
+      "by": "Player 569",
+      "troops": 5589862
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 7104710,
+     "陆攻出兵": 5423219,
+     "出兵手续费": 585627,
+     "战斗耗兵": 6455726,
+     "得地": 26801,
+     "失地": 122242,
+     "被打掉兵": 13053503
+    },
+    "ownCmdsLast600": [
+     "t7406:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出264292",
+     "t7532:atk→Player 569 121‰ 出236143",
+     "t7539:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出179168",
+     "t7553:atk→𓃗 𝐆𝐘𝐑𝐎🟢 90‰ 出139451"
+    ],
+    "ownCmdCountLast600": 4,
+    "attackCmdsOnMeLast600": [
+     "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人]×8 共5132421兵 t7147~7686",
+     "Player 569[敌方真人]×3 共4378630兵 t7259~7350"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 7560 地 33479 兵 1.43M 密 42.7 边459 岸1325 无主邻格0 船0 | 邻居3: 𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接363 地219244 密12；*Eisenhower[我方号·异队] 接362 地28324 密150；*Kamakura[我方号·异队] 接35 地21420 密55 | 在攻: 𓃗 𝐆𝐘𝐑𝐎🟢:119k",
+     "t= 7650 地 32184 兵 1.37M 密 42.7 边463 岸1311 无主邻格0 船0 | 邻居3: 𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接377 地220539 密9；*Eisenhower[我方号·异队] 接354 地28324 密150；*Kamakura[我方号·异队] 接35 地13230 密46 | 被攻: 𓃗 𝐆𝐘𝐑𝐎🟢:520k"
+    ]
+   },
+   "peakLandLog": 149831,
+   "landBeforeClear": 22736,
+   "balanceBeforeClear": 810827,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Kamakura",
+   "me": 19,
+   "team": 4,
+   "t": 7678,
+   "peakLand": 48111,
+   "killers": [
+    "Player 569[敌方真人] 拿走 30367 格",
+    "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 拿走 7822 格"
+   ],
+   "densityLast500": [
+    [
+     7110,
+     47477,
+     7121550,
+     150
+    ],
+    [
+     7200,
+     47648,
+     4500982,
+     94
+    ],
+    [
+     7290,
+     45753,
+     3081607,
+     67
+    ],
+    [
+     7380,
+     44008,
+     2851461,
+     65
+    ],
+    [
+     7470,
+     30198,
+     1787325,
+     59
+    ],
+    [
+     7560,
+     21420,
+     1168869,
+     55
+    ],
+    [
+     7650,
+     13230,
+     611046,
+     46
+    ]
+   ],
+   "lastDecisions": [
+    "t7175 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 39%",
+    "t7252 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%",
+    "t7259 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%",
+    "t7273 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%",
+    "t7294 攻𓃗 𝐆𝐘𝐑𝐎🟢/T2 12%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 625922,
+   "cause": "队4（t=5145 起队4 只剩它）。天然份额 35,712 格（全场第 8）；t=1500 实抢 63.8%，t≈1988 长到 47,477 格（全场第 6）后到 t=7110 没变过：t=2250~4230、4410~7110 被 Eisenhower（队2）420~499 格和 Dixie（队1）35~425 格围住（早期还有队友 🤗 348~371 格、Sever 121~148 格），岸格 102 但 200 格水程内找不到可登陆的地。t=3528~5110 给 Manchu 捐 12 笔（到账 550 万、手续费 258 万）；Manchu 阵亡后捐款候选为空，t≈6000 起 712 万兵顶在硬上限（整局顶格少拿 1,590 万）。t=7165 GYRO 吃穿 Dixie 贴上来（9 格；210,572 格、707 万兵）：397‰ 277 万，之后密度 91 → L5267（报价 121.0 对 worth 82.1）、L5511，t=7252~7294 4 条 122‰：对 GYRO 耗兵 362 万得 1,040 格（3,484 兵/格，与 GYRO 的 6 条 207‰ 628 万对消）。t=7399~7665 Player 569 7 条 212‰ 563 万拿走 30,367 格，Kamakura 0 条还手：t=7400 / 7500 / 7600 L5361（dpKeep 315 万 / 207 万 / 173 万 >= 余额 277 万 / 146 万 / 89.5 万），当时 Player 569 密度 10~15。t=7290~7650 零出兵 45,753→13,230 格。t=7678 清地（10,804 格、45.2 万兵）。",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:EG-boxed-hardcap",
+    "NEW:EG-cap-idle-death",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-main-attacker-unanswered"
+   ],
+   "tLog": 7681,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 569",
+      "cls": "敌方真人",
+      "cells": 30367
+     },
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "cls": "敌方真人",
+      "cells": 7822
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 569",
+      "troops": 2705737
+     },
+     {
+      "by": "𓃗 𝐆𝐘𝐑𝐎🟢",
+      "troops": 1858911
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 1749957,
+     "顶格少拿": 4909319,
+     "陆攻出兵": 4607321,
+     "出兵手续费": 262904,
+     "战斗耗兵": 3623406,
+     "得地": 1040,
+     "失地": 38189,
+     "被打掉兵": 4564648
+    },
+    "ownCmdsLast600": [
+     "t7175:atk→𓃗 𝐆𝐘𝐑𝐎🟢 397‰ 出2767946",
+     "t7252:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出566430",
+     "t7259:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出485364",
+     "t7273:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出417428",
+     "t7294:atk→𓃗 𝐆𝐘𝐑𝐎🟢 122‰ 出370153"
+    ],
+    "ownCmdCountLast600": 5,
+    "attackCmdsOnMeLast600": [
+     "𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人]×6 共6281966兵 t7210~7385",
+     "Player 569[敌方真人]×7 共5627593兵 t7399~7665"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 7560 地 21420 兵 1.17M 密 54.6 边392 岸87 无主邻格0 船0 | 邻居4: *Eisenhower[我方号·异队] 接351 地28324 密150；Player 569[敌方真人] 接239 地320016 密10；*Dixie[我方号·异队] 接35 地33479 密43；𓃗 𝐆𝐘𝐑𝐎🟢[敌方真人] 接11 地219244 密12",
+     "t= 7650 地 13230 兵  611k 密 46.2 边348 岸79 无主邻格0 船0 | 邻居3: *Eisenhower[我方号·异队] 接287 地28324 密150；Player 569[敌方真人] 接258 地328206 密8；*Dixie[我方号·异队] 接35 地32184 密43"
+    ]
+   },
+   "peakLandLog": 47648,
+   "landBeforeClear": 10804,
+   "balanceBeforeClear": 452131,
+   "statementType": "observed"
+  }
+ ],
+ "truthSummary": {
+  "source": "真引擎重放（录像 B022）到 t=7932；日志快照指纹 685/685 逐兵一致",
+  "donationsExecuted": {
+   "n": 47,
+   "delivered": 13747661,
+   "fee": 6351360,
+   "smallPctN": 8,
+   "smallPctDelivered": 2092224,
+   "smallPctFee": 1515328,
+   "toHuskN": 0,
+   "toHuskDelivered": 0,
+   "toHuskFee": 0
+  },
+  "donationLogVerdicts": {
+   "已执行": 47,
+   "校验能过却没执行": 5,
+   "配额不够": 4,
+   "配额临界": 1
+  },
+  "boatGiftsOut": {
+   "n": 2,
+   "troops": 8411,
+   "delivered": 8411
+  },
+  "ledgerTotals": {
+   "MasterChief": {
+    "利息+地租": 450429,
+    "顶格少拿": 228,
+    "陆攻出兵": 391642,
+    "发船出兵": 19962,
+    "出兵手续费": 32507,
+    "战斗耗兵": 265990,
+    "得地": 25139,
+    "失地": 20201,
+    "被打掉兵": 122168
+   },
+   "Sever (rus)": {
+    "利息+地租": 3198958,
+    "顶格少拿": 171839,
+    "陆攻出兵": 1489163,
+    "出兵手续费": 72657,
+    "收到捐款": 1065069,
+    "战斗耗兵": 672718,
+    "得地": 43111,
+    "失地": 37326,
+    "被打掉兵": 3151624
+   },
+   "Manchu": {
+    "利息+地租": 8436272,
+    "顶格少拿": 855504,
+    "陆攻出兵": 6747750,
+    "发船出兵": 315597,
+    "出兵手续费": 460719,
+    "收到捐款": 5501942,
+    "战斗耗兵": 3354150,
+    "得地": 66539,
+    "失地": 58532,
+    "被打掉兵": 9453892,
+    "收到船兵": 8411
+   },
+   "Ethereum": {
+    "利息+地租": 448193,
+    "顶格少拿": 336,
+    "陆攻出兵": 367666,
+    "发船出兵": 91946,
+    "出兵手续费": 42011,
+    "战斗耗兵": 237576,
+    "得地": 21998,
+    "失地": 18143,
+    "被打掉兵": 122640,
+    "船兵交友军": 8411
+   },
+   "Rommel": {
+    "利息+地租": 5452940,
+    "顶格少拿": 9726072,
+    "陆攻出兵": 319950,
+    "出兵手续费": 38279,
+    "捐出到账": 2094676,
+    "捐款手续费": 671632,
+    "战斗耗兵": 53352,
+    "得地": 17991,
+    "失地": 721,
+    "被打掉兵": 3213
+   },
+   "Heisenberg": {
+    "利息+地租": 4866815,
+    "顶格少拿": 367463,
+    "陆攻出兵": 515261,
+    "出兵手续费": 61153,
+    "捐出到账": 1063428,
+    "捐款手续费": 512887,
+    "收到捐款": 241,
+    "战斗耗兵": 115732,
+    "得地": 31023,
+    "失地": 25079,
+    "被打掉兵": 2809241
+   },
+   "Eisenhower": {
+    "利息+地租": 5246981,
+    "顶格少拿": 20151872,
+    "陆攻出兵": 5342057,
+    "出兵手续费": 465227,
+    "捐出到账": 1238348,
+    "捐款手续费": 426097,
+    "收到捐款": 4954863,
+    "战斗耗兵": 2747326,
+    "得地": 33098,
+    "失地": 1913,
+    "被打掉兵": 782746,
+    "回兵溢出": 2212738
+   },
+   "Dixie": {
+    "利息+地租": 62008774,
+    "顶格少拿": 5699852,
+    "陆攻出兵": 39773811,
+    "发船出兵": 2237176,
+    "出兵手续费": 3896277,
+    "战斗耗兵": 32391368,
+    "得地": 199814,
+    "失地": 177323,
+    "被打掉兵": 25756342
+   },
+   "BigBrain": {
+    "利息+地租": 3634,
+    "顶格少拿": 15728,
+    "捐出到账": 1882,
+    "捐款手续费": 464
+   },
+   "LeBron": {
+    "利息+地租": 21328405,
+    "顶格少拿": 25963112,
+    "陆攻出兵": 564304,
+    "发船出兵": 1292797,
+    "出兵手续费": 8264491,
+    "捐出到账": 3847385,
+    "捐款手续费": 2163834,
+    "收到捐款": 2225546,
+    "战斗耗兵": 397320,
+    "得地": 60514,
+    "失地": 4180,
+    "被打掉兵": 241748
+   },
+   "Kamakura": {
+    "利息+地租": 17184832,
+    "顶格少拿": 15899883,
+    "陆攻出兵": 5214491,
+    "出兵手续费": 318333,
+    "捐出到账": 5501942,
+    "捐款手续费": 2576446,
+    "战斗耗兵": 3803229,
+    "得地": 48608,
+    "失地": 38292,
+    "被打掉兵": 4564845
+   }
+  }
+ },
+ "latencyLedger": {
+  "matchId": "B022",
+  "replayLast": 7932,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 70,
+   "landed": 49,
+   "lastOk": 1,
+   "late": 10,
+   "late1": 10,
+   "late2": 0,
+   "late3": 0,
+   "zero": 0,
+   "batch3": 0,
+   "staleBatch": 0,
+   "backendLines": 0,
+   "steps": 41,
+   "lbP50": 0,
+   "lbP90": 0,
+   "lbMax": 1,
+   "near": 4,
+   "samePixel": 2,
+   "per": {
+    "9": {
+     "name": "MasterChief",
+     "team": 1,
+     "logged": 3,
+     "landed": 1,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 32,
+     "final": [
+      1266,
+      369
+     ],
+     "lastLog": [
+      284,
+      109
+     ]
+    },
+    "10": {
+     "name": "Sever (rus)",
+     "team": 3,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 35,
+     "final": [
+      306,
+      322
+     ],
+     "lastLog": [
+      1266,
+      306
+     ]
+    },
+    "11": {
+     "name": "Manchu",
+     "team": 4,
+     "logged": 3,
+     "landed": 1,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 29,
+     "final": [
+      1270,
+      506
+     ],
+     "lastLog": [
+      50,
+      394
+     ]
+    },
+    "12": {
+     "name": "Ethereum",
+     "team": 4,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 37,
+     "final": [
+      1010,
+      578
+     ],
+     "lastLog": [
+      1042,
+      594
+     ]
+    },
+    "13": {
+     "name": "Rommel",
+     "team": 2,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 34,
+     "final": [
+      994,
+      578
+     ],
+     "lastLog": [
+      706,
+      450
+     ]
+    },
+    "14": {
+     "name": "Heisenberg",
+     "team": 3,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 38,
+     "final": [
+      1010,
+      578
+     ],
+     "lastLog": [
+      290,
+      594
+     ]
+    },
+    "15": {
+     "name": "Eisenhower",
+     "team": 2,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 37,
+     "final": [
+      178,
+      194
+     ],
+     "lastLog": [
+      978,
+      258
+     ]
+    },
+    "16": {
+     "name": "Dixie",
+     "team": 1,
+     "logged": 6,
+     "landed": 4,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 39,
+     "final": [
+      18,
+      274
+     ],
+     "lastLog": [
+      102,
+      6
+     ]
+    },
+    "17": {
+     "name": "BigBrain",
+     "team": 3,
+     "logged": 6,
+     "landed": 4,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 37,
+     "final": [
+      658,
+      722
+     ],
+     "lastLog": [
+      706,
+      450
+     ]
+    },
+    "18": {
+     "name": "LeBron",
+     "team": 2,
+     "logged": 6,
+     "landed": 5,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 36,
+     "final": [
+      658,
+      722
+     ],
+     "lastLog": [
+      658,
+      722
+     ]
+    },
+    "19": {
+     "name": "Kamakura",
+     "team": 4,
+     "logged": 6,
+     "landed": 4,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 37,
+     "final": [
+      226,
+      18
+     ],
+     "lastLog": [
+      1266,
+      722
+     ]
+    }
+   }
+  },
+  "fidelity": {
+   "logCmds": 1007,
+   "shadowCmds": 1207,
+   "landed": 921,
+   "exact": 805,
+   "fuzzy": 60,
+   "unmatched": 56,
+   "lost": 344,
+   "lostBefore": 337,
+   "maxDev": 68
+  },
+  "delay": [
+   {
+    "band": "0~600",
+    "n": 66,
+    "p50": 14,
+    "p90": 145,
+    "max": 238,
+    "nUniq": 65,
+    "p50Uniq": 14,
+    "p90Uniq": 133,
+    "ge35": 20,
+    "ge90": 12,
+    "atk": [
+     66,
+     14,
+     145
+    ],
+    "boat": [
+     0,
+     null,
+     null
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "600~1500",
+    "n": 404,
+    "p50": 145,
+    "p90": 256,
+    "max": 392,
+    "nUniq": 341,
+    "p50Uniq": 137,
+    "p90Uniq": 251,
+    "ge35": 371,
+    "ge90": 294,
+    "atk": [
+     404,
+     145,
+     256
+    ],
+    "boat": [
+     0,
+     null,
+     null
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "1500~3000",
+    "n": 249,
+    "p50": 210,
+    "p90": 331,
+    "max": 517,
+    "nUniq": 106,
+    "p50Uniq": 207,
+    "p90Uniq": 294,
+    "ge35": 222,
+    "ge90": 210,
+    "atk": [
+     218,
+     214,
+     341
+    ],
+    "boat": [
+     19,
+     14,
+     175
+    ],
+    "don": [
+     12,
+     231,
+     291
+    ]
+   },
+   {
+    "band": "3000+",
+    "n": 146,
+    "p50": 16,
+    "p90": 205,
+    "max": 284,
+    "nUniq": 109,
+    "p50Uniq": 14,
+    "p90Uniq": 45,
+    "ge35": 41,
+    "ge90": 23,
+    "atk": [
+     72,
+     15,
+     249
+    ],
+    "boat": [
+     41,
+     19,
+     66
+    ],
+    "don": [
+     33,
+     12,
+     87
+    ]
+   }
+  ],
+  "bots": [
+   {
+    "me": 9,
+    "name": "MasterChief",
+    "team": 1,
+    "n": 68,
+    "p50": 166,
+    "max": 329,
+    "cmdsLog": 70,
+    "landed": 68
+   },
+   {
+    "me": 10,
+    "name": "Sever (rus)",
+    "team": 3,
+    "n": 77,
+    "p50": 168,
+    "max": 379,
+    "cmdsLog": 83,
+    "landed": 77
+   },
+   {
+    "me": 11,
+    "name": "Manchu",
+    "team": 4,
+    "n": 99,
+    "p50": 123,
+    "max": 332,
+    "cmdsLog": 112,
+    "landed": 99
+   },
+   {
+    "me": 12,
+    "name": "Ethereum",
+    "team": 4,
+    "n": 60,
+    "p50": 143,
+    "max": 293,
+    "cmdsLog": 60,
+    "landed": 60
+   },
+   {
+    "me": 13,
+    "name": "Rommel",
+    "team": 2,
+    "n": 74,
+    "p50": 118,
+    "max": 296,
+    "cmdsLog": 76,
+    "landed": 74
+   },
+   {
+    "me": 14,
+    "name": "Heisenberg",
+    "team": 3,
+    "n": 83,
+    "p50": 149,
+    "max": 318,
+    "cmdsLog": 85,
+    "landed": 83
+   },
+   {
+    "me": 15,
+    "name": "Eisenhower",
+    "team": 2,
+    "n": 99,
+    "p50": 155,
+    "max": 364,
+    "cmdsLog": 114,
+    "landed": 99
+   },
+   {
+    "me": 16,
+    "name": "Dixie",
+    "team": 1,
+    "n": 138,
+    "p50": 141,
+    "max": 517,
+    "cmdsLog": 167,
+    "landed": 138
+   },
+   {
+    "me": 17,
+    "name": "BigBrain",
+    "team": 3,
+    "n": 17,
+    "p50": 196,
+    "max": 311,
+    "cmdsLog": 17,
+    "landed": 17
+   },
+   {
+    "me": 18,
+    "name": "LeBron",
+    "team": 2,
+    "n": 106,
+    "p50": 48,
+    "max": 327,
+    "cmdsLog": 110,
+    "landed": 106
+   },
+   {
+    "me": 19,
+    "name": "Kamakura",
+    "team": 4,
+    "n": 100,
+    "p50": 159,
+    "max": 390,
+    "cmdsLog": 113,
+    "landed": 100
+   }
+  ],
+  "funnel": {
+   "bands": [
+    {
+     "band": "0~600",
+     "shadow": 71,
+     "landed": 66,
+     "ok": 64,
+     "void": 2,
+     "lost": 5,
+     "pending": 0,
+     "pendingAmt": 0
+    },
+    {
+     "band": "600~1500",
+     "shadow": 485,
+     "landed": 404,
+     "ok": 319,
+     "void": 85,
+     "lost": 81,
+     "pending": 0,
+     "pendingAmt": 0
+    },
+    {
+     "band": "1500~3000",
+     "shadow": 474,
+     "landed": 249,
+     "ok": 162,
+     "void": 87,
+     "lost": 225,
+     "pending": 0,
+     "pendingAmt": 0
+    },
+    {
+     "band": "3000+",
+     "shadow": 179,
+     "landed": 146,
+     "ok": 128,
+     "void": 18,
+     "lost": 26,
+     "pending": 7,
+     "pendingAmt": 1096998
+    }
+   ],
+   "check": [
+    [
+     270,
+     24,
+     26,
+     20
+    ],
+    [
+     540,
+     57,
+     63,
+     57
+    ],
+    [
+     810,
+     128,
+     135,
+     109
+    ],
+    [
+     1080,
+     182,
+     187,
+     136
+    ],
+    [
+     1350,
+     371,
+     395,
+     295
+    ],
+    [
+     1620,
+     415,
+     465,
+     339
+    ],
+    [
+     1890,
+     561,
+     626,
+     441
+    ],
+    [
+     2160,
+     610,
+     706,
+     555
+    ],
+    [
+     2430,
+     825,
+     1005,
+     751
+    ],
+    [
+     2700,
+     766,
+     938,
+     694
+    ],
+    [
+     2970,
+     775,
+     952,
+     703
+    ],
+    [
+     3240,
+     724,
+     889,
+     647
+    ],
+    [
+     3510,
+     729,
+     894,
+     652
+    ],
+    [
+     3780,
+     736,
+     901,
+     659
+    ],
+    [
+     4050,
+     742,
+     907,
+     665
+    ],
+    [
+     4320,
+     683,
+     829,
+     612
+    ],
+    [
+     4590,
+     628,
+     761,
+     551
+    ],
+    [
+     4860,
+     649,
+     798,
+     557
+    ],
+    [
+     5130,
+     657,
+     806,
+     581
+    ],
+    [
+     5400,
+     550,
+     680,
+     487
+    ],
+    [
+     5670,
+     554,
+     685,
+     491
+    ],
+    [
+     5940,
+     561,
+     691,
+     498
+    ],
+    [
+     6210,
+     562,
+     692,
+     499
+    ],
+    [
+     6480,
+     567,
+     698,
+     503
+    ],
+    [
+     6750,
+     414,
+     476,
+     380
+    ],
+    [
+     7020,
+     582,
+     712,
+     518
+    ],
+    [
+     7290,
+     588,
+     718,
+     524
+    ],
+    [
+     7560,
+     593,
+     723,
+     530
+    ],
+    [
+     7830,
+     317,
+     367,
+     296
+    ],
+    [
+     7920,
+     317,
+     367,
+     296
+    ]
+   ]
+  },
+  "void": [
+   {
+    "band": "0~600",
+    "atk": 68,
+    "void": 2,
+    "a1": 0,
+    "a1Ai": 0,
+    "a1Amt": 0,
+    "a2": 2,
+    "a2Amt": 946,
+    "a3": 0,
+    "a0": 0,
+    "b": 0,
+    "bSent": 0
+   },
+   {
+    "band": "600~1500",
+    "atk": 345,
+    "void": 66,
+    "a1": 59,
+    "a1Ai": 59,
+    "a1Amt": 137939,
+    "a2": 4,
+    "a2Amt": 3960,
+    "a3": 1,
+    "a0": 2,
+    "b": 47,
+    "bSent": 154523
+   },
+   {
+    "band": "1500~3000",
+    "atk": 327,
+    "void": 123,
+    "a1": 35,
+    "a1Ai": 35,
+    "a1Amt": 299972,
+    "a2": 67,
+    "a2Amt": 640926,
+    "a3": 6,
+    "a0": 15,
+    "b": 34,
+    "bSent": 533220
+   },
+   {
+    "band": "3000+",
+    "atk": 74,
+    "void": 18,
+    "a1": 0,
+    "a1Ai": 0,
+    "a1Amt": 0,
+    "a2": 17,
+    "a2Amt": 5834125,
+    "a3": 1,
+    "a0": 0,
+    "b": 0,
+    "bSent": 0
+   },
+   {
+    "band": "0~600",
+    "cls": "ai",
+    "lines": 6,
+    "cmds": 6,
+    "sent": 2126,
+    "spent": 1951,
+    "gain": 681,
+    "ret": 111,
+    "redirLines": 1,
+    "moved": 64,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "0~600",
+    "cls": "neu",
+    "lines": 48,
+    "cmds": 65,
+    "sent": 67185,
+    "spent": 57306,
+    "gain": 28653,
+    "ret": 9879,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "600~1500",
+    "cls": "ai",
+    "lines": 119,
+    "cmds": 206,
+    "sent": 898124,
+    "spent": 352711,
+    "gain": 90402,
+    "ret": 2226,
+    "redirLines": 77,
+    "moved": 543187,
+    "emptyLines": 1,
+    "emptySent": 5499
+   },
+   {
+    "band": "600~1500",
+    "cls": "neu",
+    "lines": 20,
+    "cmds": 53,
+    "sent": 232143,
+    "spent": 37076,
+    "gain": 18538,
+    "ret": 195067,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 1,
+    "emptySent": 15211
+   },
+   {
+    "band": "1500~3000",
+    "cls": "ai",
+    "lines": 32,
+    "cmds": 105,
+    "sent": 1891634,
+    "spent": 339881,
+    "gain": 86189,
+    "ret": 768,
+    "redirLines": 26,
+    "moved": 1550985,
+    "emptyLines": 1,
+    "emptySent": 22587
+   },
+   {
+    "band": "1500~3000",
+    "cls": "hum",
+    "lines": 9,
+    "cmds": 19,
+    "sent": 680936,
+    "spent": 679946,
+    "gain": 32019,
+    "ret": 815,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 2,
+    "emptySent": 71748
+   },
+   {
+    "band": "1500~3000",
+    "cls": "neu",
+    "lines": 17,
+    "cmds": 59,
+    "sent": 1080047,
+    "spent": 17202,
+    "gain": 8601,
+    "ret": 1062845,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "3000+",
+    "cls": "hum",
+    "lines": 33,
+    "cmds": 48,
+    "sent": 51367748,
+    "spent": 37782714,
+    "gain": 198702,
+    "ret": 4918826,
+    "redirLines": 2,
+    "moved": 201967,
+    "emptyLines": 6,
+    "emptySent": 4088138
+   },
+   {
+    "band": "3000+",
+    "cls": "neu",
+    "lines": 4,
+    "cmds": 7,
+    "sent": 1707381,
+    "spent": 9702,
+    "gain": 4851,
+    "ret": 1697679,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   }
+  ],
+  "dups": [
+   {
+    "band": "0~600",
+    "kind": "atk",
+    "base": 66,
+    "dups": 9,
+    "ok": 8,
+    "sent": 3948,
+    "fee": 98,
+    "void": 1,
+    "stack": [
+     8,
+     1,
+     0,
+     0
+    ],
+    "byTarget": {
+     "无主地": 9
+    }
+   },
+   {
+    "band": "600~1500",
+    "kind": "atk",
+    "base": 404,
+    "dups": 229,
+    "ok": 167,
+    "sent": 1048069,
+    "fee": 92878,
+    "void": 62,
+    "stack": [
+     88,
+     51,
+     37,
+     53
+    ],
+    "byTarget": {
+     "内置 AI": 229
+    }
+   },
+   {
+    "band": "1500~3000",
+    "kind": "atk",
+    "base": 218,
+    "dups": 174,
+    "ok": 97,
+    "sent": 2126600,
+    "fee": 248355,
+    "void": 77,
+    "stack": [
+     44,
+     35,
+     24,
+     71
+    ],
+    "byTarget": {
+     "无主地": 88,
+     "内置 AI": 72,
+     "真人": 14
+    }
+   },
+   {
+    "band": "1500~3000",
+    "kind": "boat",
+    "base": 19,
+    "dups": 5,
+    "ok": 5,
+    "sent": 60105,
+    "fee": 55265,
+    "void": 0,
+    "stack": [
+     4,
+     1,
+     0,
+     0
+    ],
+    "byTarget": {
+     "发船": 5
+    }
+   },
+   {
+    "band": "1500~3000",
+    "kind": "don",
+    "base": 12,
+    "dups": 11,
+    "ok": 11,
+    "sent": 1027,
+    "fee": 229,
+    "void": 0,
+    "stack": [
+     1,
+     1,
+     1,
+     8
+    ],
+    "byTarget": {
+     "真人": 11
+    }
+   },
+   {
+    "band": "3000+",
+    "kind": "atk",
+    "base": 72,
+    "dups": 27,
+    "ok": 11,
+    "sent": 4754702,
+    "fee": 556924,
+    "void": 16,
+    "stack": [
+     13,
+     2,
+     1,
+     11
+    ],
+    "byTarget": {
+     "无主地": 18,
+     "真人": 9
+    }
+   },
+   {
+    "band": "3000+",
+    "kind": "boat",
+    "base": 41,
+    "dups": 6,
+    "ok": 6,
+    "sent": 34698,
+    "fee": 889765,
+    "void": 0,
+    "stack": [
+     5,
+     1,
+     0,
+     0
+    ],
+    "byTarget": {
+     "发船": 6
+    }
+   },
+   {
+    "band": "3000+",
+    "kind": "don",
+    "base": 33,
+    "dups": 8,
+    "ok": 8,
+    "sent": 3732846,
+    "fee": 2075010,
+    "void": 0,
+    "stack": [
+     4,
+     3,
+     1,
+     0
+    ],
+    "byTarget": {
+     "真人": 8
+    }
+   }
+  ],
+  "batches": {
+   "bands": [
+    {
+     "band": "600~1500",
+     "batches": 41,
+     "cmds": 222,
+     "allVoid": 4,
+     "drain": 20,
+     "drainCost": 590287,
+     "extra": 615265
+    },
+    {
+     "band": "1500~3000",
+     "batches": 44,
+     "cmds": 301,
+     "allVoid": 10,
+     "drain": 23,
+     "drainCost": 2515780,
+     "extra": 2695082
+    },
+    {
+     "band": "3000+",
+     "batches": 4,
+     "cmds": 20,
+     "allVoid": 2,
+     "drain": 1,
+     "drainCost": 2712730,
+     "extra": 2471249
+    }
+   ],
+   "rows": [
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 840,
+     "n": 3,
+     "ok": 3,
+     "B0": 15692,
+     "cost": 6072,
+     "frac": 0.38694876370124903,
+     "tau0": 725,
+     "tau1": 755,
+     "kinds": "a",
+     "extra": 2901
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 861,
+     "n": 5,
+     "ok": 3,
+     "B0": 20651,
+     "cost": 7617,
+     "frac": 0.3688441237712459,
+     "tau0": 760,
+     "tau1": 805,
+     "kinds": "a",
+     "extra": 5379
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 903,
+     "n": 3,
+     "ok": 3,
+     "B0": 22503,
+     "cost": 9077,
+     "frac": 0.40336843976358705,
+     "tau0": 825,
+     "tau1": 855,
+     "kinds": "a",
+     "extra": 6573
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 903,
+     "n": 3,
+     "ok": 3,
+     "B0": 19620,
+     "cost": 4563,
+     "frac": 0.23256880733944954,
+     "tau0": 810,
+     "tau1": 830,
+     "kinds": "a",
+     "extra": 2802
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 910,
+     "n": 3,
+     "ok": 3,
+     "B0": 20875,
+     "cost": 8059,
+     "frac": 0.386059880239521,
+     "tau0": 830,
+     "tau1": 860,
+     "kinds": "a",
+     "extra": 4595
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 924,
+     "n": 3,
+     "ok": 3,
+     "B0": 20756,
+     "cost": 9902,
+     "frac": 0.4770668722297167,
+     "tau0": 835,
+     "tau1": 865,
+     "kinds": "a",
+     "extra": 5788
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 931,
+     "n": 4,
+     "ok": 3,
+     "B0": 13858,
+     "cost": 3829,
+     "frac": 0.2763024967527782,
+     "tau0": 815,
+     "tau1": 850,
+     "kinds": "a",
+     "extra": 3829
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 959,
+     "n": 3,
+     "ok": 3,
+     "B0": 15498,
+     "cost": 8741,
+     "frac": 0.5640082591302104,
+     "tau0": 860,
+     "tau1": 890,
+     "kinds": "a",
+     "extra": 4777
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 980,
+     "n": 3,
+     "ok": 3,
+     "B0": 27885,
+     "cost": 9243,
+     "frac": 0.33146853146853145,
+     "tau0": 870,
+     "tau1": 895,
+     "kinds": "a",
+     "extra": 5650
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1001,
+     "n": 4,
+     "ok": 4,
+     "B0": 34695,
+     "cost": 19828,
+     "frac": 0.5714944516500937,
+     "tau0": 870,
+     "tau1": 900,
+     "kinds": "a",
+     "extra": 15933
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1008,
+     "n": 5,
+     "ok": 5,
+     "B0": 33816,
+     "cost": 22243,
+     "frac": 0.6577655547669742,
+     "tau0": 875,
+     "tau1": 925,
+     "kinds": "a",
+     "extra": 12634
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1008,
+     "n": 3,
+     "ok": 3,
+     "B0": 25862,
+     "cost": 11965,
+     "frac": 0.46264790039440107,
+     "tau0": 885,
+     "tau1": 920,
+     "kinds": "a",
+     "extra": 8278
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 1022,
+     "n": 5,
+     "ok": 2,
+     "B0": 24364,
+     "cost": 10933,
+     "frac": 0.4487358397635856,
+     "tau0": 880,
+     "tau1": 925,
+     "kinds": "a",
+     "extra": 10933
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1036,
+     "n": 4,
+     "ok": 4,
+     "B0": 29475,
+     "cost": 21626,
+     "frac": 0.7337065309584394,
+     "tau0": 910,
+     "tau1": 945,
+     "kinds": "a",
+     "extra": 12445
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 1043,
+     "n": 3,
+     "ok": 3,
+     "B0": 17441,
+     "cost": 8370,
+     "frac": 0.4799036752479789,
+     "tau0": 920,
+     "tau1": 950,
+     "kinds": "a",
+     "extra": 5680
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1071,
+     "n": 4,
+     "ok": 0,
+     "B0": 40652,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 930,
+     "tau1": 970,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1078,
+     "n": 4,
+     "ok": 4,
+     "B0": 35253,
+     "cost": 17905,
+     "frac": 0.5079000368762943,
+     "tau0": 955,
+     "tau1": 990,
+     "kinds": "a",
+     "extra": 13568
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1106,
+     "n": 6,
+     "ok": 6,
+     "B0": 24825,
+     "cost": 10727,
+     "frac": 0.4321047331319235,
+     "tau0": 940,
+     "tau1": 1005,
+     "kinds": "a",
+     "extra": 9128
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1106,
+     "n": 6,
+     "ok": 6,
+     "B0": 41833,
+     "cost": 21922,
+     "frac": 0.5240360480960008,
+     "tau0": 930,
+     "tau1": 990,
+     "kinds": "a",
+     "extra": 19472
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 1106,
+     "n": 5,
+     "ok": 0,
+     "B0": 41691,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 935,
+     "tau1": 995,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 1113,
+     "n": 6,
+     "ok": 6,
+     "B0": 24714,
+     "cost": 12521,
+     "frac": 0.5066359148660678,
+     "tau0": 930,
+     "tau1": 990,
+     "kinds": "a",
+     "extra": 10567
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1120,
+     "n": 4,
+     "ok": 4,
+     "B0": 40224,
+     "cost": 22838,
+     "frac": 0.5677704852824185,
+     "tau0": 980,
+     "tau1": 1005,
+     "kinds": "a",
+     "extra": 20482
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1141,
+     "n": 6,
+     "ok": 5,
+     "B0": 17766,
+     "cost": 12934,
+     "frac": 0.7280198131261961,
+     "tau0": 970,
+     "tau1": 1035,
+     "kinds": "a",
+     "extra": 9482
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 1155,
+     "n": 6,
+     "ok": 3,
+     "B0": 39804,
+     "cost": 23180,
+     "frac": 0.5823535323083108,
+     "tau0": 935,
+     "tau1": 1015,
+     "kinds": "a",
+     "extra": 11481
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1204,
+     "n": 7,
+     "ok": 7,
+     "B0": 86225,
+     "cost": 45303,
+     "frac": 0.525404465062337,
+     "tau0": 1000,
+     "tau1": 1075,
+     "kinds": "a",
+     "extra": 35199
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1218,
+     "n": 7,
+     "ok": 6,
+     "B0": 67188,
+     "cost": 44498,
+     "frac": 0.6622908852771329,
+     "tau0": 1000,
+     "tau1": 1105,
+     "kinds": "a",
+     "extra": 35772
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1239,
+     "n": 8,
+     "ok": 4,
+     "B0": 50318,
+     "cost": 35383,
+     "frac": 0.7031877260622441,
+     "tau0": 1035,
+     "tau1": 1115,
+     "kinds": "a",
+     "extra": 25262
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1239,
+     "n": 7,
+     "ok": 7,
+     "B0": 64893,
+     "cost": 45209,
+     "frac": 0.6966699027630099,
+     "tau0": 1020,
+     "tau1": 1105,
+     "kinds": "a",
+     "extra": 36718
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 1253,
+     "n": 7,
+     "ok": 5,
+     "B0": 42903,
+     "cost": 30287,
+     "frac": 0.7059413094655386,
+     "tau0": 1015,
+     "tau1": 1100,
+     "kinds": "a",
+     "extra": 19144
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 1260,
+     "n": 9,
+     "ok": 6,
+     "B0": 81638,
+     "cost": 43068,
+     "frac": 0.5275484455768147,
+     "tau0": 1045,
+     "tau1": 1115,
+     "kinds": "a",
+     "extra": 34778
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1260,
+     "n": 8,
+     "ok": 7,
+     "B0": 41206,
+     "cost": 26308,
+     "frac": 0.6384507110614959,
+     "tau0": 1030,
+     "tau1": 1110,
+     "kinds": "a",
+     "extra": 19589
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 1295,
+     "n": 6,
+     "ok": 3,
+     "B0": 56626,
+     "cost": 28167,
+     "frac": 0.497421679087345,
+     "tau0": 1090,
+     "tau1": 1150,
+     "kinds": "a",
+     "extra": 21145
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 1316,
+     "n": 7,
+     "ok": 7,
+     "B0": 43426,
+     "cost": 26436,
+     "frac": 0.6087597291944917,
+     "tau0": 1050,
+     "tau1": 1120,
+     "kinds": "a",
+     "extra": 19779
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1358,
+     "n": 9,
+     "ok": 2,
+     "B0": 120732,
+     "cost": 23055,
+     "frac": 0.19096014312692575,
+     "tau0": 1095,
+     "tau1": 1205,
+     "kinds": "a",
+     "extra": 6078
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1365,
+     "n": 5,
+     "ok": 0,
+     "B0": 87073,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1155,
+     "tau1": 1215,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1393,
+     "n": 9,
+     "ok": 9,
+     "B0": 70948,
+     "cost": 53293,
+     "frac": 0.7511557760613407,
+     "tau0": 1125,
+     "tau1": 1210,
+     "kinds": "a",
+     "extra": 32993
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1393,
+     "n": 9,
+     "ok": 2,
+     "B0": 81061,
+     "cost": 37299,
+     "frac": 0.46013496009178273,
+     "tau0": 1135,
+     "tau1": 1240,
+     "kinds": "a",
+     "extra": 10227
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1421,
+     "n": 4,
+     "ok": 2,
+     "B0": 83275,
+     "cost": 32637,
+     "frac": 0.391918342839988,
+     "tau0": 1240,
+     "tau1": 1280,
+     "kinds": "a",
+     "extra": 14585
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1421,
+     "n": 8,
+     "ok": 8,
+     "B0": 80802,
+     "cost": 56764,
+     "frac": 0.7025073636791168,
+     "tau0": 1165,
+     "tau1": 1250,
+     "kinds": "a",
+     "extra": 51873
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 1428,
+     "n": 8,
+     "ok": 8,
+     "B0": 122559,
+     "cost": 56926,
+     "frac": 0.46447833288456986,
+     "tau0": 1145,
+     "tau1": 1250,
+     "kinds": "a",
+     "extra": 49746
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 1442,
+     "n": 3,
+     "ok": 0,
+     "B0": 85282,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1180,
+     "tau1": 1210,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 1505,
+     "n": 4,
+     "ok": 4,
+     "B0": 85190,
+     "cost": 41694,
+     "frac": 0.4894236412724498,
+     "tau0": 1240,
+     "tau1": 1285,
+     "kinds": "a",
+     "extra": 27635
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1540,
+     "n": 8,
+     "ok": 7,
+     "B0": 202105,
+     "cost": 110669,
+     "frac": 0.5475817025803419,
+     "tau0": 1240,
+     "tau1": 1330,
+     "kinds": "a",
+     "extra": 90933
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1554,
+     "n": 8,
+     "ok": 8,
+     "B0": 138310,
+     "cost": 107664,
+     "frac": 0.7784252765526716,
+     "tau0": 1260,
+     "tau1": 1365,
+     "kinds": "a",
+     "extra": 96049
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1554,
+     "n": 8,
+     "ok": 8,
+     "B0": 115809,
+     "cost": 91680,
+     "frac": 0.7916483174882781,
+     "tau0": 1290,
+     "tau1": 1395,
+     "kinds": "a",
+     "extra": 53568
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1561,
+     "n": 9,
+     "ok": 9,
+     "B0": 97548,
+     "cost": 91204,
+     "frac": 0.9349653503916021,
+     "tau0": 1255,
+     "tau1": 1380,
+     "kinds": "a",
+     "extra": 85489
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1575,
+     "n": 9,
+     "ok": 9,
+     "B0": 70458,
+     "cost": 60446,
+     "frac": 0.8579011609753329,
+     "tau0": 1310,
+     "tau1": 1570,
+     "kinds": "a",
+     "extra": 36709
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1596,
+     "n": 8,
+     "ok": 3,
+     "B0": 95057,
+     "cost": 45367,
+     "frac": 0.47726101181396424,
+     "tau0": 1310,
+     "tau1": 1420,
+     "kinds": "a",
+     "extra": 45367
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 1617,
+     "n": 6,
+     "ok": 4,
+     "B0": 197688,
+     "cost": 75719,
+     "frac": 0.3830227429080167,
+     "tau0": 1365,
+     "tau1": 1570,
+     "kinds": "a",
+     "extra": 50816
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 1645,
+     "n": 3,
+     "ok": 0,
+     "B0": 106607,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1535,
+     "tau1": 1545,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 13,
+     "name": "Rommel",
+     "t": 1736,
+     "n": 7,
+     "ok": 0,
+     "B0": 172222,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1440,
+     "tau1": 1525,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 17,
+     "name": "BigBrain",
+     "t": 1736,
+     "n": 4,
+     "ok": 4,
+     "B0": 1800,
+     "cost": 1449,
+     "frac": 0.805,
+     "tau0": 1500,
+     "tau1": 1560,
+     "kinds": "d",
+     "extra": 844
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1743,
+     "n": 7,
+     "ok": 1,
+     "B0": 184024,
+     "cost": 44927,
+     "frac": 0.24413663435204103,
+     "tau0": 1425,
+     "tau1": 1550,
+     "kinds": "a",
+     "extra": 44927
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1750,
+     "n": 8,
+     "ok": 8,
+     "B0": 132615,
+     "cost": 121553,
+     "frac": 0.9165856049466501,
+     "tau0": null,
+     "tau1": null,
+     "kinds": "a",
+     "extra": 74413
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1757,
+     "n": 8,
+     "ok": 6,
+     "B0": 226494,
+     "cost": 136480,
+     "frac": 0.6025766686976255,
+     "tau0": 1425,
+     "tau1": 1720,
+     "kinds": "a",
+     "extra": 102861
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1757,
+     "n": 8,
+     "ok": 2,
+     "B0": 256605,
+     "cost": 48873,
+     "frac": 0.1904600455953703,
+     "tau0": 1365,
+     "tau1": 1575,
+     "kinds": "a",
+     "extra": 32084
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1799,
+     "n": 8,
+     "ok": 5,
+     "B0": 168897,
+     "cost": 113134,
+     "frac": 0.6698401984641527,
+     "tau0": 1435,
+     "tau1": 1535,
+     "kinds": "a",
+     "extra": 80477
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 1813,
+     "n": 9,
+     "ok": 9,
+     "B0": 279943,
+     "cost": 132102,
+     "frac": 0.4718889202444783,
+     "tau0": 1570,
+     "tau1": 1630,
+     "kinds": "a",
+     "extra": 103125
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 1848,
+     "n": 7,
+     "ok": 7,
+     "B0": 172766,
+     "cost": 116237,
+     "frac": 0.6728002037437922,
+     "tau0": 1555,
+     "tau1": 1835,
+     "kinds": "a",
+     "extra": 89243
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 1897,
+     "n": 9,
+     "ok": 0,
+     "B0": 247418,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1725,
+     "tau1": 1730,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 1904,
+     "n": 3,
+     "ok": 2,
+     "B0": 188629,
+     "cost": 36232,
+     "frac": 0.192080751104019,
+     "tau0": 1615,
+     "tau1": 1705,
+     "kinds": "a",
+     "extra": 11181
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 1904,
+     "n": 9,
+     "ok": 9,
+     "B0": 152330,
+     "cost": 151643,
+     "frac": 0.995490054486969,
+     "tau0": 1610,
+     "tau1": 1660,
+     "kinds": "a",
+     "extra": 139445
+    },
+    {
+     "me": 17,
+     "name": "BigBrain",
+     "t": 1911,
+     "n": 7,
+     "ok": 7,
+     "B0": 312,
+     "cost": 291,
+     "frac": 0.9326923076923077,
+     "tau0": 1600,
+     "tau1": 1720,
+     "kinds": "d",
+     "extra": 187
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 1918,
+     "n": 6,
+     "ok": 6,
+     "B0": 193727,
+     "cost": 101203,
+     "frac": 0.522400078460927,
+     "tau0": 1645,
+     "tau1": 1720,
+     "kinds": "a",
+     "extra": 82285
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 1946,
+     "n": 9,
+     "ok": 9,
+     "B0": 335016,
+     "cost": 140445,
+     "frac": 0.4192187835804857,
+     "tau0": 1580,
+     "tau1": 1620,
+     "kinds": "a",
+     "extra": 120817
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 1967,
+     "n": 8,
+     "ok": 1,
+     "B0": 257702,
+     "cost": 60397,
+     "frac": 0.23436760289015995,
+     "tau0": 1640,
+     "tau1": 1755,
+     "kinds": "a",
+     "extra": 60397
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 1988,
+     "n": 9,
+     "ok": 9,
+     "B0": 233728,
+     "cost": 136097,
+     "frac": 0.582287958652793,
+     "tau0": 1620,
+     "tau1": 1740,
+     "kinds": "a",
+     "extra": 122402
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 2009,
+     "n": 8,
+     "ok": 8,
+     "B0": 337435,
+     "cost": 174001,
+     "frac": 0.5156578303969653,
+     "tau0": 1645,
+     "tau1": 1775,
+     "kinds": "a",
+     "extra": 154230
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 2030,
+     "n": 7,
+     "ok": 7,
+     "B0": 340050,
+     "cost": 164073,
+     "frac": 0.48249669166299075,
+     "tau0": 1775,
+     "tau1": 1865,
+     "kinds": "a",
+     "extra": 137176
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 2037,
+     "n": 8,
+     "ok": 0,
+     "B0": 224979,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1840,
+     "tau1": 1845,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 2044,
+     "n": 7,
+     "ok": 3,
+     "B0": 188200,
+     "cost": 155584,
+     "frac": 0.8266950053134963,
+     "tau0": 1665,
+     "tau1": 1855,
+     "kinds": "a",
+     "extra": 155584
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 2079,
+     "n": 8,
+     "ok": 4,
+     "B0": 235369,
+     "cost": 163285,
+     "frac": 0.6937404670963466,
+     "tau0": 1750,
+     "tau1": 1865,
+     "kinds": "a",
+     "extra": 96628
+    },
+    {
+     "me": 11,
+     "name": "Manchu",
+     "t": 2107,
+     "n": 8,
+     "ok": 0,
+     "B0": 353920,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1930,
+     "tau1": 1965,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 10,
+     "name": "Sever (rus)",
+     "t": 2128,
+     "n": 6,
+     "ok": 0,
+     "B0": 69034,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1885,
+     "tau1": 1965,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 2135,
+     "n": 9,
+     "ok": 7,
+     "B0": 270174,
+     "cost": 189693,
+     "frac": 0.7021141930755735,
+     "tau0": 1745,
+     "tau1": 1925,
+     "kinds": "a",
+     "extra": 189693
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 2142,
+     "n": 9,
+     "ok": 0,
+     "B0": 370633,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1870,
+     "tau1": 1965,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 2142,
+     "n": 9,
+     "ok": 3,
+     "B0": 451736,
+     "cost": 130148,
+     "frac": 0.2881063275895656,
+     "tau0": 1625,
+     "tau1": 1870,
+     "kinds": "a",
+     "extra": 81182
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 2170,
+     "n": 3,
+     "ok": 3,
+     "B0": 239354,
+     "cost": 129647,
+     "frac": 0.5416537847706744,
+     "tau0": 1990,
+     "tau1": 2040,
+     "kinds": "ab",
+     "extra": 70044
+    },
+    {
+     "me": 14,
+     "name": "Heisenberg",
+     "t": 2170,
+     "n": 3,
+     "ok": 0,
+     "B0": 319519,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 2050,
+     "tau1": 2060,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 18,
+     "name": "LeBron",
+     "t": 2184,
+     "n": 3,
+     "ok": 3,
+     "B0": 126998,
+     "cost": 67583,
+     "frac": 0.5321579867399486,
+     "tau0": 2015,
+     "tau1": 2040,
+     "kinds": "a",
+     "extra": 28393
+    },
+    {
+     "me": 9,
+     "name": "MasterChief",
+     "t": 2191,
+     "n": 4,
+     "ok": 4,
+     "B0": 65910,
+     "cost": 37909,
+     "frac": 0.5751631011986041,
+     "tau0": 1965,
+     "tau1": 2025,
+     "kinds": "ab",
+     "extra": 27612
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 2212,
+     "n": 3,
+     "ok": 0,
+     "B0": 425729,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 2095,
+     "tau1": 2145,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 2212,
+     "n": 9,
+     "ok": 9,
+     "B0": 382358,
+     "cost": 202439,
+     "frac": 0.5294488411384095,
+     "tau0": 1925,
+     "tau1": 2140,
+     "kinds": "a",
+     "extra": 173689
+    },
+    {
+     "me": 12,
+     "name": "Ethereum",
+     "t": 2240,
+     "n": 3,
+     "ok": 3,
+     "B0": 107265,
+     "cost": 55889,
+     "frac": 0.5210366848459423,
+     "tau0": 2065,
+     "tau1": 2085,
+     "kinds": "ab",
+     "extra": 29597
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 2261,
+     "n": 5,
+     "ok": 0,
+     "B0": 222378,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 2145,
+     "tau1": 2165,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 15,
+     "name": "Eisenhower",
+     "t": 4466,
+     "n": 3,
+     "ok": 3,
+     "B0": 4118418,
+     "cost": 2712730,
+     "frac": 0.6586825329531873,
+     "tau0": 4380,
+     "tau1": 4395,
+     "kinds": "a",
+     "extra": 1868134
+    },
+    {
+     "me": 19,
+     "name": "Kamakura",
+     "t": 4669,
+     "n": 3,
+     "ok": 3,
+     "B0": 2975261,
+     "cost": 1105770,
+     "frac": 0.37165478927731044,
+     "tau0": 4510,
+     "tau1": 4530,
+     "kinds": "d",
+     "extra": 603115
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 4900,
+     "n": 6,
+     "ok": 0,
+     "B0": 12658141,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 4670,
+     "tau1": 4695,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 16,
+     "name": "Dixie",
+     "t": 4984,
+     "n": 8,
+     "ok": 0,
+     "B0": 13743589,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 4700,
+     "tau1": 4735,
+     "kinds": "a",
+     "extra": 0
+    }
+   ]
+  }
+ },
+ "landLedger": {
+  "matchId": "B022",
+  "gridTicks": [
+   0,
+   150,
+   300,
+   450,
+   630,
+   900,
+   1200,
+   1500,
+   1800,
+   2400,
+   3000,
+   7932
+  ],
+  "replayLast": 7932,
+  "voronoi": {
+   "land": 695915,
+   "humans": 20,
+   "squad": 11,
+   "unreach": 7443,
+   "reach": 688472,
+   "squadVor": 282039,
+   "squadVorPct": 40.97,
+   "headPct": 55.0,
+   "ratio": 0.745,
+   "squadMed": 24886,
+   "otherMed": 39031,
+   "squadEuclid": 298932,
+   "squadEuclidPct": 42.96,
+   "euclidSquadMed": 24565,
+   "euclidOtherMed": 47807,
+   "small": 2,
+   "top16": 1,
+   "bottom16": 4,
+   "bots": [
+    {
+     "me": 15,
+     "name": "*Eisenhower",
+     "team": 2,
+     "vor": 43181,
+     "rank": 5,
+     "euclid": 43524,
+     "spawn": [
+      178,
+      194
+     ],
+     "nearest": 179,
+     "nearestWho": "*Dixie",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 16,
+     "name": "*Dixie",
+     "team": 1,
+     "vor": 39575,
+     "rank": 6,
+     "euclid": 41587,
+     "spawn": [
+      18,
+      274
+     ],
+     "nearest": 179,
+     "nearestWho": "*Eisenhower",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 19,
+     "name": "*Kamakura",
+     "team": 4,
+     "vor": 35712,
+     "rank": 8,
+     "euclid": 36407,
+     "spawn": [
+      226,
+      18
+     ],
+     "nearest": 182,
+     "nearestWho": "*Eisenhower",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 10,
+     "name": "*Sever (rus)",
+     "team": 3,
+     "vor": 33018,
+     "rank": 10,
+     "euclid": 47904,
+     "spawn": [
+      306,
+      322
+     ],
+     "nearest": 181,
+     "nearestWho": "*Eisenhower",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 14,
+     "name": "*Heisenberg",
+     "team": 3,
+     "vor": 26932,
+     "rank": 12,
+     "euclid": 31216,
+     "spawn": [
+      1014,
+      582
+     ],
+     "nearest": 6,
+     "nearestWho": "*Ethereum",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 11,
+     "name": "*Manchu",
+     "team": 4,
+     "vor": 24886,
+     "rank": 13,
+     "euclid": 24565,
+     "spawn": [
+      1270,
+      506
+     ],
+     "nearest": 137,
+     "nearestWho": "*MasterChief",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 13,
+     "name": "*Rommel",
+     "team": 2,
+     "vor": 22371,
+     "rank": 14,
+     "euclid": 19960,
+     "spawn": [
+      994,
+      578
+     ],
+     "nearest": 16,
+     "nearestWho": "*Ethereum",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 18,
+     "name": "*LeBron",
+     "team": 2,
+     "vor": 20806,
+     "rank": 16,
+     "euclid": 17478,
+     "spawn": [
+      658,
+      722
+     ],
+     "nearest": 6,
+     "nearestWho": "*BigBrain",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 9,
+     "name": "*MasterChief",
+     "team": 1,
+     "vor": 20574,
+     "rank": 17,
+     "euclid": 20780,
+     "spawn": [
+      1266,
+      369
+     ],
+     "nearest": 137,
+     "nearestWho": "*Manchu",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 12,
+     "name": "*Ethereum",
+     "team": 4,
+     "vor": 10509,
+     "rank": 18,
+     "euclid": 9192,
+     "spawn": [
+      1010,
+      578
+     ],
+     "nearest": 6,
+     "nearestWho": "*Heisenberg",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 17,
+     "name": "*BigBrain",
+     "team": 3,
+     "vor": 4475,
+     "rank": 19,
+     "euclid": 6319,
+     "spawn": [
+      662,
+      726
+     ],
+     "nearest": 6,
+     "nearestWho": "*LeBron",
+     "nearestKind": "我方异队"
+    }
+   ],
+   "teams": {
+    "1": [
+     5,
+     141058,
+     2,
+     60149
+    ],
+    "2": [
+     5,
+     219894,
+     3,
+     86358
+    ],
+    "3": [
+     5,
+     136710,
+     3,
+     64425
+    ],
+    "4": [
+     5,
+     190810,
+     3,
+     71107
+    ]
+   }
+  },
+  "capture": [
+   {
+    "t": 630,
+    "squadTerr": 26950,
+    "squadVor": 282039,
+    "squadRate": 0.0956,
+    "squadMedRate": 0.1013,
+    "squadDead": 0,
+    "otherTerr": 30157,
+    "otherVor": 406433,
+    "otherRate": 0.0742,
+    "otherMedRate": 0.1065,
+    "otherDead": 0,
+    "aiLand": 255214,
+    "neutral": 383594,
+    "teams": {
+     "1o": [
+      7102,
+      80909,
+      3
+     ],
+     "1s": [
+      4751,
+      60149,
+      2
+     ],
+     "2o": [
+      8806,
+      133536,
+      2
+     ],
+     "2s": [
+      8934,
+      86358,
+      3
+     ],
+     "3o": [
+      7077,
+      72285,
+      2
+     ],
+     "3s": [
+      4658,
+      64425,
+      3
+     ],
+     "4o": [
+      7172,
+      119703,
+      2
+     ],
+     "4s": [
+      8607,
+      71107,
+      3
+     ]
+    }
+   },
+   {
+    "t": 1500,
+    "squadTerr": 141558,
+    "squadVor": 282039,
+    "squadRate": 0.5019,
+    "squadMedRate": 0.5952,
+    "squadDead": 0,
+    "otherTerr": 195630,
+    "otherVor": 406433,
+    "otherRate": 0.4813,
+    "otherMedRate": 0.6105,
+    "otherDead": 0,
+    "aiLand": 347269,
+    "neutral": 11458,
+    "teams": {
+     "1o": [
+      44731,
+      80909,
+      3
+     ],
+     "1s": [
+      24178,
+      60149,
+      2
+     ],
+     "2o": [
+      52537,
+      133536,
+      2
+     ],
+     "2s": [
+      42696,
+      86358,
+      3
+     ],
+     "3o": [
+      38267,
+      72285,
+      2
+     ],
+     "3s": [
+      28454,
+      64425,
+      3
+     ],
+     "4o": [
+      60095,
+      119703,
+      2
+     ],
+     "4s": [
+      46230,
+      71107,
+      3
+     ]
+    }
+   }
+  ],
+  "natural": {
+   "ticks": [
+    {
+     "t": 630,
+     "squad": {
+      "n": 282039,
+      "self": 23949,
+      "squad": 3001,
+      "other": 0,
+      "ai": 102211,
+      "neutral": 152878
+     },
+     "other": {
+      "n": 406433,
+      "self": 30157,
+      "squad": 0,
+      "other": 0,
+      "ai": 153003,
+      "neutral": 223273
+     }
+    },
+    {
+     "t": 1500,
+     "squad": {
+      "n": 282039,
+      "self": 120008,
+      "squad": 15309,
+      "other": 4662,
+      "ai": 140220,
+      "neutral": 1840
+     },
+     "other": {
+      "n": 406433,
+      "self": 169024,
+      "squad": 6241,
+      "other": 21944,
+      "ai": 207049,
+      "neutral": 2175
+     }
+    }
+   ],
+   "perBot": [
+    {
+     "me": 15,
+     "name": "*Eisenhower",
+     "n": 43181,
+     "self": 13914,
+     "squad": 4737,
+     "other": 0,
+     "ai": 23575,
+     "neutral": 955,
+     "outside": 86
+    },
+    {
+     "me": 16,
+     "name": "*Dixie",
+     "n": 39575,
+     "self": 11750,
+     "squad": 0,
+     "other": 0,
+     "ai": 27694,
+     "neutral": 131,
+     "outside": 182
+    },
+    {
+     "me": 19,
+     "name": "*Kamakura",
+     "n": 35712,
+     "self": 19079,
+     "squad": 0,
+     "other": 0,
+     "ai": 16608,
+     "neutral": 25,
+     "outside": 3702
+    },
+    {
+     "me": 10,
+     "name": "*Sever (rus)",
+     "n": 33018,
+     "self": 11756,
+     "squad": 86,
+     "other": 0,
+     "ai": 21137,
+     "neutral": 39,
+     "outside": 853
+    },
+    {
+     "me": 14,
+     "name": "*Heisenberg",
+     "n": 26932,
+     "self": 10777,
+     "squad": 1,
+     "other": 0,
+     "ai": 15489,
+     "neutral": 665,
+     "outside": 5056
+    },
+    {
+     "me": 11,
+     "name": "*Manchu",
+     "n": 24886,
+     "self": 14340,
+     "squad": 0,
+     "other": 0,
+     "ai": 10522,
+     "neutral": 24,
+     "outside": 1007
+    },
+    {
+     "me": 13,
+     "name": "*Rommel",
+     "n": 22371,
+     "self": 12406,
+     "squad": 4135,
+     "other": 645,
+     "ai": 5185,
+     "neutral": 0,
+     "outside": 3425
+    },
+    {
+     "me": 18,
+     "name": "*LeBron",
+     "n": 20806,
+     "self": 10342,
+     "squad": 0,
+     "other": 2524,
+     "ai": 7940,
+     "neutral": 0,
+     "outside": 2523
+    },
+    {
+     "me": 9,
+     "name": "*MasterChief",
+     "n": 20574,
+     "self": 10931,
+     "squad": 1007,
+     "other": 0,
+     "ai": 8636,
+     "neutral": 0,
+     "outside": 1315
+    },
+    {
+     "me": 12,
+     "name": "*Ethereum",
+     "n": 10509,
+     "self": 4701,
+     "squad": 2848,
+     "other": 0,
+     "ai": 2959,
+     "neutral": 1,
+     "outside": 3401
+    },
+    {
+     "me": 17,
+     "name": "*BigBrain",
+     "n": 4475,
+     "self": 12,
+     "squad": 2495,
+     "other": 1493,
+     "ai": 475,
+     "neutral": 0,
+     "outside": 0
+    }
+   ],
+   "perBotTick": 1500
+  },
+  "ai": {
+   "t0": 630,
+   "touch": 48,
+   "inside": 195,
+   "n": 195,
+   "cells": 101750,
+   "allAi": 489,
+   "allCells": 255214,
+   "later": [
+    {
+     "t": 900,
+     "near": {
+      "n": 101750,
+      "squad": 9750,
+      "other": 478,
+      "ai": 91247,
+      "neutral": 275
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 83,
+      "other": 3532,
+      "ai": 149717,
+      "neutral": 132
+     },
+     "dead": 18
+    },
+    {
+     "t": 1200,
+     "near": {
+      "n": 101750,
+      "squad": 26021,
+      "other": 1491,
+      "ai": 73987,
+      "neutral": 251
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 2987,
+      "other": 24447,
+      "ai": 124800,
+      "neutral": 1230
+     },
+     "dead": 93
+    },
+    {
+     "t": 1500,
+     "near": {
+      "n": 101750,
+      "squad": 45568,
+      "other": 2488,
+      "ai": 53224,
+      "neutral": 470
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 4149,
+      "other": 62457,
+      "ai": 85861,
+      "neutral": 997
+     },
+     "dead": 151
+    },
+    {
+     "t": 1800,
+     "near": {
+      "n": 101750,
+      "squad": 63302,
+      "other": 6669,
+      "ai": 31048,
+      "neutral": 731
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 5895,
+      "other": 103753,
+      "ai": 43746,
+      "neutral": 70
+     },
+     "dead": 172
+    },
+    {
+     "t": 2400,
+     "near": {
+      "n": 101750,
+      "squad": 84179,
+      "other": 12690,
+      "ai": 4315,
+      "neutral": 566
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 15227,
+      "other": 136155,
+      "ai": 2079,
+      "neutral": 3
+     },
+     "dead": 191
+    },
+    {
+     "t": 3000,
+     "near": {
+      "n": 101750,
+      "squad": 76391,
+      "other": 24699,
+      "ai": 660,
+      "neutral": 0
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 13587,
+      "other": 139874,
+      "ai": 0,
+      "neutral": 3
+     },
+     "dead": 194
+    },
+    {
+     "t": 7932,
+     "near": {
+      "n": 101750,
+      "squad": 19821,
+      "other": 81929,
+      "ai": 0,
+      "neutral": 0
+     },
+     "rest": {
+      "n": 153464,
+      "squad": 17462,
+      "other": 136002,
+      "ai": 0,
+      "neutral": 0
+     },
+     "dead": 195
+    }
+   ],
+   "only": {
+    "ais": 195,
+    "cells": 101750,
+    "squad": 19821,
+    "other": 81929,
+    "ai": 0,
+    "neutral": 0
+   },
+   "both": {
+    "ais": 0,
+    "cells": 0,
+    "squad": 0,
+    "other": 0,
+    "ai": 0,
+    "neutral": 0
+   },
+   "credit": {
+    "我方拿到一半以上": [
+     42,
+     21692
+    ],
+    "其他真人拿到一半以上": [
+     153,
+     80058
+    ]
+   }
+  },
+  "flow": {
+   "t0": 630,
+   "t1": 1500,
+   "rows": [
+    {
+     "me": 9,
+     "name": "*MasterChief",
+     "team": 1,
+     "t0": 2084,
+     "t1": 12246,
+     "gain": {
+      "neutral": 4689,
+      "ai": 5505,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 32,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 10,
+     "name": "*Sever (rus)",
+     "team": 3,
+     "t0": 1907,
+     "t1": 12609,
+     "gain": {
+      "neutral": 8188,
+      "ai": 2514,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 11,
+     "name": "*Manchu",
+     "team": 4,
+     "t0": 3616,
+     "t1": 15347,
+     "gain": {
+      "neutral": 5354,
+      "ai": 6377,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 12,
+     "name": "*Ethereum",
+     "team": 4,
+     "t0": 2014,
+     "t1": 8102,
+     "gain": {
+      "neutral": 4504,
+      "ai": 1611,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 27
+     }
+    },
+    {
+     "me": 13,
+     "name": "*Rommel",
+     "team": 2,
+     "t0": 3158,
+     "t1": 15831,
+     "gain": {
+      "neutral": 4361,
+      "ai": 8285,
+      "other": 0,
+      "squad": 27
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 14,
+     "name": "*Heisenberg",
+     "team": 3,
+     "t0": 2739,
+     "t1": 15833,
+     "gain": {
+      "neutral": 5890,
+      "ai": 7271,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 67,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 15,
+     "name": "*Eisenhower",
+     "team": 2,
+     "t0": 2798,
+     "t1": 14000,
+     "gain": {
+      "neutral": 6214,
+      "ai": 4988,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 16,
+     "name": "*Dixie",
+     "team": 1,
+     "t0": 2667,
+     "t1": 11932,
+     "gain": {
+      "neutral": 7314,
+      "ai": 1951,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 17,
+     "name": "*BigBrain",
+     "team": 3,
+     "t0": 12,
+     "t1": 12,
+     "gain": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 18,
+     "name": "*LeBron",
+     "team": 2,
+     "t0": 2978,
+     "t1": 12865,
+     "gain": {
+      "neutral": 6312,
+      "ai": 3814,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 239,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 19,
+     "name": "*Kamakura",
+     "team": 4,
+     "t0": 2977,
+     "t1": 22781,
+     "gain": {
+      "neutral": 12403,
+      "ai": 7401,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    }
+   ],
+   "squad": {
+    "t0": 26950,
+    "t1": 141558,
+    "g_neutral": 65229,
+    "g_ai": 49717,
+    "g_other": 0,
+    "g_squad": 27,
+    "l_neutral": 0,
+    "l_ai": 338,
+    "l_other": 0,
+    "l_squad": 27
+   },
+   "other": {
+    "n": 9,
+    "t0": 30157,
+    "t1": 195630,
+    "fromAi": 64945,
+    "fromSquad": 0,
+    "fromNeutral": 100528,
+    "toAi": 0
+   }
+  },
+  "layers": {
+   "spawn": {
+    "squadVor": 282039,
+    "par": 378660,
+    "small": [
+     [
+      "*Ethereum",
+      10509
+     ],
+     [
+      "*BigBrain",
+      4475
+     ]
+    ]
+   },
+   "gates": {
+    "n": 1800,
+    "ok": 1078,
+    "botOk": 271,
+    "winR": 148,
+    "dpKeep": 56,
+    "safeFinite": 197,
+    "safeFiniteSquad": 100,
+    "safeFiniteNoPass": 12
+   },
+   "late": {
+    "atk": 345,
+    "a1": 59,
+    "a1Amt": 137939,
+    "b": 47,
+    "bSent": 154523,
+    "aiSent": 898124,
+    "aiMoved": 543187,
+    "pending": 0
+   }
+  }
+ },
+ "latencyNotes": [
+  "选点：70 行下发、49 条落地；10/11 个号的最后一版选点没有成为出生点（都差 1 条）；0 个号被引擎随机落位；同像素 2 对、<80 格 4 对（全部异队）；选点延迟下界 0/0/1 步。",
+  "指令延迟（下令→执行，拍）：τ=0~600 14/145/238（第一个开局周期 145/238，之后 10~16）；600~1500 145/256/392（全是陆攻）；1500~3000 210/331/517（陆攻 214/341/517、发船 14/175/226、捐款 231/291/311）；3000 以后 16/205/284（陆攻 15/249/284、发船 19/66/207、捐款 12/87/159）。每 150 拍的中位：21→66→127→189→225→227→252→251→225→155→96→10（t=2250）。",
+  "漏斗：τ=0~600 影子 71 → 进录像 66 → 生效 64；600~1500 485 → 404 → 319；1500~3000 474 → 249 → 162；3000 以后 179 → 146 → 128（重放末拍还在路上 7 条 110 万兵）。日志 cmds 1,007 条，进录像 921 条。没有断档。",
+  "迟到落空：执行拍 600~1500 陆攻 345 条里没生效 66（目标 AI 已出局 59）、打错 47（15.5 万兵）；1500~3000 327 条里没生效 123（目标 AI 已出局 35、无主地已没了 67）、打错 34（53.3 万兵）；3000 以后 74 条里 18 条（17 条是无主地单，想发 583 万）。打 AI 的 279 万兵里 209 万被改挂到无主地线。",
+  "重复下单：τ=600~1500 229/404（57%）；1500~3000 陆攻 174/218（80%）、发船 5/19、捐款 11/12；3000 以后陆攻 27/72（38%）、发船 6/41、捐款 8/33。同拍批：600~1500 41 批（清仓 20 批 59.0 万）、1500~3000 44 批（清仓 23 批 252 万）、3000 以后 4 批（清仓 1 批：Eisenhower t=4466 271 万）。",
+  "日志侧：seqlag 看不出相对落后（11 个号一起落后；685 张快照里 13 张 >=90 拍）；阵亡行按墙上时钟算与服务器同步（−59~+31 拍）；HL-SLOW-TICK 63 行（25~62 毫秒）；zerodrop 7 段 / 5 个号；sent 1,121 对 cmds+选点 1,077，sent−accepted 42（Dixie 13、Eisenhower 9）。"
+ ],
+ "landNotes": [
+  "Voronoi 天然份额：我方 41.0%（人头 55.0%，比值 0.74；直线版 0.78），单号中位 24,886 对 39,031；2 个号不到人均一半（BigBrain 4,475、Ethereum 10,509）；11 个号最近的真人全是异队的我方号。",
+  "实抢 ÷ 天然份额：t=630 我方 9.6% 对其他真人 7.4%（单号中位 10.1% 对 10.7%）；t=1500 50.2% 对 48.1%（59.5% 对 61.1%）；t=2520（AI 地分完）94.1% 对 98.8%。",
+  "身边的内置 AI（195 个、101,750 格）：我方 9.6%（900）→25.6%（1200）→44.8%（1500）→62.2%（1800）→82.7%（2400），其他真人 0.5%→1.5%→2.4%→6.6%→12.5%；其余 153,464 格 AI 地我方 2.7%（1500）→9.9%（2400），其他真人 40.7%→88.7%。t=630→1500 人均从 AI 手里拿到 4,519 对 7,216 格。我方天然份额 t=1500 的归属：自己 42.6%、别的我方号 5.4%、其他真人 1.7%、AI 49.7%。",
+  "三层归因（600~1500）：① 出生：天然份额比按人头少 96,621 格（−25.5%）；② 策略底线：1,800 个决策拍里 botOk 271、winR 148、dpKeep 56、safeFinite 197（100 取异队我方号的兵）；③ 迟到：345 条陆攻里落空 59、打错 47，60.5% 的兵被改挂。本局第 ① 层是主因：实抢率与外人持平。"
+ ],
+ "decisions": [
+  {
+   "t": 0,
+   "bot": "11 个席位（选点）",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "选点阶段 41 步；日志 70 行选点、进录像 49 条；最后一条下发的 = 出生点只有 1/11（LeBron）；另外 10 个号都停在倒数第二条，最后一条下发的坐标离出生点 36~1,256 格；槽位 0 / 3 的 MasterChief、Manchu 各下发 3 条只落地 1 条",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4074-4085 候选表每 2.2 秒重算；L4117 取 chosenSlots[slot]；L4147-4150 移动 >6 格才打日志。发送层不在对局包里。本局 0 行 HL-SPAWN-BACKEND",
+   "why": "每次重算都可能换到几百格外的点，哪一版最后生效不由策略决定",
+   "estCost": "无法直接折算：出生点不是策略最后想要的那一个（10/11）",
+   "patternId": "NEW:SP-stale-pick-lands",
+   "evidenceRef": "latency.py B022 spawn；digest.py B022 picks / slots / spawnlog"
+  },
+  {
+   "t": 0,
+   "bot": "11 个席位（阵型）",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "出生点 4 对相距 <80 格、全部异队，2 对同一个像素（Ethereum↔Heisenberg、BigBrain↔LeBron），Rommel 离前一对 16 格；西北角四个号（四个队）两两 179~182 格。11 个号最近的真人全是异队的我方号。陆路 Voronoi 天然份额 41.0%，人头 55.0%",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4062-4072：把名字在池里的号从局面里抹掉再算（编队号之间互不排斥）；L4090-4116 minSep 145 只在本机自己的候选表里生效；L4019 slot = mySquadIdx % 20",
+   "why": "11 个客户端各自按槽位取点，彼此看不见对方最后选了哪；四队局里挨着的两个号多半不同队，之后互相是保护名单里打不得的墙",
+   "estCost": "天然份额 282,039 格，按人头应有约 37.9 万格（−25.5%）；80 格内有另一个我方号的 5 个号 t=630 领土中位 2,014 对其余 2,798；之后 27,720 个号·拍被围",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "landcap.py B022 voronoi；latency.py B022 spawn；simdigest.py B022 protbox"
+  },
+  {
+   "t": 65,
+   "bot": "BigBrain",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "与 LeBron 同像素 (658,722)。两边的影子都在 t=65 下第一条 470‰；LeBron 的 t=112 执行（迟到 47 拍），t=160 208 格；BigBrain 的 t=217 执行（迟到 152 拍）时身边已无无主地 → 没生效，t=245 第二条同样。之后整局 12 格：四周 16 格全是 LeBron（保护名单）、岸格 0；兵 1,800（密度 150）。它整局的指令是 2 条空单 + 15 笔捐款（到账合计 1,882 兵）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4820-4860 开局周期；isProtectedSquadMate L3993-3996（LeBron 受保护）；General.act L835-845 / idleBoats L4979-5006（岸格 0 发不了船）",
+   "why": "第一条指令迟到 152 拍，同像素的另一个号先拿走了整圈无主地；被编队号围死后没有任何出口",
+   "estCost": "一个席位整局 12 格（天然份额 4,475 格）",
+   "patternId": "NEW:OP-dead-cycle",
+   "evidenceRef": "simdigest.py B022 cmdlist 17 0 400 / cmdlist 18 0 300；logdigest.py B022 oplag；digest.py B022 bot 17"
+  },
+  {
+   "t": 900,
+   "bot": "10 个号",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "t=630 贴着我方的内置 AI 195 个、101,750 格：我方拿到 44.8%（t=1500）→62.2%（1800）→82.7%（2400），其他真人只拿走 12.5%。t=1500 实抢 = 天然份额的 50.2%（其他真人 48.1%）；t=2520 我方 265,430 格 = 天然份额的 94.1%。打 AI 的单价 3.1~4.6 兵/格",
+   "codePath": "src/strategy/v27-team-c110.js General.act L828-833 expandNeutral / pickTarget；t>=1500 Policy.act L4899-4902 flashLoan / expandNeutral / buyLand（非真人目标 L5363-5369）",
+   "why": "客户端落后 145~250 拍、一半以上是重复下单的情况下，身边的 AI 地仍然基本拿到手；这一段没有因为迟到丢地",
+   "estCost": "—",
+   "patternId": "NEW:AT-bot-farm",
+   "evidenceRef": "landcap.py B022 ai / flow / capture；simdigest.py B022 ledger"
+  },
+  {
+   "t": 1050,
+   "bot": "10 个号",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "τ=600~1500 的 404 条指令延迟 145/256/392 拍；229 条（57%）下在前一条还没进录像的窗口里（53 条下令时已有 >=4 条在路上）；τ=1500~3000 陆攻 174/218（80%）。执行拍 600~3000 的 672 条陆攻没生效 189 条、打错 81 条；打 AI 的 279 万兵里 209 万被改挂到无主地线，打无主地的 131 万兵退回 126 万。重复下单生效的部分手续费 9.3 万 + 24.8 万",
+   "codePath": "src/strategy/v27-team-c110.js General.act L830-833 → Strategy.send L526-539（L531 同一目标 15 个本机拍不重发；不记已发未生效的指令）；minCmd L521-523",
+   "why": "本机局面落后服务器：前一条还没生效就按旧局面再下一条，到服务器时目标已出局",
+   "estCost": "手续费 34.1 万；改挂的兵在无主地线上挂 39 拍（中位）、最长 270 拍",
+   "patternId": "NEW:CMD-repeat-before-effect",
+   "evidenceRef": "latency.py B022 delay / dups / void / funnel"
+  },
+  {
+   "t": 1000,
+   "bot": "Eisenhower、MasterChief、Heisenberg、Ethereum",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "t=600~1499 眼里有内置 AI 邻居的 1,800 个决策拍里，底线取 safeFinite、取的是异队我方号的兵、去掉就能出兵的 100 拍（5.6%）：Eisenhower 28 拍（它这类决策拍的 15.6%）、MasterChief 20（11.1%）、Heisenberg 17、Ethereum 15、Manchu 6、Dixie 6；LeBron 另有 54 拍取的是外人队友的兵。t=1500 Eisenhower 实抢 32.4%（天然份额全场第 5）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.winFloor L4542-4550 → safeFinite L2532-2543（threatOf(q).minOther：内置 AI 的其他邻居里兵最少的，不区分编队号）→ Style.pickTarget L1197（可用兵 <= minSend×余额）",
+   "why": "safeFinite 的本意是别让内置 AI 把自己当成最软的邻居；这里另一个邻居是出生点挨着的异队编队号，两个号余额一起涨。影子显示去掉这一项当拍就能出兵",
+   "estCost": "100 个决策拍（约 500 个号·拍）不出兵；本局占比低于 B017（8.0%）",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "simdigest.py B022 gates 600 1500；landcap.py B022 layers"
+  },
+  {
+   "t": 1200,
+   "bot": "Heisenberg、MasterChief、Eisenhower、LeBron",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "撞名的内置 AI 22 个（t=1170 合计 26,920 格）。Kalmar Union 贴着 Heisenberg 20~543 格（t=360~2340），144 格→9,850 格（t=2190）、密度 0~2.3：Heisenberg 对它 0 兵。Yugoslavia 贴 MasterChief 13~135 格（0 兵）、Goguryeo 贴 Eisenhower 45~137 格（峰值 4,082 格，0 兵）、Austria-Hungary 贴 LeBron（峰值 3,046 格，0 兵）",
+   "codePath": "src/strategy/v27-team-c110.js isOurSquadBot L3973-3976（只按名字查名字池，不看是不是内置 AI）→ 不进 nb；chooseSpawn L4062-4072",
+   "why": "名字在池里就被当成编队号；一个 0~2 密度的内置 AI 在身边长到近一万格",
+   "estCost": "Kalmar Union 峰值 9,850 格、Goguryeo 4,082 格没有进这四个号的手（Kalmar Union t=1800 的 6,316 格后来归 Manchu 4,437、Heisenberg 1,879）",
+   "patternId": "NEW:PL-pool-ai",
+   "evidenceRef": "simdigest.py B022 poolai；landcap.py B022 heldby 345 1800 2400 3000（out/B022/sec/land_heldby.txt）"
+  },
+  {
+   "t": 1904,
+   "bot": "Sever",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "t=1575 / 1750 / 1904 / 2044 四批同拍指令各抽走余额的 86% / 92% / 99.5% / 83%：t=1904 9 条（下令拍 1610~1660，延迟 244~294 拍；打内置 AI bot96 / bot228 和无主地线）花掉 15.2 万里的 15.2 万。领土 12,609（1500）→37,932 格（2168），t=2070 密度 1.1（3.4 万兵）。🤗 的登陆 t=2045 开始",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4899-4902 expandNeutral / buyLand L5363-5369（非真人目标）；Strategy.send L526-539",
+   "why": "积压的指令一拍落地把余额打空，但打的是 2~5 兵一格的 AI 地，地确实拿到了（t=2168 全队第 2 大）；代价是 🤗 开始登陆时它只有 3 万~7 万兵守 3.8 万格，之后 2,000 拍 worth 一直低于对方的报价",
+   "estCost": "+25,323 格；之后被 🤗 拿走 36,696 格",
+   "patternId": "NEW:IO-stale-pulse-dump",
+   "evidenceRef": "latency.py B022 batches；simdigest.py B022 cmdlist 10 1740 2060 / bursts"
+  },
+  {
+   "t": 2079,
+   "bot": "MasterChief",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "τ=1750~1865 下的 8 条在 t=2079 同一拍落地（延迟 214~329 拍）：4 条打 Player 771（277‰ / 224‰ / 244‰ / 251‰）+ 4 条空的无主地单，批前余额 23.5 万，花掉 16.3 万（69.4%）→ 20,724 格、4.9 万兵（密度 2.4）。影子在 t=2060 / 2075 的判断：可用 4.1 万 < chunk 4.6 万~4.7 万 → 不发（L5528）。Player 771（5.6 万~7.4 万格）随后 7 条 35.4 万拿走 19,075 格，t=2628 清地",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5510-5523（L5511 只在本机局面里对它的在途兵 >=4% 余额时跳过）、L5526-5531；Strategy.send L526-539",
+   "why": "4 条指令每条按落地时的余额取 22%~28%；本机落后时在途兵检查看不到自己刚发的指令。落地时策略自己的判断已经是「不发」",
+   "estCost": "16.3 万兵换 6,124 格，550 拍后连同原有的地一起丢光（19,075 格）",
+   "patternId": "NEW:AT-dump-then-dead",
+   "evidenceRef": "latency.py B022 batches；strat_probe.mjs B022 dump2（out/B022/probe_dump2.txt）；simdigest.py B022 cmdlist 9 1840 2650"
+  },
+  {
+   "t": 2170,
+   "bot": "Ethereum",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "15,340 格、23.6 万兵（密度 15.4），唯一的邻居 Player 569（56,895 格、52.5 万兵）。t=2170 一拍 3 条（242‰ + 205‰ + 197‰ 的船）花掉 54%，t=2184 243‰，t=2240 又 3 条（52%）：对 Player 569 耗兵 18.3 万得 3,761 格（48.6 兵/格），剩 5.2 万兵（密度 2.7）。影子 t=2150 / 2165：报价 23.8 >= worth 19.3 → L5267。Player 569 三条 212‰ 拿走 17,996 格，t=2740 清地",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267、L5526-5531；idleBoats L4979-5006 → boatOut L1035-1051；Strategy.send L526-539",
+   "why": "下令拍 1990~2085 时本机局面里报价还低于 worth；130~180 拍后落地时已经不值，而且是一批",
+   "estCost": "18.3 万兵换 3,761 格，之后 17,996 格全丢",
+   "patternId": "NEW:EC-thin-big-target",
+   "evidenceRef": "simdigest.py B022 cmdlist 12 1990 3110；latency.py B022 batches；strat_probe.mjs B022 dump2"
+  },
+  {
+   "t": 2500,
+   "bot": "Heisenberg",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "t=2500：25,641 格、45.5 万兵（密度 17.7）。身边 0 兵的内置 AI Holy Roman Empire（2,245 格，接壤 98 格，地价 5.1）：能发 x = min(avail 10.9 万, 1.25×need + 3×接壤) = 4,319 < minCmd 2.1 万（余额的 4.7%）→ 跳过。t=1500~3000 非真人报价的 1,355 个决策拍里 441 拍是这个出口（Heisenberg 145、LeBron 204）；t>=3000 LeBron 123 拍",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5363-5369（非真人目标：want = 1.25×need + 3×cnt；x < minCmd → continue）；minCmd L521-523（feeK × 余额的 12/1024）",
+   "why": "minCmd 跟着自己的余额涨，want 跟着对方的兵涨：对方越空越发不出这一单",
+   "estCost": "2,245 格、约 4,300 兵就够的一单没有发",
+   "patternId": "NEW:EG-mincmd-skips-small-ai",
+   "evidenceRef": "strat_probe.mjs B022 dump2；simdigest.py B022 gates 1500 3000 / gates 3000"
+  },
+  {
+   "t": 1620,
+   "bot": "Rommel",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "t=1620 起到终局 6,390 拍 nb=0、neut=0，领土 17,251~17,282 格。真实邻居：队友 GYRO 295~504 格、Player 569 172~409 格，Ethereum 241 格（到 t=2740）、Heisenberg 189~206 格（到 t=4420）。每个采样拍 offers 为空；岸格 204，发船检查「200 格水程内找不到可登陆的地」。1,255 个这样的决策拍里影子 1,246 拍什么都不发；录像里整局 7 笔捐款（到账 209 万、手续费 67.2 万）、0 条船；t=5760 起 259 万兵顶在硬上限，顶格少拿 973 万（实得利息 545 万）",
+   "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996；General.act L835-845、idleBoats L4979-5006 → boatOut L1035-1051（searchWater：登陆点不能是受保护的号、也不能是陆上邻居）；tryDonateToTeammate L4462-4489",
+   "why": "出生点在 Ethereum / Heisenberg 旁边 16 格，三个号把彼此围在中间；它俩阵亡后四周只剩队友。被围的号只有捐款一条出口，而捐款候选在 t=4530 之后也空了",
+   "estCost": "6,390 拍 0 格增长；顶格少拿 973 万",
+   "patternId": "NEW:PL-protect-box",
+   "evidenceRef": "simdigest.py B022 protbox / boxedout；strat_probe.mjs B022 dump1（--boatcheck；out/B022/probe_dump1.txt）；digest.py B022 bot 13"
+  },
+  {
+   "t": 2250,
+   "bot": "Eisenhower、Kamakura、Dixie",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "西北角四个异队的号长大后互相贴边：t=3000 Eisenhower（20,607 格）四周是 Kamakura 420 格、Dixie 382 格、Sever 374 格 + 7 格海岸；Kamakura（47,477 格）贴 Eisenhower 420、队友 🤗 348、Sever 121、Dixie 35。Eisenhower、Kamakura t=2250~4230 各 2,070 拍被围（nb=0 且 neut=0）；Dixie t=2340~3330 的陆上邻居只有这三个异队的我方号（nb=0，剩零星的无主邻格）。Eisenhower 天然份额 43,181 格（全场第 5），t=2250 起停在 20,607 格",
+   "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996（hasWildOutsidersAlive && isOurSquadBot）；hasWildOutsidersAlive L3978-3989",
+   "why": "保护名单把四个队的编队号都算自己人；四个号各在一个队里，按规则本来是互相的敌人。Dixie 靠 6 条船拿小岛多了 8,842 格，另两个没有可登陆的地",
+   "estCost": "Eisenhower、Kamakura 两段共 4,140 个号·拍没有任何合法目标；Eisenhower 这一段顶格少拿 52.0 万",
+   "patternId": "NEW:TS-squad-wall",
+   "evidenceRef": "simdigest.py B022 protbox；strat_probe.mjs B022 dump1；landcap.py B022 voronoi"
+  },
+  {
+   "t": 3017,
+   "bot": "Rommel、Eisenhower",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=3017~3710 被围的 Rommel、Eisenhower 各 4 笔 185‰ 捐给 LeBron：到账 223 万、手续费 76.6 万（每笔到账 24.4 万~34.5 万、手续费 8.4 万~11.9 万）。Eisenhower t=3100~3180 另有 4 条配额不够（LeBron 已用 107/201 点，这一笔要 129~143 点）、1 条临界。LeBron 同期在吃 Major McNade：整段对它耗兵 32.9 万，密度 21（3017）→106（3710）→129（4050），之后自己也顶在上限",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4463（被围 dMe >= 55）、L4466-4489（候选：同队编队号、密度 <132、有敌方真人邻居；被围时不看对方的进攻有多大；pct 185）",
+   "why": "候选的条件是「同队、有敌方邻居」，LeBron 满足；它打的是一个把自己打空的玩家（9 兵一格；t=3388 起 Major McNade 的 1023‰ 只有 0~3 兵），用不上这些兵",
+   "estCost": "手续费 76.6 万；223 万兵从两个密度 60~85 的号搬到一个 300 拍后就超软上限的号",
+   "patternId": "NEW:DN-to-overcap",
+   "evidenceRef": "simdigest.py B022 don / probe（HL-DONATE 逐条）；logdigest.py B022 quotacap；digest.py B022 bot 18"
+  },
+  {
+   "t": 3420,
+   "bot": "Dixie",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "t=3420~3690 唯一的邻居是 🤗（队4，73,584~79,611 格，接壤 14~17 格）：报价 163~200 对 worth 51.5~70.0 → L5267；发船：对 Major McNade 的空壳 max < min（floor = 100×领土）、L4996。270 拍零指令，密度 50→76，领土 46,862 不动。t=3715 替 Sever 戳 🤗 一条 102‰ 37.7 万（+2,718 格）；t=4000 超软上限（103）：可用 58.3 万 < chunk 102 万 → L5528；t=4140 起出兵",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267、L5526-5531（L5528 chunk）；tryDonateToTeammate L4448-4457（协防戳）；boatOut L1042-1045",
+   "why": "🤗 比它大 1.7 倍、接壤只有十几格，不出手说得通；但这 700 拍里唯一的一次出手是替异队的 Sever 戳人，自己的兵从 234 万攒到 544 万",
+   "estCost": "700 拍 +2,718 格",
+   "patternId": "NEW:AT-worth-gate",
+   "evidenceRef": "strat_probe.mjs B022 dump3（out/B022/probe_dump3.txt）；simdigest.py B022 pokes；digest.py B022 bot 16"
+  },
+  {
+   "t": 3900,
+   "bot": "Heisenberg",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=3900~4240 超软上限（密度 101~125、257 万~318 万兵），25,505 格。GYRO（122,226 格、426 万→969 万兵）和 Player 569（84,058 格、581 万~686 万兵）两份报价都是 L5361：dpKeep 376 万 / 379 万 / 454 万 / 542 万 >= 余额。这 400 拍发出的指令：给 Sever 的 3 笔捐款（到账 106 万、手续费 51.3 万）。GYRO t=4249~4410 4 条 185‰ 614 万拿走 19,549 格，Heisenberg 0 条还手，t=4420 清地",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5348-5361（超软上限时的 keep；avail <= 0 → continue）→ Policy.safeAt L4524-4540 → dpKeep L2491-2496；Policy.act L4922 → tryDonateToTeammate L4434-4445、L4462-4489",
+   "why": "最强邻居的兵是它的 2~3 倍 → 整份余额都是保底；出兵的路关着，捐款的路（密度 >=112 或救援）开着",
+   "estCost": "318 万兵（密度 125）在 520 拍里换成 106 万到账的捐款；25,505 格丢光，清地时作废 31.1 万兵",
+   "patternId": "NEW:EG-giant-neighbor-freeze",
+   "evidenceRef": "strat_probe.mjs B022 dump2；simdigest.py B022 sieges / don；digest.py B022 bot 14"
+  },
+  {
+   "t": 2070,
+   "bot": "Sever",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=2070~4050 的 1,980 拍零指令：🤗 7 次登陆 + 4 条 106‰（t=2254 / 3535 / 3710 / 3801），37,852→16,734 格；兵 3.4 万→196 万（密度 1→117）。采样拍 t=2500 / 3000 / 3500 / 3900：报价 27.5 / 79.7 / 142.3 / 181.7 对 worth 10.4 / 22.6 / 44.7 / 89.1 → L5267；t=4000 / 4100 / 4200 超软上限 → L5271（🤗 是它唯一的真人邻居）。第一条还手 t=4116（密度 122）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（c >= worth 且没超软上限 → break）、L5269-5273（唯一健康的真人缓冲：超软上限也要 worth 的 1.28 倍内）；offers L5103-5107",
+   "why": "登陆的兵落在它背后，报价仍按 🤗 整个号的密度算；地价闸拿自己的密度当尺子，丢地时密度反而涨、worth 追不上对方",
+   "estCost": "2,000 拍丢 21,118 格；整局被 🤗 拿走 36,696 格",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "strat_probe.mjs B022 dump2；logdigest.py B022 silent / idleloss；simdigest.py B022 landings / sieges"
+  },
+  {
+   "t": 3528,
+   "bot": "Kamakura",
+   "kind": "donate",
+   "verdict": "unclear",
+   "state": "被围的 Kamakura t=3528~5110 给 Manchu 12 笔：到账 550 万、手续费 258 万。前 5 笔 185‰（各到账 67 万~68 万）让 Manchu 密度到 114~123、开始还手 Player 771（7 条 611 万，得 25,868 格）。t=4487 起的 7 笔里 6 笔是 55‰~108‰ 的救援捐款（到账 11.6 万~33.9 万、手续费 13.2 万~24.9 万，2 笔到账不如手续费多），当时 GYRO / Player 569 已在打 Manchu，Manchu 自己一条不发；t=5110 最后一笔 35 拍后 Manchu 清地",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4434-4445（救援：pct = min(maxSafePct, 240 / 155)，>=55 就捐）、L4462-4489（被围 185‰）；L4380-4389（maxSafePct）",
+   "why": "前半段是这局里唯一把后方的兵变成前线的地的捐款；后半段收款人已经冻住（L5267 / L5361），捐过去的兵和它一起作废",
+   "estCost": "手续费 258 万；t=4487 之后的 7 笔到账 212 万、手续费 141 万，收款人 650 拍后阵亡",
+   "patternId": "NEW:DN-rear-to-front",
+   "evidenceRef": "simdigest.py B022 don；digest.py B022 bot 11 / bot 19"
+  },
+  {
+   "t": 4250,
+   "bot": "Manchu",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "t=4250 Player 771（68,004 格）只剩 1 兵；Manchu 414 万兵（密度 106.5）一拍打出 409‰ 163 万 + 122‰ 35.5 万（影子算的 need 约 13.7 万）。t=4230→4320 兵 404 万→191 万，从 Player 771 再得约 1.9 万格；GYRO t=4389 开始打它时它的密度是 55",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5526-5531（min(avail, 1.25×need)：本机局面里对方还有兵）；Strategy.send L526-539",
+   "why": "地确实拿到了（整局从 Player 771 得 25,868 格）；但出兵量是需要的十几倍，随后 GYRO 贴上来时它只剩一半的兵，报价再也过不了 worth",
+   "estCost": "多发约 185 万兵；之后 900 拍丢 55,947 格",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "strat_probe.mjs B022 dump2；simdigest.py B022 foewho / sieges；digest.py B022 bot 11"
+  },
+  {
+   "t": 4319,
+   "bot": "LeBron、Rommel",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=4284~4522 Rommel 3 笔、LeBron 6 笔捐给正在打 🤗 的 Eisenhower：到账 495 万、手续费 250 万。前 5 笔（t=4284~4403）时 Eisenhower 密度 124~139，4 笔 280‰ 的到账被它离硬上限的余量截断：t=4319 LeBron 280‰（捐前 735 万兵）只到账 30.5 万、手续费 46.0 万；t=4403 到账 29.8 万、手续费 38.1 万。t=4466 的两笔（到账 134 万）把它补到硬上限，同一拍它的 3 条指令打出去 271 万；t=4501 / 4522 的两笔（86.3 万 + 67.2 万）落在这之后（密度 53 / 86）。Rommel t=4445 / 4465、LeBron t=4365 / 4475 / 4495 另有 5 条校验能过却没执行",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4466-4489（L4469 只排除密度 >=132 的候选；L4482 被围就捐；pct 280 / 185）；src/engine/live_game_js.js：到账按收款人离 150×领土的余量截断，手续费按捐款人余额的 6.25% 收",
+   "why": "收款人已经在硬上限附近，捐过去的兵要么被截断、要么把它重新顶回上限；LeBron 的余额大，每笔手续费 23 万~46 万",
+   "estCost": "手续费 250 万；到账的 495 万里 221 万随后在回兵时溢出",
+   "patternId": "NEW:DN-fee-exceeds-delivery",
+   "evidenceRef": "simdigest.py B022 don / probe；digest.py B022 bot 15 / bot 18"
+  },
+  {
+   "t": 4466,
+   "bot": "Eisenhower",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "τ=4380~4395 对 🤗 下的 3 条（197‰ / 424‰ / 244‰）在 t=4466 同一拍落地（延迟 71~86 拍）：79.6 万 + 136 万 + 44.9 万，连手续费 271 万 = 批前余额 412 万的 65.9%；🤗 这一拍只剩 3 兵，它的地正被 Dixie 从另一侧收走。Eisenhower t=4500 之后只再得 100 格；t=4501 / 4522 LeBron 又捐来 86.3 万 + 67.2 万；线上的兵退回时余额顶到 4,248,600 = 150×28,324（t=4530），账本记回兵溢出 2,212,738",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5526-5531、L5489-5500；Strategy.send L526-539（不记已发未生效）。src/engine/live_game_js.js：进攻线结束时剩兵退回余额，超过硬上限的部分作废（账本 kind 12）",
+   "why": "三条指令按 80 拍前的局面（🤗 还有 7.1 万兵、need 120 万）各取一份；目标没了以后这些兵只能原路退回，而余额已被捐款补满",
+   "estCost": "221 万兵作废 + 三条的手续费 10.8 万；之后 3,150 拍停在密度 150（顶格少拿 1,892 万）",
+   "patternId": "NEW:AT-return-overflow",
+   "evidenceRef": "simdigest.py B022 cmdlist 15 4270 4560 / ledger；latency.py B022 batches；strat_probe.mjs B022 dump3"
+  },
+  {
+   "t": 4320,
+   "bot": "Dixie",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "🤗（队4）t=4249 一条 1023‰ 满仓 497 万打 Sever，自己只剩 4 兵、77,718 格（t=4280）。Dixie t=4140 起对它出兵，t=4320~4860 58,061→111,084 格：从 🤗 得 63,064 格、耗兵 198 万（31 兵/格），成了全场第 4（t=5040 16.0%）。同一块地 Eisenhower 耗兵 269 万得 8,746 格",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（报价 2.1 远低于 worth）→ L5489-5500（将崩目标）/ L5526-5531",
+   "why": "邻居把自己打空时出手快、单价低；这是 Dixie 之后能一对二撑 2,500 拍的本钱",
+   "estCost": "—",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "simdigest.py B022 foewho / ledger 16；digest.py B022 bot 16；logdigest.py B022 harvest"
+  },
+  {
+   "t": 1967,
+   "bot": "LeBron",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "Major McNade（队4；t=1530 33,735 格、密度 2.3，对队2 的 16 条进攻平均 84.5% 出兵）：LeBron t=1967~3493 7 条 32.9 万兵得 37,042 格（9.2 兵/格），14,658→52,327 格（t≈3950，全队第 1、全场第 6）。t=3612 它离开后空壳的地也大半进了 LeBron",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（报价低于 worth）→ L5526-5531",
+   "why": "对面是把兵打空的玩家，报价低于 worth 时一条条小额收地",
+   "estCost": "—",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "simdigest.py B022 foewho / foepct；digest.py B022 bot 18"
+  },
+  {
+   "t": 5096,
+   "bot": "Dixie",
+   "kind": "boat",
+   "verdict": "good",
+   "state": "t=4860~5096 被 Eisenhower（811 格）、Kamakura（425 格）围住，密度 107→133；t=4900 / 4984 14 条 47‰ 的无主地单没生效。t=5096 一条 128‰ 的船 188 万兵（手续费 46.6 万）靠上 GYRO 的岸，t=5117 起陆攻：111,084→150,835 格（t=6150）。同样被围的 Kamakura（岸格 102）、Eisenhower（岸格 7）、Rommel（岸格 204）找不到登陆点",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4923 → idleBoats L4979-5006 → boatOut L1035-1051（L1042-1045：对敌岸 max = boatFrac×(兵 − 100×领土) 要 >= 4 倍船费，即密度约 133 以上）",
+   "why": "被围的号里只有它的海岸够得着敌人的岸；密度涨过 133 的那一拍船就发出去了",
+   "estCost": "—（t=4860~5040 被围时顶格少拿 243 万）",
+   "patternId": "NEW:BT-boxed-breakout",
+   "evidenceRef": "simdigest.py B022 cmdlist 16 4860 5330 / boats 16 / protbox；strat_probe.mjs B022 dump3"
+  },
+  {
+   "t": 5300,
+   "bot": "Dixie",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "t=5117~6300 对 GYRO 每约 180 拍一条 205‰~214‰（273 万~300 万）：t=5300 密度 115.6 → 出兵 288 万；t=5400 密度 97.4 → L5267；t=5500 密度 114.2 → 出兵 299 万。t=5000~6000 5 条 1,500 万换 +38,747 格（约 390 兵/格），GYRO 回 3 条 775 万。Dixie 的兵 1,450 万~1,600 万不降（密度 100~130），t=6150 全图 21.7%",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267（超软上限才越过 worth 闸）、L5348-5357（超软上限时 keep ×0.9）、L5526-5531（chunk 20%）",
+   "why": "节奏由「自己密度过 114」决定：每条打完掉回软上限以下，再等 180 拍利息。对面 GYRO 同期兵 957 万~1,287 万，没有被打穿；Player 569 这 1,000 拍在吃 Rotigus 的空壳",
+   "estCost": "1,500 万兵换 38,747 格",
+   "patternId": "NEW:AT-over-cap-dump",
+   "evidenceRef": "strat_probe.mjs B022 dump3；simdigest.py B022 exchange / foewho；digest.py B022 bot 16"
+  },
+  {
+   "t": 7000,
+   "bot": "Dixie",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=6400（密度 113.5、两个邻居）可用 314 万 < chunk 321 万 → L5528；t=6700（93.2）L5511 / L5267；t=7000 / 7100（密度 61.8 / 62.9）Player 569 的报价 58.6 / 65.8 对 worth 55.6 / 56.6 → L5267 break，排在后面的 GYRO 标「在打我」也轮不到；t=7200 / 7300 L5361（dpKeep 485 万 / 394 万 >= 余额 416 万 / 311 万）——t=7300 GYRO 213,537 格只有 378 万兵、报价 30.7，低于 worth 60.2；t=7400 pulse 12% 26.4 万。t=7020~7380 零指令：85,793→34,808 格、515 万→218 万兵",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5264-5267（offers 按报价排序，第一份 >= worth 就 break）、L5322-5361（keep 对所有报价同一条线；dpKeep 取最强邻居的兵）、L5510-5523、L5526-5531",
+   "why": "两个邻居里兵多的那个（Player 569，708 万）决定保底线，于是对兵少的那个（GYRO）也不出手；报价只比 worth 高 3 也整拍 break",
+   "estCost": "360 拍丢 50,985 格；清地时作废 81.1 万兵，当时两个对手合计只剩 357 万兵",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "strat_probe.mjs B022 dump3；logdigest.py B022 idleloss；simdigest.py B022 gates 3000"
+  },
+  {
+   "t": 4530,
+   "bot": "Eisenhower、Rommel、LeBron",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "队2 的三个我方号 t=4530 起没有任何合法目标：Eisenhower 四周是 Dixie 811 格 + Kamakura 499 格（保护名单），Rommel 四周只有队友，LeBron 四周是队友 GYRO + Dixie + BigBrain。三个号 t=5040 1,136 万兵 → t=7500 1,495 万（密度 134~150）；同一时刻队友 GYRO + Player 569 从 2,327 万打到 672 万（密度 12~14）。t>=3000 有真人报价的决策拍：Rommel 0、Eisenhower 13。三个号整局顶格少拿 5,584 万、实得利息 3,203 万；t=4522 之后 0 笔捐款",
+   "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996 + hasWildOutsidersAlive L3978-3989（野生外人 = 自己的队友，保护不会解除）；tryDonateToTeammate L4466-4467（候选只有同队的 Boss / 编队号）、L4477-4478（候选要有敌方邻居或进攻）；idleBoats L4979-5006",
+   "why": "保护名单里的「外人还活着」不分敌我：最后的野生外人是它们自己的队友。队友外人不在捐款候选里，三个号互相又都没有敌方邻居",
+   "estCost": "顶格少拿 5,584 万；终局队2 的兵 65% 在这三个号手里（1,470 万 / 2,268 万），地 15%",
+   "patternId": "NEW:TS-truce-no-target",
+   "evidenceRef": "simdigest.py B022 protbox / boxedout / contact / ledger；strat_probe.mjs B022 dump1；simdigest.py B022 gates 3000"
+  },
+  {
+   "t": 3941,
+   "bot": "LeBron",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "t=3941~7791 39 条船：37 条是 0‰，各载 3,211~7,992 兵（余额的 1/1024），每条手续费 10.3 万~25.6 万（余额 329 万~818 万的 32/1024）——37 条载兵合计 24.0 万、船费 769 万；另有 t=7791 一条 1‰（1.4 万兵、手续费 22.1 万）、t=7784 一条 127‰（104 万兵）。31 条瞄无主小岛，21 条靠在自己岸上（一对船里后到的那条到岸时小岛已归自己）；t>=4500 从无主地得约 2,348 格。LeBron 整局手续费 1,043 万 = 实得利息的 48.9%",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4979-5006 → boatOut L1035-1051（L1042-1045：目标是无主地 → min = 60，amount = min(max, max(3×无主块格数 + 300, min))；maxBoats 2）。src/engine/live_game_js.js：发船手续费 = 发船时整份余额的 32/1024，与载兵无关",
+   "why": "船按小岛的大小装兵（几千），手续费按整份余额收（十几万~二十几万）；被围、顶在上限的号每 60~90 拍发一对",
+   "estCost": "船费 817 万换约 2,348 格（约 3,480 兵/格）",
+   "patternId": "NEW:FE-tiny-cmd-fee",
+   "evidenceRef": "simdigest.py B022 boats 18 / fees；strat_probe.mjs B022 dump1；digest.py B022 bot 18"
+  },
+  {
+   "t": 7165,
+   "bot": "Kamakura",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t≈6000~7165 712 万兵顶在硬上限（47,477 格、密度 150），四周是 Eisenhower 499 格 + Dixie 425 格。t=7165 GYRO 贴上 9 格：397‰ 277 万（可用兵 = 余额 − keep 427 万）；之后密度 91 → L5267 / L5511，4 条 122‰；对 GYRO 一共耗兵 362 万得 1,040 格。t=7399~7665 Player 569（密度 10~15）7 条 212‰ 563 万拿走 30,367 格：t=7400 / 7500 / 7600 两份报价都是 L5361（dpKeep 315 万 / 207 万 / 173 万 >= 余额），0 条还手；t=7678 清地（45.2 万兵作废）",
+   "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996；buyLand L5348-5361、L5258-5267；Policy.safeAt L4524-4540 → dpKeep L2491-2496；idleBoats L4979-5006（L4996）",
+   "why": "1,100 拍里兵涨不动也花不出去；敌人贴上来的第一拍打出 39%，剩下的掉回软上限以下，之后同 Dixie 一样被 worth 闸和保底线挡住",
+   "estCost": "顶格少拿 1,590 万；47,477 格 513 拍丢光",
+   "patternId": "NEW:EG-cap-idle-death",
+   "evidenceRef": "strat_probe.mjs B022 dump3；simdigest.py B022 protbox / sieges；digest.py B022 bot 19"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个编队号的出生点相距 <80 格（含同一个像素），或一个号最近的真人是另一个编队号",
+   "detectionSketch": "latency.py <id> spawn；landcap.py <id> voronoi 的「最近的真人」列",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "Ethereum / Heisenberg（同像素）"
+    },
+    {
+     "t": 0,
+     "bot": "BigBrain / LeBron（同像素）"
+    },
+    {
+     "t": 0,
+     "bot": "Rommel（离前一对 16 格）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-dead-cycle",
+   "definition": "开局周期的指令落地时身边已没有无主地（没生效），该号在 t=300 时领土 <= 出生时的格数",
+   "detectionSketch": "simdigest.py <id> cmdlist <me> 0 400 的「没生效」行 + logdigest.py <id> oplag",
+   "instances": [
+    {
+     "t": 217,
+     "bot": "BigBrain（整局 12 格）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-client-behind",
+   "definition": "某个 150 拍的下令窗口里，指令从「策略下令」到「进录像执行」的延迟中位 >=90 拍（约 5 秒）",
+   "detectionSketch": "latency.py <id> delay / bots",
+   "instances": [
+    {
+     "t": 900,
+     "bot": "11 个号（中位 127→252，t=900~2100）"
+    },
+    {
+     "t": 65,
+     "bot": "第一个开局周期 8 个号 133~238 拍"
+    }
+   ]
+  },
+  {
+   "name": "NEW:CMD-repeat-before-effect",
+   "definition": "一条指令的下令拍落在同一个号前一条「已下令、还没进录像」的窗口里",
+   "detectionSketch": "latency.py <id> dups",
+   "instances": [
+    {
+     "t": 1050,
+     "bot": "10 个号（57% / 80%）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-stale-pulse-dump",
+   "definition": "同一个号同一个服务器回合进录像 >=3 条指令，出兵+手续费 >= 批前余额的 50%；这些指令是 70 拍以前按当时的局面下的",
+   "detectionSketch": "latency.py <id> batches；simdigest.py <id> bursts",
+   "instances": [
+    {
+     "t": 1904,
+     "bot": "Sever（99.5%）"
+    },
+    {
+     "t": 2079,
+     "bot": "MasterChief（69.4%）"
+    },
+    {
+     "t": 2170,
+     "bot": "Ethereum"
+    },
+    {
+     "t": 4466,
+     "bot": "Eisenhower（65.9%）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-dump-then-dead",
+   "definition": "一批清仓（>=50% 余额）打在真人身上，之后 900 拍内被同一个真人清地",
+   "detectionSketch": "latency.py <id> batches + simdigest.py <id> deaths",
+   "instances": [
+    {
+     "t": 2079,
+     "bot": "MasterChief ← Player 771"
+    },
+    {
+     "t": 2170,
+     "bot": "Ethereum ← Player 569"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-protect-box",
+   "definition": "策略眼里 nb=0 且 neut=0，而真实邻居里有保护名单上的异队编队号（或撞名的内置 AI）",
+   "detectionSketch": "simdigest.py <id> protbox；strat_probe.mjs --dump 的「不在 nb 里的真实邻居」行",
+   "instances": [
+    {
+     "t": 1620,
+     "bot": "Rommel（6,390 拍）"
+    },
+    {
+     "t": 2250,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2250,
+     "bot": "Kamakura"
+    },
+    {
+     "t": 630,
+     "bot": "BigBrain"
+    }
+   ]
+  },
+  {
+   "name": "NEW:TS-squad-wall",
+   "definition": "异队的编队号互相贴边 >=100 格：按规则是敌人，按保护名单互不出手，各自少一段可扩张的边",
+   "detectionSketch": "simdigest.py <id> protbox 的贴边明细；simdigest.py <id> contact",
+   "instances": [
+    {
+     "t": 3000,
+     "bot": "Eisenhower ↔ Kamakura 420 格 / Dixie 382 格 / Sever 374 格"
+    },
+    {
+     "t": 3900,
+     "bot": "Heisenberg ↔ Manchu 338 格 / Rommel 189 格"
+    }
+   ]
+  },
+  {
+   "name": "NEW:TS-truce-no-target",
+   "definition": "场上剩下的野生外人全是自己的队友：跨队保护不会解除，本队的编队号没有任何合法目标，捐款候选（同队的 Boss / 编队号且有敌方邻居）也为空",
+   "detectionSketch": "simdigest.py <id> contact（贴着敌方真人的号数）+ gates 3000（有真人报价的决策拍 = 0）+ ledger 的顶格少拿",
+   "instances": [
+    {
+     "t": 4530,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 4420,
+     "bot": "Rommel"
+    },
+    {
+     "t": 4860,
+     "bot": "LeBron"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-boxed-hardcap",
+   "definition": "被围（nb=0、neut=0）且密度 >=133 的决策拍里什么都不发，余额顶在 150×领土",
+   "detectionSketch": "simdigest.py <id> boxedout / protbox 的顶格少拿",
+   "instances": [
+    {
+     "t": 5760,
+     "bot": "Rommel（259 万）"
+    },
+    {
+     "t": 4530,
+     "bot": "Eisenhower（425 万）"
+    },
+    {
+     "t": 6000,
+     "bot": "Kamakura（712 万）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-cap-idle-death",
+   "definition": "顶在硬上限 >=900 拍的号，在第一次接敌后 900 拍内阵亡",
+   "detectionSketch": "logdigest.py <id> overcap + simdigest.py <id> deaths",
+   "instances": [
+    {
+     "t": 7165,
+     "bot": "Kamakura"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-return-overflow",
+   "definition": "进攻线结束（目标出局或不再接壤）时退回的兵把余额顶过硬上限，超出的部分作废（录像账本的「回兵溢出」）",
+   "detectionSketch": "simdigest.py <id> ledger 的回兵溢出列；逐拍余额 = 150×领土 的那一拍",
+   "instances": [
+    {
+     "t": 4530,
+     "bot": "Eisenhower（221 万）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-to-overcap",
+   "definition": "捐款的收款人在 300 拍内超软上限，或到账被收款人离硬上限的余量截断",
+   "detectionSketch": "simdigest.py <id> don 的「收款人: 密 / 余量」列",
+   "instances": [
+    {
+     "t": 3017,
+     "bot": "Rommel / Eisenhower → LeBron"
+    },
+    {
+     "t": 4319,
+     "bot": "LeBron → Eisenhower（到账 30.5 万 / 手续费 46.0 万）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-fee-exceeds-delivery",
+   "definition": "一笔捐款的到账 < 手续费（手续费按捐款人余额的 6.25% 收，与 pct 无关）",
+   "detectionSketch": "simdigest.py <id> don 的「手续费 > 到账」行",
+   "instances": [
+    {
+     "t": 4319,
+     "bot": "LeBron → Eisenhower"
+    },
+    {
+     "t": 4403,
+     "bot": "LeBron → Eisenhower"
+    },
+    {
+     "t": 4487,
+     "bot": "Kamakura → Manchu"
+    },
+    {
+     "t": 4669,
+     "bot": "Kamakura → Manchu"
+    }
+   ]
+  },
+  {
+   "name": "NEW:FE-tiny-cmd-fee",
+   "definition": "出兵 / 载兵不足余额的 5% 而余额 >=100 万的指令：手续费按整份余额收，大于出兵量",
+   "detectionSketch": "simdigest.py <id> fees 的小额指令行；simdigest.py <id> boats <me>",
+   "instances": [
+    {
+     "t": 3941,
+     "bot": "LeBron（37 条 0‰ 的船，手续费是载兵的 32 倍）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-giant-neighbor-freeze",
+   "definition": "保底线（dpKeep，按最强邻居的兵）>= 自己的余额：对所有邻居都不出兵，包括兵少的那一个",
+   "detectionSketch": "strat_probe.mjs --tally 的 L5361 计数；simdigest.py <id> contact <t>",
+   "instances": [
+    {
+     "t": 3900,
+     "bot": "Heisenberg"
+    },
+    {
+     "t": 7300,
+     "bot": "Dixie（GYRO 密度 18）"
+    },
+    {
+     "t": 7400,
+     "bot": "Kamakura"
+    },
+    {
+     "t": 4700,
+     "bot": "Manchu"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-main-attacker-unanswered",
+   "definition": "一个敌方真人在 [首条, 末条] 内对同一个号出兵 >=20 万，而这个号对它的还手 <= 对方出兵的 10%",
+   "detectionSketch": "simdigest.py <id> sieges",
+   "instances": [
+    {
+     "t": 4249,
+     "bot": "Heisenberg ← GYRO"
+    },
+    {
+     "t": 7399,
+     "bot": "Kamakura ← Player 569"
+    },
+    {
+     "t": 4774,
+     "bot": "Manchu ← Player 569"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-pool-ai",
+   "definition": "名字在编队名字池里的内置 AI：策略把它当编队号（不进 nb、不打）",
+   "detectionSketch": "simdigest.py <id> poolai",
+   "instances": [
+    {
+     "t": 360,
+     "bot": "Heisenberg ↔ Kalmar Union（峰值 9,850 格）"
+    },
+    {
+     "t": 810,
+     "bot": "Eisenhower ↔ Goguryeo"
+    },
+    {
+     "t": 630,
+     "bot": "MasterChief ↔ Yugoslavia"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "outscaled",
+ "secondaryArchetype": "team-split",
+ "teamSplit": true,
+ "externalFactors": [
+  "四队局（每队最多 5 个真人）、20 个真人：11 个席位被拆成 队1 2 个（MasterChief、Dixie）、队2 3 个（Rommel、Eisenhower、LeBron）、队3 3 个（Sever、Heisenberg、BigBrain）、队4 3 个（Manchu、Ethereum、Kamakura）（录像队伍表；卡片的进队记录是首选 8、补位 2、次选 1）。每队最多 5 人，11 个席位至少要占 3 个队。卡片的主队是队4；赢的是队2（终局 99.5%）：我方 3 个号 15.1%，外人 Player 569 49.8%、𓃗 𝐆𝐘𝐑𝐎🟢 34.7%",
+  "客户端落后服务器：下令到执行的延迟 τ=0~600 是 14/145/238 拍（P50/P90/最大；第一个开局周期 8 个号迟到 133~238 拍），τ=600~1500 是 145/256/392 拍（按 56 毫秒一拍约 8 / 14 / 22 秒），τ=1500~3000 是 210/331/517 拍，τ>=3000 是 16/205/284 拍（中位回到 16，仍有零星 70~280 拍的积压）。11 个号一起落后、幅度接近",
+  "外人离场：队1 的 Israel empire t=1701 离开（12,745 格的空壳，t=3004 出局）、Player 46 t=1863 阵亡、[RU] Rotigus t=5495 离开（118,256 格、362 万兵；空壳 t=6080 出局，地进了 Player 569）；队3 的 Player 450 t=2580 阵亡、Player 771 t=4403 离开（60,261 格；t=4595 出局）；队4 的 Major McNade🍋[OFF] t=3612 离开（34,746 格；t=3774 出局）、🤗🤗🤗🤗🤗 t=4842 阵亡。t=5495 之后队1 只剩 Dixie、队4 只剩 Kamakura，队3 只剩 12 格的 BigBrain",
+  "选点阶段 41 步，本局还没有后端选点协调（HL-SPAWN-BACKEND 0 行；VERSION-TIMELINE：无 Boss 时的后端协调 2026-11-10T14:08Z 才启用，本局 2026-11-10T00:49Z）",
+  "名字撞池：22 个内置 AI 的名字在编队名字池里（t=1170 合计 26,920 格；Kalmar Union 峰值 9,850 格）；本局没有撞名的外人真人",
+  "HL-PEACE 0 行（没有跨队议和的喊话）"
+ ],
+ "winnerNotes": "赢家队2（终局 99.5%）：Player 569 346,270 格（49.8%，533 万兵、密度 15）、𓃗 𝐆𝐘𝐑𝐎🟢 241,187 格（34.7%，266 万兵、密度 11），我方 LeBron 8.1%、Eisenhower 4.5%、Rommel 2.5%。队2 的份额 2.5%（630）→14.3%（1530）→27.4%（2070）→33.4%（2610）→42.6%（4050）→50.5%（4500）→57.8%（5040）→65.8%（6030）→80.7%（7020）→99.5%。两个外人的地是分内置 AI 时拿下的：天然份额人均 66,768 格（我方单号中位 24,886），t=1500 只兑现了 39.3%，到 t=2520 GYRO 92,589 格（全场第 1）、Player 569 68,471（第 2）——不贴着我方的 153,464 格 AI 地 88.7% 进了外人手里。出手习惯（录像指令）：GYRO 整局陆攻 123 条——开局 t=399~854 21 条 504‰（20 条打无主地），t=1008~1911 45 条 76‰（41 条打内置 AI），对真人是固定档位：155‰（t=2177~2751）、185‰（t=4249~4613：Heisenberg 4 条、Manchu 4 条）、207‰（t=5215~7707：Dixie 21 条、Kamakura 6 条）；对我方 37 条共 5,361 万。Player 569 整局陆攻 63 条——开局 13 条 315‰，之后 50 条全是 212‰（内置 AI 19、Rotigus 8、Dixie 7、Kamakura 7、Ethereum 3、Manchu 3）+ 8 条 212‰ 的船；对我方 20 条 2,487 万 + 6 次登陆 1,161 万（每次 141 万~250 万，落在 Dixie 背后）。两个人对真人都是每次约 20% 的固定档位，没有清仓。按执行拍数进录像的指令：t=600~1500 GYRO 37 条 +23,841 格、Player 569 12 条 +20,909 格，我方 10 个号 345 条（单号中位 34 条、+11,225 格）；t=1500~3000 GYRO 29 条 +68,605 格、Player 569 17 条 +59,945 格，我方 346 条（单号中位 34 条、+12,870 格）。它们一次只打一个我方号：GYRO t=4249~4410 4 条 614 万拿 Heisenberg 19,549 格 → t=4389~4613 4 条 442 万打 Manchu → Player 569 t=4774~5068 3 条 824 万收掉 Manchu → Player 569 t=5550~6150 吃 Rotigus 的空壳（+10.9 万格）→ 两个人 t=6000 起合打 Dixie（t=6000~7000 陆攻 2,786 万 + 登陆 1,058 万）→ t=7210 起 Kamakura。GYRO 整局从我方拿走 170,227 格（Dixie 116,904、Manchu 23,067、Heisenberg 22,434、Kamakura 7,822），我方从它得 65,072 格（耗兵 2,476 万，381 兵/格）；Player 569 拿走 137,152 格（Dixie 59,942、Kamakura 30,367、Manchu 28,847、Ethereum 17,996），我方从它得 29,425 格（935 万）。终局两个外人的 587,457 格里约 30.7 万格是从我方号手里拿的。两个外人之间捐了 3 笔大的（t=3983 Player 569→GYRO 158 万、t=5383 GYRO→Player 569 255 万、t=6265 Player 569→GYRO 253 万；到账 667 万、手续费 202 万），都是捐给正在被打的一方，没有来回对捐；我方同队的三个号一笔也没给过他们（不在候选里）。其他队的外人是自己打空或离场的：🤗（队4）t=4249 一条满仓 497 万打 Sever 后只剩 4 兵（t=4389 攒到 151 万又满仓打 Eisenhower），Major McNade（队4）16 条平均 84.5% 出兵后 t=3612 离开，Player 771（队3）98 条里 12 条 1023‰、t=4403 离开，Rotigus（队1）t=5495 离开。",
+ "wentWell": [
+  "身边的 AI 地基本拿到手：195 个 AI 的 101,750 格我方拿 82.7%（t=2400），实抢率 t=1500 50.2%（其他真人 48.1%）、t=2520 94.1%；客户端落后 145~250 拍没有让这一段丢地。",
+  "Dixie：t=4320~4860 收 🤗 的崩盘（+53,023 格，31 兵/格），t=5096 被围时一条船打开 GYRO 的岸，之后靠超软上限的溢出出兵长到全图 21.7%（t=6153），是这局里唯一一个长期贴着敌人打的号。",
+  "LeBron 对 Major McNade：32.9 万兵得 37,042 格（9 兵/格）；Manchu 靠 Kamakura 的 5 笔 185‰ 捐款还手 Player 771，得 25,868 格。",
+  "编队号之间没有陆攻（保护名单生效）；HL-PEACE 0 行；没有断档（没有 >=300 拍不进录像的号）；t>=2250 指令延迟中位回到 10~16 拍。",
+  "≥70% 的清仓批 13 组之后 900 拍内没有号阵亡（打的是 AI 和无主地线）；全局只有 MasterChief、Ethereum 两个号死在清仓之后。"
+ ],
+ "unknowns": [
+  "客户端为什么在 t≈65 和 t≈750~2100 落后（中位 127→252 拍）、t≈2250 追平，t>=3000 又有零星 70~280 拍的积压（Eisenhower t=4466 那一批 71~86 拍）：对局包里没有浏览器 / 机器 / 网络各层的数据。11 个号同时落后、幅度接近。",
+  "把选点发给服务器的外层不在对局包里：为什么 10 个号的最后一版选点都没落地（全部正好差 1 条），只能看到结果。",
+  "影子下了令而录像里没有的 344 条里，有多少是真的发出去而丢了、多少是影子「多想」的（影子的指令不执行，之后的局面与真实不同）；sent−accepted 只有 42。",
+  "Eisenhower 的 221 万回兵溢出：账本只给出 t=4500~4999 这一格的合计；溢出发生在哪几拍、对应哪一条进攻线没有逐拍拆开（逐拍余额在 t=4530 第一次等于 150×领土）。",
+  "Rotigus（队1）为什么在 t=5310~5490 把 1,369 万兵打到 362 万后离开；它不离开时 Dixie 的结局无法从本局判断。",
+  "Kamakura、Rommel、Eisenhower 的「200 格水程内找不到可登陆的地」是探针按 searchWater 的条件复算的；没有逐个海岸格核对水程。",
+  "Kalmar Union 的地后来经过谁的手到了 Manchu / Heisenberg（直接打、登陆，还是出局后变无主地再拿）没有拆。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "延迟 / 执行延迟",
+   "a": "选点 10/11 个号停在前一版坐标（下界 0/0/1 步）。指令延迟 τ=0~600 14/145/238 拍（第一个开局周期 8 个号 133~238 拍），600~1500 145/256/392，1500~3000 210/331/517，3000 以后 16/205/284。漏斗（600~1500）485→404→319、（1500~3000）474→249→162；迟到落空 94 条（目标 AI 已出局）+ 打错 81 条；重复下单 57%（600~1500）/ 80%（1500~3000）；同拍批 89 批、清仓批 44 批 582 万兵（含 Eisenhower t=4466 的 271 万）。没有断档。全部来自 latency.py（JSON 的 latencyLedger）。"
+  },
+  {
+   "q": "好地实际抢到多少",
+   "a": "天然份额 41.0% 对人头 55.0%（0.74）；实抢率 t=630 9.6% 对 7.4%，t=1500 50.2% 对 48.1%，t=2520 94.1% 对 98.8%；身边 AI 的地我方拿 44.8%（t=1500）→82.7%（t=2400），其余 AI 地只拿 2.7%→9.9%（其他真人 88.7%）；人均 AI 地 4,519 对 7,216 格。全部来自 landcap.py（JSON 的 landLedger）。"
+  },
+  {
+   "q": "额度拒单",
+   "a": "HL-DONATE 57 行：已执行 47、校验能过却没执行 5（Rommel→Eisenhower 2、LeBron→Eisenhower 3，都在 t=4365~4495 的积压里）、配额不够 4（Eisenhower→LeBron t=3100~3180：已用 107/201 点，这一笔要 129~143 点）、配额临界 1。配额上限（引擎公式，本图 uv=2320）：t=1100 单笔最多 4.2 万、t=2141 8.4 万，t=2142 跳到 27.8 万、t=3000 44.5 万、t=3213 103 万；t>=4284 不再检查。BigBrain 的 15 笔每笔 8~493 兵。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "我方 47 笔到账 1,375 万、手续费 635 万（损耗 31.6%）；pct<150‰ 的 8 笔到账 209 万、手续费 152 万（42.0%）；到账 < 手续费 4 笔（96.4 万 / 122 万）：LeBron→Eisenhower t=4319 30.5 万 / 46.0 万、t=4403 29.8 万 / 38.1 万（到账被收款人离硬上限的余量截断），Kamakura→Manchu t=4487 24.5 万 / 24.9 万、t=4669 11.6 万 / 13.2 万。同一条规则在发船上更重：LeBron 37 条 0‰ 的船载兵 24.0 万、船费 769 万。外人 4 笔的损耗 23.3%。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "被围（nb=0、neut=0）12 段 27,720 拍：Rommel 6,390 拍、Eisenhower 5,220、Kamakura 4,860、LeBron 2,970、BigBrain 7,380。被围的决策拍与录像里实际执行的指令：Rommel 1,255 拍 / 7 笔捐款、0 条船（密度 >=133.3 的 567 拍）；Eisenhower 1,086 拍 / 4 笔捐款、0 条船（667 拍）；Kamakura 987 拍 / 12 笔捐款、0 条船（303 拍）；LeBron 625 拍 / 6 笔捐款、39 条船；BigBrain 1,544 拍 / 15 笔几十到几百兵的捐款。队2 三个号 2,966 个这类决策拍里影子 2,906 拍什么都不发。全局顶格少拿 7,885 万 = 实得利息 1 亿 2,863 万的 61%；回兵溢出 221 万。"
+  },
+  {
+   "q": "出生与开局被围",
+   "a": "4 对 <80 格（2 对同像素），全部异队；BigBrain 开局第一条指令迟到 152 拍，被同像素的 LeBron 围死在 12 格（整局）；Ethereum 天然份额 10,509 格。没有后端协调（本局早于启用时间）。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "t<1500：有 AI 邻居的决策拍 15.1% 地价闸、10.9% safeFinite（5.6% 取的是异队编队号的兵）、8.2% winR、3.1% dpKeep。t=1500~3000：L5267 68.4%、L5528 11.7%、出兵 4.6%；t>=3000：L5267 49.1%、L5361 18.2%、L5528 12.6%、L5271 6.5%、出兵 6.6%。被真人打的决策拍 99.0% / 87.8% 没有对任何真人出兵。按日志快照的丢地间隔算，丢的 273,350 格里 76% 在零出兵间隔。对真人的单价 9~3,484 兵/格（Dixie 213）。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "2/3/3/3（每队最多 5 人，11 个席位不可能同队）。异队的编队号互相：同像素出生（2 对）、拿对方的兵当底线（100 个决策拍）、围住（27,720 个号·拍；Eisenhower 被 Kamakura / Dixie / Sever 三个队的号围住）、船靠上对方的岸（MasterChief→Manchu 7,576 兵）、跨队协防戳（2 条，都替 Sever）。赢家队2 里的 3 个号 t=4530 起没有合法目标（野生外人只剩自己的队友），队1、队4 的最后一个号各自一对二。没有陆攻对方（保护名单）。"
+  },
+  {
+   "q": "名字撞池",
+   "a": "没有撞名的外人真人。22 个内置 AI 的名字在池里（t=630 合计 11,598 格、t=1170 26,920 格）：Kalmar Union 贴着 Heisenberg 20~543 格长到 9,850 格、Yugoslavia 贴 MasterChief / Manchu、Goguryeo 贴 Eisenhower、Austria-Hungary 贴 LeBron，这四个号对它们 0 兵（Manchu 对 Yugoslavia 2,380 兵得 1,190 格）。"
+  }
+ ],
+ "scripts": [
+  "python3 c136-review/agents/R06/scripts/sim_prep.py B022 → node c136-review/agents/R06/scripts/eng_replay.cjs B022 → sim_prep.py → eng_replay.cjs（真引擎重放到 t=7932，写 out/B022/sim_state.json 和领土网格 grids.bin.gz；套 run-heavy.sh；按步骤手动跑了两遍）",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B022 --me squad --json --tally --part i/2，再 --merge 2（影子策略；套 run-heavy.sh；out/B022/probe.txt）",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B022 --me 13,15,17,18,19 --to 7150 --boatcheck --dump 13:2000:2000:5,13:3000:3000:5,13:5000:5000:5,13:6500:6500:5,15:3000:3000:5,15:5000:5000:5,15:6500:6500:5,19:3000:3000:5,19:5500:5500:5,19:6500:6500:5,19:7100:7100:5,18:4300:4300:5,18:5000:5000:5,18:6000:6000:5,18:7000:7000:5,17:3000:3000:5,17:6000:6000:5（out/B022/probe_dump1.txt）",
+  "…… --me 9,10,11,12,14 --to 5150 --dump 9:2060:2075:15,9:2200:2600:200,12:2150:2165:15,12:2300:2700:200,14:2500:2500:5,14:3900:4400:100,10:2500:3500:500,10:3900:4300:100,11:3400:3400:5,11:4250:4250:5,11:4700:5100:100（probe_dump2.txt）",
+  "…… --me 15,16,19 --to 7700 --boatcheck --dump 16:2400:2400:5,16:3000:3000:5,16:3500:3700:200,16:4000:4000:5,16:4900:5000:100,16:5300:5500:100,16:6400:6400:5,16:6700:6700:5,16:7000:7500:100,15:4280:4300:10,15:4400:4470:35,19:7150:7180:15,19:7300:7600:100（probe_dump3.txt）",
+  "python3 c136-review/agents/R06/scripts/latency.py B022 spawn|delay|bots|funnel|void|dups|batches|json|all（延迟账；out/B022/sec/lat_all.txt、out/B022/latency.json）",
+  "python3 c136-review/agents/R06/scripts/landcap.py B022 voronoi|capture|natural|ai|flow|layers|json|all（好地账；out/B022/sec/land_all.txt、out/B022/landcap.json）；landcap.py B022 heldby 345 1800 2400 3000、heldby 2 1800 2400 3000 7932、heldby 3 3000 7932（Kalmar Union / Rotigus / 🤗 的地后来归谁；out/B022/sec/land_heldby.txt）",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B022 check|teams [t…]（含我方领土合计的逐拍最高值和指定拍的逐拍合计）|top <t> [n]（out/B022/sec/sim_top_<t>.txt）|medians|gates 600 1500|gates 1500 3000|gates 3000|contact|sieges|pokes|don|probe|fees|halves|ledger|front|foewho|foepct|foehabit|foedon|bursts|gaps|boats [me]|landings|poolai|protbox|boxedout|collapse|deaths|cmdlist <me> <t0> <t1>（录像真值；各节输出存 out/B022/sec/sim_*.txt，bash scripts/sections.sh B022 sim|led|foe）",
+  "python3 c136-review/agents/R06/scripts/digest.py B022 roster|teams|timeline|outsiders|deaths|bot <me>|spawn|slots|picks|spawnlog|json（日志快照 + 结算行；out/B022/sec/dig_*.txt、bot_*.txt）",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B022 silent|seqlag|wall|wallms|cmdmix|idleloss|overcap|fireband|harvest|bursts|boxboats|donlog|donval|quotacap|oplag|opening|noefftl|gaps|sentchk|zerodrop|spend|json（只用日志；out/B022/sec/log_*.txt）",
+  "python3 c136-review/agents/R06/scripts/make_review.py B022（合并 reviews_src/B022.py、latency.json、landcap.json，自检）"
+ ],
+ "confidenceOverall": "high：全程有录像，真引擎重放与日志快照 685/685 逐兵一致，影子策略 11 个号全程，干净模拟器与真引擎一致到终局；延迟、落空、清仓批、被围时段、各闸的计数、捐款 / 船费 / 顶格少拿的账都可由脚本重算。因果解释标了「推断」的两处：MasterChief、Ethereum 的清仓与随后阵亡之间的因果（时间上紧接，但两个号本来就是全场最小的一档），以及客户端落后的原因（对局包里没有数据）。分型取 outscaled（实抢率与外人持平，但天然份额人均只有外人的 57%，t=2070 起单号领土中位只有外人的 38%→21%，之后被 2~3 倍大的外人逐个吃掉）；另一种读法是 never-grew（除 Dixie、LeBron 外没有号超过 5 万格）。按编队合计，t=6153 的 42.96% 是全场最大的一股，但分在三个互相不能配合的队里。"
+}
