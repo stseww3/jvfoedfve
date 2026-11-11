@@ -128,12 +128,14 @@ function sbSource(g, pol) {
   }
   return best;
 }
+// 引擎口径（game.js isEnemy）：队号 0 = 没有队（自由混战），谁和谁都不同队
+const sameTeam = (g, a, b) => g.teams[a] !== 0 && g.teams[a] === g.teams[b];
 function whoCat(g, me, o) {
   if (o < 0) return 'none';
   if (o >= g.humans) return 'ai';
-  if (ownIds.has(o)) return g.teams[o] === g.teams[me] ? 'squadSameTeam' : 'squadOtherTeam';
-  if (peerIds.has(o)) return g.teams[o] === g.teams[me] ? 'peerSameTeam' : 'peerOtherTeam';
-  return g.teams[o] === g.teams[me] ? 'teammate' : 'enemy';
+  if (ownIds.has(o)) return sameTeam(g, o, me) ? 'squadSameTeam' : 'squadOtherTeam';
+  if (peerIds.has(o)) return sameTeam(g, o, me) ? 'peerSameTeam' : 'peerOtherTeam';
+  return sameTeam(g, o, me) ? 'teammate' : 'enemy';
 }
 
 // 口粮门槛普查：对「接壤的内置 AI」逐个按 pickTarget 的顺序过一遍门槛，记下最便宜那个 AI 被哪一关挡住。
@@ -375,7 +377,7 @@ function censusWalk(g, b) {
     const w = walkBuyLand(g, pol);
     let inH = 0, top = -1, topTr = 0;
     for (const a of g.attackersOf(me)) {
-      if (a >= g.humans || g.teams[a] === g.teams[me]) continue;
+      if (a >= g.humans || sameTeam(g, a, me)) continue;
       const tr = g.attackTroopsOn(a, me);
       inH += tr;
       if (tr > topTr) { topTr = tr; top = a; }

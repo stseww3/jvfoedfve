@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/agent/repos/c136-r08/c136-review/agents/R08/scripts/lagstats.py", line 81, in <module>
+    main()
+  File "/agent/repos/c136-r08/c136-review/agents/R08/scripts/lagstats.py", line 29, in main
+    S = json.load(open(os.path.join(L.OUT, mid, "shadow_peer.json" if peer else "shadow.json"), encoding="utf-8"))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/agent/repos/c136-r08/c136-review/agents/R08/out/B027/shadow.json'
