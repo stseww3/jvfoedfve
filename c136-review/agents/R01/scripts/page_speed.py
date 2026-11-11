@@ -37,7 +37,7 @@ def main():
     pat_tick = re.compile(r'^(\d+)\t\[([^\]]+)\] \[HL-TICK\] t=(\d+).*?avgMs=([\d.]+) maxMs=([\d.]+)')
     pat_slow = re.compile(r'^(\d+)\t\[([^\]]+)\] \[HL-SLOW-TICK\] t=(\d+) took ([\d.]+)ms')
     pat_res = re.compile(r'^(\d+)\t\[RESULT (?:\[[^\]]*\] )?([^\]]+)\]')
-    pat_init = re.compile(r'^\d+\t\[([^\]\s]+)\] \[HL-(?:GAME-INIT|SPAWN|SPAWN-BACKEND|TICK|OPENING)\]')
+    pat_init = re.compile(r'^\d+\t\[([^\]]+)\] \[HL-(?:GAME-INIT|SPAWN|SPAWN-BACKEND|TICK|OPENING)\]')
     seq, bots, slow, avg_at = [], [], [], {}
     for i, line in enumerate(open(os.path.join(DATA, mid, 'in_game.log'), errors='replace')):
         m = pat_init.search(line)
