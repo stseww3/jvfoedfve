@@ -51,6 +51,7 @@ const wantBots = opt('bots', 'all');
 const side = opt('side', 'own');          // own：本编队；peer：同房另一支编队（策略用 --strategy 指定）
 const censusUntil = +opt('census-until', 1800);
 const censusEvery = +opt('census-every', 10);
+const coreCensusUntil = +opt('core-census-until', 3000);   // 1500 拍后的买地口径普查（censusCore）做到哪一拍
 const guardTicks = +opt('guard', 8);     // 模拟驱动层 inflight 节流：某拍发过指令后，接下来 guardTicks 拍内不调用策略（0=不模拟）
 const traceSpec = {};
 for (const part of String(opt('trace', '')).split(';').filter(Boolean)) {
@@ -169,6 +170,71 @@ function census(g, b) {
   } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census ' + String(e).slice(0, 200)]); }
 }
 
+// 1500 拍后（coreFrom 起）的口粮门槛普查：按 Policy.buyLand（c110 L5250-5369）对「非真人邻居」的那条路逐关重算，
+// 记下最便宜那个内置 AI 报价被哪一关挡住：
+//   price   = 排在它前面（含它自己）已经有报价 c ≥ worth 且不 over → L5267 break
+//   safe:*  = 可用兵 B − fee − max(keep, safe) ≤ 0，且起作用的是 safe（safeAt → safeFinite 即 sb / killKeep 等，非真人目标再按 oppFloorCap×L 封顶）
+//   keep    = 同上但起作用的是按报价算的 keep（L5330-5335）
+//   minCmd(want) = 吃光它所需 want = 1.25×need + 3×边界 本身就小于 minCmd（feeK×12/1024×余额）→ L5367 跳过
+//   minCmd(avail) / chunk = 可用兵不够 minCmd，或不够 want 且小于 chunk×余额
+//   attacking = 已经有兵压在它身上（L5364）
+const iVf = (a, c) => Math.floor((a + 0.5) / c);
+function censusCore(g, b) {
+  const pol = b.pol, me = b.id, P = pol.p;
+  try {
+    pol.analyze(g);
+    const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iVf(12 * B, 1024), dMe = B / L;
+    const dMed = pol.otherHumanMedDens(g);
+    const m = P.maxW * pol.winRatio(g.t);
+    const refDens = dMed !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMed) : dMe;
+    const worth = m * refDens, over = P.surplus > 0 && B > 100 * L, cheap = P.growth > 0 ? 0.1 / pol.baseRate(g) : 0;
+    const minCmd = pol.minCmd(g);
+    let nAi = 0, anyOk = 0, best = null, gated = false, nAiNb = 0;
+    for (const q of pol.nb) if (g.alive[q] && g.terr[q] > 0 && !pol.person(g, q)) nAiNb++;
+    for (const o of pol.offers(g)) {
+      const { q, c, need, person } = o;
+      if (c >= worth && c >= cheap && !over) gated = true;
+      if (person || o.isDoorSea) continue;
+      nAi++;
+      let why, x = 0, want = 0, safe = 0, keep = Infinity, tag = '';
+      if (gated) why = 'price';
+      else {
+        safe = Math.min(pol.safeAt(g, q), P.oppFloorCap * L);
+        if (c < cheap) keep = 0;
+        if (c < worth) {
+          const worthOwn = P.ownWorthMinKeep > 0 && g.t >= P.ownWorthFrom && !o.nearCollapse ? m * dMe : worth;
+          const budget = Math.max(0, (worthOwn * L - fee * m - c * L) / (1 + m));
+          const minKeep = (c * L) / m;
+          keep = Math.min(keep, P.post > 0 ? Math.max(minKeep, B - fee - budget) : minKeep);
+        }
+        if (over) keep = Math.min(keep, (o.isCrowdedHard ? 1.08 : P.hold) * 100 * L);
+        const byKeep = keep >= safe;
+        const avail = B - fee - Math.max(keep, safe);
+        want = 1.25 * need + 3 * pol.cnt[q];
+        x = Math.min(avail, want);
+        if (avail <= 0) {
+          if (byKeep) why = 'keep';
+          else {
+            const sf = pol.safeFinite ? pol.safeFinite(g) : 0;
+            tag = Math.abs(safe - Math.min(sf, P.oppFloorCap * L)) < 1 ? (sf > P.oppFloorCap * L ? 'sb(cap)' : 'sb') : 'people';
+            why = `safe:${tag}`;
+          }
+        } else if (g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) why = 'attacking';
+        else if (x < minCmd) why = want < minCmd ? 'minCmd(want)' : 'minCmd(avail)';
+        else if (x < want && x < P.chunk * B) why = 'chunk';
+        else why = 'ok';
+      }
+      if (why === 'ok' || why === 'attacking') anyOk++;
+      if (best && c >= best.c) continue;
+      best = { q, c: +(+c).toFixed(1), terr: g.terr[q], aiBal: g.bal[q], need: Math.round(need), want: Math.round(want), x: Math.round(x), safe: Math.round(safe), keep: Number.isFinite(keep) ? Math.round(keep) : -1, why };
+    }
+    let src = null;
+    if (best && /^safe:sb/.test(best.why)) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
+    b.census2.push([g.t, B, g.terr[me], nAiNb, nAi, anyOk, best ? best.q : -1, best ? best.c : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.want : 0, best ? best.x : 0,
+      Math.round(minCmd), best ? best.safe : 0, best ? best.keep : 0, best ? best.why : (nAiNb ? 'noOffer' : 'noAI'), src, +worth.toFixed(1), over ? 1 : 0]);
+  } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census2 ' + String(e).slice(0, 200)]); }
+}
+
 function traceOne(g, b) {
   const pol = b.pol, me = b.id, P = pol.p;
   const o = { t: g.t, bot: b.name, terr: g.terr[me], bal: g.bal[me], cmds: pol.cmds, boats: pol.boats, lastBoat: pol.lastBoat,
@@ -239,7 +305,7 @@ const out = resim(mid, {
     for (const [name, s] of Object.entries(ctx.squad)) {
       if (s.id < 0 || (side === 'peer') !== !!s.peer) continue;
       if (wantBots !== 'all' && !wantBots.split(',').includes(name)) continue;
-      bots.push({ name, id: s.id, pol: new Policy({}, s.id), cmds: [], logs: [], errors: [], flags: [], locks: [], census: [], guard: [], lastFlag: null, nAct: 0, lastCmdTick: -999,
+      bots.push({ name, id: s.id, pol: new Policy({}, s.id), cmds: [], logs: [], errors: [], flags: [], locks: [], census: [], census2: [], guard: [], lastFlag: null, nAct: 0, lastCmdTick: -999,
         win: null, boatSpot: Object.getPrototypeOf(g).boatSpot ?? g.boatSpot });
     }
     for (const b of bots) b.win = { __hlLog: (s) => b.logs.push([g.t, String(s).slice(0, 400)]) };
@@ -281,6 +347,7 @@ const out = resim(mid, {
       if (f !== b.lastFlag) { b.flags.push([g.t, b.pol.isNoFullSend ? 1 : 0, Math.round(b.pol.shadowQuota ?? 0)]); b.lastFlag = f; }
       if (traceSpec[b.name]?.has(g.t)) traceOne(g, b);
       if (g.t % censusEvery === 0 && g.t >= 300 && g.t <= censusUntil) census(g, b);
+      if (g.t % censusEvery === 0 && g.t >= b.pol.p.coreFrom && g.t <= coreCensusUntil && typeof b.pol.offers === 'function') censusCore(g, b);
       unpatch(g);
     }
     globalThis.window = undefined;
@@ -290,7 +357,7 @@ const out = resim(mid, {
 
 const res = {
   matchId: mid, strategy: stratName, guardTicks, endTick: out.endTick, replayFrom: opt('replay-from', null) || mid,
-  bots: Object.fromEntries(bots.map((b) => [b.name, { id: b.id, nAct: b.nAct, cmds: b.cmds, logs: b.logs, errors: b.errors, flags: b.flags, locks: b.locks, census: b.census, guard: b.guard,
+  bots: Object.fromEntries(bots.map((b) => [b.name, { id: b.id, nAct: b.nAct, cmds: b.cmds, logs: b.logs, errors: b.errors, flags: b.flags, locks: b.locks, census: b.census, census2: b.census2, guard: b.guard,
     final: { cmds: b.pol.cmds, boats: b.pol.boats, isNoFullSend: !!b.pol.isNoFullSend } }])),
   traces,
 };

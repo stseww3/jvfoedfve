@@ -68,7 +68,7 @@ def match_bot(T, name, sb):
 def sec_SH(S, T, w):
     """[SH] 口粮门槛普查：影子在真值上每隔几拍把「接壤的内置 AI」按 pickTarget 的顺序过一遍门槛（不落后的客户端此刻的代码口径）。
     重点数：没有任何 AI 过得了门槛、且最便宜那个被防人机留底 sb（safeFinite）挡住的号·点；sb 由谁的余额定出；两个号互相定对方 sb 的互锁。"""
-    WIN = [(300, 630), (630, 900), (900, 1260), (1260, 1500), (1500, 1800)]
+    WIN = [(300, 630), (630, 900), (900, 1260), (1260, 1500)]   # 1500 拍起走 buyLand，见 [SJ]
     rows = {}
     for name, sb in S["bots"].items():
         for c in sb.get("census", []):
@@ -135,6 +135,68 @@ def sec_SH(S, T, w):
         med = lambda xs: sorted(xs)[len(xs) // 2]
         ws = " ".join(f"{k}×{v}" for k, v in sorted(who.items(), key=lambda kv: -kv[1])[:4])
         w(f"  {name:12s} | {len(cs)} | {min(c[0] for c in cs)}~{max(c[0] for c in cs)} | {ws} | {med([c[1] for c in cs])} / {med([c[11][5] for c in cs])} / {med([c[6] for c in cs])}·{med([c[7] for c in cs])}·{med([c[8] for c in cs])}")
+
+
+def sec_SJ(S, T, w):
+    """[SJ] 1500 拍后的口粮门槛普查：按 Policy.buyLand 对非真人邻居的那条路（c110 L5250-5369）逐关重算，最便宜那个内置 AI 报价被哪一关挡住。
+    census2 行：[t, 余额, 领土, 接壤 AI 数, AI 报价数, 过门槛数, q, c, AI 格数, AI 兵, need, want, x, minCmd, safe, keep, why, sb 来源, worth, over]"""
+    WIN = [(1500, 1650), (1650, 1800), (1800, 2100), (2100, 3001)]
+    rows = {}
+    for name, sb in S["bots"].items():
+        for c in sb.get("census2", []):
+            rows[(sb["id"], c[0])] = (name, c)
+    if not rows:
+        return
+    w("")
+    w("[SJ] 1500 拍后的口粮门槛普查（影子按真值每 10 拍一次；Policy.buyLand 对非真人邻居（内置 AI 和已离开的空壳，person() = !isBot）：price = 报价 ≥ worth 被 L5267 截断；safe:sb = 可用兵 ≤ 0 且起作用的是 safeAt 里的 safeFinite"
+      "（L2744-2754 → L2532-2541，非真人目标按 oppFloorCap×领土封顶）；safe:people = 起作用的是防真人留底；keep = 起作用的是按报价算的留底；"
+      "minCmd(want) = 吃光它所需 1.25×need+3×边界 小于 minCmd（L5367）；minCmd(avail) / chunk = 可用兵不够；noOffer = 接壤 AI 但没有报价（进攻槽 / 目标数已满））")
+    w("  窗口 | 号·点 | 接壤 AI 的 | 至少一个 AI 过门槛或已在打 | 全被挡 | 最便宜那个被挡的原因分布")
+    for a, b in WIN:
+        n = nai = ok = 0
+        why = defaultdict(int)
+        for (p, t), (name, c) in rows.items():
+            if not (a <= t < b):
+                continue
+            n += 1
+            if c[16] == "noAI":
+                continue
+            nai += 1
+            if c[5] > 0:
+                ok += 1
+                continue
+            why[c[16]] += 1
+        ws = " ".join(f"{k}:{v}" for k, v in sorted(why.items(), key=lambda kv: -kv[1]))
+        w(f"  {a}~{b - 1 if b == 3001 else b} | {n} | {nai} | {ok} | {nai - ok} | {ws}")
+    med = lambda xs: sorted(xs)[len(xs) // 2] if xs else 0
+    blocked = [(name, c) for (p, t), (name, c) in rows.items() if c[16] not in ("noAI",) and c[5] == 0]
+    mc = [c for name, c in blocked if c[16] == "minCmd(want)"]
+    if mc:
+        w(f"  minCmd(want) 共 {len(mc)} 个号·点：中位 自己余额 {med([c[1] for c in mc])} / minCmd {med([c[13] for c in mc])} / 被挡 AI {med([c[8] for c in mc])} 格·{med([c[9] for c in mc])} 兵·吃光所需 {med([c[11] for c in mc])}；"
+          f"被挡 AI 的兵为 0 的 {sum(1 for c in mc if c[9] == 0)} 个；被挡 AI 最大 {max(c[8] for c in mc)} 格；被挡的是空壳（离开的真人）的 {sum(1 for c in mc if c[6] < T.H)} 个")
+        byw = defaultdict(int)
+        for c in mc:
+            byw[(c[0] // 150) * 150] += 1
+        w("  minCmd(want) 按拍分布（每 150 拍）：" + " ".join(f"{k}~{k + 149}:{v}" for k, v in sorted(byw.items())))
+    sbr = [c for name, c in blocked if c[16].startswith("safe:sb") and c[17]]
+    if sbr:
+        cat = defaultdict(int)
+        for c in sbr:
+            cat[c[17][2]] += 1
+        w(f"  safe:sb 共 {len(sbr)} 个号·点，sb 由谁的余额定出：本编队同队 {cat['squadSameTeam']} / 本编队异队 {cat['squadOtherTeam']} / 另一支受控编队 {cat['peerSameTeam'] + cat['peerOtherTeam']} / 同队真人 {cat['teammate']} / 敌队真人 {cat['enemy']} / 内置 AI {cat['ai']}；"
+          f"其中按 oppFloorCap 封顶后仍挡住的 {sum(1 for c in sbr if c[16] == 'safe:sb(cap)')} 个")
+    w("  逐号（全被挡的点数 ≥5 的）：号 | 点数 | 首末拍 | 原因（次数）| 中位：自己余额 / minCmd / safe / 被挡 AI 的格数·兵·吃光所需")
+    per = defaultdict(list)
+    for name, c in blocked:
+        per[name].append(c)
+    for name, cs in sorted(per.items(), key=lambda kv: -len(kv[1])):
+        if len(cs) < 5:
+            continue
+        who = defaultdict(int)
+        for c in cs:
+            who[c[16]] += 1
+        ws = " ".join(f"{k}×{v}" for k, v in sorted(who.items(), key=lambda kv: -kv[1])[:4])
+        w(f"  {name:12s} | {len(cs)} | {min(c[0] for c in cs)}~{max(c[0] for c in cs)} | {ws} | {med([c[1] for c in cs])} / {med([c[13] for c in cs])} / {med([c[14] for c in cs])} / {med([c[8] for c in cs])}·{med([c[9] for c in cs])}·{med([c[11] for c in cs])}")
 
 
 def sec_SI(S, T, w, allpairs):
@@ -299,6 +361,7 @@ def main():
 
     # 口粮门槛普查
     sec_SH(S, T, w)
+    sec_SJ(S, T, w)
     sec_SI(S, T, w, allpairs)
 
     # 全队时延曲线
