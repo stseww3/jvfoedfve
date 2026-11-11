@@ -9,6 +9,13 @@
   [DL …]      reports/DELAY-AND-LAND-ACCOUNT.md
   [CL …]      reports/CROSS-LEDGER.md
   [RO …]      reports/REVIEW-ROLLUP.md
+  [PH …]      reports/PREY-HAZARD.md
+  [HA …]      reports/HUB-AUDIT-RECONCILE.md
+  [LT …]      reports/LAG-TRACE.md
+  [BF …]      reports/BOT-FLOOR.md
+  [PC …]      reports/PROPOSAL-CALC.md（提案里的算例：按引擎公式代入的算术）
+  [HUB]       hub 的 c136-review/reports/LATENCY-AND-LAND-CAPTURE-AUDIT.md（引用 hub 的原数时用）
+  [提议]      设计值（门槛、系数、样本量这类提议，不是量出来的数）：这一段不核对
   [tsv]       out/pattern-scan.tsv、out/pattern-scan2.tsv：数字必须出现在同一句里提到的那一局的那一行
   [复盘 局号…] reviews/<局>.md + reviews/<局>.json；只写 [复盘] 时取同一段里出现的局号，没有局号就取全部 13 局
 一行按标记切成若干段：一个标记管它前面、上一个标记之后的那段文字；紧挨着的几个标记一起管同一段。
@@ -39,7 +46,10 @@ SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
 MATCHES = ['A014', 'A017', 'A021', 'A026', 'A030', 'A034', 'A037', 'A043', 'A058', 'A065', 'A093', 'A095', 'B010']
 
 NUM = re.compile(r'(?<![A-Za-z_\d.])(\d[\d,]*(?:\.\d+)?)(%|M|k)?(?![\d])')
-TAG = re.compile(r'\[(PS|DL|CL|RO|tsv|复盘)([^\]]*)\]')
+TAG = re.compile(r'\[(PS|DL|CL|RO|PH|HA|LT|BF|PC|HUB|提议|tsv|复盘)([^\]]*)\]')
+TABLES = {'PS': 'reports/PATTERN-SCAN.md', 'DL': 'reports/DELAY-AND-LAND-ACCOUNT.md', 'CL': 'reports/CROSS-LEDGER.md',
+          'RO': 'reports/REVIEW-ROLLUP.md', 'PH': 'reports/PREY-HAZARD.md', 'HA': 'reports/HUB-AUDIT-RECONCILE.md',
+          'LT': 'reports/LAG-TRACE.md', 'BF': 'reports/BOT-FLOOR.md', 'PC': 'reports/PROPOSAL-CALC.md'}
 MID = re.compile(r'\b([AB]\d{3})\b')
 
 
@@ -85,27 +95,23 @@ _cache = {}
 def corpus(key):
     if key in _cache:
         return _cache[key]
-    if key == 'PS':
-        s = corpus_tokens(read(f'{ROOT}/reports/PATTERN-SCAN.md'))
-    elif key == 'DL':
-        s = corpus_tokens(read(f'{ROOT}/reports/DELAY-AND-LAND-ACCOUNT.md'))
-    elif key == 'CL':
-        s = corpus_tokens(read(f'{ROOT}/reports/CROSS-LEDGER.md'))
-    elif key == 'RO':
-        s = corpus_tokens(read(f'{ROOT}/reports/REVIEW-ROLLUP.md'))
+    if key in TABLES:
+        s = corpus_tokens(read(f'{ROOT}/{TABLES[key]}'))
+    elif key == 'HUB':
+        s = corpus_tokens(read(f'{ROOT}/../../reports/LATENCY-AND-LAND-CAPTURE-AUDIT.md'))
     elif key.startswith('REV:'):
         m = key[4:]
         s = corpus_tokens(read(f'{ROOT}/reviews/{m}.md')) | corpus_tokens(read(f'{ROOT}/reviews/{m}.json'))
     elif key == 'ALL':
         s = set()
-        for k in ('PS', 'DL', 'CL', 'RO'):
+        for k in TABLES:
             s |= corpus(k)
         for m in MATCHES:
             s |= corpus('REV:' + m)
         for f in glob.glob(f'{HERE}/*'):
             if f.endswith(('.py', '.mjs', '.cjs', '.sh')):
                 s |= corpus_tokens(read(f))
-        for f in glob.glob(f'{SRC}/src/strategy/*.js') + glob.glob(f'{SRC}/src/strategy/*.mjs') + [f'{SRC}/src/strategy/params-diff.txt', f'{SRC}/src/sim/sim/game.js']:
+        for f in glob.glob(f'{SRC}/src/strategy/*.js') + glob.glob(f'{SRC}/src/strategy/*.mjs') + [f'{SRC}/src/strategy/params-diff.txt'] + glob.glob(f'{SRC}/src/sim/sim/*.js'):
             s |= corpus_tokens(read(f))
     else:
         s = set()
@@ -199,6 +205,8 @@ def check_file(path, allow):
             toks = tokens(text)
             if not toks:
                 continue
+            if any(k == '提议' for k, _ in tags):
+                continue
             n += len(toks)
             if any(k == 'tsv' for k, _ in tags):
                 miss = check_tsv(text)
@@ -212,12 +220,12 @@ def check_file(path, allow):
                         for m in mids:
                             have |= corpus('REV:' + m)
                         names.append('复盘 ' + '、'.join(mids))
-                        for extra in re.findall(r'\b(PS|DL|CL|RO)\b', arg):
+                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT|BF|PC)\b', arg):
                             have |= corpus(extra)
                     else:
                         have |= corpus(k)
                         names.append(k)
-                        for extra in re.findall(r'\b(PS|DL|CL|RO)\b', arg):
+                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT|BF|PC)\b', arg):
                             have |= corpus(extra)
                         if '复盘' in arg:
                             mids = MID.findall(arg) or MID.findall(text) or para_mids or MATCHES

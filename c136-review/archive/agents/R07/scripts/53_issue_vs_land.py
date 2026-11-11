@@ -24,12 +24,29 @@ import sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# R07_OUT_ROOT：换一个放 <matchId>/humans_cmd.tsv、spawn_cmds.tsv 的根目录（57_exec_census.py 做全量普查时用 out/_cache/census）
+OUT_ROOT = os.environ.get("R07_OUT_ROOT") or os.path.join(HERE, "..", "out")
 DATA = "/agent/repos/c136-data"
 TICK_RE = re.compile(r"\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
 
 
+def allowed_bots(mid):
+    """<根目录>/<局>/squad_players.tsv（57_exec_census.mjs 写的）存在时，只算名字在录像里对得上的号；不存在就不过滤。"""
+    p = os.path.join(OUT_ROOT, mid, "squad_players.tsv")
+    if not os.path.exists(p):
+        return None
+    out = set()
+    for ln in open(p, encoding="utf-8"):
+        c = ln.rstrip("\n").split("\t")
+        if len(c) == 2 and c[0].isdigit():
+            out.add(c[1])
+    return out
+
+
 def load(mid):
     issued = defaultdict(dict)
+    allow = allowed_bots(mid)
+    ok = (lambda b: True) if allow is None else (lambda b: b in allow)
     # results.csv 的 accepted 是宿主数的，含出生阶段的选点指令；[HL-TICK] 的 cmds 是策略自己数的，不含。
     # 选点指令条数 = [OPENING-CHECK] 的 sent − 到那一拍为止的开局指令（[HL-OPENING]）；没有核对行的号用日志里的指派次数。
     check, opening, asg = {}, defaultdict(list), defaultdict(int)
@@ -38,21 +55,25 @@ def load(mid):
         for line in f:
             m = TICK_RE.search(line)
             if m:
-                issued[m.group(1)][int(m.group(2))] = int(m.group(3))
+                if ok(m.group(1)):
+                    issued[m.group(1)][int(m.group(2))] = int(m.group(3))
                 continue
             if "[HL-DISPATCH]" in line:
-                n_dispatch += 1
+                md = re.match(r"^\d+\t\[(\w+)\] ", line)
+                if md is None or ok(md.group(1)):
+                    n_dispatch += 1
                 continue
             if "[OPENING-CHECK" in line and not check:
                 for mm in re.finditer(r"\] (\w+):tick=(\d+),terr=\d+,sent=(\d+)", line):
-                    check[mm.group(1)] = (int(mm.group(2)), int(mm.group(3)))
+                    if ok(mm.group(1)):
+                        check[mm.group(1)] = (int(mm.group(2)), int(mm.group(3)))
                 continue
             mo = re.search(r"\[(\w+)\] \[HL-OPENING\] t=(\d+) ", line)
             if mo:
                 opening[mo.group(1)].append(int(mo.group(2)))
                 continue
             ms = re.search(r"\[(\w+)\] \[HL-SPAWN(?:-BACKEND)?\] me=", line)
-            if ms:
+            if ms and ok(ms.group(1)):
                 asg[ms.group(1)] += 1
     spawn_sent = {}
     for b in set(list(asg) + list(check)):
@@ -67,12 +88,13 @@ def load(mid):
         with open(rp, newline="", encoding="utf-8") as f:
             for r in csv.DictReader(f):
                 try:
-                    final[r["bot"]] = (int(r["tick"]), int(r["accepted"]), r["event"])
+                    if ok(r["bot"]):
+                        final[r["bot"]] = (int(r["tick"]), int(r["accepted"]), r["event"])
                 except (ValueError, KeyError):
                     pass
     land = defaultdict(list)
     n_don_land = 0
-    hp = os.path.join(HERE, "..", "out", mid, "humans_cmd.tsv")
+    hp = os.path.join(OUT_ROOT, mid, "humans_cmd.tsv")
     if not os.path.exists(hp):
         return None
     with open(hp, newline="", encoding="utf-8") as f:
@@ -172,7 +194,7 @@ def one(mid):
         lines.append("  例（一定晚 >90 拍的条数最多的几段）：" + "；".join(
             f"{b} 落地在 ({s1}, {s2}] 的 {ln} 条里至少 {l90} 条是 t≤{s1 - 90} 发的（cmds {i0}→{i2}）" + (f"、至少 {l180} 条是 t≤{s1 - 180} 发的" if l180 else "")
             for l90, b, s1, s2, ln, i0, i2, l180 in ex[:8]))
-    out_dir = os.path.join(HERE, "..", "out", mid)
+    out_dir = os.path.join(OUT_ROOT, mid)
     os.makedirs(out_dir, exist_ok=True)
     open(os.path.join(out_dir, "issue_vs_land.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
     return {"mid": mid, "issued": tot_i, "landed": tot_l, "peak": peak, "agg": agg, "lines": lines, "dispatch": n_dispatch, "donLand": n_don_land}

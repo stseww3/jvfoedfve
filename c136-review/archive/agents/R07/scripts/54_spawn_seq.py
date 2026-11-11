@@ -16,6 +16,8 @@ import sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# R07_OUT_ROOT：换一个放 <matchId>/humans_cmd.tsv、spawn_cmds.tsv 的根目录（57_exec_census.py 做全量普查时用 out/_cache/census）
+OUT_ROOT = os.environ.get("R07_OUT_ROOT") or os.path.join(HERE, "..", "out")
 DATA = "/agent/repos/c136-data"
 
 
@@ -41,7 +43,7 @@ def lcs_pairs(a, b):
 
 
 def run(mid):
-    out_dir = os.path.join(HERE, "..", "out", mid)
+    out_dir = os.path.join(OUT_ROOT, mid)
     tsv = os.path.join(out_dir, "spawn_cmds.tsv")
     if not os.path.exists(tsv):
         return None
@@ -87,6 +89,13 @@ def run(mid):
             asg[m.group(1)].append((i, "协调器" if s.group(1) else "自选", int(s.group(2)), int(s.group(3))))
         elif first_open is None and "[HL-OPENING]" in m.group(2):
             first_open = i
+
+    # <根目录>/<局>/squad_players.tsv（57_exec_census.mjs 写的）存在时，只算名字在录像里对得上的号（别的号在别的房间）
+    fp = os.path.join(out_dir, "squad_players.tsv")
+    if os.path.exists(fp):
+        allow = {c[1] for c in (ln.rstrip("\n").split("\t") for ln in open(fp, encoding="utf-8")) if len(c) == 2 and c[0].isdigit()}
+        bots = [b for b in bots if b in allow]
+        check = {b: v for b, v in check.items() if b in allow}
 
     L = []
     P = L.append

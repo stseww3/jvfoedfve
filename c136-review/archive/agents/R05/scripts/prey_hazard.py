@@ -396,6 +396,11 @@ def main():
     dead2 = sum(1 for x in late if x['died600'])
     w(f'| 合计 | {len(RND):,} | {len(first):,} | {back}（{pct(back, len(first))}） | {dead}（{pct(dead, len(first))}） | {len(late):,} | {dead2}（{pct(dead2, len(late))}） | {pct(med([x["spent"] for x in RND]) or 0, 1) if RND else "–"} |')
     w('')
+    for lo, hi, name in [(0, 2, '<2 倍'), (2, 1e12, '≥2 倍')]:
+        first = [x for x in RND if lo <= x['ratio'] < hi and not x['prior']]
+        back = sum(1 for x in first if x['back100'])
+        dead = sum(1 for x in first if x['died600'])
+        w(f'- 全程、目标{name}：先手 {len(first)} 轮，对方还手 {back}（{pct(back, len(first))}），这个号 600 拍内阵亡 {dead}（{pct(dead, len(first))}）。')
     for nm, cond in (('1500–4284 拍', lambda x: x['t'] < 4284), ('4284 拍以后', lambda x: x['t'] >= 4284)):
         for lo, hi, name in [(0, 1, '比自己弱'), (1, 2, '1–2 倍'), (2, 1e12, '≥2 倍')]:
             first = [x for x in RND if cond(x) and lo <= x['ratio'] < hi and not x['prior']]

@@ -14,6 +14,8 @@
   [XS-C] 四分之一线的核对：全部阵亡号『出局前最后的领土 ÷ 历史峰值』的分布
   [XS-D] 指令节奏：每 1000 号·拍的非船指令，按时段；主队赢 / 输对照
   [XS-E] R08 的 16 局逐局（模式命中表）
+  [XS-F] 出局的时间：全部阵亡号的出局拍分位、峰值拍 → 出局拍的间隔
+  [XS-G] 编队合计领土占全图陆地的份额，t=630 / 1530 / 3060 / 4500 / 6030（日志口径）
 """
 import json
 import os
@@ -31,6 +33,7 @@ import r08lib as L  # noqa: E402
 
 OUT = os.path.join(os.path.dirname(HERE), "out")
 MINE = ["G02", "G05", "G08", "B043", "B033", "B034", "B031", "B049", "B006", "B030", "B019", "B009", "B015", "B029", "B035", "B027"]
+SHARE_T = (630, 1530, 3060, 4500, 6030)
 CAD = [("0~630", 0, 630), ("630~1500", 630, 1500), ("1500~3000", 1500, 3000), ("3000~4500", 3000, 4500), ("4500+", 4500, 10 ** 9)]
 
 
@@ -64,7 +67,25 @@ def basics(m):
                 bo += tk[-1]["boats"] - tk[0]["boats"]
         cad.append(dict(period=name, botTicks=bt, nonBoat=nb, boats=bo))
     dons = m.dons
-    return dict(bots=len(bots), died=len(died), left=len(left), leftWithLand=len(left_land),
+    # 出局拍、峰值拍；编队合计领土占全图陆地的份额（日志口径：每个号取 ≤t 且 ≥t−90 的最后一条快照）
+    death_rows = []
+    for b in died:
+        tk = [s for s in b["ticks"] if s["terr"] > 0]
+        pk = max(tk, key=lambda s: s["terr"]) if tk else None
+        death_rows.append([m.death(b), pk["t"] if pk else None, pk["terr"] if pk else None, b.get("resBalance") or 0])
+    share = {}
+    for t in SHARE_T:
+        if m.end is None or m.end < t:
+            share[t] = None
+            continue
+        tot = n = 0
+        for b in bots:
+            tk = [s for s in b["ticks"] if t - 90 <= s["t"] <= t and s["terr"] > 0]
+            if tk:
+                tot += tk[-1]["terr"]
+                n += 1
+        share[t] = [tot / m.land if m.land else None, n]
+    return dict(bots=len(bots), died=len(died), left=len(left), leftWithLand=len(left_land), deathRows=death_rows, share=share,
                 firstDeath=min((m.death(b) for b in died), default=None),
                 bank=sum(b.get("resBalance") or 0 for b in died), bankBig=sum(1 for b in died if (b.get("resBalance") or 0) >= 100_000),
                 snaps=len(snaps), boxedSnaps=len(boxed), boxedHighDens=sum(1 for s in boxed if s["dens"] >= 95),
@@ -165,6 +186,37 @@ def main():
         vals = [per(rows)] + [per([r for r in rows if r["cohort"] == c]) for c in cohorts] + [per(won), per(lost)]
         cadence[name] = vals
         out.append(f"    {name} | " + " | ".join("–" if v is None else f"{v:.1f}" for v in vals))
+    # [XS-F]
+    out.append("[XS-F] 出局的时间（日志口径，全部阵亡号）：组 | 阵亡号 | 出局拍的 10% / 25% / 50% / 75% / 90% 分位 | ≤1500 拍 | ≤3000 拍 | ≤4500 拍 | 峰值拍 → 出局拍 的中位间隔 | 峰值拍的中位")
+    death_agg = {}
+    for nm, rs in [("全部", rows)] + [(c, [r for r in rows if r["cohort"] == c]) for c in cohorts] + [("主队赢的局", won), ("没赢的局", lost)]:
+        dr = [d for r in rs for d in r["basics"]["deathRows"] if d[0] is not None]
+        if len(dr) < 5:
+            continue
+        ts = sorted(d[0] for d in dr)
+        q = statistics.quantiles(ts, n=20)
+        gaps = sorted(d[0] - d[1] for d in dr if d[1] is not None)
+        pks = sorted(d[1] for d in dr if d[1] is not None)
+        out.append(f"    {nm} | {len(ts)} | {q[1]:.0f} / {q[4]:.0f} / {q[9]:.0f} / {q[14]:.0f} / {q[17]:.0f} | {rate(sum(1 for t in ts if t <= 1500), len(ts))} | {rate(sum(1 for t in ts if t <= 3000), len(ts))} | "
+                   f"{rate(sum(1 for t in ts if t <= 4500), len(ts))} | {statistics.median(gaps):.0f} | {statistics.median(pks):.0f}")
+        death_agg[nm] = dict(n=len(ts), q10=q[1], q25=q[4], q50=q[9], q75=q[14], q90=q[17], le1500=sum(1 for t in ts if t <= 1500), le3000=sum(1 for t in ts if t <= 3000),
+                             peakToDeathMedian=statistics.median(gaps), peakTickMedian=statistics.median(pks))
+    # [XS-G]
+    out.append("[XS-G] 编队合计领土占全图陆地的份额（日志口径；括号 = 有数的局数）：组 | " + " | ".join(f"t={t}" for t in SHARE_T) + " | 份额最高的那个检查点落在哪（局数）")
+    share_agg = {}
+    for nm, rs in [("全部", rows)] + [(c, [r for r in rows if r["cohort"] == c]) for c in cohorts] + [("主队赢的局", won), ("没赢的局", lost)]:
+        cells = []
+        for t in SHARE_T:
+            v = [r["basics"]["share"][t][0] for r in rs if r["basics"]["share"].get(t) and r["basics"]["share"][t][0] is not None]
+            cells.append(f"{100 * statistics.median(v):.1f}%（{len(v)}）" if v else "–")
+            share_agg.setdefault(nm, {})[t] = dict(n=len(v), median=statistics.median(v) if v else None)
+        best = {}
+        for r in rs:
+            sv = [(r["basics"]["share"][t][0], t) for t in SHARE_T if r["basics"]["share"].get(t) and r["basics"]["share"][t][0] is not None]
+            if sv:
+                bt = max(sv)[1]
+                best[bt] = best.get(bt, 0) + 1
+        out.append(f"    {nm} | " + " | ".join(cells) + " | " + "，".join(f"t={t}：{best.get(t, 0)}" for t in SHARE_T))
     # [XS-E]
     mine = [r for r in rows if r["matchId"] in MINE]
     mine.sort(key=lambda r: MINE.index(r["matchId"]))
@@ -180,7 +232,7 @@ def main():
     os.makedirs(od, exist_ok=True)
     name = "xscan_mine" if mine_only else "xscan"
     open(os.path.join(od, f"{name}.txt"), "w", encoding="utf-8").write("\n".join(out) + "\n")
-    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence,
+    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence, deathTiming=death_agg, shareTrajectory=share_agg,
                    quarter=dict(n=len(ratios), le026=sum(1 for x in ratios if x <= 0.26), le030=sum(1 for x in ratios if x <= 0.30), gt035=sum(1 for x in ratios if x > 0.35)),
                    rows=[{k: v for k, v in r.items()} for r in rows]),
               open(os.path.join(od, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=str)
