@@ -1,0 +1,36 @@
+# A079 影子运行（策略 v27-team-c116-vb.js；重演 7590 拍，用时 7.9 秒）
+# 重演与 traj.csv 快照核对：756 行，领土一致 756，余额一致 756，都一致 756
+# HL-TICK 比对：真日志 756 条；影子同拍 领土余额一致 756，nb 一致 756，neut 一致 756，cmds 计数一致 439，三项全一致 439
+#   alex_k: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：460:attack 452→无主地、460:attack 77→AI#502、465:attack 94→AI#502、515:attack 489→无主地
+#   sora_w: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 84；最后一条 cmds 差（影子-真）0
+#   kaito9: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：460:attack 111→AI#209、465:attack 458→无主地、465:attack 128→AI#209、475:attack 46→AI#209、530:attack 444→无主地
+#   talon5: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 84；最后一条 cmds 差（影子-真）0
+#   ryan_m: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 4；最后一条 cmds 差（影子-真）2
+#       变化点 (360,450] 差 0→1；这一段影子指令：370:attack 421→无主地、370:attack 143→AI#160、375:attack 169→AI#160
+#       变化点 (450,540] 差 1→2；这一段影子指令：460:attack 91→AI#160、465:attack 492→无主地、465:attack 92→AI#160、475:attack 131→AI#213、525:attack 468→无主地
+#   zero_7: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 5；最后一条 cmds 差（影子-真）3
+#       变化点 (450,540] 差 0→1；这一段影子指令：460:attack 118→AI#132、465:attack 483→无主地、465:attack 138→AI#132、540:attack 497→无主地、540:attack 114→AI#210
+#       变化点 (540,630] 差 1→2；这一段影子指令：545:attack 126→AI#210、550:attack 135→AI#210、600:attack 475→无主地
+#       变化点 (810,900] 差 2→3；这一段影子指令：815:attack 112→AI#292、820:attack 47→AI#209、825:attack 155→AI#329、835:attack 211→AI#329、840:attack 207→AI#329、845:attack 47→AI#209、850:attack 47→AI#209、860:attack 58→无主地、860:attack 47→AI#329、890:attack 167→AI#432
+#   zexos1: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 84；最后一条 cmds 差（影子-真）0
+#   noah88: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 84；最后一条 cmds 差（影子-真）0
+#   leo_tx: 84 条，影子缺 0，nb 一致 84，neut 一致 84，cmds 一致 84；最后一条 cmds 差（影子-真）0
+# HL-DISPATCH 比对：真日志 457 条；影子在同一拍给出同对象同比例 457 条（其中种类也相同 457）；影子多出 1 条
+#   影子多出（前 8）：zexos1@7590:yield_opt_dispatch pct=320→69
+# HL-OPENING 比对：真日志 67 条；影子同拍同金额 67 条；影子共 67 条
+# 影子策略报错 0 条
+# 影子指令计数：alex_k:attack×59 alex_k:donate×32 kaito9:attack×29 kaito9:donate×82 leo_tx:attack×59 leo_tx:boatTo×4 leo_tx:donate×51 noah88:attack×50 noah88:donate×30 ryan_m:attack×57 ryan_m:donate×36 sora_w:attack×39 sora_w:donate×26 talon5:attack×20 talon5:donate×93 zero_7:attack×49 zero_7:donate×55 zexos1:attack×86 zexos1:boatTo×4 zexos1:donate×53
+# 影子指令的发令位置（策略源码行号）：
+#   donate 〔tryDonateToTeammate:4508<act:4962〕：458 条，约 125,113,762 兵，t=1500~7590
+#   attack→内置AI 〔send:484<send:1827<send:3865<act:796〕：233 条，约 331,234 兵，t=175~1315
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5607〕：95 条，约 10,268,945 兵，t=2105~5170
+#   attack→无主地 〔send:484<send:1827<send:3865<dpNeutral:2406〕：67 条，约 68,647 兵，t=65~960
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5585〕：28 条，约 3,354,591 兵，t=4280~5180
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5592〕：10 条，约 1,119,240 兵，t=2745~3500
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5616〕：9 条，约 1,475,162 兵，t=2080~2370
+#   boatTo 〔boatOut:1011<boatOut:2327<idleBoats:5040<act:4963〕：8 条，约 25,058 兵，t=5300~7575
+#   attack→内置AI 〔send:484<send:1827<send:3865<buyLand:5453〕：3 条，约 7,832 兵，t=2500~2510
+#   attack→无主地 〔send:484<send:1827<send:3865<expandNeutral:952〕：3 条，约 109,257 兵，t=2870~4610
+# isNoFullSend（影子）：ryan_m: 锁上@470 之后被挡 3 次、改 1 兵试探 0 次（t=470~4480）；zero_7: 锁上@470 之后被挡 2 次、改 1 兵试探 0 次（t=830~855）；kaito9: 锁上@470 之后被挡 3 次、改 1 兵试探 0 次（t=635~845）；alex_k: 锁上@631 之后被挡 4 次、改 1 兵试探 0 次（t=640~995）；sora_w: 锁上@652 之后被挡 1 次、改 1 兵试探 0 次（t=1280~1280）；leo_tx: 锁上@659 之后被挡 3 次、改 1 兵试探 0 次（t=660~3140）；noah88: 锁上@666 之后被挡 0 次、改 1 兵试探 0 次；talon5: 锁上@827 之后被挡 0 次、改 1 兵试探 0 次；zexos1: 锁上@3883 之后被挡 3 次、改 1 兵试探 0 次（t=3885~4310）

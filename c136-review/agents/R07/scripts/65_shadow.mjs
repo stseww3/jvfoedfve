@@ -113,6 +113,32 @@ for (const b of bots) {
     const origDon = p.tryDonateToTeammate.bind(p);
     p.tryDonateToTeammate = (g, em = false) => { const ret = origDon(g, em); p.__donTry = { t: g.t, ret, em }; return ret; };
   }
+  // 船的门槛：idleBoats 有没有被叫到、boatOut 入口时的船数 / 上限、searchWater 找到的目标与航程
+  if (typeof p.idleBoats === 'function' && typeof p.boatOut === 'function' && typeof p.searchWater === 'function') {
+    const origIdle = p.idleBoats.bind(p);
+    p.idleBoats = (g) => { p.__idle = { t: g.t, calls: [], lastBoat0: p.lastBoat }; return origIdle(g); };
+    const origBoatOut = p.boatOut.bind(p);
+    p.boatOut = (g, floorAt, maxEff) => {
+      const st = { allowed: g.boatsAllowed(me), count: g.boatCount[me], maxBoats: p.p.maxBoats, range: p.p.boatRange, frac: p.p.boatFrac, bal: g.bal[me], maxEff, hit: undefined, dist: -1 };
+      p.__boatCall = st;
+      const ret = origBoatOut(g, floorAt, maxEff);
+      st.ret = ret;
+      if (st.hit) { try { st.floor = floorAt(st.hit.price); } catch (e) { st.floor = NaN; } }
+      p.__boatCall = null;
+      if (p.__idle && p.__idle.t === g.t) p.__idle.calls.push(st);
+      return ret;
+    };
+    const origSW = p.searchWater.bind(p);
+    p.searchWater = (g) => {
+      const hit = origSW(g);
+      const st = p.__boatCall;
+      if (st) {
+        st.hit = hit || null;
+        if (hit && p.wdist) { let dd = -1; for (let k = 0; k < 4; k++) { const v = p.wdist[hit.land + g.dir4[k]]; if (v >= 0 && (dd < 0 || v < dd)) dd = v; } st.dist = dd + 1; }
+      }
+      return hit;
+    };
+  }
   pol.set(b, p);
 }
 const shadowCmds = [];
@@ -457,6 +483,61 @@ function donDiag(g, b, p, cmdsNow, ld0) {
   return fin(`SENT:${bestKind}`);
 }
 // 每个决策拍：我方哪些号身上有敌方真人的进攻（协防打分里的 inHumanAtk），以及按 isDoomedPocket 的两个分支会不会被当成弃子
+// ---- 船的门槛（t>=1500，四周没有可打的邻居也没有无主地的决策拍）：idleBoats 第一段（v27-team-c116-v*.js Policy.idleBoats）走到了哪一步
+const boatRows = [];
+function boatDiag(g, b, p, cmdsNow) {
+  const P = p.p, me = p.me;
+  if (g.t < 1500 || g.t % P.period !== 0 || typeof p.idleBoats !== 'function') return;
+  if (!(p.nb && p.nb.length === 0 && p.neutral === 0)) return;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
+  const coastPx = g.coast[me] ? g.coast[me].length : 0;
+  const row = { t: g.t, bot: b, bal: B, terr: g.terr[me], dMe, coastPx, boats: g.boatCount[me], reason: '', x: '', y: '', neutral: '', size: '', price: '', dist: '', floor: '', max: '', min: '', amount: '' };
+  const sent = cmdsNow.find((c) => c.kind === 'boatTo' || c.kind === 'boat');
+  const idle = p.__idle && p.__idle.t === g.t ? p.__idle : null;
+  if (!g.boatsAllowed(me)) row.reason = coastPx ? 'no-boats-allowed' : 'no-coast';
+  else if (!idle) {
+    const c = cmdsNow[0];
+    row.reason = c ? (c.kind === 'donate' ? 'nocall-donate' : c.kind === 'attack' ? 'nocall-attack' : 'nocall-' + c.kind) : 'nocall-early';
+  } else if (!idle.calls.length) {
+    let mop = false; try { mop = !!p.isMopUp(g); } catch (e) { mop = false; }
+    if (mop) row.reason = 'mopup-nocall';
+    else {
+      let fb = 0;
+      for (let q = 0; q < g.humans; q++) {
+        if (q !== me && g.alive[q] && p.isTeammate(g, q) && (p.isOurSquadBot(g, q) || p.isBossNpl(g, q)) && g.terr[q] >= 500) {
+          if (window.__quitPlayers && window.__quitPlayers.has(q)) continue;
+          if (p.peopleOf(g, q).some((o) => g.alive[o] && !p.isTeammate(g, o) && g.terr[o] > 0)) fb++;
+        }
+      }
+      if (fb >= 1 && dMe < 115) row.reason = 'frontBrother';
+      else if (g.boatCount[me] >= 6) row.reason = 'count6';
+      else if (g.t - idle.lastBoat0 < Math.min(P.boatEvery, 18)) row.reason = 'cooldown';
+      else row.reason = 'idle-return-other';
+    }
+  } else {
+    const st = idle.calls[idle.calls.length - 1];
+    if (!st.allowed || st.count >= st.maxBoats) row.reason = `maxBoats(${st.count}/${st.maxBoats})`;
+    else if (!st.hit) row.reason = 'nohit';
+    else {
+      const h = st.hit;
+      row.x = h.land % g.W; row.y = (h.land / g.W) | 0; row.neutral = h.neutral ? 1 : 0; row.size = h.size; row.price = h.price.toFixed(1); row.dist = st.dist;
+      row.floor = Math.round(st.floor);
+      const max = st.frac * (st.bal - st.floor);
+      const min = P.boatFee > 0 && h.neutral ? 60 : Math.max(60, P.feeK * iV(32 * st.bal, 1024));
+      row.max = Math.round(max); row.min = Math.round(min);
+      if (h.eff > st.maxEff) row.reason = 'eff>maxEff';
+      else if (max < min) row.reason = 'max<min';
+      else {
+        const amount = h.neutral ? Math.min(max, Math.max(3 * h.size + 300, min)) : max;
+        row.amount = Math.round(amount);
+        row.reason = st.ret ? (h.neutral ? 'SENT:neutral' : 'SENT:enemy') : 'boatTo-refused';
+      }
+    }
+  }
+  if (sent && !row.reason.startsWith('SENT')) row.reason += '+sentElsewhere';
+  boatRows.push(row);
+}
+
 function fireScan(g) {
   if (g.t < 1500 || g.t % 5 !== 0) return;
   let maxSquadTerr = 0;
@@ -531,6 +612,7 @@ proto.tick = function () {
     try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
     try { lateDiag(g, b, p, cmdsNow); } catch (e) { if (!lateDiag.err) { lateDiag.err = String(e && e.message); } }
     try { donDiag(g, b, p, cmdsNow, ld0); } catch (e) { if (!donDiag.err) { donDiag.err = String(e && e.stack); } }
+    try { boatDiag(g, b, p, cmdsNow); } catch (e) { if (!boatDiag.err) { boatDiag.err = String(e && e.stack); } }
     for (const tr of traces) {
       if (tr.bot !== b || g.t < tr.t0 || g.t > tr.t1) continue;
       const P = p.p;
@@ -719,6 +801,34 @@ if (DK) {
   fs.writeFileSync(path.join(OUT, 'shadow_underfire.tsv'), (fireScan.err ? `# 出错：${fireScan.err}\n` : '') + 't\tbot\tterr\tbal\tinHumanAtk\tratio\tunderFire\tdoomedA\tdoomedB\tmaxSquadTerr\n' + fireRows.join('\n') + '\n');
   console.log(`# 调度门槛复刻：${donRows.length} 行（相位拍），与影子实际捐款比对 ${donChk.ok} 一致 / ${donChk.bad} 不一致${donDiag.err ? '；出错 ' + donDiag.err.split('\n').slice(0, 2).join(' | ') : ''}`);
   for (const e of donChk.ex) console.log('#   ' + e);
+}
+{
+  const cols = ['t', 'bot', 'bal', 'terr', 'dMe', 'coastPx', 'boats', 'reason', 'x', 'y', 'neutral', 'size', 'price', 'dist', 'floor', 'max', 'min', 'amount'];
+  fs.writeFileSync(path.join(OUT, 'shadow_boat_gate.tsv'), (boatDiag.err ? `# 出错：${boatDiag.err.split('\n')[0]}\n` : '') + cols.join('\t') + '\n' + boatRows.map((r) => cols.map((c) => c === 'dMe' ? r.dMe.toFixed(1) : r[c]).join('\t')).join('\n') + '\n');
+  const LBL = { 'no-coast': '没有海岸格（引擎不让出船）', 'no-boats-allowed': '有海岸格但引擎不让出船', 'nocall-donate': '本拍在捐兵（调度排在船前面）', 'nocall-attack': '本拍已出兵', 'nocall-early': '本拍没走到 idleBoats', 'frontBrother': '有队友还贴着敌人、自己密度 <115：不出船', 'count6': '在海上的船 ≥6', 'cooldown': '距上次找船不到 18 拍', 'nohit': '找不到目标（2500 格水路内没有无主地 / 非邻居的敌人）', 'max<min': '留底以上的 boatFrac 份额不到一条船的下限', 'SENT:neutral': '发船去无主地', 'SENT:enemy': '发船去敌人的岸', 'mopup-nocall': '收尾模式没发', 'idle-return-other': 'idleBoats 走了别的分支', 'boatTo-refused': 'boatTo 被拒', 'eff>maxEff': '目标折算价高于上限' };
+  const lab = (k) => k.startsWith('maxBoats(') ? `在海上的船已到 maxBoats 上限 ${k.slice(9, -1)}` : (LBL[k.replace('+sentElsewhere', '')] || k) + (k.endsWith('+sentElsewhere') ? '（本拍别处发了船）' : '');
+  const E = [`# ${mid} t>=1500 船的门槛（影子运行；只统计四周没有可打的邻居、也没有无主地的决策拍；归类按 Policy.idleBoats 第一段 → boatOut → searchWater 的先后）`];
+  const tot = new Map();
+  for (const r of boatRows) tot.set(r.reason, (tot.get(r.reason) || 0) + 1);
+  E.push(`全队：${boatRows.length} 个决策拍：` + [...tot].sort((a, b2) => b2[1] - a[1]).map(([k, n]) => `${lab(k)} ${n}`).join('；'));
+  for (const b of bots) {
+    const rs = boatRows.filter((r) => r.bot === b);
+    if (!rs.length) continue;
+    const m = new Map();
+    for (const r of rs) { const o = m.get(r.reason) || { n: 0, t0: r.t, t1: r.t }; o.n++; o.t1 = r.t; m.set(r.reason, o); }
+    const cp = rs.map((r) => r.coastPx);
+    E.push(`${b}: ${rs.length} 个决策拍（t=${rs[0].t}~${rs[rs.length - 1].t}；海岸格 ${Math.min(...cp)}~${Math.max(...cp)}）：` + [...m].sort((a, b2) => b2[1].n - a[1].n).map(([k, o]) => `${lab(k)} ${o.n}（t=${o.t0}~${o.t1}）`).join('；'));
+    const hits = rs.filter((r) => r.x !== '');
+    if (hits.length) {
+      const byT = new Map();
+      for (const r of hits) { const k = `(${r.x},${r.y}) ${r.neutral ? '无主地 ' + r.size + ' 格' : '敌人的岸'}`; const o = byT.get(k) || { n: 0, t0: r.t, t1: r.t, dMin: r.dist, dMax: r.dist, sent: 0 }; o.n++; o.t1 = r.t; o.dMin = Math.min(o.dMin, r.dist); o.dMax = Math.max(o.dMax, r.dist); if (r.reason.startsWith('SENT')) o.sent++; byT.set(k, o); }
+      E.push('    找到的目标：' + [...byT].sort((a, b2) => b2[1].n - a[1].n).slice(0, 8).map(([k, o]) => `${k}，水路 ${o.dMin}${o.dMax !== o.dMin ? '~' + o.dMax : ''} 格，${o.n} 拍（t=${o.t0}~${o.t1}），发出 ${o.sent} 条`).join('；'));
+    }
+    for (const r of rs.filter((x) => x.reason.startsWith('SENT'))) E.push(`    t=${r.t} 发船 → (${r.x},${r.y}) ${r.neutral ? '无主地 ' + r.size + ' 格' : '敌人的岸'}，水路 ${r.dist} 格；余额 ${Math.round(r.bal)}，留底 ${r.floor}，上限 ${r.max} / 下限 ${r.min} → 带兵 ${r.amount}，船费 ${iV(32 * r.bal, 1024)}`);
+    const lim = rs.filter((x) => x.reason === 'max<min').slice(0, 3);
+    for (const r of lim) E.push(`    例 t=${r.t} 不到下限：目标 (${r.x},${r.y}) ${r.neutral ? '无主地 ' + r.size + ' 格' : '敌人的岸'}，余额 ${Math.round(r.bal)}，留底 ${r.floor}，上限 ${r.max} < 下限 ${r.min}`);
+  }
+  fs.writeFileSync(path.join(OUT, 'shadow_boat_gate.txt'), E.join('\n') + '\n');
 }
 fs.writeFileSync(path.join(OUT, 'shadow_coast.tsv'), 't\tbot\tterr\tcoastPx\tboatsAllowed\tleft\n' + coastRows.join('\n') + '\n');
 for (const tr of traces) {

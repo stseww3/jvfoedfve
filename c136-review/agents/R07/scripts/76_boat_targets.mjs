@@ -12,7 +12,9 @@
 //   3) 同一个号按「发船顺序 = 靠岸顺序里带兵数相同的第一条」配对。
 //
 // 用法（必须套重计算闸；先跑过 65_shadow.mjs）：
-//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/76_boat_targets.mjs <matchId>
+//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/76_boat_targets.mjs <matchId> [--reach t1,t2,…]
+//   --reach：在这些拍上，从每个有海岸的我方号的岸出发沿水路广搜（和策略 searchWater 一样从 coast + border 起步，最远 2500 格），
+//            列出水路能到的岸各是谁的、最近多少格（C 段）。用来回答「当时有没有海路能到的敌岸」。
 // 输出：out/<matchId>/boat_targets.txt / boat_targets.json
 import fs from 'node:fs';
 import path from 'node:path';
@@ -55,6 +57,35 @@ for (const ln of shRows.slice(1)) {
 const shByT = new Map();
 for (const s of shadow) { if (!shByT.has(s.t)) shByT.set(s.t, []); shByT.get(s.t).push(s); }
 
+const argv = process.argv.slice(3);
+const reachTs = new Set((argv.includes('--reach') ? argv[argv.indexOf('--reach') + 1] : '').split(',').filter(Boolean).map(Number));
+const reachOut = [];
+function reachScan(g) {
+  const N = g.N, px = g.px, own = g.own, d4 = g.dir4;
+  for (const [b, me] of idOf) {
+    if (!g.alive[me] || !g.coast[me] || !g.coast[me].length) continue;
+    const dist = new Int32Array(N).fill(-1), q = new Int32Array(N);
+    let h = 0, t = 0;
+    const seed = (list) => { for (let i = list.length - 1; i >= 0; i--) for (let k = 0; k < 4; k++) { const c = list[i] + d4[k]; if (px[c] === SIM.T_WATER && dist[c] < 0) { dist[c] = 0; q[t++] = c; } } };
+    seed(g.coast[me]); seed(g.border[me]);
+    const seen = new Map(); // owner -> {d, cells}
+    let neutD = -1, neutCells = 0, water = 0;
+    while (h < t) {
+      const c = q[h++]; const dc = dist[c];
+      if (dc > 2500) break;
+      water++;
+      for (let k = 0; k < 4; k++) {
+        const n = c + d4[k]; const v = px[n];
+        if (v === SIM.T_WATER) { if (dist[n] < 0) { dist[n] = dc + 1; q[t++] = n; } }
+        else if (v === SIM.T_LAND) { neutCells++; if (neutD < 0) neutD = dc + 1; }
+        else if (v >= SIM.P_INNER) { const o = own[n]; if (o === me) continue; const e = seen.get(o) || { d: dc + 1, cells: 0 }; e.cells++; seen.set(o, e); }
+      }
+    }
+    const rows = [...seen].map(([o, e]) => ({ o, d: e.d, cells: e.cells, mate: o < H && !g.isEnemy(me, o), squad: botOf.has(o), ai: o >= H, left: o < H && g.state[o] === 2, terr: g.terr[o], bal: g.bal[o] }));
+    reachOut.push({ t: g.t, bot: b, coastPx: g.coast[me].length, water, neutD, neutCells, rows });
+  }
+}
+
 const proto = SIM.Game.prototype;
 const launches = [], landings = [];
 const origBoat = proto.boat;
@@ -95,6 +126,7 @@ proto.tick = function () {
     if (g.t >= s.t && g.t <= s.t + 60) { if (!ownerHist.has(i)) ownerHist.set(i, new Map()); ownerHist.get(i).set(g.t, ownerAt(g, s.c)); }
   }
   origTick.call(this);
+  if (reachTs.has(g.t) && !g.spawnPhase) { try { reachScan(g); } catch (e) { if (!reachScan.err) reachScan.err = String(e && e.message); } }
 };
 
 await resim(mid, {});
@@ -154,6 +186,19 @@ const chg = J.filter((r) => r.ownerAtDecision && r.landOwner && r.mate && !Strin
 P(`  决策拍目标格不是队友的地、靠岸时却是队友的地：${chg.length} 条（${chg.map((r) => `${r.bot}@${r.t}`).join('、') || '无'}）`);
 const mateAtDec = J.filter((r) => r.ownerAtDecision && String(r.ownerAtDecision).startsWith('队友'));
 P(`  决策拍目标格就已经是队友的地：${mateAtDec.length} 条（${mateAtDec.map((r) => `${r.bot}@${r.t}`).join('、') || '无'}）`);
+if (reachTs.size) {
+  P('');
+  P(`C. 水路能到的岸（--reach；从该号的 coast + border 起步沿水广搜，最远 2500 格；距离 = 水路格数）${reachScan.err ? ' | 出错：' + reachScan.err : ''}`);
+  for (const r of reachOut) {
+    const en = r.rows.filter((x) => !x.mate && !x.ai).sort((a, b2) => a.d - b2.d);
+    const ai = r.rows.filter((x) => x.ai).sort((a, b2) => a.d - b2.d);
+    const mates = r.rows.filter((x) => x.mate).sort((a, b2) => a.d - b2.d);
+    const f1 = (x) => `${(names[x.o] || 'AI').trim().slice(0, 16)}#${x.o}${x.left ? '（已离开）' : ''} 最近 ${x.d} 格（岸 ${x.cells} 格；他 ${fmt(x.terr)} 格 / ${fmt(x.bal)} 兵）`;
+    P(`  t=${r.t} ${r.bot}（海岸 ${r.coastPx} 格，搜到水面 ${fmt(r.water)} 格）：无主地 ${r.neutD < 0 ? '搜不到' : `最近 ${r.neutD} 格（岸 ${r.neutCells} 格）`}；` +
+      `敌方真人的岸 ${en.length} 家${en.length ? '：' + en.slice(0, 5).map(f1).join('；') : ''}；内置 AI 的岸 ${ai.length} 家${ai.length ? '（最近 ' + ai[0].d + ' 格）' : ''}；` +
+      `队友的岸 ${mates.length} 家（其中我方号 ${mates.filter((x) => x.squad).length} 家${mates.length ? '；最近 ' + mates.slice(0, 3).map((x) => `${botOf.get(x.o) || (names[x.o] || '').trim().slice(0, 12) + '#' + x.o} ${x.d} 格`).join('、') : ''}）`);
+  }
+}
 fs.writeFileSync(path.join(OUT, 'boat_targets.txt'), L.join('\n') + '\n');
-fs.writeFileSync(path.join(OUT, 'boat_targets.json'), JSON.stringify({ launches: J, lost, lostN, handed, handedN, atk, atkN }, null, 0));
+fs.writeFileSync(path.join(OUT, 'boat_targets.json'), JSON.stringify({ launches: J, lost, lostN, handed, handedN, atk, atkN, reach: reachOut.map((r) => ({ ...r, rows: r.rows.map((x) => ({ ...x, name: x.o < H ? names[x.o] : 'AI#' + x.o })) })) }, null, 0));
 console.log(L.join('\n'));

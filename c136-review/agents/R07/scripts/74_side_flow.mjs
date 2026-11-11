@@ -242,6 +242,33 @@ for (const p of topOthers) for (let i = 0; i + 1 < cuts.length; i++) {
   P('  按目标合计（挨了多少真人的兵）：' + [...byTo].sort((a, b) => b[1].troops - a[1].troops).slice(0, 20).map(([p, a]) => `${nm(p)} ${a.n} 条 ${fmt(a.troops)}`).join('；'));
   P('  按进攻方合计（往真人身上发了多少）：' + [...byFrom].sort((a, b) => b[1].troops - a[1].troops).slice(0, 20).map(([p, a]) => `${nm(p)} ${a.n} 条 ${fmt(a.troops)}`).join('；'));
   J.matrix = rowsE.map((m) => ({ from: names[m.from], to: names[m.to], n: m.n, troops: m.troops, fee: m.fee, heavy: m.heavy, t0: m.t0, t1: m.t1 }));
+  // F. 我方号打过的每个真人：他身上的兵有多少是我方发的、多少是同队其他真人发的、多少是别的队发的；他后来怎么样
+  const sqTeams = new Set([...botOf.keys()].map((q) => teams[q]));
+  const tgts = [...new Set(rowsE.filter((m) => botOf.has(m.from)).map((m) => m.to))];
+  const F = [];
+  for (const q of tgts) {
+    const o = { q, sq: 0, sqN: 0, mate: 0, mateN: 0, oth: 0, othN: 0, by: new Map(), mateBy: new Map(), t0: Infinity, t1: -Infinity };
+    for (const m of rowsE) {
+      if (m.to !== q) continue;
+      if (botOf.has(m.from)) { o.sq += m.troops; o.sqN += m.n; o.by.set(m.from, (o.by.get(m.from) || 0) + m.troops); o.t0 = Math.min(o.t0, m.t0); o.t1 = Math.max(o.t1, m.t1); }
+      else if (sqTeams.has(teams[m.from])) { o.mate += m.troops; o.mateN += m.n; o.mateBy.set(m.from, (o.mateBy.get(m.from) || 0) + m.troops); }
+      else { o.oth += m.troops; o.othN += m.n; }
+    }
+    let peak = 0, tLeft = null, tGone = null, had = false;
+    for (const [t, x] of snap[q]) { if (x[1] > peak) peak = x[1]; if (x[1] > 0) had = true; if (tLeft === null && x[3] === 2) tLeft = t; if (tGone === null && had && (!x[2] || x[1] === 0)) tGone = t; }
+    o.peak = peak; o.tLeft = tLeft; o.tGone = tGone;
+    F.push(o);
+  }
+  F.sort((a2, b2) => b2.sq - a2.sq);
+  P('');
+  P(`F. 我方号打过的真人（${F.length} 个；只算他还是真人席位时挨的兵）：我方发兵 / 同队其他真人发兵 / 别的队发兵；他的领土峰值、离开拍、出局拍`);
+  for (const o of F) {
+    const all = o.sq + o.mate + o.oth;
+    P(`  ${nm(o.q)}：我方 ${o.sqN} 条 ${fmt(o.sq)}（${(100 * o.sq / Math.max(1, all)).toFixed(0)}%；${[...o.by].sort((a2, b2) => b2[1] - a2[1]).slice(0, 4).map(([p2, v2]) => `${names[p2].replace(/^.*\] /, '')} ${fmt(v2)}`).join('、')}；t=${o.t0}~${o.t1}）` +
+      ` / 同队其他真人 ${o.mateN} 条 ${fmt(o.mate)}${o.mateBy.size ? `（${[...o.mateBy].sort((a2, b2) => b2[1] - a2[1]).slice(0, 3).map(([p2, v2]) => `${names[p2].slice(0, 14)} ${fmt(v2)}`).join('、')}）` : ''}` +
+      ` / 别的队 ${o.othN} 条 ${fmt(o.oth)}；领土峰值 ${fmt(o.peak)}，${o.tLeft !== null && (o.tGone === null || o.tLeft < o.tGone) ? `t=${o.tLeft} 离开，` : ''}${o.tGone !== null ? `t=${o.tGone} 出局` : '活到终局'}`);
+  }
+  J.squadTargets = F.map((o) => ({ target: names[o.q], team: teams[o.q], squadN: o.sqN, squadTroops: o.sq, mateN: o.mateN, mateTroops: o.mate, otherN: o.othN, otherTroops: o.oth, peak: o.peak, tLeft: o.tLeft, tGone: o.tGone }));
 }
 const sfx = tag ? `_${tag}` : '';
 fs.writeFileSync(path.join(OUT, `side_flow${sfx}.txt`), L.join('\n') + '\n');

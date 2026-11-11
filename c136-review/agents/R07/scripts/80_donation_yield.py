@@ -8,7 +8,8 @@
   这是「落地当拍」的瞬时量：不含收方拿到兵之后去打地、也不含捐方本来会不会把这些兵花掉。
 输入：out/<mid>/cmd_effect.tsv（67_troop_flow.mjs：引擎里每条生效指令的扣款 / 到账）、quota_logs.tsv（69_quota_truth.mjs：日志里的调度类别与落地拍）、
       bundles/<mid>/card.json（全图陆地）
-用法：python3 80_donation_yield.py <matchId>
+用法：python3 80_donation_yield.py <matchId> [--span t0:t1]…
+  --span：再按时间段各出一段（笔数、到账、手续费、Δ利息、收方落地后过软上限 / 顶到硬上限的笔数、按「捐方→收方」的合计、接力笔数）
 输出：out/<mid>/donation_yield.txt / .json
 """
 import csv, importlib.util, json, os, sys
@@ -80,12 +81,43 @@ def main():
     for r in rows:
         P(f"   t={r['t']} {r['donor']}→{r['to']} {KIND_CN.get(r['kind'], r['kind'])} | {r['got']:,} {r['fee']:,} | {r['dDonor0']:.0f}→{r['dDonor1']:.0f}（{r['rd0']}→{r['rd1']}） | "
           f"{r['dRecv0']:.0f}→{r['dRecv1']:.0f}（{r['rr0']}→{r['rr1']}） | {r['dI']:+,.0f}")
+    spans = []
+    av = sys.argv[2:]
+    for i, x in enumerate(av):
+        if x == '--span' and i + 1 < len(av):
+            t0, t1 = av[i + 1].split(':'); spans.append((int(t0), int(t1)))
+    J['spans'] = []
+    if spans:
+        P('')
+        P('C. 按时间段（--span；「接力」= 这笔的捐方在此前 300 拍内收过我方的捐款；「硬上限」= 落地后收方余额 ≥149.5×领土）')
+    for t0, t1 in spans:
+        L = [r for r in rows if t0 <= r['t'] <= t1]
+        if not L:
+            P(f'   t={t0}~{t1}: 0 笔'); continue
+        got = sum(r['got'] for r in L); fee = sum(r['fee'] for r in L); dI = sum(r['dI'] for r in L)
+        over = [r for r in L if r['dRecv1'] > 100]
+        hard = [r for r in L if r['dRecv1'] >= 149.5]
+        dcap = [r for r in L if r['dDonor0'] >= 149.5]
+        lost = sum(r['lost'] for r in L)
+        relay = []
+        for r in L:
+            if any(q['to'] == r['donor'] and 0 <= r['t'] - q['t'] <= 300 for q in rows):
+                relay.append(r)
+        pair = defaultdict(lambda: [0, 0, 0])
+        for r in L:
+            pr = pair[(r['donor'], r['to'])]; pr[0] += 1; pr[1] += r['got']; pr[2] += r['fee']
+        P(f"   t={t0}~{t1}: {len(L)} 笔，到账 {got:,}，手续费 {fee:,}（手续费 ÷ 到账 = {100 * fee / max(1, got):.1f}%）；Δ利息合计 {dI:+,.0f} / 10 拍（为负的 {sum(1 for r in L if r['dI'] < 0)} 笔）；"
+          f"落地后收方过软上限 {len(over)} 笔（到账 {sum(r['got'] for r in over):,}），其中顶到硬上限 {len(hard)} 笔；捐方发令时自己就在硬上限的 {len(dcap)} 笔；"
+          f"扣了款却没到账的兵 {lost:,}；接力 {len(relay)} 笔（到账 {sum(r['got'] for r in relay):,}，手续费 {sum(r['fee'] for r in relay):,}）")
+        P('      捐方→收方：' + '；'.join(f"{a}→{b} {v[0]} 笔 {v[1]:,}（费 {v[2]:,}）" for (a, b), v in sorted(pair.items(), key=lambda kv: -kv[1][1])[:12]))
+        J['spans'].append(dict(t0=t0, t1=t1, n=len(L), got=got, fee=fee, dI=round(dI), recvOver=len(over), recvHard=len(hard), donorHard=len(dcap), lost=lost, relayN=len(relay), relayGot=sum(r['got'] for r in relay), relayFee=sum(r['fee'] for r in relay),
+                               pairs=[dict(donor=a, to=b, n=v[0], got=v[1], fee=v[2]) for (a, b), v in sorted(pair.items(), key=lambda kv: -kv[1][1])]))
     J['rows'] = rows
     open(os.path.join(out, 'donation_yield.txt'), 'w', encoding='utf-8').write('\n'.join(T) + '\n')
     json.dump(J, open(os.path.join(out, 'donation_yield.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    print('\n'.join(T[:14 + 0]))
+    print('\n'.join(T[:9]))
     print('...')
-    print('\n'.join(T[-12:]))
+    print('\n'.join(x for x in T if x.startswith('C.') or x.startswith('   t=') and '笔，到账' in x or x.startswith('      捐方→收方')))
 
 
 if __name__ == '__main__':
