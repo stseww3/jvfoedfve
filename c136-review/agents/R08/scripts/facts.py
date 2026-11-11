@@ -41,17 +41,20 @@ def fmt(n):
     return str(n)
 
 
-def build(mid):
+def build(mid, room=None):
+    """room：一个对局包里混了几个物理房间时选哪个房间（默认主房间）；单房间的包忽略这个参数。"""
     card = L.load_card(mid)
     land = card["mapLand"]
     recs = L.parse_log(mid)
     truth = L.load_truth(mid)
+    label_map, rinfo = L.room_label_map(mid)
     res_rows0 = L.load_results(mid)
     res_me = {}
     for rr in res_rows0:
         if rr.get("meId") is not None and rr.get("bot"):
             res_me[str(rr["bot"])] = int(rr["meId"])
-    tracks, notes, unresolved = L.resolve_identities(recs, L.fingerprints(truth) if truth else None, res_me)
+    tracks, notes, unresolved = L.resolve_identities(recs, L.fingerprints(truth) if (truth and not label_map) else None, res_me,
+                                                     label_map)
     end_tick = card["outcome"]["endTick"]
     primary = card.get("ourPrimaryTeam")
 
@@ -125,9 +128,26 @@ def build(mid):
             b["resBalance"] = rr.get("balance")
             b["resTerritory"] = rr.get("territory")
             b["alivePlayers"] = rr.get("alivePlayers")
+    # 多房间的包：每个号标上房间；真值（录像）只属于其中一个房间
+    truth_room = None
+    if rinfo:
+        hits = defaultdict(int)
+        for key, b in bots.items():
+            ri = rinfo.get(key) or {}
+            b["room"], b["meReal"], b["pseudoMe"] = ri.get("room"), ri.get("me"), bool(ri.get("pseudo"))
+            if truth and b["meReal"] is not None and b["meReal"] < truth["H"]:
+                nm = str(truth["names"][b["meReal"]]).strip().lower()
+                if any(nm.endswith(lab.lower()) for lab in b["labels"]):
+                    hits[b["room"]] += 1
+        if hits:
+            truth_room = max(hits, key=hits.get)
     if truth:
         # 全场真值：队号、离开拍、阵亡拍以重演为准
         for me, b in bots.items():
+            if rinfo:
+                if b.get("room") != truth_room or b.get("meReal") is None:
+                    continue
+                me = b["meReal"]
             if me < truth["H"]:
                 b["team"] = truth["teams"][me] or b["team"]
                 b["teamTruth"] = True
@@ -136,6 +156,44 @@ def build(mid):
                 if b["event"] is None and b["leftTick"] is not None:
                     # 没有结算行、但录像里执行过「离开」：按离开处理，拍号取引擎执行离开的那一拍
                     b["event"], b["result"], b["deathTick"], b["leftInferred"] = "left", "left", b["leftTick"], True
+    rooms_meta = None
+    other_bots = {}
+    sel_room = None
+    if rinfo:
+        sel_room = rinfo["_main"] if room is None else int(room)
+        rooms_meta = rinfo["_rooms"]
+        other_bots = {k: b for k, b in bots.items() if b.get("room") != sel_room}
+        bots = {k: b for k, b in bots.items() if b.get("room") == sel_room}
+        rm = rooms_meta.get(sel_room) or {}
+        orig = {k: card.get(k) for k in ("mapLand", "seededPlayers", "squadBots", "ourPrimaryTeam", "teamSplitCounts", "distinctSquadTeams")}
+        orig["outcome"] = dict(card["outcome"])
+        land = rm.get("land") or land
+        split = defaultdict(int)
+        for b in bots.values():
+            if b["team"] is not None:
+                split[str(b["team"])] += 1
+        primary = int(max(split, key=lambda k: (split[k], -int(k)))) if split else None
+        end_tick = rm.get("lastTick") or end_tick
+        all_t = sorted({s["t"] for b in bots.values() for s in b["ticks"]})
+        peak_sq = max((sum(s["terr"] for b in bots.values() for s in [snap_at(b, t, 0)] if s) for t in all_t), default=0)
+        tot_rows = [(b["deathTick"] or 0, b) for b in bots.values() if b.get("teamTotals")]
+        prim_sh = [bb["teamTotals"].get(str(primary), 0) / land for _, bb in sorted(tot_rows, key=lambda x: x[0])] if primary else []
+        last_tot = max(tot_rows, key=lambda x: x[0])[1]["teamTotals"] if tot_rows else None
+        winner = rm.get("winner")
+        if winner is None and last_tot:
+            lt = {int(k): v for k, v in last_tot.items() if int(k) != 0}
+            winner = max(lt, key=lt.get) if lt else None
+        card = dict(card)
+        oc = dict(card["outcome"])
+        any_won = any(b["result"] == "won" for b in bots.values())
+        oc.update(endTick=end_tick, winnerTeam=winner, primaryTeamWon=bool(winner is not None and winner == primary),
+                  anyBotWon=any_won, peakSquadLandShare=round(peak_sq / land, 4),
+                  peakPrimaryTeamShareSeen=round(max(prim_sh), 4) if prim_sh else None,
+                  ourFinalTeamShare=round(prim_sh[-1], 4) if prim_sh else None)
+        oc["resultLabel"] = "won" if oc["primaryTeamWon"] else "lost"
+        card.update(mapLand=land, seededPlayers=rm.get("seeded") or card.get("seededPlayers"), squadBots=len(bots),
+                    ourPrimaryTeam=primary, teamSplitCounts=dict(sorted(split.items())), distinctSquadTeams=len(split), outcome=oc,
+                    roomIdx=sel_room, roomsInBundle=len(rooms_meta), cardOriginal=orig)
     name_of = {me: b["name"] for me, b in bots.items()}
     # 没拆队的局：离开（left，结算里 team=null）的号按主队算，并标记为推断
     if len(card.get("teamSplitCounts") or {}) == 1:
@@ -153,8 +211,10 @@ def build(mid):
                 items = re.findall(r"([^|]+?):tick=(\d+),terr=(\d+),sent=(\d+)\((\w+)\)", m.group(3))
                 ochk.append(dict(line=r["line"], n=int(m.group(1)), tick=int(m.group(2)),
                                  items=[dict(name=a.strip(), tick=int(b_), terr=int(c), sent=int(d), ok=e) for a, b_, c, d, e in items]))
-    return dict(card=card, land=land, bots=bots, notes=notes, unresolved=[u["line"] for u in unresolved], hasTruth=bool(truth),
-                endTick=end_tick, primary=primary, ochk=ochk, name_of=name_of, results=res_rows)
+    return dict(card=card, land=land, bots=bots, notes=notes, unresolved=[u["line"] for u in unresolved],
+                hasTruth=bool(truth) and (not rinfo or truth_room == sel_room),
+                endTick=end_tick, primary=primary, ochk=ochk, name_of=name_of, results=res_rows,
+                room=sel_room, rooms=rooms_meta, truthRoom=truth_room, otherBots=other_bots)
 
 
 def snap_at(b, t, tol=45):
@@ -163,6 +223,19 @@ def snap_at(b, t, tol=45):
         if abs(s["t"] - t) <= tol and (best is None or abs(s["t"] - t) < abs(best["t"] - t)):
             best = s
     return best
+
+
+def snap_fill(b, t):
+    """t 拍的快照；这一拍的日志行丢了（前后都有快照）就沿用前一条。返回 (快照, 是否沿用)。"""
+    prev = None
+    for s in b["ticks"]:
+        if s["t"] == t:
+            return s, False
+        if s["t"] < t:
+            prev = s
+        else:
+            return (prev, True) if prev is not None else (None, False)
+    return None, False
 
 
 def segments(b):
@@ -394,6 +467,14 @@ def digest(F):
       f"result={oc['resultLabel']} winnerTeam={oc['winnerTeam']} endTick={oc['endTick']} peakSquadShare={oc['peakSquadLandShare']} "
       f"peakPrimaryTeamShareSeen={oc['peakPrimaryTeamShareSeen']} finalTeamShare={oc['ourFinalTeamShare']}")
     P(f"    anomalies={card['anomaliesSummary']} peer={card.get('sameMatchPeer')}")
+    if F.get("rooms"):
+        P(f"    【多房间的包】本底稿只算房间 {F['room']}；录像（真值）属于房间 {F.get('truthRoom')}。各房间：" +
+          "；".join(f"房间{k}: 陆地 {v['land']} 真人 {v['seeded']} 我方 {v['nBots']} 个号 开局 {v['startUtc']} 末拍 {v['lastTick']} 胜队 {v['winner']}"
+                    for k, v in sorted(F["rooms"].items())))
+        co = card.get("cardOriginal") or {}
+        P(f"    对局卡原值（把几个房间混在一起算的）：squadBots={co.get('squadBots')} split={co.get('teamSplitCounts')} land={co.get('mapLand')} "
+          f"outcome={co.get('outcome')}")
+        P("    其它房间的号：" + " ".join(f"{b['name']}({k})r{b.get('room')}" for k, b in F["otherBots"].items()))
     if F["notes"]:
         P(f"    身份还原备注 {len(F['notes'])} 条；未归属日志行 {len(F['unresolved'])} 条")
 
@@ -407,11 +488,12 @@ def digest(F):
 
     # [C] checkpoints
     all_t = sorted({s["t"] for b in bots.values() for s in b["ticks"]})
-    P("[C] 检查点 t | 存活(有快照) | 编队领土 占比% | 编队余额 密度 | 主队成员(T=primary)领土 占比% | 被围(nb=0&neut=0)数 | 密度>=95数 | 超软上限数")
+    P("[C] 检查点 t | 有数的号数(其中沿用前一条快照的) | 编队领土 占比% | 编队余额 密度 | 主队成员(T=primary)领土 占比% | 被围(nb=0&neut=0)数 | 密度>=95数 | 超软上限数")
     prim = F["primary"]
     for t in all_t:
-        ss = [(b, snap_at(b, t, 0)) for b in bots.values()]
-        ss = [(b, s) for b, s in ss if s]
+        sf = [(b,) + snap_fill(b, t) for b in bots.values()]
+        nfill = sum(1 for _, s, f in sf if s and f)
+        ss = [(b, s) for b, s, f in sf if s]
         if not ss:
             continue
         terr = sum(s["terr"] for _, s in ss)
@@ -420,7 +502,7 @@ def digest(F):
         boxed = sum(1 for _, s in ss if s["nb"] == 0 and s["neut"] == 0)
         dense = sum(1 for _, s in ss if s["dens"] >= 95)
         over = sum(1 for _, s in ss if s["bal"] > 100 * s["terr"] and s["terr"] > 0)
-        P(f"    {t:>6} | {len(ss):>2} | {terr:>7} {100 * terr / land:5.2f} | {bal:>9} {bal / max(terr, 1):6.1f} | {pterr:>7} {100 * pterr / land:5.2f} | "
+        P(f"    {t:>6} | {len(ss):>2}({nfill}) | {terr:>7} {100 * terr / land:5.2f} | {bal:>9} {bal / max(terr, 1):6.1f} | {pterr:>7} {100 * pterr / land:5.2f} | "
           f"{boxed} | {dense} | {over}")
 
     P("[D] 结算拍的全队领土（team.totals）: tick | bot | event | mine | 各队占比% | 我方排名")
@@ -551,27 +633,35 @@ def digest(F):
     return "\n".join(o)
 
 
-def main():
-    mid = sys.argv[1]
-    F = build(mid)
+def full(mid, room=None):
+    F = build(mid, room)
     F["dons"] = donation_ledger(F)
     F["drop30"] = drop30(F, F["dons"])
     F["idle"] = idle_check(F)
     F["inflow"] = inflow_check(F, F["dons"])
+    return F
+
+
+def main():
+    mid = sys.argv[1]
+    room = int(sys.argv[sys.argv.index("--room") + 1]) if "--room" in sys.argv else None
+    F = full(mid, room)
     text = digest(F)
     od = os.path.join(L.OUT, mid)
     os.makedirs(od, exist_ok=True)
-    with open(os.path.join(od, "digest.txt"), "w", encoding="utf-8") as f:
+    # 多房间的包：主房间写 digest.txt / facts.json，其它房间写 digest_room<N>.txt / facts_room<N>.json
+    suf = "" if (room is None or F.get("rooms") is None or room == L.room_label_map(mid)[1]["_main"]) else f"_room{room}"
+    with open(os.path.join(od, f"digest{suf}.txt"), "w", encoding="utf-8") as f:
         f.write(text + "\n")
     slim = dict(card=F["card"], notes=F["notes"], unresolved=F["unresolved"],
                 bots={str(me): {k: v for k, v in b.items() if k not in ("slow",)} for me, b in F["bots"].items()},
                 dons=F["dons"], drop30=F["drop30"], ochk=F["ochk"], inflow=F["inflow"])
-    with open(os.path.join(od, "facts.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(od, f"facts{suf}.json"), "w", encoding="utf-8") as f:
         json.dump(slim, f, ensure_ascii=False)
     if "--quiet" not in sys.argv:
         print(text)
     else:
-        print(f"{mid}: digest {len(text.splitlines())} 行 -> {od}/digest.txt")
+        print(f"{mid}: digest {len(text.splitlines())} 行 -> {od}/digest{suf}.txt")
 
 
 if __name__ == "__main__":

@@ -186,16 +186,106 @@ def _dist(tr, s):
     return d
 
 
-def resolve_identities(recs, fp=None, res_me=None):
+ROOMS_JSON = os.path.join(DATA, "src", "tools", "rooms-discovery.json")
+_ROOMS_CACHE = {}
+
+
+def load_rooms(mid):
+    """统筹分发的房间拆分表（rooms-discovery.json）里这一局的记录；没有就返回 None。"""
+    if "all" not in _ROOMS_CACHE:
+        try:
+            with open(ROOMS_JSON, encoding="utf-8") as f:
+                _ROOMS_CACHE["all"] = {m["matchId"]: m for m in json.load(f)}
+        except OSError:
+            _ROOMS_CACHE["all"] = {}
+    return _ROOMS_CACHE["all"].get(mid)
+
+
+def room_label_map(mid):
+    """一个对局包里混了几个物理房间（或某个房间没有 HL-GAME-INIT 行）时，按名字链表把 label 直接定到号。
+
+    返回 (label_map, info)；不需要（单房间且每个号都有 init 行）时返回 (None, None)。
+      label_map: {label: key}；info: {key: dict(room, me, names, team, land, seeded, pseudo)}
+      key = 玩家号；房间表里没有玩家号的号（没有结算行也没有 init 行）用 1000+100×房间号+序号；
+            不同房间撞玩家号时，非主房间的号 key = 10000×房间号 + 玩家号。
+    同一个 label 出现在两个号的名字链里时，这个 label 不进 label_map（留给连续性判断），并记在 info['_collide']。
+    """
+    m = load_rooms(mid)
+    if not m:
+        return None, None
+    if m.get("nRooms", 1) <= 1 and m.get("nInitNames", 0) >= m.get("nBots", 0):
+        return None, None
+    main = m.get("mainRoom", 0)
+    info, owner, collide = {}, {}, set()
+    used = set()
+    order = sorted(m["rooms"], key=lambda r: (r["roomIdx"] != main, r["roomIdx"]))
+    for r in order:
+        k = 0
+        for b in r["bots"]:
+            me = b.get("me")
+            if me is None:
+                k += 1
+                key = 1000 + 100 * r["roomIdx"] + k
+            else:
+                key = me if me not in used else 10000 * r["roomIdx"] + me
+            used.add(key)
+            info[key] = dict(room=r["roomIdx"], me=me, names=list(b["names"]), team=b.get("team"), land=r.get("land"),
+                             seeded=r.get("seeded"), pseudo=me is None)
+            for nm in b["names"]:
+                if nm in owner and owner[nm] != key:
+                    collide.add(nm)
+                owner[nm] = key
+    for nm in collide:
+        owner.pop(nm, None)
+    info["_collide"] = sorted(collide)
+    info["_main"] = main
+    info["_rooms"] = {r["roomIdx"]: dict(land=r.get("land"), seeded=r.get("seeded"), nBots=r.get("nBots"), startUtc=r.get("startUtc"),
+                                         lastTick=r.get("lastTick"), init=r.get("initKey"), winner=r.get("winner"),
+                                         physRoom=r.get("physRoom")) for r in m["rooms"]}
+    return owner, info
+
+
+def resolve_identities(recs, fp=None, res_me=None, label_map=None):
     """把日志记录按玩家归并。返回 (tracks: {me: Track}, notes: [str], unresolved: [rec])。
 
-    fp：fingerprints() 的结果（有全场真值时）；res_me：{结算行的 label: 玩家号}（results.csv 的 meId 列）。
+    fp：fingerprints() 的结果（有全场真值时）；res_me：{结算行的 label: 玩家号}（results.csv 的 meId 列）；
+    label_map：room_label_map() 的 {label: key}（多房间的包）。在表里的 label 直接归到那个号，
+    只用 HL-TICK 的连续性做核对（不连续记进 notes），不再走指纹和连续性猜测。
     """
     tracks = {}
     cur = {}          # label -> me（当前绑定）
     pending = defaultdict(list)   # label -> 还没归属的记录
     notes = []
     unresolved = []
+    if label_map:
+        for r in recs:
+            label, tag = r["label"], r["tag"]
+            if label is None:
+                continue
+            key = label_map.get(label)
+            if key is None:
+                unresolved.append(r)
+                continue
+            tr = tracks.get(key)
+            if tr is None:
+                tr = tracks[key] = Track(key, label)
+            elif tr.labels[-1] != label:
+                notes.append(f"line {r['line']}: 号 {key} 的 label {tr.labels[-1]} -> {label}（名字链表）")
+                tr.labels.append(label)
+            if tag == "HL-TICK" and "tick" in r:
+                s = r["tick"]
+                if not _consistent(tr, s):
+                    notes.append(f"line {r['line']}: 名字链表把 '{label}' t={s['t']} 归到号 {key}，但与它上一条 HL-TICK（t={tr.last['t']}）不连续")
+                rec = dict(s)
+                rec["line"] = r["line"]
+                rec["label"] = label
+                tr.ticks.append(rec)
+                tr.last = rec
+            elif tag == "RESULT":
+                tr.result = r
+                tr.closed = True
+            tr.lines.append(r)
+        return tracks, notes, unresolved
 
     def bind(label, me, why, line):
         old = cur.get(label)

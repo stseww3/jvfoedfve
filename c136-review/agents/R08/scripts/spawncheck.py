@@ -26,14 +26,16 @@ def analyse(mid):
     T = Truth(mid)
     R = T.R
     seqs = defaultdict(list)
-    n_lines = 0
+    n_lines = n_backend = 0
     with open(os.path.join(DATA, "bundles", mid, "in_game.log"), encoding="utf-8", errors="replace") as f:
         for l in f:
-            if "[HL-SPAWN]" not in l:
+            # 本地兜底选点打 [HL-SPAWN]，后端协调器的指派打 [HL-SPAWN-BACKEND]（11-10 14:08 UTC 起无 Boss 也启用）；两种都是一次出生指派
+            if "[HL-SPAWN]" not in l and "[HL-SPAWN-BACKEND]" not in l:
                 continue
-            m = re.search(r"me=(\d+) .*-> \((\d+),(\d+)\)", l)
+            m = re.search(r"me=(\d+) .*?-> \((\d+),(\d+)\)", l)
             if m:
                 n_lines += 1
+                n_backend += "[HL-SPAWN-BACKEND]" in l
                 seqs[int(m.group(1))].append((int(m.group(2)), int(m.group(3))))
     rows = []
     ids = sorted(T.sqIds)
@@ -57,7 +59,7 @@ def analyse(mid):
         for b in rows[i + 1:]:
             if a["last"] and a["last"] == b["last"]:
                 same_last.append((a, b))
-    return T, rows, sorted(pairs, key=lambda x: x[0]), same_last, n_lines
+    return T, rows, sorted(pairs, key=lambda x: x[0]), same_last, (n_lines, n_backend)
 
 
 def main():
@@ -66,8 +68,8 @@ def main():
         print(__doc__)
         return 1
     mid = args[0]
-    T, rows, pairs, same_last, n_lines = analyse(mid)
-    out = [f"[PA] {mid} 出生点：日志 [HL-SPAWN] {n_lines} 行。号 | 队 | 指派条数 | 引擎落点 | 落点是第几条指派 | 最后一条指派 | 最后一条执行了吗 | 最近编队友（距离）"]
+    T, rows, pairs, same_last, (n_lines, n_backend) = analyse(mid)
+    out = [f"[PA] {mid} 出生点：日志出生指派 {n_lines} 行（其中后端协调器 [HL-SPAWN-BACKEND] {n_backend} 行）。号 | 队 | 指派条数 | 引擎落点 | 落点是第几条指派 | 最后一条指派 | 最后一条执行了吗 | 最近编队友（距离）"]
     for r in rows:
         out.append(f"     {r['name']:<12} | T{r['team']} | {r['n']:>2} | {r['engine']} | {r['hit'] or '不在日志里'} | {r['last']} | {'是' if r['lastExecuted'] else '否'} | "
                    f"{T.names[r['nearId']] if r['nearId'] is not None else '-'}（{r['nearDist']:.0f}）" if r["nearDist"] is not None else "")

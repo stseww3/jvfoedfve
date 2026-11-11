@@ -45,9 +45,11 @@ def team_shares(b, land):
 
 
 def squad_point(F, t, src="HL-TICK"):
+    """t 拍的编队合计。某个号这一拍的日志行丢了（前后都有快照）就沿用它的前一条，并记在 botsCarriedForward 里。"""
     bots, land = F["bots"], F["land"]
-    ss = [(b, facts.snap_at(b, t, 0)) for b in bots.values()]
-    ss = [(b, s) for b, s in ss if s]
+    sf = [(b,) + facts.snap_fill(b, t) for b in bots.values()]
+    carried = sum(1 for _, s, f in sf if s and f)
+    ss = [(b, s) for b, s, f in sf if s]
     if not ss:
         return None
     terr = sum(s["terr"] for _, s in ss)
@@ -57,6 +59,8 @@ def squad_point(F, t, src="HL-TICK"):
               sqDens=round(bal / max(terr, 1), 1),
               boxedIn=sum(1 for _, s in ss if s["nb"] == 0 and s["neut"] == 0),
               overSoftCap=sum(1 for _, s in ss if s["terr"] > 0 and s["bal"] > 100 * s["terr"]))
+    if carried:
+        pt["botsCarriedForward"] = carried
     if len(F["card"].get("teamSplitCounts") or {}) > 1:
         pterr = sum(s["terr"] for b, s in ss if b["team"] == prim)
         pt["primaryTeamBotsTerr"] = pterr
@@ -101,7 +105,7 @@ def auto_timeline(F):
     if all_t:
         pts.setdefault(all_t[-1], squad_point(F, all_t[-1]))
         # 编队份额峰值
-        pk = max(all_t, key=lambda x: sum(s["terr"] for b in bots.values() for s in [facts.snap_at(b, x, 0)] if s))
+        pk = max(all_t, key=lambda x: sum(s["terr"] for b in bots.values() for s in [facts.snap_fill(b, x)[0]] if s))
         p = squad_point(F, pk)
         p["note"] = "编队领土份额峰值"
         pts[pk] = {**pts.get(pk, {}), **p}
@@ -121,6 +125,14 @@ def auto_timeline(F):
             pts[dt].setdefault("events", []).append(base["event"])
         else:
             pts[dt] = base
+    # 规程要的锚点（t≈180 / 600 / 1500 / 3000）附近这个房间完全没有数据时，明写一个缺口点（不补数）
+    for target, tol in ((180, 120), (600, 150), (1500, 250), (3000, 300)):
+        if (end and end < target) or any(abs(x - target) <= tol for x in pts):
+            continue
+        before = [x for x in all_t if x < target]
+        after = [x for x in all_t if x > target]
+        pts[target] = dict(t=target, src="无数据", dataGap=True, botsWithSnapshot=0, sqTerr=None, sqSharePct=None,
+                           note=f"这个房间在 t≈{target} 没有任何快照或开局行（之前最近一条 t={before[-1] if before else '无'}，之后最近一条 t={after[0] if after else '无'}）；只标缺口，不补数")
     return [pts[k] for k in sorted(pts)]
 
 
@@ -152,6 +164,75 @@ def load_truth(mid):
         return None
     import truth
     return truth, truth.Truth(mid)
+
+
+def merge_truth(mid, F, timeline, deaths):
+    """把真引擎重演的全场真值并进 timeline / deaths；只在录像属于这个房间时做。返回 truthSource 或 None。"""
+    tr = load_truth(mid) if F.get("hasTruth") else None
+    if not tr:
+        return None
+    truth, T = tr
+    for pt in timeline:
+        if pt["t"] <= T.end + 30:
+            pt["truth"] = truth.timeline_point(T, pt["t"])
+        if str(pt.get("event", "")).endswith(" left"):
+            pt["note"] = "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+    if timeline and timeline[-1]["t"] < T.end:
+        timeline.append(dict(t=T.end, src="真引擎重演的最后一拍", truth=truth.timeline_point(T, T.end)))
+    for d in deaths:
+        me = d.get("meReal") if d.get("meReal") is not None else d.get("me")
+        if isinstance(me, int) and me < T.H:
+            d["truth"] = truth.death_summary(T, me)
+    return dict(replayFrom=T.R.get("replayFrom"), peer=T.R.get("peer"), engineEndTick=T.end,
+                trajRowsExact=f"{T.R['validate']['bothExact']}/{T.R['validate']['rows']}")
+
+
+def side_room(mid, r, R):
+    """多房间的包：主房间之外的房间单独出一节（骨架同主房间：身份、时间线、死亡链；有录像就并真值）。"""
+    F = facts.build(mid, room=r)
+    F["dons"] = facts.donation_ledger(F)
+    card = F["card"]
+    oc = card["outcome"]
+    rm = (F.get("rooms") or {}).get(r) or {}
+    notes = (R.get("sideRoomDeathNotes") or {}).get(r, {})
+    tl = auto_timeline(F)
+    deaths = auto_deaths(F, notes)
+    for d in deaths:
+        b = F["bots"].get(d["me"])
+        if b is not None and b.get("meReal") is not None:
+            d["meReal"] = b["meReal"]
+    ts = merge_truth(mid, F, tl, deaths)
+    out = dict(roomIdx=r, physRoom=rm.get("physRoom"), startUtc=rm.get("startUtc"), mapLand=F["land"], seededPlayers=card.get("seededPlayers"),
+               mode=rm.get("mode"), endTick=oc["endTick"], winnerTeam=oc["winnerTeam"], primaryTeam=card["ourPrimaryTeam"],
+               primaryTeamWon=oc["primaryTeamWon"], peakSquadLandShare=oc["peakSquadLandShare"], ourFinalTeamShare=oc["ourFinalTeamShare"],
+               squad=[dict(me=me, meReal=b.get("meReal"), name=b["name"], labels=b["labels"], team=b["team"], spawn=b["spawn"],
+                           spawnResolves=b.get("spawnCount", 0), event=b["event"], result=b["result"], tick=b["deathTick"], place=b["place"])
+                      for me, b in F["bots"].items()],
+               timeline=tl, deaths=deaths)
+    if ts:
+        out["truthSource"] = ts
+    out.update((R.get("sideRoomExtra") or {}).get(r, {}))
+    return out
+
+
+def donfit_summary(mid, room):
+    """donfit.py 的定案（余额序列拟合）；没有跑过就返回 None。"""
+    p = os.path.join(ROOT, "out", mid, "donfit.json" if room is None else f"donfit_room{room}.json")
+    if not os.path.exists(p):
+        return None
+    rows = json.load(open(p, encoding="utf-8"))["rows"]
+    ex = [r for r in rows if r["status"] == "EXEC"]
+    return dict(method="donfit.py：拿捐出方的余额观测序列（HL-TICK + 每条 HL-DONATE 的 myBal）逐段拟合，在途的单子允许晚落地；"
+                       "成交几笔由余额拟合定，同样大小的候选里先挑不违反引擎受捐额度的、再挑最新发的；"
+                       "同一个快照窗里还有攻击/船时只收『整单、额度内』的拟合，其余记判不了",
+                quotaConflicts=sum(1 for r in ex if r.get("quotaOver")),
+                logged=len(rows), executed=len(ex), notExecuted=sum(1 for r in rows if r["status"] == "NOEXEC"),
+                undetermined=sum(1 for r in rows if r["status"] == "AMB"),
+                delivered=sum(r.get("amt") or 0 for r in ex), tax=sum(r.get("fee") or 0 for r in ex),
+                clippedByReceiverCap=sum(1 for r in ex if r.get("clip")),
+                lagAtLeast20=sum(1 for r in ex if (r.get("lagLo") or 0) >= 20),
+                refires=sum(1 for r in rows if r.get("dupOf") is not None),
+                old20TickRuleRejectedButExecuted=sum(1 for r in ex if r.get("oldVerdict") == "REJ"))
 
 
 def build(mid):
@@ -200,6 +281,7 @@ def build(mid):
                     note="观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
                     donatedArrivedUpperBound=sum(d["amountEff"] for d in acc), donationTaxUpperBound=sum(d["fee"] for d in acc),
                     cardLikelyRejected=(card.get("anomaliesSummary") or {}).get("likelyRejectedTransfers"),
+                    **({"donfit": donfit_summary(mid, None)} if donfit_summary(mid, None) else {}),
                     **R.get("ledgerExtra", {})),
         decisions=R["decisions"],
         newPatterns=R.get("newPatterns", []),
@@ -215,21 +297,14 @@ def build(mid):
     for k in ("peerComparison", "teamSplitNotes"):
         if k in R:
             doc[k] = R[k]
-    tr = load_truth(mid)
-    if tr:
-        truth, T = tr
-        for pt in doc["timeline"]:
-            if pt["t"] <= T.end + 30:
-                pt["truth"] = truth.timeline_point(T, pt["t"])
-            if str(pt.get("event", "")).endswith(" left"):
-                pt["note"] = "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
-        if doc["timeline"] and doc["timeline"][-1]["t"] < T.end:
-            doc["timeline"].append(dict(t=T.end, src="真引擎重演的最后一拍", truth=truth.timeline_point(T, T.end)))
-        for d in doc["deaths"]:
-            if isinstance(d.get("me"), int) and d["me"] < T.H:
-                d["truth"] = truth.death_summary(T, d["me"])
-        doc["context"]["truthSource"] = dict(replayFrom=T.R.get("replayFrom"), peer=T.R.get("peer"), engineEndTick=T.end,
-                                             trajRowsExact=f"{T.R['validate']['bothExact']}/{T.R['validate']['rows']}")
+    ts = merge_truth(mid, F, doc["timeline"], doc["deaths"])
+    if ts:
+        doc["context"]["truthSource"] = ts
+    if F.get("rooms") and len(F["rooms"]) > 1:
+        doc["context"]["roomIdx"] = F["room"]
+        doc["context"]["roomsInBundle"] = len(F["rooms"])
+        doc["context"]["cardOriginal"] = card.get("cardOriginal")
+        doc["sideRooms"] = [side_room(mid, r, R) for r in sorted(F["rooms"]) if r != F["room"]]
     os.makedirs(REVIEWS, exist_ok=True)
     out = os.path.join(REVIEWS, f"{mid}.json")
     with open(out, "w", encoding="utf-8") as f:
