@@ -12,7 +12,7 @@
   aiShare    600 拍的 AI 地到 1800 拍被本队拿到的占比 ÷ 本队人头占比（1.0 = 按人头拿到了该拿的 AI 地）
 用法：python3 scripts/m6_all_land.py [--csv] [--list]     --list 逐局列出；末尾按编队汇总，并按“指令通道干净不干净”分开看。
 说明：泰森多边形是“谁离得近”的几何切法，不考虑山、水和先手；它回答的是“落点本身给了多少地”，不是“应该拿到多少”。
-     录像不到 1510 拍的局没有 1500 拍的列；一个包里混了两场的不算。
+     录像不到 1510 拍的局没有 1500 拍的列；不是同一场对局的包（平行两场、先后两场，见 m6_match_split.py）不算。
 """
 import csv, json, os, statistics, sys
 
@@ -32,7 +32,7 @@ def main():
             continue
         v = json.load(open(p))
         j = joined.get(mid, {})
-        if j.get('multi') == '1' and mid != 'A094':
+        if j.get('multi') == '1':     # 不是同一场对局的包（m6_match_split.py）：席位表对不上日志里的号
             continue
         card = json.load(open(os.path.join(DATA, mid, 'card.json')))
         r = {'mid': mid, 'cohort': card['cohort'], 'won': int(bool(card['outcome']['primaryTeamWon'])), 'teams': joined.get(mid, {}).get('teams') or card.get('nominalTeams'),
@@ -74,6 +74,11 @@ def main():
             w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
             w.writeheader(); w.writerows(rows)
         print(f'# 已写 out/_all/land.csv（{len(rows)} 局）')
+    # 两种人数口径：card.seededPlayers（录像头的真人数，人均相对值用）对 第 1 拍在场的真人数（好地账用）
+    dh = [abs(int(float(joined[r['mid']]['humans'])) - r['humans']) for r in rows if joined.get(r['mid'], {}).get('humans') not in (None, '')]
+    nz = [x for x in dh if x >= 1]
+    if dh and '--md' not in argv:
+        print(f"# 人数口径：{len(dh)} 局里 card.seededPlayers 和第 1 拍在场的真人数相差 ≥ 1 的 {len(nz)} 局（差的中位 {statistics.median(nz) if nz else 0:.0f}，最多 {max(dh)}）")
 
     def med(L, k):
         v = [r[k] for r in L if r[k] is not None]

@@ -6,7 +6,7 @@
 #   bash scripts/sections.sh <matchId> log     # 日志侧（logdigest.py）
 #   bash scripts/sections.sh <matchId> sim     # 录像真值侧（simdigest.py；没有可用录像的局跳过）
 #   bash scripts/sections.sh <matchId> led     # 延迟账 + 好地账（latency.py / landcap.py；含 json）
-#   bash scripts/sections.sh <matchId> foe     # 外人侧（simdigest.py foedon / foepct / foeled / foewho）
+#   bash scripts/sections.sh <matchId> foe     # 外人侧（simdigest.py foedon / foepct / foeled / foewho / foehabit）
 set -u
 mid=${1:?用法：sections.sh <matchId> dig|log|sim|led|foe}
 grp=${2:?用法：sections.sh <matchId> dig|log|sim|led|foe}
@@ -41,7 +41,7 @@ case "$grp" in
     run sim_gates_3000.txt simdigest.py gates 3000 99999
     ;;
   foe)
-    for s in foedon foepct foeled foewho; do run "sim_$s.txt" simdigest.py "$s"; done
+    for s in foedon foepct foeled foewho foehabit; do run "sim_$s.txt" simdigest.py "$s"; done
     ;;
   led)
     run lat_all.txt latency.py all

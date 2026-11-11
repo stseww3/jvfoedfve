@@ -1,0 +1,39 @@
+[QA] B043 出生点离地图边的距离（地图 931×959，短边的 12% = 112 像素）
+  编队 20 个号：中位 200、下四分位 66、上四分位 297；离边 ≤112 的 7 个（35%）
+  其他真人 67 个：中位 154、下四分位 63、上四分位 267；离边 ≤112 的 29 个（43%）
+  逐号（离边从近到远）：Zhuge Liang(T3) 18（左）；deRuyter(T1) 29（右）；Barbary(T3) 29（下）；Janissary(T3) 45（右）；Murat(T1) 61（下）；ProGamer99(T2) 66（上）；Zenobia(T1) 110（上）；Kokand(T2) 149（下）；Timurid(T3) 166（上）；Jordan(T1) 194（上）；Trajan(T1) 207（上）；Hussite(T3) 221（下）；KGB(T2) 221（下）；Spiderman(T3) 237（下）；Viking(T2) 257（右）；Bongcloud(T1) 297（下）；Yoshi(T3) 306（上）；Itachi(T3) 306（上）；Celtic(T2) 321（下）；Srivijaya(T1) 382（左）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 70｜最近的编队友 中位 97｜最近的非编队真人 中位 82｜最近的真人就是编队友的 9/20 个
+  其他真人：最近的任意真人 中位 57
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：3 团；≥3 个号的团 2 个，装了 19 个号
+  12 个号（中心 603,724）：Kokand(T2) Srivijaya(T1) Bongcloud(T1) Spiderman(T3) Murat(T1) Celtic(T2) Hussite(T3) KGB(T2) Viking(T2) Barbary(T3) Janissary(T3) deRuyter(T1)｜队的构成 T1×4 T2×4 T3×4｜≤260 像素的号对：异队 22、同队 8
+  7 个号（中心 537,194）：Yoshi(T3) Itachi(T3) Trajan(T1) Zenobia(T1) ProGamer99(T2) Jordan(T1) Timurid(T3)｜队的构成 T1×3 T2×1 T3×3｜≤260 像素的号对：异队 11、同队 4
+  1 个号（中心 18,930）：Zhuge Liang(T3)｜队的构成 T3×1｜≤260 像素的号对：异队 0、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤112 像素；沿边相邻间距 ≤520）
+  无
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Trajan           | [APL] River_zz~T1 66=；Zenobia*T1 97=；Yoshi*~T3 103≠
+    deRuyter         | [OFF] Art raffT1 74=；Janissary*T3 117≠；[burger] frybo~T3 125≠
+    Murat            | 🇸🇰Noël🇸🇰T1 102=；Hacker[OFF]T1 105=；Player 879~T1 171=
+    Janissary        | [burger] frybo~T3 15=；[OFF] Art raffT1 92≠；ArorangiT1 106≠
+    Srivijaya        | DARKSEIDT3 75≠；EMİN İMPARATOR~T2 89≠；I ❤️ Bhavya [IT1 91=
+    Hussite          | KGB*T2 0≠；Kievan RusT3 76=；[UN] My Staffe~T3 102=
+    Celtic           | Kneel before 🇵T3 37≠；[Cat] 𝕮𝖆𝖙𝕹𝖆𝖕T3 80≠；π[OG]πT1 90≠
+    KGB              | Hussite*T3 0≠；Kievan RusT3 76≠；[UN] My Staffe~T3 102≠
+    Yoshi            | Itachi*T3 0=；[APL] River_zz~T1 82≠；EmpireT2 95≠
+    Bongcloud        | Spiderman*T3 77≠；resistance zon~T2 94≠；Srivijaya*T1 99=
+    Jordan           | Timurid*~T3 29≠；Scabrik~T1 95=；[APEX] ryan_m+T2 102≠
+    Timurid          | Jordan*T1 29≠；Scabrik~T1 103≠；[FLR] さっしー~T3 116=
+    Kokand           | Player 879~T1 36≠；Player 384T1 77≠；Hacker[OFF]T1 110≠
+    Itachi           | Yoshi*~T3 0=；[APL] River_zz~T1 82≠；EmpireT2 95≠
+    Zenobia          | ★[OG]Čh!łł çōř~T1 85=；Trajan*T1 97=；[APL] River_zz~T1 136=
+    ProGamer99       | ★[OG]Čh!łł çōř~T1 89≠；Scabrik~T1 118≠；Timurid*~T3 126≠
+    Zhuge Liang      | hearts/wire[OFT1 94≠；Suomi perkeleT1 115≠；tokok [OG] ačiT1 179≠
+    Spiderman        | Bongcloud*T1 77≠；π[OG]πT1 77≠；[Cat] 𝕮𝖆𝖙𝕹𝖆𝖕T3 115=
+    Barbary          | 🇮🇱T2 81≠；ArorangiT1 81≠；[Titan] Jable T3 88=
+    Viking           | Celtic*~T2 97=；me23 [titan]T3 110≠；[APL]Player 21T1 117≠
+  最近 3 个真人里是异队编队友的：9 / 60

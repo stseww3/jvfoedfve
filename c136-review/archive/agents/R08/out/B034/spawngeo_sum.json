@@ -1,0 +1,73 @@
+{
+ "matchId": "B034",
+ "W": 1000,
+ "H": 707,
+ "edgeLimit": 85,
+ "squad": {
+  "n": 15,
+  "edgeMedian": 46,
+  "nearEdge": 9,
+  "nnAny": 64.00781202322104,
+  "nnMate": 176.0,
+  "nnWild": 74.94664769020693,
+  "nearestIsMate": 2
+ },
+ "others": {
+  "n": 33,
+  "edgeMedian": 92,
+  "nearEdge": 14,
+  "nnAny": 57.28001396647874
+ },
+ "groups": [
+  {
+   "n": 15,
+   "bots": [
+    "Sanada",
+    "Fischer",
+    "Levi",
+    "Jokic",
+    "Pagan",
+    "Bulgar",
+    "British Empire",
+    "Broly",
+    "East India Co",
+    "Tal",
+    "Zhuge Liang",
+    "Ireland",
+    "Kilwa",
+    "Cyrus",
+    "LightYagami"
+   ],
+   "teams": {
+    "4": 2,
+    "2": 5,
+    "1": 4,
+    "3": 4
+   },
+   "crossPairs": 15,
+   "samePairs": 3
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "左",
+   "bots": [
+    "British Empire",
+    "Zhuge Liang",
+    "Tal",
+    "Levi"
+   ],
+   "gaps": [
+    176,
+    64,
+    240
+   ],
+   "teams": [
+    1,
+    2,
+    3
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 8
+}

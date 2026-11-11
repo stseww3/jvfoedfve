@@ -409,7 +409,7 @@ R = dict(
              evidence=["flow_late [VD]：≥100 的 47 段 21428594 兵 / 59392 格；<100 的 24 段 2924285 兵 / 55022 格；player_007 7 段 7880115 兵 / 13440 格（每格 586）、Phoenicia 4 段每格 647、Cringe 3 段每格 489",
                        "HL-TICK：Phoenicia t=4770 9265 格 / 1244185 兵（L8600799）→ t=4860 9635 / 118838（L8600817）→ t=5670 6974 格（L8601037）",
                        "HL-TICK：player_007 t=4320 32358 格 / 3600570 兵（L8600648）→ t=4500 35981 / 1853131（L8600704）→ t=4950 28152 格（L8600834）"], statementType="observed"),
-        dict(id="D15", t="4320~9662", bot="Davout / Habsburg / player_007 / Hashashin / New England / Kuban", decision="满仓挨打时不出手：6 个号的下坡里合计 0 条指令。Habsburg 1620 拍从 22838 格掉到 4871 格；player_007 25354 格 / 250 万兵 349 拍出局。",
+        dict(id="D15", t="3780~9662", bot="Davout / Habsburg / player_007 / Hashashin / New England / Kuban", decision="满仓挨打时不出手：6 个号的下坡里合计 0 条指令。Habsburg 1620 拍从 22838 格掉到 4871 格；player_007 25354 格 / 250 万兵 349 拍出局。",
              codePath=COUNTER + "；" + OFFERS + "；" + SAFE, verdict="error", patternId="NEW-DF-07",
              evidence=["HL-TICK：Davout 4320 → 4860 cmds 37 不变（L8600652、L8600820）；Habsburg 4950 → 6570 cmds 71 不变（L8600841、L8601220）；player_007 6570 → 6840 cmds 74 不变（L8601213、L8601289）",
                        "HL-TICK：Hashashin 6930 → 7560 cmds 45 不变（L8601314、L8601416）；New England 9360 → 9630 cmds 67 不变（L8601549、L8601563）；Kuban 3780 → 4050 cmds 38 不变（L8600509、L8600592）",

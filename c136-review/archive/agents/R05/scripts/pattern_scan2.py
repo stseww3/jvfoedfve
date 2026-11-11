@@ -59,7 +59,8 @@ if opt('--only'):
     ids = [x for x in ids if x[0] in opt('--only')]
 bare = lambda n: re.sub(r'\[[^\]]*\]', '', n or '').strip().lower()
 IDMAP = collections.defaultdict(list)
-for r in csv.DictReader(open(f'{SRC}/src/tools/identity-map-discovery.csv', encoding='utf-8')):
+_idmap = os.environ.get('C136_IDMAP', f'{SRC}/src/tools/identity-map-discovery.csv')   # 验证集没有这份表时：C136_IDMAP=''（B 组轮换名就不换回）
+for r in (csv.DictReader(open(_idmap, encoding='utf-8')) if _idmap and os.path.exists(_idmap) else []):
     IDMAP[r['matchId']].append(r)
 MAPW = {}            # mapId → 宽（从有 `(map=宽x高` 的局学来）
 

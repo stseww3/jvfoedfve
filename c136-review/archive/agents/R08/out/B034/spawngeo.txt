@@ -1,0 +1,32 @@
+[QA] B034 出生点离地图边的距离（地图 1000×707，短边的 12% = 85 像素）
+  编队 15 个号：中位 46、下四分位 18、上四分位 224；离边 ≤85 的 9 个（60%）
+  其他真人 33 个：中位 92、下四分位 67、上四分位 185；离边 ≤85 的 14 个（42%）
+  逐号（离边从近到远）：Levi(T1) 18（左）；British Empire(T2) 18（左）；East India Co(T3) 18（上）；Tal(T2) 18（左）；Zhuge Liang(T3) 18（左）；Pagan(T3) 33（下）；Broly(T3) 33（下）；Ireland(T1) 46（上）；Kilwa(T4) 50（上）；Jokic(T2) 146（上）；Cyrus(T1) 182（右）；Sanada(T4) 224（上）；Bulgar(T1) 241（下）；Fischer(T2) 262（左）；LightYagami(T2) 290（上）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 64｜最近的编队友 中位 176｜最近的非编队真人 中位 75｜最近的真人就是编队友的 2/15 个
+  其他真人：最近的任意真人 中位 57
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：1 团；≥3 个号的团 1 个，装了 15 个号
+  15 个号（中心 341,320）：British Empire(T2) Zhuge Liang(T3) Tal(T2) Levi(T1) Kilwa(T4) Pagan(T3) Fischer(T2) Bulgar(T1) Ireland(T1) Sanada(T4) Broly(T3) LightYagami(T2) Jokic(T2) Cyrus(T1) East India Co(T3)｜队的构成 T1×4 T2×5 T3×4 T4×2｜≤260 像素的号对：异队 15、同队 3
+
+[QD] 贴同一条边排成一排（离这条边 ≤85 像素；沿边相邻间距 ≤520）
+  左沿 4 个号：British Empire(T2)@194 Zhuge Liang(T3)@370 Tal(T2)@434 Levi(T1)@674｜相邻间距 [176, 64, 240]｜队 T1 T2 T3
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Sanada           | DeviceT3 75≠；SalchichadorT3 94≠；Praetorian~T4 146=
+    Fischer          | Player 776~T1 117≠；Player 883T4 128≠；Bulgar*~T1 153≠
+    Levi             | [CORGI] Mr BasT1 181=；YKT2 199≠；patT4 201≠
+    Jokic            | Ill full sendT3 64≠；SalchichadorT3 115≠；[APEX] ryan_m+T5 122≠
+    Pagan            | [RU]: BashkortT2 54≠；[CORGI] Mr BasT1 92≠；patT4 99≠
+    Bulgar           | Player 883T4 76≠；patT4 140≠；Player 778T4 140≠
+    British Empire   | [OG]cyankwastaT2 129=；Zhuge Liang*T3 176≠；Kilwa*T4 182≠
+    Broly            | PrussiaT1 61≠；BanananeninineT1 99≠；[RU]: BashkortT2 190≠
+    East India Co    | [APEX] zexos1+T5 10≠；ZxZxZT2 113≠；[APEX] alex_k+T5 125≠
+    Tal              | Zhuge Liang*T3 64≠；YKT2 112=；[OG]cyankwastaT2 125=
+    Zhuge Liang      | Tal*~T2 64≠；[OG]cyankwastaT2 68≠；YKT2 157≠
+    Ireland          | DeviceT3 117≠；Sigmalambo emp~T3 123≠；Sanada*T4 179≠
+    Kilwa            | БарбосT4 21=；Sigmalambo emp~T3 175≠；British Empire*~T2 182≠
+    Cyrus            | [APEX] noah88+T5 46≠；[Bloods] 🩸 🩸 [~T3 63≠；[APEX] zero_7+T5 69≠
+    LightYagami      | SalchichadorT3 81≠；Player 920T4 146≠；Sanada*T4 149≠
+  最近 3 个真人里是异队编队友的：8 / 45

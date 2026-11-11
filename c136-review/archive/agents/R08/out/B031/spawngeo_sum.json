@@ -1,0 +1,71 @@
+{
+ "matchId": "B031",
+ "W": 1050,
+ "H": 1392,
+ "edgeLimit": 126,
+ "squad": {
+  "n": 13,
+  "edgeMedian": 290,
+  "nearEdge": 0,
+  "nnAny": 91.21403400793103,
+  "nnMate": 150.94369811290565,
+  "nnWild": 98.99494936611666,
+  "nearestIsMate": 5
+ },
+ "others": {
+  "n": 33,
+  "edgeMedian": 314,
+  "nearEdge": 1,
+  "nnAny": 55.154328932550705
+ },
+ "groups": [
+  {
+   "n": 7,
+   "bots": [
+    "Zizka",
+    "Manchu",
+    "Benin",
+    "Transylvania",
+    "TaxCollector",
+    "BigSmoke",
+    "Togo"
+   ],
+   "teams": {
+    "3": 2,
+    "1": 3,
+    "5": 2
+   },
+   "crossPairs": 8,
+   "samePairs": 2
+  },
+  {
+   "n": 5,
+   "bots": [
+    "Redcoat",
+    "JohnMarston",
+    "Cataphract",
+    "Aurelian",
+    "Croatia"
+   ],
+   "teams": {
+    "1": 2,
+    "4": 3
+   },
+   "crossPairs": 2,
+   "samePairs": 2
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Tifa"
+   ],
+   "teams": {
+    "4": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [],
+ "nn3CrossTeamMates": 8
+}

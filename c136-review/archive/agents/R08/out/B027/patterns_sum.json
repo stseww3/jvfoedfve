@@ -1,0 +1,1922 @@
+{
+ "matchId": "B027",
+ "room": null,
+ "bots": 19,
+ "patterns": {
+  "NEW-SP-01": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-SP-02": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-SP-03": {
+   "hit": false,
+   "n": 0,
+   "items": [],
+   "note": "日志里没有 BACKEND-SPAWN-COORD 行"
+  },
+  "NEW-OP-01": {
+   "hit": true,
+   "n": 1,
+   "items": [
+    {
+     "bot": "King",
+     "t": 720,
+     "terr": 2400,
+     "line": 8599610
+    }
+   ]
+  },
+  "NEW-OP-02": {
+   "hit": true,
+   "n": 1,
+   "items": [
+    {
+     "bot": "Vinland",
+     "t0": 7560,
+     "t1": 8190,
+     "ticks": 630,
+     "terr": 2,
+     "bal0": 0,
+     "bal1": 0,
+     "dCmds": 0,
+     "dBoats": 0
+    }
+   ],
+   "ticks": 630
+  },
+  "NEW-OP-G2": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-OP-G1": {
+   "hit": true,
+   "n": 19,
+   "items": [],
+   "avgTerrAt630": 2582,
+   "openingCheckBad": []
+  },
+  "NEW-EC-01": {
+   "hit": false,
+   "n": 0,
+   "items": [],
+   "realized": 0
+  },
+  "NEW-EC-02": {
+   "hit": true,
+   "n": 9,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 3780,
+     "t1": 4770,
+     "ticks": 990,
+     "terr": 9265,
+     "dens0": 41.8,
+     "dens1": 134.3,
+     "nb": 1,
+     "dCmds": 2,
+     "cost": []
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 6570,
+     "t1": 7560,
+     "ticks": 990,
+     "terr": 7328,
+     "dens0": 73.5,
+     "dens1": 148.1,
+     "nb": 1,
+     "dCmds": 0,
+     "cost": []
+    },
+    {
+     "bot": "Ronin",
+     "t0": 1980,
+     "t1": 3420,
+     "ticks": 1440,
+     "terr": 3514,
+     "dens0": 18.7,
+     "dens1": 123.3,
+     "nb": 2,
+     "dCmds": 1,
+     "cost": []
+    },
+    {
+     "bot": "Kuban",
+     "t0": 4590,
+     "t1": 5760,
+     "ticks": 1170,
+     "terr": 76,
+     "dens0": 5.5,
+     "dens1": 39.6,
+     "nb": 1,
+     "dCmds": 0,
+     "cost": []
+    },
+    {
+     "bot": "King",
+     "t0": 3780,
+     "t1": 4770,
+     "ticks": 990,
+     "terr": 4120,
+     "dens0": 19.3,
+     "dens1": 80.6,
+     "nb": 1,
+     "dCmds": 0,
+     "cost": []
+    },
+    {
+     "bot": "Cringe",
+     "t0": 1530,
+     "t1": 2250,
+     "ticks": 720,
+     "terr": 4738,
+     "dens0": 39.0,
+     "dens1": 114.3,
+     "nb": 2,
+     "dCmds": 0,
+     "cost": []
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 3240,
+     "t1": 3870,
+     "ticks": 630,
+     "terr": 13371,
+     "dens0": 49.4,
+     "dens1": 114.4,
+     "nb": 1,
+     "dCmds": 0,
+     "cost": []
+    },
+    {
+     "bot": "Vinland",
+     "t0": 3240,
+     "t1": 4050,
+     "ticks": 810,
+     "terr": 5355,
+     "dens0": 43.2,
+     "dens1": 91.7,
+     "nb": 1,
+     "dCmds": 2,
+     "cost": []
+    },
+    {
+     "bot": "Sparta",
+     "t0": 2070,
+     "t1": 2880,
+     "ticks": 810,
+     "terr": 5257,
+     "dens0": 60.4,
+     "dens1": 129.2,
+     "nb": 1,
+     "dCmds": 2,
+     "cost": []
+    }
+   ],
+   "realized": 0,
+   "ticks": 8550
+  },
+  "NEW-EC-03": {
+   "hit": true,
+   "n": 15,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "snapshots": 22,
+     "firstT": 2880,
+     "lastT": 8640,
+     "hardCap": 0
+    },
+    {
+     "bot": "Ronin",
+     "snapshots": 35,
+     "firstT": 3240,
+     "lastT": 7380,
+     "hardCap": 0
+    },
+    {
+     "bot": "Hashashin",
+     "snapshots": 43,
+     "firstT": 2340,
+     "lastT": 7560,
+     "hardCap": 2
+    },
+    {
+     "bot": "Habsburg",
+     "snapshots": 11,
+     "firstT": 3420,
+     "lastT": 6570,
+     "hardCap": 0
+    },
+    {
+     "bot": "Doge",
+     "snapshots": 9,
+     "firstT": 2880,
+     "lastT": 3600,
+     "hardCap": 0
+    },
+    {
+     "bot": "Kuban",
+     "snapshots": 15,
+     "firstT": 2250,
+     "lastT": 3870,
+     "hardCap": 0
+    },
+    {
+     "bot": "Davout",
+     "snapshots": 13,
+     "firstT": 3150,
+     "lastT": 4770,
+     "hardCap": 0
+    },
+    {
+     "bot": "player_007",
+     "snapshots": 10,
+     "firstT": 3510,
+     "lastT": 6390,
+     "hardCap": 0
+    },
+    {
+     "bot": "King",
+     "snapshots": 41,
+     "firstT": 2700,
+     "lastT": 9450,
+     "hardCap": 0
+    },
+    {
+     "bot": "Cringe",
+     "snapshots": 8,
+     "firstT": 2160,
+     "lastT": 3690,
+     "hardCap": 0
+    },
+    {
+     "bot": "Raeder",
+     "snapshots": 32,
+     "firstT": 2700,
+     "lastT": 6030,
+     "hardCap": 13
+    },
+    {
+     "bot": "SyntaxError",
+     "snapshots": 39,
+     "firstT": 2880,
+     "lastT": 7740,
+     "hardCap": 0
+    },
+    {
+     "bot": "New England",
+     "snapshots": 43,
+     "firstT": 2790,
+     "lastT": 9360,
+     "hardCap": 0
+    },
+    {
+     "bot": "Tripoli",
+     "snapshots": 26,
+     "firstT": 3780,
+     "lastT": 8190,
+     "hardCap": 0
+    },
+    {
+     "bot": "Sparta",
+     "snapshots": 28,
+     "firstT": 2520,
+     "lastT": 5400,
+     "hardCap": 0
+    }
+   ],
+   "snapshots": 375,
+   "hardCapSnapshots": 15
+  },
+  "NEW-EC-G1": {
+   "hit": true,
+   "n": 2,
+   "items": [
+    {
+     "bot": "Doge",
+     "t0": 1530,
+     "t1": 1890,
+     "death": 4039
+    },
+    {
+     "bot": "Sparta",
+     "t0": 1710,
+     "t1": 2070,
+     "death": 5799
+    }
+   ]
+  },
+  "NEW-EC-04": {
+   "hit": true,
+   "n": 1,
+   "items": [
+    {
+     "t0": 1980,
+     "t1": 3600,
+     "ticks": 1620,
+     "bots": 18,
+     "terr0": 127408,
+     "terr1": 132943,
+     "bal0": 3727903,
+     "bal1": 12322101,
+     "mult": 3.31,
+     "cmds": 101,
+     "lost": [
+      "Savoy 腰斩",
+      "Mewtwo 腰斩"
+     ]
+    }
+   ],
+   "ticks": 1620,
+   "realized": 1
+  },
+  "NEW-EC-09": {
+   "hit": true,
+   "n": 1,
+   "items": [
+    {
+     "bot": "Raeder",
+     "windows": 11,
+     "firstT": 4050,
+     "lastT": 5040
+    }
+   ],
+   "windows": 11
+  },
+  "NEW-DN-01": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-DN-03": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-DN-02": {
+   "hit": false,
+   "n": 0,
+   "items": [],
+   "taxMinusGift": 0,
+   "accepted": 0
+  },
+  "NEW-DN-07": {
+   "hit": false,
+   "n": 0,
+   "items": [],
+   "pairs": 0
+  },
+  "NEW-DN-17": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-AT-01": {
+   "hit": true,
+   "n": 23,
+   "items": [
+    {
+     "bot": "Cringe",
+     "t0": 2250,
+     "t1": 2340,
+     "bal0": 541409,
+     "bal1": 347930,
+     "dterr": 817,
+     "perCell": 288,
+     "dens0": 114.3
+    },
+    {
+     "bot": "Cringe",
+     "t0": 2880,
+     "t1": 2970,
+     "bal0": 607822,
+     "bal1": 404170,
+     "dterr": 985,
+     "perCell": 252,
+     "dens0": 115.8
+    },
+    {
+     "bot": "Raeder",
+     "t0": 3060,
+     "t1": 3150,
+     "bal0": 657465,
+     "bal1": 294211,
+     "dterr": 48,
+     "perCell": 1632,
+     "dens0": 138.0
+    },
+    {
+     "bot": "New England",
+     "t0": 3240,
+     "t1": 3330,
+     "bal0": 661596,
+     "bal1": 389542,
+     "dterr": 325,
+     "perCell": 772,
+     "dens0": 114.3
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 3420,
+     "t1": 3510,
+     "bal0": 700774,
+     "bal1": 472975,
+     "dterr": 6,
+     "perCell": 2452,
+     "dens0": 134.9
+    },
+    {
+     "bot": "Sparta",
+     "t0": 3420,
+     "t1": 3510,
+     "bal0": 776337,
+     "bal1": 399319,
+     "dterr": 13,
+     "perCell": 2279,
+     "dens0": 147.4
+    },
+    {
+     "bot": "Cringe",
+     "t0": 3690,
+     "t1": 3780,
+     "bal0": 629370,
+     "bal1": 271897,
+     "dterr": 363,
+     "perCell": 1075,
+     "dens0": 125.8
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 3690,
+     "t1": 3780,
+     "bal0": 583455,
+     "bal1": 386410,
+     "dterr": 179,
+     "perCell": 1410,
+     "dens0": 105.8
+    },
+    {
+     "bot": "Ronin",
+     "t0": 3780,
+     "t1": 3870,
+     "bal0": 441149,
+     "bal1": 203852,
+     "dterr": 36,
+     "perCell": 7308,
+     "dens0": 122.4
+    },
+    {
+     "bot": "player_007",
+     "t0": 4320,
+     "t1": 4410,
+     "bal0": 3600570,
+     "bal1": 2477942,
+     "dterr": 3112,
+     "perCell": 681,
+     "dens0": 111.3
+    },
+    {
+     "bot": "Sparta",
+     "t0": 4320,
+     "t1": 4410,
+     "bal0": 816586,
+     "bal1": 571530,
+     "dterr": 130,
+     "perCell": 509,
+     "dens0": 135.8
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 4770,
+     "t1": 4860,
+     "bal0": 1244185,
+     "bal1": 118838,
+     "dterr": 370,
+     "perCell": 1136,
+     "dens0": 134.3
+    },
+    {
+     "bot": "Hashashin",
+     "t0": 4770,
+     "t1": 4860,
+     "bal0": 634648,
+     "bal1": 184650,
+     "dterr": 751,
+     "perCell": 265,
+     "dens0": 141.8
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 4770,
+     "t1": 4860,
+     "bal0": 2175428,
+     "bal1": 1118754,
+     "dterr": 2386,
+     "perCell": 369,
+     "dens0": 113.5
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 5130,
+     "t1": 5220,
+     "bal0": 2313664,
+     "bal1": 1321718,
+     "dterr": 85,
+     "perCell": 13383,
+     "dens0": 123.9
+    },
+    {
+     "bot": "Raeder",
+     "t0": 5220,
+     "t1": 5310,
+     "bal0": 737400,
+     "bal1": 489849,
+     "dterr": 665,
+     "perCell": 281,
+     "dens0": 150.0
+    },
+    {
+     "bot": "player_007",
+     "t0": 5580,
+     "t1": 5670,
+     "bal0": 3544668,
+     "bal1": 2443216,
+     "dterr": 1587,
+     "perCell": 936,
+     "dens0": 107.1
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 5670,
+     "t1": 5850,
+     "bal0": 1088422,
+     "bal1": 759773,
+     "dterr": 1536,
+     "perCell": 265,
+     "dens0": 145.2
+    },
+    {
+     "bot": "New England",
+     "t0": 5850,
+     "t1": 5940,
+     "bal0": 1103849,
+     "bal1": 712897,
+     "dterr": 570,
+     "perCell": 387,
+     "dens0": 115.8
+    },
+    {
+     "bot": "Ronin",
+     "t0": 6570,
+     "t1": 6660,
+     "bal0": 223583,
+     "bal1": 97974,
+     "dterr": 5,
+     "perCell": 1083,
+     "dens0": 93.3
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 6930,
+     "t1": 7020,
+     "bal0": 4094499,
+     "bal1": 2562525,
+     "dterr": 4354,
+     "perCell": 247,
+     "dens0": 139.8
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 7380,
+     "t1": 7470,
+     "bal0": 3998158,
+     "bal1": 2767664,
+     "dterr": 3868,
+     "perCell": 408,
+     "dens0": 115.5
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 7560,
+     "t1": 7740,
+     "bal0": 1085378,
+     "bal1": 749701,
+     "dterr": 1050,
+     "perCell": 333,
+     "dens0": 148.1
+    }
+   ]
+  },
+  "NEW-AT-02": {
+   "hit": true,
+   "n": 7,
+   "items": [
+    {
+     "bot": "Mewtwo",
+     "t0": 1530,
+     "t1": 1620,
+     "dens0": 41.6,
+     "dens1": 12.9,
+     "terr1": 10573,
+     "realized": false
+    },
+    {
+     "bot": "Raeder",
+     "t0": 3060,
+     "t1": 3150,
+     "dens0": 138.0,
+     "dens1": 61.1,
+     "terr1": 4813,
+     "realized": false
+    },
+    {
+     "bot": "Cringe",
+     "t0": 3690,
+     "t1": 3780,
+     "dens0": 125.8,
+     "dens1": 50.7,
+     "terr1": 5365,
+     "realized": true
+    },
+    {
+     "bot": "Vinland",
+     "t0": 4410,
+     "t1": 4500,
+     "dens0": 51.2,
+     "dens1": 18.8,
+     "terr1": 7306,
+     "realized": false
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 4770,
+     "t1": 4860,
+     "dens0": 134.3,
+     "dens1": 12.3,
+     "terr1": 9635,
+     "realized": false
+    },
+    {
+     "bot": "Hashashin",
+     "t0": 4770,
+     "t1": 4860,
+     "dens0": 141.8,
+     "dens1": 35.3,
+     "terr1": 5228,
+     "realized": false
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 4770,
+     "t1": 4860,
+     "dens0": 113.5,
+     "dens1": 51.9,
+     "terr1": 21559,
+     "realized": false
+    }
+   ],
+   "realized": 1
+  },
+  "NEW-AT-03": {
+   "hit": true,
+   "n": 19,
+   "items": [
+    {
+     "bot": "Raeder",
+     "t0": 3060,
+     "t1": 3150,
+     "perCell": 1632,
+     "dens0": 138.0,
+     "dterr": 48,
+     "gone": 382068
+    },
+    {
+     "bot": "New England",
+     "t0": 3240,
+     "t1": 3330,
+     "perCell": 772,
+     "dens0": 114.3,
+     "dterr": 325,
+     "gone": 322988
+    },
+    {
+     "bot": "Savoy",
+     "t0": 3420,
+     "t1": 3510,
+     "perCell": 1299,
+     "dens0": 78.6,
+     "dterr": 62,
+     "gone": 80520
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 3420,
+     "t1": 3510,
+     "perCell": 2452,
+     "dens0": 134.9,
+     "dterr": 6,
+     "gone": 252654
+    },
+    {
+     "bot": "Sparta",
+     "t0": 3420,
+     "t1": 3510,
+     "perCell": 2279,
+     "dens0": 147.4,
+     "dterr": 13,
+     "gone": 386015
+    },
+    {
+     "bot": "Cringe",
+     "t0": 3690,
+     "t1": 3780,
+     "perCell": 1075,
+     "dens0": 125.8,
+     "dterr": 363,
+     "gone": 390247
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 3690,
+     "t1": 3780,
+     "perCell": 1410,
+     "dens0": 105.8,
+     "dterr": 179,
+     "gone": 252336
+    },
+    {
+     "bot": "Ronin",
+     "t0": 3780,
+     "t1": 3870,
+     "perCell": 7308,
+     "dens0": 122.4,
+     "dterr": 36,
+     "gone": 263079
+    },
+    {
+     "bot": "player_007",
+     "t0": 4320,
+     "t1": 4410,
+     "perCell": 681,
+     "dens0": 111.3,
+     "dterr": 3112,
+     "gone": 1475431
+    },
+    {
+     "bot": "Vinland",
+     "t0": 4320,
+     "t1": 4410,
+     "perCell": 491,
+     "dens0": 88.4,
+     "dterr": 18,
+     "gone": 298385
+    },
+    {
+     "bot": "Sparta",
+     "t0": 4320,
+     "t1": 4410,
+     "perCell": 509,
+     "dens0": 135.8,
+     "dterr": 130,
+     "gone": 272471
+    },
+    {
+     "bot": "Vinland",
+     "t0": 4410,
+     "t1": 4500,
+     "perCell": 180,
+     "dens0": 51.2,
+     "dterr": 1047,
+     "gone": 224826
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 4770,
+     "t1": 4860,
+     "perCell": 1136,
+     "dens0": 134.3,
+     "dterr": 370,
+     "gone": 1171194
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 4770,
+     "t1": 4860,
+     "perCell": 369,
+     "dens0": 113.5,
+     "dterr": 2386,
+     "gone": 1244993
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 5130,
+     "t1": 5220,
+     "perCell": 13383,
+     "dens0": 123.9,
+     "dterr": 85,
+     "gone": 1137562
+    },
+    {
+     "bot": "player_007",
+     "t0": 5580,
+     "t1": 5670,
+     "perCell": 936,
+     "dens0": 107.1,
+     "dterr": 1587,
+     "gone": 1485557
+    },
+    {
+     "bot": "New England",
+     "t0": 5850,
+     "t1": 5940,
+     "perCell": 387,
+     "dens0": 115.8,
+     "dterr": 570,
+     "gone": 476000
+    },
+    {
+     "bot": "Ronin",
+     "t0": 6570,
+     "t1": 6660,
+     "perCell": 1083,
+     "dens0": 93.3,
+     "dterr": 5,
+     "gone": 151052
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 7380,
+     "t1": 7470,
+     "perCell": 408,
+     "dens0": 115.5,
+     "dterr": 3868,
+     "gone": 1579274
+    }
+   ]
+  },
+  "NEW-AT-04": {
+   "hit": true,
+   "n": 12,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 450,
+     "t1": 540,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 1114,
+     "terr1": 1944,
+     "realized": true
+    },
+    {
+     "bot": "Doge",
+     "t0": 540,
+     "t1": 630,
+     "nb0": 1,
+     "nb1": 4,
+     "terr0": 1706,
+     "terr1": 2604,
+     "realized": true
+    },
+    {
+     "bot": "Doge",
+     "t0": 3240,
+     "t1": 3330,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 3924,
+     "terr1": 4353,
+     "realized": false
+    },
+    {
+     "bot": "Savoy",
+     "t0": 1350,
+     "t1": 1530,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 4719,
+     "terr1": 5032,
+     "realized": true
+    },
+    {
+     "bot": "Kuban",
+     "t0": 450,
+     "t1": 540,
+     "nb0": 1,
+     "nb1": 3,
+     "terr0": 959,
+     "terr1": 1627,
+     "realized": true
+    },
+    {
+     "bot": "player_007",
+     "t0": 270,
+     "t1": 360,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 394,
+     "terr1": 767,
+     "realized": true
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 360,
+     "t1": 450,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 600,
+     "terr1": 1147,
+     "realized": true
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 1980,
+     "t1": 2160,
+     "nb0": 1,
+     "nb1": 3,
+     "terr0": 2599,
+     "terr1": 2875,
+     "realized": true
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 360,
+     "t1": 450,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 666,
+     "terr1": 1100,
+     "realized": true
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 5760,
+     "t1": 5850,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 18974,
+     "terr1": 21020,
+     "realized": false
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 6840,
+     "t1": 7020,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 29085,
+     "terr1": 33648,
+     "realized": false
+    },
+    {
+     "bot": "Sparta",
+     "t0": 4320,
+     "t1": 4500,
+     "nb0": 1,
+     "nb1": 2,
+     "terr0": 6011,
+     "terr1": 6545,
+     "realized": false
+    }
+   ],
+   "realized": 8
+  },
+  "NEW-AT-G1": {
+   "hit": true,
+   "n": 3,
+   "items": [
+    {
+     "bot": "Ronin",
+     "t0": 450,
+     "t1": 630,
+     "cells": 1176,
+     "perCell": 3.5,
+     "dens0": 3.0
+    },
+    {
+     "bot": "Vinland",
+     "t0": 450,
+     "t1": 630,
+     "cells": 1190,
+     "perCell": 4.2,
+     "dens0": 2.9
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 1260,
+     "t1": 1440,
+     "cells": 1375,
+     "perCell": 2.6,
+     "dens0": 11.1
+    }
+   ],
+   "cells": 3741
+  },
+  "NEW-DF-01": {
+   "hit": true,
+   "n": 25,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 5130,
+     "t1": 5670,
+     "terr0": 11424,
+     "terr1": 6974,
+     "bal0": 142492,
+     "dens0": 12.5,
+     "nb0": 1,
+     "died": false
+    },
+    {
+     "bot": "Phoenicia",
+     "t0": 8730,
+     "t1": 8834,
+     "terr0": 4635,
+     "terr1": 0,
+     "bal0": 304588,
+     "dens0": 65.7,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Ronin",
+     "t0": 6210,
+     "t1": 6570,
+     "terr0": 6143,
+     "terr1": 2397,
+     "bal0": 697141,
+     "dens0": 113.5,
+     "nb0": 1,
+     "died": false
+    },
+    {
+     "bot": "Ronin",
+     "t0": 7290,
+     "t1": 7505,
+     "terr0": 2276,
+     "terr1": 0,
+     "bal0": 279442,
+     "dens0": 122.8,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Hashashin",
+     "t0": 6300,
+     "t1": 7591,
+     "terr0": 8902,
+     "terr1": 0,
+     "bal0": 827261,
+     "dens0": 92.9,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 4950,
+     "t1": 6660,
+     "terr0": 22838,
+     "terr1": 0,
+     "bal0": 1173703,
+     "dens0": 51.4,
+     "nb0": 4,
+     "died": true
+    },
+    {
+     "bot": "Doge",
+     "t0": 3870,
+     "t1": 4039,
+     "terr0": 5060,
+     "terr1": 0,
+     "bal0": 291117,
+     "dens0": 57.5,
+     "nb0": 2,
+     "died": true
+    },
+    {
+     "bot": "Savoy",
+     "t0": 1800,
+     "t1": 3240,
+     "terr0": 7191,
+     "terr1": 2073,
+     "bal0": 136075,
+     "dens0": 18.9,
+     "nb0": 2,
+     "died": false
+    },
+    {
+     "bot": "Savoy",
+     "t0": 3960,
+     "t1": 4148,
+     "terr0": 1584,
+     "terr1": 0,
+     "bal0": 48683,
+     "dens0": 30.7,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Kuban",
+     "t0": 3780,
+     "t1": 4050,
+     "terr0": 3544,
+     "terr1": 0,
+     "bal0": 458052,
+     "dens0": 129.2,
+     "nb0": 3,
+     "died": false
+    },
+    {
+     "bot": "Davout",
+     "t0": 4230,
+     "t1": 4914,
+     "terr0": 11172,
+     "terr1": 0,
+     "bal0": 1045027,
+     "dens0": 93.5,
+     "nb0": 4,
+     "died": true
+    },
+    {
+     "bot": "Mewtwo",
+     "t0": 1980,
+     "t1": 3626,
+     "terr0": 13887,
+     "terr1": 0,
+     "bal0": 142577,
+     "dens0": 10.3,
+     "nb0": 2,
+     "died": true
+    },
+    {
+     "bot": "player_007",
+     "t0": 6480,
+     "t1": 6919,
+     "terr0": 26914,
+     "terr1": 0,
+     "bal0": 2434640,
+     "dens0": 90.5,
+     "nb0": 5,
+     "died": true
+    },
+    {
+     "bot": "King",
+     "t0": 3780,
+     "t1": 5490,
+     "terr0": 4120,
+     "terr1": 2434,
+     "bal0": 79478,
+     "dens0": 19.3,
+     "nb0": 1,
+     "died": false
+    },
+    {
+     "bot": "King",
+     "t0": 6300,
+     "t1": 6750,
+     "terr0": 3221,
+     "terr1": 1820,
+     "bal0": 351751,
+     "dens0": 109.2,
+     "nb0": 0,
+     "died": false
+    },
+    {
+     "bot": "King",
+     "t0": 8910,
+     "t1": 9544,
+     "terr0": 843,
+     "terr1": 0,
+     "bal0": 65682,
+     "dens0": 77.9,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Cringe",
+     "t0": 3780,
+     "t1": 4155,
+     "terr0": 5365,
+     "terr1": 0,
+     "bal0": 271897,
+     "dens0": 50.7,
+     "nb0": 2,
+     "died": true
+    },
+    {
+     "bot": "Raeder",
+     "t0": 6210,
+     "t1": 6710,
+     "terr0": 8973,
+     "terr1": 0,
+     "bal0": 634929,
+     "dens0": 70.8,
+     "nb0": 3,
+     "died": true
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 6300,
+     "t1": 7200,
+     "terr0": 10001,
+     "terr1": 3980,
+     "bal0": 1014199,
+     "dens0": 101.4,
+     "nb0": 3,
+     "died": false
+    },
+    {
+     "bot": "New England",
+     "t0": 6030,
+     "t1": 6930,
+     "terr0": 10746,
+     "terr1": 6242,
+     "bal0": 812160,
+     "dens0": 75.6,
+     "nb0": 1,
+     "died": false
+    },
+    {
+     "bot": "New England",
+     "t0": 9000,
+     "t1": 9662,
+     "terr0": 8941,
+     "terr1": 0,
+     "bal0": 1115643,
+     "dens0": 124.8,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 7470,
+     "t1": 7830,
+     "terr0": 38482,
+     "terr1": 26675,
+     "bal0": 2767664,
+     "dens0": 71.9,
+     "nb0": 3,
+     "died": false
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 8280,
+     "t1": 8623,
+     "terr0": 15357,
+     "terr1": 0,
+     "bal0": 1372254,
+     "dens0": 89.4,
+     "nb0": 1,
+     "died": true
+    },
+    {
+     "bot": "Vinland",
+     "t0": 5310,
+     "t1": 5940,
+     "terr0": 7821,
+     "terr1": 0,
+     "bal0": 148582,
+     "dens0": 19.0,
+     "nb0": 0,
+     "died": false
+    },
+    {
+     "bot": "Sparta",
+     "t0": 5490,
+     "t1": 5799,
+     "terr0": 5217,
+     "terr1": 0,
+     "bal0": 483862,
+     "dens0": 92.7,
+     "nb0": 2,
+     "died": true
+    }
+   ],
+   "bots": 18,
+   "died": 15,
+   "cellsLost": 192062
+  },
+  "NEW-DF-01w": {
+   "hit": true,
+   "n": 9,
+   "items": [
+    {
+     "bot": "Hashashin",
+     "t0": 6300,
+     "t1": 7591,
+     "terr0": 8902,
+     "terr1": 0,
+     "cmds": 0,
+     "boats": 0,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 92.9
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 4950,
+     "t1": 6660,
+     "terr0": 22838,
+     "terr1": 0,
+     "cmds": 0,
+     "boats": 0,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 51.4
+    },
+    {
+     "bot": "Doge",
+     "t0": 3690,
+     "t1": 4039,
+     "terr0": 5127,
+     "terr1": 0,
+     "cmds": 2,
+     "boats": 1,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 1,
+     "died": true,
+     "dens0": 96.6
+    },
+    {
+     "bot": "Savoy",
+     "t0": 1800,
+     "t1": 4148,
+     "terr0": 7191,
+     "terr1": 0,
+     "cmds": 5,
+     "boats": 5,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 18.9
+    },
+    {
+     "bot": "Kuban",
+     "t0": 3780,
+     "t1": 5891,
+     "terr0": 3544,
+     "terr1": 0,
+     "cmds": 2,
+     "boats": 2,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 129.2
+    },
+    {
+     "bot": "Mewtwo",
+     "t0": 1980,
+     "t1": 3626,
+     "terr0": 13887,
+     "terr1": 0,
+     "cmds": 0,
+     "boats": 0,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 10.3
+    },
+    {
+     "bot": "Raeder",
+     "t0": 6210,
+     "t1": 6710,
+     "terr0": 8973,
+     "terr1": 0,
+     "cmds": 0,
+     "boats": 0,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": true,
+     "dens0": 70.8
+    },
+    {
+     "bot": "Vinland",
+     "t0": 5220,
+     "t1": 5940,
+     "terr0": 7821,
+     "terr1": 0,
+     "cmds": 2,
+     "boats": 2,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 0,
+     "died": false,
+     "dens0": 16.0
+    },
+    {
+     "bot": "Sparta",
+     "t0": 4950,
+     "t1": 5799,
+     "terr0": 6948,
+     "terr1": 0,
+     "cmds": 2,
+     "boats": 1,
+     "donations": 0,
+     "assists": 0,
+     "landAttacks": 1,
+     "died": true,
+     "dens0": 119.4
+    }
+   ],
+   "bots": 9,
+   "died": 8,
+   "cellsLost": 85231
+  },
+  "NEW-DF-07": {
+   "hit": true,
+   "n": 2,
+   "items": [
+    {
+     "bot": "player_007",
+     "startT": 6570,
+     "terr": 25354,
+     "bal": 2496591,
+     "dens": 98.5,
+     "ticksToDeath": 349,
+     "cmds": 0
+    },
+    {
+     "bot": "New England",
+     "startT": 9360,
+     "terr": 8941,
+     "bal": 1290211,
+     "dens": 144.3,
+     "ticksToDeath": 302,
+     "cmds": 0
+    }
+   ],
+   "wide": 6,
+   "deaths": 17,
+   "bal": 3786802,
+   "cmds": 0
+  },
+  "NEW-SE-01": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-EX-02": {
+   "hit": true,
+   "n": 1,
+   "items": [
+    {
+     "bot": "Tripoli",
+     "t0": 4500,
+     "t1": 4680,
+     "cmds": 5,
+     "bal0": 1783552,
+     "bal1": 597951,
+     "terr0": 17773,
+     "terr1": 17683,
+     "realized": false
+    }
+   ],
+   "realized": 0
+  },
+  "NEW-EX-03": {
+   "hit": false,
+   "n": 0,
+   "items": []
+  },
+  "NEW-EG-G2": {
+   "hit": true,
+   "n": 11,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 7560,
+     "t1": 7740,
+     "gain": 1050,
+     "cmds": 3,
+     "died": [
+      "Hashashin"
+     ]
+    },
+    {
+     "bot": "Ronin",
+     "t0": 5670,
+     "t1": 5850,
+     "gain": 1051,
+     "cmds": 1,
+     "died": [
+      "Sparta"
+     ]
+    },
+    {
+     "bot": "Habsburg",
+     "t0": 3960,
+     "t1": 4050,
+     "gain": 1065,
+     "cmds": 1,
+     "died": [
+      "Doge"
+     ]
+    },
+    {
+     "bot": "player_007",
+     "t0": 3600,
+     "t1": 3690,
+     "gain": 1732,
+     "cmds": 1,
+     "died": [
+      "Mewtwo"
+     ]
+    },
+    {
+     "bot": "player_007",
+     "t0": 4140,
+     "t1": 4230,
+     "gain": 1921,
+     "cmds": 1,
+     "died": [
+      "Savoy",
+      "Cringe"
+     ]
+    },
+    {
+     "bot": "SyntaxError",
+     "t0": 5670,
+     "t1": 5850,
+     "gain": 1536,
+     "cmds": 1,
+     "died": [
+      "Sparta"
+     ]
+    },
+    {
+     "bot": "New England",
+     "t0": 5850,
+     "t1": 5940,
+     "gain": 570,
+     "cmds": 2,
+     "died": [
+      "Kuban"
+     ]
+    },
+    {
+     "bot": "New England",
+     "t0": 7560,
+     "t1": 7740,
+     "gain": 591,
+     "cmds": 1,
+     "died": [
+      "Hashashin"
+     ]
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 4140,
+     "t1": 4230,
+     "gain": 1705,
+     "cmds": 1,
+     "died": [
+      "Savoy",
+      "Cringe"
+     ]
+    },
+    {
+     "bot": "Tripoli",
+     "t0": 5850,
+     "t1": 5940,
+     "gain": 728,
+     "cmds": 1,
+     "died": [
+      "Kuban"
+     ]
+    },
+    {
+     "bot": "Sparta",
+     "t0": 3600,
+     "t1": 3780,
+     "gain": 571,
+     "cmds": 1,
+     "died": [
+      "Mewtwo"
+     ]
+    }
+   ],
+   "cells": 12520
+  },
+  "NEW-MT-07": {
+   "hit": false,
+   "n": 0,
+   "items": [],
+   "minAlivePlayers": 12
+  },
+  "NEW-DF-08": {
+   "hit": true,
+   "n": 9,
+   "items": [
+    {
+     "bot": "Hashashin",
+     "t": 7591,
+     "peak": 8904,
+     "lastTerr": 1805,
+     "balance": 156941,
+     "dens": 86.9
+    },
+    {
+     "bot": "Habsburg",
+     "t": 6660,
+     "peak": 24132,
+     "lastTerr": 3390,
+     "balance": 307846,
+     "dens": 90.8
+    },
+    {
+     "bot": "Davout",
+     "t": 4914,
+     "peak": 11836,
+     "lastTerr": 2676,
+     "balance": 212714,
+     "dens": 79.5
+    },
+    {
+     "bot": "Mewtwo",
+     "t": 3626,
+     "peak": 13887,
+     "lastTerr": 2790,
+     "balance": 131729,
+     "dens": 47.2
+    },
+    {
+     "bot": "player_007",
+     "t": 6919,
+     "peak": 37022,
+     "lastTerr": 7127,
+     "balance": 468336,
+     "dens": 65.7
+    },
+    {
+     "bot": "Raeder",
+     "t": 6710,
+     "peak": 8973,
+     "lastTerr": 2064,
+     "balance": 109909,
+     "dens": 53.3
+    },
+    {
+     "bot": "SyntaxError",
+     "t": 7835,
+     "peak": 10001,
+     "lastTerr": 1579,
+     "balance": 147818,
+     "dens": 93.6
+    },
+    {
+     "bot": "New England",
+     "t": 9662,
+     "peak": 10746,
+     "lastTerr": 2739,
+     "balance": 250494,
+     "dens": 91.5
+    },
+    {
+     "bot": "Tripoli",
+     "t": 8623,
+     "peak": 38593,
+     "lastTerr": 6738,
+     "balance": 546060,
+     "dens": 81.0
+    }
+   ],
+   "balance": 2331847,
+   "deaths": 17,
+   "allDeathsBalance": 2734406
+  },
+  "NEW-MT-11": {
+   "hit": true,
+   "n": 6,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 1260,
+     "t1": 3690,
+     "ticks": 2430,
+     "terr0": 5681,
+     "terr1": 9073,
+     "bal0": 93463,
+     "bal1": 310840,
+     "nonBoat": 0,
+     "boats": 13,
+     "realized": true
+    },
+    {
+     "bot": "Hashashin",
+     "t0": 1350,
+     "t1": 3690,
+     "ticks": 2340,
+     "terr0": 4737,
+     "terr1": 4036,
+     "bal0": 95027,
+     "bal1": 603881,
+     "nonBoat": 0,
+     "boats": 0,
+     "realized": true
+    },
+    {
+     "bot": "King",
+     "t0": 720,
+     "t1": 3690,
+     "ticks": 2970,
+     "terr0": 2400,
+     "terr1": 3859,
+     "bal0": 12188,
+     "bal1": 72515,
+     "nonBoat": 1,
+     "boats": 22,
+     "realized": true
+    },
+    {
+     "bot": "King",
+     "t0": 7740,
+     "t1": 8730,
+     "ticks": 990,
+     "terr0": 546,
+     "terr1": 549,
+     "bal0": 22529,
+     "bal1": 63441,
+     "nonBoat": 0,
+     "boats": 1,
+     "realized": true
+    },
+    {
+     "bot": "New England",
+     "t0": 1350,
+     "t1": 4140,
+     "ticks": 2790,
+     "terr0": 6402,
+     "terr1": 6550,
+     "bal0": 91326,
+     "bal1": 453515,
+     "nonBoat": 0,
+     "boats": 18,
+     "realized": true
+    },
+    {
+     "bot": "Vinland",
+     "t0": 6030,
+     "t1": 7470,
+     "ticks": 1440,
+     "terr0": 2,
+     "terr1": 2,
+     "bal0": 0,
+     "bal1": 0,
+     "nonBoat": 0,
+     "boats": 0,
+     "realized": false
+    }
+   ],
+   "realized": 5,
+   "ffa": true,
+   "donations": 0,
+   "ticks": 12960
+  },
+  "NEW-MT-09L": {
+   "hit": true,
+   "n": 6,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "t0": 1260,
+     "t1": 3690,
+     "ticks": 2430,
+     "terr0": 5681,
+     "bal0": 93463,
+     "bal1": 310840,
+     "densEnd": 34.3,
+     "nonBoat": 0,
+     "boats": 13,
+     "donations": 0,
+     "realized": true
+    },
+    {
+     "bot": "Hashashin",
+     "t0": 1350,
+     "t1": 3690,
+     "ticks": 2340,
+     "terr0": 4737,
+     "bal0": 95027,
+     "bal1": 603881,
+     "densEnd": 149.6,
+     "nonBoat": 0,
+     "boats": 0,
+     "donations": 0,
+     "realized": true
+    },
+    {
+     "bot": "King",
+     "t0": 720,
+     "t1": 3690,
+     "ticks": 2970,
+     "terr0": 2400,
+     "bal0": 12188,
+     "bal1": 72515,
+     "densEnd": 18.8,
+     "nonBoat": 1,
+     "boats": 22,
+     "donations": 0,
+     "realized": true
+    },
+    {
+     "bot": "King",
+     "t0": 7740,
+     "t1": 8730,
+     "ticks": 990,
+     "terr0": 546,
+     "bal0": 22529,
+     "bal1": 63441,
+     "densEnd": 115.6,
+     "nonBoat": 0,
+     "boats": 1,
+     "donations": 0,
+     "realized": true
+    },
+    {
+     "bot": "New England",
+     "t0": 1350,
+     "t1": 4140,
+     "ticks": 2790,
+     "terr0": 6402,
+     "bal0": 91326,
+     "bal1": 453515,
+     "densEnd": 69.2,
+     "nonBoat": 0,
+     "boats": 18,
+     "donations": 0,
+     "realized": true
+    },
+    {
+     "bot": "Vinland",
+     "t0": 6030,
+     "t1": 7470,
+     "ticks": 1440,
+     "terr0": 2,
+     "bal0": 0,
+     "bal1": 0,
+     "densEnd": 0.0,
+     "nonBoat": 0,
+     "boats": 0,
+     "donations": 0,
+     "realized": false
+    }
+   ],
+   "realized": 5,
+   "bots": 5,
+   "ticks": 12960
+  },
+  "NEW-MT-06": {
+   "hit": true,
+   "n": 15,
+   "items": [
+    {
+     "bot": "Phoenicia",
+     "windows": 1,
+     "cells": 1,
+     "firstT": 1980,
+     "lastT": 2070
+    },
+    {
+     "bot": "Hashashin",
+     "windows": 6,
+     "cells": 701,
+     "firstT": 1980,
+     "lastT": 3600
+    },
+    {
+     "bot": "King",
+     "windows": 5,
+     "cells": 201,
+     "firstT": 2430,
+     "lastT": 2970
+    },
+    {
+     "bot": "New England",
+     "windows": 3,
+     "cells": 483,
+     "firstT": 1350,
+     "lastT": 2970
+    }
+   ],
+   "bots": 4,
+   "cells": 1386
+  }
+ }
+}

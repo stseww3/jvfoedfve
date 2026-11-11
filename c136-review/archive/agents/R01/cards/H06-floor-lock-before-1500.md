@@ -31,7 +31,7 @@ bash ../../tools/run-heavy.sh node scripts/shadow.mjs <局> --probe 号:t0:t1 --
 python3 scripts/m6_tables.py attrib                   # 15 局汇总
 ```
 
-全量没有影子，只有代用量：`python3 scripts/m6_all_traj.py` 的 `p1_idleTgt`（600–1500 拍有对象而 90 拍不发令的快照对占比；squad10 没赢的局 28%，赢的局 39%），它把按租期等也算在内。
+全量没有影子，只有代用量：`python3 scripts/m6_all_traj.py` 的 `p1_idleTgt`（600–1500 拍有对象而 90 拍不发令的快照对占比；squad10 没赢的局 28%，赢的局 41%），它把按租期等也算在内。
 
 ## 什么结果算证伪
 

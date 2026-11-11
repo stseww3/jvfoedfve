@@ -17,11 +17,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "out")
 
 
-def analyse(mid):
-    F = json.load(open(os.path.join(OUT, mid, "facts.json"), encoding="utf-8"))
+def analyse(mid, F=None):
+    """F：已经在内存里的 facts（跨局扫描用，不落盘）；不给就读 out/<局>/facts.json。"""
+    if F is None:
+        F = json.load(open(os.path.join(OUT, mid, "facts.json"), encoding="utf-8"))
     rows = []
     for me, b in sorted(F["bots"].items(), key=lambda kv: (kv[1].get("deathTick") or 10 ** 9)):
-        if b.get("event") != "died" or not b.get("ticks"):
+        if b.get("event") != "died" or not b.get("ticks") or b.get("deathTick") is None:
             continue
         tk = [s for s in b["ticks"] if s["terr"] > 0]
         if len(tk) < 2:

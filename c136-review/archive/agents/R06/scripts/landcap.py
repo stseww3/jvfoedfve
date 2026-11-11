@@ -301,7 +301,7 @@ def sec_logcap(X):
         tv_have = sum(int(vb[p]) for p in have)
         rr = sorted(snaps[t][p]['terr'] / vb[p] for p in have if vb[p] > 0)
         q = lambda f: 100 * rr[min(len(rr) - 1, int(f * len(rr)))] if rr else 0
-        print(f"   t={t}：我方 领土 {tt} ÷ 天然 {tv_all} = {pc(tt, tv_all)}（20 个号全算）；有快照的 {len(have)} 个号 {tt} ÷ {tv_have} = {pc(tt, tv_have)}；"
+        print(f"   t={t}：我方 领土 {tt} ÷ 天然 {tv_all} = {pc(tt, tv_all)}（{len(X.squad)} 个号全算）；有快照的 {len(have)} 个号 {tt} ÷ {tv_have} = {pc(tt, tv_have)}；"
               f"各号兑现率 25% / 50% / 75% 分位 {q(.25):.0f}% / {q(.5):.0f}% / {q(.75):.0f}%；领土中位 {med([snaps[t][p]['terr'] for p in have])} 格；占全图陆地 {pc(tt, X.nland)}")
         teams = defaultdict(lambda: [0, 0, 0])
         for p in X.squad:
