@@ -30,7 +30,8 @@ from team_assign import assign_teams, clan_tag  # noqa: E402
 PEER_REPLAY = {'B039': 'A058', 'B038': 'A057'}
 
 RE_LINE = re.compile(r'^(\d+)\t\[(.+?)\] \[(HL-[A-Z-]+)\] (.*)$')
-RE_RESULT = re.compile(r'^(\d+)\t\[RESULT (.+?)\] result=(\S+) event=(\S+) place=(\S+) peak=(\S+) team=(.*)$')
+# 结算行：c116 的在 place 和 peak 之间多了 seeded= aiBots= alivePlayers= 三项
+RE_RESULT = re.compile(r'^(\d+)\t\[RESULT (.+?)\] result=(\S+) event=(\S+) place=(\S+)(?: seeded=\S+ aiBots=\S+ alivePlayers=\S+)? peak=(\S+) team=(.*)$')
 RE_TICK = re.compile(r't=(\d+) terr=(\d+)\(([\d.]+)%\) bal=(\d+) dens=([\d.]+) nb=(\d+) neut=(\d+) cmds=(\d+) boats=(\d+)(?: avgMs=([\d.]+) maxMs=([\d.]+) skip=(\d+))?')
 RE_INIT = re.compile(r'mode=(\d+) map=(\d+) mapSeed=(\d+) seeded=(\d+) me=(\d+)')
 RE_SPAWN = re.compile(r'me=(\d+) slot=(\d+) \(squad=(\d+),rankIdx=(-?\d+)\) -> \((\d+),(\d+)\)(?: chosenSlots=(\d+)/(\d+))?(?: minSep=(\d+))?')
