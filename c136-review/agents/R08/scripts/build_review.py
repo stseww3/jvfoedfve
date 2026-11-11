@@ -121,6 +121,14 @@ def auto_timeline(F):
                     event=f"{b['name']} {b['event']}")
         if ts:
             base["teamTotals"] = ts
+        # 同一时刻（±10 拍）有 ≥2 个号写了带领土的结果行（left / end）：结果行自己的合计比「最近快照」准
+        grp = [x for x in bots.values() if x.get("deathTick") is not None and abs(int(x["deathTick"]) - dt) <= 10
+               and x.get("event") != "died" and isinstance(x.get("resTerritory"), (int, float))]
+        if len(grp) >= 2:
+            rt = int(sum(x["resTerritory"] for x in grp))
+            base["resultRows"] = dict(bots=len(grp), sqTerr=rt, sqSharePct=round(100 * rt / land, 2),
+                                      sqBal=int(sum(x.get("resBalance") or 0 for x in grp)),
+                                      note="这些号结果行里的 territory / balance 合计（阵亡的号不计）")
         if dt in pts:
             pts[dt].setdefault("events", []).append(base["event"])
         else:
@@ -247,7 +255,8 @@ def build(mid):
     R = mod.R
     oc = card["outcome"]
     label = oc["resultLabel"]
-    result = "won" if oc["primaryTeamWon"] or oc.get("ffaWin") else "lost"
+    # 没有 end 行、领先的队也没到引擎的收尾线（facts.py OPEN_LEAD_SHARE）：对局没打完，不算赢也不算输
+    result = "open" if label == "open" else ("won" if oc["primaryTeamWon"] or oc.get("ffaWin") else "lost")
     acc = [d for d in F["dons"] if d["accepted"]]
     doc = dict(
         matchId=mid, reviewer="R08", protocol="v2.0",
@@ -266,6 +275,7 @@ def build(mid):
                      peakPrimaryTeamShareSeen=oc["peakPrimaryTeamShareSeen"], ourFinalTeamShare=oc["ourFinalTeamShare"],
                      placements=[dict(bot=b["name"], me=me, team=b["team"], event=b["event"], result=b["result"], tick=b["deathTick"],
                                       place=b["place"]) for me, b in F["bots"].items()],
+                     **({"openGame": oc["openGame"]} if oc.get("openGame") else {}),
                      **R.get("outcomeExtra", {})),
         timeline=auto_timeline(F),
         phases=R["phases"],

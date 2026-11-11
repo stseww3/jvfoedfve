@@ -354,11 +354,25 @@ export function resim(mid, opts = {}) {
   }
   // 日志标签和录像里的名字对不上的号（B019 有 7 个）：按 facts.json 里还原出的玩家号认；认得对不对由下面的 traj 核对把关
   const factsPath = path.join(OUT, mid, 'facts.json');
+  // 混了几个物理房间的包（B009）：录像只属于其中一个房间。别的房间的号玩家号会撞上录像里的陌生人，不能按玩家号硬认
+  const otherRoomLabels = new Set();
+  const roomsPath = path.join(DATA, 'src', 'tools', 'rooms-discovery.json');
+  if (!opts.replayFrom && fs.existsSync(roomsPath)) {
+    const rec = JSON.parse(fs.readFileSync(roomsPath, 'utf8')).find((m) => m.matchId === mid);
+    if (rec && (rec.nRooms || 1) > 1) {
+      const hits = {};
+      const ends = (p, nm) => p >= 0 && p < H && names[p].trim().toLowerCase().endsWith(String(nm).toLowerCase());
+      for (const r of rec.rooms) for (const b of r.bots) if (b.me != null && b.names.some((nm) => ends(b.me, nm))) hits[r.roomIdx] = (hits[r.roomIdx] || 0) + 1;
+      const best = Object.entries(hits).sort((a, b) => b[1] - a[1])[0];
+      if (best) for (const r of rec.rooms) if (r.roomIdx !== +best[0]) for (const b of r.bots) for (const nm of b.names) otherRoomLabels.add(nm);
+    }
+  }
   if (!opts.replayFrom && fs.existsSync(factsPath)) {
     const fb = Object.values(JSON.parse(fs.readFileSync(factsPath, 'utf8')).bots || {});
     const used = new Set(Object.values(squad).map((s) => s.id).filter((x) => x >= 0));
     for (const [b, s] of Object.entries(squad)) {
       if (s.id >= 0) continue;
+      if (otherRoomLabels.has(b)) { s.otherRoom = true; continue; }
       const f = fb.find((x) => (x.labels || []).includes(b));
       if (!f || !(f.me >= 0 && f.me < H) || used.has(f.me)) continue;
       used.add(f.me);

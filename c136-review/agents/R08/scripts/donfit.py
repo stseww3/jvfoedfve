@@ -18,6 +18,8 @@
     受捐方累计点数 ≤ 全场额度，t≥4284 不查）的，再取发令最晚的；--fifo 换回旧口径（在途队列队首优先，会把时延估大、把归属推给旧单）。
   · 段所在的快照窗（或前一个窗）里有陆攻 / 发船 / 协防戳刺时（cmds 增量 > 日志里的捐款条数），只留「足额对到 1.5% 以内且过得了额度」的，其余记「定不了」。
   · 一笔捐款发令后 150 拍内每一段都对得上、且都明确不含它 → 记「没成交」。
+  · 收款方是本房间的编队号、结果行是 died：出局拍之后才开始的段不再把这笔捐款当候选，直接记「没成交（收款方已出局）」
+    ——引擎不给已出局的玩家转兵（game.js donate L404-416），拍号是锁步模拟的服务器拍，不受客户端卡顿影响。
   · 时延区间：(最后一次确认还没落地的观测拍 − 发令拍, 第一次确认已落地的观测拍 − 发令拍]。
 产物：out/<局>/donfit[_room<N>].txt 与 donfit[_room<N>].json
 """
@@ -160,9 +162,10 @@ class Quota:
 
 
 class Donor:
-    def __init__(self, me, b):
+    def __init__(self, me, b, dead_at=None):
         self.me = me
         self.b = b
+        self.dead_at = dead_at or {}
         self.dons = sorted(b["donations"], key=lambda d: (d["t"], d["line"]))
         obs = [(s["t"], 1, s["bal"], s["terr"], None) for s in b["ticks"]]
         obs += [(d["t"], 0, d["myBal"], None, d) for d in self.dons]
@@ -200,6 +203,11 @@ class Donor:
                 nxt_terr = next((x[3] for x in obs[i:] if x[3]), None)
                 if not terr_opts:
                     terr_opts = {x for x in (self.last_terr, nxt_terr) if x}
+                for d in list(pending):
+                    dt = self.dead_at.get(d["ally"])
+                    if dt is not None and t0 >= dt:
+                        res[id(d)].update(status="NOEXEC", deadReceiver=True)
+                        pending.remove(d)
                 cand = [d for d in pending if d["t"] < t1]
                 qok = quota.ok(cand, t0, t1) if quota else None
                 f = fit_segment(bal0, t0, bal1, t1, terr_opts, land, cand, qok)
@@ -240,13 +248,18 @@ class Donor:
     def finish(self):
         for d in self.pending:
             r = self.res[id(d)]
+            dt = self.dead_at.get(d["ally"])
+            if dt is not None and r["notSeenAt"] >= dt:
+                r.update(status="NOEXEC", deadReceiver=True)
+                continue
             r["status"] = "NOEXEC" if r["clean_without"] > 0 and r["dirty"] == 0 else "AMB"
         out = []
         for d in self.dons:
             r = self.res[id(d)]
             out.append(dict(t=d["t"], donor=d["donor"], ally=d["ally"], allyName=d["allyName"], kind=d["kind"], pct=d["pct"], myBal=d["myBal"], line=d["line"],
                             status=r["status"], clip=r["clip"], lagLo=r["notSeenAt"] - d["t"], lagHi=(r["seenAt"] - d["t"]) if r["seenAt"] is not None else None,
-                            amt=r["amt"], fee=r["fee"], oldVerdict=d.get("obsVerdict"), pts=r["pts"], quotaOver=r["over"], mixed=r["mixed"], donorName=self.b["name"]))
+                            amt=r["amt"], fee=r["fee"], oldVerdict=d.get("obsVerdict"), pts=r["pts"], quotaOver=r["over"], mixed=r["mixed"], donorName=self.b["name"],
+                            deadReceiver=bool(r.get("deadReceiver"))))
         return out
 
 
@@ -254,7 +267,8 @@ def analyse(mid, room=None, fifo=False):
     F = facts.full(mid, room=room)
     land = F["land"]
     quota = None if fifo else Quota(F)
-    donors = [Donor(me, b) for me, b in F["bots"].items() if b["donations"]]
+    dead_at = {me: int(b["deathTick"]) for me, b in F["bots"].items() if b.get("event") == "died" and b.get("deathTick") is not None}
+    donors = [Donor(me, b, dead_at) for me, b in F["bots"].items() if b["donations"]]
     # 全房间按观测拍排：额度是受捐方的累计量，要跨捐出方按时间记账
     ev = sorted((o[0], o[1], k, i) for k, dn in enumerate(donors) for i, o in enumerate(dn.obs))
     for _t, _o, k, i in ev:
@@ -303,6 +317,9 @@ def main():
     P.append(f"     成交的 {len(ex)} 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 {lo20} 笔（{100 * lo20 / max(1, len(ex)):.0f}%）；时延上界 中位 {lag_hi[len(lag_hi) // 2] if lag_hi else '-'} 拍")
     dup = [x for x in rows if x.get("dupOf") is not None]
     P.append(f"     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：{len(dup)} 笔，多付出 到账 {sum(x['amt'] for x in dup)} + 税 {sum(x['fee'] for x in dup)}")
+    dead = [x for x in no if x.get("deadReceiver")]
+    if dead:
+        P.append(f"     没成交的 {len(no)} 笔里，收款方在这笔捐款落地前已经出局的 {len(dead)} 笔：" + "；".join(f"t={x['t']} {x['donorName']}→{x['allyName']}" for x in dead[:8]))
     P.append("[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数")
     by = defaultdict(list)
     for x in rows:
@@ -363,7 +380,7 @@ def main():
         if donor and x["donorName"] != donor:
             continue
         lag = f"({x['lagLo']},{x['lagHi']}]" if x["lagHi"] is not None else f"(>{x['lagLo']})"
-        P.append(f"     {x['t']:>5} {x['donorName']}→{x['allyName']}({x['ally']}) {x['kind'].replace(' donate', '')} {x['pct']} | {x['myBal']} | {x['status']}{'(夹小)' if x.get('clip') else ''} | {lag} | {x['amt']} / {x['fee']} | {x['oldVerdict']} | {'连发@' + str(x['dupOf']) if x.get('dupOf') is not None else ''} L{x['line']}")
+        P.append(f"     {x['t']:>5} {x['donorName']}→{x['allyName']}({x['ally']}) {x['kind'].replace(' donate', '')} {x['pct']} | {x['myBal']} | {x['status']}{'(夹小)' if x.get('clip') else ''}{'(收款方已出局)' if x.get('deadReceiver') else ''} | {lag} | {x['amt']} / {x['fee']} | {x['oldVerdict']} | {'连发@' + str(x['dupOf']) if x.get('dupOf') is not None else ''} L{x['line']}")
     txt = "\n".join(P)
     suffix = "" if room is None else f"_room{room}"
     od = os.path.join(HERE, "..", "out", mid)

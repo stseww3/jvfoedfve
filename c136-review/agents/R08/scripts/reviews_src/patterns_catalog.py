@@ -337,6 +337,15 @@ CATALOG = [
          definition="一个编队号的结果行 died（引擎把它剩下的地变成空地）落在另一个编队号的某个 90 拍快照窗里，后者这一窗发出非船指令（Δcmds − Δboats ≥1）、领土 +≥500 格，"
                     "之后两条快照没有吐回去；记号、格数、指令数。只看日志时『拿的就是那片空地』是推断（两端快照的 neut 可能都是 0）",
          detect="bundles/<局>/results.csv 的 died 拍 + traj.csv 跨过该拍的快照窗（scripts/patterns.py）"),
+    # ---- B009（混房包；房间 0 九个号分在四个队，只有日志）新增 ----
+    dict(id="NEW-MT-07", prefix="MT", name="保护解除不了：编队号分在几个队、合起来占了大半张图，剩下的野人是其中一队自己的队友（或谁都不接壤）——"
+                                           "hasWildOutsidersAlive 不排除队友，异队编队号按名字互不攻击，占地最多的那一队没有可打的目标，收尾卡住",
+         definition="只看日志：最后 ≥2 条快照里，编队在线号合占陆地 ≥70% 且分属 ≥2 个队，在线号里 ≥70% 的 nb=0，"
+                    "结果行的 alivePlayers 比在线编队号多（还有不在名字池里的活人）；记编队份额、nb=0 的号数、野人数、最后一条带全队领土的结果行",
+         detect="scripts/facts.py [C][I]（末段快照的 nb / neut）+ bundles/<局>/results.csv 的 alivePlayers、place；scripts/patterns.py"),
+    dict(id="NEW-AT-G3", prefix="AT", name="（正面）密度还低时趁邻居便宜连续出手：不等囤过软上限",
+         definition="只看日志：一个号在密度 <50 时起手，≤630 拍内陆攻 ≥8 条，领土 ≥2 倍，净花费 ÷ 净增领土 ≤50 兵/格，期末密度不低于期初",
+         detect="scripts/facts.py [E]（分段的 Δcmds / 领土 / 密度）；scripts/flow.py [VB]（逐窗净流出）"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

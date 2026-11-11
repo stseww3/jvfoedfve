@@ -41,6 +41,8 @@ def main():
     end = F["endTick"]
     name = lambda me: "%s(%d) T%s" % (bots[me]["labels"][0], me, bots[me].get("team"))
     st = stalled_ids(F)
+    # 终局前 500 拍以内才 left 的号（收尾时一起退出）不算中途离开
+    left_early = lambda b: b.get("event") == "left" and (b.get("deathTick") or 0) < end - 500
 
     resim = None
     rp = os.path.join(L.OUT, mid, "resim.json")
@@ -221,7 +223,7 @@ def main():
             by[(r["t"], r["ally"])].append(r)
         multi = [x for v in by.values() if len({y["donor"] for y in v}) >= 2 for x in v]
         print(line(multi, "同一拍 ≥2 个号捐同一人（%d 组）" % sum(1 for v in by.values() if len({y["donor"] for y in v}) >= 2)))
-        live = {me for me in bots if me not in st and bots[me].get("event") != "left"}
+        live = {me for me in bots if me not in st and not left_early(bots[me])}
         print(line([r for r in D if r["donor"] in live and r["ally"] in live], "收款方也是一直在跑的号"))
         last_t = max(r["t"] for r in D)
         edges = [0, 2300, 4284, 6300, 9400, 10000, 11200, last_t + 1]
@@ -273,11 +275,11 @@ def main():
             seen_d[(int(m.group(2)), m.group(3))].append((int(m.group(1)), int(m.group(5))))
     if seen_d:
         print("[HL] 救援捐款日志里的收款方密度 dAlly（发令拍:密度）：收款方（停摆/在跑）| 条数 | 最小~最大 | 序列（按发令拍）")
-        for (ally, nm), v in sorted(seen_d.items(), key=lambda kv: (kv[0][0] in st or (bots.get(kv[0][0]) or {}).get("event") == "left", kv[1][0][0])):
+        for (ally, nm), v in sorted(seen_d.items(), key=lambda kv: (kv[0][0] in st or left_early(bots.get(kv[0][0]) or {}), kv[1][0][0])):
             v.sort()
-            stalled = ally in st or (bots.get(ally) or {}).get("event") == "left"
+            stalled = ally in st or left_early(bots.get(ally) or {})
             print("     %s（%s）| %d | %d~%d | %s" % (nm, "停摆" if stalled else "在跑", len(v), min(x[1] for x in v), max(x[1] for x in v), " ".join("%d:%d" % x for x in v)))
-        sv = [x[1] for (ally, nm), v in seen_d.items() if (ally in st or (bots.get(ally) or {}).get("event") == "left") for x in v]
+        sv = [x[1] for (ally, nm), v in seen_d.items() if (ally in st or left_early(bots.get(ally) or {})) for x in v]
         if sv:
             sv.sort()
             print("     停摆账号合计 %d 条读数：密度 最小 %d / 中位 %d / 最大 %d" % (len(sv), sv[0], sv[len(sv) // 2], sv[-1]))
@@ -357,7 +359,10 @@ def main():
     if os.path.exists(rp):
         print("[HK] 结果行（results.csv）：号 | 事件 拍 | 名次 | 历史峰值 | 出局前最后一次领土（÷峰值）| 出局时余额")
         gone = 0
+        room_labels = {lab for b in bots.values() for lab in b["labels"]}
         for r in csv.DictReader(open(rp, encoding="utf-8")):
+            if F.get("rooms") and r["bot"] not in room_labels:
+                continue
             pk = int(r["peak"] or 0); lt = int(r["lastTerritory"] or 0); bal = int(r["balance"] or 0)
             print("     %s | %s %s | %s | %d | %d（%.3f）| %d" % (r["bot"], r["event"], r["tick"], r["place"], pk, lt, (lt / pk if pk else 0), bal))
             if r["event"] == "died":

@@ -32,6 +32,20 @@ SPAWNB_RE = re.compile(r"bossDist=(-?\d+) minAllyDist=(\d+) voronoi=(\d+)")
 SLOW_RE = re.compile(r"t=(\d+) took ([\d.]+)ms")
 OCHK_RE = re.compile(r"\[OPENING-CHECK (\d+) bots @ tick (\d+)\] (.*)$")
 
+# 只有日志的房间里，结果行没带队号的号（left 的行 team=null）：按证据定队，记为推断。
+#   B009 房间 0（4 队 × 5 人，没有 ≥2 人的战队标签，引擎分队上限 = 20÷4 = 5 人）：
+#     捐款边（引擎只允许捐给同队）把 9 个号连成 {13,16,17,18}、{10,11}、{14,15}、{12} 四组；
+#     Quebec(14) 的结果行（t=5288）给出 T1=18954 / T2=141550 / T3=12415 / T4=243509：
+#       T1 = Musashi(15) 在 t=5220 和 5310 的领土 18954（逐格相等）；T3 = GalaxyBrain(12) 在 t=5220 和 5310 的领土 12415（逐格相等）；
+#       {13,16,17,18} 在 t=5220 合计 171940 格，比 T2 的 141550 多，只能在 T4；T4 已有这 4 个号，再放 {10,11} 就超过 5 人，所以 {10,11} 在 T2
+#       （另有协防日志：T1、T3、T4 的号都打过 Player 188，它只能在 T2）。
+TEAM_BY_EVIDENCE = {
+    "B009": dict(room=0, teams={13: 4, 16: 4, 17: 4, 18: 4, 10: 2, 11: 2, 15: 1, 12: 3},
+                 how="捐款边分组 + Quebec 结果行（t=5288）的各队领土逐格对上 + 每队 5 人的上限"),
+}
+# 没有 end 行的房间：最后一条结果行里领先的队不到这个份额，就不定赢家（对局没打完）
+OPEN_LEAD_SHARE = 0.9
+
 
 def fmt(n):
     if n is None:
@@ -164,10 +178,18 @@ def build(mid, room=None):
         rooms_meta = rinfo["_rooms"]
         other_bots = {k: b for k, b in bots.items() if b.get("room") != sel_room}
         bots = {k: b for k, b in bots.items() if b.get("room") == sel_room}
+        room_labels = {lab for b in bots.values() for lab in b["labels"]}
+        res_rows = [r for r in res_rows if r.get("bot") in room_labels]
         rm = rooms_meta.get(sel_room) or {}
         orig = {k: card.get(k) for k in ("mapLand", "seededPlayers", "squadBots", "ourPrimaryTeam", "teamSplitCounts", "distinctSquadTeams")}
         orig["outcome"] = dict(card["outcome"])
         land = rm.get("land") or land
+        ev = TEAM_BY_EVIDENCE.get(mid)
+        if ev and ev["room"] == sel_room:
+            for b in bots.values():
+                tm = ev["teams"].get(b.get("meReal"))
+                if b["team"] is None and tm is not None:
+                    b["team"], b["teamInferred"], b["teamHow"] = tm, True, ev["how"]
         split = defaultdict(int)
         for b in bots.values():
             if b["team"] is not None:
@@ -180,9 +202,16 @@ def build(mid, room=None):
         prim_sh = [bb["teamTotals"].get(str(primary), 0) / land for _, bb in sorted(tot_rows, key=lambda x: x[0])] if primary else []
         last_tot = max(tot_rows, key=lambda x: x[0])[1]["teamTotals"] if tot_rows else None
         winner = rm.get("winner")
+        open_game = None
         if winner is None and last_tot:
             lt = {int(k): v for k, v in last_tot.items() if int(k) != 0}
-            winner = max(lt, key=lt.get) if lt else None
+            lead = max(lt, key=lt.get) if lt else None
+            if lead is not None and lt[lead] < OPEN_LEAD_SHARE * land:
+                # 没有 end 行，最后一条结果行里领先的队也远没拿下全图：对局没打完，不定赢家
+                open_game = dict(leaderAtLastTotals=lead, leaderShare=round(lt[lead] / land, 4),
+                                 lastTotalsTick=max(tot_rows, key=lambda x: x[0])[0])
+            else:
+                winner = lead
         card = dict(card)
         oc = dict(card["outcome"])
         any_won = any(b["result"] == "won" for b in bots.values())
@@ -193,6 +222,9 @@ def build(mid, room=None):
         # 自由混战的房间（没有一个号带队伍号）：没有「主队」可言，有号拿到 won 就按赢记，并标 ffaWin
         oc["ffaWin"] = bool(primary is None and any_won)
         oc["resultLabel"] = "won" if oc["primaryTeamWon"] or oc["ffaWin"] else "lost"
+        if open_game:
+            oc["resultLabel"] = "open"
+            oc["openGame"] = open_game
         card.update(mapLand=land, seededPlayers=rm.get("seeded") or card.get("seededPlayers"), squadBots=len(bots),
                     ourPrimaryTeam=primary, teamSplitCounts=dict(sorted(split.items())), distinctSquadTeams=len(split), outcome=oc,
                     roomIdx=sel_room, roomsInBundle=len(rooms_meta), cardOriginal=orig)
