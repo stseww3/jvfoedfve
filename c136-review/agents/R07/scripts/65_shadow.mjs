@@ -59,6 +59,8 @@ globalThis.window = {
 
 Error.stackTraceLimit = 40;
 const SIM = await import(path.join(DATA, 'src/sim/sim/index.js'));
+// 船落在没人占的水 / 边界 / 山格时按线上规则处理（见 r07simfix.mjs；来自 R01 的 resim_lib_r01.mjs）
+(await import(path.join(HERE, 'r07simfix.mjs'))).applyOddLandingFix(SIM);
 const { resim } = await import(path.join(DATA, 'src/tools/resim.mjs'));
 const LIB = await import(path.join(DATA, 'src/sim/tools/c102-replay-lib.mjs'));
 const STR = await import(pathToFileURL(modPath).href);
