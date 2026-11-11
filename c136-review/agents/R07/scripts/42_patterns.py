@@ -25,6 +25,8 @@
   R07-OP-BOXED-EARLY  t ≤ 1620 时已经 nb=0 且 neut=0 的号（开局就被队友围死）。记：号数、最早拍号、当时领土。
   R07-EC-NO-OUTLET    同一个号（领土 ≥1000）连续 ≥10 个快照 nb=0 且 neut=0、cmds 不变、余额不降（围死且一条指令都发不出去）。记：段数、快照数、段末最大余额。
                       注意：策略停摆（R07-IO-CRASH）的号也会命中，要对照报错条数排除。
+  R07-EC-NEUT-LOCK    同一个号（领土 ≥1000）连续 ≥3 个快照 nb=0、贴着 1~5 格中立地、cmds 和领土都不变
+                      （零碎中立地不值一条指令，但只要 neutral>0 就不发船：既不吃也不出海）。记：段数、快照数、段末最大余额。
   R07-EG-FRONT-STARVE 快照 t：有接敌号（nb≥1、dens<20、领土≥1000）在下一个窗口丢地 ≥max(200,2%)，而 nb=0 的号加上「dens≥60 且该窗口零进攻」的号握有全队 ≥50% 的兵。记：快照数、薄号丢地合计。
   R07-MT-PRE2400-HOLD 全队贴着的中立地 ≤5（t≥900 第一次）到 t=2400：记份额变化、接敌窗口数（nb≥1）、其中零进攻的窗口数。
   R07-GOOD-SAVED-PUSH （正例）≤3 个连续窗口领土 +≥30% 且 ≥1500 格，起点 dens≥20，期间没有收到捐款（用自己攒的兵换地）。记：次数、涨地合计。
@@ -323,6 +325,25 @@ def analyze(mid):
     pat["R07-EC-NO-OUTLET"] = {"spans": len(no_outlet), "snaps": sum(x["snaps"] for x in no_outlet), "maxBal1": max((x["bal1"] for x in no_outlet), default=0)}
     inst["R07-EC-NO-OUTLET"] = no_outlet
 
+    # ---- NEUT-LOCK: ≥3 consecutive snapshots nb=0 with 1..5 neutral px touching, cmds and terr unchanged
+    neut_lock = []
+    for b, rows in traj.items():
+        i = 0
+        while i < len(rows):
+            if rows[i]["nb"] == 0 and 1 <= rows[i]["neut"] <= 5 and rows[i]["terr"] >= 1000:
+                j = i
+                while (j + 1 < len(rows) and rows[j + 1]["nb"] == 0 and 1 <= rows[j + 1]["neut"] <= 5
+                       and rows[j + 1]["cmds"] == rows[i]["cmds"] and rows[j + 1]["terr"] == rows[i]["terr"]):
+                    j += 1
+                if j - i + 1 >= 3:
+                    neut_lock.append({"bot": b, "t0": rows[i]["t"], "t1": rows[j]["t"], "snaps": j - i + 1, "terr": rows[i]["terr"],
+                                      "neut": rows[i]["neut"], "bal0": rows[i]["bal"], "bal1": rows[j]["bal"], "dens1": rows[j]["dens"]})
+                i = j + 1
+            else:
+                i += 1
+    pat["R07-EC-NEUT-LOCK"] = {"spans": len(neut_lock), "snaps": sum(x["snaps"] for x in neut_lock), "maxBal1": max((x["bal1"] for x in neut_lock), default=0)}
+    inst["R07-EC-NEUT-LOCK"] = neut_lock
+
     # ---- FRONT-STARVE: at snapshot t a thin frontline bot is losing land while idle/boxed bots hold ≥50% of the squad's troops
     by_t = defaultdict(dict)
     for b, rows in traj.items():
@@ -453,7 +474,7 @@ def main():
                 "R07-DN-IDLE-RECV.denseN", "R07-DN-IDLE-RECV.staleN", "R07-AT-BIG-BURN.windows", "R07-AT-BIG-BURN.sumDrop",
                 "R07-OP-BOXED-EARLY.bots", "R07-SP-CLUSTER.closeLt140", "R07-SP-CLUSTER.bots", "R07-SP-SCATTER.farGe300", "R07-SP-SCATTER.earlyGone",
                 "R07-DN-PINGPONG.n", "R07-DN-PINGPONG.fee", "R07-DN-DEAD-RECV.n", "R07-DN-DEAD-RECV.fee",
-                "R07-EC-NO-OUTLET.spans", "R07-EC-NO-OUTLET.snaps", "R07-EC-NO-OUTLET.maxBal1", "R07-EG-FRONT-STARVE.snaps", "R07-EG-FRONT-STARVE.px",
+                "R07-EC-NO-OUTLET.spans", "R07-EC-NO-OUTLET.snaps", "R07-EC-NO-OUTLET.maxBal1", "R07-EC-NEUT-LOCK.spans", "R07-EC-NEUT-LOCK.snaps", "R07-EC-NEUT-LOCK.maxBal1", "R07-EG-FRONT-STARVE.snaps", "R07-EG-FRONT-STARVE.px",
                 "R07-MT-PRE2400-HOLD.tNeut0", "R07-MT-PRE2400-HOLD.share0", "R07-MT-PRE2400-HOLD.share2400", "R07-MT-PRE2400-HOLD.nbWindows", "R07-MT-PRE2400-HOLD.idleNbWindows",
                 "R07-GOOD-SAVED-PUSH.n", "R07-GOOD-SAVED-PUSH.px", "R07-GOOD-BOXED-BOAT.bots", "R07-GOOD-BOXED-BOAT.px"]
         rows = ["\t".join(["matchId", "cohort", "result", "endTick", "teams"] + keys)]

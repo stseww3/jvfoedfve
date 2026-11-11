@@ -1,0 +1,184 @@
+{
+ "matchId": "G00",
+ "bots": {
+  "leo_tx": {
+   "n": 6,
+   "segments": 32,
+   "segOk": 14,
+   "segMismatch": 18,
+   "verdicts": {
+    "EXEC": 5,
+    "UNDETERMINED": 1
+   }
+  },
+  "ryan_m": {
+   "n": 3,
+   "segments": 23,
+   "segOk": 16,
+   "segMismatch": 7,
+   "verdicts": {
+    "EXEC": 2,
+    "UNDETERMINED": 1
+   }
+  }
+ },
+ "rows": [
+  {
+   "bot": "leo_tx",
+   "t": 3364,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "kevin_k",
+   "myBal": 359505,
+   "amt": 18256,
+   "fee": 22469,
+   "verdict": "EXEC",
+   "execLo": 3370,
+   "execHi": 3379,
+   "rejFlag": false,
+   "line": 608
+  },
+  {
+   "bot": "leo_tx",
+   "t": 3382,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "mark07",
+   "myBal": 325799,
+   "amt": 16544,
+   "fee": 20362,
+   "verdict": "EXEC",
+   "execLo": 3383,
+   "execHi": 3399,
+   "rejFlag": false,
+   "line": 610
+  },
+  {
+   "bot": "leo_tx",
+   "t": 3400,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "kevin_k",
+   "myBal": 298910,
+   "amt": 15179,
+   "fee": 18681,
+   "verdict": "EXEC",
+   "execLo": 3401,
+   "execHi": 3419,
+   "rejFlag": false,
+   "line": 611
+  },
+  {
+   "bot": "leo_tx",
+   "t": 3420,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "kevin_k",
+   "myBal": 271019,
+   "amt": 13762,
+   "fee": 16938,
+   "verdict": "UNDETERMINED",
+   "execLo": null,
+   "execHi": null,
+   "rejFlag": false,
+   "line": 616
+  },
+  {
+   "bot": "leo_tx",
+   "t": 3550,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "kevin_k",
+   "myBal": 270197,
+   "amt": 13720,
+   "fee": 16887,
+   "verdict": "EXEC",
+   "execLo": 3570,
+   "execHi": 3578,
+   "rejFlag": true,
+   "line": 630
+  },
+  {
+   "bot": "leo_tx",
+   "t": 3568,
+   "type": "DONATE",
+   "kind": "surplus donate",
+   "pct": 51,
+   "to": "kevin_k",
+   "myBal": 273223,
+   "amt": 13874,
+   "fee": 17076,
+   "verdict": "EXEC",
+   "execLo": 3571,
+   "execHi": 3579,
+   "rejFlag": false,
+   "line": 631
+  },
+  {
+   "bot": "ryan_m",
+   "t": 2240,
+   "type": "DONATE",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "to": "dave_w",
+   "myBal": 530279,
+   "amt": 26928,
+   "fee": 33142,
+   "verdict": "EXEC",
+   "execLo": 2241,
+   "execHi": 2249,
+   "rejFlag": false,
+   "line": 496
+  },
+  {
+   "bot": "ryan_m",
+   "t": 2340,
+   "type": "DONATE",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "to": "dave_w",
+   "myBal": 529941,
+   "amt": 26911,
+   "fee": 33121,
+   "verdict": "EXEC",
+   "execLo": 2350,
+   "execHi": 2359,
+   "rejFlag": false,
+   "line": 509
+  },
+  {
+   "bot": "ryan_m",
+   "t": 2440,
+   "type": "DONATE",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "to": "dave_w",
+   "myBal": 528933,
+   "amt": 26859,
+   "fee": 33058,
+   "verdict": "UNDETERMINED",
+   "execLo": null,
+   "execHi": null,
+   "rejFlag": false,
+   "line": 519
+  }
+ ],
+ "latency": {
+  "n": 7,
+  "loMin": 1,
+  "loMed": 3,
+  "loMax": 20,
+  "hiMin": 9,
+  "hiMed": 17,
+  "hiMax": 28
+ },
+ "total": {
+  "EXEC": 7,
+  "UNDETERMINED": 2
+ }
+}

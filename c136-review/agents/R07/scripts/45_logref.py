@@ -16,7 +16,11 @@ RE_TICK = re.compile(r"@ tick (\d+)")
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    argv = sys.argv[1:]
+    if "--max" in argv:
+        k = argv.index("--max")
+        argv = argv[:k] + argv[k + 2:]
+    args = [a for a in argv if not a.startswith("--")]
     mid, bot, t0, t1 = args[0], args[1], int(args[2]), int(args[3])
     tags = args[4:]
     no_tick = "--no-tick" in sys.argv

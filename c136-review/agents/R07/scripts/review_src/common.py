@@ -113,6 +113,13 @@ PATTERN_DEFS = {
                       "（t>2200 后没有敌邻且没有攻防的队友不算候选，领土 <600 的也不算）；闲置船不打 ≥2,500 格的真人。兵只进不出，直到超过软上限。",
         "detectionSketch": "42_patterns.py：同一个号（领土 ≥1000）连续 ≥10 个快照 nb=0&neut=0、cmds 不变、余额不降。策略停摆的号也会命中，要对照 R07-IO-CRASH 排除。",
     },
+    "R07-EC-NEUT-LOCK": {
+        "category": "EC",
+        "definition": "没有敌邻的号贴着 1~5 格零碎中立地，既不吃也不出海。t<1500（dpEnd）时中立地走 dpNeutral：`X = 2*sum + rings[n-1].r`，"
+                      "X 小于 minCmd（= 4 × 进攻手续费，随余额增长）就不发；而开局阶段的 act 在 `this.neutral > 0` 时直接 return，走不到发船那一段。"
+                      "结果是兵越攒越多、这几格地越不值得发指令，一直卡到 t=1500 换成核心逻辑为止。",
+        "detectionSketch": "42_patterns.py：同一个号（领土 ≥1000）连续 ≥3 个快照 nb=0、1≤neut≤5、cmds 与领土都不变。",
+    },
     "R07-GOOD-SAVED-PUSH": {
         "category": "AT",
         "definition": "（正例）用自己攒的兵一次换成地：≤3 个连续窗口领土 +≥30% 且 ≥1,500 格，起点密度 ≥20，期间没有收到捐款。",
