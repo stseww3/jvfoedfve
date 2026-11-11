@@ -1,11 +1,11 @@
 # A086 核心期贴着内置 AI 的行动拍 [1500,3500)：共 582 个号·行动拍，其中贴着弱 AI（兵 < 地）的 337 个
-第一条 AI 报价的去向：covered 236（41%），floor/sf/squad 94（16%），send 75（13%），price 71（12%），floor/sf/enemy 64（11%），behind 20（3%），floor/dp 12（2%），chunk 8（1%），floor/keep 1（0%），floor/sf/ally 1（0%）
+第一条 AI 报价的去向：covered 236（41%），floor/sf/squad 95（16%），send 75（13%），price 71（12%），floor/sf/enemy 64（11%），behind 20（3%），floor/dp 12（2%），chunk 8（1%），floor/keep 1（0%）
 其中贴着弱 AI 的：covered 132（39%），floor/sf/squad 94（28%），send 41（12%），price 16（5%），floor/sf/enemy 37（11%），behind 7（2%），floor/dp 7（2%），chunk 3（1%）
-safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：squad:1 68，enemy:15 64，squad:2 25，squad:3 1，ally:4 1
+safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：squad:1 68，enemy:15 64，squad:2 25，squad:3 1，squad:4 1
   leo_tx    150 拍（1500~3020）：covered 35，floor/sf/squad 66，send 28，price 19，behind 1，chunk 1
   talon5    117 拍（1500~2390）：covered 73，send 16，price 4，behind 11，floor/dp 9，chunk 4
   alex_k     89 拍（1500~1940）：covered 6，send 3，price 22，floor/sf/enemy 52，behind 4，chunk 1，floor/keep 1
   noah88     69 拍（1500~1840）：covered 36，floor/sf/squad 24，send 7，chunk 2
-  kaito9     65 拍（1510~2310）：covered 41，send 5，price 18，floor/sf/ally 1
+  kaito9     65 拍（1510~2310）：covered 41，floor/sf/squad 1，send 5，price 18
   ryan_m     57 拍（1500~1790）：covered 23，send 7，price 8，floor/sf/enemy 12，behind 4，floor/dp 3
   zexos1     35 拍（1500~1670）：covered 22，floor/sf/squad 4，send 9

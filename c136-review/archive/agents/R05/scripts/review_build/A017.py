@@ -4,10 +4,11 @@
 # 其余数字逐条来自 scripts 字段里列的脚本输出。用法：python3 scripts/review_build/A017.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A017'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-va.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-va.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -470,6 +471,7 @@ doc = {
         'results': 'leo_tx 3185（机器人 13.4%/T1 70.2%/T2 14.1%）、alex_k 3297（12.8/72.7/12.3）、zexos1 3437（11.2/75.8/11.4）、sora_w 3529（8.8/78.7/10.3）、riku_x 3696（8.3/81.5/8.1；存兵 174k）、kaito9 3871（4.4/87.5/6.6；120k）、noah88 4183（0.3/92.4/5.5）、zero_7 4290（0.3/96.5/0.0）、talon5 4432 结束（0.1/98.3/0.0）',
         'aiBotsLingered': 'Y 盘机器人 3185 拍还有 13.4%、3696 拍 8.3%；X 盘 2700 拍已是 2.7%',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'bursts': S['bursts'],
     'delivery': S['delivery'],

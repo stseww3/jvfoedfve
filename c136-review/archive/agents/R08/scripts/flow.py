@@ -141,6 +141,81 @@ def main():
         if n:
             print(f"     {bots[me]['name']} | {n} / {nb} | {a} | {bsum} | {a + bsum} | {dterr:+d}")
 
+    # [VD] 出手段的价钱：连续的『有陆攻或戳刺、没有船』的窗连成一段，再带上紧接着的一窗（兵回流 / 地继续涨）。
+    #      花掉的兵 = −（这几窗『其余』之和）；只在领土净涨的段里算每格的价。挨打的损失也混在『其余』里，所以是上限。
+    print("[VD] 出手段的价钱（只看日志；一段 = 连续的『有陆攻 / 戳刺、没有船』的窗 + 紧接着的一窗）：号 | 段数 | 领土净涨的段：段数 / 花掉的兵 / 涨的格 / 每格 | "
+          "其中段首密度 ≥100 的：段数 / 花掉的兵 / 涨的格 / 每格 | 段首密度 <100 的：段数 / 花掉的兵 / 涨的格 / 每格 | 领土没涨的段：段数 / 花掉的兵 / 领土变化")
+    tot = dict(hi=[0, 0, 0], lo=[0, 0, 0], bad=[0, 0, 0])
+    epis_all = []
+    for me in order:
+        ws = sorted(wins[me].values(), key=lambda w: w["t0"])
+        epis = []
+        i = 0
+        while i < len(ws):
+            w = ws[i]
+            atk = (w["dc"] - w["db"] - w["nDonLog"] > 0) and w["db"] == 0
+            if not atk:
+                i += 1
+                continue
+            j = i
+            while j + 1 < len(ws) and (ws[j + 1]["dc"] - ws[j + 1]["db"] - ws[j + 1]["nDonLog"] > 0) and ws[j + 1]["db"] == 0 and ws[j + 1]["t0"] == ws[j]["t1"]:
+                j += 1
+            seg = ws[i:j + 1]
+            if j + 1 < len(ws) and ws[j + 1]["t0"] == ws[j]["t1"] and ws[j + 1]["db"] == 0:
+                seg = seg + [ws[j + 1]]
+                j += 1
+            spent = -sum(x["resid"] + x["outE"] - x["inE"] for x in seg)
+            gain = seg[-1]["terr1"] - seg[0]["terr0"]
+            b0 = None
+            for s in bots[me]["ticks"]:
+                if s["t"] == seg[0]["t0"]:
+                    b0 = s
+                    break
+            dens0 = (b0["bal"] / max(1, b0["terr"])) if b0 else 0
+            epis.append(dict(t0=seg[0]["t0"], t1=seg[-1]["t1"], spent=spent, gain=gain, dens0=dens0, terr0=seg[0]["terr0"], name=bots[me]["name"]))
+            i = j + 1
+        if not epis:
+            continue
+        good = [e for e in epis if e["gain"] > 0 and e["spent"] > 0]
+        hi = [e for e in good if e["dens0"] >= 100]
+        lo = [e for e in good if e["dens0"] < 100]
+        bad = [e for e in epis if not (e["gain"] > 0 and e["spent"] > 0)]
+
+        def fmt(es):
+            sp, gn = sum(e["spent"] for e in es), sum(e["gain"] for e in es)
+            return f"{len(es)} / {sp} / {gn} / {sp / gn:.0f}" if gn > 0 else f"{len(es)} / {sp} / {gn} / –"
+
+        for k, es in (("hi", hi), ("lo", lo)):
+            tot[k][0] += len(es)
+            tot[k][1] += sum(e["spent"] for e in es)
+            tot[k][2] += sum(e["gain"] for e in es)
+        tot["bad"][0] += len(bad)
+        tot["bad"][1] += sum(e["spent"] for e in bad)
+        tot["bad"][2] += sum(e["gain"] for e in bad)
+        epis_all += epis
+        print(f"     {bots[me]['name']} | {len(epis)} | {fmt(good)} | {fmt(hi)} | {fmt(lo)} | {len(bad)} / {sum(e['spent'] for e in bad)} / {sum(e['gain'] for e in bad):+d}")
+    if epis_all:
+        h, lw, bd = tot["hi"], tot["lo"], tot["bad"]
+        print(f"     合计 | {len(epis_all)} | 段首密度 ≥100：{h[0]} 段 / {h[1]} 兵 / {h[2]} 格 / 每格 {h[1] / max(1, h[2]):.0f} | <100：{lw[0]} 段 / {lw[1]} 兵 / {lw[2]} 格 / 每格 {lw[1] / max(1, lw[2]):.0f} | "
+              f"领土没涨的 {bd[0]} 段 / {bd[1]} 兵 / {bd[2]:+d} 格")
+        big = sorted([e for e in epis_all if e["spent"] > 0], key=lambda e: -e["spent"])[:14]
+        print("     花得最多的 14 段：号 起~止 | 段首 领土 / 密度 | 花掉的兵 | 领土变化 | 每格")
+        for e in big:
+            per = f"{e['spent'] / e['gain']:.0f}" if e["gain"] > 0 else "–"
+            print(f"       {e['name']} {e['t0']}~{e['t1']} | {e['terr0']} / {e['dens0']:.0f} | {e['spent']} | {e['gain']:+d} | {per}")
+
+    # [VE] 挨打窗：窗内没有自己的指令（cmds 不变）、领土掉了、『其余』为负。
+    print("[VE] 挨打窗（窗内 cmds 不变、领土净掉、『其余』为负）：号 | 窗数 | 掉的格 | 少掉的兵 | 每掉一格少掉的兵 | 掉得最多的一窗（起拍 / 格 / 兵）")
+    for me in order:
+        ws = sorted(wins[me].values(), key=lambda w: w["t0"])
+        hit = [w for w in ws if w["dc"] == 0 and w["terr1"] < w["terr0"] and (w["resid"] + w["outE"] - w["inE"]) < 0]
+        if not hit:
+            continue
+        lost = sum(w["terr0"] - w["terr1"] for w in hit)
+        burn = -sum(w["resid"] + w["outE"] - w["inE"] for w in hit)
+        worst = max(hit, key=lambda w: w["terr0"] - w["terr1"])
+        print(f"     {bots[me]['name']} | {len(hit)} | {lost} | {burn} | {burn / max(1, lost):.0f} | {worst['t0']} / {worst['terr0'] - worst['terr1']} / {-(worst['resid'] + worst['outE'] - worst['inE'])}")
+
 
 if __name__ == "__main__":
     main()

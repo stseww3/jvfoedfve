@@ -30,6 +30,27 @@ RESULT_RE = re.compile(r"^\[RESULT (.+?)\] result=(\w+) event=(\w+) place=(\d+) 
 INIT_RE = re.compile(r"mode=(\d+) map=(\d+) mapSeed=(\d+) seeded=(\d+) me=(\d+)")
 OPEN_RE = re.compile(r"t=(\d+) cyc=(\d+) DP expand rings=(\d+) spend=(\d+)/(\d+) terr=(\d+)")
 
+# 同一个 label 在一局里先后被两个号用过（整体轮换名字时，一个号接了另一个号刚腾出来的名字）：
+# 按日志行号切开，行号 >= 第二个数的那一段换成带 @2 的标签。依据写在右边。
+LABEL_SPLITS = {
+    # B027：L8600929 以前的 [Aztec] 是 32 号（maxMs=74.3、cmds=69）；L8600953 起的 [Aztec] 是 35 号
+    #（maxMs=44.0、cmds=40、boats=3，接的是 [DemonHunter] t=5310 那一条），32 号同时改叫 [Croissant]。
+    "B027": [("Aztec", 8600953, "Aztec@2")],
+}
+# 统筹的房间表把一个号的名字链断成两截（后半截被当成另一个房间的号）时，在这里接上。
+ROOM_FIXES = {
+    "B027": dict(names={32: ["player_007", "Aztec", "Croissant", "Starbucks"],
+                        35: ["Raeder", "DemonHunter", "Aztec@2", "Ashoka"]},
+                 dropRooms=[1], forceLabelMap=True),
+}
+
+
+def split_label(mid, label, line):
+    for lab, from_line, new in LABEL_SPLITS.get(mid, ()):
+        if label == lab and line >= from_line:
+            return new
+    return label
+
 
 def bundle_dir(mid):
     for sub in ("bundles", "validation_bundles"):
@@ -101,6 +122,8 @@ def parse_log(mid):
                     rec["tag"] = "BACKEND-SPAWN-COORD"
                 elif rest.startswith("[OPENING-CHECK"):
                     rec["tag"] = "OPENING-CHECK"
+            if rec["label"] is not None and mid in LABEL_SPLITS:
+                rec["label"] = split_label(mid, rec["label"], line)
             if rec["tag"] == "HL-TICK":
                 mt = TICK_RE.search(rest)
                 if mt:
@@ -198,7 +221,22 @@ def load_rooms(mid):
                 _ROOMS_CACHE["all"] = {m["matchId"]: m for m in json.load(f)}
         except OSError:
             _ROOMS_CACHE["all"] = {}
-    return _ROOMS_CACHE["all"].get(mid)
+    m = _ROOMS_CACHE["all"].get(mid)
+    fx = ROOM_FIXES.get(mid)
+    if m and fx and not m.get("_fixed"):
+        m = json.loads(json.dumps(m))
+        m["rooms"] = [r for r in m["rooms"] if r["roomIdx"] not in fx.get("dropRooms", ())]
+        for r in m["rooms"]:
+            for b in r["bots"]:
+                if b.get("me") in fx["names"]:
+                    b["names"] = list(fx["names"][b["me"]])
+            r["nBots"] = len(r["bots"])
+        m["nRooms"] = len(m["rooms"])
+        m["nBots"] = sum(len(r["bots"]) for r in m["rooms"])
+        m["forceLabelMap"] = bool(fx.get("forceLabelMap"))
+        m["_fixed"] = True
+        _ROOMS_CACHE["all"][mid] = m
+    return m
 
 
 def _fix_rooms_by_replay(mid, rooms, main):
@@ -264,7 +302,7 @@ def room_label_map(mid):
     m = load_rooms(mid)
     if not m:
         return None, None
-    if m.get("nRooms", 1) <= 1 and m.get("nInitNames", 0) >= m.get("nBots", 0):
+    if m.get("nRooms", 1) <= 1 and m.get("nInitNames", 0) >= m.get("nBots", 0) and not m.get("forceLabelMap"):
         return None, None
     main = m.get("mainRoom", 0)
     info, owner, collide = {}, {}, set()

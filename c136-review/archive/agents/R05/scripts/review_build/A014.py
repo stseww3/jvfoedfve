@@ -4,10 +4,11 @@
 # 用法：python3 scripts/review_build/A014.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A014'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-va.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-va.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -363,6 +364,7 @@ doc = {
     }, note='引擎在 t≥4284 取消对真人的捐兵配额（game.js donationFree L360）。此前 94.6% 的调度没落地（被拒不扣税、不进录像）；此后 91% 落地。全程落地 157 笔：到账 29.23M、税 9.47M（税/到账 32.4%）。'),
     'delivery': S['delivery'],
     'shadow': S['shadow'],
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': '各队 地%/总兵（match_truth.mjs T30；A014_facts.py §3）',

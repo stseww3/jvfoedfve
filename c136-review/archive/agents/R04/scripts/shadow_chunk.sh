@@ -5,7 +5,7 @@
 # 用法（重活，套 run-heavy；DEADLINE = 这条命令必须结束的时刻，秒）：
 #   DEADLINE=$(( $(date +%s) + 116 )) HEAVY_QUEUE=70 HEAVY_TIMEOUT=110 timeout 119 bash ../../tools/run-heavy.sh bash scripts/shadow_chunk.sh <局号> [--ours id,id,…]
 #   python3 scripts/shadow_merge.py <局号>
-# 估时：引擎整局重放约 30 秒 / 5600 拍，每个号的策略约 9.5 秒 / 5600 拍（4 核共用、nice 19 时的实测量级）；
+# 估时：引擎整局重放约 22 秒 / 5600 拍，每个号的策略约 9 秒 / 5600 拍（4 核共用、nice 19 时的实测量级）；
 #   剩余时间不够带 1 个号就直接退出（退出码 75），不占槽位。
 cd "$(dirname "$0")/.." || exit 2
 m=$1; shift
@@ -25,7 +25,7 @@ for d in glob.glob(f'tmp/shadow/{mid}.chunk-*'):
         pass
 pend = [b for b in allb if b not in done]
 scale = meta['lastTick'] / 5600.0
-E, B = 30.0 * scale, 9.5 * scale
+E, B = 22.0 * scale, 9.0 * scale
 k = int((left - E - 6) // B)
 k = max(0, min(k, len(pend)))
 print(','.join(pend[:k]) + '|' + str(len(pend)))

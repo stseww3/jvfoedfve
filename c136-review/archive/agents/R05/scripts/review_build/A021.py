@@ -5,10 +5,11 @@
 # 用法：python3 scripts/review_build/A021.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A021'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -561,6 +562,7 @@ doc = {
     'shadow': dict(S['shadow'], summary={'shadowIssued': 1682, 'selfReported': 1673, 'botsEqual': '8/10（zexos1 392 对 387、alex_k 120 对 116）', 'executed': 785, 'matched': 631, 'staleMedian': 12, 'staleGE90': 95, 'staleGE300': 11,
                                          'atkBoatIssued': 1124, 'atkBoatExecuted': 646, 'issuedInDeadWindows': 374, 'executedInSameTickBursts': 310,
                                          'oneCmdPerTickSqueezed': '20 条：19 条打机器人（其中 14 条是 zexos1 的 pct=47 中立小指令挤掉 62k 的打机器人指令）、1 条打真人（ryan_m 5100 窗 301k → BDF）'}),
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'match_extra.py --sec team（HS 每 300 拍采样）：各队总兵；squadShareOfTeamTroops / squadShareOfTeamLand = 编队占 T3 兵/地 的比例；squadVsBiggestEnemyTeam = 编队兵 ÷ 敌方最大一队的兵',

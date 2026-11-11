@@ -2,10 +2,11 @@
 # 用法：python3 scripts/review_build/A093.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A093'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -574,6 +575,7 @@ doc = {
         'selfReportedVsExecutedPeakGap': 'alex_k 108（1800 拍）、riku_x 93、zero_7 47、zexos1 26（1080 拍）',
         'strategyCost': '[HL-SLOW-TICK] 19 条、最大 96.7 ms（alex_k t=3320）；[HL-TICK] avgMs 约 0.92',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'A093_facts.py §1（T30）：各队 占图/总兵/密度；squadVsT2 = 编队兵 ÷ T2 兵',

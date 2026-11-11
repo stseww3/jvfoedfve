@@ -2,10 +2,11 @@
 # 用法：python3 scripts/review_build/A034.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A034'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -515,6 +516,7 @@ doc = {
         'strategyCost': 'traj.csv：avgMs 约 0.8、maxMs ≤13.4、skip 0',
         'clientClock': 'client_clock.py：服务器每拍 56.02 ms；ryan_m 上报离场时落后 376 拍（21.1 秒），leo_tx 终局落后 12 拍',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'A034_facts.py §1（T30）：各队 占图/总兵/密度；squadVsT1、squadVsT2 = 编队兵 ÷ 该队兵',

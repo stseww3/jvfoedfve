@@ -83,6 +83,13 @@ def accounts(mid, work='/tmp/c136-r05/work'):
         out['tickAttribution'] = _rd({
             'source': f'scripts/shadow.mjs {mid} --quiet --tc 600:1500 → scripts/tick_attrib.py {mid}（每个决策拍归一类，类别互斥）',
             **{k: A.get(k) for k in ('window', 'rows', 'cats', 'layers', 'floorSetter', 'safeFiniteHalf', 'issuedByClass', 'byBot')},
-            **{k: A[k] for k in ('exits', 'ptGates', 'gaExit') if k in A},
+            **{k: A[k] for k in ('exits', 'ptGates', 'gaExit', 'notSentSplit', 'sendRefused', 'noFullSendRows') if k in A},
+        })
+    p = f'{work}/{mid}-quota.json'
+    if os.path.exists(p):
+        Q = json.load(open(p))
+        out['quotaGuard'] = _rd({
+            'source': f'scripts/quota_guard.py {mid}（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）',
+            **{k: Q.get(k) for k in ('ver', 'okLine', 'calls', 'refused', 'nfsAt', 'byPeriod', 'byBot')},
         })
     return out

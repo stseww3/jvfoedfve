@@ -1,6 +1,6 @@
 # A086 核心期行动拍的去向 [1500,3500)：共 3600 个号·行动拍
 合计：nooffer 2649（74%），floor 289（8%），出手 185（5%），inflight 163（5%），donate 146（4%），price 120（3%），chunk 19（1%），send 17（0%），boat 6（0%），small 4（0%），sole 2（0%）
-floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 107，sf/squad 94，sf/enemy 61，empty 18，sf/ally 8，keep 1
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 107，sf/squad 102，sf/enemy 61，empty 18，keep 1
   ryan_m    400 拍：nooffer 287（72%），floor 20（5%），出手 22（6%），inflight 17（4%），donate 1（0%），price 33（8%），chunk 16（4%），send 3（1%），small 1（0%）
           按目标：price→15 32，chunk→15 15，inflight→15 15，floor→9 13，floor→15 7，send→9 2，inflight→9 2，chunk→9 1
   noah88    400 拍：nooffer 354（88%），floor 24（6%），出手 9（2%），donate 11（3%），boat 2（0%）

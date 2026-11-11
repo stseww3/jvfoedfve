@@ -565,8 +565,12 @@ export function diagBoats(pol, g, nm) {
     if (act >= 1 && dMe < 115) why.push(`有 ${act} 个兄弟号在陆上接敌且本号密度 ${dMe.toFixed(0)} < 115（L5031 直接返回）`);
     if (!g.boatsAllowed(me)) why.push(`boatsAllowed=false（海岸像素 ${g.coast[me].length}，在航 ${g.boatCount[me]} 条）`);
     if (g.boatCount[me] >= 6) why.push('在航船已 6 条');
-    if (g.t - (pol.lastBoat ?? -999) < Math.min(P.boatEvery, 18)) why.push('发船冷却中');
-    out.push(`    [idleBoats L5022~5043 封死分支] 接敌兄弟 ${act} 个，密度 ${dMe.toFixed(0)}，海岸像素 ${g.coast[me].length}，保底 ${act >= 1 ? 92 : 68}×地=${f((act >= 1 ? 92 : 68) * L)} → ${why.length ? '不发船：' + why.join('；') : '会调用 boatOut（范围 2500）'}`);
+    // boatOut 一被调用就把 lastBoat 记成当前拍（L1002），不管船发没发出去；所以「冷却中」只说明 18 拍内调用过一次，
+    // 真正的原因要看那一次 boatOut 为什么返回 false —— 下面照样复刻一遍。
+    const sinceCall = g.t - (pol.lastBoat ?? -1e9);
+    const cooling = sinceCall < Math.min(P.boatEvery, 18);
+    const coolNote = cooling ? `（${sinceCall === 0 ? '这一拍' : sinceCall + ' 拍前'}刚调用过 boatOut、没发出去；下面是它的判定）` : '';
+    out.push(`    [idleBoats L5022~5043 封死分支] 接敌兄弟 ${act} 个，密度 ${dMe.toFixed(0)}，海岸像素 ${g.coast[me].length}，保底 ${act >= 1 ? 92 : 68}×地=${f((act >= 1 ? 92 : 68) * L)} → ${why.length ? '不发船：' + why.join('；') : '会调用 boatOut（范围 2500）' + coolNote}`);
     if (!why.length) {
       // 复刻 boatOut（基类 L999~1015 + V13 包装 L2325~2330）：找得到落点吗？够不够最小船量？
       const oldRange = P.boatRange, oldFrac = P.boatFrac;

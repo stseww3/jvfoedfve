@@ -2,10 +2,11 @@
 # 用法：python3 scripts/review_build/A030.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A030'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -582,6 +583,7 @@ doc = {
         'dispatchLag': '调度日志拍 → 落地拍：中位 11 拍、最大 49 拍',
         'clientClock': 'client_clock.py：服务器每拍 55.87 ms',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'game_facts.py --sec 1、30（T30）：占图/总兵；squadVsT1 = 编队兵 ÷ T1 兵；randoms = T2 的路人',

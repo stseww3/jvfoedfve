@@ -4,10 +4,11 @@
 # 用法：python3 scripts/review_build/A037.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A037'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -382,6 +383,7 @@ doc = {
     },
     'delivery': S['delivery'],
     'shadow': S['shadow'],
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'match_extra.py --sec team（HS 每 300 拍采样）：各队总兵；squadShareOfTeamTroops = 编队占 T3 兵的比例',

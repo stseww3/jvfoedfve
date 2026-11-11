@@ -4,10 +4,11 @@
 # 其余数字逐条来自 scripts 字段里列的脚本输出。用法：python3 scripts/review_build/A043.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A043'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -561,6 +562,7 @@ doc = {
     'delivery': S['delivery'],
     'shadow': {'summary': {'shadowIssued': 188, 'selfReported': 188, 'executed': 188, 'matched': 184, 'staleMedian': 9, 'staleMax': 24, 'staleGE90': 0,
                            'noFullSendFirstTrue': 'ryan_m t=771（拒 11 次整额）、sora_w t=1002（1 次）', 'oneCmdPerTickSqueezed': '2 条（ryan_m，打机器人，想出 19k）'}},
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'match_extra.py --sec team（X 盘，HS 每 300 拍）：各队 占图/总兵；编队兵 ÷ 最大敌队兵',

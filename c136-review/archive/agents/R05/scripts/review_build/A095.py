@@ -5,10 +5,11 @@
 # 用法：python3 scripts/review_build/A095.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts
 
 M = 'A095'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -585,6 +586,7 @@ doc = {
                                          'notExecuted': '69 条＝66 条没落地的捐兵（64 条四个试算拍全被配额拒、2 条有通过有被拒）+ zexos1 3 条',
                                          'oneCmdPerTickSqueezed': '12 条：9 条打真人 710k（leo_tx 2100 段 4 条 641k→Hi、ryan_m 3 条 13k、noah88 2 条 56k），3 条打机器人',
                                          'unlockShadowIssued': 644, 'guardRefusals': 44}),
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'A095_facts.py §8（HS 每 300 拍采样）：各队 占图/总兵；squadShareOfTeamTroops = 编队占 T1 兵的比例；squadVsBiggestEnemyTeam = 编队兵 ÷ 最大敌队兵',
