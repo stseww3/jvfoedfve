@@ -138,7 +138,10 @@ def one(mid):
         first = sum(sp(v[0]) for v in vol)
         frac = [sum(sp(e) for e in v) / v[0]['B0'] for v in vol if v[0]['B0'] > 0]
         frac1 = [sp(v[0]) / v[0]['B0'] for v in vol if v[0]['B0'] > 0]
+        ovv = [v for v in vol if v[0]['B0'] > 100 * v[0]['L0']]
         return {'n': len(es), 'sent': tot, 'overN': len(ov), 'overSent': sum(sp(e) for e in ov), 'tgtGE1N': len(ge1), 'tgtGE1Sent': sum(sp(e) for e in ge1),
+                'overVolleys': len(ovv), 'overVolleySent': sum(sp(e) for v in ovv for e in v),
+                'volleyLenMedian': st.median([len(v) for v in vol]) if vol else None,
                 'tgtGE2N': len(ge2), 'tgtGE2Sent': sum(sp(e) for e in ge2), 'leftTargetN': len(left), 'leftTargetSent': sum(sp(e) for e in left),
                 'volleys': len(vol), 'volleysGE3': len(v3), 'volleysGE3Sent': sum(sp(e) for v in v3 for e in v), 'firstSent': first,
                 'volleyFracMedian': round(st.median(frac), 3) if frac else None, 'firstFracMedian': round(st.median(frac1), 3) if frac1 else None}
@@ -333,31 +336,45 @@ def render(RS):
     w('')
     w('放行 = 执行前一刻存兵 > 100×地（`buyLand` L5352–5359 在这种情况下跳过价格门 `c >= worth`）。目标更强 = 目标存兵 ≥ 我方号存兵（执行前一刻）。')
     w('≥3 条的轮 = 同一个号对同一个目标、相邻两条间隔 ≤ 21 拍、合计 ≥3 条。每轮花掉 = 一轮连手续费打出的兵 ÷ 第一条执行前的存兵。')
+    w('放行口有两种算法：「逐条」= 这一条执行前一刻过线（同一轮里第一条扣兵之后，后面几条执行时往往已经不过线，所以是下界）；')
+    w('「按轮」= 一轮的第一条执行前过线，整轮都算放行口放出来的（后面几条是第一条在途期间下的单，下单时策略看到的还是过线的存兵）。')
     w('')
-    w('| 局 | 版本 | 结果 | 打真人条数 | 打出(含费) | 放行口占打出 | 目标更强占打出 | 目标 ≥2 倍 | 目标已离场 | 轮数 | ≥3 条的轮占打出 | 首条花掉(中位) | 整轮花掉(中位) |')
-    w('| --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: |')
+    w('| 局 | 版本 | 结果 | 打真人条数 | 打出(含费) | 放行口占打出（逐条） | 放行口占打出（按轮） | 目标更强占打出 | 目标 ≥2 倍 | 目标已离场 | 轮数 | 每轮条数(中位) | ≥3 条的轮占打出 | 首条花掉(中位) | 整轮花掉(中位) |')
+    w('| --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: | --: |')
     tot = defaultdict(float)
     for R in RS:
         h = R['humanAtk']['all']
-        for key in ('n', 'sent', 'overSent', 'tgtGE1Sent', 'tgtGE2Sent', 'leftTargetSent', 'volleys', 'volleysGE3Sent'):
+        for key in ('n', 'sent', 'overSent', 'overVolleySent', 'tgtGE1Sent', 'tgtGE2Sent', 'leftTargetSent', 'volleys', 'volleysGE3Sent'):
             tot[key] += h[key]
         fm = '–' if h['firstFracMedian'] is None else f"{100*h['firstFracMedian']:.0f}%"
         vm = '–' if h['volleyFracMedian'] is None else f"{100*h['volleyFracMedian']:.0f}%"
-        w(f"| {R['mid']} | {R['ver']} | {R['result']} | {h['n']} | {k(h['sent'])} | {pc(h['overSent'], h['sent'])} | {pc(h['tgtGE1Sent'], h['sent'])} | {pc(h['tgtGE2Sent'], h['sent'])} | {pc(h['leftTargetSent'], h['sent'])} | {h['volleys']} | {pc(h['volleysGE3Sent'], h['sent'])} | {fm} | {vm} |")
+        lm = '–' if h['volleyLenMedian'] is None else f"{h['volleyLenMedian']:g}"
+        w(f"| {R['mid']} | {R['ver']} | {R['result']} | {h['n']} | {k(h['sent'])} | {pc(h['overSent'], h['sent'])} | {pc(h['overVolleySent'], h['sent'])} | {pc(h['tgtGE1Sent'], h['sent'])} | {pc(h['tgtGE2Sent'], h['sent'])} | {pc(h['leftTargetSent'], h['sent'])} | {h['volleys']} | {lm} | {pc(h['volleysGE3Sent'], h['sent'])} | {fm} | {vm} |")
     s = tot['sent']
-    w(f"| 合计 | | | {tot['n']:.0f} | {k(s)} | {pc(tot['overSent'], s)} | {pc(tot['tgtGE1Sent'], s)} | {pc(tot['tgtGE2Sent'], s)} | {pc(tot['leftTargetSent'], s)} | {tot['volleys']:.0f} | {pc(tot['volleysGE3Sent'], s)} | | |")
+    w(f"| 合计 | | | {tot['n']:.0f} | {k(s)} | {pc(tot['overSent'], s)} | {pc(tot['overVolleySent'], s)} | {pc(tot['tgtGE1Sent'], s)} | {pc(tot['tgtGE2Sent'], s)} | {pc(tot['leftTargetSent'], s)} | {tot['volleys']:.0f} | | {pc(tot['volleysGE3Sent'], s)} | | |")
     w('')
     w('按时段（13 局合计）：')
     w('')
-    w('| 时段 | 条数 | 打出 | 放行口占 | 目标更强占 | 目标 ≥2 倍占 | ≥3 条的轮占 |')
-    w('| --: | --: | --: | --: | --: | --: | --: |')
+    w('| 时段 | 条数 | 打出 | 放行口占（逐条） | 放行口占（按轮） | 目标更强占 | 目标 ≥2 倍占 | ≥3 条的轮占 |')
+    w('| --: | --: | --: | --: | --: | --: | --: | --: |')
     for key, nm in (('1500-4284', '1500–4284'), ('4284+', '4284–终局')):
         t = defaultdict(float)
         for R in RS:
             for kk, v in R['humanAtk'][key].items():
                 if isinstance(v, (int, float)) and v is not None:
                     t[kk] += v
-        w(f"| {nm} | {t['n']:.0f} | {k(t['sent'])} | {pc(t['overSent'], t['sent'])} | {pc(t['tgtGE1Sent'], t['sent'])} | {pc(t['tgtGE2Sent'], t['sent'])} | {pc(t['volleysGE3Sent'], t['sent'])} |")
+        w(f"| {nm} | {t['n']:.0f} | {k(t['sent'])} | {pc(t['overSent'], t['sent'])} | {pc(t['overVolleySent'], t['sent'])} | {pc(t['tgtGE1Sent'], t['sent'])} | {pc(t['tgtGE2Sent'], t['sent'])} | {pc(t['volleysGE3Sent'], t['sent'])} |")
+    w('')
+    w('逐局 × 时段（每格 = 条数 / 打出 / 放行口按轮 / 目标更强 / 目标 ≥2 倍；百分比都是占该格打出的兵）：')
+    w('')
+    w('| 局 | 结果 | 1500–4284 拍 | 4284 拍–终局 |')
+    w('| --: | --: | --: | --: |')
+    for R in RS:
+        cells = []
+        for key in ('1500-4284', '4284+'):
+            h = R['humanAtk'][key]
+            cells.append('–' if not h['n'] else f"{h['n']} 条 / {k(h['sent'])} / {pc(h['overVolleySent'], h['sent'])} / {pc(h['tgtGE1Sent'], h['sent'])} / {pc(h['tgtGE2Sent'], h['sent'])}")
+        w(f"| {R['mid']} | {R['result']} | {cells[0]} | {cells[1]} |")
     # ---- 5 ----
     w('')
     w('## 5. 捐兵（录像里执行了的）：三个配额时段')
