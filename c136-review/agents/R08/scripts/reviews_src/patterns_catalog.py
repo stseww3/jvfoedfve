@@ -385,6 +385,15 @@ CATALOG = [
                     "（c110 offers L5031-5036 的报价 c = (elimCost + 对方压在我身上的兵 − 我压在它身上的兵 + 手续费) ÷ 打出局能拿到的地；buyLand L5258-5267 的 worth 与截断）；"
                     "记点数、占比、报价 ÷ worth 的中位，以及按真值逐对战损账分摊到这一结论上的丢地格数。同一张表里 skip:avail<=0(safe)（NEW-DF-04）、skip:siegeShrink、skip:soleBuffer、skip:crowdedHard、skip:x<chunk 分别计数",
          detect="scripts/shadow.mjs --walk-every 30 --tag walk + scripts/gatecensus.py [WC][WE][WG]"),
+    dict(id="NEW-DN-17", prefix="DN", name="救援捐款把快出局的队友顶到 150 倍硬上限，对方转手按盈余分支捐回来：两头各付一次 6.25% 的税，兵在两个号之间打转",
+         definition="日志 [HL-DONATE]：A 对 B 发 squad rescue donate 之后 ≤60 拍内，B 发 surplus donate 且当拍 dMe ≥140（myBal ≥ 140×领土；=150 即正好顶在引擎硬上限），"
+                    "收款方是 A 或同队另一个编队号；记两笔的 myBal、pct、税（= myBal×64/1024），以及 B 之后多少拍出局。"
+                    "（c110 tryDonateToTeammate L4436-4437 救援不看对方还装得下多少；L4462-4489 盈余分支不看对方刚才是不是捐过来；game.js receiverRoom L340-345 把到账夹在 150×领土 − 余额）",
+         detect="scripts/donlogpairs.py [LF][LG] + bundles/<局>/in_game.log 的 [HL-DONATE] 行（rescue 之后 60 拍内的 surplus，dMe ≥140）"),
+    dict(id="NEW-DF-07", prefix="DF", name="满仓速死：密度 ≥60、余额过百万的号，从领土还在峰值九成的那个快照到出局不到 360 拍，下坡里自己的指令 ≤4 条",
+         definition="日志 HL-TICK + 结果行：阵亡号最后一个『领土 ≥ 最后一轮峰值的 90%』的快照密度 ≥60、余额 ≥100 万，该快照到阵亡拍 ≤360 拍，期间 cmds 增量 ≤4；"
+                    "记起点的领土 / 余额 / 密度、下坡拍数、cmds 增量（其中捐款几条）、nb。有真值时并记进攻者是谁、压上来多少兵、对它的买地结论（NEW-DF-04 / NEW-DF-06）",
+         detect="scripts/logstats.py [QD]（峰值 → 阵亡的指令数）；scripts/flow.py [VE]（挨打窗）；有录像时 scripts/dossier.py + gatecensus.py [WC]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}
