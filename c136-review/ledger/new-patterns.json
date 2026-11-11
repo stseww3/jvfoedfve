@@ -1,5 +1,373 @@
 [
  {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-OP02",
+  "prefix": "OP",
+  "name": "保底线死锁：safeFinite 取到队友余额",
+  "definition": "1500 拍前、身边中立地已吃完，某号连续 >=20 个决策拍没有发令，身边有密度 <5 的机器人地，且 winFloor（取自 safeFinite）不低于自己的余额。",
+  "detect": "shadow.mjs 写出的 shadow_idle.csv（floor+floorN 列、bySafe 列）；shadow_report.py --section idle；--probe 可列出保底线取自哪个邻居。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 700,
+    "note": "leo_tx 700–1299 拍 104 个决策拍，身边机器人地 3722–4312 格（密度 0.5–1.1），保底线取自 noah88 等队友的余额"
+   },
+   {
+    "matchId": "A057",
+    "t": 700,
+    "note": "ryan_m 700–1499 拍 155 个决策拍，只发出 2 条指令"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT02",
+  "prefix": "AT",
+  "name": "零星中立地的最小令抢占每拍唯一的指令名额",
+  "definition": "同一个决策拍先对 NEUTRAL 发出 pct=47 的最小令并被受理，紧接着对玩家目标的指令被拒（同拍第二条），连续 >=5 个决策拍。",
+  "detect": "shadow_cmds.csv：同一 (bot, t) 两行，第一行 NEUTRAL ok=1，第二行 ok=0。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 1600,
+    "note": "ryan_m 1600–1800 拍 41 条对 Dai Viet 离场壳的指令被拒"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-IO02",
+  "prefix": "IO",
+  "name": "过期指令成批执行成清仓",
+  "definition": "同一个号在同一个服务器拍落地 >=3 条陆攻令，决策拍比落地拍早 60 拍以上，合计花掉执行前余额的 60% 以上。",
+  "detect": "shadow_report.py --section bursts；只有录像时用 burst_audit.mjs。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 896,
+    "note": "sora_w x9，想出 9154，实扣 24353（72.6%）"
+   },
+   {
+    "matchId": "A057",
+    "t": 1008,
+    "note": "zexos1 x9，想出 7969，实扣 32934（64.9%）"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-IO03",
+  "prefix": "IO",
+  "name": "isNoFullSend 误置真",
+  "definition": "updateShadowQuota 在发令后 7 拍内看到余额下降就判定“没发满”，而当时这条指令还没落地；置真后不复位。",
+  "detect": "shadow.mjs 的 shadow_flags.csv（ev=isNoFullSend / sendHeld）；--pin-no-full 做对照。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 57,
+    "note": "10 个号里 7 个置真（57–695 拍），之后 15 次出兵被拦"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-EC01",
+  "prefix": "EC",
+  "name": "内陆围死满仓",
+  "definition": "nb=0 且 neut=0 且余额 >=149.5 倍领土（利率 0）连续 >=10 个快照。",
+  "detect": "shadow_idle.csv 的 boxed、cap 列；没有影子时用 HL-TICK 行。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 2610,
+    "note": "4 个号 1200900 兵到 4050 拍"
+   },
+   {
+    "matchId": "A057",
+    "t": 7200,
+    "note": "4 个号 2804850 兵到 11790 拍"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-EG01",
+  "prefix": "EG",
+  "name": "本队领先时触发自退",
+  "definition": "编队号在 t>8500 发出离场指令，且当时本队份额 >=50%。",
+  "detect": "录像里编队号的 leave（id=9）拍 + resim_teams.csv 当拍份额。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 11984,
+    "note": "ryan_m 12385 格、1121631 兵时离场，T1 74.3%"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DN02",
+  "prefix": "DN",
+  "name": "受赠者快满仓时的截断捐款",
+  "definition": "调度到账额 < 名义额的 90%（受赠者余量不足），捐出方仍付余额 6.25% 的全额税；余量 <1 时整笔作废。",
+  "detect": "donation_ledger.py / dispatch_audit.mjs。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 4095,
+    "note": "zero_7 名义 43268 到账 8068、税 8810"
+   }
+  ]
+ },
+ {
+  "matchId": "A057",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DN04",
+  "prefix": "DN",
+  "name": "给必死队友的协防捐款",
+  "definition": "kind=defense_dispatch 的受赠者在到账后 150 拍内阵亡或离场。",
+  "detect": "HL-DISPATCH 行 + resim_events.csv。",
+  "instances": [
+   {
+    "matchId": "A057",
+    "t": 11860,
+    "note": "leo_tx→zero_7 名义 175579；zero_7 85 拍后阵亡"
+   }
+  ]
+ },
+ {
+  "matchId": "A059",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-IO02",
+  "prefix": "IO",
+  "name": "过期指令成批执行成清仓",
+  "definition": "同一个号在同一个服务器拍落地 >=3 条陆攻令，这些指令的决策拍比落地拍早 60 拍以上，合计花掉执行前余额的 60% 以上。",
+  "detect": "shadow.mjs + shadow_report.py --section bursts（要决策拍）；只有录像时用 burst_audit.mjs（n>=3 且花掉 >=60%）。",
+  "instances": [
+   {
+    "matchId": "A059",
+    "t": 2107,
+    "note": "zexos1 x9，614617 花掉 98.6%，决策拍 1680–1720"
+   },
+   {
+    "matchId": "A059",
+    "t": 1918,
+    "note": "leo_tx x6，420065 花掉 92.6%"
+   },
+   {
+    "matchId": "A059",
+    "t": 2086,
+    "note": "alex_k x8，253900 花掉 88.4%"
+   }
+  ]
+ },
+ {
+  "matchId": "A059",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-IO03",
+  "prefix": "IO",
+  "name": "isNoFullSend 被别的指令落地误置真",
+  "definition": "置真那一拍，待检指令还没落地，余额下降来自更早的一条指令。",
+  "detect": "shadow.mjs 输出的 shadow_flags.csv（ev=isNoFullSend）；后果用 shadow.mjs --pin-no-full 加 shadow_diff.py 数差异。",
+  "instances": [
+   {
+    "matchId": "A059",
+    "t": 554,
+    "note": "7 个号中招；拦下 18 次 send"
+   }
+  ]
+ },
+ {
+  "matchId": "A059",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DN05",
+  "prefix": "DN",
+  "name": "调度额超过受赠者的反喂养配额",
+  "definition": "日志有调度行、录像无对应捐款，且重演到那一拍 used+cost>cap。",
+  "detect": "dispatch_audit.mjs 的 would=quota 且 executed=0；shadow_report.py --section donate 区分是否到了引擎。",
+  "instances": [
+   {
+    "matchId": "A059",
+    "t": 2185,
+    "note": "给 zexos1 的 32 条全拒"
+   },
+   {
+    "matchId": "A059",
+    "t": 1525,
+    "note": "2142 前单笔成本 116–257 对上限 85–121"
+   }
+  ]
+ },
+ {
+  "matchId": "A059",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT04",
+  "prefix": "AT",
+  "name": "开战首击按预算一次打出",
+  "definition": "2400 拍前对还没交战的人类邻居，不走 12% 脉冲，单条 pct>=200。",
+  "detect": "shadow_cmds.csv 里代码位置为 buyLand L5616 的陆攻。",
+  "instances": [
+   {
+    "matchId": "A059",
+    "t": 1500,
+    "note": "zexos1→TURAN pct 298–396"
+   }
+  ]
+ },
+ {
+  "matchId": "A059",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DN07",
+  "prefix": "DN",
+  "name": "两个号短时间内互相捐款",
+  "definition": "甲给乙捐款后 100 拍内乙又给甲捐款。",
+  "detect": "resim_transfers.csv 里 kind=cmd 的往返配对。",
+  "instances": [
+   {
+    "matchId": "A059",
+    "t": 5124,
+    "note": "leo_tx↔alex_k，税 125663"
+   }
+  ]
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "SP",
+  "name": "出生点挤成一个紧凑圆盘，内圈的号开局就没地可占",
+  "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 60 像素内有 ≥2 个队友。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。",
+  "detector": "scripts/match_digest.py 第 1 节（出生点距离）与第 3b 节（开局名次、封死快照）",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852（allyMinSep 等尺度）、pickNextTarget L938~991（relaxFactors 逐级放宽 + 紧凑圆盘约束）",
+  "id": "NEW-SP-DISC"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "SP",
+  "name": "选点阶段反复改点，最后一刻才落定",
+  "definition": "选点阶段同一个号被执行的出生指令 ≥ 10 条，或最后一条出生指令落在选点阶段最后 10% 的步数里。",
+  "detector": "scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（每次大厅状态变化都整体重算）、matchBotsToTargets L1431",
+  "id": "NEW-SP-RESOLVE"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "OP",
+  "name": "开局占无主地的节奏不落后",
+  "definition": "t=270 时我方号领土中位 ≥ 其他真人领土中位。",
+  "detector": "scripts/match_digest.py 第 3b 节（拍 270 的中位与名次）",
+  "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）",
+  "id": "NEW-OP-DPGOOD"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "OP",
+  "name": "打内置 AI 的底线被队友的余额顶住（队友互锁）",
+  "definition": "核心期之前（t < coreFrom=1500）某号贴着「兵比地少」的内置 AI、这一拍没有出手，且对该 AI 的出兵底线高于自己的余额；底线来自 winFloor 的第 3 项 safeFinite = 这个 AI 的其他邻居里「余额 + 正在打它的兵」最小者，不排除队友、也不看这个 AI 自己有没有兵。",
+  "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）",
+  "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444",
+  "id": "NEW-OP-ALLYLOCK"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "客户端落后，指令晚到或丢失",
+  "definition": "某时段我方陆攻指令落地率 < 60%，或落地延迟中位 ≥ 90 拍；并且日志行序显示该号比最快的队友落后 ≥ 180 拍。",
+  "detector": "scripts/exec_gap.py（想发 vs 落地）+ scripts/client_lag.py（日志行序）",
+  "codePath": "Strategy.send L479~487（发出即计数，不跟踪是否落地）+ Policy.act L4838（每 5 拍重新决策，同一指令反复重发）",
+  "id": "NEW-IO-LAGLOSS"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "挑密度远低于自己的邻居一口气打到出局线（有效）",
+  "definition": "对某真人目标的出兵发生时，对方密度 ≤ 我方密度的 45%，且对方在随后 300 拍内出局或领土跌掉 ≥ 40%，我方该号同期净得地 > 0。",
+  "detector": "scripts/shadow.mjs --at <拍>（报价 c 与 worth）；scripts/truth_query.py <局号> bal <对方号>",
+  "codePath": "Policy.buyLand L5350~5359（c < worth 才买）、L5456~5609（对真人的出兵量）",
+  "id": "NEW-AT-CHEAPKILL"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "追帧后同一拍连发，把余额抽干",
+  "definition": "同一拍落地 ≥ 5 条同目标陆攻，批后余额 < 批前的 40%（每条都按当时余额重新计价）。",
+  "detector": "scripts/match_digest.py 第 6 节（同拍批次）",
+  "codePath": "Strategy.send L479~487（比例按决策拍的余额换算）+ Policy.act L4838（每 5 拍重发）；策略里没有「已发未落地」的账",
+  "id": "NEW-IO-DRAINBATCH"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "isNoFullSend 误锁，出兵被自己的守卫拦掉",
+  "definition": "影子策略里 isNoFullSend 变成 true（引擎的 25% 限额只在 aE.lC==10 的模式存在，团队局没有），此后 Policy.send 的守卫拦掉对非无主目标的出兵（返回 false）。计数 = 被拦次数与想出的兵。",
+  "detector": "scripts/shadow.mjs <局号> --out（check.json 里每个号的 lockAt / blocked）",
+  "codePath": "Policy.updateShadowQuota L3821~3834（发令后 6 拍内看到余额少掉的量比想发的小就上锁，永不解锁）、Policy.send L3844~3862（守卫）",
+  "id": "NEW-AT-NFSLOCK"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "DN",
+  "name": "调度不看收款人的反喂养配额",
+  "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
+  "detector": "scripts/match_digest.py 第 7 节（按时段 发出/落地/到账）；scripts/exec_gap.py（捐款落地率）",
+  "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）",
+  "id": "NEW-DN-QUOTABLIND"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "EC",
+  "name": "内陆封死憋兵（没有敌邻、没有无主地、没有海岸）",
+  "definition": "某号 nb=0 且 neut=0 且海岸像素=0（船也发不了）连续 ≥ 900 拍；或余额顶到 150×领土（硬上限，利息归零）≥ 90 拍。",
+  "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）",
+  "codePath": "Policy.offers L5072（只遍历 this.nb，报价单为空）、Policy.idleBoats L5019~5070（L5032 boatsAllowed 要求有海岸）",
+  "id": "NEW-EC-LANDLOCK"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "DN",
+  "name": "配额解除后把后排的兵集中给有战线的号（有效）",
+  "definition": "t≥4284 后封死号的调度落地率 ≥ 90%，且收款号在随后 600 拍净得地 > 0。",
+  "detector": "scripts/match_digest.py 第 7 节；scripts/truth_query.py <局号> gain <t0> <t1>",
+  "codePath": "Policy.tryDonateToTeammate L4414~4508（offense / yield / defense 三种调度）",
+  "id": "NEW-DN-CARRIER"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "EG",
+  "name": "胜负已分后还在烧捐款税",
+  "definition": "本队占比 ≥ 80% 之后，我方号捐款所交的税合计 ≥ 100 万兵。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> <t0> <t1> --id 2",
+  "codePath": "Policy.tryDonateToTeammate L4355（没有敌邻、没有无主地时 boxedIn 恒真）→ L4453、L4479~4481",
+  "id": "NEW-EG-TAXBURN"
+ },
+ {
+  "matchId": "A022",
+  "reviewer": "R04",
+  "prefix": "EX",
+  "name": "我方号中途离场，变成不生息的内置 AI",
+  "definition": "引擎里该号状态变成 2（离开）；记录离场拍、当时领土与余额、离场前客户端落后量。",
+  "detector": "scripts/match_digest.py 第 5、10 节（ev.tsv 的 state 事件）；scripts/client_lag.py",
+  "codePath": "不在策略代码里：引擎 dF.aeY 把离场号标成已离开并交给内置 AI（规格书 B 第 9.4 节）",
+  "id": "NEW-EX-LEAVER"
+ },
+ {
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:IO-disconnect-husk",
