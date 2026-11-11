@@ -32,7 +32,7 @@
 4. 门槛（L1197）：`avail ≤ minShare·余额` 就跳过，`minShare = minSend = 0.2141`。也就是余额要高过 sb 的 1 ÷ (1 − 0.2141) ≈ 1.27 倍才放行。
 
 五个策略文件里 `threatOf`、`safeFinite`、`winFloor`、`dpKeep`、`minShare`、`allow` 的正文逐字相同（`codemap.txt` [CM-C]），参数也相同
-（`dump_params.mjs`：`winR`、`minSend`、`botMax`、`maxTargets`、`feeK`、`idleCap` 各档一致）。两档只差两处：
+（`params_all.mjs` → `out/_cross/params.txt`：`winR`、`minSend`、`botMax`、`feeK`、`idleCap` 五档一致；`maxTargets` 在 c110 / c116 系是 4，g09 是 6；`period` 是 5，g09 是 2）。两档只差两处：
 c110 的邻居表不含受保护的编队友（`analyze` L440，影响 `dpKeep`，不影响 sb）；c110 的 `pickTarget` 多一行 L1200（已经在打的 AI 跳过，见 H04）。
 
 互锁怎么来：两个编队号 A、B 挨着同一个 AI q，余额相近。A 算 sb 时 q 最弱的别的邻居是 B，sb_A ≈ 余额_B；B 那边 sb_B ≈ 余额_A。

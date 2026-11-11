@@ -1,0 +1,72 @@
+[PA-A] 生效参数（Policy 构造后的 this.p）：键 | c110（squad20） | c116（squad10（Vc）） | c116-va（squad10（Va）） | c116-vb（squad10（Vb）） | g09（squad8） | 各档是否相同
+  period | 5 | 5 | 5 | 5 | 2 | 不同
+  maxTargets | 4 | 4 | 4 | 4 | 6 | 不同
+  dpEnd | 1500 | 1500 | 1500 | 1500 | 1500 | 同
+  coreFrom | 1500 | 1500 | 1500 | 1500 | 1500 | 同
+  winR | 0.002 | 0.002 | 0.002 | 0.002 | 0.002 | 同
+  minSend | 0.2141 | 0.2141 | 0.2141 | 0.2141 | 0.2141 | 同
+  feeK | 4 | 4 | 4 | 4 | 4 | 同
+  botMax | 60 | 60 | 60 | 60 | 60 | 同
+  idleCap | 1.25 | 1.25 | 1.25 | 1.25 | 1.25 | 同
+  dpSpend | 0.5 | 0.5 | 0.5 | 0.5 | 0.5 | 同
+  sendFrac | 0.746 | 0.746 | 0.746 | 0.746 | 0.746 | 同
+  foodK | 1.25 | 1.25 | 1.25 | 1.25 | 1.25 | 同
+  maxCost | 338.1478 | 338.1478 | 338.1478 | 338.1478 | 338.1478 | 同
+  botWait | 0 | 0 | 0 | 0 | 0 | 同
+  botSkip | 0 | 0 | 0 | 0 | 0 | 同
+  elimW | 0.8998 | 0.8998 | 0.8998 | 0.8998 | 0.8998 | 同
+  shareW | 0.1055 | 0.1055 | 0.1055 | 0.1055 | 0.1055 | 同
+  chunk | 0.2 | 0.2 | 0.2 | 0.2 | 0.2 | 同
+  refN | 1.2124 | 1.2124 | 1.2124 | 1.2124 | 1.2124 | 同
+  killW | 1 | 1 | 1 | 1 | 1 | 同
+  oppFloorCap | 88 | 88 | 78 | 88 | 38 | 不同
+  collapseFloorCap | 85 | 85 | 85 | 85 | 16 | 不同
+  counterK | 0 | 0 | 0 | 0 | 0 | 同
+  counterFloor | 0.5 | 0.5 | 0.5 | 0.5 | 0.5 | 同
+  maxW | 0.5 | 0.5 | 0.5 | 0.5 | 0.5 | 同
+  marketFrom | 2500 | 2500 | 2500 | 2500 | 2500 | 同
+  marketFloor | 0.85 | 0.85 | 0.85 | 0.85 | 0.85 | 同
+  surplus | 1 | 1 | 1 | 1 | 1 | 同
+  growth | 1 | 1 | 1 | 1 | 1 | 同
+  pulseFrac | 0.12 | 0.12 | 0.2 | 0.12 | 0.12 | 不同
+  bleedSafeCap | 1 | 1 | 0 | 1 | 1 | 不同
+  maxBoats | 2 | 2 | 2 | 2 | 2 | 同
+  boatEvery | 60 | 60 | 60 | 60 | 60 | 同
+  boatRange | 200 | 200 | 200 | 200 | 200 | 同
+  boatFood | 1 | 1 | 1 | 1 | 1 | 同
+  boatFee | 1 | 1 | 1 | 1 | 1 | 同
+  pplK | 0 | 0 | 0 | 0 | 0 | 同
+  hungryK | 0 | 0 | 0 | 0 | 0 | 同
+
+[PA-B] 全部 226 个键里各档取值不同的 31 个：键 | c110 | c116 | c116-va | c116-vb | g09
+  a06AggMemGate | 1 | 0 | 0 | 0 | 1
+  a06AloneSafe | 1 | 0 | 0 | 0 | 1
+  atkFreshBoats | 0 | 0 | 0 | 0 | 1
+  bleedDiscount | 1 | 1 | 0.72 | 1 | 0.65
+  bleedSafeCap | 1 | 1 | 0 | 1 | 1
+  collapseFloorCap | 85 | 85 | 85 | 85 | 16
+  collapseRatio | 1.4 | 1.4 | 1.4 | 1.4 | 1.45
+  crowdedHardCap | 1.26 | 1.26 | 1.1 | 1.26 | 1.26
+  crowdedHardPenalty | 1.35 | 1.35 | 1.08 | 1.35 | 1.35
+  flashLoanMode | 0 | 0 | 0 | 0 | 3
+  focusBonus | 1 | 1 | 0.78 | 1 | 1
+  frogHopOverMode | 0 | 0 | 0 | 0 | 1
+  leaderHardFrom | 5000 | 5000 | 0 | 5000 | 5000
+  maxTargets | 4 | 4 | 4 | 4 | 6
+  narrowBoatFirstMode | 0 | 0 | 0 | 0 | 1
+  oppFloorCap | 88 | 88 | 78 | 88 | 38
+  overHumanCap | 1.28 | 1.28 | 1.12 | 1.28 | 1.28
+  overHumanKeep | 1.12 | 1.12 | 0.92 | 1.12 | 1.12
+  overPulseMode | 0 | 0 | 1 | 0 | 0
+  period | 5 | 5 | 5 | 5 | 2
+  pocket0Mult | 1 | 1 | 0.76 | 1 | 1
+  pocket1Rank | 1 | 1 | 0.88 | 1 | 1
+  pulseFrac | 0.12 | 0.12 | 0.2 | 0.12 | 0.12
+  pulseMinShare | 0.04 | 0.04 | 0.04 | 0.04 | 0.03
+  reigniteBorders | 0 | 0 | 0 | 0 | 1
+  seaCore | 0 | 0 | 0 | 0 | 1
+  siegeShrinkRatio | 0.72 | 0.72 | 0 | 0.72 | 0.72
+  soleBufferPenalty | 1.6 | 1.6 | 1.15 | 1.6 | 1.6
+  thinDiscount | 1 | 1 | 0.78 | 1 | 0.72
+  thinMaxTD | 0.48 | 0.48 | 0.48 | 0.48 | 0.62
+  zeroPulseMode | 0 | 0 | 0 | 0 | 1
