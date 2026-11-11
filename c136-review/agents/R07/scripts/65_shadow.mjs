@@ -203,7 +203,7 @@ function evalOffers(g, p, lim = 6) {
 // 过了比价和留底之后「发多少」的那一段（Vb：buyLand L5449-5617，c110 / c116 / Va / g09 同一段代码）：
 //   在途：对这个目标已经压着的兵（curAtk）过了门槛就不再加（L5575 / L5589 / L5596）；
 //   低于最小指令：算出来要发的兵 x < max(minCmd, pulseMinShare×B)，minCmd = feeK × 手续费（L474-476）——跳过这个报价（L5583 / L5591 / L5605）；
-//   不够一条：非脉冲分支 x < want 且 x < chunk×B（L5612）。
+//   不够一条：非脉冲分支 x < want 且 x < chunk×B（真人 L5613；内置 AI / 离开席位 L5452）。
 // counterClearMode / exactRingMode / zeroPulseMode / narrowBoatFirstMode 在这几个版本的参数下都不改变发不发（6 / 0 / 0 / 0），这里不复刻。
 function sizeOf(g, p, o, B, avail, over) {
   const P = p.p, me = p.me, q = o.q, need = o.need, cnt = p.cnt[q] ?? 0;
