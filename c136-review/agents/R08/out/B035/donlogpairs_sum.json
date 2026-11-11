@@ -1,0 +1,543 @@
+{
+ "matchId": "B035",
+ "basis": "log-fit",
+ "deathTicks": {
+  "Afsharid": 8358,
+  "San Marino": 9142,
+  "Panzergrenadier": 8867,
+  "Lucario": 9654,
+  "Wales": 3036,
+  "Maurya": 6386,
+  "Alaska": 8616,
+  "Impostor": 6573
+ },
+ "total": {
+  "logged": 79,
+  "executed": 65,
+  "arrival": 33640347,
+  "tax": 15933967,
+  "toSquad": {
+   "n": 47,
+   "arrival": 28259605,
+   "tax": 12487062
+  },
+  "toOutsider": {
+   "n": 18,
+   "arrival": 5380742,
+   "tax": 3446905
+  }
+ },
+ "pairs": [
+  {
+   "a": "Panzergrenadier",
+   "b": "Lucario",
+   "ab": {
+    "n": 11,
+    "amt": 7827411,
+    "fee": 3157280
+   },
+   "ba": {
+    "n": 6,
+    "amt": 4398318,
+    "fee": 2432168
+   },
+   "net": 3429093,
+   "churn": 8796636
+  },
+  {
+   "a": "Lucario",
+   "b": "Alaska",
+   "ab": {
+    "n": 5,
+    "amt": 3994196,
+    "fee": 2121402
+   },
+   "ba": {
+    "n": 13,
+    "amt": 5927436,
+    "fee": 2163754
+   },
+   "net": -1933240,
+   "churn": 7988392
+  },
+  {
+   "a": "Panzergrenadier",
+   "b": "Alaska",
+   "ab": {
+    "n": 3,
+    "amt": 2301075,
+    "fee": 1090582
+   },
+   "ba": {
+    "n": 3,
+    "amt": 1919779,
+    "fee": 535443
+   },
+   "net": 381296,
+   "churn": 3839558
+  },
+  {
+   "a": "Lucario",
+   "b": "Zoro",
+   "ab": {
+    "n": 7,
+    "amt": 2935871,
+    "fee": 1623230
+   },
+   "ba": {
+    "n": 0,
+    "amt": 0,
+    "fee": 0
+   },
+   "net": 2935871,
+   "churn": 0
+  },
+  {
+   "a": "Afsharid",
+   "b": "Impostor",
+   "ab": {
+    "n": 4,
+    "amt": 1162979,
+    "fee": 677036
+   },
+   "ba": {
+    "n": 2,
+    "amt": 728411,
+    "fee": 309397
+   },
+   "net": 434568,
+   "churn": 1456822
+  },
+  {
+   "a": "Panzergrenadier",
+   "b": "Zoro",
+   "ab": {
+    "n": 6,
+    "amt": 1304044,
+    "fee": 1002972
+   },
+   "ba": {
+    "n": 0,
+    "amt": 0,
+    "fee": 0
+   },
+   "net": 1304044,
+   "churn": 0
+  },
+  {
+   "a": "Alaska",
+   "b": "Zoro",
+   "ab": {
+    "n": 5,
+    "amt": 1140827,
+    "fee": 820703
+   },
+   "ba": {
+    "n": 0,
+    "amt": 0,
+    "fee": 0
+   },
+   "net": 1140827,
+   "churn": 0
+  }
+ ],
+ "groups": [
+  {
+   "members": [
+    "Panzergrenadier",
+    "Lucario",
+    "Alaska",
+    "Zoro（不在编队日志里）"
+   ],
+   "n": 59,
+   "arrival": 31748957,
+   "tax": 14947534,
+   "net": 11124371,
+   "churn": 20624586
+  },
+  {
+   "members": [
+    "Afsharid",
+    "Impostor"
+   ],
+   "n": 6,
+   "arrival": 1891390,
+   "tax": 986433,
+   "net": 434568,
+   "churn": 1456822
+  }
+ ],
+ "perBot": [
+  {
+   "name": "Afsharid",
+   "outN": 4,
+   "outArrival": 1162979,
+   "outTax": 677036,
+   "inN": 2,
+   "inArrival": 728411,
+   "net": -1111604
+  },
+  {
+   "name": "Panzergrenadier",
+   "outN": 20,
+   "outArrival": 11432530,
+   "outTax": 5250834,
+   "inN": 9,
+   "inArrival": 6318097,
+   "net": -10365267
+  },
+  {
+   "name": "Lucario",
+   "outN": 18,
+   "outArrival": 11328385,
+   "outTax": 6176800,
+   "inN": 24,
+   "inArrival": 13754847,
+   "net": -3750338
+  },
+  {
+   "name": "Alaska",
+   "outN": 21,
+   "outArrival": 8988042,
+   "outTax": 3519900,
+   "inN": 8,
+   "inArrival": 6295271,
+   "net": -6212671
+  },
+  {
+   "name": "Impostor",
+   "outN": 2,
+   "outArrival": 728411,
+   "outTax": 309397,
+   "inN": 4,
+   "inArrival": 1162979,
+   "net": 125171
+  },
+  {
+   "name": "Zoro（不在编队日志里）",
+   "outN": 0,
+   "outArrival": 0,
+   "outTax": 0,
+   "inN": 18,
+   "inArrival": 5380742,
+   "net": 5380742
+  }
+ ],
+ "toOutsiderRows": [
+  {
+   "t": 3700,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "surplus donate",
+   "pct": 153,
+   "arrival": 427721,
+   "tax": 177754,
+   "donorBal": 2844071,
+   "donorTerr": 25081
+  },
+  {
+   "t": 4005,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 155,
+   "arrival": 727490,
+   "tax": 298457,
+   "donorBal": 4723363,
+   "donorTerr": 41116
+  },
+  {
+   "t": 4030,
+   "donor": "Alaska",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 63,
+   "arrival": 158676,
+   "tax": 158676,
+   "donorBal": 2538817,
+   "donorTerr": 25066
+  },
+  {
+   "t": 4030,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 155,
+   "arrival": 588109,
+   "tax": 241275,
+   "donorBal": 3860412,
+   "donorTerr": 41116
+  },
+  {
+   "t": 4080,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 58,
+   "arrival": 187858,
+   "tax": 203778,
+   "donorBal": 3260454,
+   "donorTerr": 41849
+  },
+  {
+   "t": 4090,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 67,
+   "arrival": 173630,
+   "tax": 163417,
+   "donorBal": 2614676,
+   "donorTerr": 25707
+  },
+  {
+   "t": 4185,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 89,
+   "arrival": 300240,
+   "tax": 213504,
+   "donorBal": 3366578,
+   "donorTerr": 41849
+  },
+  {
+   "t": 4185,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 60,
+   "arrival": 156716,
+   "tax": 164423,
+   "donorBal": 2595996,
+   "donorTerr": 25707
+  },
+  {
+   "t": 4185,
+   "donor": "Alaska",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 130,
+   "arrival": 353120,
+   "tax": 172516,
+   "donorBal": 2729695,
+   "donorTerr": 25066
+  },
+  {
+   "t": 4295,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 87,
+   "arrival": 234583,
+   "tax": 170606,
+   "donorBal": 2670344,
+   "donorTerr": 25707
+  },
+  {
+   "t": 4305,
+   "donor": "Alaska",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 101,
+   "arrival": 266480,
+   "tax": 167203,
+   "donorBal": 2643009,
+   "donorTerr": 25066
+  },
+  {
+   "t": 4385,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 57,
+   "arrival": 148652,
+   "tax": 164030,
+   "donorBal": 2589783,
+   "donorTerr": 25707
+  },
+  {
+   "t": 4385,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 155,
+   "arrival": 607683,
+   "tax": 249306,
+   "donorBal": 3931109,
+   "donorTerr": 41849
+  },
+  {
+   "t": 4400,
+   "donor": "Alaska",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 69,
+   "arrival": 177043,
+   "tax": 161868,
+   "donorBal": 2556409,
+   "donorTerr": 25066
+  },
+  {
+   "t": 4440,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 101,
+   "arrival": 339999,
+   "tax": 213333,
+   "donorBal": 3413332,
+   "donorTerr": 41849
+  },
+  {
+   "t": 4470,
+   "donor": "Panzergrenadier",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 63,
+   "arrival": 162742,
+   "tax": 162742,
+   "donorBal": 2603883,
+   "donorTerr": 25707
+  },
+  {
+   "t": 4500,
+   "donor": "Alaska",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 73,
+   "arrival": 185508,
+   "tax": 160440,
+   "donorBal": 2567042,
+   "donorTerr": 25066
+  },
+  {
+   "t": 4520,
+   "donor": "Lucario",
+   "to": "Zoro",
+   "kind": "squad rescue donate",
+   "pct": 57,
+   "arrival": 184492,
+   "tax": 203577,
+   "donorBal": 3257244,
+   "donorTerr": 41849
+  }
+ ],
+ "receiverDiedWithin": {
+  "300": {
+   "n": 8,
+   "arrival": 5205716,
+   "tax": 3399131
+  },
+  "600": {
+   "n": 9,
+   "arrival": 5647300,
+   "tax": 3582646
+  },
+  "1200": {
+   "n": 10,
+   "arrival": 6509001,
+   "tax": 3940755
+  }
+ },
+ "roundTrips600": {
+  "n": 9,
+  "churn": 4629943,
+  "tax": 5155683,
+  "pairs": [
+   {
+    "a": "Panzergrenadier",
+    "b": "Lucario",
+    "n": 5,
+    "churn": 2812252,
+    "tax": 3280112
+   },
+   {
+    "a": "Lucario",
+    "b": "Alaska",
+    "n": 2,
+    "churn": 941308,
+    "tax": 1003036
+   },
+   {
+    "a": "Panzergrenadier",
+    "b": "Alaska",
+    "n": 1,
+    "churn": 480762,
+    "tax": 523532
+   },
+   {
+    "a": "Afsharid",
+    "b": "Impostor",
+    "n": 1,
+    "churn": 395621,
+    "tax": 349003
+   }
+  ]
+ },
+ "windows900": [
+  {
+   "t0": 2700,
+   "n": 1,
+   "arrival": 433808,
+   "tax": 180284,
+   "hiN": 1,
+   "hiArrival": 433808,
+   "donorDensMed": 112.9
+  },
+  {
+   "t0": 3600,
+   "n": 20,
+   "arrival": 6715216,
+   "tax": 3791241,
+   "hiN": 3,
+   "hiArrival": 1297217,
+   "donorDensMed": 0
+  },
+  {
+   "t0": 4500,
+   "n": 9,
+   "arrival": 4620342,
+   "tax": 2135998,
+   "hiN": 3,
+   "hiArrival": 2314802,
+   "donorDensMed": 113.3
+  },
+  {
+   "t0": 5400,
+   "n": 10,
+   "arrival": 5923828,
+   "tax": 2319566,
+   "hiN": 8,
+   "hiArrival": 4344422,
+   "donorDensMed": 112.2
+  },
+  {
+   "t0": 6300,
+   "n": 10,
+   "arrival": 4843609,
+   "tax": 1977451,
+   "hiN": 5,
+   "hiArrival": 2555335,
+   "donorDensMed": 77.9
+  },
+  {
+   "t0": 7200,
+   "n": 8,
+   "arrival": 5354591,
+   "tax": 2098255,
+   "hiN": 4,
+   "hiArrival": 2783056,
+   "donorDensMed": 112.0
+  },
+  {
+   "t0": 8100,
+   "n": 7,
+   "arrival": 5748953,
+   "tax": 3431172,
+   "hiN": 4,
+   "hiArrival": 3112373,
+   "donorDensMed": 0
+  }
+ ]
+}
