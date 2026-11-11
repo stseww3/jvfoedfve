@@ -26,7 +26,9 @@ TICK_RE = re.compile(
     r"(?: avgMs=([\d.]+) maxMs=([\d.]+) skip=(\d+))?")
 LINE_RE = re.compile(r"^(\d+)\t(.*)$")
 LABEL_RE = re.compile(r"^\[([^\]]+)\] \[(HL-[A-Z-]+)\] ?(.*)$")
-RESULT_RE = re.compile(r"^\[RESULT (.+?)\] result=(\w+) event=(\w+) place=(\d+) peak=(\d+) team=(.*)$")
+# 10 号编队（c116）的结果行在 place 和 peak 之间多了 seeded= / aiBots= / alivePlayers= 三栏，名字前带 [APEX] 标签
+RESULT_RE = re.compile(r"^\[RESULT (.+?)\] result=(\w+) event=(\w+) place=(\d+)(?: \w+=\d+)* peak=(\d+) team=(.*)$")
+CLAN_PREFIX_RE = re.compile(r"^\[(?:Nope|APEX)\] ")
 INIT_RE = re.compile(r"mode=(\d+) map=(\d+) mapSeed=(\d+) seeded=(\d+) me=(\d+)")
 OPEN_RE = re.compile(r"t=(\d+) cyc=(\d+) DP expand rings=(\d+) spend=(\d+)/(\d+) terr=(\d+)")
 
@@ -112,7 +114,7 @@ def parse_log(mid):
                     team = json.loads(mr.group(6))
                 except Exception:  # noqa: BLE001
                     team = None
-                rec.update(label=mr.group(1).replace("[Nope] ", ""), tag="RESULT", result=mr.group(2), event=mr.group(3),
+                rec.update(label=CLAN_PREFIX_RE.sub("", mr.group(1)), tag="RESULT", result=mr.group(2), event=mr.group(3),
                            place=int(mr.group(4)), peak=int(mr.group(5)), team=team)
             else:
                 ml = LABEL_RE.match(rest)

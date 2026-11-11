@@ -30,13 +30,15 @@ BIG = 10 ** 9
 class M:
     """一局的日志事实。"""
 
-    def __init__(self, mid, room=None):
+    def __init__(self, mid, room=None, F=None):
+        """F：已经在内存里的 facts.full(mid)（xscan.py 跨局扫描用，不落盘）；不给就读 out/<局>/facts[_room<N>].json。"""
         self.mid = mid
-        suf = "" if room in (None, 0) else f"_room{room}"
-        p = os.path.join(OUT, mid, f"facts{suf}.json")
-        if not os.path.exists(p):
-            p = os.path.join(OUT, mid, "facts.json")
-        F = json.load(open(p, encoding="utf-8"))
+        if F is None:
+            suf = "" if room in (None, 0) else f"_room{room}"
+            p = os.path.join(OUT, mid, f"facts{suf}.json")
+            if not os.path.exists(p):
+                p = os.path.join(OUT, mid, "facts.json")
+            F = json.load(open(p, encoding="utf-8"))
         self.F = F
         self.card = F["card"]
         self.land = self.card["mapLand"]
@@ -538,13 +540,83 @@ def df_passive_wide(m):
 def df_full_death(m):
     """NEW-DF-07：满仓速死（fulldeath.py 的口径）。"""
     import fulldeath
-    rows = fulldeath.analyse(m.mid) if os.path.exists(os.path.join(OUT, m.mid, "facts.json")) else []
+    rows = fulldeath.analyse(m.mid, m.F)
     rows = [r for r in rows if r["bot"] in {b["name"] for b in m.bots.values()}]
     st = [r for r in rows if r["strict"]]
     wd = [r for r in rows if r["wide"]]
     return dict(hit=bool(st), n=len(st), items=[dict(bot=r["bot"], startT=r["startT"], terr=r["startTerr"], bal=r["startBal"], dens=r["startDens"],
                                                       ticksToDeath=r["ticksToDeath"], cmds=r["cmds"]) for r in st],
                 wide=len(wd), deaths=len(rows), bal=sum(r["startBal"] for r in st), cmds=sum(r["cmds"] for r in st))
+
+
+def df_quarter_bank(m):
+    """NEW-DF-08：阵亡号的结果行里 balance ≥10 万、出局前最后的领土 ≤ 历史峰值的 30%（四分之一线出局，账上的兵清零）。"""
+    it, all_bal, deaths = [], 0, 0
+    for b in m.bots.values():
+        if m.death(b) is None:
+            continue
+        deaths += 1
+        bal = b.get("resBalance") or 0
+        all_bal += bal
+        pk = b.get("resPeak") or 0
+        lt = b.get("lastTerritory") or 0
+        if bal >= 100_000 and pk > 0 and lt <= 0.30 * pk:
+            it.append(dict(bot=b["name"], t=m.death(b), peak=pk, lastTerr=lt, balance=bal, dens=round(bal / lt, 1) if lt else None))
+    return dict(hit=bool(it), n=len(it), items=it, balance=sum(x["balance"] for x in it), deaths=deaths, allDeathsBalance=all_bal)
+
+
+def boxed_runs(b, min_ticks=0):
+    """连续 nb=0 且 neut=0（还有地）的快照段：[(首快照, 末快照)]，只留跨度 ≥ min_ticks 的。"""
+    tk = b["ticks"]
+    out = []
+    for i0, i1 in runs(tk, lambda s: s["terr"] > 0 and s["nb"] == 0 and s["neut"] == 0):
+        if tk[i1]["t"] - tk[i0]["t"] >= min_ticks:
+            out.append((tk[i0], tk[i1]))
+    return out
+
+
+def mt_ffa_boxed(m):
+    """NEW-MT-11：自由混战的房间（对局卡 mode = 7，结果行都不带队号），整局日志 0 笔捐款；
+    命中 = 号有一段 ≥900 拍的被围（nb=0 且 neut=0）。兑现 = 这一段里非船指令 ≤2 条、余额至少翻倍。"""
+    ffa = m.card.get("mode") == 7 and all(b.get("team") is None for b in m.bots.values())
+    if not ffa:
+        return dict(hit=False, n=0, items=[], ffa=False)
+    it = []
+    for b in m.bots.values():
+        for a, z in boxed_runs(b, 900):
+            nonboat = (z["cmds"] - a["cmds"]) - (z["boats"] - a["boats"])
+            it.append(dict(bot=b["name"], t0=a["t"], t1=z["t"], ticks=z["t"] - a["t"], terr0=a["terr"], terr1=z["terr"], bal0=a["bal"], bal1=z["bal"],
+                           nonBoat=nonboat, boats=z["boats"] - a["boats"], realized=nonboat <= 2 and z["bal"] >= 2 * max(a["bal"], 1)))
+    return dict(hit=bool(it), n=len(it), items=it, realized=sum(1 for x in it if x["realized"]), ffa=True, donations=len(m.dons),
+                ticks=sum(x["ticks"] for x in it))
+
+
+def mt_boxed_long(m):
+    """（NEW-MT-09 的日志侧影子，任何模式）一个号连续 ≥900 拍 nb=0 且 neut=0。兑现 = 这一段里非船指令 ≤2 条、余额至少翻倍。
+    日志分不清围住它的是同队真人、异队编队友还是海——有录像的局用 enclose.py 的 A / B / C 类。"""
+    it = []
+    for me, b in m.bots.items():
+        for a, z in boxed_runs(b, 900):
+            nonboat = (z["cmds"] - a["cmds"]) - (z["boats"] - a["boats"])
+            nd = sum(1 for x in m.dons if x["donor"] == me and a["t"] < x["t"] <= z["t"])
+            it.append(dict(bot=b["name"], t0=a["t"], t1=z["t"], ticks=z["t"] - a["t"], terr0=a["terr"], bal0=a["bal"], bal1=z["bal"], densEnd=z["dens"],
+                           nonBoat=nonboat, boats=z["boats"] - a["boats"], donations=nd,
+                           realized=(nonboat - nd) <= 2 and z["bal"] >= 2 * max(a["bal"], 1)))
+    return dict(hit=bool(it), n=len(it), items=it, realized=sum(1 for x in it if x["realized"]), bots=len({x["bot"] for x in it}),
+                ticks=sum(x["ticks"] for x in it))
+
+
+def mt_unseen_loss(m):
+    """NEW-MT-06：看不见的失地——相邻两条快照（相隔 90 拍）都是 nb=0、neut=0，cmds 没变，领土却在掉。"""
+    it = []
+    for b in m.bots.values():
+        tk = b["ticks"]
+        wins = [(p["t"], s["t"], p["terr"] - s["terr"]) for p, s in zip(tk, tk[1:])
+                if s["t"] - p["t"] == 90 and p["terr"] > 0 and p["nb"] == 0 and p["neut"] == 0 and s["nb"] == 0 and s["neut"] == 0
+                and s["cmds"] == p["cmds"] and s["terr"] < p["terr"]]
+        if wins:
+            it.append(dict(bot=b["name"], windows=len(wins), cells=sum(w[2] for w in wins), firstT=wins[0][0], lastT=wins[-1][1]))
+    return dict(hit=bool(it), n=sum(x["windows"] for x in it), items=it, bots=len(it), cells=sum(x["cells"] for x in it))
 
 
 # ---------------------------------------------------------------- 海上 / 执行
@@ -639,6 +711,8 @@ DETECTORS = [
     ("NEW-DF-01", "df_passive", df_passive), ("NEW-DF-01w", "df_passive_wide", df_passive_wide), ("NEW-DF-07", "df_full_death", df_full_death),
     ("NEW-SE-01", "se_big_intercept", se_big_intercept), ("NEW-EX-02", "ex_burst_drain", ex_burst_drain), ("NEW-EX-03", "ex_assist_burst", ex_assist_burst),
     ("NEW-EG-G2", "eg_inherit", eg_inherit), ("NEW-MT-07", "mt_protect_lock", mt_protect_lock),
+    ("NEW-DF-08", "df_quarter_bank", df_quarter_bank), ("NEW-MT-11", "mt_ffa_boxed", mt_ffa_boxed),
+    ("NEW-MT-09L", "mt_boxed_long", mt_boxed_long), ("NEW-MT-06", "mt_unseen_loss", mt_unseen_loss),
 ]
 
 
@@ -657,7 +731,7 @@ def run(mid, room=None, quiet=False):
         except Exception as e:  # noqa: BLE001
             r = dict(hit=False, n=0, items=[], error=repr(e))
         res[pid] = r
-        nm = PC.BY_ID.get(pid.rstrip("w"), {}).get("name", "")[:26]
+        nm = PC.BY_ID.get(pid.rstrip("wL"), {}).get("name", "")[:26]
         extra = {k: v for k, v in r.items() if k not in ("hit", "n", "items", "realized", "closePairs")}
         out.append(f"  {pid:<11} {nm} | {fn} | {'是' if r['hit'] else '否'} | {r['n']} | {r.get('realized', '-')} | "
                    + (" ".join(f"{k}={v}" for k, v in extra.items()) or "-") + " | " + "；".join(fmt_item(x) for x in r["items"][:8])
@@ -692,7 +766,7 @@ def main():
             for mid in mids:
                 r = allres[mid][pid]
                 cells.append("-" if not r["hit"] else (f"{r['n']}" + (f"*{r['realized']}" if r.get("realized") else "")))
-            nm = PC.BY_ID.get(pid.rstrip("w"), {}).get("name", "")[:22]
+            nm = PC.BY_ID.get(pid.rstrip("wL"), {}).get("name", "")[:22]
             out.append(f"  {pid:<11} | {nm} | " + " | ".join(f"{c:>5}" for c in cells) + f" | {sum(1 for mid in mids if allres[mid][pid]['hit'])} | "
                        f"{sum(allres[mid][pid]['n'] for mid in mids if allres[mid][pid]['hit'])}")
         open(os.path.join(od, "patterns_matrix.txt"), "w", encoding="utf-8").write("\n".join(out) + "\n")
