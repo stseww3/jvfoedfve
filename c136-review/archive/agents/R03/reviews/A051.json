@@ -1,0 +1,4976 @@
+{
+ "matchId": "A051",
+ "reviewer": "R03",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T04:30:11Z",
+  "squad": "squad10",
+  "bots": 10,
+  "strategyVersion": "Vb（v27-team-c116-vb.js）",
+  "map": 22,
+  "mapSeed": 14937,
+  "mapLand": 664497,
+  "teams": 2,
+  "teamsInReplayHeader": 2,
+  "teamSizes": [
+   0,
+   34,
+   35
+  ],
+  "humans": 69,
+  "ourTeam": 1,
+  "teamSplitCard": {
+   "1": 8
+  },
+  "baseWinExpectation": 0.5,
+  "sameMatchPeer": {
+   "peerMatchId": "B033",
+   "peerCohort": "squad20",
+   "peerPrimaryTeam": 2,
+   "samePrimaryTeam": false
+  },
+  "presence": {
+   "left": 2,
+   "died": 8
+  },
+  "leftTicks": {
+   "zero_7": 1736,
+   "kaito9": 1960
+  },
+  "dataCompleteness": {
+   "replay": true,
+   "resimTrajCheck": {
+    "rows": 420,
+    "terrExact": 420,
+    "balExact": 420,
+    "bothExact": 420,
+    "mism": []
+   },
+   "shadowCheck": {
+    "rows": 420,
+    "cmds": 420,
+    "nb": 420,
+    "neut": 420,
+    "dl": 154,
+    "ds": 154,
+    "ol": 76,
+    "os": 76,
+    "ex": 595,
+    "mt": 595
+   }
+  },
+  "peerSquad": "同局另一编队 B033（squad20，10 个号里 4 个在队1、6 个在队2）。它的号没有出现在我方任何一个号的进攻方/被攻方名单里；它们的指令同样晚到（影子对 B033：发 552 条成交 284 条，9 个号的成交延迟中位 89~362 拍、最大 412~690 拍；只有 1525 拍就出局的 Bhutan 正常）",
+  "tickRate": "results.csv：ryan_m 本地 2942 拍@189 秒、zexos1 5096 拍@309 秒 → 17.95 拍/秒",
+  "pageStops": "zero_7：results.csv 的 tick=994 是外层最后一次采到的状态（peak=4931 也是那一拍的值），页面日志此后还有 t=1080/1170/1260 三行（cmds=107）；服务器 1736 拍记为离线，停止时页面落后服务器约 390~480 拍。kaito9：状态拍 1477、日志最后一行 1440，服务器 1960 拍离线，落后约 430~480 拍",
+  "liveAdapterModel": "影子策略用的页面适配规则（每拍只收 1 条指令、陆攻按相邻受理、船不发队友地、离线同战队标签队友算 bot）是从日志计数器反推的；本局 420/420 行 HL-TICK 的 cmds/nb/neut、154/154 条调度、76/76 条开局日志、595/595 条成交全部对上"
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "lost",
+  "winnerTeam": 2,
+  "endTick": 5096,
+  "ourFinalShare": 0.081,
+  "peakSquadLandShare": 0.0752,
+  "peakPrimaryTeamShareSeen": 0.403,
+  "anyBotWon": false,
+  "note": "队1 输给队2。队1 从 t=900 起落后（22.0% 对 24.9%），t=1530 落后 9.6 个点，t=3000 后队1 路人成片崩盘；我方 10 个号 2831~5092 拍全部出局（其中 2 个是页面先停、由内置 AI 托管后被吃）。",
+  "archetypeSecondary": "external（本地 600~2699 拍页面落后服务器 100~700 拍，这一段发 1262 条指令只成交 426 条）"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 10,
+   "sqTerr": 327,
+   "sqSharePct": 0.05,
+   "sqBal": 5263,
+   "sqDens": 16.1,
+   "teamOnlineBal": {
+    "T1": 18989,
+    "T2": 20339
+   },
+   "teamOnlineHumans": {
+    "T1": 33,
+    "T2": 34
+   },
+   "teamSharePct": {
+    "T1": 0.3,
+    "T2": 0.4
+   },
+   "aiSharePct": 1.9,
+   "neutralSharePct": 97.4
+  },
+  {
+   "t": 180,
+   "alive": 10,
+   "sqTerr": 1578,
+   "sqSharePct": 0.24,
+   "sqBal": 11191,
+   "sqDens": 7.1,
+   "teamOnlineBal": {
+    "T1": 32886,
+    "T2": 29608
+   },
+   "teamOnlineHumans": {
+    "T1": 33,
+    "T2": 34
+   },
+   "teamSharePct": {
+    "T1": 0.8,
+    "T2": 1.0
+   },
+   "aiSharePct": 3.5,
+   "neutralSharePct": 94.7,
+   "note": "开局周期出兵按时成交（延迟 7~16 拍）"
+  },
+  {
+   "t": 270,
+   "alive": 10,
+   "sqTerr": 3571,
+   "sqSharePct": 0.54,
+   "sqBal": 15527,
+   "sqDens": 4.3,
+   "teamOnlineBal": {
+    "T1": 46792,
+    "T2": 41908
+   },
+   "teamOnlineHumans": {
+    "T1": 33,
+    "T2": 34
+   },
+   "teamSharePct": {
+    "T1": 1.8,
+    "T2": 1.9
+   },
+   "aiSharePct": 5.7,
+   "neutralSharePct": 90.6
+  },
+  {
+   "t": 630,
+   "alive": 10,
+   "sqTerr": 28653,
+   "sqSharePct": 4.31,
+   "sqBal": 55072,
+   "sqDens": 1.9,
+   "teamOnlineBal": {
+    "T1": 195662,
+    "T2": 178877
+   },
+   "teamOnlineHumans": {
+    "T1": 32,
+    "T2": 34
+   },
+   "teamSharePct": {
+    "T1": 12.8,
+    "T2": 13.1
+   },
+   "aiSharePct": 32.0,
+   "neutralSharePct": 42.2,
+   "note": "两队持平（12.8% 对 13.1%）；编队单号地中位 3018，高于队1 路人 2499、队2 真人 2536"
+  },
+  {
+   "t": 1080,
+   "alive": 10,
+   "sqTerr": 44090,
+   "sqSharePct": 6.64,
+   "sqBal": 482821,
+   "sqDens": 11.0,
+   "teamOnlineBal": {
+    "T1": 1271036,
+    "T2": 1018652
+   },
+   "teamOnlineHumans": {
+    "T1": 32,
+    "T2": 34
+   },
+   "teamSharePct": {
+    "T1": 28.5,
+    "T2": 32.7
+   },
+   "aiSharePct": 34.6,
+   "neutralSharePct": 4.2,
+   "note": "AI 抢地期：600~1500 拍 1749 个决策拍里 727 个被 safeFinite 冻结；本地 900~1199 拍段发 231 条只成交 59 条，延迟中位 339 拍"
+  },
+  {
+   "t": 1530,
+   "alive": 10,
+   "sqTerr": 47105,
+   "sqSharePct": 7.09,
+   "sqBal": 2008191,
+   "sqDens": 42.6,
+   "teamOnlineBal": {
+    "T1": 4569093,
+    "T2": 3805098
+   },
+   "teamOnlineHumans": {
+    "T1": 31,
+    "T2": 30
+   },
+   "teamSharePct": {
+    "T1": 40.2,
+    "T2": 49.8
+   },
+   "aiSharePct": 7.4,
+   "neutralSharePct": 2.6,
+   "note": "队1 40.2% 对队2 49.8%；编队 7.09% 的地握着队1 在线兵力的 44%（201 万/457 万），密度 42.6"
+  },
+  {
+   "t": 2130,
+   "alive": 8,
+   "sqTerr": 41827,
+   "sqSharePct": 6.29,
+   "sqBal": 2029394,
+   "sqDens": 48.5,
+   "husks": {
+    "n": 2,
+    "terr": 12828,
+    "sharePct": 1.93,
+    "bal": 730435
+   },
+   "teamOnlineBal": {
+    "T1": 6616869,
+    "T2": 6389632
+   },
+   "teamOnlineHumans": {
+    "T1": 25,
+    "T2": 26
+   },
+   "teamSharePct": {
+    "T1": 42.8,
+    "T2": 54.3
+   },
+   "aiSharePct": 1.3,
+   "neutralSharePct": 1.6,
+   "note": "2030~2331 拍：5 个号各有 8~9 条晚到的陆攻在同一拍落地，余额一拍清空（555k→6.9k、488k→42k、460k→7.0k、477k→6.5k、243k→6.7k）"
+  },
+  {
+   "t": 2700,
+   "alive": 8,
+   "sqTerr": 47784,
+   "sqSharePct": 7.19,
+   "sqBal": 1975809,
+   "sqDens": 41.3,
+   "husks": {
+    "n": 2,
+    "terr": 11665,
+    "sharePct": 1.76,
+    "bal": 436221
+   },
+   "teamOnlineBal": {
+    "T1": 7306474,
+    "T2": 10584925
+   },
+   "teamOnlineHumans": {
+    "T1": 23,
+    "T2": 25
+   },
+   "teamSharePct": {
+    "T1": 43.3,
+    "T2": 54.8
+   },
+   "aiSharePct": 1.0,
+   "neutralSharePct": 0.9,
+   "note": "ICARUS 已出局（2362 拍；编队烧 115 万换它 1.66 万格）。noah88（2245~2940 拍）和 zexos1（2260~2865 拍）四周没有任何陆上邻居，余额各自从 1 万出头攒到 90 万/80 万"
+  },
+  {
+   "t": 3060,
+   "alive": 7,
+   "sqTerr": 44033,
+   "sqSharePct": 6.63,
+   "sqBal": 2010007,
+   "sqDens": 45.6,
+   "husks": {
+    "n": 1,
+    "terr": 7452,
+    "sharePct": 1.12,
+    "bal": 212260
+   },
+   "teamOnlineBal": {
+    "T1": 9060838,
+    "T2": 13966053
+   },
+   "teamOnlineHumans": {
+    "T1": 20,
+    "T2": 25
+   },
+   "teamSharePct": {
+    "T1": 40.4,
+    "T2": 58.4
+   },
+   "aiSharePct": 0.4,
+   "neutralSharePct": 0.7,
+   "note": "队2 开始吃队1 路人：队1 40.3% → t=3900 的 23.9%，在线真人 21→15"
+  },
+  {
+   "t": 3600,
+   "alive": 6,
+   "sqTerr": 43692,
+   "sqSharePct": 6.58,
+   "sqBal": 2947278,
+   "sqDens": 67.5,
+   "teamOnlineBal": {
+    "T1": 12103115,
+    "T2": 18632645
+   },
+   "teamOnlineHumans": {
+    "T1": 18,
+    "T2": 24
+   },
+   "teamSharePct": {
+    "T1": 30.3,
+    "T2": 68.3
+   },
+   "aiSharePct": 0.6,
+   "neutralSharePct": 0.9,
+   "note": "编队剩 6 个号 295 万兵；在出手的只有 zexos1（打 Laurelin）和 noah88（打 M[OG]GER）。队2 的捐款从 3213 拍（引擎额度放宽）起放量：3213~4283 拍到账 484 万"
+  },
+  {
+   "t": 4500,
+   "alive": 6,
+   "sqTerr": 34421,
+   "sqSharePct": 5.18,
+   "sqBal": 2291592,
+   "sqDens": 66.6,
+   "teamOnlineBal": {
+    "T1": 9304579,
+    "T2": 23503860
+   },
+   "teamOnlineHumans": {
+    "T1": 12,
+    "T2": 22
+   },
+   "teamSharePct": {
+    "T1": 15.9,
+    "T2": 82.7
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 1.2,
+   "note": "队2 猎杀阶段（引擎事件 4478 起）；My Staf#42 14.4% 的地、332 万兵"
+  },
+  {
+   "t": 5096,
+   "alive": 1,
+   "sqTerr": 3961,
+   "sqSharePct": 0.6,
+   "sqBal": 162315,
+   "sqDens": 41.0,
+   "teamOnlineBal": {
+    "T1": 6953578,
+    "T2": 33176778
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 21
+   },
+   "teamSharePct": {
+    "T1": 8.1,
+    "T2": 91.5
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.3,
+   "note": "最后一个号 zexos1 出局（My Staf 4860~5100 拍烧 264 万兵吃掉它 12712 格，zexos1 掉兵 131 万）"
+  }
+ ],
+ "phases": {
+  "spawn_0_90": {
+   "facts": [
+    "10 个号全部在队1，出生点挤在 x 1140~1342、y 140~318 约 200×180 像素的一块里；最近队内号距离 52~62 像素",
+    "zexos1 (1304,276) 与 riku_x (1308,280) 只隔 6 像素：riku_x 最后一次指派是 (1276,332)，选点期结束时的实际位置差了 61 像素",
+    "最近的敌方真人：ICARUS#3（队2，是 6 个号的最近敌人，83~150 像素）、Dhrishiv#63（队2，距 leo_tx/kaito9/zero_7 85~145）、Laurelin#55（队2，距 sora_w 114）"
+   ],
+   "problems": [
+    "一对号叠在同一点（zexos1/riku_x，指派点与实际点不一致）；整个编队挨在一起、共用同一批 AI 邻居，是 600~1500 拍互相冻结的前提"
+   ]
+  },
+  "opening_90_630": {
+   "facts": [
+    "开局周期出兵（dpNeutral）76 条全部成交，延迟 7~20 拍；t=630 编队 4.31% 的地，单号 2387~3302（中位 3018，全场真人第 12~42 名/69），队1 路人中位 2499、队2 真人中位 2536",
+    "t=630 两队 12.8% 对 13.1%，AI 占 32.0%，中立地还剩 42.2%"
+   ],
+   "problems": [
+    "无：这是全局里编队唯一按设计运转的阶段"
+   ]
+  },
+  "midgame_630_3500": {
+   "facts": [
+    "630→1530：中立地和 AI 的地被分完（AI 32.0%→峰值 47.2%@900→7.4%）；队2 +36.7 点、队1 路人 +24.6 点、编队 10 个号合计 +2.78 点（4.31%→7.09%），兵却从 5.5 万攒到 201 万",
+    "600~1500 拍 1749 个决策拍：选到目标 550、在扩中立 457、被 safeFinite 冻结 727（其中 664 个卡在编队友身上；688 个只要去掉这一项就能出手，平均想发余额的 6.0%）、其它 15。连续不发令的空窗：ryan_m 本地 650~1500 拍（850 拍）、zexos1 805~1505、riku_x 980~1510、sora_w 1065~1500",
+    "页面落后服务器：本地 600/900/1200/1500/1800/2100/2400 拍段的成交延迟中位 102/339/441/385/251/184/102 拍；900~2099 拍发 977 条只成交 223 条；2700 拍起恢复同步（中位 9~21 拍）",
+    "zero_7 的页面日志停在本地 1260 拍（服务器 1736 拍记为离线，当时 5712 格/28.4 万兵）、kaito9 停在本地 1440~1477 拍（服务器 1960 拍离线，6586 格/48.9 万兵），之后由内置 AI 托管",
+    "1500~2100：有敌邻的号每 5 拍对 ICARUS/Laurelin 重发一次「30~40% 余额」（buyLand L5616），本地 1500~2099 拍全队发 567 条成交 122 条；被围的 ryan_m/leo_tx/riku_x 只发调度，这一段 56 条调度只成交 4 条",
+    "2030~2331：五次成批落地（落地前余额合计 222 万，落地后合计剩 6.9 万），在控的 8 个号余额 299 万（t=2100）→101 万（t=2400）；换来 ICARUS 的 1.66 万格和 Laurelin 的 4971 格；打空的号随即被反吃（talon5 丢 5366 格，ICARUS 只烧 4.6 万兵）",
+    "2245~2940：noah88 四周没有陆上邻居，余额 1.2 万→90 万；2430~2955 拍每 25 拍给 alex_k/sora_w 发一条 pct 320~380 的调度（每条 19~29 万），22 条全部没有成交。zexos1 2260~2865 拍同样被围，1.1 万→80.2 万",
+    "2400~3500：队2 的 M[OG]GER/Prest/Laurelin 逐个吃掉薄号和空壳：zero_7（2831）、ryan_m（2941）、kaito9（3438）、leo_tx（3525）"
+   ],
+   "problems": [
+    "AI 抢地期编队几乎没参与：策略层互相冻结（safeFinite）与执行层指令不落地叠加",
+    "策略不知道上一条指令还没成交，同一决定重发几十次，晚到时成批执行",
+    "9/10 个号的 isNoFullSend 被误翻（本局不是限额模式），之后 40 次出手被 L3844 守卫挡掉",
+    "调度不看引擎额度：日志 154 条调度，录像里只有 50 条；没出现的 104 条里 82 条按额度复算必超",
+    "被围的富号没有出路：t≥1500 的 4693 个 buyLand 决策拍里 1535 个（33%）没有任何陆上邻居，这些拍上的平均余额 23.9 万"
+   ]
+  },
+  "endgame_3500_end": {
+   "facts": [
+    "t=3600 编队 6 个号 6.58% 的地、295 万兵；队1 30.3% 对队2 68.3%",
+    "t≥1500 全部 4693 个 buyLand 决策拍：出手 586、没有陆上邻居 1535、最便宜的报价也高于 worth 1775、卡在对真人邻居的留底 209（平均余额 53.5 万）、卡在 safeFinite 60、在等上一笔在途兵 143、其它不出手 306、同拍名额已被占 54、走到 send 被拒 25",
+    "talon5 2415~2930、3100~3810 拍没有陆上邻居（中间 2935~3100 拍接壤 Laurelin：报价 23~28 低于 worth 28~31，但留底 37~38 万高于余额 13~15 万）；3815 拍起唯一邻居是 M[OG]GER（报价中位 595，始终高于 worth 34~103）。兵 5.4 万→50 万，整段只成交 3 条调度（22.6 万，税 5.9 万）",
+    "alex_k 2630~4225 拍握 15~72 万兵没有买下 УРАРТУ#54 的空壳：t≥1500 共 235 个决策拍是报价高于 worth，3340~3500 拍报价 24~25 低于 worth 47~51、但对 Prest#6 的留底 62~64 万吃掉了可用兵。队2 的 Ponce#35 3500~4410 拍分 18 笔给这个空壳捐了 129 万兵（自付税 131 万），空壳托管 AI 3480 拍后烧 90.6 万兵吃掉 alex_k 3499 格/44.9 万兵",
+    "noah88 余额过软上限后对 M[OG]GER 连发：3610~3630 拍 5 个决策拍各发一条（都发在第一条 3633 拍成交之前），成交 34.4 万；11.2 万换 616 格，其余 23.2 万在槽内与 M[OG]GER 打过来的兵 1:1 对消",
+    "zexos1 3685~4215 拍握 91~151 万兵不出手：3685~4015 拍是 Laurelin/M[OG]GER 报价（74~116）高于 worth（57~71）；4035~4215 拍 Laurelin 已清仓离场（4018 拍把 154.6 万兵全捐给 M[OG]GER，4039 拍离线，剩 22521 格/3 个兵），zexos1 对它的 need 起初只有 3.3 万（4074 拍它的队友 LANSPAN 给空壳补了 20.2 万兵之后升到 24 万），但留底封顶在 88 兵/格=122.8 万、余额 113~151 万，37 个决策拍没出手。空壳最后被队1 路人 Madros#53（9632 格）和 虎#5（7547 格）吃掉",
+    "zexos1 4220~4340 拍把攒下的兵一次花掉：对空壳陆攻 39.4 万（只换 41 格，其余退回）、捐给 alex_k 28.1 万（税 9.5 万）、发 2 条船 47.3 万（船费 7.2 万，253~256 拍后靠岸时 31.7 万移交给路人队友 虎#5）",
+    "4558 alex_k、4738 noah88、4743 riku_x、4796 sora_w、5046 talon5、5092 zexos1 依次出局；My Staf#42 从 t=1530 的 3.9%/11.7 万兵长到 t=4500 的 14.4%/332 万兵"
+   ],
+   "problems": [
+    "存活的号各自为战：有兵的被围、接敌的被报价或留底卡住、过软上限的在高价上硬换；没有任何两个号同时打同一个对手。同一时段队2 把 1092 万兵（3213 拍之后）捐到少数几个前线号手里"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 630,
+   "t1": 1530,
+   "what": "AI 抢地期：两队从持平到队1 落后 9.6 个点；编队 10 个号只拿到 2.78 个点的地，却攒了 201 万兵",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.128,
+   "shareAfter": 0.402,
+   "enemyShareBefore": 0.131,
+   "enemyShareAfter": 0.498,
+   "squadShareBefore": 0.0431,
+   "squadShareAfter": 0.0709,
+   "ourBots": [
+    "全部 10 个号"
+   ],
+   "enemies": [
+    "内置 AI（地被两队瓜分）",
+    "Dhrishiv#63（吃 leo_tx 1316 格）"
+   ],
+   "evidence": [
+    "卷宗[B]：t=630 队1 12.8%/队2 13.1%/AI 32.0%/中立 42.2% → t=1530 队1 40.2%/队2 49.8%/AI 7.4%/中立 2.6%；编队 4.31%→7.09%，兵 5.5 万→201 万，密度 1.9→42.6；队1 路人 8.5%→33.1%",
+    "freeze-scan A051：t∈[600,1500) 1749 个决策拍，选到目标 550、扩中立 457、被 safeFinite 冻结 727（卡在编队友 664、敌方真人 63）；反事实（只去掉 safeFinite）688 拍能选到目标，平均想发余额的 6.0%；冻结拍上的平均余额 7.4 万",
+    "逐号冻结拍数/180：ryan_m 135、riku_x 102、noah88 99、zexos1 97、talon5 88、leo_tx 88、sora_w 84、alex_k 21、zero_7 12（133 拍里）、kaito9 1；riku_x 1110~1495 连续 78 个决策拍（兵 5.8 万→19.1 万、地 3442 不动），sora_w 1110~1460 连续 70 个，ryan_m 1210~1495 连续 57 个",
+    "act-trace A051 zexos1 t=1000：余额 3.4 万、6 个 AI 邻居报价 4.2~13.2 兵/格，winFloor=41155（来自 safeFinite：AI434/AI326 的「最弱的别的邻居」是 riku_x，兵+在途 4.1 万；AI294 的是 ryan_m 4.0 万）→ 每个目标 avail<0，pickTarget 返回空。zexos1 本地 805~1505 拍一条指令都没发",
+    "影子摘要[S1]：全队 600~899 拍发 139 成 124（延迟中位 102）、900~1199 发 231 成 59（339）、1200~1499 发 179 成 42（441）；kaito9 955~1476 拍 105 条陆攻（其中 85 条是最小额 pct=47）0 条成交，地 6441→6452、兵 3.3 万→22.8 万",
+    "卷宗[E]/[L]：t=1500 单号地 alex_k 8714、kaito9 6511、zero_7 5712、zexos1 4759、talon5 4715、sora_w 4670、riku_x 3442、noah88 3372、ryan_m 2977、leo_tx 2179（合计 4.7 万格）；同时刻队1 路人合计 21.8 万格（21~23 人，人均约 1 万格）。整局编队打 AI 只烧了 28.8 万兵（占总利息 2.3%）换 19105 格，15.1 兵/格",
+    "内置 AI 这一段对编队的实际伤害：2779 格/5.1 万兵（另有真人 Dhrishiv 吃 leo_tx 1316 格/1.9 万兵）"
+   ],
+   "priorDecisions": [
+    {
+     "t": "675~1495",
+     "bot": "ryan_m/riku_x/noah88/zexos1/talon5/leo_tx/sora_w",
+     "what": "贴着报价 4~13 兵/格的内置 AI 不买地",
+     "codePath": "src/strategy/v27-team-c116-vb.js Style.pickTarget L1144-1177（avail = bal - floorFor；avail <= minShare*bal 就跳过，minSend=0.2141）→ V13.floorFor0 L2233-2241（t<dpEnd=1500 且目标非真人）→ Policy.winFloor L4562-4570 → V13.safeFinite L2500-2510 → Strategy.threatOf L417-443",
+     "why": "winFloor 的第三项 safeFinite 要求自己的余额高过每个接壤 AI 的「除我之外最弱的邻居」（余额+在途）。编队的号挤在一起、共用同一批 AI 邻居、余额又相近：余额低的一方门槛高于自己的余额，余额高的一方只能花差额"
+    },
+    {
+     "t": "900~1500",
+     "bot": "kaito9/noah88/talon5/alex_k/zero_7",
+     "what": "同一条小额陆攻（多数 pct=47，约 4.7% 余额）每 5 拍重发",
+     "codePath": "src/strategy/v27-team-c116-vb.js General.act L793-797 → Strategy.send L479-487（只累加 cmds，不记未成交指令）；V13.amount0 L2332-2341（foodK*need+3*cnt 小于 minCmd 时发 minCmd）",
+     "why": "页面落后服务器 300~450 拍，指令要等页面追上才被服务器执行；本地局面里上一条始终没生效，于是决定不变、继续重发"
+    },
+    {
+     "t": "1135~1355",
+     "bot": "leo_tx",
+     "what": "对吃了自己 1316 格的 Dhrishiv#63 发 43 条反击（pct 180~597）",
+     "codePath": "src/strategy/v27-team-c116-vb.js Style.pickTarget L1144-1177 + V13.allow L2110-2119（preyKill=1 → 真人可打）",
+     "why": "成交 15 条：1456×5、1463×1、1771×9，比发令晚 100~600 拍；其中 1771 拍那 9 条落地时目标已不相邻，被改成中立空令。地 2233→2139 没有夺回"
+    }
+   ],
+   "alternatives": [
+    "队2 的优势也可能主要来自队2 路人更强：630~1530 队2 +36.7 点，队1 路人 +24.6 点；编队即使不冻结也未必补得上全部 9.6 点",
+    "冻结与延迟各占多少没有拆开：冻结的 688 拍是策略自己不出手；选到目标的 550 拍里有多少因延迟作废，取决于延迟的成因（局内数据看不出）"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 2030,
+   "t1": 3060,
+   "what": "晚到的指令成批落地，5 个号一拍清空余额；在控的号余额 299 万→101 万，地先涨 1.5 点、再被反吃 1.4 点；随后 2 个最富的号被围 600~700 拍",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.429,
+   "shareAfter": 0.403,
+   "enemyShareBefore": 0.543,
+   "enemyShareAfter": 0.585,
+   "squadShareBefore": 0.063,
+   "squadShareAfter": 0.0641,
+   "ourBots": [
+    "talon5",
+    "sora_w",
+    "zexos1",
+    "noah88",
+    "alex_k",
+    "ryan_m",
+    "leo_tx",
+    "riku_x"
+   ],
+   "enemies": [
+    "ICARUS#3（队2，t=1530 2.7% 的地/23 万兵，2362 拍出局）",
+    "Laurelin#55（队2）",
+    "ZxZxZ#59",
+    "УРАРТУ#54（空壳）"
+   ],
+   "evidence": [
+    "卷宗[J]：2030 talon5 9 条打 ICARUS（pct 315~326）243,050→6,694；2100 sora_w 9 条打 Laurelin（pct 380~391）554,628→6,907，2198 再 8 条 7,642→221；2114 zexos1 8 条 488,376→41,649，2226 再 8 条 54,026→4,867；2142 noah88 9 条 460,323→6,964；2331 alex_k 9 条 477,436→6,464",
+    "算术核对：一条 pct=325 的陆攻留下 1-(326+12)/1024=67.0% 的余额，9 条连乘剩 2.7%：243,050×0.027≈6,600（实际 6,694）",
+    "卷宗[B]（只算在控的号，两个空壳另列）：余额 t=2100 299 万→t=2400 101 万（密度 71.3→19.6）；队1 在线兵力 746 万→501 万，队2 671 万→819 万；地 6.30%（2100）→7.76%（2400）→7.19%（2700）→6.41%（3000）",
+    "卷宗[F]：对 ICARUS 四个号共烧 115.4 万换 16598 格（69.5 兵/格）；sora_w 对 Laurelin 烧 53.8 万换 4971 格。talon5 2100~2370 拍被 ICARUS 反吃 5366 格（ICARUS 只烧 4.6 万兵，8.6 兵/格）；sora_w 2370~3000 拍被 Laurelin 吃回 4988 格",
+    "影子摘要[S2]：talon5 本地 1505~1865 拍发 73 条「打 ICARUS 30~35%」只成交 11 条（1869×2、2030×9）；sora_w 1675~2100 拍发 86 条成交 17 条（2100×9、2198×8）；noah88 1515~2140 拍发 126 条成交 17 条（2142×9、2289×8）",
+    "捐款同样成批落地：ryan_m 2303 一拍 5 笔（198,610→18,796）、leo_tx 2310 一拍 4 笔（269,221→40,826）、riku_x 2744 一拍 8 条（486,502→36,022，其中 2330 拍发的 4 条调度晚了 414 拍）、2856 一拍 9 笔（44,258→321）",
+    "freeze-scan 第二段：noah88 2245~2940 拍 140 个决策拍没有任何陆上邻居（兵 1.2 万→90 万），zexos1 2260~2865 拍 122 个（1.1 万→80.2 万）；events.csv：noah88 2430~2955 拍 22 条调度（pct 320~380，myBal 51~89 万，dMe 72→126），录像里一条都没有"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1505~2110",
+     "bot": "talon5/noah88/zexos1/sora_w",
+     "what": "对同一个真人每个决策拍重发一次「min(avail, 1.25*need+3*cnt)」",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5611-5616（末段整笔出手，没有在途检查）；L5594-5608（pulseMode：curAtk >= 0.04*B 才停，curAtk=g.attackTroopsOn 只含已成交的兵，L5459）",
+     "why": "每条都是按「只有这一条」算的 30~40% 余额；成交延迟 250~450 拍，页面追上时每拍最多落 8~9 条、其余丢弃，于是 8~9 条在同一拍连乘"
+    },
+    {
+     "t": "2115~2330",
+     "bot": "alex_k",
+     "what": "对已被另外 3 个编队号同时进攻的 ICARUS 再发 26 条「濒死目标」脉冲（pct 357~437）",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5588-5593（nearCollapse 分支：pulse = min(avail, max(pulseFrac*B, min(avail, 0.30*need)))；curAtk >= 0.04*B 才停）",
+     "why": "ICARUS 被判 nearCollapse 后这一支不受 pulseFrac=0.12 的限制；2331 拍 9 条同拍落地，477,436→6,464，到 2340 拍只烧掉 6.8 万、换 1232 格，其余 45 万在途兵等 ICARUS 2362 拍出局后才退回"
+    },
+    {
+     "t": "1500~2955",
+     "bot": "ryan_m/leo_tx/riku_x/noah88",
+     "what": "被围的号每 25 拍给前线号发一条 pct 320~380 的调度",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4325-4518（Case B L4474-4495，boxedIn 时 pct 上限 320，L4500-4506；全函数不读引擎捐款额度）；Policy.idleBoats L5022-5031（被围且有编队友在前线、自己密度 <115 时不发船）",
+     "why": "t<3213 引擎按「受捐者累计点数」限额，一笔 19~29 万的捐款要 88~135 点、而收款人 alex_k 只剩 33~45 点：整笔拒收（不按余量缩小）。成交的那些晚 165~414 拍、成批落地，每笔按当时余额付 6.25% 手续费"
+    }
+   ],
+   "alternatives": [
+    "ICARUS 是编队最近、当时最弱的敌方真人（密度 13），打它的方向没有问题；问题在 5 个号 300 拍内把全部家底同时压上去",
+    "如果指令按时成交，每个号发出第一条后 need 会扣掉在途兵（offers L5094-5095）、后续重发会变小——同步状态下的实测是每串仍多发 1~4 条（影子摘要[S6]），所以按时成交也不会只发一条"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 3000,
+   "t1": 3900,
+   "what": "队2 吃掉队1 路人：队1 40.3%→23.9%，在线真人 21→15；编队 6~7 个号握 215~295 万兵，只有 2 个号在出手",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.403,
+   "shareAfter": 0.239,
+   "enemyShareBefore": 0.585,
+   "enemyShareAfter": 0.746,
+   "squadShareBefore": 0.0641,
+   "squadShareAfter": 0.0614,
+   "ourBots": [
+    "alex_k",
+    "noah88",
+    "talon5",
+    "sora_w",
+    "zexos1",
+    "riku_x",
+    "leo_tx",
+    "kaito9（空壳）"
+   ],
+   "enemies": [
+    "My Staf#42",
+    "Perhaps Port#11",
+    "Device#33",
+    "Fozzu#1",
+    "M[OG]GER#10",
+    "Prest#6",
+    "Laurelin#55"
+   ],
+   "evidence": [
+    "卷宗[B]：t=3000 队1 40.3%/队2 58.5% → t=3900 23.9%/74.6%；队1 路人 32.8%→17.7%，编队在控的号 6.41%→6.14%，kaito9 的空壳 1.10%→0（3438 拍出局）；在线兵力队1 914 万→1140 万、队2 1362 万→2029 万",
+    "重放 pairLog：3000~3900 拍队1 路人被真人吃掉 10.66 万格，前四名都是队2：My Staf#42 21,490 格（烧 81.1 万）、Perhaps Port#11 17,398、Device#33 17,027、Fozzu#1 16,487",
+    "卷宗[C]：My Staf#42 t=2400 4.1%/66.5 万 → t=3300 7.1%/180 万 → t=4500 14.4%/332 万；M[OG]GER#10 3.8%/66 万 → 4.5%/144 万 → 5.3%/389 万",
+    "freeze-scan 第二段（t≥1500 逐号）：sora_w 660 个决策拍里 415 个是「最便宜的报价也高于 worth」（2105~2985 拍 Laurelin 报价 52.8→27.1 对 worth 1.9→27.1；3165~3545 拍 62.9→77.8 对 34.7→57.5）；talon5 247 个被围 + 260 个报价高于 worth；riku_x 425 个被围",
+    "卷宗[F]：noah88 2970~3690 拍对 M[OG]GER 烧 63.5 万换 1610 格，其中 37.5 万是在槽内与对方打过来的兵对消，真正换地的 26 万合 161 兵/格；zexos1 3000~3750 拍对 Laurelin 烧 64.3 万换 6588 格（98 兵/格），自身余额 60.7 万→95 万",
+    "卷宗[N]：队2 全场捐款 73 笔到账 1178 万（其中 3213~4283 拍 484 万、4284 拍以后 608 万）；收捐最多的是打死 alex_k 的 Prest#6（21 笔 363 万）和打死 noah88/talon5 的 M[OG]GER#10（224 万）。编队 50 笔到账 239 万（2142~3212 拍 138 万、3213~4283 拍 75.5 万、之后 25.5 万）"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2630~3500",
+     "bot": "alex_k",
+     "what": "握 15~70 万兵不买 УРАРТУ#54 的空壳（1974 拍掉线，AI 托管）",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5359（c >= worth 且没过软上限即停）、L5414-5418（safe = safeAt，非真人目标封顶 oppFloorCap*L）、L5444（keep = max(keep, safe)）、L5449-5453（x < want 且 x < chunk*B 跳过）；Policy.safeAt L4543-4560 → V17.safeAt L2728-2738 → V17.killKeep L2745-2751 / V13.dpKeep L2459-2464",
+     "why": "2630~3010 拍：报价 32.2~31.1 ≥ worth 22.1~30.2；3340~3500 拍：报价 24~25 < worth 47~51，但对 Prest#6 的留底 62~64 万使可用只剩 3 万上下，去掉留底会发 12.6~13.5 万"
+    },
+    {
+     "t": "2415~3810",
+     "bot": "talon5",
+     "what": "四周全是队友，兵从 5.4 万攒到 19 万，只发 2 条调度",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4329-4343（门槛与冷却）、L4453（没有敌邻的收款人被跳过）、L4474-4495（被围捐款人要 dMe>=58）；Policy.idleBoats L5031（dMe < 115 不发船）",
+     "why": "talon5 密度在 3250~3650 拍只有 42~54：不够调度门槛，也不到发船门槛"
+    },
+    {
+     "t": "2865",
+     "bot": "zexos1",
+     "what": "被围时把 25.4 万兵（手续费 5.1 万）调给刚把自己捐空、刚接壤 Laurelin 的 riku_x",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4474-4495（日志：offense_dispatch boxedIn=true dMe=94 dAlly=0）",
+     "why": "riku_x 拿到后只对 Laurelin 发了 6.5 万（3070~3085 拍 4 条），3095 拍又失去敌邻；3122~3549 拍分 4 笔把 25.2 万调回已在前线的 zexos1（手续费 5.4 万）"
+    }
+   ],
+   "alternatives": [
+    "这一段队1 丢的 16.4 个点里 15.0 个点是路人丢的，编队在控的号只丢 0.3 个点（另 1.1 个点是 kaito9 的空壳）；编队握有队1 在线兵力的 24% 上下，全力出手也未必挡得住",
+    "握兵不动本身在消耗对手：整局对手为吃掉编队 7.05 万格烧了 1045 万兵（148 兵/格），而被打空/捐空的号只让对手付 9~46 兵/格"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "zero_7",
+   "me": 18,
+   "event": "left",
+   "t": 2831,
+   "localStopTick": 994,
+   "leftServerTick": 1736,
+   "peakLand": 6842,
+   "peakTick": 2440,
+   "landAtDeath": 1512,
+   "balanceAtDeath": 13332,
+   "killers": [
+    "M[OG]GER#10T2（压在身上 133150）",
+    "[OG] Laureli#55T2（压在身上 42032）"
+   ],
+   "last500": {
+    "land0": 6588,
+    "bal0": 238741,
+    "tilesLost": 5368,
+    "balLostDefending": 172716,
+    "lostTo": [
+     "M[OG]GER#10T2 3463格/119482兵",
+     "[OG] Laureli#55T2 1905格/53234兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 0
+   },
+   "cause": "执行层，不是策略决定。页面日志最后一行在本地 1260 拍（results.csv 的 994 是更早采到的状态），服务器 1736 拍记为离线，停止时落后约 390~480 拍；5712 格/28.4 万兵交给内置 AI 托管。整局发 108 条陆攻只成交 39 条：本地 915~1260 拍发的全部没有成交，最后成交的是 1288 拍一批 9 条（本地 845~910 拍发的，99,528→13,977）。空壳在 2460~2850 拍被 M[OG]GER#10 吃掉 3571 格（它烧 25.5 万）、被 Laurelin#55 吃掉 1989 格，2831 拍出局。",
+   "patternIds": [
+    "NEW:IO-disconnect-husk",
+    "NEW-R03-IO01"
+   ]
+  },
+  {
+   "bot": "ryan_m",
+   "me": 13,
+   "event": "died",
+   "t": 2941,
+   "localStopTick": 2942,
+   "leftServerTick": null,
+   "peakLand": 3014,
+   "peakTick": 800,
+   "landAtDeath": 682,
+   "balanceAtDeath": 2193,
+   "killers": [
+    "M[OG]GER#10T2（压在身上 155548）",
+    "[OG] Laureli#55T2（压在身上 64118）"
+   ],
+   "last500": {
+    "land0": 2977,
+    "bal0": 15490,
+    "tilesLost": 2237,
+    "balLostDefending": 17799,
+    "lostTo": [
+     "[OG] Laureli#55T2 2073格/16636兵",
+     "M[OG]GER#10T2 164格/1163兵"
+    ],
+    "donatedOut": 11590,
+    "donationTax": 2411,
+    "received": 0,
+    "attackSent": 0
+   },
+   "cause": "600~1500 拍身边一直有 1~5 个内置 AI，但 180 个决策拍里 135 个被 safeFinite 冻结（卡在 zexos1×59、noah88×52），本地 650~1500 拍一条指令都没发，地 2977 自 900 拍起不变；1500 拍起四周全是队友。900~2100 拍只攒兵（2.5 万→41.9 万，密度 141，已过软上限）。1500~2025 拍给 alex_k 的 22 条 pct=320 调度有 20 条没有出现在录像里（按额度复算：首条需 101 点、只剩 85 点）；2163~2464 拍 13 笔成交（2303、2464 两拍各 5 笔同时落地），捐出 38.4 万、付手续费 7.6 万，自己只剩 1.2~1.5 万（密度 4~5）。2790 拍起 Laurelin#55 只烧 3.8 万兵就吃掉 2120 格，2941 拍出局（当时 682 格/2.2 千兵）。死前没有收到任何捐款。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW-R03-DN01",
+    "R07-EC-BOXED-RICH",
+    "NEW:IO-lag-burst"
+   ]
+  },
+  {
+   "bot": "kaito9",
+   "me": 20,
+   "event": "left",
+   "t": 3438,
+   "localStopTick": 1477,
+   "leftServerTick": 1960,
+   "peakLand": 7452,
+   "peakTick": 3040,
+   "landAtDeath": 1639,
+   "balanceAtDeath": 8506,
+   "killers": [
+    "[Kilr] Prest#6T2（压在身上 16964）"
+   ],
+   "last500": {
+    "land0": 7220,
+    "bal0": 278609,
+    "tilesLost": 5545,
+    "balLostDefending": 138223,
+    "lostTo": [
+     "[Kilr] Prest#6T2 5545格/138223兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 0
+   },
+   "cause": "执行层。页面停在本地 1477 拍前后（日志最后一行 1440），服务器 1960 拍离线，落后约 430~480 拍；6586 格/48.9 万兵交给内置 AI。停止前 955~1476 拍发了 105 条陆攻打 7 个 AI 邻居（85 条是最小额 pct=47），0 条成交，地 6441→6452 冻住而兵 3.3 万→22.8 万；它的余额同时成了 alex_k 的留底门槛（1515~1730 拍）。AI 托管后对 Prest#6 烧 32.2 万只换 1309 格，随后 2310~3450 拍被 Prest 吃掉 6256 格（Prest 烧 36.9 万），3438 拍出局。",
+   "patternIds": [
+    "NEW:IO-disconnect-husk",
+    "NEW-R03-IO01"
+   ]
+  },
+  {
+   "bot": "leo_tx",
+   "me": 17,
+   "event": "died",
+   "t": 3525,
+   "localStopTick": 3549,
+   "leftServerTick": null,
+   "peakLand": 3205,
+   "peakTick": 860,
+   "landAtDeath": 497,
+   "balanceAtDeath": 5434,
+   "killers": [
+    "M[OG]GER#10T2（压在身上 166306）"
+   ],
+   "last500": {
+    "land0": 2179,
+    "bal0": 25233,
+    "tilesLost": 1528,
+    "balLostDefending": 43316,
+    "lostTo": [
+     "M[OG]GER#10T2 1528格/43316兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 0
+   },
+   "cause": "720~1200 拍被 Dhrishiv#63 吃掉 1316 格；1135~1355 拍发的 43 条反击只成交 15 条且晚 100~600 拍，地没夺回。1515~2930 拍四周全是队友（2179 格，284 个决策拍没有陆上邻居）。1710~2085 拍给 alex_k/talon5 的 16 条调度一条没成交（额度复算不超，是指令没到服务器）；2310~2450 拍 9 笔成交（22.5 万到 noah88/sora_w/zexos1，手续费 4.5 万），自己剩 0.7~4 万。2935 拍起接壤 M[OG]GER（报价 201→81 对 worth 23→32，一条没发）；3390 拍起 M[OG]GER 烧 9.6 万兵吃掉它 1682 格，3525 拍出局（497 格/5.4 千兵）。",
+   "patternIds": [
+    "NEW:IO-lag-burst",
+    "R07-EC-BOXED-RICH",
+    "NEW-R03-DN01"
+   ]
+  },
+  {
+   "bot": "alex_k",
+   "me": 16,
+   "event": "died",
+   "t": 4558,
+   "localStopTick": 4572,
+   "leftServerTick": null,
+   "peakLand": 15322,
+   "peakTick": 2380,
+   "landAtDeath": 2280,
+   "balanceAtDeath": 110196,
+   "killers": [
+    "[Kilr] Prest#6T2（压在身上 91585）"
+   ],
+   "last500": {
+    "land0": 6948,
+    "bal0": 564361,
+    "tilesLost": 5801,
+    "balLostDefending": 778587,
+    "lostTo": [
+     "[Kilr] Prest#6T2 3785格/514710兵",
+     "УРАРТУ#54T2* 1754格/224126兵",
+     "ZxZxZ#59T2 262格/39751兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 433312,
+    "attackSent": 265581
+   },
+   "cause": "编队里地最大的号（峰值 15322@2380）。1515~1730 拍 40 个决策拍想买三个 0~966 兵的 AI 残块（共 4839 格，elimCost 合计约 0.9 万）却被 kaito9 的余额（22~33 万）卡住留底。2331 拍 9 条晚到的陆攻同拍落地，余额 477,436→6,464；余额见底的 2100~2400 拍被 УРАРТУ 空壳和 ZxZxZ#59 吃掉 3006 格（两者合计只让它掉 3.3 万兵）。2630~4225 拍握 15~72 万兵没有买 УРАРТУ#54 的空壳（先是报价高于 worth，之后被对 Prest 的留底卡住）。3500 拍起队2 的 Ponce#35 给这个空壳捐了 129 万兵，空壳整局吃掉 alex_k 7801 格/58.7 万兵；收了队友 363 万捐款的 Prest#6 2610~4560 拍烧 200 万兵吃掉它 9036 格/99.1 万兵。期间收到编队捐款 71 万。4558 拍出局（2280 格/11 万兵）。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW:IO-lag-burst",
+    "R07-DF-RICH-BLEED"
+   ]
+  },
+  {
+   "bot": "noah88",
+   "me": 15,
+   "event": "died",
+   "t": 4738,
+   "localStopTick": 4741,
+   "leftServerTick": null,
+   "peakLand": 8873,
+   "peakTick": 3660,
+   "landAtDeath": 1824,
+   "balanceAtDeath": 68090,
+   "killers": [
+    "M[OG]GER#10T2（压在身上 311636）"
+   ],
+   "last500": {
+    "land0": 7233,
+    "bal0": 717322,
+    "tilesLost": 5897,
+    "balLostDefending": 517004,
+    "lostTo": [
+     "M[OG]GER#10T2 5897格/517004兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 298452
+   },
+   "cause": "600~1500 拍 99 个决策拍被冻结（690~1100 拍连续 80 个，起先卡在敌方 ICARUS；之后 1145~1180、1215~1270 卡在队友），地 3372 从 1440 到 2100 拍不动而兵 20.7 万→45.4 万（密度 135）。1515~2140 拍对 ICARUS 发 126 条，2142 拍 9 条同拍落地（460,323→6,964），2289 拍再 8 条。2245~2940 拍四周没有陆上邻居，兵 1.2 万→90 万；2430~2955 拍给 alex_k/sora_w 的 22 条调度、3230~3380 拍给 zexos1 的 7 条全部没有成交（额度）。2970~3690 拍对 Laurelin、M[OG]GER 出手：对 M[OG]GER 烧 63.5 万换 1610 格（其中 37.5 万槽内对消）；3030 拍起 M[OG]GER 烧 173 万兵吃掉它 9202 格/85.6 万兵，4738 拍出局（1824 格/6.8 万兵）。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW:IO-lag-burst",
+    "R07-EC-BOXED-RICH",
+    "NEW-R03-DN01",
+    "NEW-R03-IO01"
+   ]
+  },
+  {
+   "bot": "riku_x",
+   "me": 21,
+   "event": "died",
+   "t": 4743,
+   "localStopTick": 4751,
+   "leftServerTick": null,
+   "peakLand": 3443,
+   "peakTick": 3100,
+   "landAtDeath": 694,
+   "balanceAtDeath": 8907,
+   "killers": [
+    "[UN] My Staf#42T2（压在身上 253301）"
+   ],
+   "last500": {
+    "land0": 2941,
+    "bal0": 102224,
+    "tilesLost": 2099,
+    "balLostDefending": 75361,
+    "lostTo": [
+     "[UN] My Staf#42T2 2099格/75361兵"
+    ],
+    "donatedOut": 61100,
+    "donationTax": 13881,
+    "received": 0,
+    "attackSent": 0
+   },
+   "cause": "出生点与 zexos1 只隔 6 像素。785~1495 拍 102 个决策拍被冻结（卡在 zexos1×70、sora_w×32），本地 980~1510 拍没有发令，地 3442 自 1200 拍起不动；1655 拍唯一的 AI 邻居被别人吃掉后四周全是队友（t≥1500 有 425 个决策拍没有陆上邻居）。t=2400 握 49.9 万兵（密度 145）。1705~2730 拍发的调度/发船指令成批晚到：2513 拍 3 条小船（各 5.7 千兵、船费 1.5 万）、2744 拍 8 条（486,502→36,022）、2856 拍 9 条（44,258→321）。2877 拍收到 zexos1 的 25.4 万，3122~3549 拍又分 4 笔调回 zexos1。4431~4445 拍把 6.1 万捐给 sora_w 后只剩 6.5~8.3 万；4680 拍起 My Staf#42 吃掉 2247 格，4743 拍出局（694 格/8.9 千兵）。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW:IO-lag-burst",
+    "NEW:DN-pingpong",
+    "R07-EC-BOXED-RICH"
+   ]
+  },
+  {
+   "bot": "sora_w",
+   "me": 12,
+   "event": "died",
+   "t": 4796,
+   "localStopTick": 4800,
+   "leftServerTick": null,
+   "peakLand": 9641,
+   "peakTick": 2360,
+   "landAtDeath": 1161,
+   "balanceAtDeath": 71486,
+   "killers": [
+    "[UN] My Staf#42T2（压在身上 82990）"
+   ],
+   "last500": {
+    "land0": 4700,
+    "bal0": 275942,
+    "tilesLost": 1872,
+    "balLostDefending": 150447,
+    "lostTo": [
+     "[UN] My Staf#42T2 1872格/150447兵"
+    ],
+    "donatedOut": 102669,
+    "donationTax": 17246,
+    "received": 152564,
+    "attackSent": 24439
+   },
+   "cause": "800~1460 拍 84 个决策拍被冻结（卡在 zexos1×62、riku_x×20），本地 1065~1500 拍没有发令。1675~2100 拍对 Laurelin#55 发 86 条「30~40% 余额」，2100 拍 9 条、2198 拍 8 条同拍落地（554,628→6,907→221），烧 53.8 万换 4971 格；2370~4140 拍被 Laurelin 吃回 5630 格/22.7 万兵。2105~4015 拍多数决策拍是 Laurelin 报价高于 worth（415 个）。4075~4105 拍对刚离线的 Laurelin 空壳连发 4 条（3 条发在第一条成交之前，第 4 条是 pct=1012 的全仓），余额 316,660→3，在途 42.7 万只烧掉 1.8 万（689 格）；4255 拍前后失去与空壳的边界，41.3 万退回。4380 拍起 My Staf#42 烧 70.6 万兵吃掉它 3577 格/34.9 万兵，4796 拍出局（1161 格/7.1 万兵）。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW:IO-lag-burst",
+    "R08:出手后变薄，随后被吃",
+    "NEW-R03-IO01"
+   ]
+  },
+  {
+   "bot": "talon5",
+   "me": 19,
+   "event": "died",
+   "t": 5046,
+   "localStopTick": 5049,
+   "leftServerTick": null,
+   "peakLand": 9827,
+   "peakTick": 2080,
+   "landAtDeath": 1162,
+   "balanceAtDeath": 35882,
+   "killers": [
+    "[UN] My Staf#42T2（压在身上 526161）",
+    "M[OG]GER#10T2（压在身上 38663）"
+   ],
+   "last500": {
+    "land0": 4461,
+    "bal0": 425029,
+    "tilesLost": 3875,
+    "balLostDefending": 353368,
+    "lostTo": [
+     "M[OG]GER#10T2 3875格/353368兵"
+    ],
+    "donatedOut": 91464,
+    "donationTax": 31813,
+    "received": 0,
+    "attackSent": 147704
+   },
+   "cause": "1505~1865 拍对 ICARUS 发 73 条，1869 拍 8 条（2 条打中，pct 336/354，445k→188k）、2030 拍 9 条落地（243,050→6,694），地 4871→9827；打完密度 1.8，2100~2370 拍被 ICARUS 反吃 5366 格（ICARUS 只烧 4.6 万兵）。2415~2930、3100~3810 拍没有陆上邻居，3815 拍起唯一邻居是 M[OG]GER#10（报价中位 595，始终高于 worth 34~103）；兵 5.4 万→50 万，只成交 3 条调度（22.6 万）。4920 拍接壤 My Staf 后发了 2 条脉冲（12 万）；4950~5070 拍被 M[OG]GER 烧 74.3 万兵吃掉 4140 格/36.8 万兵，5046 拍出局（1162 格/3.6 万兵）。",
+   "patternIds": [
+    "NEW:IO-lag-burst",
+    "R08:出手后变薄，随后被吃",
+    "R07-EC-NO-OUTLET"
+   ]
+  },
+  {
+   "bot": "zexos1",
+   "me": 14,
+   "event": "died",
+   "t": 5092,
+   "localStopTick": 5096,
+   "leftServerTick": null,
+   "peakLand": 16351,
+   "peakTick": 4760,
+   "landAtDeath": 3639,
+   "balanceAtDeath": 141562,
+   "killers": [
+    "M[OG]GER#10T2（压在身上 825320）",
+    "[UN] My Staf#42T2（压在身上 202961）"
+   ],
+   "last500": {
+    "land0": 13993,
+    "bal0": 1215808,
+    "tilesLost": 10432,
+    "balLostDefending": 1141545,
+    "lostTo": [
+     "[UN] My Staf#42T2 10432格/1141545兵"
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 339379
+   },
+   "cause": "编队最后一个号。765~1495 拍 97 个决策拍被冻结（卡在 ryan_m×70、riku_x×26），本地 805~1505 拍没有发出一条指令。2114、2226 拍两次成批落地（488,376→41,649；54,026→4,867），ICARUS 出局后退回 24.1 万。2260~2865 拍没有陆上邻居（1.1 万→80.2 万）。2985~3696 拍对 Laurelin 的 12 条脉冲按时成交，地 8496→13952。3685~4215 拍握 91~151 万兵不出手（先是报价高于 worth，后是留底封顶 122.8 万）；4220~4340 拍对 Laurelin 空壳陆攻 39.4 万（换 41 格，其余退回）、捐给 alex_k 28.1 万（税 9.5 万）、发 2 条船 47.3 万（船费 7.2 万；靠岸时 31.7 万移交给路人队友 虎#5）。4860~5100 拍 My Staf#42（14.4%→17.7% 的地）烧 264 万兵吃掉它 12712 格/131 万兵，5092 拍出局（3639 格/14.2 万兵）。",
+   "patternIds": [
+    "NEW-R03-OP01",
+    "NEW:IO-lag-burst",
+    "R07-EC-IDLE-RICH",
+    "NEW-R03-SE01"
+   ]
+  }
+ ],
+ "decisions": [
+  {
+   "t": "60~700",
+   "bot": "全部 10 个号",
+   "kind": "opening",
+   "verdict": "good",
+   "state": "中立地充足；本地与服务器同步（成交延迟 7~20 拍）",
+   "codePath": "src/strategy/v27-team-c116-vb.js V13.dpNeutral L2383-2412（每个地租周期一条，send 在 L2406）",
+   "why": "76 条开局出兵全部成交；t=630 单号地中位 3018，高于队1 路人 2499 和队2 真人 2536，全场排名 12~42/69",
+   "estCost": "无",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "影子摘要[S0] 开局 76/76；卷宗[D] t=630 对照"
+  },
+  {
+   "t": "675~1495",
+   "bot": "ryan_m 135 拍 / riku_x 102 / noah88 99 / zexos1 97 / talon5 88 / leo_tx 88 / sora_w 84",
+   "kind": "hold",
+   "verdict": "error",
+   "state": "贴着 2~7 个内置 AI（报价 4~13 兵/格），没有中立地，余额 0.6~20 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Style.pickTarget L1160-1161 ← V13.floorFor0 L2235-2237 ← Policy.winFloor L4562-4570 ← V13.safeFinite L2500-2510 ← Strategy.threatOf L417-443",
+   "why": "safeFinite 取「每个接壤 AI 的除我之外最弱邻居的余额+在途」的最大值当留底；这个最弱邻居 664/727 次是编队友。例：zexos1 t=1000 余额 3.4 万、留底 41,155（riku_x）；riku_x 1110~1495 连续 78 拍卡在 zexos1",
+   "estCost": "630~1530 拍编队只涨 2.78 个点的地（同期队1 路人 +24.6 点），兵闲置到 201 万；反事实 688 拍可出手（未重放后续局面）",
+   "patternId": "NEW-R03-OP01",
+   "evidenceRef": "freeze-scan.mjs A051（第一段）；dbg/act-trace.mjs A051 zexos1 1000 1005 --threat"
+  },
+  {
+   "t": "1515~1730",
+   "bot": "alex_k",
+   "kind": "hold",
+   "verdict": "error",
+   "state": "t≥1500（buyLand 阶段）；余额 15.8~22.4 万、8587 格；邻居里有三个 AI 残块：AI85（1874 格/0 兵，elimCost 2.8 千）、AI337（2408 格/966 兵，5.3 千）、AI439（557 格/0 兵，836）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5414（safe = this.safeAt(g, q)）、L5444、L5446-5447（avail <= 0 → continue）→ Policy.safeAt L4543-4560 → V17.safeAt L2728-2738 → V17.safeFinite L2757-2768（只跳过正在买的那个 AI，其余 AI 邻居照算）→ Strategy.threatOf L417-443",
+   "why": "AI439 的「最弱的别的邻居」是编队友 kaito9（兵+在途 22.3 万→32.6 万，它的 105 条指令一条没成交、余额只涨不降），于是 alex_k 的留底 22.3~32.6 万始终高于自己的余额：40 个决策拍想发 3.9~4.6 千兵都发不出",
+   "estCost": "AI337 的 1921 格被队2 的 УРАРТУ#54 用 3842 兵拿走（1620~1770 拍）；alex_k 到 1710~1920 拍才拿到 AI439 的 575 格和 AI85 的 1751 格（2.0 兵/格）",
+   "patternId": "NEW-R03-OP01",
+   "evidenceRef": "freeze-scan.mjs A051（第二段 frozenSF）；out/trace/A051-alex_k-1515.txt"
+  },
+  {
+   "t": "955~1476",
+   "bot": "kaito9",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "轮流打 7 个 AI 邻居；页面落后服务器 250~580 拍",
+   "codePath": "src/strategy/v27-team-c116-vb.js General.act L793-797 → Strategy.send L479-487；V13.amount0 L2332-2341",
+   "why": "105 条陆攻（pct 47~105，其中 85 条是最小额 47）逐拍重发，0 条成交；策略不知道上一条还没生效。页面在 1477 拍前后停止",
+   "estCost": "地 6441→6452 冻结 520 拍，兵 3.3 万→22.8 万闲置；掉线后 6586 格/48.9 万兵交给 AI",
+   "patternId": "NEW-R03-IO01",
+   "evidenceRef": "影子摘要[S2] kaito9 955~1475；[S1] kaito9 900/1200 拍段 59→9、56→0"
+  },
+  {
+   "t": "463~1109",
+   "bot": "zexos1 463 / zero_7 631 / ryan_m 652 / talon5 693 / sora_w 702 / alex_k 983 / riku_x 983 / leo_tx 1107 / noah88 1109",
+   "kind": "flag",
+   "verdict": "error",
+   "state": "对局不是限额（no-full-send）模式",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.send L3876（每条受理的指令登记 pendingQuotaCheck）→ Policy.updateShadowQuota L3821-3834（之后 7 拍内余额下降且「想发」≥1.12×「实降」→ isNoFullSend=true、shadowQuota=0）→ Policy.send L3844-3862（影子额度不足时不对非中立目标出手）",
+   "why": "窗口里看到的余额下降其实是更早的指令落地或挨打（例：zexos1 460 拍想发 526，463 拍看到只降 388——那是 450 拍那条 pct=109 在 462 拍落地）。翻转后 40 次出手被挡：alex_k 20（ICARUS×8、ZxZxZ×6、УРАРТУ×3）、talon5 7、sora_w 4、zexos1 4、leo_tx 3、noah88 2",
+   "estCost": "40 次被挡的出手；标志为真还关掉 4 处带 !isNoFullSend 条件的分支（L4549、L5164、L5262-5266、L5430）",
+   "patternId": "NEW-R03-IO02",
+   "evidenceRef": "影子摘要[S5]"
+  },
+  {
+   "t": "1135~1355",
+   "bot": "leo_tx",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "720~1200 拍被 Dhrishiv#63 吃掉 1316 格；余额 3.1~6.3 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Style.pickTarget L1144-1177 + V13.allow L2110-2119",
+   "why": "回击正在吃自己的真人，方向合理；但 43 条里只成交 15 条且晚 100~600 拍（1456×5、1463、1771×9），成交时局面已变",
+   "estCost": "地 2233→2139，没有夺回",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "影子摘要[S2] leo_tx 1135~1355；卷宗[J] 1456、1771"
+  },
+  {
+   "t": "1500~2025",
+   "bot": "ryan_m",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "被围（nb=0、neut=0），密度 71→137；收款人 alex_k 密度 18~30、有敌邻",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4325-4518（Case B L4474-4495；L4500-4506 pct=min(maxSafePct,320)；L4508 g.donate）；全函数没有读引擎捐款额度",
+   "why": "22 条 pct=320 的调度每 25 拍一条，20 条没有出现在录像里（录像只记成交的捐款；按额度复算：首条需 101 点、只剩 85 点，之后每条都超），2 条在 2163 拍成交（13.3 万+8.3 万）。策略的 cmds 计数照涨，以为发出去了",
+   "estCost": "ryan_m 在密度 100~141 上多待约 400 拍（软上限以上利息被扣）",
+   "patternId": "NEW-R03-DN01",
+   "evidenceRef": "卷宗[H]；in_game.log seq=7125583 起的 [HL-DISPATCH]"
+  },
+  {
+   "t": "2430~2955",
+   "bot": "noah88",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "2245~2940 拍四周没有陆上邻居；余额 51.2 万→89.5 万（密度 72→126）；收款人 alex_k 密度 1~37、正被 Prest/УРАРТУ/ZxZxZ 打",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4325-4518（defense/offense/yield_opt_dispatch，pct 320~380）；Policy.idleBoats L5022-5031（activeLandFrontBrothers >= 1 && dMe < 115 → return）",
+   "why": "22 条调度每条 19~29 万，需要 88~135 点；alex_k 的受捐账 2430 拍已用 112/145 点（只容得下约 6.9 万）、2905 拍 140/185 点（约 9.5 万）。引擎整笔拒收，策略没有读额度、也不按余量缩小，于是 525 拍里一个兵也没送出去",
+   "estCost": "90 万兵闲置 700 拍，其中 2705 拍起密度过 100、利息打折；同期 alex_k 的地 13959（2400 拍）→12169（3000 拍），2430 拍余额只有 1.7 万。3213 拍起额度改按收款人软上限算（alex_k 一次可收约 76 万），但那时 noah88 已转去打 M[OG]GER",
+   "patternId": "NEW-R03-DN01",
+   "evidenceRef": "events.csv noah88 DISPATCH 行；卷宗[H] noah88 29/0；重放 cmdLog 捐款行的 q0/cap 列"
+  },
+  {
+   "t": "1500~1680",
+   "bot": "noah88 / sora_w / zexos1 / alex_k",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "身边还剩几格零星中立地，同时已有可打的真人/AI",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.act L4941（neutral>0 → expandNeutral，send 在 L952）→ L4942 buyLand；页面每拍只受理 1 条指令",
+   "why": "expandNeutral 先发一条 pct=47 的最小令占掉当拍名额，同拍 buyLand 的指令被拒：20 条（13 条打 ICARUS/Laurelin 的 pct 270~414，7 条打 AI）；另有 4 条 act:796 被 dpNeutral 挤掉。全局 t≥1500 有 54 个 buyLand 决策拍名额已被占",
+   "estCost": "小：各号的第一条大单晚 15~30 拍发出（本局此时成交延迟已有 250~450 拍）",
+   "patternId": "NEW-R01-AT02",
+   "evidenceRef": "reviews/A051.json execLayer.sameTickRejected；影子摘要[S2]「本地就被拒」行"
+  },
+  {
+   "t": "1505~2030",
+   "bot": "talon5",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "唯一敌邻 ICARUS#3（密度 13）；自己 22~44 万兵；成交延迟 240~460 拍",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5611-5616（x = min(avail, 1.25*need+3*cnt)，无在途检查）",
+   "why": "73 条「30~35% 余额」只成交 11 条：1869 拍一批 8 条里 2 条打中 ICARUS（pct 336、354，445k→188k，另 6 条成了空令）、2030 拍 9 条（243,050→6,694）",
+   "estCost": "1800~2100 拍烧 47.6 万换 4956 格后密度 1.8；2100~2370 拍被 ICARUS 用 4.6 万兵反吃 5366 格",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "卷宗[J] 2030；[I] talon5 1800~1890、1980~2070；[F]"
+  },
+  {
+   "t": "1675~2198",
+   "bot": "sora_w",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "唯一敌邻 Laurelin#55（t=1530 3.1% 的地/19.5 万兵）；自己 31.5~55.5 万兵",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5611-5616",
+   "why": "86 条里 17 条成交：2100×9（554,628→6,907）、2198×8（7,642→221）",
+   "estCost": "烧 53.8 万换 4971 格（108 兵/格）；2370~3000 拍被 Laurelin 吃回 4988 格",
+   "patternId": "R08:出手后变薄，随后被吃",
+   "evidenceRef": "卷宗[J] 2100/2198；[E] sora_w 2100~3000"
+  },
+  {
+   "t": "2115~2331",
+   "bot": "alex_k",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "ICARUS 已被 talon5/zexos1/noah88 同时进攻，alex_k 自己 2219 拍也已有 8 条落地；余额 38.6~47.9 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5588-5593（nearCollapse 分支，不受 pulseFrac 限制）",
+   "why": "26 条 pct 357~437 的脉冲，2331 拍 9 条同拍落地（477,436→6,464），到 2340 拍只烧 6.8 万换 1232 格，45 万在途兵等 ICARUS 2362 拍出局后才退回（2464 拍还有 9 条落在已死目标上成了空令）",
+   "estCost": "2335~2485 拍 150 拍余额≈0；2100~2400 拍被 УРАРТУ 空壳和 ZxZxZ 吃掉 3006 格，只掉 3.3 万兵",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "卷宗[J] 2331、2464；[I] alex_k 2250~2340；[E] alex_k 2100~2400"
+  },
+  {
+   "t": "2163~2317",
+   "bot": "ryan_m/leo_tx → noah88/sora_w/talon5/alex_k",
+   "kind": "donate",
+   "verdict": "good",
+   "state": "捐款人被围、密度 117~142；收款人刚把余额打空（密度 1~2）且正与真人交战",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4474-4495（boxedIn 捐款人 reqD=58、pct 上限 320）",
+   "why": "方向是后排闲兵给前线：2100~2400 拍 noah88 收到 19.9 万、sora_w 10.5 万、alex_k 24 万、talon5 3.2 万；noah88 靠这笔兵守住新打下的地（3372→7016）",
+   "estCost": "手续费率 20%（每笔付当时余额的 6.25%）；成交是成批的（2303、2310 拍各 4~5 笔同拍），捐款人只剩 1.5 万/3 万，之后被 Laurelin/M[OG]GER 用 18~57 兵/格吃掉",
+   "patternId": "NEW:DN-rear-to-front",
+   "evidenceRef": "卷宗[E] ryan_m/leo_tx 2100~2400；[H]"
+  },
+  {
+   "t": "2744~3549",
+   "bot": "riku_x ⇄ zexos1",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "三段：2744 拍 riku_x（被围，48.7 万）→ zexos1（当时也被围，44.6 万）；2877 拍 zexos1（被围，81.1 万）→ riku_x（余额 327、刚接壤 Laurelin）；3122~3549 拍 riku_x（又被围）→ zexos1（已在前线）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4474-4495（offense_dispatch；收款人按发令当拍的局面选）",
+   "why": "第一段是 2330 拍发的调度晚了 414 拍才落地（发令时 zexos1 还在打 ICARUS，落地时它已被围）；随后 2856 拍又一批晚到的调度把 riku_x 捐空，zexos1 于是把 25.4 万调回给它；riku_x 只用掉 6.5 万，3095 拍失去敌邻后再把 25.2 万调回 zexos1",
+   "estCost": "三段到账 24.4 万 + 25.4 万 + 25.2 万，手续费 4.9 万 + 5.1 万 + 5.4 万 = 15.3 万，一格地没换",
+   "patternId": "NEW:DN-pingpong",
+   "evidenceRef": "重放 cmdLog 捐款行 2744/2877/3122/3143/3248/3549；in_game.log seq=7125867"
+  },
+  {
+   "t": "2985~3696",
+   "bot": "zexos1",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "邻居 Laurelin#55（失血中）；自己 58.5~91.3 万兵；页面已同步（延迟 11~40 拍）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5594-5608（pulseMode：want = min(1.20*need+3*cnt, pulseFrac*B)，curAtk >= 0.04*B 时不再发）",
+   "why": "四串脉冲共 12 条全部成交，地 8496→13952，自身余额 60.7 万→95 万没有被掏空。但每串都在第一条成交之前又发了 1~3 条：四串首条合计 26.6 万、多发 46.6 万（例：2985~3000 拍首条 8.0 万、多发 18.3 万，余额 607k→349k），实际力度约是设计值的 2.8 倍",
+   "estCost": "烧 64.3 万换 6588 格（98 兵/格）",
+   "patternId": "NEW-R03-AT01",
+   "evidenceRef": "影子摘要[S6] zexos1 四行；卷宗[F] zexos1→Laurelin；[I] zexos1 2970~3060"
+  },
+  {
+   "t": "2630~4225",
+   "bot": "alex_k",
+   "kind": "hold",
+   "verdict": "unclear",
+   "state": "邻居：УРАРТУ#54 空壳（1.7~2.1 万格；兵 17~23 万，3500 拍起被 Ponce 喂到 43~65 万）与 Prest#6（t=3300 85.8 万兵）；自己 15.2~72 万兵",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5359、L5414-5418、L5444-5453；Policy.safeAt L4543-4560 → V17.safeAt L2728-2738 → V17.killKeep L2745-2751",
+   "why": "t≥1500 的 612 个决策拍：报价高于 worth 235、其它不出手 161、卡在对真人的留底 39、守卫挡掉 17。2630 拍空壳报价 32.2 ≥ worth 22.1；3340~3500 拍报价 24~25 < worth 47~51，但对 Prest 的留底 62~64 万使可用只剩约 3 万（需要 41 万）；3630 拍以后空壳被喂肥，报价 67~81 又高于 worth 60~78。对 Prest 留底有依据（Prest 烧 200 万兵才吃掉它 9036 格）",
+   "estCost": "3000 拍之后被这个空壳吃掉 4052 格/50.3 万兵（空壳为此烧 101.8 万；它 3500 拍后收到 Ponce 的捐款 129 万）",
+   "patternId": "R07-DF-RICH-BLEED",
+   "evidenceRef": "freeze-scan.mjs A051（第二段 alex_k）；影子摘要[S4] alex_k；卷宗[N] Ponce→УРАРТУ"
+  },
+  {
+   "t": "3610~3630",
+   "bot": "noah88",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "余额 82.9~84.8 万、地 8257（密度 100.4，刚过软上限）；邻居 M[OG]GER#10（167 万兵/31389 格）报价 128 高于 worth 89，且它正在打 noah88；页面同步（首条延迟 23 拍）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5353（over = B > 100*L）、L5359（over 时不停）、L5440-5444（keep = min(keep, hold*100*L)，再与 safe 取大）、L5594-5608（pulseMode，curAtk 只含已成交的兵）",
+   "why": "过软上限后每个决策拍都把「超出 keep 的部分」发出去：3610、3615 拍各 7.6 万，3620、3625 拍各 8.6 万，3630 拍 9.5 万——5 条都发在第一条 3633 拍成交之前，余额一直没降，所以每拍都重新算出同样的超额。设计是放一笔 7.6 万，实际成交 34.4 万（4.5 倍，手续费 4.0 万）",
+   "estCost": "到 3660 拍 11.2 万换 616 格（181 兵/格）；3690 拍 M[OG]GER 的进攻兵打过来，剩下 23.2 万在途兵在槽内 1:1 对消；余额 84.8 万→60.2 万，同期 3600~3900 拍仍被 M[OG]GER 吃掉 1640 格/16.7 万兵",
+   "patternId": "NEW-R03-IO01",
+   "evidenceRef": "out/trace/A051-noah88-3600.txt；影子摘要[S6] noah88 3610-3630；卷宗[I] noah88 3600~3690"
+  },
+  {
+   "t": "2415~4690",
+   "bot": "talon5",
+   "kind": "hold",
+   "verdict": "unclear",
+   "state": "4461 格；2415~2930、3100~3810 拍没有陆上邻居，3815 拍起唯一邻居 M[OG]GER（报价中位 595，始终高于 worth；被判拥挤）；兵 5.4 万→50 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4329-4343、L4453、L4474-4495；Policy.idleBoats L5022-5031；Policy.buyLand L5359、L5371-5374",
+   "why": "t≥1500 的 710 个决策拍：没有陆上邻居 247、报价高于 worth 260、卡在留底 50、出手 79。被围捐款人要密度 ≥58 才进 Case B、≥115 才发船；talon5 3250~3650 拍密度 42~54，只成交 3 条调度（3409→zexos1 8.9 万、3654→riku_x 4.5 万、4704→sora_w 9.1 万，手续费共 5.9 万）",
+   "estCost": "2275 拍里 20~50 万兵没有用在任何战线上；4950 拍接敌后 120 拍内被吃光",
+   "patternId": "R07-EC-NO-OUTLET",
+   "evidenceRef": "freeze-scan.mjs A051（第二段 talon5）；影子摘要[S4] talon5"
+  },
+  {
+   "t": "3685~4215",
+   "bot": "zexos1",
+   "kind": "hold",
+   "verdict": "unclear",
+   "state": "邻居 Laurelin#55 与 M[OG]GER#10（t=4500 389 万兵）；自己 91.3 万→151 万兵，密度 75→108",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5359（3685~4015 拍：c >= worth）、L5414-5418（safe = min(safeAt, oppFloorCap*L)，oppFloorCap=88）、L5444、L5449-5453",
+   "why": "前 330 拍是报价高于 worth（Laurelin 74 对 67.5、M[OG]GER 79~116 对 58~71）。4018 拍 Laurelin 把 154.6 万兵全捐给 M[OG]GER 后离场，留下 22521 格/3 个兵的空壳；zexos1 对它的 need 只有 3.3 万，但留底 = 88×13952 = 122.8 万（对 M[OG]GER），余额 113 万时可用为负，过 124 万后可用又小于 chunk：37 个决策拍没出手，4220 拍才发",
+   "estCost": "空壳的 2.25 万格被队1 路人 Madros#53（9632 格，烧 30.8 万）和 虎#5（7547 格，烧 19.5 万）吃掉，zexos1 只拿到 41 格；地留在队1，编队没涨。M[OG]GER 整段没有打 zexos1",
+   "patternId": "R07-EC-IDLE-RICH",
+   "evidenceRef": "freeze-scan.mjs A051（第二段 zexos1：pricedHigh 3685~4015、frozenKeep 4035~4215）；卷宗[N] 离场前清仓捐款"
+  },
+  {
+   "t": "4075~4105",
+   "bot": "sora_w",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "Laurelin 空壳（4039 拍离线；2.22 万格，与 sora_w 的边界只有 6~13 像素；4074 拍它的队友 LANSPAN 给它捐了 20.2 万）；自己 31.7 万兵、已有 11 万在途；页面同步（首条延迟 13 拍）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5421（c < cheap → keep = 0）、L5444（keep = max(keep, safe)，此时 safeAt=0）、L5449-5453（非真人：x = min(avail, 1.25*need+3*cnt)，无在途检查）；Policy.send L3844-3862；V13.dpKeep L2459-2464；Policy.offers L5094-5095（need 只扣已成交的在途兵）",
+   "why": "空壳不算真人、sora_w 又没有别的真人邻居，safeAt 与 dpKeep 都是 0。4075、4080、4085 三个决策拍各发 10.9~11.1 万（都发在第一条 4088 拍成交之前，余额 31.7~32 万没变）；4090~4100 拍三次出手被 L3844 守卫挡掉；4105 拍报价 7.25 低于 cheap，keep=0，把剩下的 8.9 万整仓发出（pct=1012）",
+   "estCost": "成交 110,383+72,036+48,180+89,888，余额 316,660→3；在途 42.7 万只烧 1.8 万换 689 格（边界太窄），4255 拍前后失去边界才退回 41.3 万。4116~4255 拍约 140 拍余额≈0（4400 格），碰巧没人打它",
+   "patternId": "NEW-R03-IO01",
+   "evidenceRef": "out/trace/A051-sora_w-4070.txt；影子摘要[S6] sora_w 4075-4085；卷宗[I] sora_w 4050~4140"
+  },
+  {
+   "t": "4265~4325",
+   "bot": "zexos1",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "余额 116 万、密度 83；Laurelin 空壳已不与自己陆地相邻（12747 格/10.2 万兵，elimCost 15.7 万）；邻居只剩 M[OG]GER（386 万兵）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5058 → Policy.boatFood L5621-5623（seaCore=0 → super）→ V13.boatFood L2001-2021（amount = min(boatFrac*(bal-floor), max(foodK*hit.cost, min))，L2017 g.boatTo）← V13.searchFood L2028-2080（cost = elimCost×exp(boatDecay×距离)）",
+   "why": "对隔海的空壳发 2 条船：4277 拍 263,464 兵（船费 36,816）、4340 拍 209,598 兵（船费 34,933），航程 253/256 拍。第二条发出时第一条还在海上。靠岸（4530、4596 拍）时落点已是路人队友 虎#5 的地，船上剩的 176,625+140,517 兵直接并入 虎#5 的余额（它当时 342 万兵）；Laurelin 空壳 4591 拍被别人吃光",
+   "estCost": "余额支出 54.5 万（兵 47.3 万 + 船费 7.2 万）：海上损耗 15.6 万（每 5 拍 1/128），31.7 万送给编队外；500 拍后 zexos1 被 My Staf 打穿。全局 15 条船共发 58.8 万兵、船费 14.8 万，靠岸的 11 条全部落在 虎#5 的地上（移交 37.4 万），没有一条换到地",
+   "patternId": "NEW-R03-SE01",
+   "evidenceRef": "卷宗[H]「船靠队友岸移交」；重放 cmdLog（#14）4277/4340、landings 4530/4596；影子摘要[S2] zexos1 4265~4325 boatFood:2017"
+  },
+  {
+   "t": "1910~2510",
+   "bot": "riku_x",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "被围、余额 39.8~50.8 万（密度 116~148）；页面落后 250~700 拍",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5022-5044（被围分支：dMe >= 115 才走到 boatOut，boatRange 临时放到 2500）→ V13.boatOut L2325-2330 → General.boatOut L999-1015（中立目标 amount = max(3*size+300, 60)；船费 g0(32B,1024) 不进入数额计算）",
+   "why": "24 条发船指令每 25 拍一条，成交 7 条：2513 拍 3 条（1910/1960/1985 拍发的，晚 528~603 拍）各 5.5~6.0 千兵去中立地，每条船费 1.45~1.59 万（船费按余额的 3.1% 收，与船上兵数无关）；2744 拍 4 条。航程 480~790 拍，靠岸时落点已是 虎#5 的地",
+   "estCost": "7 条船发 7.4 万兵、付船费 6.5 万，靠岸移交给 虎#5 3.0 万，其余沉在海上；没有换到地",
+   "patternId": "NEW-R03-SE01",
+   "evidenceRef": "重放 cmdLog（#21）2513/2744 发船行；影子 cmds riku_x 类型 3 的 24 条（act:4963>idleBoats:5040>boatOut:2327>boatOut:1011）"
+  },
+  {
+   "t": "1260 / 1477",
+   "bot": "zero_7 / kaito9",
+   "kind": "exec",
+   "verdict": "unclear",
+   "state": "页面落后服务器约 390~480 拍时停止",
+   "codePath": "执行层，无策略分支（停止前策略仍在逐拍发令：General.act L793-797）",
+   "why": "两个号的日志在本地 1260 / 1440 拍之后中断，results.csv 记为 left；服务器 1736 / 1960 拍才把它们记为离线。停止原因局内数据看不出",
+   "estCost": "5712 格/28.4 万兵、6586 格/48.9 万兵交给内置 AI（占编队整局利息的 6.1%）；两个空壳之后被 M[OG]GER、Prest、Laurelin 吃掉 11816 格",
+   "patternId": "NEW:IO-disconnect-husk",
+   "evidenceRef": "卷宗[D]、[G]；results.csv；in_game.log 两个号最后的 HL-TICK 与 RESULT 行"
+  }
+ ],
+ "newPatterns": [
+  {
+   "proposedId": "NEW-R03-OP01",
+   "prefix": "OP",
+   "name": "买 AI 地被编队友的余额冻住（按决策拍计数；t<1500 走 winFloor，t≥1500 走 safeAt）",
+   "sameAs": [
+    "NEW-R01-OP02 保底线死锁：safeFinite 取到队友余额",
+    "R04 打内置 AI 的底线被队友的余额顶住（队友互锁）"
+   ],
+   "definition": "第一段 t < dpEnd（1500）：该号有 ≥1 个存活的内置 AI 邻居、没有在扩中立、pickTarget 返回空，且 safeFinite ≥ (1-minSend)×余额（minSend=0.2141）。第二段 t ≥ 1500：buyLand 没出手，但只把 safeFinite 当 0 重跑同一拍就会出手。两段都按卡住它的「最弱的别的邻居」分类：编队友 / 路人队友 / 敌方真人 / AI。",
+   "detect": "scripts/freeze-scan.mjs <局>（需要录像；影子策略逐拍包住 pickTarget 与 buyLand）。输出 out/cache/<局>-freeze.json：第一段 team/bots，第二段 post.team/post.bots（frozenSF 及其 binders、spans）。",
+   "instances": [
+    {
+     "t": 1000,
+     "bot": "zexos1"
+    },
+    {
+     "t": 1110,
+     "bot": "riku_x"
+    },
+    {
+     "t": 1110,
+     "bot": "sora_w"
+    },
+    {
+     "t": 1210,
+     "bot": "ryan_m"
+    },
+    {
+     "t": 700,
+     "bot": "talon5"
+    },
+    {
+     "t": 900,
+     "bot": "leo_tx"
+    },
+    {
+     "t": 1145,
+     "bot": "noah88"
+    },
+    {
+     "t": 1515,
+     "bot": "alex_k",
+     "note": "t≥1500：40 拍卡在 kaito9"
+    },
+    {
+     "t": 1500,
+     "bot": "zexos1",
+     "note": "t≥1500：14 拍卡在 riku_x，AI326 need=2080"
+    }
+   ],
+   "note": "A051：第一段 727/1749 个决策拍（卡在编队友 664、敌方真人 63）；第二段 60/4693（编队友 57、路人队友 3）。对照 A025（赢局，5 个号）：第一段 60/900"
+  },
+  {
+   "proposedId": "NEW-R03-IO01",
+   "prefix": "IO",
+   "name": "上一条没成交就重发同一个决定",
+   "sameAs": [
+    "统筹 0004 号广播第 iii 项（往返 11~19 拍内按未生效状态重发）",
+    "R07-IO-DUP-ASSIST（协防分支的同类现象）",
+    "R08 连发清仓 / 超软上限后高价倾泻（无录像时的替代口径）"
+   ],
+   "definition": "同一个号对同一目标、由同一源码行发出的同一决定，在上一条还没被服务器执行时再次发令（决策周期 5 拍 < 成交延迟）。相邻发令间隔 ≤10 拍并成一串；按首条成交延迟分两类：同步串（≤45 拍）与落后串（>45 拍）。计：串数、条数、首条实际送出的兵+手续费、「首条成交之前发出的其余各条」实际送出的兵+手续费。",
+   "detect": "shadow-digest.py [S6]（影子发令与录像成交逐条配对；只统计陆攻、目标非中立）。facts 里是 reissue.{syncBursts,syncCmds,syncFirst,syncExtra,lagBursts,lagIssued,lagExecuted,deadBursts,deadIssued}。",
+   "instances": [
+    {
+     "t": 955,
+     "bot": "kaito9",
+     "note": "落后：105 条 0 成交"
+    },
+    {
+     "t": 1505,
+     "bot": "talon5",
+     "note": "落后：73 条成交 11"
+    },
+    {
+     "t": 1515,
+     "bot": "noah88",
+     "note": "落后：126 条成交 17"
+    },
+    {
+     "t": 1675,
+     "bot": "sora_w",
+     "note": "落后：86 条成交 17"
+    },
+    {
+     "t": 3610,
+     "bot": "noah88",
+     "note": "同步：5 条都在首条成交前，首条 8.9 万、多发 29.6 万"
+    },
+    {
+     "t": 4075,
+     "bot": "sora_w",
+     "note": "同步：首条 11.4 万、多发 12.4 万，随后整仓，余额 316,660→3"
+    },
+    {
+     "t": 4685,
+     "bot": "zexos1",
+     "note": "同步：对 My Staf 首条 14.2 万、多发 24.2 万"
+    },
+    {
+     "t": 4220,
+     "bot": "zexos1",
+     "note": "同步：对 Laurelin 空壳首条 22.3 万、多发 17.1 万"
+    }
+   ],
+   "note": "A051：全局发 1456 条、成交 595 条；成交里 261 条是同批同一决定的重复落地。同步串 24 个共 72 条：首条合计 134.5 万，多发 205.2 万（48 条）；落后串 62 个发 670 条成交 301 条；整串没有成交的 47 个共 326 条"
+  },
+  {
+   "proposedId": "NEW-R03-IO02",
+   "prefix": "IO",
+   "name": "isNoFullSend 假翻转后出手被守卫挡掉",
+   "sameAs": [
+    "NEW-R01-IO03 isNoFullSend 误置真",
+    "R04 isNoFullSend 误锁，出兵被自己的守卫拦掉"
+   ],
+   "definition": "对局不是限额模式，但 isNoFullSend 被 updateShadowQuota 翻成 true（pendingQuotaCheck 的 7 拍窗口内余额因别的原因下降）；计数 = 翻转的号数 + 翻转后 Policy.send L3844 守卫挡掉的对非中立目标的出手次数。",
+   "detect": "shadow.mjs 输出的 nfsFlip（翻转拍、当时的 pending）和 blocked 列表；shadow-digest.py [S5]。",
+   "instances": [
+    {
+     "t": 463,
+     "bot": "zexos1"
+    },
+    {
+     "t": 983,
+     "bot": "alex_k"
+    },
+    {
+     "t": 693,
+     "bot": "talon5"
+    },
+    {
+     "t": 4090,
+     "bot": "sora_w",
+     "note": "对 Laurelin 空壳的 3 次出手被挡"
+    }
+   ],
+   "note": "A051：9/10 个号翻转，40 次出手被挡（其中 t≥1500 的 buyLand 决策拍 25 个）"
+  },
+  {
+   "proposedId": "NEW-R03-DN01",
+   "prefix": "DN",
+   "name": "调度撞额度：同一收款人连续多条被拒",
+   "sameAs": [
+    "NEW-R01-DN05 调度额超过受赠者的反喂养配额",
+    "R04 调度不看收款人的反喂养配额",
+    "NEW:DN-not-executed"
+   ],
+   "definition": "日志有 HL-DISPATCH/HL-DONATE，但录像里没有对应的捐款（录像只记成交的捐款），且按引擎额度公式复算：收款人已用点数 + 本笔点数 > 当拍上限。同一捐款人对同一收款人连续 ≥5 条记为一串。",
+   "detect": "dossier.py [H]（日志条目与重放逐笔配对；没成交的按额度复算分成「额度拒」与「其它」）。",
+   "instances": [
+    {
+     "t": 1500,
+     "bot": "ryan_m",
+     "note": "→alex_k 20 条"
+    },
+    {
+     "t": 1705,
+     "bot": "riku_x",
+     "note": "→alex_k 14 条"
+    },
+    {
+     "t": 2430,
+     "bot": "noah88",
+     "note": "→alex_k/sora_w 22 条，余额 51~89 万"
+    },
+    {
+     "t": 2640,
+     "bot": "zexos1",
+     "note": "→alex_k 9 条"
+    }
+   ],
+   "note": "A051：154 条调度，成交 50、额度复算必超 82、其它未成交 22（其中 leo_tx→alex_k 14 条是指令没到服务器）。noah88 29 条 0 成交"
+  },
+  {
+   "proposedId": "NEW-R03-AT01",
+   "prefix": "AT",
+   "name": "（正例）同步状态下的小脉冲把兵换成地",
+   "sameAs": [
+    "R07-GOOD-SAVED-PUSH（相近）"
+   ],
+   "definition": "对真人的脉冲出手（pct ≤130）在 ≤45 拍内成交、同一拍至多落 2 条；一串脉冲之后余额不低于出手前的 55%，300 拍内领土 +≥10%。",
+   "detect": "shadow-digest.py 决策串里源码行为 buyLand:5607/5585 的串 + 卷宗 [E] 同窗口地、兵变化。",
+   "instances": [
+    {
+     "t": 2985,
+     "bot": "zexos1"
+    },
+    {
+     "t": 3125,
+     "bot": "zexos1"
+    },
+    {
+     "t": 3670,
+     "bot": "zexos1"
+    }
+   ],
+   "note": "A051：zexos1 3000~3900 拍 +5456 格（8496→13952），余额 60.7 万→95 万"
+  },
+  {
+   "proposedId": "NEW-R03-SE01",
+   "prefix": "SE",
+   "name": "远程发船到岸时落点已是队友的地，整船兵并入对方余额",
+   "sameAs": [
+    "NEW:AT-boat-dump（相近：装船后领土不涨）"
+   ],
+   "definition": "boatFood（打隔海的 AI/空壳）或被围分支 idleBoats→boatOut 发出的船，靠岸时落点属于队友（非编队号）→ 船上的兵按捐款并入对方余额。计：船数、发船兵、船费、海上损耗、移交给编队外的兵。",
+   "detect": "dossier.py [H]「船靠队友岸移交」（每条靠岸的船配回它的发船指令：发船拍、发船兵、船费、航程）、[L]「移交路人」列；facts.boatHandovers。",
+   "instances": [
+    {
+     "t": 4277,
+     "bot": "zexos1",
+     "note": "263,464 兵 → 4530 拍 176,625 给 虎#5"
+    },
+    {
+     "t": 4340,
+     "bot": "zexos1",
+     "note": "209,598 兵 → 4596 拍 140,517 给 虎#5"
+    },
+    {
+     "t": 2513,
+     "bot": "riku_x",
+     "note": "3 条各约 5.7 千兵、船费各约 1.5 万 → 3163~3177 拍各约 2 千给 虎#5"
+    }
+   ],
+   "note": "A051：全局 15 条船发 58.8 万兵、船费 14.8 万；11 条靠在 虎#5 的地上，移交 37.4 万（占编队总利息 2.9%）"
+  }
+ ],
+ "lossArchetype": "never-grew",
+ "winnerNotes": "赢家是队2（35 个真人，含另一编队 B033 的 6 个号）。优势在 630~1530 拍分 AI 地的阶段建立：队2 +36.7 个点，队1 只 +27.4 个点，其中我方 10 个号合计 +2.78 个点。到 2100 拍队1 的在线兵力还略多（746 万对 671 万，其中四成是我方攒着没用的 299 万）；我方 2030~2331 拍成批清空之后，2400 拍变成 501 万对 819 万。3000~3900 拍队2 吃掉队1 路人 10.66 万格（My Staf#42 2.15 万、Perhaps Port#11 1.74 万、Device#33 1.70 万、Fozzu#1 1.65 万），队1 在线真人 21→15；4478 拍进入猎杀，My Staf 录像末 20.2% 的地。队2 会集中兵力：全场捐款 73 笔到账 1178 万（编队 50 笔 239 万），九成以上发生在 3213 拍引擎额度放宽之后；收捐最多的是 Prest#6（21 笔 363 万，吃掉 alex_k 9036 格）和 M[OG]GER#10（224 万，其中 154.6 万是同战队的 Laurelin 4018 拍离场前的清仓捐款）。Ponce#35 还把 129 万兵分 18 笔喂给已掉线的队友 УРАРТУ（给离线号捐款不受额度限制），由托管 AI 去打 alex_k。对我方伤害最大的四个人：My Staf（18536 格/174 万兵，自烧 351 万）、M[OG]GER（18770 格/139 万）、Prest（15292 格/116 万）、УРАРТУ 空壳（7801 格/58.7 万）。只有两队，不存在第三方渔利；打错对象的情形：5 个号同时把全部家底压在 ICARUS 一个人身上；noah88 在软上限上对最富的邻居 M[OG]GER 硬换。",
+ "wentWell": [
+  "开局周期出兵 76/76 成交，t=630 编队单号地中位高于两队路人",
+  "打掉了最近的敌方真人 ICARUS#3（115 万兵换 1.66 万格，约 70 兵/格）",
+  "页面恢复同步后（t≥2700）zexos1 的脉冲出手逐条成交，3000~3750 拍从 Laurelin 手里拿下 6588 格且没有掏空自己",
+  "后排被围号的闲兵最终到了刚打空的前线号手里（noah88 +19.9 万、sora_w +10.5 万）",
+  "握着兵的号让对手付出高价：整局对手吃掉编队 7.05 万格烧了 1045 万兵（148 兵/格）；zexos1 一个号就让 My Staf 烧了 264 万"
+ ],
+ "unknowns": [
+  "页面为什么在本地 600~2700 拍落后服务器 100~700 拍：HL-TICK 的 avgMs 中位 1.1（最大 1.43）、skip 恒为 0、34 条 HL-SLOW-TICK 最大 66ms，不是策略计算慢；同局 B033 的号同样落后。是运行主机过载、页面被降频还是网络，局内数据看不出。",
+  "zero_7 和 kaito9 页面停止的原因与确切时刻：results.csv 的 tick 对 left 的号只是外层最后一次采到的状态拍（zero_7 是 994，而日志打到了 1260）；是否被外层看门狗关掉不可知。",
+  "zero_7 本地 915~1260 拍、kaito9 955~1476 拍发的指令为什么一条都没有成交（其它号在同样落后时每批还能落 8~9 条）。",
+  "safeFinite 的前提（内置 AI 挑余额+在途最低的邻居打）没有对照引擎 AI 决策代码核实；本局 AI 对我方的实际伤害很小（600~1500 拍全队被 AI 打掉 2779 格、5.1 万兵）。",
+  "页面适配层源码不在数据仓库里：「落后时每拍最多落 8~9 条、其余丢弃」是从成交记录归纳的（每次成批落地都是 8 或 9 条），由谁限流不清楚。",
+  "冻结与延迟对 630~1530 拍落后的贡献各占多少，没有做去掉其一的整局反事实重放。",
+  "leo_tx→alex_k 1710~2010 拍的 13 条调度（另有 1 条 2085 拍）没有出现在录像里，按额度复算并不超，与同期陆攻指令一样是没到服务器；具体丢在哪一层不清楚。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "同一拍落地的多条陆攻怎么结算",
+   "a": "逐条按「当时剩余余额」取百分比：每条先扣手续费 g0(12B,1024)，再送出 g0(B(pct+1),1024)。9 条 pct≈325 连乘后剩 0.670^9=2.7%：243,050→6,694（实测）与公式 6,600 相符。"
+  },
+  {
+   "q": "指令落地时目标已死",
+   "a": "引擎把目标改写成中立；本局 595 条成交里 189 条如此，其中 138 条因没有可扩的中立前线成为空令（不扣手续费）；另有 27 条目标没死但已不相邻的空令。"
+  },
+  {
+   "q": "DROP30 对账",
+   "a": "traj 全量 32 个区间（anomalies.json 的 drop30Events 只列了 30 个）全部对上：打真人 12、捐款 10、挨打 7、打 AI（含空壳）2、扩中立 1；没有无法解释的掉兵。"
+  },
+  {
+   "q": "捐款额度与手续费",
+   "a": "录像只记成交的捐款：日志 154 条调度里成交 50（到账 238.9 万、手续费 52.9 万，费率 22%），没成交的 104 条里 82 条按额度复算必超。手续费恒为捐款人当时余额的 6.25%：pct=320 时费/到账=20%，pct=188 时 34%（zexos1→alex_k：到账 28.1 万、手续费 9.5 万）。额度是每个收款人一本累计账（上限 2163 拍 121 点、2744 拍 169 点、3248 拍 209 点、4228 拍 309 点），超了整笔拒收；t≥3213 一笔的点数改按收款人软上限算，t≥4284 不限；给已离线的号捐款不受限（队2 这样捐了 151 万）。"
+  },
+  {
+   "q": "进攻兵与对方进攻兵相遇",
+   "a": "A 打 B 时若 B 也有兵压在 A 身上，两边在槽内 1:1 对消，不换地。noah88→M[OG]GER 整局烧 63.5 万，其中 37.5 万是对消（3690 拍一次 23.2 万、0 格）；真正换地的部分 161 兵/格。"
+  },
+  {
+   "q": "守方余额与攻方成本",
+   "a": "守方每被攻方烧掉 1 个兵，自己的余额掉约 0.49 个（卷宗[F] 各对 0.47~0.50）。攻方每吃 1 格的花费随守方密度上升：被打空的 talon5 让 ICARUS 只付 8.6 兵/格、ryan_m 18、leo_tx 46~57；握着兵的 zexos1 206、noah88 188、alex_k 168。"
+  },
+  {
+   "q": "船",
+   "a": "船费 g0(32B,1024)=余额的 3.1%，与船上兵数无关（riku_x 2513 拍：5952 兵的船付 15,873）。海上每 5 拍掉 1/128：zexos1 的船 253 拍后 263,464→176,625（×0.6704=(127/128)^51）。船靠在队友的地上时，船上的兵并入对方余额。"
+  },
+  {
+   "q": "号离线以后",
+   "a": "余额利率变 0，只剩每 100 拍每格 1 兵的领土收入（kaito9 空壳 1980~3420 拍累计收入 +9.6 万，地 6.6~7.4 千格）；由内置 AI 托管，仍然会进攻（УРАРТУ 空壳整局烧 119 万兵打 alex_k）。"
+  },
+  {
+   "q": "每拍只受理 1 条指令",
+   "a": "同拍第二条被页面拒收：本局 24 条（expandNeutral 挤掉 buyLand 20 条，其中 13 条目标是真人；dpNeutral 挤掉 act:796 4 条）。"
+  },
+  {
+   "q": "整局兵力去向（编队在控期间，总利息 1271 万）",
+   "a": "打中立 0.6%（2.0 兵/格）、打 AI 2.3%（15.1 兵/格）、打真人 31.1%（91 兵/格，另含对消 3.4%）、三种手续费 10.7%（攻击费 5.3%、捐款税 4.2%、船费 1.2%）、挨打掉兵 37.4%、送给编队外 2.9%、离线/出局时还在手里 10.7%（其中两个空壳 77.3 万）。"
+  }
+ ],
+ "execLayer": {
+  "teamWindows": [
+   {
+    "t0": 0,
+    "issued": 33,
+    "executed": 33,
+    "lagMedian": 12,
+    "lagMax": 19
+   },
+   {
+    "t0": 300,
+    "issued": 48,
+    "executed": 48,
+    "lagMedian": 11,
+    "lagMax": 22
+   },
+   {
+    "t0": 600,
+    "issued": 139,
+    "executed": 124,
+    "lagMedian": 102,
+    "lagMax": 454
+   },
+   {
+    "t0": 900,
+    "issued": 231,
+    "executed": 59,
+    "lagMedian": 339,
+    "lagMax": 596
+   },
+   {
+    "t0": 1200,
+    "issued": 179,
+    "executed": 42,
+    "lagMedian": 441,
+    "lagMax": 571
+   },
+   {
+    "t0": 1500,
+    "issued": 303,
+    "executed": 75,
+    "lagMedian": 385,
+    "lagMax": 723
+   },
+   {
+    "t0": 1800,
+    "issued": 264,
+    "executed": 47,
+    "lagMedian": 251,
+    "lagMax": 603
+   },
+   {
+    "t0": 2100,
+    "issued": 97,
+    "executed": 59,
+    "lagMedian": 184,
+    "lagMax": 509
+   },
+   {
+    "t0": 2400,
+    "issued": 49,
+    "executed": 20,
+    "lagMedian": 102,
+    "lagMax": 326
+   },
+   {
+    "t0": 2700,
+    "issued": 32,
+    "executed": 15,
+    "lagMedian": 13,
+    "lagMax": 151
+   },
+   {
+    "t0": 3000,
+    "issued": 15,
+    "executed": 11,
+    "lagMedian": 14,
+    "lagMax": 19
+   },
+   {
+    "t0": 3300,
+    "issued": 16,
+    "executed": 12,
+    "lagMedian": 11,
+    "lagMax": 44
+   },
+   {
+    "t0": 3600,
+    "issued": 9,
+    "executed": 9,
+    "lagMedian": 21,
+    "lagMax": 27
+   },
+   {
+    "t0": 3900,
+    "issued": 13,
+    "executed": 13,
+    "lagMedian": 15,
+    "lagMax": 19
+   },
+   {
+    "t0": 4200,
+    "issued": 18,
+    "executed": 18,
+    "lagMedian": 17,
+    "lagMax": 26
+   },
+   {
+    "t0": 4500,
+    "issued": 8,
+    "executed": 8,
+    "lagMedian": 10,
+    "lagMax": 17
+   },
+   {
+    "t0": 4800,
+    "issued": 2,
+    "executed": 2,
+    "lagMedian": 9,
+    "lagMax": 10
+   }
+  ],
+  "perBot": {
+   "alex_k": {
+    "issued": 144,
+    "executed": 95,
+    "dropped": 49,
+    "lagMedian": 179,
+    "lagMax": 386
+   },
+   "noah88": {
+    "issued": 248,
+    "executed": 68,
+    "dropped": 180,
+    "lagMedian": 217,
+    "lagMax": 497
+   },
+   "ryan_m": {
+    "issued": 45,
+    "executed": 25,
+    "dropped": 20,
+    "lagMedian": 135,
+    "lagMax": 264
+   },
+   "talon5": {
+    "issued": 153,
+    "executed": 70,
+    "dropped": 83,
+    "lagMedian": 241,
+    "lagMax": 464
+   },
+   "kaito9": {
+    "issued": 147,
+    "executed": 32,
+    "dropped": 115,
+    "lagMedian": 252,
+    "lagMax": 584
+   },
+   "sora_w": {
+    "issued": 187,
+    "executed": 74,
+    "dropped": 113,
+    "lagMedian": 194,
+    "lagMax": 518
+   },
+   "zexos1": {
+    "issued": 160,
+    "executed": 67,
+    "dropped": 93,
+    "lagMedian": 64,
+    "lagMax": 455
+   },
+   "zero_7": {
+    "issued": 108,
+    "executed": 39,
+    "dropped": 69,
+    "lagMedian": 88,
+    "lagMax": 438
+   },
+   "leo_tx": {
+    "issued": 105,
+    "executed": 52,
+    "dropped": 53,
+    "lagMedian": 212,
+    "lagMax": 596
+   },
+   "riku_x": {
+    "issued": 159,
+    "executed": 73,
+    "dropped": 86,
+    "lagMedian": 171,
+    "lagMax": 723
+   }
+  },
+  "misfire": {
+   "exec": 595,
+   "late30": 410,
+   "late150": 328,
+   "deadTarget": 189,
+   "deadTargetNoop": 138,
+   "noop": 27,
+   "dupInBatch": 261
+  },
+  "nfsFlips": {
+   "alex_k": {
+    "t": 983,
+    "blockedSends": 20
+   },
+   "noah88": {
+    "t": 1109,
+    "blockedSends": 2
+   },
+   "ryan_m": {
+    "t": 652,
+    "blockedSends": 0
+   },
+   "talon5": {
+    "t": 693,
+    "blockedSends": 7
+   },
+   "sora_w": {
+    "t": 702,
+    "blockedSends": 4
+   },
+   "zexos1": {
+    "t": 463,
+    "blockedSends": 4
+   },
+   "zero_7": {
+    "t": 631,
+    "blockedSends": 1
+   },
+   "leo_tx": {
+    "t": 1107,
+    "blockedSends": 3
+   },
+   "riku_x": {
+    "t": 983,
+    "blockedSends": 0
+   }
+  },
+  "sendSites": [
+   {
+    "site": "act:796",
+    "n": 558
+   },
+   {
+    "site": "buyLand:5616",
+    "n": 340
+   },
+   {
+    "site": "tryDonateToTeammate:4508",
+    "n": 154
+   },
+   {
+    "site": "buyLand:5453",
+    "n": 116
+   },
+   {
+    "site": "buyLand:5607",
+    "n": 111
+   },
+   {
+    "site": "dpNeutral:2406",
+    "n": 76
+   },
+   {
+    "site": "expandNeutral:952",
+    "n": 54
+   },
+   {
+    "site": "buyLand:5592",
+    "n": 35
+   },
+   {
+    "site": "boatOut:1011",
+    "n": 28
+   },
+   {
+    "site": "buyLand:5585",
+    "n": 4
+   },
+   {
+    "site": "boatFood:2017",
+    "n": 4
+   }
+  ],
+  "reissueBeforeExec": {
+   "syncBursts": 24,
+   "syncCmds": 72,
+   "syncFirst": 1345368,
+   "syncExtra": 2052381,
+   "syncExtraCmds": 48,
+   "lagBursts": 62,
+   "lagIssued": 670,
+   "lagExecuted": 301,
+   "deadBursts": 47,
+   "deadIssued": 326,
+   "list": [
+    {
+     "bot": "noah88",
+     "t0": 3610,
+     "t1": 3630,
+     "target": "M[OG]GER#10T2",
+     "site": "buyLand:5607",
+     "issued": 5,
+     "beforeFirstExec": 5,
+     "firstLag": 23,
+     "firstExec": 3633,
+     "B0": 848443,
+     "B1": 602315,
+     "first": 88654,
+     "extra": 296136
+    },
+    {
+     "bot": "zexos1",
+     "t0": 4685,
+     "t1": 4695,
+     "target": "[UN] My Sta#42T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 4697,
+     "B0": 1388152,
+     "B1": 1047138,
+     "first": 142339,
+     "extra": 241658
+    },
+    {
+     "bot": "noah88",
+     "t0": 2970,
+     "t1": 2980,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 2982,
+     "B0": 901622,
+     "B1": 589973,
+     "first": 118865,
+     "extra": 192784
+    },
+    {
+     "bot": "noah88",
+     "t0": 4240,
+     "t1": 4255,
+     "target": "[Kilr] Pres#6T2",
+     "site": "buyLand:5607",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 23,
+     "firstExec": 4263,
+     "B0": 742134,
+     "B1": 415993,
+     "first": 76821,
+     "extra": 191146
+    },
+    {
+     "bot": "zexos1",
+     "t0": 2985,
+     "t1": 3000,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 18,
+     "firstExec": 3003,
+     "B0": 606817,
+     "B1": 348755,
+     "first": 80000,
+     "extra": 183413
+    },
+    {
+     "bot": "zexos1",
+     "t0": 4220,
+     "t1": 4225,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 15,
+     "firstExec": 4235,
+     "B0": 1159258,
+     "B1": 776452,
+     "first": 223021,
+     "extra": 171207
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3670,
+     "t1": 3680,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 3689,
+     "B0": 912777,
+     "B1": 768565,
+     "first": 78441,
+     "extra": 143415
+    },
+    {
+     "bot": "sora_w",
+     "t0": 4075,
+     "t1": 4085,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 4088,
+     "B0": 320206,
+     "B1": 89946,
+     "first": 114135,
+     "extra": 124294
+    },
+    {
+     "bot": "noah88",
+     "t0": 3400,
+     "t1": 3405,
+     "target": "M[OG]GER#10T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 3409,
+     "B0": 970227,
+     "B1": 737706,
+     "first": 127909,
+     "extra": 112024
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3125,
+     "t1": 3135,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 3136,
+     "B0": 519137,
+     "B1": 445020,
+     "first": 49682,
+     "extra": 90574
+    },
+    {
+     "bot": "sora_w",
+     "t0": 4020,
+     "t1": 4030,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5616",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 4032,
+     "B0": 426829,
+     "B1": 339683,
+     "first": 46266,
+     "extra": 77700
+    },
+    {
+     "bot": "talon5",
+     "t0": 4920,
+     "t1": 4925,
+     "target": "[UN] My Sta#42T2",
+     "site": "buyLand:5585",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 4928,
+     "B0": 487537,
+     "B1": 371578,
+     "first": 64274,
+     "extra": 56425
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3495,
+     "t1": 3500,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 40,
+     "firstExec": 3535,
+     "B0": 819808,
+     "B1": 722352,
+     "first": 57642,
+     "extra": 48959
+    },
+    {
+     "bot": "riku_x",
+     "t0": 4020,
+     "t1": 4030,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 4039,
+     "B0": 215511,
+     "B1": 142572,
+     "first": 28411,
+     "extra": 46314
+    },
+    {
+     "bot": "riku_x",
+     "t0": 3070,
+     "t1": 3085,
+     "target": "[OG] Laurel#55T2",
+     "site": "buyLand:5607",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 17,
+     "firstExec": 3087,
+     "B0": 328279,
+     "B1": 327716,
+     "first": 22120,
+     "extra": 43407
+    },
+    {
+     "bot": "alex_k",
+     "t0": 2620,
+     "t1": 2625,
+     "target": "ZxZxZ#59T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 33,
+     "firstExec": 2653,
+     "B0": 151908,
+     "B1": 114496,
+     "first": 20026,
+     "extra": 17386
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 675,
+     "t1": 695,
+     "target": "AI73",
+     "site": "act:796",
+     "issued": 5,
+     "beforeFirstExec": 5,
+     "firstLag": 32,
+     "firstExec": 707,
+     "B0": 10714,
+     "B1": 4187,
+     "first": 2071,
+     "extra": 5534
+    },
+    {
+     "bot": "ryan_m",
+     "t0": 630,
+     "t1": 650,
+     "target": "AI197",
+     "site": "act:796",
+     "issued": 5,
+     "beforeFirstExec": 5,
+     "firstLag": 21,
+     "firstExec": 651,
+     "B0": 9265,
+     "B1": 4654,
+     "first": 1591,
+     "extra": 5056
+    },
+    {
+     "bot": "zero_7",
+     "t0": 660,
+     "t1": 675,
+     "target": "AI191",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 26,
+     "firstExec": 686,
+     "B0": 7803,
+     "B1": 5567,
+     "first": 1058,
+     "extra": 2538
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 540,
+     "t1": 545,
+     "target": "AI424",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 20,
+     "firstExec": 560,
+     "B0": 3957,
+     "B1": 3957,
+     "first": 695,
+     "extra": 906
+    },
+    {
+     "bot": "alex_k",
+     "t0": 660,
+     "t1": 665,
+     "target": "AI496",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 33,
+     "firstExec": 693,
+     "B0": 3410,
+     "B1": 3410,
+     "first": 481,
+     "extra": 584
+    },
+    {
+     "bot": "zexos1",
+     "t0": 450,
+     "t1": 460,
+     "target": "AI476",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 462,
+     "B0": 3621,
+     "B1": 2690,
+     "first": 430,
+     "extra": 501
+    },
+    {
+     "bot": "riku_x",
+     "t0": 470,
+     "t1": 475,
+     "target": "AI206",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 20,
+     "firstExec": 490,
+     "B0": 1515,
+     "B1": 1515,
+     "first": 215,
+     "extra": 286
+    },
+    {
+     "bot": "noah88",
+     "t0": 280,
+     "t1": 285,
+     "target": "AI489",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 7,
+     "firstExec": 287,
+     "B0": 1722,
+     "B1": 772,
+     "first": 221,
+     "extra": 134
+    }
+   ]
+  },
+  "pageStops": {
+   "kaito9": {
+    "resultsTick": 1477,
+    "lastLogTick": 1440,
+    "shadowUntil": 1476
+   },
+   "zero_7": {
+    "resultsTick": 994,
+    "lastLogTick": 1260,
+    "shadowUntil": 1260
+   }
+  },
+  "sameTickRejected": {
+   "byPair": {
+    "dpNeutral:2406 → act:796": 4,
+    "expandNeutral:952 → buyLand:5453": 7,
+    "expandNeutral:952 → buyLand:5616": 13
+   },
+   "total": 24,
+   "withHumanTarget": 13
+  }
+ },
+ "openingFreeze": {
+  "window": [
+   600,
+   1500
+  ],
+  "team": {
+   "ticks": 1749,
+   "target": 550,
+   "neutral": 457,
+   "noai": 0,
+   "frozen": 727,
+   "other": 15,
+   "frozenBy": {
+    "squad": 664,
+    "mate": 0,
+    "enemy": 63,
+    "ai": 0
+   },
+   "frozenBalTicks": 53843620,
+   "frozenWould": 688
+  },
+  "perBot": {
+   "alex_k": {
+    "ticks": 180,
+    "target": 40,
+    "neutral": 119,
+    "noai": 0,
+    "frozen": 21,
+    "frozenWould": 21,
+    "other": 0,
+    "frozenBy": {
+     "squad": 21,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "kaito9#20": 21
+    },
+    "B0": 5566,
+    "B1": 146461,
+    "L0": 3104,
+    "L1": 8714
+   },
+   "noah88": {
+    "ticks": 180,
+    "target": 61,
+    "neutral": 20,
+    "noai": 0,
+    "frozen": 99,
+    "frozenWould": 96,
+    "other": 0,
+    "frozenBy": {
+     "squad": 55,
+     "mate": 0,
+     "enemy": 44,
+     "ai": 0
+    },
+    "binders": {
+     "𝐈𝐂𝐀𝐑𝐔#3": 44,
+     "talon5#19": 15,
+     "ryan_m#13": 29,
+     "alex_k#16": 11
+    },
+    "B0": 5609,
+    "B1": 199444,
+    "L0": 2513,
+    "L1": 3372
+   },
+   "ryan_m": {
+    "ticks": 180,
+    "target": 5,
+    "neutral": 32,
+    "noai": 0,
+    "frozen": 135,
+    "frozenWould": 130,
+    "other": 8,
+    "frozenBy": {
+     "squad": 135,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "zero_7#18": 13,
+     "noah88#15": 52,
+     "talon5#19": 11,
+     "zexos1#14": 59
+    },
+    "B0": 5818,
+    "B1": 204267,
+    "L0": 2384,
+    "L1": 2977
+   },
+   "talon5": {
+    "ticks": 180,
+    "target": 52,
+    "neutral": 39,
+    "noai": 0,
+    "frozen": 88,
+    "frozenWould": 77,
+    "other": 1,
+    "frozenBy": {
+     "squad": 72,
+     "mate": 0,
+     "enemy": 16,
+     "ai": 0
+    },
+    "binders": {
+     "noah88#15": 20,
+     "𝐈𝐂𝐀𝐑𝐔#3": 16,
+     "ryan_m#13": 9,
+     "zexos1#14": 43
+    },
+    "B0": 6159,
+    "B1": 212663,
+    "L0": 3053,
+    "L1": 4663
+   },
+   "kaito9": {
+    "ticks": 176,
+    "target": 137,
+    "neutral": 38,
+    "noai": 0,
+    "frozen": 1,
+    "frozenWould": 1,
+    "other": 0,
+    "frozenBy": {
+     "squad": 1,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "leo_tx#17": 1
+    },
+    "B0": 6283,
+    "B1": 222484,
+    "L0": 2643,
+    "L1": 6452
+   },
+   "sora_w": {
+    "ticks": 180,
+    "target": 42,
+    "neutral": 54,
+    "noai": 0,
+    "frozen": 84,
+    "frozenWould": 84,
+    "other": 0,
+    "frozenBy": {
+     "squad": 82,
+     "mate": 0,
+     "enemy": 2,
+     "ai": 0
+    },
+    "binders": {
+     "riku_x#21": 20,
+     "zexos1#14": 62,
+     "Laurelin#55": 2
+    },
+    "B0": 5596,
+    "B1": 210422,
+    "L0": 2377,
+    "L1": 4670
+   },
+   "zexos1": {
+    "ticks": 180,
+    "target": 15,
+    "neutral": 68,
+    "noai": 0,
+    "frozen": 97,
+    "frozenWould": 97,
+    "other": 0,
+    "frozenBy": {
+     "squad": 97,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "riku_x#21": 26,
+     "sora_w#12": 1,
+     "ryan_m#13": 70
+    },
+    "B0": 6235,
+    "B1": 179218,
+    "L0": 2375,
+    "L1": 4759
+   },
+   "zero_7": {
+    "ticks": 133,
+    "target": 101,
+    "neutral": 19,
+    "noai": 0,
+    "frozen": 12,
+    "frozenWould": 8,
+    "other": 1,
+    "frozenBy": {
+     "squad": 12,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "ryan_m#13": 12
+    },
+    "B0": 6452,
+    "B1": 93789,
+    "L0": 2339,
+    "L1": 5450
+   },
+   "leo_tx": {
+    "ticks": 180,
+    "target": 66,
+    "neutral": 21,
+    "noai": 0,
+    "frozen": 88,
+    "frozenWould": 72,
+    "other": 5,
+    "frozenBy": {
+     "squad": 87,
+     "mate": 0,
+     "enemy": 1,
+     "ai": 0
+    },
+    "binders": {
+     "noah88#15": 79,
+     "kaito9#20": 8,
+     "Dhrishiv#63": 1
+    },
+    "B0": 4356,
+    "B1": 81758,
+    "L0": 2750,
+    "L1": 2179
+   },
+   "riku_x": {
+    "ticks": 180,
+    "target": 31,
+    "neutral": 47,
+    "noai": 0,
+    "frozen": 102,
+    "frozenWould": 102,
+    "other": 0,
+    "frozenBy": {
+     "squad": 102,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "zexos1#14": 70,
+     "sora_w#12": 32
+    },
+    "B0": 4736,
+    "B1": 190508,
+    "L0": 2147,
+    "L1": 3442
+   }
+  }
+ },
+ "coreDecisionTicks": {
+  "from": 1500,
+  "classes": {
+   "sent": "buyLand 发了令",
+   "slotTaken": "同一拍前面已有指令被受理（每拍只收 1 条）",
+   "noOffer": "没有任何陆上邻居（被围）",
+   "blocked": "走到 send 被 Policy.send 守卫或适配层拒掉",
+   "frozenSF": "只把 safeFinite 当 0 就会出手",
+   "frozenKeep": "把整个 safeAt 当 0 才会出手（对真人邻居的留底）",
+   "pricedHigh": "最便宜的报价 ≥ worth 且没过软上限（L5359 break）",
+   "pulseWait": "有报价进了循环，但对它已有在途兵",
+   "pricedOther": "其余不出手"
+  },
+  "team": {
+   "ticks": 4693,
+   "sent": 586,
+   "slotTaken": 54,
+   "noOffer": 1535,
+   "blocked": 25,
+   "frozenSF": 60,
+   "frozenKeep": 209,
+   "pricedHigh": 1775,
+   "pulseWait": 143,
+   "pricedOther": 306,
+   "frozenSFBy": {
+    "squad": 57,
+    "mate": 3,
+    "enemy": 0,
+    "ai": 0
+   },
+   "frozenSFBotTarget": 59,
+   "frozenSFPersonTarget": 1,
+   "frozenSFBalTicks": 11444208,
+   "frozenKeepBalTicks": 111767224,
+   "noOfferBalTicks": 366108328,
+   "pricedHighBalTicks": 641082512
+  },
+  "perBot": {
+   "alex_k": {
+    "ticks": 612,
+    "sent": 86,
+    "slotTaken": 8,
+    "noOffer": 0,
+    "blocked": 17,
+    "frozenSF": 40,
+    "frozenKeep": 39,
+    "pricedHigh": 235,
+    "pulseWait": 26,
+    "pricedOther": 161,
+    "t0": 1500,
+    "t1": 4555,
+    "binders": {
+     "kaito9#20": 40
+    },
+    "safeFiniteSpans": [
+     {
+      "t0": 1515,
+      "t1": 1585,
+      "n": 15,
+      "B0": 158392,
+      "B1": 183874,
+      "L0": 8587,
+      "target": "AI85",
+      "person": 0,
+      "c": 3.24,
+      "need": 2778,
+      "x": 3854,
+      "sb0": 222831,
+      "binder": "kaito9#20",
+      "binders": {
+       "kaito9#20": 15
+      }
+     },
+     {
+      "t0": 1600,
+      "t1": 1690,
+      "n": 19,
+      "B0": 194863,
+      "B1": 223997,
+      "L0": 8448,
+      "target": "AI337",
+      "person": 0,
+      "c": 3.22,
+      "need": 3542,
+      "x": 4614,
+      "sb0": 275797,
+      "binder": "kaito9#20",
+      "binders": {
+       "kaito9#20": 19
+      }
+     },
+     {
+      "t0": 1705,
+      "t1": 1730,
+      "n": 6,
+      "B0": 217870,
+      "B1": 222818,
+      "L0": 8215,
+      "target": "AI85",
+      "person": 0,
+      "c": 3.6,
+      "need": 3006,
+      "x": 4148,
+      "sb0": 326268,
+      "binder": "kaito9#20",
+      "binders": {
+       "kaito9#20": 6
+      }
+     }
+    ],
+    "keepSpans": [
+     {
+      "t0": 3340,
+      "t1": 3435,
+      "n": 20,
+      "B0": 597820,
+      "B1": 663158,
+      "L0": 11687,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c": 25.07,
+      "need": 345400,
+      "x": 125646
+     },
+     {
+      "t0": 3455,
+      "t1": 3500,
+      "n": 10,
+      "B0": 601911,
+      "B1": 698579,
+      "L0": 11616,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c": 23.94,
+      "need": 330754,
+      "x": 135414
+     }
+    ],
+    "boxedSpans": [],
+    "pricedHighSpans": [
+     {
+      "t0": 2335,
+      "t1": 2435,
+      "n": 21,
+      "B0": 6446,
+      "B1": 412914,
+      "L0": 13800,
+      "target": "ZxZxZ#59",
+      "person": 1,
+      "c0": 43.6,
+      "w0": 0.5,
+      "c1": 32.91,
+      "w1": 32.56,
+      "target1": "ZxZxZ#59"
+     },
+     {
+      "t0": 2630,
+      "t1": 3010,
+      "n": 77,
+      "B0": 152136,
+      "B1": 407639,
+      "L0": 12379,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c0": 32.16,
+      "w0": 22.14,
+      "c1": 31.11,
+      "w1": 30.15,
+      "target1": "УРАРТУ#54"
+     },
+     {
+      "t0": 3630,
+      "t1": 3810,
+      "n": 36,
+      "B0": 719914,
+      "B1": 712117,
+      "L0": 10835,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c0": 67.19,
+      "w0": 59.8,
+      "c1": 69.86,
+      "w1": 68.28,
+      "target1": "УРАРТУ#54"
+     },
+     {
+      "t0": 3970,
+      "t1": 4130,
+      "n": 33,
+      "B0": 653358,
+      "B1": 500871,
+      "L0": 7987,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c0": 81.4,
+      "w0": 73.62,
+      "c1": 78.47,
+      "w1": 78.18,
+      "target1": "УРАРТУ#54"
+     },
+     {
+      "t0": 4355,
+      "t1": 4555,
+      "n": 41,
+      "B0": 302295,
+      "B1": 117755,
+      "L0": 4631,
+      "target": "УРАРТУ#54",
+      "person": 0,
+      "c0": 60.75,
+      "w0": 58.75,
+      "c1": 63.93,
+      "w1": 44.6,
+      "target1": "УРАРТУ#54"
+     }
+    ]
+   },
+   "noah88": {
+    "ticks": 648,
+    "sent": 142,
+    "slotTaken": 8,
+    "noOffer": 140,
+    "blocked": 0,
+    "frozenSF": 0,
+    "frozenKeep": 1,
+    "pricedHigh": 246,
+    "pulseWait": 51,
+    "pricedOther": 60,
+    "t0": 1500,
+    "t1": 4735,
+    "binders": {},
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 2245,
+      "t1": 2940,
+      "n": 140,
+      "B0": 11765,
+      "B1": 899617,
+      "L0": 4467
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 3635,
+      "t1": 3850,
+      "n": 44,
+      "B0": 759789,
+      "B1": 441336,
+      "L0": 8257,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 129.91,
+      "w0": 82.82,
+      "c1": 118.76,
+      "w1": 54.92,
+      "target1": "M[OG]GER#10"
+     },
+     {
+      "t0": 3865,
+      "t1": 4235,
+      "n": 75,
+      "B0": 446411,
+      "B1": 717322,
+      "L0": 7233,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 78.39,
+      "w0": 55.55,
+      "c1": 162.51,
+      "w1": 89.26,
+      "target1": "Prest#6"
+     },
+     {
+      "t0": 4265,
+      "t1": 4735,
+      "n": 95,
+      "B0": 665313,
+      "B1": 72712,
+      "L0": 7233,
+      "target": "Prest#6",
+      "person": 1,
+      "c0": 93.1,
+      "w0": 82.78,
+      "c1": 203.12,
+      "w1": 39.53,
+      "target1": "M[OG]GER#10"
+     }
+    ]
+   },
+   "ryan_m": {
+    "ticks": 289,
+    "sent": 0,
+    "slotTaken": 0,
+    "noOffer": 257,
+    "blocked": 0,
+    "frozenSF": 0,
+    "frozenKeep": 0,
+    "pricedHigh": 32,
+    "pulseWait": 0,
+    "pricedOther": 0,
+    "t0": 1500,
+    "t1": 2940,
+    "binders": {},
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 1500,
+      "t1": 2780,
+      "n": 257,
+      "B0": 211962,
+      "B1": 13497,
+      "L0": 2977
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 2785,
+      "t1": 2940,
+      "n": 32,
+      "B0": 13497,
+      "B1": 2503,
+      "L0": 2977,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 233.4,
+      "w0": 21.07,
+      "c1": 39.55,
+      "w1": 22.84,
+      "target1": "Laurelin#55"
+     }
+    ]
+   },
+   "talon5": {
+    "ticks": 710,
+    "sent": 79,
+    "slotTaken": 12,
+    "noOffer": 247,
+    "blocked": 5,
+    "frozenSF": 1,
+    "frozenKeep": 50,
+    "pricedHigh": 260,
+    "pulseWait": 14,
+    "pricedOther": 42,
+    "t0": 1500,
+    "t1": 5045,
+    "binders": {
+     "zexos1#14": 1
+    },
+    "safeFiniteSpans": [],
+    "keepSpans": [
+     {
+      "t0": 2145,
+      "t1": 2315,
+      "n": 35,
+      "B0": 12968,
+      "B1": 48065,
+      "L0": 7996,
+      "target": "𝐈𝐂𝐀𝐑𝐔#3",
+      "person": 1,
+      "c": 0.01,
+      "need": 593721,
+      "x": 12817
+     },
+     {
+      "t0": 2990,
+      "t1": 3065,
+      "n": 15,
+      "B0": 134496,
+      "B1": 150167,
+      "L0": 4461,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 23.29,
+      "need": 1075537,
+      "x": 8922
+     }
+    ],
+    "boxedSpans": [
+     {
+      "t0": 2415,
+      "t1": 2930,
+      "n": 104,
+      "B0": 54168,
+      "B1": 125805,
+      "L0": 4461
+     },
+     {
+      "t0": 3100,
+      "t1": 3810,
+      "n": 143,
+      "B0": 161466,
+      "B1": 167794,
+      "L0": 4461
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 1895,
+      "t1": 2140,
+      "n": 50,
+      "B0": 194747,
+      "B1": 13735,
+      "L0": 5590,
+      "target": "𝐈𝐂𝐀𝐑𝐔#3",
+      "person": 1,
+      "c0": 50.88,
+      "w0": 50.19,
+      "c1": 12.09,
+      "w1": 2.12,
+      "target1": "𝐈𝐂𝐀𝐑𝐔#3"
+     },
+     {
+      "t0": 3815,
+      "t1": 4585,
+      "n": 155,
+      "B0": 167794,
+      "B1": 444391,
+      "L0": 4461,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 443.86,
+      "w0": 33.85,
+      "c1": 595.79,
+      "w1": 89.66,
+      "target1": "M[OG]GER#10"
+     }
+    ]
+   },
+   "sora_w": {
+    "ticks": 660,
+    "sent": 123,
+    "slotTaken": 9,
+    "noOffer": 60,
+    "blocked": 3,
+    "frozenSF": 3,
+    "frozenKeep": 22,
+    "pricedHigh": 415,
+    "pulseWait": 0,
+    "pricedOther": 25,
+    "t0": 1500,
+    "t1": 4795,
+    "binders": {
+     "Madros#53": 3
+    },
+    "safeFiniteSpans": [],
+    "keepSpans": [
+     {
+      "t0": 2990,
+      "t1": 3065,
+      "n": 14,
+      "B0": 139792,
+      "B1": 156097,
+      "L0": 4653,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 23.3,
+      "need": 1075537,
+      "x": 9297
+     }
+    ],
+    "boxedSpans": [
+     {
+      "t0": 4125,
+      "t1": 4380,
+      "n": 52,
+      "B0": 1,
+      "B1": 177611,
+      "L0": 4420
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 2105,
+      "t1": 2985,
+      "n": 177,
+      "B0": 6907,
+      "B1": 138244,
+      "L0": 4670,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 52.77,
+      "w0": 1.94,
+      "c1": 27.1,
+      "w1": 27.05,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 3165,
+      "t1": 3545,
+      "n": 77,
+      "B0": 179457,
+      "B1": 297165,
+      "L0": 4653,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 62.92,
+      "w0": 34.71,
+      "c1": 77.79,
+      "w1": 57.48,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 3570,
+      "t1": 3665,
+      "n": 20,
+      "B0": 307261,
+      "B1": 304483,
+      "L0": 4653,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 258.33,
+      "w0": 59.43,
+      "c1": 130.45,
+      "w1": 63.57,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 3710,
+      "t1": 3985,
+      "n": 56,
+      "B0": 289982,
+      "B1": 400987,
+      "L0": 4011,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 67.07,
+      "w0": 65.07,
+      "c1": 240.87,
+      "w1": 89.97,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 4395,
+      "t1": 4740,
+      "n": 70,
+      "B0": 179600,
+      "B1": 264230,
+      "L0": 4700,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c0": 216.09,
+      "w0": 34.39,
+      "c1": 97.92,
+      "w1": 84.09,
+      "target1": "My Staffer#42"
+     }
+    ]
+   },
+   "zexos1": {
+    "ticks": 719,
+    "sent": 119,
+    "slotTaken": 8,
+    "noOffer": 122,
+    "blocked": 0,
+    "frozenSF": 14,
+    "frozenKeep": 68,
+    "pricedHigh": 324,
+    "pulseWait": 51,
+    "pricedOther": 13,
+    "t0": 1500,
+    "t1": 5090,
+    "binders": {
+     "talon5#19": 1,
+     "riku_x#21": 13
+    },
+    "safeFiniteSpans": [
+     {
+      "t0": 1500,
+      "t1": 1570,
+      "n": 14,
+      "B0": 188116,
+      "B1": 215983,
+      "L0": 4759,
+      "target": "AI326",
+      "person": 0,
+      "c": 4.06,
+      "need": 2080,
+      "x": 2714,
+      "sb0": 230823,
+      "binder": "talon5#19",
+      "binders": {
+       "talon5#19": 1,
+       "riku_x#21": 13
+      }
+     }
+    ],
+    "keepSpans": [
+     {
+      "t0": 3620,
+      "t1": 3645,
+      "n": 6,
+      "B0": 849230,
+      "B1": 869905,
+      "L0": 12168,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 51.73,
+      "need": 1335614,
+      "x": 66243
+     },
+     {
+      "t0": 4035,
+      "t1": 4215,
+      "n": 37,
+      "B0": 1126428,
+      "B1": 1505598,
+      "L0": 13952,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 0.47,
+      "need": 32523,
+      "x": 90114
+     },
+     {
+      "t0": 4450,
+      "t1": 4490,
+      "n": 9,
+      "B0": 1012809,
+      "B1": 1063145,
+      "L0": 13993,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c": 55.19,
+      "need": 5164548,
+      "x": 67669
+     },
+     {
+      "t0": 4930,
+      "t1": 4985,
+      "n": 12,
+      "B0": 503481,
+      "B1": 533629,
+      "L0": 8932,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c": 36.71,
+      "need": 7947212,
+      "x": 60417
+     }
+    ],
+    "boxedSpans": [
+     {
+      "t0": 2260,
+      "t1": 2865,
+      "n": 122,
+      "B0": 11172,
+      "B1": 801732,
+      "L0": 7166
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 3165,
+      "t1": 3490,
+      "n": 66,
+      "B0": 455809,
+      "B1": 807345,
+      "L0": 12032,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 67.13,
+      "w0": 34.09,
+      "c1": 72.47,
+      "w1": 61.89,
+      "target1": "M[OG]GER#10"
+     },
+     {
+      "t0": 3685,
+      "t1": 3850,
+      "n": 34,
+      "B0": 912777,
+      "B1": 880792,
+      "L0": 12168,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 73.96,
+      "w0": 67.51,
+      "c1": 91.93,
+      "w1": 56.82,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 3865,
+      "t1": 4015,
+      "n": 31,
+      "B0": 891537,
+      "B1": 1099439,
+      "L0": 13952,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 78.62,
+      "w0": 57.51,
+      "c1": 116.14,
+      "w1": 70.92,
+      "target1": "M[OG]GER#10"
+     },
+     {
+      "t0": 4240,
+      "t1": 4445,
+      "n": 42,
+      "B0": 947659,
+      "B1": 1000602,
+      "L0": 13952,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 639.05,
+      "w0": 61.13,
+      "c1": 97.96,
+      "w1": 64.36,
+      "target1": "My Staffer#42"
+     },
+     {
+      "t0": 4495,
+      "t1": 4680,
+      "n": 38,
+      "B0": 1063145,
+      "B1": 1371421,
+      "L0": 13993,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c0": 76.98,
+      "w0": 68.38,
+      "c1": 97.96,
+      "w1": 88.21,
+      "target1": "My Staffer#42"
+     },
+     {
+      "t0": 4705,
+      "t1": 4925,
+      "n": 44,
+      "B0": 1130571,
+      "B1": 508029,
+      "L0": 14092,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c0": 74.63,
+      "w0": 72.21,
+      "c1": 62.84,
+      "w1": 51.19,
+      "target1": "My Staffer#42"
+     }
+    ]
+   },
+   "leo_tx": {
+    "ticks": 406,
+    "sent": 0,
+    "slotTaken": 3,
+    "noOffer": 284,
+    "blocked": 0,
+    "frozenSF": 0,
+    "frozenKeep": 0,
+    "pricedHigh": 119,
+    "pulseWait": 0,
+    "pricedOther": 0,
+    "t0": 1500,
+    "t1": 3525,
+    "binders": {},
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 1515,
+      "t1": 2930,
+      "n": 284,
+      "B0": 87781,
+      "B1": 20910,
+      "L0": 2179
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 2935,
+      "t1": 3525,
+      "n": 119,
+      "B0": 20910,
+      "B1": 5846,
+      "L0": 2179,
+      "target": "M[OG]GER#10",
+      "person": 1,
+      "c0": 201.33,
+      "w0": 22.56,
+      "c1": 81.48,
+      "w1": 32.05,
+      "target1": "M[OG]GER#10"
+     }
+    ]
+   },
+   "riku_x": {
+    "ticks": 649,
+    "sent": 37,
+    "slotTaken": 6,
+    "noOffer": 425,
+    "blocked": 0,
+    "frozenSF": 2,
+    "frozenKeep": 29,
+    "pricedHigh": 144,
+    "pulseWait": 1,
+    "pricedOther": 5,
+    "t0": 1500,
+    "t1": 4740,
+    "binders": {
+     "sora_w#12": 2
+    },
+    "safeFiniteSpans": [],
+    "keepSpans": [
+     {
+      "t0": 2885,
+      "t1": 2940,
+      "n": 12,
+      "B0": 257391,
+      "B1": 278446,
+      "L0": 3442,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 51.15,
+      "need": 821221,
+      "x": 27832
+     },
+     {
+      "t0": 2985,
+      "t1": 3065,
+      "n": 17,
+      "B0": 290899,
+      "B1": 321176,
+      "L0": 3442,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c": 27.19,
+      "need": 1062505,
+      "x": 34907
+     }
+    ],
+    "boxedSpans": [
+     {
+      "t0": 1685,
+      "t1": 2835,
+      "n": 231,
+      "B0": 287958,
+      "B1": 43301,
+      "L0": 3442
+     },
+     {
+      "t0": 3095,
+      "t1": 3600,
+      "n": 102,
+      "B0": 266119,
+      "B1": 116011,
+      "L0": 3443
+     },
+     {
+      "t0": 4040,
+      "t1": 4495,
+      "n": 92,
+      "B0": 164221,
+      "B1": 61529,
+      "L0": 2939
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 3715,
+      "t1": 4015,
+      "n": 61,
+      "B0": 144680,
+      "B1": 210848,
+      "L0": 2939,
+      "target": "Laurelin#55",
+      "person": 1,
+      "c0": 68.18,
+      "w0": 44.3,
+      "c1": 514.43,
+      "w1": 64.57,
+      "target1": "Laurelin#55"
+     },
+     {
+      "t0": 4500,
+      "t1": 4740,
+      "n": 49,
+      "B0": 65146,
+      "B1": 12187,
+      "L0": 2941,
+      "target": "My Staffer#42",
+      "person": 1,
+      "c0": 243.92,
+      "w0": 28.96,
+      "c1": 63.28,
+      "w1": 37.66,
+      "target1": "My Staffer#42"
+     }
+    ]
+   }
+  }
+ },
+ "drop30": {
+  "count": 32,
+  "countInCard": 32,
+  "byMainCause": {
+   "攻中立": 1,
+   "攻真人": 12,
+   "攻AI": 2,
+   "挨打": 7,
+   "捐款": 10
+  },
+  "list": [
+   {
+    "bot": "alex_k",
+    "t0": 990,
+    "t1": 1080,
+    "bal0": 25969,
+    "bal1": 17296,
+    "dropPct": 33.4,
+    "main": "攻中立",
+    "parts": {
+     "攻中立": 20645,
+     "攻AI": 4012,
+     "挨打": 339
+    },
+    "cmds": 8,
+    "tilesGained": 832,
+    "burnt": 2006,
+    "target": ""
+   },
+   {
+    "bot": "alex_k",
+    "t0": 2250,
+    "t1": 2340,
+    "bal0": 410783,
+    "bal1": 6490,
+    "dropPct": 98.4,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 470972,
+     "挨打": 14382
+    },
+    "cmds": 9,
+    "tilesGained": 1232,
+    "burnt": 67506,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "alex_k",
+    "t0": 2610,
+    "t1": 2700,
+    "bal0": 378187,
+    "bal1": 113417,
+    "dropPct": 70.0,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 278569,
+     "挨打": 15766
+    },
+    "cmds": 11,
+    "tilesGained": 2715,
+    "burnt": 81704,
+    "target": "对 ZxZxZ#59T2"
+   },
+   {
+    "bot": "alex_k",
+    "t0": 4230,
+    "t1": 4320,
+    "bal0": 669757,
+    "bal1": 407634,
+    "dropPct": 39.1,
+    "main": "攻AI",
+    "parts": {
+     "攻AI": 224747,
+     "攻真人": 53006,
+     "挨打": 128475
+    },
+    "cmds": 2,
+    "tilesGained": 969,
+    "burnt": 148285,
+    "target": ""
+   },
+   {
+    "bot": "alex_k",
+    "t0": 4410,
+    "t1": 4500,
+    "bal0": 292622,
+    "bal1": 178470,
+    "dropPct": 39.0,
+    "main": "挨打",
+    "parts": {
+     "挨打": 139164
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 [Kilr] Prest#6T2,УРАРТУ#54T2*"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 2250,
+    "t1": 2340,
+    "bal0": 256928,
+    "bal1": 26303,
+    "dropPct": 89.8,
+    "main": "捐款",
+    "parts": {
+     "捐款": 243743
+    },
+    "cmds": 5,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 noah88,sora_w"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 2430,
+    "t1": 2520,
+    "bal0": 31192,
+    "bal1": 6661,
+    "dropPct": 78.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 26113,
+     "发船": 1574
+    },
+    "cmds": 8,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1,sora_w"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 3420,
+    "t1": 3510,
+    "bal0": 40550,
+    "bal1": 8315,
+    "dropPct": 79.5,
+    "main": "挨打",
+    "parts": {
+     "挨打": 34916
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 M[OG]GER#10T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 2070,
+    "t1": 2160,
+    "bal0": 445872,
+    "bal1": 7117,
+    "dropPct": 98.4,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 453359
+    },
+    "cmds": 9,
+    "tilesGained": 74,
+    "burnt": 5640,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 2970,
+    "t1": 3060,
+    "bal0": 814059,
+    "bal1": 562709,
+    "dropPct": 30.9,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 390322,
+     "挨打": 6150
+    },
+    "cmds": 4,
+    "tilesGained": 682,
+    "burnt": 114520,
+    "target": "对 [OG] Laureli#55T2,M[OG]GER#10T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 3600,
+    "t1": 3690,
+    "bal0": 819590,
+    "bal1": 473372,
+    "dropPct": 42.2,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 384790,
+     "挨打": 26805
+    },
+    "cmds": 5,
+    "tilesGained": 616,
+    "burnt": 344406,
+    "target": "对 M[OG]GER#10T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 4230,
+    "t1": 4320,
+    "bal0": 717322,
+    "bal1": 449361,
+    "dropPct": 37.4,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 333792
+    },
+    "cmds": 5,
+    "tilesGained": 1019,
+    "burnt": 298354,
+    "target": "对 [Kilr] Prest#6T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 4500,
+    "t1": 4590,
+    "bal0": 355277,
+    "bal1": 235764,
+    "dropPct": 33.6,
+    "main": "挨打",
+    "parts": {
+     "挨打": 146671
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 M[OG]GER#10T2"
+   },
+   {
+    "bot": "noah88",
+    "t0": 4590,
+    "t1": 4680,
+    "bal0": 235764,
+    "bal1": 142796,
+    "dropPct": 39.4,
+    "main": "挨打",
+    "parts": {
+     "挨打": 117805
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 M[OG]GER#10T2"
+   },
+   {
+    "bot": "riku_x",
+    "t0": 2700,
+    "t1": 2790,
+    "bal0": 482438,
+    "bal1": 38044,
+    "dropPct": 92.1,
+    "main": "捐款",
+    "parts": {
+     "捐款": 373905,
+     "发船": 76575
+    },
+    "cmds": 8,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1,sora_w"
+   },
+   {
+    "bot": "riku_x",
+    "t0": 3060,
+    "t1": 3150,
+    "bal0": 321176,
+    "bal1": 141327,
+    "dropPct": 56.0,
+    "main": "捐款",
+    "parts": {
+     "攻真人": 65527,
+     "捐款": 199797
+    },
+    "cmds": 5,
+    "tilesGained": 1,
+    "burnt": 84,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "riku_x",
+    "t0": 4050,
+    "t1": 4140,
+    "bal0": 144140,
+    "bal1": 88880,
+    "dropPct": 38.3,
+    "main": "捐款",
+    "parts": {
+     "捐款": 140570
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1,alex_k"
+   },
+   {
+    "bot": "riku_x",
+    "t0": 4410,
+    "t1": 4500,
+    "bal0": 129399,
+    "bal1": 65146,
+    "dropPct": 49.7,
+    "main": "捐款",
+    "parts": {
+     "捐款": 74981
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 sora_w"
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2160,
+    "t1": 2250,
+    "bal0": 423737,
+    "bal1": 185222,
+    "dropPct": 56.3,
+    "main": "捐款",
+    "parts": {
+     "捐款": 258730
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 alex_k"
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2250,
+    "t1": 2340,
+    "bal0": 185222,
+    "bal1": 11102,
+    "dropPct": 94.0,
+    "main": "捐款",
+    "parts": {
+     "捐款": 188071
+    },
+    "cmds": 6,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 noah88,sora_w"
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2430,
+    "t1": 2520,
+    "bal0": 15322,
+    "bal1": 4995,
+    "dropPct": 67.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 14001
+    },
+    "cmds": 5,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 sora_w,noah88"
+   },
+   {
+    "bot": "sora_w",
+    "t0": 2070,
+    "t1": 2160,
+    "bal0": 537449,
+    "bal1": 7387,
+    "dropPct": 98.6,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 547721
+    },
+    "cmds": 9,
+    "tilesGained": 1051,
+    "burnt": 102592,
+    "target": "对 [OG] Laureli#55T2"
+   },
+   {
+    "bot": "sora_w",
+    "t0": 4050,
+    "t1": 4140,
+    "bal0": 309685,
+    "bal1": 3,
+    "dropPct": 100.0,
+    "main": "攻AI",
+    "parts": {
+     "攻AI": 329382
+    },
+    "cmds": 4,
+    "tilesGained": 312,
+    "burnt": 9686,
+    "target": ""
+   },
+   {
+    "bot": "talon5",
+    "t0": 1800,
+    "t1": 1890,
+    "bal0": 412786,
+    "bal1": 194747,
+    "dropPct": 52.8,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 256864
+    },
+    "cmds": 2,
+    "tilesGained": 512,
+    "burnt": 44788,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "talon5",
+    "t0": 1980,
+    "t1": 2070,
+    "bal0": 222137,
+    "bal1": 7010,
+    "dropPct": 96.8,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 236356
+    },
+    "cmds": 9,
+    "tilesGained": 1582,
+    "burnt": 160470,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "talon5",
+    "t0": 3330,
+    "t1": 3420,
+    "bal0": 218364,
+    "bal1": 139066,
+    "dropPct": 36.3,
+    "main": "捐款",
+    "parts": {
+     "捐款": 104524
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 4950,
+    "t1": 5040,
+    "bal0": 379947,
+    "bal1": 50096,
+    "dropPct": 86.8,
+    "main": "挨打",
+    "parts": {
+     "挨打": 353368
+    },
+    "cmds": 0,
+    "tilesGained": 666,
+    "burnt": 91620,
+    "target": "被 M[OG]GER#10T2"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 2070,
+    "t1": 2160,
+    "bal0": 462986,
+    "bal1": 44058,
+    "dropPct": 90.5,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 446727
+    },
+    "cmds": 8,
+    "tilesGained": 1189,
+    "burnt": 99378,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 2160,
+    "t1": 2250,
+    "bal0": 44058,
+    "bal1": 11045,
+    "dropPct": 74.9,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 49159
+    },
+    "cmds": 8,
+    "tilesGained": 1219,
+    "burnt": 82824,
+    "target": "对 [OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 2970,
+    "t1": 3060,
+    "bal0": 577803,
+    "bal1": 369711,
+    "dropPct": 36.0,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 263413
+    },
+    "cmds": 4,
+    "tilesGained": 1022,
+    "burnt": 84420,
+    "target": "对 [OG] Laureli#55T2"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 4860,
+    "t1": 4950,
+    "bal0": 1277130,
+    "bal1": 515330,
+    "dropPct": 59.6,
+    "main": "挨打",
+    "parts": {
+     "挨打": 858895
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 [UN] My Staf#42T2"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 4950,
+    "t1": 5040,
+    "bal0": 515330,
+    "bal1": 293203,
+    "dropPct": 43.1,
+    "main": "挨打",
+    "parts": {
+     "挨打": 282650
+    },
+    "cmds": 0,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "被 [UN] My Staf#42T2"
+   }
+  ]
+ },
+ "squadLedger": {
+  "perBot": {
+   "sora_w": {
+    "inc": 1256012,
+    "burnN": 7700,
+    "burnAI": 21460,
+    "burnH": 538176,
+    "netH": 0,
+    "atkFee": 49143,
+    "defBal": 378540,
+    "defSlot": 0,
+    "donOut": 238233,
+    "donTax": 44274,
+    "donIn": 342392,
+    "donOutNonSquad": 0,
+    "boatOut": 40737,
+    "boatFee": 10184,
+    "boatToMate": 26239,
+    "balEnd": 126066,
+    "outEnd": 24365,
+    "lostTiles": 9207,
+    "lostBurn": 1171887,
+    "tilesN": 3850,
+    "tilesAI": 1644,
+    "tilesH": 4971,
+    "end": 4796,
+    "husk": false
+   },
+   "ryan_m": {
+    "inc": 490583,
+    "burnN": 5002,
+    "burnAI": 3424,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 568,
+    "defBal": 18796,
+    "defSlot": 0,
+    "donOut": 384305,
+    "donTax": 76497,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 2503,
+    "outEnd": 0,
+    "lostTiles": 2295,
+    "lostBurn": 40808,
+    "tilesN": 2501,
+    "tilesAI": 661,
+    "tilesH": 0,
+    "end": 2941,
+    "husk": false
+   },
+   "zexos1": {
+    "inc": 3396100,
+    "burnN": 7646,
+    "burnAI": 6116,
+    "burnH": 1209536,
+    "netH": 4875,
+    "atkFee": 182128,
+    "defBal": 1259043,
+    "defSlot": 29,
+    "donOut": 535014,
+    "donTax": 145763,
+    "donIn": 800507,
+    "donOutNonSquad": 0,
+    "boatOut": 473062,
+    "boatFee": 71749,
+    "boatToMate": 317142,
+    "balEnd": 162315,
+    "outEnd": 0,
+    "lostTiles": 13844,
+    "lostBurn": 2853967,
+    "tilesN": 3823,
+    "tilesAI": 1645,
+    "tilesH": 12457,
+    "end": 5092,
+    "husk": false
+   },
+   "noah88": {
+    "inc": 2125639,
+    "burnN": 8870,
+    "burnAI": 1258,
+    "burnH": 789122,
+    "netH": 397999,
+    "atkFee": 194772,
+    "defBal": 836128,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 204279,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 78958,
+    "outEnd": 0,
+    "lostTiles": 9202,
+    "lostBurn": 1730207,
+    "tilesN": 4435,
+    "tilesAI": 539,
+    "tilesH": 6584,
+    "end": 4738,
+    "husk": false
+   },
+   "alex_k": {
+    "inc": 1997335,
+    "burnN": 16122,
+    "burnAI": 232668,
+    "burnH": 405282,
+    "netH": 27303,
+    "atkFee": 152172,
+    "defBal": 1701643,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 710281,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 130114,
+    "outEnd": 0,
+    "lostTiles": 20742,
+    "lostBurn": 3490137,
+    "tilesN": 8061,
+    "tilesAI": 7842,
+    "tilesH": 8899,
+    "end": 4558,
+    "husk": false
+   },
+   "leo_tx": {
+    "inc": 353734,
+    "burnN": 5730,
+    "burnAI": 2076,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 3848,
+    "defBal": 62723,
+    "defSlot": 0,
+    "donOut": 225000,
+    "donTax": 44856,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 222,
+    "boatFee": 1352,
+    "boatToMate": 0,
+    "balEnd": 6666,
+    "outEnd": 0,
+    "lostTiles": 2998,
+    "lostBurn": 138059,
+    "tilesN": 2865,
+    "tilesAI": 623,
+    "tilesH": 0,
+    "end": 3525,
+    "husk": false
+   },
+   "zero_7": {
+    "inc": 312152,
+    "burnN": 5994,
+    "burnAI": 10900,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 7958,
+    "defBal": 3687,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 284125,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 2997,
+    "tilesAI": 2779,
+    "tilesH": 0,
+    "end": 1736,
+    "husk": true
+   },
+   "talon5": {
+    "inc": 1324059,
+    "burnN": 7502,
+    "burnAI": 4011,
+    "burnH": 585813,
+    "netH": 0,
+    "atkFee": 44559,
+    "defBal": 379204,
+    "defSlot": 0,
+    "donOut": 226329,
+    "donTax": 58697,
+    "donIn": 31640,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 50096,
+    "outEnd": 0,
+    "lostTiles": 9506,
+    "lostBurn": 788994,
+    "tilesN": 3751,
+    "tilesAI": 1492,
+    "tilesH": 5765,
+    "end": 5046,
+    "husk": false
+   },
+   "kaito9": {
+    "inc": 525030,
+    "burnN": 10386,
+    "burnAI": 4676,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 21883,
+    "defBal": 0,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "balEnd": 488597,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 5193,
+    "tilesAI": 1381,
+    "tilesH": 0,
+    "end": 1960,
+    "husk": true
+   },
+   "riku_x": {
+    "inc": 930600,
+    "burnN": 6126,
+    "burnAI": 1338,
+    "burnH": 84,
+    "netH": 0,
+    "atkFee": 19959,
+    "defBal": 113055,
+    "defSlot": 0,
+    "donOut": 779855,
+    "donTax": 158869,
+    "donIn": 299637,
+    "donOutNonSquad": 0,
+    "boatOut": 74282,
+    "boatFee": 64994,
+    "boatToMate": 30377,
+    "balEnd": 12187,
+    "outEnd": 0,
+    "lostTiles": 2751,
+    "lostBurn": 234604,
+    "tilesN": 3063,
+    "tilesAI": 499,
+    "tilesH": 1,
+    "end": 4743,
+    "husk": false
+   }
+  },
+  "total": {
+   "inc": 12711244,
+   "burnN": 81078,
+   "burnAI": 287927,
+   "burnH": 3528013,
+   "netH": 430177,
+   "atkFee": 676990,
+   "defBal": 4752819,
+   "defSlot": 29,
+   "donOut": 2388736,
+   "donTax": 528956,
+   "donIn": 2388736,
+   "donOutNonSquad": 0,
+   "boatOut": 588303,
+   "boatFee": 148279,
+   "boatToMate": 373758,
+   "balEnd": 1341627,
+   "outEnd": 24365,
+   "lostTiles": 70545,
+   "lostBurn": 10448663,
+   "tilesN": 40539,
+   "tilesAI": 19105,
+   "tilesH": 38677
+  }
+ },
+ "boatHandovers": [
+  {
+   "t": 3116,
+   "bot": "sora_w",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 14895,
+   "got": 14895,
+   "launchT": 2842,
+   "launched": 22892,
+   "fee": 5723,
+   "B0": 183139,
+   "pct": 127
+  },
+  {
+   "t": 3163,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 2186,
+   "got": 2186,
+   "launchT": 2513,
+   "launched": 5952,
+   "fee": 15873,
+   "B0": 507938,
+   "pct": 11
+  },
+  {
+   "t": 3170,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 2064,
+   "got": 2064,
+   "launchT": 2513,
+   "launched": 5696,
+   "fee": 15191,
+   "B0": 486113,
+   "pct": 11
+  },
+  {
+   "t": 3177,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 1963,
+   "got": 1963,
+   "launchT": 2513,
+   "launched": 5451,
+   "fee": 14538,
+   "B0": 465226,
+   "pct": 11
+  },
+  {
+   "t": 3185,
+   "bot": "sora_w",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 11344,
+   "got": 11344,
+   "launchT": 2898,
+   "launched": 17845,
+   "fee": 4461,
+   "B0": 142766,
+   "pct": 127
+  },
+  {
+   "t": 3227,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 14743,
+   "got": 14743,
+   "launchT": 2744,
+   "launched": 31225,
+   "fee": 5677,
+   "B0": 181678,
+   "pct": 175
+  },
+  {
+   "t": 3333,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 6206,
+   "got": 6206,
+   "launchT": 2744,
+   "launched": 15439,
+   "fee": 2823,
+   "B0": 90345,
+   "pct": 174
+  },
+  {
+   "t": 3483,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 981,
+   "got": 981,
+   "launchT": 2744,
+   "launched": 2964,
+   "fee": 9487,
+   "B0": 303590,
+   "pct": 9
+  },
+  {
+   "t": 3536,
+   "bot": "riku_x",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 2234,
+   "got": 2234,
+   "launchT": 2744,
+   "launched": 7555,
+   "fee": 1405,
+   "B0": 44982,
+   "pct": 171
+  },
+  {
+   "t": 4530,
+   "bot": "zexos1",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 176625,
+   "got": 176625,
+   "launchT": 4277,
+   "launched": 263464,
+   "fee": 36816,
+   "B0": 1178113,
+   "pct": 228
+  },
+  {
+   "t": 4596,
+   "bot": "zexos1",
+   "to": "虎#5T1",
+   "toSquad": false,
+   "landed": 140517,
+   "got": 140517,
+   "launchT": 4340,
+   "launched": 209598,
+   "fee": 34933,
+   "B0": 1117859,
+   "pct": 191
+  }
+ ],
+ "donationNetwork": {
+  "byClass": {
+   "队2": {
+    "n": 73,
+    "delivered": 11779011,
+    "tax": 4179890,
+    "toHusk": 1513035,
+    "bands": {
+     "<2142": 8824,
+     "2142~3212": 853368,
+     "3213~4283": 4836494,
+     "≥4284": 6080325
+    }
+   },
+   "本编队": {
+    "n": 50,
+    "delivered": 2388736,
+    "tax": 528956,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 1378413,
+     "3213~4283": 755090,
+     "≥4284": 255233
+    }
+   },
+   "本队路人": {
+    "n": 9,
+    "delivered": 801519,
+    "tax": 310672,
+    "toHusk": 42657,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 42657,
+     "3213~4283": 562380,
+     "≥4284": 196482
+    }
+   }
+  },
+  "topReceivers": [
+   {
+    "who": "[Kilr] Prest#6T2",
+    "left": null,
+    "n": 21,
+    "delivered": 3630095,
+    "t0": 2968,
+    "t1": 5082,
+    "from": [
+     {
+      "who": "[OFF]handed#68T2",
+      "delivered": 1056154
+     },
+     {
+      "who": "Ponce#35T2",
+      "delivered": 940439
+     },
+     {
+      "who": "Device#33T2",
+      "delivered": 828705
+     },
+     {
+      "who": "LANSPAN [OG]#43T2",
+      "delivered": 804797
+     }
+    ]
+   },
+   {
+    "who": "M[OG]GER#10T2",
+    "left": null,
+    "n": 2,
+    "delivered": 2243887,
+    "t0": 4018,
+    "t1": 5313,
+    "from": [
+     {
+      "who": "[OG] Laureli#55T2",
+      "delivered": 1545943
+     },
+     {
+      "who": "Device#33T2",
+      "delivered": 697944
+     }
+    ]
+   },
+   {
+    "who": "[Bloods] 🩸 🩸#56T2",
+    "left": null,
+    "n": 5,
+    "delivered": 1396752,
+    "t0": 2317,
+    "t1": 5593,
+    "from": [
+     {
+      "who": "Device#33T2",
+      "delivered": 833660
+     },
+     {
+      "who": "[cn]的牧羊人#61T2",
+      "delivered": 429143
+     },
+     {
+      "who": "EMR#23T2",
+      "delivered": 75093
+     },
+     {
+      "who": "Ottoman Empi#66T2",
+      "delivered": 58856
+     }
+    ]
+   },
+   {
+    "who": "УРАРТУ#54T2",
+    "left": 1974,
+    "n": 18,
+    "delivered": 1291695,
+    "t0": 3500,
+    "t1": 4410,
+    "from": [
+     {
+      "who": "Ponce#35T2",
+      "delivered": 1291695
+     }
+    ]
+   },
+   {
+    "who": "JinKazama#67T2",
+    "left": null,
+    "n": 7,
+    "delivered": 863557,
+    "t0": 3311,
+    "t1": 4795,
+    "from": [
+     {
+      "who": "Tunis#48T2",
+      "delivered": 573069
+     },
+     {
+      "who": "Lannes#58T2",
+      "delivered": 290488
+     }
+    ]
+   },
+   {
+    "who": "zexos1",
+    "left": null,
+    "n": 11,
+    "delivered": 800507,
+    "t0": 2450,
+    "t1": 4277,
+    "from": [
+     {
+      "who": "riku_x",
+      "delivered": 563298
+     },
+     {
+      "who": "sora_w",
+      "delivered": 135564
+     },
+     {
+      "who": "talon5",
+      "delivered": 89492
+     },
+     {
+      "who": "leo_tx",
+      "delivered": 12153
+     }
+    ]
+   },
+   {
+    "who": "Tunis#48T2",
+    "left": null,
+    "n": 7,
+    "delivered": 789655,
+    "t0": 2919,
+    "t1": 4704,
+    "from": [
+     {
+      "who": "JinKazama#67T2",
+      "delivered": 349649
+     },
+     {
+      "who": "Ainz#49T2",
+      "delivered": 348333
+     },
+     {
+      "who": "Lannes#58T2",
+      "delivered": 91673
+     }
+    ]
+   },
+   {
+    "who": "[OG] Laureli#55T2",
+    "left": 4039,
+    "n": 4,
+    "delivered": 745287,
+    "t0": 3934,
+    "t1": 4088,
+    "from": [
+     {
+      "who": "LANSPAN [OG]#43T2",
+      "delivered": 725877
+     },
+     {
+      "who": "[OG]cyankwas#26T2",
+      "delivered": 19410
+     }
+    ]
+   }
+  ],
+  "toHusks": [
+   {
+    "from": "Ponce#35T2",
+    "to": "УРАРТУ#54T2",
+    "n": 18,
+    "delivered": 1291695,
+    "tax": 1312195,
+    "t0": 3500,
+    "t1": 4410
+   },
+   {
+    "from": "LANSPAN [OG]#43T2",
+    "to": "[OG] Laureli#55T2",
+    "n": 1,
+    "delivered": 201930,
+    "tax": 13462,
+    "t0": 4074,
+    "t1": 4074
+   },
+   {
+    "from": "Guderian#45T1",
+    "to": "Gladiator#51T1",
+    "n": 2,
+    "delivered": 42657,
+    "tax": 48320,
+    "t0": 3045,
+    "t1": 3143
+   },
+   {
+    "from": "[OG]cyankwas#26T2",
+    "to": "[OG] Laureli#55T2",
+    "n": 1,
+    "delivered": 19410,
+    "tax": 23439,
+    "t0": 4088,
+    "t1": 4088
+   }
+  ],
+  "leaveGifts": [
+   {
+    "t": 4018,
+    "from": "[OG] Laureli#55T2",
+    "to": "M[OG]GER#10T2",
+    "got": 1545943,
+    "leftT": 4039
+   },
+   {
+    "t": 4340,
+    "from": "[cn]的牧羊人#61T2",
+    "to": "[Bloods] 🩸 🩸#56T2",
+    "got": 337261,
+    "leftT": 4382
+   }
+  ]
+ },
+ "donationAudit": {
+  "logged": 154,
+  "exec": 50,
+  "quota": 82,
+  "other": 22,
+  "amount": 2388736,
+  "fee": 528956
+ },
+ "dumpBatches": [
+  {
+   "t": 2100,
+   "bot": "sora_w",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 554628,
+   "bal1": 6907,
+   "targets": {
+    "[OG] Laureli#55T2": 9
+   },
+   "pcts": [
+    380,
+    381,
+    381,
+    381,
+    381,
+    381,
+    381,
+    381,
+    391
+   ]
+  },
+  {
+   "t": 2198,
+   "bot": "sora_w",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 7642,
+   "bal1": 221,
+   "targets": {
+    "[OG] Laureli#55T2": 8
+   },
+   "pcts": [
+    347,
+    349,
+    350,
+    352,
+    354,
+    355,
+    363,
+    363
+   ]
+  },
+  {
+   "t": 2303,
+   "bot": "ryan_m",
+   "n": 5,
+   "ok": 5,
+   "dump": true,
+   "bal0": 198610,
+   "bal1": 18796,
+   "targets": {
+    "捐→noah88": 1,
+    "捐→sora_w": 1,
+    "捐→alex_k": 1,
+    "捐→talon5": 2
+   },
+   "pcts": [
+    320,
+    320,
+    320,
+    320,
+    320
+   ]
+  },
+  {
+   "t": 2464,
+   "bot": "ryan_m",
+   "n": 5,
+   "ok": 5,
+   "dump": true,
+   "bal0": 15832,
+   "bal1": 1831,
+   "targets": {
+    "捐→noah88": 1,
+    "捐→sora_w": 4
+   },
+   "pcts": [
+    320,
+    315,
+    299,
+    275,
+    259
+   ]
+  },
+  {
+   "t": 2114,
+   "bot": "zexos1",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 488376,
+   "bal1": 41649,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 8
+   },
+   "pcts": [
+    258,
+    258,
+    258,
+    258,
+    258,
+    258,
+    259,
+    259
+   ]
+  },
+  {
+   "t": 2226,
+   "bot": "zexos1",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 54026,
+   "bal1": 4867,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 8
+   },
+   "pcts": [
+    245,
+    247,
+    255,
+    255,
+    255,
+    256,
+    256,
+    256
+   ]
+  },
+  {
+   "t": 2142,
+   "bot": "noah88",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 460323,
+   "bal1": 6964,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 9
+   },
+   "pcts": [
+    365,
+    365,
+    366,
+    366,
+    366,
+    366,
+    366,
+    366,
+    388
+   ]
+  },
+  {
+   "t": 2289,
+   "bot": "noah88",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 12299,
+   "bal1": 365,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 8
+   },
+   "pcts": [
+    360,
+    360,
+    356,
+    356,
+    348,
+    348,
+    344,
+    344
+   ]
+  },
+  {
+   "t": 2331,
+   "bot": "alex_k",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 477436,
+   "bal1": 6464,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 9
+   },
+   "pcts": [
+    417,
+    421,
+    429,
+    437,
+    433,
+    122,
+    357,
+    358,
+    359
+   ]
+  },
+  {
+   "t": 2310,
+   "bot": "leo_tx",
+   "n": 4,
+   "ok": 4,
+   "dump": true,
+   "bal0": 269221,
+   "bal1": 40826,
+   "targets": {
+    "捐→noah88": 2,
+    "捐→sora_w": 2
+   },
+   "pcts": [
+    320,
+    320,
+    320,
+    320
+   ]
+  },
+  {
+   "t": 2450,
+   "bot": "leo_tx",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 31862,
+   "bal1": 4155,
+   "targets": {
+    "捐→zexos1": 2,
+    "船": 4,
+    "捐→sora_w": 2
+   },
+   "pcts": [
+    320,
+    4,
+    320,
+    4,
+    320,
+    5,
+    320,
+    5
+   ]
+  },
+  {
+   "t": 1288,
+   "bot": "zero_7",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 99528,
+   "bal1": 13977,
+   "targets": {
+    "AI122": 3,
+    "中立": 6
+   },
+   "pcts": [
+    121,
+    123,
+    122,
+    269,
+    260,
+    196,
+    192,
+    197,
+    194
+   ]
+  },
+  {
+   "t": 2030,
+   "bot": "talon5",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 243050,
+   "bal1": 6694,
+   "targets": {
+    "[OG] 𝐈𝐂𝐀𝐑𝐔𝐒#3T2": 9
+   },
+   "pcts": [
+    315,
+    325,
+    325,
+    325,
+    325,
+    325,
+    325,
+    325,
+    326
+   ]
+  },
+  {
+   "t": 2744,
+   "bot": "riku_x",
+   "n": 8,
+   "ok": 8,
+   "dump": true,
+   "bal0": 486502,
+   "bal1": 36022,
+   "targets": {
+    "捐→zexos1": 2,
+    "船": 4,
+    "捐→sora_w": 2
+   },
+   "pcts": [
+    320,
+    9,
+    320,
+    175,
+    320,
+    174,
+    320,
+    171
+   ]
+  },
+  {
+   "t": 2856,
+   "bot": "riku_x",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 44258,
+   "bal1": 321,
+   "targets": {
+    "捐→alex_k": 7,
+    "捐→sora_w": 2
+   },
+   "pcts": [
+    380,
+    380,
+    380,
+    380,
+    380,
+    320,
+    320,
+    380,
+    380
+   ]
+  }
+ ],
+ "scripts": [
+  "scripts/resim.mjs（整局精确重放，traj 逐行核对）",
+  "scripts/shadow.mjs（影子策略：同一份源码在重放状态上逐拍运行，对日志计数器与录像成交）",
+  "scripts/dossier.py（卷宗：各队走势、逐号分段账、DROP30 对账、捐款审计、整局兵力去向总账、全场捐款网络）",
+  "scripts/shadow-digest.py（决策串、执行层延迟、落地错位、isNoFullSend 翻转、未成交就重发的串）",
+  "scripts/freeze-scan.mjs（t<1500：safeFinite 冻结计数与反事实；t≥1500：buyLand 每个决策拍为什么没出手的九类计数）",
+  "scripts/dbg/act-trace.mjs（逐决策拍打印各分支的输入与返回值）",
+  "scripts/mkreview.py（合成本文件并自检）",
+  "node scripts/shadow.mjs A051 --quiet --maps 630,1530,2130,2340,3060 → out/cache/A051-{resim,shadow}.json",
+  "python3 scripts/dossier.py A051 --quiet → out/dossier/A051.txt（[I] 用 traj 全量 DROP30；[L] 整局兵力去向总账；[N] 全场捐款网络）",
+  "python3 scripts/shadow-digest.py A051 --quiet → out/dossier/A051-shadow.txt（[S6] 未成交就重发）",
+  "node scripts/freeze-scan.mjs A051 → out/dossier/A051-freeze.txt（两段；对照：A025）",
+  "node scripts/dbg/act-trace.mjs A051 zexos1 1000 1005 --threat；alex_k 1515 1515 --threat；noah88 2600 2605 --all；noah88 3600 3640；sora_w 4070 4110 → out/trace/",
+  "node scripts/shadow.mjs B033 --quiet（同局另一编队的成交延迟）"
+ ],
+ "confidenceOverall": "事实层高（整局重放 420/420 行与 traj 一致；影子策略 420/420 行 cmds、154/154 条调度、595/595 条成交对上）；归因层中（冻结与延迟的占比、延迟成因未定）"
+}

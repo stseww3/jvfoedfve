@@ -1,0 +1,2644 @@
+{
+ "matchId": "B041",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T05:44:00Z",
+  "squad": "squad20",
+  "bots": 20,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 15,
+  "mapSeed": 12708,
+  "mapLand": 480957,
+  "teams": 6,
+  "humans": 62,
+  "ourTeam": 1,
+  "teamSplitTrue": {
+   "1": 3,
+   "2": 4,
+   "3": 2,
+   "4": 1,
+   "5": 5,
+   "6": 5
+  },
+  "teamSplitSource": "engine-replay(bj.fX)",
+  "teamSplitCard": {
+   "1": 2,
+   "3": 2,
+   "4": 1,
+   "5": 2,
+   "6": 1
+  },
+  "presence": {
+   "silent": 11,
+   "died": 7,
+   "end": 1,
+   "left": 1
+  },
+  "leftTicks": {},
+  "neverPlayed": [],
+  "sameMatchPeer": "A060",
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "真引擎重放（录像 B041）到 t=1155；日志快照指纹 202/202 逐兵一致"
+  },
+  "contamination": [
+   "卡片 ourPrimaryTeam=1、primaryTeamWon=true 是按 9 条带队号的结算行数出来的（队1 2 条）；真实分队取自真引擎重放的队伍表：人数最多的是队5、队6（各 5 个号），两队都输了；赢的队1 里我方只有 3 个号，活到终局 1 个",
+   "录像（本局自己的包）只到 t=1155：引擎真值、影子探针、指令是否生效只覆盖 t<=1155；之后谁打了谁、指令有没有执行都看不到，文中凡涉及 t>1155 的攻击者和代码分支都标了「推断」",
+   "对局包按名字分号：SonHeungMin(8) 的日志名后来变成 Maurya、Mughal，结算行叫 Rossi；Songhai(22) 的 left 结算行叫 Zenitsu。本复盘按「首次出现拍先后、时段不重叠、cmds/boats 计数单调」认号",
+   "left 结算行的 tick=861 是页面被判离开时它本机知道的拍号，不是服务器拍；按结算行的墙上秒数回推，服务器当时在 1,692 拍前后",
+   "内置 AI 里有 17 个名字在编队名字池里；外人 Luffy（队2）的名字也在池里（各号 HL-SPAWN 行的 squad=21 就是 20 个号 + 它）",
+   "同局还有一支 squad10（[APEX] 十人队，全在队4），它的包 A060 属于验证集，没有读"
+  ],
+  "huskDeaths": [],
+  "truthEnd": 1155
+ },
+ "outcome": {
+  "result": "won",
+  "resultLabel": "won",
+  "anyBotWon": true,
+  "ourTeamRank": 1,
+  "winnerTeam": 1,
+  "endTick": 7001,
+  "ourFinalShare": 0.9941,
+  "peakSquadLandShare": 0.1815,
+  "peakPrimaryTeamShareSeen": 0.9941,
+  "note": "卡片记为赢：主队按结算行记成队1（终局 99.4%）。我方在队1 的 3 个号：Zidane 在本机拍 1170 后停摆、Peru t=2388 阵亡、SonHeungMin 活到终局（39,327 格、440 万兵，8 个存活真人里排第 5，占队1 领土的 8.2%）。按真实人数主队应是队5 或队6（各 5 个号），两队都输。peakSquadLandShare=0.1815 是卡片按日志算的；重放里 t=1155 在场 20 个号合计 96,151 格（19.99%）。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 818,
+   "squadLandShare": 0.0017,
+   "teamTroops": 10155,
+   "squadDens": 12.4,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 115,
+     "troops": 1560
+    },
+    "2": {
+     "bots": 4,
+     "land": 181,
+     "troops": 1989
+    },
+    "3": {
+     "bots": 2,
+     "land": 77,
+     "troops": 947
+    },
+    "4": {
+     "bots": 1,
+     "land": 40,
+     "troops": 575
+    },
+    "5": {
+     "bots": 5,
+     "land": 239,
+     "troops": 2476
+    },
+    "6": {
+     "bots": 5,
+     "land": 166,
+     "troops": 2608
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0015,
+     "troops": 6976,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0016,
+     "troops": 5855,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0017,
+     "troops": 5232,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0007,
+     "troops": 5992,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0005,
+     "troops": 3398,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    },
+    "6": {
+     "landShare": 0.0015,
+     "troops": 6461,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.025,
+   "src": "engine-replay",
+   "teamLandShare": 0.0015,
+   "teamRank": 4,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.0017
+  },
+  {
+   "t": 180,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 3306,
+   "squadLandShare": 0.0069,
+   "teamTroops": 20601,
+   "squadDens": 6.2,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 495,
+     "troops": 2788
+    },
+    "2": {
+     "bots": 4,
+     "land": 658,
+     "troops": 3870
+    },
+    "3": {
+     "bots": 2,
+     "land": 379,
+     "troops": 1662
+    },
+    "4": {
+     "bots": 1,
+     "land": 144,
+     "troops": 1205
+    },
+    "5": {
+     "bots": 5,
+     "land": 847,
+     "troops": 5526
+    },
+    "6": {
+     "bots": 5,
+     "land": 783,
+     "troops": 5550
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0033,
+     "troops": 11193,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0039,
+     "troops": 10047,
+     "activeHumans": 10,
+     "huskLandShare": 0.0001
+    },
+    "3": {
+     "landShare": 0.005,
+     "troops": 7627,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0037,
+     "troops": 11502,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0018,
+     "troops": 7055,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    },
+    "6": {
+     "landShare": 0.0049,
+     "troops": 9841,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0477,
+   "src": "engine-replay",
+   "teamLandShare": 0.0033,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.005
+  },
+  {
+   "t": 270,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 7279,
+   "squadLandShare": 0.0151,
+   "teamTroops": 29740,
+   "squadDens": 4.1,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 1069,
+     "troops": 4595
+    },
+    "2": {
+     "bots": 4,
+     "land": 1445,
+     "troops": 6013
+    },
+    "3": {
+     "bots": 2,
+     "land": 708,
+     "troops": 2278
+    },
+    "4": {
+     "bots": 1,
+     "land": 364,
+     "troops": 1543
+    },
+    "5": {
+     "bots": 5,
+     "land": 1860,
+     "troops": 7812
+    },
+    "6": {
+     "bots": 5,
+     "land": 1833,
+     "troops": 7499
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0067,
+     "troops": 18187,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0071,
+     "troops": 13342,
+     "activeHumans": 10,
+     "huskLandShare": 0.0001
+    },
+    "3": {
+     "landShare": 0.0086,
+     "troops": 11980,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0086,
+     "troops": 16045,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0044,
+     "troops": 9139,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    },
+    "6": {
+     "landShare": 0.0091,
+     "troops": 12537,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0789,
+   "src": "engine-replay",
+   "teamLandShare": 0.0067,
+   "teamRank": 5,
+   "topEnemyTeam": 6,
+   "topEnemyShare": 0.0091
+  },
+  {
+   "t": 630,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 54268,
+   "squadLandShare": 0.1128,
+   "teamTroops": 113413,
+   "squadDens": 2.1,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 8701,
+     "troops": 18485
+    },
+    "2": {
+     "bots": 4,
+     "land": 10174,
+     "troops": 19770
+    },
+    "3": {
+     "bots": 2,
+     "land": 5296,
+     "troops": 12354
+    },
+    "4": {
+     "bots": 1,
+     "land": 2343,
+     "troops": 6603
+    },
+    "5": {
+     "bots": 5,
+     "land": 14084,
+     "troops": 26875
+    },
+    "6": {
+     "bots": 5,
+     "land": 13670,
+     "troops": 29326
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0636,
+     "troops": 76211,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0429,
+     "troops": 54898,
+     "activeHumans": 10,
+     "huskLandShare": 0.0003
+    },
+    "3": {
+     "landShare": 0.0479,
+     "troops": 51389,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0567,
+     "troops": 67240,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.035,
+     "troops": 32966,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    },
+    "6": {
+     "landShare": 0.0633,
+     "troops": 59806,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.4248,
+   "src": "engine-replay",
+   "teamLandShare": 0.0636,
+   "teamRank": 1,
+   "topEnemyTeam": 6,
+   "topEnemyShare": 0.0633
+  },
+  {
+   "t": 1155,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 96151,
+   "squadLandShare": 0.1999,
+   "teamTroops": 1247028,
+   "squadDens": 13.0,
+   "boxed": 4,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 13406,
+     "troops": 179018
+    },
+    "2": {
+     "bots": 4,
+     "land": 18787,
+     "troops": 208290
+    },
+    "3": {
+     "bots": 2,
+     "land": 10617,
+     "troops": 105342
+    },
+    "4": {
+     "bots": 1,
+     "land": 4289,
+     "troops": 62455
+    },
+    "5": {
+     "bots": 5,
+     "land": 26117,
+     "troops": 333922
+    },
+    "6": {
+     "bots": 5,
+     "land": 22935,
+     "troops": 358001
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1732,
+     "troops": 526998,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.1046,
+     "troops": 413477,
+     "activeHumans": 10,
+     "huskLandShare": 0.0003
+    },
+    "3": {
+     "landShare": 0.1063,
+     "troops": 473851,
+     "activeHumans": 8,
+     "huskLandShare": 0.0083
+    },
+    "4": {
+     "landShare": 0.0772,
+     "troops": 841232,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0726,
+     "troops": 395885,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    },
+    "6": {
+     "landShare": 0.121,
+     "troops": 545044,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.3303,
+   "src": "engine-replay",
+   "teamLandShare": 0.1732,
+   "teamRank": 1,
+   "topEnemyTeam": 6,
+   "topEnemyShare": 0.121
+  },
+  {
+   "t": 1530,
+   "alive": 8,
+   "seen": 8,
+   "squadLand": 45368,
+   "squadLandShare": 0.0943,
+   "teamTroops": 1540738,
+   "squadDens": 34.0,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 10909,
+     "troops": 408155
+    },
+    "3": {
+     "bots": 2,
+     "land": 15478,
+     "troops": 319807
+    },
+    "4": {
+     "bots": 1,
+     "land": 4415,
+     "troops": 179608
+    },
+    "5": {
+     "bots": 2,
+     "land": 10422,
+     "troops": 369228
+    },
+    "6": {
+     "bots": 1,
+     "land": 4144,
+     "troops": 263940
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 2070,
+   "alive": 8,
+   "seen": 7,
+   "squadLand": 53643,
+   "squadLandShare": 0.1115,
+   "teamTroops": 888080,
+   "squadDens": 16.6,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 13715,
+     "troops": 411984
+    },
+    "3": {
+     "bots": 2,
+     "land": 17993,
+     "troops": 154812
+    },
+    "4": {
+     "bots": 1,
+     "land": 3714,
+     "troops": 131033
+    },
+    "5": {
+     "bots": 2,
+     "land": 18221,
+     "troops": 190251
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 2388,
+   "alive": 7,
+   "seen": 7,
+   "squadLand": 47817,
+   "squadLandShare": 0.0994,
+   "teamTroops": 581871,
+   "squadDens": 12.2,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 6962,
+     "troops": 178738
+    },
+    "3": {
+     "bots": 2,
+     "land": 8813,
+     "troops": 115096
+    },
+    "4": {
+     "bots": 1,
+     "land": 120,
+     "troops": 657
+    },
+    "5": {
+     "bots": 2,
+     "land": 23178,
+     "troops": 272926
+    },
+    "6": {
+     "bots": 1,
+     "land": 8744,
+     "troops": 14454
+    }
+   },
+   "teamLandShare": 0.2959,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1867,
+   "teamSnapT": 2388
+  },
+  {
+   "t": 2451,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 41804,
+   "squadLandShare": 0.0869,
+   "teamTroops": 679225,
+   "squadDens": 16.2,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 8445,
+     "troops": 183230
+    },
+    "3": {
+     "bots": 1,
+     "land": 3606,
+     "troops": 100753
+    },
+    "4": {
+     "bots": 1,
+     "land": 677,
+     "troops": 746
+    },
+    "5": {
+     "bots": 2,
+     "land": 21360,
+     "troops": 317176
+    },
+    "6": {
+     "bots": 1,
+     "land": 7716,
+     "troops": 77320
+    }
+   },
+   "teamLandShare": 0.3092,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1868,
+   "teamSnapT": 2451
+  },
+  {
+   "t": 2519,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 41127,
+   "squadLandShare": 0.0855,
+   "teamTroops": 678479,
+   "squadDens": 16.5,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 8445,
+     "troops": 183230
+    },
+    "3": {
+     "bots": 1,
+     "land": 3606,
+     "troops": 100753
+    },
+    "5": {
+     "bots": 2,
+     "land": 21360,
+     "troops": 317176
+    },
+    "6": {
+     "bots": 1,
+     "land": 7716,
+     "troops": 77320
+    }
+   },
+   "teamLandShare": 0.323,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1904,
+   "teamSnapT": 2519
+  },
+  {
+   "t": 2537,
+   "alive": 4,
+   "seen": 4,
+   "squadLand": 38869,
+   "squadLandShare": 0.0808,
+   "teamTroops": 663426,
+   "squadDens": 17.1,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 10647,
+     "troops": 232374
+    },
+    "5": {
+     "bots": 2,
+     "land": 20967,
+     "troops": 347053
+    },
+    "6": {
+     "bots": 1,
+     "land": 7255,
+     "troops": 83999
+    }
+   },
+   "teamLandShare": 0.3256,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1909,
+   "teamSnapT": 2537
+  },
+  {
+   "t": 2916,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 26549,
+   "squadLandShare": 0.0552,
+   "teamTroops": 979867,
+   "squadDens": 36.9,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 12743,
+     "troops": 430245
+    },
+    "5": {
+     "bots": 1,
+     "land": 6551,
+     "troops": 394498
+    },
+    "6": {
+     "bots": 1,
+     "land": 7255,
+     "troops": 155124
+    }
+   },
+   "teamLandShare": 0.3453,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1919,
+   "teamSnapT": 2916
+  },
+  {
+   "t": 3060,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 27535,
+   "squadLandShare": 0.0573,
+   "teamTroops": 1197135,
+   "squadDens": 43.5,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 13821,
+     "troops": 499564
+    },
+    "5": {
+     "bots": 1,
+     "land": 6459,
+     "troops": 489450
+    },
+    "6": {
+     "bots": 1,
+     "land": 7255,
+     "troops": 208121
+    }
+   },
+   "teamLandShare": 0.3453,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.1919,
+   "teamSnapT": 2916
+  },
+  {
+   "t": 4050,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 30472,
+   "squadLandShare": 0.0634,
+   "teamTroops": 2822284,
+   "squadDens": 92.6,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 15655,
+     "troops": 1457040
+    },
+    "5": {
+     "bots": 1,
+     "land": 8426,
+     "troops": 710570
+    },
+    "6": {
+     "bots": 1,
+     "land": 6391,
+     "troops": 654674
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 4500,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 27466,
+   "squadLandShare": 0.0571,
+   "teamTroops": 2658087,
+   "squadDens": 96.8,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 18106,
+     "troops": 1634745
+    },
+    "5": {
+     "bots": 1,
+     "land": 4267,
+     "troops": 397270
+    },
+    "6": {
+     "bots": 1,
+     "land": 5093,
+     "troops": 626072
+    }
+   },
+   "teamLandShare": 0.467,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2181,
+   "teamSnapT": 4616
+  },
+  {
+   "t": 4616,
+   "alive": 2,
+   "seen": 2,
+   "squadLand": 23529,
+   "squadLandShare": 0.0489,
+   "teamTroops": 2267167,
+   "squadDens": 96.4,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 18436,
+     "troops": 1608763
+    },
+    "6": {
+     "bots": 1,
+     "land": 5093,
+     "troops": 658404
+    }
+   },
+   "teamLandShare": 0.467,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2181,
+   "teamSnapT": 4616
+  },
+  {
+   "t": 4936,
+   "alive": 1,
+   "seen": 1,
+   "squadLand": 19216,
+   "squadLandShare": 0.04,
+   "teamTroops": 2053271,
+   "squadDens": 106.9,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 19216,
+     "troops": 2053271
+    }
+   },
+   "teamLandShare": 0.5065,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2137,
+   "teamSnapT": 4936
+  },
+  {
+   "t": 5040,
+   "alive": 1,
+   "seen": 1,
+   "squadLand": 20489,
+   "squadLandShare": 0.0426,
+   "teamTroops": 2030955,
+   "squadDens": 99.1,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 20489,
+     "troops": 2030955
+    }
+   },
+   "teamLandShare": 0.5065,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2137,
+   "teamSnapT": 4936
+  },
+  {
+   "t": 6030,
+   "alive": 1,
+   "seen": 1,
+   "squadLand": 34480,
+   "squadLandShare": 0.0717,
+   "teamTroops": 3146602,
+   "squadDens": 91.3,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 34480,
+     "troops": 3146602
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 7001,
+   "alive": 1,
+   "seen": 1,
+   "squadLand": 39327,
+   "squadLandShare": 0.0818,
+   "teamTroops": 4402581,
+   "squadDens": 111.9,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 39327,
+     "troops": 4402581
+    }
+   },
+   "teamLandShare": 0.9941,
+   "teamRank": 1,
+   "topEnemyTeam": 6,
+   "topEnemyShare": 0.0005,
+   "teamSnapT": 7001
+  },
+  {
+   "t": 7020,
+   "alive": 1,
+   "seen": 1,
+   "squadLand": 39327,
+   "squadLandShare": 0.0818,
+   "teamTroops": 4402581,
+   "squadDens": 111.9,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 39327,
+     "troops": 4402581
+    }
+   },
+   "teamLandShare": 0.9941,
+   "teamRank": 1,
+   "topEnemyTeam": 6,
+   "topEnemyShare": 0.0005,
+   "teamSnapT": 7001
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "选点阶段 51 步。没有 HL-SPAWN-BACKEND 行（没有用到统一分配的落点），每个号在本机各算一张候选表：日志 HL-SPAWN 204 行，录像里生效的选点指令 156 条（每号 2~13 条，中位 10）。我方选过的不同坐标 105 个，其中 29 个被 >=2 个号先后选过，12 个被 >=3 个号选过。",
+    "同一个坐标 (674,514) 先后被 Cringe（第 41 步）、root（第 47 步）、SonHeungMin（第 49 步）、Peru（第 50 步）选中；最后两步（49、50）还有 13 条改点，Peru 一个号就在最后一步连改 5 次，最后一次落回 (674,514)。结果 SonHeungMin 与 Peru（同在队1）落在同一点（引擎实际摆在 (677,509)/(673,513)，相距 4 格），Zidane（队1）离它们 66 格；Eisenhower 与 root（同在队6）相距 36 格。",
+    "真实分队：队1=SonHeungMin、Zidane、Peru；队2=Kamakura、MaxVerstappen、First Bulgarian、Cringe；队3=Jotaro、Kazakh；队4=Sweaty（与 [APEX] 十人同队）；队5=Morphy、Kobe、Seljuk、Carthage、SegFault；队6=Eisenhower、bruh、root、Mewtwo、Songhai。全场真人 62。",
+    "贴着外人出生的：Carthage 离 天才张阔/队3 29 格、Sweaty 离 Luffy/队2 28 格、Morphy 离 [APEX] kaito9/队4 26 格。",
+    "开局周期出兵按时执行：下令拍 <500 的 100 条周期指令延迟中位 10~13 拍、最大 20 拍。t=630 在场 20 个号 54,268 格（11.28%），单号领土中位 2,828.5（最小 Cringe 1,730、最大 Kobe 3,259）；同局 [APEX] 十人队中位 2,433.5，其余 29 个真人中位 2,343。"
+   ],
+   "issues": [
+    "同队号叠在一起出生：SonHeungMin/Peru/Zidane 三个号挤在 66 格内，Eisenhower/root 36 格。t=630 还看不出代价（这五个号 2,675~2,962 格，都在中位附近），代价在 t=900 之后才出现。",
+    "贴着外人出生的 Carthage t=630 只有 1,961 格（全编队倒数第二）：t<600 被 天才张阔 拿走 226 格，t=600~1022 又被拿走 461 格。"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "t=500 起指令越来越晚：下令拍 500~599 的延迟中位 29（最大 52），600~699 中位 65（最大 103），700~799 中位 140（最大 203）。到各号 t<=1080 的最后一条快照，日志 cmds 计数合计 637，录像里对应只有 311 条（SonHeungMin 37/12、Jotaro 40/14、Kamakura 36/12）。",
+    "晚到的指令成批执行：14 个号出现过同拍 >=4 条。SonHeungMin t=1120 一拍 9 条陆攻（4 条打同一个内置 AI bot485：337‰/350‰/358‰/206‰，4 条打无主地，1 条打 bot184），拍前 6.8 万兵花掉 89.2%；Kazakh t=1001 一拍 8 条花掉 75.9%；bruh t=903 66.3%；MaxVerstappen t=903 61.3%；Kobe t=1036 58.8%。录像里我方 341 条陆攻有 43 条到执行时已经没有效果（目标没了）。",
+    "这段是全场瓜分内置 AI 的时候：内置 AI 占地 52.4%（t=720）→50.4%（t=900）→38.0%（t=1080）→33.0%（t=1155）。我方单号领土中位 2,828.5（t=630）→3,943（t=900）→4,518（t=1155）；其余真人（不含 [APEX]）2,343→4,013→6,639；[APEX] 2,433.5→2,723.5→2,894.5。",
+    "t=1155 各队在场真人的密度（兵/地）：我方 20 个号 96,151 格、125 万兵，密度 13.0；外人 37 个 214,711 格、187 万兵，密度 8.7——其中队4 的 [APEX] 十人密度 23.7，其余各队外人只有 5.0~7.8。我方的兵比外人密，地比外人小。",
+    "影子探针（同一份 c110 源码逐拍跑在重放局面上）：t=600~1155 有内置 AI 邻居的 2,220 个决策拍里，能出兵 1,332（60.0%）；被地价闸 botOk 挡 244；底线取到 safeFinite、而它取的是「另一个我方在场号的兵」且去掉就能出兵的 332（15.0%，其中同队 265）；底线取到 dpKeep 60、winR 项 71。被这一项卡得最多的正是叠着出生的四个号：Zidane 64.0%、root 55.9%、Peru 53.2%、Eisenhower 48.6%。",
+    "逐拍例子：t=925 Zidane 5,073 格、2.7 万兵，身边 8 个内置 AI 只有 0~704 兵（地价 2.0~5.2；其中 Lakota 876 格、0 兵、接壤 85 格），底线却是 3.2 万 = Peru 的兵（Peru 也挨着 Lakota）→ 可用兵 −4,470；同一拍 Peru 3,474 格、3.2 万兵，底线 2.8 万 = Zidane 的兵 → 可用兵 3,974 不到最小出兵量 6,803。到 t=1155 这四个号的兵是全编队最多的一档（Peru 8.4 万、Eisenhower 7.8 万、root 7.4 万、Zidane 7.2 万），Peru 的领土从 t=900 到 t=1260 一直停在 3,474；Zidane 反而被内置 AI Lakota 拿走 413 格、Chola 拿走 95 格。",
+    "Carthage（队5）t=1150：3,853 格、3.0 万兵；邻居里有 [APEX] zexos1（5,333 格、7.4 万兵，接壤 30 格）→ dpKeep=3.9 万 > 自己的全部兵 → 对身边 5 个内置 AI（合计 4,762 格、1,361 兵）一条都不发。t=600~1155 它 111 个决策拍里 28 个卡在 dpKeep。",
+    "t=1155（重放末拍）各队份额：队1 17.3% / 队2 10.5% / 队3 10.6% / 队4 7.7% / 队5 7.3% / 队6 12.1% / 内置 AI 33.0%。我方按队：队1 2.8%、队2 3.9%、队3 2.2%、队4 0.9%、队5 5.4%、队6 4.8%。队1 的 8 个外人单号领土中位 8,936（密度 5.0），是各队里最大的。"
+   ],
+   "issues": [
+    "同队贴身出生的号互相把对方的兵当成「内置 AI 可能调来打我的兵」，两边都攥着兵不动。",
+    "指令晚到 100~200 拍：下令时算好的目标到执行时已被别人吃掉，或者几条指令同拍连乘把兵打空。"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "（以下只有日志）墙上时钟对拍：阵亡/终局结算行拟合 秒 = 23.3 + 0.056×拍（8 行残差 0~0.7 秒）。Songhai 的 left 结算行写在第 118 秒 → 服务器拍≈1,692；这一行前后各号最近的快照是本机拍 1,080~1,350，即本机落后服务器 342~612 拍；它自己页面知道的拍号只有 861。",
+    "11 个号的日志停在本机拍 990（Kamakura、MaxVerstappen、Morphy、bruh、root、First Bulgarian、Mewtwo）、1080（SegFault、Cringe）、1170（Zidane、Kobe），10 个停在 Songhai 那条 left 行之前、Kobe 紧随其后；此后没有任何日志，也没有结算行。按 VERSION-TIMELINE §4.3，外层运行环境在页面连续 3 次取状态超时或连接断开时会让该席位离开（之后由内置 AI 托管、利息为 0）。",
+    "这 12 个号在 t=1155 合计 59,966 格（12.47%）、77.3 万兵；留下的 8 个号 36,185 格（7.52%）、47.4 万兵。日志里编队在场领土 19.10%（t=1170，19 个号）→9.43%（t=1530，8 个号、154 万兵）。",
+    "留下的 8 个号继续落后：Eisenhower 在本机拍 1350~1710 比最快的号慢 270~360 拍，Peru/Jotaro 慢 90~180 拍。本机拍 1530~1980 这段，Peru（nb=1）cmds 24→49、Seljuk（nb=2）68→98、Jotaro 59→67，正好是每 15 拍一条的节流上限，而余额一直贴着纯利息曲线、领土不动：发出去的指令在本机局面里一条都没生效。",
+    "追上服务器的那一两个快照（本机拍 1980→2160）里攒下的指令集中生效：Peru 47.5 万→1.8 万兵（剩纯利息预测的 3.5%，相当于 23.7 条 12% 的 pulse 连乘），领土 5,392→7,081→9,806；Seljuk 57.3 万→1,209 兵（0.19%，44.3 条），领土 7,515→12,941→18,257（t=2250 到 20,373）；Jotaro 27.6 万→4.2 万（13.9%，14.0 条），5,817→6,101→8,944；Eisenhower 本机拍 1260~2160 共发令 62 条（48 条陆攻、5 条船、9 条捐款），本机拍 2095 还有 54.7 万兵，2160 只剩 114 兵，领土 4,144→5,713→8,878。",
+    "对照（logdigest stale）：全程有快照的 6 个号里，最后 270 拍（t=1710~1980）还在发令的 4 个——Peru 18 条、Seljuk 18 条、Jotaro 8 条、Sweaty 8 条——余额都掉到纯利息预测的 0~22%；一条没发的 2 个——SonHeungMin、Carthage——是 0.93、0.98。Kazakh 在 540 拍没有快照的那段发了 33 条，余额是纯利息预测的 28.7%。",
+    "清仓后密度只有 0~7，528 拍内连死 5 个：Peru（队1）领土 9,806→8,483→4,308→0，t=2388 阵亡；Jotaro（队3）8,944→8,122→5,207→3,094，t=2451；Sweaty（队4）t=1980 策略眼里 nb=0、neut=0，兵 31.2 万→13.1 万→3.2 万，领土 4,321→3,714→1,445→0（t=2250），靠两条船苟到 t=2519；Kazakh（队3）11,892→9,485→4,318→2,709，t=2537；Seljuk（队5）t=2250~2880 零指令，20,373→6,342，t=2916。",
+    "Eisenhower 本机拍 1935~2095 每 20 拍打印一条 HL-DONATE（surplus pct=153 → 同队的 bruh，共 9 条；当时自己密度 120~132，余额 49.8 万→54.7 万一直在涨）。bruh 的日志早在本机拍 990 就停了。按引擎额度公式，这 9 笔每笔到账 7.5 万~8.2 万，在 t<2142 要 157~173 点额度，而受捐上限只有 109~115 点；t>=2142 每笔 48~53 点。",
+    "结算行里的各队份额：t=2388 队1 29.6% / 队2 18.7% / 队3 12.9% / 队4 9.1% / 队5 11.1% / 队6 17.5%；t=2916 队1 34.5% / 队2 19.2% / 队3 10.7% / 队4 9.7% / 队5 6.7% / 队6 17.8%。编队在场领土 11.15%（t=2070，8 个号、88.8 万兵）→5.52%（t=2916，3 个号）。",
+    "SonHeungMin（队1）t=1710~2070 cmds 停在 71、兵 27.4 万→39.4 万，没有清仓；t=2160 策略眼里 nb=0（四周只剩队友/受保护的名字）→ 到 t=2250 发了 3 条船，兵 42.1 万→16.6 万，领土 6,675→12,910（t=2700）。"
+   ],
+   "issues": [
+    "同一目标 15 拍节流、pulse 的「已有兵在打就不再加」都只看本机局面；本机落后时，每条指令都像第一条。",
+    "清仓拿下的地守不住：5 个号清仓后 2 个快照内合计多出 2.5 万格，随后 300~850 拍内 4 个被打死。"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "t=2916 之后只剩 3 个号，分在三支队：SonHeungMin（队1）、Carthage（队5）、Eisenhower（队6），合计 26,549 格（5.52%）。",
+    "Eisenhower（队6）：清仓后 t=2160~4860 的 2,700 拍 cmds/boats 计数不变（零指令），日志照常每 90 拍打印、nb=2~3。兵靠利息从 114 涨到 86.8 万（t=4410，6,391 格，密度 136；密度>100 的快照 10 个、>125 的 4 个，估算少拿利息 31.4 万），领土 8,878（t=2250）→7,255（t=2520~3510）→6,391（t=3600~4410）。t=4410 起挨打：领土 6,391→5,093→4,369→3,623，兵 86.8 万→43.3 万（t=4860），t=4936 阵亡时账上还有 14.2 万兵。",
+    "Carthage（队5）：t=1080~2250 的 1,170 拍零指令（nb=3~8、密度 5→45、领土 3,853→5,148）；t=2250~3960 cmds 35→42（其中 1 条船），领土 5,148→7,239、密度 45→128（密度>100 的快照 9 个，估算少拿利息 13.8 万）；t=3960→4050 一次出手 −21.8 万兵、+1,187 格；之后 t=4050~4590 的 540 拍又是零指令，领土 8,426→2,880、兵 71.1 万→19.5 万，t=4616 阵亡时账上还有 16.2 万兵。打它的人按 SonHeungMin 的 HL-ASSIST 日志是 ahsokata（队2）和 Büyük kıti（队3）。",
+    "SonHeungMin（队1）：t=2430~2880 零指令；t=2700~3960 领土 12,910→14,200、密度 24→116。t=4110~4550 打印 5 条 HL-ASSIST「10% squad-rescue poke」：替异队的 Carthage 去戳 ahsokata 3 次、Büyük kıti 2 次（这两人对队1 也是敌人），这段领土 15,655→18,436。之后贴着软上限锯齿式出手：t=5400→5490 −47.4 万兵 / +2,572 格，t=5490~5670 领土 24,693→34,244；终局 39,327 格、440 万兵（密度 112）。全程密度>100 的快照 14 个，估算少拿利息 76.9 万（实得 1,210 万）。",
+    "队1 的份额：34.5%（t=2916）→46.7%（t=4616）→50.6%（t=4936）→99.4%（t=7001）。"
+   ],
+   "issues": [
+    "Eisenhower、Carthage 两个号挨打前各有 86.8 万、71.1 万兵（密度 136、84），死前 540~2,700 拍一条指令没发，阵亡时账上还剩 14.2 万、16.2 万。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 500,
+   "t1": 1700,
+   "what": "客户端越来越落后于服务器，指令晚到、成批执行；墙上第 118 秒（服务器拍≈1,692）20 个号一下少了 12 个",
+   "shareBefore": 0.1999,
+   "shareAfter": 0.0943,
+   "ourBots": [
+    "Kamakura",
+    "MaxVerstappen",
+    "Morphy",
+    "Kobe",
+    "bruh",
+    "root",
+    "Zidane",
+    "First Bulgarian",
+    "SegFault",
+    "Mewtwo",
+    "Cringe",
+    "Songhai"
+   ],
+   "enemies": [],
+   "evidence": [
+    "logdigest oplag：开局周期指令下令拍→执行拍的延迟，下令拍 <500 中位 10~13（最大 20）；500~599 中位 29（最大 52）；600~699 中位 65（最大 103）；700~799 中位 140（最大 203）",
+    "logdigest issued：各号 t<=1080 的最后一条快照，日志 cmds 合计 637，录像里 311 条（48.8%）；simdigest cmds：14 个号有同拍 >=4 条的连发，SonHeungMin t=1120 一拍 9 条花掉 89.2% 的兵",
+    "logdigest wall：结算行拟合 秒=23.3+0.056×拍；Songhai（结算名 Zenitsu）left 行在第 118 秒 → 服务器拍≈1,692，行内 tick=861；这一行前后其余 8 个号的快照在本机拍 1,080~1,350",
+    "logdigest wall（没有结算行的号）：11 个号最后一条快照在本机拍 990（7 个）、1080（2 个）、1170（2 个），10 个落在 Songhai 的 left 行之前",
+    "重放 t=1155：这 12 个号 59,966 格（12.47%）、77.3 万兵（密度 12.9）；留下的 8 个号 36,185 格（7.52%）、47.4 万兵。digest timeline：在场领土 19.10%（t=1170）→9.43%（t=1530）",
+    "in_game.log：策略每拍耗时 avgMs 0.31~1.19（中位 0.81），全局只有 3 行 HL-SLOW-TICK（最长 33.8ms）——不是策略算得慢",
+    "simdigest medians：内置 AI 占地 52.4%（t=720）→33.0%（t=1155）；我方单号领土中位 2,828.5→4,518，其余真人 2,343→6,639"
+   ],
+   "priorDecisions": [
+    {
+     "t": "500~1155",
+     "bot": "全体 20 个号",
+     "what": "指令照常按本机局面每 5 拍决策、发出；策略不知道它们晚了 30~200 拍",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4818（g.t % period===0 即决策）→ L4820-4860 t<coreFrom 分支 super.act → General.act L804-845 → Style.pickTarget L1180-1213（L1208 send）；Strategy.send L526-539 只有「同一目标 15 个本机拍内不重发」的节流；src/engine/live_game_js.js 指令按执行那一拍的余额百分比结算",
+     "why": "策略没有读「上一条指令是否已在本机局面里生效」；晚到的几条指令在同一拍逐条按剩余余额连乘（SonHeungMin t=1120：4 条 20.6%~35.8% 的陆攻落在同一个 bot485 上）"
+    },
+    {
+     "t": "≈1692（服务器拍）",
+     "bot": "12 个号",
+     "what": "页面被外层运行环境判为失联/超时，席位离开，改由内置 AI 托管",
+     "codePath": "src/strategy/VERSION-TIMELINE.md §4.3：连接关闭或连续 3 次取状态超时（4.5 秒看门狗）→ 外层触发离开/重启页面，结算行记 event=left、tick=页面当时知道的本机拍；src/engine/live_game_js.js 离开的真人按内置 AI 托管、利息为 0",
+     "why": "不是策略决策。局内数据只能看到结果：11 个号没有任何后续日志和结算行，1 个号（录像号）有 left 行"
+    }
+   ],
+   "alternatives": [
+    "这一步不在策略代码里。局内数据看不出本机为什么越跑越慢（策略自己每拍平均不到 1.2 毫秒）；也看不出这 12 个席位之后被谁吃掉（录像停在 t=1155）"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 1980,
+   "t1": 2916,
+   "what": "留下的号追上服务器时，落后期间攒下的指令集中生效：4 个号一两个快照内把 164 万兵打空（密度 0~7），连同 Sweaty、Kazakh，528 拍内死了 5 个",
+   "shareBefore": 0.1115,
+   "shareAfter": 0.0552,
+   "ourBots": [
+    "Peru",
+    "Seljuk",
+    "Jotaro",
+    "Eisenhower",
+    "Kazakh",
+    "Sweaty"
+   ],
+   "enemies": [],
+   "evidence": [
+    "logdigest stale：Peru 本机拍 1530~1980 发令 25 条（nb=1）而余额=纯利息、领土不动；1980→2070 兵 47.5 万→1.8 万（剩纯利息预测的 3.51%，k=23.7），领土 5,392→7,081→9,806；318 拍后阵亡",
+    "logdigest stale：Seljuk 1800~1980 发令 12 条（1350~1980 共 43 条，每 15 拍 1 条）；1980→2070 兵 57.3 万→1,209（0.19%，k=44.3），领土 7,515→12,941→18,257；846 拍后阵亡",
+    "logdigest stale：Jotaro 1800~1980 发令 7 条、清仓间隔里又 6 条；27.6 万→4.2 万（13.87%，k=14.0），领土 5,817→6,101→8,944；381 拍后阵亡。Eisenhower 1260~1710 发令 28 条、之后又 34 条（含 5 条船、9 条捐款）；38.1 万（本机拍 2095 时 54.7 万）→114 兵",
+    "logdigest stale 对照表：最后 270 拍（t=1710~1980）发令 Peru 18、Seljuk 18、Jotaro 8、Sweaty 8 条 → 余额/纯利息预测的最小值 0.04、0.00、0.14、0.22；SonHeungMin 0 条、Carthage 0 条 → 0.93、0.98",
+    "对局包 in_game.log 行 661~669：Eisenhower 的 9 条 HL-DONATE（本机拍 1935~2095）连续落盘，夹在其他号的 t=2070 快照和 t=2160 快照之间；myBal 49.8 万→54.7 万逐条上涨（前一条没在本机生效）",
+    "digest bot：清仓后的密度 Peru 1.0~2.6、Seljuk 0.1~1.9、Jotaro 4.7~7.0、Eisenhower 0.0~1.7；digest timeline：在场领土 11.15%（t=2070）→9.94%（t=2388）→5.52%（t=2916）",
+    "logdigest wall：t>=2388 的 7 条结算行与拟合线的残差 0.0~0.7 秒——到这时本机已经追平服务器"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1530~1980",
+     "bot": "Peru",
+     "what": "对唯一的可打邻居每 15 拍下一条 12% 的 pulse，连下 25 条；本机局面里前一条始终没有生效",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5374 curAtk=g.attackTroopsOn(me,q)（本机局面里已经在打的兵）→ L5510-5523 pulseMode：L5511 curAtk>=0.04×B 才跳过；capFrac=floor(pulseFrac×B)（pulseFrac=0.12）；L5522 send。Strategy.send L526-539：同一目标 15 个本机拍内不重发（_lastTargetSendTick）。src/engine/live_game_js.js 陆攻按执行拍余额的 (pct+1)/1024 出兵、另收 12/1024 手续费 → 每条执行后余额剩 86.8%",
+     "why": "推断（录像没覆盖，无法逐条核对）：本机落后服务器几百拍时，发出的指令要等本机跑到服务器执行它的那一拍才看得见，curAtk 一直是 0、节流一到就再发；追上时这些指令在几个服务器回合里逐条执行，余额按 0.868^k 连乘。日志能直接看到的是：cmds 每 90 拍 +6、余额贴着纯利息曲线、领土不动，然后一个快照内兵只剩 3.5%"
+    },
+    {
+     "t": "1350~1980",
+     "bot": "Seljuk",
+     "what": "630 拍里发了 43 条指令（每 14.7 拍 1 条），兵从 18.0 万涨到 57.3 万",
+     "codePath": "src/strategy/v27-team-c110.js 同上（buyLand L5510-5523 + send L526-539 的 15 拍节流）；非真人目标走 L5363-5368：L5364 g.hasAttack(me,q) 也只看本机局面",
+     "why": "推断：同一机制。Seljuk 在 t=1530~1710 有几条生效（领土 4,709→7,360），其余在 1980→2070 一起生效：兵 57.3 万→1,209"
+    },
+    {
+     "t": "1935~2095",
+     "bot": "Eisenhower",
+     "what": "自己密度 120~132（此前发出的几十条指令都还没在本机生效），按 surplus 规则每 20 拍给 bruh 捐一次 15%",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4370 冷却 18 拍；L4462 非 boxedIn 且 dMe>=112 才进 surplus；L4466-4486 候选 = 同队且（Boss 或名字在池里）且地>=600、密度<132；L4489 pct=153。函数里没有受捐额度的计算，也不看对方是否已离开（person()=!isBot，空壳按内置 AI 的状态留在场上）",
+     "why": "日志 9 条 HL-DONATE，myBal 一条比一条高；bruh 的日志在本机拍 990 就停了。按引擎额度公式这 9 笔在 t<2142 每笔要 157~173 点，上限 109~115 点"
+    }
+   ],
+   "alternatives": [
+    "没有发令的两个号（SonHeungMin、Carthage）没有清仓，都活过了 t=4600；清仓的 4 个号里 3 个在 850 拍内阵亡",
+    "Seljuk 清仓换来 12,858 格（7,515→20,373），如果随后守得住是赚的；但它清仓后密度 0.1~1.9、t=2250 起 630 拍零指令，领土被打回 6,342"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 2160,
+   "t1": 4936,
+   "what": "最后两个不在赢家队里的号（Eisenhower/队6、Carthage/队5）长时间零指令、攥着兵被打死；同期队1 从 29.6% 涨到 50.6%",
+   "shareBefore": 0.0552,
+   "shareAfter": 0.04,
+   "ourBots": [
+    "Eisenhower",
+    "Carthage",
+    "SonHeungMin"
+   ],
+   "enemies": [
+    "ahsokata/T2",
+    "Büyük kıti/T3"
+   ],
+   "evidence": [
+    "logdigest silent：Eisenhower t=2160~4860（2,700 拍）cmds/boats 不变，nb=2~3，密度 0→120（最高 136），领土 5,713→3,623（最高 8,878），直到 t=4936 阵亡；结算行 balance=142,460。digest bot 3：t=4410 兵 867,657（6,391 格）→t=4860 433,101（3,623 格）",
+    "logdigest silent：Carthage t=4050~4590（540 拍）零指令，nb=1~2，密度 84→68（最高 107），领土 8,426→2,880、兵 71.1 万→19.5 万；结算行 balance=162,456。更早 t=1080~2250 也有 1,170 拍零指令",
+    "logdigest overcap：Eisenhower 密度>100 的快照 10 个（>125 的 4 个），估算少拿利息 31.4 万；Carthage 9 个，少拿 13.8 万",
+    "in_game.log：SonHeungMin（日志名 Maurya）t=4110/4270/4420 戳 ahsokata(52)、t=4345/4550 戳 Büyük kıti(51)，都写着 for ally=11(Carthage)",
+    "结算行里的各队领土：队1 34.5%（t=2916）→46.7%（t=4616）→50.6%（t=4936）；队5 6.7%→3.7%；队6 17.8%→10.1%",
+    "digest bot 8：SonHeungMin 领土 12,743（t=2880）→19,216（t=4860），兵 43.0 万→205 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2160~4860",
+     "bot": "Eisenhower",
+     "what": "2,700 拍没有下过一条陆攻、船或捐款",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5267：worth=maxW×winRatio(t)×参考密度（t>=2500 时 =0.9×max(自己密度, 0.85×其余真人密度中位)）；c>=worth 且未超软上限 → break。超软上限后 L5322 safe=safeAt(g,q) → dpKeep L2491-2496=(最强真人邻居的兵−1.5×我的地)/1.78；L5358 keep=max(keep,safe)；L5360-5361 avail<=0 → continue。tryDonateToTeammate L4466-4486 只认 Boss 和名字在池里的同队号",
+     "why": "推断（录像没覆盖；依据是同一份代码在 B039 的探针结果：ArthurMorgan/Bohemia 的零指令时段全部卡在 L5267 或 L5361）。日志能直接看到的：nb=2~3、cmds 计数 2,700 拍不变、密度一路涨到 136、领土在掉；同队的 4 个编队号都已停摆，没有可捐的对象"
+    },
+    {
+     "t": "4050~4590",
+     "bot": "Carthage",
+     "what": "被 ahsokata、Büyük kıti 打掉 5,546 格的 540 拍里没有还击",
+     "codePath": "src/strategy/v27-team-c110.js 同上：buyLand L5267（c>=worth）/ L5361（dpKeep）；L5489-5501 只有目标 nearCollapse/bleeding 时才放宽",
+     "why": "推断：同上。日志：nb=1~2，密度 84~107，cmds 停在 43"
+    }
+   ],
+   "alternatives": [
+    "SonHeungMin 在同一时段（t=3960 起）每次密度过 100 就出手，领土 14,200→19,216；Eisenhower 最高密度 136 一条没发",
+    "两个号都不在卡片记的主队里：它们死不死不影响卡片上的胜负，但它们是编队里人数最多的两支队（各 5 个号）最后的在场号"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Sweaty",
+   "me": 2,
+   "team": 4,
+   "t": 2519,
+   "peakLand": 4415,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1980,
+     4321,
+     312090,
+     72
+    ],
+    [
+     2070,
+     3714,
+     131033,
+     35
+    ],
+    [
+     2160,
+     1445,
+     31846,
+     22
+    ],
+    [
+     2250,
+     0,
+     0,
+     0
+    ],
+    [
+     2340,
+     120,
+     657,
+     6
+    ],
+    [
+     2430,
+     677,
+     746,
+     1
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 66→68 boats 2→4"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 103,
+   "cause": "队4 唯一的我方号，离外人 Luffy/队2 28 格出生；Luffy 的名字在编队名字池里，策略把它当自己人（探针：t=1050~1150 Luffy 与它接壤约 100 格却不在邻居表里）。t=1260~1800 兵从 8.0 万攒到 26.8 万、领土不动（4,415→4,313）；t=1980 策略眼里 nb=0、neut=0，改发船。最后 270 拍发的 8 条指令（含 2 条船）在 t=1980~2160 生效：兵 31.2 万→13.1 万→3.2 万，同时领土 4,321→3,714→1,445→0（t=2250）。之后靠船上岸的 120~677 格拖到 t=2519。谁打的看不到（录像没覆盖）。",
+   "patternIds": [
+    "NEW:PL-pool-outsider",
+    "NEW:IO-stale-pulse-dump"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Eisenhower",
+   "me": 3,
+   "team": 6,
+   "t": 4936,
+   "peakLand": 8878,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4320,
+     6391,
+     829284,
+     130
+    ],
+    [
+     4410,
+     6391,
+     867657,
+     136
+    ],
+    [
+     4500,
+     5093,
+     626072,
+     123
+    ],
+    [
+     4590,
+     5093,
+     658404,
+     129
+    ],
+    [
+     4680,
+     4369,
+     544947,
+     125
+    ],
+    [
+     4770,
+     4369,
+     574593,
+     132
+    ],
+    [
+     4860,
+     3623,
+     433101,
+     120
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 94→94 boats 5→5"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 142460,
+   "cause": "队6。与同队的 root 相距 36 格出生，t=600~1155 有 48.6% 的决策拍因为「root 的兵」被当成底线而不打内置 AI。本机一直比别的号慢（最多慢 360 拍）：本机拍 1260~2160 发令 62 条（48 条陆攻、5 条船、9 条给早已停摆的 bruh 的捐款），都没在本机生效，兵涨到 54.7 万（密度 132）；本机拍 2095→2160 一起生效，只剩 114 兵。之后 2,700 拍零指令，兵靠利息涨回 86.8 万（t=4410，密度 136）；t=4410 起挨打，领土 6,391→3,623、兵 86.8 万→43.3 万，t=4936 阵亡时账上还有 14.2 万兵。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:OP-safefinite-squad-lock",
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DN-husk-donate",
+    "NEW:EG-cap-idle-death",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Seljuk",
+   "me": 7,
+   "team": 5,
+   "t": 2916,
+   "peakLand": 20373,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2340,
+     18030,
+     34211,
+     2
+    ],
+    [
+     2430,
+     15767,
+     46766,
+     3
+    ],
+    [
+     2520,
+     15111,
+     64333,
+     4
+    ],
+    [
+     2610,
+     14550,
+     82513,
+     6
+    ],
+    [
+     2700,
+     13788,
+     98559,
+     7
+    ],
+    [
+     2790,
+     10722,
+     73425,
+     7
+    ],
+    [
+     2880,
+     6342,
+     39841,
+     6
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 101→101 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 29800,
+   "cause": "队5。本机拍 1350~1980 每 15 拍发一条指令（共 43 条），大部分没在本机生效，兵涨到 57.3 万；1980→2070 一起生效：兵只剩 1,209，领土 7,515→20,373（t=2250）。之后密度 0.1~7，t=2250~2880 零指令，被 3~4 个邻居打回 6,342 格，t=2916 阵亡。谁打的看不到。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Carthage",
+   "me": 11,
+   "team": 5,
+   "t": 4616,
+   "peakLand": 8426,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4050,
+     8426,
+     710570,
+     84
+    ],
+    [
+     4140,
+     7875,
+     717897,
+     91
+    ],
+    [
+     4230,
+     7726,
+     782456,
+     101
+    ],
+    [
+     4320,
+     7175,
+     767486,
+     107
+    ],
+    [
+     4410,
+     6204,
+     666390,
+     107
+    ],
+    [
+     4500,
+     4267,
+     397270,
+     93
+    ],
+    [
+     4590,
+     2880,
+     195121,
+     68
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 43→43 boats 1→1"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [
+    "SonHeungMin@4110→ahsokata",
+    "SonHeungMin@4270→ahsokata",
+    "SonHeungMin@4345→Büyük kıti",
+    "SonHeungMin@4420→ahsokata",
+    "SonHeungMin@4550→Büyük kıti"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 162456,
+   "cause": "队5。离 天才张阔/队3 29 格出生，t=630 领土 1,961（全编队倒数第二）。t=1000~1155 被 [APEX] zexos1 的 7.4 万兵抬高 dpKeep，身边 5 个几乎没兵的内置 AI 一个不打；t=1080~2250 的 1,170 拍零指令，错过瓜分内置 AI。之后密度涨到 128 才出手一次（t=3960→4050：−21.8 万兵、+1,187 格）；t=4050 起被 ahsokata/队2、Büyük kıti/队3 打，540 拍零指令，领土 8,426→2,880、兵 71.1 万→19.5 万，t=4616 阵亡时账上还有 16.2 万兵。SonHeungMin（队1）替它戳了对面 5 次。",
+   "patternIds": [
+    "NEW:OP-dpkeep-freeze-ai",
+    "NEW:DF-passive-death",
+    "NEW:EG-cap-idle-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Jotaro",
+   "me": 14,
+   "team": 3,
+   "t": 2451,
+   "peakLand": 8944,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1890,
+     5817,
+     242465,
+     42
+    ],
+    [
+     1980,
+     5817,
+     275606,
+     47
+    ],
+    [
+     2070,
+     6101,
+     42433,
+     7
+    ],
+    [
+     2160,
+     8944,
+     42178,
+     5
+    ],
+    [
+     2250,
+     8122,
+     41589,
+     5
+    ],
+    [
+     2340,
+     5207,
+     27322,
+     5
+    ],
+    [
+     2430,
+     3094,
+     16268,
+     5
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 61→73 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 10872,
+   "cause": "队3。本机拍 1710~1980 发的 8 条指令在 1980→2070 一起生效：兵 27.6 万→4.2 万，领土 5,817→8,944（t=2160）。之后密度 4.7~7.0，cmds 停在 73，领土 8,944→8,122→5,207→3,094，t=2451 阵亡。谁打的看不到。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Peru",
+   "me": 18,
+   "team": 1,
+   "t": 2388,
+   "peakLand": 9806,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1800,
+     5392,
+     379528,
+     70
+    ],
+    [
+     1890,
+     5392,
+     423537,
+     78
+    ],
+    [
+     1980,
+     5392,
+     475349,
+     88
+    ],
+    [
+     2070,
+     7081,
+     18472,
+     3
+    ],
+    [
+     2160,
+     9806,
+     9333,
+     1
+    ],
+    [
+     2250,
+     8483,
+     14880,
+     2
+    ],
+    [
+     2340,
+     4308,
+     9277,
+     2
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 37→51 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 4647,
+   "cause": "队1。与同队的 SonHeungMin 落在同一个出生点、Zidane 在 66 格外：t=600~1155 有 53.2% 的决策拍被「Zidane 的兵」当底线卡住，领土 t=900~1260 停在 3,474。本机拍 1530~1980 对唯一的邻居每 15 拍下一条 pulse（25 条），都没在本机生效；1980→2070 一起生效：兵 47.5 万→1.8 万，领土 5,392→9,806（t=2160）。之后密度 1.0~2.6，230 拍内被打穿，t=2388 阵亡。谁打的看不到。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:OP-safefinite-squad-lock",
+    "NEW:IO-stale-pulse-dump"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Kazakh",
+   "me": 35,
+   "team": 3,
+   "t": 2537,
+   "peakLand": 11892,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2070,
+     11892,
+     112379,
+     9
+    ],
+    [
+     2160,
+     9485,
+     62428,
+     7
+    ],
+    [
+     2250,
+     4318,
+     111580,
+     26
+    ],
+    [
+     2340,
+     3606,
+     87774,
+     24
+    ],
+    [
+     2430,
+     3606,
+     100753,
+     28
+    ],
+    [
+     2520,
+     2709,
+     64883,
+     24
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 96→96 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 59748,
+   "cause": "队3。t=1001 晚到的 8 条指令同拍执行，花掉 75.9% 的兵。本机拍 1530~2070 没有快照，其间发了 33 条指令：兵 17.5 万→11.2 万（纯利息预测的 28.7%），领土 9,975→11,892。t=2070 起密度 6.6~9.4，被打掉 7,574 格（→4,318，t=2250）；之后 450 拍零指令（密度 24~28），t=2537 阵亡时账上还有 6.0 万兵。谁打的看不到。",
+   "patternIds": [
+    "NEW:IO-lag-burst",
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "truthSummary": {
+  "source": "真引擎重放（录像 B041）到 t=1155；日志快照指纹 202/202 逐兵一致",
+  "donationsExecuted": {
+   "n": 0,
+   "delivered": 0,
+   "fee": 0,
+   "smallPctN": 0,
+   "smallPctDelivered": 0,
+   "smallPctFee": 0,
+   "toHuskN": 0,
+   "toHuskDelivered": 0,
+   "toHuskFee": 0
+  },
+  "donationLogVerdicts": {
+   "录像没覆盖": 9
+  },
+  "boatGiftsOut": {
+   "n": 0,
+   "troops": 0,
+   "delivered": 0
+  },
+  "ledgerTotals": {
+   "Kamakura": {
+    "利息+地租": 91017,
+    "陆攻出兵": 43032,
+    "出兵手续费": 3046,
+    "战斗耗兵": 12790,
+    "得地": 5215
+   },
+   "Sweaty": {
+    "利息+地租": 77334,
+    "陆攻出兵": 25236,
+    "出兵手续费": 2190,
+    "战斗耗兵": 12509,
+    "得地": 4390,
+    "失地": 113,
+    "被打掉兵": 692
+   },
+   "Eisenhower": {
+    "利息+地租": 91914,
+    "陆攻出兵": 22324,
+    "出兵手续费": 1486,
+    "战斗耗兵": 8970,
+    "得地": 4472,
+    "失地": 340,
+    "被打掉兵": 4084
+   },
+   "MaxVerstappen": {
+    "利息+地租": 86051,
+    "陆攻出兵": 29891,
+    "出兵手续费": 2121,
+    "战斗耗兵": 13472,
+    "得地": 5237,
+    "失地": 263,
+    "被打掉兵": 1877
+   },
+   "Morphy": {
+    "利息+地租": 93686,
+    "陆攻出兵": 19466,
+    "出兵手续费": 2002,
+    "战斗耗兵": 9316,
+    "得地": 4294,
+    "失地": 75,
+    "被打掉兵": 1028
+   },
+   "Kobe": {
+    "利息+地租": 95092,
+    "陆攻出兵": 57464,
+    "出兵手续费": 3978,
+    "战斗耗兵": 17702,
+    "得地": 7246,
+    "失地": 43,
+    "被打掉兵": 652
+   },
+   "Seljuk": {
+    "利息+地租": 102358,
+    "陆攻出兵": 20119,
+    "出兵手续费": 1372,
+    "战斗耗兵": 9910,
+    "得地": 4801,
+    "失地": 104,
+    "被打掉兵": 387
+   },
+   "SonHeungMin": {
+    "利息+地租": 82847,
+    "陆攻出兵": 73079,
+    "出兵手续费": 4635,
+    "战斗耗兵": 15002,
+    "得地": 5143,
+    "失地": 56,
+    "被打掉兵": 791
+   },
+   "bruh": {
+    "利息+地租": 81796,
+    "陆攻出兵": 33964,
+    "出兵手续费": 2291,
+    "战斗耗兵": 18320,
+    "得地": 6731,
+    "失地": 113,
+    "被打掉兵": 749
+   },
+   "root": {
+    "利息+地租": 87934,
+    "陆攻出兵": 23984,
+    "出兵手续费": 1257,
+    "战斗耗兵": 10242,
+    "得地": 4162,
+    "失地": 162,
+    "被打掉兵": 2640
+   },
+   "Carthage": {
+    "利息+地租": 46428,
+    "陆攻出兵": 16562,
+    "出兵手续费": 585,
+    "战斗耗兵": 13098,
+    "得地": 4901,
+    "失地": 1060,
+    "被打掉兵": 3701
+   },
+   "Zidane": {
+    "利息+地租": 89523,
+    "陆攻出兵": 16684,
+    "出兵手续费": 1244,
+    "战斗耗兵": 10702,
+    "得地": 5329,
+    "失地": 508,
+    "被打掉兵": 6522
+   },
+   "First Bulgarian": {
+    "利息+地租": 79512,
+    "陆攻出兵": 34331,
+    "出兵手续费": 1981,
+    "战斗耗兵": 10504,
+    "得地": 4235
+   },
+   "Jotaro": {
+    "利息+地租": 78858,
+    "陆攻出兵": 20262,
+    "出兵手续费": 1166,
+    "战斗耗兵": 7776,
+    "得地": 3673,
+    "失地": 226,
+    "被打掉兵": 2159
+   },
+   "SegFault": {
+    "利息+地租": 88817,
+    "陆攻出兵": 39565,
+    "出兵手续费": 2111,
+    "战斗耗兵": 14162,
+    "得地": 6097
+   },
+   "Mewtwo": {
+    "利息+地租": 92036,
+    "陆攻出兵": 30198,
+    "出兵手续费": 1821,
+    "战斗耗兵": 14744,
+    "得地": 5571,
+    "失地": 15,
+    "被打掉兵": 234
+   },
+   "Peru": {
+    "利息+地租": 93599,
+    "陆攻出兵": 11184,
+    "出兵手续费": 421,
+    "战斗耗兵": 8501,
+    "得地": 3626,
+    "失地": 164,
+    "被打掉兵": 1096
+   },
+   "Cringe": {
+    "利息+地租": 62234,
+    "陆攻出兵": 24242,
+    "出兵手续费": 1683,
+    "战斗耗兵": 17366,
+    "得地": 4315
+   },
+   "Songhai": {
+    "利息+地租": 75082,
+    "陆攻出兵": 8412,
+    "出兵手续费": 346,
+    "战斗耗兵": 5845,
+    "得地": 2672,
+    "失地": 103,
+    "被打掉兵": 292
+   },
+   "Kazakh": {
+    "利息+地租": 76423,
+    "顶格少拿": 2,
+    "陆攻出兵": 48393,
+    "出兵手续费": 3053,
+    "战斗耗兵": 17968,
+    "得地": 7151
+   }
+  }
+ },
+ "decisions": [
+  {
+   "t": 50,
+   "bot": "SonHeungMin/Peru/Zidane、Eisenhower/root",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "选点 51 步里每个号改点 2~13 次；坐标 (674,514) 先后被 Cringe（步 41）、root（步 47）、SonHeungMin（步 49）、Peru（步 50，当步第 5 次改点）选中。最终 SonHeungMin 与 Peru 同点、Zidane 距 66 格（都在队1）；Eisenhower 与 root 距 36 格（都在队6）",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4019 slot=__tsbSquadSlot%20；L4062-4068 把名字在池里的号从局面里抹掉再算（编队号之间互不排斥）；L4070-4081 候选表每 2.2 秒在本机重算一次（spawnVsPeople）；L4083-4099 按候选顺序用 minSep 贪心取 chosenSlots[slot]；没有 __tsbAssignedSpawn 时走这条本机路径（本局 0 行 HL-SPAWN-BACKEND）",
+   "why": "每个客户端各算各的候选表、各自每 2.2 秒重排一次：槽位号不同，但同一个坐标在不同客户端的表里排在不同槽位；谁最后一条生效的选点落在哪，取决于选点阶段结束的那一步",
+   "estCost": "t=630 还看不出差别（五个号 2,675~2,962 格）；t=600~1155 这四个号 48.6%~64.0% 的决策拍被对方的兵卡住不打内置 AI：Peru 领土 t=900~1260 停在 3,474，Zidane 被内置 AI 反拿 508 格、Eisenhower 302 格、root 162 格；SonHeungMin t=2160 起四周只剩队友（nb=0）",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "digest.py B041 picks；digest.py B041 spawn；simdigest.py B041 roster"
+  },
+  {
+   "t": 630,
+   "bot": "全体 20 个号",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "t=55~470 的 5 个开局周期按时出兵，下令拍→执行拍的延迟中位 10~13 拍（最大 20）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4820-4860（t<coreFrom 走 super.act）→ dpNeutral L2418-2444",
+   "why": "t=630 单号领土中位 2,828.5；同局 [APEX] 十人队 2,433.5，其余 29 个真人 2,343",
+   "estCost": "无",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "logdigest.py B041 oplag；simdigest.py B041 medians [APEX]"
+  },
+  {
+   "t": 925,
+   "bot": "Zidane",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "5,073 格、2.7 万兵（密度 5.4）；8 个内置 AI 邻居只有 0~704 兵、地价 2.0~5.2（Lakota 876 格、0 兵、接壤 85 格）",
+   "codePath": "src/strategy/v27-team-c110.js Style.pickTarget L1180-1213：L1196-1197 avail=bal−floorFor，avail<=minSend×bal 跳过 → V13.floorFor0 L2270-2276 → winFloor L2521-2528 = max(botPx×L/(winR×t), dpKeep, this.sb)，this.sb=safeFinite(g) L2532-2542：对每个内置 AI 邻居，取它所有邻居里兵最多的那个真人的兵（threatOf L464-492），不分队友",
+   "why": "Lakota 的另一个邻居是同队、同点出生的 Peru（3.2 万兵）→ 底线 3.2 万 > 自己 2.7 万 → avail=−4,470。同一拍 Peru 的底线是 Zidane 的 2.8 万 → avail 3,974 < 最小出兵量 6,803：两个号互相锁住",
+   "estCost": "Zidane t=600~1155 64.0% 的决策拍卡在这里，同期被 Lakota/Chola 两个内置 AI 反拿 508 格；Peru 领土 360 拍不动、兵 2.9 万→9.0 万",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "strat_probe.mjs B041 --me 12,18 --dump 12:700:1150:75,18:700:1150:75；simdigest.py B041 gates；simdigest.py B041 front 600"
+  },
+  {
+   "t": 1000,
+   "bot": "Eisenhower",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "3,396 格、4.8 万兵；内置 AI 邻居 Yatenga 1,462 格、0 兵、接壤 81 格",
+   "codePath": "src/strategy/v27-team-c110.js 同上：winFloor L2521-2528 取到 safeFinite L2532-2542",
+   "why": "底线 4.2 万 = 同队 root 的兵（经由两人共同的内置 AI 邻居 Ankole）；root 那边 55.9% 的决策拍同样被 Eisenhower 的兵卡住",
+   "estCost": "Eisenhower 48.6%、root 55.9% 的决策拍；t=1155 两个号的兵 7.8 万、7.4 万（密度 18.8、18.5，编队平均 13.0）",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "strat_probe.mjs B041 --me 11,3 --dump 11:1000:1155:50,3:1000:1155:50；simdigest.py B041 gates"
+  },
+  {
+   "t": 1150,
+   "bot": "Carthage",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "3,853 格、3.0 万兵；5 个内置 AI 邻居合计 4,762 格、1,361 兵（Tambralinga 1,061 格/48 兵、Loango 825/79、Banjar 1,080/944、Gowa 1,580/124、Marinid 216/166）；另一个邻居 [APEX] zexos1 5,333 格、7.4 万兵，接壤 30 格",
+   "codePath": "src/strategy/v27-team-c110.js winFloor L2521-2528 的第二项 dpKeep L2491-2496 = (最强真人邻居的兵 + 它压在我身上的兵 − 1.5×我的地)/1.78，对所有目标（包括 0 兵的内置 AI）共用",
+   "why": "dpKeep=(7.4 万−1.5×3,853)/1.78=3.9 万 > 自己的 3.0 万 → 对谁都 avail<0。zexos1 当时并没有打它",
+   "estCost": "t=600~1155 28 个决策拍；日志里 t=1080~2250 的 1,170 拍零指令，领土 3,853→5,148（同期其余真人中位 6,639 以上）",
+   "patternId": "NEW:OP-dpkeep-freeze-ai",
+   "evidenceRef": "strat_probe.mjs B041 --me 11,3 --dump 11:1000:1155:50,3:1000:1155:50；simdigest.py B041 gates；logdigest.py B041 silent"
+  },
+  {
+   "t": 1120,
+   "bot": "SonHeungMin",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "拍前 6.8 万兵、4,633 格；本机拍 990~1080 发出的指令到 t=1120 才进录像，一拍 9 条",
+   "codePath": "src/strategy/v27-team-c110.js Style.pickTarget L1208 send / dpNeutral；src/engine/live_game_js.js 同拍指令逐条按当时剩余余额的百分比结算",
+   "why": "9 条按下令时的局面各算各的：4 条都落在 bot485 上（337‰→2.0 万、350‰→1.1 万、358‰→7,310、206‰→2,687），4 条打无主地，合计花掉 89.2% 的兵；领土 4,633→5,148",
+   "estCost": "兵 6.8 万→9,098；之后 50 拍内密度 4.8",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "simdigest.py B041 cmdlist 8 1100 1155；simdigest.py B041 cmds"
+  },
+  {
+   "t": 1980,
+   "bot": "Peru",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "本机拍 1530~1980：nb=1、neut=0，密度 41→88，cmds 24→49；余额贴着纯利息曲线、领土 5,392 不动",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5510-5523（pulseMode：L5511 curAtk>=0.04×B 才跳过，capFrac=12%×B）+ Strategy.send L526-539（同目标 15 个本机拍节流）；curAtk L5374 取自本机局面",
+   "why": "推断：本机落后服务器，发出的 pulse 在本机局面里看不到 → 每 15 拍再发一条；追上时 25 条逐条执行，兵 47.5 万→1.8 万（k=23.7）",
+   "estCost": "45.7 万兵换 4,414 格（每格 104 兵），随后密度 1.0~2.6，318 拍后阵亡，地全丢",
+   "patternId": "NEW:IO-stale-pulse-dump",
+   "evidenceRef": "logdigest.py B041 stale；digest.py B041 bot 18"
+  },
+  {
+   "t": 1980,
+   "bot": "Seljuk",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "本机拍 1350~1980：nb=1~3，cmds 55→98（每 14.7 拍 1 条），兵 18.0 万→57.3 万（密度 76）",
+   "codePath": "src/strategy/v27-team-c110.js 同上（buyLand L5510-5523 / 非真人 L5363-5368 的 L5364 g.hasAttack 也只看本机局面；send L526-539）",
+   "why": "推断：同一机制。1980→2070 兵 57.3 万→1,209（k=44.3），领土 7,515→12,941→18,257→20,373",
+   "estCost": "清仓后密度 0.1~1.9；t=2250~2880 被打掉 14,031 格，846 拍后阵亡",
+   "patternId": "NEW:IO-stale-pulse-dump",
+   "evidenceRef": "logdigest.py B041 stale；digest.py B041 bot 7"
+  },
+  {
+   "t": 1935,
+   "bot": "Eisenhower",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "本机密度 120~132（49.8 万~54.7 万兵、4,144 格），非 boxedIn；同队的编队号 bruh、root、Mewtwo、Songhai 都已停摆",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4489：非 boxedIn 且 dMe>=112 → surplus，pct=153；候选 L4466-4486 只要求同队、名字在池里、地>=600、密度<132",
+   "why": "9 条捐款日志都给 bruh（日志停在本机拍 990）；每条的 myBal 比上一条高 → 前一条没在本机生效就又下一条。按引擎额度公式每笔要 157~173 点（t<2142），上限 109~115",
+   "estCost": "若执行：每笔手续费 3.1 万~3.4 万兵（余额的 6.25%）；到没到账看不到",
+   "patternId": "NEW:DN-husk-donate",
+   "evidenceRef": "digest.py B041 donations -v；in_game.log 行 661~669；r06lib.quota_points/quota_limit"
+  },
+  {
+   "t": 2160,
+   "bot": "SonHeungMin",
+   "kind": "boat",
+   "verdict": "good",
+   "state": "t=2160 策略眼里 nb=0、neut=0（四周只剩队友），42.1 万兵、6,671 格、密度 63",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4923 idleBoats → L4979-5005（没有邻居时不受 idleCap 限制）→ boatFood / boatOut",
+   "why": "到 t=2250 发了 3 条船，兵 42.1 万→16.6 万；领土 6,675→8,445（t=2430）→12,910（t=2700）",
+   "estCost": "无（25.5 万兵换 6,235 格，每格 41 兵）",
+   "patternId": "NEW:BT-boxed-breakout",
+   "evidenceRef": "digest.py B041 bot 8"
+  },
+  {
+   "t": 2160,
+   "bot": "Eisenhower",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "清仓后 114 兵、5,713 格；之后 2,700 拍 nb=2~3，兵靠利息涨到 86.8 万（t=4410，6,391 格，密度 136）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5267（c>=worth 且未超软上限 → break）；超软上限后 L5322/L5358/L5361（dpKeep 抬高 keep → avail<=0）；idleBoats L4996：有邻居时兵 >= idleCap×100×地（125×地）才发船",
+   "why": "推断（录像没覆盖）：日志只能看到 cmds/boats 计数 2,700 拍不变。密度>125 的快照 4 个（t=4320、4410、4590、4770），过了 L4996 的门槛也没有船；t=4410 起挨打的 450 拍里 86.8 万兵一条没发",
+   "estCost": "领土 8,878→3,623；少拿利息约 31.4 万；86.8 万兵全部耗在挨打上，阵亡时账上还有 14.2 万",
+   "patternId": "NEW:EG-cap-idle-death",
+   "evidenceRef": "logdigest.py B041 silent；logdigest.py B041 overcap；digest.py B041 bot 3"
+  },
+  {
+   "t": 4050,
+   "bot": "Carthage",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=4050 8,426 格、71.1 万兵（密度 84）；nb=1~2",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5267 / L5361（同 Eisenhower）",
+   "why": "推断：540 拍 cmds 停在 43，领土 8,426→2,880、兵 71.1 万→19.5 万（被打掉）；对面是 ahsokata/队2、Büyük kıti/队3（SonHeungMin 的 HL-ASSIST 日志）",
+   "estCost": "5,546 格；阵亡时账上 16.2 万兵",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "logdigest.py B041 silent；digest.py B041 bot 11 2160 4700"
+  },
+  {
+   "t": 4110,
+   "bot": "SonHeungMin",
+   "kind": "assist",
+   "verdict": "unclear",
+   "state": "队1；141 万~168 万兵、密度 87~101；Carthage（队5，对队1 是敌队）正被 ahsokata/队2、Büyük kıti/队3 打",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4460 squad rescue：L4448-4457 dMe>=65 且 25 拍冷却 → g.attack(102, mainAttacker)，对象是「名字在池里的号」，不看是不是同队",
+   "why": "5 次各 10% 的陆攻（t=4110/4270/4420 → ahsokata，t=4345/4550 → Büyük kıti）。被戳的两人对队1 本来也是敌人；这段 SonHeungMin 领土 15,655→18,436",
+   "estCost": "约 80 万兵换 2,781 格（每格约 290 兵）；Carthage 仍在 t=4616 阵亡",
+   "patternId": "NEW:AS-cross-team-poke",
+   "evidenceRef": "in_game.log HL-ASSIST 5 行；digest.py B041 bot 8"
+  },
+  {
+   "t": 5400,
+   "bot": "SonHeungMin",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=5400 22,121 格、253 万兵（密度 114，超软上限）；nb=3",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5348-5357（over：兵>100×地 → keep 封顶到 overKeepMult×100×地）→ L5526-5531 出兵",
+   "why": "t=5400→5490 −47.4 万兵 / +2,572 格；到 t=5670 领土 34,244（+12,123）",
+   "estCost": "无",
+   "patternId": "NEW:AT-over-cap-dump",
+   "evidenceRef": "digest.py B041 bot 8"
+  },
+  {
+   "t": 1710,
+   "bot": "SonHeungMin",
+   "kind": "idle",
+   "verdict": "unclear",
+   "state": "本机拍 1710~2070：nb=2→1，cmds 停在 71，兵 27.4 万→39.4 万（密度 48→59）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5267（c>=worth）——推断",
+   "why": "这 360 拍没有发令，所以追上服务器时没有东西可清仓；它是留下的 8 个号里唯一没掉兵也没丢地的",
+   "estCost": "无法估计（少打 360 拍 vs 保住 39 万兵）",
+   "patternId": "NEW:AT-worth-gate",
+   "evidenceRef": "logdigest.py B041 stale（对照表）；digest.py B041 bot 8"
+  },
+  {
+   "t": 1980,
+   "bot": "Sweaty",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "队4；t=1980 策略眼里 nb=0、neut=0，31.2 万兵（密度 72）；重放 t=1080 它实际挨着 Luffy/队2（接壤 101 格、6,286 格）",
+   "codePath": "src/strategy/v27-team-c110.js analyze L425-447：L440 isProtectedSquadMate 的邻居不进 nb；isProtectedSquadMate L3993-3996 = 同队 || Boss || (场上还有外人 && 名字在池里)；isOurSquadBot L3973-3976 只比名字 → Luffy 被当成编队号",
+   "why": "能打的内置 AI 吃完后，策略眼里就没有邻居了，只能发船；最后 270 拍的 8 条指令（含 2 条船）在追上服务器时生效，兵 31.2 万→13.1 万→3.2 万，同时本土 270 拍内丢光",
+   "estCost": "本土 4,321 格；t=2519 阵亡",
+   "patternId": "NEW:PL-pool-outsider",
+   "evidenceRef": "strat_probe.mjs B041 --me 2 --dump 2:1050:1155:50；simdigest.py B041 neigh 2 1000 1155；digest.py B041 bot 2"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:IO-stale-pulse-dump",
+   "definition": "发令不见效 → 集中清仓：日志 cmds 计数在涨（>=4 条）而余额贴着纯利息预测（0.97~1.08 倍）、领土不动；随后相邻快照间余额跌到纯利息预测的一半以下而领土没丢（>=90%），且下一个快照没有回弹",
+   "detectionSketch": "logdigest stale：用引擎利率公式在相邻快照间推纯利息余额；k=ln(清仓后余额/纯利息预测)/ln(0.868) 给出「相当于几条 12% pulse 连乘」。有录像时可直接数同号对同目标的生效陆攻间隔",
+   "instances": [
+    {
+     "t": 1980,
+     "bot": "Peru"
+    },
+    {
+     "t": 1980,
+     "bot": "Seljuk"
+    },
+    {
+     "t": 1980,
+     "bot": "Jotaro"
+    },
+    {
+     "t": 1710,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1530,
+     "bot": "Kazakh"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-client-behind",
+   "definition": "本机拍落后服务器拍 >=90 拍：结算行的墙上秒数回推的服务器拍 − 同一时刻各号日志快照的本机拍",
+   "detectionSketch": "logdigest wall：阵亡/终局结算行拟合 秒=a+0.056×拍，再把 left 行的秒数换成服务器拍，与该行前后各号最近快照的拍号相减；logdigest oplag：开局周期指令的下令拍→执行拍延迟",
+   "instances": [
+    {
+     "t": 861,
+     "bot": "Songhai"
+    },
+    {
+     "t": 1350,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1530,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1710,
+     "bot": "Peru"
+    },
+    {
+     "t": 1710,
+     "bot": "Jotaro"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-silent-drop",
+   "definition": "某个号的日志在终局前 300 拍以上中断，之后既没有快照也没有结算行（席位被外层运行环境摘掉）",
+   "detectionSketch": "对局包：results.csv 里没有这个号的行，且 in_game.log 最后一条快照拍 < endTick−300（logdigest wall 末段）",
+   "instances": [
+    {
+     "t": 990,
+     "bot": "Kamakura"
+    },
+    {
+     "t": 990,
+     "bot": "MaxVerstappen"
+    },
+    {
+     "t": 990,
+     "bot": "Morphy"
+    },
+    {
+     "t": 990,
+     "bot": "bruh"
+    },
+    {
+     "t": 990,
+     "bot": "root"
+    },
+    {
+     "t": 990,
+     "bot": "First Bulgarian"
+    },
+    {
+     "t": 990,
+     "bot": "Mewtwo"
+    },
+    {
+     "t": 1080,
+     "bot": "SegFault"
+    },
+    {
+     "t": 1080,
+     "bot": "Cringe"
+    },
+    {
+     "t": 1170,
+     "bot": "Zidane"
+    },
+    {
+     "t": 1170,
+     "bot": "Kobe"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-lag-burst",
+   "definition": "同号同拍 >=3 条生效指令且一拍内出兵+手续费 >= 拍前余额的 50%（攒下的指令成批执行，每条按执行时余额的百分比连乘）",
+   "detectionSketch": "重放：同号同拍生效指令 >=3 且合计花费 >= 50% 余额（simdigest cmds）",
+   "instances": [
+    {
+     "t": 1120,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 1001,
+     "bot": "Kazakh"
+    },
+    {
+     "t": 903,
+     "bot": "bruh"
+    },
+    {
+     "t": 903,
+     "bot": "MaxVerstappen"
+    },
+    {
+     "t": 1036,
+     "bot": "Kobe"
+    },
+    {
+     "t": 875,
+     "bot": "Mewtwo"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+   "detectionSketch": "录像选点指令取每号最后一条生效的落点，两两算距离（digest picks）；无录像用 HL-SPAWN 最后一行近似（不可靠：最后几条日志里的改点可能没生效）",
+   "instances": [
+    {
+     "t": 50,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 50,
+     "bot": "Peru"
+    },
+    {
+     "t": 50,
+     "bot": "Zidane"
+    },
+    {
+     "t": 50,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 50,
+     "bot": "root"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-repick-churn",
+   "definition": "选点阶段单号生效的选点指令 >=8 条，或最后两步还在改点",
+   "detectionSketch": "录像 id=0 指令按号计数、按步号取最后两步（digest picks）；日志侧数 HL-SPAWN 行",
+   "instances": [
+    {
+     "t": 50,
+     "bot": "Peru"
+    },
+    {
+     "t": 49,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 50,
+     "bot": "Zidane"
+    },
+    {
+     "t": 50,
+     "bot": "root"
+    },
+    {
+     "t": 50,
+     "bot": "Cringe"
+    },
+    {
+     "t": 49,
+     "bot": "bruh"
+    },
+    {
+     "t": 49,
+     "bot": "Jotaro"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-safefinite-squad-lock",
+   "definition": "打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」的兵，那个邻居是我方在场号（同队或异队）；去掉这一项当拍就能出兵",
+   "detectionSketch": "影子探针逐决策拍（strat_probe.mjs --tally → simdigest gates）：t<1500 gate=floor:sb 且 sbKind 以「我方号」开头且 passNoSb=1",
+   "instances": [
+    {
+     "t": 925,
+     "bot": "Zidane"
+    },
+    {
+     "t": 925,
+     "bot": "Peru"
+    },
+    {
+     "t": 1000,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1000,
+     "bot": "root"
+    },
+    {
+     "t": 1000,
+     "bot": "Cringe"
+    },
+    {
+     "t": 1000,
+     "bot": "Kamakura"
+    },
+    {
+     "t": 1000,
+     "bot": "Mewtwo"
+    },
+    {
+     "t": 1000,
+     "bot": "bruh"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-dpkeep-freeze-ai",
+   "definition": "t<1500 打内置 AI 的底线取到 dpKeep（最强真人邻居的兵折算），高于自己的可用兵 → 对 0 兵的内置 AI 也不出手，而那个真人当时并没有打我",
+   "detectionSketch": "影子探针 tally：t<1500 gate=floor:dpKeep（simdigest gates 的 dpKeep 列）",
+   "instances": [
+    {
+     "t": 1150,
+     "bot": "Carthage"
+    },
+    {
+     "t": 1000,
+     "bot": "bruh"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-pool-outsider",
+   "definition": "外人的名字在编队名字池里（isOurSquadBot 只比名字）：它与我方号接壤却不进邻居表，策略不会陆攻它",
+   "detectionSketch": "重放名字表：编号 < 真人数、不是我方 20 个号、名字小写在 SQUAD_POOL_SET 里；再查与我方号的接壤（simdigest neigh）",
+   "instances": [
+    {
+     "t": 1080,
+     "bot": "Sweaty"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-pool-ai",
+   "definition": "内置 AI 的名字在编队名字池里：我方号与它接壤却不打它",
+   "detectionSketch": "重放：引擎名字表里编号 >= 真人数且名字小写在 SQUAD_POOL_SET 里的号（simdigest poolai）",
+   "instances": [
+    {
+     "t": 1155,
+     "bot": "全体（17 个撞名 AI，t=630 占 8,872 格）"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-husk-donate",
+   "definition": "捐款的收款人当时已经不在场（离开/停摆后由内置 AI 托管）",
+   "detectionSketch": "有录像：捐款执行拍 >= 收款人的离开拍；无录像：HL-DONATE 的 ally 在该拍之前日志已中断 >=300 拍且没有结算行",
+   "instances": [
+    {
+     "t": 1935,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1955,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1975,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1995,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2015,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2035,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2055,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2075,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2095,
+     "bot": "Eisenhower"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-over-quota",
+   "definition": "一笔捐款按引擎额度公式需要的点数超过当拍的受捐上限（即使对方额度一点没用也过不了）",
+   "detectionSketch": "HL-DONATE 的 myBal、pct → 到账 v=floor(myBal×(pct+1)/1024)；需要点数 = 2+100v/(k×(1+陆地/300))（k=1/4/10/30/100 随拍分档）对比 quota_limit(t)",
+   "instances": [
+    {
+     "t": 1935,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 1995,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2095,
+     "bot": "Eisenhower"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-cap-idle-death",
+   "definition": "连续 >=600 拍没有任何指令、期间密度升到 >=100，随后 600 拍内被打掉 >=25% 领土或被打死",
+   "detectionSketch": "快照 cmds/boats 计数 >=600 拍不变且期间 dens>=100，之后 600 拍内领土跌 >=25% 或阵亡（logdigest silent）",
+   "instances": [
+    {
+     "t": 2160,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 4050,
+     "bot": "Carthage"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-passive-death",
+   "definition": "阵亡前 >=450 拍 cmds/boats 计数不变（零指令），而这段时间 nb>=1 且领土在掉",
+   "detectionSketch": "无录像：logdigest silent 里「直到阵亡」的时段；有录像：死前 600 拍对真人 0 条陆攻",
+   "instances": [
+    {
+     "t": 2250,
+     "bot": "Seljuk"
+    },
+    {
+     "t": 2070,
+     "bot": "Kazakh"
+    },
+    {
+     "t": 4050,
+     "bot": "Carthage"
+    },
+    {
+     "t": 2160,
+     "bot": "Eisenhower"
+    },
+    {
+     "t": 2070,
+     "bot": "Jotaro"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AS-cross-team-poke",
+   "definition": "HL-ASSIST 的「10% squad-rescue poke」是替异队的编队号打的（被救的号与出手的号不同队）",
+   "detectionSketch": "HL-ASSIST 行的 ally 与出手号按真实分队比较；再看被戳的 enemy 属于哪一队",
+   "instances": [
+    {
+     "t": 4110,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 4270,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 4345,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 4420,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 4550,
+     "bot": "SonHeungMin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-boxed-breakout",
+   "definition": "策略眼里 nb=0、neut=0 时发船，之后 500 拍内领土 +50% 以上",
+   "detectionSketch": "日志：nb==0 && neut==0 的快照之后 boats 计数上升，且 500 拍内 terr >= 1.5×当时值",
+   "instances": [
+    {
+     "t": 2160,
+     "bot": "SonHeungMin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-over-cap-dump",
+   "definition": "兵超过 100×领土后一次出手打掉 >=15% 余额并在 300 拍内领土 +10% 以上",
+   "detectionSketch": "有录像按指令算；无录像：密度>100 的快照后相邻快照余额跌 >=15% 且 300 拍内领土 +10%",
+   "instances": [
+    {
+     "t": 5400,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 3960,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 3960,
+     "bot": "Carthage"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-worth-gate",
+   "definition": "有可打的真人邻居而长时间不出手：buyLand 对真人邻居的报价停在 L5267（c>=worth 且没超软上限）",
+   "detectionSketch": "有录像：strat_probe 的逐报价出口；无录像：日志 nb>=1 且 cmds 计数 >=300 拍不变、密度 <100",
+   "instances": [
+    {
+     "t": 1710,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 2430,
+     "bot": "SonHeungMin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-cycle-open",
+   "definition": "开局周期出兵按时执行（指令延迟 <50 拍）且 t=630 单号领土中位不低于同局其余真人中位",
+   "detectionSketch": "HL-OPENING 配录像无主地指令的延迟（logdigest oplag）；重放 t=630 各真人领土（simdigest medians）",
+   "instances": [
+    {
+     "t": 630,
+     "bot": "全体 20 个号"
+    }
+   ]
+  },
+  {
+   "name": "NEW:CMD-repeat-before-effect",
+   "definition": "同一个号对同一玩家目标的两条生效陆攻相隔 <=21 拍（3 个服务器回合）：第二条是在第一条落地前后下的",
+   "detectionSketch": "重放 squadCmds：同 p 同 raw 目标、ok=1、间隔 1~21 拍（simdigest dups）",
+   "instances": [
+    {
+     "t": 560,
+     "bot": "Kobe"
+    },
+    {
+     "t": 567,
+     "bot": "Peru"
+    },
+    {
+     "t": 574,
+     "bot": "bruh"
+    },
+    {
+     "t": 693,
+     "bot": "Kazakh"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "win",
+ "secondaryArchetype": "external",
+ "teamSplit": true,
+ "externalFactors": [
+  "客户端落后服务器：开局周期指令「下令拍→执行拍」的延迟中位从 10~13 拍（下令拍 <500）涨到 29（500~599）、65（600~699）、140（700~799，最大 203）；到各号 t<=1080 的最后一条快照，策略已发 637 条指令，录像里只有 311 条（48.8%）",
+  "墙上 118 秒（服务器拍≈1,692）时各号本机只跑到 1,080~1,350 拍（落后 342~612 拍）；就在这时 20 个号少了 12 个：11 个号的日志停在本机拍 990~1170、此后没有任何记录（连结算行都没有），录像号 Songhai 被登记为 left。这 12 个号在 t=1155 占着 59,966 格（全图 12.47%）、77.3 万兵",
+  "剩下的 8 个号在本机拍 1980~2160 追上服务器：落后期间按本机旧局面下的指令在追上的一两个快照内集中生效",
+  "20 个号被引擎分到 6 支队里：队1=3、队2=4、队3=2、队4=1、队5=5、队6=5（卡片只数到 2+2+1+2+1）"
+ ],
+ "winnerNotes": "赢家是队1（t=7001 占 99.4%）。它在 t=630 只有 6.4%（队6 6.3%、队4 5.7%），t=1155 已经 17.3%，是六队里最大的；之后 29.6%（t=2388）→34.5%（t=2916）→46.7%（t=4616）→50.6%（t=4936）。队1 有 11 个真人：我方 3 个 + 外人 8 个。t=1155 这 8 个外人单号领土中位 8,936（🔱[CN] TT 12,964、[OMEN] 10,885、Рязань 9,939、[OG] Javohir 9,434、Playerone 8,438、[OG]🦷 7,752），合计 69,876 格、34.8 万兵，密度只有 5.0；同一时刻我方 20 个号中位 4,518、密度 13.0，[APEX] 十人队中位 2,894.5、密度 23.7。队1 的外人在瓜分内置 AI 的 500 拍里把兵都换成了地。我方对队1 的贡献：t=1155 三个号占队1 领土的 16.1%（13,406/83,282）；之后 Zidane 停摆、Peru 阵亡，SonHeungMin 一个号终局 39,327 格，占队1 的 8.2%。我方另外 17 个号分在五支输掉的队里：其中 11 个在 t≈1,692 停摆，6 个在 t=2451~4936 阵亡。t=2916 之后的队间战况没有录像，只有结算行里的各队领土。",
+ "wentWell": [
+  "开局周期出兵：t=630 单号领土中位 2,828.5，高于同局 [APEX] 十人队（2,433.5）和其余 29 个真人（2,343）。",
+  "SonHeungMin 被队友围住后（t=2160，nb=0）靠 3 条船破局：25.5 万兵换 6,235 格，领土 6,675→12,910。",
+  "SonHeungMin 后期每次密度过 100 就出手：t=3960 起领土 14,200→39,327；估算因超软上限少拿的利息 76.9 万，只占实得利息 1,210 万的 6%。",
+  "没有在落后期间发令的两个号（SonHeungMin t=1710~2070、Carthage）都躲过了集中清仓。"
+ ],
+ "unknowns": [
+  "本机为什么从 t≈500 起越跑越慢、12 个页面为什么在第 118 秒前后被摘掉：局内数据只看得到结果（策略每拍平均不到 1.2 毫秒）。",
+  "t>1155 没有录像：Peru/Jotaro/Sweaty/Kazakh/Seljuk/Carthage/Eisenhower 是被谁打死的、清仓时打的是谁、每条指令是否生效，都只能从日志快照推断。「集中清仓 = 落后期间的指令在追上时逐条生效」是与全部快照一致的解释，不是逐条核对过的事实。",
+  "Eisenhower 的 9 条捐款有没有到达引擎、有没有被额度拒掉：执行拍如果在 2142 之前，按公式一条都过不了；之后每笔 48~53 点，最多过 2 笔。bruh 当时还剩多少地也不知道。",
+  "Eisenhower t=2160~4860、Carthage t=1080~2250 和 t=4050~4590 的零指令到底卡在 buyLand 的哪一行：录像没覆盖，探针跑不到。文中写的 L5267/L5361 是从同一份代码在 B039 的实测结果类推的。",
+  "有些号在追赶期间整段没有 HL-TICK 快照（Eisenhower 本机拍 1800~2070、Kazakh 1620~1980、Seljuk 1170~1260），但同期有别的日志（Eisenhower 的 HL-DONATE、Kazakh 本机拍 1835/2015 的 HL-SLOW-TICK）：策略在跑，只是 90 的整数倍那几拍没被调用——像是本机在快进、每批只调一次策略。对局包里没有实盘适配层（canAct）的代码，无法确认。",
+  "12 个停摆席位之后的去向（被谁吃掉、有没有反过来打我方在场号）看不到。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "额度拒单",
+   "a": "重放范围内（t<=1155）没有任何捐款指令。日志 9 条捐款全是 Eisenhower→bruh（pct=153，本机拍 1935~2095）：按引擎额度公式（r06lib.quota_points）每笔到账 7.5 万~8.2 万，t<2142 要 157~173 点，受捐上限 109~115 点——单笔就超上限，对方额度一点没用也过不了；t>=2142 每笔 48~53 点。tryDonateToTeammate 里没有任何额度计算。卡片启发式「8 笔疑似被拒」的依据是 20 拍后余额没掉——在本局更可能是「还没在本机生效」。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "本局没有小额捐款：9 条都是 pct=153（到账 15.0%、手续费 6.25%，效率 70.6%）。如果全部执行，9 笔手续费合计约 29.3 万兵。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "策略眼里 nb=0 且 neut=0 的快照：Sweaty 4 个（t=1980 起，实际挨着撞名外人 Luffy）、SonHeungMin 4 个（t=2160~2250 被队友围住，发船破局；t=6840~6930 终局前密度 109）。真正的高密度闲置不在「被围」的号上，而在有邻居却不出手的号上：Eisenhower 密度>100 的快照 10 个（少拿利息 31.4 万）、Carthage 9 个（13.8 万）、SonHeungMin 14 个（76.9 万）。"
+  },
+  {
+   "q": "出生与开局被围",
+   "a": "选点靠各号本机重算：51 步里每号改点 2~13 次，105 个坐标里 29 个被多个号先后选过；SonHeungMin/Peru 同点、Zidane 66 格、Eisenhower/root 36 格，全是同队。叠着出生的四个号 t=600~1155 有 48.6%~64.0% 的决策拍互相锁住。贴着外人出生的 Carthage（29 格）t=630 只有 1,961 格（倒数第二）。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "t<=1155 没有真人打我方号。之后的 7 个阵亡号里 5 个是清仓（或成批出兵）后密度 0~9 被打穿的，2 个（Eisenhower、Carthage）是手里有 71 万~87 万兵（密度 84~136）时零指令被打死的，阵亡时账上还剩 14 万~16 万兵。领先被送掉的窗口：编队在场领土 19.99%（t=1155）→9.43%（t=1530，停摆 12 个号）→5.52%（t=2916，清仓后连死 5 个）。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "真实分队 队1=3、队2=4、队3=2、队4=1、队5=5、队6=5；先选队进了 14 个、第二志愿 3 个、补位 3 个。人数最多的队5、队6 都输了。跨队的影响：（1）safeFinite 把异队编队号的兵也当底线：332 个被卡的决策拍里 67 个是异队（Cringe 18、Kamakura 15、Mewtwo 13、bruh 12、Kobe 9）；（2）SonHeungMin（队1）5 次替异队的 Carthage（队5）出兵；（3）Sweaty 一个号落在 [APEX] 的队4，身边的撞名外人 Luffy 被当成自己人。互保名单造成的「无邻可打」在 t<=1155 没有出现（simdigest protbox 为空）。"
+  },
+  {
+   "q": "HUB 广播 0004 的三处病灶对账",
+   "a": "（1）t<1500 打内置 AI 时 winFloor 取到 safeFinite、被队友的兵锁住：成立，而且本局以同队互锁为主——2,220 个决策拍里 332 个（15.0%，同队 265），集中在叠着出生的 Zidane/Peru、Eisenhower/root。另有一个变体：底线取到 dpKeep（Carthage 被 [APEX] zexos1 的兵冻住，28 个决策拍）。（2）expandNeutral 的小额无主地单挤掉 buyLand：重放只到 t=1155，buyLand 还没启用（coreFrom=1500）；t<1500 同拍两单的情形 768 个里只有 3 个。（3）前一单没生效就重复下单：重放内同目标 21 拍内重复 11 组/138（8.0%，第二单共 1.3 万兵）；t>1155 的集中清仓是它的极端形态——本机落后时同一目标被连下 25 条 pulse。"
+  },
+  {
+   "q": "HUB 广播 0003 的几项",
+   "a": "选点重算：成立（见出生一问）。isNoFullSend 误锁：影子探针里 20 个号有 17 个在 t=56~1071 被置真（始终为假的只有 Seljuk、SonHeungMin、SegFault）；按日志原文的发令拍和 spend 直接重演，满足置真条件的有 9 个号（First Bulgarian t=65、bruh/Carthage t=460、Kobe t=555、Jotaro t=600、root t=620、Eisenhower/Zidane/Songhai t=700）。t>=4800 时它是否让保守闸门失效，本局没有录像可查。船赠队友、反序清仓批、Vb 阶段倒输血：重放范围内没有发船和捐款，无法核对。跨队救援 poke：5 次，全是 SonHeungMin 替 Carthage。名字池撞名：17 个内置 AI + 外人 Luffy。"
+  }
+ ],
+ "scripts": [
+  "node c136-review/agents/R06/scripts/replay_decode.mjs B041（套 run-heavy.sh）",
+  "python3 c136-review/agents/R06/scripts/team_assign.py B041",
+  "bash c136-review/agents/R06/scripts/run_truth.sh B041（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/B041/sim_state.json）",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B041 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B041 --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
+  "python3 c136-review/agents/R06/scripts/digest.py B041 roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
+  "python3 c136-review/agents/R06/scripts/digest.py B041 picks（选点指令真值：改点次数、最后两步的改点、撞点）",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B041 stale|silent|seqlag|wall|overcap|drop30|oplag|issued|json（只用日志快照的事实：发令不见效→集中清仓、零指令时段、本地拍落后、墙上时钟对拍、超软上限、全量 DROP30）",
+  "python3 c136-review/agents/R06/scripts/make_review.py B041"
+ ],
+ "confidenceOverall": "medium：t<=1155 的全场状态来自真引擎重放（日志快照 202/202 条逐兵一致），这段的出兵、延迟、分队、闸口都是真值或影子探针实测；t>1155（占全局 84% 的时间）只有日志快照、结算行和日志原文，攻击者和代码分支是推断。客户端落后与 12 个号停摆有墙上时钟和日志序号两路证据；「集中清仓」的机制解释与全部快照一致但没有逐条指令核对。"
+}

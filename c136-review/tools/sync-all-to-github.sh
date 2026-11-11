@@ -18,8 +18,10 @@ for r in 01 02 03 04 05 06 07 08 09 10; do
   mkdir -p "$DST"
   for sub in reviews reports scripts notes cards outbox review-src reviews_src analysis; do
     if [ -d "$SRC/$sub" ]; then
+      rm -rf "$DST/$sub"
       mkdir -p "$DST/$sub"
-      rsync -a --delete --exclude '__pycache__' --exclude '*.pyc' --exclude 'node_modules' "$SRC/$sub/" "$DST/$sub/"
+      cp -rf "$SRC/$sub/." "$DST/$sub/"
+      find "$DST/$sub" \( -name '__pycache__' -o -name '*.pyc' -o -name 'node_modules' \) -exec rm -rf {} + 2>/dev/null || true
     fi
   done
   # 同步 out/ 下小于 2MB 的汇总文本/JSON/TSV/CSV（排除超大缓存）
