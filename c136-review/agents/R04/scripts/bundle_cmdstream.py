@@ -17,6 +17,9 @@
 #            落地 = 录像里我方的捐款指令（按服务器拍号分档）。被反喂养配额或收款人上限拒掉的单不会进录像
 #            （13 局里录像的捐款条数和真引擎入账的笔数对得上：A013 10、A038 74、A083 102），所以两者之比就是落地率。
 #            只算录像这个房间里的号。不依赖 events.csv 的 likelyRejected 标记（它在 c110 上不可靠）。对应 NEW-DN-QUOTABLIND。
+#            录像没录到终局的局，「发出」只数到录像的最后一拍。
+#   不计入的局：没有 replay.txt 的；replay.txt 只有开头、不到 600 拍的。录像没录到终局（<0.9×endTick）的局照算，但在输出开头列出来。
+#   输出 §4：600~2999 拍同一个号同一拍落地几条陆攻的分布，和同一个号相邻两批之间隔多少拍。
 #   对照组 = 同一局里既不是本编队的号、也不是另一支本方编队的号的真人位。真人手点和程序发令本来就不同，对照只说明
 #            「这不是同一局里所有玩家都有的现象」，不说明成因。
 #   另一支本方编队的号（不进对照组，单独数）：带 [APEX] 标签、名字是 squad10 / squad8 那几个号名的；或者不带标签、名字在
@@ -177,13 +180,18 @@ def scan(mid, idmap, sib_names=(set(), set())):
             bd = next(lab for lo, hi, lab in BANDS if lo <= t < hi)
             g['don'] += 1
             g['don@' + bd] += 1
+    sent_after = 0
     with open(os.path.join(B, mid, 'events.csv'), encoding='utf8') as f:
         for e in csv.DictReader(f):
             if e['type'] in ('DISPATCH', 'DONATE') and e['bot'] in our_names and e['t']:
+                if int(e['t']) > vu['totalTicks']:
+                    sent_after += 1      # 录像没录到的那一段：不进「发出」，否则落地率被压低
+                    continue
                 bd = next(lab for lo, hi, lab in BANDS if lo <= int(e['t']) < hi)
                 G['ours']['sent'] += 1
                 G['ours']['sent@' + bd] += 1
-    return dict(mid=mid, cohort=card['cohort'], ver=version(mid), res=res, H=H, ticks=vu['totalTicks'], G=G)
+    return dict(mid=mid, cohort=card['cohort'], ver=version(mid), res=res, H=H, ticks=vu['totalTicks'], G=G,
+                end=o.get('endTick') or 0, sent_after=sent_after)
 
 
 def pct(a, b):
@@ -266,6 +274,13 @@ def main():
     if stub:
         print('# replay.txt 只有开头、不到 600 拍的局（不计入）：%d 局：%s' % (len(stub), '、'.join(stub)))
     rows = [r for r in rows if r['ticks'] >= 600]
+    part = [r for r in rows if r['end'] and r['ticks'] < 0.9 * r['end']]
+    if part:
+        print('# 录像没录到终局的局（录像拍数 < 0.9×对局卡的 endTick；只算录像覆盖到的那一段，调度的「发出」也只数到录像的最后一拍）：%d 局：%s' % (
+            len(part), '、'.join('%s（%d / %d 拍）' % (r['mid'], r['ticks'], r['end']) for r in part)))
+        print('#   这些局里录像最后一拍之后的调度 / 捐款行 %d 行，不进 DONLAND；按编队：%s' % (
+            sum(r['sent_after'] for r in part),
+            '、'.join('%s %s %d 局' % (k[0], k[1], n) for k, n in collections.Counter((r['cohort'], r['ver']) for r in part).items())))
     zero = [r['mid'] for r in rows if r['G']['ours']['players'] == 0]
     if zero:
         print('# 录像里认不出我方号的局（不计入）：' + '、'.join(zero))
