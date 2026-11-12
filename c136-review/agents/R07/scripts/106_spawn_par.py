@@ -193,6 +193,29 @@ def main():
         r1500 = statistics.median((s["at"].get("1500", {}).get("terr", 0) if s["at"].get("1500", {}).get("st") == 1 else 0) / s["vor"] for s in xs)
         gone = sum(1 for s in xs if s["at"].get("1500", {}).get("st") != 1) / len(xs)
         P(f"我方号（全部，天然地盘中位 {statistics.median(s['vor'] for s in xs):.0f} 格）\t{len(xs)}\t{r630:.2f}\t{r1500:.2f}\t{100 * gone:.0f}%")
+        J["fillSquad"] = {"n": len(xs), "r630": r630, "r1500": r1500, "gone": gone}
+    P("")
+
+    # γ 本身有抽样误差：出生站位这一项（各局 −ln v_γ 的平均）跟着变多少
+    P("## 表 D：出生站位这一项（各局 −ln v_γ 的平均）对 γ 取值的敏感度")
+    P("拍\tγ\t各局平均 −ln v_γ\tγ 减一个标准误\tγ 加一个标准误\t剔除一局后 γ 最小时\t剔除一局后 γ 最大时")
+    J["gammaSens"] = {}
+    for t in ("630", "1500"):
+        r = J["gamma"].get(t)
+        if not r:
+            continue
+
+        def mean_spawn(gm):
+            vals = []
+            for d in data.values():
+                sq = [s for s in d["sites"] if s["bot"]]
+                oth = [s for s in d["sites"] if not s["bot"]]
+                if sq and oth:
+                    vals.append(-math.log((sum(s["vor"] ** gm for s in sq) / len(sq)) / (sum(s["vor"] ** gm for s in oth) / len(oth))))
+            return sum(vals) / len(vals) if vals else None
+        cols = [mean_spawn(x) for x in (r["g"], r["g"] - r["se"], r["g"] + r["se"], r["lo"], r["hi"])]
+        J["gammaSens"][t] = {"mid": cols[0], "minusSe": cols[1], "plusSe": cols[2], "jkLo": cols[3], "jkHi": cols[4]}
+        P(f"{t}\t{r['g']:.3f}\t" + "\t".join(f"{x:+.3f}" for x in cols))
     P("")
 
     open(os.path.join(OUT, "_cross", "spawn_par.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
