@@ -23,8 +23,13 @@
 <!-- assert: Math.abs(n('arena-cps.1071.oLand') - 1) <= 0.12 && Math.abs(n('arena-cps.1071.sLand') - 1) <= 0.08 -->
 <!-- assert: n('arena-cps.1530.sLand') >= 1.08 && n('arena-cps.3210.sLand') >= 1.3 && n('arena-cps.4284.sLand') >= 1.5 -->
 <!-- assert: n('arena-cps.3210.oLand') <= 0.85 && n('arena-cps.4284.oLand') <= 0.8 -->
-- **到 1071 拍为止对得上。** 其余真人的人均地，模型 ÷ 录像的中位：357 拍 {{v:arena-cps.357.oLand}}，630 拍 {{v:arena-cps.630.oLand}}，1071 拍 {{v:arena-cps.1071.oLand}}；我方人均地：{{v:arena-cps.357.sLand}}、{{v:arena-cps.630.sLand}}、{{v:arena-cps.1071.sLand}}。其余真人在场占比、内置 AI 占的陆地，和录像差在几个百分点以内。
-- **1530 拍以后一路偏离。** 我方人均地 模型 ÷ 录像：1530 拍 {{v:arena-cps.1530.sLand}}，2142 拍 {{v:arena-cps.2142.sLand}}，3210 拍 {{v:arena-cps.3210.sLand}}，4284 拍 {{v:arena-cps.4284.sLand}}；其余真人人均地同时走低：{{v:arena-cps.1530.oLand}}、{{v:arena-cps.2142.oLand}}、{{v:arena-cps.3210.oLand}}、{{v:arena-cps.4284.oLand}}。也就是说，闭环里的对手在中后期比真人弱，我方在闭环里的中后期成绩比当年的实际成绩好得多。
+<!-- assert: ['357', '630'].every((t) => Math.abs(n(`arena-cps.${t}.oDens`) - 1) <= 0.08 && Math.abs(n(`arena-cps.${t}.sDens`) - 1) <= 0.08 && n(`arena-cps.${t}.oAlive`) === 0 && n(`arena-cps.${t}.ai`) === 0 && Math.abs(n(`arena-cps.${t}.rel`) - 1) <= 0.08) -->
+<!-- assert: n('arena-cps.1071.rel') >= 1.08 && n('arena-cps.1071.rel') <= 1.15 && Math.abs(n('arena-cps.1071.oDens') - 1) <= 0.05 && Math.abs(n('arena-cps.1071.sDens') - 1) <= 0.05 && n('arena-cps.1071.ai') <= 3 -->
+<!-- assert: n('arena-cps.357.oDens') <= Math.min(n('arena-cps.357.sDens'), n('arena-cps.630.oDens')) && n('arena-cps.630.sDens') >= Math.max(n('arena-cps.357.sDens'), n('arena-cps.630.oDens')) -->
+- **到 630 拍对得上。** 其余真人的人均地，模型 ÷ 录像的中位：357 拍 {{v:arena-cps.357.oLand}}，630 拍 {{v:arena-cps.630.oLand}}；我方人均地：{{v:arena-cps.357.sLand}}、{{v:arena-cps.630.sLand}}。两边的兵密度在 {{v:arena-cps.357.oDens}}~{{v:arena-cps.630.sDens}} 之间，其余真人在场占比、内置 AI 占的陆地和录像没有差。
+- **1071 拍，绝对量还对得上，相对量开始偏。** 其余真人的人均地 {{v:arena-cps.1071.oLand}}，我方人均地 {{v:arena-cps.1071.sLand}}，两边兵密度都是 {{v:arena-cps.1071.oDens}}。但这两个小偏差方向相反，叠起来，我方人均地 ÷ 其余真人人均地的中位已经是录像的 {{v:arena-cps.1071.rel}} 倍（630 拍是 {{v:arena-cps.630.rel}}）。内置 AI 占的陆地与录像的差是 {{v:arena-cps.1071.ai}} 个百分点（模型里多）：模型里的对手吃内置 AI 比真人慢一点。
+<!-- assert: n('arena-cps.1530.rel') >= 1.15 && n('arena-cps.2142.rel') > n('arena-cps.1530.rel') && n('arena-cps.3210.rel') > n('arena-cps.2142.rel') && n('arena-cps.4284.rel') > n('arena-cps.3210.rel') -->
+- **1530 拍以后一路偏离。** 我方人均地 模型 ÷ 录像：1530 拍 {{v:arena-cps.1530.sLand}}，2142 拍 {{v:arena-cps.2142.sLand}}，3210 拍 {{v:arena-cps.3210.sLand}}，4284 拍 {{v:arena-cps.4284.sLand}}；其余真人人均地同时走低：{{v:arena-cps.1530.oLand}}、{{v:arena-cps.2142.oLand}}、{{v:arena-cps.3210.oLand}}、{{v:arena-cps.4284.oLand}}。相对量从 {{v:arena-cps.1530.rel}} 倍涨到 {{v:arena-cps.4284.rel}} 倍。也就是说，闭环里的对手在中后期比真人弱，我方在闭环里的中后期成绩比当年的实际成绩好得多。
 
 ### 7.3 对手的出手强度
 
@@ -32,8 +37,12 @@
 
 <!-- assert: Math.abs(n('arena.int.0.cmd') - 1) <= 0.2 && Math.abs(n('arena.int.490.cmd') - 1) <= 0.1 && Math.abs(n('arena.int.630.cmd') - 1) <= 0.1 -->
 <!-- assert: n('arena.int.3210.hum') <= 0.7 && n('arena.int.3210.bal') <= 0.75 -->
-- 出手的密度和对象构成，模型逐阶段贴着录像（这是按画像生成的，贴得上是应该的）：每人每 100 拍生效指令 模型 ÷ 录像，490~630 拍 {{v:arena.int.490.cmd}}，630~850 拍 {{v:arena.int.630.cmd}}。
-- 对不上的是**兵**：模型里其余真人的人均余额从 1071 拍起越来越低于录像（1300~1530 拍 {{v:arena.int.1300.bal}}，3210~4284 拍 {{v:arena.int.3210.bal}}）。出手条数和千分比都对，余额低了，每一条出的兵就少：3210~4284 拍打真人出的兵，模型 {{v:arena.int.3210.humSent}}。
+<!-- assert: ['105', '231', '357', '490', '630', '850'].every((k) => Math.abs(n(`arena.int.${k}.cmd`) - 1) <= 0.065) && ['0', '1071', '1300', '1530', '2142', '3210'].every((k) => Math.abs(n(`arena.int.${k}.cmd`) - 1) <= 0.16) -->
+- 出手的密度和对象构成，模型逐阶段贴着录像（这是按画像生成的，贴得上是应该的）。每人每 100 拍生效指令 模型 ÷ 录像：105 拍到 1071 拍的六个阶段都在 1 ± 0.06 以内（490~630 拍 {{v:arena.int.490.cmd}}，630~850 拍 {{v:arena.int.630.cmd}}）；偏得最多的是开头 0~105 拍（{{v:arena.int.0.cmd}}）、1071~1300 拍（{{v:arena.int.1071.cmd}}）和最后 3210~4284 拍（{{v:arena.int.3210.cmd}}）。
+<!-- assert: n('arena.int.630.bal') >= 0.9 && n('arena.int.1071.bal') < n('arena.int.630.bal') && n('arena.int.1300.bal') < n('arena.int.1071.bal') && n('arena.int.1530.bal') <= 0.7 && n('arena.int.2142.bal') < n('arena.int.1530.bal') && n('arena.int.3210.bal') < n('arena.int.2142.bal') -->
+<!-- assert: n('arena.int.3210.hum') <= 0.5 && n('arena.int.1530.spend') >= 1.5 && ['0', '105', '231', '357', '490', '630', '850', '1071', '1300', '3210'].every((k) => Math.abs(n(`arena.int.${k}.spend`) - 1) <= 0.12) && n('arena.int.2142.spend') <= 1.35 -->
+- 对不上的是**兵**。模型里其余真人的人均余额从 630 拍起一点点低于录像（630~850 拍 {{v:arena.int.630.bal}}，1071~1300 拍 {{v:arena.int.1071.bal}}，1300~1530 拍 {{v:arena.int.1300.bal}}），1530 拍以后掉得快（{{v:arena.int.1530.bal}}、{{v:arena.int.2142.bal}}、{{v:arena.int.3210.bal}}）。余额低了，差不多的条数出的兵就少：3210~4284 拍打真人出的兵，模型是录像的 {{v:arena.int.3210.hum}} 倍（{{v:arena.int.3210.humSent}}）。
+- 还有一处对不上：1530~2142 拍，模型里其余真人每 100 拍花掉的余额占比是录像的 {{v:arena.int.1530.spend}} 倍，2142~3210 拍 {{v:arena.int.2142.spend}} 倍；别的阶段这个比都在 1 ± 0.12 以内。余额变低和花得更快，哪个是因、哪个是果，这里没有分开。
 
 人与人之间的差别，到各时刻为止每人下过几条有兵的陆攻（这一项只统计到 1071 拍）：
 
@@ -57,7 +66,8 @@
 
 <!-- assert: Math.abs(n('arena.sq.0.aiSentR') - 1) <= 0.25 -->
 <!-- assert: n('arena.sq.1071.aiSentR') >= 1.3 -->
-我方在闭环里和在录像里出手的对比（同一版策略、同一条通道）：630 拍之前打无主地、打内置 AI 的条数和出兵都接近；1071 拍起，闭环里我方打内置 AI 的出兵明显多于录像（1071~1530 拍是录像的 {{v:arena.sq.1071.aiSentR}} 倍）。对手弱了，内置 AI 留给我方的更多，我方的地就从这里开始超出历史。
+<!-- assert: n('arena.sq.1530.humSentR') >= 1.1 && n('arena.sq.2142.humSentR') >= 1.2 && n('arena.sq.3210.humSentR') >= 1.3 && Math.abs(n('arena.sq.630.aiSentR') - 1) <= 0.1 -->
+我方在闭环里和在录像里出手的对比（同一版策略、同一条通道）：1071 拍之前打无主地、打内置 AI 的条数和出兵都接近（打内置 AI 的出兵，0~630 拍是录像的 {{v:arena.sq.0.aiSentR}} 倍，630~1071 拍 {{v:arena.sq.630.aiSentR}} 倍）；1071 拍起，闭环里我方打内置 AI 的出兵明显多于录像（1071~1530 拍是录像的 {{v:arena.sq.1071.aiSentR}} 倍），1530 拍起打真人的出兵也多（{{v:arena.sq.1530.humSentR}}、{{v:arena.sq.2142.humSentR}}、{{v:arena.sq.3210.humSentR}} 倍）。和 7.2 节合起来看，一种读法是：模型里的对手吃内置 AI 慢一点，留给我方的内置 AI 多，我方的地从 1071 拍前后开始超出历史，之后越滚越大。这个读法没有单独验证过（7.5 节）。
 
 ### 7.5 误差是前期滚出来的，还是后期没拟合上
 
@@ -73,11 +83,21 @@
 
 ### 7.6 已知边界
 
-1. **闭环可用的范围是开局到 1071 拍前后。** 在这个范围里，对手的地、兵密度、在场人数和我方的地都和录像对得上（中位在 ±10% 上下）。
+1. **闭环对得上的范围是开局到 630 拍；到 1071 拍只有绝对量对得上。** 630 拍为止，对手的地、兵密度、在场人数和我方的地都和录像对得上（中位在 1 ± 0.07 以内）。1071 拍，这几项的中位仍在 1 ± 0.05 以内，但我方相对其余真人的人均地已经偏高（{{v:arena-cps.1071.rel}} 倍）。
 2. **1530 拍以后闭环里我方的绝对成绩不可信。** 我方人均地到 4284 拍被高估到录像的 {{v:arena-cps.4284.sLand}} 倍。这一段模型里的名次、领土不能拿去对实盘。
 3. **对手模型重现的是平均倾向，不是临场判断。** 出手密度、对象构成、千分比和六类原型都来自 20 局的合计。真人在具体一局里看谁正卡着、谁刚被打空、几家一起压一个大号，这些模型里没有。
 4. **画像和标定用的是同一批 20 局。** 这是拟合优度，不是样本外的检验。新接的 Va / Vc 局没有进画像，也没有拿来跑闭环。
 
 ### 7.7 判定
 
-{{v:arena.verdict}}
+<!-- assert: Math.abs(n('arena-cps.630.oLand') - 1) <= 0.08 && Math.abs(n('arena-cps.630.sLand') - 1) <= 0.05 && n('arena-cps.1071.rel') >= 1.08 && n('arena-cps.4284.sLand') >= 1.5 && n('arena.n') === 20 -->
+对手模型这一项：**部分通过，带边界。**
+
+- 开局到 630 拍：通过。对手的地、兵密度、在场人数，出手的密度和对象构成，人与人之间的分布，都和 {{v:arena.n}} 局录像对得上。
+- 630~1071 拍：绝对量对得上，相对量开始偏高（1071 拍，我方人均地 ÷ 其余真人人均地是录像的 {{v:arena-cps.1071.rel}} 倍）。可以用来看方向，一成以内的差不要读。
+<!-- if: n('runs.arenaRp') >= 20 -->
+- 1530 拍以后：不通过。闭环里对手越来越弱，我方人均地到 4284 拍是录像的 {{v:arena-cps.4284.sLand}} 倍。这一段的闭环结果不能用。偏差的来源见 7.5 节。
+<!-- else -->
+- 1530 拍以后：不通过。闭环里对手越来越弱，我方人均地到 4284 拍是录像的 {{v:arena-cps.4284.sLand}} 倍。这一段的闭环结果不能用。偏差是前期滚出来的，还是后期的打法没拟合上，这一版没有分清（7.5 节）。
+<!-- endif -->
+- 以上是拟合优度（画像和标定是同一批 {{v:arena.n}} 局），不是样本外检验。

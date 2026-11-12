@@ -1,6 +1,6 @@
 ## 9. 复算办法
 
-全部命令在 `c136-review/agents/R06/` 下执行。每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限）。
+全部命令在 `c136-review/agents/R06/` 下执行。队列里的每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限），槽位数写死为 2。写报告时反复执行的几个只读脚本（`g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`，只读结果文件，一秒上下）是直接跑的，不占槽位。
 
 **整条队列（按顺序跑完本报告用到的全部运行，已有结果的跳过）：**
 
@@ -19,6 +19,7 @@ bash sim-v2/tools/g0_all.sh
 | plan | `node sim-v2/tools/g0_batch.mjs plan sim-v2/tools/g0_plan.txt`（每批之前先 `python3 sim-v2/tools/hold_list.py`） | 见下表 |
 | tail | `node sim-v2/tools/verify_tail.mjs` | `sim-v2/calib/verify-tail.json` |
 | delay | `node sim-v2/tools/opening_delay.mjs --live-clean sim-v2/calib/live --json sim-v2/calib/opening-delay.json` | `sim-v2/calib/opening-delay.json` |
+| prov | `python3 sim-v2/tools/run_prov.py`，再 `node sim-v2/tools/g0_batch.mjs plan sim-v2/tools/provcheck_plan.txt` | `sim-v2/calib/run-prov.json`、`sim-v2/calib/batchcheck/prov/<目录>/`（下面「运行的出处」一段） |
 | old | `bash sim-v2/tools/old_vs_new.sh` | `sim-v2/calib/old-vs-new.json`（1.6 节：与旧提交里入库的结果逐字段核对） |
 | oldcode | `bash sim-v2/tools/old_code_arena.sh` | `sim-v2/calib/old-code-arena.json`（1.6 节：把旧提交的代码取到临时目录，重跑两个闭环房间，与现在的结果核对） |
 | profile | `bash sim-v2/tools/profile_check.sh` | `sim-v2/calib/human-profile-check.json`（1.6 节：对手模型的参数文件从录像重算，与入库的那份逐字节比） |
@@ -46,6 +47,31 @@ G="bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700"
 $G sim-v2/tools/g0_batch.mjs checkpoint batchcheck/g0-batched sim-v2/tools/batchcheck_list.txt
 timeout 60 node sim-v2/tools/same_result.mjs sim-v2/calib/batchcheck/g0-batched sim-v2/calib/g0
 ```
+
+**运行的出处：有一部分结果不是 R06 的队列跑出来的。**
+
+11 月 12 日 {{v:prov.strayStart}} 到 {{v:prov.strayLast}}（UTC），有别的进程在 R06 的工作区里直接执行 `tools/g0_batch.mjs`，不经闸门（进程优先级 0，几个进程并行），把清单上排在后面的运行跑掉了一大批。不是 R06 启动的；是谁启动的，R06 没有查到（当时发了 alert：`outbox/0022-gate-bypass-in-r06-workdir.md`）。同一时刻 R06 工作区里闸门脚本的缺省槽位数被从 2 改成了 4；R06 把自己工作区里的改回去了，R06 的队列也一直写死 2 个槽位。
+
+这些运行用的是 R06 工作区里的模拟器（`teamgate-v2.mjs`、`lib/`，当时与入库的一致）和清单，模拟又是确定性的，结果理应和经闸门跑的一样。R06 没有直接采信，做了三件事：
+
+1. 从 17:06 起，`g0_batch.mjs` 每跑完一次运行就往 `calib/run-log.jsonl` 记一行（结果目录、标签、时刻、进程优先级），以后每个结果是不是经闸门跑的都有据可查。
+2. 全部 {{v:prov.total}} 个结果，逐个把结果文件里自己记的局、断面、窗口长度、通道写法、种子、策略文件的内容散列，和清单上那一行对一遍。
+3. 没经闸门跑的 {{v:prov.ungated}} 个里，{{v:prov.sample}} 个由 R06 自己的队列经闸门重跑到 `calib/batchcheck/prov/`，与原结果逐字段核对（计时字段除外）。其中 verify 的 {{v:prov.dir.verify.sample}} 局和闭环的 {{v:prov.dir.arena-acc20.sample}} 个房间是全部重跑（verify 是 G0 第 1 项的依据；第 7 节每个数都是 20 个房间合起来的，一个房间就占二十分之一）；断面运行（`attr/`、`hold/`）按固定规则抽 {{v:prov.sample.hash}} 个：按「目录/标签」的散列每 {{v:prov.every}} 个抽 1 个，另加点名的 {{v:prov.sample.always}} 个（B041、A049 的截断对照）。
+<!-- assert: n('prov.dir.verify.sample') === n('prov.dir.verify.ungated') && n('prov.dir.arena-acc20.sample') === n('prov.dir.arena-acc20.ungated') && n('prov.sample.full') === n('prov.dir.verify.sample') + n('prov.dir.arena-acc20.sample') && n('prov.sample.hash') + n('prov.sample.full') === n('prov.sample') && n('prov.sample.always') === 2 -->
+
+{{T:prov}}
+
+<!-- assert: n('prov.describe.ok') === n('prov.describe.n') && n('prov.describe.n') === n('prov.total') && n('prov.check.bad') === 0 && n('prov.check.same') === n('prov.check.n') -->
+- 自述核对：{{v:prov.describe.n}} 个里 {{v:prov.describe.ok}} 个与清单一致。
+- 顺带的一项交叉核对：断面运行的结果里有一半是「历史」（这一局这个窗口的录像重放出来的真值，与挂哪条通道无关），同一局同一窗口的各个结果里这一半应当逐字段相同。{{v:prov.hist.windows}} 个窗口、{{v:prov.hist.results}} 个结果，窗口内不一致的 {{v:prov.hist.bad}} 个。没经闸门的断面结果有 {{v:prov.hist.ungated}} 个，其中 {{v:prov.hist.anchored}} 个所在的窗口里有经闸门跑出来的结果（原结果或抽查重跑），历史那一半与之相同；其余的窗口里只有没经闸门的结果互相对得上。这一项只管得到「历史」那一半，各条通道自己那一半靠下一条的抽查重跑。
+<!-- assert: n('prov.hist.bad') === 0 && n('prov.hist.results') > 300 && n('prov.hist.anchored') <= n('prov.hist.ungated') -->
+<!-- if: n('prov.done') === 1 -->
+- 重跑核对：要重跑的 {{v:prov.sample}} 个全部经闸门重跑完，{{v:prov.check.same}} 个与原结果逐字段相同（共 {{v:prov.check.leaves}} 个字段）。
+<!-- else -->
+- 重跑核对：要重跑的 {{v:prov.sample}} 个里，到这一版为止经闸门重跑完 {{v:prov.check.n}} 个，{{v:prov.check.same}} 个与原结果逐字段相同（共 {{v:prov.check.leaves}} 个字段）；其余 {{v:prov.check.pending}} 个还在排队，跑完之后再执行 `python3 sim-v2/tools/run_prov.py` 就能看到结果。
+<!-- endif -->
+- 「没经闸门」是从严算的：记流水之前那几分钟里写出来的结果，分不清是谁跑的，一律算没经闸门。
+- 没经闸门的结果集中在 `attr/`（0 / 1500 / 4284 三个断面的归因和换种子）：第 6 节除 630 断面以外的数，底下的运行绝大部分是这样来的。5.7 节的三种假定对照（`hold/`）、第 7 节的闭环（`arena-acc20/`）和新接的 Va / Vc 局的 verify 各有一部分。第 2 节核心 20 局的 verify、第 5 节的断面整表（`g0/`）全部是 R06 的队列经闸门跑的。
 
 **单独跑一次（不经批量）：**
 
@@ -84,7 +110,8 @@ bash sim-v2/tools/add_match.sh <c110|c116-vb|c116-va|c116> <局号…>
 | `sim-v2/calib/human-profile.json` | 对手模型的参数来源：核心 20 局真局里其余真人的出手统计（`tools/human_profile.mjs --matches <核心 20 局>`；从头重算见 `tools/profile_check.sh`） |
 | `sim-v2/calib/{verify,live,g0,attr,fill,hold,arena-acc20,arena-rp1530,batchcheck}/`、`verify-tail.json`、`opening-delay.json`、`live-bands.json` | 本报告用到的全部运行结果 |
 | `sim-v2/calib/report/tables/`、`values.json`、`notes.txt` | `g0_report.mjs` 生成的表、数字、提醒 |
-| `sim-v2/calib/old-vs-new.json`、`old-code-arena.json`、`human-profile-check.json` | 1.6 节的三项核对（`tools/old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`） |
+| `sim-v2/calib/old-vs-new.json`、`old-code-arena.json`、`human-profile-check.json` | 1.6 节的几项核对（`tools/old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`） |
+| `sim-v2/calib/run-log.jsonl`、`run-prov.json`、`batchcheck/prov/` | 运行流水、出处分类、抽查重跑的结果（`tools/run_prov.py`；抽查清单在 `tools/provcheck/`、`tools/provcheck_plan.txt`） |
 | `sim-v2/tools/g0_all.sh`、`g0_batch.mjs`、`g0_plan.txt`、`g0_lists.py`、`hold_list.py`、各张 `*_list*.txt` | 队列、计划、清单 |
-| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
+| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
 | `reports/src-g0/*.md` | 本报告的正文模板 |

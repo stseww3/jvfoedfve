@@ -1,9 +1,9 @@
 | 结果目录 | 模式 | 运行数 | 被时间预算截断 | 有席位策略报错的运行 |
 |---|---|---|---|---|
-| `calib/verify/` | verify | 20 | 0 | - |
+| `calib/verify/` | verify | 31 | 0 | - |
 | `calib/live/` | live | 100 | 0 | - |
 | `calib/g0/` | checkpoint | 110 | 0 | 0 |
-| `calib/attr/` | checkpoint | 6 | 0 | 0 |
+| `calib/attr/` | checkpoint | 266 | 0 | 0 |
 | `calib/fill/` | checkpoint | 0 | 0 | 0 |
 | `calib/hold/` | checkpoint | 30 | 0 | 0 |
 | `calib/arena-acc20/` | arena | 20 | 0 | 0 |
