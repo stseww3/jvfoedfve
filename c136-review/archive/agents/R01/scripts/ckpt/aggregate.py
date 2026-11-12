@@ -531,7 +531,7 @@ def main():
             head_rows.append({'group': f'按全量 squad10 加权（{cnt["通道干净"]}/{cnt["浅落后"]}/{cnt["深落后"]}）', 'n': n, 'y': y, 'histOverC1': math.exp(lw + lp + lr), 'wave': math.exp(lw), 'page': math.exp(lp), 'resid': math.exp(lr),
                               'lnWavePage': lw + lp, 'ciLo': None, 'ciHi': None, 'c1OverC0': None})
         if segs:
-            P(f"粗外推：全量 squad10 有可比数据的 {n} 局里，600–1500 拍指令落地率 ≥ 0.9 的 {cnt['通道干净']} 局、0.7–0.9 的 {cnt['浅落后']} 局、< 0.7 的 {cnt['深落后']} 局"
+            P(f"粗外推：全量 10 人编队局里有可比数据的 {n} 局，按 600–1500 拍进攻指令的「落地 ÷ 放行」分档，≥ 0.9 的 {cnt['通道干净']} 局、0.7–0.9 的 {cnt['浅落后']} 局、< 0.7 的 {cnt['深落后']} 局"
               f"（`reports/m6-data/joined.csv`）。把上表 A 局三组的 ln 均值按这个占比加权：" + '；'.join(segs) + '。'
               '前提是本报告每组的 3–6 局能代表全量里同一档的局，这一点没有验证。')
             P('')
@@ -701,6 +701,88 @@ def main():
             for r in sig_rows:
                 w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
 
+    # ---- 连乘的前提：窗口内的涨幅与起点水平无关。跨局看这个前提成不成立，并按跨局斜率给 C1 路径一个粗修正
+    def ols(x, y):
+        n = len(x)
+        mx, my = mean(x), mean(y)
+        sxx = sum((a - mx) ** 2 for a in x)
+        syy = sum((b - my) ** 2 for b in y)
+        sxy = sum((a - mx) * (b - my) for a, b in zip(x, y))
+        if n < 4 or sxx <= 0 or syy <= 0:
+            return None
+        b = sxy / sxx
+        a = my - b * mx
+        s2 = sum((yy - (a + b * xx)) ** 2 for xx, yy in zip(x, y)) / (n - 2)
+        return b, math.sqrt(s2 / sxx), sxy / math.sqrt(sxx * syy), n
+    P('### 表 K　连乘的前提：窗口内的涨幅和起点水平有没有关系（跨局回归 ln(窗口末 ÷ 起点) 对 ln(起点)；起点都是历史的断面值）')
+    P('')
+    P('| 窗口 | 局数 | 历史：斜率 ± 标准误（相关系数） | C2 | C1 | C0 |')
+    P('| :-- | --: | :-- | :-- | :-- | :-- |')
+    slope = {}
+    adj_path = None
+    for t0 in (630, 1500, 3213, 4284):
+        rs = [r for m, use in chain_use.items() for r in use if r['t0'] == t0]
+        cells = []
+        for arm in ('hist', 'C2', 'C1', 'C0'):
+            o = ols([math.log(r['relTerr1_start']) for r in rs], [math.log(r[f'relTerr1_{arm}'] / r['relTerr1_start']) for r in rs])
+            if arm == 'C1' and o:
+                slope[t0] = o
+            cells.append(f"{o[0]:+.2f} ± {o[1]:.2f}（{o[2]:+.2f}）" if o else '-')
+        P(f"| {WN[t0]} | {len(rs)} | " + ' | '.join(cells) + ' |')
+    P('')
+    P('斜率 0 = 涨幅与起点无关（连乘成立）；−1 = 窗口末的水平与起点无关（之前亏的在这个窗口里全补回来，连乘会把之前的亏重复算进去）。'
+      '这是跨局的关系，起点低的局同时也是落后重的局，不能直接当成同一局里的因果；局数少，标准误大。')
+    P('')
+    if slope:
+        def adj_path(mid, upto, k=0.0):
+            # k = 斜率取 估计值 + k × 标准误
+            use = [r for r in chain_use.get(mid, []) if r['t1'] <= upto]
+            if not use or use[-1]['t1'] != upto:
+                return None
+            Pl = None
+            for r in use:
+                H = r['relTerr1_start']
+                Pl = H if Pl is None else Pl
+                b = (slope[r['t0']][0] + k * slope[r['t0']][1]) if r['t0'] in slope else 0.0
+                Pl = Pl * (r['relTerr1_C1'] / H) * (Pl / H) ** b
+            return Pl
+        def chain_path(mid, upto, arm):
+            use = [r for r in chain_use.get(mid, []) if r['t1'] <= upto]
+            if not use or use[-1]['t1'] != upto:
+                return None
+            v = use[0]['relTerr1_start']
+            for r in use:
+                v *= r[f'relTerr1_{arm}'] / r['relTerr1_start']
+            return v
+        P('按这些斜率给 C1 路径做一个粗修正：每个窗口的 C1 涨幅乘上（修正后的起点 ÷ 历史起点）^斜率，再往下接。几何均值：')
+        P('')
+        P('| 组 | 断面 | 局数 | 历史 ÷ C1 路径（连乘） | 历史 ÷ C1 路径（按斜率修正；括号里斜率取 ±1 个标准误） | 修正后的 C1 路径 ÷ 连乘的 C1 路径 |')
+        P('| :-- | :-- | --: | --: | :-- | --: |')
+        adj_rows = []
+        for g in GROUP_ORDER + ['全部']:
+            for upto in (1500, 3213, 5184):
+                pts = []
+                for m in chain_use:
+                    if not (g == '全部' or GROUP[m] == g):
+                        continue
+                    hv, cv, av, lo, hi = chain_path(m, upto, 'hist'), chain_path(m, upto, 'C1'), adj_path(m, upto), adj_path(m, upto, -1), adj_path(m, upto, 1)
+                    if None in (hv, cv, av, lo, hi):
+                        continue
+                    pts.append((hv, cv, av, lo, hi))
+                if len(pts) < 2:
+                    continue
+                gm = lambda f: math.exp(mean([math.log(f(x)) for x in pts]))
+                a, b, c1, c2 = gm(lambda x: x[0] / x[1]), gm(lambda x: x[0] / x[2]), gm(lambda x: x[0] / x[3]), gm(lambda x: x[0] / x[4])
+                adj_rows.append({'group': g, 'at': upto, 'n': len(pts), 'histOverC1chain': a, 'histOverC1adj': b, 'adjLo': min(c1, c2), 'adjHi': max(c1, c2), 'adjOverChain': gm(lambda x: x[2] / x[1])})
+                P(f"| {g} | t={upto} | {len(pts)} | ×{a:.2f} | ×{b:.2f}（×{min(c1, c2):.2f} ~ ×{max(c1, c2):.2f}） | ×{gm(lambda x: x[2] / x[1]):.2f} |")
+        P('')
+        if adj_rows:
+            with open(os.path.join(DST, 'ckpt_chainadj.csv'), 'w', newline='') as fo:
+                w = csv.DictWriter(fo, fieldnames=list(adj_rows[0].keys()))
+                w.writeheader()
+                for r in adj_rows:
+                    w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
+
     # ---- 对照 R06 入库的「实盘区间」（sim-v2/calib/live-bands.json：按版本 × 卡顿档，全部合格历史局各项签名的 P25 / 中位 / P75）
     if os.path.exists(LIVE_BANDS):
         LB = json.load(open(LIVE_BANDS))
@@ -813,7 +895,8 @@ def main():
                 w.writeheader()
                 for r in lvl_rows:
                     w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
-            P('R06 的窗口末是 1530 / 3210 拍，这里是 1500 / 3213 拍，差 30 拍和 3 拍，没有换算。卡顿档沿用 R06 的分法（R06 没分过的局按 630 起第一个窗口的同拍批占比补）。')
+            P('R06 的窗口末是 1530 / 3210 拍，这里是 1500 / 3213 拍，差 30 拍和 3 拍，没有换算。卡顿档沿用 R06 的分法：630 起第一个窗口里我方指令的同拍批占比 < 0.15 为通道干净、≥ 0.5 为 lag、之间为 mid（R06 没分过的局按同一条规则补）。这个分法只看通道成不成批，不看页面有没有停摆或离场；C1 臂是两样都没有。')
+            P('')
             vb = {(r['cls'], r['at']): r for r in lvl_rows if r['cohort'] == 'vb'}
             segs = []
             for at in (1500, 3213):
@@ -823,13 +906,151 @@ def main():
                                 f"{r['c1Above']} 局高于 P75、{r['c1Inside']} 局在区间内、{r['c1Below']} 局低于 P25；C1 路径中位 ÷ 干净档中位 = ×{r['c1Med'] / r['cleanMed']:.2f}，历史中位 ÷ 干净档中位 = ×{r['histMed'] / r['cleanMed']:.2f}")
             if segs:
                 P('读法：如果「通道健康时这些局会怎样」的反事实是准的，C1 路径的水平应当和真实通道干净局的水平差不多。' + '。'.join(segs) + '。')
+                P('')
             lag = {at: (LB['cohorts'].get(f'vb|lag|{wk}') or {}).get('band', {}).get('relTerr1') for at, wk in ((1500, '630~1530'), (3213, '1530~3210'))}
             cln = {at: (LB['cohorts'].get(f'vb|clean|{wk}') or {}).get('band', {}).get('relTerr1') for at, wk in ((1500, '630~1530'), (3213, '1530~3210'))}
+            # 同一批局：模拟器给的（历史 ÷ C1 路径，逐局比值的几何均值）对「历史 ÷ 真实干净局中位」
+            ms7 = [m for m in mids_all if cohort(m) == 'vb' and cls.get(m) != 'clean']
+            cmp_ = []
+            for at in (1500, 3213):
+                rr = [(path_level(m, 'hist', at), path_level(m, 'C1', at), path_level(m, 'C2', at)) for m in ms7]
+                rr = [x for x in rr if all(v and v > 0 for v in x)]
+                if rr and cln.get(at):
+                    g = lambda f: math.exp(mean([math.log(f(x)) for x in rr]))
+                    cmp_.append(f"t={at}：历史 ÷ C1 路径 ×{g(lambda x: x[0] / x[1]):.2f}（其中 C2 路径 ÷ C1 路径 ×{g(lambda x: x[2] / x[1]):.2f}），历史 ÷ 真实干净局中位 ×{g(lambda x: x[0] / cln[at][1]):.2f}，"
+                                f"C1 路径 ÷ 真实干净局中位 ×{g(lambda x: x[1] / cln[at][1]):.2f}")
+            if cmp_:
+                P(f"同一批局（有落后的 {len(ms7)} 局 Vb）逐局比值的几何均值：" + '；'.join(cmp_) + '。')
+                P('')
+            if adj_path:
+                seg = []
+                for at in (1500, 3213):
+                    rr = [(path_level(m, 'hist', at), adj_path(m, at), adj_path(m, at, -1), adj_path(m, at, 1)) for m in ms7]
+                    rr = [x for x in rr if all(v and v > 0 for v in x)]
+                    if rr and cln.get(at):
+                        g = lambda f: math.exp(mean([math.log(f(x)) for x in rr]))
+                        lo, hi = sorted((g(lambda x: x[2] / cln[at][1]), g(lambda x: x[3] / cln[at][1])))
+                        seg.append(f"t={at}：修正后的 C1 路径 ÷ 真实干净局中位 ×{g(lambda x: x[1] / cln[at][1]):.2f}（斜率 ±1 个标准误：×{lo:.2f} ~ ×{hi:.2f}），历史 ÷ 修正后的 C1 路径 ×{g(lambda x: x[0] / x[1]):.2f}")
+                if seg:
+                    P('C1 路径按表 K 的跨局斜率修正以后（同样这几局，逐局比值的几何均值）：' + '；'.join(seg) + '。')
+                    P('')
+            # 不靠连乘：一口气放开跑的 C1 / C2 水平对真实干净局
+            seg = []
+            for at, tagre in ((1500, r'g0[a-z]'), (3213, r'fr[a-z]')):
+                FRX = load(tagre)
+                rr = []
+                for m in ms7:
+                    e = FRX.get((m, 0))
+                    if not e or e['meta']['t1'] != at or e['meta'].get('truncated'):
+                        continue
+                    c1, c2 = seeds(e, 'C1'), seeds(e, 'C2')
+                    if c1 and c2:
+                        rr.append((e['history']['relTerr1'], mean([x['relTerr1'] for x in c1]), mean([x['relTerr1'] for x in c2])))
+                rr = [x for x in rr if all(v and v > 0 for v in x)]
+                if rr and cln.get(at):
+                    g = lambda f: math.exp(mean([math.log(f(x)) for x in rr]))
+                    above = sum(1 for x in rr if x[1] > cln[at][2])
+                    seg.append(f"t={at}（{len(rr)} 局）：C1 放开跑的水平中位 {quart([x[1] for x in rr])[1]:.2f}，÷ 真实干净局中位 ×{g(lambda x: x[1] / cln[at][1]):.2f}（{above} 局高于 P75）；"
+                               f"历史 ÷ C1 放开跑 ×{g(lambda x: x[0] / x[1]):.2f}；C2 放开跑 ÷ C1 放开跑 ×{g(lambda x: x[2] / x[1]):.2f}")
+            if seg:
+                P('不连乘、从开局一口气放开跑的水平（同样这几局，逐局比值的几何均值）：' + '。'.join(seg) + '。')
+                P('')
             if all(lag.values()) and all(cln.values()):
                 P('实盘横向对比（R06 的区间，Vb）：lag 档中位 ÷ clean 档中位 = ' + '、'.join(f"×{lag[at][1] / cln[at][1]:.2f}（t≈{at}，{lag[at][3]} 局对 {cln[at][3]} 局）" for at in (1500, 3213)) + '。')
+                P('')
+            jf = os.path.join(R01, 'reports', 'm6-data', 'joined.csv')
+            if os.path.exists(jf):
+                pop = {'clean': [], 'mid': [], 'deep': []}
+                for r in csv.DictReader(open(jf)):
+                    try:
+                        x = float(r['nd600_1500'])
+                        num = int(r['mid'][1:])
+                    except ValueError:
+                        continue
+                    if r['cohort'] != 'squad10' or r['multi'] != '0' or not r['mid'].startswith('A') or not 18 <= num <= 95:
+                        continue
+                    pop['clean' if x >= 0.9 else 'deep' if x < 0.7 else 'mid'].append(r)
+                def pmed(c, k):
+                    v = []
+                    for r in pop[c]:
+                        try:
+                            v.append(float(r[k]))
+                        except ValueError:
+                            pass
+                    return quart(v)[1] if v else None
+                if pop['clean'] and pop['deep']:
+                    seg = []
+                    for c, lab in (('deep', '< 0.7 档'), ('mid', '0.7–0.9 档')):
+                        if pop[c]:
+                            seg.append(f"{lab}（{len(pop[c])} 局）中位 ÷ ≥ 0.9 档（{len(pop['clean'])} 局）中位 = " + '、'.join(f"×{pmed(c, k) / pmed('clean', k):.2f}（{t} 拍）" for k, t in (('rel630', 630), ('rel1530', 1530), ('rel3060', 3060))))
+                    P('另一套口径的实盘横向对比（M6 的全量表 `reports/m6-data/joined.csv`，Vb 的 10 人编队局；结果量是编队领土占全图的份额 ÷ 编队的人头份额，和本表的人均相对领土不是同一个量，只比倍数；按 600–1500 拍「落地 ÷ 放行」分档）：' + '；'.join(seg) + '。')
             P('')
 
     extra = []
+
+    CVF = {}
+    def chain_vs_free(RUNS, cps, label, per_match=False):
+        """同一条臂：把 cps 里首尾相接的窗口连乘（起点 × 各窗口的 臂 ÷ 窗口起点），对一口气从 cps[0] 跑到 cps[-1]。按「通道干净 / 有落后」分开汇总。"""
+        byk2 = {(r['mid'], r['t0']): r for r in D}
+        ta, tb = cps[0], cps[-1]     # tb = None：一直接到这条放开跑自己停下的那一拍（各局录像长短不一）
+        rows, skipped = [], []
+        for k in sorted(RUNS, key=lambda k: MID_ORDER.index(k[0]) if k[0] in MID_ORDER else 99):
+            e = RUNS[k]
+            c1, c2 = seeds(e, 'C1'), seeds(e, 'C2')
+            if not (c1 and c2) or k[1] != ta or e['meta'].get('truncated') or (tb is not None and e['meta']['t1'] != tb):
+                continue
+            wins, t = [], ta
+            while t != e['meta']['t1']:
+                w = byk2.get((k[0], t))
+                if not w or w.get('truncated') or w['t1'] <= t:
+                    wins = None
+                    break
+                wins.append(w)
+                t = w['t1']
+            y = 'relTerr1'
+            free = {'C1': mean([m[y] for m in c1]), 'C2': mean([m[y] for m in c2])}
+            hist = e['history'][y]
+            if not wins:
+                skipped.append((k[0], e['meta']['t1'], hist, free, e['history'].get('alive1'), mean([m['alive1'] for m in c1]), mean([m['alive1'] for m in c2])))
+                continue
+            ch = {}
+            for arm in free:
+                v = wins[0][f'{y}_start']
+                for w in wins:
+                    v *= w[f'{y}_{arm}'] / w[f'{y}_start']
+                ch[arm] = v
+            if min(list(free.values()) + list(ch.values()) + [hist]) < CHAIN_FLOOR:
+                skipped.append((k[0], e['meta']['t1'], hist, free, e['history'].get('alive1'), mean([m['alive1'] for m in c1]), mean([m['alive1'] for m in c2])))
+                continue
+            rows.append({'mid': k[0], 'lag': GROUP.get(k[0]) != '通道干净', 'hist': hist, 'free': free, 'ch': ch, 'sd1': sd([m[y] for m in c1]), 'sd2': sd([m[y] for m in c2]), 'n': min(len(c1), len(c2)), 't1': e['meta']['t1'],
+                         'alive': (e['history'].get('alive1'), mean([m['alive1'] for m in c2]))})
+            extra.append({'table': f'chain-vs-free {label}', 'mid': k[0], 't0': ta, 't1': tb, 'variant': 'free', 'hist': hist, 'C1': free['C1'], 'C2': free['C2'], 'n': min(len(c1), len(c2))})
+            extra.append({'table': f'chain-vs-free {label}', 'mid': k[0], 't0': ta, 't1': tb, 'variant': 'chain', 'hist': hist, 'C1': ch['C1'], 'C2': ch['C2'], 'n': min(len(c1), len(c2))})
+        if not rows:
+            return []
+        if per_match:
+            P(f"| 局 | 组 | 历史（t={tb if tb is not None else '放开跑的终点'}） | C1：串接 / 放开跑（±sd） | C2：串接 / 放开跑（±sd） | 历史 ÷ C1：串接 / 放开跑 | ln(C2÷C1)：串接 / 放开跑 | 残差 历史−C2（放开跑） |")
+            P('| :-- | :-- | --: | :-- | :-- | :-- | :-- | --: |')
+            for r in rows:
+                P(f"| {r['mid']} | {GROUP.get(r['mid'], '')} | {fmt(r['hist'])}{'' if tb is not None else '（t=' + str(r['t1']) + '）'} | {fmt(r['ch']['C1'])} / {fmt(r['free']['C1'])} ±{fmt(r['sd1'])} | {fmt(r['ch']['C2'])} / {fmt(r['free']['C2'])} ±{fmt(r['sd2'])} | "
+                  f"×{r['hist'] / r['ch']['C1']:.2f} / ×{r['hist'] / r['free']['C1']:.2f} | {fmt(math.log(r['ch']['C2'] / r['ch']['C1']), 3, True)} / {fmt(math.log(r['free']['C2'] / r['free']['C1']), 3, True)} | {fmt(r['hist'] - r['free']['C2'], 3, True)} |")
+            P('')
+        P(f'按通道状况分开看（{label}；几何均值）：')
+        P('')
+        P('| 组 | 局数 | C1：串接 ÷ 放开跑 | C2：串接 ÷ 放开跑 | 历史 ÷ C1：串接 | 历史 ÷ C1：放开跑 | C2 ÷ C1：串接 | C2 ÷ C1：放开跑 | 历史 ÷ C2：串接 | 历史 ÷ C2：放开跑 |')
+        P('| :-- | --: | --: | --: | --: | --: | --: | --: | --: | --: |')
+        for lab, sel in (('通道干净', [r for r in rows if not r['lag']]), ('有落后（浅落后、深落后、c110）', [r for r in rows if r['lag']]), ('全部', rows)):
+            if not sel:
+                continue
+            g = lambda f: math.exp(mean([math.log(f(r)) for r in sel]))
+            P(f"| {lab} | {len(sel)} | ×{g(lambda r: r['ch']['C1'] / r['free']['C1']):.3f} | ×{g(lambda r: r['ch']['C2'] / r['free']['C2']):.3f} | ×{g(lambda r: r['hist'] / r['ch']['C1']):.2f} | ×{g(lambda r: r['hist'] / r['free']['C1']):.2f} | "
+              f"×{g(lambda r: r['ch']['C2'] / r['ch']['C1']):.2f} | ×{g(lambda r: r['free']['C2'] / r['free']['C1']):.2f} | ×{g(lambda r: r['hist'] / r['ch']['C2']):.2f} | ×{g(lambda r: r['hist'] / r['free']['C2']):.2f} |")
+        P('')
+        if skipped:
+            P(f'没进上面两张表的局（{label}；历史或某条臂的人均相对领土低于 {CHAIN_FLOOR}，或历史上我方中途归零、后面的窗口没有跑，比值没有意义）：'
+              + '；'.join(f"{m}（到 t={t1}：历史 {fmt(h)}、活席 {al}；C1 放开跑 {fmt(fr['C1'])}、活席 {f2(a1, 1)}；C2 放开跑 {fmt(fr['C2'])}、活席 {f2(a2, 1)}）" for m, t1, h, fr, al, a1, a2 in skipped) + '。')
+            P('')
+        return rows
 
     # ---- 0→1500 一口气放开跑
     G = load(r'g0[a-z]')
@@ -895,6 +1116,63 @@ def main():
               f"C0 {mab('C0'):.3f}、C1 {mab('C1'):.3f}、C2w {mab('C2w'):.3f}、C2 {mab('C2'):.3f}。")
             P(f"落后波 ln(C2w÷C1) 的均值：串接 {mean([x[0] for x in cc['wave']]):+.3f}，放开跑 {mean([x[1] for x in cc['wave']]):+.3f}；页面/掉线 ln(C2÷C2w)：串接 {mean([x[0] for x in cc['page']]):+.3f}，放开跑 {mean([x[1] for x in cc['page']]):+.3f}；"
               f"两段合计 ln(C2÷C1)：串接 {mean([x[0] for x in cc['both']]):+.3f}，放开跑 {mean([x[1] for x in cc['both']]):+.3f}。")
+        P('')
+        CVF['0→1500'] = chain_vs_free(G, [0, 630, 1500], '0→1500')
+
+    # ---- 630→3213 一口气放开跑：连乘第二个接头的直接核对
+    SP = load(r'sp[a-z]')
+    if SP:
+        P('### 表 G2　从 630 一口气放开跑到 t=3213（不在 1500 重新对齐）：连乘第二个接头的核对')
+        P('')
+        CVF['630→3213'] = chain_vs_free(SP, [630, 1500, 3213], '630→3213', per_match=True)
+
+    # ---- 0→3213 一口气放开跑：累计效应不靠连乘的直接估计
+    FR = load(r'fr[a-z]')
+    if FR:
+        P('### 表 G3　从开局一口气放开跑到 t=3213（630、1500 两个接头都不重新对齐）')
+        P('')
+        CVF['0→3213'] = chain_vs_free(FR, [0, 630, 1500, 3213], '0→3213', per_match=True)
+
+    # ---- 0→5184（或录像结束）一口气放开跑
+    FS = load(r'fs[a-z]')
+    if FS:
+        P('### 表 G4　从开局一口气放开跑到 t=5184 或录像结束（中间不重新对齐）')
+        P('')
+        CVF['0→5184（或录像结束）'] = chain_vs_free(FS, [0, None], '0→5184', per_match=True)
+
+    # ---- 累计通道效应的几种估计放在一张表里
+    if any(CVF.values()):
+        P('### 表 Z　累计的通道效应：窗口连乘 对 一口气放开跑（人均相对领土，几何均值；「历史 ÷ C1」越小 = 通道效应越大）')
+        P('')
+        P('| 区间 | 组 | 局数 | 历史 ÷ C1：连乘 | 历史 ÷ C1：放开跑 | C2 ÷ C1：连乘 | C2 ÷ C1：放开跑 | 历史 ÷ C2：连乘 | 历史 ÷ C2：放开跑 | C1 的水平：连乘 ÷ 放开跑 | 历史 ÷ C1（放开跑）< 1 的局数 |')
+        P('| :-- | :-- | --: | --: | --: | --: | --: | --: | --: | --: | :-- |')
+        z_rows = []
+        for label, rows in CVF.items():
+            for lab, sel in (('通道干净', [r for r in rows or [] if not r['lag']]), ('有落后', [r for r in rows or [] if r['lag']]), ('全部', rows or [])):
+                if not sel:
+                    continue
+                g = lambda f: math.exp(mean([math.log(f(r)) for r in sel]))
+                z = {'span': label, 'group': lab, 'n': len(sel), 'histOverC1chain': g(lambda r: r['hist'] / r['ch']['C1']), 'histOverC1free': g(lambda r: r['hist'] / r['free']['C1']),
+                     'c2OverC1chain': g(lambda r: r['ch']['C2'] / r['ch']['C1']), 'c2OverC1free': g(lambda r: r['free']['C2'] / r['free']['C1']),
+                     'histOverC2chain': g(lambda r: r['hist'] / r['ch']['C2']), 'histOverC2free': g(lambda r: r['hist'] / r['free']['C2']),
+                     'c1ChainOverFree': g(lambda r: r['ch']['C1'] / r['free']['C1']), 'nBelow': sum(1 for r in sel if r['hist'] < r['free']['C1'])}
+                def gci(f):
+                    ci = boot_ci([math.log(f(r)) for r in sel])
+                    return f"（×{math.exp(ci[0]):.2f} ~ ×{math.exp(ci[1]):.2f}）" if ci else ''
+                ci1 = boot_ci([math.log(r['hist'] / r['free']['C1']) for r in sel])
+                z['histOverC1free_lo'], z['histOverC1free_hi'] = (math.exp(ci1[0]), math.exp(ci1[1])) if ci1 else (None, None)
+                z_rows.append(z)
+                P(f"| {label} | {lab} | {z['n']} | ×{z['histOverC1chain']:.2f}{gci(lambda r: r['hist'] / r['ch']['C1'])} | ×{z['histOverC1free']:.2f}{gci(lambda r: r['hist'] / r['free']['C1'])} | "
+                  f"×{z['c2OverC1chain']:.2f} | ×{z['c2OverC1free']:.2f}{gci(lambda r: r['free']['C2'] / r['free']['C1'])} | ×{z['histOverC2chain']:.2f} | ×{z['histOverC2free']:.2f}{gci(lambda r: r['hist'] / r['free']['C2'])} | "
+                  f"×{z['c1ChainOverFree']:.2f}{gci(lambda r: r['ch']['C1'] / r['free']['C1'])} | {z['nBelow']}/{z['n']} |")
+        P('')
+        with open(os.path.join(DST, 'ckpt_cumulative.csv'), 'w', newline='') as fo:
+            w = csv.DictWriter(fo, fieldnames=list(z_rows[0].keys()))
+            w.writeheader()
+            for r in z_rows:
+                w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
+        P('连乘 = 把首尾相接的窗口（每个都从历史的断面起跑）的比值乘起来；放开跑 = 从区间起点一口气跑到终点，中间不回到历史。放开跑只有 C1、C2 各 2–3 个种子。括号里是按局重抽样的 90%% 区间（不到 4 局的不给）。'
+          '两种算法进的是同一批局：有一条臂或历史的人均相对领土低于 %.2f 的局两边都不算。' % CHAIN_FLOOR)
         P('')
 
     # ---- 敏感度：换阶梯来源、换补法
@@ -986,13 +1264,25 @@ def main():
         CH = {v: chain_of(DV[v], cuts)[0] for v in DV}
         P('| 组 | 局数 | 落后波（ln）：主 / 上界 / 下界 | 页面/掉线（ln）：主 / 上界 / 下界 | 残差（ln）：主 / 上界 / 下界 | 落后波+页面（ln）：主 / 上界 / 下界 |')
         P('| :-- | --: | :-- | :-- | :-- | :-- |')
+        tsum, tsum_n = None, 0
         for g in GROUP_ORDER + ['A 局（c116 家族）', '全部']:
             ms = [m for m in CH['located'] if all(m in CH[v] and CH[v][m]['n'] == CH['located'][m]['n'] for v in DV) and (g == '全部' or GROUP[m] == g or (g.startswith('A 局') and m.startswith('A')))]
             if not ms:
                 continue
             c3 = lambda f: ' / '.join(fmt(mean([f(CH[v][m]) for m in ms]), 3, True) for v in ('located', 'hi', 'lo'))
             P(f"| {g} | {len(ms)} | {c3(lambda c: c['wave'])} | {c3(lambda c: c['page'])} | {c3(lambda c: c['resid'])} | {c3(lambda c: c['wave'] + c['page'])} |")
+            if g == '全部':
+                tsum = {v: {key: mean([f(CH[v][m]) for m in ms]) for key, f in (('wave', lambda c: c['wave']), ('page', lambda c: c['page']), ('resid', lambda c: c['resid']))} for v in ('located', 'hi', 'lo')}
+                tsum_n = len(ms)
         P('')
+        if tsum:
+            ex = lambda x: f"×{math.exp(x):.2f}"
+            P(f"{tsum_n} 局的对数链，主口径 / 上界 / 下界：落后波 + 页面 {' / '.join(fmt(tsum[v]['wave'] + tsum[v]['page'], 3, True) for v in ('located', 'hi', 'lo'))}"
+              f"（{' / '.join(ex(tsum[v]['wave'] + tsum[v]['page']) for v in ('located', 'hi', 'lo'))}）；"
+              f"其中落后波 {' / '.join(ex(tsum[v]['wave']) for v in ('located', 'hi', 'lo'))}、页面/掉线 {' / '.join(ex(tsum[v]['page']) for v in ('located', 'hi', 'lo'))}；"
+              f"残差 {' / '.join(fmt(tsum[v]['resid'], 3, True) for v in ('located', 'hi', 'lo'))}（{' / '.join(ex(tsum[v]['resid']) for v in ('located', 'hi', 'lo'))}）。"
+              f"已重跑 上界 {nband['hi']} 个、下界 {nband['lo']} 个窗口" + (f"，排着队还没跑的 上界 {len(npend['hi'])} 个、下界 {len(npend['lo'])} 个（阶梯差得小的）。" if (npend['hi'] or npend['lo']) else '，选中的都跑完了。'))
+            P('')
 
     # ---- 敏感度：落后波与页面停摆两段的先后次序（C1p = 基础延迟 + 实录页面寿命，不带落后波）
     O = [(k, R[k]) for k in keys if seeds(R[k], 'C1p') and seeds(R[k], 'C2w') and seeds(R[k], 'C1') and seeds(R[k], 'C2')]
@@ -1016,11 +1306,12 @@ def main():
           f"交互项均值 {mean([x[3] - x[2] for x in acc]):+.3f}，|交互项| 均值 {mean([abs(x[3] - x[2]) for x in acc]):.3f}。")
         P('')
 
-    # ---- 历史版本互换（只在 c116 家族内：Va / Vb / Vc）
-    V = load(r'(va|vb|vc)[a-z]', historical=False, keyfn=lambda d, tag: (d['match'], d['t0'], d.get('stratKey')))
+    # ---- 历史版本互换（c116 家族内 Va / Vb / Vc；c110 与 c116 家族之间）
+    V = load(r'(va|vb|vc|c110)[a-z]', historical=False, keyfn=lambda d, tag: (d['match'], d['t0'], d.get('stratKey')))
+    VN = {'va': 'Va', 'vb': 'Vb', 'vc': 'Vc', 'c110': 'c110'}
     if V:
         named = lambda e, kind: {n: m for n, m in e['arms'].items() if n.split('@')[0] == kind and m['_t1'] == e['meta']['t1']}
-        P('### 表 V　同一断面、同一通道下，把我方换成另一个历史版本（只在 Va / Vb / Vc 之间互换）')
+        P('### 表 V　同一断面、同一通道下，把我方换成另一个历史版本（Va / Vb / Vc 之间互换；c110 与 c116 家族之间互换）')
         P('')
         P('每一格都是「换上去的版本 − 当年那一版」在**同名种子**上的差（主批里当年那一版只取换版本那一批也跑了的种子）。'
           '「逐位相同」= 两个版本在这个窗口里窗口末的领土、兵力、进录像条数完全一样。')
@@ -1064,16 +1355,20 @@ def main():
             vrows.append(row)
             c = lambda ch: (f"{fmt(row[f'{ch}_hist'])} → {fmt(row[f'{ch}_alt'])}（{fmt(row[f'{ch}_d'], 3, True)}）" if f'{ch}_n' in row else '-')
             g = lambda key, nd=2, sign=False: ' / '.join((fmt(row.get(f'{ch}_{key}'), nd, sign) if row.get(f'{ch}_{key}') is not None else '-') for ch in ('C1', 'C2'))
-            P(f"| {k[0]} | {hv.capitalize()} | {k[2].capitalize()} | {WN.get(k[1], k[1])} | {c('C1')} | {c('C2')} | {g('w')} | {g('alive', 1, True)} | {row.get('C1_n', 0)} / {row.get('C2_n', 0)} | {'是' if same else '否'} | "
+            P(f"| {k[0]} | {VN.get(hv, hv)} | {VN.get(k[2], k[2])} | {WN.get(k[1], k[1])} | {c('C1')} | {c('C2')} | {g('w')} | {g('alive', 1, True)} | {row.get('C1_n', 0)} / {row.get('C2_n', 0)} | {'是' if same else '否'} | "
               f"{fmt(row['base'], 3, True)} / {fmt(row['chan'], 3, True)} |")
         P('')
         # 汇总：统一成「Vb − Va」「Vc − Vb」「Vc − Va」的方向
         P('按窗口汇总（方向统一：正数 = 前一个版本的窗口末人均相对领土更高）：')
         P('')
-        P('| 窗口 | 对比 | 通道 | 局数 | 差的均值 | 差的中位 | 正 / 负 的局数 | \\|差\\| 均值 | ln 比值的均值（换回倍数） | 兵力比的几何均值 | 种子噪声（差的标准误，各局均值） | 同一批局、同窗口的通道效应均值：基础延迟 / 落后波+页面 | \\|版本差\\| ÷ \\|落后波+页面\\| |')
-        P('| :-- | :-- | :-- | --: | --: | --: | :-- | --: | --: | --: | --: | :-- | --: |')
+        P('| 窗口 | 对比 | 通道 | 局数 | 差的均值（按局重抽样 90% 区间） | 差的中位 | 正 / 负 的局数 | \\|差\\| 均值 | ln 比值的均值（换回倍数） | 兵力比的几何均值 | 种子噪声（差的标准误，各局均值） | 同一批局、同窗口的通道效应均值：基础延迟 / 落后波+页面 | \\|版本差\\| ÷ \\|落后波+页面\\| |')
+        P('| :-- | :-- | :-- | --: | :-- | --: | :-- | --: | --: | --: | --: | :-- | --: |')
         def norm(r):
             pair = {r['hv'], r['ver']}
+            if 'c110' in pair:
+                if r['mid'].startswith('B'):
+                    return 'c110 − Vb（B 局：当年是 c110，换成 Vb）', (1 if r['ver'] == 'c110' else -1)
+                return 'c110 − c116 家族（A 局：当年是 Va 或 Vb，换成 c110）', (1 if r['ver'] == 'c110' else -1)
             if pair == {'va', 'vb'}:
                 return 'Vb − Va', (1 if r['ver'] == 'vb' else -1)
             if pair == {'vb', 'vc'}:
@@ -1091,7 +1386,8 @@ def main():
             ses = [x[3] for x in v if x[3] is not None]
             base = mean([x[4]['base'] for x in v if x[4]['base'] is not None]); chan = mean([x[4]['chan'] for x in v if x[4]['chan'] is not None])
             mabs = mean([abs(d) for d in ds]); cabs = mean([abs(x[4]['chan']) for x in v if x[4]['chan'] is not None])
-            P(f"| {WN.get(t0, t0)} | {name} | {ch} | {len(ds)} | {fmt(mean(ds), 3, True)} | {fmt(quart(ds)[1], 3, True)} | {sum(1 for d in ds if d > 1e-9)} / {sum(1 for d in ds if d < -1e-9)} | {fmt(mabs)} | "
+            ci = boot_ci(ds)
+            P(f"| {WN.get(t0, t0)} | {name} | {ch} | {len(ds)} | {fmt(mean(ds), 3, True)}{f'（{ci[0]:+.3f} ~ {ci[1]:+.3f}）' if ci else ''} | {fmt(quart(ds)[1], 3, True)} | {sum(1 for d in ds if d > 1e-9)} / {sum(1 for d in ds if d < -1e-9)} | {fmt(mabs)} | "
               f"{(fmt(mean(lns), 3, True) + '（×' + format(math.exp(mean(lns)), '.2f') + '）') if lns else '-'} | ×{math.exp(mean([math.log(x[2]) for x in v])):.2f} | {fmt(mean(ses)) if ses else '-'} | "
               f"{fmt(base, 3, True)} / {fmt(chan, 3, True)} | {(format(mabs / cabs, '.2f')) if cabs and cabs > 1e-9 else '-'} |")
         P('')

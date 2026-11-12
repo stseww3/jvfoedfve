@@ -24,7 +24,7 @@
 - C1 挂在不卡的局上：{{v:card.C1.630.hit}} 项、{{v:card.C1.1530.hit}} 项在容差内。不卡的局本来就没怎么落后，C1 和 C2 在这些局上应当差不多，结果也是这样。
 - C3 挂在不卡的局上：只有 {{v:card.C3.630.hit}} 项、{{v:card.C3.1530.hit}} 项还在容差内——注入一段卡顿，签名就离开了这一局的真值。这一行是反面检验，对不上才是对的。
 
-下面几小节把这 60 次扩成完整的一张表（每个断面四档通道都跑，再加上新接的 Va / Vc 局），共 {{v:runs.g0}} 次运行。
+下面几小节在这 60 次之外补了两样：630 断面补齐成每一局四档通道都跑（反面检验要用：卡顿的局走 C1 / C0）；再加上新接的 Va / Vc 局。1530 断面跑了哪些臂，以各表的「运行数」一列为准。`calib/g0/` 下一共 {{v:runs.g0}} 次运行。
 
 ### 5.3 逐局：C2 对这一局的真值
 
@@ -54,7 +54,8 @@
 1. **C2 两档都对得上。** 630~1530 拍，不卡的局 {{v:ckpt.630.clean.C2.hit}} 项在容差内（{{v:ckpt.630.clean.C2.hitPc}}），卡顿的局 {{v:ckpt.630.lag.C2.hit}} 项（{{v:ckpt.630.lag.C2.hitPc}}）；1530~3210 拍是 {{v:ckpt.1530.clean.C2.hitPc}} 和 {{v:ckpt.1530.lag.C2.hitPc}}。同拍批占比在卡顿的局里真值的中位是 {{v:ckpt.630.lag.C2.batchShare.real}}，模拟是 {{v:ckpt.630.lag.C2.batchShare.sim}}，逐局相差的中位 {{v:ckpt.630.lag.C2.batchShare.abs}} 个百分点。
 2. **卡顿的局换成不落后的通道，签名就没了。** 同样这些卡顿的局走 C1，只有 {{v:ckpt.630.lag.C1.hitPc}} 的项还在容差内，同拍批占比逐局差 {{v:ckpt.630.lag.C1.batchShare.abs}} 个百分点；走 C0 是 {{v:ckpt.630.lag.C0.hitPc}}。窗口末的编队领土，C1 是真局的 {{v:ckpt.630.lag.C1.terr}} 倍。所以卡顿局的那套签名（同拍批、清仓批、陆攻落空）是通道落后造成的，不是策略或对手造成的；这也是第 6 节做归因的依据。
 3. **不卡的局也不能用即时通道。** 不卡的局走 C0，重复单占比逐局差 {{v:ckpt.630.clean.C0.dupShare.abs}} 个百分点（真值的中位 {{v:ckpt.630.clean.C0.dupShare.real}}，C0 只有 {{v:ckpt.630.clean.C0.dupShare.sim}}），走 C1 只差 {{v:ckpt.630.clean.C1.dupShare.abs}} 个百分点。指令从下令到执行那十来拍里，策略会对同一个目标再下一次令，即时通道里没有这一段，重复单就没了，窗口末的编队领土也比真局高（{{v:ckpt.630.clean.C0.terr}} 倍，C1 是 {{v:ckpt.630.clean.C1.terr}} 倍）。旧门禁用的就是即时口径。
-4. **合成卡顿波造得出卡顿局的签名。** 不卡的局挂 C3，同拍批占比逐局比真值高出 {{v:ckpt.630.clean.C3.batchShare.abs}} 个百分点，窗口末编队领土是真局的 {{v:ckpt.630.clean.C3.terr}} 倍。量级偏重（4.4 节），方向和卡顿局一致。
+<!-- assert: n('ckpt.630.lag.C3.hitPc') >= 70 && n('ckpt.630.lag.C3.hitPc') < n('ckpt.630.lag.C2.hitPc') && n('ckpt.630.lag.C3.hitPc') > n('ckpt.630.lag.C1.hitPc') + 30 -->
+4. **合成卡顿波造得出卡顿局的签名。** 不卡的局挂 C3，同拍批占比逐局比真值高出 {{v:ckpt.630.clean.C3.batchShare.abs}} 个百分点，窗口末编队领土是真局的 {{v:ckpt.630.clean.C3.terr}} 倍。反过来，把卡顿的局自己的实录阶梯换成这一条合成波，{{v:ckpt.630.lag.C3.hitPc}} 的签名仍在容差内——不如用它自己的阶梯（{{v:ckpt.630.lag.C2.hitPc}}），但远好于不落后的通道（{{v:ckpt.630.lag.C1.hitPc}}）。合成波不是哪一局的实录，却抓住了卡顿局签名的大半。
 
 ### 5.5 按版本
 
@@ -102,14 +103,35 @@ C2 臂里，窗口末编队领土偏出真局 ±10% 的运行：
 <!-- assert: n('out.A023.1530.top') >= 80 && n('out.A023.1530.topLand.C2') < 0.6 * n('out.A023.1530.topLand.hist') -->
 **二、偏差集中在一个席位上。** A041 的 630~1530 拍，全部偏差的 {{v:out.A041.630.top}} 在 {{v:out.A041.630.topSeat}} 号一个席位上：真局里它窗口末有 {{v:out.A041.630.topLand.hist}} 格地，模拟里 C0 / C1 / C2 三档通道下分别是 {{v:out.A041.630.topLand.C0}} / {{v:out.A041.630.topLand.C1}} / {{v:out.A041.630.topLand.C2}} 格。三档通道都偏在同一边，所以不是通道的事：同一版策略放在这个席位上，模拟里比当年多打下一块地。当年它为什么没打下来，没有查到原因；至少不是因为这个席位的页面有一长段没动静——它在窗口里最长 {{v:out.A041.630.topGap}} 拍没有已知点，全队各席位的中位是 {{v:out.A041.630.medGap}} 拍。A023 的 1530~3210 拍反过来：{{v:out.A023.1530.topSeat}} 号席位真局里从断面起长到了 {{v:out.A023.1530.topLand.hist}} 格，模拟里（C2）只有 {{v:out.A023.1530.topLand.C2}} 格，占了全部偏差的 {{v:out.A023.1530.top}}，其余九个席位几乎一样。这种单个席位的分叉不成系统（一高一低），但说明逐局的窗口末领土可以因为一个席位的一次得手或失手差出两成。
 
-**三、B041。** 这一局录像在 1155 拍结束，正是卡顿高峰。{{v:out.B041.630.blindSeats}} 个席位最后一个已知点上还落后 {{v:out.B041.630.blindLag}} 拍左右，这之后到窗口末占了窗口内 {{v:out.B041.630.blind}} 的 席位·拍。模拟里我方进录像的指令是当年的两倍，窗口末领土是真局的 {{v:out.B041.630.ratio}} 倍。{{v:hold.b041}}
+**三、B041。** 这一局录像在 1155 拍结束，正是卡顿高峰。{{v:out.B041.630.blindSeats}} 个席位最后一个已知点上还落后 {{v:out.B041.630.blindLag}} 拍左右，这之后到窗口末占了窗口内 {{v:out.B041.630.blind}} 的 席位·拍。<!-- assert: n('hold.B041.630.recDef') >= 1.7 * n('hold.B041.630.recReal') && s('out.B041.630.topSameSide') === '是' -->
+<!-- assert: s('asrec.630.minMid') === 'B041' && n('asrec.630.min') <= 80 && n('asrec.630.med') >= n('asrec.630.min') + 10 -->
+模拟里我方进录像的指令是当年的两倍（每席位 {{v:hold.B041.630.recDef}} 条，真局 {{v:hold.B041.630.recReal}} 条），窗口末领土是真局的 {{v:out.B041.630.ratio}} 倍；偏差最大的那个席位在 C0 / C1 / C2 三档通道下都比真局高。其余真人的陆攻在这一局只有 {{v:asrec.630.min}} 还能照录像执行，是这个窗口各局里最低的（各局的中位是 {{v:asrec.630.med}}）——模拟里的局面离历史已经很远。这一局没有复现出来，原因没有查清（下面换假定也解释不了），记为边界。
 
 为了查清「最后一个已知点之后页面追平」这条假定在其中起多大作用，把它换成另一头（之后一直保持那时的落后）重跑了清单上的运行：
 
 {{T:ckpt-hold}}
 
-{{v:hold.text}}
+<!-- assert: n('hold.n') >= 15 && n('hold.outMoved') === 0 && n('hold.between') === 0 -->
+<!-- assert: n('hold.sig.def') > n('hold.sig.hold') && n('hold.sig.defAbs') < n('hold.sig.holdAbs') && n('hold.rec.def') > n('hold.rec.hold') -->
+<!-- assert: Math.abs(n('hold.A057.1530.bsDef') - n('hold.A057.1530.bsReal')) <= 10 && Math.abs(n('hold.A057.1530.bsHold') - n('hold.A057.1530.bsReal')) >= 30 -->
+<!-- assert: n('hold.B041.630.hold') >= 1.15 && n('hold.B041.630.recHold') >= 1.5 * n('hold.B041.630.recReal') && Math.abs(n('hold.B041.630.bsHold') - n('hold.B041.630.bsReal')) > Math.abs(n('hold.B041.630.bsDef') - n('hold.B041.630.bsReal')) -->
+- **换假定救不回领土的偏差。** 清单上 {{v:hold.out}} 次窗口末领土偏出 ±10% 的运行，换成「保持」之后没有一次回到 ±10% 以内；真局的值也没有一次落在两种假定之间。
+- **签名是缺省的「追平」更贴真局。** 看不见的一段占到一成以上的 {{v:hold.blind}} 次运行里，同拍批占比离真局的差，「追平」的中位是 {{v:hold.sig.defAbs}} 个百分点，「保持」是 {{v:hold.sig.holdAbs}} 个；逐次比，{{v:hold.sig.def}} 次「追平」更近，{{v:hold.sig.hold}} 次「保持」更近，{{v:hold.sig.tie}} 次相差不到 2 个百分点。进录像条数也是「追平」更近的多（{{v:hold.rec.def}} 次对 {{v:hold.rec.hold}} 次）。最清楚的是 A057 的 1530~3210 拍（看不见的一段占 {{v:hold.A057.1530.blind}}）：同拍批占比真局 {{v:hold.A057.1530.bsReal}}，追平 {{v:hold.A057.1530.bsDef}}，保持 {{v:hold.A057.1530.bsHold}}。
+- **B041 两种假定都解释不了。** 换成「保持」，窗口末领土从 ×{{v:hold.B041.630.def}} 降到 ×{{v:hold.B041.630.hold}}，但进录像的指令仍是真局的近两倍（{{v:hold.B041.630.recHold}} 对 {{v:hold.B041.630.recReal}}），同拍批占比反而离真局更远（{{v:hold.B041.630.bsHold}} 对 {{v:hold.B041.630.bsReal}}）。
+
+所以缺省假定不改：就这些运行看，「追平」比「保持」更接近当年的情形。两头之间的情形（卡顿慢慢退）没有试。
 
 ### 5.8 判定
 
-{{v:ckpt.verdict}}
+<!-- assert: n('card.C2.630.terrIn') >= 0.9 * n('card.C2.630.n') && n('revived.1530.in') <= 0.8 * n('revived.1530.runs') -->
+<!-- assert: Math.min(n('ckpt.ver.vb.630.hitPc'), n('ckpt.ver.vb.1530.hitPc'), n('ckpt.ver.c110.630.hitPc'), n('ckpt.ver.c110.1530.hitPc')) >= 85 -->
+第 2 项（通道）通过，带四条边界。
+
+通过的依据：走这一局的实录阶梯，当年那一版策略重现了当年的指令签名。任务卡点名的 60 次里，C2 在 630~1530 拍有 {{v:card.C2.630.hit}} 项在容差内，1530~3210 拍 {{v:card.C2.1530.hit}} 项；Vb 和 c110 两版、两个窗口都在 85% 以上。反面检验也成立：卡顿的局换成不落后的通道，容差内的比例掉到 {{v:ckpt.630.lag.C1.hitPc}}；不卡的局注入合成卡顿波，掉到 {{v:card.C3.630.hitPc}}。签名是通道决定的，通道模型抓住了它。
+
+边界：
+
+1. **窗口末的领土，630~1530 拍可以用，1530~3210 拍不可以。** 前一个窗口 {{v:card.C2.630.terrIn}} 局落在真局的 ±10% 内；后一个窗口只有 {{v:card.C2.1530.terrIn}} 局，而且偏差偏向一边（真局出了局的席位在模拟里活下来，5.7 节）。
+2. **单个席位的分叉可以让一局的窗口末领土差出两成**（A041、A023），方向不定。看领土要看多局的中位，不看单局。
+3. **B041 没有复现出来**，原因未查清。录像在卡顿高峰处结束的局，结果不用。
+4. **即时通道（C0）不是任何一档的替身。** 连不卡的局也对不上（重复单占比差 {{v:ckpt.630.clean.C0.dupShare.abs}} 个百分点，窗口末领土是真局的 {{v:ckpt.630.clean.C0.terr}} 倍）。

@@ -30,6 +30,12 @@ const AKK = [[100, 100, 100], [144, 0, 0], [0, 128, 0], [0, 0, 144], [128, 128, 
 const AKL = [[4, 4, 4, 20], [4, 0, 0, 27], [0, 4, 0, 31], [0, 0, 4, 27], [4, 4, 0, 31], [4, 0, 4, 31], [0, 4, 4, 31], [4, 4, 4, 14], [4, 4, 4, 13]];
 const mj = (a, b) => (a >= 0 ? iV(a, b) : -iV(-a, b));
 let TEAM_CTX = null;
+// G0 保真度消融（只给 g0ablate.mjs 用；默认什么都不关）：环境变量 G0_ABLATE=colors,botteams,cache32
+//   colors   组队局也用自由混战的配色随机数（数据仓库 sim/game.js 的默认 setupColors）
+//   botteams 内置 AI 一律轮流入队（数据仓库 sim/game.js setupTeams 的默认；线上只有 8 队及以上才入队）
+//   nobotteams 内置 AI 一律不入队（给 8 队的局做反向检验用）
+//   cache32  队伍总地不走 32 拍缓存，猎杀与终局提速用数据仓库 sim 的默认实现（实时队伍总地 / 榜首个人占 90%）
+const abl = (k) => (process.env.G0_ABLATE || '').split(',').includes(k);
 class TGame extends Game {
   // 引擎 dQ（bk）：各队总地 a5c 每 32 拍才重算一次（bk.ee 在每拍末尾 ++w0>=32 时 aYJ），
   // 「领先队占 80% 后给 AI 派猎杀目标」(jd.jp) 和「领先队占 90% 后 AI 提速」(je.ee) 读的都是这份旧值。
@@ -77,6 +83,7 @@ class TGame extends Game {
   }
 
   teamHuntTick() {
+    if (abl('cache32')) return super.teamHuntTick();
     if (!this.teamGame || this.t % 109 !== 9 || this.aliveCount < 20) return;
     if (this.teamLeadLandCached() < iV(8 * this.land, 10)) return;
     const lead = this.teamLeadCached();
@@ -97,7 +104,7 @@ class TGame extends Game {
   }
 
   endgameSpeedTick() {
-    if (!this.teamGame) return super.endgameSpeedTick();
+    if (!this.teamGame || abl('cache32')) return super.endgameSpeedTick();
     if (this.endgameFast || this.t % 30 !== 7) return;
     if (this.teamLeadLandCached() < iV(90 * this.land, 100)) return;
     this.endgameFast = 1;
@@ -317,7 +324,7 @@ export function resim(mid, opts = {}) {
       const team = p < H ? ta.fX[p] : ta.botsTeamed ? 1 + (p % ta.nTeams) : 0;
       aDn[p] = ta.lH[team];
     }
-    TEAM_CTX = { aDn };
+    TEAM_CTX = abl('colors') ? null : { aDn };
   } else TEAM_CTX = null;
   const g = new TGame({
     map,
@@ -330,7 +337,7 @@ export function resim(mid, opts = {}) {
     humanColors: vu.colorsData ? Array.from(vu.colorsData.subarray(0, H)) : [0],
     teams: teamGame ? ta.fX : undefined,
     nTeams: ta.nTeams,
-    botTeams: ta.botsTeamed,
+    botTeams: abl('botteams') ? true : abl('nobotteams') ? false : ta.botsTeamed,
   });
   g.me = vu.selectedPlayer;
 
@@ -450,8 +457,12 @@ export function resim(mid, opts = {}) {
   const cmdLog = [];
   const leftT = new Int32Array(H).fill(-1);
   const spawnXY = new Array(H).fill(null);
+  // opts.cmdFilter(c, g, info)：开环消融用（cfopen.mjs）。返回 false 的指令不执行；选点、离场指令不过滤。
+  // info = { H, isSquad, teams }。默认没有过滤器，重放与原来逐拍相同。
+  const fInfo = { H, isSquad, teams: ta.fX, teamGame };
   const execCmd = (c) => {
     const { id, player, dX, dZ } = c;
+    if (opts.cmdFilter && id >= 1 && id <= 5 && !opts.cmdFilter(c, g, fInfo)) return;
     if (id === 0) {
       g.chooseSpawn(dX % g.W, Math.floor(dX / g.W), player, false);
       if (player < H) spawnXY[player] = [dX % g.W, Math.floor(dX / g.W)];

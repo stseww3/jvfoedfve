@@ -5,25 +5,28 @@
 # 只用历史旧策略：每一局跑它当年线上那一版（清单里写的版本和局号不符时，模拟器拒绝）。
 #
 # 用法（在 c136-review/agents/R06 下；整条队很长，放后台）：
-#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省全部：live bands lists g0 arena arena-rp attr delay verify tail g0x attrx fill hold seeds batchcheck tables
+#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省：live bands lists core plan tail delay old oldcode profile tables
 # 各阶段的产物：
 #   live       sim-v2/calib/live/<局>.json            全部有录像的局的实盘签名（只放录像）
 #   bands      sim-v2/calib/live-bands.json           实盘区间：策略版本 × 卡顿档，各项签名的 P25 / 中位 / P75
-#   lists      sim-v2/tools/{verify_list,g0_list_more,g0_list_ext,attr_list,attr_list_ext,attr_list_seeds,fill_list}.txt（tools/g0_lists.py）
-#   verify     sim-v2/calib/verify/<局>.json          入库各局：与真引擎重放逐断面核对、clone 自检、日志快照核对
+#   lists      sim-v2/tools/{verify_list,g0_list_more,g0_list_ext,g0_list_ext_more,attr_list,attr_list_ext,attr_list_seeds,fill_list}.txt（tools/g0_lists.py）
+#   core       核心 20 局的 verify 与任务卡点名的 60 次断面（后面的清单要用它们的结果：hold 清单从 C2 的结果里挑运行）
+#   plan       tools/g0_plan.txt 里的全部清单，按文件里的先后排优先级：排到一次槽位就从头接着往下跑。包括——
+#              verify     sim-v2/calib/verify/<局>.json          入库各局：与真引擎重放逐断面核对、clone 自检、日志快照核对
+#              g0         sim-v2/calib/g0/<标签>.json            630 / 1530 两个断面 × C0 / C1 / C2 / C3（g0_list.txt 的 60 次 + 补齐的 + 新接进来的局）
+#              hold       sim-v2/calib/hold/<标签>.json          C2「最后一个已知点之后」那条假定的对照：追平（缺省）换成保持落后 / 之后的指令没落地（tools/hold_list.py 挑运行）
+#              arena      sim-v2/calib/arena-acc20/<局>.json     对手模型标定：核心 20 个真局房间，从第 0 拍起闭环
+#              arena      sim-v2/calib/batchcheck/arena-rerun/   抽两个房间换个次序在另一批里再跑一遍（与 arena-acc20 里的同名结果核对）
+#              attr       sim-v2/calib/attr/<标签>.json          通道延迟归因：0 / 630 / 1500 / 4284 四个断面（attr_list.txt 种子 1、attr_list_seeds.txt 种子 2、attr_list_ext.txt 新接进来的局）
+#              fill       sim-v2/calib/fill/<标签>.json          C2 已知点之间几种补法的对照（fill_list.txt）
+#              arena-rp   sim-v2/calib/arena-rp1530/<局>.json    闭环，但前 1530 拍其余真人照录像（区分「前期误差滚雪球」和「后期行为没拟合上」）
 #   tail       sim-v2/calib/verify-tail.json          verify 里没有一致到最后的局：分歧之前的局面、是哪几个真人不同（tools/verify_tail.mjs）
-#   g0         sim-v2/calib/g0/<标签>.json            核心 20 局：630 / 1530 两个断面 × C0 / C1 / C2 / C3（g0_list.txt 的 60 次 + g0_list_more.txt 补齐）
-#   g0x        sim-v2/calib/g0/<标签>.json            为覆盖 Va / Vc 新接进来的局：同一张表（g0_list_ext.txt）
-#   arena      sim-v2/calib/arena-acc20/<局>.json     对手模型标定：核心 20 个真局房间，从第 0 拍起闭环
-#   arena-rp   sim-v2/calib/arena-rp1530/<局>.json    同上，但前 1530 拍其余真人照录像（区分「前期误差滚雪球」和「后期行为没拟合上」）
-#   attr       sim-v2/calib/attr/<标签>.json          核心 20 局的通道延迟归因：0 / 630 / 1500 / 4284 四个断面（attr_list.txt，种子 1）
-#   attrx      sim-v2/calib/attr/<标签>.json          新接进来的局：同上（attr_list_ext.txt）
-#   fill       sim-v2/calib/fill/<标签>.json          C2 已知点之间几种补法的对照（fill_list.txt）
-#   hold       sim-v2/calib/hold/<标签>.json          C2「最后一个已知点之后」那条假定的对照：追平（缺省）换成保持落后（tools/hold_list.py 挑运行）
 #   delay      sim-v2/calib/opening-delay.json        不卡的局里「下令拍 → 录像执行拍」间隔的实测分布（对 C1 模型）
-#   seeds      sim-v2/calib/attr/<标签>.json          核心 20 局 attr 的 C1 / C2 换种子 2、3（attr_list_seeds.txt）
-#   batchcheck sim-v2/calib/batchcheck/attr-single/   抽 12 次断面运行，单独起进程各跑一遍，与批量跑的结果逐字段核对（tools/same_result.mjs）
+#   old        sim-v2/calib/old-vs-new.json           拆掉候选臂之前入库的旧结果（单独起进程逐个跑的）对现在批量重跑的同名结果，逐字段核对（tools/old_vs_new.sh）
+#   oldcode    sim-v2/calib/old-code-arena.json       闭环模式：把拆掉候选臂之前的代码取出来重跑两个房间，对现在的结果逐字段核对（tools/old_code_arena.sh）
+#   profile    sim-v2/calib/human-profile-check.json  对手模型的参数文件 calib/human-profile.json 从录像从头重算一遍，与入库的那份逐字节比（tools/profile_check.sh）
 #   tables     sim-v2/calib/report/                   报告里的全部表和数字（tools/g0_report.mjs）
+# 单独的阶段名 verify / g0 / g0x / attr / attrx / seeds / fill / hold / arena / arena-rp 也还能用（只跑那一张清单）。
 set -u
 cd "$(dirname "$0")/../.." || exit 2
 # 重计算闸门（run-heavy.sh）管排队：全机的重计算槽位很挤，等一个槽位常常要好几分钟，所以排队交给闸门自己（最多等 HEAVY_QUEUE 秒），
@@ -33,15 +36,15 @@ export HEAVY_QUEUE=900
 HEAVY="bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700"
 T=sim-v2/tools
 LAST=/tmp/r06-g0all-last.txt
-stages="${*:-live bands lists g0 arena arena-rp attr delay verify tail g0x attrx fill hold seeds batchcheck tables}"
+stages="${*:-live bands lists core plan tail delay old oldcode profile tables}"
 say() { echo "=== $(date -u +%H:%M:%S) $*"; }
 
-# batch <checkpoint|arena|verify> <结果目录名> <清单> [其余开关…]：一批接一批，直到清单跑完
+# batch <g0_batch.mjs 的参数…>：一批接一批，直到清单（或整份计划）跑完。BEFORE 里有命令的话，每批之前先执行一遍
 batch() {
-  local kind="$1" dir="$2" list="$3"; shift 3
   local i r stuck=0 nowait=0
   for i in $(seq 1 900); do
-    r=$($HEAVY $T/g0_batch.mjs "$kind" "$dir" "$list" "$@" 2>&1 | tail -1 | cut -c1-240)
+    [ -n "${BEFORE:-}" ] && $BEFORE > /dev/null 2>&1
+    r=$($HEAVY $T/g0_batch.mjs "$@" 2>&1 | tail -1 | cut -c1-240)
     case "$r" in
       *"[g0_batch]"*"没轮上"*) nowait=$((nowait + 1)) ;;
       *"[g0_batch]"*"还剩 0 个"*) echo "$(date -u +%H:%M:%S) $r（另有 $nowait 次没排到槽位）"; return 0 ;;
@@ -83,6 +86,23 @@ for st in $stages; do
     lists)
       say lists
       timeout 60 python3 $T/g0_lists.py || { echo "清单没生成，停"; exit 1; } ;;
+    core)
+      say core
+      batch verify verify $T/arena_calib_list20.txt
+      batch checkpoint g0 $T/g0_list.txt ;;
+    plan)
+      say plan
+      # hold 清单是从 C2 的结果里挑出来的，C2 的结果一边跑一边多：每批之前重新挑一遍
+      BEFORE="timeout 60 python3 $T/hold_list.py" batch plan $T/g0_plan.txt ;;
+    old)
+      say old
+      timeout 120 bash $T/old_vs_new.sh | tail -3 ;;
+    oldcode)
+      say oldcode
+      bash $T/old_code_arena.sh | tail -3 ;;
+    profile)
+      say profile
+      bash $T/profile_check.sh | tail -3 ;;
     verify)
       say verify
       batch verify verify $T/verify_list.txt ;;
@@ -95,7 +115,8 @@ for st in $stages; do
       batch checkpoint g0 $T/g0_list_more.txt ;;
     g0x)
       say g0x
-      batch checkpoint g0 $T/g0_list_ext.txt ;;
+      batch checkpoint g0 $T/g0_list_ext.txt
+      batch checkpoint g0 $T/g0_list_ext_more.txt ;;
     attr)
       say attr
       batch checkpoint attr $T/attr_list.txt ;;
@@ -120,16 +141,6 @@ for st in $stages; do
     delay)
       say delay
       light $T/opening_delay.mjs --live-clean sim-v2/calib/live --json sim-v2/calib/opening-delay.json ;;
-    batchcheck)
-      say batchcheck
-      # attr 清单每隔 31 行抽一个标签（那些结果都是批量跑出来的），单独起进程各跑一遍（tools/g0_run.sh），再与批量跑的同名结果逐字段核对
-      grep -v '^#' $T/attr_list.txt | awk 'NF && (NR % 31) == 7' | head -12 > /tmp/r06-batchcheck-attr.txt
-      for i in $(seq 1 30); do
-        bash $T/g0_run.sh batchcheck/attr-single < /tmp/r06-batchcheck-attr.txt | grep -v '^跳过' | cut -c1-160
-        n=$(ls sim-v2/calib/batchcheck/attr-single/*.json 2>/dev/null | wc -l)
-        [ "$n" -ge "$(wc -l < /tmp/r06-batchcheck-attr.txt)" ] && break
-      done
-      light $T/same_result.mjs sim-v2/calib/batchcheck/attr-single sim-v2/calib/attr ;;
     tables)
       say tables
       light $T/g0_report.mjs ;;

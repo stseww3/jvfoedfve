@@ -3917,7 +3917,7 @@ export const PARAMS = {
 
   // ---- v28/P3: floors when buying the land of bots, of seats that left, of remnants ----
   p3ThreatSkip: 1, // threatOf leaves out teammates, squad seats and seats that left
-  p3SafeCap: 1, // the floor a neighbouring bot sets is at most p3ThetaAi x its balance + 2 x our border with it (only for small/weak bots)
+  p3SafeCap: 0, // disabled: capping safeFinite by bot's own balance exposes us to becoming the bot's weakest neighbour
   p3ThetaAi: 1.5,
   p3Decouple: 1, // such land may be bought with up to p3SpendFrac x balance from below dpKeep / safeFinite (only when g.t >= coreFrom)
   p3SpendFrac: 0.12,

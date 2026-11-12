@@ -7,6 +7,9 @@
 //   <!-- assert: 表达式 -->   正文里一句定性的话所依赖的数量关系。表达式是 JavaScript，n('键') 取这个键里的第一个数
 //                      （去掉逗号；百分号、正负号「−」照认），s('键') 取原字符串。表达式不成立就报错、不写报告——
 //                      数据重跑之后正文里的话要是不再成立，在这里就拦下来。这一行不进报告。
+//   <!-- if: 表达式 --> … [<!-- else --> …] <!-- endif -->   按数据有没有决定这一段进不进报告（不能嵌套）。表达式同上，另有 has('键')
+//                      判断键在不在。用在排在队列后面的对照运行上：跑完了就报，没跑完就写明没跑完，不留空表。
+//                      没进报告的那一段里的记号和断言都不算。这三行本身不进报告。
 // 缺表、缺键、断言不成立，全部列出来并以退出码 1 结束；--draft 时照样写出报告（缺的地方标「【缺 …】」），用来边跑数据边看稿。
 //
 // 用法（在 c136-review/agents/R06 下）：node sim-v2/tools/g0_build.mjs [--draft] [--out 报告路径]
@@ -33,19 +36,38 @@ const n = (k) => {
   return parseFloat(m[0].replace('−', '-'));
 };
 
+const has = (k) => k in values;
+
 let asserts = 0;
 const parts = [];
 const ASSERT_RE = /^[ \t]*<!--\s*assert:\s*([\s\S]*?)-->[ \t]*\n?/gm;
+const IF_RE = /^[ \t]*<!--\s*if:\s*([\s\S]*?)-->[ \t]*\n([\s\S]*?)^[ \t]*<!--\s*endif\s*-->[ \t]*\n?/gm;
+const ELSE_RE = /^[ \t]*<!--\s*else\s*-->[ \t]*\n/m;
 const files = fs.readdirSync(SRC).filter((x) => x.endsWith('.md')).sort();
-// 模板里可以引用「一共核对了多少条断言」：先数一遍
-values['build.asserts'] = String(files.reduce((a, file) => a + (fs.readFileSync(path.join(SRC, file), 'utf8').match(ASSERT_RE) || []).length, 0));
+// 先定下哪些段进报告
+const texts = new Map();
 for (const file of files) {
-  let text = fs.readFileSync(path.join(SRC, file), 'utf8');
+  const raw = fs.readFileSync(path.join(SRC, file), 'utf8');
+  texts.set(file, raw.replace(IF_RE, (m, expr, body) => {
+    let on = false;
+    try {
+      // eslint-disable-next-line no-new-func
+      on = !!new Function('n', 's', 'has', `return (${expr});`)(n, s, has);
+    } catch (e) { problems.push(`${file}：条件算不出来（${e.message}）：${expr.trim()}`); }
+    const br = body.split(ELSE_RE);
+    return on ? br[0] : (br[1] || '');
+  }));
+}
+// 模板里可以引用「一共核对了多少条断言」：先数一遍（只数进了报告的段）
+values['build.asserts'] = String(files.reduce((a, file) => a + (texts.get(file).match(ASSERT_RE) || []).length, 0));
+for (const file of files) {
+  let text = texts.get(file);
+  if (/<!--\s*(if:|else|endif)/.test(text)) problems.push(`${file}：有没配上对的 if / else / endif`);
   text = text.replace(ASSERT_RE, (m, expr) => {
     asserts++;
     try {
       // eslint-disable-next-line no-new-func
-      if (!new Function('n', 's', `return (${expr});`)(n, s)) problems.push(`${file}：断言不成立：${expr.trim()}`);
+      if (!new Function('n', 's', 'has', `return (${expr});`)(n, s, has)) problems.push(`${file}：断言不成立：${expr.trim()}`);
     } catch (e) { problems.push(`${file}：断言算不出来（${e.message}）：${expr.trim()}`); }
     return '';
   });

@@ -1,0 +1,16 @@
+# g0_plan.txt — 保真度验收要跑的全部清单，按先后排优先级（tools/g0_batch.mjs plan）。
+# 重计算槽位很挤：排到一次槽位，就从第一行起接着往下跑，前面的清单跑完了才轮到后面的。已有结果文件的运行跳过。
+# 每行：checkpoint|arena|verify <结果目录名> <清单文件> [开关…]
+checkpoint g0           sim-v2/tools/g0_list.txt
+checkpoint hold         sim-v2/tools/hold_list.txt
+arena      arena-acc20  sim-v2/tools/arena_calib_list20.txt --len 4300 --channel C2 --squad-fate real
+arena      batchcheck/arena-rerun sim-v2/tools/batchcheck_arena_list.txt --len 4300 --channel C2 --squad-fate real
+checkpoint attr         sim-v2/tools/attr_list.txt
+checkpoint attr         sim-v2/tools/attr_list_seeds.txt
+verify     verify       sim-v2/tools/verify_list.txt
+checkpoint g0           sim-v2/tools/g0_list_ext.txt
+checkpoint fill         sim-v2/tools/fill_list.txt
+arena      arena-rp1530 sim-v2/tools/arena_calib_list20.txt --len 4300 --channel C2 --squad-fate real --others-replay-until 1530
+checkpoint attr         sim-v2/tools/attr_list_ext.txt
+checkpoint g0           sim-v2/tools/g0_list_more.txt
+checkpoint g0           sim-v2/tools/g0_list_ext_more.txt

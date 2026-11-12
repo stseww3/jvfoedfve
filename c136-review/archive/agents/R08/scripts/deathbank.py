@@ -23,6 +23,7 @@
   [DB-C] 在线出局的席位账上的兵：合计、每个号平均、中位、≥10 万的占比、密度（兵÷地）、账上的兵 ÷ 压在它身上的兵。
   [DB-D] 按时段。
   [DB-E] 按编队档、按主队输赢。
+  [DB-H] 出局那一拍这笔兵在引擎里有没有去处：4284 拍前后 × 同队还有没有活着、在线的真人。
   [DB-F] 和日志口径（xscan [XS-B]）对账。
   [DB-G] 逐局一行。
 """
@@ -121,11 +122,15 @@ def main():
             return "wild"
 
         played = [s for s in range(H) if R["seats"][s][0] > 0]          # 整局有过地的席位
+        teams = R["teams"]
+        team_game = R["gameMode"] != 0
+        death_t = R["deathT"]
         for s in played:
             seats_n[grp(s)] += 1
         seen = set()
         won = bool(XT.get(mid, {}).get("won"))
-        m = dict(mid=mid, cohort=cohort, H=H, end=R["endTick"], won=won, own=len([s for s in played if s in own_set]), rows=0)
+        m = dict(mid=mid, cohort=cohort, H=H, end=R["endTick"], won=won, own=len([s for s in played if s in own_set]), rows=0,
+                 wildSeats=len([s for s in played if grp(s) == "wild"]))
         mc = Counter()
         for t, p, kind, terr, bal, peak, state, out, n_atk, press, top, boats in R["deaths"]:
             if p in seen or p >= H:
@@ -135,7 +140,19 @@ def main():
             seen.add(p)
             g = grp(p)
             online = state != 2
-            r = dict(mid=mid, cohort=cohort, won=won, t=t, p=p, g=g, online=online, kind=kind, terr=terr, bal=bal, peak=peak, out=out, nAtk=n_atk, press=press, boats=boats)
+            # 出局那一拍同队还活着、在线的真人（引擎里捐款只能给同队；t ≥ 4284 以后不查受捐额度）
+            mates_own = mates_any = 0
+            if team_game and teams[p] != 0:
+                for s2 in played:
+                    if s2 == p or teams[s2] != teams[p]:
+                        continue
+                    if 0 <= death_t[s2] <= t or 0 <= left[s2] <= t:
+                        continue
+                    mates_any += 1
+                    if s2 in own_set:
+                        mates_own += 1
+            r = dict(mid=mid, cohort=cohort, won=won, t=t, p=p, g=g, online=online, kind=kind, terr=terr, bal=bal, peak=peak, out=out, nAtk=n_atk, press=press, boats=boats,
+                     matesOwn=mates_own, matesAny=mates_any, teamGame=team_game)
             recs.append(r)
             m["rows"] += 1
             if online:
@@ -237,6 +254,47 @@ def main():
         J["split"][label] = dict(matches=len(ms), own=sum(m["own"] for m in ms), dead=d, line=sum(m.get("ownLine", 0) for m in ms), bal=b, ge100k=sum(m.get("own100k", 0) for m in ms),
                                  matches100k=sum(1 for m in ms if m.get("own100k", 0)))
     P()
+    P("[DB-H] 我方在线时出局的号：出局那一拍，账上的兵在引擎里有没有去处（捐款只能给同队；t ≥ 4284 以后引擎不再查受捐额度）")
+    P("  时段 | 出局那一拍同队还有谁活着、在线 | 号 | 账上的兵合计 | 其中 ≥10 万的号 | 出局前的地合计")
+    J["outlet"] = []
+    for cn, sel_t in (("4284 拍以前", lambda r: r["t"] < 4284), ("4284 拍以后", lambda r: r["t"] >= 4284)):
+        for mn, sel_m in (("有我方号", lambda r: r["matesOwn"] > 0), ("没有我方号、有别的真人", lambda r: r["matesOwn"] == 0 and r["matesAny"] > 0),
+                          ("一个都没有（含自由混战）", lambda r: r["matesAny"] == 0)):
+            rs = [r for r in recs if r["g"] == "own" and r["online"] and sel_t(r) and sel_m(r)]
+            b = sum(r["bal"] for r in rs)
+            P(f"  {cn} | {mn} | {len(rs)} | {b} | {sum(1 for r in rs if r['bal'] >= 100000)} | {sum(r['terr'] for r in rs)}")
+            J["outlet"].append(dict(period=cn, mates=mn, n=len(rs), bal=b, ge100k=sum(1 for r in rs if r["bal"] >= 100000)))
+    own_on_all = [r for r in recs if r["g"] == "own" and r["online"]]
+    late = [r for r in own_on_all if r["t"] >= 4284]
+    P(f"  合计 {len(own_on_all)} 个号、{sum(r['bal'] for r in own_on_all)} 兵；其中 4284 拍以后出局的 {len(late)} 个号（{pct(len(late), len(own_on_all))}）、{sum(r['bal'] for r in late)} 兵（{pct(sum(r['bal'] for r in late), sum(r['bal'] for r in own_on_all))}）")
+    P()
+    P("[DB-I] 按编队档分开（在线时出局的席位；本编队和同一批局里的野人并排）")
+    P("  档 | 组 | 局 | 有过地的席位 | 在线时出局 | 被吃光 | 地还在就被除名 | 除名前 地÷峰值 中位 | 账上的兵合计 | 中位 | ≥10 万的号 | 密度中位 | 账上的兵 ÷ 压在它身上的兵 中位")
+    J["cohort"] = {}
+    table = []
+    seats_by = Counter()
+    for m in per_match:
+        seats_by[(m["cohort"], "own")] += m["own"]
+        seats_by[(m["cohort"], "wild")] += m["wildSeats"]
+    for co in ("squad10", "squad20"):
+        n_m = sum(1 for m in per_match if m["cohort"] == co)
+        if not n_m:
+            continue
+        for g in ("own", "wild"):
+            rs = [r for r in recs if r["cohort"] == co and r["g"] == g and r["online"]]
+            n_seats = seats_by[(co, g)]
+            line = [r for r in rs if r["terr"] > 0]
+            ratio = [r["terr"] / r["peak"] for r in line if r["peak"] > 0]
+            bals = [r["bal"] for r in rs]
+            dens = [r["bal"] / r["terr"] for r in rs if r["terr"] > 0]
+            rel = [r["bal"] / r["press"] for r in rs if r["press"] > 0]
+            k = sum(1 for b in bals if b >= 100000)
+            cells = [f"{len(rs)}（{pct(len(rs), n_seats)}）", str(len(rs) - len(line)), str(len(line)), fq(ratio, (0.5,), 3), str(sum(bals)), str(q(bals, 0.5)) if bals else "–",
+                     f"{k}（{pct(k, len(rs))}）", fq(dens, (0.5,), 1), fq(rel, (0.5,), 2)]
+            P(f"  {co} | {GROUP_CN[g]} | {n_m} | {n_seats} | " + " | ".join(cells))
+            J["cohort"][f"{co}|{g}"] = dict(matches=n_m, seats=n_seats, n=len(rs), line=len(line), bal=sum(bals), median=q(bals, 0.5) if bals else None, ge100k=k)
+            table.append(f"| {co} | {'本编队' if g == 'own' else '野人'} | {cells[0]} | {cells[1]} | {cells[2]} | {cells[3]} | {cells[5]} | {cells[6]} | {cells[7]} | {cells[8]} |")
+    P()
     P("[DB-F] 和日志口径对账（xscan [XS-B]：123 局里 905 个阵亡号、出局时账上合计 148529470 兵、≥10 万的 373 个）")
     own_on = [r for r in recs if r["g"] == "own" and r["online"]]
     own_sh = [r for r in recs if r["g"] == "own" and not r["online"]]
@@ -247,6 +305,46 @@ def main():
     for m in sorted(per_match, key=lambda m: m["mid"]):
         P(f"  {m['mid']} | {m['cohort']} | {m['H']} | {m['end']} | {'赢' if m['won'] else '–'} | {m['own']} | {m.get('ownDead', 0)} | {m.get('ownLine', 0)} | {m.get('ownBal', 0)} | {m.get('own100k', 0)} | {m.get('wildDead', 0)} / {m.get('wildBal', 0)}")
     J["perMatch"] = per_match
+
+    # 会审稿用的填空（council_fill.py 读）：每一项都和上面打印出来的写法一模一样
+    n10 = sum(1 for m in per_match if m["cohort"] == "squad10")
+    n20 = sum(1 for m in per_match if m["cohort"] == "squad20")
+    tot_bal = sum(r["bal"] for r in own_on_all)
+    o = {(d["period"], d["mates"]): d for d in J["outlet"]}
+    la, lb_, lc = o[("4284 拍以后", "有我方号")], o[("4284 拍以后", "没有我方号、有别的真人")], o[("4284 拍以后", "一个都没有（含自由混战）")]
+    # 能整局重演的局单（fidlist.py 从 xtruth.json 生成；fid_batch.sh 照它分批跑）
+    try:
+        want = json.load(open(os.path.join(OUT, "_run", "fidabl_list.json"), encoding="utf-8"))
+        w10 = sum(1 for _m, _h, c in want if c == "squad10")
+        w20 = sum(1 for _m, _h, c in want if c == "squad20")
+    except Exception:
+        w10 = w20 = None
+    if w10 is None:
+        cover = f"{len(per_match)} 局：squad10 {n10} 局、squad20 {n20} 局"
+    elif n10 >= w10 and n20 >= w20:
+        cover = f"能整局重演的 {w10 + w20} 局全部跑完：squad10 {n10} 局、squad20 {n20} 局"
+    else:
+        cover = (f"能整局重演的 {w10 + w20} 局里跑完了 {len(per_match)} 局：squad10 {n10} / {w10} 局、squad20 {n20} / {w20} 局；"
+                 "其余的在后台分批重演（和别的组共用重计算槽位），所以下表目前" + ("只有 squad20" if n10 == 0 else "两档都不全"))
+    lines.insert(1, f"  覆盖：{cover}")
+    J["report"] = {
+        "DB_N": str(len(per_match)), "DB_N10": str(n10), "DB_N20": str(n20), "DB_COVER": cover,
+        "DB_TABLE": "\n".join(table),
+        "DB_OWN_DEAD": str(len(own_on_all)), "DB_OWN_BAL": str(tot_bal),
+        "DB_OWN_MED": str(J["bank"]["own"]["median"]), "DB_OWN_100K": f"{J['bank']['own']['ge100k']}（{pct(J['bank']['own']['ge100k'], J['bank']['own']['n'])}）",
+        "DB_WILD_DEAD": str(J["bank"]["wild"]["n"]), "DB_WILD_MED": str(J["bank"]["wild"]["median"]),
+        "DB_WILD_100K": f"{J['bank']['wild']['ge100k']}（{pct(J['bank']['wild']['ge100k'], J['bank']['wild']['n'])}）",
+        "DB_LATE_N": str(len(late)), "DB_LATE_NPCT": pct(len(late), len(own_on_all)),
+        "DB_LATE_BAL": str(sum(r["bal"] for r in late)), "DB_LATE_BALPCT": pct(sum(r["bal"] for r in late), tot_bal),
+        "DB_LATE_OWN_N": str(la["n"]), "DB_LATE_OWN_BAL": str(la["bal"]), "DB_LATE_OWN_100K": str(la["ge100k"]),
+        "DB_LATE_ANY_N": str(lb_["n"]), "DB_LATE_ANY_BAL": str(lb_["bal"]),
+        "DB_LATE_NONE_N": str(lc["n"]), "DB_LATE_NONE_BAL": str(lc["bal"]),
+        "DB_SHELL_N": str(len(own_sh)), "DB_SHELL_BAL": str(sum(r["bal"] for r in own_sh)),
+        "DB_WIN_M": str(J["split"].get("主队赢的局", {}).get("matches", 0)), "DB_WIN_SEATS": str(J["split"].get("主队赢的局", {}).get("own", 0)),
+        "DB_WIN_DEAD": str(J["split"].get("主队赢的局", {}).get("dead", 0)),
+        "DB_LOSE_M": str(J["split"].get("主队没赢的局", {}).get("matches", 0)), "DB_LOSE_SEATS": str(J["split"].get("主队没赢的局", {}).get("own", 0)),
+        "DB_LOSE_DEAD": str(J["split"].get("主队没赢的局", {}).get("dead", 0)),
+    }
 
     os.makedirs(os.path.join(OUT, "_cross"), exist_ok=True)
     open(os.path.join(OUT, "_cross", "deathbank.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")

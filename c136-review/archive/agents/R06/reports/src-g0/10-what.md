@@ -79,8 +79,24 @@
 {{T:runs}}
 
 <!-- assert: n('old.verify.both') === 20 && n('old.verify.same') === 20 && n('old.g0.both') === 60 && n('old.g0.same') === 60 -->
-<!-- assert: n('old.arena.both') === 20 && n('old.arena.same') === n('old.arena.both') -->
-拆掉候选臂之前（提交 `{{v:old.ref}}`）入库过一批用旧版工具跑的结果。把它们和现在重跑出来的同名结果逐字段核对（`tools/old_vs_new.sh`；新版多记的字段和计时字段不比）：verify {{v:old.verify.same}} / {{v:old.verify.both}} 个相同，断面运行 {{v:old.g0.same}} / {{v:old.g0.both}} 个相同，闭环运行 {{v:old.arena.same}} / {{v:old.arena.both}} 个相同。拆候选臂没有改动历史策略这条臂的任何数字。
+<!-- assert: n('batch.n') >= 6 && n('batch.same') === n('batch.n') -->
+<!-- assert: s('old.arena.codeWritesIt') === '是' && n('old.arena.oldWithIt') === 0 && n('old.arena.newWithIt') === n('old.arena.newFiles') -->
+三项核对，都是逐字段比结果文件（`tools/same_result.mjs`，计时字段不比）：
 
-<!-- assert: n('batch.n') >= 12 && n('batch.same') === n('batch.n') -->
-断面运行是一个进程里连着跑一批的（`tools/g0_batch.mjs`，每次运行之前把策略文件重新编译一遍）。为了确认这样跑和单独起进程跑没有区别，抽了 {{v:batch.n}} 次运行两种跑法各跑一遍，{{v:batch.same}} 次的结果逐字段相同（计时字段除外）。
+- **verify 和断面：新旧结果相同。** 拆掉候选臂之前（提交 `{{v:old.ref}}`）入库过一批旧结果。和现在重跑出来的同名结果比（`tools/old_vs_new.sh`；新版多记的字段不比）：verify {{v:old.verify.same}} / {{v:old.verify.both}} 个相同，断面运行 {{v:old.g0.same}} / {{v:old.g0.both}} 个相同。拆候选臂没有改动历史策略这条臂在这两种模式下的任何数字。
+- **闭环：入库的旧结果作废。** 同一次提交里入库的 {{v:old.arena.old}} 个闭环结果，和现在重跑的同名结果比，{{v:old.arena.both}} 个里只有 {{v:old.arena.same}} 个相同。原因查到了，不在拆候选臂上：那次提交的 `lib/arena.mjs` 在每个断面都往结果里写 `{{v:old.arena.field}}`（其余真人的余额）这个字段，而那 {{v:old.arena.oldFiles}} 个旧结果文件里带这个字段的是 {{v:old.arena.oldWithIt}} 个。也就是说，它们是对手模型还在改的时候用更早的代码跑的，提交时没有用定稿的代码重跑，拿那次提交自己的代码也复算不出来。本报告不用那批结果；第 7 节的数字全部来自这一次用入库代码的重跑。
+<!-- if: has('oldcode.both') && n('oldcode.both') > 0 -->
+<!-- assert: n('oldcode.same') === n('oldcode.both') && n('oldcode.both') === n('oldcode.n') && n('oldcode.leavesN') >= 3000 * n('oldcode.n') -->
+- **闭环：旧代码重跑，与现在的结果相同。** 拆候选臂有没有改动闭环的数字，既然不能拿入库的旧结果对，就把那次提交的代码原样取出来，单独起进程重跑 {{v:oldcode.rooms}} 这 {{v:oldcode.n}} 个房间（`tools/old_code_arena.sh`），与现在的结果比：{{v:oldcode.same}} / {{v:oldcode.both}} 个逐字段相同，一共比了 {{v:oldcode.leaves}} 个数。不比的只有两边各自独有的字段：旧结果的 {{v:oldcode.onlyOld}}，新结果的 {{v:oldcode.onlyNew}}。所以闭环这一侧，拆候选臂也没有改动历史策略这条臂的数字；入库的旧结果对不上，是因为它们本来就不是那版代码跑的。
+<!-- else -->
+- **闭环：旧代码重跑的核对还没有做完。** 拆候选臂有没有改动闭环的数字，要把那次提交的代码取出来重跑才能对（`tools/old_code_arena.sh`）。这一项排在队列里，这一版没有跑完。
+<!-- endif -->
+- **两种跑法。** 现在的运行是一个进程里连着跑一批的（`tools/g0_batch.mjs`，每次运行之前把策略文件重新编译一遍）；入库的旧结果和上面旧代码的重跑，都是单独起进程一个一个跑的。所以上面的核对同时说明两种跑法的结果没有区别。另外抽了 {{v:batch.n}} 次断面运行放进另一批再跑一遍，{{v:batch.same}} 次与原结果相同。
+<!-- if: n('batch.arena.n') > 0 -->
+<!-- assert: n('batch.arena.same') === n('batch.arena.n') -->
+  闭环运行也抽了 {{v:batch.arena.n}} 个房间，换一个次序在另一批里再跑一遍，{{v:batch.arena.same}} 个与原结果相同。
+<!-- endif -->
+<!-- if: has('profile.check.same') -->
+<!-- assert: s('profile.check.same') === '是' -->
+- **对手模型的参数文件。** `sim-v2/calib/human-profile.json` 是 `tools/human_profile.mjs` 从核心 20 局的录像统计出来的。从头重算一遍（`tools/profile_check.sh`，{{v:profile.check.matches}} 局），与入库的那份逐字节相同。
+<!-- endif -->

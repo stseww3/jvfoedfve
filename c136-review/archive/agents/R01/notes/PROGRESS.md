@@ -246,12 +246,25 @@ M6 要全量做的（A005 带出来的）：
   `ckpt_run.mjs --floor` 在建好的阶梯上取 max（不写进阶梯文件：R06 的 makeProfile 拿阶梯文件里最大的 τ 当「通道断了」的时刻，混进地板点会改它）。
   只收唯一定位配对的阶梯在最深的几段是空的（A057 76 号席位 1440–2070、B043 16 号 810–1440…），`stair_logorder.mjs` 的表（`stair_logorder.csv`）是证据；`chan_unpaired.mjs` 是另一面（模型多执行的「幽灵」指令落在长空档里）。
 - 批次：步骤文件 `scripts/steps/ckpt-all3.txt`（主批次标签 a–o；g0* 放开跑 0→1500；hi* / lo* 阶梯上下界 + 地板，只跑 `band_select.csv` 里选中的窗口；va* vb* vc* 版本互换；p q r = C1p；r06trace*、fill*）。
-  后台跑法：tmux 会话 `c136-r01-ckpt` 里 `bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all3-loop.log`（每轮 600 秒占一个 run-heavy 槽，`.done` 续跑；日志里找 `LOOP-DONE` / `LOOP-STALLED` / `失败`）。
+  后台跑法：tmux 会话 `c136-r01-ckpt` 里 `LOOP_ROUND=1800 bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all5-loop.log`（每轮占一个 run-heavy 槽，`.done` 续跑；日志里找 `LOOP-DONE` / `LOOP-STALLED` / `LOOP-STARVED` / `失败`）。
+  c135 组的长任务常把 3 个槽占满，我们组只用得了 1、2 号槽，一轮常要排 15–40 分钟；排不到（退出码 75）loop.sh 会记 `LOOP-QUEUE-TIMEOUT` 接着排，连续 8 次才停。**不要开第二个循环，不要改 HEAVY_SLOTS。**
+  步骤文件的次序（464 行；`make_steps_extra.py <选项>` 生成各段，标签见脚本）：swap0 4 → swap 24 → g0 16（0→1500 放开跑）→ span 16（630→3213 放开跑，sp*）→ full 16（0→3213 放开跑，fr*）
+  → full5 16（0→5184 或录像结束，fs*）→ swapx 前半 36（版本互换的第 3 个种子）→ swapc110 70（A 局换 c110、B 局换 vb，5 个断面）→ 主批次 83（已完）→ band hi 前 20 → band lo 前 12 → swapvc 12 → c1p 17
+  → band 余下 → r06trace / fill 14 → swaplate 24 → swapx 后半 52（3213 / 4284 的补种子）。
   一次性的重活放 tmux 会话 `c136-r01-aux`：`HEAVY_QUEUE=3000 HEAVY_TIMEOUT=300 bash ../../tools/run-heavy.sh node … > out/_ckpt/x.txt 2>&1; echo AUX-DONE >> out/_ckpt/x.txt`（前台排队会超 120 秒）。
   改步骤文件要写到临时文件再 `mv`（正在跑的那一轮还在读旧文件）。结果在 `out/_ckpt/runs/<局>-<t0>-<标签>.json`（不入库），入库的是 `reports/ckpt-data/*.csv|md|json`。
 - 汇总：`timeout 120 python3 scripts/ckpt/aggregate.py`（会列出被截断 / 没跑全的臂）；`CKPT_PRIMARY=hi|lo` 可以换主口径。
   表：A 逐局逐窗口、B 分组均值、B2 兵力与活席、C 对数链、D/E 闭环保真度、E2 签名四分位（本报告各局自己的历史）、E3 对照 R06 的实盘区间（`sim-v2/calib/live-bands.json`）、
   F 指令流签名、W 剂量—反应、G 放开跑、T 阶梯三种口径、O 两段次序（C1p）、S1/S2 换阶梯 / 换补法、V 版本互换。
+  后加的：M 局清单；C2 链按窗口；H 以 C1 为基线的总账（末尾有按全量 squad10 加权的粗外推）；R 残差大的窗口（生死翻转占多少）；P 对手开环（改打 / 作废占比）；
+  K 连乘的前提（跨局回归 ln 涨幅对 ln 起点；按斜率粗修正 C1 路径）；L C1 路径的水平对照 R06 实盘区间的「通道干净」档 + M6 全量表的横向对比；
+  G / G2 / G3 / G4 = 一口气放开跑（0→1500、630→3213、0→3213、0→5184）对窗口连乘，都走 `chain_vs_free()`；Z 把这几段的「历史 ÷ C1」连乘与放开跑并排（`ckpt_cumulative.csv`）。
+  V 现在认 4 个版本（标签 va* vb* vc* c110*，键里带 stratKey）；汇总行的区间是按局重抽样的 90% 区间。
+- 报告正文在模板 `reports/ckpt-data/REPORT.tmpl.md`，`timeout 60 python3 scripts/ckpt/build_report.py` 把 `{{ckpt:表 X:n}}` / `{{ckpt:表 X:note:n}}` / `{{fid:④:4}}` 换成表，写出 `reports/OFFLINE-CHECKPOINT-ATTRIBUTION.md`。
+  **改正文只改模板。** 脚本会报没填上的占位符和正文里的「待补」。表的 note 以空行分段计数，往 aggregate.py 里加说明行会改变后面 note 的序号，加完要核对模板。
+- 主批次的结论（14 局 68 个窗口）：历史 ÷ C1 路径（连乘到 5184）全部 ×0.50 = 落后波 ×0.70 × 页面 ×0.80 × 残差 ×0.89；深落后 ×0.36；通道干净 ×1.03。
+  **连乘的累计倍数偏大**：(1) 对手开环；(2) 630→1500 窗口里 C1 的涨幅对起点的跨局斜率 −0.82 ± 0.36（落后的局换健康通道会补回来）；(3) 有落后的 7 局 Vb 的 C1 路径比真实干净局
+  （R06 实盘区间 9 局）高 ×1.18（1500）/ ×1.34（3213）。窗口内的效应是直接量的，累计倍数要带这三条读。
 - 坑：录像只收真正执行了的捐款（配额拒掉的不进录像）→ 历史臂的 quotaRejectRate 恒 0，要用「影子发出 → 录像落地」比「沙箱发出 → 沙箱落地」。
   机器忙时一条 110 秒的步骤会被截断（A019-1500-a 出过），所以步骤一律带 `--budget-ms 480000` 且用 loop.sh 的 600 秒轮。
   我自己的重演（resim）在 5 局的残局（t ≥ 5310）与真引擎有差，TGame 与真引擎全同——断面窗口都在 5184 以内，不受影响。

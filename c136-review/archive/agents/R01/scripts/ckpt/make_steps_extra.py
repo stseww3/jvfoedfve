@@ -11,6 +11,9 @@
   swaplate   断面 3213（捐兵配额放开以后）：Va ↔ Vb 与 Vc，只跑 C1 两个种子
 
   g0         从开局一口气放开跑到 t=1500（14 局；C0 / C1×3 / C2×3，1500 拍前有页面停摆的再加 C2w×3）
+  span       从 630 一口气放开跑到 t=3213（14 局；C1×2 / C2×2）：连乘第二个接头的直接核对
+  full       从开局一口气放开跑到 t=3213（14 局；C1×2 / C2×2）：累计效应不靠连乘的直接估计
+  full5      从开局一口气放开跑到 t=5184 或录像结束（14 局；C1×2 / C2×2）
   band       C2 / C2w 换成阶梯的上界 / 下界（traces-hi / traces-lo，见 make_trace.py）并按日志次序的地板抬高（floor/，见 logorder_floor.py），
              只跑受影响的窗口（选了哪些见 reports/ckpt-data/band_select.csv）
   c1p        主批次里单独跑了 C2w 的窗口再补 C1p×3（基础延迟 + 实录页面停摆，不带落后波）：检验落后波与页面停摆两段的先后次序
@@ -113,6 +116,28 @@ def main():
             for i in range(0, len(arms), n):
                 tag = 'g0' + chr(97 + i // n)
                 print(f"out/_ckpt/logs/{mid}-0-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 0 --len 1500 --arms {','.join(arms[i:i + n])} --tag {tag}")
+    if 'span' in what:
+        # 连乘的直接核对（第二个接头）：从 630 一口气放开跑到 3213，不在 1500 重新对齐；只跑 C1 / C2 各 2 个种子
+        for mid in A_MIDS + ['B039', 'B043']:
+            b = json.load(open(os.path.join(OUT, mid, 'ckpt_base.json')))
+            for k, ch in enumerate(chunks(['C1', 'C2', 'C1@2', 'C2@2'], len(b['squad']), 630, 2583)):
+                tag = 'sp' + chr(97 + k)
+                print(f"out/_ckpt/logs/{mid}-630-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 630 --len 2583 --arms {','.join(ch)} --tag {tag}")
+    if 'full' in what:
+        # 从开局一口气放开跑到 3213（两个接头都不重新对齐）：累计效应不靠连乘的直接估计；C1 / C2 各 2 个种子
+        for mid in A_MIDS + ['B039', 'B043']:
+            b = json.load(open(os.path.join(OUT, mid, 'ckpt_base.json')))
+            for k, ch in enumerate(chunks(['C1', 'C2', 'C1@2', 'C2@2'], len(b['squad']), 0, 3213)):
+                tag = 'fr' + chr(97 + k)
+                print(f"out/_ckpt/logs/{mid}-0-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 0 --len 3213 --arms {','.join(ch)} --tag {tag}")
+    if 'full5' in what:
+        # 从开局一口气放开跑到 5184（或录像结束）：整局累计效应不靠连乘的直接估计；C1 / C2 各 2 个种子
+        for mid in A_MIDS + ['B039', 'B043']:
+            b = json.load(open(os.path.join(OUT, mid, 'ckpt_base.json')))
+            ln = min(5184, b['endT'])
+            for k, ch in enumerate(chunks(['C1', 'C2', 'C1@2', 'C2@2'], len(b['squad']), 0, ln)):
+                tag = 'fs' + chr(97 + k)
+                print(f"out/_ckpt/logs/{mid}-0-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 0 --len {ln} --arms {','.join(ch)} --tag {tag}")
     if 'c1p' in what:
         # 次序敏感度：主批次里单独跑了 C2w 的窗口（窗口结束前有页面停摆 / 掉线离场），再补 C1p（基础延迟 + 实录页面）×3
         import re
@@ -188,12 +213,12 @@ def main():
                     tag = f'fill{fill}{chr(97 + k)}'
                     print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --arms {','.join(ch)} --fill {fill} --tag {tag}")
     # ---- 历史版本互换（只在 c116 家族内：Va / Vb / Vc）。臂名与主批相同，汇总时按同名种子配对。
-    def swap_steps(mid, ver, t0, arms):
+    def swap_steps(mid, ver, t0, arms, base=97):
         live, end = live_seats(mid, t0)
         if t0 >= end - 100 or not live:
             return
         for k, ch in enumerate(chunks(arms, len(live), t0, WIN[t0])):
-            tag = f'{ver}{chr(97 + k)}'
+            tag = f'{ver}{chr(base + k)}'
             print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --strat {ver} --arms {','.join(ch)} --tag {tag}")
     ab = lambda mid: 'vb' if hist_ver(mid) == 'va' else 'va'
     if 'swap0' in what:
@@ -216,6 +241,26 @@ def main():
         for mid in A_MIDS:
             for ver in (ab(mid), 'vc'):
                 swap_steps(mid, ver, 3213, ['C1', 'C1@2'])
+    if 'swapc110' in what:
+        # c110 与 c116 家族互换（都是历史版本）：A 局换成 c110；B039 / B043 换成 Vb。各窗口 C1 / C2 各 2 个种子
+        for t0 in (0, 630, 1500, 3213, 4284):
+            for mid in A_MIDS:
+                swap_steps(mid, 'c110', t0, ['C1', 'C2', 'C1@2', 'C2@2'])
+            for mid in ('B039', 'B043'):
+                swap_steps(mid, 'vb', t0, ['C1', 'C2', 'C1@2', 'C2@2'])
+    if 'swapx' in what:
+        # 机器空下来以后补齐：各窗口都凑到 C1 / C2 各 3 个种子（标签从 s 起，和前面的不撞）；再加 4284 这个窗口
+        for t0 in (630, 1500):
+            for mid in A_MIDS:
+                swap_steps(mid, ab(mid), t0, ['C1@3', 'C2@3'], base=115)
+        for mid in A_MIDS:
+            swap_steps(mid, 'vc', 1500, ['C1@3', 'C2@3'], base=115)
+        for mid in A_MIDS:
+            for ver in (ab(mid), 'vc'):
+                swap_steps(mid, ver, 3213, ['C2', 'C2@2', 'C1@3', 'C2@3'], base=115)
+        for mid in A_MIDS:
+            for ver in (ab(mid), 'vc'):
+                swap_steps(mid, ver, 4284, ['C1', 'C2', 'C1@2', 'C2@2', 'C1@3', 'C2@3'], base=115)
 
 if __name__ == '__main__':
     main()

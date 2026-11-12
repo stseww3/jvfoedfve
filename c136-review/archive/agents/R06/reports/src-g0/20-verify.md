@@ -14,12 +14,21 @@
 
 {{T:verify}}
 
-<!-- assert: n('verify.n') === n('pack.n') -->
-<!-- assert: n('verify.full') >= n('verify.n') - 1 -->
+<!-- assert: n('verify.n') >= 20 && n('verify.full') >= n('verify.n') - 1 -->
+<!-- if: n('verify.n') === n('pack.n') -->
+对局包里的 {{v:pack.n}} 局全部核对过。
+<!-- else -->
+核对了 {{v:verify.n}} 局：任务卡说的核心 20 局全部在内。为覆盖 Va / Vc 新接的 {{v:pack.ext}} 局，物理底座的核对排在队列后面，这一版没有跑完的不在下表里，也不计入下面的数字。
+<!-- endif -->
+
 - {{v:verify.n}} 局里 {{v:verify.full}} 局从第 0 拍到录像最后一拍，每个采样拍的指纹都与真引擎相同。合计核对了 {{v:verify.samples}} 个采样拍。
 - 没有一致到最后的：{{v:verify.partial}}。
 - 日志快照 {{v:verify.snaps}} 条相同；分队 {{v:verify.teams}} 局与真引擎相同；分叉自检 {{v:verify.clone}} 局通过。
+<!-- if: n('verify.va.n') > 0 && n('verify.vc.n') > 0 -->
 - 四个版本都有覆盖：Va {{v:verify.va.n}} 局、Vb {{v:verify.vb.n}} 局、Vc {{v:verify.vc.n}} 局、c110 {{v:verify.c110.n}} 局。物理底座和策略版本无关，这里分开数只是说明各版本的房间（人数、队数、内置 AI 是否入队）都验到了。
+<!-- else -->
+- 按版本：Vb {{v:verify.vb.n}} 局、c110 {{v:verify.c110.n}} 局（Va {{v:verify.va.n}} 局、Vc {{v:verify.vc.n}} 局）。物理底座和策略版本无关，这里分开数只是说明各版本的房间（人数、队数、内置 AI 是否入队）验到了哪些。
+<!-- endif -->
 - 速度：每 1000 拍约 {{v:verify.cpuPer1000}} 秒 CPU。
 
 ### 2.3 B023 的终局分歧

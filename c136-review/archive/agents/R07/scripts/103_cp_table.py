@@ -360,6 +360,44 @@ def main():
         P(f"{T}\t{f(gm, 2)}\t{n}\t{math.exp(-m['total']):.3f}\t" + "\t".join(f(m[k], sign=True) for k in ("spawn", "rule", "base", "hold", "total", "bias", "raw1")))
     P("")
 
+    # ---------- 表 1d：断面 0 出发，两项通道差逐拍怎么长出来（每 60 拍；各局平均）
+    P("## 表 1d：断面 0 出发，两项通道差逐拍（各局平均；每局先对种子取平均）")
+    P("观察拍\t局数\t基础延迟 ln ρC0 − ln ρC1\t其中我方领土 ln(C0 ÷ C1)\t按住与成批放行 ln ρC1 − ln ρC2p\t其中我方领土 ln(C1 ÷ C2p)\t基础延迟：各局中位数\t按住与成批放行：各局中位数")
+    J["chanPath"] = {}
+
+    def run_ln(g, tags, t, key):
+        h = base[g]
+        vals = []
+        for tg in tags:
+            j = runs.get((g, tg))
+            if not j:
+                continue
+            s = snap_at(j["snaps"], t, 1)
+            if not s:
+                continue
+            x = rho(s, h["nSquad"], h["nOther"]) if key == "rho" else s[key]
+            if x and x > 0:
+                vals.append(math.log(x))
+        return mean(vals)
+
+    C0T, C1T, C2T = [f"C0-t0-s{i}" for i in (0, 1, 2)], [f"C1-t0-s{i}" for i in (0, 1, 2)], [f"C2-t0-s{i}" for i in (1, 2)]
+    for t in range(60, 1501, 60):
+        acc = {k: [] for k in ("base", "baseS", "hold", "holdS")}
+        for g in GAMES:
+            if g not in base:
+                continue
+            c0, c1, c2 = run_ln(g, C0T, t, "rho"), run_ln(g, C1T, t, "rho"), run_ln(g, C2T, t, "rho")
+            s0, s1, s2 = run_ln(g, C0T, t, "LS"), run_ln(g, C1T, t, "LS"), run_ln(g, C2T, t, "LS")
+            if None in (c0, c1, c2, s0, s1, s2):
+                continue
+            acc["base"].append(c0 - c1); acc["baseS"].append(s0 - s1); acc["hold"].append(c1 - c2); acc["holdS"].append(s1 - s2)
+        n = len(acc["base"])
+        if not n:
+            continue
+        J["chanPath"][str(t)] = dict({k: sum(v) / n for k, v in acc.items()}, n=n, baseMed=med(acc["base"]), holdMed=med(acc["hold"]))
+        P(f"{t}\t{n}\t" + "\t".join(f(sum(acc[k]) / n, sign=True) for k in ("base", "baseS", "hold", "holdS")) + f"\t{f(med(acc['base']), sign=True)}\t{f(med(acc['hold']), sign=True)}")
+    P("")
+
     # ---------- 表 1b：断面 0 → 1500 拍，领土的去向
     P("## 表 1b：断面 0 → 1500 拍时全图陆地的分布（占全图陆地的百分比；多个种子取平均）")
     P("局\t通道\t我方号\t其他真人\t内置 AI\t没人占\t我方号存活 / 开局\t种子数")
@@ -450,7 +488,7 @@ def main():
 
     # ---------- 表 3：版本对照
     P("## 表 3：另一个历史版本（原文）在同一断面、同一通道下：ln ρ(Vb) − ln ρ(Va)")
-    P("（A007 历史上用 Va，其余 10 局用 Vb；另一版本和本局版本用同样的种子比）")
+    P("（A007 历史上用 Va，其余 10 局用 Vb；另一版本和本局版本用同样的种子比；C2 只用扰动种子，因为种子 0 的本局版本不走偏）")
     P("局\t断面\t看多少拍\tC1：ln ρ(Vb) − ln ρ(Va)\tC2：ln ρ(Vb) − ln ρ(Va)\t种子数")
     verd = {"C1": [], "C2": []}
     for g in GAMES:
@@ -462,7 +500,8 @@ def main():
                 for ch in ("C1", "C2"):
                     ra = {r["seed"]: math.log(float(r["rho"])) for r in sel(g, ch, T0, hh, variant=alt, native=False) if float(r["rho"]) > 0}
                     rn = {r["seed"]: math.log(float(r["rho"])) for r in sel(g, ch, T0, hh) if float(r["rho"]) > 0}
-                    common = sorted(set(ra) & set(rn))
+                    # C2 的种子 0 不走偏（等于历史），另一版本一接管就走偏，两者不能直接比：C2 只用扰动种子
+                    common = sorted(x for x in set(ra) & set(rn) if not (ch == "C2" and x == 0))
                     if not common:
                         cells.append("-")
                         ns.append(0)

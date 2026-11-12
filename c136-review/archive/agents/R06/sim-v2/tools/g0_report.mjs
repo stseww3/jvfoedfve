@@ -9,7 +9,8 @@
 //   attr/<标签>.json            通道延迟归因：0 / 630 / 1500 / 4284 四个断面
 //   arena-acc20/<局>.json、arena-rp1530/<局>.json   --mode arena：闭环对手模型标定
 //   opening-delay.json          tools/opening_delay.mjs --json：日志里带拍号的发令记录 ↔ 录像执行拍
-//   batchcheck/                 同一批运行「单独起进程跑」与「一个进程连着跑」两种跑法的结果（tools/same_result.mjs 逐字段核对）
+//   batchcheck/g0-batched/      抽几次断面运行在另一批里再跑一遍的结果（与 calib/g0/ 里的同名结果逐字段核对，tools/same_result.mjs）
+//   old-vs-new.json             拆掉候选臂之前入库的旧结果（单独起进程逐个跑的）对现在批量重跑的同名结果（tools/old_vs_new.sh）
 // 写：sim-v2/calib/report/tables/<表名>.md（Markdown 表）、sim-v2/calib/report/values.json（正文里引用的单个数字）
 //
 // 用法（在 c136-review/agents/R06 下）：node sim-v2/tools/g0_report.mjs [--only 表名前缀] [--print] [--calib 结果目录]
@@ -133,7 +134,7 @@ function loadRuns(dirName, armOf) {
 const G0 = loadRuns('g0', (rest) => ({ arm: rest[1], seed: 1 }));
 const ATTR = loadRuns('attr', (rest) => ({ arm: rest[0], seed: rest[1] ? +rest[1].slice(1) : 1 }));
 const FILL = loadRuns('fill', (rest) => ({ arm: rest[0], seed: 1 }));
-const HOLD = loadRuns('hold', () => ({ arm: 'hold', seed: 1 }));
+const HOLD = loadRuns('hold', (rest) => ({ arm: rest[0], seed: 1 }));
 
 // 卡顿档：这一局 630~1530 拍录像里的同拍批占比（< 15% 不卡，≥ 50% 卡顿，其间轻度）——取历史臂（= 录像），没有断面结果的局取 live
 const clsOf = (() => {
@@ -190,7 +191,7 @@ if (want('scope')) {
   table('runs', ['结果目录', '模式', '运行数', '被时间预算截断', '有席位策略报错的运行'], inv, '「被时间预算截断」= 一次运行给足 95 秒墙钟仍没跑到窗口结束（结果里带标记，统计时照常用到它停下的那一拍）。');
   val('runs.g0', G0.length); val('runs.attr', ATTR.length); val('runs.fill', FILL.length); val('runs.hold', HOLD.length); val('runs.ckpt', G0.length + ATTR.length + FILL.length + HOLD.length);
   val('runs.ckpt.trunc', [...G0, ...ATTR, ...FILL, ...HOLD].filter((x) => x.truncated).length); val('runs.ckpt.errs', [...G0, ...ATTR, ...FILL, ...HOLD].filter((x) => x.errs > 0).length);
-  val('runs.arena', ARENA_ALL.length);
+  val('runs.arena', ARENA_ALL.length); val('runs.arenaAcc', ARENA_ALL.filter((x) => x.dir === 'arena-acc20').length); val('runs.arenaRp', ARENA_ALL.filter((x) => x.dir === 'arena-rp1530').length);
 
   // 任务卡说的 60 次（tools/g0_list.txt）
   const tags60 = fs.readFileSync(path.join(HERE, 'g0_list.txt'), 'utf8').split('\n').filter((l) => l.trim() && !l.startsWith('#')).map((l) => l.split(/\s+/)[0]);
@@ -207,13 +208,30 @@ if (want('scope')) {
       const x = O[d] || { old: 0, both: 0, same: 0 };
       val(`old.${k}.old`, x.old); val(`old.${k}.both`, x.both); val(`old.${k}.same`, x.same);
     }
+    if (O.arenaOld) {
+      val('old.arena.field', O.arenaOld.field); val('old.arena.codeWritesIt', O.arenaOld.codeWritesIt ? '是' : '否');
+      val('old.arena.oldWithIt', O.arenaOld.oldFilesWithIt); val('old.arena.oldFiles', O.arenaOld.oldFiles);
+      val('old.arena.newWithIt', O.arenaOld.newFilesWithIt); val('old.arena.newFiles', O.arenaOld.newFiles);
+    }
   } else notes.push('缺 calib/old-vs-new.json（bash sim-v2/tools/old_vs_new.sh）');
 
   // 两种跑法的结果核对
   const a = compareDirs(path.join(CALIB, 'batchcheck', 'g0-batched'), path.join(CALIB, 'g0'));
-  const b = compareDirs(path.join(CALIB, 'batchcheck', 'attr-single'), path.join(CALIB, 'attr'));
-  val('batch.n', a.n + b.n); val('batch.same', a.same + b.same);
-  for (const [f1, d] of [...a.bad, ...b.bad]) notes.push(`两种跑法结果不同：${f1}：${d.join('；')}`);
+  val('batch.n', a.n); val('batch.same', a.same);
+  for (const [f1, d] of a.bad) notes.push(`同一次运行再跑一遍结果不同：${f1}：${d.join('；')}`);
+  // 闭环运行：换一个次序、在另一批里再跑一遍
+  const a2 = compareDirs(path.join(CALIB, 'batchcheck', 'arena-rerun'), path.join(CALIB, 'arena-acc20'));
+  val('batch.arena.n', a2.n); val('batch.arena.same', a2.same);
+  for (const [f1, d] of a2.bad) notes.push(`同一个闭环运行再跑一遍结果不同：${f1}：${d.join('；')}`);
+  // 闭环模式：拆掉候选臂之前的代码重跑，对现在的结果（tools/old_code_arena.sh）
+  const ocf = path.join(CALIB, 'old-code-arena.json');
+  if (fs.existsSync(ocf)) { const P = readJson(ocf); val('oldcode.ref', P.ref); val('oldcode.rooms', P.rooms.join('、')); val('oldcode.n', P.rooms.length); val('oldcode.both', P.both); val('oldcode.same', P.same);
+    if (ok(P.leaves)) { val('oldcode.leaves', int(P.leaves)); val('oldcode.leavesN', P.leaves); val('oldcode.onlyOld', (P.onlyOld || []).map((x) => '`' + x.replace(/^\./, '') + '`').join('、') || '无'); val('oldcode.onlyNew', (P.onlyNew || []).map((x) => '`' + x.replace(/^\./, '') + '`').join('、') || '无'); } }
+  else notes.push('缺 calib/old-code-arena.json（bash sim-v2/tools/old_code_arena.sh）');
+  // 对手模型的参数文件从录像重算一遍，与入库的那份逐字节比（tools/profile_check.sh）
+  const pcf = path.join(CALIB, 'human-profile-check.json');
+  if (fs.existsSync(pcf)) { const P = readJson(pcf); val('profile.check.matches', P.matches); val('profile.check.same', P.same ? '是' : '否'); }
+  else notes.push('缺 calib/human-profile-check.json（bash sim-v2/tools/profile_check.sh）');
 }
 
 // =====================================================================================================================
@@ -582,7 +600,8 @@ if (want('ckpt')) {
       for (const [p, rs] of Object.entries(T.seats)) {
         if (!rs.length) continue;
         const d = (pk.deathT || {})[p] ?? -1, ll = (T.lastLog || {})[p];
-        const end = Math.min(t1, d >= 0 ? d : Infinity, ok(ll) && ll >= 0 ? ll + 89 : Infinity);
+        // lastLog 已经是「最后一条快照 + 89」（tools/export_traces.py），这里不再加
+        const end = Math.min(t1, d >= 0 ? d : Infinity, ok(ll) && ll >= 0 ? ll : Infinity);
         if (end <= t0) continue;
         tot += end - t0;
         let last = rs[0];
@@ -592,6 +611,60 @@ if (want('ckpt')) {
       }
       return { share: tot ? blind / tot : 0, seats: n, lag: med(lags) };
     };
+    // 窗口末尾有没有已知点：每个席位最后一条进录像的指令（最后一个已知点）离窗口末多远、是多少拍以前下的令。
+    // 录像在卡顿当中截断的局，这个距离很大——窗口末尾那一段，页面发的指令都落在录像结束之后，实录里看不见。
+    {
+      const toEndMed = [];
+      for (const x of G0) {
+        if (x.arm !== 'C2') continue;
+        const tf = path.join(SIMV2, 'traces', `${x.mid}.json`);
+        if (!fs.existsSync(tf)) continue;
+        const T = readJson(tf), pk = PACK[x.mid];
+        const toEnd = [], eLast = [], tauLast = [], lagLast = [];
+        for (const [p0, rs] of Object.entries(T.seats)) {
+          const inWin = rs.filter((r) => r[1] <= x.t1);
+          if (!inWin.length) continue;
+          const d = (pk.deathT || {})[p0] ?? -1, ll = (T.lastLog || {})[p0];
+          // 只看到窗口末席位和页面都还在的
+          if ((d >= 0 && d <= x.t1) || (ok(ll) && ll >= 0 && ll < x.t1 - 90)) continue;
+          let last = inWin[0];
+          for (const r of inWin) if (r[1] > last[1]) last = r;
+          toEnd.push(x.t1 - last[1]); eLast.push(last[1]); tauLast.push(last[0]); lagLast.push(last[1] - last[0] - 12);
+        }
+        if (!toEnd.length) continue;
+        const K = `tailend.${x.mid}.${x.t0}`;
+        val(`${K}.seats`, toEnd.length); val(`${K}.toEnd.med`, int(med(toEnd))); val(`${K}.toEnd.p25`, int(q(toEnd, 0.25))); val(`${K}.toEnd.p75`, int(q(toEnd, 0.75)));
+        val(`${K}.eLast.med`, int(med(eLast))); val(`${K}.tauLast.med`, int(med(tauLast))); val(`${K}.tauLast.max`, int(Math.max(...tauLast))); val(`${K}.lagLast.med`, int(med(lagLast)));
+        val(`${K}.quiet100`, toEnd.filter((v) => v >= 100).length);
+        toEndMed.push([x.mid, x.t0, med(toEnd)]);
+        val(`trace.${x.mid}.rows`, int(T.rows)); val(`trace.${x.mid}.lost`, int(T.lost)); val(`trace.${x.mid}.unmatched`, int(T.unmatched));
+      }
+      for (const t0 of [630, 1530]) {
+        const a = toEndMed.filter((v) => v[1] === t0).sort((u, v) => v[2] - u[2]);
+        if (!a.length) continue;
+        val(`tailend.${t0}.max`, int(a[0][2])); val(`tailend.${t0}.maxMid`, a[0][0]);
+        val(`tailend.${t0}.next`, a.length > 1 ? int(a[1][2]) : '-'); val(`tailend.${t0}.nextMid`, a.length > 1 ? a[1][0] : '-');
+        val(`tailend.${t0}.med`, int(med(a.map((v) => v[2]))));
+      }
+    }
+    // 墙上时钟的旁证（只对有「离场」结算行的局）：scripts/logdigest.py 早先从 results.csv 算过——一个号的页面登记离场时，
+    // 页面自己在本机第几拍、服务器当时大约在第几拍（seconds 是整秒，±18 拍）、同一时刻其它号最近一条快照在本机第几拍。
+    // 这里只把它读出来（out/<局>/logdigest.json 的 wall.rows），用在「录像在卡顿当中截断」的 B041 上。
+    for (const mid of MIDS) {
+      const lf = path.join(SIMV2, '..', 'out', mid, 'logdigest.json');
+      if (!fs.existsSync(lf)) continue;
+      const W = readJson(lf).wall;
+      const left = W && W.rows ? W.rows.filter((r) => r.event === 'left' && r.tick > 0 && ok(r.serverTick) && r.near && r.near.length) : [];
+      if (!left.length) continue;
+      const r = left[0];
+      const lo = Math.min(...r.near.map((v) => v[1])), hi = Math.max(...r.near.map((v) => v[2]));
+      val(`wall.${mid}.seat`, r.me); val(`wall.${mid}.local`, int(r.tick)); val(`wall.${mid}.server`, int(Math.round(r.serverTick)));
+      val(`wall.${mid}.behind`, int(Math.round(r.serverTick - r.tick)));
+      val(`wall.${mid}.near.n`, r.near.length); val(`wall.${mid}.near.local`, `${int(lo)}~${int(hi)}`);
+      val(`wall.${mid}.near.behind`, `${int(Math.round(r.serverTick - hi))}~${int(Math.round(r.serverTick - lo))}`);
+      val(`wall.${mid}.near.behindMin`, int(Math.round(r.serverTick - hi)));
+      val(`wall.${mid}.afterEnd`, int(Math.round(r.serverTick - PACK[mid].replayLast)));
+    }
     const orow = [];
     const devs = { blind: [], seen: [] };
     for (const x of G0) {
@@ -651,6 +724,12 @@ if (want('ckpt')) {
     table('ckpt-out', ['局', '版本', '卡顿档', '窗口', '窗口末编队领土 模拟 ÷ 真局', '进录像条数 ÷ 席位 模拟 / 真局', '窗口末在场席位 模拟 / 真局', '偏差最大的一个席位占全部偏差', '这个席位窗口末的地：真局 ｜ C0 / C1 / C2', '真局已出局、模拟里还在的席位', '最后一个已知点之后看不见的一段'], orow,
       '只列 C2 臂里窗口末编队领土偏出真局 ±10% 的运行。「偏差最大的一个席位」= 各席位（模拟 − 真局）的地取绝对值，最大那个占总和的份额；后一列是这同一个席位窗口末的地：真局多少，三档通道下的模拟各多少（没跑的臂记 -）。「真局已出局、模拟里还在的席位」= 窗口末真局里已经没有地、模拟里还有地的我方席位；「去掉后」= 把这些席位的地从模拟的编队领土里拿掉，再除以真局。「看不见的一段」= 某席位最后一个已知点上页面还落后 28 拍以上，而这之后席位和页面都还在：阶梯在已知点之后假定页面追平，这一段的落后模拟不出来；格里是这一段占窗口内全部 席位·拍 的份额。');
     val('out.n', orow.length);
+    // 其余真人的陆攻还能照录像执行的比例：各窗口 C2 运行里最低的是哪一局
+    for (const t0 of [630, 1530]) {
+      const a = G0.filter((x) => x.arm === 'C2' && x.t0 === t0 && ok(x.a.othersAsRec)).sort((p1, p2) => p1.a.othersAsRec - p2.a.othersAsRec);
+      if (!a.length) continue;
+      val(`asrec.${t0}.min`, pc(a[0].a.othersAsRec)); val(`asrec.${t0}.minMid`, a[0].mid); val(`asrec.${t0}.med`, pc(med(a.map((x) => x.a.othersAsRec)))); val(`asrec.${t0}.next`, a[1] ? pc(a[1].a.othersAsRec) : '-');
+    }
     for (const t0 of [630, 1530]) {
       let rvN = 0, lostN = 0, seats = 0, runs = 0, runsRv = 0;
       const exIn = [];
@@ -671,40 +750,100 @@ if (want('ckpt')) {
     val('seen.n', devs.seen.length); val('seen.dev', devs.seen.length ? pc(Math.exp(med(devs.seen)) - 1) : '-');
     val('blind.dev90', devs.blind.length ? pc(Math.exp(q(devs.blind, 0.9)) - 1) : '-'); val('seen.dev90', devs.seen.length ? pc(Math.exp(q(devs.seen, 0.9)) - 1) : '-');
 
-    // 对照：最后一个已知点之后「追平」（缺省）换成「保持那时的落后」（C2:after=hold）
+    // 对照：一个席位最后一个已知点之后怎么办。缺省「追平」；C2:after=hold「保持那时的落后」；C2:after=cut「之后发出的一律没落地」
     if (HOLD.length) {
       const hrow = [];
       let between = 0, nOut = 0, closer = 0, nBlind = 0, outMoved = 0, sigDef = 0, sigHold = 0, sigTie = 0, recDef = 0, recHold = 0;
       const bsDef = [], bsHold = [];
-      for (const y of HOLD) {
-        const x = G0.find((z) => z.mid === y.mid && z.t0 === y.t0 && z.arm === 'C2');
-        if (!x) { notes.push(`hold/${y.tag}：没有对应的缺省 C2 运行`); continue; }
+      // 一次运行有几项签名在容差内
+      const hitsOf = (x) => {
+        let n = 0, k = 0;
+        for (const [key, , type] of SIGS) { const h = hitOf(type, x.a[key], x.h[key]); if (h === null) continue; n++; if (h) k++; }
+        return [k, n];
+      };
+      const pairs = new Map();
+      for (const y of HOLD) { const k = `${y.mid}.${y.t0}`; if (!pairs.has(k)) pairs.set(k, {}); pairs.get(k)[y.arm] = y; }
+      const tot3 = { def: [0, 0], hold: [0, 0], cut: [0, 0] }, blind3 = { def: [0, 0], hold: [0, 0], cut: [0, 0] };
+      let nCut = 0, cutOutMoved = 0, cutOut = 0, cutBest = 0, defBest = 0, holdBest = 0, nBlindCut = 0, cutWorse = 0, cutSame = 0;
+      const cutRecDev = [], defRecDev = [];
+      for (const [, o] of [...pairs].sort((u, v) => MIDS.indexOf(u[1].hold ? u[1].hold.mid : u[1].cut.mid) - MIDS.indexOf(v[1].hold ? v[1].hold.mid : v[1].cut.mid) || (u[1].hold || u[1].cut).t0 - (v[1].hold || v[1].cut).t0)) {
+        const y = o.hold, z = o.cut, any = y || z;
+        const x = G0.find((w) => w.mid === any.mid && w.t0 === any.t0 && w.arm === 'C2');
+        if (!x) { notes.push(`hold/${any.tag}：没有对应的缺省 C2 运行`); continue; }
         const b = blindOf(x.mid, x.t0, x.t1);
-        const rd = div(x.a.terr1, x.h.terr1), rh = div(y.a.terr1, y.h.terr1);
+        const rd = div(x.a.terr1, x.h.terr1), rh = y ? div(y.a.terr1, y.h.terr1) : null, rc = z ? div(z.a.terr1, z.h.terr1) : null;
         const out = ok(rd) && (rd < 0.9 || rd > 1.1);
-        if (out) { nOut++; if (Math.min(rd, rh) <= 1 && Math.max(rd, rh) >= 1) between++; if (ok(rh) && rh >= 0.9 && rh <= 1.1) outMoved++; }
-        if (b && b.share >= 0.1) {
-          nBlind++;
-          if (Math.abs(Math.log(rh)) < Math.abs(Math.log(rd)) - 0.02) closer++;
-          // 看不见的一段占得多的运行：两种假定各自的签名离真局多远
-          const dD = Math.abs(x.a.batchShare - x.h.batchShare), dH = Math.abs(y.a.batchShare - y.h.batchShare);
-          if (ok(dD) && ok(dH)) { bsDef.push(dD); bsHold.push(dH); if (dD < dH - 0.02) sigDef++; else if (dH < dD - 0.02) sigHold++; else sigTie++; }
-          const cD = Math.abs(Math.log(div(x.a.recPerSeat, x.h.recPerSeat))), cH = Math.abs(Math.log(div(y.a.recPerSeat, y.h.recPerSeat)));
-          if (ok(cD) && ok(cH)) { if (cD < cH - 0.02) recDef++; else if (cH < cD - 0.02) recHold++; }
+        if (y) {
+          if (out) { nOut++; if (Math.min(rd, rh) <= 1 && Math.max(rd, rh) >= 1) between++; if (ok(rh) && rh >= 0.9 && rh <= 1.1) outMoved++; }
+          if (b && b.share >= 0.1) {
+            nBlind++;
+            if (Math.abs(Math.log(rh)) < Math.abs(Math.log(rd)) - 0.02) closer++;
+            // 看不见的一段占得多的运行：两种假定各自的签名离真局多远
+            const dD = Math.abs(x.a.batchShare - x.h.batchShare), dH = Math.abs(y.a.batchShare - y.h.batchShare);
+            if (ok(dD) && ok(dH)) { bsDef.push(dD); bsHold.push(dH); if (dD < dH - 0.02) sigDef++; else if (dH < dD - 0.02) sigHold++; else sigTie++; }
+            const cD = Math.abs(Math.log(div(x.a.recPerSeat, x.h.recPerSeat))), cH = Math.abs(Math.log(div(y.a.recPerSeat, y.h.recPerSeat)));
+            if (ok(cD) && ok(cH)) { if (cD < cH - 0.02) recDef++; else if (cH < cD - 0.02) recHold++; }
+          }
         }
-        hrow.push([x.mid + (CORE.has(x.mid) ? '' : ' ＋'), `${x.t0}~${x.t1}`, b ? pc(b.share) : '-', `×${f(rd)} → ×${f(rh)}`,
-          `${f(x.a.recPerSeat, 1)} → ${f(y.a.recPerSeat, 1)} ｜ ${f(x.h.recPerSeat, 1)}`, `${pc(x.a.batchShare)} → ${pc(y.a.batchShare)} ｜ ${pc(x.h.batchShare)}`,
-          `${pc(x.a.atkVoidRate)} → ${pc(y.a.atkVoidRate)} ｜ ${pc(x.h.atkVoidRate)}`, `${x.a.alive1} → ${y.a.alive1} ｜ ${x.h.alive1}`]);
-        val(`hold.${x.mid}.${x.t0}.def`, f(rd)); val(`hold.${x.mid}.${x.t0}.hold`, f(rh));
-        val(`hold.${x.mid}.${x.t0}.rec`, `${f(x.a.recPerSeat, 1)} → ${f(y.a.recPerSeat, 1)}`); val(`hold.${x.mid}.${x.t0}.recReal`, f(x.h.recPerSeat, 1));
+        const hd = hitsOf(x), hh = y ? hitsOf(y) : null, hc = z ? hitsOf(z) : null;
+        if (y && z) {
+          nCut++;
+          const isBlind = b && b.share >= 0.1;
+          for (const [k3, h3] of [['def', hd], ['hold', hh], ['cut', hc]]) { tot3[k3][0] += h3[0]; tot3[k3][1] += h3[1]; if (isBlind) { blind3[k3][0] += h3[0]; blind3[k3][1] += h3[1]; } }
+          if (out) { cutOut++; if (ok(rc) && rc >= 0.9 && rc <= 1.1) cutOutMoved++; }
+          if (isBlind) {
+            nBlindCut++;
+            const e = [Math.abs(Math.log(rd)), Math.abs(Math.log(rh)), Math.abs(Math.log(rc))];
+            const m3 = Math.min(...e);
+            if (e[2] <= m3 + 1e-9 && e[2] < Math.min(e[0], e[1]) - 0.02) cutBest++;
+            else if (e[0] <= m3 + 1e-9 && e[0] < Math.min(e[1], e[2]) - 0.02) defBest++;
+            else if (e[1] <= m3 + 1e-9 && e[1] < Math.min(e[0], e[2]) - 0.02) holdBest++;
+            if (hc[0] < hd[0]) cutWorse++; else if (hc[0] === hd[0]) cutSame++;
+            const cd = Math.abs(Math.log(div(x.a.recPerSeat, x.h.recPerSeat))), cc = Math.abs(Math.log(div(z.a.recPerSeat, z.h.recPerSeat)));
+            if (ok(cd) && ok(cc)) { defRecDev.push(cd); cutRecDev.push(cc); }
+          }
+        }
+        const tri = (fm, a0, a1, a2, real) => `${fm(a0)} → ${a1 === undefined ? '-' : fm(a1)} → ${a2 === undefined ? '-' : fm(a2)}${real === undefined ? '' : ` ｜ ${fm(real)}`}`;
+        hrow.push([x.mid + (CORE.has(x.mid) ? '' : ' ＋'), `${x.t0}~${x.t1}`, b ? pc(b.share) : '-',
+          `×${f(rd)} → ${y ? '×' + f(rh) : '-'} → ${z ? '×' + f(rc) : '-'}`,
+          tri((v) => f(v, 1), x.a.recPerSeat, y ? y.a.recPerSeat : undefined, z ? z.a.recPerSeat : undefined, x.h.recPerSeat),
+          tri(pc, x.a.batchShare, y ? y.a.batchShare : undefined, z ? z.a.batchShare : undefined, x.h.batchShare),
+          tri(pc, x.a.atkVoidRate, y ? y.a.atkVoidRate : undefined, z ? z.a.atkVoidRate : undefined, x.h.atkVoidRate),
+          `${hd[0]} → ${hh ? hh[0] : '-'} → ${hc ? hc[0] : '-'}（共 ${hd[1]} 项）`,
+          z ? `${f(z.r.arms.baseline.lostChan / z.a.seats, 1)}（${pc(div(z.r.arms.baseline.lostChan, z.r.arms.baseline.issued))}）` : '-',
+          `${x.a.alive1} → ${y ? y.a.alive1 : '-'} → ${z ? z.a.alive1 : '-'} ｜ ${x.h.alive1}`]);
+        const K = `${x.mid}.${x.t0}`;
+        val(`hold.${K}.def`, f(rd)); val(`hold.${K}.recReal`, f(x.h.recPerSeat, 1)); val(`hold.${K}.recDef`, f(x.a.recPerSeat, 1));
+        val(`hold.${K}.bsDef`, pc(x.a.batchShare)); val(`hold.${K}.bsReal`, pc(x.h.batchShare)); val(`hold.${K}.blind`, b ? pc(b.share) : '-');
+        val(`hold.${K}.sigDef`, `${hd[0]} / ${hd[1]}`);
+        if (y) {
+          val(`hold.${K}.hold`, f(rh)); val(`hold.${K}.rec`, `${f(x.a.recPerSeat, 1)} → ${f(y.a.recPerSeat, 1)}`);
+          val(`hold.${K}.recHold`, f(y.a.recPerSeat, 1)); val(`hold.${K}.bsHold`, pc(y.a.batchShare)); val(`hold.${K}.sigHold`, `${hh[0]} / ${hh[1]}`);
+        }
+        if (z) {
+          const zb = z.r.arms.baseline;
+          val(`cut.${K}.terr`, f(rc)); val(`cut.${K}.rec`, f(z.a.recPerSeat, 1)); val(`cut.${K}.bs`, pc(z.a.batchShare)); val(`cut.${K}.void`, pc(z.a.atkVoidRate));
+          val(`cut.${K}.sig`, `${hc[0]} / ${hc[1]}`); val(`cut.${K}.lost`, zb.lostChan); val(`cut.${K}.lostPerSeat`, f(zb.lostChan / z.a.seats, 1));
+          val(`cut.${K}.lostShare`, pc(div(zb.lostChan, zb.issued))); val(`cut.${K}.issued`, zb.issued); val(`cut.${K}.issuedDef`, x.r.arms.baseline.issued);
+          val(`cut.${K}.dump`, f(z.a.dumpPerSeat, 2)); val(`cut.${K}.dumpDef`, f(x.a.dumpPerSeat, 2)); val(`cut.${K}.dumpReal`, f(x.h.dumpPerSeat, 2));
+          val(`cut.${K}.voidDef`, pc(x.a.atkVoidRate)); val(`cut.${K}.voidReal`, pc(x.h.atkVoidRate));
+          val(`cut.${K}.dup`, pc(z.a.dupShare)); val(`cut.${K}.dupDef`, pc(x.a.dupShare)); val(`cut.${K}.dupReal`, pc(x.h.dupShare));
+        }
       }
-      table('ckpt-hold', ['局', '窗口', '看不见的一段', '窗口末编队领土 模拟 ÷ 真局：追平 → 保持', '进录像条数 ÷ 席位：追平 → 保持 ｜ 真局', '同拍批占比：追平 → 保持 ｜ 真局', '陆攻落空率：追平 → 保持 ｜ 真局', '窗口末在场席位：追平 → 保持 ｜ 真局'], hrow,
-        '「追平」= 缺省的 C2（一个席位最后一个已知点之后，页面在那个已知点的执行拍上一口气追平）；「保持」= `C2:after=hold`（之后一直保持那个已知点上的落后）。这是两头的假定：一头是卡顿在最后一个已知点上立刻退掉，一头是一直不退。清单由 `tools/hold_list.py` 按规则挑出（看不见的一段 ≥ 5%，或缺省 C2 的窗口末领土偏出 ±10%）。');
+      table('ckpt-hold', ['局', '窗口', '看不见的一段', '窗口末编队领土 模拟 ÷ 真局：追平 → 保持 → 截断', '进录像条数 ÷ 席位：追平 → 保持 → 截断 ｜ 真局', '同拍批占比：追平 → 保持 → 截断 ｜ 真局', '陆攻落空率：追平 → 保持 → 截断 ｜ 真局', '容差内的签名项：追平 → 保持 → 截断', '「截断」丢掉的指令 ÷ 席位（占发出的）', '窗口末在场席位：追平 → 保持 → 截断 ｜ 真局'], hrow,
+        '三种假定说的都是一个席位最后一个已知点之后的事。「追平」= 缺省的 C2（页面在那个已知点的执行拍上一口气追平，之后不落后）；「保持」= `C2:after=hold`（之后一直保持那个已知点上的落后）；「截断」= `C2:after=cut`（之后发出的指令一律没落地）。清单由 `tools/hold_list.py` 按规则挑出（看不见的一段 ≥ 5%，或缺省 C2 的窗口末领土偏出 ±10%）。「-」= 这一条还没跑。');
       val('hold.n', hrow.length); val('hold.out', nOut); val('hold.between', between); val('hold.blind', nBlind); val('hold.closer', closer);
       val('hold.outMoved', outMoved);
       val('hold.sig.def', sigDef); val('hold.sig.hold', sigHold); val('hold.sig.tie', sigTie);
       val('hold.sig.defAbs', bsDef.length ? f(100 * med(bsDef), 0) : '-'); val('hold.sig.holdAbs', bsHold.length ? f(100 * med(bsHold), 0) : '-');
       val('hold.rec.def', recDef); val('hold.rec.hold', recHold);
+      val('cut.n', nCut); val('cut.out', cutOut); val('cut.outMoved', cutOutMoved); val('cut.blind', nBlindCut);
+      for (const k3 of ['def', 'hold', 'cut']) {
+        val(`cut.hits.${k3}`, `${tot3[k3][0]} / ${tot3[k3][1]}`); val(`cut.hits.${k3}.pc`, pc(div(tot3[k3][0], tot3[k3][1])));
+        val(`cut.blindHits.${k3}`, `${blind3[k3][0]} / ${blind3[k3][1]}`); val(`cut.blindHits.${k3}.pc`, pc(div(blind3[k3][0], blind3[k3][1])));
+      }
+      val('cut.best.cut', cutBest); val('cut.best.def', defBest); val('cut.best.hold', holdBest); val('cut.worse', cutWorse); val('cut.same', cutSame);
+      val('cut.recDev.def', defRecDev.length ? pc(Math.exp(med(defRecDev)) - 1) : '-'); val('cut.recDev.cut', cutRecDev.length ? pc(Math.exp(med(cutRecDev)) - 1) : '-');
     }
   }
 
@@ -751,11 +890,13 @@ if (want('ckpt')) {
 // 五、通道延迟归因：0 / 630 / 1500 / 4284 四个断面
 // =====================================================================================================================
 const CPS = [0, 630, 1500, 4284];
-const WIN = { 0: '0~630', 630: '630~1500', 1500: '1500~2400', 4284: '4284~5184' };
-if (want('attr') && ATTR.length) {
+const WIN = { 0: '0~630', 630: '630~1530', 1500: '1500~2400', 4284: '4284~5184' };
+// 630 这个断面的 C0 / C1 / C2 / C3（种子 1）与第四节整表里 630~1530 的运行是同一次运行（同一局、断面、窗口、通道、种子），直接取，不重复跑
+const ATTR_ALL = [...ATTR, ...G0.filter((x) => x.t0 === 630 && ['C0', 'C1', 'C2', 'C3'].includes(x.arm) && !ATTR.some((y) => y.mid === x.mid && y.t0 === 630 && y.arm === x.arm && y.seed === 1))];
+if (want('attr') && ATTR_ALL.length) {
   // 每局每断面：各臂的结果（多个种子取平均），历史臂取任一条
   const cell = new Map();   // `${mid}|${t0}` → { h, arms: {C0:[..], C1:[..], C2:[..], C2nd:[..], C3:[..]} }
-  for (const x of ATTR) {
+  for (const x of ATTR_ALL) {
     const k = `${x.mid}|${x.t0}`;
     let c = cell.get(k);
     if (!c) cell.set(k, (c = { mid: x.mid, t0: x.t0, t1: x.t1, h: x.h, hr: x.r.history, arms: {} }));
@@ -774,12 +915,13 @@ if (want('attr') && ATTR.length) {
     const n = (arm) => cs.filter((c) => c.arms[arm]).length;
     const runs = (arm) => sum(cs.map((c) => (c.arms[arm] ? c.arms[arm].length : 0)));
     cov.push([String(t0), WIN[t0], String(cs.length), `${n('C0')}（${runs('C0')}）`, `${n('C1')}（${runs('C1')}）`, `${n('C2')}（${runs('C2')}）`, `${n('C2nd')}（${runs('C2nd')}）`, `${n('C3')}（${runs('C3')}）`,
-      String(ATTR.filter((x) => x.t0 === t0 && x.truncated).length)]);
+      String(ATTR_ALL.filter((x) => x.t0 === t0 && x.truncated).length)]);
     val(`attr.${t0}.games`, cs.length);
   }
   table('attr-cover', ['断面 t0', '窗口', '局数', 'C0 即时', 'C1 正常延迟', 'C2 实录阶梯', 'C2 关掉页面停摆', 'C3 合成卡顿波', '被时间预算截断的运行'], cov,
-    '每格：有这条臂的局数（运行数，含换种子的重复）。窗口不足 300 拍的局不跑；C2 只在实录阶梯还盖得到这个窗口的局跑（A 组的实录到 3700 拍前后为止）；「关掉页面停摆」只在有页面中途停摆的局跑；C3 只在不卡的局、卡顿波所在的两个断面跑。');
-  val('attr.runs', ATTR.length); val('attr.trunc', ATTR.filter((x) => x.truncated).length);
+    '每格：有这条臂的局数（运行数，含换种子的重复）。窗口不足 300 拍的局不跑；C2 只在实录阶梯还盖得到这个窗口的局跑（A 组的实录到 3700 拍前后为止）；「关掉页面停摆」只在有页面中途停摆的局跑；C3 只在卡顿波所在的两个断面跑（1500 断面只跑不卡的局；630 断面整表里每局都有，分析时只用不卡的局）。630 这个断面的 C0 / C1 / C2 / C3（种子 1）就是第 5 节 630~1530 拍那张表里的运行，不另跑。');
+  val('attr.runs', ATTR_ALL.length); val('attr.trunc', ATTR_ALL.filter((x) => x.truncated).length);
+  val('attr.runs.own', ATTR.length); val('attr.runs.grid', ATTR_ALL.length - ATTR.length);
 
   // 噪声底：C2 对历史（同一条通道、同一版策略，本该重现历史）；种子之间的散布
   const nrow = [];
@@ -798,7 +940,7 @@ if (want('attr') && ATTR.length) {
     val(`attr.noise.${t0}.${arm}.range`, `${f(q(r, 0.1))}~${f(q(r, 0.9))}`);
   }
   table('attr-noise', ['断面 t0', '窗口', '复现臂', '局数', '窗口末编队领土 复现 ÷ 历史：P10 / P25 / 中位 / P75 / P90', '偏离 1 的中位', '落在 ±10% 内的局', '同一局换种子的最大 − 最小（中位）', '人均相对领土 复现 − 历史（中位）', '在场席位 复现 − 历史（各局合计）', '历史在场席位（合计）'], nrow,
-    '复现臂跑的是这一局当年那一版策略、当年那条通道，本该重现历史；它与历史的差就是「模拟器 + 开环重放其余真人」这套办法自身的误差，后面各通道之间的差要比它大才算数。换种子只换通道里 d 的抽样（C1 / C2 各 3 个种子）。');
+    '复现臂跑的是这一局当年那一版策略、当年那条通道，本该重现历史；它与历史的差就是「模拟器 + 开环重放其余真人」这套办法自身的误差，后面各通道之间的差要比它大才算数。换种子只换通道里 d 的抽样（卡顿波所在的两个断面，C1 / C2 各 2 个种子）。');
 
   // 归因链：C0 → C1 → C2（关掉页面停摆）→ C2 → 历史
   const chain = [];
@@ -851,6 +993,40 @@ if (want('attr') && ATTR.length) {
   table('attr-chain', ['断面 t0', '窗口', '卡顿档', '局数（其中有 C2 的）', 'C0 ÷ 历史', 'C1 ÷ 历史', 'C2 关掉页面停摆 ÷ 历史', 'C2 ÷ 历史', '① 正常延迟：C0 → C1', '② 卡顿波：C1 → C2（关掉页面停摆）', '③ 页面停摆：→ C2', '④ 余项：C2 → 历史', 'C1 高于 C2 的局'], chain,
     '量 = 窗口末编队领土（各席位合计，出局的记 0）。前四列是各局「这条臂 ÷ 历史」的中位；①~④ 是各局相邻两级之比的中位（括号里 P25~P75），写成相对变化：① = C1 ÷ C0 − 1，② = C2（关掉页面停摆）÷ C1 − 1，③ = C2 ÷ C2（关掉页面停摆）− 1，④ = 历史 ÷ C2 − 1。多个种子的臂先在局内取平均。没有页面中途停摆的局 ③ 记 0。');
 
+  // 开环重放的偏差：真局里窗口末已经没地的席位，在各臂里还剩多少、占这条臂编队领土的多少
+  {
+    const rrow = [];
+    for (const t0 of CPS) for (const c of ['clean', 'lag']) {
+      const cs = cells.filter((x) => x.t0 === t0 && clsOf(x.mid) === c);
+      if (!cs.length) continue;
+      const row = [String(t0), WIN[t0], CLS[c], String(cs.length)];
+      let seats0 = 0, deadH = 0;
+      for (const x of cs) { const hs = x.hr.perSeat || []; seats0 += hs.filter((z) => z.terr0 > 0).length; deadH += hs.filter((z) => z.terr0 > 0 && !(z.terr1 > 0)).length; }
+      row.push(String(seats0), String(deadH));
+      val(`attr.dead.${t0}.${c}.seats`, seats0); val(`attr.dead.${t0}.${c}.hist`, deadH);
+      for (const arm of ['C2', 'C1', 'C0']) {
+        const a = cs.filter((x) => x.arms[arm]);
+        if (!a.length) { row.push('-'); continue; }
+        let rv = 0, lost = 0, rvLand = 0, land = 0, hDead = 0;
+        for (const x of a) {
+          const y = x.arms[arm].find((z) => z.seed === 1) || x.arms[arm][0];
+          const hp = new Map((x.hr.perSeat || []).map((z) => [z.p, z]));
+          for (const z of y.r.arms.baseline.perSeat || []) {
+            const h = hp.get(z.p);
+            if (!h || !(h.terr0 > 0)) continue;
+            land += z.terr1;
+            if (!(h.terr1 > 0)) { hDead++; if (z.terr1 > 0) { rv++; rvLand += z.terr1; } } else if (!(z.terr1 > 0)) lost++;
+          }
+        }
+        row.push(`${rv} / ${hDead}，占 ${pc(div(rvLand, land))}；反过来 ${lost}`);
+        val(`attr.dead.${t0}.${c}.${arm}.rv`, rv); val(`attr.dead.${t0}.${c}.${arm}.of`, hDead); val(`attr.dead.${t0}.${c}.${arm}.share`, pc(div(rvLand, land))); val(`attr.dead.${t0}.${c}.${arm}.lost`, lost);
+      }
+      rrow.push(row);
+    }
+    table('attr-dead', ['断面 t0', '窗口', '卡顿档', '局数', '断面上有地的我方席位', '其中真局里窗口末已经没地', 'C2：这些席位里还有地的 / 总数，它们的地占 C2 编队领土；反过来', 'C1：同左', 'C0：同左'], rrow,
+      '「反过来」= 真局里窗口末还有地、这条臂里没地了的席位数。各局合计；多个种子的臂取种子 1。真局里某个席位出局之后，录像里不再有冲着它去的指令，所以它在模拟里只要多撑过那一拍，之后就没有真人再打它——这部分地是开环重放送的，不该算到通道头上。');
+  }
+
   // 逐局（630 与 1500 两个断面）
   for (const t0 of [0, 630, 1500, 4284]) {
     const rows = [];
@@ -864,7 +1040,7 @@ if (want('attr') && ATTR.length) {
         `${c.h.alive1} ｜ ${al('C2')} ｜ ${al('C1')} ｜ ${al('C0')}`, `${oa('C2')} ｜ ${oa('C1')} ｜ ${oa('C0')}`]);
     }
     table(`attr-games-${t0}`, ['局', '版本', '卡顿档', '窗口', '历史：窗口末编队领土（格）', '历史：人均相对领土', 'C0 ÷ 历史', 'C1 ÷ 历史', 'C2 关掉页面停摆 ÷ 历史', 'C2 ÷ 历史', 'C3 ÷ 历史', '窗口末在场席位：历史 ｜ C2 ｜ C1 ｜ C0', '其余真人陆攻照录像执行：C2 ｜ C1 ｜ C0'], rows,
-      '比值 = 这条臂窗口末的编队领土 ÷ 历史；有 3 个种子的臂写 平均（最小~最大）。');
+      '比值 = 这条臂窗口末的编队领土 ÷ 历史；跑了不止一个种子的臂写 平均（最小~最大）。');
   }
 
   // 机制指标：各臂的签名（各局中位）
@@ -889,7 +1065,7 @@ if (want('attr') && ATTR.length) {
     '各局的中位。净产兵 = 窗口内利息与地租入账 − 三种手续费。历史臂的指令流水来自录像，没有「发出」的条数，所以「进录像 ÷ 发出」「被 9 条顶丢弃」两项为空。');
 
   // 随时间的走势（630 与 1500 两个断面）：编队领土 各臂 ÷ 历史，各局中位
-  for (const [t0, offs] of [[0, [150, 300, 450, 630]], [630, [150, 300, 450, 600, 750, 870]], [1500, [150, 300, 450, 600, 750, 900]], [4284, [150, 300, 450, 600, 750, 870]]]) {
+  for (const [t0, offs] of [[0, [150, 300, 450, 630]], [630, [150, 300, 450, 600, 750, 900]], [1500, [150, 300, 450, 600, 750, 900]], [4284, [150, 300, 450, 600, 750, 870]]]) {
     const rows = [];
     for (const [arm, c, label] of [['C2', 'all', 'C2，全部局'], ['C2', 'lag', 'C2，卡顿的局'], ['C1', 'clean', 'C1，不卡的局'], ['C1', 'lag', 'C1，卡顿的局'], ['C0', 'lag', 'C0，卡顿的局'], ['C0', 'clean', 'C0，不卡的局'], ['C3', 'clean', 'C3，不卡的局']]) {
       const cs = cells.filter((x) => x.t0 === t0 && x.arms[arm] && (c === 'all' || clsOf(x.mid) === c));
@@ -917,7 +1093,7 @@ if (want('attr') && ATTR.length) {
   {
     const rows = [];
     for (const t0 of [630, 1500]) {
-      const cs = cells.filter((x) => x.t0 === t0 && x.arms.C3 && x.arms.C1);
+      const cs = cells.filter((x) => x.t0 === t0 && x.arms.C3 && x.arms.C1 && clsOf(x.mid) === 'clean');
       if (!cs.length) continue;
       const lagCs = cells.filter((x) => x.t0 === t0 && clsOf(x.mid) === 'lag');
       const g = (arm, k) => med(cs.map((x) => avg(x, arm, k)));
