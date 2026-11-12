@@ -211,6 +211,23 @@ DEFS["NEW-R03-EC02"] = {
               "+ dbg/attack-state.mjs（逐拍看槽里的兵和余额）+ retq.py（退兵总量：是槽里退出来的量，没有扣掉被硬上限吃掉的部分）。",
 }
 
+# ---- A046 新增 ----
+DEFS["NEW-R03-MT01"] = {
+    "prefix": "MT",
+    "name": "编队进了没有队伍的房间（自由混战）：策略只认 g.teams，编队友互相报价、互相吃",
+    "sameAs": ["R07-SP-CLUSTER（一团选点；这条说的是一团里的号互为目标）", "R08:出手后变薄，随后被吃（这条里吃它的是编队友）",
+               "暂无完全对应的条目（R03 在 A046 第一次遇到；请统筹归并）"],
+    "definition": "页面 mode=7（card.json、日志 [HL-GAME-INIT]），录像头 gameMode=0、numberTeams=0，RESULT 行 team=null；卡片的 nominalTeams/actualTeams=2、baseWinExpectation=0.5 是默认值。"
+                  "Vb 全文没有对局模式判断，所有「队友」判断都是 g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]（analyze L393、isTeammate L3927-3929）；"
+                  "按名字认编队号的 isOurSquadBot（L3960-3972）每一处使用都要 isTeammate 同时成立。g.teams 为空时：编队友进邻居表 this.nb（L393-395）、进 offers 的报价表（L5086-5100）；"
+                  "tryDonateToTeammate 第一行就返回（L4327）；被围分支的船不开（idleBoats L5022）；联手折扣和 engagedTeams（offers L5182-5207）都不生效；"
+                  "选点协调器收到 myTeam=0（L4024），teamId 留 0（spawn-coordinator solve L806-814）、别的真人全算敌人（L828-833）、没有 boss 就找虚拟锚点（L857-860），照样把编队排成一团。"
+                  "计：在控的编队号打在控编队号的陆攻条数、送出、手续费、烧、得地；每 300 拍 编队互打 / 打其他真人 / 被其他真人打 的烧兵与格数；"
+                  "每个号出局前 300 拍丢给编队友、其他真人的格数；DROP30 里主因是打编队友或被编队友打的个数。",
+    "detect": "intrasquad.py <局>（[X1] 总账、[X2] 每 300 拍、[X3] 每个号、[X4] 每一对、[X5] DROP30 分类；读 resim 的 pairLog/cmdLog 和 facts 的 drops）"
+              "+ modeq.py（manifest.jsonl 里各 mode 的局数与 mode 7、8 的名单）+ 卷宗[A] 的录像头队数 + donate-why（全部停在 noTeam）。",
+}
+
 
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]
