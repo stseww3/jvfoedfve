@@ -126,7 +126,8 @@ def main():
                 row += ["还没跑", "还没跑"]
                 continue
             a = "两边都是 0" if c["LSratio"] is None else r3(c["LSratio"])
-            row += ["没有" if c["firstDiff"] is None else c["firstDiff"], f"{a} / {r3(c['LOratio'])}"]
+            star = "＊" if c.get("T0real") else ""
+            row += [("没有" if c["firstDiff"] is None else str(c["firstDiff"])) + star, f"{a} / {r3(c['LOratio'])}"]
         rows.append(row)
     if not any((J.get("closure") or {}).get(f"{g}@{T0}") for g in GAMES for T0 in (630, 1500, 4284)):
         rows = []
@@ -335,6 +336,9 @@ def main():
                     continue
                 hsh, hn = held(g, T0)
                 dh = "历史上已全灭" if d.get("rhoH") == 0 else sg(d["dH"])
+                if d.get("excl"):
+                    rows.append([g + "（不计入平均）", r3(d["rho0"]), pc(hsh) if hh == 900 else "", dh, sg(d["d2p"]), sg(d["d1"]), sg(d["d0"]), "不计入", "不计入", "不计入"])
+                    continue
                 rows.append([g, r3(d["rho0"]), pc(hsh) if hh == 900 else "", dh, sg(d["d2p"]), sg(d["d1"]), sg(d["d0"]), sg(d["base"]), sg(d["hold"]), sg(d["bias"])])
                 hs.append(hsh)
                 hd.append(d["hold"])
@@ -347,7 +351,8 @@ def main():
                 if hh == 900:
                     rho, nn = spearman(hs, hd)
                     notes[f"窗口-{T0}-相关"] = f"断面 {T0} 往后 900 拍：按住与成批放行这一项 与 这一窗被按住的指令占比 的秩相关 {r3(rho, 2)}（{nn} 局）"
-                    bv = [(J["win"][g_][f"t{T0}_h{hh}"]["base"], g_) for g_ in GAMES if (J.get("win") or {}).get(g_, {}).get(f"t{T0}_h{hh}", {}).get("base") is not None]
+                    bv = [(J["win"][g_][f"t{T0}_h{hh}"]["base"], g_) for g_ in GAMES if (J.get("win") or {}).get(g_, {}).get(f"t{T0}_h{hh}", {}).get("base") is not None
+                          and not J["win"][g_][f"t{T0}_h{hh}"].get("excl")]
                     if bv:
                         F0[f"wb{T0}n"] = str(len(bv))
                         F0[f"wb{T0}mean"], F0[f"wb{T0}med"] = sg(mean([x_[0] for x_ in bv])), sg(med([x_[0] for x_ in bv]))
@@ -361,6 +366,7 @@ def main():
                         F0[f"wh{T0}mean"] = sg(ws["hold"]["mean"])
                         F0[f"wh{T0}med"] = sg(ws["hold"]["median"])
                         F0[f"wbias{T0}mean"] = sg(ws["bias"]["mean"])
+                        F0[f"wbias{T0}med"] = sg(ws["bias"]["median"])
                         F0[f"wc1_{T0}mean"] = sg(ws["d1"]["mean"])
                         F0[f"wc2_{T0}mean"] = sg(ws["d2p"]["mean"])
                         F0[f"wh{T0}corr"] = r3(rho, 2) if rho is not None else "—"
@@ -399,7 +405,9 @@ def main():
             y = x.get(k)
             return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）" if y else "—"
         c1, c2 = x.get("C1"), x.get("C2p")
-        if c1 and c2 and c1["rho"] > 0 and c2["rho"] > 0:
+        if ((J.get("win") or {}).get(g, {}).get("t4284_h900") or {}).get("excl"):
+            hs = "不计入（见下文）"
+        elif c1 and c2 and c1["rho"] > 0 and c2["rho"] > 0:
             hd_ = math.log(c1["rho"]) - math.log(c2["rho"])
             hs = sg(hd_)
             wl_h.append((g, hd_, held))
@@ -444,6 +452,9 @@ def main():
         F0[f"w3_{T0}_rbPos"] = str(sum(1 for v_, _ in w3rb if v_ >= 0))
         F0[f"w3_{T0}_rbPosList"] = "、".join(f"{g_}（{sg(v_)}）" for v_, g_ in w3rb if v_ >= 0) or "没有"
         F0[f"w3_{T0}_rbMin"], F0[f"w3_{T0}_rbMax"] = sg(w3rb[0][0]), sg(w3rb[-1][0])
+        F0[f"w3_{T0}_rbNegBig"] = str(sum(1 for v_, _ in w3rb if v_ < -0.1))
+        F0[f"w3_{T0}_rbZero"] = str(sum(1 for v_, _ in w3rb if abs(v_) <= 0.1))
+        F0[f"w3_{T0}_rbPosBig"] = str(sum(1 for v_, _ in w3rb if v_ > 0.1))
         w3sp = [x_["spawn"] for x_ in w3["games"].values()]
         F0[f"w3_{T0}_spMin"], F0[f"w3_{T0}_spMax"] = sg(min(w3sp)), sg(max(w3sp))
         for k in ("total", "spawn", "hold", "rulebase"):
@@ -557,6 +568,27 @@ def main():
             F0[f"seed{T0_}n"] = str(len({x_["g"] for x_ in SS if x_["T0"] == T0_ and x_["h"] == h_}))
             F0[f"seed{T0_}min"], F0[f"seed{T0_}max"], F0[f"seed{T0_}med"] = r3(min(xs), 2), r3(max(xs), 2), r3(med(xs), 2)
     T["种子间差别"] = md(["断面 → 观察拍", "通道", "有两个以上种子的局数", "ln ρ 最大 − 最小：各局中位数", "各局最小 ~ 最大"], rows)
+    # 各断面窗口里 C1 第二个种子的读数（有了才写）
+    wl_ = []
+    for T0_ in (630, 1500, 4284):
+        xs = [x_ for x_ in SS if x_["T0"] == T0_ and x_["h"] == 900 and x_["ch"] == "C1"]
+        if xs:
+            rg = [x_["range"] for x_ in xs]
+            top = max(xs, key=lambda x_: x_["range"])
+            wl_.append(f"- 断面 {T0_} → {T0_ + 900} 拍，C1 已有两个种子的 {len(xs)} 局：两个种子之间 ln ρ 相差的中位数是 {r3(med(rg), 2)}，最大 {r3(max(rg), 2)}（{top['g']}）。")
+            F0[f"seedC1_{T0_}n"], F0[f"seedC1_{T0_}med"], F0[f"seedC1_{T0_}max"] = str(len(xs)), r3(med(rg), 2), r3(max(rg), 2)
+    F0["seedWinLine"] = "\n".join(wl_)
+    late_n = [len([x_ for x_ in SS if x_["T0"] == T0_ and x_["h"] == 900 and x_["ch"] == "C1"]) for T0_ in (1500, 4284)]
+    F0["seedLateNote"] = "（这两个断面 C1 的第二个种子还没有跑出来）" if not any(late_n) else \
+        f"（1500 断面已有 {late_n[0]} 局，4284 断面" + (f"已有 {late_n[1]} 局" if late_n[1] else "还没有") + "，见上表）"
+    # C2 的帧内先后改成随机的检查
+    RP = J.get("rpCheck") or []
+    if RP:
+        F0["rpLine"] = "；".join(
+            f"{x_['g']} 的 {x_['T0']} 断面" + (f"（{x_['T0real']} 拍接管）" if x_["T0real"] != x_["T0"] else "") +
+            f"，{x_['before']} 条排在这一帧录像指令之前、{x_['after']} 条排在之后，每个记录拍的领土和余额与放回历史原位置时" + ("完全相同" if x_["same"] else "不同")
+            for x_ in RP)
+        F0["rpN"] = str(len(RP))
     nz = J.get("noise") or []
     rows = []
     for T0 in (0, 630, 1500, 4284):
@@ -564,6 +596,89 @@ def main():
         if xs:
             rows.append([T0, len(xs), r3(med(xs)), r3(max(xs))])
     T["噪声底"] = md(["断面", "局数", "|ln ρ(只扰动随机数) − ln ρ(历史)| 中位数", "最大"], rows)
+    for T0 in (0, 630, 1500, 4284):
+        xs = [x["maxDev"] for x in nz if x["T0"] == T0]
+        if xs:
+            F0[f"nf{T0}n"], F0[f"nf{T0}med"], F0[f"nf{T0}max"] = str(len(xs)), r3(med(xs)), r3(max(xs))
+    # 扰动种子对 C2 的作用：C2 种子 1 对 种子 0（不扰动）
+    PT = J.get("pert") or []
+    rows = []
+    for T0 in (0, 630, 1500, 4284):
+        xs = [x for x in PT if x["T0"] == T0 and x["d"] is not None]
+        if not xs:
+            continue
+        ds = [abs(x["d"]) for x in xs]
+        same = [x["g"] for x in xs if x["same"]]
+        rows.append([f"{T0} → {T0 + (1500 if T0 == 0 else 900)}", len(xs), len(same), r3(med(ds)), r3(max(ds))])
+        F0[f"pert{T0}n"], F0[f"pert{T0}same"], F0[f"pert{T0}med"], F0[f"pert{T0}max"] = str(len(xs)), str(len(same)), r3(med(ds)), r3(max(ds))
+        F0[f"pert{T0}sameList"] = "、".join(same) or "没有"
+    T["扰动-C2"] = md(["断面 → 观察拍", "局数", "其中每个记录拍都与不扰动时相同的局数", "|ln ρ(扰动) − ln ρ(不扰动)| 中位数", "最大"], rows)
+    # 不计入窗口汇总的局（A082 的 4284 断面）：手头每一条离线轨迹的窗末结果
+    AW = (J.get("armsWin") or {}).get("A082@4284")
+    rows = []
+    if AW:
+        hh_ = AW["hist"]
+        rows.append(["历史", "—", sg(hh_["d"], 2), f"{hh_['LS']:,}", hh_["aS"], "—"])
+
+        def arm_name(x):
+            if x["chan"] == "H":
+                nm = f"全按录像，引擎随机数多走 {x['seed']} 步"
+            elif x["chan"] == "C2":
+                nm = "C2，不扰动" if x["seed"] == 0 else f"C2，引擎随机数多走 {x['seed']} 步"
+            else:
+                nm = f"{x['chan']}（种子 {x['seed']}）"
+            if x["variant"] == "rp":
+                nm += "，帧内先后随机"
+            elif x["variant"]:
+                nm += f"，{x['variant']}"
+            return nm
+        for x in AW["arms"]:
+            rows.append([arm_name(x), "4285" if x["take"] == 4285 else "4284（没有那条 4284 拍落地的赠兵）", sg(x["d"], 2), f"{x['LS']:,}", x["aS"],
+                         "每个记录拍都相同" if x["sameAsHist"] else "不同"])
+
+        def arm(take, chan, seed, variant=""):
+            return next((x for x in AW["arms"] if x["take"] == take and x["chan"] == chan and x["seed"] == seed and x["variant"] == variant), None)
+        a85c2, a85c1, a84c2, a84c1, a84c2s1 = arm(4285, "C2", 0), arm(4285, "C1", 0), arm(4284, "C2", 0), arm(4284, "C1", 0), arm(4284, "C2", 1)
+        F0["a082dH"] = sg(hh_["d"], 2)
+        F0["a082aS"] = str(hh_["aS"])
+        if a85c2 and a85c1 and a84c2 and a84c1:
+            F0["a082gapDon"] = r3(abs(a84c2["d"] - a85c2["d"]), 2)
+            F0["a082gapChan4285"] = r3(abs(a85c1["d"] - a85c2["d"]), 2)
+            F0["a082gapChan4284"] = r3(abs(a84c1["d"] - a84c2["d"]), 2)
+            F0["a082d_c2_4285"], F0["a082d_c1_4285"], F0["a082d_c2_4284"], F0["a082d_c1_4284"] = sg(a85c2["d"], 2), sg(a85c1["d"], 2), sg(a84c2["d"], 2), sg(a84c1["d"], 2)
+            ds_ = [x["d"] for x in AW["arms"]] + [hh_["d"]]
+            F0["a082dMin"], F0["a082dMax"] = sg(min(ds_), 2), sg(max(ds_), 2)
+            F0["a082armsN"] = str(len(AW["arms"]))
+            F0["a082histWorst"] = "历史上的结果是其中最低的" if hh_["d"] <= min(x["d"] for x in AW["arms"]) + 1e-9 else "历史上的结果不是其中最低的"
+        if a84c2 and a84c2s1:
+            F0["a082pertSame"] = "窗末的领土和在场号完全相同" if (a84c2["LS"], a84c2["aS"]) == (a84c2s1["LS"], a84c2s1["aS"]) else f"窗末的 ln ρ 变化是 {sg(a84c2s1['d'], 2)}"
+        # 4285 拍接管以后新增的种子（有了才写）
+        more = [x for x in AW["arms"] if x["take"] == 4285 and not (x["chan"] in ("C1", "C2") and x["seed"] == 0 and not x["variant"])]
+        F0["a082moreLine"] = ("从 4285 拍接管再换种子跑：" + "；".join(f"{arm_name(x)} 是 {sg(x['d'], 2)}（剩 {x['aS']} 个号）" for x in more) + "。") if more else ""
+    A79 = (J.get("alt4285") or {}).get("A079")
+    if A79:
+        F0["a079gap4285"], F0["a079gap4284"] = sg(A79["gap4285"]), sg(A79["gap4284"])
+        F0["a079c1_4285"], F0["a079c2_4285"] = sg(A79["c1_4285"]), sg(A79["c2_4285"])
+    T["A082-4284"] = md(["轨迹", "接管拍", "4284 → 5184 拍 ln ρ 的变化", "5184 拍我方领土（格）", "5184 拍我方在场号", "与历史相比"], rows, align="llrrrl")
+    # 4284 断面窗末（5184 拍）的历史值是怎么取的
+    HE = J.get("histEnd5184") or {}
+    if HE:
+        parts = []
+        if HE.get("exact"):
+            parts.append(f"{len(HE['exact'])} 局（{'、'.join(HE['exact'])}）另跑了一条全按录像、不动随机数、到 5184 拍为止的重放，直接取它在 5184 拍的值")
+        if HE.get("fromC2"):
+            parts.append(f"{len(HE['fromC2'])} 局（{'、'.join(HE['fromC2'])}）不扰动的 C2 从接管到 5160 拍每个记录拍的领土、余额、在场人数都与历史相同，取这条 C2 在 5184 拍的值")
+        if HE.get("late"):
+            parts.append(f"{len(HE['late'])} 局（{'、'.join(HE['late'])}）两样都没有，取历史基线在 5190 拍的值，比各通道晚 6 拍")
+        F0["histEndLine"] = "历史基线每 30 拍记一次，5184 拍不在其中（前后是 5160 和 5190 拍）。窗末的历史值这样取：" + "；".join(parts) + "。"
+        F0["histEndLateN"] = str(len(HE.get("late") or []))
+        F0["histEndLateList"] = "、".join(HE.get("late") or []) or "没有"
+    # 4284 → 5184 拍历史上的变化：A082 以外、ln ρ 有定义的局
+    hw4 = [(g, (HW.get(g, {}).get("4284") or {}).get("d")) for g in GAMES if g != "A082"]
+    hw4 = [(g, d_) for g, d_ in hw4 if d_ is not None]
+    if hw4:
+        F0["hw4284restN"] = str(len(hw4))
+        F0["hw4284restMin"], F0["hw4284restMax"] = sg(min(d_ for _, d_ in hw4)), sg(max(d_ for _, d_ in hw4))
     rows = []
     for ch in ("历史", "C2", "C1", "C0"):
         x = (J.get("seatElasticity") or {}).get(ch)
@@ -590,7 +705,7 @@ def main():
         row = [g, (e.get("ver") or "").capitalize(), sp, r3(d.get("rhoH")), sg(d.get("total")), sg(d.get("spawn")), sg(rb), sg(d.get("hold"))]
         for T0 in (630, 1500, 4284):
             x = (J.get("win") or {}).get(g, {}).get(f"t{T0}_h900")
-            row.append(sg(x["hold"]) if x else "—")
+            row.append("不计入" if x and x.get("excl") else sg(x["hold"]) if x else "—")
         rows.append(row)
     T["逐局"] = md(["局", "版本", "历史上过半指令被按住的时段（发令拍）", "1500 拍的 ρ", "到 1500 拍的落后", "出生站位", "既有规则（含基础延迟）", "按住与成批放行", "按住与成批放行：630 → 1530", "1500 → 2400", "4284 → 5184"], rows, align="lllrrrrrrrr")
 
@@ -811,7 +926,9 @@ def main():
         same = [g for g, c in cl if c["firstDiff"] is None]
         df = [(g, c) for g, c in cl if c["firstDiff"] is not None]
         F[f"clsX{T0}same"], F[f"clsX{T0}diffN"] = str(len(same)), str(len(df))
-        s = f"**{T0} 拍接管，看到 {T0 + 900} 拍**（{len(cl)} 局" + ("" if len(cl) == len(need) else f"，另外 {len(need) - len(cl)} 局还在排队") + "）："
+        shifted = [g for g, c in cl if c.get("T0real")]
+        s = f"**{T0} 拍接管，看到 {T0 + 900} 拍**（{len(cl)} 局" + ("" if len(cl) == len(need) else f"，另外 {len(need) - len(cl)} 局还在排队") + \
+            (f"；其中 {'、'.join(shifted)} 从 {cl[[g for g, c in cl].index(shifted[0])][1]['T0real']} 拍接管，原因见下文" if shifted else "") + "）："
         s += f"{len(same)} 局每个记录拍的领土都与历史相同"
         if len(strict) != len(same):
             s += f"（其中 {len(strict)} 局的轨迹表也逐行相同）"
@@ -820,7 +937,12 @@ def main():
             dv = [c["LSratio"] - 1 for g, c in df if c["LSratio"]]
             dvo = [c["LOratio"] - 1 for g, c in df if c["LOratio"]]
             if dv and dvo:
-                s += f"，到 {T0 + 900} 拍我方领土与历史相差 {100 * min(dv):+.1f}% ~ {100 * max(dv):+.1f}%，其他真人领土相差 {100 * min(dvo):+.1f}% ~ {100 * max(dvo):+.1f}%"
+                def rng(v):
+                    return f"{100 * v[0]:+.1f}%" if len(v) == 1 else f"{100 * min(v):+.1f}% ~ {100 * max(v):+.1f}%"
+                endT = max(c["lastT"] for g, c in df)
+                s += f"，到 {endT} 拍我方领土与历史相差 {rng(dv)}，其他真人领土相差 {rng(dvo)}"
+                if endT != T0 + 900:
+                    s += f"（历史基线每 30 拍记一次，{T0 + 900} 拍不在其中，所以比到 {endT} 拍）"
                 F[f"clsX{T0}absMax"] = f"{100 * max(abs(x) for x in dv + dvo):.1f}%"
         # 与这一窗录像里不等价的指令对照：有差别的局是否都有不等价指令、第一处不同是否在第一条不等价指令落地之后
         wk = f"{T0}_{T0 + 900}"
@@ -839,10 +961,29 @@ def main():
             if quiet:
                 s += f"；{'、'.join(quiet)} 有不等价指令但每个记录拍的领土仍与历史相同"
         else:
-            if odd1:
-                s += f"；{'、'.join(odd1)} 这一窗没有不等价指令，领土却与历史不同（原因未查明）"
-            if odd2:
-                s += f"；{'、'.join(odd2)} 的差别出现在第一条不等价指令落地之前（原因未查明）"
+            # 没有不等价指令却有差别的局：看接管那一拍在途的指令，离线通道与录像是否一致（108 的 inflight）
+            infl = {g: (M.get("inflight") or {}).get(f"{g}@{T0}") or {} for g in odd1 + odd2}
+            ex_ = [g for g in odd1 + odd2 if (infl[g].get("extra") or 0) > 0]
+            fl_ = [g for g in odd1 + odd2 if (infl[g].get("flipAtT0") or 0) > 0]
+            rest = [g for g in odd1 + odd2 if g not in ex_ and g not in fl_]
+            if quiet:
+                s += f"（{'、'.join(quiet)}，但它每个记录拍的领土仍与历史相同）"
+            if ex_ or fl_:
+                nexp = len(ex_) + len([g for g in fl_ if g not in ex_])
+                if nexp == len(df):
+                    s += "。" + ("它的差别" if len(df) == 1 else f"这 {len(df)} 局的差别都") + "出在接管那一拍在途的指令上"
+                else:
+                    s += f"。领土有差别的 {len(df)} 局里，{nexp} 局的差别出在接管那一拍在途的指令上"
+                parts = []
+                if ex_:
+                    parts.append("、".join(f"{g} 多放行了 {infl[g]['extra']} 条" for g in ex_) + "（影子发了、录像里始终没有落地的指令，离线通道把它当作在途放行了）")
+                if fl_:
+                    parts.append("、".join(f"{g} 有 {infl[g]['flipAtT0']} 条" for g in fl_) + "赠兵正好在接管那一拍落地，离线通道没有发（见下文赠兵一段）")
+                s += "：" + "；".join(parts)
+            if rest:
+                s += f"；{'、'.join(rest)} 的差别原因未查明"
+            F[f"clsX{T0}inflEx"] = "、".join(ex_)
+            F[f"clsX{T0}inflFlip"] = "、".join(fl_)
         if T0 == 630 and df:
             # 与断面 0 的那一组比：是不是同几局、第一处不同是不是同一个记录拍
             c0 = {g: (J.get("closure") or {}).get(f"{g}@0") for g, c in cl}
@@ -855,6 +996,64 @@ def main():
     if clsTodo:
         clsLines.append("- 还在排队：" + "、".join(clsTodo) + "。")
     F["clsXlines"] = "\n".join(clsLines)
+    c4 = [c for g, c in ((g, (J.get("closure") or {}).get(f"{g}@4284")) for g in GAMES) if c]
+    F["cls4284endNote"] = "；4284 断面比到 5160 拍，是历史基线在 5184 拍之前的最后一个记录拍" if c4 and any(c["lastT"] != 5184 for c in c4) else ""
+    # 还没有结果的部分（按手头的数据生成，免得正文与数据对不上）
+    todo = []
+    w4 = [(g, (J.get("win") or {}).get(g, {}).get("t4284_h900")) for g in GAMES]
+    w4 = [(g, w) for g, w in w4 if w and not w.get("excl")]
+    n0 = sum(1 for g, w in w4 if w.get("d0") is not None)
+    if n0 < len(w4):
+        todo.append("4284 断面的零延迟对照（这一窗的「基础延迟」一项" + (f"，已有 {n0} 局" if n0 else "") + "）")
+    if clsTodo:
+        todo.append("不扰动的 C2 能否复现历史的检查：" + "、".join(clsTodo) + "（§3）")
+    he = J.get("histEnd5184") or {}
+    if he.get("late"):
+        todo.append(f"{'、'.join(he['late'])} 在 4284 断面窗末的历史值晚 6 拍（§6.2）")
+    if not (J.get("sens") or {}):
+        todo.append("基础延迟的其他取法（§8）")
+    if not (J.get("leave") or []):
+        todo.append("我方号离开的敏感性（§8）")
+    SS_ = J.get("seedSpread") or []
+    nseed = {T0: len({x["g"] for x in SS_ if x["T0"] == T0 and x["ch"] == "C1"}) for T0 in (0, 630, 1500, 4284)}
+    lack = [f"断面 {T0}（{'还没有' if not nseed[T0] else f'已有 {nseed[T0]} 局'}）" for T0 in (0, 630, 1500) if nseed[T0] < 11]
+    if lack:
+        todo.append("C1 的第二个随机数种子：" + "、".join(lack) + "（§8）")
+    F["delaySensNote"] = "（§8 给了几种取法下的结果）" if (J.get("sens") or {}) else "（§8 原计划给出几种取法下的结果，这一组对照还没有跑出来）"
+    if todo:
+        F["todoLine"] = "重计算槽位紧张（`outbox/0021`、`outbox/0023`），下面几样没有跑完，报告里对应的表留空或只有部分局：" + "；".join(todo) + \
+            "。跑出来以后补进这份报告。原计划每种通道 3 个种子，现在大多数格只有 1 个（§8 末尾的表）；第三个种子、零延迟通道的其余种子、4284 断面的第二个种子等次要对照已从清单里删掉，不再补。"
+    else:
+        F["todoLine"] = "计划内的对照都已跑完。原计划每种通道 3 个种子，实际大多数格只有 1~2 个（§8 末尾的表）；第三个种子等次要对照已从清单里删掉。"
+    # 接管那一拍在途的指令：离线通道放行的条数 对 录像里实际在途并落地的条数
+    INF = M.get("inflight") or {}
+    for T0 in (630, 1500, 4284):
+        xs = [(g, INF.get(f"{g}@{T0}")) for g in GAMES]
+        xs = [(g, x) for g, x in xs if x and x.get("arm") is not None]
+        if not xs:
+            continue
+        ok = [g for g, x in xs if x["extra"] == 0 and x["flip"] == 0]
+        F[f"infl{T0}n"], F[f"infl{T0}ok"] = str(len(xs)), str(len(ok))
+        F[f"infl{T0}sum"] = f"{sum(x['hist'] for g, x in xs):,}"
+        gmax = max(xs, key=lambda z: z[1]["hist"])
+        F[f"infl{T0}max"], F[f"infl{T0}maxG"] = str(gmax[1]["hist"]), gmax[0]
+    tail = []
+    for g in GAMES:
+        x = INF.get(f"{g}@4284")
+        c = (J.get("closure") or {}).get(f"{g}@4284")
+        if not x or x.get("arm") is None or not c or c.get("T0real"):
+            continue
+        if x["extra"] > 0 and c["firstDiff"] is None and c.get("firstDiffBal") is None:
+            tail.append(f"{g} 多放行 {x['extra']} 条，但它每个记录拍的领土和余额仍与历史相同")
+    F["infl4284tail"] = "不一致的就是上面说的几处" + ("；另有 " + "；".join(tail) if tail else "")
+    # 4284 断面把接管推后 1 拍的验证（103 的 closureBd）
+    bd = J.get("closureBd") or {}
+    if bd:
+        okb = [g for g in GAMES if g in bd and bd[g]["firstDiffBal"] is None]
+        nob = [g for g in GAMES if g in bd and bd[g]["firstDiffBal"] is not None]
+        F["bdN"], F["bdOkN"] = str(len(bd)), str(len(okb))
+        F["bdOkList"] = "、".join(okb) or "没有"
+        F["bdBadList"] = "、".join(f"{g}（第一处不同在 {bd[g]['firstDiffBal']} 拍）" for g in nob) or "没有"
     # 赠兵：发令那一拍额度不够、落地时够了（离线通道不发，录像里生效）
     dfp = M.get("donFlip")
     if dfp and dfp.get("n"):

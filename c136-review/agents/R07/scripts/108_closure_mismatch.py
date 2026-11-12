@@ -50,7 +50,7 @@ def don_gate(t_issue, t_land):
 
 
 def classify(mid):
-    """返回 [(落地拍, 号, 类别, 指令种类, 备注)]。
+    """返回 [(落地拍, 号, 类别, 指令种类, 备注, 对上的影子发令拍或 None)]。
     赠兵另分一类 donFlip：录像里落地并生效的赠兵，影子在发令那一拍判定「额度不够」（离线通道按不发处理）。"""
     h = json.load(open(os.path.join(OUT, "_cache", "cp", mid, "H.json"), encoding="utf-8"))
     death = h["deathAll"]
@@ -84,24 +84,25 @@ def classify(mid):
                         if c:
                             hit = max(c)
                     if hit is None:
-                        ev.append((T, b, "unmatched", a[2], ""))
+                        ev.append((T, b, "unmatched", a[2], "", None))
                     else:
-                        ev.append((T, b, "donFlip", a[2], f"{hit}|{don_gate(hit, T)}"))
+                        ev.append((T, b, "donFlip", a[2], f"{hit}|{don_gate(hit, T)}", hit))
                 continue
             for a, ii in zip(L[::-1], range(j, j + len(L))):
                 c = rm.cost(a, I[ii])
+                ti = I[ii][0]
                 if c == 0:
-                    ev.append((T, b, "exact", a[2], ""))
+                    ev.append((T, b, "exact", a[2], "", ti))
                 elif c >= 1:
-                    ev.append((T, b, "mis", a[2], ""))
+                    ev.append((T, b, "mis", a[2], "", ti))
                 else:
                     tgt = I[ii][3]
                     if a[2] == "attack" and a[4] >= 512 and isinstance(tgt, int) and 0 <= tgt < 512:
                         d = death[tgt]
-                        ev.append((T, b, "deadEq" if 0 <= d <= T else "aliveNeutral", a[2], ""))
+                        ev.append((T, b, "deadEq" if 0 <= d <= T else "aliveNeutral", a[2], "", ti))
                     else:
-                        ev.append((T, b, "otherTarget", a[2], ""))
-    ev.sort()
+                        ev.append((T, b, "otherTarget", a[2], "", ti))
+    ev.sort(key=lambda e: e[:4])
     return ev
 
 
@@ -153,6 +154,26 @@ def main():
     res["donFlip"] = {"n": len(flips), "donAll": donAll, "donOtherBad": len(other), "list": flips,
                       "games": sorted({f["g"] for f in flips}),
                       "byWhy": dict(collections.Counter(f["why"].split("（")[0] for f in flips))}
+    # 接管那一拍在途的指令：录像里实际的（发令在断面之前、落地在断面那一拍或之后）对 离线通道当作在途的条数
+    #   离线通道多放行 = 影子发了、录像里始终没落地的指令被当作在途放行了；
+    #   离线通道少放行 = 发令时额度不够的赠兵（donFlip）录像里在断面那一拍或之后落地，离线通道不发
+    L.append("## 接管那一拍在途的指令：录像 对 离线通道（C2 种子 0）")
+    L.append("局\t断面\t录像里在途并落地的（离线通道会发的）\t录像里在途并落地、离线通道不发的赠兵\t其中正好在断面那一拍落地的\t离线通道当作在途的条数\t离线通道多放行的条数")
+    res["inflight"] = {}
+    for g in GAMES:
+        ev = res[g]["_ev"]
+        for T0 in (630, 1500, 4284):
+            hin = [e for e in ev if e[5] is not None and e[2] != "donFlip" and e[5] < T0 <= e[0]]
+            fin = [e for e in ev if e[2] == "donFlip" and e[5] < T0 <= e[0]]
+            try:
+                arm = json.load(open(os.path.join(OUT, "_cache", "cp", g, f"C2-t{T0}-s0.json"), encoding="utf-8"))
+                ain = arm["chanStat"].get("inflight")
+            except (OSError, ValueError):
+                ain = None
+            extra = None if ain is None else ain - len(hin)
+            res["inflight"][f"{g}@{T0}"] = {"hist": len(hin), "flip": len(fin), "flipAtT0": sum(1 for e in fin if e[0] == T0), "arm": ain, "extra": extra}
+            L.append(f"{g}\t{T0}\t{len(hin)}\t{len(fin)}\t{sum(1 for e in fin if e[0] == T0)}\t{'未跑' if ain is None else ain}\t{'-' if extra is None else extra}")
+    L.append("")
     for g in GAMES:
         res[g].pop("_ev", None)
     open(os.path.join(CROSS, "closure_mismatch.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
