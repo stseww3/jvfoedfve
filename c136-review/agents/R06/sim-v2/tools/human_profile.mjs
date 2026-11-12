@@ -2,7 +2,8 @@
 // human_profile.mjs — 量「其余真人」（不是我方席位的真人）在真局里怎么下指令，给 arena 的对手模型定参数、做验收对照。
 //
 // 用法（在 c136-review/agents/R06 下，套 run-heavy.sh）：
-//   node sim-v2/tools/human_profile.mjs [--matches A018,B021,…|packs] [--to 9000] [--out sim-v2/calib/human-profile.json]
+//   node sim-v2/tools/human_profile.mjs [--matches A018,B021,…|packs] [--to 9000] [--out sim-v2/calib/human-profile.json] [--cache-dir 目录] [--budget-ms 80000]
+//   入库的 sim-v2/calib/human-profile.json 用的是核心 20 局（tools/arena_calib_list20.txt 里的局号）；tools/profile_check.sh 从头重算一遍与它逐字节比。
 // 做法：录像原样重放；每条其余真人的指令在执行前记下：阶段、种类、对象类别（无主地 / 内置 AI 与空壳 / 真人）、千分比、
 // 自己的兵和地、对象的兵和地、对象当时有没有在打自己、离自己上一条指令隔了多少拍。
 // 输出：各阶段的分布摘要（终端）和明细汇总（JSON）。
@@ -283,7 +284,7 @@ const leaves = [];      // 其余真人在场时离场的拍
 let humansTotal = 0;
 const snapsAll = {};   // t → [{ mid, humTerr:[], humBal:[], sqTerr:[], sqBal:[], humAlive, humN, sqAlive, sqN }]
 const doneMatches = [];
-const cacheDir = path.join(SIMV2, '_cache', 'hp');
+const cacheDir = typeof o['cache-dir'] === 'string' ? path.resolve(o['cache-dir']) : path.join(SIMV2, '_cache', 'hp');   // --cache-dir：换一个缓存目录（从头重算一遍核对用，tools/profile_check.sh）
 const CACHE_V = 12;
 const cacheKey = `v${CACHE_V}-${o.phases === 'coarse' ? 'c' : 'f'}${TO}`;
 let pending = 0;

@@ -1,0 +1,6 @@
+# 抽查清单：这两个房间的闭环运行换一个次序、在另一批里再跑一遍（结果放 sim-v2/calib/batchcheck/arena-rerun/），
+# 与 sim-v2/calib/arena-acc20/ 里的同名结果逐字段核对（tools/same_result.mjs）。开关与 arena-acc20 相同：
+#   node sim-v2/tools/g0_batch.mjs arena batchcheck/arena-rerun sim-v2/tools/batchcheck_arena_list.txt --len 4300 --channel C2 --squad-fate real
+# <局> <当年那一版策略>
+B041 c110
+A018 vb
