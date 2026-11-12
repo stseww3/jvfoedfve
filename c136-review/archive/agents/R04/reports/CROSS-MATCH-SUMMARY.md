@@ -1342,6 +1342,9 @@ squad10 的 75 局按「成摞落地的占比」分三等份（`out/bundle_join.
 | `doomed_pocket.py`、`allin_strikes.py`、`seal_floor.py`、`neutral_pickup.py` | 四个跨局专项（弃子时段、全压、封死发船、捡无主地） | `out/*_all.txt` |
 | `hub0007_table.py` | 延迟账 / 好地账的逐局大表 | `out/hub0007/m7_table.md` |
 | `m7_report_build.py`、`m7_numcheck.py` | 拼这份报告；核对正文里手写的数 | `reports/CROSS-MATCH-SUMMARY.md` |
+| `engine_replay_check.sh`、`hub_resim_check.sh` | 两种重放对日志快照的自检：线上客户端原文在 Node 里跑；hub 的纯 JS 重放脚本（原样拷来跑，一次一局） | `out/engine-replay-check.txt`、`out/hub-resim-check.txt` |
+| `m7_misc_totals.py` | 上面两份自检的合计，和我早先那份重放脚本的偏差摘行 | `out/m7/misc_totals.txt` |
+| `power_calc.py` | 按全量基线胜率，算分辨给定的胜率差每组要多少局 | `out/m7/power.txt` |
 
 **重跑的顺序**（都在 `c136-review/agents/R04/` 下；前三条只读 `c136-data/bundles/`）：
 

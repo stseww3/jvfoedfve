@@ -5,7 +5,7 @@
 #   bash scripts/sections.sh <matchId> dig     # 对局包侧（digest.py）
 #   bash scripts/sections.sh <matchId> log     # 日志侧（logdigest.py）
 #   bash scripts/sections.sh <matchId> sim     # 录像真值侧（simdigest.py；没有可用录像的局跳过）
-#   bash scripts/sections.sh <matchId> led     # 延迟账 + 好地账（latency.py / landcap.py；含 json）
+#   bash scripts/sections.sh <matchId> led     # 延迟账 + 好地账 + 核心期出口（latency.py / landcap.py / coregates.py；含 json）
 #   bash scripts/sections.sh <matchId> foe     # 外人侧（simdigest.py foedon / foepct / foeled / foewho / foehabit）
 set -u
 mid=${1:?用法：sections.sh <matchId> dig|log|sim|led|foe}
@@ -48,6 +48,14 @@ case "$grp" in
     run land_all.txt landcap.py all
     timeout 60 python3 "$here/latency.py" "$mid" json | tail -1
     timeout 60 python3 "$here/landcap.py" "$mid" json | tail -1
+    # 核心期出口（需要 probe.json 的 tally，且录像到 t>=1500）
+    timeout 60 python3 "$here/coregates.py" "$mid" json > "$sec/coregates.txt" 2>&1 || echo "  [coregates 跳过] $(tail -1 "$sec/coregates.txt")"
+    # 输血账（需要 sim_state.json）
+    timeout 60 python3 "$here/donflow.py" "$mid" json > "$sec/donflow.txt" 2>&1 || echo "  [donflow 跳过] $(tail -1 "$sec/donflow.txt")"
+    # 对手画像（需要 sim_state.json）
+    timeout 60 python3 "$here/foeprofile.py" "$mid" json > "$sec/foeprofile.txt" 2>&1 || echo "  [foeprofile 跳过] $(tail -1 "$sec/foeprofile.txt")"
+    # 船账（需要 sim_state.json；被围与否读 probe.json）
+    timeout 60 python3 "$here/boatflow.py" "$mid" json > "$sec/boatflow.txt" 2>&1 || echo "  [boatflow 跳过] $(tail -1 "$sec/boatflow.txt")"
     ;;
   *) echo "未知批次 $grp"; exit 2 ;;
 esac

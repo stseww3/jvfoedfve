@@ -116,6 +116,7 @@ def main():
     per_match_sync = []
     per_match_rows = []
     second_squad = 0
+    replay_rows = []
 
     for mid, card in ids:
         p = os.path.join(RUN, f"{mid}.json")
@@ -131,6 +132,8 @@ def main():
             seats_total["wild" if grp[s] == "wild" else "bot"] += 1
         if sum(1 for s in range(H) if grp[s] in ("apex", "pool")) >= 5:
             second_squad += 1
+        n_own = sum(1 for s in range(H) if grp[s] == "own")
+        replay_rows.append((mid, card.get("cohort"), last_tick, n_own, meta.get("numberTeams")))
         per_tick = defaultdict(int)
         seat_ticks = defaultdict(set)
         seat_kind = [defaultdict(Counter) for _ in PERIODS]
@@ -349,6 +352,21 @@ def main():
           + f"；编队占开局真人的 P25 / P50 / P75 = {fmt(q(share, .25), 2)} / {fmt(q(share, .5), 2)} / {fmt(q(share, .75), 2)}"
           + f"；最大的那一块占编队号的 P25 / P50 / P75 = {fmt(q(blk, .25), 2)} / {fmt(q(blk, .5), 2)} / {fmt(q(blk, .75), 2)}")
     P(f"  有录像的 {n_match} 局里，同房另有一支机器编队（[APEX] + 名字池的席位 ≥5）的 {second_squad} 局")
+    nt = Counter(r[4] for r in replay_rows)
+    P("  录像头里的队数（numberTeams；0 = 自由混战）：" + "；".join(f"{k} 队 {v} 局" for k, v in sorted(nt.items(), key=lambda kv: (kv[0] is None, kv[0] or 0))))
+    valid = None
+    try:
+        with open(os.path.join(OUT, "_cross", "xtruth.json"), encoding="utf-8") as f:
+            valid = {m["matchId"] for m in json.load(f)["matches"] if m.get("valid") and not m.get("spawnOnly")}
+    except (OSError, KeyError, ValueError):
+        pass
+    if valid is not None:
+        P("  录像够不够长（xtruth.py 里重演和日志逐行对得上、且有对局段的局）：断面 | 录像到这一拍的局 | 其中 squad10 / squad20")
+        ok = [r for r in replay_rows if r[0] in valid]
+        for T in (630, 1500, 3000, 4284, 6000):
+            rs2 = [r for r in ok if r[2] >= T]
+            P(f"    t={T} | {len(rs2)} | {sum(1 for r in rs2 if r[1] == 'squad10')} / {sum(1 for r in rs2 if r[1] == 'squad20')}")
+        P(f"    （对得上且有对局段的 {len(ok)} 局；t=0 的断面另外可以用只有出生期的录像）")
 
     txt = "\n".join(lines) + "\n"
     os.makedirs(os.path.join(OUT, "_cross"), exist_ok=True)

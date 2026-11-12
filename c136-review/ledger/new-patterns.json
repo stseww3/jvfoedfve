@@ -6921,6 +6921,141 @@
   "detector": "scripts/review_build/A010_facts.py --sec A"
  },
  {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "EX-FLEET-FREEZE",
+  "prefix": "EX",
+  "name": "机群拍流中断：一间房里我方号在同一拍一起 left",
+  "definition": "一局里 ≥5 个我方号的结果行 event=left 且 tick 相同（7 的倍数），登记时刻比按钟面模型推出的这一拍晚 ≥15 秒，录像里没有我方的离场指令；另记同一时刻（±10 秒）在别的房里停拍的我方机群。",
+  "detector": "scripts/review_build/A011_facts.py --sec A,B,C,D [--dmin N]（发现集：4 间房 28 个号；A011 与 B009 房 0 同一秒）"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "IO-SAMETICK-LIFO",
+  "prefix": "IO",
+  "name": "同一步里同一个号的多条指令按发出的逆序执行",
+  "definition": "选点期同一个号在同一拍有 ≥2 条出生指令，录像块内的顺序与日志里指派的先后相反（先发的排在后面、最后执行，留下来的是先发的那条）；记这样的同拍组数，以及「号的最终落点 = 同拍里先发的那条、不是最后一次指派」的次数。",
+  "detector": "scripts/review_build/A011_facts.py --sec F（12 局 157 组里 154 组）；scripts/spawn_order_probe.mjs <局> --skip <块内序号>（去掉后面那条重放，看与日志的全等数）"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "SP-NAME-COLLIDE",
+  "prefix": "SP",
+  "name": "路人撞名：硬编码名单里的名字被路人用了",
+  "definition": "录像名单里某个非我方真人的名字去掉 [标签] 后落在策略/协调器的硬编码名单里（日志 [HL-SPAWN] 的 squad= 大于实际我方号数）；协调器把它既不算敌人也不算路人队友。记它的出生指令到我方指派点的最近距离。",
+  "detector": "scripts/review_build/A011_facts.py --sec G"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "SP-SLOT-SHUFFLE",
+  "prefix": "SP",
+  "name": "选点期阵位反复重排、号与点位的对应逐拍互换",
+  "definition": "选点期后端求解 ≥30 次，或有号的执行点与日志里最后一次指派给它的点不同；记「点集相同只是换了人」的轮数、我方出生指令条数与其余真人的条数。",
+  "detector": "scripts/review_build/A011_facts.py --sec F；scripts/delay_account.py（出生点执行）"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "SP-OVERLAP",
+  "prefix": "SP",
+  "name": "两个号落在同一个出生点上",
+  "definition": "我方两个号最后一条出生指令的目标像素相同（或引擎落点相距 <10 格）；记两号 t=600、t=900 的合计地与其余号的中位。",
+  "detector": "scripts/spawn_truth.mjs --detail + scripts/review_build/A011_facts.py --sec F,I"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "SP-INLAND-ANCHOR",
+  "prefix": "SP",
+  "name": "「角」锚点落在内陆",
+  "definition": "协调器重放里最佳锚点四周的陆地采样占比 ≥85% 且陆地偏向度 <0.15；记锚点到地图角的距离。",
+  "detector": "scripts/shadow_spawn.mjs <局> --at … --anchors"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "SP-ENCLOSED",
+  "prefix": "SP",
+  "name": "方阵内圈号被队友围住",
+  "definition": "t≤1500 时某号陆上邻格 ≥70% 属于队友；或 t=3000 时对敌接触格数为 0。附：队友间距中位 ÷ 全图人均间距。",
+  "detector": "scripts/review_build/A011_facts.py --sec F,L（边界构成取自 match_truth.mjs 的 C30）；scripts/game_facts.py --sec 29"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "OP-DP-PAR",
+  "prefix": "OP",
+  "name": "开局中立扩张不输真人（有效）",
+  "definition": "t=300 我方号地中位 ≥ 0.9×在场真人地中位。",
+  "detector": "scripts/review_skel.py（cmp）"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "OP-SAME-TICK-SQUEEZE",
+  "prefix": "OP",
+  "name": "同拍第二条被挤掉",
+  "definition": "影子策略同一拍发出 ≥2 条指令，第 2 条起不被本地受理（results.csv 的 sent − accepted）；记被挤掉的是什么、挤掉它的是什么。",
+  "detector": "scripts/shadow.mjs <局> --quiet（--json 的 drops 字段）；scripts/delay_account.py"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "AT-BOTLOCK",
+  "prefix": "AT",
+  "name": "机器人锁：留底被队友的存兵顶到 ≥ 可用兵",
+  "definition": "t<1800，某号有相邻 AI 机器人但没有任何非真人目标满足 pickTarget L1161，且 safeFinite ≥ 一半存兵、其取值来自我方队友（或贴身的其他真人，另计）。",
+  "detector": "scripts/shadow.mjs <局> --cold --floor t1,t2,… → scripts/floor_tally.py、scripts/review_build/A011_facts.py --sec M；scripts/tick_attrib.py"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "AT-BOT-HARVEST",
+  "prefix": "AT",
+  "name": "贴身机器人吃得干净（有效）",
+  "definition": "600 拍时贴着我方号的机器人，其地到 1800 拍 ≥70% 归我方（录像不到 1800 拍的局按最后一个检查拍看，并注明）。",
+  "detector": "scripts/land_account.mjs <局> --fate …（机器人地去向 B 组与逐号表）"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "IO-BATCH9",
+  "prefix": "IO",
+  "name": "同拍连发批（≤9 条、逐条重新计价）",
+  "definition": "同一号在同一拍执行 ≥3 条陆攻/出船指令；附：整批花掉的余额占比。",
+  "detector": "scripts/delay_account.py <局> --list-batches；scripts/review_build/A011_facts.py --sec K"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "EC-NOFULLSEND-LOCK",
+  "prefix": "EC",
+  "name": "isNoFullSend 置位后拒发",
+  "definition": "影子策略里 isNoFullSend 由假变真的那一拍；其后 send 因它拒发的次数。",
+  "detector": "scripts/quota_guard.py <局> --by-bot"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "AT-THIN-KILL",
+  "prefix": "AT",
+  "name": "吃掉没兵的真人邻居",
+  "definition": "t<1500，对一名密度 <1 的真人邻居出兵，每格净花费 <20 兵且 300 拍内地增 ≥50%（本局只有决策、没有落地）。",
+  "detector": "scripts/shadow.mjs --json（ticks 里目标是真人的决策）；scripts/review_build/A011_facts.py --sec K"
+ },
+ {
+  "matchId": "A011",
+  "reviewer": "R05",
+  "key": "IO-HOST-WAVE",
+  "prefix": "IO",
+  "name": "延迟波只落在本机房的号上",
+  "definition": "同一间房里，我方机房的号有同拍批（同号同拍 ≥3 条），而其余真人 0 批或远少于我方；记两类号批所在的拍段。",
+  "detector": "scripts/review_build/A011_facts.py --sec K（同拍批、按 60 拍窗的延迟）"
+ },
+ {
   "matchId": "A014",
   "reviewer": "R05",
   "key": "SP-ENCLOSED",

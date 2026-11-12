@@ -81,6 +81,44 @@ def main():
     print("  读法：对方密度高于上限时，单独出手的报价 c ≥ worth，buyLand L5359 直接 break；"
           "只有自己过软上限（余额 > 100×地，over）或者有队友的兵已经压在对方身上（offers L5182-5185 重算、L5205-5207 再 ×0.58）才会改变")
 
+    # 第二道闸：报价已经低于 worth，价格线放行的预算够不够发一条指令。
+    full = os.path.join(ROOT, "out", "trace", f"{mid}-params.txt")
+    txt2 = txt + ("\n" + open(full).read() if os.path.exists(full) else "")
+
+    def num2(name):
+        mm = re.search(r"(?:^|\s)" + re.escape(name) + r"=([-0-9.e]+)", txt2)
+        return float(mm.group(1)) if mm else None
+
+    chunk, pms = num2("chunk"), num2("pulseMinShare")
+    if chunk is None or pms is None:
+        print(f"  （第二道闸没有算：chunk / pulseMinShare 不在 {os.path.relpath(src, ROOT)} 或 {os.path.relpath(full, ROOT)} 里）")
+        return
+    fee = 12 / 1024
+    print(f"  第二道闸（报价低于 worth 之后；chunk={chunk:g} pulseMinShare={pms:g}，手续费按余额的 12/1024）：buyLand L5422-5426 的预算 = (worth×地 − 手续费×m − c×地) ÷ (1+m)，m = maxW×winRatio；"
+          "没过软上限时 avail 不会超过这个预算")
+    print("    整吃档（offers L5291-5294：2400 拍前、对方没在打我、need > 0.35×余额 时不走脉冲；buyLand L5611-5613 要 x ≥ want 或 x ≥ chunk×余额）："
+          "预算 ≥ chunk×余额 ⟺ c ≤ (m − chunk×(1+m) − 12/1024×m)×自己密度")
+    print("    脉冲档（buyLand L5594-5607：x ≥ pulseMinShare×余额）：预算 ≥ pulseMinShare×余额 ⟺ c ≤ (m − pulseMinShare×(1+m) − 12/1024×m)×自己密度")
+    print("    各拍：整吃档 c 上限 ÷ 自己密度 | 自己密度 20 / 50 / 100 时 对方密度上限 ÷ 自己密度（share=0 ~ share=1）‖ 脉冲档 同样两列")
+    for t in (1500, 1750, 2000, 2250, 2399, 2500, 3000):
+        wr = win_ratio(winT, t)
+        mk = maxW * wr
+        row = []
+        for gate in (chunk, pms):
+            kk = mk - gate * (1 + mk) - fee * mk
+            cells = []
+            for dme in (20, 50, 100):
+                lim = []
+                for share in (0, 1):
+                    den = (1 - x) + x * shareW * share
+                    a, b = kB / den, kT / den
+                    lim.append(max(0.0, (kk * dme - b) / a) / dme)
+                cells.append(f"{lim[0]:.2f}~{lim[1]:.2f}")
+            row.append(f"c ≤ {kk:.3f}×自己密度 | " + " / ".join(cells))
+        print(f"    t={t:<5d} 整吃档 {row[0]} ‖ 脉冲档 {row[1]}")
+    print("    读法：对方没掉过地、没人在打它时，2400 拍前只要「吃掉它整个号要的兵」超过自己余额的 0.35 倍，就走整吃档——对方密度要低到整吃档那一列以下，一个号才会独自出第一手；"
+          "否则报价明明低于 worth，预算却不到余额的两成，整拍不发（buy-why 里写成「拦在 worth,chunk」）")
+
 
 if __name__ == "__main__":
     main()
