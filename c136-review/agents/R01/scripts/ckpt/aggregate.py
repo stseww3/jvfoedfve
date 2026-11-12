@@ -955,6 +955,26 @@ def main():
             if seg:
                 P('不连乘、从开局一口气放开跑的水平（同样这几局，逐局比值的几何均值）：' + '。'.join(seg) + '。')
                 P('')
+            # 这几局自己在实盘同档里的位置：历史与 C2 放开跑各在哪
+            seg = []
+            midb = {at: (LB['cohorts'].get(f'vb|mid|{wk}') or {}).get('band', {}).get('relTerr1') for at, wk in ((1500, '630~1530'), (3213, '1530~3210'))}
+            for at, tagre in ((1500, r'g0[a-z]'), (3213, r'fr[a-z]')):
+                FRX = load(tagre)
+                for lab, sel, bd in (('lag 档', [m for m in ms7 if cls.get(m) == 'lag'], lag.get(at)), ('mid 档', [m for m in ms7 if cls.get(m) == 'mid'], midb.get(at))):
+                    rr = []
+                    for m in sel:
+                        e = FRX.get((m, 0))
+                        if not e or e['meta']['t1'] != at or e['meta'].get('truncated'):
+                            continue
+                        c2 = seeds(e, 'C2')
+                        if c2:
+                            rr.append((e['history']['relTerr1'], mean([x['relTerr1'] for x in c2])))
+                    if rr and bd:
+                        seg.append(f"t={at} {lab}（本报告 {len(rr)} 局：{'、'.join(sel)}）：历史中位 {quart([x[0] for x in rr])[1]:.2f}，C2 放开跑中位 {quart([x[1] for x in rr])[1]:.2f}；"
+                                   f"实盘同档 P25 / 中位 / P75 = {bd[0]:.2f} / {bd[1]:.2f} / {bd[2]:.2f}（{bd[3]} 局）；历史低于同档 P25 的 {sum(1 for x in rr if x[0] < bd[0])} 局，C2 放开跑低于同档 P25 的 {sum(1 for x in rr if x[1] < bd[0])} 局")
+            if seg:
+                P('这几局在实盘同档里的位置（Vb；看的是选局：这几局的历史是不是比同档的典型局更差）：' + '。'.join(seg) + '。')
+                P('')
             if all(lag.values()) and all(cln.values()):
                 P('实盘横向对比（R06 的区间，Vb）：lag 档中位 ÷ clean 档中位 = ' + '、'.join(f"×{lag[at][1] / cln[at][1]:.2f}（t≈{at}，{lag[at][3]} 局对 {cln[at][3]} 局）" for at in (1500, 3213)) + '。')
                 P('')
@@ -1151,19 +1171,25 @@ def main():
             c1, c2 = seeds(e, 'C1'), seeds(e, 'C2')
             if not (c1 and c2) or e['meta'].get('truncated') or 'series' not in e['history']:
                 continue
+            # 人均相对领土 = (我方领土 ÷ 席位) ÷ (全体真人领土 ÷ 人数)；同一局里席位数与人数相同，比值里约掉
+            sq = e['meta'].get('squad')
+            nseat = len(sq) if isinstance(sq, (list, tuple)) else sq
+            scale = (e['meta']['humans'] / nseat) if (nseat and e['meta'].get('humans')) else None
             for t in CPS:
-                h = rel_at(e['history']['series'], t)
-                a1 = [rel_at(m['series'], t) for m in c1 if m.get('series')]
-                a2 = [rel_at(m['series'], t) for m in c2 if m.get('series')]
+                if t == e['meta']['t1'] and scale:
+                    # 终点不在 30 拍的采样格上，直接用终点值
+                    h = e['history']['relTerr1'] / scale
+                    a1 = [m['relTerr1'] / scale for m in c1]
+                    a2 = [m['relTerr1'] / scale for m in c2]
+                else:
+                    h = rel_at(e['history']['series'], t)
+                    a1 = [rel_at(m['series'], t) for m in c1 if m.get('series')]
+                    a2 = [rel_at(m['series'], t) for m in c2 if m.get('series')]
                 if h is None or not a1 or not a2 or None in a1 or None in a2:
                     continue
-                # 人均相对领土 = (我方领土 ÷ 席位) ÷ (全体真人领土 ÷ 人数)；同一局里席位数与人数相同，比值里约掉
-                sq = e['meta'].get('squad')
-                nseat = len(sq) if isinstance(sq, (list, tuple)) else sq
-                scale = (e['meta']['humans'] / nseat) if (nseat and e['meta'].get('humans')) else None
                 tr.setdefault(t, []).append({'mid': k[0], 'lag': GROUP.get(k[0]) != '通道干净', 'h': h, 'c1': mean(a1), 'c2': mean(a2), 'hrel': h * scale if scale else None, 'scale': scale})
         if tr:
-            P('同一批放开跑沿途各断面的水平（每 30 拍一个采样，取离断面最近的；历史的人均相对领土低于 %.2f 的局在那个断面不算）：' % CHAIN_FLOOR)
+            P('同一批放开跑沿途各断面的水平（每 30 拍一个采样，取离断面最近的，终点用终点值；历史的人均相对领土低于 %.2f 的局在那个断面不算）：' % CHAIN_FLOOR)
             P('')
             P('| 断面 | 组 | 局数 | 水平（人均相对领土的几何均值）：历史 / C2 / C1 | 历史 ÷ C2 放开跑 | C2 ÷ C1（放开跑） | 历史 ÷ C1 放开跑 | 历史低于 C2 的局数 | 通道模型解释的占比 ln(C2÷C1) ÷ ln(历史÷C1) |')
             P('| :-- | :-- | --: | :-- | --: | --: | --: | :-- | --: |')
