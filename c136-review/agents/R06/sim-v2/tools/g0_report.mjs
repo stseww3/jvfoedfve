@@ -923,6 +923,14 @@ if (want('attr') && ATTR_ALL.length) {
     '每格：有这条臂的局数（运行数，含换种子的重复）。窗口不足 300 拍的局不跑；C2 只在实录阶梯还盖得到这个窗口的局跑（A 组的实录到 3700 拍前后为止）；「关掉页面停摆」只在有页面中途停摆的局跑；C3 只在卡顿波所在的两个断面跑（1500 断面只跑不卡的局；630 断面整表里每局都有，分析时只用不卡的局）。630 这个断面的 C0 / C1 / C2 / C3（种子 1）就是第 5 节 630~1530 拍那张表里的运行，不另跑。');
   val('attr.runs', ATTR_ALL.length); val('attr.trunc', ATTR_ALL.filter((x) => x.truncated).length);
   val('attr.runs.own', ATTR.length); val('attr.runs.grid', ATTR_ALL.length - ATTR.length);
+  // 换种子的重复：清单 tools/attr_list_seeds.txt 上有几次、跑完了几次
+  {
+    const lf = path.join(SIMV2, 'tools', 'attr_list_seeds.txt');
+    const wantN = fs.existsSync(lf) ? fs.readFileSync(lf, 'utf8').split('\n').filter((l) => l.trim() && !l.trim().startsWith('#')).length : 0;
+    const got = ATTR.filter((x) => x.seed >= 2);
+    val('attr.seeds.want', wantN); val('attr.seeds.runs', got.length);
+    val('attr.seeds.games', new Set(got.map((x) => `${x.mid}|${x.t0}`)).size);
+  }
 
   // 噪声底：C2 对历史（同一条通道、同一版策略，本该重现历史）；种子之间的散布
   const nrow = [];

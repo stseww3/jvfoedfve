@@ -25,6 +25,7 @@ if [ ! -f "$old/teamgate-v2.mjs" ]; then
 fi
 mkdir -p "$TMP/out"
 export HEAVY_TIMEOUT=110
+export HEAVY_SLOTS=2    # 统筹广播 0006 定的上限；写死在这里，不跟着 run-heavy.sh 里的缺省值走
 export HEAVY_QUEUE=900
 strat_of() { grep -h "^$1 " sim-v2/tools/arena_calib_list20.txt | awk '{print $2}'; }
 for i in $(seq 1 60); do
