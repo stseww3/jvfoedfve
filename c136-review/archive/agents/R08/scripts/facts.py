@@ -93,7 +93,7 @@ def build(mid, room=None):
                 if m:
                     t, cyc, rings, spend, bal, terr = map(int, m.groups())
                     b["openings"].append(dict(t=t, cyc=cyc, rings=rings, spend=spend, bal=bal, terr=terr, line=r["line"]))
-            elif tag == "HL-DONATE":
+            elif tag in ("HL-DONATE", "HL-DISPATCH"):  # 10 号编队（c116）的捐款行叫 HL-DISPATCH，格式相同
                 m = DON_RE.search(body)
                 if m:
                     b["donations"].append(dict(t=int(m.group(1)), kind=m.group(2).strip(), pct=int(m.group(3)),

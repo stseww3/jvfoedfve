@@ -35,6 +35,7 @@
   },
   "leftTicks": {},
   "neverPlayed": [],
+  "neverPlayedSource": "log: 整局没有 HL-TICK 快照、也没有 HL-OPENING 行",
   "sameMatchPeer": null,
   "dataCompleteness": {
    "results": true,
@@ -59,6 +60,9 @@
   "ourFinalShare": 0.0,
   "peakSquadLandShare": 0.5319,
   "peakPrimaryTeamShareSeen": 0.3753,
+  "endRowSeen": true,
+  "lastSnapshotTick": 14220,
+  "lastTeamTotalsTick": 14253,
   "note": "卡片标签 split_straggler_won：主队按人数是队5（6 个号），t=13867 最后一个队5 的号 Umbreon 阵亡；赢的是队1，Liu Bei（队1）以 21,131 格、316.9 万兵（正好是硬上限）活到终局，8 个存活玩家里排第 5。peakPrimaryTeamShareSeen=37.5% 是 t=9126 结算行里队5 的份额（其中我方 3 个号 35.3%）。"
  },
  "timeline": [
@@ -3102,6 +3106,20 @@
    "statementType": "inferred"
   }
  ],
+ "latencyLedger": {
+  "matchId": "B002",
+  "replayLast": 0,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 176,
+   "backendLines": 0
+  }
+ },
  "decisions": [
   {
    "t": 50,

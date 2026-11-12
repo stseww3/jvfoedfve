@@ -3,7 +3,9 @@
 """41_conquest_squad.py — R07：把 conquest.txt A 段里「从 我方号」那一列按时间段加起来（94_conquest.mjs 只印了每个吃地方的格子，没有印列合计）。
 
 用法（在 scripts/ 目录下）：
-    python3 41_conquest_squad.py <matchId>
+    python3 41_conquest_squad.py <matchId> [--merge t0:t1]...
+        --merge：把 conquest.txt 里相邻的几个时间段并成一段再列一行（t0、t1 必须是 conquest.txt 的切点），写在 C 段；
+                 同一行另给「其他真人队吃进合计」（conquest.txt A 段里「T? 真人」各行的吃进合计相加，我方号所在队的别的真人如果单列也算在内）。
 
 输入：out/<matchId>/conquest.txt（94_conquest.mjs 的逐格过户账）
 输出：out/<matchId>/conquest_squad.txt
@@ -23,6 +25,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 def num(s):
     return int(s.replace(",", ""))
+
+
+SQUAD_RE = re.compile(r"^\*(sora_w|ryan_m|noah88|zexos1|talon5|alex_k|leo_tx|zero_7|kaito9|riku_x)#\d+\[T\d+\]$")
+
+
+def is_squad(name):
+    """conquest.txt 里我方号写成「*alex_k#11[T2]」。只看开头的 * 不够：A070 对面有个真人的名字本身以 * 开头（*Cr-nA* …）。"""
+    return bool(SQUAD_RE.match(name.strip()))
 
 
 def split_items(body):
@@ -46,9 +56,9 @@ def focus_totals(path):
     def flush():
         if cur is None:
             return
-        ours = sum(a + b for k, (a, b) in taken.items() if k.startswith("*"))
-        others = sum(a + b for k, (a, b) in taken.items() if not k.startswith("*"))
-        from_ours = sum(a + b for k, (a, b) in got.items() if k.startswith("*"))
+        ours = sum(a + b for k, (a, b) in taken.items() if is_squad(k))
+        others = sum(a + b for k, (a, b) in taken.items() if not is_squad(k))
+        from_ours = sum(a + b for k, (a, b) in got.items() if is_squad(k))
         order = sorted(taken.items(), key=lambda kv: -(kv[1][0] + kv[1][1]))
         txt = "、".join(f"{k} {a:,}" + (f" + {b:,}" if b else "") for k, (a, b) in order) or "-"
         res.append(f"  {cur}\t{txt}\t我方 {ours:,}\t别人 {others:,}\t清场放掉 {cleared:,}\t从我方号拿走 {from_ours:,}")
@@ -111,6 +121,8 @@ def main():
             if cells[0] == "我方号":
                 cur["intake"] = num(row.get("吃进合计", "0"))
                 continue
+            if re.match(r"^T\d+ 真人$", cells[0]):
+                cur["humans"] = cur.get("humans", 0) + num(row.get("吃进合计", "0"))
             v = row.get("从 我方号")
             if v and v != "0":
                 parts = [num(x) for x in v.split(" + ")]
@@ -129,6 +141,24 @@ def main():
     out.append("")
     out.append("B. 指定玩家全程：它的地被谁拿走（直接 + 清场后被捡走，按拿的一方合计）| 我方合计 | 别人合计 | 清场放掉合计 | 它从我方号手里拿走")
     out.extend(focus_totals(os.path.join(outdir, "conquest.txt")))
+    merges = [sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--merge" and i + 1 < len(sys.argv)]
+    if merges:
+        out.append("")
+        out.append("C. 合并时间段（--merge）：吃进合计 | 被直接打掉 | 清场后被捡走 | 被拿走合计 | 清场放掉 | 其他真人队吃进合计 | 并了哪几段")
+        spans = []
+        for r in rows:
+            m = re.match(r"t=(-?\d+)~(\d+)", r["span"])
+            spans.append((int(m.group(1)), int(m.group(2))) if m else None)
+        for mg in merges:
+            a, b = (int(x) for x in mg.split(":"))
+            sel = [r for r, sp in zip(rows, spans) if sp and sp[0] >= a and sp[1] <= b]
+            ok = bool(sel) and any(sp and sp[0] == a for sp in spans) and any(sp and sp[1] == b for sp in spans)
+            if not ok:
+                out.append(f"  t={a}~{b}\t（不是 conquest.txt 的切点，没法合并）")
+                continue
+            vals = [sum(r["intake"] for r in sel), sum(r["direct"] for r in sel), sum(r["picked"] for r in sel),
+                    sum(r["direct"] + r["picked"] for r in sel), sum(r["cleared"] for r in sel), sum(r.get("humans", 0) for r in sel)]
+            out.append(f"  t={a}~{b}\t" + "\t".join(f"{v:,}" for v in vals) + "\t" + " + ".join(r["span"] for r in sel))
     path = os.path.join(outdir, "conquest_squad.txt")
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")

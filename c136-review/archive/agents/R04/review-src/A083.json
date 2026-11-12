@@ -644,5 +644,9 @@
   "scripts/truth_query.py A083 cmds|bal|gain|who …（逐条指令、逐拍余额、地块流动）",
   "scripts/policy_params.mjs vb <参数名…>（生效参数：overHumanCap、crowdedHardCap、collapseRatio、shareW、soleBufferPenalty 等）",
   "scripts/review_write.py A083；scripts/check_reviews.py A083（生成与自检）"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "读法：出生执行最差的一局：10 个号里 6 个停在旧坐标、2 对落在同一点。600~1499 拍受理 452 条落地 391 条，但落地的「瞄 AI / 真人」单里 221 条到站时目标已出局（按当初想出的兵算占 64%）；1530~3060 拍受理 231 条只落地 91 条。",
+  "land": "读法：人均天然地盘是全场的 0.48 倍。1500~2999 拍没有贴着内置 AI 的决策拍，所以只有一段归因。"
+ }
 }

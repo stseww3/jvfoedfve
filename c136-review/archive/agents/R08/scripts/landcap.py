@@ -76,6 +76,15 @@ def main():
     R = T.R
     sp = os.path.join(OUT, mid, "shadow.json")
     S = json.load(open(sp, encoding="utf-8")) if os.path.exists(sp) else None
+    # 早先几局的 shadow.json 是旧版影子跑的，census 里没有逐 AI 的结论（第 15 栏）。这时用
+    #   shadow.mjs <局> … --until 1800 --tag census   （只跑到 1800 拍，几秒钟）
+    # 的产物 shadow_census.json 里的 census 顶上；指令配对（时延）仍用完整的 shadow.json。
+    cp = os.path.join(OUT, mid, "shadow_census.json")
+    if S and os.path.exists(cp) and not any(len(c) > 14 and c[14] is not None for sb in S["bots"].values() for c in sb.get("census", [])):
+        SCen = json.load(open(cp, encoding="utf-8"))
+        for bname, sb in S["bots"].items():
+            if bname in SCen["bots"]:
+                sb["census"] = SCen["bots"][bname].get("census", [])
     fp = os.path.join(OUT, mid, "facts.json")
     F = json.load(open(fp, encoding="utf-8")) if os.path.exists(fp) else None
     H = LC["H"]

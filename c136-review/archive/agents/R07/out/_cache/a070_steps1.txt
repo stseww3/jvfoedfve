@@ -1,0 +1,7 @@
+## steps1 — 真值层
+node /agent/repos/c136-data/src/tools/replay_cmds.mjs A070 --out c136-review/agents/R07/out/A070/cmds.tsv
+node c136-review/agents/R07/scripts/60_truth.cjs A070
+node c136-review/agents/R07/scripts/88_sim_divergence.mjs A070
+node c136-review/agents/R07/scripts/66_spawn_truth.mjs A070
+node c136-review/agents/R07/scripts/69_quota_truth.mjs A070
+node c136-review/agents/R07/scripts/46_voronoi.mjs A070

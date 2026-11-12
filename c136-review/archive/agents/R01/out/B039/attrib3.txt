@@ -1,0 +1,22 @@
+== B039 三分账 [600,1500)
+   ① 出生：本队 20 个号，天然份额中位 8698 格（其他真人中位 10771）；低于其他真人中位一半的 5 个：Belgium 3959、404 Not Found 5064、Chile 1457、HighPing 5264、Thanos 2606
+      决策拍合计 2022：下令 415（20.5%） boxed 134（6.6%） 开局按租期等 332（16.4%） 保底线 605（29.9%） 其余 536（26.5%：价格线 0 / 其他闸门 0 / 没目标或没空槽 0 / 没走到 offers 536）
+      boxed 决策拍按号：Sus 52、Thanos 52、ArthurMorgan 30
+   ② 保底线锁死：605 个决策拍（身边只剩机器人地 171 / 身边还有无主地 434），保底线取自 safeFinite 391 / dpKeep 0 / 回本线 214
+      Algiers：118 拍（safeFinite 94 / dpKeep 0 / 回本线 24），同窗口下令 22 次，身边机器人地均值 3115 格
+      Pomerania：88 拍（safeFinite 67 / dpKeep 0 / 回本线 21），同窗口下令 3 次，身边机器人地均值 4076 格
+      Manstein：53 拍（safeFinite 41 / dpKeep 0 / 回本线 12），同窗口下令 5 次，身边机器人地均值 2826 格
+      Thanos：51 拍（safeFinite 49 / dpKeep 0 / 回本线 2），同窗口下令 14 次，身边机器人地均值 1074 格
+      Belgium：48 拍（safeFinite 45 / dpKeep 0 / 回本线 3），同窗口下令 7 次，身边机器人地均值 1965 格
+      ArthurMorgan：40 拍（safeFinite 11 / dpKeep 0 / 回本线 29），同窗口下令 12 次，身边机器人地均值 1574 格
+      DoomSlayer：37 拍（safeFinite 22 / dpKeep 0 / 回本线 15），同窗口下令 9 次，身边机器人地均值 4133 格
+      Sus：37 拍（safeFinite 17 / dpKeep 0 / 回本线 20），同窗口下令 4 次，身边机器人地均值 2285 格
+      404 Not Found：32 拍（safeFinite 11 / dpKeep 0 / 回本线 21），同窗口下令 8 次，身边机器人地均值 2517 格
+      Maple Leaf：23 拍（safeFinite 2 / dpKeep 0 / 回本线 21），同窗口下令 13 次，身边机器人地均值 2239 格
+      HighPing：22 拍（safeFinite 6 / dpKeep 0 / 回本线 16），同窗口下令 3 次，身边机器人地均值 1302 格
+      Bohemia：21 拍（safeFinite 11 / dpKeep 0 / 回本线 10），同窗口下令 13 次，身边机器人地均值 2729 格
+      Ashanti：20 拍（safeFinite 9 / dpKeep 0 / 回本线 11），同窗口下令 8 次，身边机器人地均值 2614 格
+      Kazuya：12 拍（safeFinite 6 / dpKeep 0 / 回本线 6），同窗口下令 13 次，身边机器人地均值 3688 格
+      BlackRock：3 拍（safeFinite 0 / dpKeep 0 / 回本线 3），同窗口下令 4 次，身边机器人地均值 1196 格
+   ③ 动了但迟到：落地陆攻 145 条，其中目标已不在 34 条（23.4%），一兵未扣 38 条（26.2%）；一兵未扣的令决策时想出 54983 兵 = 同期全部落地令想出的 246862 兵的 22.3%；延迟中位 206 拍
+# 已写 out/B039/attrib3.json

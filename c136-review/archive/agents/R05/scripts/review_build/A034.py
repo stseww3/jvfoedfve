@@ -2,7 +2,7 @@
 # 用法：python3 scripts/review_build/A034.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check, accounts
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A034'
 S = skel(M)
@@ -136,7 +136,7 @@ turning = [
              'codePath': f'{SRC}: Strategy.send L479-487；Policy.act L4836-4963（L4941-4942）；{ADAPT}: afterTick 在途门与 patchLoop（L10-106）'},
         ],
         'statementType': 'inferred',
-        'note': '地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因各占多少没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。',
+        'note': '地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因按决策拍的占比见 tickAttribution（留底 53.3%、发了没用 31.7%、结构 4.6%、有效 8.1%），各自少拿多少地没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。',
     },
     {
         'id': 'TP3', 't0': 1800, 't1': 2400, 'shareBefore': 11.4, 'shareAfter': 15.1, 'shareOf': 'T3（我方队伍）', 'rankBefore': 3, 'rankAfter': 3,
@@ -609,6 +609,7 @@ doc = {
         '离线的队友（★ 1947 拍离线）按机器人处理（game.js isBot L215）：队友能不能打它的地？它的 8,204 格被 Player 31 拿走。',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A034 --check（逐拍精确重放；与 442 条 [HL-TICK] 的地、兵逐条相等）', 'scripts/match_truth.mjs A034 → /tmp/c136-r05/truth/A034.json', 'scripts/review_skel.py A034 → /tmp/c136-r05/skel/A034.json',
         'scripts/truth_digest.py A034', 'scripts/match_facts.py A034 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]', 'scripts/match_extra.py A034',
         'scripts/review_build/A034_facts.py [--sec 1,…,28]（§1 各队兵力、§2 接敌面、§3 路人队友与邻居、§4 捐兵、§5 打真人的同拍批、§6 阵亡、§7 机器人的地、§8 名次、§11 分段收支、§12 交换比、§13 谁拿了谁的地、§14 捐兵之后、§15 多号打同一人、§16 各号每 300 拍、§17 3380–4300 拍时间线与谁先动手、§18 影子决策构成、§19 2100 拍后的出手段、§20 ProfChaos、§21 leo_tx 的船、§22 批前后、§23 指令对账、§24 锚点周围的敌人、§25 除名时的存兵、§26 崩盘段合计、§27 做对的几手、§28 放行轮与捐兵去向）',

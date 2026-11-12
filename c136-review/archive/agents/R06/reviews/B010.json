@@ -42,6 +42,7 @@
    "Chicago": 1694
   },
   "neverPlayed": [],
+  "neverPlayedSource": "replay: left 且录像里没有它的任何出兵指令",
   "sameMatchPeer": "A012",
   "dataCompleteness": {
    "results": true,
@@ -189,6 +190,9 @@
   "ourFinalShare": 0.0607,
   "peakSquadLandShare": 0.0585,
   "peakPrimaryTeamShareSeen": 0.107,
+  "endRowSeen": false,
+  "lastSnapshotTick": 6120,
+  "lastTeamTotalsTick": 6128,
   "note": "卡片记为 lost，赢家队3（录像末拍 t=6705 占 36.0%，4 个真人）。我方 13 个号全部出局：3 个在 t=1558~2290 阵亡，6 个离开后以空壳身份在 t=2260~3701 被吃掉，最后 4 个各在一支队里（队2、队5、队7、队8），t=5530~6123 阵亡。编队号最多的队8（5 个）录像末拍 5.8%，队7（4 个）3.4%。"
  },
  "timeline": [
@@ -2284,6 +2288,8 @@
     ]
    },
    "peakLandLog": 2714,
+   "landBeforeClear": 444,
+   "balanceBeforeClear": 2366,
    "statementType": "observed"
   },
   {
@@ -2422,6 +2428,8 @@
     ]
    },
    "peakLandLog": 2118,
+   "landBeforeClear": 407,
+   "balanceBeforeClear": 7483,
    "statementType": "observed"
   },
   {
@@ -2557,6 +2565,8 @@
     ]
    },
    "peakLandLog": 14968,
+   "landBeforeClear": 2951,
+   "balanceBeforeClear": 246187,
    "statementType": "observed"
   },
   {
@@ -2692,6 +2702,8 @@
     ]
    },
    "peakLandLog": 5216,
+   "landBeforeClear": 581,
+   "balanceBeforeClear": 428,
    "statementType": "observed"
   },
   {
@@ -2843,6 +2855,8 @@
     ]
    },
    "peakLandLog": 5902,
+   "landBeforeClear": 33,
+   "balanceBeforeClear": 6,
    "statementType": "observed"
   },
   {
@@ -2978,6 +2992,8 @@
     ]
    },
    "peakLandLog": 13879,
+   "landBeforeClear": 3033,
+   "balanceBeforeClear": 130258,
    "statementType": "observed"
   },
   {
@@ -3106,6 +3122,8 @@
     ]
    },
    "peakLandLog": 6859,
+   "landBeforeClear": 1478,
+   "balanceBeforeClear": 61932,
    "statementType": "observed"
   }
  ],
@@ -3270,6 +3288,3123 @@
     "失地": 8150,
     "被打掉兵": 257602,
     "收到船兵": 20875
+   }
+  }
+ },
+ "latencyLedger": {
+  "matchId": "B010",
+  "replayLast": 6705,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 186,
+   "landed": 142,
+   "lastOk": 1,
+   "late": 12,
+   "late1": 9,
+   "late2": 1,
+   "late3": 2,
+   "zero": 0,
+   "batch3": 1,
+   "staleBatch": 0,
+   "backendLines": 0,
+   "steps": 51,
+   "lbP50": 0,
+   "lbP90": 0,
+   "lbMax": 12,
+   "near": 4,
+   "samePixel": 1,
+   "per": {
+    "59": {
+     "name": "AltF4",
+     "team": 8,
+     "logged": 21,
+     "landed": 8,
+     "late": 12,
+     "lateAlt": 12,
+     "batch": 4,
+     "finalBatch": 1,
+     "finalStep": 31,
+     "final": [
+      1170,
+      562
+     ],
+     "lastLog": [
+      386,
+      1026
+     ]
+    },
+    "60": {
+     "name": "Frieren",
+     "team": 7,
+     "logged": 12,
+     "landed": 10,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      1138,
+      1058
+     ],
+     "lastLog": [
+      1018,
+      398
+     ]
+    },
+    "61": {
+     "name": "Chosokabe",
+     "team": 8,
+     "logged": 24,
+     "landed": 15,
+     "late": 8,
+     "lateAlt": 8,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 33,
+     "final": [
+      306,
+      386
+     ],
+     "lastLog": [
+      1314,
+      1058
+     ]
+    },
+    "62": {
+     "name": "Mansa Musa",
+     "team": 7,
+     "logged": 18,
+     "landed": 15,
+     "late": 2,
+     "lateAlt": 2,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      642,
+      1058
+     ],
+     "lastLog": [
+      806,
+      310
+     ]
+    },
+    "63": {
+     "name": "Cleopatra",
+     "team": 5,
+     "logged": 11,
+     "landed": 9,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      130,
+      438
+     ],
+     "lastLog": [
+      214,
+      102
+     ]
+    },
+    "64": {
+     "name": "Bowser",
+     "team": 7,
+     "logged": 10,
+     "landed": 8,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      470,
+      154
+     ],
+     "lastLog": [
+      1018,
+      398
+     ]
+    },
+    "65": {
+     "name": "BlackRock",
+     "team": 2,
+     "logged": 20,
+     "landed": 18,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 49,
+     "final": [
+      1314,
+      594
+     ],
+     "lastLog": [
+      1314,
+      1058
+     ]
+    },
+    "69": {
+     "name": "Chicago",
+     "team": 8,
+     "logged": 12,
+     "landed": 10,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      938,
+      162
+     ],
+     "lastLog": [
+      286,
+      658
+     ]
+    },
+    "70": {
+     "name": "Angkor",
+     "team": 7,
+     "logged": 13,
+     "landed": 11,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 38,
+     "final": [
+      1314,
+      610
+     ],
+     "lastLog": [
+      946,
+      1058
+     ]
+    },
+    "71": {
+     "name": "Afsharid",
+     "team": 3,
+     "logged": 11,
+     "landed": 9,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      298,
+      98
+     ],
+     "lastLog": [
+      814,
+      802
+     ]
+    },
+    "77": {
+     "name": "Enderman",
+     "team": 8,
+     "logged": 13,
+     "landed": 11,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      1138,
+      1058
+     ],
+     "lastLog": [
+      1314,
+      610
+     ]
+    },
+    "78": {
+     "name": "TaxCollector",
+     "team": 6,
+     "logged": 16,
+     "landed": 14,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      482,
+      1042
+     ],
+     "lastLog": [
+      1138,
+      1058
+     ]
+    },
+    "94": {
+     "name": "Khiva",
+     "team": 8,
+     "logged": 5,
+     "landed": 4,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 25,
+     "final": [
+      1150,
+      1034
+     ],
+     "lastLog": [
+      1150,
+      1034
+     ]
+    }
+   }
+  },
+  "fidelity": {
+   "logCmds": 517,
+   "shadowCmds": 564,
+   "landed": 446,
+   "exact": 410,
+   "fuzzy": 18,
+   "unmatched": 18,
+   "lost": 313,
+   "lostBefore": 124,
+   "maxDev": 15
+  },
+  "delay": [
+   {
+    "band": "0~600",
+    "n": 89,
+    "p50": 13,
+    "p90": 34,
+    "max": 285,
+    "nUniq": 89,
+    "p50Uniq": 13,
+    "p90Uniq": 34,
+    "ge35": 7,
+    "ge90": 5,
+    "atk": [
+     87,
+     13,
+     34
+    ],
+    "boat": [
+     2,
+     15,
+     15
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "600~1500",
+    "n": 235,
+    "p50": 284,
+    "p90": 484,
+    "max": 556,
+    "nUniq": 186,
+    "p50Uniq": 252,
+    "p90Uniq": 487,
+    "ge35": 226,
+    "ge90": 200,
+    "atk": [
+     215,
+     270,
+     485
+    ],
+    "boat": [
+     20,
+     350,
+     482
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "1500~3000",
+    "n": 44,
+    "p50": 196,
+    "p90": 314,
+    "max": 334,
+    "nUniq": 19,
+    "p50Uniq": 161,
+    "p90Uniq": 281,
+    "ge35": 39,
+    "ge90": 34,
+    "atk": [
+     36,
+     195,
+     319
+    ],
+    "boat": [
+     8,
+     205,
+     302
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "3000+",
+    "n": 60,
+    "p50": 13,
+    "p90": 20,
+    "max": 24,
+    "nUniq": 44,
+    "p50Uniq": 12,
+    "p90Uniq": 16,
+    "ge35": 0,
+    "ge90": 0,
+    "atk": [
+     36,
+     12,
+     21
+    ],
+    "boat": [
+     24,
+     13,
+     16
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   }
+  ],
+  "cells": [
+   [
+    0,
+    15,
+    15,
+    285
+   ],
+   [
+    150,
+    24,
+    12,
+    220
+   ],
+   [
+    300,
+    25,
+    12,
+    120
+   ],
+   [
+    450,
+    25,
+    15,
+    47
+   ],
+   [
+    600,
+    57,
+    77,
+    547
+   ],
+   [
+    750,
+    67,
+    182,
+    512
+   ],
+   [
+    900,
+    57,
+    347,
+    556
+   ],
+   [
+    1050,
+    27,
+    474,
+    554
+   ],
+   [
+    1200,
+    19,
+    463,
+    542
+   ],
+   [
+    1350,
+    8,
+    393,
+    479
+   ],
+   [
+    1500,
+    11,
+    302,
+    334
+   ],
+   [
+    1650,
+    13,
+    201,
+    291
+   ],
+   [
+    1800,
+    8,
+    180,
+    225
+   ],
+   [
+    1950,
+    8,
+    105,
+    150
+   ],
+   [
+    2100,
+    2,
+    10,
+    10
+   ],
+   [
+    2250,
+    1,
+    8,
+    8
+   ],
+   [
+    2400,
+    1,
+    10,
+    10
+   ],
+   [
+    3150,
+    4,
+    14,
+    23
+   ],
+   [
+    3300,
+    4,
+    15,
+    19
+   ],
+   [
+    3450,
+    1,
+    11,
+    11
+   ],
+   [
+    3600,
+    3,
+    12,
+    14
+   ],
+   [
+    3900,
+    4,
+    15,
+    15
+   ],
+   [
+    4050,
+    3,
+    11,
+    20
+   ],
+   [
+    4200,
+    5,
+    10,
+    19
+   ],
+   [
+    4350,
+    2,
+    12,
+    12
+   ],
+   [
+    4500,
+    3,
+    10,
+    10
+   ],
+   [
+    4650,
+    5,
+    14,
+    21
+   ],
+   [
+    4800,
+    1,
+    18,
+    18
+   ],
+   [
+    4950,
+    1,
+    15,
+    15
+   ],
+   [
+    5100,
+    1,
+    15,
+    15
+   ],
+   [
+    5250,
+    4,
+    12,
+    14
+   ],
+   [
+    5400,
+    5,
+    15,
+    23
+   ],
+   [
+    5550,
+    3,
+    12,
+    21
+   ],
+   [
+    5700,
+    6,
+    13,
+    16
+   ],
+   [
+    5850,
+    5,
+    12,
+    24
+   ]
+  ],
+  "bots": [
+   {
+    "me": 59,
+    "name": "AltF4",
+    "team": 8,
+    "n": 38,
+    "p50": 329,
+    "max": 554,
+    "cmdsLog": 51,
+    "landed": 38,
+    "bands": {
+     "0~600": [
+      5,
+      120,
+      285
+     ],
+     "600~1500": [
+      26,
+      417,
+      554
+     ],
+     "1500~3000": [
+      7,
+      319,
+      334
+     ]
+    }
+   },
+   {
+    "me": 60,
+    "name": "Frieren",
+    "team": 7,
+    "n": 15,
+    "p50": 34,
+    "max": 233,
+    "cmdsLog": 15,
+    "landed": 15,
+    "bands": {
+     "0~600": [
+      9,
+      13,
+      47
+     ],
+     "600~1500": [
+      6,
+      203,
+      233
+     ]
+    }
+   },
+   {
+    "me": 61,
+    "name": "Chosokabe",
+    "team": 8,
+    "n": 18,
+    "p50": 174,
+    "max": 547,
+    "cmdsLog": 18,
+    "landed": 18,
+    "bands": {
+     "0~600": [
+      6,
+      15,
+      160
+     ],
+     "600~1500": [
+      11,
+      472,
+      547
+     ]
+    }
+   },
+   {
+    "me": 62,
+    "name": "Mansa Musa",
+    "team": 7,
+    "n": 64,
+    "p50": 127,
+    "max": 547,
+    "cmdsLog": 73,
+    "landed": 64,
+    "bands": {
+     "0~600": [
+      8,
+      17,
+      23
+     ],
+     "600~1500": [
+      31,
+      255,
+      547
+     ],
+     "1500~3000": [
+      11,
+      161,
+      281
+     ],
+     "3000+": [
+      10,
+      19,
+      23
+     ]
+    }
+   },
+   {
+    "me": 63,
+    "name": "Cleopatra",
+    "team": 5,
+    "n": 47,
+    "p50": 13,
+    "max": 388,
+    "cmdsLog": 47,
+    "landed": 47,
+    "bands": {
+     "0~600": [
+      6,
+      9,
+      21
+     ],
+     "600~1500": [
+      11,
+      96,
+      388
+     ],
+     "1500~3000": [
+      2,
+      291,
+      291
+     ],
+     "3000+": [
+      24,
+      12,
+      24
+     ]
+    }
+   },
+   {
+    "me": 64,
+    "name": "Bowser",
+    "team": 7,
+    "n": 40,
+    "p50": 209,
+    "max": 542,
+    "cmdsLog": 42,
+    "landed": 40,
+    "bands": {
+     "0~600": [
+      6,
+      10,
+      12
+     ],
+     "600~1500": [
+      31,
+      275,
+      542
+     ],
+     "1500~3000": [
+      2,
+      302,
+      302
+     ]
+    }
+   },
+   {
+    "me": 65,
+    "name": "BlackRock",
+    "team": 2,
+    "n": 79,
+    "p50": 128,
+    "max": 493,
+    "cmdsLog": 107,
+    "landed": 79,
+    "bands": {
+     "0~600": [
+      7,
+      12,
+      15
+     ],
+     "600~1500": [
+      31,
+      305,
+      493
+     ],
+     "1500~3000": [
+      17,
+      195,
+      225
+     ],
+     "3000+": [
+      19,
+      12,
+      21
+     ]
+    }
+   },
+   {
+    "me": 69,
+    "name": "Chicago",
+    "team": 8,
+    "n": 31,
+    "p50": 207,
+    "max": 427,
+    "cmdsLog": 25,
+    "landed": 31,
+    "bands": {
+     "0~600": [
+      7,
+      16,
+      25
+     ],
+     "600~1500": [
+      22,
+      252,
+      427
+     ]
+    }
+   },
+   {
+    "me": 70,
+    "name": "Angkor",
+    "team": 7,
+    "n": 19,
+    "p50": 33,
+    "max": 299,
+    "cmdsLog": 18,
+    "landed": 19,
+    "bands": {
+     "0~600": [
+      10,
+      19,
+      36
+     ],
+     "600~1500": [
+      9,
+      155,
+      299
+     ]
+    }
+   },
+   {
+    "me": 71,
+    "name": "Afsharid",
+    "team": 3,
+    "n": 13,
+    "p50": 64,
+    "max": 252,
+    "cmdsLog": 19,
+    "landed": 13,
+    "bands": {
+     "0~600": [
+      6,
+      10,
+      15
+     ],
+     "600~1500": [
+      7,
+      101,
+      252
+     ]
+    }
+   },
+   {
+    "me": 77,
+    "name": "Enderman",
+    "team": 8,
+    "n": 45,
+    "p50": 278,
+    "max": 556,
+    "cmdsLog": 56,
+    "landed": 45,
+    "bands": {
+     "0~600": [
+      6,
+      13,
+      15
+     ],
+     "600~1500": [
+      27,
+      364,
+      556
+     ],
+     "1500~3000": [
+      5,
+      205,
+      278
+     ],
+     "3000+": [
+      7,
+      12,
+      15
+     ]
+    }
+   },
+   {
+    "me": 78,
+    "name": "TaxCollector",
+    "team": 6,
+    "n": 25,
+    "p50": 130,
+    "max": 386,
+    "cmdsLog": 30,
+    "landed": 25,
+    "bands": {
+     "0~600": [
+      7,
+      10,
+      11
+     ],
+     "600~1500": [
+      17,
+      291,
+      386
+     ]
+    }
+   },
+   {
+    "me": 94,
+    "name": "Khiva",
+    "team": 8,
+    "n": 12,
+    "p50": 51,
+    "max": 426,
+    "cmdsLog": 16,
+    "landed": 12,
+    "bands": {
+     "0~600": [
+      6,
+      11,
+      15
+     ],
+     "600~1500": [
+      6,
+      375,
+      426
+     ]
+    }
+   }
+  ],
+  "funnel": {
+   "bands": [
+    {
+     "band": "0~600",
+     "shadow": 95,
+     "landed": 89,
+     "ok": 88,
+     "void": 1,
+     "lost": 6,
+     "pending": 0,
+     "pendingAmt": 0,
+     "shadowLive": 95,
+     "pendingLive": 0,
+     "pendingLiveAmt": 0
+    },
+    {
+     "band": "600~1500",
+     "shadow": 443,
+     "landed": 235,
+     "ok": 138,
+     "void": 97,
+     "lost": 49,
+     "pending": 159,
+     "pendingAmt": 1412265,
+     "shadowLive": 323,
+     "pendingLive": 41,
+     "pendingLiveAmt": 188998
+    },
+    {
+     "band": "1500~3000",
+     "shadow": 120,
+     "landed": 44,
+     "ok": 32,
+     "void": 12,
+     "lost": 48,
+     "pending": 28,
+     "pendingAmt": 770323,
+     "shadowLive": 94,
+     "pendingLive": 2,
+     "pendingLiveAmt": 20162
+    },
+    {
+     "band": "3000+",
+     "shadow": 83,
+     "landed": 60,
+     "ok": 60,
+     "void": 0,
+     "lost": 21,
+     "pending": 2,
+     "pendingAmt": 68749,
+     "shadowLive": 83,
+     "pendingLive": 2,
+     "pendingLiveAmt": 68749
+    }
+   ],
+   "check": [
+    [
+     270,
+     25,
+     27,
+     20
+    ],
+    [
+     540,
+     82,
+     81,
+     79
+    ],
+    [
+     810,
+     190,
+     192,
+     139
+    ],
+    [
+     1080,
+     225,
+     229,
+     139
+    ],
+    [
+     1350,
+     188,
+     191,
+     130
+    ],
+    [
+     1620,
+     265,
+     282,
+     167
+    ],
+    [
+     1890,
+     287,
+     313,
+     226
+    ],
+    [
+     2160,
+     260,
+     272,
+     210
+    ],
+    [
+     2430,
+     219,
+     232,
+     171
+    ],
+    [
+     2700,
+     220,
+     233,
+     172
+    ],
+    [
+     2970,
+     220,
+     233,
+     172
+    ],
+    [
+     3240,
+     224,
+     238,
+     176
+    ],
+    [
+     3510,
+     229,
+     243,
+     181
+    ],
+    [
+     3780,
+     233,
+     247,
+     185
+    ],
+    [
+     4050,
+     236,
+     251,
+     187
+    ],
+    [
+     4320,
+     245,
+     264,
+     197
+    ],
+    [
+     4590,
+     250,
+     274,
+     202
+    ],
+    [
+     4860,
+     258,
+     287,
+     210
+    ],
+    [
+     5130,
+     259,
+     288,
+     211
+    ],
+    [
+     5400,
+     264,
+     293,
+     215
+    ],
+    [
+     5670,
+     216,
+     232,
+     179
+    ],
+    [
+     5940,
+     227,
+     245,
+     190
+    ],
+    [
+     6120,
+     107,
+     118,
+     79
+    ]
+   ]
+  },
+  "void": [
+   {
+    "band": "0~600",
+    "atk": 89,
+    "void": 1,
+    "a1": 0,
+    "a1Ai": 0,
+    "a1Amt": 0,
+    "a2": 1,
+    "a2Amt": 135,
+    "a3": 0,
+    "a0": 0,
+    "b": 0,
+    "bSent": 0
+   },
+   {
+    "band": "600~1500",
+    "atk": 187,
+    "void": 73,
+    "a1": 63,
+    "a1Ai": 63,
+    "a1Amt": 153671,
+    "a2": 6,
+    "a2Amt": 7109,
+    "a3": 1,
+    "a0": 3,
+    "b": 21,
+    "bSent": 49145
+   },
+   {
+    "band": "1500~3000",
+    "atk": 77,
+    "void": 41,
+    "a1": 27,
+    "a1Ai": 27,
+    "a1Amt": 184955,
+    "a2": 12,
+    "a2Amt": 53716,
+    "a3": 0,
+    "a0": 2,
+    "b": 9,
+    "bSent": 11461
+   },
+   {
+    "band": "3000+",
+    "atk": 37,
+    "void": 0,
+    "a1": 0,
+    "a1Ai": 0,
+    "a1Amt": 0,
+    "a2": 0,
+    "a2Amt": 0,
+    "a3": 0,
+    "a0": 0,
+    "b": 0,
+    "bSent": 0
+   },
+   {
+    "band": "0~600",
+    "cls": "ai",
+    "lines": 13,
+    "cmds": 15,
+    "sent": 8524,
+    "spent": 8121,
+    "gain": 2268,
+    "ret": 403,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "0~600",
+    "cls": "neu",
+    "lines": 56,
+    "cmds": 79,
+    "sent": 69726,
+    "spent": 57136,
+    "gain": 28568,
+    "ret": 12590,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "600~1500",
+    "cls": "ai",
+    "lines": 37,
+    "cmds": 74,
+    "sent": 316770,
+    "spent": 73629,
+    "gain": 18811,
+    "ret": 303,
+    "redirLines": 27,
+    "moved": 242838,
+    "emptyLines": 1,
+    "emptySent": 9389
+   },
+   {
+    "band": "600~1500",
+    "cls": "neu",
+    "lines": 14,
+    "cmds": 27,
+    "sent": 156835,
+    "spent": 13540,
+    "gain": 6770,
+    "ret": 143295,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "1500~3000",
+    "cls": "ai",
+    "lines": 3,
+    "cmds": 10,
+    "sent": 191167,
+    "spent": 116938,
+    "gain": 4461,
+    "ret": 31,
+    "redirLines": 2,
+    "moved": 74198,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "1500~3000",
+    "cls": "hum",
+    "lines": 7,
+    "cmds": 16,
+    "sent": 471370,
+    "spent": 140884,
+    "gain": 2632,
+    "ret": 59804,
+    "redirLines": 2,
+    "moved": 204721,
+    "emptyLines": 3,
+    "emptySent": 98800
+   },
+   {
+    "band": "1500~3000",
+    "cls": "neu",
+    "lines": 2,
+    "cmds": 10,
+    "sent": 16091,
+    "spent": 364,
+    "gain": 182,
+    "ret": 15727,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "3000+",
+    "cls": "ai",
+    "lines": 1,
+    "cmds": 1,
+    "sent": 2073,
+    "spent": 1564,
+    "gain": 421,
+    "ret": 13,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "3000+",
+    "cls": "hum",
+    "lines": 14,
+    "cmds": 16,
+    "sent": 2052923,
+    "spent": 1976820,
+    "gain": 13854,
+    "ret": 15557,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 1,
+    "emptySent": 60546
+   },
+   {
+    "band": "3000+",
+    "cls": "neu",
+    "lines": 9,
+    "cmds": 17,
+    "sent": 649825,
+    "spent": 7286,
+    "gain": 3643,
+    "ret": 642539,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   }
+  ],
+  "dups": [
+   {
+    "band": "0~600",
+    "kind": "atk",
+    "base": 87,
+    "dups": 5,
+    "ok": 5,
+    "sent": 2452,
+    "fee": 137,
+    "void": 0,
+    "stack": [
+     3,
+     1,
+     1,
+     0
+    ],
+    "byTarget": {
+     "无主地": 4,
+     "内置 AI": 1
+    }
+   },
+   {
+    "band": "600~1500",
+    "kind": "atk",
+    "base": 215,
+    "dups": 152,
+    "ok": 65,
+    "sent": 243466,
+    "fee": 20302,
+    "void": 87,
+    "stack": [
+     36,
+     28,
+     23,
+     65
+    ],
+    "byTarget": {
+     "无主地": 3,
+     "内置 AI": 149
+    }
+   },
+   {
+    "band": "600~1500",
+    "kind": "boat",
+    "base": 20,
+    "dups": 16,
+    "ok": 16,
+    "sent": 215747,
+    "fee": 38476,
+    "void": 0,
+    "stack": [
+     4,
+     3,
+     3,
+     6
+    ],
+    "byTarget": {
+     "发船": 16
+    }
+   },
+   {
+    "band": "1500~3000",
+    "kind": "atk",
+    "base": 36,
+    "dups": 25,
+    "ok": 15,
+    "sent": 323655,
+    "fee": 37519,
+    "void": 10,
+    "stack": [
+     5,
+     4,
+     4,
+     12
+    ],
+    "byTarget": {
+     "无主地": 10,
+     "内置 AI": 7,
+     "真人": 8
+    }
+   },
+   {
+    "band": "1500~3000",
+    "kind": "boat",
+    "base": 8,
+    "dups": 7,
+    "ok": 7,
+    "sent": 157107,
+    "fee": 18503,
+    "void": 0,
+    "stack": [
+     1,
+     0,
+     0,
+     6
+    ],
+    "byTarget": {
+     "发船": 7
+    }
+   },
+   {
+    "band": "3000+",
+    "kind": "atk",
+    "base": 36,
+    "dups": 11,
+    "ok": 11,
+    "sent": 316926,
+    "fee": 79198,
+    "void": 0,
+    "stack": [
+     11,
+     0,
+     0,
+     0
+    ],
+    "byTarget": {
+     "无主地": 11
+    }
+   },
+   {
+    "band": "3000+",
+    "kind": "boat",
+    "base": 24,
+    "dups": 5,
+    "ok": 5,
+    "sent": 570073,
+    "fee": 76816,
+    "void": 0,
+    "stack": [
+     5,
+     0,
+     0,
+     0
+    ],
+    "byTarget": {
+     "发船": 5
+    }
+   }
+  ],
+  "batches": {
+   "bands": [
+    {
+     "band": "0~600",
+     "batches": 1,
+     "cmds": 3,
+     "allVoid": 0,
+     "drain": 1,
+     "drainCost": 1527,
+     "extra": 763
+    },
+    {
+     "band": "600~1500",
+     "batches": 21,
+     "cmds": 114,
+     "allVoid": 5,
+     "drain": 6,
+     "drainCost": 192686,
+     "extra": 209934
+    },
+    {
+     "band": "1500~3000",
+     "batches": 12,
+     "cmds": 81,
+     "allVoid": 5,
+     "drain": 5,
+     "drainCost": 592769,
+     "extra": 593930
+    }
+   ],
+   "rows": [
+    {
+     "me": 59,
+     "name": "AltF4",
+     "t": 420,
+     "n": 3,
+     "ok": 3,
+     "B0": 1800,
+     "cost": 1527,
+     "frac": 0.8483333333333334,
+     "tau0": 135,
+     "tau1": 300,
+     "kinds": "a",
+     "extra": 763
+    },
+    {
+     "me": 63,
+     "name": "Cleopatra",
+     "t": 791,
+     "n": 3,
+     "ok": 3,
+     "B0": 15886,
+     "cost": 8711,
+     "frac": 0.5483444542364346,
+     "tau0": 695,
+     "tau1": 725,
+     "kinds": "a",
+     "extra": 5050
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 791,
+     "n": 3,
+     "ok": 3,
+     "B0": 10878,
+     "cost": 4116,
+     "frac": 0.3783783783783784,
+     "tau0": 685,
+     "tau1": 700,
+     "kinds": "a",
+     "extra": 2683
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 798,
+     "n": 3,
+     "ok": 3,
+     "B0": 11236,
+     "cost": 4338,
+     "frac": 0.3860804556781773,
+     "tau0": 680,
+     "tau1": 710,
+     "kinds": "a",
+     "extra": 2221
+    },
+    {
+     "me": 63,
+     "name": "Cleopatra",
+     "t": 896,
+     "n": 3,
+     "ok": 3,
+     "B0": 12457,
+     "cost": 5348,
+     "frac": 0.42931684996387576,
+     "tau0": 755,
+     "tau1": 780,
+     "kinds": "a",
+     "extra": 3537
+    },
+    {
+     "me": 69,
+     "name": "Chicago",
+     "t": 896,
+     "n": 4,
+     "ok": 4,
+     "B0": 20434,
+     "cost": 8136,
+     "frac": 0.39815992952921603,
+     "tau0": 745,
+     "tau1": 785,
+     "kinds": "a",
+     "extra": 5922
+    },
+    {
+     "me": 60,
+     "name": "Frieren",
+     "t": 903,
+     "n": 3,
+     "ok": 0,
+     "B0": 30514,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 670,
+     "tau1": 700,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 903,
+     "n": 4,
+     "ok": 0,
+     "B0": 21503,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 745,
+     "tau1": 775,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 917,
+     "n": 3,
+     "ok": 3,
+     "B0": 21427,
+     "cost": 3548,
+     "frac": 0.16558547626825967,
+     "tau0": 760,
+     "tau1": 790,
+     "kinds": "a",
+     "extra": 2293
+    },
+    {
+     "me": 64,
+     "name": "Bowser",
+     "t": 994,
+     "n": 6,
+     "ok": 5,
+     "B0": 31487,
+     "cost": 25501,
+     "frac": 0.8098897957887382,
+     "tau0": 785,
+     "tau1": 845,
+     "kinds": "a",
+     "extra": 19629
+    },
+    {
+     "me": 70,
+     "name": "Angkor",
+     "t": 1057,
+     "n": 3,
+     "ok": 3,
+     "B0": 24526,
+     "cost": 18123,
+     "frac": 0.7389301149800211,
+     "tau0": 820,
+     "tau1": 880,
+     "kinds": "b",
+     "extra": 8855
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 1092,
+     "n": 4,
+     "ok": 4,
+     "B0": 49377,
+     "cost": 34560,
+     "frac": 0.6999210158575855,
+     "tau0": 865,
+     "tau1": 910,
+     "kinds": "a",
+     "extra": 20336
+    },
+    {
+     "me": 69,
+     "name": "Chicago",
+     "t": 1092,
+     "n": 6,
+     "ok": 6,
+     "B0": 36891,
+     "cost": 12664,
+     "frac": 0.3432815591878778,
+     "tau0": 810,
+     "tau1": 885,
+     "kinds": "a",
+     "extra": 10395
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 1120,
+     "n": 8,
+     "ok": 2,
+     "B0": 53443,
+     "cost": 6078,
+     "frac": 0.11372864547274666,
+     "tau0": 835,
+     "tau1": 900,
+     "kinds": "a",
+     "extra": 2947
+    },
+    {
+     "me": 64,
+     "name": "Bowser",
+     "t": 1239,
+     "n": 9,
+     "ok": 0,
+     "B0": 62034,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 875,
+     "tau1": 985,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 61,
+     "name": "Chosokabe",
+     "t": 1267,
+     "n": 7,
+     "ok": 7,
+     "B0": 36556,
+     "cost": 29381,
+     "frac": 0.8037257905678958,
+     "tau0": 720,
+     "tau1": 840,
+     "kinds": "a",
+     "extra": 22706
+    },
+    {
+     "me": 77,
+     "name": "Enderman",
+     "t": 1274,
+     "n": 9,
+     "ok": 1,
+     "B0": 118120,
+     "cost": 10612,
+     "frac": 0.08984083982390789,
+     "tau0": 870,
+     "tau1": 985,
+     "kinds": "a",
+     "extra": 10612
+    },
+    {
+     "me": 78,
+     "name": "TaxCollector",
+     "t": 1281,
+     "n": 9,
+     "ok": 0,
+     "B0": 131378,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 895,
+     "tau1": 990,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 59,
+     "name": "AltF4",
+     "t": 1302,
+     "n": 8,
+     "ok": 1,
+     "B0": 11607,
+     "cost": 2697,
+     "frac": 0.23235978288963557,
+     "tau0": 885,
+     "tau1": 1015,
+     "kinds": "a",
+     "extra": 2697
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 1393,
+     "n": 8,
+     "ok": 0,
+     "B0": 77127,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 940,
+     "tau1": 1045,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 69,
+     "name": "Chicago",
+     "t": 1407,
+     "n": 7,
+     "ok": 7,
+     "B0": 104929,
+     "cost": 76410,
+     "frac": 0.7282066921442119,
+     "tau0": 980,
+     "tau1": 1060,
+     "kinds": "a",
+     "extra": 59094
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 1428,
+     "n": 4,
+     "ok": 1,
+     "B0": 144096,
+     "cost": 30957,
+     "frac": 0.21483594270486342,
+     "tau0": 930,
+     "tau1": 970,
+     "kinds": "a",
+     "extra": 30957
+    },
+    {
+     "me": 64,
+     "name": "Bowser",
+     "t": 1575,
+     "n": 4,
+     "ok": 4,
+     "B0": 174448,
+     "cost": 119710,
+     "frac": 0.6862216821058424,
+     "tau0": 1160,
+     "tau1": 1225,
+     "kinds": "b",
+     "extra": 87854
+    },
+    {
+     "me": 77,
+     "name": "Enderman",
+     "t": 1596,
+     "n": 9,
+     "ok": 0,
+     "B0": 249739,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1040,
+     "tau1": 1160,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 59,
+     "name": "AltF4",
+     "t": 1624,
+     "n": 9,
+     "ok": 9,
+     "B0": 14059,
+     "cost": 12169,
+     "frac": 0.8655665410057615,
+     "tau0": 1070,
+     "tau1": 1180,
+     "kinds": "a",
+     "extra": 8669
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 1708,
+     "n": 8,
+     "ok": 0,
+     "B0": 170853,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1215,
+     "tau1": 1650,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 1722,
+     "n": 8,
+     "ok": 0,
+     "B0": 243140,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1175,
+     "tau1": 1280,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 77,
+     "name": "Enderman",
+     "t": 1813,
+     "n": 5,
+     "ok": 5,
+     "B0": 243906,
+     "cost": 166989,
+     "frac": 0.6846449041843989,
+     "tau0": 1420,
+     "tau1": 1540,
+     "kinds": "b",
+     "extra": 128879
+    },
+    {
+     "me": 64,
+     "name": "Bowser",
+     "t": 1827,
+     "n": 5,
+     "ok": 5,
+     "B0": 58412,
+     "cost": 47233,
+     "frac": 0.8086180921728412,
+     "tau0": 1285,
+     "tau1": 1525,
+     "kinds": "b",
+     "extra": 38107
+    },
+    {
+     "me": 59,
+     "name": "AltF4",
+     "t": 1834,
+     "n": 8,
+     "ok": 0,
+     "B0": 21488,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1340,
+     "tau1": 1520,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 1876,
+     "n": 5,
+     "ok": 5,
+     "B0": 295367,
+     "cost": 95197,
+     "frac": 0.32230073095504913,
+     "tau0": 1595,
+     "tau1": 1715,
+     "kinds": "a",
+     "extra": 73853
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 1876,
+     "n": 8,
+     "ok": 0,
+     "B0": 222731,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1655,
+     "tau1": 1680,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 62,
+     "name": "Mansa Musa",
+     "t": 2072,
+     "n": 3,
+     "ok": 3,
+     "B0": 177716,
+     "cost": 68837,
+     "frac": 0.38734272659749264,
+     "tau0": 2000,
+     "tau1": 2040,
+     "kinds": "ab",
+     "extra": 49748
+    },
+    {
+     "me": 65,
+     "name": "BlackRock",
+     "t": 2100,
+     "n": 9,
+     "ok": 9,
+     "B0": 302261,
+     "cost": 246668,
+     "frac": 0.8160761725793272,
+     "tau0": 1875,
+     "tau1": 1995,
+     "kinds": "a",
+     "extra": 206820
+    }
+   ]
+  }
+ },
+ "landLedger": {
+  "matchId": "B010",
+  "gridTicks": [
+   0,
+   150,
+   300,
+   450,
+   630,
+   900,
+   1200,
+   1500,
+   1800,
+   2400,
+   3000,
+   6705
+  ],
+  "replayLast": 6705,
+  "voronoi": {
+   "land": 664497,
+   "humans": 95,
+   "squad": 13,
+   "unreach": 35893,
+   "reach": 628604,
+   "squadVor": 62572,
+   "squadVorPct": 9.95,
+   "headPct": 13.68,
+   "ratio": 0.727,
+   "squadMed": 4412,
+   "otherMed": 5705,
+   "squadEuclid": 74423,
+   "squadEuclidPct": 11.2,
+   "euclidSquadMed": 5048,
+   "euclidOtherMed": 6519,
+   "small": 4,
+   "top16": 1,
+   "bottom16": 6,
+   "bots": [
+    {
+     "me": 71,
+     "name": "*Afsharid",
+     "team": 3,
+     "vor": 9626,
+     "rank": 23,
+     "euclid": 12794,
+     "spawn": [
+      298,
+      98
+     ],
+     "nearest": 94,
+     "nearestWho": "No attack me pls",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 62,
+     "name": "*Mansa Musa",
+     "team": 7,
+     "vor": 9467,
+     "rank": 24,
+     "euclid": 5293,
+     "spawn": [
+      642,
+      1058
+     ],
+     "nearest": 161,
+     "nearestWho": "*TaxCollector",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 60,
+     "name": "*Frieren",
+     "team": 7,
+     "vor": 7495,
+     "rank": 34,
+     "euclid": 1810,
+     "spawn": [
+      1142,
+      1062
+     ],
+     "nearest": 6,
+     "nearestWho": "*Enderman",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 77,
+     "name": "*Enderman",
+     "team": 8,
+     "vor": 6557,
+     "rank": 40,
+     "euclid": 7327,
+     "spawn": [
+      1138,
+      1058
+     ],
+     "nearest": 6,
+     "nearestWho": "*Frieren",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 64,
+     "name": "*Bowser",
+     "team": 7,
+     "vor": 5796,
+     "rank": 45,
+     "euclid": 9244,
+     "spawn": [
+      474,
+      159
+     ],
+     "nearest": 127,
+     "nearestWho": "jerry stankleton",
+     "nearestKind": "其他真人同队"
+    },
+    {
+     "me": 63,
+     "name": "*Cleopatra",
+     "team": 5,
+     "vor": 4630,
+     "rank": 55,
+     "euclid": 4447,
+     "spawn": [
+      131,
+      438
+     ],
+     "nearest": 106,
+     "nearestWho": "Kingdom of Kent",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 69,
+     "name": "*Chicago",
+     "team": 8,
+     "vor": 4412,
+     "rank": 58,
+     "euclid": 4800,
+     "spawn": [
+      938,
+      162
+     ],
+     "nearest": 9,
+     "nearestWho": "World",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 78,
+     "name": "*TaxCollector",
+     "team": 6,
+     "vor": 3533,
+     "rank": 73,
+     "euclid": 5048,
+     "spawn": [
+      482,
+      1042
+     ],
+     "nearest": 161,
+     "nearestWho": "*Mansa Musa",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 94,
+     "name": "*Khiva",
+     "team": 8,
+     "vor": 3429,
+     "rank": 75,
+     "euclid": 5546,
+     "spawn": [
+      1150,
+      1035
+     ],
+     "nearest": 26,
+     "nearestWho": "*Enderman",
+     "nearestKind": "我方同队"
+    },
+    {
+     "me": 61,
+     "name": "*Chosokabe",
+     "team": 8,
+     "vor": 2813,
+     "rank": 83,
+     "euclid": 3237,
+     "spawn": [
+      306,
+      386
+     ],
+     "nearest": 108,
+     "nearestWho": "Bruh Union",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 65,
+     "name": "*BlackRock",
+     "team": 2,
+     "vor": 2521,
+     "rank": 86,
+     "euclid": 4922,
+     "spawn": [
+      1314,
+      594
+     ],
+     "nearest": 20,
+     "nearestWho": "*Angkor",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 59,
+     "name": "*AltF4",
+     "team": 8,
+     "vor": 2048,
+     "rank": 87,
+     "euclid": 2349,
+     "spawn": [
+      1170,
+      562
+     ],
+     "nearest": 119,
+     "nearestWho": "Player 802",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 70,
+     "name": "*Angkor",
+     "team": 7,
+     "vor": 245,
+     "rank": 90,
+     "euclid": 7606,
+     "spawn": [
+      1318,
+      614
+     ],
+     "nearest": 20,
+     "nearestWho": "*BlackRock",
+     "nearestKind": "我方异队"
+    }
+   ],
+   "teams": {
+    "1": [
+     12,
+     65237,
+     0,
+     0
+    ],
+    "2": [
+     12,
+     79186,
+     1,
+     2521
+    ],
+    "3": [
+     12,
+     80993,
+     1,
+     9626
+    ],
+    "4": [
+     12,
+     86537,
+     0,
+     0
+    ],
+    "5": [
+     12,
+     94619,
+     1,
+     4630
+    ],
+    "6": [
+     11,
+     78028,
+     1,
+     3533
+    ],
+    "7": [
+     12,
+     67670,
+     4,
+     23003
+    ],
+    "8": [
+     12,
+     76334,
+     5,
+     19259
+    ]
+   }
+  },
+  "capture": [
+   {
+    "t": 630,
+    "squadTerr": 28353,
+    "squadVor": 62572,
+    "squadRate": 0.4531,
+    "squadMedRate": 0.5076,
+    "squadDead": 0,
+    "otherTerr": 188671,
+    "otherVor": 566032,
+    "otherRate": 0.3333,
+    "otherMedRate": 0.3699,
+    "otherDead": 6,
+    "aiLand": 200592,
+    "neutral": 246881,
+    "teams": {
+     "1o": [
+      32106,
+      65237,
+      12
+     ],
+     "2o": [
+      26725,
+      76665,
+      11
+     ],
+     "2s": [
+      1381,
+      2521,
+      1
+     ],
+     "3o": [
+      24883,
+      71367,
+      11
+     ],
+     "3s": [
+      3321,
+      9626,
+      1
+     ],
+     "4o": [
+      19384,
+      86537,
+      12
+     ],
+     "5o": [
+      28087,
+      89989,
+      11
+     ],
+     "5s": [
+      2855,
+      4630,
+      1
+     ],
+     "6o": [
+      21540,
+      74495,
+      10
+     ],
+     "6s": [
+      2312,
+      3533,
+      1
+     ],
+     "7o": [
+      17301,
+      44667,
+      8
+     ],
+     "7s": [
+      8413,
+      23003,
+      4
+     ],
+     "8o": [
+      18645,
+      57075,
+      7
+     ],
+     "8s": [
+      10071,
+      19259,
+      5
+     ]
+    }
+   },
+   {
+    "t": 1500,
+    "squadTerr": 56395,
+    "squadVor": 62572,
+    "squadRate": 0.9013,
+    "squadMedRate": 0.8672,
+    "squadDead": 0,
+    "otherTerr": 523949,
+    "otherVor": 566032,
+    "otherRate": 0.9257,
+    "otherMedRate": 0.9844,
+    "otherDead": 17,
+    "aiLand": 68991,
+    "neutral": 15162,
+    "teams": {
+     "1o": [
+      55286,
+      65237,
+      12
+     ],
+     "2o": [
+      84374,
+      76665,
+      11
+     ],
+     "2s": [
+      6274,
+      2521,
+      1
+     ],
+     "3o": [
+      75538,
+      71367,
+      11
+     ],
+     "3s": [
+      6412,
+      9626,
+      1
+     ],
+     "4o": [
+      77408,
+      86537,
+      12
+     ],
+     "5o": [
+      90733,
+      89989,
+      11
+     ],
+     "5s": [
+      4996,
+      4630,
+      1
+     ],
+     "6o": [
+      67273,
+      74495,
+      10
+     ],
+     "6s": [
+      3681,
+      3533,
+      1
+     ],
+     "7o": [
+      34019,
+      44667,
+      8
+     ],
+     "7s": [
+      18757,
+      23003,
+      4
+     ],
+     "8o": [
+      39318,
+      57075,
+      7
+     ],
+     "8s": [
+      16275,
+      19259,
+      5
+     ]
+    }
+   }
+  ],
+  "natural": {
+   "ticks": [
+    {
+     "t": 630,
+     "squad": {
+      "n": 62572,
+      "self": 23483,
+      "squad": 1997,
+      "other": 149,
+      "ai": 16970,
+      "neutral": 19973
+     },
+     "other": {
+      "n": 566032,
+      "self": 171136,
+      "squad": 1013,
+      "other": 17098,
+      "ai": 176247,
+      "neutral": 200538
+     }
+    },
+    {
+     "t": 1500,
+     "squad": {
+      "n": 62572,
+      "self": 40471,
+      "squad": 4124,
+      "other": 6211,
+      "ai": 11764,
+      "neutral": 2
+     },
+     "other": {
+      "n": 566032,
+      "self": 344219,
+      "squad": 7464,
+      "other": 162450,
+      "ai": 49331,
+      "neutral": 2568
+     }
+    }
+   ],
+   "perBot": [
+    {
+     "me": 71,
+     "name": "*Afsharid",
+     "n": 9626,
+     "self": 6412,
+     "squad": 0,
+     "other": 2204,
+     "ai": 1010,
+     "neutral": 0,
+     "outside": 0
+    },
+    {
+     "me": 62,
+     "name": "*Mansa Musa",
+     "n": 9467,
+     "self": 6225,
+     "squad": 148,
+     "other": 0,
+     "ai": 3094,
+     "neutral": 0,
+     "outside": 0
+    },
+    {
+     "me": 60,
+     "name": "*Frieren",
+     "n": 7495,
+     "self": 1570,
+     "squad": 2584,
+     "other": 0,
+     "ai": 3341,
+     "neutral": 0,
+     "outside": 429
+    },
+    {
+     "me": 77,
+     "name": "*Enderman",
+     "n": 6557,
+     "self": 3256,
+     "squad": 723,
+     "other": 0,
+     "ai": 2578,
+     "neutral": 0,
+     "outside": 2430
+    },
+    {
+     "me": 64,
+     "name": "*Bowser",
+     "n": 5796,
+     "self": 5570,
+     "squad": 0,
+     "other": 226,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 19
+    },
+    {
+     "me": 63,
+     "name": "*Cleopatra",
+     "n": 4630,
+     "self": 4034,
+     "squad": 0,
+     "other": 596,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 962
+    },
+    {
+     "me": 69,
+     "name": "*Chicago",
+     "n": 4412,
+     "self": 3316,
+     "squad": 0,
+     "other": 1096,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 2239
+    },
+    {
+     "me": 78,
+     "name": "*TaxCollector",
+     "n": 3533,
+     "self": 3533,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 148
+    },
+    {
+     "me": 94,
+     "name": "*Khiva",
+     "n": 3429,
+     "self": 2030,
+     "squad": 306,
+     "other": 0,
+     "ai": 1093,
+     "neutral": 0,
+     "outside": 754
+    },
+    {
+     "me": 61,
+     "name": "*Chosokabe",
+     "n": 2813,
+     "self": 534,
+     "squad": 0,
+     "other": 1631,
+     "ai": 648,
+     "neutral": 0,
+     "outside": 0
+    },
+    {
+     "me": 65,
+     "name": "*BlackRock",
+     "n": 2521,
+     "self": 2158,
+     "squad": 363,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 4116
+    },
+    {
+     "me": 59,
+     "name": "*AltF4",
+     "n": 2048,
+     "self": 1588,
+     "squad": 0,
+     "other": 458,
+     "ai": 0,
+     "neutral": 2,
+     "outside": 128
+    },
+    {
+     "me": 70,
+     "name": "*Angkor",
+     "n": 245,
+     "self": 245,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 4699
+    }
+   ],
+   "perBotTick": 1500
+  },
+  "ai": {
+   "t0": 630,
+   "touch": 33,
+   "inside": 39,
+   "n": 45,
+   "cells": 19145,
+   "allAi": 409,
+   "allCells": 200592,
+   "later": [
+    {
+     "t": 900,
+     "near": {
+      "n": 19145,
+      "squad": 5474,
+      "other": 392,
+      "ai": 13273,
+      "neutral": 6
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 0,
+      "other": 41453,
+      "ai": 138553,
+      "neutral": 1441
+     },
+     "dead": 14
+    },
+    {
+     "t": 1200,
+     "near": {
+      "n": 19145,
+      "squad": 8344,
+      "other": 2231,
+      "ai": 8556,
+      "neutral": 14
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 1676,
+      "other": 109123,
+      "ai": 69361,
+      "neutral": 1287
+     },
+     "dead": 31
+    },
+    {
+     "t": 1500,
+     "near": {
+      "n": 19145,
+      "squad": 10952,
+      "other": 3673,
+      "ai": 4518,
+      "neutral": 2
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 2973,
+      "other": 149071,
+      "ai": 28272,
+      "neutral": 1131
+     },
+     "dead": 38
+    },
+    {
+     "t": 1800,
+     "near": {
+      "n": 19145,
+      "squad": 11713,
+      "other": 4574,
+      "ai": 2857,
+      "neutral": 1
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 4416,
+      "other": 164686,
+      "ai": 12343,
+      "neutral": 2
+     },
+     "dead": 41
+    },
+    {
+     "t": 2400,
+     "near": {
+      "n": 19145,
+      "squad": 9171,
+      "other": 9416,
+      "ai": 557,
+      "neutral": 1
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 5173,
+      "other": 170027,
+      "ai": 6129,
+      "neutral": 118
+     },
+     "dead": 44
+    },
+    {
+     "t": 3000,
+     "near": {
+      "n": 19145,
+      "squad": 6170,
+      "other": 12428,
+      "ai": 546,
+      "neutral": 1
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 4826,
+      "other": 171673,
+      "ai": 4926,
+      "neutral": 22
+     },
+     "dead": 44
+    },
+    {
+     "t": 6705,
+     "near": {
+      "n": 19145,
+      "squad": 0,
+      "other": 19145,
+      "ai": 0,
+      "neutral": 0
+     },
+     "rest": {
+      "n": 181447,
+      "squad": 0,
+      "other": 179643,
+      "ai": 1804,
+      "neutral": 0
+     },
+     "dead": 45
+    }
+   ],
+   "only": {
+    "ais": 40,
+    "cells": 17251,
+    "squad": 0,
+    "other": 17251,
+    "ai": 0,
+    "neutral": 0
+   },
+   "both": {
+    "ais": 5,
+    "cells": 1894,
+    "squad": 0,
+    "other": 1894,
+    "ai": 0,
+    "neutral": 0
+   },
+   "credit": {
+    "其他真人拿到一半以上": [
+     45,
+     19145
+    ]
+   }
+  },
+  "flow": {
+   "t0": 630,
+   "t1": 1500,
+   "rows": [
+    {
+     "me": 59,
+     "name": "*AltF4",
+     "team": 8,
+     "t0": 630,
+     "t1": 1716,
+     "gain": {
+      "neutral": 672,
+      "ai": 414,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 60,
+     "name": "*Frieren",
+     "team": 7,
+     "t0": 1428,
+     "t1": 1999,
+     "gain": {
+      "neutral": 30,
+      "ai": 383,
+      "other": 0,
+      "squad": 158
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 61,
+     "name": "*Chosokabe",
+     "team": 8,
+     "t0": 1428,
+     "t1": 534,
+     "gain": {
+      "neutral": 0,
+      "ai": 279,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 366,
+      "other": 807,
+      "squad": 0
+     }
+    },
+    {
+     "me": 62,
+     "name": "*Mansa Musa",
+     "team": 7,
+     "t0": 2405,
+     "t1": 6225,
+     "gain": {
+      "neutral": 2839,
+      "ai": 981,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 63,
+     "name": "*Cleopatra",
+     "team": 5,
+     "t0": 2855,
+     "t1": 4996,
+     "gain": {
+      "neutral": 962,
+      "ai": 1179,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 64,
+     "name": "*Bowser",
+     "team": 7,
+     "t0": 2423,
+     "t1": 5589,
+     "gain": {
+      "neutral": 1460,
+      "ai": 1706,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 65,
+     "name": "*BlackRock",
+     "team": 2,
+     "t0": 1381,
+     "t1": 6274,
+     "gain": {
+      "neutral": 2835,
+      "ai": 2058,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 69,
+     "name": "*Chicago",
+     "team": 8,
+     "t0": 2731,
+     "t1": 5555,
+     "gain": {
+      "neutral": 1010,
+      "ai": 1755,
+      "other": 136,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 77,
+      "squad": 0
+     }
+    },
+    {
+     "me": 70,
+     "name": "*Angkor",
+     "team": 7,
+     "t0": 2157,
+     "t1": 4944,
+     "gain": {
+      "neutral": 1281,
+      "ai": 1506,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 71,
+     "name": "*Afsharid",
+     "team": 3,
+     "t0": 3321,
+     "t1": 6412,
+     "gain": {
+      "neutral": 2327,
+      "ai": 764,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 77,
+     "name": "*Enderman",
+     "team": 8,
+     "t0": 2697,
+     "t1": 5686,
+     "gain": {
+      "neutral": 822,
+      "ai": 2173,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 6
+     }
+    },
+    {
+     "me": 78,
+     "name": "*TaxCollector",
+     "team": 6,
+     "t0": 2312,
+     "t1": 3681,
+     "gain": {
+      "neutral": 911,
+      "ai": 458,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 94,
+     "name": "*Khiva",
+     "team": 8,
+     "t0": 2585,
+     "t1": 2784,
+     "gain": {
+      "neutral": 276,
+      "ai": 269,
+      "other": 0,
+      "squad": 6
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 194,
+      "other": 0,
+      "squad": 158
+     }
+    }
+   ],
+   "squad": {
+    "t0": 28353,
+    "t1": 56395,
+    "g_neutral": 15425,
+    "g_ai": 13925,
+    "g_other": 136,
+    "g_squad": 164,
+    "l_neutral": 0,
+    "l_ai": 560,
+    "l_other": 884,
+    "l_squad": 164
+   },
+   "other": {
+    "n": 82,
+    "t0": 188671,
+    "t1": 523949,
+    "fromAi": 152744,
+    "fromSquad": 884,
+    "fromNeutral": 182551,
+    "toAi": 664
+   }
+  },
+  "layers": {
+   "spawn": {
+    "squadVor": 62572,
+    "par": 86019,
+    "small": [
+     [
+      "*AltF4",
+      2048
+     ],
+     [
+      "*Chosokabe",
+      2813
+     ],
+     [
+      "*BlackRock",
+      2521
+     ],
+     [
+      "*Angkor",
+      245
+     ]
+    ]
+   },
+   "gates": {
+    "n": 1742,
+    "ok": 1034,
+    "botOk": 159,
+    "winR": 51,
+    "dpKeep": 75,
+    "safeFinite": 174,
+    "safeFiniteSquad": 86,
+    "safeFiniteNoPass": 86
+   },
+   "late": {
+    "atk": 187,
+    "a1": 63,
+    "a1Amt": 153671,
+    "b": 21,
+    "bSent": 49145,
+    "aiSent": 316770,
+    "aiMoved": 242838,
+    "pending": 135
    }
   }
  },

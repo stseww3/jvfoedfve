@@ -217,9 +217,9 @@ def main():
         if d not in sq_ids:
             continue
         for a, tiles in atks.items():
-            if a in T.sqIds and T.team(a) != T.team(d):
+            if a in T.sqIds and not T.same(a, d):
                 key = "进攻者是异队编队友（受保护，不在报价表里）"
-            elif T.team(a) == T.team(d):
+            elif T.same(a, d):
                 key = "进攻者是同队"
             else:
                 t0 = tend - pl_step

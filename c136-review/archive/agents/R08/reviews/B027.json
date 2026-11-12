@@ -1,0 +1,5568 @@
+{
+ "matchId": "B027",
+ "reviewer": "R08",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad20",
+  "strategyFile": "v27-team-c110.js",
+  "mapId": 11,
+  "mapSeed": 10137,
+  "mapLand": 517334,
+  "mode": 7,
+  "seededPlayers": 72,
+  "nominalTeams": 2,
+  "actualTeams": 2,
+  "baseWinExpectation": 0.5,
+  "squadBots": 19,
+  "ourPrimaryTeam": null,
+  "teamSplitCounts": {},
+  "teamSplit": false,
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": true,
+   "tickSnapshots": 107
+  },
+  "anomaliesSummary": {
+   "drop30Count": 71,
+   "totalTransfers": 0,
+   "likelyRejectedTransfers": 0,
+   "boxedHighDensSnapshots": 55,
+   "strategyErrors": 0,
+   "teamSplit": false
+  },
+  "squad": [
+   {
+    "me": 20,
+    "name": "Phoenicia",
+    "labels": [
+     "Phoenicia",
+     "Curry",
+     "Aizen",
+     "Rommel",
+     "Styria"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1304,
+     967
+    ],
+    "spawnResolves": 4,
+    "spawnInfo": null
+   },
+   {
+    "me": 21,
+    "name": "Ronin",
+    "labels": [
+     "Ronin",
+     "Spartan",
+     "Ronin",
+     "Greenland",
+     "Shaka",
+     "Spartan"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     498,
+     226
+    ],
+    "spawnResolves": 17,
+    "spawnInfo": null
+   },
+   {
+    "me": 22,
+    "name": "Liao",
+    "labels": [
+     "Liao"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     462,
+     774
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 24,
+    "name": "Hashashin",
+    "labels": [
+     "Hashashin",
+     "Burgundy",
+     "IronMan",
+     "Salzburg"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1198,
+     986
+    ],
+    "spawnResolves": 13,
+    "spawnInfo": null
+   },
+   {
+    "me": 25,
+    "name": "Habsburg",
+    "labels": [
+     "Habsburg",
+     "Amogus",
+     "Ronaldinho"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1306,
+     98
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 26,
+    "name": "Doge",
+    "labels": [
+     "Doge",
+     "Kublai"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     430,
+     198
+    ],
+    "spawnResolves": 16,
+    "spawnInfo": null
+   },
+   {
+    "me": 27,
+    "name": "Savoy",
+    "labels": [
+     "Savoy",
+     "Maurice"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1230,
+     374
+    ],
+    "spawnResolves": 13,
+    "spawnInfo": null
+   },
+   {
+    "me": 28,
+    "name": "Kuban",
+    "labels": [
+     "Kuban",
+     "Augustus",
+     "Khmer"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     322,
+     434
+    ],
+    "spawnResolves": 17,
+    "spawnInfo": null
+   },
+   {
+    "me": 29,
+    "name": "Davout",
+    "labels": [
+     "Davout",
+     "Lannes"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     862,
+     334
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 31,
+    "name": "Mewtwo",
+    "labels": [
+     "Mewtwo"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1198,
+     986
+    ],
+    "spawnResolves": 18,
+    "spawnInfo": null
+   },
+   {
+    "me": 32,
+    "name": "player_007",
+    "labels": [
+     "player_007",
+     "Aztec",
+     "Croissant",
+     "Starbucks"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     814,
+     986
+    ],
+    "spawnResolves": 13,
+    "spawnInfo": null
+   },
+   {
+    "me": 33,
+    "name": "King",
+    "labels": [
+     "King",
+     "Toyotomi",
+     "Darius",
+     "Mario",
+     "NightStalker",
+     "Don"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1198,
+     934
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 34,
+    "name": "Cringe",
+    "labels": [
+     "Cringe",
+     "Dahomey"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1306,
+     98
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 35,
+    "name": "Raeder",
+    "labels": [
+     "Raeder",
+     "DemonHunter",
+     "Aztec@2",
+     "Ashoka"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1602,
+     594
+    ],
+    "spawnResolves": 17,
+    "spawnInfo": null
+   },
+   {
+    "me": 36,
+    "name": "SyntaxError",
+    "labels": [
+     "SyntaxError",
+     "Vinicius",
+     "Vlad Tepes"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     498,
+     226
+    ],
+    "spawnResolves": 14,
+    "spawnInfo": null
+   },
+   {
+    "me": 39,
+    "name": "New England",
+    "labels": [
+     "New England",
+     "Fischer",
+     "Ping999",
+     "HODL",
+     "anon_42",
+     "Wallachia"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     1462,
+     946
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 40,
+    "name": "Tripoli",
+    "labels": [
+     "Tripoli",
+     "Brunei",
+     "Ayutthaya",
+     "Chosokabe",
+     "Nogai"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     290,
+     418
+    ],
+    "spawnResolves": 16,
+    "spawnInfo": null
+   },
+   {
+    "me": 42,
+    "name": "Vinland",
+    "labels": [
+     "Vinland",
+     "Bukhara",
+     "Vanguard",
+     "giga_chad",
+     "Mataram",
+     "Kakashi"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     450,
+     834
+    ],
+    "spawnResolves": 20,
+    "spawnInfo": null
+   },
+   {
+    "me": 44,
+    "name": "Sparta",
+    "labels": [
+     "Sparta",
+     "Napoléon",
+     "Error404"
+    ],
+    "team": null,
+    "teamInferred": false,
+    "spawn": [
+     82,
+     130
+    ],
+    "spawnResolves": 16,
+    "spawnInfo": null
+   }
+  ],
+  "replay": "自带 replay.txt 只录到 t=1428：录制号是 Liao（22 号），它的 HL-TICK 到 t=1350（L8599724）为止，录像里没有它的『离开』指令，只是到此为止。scripts/resim_r08.mjs 逐拍重演 512 个玩家，250/250 条 traj 快照地、兵逐兵一致。数据到 t=9662 为止（最后一个编队号 New England 阵亡的拍；当时场上还有 12 个真人，谁赢了没有记录）；1428 以后的 8234 拍只有日志。",
+  "truthTeamSplit": "真值：没有队伍（录像头 0 队，72 个席位的 teams 全是 0）。对局卡写『2 队、名义胜率 0.5』，原始卡写 18 个编队号——都不对：这是 72 人自由混战，要赢得一个号独吞全图。19 个号互为对手，却按名字互相保护：保护开关从 t=270 起全程开着（场上一直有名字池外的真人）。没有队伍，所以整局没有一笔捐款、一条协防。",
+  "builtInAiTeamed": "自由混战，内置 AI 不分队。t=600 时 427 个内置 AI 占 180861 格（陆地的 35.0%）；占比 39.1% @630、47.3% @720（峰值）、39.0% @900、22.3% @1080、10.7% @1260、2.8% @1428；有地的内置 AI 424 个（540~719）→ 358 → 194 → 90 → 31 个（1260~1439）。",
+  "namePoolCollision": "名字池数出 20 个号：19 个在场 + Stark（23 号席位，名字在名字池里，t=0 就不在，没有出生）。245 条 [HL-SPAWN] 行全部写 squad=20，名次 3 空着。没有撞名的野人。",
+  "liaoLeftRow": "Liao 的结果行在日志里，但不在 results.csv 里：L8600025 `[RESULT Spartan] result=left event=left place=30 peak=7546`。peak 7546 和 place 30 正是 Liao 在录像末拍的领土和名次（ffa [FG]：编队号的名次 10、25、30……；当时叫 Ronin 的 21 号只有 3500 格上下）。这一行写在别的号的 t≈2390 处，比 Liao 的最后一拍晚约 960 拍——和 Vinland 的 left 行一样，是断流后约一分钟才写的。results.csv 里 Spartan 这个名字后来给了 Ronin 的阵亡行（L8601407），Liao 的这一行就没有了；原始卡因此只数出 18 个号。",
+  "labelRenames": "traj 标签中途换名（同一个 me 先后用几个名字）；本文一律用第一个名字。结果表里的名字对应：Kublai = Doge、Maurice = Savoy、Dahomey = Cringe、Lannes = Davout、Error404 = Sparta、Khmer = Kuban、Ronaldinho = Habsburg、Ashoka = Raeder、Starbucks = player_007、Spartan = Ronin、Salzburg = Hashashin、Vlad Tepes = SyntaxError、Kakashi = Vinland、Nogai = Tripoli、Styria = Phoenicia（中间还叫过 Curry、Aizen、Rommel）、Don = King、Wallachia = New England；Mewtwo 没换名。",
+  "fairSharePerCapita": "本文的『人均比』= 编队号人均领土 ÷ 其他在场真人人均领土（真值，perhead [PH-A]）：0.81 @180、1.06 @630、0.87 @900、0.68 @1260、0.62 @1420。1428 以后没有别人的数据，用『人均比下限』（ffa [FA]：把编队以外的陆地全算给其他活着的真人）：0.63 @3626、0.59 @4039、0.60 @4914、0.50 @5799、0.40 @6660、0.33 @6919、0.24 @7591、0.13 @8623、0.06 @9544。『人头份额』= 19/71 = 26.8%；一个人头的平均地 = 7286 格。『占全图』= 编队领土 ÷ 地图陆地 517334 格。",
+  "notes": "没有后端出生协调器。HL-TICK avgMs ≤1.49（均值 1.13），HL-SLOW-TICK 707 行、最大 100.7 ms——策略计算本身不慢。日志 2423 行：HL-TICK 1296、HL-SLOW-TICK 707、HL-SPAWN 245、HL-OPENING 136、结果行 19、HL-GAME-INIT 19；HL-DONATE / HL-ASSIST 0 行。",
+  "truthSource": {
+   "replayFrom": "B027",
+   "peer": null,
+   "engineEndTick": 1428,
+   "trajRowsExact": "250/250"
+  }
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "lost",
+  "primaryTeamWon": false,
+  "anyBotWon": false,
+  "winnerTeam": null,
+  "endTick": 9662,
+  "peakSquadLandShare": 0.263,
+  "peakPrimaryTeamShareSeen": null,
+  "ourFinalTeamShare": null,
+  "placements": [
+   {
+    "bot": "Phoenicia",
+    "me": 20,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 8834,
+    "place": 15
+   },
+   {
+    "bot": "Ronin",
+    "me": 21,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 7505,
+    "place": 22
+   },
+   {
+    "bot": "Liao",
+    "me": 22,
+    "team": null,
+    "event": null,
+    "result": null,
+    "tick": null,
+    "place": null
+   },
+   {
+    "bot": "Hashashin",
+    "me": 24,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 7591,
+    "place": 20
+   },
+   {
+    "bot": "Habsburg",
+    "me": 25,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 6660,
+    "place": 30
+   },
+   {
+    "bot": "Doge",
+    "me": 26,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 4039,
+    "place": 45
+   },
+   {
+    "bot": "Savoy",
+    "me": 27,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 4148,
+    "place": 43
+   },
+   {
+    "bot": "Kuban",
+    "me": 28,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 5891,
+    "place": 34
+   },
+   {
+    "bot": "Davout",
+    "me": 29,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 4914,
+    "place": 38
+   },
+   {
+    "bot": "Mewtwo",
+    "me": 31,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 3626,
+    "place": 50
+   },
+   {
+    "bot": "player_007",
+    "me": 32,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 6919,
+    "place": 28
+   },
+   {
+    "bot": "King",
+    "me": 33,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 9544,
+    "place": 14
+   },
+   {
+    "bot": "Cringe",
+    "me": 34,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 4155,
+    "place": 43
+   },
+   {
+    "bot": "Raeder",
+    "me": 35,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 6710,
+    "place": 29
+   },
+   {
+    "bot": "SyntaxError",
+    "me": 36,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 7835,
+    "place": 18
+   },
+   {
+    "bot": "New England",
+    "me": 39,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 9662,
+    "place": 13
+   },
+   {
+    "bot": "Tripoli",
+    "me": 40,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 8623,
+    "place": 16
+   },
+   {
+    "bot": "Vinland",
+    "me": 42,
+    "team": null,
+    "event": "left",
+    "result": "left",
+    "tick": 8267,
+    "place": 17
+   },
+   {
+    "bot": "Sparta",
+    "me": 44,
+    "team": null,
+    "event": "died",
+    "result": "lost",
+    "tick": 5799,
+    "place": 35
+   }
+  ],
+  "endState": "没有 end 行。最后一条结果行是 New England t=9662 阵亡（第 13 名，L8601565），当时场上还有 12 个真人，没有一个是编队号。",
+  "squadFinal": "19 个号：17 个阵亡（3626~9662，名次 50 → 13）、Vinland 离开（8267，只剩 2 格）、Liao 离开（≈1428，7546 格 / 104702 兵，全房第 30）。没有一个号进前 12。单号最大：Tripoli 38593 格（t≈7470，占全图 7.5%）、player_007 37022 格（7.2%）、Habsburg 24132 格（4.7%）；其余 16 个号的峰值都不到 1.4 万格。",
+  "primaryTeam": "没有队伍，没有『主队』。编队合计占全图：9.64% @630、19.29% @1428（真值）；日志口径 24.63% @1980、25.70% @3600、26.30% @3870（峰值，17 个号 136048 格）、25.79% @5220、19.45% @6570、12.36% @7110、5.66% @8460、0.53% @9540。",
+  "leaders": "录像末拍（t=1428）的前 10 名：Imperium 17762 格、Mex 15058、Player 644 14548、Illyrium 13118、GloriousPurpose 13112、U.N. Peace Corps 12343、bob 12204、Player 778 11884、Equality fighter 11676、player_007 11535（唯一的编队号）。其他真人 46 个里 15 个过 1 万格，编队 19 个里 1 个；领土中位 8594 对 4738。1428 以后别人的地没有数据。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 897,
+   "sqSharePct": 0.17,
+   "sqBal": 9617,
+   "sqDens": 10.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 90,
+    "teamSharePct": {},
+    "builtInAiSharePct": 2.4,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 0.17,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.62,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 0.17
+     }
+    }
+   }
+  },
+  {
+   "t": 180,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 2624,
+   "sqSharePct": 0.51,
+   "sqBal": 13504,
+   "sqDens": 5.1,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "botsCarriedForward": 5,
+   "truth": {
+    "snapT": 180,
+    "teamSharePct": {},
+    "builtInAiSharePct": 4.3,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 0.64,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.86,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 0.64
+     }
+    }
+   }
+  },
+  {
+   "t": 188,
+   "src": "OPENING-CHECK L8599418",
+   "botsWithSnapshot": 19,
+   "sqTerr": 3482,
+   "sqSharePct": 0.673,
+   "allOk": true,
+   "truth": {
+    "snapT": 180,
+    "teamSharePct": {},
+    "builtInAiSharePct": 4.3,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 0.64,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.86,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 0.64
+     }
+    }
+   }
+  },
+  {
+   "t": 270,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 6325,
+   "sqSharePct": 1.22,
+   "sqBal": 20529,
+   "sqDens": 3.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "botsCarriedForward": 3,
+   "truth": {
+    "snapT": 270,
+    "teamSharePct": {},
+    "builtInAiSharePct": 7.1,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 1.37,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.08,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 1.37
+     }
+    }
+   }
+  },
+  {
+   "t": 450,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 20711,
+   "sqSharePct": 4.0,
+   "sqBal": 50759,
+   "sqDens": 2.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "botsCarriedForward": 1,
+   "truth": {
+    "snapT": 450,
+    "teamSharePct": {},
+    "builtInAiSharePct": 18.2,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 4.1,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.08,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 4.1
+     }
+    }
+   }
+  },
+  {
+   "t": 630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 49059,
+   "sqSharePct": 9.48,
+   "sqBal": 90812,
+   "sqDens": 1.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "botsCarriedForward": 2,
+   "truth": {
+    "snapT": 630,
+    "teamSharePct": {},
+    "builtInAiSharePct": 39.1,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 9.64,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.03,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 9.64
+     }
+    }
+   }
+  },
+  {
+   "t": 900,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 73375,
+   "sqSharePct": 14.18,
+   "sqBal": 399577,
+   "sqDens": 5.4,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "botsCarriedForward": 2,
+   "truth": {
+    "snapT": 900,
+    "teamSharePct": {},
+    "builtInAiSharePct": 39.0,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 14.31,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.89,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 14.31
+     }
+    }
+   }
+  },
+  {
+   "t": 1260,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 93723,
+   "sqSharePct": 18.12,
+   "sqBal": 1329401,
+   "sqDens": 14.2,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "botsCarriedForward": 2,
+   "truth": {
+    "snapT": 1260,
+    "teamSharePct": {},
+    "builtInAiSharePct": 10.7,
+    "activeHumansByTeam": {},
+    "squadActive": 19,
+    "squadActiveSharePct": 18.63,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.75,
+    "squadByTeam": {
+     "T0": {
+      "bots": 19,
+      "sharePct": 18.63
+     }
+    }
+   }
+  },
+  {
+   "t": 1530,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 92976,
+   "sqSharePct": 17.97,
+   "sqBal": 2305320,
+   "sqDens": 24.8,
+   "boxedIn": 4,
+   "overSoftCap": 0
+  },
+  {
+   "t": 1800,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 118395,
+   "sqSharePct": 22.89,
+   "sqBal": 3187752,
+   "sqDens": 26.9,
+   "boxedIn": 4,
+   "overSoftCap": 0
+  },
+  {
+   "t": 2070,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 126049,
+   "sqSharePct": 24.37,
+   "sqBal": 4245045,
+   "sqDens": 33.7,
+   "boxedIn": 4,
+   "overSoftCap": 0
+  },
+  {
+   "t": 2520,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 128527,
+   "sqSharePct": 24.84,
+   "sqBal": 6666127,
+   "sqDens": 51.9,
+   "boxedIn": 4,
+   "overSoftCap": 3
+  },
+  {
+   "t": 3060,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 130616,
+   "sqSharePct": 25.25,
+   "sqBal": 10471410,
+   "sqDens": 80.2,
+   "boxedIn": 4,
+   "overSoftCap": 9
+  },
+  {
+   "t": 3510,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 132387,
+   "sqSharePct": 25.59,
+   "sqBal": 12033482,
+   "sqDens": 90.9,
+   "boxedIn": 4,
+   "overSoftCap": 8
+  },
+  {
+   "t": 3626,
+   "src": "RESULT L8600466 + 最近快照 t=3600",
+   "botsWithSnapshot": 18,
+   "sqTerr": 132943,
+   "sqSharePct": 25.7,
+   "sqBal": 12322101,
+   "sqDens": 92.7,
+   "boxedIn": 4,
+   "overSoftCap": 7,
+   "event": "Mewtwo died"
+  },
+  {
+   "t": 3870,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 17,
+   "sqTerr": 136048,
+   "sqSharePct": 26.3,
+   "sqBal": 12048755,
+   "sqDens": 88.6,
+   "boxedIn": 1,
+   "overSoftCap": 6,
+   "note": "编队领土份额峰值"
+  },
+  {
+   "t": 4039,
+   "src": "RESULT L8600579 + 最近快照 t=3960",
+   "botsWithSnapshot": 17,
+   "sqTerr": 132643,
+   "sqSharePct": 25.64,
+   "sqBal": 12316945,
+   "sqDens": 92.9,
+   "boxedIn": 1,
+   "overSoftCap": 7,
+   "event": "Doge died"
+  },
+  {
+   "t": 4050,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 16,
+   "sqTerr": 129343,
+   "sqSharePct": 25.0,
+   "sqBal": 12326506,
+   "sqDens": 95.3,
+   "boxedIn": 2,
+   "overSoftCap": 7
+  },
+  {
+   "t": 4148,
+   "src": "RESULT L8600616 + 最近快照 t=4140",
+   "botsWithSnapshot": 15,
+   "sqTerr": 126877,
+   "sqSharePct": 24.53,
+   "sqBal": 12841904,
+   "sqDens": 101.2,
+   "boxedIn": 2,
+   "overSoftCap": 6,
+   "event": "Savoy died"
+  },
+  {
+   "t": 4155,
+   "src": "RESULT L8600618 + 最近快照 t=4140",
+   "botsWithSnapshot": 15,
+   "sqTerr": 126877,
+   "sqSharePct": 24.53,
+   "sqBal": 12841904,
+   "sqDens": 101.2,
+   "boxedIn": 2,
+   "overSoftCap": 6,
+   "event": "Cringe died"
+  },
+  {
+   "t": 4500,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 14,
+   "sqTerr": 134225,
+   "sqSharePct": 25.95,
+   "sqBal": 11506597,
+   "sqDens": 85.7,
+   "boxedIn": 1,
+   "overSoftCap": 8
+  },
+  {
+   "t": 4914,
+   "src": "RESULT L8600830 + 最近快照 t=4860",
+   "botsWithSnapshot": 14,
+   "sqTerr": 130018,
+   "sqSharePct": 25.13,
+   "sqBal": 9816941,
+   "sqDens": 75.5,
+   "boxedIn": 3,
+   "overSoftCap": 5,
+   "event": "Davout died"
+  },
+  {
+   "t": 5040,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 13,
+   "sqTerr": 131217,
+   "sqSharePct": 25.36,
+   "sqBal": 11293440,
+   "sqDens": 86.1,
+   "boxedIn": 1,
+   "overSoftCap": 7
+  },
+  {
+   "t": 5799,
+   "src": "RESULT L8601074 + 最近快照 t=5760",
+   "botsWithSnapshot": 13,
+   "sqTerr": 112821,
+   "sqSharePct": 21.81,
+   "sqBal": 10440639,
+   "sqDens": 92.5,
+   "boxedIn": 1,
+   "overSoftCap": 5,
+   "botsCarriedForward": 2,
+   "event": "Sparta died"
+  },
+  {
+   "t": 5891,
+   "src": "RESULT L8601091 + 最近快照 t=5850",
+   "botsWithSnapshot": 12,
+   "sqTerr": 112983,
+   "sqSharePct": 21.84,
+   "sqBal": 9857893,
+   "sqDens": 87.3,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "event": "Kuban died"
+  },
+  {
+   "t": 6030,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 11,
+   "sqTerr": 108783,
+   "sqSharePct": 21.03,
+   "sqBal": 10474934,
+   "sqDens": 96.3,
+   "boxedIn": 1,
+   "overSoftCap": 6
+  },
+  {
+   "t": 6660,
+   "src": "RESULT L8601241 + 最近快照 t=6660",
+   "botsWithSnapshot": 10,
+   "sqTerr": 90081,
+   "sqSharePct": 17.41,
+   "sqBal": 10240199,
+   "sqDens": 113.7,
+   "boxedIn": 1,
+   "overSoftCap": 6,
+   "event": "Habsburg died"
+  },
+  {
+   "t": 6710,
+   "src": "RESULT L8601263 + 最近快照 t=6660",
+   "botsWithSnapshot": 10,
+   "sqTerr": 90081,
+   "sqSharePct": 17.41,
+   "sqBal": 10240199,
+   "sqDens": 113.7,
+   "boxedIn": 1,
+   "overSoftCap": 6,
+   "event": "Raeder died"
+  },
+  {
+   "t": 6919,
+   "src": "RESULT L8601307 + 最近快照 t=6840",
+   "botsWithSnapshot": 9,
+   "sqTerr": 76580,
+   "sqSharePct": 14.8,
+   "sqBal": 9376124,
+   "sqDens": 122.4,
+   "boxedIn": 2,
+   "overSoftCap": 6,
+   "event": "player_007 died"
+  },
+  {
+   "t": 7020,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 63889,
+   "sqSharePct": 12.35,
+   "sqBal": 6304220,
+   "sqDens": 98.7,
+   "boxedIn": 3,
+   "overSoftCap": 6
+  },
+  {
+   "t": 7505,
+   "src": "RESULT L8601407 + 最近快照 t=7470",
+   "botsWithSnapshot": 8,
+   "sqTerr": 62096,
+   "sqSharePct": 12.0,
+   "sqBal": 5631341,
+   "sqDens": 90.7,
+   "boxedIn": 3,
+   "overSoftCap": 4,
+   "event": "Ronin died"
+  },
+  {
+   "t": 7591,
+   "src": "RESULT L8601420 + 最近快照 t=7560",
+   "botsWithSnapshot": 7,
+   "sqTerr": 54734,
+   "sqSharePct": 10.58,
+   "sqBal": 5346074,
+   "sqDens": 97.7,
+   "boxedIn": 0,
+   "overSoftCap": 5,
+   "event": "Hashashin died"
+  },
+  {
+   "t": 7835,
+   "src": "RESULT L8601448 + 最近快照 t=7830",
+   "botsWithSnapshot": 5,
+   "sqTerr": 42520,
+   "sqSharePct": 8.22,
+   "sqBal": 4212045,
+   "sqDens": 99.1,
+   "boxedIn": 1,
+   "overSoftCap": 2,
+   "event": "SyntaxError died"
+  },
+  {
+   "t": 8010,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 5,
+   "sqTerr": 34118,
+   "sqSharePct": 6.59,
+   "sqBal": 3648807,
+   "sqDens": 106.9,
+   "boxedIn": 1,
+   "overSoftCap": 3
+  },
+  {
+   "t": 8267,
+   "src": "RESULT L8601539 + 最近快照 t=8190",
+   "botsWithSnapshot": 5,
+   "sqTerr": 31317,
+   "sqSharePct": 6.05,
+   "sqBal": 3202635,
+   "sqDens": 102.3,
+   "boxedIn": 1,
+   "overSoftCap": 1,
+   "event": "Vinland left",
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 8623,
+   "src": "RESULT L8601514 + 最近快照 t=8550",
+   "botsWithSnapshot": 4,
+   "sqTerr": 25382,
+   "sqSharePct": 4.91,
+   "sqBal": 2277385,
+   "sqDens": 89.7,
+   "boxedIn": 1,
+   "overSoftCap": 1,
+   "event": "Tripoli died"
+  },
+  {
+   "t": 8834,
+   "src": "RESULT L8601526 + 最近快照 t=8820",
+   "botsWithSnapshot": 3,
+   "sqTerr": 11678,
+   "sqSharePct": 2.26,
+   "sqBal": 1142951,
+   "sqDens": 97.9,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "event": "Phoenicia died"
+  },
+  {
+   "t": 9000,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 2,
+   "sqTerr": 9784,
+   "sqSharePct": 1.89,
+   "sqBal": 1194505,
+   "sqDens": 122.1,
+   "boxedIn": 0,
+   "overSoftCap": 1
+  },
+  {
+   "t": 9544,
+   "src": "RESULT L8601561 + 最近快照 t=9540",
+   "botsWithSnapshot": 1,
+   "sqTerr": 2739,
+   "sqSharePct": 0.53,
+   "sqBal": 219534,
+   "sqDens": 80.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "King died"
+  },
+  {
+   "t": 9630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 2739,
+   "sqSharePct": 0.53,
+   "sqBal": 245074,
+   "sqDens": 89.5,
+   "boxedIn": 0,
+   "overSoftCap": 0
+  },
+  {
+   "t": 9662,
+   "src": "RESULT L8601565 + 最近快照 t=9630",
+   "botsWithSnapshot": 1,
+   "sqTerr": 2739,
+   "sqSharePct": 0.53,
+   "sqBal": 245074,
+   "sqDens": 89.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "New England died"
+  }
+ ],
+ "phases": {
+  "spawn": {
+   "window": [
+    0,
+    20
+   ],
+   "facts": [
+    "出生指派 245 行、全部是 [HL-SPAWN]（各号客户端自己算，没有后端协调器）；每个号 4~20 条（中位 13）。候选表先是 7 个点（65 行 chosenSlots=k/7），后来 48 个点（180 行）。录像里每个号落地的选点指令中位 10 条（其他真人 2 条），相邻两次落点中位相距 371 像素——出生期 50 个回合里每个号在图上跳了十来次。",
+    "最后一条指派落地 5/19（Phoenicia、Hashashin、King、Cringe、New England）。其余 14 个号停在更早的一条上：Sparta 落在 16 条里的第 2 条 (1602,98)，离最后一条 (82,130) 1520 像素；Tripoli 1324、Vinland 1191、Mewtwo 973、Ronin / SyntaxError 968 像素。最后几条指派 L8599344~L8599346 紧挨着第一条 [HL-OPENING]（t=20，L8599347）。",
+    "同一个像素上出生 3 对：Ronin / SyntaxError (1458,354)、Liao / King (1198,934)、Davout / Cringe (1306,98)；Hashashin (1198,986) 离 Liao / King 52 像素。",
+    "不同的槽位号在不同的客户端里算出同一个点：(1198,934) 是 Doge 的槽位 11（L8599251）、Liao 的槽位 9（L8599282）、King 的槽位 8（L8599291）；(1458,354) 是 Ronin 的槽位 17（L8599292）、SyntaxError 的槽位 16（L8599305）；(498,226) 是 Kuban 的槽位 19（L8599299），也是 SyntaxError（L8599308）、Ronin（L8599323）的；(1306,98) 是 Davout 的槽位 5（L8599315）、Cringe 的槽位 6（L8599327）、Habsburg 的槽位 4（L8599335）。",
+    "最后一版里也撞：最后一条指派完全相同的 3 对（Ronin / SyntaxError (498,226)、Hashashin / Mewtwo (1198,986)、Habsburg / Cringe (1306,98)），相距 <145 像素的 12 对。",
+    "贴边：编队出生点离地图边的中位 122 像素（其他真人 250）；离边 ≤120 像素的 9/19（47%），其他真人 7/48（15%）。下沿一排 6 个号（Savoy、Liao、Hashashin、King、Phoenicia、New England），上沿 3 个（Davout、Cringe、Sparta）。",
+    "扎堆：≤260 像素连成的团——5 个号（Liao、King、Hashashin、Phoenicia、New England，中心 1272,953）、3 个号（Raeder、Ronin、SyntaxError）、3 个号（Habsburg、Davout、Cringe）、2 个号（Mewtwo、Kuban）、2 个号（Tripoli、Vinland）。9/19 个号最近的真人是编队友；每个号最近的 3 个真人里编队友占 20/57。",
+    "按实际出生点的直线 Voronoi：编队名下 101951 格 = 19.7%，人头 26.8%（占比之比 0.74；人均 5366 格对其他真人 7988 格 = 0.67）；陆路口径 19.4%（0.72）。逐号中位 4444 格（其他真人 7654）；10/19 个号在全房最低四分位（随机该有 4.8 个）：Liao 1140、SyntaxError 1735、Ronin 1807、King 2205、Hashashin 3460。另一头：Habsburg 17624、player_007 10317、Phoenicia 8904。",
+    "反事实（19 个号都落在自己最后一条指派上，其余不动）：87627 格 = 16.9%，比实际还少 14324 格——最后一版并不比实际落点好。"
+   ],
+   "problems": [
+    "各号各算各的槽位表：同一个坐标在三个客户端里是三个不同的槽位号，结果 3 对号同像素出生，11 个号挤在 3 个团里。",
+    "选点贴边：6 个号在下沿排成一排、3 个在上沿；编队名下的自然地盘人均只有别人的 0.67。",
+    "出生期里每个号重选了十来次，最后一条只有 5 个号落地；但最后一版本身更差（16.9%），问题不在『没赶上最后一版』，在表本身。"
+   ]
+  },
+  "opening": {
+   "window": [
+    20,
+    630
+   ],
+   "facts": [
+    "开局 DP 扩张按期完成：OPENING-CHECK t=188（L8599418）19/19 OK。时延 0~600：P50 12 / P90 17 / 最大 29 拍，125 条指令没有一条落空。",
+    "人均比 0.81 @180 → 1.06 @630（编队 49877 格 = 占全图 9.64%）。拿到率（领土 ÷ 自己名下的自然地盘）编队 0.49 对其他真人 0.30；恒等式（出生人头口径）1.09 = 自然份额 0.67 × 拿到率之比 1.62。",
+    "(270,630] 全房吃掉的 148091 格无主地里编队 42823 格（29%；人均 2254 对 2024）。逐号 t=630 的拿到率：Liao 1.78、Ronin 1.23、King 1.06……Cringe 0.35、player_007 0.34、Habsburg 0.17（自然地盘越大的号这时候吃到的比例越低）。",
+    "t=540 编队边界里已经有 15% 朝着编队友。King 和 Liao 同像素出生，t=690 起四面都是受保护的编队友（Hashashin 88 格边界、Liao 44、Phoenicia 39、New England 29），这时 2400 格 / 9144 兵。",
+    "门槛普查 300~630：贴着可打的内置 AI 的 540 个号·点里 521 个全被挡，417 个挡在『值不值』门槛——这一段无主地还没吃完，不打人机是本意。"
+   ],
+   "problems": [
+    "King t=690 被四个编队友围死，只有 2400 格；之后 750 拍地不动（2400 → 2577），兵从 9144 涨到 71676。",
+    "同像素 / 贴身出生的号对从这时起互相贴着：Ronin–SyntaxError 最多 119 格边界、Davout–Cringe 199 格、Liao–Hashashin 152 格。"
+   ]
+  },
+  "midgame": {
+   "window": [
+    630,
+    3600
+   ],
+   "facts": [
+    "720~1440 时延波：按执行拍每 180 拍一窗的时延中位 / P90 / 最大 = 16 / 25 / 35（540~719）→ 42 / 86 / 125 → 96 / 146 / 201 → 149 / 262 / 350（1080~1259）→ 133 / 260 / 363（1260~1439）。600~1500 合计 P50 89 / P90 212 / 最大 363 拍，365 条配上影子的指令里 262 条（72%）晚 ≥35 拍；19 个号里 17 个的中位 ≥35（Sparta 183、Kuban 171、Raeder 150、New England 120、Mewtwo 109）。",
+    "这一段正是内置 AI 被收割的时候（占比 47.3% @720 → 2.8% @1428）。411 条陆攻里 121 条没生效（29%）；165 条落地时目标已经出局（160 条是内置 AI）：68 条被改成打无主地（176433 兵）、97 条作废（本意 368510 兵）。派出去的兵 761339，原数退回 525458（69%；其他真人 37%）。",
+    "成批落地：一个服务器拍里同一个号到达 ≥3 条指令的批，编队 47 批 / 237 条（占 700~2100 全部指令的 62%），其他真人 0 批。7 批抽走了 ≥50% 的余额：Tripoli t=1162~1169 四条抽走 58%（本意 25%）、Sparta t=1036 四条 56%（本意 12%）、Tripoli t=1232 五条 55%（本意 6%）、Vinland t=1225 四条 55%（本意 20%）。整批作废的：Mewtwo t=1316 八条、t=1127 七条，Phoenicia t=1323 六条，Davout t=1246 六条。",
+    "(600,1500] 全房真人吃掉的 282908 格人机地里编队只拿到 48047 格 = 17.0%（人头 27.1%，该有 76789 格，差 28742 格）。按 150 拍窗：35.8% → 19.3% → 15.1% → 14.6% → 11.0% → 18.4%。t=600 时就贴着编队号的 66 个人机（23844 格）编队吃到 84.6%；600 以后才长出来的人机地 109898 格编队只吃到 14.2%。",
+    "接壤口径的归因：别人吃走、而此前有编队号贴着的 39918 格里，③ 迟到 22422 格（迟到落空 18528 + 晚到 ≥35 拍 3894）、② 门槛 10940 格（值不值 6278、防人机留底 sb 4598、价位底 64）、被分走 / 其它 6556 格。",
+    "门槛普查 [600,1500)：贴着可打的内置 AI 的 938 个号·点里 533 个全被挡（56.8%）。sb 挡住的点 630~900 有 170 个（定出 sb 的是编队友 106 个、别的真人 64 个；76 个是两个号互锁；59 个面前的人机 0 兵）、900~1260 有 122 个（编队友 55 个）。Liao 48 个点（660~1230，46 个是 Hashashin 的余额定的：自己余额中位 20416、sb 28074，面前的人机 485 格 / 0 兵，吃光只要 728 兵）；Hashashin 37 个点（33 个是 Liao 定的）；Ronin 26 个（SyntaxError 定 21 个）、SyntaxError 26 个（Ronin 定 22 个）；New England 21 个（全是 Phoenicia 定的）。",
+    "人均比 1.06 @630 → 0.87 @900 → 0.68 @1260 → 0.62 @1420。t=1428 编队 99797 格 / 2015545 兵：地占真人的 20.3%，兵占 31.4%（密度 20.2 对 11.2）；t=600 时是 28.7% / 26.0%。编队烧在进攻里的兵是自己产兵的 10.8%，其他真人 25.5%。",
+    "被围：t=1350 起 King、Hashashin、Phoenicia、New England 四个号四面只有受保护的编队友（19261 格 = 编队地的 20%，380101 兵 = 22%）；t=1080 编队边界朝向：编队友 28%、其他真人 29%、内置 AI 41%、无主地 3%。",
+    "被围的号只剩船：King 5 条船 96699 兵（船费 7350）。t=1300 决策、1365 执行的那条 1372 靠岸在 New England 的地上：56653 兵打下 343 格（每格 56 兵，烧掉 19218 兵，New England 余额掉 9255）。到 1428 编队 15 条船 282943 兵、船费 30416：靠岸在别人的地上 64281 兵（58404 兵靠在编队友的地上、5877 兵在人机的地上）、自己的地上 34585、无主地 5182，178895 兵还在海上（Phoenicia 5 条 108726 兵一条没靠岸）。编队内部互打 356 格、烧 19604 兵，全是船。",
+    "Liao 在 ≈1428 离开（7546 格 / 104702 兵，编队里第三大的号）；PastaPirate（吃了 Kuban 995 格的那个）t=1351 离开。",
+    "1440~1980（时延消了）：18 个号 38 条非船指令，编队占全图 17.84% → 24.63%（日志口径；player_007 10748 → 28028 格、Mewtwo 5789 → 13887、Habsburg → 11937）。",
+    "1980~3600 全队停手：18 个号 29160 号·拍里 39 条非船指令（每 1000 号·拍 1.3 条）、62 条船；编队占全图 24.63% → 25.70%，密度 29.3 → 92.7，余额过软上限的号 0 个 @1800 → 9 个 @3150、7 个 @3600。player_007 1980~3600 领土 28028 → 27669、余额 185637 → 3164351（密度 6.6 → 114.4），3 个敌邻，1 条指令。Mewtwo 2070 以后 1556 拍 0 条指令，13674 → 3708 格。",
+    "Hashashin 1350~3690（2340 拍）nb=0、neut=0、0 条指令、整局 0 条船：领土 4737 → 4036，余额 95027 → 603881（密度 20.1 → 149.6，顶在硬上限）。期间『看不见的失地』6 窗 701 格（1980~2070 152 格、2520~2610 150、3060~3150 149、3330~3600 250）；King 5 窗 201 格、New England 3 窗 483 格（其中 1350~1440 的 481 格是 King 的船）。"
+   ],
+   "problems": [
+    "时延波盖住了人机收割的整段：单子落地时目标已被别人吃掉，兵退回来，地没涨——人均比从 1.06 掉到 0.62，这是全局差距的来源。",
+    "一拍冲出几条旧单：按决策时的比例、落地时的余额抽兵，同一个号几条叠在一起抽走一半以上的余额；其他真人没有这种批。",
+    "贴着 0 兵的人机不出手：防人机留底 sb 取了邻居的余额，邻居多半就是同像素出生的编队友，两个号互锁。",
+    "自由混战里编队友互相当墙：4 个号 t=1350 起被围，兵涨到上限没有任何出路——没有捐款通道，船又会落在编队友的地上。",
+    "中立地和人机吃完以后 1620 拍几乎不出手：18 个号把 1300 万兵囤到软上限，地不涨；同一时段别的真人在长。"
+   ]
+  },
+  "endgame": {
+   "window": [
+    3600,
+    9662
+   ],
+   "facts": [
+    "t=3870 编队占全图 26.30%（峰值，17 个号 136048 格）；4320 时 14 个号 1370 万兵、密度 104.8。第一个阵亡 Mewtwo t=3626；3626~9662 的 6036 拍里 17 个号阵亡。",
+    "过了软上限才出手，价钱很高（日志口径，flow [VD]，t≥1420）：段首密度 ≥100 的 47 段花掉 21428594 兵、涨 59392 格，每格 361 兵；段首密度 <100 的 24 段 2924285 兵 / 55022 格，每格 53 兵；另有 20 段花了 10014422 兵，领土反而掉 25824 格（这些段里同时在挨打，日志分不开）。",
+    "花得最多的几段：player_007 4320~4590 2721977 兵 +2349 格（每格 1159）、5580~5760 1677003 兵 +224 格；Habsburg 4770~4950 1353205 兵 +3665 格（369）；Phoenicia 4680~4950 1183952 兵 +1042 格（1136），余额 1244185 → 118838，随后 5310~5670 丢 4450 格。",
+    "挨打窗（cmds 不变、领土净掉）每丢一格少掉的兵：Habsburg 163（丢 20105 格 / 3270904 兵）、player_007 157（32271 / 5071822）、Tripoli 150（19382 / 2915912）、New England 168、Davout 159、Hashashin 189、Mewtwo 85。",
+    "满仓下坡、自己不出手：Davout 4320（11172 格 / 1175778 兵）→ 4914 出局，594 拍 0 条指令；Habsburg 4950~6570（1620 拍）0 条指令，22838 → 4871 格；player_007 6570（25354 格 / 2496591 兵）→ 6919 出局，349 拍 0 条；New England 9360（8941 格 / 1290211 兵）→ 9662，302 拍 0 条；Hashashin 6930（8902 格 / 1284834 兵）→ 7591，661 拍 0 条；Kuban 3780（3544 格 / 458052 兵）→ 4050 地和兵全清，0 条。",
+    "出局时账上的兵（结果行）：17 个阵亡号合计 2734406；≥10 万的 9 个号合计 2331847——Tripoli 546060（剩 6738 格，密度 81）、player_007 468336、Habsburg 307846、New England 250494、Davout 212714、Hashashin 156941、SyntaxError 147818、Mewtwo 131729、Raeder 109909。出局前最后的领土都在峰值的 0.11~0.25 倍。",
+    "生存梯（ffa [FA]）：编队号占活着的真人 34.7% @3626、35.1% @4914、34.5% @6660、31.6% @7591、20.0% @8623——到 7591 为止编队号不比别人死得快；同期编队占全图 24.98% → 24.50% → 17.41% → 10.02% → 3.24%，人均比下限 0.63 → 0.60 → 0.40 → 0.24 → 0.13：号还在，地在掉。",
+    "被围的号靠船：整局船数 King 28、SyntaxError 23、New England 22、Ronin 19、Phoenicia 16、Tripoli 16、Vinland 15。被围且有船的窗（flow [VC]）：Phoenicia 9 窗 13 条船，余额净流出 884652 兵、领土 +3424 格；King 18 窗 25 条 726286 兵 +1974 格；New England 13 窗 19 条 966049 兵 +631 格；Vinland 4 窗 10 条 424826 兵 +954 格。",
+    "顶硬上限空转：Raeder 4050~5220 的 13 个快照余额 = 150×领土（约 5000 格 / 75 万兵），2~3 个敌邻，1 条指令；Hashashin 3330、3690 两个快照。",
+    "编队里长得最大的两个号：Tripoli 8380 格 @2250 → 38482 @7470（1420 以后 3 段在密度 ≥100 时出手，每格 228 兵；3 段在 <100 时出手，每格 78 兵），7470 → 8550 丢 29841 格，自己 6 条指令；player_007 峰值 35981 @4500（日志）。"
+   ],
+   "problems": [
+    "囤过软上限以后才买地：同样的地，密度 100 以上出手每格 361 兵，100 以下 53 兵。",
+    "挨打时不出手：6 个大号在满仓下坡里合计 0 条指令；每丢一格还要被打掉 150~190 兵。",
+    "领土掉到峰值的 1/4 就出局、余额清零：17 个号出局时账上还有 273 万兵没有用掉。策略只算别人的这条线，不看自己的。",
+    "没有队伍就没有捐款：被围的号把兵装上船（每条先付余额的 3.1%），换回来的地很少；别的号快出局时身边有 1~7 个密度过 106 的编队号，一兵也给不了。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 720,
+   "t1": 1440,
+   "shareBefore": 1.06,
+   "shareAfter": 0.62,
+   "shareUnit": "人均比（t=630 → t=1420，真值）",
+   "what": "人机收割掉队。720~1440 的时延波（180 拍窗的中位 42 → 96 → 149 → 133 拍）正好盖住内置 AI 从 424 个被吃到 31 个的阶段：单子落地时目标已经出局，兵退回来，地没涨。贴着人机的号又被 sb（邻居的余额，多半是同像素出生的编队友）锁住。到 1500 真人吃掉的 282908 格人机地里编队只拿到 17.0%（人头 27.1%），兵却囤到真人兵力的 31.4%。",
+   "evidence": [
+    "perhead [PH-A]：人均比 1.06 @630、0.87 @900、0.68 @1260、0.62 @1420；编队 5244 格 / 107462 兵一个号，其他真人 8519 格 / 95592 兵",
+    "lagledger [GB][GE]：600~1500 时延 P50 89 / P90 212 / 最大 363，72% 晚 ≥35 拍；411 条陆攻 121 条没生效，165 条的目标已出局（68 条改打无主地 176433 兵、97 条作废本意 368510 兵）",
+    "lagload [LL-A][LL-C]：720~1439 四个窗时延中位 42 / 96 / 149 / 133，全房换手 95578 / 104768 / 72055 / 59680 格；时延对交战对数的秩相关 0.67、对前一窗换手格数 0.74",
+    "landcap [KD][KE][KF]：(600,1500] 人机地 282908 格里编队 48047（17.0%）；150 拍窗里编队占比 35.8 / 19.3 / 15.1 / 14.6 / 11.0 / 18.4%；接壤口径：迟到 22422 格、门槛 10940 格、分走 / 其它 6556 格",
+    "shadowcmp [SH]：630~1260 被 sb 全挡的 292 个号·点里 161 个的 sb 是编队友的余额；Liao 48 个点（Hashashin 定 46 个），面前的人机 485 格 / 0 兵，吃光只要 728 兵",
+    "bursts [BA] / lagledger [GF]：一拍 ≥3 条的批编队 47 批 / 237 条，其他真人 0 批；7 批抽走 ≥50% 余额",
+    "econ [ND]：t=1428 编队地占真人的 20.3%、兵占 31.4%（密度 20.2 对 11.2）；t=600 是 28.7% / 26.0%"
+   ],
+   "priorDecisions": [
+    {
+     "t": "0~20",
+     "bot": "全队",
+     "decision": "各算各的出生槽位：3 对号同像素、11 个号挤在 3 个团里、6 个号贴着下沿；编队名下的自然地盘人均只有别人的 0.67，能贴到的人机从一开始就少。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4010-4020 squadIds 只按名字池收人，slot = 启动名次 % 20；L4066 minSep = max(85, min(145, 0.14×对角线))；L4067-4089 每个号在自己的客户端里先把编队友已经占的地从盘面上抹掉，再各算各的候选表，2200 ms 重算一次；L4090-4112 贪心排槽位，不够就把间距放宽到 0.62 倍；L4114-4141 还不够时按『离已选点最远』在 16 像素网格上补位；L4146-4151 返回 chosenSlots[slot]——没有一张全队共用的『槽位 → 坐标』表）"
+    },
+    {
+     "t": "720~1440",
+     "bot": "全队",
+     "decision": "客户端落后服务器几十到上百拍时照常按旧盘面下单；单子落地时目标人机已被别人吃掉，积压的单子一拍冲出去。",
+     "codePath": "src/strategy/v27-team-c110.js: 文件头 L2-47（驱动层 afterTick 包装：只有 450 ms / 8 拍的在途保护，没有时延检测）；Strategy.send L526-540（pct 在决策时按当时余额算好，同目标 15 拍冷却后可重发）；src/sim/sim/game.js attack L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵）/ redirectAttackToNeutral L858-869（目标出局后这一路改成打无主地；身边没有无主地就作废） / endAttack L1076-1080（没用上的兵原数退回）"
+    },
+    {
+     "t": "510~1420",
+     "bot": "Liao / Hashashin / Ronin / SyntaxError / New England / Phoenicia / Kuban / Doge",
+     "decision": "贴着可打的人机时被 sb 留底挡住：938 个号·点里 533 个全挡。",
+     "codePath": "src/strategy/v27-team-c110.js: winFloor L4542-4550（打人机前的留底 = max(价位底, dpKeep, sb)）→ safeFinite L2532-2541 / L2773-2784 → threatOf L464-490（sb 取的是共用同一个人机邻居的另一个真人的余额，不分是不是编队友）"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 1980,
+   "t1": 3600,
+   "shareBefore": 24.63,
+   "shareAfter": 25.7,
+   "shareUnit": "编队占全图 %（日志口径；同期编队密度 29.3 → 92.7）",
+   "what": "全队停手囤兵。时延消了以后 1440~1980 用 38 条指令从 17.84% 涨到 24.63%；之后 1620 拍 18 个号只发了 39 条非船指令，地不涨（+1.07 个点），余额从 373 万涨到 1232 万。4 个号被编队友围死（Hashashin 2340 拍 0 条指令、0 条船，兵涨到硬上限），其余的号有敌邻也不出手。这一段没有丢地，丢的是时间：后面的买地和挨打都发生在密度 100 上下。",
+   "evidence": [
+    "ffa [FC]：1980~3600 29160 号·拍 / 39 条非船指令（每 1000 号·拍 1.3 条）/ 62 条船；占全图 24.63% → 25.70%，余额 3727903 → 12322101，密度 29.3 → 92.7（1440~1980 是 3.9 条 / 1000 号·拍）",
+    "teamshare [TC]：编队余额 3187752 @1800 → 12322101 @3600；被围的号 4 个，余额合计 748688 @1800 → 2239979 @3150；余额过软上限的号 0 @1800 → 9 @3150",
+    "HL-TICK：player_007 t=1980 28028 格 / 185637 兵（L8599912）→ t=3600 27669 格 / 3164351 兵（L8600447），nb=3，cmds 59 → 60",
+    "ffa [FD]：Hashashin 1350~3690 被围 2340 拍，4737 → 4036 格，95027 → 603881 兵，最高密度 149.9，指令 0、整局船 0（L8599727~L8600480）",
+    "HL-TICK：Cringe 1080~2250 领土 4738 不变、余额 37907 → 541409、cmds 21 不变（L8599680、L8599989）；Mewtwo 2070~3600 cmds 46 不变、13674 → 3708 格（L8599935、L8600448）",
+    "ffa [FA]：人均比下限 0.63 @3626，和 0.62 @1420（真值）持平——这一段没有再掉队，也没有追回来"
+   ],
+   "priorDecisions": [
+    {
+     "t": "270 起全程",
+     "bot": "全队",
+     "decision": "自由混战里照样按名字保护编队友（不进 nb），而捐款 / 协防的入口在没有队伍时直接返回：被围的号的兵没有出路。",
+     "codePath": "src/strategy/v27-team-c110.js: analyze L420-448（L440：isProtectedSquadMate 为真的邻居不进 nb，也不计入 neutral）；isProtectedSquadMate L3993-3996 → hasWildOutsidersAlive L3978-3990（场上还有『活着、领土 ≥80、不是空壳、名字不在名字池』的人就为真；自由混战里这样的人一直有）；src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4497 的第一行 L4371（!g.teams || !(g.teams[me] > 0) 就返回：救援捐款、协防戳刺、盈余捐款都在它后面）；tryEmergencyBossRescue L4273-4275（同样的判断）；Policy.act L4922（买地循环没发指令时才走到捐款）"
+    },
+    {
+     "t": "1980~3600",
+     "bot": "player_007 / Cringe / Tripoli / Davout / Raeder 等有敌邻的号",
+     "decision": "没过软上限时，最便宜的真人报价 ≥ worth 就整轮停（推断：这一段没有真值，停在哪一道闸没有核实）。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）；src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 3870,
+   "t1": 6570,
+   "shareBefore": 26.3,
+   "shareAfter": 19.45,
+   "shareUnit": "编队占全图 %（日志口径；在场 17 个号 → 11 个号）",
+   "what": "过了软上限才出手，再挨个被买走。3600 以后各号在密度 100 以上清仓买地（每格 361 兵），买完变薄；小号（峰值 <1.4 万格）在 3626~5891 被吃掉 7 个，Habsburg 4950 起 1620 拍一条指令不发，从 22838 格掉到 4871 格。编队合计到 5220 还撑在 25.79%，之后 1350 拍掉了 6.3 个点。",
+   "evidence": [
+    "flow_late [VD]：段首密度 ≥100 的 47 段 21428594 兵 / 59392 格 = 每格 361；<100 的 24 段 2924285 兵 / 55022 格 = 每格 53；player_007 4320~4590 2721977 兵 +2349 格",
+    "HL-TICK：Phoenicia t=4770 9265 格 / 1244185 兵（L8600799）→ t=4860 9635 格 / 118838 兵（L8600817）→ t=5670 6974 格（L8601037）",
+    "HL-TICK：Habsburg t=4950 22838 格 / 1173703 兵（L8600841）→ t=5220 21218 / 1512323（L8600909）→ t=6570 4871 / 518840（L8601220），cmds 71 不变",
+    "HL-TICK：Davout t=4320 11172 格 / 1175778 兵（L8600652）→ t=4860 3272 / 278041（L8600820），cmds 37 不变；结果行 L8600830 t=4914 阵亡",
+    "ffa [FA]：编队占全图 26.30% @3870（日志）→ 24.50% @4914 → 21.33% @5799 → 17.41% @6660；编队号占活着的真人 35.1% → 35.3% → 34.5%",
+    "flow_late [VE]：挨打窗每丢一格少掉的兵 Habsburg 163、player_007 157、Davout 159、Mewtwo 85"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3600~5760",
+     "bot": "player_007 / Phoenicia / Habsburg / Cringe / Davout",
+     "decision": "余额过 100×领土以后价格门不再拦，一轮把超出的兵放出去：买到的地每格 250~1160 兵。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）"
+    },
+    {
+     "t": "3626~6660",
+     "bot": "Mewtwo / Doge / Cringe / Davout / Sparta / Kuban / Habsburg",
+     "decision": "挨打时不出手：专门的反击分支关着，买地循环对进攻者的报价过不了价格门 / 留底（推断：没有真值）。",
+     "codePath": "src/strategy/v27-team-c110.js: counterAttack L871-887（L650 counterK = 0、L825 只在 counterK > 0 时才调用——专门的反击分支是关着的；挨打时只剩 buyLand 的报价 / 留底几道闸）；src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 6570,
+   "t1": 9662,
+   "shareBefore": 19.45,
+   "shareAfter": 0.0,
+   "shareUnit": "编队占全图 %（日志口径；在场 11 个号 → 0）",
+   "what": "剩下的大号满仓被吃。player_007 6570 时 25354 格 / 250 万兵，349 拍后出局，一条指令没发；Tripoli 7470 时 38482 格 / 277 万兵（编队全场最大），1153 拍后出局；New England 9360 时 8941 格 / 129 万兵，302 拍后出局。每个号都是领土掉到峰值的 1/4 被引擎除名，账上的兵清零：这一段 10 个号出局时合计还有 220 万兵。",
+   "evidence": [
+    "HL-TICK + 结果行：player_007 t=6570 25354 格 / 2496591 兵（L8601213）→ t=6840 12908 / 1164348（L8601289）→ t=6919 阵亡，剩 7127 格 / 468336 兵（L8601307）；cmds 74 不变",
+    "HL-TICK + 结果行：Tripoli t=7470 38482 格 / 2767664 兵（L8601401）→ t=8550 8641 / 749924（L8601509）→ t=8623 阵亡，剩 6738 格 / 546060 兵（L8601514）；cmds 83 → 89",
+    "HL-TICK + 结果行：New England t=9360 8941 格 / 1290211 兵（L8601549）→ t=9540 2739 / 219534（L8601560）→ t=9662 阵亡，剩 2739 格 / 250494 兵（L8601565）；cmds 67 不变",
+    "ffa [FB]：17 个阵亡号出局时余额合计 2734406；其中这一段出局的 10 个号 2195859（累计列：Kuban 为止 538547）——Tripoli 546060、player_007 468336、Habsburg 307846、New England 250494、Hashashin 156941、SyntaxError 147818、Raeder 109909、Phoenicia 96322、Ronin 95679、King 16454；出局前最后的领土 ÷ 峰值 0.11~0.25（Kuban 0.00、King 0.06 是陆上被清场后靠船回来的残部）",
+    "ffa [FA]：编队号占活着的真人 34.5% @6660 → 31.6% @7591 → 20.0% @8623 → 7.7% @9544；占全图 17.41% → 10.02% → 3.24% → 0.53%",
+    "fulldeath：严格口径的满仓速死 2 个（player_007 349 拍 / 0 条指令、New England 302 拍 / 0 条）；Hashashin 6930 起 661 拍 0 条、SyntaxError 6570 起 1265 拍 6 条、Tripoli 7470 起 1153 拍 6 条"
+   ],
+   "priorDecisions": [
+    {
+     "t": "6570~9662",
+     "bot": "player_007 / Hashashin / SyntaxError / Tripoli / Phoenicia / New England",
+     "decision": "满仓挨打时不出手，也不看自己离出局线还有多远：领土掉到峰值的 1/4 时账上还有十几万到五十几万兵。",
+     "codePath": "src/strategy/v27-team-c110.js: 全文 9 处读 g.peak（L513、L591、L1017、L1203、L2109、L2600、L2800、L3448、L5033），都是算对方的出局线；没有一处读 g.peak[me]；src/sim/sim/game.js aliveTick L1298-1312（每拍检查：领土 ≤ ⌊历史峰值/4⌋ 就 collapse，L1303；领土低于峰值时峰值每拍只回落 max(1, 差额/1000)，L1307）/ collapse L1314-1334（有船在海上时不除名，但陆上的地和余额全清，L1316-1330；否则 eliminate，余额清零）"
+    },
+    {
+     "t": "6300~9360",
+     "bot": "Hashashin / Phoenicia / New England / Tripoli",
+     "decision": "只有 1 个敌邻时把兵囤到 140 以上（硬上限附近）不出手，等对方来打。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）"
+    }
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Mewtwo",
+   "me": 31,
+   "labels": [
+    "Mewtwo"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 3626,
+   "place": 50,
+   "resultPeak": 13887,
+   "logPeakTerr": 13887,
+   "logPeakTick": 1980,
+   "lastSnapshots": [
+    {
+     "t": 3330,
+     "terr": 8223,
+     "bal": 533197,
+     "dens": 64.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 46
+    },
+    {
+     "t": 3420,
+     "terr": 7464,
+     "bal": 514289,
+     "dens": 68.9,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 46
+    },
+    {
+     "t": 3510,
+     "terr": 6240,
+     "bal": 426090,
+     "dens": 68.3,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 46
+    },
+    {
+     "t": 3600,
+     "terr": 3708,
+     "bal": 205755,
+     "dens": 55.5,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 46
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8600466,
+   "cause": "便宜地长到 13887 格以后密度只有 10，之后 1556 拍一条指令不发，被三四个邻居吃到峰值的 1/4；出局时账上 131729 兵。进攻者是谁没有数据（1428 时最大的邻居是全房第二的 Mex，196 格边界）。",
+   "chain": [
+    "t=1428 5789 格 / 181065 兵（编队里兵最多的号）；600~1500 时延中位 109 拍，t=1127、1316 两批共 15 条指令整批作废",
+    "1530~1620 5789 → 10573 格（余额 240552 → 136675），1890~1980 → 13887 格（密度 10.3，L8599914）：两段 280342 兵 / 7885 格 = 每格 36 兵",
+    "t=2070 13674 格 / 170492 兵（L8599935）→ t=3600 3708 格 / 205755 兵（L8600448）：cmds 46 不变；挨打窗丢 10179 格、少 869048 兵（每格 85）",
+    "结果行 L8600466：t=3626 阵亡，第 50 名，峰值 13887、最后 2790 格、余额 131729"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Doge",
+   "me": 26,
+   "labels": [
+    "Doge",
+    "Kublai"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 4039,
+   "place": 45,
+   "resultPeak": 5262,
+   "logPeakTerr": 5127,
+   "logPeakTick": 3690,
+   "lastSnapshots": [
+    {
+     "t": 3690,
+     "terr": 5127,
+     "bal": 495096,
+     "dens": 96.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 33
+    },
+    {
+     "t": 3780,
+     "terr": 4655,
+     "bal": 315634,
+     "dens": 67.8,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 35
+    },
+    {
+     "t": 3870,
+     "terr": 5060,
+     "bal": 291117,
+     "dens": 57.5,
+     "nb": 2,
+     "neut": 3,
+     "cmds": 35
+    },
+    {
+     "t": 3960,
+     "terr": 2506,
+     "bal": 128512,
+     "dens": 51.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 35
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8600579,
+   "cause": "贴着全房第三的 Player 644（134 格边界）：人机收割期被它的余额锁住，之后囤到密度 121 才动；3690 起 350 拍内从 5127 格掉到出局线，期间 2 条陆攻 1 条船。出局时 45529 兵。",
+   "chain": [
+    "800~1220 有 21 个决策点被 sb 挡住，全是 Player 644 的余额定的；t=1428 4129 格 / 97135 兵",
+    "1260~2070 领土 4000 上下，余额 44364 → 239529；t=3240 3924 格 / 474731 兵（密度 121.0，L8600331）",
+    "t=3690 5127 格 / 495096 兵（L8600484）→ 3780 4655 / 315634 → 3870 5060 / 291117（L8600533）→ 3960 2506 / 128512（L8600561）",
+    "结果行 L8600579：t=4039 阵亡，第 45 名，峰值 5262、最后 1236 格、余额 45529"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Savoy",
+   "me": 27,
+   "labels": [
+    "Savoy",
+    "Maurice"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 4148,
+   "place": 43,
+   "resultPeak": 7325,
+   "logPeakTerr": 7191,
+   "logPeakTick": 1800,
+   "lastSnapshots": [
+    {
+     "t": 3780,
+     "terr": 1426,
+     "bal": 39107,
+     "dens": 27.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 26
+    },
+    {
+     "t": 3870,
+     "terr": 1535,
+     "bal": 37652,
+     "dens": 24.5,
+     "nb": 1,
+     "neut": 5,
+     "cmds": 27
+    },
+    {
+     "t": 3960,
+     "terr": 1584,
+     "bal": 48683,
+     "dens": 30.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 27
+    },
+    {
+     "t": 4050,
+     "terr": 1584,
+     "bal": 55242,
+     "dens": 34.9,
+     "nb": 1,
+     "neut": 19,
+     "cmds": 27
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8600616,
+   "cause": "出生点离下沿 10 像素；早期把兵装上船（1428 时 65446 兵还在海上），本土密度 19。1800~2970 的 1170 拍 0 条指令，7191 → 2112 格；之后只发了 5 条船。出局时 21337 兵。",
+   "chain": [
+    "到 1428 四条船 71323 兵（船费 11797），都打 AI184：一条 1408 靠岸（5877 兵），65446 兵还在海上；1260~1350 一窗发了 3 条，余额掉 41%（真值 DROP30 里唯一的发船段）",
+    "t=1800 7191 格 / 136075 兵（L8599873）→ 2250 4312 格（L8599982）→ 2970 2112 格 / 94181 兵（L8600235）：cmds 22 不变",
+    "t=4050 1584 格 / 55242 兵（L8600590）；2250 以后 0 条陆攻、5 条船",
+    "结果行 L8600616：t=4148 阵亡，第 43 名，峰值 7325、最后 816 格、余额 21337"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Cringe",
+   "me": 34,
+   "labels": [
+    "Cringe",
+    "Dahomey"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 4155,
+   "place": 43,
+   "resultPeak": 6235,
+   "logPeakTerr": 6235,
+   "logPeakTick": 2970,
+   "lastSnapshots": [
+    {
+     "t": 3870,
+     "terr": 5365,
+     "bal": 307175,
+     "dens": 57.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 30
+    },
+    {
+     "t": 3960,
+     "terr": 4405,
+     "bal": 247250,
+     "dens": 56.1,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 30
+    },
+    {
+     "t": 4050,
+     "terr": 3456,
+     "bal": 182072,
+     "dens": 52.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 30
+    },
+    {
+     "t": 4140,
+     "terr": 1450,
+     "bal": 49355,
+     "dens": 34.0,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 30
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8600618,
+   "cause": "和 Davout 同像素出生，1170 拍不出手、把兵囤到密度 114；之后三段在密度 ≥100 时买地（每格 489 兵），3870 起 270 拍 0 条指令从 5365 格掉到出局线。出局时 42413 兵。",
+   "chain": [
+    "出生 (1306,98) 贴上沿，和 Davout 199 格边界；t=630 拿到率 0.35",
+    "t=1080 4738 格 / 37907 兵（L8599680）→ t=2250 4738 格 / 541409 兵（密度 114.3，L8599989）：cmds 21 不变，nb 2~3",
+    "2250~2340 → 5555 格（余额 → 347930）；3690~3780 5002 → 5365 格，余额 629370 → 271897（L8600487、L8600512）",
+    "t=3870 5365 格 / 307175 兵（L8600538）→ t=4140 1450 / 49355（L8600615）：cmds 30 不变；结果行 L8600618 t=4155 阵亡，余额 42413"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Davout",
+   "me": 29,
+   "labels": [
+    "Davout",
+    "Lannes"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 4914,
+   "place": 38,
+   "resultPeak": 11836,
+   "logPeakTerr": 11544,
+   "logPeakTick": 4140,
+   "lastSnapshots": [
+    {
+     "t": 4590,
+     "terr": 7864,
+     "bal": 871512,
+     "dens": 110.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 37
+    },
+    {
+     "t": 4680,
+     "terr": 6692,
+     "bal": 730691,
+     "dens": 109.2,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 37
+    },
+    {
+     "t": 4770,
+     "terr": 5726,
+     "bal": 622988,
+     "dens": 108.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 37
+    },
+    {
+     "t": 4860,
+     "terr": 3272,
+     "bal": 278041,
+     "dens": 85.0,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 37
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8600830,
+   "cause": "满仓下坡不出手：t=4320 11172 格 / 1175778 兵（密度 105），594 拍后出局，期间 0 条指令；每丢一格被打掉 159 兵。1428 时贴着全房第一的 Imperium（112 格边界）。出局时 212714 兵。",
+   "chain": [
+    "和 Cringe 同像素出生；(600,1500] 贴着的人机地里 2288 格迟到没吃到、1769 格被门槛挡住",
+    "2880~3420 领土 8300 上下，余额 601034 → 1121630（密度 135.0，L8600393）；3420~3600 → 10106 格；t=4140 11544 格（L8600608）",
+    "t=4320 11172 格 / 1175778 兵（L8600652）→ t=4860 3272 / 278041（L8600820）：cmds 37 不变；挨打窗共丢 9324 格 / 1480306 兵",
+    "结果行 L8600830：t=4914 阵亡，第 38 名，峰值 11836、最后 2676 格、余额 212714"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Sparta",
+   "me": 44,
+   "labels": [
+    "Sparta",
+    "Napoléon",
+    "Error404"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 5799,
+   "place": 35,
+   "resultPeak": 7000,
+   "logPeakTerr": 6948,
+   "logPeakTick": 4950,
+   "lastSnapshots": [
+    {
+     "t": 5490,
+     "terr": 5217,
+     "bal": 483862,
+     "dens": 92.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 43
+    },
+    {
+     "t": 5580,
+     "terr": 3981,
+     "bal": 350364,
+     "dens": 88.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 43
+    },
+    {
+     "t": 5670,
+     "terr": 3693,
+     "bal": 331871,
+     "dens": 89.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 43
+    },
+    {
+     "t": 5760,
+     "terr": 2471,
+     "bal": 186989,
+     "dens": 75.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 43
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601074,
+   "cause": "1530 拍地不动、兵囤到密度 141；5220 起 540 拍里 2 条指令（1 条船），6528 格掉到出局线。出局时 84761 兵。",
+   "chain": [
+    "出生点落在 16 条指派里的第 2 条 (1602,98)，贴上沿；600~1500 时延中位 183 拍（全队最慢），t=1036 一拍 4 条抽走 56% 余额",
+    "1980~3510 领土 5250 上下，余额 266736 → 399319；t=4950 6948 格 / 829603 兵（密度 119.4，L8600837）；t=5220 6528 / 920940（141.1，L8600908）",
+    "t=5400 4977 / 617790 → 5490 5217 / 483862（L8600998）→ 5760 2471 / 186989（L8601060）",
+    "结果行 L8601074：t=5799 阵亡，第 35 名，峰值 7000、最后 1484 格、余额 84761"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Kuban",
+   "me": 28,
+   "labels": [
+    "Kuban",
+    "Augustus",
+    "Khmer"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 5891,
+   "place": 34,
+   "resultPeak": 3544,
+   "logPeakTerr": 3544,
+   "logPeakTick": 3780,
+   "lastSnapshots": [
+    {
+     "t": 5580,
+     "terr": 76,
+     "bal": 2382,
+     "dens": 31.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40
+    },
+    {
+     "t": 5670,
+     "terr": 76,
+     "bal": 2683,
+     "dens": 35.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40
+    },
+    {
+     "t": 5760,
+     "terr": 76,
+     "bal": 3010,
+     "dens": 39.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40
+    },
+    {
+     "t": 5850,
+     "terr": 26,
+     "bal": 575,
+     "dens": 22.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601091,
+   "cause": "全队最小的号之一（峰值 3544 格），密度 129 时 270 拍内被吃穿：3780 → 4050 地和兵全清，0 条指令。当时有船在海上，引擎没有除名；靠船回来的 50~76 格撑到 5891。",
+   "chain": [
+    "出生 (498,226)，1351 以前被 PastaPirate 吃掉 995 格（对方烧 61786 兵）；710~1420 有 40 个决策点被邻居（PastaPirate、Player 551）的余额锁住；(600,1500] 迟到没吃到 3472 格人机地",
+    "t=3690 3441 格 / 448211 兵（密度 130.3，L8600485）；t=3780 3544 / 458052（L8600509）",
+    "t=3870 3188 / 405400 → 3960 1155 / 77865（L8600557）→ 4050 0 / 0（L8600592）：cmds 38 不变",
+    "t=4230 49 格 / 30 兵（船靠岸）；之后 51~76 格到 5850；结果行 L8601091 t=5891 阵亡，最后 7 格 / 64 兵"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Habsburg",
+   "me": 25,
+   "labels": [
+    "Habsburg",
+    "Amogus",
+    "Ronaldinho"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 6660,
+   "place": 30,
+   "resultPeak": 24132,
+   "logPeakTerr": 22838,
+   "logPeakTick": 4950,
+   "lastSnapshots": [
+    {
+     "t": 6300,
+     "terr": 6899,
+     "bal": 782702,
+     "dens": 113.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 71
+    },
+    {
+     "t": 6390,
+     "terr": 6899,
+     "bal": 838807,
+     "dens": 121.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 71
+    },
+    {
+     "t": 6480,
+     "terr": 5742,
+     "bal": 638717,
+     "dens": 111.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 71
+    },
+    {
+     "t": 6570,
+     "terr": 4871,
+     "bal": 518840,
+     "dens": 106.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 71
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601241,
+   "cause": "编队第三大的号（峰值 24132 格）。4770~4950 在密度 113 时放出 135 万兵买了 3665 格，之后 1620 拍一条指令不发，从 22838 格被吃到 4871 格；每丢一格被打掉 163 兵。出局时 307846 兵。",
+   "chain": [
+    "自然地盘全队最大（17624 格），1428 时贴着 GloriousPurpose（232 格边界）、Imperium（130）；(600,1500] 迟到没吃到 5002 格人机地，t=1344 一拍 9 条",
+    "t=4770 19173 格 / 2175428 兵（L8600795）→ t=4950 22838 格 / 1173703 兵（L8600841）：3 条指令",
+    "t=5220 21218 / 1512323（L8600909）→ 6210 6899 / 708860（L8601150）→ 6570 4871 / 518840（L8601220）：cmds 71 不变；挨打窗共丢 20105 格 / 3270904 兵",
+    "结果行 L8601241：t=6660 阵亡，第 30 名，峰值 24132、最后 3390 格、余额 307846"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Raeder",
+   "me": 35,
+   "labels": [
+    "Raeder",
+    "DemonHunter",
+    "Aztec@2",
+    "Ashoka"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 6710,
+   "place": 29,
+   "resultPeak": 8973,
+   "logPeakTerr": 8973,
+   "logPeakTick": 6210,
+   "lastSnapshots": [
+    {
+     "t": 6390,
+     "terr": 6643,
+     "bal": 489450,
+     "dens": 73.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 6480,
+     "terr": 5807,
+     "bal": 434632,
+     "dens": 74.8,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 6570,
+     "terr": 3653,
+     "bal": 230098,
+     "dens": 63.0,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 6660,
+     "terr": 2753,
+     "bal": 163984,
+     "dens": 59.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601263,
+   "cause": "顶着硬上限空转：4050~5220 的 13 个快照余额 = 150×领土（约 5000 格 / 75 万兵），2~3 个敌邻，1 条陆攻 1 条船。6030~6210 买到 8973 格后 450 拍 0 条指令掉到出局线。出局时 109909 兵。",
+   "chain": [
+    "600~1500 时延中位 150 拍；t=1260 一拍 8 条抽走 39% 余额（本意 5%）；720~1060 有 16 个决策点被 sb 挡住，15 个是 Big 的余额定的",
+    "t=3240 5000 格 / 329348 兵（L8600332）→ t=4050 5036 / 754621（密度 149.8，L8600594）→ t=5220 4916 / 737400（150.0，L8600915）；被硬上限截掉的利息 13194",
+    "t=6030 6922 / 770778（L8601123）→ 6210 8973 / 634929（L8601156）→ 6660 2753 / 163984（L8601250）：6210 以后 cmds 45 不变",
+    "结果行 L8601263：t=6710 阵亡，第 29 名，峰值 8973、最后 2064 格、余额 109909"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "player_007",
+   "me": 32,
+   "labels": [
+    "player_007",
+    "Aztec",
+    "Croissant",
+    "Starbucks"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 6919,
+   "place": 28,
+   "resultPeak": 37022,
+   "logPeakTerr": 35981,
+   "logPeakTick": 4500,
+   "lastSnapshots": [
+    {
+     "t": 6570,
+     "terr": 25354,
+     "bal": 2496591,
+     "dens": 98.5,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 74
+    },
+    {
+     "t": 6660,
+     "terr": 21705,
+     "bal": 2199737,
+     "dens": 101.3,
+     "nb": 6,
+     "neut": 0,
+     "cmds": 74
+    },
+    {
+     "t": 6750,
+     "terr": 17453,
+     "bal": 1720672,
+     "dens": 98.6,
+     "nb": 6,
+     "neut": 0,
+     "cmds": 74
+    },
+    {
+     "t": 6840,
+     "terr": 12908,
+     "bal": 1164348,
+     "dens": 90.2,
+     "nb": 6,
+     "neut": 0,
+     "cmds": 74
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601307,
+   "cause": "编队第二大的号（峰值 37022 格 = 全图 7.2%）。1980~3600 地不动、兵从 19 万囤到 316 万；之后在密度 100 以上分 7 段放出 788 万兵买了 13440 格（每格 586）。t=6570 还有 25354 格 / 250 万兵，349 拍后出局，一条指令没发；出局时 468336 兵。",
+   "chain": [
+    "1350~1980 10748 → 28028 格（11 条指令，密度 6.6）——编队全场最快的一段",
+    "t=1980 28028 格 / 185637 兵（L8599912）→ t=3600 27669 格 / 3164351 兵（密度 114.4，L8600447）：3 个敌邻，1 条指令",
+    "t=4320 32358 格 / 3600570 兵（L8600648）→ 4410 35470 / 2477942 → 4500 35981 / 1853131（L8600704）；4500~4950 掉到 28152 格（0 条指令）；5580~5670 33100 → 34687 格，余额 3544668 → 2443216",
+    "t=6570 25354 / 2496591（L8601213）→ 6840 12908 / 1164348（L8601289）：cmds 74 不变；挨打窗共丢 32271 格 / 5071822 兵（每格 157）",
+    "结果行 L8601307：t=6919 阵亡，第 28 名，峰值 37022、最后 7127 格、余额 468336"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Ronin",
+   "me": 21,
+   "labels": [
+    "Ronin",
+    "Spartan",
+    "Ronin",
+    "Greenland",
+    "Shaka",
+    "Spartan"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 7505,
+   "place": 22,
+   "resultPeak": 6967,
+   "logPeakTerr": 6964,
+   "logPeakTick": 6030,
+   "lastSnapshots": [
+    {
+     "t": 7200,
+     "terr": 2570,
+     "bal": 332095,
+     "dens": 129.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 55
+    },
+    {
+     "t": 7290,
+     "terr": 2276,
+     "bal": 279442,
+     "dens": 122.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 57
+    },
+    {
+     "t": 7380,
+     "terr": 1664,
+     "bal": 181031,
+     "dens": 108.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 57
+    },
+    {
+     "t": 7470,
+     "terr": 1134,
+     "bal": 105096,
+     "dens": 92.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 57
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601407,
+   "cause": "和 SyntaxError 同像素出生，自然地盘 1807 格；1530 拍只发 1 条指令、兵囤到密度 123。6120 时 6964 格 / 79 万兵，450 拍掉到 2397 格；7200 起再掉到出局线。出局时 95679 兵。",
+   "chain": [
+    "510~1060 有 26 个决策点被 sb 挡住，21 个是 SyntaxError 的余额定的；t=1022 一拍 4 条全没生效",
+    "t=1890 3535 格 / 51508 兵（L8599901）→ t=3420 3514 格 / 433294 兵（密度 123.3，L8600378）：1 条指令",
+    "4500~4680 3821 → 5684 格（6 条指令）；t=6120 6964 / 794465（L8601133）→ 6570 2397 / 223583（L8601214）",
+    "t=7200 2570 / 332095（密度 129.2，L8601358）→ 7470 1134 / 105096（L8601400）；结果行 L8601407 t=7505 阵亡，余额 95679"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Hashashin",
+   "me": 24,
+   "labels": [
+    "Hashashin",
+    "Burgundy",
+    "IronMan",
+    "Salzburg"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 7591,
+   "place": 20,
+   "resultPeak": 8904,
+   "logPeakTerr": 8902,
+   "logPeakTick": 6300,
+   "lastSnapshots": [
+    {
+     "t": 7290,
+     "terr": 3725,
+     "bal": 400275,
+     "dens": 107.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 7380,
+     "terr": 3725,
+     "bal": 435935,
+     "dens": 117.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 7470,
+     "terr": 3725,
+     "bal": 466042,
+     "dens": 125.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 7560,
+     "terr": 2918,
+     "bal": 332866,
+     "dens": 114.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601420,
+   "cause": "被三个编队友围了 2340 拍（1350~3690），0 条指令、整局 0 条船，兵顶到硬上限；其间 701 格被『看不见』的对手拿走（推断：离开后由引擎托管的 Liao，或编队友的船）。6300~6930 只有 1 个敌邻，又把兵囤到 128 万（密度 144）不动；6930 起 661 拍 0 条指令出局。出局时 156941 兵。",
+   "chain": [
+    "出生 (1198,986) 离下沿 14 像素、离 Liao / King 52 像素；510~1220 有 37 个决策点被 sb 挡住，33 个是 Liao 的余额定的",
+    "t=1350 4737 格 / 95027 兵（L8599727）→ t=3690 4036 格 / 603881 兵（密度 149.6，L8600480）：cmds 35 不变；失地 152 / 150 / 149 / 116 / 83 / 51 格共 6 窗，头三次间隔 540 拍、大小正好是它和 Liao 的边界长度（152 格）",
+    "3690 以后有了敌邻：4770~5040 4477 → 6373 格（余额 634648 → 240708）；6120~6300 6688 → 8902 格",
+    "t=6930 8902 格 / 1284834 兵（L8601314）→ 7290 3725 / 400275（L8601371）→ 7560 2918 / 332866（L8601416）：cmds 45 不变；结果行 L8601420 t=7591 阵亡，余额 156941"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "SyntaxError",
+   "me": 36,
+   "labels": [
+    "SyntaxError",
+    "Vinicius",
+    "Vlad Tepes"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 7835,
+   "place": 18,
+   "resultPeak": 10001,
+   "logPeakTerr": 10001,
+   "logPeakTick": 6300,
+   "lastSnapshots": [
+    {
+     "t": 7470,
+     "terr": 3684,
+     "bal": 235456,
+     "dens": 63.9,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 7560,
+     "terr": 3236,
+     "bal": 391130,
+     "dens": 120.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 45
+    },
+    {
+     "t": 7650,
+     "terr": 3186,
+     "bal": 393977,
+     "dens": 123.7,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 46
+    },
+    {
+     "t": 7740,
+     "terr": 2690,
+     "bal": 319888,
+     "dens": 118.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 47
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601448,
+   "cause": "和 Ronin 同像素出生，自然地盘 1735 格。4590~5670 领土 7400 上下、兵囤到密度 145，这 1080 拍的 8 条指令全是船。6570 时 9983 格 / 129 万兵，1265 拍后出局，期间 6 条指令（4 条船）。出局时 147818 兵。",
+   "chain": [
+    "550~840 有 26 个决策点被 sb 挡住，22 个是 Ronin 的余额定的；t=900 只有 1818 格（全队最小）",
+    "2070~2520 2600 → 4958 格；t=4590 7236 / 898421（L8600736）→ t=5670 7498 / 1088422（密度 145.2，L8601035）",
+    "t=6570 9983 / 1286569（L8601212）→ 6750 7694 → 6930 4930 / 526182（L8601309）→ 7290 3900 / 224010 → 7740 2690 / 319888（L8601434）",
+    "结果行 L8601448：t=7835 阵亡，第 18 名，峰值 10001、最后 1579 格、余额 147818"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Vinland",
+   "me": 42,
+   "labels": [
+    "Vinland",
+    "Bukhara",
+    "Vanguard",
+    "giga_chad",
+    "Mataram",
+    "Kakashi"
+   ],
+   "team": null,
+   "event": "left",
+   "tick": 8267,
+   "place": 17,
+   "resultPeak": 7821,
+   "logPeakTerr": 7821,
+   "logPeakTick": 5220,
+   "lastSnapshots": [
+    {
+     "t": 7920,
+     "terr": 2,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 3,
+     "cmds": 69
+    },
+    {
+     "t": 8010,
+     "terr": 2,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 3,
+     "cmds": 69
+    },
+    {
+     "t": 8100,
+     "terr": 2,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 3,
+     "cmds": 69
+    },
+    {
+     "t": 8190,
+     "terr": 2,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 3,
+     "cmds": 69
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601539,
+   "cause": "不是阵亡：5310~5850 的 540 拍 0 条指令，7821 格掉到 1973 格，随后陆上被清场（当时有船在海上，引擎没有除名）；靠船留下 2 格 / 0 兵，客户端在 8267 断流离开。",
+   "chain": [
+    "出生 (1634,706) 贴右沿；1428 以前被 v 吃掉 1591 格；t=1225 一拍 4 条抽走 55% 余额（本意 20%）",
+    "4410~5310 的快照里没有陆上敌邻（nb=0），靠 12 条船从 6259 格长到 7821 格，密度 51 → 19",
+    "t=5310 7821 格 / 148582 兵（L8600949）→ 5580 4863 → 5850 1973 / 40444（L8601081）→ 5940 0 / 0（L8601103）：cmds 69 不变",
+    "6030~8190 2 格 / 0 兵；结果行 L8601539：left，t=8267"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Tripoli",
+   "me": 40,
+   "labels": [
+    "Tripoli",
+    "Brunei",
+    "Ayutthaya",
+    "Chosokabe",
+    "Nogai"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 8623,
+   "place": 16,
+   "resultPeak": 38593,
+   "logPeakTerr": 38482,
+   "logPeakTick": 7470,
+   "lastSnapshots": [
+    {
+     "t": 8280,
+     "terr": 15357,
+     "bal": 1372254,
+     "dens": 89.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 89
+    },
+    {
+     "t": 8370,
+     "terr": 13110,
+     "bal": 1197227,
+     "dens": 91.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 89
+    },
+    {
+     "t": 8460,
+     "terr": 12542,
+     "bal": 1258877,
+     "dens": 100.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 89
+    },
+    {
+     "t": 8550,
+     "terr": 8641,
+     "bal": 749924,
+     "dens": 86.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 89
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601514,
+   "cause": "编队全场最大的号（峰值 38593 格 = 全图 7.5%）。7470 时 38482 格 / 277 万兵，之后 1153 拍被吃到出局线：两段共放出 519 万兵，领土净掉 15725 格。出局时账上 546060 兵、6738 格（密度 81）。",
+   "chain": [
+    "t=1068 参与打掉真人 四大发明；t=1162~1169 四条指令抽走 58% 余额（本意 25%）、t=1232 五条抽走 55%",
+    "2250~2520 8380 → 12340 格；3150~3870 领土 13300 不动，余额 517407 → 1517498（0 条指令）",
+    "之后每囤过软上限放一次：18411 格 @4410、22588 @6030、29085 @6390、35946 @7110；1420 以后密度 ≥100 时出手的 3 段每格 228 兵，<100 时的 3 段每格 78 兵",
+    "t=7470 38482 / 2767664（L8601401）→ 8550 8641 / 749924（L8601509）：6 条指令；7830~8370 少掉 2807169 兵、领土 −13565 格",
+    "结果行 L8601514：t=8623 阵亡，第 16 名，峰值 38593、最后 6738 格、余额 546060"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Phoenicia",
+   "me": 20,
+   "labels": [
+    "Phoenicia",
+    "Curry",
+    "Aizen",
+    "Rommel",
+    "Styria"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 8834,
+   "place": 15,
+   "resultPeak": 11521,
+   "logPeakTerr": 11424,
+   "logPeakTick": 5130,
+   "lastSnapshots": [
+    {
+     "t": 8550,
+     "terr": 7519,
+     "bal": 796504,
+     "dens": 105.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 61
+    },
+    {
+     "t": 8640,
+     "terr": 7519,
+     "bal": 873737,
+     "dens": 116.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 61
+    },
+    {
+     "t": 8730,
+     "terr": 4635,
+     "bal": 304588,
+     "dens": 65.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 62
+    },
+    {
+     "t": 8820,
+     "terr": 2456,
+     "bal": 117808,
+     "dens": 48.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 62
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601526,
+   "cause": "1260~3690 被编队友围住，靠 13 条船换出 3400 格；3780~4770 又囤到 124 万兵（密度 134），90 拍里几乎全放出去只多了 370 格，随后在密度 12~18 时丢掉 4450 格。最后一轮 8640 时 7519 格 / 87 万兵，180 拍掉到出局线。出局时 96322 兵。",
+   "chain": [
+    "t=1260 5681 格 / 93463 兵，四面是 New England、Hashashin、King（L8599712）；到 1428 发了 5 条船 108726 兵，一条没靠岸；t=1323 一拍 6 条陆攻整批作废",
+    "t=3330 6105 格 / 402993 兵（L8600353）→ t=3780 9265 格 / 387141 兵（L8600497）：6 条船，nb 0 → 1",
+    "t=4770 9265 / 1244185（L8600799）→ 4860 9635 / 118838（L8600817）→ 5130 11424 / 142492 → 5670 6974 / 160069（L8601037）",
+    "6210~7560 领土 7300 上下，余额 317934 → 1085378（密度 148.1，L8601411）；t=8640 7519 / 873737（L8601515）→ 8820 2456 / 117808（L8601523）",
+    "结果行 L8601526：t=8834 阵亡，第 15 名，峰值 11521、最后 2168 格、余额 96322"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "King",
+   "me": 33,
+   "labels": [
+    "King",
+    "Toyotomi",
+    "Darius",
+    "Mario",
+    "NightStalker",
+    "Don"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 9544,
+   "place": 14,
+   "resultPeak": 4120,
+   "logPeakTerr": 4120,
+   "logPeakTick": 3780,
+   "lastSnapshots": [
+    {
+     "t": 9180,
+     "terr": 843,
+     "bal": 94080,
+     "dens": 111.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48
+    },
+    {
+     "t": 9270,
+     "terr": 843,
+     "bal": 100975,
+     "dens": 119.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48
+    },
+    {
+     "t": 9360,
+     "terr": 843,
+     "bal": 106853,
+     "dens": 126.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48
+    },
+    {
+     "t": 9450,
+     "terr": 843,
+     "bal": 111737,
+     "dens": 132.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601561,
+   "cause": "和 Liao 同像素出生，t=690 就被四个编队友围死，只有 2400 格。整局 28 条船（25 条是被围时发的），峰值 4120 格；7560~7740 陆上被清场（1820 → 546 格，余额 267523 → 22529），靠船回来的几百格撑到 9544。活得最久的号之一，也是最小的号之一。",
+   "chain": [
+    "t=720 2400 格 / 12188 兵，nb=0、neut=0（L8599610）；到 1428 发了 5 条船 96699 兵（船费 7350）",
+    "t=1300 决策、1365 执行的船 1372 靠岸在 New England 的地上：56653 兵打下 343 格（烧 19218 兵）；898、1295 两条也靠在 Phoenicia / New England 的地上",
+    "t=2790 2759 格 / 319895 兵（密度 115.9，L8600167）；t=3780 4120 格（L8600500）；3780~5040 领土不动，余额 79478 → 459889（0 条指令）",
+    "t=7560 1820 / 267523（L8601417）→ 7740 546 / 22529（L8601435）；t=9450 843 / 111737（L8601554）；结果行 L8601561 t=9544 阵亡，最后 251 格 / 16454 兵"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "New England",
+   "me": 39,
+   "labels": [
+    "New England",
+    "Fischer",
+    "Ping999",
+    "HODL",
+    "anon_42",
+    "Wallachia"
+   ],
+   "team": null,
+   "event": "died",
+   "tick": 9662,
+   "place": 13,
+   "resultPeak": 10746,
+   "logPeakTerr": 10746,
+   "logPeakTick": 6030,
+   "lastSnapshots": [
+    {
+     "t": 9360,
+     "terr": 8941,
+     "bal": 1290211,
+     "dens": 144.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 67
+    },
+    {
+     "t": 9450,
+     "terr": 3050,
+     "bal": 240357,
+     "dens": 78.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 67
+    },
+    {
+     "t": 9540,
+     "terr": 2739,
+     "bal": 219534,
+     "dens": 80.2,
+     "nb": 1,
+     "neut": 27,
+     "cmds": 67
+    },
+    {
+     "t": 9630,
+     "terr": 2739,
+     "bal": 245074,
+     "dens": 89.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 67
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8601565,
+   "cause": "1350~4140 被编队友围住（先被 King 的船打掉 481 格），22 条船；之后只有 1 个敌邻。8910~9360 领土 8941 不动、兵囤到 129 万（密度 144），9360 起 302 拍 0 条指令出局。出局时 250494 兵。",
+   "chain": [
+    "出生 (1462,946) 离下沿 54 像素；750~1110 有 21 个决策点被 sb 挡住，全是 Phoenicia 的余额定的；600~1500 时延中位 120 拍",
+    "t=1350 6402 格（L8599731）→ 1440 5921 → 1530 5508（L8599794）；1530~3150 领土不动，余额 114151 → 629034（8 条指令全是船）",
+    "4860~5130 6550 → 9132 格；t=6030 10746 格 / 812160 兵（L8601121）→ 6480 6743 / 684547（L8601201）：0 条指令",
+    "t=9360 8941 / 1290211（L8601549）→ 9540 2739 / 219534（L8601560）：cmds 67 不变；结果行 L8601565 t=9662 阵亡，第 13 名，最后 2739 格、余额 250494"
+   ],
+   "statementType": "inferred",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Liao",
+   "me": 22,
+   "labels": [
+    "Liao"
+   ],
+   "team": null,
+   "event": null,
+   "tick": null,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 6877,
+   "logPeakTick": 1350,
+   "lastSnapshots": [
+    {
+     "t": 1080,
+     "terr": 6101,
+     "bal": 30018,
+     "dens": 4.9,
+     "nb": 5,
+     "neut": 12,
+     "cmds": 17
+    },
+    {
+     "t": 1170,
+     "terr": 6354,
+     "bal": 51786,
+     "dens": 8.2,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 18
+    },
+    {
+     "t": 1260,
+     "terr": 6748,
+     "bal": 76556,
+     "dens": 11.3,
+     "nb": 2,
+     "neut": 22,
+     "cmds": 20
+    },
+    {
+     "t": 1350,
+     "terr": 6877,
+     "bal": 104765,
+     "dens": 15.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 26
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "不是阵亡：录制号在 ≈1428 断流离开（7546 格 / 104702 兵，全房第 30、编队里第三大），录像也到此为止；原因没有记录。离开以后它的地由引擎托管，编队友按名字照样保护它（推断）。",
+   "chain": [
+    "和 King 同像素出生 (1198,934)，自然地盘全队最小（1140 格）；t=630 已有 2031 格（拿到率 1.78）",
+    "吃掉两个真人邻居：meng孬到（996 格，花 2048 兵，t=768 出局）、国防科大（2302 格，花 7040 兵，t=1030 出局）——每格 2~3 兵",
+    "660~1230 有 48 个决策点被 sb 挡住，46 个是 Hashashin 的余额定的；t=1218 一条指令晚到 338 拍，t=1372 一拍 6 条抽走 30% 余额",
+    "结果行 L8600025（标签已换成 Spartan）：left，place=30，peak=7546；results.csv 里没有这一行"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  }
+ ],
+ "ledger": {
+  "drop30Count": 72,
+  "drop30ByClass": {
+   "ATTACK-GAIN": 28,
+   "BOAT": 12,
+   "LOST-LAND": 31,
+   "SPEND-NO-LAND": 1
+  },
+  "donationsLogged": 0,
+  "donationsObservedAccepted": 0,
+  "donationsObservedRejected": 0,
+  "donationsUndetermined": 0,
+  "donationsModelRejected": 0,
+  "note": "观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
+  "donatedArrivedUpperBound": 0,
+  "donationTaxUpperBound": 0,
+  "cardLikelyRejected": 0,
+  "donfit": {
+   "method": "donfit.py：拿捐出方的余额观测序列（HL-TICK + 每条 HL-DONATE 的 myBal）逐段拟合，在途的单子允许晚落地；成交几笔由余额拟合定，同样大小的候选里先挑不违反引擎受捐额度的、再挑最新发的；同一个快照窗里还有攻击/船时只收『整单、额度内』的拟合，其余记判不了",
+   "quotaConflicts": 0,
+   "logged": 0,
+   "executed": 0,
+   "notExecuted": 0,
+   "undetermined": 0,
+   "delivered": 0,
+   "tax": 0,
+   "clippedByReceiverCap": 0,
+   "lagAtLeast20": 0,
+   "refires": 0,
+   "old20TickRuleRejectedButExecuted": 0
+  },
+  "latencyLedger": {
+   "matchId": "B027",
+   "side": "own",
+   "bots": 19,
+   "endTick": 1428,
+   "periods": [
+    "0~600",
+    "600~1500",
+    "1500~3000",
+    "3000+"
+   ],
+   "spawn": {
+    "bots": 19,
+    "logAssignMed": 13,
+    "logAssignMax": 20,
+    "landedMed": 10,
+    "landedMax": 16,
+    "otherLandedMed": 2,
+    "lastExecuted": 5,
+    "stale": 14,
+    "notInLog": 0,
+    "lastTwoSteps": 5,
+    "samePixelPairs": 3,
+    "near40Pairs": 3,
+    "sameLastPairs": 3,
+    "turns": 50,
+    "hopMed": 371
+   },
+   "lag": [
+    {
+     "period": "0~600",
+     "executed": 125,
+     "matched": 125,
+     "p50": 12,
+     "p90": 17,
+     "max": 29,
+     "ge35": 0,
+     "noEffect": 0
+    },
+    {
+     "period": "600~1500",
+     "executed": 426,
+     "matched": 365,
+     "p50": 89,
+     "p90": 212,
+     "max": 363,
+     "ge35": 262,
+     "noEffect": 121
+    }
+   ],
+   "slowBots": {
+    "600~1500": 17,
+    "0~600": 0,
+    "1500~3000": 0,
+    "3000+": 0
+   },
+   "funnel": [
+    {
+     "period": "0~600",
+     "shadow": 133,
+     "shadowMatched": 126,
+     "clientCmds": 110,
+     "replay": 125,
+     "effective": 125
+    },
+    {
+     "period": "600~1500",
+     "shadow": 488,
+     "shadowMatched": 364,
+     "clientCmds": 472,
+     "replay": 426,
+     "effective": 305
+    }
+   ],
+   "late": [
+    {
+     "period": "0~600",
+     "attacks": 125,
+     "noEffect": 0,
+     "targetGone": 0,
+     "goneAI": 0,
+     "redirected": 0,
+     "redirectedTroops": 0,
+     "void": 0,
+     "voidTroops": 0,
+     "aliveNoEffect": 0,
+     "unmatched512NoEffect": 0,
+     "sentTroops": 118929
+    },
+    {
+     "period": "600~1500",
+     "attacks": 411,
+     "noEffect": 121,
+     "targetGone": 165,
+     "goneAI": 160,
+     "redirected": 68,
+     "redirectedTroops": 176433,
+     "void": 97,
+     "voidTroops": 368510,
+     "aliveNoEffect": 1,
+     "unmatched512NoEffect": 12,
+     "sentTroops": 761339
+    }
+   ],
+   "fate": [
+    {
+     "period": "0~600",
+     "group": "编队",
+     "aiEpisodes": 7,
+     "aiBurn": 2174,
+     "aiTiles": 818,
+     "aiLeftover": 506,
+     "neutEpisodes": 92,
+     "neutBurn": 67672,
+     "neutTiles": 33836,
+     "neutReturned": 12048,
+     "sent": 118929,
+     "returnedAll": 12332
+    },
+    {
+     "period": "0~600",
+     "group": "其他真人",
+     "aiEpisodes": 25,
+     "aiBurn": 7565,
+     "aiTiles": 2454,
+     "aiLeftover": 7514,
+     "neutEpisodes": 340,
+     "neutBurn": 173609,
+     "neutTiles": 89008,
+     "neutReturned": 32703,
+     "sent": 298956,
+     "returnedAll": 33351
+    },
+    {
+     "period": "600~1500",
+     "group": "编队",
+     "aiEpisodes": 127,
+     "aiBurn": 142099,
+     "aiTiles": 39677,
+     "aiLeftover": 324309,
+     "neutEpisodes": 103,
+     "neutBurn": 65036,
+     "neutTiles": 32518,
+     "neutReturned": 494947,
+     "sent": 761339,
+     "returnedAll": 525458
+    },
+    {
+     "period": "600~1500",
+     "group": "其他真人",
+     "aiEpisodes": 552,
+     "aiBurn": 845519,
+     "aiTiles": 193566,
+     "aiLeftover": 873842,
+     "neutEpisodes": 309,
+     "neutBurn": 220545,
+     "neutTiles": 110348,
+     "neutReturned": 879237,
+     "sent": 2505857,
+     "returnedAll": 933923
+    }
+   ],
+   "dup": [
+    {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 125,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 667,
+     "chains": 69,
+     "chain2": 33,
+     "chain3": 7,
+     "chain4": 29,
+     "chainExtraCmds": 305,
+     "chainExtraTroops": 28273,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 426,
+     "chains": 80,
+     "chain2": 37,
+     "chain3": 11,
+     "chain4": 32,
+     "chainExtraCmds": 192,
+     "chainExtraTroops": 349343,
+     "batches": 47,
+     "batchCmds": 237,
+     "drain50": 7,
+     "drain90": 0,
+     "batchExtraTroops": 342772
+    },
+    {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 924,
+     "chains": 52,
+     "chain2": 26,
+     "chain3": 7,
+     "chain4": 19,
+     "chainExtraCmds": 183,
+     "chainExtraTroops": 175989,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   ],
+   "stale": [
+    {
+     "period": "0~600",
+     "n": 0,
+     "intent": 0,
+     "actual": 0
+    },
+    {
+     "period": "600~1500",
+     "n": 173,
+     "intent": 632142,
+     "actual": 732289
+    }
+   ],
+   "src": "scripts/lagledger.py [GA]~[GG]（out/<局>/lagledger.txt）"
+  },
+  "landCapture": {
+   "matchId": "B027",
+   "land": 517334,
+   "humansSpawned": 71,
+   "squad": 19,
+   "peer": 0,
+   "vorEShare": 0.1971,
+   "vorEPerHead": 0.736,
+   "vorEMedSquad": 4444,
+   "vorEMedOther": 7654,
+   "vorBShare": 0.1937,
+   "vorBPerHead": 0.724,
+   "vorBMedSquad": 3656,
+   "vorBMedOther": 6607,
+   "headShare": 0.2676,
+   "squadInLowestQuartile": 10,
+   "cf": {
+    "moved": 16,
+    "vorEShare": 0.1694,
+    "vorEPerHead": 0.633,
+    "squadCells": 87627,
+    "actualCells": 101951,
+    "medSquad": 3809,
+    "lowQuartile": 11
+   },
+   "capture": {
+    "300": {
+     "squad": 0.1,
+     "squadMed": 0.117,
+     "other": 0.052,
+     "otherMed": 0.059,
+     "perHeadRatio": 1.281,
+     "squadB": 0.107,
+     "otherB": 0.055,
+     "squadTerr": 10171,
+     "otherTerr": 21737,
+     "vorRatio": 0.672,
+     "captureRatio": 1.906
+    },
+    "630": {
+     "squad": 0.489,
+     "squadMed": 0.6,
+     "other": 0.303,
+     "otherMed": 0.314,
+     "perHeadRatio": 1.085,
+     "squadB": 0.523,
+     "otherB": 0.317,
+     "squadTerr": 49877,
+     "otherTerr": 125759,
+     "vorRatio": 0.672,
+     "captureRatio": 1.616
+    },
+    "900": {
+     "squad": 0.726,
+     "squadMed": 0.847,
+     "other": 0.537,
+     "otherMed": 0.545,
+     "perHeadRatio": 0.908,
+     "squadB": 0.776,
+     "otherB": 0.562,
+     "squadTerr": 74012,
+     "otherTerr": 223188,
+     "vorRatio": 0.672,
+     "captureRatio": 1.351
+    },
+    "1260": {
+     "squad": 0.945,
+     "squadMed": 1.054,
+     "other": 0.849,
+     "otherMed": 0.892,
+     "perHeadRatio": 0.748,
+     "squadB": 1.011,
+     "otherB": 0.889,
+     "squadTerr": 96357,
+     "otherTerr": 352693,
+     "vorRatio": 0.672,
+     "captureRatio": 1.113
+    }
+   },
+   "occ": {
+    "630:编队": {
+     "n": 101951,
+     "self": 42698,
+     "sqSame": 0,
+     "sqOther": 2229,
+     "mate": 0,
+     "enemy": 184,
+     "ai": 39062,
+     "neutral": 17778,
+     "peer": 0
+    },
+    "630:其他真人": {
+     "n": 415383,
+     "self": 119457,
+     "sqSame": 0,
+     "sqOther": 4950,
+     "mate": 0,
+     "enemy": 6118,
+     "ai": 163319,
+     "neutral": 121539,
+     "peer": 0
+    }
+   },
+   "aiFate": {
+    "全图:1500": {
+     "cells": 173010,
+     "eaten": 173010,
+     "squad": 32453,
+     "peer": 0,
+     "other": 140557
+    },
+    "全图:1800": {
+     "cells": 173010,
+     "eaten": 173010,
+     "squad": 32453,
+     "peer": 0,
+     "other": 140557
+    },
+    "编队名下的（直线口径）:1500": {
+     "cells": 31985,
+     "eaten": 31985,
+     "squad": 21890,
+     "peer": 0,
+     "other": 10095
+    },
+    "编队名下的（直线口径）:1800": {
+     "cells": 31985,
+     "eaten": 31985,
+     "squad": 21890,
+     "peer": 0,
+     "other": 10095
+    },
+    "t=600 时和编队号接壤的 AI 的:1500": {
+     "cells": 23844,
+     "eaten": 23844,
+     "squad": 20165,
+     "peer": 0,
+     "other": 3679
+    },
+    "t=600 时和编队号接壤的 AI 的:1800": {
+     "cells": 23844,
+     "eaten": 23844,
+     "squad": 20165,
+     "peer": 0,
+     "other": 3679
+    },
+    "late:全图:1500": {
+     "cells": 109898,
+     "eaten": 109898,
+     "squad": 15594,
+     "peer": 0,
+     "other": 94304
+    },
+    "late:全图:1800": {
+     "cells": 109898,
+     "eaten": 109898,
+     "squad": 15594,
+     "peer": 0,
+     "other": 94304
+    },
+    "late:编队名下的（直线口径）:1500": {
+     "cells": 15377,
+     "eaten": 15377,
+     "squad": 8546,
+     "peer": 0,
+     "other": 6831
+    },
+    "late:编队名下的（直线口径）:1800": {
+     "cells": 15377,
+     "eaten": 15377,
+     "squad": 8546,
+     "peer": 0,
+     "other": 6831
+    },
+    "ever:全图:1500": {
+     "cells": 282908,
+     "eaten": 282908,
+     "squad": 48047,
+     "par": 76789
+    },
+    "ever:全图:1800": {
+     "cells": 282908,
+     "eaten": 282908,
+     "squad": 48047,
+     "par": 76789
+    }
+   },
+   "aiFateWin": {
+    "600": [
+     20049,
+     7186
+    ],
+    "750": [
+     67524,
+     13063
+    ],
+    "900": [
+     74994,
+     11339
+    ],
+    "1050": [
+     60343,
+     8831
+    ],
+    "1200": [
+     46120,
+     5075
+    ],
+    "1350": [
+     13878,
+     2553
+    ]
+   },
+   "aiFateOwnRegion1500": {
+    "名下那个号自己": 19706,
+    "异队编队友": 2184,
+    "敌队真人": 10095
+   },
+   "attr": {
+    "U": 282908,
+    "par": 76789,
+    "got": 48047,
+    "ownRegion": 47362,
+    "gotInOwn": 30436,
+    "gotOutside": 17611,
+    "lost": 16926,
+    "geomDeficit": 29427,
+    "base": {
+     "U": 173010,
+     "par": 46960,
+     "got": 32453,
+     "ownRegion": 31985
+    },
+    "cats": {
+     "③ 迟到落空（影子发了，录像里没有生效的）": 6574,
+     "③ 迟到（出手了，最快的一条也晚到 ≥35 拍）": 453,
+     "② 门槛挡住：值不值门槛（winWorth）": 2733,
+     "够不着（没有编队号接壤这个 AI）": 3641,
+     "出手了、按时生效，被别人分走": 3140,
+     "过了门槛但没发（影子也没发：先打别的 / 轮次）": 381,
+     "② 门槛挡住：防人机留底 sb（safeFinite）": 4
+    },
+    "gate": 2737,
+    "late": 7027,
+    "noContact": 3641,
+    "byTaker": {
+     "敌队真人": 16926
+    },
+    "hasShadow": true,
+    "censusPts": 938,
+    "censusBlocked": 533
+   },
+   "attrContact": {
+    "short": 28742,
+    "position": -11176,
+    "teamAi": 0,
+    "rest": 6556,
+    "othersAte": 234861,
+    "inReach": 39918,
+    "cats": {
+     "不接壤（被吃掉之前没有编队号贴着它）": 194943,
+     "② 门槛挡住：价位底（winFloor）": 64,
+     "② 门槛挡住：防人机留底 sb（safeFinite）": 4598,
+     "② 门槛挡住：值不值门槛（winWorth）": 6278,
+     "出手了、按时生效，被别人分走": 5419,
+     "③ 迟到落空（影子发了，录像里没有生效的）": 18528,
+     "③ 迟到（出手了，最快的一条也晚到 ≥35 拍）": 3894,
+     "过了门槛但没发（影子也没发：先打别的 / 轮次）": 1075,
+     "接壤但策略没把它列为邻居": 62
+    },
+    "gate": 10940,
+    "late": 22422,
+    "perBot": {
+     "SyntaxError*T0": {
+      "②": 550,
+      "③": 189
+     },
+     "Raeder*T0": {
+      "②": 310,
+      "其它": 33
+     },
+     "Ronin*T0": {
+      "②": 1372,
+      "③": 123
+     },
+     "Mewtwo*T0": {
+      "②": 1599,
+      "③": 2199,
+      "其它": 241
+     },
+     "Cringe*T0": {
+      "②": 1377,
+      "其它": 155,
+      "③": 695
+     },
+     "Davout*T0": {
+      "③": 2288,
+      "②": 1769
+     },
+     "Kuban*T0": {
+      "③": 3472,
+      "②": 84
+     },
+     "Doge*T0": {
+      "其它": 1412,
+      "③": 271
+     },
+     "Vinland*T0": {
+      "③": 927
+     },
+     "Liao*T0": {
+      "②": 1026,
+      "其它": 37,
+      "③": 1736
+     },
+     "Savoy*T0": {
+      "③": 1036,
+      "其它": 36
+     },
+     "Habsburg*T0": {
+      "③": 5002,
+      "其它": 4115,
+      "②": 1164
+     },
+     "player_007*T0": {
+      "③": 3811,
+      "其它": 527,
+      "②": 1689
+     },
+     "Tripoli*T0": {
+      "③": 673
+     }
+    }
+   },
+   "src": "scripts/landcap.mjs + landcap.py [KA]~[KF]（out/<局>/landcap.txt）"
+  },
+  "enclosure": {
+   "matchId": "B027",
+   "step": 30,
+   "perBot": {
+    "King": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 25,
+     "sealedB": 0,
+     "sealedC": 0,
+     "longestA": {
+      "t0": 690,
+      "t1": 1410,
+      "ticks": 750,
+      "terr0": 2400,
+      "terr1": 2577,
+      "bal0": 9144,
+      "bal1": 71676,
+      "densMax": 49.3,
+      "landAtk": 0,
+      "boats": 5,
+      "donations": 0,
+      "mates": [
+       "Hashashin",
+       "Liao",
+       "Phoenicia",
+       "New England"
+      ]
+     },
+     "inSealA": {
+      "botTicks": 750,
+      "boats": 5,
+      "boatTroops": 96699,
+      "boatFees": 7350,
+      "boatsFeeOverTroops": 0,
+      "donations": 0,
+      "donArrived": 0,
+      "donTax": 0,
+      "landAtk": 3,
+      "landAtkOk": 3,
+      "landAtkTroops": 1329,
+      "over100": 0,
+      "hardCap": 0
+     }
+    },
+    "Phoenicia": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 6,
+     "sealedB": 0,
+     "sealedC": 0,
+     "longestA": {
+      "t0": 1260,
+      "t1": 1410,
+      "ticks": 180,
+      "terr0": 5681,
+      "terr1": 5681,
+      "bal0": 93463,
+      "bal1": 23677,
+      "densMax": 20.6,
+      "landAtk": 6,
+      "boats": 5,
+      "donations": 0,
+      "mates": [
+       "New England",
+       "Hashashin",
+       "King"
+      ]
+     }
+    },
+    "Hashashin": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 3,
+     "sealedB": 0,
+     "sealedC": 0,
+     "longestA": {
+      "t0": 1350,
+      "t1": 1410,
+      "ticks": 90,
+      "terr0": 4737,
+      "terr1": 4737,
+      "bal0": 95027,
+      "bal1": 116159,
+      "densMax": 24.5,
+      "landAtk": 5,
+      "boats": 0,
+      "donations": 0,
+      "mates": [
+       "Liao",
+       "King",
+       "Phoenicia"
+      ]
+     }
+    },
+    "New England": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 3,
+     "sealedB": 0,
+     "sealedC": 0,
+     "longestA": {
+      "t0": 1350,
+      "t1": 1410,
+      "ticks": 90,
+      "terr0": 6402,
+      "terr1": 6266,
+      "bal0": 91326,
+      "bal1": 109739,
+      "densMax": 17.5,
+      "landAtk": 0,
+      "boats": 0,
+      "donations": 0,
+      "mates": [
+       "Phoenicia",
+       "King"
+      ]
+     }
+    },
+    "player_007": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "SyntaxError": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Mewtwo": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Sparta": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Tripoli": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Liao": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Savoy": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Ronin": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Davout": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Vinland": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Doge": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Habsburg": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Raeder": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Kuban": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    },
+    "Cringe": {
+     "team": 0,
+     "samples": 48,
+     "sealedA": 0,
+     "sealedB": 0,
+     "sealedC": 0
+    }
+   },
+   "timeline": [
+    {
+     "t": 0,
+     "bots": 19,
+     "A": 0,
+     "B": 0,
+     "C": 0,
+     "terrA": 0,
+     "terrAll": 208,
+     "balA": 0,
+     "balAll": 9728,
+     "over100": 0,
+     "protect": false
+    },
+    {
+     "t": 270,
+     "bots": 19,
+     "A": 0,
+     "B": 0,
+     "C": 0,
+     "terrA": 0,
+     "terrAll": 7080,
+     "balA": 0,
+     "balAll": 22391,
+     "over100": 0,
+     "protect": true
+    },
+    {
+     "t": 540,
+     "bots": 19,
+     "A": 0,
+     "B": 0,
+     "C": 0,
+     "terrA": 0,
+     "terrAll": 35022,
+     "balA": 0,
+     "balAll": 64161,
+     "over100": 0,
+     "protect": true
+    },
+    {
+     "t": 810,
+     "bots": 19,
+     "A": 1,
+     "B": 0,
+     "C": 0,
+     "terrA": 2400,
+     "terrAll": 67996,
+     "balA": 13071,
+     "balAll": 285855,
+     "over100": 0,
+     "protect": true
+    },
+    {
+     "t": 1080,
+     "bots": 19,
+     "A": 1,
+     "B": 0,
+     "C": 0,
+     "terrA": 2413,
+     "terrAll": 87145,
+     "balA": 45956,
+     "balAll": 733843,
+     "over100": 0,
+     "protect": true
+    },
+    {
+     "t": 1350,
+     "bots": 19,
+     "A": 4,
+     "B": 0,
+     "C": 0,
+     "terrA": 19261,
+     "terrAll": 97426,
+     "balA": 380101,
+     "balAll": 1718155,
+     "over100": 0,
+     "protect": true
+    }
+   ],
+   "pairs": [
+    {
+     "a": "Ronin",
+     "b": "SyntaxError",
+     "samples": 45,
+     "t0": 90,
+     "t1": 1410,
+     "maxCells": 119,
+     "sealedA": 0,
+     "sealedB": 0,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Liao",
+     "b": "King",
+     "samples": 45,
+     "t0": 90,
+     "t1": 1410,
+     "maxCells": 44,
+     "sealedA": 0,
+     "sealedB": 25,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Davout",
+     "b": "Cringe",
+     "samples": 44,
+     "t0": 120,
+     "t1": 1410,
+     "maxCells": 199,
+     "sealedA": 0,
+     "sealedB": 0,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Liao",
+     "b": "Hashashin",
+     "samples": 35,
+     "t0": 390,
+     "t1": 1410,
+     "maxCells": 152,
+     "sealedA": 0,
+     "sealedB": 3,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Hashashin",
+     "b": "King",
+     "samples": 34,
+     "t0": 420,
+     "t1": 1410,
+     "maxCells": 89,
+     "sealedA": 3,
+     "sealedB": 25,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Raeder",
+     "b": "SyntaxError",
+     "samples": 30,
+     "t0": 540,
+     "t1": 1410,
+     "maxCells": 7,
+     "sealedA": 0,
+     "sealedB": 0,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Phoenicia",
+     "b": "King",
+     "samples": 28,
+     "t0": 600,
+     "t1": 1410,
+     "maxCells": 39,
+     "sealedA": 6,
+     "sealedB": 25,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      13,
+      386
+     ]
+    },
+    {
+     "a": "Phoenicia",
+     "b": "Hashashin",
+     "samples": 27,
+     "t0": 630,
+     "t1": 1410,
+     "maxCells": 49,
+     "sealedA": 6,
+     "sealedB": 3,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "Phoenicia",
+     "b": "New England",
+     "samples": 22,
+     "t0": 780,
+     "t1": 1410,
+     "maxCells": 74,
+     "sealedA": 6,
+     "sealedB": 3,
+     "aToB": [
+      0,
+      0
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    },
+    {
+     "a": "King",
+     "b": "New England",
+     "samples": 4,
+     "t0": 1320,
+     "t1": 1410,
+     "maxCells": 29,
+     "sealedA": 4,
+     "sealedB": 3,
+     "aToB": [
+      343,
+      19218
+     ],
+     "bToA": [
+      0,
+      0
+     ]
+    }
+   ],
+   "border": [
+    {
+     "t": 0,
+     "bots": 19,
+     "neutral": 192,
+     "ai": 0,
+     "foe": 0,
+     "mateX": 0,
+     "own": 0,
+     "teamAi": 0,
+     "peer": 0
+    },
+    {
+     "t": 540,
+     "bots": 19,
+     "neutral": 832,
+     "ai": 1591,
+     "foe": 90,
+     "mateX": 451,
+     "own": 0,
+     "teamAi": 0,
+     "peer": 0
+    },
+    {
+     "t": 1080,
+     "bots": 19,
+     "neutral": 145,
+     "ai": 1998,
+     "foe": 1408,
+     "mateX": 1347,
+     "own": 0,
+     "teamAi": 0,
+     "peer": 0
+    }
+   ],
+   "total": {
+    "samples": 912,
+    "sealedA": 37,
+    "botTicksA": 1110,
+    "botsEverA": 1
+   },
+   "pairCount": 10,
+   "inSealA": {
+    "botTicks": 750,
+    "boats": 5,
+    "boatTroops": 96699,
+    "boatFees": 7350,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "over100": 0,
+    "hardCap": 0
+   },
+   "src": "scripts/enclose.py [EA]~[EE]（out/<局>/enclose.txt）：编队号被受保护的异队编队友封死的账"
+  },
+  "troopLedger": {
+   "matchId": "B027",
+   "edges": [
+    0,
+    600,
+    1428
+   ],
+   "groups": {
+    "编队": 19,
+    "其他真人": 52
+   },
+   "periods": [
+    {
+     "t0": 0,
+     "t1": 600,
+     "编队": {
+      "inc": 211782,
+      "ret": 12332,
+      "balTicks": 19182930,
+      "cellTicks": 8068340,
+      "botTicks": 11400,
+      "forgone": 11,
+      "overTicks": 30,
+      "atkN": 125,
+      "atkOk": 125,
+      "atkTroops": 118929,
+      "atkFee": 3272,
+      "burnt": 93212,
+      "tilesGot": 46249,
+      "hitBal": 3884,
+      "tilesLost": 1271,
+      "hardTicks": 0,
+      "heads": 19
+     },
+     "其他真人": {
+      "inc": 566798,
+      "ret": 33351,
+      "balTicks": 58610690,
+      "cellTicks": 19143330,
+      "botTicks": 30950,
+      "forgone": 5910,
+      "overTicks": 980,
+      "hardTicks": 220,
+      "atkN": 654,
+      "atkOk": 654,
+      "atkTroops": 298956,
+      "atkFee": 12260,
+      "boatN": 13,
+      "boatTroops": 4513,
+      "boatFee": 791,
+      "burnt": 228867,
+      "tilesGot": 112974,
+      "hitBal": 2434,
+      "tilesLost": 1134,
+      "heads": 52
+     },
+     "incPerCapRatio": 1.023
+    },
+    {
+     "t0": 600,
+     "t1": 1428,
+     "编队": {
+      "inc": 2642289,
+      "ret": 525458,
+      "balTicks": 629219168,
+      "cellTicks": 65770120,
+      "botTicks": 15732,
+      "atkN": 411,
+      "atkOk": 290,
+      "atkTroops": 761339,
+      "atkFee": 101384,
+      "boatN": 15,
+      "boatTroops": 282943,
+      "boatFee": 30416,
+      "boatHiN": 1,
+      "boatHiFee": 758,
+      "burnt": 216360,
+      "tilesGot": 64934,
+      "hitBal": 119910,
+      "tilesLost": 10323,
+      "forgone": 0,
+      "overTicks": 0,
+      "hardTicks": 0,
+      "heads": 19
+     },
+     "其他真人": {
+      "inc": 6511982,
+      "ret": 933923,
+      "balTicks": 1365199510,
+      "cellTicks": 218227136,
+      "botTicks": 40268,
+      "atkN": 879,
+      "atkOk": 877,
+      "atkTroops": 2505857,
+      "atkFee": 244991,
+      "boatN": 45,
+      "boatTroops": 299487,
+      "boatFee": 63636,
+      "boatHiN": 2,
+      "boatHiFee": 6636,
+      "burnt": 1576791,
+      "tilesGot": 313831,
+      "hitBal": 263314,
+      "tilesLost": 32335,
+      "forgone": 0,
+      "overTicks": 0,
+      "hardTicks": 0,
+      "heads": 52
+     },
+     "incPerCapRatio": 1.11
+    }
+   ],
+   "perBot": {
+    "Mewtwo": {
+     "inc": 199350,
+     "burnt": 13362,
+     "hitBal": 1634,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Savoy": {
+     "inc": 177863,
+     "boatFee": 11797,
+     "boatTroops": 71323,
+     "burnt": 11094,
+     "hitBal": 258,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Davout": {
+     "inc": 170721,
+     "burnt": 12992,
+     "hitBal": 8067,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Phoenicia": {
+     "inc": 168780,
+     "boatFee": 9721,
+     "boatTroops": 108726,
+     "burnt": 15544,
+     "hitBal": 4854,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Habsburg": {
+     "inc": 167523,
+     "burnt": 31397,
+     "hitBal": 598,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "player_007": {
+     "inc": 166863,
+     "burnt": 37052,
+     "hitBal": 9881,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Ronin": {
+     "inc": 160289,
+     "forgone": 10,
+     "overTicks": 20,
+     "burnt": 6634,
+     "hitBal": 4094,
+     "boatFee": 0,
+     "donTax": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Cringe": {
+     "inc": 153988,
+     "burnt": 13918,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0,
+     "hitBal": 0
+    },
+    "Liao": {
+     "inc": 153809,
+     "burnt": 19266,
+     "hitBal": 4209,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "New England": {
+     "inc": 148359,
+     "burnt": 17108,
+     "hitBal": 15374,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "King": {
+     "inc": 147748,
+     "boatFee": 7350,
+     "boatTroops": 96699,
+     "burnt": 24380,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "donOut": 0,
+     "donIn": 0,
+     "hitBal": 0
+    },
+    "SyntaxError": {
+     "inc": 146943,
+     "boatFee": 1548,
+     "boatTroops": 6195,
+     "burnt": 5620,
+     "hitBal": 2012,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Hashashin": {
+     "inc": 145261,
+     "burnt": 12244,
+     "hitBal": 6490,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Tripoli": {
+     "inc": 138236,
+     "burnt": 17527,
+     "hitBal": 3126,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Raeder": {
+     "inc": 137688,
+     "burnt": 11954,
+     "hitBal": 5270,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Sparta": {
+     "inc": 135936,
+     "burnt": 14640,
+     "hitBal": 8606,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Kuban": {
+     "inc": 126195,
+     "burnt": 9250,
+     "hitBal": 32257,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Doge": {
+     "inc": 122447,
+     "burnt": 15566,
+     "hitBal": 7489,
+     "boatFee": 0,
+     "donTax": 0,
+     "forgone": 0,
+     "overTicks": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    },
+    "Vinland": {
+     "inc": 86072,
+     "forgone": 1,
+     "overTicks": 10,
+     "burnt": 20024,
+     "hitBal": 9575,
+     "boatFee": 0,
+     "donTax": 0,
+     "hardTicks": 0,
+     "boatTroops": 0,
+     "donOut": 0,
+     "donIn": 0
+    }
+   },
+   "total": {
+    "编队": {
+     "inc": 2854071,
+     "ret": 537790,
+     "balTicks": 648402098,
+     "cellTicks": 73838460,
+     "botTicks": 27132,
+     "forgone": 11,
+     "overTicks": 30,
+     "atkN": 536,
+     "atkOk": 415,
+     "atkTroops": 880268,
+     "atkFee": 104656,
+     "burnt": 309572,
+     "tilesGot": 111183,
+     "hitBal": 123794,
+     "tilesLost": 11594,
+     "hardTicks": 0,
+     "boatFee": 30416,
+     "donTax": 0,
+     "boatN": 15,
+     "boatTroops": 282943,
+     "boatHiN": 1,
+     "boatHiFee": 758,
+     "donN": 0,
+     "donGot": 0,
+     "donIn": 0
+    },
+    "其他真人": {
+     "inc": 7078780,
+     "ret": 967274,
+     "balTicks": 1423810200,
+     "cellTicks": 237370466,
+     "botTicks": 71218,
+     "forgone": 5910,
+     "overTicks": 980,
+     "hardTicks": 220,
+     "atkN": 1533,
+     "atkOk": 1531,
+     "atkTroops": 2804813,
+     "atkFee": 257251,
+     "boatN": 58,
+     "boatTroops": 304000,
+     "boatFee": 64427,
+     "burnt": 1805658,
+     "tilesGot": 426805,
+     "hitBal": 265748,
+     "tilesLost": 33469,
+     "donTax": 0,
+     "boatHiN": 2,
+     "boatHiFee": 6636,
+     "donN": 0,
+     "donGot": 0,
+     "donIn": 0
+    }
+   },
+   "stock": [
+    {
+     "t": 600,
+     "squad": [
+      19,
+      45186,
+      107757
+     ],
+     "others": [
+      51,
+      112426,
+      306133
+     ]
+    },
+    {
+     "t": 1428,
+     "squad": [
+      19,
+      99797,
+      2015545
+     ],
+     "others": [
+      46,
+      392580,
+      4396708
+     ]
+    }
+   ],
+   "src": "scripts/econ.py [NA]~[ND]（out/<局>/econ.txt）：产兵 / 花兵 / 漏损，编队对其他真人"
+  },
+  "donationPairs": {
+   "matchId": "B027",
+   "total": {
+    "logged": 0,
+    "executed": 0,
+    "arrived": 0,
+    "tax": 0,
+    "clamped": 0,
+    "clampedArrived": 0,
+    "clampedTax": 0,
+    "taxGeArrived": 0,
+    "netMoved": 0,
+    "churned": 0,
+    "pairCount": 0,
+    "twoWayPairs": 0,
+    "pingPong": 0,
+    "ppMin": 0,
+    "ppTax": 0,
+    "donorSealedN": 0,
+    "donorSealedArrived": 0,
+    "donorSealedTax": 0,
+    "recvSealedN": 0,
+    "recvSealedArrived": 0,
+    "bothSealedN": 0,
+    "bothSealedArrived": 0,
+    "bothSealedTax": 0
+   },
+   "periods": [],
+   "teams": {},
+   "pairs": [],
+   "recvDensity": [
+    {
+     "band": "<50",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "recvDiedIn600": 0,
+     "diedArrived": 0
+    },
+    {
+     "band": "50~80",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "recvDiedIn600": 0,
+     "diedArrived": 0
+    },
+    {
+     "band": "80~100",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "recvDiedIn600": 0,
+     "diedArrived": 0
+    },
+    {
+     "band": "100~132",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "recvDiedIn600": 0,
+     "diedArrived": 0
+    },
+    {
+     "band": "≥132",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "recvDiedIn600": 0,
+     "diedArrived": 0
+    }
+   ],
+   "donorDensity": [
+    {
+     "band": "<60",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "sealedN": 0,
+     "sealedArrived": 0,
+     "sealedTax": 0
+    },
+    {
+     "band": "60~80",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "sealedN": 0,
+     "sealedArrived": 0,
+     "sealedTax": 0
+    },
+    {
+     "band": "80~100",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "sealedN": 0,
+     "sealedArrived": 0,
+     "sealedTax": 0
+    },
+    {
+     "band": "100~132",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "sealedN": 0,
+     "sealedArrived": 0,
+     "sealedTax": 0
+    },
+    {
+     "band": "≥132",
+     "n": 0,
+     "arrived": 0,
+     "tax": 0,
+     "sealedN": 0,
+     "sealedArrived": 0,
+     "sealedTax": 0
+    }
+   ],
+   "perBot": {
+    "player_007": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "SyntaxError": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Mewtwo": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Sparta": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Tripoli": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Phoenicia": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "King": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Liao": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Savoy": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Ronin": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Hashashin": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "New England": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Davout": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Vinland": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Doge": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Habsburg": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Raeder": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Kuban": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    },
+    "Cringe": {
+     "team": 0,
+     "outN": 0,
+     "outArrived": 0,
+     "tax": 0,
+     "inN": 0,
+     "inArrived": 0
+    }
+   },
+   "src": "scripts/donpairs.py [YA]~[YF]（out/<局>/donpairs.txt）：捐款对子、净转移与来回倒手"
+  },
+  "deathDossier": {
+   "matchId": "B027",
+   "span": 1500,
+   "perBot": [],
+   "total": {
+    "deaths": 0,
+    "destroyed": 0,
+    "atAttackers": 0,
+    "zeroReply": 0,
+    "bal0": 0
+   },
+   "src": "scripts/dossier.py（out/<局>/dossier.txt）：每个阵亡号最后一轮下坡里的指令和被打掉的余额"
+  },
+  "spawnGeometry": {
+   "matchId": "B027",
+   "W": 1756,
+   "H": 1000,
+   "edgeLimit": 120,
+   "squad": {
+    "n": 19,
+    "edgeMedian": 122,
+    "nearEdge": 9,
+    "nnAny": 94.36630754670864,
+    "nnMate": 116.48175822848829,
+    "nnWild": 109.04127658827184,
+    "nearestIsMate": 9
+   },
+   "others": {
+    "n": 48,
+    "edgeMedian": 249.5,
+    "nearEdge": 7,
+    "nnAny": 70.83078426785913
+   },
+   "groups": [
+    {
+     "n": 5,
+     "bots": [
+      "Phoenicia",
+      "Liao",
+      "Hashashin",
+      "King",
+      "New England"
+     ],
+     "teams": {
+      "0": 5
+     },
+     "crossPairs": 7,
+     "samePairs": 0
+    },
+    {
+     "n": 3,
+     "bots": [
+      "Ronin",
+      "Raeder",
+      "SyntaxError"
+     ],
+     "teams": {
+      "0": 3
+     },
+     "crossPairs": 3,
+     "samePairs": 0
+    },
+    {
+     "n": 3,
+     "bots": [
+      "Habsburg",
+      "Davout",
+      "Cringe"
+     ],
+     "teams": {
+      "0": 3
+     },
+     "crossPairs": 3,
+     "samePairs": 0
+    },
+    {
+     "n": 2,
+     "bots": [
+      "Kuban",
+      "Mewtwo"
+     ],
+     "teams": {
+      "0": 2
+     },
+     "crossPairs": 1,
+     "samePairs": 0
+    },
+    {
+     "n": 2,
+     "bots": [
+      "Tripoli",
+      "Vinland"
+     ],
+     "teams": {
+      "0": 2
+     },
+     "crossPairs": 1,
+     "samePairs": 0
+    },
+    {
+     "n": 1,
+     "bots": [
+      "Doge"
+     ],
+     "teams": {
+      "0": 1
+     },
+     "crossPairs": 0,
+     "samePairs": 0
+    },
+    {
+     "n": 1,
+     "bots": [
+      "Savoy"
+     ],
+     "teams": {
+      "0": 1
+     },
+     "crossPairs": 0,
+     "samePairs": 0
+    },
+    {
+     "n": 1,
+     "bots": [
+      "player_007"
+     ],
+     "teams": {
+      "0": 1
+     },
+     "crossPairs": 0,
+     "samePairs": 0
+    },
+    {
+     "n": 1,
+     "bots": [
+      "Sparta"
+     ],
+     "teams": {
+      "0": 1
+     },
+     "crossPairs": 0,
+     "samePairs": 0
+    }
+   ],
+   "edgeRows": [
+    {
+     "side": "上",
+     "bots": [
+      "Davout",
+      "Cringe",
+      "Sparta"
+     ],
+     "gaps": [
+      0,
+      296
+     ],
+     "teams": [
+      0
+     ]
+    },
+    {
+     "side": "下",
+     "bots": [
+      "Savoy",
+      "Liao",
+      "Hashashin",
+      "King",
+      "Phoenicia",
+      "New England"
+     ],
+     "gaps": [
+      428,
+      0,
+      0,
+      106,
+      158
+     ],
+     "teams": [
+      0
+     ]
+    }
+   ],
+   "nn3CrossTeamMates": 20,
+   "src": "scripts/spawngeo.py [QA]~[QE]（out/<局>/spawngeo.txt）：出生点贴边、扎堆、异队编队友挨着"
+  },
+  "lagLoad": {
+   "matchId": "B027",
+   "step": 180,
+   "rows": [
+    {
+     "w": 0,
+     "tiles": 13815,
+     "humanTiles": 249,
+     "expand": 768,
+     "pairs": 73,
+     "humans": 71,
+     "ais": 440,
+     "lag": {
+      "n": 28,
+      "p50": 13,
+      "p90": 18,
+      "mx": 29,
+      "atk": 28,
+      "void": 0
+     }
+    },
+    {
+     "w": 180,
+     "tiles": 28926,
+     "humanTiles": 304,
+     "expand": 931,
+     "pairs": 69,
+     "humans": 71,
+     "ais": 436,
+     "lag": {
+      "n": 39,
+      "p50": 12,
+      "p90": 17,
+      "mx": 22,
+      "atk": 39,
+      "void": 0
+     }
+    },
+    {
+     "w": 360,
+     "tiles": 77419,
+     "humanTiles": 365,
+     "expand": 1767,
+     "pairs": 97,
+     "humans": 70,
+     "ais": 435,
+     "lag": {
+      "n": 44,
+      "p50": 12,
+      "p90": 16,
+      "mx": 20,
+      "atk": 44,
+      "void": 0
+     }
+    },
+    {
+     "w": 540,
+     "tiles": 103855,
+     "humanTiles": 1678,
+     "expand": 3457,
+     "pairs": 173,
+     "humans": 70,
+     "ais": 424,
+     "lag": {
+      "n": 58,
+      "p50": 16,
+      "p90": 25,
+      "mx": 35,
+      "atk": 60,
+      "void": 0
+     }
+    },
+    {
+     "w": 720,
+     "tiles": 95578,
+     "humanTiles": 2704,
+     "expand": 4411,
+     "pairs": 359,
+     "humans": 69,
+     "ais": 358,
+     "lag": {
+      "n": 67,
+      "p50": 42,
+      "p90": 86,
+      "mx": 125,
+      "atk": 78,
+      "void": 8
+     }
+    },
+    {
+     "w": 900,
+     "tiles": 104768,
+     "humanTiles": 6042,
+     "expand": 4419,
+     "pairs": 340,
+     "humans": 68,
+     "ais": 194,
+     "lag": {
+      "n": 88,
+      "p50": 96,
+      "p90": 146,
+      "mx": 201,
+      "atk": 108,
+      "void": 34
+     }
+    },
+    {
+     "w": 1080,
+     "tiles": 72055,
+     "humanTiles": 3335,
+     "expand": 3317,
+     "pairs": 218,
+     "humans": 66,
+     "ais": 90,
+     "lag": {
+      "n": 95,
+      "p50": 149,
+      "p90": 262,
+      "mx": 350,
+      "atk": 105,
+      "void": 52
+     }
+    },
+    {
+     "w": 1260,
+     "tiles": 59680,
+     "humanTiles": 12278,
+     "expand": 2217,
+     "pairs": 136,
+     "humans": 66,
+     "ais": 31,
+     "lag": {
+      "n": 71,
+      "p50": 133,
+      "p90": 260,
+      "mx": 363,
+      "atk": 74,
+      "void": 27
+     }
+    }
+   ],
+   "slowWindows": 4,
+   "fastWindows": 4,
+   "spearman": {
+    "tiles": 0.25,
+    "expand": 0.56,
+    "pairs": 0.67,
+    "humans": -0.91,
+    "tilesPrev": 0.74
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 1440,
+     "n": 4,
+     "peakLag": 149,
+     "tilesMed": 95578,
+     "tilesMax": 104768,
+     "before": 103855,
+     "after": null
+    }
+   ],
+   "slowTilesMedian": 95578,
+   "fastTilesMedian": 77419,
+   "src": "scripts/lagload.py [LL-A]~[LL-D]（out/<局>/lagload.txt）：指令时延对全房换手格数，每 180 拍一窗"
+  },
+  "gateCensus": {
+   "matchId": "B027",
+   "side": "own",
+   "walkEvery": 30,
+   "withHumanNb": [],
+   "underAttack": [],
+   "underAttackByDensity": [],
+   "lostTilesByVerdict": {
+    "total": 4343,
+    "by": {
+     "没有采样点（1500 拍前 / 已不在线）": 3987,
+     "进攻者是异队编队友（受保护，不在报价表里）": 356
+    },
+    "byPeriod": {
+     "<1500": {
+      "没有采样点（1500 拍前 / 已不在线）": 3987,
+      "进攻者是异队编队友（受保护，不在报价表里）": 356
+     }
+    }
+   },
+   "perBot": [
+    {
+     "bot": "player_007",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "SyntaxError",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Mewtwo",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Sparta",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Tripoli",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Phoenicia",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "King",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Liao",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Savoy",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Ronin",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Hashashin",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "New England",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Davout",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Vinland",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Doge",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Habsburg",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Raeder",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Kuban",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    },
+    {
+     "bot": "Cringe",
+     "n": 0,
+     "humanNb": 0,
+     "underAttack": 0,
+     "send": 0,
+     "why": {}
+    }
+   ],
+   "selfCheck": {
+    "sendSamples": 0,
+    "shadowSentWithin": 0
+   },
+   "src": "scripts/shadow.mjs --walk-every 30 --tag walk + scripts/gatecensus.py [WA]~[WI]（out/<局>/gatecensus.txt）：1500 拍后对真人邻居 / 进攻者的买地门槛结论普查"
+  },
+  "truthDonations": "录像（0~1428）和日志（全程）里编队都没有一笔捐款、一条协防戳刺：这个房间没有队伍，tryDonateToTeammate 第一行（L4371）就返回。",
+  "cardLikelyRejectedCheck": "对局卡 totalTransfers = 0、likelyRejectedTransfers = 0，和日志一致。",
+  "drop30Truth": "对局卡的 DROP30 是 71 条（本地重算 72 条）。真值（0~1428）90 拍窗余额跌 ≥30% 的 5 段：4 段是自己的陆攻（Ronin、Vinland 450~540 吃无主地；Vinland 1170~1260 六条打 AI98，−44%；Habsburg 1260~1350 九条打 AI223，−42%——后两段都是时延波里成批落地），1 段是发船（Savoy 1260~1350，3 条船 71478 兵，−41%）。1428 以后的 DROP30 是过软上限后的清仓买地和挨打，没有真值。",
+  "boats": "真值（0~1428）15 条船：船上兵 282943、船费 30416；靠岸在别人的地上 64281 兵（King 三条 58404 兵靠在编队友 Phoenicia / New England 的地上，Savoy 一条 5877 兵靠在 AI184 上）、自己的地上 34585（King 两条）、无主地 5182，178895 兵没靠岸（Phoenicia 5 条 108726、Savoy 65446）。日志口径整局船数：King 28、SyntaxError 23、New England 22、Ronin 19、Phoenicia 16、Tripoli 16、Vinland 15、Sparta 13、Savoy 11、Doge 8、Kuban 6、Raeder 3，其余 6 个号 0。",
+  "intraSquadFights": "真值（0~1428）编队内部互打 356 格：King → New England 343 格（烧 19218 兵）、King → Phoenicia 13 格（386 兵），守方余额损失 9427。都是船靠岸（NEW-SE-04）。King t=1300 的船和 Phoenicia 同一拍的船选的是同一个落点（格 1650314，当时是无主地）。",
+  "assistPokes": "0 条（没有队伍）。",
+  "squadVsWild": "真值（0~1428）编队 → 真人：(630,900] 1374 格（2.0 兵/格）、(900,1260] 1937 格（3.4 兵/格），主要是 Liao 吃掉的两个邻居；其他真人 → 真人 2445 格（8.5）、7440 格（18.4）。编队丢给真人 4343 格：Vinland ← v 1591 格、Kuban ← PastaPirate 995、Sparta ← Tennessee 678、player_007 ← The Mongols 591、Habsburg ← GloriousPurpose 81，另 356 格是编队友的船；进攻方每格烧 12.9~62.1 兵。编队 → 内置 AI：(630,900] 17270 格、(900,1260] 18985、(1260,1428] 2583；内置 AI → 编队 7251 格（8 对赊账啃地：Doge ← AI279 639 格、Davout ← AI268 576、Phoenicia ← AI367 427、Ronin ← AI294 425……），编队被打掉的余额 ÷ AI 花的兵 = 0.95（其他真人 0.60）。",
+  "latencyDigest": {
+   "spawn": "选点：245 条指派、每号中位 13 条；录像里每号落地的选点指令中位 10 条（其他真人 2 条），相邻两次落点中位相距 371 像素；最后一条指派落地 5/19；同像素 3 对。出生期 50 步、一步约 7 拍。",
+   "lagByPeriod": "时延 P50 / P90 / 最大（落地条数；晚 ≥35 拍的占比；没生效的占比）：0~600 12 / 17 / 29（125；0%；0%）｜600~1500 89 / 212 / 363（426；72%；28%）。1428 以后没有录像，量不了。逐号 600~1500 中位：Sparta 183、Kuban 171、Raeder 150、New England 120、Mewtwo 109、Hashashin 103、Vinland 103、Phoenicia 97、Ronin 97、Tripoli 93、Savoy 92、SyntaxError 83、player_007 74、Cringe 64、Liao 46、Habsburg 43、Davout 42、Doge 32、King 25；最大：Phoenicia 363 @1323、Habsburg 350 @1155、Liao 338 @1218、Tripoli 327 @1162。",
+   "curve": "180 拍窗的时延中位 / P90 / 最大：13 / 18 / 29（0 起）→ 12 / 17 / 22 → 12 / 16 / 20 → 16 / 25 / 35（540）→ 42 / 86 / 125（720）→ 96 / 146 / 201（900）→ 149 / 262 / 350（1080）→ 133 / 260 / 363（1260）。陆攻没生效的占比：720 窗 10%、900 窗 31%、1080 窗 50%、1260 窗 36%。日志口径的指令数：630~1440 每 1000 号·拍 27.3 条，1440~1980 3.9 条。",
+   "funnel": "影子想发 → 配上录像 → 真机本地受理 → 录像落地 → 生效：0~600 133 → 126（95%）→ 110 → 125 → 125；600~1500 488 → 364（75%）→ 472 → 426 → 305。整局日志口径：本地发出 958 条，录像（到 1428）记下 551 条。",
+   "lateLoss": "600~1500 陆攻 411 条：没生效 121 条（29%）；目标已经出局 165 条（内置 AI 160、真人 5）——68 条改打无主地（176433 兵）、97 条作废（本意 368510 兵）。配上影子的 350 条里，时延 <35 拍的 28% 落空或目标已出局，≥35 拍的 56%。接壤口径丢掉的人机地里迟到占 22422 格。",
+   "refund": "600~1428 编队派出 761339 兵，进攻结束原数退回 525458（69%），实际烧掉 216360 兵换 64934 格；其他真人派出 2505857、退回 933923（37%）、烧掉 1576791 换 313831 格。",
+   "dupAndBatch": "连发串（同号同类同目标、相邻 ≤14 拍）600~1500：编队 80 串、多出 192 条 / 349343 兵；其他真人 52 串 / 183 条 / 175989 兵。同拍 ≥3 条的批：编队 47 批 / 237 条，7 批抽走 ≥50% 余额，第 2 条起多抽 342772 兵；其他真人 0 批。最大一拍 9 条（Habsburg t=1344）。整批作废的：Mewtwo t=1316 ×8、t=1127 ×7，Phoenicia t=1323 ×6，Davout t=1246 ×6，Raeder t=1148 ×6，New England t=1344 ×6，Sparta t=1218 ×6，Doge t=1050 ×5。",
+   "staleAmplify": "旧比例放大（晚 ≥35 拍、已生效）173 条：本意 632142 兵 → 实发 732289 兵（1.16 倍）。最大的几条是船：Savoy 决策 1020 / 执行 1302，17615 → 36759 兵（2.1 倍）；Phoenicia 决策 1240 / 执行 1330，34535 → 47355 兵；King 决策 1300 / 执行 1365，47753 → 57099 兵。同一次决策的第 2 条指令 0/6 落地。",
+   "load": "时延中位 ≥35 拍的 4 个窗（720~1439）全房换手 95578 / 104768 / 72055 / 59680 格；逐窗时延中位对交战对数的秩相关 0.67、对推进次数 0.56、对前一窗换手格数 0.74、对有地的真人数 −0.91（8 个窗）。HL-TICK avgMs ≤1.49：策略计算本身不慢。",
+   "clientSkew": "clockskew [KA]：参照拍 1170 / 1260 / 1350 时全队本地拍的中位比稳定差值多落后 43 / 44 / 26 拍；最落后的 Kuban 124 / 149 / 148 拍；1530 以后回到正常（≤14 拍）。"
+  },
+  "landDigest": {
+   "voronoi": "自然地盘（直线 Voronoi）：编队 101951 格 = 19.7%（人头 26.8%，占比之比 0.74）；人均 5366 格对其他真人 7988 格 = 0.67；陆路口径 19.4%。逐号中位 4444 对 7654；10/19 在全房最低四分位。反事实（全落在最后一条指派上）87627 格 = 16.9%。",
+   "capture": "拿到率（领土 ÷ 名下自然地盘）编队对其他真人：0.10 对 0.05 @300、0.49 对 0.30 @630、0.73 对 0.54 @900、0.95 对 0.85 @1260。逐号 t=630：Liao 1.78、Ronin 1.23、King 1.06……Cringe 0.35、player_007 0.34、Habsburg 0.17。",
+   "identity": "人均比（出生人头口径）= 自然份额之比 × 拿到率之比：1.28 = 0.67 × 1.91 @300；1.09 = 0.67 × 1.62 @630；0.91 = 0.67 × 1.35 @900；0.75 = 0.67 × 1.11 @1260。站位那一项全程不变，掉的是拿到率之比。",
+   "aiLand": "t=600 内置 AI 427 个 / 180861 格（35.0%）。(600,1500] 真人吃掉『属于过内置 AI 的格』282908 格：编队 48047 = 17.0%（人头 27.1%，该有 76789，差 28742）。150 拍窗的编队占比 35.8 → 19.3 → 15.1 → 14.6 → 11.0 → 18.4%。t=600 时贴着编队号的 66 个 AI（23844 格）编队吃到 84.6%；编队名下（直线口径）的 AI 地 31985 格吃到 68.4%；600 以后才长出来的 109898 格只吃到 14.2%。例：AI340（545 格，贴着 Kuban）全被 PastaPirate 吃掉；AI317（509 格，贴着 Mewtwo）Mex 吃了 495 格。",
+   "attribution": "三层归因。人头口径 [KE]：差 28742 格里 ① 站位（名下的人机地本来就少）+29427 格，名下被别人吃走的 16926 格 = ③ 迟到 7027（迟到落空 6574 + 晚到 453）+ 够不着 3641 + 被分走 3140 + ② 门槛 2737（值不值 2733、sb 4）+ 其它 381。接壤口径 [KF]：别人吃走而此前有编队号贴着的 39918 格 = ③ 迟到 22422 + ② 门槛 10940（值不值 6278、sb 4598、价位底 64）+ 分走 / 其它 6556。逐号 ② / ③：Habsburg 1164 / 5002、player_007 1689 / 3811、Davout 1769 / 2288、Mewtwo 1599 / 2199、Kuban 84 / 3472、Liao 1026 / 1736、Cringe 1377 / 695、Ronin 1372 / 123。",
+   "gateCensus": "[600,1500) 贴着可打的内置 AI 的 938 个号·点里 533 个全被挡（56.8%）；被挡的关（一个点可以有多关）：sb 326、值不值 222、开局留底 dpKeep 53、价位底 40。按窗（接壤 / 过 / 全挡）：300~630 540 / 19 / 521；630~900 411 / 122 / 289；900~1260 373 / 194 / 179；1260~1500 103 / 38 / 65。1500 以后没有真值，普查是空的。"
+  },
+  "enclosureDigest": {
+   "total": "真值（到 1428）：King 690~1410 被围 750 拍；t=1350 起 New England、Phoenicia、Hashashin 也被围——4 个号 19261 格（编队地的 20%）、380101 兵（22%）。编队边界朝向：t=540 编队友 15%；t=1080 编队友 28%、其他真人 29%、内置 AI 41%、无主地 3%。贴着的编队号对 10 对（Davout–Cringe 最多 199 格、Liao–Hashashin 152、Ronin–SyntaxError 119、Hashashin–King 89、Phoenicia–New England 74）。",
+   "late": "日志口径（ffa [FD]）：被围快照 King 58 个（最长 720~3690）、New England 35（1350~4140）、Phoenicia 31（1260~3690）、Hashashin 29（1350~3690）；四个号的余额合计 380101 @1350 → 748688 @1800 → 2239979 @3150。看不见的失地（ffa [FE]）15 窗 1386 格：Hashashin 701、New England 483、King 201。",
+   "outlets": "出路只有船：被围且有船的窗（flow [VC]）Phoenicia 9 窗 13 条船净流出 884652 兵 / +3424 格；King 18 窗 25 条 726286 兵 / +1974 格；New England 13 窗 19 条 966049 兵 / +631 格；Vinland 4 窗 10 条 424826 兵 / +954 格。Hashashin 整局 0 条船、0 笔捐款，2340 拍 0 条指令。"
+  },
+  "troopDigest": {
+   "production": "真值：编队产兵占全房真人的 27.2%（0~600，人均 1.02 倍）、28.9%（600~1428，1.11 倍）。日志口径整局利息：player_007 1567 万、Tripoli 1404 万、Habsburg 743 万、New England 530 万、Phoenicia 424 万。",
+   "stock": "t=600 编队地占真人的 28.7%、兵 26.0%；t=1428 地 20.3%、兵 31.4%（99797 格 / 2015545 兵，密度 20.2 对 11.2）。日志口径编队余额：3727903 @1980 → 12322101 @3600 → 11915025 @4590 → 10985788 @6570；密度 29.3 → 92.7 → 87.9 → 109.2。",
+   "uses": "真值整局（到 1428）：编队产兵 2854071，烧在进攻里 309572（10.8%；其他真人 25.5%），挨打被打掉 123794（4.3%；3.8%），船费 30416（1.1%）。日志口径 t≥2250：18 个号 79200 号·拍 315 条指令 = 173 条陆攻 + 142 条船 + 0 捐款 + 0 戳刺（每 1000 号·拍 2.2 条陆攻）。",
+   "leak": "出局时清零的余额 2734406（17 个号；ffa [FB]）；另有 3 次陆上被清场时的余额（Kuban、Vinland、King）。顶硬上限被截的利息：Raeder 13194。",
+   "price": "日志口径（flow [VD]，t≥1420；『花掉的兵』= 余额变化扣掉利息，段里同时挨打的分不开）：段首密度 ≥100 的 47 段 21428594 兵 / 59392 格 = 每格 361；<100 的 24 段 2924285 兵 / 55022 格 = 每格 53；领土没涨的 20 段 10014422 兵 / −25824 格。逐号 ≥100 的段：player_007 7 段每格 586、Phoenicia 4 段 647、Cringe 3 段 489、Habsburg 4 段 355、New England 6 段 349、Tripoli 3 段 228。挨打窗（flow [VE]）每丢一格少掉 150~190 兵（Mewtwo 85）。"
+  },
+  "deathDigest": {
+   "total": "17 个阵亡全在录像结束以后，只有日志。出局时账上的兵合计 2734406，≥10 万的 9 个号 2331847。满仓下坡（起点 → 出局的拍数 / 自己的指令）：Davout 594 / 0、Habsburg 1710 / 0（4950 起）、player_007 349 / 0、Hashashin 661 / 0、New England 302 / 0、SyntaxError 1265 / 6、Tripoli 1153 / 6、Kuban 270 / 0（3780 → 4050 清场）。生存梯：编队号占活着的真人 34.7% @3626 → 31.6% @7591 → 0 @9662。",
+   "perBot": "下坡起点 领土 / 余额（密度）：Davout 11172 / 1175778（105.2）；Habsburg 21218 / 1512323（71.3，@5220）；player_007 25354 / 2496591（98.5）；Hashashin 8902 / 1284834（144.3）；SyntaxError 9983 / 1286569（128.9）；Tripoli 38482 / 2767664（71.9）；Phoenicia 7519 / 873737（116.2）；New England 8941 / 1290211（144.3）；Kuban 3544 / 458052（129.2）。出局时余额：Tripoli 546060、player_007 468336、Habsburg 307846、New England 250494、Davout 212714、Hashashin 156941、SyntaxError 147818、Mewtwo 131729、Raeder 109909、Phoenicia 96322、Ronin 95679、Sparta 84761、Doge 45529、Cringe 42413、Savoy 21337、King 16454、Kuban 64。"
+  }
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "0~20",
+   "bot": "全队",
+   "decision": "出生选点各算各的槽位表：同一个坐标在三个客户端里是三个不同的槽位号，3 对号落在同一个像素上（Ronin / SyntaxError、Liao / King、Davout / Cringe），Hashashin 离 Liao / King 52 像素。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4010-4020 squadIds 只按名字池收人，slot = 启动名次 % 20；L4066 minSep = max(85, min(145, 0.14×对角线))；L4067-4089 每个号在自己的客户端里先把编队友已经占的地从盘面上抹掉，再各算各的候选表，2200 ms 重算一次；L4090-4112 贪心排槽位，不够就把间距放宽到 0.62 倍；L4114-4141 还不够时按『离已选点最远』在 16 像素网格上补位；L4146-4151 返回 chosenSlots[slot]——没有一张全队共用的『槽位 → 坐标』表）",
+   "verdict": "error",
+   "patternId": "NEW-SP-07",
+   "evidence": [
+    "spawncheck [PB]：同像素号对 3；最后一条指派相同的号对 3（Ronin / SyntaxError、Hashashin / Mewtwo、Habsburg / Cringe）",
+    "日志：(1198,934) = Doge 槽位 11（L8599251）、Liao 槽位 9（L8599282）、King 槽位 8（L8599291）；(1306,98) = Davout 槽位 5（L8599315）、Cringe 槽位 6（L8599327）、Habsburg 槽位 4（L8599335）",
+    "landcap [KA]：同像素的 6 个号里 4 个的自然地盘在全队最小的 5 个里（Liao 1140、SyntaxError 1735、Ronin 1807、King 2205）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "0~20",
+   "bot": "全队",
+   "decision": "选点贴边、扎堆：9/19 个号离地图边 ≤120 像素（其他真人 15%），下沿一排 6 个号、上沿 3 个；编队名下的自然地盘 19.7%（人头 26.8%），10 个号在全房最低四分位。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4010-4020 squadIds 只按名字池收人，slot = 启动名次 % 20；L4066 minSep = max(85, min(145, 0.14×对角线))；L4067-4089 每个号在自己的客户端里先把编队友已经占的地从盘面上抹掉，再各算各的候选表，2200 ms 重算一次；L4090-4112 贪心排槽位，不够就把间距放宽到 0.62 倍；L4114-4141 还不够时按『离已选点最远』在 16 像素网格上补位；L4146-4151 返回 chosenSlots[slot]——没有一张全队共用的『槽位 → 坐标』表）",
+   "verdict": "error",
+   "patternId": "NEW-SP-08",
+   "evidence": [
+    "spawngeo [QA][QD]：离边中位 122 像素（其他真人 250）；下沿：Savoy、Liao、Hashashin、King、Phoenicia、New England",
+    "spawngeo [QC][QE]：5 个号一团（中心 1272,953）；9/19 个号最近的真人是编队友",
+    "landcap [KA]：自然地盘 101951 格 = 19.7%，逐号中位 4444（其他真人 7654）；全落在最后一条指派上也只有 16.9%"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "20~630",
+   "bot": "全队",
+   "decision": "开局 DP 扩张按期完成，时延正常：自然地盘只有别人的 0.67，t=630 人均领土做到别人的 1.06 倍。",
+   "codePath": "src/strategy/v27-team-c110.js: expandNeutral L2408-2417 → dpNeutral L2418-2490（开局按租金周期的 DP 扩张）",
+   "verdict": "good",
+   "patternId": "NEW-OP-G1",
+   "evidence": [
+    "OPENING-CHECK t=188（L8599418）：19/19 OK",
+    "perhead [PH-A]：人均比 0.81 @180 → 1.06 @630；landcap [KB]：拿到率 0.49 对 0.30",
+    "lagledger [GB]：0~600 时延 P50 12 / P90 17 / 最大 29，125 条指令 0 条没生效"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "690~1410",
+   "bot": "King",
+   "decision": "和 Liao 同像素出生，t=690 四面都是受保护的编队友，只有 2400 格：之后 750 拍地不动，兵从 9144 涨到 71676，出路只有船。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4010-4020 squadIds 只按名字池收人，slot = 启动名次 % 20；L4066 minSep = max(85, min(145, 0.14×对角线))；L4067-4089 每个号在自己的客户端里先把编队友已经占的地从盘面上抹掉，再各算各的候选表，2200 ms 重算一次；L4090-4112 贪心排槽位，不够就把间距放宽到 0.62 倍；L4114-4141 还不够时按『离已选点最远』在 16 像素网格上补位；L4146-4151 返回 chosenSlots[slot]——没有一张全队共用的『槽位 → 坐标』表）；src/strategy/v27-team-c110.js: analyze L420-448（L440：isProtectedSquadMate 为真的邻居不进 nb，也不计入 neutral）；isProtectedSquadMate L3993-3996 → hasWildOutsidersAlive L3978-3990（场上还有『活着、领土 ≥80、不是空壳、名字不在名字池』的人就为真；自由混战里这样的人一直有）",
+   "verdict": "error",
+   "patternId": "NEW-OP-01",
+   "evidence": [
+    "enclose [EA]：King 690~1410 围死 750 拍，2400 → 2577 格，9144 → 71676 兵；贴着 Hashashin 88、Liao 44、Phoenicia 39、New England 29 格",
+    "HL-TICK t=720：2400 格、nb=0、neut=0（L8599610）",
+    "ffa [FD]：King 整局 58 个被围快照、28 条船"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "700~1030",
+   "bot": "Liao",
+   "decision": "趁两个真人邻居兵薄连续出手：meng孬到 996 格花 2048 兵、国防科大 2302 格花 7040 兵，都打到出局——自然地盘全队最小（1140 格）的号在 1428 时长成编队第三大（7546 格）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）；src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）",
+   "verdict": "good",
+   "patternId": "NEW-AT-G1",
+   "evidence": [
+    "truth 逐对战损：Liao → 国防科大 2302 格 / 7040 兵（3.1 兵/格），→ meng孬到 996 格 / 2048 兵（2.1 兵/格）",
+    "resim deaths：meng孬到 t=768 出局（进攻者 AI423、Liao 1093 兵）、国防科大 t=1030 出局（Liao 5682 兵）",
+    "landcap [KB]：Liao t=630 拿到率 1.78（全队最高）；perhead [PH-C]：t=1428 7546 格 / 104702 兵"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "720~1440",
+   "bot": "全队（17 个号时延中位 ≥35 拍）",
+   "decision": "客户端落后服务器时照常按旧盘面下单：411 条陆攻里 121 条没生效，165 条落地时目标已经出局（97 条作废、68 条被改成打无主地）；派出去的兵 69% 原数退回。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L2-47（驱动层 afterTick 包装：只有 450 ms / 8 拍的在途保护，没有时延检测）；Strategy.send L526-540（pct 在决策时按当时余额算好，同目标 15 拍冷却后可重发）；src/sim/sim/game.js attack L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵）/ redirectAttackToNeutral L858-869（目标出局后这一路改成打无主地；身边没有无主地就作废） / endAttack L1076-1080（没用上的兵原数退回）",
+   "verdict": "error",
+   "patternId": "NEW-IO-14",
+   "evidence": [
+    "lagledger [GE]：600~1500 陆攻 411 条、没生效 121 条；目标已出局 165 条（内置 AI 160）：改打无主地 68 条 / 176433 兵、作废 97 条 / 本意 368510 兵",
+    "lagledger [GD]：编队派出 761339 兵、退回 525458（69%）；其他真人派出 2505857、退回 933923（37%）",
+    "landcap [KF]：接壤口径里迟到的 22422 格（迟到落空 18528 + 晚到 ≥35 拍 3894）",
+    "lagledger [GE]：配上影子的 350 条陆攻里，时延 <35 拍的 100 条有 28% 落空或目标已出局，≥35 拍的 250 条有 56%"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "1022~1407",
+   "bot": "Tripoli / Sparta / Vinland / Raeder / Hashashin / Liao 等",
+   "decision": "积压的旧单一拍冲出去：比例是决策时算的，抽兵按落地时的余额，一拍几条叠在一起——Tripoli t=1162~1169 四条抽走 58% 余额（本意 25%），Sparta t=1036 四条 56%（本意 12%）。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L2-47（驱动层 afterTick 包装：只有 450 ms / 8 拍的在途保护，没有时延检测）；Strategy.send L526-540（pct 在决策时按当时余额算好，同目标 15 拍冷却后可重发）；src/sim/sim/game.js attack L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵）/ redirectAttackToNeutral L858-869（目标出局后这一路改成打无主地；身边没有无主地就作废） / endAttack L1076-1080（没用上的兵原数退回）",
+   "verdict": "error",
+   "patternId": "NEW-IO-02",
+   "evidence": [
+    "lagledger [GF]：≥3 条的批编队 47 批 / 237 条，7 批抽走 ≥50% 余额，第 2 条起多抽 342772 兵；其他真人 0 批",
+    "bursts [BA]：700~2100 编队 385 条指令里 237 条落在 ≥3 条的批里（62%），最大一拍 9 条（Habsburg t=1344）",
+    "shadowcmp [SG]：旧比例放大 173 条，本意 632142 兵 → 实发 732289 兵；Savoy 的一条船决策在 1020（余额 50956，本意 17615 兵）、执行在 1302（余额 106334，实发 36759 兵），2.1 倍"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "510~1230",
+   "bot": "Liao / Hashashin / Ronin / SyntaxError / New England / Phoenicia",
+   "decision": "贴着 0 兵的人机不出手：防人机留底 sb 取了邻居的余额，而邻居正是同像素 / 贴身出生的编队友——两个号互相把对方锁住。Liao 余额 20416、sb 28074，面前的人机 485 格 / 0 兵，吃光只要 728 兵。",
+   "codePath": "src/strategy/v27-team-c110.js: winFloor L4542-4550（打人机前的留底 = max(价位底, dpKeep, sb)）→ safeFinite L2532-2541 / L2773-2784 → threatOf L464-490（sb 取的是共用同一个人机邻居的另一个真人的余额，不分是不是编队友）",
+   "verdict": "error",
+   "patternId": "NEW-EC-05",
+   "evidence": [
+    "shadowcmp [SH]：630~900 sb 全挡 170 个号·点（编队友定的 106 个、互锁 76 个、人机 0 兵的 59 个、吃光所需 ≤ 自己余额 10% 的 135 个）；900~1260 122 个（编队友 55 个）",
+    "shadowcmp [SH] 逐号：Liao 48 点（Hashashin×46）、Hashashin 37（Liao×33）、Ronin 26（SyntaxError×21）、SyntaxError 26（Ronin×22）、New England 21（Phoenicia×21）、Phoenicia 17（Hashashin×10、New England×7）",
+    "landcap [KF]：接壤口径里被 sb 挡掉的 4598 格（定出 sb 的是别的真人 3007 格、编队友 1591 格）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "455~1065",
+   "bot": "player_007 / New England / Habsburg / Davout / Cringe / Mewtwo",
+   "decision": "同一次决策发两条指令（先吃无主地、再买地），第 2 条在录像里一条都没有：0/6。最大的一条是 player_007 t=1065 打 AI97 的 2271 兵。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.act L4900-4902（同一次决策里先 expandNeutral 再 buyLand，可以各发一条）",
+   "verdict": "unclear",
+   "patternId": "NEW-EX-05",
+   "evidence": [
+    "shadowcmp [SI]：一次 act 只发 1 条的 484/609 配上；发两条时第 2 条 0/6",
+    "6 条：player_007 t=1065 → AI97 2271 兵、New England 540 → AI451 911、Habsburg 560 → AI273 900、Davout 540 → AI268 694、Cringe 470 → AI390 511、Mewtwo 455 → AI431 510",
+    "同样的现象 B030 / B015 / B033 / B034 / B035 都有"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "1300~1372",
+   "bot": "King",
+   "decision": "被围的号发船：决策时落点不是编队友的地，65 拍后才执行、再 7 拍靠岸时那里已经是 New England 的——56653 兵打下编队友 343 格（每格 56 兵），King 烧 19218 兵，New England 余额掉 9255。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.idleBoats L4979-5006（L4995 有中立地或离上一条船不到 boatEvery 拍就不发；L4996 有敌邻时余额要 ≥ idleCap×100×领土才发；L5004 nb 为空时不设价格上限）→ boatOut L1035-1051（落点有主时船上的兵 = boatFrac×（余额 − 留底），pct 在决策时算好）→ searchWater L1056-1115（L1104 跳过受保护的编队友——按决策那一拍落点归谁算）；src/sim/sim/game.js boat 手续费 = 余额的 32/1024，和船上装多少兵无关；src/sim/sim/boats.js landAt L263-287（落点归谁，按靠岸那一拍算：靠在自己的地上兵回余额；靠在别人的地上开进攻——自由混战里编队友也是『别人』）",
+   "verdict": "error",
+   "patternId": "NEW-SE-04",
+   "evidence": [
+    "truth 靠岸表：t=1372 King → New England 56653 兵；t=898 King → Phoenicia 389 兵；t=1295 King → New England 1362 兵",
+    "shadow.json：King t=1300 的船落点是格 1650314 = (1430,939)，决策时是无主地（512）；Phoenicia 同一拍选了同一个落点，t=1310 两个号又同选 1648561",
+    "enclose [EC]：King – New England 互打 343 格 / 19218 兵；编队内部互打合计 356 格 / 19604 兵，全是船",
+    "HL-TICK：New England t=1350 6402 格 → t=1440 5921 格（L8599731、L8599756），nb=0、cmds 不变（ffa [FE]：481 格）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "1440~1980",
+   "bot": "player_007 / Mewtwo / Habsburg 等",
+   "decision": "时延一消就把囤的兵换成地：18 个号 38 条非船指令，编队占全图 17.84% → 24.63%；player_007 10748 → 28028 格，Mewtwo 两段 7885 格每格 36 兵。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）",
+   "verdict": "good",
+   "patternId": "NEW-AT-G3",
+   "evidence": [
+    "ffa [FC]：1440~1980 9720 号·拍 / 38 条非船指令 / 13 条船；占全图 17.84% → 24.63%，密度 22.2 → 29.3",
+    "HL-TICK：player_007 t=1350 10748 格（L8599725）→ t=1980 28028 格 / 185637 兵（L8599912），11 条指令",
+    "flow [VD]：Mewtwo 2 段 280342 兵 / 7885 格 = 每格 36；全队段首密度 <100 的段（含 1420 以前）每格 24 兵"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "1980~3600",
+   "bot": "全队 18 个号",
+   "decision": "中立地和人机吃完以后停手：1620 拍 39 条非船指令，地不涨，余额从 373 万涨到 1232 万（密度 29 → 93）。player_007 28028 格、3 个敌邻，1 条指令，兵从 19 万涨到 316 万。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）；src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）",
+   "verdict": "error",
+   "patternId": "NEW-EC-04",
+   "evidence": [
+    "ffa [FC]：1980~3600 每 1000 号·拍 1.3 条非船指令（1440~1980 是 3.9、630~1440 是 27.3）",
+    "teamshare [TC]：编队余额 5214670 @2250 → 12322101 @3600；余额过软上限的号 2 → 7",
+    "logstats [QF]（整局）：只有 1 个敌邻、没有中立地的快照窗里，起点密度 <100 的 159 窗有 140 窗没有指令，100~128 的 104 窗有 76 窗没有，≥128 的 48 窗有 31 窗没有",
+    "停在哪一道闸没有真值（推断：没过软上限时最便宜的报价 ≥ worth 就整轮停）"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D13",
+   "t": "1350~3690",
+   "bot": "Hashashin（King / Phoenicia / New England 同类）",
+   "decision": "自由混战里被编队友围死：不能打（名字保护）、不能捐（没有队伍）、没有发船——2340 拍 0 条指令，兵从 95027 涨到 603881 顶在硬上限，还被『看不见』的对手拿走 701 格。",
+   "codePath": "src/strategy/v27-team-c110.js: analyze L420-448（L440：isProtectedSquadMate 为真的邻居不进 nb，也不计入 neutral）；isProtectedSquadMate L3993-3996 → hasWildOutsidersAlive L3978-3990（场上还有『活着、领土 ≥80、不是空壳、名字不在名字池』的人就为真；自由混战里这样的人一直有）；src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4497 的第一行 L4371（!g.teams || !(g.teams[me] > 0) 就返回：救援捐款、协防戳刺、盈余捐款都在它后面）；tryEmergencyBossRescue L4273-4275（同样的判断）；Policy.act L4922（买地循环没发指令时才走到捐款）；src/strategy/v27-team-c110.js: 第 1 行 SQUAD_POOL_SET（名字池）；isOurSquadBot L3973-3976（只比名字，不看这个号在不在场、还连不连着）；src/sim/sim/game.js leave L229-233 / runAsBot L235-239（离开的真人改由引擎托管：每 80 拍朝一个随机邻居出兵，1.5% 余额起、每次多 0.5%、封顶 25%）；isBot L216（离开的人对别人算人机）",
+   "verdict": "error",
+   "patternId": "NEW-MT-11",
+   "evidence": [
+    "ffa [FD]：Hashashin 1350~3690 被围 2340 拍，4737 → 4036 格，95027 → 603881 兵，最高密度 149.9，指令 0 / 船 0（L8599727~L8600480）；整局 HL-DONATE / HL-ASSIST 0 条",
+    "ffa [FE]：看不见的失地 Hashashin 6 窗 701 格（152、150、149、116、83、51）、King 5 窗 201 格、New England 3 窗 483 格",
+    "perhead [PH-C]：t=1410 Hashashin 的边界 = Liao 152 格、King 89、Phoenicia 49，没有别人；Liao ≈1428 离开",
+    "teamshare [TC]：被围的 4 个号余额合计 380101 @1350 → 2239979 @3150"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D14",
+   "t": "3600~5760",
+   "bot": "player_007 / Phoenicia / Habsburg / Cringe",
+   "decision": "囤过软上限以后才买地，价钱是没过软上限时的 7 倍：段首密度 ≥100 的 47 段每格 361 兵，<100 的 24 段每格 53 兵。Phoenicia 90 拍里把 124 万兵放到只剩 12 万，多了 370 格，随后丢 4450 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）",
+   "verdict": "error",
+   "patternId": "NEW-AT-01",
+   "evidence": [
+    "flow_late [VD]：≥100 的 47 段 21428594 兵 / 59392 格；<100 的 24 段 2924285 兵 / 55022 格；player_007 7 段 7880115 兵 / 13440 格（每格 586）、Phoenicia 4 段每格 647、Cringe 3 段每格 489",
+    "HL-TICK：Phoenicia t=4770 9265 格 / 1244185 兵（L8600799）→ t=4860 9635 / 118838（L8600817）→ t=5670 6974 格（L8601037）",
+    "HL-TICK：player_007 t=4320 32358 格 / 3600570 兵（L8600648）→ t=4500 35981 / 1853131（L8600704）→ t=4950 28152 格（L8600834）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D15",
+   "t": "3780~9662",
+   "bot": "Davout / Habsburg / player_007 / Hashashin / New England / Kuban",
+   "decision": "满仓挨打时不出手：6 个号的下坡里合计 0 条指令。Habsburg 1620 拍从 22838 格掉到 4871 格；player_007 25354 格 / 250 万兵 349 拍出局。",
+   "codePath": "src/strategy/v27-team-c110.js: counterAttack L871-887（L650 counterK = 0、L825 只在 counterK > 0 时才调用——专门的反击分支是关着的；挨打时只剩 buyLand 的报价 / 留底几道闸）；src/strategy/v27-team-c110.js: Policy.offers L5008-5036（L5031 rawNeed = elimCost(q) + 对方压在我身上的兵 − 我压在它身上的兵；L5035-5036 每格报价 c = (rawNeed + 手续费) ÷ 把它打出局能拿到的地）；elimCost L511-516（= 2×对方余额×(1 − x^1.6) + 2×对方领土×(1 − x)，x = 对方峰值的 1/4 ÷ 现有领土）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）",
+   "verdict": "error",
+   "patternId": "NEW-DF-07",
+   "evidence": [
+    "HL-TICK：Davout 4320 → 4860 cmds 37 不变（L8600652、L8600820）；Habsburg 4950 → 6570 cmds 71 不变（L8600841、L8601220）；player_007 6570 → 6840 cmds 74 不变（L8601213、L8601289）",
+    "HL-TICK：Hashashin 6930 → 7560 cmds 45 不变（L8601314、L8601416）；New England 9360 → 9630 cmds 67 不变（L8601549、L8601563）；Kuban 3780 → 4050 cmds 38 不变（L8600509、L8600592）",
+    "flow_late [VE]：挨打窗每丢一格少掉的兵 Hashashin 189、New England 168、Habsburg 163、Davout 159、player_007 157、Tripoli 150",
+    "fulldeath：严格口径 2 个（player_007、New England），宽口径 6 个；对进攻者的买地结论没有真值"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D16",
+   "t": "3626~9662",
+   "bot": "17 个阵亡号",
+   "decision": "领土掉到历史峰值的 1/4 被引擎除名时，账上还有大笔兵：17 个号合计 2734406，Tripoli 一个号 546060（当时还有 6738 格）。策略里没有任何一处看自己离这条线还有多远。",
+   "codePath": "src/strategy/v27-team-c110.js: 全文 9 处读 g.peak（L513、L591、L1017、L1203、L2109、L2600、L2800、L3448、L5033），都是算对方的出局线；没有一处读 g.peak[me]；src/sim/sim/game.js aliveTick L1298-1312（每拍检查：领土 ≤ ⌊历史峰值/4⌋ 就 collapse，L1303；领土低于峰值时峰值每拍只回落 max(1, 差额/1000)，L1307）/ collapse L1314-1334（有船在海上时不除名，但陆上的地和余额全清，L1316-1330；否则 eliminate，余额清零）",
+   "verdict": "error",
+   "patternId": "NEW-DF-08",
+   "evidence": [
+    "ffa [FB]：出局时余额合计 2734406；≥10 万的 9 个号合计 2331847；出局前最后的领土 ÷ 峰值 0.11~0.25",
+    "结果行：Tripoli L8601514（6738 格 / 546060 兵）、player_007 L8601307（7127 / 468336）、Habsburg L8601241（3390 / 307846）、New England L8601565（2739 / 250494）",
+    "另有 3 次陆上被清场、因为有船在海上没有除名（余额同样清零）：Kuban 3960 → 4050（1155 格 / 77865 兵 → 0）、Vinland 5850 → 5940（1973 / 40444 → 0）、King 7560 → 7740（267523 → 22529 兵）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "4050~5220",
+   "bot": "Raeder",
+   "decision": "余额顶在 150×领土（引擎硬上限，利息被截掉）1170 拍：5000 格上下、75 万兵、2~3 个敌邻，只发了 1 条陆攻 1 条船。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）；src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541 → safeAt L2744-2754 → dpKeep L2491-2496（对真人的留底 =（真人邻居里『余额 + 它压在我身上的兵』最大的那个 − 1.5×领土）÷1.78）；src/sim/sim/game.js interestRate L739-746（密度过 100 利率线性降，150 归零；离开的人没有利息）/ addBalance L752-757（余额封顶 150×领土）",
+   "verdict": "error",
+   "patternId": "NEW-EC-09",
+   "evidence": [
+    "HL-TICK：t=4050 5036 格 / 754621 兵（密度 149.8，L8600594）→ t=5220 4916 格 / 737400 兵（150.0，L8600915），cmds 38 → 39",
+    "logstats：Raeder 顶硬上限的快照 13 个（4050~5220），被截掉的利息 13194；Hashashin 2 个（3330、3690）",
+    "停在哪一道闸没有真值"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D18",
+   "t": "1530~3626",
+   "bot": "Mewtwo",
+   "decision": "便宜地把地翻倍到 13887 格（每格 36 兵）以后密度只有 10，身边是全房第二的 Mex；此后 1556 拍一条指令不发，被吃到出局线。买地本身不贵，问题在买完以后既不补防也不还手。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5372（L5258-5260 worth = maxW(0.5，L2701)×winRatio(t)（L2885-2892）×max(自己密度, 0.85×其他真人密度中位)；L5261 over = 余额 > 100×领土；L5267 最便宜的报价 ≥ worth 且没超软上限就整轮停；L5358-5361 可用兵 = 余额 − 手续费 − max(keep, safe)，≤0 跳过）；src/strategy/v27-team-c110.js: counterAttack L871-887（L650 counterK = 0、L825 只在 counterK > 0 时才调用——专门的反击分支是关着的；挨打时只剩 buyLand 的报价 / 留底几道闸）",
+   "verdict": "unclear",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "HL-TICK：t=1980 13887 格 / 142577 兵（密度 10.3，L8599914）；t=2070 → 3600 cmds 46 不变，13674 → 3708 格（L8599935、L8600448）",
+    "flow_late [VE]：Mewtwo 挨打窗丢 10179 格、少 869048 兵（每格 85）",
+    "ffa [FG]：t=1428 Mex 15058 格 / 92838 兵，全房第二；perhead [PH-C]：Mewtwo 和 Mex 196 格边界"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D19",
+   "t": "1260~5310",
+   "bot": "Phoenicia / King / New England / Vinland",
+   "decision": "被围时每隔一阵发一条船，不设价格上限：Phoenicia 9 窗 13 条船净流出 884652 兵换 3424 格（每格 258），King 726286 兵换 1974 格，New England 966049 兵换 631 格（每格 1531）。Phoenicia 靠它破了围，New England 没有。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.idleBoats L4979-5006（L4995 有中立地或离上一条船不到 boatEvery 拍就不发；L4996 有敌邻时余额要 ≥ idleCap×100×领土才发；L5004 nb 为空时不设价格上限）→ boatOut L1035-1051（落点有主时船上的兵 = boatFrac×（余额 − 留底），pct 在决策时算好）→ searchWater L1056-1115（L1104 跳过受保护的编队友——按决策那一拍落点归谁算）；src/sim/sim/game.js boat 手续费 = 余额的 32/1024，和船上装多少兵无关",
+   "verdict": "unclear",
+   "patternId": "NEW-SE-05",
+   "evidence": [
+    "flow_late [VC]：Phoenicia 9 窗 / 13 条 −884652 兵 / +3424 格；King 18 窗 / 25 条 −726286 / +1974；New England 13 窗 / 19 条 −966049 / +631；Vinland 4 窗 / 10 条 −424826 / +954",
+    "HL-TICK：Phoenicia t=3330 6105 格、nb=0（L8600353）→ t=3780 9265 格、nb=1（L8600497）；New England t=1530 5508 格 → t=3150 5517 格，8 条船（L8599794、L8600295）",
+    "真值（到 1428）：15 条船 282943 兵、船费 30416；靠在别人的地上 64281 兵（其中 58404 兵是 King 靠在编队友的地上），178895 兵没靠岸"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "id": "NEW-MT-11",
+   "prefix": "MT",
+   "name": "自由混战也按名字互保：没有队伍，捐款 / 协防 / 救援整段不走，编队友之间只剩『不能打』——被围的号的兵除了船没有出路",
+   "definition": "录像头 0 队（对局卡 teamSplitCounts 为空）、同房 ≥2 个名字池里的号。c110 isProtectedSquadMate L3993-3996 只要场上还有池外真人活着就保护名字池里的号（analyze L440 不进 nb）；tryDonateToTeammate L4371、tryEmergencyBossRescue L4275 开头都是 !g.teams || !(g.teams[me] > 0) 直接返回——救援捐款、协防戳刺、盈余捐款在没有队伍的房间里一条都发不出。记：整局 HL-DONATE / HL-ASSIST 条数（= 0）、每个号 nb=0 且 neut=0 的快照数和最长一段（领土、余额起止、段内指令 / 船）；有录像时并记编队边界里朝着编队友的占比。命中 = 队数 0 且至少一个号被围 ≥10 个快照",
+   "detect": "scripts/ffa.py [FD]（被围的账 + 捐款条数）、[FC]（分段指令）；有录像时 scripts/enclose.py [EA]~[EE]"
+  },
+  {
+   "id": "NEW-DF-08",
+   "prefix": "DF",
+   "name": "四分之一线出局时账上还有大笔兵：领土掉到历史峰值的 1/4 就被引擎除名、余额清零；策略只算别人的这条线，不看自己的",
+   "definition": "结果行 died 且 lastTerritory ÷ peak ≤ 0.25、出局时 balance ≥10 万。引擎 game.js aliveTick L1298-1312：每拍检查，领土 ≤ ⌊峰值/4⌋ 就 collapse（L1303）；领土低于峰值时峰值每拍只回落 max(1, 差额/1000)（L1307）；collapse L1314-1334：有船在海上时不除名，但陆上的地和余额全清（L1316-1330）；否则 eliminate，余额清零。c110 全文 9 处读 g.peak，都是算对方的出局线（elimCost L513、L591、L1017、L1203、L2109、L2600、L2800、L3448、L5033），没有一处读 g.peak[me]。记：每个阵亡号的峰值、最后领土、出局时余额和密度；全队合计、余额 ≥10 万的个数",
+   "detect": "scripts/ffa.py [FB]（结果行的 peak / lastTerritory / balance）"
+  }
+ ],
+ "lossArchetype": "never-grew",
+ "archetypeNote": "按 never-grew 归类：人均比 1.06 @630 之后再没有回到 0.7 以上（0.62 @1420；人均比下限 0.63 @3626、0.60 @4914、0.40 @6660）。录像末拍 19 个号里 16 个排在后一半，过 1 万格的只有 player_007 一个（其他真人 46 个里 15 个）。单号最大 38593 格 = 全图 7.5%——自由混战要一个号独吞全图，没有一个号接近。不是 early-wipe（第一个阵亡在 3626）、不是 lead-thrown（没有领先过）；3870 以后的连环出局发生在已经落后之后。次型 outscaled：编队合计 1980~5220 一直在 24%~26%，活到 9662 的 12 个真人里没有编队号。",
+ "winnerNotes": "没有 end 行，赢家不知道：t=9662 最后一个编队号出局时场上还有 12 个真人。录像末拍（t=1428）领先的是 Imperium 17762 格、Mex 15058、Player 644 14548、Illyrium 13118、GloriousPurpose 13112（各占全图 2.5%~3.4%，谁都还小）。其他真人在人机收割期人均吃到的人机地比编队多：(630,900] 1187 对 909 格、(900,1260] 2155 对 999、(1260,1428] 626 对 136；烧在进攻里的兵占产兵的 25.5%（编队 10.8%）。贴着编队号的大号：Mex（Mewtwo，196 格边界）、Player 644（Doge）、Imperium（Habsburg、Davout）、GloriousPurpose（Habsburg，232 格边界）。1428 以后别人怎么长的没有数据。",
+ "wentWell": [
+  "开局：自然地盘人均只有别人的 0.67，t=630 人均领土做到 1.06 倍；t=600 时贴着编队号的 66 个人机（23844 格）吃到 84.6%。",
+  "Liao：全队最小的自然地盘（1140 格），用每格 2~3 兵吃掉两个真人邻居，1428 时长成编队第三大（7546 格）。",
+  "1440~1980 时延一消，38 条非船指令把编队从 17.84% 带到 24.63%；player_007 10748 → 28028 格、Mewtwo 两段每格 36 兵。",
+  "对真人打得省：真值里编队打真人每格 2.0~3.4 兵（其他真人 8.5~18.4）；烧在进攻里的兵只占产兵的 10.8%。",
+  "到 t=7591 为止编队号占活着的真人的比例一直在 31%~36%（开局 26.8%）：号不比别人死得快。Tripoli、player_007 各长到 3.8 万、3.7 万格。"
+ ],
+ "unknowns": [
+  "1428 以后 8234 拍没有真值：谁打了哪个号、压上来多少兵、买地循环停在哪一道闸，都只能从每 90 拍一条的快照推。17 个阵亡的死因链都落在这一段。",
+  "Liao 为什么在 1428 前后断流；离开以后它的 7546 格 / 104702 兵去了哪里。Hashashin 被围期间 701 格是谁拿走的（头三次每次约 150 格，正好是它和 Liao 的边界长度；推断是引擎托管的 Liao，没有核实）。",
+  "谁赢了：t=9662 场上还有 12 个真人，没有 end 行。1428 以后其他真人的领土、兵力没有数据，人均比只有下限。",
+  "720~1440 时延波的成因：只能确定和全房交战密度同步、17 个号一起慢、策略计算本身不慢（avgMs ≤1.49）；是服务器下发慢、浏览器排队还是别的，没有数据。",
+  "Hashashin 为什么整局不发船（King、Phoenicia、New England 都发了）：最可能是没有海岸，没有核实。",
+  "flow 的『花掉的兵』分不开进攻和挨打：领土没涨的 20 段（1001 万兵）里各有多少是打出去的，不知道。",
+  "600~1500 的时延是下限：积压重时按 pct 配对会把旧单配到较新的影子决策上。Stark（第 20 个号）为什么没进场，没有记录。"
+ ],
+ "mechanicsQuestions": [
+  "同一次决策发两条指令时第 2 条在录像里找不到（0/6）：是外层桥每个决策拍只转发一条，还是服务器每拍每号只收一条？B030 / B015 / B033 / B034 / B035 都见过。",
+  "编队的指令成批落在同一个服务器拍上（47 批，最多一拍 9 条），同房 52 个其他真人一批都没有：是编队的客户端共用一条通道被一起放行，还是各自积压后同时追上？",
+  "四分之一线：领土 ≤ 峰值/4 就出局、余额清零，峰值每拍只回落差额的千分之一。真机上是不是同一条规则、同一个回落速度？17 个号出局时账上共 273 万兵。",
+  "离开的号由引擎托管后会不会真的每 80 拍打一次邻居（game.js leave / runAsBot）？如果会，编队友按名字保护它、它却照打编队友。",
+  "自由混战里录像头 teams 全是 0：名字保护照常生效，捐款 / 协防 / 救援的入口全部返回。这是有意的（混战里不互助），还是没考虑到编队会被排进混战房？",
+  "陆上被清场时有船在海上就不除名（collapse 的 boatCount 分支）：Kuban、Vinland、King 都靠这个多活了一段，但余额同样清零。"
+ ],
+ "scripts": [
+  "scripts/facts.py",
+  "scripts/resim_r08.mjs",
+  "scripts/truth.py",
+  "scripts/shadow.mjs",
+  "scripts/shadowcmp.py",
+  "scripts/spawncheck.py",
+  "scripts/spawnlog.py",
+  "scripts/spawngeo.py",
+  "scripts/landcap.mjs",
+  "scripts/landcap.py",
+  "scripts/atkfate.mjs",
+  "scripts/lagledger.py",
+  "scripts/lagload.py",
+  "scripts/enclose.py",
+  "scripts/econ.py",
+  "scripts/clockskew.py",
+  "scripts/lagorder.py",
+  "scripts/harvest.py",
+  "scripts/perhead.py",
+  "scripts/bursts.py",
+  "scripts/logstats.py",
+  "scripts/teamshare.py",
+  "scripts/flow.py",
+  "scripts/fulldeath.py",
+  "scripts/ffa.py",
+  "scripts/build_review.py"
+ ],
+ "confidenceOverall": "medium",
+ "peerComparison": "这个房间里没有同房的另一支编队；对照组是 52 个其他真人（econ / landcap / lagledger / perhead 里的『其他真人』列）：成批落地（一拍 ≥3 条）编队 47 批、其他真人 0 批；600~1500 派出的兵原数退回 69% 对 37%；烧在进攻里的兵占产兵 10.8% 对 25.5%；出生点离边中位 122 对 250 像素；t=1428 领土中位 4738 对 8594、密度 20.2 对 11.2。",
+ "teamSplitNotes": "没有队伍。按名字互保在自由混战里的后果，按时间：① 510~1260 同像素 / 贴身出生的号对用对方的余额当留底互锁（161 个号·点）；② 690 起 King、1350 起四个号被编队友围死；③ 被围的号的船落在编队友的地上（到 1428 共 356 格 / 19604 兵）；④ 整局 0 笔捐款、0 条协防——没有队伍时这几条路的入口直接返回；⑤ Liao 离开以后它的地仍受保护（推断）。"
+}

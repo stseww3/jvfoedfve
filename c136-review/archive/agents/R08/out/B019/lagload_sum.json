@@ -1,0 +1,148 @@
+{
+ "matchId": "B019",
+ "step": 180,
+ "rows": [
+  {
+   "w": 0,
+   "tiles": 8894,
+   "humanTiles": 49,
+   "expand": 470,
+   "pairs": 54,
+   "humans": 50,
+   "ais": 461,
+   "lag": {
+    "n": 24,
+    "p50": 12,
+    "p90": 19,
+    "mx": 26,
+    "atk": 24,
+    "void": 0
+   }
+  },
+  {
+   "w": 180,
+   "tiles": 23161,
+   "humanTiles": 0,
+   "expand": 619,
+   "pairs": 51,
+   "humans": 49,
+   "ais": 459,
+   "lag": {
+    "n": 37,
+    "p50": 12,
+    "p90": 17,
+    "mx": 21,
+    "atk": 37,
+    "void": 0
+   }
+  },
+  {
+   "w": 360,
+   "tiles": 55275,
+   "humanTiles": 0,
+   "expand": 998,
+   "pairs": 62,
+   "humans": 49,
+   "ais": 458,
+   "lag": {
+    "n": 55,
+    "p50": 11,
+    "p90": 16,
+    "mx": 18,
+    "atk": 55,
+    "void": 0
+   }
+  },
+  {
+   "w": 540,
+   "tiles": 119641,
+   "humanTiles": 0,
+   "expand": 2204,
+   "pairs": 91,
+   "humans": 49,
+   "ais": 457,
+   "lag": {
+    "n": 66,
+    "p50": 25,
+    "p90": 43,
+    "mx": 51,
+    "atk": 67,
+    "void": 0
+   }
+  },
+  {
+   "w": 720,
+   "tiles": 84586,
+   "humanTiles": 1763,
+   "expand": 2664,
+   "pairs": 140,
+   "humans": 49,
+   "ais": 441,
+   "lag": {
+    "n": 43,
+    "p50": 70,
+    "p90": 112,
+    "mx": 131,
+    "atk": 56,
+    "void": 6
+   }
+  },
+  {
+   "w": 900,
+   "tiles": 96047,
+   "humanTiles": 2041,
+   "expand": 3084,
+   "pairs": 212,
+   "humans": 49,
+   "ais": 370,
+   "lag": {
+    "n": 57,
+    "p50": 187,
+    "p90": 253,
+    "mx": 583,
+    "atk": 67,
+    "void": 28
+   }
+  },
+  {
+   "w": 1080,
+   "tiles": 113423,
+   "humanTiles": 127,
+   "expand": 3552,
+   "pairs": 210,
+   "humans": 48,
+   "ais": 217,
+   "lag": {
+    "n": 57,
+    "p50": 288,
+    "p90": 373,
+    "mx": 687,
+    "atk": 70,
+    "void": 14
+   }
+  }
+ ],
+ "slowWindows": 3,
+ "fastWindows": 4,
+ "spearman": {
+  "tiles": 0.67,
+  "expand": 0.88,
+  "pairs": 0.85,
+  "humans": -0.61,
+  "tilesPrev": 0.77
+ },
+ "waves": [
+  {
+   "t0": 720,
+   "t1": 1260,
+   "n": 3,
+   "peakLag": 288,
+   "tilesMed": 96047,
+   "tilesMax": 113423,
+   "before": 119641,
+   "after": null
+  }
+ ],
+ "slowTilesMedian": 96047,
+ "fastTilesMedian": 55275
+}

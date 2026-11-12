@@ -1,0 +1,7 @@
+# A041 events.csv 的调度行：合计 419 条：offense_dispatch 374，defense_dispatch 41，yield_opt_dispatch 4
+  按受捐方：kaito9 offense_dispatch×336 defense_dispatch×22 yield_opt_dispatch×4；noah88 offense_dispatch×27 defense_dispatch×2；leo_tx defense_dispatch×13 offense_dispatch×5；zexos1 offense_dispatch×6 defense_dispatch×2；zero_7 defense_dispatch×1；talon5 defense_dispatch×1
+  按捐方是否被围：boxedIn=False offense_dispatch×8 defense_dispatch×4；boxedIn=True offense_dispatch×366 defense_dispatch×37 yield_opt_dispatch×4
+  捐方发令时的密度 dMe（最小/中位/最大）：defense_dispatch boxedIn=False 107/110/110（4 条）；defense_dispatch boxedIn=True 30/114/150（37 条）；offense_dispatch boxedIn=False 112/119/125（8 条）；offense_dispatch boxedIn=True 59/114/150（366 条）；yield_opt_dispatch boxedIn=True 65/140/143（4 条）
+  受捐方当时的密度 dAlly（最小/中位/最大）：defense_dispatch boxedIn=False 34/85/86（4 条）；defense_dispatch boxedIn=True 19/29/128（37 条）；offense_dispatch boxedIn=False 18/19/39（8 条）；offense_dispatch boxedIn=True 0/33/96（366 条）；yield_opt_dispatch boxedIn=True 98/99/99（4 条）
+  受捐方比捐方密（dAlly > dMe）的条数：offense_dispatch 17/374；yield_opt_dispatch 2/4；defense_dispatch 14/41｜受捐方已过软上限（dAlly ≥ 100）的条数：offense_dispatch 0/374；yield_opt_dispatch 0/4；defense_dispatch 2/41
+  按 1000 拍：1000~1999 offense_dispatch×63；2000~2999 offense_dispatch×245 defense_dispatch×20 yield_opt_dispatch×4；3000~3999 offense_dispatch×66 defense_dispatch×16；4000~4999 defense_dispatch×5
