@@ -396,6 +396,7 @@ def main():
         "DB_LATE_NONE_N": str(lc["n"]), "DB_LATE_NONE_BAL": str(lc["bal"]),
         "DB_SHELL_N": str(len(own_sh)), "DB_SHELL_BAL": str(sum(r["bal"] for r in own_sh)),
         "DB_ROOMS": str(n_rooms), "DB_CUT_ROWS": str(sum(c[1] for c in cuts.values())),
+        "DB_OWN_EATEN": str(J["mode"]["own|on"]["eaten"]), "DB_OWN_LINE": str(J["mode"]["own|on"]["line"]),
         "DB_WIN_M": str(J["split"].get("主队赢的局", {}).get("matches", 0)), "DB_WIN_SEATS": str(J["split"].get("主队赢的局", {}).get("own", 0)),
         "DB_WIN_DEAD": str(J["split"].get("主队赢的局", {}).get("dead", 0)),
         "DB_LOSE_M": str(J["split"].get("主队没赢的局", {}).get("matches", 0)), "DB_LOSE_SEATS": str(J["split"].get("主队没赢的局", {}).get("own", 0)),

@@ -1,0 +1,3 @@
+# 配对臂补 A090（scripts/queues/CF-p5.txt）。排两遍：第二遍补第一遍超时没做完的（做完的会跳过）。
+out/council/cf/_q3.log|bash scripts/heavy-batch.sh scripts/queues/CF-p5.txt
+out/council/cf/_q4.log|bash scripts/heavy-batch.sh scripts/queues/CF-p5.txt

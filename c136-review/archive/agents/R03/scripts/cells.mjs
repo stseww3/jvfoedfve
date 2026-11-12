@@ -5,6 +5,7 @@
 //
 //   bash c136-review/tools/run-heavy.sh node scripts/cells.mjs A051 A087 …
 //   写 out/council/cells/<局>.json：{ land, W, H, pts: [{ id, x, y, team, cells, squad, nearest }] }
+//   某一局算不出来（例如缺地图文件）就写 out/council/cells/<局>.fail.json：{ matchId, error }，接着算下一局
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -15,8 +16,14 @@ const OUT = path.join(HERE, '..', 'out', 'council', 'cells');
 const P_INNER = 16, T_LAND = 1;
 fs.mkdirSync(OUT, { recursive: true });
 
+const fail = (mid, why) => {
+  fs.writeFileSync(path.join(OUT, `${mid}.fail.json`), JSON.stringify({ matchId: mid, error: why }));
+  console.log(`${mid} 失败：${why}`);
+};
+
 for (const mid of process.argv.slice(2)) {
   let done = null;
+  try {
   resim(mid, {
     until: 1,
     onState: (g, ctx) => {
@@ -53,6 +60,12 @@ for (const mid of process.argv.slice(2)) {
       done = { matchId: mid, land: total, W, H: Math.round(N / W), humans: pts.length, pts };
     },
   });
+  } catch (e) {
+    // 一局出错（例如数据镜像里没有这张地图）不拖累同一批里的其他局
+    fail(mid, e && e.code === 'ENOENT' ? `缺文件 ${path.basename(String(e.path))}` : String(e && e.message || e).slice(0, 200));
+    continue;
+  }
+  if (!done) { fail(mid, '放到第 1 拍选点期还没结束'); continue; }
   fs.writeFileSync(path.join(OUT, `${mid}.json`), JSON.stringify(done));
   const s = done.pts.filter((p) => p.squad).reduce((a, p) => a + p.cells, 0);
   console.log(`${mid} 陆地 ${done.land} 真人 ${done.humans} 编队名下合计 ${s}`);

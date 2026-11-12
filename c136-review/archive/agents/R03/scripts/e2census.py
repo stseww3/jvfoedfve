@@ -207,12 +207,21 @@ def exact_for_mine():
 
 def main():
     cards = [json.loads(line) for line in open(os.path.join(DATA, "manifest.jsonl"), encoding="utf-8")]
+    # E2_SINGLE_ROOM=1：只留房间拆分表（src/tools/rooms-discovery.json）里编队全在一个房间的局，另写一份 E2-census-singleroom.txt 作对照。
+    # 对局包的日志是全部号的，分了房间的局按一局算会把两个房间混在一起；默认（不设这个变量）的输出不变。
+    single = os.environ.get("E2_SINGLE_ROOM") == "1"
+    if single:
+        nrooms = {r["matchId"]: r["nRooms"] for r in json.load(open(os.path.join(DATA, "src", "tools", "rooms-discovery.json"), encoding="utf-8"))}
+        dropped = sorted(c["matchId"] for c in cards if nrooms.get(c["matchId"]) != 1)
+        cards = [c for c in cards if nrooms.get(c["matchId"]) == 1]
     M = [measure(c) for c in cards]
     by = {m["mid"]: m for m in M}
     L = ["# E2 发现集普查（e2census.py；123 局发现集，只用 manifest.jsonl 与每局的 events.csv / traj.csv / spawn.csv，不用重放；判据口径见脚本文件头）",
          "# 这是日志里看得见的替身量，不是重放精确值；[V] 段给出在 R03 复盘的 11 局上两者的对照。三个编队规模用的策略版本不同，不混在一起比。",
          f"# 发现集 {len(M)} 局：" + "，".join(f"{c} {sum(1 for m in M if m['cohort'] == c)} 局" for c in ("squad10", "squad8", "squad20")),
          ""]
+    if single:
+        L[2:2] = [f"# 对照版：只留编队全在一个房间的局（E2_SINGLE_ROOM=1）；去掉了 {len(dropped)} 局：{' '.join(dropped)}"]
 
     groups = [("squad10 全部", lambda m: m["cohort"] == "squad10"), ("squad10 输", lambda m: m["cohort"] == "squad10" and m["result"] == "lost"),
               ("squad10 赢", lambda m: m["cohort"] == "squad10" and m["result"] == "won"), ("squad8 全部", lambda m: m["cohort"] == "squad8"),
@@ -299,6 +308,8 @@ def main():
           "局 | 日志疑似被拒占比（整局） 对 重放里没成交占比（100% − 成交÷日志） | 快照被围占比 对 决策拍被围占比 | 选点间距（相对） 对 出生份额 | 地的倍数 对 人均得AI+中立地比 630~1500"]
     xs = defaultdict(list)
     for mid in MINE:
+        if mid not in by:
+            continue
         m = by[mid]
         rej_all = 100.0 * sum(m["rej"]) / sum(m["log"]) if sum(m["log"]) else None
         e_exec = ex.get("exec", {}).get(mid)
@@ -325,7 +336,7 @@ def main():
         L.append(f"{m['mid']}{star} | {m['result']} | {m['players']}/{m['teams']} | {m['log'][0]}→{m['rej'][0]} | {sum(m['log'])}→{sum(m['rej'])} | {f(m['boxedShare'], 0)}% | "
                  f"{f(m['dens1530'], 1)} | {f(m['grow'])} | {f(m['spawnRel'])} | {f(m['peakOverHead'])}")
     os.makedirs(os.path.join(ROOT, "out", "cross"), exist_ok=True)
-    p = os.path.join(ROOT, "out", "cross", "E2-census.txt")
+    p = os.path.join(ROOT, "out", "cross", "E2-census-singleroom.txt" if single else "E2-census.txt")
     with open(p, "w", encoding="utf-8") as fh:
         fh.write("\n".join(L) + "\n")
     print(f"写 {os.path.relpath(p, ROOT)}（{len(L)} 行）")

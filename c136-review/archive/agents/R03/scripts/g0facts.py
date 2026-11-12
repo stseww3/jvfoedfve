@@ -437,7 +437,7 @@ def g05():
             if c[1].startswith("phys="):
                 k = c[1][5:]
                 un = last(c[2]).replace("until=", "")
-                phys.append((c[0], ORDER.get(k, 99), [c[0], PH.get(k, k), "整局" if un in ("end", "Infinity", "undefined") else un + " 拍", last(c[3]), last(c[4]), last(c[5]), last(c[6]), no(last(c[7])), last(c[8]), no(last(c[9])), no(last(c[10])), last(c[11]), f"{int(last(c[12])):,}"]))
+                phys.append((c[0], ORDER.get(k, 99), [c[0], PH.get(k, k), "整局" if un in ("end", "Infinity", "undefined") else un + " 拍", last(c[3]), last(c[4]), last(c[5]), last(c[6]), no(last(c[7])), last(c[8]), no(last(c[9])), no(last(c[10])), "没数" if k == "cache32" else last(c[11]), f"{int(last(c[12])):,}"]))
             elif c[1].startswith("shadow="):
                 k = c[1][7:]
                 un = last(c[2]).replace("until=", "")
@@ -451,6 +451,7 @@ def g05():
         w("局 | 换掉什么 | 跑到 | traj 行 | 地一致 | 兵一致 | 都一致 | 首个不一致拍 | 结束拍 | 胜队 | 终局提速拍 | 猎杀次数 | 末拍编队地")
         for _m, _o, r in sorted(phys, key=lambda x: (x[0], x[2][2], x[1])):
             w(" | ".join(r))
+        w("# 猎杀次数靠 resim.mjs 重写的那个函数里的回调来数；换回数据仓库模拟器的写法之后没有这个回调，所以写「没数」，不是 0 次。终局提速拍读的是引擎自己的标志位，两种写法都读得到。")
     if shad:
         w("[G0-5b] 决策层与适配层（影子对线上日志）")
         w("局 | 换掉什么 | 跑到 | HL-TICK 行 | cmds 一致 | nb 一致 | neut 一致 | 调度日志 相同/日志 | 开局日志 相同/日志 | 录像成交 对上/成交 | 影子发令 | 报错的号")
