@@ -284,6 +284,36 @@ def foreign_bots(mid, rep):
     return sorted({r["bot"] for r in load_results(mid)} - inside)
 
 
+_LAND = {}
+
+
+def match_land(mid, rep=None):
+    """全图陆地格数，取这份回放所在的那张图的。
+
+    card.json 的 mapId/mapSeed/mapLand 取自 results.csv 的某一行；编队分进两个房间时那一行可能是
+    另一个房间的（A071：card 写图 12、695,915 格，回放是图 22、664,497 格）。所以先用 resim.mjs 按
+    录像头的图数出来的 land（out/cache/<局>-resim.json）；没有重演缓存才退回 card.json，这时录像头的
+    种子和 card 对不上就报错，不拿另一个房间的数去代公式。
+    """
+    if mid in _LAND:
+        return _LAND[mid]
+    land = None
+    path = os.path.join(CACHE, f"{mid}-resim.json")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            land = json.load(f).get("land")
+    if not land:
+        card = load_card(mid)
+        rep = rep if rep is not None else load_replay(mid)
+        if rep is not None and rep.get("mapSeed") is not None and card.get("mapSeed") is not None \
+                and rep["mapSeed"] != card["mapSeed"]:
+            raise ValueError(f"{mid}: card.json 的图（种子 {card['mapSeed']}）不是回放那张（种子 {rep['mapSeed']}），"
+                             f"先跑 resim.mjs 生成 out/cache/{mid}-resim.json")
+        land = card["mapLand"]
+    _LAND[mid] = land
+    return land
+
+
 def cmds_by_tick(rep, ids=SPEND_CMDS):
     """{拍号: [(id, player, a, b), ...]}，保持回放里的先后顺序（就是引擎执行顺序）。"""
     out = {}

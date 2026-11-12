@@ -28,6 +28,7 @@ import json
 import math
 import os
 import statistics
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "out")
@@ -126,6 +127,19 @@ def main():
                     tag = tag.replace(f"-t{SHIFT[g]}-", "-t4284-")
                     j["T0real"], j["T0"] = j["T0"], 4284
             runs[(g, tag)] = j
+    # 保护已有的结果：各次运行的输出（out/_cache/cp）不进 git，可能丢失或不全。
+    # out/_cross/cp_runs.tsv 里已经有、而缓存里现在没有的运行只要有一条，就不重算、不覆盖 out/_cross 下的表
+    # （否则会拿残缺的缓存把已提交的底表和报告冲掉）。确实要按现有缓存重算时加 --force。
+    prev = os.path.join(CROSS, "cp_runs.tsv")
+    if os.path.exists(prev) and "--force" not in sys.argv:
+        with open(prev, encoding="utf-8") as fh:
+            old_keys = {tuple(line.rstrip("\n").split("\t")[:2]) for i, line in enumerate(fh) if i and line.strip()}
+        gone = sorted(k for k in old_keys if k not in runs)
+        if gone or any(g not in base for g in {k[0] for k in old_keys}):
+            print(f"CP-TABLE-ABORT 缓存不全：cp_runs.tsv 里已有 {len(old_keys)} 条运行，其中 {len(gone)} 条在 out/_cache/cp 里找不到"
+                  f"（例：{'、'.join(' '.join(k) for k in gone[:3]) or '历史基线 H.json'}）。没有重算，out/_cross 下的表保持原样。"
+                  "要按现有缓存重算，加 --force。", file=sys.stderr)
+            sys.exit(3)
     # 4284 断面的窗末（5184 拍）不是 30 的倍数，H.json 没有这一拍的记录（最近的是 5190 拍）。
     # 有不扰动的历史重放（H-t4284-s0：全按录像、不动随机数、跑到 5184 拍）时，先核对它与 H.json 在共同的记录拍上逐个相同，
     # 再把它最后一拍的记录补进历史的记录里；这样窗末的历史值与各通道取的是同一拍。
@@ -374,7 +388,7 @@ def main():
 
     # ---------- 表 0d：不计入窗口汇总的局（A082 的 4284 断面）：手头每一条离线轨迹的窗末结果
     P("## 表 0d：不计入窗口汇总的局：各条离线轨迹在窗末（5184 拍）的结果")
-    P("局\t接管拍\t通道\t种子\t变体\tln ρ 的变化\t我方领土\t我方在场号\t每个记录拍的领土是否都与历史相同")
+    P("局\t接管拍\t通道\t种子\t变体\tln ρ 的变化\t我方领土\t我方在场号\t每个记录拍（到 5160 拍）与历史相比")
     J["armsWin"] = {}
     for T0x, gs_ in EXCL_WIN.items():
         for g in gs_:
@@ -393,13 +407,20 @@ def main():
                     variant = tag.split(sfx, 1)[1].lstrip("-") if sfx in tag else ""
                     e = j["snaps"][-1]
                     same = all((x["LS"], x["LO"]) == (hs[x["t"]]["LS"], hs[x["t"]]["LO"]) for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160)
+                    kk = ("LS", "LO", "BS", "BO", "aS", "aO")
+                    same_all = all(tuple(x[k] for k in kk) == tuple(hs[x["t"]][k] for k in kk) for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160)
+                    diff_keys = sorted({k for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160 for k in kk if x[k] != hs[x["t"]][k]})
+                    # 与历史相差最大的一处余额（相对值），只在领土全同时有意义
+                    bal_rel = max([abs(x[k] - hs[x["t"]][k]) / hs[x["t"]][k] for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160
+                                   for k in ("BS", "BO") if hs[x["t"]][k]] or [0.0])
                     lst.append({"take": j.get("T0real", T0x), "chan": j["chan"], "seed": j["seed"], "variant": variant,
-                                "d": sub(ln(rho(e, nS, nO)), r0), "LS": e["LS"], "aS": e["aS"], "sameAsHist": same})
+                                "d": sub(ln(rho(e, nS, nO)), r0), "LS": e["LS"], "aS": e["aS"], "sameAsHist": same, "sameAll": same_all,
+                                "diffKeys": diff_keys, "balRelMax": bal_rel})
             lst.sort(key=lambda x: (-x["take"], {"H": 0, "C2": 1, "C1": 2, "C0": 3}.get(x["chan"], 9), x["variant"], x["seed"]))
             eh = snap_at(h["snaps"], T0x + 900)
             J["armsWin"][f"{g}@{T0x}"] = {"hist": {"d": sub(ln(rho(eh, nS, nO)), r0), "LS": eh["LS"], "aS": eh["aS"], "t": eh["t"]}, "arms": lst}
             for x in lst:
-                P(f"{g}\t{x['take']}\t{x['chan']}\t{x['seed']}\t{x['variant'] or '-'}\t{f(x['d'], 3, True)}\t{x['LS']}\t{x['aS']}\t{'相同' if x['sameAsHist'] else '不同'}")
+                P(f"{g}\t{x['take']}\t{x['chan']}\t{x['seed']}\t{x['variant'] or '-'}\t{f(x['d'], 3, True)}\t{x['LS']}\t{x['aS']}\t{'领土、余额、在场人数都相同' if x['sameAll'] else ('领土相同' if x['sameAsHist'] else '不同')}")
     P("")
 
     # ---------- 表 0e：扰动种子对 C2 的作用：C2 种子 1 与种子 0（不扰动）相比
@@ -783,7 +804,8 @@ def main():
             for key, chan, seeds in (("C2p", "C2", PERT), ("C1", "C1", (0, 1, 2)), ("C0", "C0", (0, 1, 2))):
                 rr = sel(g, chan, T0, 900, seeds=seeds)
                 if rr:
-                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr)}
+                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr),
+                                "aSs": [r["aS"] for r in rr], "rhos": [float(r["rho"]) for r in rr]}
             if not any(k in rec for k in ("C2p", "C1", "C0")):
                 continue
             J["winLevel"].setdefault(g, {})[str(T0)] = rec

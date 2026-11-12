@@ -289,7 +289,7 @@ const CACHE_V = 12;
 const cacheKey = `v${CACHE_V}-${o.phases === 'coarse' ? 'c' : 'f'}${TO}`;
 let pending = 0;
 // 两道只管「这一次算不算、算几局」的闸，不影响算出来的数：
-//   --min-share 0.15  开算第一局之前量一下这个进程眼下分得到多少 CPU（空转 1.5 秒）；不到这个比例就这一次不算
+//   --min-share 0.15  开算第一局之前量一下这个进程眼下分得到多少 CPU（空转 2.5 秒）；不到这个比例就这一次不算
 //                     （经重计算闸门跑的进程 nice 19，机器挤的时候一局在一个槽位里算不完，白占槽位）
 //   --hard-ms 100000  已经用掉的墙钟 + 1.3 × 目前最慢的一局 超过这个数，就不再开新的一局（免得算到一半被闸门的上限杀掉）
 const minShare = num(o['min-share'], 0), hardMs = num(o['hard-ms'], Infinity);
@@ -298,7 +298,7 @@ function cpuShare() {
   if (shareNow !== null) return shareNow;
   const c0 = process.cpuUsage(), t0 = Date.now();
   let x = 0;
-  while (Date.now() - t0 < 1500) { for (let i = 0; i < 200000; i++) x += i % 7; }
+  while (Date.now() - t0 < 2500) { for (let i = 0; i < 200000; i++) x += i % 7; }
   const c = process.cpuUsage(c0);
   shareNow = Math.max(0.01, Math.min(1, (c.user + c.system) / 1000 / Math.max(1, Date.now() - t0)));
   return shareNow;
