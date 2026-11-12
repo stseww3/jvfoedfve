@@ -6,10 +6,11 @@
 //   ① 样本内：配上的指令（τ ↔ 录像落地拍 E），模型的落地拍与 E 相差几个回合
 //   ② 留一法（10 折）：把一部分配对从阶梯里拿掉，用剩下的已知点补出 S(τ)，预测被拿掉的那些的落地拍——这是「已知点之间怎么补」的误差，
 //      反事实臂里策略在别的拍下令时用的就是这种补出来的值。fill = auto / nearest / linear 各算一遍；另给不用阶梯（C1）的基线
-//   ③ 批结构：模型里每个（席位, 回合）执行几条 ↔ 录像里我方每个（席位, 落地拍）进录像几条（陆攻 + 捐款 + 船）
-//   ④ 没配上的指令：模型判成 9 条顶丢 / 通道已断 / 执行，与 R01 第 6 阶段从录像数出来的「挤掉」条数（channel_bursts.csv）对照
+//   ③ 批结构：模型里每个（席位, 回合）执行几条 ↔ 录像里我方每个（席位, 落地拍）进录像几条。两边都只数陆攻 + 船：
+//      捐款被配额拒掉的不进录像，这里不跑引擎、分不出哪些捐款会被拒
+//   ④ 没配上的陆攻：模型判成 9 条顶丢 / 通道已断 / 执行各多少条（判成执行的那部分是模型没抓到的丢失，细看用 chan_unpaired.mjs）
 // 用法：HEAVY_TIMEOUT=110 timeout 120 bash ../../tools/run-heavy.sh node scripts/ckpt/chan_openloop.mjs <局号…> [--seed 1]
-// 输出：reports/ckpt-data/chan_openloop.csv（追加 / 覆盖同一局的行）与逐局一段摘要
+// 输出：reports/ckpt-data/chan_openloop.json（按局号为键，同一局覆盖）与逐局一段摘要
 import fs from 'node:fs';
 import path from 'node:path';
 import { R01, OUT, LC, LU, loadR01, readCsv } from './common.mjs';

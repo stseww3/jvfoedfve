@@ -15,6 +15,7 @@
 // 用法（在 agents/R01 下）：
 //   HEAVY_TIMEOUT=110 timeout 120 bash ../../tools/run-heavy.sh node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 \
 //       [--arms C0,C1,C1@2,C1@3,C2w,C2,C2@2,C2@3] [--strat vb] [--fill auto] [--warmup full|拍数] [--tag x] [--budget-ms 95000]
+//       [--trace 阶梯文件] [--floor 地板文件]
 // 输出：out/_ckpt/runs/<局>-<t0>[-<tag>].json 与一段摘要
 import fs from 'node:fs';
 import path from 'node:path';
@@ -42,6 +43,23 @@ const seatDefs = squad.map((p) => ({ p, slot: M.slotOf.get(p) ?? p % 20 }));
 
 const traceFile = o.trace || path.join(R01, 'reports', 'ckpt-data', 'traces', `${mid}.json`);
 const trace = fs.existsSync(traceFile) ? JSON.parse(fs.readFileSync(traceFile, 'utf8')) : null;
+// --floor：日志次序给的地板（scripts/ckpt/logorder_floor.py）。页面算到本机拍 t 时服务器至少已经到了 LB，
+// S 对本机拍不降，所以 t 之后的每个本机拍 W 都有 S(W) ≥ LB。只抬高 C2 / C2w 的实录阶梯，不动别的臂。
+const floor = o.floor ? JSON.parse(fs.readFileSync(o.floor, 'utf8')) : null;
+function applyFloor(profile) {
+  let raised = 0, seats = 0;
+  for (const p of squad) {
+    const pts = floor.seats[String(p)];
+    if (!pts || !pts.length) continue;
+    let s = profile.stairs.get(p);
+    if (!s) { s = new Int32Array(profile.Wmax + 1); for (let W = 0; W < s.length; W++) s[W] = W; profile.stairs.set(p, s); }
+    let n = 0;
+    for (const [t, lb] of pts) for (let W = t; W < lb && W < s.length; W++) if (s[W] < lb) { s[W] = lb; n++; }
+    for (let W = 1; W < s.length; W++) if (s[W] < s[W - 1]) s[W] = s[W - 1];
+    if (n) { raised += n; seats++; }
+  }
+  profile.note += `；再按日志次序的地板抬高（${seats} 个席位、${raised} 个本机拍）`;
+}
 
 // ---- 臂的配置
 const armNames = LU.list(o.arms || 'C0,C1,C1@2,C1@3,C2w,C2,C2@2,C2@3');
@@ -53,7 +71,24 @@ function armCfg(name) {
   if (kind === 'C1') return { seed, spec: 'C1', opts: { ...base, ourLeaves: 'ignore' }, page: false };
   if (kind === 'C2w') return { seed, spec: `C2:fill=${fill},pagedeath=0`, opts: { ...base, ourLeaves: 'ignore' }, page: false };
   if (kind === 'C2') return { seed, spec: `C2:fill=${fill}`, opts: { ...base, ourLeaves: 'replay' }, page: true };
-  throw new Error(`不认识的臂 ${name}（C0 / C1 / C2w / C2，可带 @种子）`);
+  // C1p：基础延迟（不落后）+ 实录的页面停摆 / 通道中断 / 掉线离场。只用来检验「落后波」与「页面停摆」两段的先后次序：
+  // 主口径是先加落后波（C1→C2w）再加页面（C2w→C2）；有了 C1p 就能反过来算一遍（C1→C1p→C2）。
+  if (kind === 'C1p') return { seed, spec: 'C1', opts: { ...base, ourLeaves: 'replay' }, page: false, pageOnC1: true };
+  throw new Error(`不认识的臂 ${name}（C0 / C1 / C1p / C2w / C2，可带 @种子）`);
+}
+// R06 的 makeProfile 只给 C2 档挂页面寿命；C1p 这里照它的做法把同样三样东西挂到 C1 的档上（不改它的代码）
+function attachPageLife(profile) {
+  profile.pageEnd = new Map(M.pageEnd);
+  profile.doomed = M.doomed || null;
+  if (M.doomed && M.doomed.size && trace) {
+    profile.lostAfter = new Map();
+    for (const p of squad) {
+      if (!M.doomed.has(p)) continue;
+      const rows = trace.seats[String(p)];
+      profile.lostAfter.set(p, rows && rows.length ? Math.max(...rows.map((r) => r[0])) : -1);
+    }
+  }
+  profile.note += `；页面寿命按实录（${M.doomed ? M.doomed.size : 0} 个席位的页面在席位还活着时停摆）`;
 }
 const chanOpts = { multi: false, cap: 9, capRounds: 3, keep: 'first', order: 'lifo' };
 
@@ -88,6 +123,8 @@ for (const name of armNames) {
   const cfg = armCfg(name);
   if (/^C2/.test(cfg.spec) && !trace) { console.log(`[ckpt] ${mid} 没有实录阶梯文件 ${traceFile}，跳过臂 ${name}`); continue; }
   const profile = LC.makeProfile(cfg.spec, { seed: cfg.seed, seats: squad, trace, seatMap: null, Wmax: t1 + 2000, pageEnd: cfg.page ? M.pageEnd : null, doomed: cfg.page ? M.doomed : null, ownTrace: true });
+  if (cfg.pageOnC1) attachPageLife(profile);
+  if (floor && /^C2/.test(cfg.spec)) applyFloor(profile);
   const w = base.clone();
   const arm = new LA.Arm({ name, world: w, strat, params: {}, seats: seatDefs, profile, chanOpts, opts: cfg.opts, history: base, takeoverT: t0 });
   arm.attachReplay(st.fork(w));
@@ -129,7 +166,7 @@ const res = {
   mode: 'r01-ckpt', match: mid, replay: M.replayMid, map: M.mapKey, humans: H, nTeams: M.ta ? M.ta.nTeams : 0,
   strategy: strat.name, stratKey, historical: stratKey === historicalStrategy(mid),
   squad, t0, t1, tw, lenAsked: len, truncated, ended, fill,
-  traceRows: trace ? trace.rows : 0, doomed: [...M.doomed], deathT: M.deathT,
+  traceRows: trace ? trace.rows : 0, traceVariant: trace ? trace.variant || 'located' : null, floor: o.floor ? path.basename(path.dirname(o.floor)) + '/' + path.basename(o.floor) : null, doomed: [...M.doomed], deathT: M.deathT,
   history: hist.finalize(natural, { arm: 'history' }),
   arms: {},
 };
