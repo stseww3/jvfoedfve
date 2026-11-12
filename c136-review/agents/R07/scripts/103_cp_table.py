@@ -374,7 +374,7 @@ def main():
 
     # ---------- 表 0d：不计入窗口汇总的局（A082 的 4284 断面）：手头每一条离线轨迹的窗末结果
     P("## 表 0d：不计入窗口汇总的局：各条离线轨迹在窗末（5184 拍）的结果")
-    P("局\t接管拍\t通道\t种子\t变体\tln ρ 的变化\t我方领土\t我方在场号\t每个记录拍的领土是否都与历史相同")
+    P("局\t接管拍\t通道\t种子\t变体\tln ρ 的变化\t我方领土\t我方在场号\t每个记录拍（到 5160 拍）与历史相比")
     J["armsWin"] = {}
     for T0x, gs_ in EXCL_WIN.items():
         for g in gs_:
@@ -393,13 +393,20 @@ def main():
                     variant = tag.split(sfx, 1)[1].lstrip("-") if sfx in tag else ""
                     e = j["snaps"][-1]
                     same = all((x["LS"], x["LO"]) == (hs[x["t"]]["LS"], hs[x["t"]]["LO"]) for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160)
+                    kk = ("LS", "LO", "BS", "BO", "aS", "aO")
+                    same_all = all(tuple(x[k] for k in kk) == tuple(hs[x["t"]][k] for k in kk) for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160)
+                    diff_keys = sorted({k for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160 for k in kk if x[k] != hs[x["t"]][k]})
+                    # 与历史相差最大的一处余额（相对值），只在领土全同时有意义
+                    bal_rel = max([abs(x[k] - hs[x["t"]][k]) / hs[x["t"]][k] for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160
+                                   for k in ("BS", "BO") if hs[x["t"]][k]] or [0.0])
                     lst.append({"take": j.get("T0real", T0x), "chan": j["chan"], "seed": j["seed"], "variant": variant,
-                                "d": sub(ln(rho(e, nS, nO)), r0), "LS": e["LS"], "aS": e["aS"], "sameAsHist": same})
+                                "d": sub(ln(rho(e, nS, nO)), r0), "LS": e["LS"], "aS": e["aS"], "sameAsHist": same, "sameAll": same_all,
+                                "diffKeys": diff_keys, "balRelMax": bal_rel})
             lst.sort(key=lambda x: (-x["take"], {"H": 0, "C2": 1, "C1": 2, "C0": 3}.get(x["chan"], 9), x["variant"], x["seed"]))
             eh = snap_at(h["snaps"], T0x + 900)
             J["armsWin"][f"{g}@{T0x}"] = {"hist": {"d": sub(ln(rho(eh, nS, nO)), r0), "LS": eh["LS"], "aS": eh["aS"], "t": eh["t"]}, "arms": lst}
             for x in lst:
-                P(f"{g}\t{x['take']}\t{x['chan']}\t{x['seed']}\t{x['variant'] or '-'}\t{f(x['d'], 3, True)}\t{x['LS']}\t{x['aS']}\t{'相同' if x['sameAsHist'] else '不同'}")
+                P(f"{g}\t{x['take']}\t{x['chan']}\t{x['seed']}\t{x['variant'] or '-'}\t{f(x['d'], 3, True)}\t{x['LS']}\t{x['aS']}\t{'领土、余额、在场人数都相同' if x['sameAll'] else ('领土相同' if x['sameAsHist'] else '不同')}")
     P("")
 
     # ---------- 表 0e：扰动种子对 C2 的作用：C2 种子 1 与种子 0（不扰动）相比

@@ -643,7 +643,7 @@ def main():
             return nm
         for x in AW["arms"]:
             rows.append([arm_name(x), "4285" if x["take"] == 4285 else "4284（没有那条 4284 拍落地的赠兵）", sg(x["d"], 2), f"{x['LS']:,}", x["aS"],
-                         "每个记录拍都相同" if x["sameAsHist"] else "不同"])
+                         "每个记录拍都相同" if x.get("sameAll") else ("每个记录拍的领土都相同" if x["sameAsHist"] else "不同")])
 
         def arm(take, chan, seed, variant=""):
             return next((x for x in AW["arms"] if x["take"] == take and x["chan"] == chan and x["seed"] == seed and x["variant"] == variant), None)
@@ -663,7 +663,9 @@ def main():
         if a84c2 and a84c2s1:
             F0["a082pertSame"] = "窗末的领土和在场号完全相同" if (a84c2["LS"], a84c2["aS"]) == (a84c2s1["LS"], a84c2s1["aS"]) else f"窗末的 ln ρ 变化是 {sg(a84c2s1['d'], 2)}"
             if a85c2s1:
-                F0["a082pertSame"] += "；从 4285 拍接管的那一条" + ("每个记录拍都与历史相同" if a85c2s1["sameAsHist"] else f"窗末的 ln ρ 变化是 {sg(a85c2s1['d'], 2)}")
+                F0["a082pertSame"] += "；从 4285 拍接管的那一条" + ("每个记录拍都与历史相同" if a85c2s1.get("sameAll") else
+                                                           ("每个记录拍的领土都与历史相同（" + ("只有其他真人的余额" if a85c2s1.get("diffKeys") == ["BO"] else "余额或在场人数") +
+                                                            f"有差别，最大的一处相差 {a85c2s1['balRelMax'] * 100:.3f}%）") if a85c2s1["sameAsHist"] else f"窗末的 ln ρ 变化是 {sg(a85c2s1['d'], 2)}")
         described = [a85c2, a85c1]
         if a85c2 and a85c1 and a84c2 and a84c1:
             if a85c1s1:
