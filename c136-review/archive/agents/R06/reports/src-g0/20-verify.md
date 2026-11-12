@@ -24,9 +24,19 @@
 
 ### 2.3 B023 的终局分歧
 
-{{v:verify.tail.text}}
+<!-- assert: s('verify.partial').startsWith('B023') && n('verify.partial.n') === 1 -->
+<!-- assert: n('verify.tail.B023.leadLand') >= 99 && n('verify.tail.B023.leadOwned') === 100 -->
+<!-- assert: n('verify.tail.B023.diff.n') === 2 && n('verify.tail.B023.diff.husk') === 1 && s('verify.tail.B023.diff.leadTeamOnly') === '是' -->
+<!-- assert: n('verify.tail.B023.diff.restLand') === 0 -->
+唯一没有一致到最后的是 B023：指纹到第 {{v:verify.tail.B023.t}} 拍（含）为止全部相同，第 {{v:verify.tail.B023.firstBadT}} 拍那个采样起不同，录像共 {{v:verify.tail.B023.replayTicks}} 拍。
 
-这个分歧出现在 {{v:verify.tail.B023.t}} 拍之后，本报告用到的断面最晚到 5784 拍，不受影响。边界记为：**B023 在 {{v:verify.tail.B023.t}} 拍之后的结果不用**。
+- **分歧之前的局面**（`tools/verify_tail.mjs`）。第 {{v:verify.tail.B023.t}} 拍，地最多的那一队占全图陆地的 {{v:verify.tail.B023.leadLand}}，所有有主的地都在它手里；在场真人 {{v:verify.tail.B023.humansPresent}} 个，另有 {{v:verify.tail.B023.humansHusk}} 个席位已离场、由内置 AI 托管；我方席位还在场 {{v:verify.tail.B023.squadPresent}}。胜负已经分出，录像只是还没放完。
+- **是谁不同**（同一个脚本，拿本机留着的真引擎逐人采样比）。第 {{v:verify.tail.B023.firstBadT}} 拍，{{v:verify.tail.B023.diff.humans}} 个真人里只有 {{v:verify.tail.B023.diff.n}} 个不同，都在占满全图的那一队里：{{v:verify.tail.B023.diff.list}}（前一个数是模拟器，后一个是真引擎）。一个是离场托管的席位，真引擎里它的地多 {{v:verify.tail.B023.diff.huskLand}} 格；另一个是在场的队友，领土相同，只是兵不同。
+<!-- assert: n('verify.tail.B023.diff.cmdsBetween') === 0 && n('verify.tail.B023.diff.huskLeaveT') < n('verify.tail.B023.t') -->
+<!-- assert: s('verify.tail.B023.diff.restAtCapSim') === '是' && s('verify.tail.B023.diff.restAtCapTruth') === '否' -->
+- **原因**。这两个席位在第 {{v:verify.tail.B023.t}} 拍到第 {{v:verify.tail.B023.firstBadT}} 拍之间，录像里一条指令都没有（{{v:verify.tail.B023.diff.cmdsBetween}} 条）；托管的那个席位早在第 {{v:verify.tail.B023.diff.huskLeaveT}} 拍就离场了。录像指令两边喂的是同一份，所以差别只能出在不由录像驱动的那一方，也就是托管离场席位的内置 AI。两边各自留下的痕迹也对得上：模拟器里，在场队友的兵正好等于「领土 × 150」，这是引擎规定的一个席位能收下的兵的上限，说明它刚被塞满；真引擎里它没有到上限，而托管席位多了 {{v:verify.tail.B023.diff.huskLand}} 格地、兵也多 {{v:verify.tail.B023.diff.huskBal}}。也就是：全图没有敌人可打之后，托管 AI 在模拟器里把兵给了队友，在真引擎里去占了最后几块无主地。两边为什么选得不同，没有再往下查（它只在这种终局出现）。
+
+这个分歧只在胜负已定之后出现。本报告用到的窗口最晚到 5184 拍，不受影响。边界记为：**B023 在 {{v:verify.tail.B023.t}} 拍之后的结果不用**。
 
 ### 2.4 判定
 

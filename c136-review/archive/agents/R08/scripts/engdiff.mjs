@@ -61,9 +61,13 @@ function engineRun(mid, lo = Infinity, hi = -Infinity, stopAt = until) {
 
 const force = argv.includes('--force');
 if (force) argv.splice(argv.indexOf('--force'), 1);
+// --budget <秒>：开跑下一局之前看一眼已经用掉的时间，超了就停（run-heavy.sh 的 110 秒上限之内尽量多跑几局；剩下的下一批接着跑）
+const budget = +take('budget', 0) || Infinity;
+const tStart = Date.now();
 for (const mid of argv) {
   const file = path.join(RUN, `${mid}${arm ? `.${arm}` : ''}${until === Infinity ? '' : `.u${until}`}.json`);
   if (!force && fs.existsSync(file)) { console.log(`${mid}: 已有，跳过`); continue; }   // 分批跑、被超时杀掉以后可以原样重跑
+  if ((Date.now() - tStart) / 1000 > budget) { console.log(`${mid}: 这一批的时间预算用完，留给下一批`); break; }
   const t0 = Date.now();
   let E;
   try { E = engineRun(mid); } catch (e) { console.log(`${mid}: 引擎重放失败：${String(e.message || e).slice(0, 160)}`); fs.writeFileSync(file, JSON.stringify({ matchId: mid, error: String(e.message || e).slice(0, 300) })); continue; }

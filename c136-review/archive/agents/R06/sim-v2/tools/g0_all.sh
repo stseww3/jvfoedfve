@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 # g0_all.sh — 保真度验收报告（reports/SIM-V2-CALIBRATION-G0.md）要用的全部运行，按顺序排成一条队。
 # 一次只跑一个 node，每个都套 run-heavy.sh + timeout 120；一个 node 里连着跑一批运行（tools/g0_batch.mjs：排一次重计算槽位跑一批，
-# 每批不超过闸门的 110 秒）。已有结果文件的跳过，所以中途断了重新执行就接着跑。120 秒内没排到槽位的，接着重排。
+# 每批不超过闸门的 110 秒）。已有结果文件的跳过，所以中途断了重新执行就接着跑。闸门排队到点仍没有空槽位的，接着重排。
 # 只用历史旧策略：每一局跑它当年线上那一版（清单里写的版本和局号不符时，模拟器拒绝）。
 #
 # 用法（在 c136-review/agents/R06 下；整条队很长，放后台）：
-#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省全部：live bands lists g0 arena arena-rp attr delay verify g0x attrx fill hold seeds batchcheck tables
+#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省全部：live bands lists g0 arena arena-rp attr delay verify tail g0x attrx fill hold seeds batchcheck tables
 # 各阶段的产物：
 #   live       sim-v2/calib/live/<局>.json            全部有录像的局的实盘签名（只放录像）
 #   bands      sim-v2/calib/live-bands.json           实盘区间：策略版本 × 卡顿档，各项签名的 P25 / 中位 / P75
 #   lists      sim-v2/tools/{verify_list,g0_list_more,g0_list_ext,attr_list,attr_list_ext,attr_list_seeds,fill_list}.txt（tools/g0_lists.py）
 #   verify     sim-v2/calib/verify/<局>.json          入库各局：与真引擎重放逐断面核对、clone 自检、日志快照核对
+#   tail       sim-v2/calib/verify-tail.json          verify 里没有一致到最后的局：分歧之前的局面、是哪几个真人不同（tools/verify_tail.mjs）
 #   g0         sim-v2/calib/g0/<标签>.json            核心 20 局：630 / 1530 两个断面 × C0 / C1 / C2 / C3（g0_list.txt 的 60 次 + g0_list_more.txt 补齐）
 #   g0x        sim-v2/calib/g0/<标签>.json            为覆盖 Va / Vc 新接进来的局：同一张表（g0_list_ext.txt）
 #   arena      sim-v2/calib/arena-acc20/<局>.json     对手模型标定：核心 20 个真局房间，从第 0 拍起闭环
@@ -25,11 +26,14 @@
 #   tables     sim-v2/calib/report/                   报告里的全部表和数字（tools/g0_report.mjs）
 set -u
 cd "$(dirname "$0")/../.." || exit 2
+# 重计算闸门（run-heavy.sh）管排队：全机的重计算槽位很挤，等一个槽位常常要好几分钟，所以排队交给闸门自己（最多等 HEAVY_QUEUE 秒），
+# timeout 120 加在 node 命令上、从拿到槽位那一刻起算（闸门自己还有 HEAVY_TIMEOUT=110 秒的上限）。
 export HEAVY_TIMEOUT=110
-HEAVY="timeout 120 bash ../../tools/run-heavy.sh node"
+export HEAVY_QUEUE=900
+HEAVY="bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700"
 T=sim-v2/tools
 LAST=/tmp/r06-g0all-last.txt
-stages="${*:-live bands lists g0 arena arena-rp attr delay verify g0x attrx fill hold seeds batchcheck tables}"
+stages="${*:-live bands lists g0 arena arena-rp attr delay verify tail g0x attrx fill hold seeds batchcheck tables}"
 say() { echo "=== $(date -u +%H:%M:%S) $*"; }
 
 # batch <checkpoint|arena|verify> <结果目录名> <清单> [其余开关…]：一批接一批，直到清单跑完
@@ -37,13 +41,13 @@ batch() {
   local kind="$1" dir="$2" list="$3"; shift 3
   local i r stuck=0 nowait=0
   for i in $(seq 1 900); do
-    r=$($HEAVY $T/g0_batch.mjs "$kind" "$dir" "$list" --deadline $(( $(date +%s%3N) + 112000 )) "$@" 2>&1 | tail -1 | cut -c1-240)
+    r=$($HEAVY $T/g0_batch.mjs "$kind" "$dir" "$list" "$@" 2>&1 | tail -1 | cut -c1-240)
     case "$r" in
       *"[g0_batch]"*"没轮上"*) nowait=$((nowait + 1)) ;;
       *"[g0_batch]"*"还剩 0 个"*) echo "$(date -u +%H:%M:%S) $r（另有 $nowait 次没排到槽位）"; return 0 ;;
       *"[g0_batch]"*"本批跑完 0 个"*) echo "$(date -u +%H:%M:%S) $r"; stuck=$((stuck + 1)) ;;
       *"[g0_batch]"*) echo "$(date -u +%H:%M:%S) $r"; stuck=0 ;;
-      *) nowait=$((nowait + 1)) ;;   # 120 秒内没排到槽位：不算没进展，接着排
+      *) nowait=$((nowait + 1)) ;;   # 闸门排队到点仍没有空槽位（或这一批被闸门的上限杀掉）：不算没进展，接着排
     esac
     if [ "$stuck" -ge 12 ]; then echo "连着 12 批一个都没跑完，这一阶段停下"; return 1; fi
   done
@@ -55,7 +59,7 @@ light() {
   local i rc
   for i in $(seq 1 90); do
     $HEAVY "$@" > "$LAST" 2>&1; rc=$?
-    if [ $rc -ne 124 ]; then tail -4 "$LAST" | cut -c1-300; return $rc; fi
+    if [ $rc -ne 124 ] && [ $rc -ne 75 ]; then tail -4 "$LAST" | cut -c1-300; return $rc; fi   # 75 = 排队到点没有空槽位；124 = 被时间上限杀掉
   done
   echo "排了 90 次都没排到槽位：$*"; return 124
 }
@@ -82,6 +86,9 @@ for st in $stages; do
     verify)
       say verify
       batch verify verify $T/verify_list.txt ;;
+    tail)
+      say tail
+      light $T/verify_tail.mjs ;;
     g0)
       say g0
       batch checkpoint g0 $T/g0_list.txt

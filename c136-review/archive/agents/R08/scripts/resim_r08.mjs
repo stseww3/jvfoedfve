@@ -511,7 +511,7 @@ export function resim(mid, opts = {}) {
   const noteDeath = (p, kind) => {
     if (p >= H) return;
     const atk = g.attackersOf(p).map((a) => [a, g.attackTroopsOn(a, p)]);
-    deaths.push({ t: g.t, p, kind, terr: g.terr[p], bal: g.bal[p], peak: g.peak[p], state: g.state[p], attackers: atk, boats: g.boatCount ? g.boatCount[p] : 0 });
+    deaths.push({ t: g.t, p, kind, terr: g.terr[p], bal: g.bal[p], peak: g.peak[p], state: g.state[p], attackers: atk, boats: g.boatCount ? g.boatCount[p] : 0, out: g.totalAttackTroops(p) });
   };
   g.eliminate = function (p) {
     if (!this.spawnPhase) noteDeath(p, 'eliminate');

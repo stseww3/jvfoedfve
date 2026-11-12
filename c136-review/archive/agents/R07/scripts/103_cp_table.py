@@ -13,10 +13,10 @@
   （11 局里无一例外，见表 1b）。所以通道之间必须在「同样走偏」的局面里比：
      C2p = C2 的扰动种子（1、2：接管那一拍让引擎随机数多走 1、2 步）；C2 种子 0 不走偏，只用来验证能否复现历史。
   从断面 0 出发、看到 T 拍（数都是自然对数差，正数 = 让我方落后）：
-     −ln ρ历史(T) = [−ln v_β]             出生站位：天然地盘比别的真人少（v_β 见 106_spawn_par.py）
+     −ln ρ历史(T) = [−ln v_γ]             出生站位：天然地盘比别的真人少（v_γ 见 106_spawn_par.py；另两种基准 v_β、v 只做敏感性）
                   + [ln ρC0 − ln ρC1]     基础延迟：正常线上通道（每条指令晚 1~2 个回合）相对零延迟
                   + [ln ρC1 − ln ρC2p]    按住与成批放行：历史实录轨迹相对正常通道
-                  + 规则（余项）          = 合计 − 以上三项 = [ln v_β − ln ρC0] + [ln ρC2p − ln ρ历史]
+                  + 规则（余项）          = 合计 − 以上三项 = [ln v_γ − ln ρC0] + [ln ρC2p − ln ρ历史]
                                            前一个方括号：零延迟下原策略相对「同样出生点上的一般真人」；后一个：走偏带来的虚高，要扣回去
   从断面 T0>0 出发、看 h 拍：Δ通道 = ln ρ通道(T0+h) − ln ρ历史(T0)
      基础延迟 = ΔC0 − ΔC1；按住与成批放行 = ΔC1 − ΔC2p；走偏带来的虚高 = ΔC2p − Δ历史
@@ -109,6 +109,9 @@ def main():
 
     def vbeta(g, T):
         return (spar["games"].get(g) or {}).get(f"vb{T}")
+
+    def vgam(g, T):
+        return (spar["games"].get(g) or {}).get(f"vg{T}")
 
     def vpar(g):
         v = vor[g]
@@ -223,15 +226,19 @@ def main():
     # ---------- 表 1：断面 0 的分层
     PERT = (1, 2)
     for T in (630, 1500):
-        b = (spar["beta"].get(str(T)) or {}).get("b")
-        P(f"## 表 1-{T}：断面 0 → {T} 拍的分层（出生站位的基准用 v_β，β = {f(b, 2)}：同一批对局里其他真人到 {T} 拍「领土对天然地盘」的弹性，见 spawn_par.txt）")
-        P("局\tv\tv_β\tρ历史\tρC2 种子 0\tρC2p\tρC1\tρC0\t出生站位 −ln v_β\t规则（余项）\t基础延迟 ln ρC0 − ln ρC1\t按住与成批放行 ln ρC1 − ln ρC2p\t合计 −ln ρ历史\t其中走偏带来的虚高 ln ρC2p − ln ρ历史（已并在规则里扣回）\t零延迟下相对 v_β：ln v_β − ln ρC0\t种子数 C0/C1/C2p\t种子标准差 C1 / C2p\t若基准改用 v：出生站位 / 规则")
+        gm = (spar.get("gamma", {}).get(str(T)) or {}).get("g")
+        bt = (spar["beta"].get(str(T)) or {}).get("b")
+        P(f"## 表 1-{T}：断面 0 → {T} 拍的分层（出生站位的基准用 v_γ，γ = {f(gm, 2)}：同一批对局里其他真人到 {T} 拍「期望领土 ∝ 天然地盘^γ」，见 spawn_par.txt）")
+        P("局\tv\tv_γ\tρ历史\tρC2 种子 0\tρC2p\tρC1\tρC0\t出生站位 −ln v_γ\t规则（余项）\t基础延迟 ln ρC0 − ln ρC1\t按住与成批放行 ln ρC1 − ln ρC2p\t合计 −ln ρ历史"
+          "\t其中走偏带来的虚高 ln ρC2p − ln ρ历史（已并在规则里扣回）\t零延迟下相对基准：ln v_γ − ln ρC0\t正常延迟下相对基准：ln v_γ − ln ρC1\t种子数 C0/C1/C2p\t种子标准差 C1 / C2p"
+          f"\t若基准改用 v_β（β = {f(bt, 2)}）：出生站位 / 规则\t若基准改用 v：出生站位 / 规则")
         keys = ("spawn", "rule", "base", "hold", "total")
-        agg = {k: [] for k in keys + ("bias", "spawnV", "ruleV")}
+        agg = {k: [] for k in keys + ("bias", "raw0", "raw1", "spawnB", "ruleB", "spawnV", "ruleV")}
         for g in GAMES:
             if g not in base:
                 continue
             v = vpar(g)
+            vg = vgam(g, T) or v
             vb = vbeta(g, T) or v
             rh = hist_rho(g, T)
             c2s0 = lnm(g, "C2", 0, T, seeds=(0,))
@@ -239,34 +246,119 @@ def main():
             if rh is None or v is None:
                 continue
             lh = math.log(rh)
-            d = {"spawn": -math.log(vb), "base": sub(c0[0], c1[0]), "hold": sub(c1[0], c2p[0]), "total": -lh}
-            d["rule"] = None if d["base"] is None or d["hold"] is None else d["total"] - d["spawn"] - d["base"] - d["hold"]
+            d = {"spawn": -math.log(vg), "base": sub(c0[0], c1[0]), "hold": sub(c1[0], c2p[0]), "total": -lh}
+            ok = d["base"] is not None and d["hold"] is not None
+            d["rule"] = d["total"] - d["spawn"] - d["base"] - d["hold"] if ok else None
             bias = sub(c2p[0], lh)
-            raw = sub(math.log(vb), c0[0])
-            spawnV = -math.log(v)
-            ruleV = None if d["rule"] is None else d["total"] - spawnV - d["base"] - d["hold"]
+            raw0 = sub(math.log(vg), c0[0])
+            raw1 = sub(math.log(vg), c1[0])
+            spawnB, spawnV = -math.log(vb), -math.log(v)
+            ruleB = d["total"] - spawnB - d["base"] - d["hold"] if ok else None
+            ruleV = d["total"] - spawnV - d["base"] - d["hold"] if ok else None
             ex = lambda c: f(math.exp(c[0])) if c[0] is not None else "-"
-            J["games"].setdefault(g, {})[f"t0_{T}"] = dict(d, v=v, vb=vb, rhoH=rh, rhoC2s0=math.exp(c2s0[0]) if c2s0[0] is not None else None,
+            J["games"].setdefault(g, {})[f"t0_{T}"] = dict(d, v=v, vg=vg, vb=vb, rhoH=rh, rhoC2s0=math.exp(c2s0[0]) if c2s0[0] is not None else None,
                                                              rhoC2p=math.exp(c2p[0]) if c2p[0] is not None else None, rhoC1=math.exp(c1[0]) if c1[0] is not None else None,
                                                              rhoC0=math.exp(c0[0]) if c0[0] is not None else None, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1],
-                                                             bias=bias, rawRule=raw, spawnV=spawnV, ruleV=ruleV)
-            if all(d[k] is not None for k in keys):
+                                                             bias=bias, raw0=raw0, raw1=raw1, spawnB=spawnB, ruleB=ruleB, spawnV=spawnV, ruleV=ruleV)
+            if ok:
                 for k in keys:
                     agg[k].append(d[k])
-                agg["bias"].append(bias); agg["spawnV"].append(spawnV); agg["ruleV"].append(ruleV)
-            P(f"{g}\t{v:.3f}\t{vb:.3f}\t{rh:.3f}\t{ex(c2s0)}\t{ex(c2p)}\t{ex(c1)}\t{ex(c0)}\t" + "\t".join(f(d[k], sign=True) for k in keys)
-              + f"\t{f(bias, sign=True)}\t{f(raw, sign=True)}\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}\t{f(spawnV, sign=True)} / {f(ruleV, sign=True)}")
+                for k, x in (("bias", bias), ("raw0", raw0), ("raw1", raw1), ("spawnB", spawnB), ("ruleB", ruleB), ("spawnV", spawnV), ("ruleV", ruleV)):
+                    agg[k].append(x)
+            P(f"{g}\t{v:.3f}\t{vg:.3f}\t{rh:.3f}\t{ex(c2s0)}\t{ex(c2p)}\t{ex(c1)}\t{ex(c0)}\t" + "\t".join(f(d[k], sign=True) for k in keys)
+              + f"\t{f(bias, sign=True)}\t{f(raw0, sign=True)}\t{f(raw1, sign=True)}\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}"
+              + f"\t{f(spawnB, sign=True)} / {f(ruleB, sign=True)}\t{f(spawnV, sign=True)} / {f(ruleV, sign=True)}")
         n = len(agg["total"])
         if n:
-            P(f"{n} 局相加\t\t\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]), sign=True) for k in keys) + f"\t{f(sum(agg['bias']), sign=True)}\t\t\t\t{f(sum(agg['spawnV']), sign=True)} / {f(sum(agg['ruleV']), sign=True)}")
-            P(f"{n} 局平均\t\t\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]) / n, sign=True) for k in keys) + f"\t{f(sum(agg['bias']) / n, sign=True)}\t\t\t\t{f(sum(agg['spawnV']) / n, sign=True)} / {f(sum(agg['ruleV']) / n, sign=True)}")
-            P(f"{n} 局中位数\t\t\t\t\t\t\t\t" + "\t".join(f(med(agg[k]), sign=True) for k in keys) + f"\t{f(med(agg['bias']), sign=True)}")
+            tail = lambda fn: (f"\t{f(fn(agg['bias']), sign=True)}\t{f(fn(agg['raw0']), sign=True)}\t{f(fn(agg['raw1']), sign=True)}\t\t"
+                               f"\t{f(fn(agg['spawnB']), sign=True)} / {f(fn(agg['ruleB']), sign=True)}\t{f(fn(agg['spawnV']), sign=True)} / {f(fn(agg['ruleV']), sign=True)}")
+            P(f"{n} 局相加\t\t\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]), sign=True) for k in keys) + tail(sum))
+            P(f"{n} 局平均\t\t\t\t\t\t\t\t" + "\t".join(f(mean(agg[k]), sign=True) for k in keys) + tail(mean))
+            P(f"{n} 局中位数\t\t\t\t\t\t\t\t" + "\t".join(f(med(agg[k]), sign=True) for k in keys) + tail(med))
             tot = sum(agg["total"])
             if abs(tot) > 1e-9:
-                P(f"占合计的比例\t\t\t\t\t\t\t\t" + "\t".join(f"{100 * sum(agg[k]) / tot:.0f}%" for k in keys) + f"\t\t\t\t\t{100 * sum(agg['spawnV']) / tot:.0f}% / {100 * sum(agg['ruleV']) / tot:.0f}%")
+                pc = lambda k: f"{100 * sum(agg[k]) / tot:.0f}%"
+                P(f"占合计的比例\t\t\t\t\t\t\t\t" + "\t".join(pc(k) for k in keys) + f"\t{pc('bias')}\t\t\t\t\t{pc('spawnB')} / {pc('ruleB')}\t{pc('spawnV')} / {pc('ruleV')}")
             J[f"sum_t0_{T}"] = {k: sum(agg[k]) for k in agg}
-            J[f"sum_t0_{T}"].update(n=n, beta=b)
+            J[f"sum_t0_{T}"].update(n=n, gamma=gm, beta=bt, median={k: med(agg[k]) for k in agg})
         P("")
+
+    # ---------- 表 1s：占比（各局相加后的比例）和它在「换一批局」下的波动（对 11 局有放回重抽 4000 次，取 5% / 95% 分位）
+    def boot_shares(rowsd, keys):
+        import random
+        rnd_ = random.Random(20261112)
+        n = len(rowsd)
+        tot = sum(r["total"] for r in rowsd)
+        point = {k: sum(r[k] for r in rowsd) / tot for k in keys}
+        draws = {k: [] for k in keys}
+        for _ in range(4000):
+            smp = [rowsd[rnd_.randrange(n)] for _ in range(n)]
+            t = sum(r["total"] for r in smp)
+            if abs(t) < 1e-9:
+                continue
+            for k in keys:
+                draws[k].append(sum(r[k] for r in smp) / t)
+        out = {}
+        for k in keys:
+            v = sorted(draws[k])
+            out[k] = {"share": point[k], "lo": v[int(0.05 * len(v))], "hi": v[int(0.95 * len(v)) - 1]}
+        return out
+
+    SK = ("spawn", "rule", "base", "hold", "rulebase")
+    SKN = {"spawn": "出生站位", "rule": "规则（余项）", "base": "基础延迟", "hold": "按住与成批放行", "rulebase": "规则 + 基础延迟"}
+    lv = {}
+    for T in (630, 1500):
+        lv[T] = {}
+        for g in GAMES:
+            d = J["games"].get(g, {}).get(f"t0_{T}")
+            if d and all(d.get(k) is not None for k in ("spawn", "rule", "base", "hold", "total")):
+                lv[T][g] = dict({k: d[k] for k in ("spawn", "rule", "base", "hold", "total")}, rulebase=d["rule"] + d["base"])
+    P("## 表 1s：各项占失分的比例（各局相加后的比例；括号里是对这些局有放回重抽 4000 次的 5% ~ 95% 分位，反映「换一批局」时比例会怎么变）")
+    P("口径\t局数\t合计（各局相加）\t" + "\t".join(SKN[k] for k in SK))
+    J["shares"] = {}
+    if lv[1500]:
+        rowsd = list(lv[1500].values())
+        bs = boot_shares(rowsd, SK)
+        J["shares"]["level1500"] = dict(bs, n=len(rowsd), total=sum(r["total"] for r in rowsd))
+        P(f"到 1500 拍的落后（−ln ρ历史）\t{len(rowsd)}\t{sum(r['total'] for r in rowsd):+.3f}\t" + "\t".join(f"{100 * bs[k]['share']:.0f}%（{100 * bs[k]['lo']:.0f}% ~ {100 * bs[k]['hi']:.0f}%）" for k in SK))
+    common = [g for g in GAMES if g in lv[630] and g in lv[1500]]
+    if common:
+        rowsd = [{k: lv[1500][g][k] - lv[630][g][k] for k in SK + ("total",)} for g in common]
+        bs = boot_shares(rowsd, SK)
+        J["shares"]["change630_1500"] = dict(bs, n=len(rowsd), total=sum(r["total"] for r in rowsd), mean={k: sum(r[k] for r in rowsd) / len(rowsd) for k in SK + ("total",)})
+        P(f"630 → 1500 拍之间新增的落后\t{len(rowsd)}\t{sum(r['total'] for r in rowsd):+.3f}\t" + "\t".join(f"{100 * bs[k]['share']:.0f}%（{100 * bs[k]['lo']:.0f}% ~ {100 * bs[k]['hi']:.0f}%）" for k in SK))
+        P("630 → 1500 拍之间各项的变化（各局平均）\t" + f"{len(rowsd)}\t{sum(r['total'] for r in rowsd) / len(rowsd):+.3f}\t" + "\t".join(f"{sum(r[k] for r in rowsd) / len(rowsd):+.3f}" for k in SK))
+        J["change630_1500_games"] = {g: r for g, r in zip(common, rowsd)}
+    P("")
+
+    # ---------- 表 1p：断面 0 出发，各观察拍的四项（各局平均）
+    P("## 表 1p：断面 0 出发，到各观察拍的四项（各局平均；只用四项都算得出的局）")
+    P("观察拍\tγ\t局数\tρ历史（几何平均）\t出生站位\t规则（余项）\t基础延迟\t按住与成批放行\t合计\t走偏带来的虚高\t正常延迟下相对基准 ln v_γ − ln ρC1")
+    J["path"] = {}
+    for T in (300, 630, 900, 1200, 1500):
+        gm = (spar.get("gamma", {}).get(str(T)) or {}).get("g")
+        acc = {k: [] for k in ("spawn", "rule", "base", "hold", "total", "bias", "raw1")}
+        for g in GAMES:
+            if g not in base:
+                continue
+            vg = vgam(g, T)
+            rh = hist_rho(g, T)
+            c2p, c1, c0 = lnm(g, "C2", 0, T, seeds=PERT), lnm(g, "C1", 0, T), lnm(g, "C0", 0, T)
+            if not vg or not rh or c2p[0] is None or c1[0] is None or c0[0] is None:
+                continue
+            d = {"spawn": -math.log(vg), "base": c0[0] - c1[0], "hold": c1[0] - c2p[0], "total": -math.log(rh)}
+            d["rule"] = d["total"] - d["spawn"] - d["base"] - d["hold"]
+            d["bias"] = c2p[0] - math.log(rh)
+            d["raw1"] = math.log(vg) - c1[0]
+            for k in acc:
+                acc[k].append(d[k])
+        n = len(acc["total"])
+        if not n:
+            continue
+        m = {k: sum(v) / n for k, v in acc.items()}
+        J["path"][str(T)] = dict(m, n=n, gamma=gm, median={k: med(v) for k, v in acc.items()})
+        P(f"{T}\t{f(gm, 2)}\t{n}\t{math.exp(-m['total']):.3f}\t" + "\t".join(f(m[k], sign=True) for k in ("spawn", "rule", "base", "hold", "total", "bias", "raw1")))
+    P("")
 
     # ---------- 表 1b：断面 0 → 1500 拍，领土的去向
     P("## 表 1b：断面 0 → 1500 拍时全图陆地的分布（占全图陆地的百分比；多个种子取平均）")
@@ -382,6 +474,7 @@ def main():
                     verd[ch].append((g, T0, hh, vbva))
                 if any(c != "-" for c in cells):
                     P(f"{g}\t{T0}\t{hh}\t" + "\t".join(cells) + f"\t{ns[0]}/{ns[1]}")
+    J["verRows"] = [{"g": g, "T0": t, "h": h2, "ch": ch, "d": d} for ch in ("C1", "C2") for g, t, h2, d in verd[ch]]
     J["ver"] = {}
     for ch in ("C1", "C2"):
         for T0, hh in ((0, 630), (0, 1500), (630, 900), (1500, 900)):
@@ -391,29 +484,38 @@ def main():
                 J["ver"][f"{ch}_t{T0}_h{hh}"] = {"n": len(xs), "median": med(xs), "min": min(xs), "max": max(xs), "pos": sum(1 for x in xs if x > 0)}
     P("")
 
-    # ---------- 表 4：延迟取法的敏感性
-    P("## 表 4：基础延迟取法的敏感性（种子 0；ln ρ − ln ρ(C1 默认取法)）")
-    P("局\t断面\t看多少拍\tC0b − C0（零延迟下改成一拍只受理一条）\tC1 的 d 改成 5~12 均匀\tC1 的 d 改成 10~18 均匀")
-    sens = {"c0b": [], "d5": [], "d10": []}
+    # ---------- 表 4：延迟取法的敏感性（都和同一局、同一种子的 C0 比）
+    P("## 表 4：基础延迟取法的敏感性（种子 0；每格 = ln ρ(这一种取法) − ln ρ(C0)；负数 = 比零延迟差）")
+    P("# C0：策略决策那一拍立刻生效（可以不在回合边界上，线上不存在这种通道）；C0b：同 C0，但一个决策拍只受理一条；")
+    P("# 只等回合边界：在途 0 拍，只等到下一个回合边界（平均约 3 拍）；默认：C1 的实测取法（合计约 12 拍）；5~12、10~18：d 在这个范围里均匀抽（再等到回合边界）")
+    P("局\t断面\t看多少拍\tC0b\t只等回合边界\tC1 默认\tC1 的 d 取 5~12\tC1 的 d 取 10~18")
+    SV = (("c0b", "C0b", ""), ("d0", "C1", "d0_0"), ("emp", "C1", ""), ("d5", "C1", "d5_12"), ("d10", "C1", "d10_18"))
+    sens = {}
+    sens_rows = []
     for g in GAMES:
         for T0 in (0, 630):
             for hh in ((630, 1500) if T0 == 0 else (300, 900)):
-                c1 = lnm(g, "C1", T0, hh, seeds=(0,))
                 c0 = lnm(g, "C0", T0, hh, seeds=(0,))
-                c0b = lnm(g, "C0b", T0, hh, seeds=(0,))
-                u = lnm(g, "C1", T0, hh, variant="d5_12", seeds=(0,))
-                w = lnm(g, "C1", T0, hh, variant="d10_18", seeds=(0,))
-                a, b, c = sub(c0b[0], c0[0]), sub(u[0], c1[0]), sub(w[0], c1[0])
-                if a is None and b is None and c is None:
+                vals = []
+                for k, ch, variant in SV:
+                    x = lnm(g, ch, T0, hh, variant=variant, seeds=(0,))
+                    vals.append(sub(x[0], c0[0]))
+                if sum(1 for x in vals if x is not None) < 2:
                     continue
-                if T0 == 0 and hh == 1500:
-                    sens["c0b"].append(a); sens["d5"].append(b); sens["d10"].append(c)
-                P(f"{g}\t{T0}\t{hh}\t{f(a, sign=True)}\t{f(b, sign=True)}\t{f(c, sign=True)}")
-    for k, name in (("c0b", "C0b − C0"), ("d5", "d 取 5~12"), ("d10", "d 取 10~18")):
-        xs = [x for x in sens[k] if x is not None]
-        if xs:
-            P(f"断面 0 看 1500 拍，{name}：{len(xs)} 局，中位数 {med(xs):+.3f}，最小 {min(xs):+.3f}，最大 {max(xs):+.3f}")
-            J.setdefault("sens", {})[k] = {"n": len(xs), "median": med(xs), "min": min(xs), "max": max(xs)}
+                for (k, ch, variant), x in zip(SV, vals):
+                    sens.setdefault((T0, hh), {}).setdefault(k, []).append(x)
+                sens_rows.append(dict({"g": g, "T0": T0, "h": hh}, **{k: x for (k, ch, variant), x in zip(SV, vals)}))
+                P(f"{g}\t{T0}\t{hh}\t" + "\t".join(f(x, sign=True) for x in vals))
+    J["sensRows"] = sens_rows
+    J["sens"] = {}
+    for (T0, hh), dct in sorted(sens.items()):
+        cells = []
+        for k, ch, variant in SV:
+            xs = [x for x in dct.get(k, []) if x is not None]
+            cells.append(f"{med(xs):+.3f}（{len(xs)} 局，{min(xs):+.3f} ~ {max(xs):+.3f}）" if xs else "-")
+            if xs:
+                J["sens"][f"t{T0}_h{hh}_{k}"] = {"n": len(xs), "median": med(xs), "mean": mean(xs), "min": min(xs), "max": max(xs)}
+        P(f"中位数（局数，最小 ~ 最大）\t{T0}\t{hh}\t" + "\t".join(cells))
     P("")
 
     # ---------- 表 5：席位离开
@@ -429,6 +531,7 @@ def main():
                     cells.append(f(sub(a[0], n[0]), sign=True))
                 if any(c != "-" for c in cells):
                     P(f"{g}\t{T0}\t{hh}\t" + "\t".join(cells))
+                    J.setdefault("leave", []).append({"g": g, "T0": T0, "h": hh, "C1": cells[0], "C2": cells[1]})
     P("")
 
     # ---------- 表 6：指令去向
@@ -441,10 +544,12 @@ def main():
                 continue
             r = r[0]
             P(f"{g}\t{ch}\t{r['issued']}\t{r['landed']}\t{r['landedOk']}\t{r['mapDrop']}\t{r['capDrop']}\t{r['second']}\t{r['delayP50']} / {r['delayP90']}\t{r['LS']}\t{r['BS']}\t{r['outS']}")
+            J.setdefault("fate", {}).setdefault(g, {})[ch] = {k: r[k] for k in ("issued", "landed", "landedOk", "mapDrop", "capDrop", "second", "delayP50", "delayP90", "LS", "BS", "outS")}
         h = base.get(g)
         if h:
             s = snap_at(h["snaps"], 1500)
             P(f"{g}\t历史\t\t\t\t\t\t\t\t{s['LS']}\t{s['BS']}\t{s['outS']}")
+            J.setdefault("fate", {}).setdefault(g, {})["历史"] = {"LS": s["LS"], "BS": s["BS"], "outS": s["outS"]}
     P("")
 
     # ---------- 表 7：席位层面
@@ -494,6 +599,7 @@ def main():
         for g, T0, hh, d, n in nz:
             P(f"{g}\t{T0}\t{hh}\t{d:.3f}\t{n}")
         P("")
+        J["noise"] = [{"g": g, "T0": T0, "h": hh, "maxDev": d, "n": n} for g, T0, hh, d, n in nz]
 
     open(os.path.join(CROSS, "checkpoint_attribution.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     json.dump(J, open(os.path.join(CROSS, "checkpoint_attribution.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)

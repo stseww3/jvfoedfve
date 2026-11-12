@@ -198,6 +198,17 @@ if (want('scope')) {
   val('runs.g0.card', tags60.length); val('runs.g0.cardHave', have60.length);
   val('runs.g0.cardGames', new Set(tags60.map((t) => t.split('-')[0])).size);
 
+  // 拆掉候选臂之前入库的旧结果，对现在重跑出来的同名结果（tools/old_vs_new.sh）
+  const ovn = path.join(CALIB, 'old-vs-new.json');
+  if (fs.existsSync(ovn)) {
+    const O = readJson(ovn);
+    val('old.ref', O.ref);
+    for (const [d, k] of [['verify', 'verify'], ['g0', 'g0'], ['arena-acc20', 'arena']]) {
+      const x = O[d] || { old: 0, both: 0, same: 0 };
+      val(`old.${k}.old`, x.old); val(`old.${k}.both`, x.both); val(`old.${k}.same`, x.same);
+    }
+  } else notes.push('缺 calib/old-vs-new.json（bash sim-v2/tools/old_vs_new.sh）');
+
   // 两种跑法的结果核对
   const a = compareDirs(path.join(CALIB, 'batchcheck', 'g0-batched'), path.join(CALIB, 'g0'));
   const b = compareDirs(path.join(CALIB, 'batchcheck', 'attr-single'), path.join(CALIB, 'attr'));
@@ -245,6 +256,23 @@ if (want('verify')) {
       val(`${k}.t`, int(x.t)); val(`${k}.firstBadT`, int(x.firstBadT)); val(`${k}.replayTicks`, int(x.replayTicks));
       val(`${k}.leadLand`, pc(x.leadShareOfLand, 1)); val(`${k}.leadOwned`, pc(x.leadShareOfOwned, 1));
       val(`${k}.humansPresent`, x.humansPresent); val(`${k}.humansHusk`, x.humansHusk); val(`${k}.squadPresent`, `${x.squadPresent} / ${x.squad}`);
+      if (x.diff) {
+        // 第一处不同的采样拍上是哪几个真人不同（模拟器 ↔ 真引擎）
+        const D = x.diff, husk = D.seats.filter((z) => z.husk), rest = D.seats.filter((z) => !z.husk);
+        val(`${k}.diff.n`, D.n); val(`${k}.diff.humans`, D.humans); val(`${k}.diff.husk`, husk.length);
+        val(`${k}.diff.teams`, [...new Set(D.seats.map((z) => z.team))].length);
+        val(`${k}.diff.leadTeamOnly`, D.seats.every((z) => z.team === x.leadTeam) ? '是' : '否');
+        val(`${k}.diff.huskLand`, husk.length ? int(Math.max(...husk.map((z) => Math.abs(z.terr[1] - z.terr[0])))) : '-');
+        val(`${k}.diff.restLand`, rest.length ? int(Math.max(...rest.map((z) => Math.abs(z.terr[1] - z.terr[0])))) : '-');
+        val(`${k}.diff.restBal`, rest.length ? k1(Math.max(...rest.map((z) => Math.abs(z.bal[1] - z.bal[0])))) : '-');
+        // 引擎规则：一个席位能收下的兵以「领土 × 150」为上限（数据包 src/sim/sim/game.js）。在场的那个席位在哪一边正好顶在这个上限上？
+        val(`${k}.diff.restAtCapSim`, rest.length && rest.every((z) => z.bal[0] === z.terr[0] * 150) ? '是' : '否');
+        val(`${k}.diff.restAtCapTruth`, rest.length && rest.every((z) => z.bal[1] === z.terr[1] * 150) ? '是' : '否');
+        val(`${k}.diff.huskBal`, husk.length ? k1(Math.max(...husk.map((z) => z.bal[1] - z.bal[0]))) : '-');
+        val(`${k}.diff.cmdsBetween`, sum(D.seats.map((z) => z.cmdsBetween || 0)));
+        val(`${k}.diff.huskLeaveT`, husk.length ? int(Math.min(...husk.map((z) => z.leaveT))) : '-');
+        val(`${k}.diff.list`, D.seats.map((z) => `${z.p} 号（${z.husk ? '离场托管' : '在场'}）领土 ${int(z.terr[0])} ↔ ${int(z.terr[1])}、兵 ${k1(z.bal[0])} ↔ ${k1(z.bal[1])}`).join('；'));
+      }
     }
   } else if (partial.length) notes.push('缺 calib/verify-tail.json（node sim-v2/tools/verify_tail.mjs）');
 }
@@ -353,6 +381,23 @@ if (want('chan')) {
     let doomed = 0;
     for (const [p, ll] of Object.entries(T.lastLog || {})) { const d = (pk.deathT || {})[p] ?? -1; if (ll >= 0 && ll + 1 < (d >= 0 ? d : pk.replayLast - 90)) doomed++; }
     rows.push([mid + (CORE.has(mid) ? '' : ' ＋'), VER[cohortOf(mid)], CLS[clsOf(mid)] || '?', int(T.rows), int(tmax), ...cells, String(doomed)]);
+  }
+  // 已知点有多密：630~1530 拍这个窗口里，每个席位有几个已知点、最长多少拍没有已知点（录像够长的局）
+  {
+    const cnt = [], gap = [];
+    for (const mid of MIDS) {
+      const tf = path.join(SIMV2, 'traces', `${mid}.json`);
+      if (!fs.existsSync(tf) || PACK[mid].replayLast < 1530) continue;
+      for (const rs of Object.values(readJson(tf).seats)) {
+        const taus = rs.map((r) => r[0]).filter((t) => t >= 630 && t <= 1530).sort((a, b) => a - b);
+        const pts = [630, ...taus, 1530];
+        let g = 0;
+        for (let i = 1; i < pts.length; i++) g = Math.max(g, pts[i] - pts[i - 1]);
+        cnt.push(taus.length); gap.push(g);
+      }
+    }
+    val('chan.known.seats', cnt.length); val('chan.known.cnt', `${f(q(cnt, 0.25), 0)} / ${f(med(cnt), 0)} / ${f(q(cnt, 0.75), 0)}`);
+    val('chan.known.gap', `${f(q(gap, 0.25), 0)} / ${f(med(gap), 0)} / ${f(q(gap, 0.75), 0)}`); val('chan.known.gap.med', f(med(gap), 0));
   }
   table('chan-stairs', ['局', '版本', '卡顿档', '配上的指令', '实录到（拍）', ...BINS.map(([a, b]) => (b > 1e8 ? `${a} 以后` : `${a}~${b}`)), '页面中途停摆的席位'], rows,
     '每格 = 这一时段下令的指令「录像执行拍 − 影子下令拍」的中位（拍），不落后时约 12；不足 5 条的时段记「-」。配对来自 `tools/export_traces.py`（当年那一版策略作影子逐拍重演，与录像里我方席位实际执行的指令按席位、种类、目标配对）。「页面中途停摆」= 日志最后一条快照早于席位出局（或录像结束）的席位。');
@@ -525,6 +570,7 @@ if (want('ckpt')) {
 
   // C2 对不上的局：偏差集中在几个席位上？实录阶梯在窗口里有没有「看不见」的一段？
   {
+
     const blindOf = (mid, t0, t1) => {
       // 一个席位最后一个已知点之后，实录阶梯假定页面已追平。如果那个已知点上页面还落后很多（> 28 拍）、而席位和页面都还在，
       // 那之后到窗口末就是「看不见还在卡」的一段。返回这一段占 窗口内席位·拍 的份额、涉及的席位数、那些席位最后一个已知点上的落后中位。
@@ -560,14 +606,67 @@ if (want('ckpt')) {
       const absSum = sum(ds.map(Math.abs));
       const top = absSum ? Math.max(...ds.map(Math.abs)) / absSum : null;
       const top2 = absSum ? ds.map(Math.abs).sort((p1, p2) => p2 - p1).slice(0, 2).reduce((p1, p2) => p1 + p2, 0) / absSum : null;
+      // 偏差最大的那个席位：它在别的通道臂里是不是也偏在同一边（是 → 不是通道的事）
+      const seatsP = (x.r.arms.baseline.perSeat || []).map((sx) => sx.p);
+      const topP = seatsP[ds.map(Math.abs).indexOf(Math.max(...ds.map(Math.abs)))];
+      const topBy = {};
+      for (const arm of ['C0', 'C1', 'C2']) {
+        const z = G0.find((w) => w.mid === x.mid && w.t0 === x.t0 && w.arm === arm);
+        const sz = z && (z.r.arms.baseline.perSeat || []).find((w) => w.p === topP);
+        topBy[arm] = sz ? sz.terr1 : null;
+        val(`out.${x.mid}.${x.t0}.topLand.${arm}`, ok(topBy[arm]) ? int(topBy[arm]) : '-');
+      }
+      const topHist = hp.get(topP) ?? 0;
+      val(`out.${x.mid}.${x.t0}.topSeat`, topP); val(`out.${x.mid}.${x.t0}.topLand.hist`, int(topHist));
+      // 这个席位在窗口里最长多少拍没有已知点（按下令拍，窗口两端也算）；全队各席位这个量的中位作参照
+      {
+        const tf = path.join(SIMV2, 'traces', `${x.mid}.json`);
+        const T = fs.existsSync(tf) ? readJson(tf) : null;
+        const gapOf = (pp0) => {
+          const rs = T && T.seats[String(pp0)];
+          if (!rs) return null;
+          const pts = [x.t0, ...rs.map((r) => r[0]).filter((t) => t >= x.t0 && t <= x.t1).sort((p1, p2) => p1 - p2), x.t1];
+          let g = 0;
+          for (let i = 1; i < pts.length; i++) g = Math.max(g, pts[i] - pts[i - 1]);
+          return g;
+        };
+        const tg = gapOf(topP), mg = med(seatsP.map(gapOf));
+        val(`out.${x.mid}.${x.t0}.topGap`, ok(tg) ? int(tg) : '-'); val(`out.${x.mid}.${x.t0}.medGap`, ok(mg) ? int(mg) : '-');
+      }
+      // 真局里窗口末已经没地、模拟里还有地的席位（「多活下来的」）：几个，去掉它们之后编队领土是真局的几倍
+      const rv = (x.r.arms.baseline.perSeat || []).filter((sx) => sx.terr1 > 0 && !((hp.get(sx.p) ?? 0) > 0));
+      const rvLand = sum(rv.map((sx) => sx.terr1));
+      const ratioEx = div(x.a.terr1 - rvLand, x.h.terr1);
+      val(`out.${x.mid}.${x.t0}.revived`, rv.length); val(`out.${x.mid}.${x.t0}.ratioEx`, ok(ratioEx) ? f(ratioEx) : '-');
+      // 这个席位在跑过的每一档通道下，是不是都偏在真局的同一边
+      const sides = ['C0', 'C1', 'C2'].filter((arm) => ok(topBy[arm])).map((arm) => Math.sign(topBy[arm] - topHist));
+      val(`out.${x.mid}.${x.t0}.topSameSide`, sides.length >= 2 && sides.every((v) => v === sides[0] && v !== 0) ? '是' : sides.length < 2 ? '只跑了一档' : '否');
       orow.push([x.mid + (CORE.has(x.mid) ? '' : ' ＋'), VER[x.co], CLS[clsOf(x.mid)] || '?', `${x.t0}~${x.t1}`, `×${f(ratio)}`, `${f(x.a.recPerSeat, 1)} / ${f(x.h.recPerSeat, 1)}`,
-        `${x.a.alive1} / ${x.h.alive1}`, `${pc(top)}（前两个 ${pc(top2)}）`, b ? `${pc(b.share)}（${b.seats} 个席位，当时落后 ${ok(b.lag) ? f(b.lag, 0) : '-'} 拍）` : '-']);
+        `${x.a.alive1} / ${x.h.alive1}`, `${pc(top)}（前两个 ${pc(top2)}）`, `${int(topHist)} ｜ ${['C0', 'C1', 'C2'].map((arm) => (ok(topBy[arm]) ? int(topBy[arm]) : '-')).join(' / ')}`,
+        rv.length ? `${rv.length} 个，去掉后 ×${f(ratioEx)}` : '0 个',
+        b ? `${pc(b.share)}（${b.seats} 个席位，当时落后 ${ok(b.lag) ? f(b.lag, 0) : '-'} 拍）` : '-']);
       val(`out.${x.mid}.${x.t0}.ratio`, f(ratio)); val(`out.${x.mid}.${x.t0}.top`, pc(top)); val(`out.${x.mid}.${x.t0}.top2`, pc(top2));
       if (b) { val(`out.${x.mid}.${x.t0}.blind`, pc(b.share)); val(`out.${x.mid}.${x.t0}.blindSeats`, b.seats); val(`out.${x.mid}.${x.t0}.blindLag`, ok(b.lag) ? f(b.lag, 0) : '-'); }
     }
-    table('ckpt-out', ['局', '版本', '卡顿档', '窗口', '窗口末编队领土 模拟 ÷ 真局', '进录像条数 ÷ 席位 模拟 / 真局', '窗口末在场席位 模拟 / 真局', '偏差最大的一个席位占全部偏差', '实录阶梯看不见的一段'], orow,
-      '只列 C2 臂里窗口末编队领土偏出真局 ±10% 的运行。「偏差最大的一个席位」= 各席位（模拟 − 真局）的地取绝对值，最大那个占总和的份额。「看不见的一段」= 某席位最后一个已知点上页面还落后 28 拍以上，而这之后席位和页面都还在：阶梯在已知点之后假定页面追平，这一段的落后模拟不出来；格里是这一段占窗口内全部 席位·拍 的份额。');
+    table('ckpt-out', ['局', '版本', '卡顿档', '窗口', '窗口末编队领土 模拟 ÷ 真局', '进录像条数 ÷ 席位 模拟 / 真局', '窗口末在场席位 模拟 / 真局', '偏差最大的一个席位占全部偏差', '这个席位窗口末的地：真局 ｜ C0 / C1 / C2', '真局已出局、模拟里还在的席位', '最后一个已知点之后看不见的一段'], orow,
+      '只列 C2 臂里窗口末编队领土偏出真局 ±10% 的运行。「偏差最大的一个席位」= 各席位（模拟 − 真局）的地取绝对值，最大那个占总和的份额；后一列是这同一个席位窗口末的地：真局多少，三档通道下的模拟各多少（没跑的臂记 -）。「真局已出局、模拟里还在的席位」= 窗口末真局里已经没有地、模拟里还有地的我方席位；「去掉后」= 把这些席位的地从模拟的编队领土里拿掉，再除以真局。「看不见的一段」= 某席位最后一个已知点上页面还落后 28 拍以上，而这之后席位和页面都还在：阶梯在已知点之后假定页面追平，这一段的落后模拟不出来；格里是这一段占窗口内全部 席位·拍 的份额。');
     val('out.n', orow.length);
+    for (const t0 of [630, 1530]) {
+      let rvN = 0, lostN = 0, seats = 0, runs = 0, runsRv = 0;
+      const exIn = [];
+      for (const x of G0) {
+        if (x.arm !== 'C2' || x.t0 !== t0) continue;
+        const hp = new Map((x.r.history.perSeat || []).map((sx) => [sx.p, sx.terr1]));
+        const ps = x.r.arms.baseline.perSeat || [];
+        const rv = ps.filter((sx) => sx.terr1 > 0 && !((hp.get(sx.p) ?? 0) > 0));
+        const lost = ps.filter((sx) => !(sx.terr1 > 0) && (hp.get(sx.p) ?? 0) > 0);
+        runs++; seats += ps.length; rvN += rv.length; lostN += lost.length; if (rv.length) runsRv++;
+        const r0 = div(x.a.terr1, x.h.terr1), r1 = div(x.a.terr1 - sum(rv.map((sx) => sx.terr1)), x.h.terr1);
+        if (ok(r0)) exIn.push([r0 >= 0.9 && r0 <= 1.1 ? 1 : 0, ok(r1) && r1 >= 0.9 && r1 <= 1.1 ? 1 : 0]);
+      }
+      val(`revived.${t0}.runs`, runs); val(`revived.${t0}.seats`, seats); val(`revived.${t0}.n`, rvN); val(`revived.${t0}.lost`, lostN); val(`revived.${t0}.runsWith`, runsRv);
+      val(`revived.${t0}.in`, `${sum(exIn.map((e) => e[0]))} / ${exIn.length}`); val(`revived.${t0}.inEx`, `${sum(exIn.map((e) => e[1]))} / ${exIn.length}`);
+    }
     val('blind.n', devs.blind.length); val('blind.dev', devs.blind.length ? pc(Math.exp(med(devs.blind)) - 1) : '-');
     val('seen.n', devs.seen.length); val('seen.dev', devs.seen.length ? pc(Math.exp(med(devs.seen)) - 1) : '-');
     val('blind.dev90', devs.blind.length ? pc(Math.exp(q(devs.blind, 0.9)) - 1) : '-'); val('seen.dev90', devs.seen.length ? pc(Math.exp(q(devs.seen, 0.9)) - 1) : '-');
@@ -575,15 +674,24 @@ if (want('ckpt')) {
     // 对照：最后一个已知点之后「追平」（缺省）换成「保持那时的落后」（C2:after=hold）
     if (HOLD.length) {
       const hrow = [];
-      let between = 0, nOut = 0, closer = 0, nBlind = 0;
+      let between = 0, nOut = 0, closer = 0, nBlind = 0, outMoved = 0, sigDef = 0, sigHold = 0, sigTie = 0, recDef = 0, recHold = 0;
+      const bsDef = [], bsHold = [];
       for (const y of HOLD) {
         const x = G0.find((z) => z.mid === y.mid && z.t0 === y.t0 && z.arm === 'C2');
         if (!x) { notes.push(`hold/${y.tag}：没有对应的缺省 C2 运行`); continue; }
         const b = blindOf(x.mid, x.t0, x.t1);
         const rd = div(x.a.terr1, x.h.terr1), rh = div(y.a.terr1, y.h.terr1);
         const out = ok(rd) && (rd < 0.9 || rd > 1.1);
-        if (out) { nOut++; if (Math.min(rd, rh) <= 1 && Math.max(rd, rh) >= 1) between++; }
-        if (b && b.share >= 0.1) { nBlind++; if (Math.abs(Math.log(rh)) < Math.abs(Math.log(rd))) closer++; }
+        if (out) { nOut++; if (Math.min(rd, rh) <= 1 && Math.max(rd, rh) >= 1) between++; if (ok(rh) && rh >= 0.9 && rh <= 1.1) outMoved++; }
+        if (b && b.share >= 0.1) {
+          nBlind++;
+          if (Math.abs(Math.log(rh)) < Math.abs(Math.log(rd)) - 0.02) closer++;
+          // 看不见的一段占得多的运行：两种假定各自的签名离真局多远
+          const dD = Math.abs(x.a.batchShare - x.h.batchShare), dH = Math.abs(y.a.batchShare - y.h.batchShare);
+          if (ok(dD) && ok(dH)) { bsDef.push(dD); bsHold.push(dH); if (dD < dH - 0.02) sigDef++; else if (dH < dD - 0.02) sigHold++; else sigTie++; }
+          const cD = Math.abs(Math.log(div(x.a.recPerSeat, x.h.recPerSeat))), cH = Math.abs(Math.log(div(y.a.recPerSeat, y.h.recPerSeat)));
+          if (ok(cD) && ok(cH)) { if (cD < cH - 0.02) recDef++; else if (cH < cD - 0.02) recHold++; }
+        }
         hrow.push([x.mid + (CORE.has(x.mid) ? '' : ' ＋'), `${x.t0}~${x.t1}`, b ? pc(b.share) : '-', `×${f(rd)} → ×${f(rh)}`,
           `${f(x.a.recPerSeat, 1)} → ${f(y.a.recPerSeat, 1)} ｜ ${f(x.h.recPerSeat, 1)}`, `${pc(x.a.batchShare)} → ${pc(y.a.batchShare)} ｜ ${pc(x.h.batchShare)}`,
           `${pc(x.a.atkVoidRate)} → ${pc(y.a.atkVoidRate)} ｜ ${pc(x.h.atkVoidRate)}`, `${x.a.alive1} → ${y.a.alive1} ｜ ${x.h.alive1}`]);
@@ -591,8 +699,12 @@ if (want('ckpt')) {
         val(`hold.${x.mid}.${x.t0}.rec`, `${f(x.a.recPerSeat, 1)} → ${f(y.a.recPerSeat, 1)}`); val(`hold.${x.mid}.${x.t0}.recReal`, f(x.h.recPerSeat, 1));
       }
       table('ckpt-hold', ['局', '窗口', '看不见的一段', '窗口末编队领土 模拟 ÷ 真局：追平 → 保持', '进录像条数 ÷ 席位：追平 → 保持 ｜ 真局', '同拍批占比：追平 → 保持 ｜ 真局', '陆攻落空率：追平 → 保持 ｜ 真局', '窗口末在场席位：追平 → 保持 ｜ 真局'], hrow,
-        '「追平」= 缺省的 C2（一个席位最后一个已知点之后，页面在那个已知点的执行拍上一口气追平）；「保持」= `C2:after=hold`（之后一直保持那个已知点上的落后）。真实情形在两者之间：卡顿波会退，但不是在最后一个已知点上立刻退。清单由 `tools/hold_list.py` 按规则挑出（看不见的一段 ≥ 5%，或缺省 C2 的窗口末领土偏出 ±10%）。');
+        '「追平」= 缺省的 C2（一个席位最后一个已知点之后，页面在那个已知点的执行拍上一口气追平）；「保持」= `C2:after=hold`（之后一直保持那个已知点上的落后）。这是两头的假定：一头是卡顿在最后一个已知点上立刻退掉，一头是一直不退。清单由 `tools/hold_list.py` 按规则挑出（看不见的一段 ≥ 5%，或缺省 C2 的窗口末领土偏出 ±10%）。');
       val('hold.n', hrow.length); val('hold.out', nOut); val('hold.between', between); val('hold.blind', nBlind); val('hold.closer', closer);
+      val('hold.outMoved', outMoved);
+      val('hold.sig.def', sigDef); val('hold.sig.hold', sigHold); val('hold.sig.tie', sigTie);
+      val('hold.sig.defAbs', bsDef.length ? f(100 * med(bsDef), 0) : '-'); val('hold.sig.holdAbs', bsHold.length ? f(100 * med(bsHold), 0) : '-');
+      val('hold.rec.def', recDef); val('hold.rec.hold', recHold);
     }
   }
 
@@ -889,6 +1001,8 @@ if (want('arena')) {
       const R = prof.cmdCount[Tk];
       const rs = [...A.values()].map((r) => r.arms.baseline.crowd.cmdCount && r.arms.baseline.crowd.cmdCount[Tk]).filter(Boolean);
       if (!rs.length) continue;
+      val(`arena.people.${Tk}.mean`, f(div(med(rs.map((x) => x.mean)), R.mean)));
+      val(`arena.people.${Tk}.qmax`, f(Math.max(...[0, 1, 2, 3, 4].map((i) => Math.abs(med(rs.map((x) => x.q[i])) - R.q[i]))), 0));
       prow.push([`到 ${Tk} 拍`, pc(med(rs.map((x) => x.zero))), [0, 1, 2, 3, 4].map((i) => f(med(rs.map((x) => x.q[i])), 0)).join(' / '), f(med(rs.map((x) => x.mean))), pc(R.zero), R.q.join(' / '), f(R.mean)]);
     }
     table('arena-people', ['时刻', '模型：一条没下的人', '模型：每人条数 P10 / P25 / 中位 / P75 / P90', '模型：均值', '实测：一条没下的人', '实测：P10 / P25 / 中位 / P75 / P90', '实测：均值'], prow,
@@ -904,6 +1018,7 @@ if (want('arena')) {
       if (!M[0].length) continue;
       drow.push([String(t), String(M[0].length), M.map((a) => f(med(a))).join(' / '), R.map((a) => f(med(a))).join(' / ')]);
       val(`arena.dist.${t}.p90`, `${f(med(M[4]))} / ${f(med(R[4]))}`); val(`arena.dist.${t}.p10`, `${f(med(M[0]))} / ${f(med(R[0]))}`);
+      ['10', '25', '50', '75', '90', 'max'].forEach((nm, i) => { val(`arena.dist.${t}.m${nm}`, f(med(M[i]))); val(`arena.dist.${t}.r${nm}`, f(med(R[i]))); });
     }
     table('arena-dist', ['拍', '局数', '模型：P10 / P25 / 中位 / P75 / P90 / 最大', '录像：P10 / P25 / 中位 / P75 / P90 / 最大'], drow, '其余在场真人每人的地，各分位 ÷ 同一局录像的中位数，再取各局的中位。');
     // 我方这一侧的陆攻：按时段、按对象，模型 / 录像

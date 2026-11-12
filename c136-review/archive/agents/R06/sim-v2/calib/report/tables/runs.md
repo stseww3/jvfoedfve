@@ -5,7 +5,7 @@
 | `calib/g0/` | checkpoint | 110 | 0 | 0 |
 | `calib/attr/` | checkpoint | 0 | 0 | 0 |
 | `calib/fill/` | checkpoint | 0 | 0 | 0 |
-| `calib/hold/` | checkpoint | 0 | 0 | 0 |
+| `calib/hold/` | checkpoint | 14 | 0 | 0 |
 | `calib/arena-acc20/` | arena | 0 | 0 | 0 |
 | `calib/arena-rp1530/` | arena | 0 | 0 | 0 |
 

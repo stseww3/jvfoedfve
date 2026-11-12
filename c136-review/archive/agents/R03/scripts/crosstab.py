@@ -118,7 +118,8 @@ def stop_tick(d, pl):
 def group_total(d, ids):
     """ids 里每个席位从开局到 离线/灭亡 的总账；口径同 dossier.sec_total（卷宗 [L]）。"""
     keys = ("inc", "burnN", "burnAI", "burnH", "netH", "atkFee", "defBal", "defSlot", "donOut", "donTax", "donIn",
-            "boatOut", "boatFee", "balEnd", "outEnd", "lostTiles", "lostBurn", "tilesN", "tilesAI", "tilesH", "ret")
+            "boatOut", "boatFee", "balEnd", "outEnd", "lostTiles", "lostBurn", "tilesN", "tilesAI", "tilesH", "ret",
+            "sentAll", "nAtk", "sentH", "feeH", "nH")
     tot = dict.fromkeys(keys, 0)
     heads = 0
     for pl in ids:
@@ -140,6 +141,11 @@ def group_total(d, ids):
             else:
                 tot["burnH"] += burnt - dS; tot["netH"] += dS; tot["tilesH"] += tiles
         tot["atkFee"] += sum(s[1] for s in g["sent"].values())
+        tot["sentAll"] += sum(s[0] for s in g["sent"].values())
+        tot["nAtk"] += sum(s[2] for s in g["sent"].values())
+        sh = g["sent"].get("H")
+        if sh:
+            tot["sentH"] += sh[0]; tot["feeH"] += sh[1]; tot["nH"] += sh[2]
         tot["defBal"] += g["def_bal"]
         tot["defSlot"] += sum(x[2] for x in g["lost"].values())
         tot["donOut"] += g["don_out"][0]; tot["donTax"] += g["don_out"][1]
@@ -317,6 +323,19 @@ def x1():
     write("X1-delay.txt", L_)
 
 
+def TL(m):
+    """复盘 JSON 的 threeLayer。三个比值在 JSON 里只存了 3 位小数，直接再取 2 位会两次取整（0.565 → 0.56）；
+    这里用同一节里位数更多的分子、分母重算。"""
+    t = dict(J(m)["latencyAndLand"]["threeLayer"])
+    if t.get("cellsPerHeadSquad") and t.get("cellsPerHeadOthers"):
+        t["layer1SpawnFactor"] = t["cellsPerHeadSquad"] / t["cellsPerHeadOthers"]
+    if t.get("convSquad") and t.get("convOthers"):
+        t["layer23ConversionFactor"] = t["convSquad"] / t["convOthers"]
+    if t.get("landPerHeadSquad") and t.get("landPerHeadOthers"):
+        t["landRatio"] = t["landPerHeadSquad"] / t["landPerHeadOthers"]
+    return t
+
+
 # ---------- X2 ----------
 def x2():
     L_ = ["# X2 好地抢到率三层恒等式（crosstab.py；取自 out/dossier/<局>-land-facts.json 与复盘 JSON 的 latencyAndLand.threeLayer）",
@@ -326,12 +345,12 @@ def x2():
           "[X2a] 1500 拍三层对账",
           "局 | 在场 编队/其他 | 人均地 编队 对 其他 | 人均地比 | 出生份额 | 转化 | ln 出生份额 + ln 转化 = ln 人均地比 | 按其他真人的转化该有 / 实际 / 差"]
     for m in MIDS:
-        t = J(m)["latencyAndLand"]["threeLayer"]
+        t = TL(m)
         l1, l2, lr = t["layer1SpawnFactor"], t["layer23ConversionFactor"], t["landRatio"]
         L_.append(f"{m} | {t['squadAlive']}/{t['othersAlive']} | {t['landPerHeadSquad']:,} 对 {t['landPerHeadOthers']:,} | {lr:.2f} | {l1:.2f} | {l2:.2f} | "
                   f"{math.log(l1):+.2f} + {math.log(l2):+.2f} = {math.log(lr):+.2f} | {t['expectedAtOthersConversion']:,} / {t['squadTerr']:,} / {t['squadTerr'] - t['expectedAtOthersConversion']:+,}")
     for label, ms in (("11 局", MIDS), ("10 个输局", [m for m in MIDS if m != "A025"])):
-        ts = [J(m)["latencyAndLand"]["threeLayer"] for m in ms]
+        ts = [TL(m) for m in ms]
         g1 = math.exp(sum(math.log(t["layer1SpawnFactor"]) for t in ts) / len(ts))
         g2 = math.exp(sum(math.log(t["layer23ConversionFactor"]) for t in ts) / len(ts))
         g3 = math.exp(sum(math.log(t["landRatio"]) for t in ts) / len(ts))
@@ -803,7 +822,7 @@ def x10():
         a, b = group_total(d, d.sqids), group_total(d, ot)
         return (a["inc"] / max(1, a["heads"])) / max(1e-9, b["inc"] / max(1, b["heads"]))
 
-    tl = lambda m: J(m)["latencyAndLand"]["threeLayer"]  # noqa: E731
+    tl = TL
     put("人均地比630", lambda m: percap(m, 630), "630 拍 编队人均地 ÷ 其他真人人均地")
     put("人均地比4284", lambda m: percap(m, 4284), "4284 拍 同上")
     put("得AI地比", lambda m: win_ratio(m, 630, 1500, "tilesO"), "630~1500 拍 人均得 AI+中立地 编队 ÷ 其他真人")
@@ -937,7 +956,83 @@ def x11():
         tt = agg[nm]
         L_.append(f"9 个有队伍的输局合计 | {nm} | {tt['n']} 笔 {wan(tt['got'])} {wan(tt['tax'])}（{pc(tt['tax'], tt['got'], 0)}） | {tt['hi']} / {tt['mid']} / {tt['lo']} | {tt['after_lo']} | {tt['denser']}（{pc(tt['denser'], tt['n'], 0)}） | "
                   f"{tt['over']} / {tt['hard']} | {tt['capped']} | {tt['neg']}（{wan(tt['neg_tax'])}；占笔数 {pc(tt['neg'], tt['n'], 0)}）")
+
+    L_ += ["", "[X11d] 成交的编队内捐款按日志里的档位分：落地之后 150 拍受捐方有没有对在线真人落过陆攻（成交笔与日志条的配对用 c136lib.match_donations，同卷宗 [H]；没配上 = 找不到同号、同目标、同 pct 的日志条）",
+           "# 每格：笔 到账 税 → 之后 150 拍打了真人的笔数 / 前后 150 拍都没打真人的笔数（这些笔的到账、税）",
+           "局 | 窗口 | 进攻档 | 防守档 | 产出档 | 其它档 | 没配上"]
+    KIND = {"offense_dispatch": "进攻档", "defense_dispatch": "防守档", "yield_opt_dispatch": "产出档", None: "没配上"}
+    COLS = ("进攻档", "防守档", "产出档", "其它档", "没配上")
+    agg_d = {w: {k_: Counter() for k_ in COLS} for w in ("<4284", "≥4284")}
+
+    def cell(c_):
+        if not c_["n"]:
+            return "0 笔"
+        return f"{c_['n']} 笔 {wan(c_['got'])} {wan(c_['tax'])} → {c_['after']} / {c_['idle']}（{wan(c_['idleGot'])}、{wan(c_['idleTax'])}）"
+
+    for m in MIDS:
+        d = D(m)
+        if not d.team_game:
+            L_.append(f"{m} | 没有队伍，没有捐款")
+            continue
+        sq = set(d.sqids)
+        atk = defaultdict(list)
+        for r in d.R["cmdLog"]:
+            if r[2] != 1 or not r[5]:
+                continue
+            q = r[4]
+            if q >= d.H or 0 <= d.left[q] <= r[0]:
+                continue
+            atk[r[1]].append(r[0])
+        acc = {w: {k_: Counter() for k_ in COLS} for w in ("<4284", "≥4284")}
+        for c, kind in paired_kinds(d):
+            if not c[5] or c[4] not in sq:
+                continue
+            S, q = c[0], c[4]
+            w = "<4284" if S < 4284 else "≥4284"
+            col = KIND.get(kind, "其它档")
+            ts = atk.get(q, ())
+            after = any(S < x <= S + 150 for x in ts)
+            before = any(S - 150 < x <= S for x in ts)
+            for a_ in (acc[w][col],) + ((agg_d[w][col],) if m != "A025" else ()):
+                a_["n"] += 1; a_["got"] += c[6]; a_["tax"] += c[7]; a_["after"] += after
+                if not after and not before:
+                    a_["idle"] += 1; a_["idleGot"] += c[6]; a_["idleTax"] += c[7]
+        for w in ("<4284", "≥4284"):
+            L_.append(f"{m} | {w} | " + " | ".join(cell(acc[w][k_]) for k_ in COLS))
+    for w in ("<4284", "≥4284"):
+        L_.append(f"9 个有队伍的输局合计 | {w} | " + " | ".join(cell(agg_d[w][k_]) for k_ in COLS))
+    tt = agg_d["<4284"]["进攻档"]
+    L_.append(f"9 个有队伍的输局、4284 拍前成交的进攻档：{tt['n']} 笔里之后 150 拍受捐方打了真人的 {tt['after']} 笔（{pc(tt['after'], tt['n'], 0)}），前后 150 拍都没打的 {tt['idle']} 笔（{pc(tt['idle'], tt['n'], 0)}；到账 {wan(tt['idleGot'])}、税 {wan(tt['idleTax'])}）")
     write("X11-patterns-mech.txt", L_)
+
+
+def paired_kinds(d):
+    """每笔成交的捐款 → 它在日志里的档位（HL-DISPATCH/HL-DONATE 的 kind；配不上记 None）。配对同 dossier.sec_donations。"""
+    import c136lib as L
+    logs = d.parse_dispatch()
+    out = []
+    for b, pl in sorted(d.sq.items(), key=lambda x: x[1]):
+        lg = logs.get(b, [])
+        ex = [c for c in d.cmds.get(pl, ()) if c[2] == 2]
+        batches, grp = [], []
+        for c in ex:
+            if batches and batches[-1][0] == c[0]:
+                batches[-1][1].append((2, c[3], c[4])); grp[-1].append(c)
+            else:
+                batches.append((c[0], [(2, c[3], c[4])])); grp.append([c])
+        rows, _ = L.match_donations([(x["t"], x["pct"], x["to"]) for x in lg], batches)
+        order = [c for g_ in grp for c in reversed(g_)]
+        used = set()
+        for c, (S, tmin, tmax, pct, tgt) in zip(order, rows):
+            kind = None
+            if tmax is not None:
+                for j, x in enumerate(lg):
+                    if x["t"] == tmax and x["pct"] == pct and x["to"] == tgt and j not in used:
+                        used.add(j)
+                        kind = x["kind"]
+                        break
+            out.append((c, kind))
+    return out
 
 
 # ---------- X12 ----------
@@ -998,12 +1093,12 @@ def x12():
         t = tot(m, which)
         return 100.0 * sum(t[k_] for k_ in keys) / max(1, t["inc"])
 
-    def eff(m, which):
-        if (m, which) not in _eff:
+    def eff(m, which, win=(1500, 4284)):
+        if (m, which, win) not in _eff:
             g = groups(m)
             ids = g[0][1] if which == "sq" else g[-1][1]
-            _eff[(m, which)] = interest_eff(D(m), ids, [(1500, 4284)])[0]
-        return _eff[(m, which)]
+            _eff[(m, which, win)] = interest_eff(D(m), ids, [win])[0]
+        return _eff[(m, which, win)]
 
     def lagrow(m):
         return next(r for r in facts(m, "delay")["lag"]["byPeriod"] if r["period"] == "600~1500")
@@ -1062,7 +1157,7 @@ def x12():
         t, n = bw(m)
         return 100.0 * t["不给脉冲档"] / t["低于worth"] if t["低于worth"] else None
 
-    tl = lambda m: J(m)["latencyAndLand"]["threeLayer"]  # noqa: E731
+    tl = TL
     vor = lambda m: facts(m, "land")["voronoi"]  # noqa: E731
 
     put("A1 人均地比 630", "630 拍 编队人均地 ÷ 其他真人人均地", lambda m: cutv(m, 630, "land"))
@@ -1087,6 +1182,10 @@ def x12():
     put("B12 对真人净得地 4284~结束", "", lambda m: win(m, 4284, None)[0]["tilesH"] - win(m, 4284, None)[0]["defTiles"])
     put("B13 三项费占利息 1500~4284 编队", "%", lambda m: 100.0 * win(m, 1500, 4284)[0]["fees3"] / max(1, win(m, 1500, 4284)[0]["inc"]))
     put("B14 三项费占利息 1500~4284 其他真人", "%", lambda m: 100.0 * win(m, 1500, 4284)[1]["fees3"] / max(1, win(m, 1500, 4284)[1]["inc"]))
+    put("B15 烧AI+中立÷利息 630~1500 编队", "% 窗口里烧在 AI+中立上的兵合计 ÷ 窗口利息合计", lambda m: 100.0 * win(m, 630, 1500)[0]["burnO"] / max(1, win(m, 630, 1500)[0]["inc"]))
+    put("B16 烧AI+中立÷利息 630~1500 其他真人", "%", lambda m: 100.0 * win(m, 630, 1500)[1]["burnO"] / max(1, win(m, 630, 1500)[1]["inc"]))
+    put("B17 1500拍余额÷利息 630~1500 编队", "% 1500 拍余额合计 ÷ 630~1500 拍利息合计", lambda m: 100.0 * win(m, 630, 1500)[0]["B1"] / max(1, win(m, 630, 1500)[0]["inc"]))
+    put("B18 1500拍余额÷利息 630~1500 其他真人", "%", lambda m: 100.0 * win(m, 630, 1500)[1]["B1"] / max(1, win(m, 630, 1500)[1]["inc"]))
     put("C1 挨打掉兵占利息 编队", "整局 %", lambda m: share(m, "sq", "defBal"))
     put("C2 挨打掉兵占利息 对手", "整局 %；对手 = 敌方真人（自由混战局 = 其他真人）", lambda m: share(m, "op", "defBal"))
     put("C3 攻击费占利息 编队", "%", lambda m: share(m, "sq", "atkFee"))
@@ -1107,6 +1206,14 @@ def x12():
     put("C18 编队吃真人地的单价", "兵/格，不含对消", lambda m: tot(m, "sq")["burnH"] / max(1, tot(m, "sq")["tilesH"]))
     put("C19 别人吃编队地的单价", "兵/格（对方烧的兵 ÷ 编队失地）", lambda m: tot(m, "sq")["lostBurn"] / max(1, tot(m, "sq")["lostTiles"]))
     put("C20 税÷互捐到账 编队", "%", lambda m: (100.0 * tot(m, "sq")["donTax"] / tot(m, "sq")["donOut"]) if tot(m, "sq")["donOut"] else None)
+    put("C21 陆攻费÷送出 编队", "% 整局成交的陆攻：手续费 ÷ 送出的兵（手续费 = 发令时余额的 12/1024，与送多少无关）", lambda m: 100.0 * tot(m, "sq")["atkFee"] / max(1, tot(m, "sq")["sentAll"]))
+    put("C22 陆攻费÷送出 对手", "%", lambda m: 100.0 * tot(m, "op")["atkFee"] / max(1, tot(m, "op")["sentAll"]))
+    put("C23 对真人陆攻费÷送出 编队", "% 只算打真人的陆攻", lambda m: 100.0 * tot(m, "sq")["feeH"] / max(1, tot(m, "sq")["sentH"]))
+    put("C24 对真人陆攻费÷送出 对手", "%", lambda m: 100.0 * tot(m, "op")["feeH"] / max(1, tot(m, "op")["sentH"]))
+    put("C25 陆攻送出占利息 编队", "% 整局成交的陆攻送出的兵 ÷ 利息（退回余额的兵会再次送出，可以超过 100）", lambda m: share(m, "sq", "sentAll"))
+    put("C26 陆攻送出占利息 对手", "%", lambda m: share(m, "op", "sentAll"))
+    put("C27 每条对真人陆攻送出 编队", "万兵/条", lambda m: tot(m, "sq")["sentH"] / max(1, tot(m, "sq")["nH"]) / 1e4)
+    put("C28 每条对真人陆攻送出 对手", "万兵/条", lambda m: tot(m, "op")["sentH"] / max(1, tot(m, "op")["nH"]) / 1e4)
     put("D1 延迟P50 600~1500", "拍", lambda m: lagrow(m)["p50"])
     put("D2 延迟P90 600~1500", "拍", lambda m: lagrow(m)["p90"])
     put("D3 迟到占比 整局", "% 成交指令里延迟 >30 拍", lambda m: 100.0 * facts(m, "delay")["lag"]["total"]["gt30"] / facts(m, "delay")["lag"]["total"]["n"])
@@ -1132,6 +1239,8 @@ def x12():
     put("F2 利息效率 1500~4284 对手", "%", lambda m: 100.0 * eff(m, "op")[3] / max(1, eff(m, "op")[4]))
     put("F3 超软占比 1500~4284 编队", "% 席位·拍", lambda m: 100.0 * eff(m, "sq")[1] / max(1, eff(m, "sq")[0]))
     put("F4 超软占比 1500~4284 对手", "%", lambda m: 100.0 * eff(m, "op")[1] / max(1, eff(m, "op")[0]))
+    put("F5 利息效率 600~1500 编队", "% 实得 ÷ 满额", lambda m: 100.0 * eff(m, "sq", (600, 1500))[3] / max(1, eff(m, "sq", (600, 1500))[4]))
+    put("F6 利息效率 600~1500 对手", "%", lambda m: 100.0 * eff(m, "op", (600, 1500))[3] / max(1, eff(m, "op", (600, 1500))[4]))
     put("G1 调度/捐款 成交÷日志", "%", lambda m: da(m, "exec"))
     put("G2 调度/捐款 额度拒÷日志", "%", lambda m: da(m, "quota"))
     put("H1 被围占比 1500起", "% buyLand 决策拍", lambda m: core(m, "noOffer"))
@@ -1208,6 +1317,9 @@ def x12():
         L_.append(stat(nm, 0))
     for nm in ("B13 三项费占利息 1500~4284 编队", "B14 三项费占利息 1500~4284 其他真人"):
         L_.append(stat(nm, 1))
+    for nm in ("B15 烧AI+中立÷利息 630~1500 编队", "B16 烧AI+中立÷利息 630~1500 其他真人", "B17 1500拍余额÷利息 630~1500 编队", "B18 1500拍余额÷利息 630~1500 其他真人"):
+        L_.append(stat(nm, 1))
+    L_ += [versus("B15 烧AI+中立÷利息 630~1500 编队", "B16 烧AI+中立÷利息 630~1500 其他真人", "<"), versus("B17 1500拍余额÷利息 630~1500 编队", "B18 1500拍余额÷利息 630~1500 其他真人")]
     L_ += [count("B2 人均利息比 630~1500", "≥1", lambda v: v >= 1), count("B6 人均烧AI+中立比 630~1500", "<1", lambda v: v < 1), count("B8 人均得AI+中立地比 630~1500", "<1", lambda v: v < 1),
            count("B5 人均烧AI+中立比 0~630", "≥1", lambda v: v >= 1), count("B7 人均得AI+中立地比 0~630", "≥0.95", lambda v: v >= 0.95),
            count("B3 人均利息比 1500~4284", "<1", lambda v: v < 1), count("B4 人均利息比 4284~结束", "<1", lambda v: v < 1),
@@ -1223,6 +1335,11 @@ def x12():
     for i in range(18, 21):
         nm = next(k_ for k_ in S if k_.startswith(f"C{i} "))
         L_.append(stat(nm, 1))
+    for i in range(21, 29):
+        nm = next(k_ for k_ in S if k_.startswith(f"C{i} "))
+        L_.append(stat(nm, 1))
+    L_ += [versus("C21 陆攻费÷送出 编队", "C22 陆攻费÷送出 对手"), versus("C23 对真人陆攻费÷送出 编队", "C24 对真人陆攻费÷送出 对手"),
+           versus("C25 陆攻送出占利息 编队", "C26 陆攻送出占利息 对手"), versus("C27 每条对真人陆攻送出 编队", "C28 每条对真人陆攻送出 对手", "<")]
     L_ += [versus("C1 挨打掉兵占利息 编队", "C2 挨打掉兵占利息 对手"), versus("C3 攻击费占利息 编队", "C4 攻击费占利息 对手"), versus("C5 捐款税占利息 编队", "C6 捐款税占利息 对手"),
            versus("C7 船费占利息 编队", "C8 船费占利息 对手", "<"), versus("C9 末余额+在途占利息 编队", "C10 末余额+在途占利息 对手", "<"), versus("C11 打AI占利息 编队", "C12 打AI占利息 对手", "<"),
            versus("C13 打真人占利息 编队", "C14 打真人占利息 对手"),
@@ -1246,9 +1363,11 @@ def x12():
            count("E6 份额÷人头", "<1", lambda v: v < 1), count("E7 每号名下中位 ÷ 其他真人名下中位", "<1", lambda v: v < 1), count("E8 B集归编队", "≥80%", lambda v: v >= 80),
            count("E10 冻结占比 600~1500", "≥14%", lambda v: v >= 14), count("E11 冻结里卡在编队友", "≥50%", lambda v: v >= 50), count("E12 没AI邻居占比 600~1500", "≥18%", lambda v: v >= 18)]
     L_ += ["", "[F] 利息效率 1500~4284"]
-    for nm in ("F1 利息效率 1500~4284 编队", "F2 利息效率 1500~4284 对手", "F3 超软占比 1500~4284 编队", "F4 超软占比 1500~4284 对手"):
+    for nm in ("F1 利息效率 1500~4284 编队", "F2 利息效率 1500~4284 对手", "F3 超软占比 1500~4284 编队", "F4 超软占比 1500~4284 对手",
+               "F5 利息效率 600~1500 编队", "F6 利息效率 600~1500 对手"):
         L_.append(stat(nm, 0))
-    L_ += [versus("F1 利息效率 1500~4284 编队", "F2 利息效率 1500~4284 对手"), versus("F3 超软占比 1500~4284 编队", "F4 超软占比 1500~4284 对手")]
+    L_ += [versus("F1 利息效率 1500~4284 编队", "F2 利息效率 1500~4284 对手"), versus("F3 超软占比 1500~4284 编队", "F4 超软占比 1500~4284 对手"),
+           versus("F5 利息效率 600~1500 编队", "F6 利息效率 600~1500 对手")]
     L_ += ["", "[G] 调度/捐款日志的去向"]
     for nm in ("G1 调度/捐款 成交÷日志", "G2 调度/捐款 额度拒÷日志"):
         L_.append(stat(nm, 0))

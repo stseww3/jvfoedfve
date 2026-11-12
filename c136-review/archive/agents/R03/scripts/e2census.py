@@ -286,6 +286,14 @@ def main():
             return f(med([m[k] for m in xs if m[k] is not None]))
         L.append(f"{nm} | {len(ms)}（{len(w)}/{len(l_)}） | {mm(w, 'grow')} / {mm(l_, 'grow')} | {mm(w, 'dens1530')} / {mm(l_, 'dens1530')} | {mm(w, 'peakOverHead')} / {mm(l_, 'peakOverHead')}")
 
+    L += ["", "[E2-7] 页面 mode=7 / 8 的局（manifest 的 mode 列；A046 的录像头是 gameMode=0、numberTeams=0，即没有队伍；其余几局的录像头 R03 没有核对）",
+          "局 | 编队档 | mode | 结局 | 人数 | 调度/捐款日志条数 | 被围占比 | 峰值÷人头 | 结束拍"]
+    for m in sorted(M, key=lambda m: m["mid"]):
+        if m["mode"] in (7, 8):
+            L.append(f"{m['mid']} | {m['cohort']} | {m['mode']} | {m['result']} | {m['players']} | {sum(m['log'])} | {f(m['boxedShare'], 0)}% | {f(m['peakOverHead'])} | {m['end']}")
+    oth = [m for m in M if m["mode"] not in (7, 8)]
+    L.append(f"其余 {len(oth)} 局（mode 0~6）里调度/捐款日志 0 条的局数：{sum(1 for m in oth if not sum(m['log']))}")
+
     ex = exact_for_mine()
     L += ["", "[V] 替身量对精确值：R03 复盘的 11 局（精确值取自 out/cross/X12-summary.txt）",
           "局 | 日志疑似被拒占比（整局） 对 重放里没成交占比（100% − 成交÷日志） | 快照被围占比 对 决策拍被围占比 | 选点间距（相对） 对 出生份额 | 地的倍数 对 人均得AI+中立地比 630~1500"]

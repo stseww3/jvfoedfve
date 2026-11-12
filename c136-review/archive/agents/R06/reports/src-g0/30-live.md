@@ -12,7 +12,7 @@
 
 <!-- assert: n('live.n') >= 90 -->
 <!-- assert: n('live.inBands') >= 70 -->
-一共扫了 {{v:live.n}} 局，{{v:live.inBands}} 局进了区间。日志快照有对不上的 {{v:live.badSnap.n}} 局是：{{v:live.badSnap.list}}。这些局没有逐局查原因，一律不用。
+一共扫了 {{v:live.n}} 局，{{v:live.inBands}} 局进了区间。日志快照有对不上的 {{v:live.badSnap.n}} 局是：{{v:live.badSnap.list}}。早先抽查时，这些局在真引擎重放里同样对不上（记在 `outbox/0018`），问题出在录像或日志本身；这一次没有重新核实，一律不用。
 
 ### 3.3 区间
 

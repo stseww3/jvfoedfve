@@ -108,7 +108,8 @@ head = ['# 通道延迟反事实归因：attr_list.txt（种子 1，核心 20 �
 n_attr = 0
 for fname, seeds, mids in (('attr_list.txt', (1,), COREM), ('attr_list_ext.txt', (1,), EXT), ('attr_list_seeds.txt', (2, 3), COREM)):
     attr = list(head)
-    for t0, ln in CPS:
+    # 清单里的先后就是跑的先后：卡顿波所在的两个断面排在前面，机器挤、队排不完的时候先有它们
+    for t0, ln in sorted(CPS, key=lambda c: (630, 1500, 0, 4284).index(c[0])):
         for mid in mids:
             if replay_last(mid) - 1 - t0 < MIN_WIN:
                 continue

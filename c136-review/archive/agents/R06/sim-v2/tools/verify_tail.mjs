@@ -46,16 +46,21 @@ for (const f of fs.readdirSync(path.join(CALIB, 'verify')).sort()) {
   if (fs.existsSync(sf)) {
     const st0 = JSON.parse(fs.readFileSync(sf, 'utf8'));
     const i = st0.ticks.indexOf(v.truth.firstBadT);
+    // 两个采样拍之间各席位在录像里有几条指令（离场指令之外）：不同的席位如果一条都没有，差别就只能来自内置 AI 自己的动作
+    const cmds = new Map();
+    const exec0 = st.exec;
+    st.exec = (c) => { if (c.id !== 8 && c.id !== 9) cmds.set(c.player, (cmds.get(c.player) || 0) + 1); return exec0(c); };
     while (g.t < v.truth.firstBadT) { if (!st.step()) break; g.tick(); }
+    st.exec = exec0;
     if (i >= 0 && g.t === v.truth.firstBadT) {
       const seats = [];
       for (let p = 0; p < H; p++) {
         const tt = g.alive[p] ? g.terr[p] : 0, bb = tt > 0 ? g.bal[p] : 0;
         const et = st0.hum[p].terr[i], eb = et > 0 ? st0.hum[p].bal[i] : 0;
-        if (tt !== et || bb !== eb) seats.push({ p, team: g.teams ? g.teams[p] : 0, husk: g.state[p] === 2, terr: [tt, et], bal: [bb, eb] });
+        if (tt !== et || bb !== eb) seats.push({ p, team: g.teams ? g.teams[p] : 0, husk: g.state[p] === 2, leaveT: M.leaveT.get(p) ?? -1, cmdsBetween: cmds.get(p) || 0, terr: [tt, et], bal: [bb, eb] });
       }
       out[mid].diff = { t: g.t, humans: H, n: seats.length, seats };
-      console.log(`   t=${g.t}：${H} 个真人里 ${seats.length} 个不同：` + seats.map((x) => `#${x.p}（队 ${x.team}${x.husk ? '，离场托管' : ''}）领土 ${x.terr[0]}↔${x.terr[1]} 兵 ${x.bal[0]}↔${x.bal[1]}`).join('；'));
+      console.log(`   t=${g.t}：${H} 个真人里 ${seats.length} 个不同：` + seats.map((x) => `#${x.p}（队 ${x.team}${x.husk ? `，${x.leaveT} 拍离场、之后托管` : ''}，两个采样拍之间录像指令 ${x.cmdsBetween} 条）领土 ${x.terr[0]}↔${x.terr[1]} 兵 ${x.bal[0]}↔${x.bal[1]}`).join('；'));
     }
   }
 }
