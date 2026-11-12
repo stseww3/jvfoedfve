@@ -16,6 +16,7 @@
   ai         身边 AI 地的去向
   layers     没抢到 AI 地的三层归因
   gates      核心期（t>=1500）影子策略对真人 / 非真人报价的出口；被真人打的拍有没有还手（读 out/<id>/coregates.json，coregates.py <id> json 写的）
+  donflow    输血账（录像真值）：捐款按千分比档 / 收款人状态 / 收款后 300 拍的去向（读 out/<id>/donflow.json，donflow.py <id> json 写的）
   money      兵力账：利息、顶格少拿、手续费、捐款损耗（录像真值）+ 日志侧估算（15 局同口径）
   logside    只靠日志的计数：sent / accepted、骤降、垮着还捐、零指令时段、满仓不动、缺快照、没开局的席位
   patterns   15 局 JSON 里的模式名：出现在几局、多少实例
@@ -56,6 +57,7 @@ class M:
         self.G = jl(os.path.join(OUT, mid, 'logdigest.json')) or {}
         self.D = jl(os.path.join(OUT, mid, 'digest.json')) or {}
         self.K = jl(os.path.join(OUT, mid, 'coregates.json')) or {}
+        self.F = jl(os.path.join(OUT, mid, 'donflow.json')) or {}
         self.ctx = self.R.get('context', {})
         self.oc = self.R.get('outcome', {})
         te = self.ctx.get('truthEnd')
@@ -541,6 +543,82 @@ def sec_gates(ms):
     return out
 
 
+def sec_donflow(ms):
+    print('### 输血账（录像真值，donflow.py）：我方号捐出、已执行的每一笔，按千分比档、收款人、收款后 300 拍做了什么')
+    print('   手续费 = 捐款人余额的 6.25%，与 pct 无关；到账 = min(余额×(pct+1)/1024, 余额−手续费, 收款人离硬上限的余量)。损耗率 = 手续费 ÷ (手续费 + 到账)。')
+    ds = [m.F for m in ms if m.F.get('n')]
+    if not ds:
+        print('   （没有 donflow.json）')
+        print()
+        return []
+    f = lambda a: f"{a['n']} / {wan(a['delivered'])} / {wan(a['fee'])}（{pc(a['fee'], a['fee'] + a['delivered'], 0)}）" if a and a.get('n') else '0'
+    z = lambda: dict(n=0, delivered=0, fee=0)
+
+    def addacc(a, b):
+        if b:
+            for k in ('n', 'delivered', 'fee'):
+                a[k] += b.get(k, 0)
+        return a
+    pk = ['<64', '64~149', '150~199', '200~299', '>=300']
+    rows = []
+    tot = dict(all=z(), pct={k: z() for k in pk}, husk=z(), trunc=z(), short=0, zero_n=0, zero_fee=0)
+    for d in ds:
+        husk = addacc(addacc(z(), d['to'].get('我方空壳')), d['to'].get('外人空壳'))
+        rows.append([d['matchId'], f(d)] + [f(d['pct'].get(k)) for k in pk] + [f(husk), f"{f(d['trunc'])}，少到账 {wan(d['trunc']['short'])}", f"{d['zero']['n']} 笔 / 费 {wan(d['zero']['fee'])}"])
+        addacc(tot['all'], d)
+        for k in pk:
+            addacc(tot['pct'][k], d['pct'].get(k))
+        addacc(tot['husk'], husk)
+        addacc(tot['trunc'], d['trunc'])
+        tot['short'] += d['trunc']['short']
+        tot['zero_n'] += d['zero']['n']
+        tot['zero_fee'] += d['zero']['fee']
+    rows.append(['合计', f(tot['all'])] + [f(tot['pct'][k]) for k in pk] + [f(tot['husk']), f"{f(tot['trunc'])}，少到账 {wan(tot['short'])}", f"{tot['zero_n']} 笔 / 费 {wan(tot['zero_fee'])}"])
+    table(['局', '已执行：笔 / 到账 / 手续费（损耗率）', 'pct <64', '64~149', '150~199', '200~299', '>=300', '给空壳', '被截断（到账 < 名义值的 90%）', '到账 = 0'], rows)
+    # 收款人状态与之后 300 拍
+    dk = ['<50', '50~100', '100~125', '>=125']
+    rows = []
+    T = dict(dens={k: z() for k in dk}, fire=z(), ddead=z(), W=dict(n=0, recv=0, spentCap=0, donOutCap=0, donOutFee=0, gain=0, noCmd=0, noCmdRecv=0, lt=0, ltRecv=0, dead=0, deadRecv=0), pp=dict(pairs=0, fee=0, back=0),
+             F=dict(all=0, noCmd=0, donOut=0, spent=0, dead=0, none=0))
+    for d in ds:
+        W = d.get('windows') or {}
+        F = d.get('follow') or {}
+        rows.append([d['matchId']] + [f(d['dens'].get(k)) for k in dk] + [f(d['underFire']), f(d['donorDead']),
+                    f"{W.get('n', 0)} 个 / {wan(W.get('recv', 0))}", f"{wan(W.get('spentCap', 0))}（{pc(W.get('spentCap', 0), W.get('recv', 0), 0)}）",
+                    f"{wan(W.get('donOutCap', 0))}（{pc(W.get('donOutCap', 0), W.get('recv', 0), 0)}）；再付 {wan(W.get('donOutFee', 0))}",
+                    f"{W.get('spentLtTenth', {}).get('n', 0)} 个 / {wan(W.get('spentLtTenth', {}).get('recv', 0))}（{pc(W.get('spentLtTenth', {}).get('recv', 0), W.get('recv', 0), 0)}）",
+                    f"{W.get('noCmd', {}).get('n', 0)} 个 / {wan(W.get('noCmd', {}).get('recv', 0))}",
+                    f"{d['pingpong']['pairs']} 组 / 费 {wan(d['pingpong']['fee'])}"])
+        for k in dk:
+            addacc(T['dens'][k], d['dens'].get(k))
+        addacc(T['fire'], d['underFire'])
+        addacc(T['ddead'], d['donorDead'])
+        for k in ('n', 'recv', 'spentCap', 'donOutCap', 'donOutFee', 'gain'):
+            T['W'][k] += W.get(k, 0)
+        T['W']['noCmd'] += W.get('noCmd', {}).get('n', 0)
+        T['W']['noCmdRecv'] += W.get('noCmd', {}).get('recv', 0)
+        T['W']['lt'] += W.get('spentLtTenth', {}).get('n', 0)
+        T['W']['ltRecv'] += W.get('spentLtTenth', {}).get('recv', 0)
+        T['W']['dead'] += W.get('dead', {}).get('n', 0)
+        T['W']['deadRecv'] += W.get('dead', {}).get('recv', 0)
+        for k in T['pp']:
+            T['pp'][k] += d['pingpong'][k]
+        for k in T['F']:
+            T['F'][k] += (F.get(k) or {}).get('n', 0)
+    W = T['W']
+    rows.append(['合计'] + [f(T['dens'][k]) for k in dk] + [f(T['fire']), f(T['ddead']), f"{W['n']} 个 / {wan(W['recv'])}", f"{wan(W['spentCap'])}（{pc(W['spentCap'], W['recv'], 0)}）",
+                f"{wan(W['donOutCap'])}（{pc(W['donOutCap'], W['recv'], 0)}）；再付 {wan(W['donOutFee'])}", f"{W['lt']} 个 / {wan(W['ltRecv'])}（{pc(W['ltRecv'], W['recv'], 0)}）", f"{W['noCmd']} 个 / {wan(W['noCmdRecv'])}",
+                f"{T['pp']['pairs']} 组 / 费 {wan(T['pp']['fee'])}"])
+    table(['局', '收款时密度 <50（在场的我方号）', '50~100', '100~125', '>=125', '收款时正被人打', '捐款人 300 拍内阵亡', '收款窗口：个 / 收到', '窗口内战斗耗兵至多抵掉', '窗口内又捐出去至多；这些再捐的手续费', '窗口内战斗耗兵不到收到的一成', '窗口内没有任何陆攻 / 发船指令', '对倒（150 拍内原路捐回）'], rows)
+    Fa = T['F']
+    print(f"   逐笔打标（在场的我方号收款、之后还有 300 拍录像的 {Fa['all']:,} 笔；一笔可挂几个标）：收款人 300 拍内没有任何陆攻 / 发船指令进录像 {Fa['noCmd']:,}（{pc(Fa['noCmd'], Fa['all'])}）；"
+          f"又捐出 >= 到账的一半 {Fa['donOut']:,}（{pc(Fa['donOut'], Fa['all'])}）；战斗耗兵 >= 到账的一半 {Fa['spent']:,}（{pc(Fa['spent'], Fa['all'])}）；收款人阵亡 {Fa['dead']:,}（{pc(Fa['dead'], Fa['all'])}）；三样都不沾 {Fa['none']:,}")
+    print('   收款窗口 = 同一个收款人相隔 <=300 拍的几笔并成一个 [第一笔, 最后一笔+300]，窗口之间不重叠。「至多」= min(收到, 窗口内的战斗耗兵 / 又捐出)：收款人自己的利息也在花，所以是上限。')
+    print()
+    return [dict(id=d['matchId'], n=d['n'], delivered=d['delivered'], fee=d['fee'], pct=d['pct'], to=d['to'], dens=d['dens'], trunc=d['trunc'], zero=d['zero'], underFire=d['underFire'],
+                 windows=d.get('windows'), follow=d.get('follow'), pingpong=d['pingpong']) for d in ds] + [dict(id='ALL', tot=tot, T=T)]
+
+
 def sec_money(ms):
     print('### 兵力账（录像真值：reviews/*.json 的 truthSummary；单位 兵）')
     keys = ['利息+地租', '顶格少拿', '出兵手续费', '捐款手续费', '捐出到账', '回兵溢出', '空壳少拿', '船兵交接蒸发', '海上损失', '其它白损', '战斗耗兵', '被打掉兵', '得地', '失地']
@@ -867,7 +945,7 @@ def sec_spawnfx(ms):
 
 
 SECS = dict(relate=sec_relate, struct=sec_struct, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
-            gates=sec_gates, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
+            gates=sec_gates, donflow=sec_donflow, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
 def main():

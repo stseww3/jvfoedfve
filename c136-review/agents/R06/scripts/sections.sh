@@ -50,6 +50,8 @@ case "$grp" in
     timeout 60 python3 "$here/landcap.py" "$mid" json | tail -1
     # 核心期出口（需要 probe.json 的 tally，且录像到 t>=1500）
     timeout 60 python3 "$here/coregates.py" "$mid" json > "$sec/coregates.txt" 2>&1 || echo "  [coregates 跳过] $(tail -1 "$sec/coregates.txt")"
+    # 输血账（需要 sim_state.json）
+    timeout 60 python3 "$here/donflow.py" "$mid" json > "$sec/donflow.txt" 2>&1 || echo "  [donflow 跳过] $(tail -1 "$sec/donflow.txt")"
     ;;
   *) echo "未知批次 $grp"; exit 2 ;;
 esac
