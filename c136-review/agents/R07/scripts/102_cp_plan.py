@@ -5,7 +5,8 @@
   主网格（历史上这一局实际用的版本）：断面 0 / 630 / 1500 / 4284 × 通道 C0 / C1 / C2 × 种子 0、1、2
       断面 0 看到 1500 拍，其余看 900 拍；另加 C0b（零延迟 + 一拍一条）种子 0
   噪声底：H（全按录像）在同一断面只扰动引擎随机数，种子 1、2
-  版本对照（另一个历史版本 Va ↔ Vb，原文）：断面 0 / 630 / 1500 × C1、C2 × 种子 0、1
+  版本对照（另一个历史版本 Va ↔ Vb，原文）：断面 1500 × C1、C2 × 种子 0、1；断面 0 只跑 C1 种子 0
+      （两个版本在 1500 拍以前走同一段早期逻辑，断面 0 的 11 条已经验证逐拍相同，所以断面 0 的其余组合和断面 630 都不跑）
   延迟敏感性：C1 的 d 改成 5~12 均匀、10~18 均匀，断面 0 / 630，种子 0；断面 0 另加 d = 0（在途 0 拍，只等到下一个回合边界）
   席位离开敏感性（A061、A062）：不执行录像里我方号的离开，断面 0 / 630 / 1500 × C1、C2，种子 0
 用法：python3 102_cp_plan.py [--set main|noise|ver|delay|leave|all] > 清单
@@ -37,10 +38,10 @@ for g in only:
                 out.append(f"{g} H-t{t0}-s{s} --chan H --t0 {t0} --h {hor(t0)} --seed {s}")
     if which in ("ver", "all"):
         alt = "vb" if NATIVE[g] == "va" else "va"
-        for t0 in (0, 630, 1500):
-            for ch in ("C1", "C2"):
-                for s in (0, 1):
-                    out.append(f"{g} {ch}-t{t0}-s{s}-{alt} --chan {ch} --t0 {t0} --h {hor(t0)} --seed {s} --ver {alt}")
+        out.append(f"{g} C1-t0-s0-{alt} --chan C1 --t0 0 --h {hor(0)} --seed 0 --ver {alt}")
+        for ch in ("C1", "C2"):
+            for s in (0, 1):
+                out.append(f"{g} {ch}-t1500-s{s}-{alt} --chan {ch} --t0 1500 --h {hor(1500)} --seed {s} --ver {alt}")
     if which in ("delay", "all"):
         for t0 in (0, 630):
             out.append(f"{g} C1-t{t0}-s0-d5_12 --chan C1 --t0 {t0} --h {hor(t0)} --seed 0 --dmodel uni --dmin 5 --dmax 12")
