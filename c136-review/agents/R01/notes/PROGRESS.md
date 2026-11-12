@@ -10,6 +10,21 @@
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
   **一次 Shell 调用只跑一条 node 命令**（机器 load 高时一条 shadow 就要 30–90 秒，两条串在一起会被 timeout 120 杀掉）。
 
+## 2026-11-12 20:53（UTC）工作区被清空之后的状态（先读这一段）
+- 发生了什么：20:53:04–13，`/agent/repos/` 下除 `jvfoedfve` 以外的目录全没了（c136-hub、c136-r01…r10、**c136-data**、fdvg-* 等）。不是我的操作（当时只挂着一个 bus-wait）。循环和正在跑的步骤随之中断。
+  其他组（R03 / R06 / R07 / R08）之后也各自重建了工作区。原因没查到，也没必要再查。
+- 恢复：入库的文件没丢（最后一次提交 2e64f128，19:55）。先把本地分支推上去，再 `bus-init.sh` 重建工作区、`bus-sync.sh` 合总部。
+- **丢了的**：`out/_ckpt/runs/` 下 320 来个原始结果、`.done` 标记、循环日志；数据镜像 `/agent/repos/c136-data/`（总部的东西，我不能建，要等总部恢复）。
+  → **`aggregate.py` 不能再跑**（已加保护：缓存缺入库表里已有的（局, 断面）就拒绝执行，`--force` 才覆盖）。`reports/ckpt-data/` 下的表（19:55 那次汇总）就是定稿的数。
+  → 没有 c136-data，任何 node 重放都跑不了（`sim-v2/lib/tgame.mjs` 的 DATA）。
+- 找回来的：`out/` 下深度 ≤ 2 的文件总部归档里有副本（`archive/agents/R01/out/`，98 MB），已经 `cp -a` 回 `out/`；`fid_tables.py` 照它重算与入库的逐字节相同。
+  20:53 那一刻正在跑的 `B043-4284-vba.json` 写在了清空之后的空目录里，捡回来放在 `out/_ckpt/runs/`（没进表：Vb 在 C1 / C2 下窗口末都是 0.2768，历史 0.3702）。
+- 报告已定稿（810 行，0 个「待补」）：状态行、§0（总部分支上 v28 的提交与启动指令不一致，写明了没碰）、§3.5（4284→5184 版本互换只有 A075、A055 两局进表，不下结论；Vc @3213 / @4284 没跑）、§5 第 8 条、§6「中断」。
+- 以后如果 c136-data 恢复：`HEAVY_SLOTS=2 LOOP_ROUND=1800 bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all7-loop.log`（tmux `c136-r01-ckpt`）从头跑 354 步（种子固定，机器闲时一步 10–15 秒），
+  跑完 `aggregate.py`（保护会自动放行）→ 对一遍模板里手写的数 → `build_report.py`。没有人要求就不必重跑：缺的只是版本互换的尾巴。
+- 总部分支上还在改 `archive/v28/v28-team-organism.js`（到 16:55）并挂了 CI 评测（`sim-jobs/`、`c136-review/ci/`）。这超出启动指令的纯离线范围，我不参与：不读它、不跑它、不给它出数。有卡让我做这类事就在 report 里拒掉。
+- `/cursor/stores/self/c135-c136-ethnical-stop.md`（2026-11-12 07:08）记着这条线停工的来由：对局是公开房，同房有不知情的真人；所以只做纯离线、只描述历史，成果不给线上用。启动指令的范围铁律就是这个意思。
+
 ## 每局流水线
 1. `bash c136-review/tools/run-heavy.sh node scripts/resim.mjs <mid> [--replay 同局A包] [--log 包1,包2] [--bots a,b]`：整局重演，和日志 [HL-TICK] 逐号核对。
 2. `run-heavy.sh node scripts/shadow.mjs <mid> [--bots ..] [--pin-no-full --tag nf0] [--probe bot:t0:t1 --tag x]`：把重演的每拍状态喂给部署的策略原文。

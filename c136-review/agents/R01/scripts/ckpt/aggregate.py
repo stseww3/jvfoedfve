@@ -319,8 +319,22 @@ def boot_ci(vals, n_boot=4000, seed=20261112):
     return ms[int(0.05 * n_boot)], ms[int(0.95 * n_boot) - 1]
 
 
+def guard_cache(R):
+    """out/ 不入库。缓存丢了或不全时照它重算，会把 reports/ckpt-data/ 下入库的表覆盖成空的或残缺的。"""
+    p = os.path.join(DST, 'ckpt_decomp.csv')
+    if '--force' in sys.argv or not os.path.exists(p):
+        return
+    with open(p, newline='') as f:
+        have = {(r['mid'], int(r['t0'])) for r in csv.DictReader(f)}
+    gone = sorted(have - set(R.keys()))
+    if gone:
+        sys.exit(f'aggregate.py：入库的表里有 {len(have)} 个（局, 断面），out/_ckpt/runs/ 里缺其中 {len(gone)} 个的原始结果（例如 {gone[0][0]}-{gone[0][1]}）。\n'
+                 '照这份缓存重算会覆盖 reports/ckpt-data/ 下的表，没有执行。先按报告 §6 把步骤重跑出来；确实要覆盖就加 --force。')
+
+
 def main():
     R = load()
+    guard_cache(R)
     os.makedirs(DST, exist_ok=True)
     keys = sorted(R.keys(), key=lambda k: (MID_ORDER.index(k[0]) if k[0] in MID_ORDER else 99, k[1]))
 
