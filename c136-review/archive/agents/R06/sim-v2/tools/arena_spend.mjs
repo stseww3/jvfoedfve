@@ -41,6 +41,6 @@ if (args.includes('--rooms')) {
       cells.push(`${prof.phases[i].t0}: ${Math.round(a.sentBy.ai / 1000)}/${Math.round(b.sentBy.ai / 1000)}`);
     }
     const ai = [630, 1071, 1530].map((t) => (m.cps[t] && R.cps[t] ? `${t}: ${m.cps[t].aiShare.toFixed(2)}/${R.cps[t].aiShare.toFixed(2)}` : '')).join('  ');
-    console.log(`  ${r.room.mid || r.room.name || '?'}\t${cells.join('  ')}\t| AI 占地 ${ai}`);
+    console.log(`  ${r.room.match || r.room.kind}\t${cells.join('  ')}\t| AI 占地 ${ai}`);
   }
 }

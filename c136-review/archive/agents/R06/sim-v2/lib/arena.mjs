@@ -15,10 +15,10 @@ import { TGame, assignTeams, teamOpts, clanOf, MAX_PLAYERS } from './tgame.mjs';
 import { compileStrategy, strategyPath } from './sandbox.mjs';
 import { makeProfile, loadTrace } from './channel.mjs';
 import { Arm } from './arm.mjs';
-import { naturalShares, PAIR_KEYS } from './metrics.mjs';
+import { naturalShares, PAIR_KEYS, ATK_SEG } from './metrics.mjs';
 import { Crowd, assignArches, parseMix, loadProfile, DEFAULT_MIX } from './opponents.mjs';
 import { chanOptsOf, armOptsOf, borrowSeats } from './checkpoint.mjs';
-import { num, list, fmtN, hashU, hashInt, median } from './util.mjs';
+import { num, list, fmtN, hashU, hashInt, median, strHash } from './util.mjs';
 
 export const CHECKPOINTS = [357, 630, 1071, 1530, 2142, 3210, 4284, 6000, 9000];
 // arena 多出来的成对指标
@@ -114,13 +114,15 @@ function spreadSpawn(w, others, seed) {
 function snapOf(w, squad, squadSet, mainTeam) {
   const H = w.humans;
   let sqTerr = 0, sqAlive = 0, sqBal = 0, humTerr = 0, oTerr = 0, oBal = 0, oAlive = 0, oN = 0, aiTerr = 0, aiAlive = 0;
-  const oList = [];
+  const oList = [], dList = [];
   for (let p = 0; p < H; p++) {
     const present = w.alive[p] && w.state[p] !== 2;
     if (w.alive[p]) humTerr += w.terr[p];
     if (squadSet.has(p)) { if (present) { sqAlive++; sqTerr += w.terr[p]; sqBal += w.bal[p]; } }
-    else { oN++; if (present) { oAlive++; oTerr += w.terr[p]; oBal += w.bal[p]; oList.push(w.terr[p]); } }
+    else { oN++; if (present) { oAlive++; oTerr += w.terr[p]; oBal += w.bal[p]; oList.push(w.terr[p]); if (w.terr[p] > 0) dList.push(w.bal[p] / w.terr[p]); } }
   }
+  dList.sort((a, b) => a - b);
+  const dq = (f) => (dList.length ? +dList[Math.min(dList.length - 1, Math.floor(f * dList.length))].toFixed(1) : 0);
   for (let p = H; p < w.players; p++) if (w.alive[p]) { aiAlive++; aiTerr += w.terr[p]; }
   const lands = w.teamGame ? Array.from(w.teamLands()) : [];
   let lead = 0;
@@ -130,6 +132,7 @@ function snapOf(w, squad, squadSet, mainTeam) {
   const oq = (f) => (oList.length ? oList[Math.min(oList.length - 1, Math.floor(f * oList.length))] : 0);
   return {
     othersQ: [oq(0.1), oq(0.25), oq(0.5), oq(0.75), oq(0.9), oq(1)],      // 其余在场真人的地：P10 / P25 / 中位 / P75 / P90 / 最大
+    othersDQ: [dq(0.1), dq(0.25), dq(0.5), dq(0.75), dq(0.9)],            // 其余在场真人的兵密度（兵 ÷ 地）：P10 / P25 / 中位 / P75 / P90
     neutralShare: r4(1 - (humTerr + aiTerr) / w.land),
     t: w.t, squadTerr: sqTerr, squadShare: r4(sqTerr / w.land), squadAlive: sqAlive, squadDensity: sqTerr ? +(sqBal / sqTerr).toFixed(1) : 0,
     squadPerSeat: Math.round(sqTerr / Math.max(1, squad.length)),
@@ -146,9 +149,12 @@ function cpuMs(c0) { const c = process.cpuUsage(c0); return Math.round((c.user +
 
 export async function runArena(o) {
   const wall0 = Date.now(), cpu0 = process.cpuUsage();
-  const seed = num(o.seed, 1);
+  const seedAsked = num(o.seed, 1);
   if (!o.room) throw new Error('arena 模式要 --room <局号>（真局房间头）或 --room synth（生成房间）');
-  const room = o.room === 'synth' ? synthRoom(o, seed) : realRoom(o);
+  const room = o.room === 'synth' ? synthRoom(o, seedAsked) : realRoom(o);
+  // 真局房间：随机数种子再掺上局号 —— 否则同一个 --seed 下每个房间里「第 p 个席位」的出手风格、活跃度都一模一样，
+  // 20 个房间等于同一次抽样重复 20 遍（验收时见过：某个种子下前 90 个席位里两头的滑块档位各只有 10 来个，中间 25 个）
+  const seed = room.kind === 'real' ? hashInt(1, 2147483646, seedAsked, strHash(String(room.mid)) | 0, 799) : seedAsked;
   const { H, squad, ta } = room;
   if (!squad.length) throw new Error('房间里没有我方席位');
   const squadSet = new Set(squad);
@@ -179,21 +185,40 @@ export async function runArena(o) {
       const st = new ReplayStepper(M, w);
       st.runSpawnPhase();
       // 这一局其余真人自己的出手强度（与 Crowd 的账同口径、同阶段划分）：对手模型按房间逐一对照用
-      const RI = loadProfile().phases.map((p) => ({ t0: p.t0, cmds: 0, sent: 0, aliveTicks: 0, balTicks: 0, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 } }));
+      const RI = loadProfile().phases.map((p) => ({ t0: p.t0, cmds: 0, sent: 0, aliveTicks: 0, balTicks: 0, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, onSq: 0, onSqSent: 0 }));
       const riOf = (t) => { for (let i = RI.length - 1; i >= 0; i--) if (t >= RI[i].t0) return RI[i]; return RI[0]; };
+      const RS = ATK_SEG.map((a) => ({ t0: a, neutral: 0, ai: 0, hum: 0, neutralSent: 0, aiSent: 0, humSent: 0 }));
+      reality.squadAtkSeg = RS;
       st.exec = (c) => {
         const p = c.player;
         if ((c.id === 8 || c.id === 9) && p < H && w.alive[p] && w.state[p] !== 2) reality.leaveAlive.set(p, w.t);
-        let cls = null;
-        if (p < H && !squadSet.has(p) && w.alive[p] && w.state[p] !== 2) {
+        let cls = null, onSq = false;
+        if (p < H && !squadSet.has(p) && w.alive[p] && w.state[p] !== 2 && w.bal[p] >= 2) {      // 余额见底时点的空单不算（画像同口径）
           if (c.id === 1) {
             let tg = Math.min(c.dZ, NEUTRAL);
             if (tg < NEUTRAL && !w.alive[tg]) tg = NEUTRAL;
             cls = tg === NEUTRAL ? 'neutral' : tg >= H || w.state[tg] === 2 ? 'ai' : 'hum';
+            onSq = cls === 'hum' && squadSet.has(tg);
           } else if (c.id === 3) cls = 'boat';
         }
+        // 我方席位当年的陆攻（按时段、按落地时的对象）：与模型里我方的打法对照
+        let sqCls = null;
+        if (c.id === 1 && squadSet.has(p) && w.alive[p]) {
+          let tg = Math.min(c.dZ, NEUTRAL);
+          if (tg < NEUTRAL && !w.alive[tg]) tg = NEUTRAL;
+          sqCls = tg === NEUTRAL ? 'neutral' : tg >= H ? 'ai' : 'hum';
+        }
         const r = execRecorded(w, c);
-        if (cls && r.ok) { const I = riOf(w.t); I.cmds++; I.sent += w.attackTroopsTmp; I.sentBy[cls] += w.attackTroopsTmp; I.okBy[cls]++; }
+        if (cls && r.ok) {
+          const I = riOf(w.t);
+          I.cmds++; I.sent += w.attackTroopsTmp; I.sentBy[cls] += w.attackTroopsTmp; I.okBy[cls]++;
+          if (onSq) { I.onSq++; I.onSqSent += w.attackTroopsTmp; }
+        }
+        if (sqCls && r.ok) {
+          let i = ATK_SEG.length - 1;
+          while (i > 0 && w.t < ATK_SEG[i]) i--;
+          RS[i][sqCls]++; RS[i][sqCls + 'Sent'] += w.attackTroopsTmp;
+        }
         return r;
       };
       const end = Math.min(len, M.replayTicks - 1);
@@ -285,7 +310,7 @@ export async function runArena(o) {
     const w = room.make();
     const profile = makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: len + 2000, pageEnd: null, doomed: null, ownTrace: false });
     if (squadHusk.size) { profile.pageEnd = new Map(squadHusk); profile.doomed = new Set(squadHusk.keys()); }
-    const crowd = new Crowd(null, { seed, members, startT: replayUntil, squad, rateScale: num(o['opp-rate'], 1), leaveAt });
+    const crowd = new Crowd(null, { seed, members, startT: replayUntil, squad, rateScale: num(o['opp-rate'], 1), leaveAt, rhythm: o['opp-rhythm'] ? list(o['opp-rhythm']).map(Number) : null, sigma: o['opp-sigma'] !== undefined ? num(o['opp-sigma'], 0.35) : undefined });
     const arm = new Arm({
       name: s.name, world: w, strat: s.strat, params: s.params, seats: seatDefs, profile, chanOpts: chanOptsOf(o),
       opts: { ...armOptsOf(o), ourLeaves: 'ignore' }, history: null, takeoverT: null, actors: [crowd],
@@ -354,20 +379,20 @@ export async function runArena(o) {
       clans: clans.map((c) => ({ tag: c.tag, size: c.members.length })), idle: idle.size, husksPlanned: leaveAt.size, squadHusks: Object.fromEntries(squadHusk),
     },
     opp: { mix, clanArches, count: archeCount, replayUntil, husks, rateScale: num(o['opp-rate'], 1) },
-    spawn: spawnMode, seed, t1: t, lenAsked: len, truncated, ended,
+    spawn: spawnMode, seed, seedAsked, t1: t, lenAsked: len, truncated, ended,
     channel: profile.name, channelNote: profile.note + (seatMap && traceMid !== room.mid ? `；阶梯借自 ${traceMid}` : ''), channelSpec: chanSpec,
     lagCourse: profile.instant ? [] : profile.lagCourse(squad, 0, Math.min(t, 3600), 300),
     opts: { ...armOptsOf(o), ...chanOptsOf(o) },
     arms: {},
   };
   if (reality) {
-    res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size };
+    res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size, squadAtkSeg: reality.squadAtkSeg || null };
     if (reality.intensityRaw) {
       res.reality.intensity = reality.intensityRaw.map((I) => ({
         t0: I.t0, cmds: I.cmds, sent: I.sent, ratePerAlive100: I.aliveTicks ? +(100 * I.cmds / I.aliveTicks).toFixed(3) : null, spendPer100: I.balTicks ? +(100 * I.sent / I.balTicks).toFixed(4) : null, sentPerCmd: I.cmds ? Math.round(I.sent / I.cmds) : null,
         spendBy: Object.fromEntries(Object.keys(I.sentBy).map((k) => [k, I.balTicks ? +(100 * I.sentBy[k] / I.balTicks).toFixed(4) : null])),
         okRateBy: Object.fromEntries(Object.keys(I.okBy).map((k) => [k, I.aliveTicks ? +(100 * I.okBy[k] / I.aliveTicks).toFixed(3) : null])),
-        sentBy: I.sentBy,
+        sentBy: I.sentBy, onSq: I.onSq, onSqSent: I.onSqSent,
       }));
     }
   }

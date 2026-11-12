@@ -14,6 +14,7 @@
 import { NEUTRAL, P_INNER, T_LAND } from './tgame.mjs';
 
 const BATCH_MIN = 3, BATCH_DRAIN = 0.5;
+export const ATK_SEG = [0, 630, 1071, 1530, 2142, 3210, 4284];
 
 // 天然份额：返回 Float64Array(H)，每个真人「走陆路最近」的陆地格数。要在开局第 0 拍（出生阶段刚结束）的世界上调用。
 export function naturalShares(w) {
@@ -146,6 +147,17 @@ export class Metrics {
     out.atkOnAi = atkAi.length;
     out.atkOnHuman = atkOnPlayer.length - atkAi.length;
     out.atkOnNeutral = atkRec.length - atkOnPlayer.length;
+    // 生效的陆攻按时段、按落地时的对象（无主地 / 内置 AI / 真人席位，含已成空壳的）：条数与出兵。arena 拿它对照同一局录像里我方的打法
+    out.atkSeg = ATK_SEG.map((a, i) => {
+      const b = ATK_SEG[i + 1] ?? Infinity;
+      const o2 = { t0: a, neutral: 0, ai: 0, hum: 0, neutralSent: 0, aiSent: 0, humSent: 0 };
+      for (const c of atkRec) {
+        if (!c.ok || c.Ex < a || c.Ex >= b) continue;
+        const k = c.toExec === NEUTRAL || c.toExec === undefined ? 'neutral' : c.toExec >= w.humans ? 'ai' : 'hum';
+        o2[k]++; o2[k + 'Sent'] += c.sent || 0;
+      }
+      return o2;
+    });
 
     // ---- 同拍批 / 清仓批
     const groups = new Map();
