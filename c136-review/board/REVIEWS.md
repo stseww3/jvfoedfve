@@ -1,8 +1,8 @@
-# 逐局复盘汇总（机械检查，2026-11-11 23:59 UTC）
+# 逐局复盘汇总（机械检查，2026-11-12 00:37 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 97 份复盘，来自 7 名复盘员。
+共 98 份复盘，来自 7 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
@@ -24,6 +24,7 @@
 | A025 | R03 | won | win | 19 | 4 | 6 | 20（10/4/6） | 10 | 9 | 全过 |
 | A042 | R03 | lost | outscaled | 25 | 6 | 10 | 21（12/5/4） | 8 | 7 | 全过 |
 | A045 | R03 | lost | lead-thrown | 24 | 7 | 8 | 24（12/3/9） | 9 | 8 | 全过 |
+| A046 | R03 | lost | external | 36 | 6 | 10 | 22（13/3/6） | 7 | 7 | 全过 |
 | A051 | R03 | lost | never-grew | 12 | 3 | 10 | 23（15/3/5） | 6 | 7 | 全过 |
 | A066 | R03 | lost | outscaled | 15 | 6 | 10 | 26（16/5/5） | 9 | 9 | 全过 |
 | A067 | R03 | lost | never-grew | 22 | 7 | 10 | 24（12/6/6） | 11 | 8 | 全过 |
@@ -250,7 +251,7 @@
 | NEW-MT-09 | 1 | 0 | 1 |
 | NEW-MT-10 | 0 | 0 | 2 |
 | NEW-MT-11 | 1 | 0 | 0 |
-| NEW-MT-OUTNUMBERED | 0 | 0 | 6 |
+| NEW-MT-OUTNUMBERED | 0 | 0 | 7 |
 | NEW-MT-WRONGFRONT | 0 | 0 | 1 |
 | NEW-OP-01 | 2 | 0 | 0 |
 | NEW-OP-02 | 1 | 0 | 0 |
@@ -317,13 +318,14 @@
 | NEW-R01-SP04 | 0 | 0 | 2 |
 | NEW-R01-SP05 | 0 | 0 | 1 |
 | NEW-R01-SP06 | 2 | 0 | 0 |
-| NEW-R03-AT01 | 0 | 14 | 0 |
+| NEW-R03-AT01 | 0 | 16 | 0 |
 | NEW-R03-AT01 / NEW:IO-lag-burst | 0 | 1 | 0 |
 | NEW-R03-AT02 | 2 | 0 | 0 |
 | NEW-R03-AT03 | 1 | 0 | 1 |
 | NEW-R03-AT03 / NEW:AT-worth-gate | 1 | 0 | 0 |
 | NEW-R03-AT04 | 0 | 0 | 1 |
 | NEW-R03-AT05 | 1 | 0 | 0 |
+| NEW-R03-AT06 | 0 | 0 | 1 |
 | NEW-R03-AT06 / NEW-R03-IO01 | 1 | 0 | 0 |
 | NEW-R03-AT07 / NEW-R03-DN01 | 1 | 0 | 0 |
 | NEW-R03-DN01 | 9 | 0 | 0 |
@@ -339,14 +341,15 @@
 | NEW-R03-EC01 / R07-GOOD-FED-PUSH | 0 | 0 | 1 |
 | NEW-R03-EC02 / NEW-R03-AT06 / NEW-R03-IO01 | 1 | 0 | 0 |
 | NEW-R03-EX01 | 0 | 1 | 1 |
-| NEW-R03-IO01 | 10 | 0 | 4 |
+| NEW-R03-IO01 | 12 | 0 | 4 |
 | NEW-R03-IO01 / NEW-AT-02 | 0 | 0 | 2 |
 | NEW-R03-IO01 / NEW-R03-AT06 | 1 | 0 | 0 |
 | NEW-R03-IO01 / NEW-R03-IO02 | 0 | 0 | 1 |
 | NEW-R03-IO01 / NEW:AT-redirect-parked | 1 | 0 | 0 |
 | NEW-R03-IO02 | 9 | 0 | 0 |
 | NEW-R03-IO03 | 2 | 0 | 0 |
-| NEW-R03-OP01 | 11 | 0 | 1 |
+| NEW-R03-MT01 | 6 | 0 | 0 |
+| NEW-R03-OP01 | 11 | 0 | 2 |
 | NEW-R03-SE01 | 2 | 0 | 0 |
 | NEW-R03-SE02 | 3 | 0 | 0 |
 | NEW-R03-SE02 / NEW:FE-tiny-cmd-fee | 2 | 0 | 0 |
@@ -397,7 +400,7 @@
 | NEW:AT-return-overflow | 1 | 0 | 0 |
 | NEW:AT-thin-human-pulse | 0 | 3 | 0 |
 | NEW:AT-thin-self-pricelock | 1 | 0 | 0 |
-| NEW:AT-worth-gate | 9 | 0 | 4 |
+| NEW:AT-worth-gate | 9 | 0 | 5 |
 | NEW:BT-boxed-breakout | 0 | 10 | 1 |
 | NEW:BT-boxed-floor-cap | 1 | 0 | 0 |
 | NEW:BT-boxed-no-gain | 3 | 0 | 1 |
@@ -434,16 +437,16 @@
 | NEW:EG-cap-idle-death | 8 | 0 | 0 |
 | NEW:EG-giant-neighbor-freeze | 14 | 0 | 4 |
 | NEW:EG-mincmd-skips-small-ai | 2 | 0 | 0 |
-| NEW:FE-tiny-cmd-fee | 7 | 0 | 1 |
+| NEW:FE-tiny-cmd-fee | 8 | 0 | 1 |
 | NEW:HK-husk-eats-us | 1 | 0 | 0 |
 | NEW:IO-cmd-blackout | 0 | 0 | 3 |
-| NEW:IO-disconnect-husk | 0 | 0 | 2 |
+| NEW:IO-disconnect-husk | 0 | 0 | 3 |
 | NEW:IO-disconnect-husk（对方的空壳）/ NEW-R03-AT01 | 0 | 2 | 0 |
-| NEW:IO-lag-burst | 8 | 0 | 5 |
+| NEW:IO-lag-burst | 8 | 0 | 6 |
 | NEW:IO-lag-burst / NEW-R03-IO01 | 5 | 0 | 0 |
 | NEW:IO-stale-pulse-dump | 9 | 0 | 3 |
 | NEW:MT-no-mountain-cmd | 0 | 0 | 1 |
-| NEW:OP-cycle-open | 0 | 15 | 6 |
+| NEW:OP-cycle-open | 0 | 16 | 6 |
 | NEW:OP-dead-cycle | 1 | 0 | 1 |
 | NEW:OP-dpkeep-freeze-ai | 3 | 0 | 0 |
 | NEW:OP-neutral-crumb-lock | 2 | 0 | 0 |
@@ -531,11 +534,11 @@
 | R07-GOOD-FED-PUSH / NEW-DN-CARRIER | 0 | 1 | 0 |
 | R07-GOOD-FED-PUSH / NEW-R03-DN02 | 0 | 1 | 0 |
 | R07-GOOD-SAVED-PUSH | 0 | 1 | 0 |
-| R07-SP-CLUSTER | 3 | 0 | 1 |
+| R07-SP-CLUSTER | 4 | 0 | 1 |
 | R07-SP-CLUSTER / R07-SP-OVERLAP | 2 | 0 | 0 |
-| R07-SP-OVERLAP | 1 | 0 | 0 |
+| R07-SP-OVERLAP | 2 | 0 | 0 |
 | R08:出手后变薄，随后被吃 | 3 | 0 | 1 |
 | R08:出手后变薄，随后被吃 / NEW-R03-IO02 | 1 | 0 | 0 |
 | R08:救援门槛够不着 | 0 | 0 | 2 |
 | R08:救援门槛够不着 / NEW-R03-EC01 | 0 | 0 | 1 |
-| R08:超软上限后高价倾泻 | 2 | 0 | 2 |
+| R08:超软上限后高价倾泻 | 4 | 0 | 2 |

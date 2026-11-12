@@ -1,0 +1,5 @@
+# A041 第三批调试重计算（bash scripts/heavy-queue.sh A041-c scripts/queues/A041-c.txt）
+out/trace/A041-buywhy-kaito9-2255.txt|node scripts/dbg/buy-why.mjs A041 kaito9 2255 2300
+out/trace/A041-buywhy-noah88-2255.txt|node scripts/dbg/buy-why.mjs A041 noah88 2255 2300
+out/trace/A041-idleboats-kaito9.txt|node scripts/dbg/idle-boats.mjs A041 kaito9 2700 4820 --bucket 300
+out/trace/A041-idleboats-noah88.txt|node scripts/dbg/idle-boats.mjs A041 noah88 3000 4730 --bucket 300

@@ -1,0 +1,33 @@
+# A041 快照：Player 586#20T1、Player 743#16T1、Spero#0T1、el imperio d#17T1（每格：地 / 余额 / 密度）
+ 1500 | Player 586#20T1 11707/80k/7 | Player 743#16T1 17196/152k/9 | Spero#0T1 7675/7.7k/1 | el imperio d#17T1 1879/114k/61
+ 1800 | Player 586#20T1 18624/130k/7 | Player 743#16T1 19783/241k/12 | Spero#0T1 8634/143k/17 | el imperio d#17T1 4339/143k/33
+ 2100 | Player 586#20T1 22001/250k/11 | Player 743#16T1 21163/353k/17 | Spero#0T1 8634/235k/27 | el imperio d#17T1 4339/92k/21
+ 2280 | Player 586#20T1 24215/294k/12 | Player 743#16T1 19783/369k/19 | Spero#0T1 8634/216k/25 | el imperio d#17T1 4339/118k/27
+ 2400 | Player 586#20T1 21581/276k/13 | Player 743#16T1 18459/297k/16 | Spero#0T1 8634/228k/26 | el imperio d#17T1 4339/93k/21
+ 2700 | Player 586#20T1 15640/156k/10 | Player 743#16T1 22572/306k/14 | Spero#0T1 8634/208k/24 | el imperio d#17T1 4339/145k/33
+ 3000 | Player 586#20T1 18085/137k/8 | Player 743#16T1 17763/86k/5 | Spero#0T1 8634/210k/24 | el imperio d#17T1 4081/127k/31
+ 3060 | Player 586#20T1 10579/1/0 | Player 743#16T1 17426/94k/5 | Spero#0T1 8634/193k/22 | el imperio d#17T1 2755/43k/16
+ 3120 | Player 586#20T1 0/0/0 | Player 743#16T1 18121/124k/7 | Spero#0T1 8634/158k/18 | el imperio d#17T1 1347/5.1k/4
+ 3210 | Player 586#20T1 0/0/0 | Player 743#16T1 19884/131k/7 | Spero#0T1 8634/185k/21 | el imperio d#17T1 0/0/0
+ 3300 | Player 586#20T1 0/0/0 | Player 743#16T1 22486/218k/10 | Spero#0T1 8634/154k/18 | el imperio d#17T1 0/0/0
+ 3420 | Player 586#20T1 0/0/0 | Player 743#16T1 15978/177k/11 | Spero#0T1 8634/71k/8 | el imperio d#17T1 0/0/0
+ 3540 | Player 586#20T1 0/0/0 | Player 743#16T1 0/0/0 | Spero#0T1 8634/91k/11 | el imperio d#17T1 0/0/0
+ 3600 | Player 586#20T1 0/0/0 | Player 743#16T1 0/0/0 | Spero#0T1 8634/106k/12 | el imperio d#17T1 0/0/0
+# 去向（重放缓存的 leftT = 离线拍、deathT = 出局拍；−1 或缺 = 到录像末尾都没有发生）
+  Player 586#20T1：离线 3108，出局 3113；最后一个有地的快照 3110 拍（5631 格/5.3k）
+  Player 743#16T1：离线 —，出局 3533；最后一个有地的快照 3530 拍（5726 格/44k）
+  Spero#0T1：离线 4347，出局 4276；最后一个有地的快照 4270 拍（2500 格/6.4k）
+  el imperio d#17T1：离线 3255，出局 3126；最后一个有地的快照 3120 拍（1347 格/5.1k）
+# 相邻采样拍之间的交战（pairLog；只列涉及所列席位的）
+  1500~1800：el imperio d#17T1→BiBLiCaL[iow#1T2 得地 2302 烧 38k 对方掉 17k；Player 743#16T1→BiBLiCaL[iow#1T2 得地 2531 烧 35k 对方掉 15k；Player 586#20T1→BiBLiCaL[iow#1T2 得地 1626 烧 24k 对方掉 10k；Spero#0T1→BiBLiCaL[iow#1T2 得地 959 烧 21k 对方掉 9.5k；Player 586#20T1→无主地 得地 3675 烧 7.3k 对方掉 0；Player 586#20T1→AI364 得地 847 烧 1.7k 对方掉 21；Player 586#20T1→AI416 得地 496 烧 1.2k 对方掉 125；Player 586#20T1→AI49 得地 233 烧 1.1k 对方掉 312
+  1800~2100：Chola#21T2→Player 743#16T1 得地 1112 烧 90k 对方掉 26k 槽消 34k；Player 743#16T1→Chola#21T2 得地 2492 烧 49k 对方掉 16k 槽消 11k；Player 586#20T1→AI369 得地 1631 烧 17k 对方掉 6.3k 槽消 1.1k；AI369→Player 586#20T1 得地 105 烧 4.0k 对方掉 1.8k；Player 586#20T1→无主地 得地 1359 烧 2.7k 对方掉 0；Player 586#20T1→AI144 得地 492 烧 2.4k 对方掉 689
+  2100~2280：Chola#21T2→Player 743#16T1 得地 1398 烧 75k 对方掉 33k 槽消 5.9k；Player 586#20T1→Chola#21T2 得地 2551 烧 33k 对方掉 14k；Player 743#16T1→Chola#21T2 得地 18 烧 27k 对方掉 92 槽消 27k；[TR] Oylesin#25T2→Player 586#20T1 得地 337 烧 14k 对方掉 6.5k
+  2280~2400：dsc.gg/cold1#23T2→Player 743#16T1 得地 1272 烧 80k 对方掉 39k；[TR] Oylesin#25T2→Player 586#20T1 得地 1849 烧 74k 对方掉 35k；Chola#21T2→Player 586#20T1 得地 1566 烧 63k 对方掉 30k；Player 105#28T2→Player 743#16T1 得地 976 烧 57k 对方掉 28k；Chola#21T2→Player 743#16T1 得地 238 烧 46k 对方掉 8.1k 槽消 29k；Player 586#20T1→[TR] Oylesin#25T2 得地 781 烧 40k 对方掉 19k；Player 743#16T1→Chola#21T2 得地 525 烧 34k 对方掉 2.7k 槽消 27k；Player 743#16T1→Player 105#28T2 得地 406 烧 33k 对方掉 5.4k 槽消 22k
+  2400~2700：[TR] Oylesin#25T2→Player 586#20T1 得地 10560 烧 397k 对方掉 185k 槽消 5.0k；Player 743#16T1→Chola#21T2 得地 5436 烧 137k 对方掉 14k 槽消 98k；dsc.gg/cold1#23T2→Player 743#16T1 得地 748 烧 43k 对方掉 21k；Chola#21T2→Player 743#16T1 得地 530 烧 32k 对方掉 16k 槽消 2；Player 586#20T1→Chola#21T2 得地 4166 烧 28k 对方掉 9.7k；Player 586#20T1→[TR] Oylesin#25T2 得地 453 烧 27k 对方掉 13k；[cn]i🍇TV#26T2→Player 743#16T1 得地 45 烧 2.1k 对方掉 1.0k
+  2700~3000：[cn]i🍇TV#26T2→Player 743#16T1 得地 8179 烧 241k 对方掉 99k 槽消 26k；[USA] Reed#14T2→Player 743#16T1 得地 7230 烧 205k 对方掉 88k 槽消 15k；[USA] Reed#14T2→Player 586#20T1 得地 3565 烧 94k 对方掉 43k；Player 743#16T1→Chola#21T2 得地 11981 烧 59k 对方掉 17k 槽消 936；[TR] Oylesin#25T2→Player 586#20T1 得地 2065 烧 54k 对方掉 25k；Player 586#20T1→Chola#21T2 得地 8075 烧 53k 对方掉 6.8k 槽消 24k；dsc.gg/cold1#23T2→Player 743#16T1 得地 1277 烧 49k 对方掉 23k；[cn]i🍇TV#26T2→el imperio d#17T1 得地 258 烧 34k 对方掉 17k
+  3000~3060：[cn]i🍇TV#26T2→el imperio d#17T1 得地 1513 烧 142k 对方掉 70k；[USA] Reed#14T2→Player 586#20T1 得地 3235 烧 141k 对方掉 31k 槽消 72k；[TR] Oylesin#25T2→Player 586#20T1 得地 4681 烧 84k 对方掉 37k；el imperio d#17T1→[cn]i🍇TV#26T2 得地 187 烧 17k 对方掉 8.4k；[cn]i🍇TV#26T2→Player 743#16T1 得地 661 烧 12k 对方掉 5.4k；Player 586#20T1→Chola#21T2 得地 410 烧 3.5k 对方掉 1.3k；Player 743#16T1→Chola#21T2 得地 323 烧 3.3k 对方掉 1.2k；Player 743#16T1→Player 529#18T2 得地 1 烧 60 对方掉 29
+  3060~3120：[cn]i🍇TV#26T2→el imperio d#17T1 得地 1408 烧 44k 对方掉 17k 槽消 6.5k；el imperio d#17T1→[cn]i🍇TV#26T2 得地 0 烧 18k 对方掉 690 槽消 16k；[TR] Oylesin#25T2→Player 586#20T1 得地 4662 烧 11k 对方掉 1.1k；Player 743#16T1→Chola#21T2 得地 695 烧 9.3k 对方掉 3.8k；[USA] Reed#14T2→Player 586#20T1 得地 493 烧 1.4k 对方掉 230
+  3120~3210：Chola#21T2→Player 743#16T1 得地 0 烧 10k 对方掉 0 槽消 9.9k；Player 743#16T1→Chola#21T2 得地 827 烧 6.1k 对方掉 2.1k；[cn]i🍇TV#26T2→el imperio d#17T1 得地 350 烧 5.2k 对方掉 1.5k 槽消 1.4k；Player 743#16T1→无主地 得地 936 烧 1.9k 对方掉 0
+  3210~3300：Player 743#16T1→无主地 得地 2641 烧 5.3k 对方掉 0；twojaStara#11T2→Player 743#16T1 得地 39 烧 1.1k 对方掉 534
+  3300~3420：twojaStara#11T2→Player 743#16T1 得地 6707 烧 222k 对方掉 104k；Player 743#16T1→无主地 得地 199 烧 398 对方掉 0
+  3420~3540：twojaStara#11T2→Player 743#16T1 得地 10723 烧 348k 对方掉 163k

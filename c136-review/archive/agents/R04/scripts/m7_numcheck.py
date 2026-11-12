@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # m7_numcheck.py — 核对手写正文里的数：每一个数都要能在脚本产物（或复盘 JSON、模式表）里原样找到。
-# 用法：python3 scripts/m7_numcheck.py [正文文件 …]      （默认 scripts/m7_src/*.md 和 cards/*.md）
+# 用法：python3 scripts/m7_numcheck.py [正文文件 …]      （默认 scripts/m7_src/*.md 和 scripts/m7_cards_src/*.md）
 #   正文里的记号行（{{…}}）不查：那些是构建时从产物里原样拼进来的。
 #   查的是「带小数、带百分号、带万 / 拍等单位、或 ≥3 位」的数；一两位的整数太常见，不查。
 #   找不到的逐条印出来（文件:行号、数、所在的那一小段），退出码 1。
@@ -9,11 +9,11 @@
 import sys, os, re, glob, json
 sys.dont_write_bytecode = True
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CORPUS = ['out/m7/TABLES.md', 'out/bundle_patterns.txt', 'out/bundle_cmdstream.txt', 'out/bundle_cmdstream_mine.txt', 'out/bundle_join.txt',
+CORPUS = ['out/m7/TABLES.md', 'out/m7/VERSIONS.md', 'out/m7/FUNNEL-BYTYPE.md', 'out/bundle_patterns.txt', 'out/bundle_cmdstream.txt', 'out/bundle_cmdstream_mine.txt', 'out/bundle_join.txt', 'out/bundle_humans.txt',
           'out/pattern_matrix.md', 'out/pattern_matrix.txt', 'out/pattern_evidence.txt', 'out/hub0007/m7_table.md', 'out/spawn_geometry.txt',
           'scripts/patterns_r04.json', 'out/m7/*.txt', 'out/*_all.txt', 'reviews/*.json', 'reports/M1-KNOWN-MECHANICS.md', 'reports/MECHANICS-B.md']
 NUM = re.compile(r'(?<![\w.])[+\-−]?\d[\d,]*(?:\.\d+)?%?')
-SKIP_BEFORE = re.compile(r'(?:[A-Za-z_#]|L|§|hub |H|RFC-|TP|D|v)$')
+SKIP_BEFORE = re.compile(r'(?:[A-Za-z_#]|L|§|hub |统筹 |H|RFC-|TP|D|v)$')
 
 
 def norm(tok):
@@ -30,7 +30,7 @@ def tokens(text):
 def main():
     files = [a for a in sys.argv[1:] if not a.startswith('--')]
     if not files:
-        files = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md'))) + sorted(glob.glob(os.path.join(ROOT, 'cards', '*.md')))
+        files = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md'))) + sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_cards_src', '*.md')))
     corpus = set()
     for pat in CORPUS:
         for fp in glob.glob(os.path.join(ROOT, pat)):
@@ -46,6 +46,7 @@ def main():
             if '{{' in ln:
                 continue
             body = re.sub(r'`[^`]*`', ' ', ln)            # 代码、文件名、命令不查
+            body = re.sub(r'^(#+\s*)\d+(?:\.\d+)*', r'\1', body)     # 标题开头的节号不查
             body = re.sub(r'\[[^\]]*\]\([^)]*\)', ' ', body)
             for m in NUM.finditer(body):
                 tok = m.group(0)

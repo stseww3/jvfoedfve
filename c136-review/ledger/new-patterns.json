@@ -1952,6 +1952,215 @@
   "note": "A045：第一段 292/1,440 个决策拍（编队友 160、路人队友 25、敌方真人 107；反事实可出手 151）；第二段 0/8,361。"
  },
  {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-MT01",
+  "prefix": "MT",
+  "name": "编队进了没有队伍的房间（自由混战）：策略只认 g.teams，编队友互相报价、互相吃",
+  "sameAs": [
+   "R07-SP-CLUSTER（一团选点；这条说的是一团里的号互为目标）",
+   "R08:出手后变薄，随后被吃（这条里吃它的是编队友）",
+   "暂无完全对应的条目（R03 在 A046 第一次遇到；请统筹归并）"
+  ],
+  "definition": "页面 mode=7（card.json、日志 [HL-GAME-INIT]），录像头 gameMode=0、numberTeams=0，RESULT 行 team=null；卡片的 nominalTeams/actualTeams=2、baseWinExpectation=0.5 是默认值。Vb 全文没有对局模式判断，所有「队友」判断都是 g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]（analyze L393、isTeammate L3927-3929）；按名字认编队号的 isOurSquadBot（L3960-3972）每一处使用都要 isTeammate 同时成立。g.teams 为空时：编队友进邻居表 this.nb（L393-395）、进 offers 的报价表（L5086-5100）；tryDonateToTeammate 第一行就返回（L4327）；被围分支的船不开（idleBoats L5022）；联手折扣和 engagedTeams（offers L5182-5207）都不生效；选点协调器收到 myTeam=0（L4024），teamId 留 0（spawn-coordinator solve L806-814）、别的真人全算敌人（L828-833）、没有 boss 就找虚拟锚点（L857-860），照样把编队排成一团。计：在控的编队号打在控编队号的陆攻条数、送出、手续费、烧、得地；每 300 拍 编队互打 / 打其他真人 / 被其他真人打 的烧兵与格数；每个号出局前 300 拍丢给编队友、其他真人的格数；DROP30 里主因是打编队友或被编队友打的个数。",
+  "detect": "intrasquad.py <局>（[X1] 总账、[X2] 每 300 拍、[X3] 每个号、[X4] 每一对、[X5] DROP30 分类；读 resim 的 pairLog/cmdLog 和 facts 的 drops）+ modeq.py（manifest.jsonl 里各 mode 的局数与 mode 7、8 的名单）+ 卷宗[A] 的录像头队数 + donate-why（全部停在 noTeam）。",
+  "instances": [
+   {
+    "t": "1568~1596",
+    "bot": "ryan_m → riku_x",
+    "note": "10 条送出 20.7 万、烧 18.3 万、得地 5,091；1589 拍 8 条一起落地（余额的 95%）"
+   },
+   {
+    "t": "1575~1610",
+    "bot": "talon5、alex_k → zexos1",
+    "note": "3 条 9.8 万、5 条 16.3 万；各烧 1.3 万，得地 2,082、3,004；zexos1 1709 拍出局"
+   },
+   {
+    "t": "1610~1904",
+    "bot": "sora_w → ryan_m、noah88；alex_k、leo_tx → sora_w",
+    "note": "sora_w 吃 7,953、4,353 格后 22,760 格/13.1 万兵；alex_k 3 条 18.7 万吃它 8,436 格，leo_tx 5 条 8.2 万吃 3,488 格"
+   },
+   {
+    "t": "3486~3493",
+    "bot": "zero_7 → leo_tx",
+    "note": "2 条 pct 97 送出 52.2 万、得地 3,109，leo_tx 掉余额 25.8 万；3632 拍出局"
+   },
+   {
+    "t": "4046~4123",
+    "bot": "riku_x ⇄ zero_7",
+    "note": "riku_x 4 条 18.4 万得地 1,130；zero_7 2 条 121 万（烧 53.0 万）得地 3,671；riku_x 4246 拍出局"
+   }
+  ],
+  "note": "本局计数（intrasquad.py）：在控的编队号打在控的编队号 58 条陆攻，送出 310 万、手续费 25.2 万、烧 200 万、得地 48,185 格、对方掉余额 95.3 万；同一口径打其他真人 50 条、送出 807 万、烧 509 万、得地 30,844 格。每 300 拍（互打 / 打其他真人 / 被其他真人打 的格数）：1500~1800 拍 18,020 / 8,052 / 2,195，1800~2100 拍 20,710 / 4,452 / 13,991。DROP30 的 27 个区间里：出手打编队友 6、被编队友打 3、被编队友和其他真人一起打 3、出手打编队友和其他真人 1。出局前 300 拍丢给编队友的地：sora_w 11,924、ryan_m 9,355（其他真人 0）、zexos1 5,086、noah88 4,353、riku_x 3,671、leo_tx 3,109、alex_k 1,545；talon5、zero_7 是 0。manifest.jsonl 的 123 局里 mode=7 的有 3 局（A046、B027、B030），mode=8 的 1 局（A073），卡片上都写着 名义 2 队/实际 2 队、baseWinExpectation=0.5（modeq.py）；另外三局我没有复盘"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-IO01",
+  "prefix": "IO",
+  "name": "上一条没成交就重发同一个决定",
+  "sameAs": [
+   "统筹 0004 号广播第 iii 项（往返 11~19 拍内按未生效状态重发）",
+   "R07-IO-DUP-ASSIST（协防分支的同类现象）",
+   "R08 连发清仓 / 超软上限后高价倾泻（无录像时的替代口径）"
+  ],
+  "definition": "同一个号对同一目标、由同一源码行发出的同一决定，在上一条还没被服务器执行时再次发令（决策周期 5 拍 < 成交延迟）。相邻发令间隔 ≤10 拍并成一串；按首条成交延迟分两类：同步串（≤45 拍）与落后串（>45 拍）。计：串数、条数、首条实际送出的兵+手续费、「首条成交之前发出的其余各条」实际送出的兵+手续费。",
+  "detect": "shadow-digest.py [S6]（影子发令与录像成交逐条配对；只统计陆攻、目标非中立）。facts 里是 reissue.{syncBursts,syncCmds,syncFirst,syncExtra,lagBursts,lagIssued,lagExecuted,deadBursts,deadIssued}。",
+  "instances": [
+   {
+    "t": "1500~1560",
+    "bot": "zexos1 → USSR",
+    "note": "13 条（pct 288~289），延迟中位 44 拍：1561 拍 7 条花掉余额 91%（21.6 万/23.7 万），1589 拍 6 条 88%"
+   },
+   {
+    "t": "1520~1565",
+    "bot": "ryan_m → riku_x",
+    "note": "10 条：1589 拍 8 条花掉余额 95%（15.7 万/16.5 万）"
+   },
+   {
+    "t": "1555~1615",
+    "bot": "noah88 → دوله البغداديه、riku_x",
+    "note": "首条前 4、6 条：首条 4.0 万、2.4 万，多花 5.7 万、5.8 万；1617 拍 5 条花掉余额 69%"
+   },
+   {
+    "t": "3890~3920",
+    "bot": "zero_7 → USSR",
+    "note": "发 7 条（首条延迟 30 拍）：首条 45.9 万、多花 160 万（占余额 54%）；3997 拍 6 条一起落地，366 万→158 万"
+   },
+   {
+    "t": "4810~4815、5210~5220",
+    "bot": "zero_7 → o#21、Player 333",
+    "note": "延迟正常（6、12 拍）时的连发：首条 70.1 万、35.7 万，多花 61.7 万、63.1 万"
+   },
+   {
+    "t": "1565~1575",
+    "bot": "talon5、alex_k → zexos1",
+    "note": "整吃档没有槽内门槛：延迟 10、24 拍，首条 4.5 万、5.9 万，多花 3.3 万、6.5 万"
+   }
+  ],
+  "note": "本局计数：延迟账口径 73 串 232 条，首条 394.2 万、后续 159 条 571.6 万（1.45 倍）；600~1500 拍 35 串 126 条 首 7.18 万 后 16.5 万，1500~3000 拍 16 串 49 条 首 50.3 万 后 70.7 万，3000 拍后 11 串 33 条 首 336.2 万 后 483.9 万；延迟 >45 拍的补发串 40 串（发 229、落 210，花 95.7 万）。同一拍落 ≥3 条的 31 批（最多 9 条），一批花掉余额 ≥50% 的 12 批 287.9 万兵、≥80% 的 3 批。本局看清的两点：① offers 的 need 只减已经落进进攻槽的兵（L5093-5095），脉冲档的间隔门槛（L5575、L5589、L5596）看的也是槽里的兵，指令在路上的这段时间两者都看不见；② 2400 拍前、对方没在打我、need > 0.35×余额 的目标不走脉冲档（L5291-5294），走整吃档（L5611-5616）：没有任何槽内门槛，大小来自预算（L5422-5426）、用的是页面上当时的余额——页面延迟一长，同一个预算被花了很多次（zexos1 13 条、ryan_m 10 条）"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-AT06",
+  "prefix": "AT",
+  "name": "出手的大小只看余额和对方整个号的 need，不看接壤多宽：对着十几到几十格的滩头压上百万兵，烧掉一小部分、其余原路退回，手续费每条照收",
+  "sameAs": [
+   "NEW-R03-IO01（同一串里上一条没落地就重发；这条说的是每条的大小和前线宽度不匹配）",
+   "NEW-AT-CAPDUMP / R08:超软上限后高价倾泻（过软上限后对高价目标出手）",
+   "NEW:FE-tiny-cmd-fee（手续费按整笔余额收）",
+   "暂无完全对应的条目（R03 在 A090 第一次单列；请统筹归并）"
+  ],
+  "definition": "Policy.buyLand 的真人分支（Vb L5530-5608）：脉冲档 L5595-5607 每条 = min(1.20×need + 3×接壤数, pulseFrac(0.12)×余额)；3800 拍后对 bleeding/nearCollapse 的目标走 L5574-5585，每条 = max(min(0.85×need + 3×接壤数, 0.12×余额) − 在途, 0.08×余额)。need 是 offers 里吃掉对方整个号的 elimCost，不是眼前这段前线后面那块地；按前线宽度修剪的三段代码（alignMultiRing L5555-5572、canZeroPulse L5539-5551、tryNarrowBoatFirst L5470-5528）在 Vb 的参数里都是关的（exactRingMode=0、zeroPulseMode=0、narrowBoatFirstMode=0）。引擎里进攻兵沿前线格逐格推进，接壤的那一小块（对方船登陆的滩头、被切下来的飞地）吃完、和目标不再相邻时，槽里剩下的兵退回余额；每条陆攻的手续费 = 发令时余额的 12/1024，与送多少无关。于是对一块十几到几十格宽的滩头连发 3~4 条（在途检查在第一条落地前是 0），槽里压上百万兵，烧掉 2~15%，其余 20~60 拍后退回；其间本体的余额少一截，手续费付 3~4 份。计：对真人的陆攻按时段、按号的 条数/送出/手续费/烧掉/槽内对消/得地 和 退回余额的兵；逐串的接壤格数、槽里兵的变化、退回的拍。",
+  "detect": "retq.py <局> [切点]（和卷宗[E] 同一套区间账：对真人 条数/出/费/烧/对消/得地 与 退兵）+ dbg/attack-state.mjs <局> <号> <t0> <t1> <目标席位>（逐拍：和目标接壤的边界格数、进攻槽里的兵、余额）+ shadow-digest [S6]（同步串的首条/多花与其中的手续费）+ dbg/params.mjs <局> 'exactRing|zeroPulse|narrow'。",
+  "instances": [
+   {
+    "t": "3997",
+    "bot": "zero_7 → USSR",
+    "note": "USSR 13,835 格/26.8 万兵；一批 6 条 208 万：3960~4050 拍烧 6.1 万、拿 1,509 格，219 万在外"
+   },
+   {
+    "t": "3780~3787",
+    "bot": "zero_7 → UTKU",
+    "note": "3 条送出 87.2 万、手续费 10.7 万，烧 9.6 万、拿 1,568 格"
+   },
+   {
+    "t": "1575~1610",
+    "bot": "talon5、alex_k → zexos1",
+    "note": "对一个 2.1 万兵的号送出 9.8 万、16.3 万，各烧 1.3 万"
+   }
+  ],
+  "note": "本局计数（卷宗[E]）：zero_7 3600~3900、3900~4200 拍对真人 3 条、9 条，送出 87.2 万、352 万，手续费 10.7 万、31.8 万，烧 9.6 万、47.8 万，这两个窗口退兵 103 万、219 万。硬上限没有吃掉退回的兵（cap-loss：编队合计无）"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-AT01",
+  "prefix": "AT",
+  "name": "（正例）同步状态下的小脉冲把兵换成地",
+  "sameAs": [
+   "R07-GOOD-SAVED-PUSH（相近）"
+  ],
+  "definition": "对真人的脉冲出手（pct ≤130）在 ≤45 拍内成交、同一拍至多落 2 条；一串脉冲之后余额不低于出手前的 55%，300 拍内领土 +≥10%。",
+  "detect": "shadow-digest.py 决策串里源码行为 buyLand:5607/5585 的串 + 卷宗 [E] 同窗口地、兵变化。",
+  "instances": [
+   {
+    "t": "1806~1813",
+    "bot": "zero_7 → Maratha empire",
+    "note": "两条 pct 122（延迟 6 拍），余额 15.9 万→12.1 万；1800~2100 拍烧 2.0 万拿 4,452 格"
+   },
+   {
+    "t": "4284~4291",
+    "bot": "zero_7 → دوله البغداديه",
+    "note": "两条 pct 105、117（延迟 9 拍），余额 421 万→329 万；烧 87.1 万拿 4,049 格，对方出局后又收 2,618 格无主地"
+   }
+  ],
+  "note": "正例：这两次出手时页面是同步的（延迟 6~9 拍），一拍最多落 1 条，目标是邻居里最薄的"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-OP01",
+  "prefix": "OP",
+  "name": "买 AI 地被编队友的余额冻住（按决策拍计数；t<1500 走 winFloor，t≥1500 走 safeAt）",
+  "sameAs": [
+   "NEW-R01-OP02 保底线死锁：safeFinite 取到队友余额",
+   "R04 打内置 AI 的底线被队友的余额顶住（队友互锁）"
+  ],
+  "definition": "第一段 t < dpEnd（1500）：该号有 ≥1 个存活的内置 AI 邻居、没有在扩中立、pickTarget 返回空，且 safeFinite ≥ (1-minSend)×余额（minSend=0.2141）。第二段 t ≥ 1500：buyLand 没出手，但只把 safeFinite 当 0 重跑同一拍就会出手。两段都按卡住它的「最弱的别的邻居」分类：编队友 / 路人队友 / 敌方真人 / AI。",
+  "detect": "scripts/freeze-scan.mjs <局>（需要录像；影子策略逐拍包住 pickTarget 与 buyLand）。输出 out/cache/<局>-freeze.json：第一段 team/bots，第二段 post.team/post.bots（frozenSF 及其 binders、spans）。",
+  "instances": [
+   {
+    "t": "600~1495",
+    "bot": "talon5、zexos1、alex_k、kaito9、sora_w",
+    "note": "冻结 71、58、47、38、37 个决策拍；talon5 的绑定方 zexos1×50，zexos1 的 talon5×26，alex_k 的 kaito9×23、USSR×23，sora_w 的 noah88×36"
+   }
+  ],
+  "note": "本局计数：1,800 个决策拍里 313 个（17.4%），卡在编队友 211、其他真人 102；287 个去掉这一项当拍就能出手。没有因此丢地（接壤的 AI 地 1800 拍仍属 AI 的 0.0%）。这一局没有队，编队友本来就是潜在的对手——它们 1500 拍后确实打了过来——所以这一局不算误判"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-IO02",
+  "prefix": "IO",
+  "name": "isNoFullSend 假翻转后出手被守卫挡掉",
+  "sameAs": [
+   "NEW-R01-IO03 isNoFullSend 误置真",
+   "R04 isNoFullSend 误锁，出兵被自己的守卫拦掉"
+  ],
+  "definition": "对局不是限额模式，但 isNoFullSend 被 updateShadowQuota 翻成 true（pendingQuotaCheck 的 7 拍窗口内余额因别的原因下降）；计数 = 翻转的号数 + 翻转后 Policy.send L3844 守卫挡掉的对非中立目标的出手次数。",
+  "detect": "shadow.mjs 输出的 nfsFlip（翻转拍、当时的 pending）和 blocked 列表；shadow-digest.py [S5]。",
+  "instances": [
+   {
+    "t": "449~932",
+    "bot": "全部 10 个号",
+    "note": "isNoFullSend 在 10 个号上都翻成了 true（kaito9 449 拍最早，zero_7 932 拍最晚）"
+   }
+  ],
+  "note": "本局计数（[S5]）：翻转 10 个号；守卫挡掉的出手 zero_7 11 次、riku_x 8 次、ryan_m 7 次（其中对 riku_x 3 次）、talon5 3、zexos1 3、sora_w 3、alex_k 1、noah88 1"
+ },
+ {
+  "matchId": "A046",
+  "reviewer": "R03",
+  "proposedId": "NEW-R03-IO03",
+  "prefix": "IO",
+  "name": "同一拍先发的扩中立占掉指令位，后面对真人/AI 的出手本地就被拒",
+  "sameAs": [
+   "统筹 0004 号广播第 ii 项（页面适配层每拍只收 1 条：Policy.act L4941 expandNeutral 挤掉 L4942 buyLand）"
+  ],
+  "definition": "影子策略同一个决策拍里已有一条被接受的指令（源码行 expandNeutral:952 或 dpNeutral:2406），同拍由 buyLand / General.act:796 发出的另一条在本地被拒收。计：条数、t≥1500 的条数、目标是真人的条数、同一目标连续被挤的拍数，以及被挤掉的那条想发的兵。",
+  "detect": "shadow-digest.py [S7]（shadow.json 里每条影子指令的本地受理标志 + 调用栈）；facts 里是 crowd.{n,after1500,humanTarget,list}。",
+  "instances": [
+   {
+    "t": "1500~1515",
+    "bot": "leo_tx → zero_7",
+    "note": "切换后头 4 个决策拍想对编队友 zero_7 出手（pct 217~218，单条最多 3.1 万兵），同拍先发的扩无主地占了指令位，本地被拒"
+   }
+  ],
+  "note": "本局计数（[S7]）：11 条（t≥1500 的 4 条；目标是真人的 4 条），涉及 6 个号。leo_tx 1500~1800 拍对无主地 4 条 pct 47：送出 2.5 万、手续费 6.2 千，只拿到 1 格"
+ },
+ {
   "matchId": "A051",
   "reviewer": "R03",
   "proposedId": "NEW-R03-OP01",
