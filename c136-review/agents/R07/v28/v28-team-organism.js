@@ -3845,6 +3845,7 @@ export const PARAMS = {
   a06BoatUnderAtk: 0,
 
   // ---- v28 module switches (ROUNDTABLE-SYNTHESIS section 3). 0 = that module behaves as Vc. ----
+  v28Debug: 0, // 1: every ledger event goes to the log ([V28-LED]); changes no decision
   enableInflightLedger: 1, // P1
   enableSpawnClosedLoop: 1, // P2 (client half)
   enableAiFloorCap: 1, // P3
@@ -3885,6 +3886,12 @@ export const PARAMS = {
   p1ArbNeutral: 8,
   p1NoFullFix: 1, // isNoFullSend from the engine flag, else from ledger landings (p1NoFullM truncations in a row)
   p1NoFullM: 3,
+  p1ScaleUp: 1, // the share of a new command is sized on the balance left after the commands in flight ...
+  p1ScaleMax: 2, // ... raised by at most this factor
+  p1AlsoK: 0.75, // a second command on a target landed with the first when this x its troops show in the rise
+  p1MinLat: 4, // a command younger than this many ticks is not matched to a drop in our balance
+  p1StepLo: 0.8, // a drop in our balance is a command of ours when it is within these x its cost
+  p1StepHi: 1.25,
 };
 
 // v28/P1: fee of a command as 1/1024ths of the balance.
@@ -3927,6 +3934,8 @@ export class Policy extends V17 {
     this.ledBurstTicks = 0;
     this.ledCarryT = -1;
     this.ledCarryN = 0;
+    this.ledLandedT = -1; // issue tick of the latest command seen landing
+    this.ledSlots = null; // our attacks at the last tick: target -> troops (kept while something is in flight)
     this.nfsTrunc = 0;
     this.nfsByProbe = false;
     this.vKeepNext = null;
@@ -6146,22 +6155,22 @@ export class Policy extends V17 {
 
   xAttack(g, pct, target, site) {
     if (!(this.p.enableInflightLedger > 0)) return super.xAttack(g, pct, target, site);
-    return this.ledgerSend(g, "attack", pct, target, site, () => super.xAttack(g, pct, target, site));
+    return this.ledgerSend(g, "attack", pct, target, site, (p) => super.xAttack(g, p, target, site));
   }
 
   xDonate(g, pct, target, site) {
     if (!(this.p.enableInflightLedger > 0)) return super.xDonate(g, pct, target, site);
-    return this.ledgerSend(g, "donate", pct, target, site, () => super.xDonate(g, pct, target, site));
+    return this.ledgerSend(g, "donate", pct, target, site, (p) => super.xDonate(g, p, target, site));
   }
 
   xBoatTo(g, pct, land, radius, site) {
     if (!(this.p.enableInflightLedger > 0)) return super.xBoatTo(g, pct, land, radius, site);
-    return this.ledgerSend(g, "boat", pct, land, site, () => super.xBoatTo(g, pct, land, radius, site));
+    return this.ledgerSend(g, "boat", pct, land, site, (p) => super.xBoatTo(g, p, land, radius, site));
   }
 
   xBoat(g, pct, water, dir, site) {
     if (!(this.p.enableInflightLedger > 0)) return super.xBoat(g, pct, water, dir, site);
-    return this.ledgerSend(g, "boat", pct, water, site, () => super.xBoat(g, pct, water, dir, site));
+    return this.ledgerSend(g, "boat", pct, water, site, (p) => super.xBoat(g, p, water, dir, site));
   }
 
   xRetreat(g, target, site) {
@@ -6171,7 +6180,7 @@ export class Policy extends V17 {
 
   xChase(g, pct, id, site) {
     if (!(this.p.enableInflightLedger > 0)) return super.xChase(g, pct, id, site);
-    return this.ledgerSend(g, "chase", pct, id, site, () => super.xChase(g, pct, id, site));
+    return this.ledgerSend(g, "chase", pct, id, site, (p) => super.xChase(g, p, id, site));
   }
 
   xRecall(g, id, site) {
@@ -6194,10 +6203,17 @@ export class Policy extends V17 {
     return true;
   }
 
+  // (A command sends its share of the balance at the tick it lands, not of the balance it left
+  // with: the troops are projected from today's balance, each command taking its share of what
+  // the ones before it leave.)
   inflightOn(g, q) {
     if (!(this.p.enableInflightLedger > 0)) return 0;
-    let s = 0;
-    for (const e of this.led) if (e.kind === "attack" && e.target === q) s += e.exp;
+    let s = 0, b = g.bal[this.me];
+    for (const e of this.led) {
+      if (!(e.share > 0)) continue;
+      if (e.kind === "attack" && e.target === q) s += iV(b * (e.pct + 1), 1024);
+      b *= 1 - e.share;
+    }
     return s;
   }
 
@@ -6250,15 +6266,28 @@ export class Policy extends V17 {
   }
 
   ledgerSend(g, kind, pct, target, site, fn) {
-    const me = this.me;
+    const P = this.p, me = this.me;
+    const bal0 = g.bal[me];
+    // A command takes its share of the balance of the tick it lands, after the commands in flight
+    // have taken theirs: the share is raised so that what lands is what the caller sized on
+    // today's balance (pct 0 is the one-ring probe and stays).
+    if (P.p1ScaleUp > 0 && FEE_OF[kind] > 0 && pct > 0 && this.led.length) {
+      const proj = this.ledProjected(g);
+      if (proj > 0 && proj < bal0) {
+        const p2 = Math.min(1023, Math.ceil(((pct + 1) * Math.min(P.p1ScaleMax, bal0 / proj))) - 1);
+        if (p2 > pct) {
+          pct = p2;
+          this.vCount("p1_scale_up");
+        }
+      }
+    }
     const why = this.ledgerVeto(g, kind, pct, target);
     this.vKeepNext = null;
     if (why) {
       this.vCount("p1_veto_" + why);
       return false;
     }
-    const bal0 = g.bal[me];
-    const ok = fn();
+    const ok = fn(pct);
     if (!ok) {
       this.vCount("p1_host_refused");
       return false;
@@ -6276,8 +6305,9 @@ export class Policy extends V17 {
       return true;
     }
     const exp = fee > 0 ? Math.max(0, Math.min(iV(bal0 * (pct + 1), 1024), bal0 - iV(fee * bal0, 1024))) : 0;
-    this.led.push({ id: ++this.ledSeq, t, kind, target, pct, share: fee > 0 ? (pct + 1 + fee) / 1024 : 0, exp, site, weak: !(fee > 0) || pct === 0 });
+    this.led.push({ id: ++this.ledSeq, t, kind, target, pct, share: fee > 0 ? Math.min(1, (pct + 1 + fee) / 1024) : 0, exp, site, weak: !(fee > 0) || pct === 0 });
     if (kind === "attack" && !this.ledAtkSeen.has(target)) this.ledAtkSeen.set(target, g.attackTroopsOn(me, target));
+    if (this.p.v28Debug > 0) this.vLog("LED", g, `issue #${this.ledSeq} ${kind} q=${target} pct=${pct} exp=${exp} site=${site} bal=${bal0} inflight=${this.led.length}`);
     return true;
   }
 
@@ -6289,13 +6319,24 @@ export class Policy extends V17 {
     this.ledPrev = null;
     this.ledStall = false;
     this.ledCarryT = -1;
+    this.ledLandedT = -1;
+    this.ledSlots = null;
+  }
+
+  // Whether the game would refuse attack e if it arrived now: no attack of ours on its target to
+  // add to and, as of our last look at the border (analyze), no border with it.
+  ledNoFront(g, e) {
+    if (g.hasAttack(this.me, e.target)) return false;
+    return e.target === NEUTRAL ? !(this.neutral > 0) : !(this.cnt[e.target] > 0);
   }
 
   ledClose(g, e, how) {
     const i = this.led.indexOf(e);
     if (i >= 0) this.led.splice(i, 1);
     this.vCount(`p1_${how}_${e.kind}`);
+    if (this.p.v28Debug > 0) this.vLog("LED", g, `close #${e.id} ${how} ${e.kind} q=${e.target} age=${g.t - e.t} bal=${g.bal[this.me]}`);
     if (how === "land" || how === "step") {
+      if (e.t > this.ledLandedT) this.ledLandedT = e.t;
       const lat = g.t - e.t;
       this.vCount("p1_lat_sum", lat);
       this.vCount("p1_lat_n");
@@ -6334,44 +6375,76 @@ export class Policy extends V17 {
     if (P.p1NoFullFix > 0 && flag !== null) this.isNoFullSend = flag || Boolean(P.noFullSend);
 
     if (this.led.length && prev) {
-      let explained = 0, landed = 0, landedAtk = null, donLanded = false;
+      let landed = 0, landedAtk = null, donLanded = false;
+      const done = [];
       const close = (e, how) => {
-        explained += prev.bal * e.share;
         landed++;
         if (e.kind === "attack") landedAtk = e;
         if (e.kind === "donate") donLanded = true;
+        if (e.share > 0) done.push(e);
         this.ledClose(g, e, how);
       };
+      // 1. what certainly landed: one boat per boat of ours more at sea, and the oldest command on
+      // every target our troops on which went up
       for (let k = boats - prev.boats; k > 0; k--) {
         const e = this.led.find((x) => x.kind === "boat");
         if (!e) break;
         close(e, "land");
       }
+      const risen = [];
       for (const [q, seen] of this.ledAtkSeen) {
         const cur = g.attackTroopsOn(me, q);
         this.ledAtkSeen.set(q, cur);
         let rise = cur - seen;
-        while (rise > 0) {
-          const e = this.led.find((x) => x.kind === "attack" && x.target === q);
-          if (!e) break;
-          close(e, "land");
-          rise -= Math.max(1, e.exp);
-          const next = this.led.find((x) => x.kind === "attack" && x.target === q);
-          if (!next || rise < 0.5 * next.exp) break;
+        // (troops the game moved onto free land because their target is gone are no landing)
+        if (q === NEUTRAL && rise > 0 && this.ledSlots) {
+          for (const [o, tr] of this.ledSlots) if (o !== NEUTRAL && (!g.alive[o] || !g.terr[o]) && !g.hasAttack(me, o)) rise -= tr;
+        }
+        if (!(rise > 0)) continue;
+        const e = this.led.find((x) => x.kind === "attack" && x.target === q);
+        if (!e) continue;
+        close(e, "land");
+        risen.push({ q, rise, first: e });
+      }
+      // 2. whether the next command on such a target landed with it. A command sends its share of
+      // the balance of the tick it lands; of the commands of one tick the one that left last lands
+      // first. Undoing them from today's balance, oldest first, gives what each landed with (b:
+      // the balance before them); the next one counts as landed when the rise that the first
+      // does not explain is at least p1AlsoK of what it would have landed with.
+      let b = B;
+      done.sort((x, y) => x.id - y.id);
+      for (const e of done) {
+        b /= Math.max(1 - e.share, 0.02);
+        e.got = iV(b * (e.pct + 1), 1024);
+      }
+      for (const r of risen) {
+        let rem = r.rise - r.first.got;
+        for (;;) {
+          const next = this.led.find((x) => x.kind === "attack" && x.target === r.q);
+          if (!next) break;
+          const before = b / Math.max(1 - next.share, 0.02);
+          const got = iV(before * (next.pct + 1), 1024);
+          if (rem < P.p1AlsoK * got) break;
+          close(next, "land");
+          b = before;
+          rem -= got;
         }
       }
       for (const e of [...this.led]) {
         if (e.kind === "retreat" && !g.hasAttack(me, e.target)) this.ledClose(g, e, "land");
       }
-      // what is left of a drop in our balance: the oldest command in flight whose cost it matches
       if (t - prev.t === 1) {
-        let rest = prev.bal - B - explained;
-        for (const e of [...this.led]) {
-          if (!(e.share > 0) || e.weak) continue;
-          const cost = prev.bal * e.share;
-          if (rest >= 0.6 * cost && rest <= 1.4 * cost) {
-            close(e, "step");
-            rest -= cost;
+        // 3. a tick in which nothing was seen landing: a drop in our balance of the size of the
+        // oldest command it matches is that command (landed and spent within the tick, or a donation)
+        if (landed === 0) {
+          let rest = prev.bal - B;
+          for (const e of [...this.led]) {
+            if (!(e.share > 0) || e.weak || t - e.t < P.p1MinLat) continue;
+            const cost = prev.bal * e.share;
+            if (rest >= P.p1StepLo * cost && rest <= P.p1StepHi * cost) {
+              close(e, "step");
+              rest -= cost;
+            }
           }
         }
         // isNoFullSend probe: exactly one attack landed this tick, no donation of ours with it, no
@@ -6404,18 +6477,43 @@ export class Policy extends V17 {
       }
     }
 
+    // Commands that will not land as they left. `soft` entries are those the game is likely to
+    // refuse on arrival (a refused command costs nothing and shows nowhere): they stay counted as
+    // in flight for the normal window and are no evidence of a stall.
     for (const e of [...this.led]) {
       const age = t - e.t;
-      if (e.kind === "attack" && e.target !== NEUTRAL && (!g.alive[e.target] || !g.terr[e.target])) this.ledClose(g, e, "void");
-      else if (e.weak ? age > P.p1NormalWin : age > P.p1DropAfter) this.ledClose(g, e, e.weak ? "weak" : "drop");
+      if (e.kind === "attack" && e.target !== NEUTRAL && !g.alive[e.target]) {
+        // the game turns an attack on a player that is gone into one on free land
+        e.target = NEUTRAL;
+        e.soft = true;
+        if (!this.ledAtkSeen.has(NEUTRAL)) this.ledAtkSeen.set(NEUTRAL, g.attackTroopsOn(me, NEUTRAL));
+        this.vCount("p1_retarget");
+      }
+      if (e.kind === "attack" && !e.soft && !e.weak && this.ledNoFront(g, e)) {
+        e.soft = true;
+        this.vCount("p1_soft");
+      }
+      if (e.weak ? age > P.p1NormalWin : e.soft ? age > P.p1StallAfter : age > P.p1DropAfter) {
+        this.ledClose(g, e, e.weak ? "weak" : e.soft ? "soft" : "drop");
+      } else if (!e.weak && age > P.p1NormalWin && this.ledLandedT >= e.t + 7) {
+        // a command that left a settlement round later has landed: this one was refused or dropped
+        this.ledClose(g, e, "lost");
+      }
     }
     for (const q of [...this.ledAtkSeen.keys()]) {
       if (!this.led.some((e) => e.kind === "attack" && e.target === q)) this.ledAtkSeen.delete(q);
     }
+    // our attacks as they stand, for the next tick (only while something is in flight)
+    if (this.led.length) {
+      const m = (this.ledSlots ??= new Map());
+      m.clear();
+      const base = g.slotBase(me);
+      for (let i = g.atkCount[me] - 1; i >= 0; i--) m.set(g.atkTarget[base + i], g.atkTroops[base + i]);
+    } else this.ledSlots = null;
 
     let why = "";
     for (const e of this.led) {
-      if (!e.weak && t - e.t > P.p1StallAfter) {
+      if (!e.weak && !e.soft && t - e.t > P.p1StallAfter) {
         why = "late";
         break;
       }
