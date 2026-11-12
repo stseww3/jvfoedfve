@@ -246,6 +246,9 @@ def main():
     line("两样都做", [r for r in out if r["nsq"] >= r["n0"]], "G2")
     P(f"说明：样本外 {len(out)} 局里，名下格数表里认出的编队号数少于 630 拍 traj 行数的 {len(part)} 局（{'、'.join(r['mid'] for r in part) or '没有'}）；"
       f"630 或 1530 拍有号缺行、但前后两拍都有行的 {len(gap)} 局（{'、'.join(r['mid'] for r in gap) or '没有'}）")
+    P("")
+    block(P, f"去掉编队号没认全的 {len(part)} 局之后，同一套量（事后加的；这几局为什么要去掉见 out/council/E2-idcheck.txt）：",
+          [r for r in out if r["nsq"] >= r["n0"]])
     # 口径对照：我名下 11 局在跨局汇总 X12 的 E1 行里也有出生份额（land-ledger 的口径），和这里的逐局比一下
     x12 = os.path.join(ROOT, "out", "cross", "X12-summary.txt")
     if os.path.exists(x12):

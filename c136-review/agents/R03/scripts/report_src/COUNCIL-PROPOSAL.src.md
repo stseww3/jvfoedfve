@@ -46,7 +46,7 @@ R03 · 纯离线 · 样本 11 局（10 负 1 胜，全部是 Vb 策略、10 号�
 
 **归因（历史失分）**
 
-8. **1500 拍的人均地差距，出生份额大约占六成，不是全部。** 输局人均地比的几何平均是 0.55。三层恒等式把它记成出生份额 0.52 × 转化 1.06，等于全部记在出生份额上。但其他真人 1500 拍的地并不与名下格数成正比，而是大约按 0.56 次方增长（按局重抽的 95% 区间 0.44~0.71）。按这个经验关系改算，0.55 = 经验出生层 0.69 × 剩余转化 0.80，对数差距里出生层占 62%（区间两端 51%~73%）。这个数只有这 11 局的支持：在发现集另外 59 局上，编队的出生份额同样只有其他真人的一半左右（中位 0.55，58 局小于 1），但「出生份额小的局，编队 630→1530 拍涨地也少」这条跨局检验按预先写的判读没有复现（控制开局人数的偏秩相关 +0.19，p=0.150）。
+8. **1500 拍的人均地差距，出生份额大约占六成，不是全部。** 输局人均地比的几何平均是 0.55。三层恒等式把它记成出生份额 0.52 × 转化 1.06，等于全部记在出生份额上。但其他真人 1500 拍的地并不与名下格数成正比，而是大约按 0.56 次方增长（按局重抽的 95% 区间 0.44~0.71）。按这个经验关系改算，0.55 = 经验出生层 0.69 × 剩余转化 0.80，对数差距里出生层占 62%（区间两端 51%~73%）。这个数只有这 11 局的支持：在发现集另外 59 局上，编队的出生份额同样只有其他真人的一半左右（中位 0.55，58 局小于 1），但「出生份额小的局，编队 630→1530 拍涨地也少」这条跨局检验按预先写的判读没有复现（控制开局人数的偏秩相关 +0.19，p=0.150；去掉事后查出数据不干净的 4 局，55 局是 +0.20，p=0.157）。
 9. **同样小的名下，别人在 630~1500 拍把兵换成了地，编队没有。** 按名下格数配对的 75 个编队号：630 拍「地÷名下」是对照的 1.31 倍，1500 拍是 0.80 倍；630→1500 拍地的倍数是对照的 0.65 倍，10 个输局没有一局高于 1；1500 拍的密度是对照的 2.06 倍，10 局全部高于 1；1500 拍余额相当于这一段利息的 0.90，对照是 0.69。
 10. **局内看，转化掉得多的号是「没有 AI 邻居」和「被冻住」的号，延迟的关系弱。** 102 个号的局内面板，控制名下格数之后，与 1500 拍「地÷名下」的偏秩相关：没有 AI 邻居 −0.31（p=0.002），冻结 −0.29（p=0.007），延迟中位 −0.20（p=0.049），目标已死 −0.18（p=0.092）。跨局看延迟与转化的秩相关是 −0.84（11 局）。跨局强、局内弱，现有数据分不清是延迟的损害外溢到了全队，还是跨局相关混着房间大小。
 11. **延迟不是策略自己算得慢。** 11 局里每个号平均每拍算 0.44~1.12 毫秒（各局中位），没有一个号跳过拍；延迟中位超过 30 拍的 59 个号，最慢一拍的中位是 28.8 毫秒。发现集 1733 个号里最慢一拍超过一个回合（392 毫秒）的只有 1 个。延迟到底来自哪里，离线数据答不了。开环配对试跑里删掉落地时目标已死的迟到指令（A051 是 144 条），900~1500 拍编队地少 0.17%~0.50%，6 对都为负：这些指令落地本身没有亏。延迟如果有代价，不在这些打空的指令上。
@@ -611,16 +611,36 @@ RFC 没有单列这一项，但它在局内面板里是最强的一条，所以�
 
 {{TAB ../council/E2-birth.txt [E2-5]}}
 
+**主检验里有 4 局的数据不干净（事后查出来的）。** 对局包的 `traj.csv` 和结算表里有的号，不一定都在这一局回放的房间里：编队有时被分进了不止一个房间，对局包只带其中一个房间的回放。预先写的做法没有防这一点。这 4 局的出生份额只按回放里认出的号算（没认出的号如果就在这个房间里，还会被算成其他真人），地的倍数却把对局包里所有的号加在了一起。`e2idcheck.py` 逐局核对了按名字认出的号和每个号自己在结算表里报的玩家号：
+
+{{LINE ../council/E2-idcheck.txt 有名下格数表的}}
+
+{{LINE ../council/E2-idcheck.txt 「认出但自报里没有」}}
+
+有号没认出的 8 局（样本外的 6 局里，A017、A073 按预先写的排除条件本来就不在主检验里）：
+
+{{TAB ../council/E2-idcheck.txt [ID-3]}}
+
+去掉这 4 局之后，同一套量：
+
+{{LINE ../council/E2-birth.txt 局数 55}}
+
+{{LINE ../council/E2-birth.txt 出生份额 × 地的倍数：秩相关 -0.25}}
+
+{{LINE ../council/E2-birth.txt 开局人数 × 出生份额：秩相关 +0.51}}
+
+{{LINE ../council/E2-birth.txt 出生份额 × 1530 拍密度（55 局）}}
+
 按输赢分组（只作描述）：
 
 {{TAB ../council/E2-birth.txt [E2-3]}}
 
 读法：
 
-- **按预先写的判读，没有复现。** 样本外 59 局，出生份额与地的倍数的偏秩相关是 +0.19（p=0.150）：方向为正，没过线。去掉编队号没认全的 4 局之后是 +0.20（p=0.157），结果不变。
-- **不控制开局人数时符号相反**：秩相关是 −0.27（p=0.045）。开局人数同时牵着两头：人越多，编队的出生份额越接近 1（+0.49），编队这一段地的倍数越小（−0.76）。跨局看，开局人数是比出生份额强得多的因素。
-- 出生份额与 1530 拍密度的偏秩相关是 −0.23（p=0.084），方向与预期相同，也没过线。
-- **描述性的一条在发现集上站得住**：样本外 59 局的出生份额中位 0.55（0.25~1.00），58 局小于 1。编队出生时人均名下只有其他真人的一半左右，不是这 11 局特有的。
+- **按预先写的判读，没有复现。** 样本外 59 局，出生份额与地的倍数的偏秩相关是 +0.19（p=0.150）：方向为正，没过线。去掉数据不干净的 4 局之后（55 局）是 +0.20（p=0.157），结果不变。这 4 局里 A015、A043、A094 的结算表有分房的迹象；A086 只有 1 个号没认出，看不出是不是分房。其余 55 局，对局包里的每个号都在回放里认出来了。
+- **不控制开局人数时符号相反**：秩相关是 −0.27（p=0.045）；55 局是 −0.25（p=0.066）。开局人数同时牵着两头：人越多，编队的出生份额越接近 1（+0.49；55 局 +0.51），编队这一段地的倍数越小（−0.76；55 局 −0.72）。跨局看，开局人数是比出生份额强得多的因素。
+- 出生份额与 1530 拍密度的偏秩相关是 −0.23（p=0.084；55 局 −0.24，p=0.085），方向与预期相同，也没过线。
+- **描述性的一条在发现集上站得住**：样本外 59 局的出生份额中位 0.55（0.25~1.00），58 局小于 1；55 局也是中位 0.55，54 局小于 1。编队出生时人均名下只有其他真人的一半左右，不是这 11 局特有的。
 - 这条检验是跨局的（出生份额大的局，编队这一段涨得多不多）；第 3.1 节的六成是局内的记账（同一局里编队对其他真人）。跨局没有复现，不等于局内的记账错了。但它说明两点：拿出生份额去解释局与局之间编队涨地的差别，在发现集上不成立；六成这个数仍然只有 11 局的支持。
 - 口径：这里的出生份额按 `cells.mjs` 算（开局有地的全部真人）。与跨局汇总里的出生份额逐局比，我名下 11 局相差最多 0.06，中位 0.01（[E2-6] 段）。
 - 排除的 5 局：1 局数据镜像里没有地图文件，2 局 1530 拍没有 traj 行，2 局录像里认出的编队号或其他真人不够。逐局的表在 `out/council/E2-birth.txt` 的 [E2-4] 段。
@@ -818,8 +838,9 @@ timeout 120 python3 scripts/cells_py.py     # out/council/cells-py/<局>.json、
 timeout 120 python3 scripts/attrib.py       # out/council/ATTR-facts.txt
 timeout 120 python3 scripts/cffacts.py      # out/council/CF-facts.txt（读 out/council/cf/*.txt）
 timeout 120 python3 scripts/e2birth.py      # out/council/E2-birth.txt（读 out/council/cells/*.json 和发现集每局的 traj.csv）
+timeout 120 python3 scripts/e2idcheck.py    # out/council/E2-idcheck.txt（按名字认出的编队号 对 结算表里自报的玩家号）
 timeout 60 python3 scripts/build_report.py scripts/report_src/COUNCIL-PROPOSAL.src.md reports/COUNCIL-PROPOSAL.md
-timeout 60 python3 scripts/crossnums.py reports/COUNCIL-PROPOSAL.md --src out/council/G0-facts.txt --src out/council/ATTR-facts.txt --src out/council/CF-facts.txt --src out/council/E2-birth.txt --src out/council/cells-py/_check.txt --src reports/MECHANICS-A.md --src out/council/abl/_queue-g0abl.log --src out/council/abl/_b1.log --src out/council/abl/_b2.log
+timeout 60 python3 scripts/crossnums.py reports/COUNCIL-PROPOSAL.md --src out/council/G0-facts.txt --src out/council/ATTR-facts.txt --src out/council/CF-facts.txt --src out/council/E2-birth.txt --src out/council/E2-idcheck.txt --src out/council/cells-py/_check.txt --src reports/MECHANICS-A.md --src out/council/abl/_queue-g0abl.log --src out/council/abl/_b1.log --src out/council/abl/_b2.log
 
 # 要重计算位的（套 run-heavy.sh）：
 #   反向检验：node scripts/g0ablate.mjs <局> --phys colors|botteams|nobotteams|cache32 [--until T]
@@ -830,4 +851,4 @@ timeout 60 python3 scripts/crossnums.py reports/COUNCIL-PROPOSAL.md --src out/co
 #             scripts/heavy-queue.sh 排队，scripts/heavy-batch.sh 在一个重计算位里连跑几步
 ```
 
-`g0facts.py`、`cells_py.py`、`attrib.py` 只读 `out/cache/`、`out/dossier/`、`reviews/` 里这 11 局的缓存，加 `manifest.jsonl`、`traj.csv` 和地图文件，不重跑重放；`cffacts.py` 只解析 `cfopen.mjs` 的输出。`e2birth.py` 只读 `manifest.jsonl`、发现集 squad10 档每局的 `traj.csv` 和 `cells.mjs` 的输出。`cfopen.mjs` 只对录像指令流做删减，不含任何策略逻辑。
+`g0facts.py`、`cells_py.py`、`attrib.py` 只读 `out/cache/`、`out/dossier/`、`reviews/` 里这 11 局的缓存，加 `manifest.jsonl`、`traj.csv` 和地图文件，不重跑重放；`cffacts.py` 只解析 `cfopen.mjs` 的输出。`e2birth.py` 只读 `manifest.jsonl`、发现集 squad10 档每局的 `traj.csv` 和 `cells.mjs` 的输出；`e2idcheck.py` 另外读这些局的 `results.csv`。`cfopen.mjs` 只对录像指令流做删减，不含任何策略逻辑。
