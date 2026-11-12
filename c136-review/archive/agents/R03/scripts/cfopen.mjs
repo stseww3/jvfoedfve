@@ -13,6 +13,8 @@
 //   squaddon@A-B     拿掉 A~B 拍编队号发出的捐款
 //   dead@A-B         拿掉 A~B 拍编队落地时目标已经没有地的陆攻
 //   dups@A-B         拿掉 A~B 拍编队同一拍里重复的指令（同号、同类、同目标，留第一条）
+//   臂+drop1@T:k     配对臂：机制臂再叠一条安慰剂扰动。和单独的 drop1@T:k 比，差的就是「同一个被扰动的世界里这条机制臂的效应」；
+//                    试跑发现单独一条安慰剂就能让后面的局面走开很远，所以机制臂要在几个不同的扰动下各比一次（读数拍用 --at 给绝对拍）。
 // 输出：每臂每个断面一行，写到标准输出；不写缓存。
 import fs from 'node:fs';
 import path from 'node:path';
@@ -67,9 +69,20 @@ const sqCmds = T.cmdLog.filter((c) => TS.isSq[c[1]] && c[2] >= 1 && c[2] <= 3);
 const truthCmd = T.cmdLog;
 
 function buildArm(spec) {
+  if (spec.includes('+')) {
+    const parts = spec.split('+').map(buildArm);
+    if (parts.some((p) => !p)) return null;
+    return {
+      label: parts.map((p) => p.label).join(' ＋ '),
+      win: parts[0].win,
+      filter: (c, g, info) => { for (const p of parts) if (!p.filter(c, g, info)) return false; return true; },
+      stat: () => parts.map((p) => p.stat()).join(' ＋ '),
+    };
+  }
   const [name, rest] = spec.split('@');
   let dropped = 0, firstT = -1;
   const note = (g) => { dropped++; if (firstT < 0) firstT = g.t; };
+  const first = () => (firstT < 0 ? '' : `，最早 ${firstT} 拍`);
   if (name === 'drop1') {
     const [a, k] = rest.split(':').map(Number);
     const list = sqCmds.filter((c) => c[0] >= a && c[5] === 1);
@@ -85,7 +98,7 @@ function buildArm(spec) {
         done = true; note(g);
         return false;
       },
-      stat: () => `丢 ${dropped} 条`,
+      stat: () => `丢 ${dropped} 条${first()}`,
     };
   }
   if (name === 'enemydon') {
@@ -101,7 +114,7 @@ function buildArm(spec) {
         note(g);
         return false;
       },
-      stat: () => `丢 ${dropped} 条（含被拒的）`,
+      stat: () => `丢 ${dropped} 条（含被拒的）${first()}`,
     };
   }
   const [a, b] = (rest || '').split('-').map(Number);
@@ -116,7 +129,7 @@ function buildArm(spec) {
         note(g);
         return false;
       },
-      stat: () => `丢 ${dropped} 条（含被拒的）`,
+      stat: () => `丢 ${dropped} 条（含被拒的）${first()}`,
     };
   }
   if (name === 'dead') {
@@ -154,7 +167,7 @@ function buildArm(spec) {
         note(g);
         return false;
       },
-      stat: () => `丢 ${dropped} 条`,
+      stat: () => `丢 ${dropped} 条${first()}`,
     };
   }
   if (name === 'dups') {
@@ -170,7 +183,7 @@ function buildArm(spec) {
         note(g);
         return false;
       },
-      stat: () => `丢 ${dropped} 条`,
+      stat: () => `丢 ${dropped} 条${first()}`,
     };
   }
   return null;

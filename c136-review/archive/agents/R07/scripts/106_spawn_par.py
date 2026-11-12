@@ -218,6 +218,46 @@ def main():
         P(f"{t}\t{r['g']:.3f}\t" + "\t".join(f"{x:+.3f}" for x in cols))
     P("")
 
+    # ---- 1500 拍以后的站位基准（105_human_fill.mjs --late 的输出；有几局算几局）
+    late = {}
+    for g in GAMES:
+        p = os.path.join(OUT, "_cache", "fill_late", f"{g}.json")
+        if os.path.exists(p):
+            late[g] = json.load(open(p, encoding="utf-8"))
+    J["late"] = {"gamma": {}, "games": {}, "n": len(late)}
+    if late:
+        LATE_AT = ["630", "1500", "1800", "2100", "2400", "3300", "4284", "5184"]
+        P(f"## 表 E：1500 拍以后的站位基准（同表 A2 的估法；已有 {len(late)} / {len(GAMES)} 局；某一拍之前已经终局的对局不进这一拍）")
+        P("拍\tγ\t刀切标准误（逐次剔除一局）\t剔除一局后 γ 的最小 ~ 最大\t局数\t人数\t其中领土为 0 的人数")
+        for t in LATE_AT:
+            by = {}
+            for g, d in late.items():
+                pts = [(s["vor"], s["at"][t]["terr"] if s["at"][t]["st"] != 0 else 0) for s in d["sites"] if not s["bot"] and s["vor"] > 0 and t in s["at"]]
+                if pts:
+                    by[g] = pts
+            r = fit_ppml(by)
+            if not r:
+                continue
+            J["late"]["gamma"][t] = r
+            P(f"{t}\t{r['g']:.3f}\t{r['se']:.3f}\t{r['lo']:.3f} ~ {r['hi']:.3f}\t{r['games']}\t{r['n']}\t{r['zeros']}")
+        P("")
+        P("## 表 E2：每局的 v_γ(T)（用表 E 里 T 拍的 γ）")
+        P("局\t" + "\t".join(f"v_γ({t})" for t in LATE_AT))
+        for g, d in late.items():
+            sq = [s for s in d["sites"] if s["bot"]]
+            oth = [s for s in d["sites"] if not s["bot"]]
+            if not sq or not oth:
+                continue
+            rec = {}
+            for t in LATE_AT:
+                gm = (J["late"]["gamma"].get(t) or {}).get("g")
+                if gm is None or not any(t in s["at"] for s in d["sites"]):
+                    continue
+                rec[f"vg{t}"] = (sum(s["vor"] ** gm for s in sq) / len(sq)) / (sum(s["vor"] ** gm for s in oth) / len(oth))
+            J["late"]["games"][g] = rec
+            P(f"{g}\t" + "\t".join(f"{rec[f'vg{t}']:.3f}" if f"vg{t}" in rec else "-" for t in LATE_AT))
+        P("")
+
     open(os.path.join(OUT, "_cross", "spawn_par.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     json.dump(J, open(os.path.join(OUT, "_cross", "spawn_par.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("\n".join(L))

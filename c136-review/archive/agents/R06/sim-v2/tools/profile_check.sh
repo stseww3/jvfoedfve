@@ -11,6 +11,7 @@ N=$(echo "$M" | tr ',' '\n' | grep -c .)
 C=${PROFILE_CHECK_DIR:-/tmp/r06-profile-check}
 mkdir -p "$C"
 export HEAVY_TIMEOUT=110
+export HEAVY_SLOTS=2    # 统筹广播 0006 定的上限；写死在这里，不跟着 run-heavy.sh 里的缺省值走
 export HEAVY_QUEUE=900
 done_=0
 for i in $(seq 1 90); do

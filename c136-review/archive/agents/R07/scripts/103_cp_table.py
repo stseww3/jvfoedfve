@@ -514,6 +514,50 @@ def main():
                 J["winSum"][f"t{T0}_h{hh}"] = {k: {"mean": mean(acc[k]), "median": med(acc[k]), "n": sum(1 for x in acc[k] if x is not None)} for k in ks}
             P("")
 
+    # ---------- 表 2w：各断面窗口的三层（站位基准用窗口两端的 v_γ；1500 拍以后的 v_γ 来自 105_human_fill.mjs --late）
+    late = (spar.get("late") or {}).get("games") or {}
+
+    def vg_any(g, T):
+        x = (spar["games"].get(g) or {}).get(f"vg{T}")
+        return x if x is not None else (late.get(g) or {}).get(f"vg{T}")
+
+    P("## 表 2w：各断面往后 900 拍的三层（正数 = 这一层让我方在这一窗里更落后）")
+    P("（合计 = −Δ历史；出生站位 = 窗口两端 −ln v_γ 之差（630 断面的窗口末端用 1500 拍的 v_γ）；按住与成批放行 = ΔC1 − ΔC2p；规则（基础延迟通道下，含走偏的虚高）= 合计 − 前两项）")
+    P("局\t断面\t合计\t出生站位\t按住与成批放行\t规则（基础延迟通道下）\t其中走偏带来的虚高\t基础延迟 ΔC0 − ΔC1")
+    J["win3"] = {}
+    ENDPAR = {630: 1500, 1500: 2400, 4284: 5184}
+    for T0 in (630, 1500, 4284):
+        rowsd = []
+        names_ = []
+        for g in GAMES:
+            w = J["win"].get(g, {}).get(f"t{T0}_h900")
+            if not w or w.get("dH") is None or w.get("hold") is None:
+                continue
+            v0, v1 = vg_any(g, T0), vg_any(g, ENDPAR[T0])
+            if not v0 or not v1:
+                continue
+            total = -w["dH"]
+            spawn = math.log(v0) - math.log(v1)
+            hold = w["hold"]
+            rule = total - spawn - hold
+            rec = {"total": total, "spawn": spawn, "hold": hold, "rulebase": rule, "bias": w.get("bias"), "base": w.get("base")}
+            rowsd.append(rec)
+            names_.append(g)
+            P(f"{g}\t{T0}\t{f(total, sign=True)}\t{f(spawn, sign=True)}\t{f(hold, sign=True)}\t{f(rule, sign=True)}\t{f(rec['bias'], sign=True)}\t{f(rec['base'], sign=True)}")
+        if not rowsd:
+            continue
+        n = len(rowsd)
+        m = {k: sum(r[k] for r in rowsd) / n for k in ("total", "spawn", "hold", "rulebase")}
+        out = {"n": n, "mean": m, "games": dict(zip(names_, rowsd))}
+        if abs(m["total"]) > 0.2:
+            bs = boot_shares(rowsd, ("spawn", "hold", "rulebase"))
+            out["shares"] = bs
+        J["win3"][str(T0)] = out
+        P(f"平均（{n} 局）\t{T0}\t{f(m['total'], sign=True)}\t{f(m['spawn'], sign=True)}\t{f(m['hold'], sign=True)}\t{f(m['rulebase'], sign=True)}")
+        if "shares" in out:
+            P(f"占合计的比例\t{T0}\t100%\t" + "\t".join(f"{100 * out['shares'][k]['share']:.0f}%（{100 * out['shares'][k]['lo']:.0f}% ~ {100 * out['shares'][k]['hi']:.0f}%）" for k in ("spawn", "hold", "rulebase")))
+    P("")
+
     # ---------- 表 3：版本对照
     P("## 表 3：另一个历史版本（原文）在同一断面、同一通道下：ln ρ(Vb) − ln ρ(Va)")
     P("（A007 历史上用 Va，其余 10 局用 Vb；另一版本和本局版本用同样的种子比；C2 只用扰动种子，因为种子 0 的本局版本不走偏）")
@@ -542,6 +586,28 @@ def main():
                 if any(c != "-" for c in cells):
                     P(f"{g}\t{T0}\t{hh}\t" + "\t".join(cells) + f"\t{ns[0]}/{ns[1]}")
     J["verRows"] = [{"g": g, "T0": t, "h": h2, "ch": ch, "d": d} for ch in ("C1", "C2") for g, t, h2, d in verd[ch]]
+    # 表 3a：断面 0 换版本，直接比两次运行的每个记录拍（两版在 coreFrom=1500 拍以前走同一段逻辑，应当逐拍相同）
+    P("## 表 3a：断面 0、C1、种子 0：换成另一个版本后，0~1500 拍每个记录拍是否与本局版本相同")
+    P("局\t记录拍数\t不同的记录拍数\t发出 本局版本 / 另一版本\t落地 本局版本 / 另一版本")
+    same = []
+    for g in GAMES:
+        alt = "vb" if g == "A007" else "va"
+        ja, jb = runs.get((g, "C1-t0-s0")), runs.get((g, f"C1-t0-s0-{alt}"))
+        if not ja or not jb:
+            continue
+        sa = {x["t"]: x for x in ja["snaps"]}
+        sb = {x["t"]: x for x in jb["snaps"]}
+        ks = ("LS", "LO", "BS", "BO", "botL", "seat", "seatB", "aS", "aO")
+        common = sorted(set(sa) & set(sb))
+        nd = sum(1 for t in common if any(sa[t][k] != sb[t][k] for k in ks))
+        rec = {"g": g, "snaps": len(common), "diff": nd, "issuedA": ja["chanStat"]["issued"], "issuedB": jb["chanStat"]["issued"], "landedA": ja["chanStat"]["landed"], "landedB": jb["chanStat"]["landed"],
+               "landSame": ja.get("landSum") == jb.get("landSum")}
+        same.append(rec)
+        P(f"{g}\t{rec['snaps']}\t{nd}\t{rec['issuedA']} / {rec['issuedB']}\t{rec['landedA']} / {rec['landedB']}")
+    if same:
+        J["verSame"] = {"rows": same, "n": len(same), "identical": sum(1 for r in same if r["diff"] == 0), "snaps": min(r["snaps"] for r in same),
+                        "issuedDiff": sum(1 for r in same if r["issuedA"] != r["issuedB"]), "landSame": sum(1 for r in same if r["landSame"])}
+    P("")
     J["ver"] = {}
     for ch in ("C1", "C2"):
         for T0, hh in ((0, 630), (0, 1500), (630, 900), (1500, 900)):

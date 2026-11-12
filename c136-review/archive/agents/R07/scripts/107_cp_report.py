@@ -302,7 +302,7 @@ def main():
     for T0 in (630, 1500, 4284):
         for hh in (300, 600, 900):
             rows = []
-            hs, hd = [], []
+            hs, hd, gd = [], [], []
             for g in GAMES:
                 d = (J.get("win") or {}).get(g, {}).get(f"t{T0}_h{hh}")
                 if not d:
@@ -312,6 +312,7 @@ def main():
                 rows.append([g, r3(d["rho0"]), pc(hsh) if hh == 900 else "", dh, sg(d["d2p"]), sg(d["d1"]), sg(d["d0"]), sg(d["base"]), sg(d["hold"]), sg(d["bias"])])
                 hs.append(hsh)
                 hd.append(d["hold"])
+                gd.append((g, d["hold"], hsh, d["dH"], d["d1"]))
             ws = (J.get("winSum") or {}).get(f"t{T0}_h{hh}")
             if ws:
                 ks = ("dH", "d2p", "d1", "d0", "base", "hold", "bias")
@@ -320,8 +321,73 @@ def main():
                 if hh == 900:
                     rho, nn = spearman(hs, hd)
                     notes[f"窗口-{T0}-相关"] = f"断面 {T0} 往后 900 拍：按住与成批放行这一项 与 这一窗被按住的指令占比 的秩相关 {r3(rho, 2)}（{nn} 局）"
+                    hv = [(g_, h_, s_) for g_, h_, s_, _, _ in gd if h_ is not None]
+                    if hv:
+                        F0[f"wh{T0}n"] = str(len(hv))
+                        F0[f"wh{T0}mean"] = sg(ws["hold"]["mean"])
+                        F0[f"wh{T0}med"] = sg(ws["hold"]["median"])
+                        F0[f"wbias{T0}mean"] = sg(ws["bias"]["mean"])
+                        F0[f"wc1_{T0}mean"] = sg(ws["d1"]["mean"])
+                        F0[f"wc2_{T0}mean"] = sg(ws["d2p"]["mean"])
+                        F0[f"wh{T0}corr"] = r3(rho, 2) if rho is not None else "—"
+                        big = sorted([x for x in hv if x[1] >= 0.15], key=lambda x: -x[1])
+                        rest = [x for x in hv if x[1] < 0.15]
+                        F0[f"wh{T0}bigN"] = str(len(big))
+                        F0[f"wh{T0}big"] = "、".join(f"{g_}（{sg(h_)}）" for g_, h_, _ in big)
+                        tot = sum(x[1] for x in hv)
+                        if tot > 0:
+                            F0[f"wh{T0}bigShare"] = pc(sum(x[1] for x in big) / tot)
+                        if rest:
+                            F0[f"wh{T0}restN"] = str(len(rest))
+                            F0[f"wh{T0}restMin"], F0[f"wh{T0}restMax"] = sg(min(x[1] for x in rest)), sg(max(x[1] for x in rest))
+                        low = [x for x in hv if x[2] is not None and x[2] <= 0.15]
+                        if low:
+                            F0[f"wh{T0}lowN"] = str(len(low))
+                            F0[f"wh{T0}lowMin"], F0[f"wh{T0}lowMax"] = sg(min(x[1] for x in low)), sg(max(x[1] for x in low))
+                            F0[f"wh{T0}lowList"] = "、".join(f"{g_}（{sg(h_)}）" for g_, h_, _ in sorted(low, key=lambda x: -x[1]))
+                        dd = [(dH_, d1_) for _, _, _, dH_, d1_ in gd if dH_ is not None and d1_ is not None]
+                        F0[f"wH{T0}neg"] = str(sum(1 for a_, _ in dd if a_ < 0))
+                        F0[f"wc1_{T0}neg"] = str(sum(1 for _, b_ in dd if b_ < 0))
+                        F0[f"wc1_{T0}of"] = str(len(dd))
             head = ["局", "断面时的 ρ", "这 900 拍里历史上被按住的指令占比" if hh == 900 else "", "历史", "C2（同样走偏）", "C1", "C0", "基础延迟", "按住与成批放行", "走偏带来的虚高"]
             T[f"窗口-{T0}-{hh}"] = md(head, rows)
+    # A053：630~1200 拍被按住的指令里，晚到但落地的和没落地的各多少（正文用）
+    ex = [(E.get("A053", {}).get("win") or {}).get(w_) for w_ in ("630~900", "900~1200")]
+    if all(ex):
+        F0["a053n"] = str(sum(e_["n"] for e_ in ex))
+        F0["a053late"] = str(sum(e_["gt35"] for e_ in ex))
+        F0["a053drop"] = str(sum(e_["dropped"] for e_ in ex))
+    # ---- 各断面窗口的三层
+    W3 = J.get("win3") or {}
+    w3sum = []
+    for T0 in (630, 1500, 4284):
+        w3 = W3.get(str(T0))
+        if not w3:
+            continue
+        w3m, w3sh = w3["mean"], w3.get("shares")
+        w3row = [f"{T0} → {T0 + 900}", w3["n"], sg(w3m["total"])]
+        for k in ("spawn", "hold", "rulebase"):
+            w3row.append(f"{sg(w3m[k])}（{pc(w3sh[k]['share'])}）" if w3sh else sg(w3m[k]))
+            F0[f"w3_{T0}_{k}"] = sg(w3m[k])
+            if w3sh:
+                F0[f"w3s_{T0}_{k}"] = pc(w3sh[k]["share"])
+                F0[f"w3r_{T0}_{k}"] = f"{pc(w3sh[k]['lo'])} ~ {pc(w3sh[k]['hi'])}"
+        F0[f"w3_{T0}_total"] = sg(w3m["total"])
+        F0[f"w3_{T0}_n"] = str(w3["n"])
+        w3sum.append(w3row)
+        w3rows = []
+        for g in GAMES:
+            w3x = w3["games"].get(g)
+            if w3x:
+                w3rows.append([g, sg(w3x["total"]), sg(w3x["spawn"]), sg(w3x["hold"]), sg(w3x["rulebase"])])
+        w3rows.append([f"**平均**（{w3['n']} 局）"] + [f"**{sg(w3m[k])}**" for k in ("total", "spawn", "hold", "rulebase")])
+        if w3sh:
+            w3rows.append(["占合计的比例", "100%"] + [f"{pc(w3sh[k]['share'])}（{pc(w3sh[k]['lo'])} ~ {pc(w3sh[k]['hi'])}）" for k in ("spawn", "hold", "rulebase")])
+        T[f"三层-窗口-{T0}"] = md(["局", "合计（这一窗里多落后多少）", "出生站位", "按住与成批放行", "既有规则（基础延迟通道下）"], w3rows)
+    T["三层-窗口"] = md(["断面 → 观察拍", "局数", "合计（这一窗里我方多落后多少）", "出生站位", "按住与成批放行", "既有规则（基础延迟通道下）"], w3sum)
+    for T0 in (630, 1500, 4284):
+        T.setdefault(f"三层-窗口-{T0}", md(["局"], []))
+
     rows = []
     for T0 in (630, 1500, 4284):
         for hh in (300, 600, 900):
@@ -346,15 +412,31 @@ def main():
     T["敏感性-延迟"] = md(["通道取法", "发令到生效平均拍数", "到 630 拍：ln ρ − ln ρ(C0) 中位数", "最小 ~ 最大", "到 1500 拍：中位数", "最小 ~ 最大"], rows, align="llrrrr")
     rows = [[x["g"], x["T0"], x["h"], x["C1"], x["C2"]] for x in (J.get("leave") or [])]
     T["敏感性-离开"] = md(["局", "断面", "看多少拍", "C1：ln ρ(不离开) − ln ρ(照录像离开)", "C2"], rows)
+    # 断面 0 / 630 的版本对调没有信息（两版在 1500 拍以前逐拍相同，见「版本对调-断面0」），表里只列 1500 拍以后的
     rows = []
     for k, x in sorted((J.get("ver") or {}).items()):
         ch, t0, hh = k.split("_")
+        if int(t0[1:]) < 1500:
+            continue
         rows.append([ch, t0[1:], hh[1:], x["n"], sg(x["median"]), f"{sg(x['min'])} ~ {sg(x['max'])}", x["pos"]])
     T["版本对调"] = md(["通道", "断面", "看多少拍", "局数", "ln ρ(Vb) − ln ρ(Va) 中位数", "最小 ~ 最大", "Vb 更高的局数"], rows)
     rows = []
+    vr = {}
     for x in (J.get("verRows") or []):
-        rows.append([x["g"], x["ch"], x["T0"], x["h"], sg(x["d"])])
-    T["版本对调-逐局"] = md(["局", "通道", "断面", "看多少拍", "ln ρ(Vb) − ln ρ(Va)"], rows)
+        if x["T0"] >= 1500 and x["ch"] == "C1":
+            vr.setdefault(x["g"], {})[x["h"]] = x["d"]
+    for g in GAMES:
+        if g in vr:
+            rows.append([g, "Va" if g == "A007" else "Vb", sg(vr[g].get(300)), sg(vr[g].get(900))])
+    T["版本对调-逐局"] = md(["局", "历史上用的版本", "1500 → 1800 拍：ln ρ(Vb) − ln ρ(Va)", "1500 → 2400 拍：ln ρ(Vb) − ln ρ(Va)"], rows)
+    vs = J.get("verSame") or {}
+    rows = [[r["g"], r["snaps"], r["diff"], f"{r['issuedA']} / {r['issuedB']}", f"{r['landedA']} / {r['landedB']}"] for r in vs.get("rows", [])]
+    T["版本对调-断面0"] = md(["局", "记录拍数（每 30 拍一次）", "与本局版本不同的记录拍数", "发出的指令：本局版本 / 另一版本", "落地的指令：本局版本 / 另一版本"], rows)
+    if vs:
+        F0["verSameN"] = str(vs["n"])
+        F0["verSameIdentical"] = str(vs["identical"])
+        F0["verSnaps"] = str(vs["snaps"])
+        F0["verIssuedDiff"] = str(vs["issuedDiff"])
     nz = J.get("noise") or []
     rows = []
     for T0 in (0, 630, 1500, 4284):

@@ -415,15 +415,47 @@ def g04():
 
 # ---------------------------------------------------------------- G0-5
 def g05():
-    files = sorted(glob.glob(os.path.join(OUT, "council", "abl", "*.txt")))
-    w("[G0-5] 反向检验（g0ablate.mjs）：把重放 / 影子里的一条线上细节换回数据仓库模拟器的默认做法，核对指标掉多少（原文逐行）")
+    import re as _re
+    files = sorted(glob.glob(os.path.join(OUT, "council", "abl", "*-*.txt")))
+    w("[G0-5] 反向检验（g0ablate.mjs）：把重放 / 影子里的一条线上细节换回数据仓库模拟器的默认做法，其余不动，看核对指标掉多少")
     if not files:
         w("  （还没有输出）")
+        w()
+        return
+    PH = {"base": "不换（对照）", "colors": "组队局改用自由混战配色", "botteams": "强制内置 AI 入队", "nobotteams": "强制内置 AI 不入队", "cache32": "猎杀与终局提速用数据仓库模拟器的写法"}
+    SH = {"base": "不换（对照）", "multi": "一个决策拍允许多条", "strict-donate": "本地按额度拒捐", "offline": "g.online 设为假", "adapter-sim": "陆攻受理用数据仓库模拟器的判定", "isbot-sim": "内置 AI 的判别用数据仓库模拟器的"}
+    ORDER = {k: i for i, k in enumerate(list(SH)[1:], 10)}
+    ORDER.update({k: i for i, k in enumerate(PH)})
+    phys, shad = [], []
     for f in files:
         for line in open(f, encoding="utf8"):
-            line = line.strip()
-            if line and "|" in line:
-                w("  " + line.rsplit(" | ", 1)[0])
+            c = [x.strip() for x in line.strip().split(" | ")]
+            if len(c) < 5:
+                continue
+            last = lambda x: x.split()[-1]
+            no = lambda x: "无" if x == "-1" else x
+            if c[1].startswith("phys="):
+                k = c[1][5:]
+                un = last(c[2]).replace("until=", "")
+                phys.append((c[0], ORDER.get(k, 99), [c[0], PH.get(k, k), "整局" if un in ("end", "Infinity", "undefined") else un + " 拍", last(c[3]), last(c[4]), last(c[5]), last(c[6]), no(last(c[7])), last(c[8]), no(last(c[9])), no(last(c[10])), last(c[11]), f"{int(last(c[12])):,}"]))
+            elif c[1].startswith("shadow="):
+                k = c[1][7:]
+                un = last(c[2]).replace("until=", "")
+                d = _re.match(r"调度 日志 (\d+) 影子 (\d+) 相同 (\d+)", c[9])
+                o = _re.match(r"开局 日志 (\d+) 相同 (\d+)", c[10])
+                e = _re.match(r"成交 (\d+) 对上 (\d+)", c[11])
+                shad.append((c[0], ORDER.get(k, 99), [c[0], SH.get(k, k), "整局" if un in ("end", "Infinity", "undefined") else un + " 拍", last(c[4]), last(c[5]), last(c[6]), last(c[7]),
+                                                     f"{d.group(3)}/{d.group(1)}（影子 {d.group(2)} 条）", f"{o.group(2)}/{o.group(1)}", f"{e.group(2)}/{e.group(1)}", last(c[12]), last(c[13])]))
+    if phys:
+        w("[G0-5a] 物理层与建局层（重放对 traj.csv）")
+        w("局 | 换掉什么 | 跑到 | traj 行 | 地一致 | 兵一致 | 都一致 | 首个不一致拍 | 结束拍 | 胜队 | 终局提速拍 | 猎杀次数 | 末拍编队地")
+        for _m, _o, r in sorted(phys, key=lambda x: (x[0], x[2][2], x[1])):
+            w(" | ".join(r))
+    if shad:
+        w("[G0-5b] 决策层与适配层（影子对线上日志）")
+        w("局 | 换掉什么 | 跑到 | HL-TICK 行 | cmds 一致 | nb 一致 | neut 一致 | 调度日志 相同/日志 | 开局日志 相同/日志 | 录像成交 对上/成交 | 影子发令 | 报错的号")
+        for _m, _o, r in sorted(shad, key=lambda x: (x[0], x[2][2], x[1])):
+            w(" | ".join(r))
     w()
 
 
