@@ -91,8 +91,19 @@ const bucket = (f) => (f <= 0 ? -1 : f <= 0.1 ? 0 : f <= 0.3 ? 1 : f <= 0.6 ? 2 
 const D_EDGES = [2, 5, 10, 20, 40, 70, 100];
 const dBucket = (d) => { let b = 0; while (b < D_EDGES.length && d >= D_EDGES[b]) b++; return b; };
 const z8 = () => [0, 0, 0, 0, 0, 0, 0, 0];
+// 「身边的敌方真人占自己接壤的几成」五档：没有 / ≤10% / 10~30% / 30~60% / >60%（下标 0~4）
+const z5 = () => [0, 0, 0, 0, 0];
+const z45 = () => [z5(), z5(), z5(), z5()];
+const KH = ['neutral', 'ai', 'hum', 'boat'];
+// 身边接壤的内置 AI（含空壳）有几个：1 / 2 / 3~4 / 5~7 / ≥8（下标 0~4；没有 = -1）
+const naBucket = (n) => (n <= 0 ? -1 : n === 1 ? 0 : n === 2 ? 1 : n <= 4 ? 2 : n <= 7 ? 3 : 4);
+function countBots(w, p, H, adj) {
+  let n = 0;
+  for (const q2 of adj.keys()) if (q2 !== NEUTRAL && w.alive[q2] && w.isEnemy(p, q2) && (q2 >= H || w.state[q2] === 2)) n++;
+  return n;
+}
 
-const newAcc = () => PH.map(() => ({ cmds: 0, okCmds: 0, sent: 0, balTicks: 0, terrTicks: 0, aliveTicks: 0, expo: { neutral: 0, ai: 0, hum: 0, all: 0, aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, ok2: { aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, expoB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, okB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, empty: { neutral: 0, ai: 0, hum: 0, boat: 0, don: 0 }, expoD: z8(), balD: z8(), okD: z8(), sentD: z8(), okDby: { neutral: z8(), ai: z8(), hum: z8(), boat: z8() }, seats: [], neutral: [], ai: [], hum: [], boats: [], dons: [], gaps: [], perHuman: [] }));
+const newAcc = () => PH.map(() => ({ cmds: 0, okCmds: 0, sent: 0, balTicks: 0, terrTicks: 0, aliveTicks: 0, expo: { neutral: 0, ai: 0, hum: 0, all: 0, aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, ok2: { aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, expoB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, okB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, empty: { neutral: 0, ai: 0, hum: 0, boat: 0, don: 0 }, expoD: z8(), balD: z8(), okD: z8(), sentD: z8(), okDby: { neutral: z8(), ai: z8(), hum: z8(), boat: z8() }, expoH: z5(), balH: z5(), okH: { neutral: z5(), ai: z5(), hum: z5(), boat: z5() }, sentH: { neutral: z5(), ai: z5(), hum: z5(), boat: z5() }, expoBH: { neutral: z45(), ai: z45() }, okBH: { neutral: z45(), ai: z45() }, expoNA: z45(), okNA: z45(), sentNA: z45(), balNA: z45(), seats: [], neutral: [], ai: [], hum: [], boats: [], dons: [], gaps: [], perHuman: [] }));
 const SNAP_T = [357, 630, 1071, 1530, 2142, 3210, 4284, 6000];
 
 // 一局的明细（按局缓存到 sim-v2/_cache/hp/：机器忙的时候 20 局一次跑不完，再跑一次同样的命令接着算，已算过的局直接读缓存）
@@ -112,7 +123,7 @@ function collect(mid) {
   const atkOn = (a, b) => w.alive[a] && w.hasAttack(a, b);
   st.exec = (c) => {
     const p = c.player;
-    let tally = null, cls = null, cls2 = null, clsB = -1, emptyA = null, emptyK = null;
+    let tally = null, cls = null, cls2 = null, clsB = -1, emptyA = null, emptyK = null, hI = 0, naI = -1;
     const dB = c.player < H && w.terr[c.player] > 0 ? dBucket(w.bal[c.player] / w.terr[c.player]) : 0;
     const mine = p < H && !squad.has(p) && w.alive[p] && w.state[p] !== 2 && (c.id === 1 || c.id === 2 || c.id === 3);
     if (mine && w.bal[p] < 2) {
@@ -138,8 +149,12 @@ function collect(mid) {
         if (tg < NEUTRAL && !w.alive[tg]) tg = NEUTRAL;
         const row = { pct: c.dX, B, T, D: T > 0 ? B / T : 0, seat: p, t };
         cls = 'neutral';
-        const fr = fracs(w, p, H, contacts(w, p));
+        const adj0 = contacts(w, p);
+        const fr = fracs(w, p, H, adj0);
         clsB = tg === NEUTRAL ? bucket(fr.fN) : (tg >= H || w.state[tg] === 2) ? bucket(fr.fB) : bucket(fr.fH);
+        hI = bucket(fr.fH) + 1;
+        row.hI = hI;
+        naI = naBucket(countBots(w, p, H, adj0));
         if (tg === NEUTRAL) A.neutral.push(row);
         else {
           row.tB = w.bal[tg]; row.tT = w.terr[tg]; row.tD = w.terr[tg] > 0 ? w.bal[tg] / w.terr[tg] : 0;
@@ -175,7 +190,7 @@ function collect(mid) {
           cls2 = isAi ? (row.hasNeutral ? 'aiN' : 'aiNoN') : (row.hasNeutral || anyBot ? 'humFarm' : 'humNoFarm');
           if (isAi) A.ai.push(row); else A.hum.push(row);
         }
-      } else if (c.id === 3) { cls = 'boat'; A.boats.push({ pct: c.dX, B, T }); }
+      } else if (c.id === 3) { cls = 'boat'; hI = bucket(fracs(w, p, H, contacts(w, p)).fH) + 1; A.boats.push({ pct: c.dX, B, T, hI }); }
       else if (c.id === 2) A.dons.push({ pct: c.dX, B, T, toSq: squad.has(c.dZ) ? 1 : 0 });
     }
     if (p < H && !squad.has(p) && (c.id === 8 || c.id === 9) && w.alive[p] && w.state[p] !== 2 && !w.spawnPhase) leaves.push(w.t);
@@ -188,6 +203,10 @@ function collect(mid) {
       if (cls2) tally.ok2[cls2]++;
       if (c.id === 1 && clsB >= 0) tally.okB[cls][clsB]++;
       tally.okD[dB]++; tally.sentD[dB] += w.attackTroopsTmp; tally.okDby[cls][dB]++;
+      tally.okH[cls][hI]++; tally.sentH[cls][hI] += w.attackTroopsTmp;
+      if (c.id === 1 && clsB >= 0 && cls !== 'hum') tally.okBH[cls][clsB][hI]++;
+      // 打 AI：按（AI 占接壤的四档 × 身边 AI 个数五档）记条数和出兵
+      if (c.id === 1 && cls === 'ai' && clsB >= 0 && naI >= 0) { tally.okNA[clsB][naI]++; tally.sentNA[clsB][naI] += w.attackTroopsTmp; }
       const sa = seatAcc[phOf(w.t)];
       sa.sent[p] += w.attackTroopsTmp; sa.ok[p]++;
     }
@@ -223,6 +242,11 @@ function collect(mid) {
           if (bn >= 0) A.expoB.neutral[bn] += 70;
           if (bb >= 0) A.expoB.ai[bb] += 70;
           if (bh >= 0) A.expoB.hum[bh] += 70;
+          // 再按「身边的敌方真人占接壤几成」分五档：人·拍、余额·拍，以及无主地 / AI 各接壤档里的人·拍
+          A.expoH[bh + 1] += 70; A.balH[bh + 1] += 70 * w.bal[p];
+          if (bn >= 0) A.expoBH.neutral[bn][bh + 1] += 70;
+          if (bb >= 0) A.expoBH.ai[bb][bh + 1] += 70;
+          if (bb >= 0) { const na = naBucket(countBots(w, p, H, adj)); if (na >= 0) { A.expoNA[bb][na] += 70; A.balNA[bb][na] += 70 * w.bal[p]; } }
           A.expo.neutral += 70 * hasN; A.expo.ai += 70 * hasB; A.expo.hum += 70 * hasH; A.expo.all += 70;
           if (hasB) A.expo[hasN ? 'aiN' : 'aiNoN'] += 70;
           if (hasH) A.expo[hasN || hasB ? 'humFarm' : 'humNoFarm'] += 70;
@@ -260,7 +284,7 @@ let humansTotal = 0;
 const snapsAll = {};   // t → [{ mid, humTerr:[], humBal:[], sqTerr:[], sqBal:[], humAlive, humN, sqAlive, sqN }]
 const doneMatches = [];
 const cacheDir = path.join(SIMV2, '_cache', 'hp');
-const CACHE_V = 10;
+const CACHE_V = 12;
 const cacheKey = `v${CACHE_V}-${o.phases === 'coarse' ? 'c' : 'f'}${TO}`;
 let pending = 0;
 for (const mid of mids) {
@@ -280,6 +304,12 @@ for (const mid of mids) {
     for (const k of ['neutral', 'ai', 'hum', 'boat']) { A.sentBy[k] += B.sentBy[k]; A.okBy[k] += B.okBy[k]; }
     for (const k of Object.keys(A.empty)) A.empty[k] += B.empty[k];
     for (let b = 0; b < 8; b++) { A.expoD[b] += B.expoD[b]; A.balD[b] += B.balD[b]; A.okD[b] += B.okD[b]; A.sentD[b] += B.sentD[b]; for (const k of ['neutral', 'ai', 'hum', 'boat']) A.okDby[k][b] += B.okDby[k][b]; }
+    for (let h = 0; h < 5; h++) {
+      A.expoH[h] += B.expoH[h]; A.balH[h] += B.balH[h];
+      for (const k of KH) { A.okH[k][h] += B.okH[k][h]; A.sentH[k][h] += B.sentH[k][h]; }
+      for (const k of ['neutral', 'ai']) for (let b = 0; b < 4; b++) { A.expoBH[k][b][h] += B.expoBH[k][b][h]; A.okBH[k][b][h] += B.okBH[k][b][h]; }
+      for (let b = 0; b < 4; b++) { A.expoNA[b][h] += B.expoNA[b][h]; A.okNA[b][h] += B.okNA[b][h]; A.sentNA[b][h] += B.sentNA[b][h]; A.balNA[b][h] += B.balNA[b][h]; }
+    }
     for (const k of Object.keys(A.expo)) A.expo[k] += B.expo[k];
     for (const k of Object.keys(A.ok2)) A.ok2[k] += B.ok2[k];
     for (const k of ['neutral', 'ai', 'hum']) for (let b = 0; b < 4; b++) { A.expoB[k][b] += B.expoB[k][b]; A.okB[k][b] += B.okB[k][b]; }
@@ -324,7 +354,44 @@ for (let i = 0; i < PH.length; i++) {
       cmds: A.okD, byClass: A.okDby,
       // 各档里指令的千分比（P25 / 中位 / P75；陆攻三类合并）
       pct: [0, 1, 2, 3, 4, 5, 6, 7].map((b) => { const a = A.neutral.concat(A.ai, A.hum).filter((r) => dBucket(r.D) === b).map((r) => r.pct); return a.length >= 8 ? [q(a, 0.25), q(a, 0.5), q(a, 0.75)] : null; }),
+      // 各档里指令的滑块分位表（21 点；陆攻三类 + 发船合并 —— 游戏里是同一个滑块）和样本数：对手模型在中后期按「自己此刻的兵密度」取千分比
+      ...(() => {
+        const all = A.neutral.concat(A.ai, A.hum).map((r) => [dBucket(r.D), r.pct]).concat(A.boats.map((r) => [r.T > 0 ? dBucket(r.B / r.T) : 0, r.pct]));
+        const by = [0, 1, 2, 3, 4, 5, 6, 7].map((b) => all.filter((r) => r[0] === b).map((r) => r[1]));
+        return { pctN: by.map((a) => a.length), pctQ: by.map((a) => (a.length >= 30 ? Q21(a) : null)) };
+      })(),
     },
+    // 按「身边的敌方真人占自己接壤的几成」分五档（没有 / ≤10% / 10~30% / 30~60% / >60%）：人·拍占比、各类对象每 100 拍的生效指令数、
+    // 每 100 拍花掉余额的几成、打无主地 / 打 AI 的千分比（P25 / 中位 / P75）；condBH = 无主地 / AI 各接壤档 × 这五档 的条件密度。
+    // 身边没有真人的时候（小房间里一直如此），人放心把兵花在 AI 身上；被真人围着就收着打。
+    byHum: (() => {
+      const all = Math.max(1, A.expo.all), perTick = A.aliveTicks / all;
+      const balAll = A.balH.reduce((s, x) => s + x, 0);
+      const pq = (rows) => [0, 1, 2, 3, 4].map((h) => { const a = rows.filter((r) => r.hI === h).map((r) => r.pct); return a.length >= 8 ? [q(a, 0.25), q(a, 0.5), q(a, 0.75)] : null; });
+      const pn = (rows) => [0, 1, 2, 3, 4].map((h) => rows.filter((r) => r.hI === h).length);
+      return {
+        expo: A.expoH.map((x) => +(x / all).toFixed(4)),
+        rate: Object.fromEntries(KH.map((k) => [k, A.expoH.map((x, h) => (x > 0 ? +(100 * A.okH[k][h] / (x * perTick)).toFixed(3) : 0))])),
+        spend: Object.fromEntries(KH.map((k) => [k, A.balH.map((x, h) => (x > 0 && balAll > 0 ? +(100 * A.sentH[k][h] / (x * A.balTicks / balAll)).toFixed(4) : 0))])),
+        cmds: A.okH,
+        pctNeutral: pq(A.neutral), pctAi: pq(A.ai), pctHum: pq(A.hum), pctBoat: pq(A.boats),
+        pctN: { neutral: pn(A.neutral), ai: pn(A.ai), hum: pn(A.hum), boat: pn(A.boats) },
+        pctQ: Object.fromEntries([['neutral', A.neutral], ['ai', A.ai]].map(([k, rows]) => [k, [0, 1, 2, 3, 4].map((h) => { const a = rows.filter((r) => r.hI === h).map((r) => r.pct); return a.length >= 30 ? Q21(a) : null; })])),
+        condBH: Object.fromEntries(['neutral', 'ai'].map((k) => [k, [0, 1, 2, 3].map((b) => [0, 1, 2, 3, 4].map((h) => ({ expo: +(A.expoBH[k][b][h] / all).toFixed(4), cmds: A.okBH[k][b][h], rate: A.expoBH[k][b][h] > 0 ? +(100 * A.okBH[k][b][h] / (A.expoBH[k][b][h] * perTick)).toFixed(3) : 0 })))])),
+        // 对手模型用的三档合并（身边没有敌方真人 / 真人占接壤 ≤30% / >30%）：AI 各接壤档的条件密度、打 AI 和打无主地的滑块分位表
+        cond3: Object.fromEntries(['neutral', 'ai'].map((k) => [k, [0, 1, 2, 3].map((b) => [[0], [1, 2], [3, 4]].map((hs) => {
+          const e = hs.reduce((s, h) => s + A.expoBH[k][b][h], 0), c = hs.reduce((s, h) => s + A.okBH[k][b][h], 0);
+          return { expo: +(e / all).toFixed(4), cmds: c, rate: e > 0 ? +(100 * c / (e * perTick)).toFixed(3) : 0 };
+        }))])),
+        pctQ3: Object.fromEntries([['neutral', A.neutral], ['ai', A.ai]].map(([k, rows]) => [k, [[0], [1, 2], [3, 4]].map((hs) => { const a = rows.filter((r) => hs.includes(r.hI)).map((r) => r.pct); return a.length >= 40 ? Q21(a) : null; })])),
+        // 打 AI 的条件密度按（AI 占接壤的四档 × 身边接壤的 AI 个数：1 / 2 / 3~4 / 5~7 / ≥8）；spend = 每 100 拍花在 AI 上的余额比例
+        aiByCount: [0, 1, 2, 3].map((b) => [0, 1, 2, 3, 4].map((n) => ({
+          expo: +(A.expoNA[b][n] / all).toFixed(4), cmds: A.okNA[b][n],
+          rate: A.expoNA[b][n] > 0 ? +(100 * A.okNA[b][n] / (A.expoNA[b][n] * perTick)).toFixed(3) : 0,
+          spend: A.balNA[b][n] > 0 && balAll > 0 ? +(100 * A.sentNA[b][n] / (A.balNA[b][n] * A.balTicks / balAll)).toFixed(4) : 0,
+        }))),
+      };
+    })(),
     // 空单（余额 < 2 时点的、引擎照收的指令）：条数，以及占「空单 + 有兵的生效指令」的几成。本文件其余各项都不含空单。
     empty: A.empty,
     emptyShare: Object.fromEntries(['neutral', 'ai', 'hum', 'boat'].map((k) => [k, A.empty[k] + A.okBy[k] ? +(A.empty[k] / (A.empty[k] + A.okBy[k])).toFixed(3) : 0])),

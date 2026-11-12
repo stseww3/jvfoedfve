@@ -10,7 +10,7 @@
 // 两条臂用同一个种子：对手的「运气」按 (种子, 席位, 拍号) 散列，两臂相同。真局房间另把录像原样放一遍，作参照（当年真实的走势）。
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadMatch, buildWorld, ReplayStepper, execRecorded, loadMapAny, SIMV2, NEUTRAL } from './match.mjs';
+import { loadMatch, buildWorld, ReplayStepper, execRecorded, loadMapAny, SIMV2, NEUTRAL, P_INNER, T_LAND } from './match.mjs';
 import { TGame, assignTeams, teamOpts, clanOf, MAX_PLAYERS } from './tgame.mjs';
 import { compileStrategy, strategyPath } from './sandbox.mjs';
 import { makeProfile, loadTrace } from './channel.mjs';
@@ -145,6 +145,35 @@ function snapOf(w, squad, squadSet, mainTeam) {
   };
 }
 
+// ---- 地的流向 -----------------------------------------------------------------------------------
+// 每个陆地格在断面拍的归属：0 无主地 / 1 内置 AI / 2 其余真人（含他们变成的空壳）/ 3 我方席位；255 = 不是陆地。
+// 相邻两个断面的归属两两配对，得到 4×4 的流向表 flow[从][到]（格数）：其余真人这一段从无主地、AI、我方手里各净拿了多少，
+// 又被 AI、我方拿走多少。对手模型和录像的人均地差在哪一条流向上，一眼能看出来。
+const FLOW_T = [357, 630, 1071, 1530, 2142, 3210];
+function classMap(w, squadSet) {
+  const n = w.px.length, out = new Uint8Array(n), px = w.px, own = w.own, H = w.humans;
+  for (let c = 0; c < n; c++) {
+    const v = px[c];
+    if (v >= P_INNER) { const o = own[c]; out[c] = o >= H ? 1 : squadSet.has(o) ? 3 : 2; }
+    else out[c] = v === T_LAND ? 0 : 255;
+  }
+  return out;
+}
+function flowOf(a, b) {
+  const f = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+  for (let c = 0; c < a.length; c++) { const x = a[c], y = b[c]; if (x !== 255 && y !== 255) f[x][y]++; }
+  return f;
+}
+class FlowLog {
+  constructor(squadSet) { this.squadSet = squadSet; this.prev = null; this.prevT = 0; this.out = {}; }
+  at(w, t) {
+    if (!FLOW_T.includes(t)) return;
+    const cur = classMap(w, this.squadSet);
+    if (this.prev) this.out[`${this.prevT}~${t}`] = flowOf(this.prev, cur);
+    this.prev = cur; this.prevT = t;
+  }
+}
+
 function cpuMs(c0) { const c = process.cpuUsage(c0); return Math.round((c.user + c.system) / 1000); }
 
 export async function runArena(o) {
@@ -224,6 +253,8 @@ export async function runArena(o) {
       const end = Math.min(len, M.replayTicks - 1);
       reality.cps[0] = snapOf(w, squad, squadSet, mainTeam);
       reality.intensityRaw = RI;
+      const fl = new FlowLog(squadSet);
+      reality.flows = fl.out;
       while (w.t < end) {
         if (!st.step()) break;
         if (w.t % 7 === 0) {
@@ -231,6 +262,7 @@ export async function runArena(o) {
           for (const p of others) if (w.alive[p] && w.state[p] !== 2) { I.aliveTicks += 7; I.balTicks += 7 * w.bal[p]; }
         }
         w.tick();
+        fl.at(w, w.t);
         if (CHECKPOINTS.includes(w.t)) reality.cps[w.t] = snapOf(w, squad, squadSet, mainTeam);
         if (w.over) break;
       }
@@ -271,15 +303,20 @@ export async function runArena(o) {
       }
     }
   } else if (husks !== 'off') throw new Error('--husks 只能是 real / model / off');
-  // 我方空壳：--squad-husks 2@1500 = 两个席位的页面在 1500 拍停摆，300 拍后被引擎登记离场
+  // 我方空壳（席位 → [页面停摆拍, 被引擎登记离场的拍；-1 = 不登记]）：
+  //   --squad-husks 2@1500   两个席位的页面在 1500 拍停摆，300 拍后登记离场；
+  //   --squad-fate real      （真局房间）照当年：页面在席位还活着时就停摆的那些席位，到同一拍停摆、到同一拍登记离场。
+  //                          对着同一局录像验收对手模型时要开 —— 20 局里有 5 局各有 3~13 个我方席位在 1530 拍前停摆，
+  //                          不开的话模型里我方平白多出这些席位的战力（1530 拍时我方人均地是录像的 1.3~4.4 倍）。
   const squadHusk = new Map();
   if (o['squad-husks']) {
     const [n, at] = String(o['squad-husks']).split('@').map(Number);
     const order = squad.slice().sort((a, b) => hashU(seed, a, 741) - hashU(seed, b, 741));
-    for (const p of order.slice(0, Math.max(0, n | 0))) squadHusk.set(p, at || 1500);
-  } else if (o['squad-husks-real'] && reality) {
-    for (const [p, t] of reality.leaveAlive) if (squadSet.has(p)) squadHusk.set(p, Math.max(0, t - 300));
-  }
+    for (const p of order.slice(0, Math.max(0, n | 0))) squadHusk.set(p, [at || 1500, (at || 1500) + 300]);
+  } else if (o['squad-fate'] === 'real') {
+    if (room.kind !== 'real') throw new Error('--squad-fate real 只对真局房间有意义');
+    for (const p of squad) if (room.M.doomed.has(p)) squadHusk.set(p, [room.M.pageEnd.get(p) ?? -1, room.M.leaveT.get(p) ?? -1]);
+  } else if (o['squad-fate'] !== undefined && o['squad-fate'] !== 'off') throw new Error('--squad-fate 只能是 real / off');
 
   // ---- 对手原型
   const mix = parseMix(o.opp);
@@ -309,8 +346,8 @@ export async function runArena(o) {
   const arms = specs.map((s) => {
     const w = room.make();
     const profile = makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: len + 2000, pageEnd: null, doomed: null, ownTrace: false });
-    if (squadHusk.size) { profile.pageEnd = new Map(squadHusk); profile.doomed = new Set(squadHusk.keys()); }
-    const crowd = new Crowd(null, { seed, members, startT: replayUntil, squad, rateScale: num(o['opp-rate'], 1), leaveAt, rhythm: o['opp-rhythm'] ? list(o['opp-rhythm']).map(Number) : null, sigma: o['opp-sigma'] !== undefined ? num(o['opp-sigma'], 0.35) : undefined });
+    if (squadHusk.size) { profile.pageEnd = new Map([...squadHusk].map(([p, v]) => [p, v[0]])); profile.doomed = new Set(squadHusk.keys()); }
+    const crowd = new Crowd(null, { seed, members, startT: replayUntil, squad, rateScale: num(o['opp-rate'], 1), leaveAt, rhythm: o['opp-rhythm'] ? list(o['opp-rhythm']).map(Number) : null, sigma: o['opp-sigma'] !== undefined ? num(o['opp-sigma'], 0.35) : undefined, densFrom: o['opp-dens-from'] !== undefined ? num(o['opp-dens-from'], 1530) : undefined, densRate: !!o['opp-dens-rate'], aiBy: o['opp-ai-by'] });
     const arm = new Arm({
       name: s.name, world: w, strat: s.strat, params: s.params, seats: seatDefs, profile, chanOpts: chanOptsOf(o),
       opts: { ...armOptsOf(o), ourLeaves: 'ignore' }, history: null, takeoverT: null, actors: [crowd],
@@ -346,6 +383,7 @@ export async function runArena(o) {
     arm.spawnLog = spawnLog;
     arm.natural = naturalShares(w);
     arm.cps = { 0: snapOf(w, squad, squadSet, mainTeam) };
+    arm.flowLog = new FlowLog(squadSet);
     arm.deadAt = new Map();
     if (replayUntil > 0 && stepper) arm.attachReplay(stepper);
     arm.takeover();
@@ -361,11 +399,12 @@ export async function runArena(o) {
       const w = a.world;
       if (w.over) continue;
       if (a.stepper && t >= replayUntil) a.stepper = null;
-      for (const [p, at] of squadHusk) if (t === at + 300 && w.alive[p] && w.state[p] !== 2) { w.leave(p); a.quit.add(p); const s = a.seats.get(p); if (s) s.left = true; }
+      for (const [p, v] of squadHusk) if (t === v[1] && w.alive[p] && w.state[p] !== 2) { w.leave(p); a.quit.add(p); const s = a.seats.get(p); if (s) s.left = true; }
       a.tickOnce();
       if ((t & 15) === 0) for (const p of squad) if (!w.alive[p] && !a.deadAt.has(p)) a.deadAt.set(p, w.t);
     }
     t++;
+    if (FLOW_T.includes(t)) for (const a of arms) if (a.world.t === t) a.flowLog.at(a.world, t);
     if (CHECKPOINTS.includes(t)) for (const a of arms) if (!a.world.over || a.world.t === t) a.cps[t] = snapOf(a.world, squad, squadSet, mainTeam);
     if (arms.every((a) => a.world.over)) { ended = '分出胜负'; break; }
     if ((t & 7) === 0 && Date.now() - wall0 > budgetMs) { truncated = true; break; }
@@ -386,7 +425,7 @@ export async function runArena(o) {
     arms: {},
   };
   if (reality) {
-    res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size, squadAtkSeg: reality.squadAtkSeg || null };
+    res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size, squadAtkSeg: reality.squadAtkSeg || null, flows: reality.flows || null };
     if (reality.intensityRaw) {
       res.reality.intensity = reality.intensityRaw.map((I) => ({
         t0: I.t0, cmds: I.cmds, sent: I.sent, ratePerAlive100: I.aliveTicks ? +(100 * I.cmds / I.aliveTicks).toFixed(3) : null, spendPer100: I.balTicks ? +(100 * I.sent / I.balTicks).toFixed(4) : null, sentPerCmd: I.cmds ? Math.round(I.sent / I.cmds) : null,
@@ -403,6 +442,7 @@ export async function runArena(o) {
     a.cps.end = end;
     const m = a.finish(a.natural, { file: a.strat.file });
     m.cps = a.cps;
+    m.flows = a.flowLog.out;
     m.spawn = a.spawnLog;
     m.mainTeamShare1 = end.mainTeamShare;
     m.mainTeamLead = end.leadTeam === mainTeam ? 1 : 0;
