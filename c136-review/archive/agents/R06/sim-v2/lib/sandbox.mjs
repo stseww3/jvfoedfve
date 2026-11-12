@@ -262,6 +262,20 @@ export class Seat {
     }
   }
 
+  // 出生阶段：让策略选一次落点。返回 {x, y} 或 null（策略没有 chooseSpawn、或这次没给出落点）
+  chooseSpawn(clockMs, final) {
+    CUR.win = this.win; CUR.clock = clockMs;
+    this.clock = clockMs;
+    if (typeof this.pol.chooseSpawn !== 'function') return null;
+    try {
+      const r = this.pol.chooseSpawn(this.view, final);
+      return r && Number.isFinite(r.x) && Number.isFinite(r.y) ? { x: r.x | 0, y: r.y | 0 } : null;
+    } catch (err) {
+      if (!this.errors++) this.firstError = `spawn ${err && err.stack ? err.stack.split('\n').slice(0, 3).join(' | ') : err}`;
+      return null;
+    }
+  }
+
   retarget(world) { Object.setPrototypeOf(this.view, world); }
 }
 
