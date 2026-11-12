@@ -131,6 +131,7 @@ export class Seat {
       __tsbSquadSlot: slot,
       __quitPlayers: host.quit,
       __hlLog: (line) => seat.onLog(line),
+      __c136Now: () => seat.clock,   // v28 的 vNow() 优先读它；与 performance.now() 的替身同值
       dictionary: { game: '__v2game', sbLeave: 'leave', gameState: 'state' },
       __v2game: { state: 1, leave: () => seat.submit({ k: 'leave' }) },
     };

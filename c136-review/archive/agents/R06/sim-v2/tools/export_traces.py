@@ -5,7 +5,8 @@
                        out/<局>/sim_state.json（eng_replay.cjs：真引擎重放里我方席位实际执行的指令）
 用 scripts/latency.py 的 align()（影子下令 ↔ 录像执行：同席位、同种类、同目标、比例相同或相近、执行拍 ≥ 下令拍）配对。
 写（入库）：sim-v2/traces/<局>.json
-    seats[席位] = [[下令拍 τ, 执行拍 E], …]   只收配上的；teamgate-v2 的 C2 档据此还原每个席位的 S(τ) = max(τ, E − 14)
+    seats[席位] = [[下令拍 τ, 执行拍 E, 种类(0 陆攻 / 1 发船 / 2 捐款), 影子下令时的目标(发船 = -1), 是否生效, 录像里记的目标(陆攻；512 = 落地时目标已出局)], …]
+                  只收配上的；teamgate-v2 的 C2 档据此还原每个席位的 S(τ) = max(τ, E − 14)，checkpoint 模式据此算真局的重复单占比
     lastLog[席位] = 这个席位日志最后一条快照的拍 + 89（之后页面没再算过）
 
 用法：python3 export_traces.py [局号…]（缺省：有 probe.json 的全部局）
@@ -38,12 +39,14 @@ def main():
         for r in rows:
             if r['tau'] is None:
                 continue
-            seats.setdefault(str(r['me']), []).append([int(r['tau']), int(r['t'])])
+            kind = {'atk': 0, 'boat': 1, 'don': 2}[r['k']]
+            raw = int(r.get('raw', r.get('to', -1))) if kind == 0 else -1
+            seats.setdefault(str(r['me']), []).append([int(r['tau']), int(r['t']), kind, int(r['sTo']) if kind != 1 else -1, 1 if r['ok'] else 0, raw])
             n += 1
         for v in seats.values():
             v.sort()
         last_log = {str(me): (b.traj[-1]['t'] + 89 if b.traj else -1) for me, b in X.M.bots.items()}
-        d = [e - t for v in seats.values() for t, e in v]
+        d = [r[1] - r[0] for v in seats.values() for r in v]
         d.sort()
         out = dict(matchId=mid, strategy=X.probe.get('strategy'), rows=n, unmatched=sum(1 for r in rows if r['tau'] is None), lost=len(lost), last=X.last, seats=seats, lastLog=last_log)
         json.dump(out, open(os.path.join(SIMV2, 'traces', mid + '.json'), 'w'), separators=(',', ':'))

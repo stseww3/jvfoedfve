@@ -41,13 +41,26 @@ export function runVerify(o) {
   const cloneLen = num(o['clone-len'], 300);
   const tIdx = new Map();
   if (truth) truth.ticks.forEach((t, i) => tIdx.set(t, i));
+  // 日志快照（[HL-TICK] t= terr= bal=，策略在本机第 t 拍看到的自己）↔ 重放到第 t 拍的同一席位：没有真引擎指纹的局靠它核对
+  const snapAt = new Map();
+  for (const s of M.log.snaps) {
+    const p = M.log.seatOf.get(s.label);
+    if (p === undefined) continue;
+    let a = snapAt.get(s.t);
+    if (!a) snapAt.set(s.t, (a = []));
+    a.push({ p, terr: s.terr, bal: s.bal });
+  }
+  let snapN = 0, snapOk = 0, snapFirstBad = -1;
   let lastOk = -1, firstBad = -1, nCmp = 0;
   const vals = new Array(2 * H);
   const t0 = Date.now();
   const cpu0 = process.cpuUsage();
   let cloneRes = null;
   let tickMs = 0;
+  const budget = num(o['budget-ms'], 95000);
+  let truncated = false;
   while (!g.over && g.t < to) {
+    if ((g.t & 63) === 0 && Date.now() - t0 > budget) { truncated = true; break; }
     const i = tIdx.get(g.t);
     if (i !== undefined && firstBad < 0) {
       for (let p = 0; p < H; p++) {
@@ -57,6 +70,14 @@ export function runVerify(o) {
       }
       nCmp++;
       if (fnvU32(vals) === truth.hash[i]) lastOk = g.t; else firstBad = g.t;
+    }
+    const sn = snapAt.get(g.t);
+    if (sn) {
+      for (const s of sn) {
+        snapN++;
+        if (g.alive[s.p] && g.terr[s.p] === s.terr && g.bal[s.p] === s.bal) snapOk++;
+        else if (snapFirstBad < 0) snapFirstBad = g.t;
+      }
     }
     if (g.t === cloneAt && !cloneRes) {
       const c0 = Date.now();
@@ -102,8 +123,15 @@ export function runVerify(o) {
   if (M.ta) console.log(`  分队：${M.ta.nTeams} 队，内置 AI ${M.ta.botsTeamed ? '分队' : '不分队'}` + (tv ? `；与真引擎重放的队号 ${tv.same}/${tv.of} 相同，队数 ${tv.nTeamsOk ? '相同' : '不同'}，AI 分队 ${tv.botTeamsOk ? '相同' : '不同'}` : ''));
   console.log(`  我方席位 ${M.squad.length} 个（所在队 ${res.squadTeams.join('/')}）` + (res.squadLogVsPack ? `；日志 [HL-GAME-INIT] 认出 ${res.squadLogVsPack.log} 个，名单独有 ${JSON.stringify(res.squadLogVsPack.onlyPack)}，日志独有 ${JSON.stringify(res.squadLogVsPack.onlyLog)}` : ''));
   if (truth) console.log(`  与真引擎重放核对（全体真人的 领土、兵力，每 30 拍）：${nCmp} 个采样拍，一致到 t=${lastOk}` + (firstBad >= 0 ? `，第一处不同 t=${firstBad}` : '，没有不同'));
-  else console.log('  没有这局的真引擎指纹（sim-v2/truth/），只跑了重放');
+  else console.log('  没有这局的真引擎指纹（sim-v2/truth/）');
+  res.logSnaps = { n: snapN, ok: snapOk, firstBadT: snapFirstBad };
+  console.log(`  与策略日志快照核对（[HL-TICK] 的 领土、兵力，我方席位每 90 拍）：${snapOk}/${snapN} 相同` + (snapFirstBad >= 0 ? `，第一处不同 t=${snapFirstBad}` : ''));
   if (cloneRes) console.log(`  clone 自检 @t=${cloneRes.at}：保留 TGame 原型 ${cloneRes.proto ? '是' : '否'}；两份副本各走 ${cloneRes.len} 拍逐拍指纹相同 ${cloneRes.twinSame}/${cloneRes.len}；原局面走到同一拍与副本 ${cloneRes.origSame ? '相同' : '不同'}；clone 一次 ${cloneRes.cloneMs} ms`);
-  console.log(`  船落在水 / 边界 / 山格 ${g.oddLandings} 次（${g.oddLandingTroops} 兵）；走到 t=${g.t}${g.over ? '（分出胜负）' : ''}；墙钟 ${tickMs} ms、CPU ${cpuMs} ms（每 1000 拍 CPU ${res.cpuMsPer1000} ms）；堆 ${res.heapMB} MB`);
+  res.truncated = truncated;
+  console.log(`  船落在水 / 边界 / 山格 ${g.oddLandings} 次（${g.oddLandingTroops} 兵）；走到 t=${g.t}${g.over ? '（分出胜负）' : ''}${truncated ? '（墙钟预算用完，提前停）' : ''}；墙钟 ${tickMs} ms、CPU ${cpuMs} ms（每 1000 拍 CPU ${res.cpuMsPer1000} ms）；堆 ${res.heapMB} MB`);
+  if (o.out) {
+    fs.mkdirSync(path.dirname(path.resolve(o.out)), { recursive: true });
+    fs.writeFileSync(o.out, JSON.stringify(res, null, 1));
+  }
   return res;
 }

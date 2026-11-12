@@ -3926,6 +3926,18 @@ export const PARAMS = {
   p3RemnantNeed: 0.12, // ... when collapsing it takes less than this x our balance
   p3MinCmdFix: 1, // such land priced under p3CheapK x worth is taken whole even when that is under the least command
   p3CheapK: 0.5,
+
+  // ---- v28/P4: joint strikes, land gained near the collapse line, waves through a narrow front ----
+  p4Joint: 1, // the seats around one person strike together when together they can pay for its collapse
+  p4JointSeats: 2, // seats of ours around the target, at least
+  p4JointCover: 1.15, // what they can spend together covers this x the troops its collapse takes
+  p4JointPriceK: 1.15, // a seat is in when its own price for the target is under this x its worth
+  p4JointGap: 21, // without the ledger: ticks before the same order is given again
+  p4DenomFix: 1, // land gained: 1 = never less than our share of what is left at the collapse; 2 = max(land above the line, that share)
+  p4NarrowCap: 1, // a front of under p4NarrowCnt pixels holds at most p4NarrowRings rings of troops (a wave is never under the least command)
+  p4NarrowCnt: 25,
+  p4NarrowRings: 18,
+  p4NarrowFrom: 1500, // ... from this tick on (before it the waves are the few hundred troops of the opening)
 };
 
 // v28/P1: fee of a command as 1/1024ths of the balance.
@@ -3975,6 +3987,9 @@ export class Policy extends V17 {
     this.vKeepNext = null;
     this.buyQuality = false;
     this.p3Old = new Map(); // P3: target -> { t, keep } the floor without the P3 relaxation, this tick
+    this.p4PlanT = -1; // P4: tick of the joint plan below
+    this.p4PlanV = null; // target -> { quota: seat -> { owe, keep }, need, sum, c, n }
+    this.p4Sent = new Map(); // target -> { t, out } our last joint order on it (used without the ledger)
     this.hitTo = new Map();
     this.hitFrom = new Map();
     this.lastLandSpendTick = -999;
@@ -4045,6 +4060,21 @@ export class Policy extends V17 {
     const P = this.p, me = this.me;
     const balBefore = g.bal[me];
     const fee0 = iV(12 * balBefore, 1024);
+
+    // v28/P4: a wave through a narrow front is no more than the front can use
+    if (target !== NEUTRAL && target >= 0 && troops > 2) {
+      const room = this.p4Room(g, target);
+      if (room < troops) {
+        if (room < this.minCmd(g)) {
+          this.vCount("p4_narrow_full");
+          return false;
+        }
+        this.vCount("p4_narrow_cut");
+        this.vLog("P4", g, `narrow q=${target} front=${this.cnt[target]} want=${Math.round(troops)} cut=${Math.round(room)} bal=${balBefore}`);
+        troops = room;
+        budgetHint = Math.min(budgetHint, room);
+      }
+    }
 
     // Exploit #3963 (`z4.aSo` 25% No-Full-Sending quota guard & `attack(0)` bypass):
     if (P.quotaGuardMode > 0 && this.isNoFullSend && troops > 2 && this.shadowQuota < Math.min(0.55 * troops, 0.06 * balBefore)) {
@@ -5361,7 +5391,7 @@ export class Policy extends V17 {
       if (rawNeed <= 0) continue;
       const left = iV(g.peak[q], 4);
       const share = Math.min(1, this.cnt[q] / Math.max(1, g.border[q].length));
-      const baseGain = Math.max(1, Lq - left + left * P.shareW * share);
+      const baseGain = this.gainOf(Lq, left, share, true); // v28/P4 (as Vc with the switch off)
       let c = (rawNeed + fee) / baseGain;
 
       if (!person) {
@@ -5618,6 +5648,9 @@ export class Policy extends V17 {
     const over = P.surplus > 0 && B > 100 * L;
     const cheap = P.growth > 0 ? 0.1 / this.baseRate(g) : 0;
 
+    // v28/P4: our part of a joint strike comes before the offers taken alone
+    if (P.enableCoordinatedStrike > 0 && P.p4Joint > 0 && this.p4Strike(g)) return true;
+
     for (const o of this.offers(g)) {
       const { q, c, need, person } = o;
       this.vKeepNext = null;
@@ -5726,6 +5759,11 @@ export class Policy extends V17 {
 
       const avail = B - fee - keep;
       if (avail <= 0) continue;
+      // v28/P4: our front with q is narrow and holds all the troops it can use (Infinity with the switch off)
+      if (this.p4Room(g, q) < this.minCmd(g)) {
+        this.vCount("p4_narrow_full");
+        continue;
+      }
       this.vKeepNext = keep; // v28/P1: the floor every send on this offer is sized against
 
       if (!person) {
@@ -6300,6 +6338,233 @@ export class Policy extends V17 {
     if (!(c < P.p3CheapK * this.winWorth(g))) return 0;
     this.vCount("p3_whole_early");
     return Math.min(avail, Math.max(want, min));
+  }
+
+  // ==========================================================================================
+  // v28/P4: joint strikes, land gained near the collapse line, waves through a narrow front
+  //
+  // 1. Joint strike. Seats of ours around one thin person each priced it alone, each could pay a
+  //    part of its collapse, and none sent. The plan below is computed from what every seat reads
+  //    in the game (balances, land, borders, attacks), never from anything a seat alone knows, so
+  //    that all seats that run this policy get the same plan on the same tick without talking: who
+  //    is in for which target, and how many troops each owes. A seat then sends what it owes.
+  // 2. Land gained from a collapse is never counted below our share of what the target has left
+  //    at its collapse line (that land turns free at once and goes to those on its border).
+  // 3. A front of a few pixels moves one ring a step whatever stands behind it: a wave is at most
+  //    p4NarrowRings rings of it (never under the least command).
+  // ==========================================================================================
+
+  // Land we gain when q collapses: its land above the collapse line and our share of what is left.
+  gainOf(Lq, left, share, count = false) {
+    const P = this.p;
+    const base = Lq - left + left * P.shareW * share;
+    if (!(P.enableCoordinatedStrike > 0 && P.p4DenomFix > 0)) return Math.max(1, base);
+    const v = P.p4DenomFix >= 2 ? Math.max(Lq - left, share * left) : Math.max(base, share * left);
+    if (count && v > base) this.vCount("p4_denom");
+    return Math.max(1, v);
+  }
+
+  // Troops a wave on q may still add through our front with it (Infinity: no limit).
+  p4Room(g, q) {
+    const P = this.p;
+    if (!(P.enableCoordinatedStrike > 0 && P.p4NarrowCap > 0)) return Infinity;
+    if (q === NEUTRAL || q < 0 || !g.alive[q]) return Infinity;
+    if (g.t < P.p4NarrowFrom) return Infinity;
+    const cnt = this.cnt[q] ?? 0;
+    if (!(cnt > 0) || cnt >= P.p4NarrowCnt) return Infinity;
+    const me = this.me;
+    // one ring of the game (expandAttack): 2 a pixel and twice the defence of the pixels taken;
+    // the troops q has on us are met before the first ring
+    const ring = 2 * cnt + 2 * iV(cnt * g.bal[q], 1 + iV(10 * g.terr[q], 16));
+    const budget = P.p4NarrowRings * ring + g.attackTroopsOn(q, me);
+    const cur = g.attackTroopsOn(me, q) + this.inflightOn(g, q);
+    // the front holds its rings: nothing more; else what is missing, a least command at the least
+    if (cur >= budget) return 0;
+    return Math.max(budget - cur, this.minCmd(g));
+  }
+
+  // Whether seat u runs this policy in this game (and so follows the same plan).
+  p4Seat(g, u) {
+    if (u === this.me) return true;
+    if (u >= g.humans || !g.alive[u] || !(g.terr[u] > 0) || this.vShell(g, u)) return false;
+    if (g.teams && g.teams[this.me] > 0 && g.teams[u] !== g.teams[this.me]) return false;
+    return this.isOurSquadBot(g, u);
+  }
+
+  // Players next to seat u: player -> number of its pixels that touch u (for us, what analyze()
+  // counts in this.cnt).
+  p4Touch(g, u) {
+    const out = new Map();
+    const B = g.border[u];
+    if (!B) return out;
+    const px = g.px, own = g.own, d = g.dir4;
+    if (!this.mark || this.mark.length !== g.N) this.mark = new Uint32Array(g.N);
+    const mark = this.mark, st = ++this.stamp;
+    for (let i = B.length - 1; i >= 0; i--) {
+      const b = B[i];
+      for (let k = 0; k < 4; k++) {
+        const c = b + d[k];
+        if (mark[c] === st || !(px[c] >= P_INNER)) continue;
+        const o = own[c];
+        if (o === u) continue;
+        mark[c] = st;
+        out.set(o, (out.get(o) ?? 0) + 1);
+      }
+    }
+    return out;
+  }
+
+  // The joint strikes of this tick, in the order in which seats commit to them (cheapest first).
+  // Everything here is read from the game as every seat sees it: `me` plays no part. What a seat
+  // can spend on a target is what buyLand would let it spend alone at the price it sees alone (the
+  // price keep of Vc, the surplus keep, the people floor): no seat pays more for the land than it
+  // would alone. What the plan adds is the knowledge that together they cover the collapse, where
+  // each alone held back because its own part did not.
+  p4Plan(g) {
+    if (this.p4PlanT === g.t) return this.p4PlanV;
+    this.p4PlanT = g.t;
+    const P = this.p, H = g.humans;
+    const plan = (this.p4PlanV = new Map());
+    const seats = [];
+    for (let u = 0; u < H; u++) if (g.alive[u] && g.terr[u] > 0 && this.p4Seat(g, u)) seats.push(u);
+    if (seats.length < P.p4JointSeats) return plan;
+    const isSeat = new Set(seats);
+    // the people that are neither seats nor teammates: the targets, and the market's median density
+    const foe = (o) => o < H && g.alive[o] !== 0 && g.terr[o] > 0 && !isSeat.has(o) && !this.isTeammate(g, o) && this.person(g, o);
+    const dens = [];
+    for (let o = 0; o < H; o++) if (g.terr[o] >= 100 && foe(o)) dens.push(g.bal[o] / g.terr[o]);
+    dens.sort((a, b) => a - b);
+    const dMed = dens.length ? dens[dens.length >> 1] : null;
+    const m = P.maxW * this.winRatio(g.t);
+    const pub = new Map(), around = new Map();
+    for (const u of seats) {
+      const B = g.bal[u], L = Math.max(1, g.terr[u]), fee = iV(12 * B, 1024), d = B / L;
+      let inc = 0;
+      for (const a of g.attackersOf(u)) if (a < H) inc += g.attackTroopsOn(a, u);
+      let active = 0;
+      const base = g.slotBase(u);
+      for (let i = g.atkCount[u] - 1; i >= 0; i--) if (g.atkTarget[base + i] !== NEUTRAL) active++;
+      // the strongest person next to u sets its people floor (dpKeep, capped as in safeAt)
+      let strong = 0;
+      for (const [o, n] of this.p4Touch(g, u)) {
+        if (!foe(o)) continue;
+        strong = Math.max(strong, g.bal[o] + g.attackTroopsOn(o, u));
+        let list = around.get(o);
+        if (!list) around.set(o, (list = []));
+        list.push({ u, n });
+      }
+      const safe = Math.min(Math.max(0, (strong - 1.5 * L) / 1.78), P.oppFloorCap * L);
+      const ref = dMed !== null && g.t >= P.marketFrom ? Math.max(d, P.marketFloor * dMed) : d;
+      const own = P.ownWorthMinKeep > 0 && g.t >= P.ownWorthFrom ? m * d : m * ref;
+      pub.set(u, { B, L, d, fee, inc, safe, worth: m * ref, own, slot: g.hasFreeSlot(u) && active < P.maxTargets, used: 0 });
+    }
+    const cands = [];
+    for (const [q, list] of around) {
+      if (list.length < P.p4JointSeats) continue;
+      const E = this.elimCost(g, q);
+      const Lq = g.terr[q], left = iV(g.peak[q], 4), bl = Math.max(1, g.border[q].length);
+      const mem = [];
+      let nAll = 0, feeSum = 0, incSum = 0;
+      for (const { u, n } of list) {
+        const pu = pub.get(u);
+        if (!g.hasAttack(u, q) && !pu.slot) continue;
+        const out = g.attackTroopsOn(u, q), incQ = g.attackTroopsOn(q, u);
+        // the price u sees alone (offers: need over land gained, the long way through a narrow front)
+        let c = (Math.max(0, E + incQ - out) + pu.fee) / this.gainOf(Lq, left, Math.min(1, n / bl));
+        const steps = (0.75 * Lq) / n;
+        if (n < 25 && steps > P.contactStepsMax && !(incQ > 0)) c *= 1 + P.contactPenalty * Math.min(400, steps - P.contactStepsMax);
+        if (!(c < P.p4JointPriceK * pu.worth)) continue;
+        // what buyLand lets u spend at that price: the price keep, the surplus keep, the people floor
+        let keep = Infinity;
+        if (c < pu.worth) {
+          const budget = Math.max(0, (pu.own * pu.L - pu.fee * m - c * pu.L) / (1 + m));
+          keep = Math.max((c * pu.L) / m, pu.B - pu.fee - budget);
+        }
+        if (P.surplus > 0 && pu.B > 100 * pu.L) keep = Math.min(keep, (pu.d >= 122 ? 0.82 : P.hold) * 100 * pu.L);
+        keep = Math.max(keep, pu.safe);
+        const spend = pu.B - pu.fee - keep - (pu.inc - incQ);
+        mem.push({ u, out, incQ, keep, spend: spend > 0 ? spend : 0, cap: 0 });
+        nAll += n;
+        feeSum += pu.fee;
+        incSum += incQ;
+      }
+      if (mem.length < P.p4JointSeats) continue;
+      const need = P.p4JointCover * (E + incSum);
+      cands.push({ q, mem, need, c: (need + feeSum) / this.gainOf(Lq, left, Math.min(1, nAll / bl)) });
+    }
+    cands.sort((a, b) => a.c - b.c || a.q - b.q);
+    for (const cd of cands) {
+      let S = 0, n = 0;
+      for (const mb of cd.mem) {
+        mb.cap = Math.max(0, mb.spend - pub.get(mb.u).used) + mb.out;
+        S += mb.cap;
+        if (mb.cap > 0) n++;
+      }
+      const open = n >= P.p4JointSeats && cd.need > 0 && S >= cd.need;
+      if (P.v28Debug > 0 && this.me === seats[0]) {
+        this.vLog("P4D", g, `q=${cd.q} seats=${cd.mem.map((mb) => `${mb.u}:${Math.round(mb.cap)}`).join(",")} need=${Math.round(cd.need)} canSpend=${Math.round(S)} price=${cd.c.toFixed(1)} open=${open ? 1 : 0} balQ=${g.bal[cd.q]} terrQ=${g.terr[cd.q]}`);
+      }
+      if (!open) continue;
+      const quota = new Map();
+      for (const mb of cd.mem) {
+        const owe = (cd.need * mb.cap) / S;
+        quota.set(mb.u, { owe, keep: mb.keep });
+        pub.get(mb.u).used += Math.max(0, owe - mb.out);
+      }
+      plan.set(cd.q, { quota, need: cd.need, sum: S, c: cd.c, n });
+    }
+    return plan;
+  }
+
+  // Our part of the joint strikes: one command on the first target of the plan that still lacks
+  // troops of ours. True when it left.
+  p4Strike(g) {
+    const P = this.p, me = this.me;
+    const plan = this.p4Plan(g);
+    if (!plan.size) return false;
+    const B = g.bal[me], fee = iV(12 * B, 1024);
+    let incOther = -1;
+    for (const [q, w] of plan) {
+      const mine = w.quota.get(me);
+      if (mine === undefined) continue;
+      this.vCount("p4_window");
+      const owe = mine.owe, out = g.attackTroopsOn(me, q);
+      let x = owe - out - this.inflightOn(g, q);
+      if (x < this.minCmd(g)) {
+        this.vCount("p4_joint_paid");
+        continue;
+      }
+      if (!(P.enableInflightLedger > 0)) {
+        // without the ledger an order that has not landed cannot be told from one never given
+        const s = this.p4Sent.get(q);
+        if (s && g.t - s.t < P.p4JointGap && !(out > s.out)) {
+          this.vCount("p4_joint_gap");
+          continue;
+        }
+      }
+      if (incOther < 0) {
+        incOther = 0;
+        for (const a of g.attackersOf(me)) if (a < g.humans) incOther += g.attackTroopsOn(a, me);
+      }
+      // (the plan's floor is what every seat can work out; the floor only we know is kept as well)
+      const keep = Math.max(mine.keep, this.safeAt(g, q));
+      x = Math.min(x, B - fee - keep - (incOther - g.attackTroopsOn(q, me)));
+      if (x < this.minCmd(g) || this.p4Room(g, q) < this.minCmd(g)) {
+        this.vCount("p4_joint_short");
+        continue;
+      }
+      this.vKeepNext = keep;
+      if (this.send(g, q, x)) {
+        this.p4Sent.set(q, { t: g.t, out });
+        this.vCount("p4_joint_send");
+        this.vLog("P4", g, `joint q=${q} x=${Math.round(x)} owe=${Math.round(owe)} have=${out} seats=${w.n} need=${Math.round(w.need)} canSpend=${Math.round(w.sum)} price=${w.c.toFixed(1)} bal=${B}`);
+        return true;
+      }
+      this.vKeepNext = null;
+      this.vCount("p4_joint_refused");
+      return false;
+    }
+    return false;
   }
 
   // ==========================================================================================

@@ -45,28 +45,17 @@ export class Profile {
   delay(p, W) { return this.dMin === this.dMax ? this.dMin : hashInt(this.dMin, this.dMax, this.seed, p, W, 77); }
   clockMs(p, W) { return TICK_MS * this.serverTick(p, W); }
 
-  // C3 / C4 的一段卡顿：从本机拍 Wa 起落后 J 拍，然后成串追帧。返回追平的本机拍。
-  stall(s, p, Wa, J, w1) {
-    const o = this.o;
-    const bMin = o.burstMin ?? 20, bMax = o.burstMax ?? 60, speed = o.speed ?? 1.45;
-    let T = Wa + J, Wc = Wa, k = 0;
-    const N = s.length;
-    while (Wc < N && T > Wc) {
-      let b = hashInt(bMin, bMax, this.seed, p, Wc, 31 + k++);
-      if (Wc + b >= w1) b = Math.max(1, T - Wc + 1);              // 到 w1：剩下的积压一口气算完
-      if (Wc + b > T) b = Math.max(1, T - Wc + 1);                 // 最后一串：正好追到当前
-      const end = Math.min(N, Wc + b);
-      for (let W = Wc; W < end; W++) s[W] = Math.max(T, W, s[W]);
-      Wc = end;
-      T += Math.ceil(b / speed);
-    }
-    return Wc;
-  }
-
+  // C3 合成卡顿波。每个席位一条「落后拍数」曲线：w0 起错开 onset 拍内开始掉队 → ramp 个本机拍内爬到峰值 L（lagMin~lagMax 里取）
+  // → 峰值上停 plateau 个本机拍 → 线性追回，到 w1 追平。页面不是匀速慢放，而是「停一段、把一串本机拍在同一个服务器时刻算完」：
+  // 每串 burstMin~burstMax 个本机拍，这一串里每一拍的 S 都等于串尾那一拍的 本机拍 + 落后拍数。
+  // 缺省形状取自 6 局卡顿局的实录（B039 / B023 / B017 / B038 / B010 / B022 的 600~2100 拍）：平均落后 73→323→358→…→17，
+  // 同一回合落地的一串指令跨 60~110 个本机拍（中位）、相邻两个落地回合隔 63~196 拍（中位）。
   buildC3(seats) {
     const o = this.o;
     const w0 = o.w0 ?? 600, w1 = o.w1 ?? 2100, lagMin = o.lagMin ?? 150, lagMax = o.lagMax ?? 400;
-    const share = o.share ?? 1, onsetSpan = o.onsetSpan ?? 0.4;
+    const bMin = o.burstMin ?? 30, bMax = o.burstMax ?? 150;
+    const onset = o.onset ?? 150, ramp = Math.max(1, o.ramp ?? 250), plateau = o.plateau ?? 150, share = o.share ?? 1;
+    const smooth = o.smooth ?? 0.2;   // 落后期间「一拍一拍算」的段落占比（其余是成串算）
     const N = this.Wmax + 1;
     let k = 0;
     for (const p of seats) {
@@ -74,25 +63,52 @@ export class Profile {
       if (hashU(this.seed, p, 5) >= share) continue;
       const s = new Int32Array(N);
       for (let W = 0; W < N; W++) s[W] = W;
-      // 起点按席位次序错开，铺满 w0 起的前 onsetSpan 段
-      const span = Math.max(1, Math.floor((w1 - w0) * onsetSpan));
-      let Wa = w0 + Math.floor(span * ((ord + hashU(this.seed, p, 6)) / Math.max(1, seats.length)));
-      let ep = 0;
-      while (Wa < w1 - 50 && ep < 6) {
-        const J = hashInt(lagMin, lagMax, this.seed, p, 7 + ep);
-        const end = this.stall(s, p, Wa, J, w1);
-        Wa = end + hashInt(o.gapMin ?? 150, o.gapMax ?? 450, this.seed, p, 8 + ep);
-        ep++;
+      const Wa = w0 + Math.floor(onset * ((ord + hashU(this.seed, p, 6)) / Math.max(1, seats.length)));
+      const L = hashInt(lagMin, lagMax, this.seed, p, 7);
+      const Wp = Math.min(w1 - 1, Wa + ramp + plateau);
+      const lagAt = (W) => (W < Wa ? 0 : W < Wa + ramp ? L * (W - Wa) / ramp : W < Wp ? L : W < w1 ? L * (w1 - W) / Math.max(1, w1 - Wp) : 0);
+      let W1 = Wa, j = 0, Tprev = Wa;
+      while (W1 < w1 && W1 < N) {
+        const b = hashInt(bMin, bMax, this.seed, p, W1, 31 + j);
+        const W2 = Math.min(N - 1, w1 - 1, W1 + b - 1);
+        if (hashU(this.seed, p, W1, 57 + j) < smooth) {
+          // 这一段页面在「落后着一拍一拍地算」：每一拍各有各的服务器时刻
+          for (let W = W1; W <= W2; W++) { const T = Math.max(Tprev, W + Math.round(lagAt(W))); s[W] = Math.max(T, W); Tprev = T; }
+        } else {
+          const T = Math.max(Tprev, W2 + Math.round(lagAt(W2)));
+          for (let W = W1; W <= W2; W++) s[W] = Math.max(T, W);
+          Tprev = T;
+        }
+        j++;
+        W1 = W2 + 1;
       }
+      for (let W = 1; W < N; W++) if (s[W] < s[W - 1]) s[W] = s[W - 1];
       this.stairs.set(p, s);
     }
-    this.note = `C3 合成卡顿波：${w0}~${w1} 拍，每次落后 ${lagMin}~${lagMax} 拍，追帧每串 ${o.burstMin ?? 20}~${o.burstMax ?? 60} 个本机拍、平均 ${o.speed ?? 1.45} 倍速`;
+    this.note = `C3 合成卡顿波：${w0}~${w1} 拍，各席位错开 ${onset} 拍内开始掉队，${ramp} 拍爬到峰值落后 ${lagMin}~${lagMax} 拍、停 ${plateau} 拍、再线性追回到 ${w1} 拍追平；每段 ${bMin}~${bMax} 个本机拍，${Math.round(100 * (1 - smooth))}% 的段在同一时刻算完、其余逐拍算`;
   }
 
-  // C2：traces/<局>.json 里每个席位的 (下令拍 τ, 执行拍 E) 配对 → S(τ) = max(τ, E − dMid)，已知点之间线性补（fill=linear）、
-  // 取后一个点（upper）或前一个点（lower）；最后一个已知点之后保持不降直到追平。
+  // C2：traces/<局>.json 里每个席位的 (下令拍 τ, 执行拍 E) 配对 → S(τ) = max(τ, E − dMid)。已知点之间怎么补：
+  //   nearest（缺省）取近的那个已知点：S 是纯阶梯——页面停一段、再把一串本机拍在同一个服务器时刻算完；没有可调参数。
+  //   burst,m=16  已知点前后各 m 个本机拍与它同一串、两串之间线性；linear 全线性（页面匀速慢放）；upper / lower 取后 / 前一个点。
+  //   各种补法对着真局的对照见 SIM-V2-CALIBRATION-G0.md：linear 的同拍批占比明显偏低，nearest 与 burst(16~32) 都贴近真局。
+  // 最后一个已知点之后保持不降直到追平。
   buildC2(seats, trace, fill = 'linear', seatMap = null) {
     const N = this.Wmax + 1;
+    // fill=burst：已知点前后各 m 个本机拍算同一串（S 与那个已知点相同），两串之间线性。m=0 就是 linear，m 很大就是 nearest。
+    const m = fill === 'burst' ? Math.max(0, this.o.m ?? 16) : 0;
+    const between = (W, ta, sa, tb, sb) => {
+      if (fill === 'upper') return sb;
+      if (fill === 'lower') return sa;
+      if (fill === 'nearest') return W - ta <= tb - W ? sa : sb;
+      if (fill === 'burst') {
+        if (tb - ta <= 2 * m) return W - ta <= tb - W ? sa : sb;
+        if (W - ta <= m) return sa;
+        if (tb - W <= m) return sb;
+        return Math.round(sa + (sb - sa) * (W - ta - m) / (tb - ta - 2 * m));
+      }
+      return Math.round(sa + (sb - sa) * (W - ta) / (tb - ta));
+    };
     const dMid = Math.round((this.dMin + this.dMax) / 2) + 3; // 不落后时 E − τ 的中位约 14
     let used = 0;
     for (const p of seats) {
@@ -112,7 +128,7 @@ export class Profile {
         else if (j === 0) v = fill === 'upper' ? pts[0][1] : W;
         else {
           const [ta, sa] = pts[j - 1], [tb, sb] = pts[j];
-          v = fill === 'upper' ? sb : fill === 'lower' ? sa : fill === 'nearest' ? (W - ta <= tb - W ? sa : sb) : Math.round(sa + (sb - sa) * (W - ta) / (tb - ta));
+          v = between(W, ta, sa, tb, sb);
         }
         s[W] = Math.max(W, v);
       }
@@ -120,7 +136,7 @@ export class Profile {
       this.stairs.set(p, s);
       used++;
     }
-    this.note = `C2 实录阶梯：${used}/${seats.length} 个席位有实录（${trace.matchId}，配对 ${trace.rows} 条），已知点之间 ${fill}`;
+    this.note = `C2 实录阶梯：${used}/${seats.length} 个席位有实录（${trace.matchId}，配对 ${trace.rows} 条），已知点之间 ${fill}${fill === 'burst' ? `（m=${m}）` : ''}`;
     return used;
   }
 
@@ -159,16 +175,25 @@ export function makeProfile(spec, ctx) {
   else if (name === 'C2') {
     const trace = ctx.trace;
     if (!trace) throw new Error('C2 要实录阶梯：这一局没有 sim-v2/traces/<局>.json（先跑 tools/export_traces.py），或用 --trace-from 指定别的局');
-    prof.buildC2(ctx.seats, trace, o.fill || 'linear', ctx.seatMap || null);
+    prof.buildC2(ctx.seats, trace, o.fill || 'nearest', ctx.seatMap || null);
     // 页面寿命：实录里这个席位的页面最后有动静的本机拍；之后不再调策略（在途的指令照常落地）。pagedeath=0 关掉。
     if (ctx.pageEnd && o.pagedeath !== 0) {
       prof.pageEnd = new Map(ctx.pageEnd);
-      const dead = [...prof.pageEnd.values()].filter((v) => v < (ctx.Wmax ?? 16000) - 2000).length;
-      prof.note += `；页面寿命按实录（${dead} 个席位的页面在窗口结束前停摆）`;
+      prof.doomed = ctx.doomed || null;
+      // 席位还活着页面就停摆的：它最后一条落地的指令之后发出的，实录里一条也没落地 → 通道在那之后算断了（指令发出即丢）
+      if (ctx.doomed && ctx.doomed.size && ctx.ownTrace !== false) {
+        prof.lostAfter = new Map();
+        for (const p of ctx.seats) {
+          if (!ctx.doomed.has(p)) continue;
+          const rows = trace.seats[String(ctx.seatMap ? ctx.seatMap.get(p) : p)];
+          prof.lostAfter.set(p, rows && rows.length ? Math.max(...rows.map((r) => r[0])) : -1);
+        }
+      }
+      prof.note += `；页面寿命按实录（${ctx.doomed ? ctx.doomed.size + ' 个席位的页面在席位还活着时停摆' : '停摆与否到时按历史臂里席位是否还活着判断'}${prof.lostAfter ? '，其最后一条落地指令之后发出的算丢失' : ''}）`;
     }
   } else if (name === 'C3' || name === 'C4') {
     prof.buildC3(ctx.seats);
-    if (name === 'C4') { prof.selfExcite = { gain: o.gain ?? 4, window: o.window ?? 100 }; prof.note = prof.note.replace('C3 合成卡顿波', 'C4 发令自激卡顿波') + `；每次落后 = lagMin + ${prof.selfExcite.gain} × 编队最近 ${prof.selfExcite.window} 拍发令条数`; }
+    if (name === 'C4') { prof.selfExcite = { gain: o.gain ?? 2, window: o.window ?? 100, cap: o.exciteCap ?? 300 }; prof.note = prof.note.replace('C3 合成卡顿波', 'C4 发令自激卡顿波') + `；每条指令再多等 ${prof.selfExcite.gain} × 编队最近 ${prof.selfExcite.window} 拍的发令条数（上限 ${prof.selfExcite.cap} 拍）`; }
   } else throw new Error(`不认识的通道档 ${name}（C0 / C1 / C2 / C3 / C4）`);
   return prof;
 }
@@ -188,6 +213,7 @@ export class Channel {
     this.seq = 0;
     this.hist = new Map();             // 席位 → 最近 capRounds−1 个回合各执行了几条
     this.recent = [];                  // C4：最近发令的拍号
+    this.lastArrive = new Map();       // 席位 → 上一条指令的到达拍
   }
 
   submit(seat, cmd) {
@@ -200,8 +226,17 @@ export class Channel {
       return cmd.k === 'atk' ? res.ok : res.ok;
     }
     const prof = this.profile;
-    if (prof.selfExcite) this.excite(seat, W);
-    cmd.arrive = prof.serverTick(p, W) + prof.delay(p, W);
+    if (prof.lostAfter && prof.lostAfter.has(p) && W > prof.lostAfter.get(p)) {
+      cmd.arrive = Infinity; cmd.E = Infinity;
+      this.host.onIssue(seat, cmd);
+      this.host.onDrop(seat, cmd, 'deadchan');
+      return true;
+    }
+    cmd.arrive = prof.serverTick(p, W) + prof.delay(p, W) + (prof.selfExcite ? this.excite(seat, W) : 0);
+    // 同一席位的指令按发出次序到达（一条连接）：后发的不会比先发的早到
+    const la = this.lastArrive.get(p);
+    if (la !== undefined && cmd.arrive < la) cmd.arrive = la;
+    this.lastArrive.set(p, cmd.arrive);
     cmd.E = ceil7(cmd.arrive);
     this.q.push(cmd);
     cmd.seat = seat;
@@ -209,18 +244,29 @@ export class Channel {
     return true;
   }
 
-  // C4：发令越密，下一次卡得越久。编队最近 window 拍每发 1 条，当前席位「下一段卡顿」的落后拍数加 gain。
+  // 接管之前影子发的指令：按同一条通道算生效拍，生效拍落在接管拍 T0 之后的算「接管时还在路上」，照常排队落地（标 pre）；
+  // 生效拍在 T0 之前的不进世界（那段时间世界照录像走）。
+  submitPre(seat, cmd, T0) {
+    if (this.instant) return;
+    const W = this.host.world.t, p = seat.p, prof = this.profile;
+    if (prof.lostAfter && prof.lostAfter.has(p) && W > prof.lostAfter.get(p)) return;
+    let arrive = prof.serverTick(p, W) + prof.delay(p, W);
+    const la = this.lastArrive.get(p);
+    if (la !== undefined && arrive < la) arrive = la;
+    this.lastArrive.set(p, arrive);
+    const E = ceil7(arrive);
+    if (E < T0) return;
+    cmd.p = p; cmd.W = W; cmd.seq = this.seq++; cmd.arrive = arrive; cmd.E = E; cmd.pre = true; cmd.seat = seat;
+    this.q.push(cmd);
+    this.host.onIssue(seat, cmd);
+  }
+
+  // C4：发令越密，指令到得越晚。编队最近 window 个本机拍每发过 1 条，这一条就多等 gain 拍（上限 cap）。返回多等的拍数。
   excite(seat, W) {
     const se = this.profile.selfExcite;
     this.recent.push(W);
     while (this.recent.length && this.recent[0] < W - se.window) this.recent.shift();
-    const s = this.profile.stairs.get(seat.p);
-    if (!s || W + 1 >= s.length) return;
-    const extra = Math.min(this.profile.o.lagMax ?? 400, se.gain * this.recent.length);
-    // 只在席位当前不落后时触发新的卡顿（已经在追帧的不叠加）
-    if (s[W] - W > 20 || hashU(this.profile.seed, seat.p, W, 91) > 0.02) return;
-    this.profile.stall(s, seat.p, W + 1, (this.profile.o.lagMin ?? 150) + extra, s.length);
-    for (let k = W + 2; k < s.length; k++) if (s[k] < s[k - 1]) s[k] = s[k - 1];
+    return Math.min(se.cap, se.gain * (this.recent.length - 1));
   }
 
   pending() { return this.q.length; }

@@ -44,8 +44,11 @@ def main():
         H = inp['humans']
         names = st.get('allNames') or []
         ai = {str(p): names[p] for p in range(H, len(names)) if names[p]}
+        death = st.get('deathT') or []
         index[mid] = dict(replay=inp['replayPath'].split('/')[-2], humans=H, squad=inp['squad'], nTeams=inp['nTeams'], botTeams=inp['botTeams'],
-                          teams=inp['teams'], endTick=inp['endTick'], replayLast=inp['replayLast'], aiNames=ai)
+                          teams=inp['teams'], endTick=inp['endTick'], replayLast=inp['replayLast'], aiNames=ai,
+                          # 真引擎重放里每个我方席位出局的拍（-1 = 到重放结束还活着）
+                          deathT={str(p): (death[p] if p < len(death) else -1) for p in inp['squad']})
         hs = []
         for i, t in enumerate(st['ticks']):
             vals = []

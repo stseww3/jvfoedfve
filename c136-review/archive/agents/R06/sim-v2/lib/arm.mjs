@@ -13,7 +13,9 @@ export class Arm {
     this.name = cfg.name;
     this.world = cfg.world;
     this.H = cfg.world.humans;
-    this.opts = { fallback: 'cheapest', ourLeaves: 'replay', donateSubmit: 'always', keepLogs: false, aoPct: null, react: [], reactSeed: 1, inflightGuard: 'auto', takeoverHooks: TAKEOVER_HOOKS, ...(cfg.opts || {}) };
+    this.opts = { fallback: 'cheapest', ourLeaves: 'replay', donateSubmit: 'always', keepLogs: false, aoPct: null, react: [], reactSeed: 1, inflightGuard: 'auto', takeoverHooks: TAKEOVER_HOOKS, handover: 'carry', ...(cfg.opts || {}) };
+    // 接管拍（checkpoint 模式）：handover=carry 时，影子在接管前发出、按通道算要到接管后才生效的指令，接管时算「还在路上」照常落地
+    this.takeoverT = cfg.takeoverT ?? null;
     // 桥接层的在途保护：auto = 策略文件自带补丁就按补丁（c110：8 拍且 450 ms），没有就不设；数字 = 固定拍数
     const ig = this.opts.inflightGuard;
     this.guard = ig === 'auto' || ig === undefined ? (cfg.strat.guard || null) : (+ig > 0 ? { ticks: +ig, ms: Infinity } : null);
@@ -42,7 +44,10 @@ export class Arm {
     this.sampleEvery = cfg.sampleEvery || 30;
   }
 
-  onShadow() { this.shadowIssued++; }
+  onShadow(seat, cmd) {
+    this.shadowIssued++;
+    if (this.opts.handover === 'carry' && this.takeoverT !== null) this.chan.submitPre(seat, cmd, this.takeoverT);
+  }
   onIssue(seat, cmd) { this.metrics.onIssue(cmd); }
   onDrop(seat, cmd, why) { this.metrics.onDrop(cmd, why); }
 
@@ -197,8 +202,12 @@ export class Arm {
   // ---- 接管 / 逐拍 -------------------------------------------------------------------------------
   takeover() {
     this.liveMode = true;
+    const clean = this.opts.handover === 'clean';
     for (const s of this.seatList) {
-      s.live = true; s.sentAt = -1; s.shadowIssued = s.issued; s.issued = 0; s.refused = 0;
+      s.live = true; s.shadowIssued = s.issued; s.issued = 0; s.refused = 0;
+      if (!clean) continue;
+      // handover=clean：接管时路上没有任何指令。在途保护清零；策略若有在途账本的清零钩子就调一下
+      s.sentAt = -1;
       for (const h of this.opts.takeoverHooks) {
         if (typeof s.pol[h] === 'function') { try { s.pol[h](s.view); s.hooked = h; } catch (err) { s.errors++; if (!s.firstError) s.firstError = `takeover ${h}: ${err.message}`; } }
       }
@@ -212,7 +221,11 @@ export class Arm {
     for (const s of this.seatList) {
       const p = s.p;
       if (!w.alive[p] || w.state[p] === 2) continue;
-      if (pageEnd && t > (pageEnd.get(p) ?? Infinity)) { s.pageDead = true; continue; }
+      if (pageEnd && t > (pageEnd.get(p) ?? Infinity)) {
+        // 页面最后有动静的拍已过：历史上这个席位此刻还活着 → 是页面停摆（之后不再决策）；历史上已出局 → 只是日志随出局停了，页面照常
+        if (s.pageDead === undefined) s.pageDead = prof.doomed ? prof.doomed.has(p) : (this.history ? this.history.alive[p] !== 0 : true);
+        if (s.pageDead) continue;
+      }
       const clock = 56 * prof.serverTick(p, t);
       if (guard && s.sentAt >= 0 && t - s.sentAt < guard.ticks && clock - s.sentClock < guard.ms) { s.guarded++; continue; }
       s.act(clock);
@@ -243,7 +256,7 @@ export class Arm {
       secondRefused: this.seatList.reduce((a, s) => a + s.refused, 0),
       guard: this.guard ? `${this.guard.ticks} 拍` + (Number.isFinite(this.guard.ms) ? ` 且 ${this.guard.ms} ms` : '') : '无',
       guarded: this.seatList.reduce((a, s) => a + s.guarded, 0),
-      pageDead: this.seatList.filter((s) => s.pageDead).length,
+      pageDead: this.seatList.filter((s) => s.pageDead === true).length,
       shadowIssued: this.shadowIssued,
       stratErrors: errs,
       logTags: tags,

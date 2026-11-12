@@ -105,18 +105,21 @@ export class Metrics {
     const cnt = (arr, k) => arr.filter((c) => c.k === k).length;
     const out = { t0: s0.t, t1: end.t, seats: this.squad.length };
 
-    // ---- 指令漏斗
-    out.issued = cmds.length;
+    // ---- 指令漏斗（pre = 接管前影子发出、接管时还在路上的；「发出」只数接管之后的，「到达 / 进录像」数窗口里落地的全部）
+    const own = cmds.filter((c) => !c.pre);
+    out.issued = own.length;
+    out.preIssued = cmds.length - own.length;
     out.arrived = ex.length;
-    out.dropped = cmds.filter((c) => c.st === 'drop').length;
+    out.dropped = cmds.filter((c) => c.st === 'drop' && c.dropWhy !== 'deadchan').length;
+    out.lostChan = cmds.filter((c) => c.st === 'drop' && c.dropWhy === 'deadchan').length;
     out.pending = cmds.filter((c) => c.st === 'fly').length;
     out.recorded = rec.length;
     out.effective = ex.filter((c) => c.ok).length;
-    out.landedShare = ratio(rec.length, cmds.length);
+    out.landedShare = ratio(rec.filter((c) => !c.pre).length, own.length);
     out.byKind = {};
     for (const k of kinds) {
       out.byKind[k] = {
-        issued: cnt(cmds, k), arrived: cnt(ex, k), recorded: cnt(rec, k), effective: ex.filter((c) => c.k === k && c.ok).length,
+        issued: cnt(own, k), arrived: cnt(ex, k), recorded: cnt(rec, k), effective: ex.filter((c) => c.k === k && c.ok).length,
         dropped: cmds.filter((c) => c.k === k && c.st === 'drop').length,
         sent: sum(ex.filter((c) => c.k === k && c.ok).map((c) => c.sent)), fee: sum(ex.filter((c) => c.k === k && c.ok).map((c) => c.fee)),
       };
@@ -132,7 +135,12 @@ export class Metrics {
     out.rerouted = rer.length;
     out.reroutedOk = rer.filter((c) => c.ok).length;
     out.reroutedSent = sum(rer.filter((c) => c.ok).map((c) => c.sent));
-    out.rerouteRate = ratio(rer.length, atkOnPlayer.length);
+    // 目标已死改道率：分母 = 窗口里发出（不含接管时已在路上的）、下令时目标是活人 / AI 的陆攻；窗口里落地的全部陆攻另给一个口径
+    const atkOnPlayerOwn = atkOnPlayer.filter((c) => !c.pre);
+    out.rerouteRate = ratio(atkOnPlayerOwn.filter((c) => c.toExec === NEUTRAL).length, atkOnPlayerOwn.length);
+    out.rerouteRateExec = ratio(rer.length, atkOnPlayer.length);
+    // 落地时记成「无主地」的陆攻占比（下令就是无主地的 + 目标已死改道的；录像里两者分不开，所以真局也能算）
+    out.atkNeutralShare = ratio(atkRec.filter((c) => c.toExec === NEUTRAL).length, atkRec.length);
     const atkAi = atkOnPlayer.filter((c) => c.to >= w.humans);
     out.rerouteRateAi = ratio(atkAi.filter((c) => c.toExec === NEUTRAL).length, atkAi.length);
     out.atkOnAi = atkAi.length;
@@ -208,16 +216,19 @@ export class Metrics {
       }
       return dup;
     };
-    const dRec = dupOf(rec), dAll = dupOf(cmds);
+    // 接管前发出的（pre）只当「前一条」用，不进分母
+    const live = cmds.filter((c) => c.dropWhy !== 'deadchan');
+    const dRec = dupOf(rec), dAll = dupOf(live);
+    const inWin = (c) => !c.pre && c.W !== null && c.W !== undefined;
     out.dup = {};
     for (const k of kinds) {
-      const b = rec.filter((c) => c.k === k), bi = cmds.filter((c) => c.k === k);
+      const b = rec.filter((c) => c.k === k && inWin(c)), bi = live.filter((c) => c.k === k && inWin(c));
       const d = b.filter((c) => dRec.has(c)), di = bi.filter((c) => dAll.has(c));
       out.dup[k] = { base: b.length, dups: d.length, share: ratio(d.length, b.length), okSent: sum(d.filter((c) => c.ok).map((c) => c.sent)), fee: sum(d.filter((c) => c.ok).map((c) => c.fee)),
         issuedBase: bi.length, issuedDups: di.length, issuedShare: ratio(di.length, bi.length) };
     }
-    out.dupShare = ratio(rec.filter((c) => dRec.has(c)).length, rec.filter((c) => c.W !== null && c.W !== undefined).length);
-    out.dupShareIssued = ratio(cmds.filter((c) => dAll.has(c)).length, cmds.filter((c) => c.W !== null && c.W !== undefined).length);
+    out.dupShare = ratio(rec.filter((c) => inWin(c) && dRec.has(c)).length, rec.filter(inWin).length);
+    out.dupShareIssued = ratio(live.filter((c) => inWin(c) && dAll.has(c)).length, live.filter(inWin).length);
 
     // ---- 捐款
     const don = ex.filter((c) => c.k === 'don');
@@ -227,6 +238,10 @@ export class Metrics {
       given: sum(don.filter((c) => c.ok).map((c) => c.sent)), fee: sum(don.filter((c) => c.ok).map((c) => c.fee)),
     };
     out.quotaRejectRate = ratio(out.don.quota, don.length);
+    // 捐款发出后没成交的占比：分母 = 窗口里发出的捐款（策略得到 true 的），分子 = 分母 − 窗口里成交的。
+    // 真局的同一项 = 1 − 录像里的捐款条数 ÷ 策略日志 [HL-DISPATCH] 的条数（checkpoint / live 模式在外面填）。
+    out.donIssued = out.byKind.don.issued;
+    out.donNotLanded = out.donIssued > 0 ? +Math.max(0, 1 - out.don.ok / out.donIssued).toFixed(4) : null;
     const donEarly = don.filter((c) => c.Ex < 3213);
     out.quotaRejectRateEarly = ratio(donEarly.filter((c) => !c.ok && c.why === 'quota').length, donEarly.length);
     const sq = new Set(this.squad);
@@ -275,6 +290,43 @@ function rel(s, nSquad, H) {
 function minOf(a) { let m = null; for (const x of a) if (x !== null && x !== undefined && (m === null || x < m)) m = x; return m; }
 function maxOf(a) { let m = null; for (const x of a) if (x !== null && x !== undefined && (m === null || x > m)) m = x; return m; }
 
+// 真局的重复单占比 / 目标已死改道率：从实录配对（traces/<局>.json，每行 [下令拍 τ, 执行拍 E, 种类, 下令时目标, 生效, 录像目标]）算，
+// 口径与模拟臂相同：同一席位、同一种类、同一目标（发船不分目标）的后一条，下令拍落在前一条「已下令、还没执行」之间。
+export function traceStats(trace, squad, t0, t1) {
+  if (!trace) return null;
+  let n = 0, dups = 0, atkP = 0, rer = 0, voidN = 0, atkN = 0;
+  const byKind = { 0: [0, 0], 1: [0, 0], 2: [0, 0] };
+  for (const p of squad) {
+    const rows = trace.seats[String(p)];
+    if (!rows) continue;
+    const by = new Map();
+    for (const r of rows) {
+      const key = `${r[2]}|${r[2] === 1 ? -1 : r[3]}`;
+      let g = by.get(key);
+      if (!g) by.set(key, (g = []));
+      g.push(r);
+    }
+    for (const g of by.values()) {
+      g.sort((a, b) => a[0] - b[0]);
+      for (let j = 0; j < g.length; j++) {
+        const r = g[j];
+        if (r[0] < t0 || r[0] >= t1) continue;
+        n++; byKind[r[2]][0]++;
+        let d = false;
+        for (let i = 0; i < j; i++) if (g[i][0] < r[0] && r[0] < g[i][1]) { d = true; break; }
+        if (d) { dups++; byKind[r[2]][1]++; }
+        if (r[2] === 0) {
+          atkN++;
+          if (!r[4]) voidN++;
+          if (r[3] < NEUTRAL && r.length > 5) { atkP++; if (r[5] === NEUTRAL) rer++; }
+        }
+      }
+    }
+  }
+  return { n, dups, dupShare: ratio(dups, n), dupAtk: ratio(byKind[0][1], byKind[0][0]), dupBoat: ratio(byKind[1][1], byKind[1][0]), dupDon: ratio(byKind[2][1], byKind[2][0]),
+    atkOnPlayer: atkP, rerouted: rer, rerouteRate: ratio(rer, atkP), atkVoidRate: ratio(voidN, atkN) };
+}
+
 // 成对差要比的数值项（键、显示名、越大越好 +1 / 越小越好 −1 / 中性 0）
 export const PAIR_KEYS = [
   ['capture1', '实抢率（领土÷天然份额）', 1],
@@ -287,9 +339,11 @@ export const PAIR_KEYS = [
   ['batchShare', '同拍批占进录像条数', -1],
   ['dupShare', '重复单占比（进录像）', -1],
   ['dupShareIssued', '重复单占比（发出）', -1],
-  ['quotaRejectRate', '配额拒单率', -1],
+  ['quotaRejectRate', '配额拒单率（到达结算的捐款里）', -1],
+  ['donNotLanded', '捐款发出后没成交的占比', -1],
   ['atkVoidRate', '陆攻落空率', -1],
   ['rerouteRate', '目标已死改道率', -1],
+  ['atkNeutralShare', '陆攻落地记成无主地的占比', 0],
   ['landedShare', '进录像 ÷ 发出', 1],
   ['dropped', '被 9 条顶丢弃（条）', -1],
   ['feeLoss', '捐款 + 船手续费（兵）', -1],

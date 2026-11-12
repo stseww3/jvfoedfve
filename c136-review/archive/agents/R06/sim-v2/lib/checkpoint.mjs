@@ -11,7 +11,7 @@ import { loadMatch, buildWorld, ReplayStepper, execRecorded, SIMV2, NEUTRAL } fr
 import { compileStrategy, strategyPath } from './sandbox.mjs';
 import { makeProfile, loadTrace } from './channel.mjs';
 import { Arm } from './arm.mjs';
-import { Metrics, naturalShares, PAIR_KEYS } from './metrics.mjs';
+import { Metrics, naturalShares, PAIR_KEYS, traceStats } from './metrics.mjs';
 import { num, list, fmtN } from './util.mjs';
 
 export function chanOptsOf(o) {
@@ -27,6 +27,7 @@ export function armOptsOf(o) {
     react: o.react === undefined || o.react === 'off' ? [] : (o.react === true || o.react === 'on' ? ['first', 'thin'] : list(o.react)),
     reactSeed: num(o.seed, 1),
     inflightGuard: o['inflight-guard'] === undefined || o['inflight-guard'] === 'auto' ? 'auto' : num(o['inflight-guard'], 0),
+    handover: o.handover === 'clean' ? 'clean' : 'carry',
   };
 }
 const parseJson = (s, what) => { if (s === undefined || s === true) return {}; try { return JSON.parse(s); } catch (e) { throw new Error(`${what} 不是合法的 JSON：${s}`); } };
@@ -63,12 +64,9 @@ export async function runCheckpoint(o) {
   const traceMid = o['trace-from'] || mid;
   const trace = /^c2/i.test(chanSpec) ? loadTrace(SIMV2, traceMid) : null;
   let seatMap = null;
-  if (trace && traceMid !== mid) {
-    // 借别的局的阶梯：按席位次序一一对上
-    const src = Object.keys(trace.seats).map(Number).sort((a, b) => a - b);
-    seatMap = new Map(squad.map((p, i) => [p, src[i % src.length]]));
-  }
-  const mkProfile = () => makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: t1 + 2000, pageEnd: traceMid === mid ? M.pageEnd : null });
+  if (trace && traceMid !== mid) seatMap = borrowSeats(trace, traceMid, squad, t0, t1);
+  // 页面寿命是这一局自己的页面的事（借别的局的阶梯也照用）；「最后一条落地指令之后发出的算丢失」要本局自己的配对才知道
+  const mkProfile = () => makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: t1 + 2000, pageEnd: M.pageEnd, doomed: M.deathT ? M.doomed : null, ownTrace: traceMid === mid });
 
   // ---- 历史臂：录像原样放
   const base = buildWorld(M);
@@ -98,7 +96,7 @@ export async function runCheckpoint(o) {
   // ---- 分叉
   const arms = specs.map((s) => {
     const w = base.clone();
-    const arm = new Arm({ name: s.name, world: w, strat: s.strat, params: s.params, seats: seatDefs, profile: mkProfile(), chanOpts: chanOptsOf(o), opts: armOptsOf(o), history: base });
+    const arm = new Arm({ name: s.name, world: w, strat: s.strat, params: s.params, seats: seatDefs, profile: mkProfile(), chanOpts: chanOptsOf(o), opts: armOptsOf(o), history: base, takeoverT: t0 });
     arm.attachReplay(st.fork(w));
     return arm;
   });
@@ -128,18 +126,34 @@ export async function runCheckpoint(o) {
     mode: 'checkpoint', match: mid, replay: M.replayMid, map: M.mapKey, humans: H, nTeams: M.ta ? M.ta.nTeams : 0, botsTeamed: M.ta ? M.ta.botsTeamed : false,
     squad, squadTeams: [...new Set(squad.map((p) => (M.ta ? M.ta.fX[p] : 0)))],
     t0, t1, tw, lenAsked: len, truncated, ended,
-    channel: profile.name, channelNote: profile.note, channelSpec: chanSpec, seed,
+    channel: profile.name, channelNote: profile.note + (seatMap ? `；阶梯借自 ${traceMid} 的席位 ${[...new Set(seatMap.values())].join(',')}` : ''), channelSpec: chanSpec + (seatMap ? `←${traceMid}` : ''), seed,
     lagCourse: profile.instant ? [] : profile.lagCourse(squad, t0, t1, 150),
     opts: { ...armOptsOf(o), ...chanOptsOf(o) },
     history: hist.finalize(natural, { arm: 'history' }),
     arms: {},
   };
+  // 真局的重复单占比 / 改道率：要下令拍，只有实录配对里有（traces/<本局>.json）
+  const ownTrace = traceMid === mid && trace ? trace : loadTrace(SIMV2, mid);
+  const ts = traceStats(ownTrace, squad, t0, t1);
+  // 历史臂的指令流水来自录像：没有下令拍、目标是落地时记的 → 这两项只能从配对算，没有配对就是空
+  res.history.dupShare = ts ? ts.dupShare : null;
+  res.history.rerouteRate = ts ? ts.rerouteRate : null;
+  res.history.rerouteRateExec = null;
+  res.history.dupShareIssued = null;
+  // 真局的捐款：发出 = 策略日志 [HL-DISPATCH]（c116 系才打这条日志；本机拍落在窗口里的），成交 = 录像里的捐款指令
+  {
+    const disp = M.log.dispatch.filter((d) => d.t >= t0 && d.t < t1 && squadSet.has(M.log.seatOf.get(d.label)));
+    res.history.donIssued = disp.length ? disp.length : null;
+    res.history.donNotLanded = disp.length ? +Math.max(0, 1 - res.history.don.ok / disp.length).toFixed(4) : null;
+  }
+  if (ts) res.history.trace = ts;
   for (const a of arms) res.arms[a.name] = a.finish(natural, { file: a.strat.file });
   if (res.arms.baseline && res.arms.candidate) res.delta = deltaOf(res.arms.baseline, res.arms.candidate);
   res.cpuMs = cpuMs(cpu0); res.wallMs = Date.now() - wall0; res.cpuReplayMs = cpuReplay; res.cpuWarmMs = cpuWarm;
   res.heapMB = Math.round(process.memoryUsage().heapUsed / 1048576);
 
-  printCheckpoint(res);
+  if (o.quiet) console.log(`[checkpoint] ${mid} t0=${t0}→${t1} ${chanSpec} ${specs.map((s) => s.strat.name).join(' ↔ ')}：CPU ${res.cpuMs} ms${truncated ? '（时间预算截断）' : ''}`);
+  else printCheckpoint(res);
   if (o['dump-cmds']) {
     const rows = [];
     for (const a of arms) for (const c of a.metrics.cmds) rows.push({ arm: a.name, p: c.p, k: c.k, W: c.W, E: c.E, Ex: c.Ex ?? null, st: c.st, to: c.to, toExec: c.toExec ?? null, pct: c.pct ?? null, amt: c.amt ?? null, ok: c.ok ?? null, rec: c.rec ?? null, sent: c.sent ?? null, fee: c.fee ?? null, why: c.why || c.dropWhy || '', Bx: c.Bx ?? null });
@@ -156,6 +170,22 @@ export async function runCheckpoint(o) {
     fs.writeFileSync(o.out, JSON.stringify(res));
   }
   return res;
+}
+
+// 借别的局的实录阶梯（--trace-from）：只借「页面活到窗口结束」的席位（页面中途停摆的席位，阶梯在停摆后没有意义），
+// 按窗口内已知点多的排前，我方席位按次序轮着用。
+export function borrowSeats(trace, traceMid, squad, t0, t1) {
+  let doomed = new Set();
+  let pageEnd = new Map();
+  try { const S = loadMatch(traceMid); doomed = S.deathT ? S.doomed : new Set(); pageEnd = S.pageEnd; } catch (e) { /* 来源局的对局包不在本机：只按已知点筛 */ }
+  const all = Object.keys(trace.seats).map(Number);
+  const inWin = (p) => trace.seats[String(p)].filter((r) => r[0] >= t0 - 300 && r[0] < t1).length;
+  const lastTau = (p) => Math.max(...trace.seats[String(p)].map((r) => r[0]));
+  let src = all.filter((p) => !doomed.has(p) && (pageEnd.get(p) ?? Infinity) >= t1 && lastTau(p) >= t1 - 400 && inWin(p) >= 3);
+  if (src.length < 3) src = all.filter((p) => lastTau(p) >= t1 - 400 && inWin(p) >= 3);
+  if (!src.length) src = all;
+  src.sort((a, b) => inWin(b) - inWin(a) || a - b);
+  return new Map(squad.map((p, i) => [p, src[i % src.length]]));
 }
 
 function cpuMs(c0) { const c = process.cpuUsage(c0); return Math.round((c.user + c.system) / 1000); }
@@ -187,12 +217,12 @@ export function printCheckpoint(res) {
   }
   for (const [n, m] of cols.slice(1)) {
     const bk = m.byKind;
-    console.log(`  ${n}：发出 ${m.issued}（陆攻 ${bk.atk.issued} / 船 ${bk.boat.issued} / 捐 ${bk.don.issued}）→ 到达 ${m.arrived}、丢弃 ${m.dropped}、窗口结束还在路上 ${m.pending} → 进录像 ${m.recorded}、生效 ${m.effective}；` +
+    console.log(`  ${n}：接管时还在路上 ${m.preIssued}；发出 ${m.issued}（陆攻 ${bk.atk.issued} / 船 ${bk.boat.issued} / 捐 ${bk.don.issued}）→ 到达 ${m.arrived}、被 9 条顶丢弃 ${m.dropped}、通道已断丢失 ${m.lostChan}、窗口结束还在路上 ${m.pending} → 进录像 ${m.recorded}、生效 ${m.effective}；` +
       `陆攻目标：AI ${m.atkOnAi} / 真人 ${m.atkOnHuman} / 无主地 ${m.atkOnNeutral}，目标已死改道 ${m.rerouted}（生效 ${m.reroutedOk}，${fmtN(m.reroutedSent)} 兵）；` +
       `捐款到达 ${m.don.arrived}：成交 ${m.don.ok}、配额拒 ${m.don.quota}、接收方满 ${m.don.room}、目标失效 ${m.don.target}；满 9 条的批 ${m.fullBatches}；` +
       `其余真人陆攻 ${m.others.atk} 条：照录像 ${m.others.asRecorded}、改打 ${m.others.rerouted}、作废 ${m.others.dropped}；策略报错的席位 ${m.stratErrors.length}` +
       (m.stratErrors.length ? `（${m.stratErrors[0].first}）` : '') + (m.react.fired ? `；对手反击脉冲 ${m.react.fired}（生效 ${m.react.ok}）` : '') +
-      `；桥接在途保护 ${m.guard}（跳过 ${m.guarded} 次决策）`);
+      `；桥接在途保护 ${m.guard}（跳过 ${m.guarded} 次决策）；页面停摆的席位 ${m.pageDead}`);
   }
   const gs = (m) => (m.gapN ? Object.entries(m.gapShare).map(([k, v]) => `${k}:${v === null ? '-' : Math.round(100 * v) + '%'}`).join(' ') : '-');
   console.log(`  同一席位相邻两条指令的执行拍间隔占比：` + cols.map(([n, m]) => `${n}（${m.gapN}）${gs(m)}`).join('｜'));
