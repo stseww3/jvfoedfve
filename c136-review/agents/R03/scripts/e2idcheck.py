@@ -32,6 +32,8 @@ def main():
     tot = dict(n=0, clean=0, wrong=0, miss=0, noself=0, unrec=0)
     bad = []
     split = []
+    sqof = {}
+    missof = set()
     for r in rows:
         mid = r["matchId"]
         cp = os.path.join(CELLS, f"{mid}.json")
@@ -56,6 +58,7 @@ def main():
                     me[x["bot"]] = int(float(x["meId"]))
                     res.append(x)
         mes = set(me.values())
+        sqof[mid] = sq
         ok = sq & mes
         wrong = sq - mes
         miss = mes - sq
@@ -64,6 +67,8 @@ def main():
         tot["wrong"] += 1 if wrong else 0
         tot["miss"] += 1 if miss else 0
         tot["clean"] += 1 if (not wrong and not miss) else 0
+        if miss:
+            missof.add(mid)
         if wrong or miss:
             bad.append((mid, len(wrong), len(miss), len(miss_in)))
         # 认出的号里自报对不上的：只要自报的玩家号全在认出的号里、多出来的个数正好等于没有自报的号数，就只是「没有自报可比」
@@ -98,6 +103,37 @@ def main():
         P(f"{mid} | {'否' if mid in MINE else '是'} | {nb} | {ns} | {hum}（{mx}） | {'、'.join(seeded) or '—'} | {'有' if up else '没有'} | {'、'.join(str(e) for e in ends) or '—'} | {'、'.join(str(v) for v in over) or '—'}")
     two = [x[0] for x in split if len(x[3]) > 1 or x[4] or len(x[5]) > 1 or x[6]]
     P(f"合计：{len(split)} 局里，至少有一项迹象说明这些号分在不止一个房间的 {len(two)} 局（{'、'.join(two) or '没有'}）；其余 {len(split) - len(two)} 局从结算表看不出来")
+    P("注：这一段只是结算表里的迹象，不够准；哪些局分了房间以 [ID-4] 的拆分表为准")
+    # 与统筹下发的物理房间拆分表对照（R10 的 rooms-discovery.json；广播 0002 第 3 节）
+    rp_ = os.path.join(DATA, "src", "tools", "rooms-discovery.json")
+    if os.path.exists(rp_):
+        rd = {r["matchId"]: r for r in json.load(open(rp_, encoding="utf-8")) if r.get("cohort") == "squad10" and r.get("split") == "discovery"}
+        multi = sorted(m for m, r in rd.items() if r["nRooms"] > 1)
+        P("")
+        P("[ID-4] 与共享的物理房间拆分表（src/tools/rooms-discovery.json）对照")
+        P(f"拆分表里 squad10 发现集 {len(rd)} 局：1 个房间的 {sum(1 for r in rd.values() if r['nRooms'] == 1)} 局，不止 1 个房间的 {len(multi)} 局（{'、'.join(multi) or '没有'}）")
+        same = set(multi) == missof
+        P(f"本表「有号自报了但没认出」的 {len(missof)} 局（{'、'.join(sorted(missof)) or '没有'}）与拆分表里不止 1 个房间的局{'完全相同' if same else '不完全相同'}")
+        P("局 | 样本外 | 拆分表：各房间的编队号数（seededPlayers） | 拆分表的主房间 | 回放是哪个房间（按认出的玩家号对） | 回放房间里的编队号数 | 回放是不是号最多的房间")
+        nminor = 0
+        for m in multi:
+            r = rd[m]
+            rooms = r["rooms"]
+            desc = "；".join(f"房间 {x['roomIdx']}：{x['nBots']} 个号（{x['seeded']}）" for x in rooms)
+            sq = sqof.get(m)
+            rep = None
+            if sq is not None:
+                for x in rooms:
+                    if {b["me"] for b in x["bots"] if b.get("me") is not None} == sq:
+                        rep = x
+            big = max(x["nBots"] for x in rooms)
+            if rep is None:
+                P(f"{m} | {'否' if m in MINE else '是'} | {desc} | 房间 {r['mainRoom']} | 对不上 | — | —")
+                continue
+            minor = rep["nBots"] < big
+            nminor += 1 if minor else 0
+            P(f"{m} | {'否' if m in MINE else '是'} | {desc} | 房间 {r['mainRoom']} | 房间 {rep['roomIdx']} | {rep['nBots']} | {'不是' if minor else '是'}")
+        P(f"合计：不止 1 个房间的 {len(multi)} 局里，对局包带的回放不是号最多的那个房间的 {nminor} 局")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
     print(f"写 {os.path.relpath(OUT, ROOT)}（{len(L)} 行）")

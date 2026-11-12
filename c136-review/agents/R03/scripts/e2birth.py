@@ -143,6 +143,30 @@ def load_match(row):
             elif (t - 90) in tt and (t + 90) in tt:
                 fill[t] += (tt[t - 90] + tt[t + 90]) / 2.0
                 nfill[t] += 1
+    # 事后修补用：地的倍数只算回放房间里的号（对局包里可能混着别的房间的号）。号名全在回放里认出的局，就是全部的号；
+    # 否则按 results.csv 里每个号自报的玩家号，只留自报的号在认出的编队号里的那些（有号没有自报就算不出在不在，这一局不修）
+    sqids = {p["id"] for p in c["pts"] if p["squad"]}
+    me, resbots = {}, set()
+    rp = os.path.join(DATA, "bundles", mid, "results.csv")
+    if os.path.exists(rp):
+        for x in csv.DictReader(open(rp, encoding="utf-8")):
+            resbots.add(x["bot"])
+            if x.get("meId", "") != "":
+                me[x["bot"]] = int(float(x["meId"]))
+    names = set(per) | resbots
+    if len(sqids) >= len(names):
+        inroom = set(per)
+    elif all(b in me for b in per):
+        inroom = {b for b in per if me[b] in sqids}
+    else:
+        inroom = None
+    g3, nin = None, None
+    if inroom is not None:
+        nin = len(inroom)
+        a0 = sum(per[b].get(T0, 0) for b in inroom)
+        a1 = sum(per[b].get(T1, 0) for b in inroom)
+        if a0 > 0:
+            g3 = a1 / a0
     if nrow[T0] == 0 or nrow[T1] == 0:
         return None, f"traj.csv 在 {T0} 拍有 {nrow[T0]} 行、{T1} 拍有 {nrow[T1]} 行"
     if land[T0] <= 0:
@@ -151,7 +175,8 @@ def load_match(row):
     return dict(mid=mid, S=s, G=land[T1] / land[T0], D=(bal[T1] / land[T1]) if land[T1] > 0 else None,
                 N=c["humans"], nsq=len(sq), n0=nrow[T0], n1=nrow[T1], land0=land[T0], land1=land[T1],
                 won=row["outcome"]["resultLabel"] == "won", teams=row.get("actualTeams"), mine=mid in MINE,
-                G2=(fill[T1] / fill[T0]) if fill[T0] > 0 else None, nfill0=nfill[T0], nfill1=nfill[T1]), None
+                G2=(fill[T1] / fill[T0]) if fill[T0] > 0 else None, nfill0=nfill[T0], nfill1=nfill[T1],
+                G3=g3, nin=nin, nnames=len(names), ntraj=len(per)), None
 
 
 def block(P, title, rows):
@@ -244,8 +269,14 @@ def main():
     line("去掉编队号没认全的局", [r for r in out if r["nsq"] >= r["n0"]], "G")
     line("缺行按前后两拍补", out, "G2")
     line("两样都做", [r for r in out if r["nsq"] >= r["n0"]], "G2")
+    line("不去掉局，地的倍数只算回放房间里的号", out, "G3")
     P(f"说明：样本外 {len(out)} 局里，名下格数表里认出的编队号数少于 630 拍 traj 行数的 {len(part)} 局（{'、'.join(r['mid'] for r in part) or '没有'}）；"
       f"630 或 1530 拍有号缺行、但前后两拍都有行的 {len(gap)} 局（{'、'.join(r['mid'] for r in gap) or '没有'}）")
+    fix = [r for r in out if r["nin"] is not None and r["nin"] < r["ntraj"]]
+    nofix = [r for r in out if r["nin"] is None]
+    P("「只算回放房间里的号」改了地的倍数的局：" + ("；".join(
+        f"{r['mid']}（对局包里 {r['ntraj']} 个号，回放房间里 {r['nin']} 个，地的倍数 {r['G']:.2f} → {(format(r['G3'], '.2f') if r['G3'] is not None else '算不出')}）" for r in fix) or "没有")
+      + f"；有号没有自报玩家号、修不了的 {len(nofix)} 局" + (f"（{'、'.join(r['mid'] for r in nofix)}）" if nofix else ""))
     P("")
     block(P, f"去掉编队号没认全的 {len(part)} 局之后，同一套量（事后加的；这几局为什么要去掉见 out/council/E2-idcheck.txt）：",
           [r for r in out if r["nsq"] >= r["n0"]])
