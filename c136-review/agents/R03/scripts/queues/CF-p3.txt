@@ -1,0 +1,3 @@
+# 开环消融试跑 3：4284 拍起拿掉敌方捐款（A041 尾段短；A066 敌方 4284 拍后捐款最多）
+out/council/cf/A041-open-4284.txt|node scripts/cfopen.mjs A041 --arms enemydon@4284,drop1@4284:0,drop1@4284:9,squaddon@1500-4284
+out/council/cf/A066-open-4284.txt|node scripts/cfopen.mjs A066 --arms enemydon@4284,drop1@4284:0,drop1@4284:31

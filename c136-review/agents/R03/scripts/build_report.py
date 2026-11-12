@@ -13,6 +13,8 @@
         从 X12-summary.txt 里取编号开头是 A1、A2、B6 的几行，转成「每局一行」的表（各局取值按 X12 文件头写的顺序）。
   {{LINE X12-summary.txt 计数 | A1 }}
         原样取该文件里第一条以给定文字开头（去掉行首空格后）的行，前面加「> 」。
+  {{RAW ../council/cf/*.txt 还没有输出时写的一句话}}
+        把匹配到的文件原文各放进一个代码块；一个文件都没有时写后面那句话。
 """
 import os
 import re
@@ -134,6 +136,23 @@ def line(arg):
     raise SystemExit(f"{fname} 里找不到以「{key}」开头的行")
 
 
+def rawfiles(arg):
+    """{{RAW ../council/cf/*.txt 缺的时候写的话}}：把匹配到的文件原文放进代码块（每个文件前一行写文件名）；一个都没有时写后面那句话。"""
+    import glob
+    parts = arg.split(None, 1)
+    pat = os.path.join(CROSS, parts[0])
+    files = sorted(glob.glob(pat))
+    if not files:
+        return [parts[1] if len(parts) > 1 else "（还没有输出）"]
+    out = []
+    for p in files:
+        body = open(p, encoding="utf-8").read().rstrip("\n")
+        if not body.strip():
+            continue
+        out += [f"`{os.path.relpath(p, ROOT)}`：", "", "```text"] + body.split("\n") + ["```", ""]
+    return out or [parts[1] if len(parts) > 1 else "（还没有输出）"]
+
+
 def main():
     src, dst = sys.argv[1], sys.argv[2]
     src = src if os.path.isabs(src) else os.path.join(ROOT, src)
@@ -141,12 +160,12 @@ def main():
     out = []
     n = 0
     for raw in open(src, encoding="utf-8").read().split("\n"):
-        m = re.match(r"^\{\{(TAB|SER|LINE)\s+(.*)\}\}\s*$", raw)
+        m = re.match(r"^\{\{(TAB|SER|LINE|RAW)\s+(.*)\}\}\s*$", raw)
         if not m:
             out.append(raw)
             continue
         n += 1
-        out += {"TAB": tab, "SER": ser, "LINE": line}[m.group(1)](m.group(2))
+        out += {"TAB": tab, "SER": ser, "LINE": line, "RAW": rawfiles}[m.group(1)](m.group(2))
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     with open(dst, "w", encoding="utf-8") as f:
         f.write("\n".join(out))

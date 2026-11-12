@@ -1,0 +1,5 @@
+# 第 3 批：决策层消融（续）+ 32 拍缓存消融（A041 整局）
+out/council/abl/shadow-A041-offline-2400.txt|node scripts/g0ablate.mjs A041 --shadow offline --until 2400
+out/council/abl/shadow-A041-adapter-sim-2400.txt|node scripts/g0ablate.mjs A041 --shadow adapter-sim --until 2400
+out/council/abl/phys-A041-base-end.txt|node scripts/g0ablate.mjs A041 --phys base
+out/council/abl/phys-A041-cache32-end.txt|node scripts/g0ablate.mjs A041 --phys cache32
