@@ -9,7 +9,7 @@
 import sys, os, re, glob, json
 sys.dont_write_bytecode = True
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CORPUS = ['out/m7/TABLES.md', 'out/m7/VERSIONS.md', 'out/bundle_patterns.txt', 'out/bundle_cmdstream.txt', 'out/bundle_cmdstream_mine.txt', 'out/bundle_join.txt',
+CORPUS = ['out/m7/TABLES.md', 'out/m7/VERSIONS.md', 'out/m7/FUNNEL-BYTYPE.md', 'out/bundle_patterns.txt', 'out/bundle_cmdstream.txt', 'out/bundle_cmdstream_mine.txt', 'out/bundle_join.txt', 'out/bundle_humans.txt',
           'out/pattern_matrix.md', 'out/pattern_matrix.txt', 'out/pattern_evidence.txt', 'out/hub0007/m7_table.md', 'out/spawn_geometry.txt',
           'scripts/patterns_r04.json', 'out/m7/*.txt', 'out/*_all.txt', 'reviews/*.json', 'reports/M1-KNOWN-MECHANICS.md', 'reports/MECHANICS-B.md']
 NUM = re.compile(r'(?<![\w.])[+\-−]?\d[\d,]*(?:\.\d+)?%?')
