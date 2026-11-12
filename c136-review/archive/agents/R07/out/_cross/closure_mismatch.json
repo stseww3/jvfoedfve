@@ -6,10 +6,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 226,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 130,
@@ -17,10 +19,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 149,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 37,
@@ -28,10 +32,31 @@
    "aliveNeutral": 0,
    "otherTarget": 3,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 40,
    "bad": 3,
-   "firstBad": 1722
+   "firstBad": 1722,
+   "badList": [
+    [
+     1722,
+     "talon5",
+     "otherTarget",
+     "boat"
+    ],
+    [
+     1743,
+     "noah88",
+     "otherTarget",
+     "boat"
+    ],
+    [
+     2142,
+     "talon5",
+     "otherTarget",
+     "boat"
+    ]
+   ]
   },
   "4284_5184": {
    "exact": 34,
@@ -39,10 +64,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 35,
    "bad": 1,
-   "firstBad": 4347
+   "firstBad": 4347,
+   "badList": [
+    [
+     4347,
+     "ryan_m",
+     "mis",
+     "attack"
+    ]
+   ]
   }
  },
  "A033": {
@@ -52,10 +86,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 224,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 137,
@@ -63,10 +99,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 155,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 52,
@@ -74,10 +112,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 53,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 59,
@@ -85,10 +125,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 59,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A039": {
@@ -98,10 +140,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 419,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 314,
@@ -109,10 +153,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 331,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 83,
@@ -120,10 +166,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
-   "unmatched": 1,
+   "donFlip": 1,
+   "unmatched": 0,
    "n": 84,
    "bad": 1,
-   "firstBad": 2142
+   "firstBad": 2142,
+   "badList": [
+    [
+     2142,
+     "noah88",
+     "donFlip",
+     "donate"
+    ]
+   ]
   },
   "4284_5184": {
    "exact": 51,
@@ -131,10 +186,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 51,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A053": {
@@ -144,10 +201,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 334,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 154,
@@ -155,10 +214,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 269,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 57,
@@ -166,10 +227,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
-   "unmatched": 1,
+   "donFlip": 1,
+   "unmatched": 0,
    "n": 58,
    "bad": 1,
-   "firstBad": 2142
+   "firstBad": 2142,
+   "badList": [
+    [
+     2142,
+     "sora_w",
+     "donFlip",
+     "donate"
+    ]
+   ]
   },
   "4284_5184": {
    "exact": 64,
@@ -177,10 +247,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 64,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A061": {
@@ -190,10 +262,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 1,
    "n": 225,
    "bad": 1,
-   "firstBad": 1001
+   "firstBad": 1001,
+   "badList": [
+    [
+     1001,
+     "sora_w",
+     "unmatched",
+     "boat"
+    ]
+   ]
   },
   "630_1530": {
    "exact": 118,
@@ -201,10 +282,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 1,
    "n": 138,
    "bad": 1,
-   "firstBad": 1001
+   "firstBad": 1001,
+   "badList": [
+    [
+     1001,
+     "sora_w",
+     "unmatched",
+     "boat"
+    ]
+   ]
   },
   "1500_2400": {
    "exact": 63,
@@ -212,10 +302,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 63,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 28,
@@ -223,10 +315,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 28,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A062": {
@@ -236,10 +330,43 @@
    "aliveNeutral": 5,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 238,
    "bad": 5,
-   "firstBad": 1337
+   "firstBad": 1337,
+   "badList": [
+    [
+     1337,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1337,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1386,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1470,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1470,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "630_1530": {
    "exact": 69,
@@ -247,10 +374,43 @@
    "aliveNeutral": 5,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 162,
    "bad": 5,
-   "firstBad": 1337
+   "firstBad": 1337,
+   "badList": [
+    [
+     1337,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1337,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1386,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1470,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1470,
+     "ryan_m",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "1500_2400": {
    "exact": 11,
@@ -258,10 +418,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
-   "unmatched": 1,
+   "donFlip": 1,
+   "unmatched": 0,
    "n": 17,
    "bad": 1,
-   "firstBad": 2142
+   "firstBad": 2142,
+   "badList": [
+    [
+     2142,
+     "riku_x",
+     "donFlip",
+     "donate"
+    ]
+   ]
   },
   "4284_5184": {
    "exact": 24,
@@ -269,10 +438,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 24,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A070": {
@@ -282,10 +453,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 541,
    "bad": 1,
-   "firstBad": 882
+   "firstBad": 882,
+   "badList": [
+    [
+     882,
+     "ryan_m",
+     "mis",
+     "attack"
+    ]
+   ]
   },
   "630_1530": {
    "exact": 247,
@@ -293,10 +473,19 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 483,
    "bad": 1,
-   "firstBad": 882
+   "firstBad": 882,
+   "badList": [
+    [
+     882,
+     "ryan_m",
+     "mis",
+     "attack"
+    ]
+   ]
   },
   "1500_2400": {
    "exact": 232,
@@ -304,10 +493,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 365,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 0,
@@ -315,10 +506,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 0,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A079": {
@@ -328,10 +521,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 293,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 140,
@@ -339,10 +534,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 209,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 21,
@@ -350,10 +547,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 21,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 72,
@@ -361,10 +560,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 72,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A082": {
@@ -374,10 +575,19 @@
    "aliveNeutral": 1,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 291,
    "bad": 1,
-   "firstBad": 1085
+   "firstBad": 1085,
+   "badList": [
+    [
+     1085,
+     "talon5",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "630_1530": {
    "exact": 86,
@@ -385,10 +595,19 @@
    "aliveNeutral": 1,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 192,
    "bad": 1,
-   "firstBad": 1085
+   "firstBad": 1085,
+   "badList": [
+    [
+     1085,
+     "talon5",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "1500_2400": {
    "exact": 112,
@@ -396,10 +615,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 114,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 40,
@@ -407,10 +628,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 40,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A089": {
@@ -420,10 +643,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 431,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "630_1530": {
    "exact": 174,
@@ -431,10 +656,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 350,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "1500_2400": {
    "exact": 99,
@@ -442,10 +669,19 @@
    "aliveNeutral": 1,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 141,
    "bad": 1,
-   "firstBad": 1645
+   "firstBad": 1645,
+   "badList": [
+    [
+     1645,
+     "zero_7",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "4284_5184": {
    "exact": 42,
@@ -453,10 +689,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 42,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "A091": {
@@ -466,10 +704,31 @@
    "aliveNeutral": 3,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 330,
    "bad": 3,
-   "firstBad": 1274
+   "firstBad": 1274,
+   "badList": [
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "630_1530": {
    "exact": 202,
@@ -477,10 +736,31 @@
    "aliveNeutral": 3,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 249,
    "bad": 3,
-   "firstBad": 1274
+   "firstBad": 1274,
+   "badList": [
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ],
+    [
+     1274,
+     "sora_w",
+     "aliveNeutral",
+     "attack"
+    ]
+   ]
   },
   "1500_2400": {
    "exact": 41,
@@ -488,10 +768,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 42,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   },
   "4284_5184": {
    "exact": 53,
@@ -499,10 +781,12 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 0,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 53,
    "bad": 0,
-   "firstBad": null
+   "firstBad": null,
+   "badList": []
   }
  },
  "all": {
@@ -512,6 +796,7 @@
    "aliveNeutral": 9,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 1,
    "n": 3552,
    "bad": 11
@@ -522,6 +807,7 @@
    "aliveNeutral": 9,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 1,
    "n": 2687,
    "bad": 11
@@ -532,7 +818,8 @@
    "aliveNeutral": 1,
    "otherTarget": 3,
    "mis": 0,
-   "unmatched": 3,
+   "donFlip": 3,
+   "unmatched": 0,
    "n": 998,
    "bad": 7
   },
@@ -542,9 +829,375 @@
    "aliveNeutral": 0,
    "otherTarget": 0,
    "mis": 1,
+   "donFlip": 0,
    "unmatched": 0,
    "n": 468,
    "bad": 1
+  }
+ },
+ "donFlip": {
+  "n": 16,
+  "donAll": 649,
+  "donOtherBad": 2,
+  "list": [
+   {
+    "g": "A033",
+    "bot": "alex_k",
+    "issue": 4090,
+    "land": 4102,
+    "why": "额度增加（4099 拍）"
+   },
+   {
+    "g": "A039",
+    "bot": "noah88",
+    "issue": 2130,
+    "land": 2142,
+    "why": "规则换档（2142 拍）"
+   },
+   {
+    "g": "A039",
+    "bot": "kaito9",
+    "issue": 3200,
+    "land": 3213,
+    "why": "规则换档（3213 拍）"
+   },
+   {
+    "g": "A039",
+    "bot": "noah88",
+    "issue": 3205,
+    "land": 3213,
+    "why": "规则换档（3213 拍）"
+   },
+   {
+    "g": "A039",
+    "bot": "leo_tx",
+    "issue": 3210,
+    "land": 3227,
+    "why": "规则换档（3213 拍）"
+   },
+   {
+    "g": "A053",
+    "bot": "sora_w",
+    "issue": 2135,
+    "land": 2142,
+    "why": "规则换档（2142 拍）"
+   },
+   {
+    "g": "A053",
+    "bot": "sora_w",
+    "issue": 2685,
+    "land": 2702,
+    "why": "额度增加（2699 拍）"
+   },
+   {
+    "g": "A053",
+    "bot": "leo_tx",
+    "issue": 3210,
+    "land": 3227,
+    "why": "规则换档（3213 拍）"
+   },
+   {
+    "g": "A062",
+    "bot": "riku_x",
+    "issue": 2130,
+    "land": 2142,
+    "why": "规则换档（2142 拍）"
+   },
+   {
+    "g": "A062",
+    "bot": "kaito9",
+    "issue": 3200,
+    "land": 3213,
+    "why": "规则换档（3213 拍）"
+   },
+   {
+    "g": "A079",
+    "bot": "alex_k",
+    "issue": 3490,
+    "land": 3500,
+    "why": "额度增加（3499 拍）"
+   },
+   {
+    "g": "A079",
+    "bot": "talon5",
+    "issue": 3495,
+    "land": 3514,
+    "why": "额度增加（3499 拍）"
+   },
+   {
+    "g": "A079",
+    "bot": "ryan_m",
+    "issue": 4275,
+    "land": 4284,
+    "why": "规则换档（4284 拍）"
+   },
+   {
+    "g": "A079",
+    "bot": "zero_7",
+    "issue": 4270,
+    "land": 4284,
+    "why": "规则换档（4284 拍）"
+   },
+   {
+    "g": "A082",
+    "bot": "ryan_m",
+    "issue": 4275,
+    "land": 4284,
+    "why": "规则换档（4284 拍）"
+   },
+   {
+    "g": "A091",
+    "bot": "zexos1",
+    "issue": 3490,
+    "land": 3500,
+    "why": "额度增加（3499 拍）"
+   }
+  ],
+  "games": [
+   "A033",
+   "A039",
+   "A053",
+   "A062",
+   "A079",
+   "A082",
+   "A091"
+  ],
+  "byWhy": {
+   "额度增加": 5,
+   "规则换档": 11
+  }
+ },
+ "inflight": {
+  "A007@630": {
+   "hist": 4,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 4,
+   "extra": 0
+  },
+  "A007@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A007@4284": {
+   "hist": 20,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 22,
+   "extra": 2
+  },
+  "A033@630": {
+   "hist": 1,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 1,
+   "extra": 0
+  },
+  "A033@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A033@4284": {
+   "hist": 1,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 2,
+   "extra": 1
+  },
+  "A039@630": {
+   "hist": 5,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 5,
+   "extra": 0
+  },
+  "A039@1500": {
+   "hist": 2,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 2,
+   "extra": 0
+  },
+  "A039@4284": {
+   "hist": 4,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 4,
+   "extra": 0
+  },
+  "A053@630": {
+   "hist": 14,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 14,
+   "extra": 0
+  },
+  "A053@1500": {
+   "hist": 1,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 1,
+   "extra": 0
+  },
+  "A053@4284": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A061@630": {
+   "hist": 5,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 5,
+   "extra": 0
+  },
+  "A061@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A061@4284": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A062@630": {
+   "hist": 52,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 52,
+   "extra": 0
+  },
+  "A062@1500": {
+   "hist": 14,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 14,
+   "extra": 0
+  },
+  "A062@4284": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A070@630": {
+   "hist": 2,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 2,
+   "extra": 0
+  },
+  "A070@1500": {
+   "hist": 116,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 116,
+   "extra": 0
+  },
+  "A070@4284": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": null,
+   "extra": null
+  },
+  "A079@630": {
+   "hist": 4,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 4,
+   "extra": 0
+  },
+  "A079@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A079@4284": {
+   "hist": 3,
+   "flip": 2,
+   "flipAtT0": 2,
+   "arm": 3,
+   "extra": 0
+  },
+  "A082@630": {
+   "hist": 1,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 1,
+   "extra": 0
+  },
+  "A082@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A082@4284": {
+   "hist": 0,
+   "flip": 1,
+   "flipAtT0": 1,
+   "arm": 0,
+   "extra": 0
+  },
+  "A089@630": {
+   "hist": 5,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 5,
+   "extra": 0
+  },
+  "A089@1500": {
+   "hist": 36,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 36,
+   "extra": 0
+  },
+  "A089@4284": {
+   "hist": 2,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 2,
+   "extra": 0
+  },
+  "A091@630": {
+   "hist": 1,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 1,
+   "extra": 0
+  },
+  "A091@1500": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
+  },
+  "A091@4284": {
+   "hist": 0,
+   "flip": 0,
+   "flipAtT0": 0,
+   "arm": 0,
+   "extra": 0
   }
  }
 }

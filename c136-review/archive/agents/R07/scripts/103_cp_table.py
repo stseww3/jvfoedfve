@@ -35,6 +35,15 @@ CP = os.path.join(OUT, "_cache", "cp")
 CROSS = os.path.join(OUT, "_cross")
 GAMES = ["A007", "A033", "A039", "A053", "A061", "A062", "A070", "A079", "A082", "A089", "A091"]
 T0S = [0, 630, 1500, 4284]
+# 4284 拍正好是赠兵规则换档的一拍。A079、A082 各有赠兵在这一拍落地、而影子在发令那一拍判定额度不够（离线通道不发），
+# 从 4284 拍接管时 C2 与历史有差别：A079 窗末我方领土差 1% 左右，A082 差六成以上。两局改为从 4285 拍接管
+# （4284 拍落地的指令照录像执行）后都逐拍复现（表 0b）。
+# A082 这一局 4284 断面的各条对照都用 4285 拍接管的运行（--t0 4285 --h 899，窗末仍是 5184 拍）；
+# A079 的差别与 A033 同一量级，保持从 4284 拍接管（表 0 里如实列出差别）。
+SHIFT = {"A082": 4285}
+# 不计入窗口汇总（平均、中位数、三层）的局：A082 的 4284 断面这一窗没有指令被按住，但结果对极小的差别都很敏感
+# （少一条赠兵、换一组延迟，ln ρ 的变化就差 0.5 以上，见表 0c 和报告 §6.2），C1 与 C2 之差不能当作通道的作用。
+EXCL_WIN = {4284: ("A082",)}
 HORIZ = {0: [300, 630, 900, 1200, 1500], 630: [150, 300, 450, 600, 900], 1500: [150, 300, 450, 600, 900], 4284: [150, 300, 450, 600, 900]}
 
 
@@ -92,6 +101,8 @@ def main():
     os.makedirs(CROSS, exist_ok=True)
     runs = {}
     base = {}
+    old4284 = {}   # SHIFT 里的局原来从 4284 拍接管的结果：只在 §3 的说明里用
+    alt4285 = {}   # 不在 SHIFT 里的局从 4285 拍接管的运行：只用来验证和取窗末的历史值，不进各表
     for g in GAMES:
         for p in sorted(glob.glob(os.path.join(CP, g, "*.json"))):
             tag = os.path.basename(p)[:-5]
@@ -102,8 +113,65 @@ def main():
                 continue
             if tag == "H":
                 base[g] = j
-            else:
-                runs[(g, tag)] = j
+                continue
+            if "-t4285-" in tag and g not in SHIFT:
+                alt4285[(g, tag)] = j
+                continue
+            if g in SHIFT and not tag.startswith("H-"):
+                if "-t4284-" in tag:
+                    old4284[(g, tag)] = j
+                    continue
+                if f"-t{SHIFT[g]}-" in tag:
+                    # 这一局的 4284 断面实际从 SHIFT[g] 拍接管：断面时的局面相同，名字和断面拍都按 4284 记
+                    tag = tag.replace(f"-t{SHIFT[g]}-", "-t4284-")
+                    j["T0real"], j["T0"] = j["T0"], 4284
+            runs[(g, tag)] = j
+    # 4284 断面的窗末（5184 拍）不是 30 的倍数，H.json 没有这一拍的记录（最近的是 5190 拍）。
+    # 有不扰动的历史重放（H-t4284-s0：全按录像、不动随机数、跑到 5184 拍）时，先核对它与 H.json 在共同的记录拍上逐个相同，
+    # 再把它最后一拍的记录补进历史的记录里；这样窗末的历史值与各通道取的是同一拍。
+    hist_end_exact, hist_end_bad = [], []
+    for g in GAMES:
+        j = runs.pop((g, "H-t4284-s0"), None)
+        h = base.get(g)
+        if not j or not h:
+            continue
+        hs = {s["t"]: s for s in h["snaps"]}
+        key = lambda s: (s["LS"], s["LO"], s["BS"], s["BO"], s["aS"], s["aO"])
+        if any(s["t"] in hs and key(s) != key(hs[s["t"]]) for s in j["snaps"]):
+            hist_end_bad.append(g)
+            continue
+        last = j["snaps"][-1]
+        if last["t"] not in hs:
+            h["snaps"].append(last)
+            h["snaps"].sort(key=lambda s: s["t"])
+        hist_end_exact.append(g)
+    # 还没有这条历史重放的局：如果不扰动的 C2（种子 0）从接管到最后一个共同记录拍，我方和其他真人的领土、余额、在场人数
+    # 都与 H.json 逐个相同，就用这条 C2 在 5184 拍的记录当作历史在 5184 拍的值（两条轨迹到 5160 拍为止完全相同）；
+    # 否则窗末的历史值只能取 H.json 里最近的记录拍（5190 拍，晚 6 拍）。
+    hist_end_c2, hist_end_late = [], []
+    for g in GAMES:
+        h = base.get(g)
+        if not h or g in hist_end_exact:
+            continue
+        s0 = snap_at(h["snaps"], 4284, 1)
+        if not s0 or s0["aS"] == 0:
+            continue
+        hs = {s["t"]: s for s in h["snaps"]}
+        key = lambda s: (s["LS"], s["LO"], s["BS"], s["BO"], s["aS"], s["aO"])
+        src = None
+        # 候选：这一局 4284 断面不扰动的 C2；从 4285 拍接管的不扰动的 C2（A079 的验证运行）
+        for j in (runs.get((g, "C2-t4284-s0")), alt4285.get((g, "C2-t4285-s0")), jload(os.path.join(CP, g, "mt-bd4285.json"))):
+            if j and j["chan"] == "C2" and j["seed"] == 0 and j["snaps"][-1]["t"] == 5184 and 5184 not in hs and \
+                    all(key(x) == key(hs[x["t"]]) for x in j["snaps"] if x["t"] in hs) and \
+                    sum(1 for x in j["snaps"] if x["t"] in hs and x["t"] >= 4284) >= 29:
+                src = j
+                break
+        if src:
+            h["snaps"].append(dict(src["snaps"][-1], fromC2=True))
+            h["snaps"].sort(key=lambda s: s["t"])
+            hist_end_c2.append(g)
+        else:
+            hist_end_late.append(g)
     vor = {g: jload(os.path.join(OUT, g, "voronoi.json")) for g in GAMES}
     spar = jload(os.path.join(CROSS, "spawn_par.json")) or {"games": {}, "beta": {}}
 
@@ -181,7 +249,13 @@ def main():
 
     L = []
     P = L.append
-    J = {"games": {}, "nRuns": len(runs)}
+    # 窗末历史值只能取 5190 拍的局：历史上 5160 → 5190 这 30 拍里 ln ρ 变了多少（晚 6 拍带来的差别不会超过这个量级）
+    late_drift = {}
+    for g in hist_end_late:
+        h = base[g]
+        a, b = snap_at(h["snaps"], 5160, 1), snap_at(h["snaps"], 5190, 1)
+        late_drift[g] = sub(ln(rho(b, h["nSquad"], h["nOther"])), ln(rho(a, h["nSquad"], h["nOther"]))) if a and b else None
+    J = {"games": {}, "nRuns": len(runs), "histEnd5184": {"exact": hist_end_exact, "mismatch": hist_end_bad, "fromC2": hist_end_c2, "late": hist_end_late, "lateDrift": late_drift}}
     P("# 历史断面离线对照：分层归因的底表（103_cp_table.py）")
     P("# ρ = 我方号人均领土 ÷ 其他真人人均领土；v = 我方号人均天然地盘 ÷ 其他真人人均天然地盘")
     P("# 各层的数是自然对数差：正数 = 这一层让我方落后（0.10 ≈ 10%，0.69 = 差一倍），负数 = 这一层上我方占便宜")
@@ -195,6 +269,7 @@ def main():
     P("")
 
     # ---------- 表 0：C2 种子 0 对历史的复现
+    all_exact_4284 = all(g in hist_end_exact for g in GAMES if g not in hist_end_bad and (snap_at(base[g]["snaps"], 4284, 1) or {}).get("aS"))
     P("## 表 0：C2（历史实录轨迹）种子 0 对历史的复现")
     P("局\t断面\t轨迹表逐行相同的行数\t第一处我方或别的真人领土与历史不同的记录拍（每 30 拍记一次）\t看到最后一拍时：我方领土 C2 ÷ 历史\t其他真人领土 C2 ÷ 历史\t别的真人指令结果第一次与历史不同的拍\t注入指令落在历史原位置的条数 / 全部落地")
     J["closure"] = {}
@@ -211,8 +286,11 @@ def main():
                 if x and s["t"] >= T0 and (s["LS"], s["LO"]) != (x["LS"], x["LO"]):
                     first = s["t"]
                     break
-            last = j["snaps"][-1]
-            xl = hs.get(last["t"]) or snap_at(h["snaps"], last["t"])
+            # 比到最后一个两边都有记录的拍。4284 断面的窗末 5184 拍不在历史基线的记录拍里：只要还有一局没有
+            # 不扰动的历史重放（H-t4284-s0），这个断面各局就都比到 5160 拍，免得各局比的不是同一拍
+            hs_c = hs if T0 != 4284 or all_exact_4284 else {t: x for t, x in hs.items() if t <= 5160}
+            last = next(s for s in reversed(j["snaps"]) if s["t"] in hs_c)
+            xl = hs_c[last["t"]]
             a = f"{last['LS'] / xl['LS']:.3f}" if xl and xl["LS"] else ("两边都是 0" if last["LS"] == 0 else f"历史为 0，C2 为 {last['LS']}")
             b = f"{last['LO'] / xl['LO']:.3f}" if xl and xl["LO"] else "-"
             ps = j.get("posStat") or {}
@@ -221,6 +299,177 @@ def main():
             J["closure"][f"{g}@{T0}"] = {"trajBoth": j["validate"]["both"], "trajRows": j["validate"]["rows"], "firstDiff": first, "lastT": last["t"],
                                          "LSratio": last["LS"] / xl["LS"] if xl and xl["LS"] else None, "LOratio": last["LO"] / xl["LO"] if xl and xl["LO"] else None,
                                          "firstOkFlip": ff, "posHist": ps.get("hist"), "landed": j["chanStat"]["landed"]}
+    P("")
+
+    # ---------- 表 0b：4284 断面的接管推后 1 拍（4284 拍落地的录像指令照常执行）时，C2 种子 0 对历史的复现
+    #   用来验证：A079、A082 在 4284 断面不能复现，是因为有赠兵正好在接管那一拍落地（§3）
+    P("## 表 0b：接管推后 1 拍（4285 拍）时 C2 种子 0 对历史的复现")
+    P("局\t第一处余额或领土与历史不同的记录拍\t第一处领土不同的记录拍\t看到最后一拍时：我方领土 C2 ÷ 历史\t其他真人领土 C2 ÷ 历史")
+    J["closureBd"] = {}
+    for g in GAMES:
+        j = jload(os.path.join(CP, g, "mt-bd4285.json"))
+        h = base.get(g)
+        if not j or not h:
+            continue
+        hs = {s["t"]: s for s in h["snaps"]}
+        first = firstB = None
+        for s in j["snaps"]:
+            x = hs.get(s["t"])
+            if not x or s["t"] < j["T0"]:
+                continue
+            if first is None and (s["LS"], s["LO"]) != (x["LS"], x["LO"]):
+                first = s["t"]
+            if firstB is None and (s["LS"], s["LO"], s["BS"], s["BO"]) != (x["LS"], x["LO"], x["BS"], x["BO"]):
+                firstB = s["t"]
+        last = next(x for x in reversed(j["snaps"]) if x["t"] in hs)
+        xl = hs[last["t"]]
+        J["closureBd"][g] = {"T0": j["T0"], "firstDiff": first, "firstDiffBal": firstB, "lastT": last["t"],
+                             "LSratio": last["LS"] / xl["LS"] if xl and xl["LS"] else None, "LOratio": last["LO"] / xl["LO"] if xl and xl["LO"] else None}
+        c = J["closureBd"][g]
+        P(f"{g}\t{'没有' if firstB is None else firstB}\t{'没有' if first is None else first}\t{'-' if c['LSratio'] is None else format(c['LSratio'], '.3f')}\t{'-' if c['LOratio'] is None else format(c['LOratio'], '.3f')}")
+    # 余额第一处不同的记录拍（4284 断面）
+    def first_bal(j, h):
+        hs = {s["t"]: s for s in h["snaps"]}
+        return next((s["t"] for s in j["snaps"] if s["t"] >= 4284 and hs.get(s["t"]) and
+                     (s["LS"], s["LO"], s["BS"], s["BO"]) != (hs[s["t"]]["LS"], hs[s["t"]]["LO"], hs[s["t"]]["BS"], hs[s["t"]]["BO"])), None)
+    for g in GAMES:
+        j = runs.get((g, "C2-t4284-s0"))
+        h = base.get(g)
+        c = J["closure"].get(f"{g}@4284")
+        if not j or not h or not c:
+            continue
+        c["firstDiffBal"] = first_bal(j, h)
+        if g in SHIFT:
+            c["T0real"] = j.get("T0real")
+    # SHIFT 里的局：原来从 4284 拍接管的结果（只用来说明为什么改从 4285 拍接管）
+    P("## 表 0c：改从 4285 拍接管的局，原来从 4284 拍接管时的结果")
+    P("局\tC2 种子 0：第一处余额不同的记录拍\t第一处领土不同的记录拍\t5184 拍我方领土 C2 ÷ 历史\t其他真人领土 C2 ÷ 历史\t原来各条对照这一窗 ln ρ 的变化")
+    J["shift4284"] = {}
+    for g, T1 in SHIFT.items():
+        h = base.get(g)
+        if not h:
+            continue
+        nS, nO = h["nSquad"], h["nOther"]
+        r0 = ln(rho(snap_at(h["snaps"], 4284, 1), nS, nO))
+        old = {}
+        for (gg, tag), j in sorted(old4284.items()):
+            if gg != g:
+                continue
+            r1 = ln(rho(j["snaps"][-1], nS, nO))
+            old[tag] = {"d": sub(r1, r0), "LS": j["snaps"][-1]["LS"], "aS": j["snaps"][-1]["aS"]}
+        ent = {"T0real": T1, "old": old}
+        j = old4284.get((g, "C2-t4284-s0"))
+        if j:
+            hs = {s["t"]: s for s in h["snaps"]}
+            first = next((s["t"] for s in j["snaps"] if s["t"] >= 4284 and hs.get(s["t"]) and (s["LS"], s["LO"]) != (hs[s["t"]]["LS"], hs[s["t"]]["LO"])), None)
+            hs_c = hs if all_exact_4284 else {t: x for t, x in hs.items() if t <= 5160}
+            last = next(s for s in reversed(j["snaps"]) if s["t"] in hs_c)
+            xl = hs_c[last["t"]]
+            ent["closure"] = {"lastT": last["t"], "firstDiff": first, "firstDiffBal": first_bal(j, h),
+                              "LSratio": last["LS"] / xl["LS"] if xl and xl["LS"] else None, "LOratio": last["LO"] / xl["LO"] if xl and xl["LO"] else None}
+        J["shift4284"][g] = ent
+        c = ent.get("closure") or {}
+        P(f"{g}\t{c.get('firstDiffBal', '-')}\t{c.get('firstDiff', '-')}\t{f(c.get('LSratio'))}\t{f(c.get('LOratio'))}\t" + "；".join(f"{k} {f(v['d'], 3, True)}" for k, v in old.items()))
+    P("")
+
+    # ---------- 表 0d：不计入窗口汇总的局（A082 的 4284 断面）：手头每一条离线轨迹的窗末结果
+    P("## 表 0d：不计入窗口汇总的局：各条离线轨迹在窗末（5184 拍）的结果")
+    P("局\t接管拍\t通道\t种子\t变体\tln ρ 的变化\t我方领土\t我方在场号\t每个记录拍的领土是否都与历史相同")
+    J["armsWin"] = {}
+    for T0x, gs_ in EXCL_WIN.items():
+        for g in gs_:
+            h = base.get(g)
+            if not h:
+                continue
+            nS, nO = h["nSquad"], h["nOther"]
+            hs = {s["t"]: s for s in h["snaps"]}
+            r0 = ln(rho(snap_at(h["snaps"], T0x, 1), nS, nO))
+            lst = []
+            for src in (runs, old4284):
+                for (gg, tag), j in sorted(src.items()):
+                    if gg != g or j["T0"] != T0x or j["snaps"][-1]["t"] != T0x + 900:
+                        continue
+                    sfx = "-s" + str(j["seed"])
+                    variant = tag.split(sfx, 1)[1].lstrip("-") if sfx in tag else ""
+                    e = j["snaps"][-1]
+                    same = all((x["LS"], x["LO"]) == (hs[x["t"]]["LS"], hs[x["t"]]["LO"]) for x in j["snaps"] if x["t"] in hs and x["t"] <= 5160)
+                    lst.append({"take": j.get("T0real", T0x), "chan": j["chan"], "seed": j["seed"], "variant": variant,
+                                "d": sub(ln(rho(e, nS, nO)), r0), "LS": e["LS"], "aS": e["aS"], "sameAsHist": same})
+            lst.sort(key=lambda x: (-x["take"], {"H": 0, "C2": 1, "C1": 2, "C0": 3}.get(x["chan"], 9), x["variant"], x["seed"]))
+            eh = snap_at(h["snaps"], T0x + 900)
+            J["armsWin"][f"{g}@{T0x}"] = {"hist": {"d": sub(ln(rho(eh, nS, nO)), r0), "LS": eh["LS"], "aS": eh["aS"], "t": eh["t"]}, "arms": lst}
+            for x in lst:
+                P(f"{g}\t{x['take']}\t{x['chan']}\t{x['seed']}\t{x['variant'] or '-'}\t{f(x['d'], 3, True)}\t{x['LS']}\t{x['aS']}\t{'相同' if x['sameAsHist'] else '不同'}")
+    P("")
+
+    # ---------- 表 0e：扰动种子对 C2 的作用：C2 种子 1 与种子 0（不扰动）相比
+    P("## 表 0e：只在接管那一拍扰动引擎随机数：C2 种子 1 与种子 0 相比")
+    P("局\t断面\t每个记录拍的领土和余额是否都相同\t窗末 ln ρ(种子 1) − ln ρ(种子 0)")
+    J["pert"] = []
+    for T0 in T0S:
+        for g in GAMES:
+            j0, j1 = runs.get((g, f"C2-t{T0}-s0")), runs.get((g, f"C2-t{T0}-s1"))
+            h = base.get(g)
+            if not j0 or not j1 or not h:
+                continue
+            a = {x["t"]: x for x in j0["snaps"]}
+            common = [x for x in j1["snaps"] if x["t"] in a and x["t"] >= T0]
+            same = all((x["LS"], x["LO"], x["BS"], x["BO"]) == (a[x["t"]]["LS"], a[x["t"]]["LO"], a[x["t"]]["BS"], a[x["t"]]["BO"]) for x in common)
+            d = sub(ln(rho(j1["snaps"][-1], h["nSquad"], h["nOther"])), ln(rho(j0["snaps"][-1], h["nSquad"], h["nOther"])))
+            J["pert"].append({"g": g, "T0": T0, "same": same, "d": d})
+            P(f"{g}\t{T0}\t{'相同' if same else '不同'}\t{f(d, 3, True)}")
+    P("")
+
+    # ---------- 表 0g：保持从 4284 拍接管的局里，另有从 4285 拍接管的运行的（A079）：两种接管拍下 C1 与不扰动的 C2 之差
+    P("## 表 0g：保持从 4284 拍接管的局，改从 4285 拍接管时的结果（验证用）")
+    P("局\t接管拍\tΔC2 种子 0\tΔC1 种子 0\tΔC1 − ΔC2")
+    J["alt4285"] = {}
+    for g in GAMES:
+        h = base.get(g)
+        a2, a1 = alt4285.get((g, "C2-t4285-s0")), alt4285.get((g, "C1-t4285-s0"))
+        b2, b1 = runs.get((g, "C2-t4284-s0")), runs.get((g, "C1-t4284-s0"))
+        if not h or not (a2 and a1 and b2 and b1):
+            continue
+        nS, nO = h["nSquad"], h["nOther"]
+        r0 = ln(rho(snap_at(h["snaps"], 4284, 1), nS, nO))
+        dd = {k: sub(ln(rho(j["snaps"][-1], nS, nO)), r0) for k, j in (("c2_4285", a2), ("c1_4285", a1), ("c2_4284", b2), ("c1_4284", b1))}
+        dd["gap4285"], dd["gap4284"] = sub(dd["c1_4285"], dd["c2_4285"]), sub(dd["c1_4284"], dd["c2_4284"])
+        J["alt4285"][g] = dd
+        P(f"{g}\t4285\t{f(dd['c2_4285'], 3, True)}\t{f(dd['c1_4285'], 3, True)}\t{f(dd['gap4285'], 3, True)}")
+        P(f"{g}\t4284\t{f(dd['c2_4284'], 3, True)}\t{f(dd['c1_4284'], 3, True)}\t{f(dd['gap4284'], 3, True)}")
+    P("")
+
+    # ---------- 表 0h：C2 的帧内先后改成随机（--pos rand，名字后缀 -rp）与放回历史原位置相比
+    P("## 表 0h：C2 的帧内先后改成随机，与放回历史原位置的同一条相比")
+    P("局\t断面（实际接管拍）\t种子\t排在这一帧录像指令之前 / 之后的条数\t每个记录拍的领土和余额是否都相同")
+    J["rpCheck"] = []
+    for (g, tag), j in sorted(runs.items()):
+        if not tag.endswith("-rp"):
+            continue
+        k = runs.get((g, tag[:-3]))
+        if not k:
+            continue
+        a = {x["t"]: x for x in k["snaps"]}
+        same = all((x["LS"], x["LO"], x["BS"], x["BO"]) == (a[x["t"]]["LS"], a[x["t"]]["LO"], a[x["t"]]["BS"], a[x["t"]]["BO"]) for x in j["snaps"] if x["t"] in a)
+        ps = j.get("posStat") or {}
+        J["rpCheck"].append({"g": g, "T0": j["T0"], "T0real": j.get("T0real", j["T0"]), "seed": j["seed"], "before": ps.get("before"), "after": ps.get("after"), "same": same})
+        P(f"{g}\t{j['T0']}（{j.get('T0real', j['T0'])}）\t{j['seed']}\t{ps.get('before')} / {ps.get('after')}\t{'相同' if same else '不同'}")
+    P("")
+
+    # ---------- 表 0f：各断面时内置 AI 占全图陆地的比例（扰动种子只改变内置 AI 的随机行为，它的作用随这个比例变小）
+    P("## 表 0f：历史上各断面时内置 AI 占全图陆地的比例")
+    P("断面\t局数\t中位数\t最小\t最大")
+    J["botShare"] = {}
+    for T0 in (630, 1500, 2400, 4284):
+        xs = []
+        for g in GAMES:
+            h = base.get(g)
+            sx = snap_at(h["snaps"], T0, 1) if h else None
+            if sx:
+                xs.append(sx["botL"] / h["land"])
+        if xs:
+            J["botShare"][str(T0)] = {"n": len(xs), "median": med(xs), "min": min(xs), "max": max(xs)}
+            P(f"{T0}\t{len(xs)}\t{100 * med(xs):.1f}%\t{100 * min(xs):.1f}%\t{100 * max(xs):.1f}%")
     P("")
 
     # ---------- 表 1：断面 0 的分层
@@ -503,9 +752,12 @@ def main():
                 d["base"] = sub(d["d0"], d["d1"]); d["hold"] = sub(d["d1"], d["d2p"]); d["bias"] = sub(d["d2p"], d["dH"])
                 fl = sel(g, "C1", T0, hh)
                 flip = (sum(x["oppOkFlip"] for x in fl) / max(1, sum(x["oppCmds"] for x in fl))) if fl else None
+                # 平均和中位数只用「历史、C2p、C1 都有定义」的局（我方全灭时 ln ρ 没有定义），免得各列的局不一样
+                excl = g in EXCL_WIN.get(T0, ())
+                core_ok = all(d[k] is not None for k in ("dH", "d2p", "d1")) and not excl
                 for k in acc:
-                    acc[k].append(d[k])
-                J["win"].setdefault(g, {})[f"t{T0}_h{hh}"] = dict(d, rho0=r0, rhoH=rh, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1], flip=flip)
+                    acc[k].append(d[k] if core_ok else None)
+                J["win"].setdefault(g, {})[f"t{T0}_h{hh}"] = dict(d, rho0=r0, rhoH=rh, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1], flip=flip, excl=excl)
                 dh = "历史上已全灭" if rh is not None and rh == 0 else f(d["dH"], sign=True)
                 P(f"{g}\t{r0:.3f}\t{dh}\t" + "\t".join(f(d[k], sign=True) for k in ks[1:]) + f"\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}\t{f(100 * flip, 1) + '%' if flip is not None else '-'}")
             if any(x is not None for x in acc["d1"]):
@@ -513,6 +765,34 @@ def main():
                 P("平均\t\t" + "\t".join(f(mean(acc[k]), sign=True) + f"（{sum(1 for x in acc[k] if x is not None)} 局）" for k in ks))
                 J["winSum"][f"t{T0}_h{hh}"] = {k: {"mean": mean(acc[k]), "median": med(acc[k]), "n": sum(1 for x in acc[k] if x is not None)} for k in ks}
             P("")
+
+    # ---------- 表 2e：窗口末尾的水平值（我方全灭时 ρ = 0，ln ρ 没有定义，所以另列水平值）
+    P("## 表 2e：各断面 → 900 拍后的水平值（多个种子取平均；我方全灭时 ρ = 0，ln ρ 没有定义）")
+    P("局\t断面\t断面时：ρ / 我方领土 / 我方在场号\t历史：ρ / 我方领土 / 在场号\tC2p\tC1\tC0")
+    J["winLevel"] = {}
+    for T0 in (630, 1500, 4284):
+        for g in GAMES:
+            h = base.get(g)
+            if not h:
+                continue
+            s0, s1 = snap_at(h["snaps"], T0, 1), snap_at(h["snaps"], T0 + 900)
+            if not s0 or not s1:
+                continue
+            rec = {"rho0": rho(s0, h["nSquad"], h["nOther"]), "LS0": s0["LS"], "aS0": s0["aS"],
+                   "H": {"rho": rho(s1, h["nSquad"], h["nOther"]), "LS": s1["LS"], "aS": s1["aS"], "n": 1}}
+            for key, chan, seeds in (("C2p", "C2", PERT), ("C1", "C1", (0, 1, 2)), ("C0", "C0", (0, 1, 2))):
+                rr = sel(g, chan, T0, 900, seeds=seeds)
+                if rr:
+                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr)}
+            if not any(k in rec for k in ("C2p", "C1", "C0")):
+                continue
+            J["winLevel"].setdefault(g, {})[str(T0)] = rec
+
+            def lv(k):
+                x = rec.get(k)
+                return f"{x['rho']:.3f} / {x['LS']:.0f} / {x['aS']:g}" if x else "-"
+            P(f"{g}\t{T0}\t{rec['rho0']:.3f} / {rec['LS0']} / {rec['aS0']}\t" + "\t".join(lv(k) for k in ("H", "C2p", "C1", "C0")))
+    P("")
 
     # ---------- 表 2w：各断面窗口的三层（站位基准用窗口两端的 v_γ；1500 拍以后的 v_γ 来自 105_human_fill.mjs --late）
     late = (spar.get("late") or {}).get("games") or {}
@@ -531,7 +811,7 @@ def main():
         names_ = []
         for g in GAMES:
             w = J["win"].get(g, {}).get(f"t{T0}_h900")
-            if not w or w.get("dH") is None or w.get("hold") is None:
+            if not w or w.get("dH") is None or w.get("hold") is None or w.get("excl"):
                 continue
             v0, v1 = vg_any(g, T0), vg_any(g, ENDPAR[T0])
             if not v0 or not v1:
@@ -733,6 +1013,42 @@ def main():
             P(f"{g}\t{T0}\t{hh}\t{d:.3f}\t{n}")
         P("")
         J["noise"] = [{"g": g, "T0": T0, "h": hh, "maxDev": d, "n": n} for g, T0, hh, d, n in nz]
+
+    # ---------- 表 10：同一条对照重跑（mt-a = A089 C1 断面 0 种子 1；mt-b = A089 C2 断面 630 种子 0）：每个记录拍是否相同
+    rer = []
+    for g, ta, tb in (("A089", "mt-a", "C1-t0-s1"), ("A089", "mt-b", "C2-t630-s0")):
+        ja, jb = jload(os.path.join(CP, g, ta + ".json")), runs.get((g, tb))
+        if not ja or not jb:
+            continue
+        sa = {x["t"]: x for x in ja["snaps"]}
+        sb = {x["t"]: x for x in jb["snaps"]}
+        ks2 = ("LS", "LO", "BS", "BO", "botL", "seat", "seatB", "aS", "aO")
+        common = sorted(set(sa) & set(sb))
+        rer.append({"g": g, "a": ta, "b": tb, "snaps": len(common), "diff": sum(1 for t in common if any(sa[t][k] != sb[t][k] for k in ks2)),
+                    "cmdSame": ja.get("cmdSum") == jb.get("cmdSum")})
+    if rer:
+        P("## 表 10：同一条对照在不同进程里重跑一次：记录拍是否相同")
+        P("局\t两次运行\t记录拍数\t不同的记录拍数\t指令汇总是否相同")
+        for x in rer:
+            P(f"{x['g']}\t{x['a']} / {x['b']}\t{x['snaps']}\t{x['diff']}\t{'相同' if x['cmdSame'] else '不同'}")
+        P("")
+        J["rerun"] = rer
+
+    # ---------- 表 9：同一局、同一通道、同一断面，只换种子：ln ρ 的最大值 − 最小值
+    ss = []
+    for g in GAMES:
+        for T0, hh in ((0, 1500), (630, 900), (1500, 900), (4284, 900)):
+            for ch, chan, seeds in (("C1", "C1", (0, 1, 2)), ("C2p", "C2", PERT)):
+                xs = [math.log(float(r["rho"])) for r in sel(g, chan, T0, hh, seeds=seeds) if float(r["rho"]) > 0]
+                if len(xs) >= 2:
+                    ss.append({"g": g, "T0": T0, "h": hh, "ch": ch, "n": len(xs), "range": max(xs) - min(xs)})
+    if ss:
+        P("## 表 9：只换种子，ln ρ 的最大值 − 最小值（C1 种子 0~2；C2p 种子 1~2）")
+        P("局\t断面\t看多少拍\t通道\t种子数\tln ρ 最大 − 最小")
+        for x in ss:
+            P(f"{x['g']}\t{x['T0']}\t{x['h']}\t{x['ch']}\t{x['n']}\t{x['range']:.3f}")
+        P("")
+        J["seedSpread"] = ss
 
     open(os.path.join(CROSS, "checkpoint_attribution.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     json.dump(J, open(os.path.join(CROSS, "checkpoint_attribution.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)

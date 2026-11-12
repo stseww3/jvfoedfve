@@ -504,6 +504,9 @@ def at3():
                     continue
                 if r["bot"] not in last or t >= last[r["bot"]][0]:
                     last[r["bot"]] = (t, a, mx, sk)
+        # 对局包的 traj.csv 里可能混着别的房间的号（A025 3 个、A071 1 个）：只留这一局回放里认出来的号
+        inroom = {b_ for b_, s_ in resim(m)["squad"].items() if s_["id"] >= 0 and not s_.get("mismatch")}
+        last = {b_: v_ for b_, v_ in last.items() if b_ in inroom}
         hi, lo = [], []
         for bot, v in last.items():
             lg = DF["lag"]["byBot"].get(bot)

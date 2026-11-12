@@ -955,6 +955,26 @@ def main():
             if seg:
                 P('不连乘、从开局一口气放开跑的水平（同样这几局，逐局比值的几何均值）：' + '。'.join(seg) + '。')
                 P('')
+            # 这几局自己在实盘同档里的位置：历史与 C2 放开跑各在哪
+            seg = []
+            midb = {at: (LB['cohorts'].get(f'vb|mid|{wk}') or {}).get('band', {}).get('relTerr1') for at, wk in ((1500, '630~1530'), (3213, '1530~3210'))}
+            for at, tagre in ((1500, r'g0[a-z]'), (3213, r'fr[a-z]')):
+                FRX = load(tagre)
+                for lab, sel, bd in (('lag 档', [m for m in ms7 if cls.get(m) == 'lag'], lag.get(at)), ('mid 档', [m for m in ms7 if cls.get(m) == 'mid'], midb.get(at))):
+                    rr = []
+                    for m in sel:
+                        e = FRX.get((m, 0))
+                        if not e or e['meta']['t1'] != at or e['meta'].get('truncated'):
+                            continue
+                        c2 = seeds(e, 'C2')
+                        if c2:
+                            rr.append((e['history']['relTerr1'], mean([x['relTerr1'] for x in c2])))
+                    if rr and bd:
+                        seg.append(f"t={at} {lab}（本报告 {len(rr)} 局：{'、'.join(sel)}）：历史中位 {quart([x[0] for x in rr])[1]:.2f}，C2 放开跑中位 {quart([x[1] for x in rr])[1]:.2f}；"
+                                   f"实盘同档 P25 / 中位 / P75 = {bd[0]:.2f} / {bd[1]:.2f} / {bd[2]:.2f}（{bd[3]} 局）；历史低于同档 P25 的 {sum(1 for x in rr if x[0] < bd[0])} 局，C2 放开跑低于同档 P25 的 {sum(1 for x in rr if x[1] < bd[0])} 局")
+            if seg:
+                P('这几局在实盘同档里的位置（Vb；看的是选局：这几局的历史是不是比同档的典型局更差）：' + '。'.join(seg) + '。')
+                P('')
             if all(lag.values()) and all(cln.values()):
                 P('实盘横向对比（R06 的区间，Vb）：lag 档中位 ÷ clean 档中位 = ' + '、'.join(f"×{lag[at][1] / cln[at][1]:.2f}（t≈{at}，{lag[at][3]} 局对 {cln[at][3]} 局）" for at in (1500, 3213)) + '。')
                 P('')
@@ -1385,6 +1405,34 @@ def main():
         P(f"{n} 个（局, 窗口）的均值：落后波 先加 {mean([x[0] for x in acc]):+.3f} / 后加 {mean([x[1] for x in acc]):+.3f}；页面/掉线 先加 {mean([x[2] for x in acc]):+.3f} / 后加 {mean([x[3] for x in acc]):+.3f}；"
           f"交互项均值 {mean([x[3] - x[2] for x in acc]):+.3f}，|交互项| 均值 {mean([abs(x[3] - x[2]) for x in acc]):.3f}。")
         P('')
+        # 整条对数链按倒过来的次序重算（没有 C1p 的窗口页面一段本来就是 0 上下，两种次序一样）
+        Od = dict(O)
+        rev, miss = {}, []
+        for mid, use in chain_use.items():
+            w = pg = 0.0
+            for r in use:
+                e = Od.get((mid, r['t0']))
+                if e:
+                    c1p = mean([m['relTerr1'] for m in seeds(e, 'C1p')])
+                    if c1p > CHAIN_FLOOR:
+                        pg += math.log(c1p / r['relTerr1_C1'])
+                        w += math.log(r['relTerr1_C2'] / c1p)
+                        continue
+                if abs(math.log(r['relTerr1_C2'] / r['relTerr1_C2w'])) > 0.02:
+                    miss.append(f"{mid} {WN.get(r['t0'], r['t0'])}")
+                w += math.log(r['relTerr1_C2w'] / r['relTerr1_C1'])
+                pg += math.log(r['relTerr1_C2'] / r['relTerr1_C2w'])
+            rev[mid] = (w, pg)
+        if rev:
+            mids_ = list(rev)
+            w0, p0 = mean([chain[m]['wave'] for m in mids_]), mean([chain[m]['page'] for m in mids_])
+            w1_, p1_ = mean([rev[m][0] for m in mids_]), mean([rev[m][1] for m in mids_])
+            r0 = mean([chain[m]['resid'] for m in mids_])
+            tot0 = w0 + p0 + r0
+            P(f"{len(mids_)} 局的对数链按两种次序算：先加落后波（正文的口径）落后波 ×{math.exp(w0):.2f}、页面/掉线 ×{math.exp(p0):.2f}；先加页面 落后波 ×{math.exp(w1_):.2f}、页面/掉线 ×{math.exp(p1_):.2f}。"
+              f"两段合计都是 ×{math.exp(w0 + p0):.2f}。占「历史 ÷ C1 路径」ln 差的份额（落后波 / 页面 / 残差）：{w0 / tot0:.0%} / {p0 / tot0:.0%} / {r0 / tot0:.0%} → {w1_ / tot0:.0%} / {p1_ / tot0:.0%} / {r0 / tot0:.0%}。"
+              + (f"页面一段不为零（|ln| > 0.02）但还没有 C1p 臂的窗口：{'、'.join(miss)}，这些窗口按原次序算。" if miss else '页面一段不为零的窗口都有 C1p 臂。'))
+            P('')
 
     # ---- 历史版本互换（c116 家族内 Va / Vb / Vc；c110 与 c116 家族之间）
     V = load(r'(va|vb|vc|c110)[a-z]', historical=False, keyfn=lambda d, tag: (d['match'], d['t0'], d.get('stratKey')))
@@ -1421,7 +1469,8 @@ def main():
                 row[f'{ch}_d'] = mean(d)
                 row[f'{ch}_se'] = (sd(d) / math.sqrt(len(d))) if len(d) > 1 else None
                 row[f'{ch}_ln'] = mean([math.log(A[n]['relTerr1'] / B[n]['relTerr1']) for n in common]) if all(A[n]['relTerr1'] > CHAIN_FLOOR and B[n]['relTerr1'] > CHAIN_FLOOR for n in common) else None
-                row[f'{ch}_w'] = math.exp(mean([math.log(max(1, A[n]['wealth1']) / max(1, B[n]['wealth1'])) for n in common]))
+                # 生死窗口（有一边的人均相对领土接近 0）不算兵力比：除以一个接近 0 的数没有意义
+                row[f'{ch}_w'] = math.exp(mean([math.log(max(1, A[n]['wealth1']) / max(1, B[n]['wealth1'])) for n in common])) if row[f'{ch}_ln'] is not None else None
                 row[f'{ch}_alive'] = mean([A[n]['alive1'] - B[n]['alive1'] for n in common])
                 same = same and all(A[n]['terr1'] == B[n]['terr1'] and A[n]['wealth1'] == B[n]['wealth1'] and A[n]['recorded'] == B[n]['recorded'] for n in common)
                 extra.append({'table': 'V', 'mid': k[0], 't0': k[1], 't1': e['meta']['t1'], 'variant': f'{k[2]}-{hv}:{ch}', 'hist': h['history']['relTerr1'], 'C0': None,
@@ -1459,7 +1508,7 @@ def main():
             name, sgn = norm(r)
             for ch in ('C1', 'C2'):
                 if f'{ch}_n' in r:
-                    vs.setdefault((r['t0'], name, ch), []).append((sgn * r[f'{ch}_d'], (sgn * r[f'{ch}_ln']) if r[f'{ch}_ln'] is not None else None, r[f'{ch}_w'] ** sgn, r[f'{ch}_se'], r))
+                    vs.setdefault((r['t0'], name, ch), []).append((sgn * r[f'{ch}_d'], (sgn * r[f'{ch}_ln']) if r[f'{ch}_ln'] is not None else None, (r[f'{ch}_w'] ** sgn) if r[f'{ch}_w'] is not None else None, r[f'{ch}_se'], r))
         for (t0, name, ch), v in sorted(vs.items()):
             ds = [x[0] for x in v]
             lns = [x[1] for x in v if x[1] is not None]
@@ -1468,7 +1517,7 @@ def main():
             mabs = mean([abs(d) for d in ds]); cabs = mean([abs(x[4]['chan']) for x in v if x[4]['chan'] is not None])
             ci = boot_ci(ds)
             P(f"| {WN.get(t0, t0)} | {name} | {ch} | {len(ds)} | {fmt(mean(ds), 3, True)}{f'（{ci[0]:+.3f} ~ {ci[1]:+.3f}）' if ci else ''} | {fmt(quart(ds)[1], 3, True)} | {sum(1 for d in ds if d > 1e-9)} / {sum(1 for d in ds if d < -1e-9)} | {fmt(mabs)} | "
-              f"{(fmt(mean(lns), 3, True) + '（×' + format(math.exp(mean(lns)), '.2f') + '）') if lns else '-'} | ×{math.exp(mean([math.log(x[2]) for x in v])):.2f} | {fmt(mean(ses)) if ses else '-'} | "
+              f"{(fmt(mean(lns), 3, True) + '（×' + format(math.exp(mean(lns)), '.2f') + '）') if lns else '-'} | {('×' + format(math.exp(mean([math.log(x[2]) for x in v if x[2] is not None])), '.2f')) if any(x[2] is not None for x in v) else '-'} | {fmt(mean(ses)) if ses else '-'} | "
               f"{fmt(base, 3, True)} / {fmt(chan, 3, True)} | {(format(mabs / cabs, '.2f')) if cabs and cabs > 1e-9 else '-'} |")
         P('')
         # 版本差在两种通道下是不是一回事（交互）

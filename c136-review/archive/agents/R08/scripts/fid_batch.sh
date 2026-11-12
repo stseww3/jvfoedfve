@@ -11,6 +11,8 @@
 # namepool / deathbank 两本账另外认 roompairs.py 的结果：out/_run/room_pairs.json 里的局改用同房另一份包更长的录像
 # （已有输出用的不是那一份就重跑）；out/_run/fid_extra.json 里的局（自己的录像只有出生期）也跑。
 set -u
+# 统筹 0006 号广播：重计算最多 2 个槽。显式写死，不跟 tools/run-heavy.sh 里的缺省值走。
+export HEAVY_SLOTS=2
 ROOT=/agent/repos/c136-r08
 A=c136-review/agents/R08
 cd "$ROOT" || exit 2
@@ -81,7 +83,7 @@ while :; do
   case "$KIND" in
     namepool)  bash c136-review/tools/run-heavy.sh node "$A/scripts/namepool.mjs" --budget 70 $LIST ;;
     deathbank) bash c136-review/tools/run-heavy.sh node "$A/scripts/deathbank.mjs" --budget 70 $LIST ;;
-    *)         bash c136-review/tools/run-heavy.sh node "$A/scripts/engdiff.mjs" --fid "$KIND" --budget 55 $LIST ;;
+    *)         bash c136-review/tools/run-heavy.sh node "$A/scripts/engdiff.mjs" --fid "$KIND" --budget 35 $LIST ;;   # 一局约 50 秒：超过 35 秒就不再开第二局，免得跑到一半被 110 秒上限杀掉
   esac
   [ $? -eq 75 ] && last=-1     # 排队没等到空槽：不算「没有进展」，接着排
 done

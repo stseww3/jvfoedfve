@@ -14,12 +14,16 @@ export HEAVY_TIMEOUT=110
 export HEAVY_SLOTS=2    # 统筹广播 0006 定的上限；写死在这里，不跟着 run-heavy.sh 里的缺省值走
 export HEAVY_QUEUE=900
 done_=0
+crowded=0
 for i in $(seq 1 90); do
-  r=$(bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700 sim-v2/tools/human_profile.mjs --matches "$M" --cache-dir "$C/cache" --budget-ms 60000 --out "$C/human-profile.json" 2>&1 | tail -1 | cut -c1-200)
+  # --min-share / --hard-ms：机器太挤（这个进程分不到 15% 的 CPU）时这一次不算，不白占槽位；连着 3 次都太挤就先停，过后重排
+  r=$(bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700 sim-v2/tools/human_profile.mjs --matches "$M" --cache-dir "$C/cache" --budget-ms 60000 --min-share 0.15 --hard-ms 100000 --out "$C/human-profile.json" 2>&1 | tail -1 | cut -c1-200)
   case "$r" in
     *"已写"*) done_=1; break ;;
-    *"时间预算到了"*) echo "$(date -u +%H:%M:%S) $r" ;;
+    *"时间预算到了"*) echo "$(date -u +%H:%M:%S) $r"; crowded=0 ;;
+    *"机器太挤"*) echo "$(date -u +%H:%M:%S) $r"; crowded=$((crowded + 1)) ;;
   esac
+  if [ "$crowded" -ge 3 ]; then echo "连着 3 次机器都太挤，这一阶段先停（已算的局留在缓存里，过后重排接着算）"; exit 1; fi
 done
 if [ $done_ -ne 1 ]; then echo "排了 90 次还没算完，停"; exit 1; fi
 if cmp -s "$C/human-profile.json" sim-v2/calib/human-profile.json; then same=true; else same=false; fi

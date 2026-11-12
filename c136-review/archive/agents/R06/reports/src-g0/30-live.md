@@ -30,6 +30,6 @@
 <!-- assert: n('live.band.vb.clean.630.gap0') >= 15 && n('live.band.c110.clean.630.gap0') < 10 -->
 - 不卡的局里，Vb 的同回合连发占比也有 {{v:live.band.vb.clean.630.gap0}}，c110 只有 {{v:live.band.c110.clean.630.gap0}}。这是策略版本自己的差别，不是通道造成的（已知的一处代码差别：c110 的策略文件在桥接层带一段在途保护，c116 系三版没有）。第 5 节的复现要把这一条也对上。
 <!-- assert: n('live.cover.va.clean') === 0 && n('live.cover.vc.inBands') <= 4 -->
-- Va 进区间的 {{v:live.cover.va.inBands}} 局里没有不卡的局，Vc 进区间的一共只有 {{v:live.cover.vc.inBands}} 局。这两个版本的区间只能当参考，第 5 节对它们主要看逐局对真值。
+- Va 进区间的 {{v:live.cover.va.inBands}} 局里没有不卡的局，Vc 进区间的一共只有 {{v:live.cover.vc.inBands}} 局。这两个版本的区间只能当参考。
 
 区间取的是 P25~P75，只盖住中间一半的局。第 5.6 节用它时，会把真值自己落在区间里的比例一起报出来当参照。

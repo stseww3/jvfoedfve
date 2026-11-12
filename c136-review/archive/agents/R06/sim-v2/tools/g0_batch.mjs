@@ -122,6 +122,42 @@ function runLog(st, j, ms) {
   } catch (e) { /* 流水写不进去不影响结果 */ }
 }
 
+// —— 机器太挤的时候不白占槽位 ——
+// 经闸门的进程 nice 19，机器挤的时候只分得到一成上下的 CPU：重的运行（闭环房间、长窗口）给足一整个槽位也跑不完，
+// 结果被丢掉，下一批从头再来，每一批白占一个槽位。所以这一批第一次用到的时候量一下眼下分得到多少 CPU（空转 1.5 秒），
+// 对知道 CPU 开销的任务先算一下跑不跑得完：给足一个槽位也跑不完的，这一批先放下，接着看清单上后面的。
+// CPU 开销从哪里知道：重跑核对（batchcheck/prov/<目录>/）看原结果里记的 cpuMs；闭环的其它目录看 arena-acc20 里同一个房间的；
+// 再就是上一次给足预算没跑完时按进度估出来的（记在临时文件里，6 小时内有效）。都不知道的照常试一次。
+const EST_FILE = path.join(os.tmpdir(), 'r06-g0-est.json');
+const EST_TTL = 6 * 3600 * 1000;
+let estMap = {};
+try { estMap = JSON.parse(fs.readFileSync(EST_FILE, 'utf8')); } catch (e) { estMap = {}; }
+function saveEst() {
+  try { const t = `${EST_FILE}.${process.pid}`; fs.writeFileSync(t, JSON.stringify(estMap)); fs.renameSync(t, EST_FILE); } catch (e) { /* 记不下来不影响结果 */ }
+}
+function cpuOfResult(f) {
+  try { const r = JSON.parse(fs.readFileSync(f, 'utf8')); return !r.truncated && typeof r.cpuMs === 'number' ? r.cpuMs : null; } catch (e) { return null; }
+}
+function estCpu(st, j) {
+  const e = estMap[j.out];
+  if (e && Date.now() - e.at < EST_TTL) return e.cpu;
+  const CAL = path.join(SIMV2, 'calib');
+  if (st.dirName.startsWith('batchcheck/prov/')) return cpuOfResult(path.join(CAL, st.dirName.slice('batchcheck/prov/'.length), `${j.tag}.json`));
+  if (st.kind === 'arena' && st.dirName !== 'arena-acc20') return cpuOfResult(path.join(CAL, 'arena-acc20', `${j.tag}.json`));
+  return null;
+}
+let share = null;
+function cpuShare() {
+  if (share !== null) return share;
+  const c0 = process.cpuUsage(), t0 = Date.now();
+  let x = 0;
+  while (Date.now() - t0 < 1500) { for (let i = 0; i < 200000; i++) x += i % 7; }
+  const c = process.cpuUsage(c0);
+  share = Math.max(0.01, Math.min(1, (c.user + c.system) / 1000 / Math.max(1, Date.now() - t0)));
+  return share;
+}
+const parkedNow = new Set();   // 这一批里判定「给足一个槽位也跑不完」的任务
+
 let done = 0, starved = 0, stop = false, busy = 0;
 const longest = { checkpoint: 12000, arena: 20000, verify: 12000 };
 const log = [], failedAll = [];
@@ -135,6 +171,12 @@ for (const st of steps) {
     // 剩下的时间不够跑一次像样的运行就收工（第一个任务至少给它试一次，免得一个特别慢的任务永远轮不上）
     if (left < Math.min(60000, 1.6 * longest[st.kind]) + 4000 && (done > 0 || left < 30000)) { stop = true; break; }
     if (has(j)) continue;                    // 这一批开始之后别的进程已经跑完了它
+    const est = estCpu(st, j);
+    if (est !== null) {
+      const wallNeed = est / cpuShare();
+      if (wallNeed > 0.8 * FULL) { parkedNow.add(j.out); continue; }            // 给足一个槽位也跑不完：这一批放下，看后面的
+      if (wallNeed > 0.8 * Math.min(FULL, left - 6000)) continue;                // 这一批剩下的时间不够它：留给下一批，看后面更轻的
+    }
     if (!claim(j)) { busy++; continue; }     // 别的进程正在跑它
     try {
     const t0 = Date.now();
@@ -160,6 +202,12 @@ for (const st of steps) {
       // 被这一批剩下的时间截断的、或者机器太挤（这次运行拿到的 CPU 不到墙钟的一半）才截断的：不留，下一批从头跑。
       // 给足整份预算、CPU 也拿够了还截断的才留，结果里带 truncated 标记。
       if (fs.existsSync(part)) fs.rmSync(part);
+      if (budget >= FULL && typeof res.cpuMs === 'number') {
+        // 给足了整份预算还是没跑完：按跑到的进度估一下整个运行要多少 CPU，记下来，下一批先算一下再决定跑不跑
+        const prog = res.lenAsked > 0 && typeof res.t1 === 'number' ? Math.max(0.05, Math.min(1, (res.t1 - (res.t0 ?? 0)) / res.lenAsked)) : 0.3;
+        estMap[j.out] = { cpu: Math.round(res.cpuMs / prog), at: Date.now() };
+        saveEst();
+      }
       log.push(`${j.tag} 本批时间不够（${ms} ms），留给下一批`);
       starved++; stop = true;
       break;
@@ -176,9 +224,12 @@ for (const st of steps) {
 for (const l of log) console.log(l);
 // 出错的任务不算进「还剩」，否则外层会一直重试；它们单独列出来。本进程没轮到的清单里以前出过错的任务仍算「还剩」（下一批会再试一次）。
 const remain = steps.reduce((n, st) => n + st.jobs.filter((j) => !has(j) && !j.failed).length, 0);
+const parkedRemain = steps.reduce((n, st) => n + st.jobs.filter((j) => !has(j) && !j.failed && parkedNow.has(j.out)).length, 0);
 const name = kind0 === 'plan' ? `plan ${path.basename(argv0[0])}` : `${kind0} ${argv0[0]}`;
 const perStep = kind0 === 'plan' ? `（${steps.map((st) => st.jobs.filter((j) => !has(j) && !j.failed).length).join(' + ')}）` : '';
 // 一个都没跑完、原因只是时间不够（槽位排得晚，或机器太挤）：也按「没轮上」报，外层接着排，不算卡住
-if (!done && !failedAll.length && remain > 0 && busy > 0 && !starved && !log.length) console.log(`[g0_batch] ${name}：没轮上（清单上剩下的 ${busy} 个任务都有别的进程正在跑）；还剩 ${remain} 个${perStep}`);
+// 清单上剩下的全都是「眼下给足一个槽位也跑不完」的：报「还剩 0 个可跑的」，外层这一阶段到此为止（不再一批一批白排），过后重排这一阶段时再试
+if (remain > 0 && parkedRemain === remain && !starved && !busy) console.log(`[g0_batch] ${name}：本批跑完 ${done} 个；还剩 0 个可跑的（另有 ${parkedRemain} 个先放下：这个进程眼下只分得到 ${Math.round(100 * (share ?? 0))}% 的 CPU，给足一个槽位也跑不完）`);
+else if (!done && !failedAll.length && remain > 0 && busy > 0 && !starved && !log.length) console.log(`[g0_batch] ${name}：没轮上（清单上剩下的 ${busy} 个任务都有别的进程正在跑）；还剩 ${remain} 个${perStep}`);
 else if (!done && !failedAll.length && remain > 0 && (!log.length || starved)) console.log(`[g0_batch] ${name}：没轮上（${starved ? '轮到了但这一批剩下的时间不够跑完一个' : `排到重计算槽位时离截止只剩 ${Math.round((deadline - startAt) / 1000)} 秒`}）；还剩 ${remain} 个${perStep}`);
 else console.log(`[g0_batch] ${name}：本批跑完 ${done} 个${failedAll.length ? `，出错 ${failedAll.length} 个（${failedAll.map((j) => j.tag).join(' ')}）` : ''}；还剩 ${remain} 个${perStep}`);

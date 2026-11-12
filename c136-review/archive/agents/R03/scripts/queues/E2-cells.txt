@@ -1,0 +1,6 @@
+# 发现集 squad10 档其余 64 局的名下格数（cells.mjs 只把录像放到第 1 拍，不做整局重放）。4 批，每批 16 局。
+# 输出文件是每批最后一局的日志；每局的结果写在 out/council/cells/<局>.json。
+out/council/cells/_e2-b1.log|node scripts/cells.mjs A001 A002 A003 A005 A006 A007 A009 A010 A011 A013 A014 A015 A017 A018 A019 A021
+out/council/cells/_e2-b2.log|node scripts/cells.mjs A022 A023 A026 A027 A029 A030 A031 A033 A034 A035 A037 A038 A039 A043 A047 A049
+out/council/cells/_e2-b3.log|node scripts/cells.mjs A050 A053 A054 A055 A057 A058 A059 A061 A062 A063 A065 A069 A070 A073 A074 A075
+out/council/cells/_e2-b4.log|node scripts/cells.mjs A077 A078 A079 A081 A082 A083 A085 A086 A089 A091 A093 A094 A095 A097 A098 A099

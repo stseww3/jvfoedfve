@@ -118,11 +118,16 @@ const parseTag = (tag) => {
   const p = tag.split('-');
   return { mid: p[0], t0: +p[1], rest: p.slice(2) };
 };
+// 物理底座没有与真引擎一致到最后的局（verify）：窗口伸进分歧之后的运行不用（2.3 节）。VOK：局 → 一致到第几拍
+const VOK = new Map();
+for (const [mid, r] of loadDir('verify')) if (r.truth && r.truth.firstBadT >= 0) VOK.set(mid, r.truth.lastOkT);
+const tailSkipped = [];
 function loadRuns(dirName, armOf) {
   const out = [];
   for (const [tag, r] of loadDir(dirName)) {
     if (!r.arms || !r.arms.baseline || !r.history) { notes.push(`${dirName}/${tag}：不是断面结果`); continue; }
     const t = parseTag(tag);
+    if (VOK.has(t.mid) && r.t1 > VOK.get(t.mid)) { tailSkipped.push(`${dirName}/${tag}（窗口到 ${r.t1} 拍，物理底座只一致到 ${VOK.get(t.mid)} 拍）`); continue; }
     const arm = armOf(t.rest);
     if (r.truncated) notes.push(`${dirName}/${tag}：被时间预算截断在 t=${r.t1}`);
     if (r.arms.baseline.stratErrors && r.arms.baseline.stratErrors.length) notes.push(`${dirName}/${tag}：策略报错的席位 ${r.arms.baseline.stratErrors.length}`);
@@ -232,6 +237,36 @@ if (want('scope')) {
   const pcf = path.join(CALIB, 'human-profile-check.json');
   if (fs.existsSync(pcf)) { const P = readJson(pcf); val('profile.check.matches', P.matches); val('profile.check.same', P.same ? '是' : '否'); }
   else notes.push('缺 calib/human-profile-check.json（bash sim-v2/tools/profile_check.sh）');
+  // 运行的出处：哪些结果是经重计算闸门跑的，哪些不是；没经闸门的抽查重跑的核对结果；全部结果的自述核对（tools/run_prov.py）
+  const pvf = path.join(CALIB, 'run-prov.json');
+  if (fs.existsSync(pvf)) {
+    const P = readJson(pvf);
+    const DN = { verify: 'verify（物理底座对真引擎）', g0: 'g0（断面整表）', hold: 'hold（已知点之后三种假定）', 'arena-acc20': 'arena-acc20（闭环 20 个房间）', 'batchcheck/arena-rerun': 'batchcheck/arena-rerun（闭环换次序重跑）', attr: 'attr（归因：0 / 1500 / 4284 断面和换种子）', fill: 'fill（已知点之间的补法）', 'arena-rp1530': 'arena-rp1530（闭环，前 1530 拍照录像）' };
+    const rows = [];
+    for (const [d, x] of Object.entries(P.dirs)) {
+      if (!x.total) continue;
+      rows.push([DN[d] || d, String(x.total), String(x.gated), String(x.ungated), x.ungated ? String(x.sample || 0) : '-', x.ungated ? `${x.same || 0} / ${x.checked || 0}` : '-', `${x.describedOk ?? '-'} / ${x.described ?? '-'}`]);
+      const k = d.replace(/\//g, '_');
+      val(`prov.dir.${k}.total`, x.total); val(`prov.dir.${k}.gated`, x.gated); val(`prov.dir.${k}.ungated`, x.ungated); val(`prov.dir.${k}.sample`, x.sample || 0); val(`prov.dir.${k}.checked`, x.checked || 0); val(`prov.dir.${k}.same`, x.same || 0);
+    }
+    rows.push(['合计', String(P.total), String(P.total - P.ungatedN), String(P.ungatedN), String(P.sampleN), `${P.check.same} / ${P.check.n}`, `${P.describe ? P.describe.ok : '-'} / ${P.describe ? P.describe.n : '-'}`]);
+    table('prov', ['结果目录', '结果数', '经闸门跑的', '没经闸门跑的', '其中要经闸门重跑的', '重跑结果与原结果逐字段相同 / 已重跑', '自述与清单一致 / 已核对'], rows,
+      '「经闸门」= 流水 `calib/run-log.jsonl` 里这次运行的进程优先级是 19（闸门 `run-heavy.sh` 给的），或者（记流水之前的）文件时间早于 ' + String(P.strayStart).replace('T', ' ').replace('+00:00', ' UTC') + '。重跑哪些：verify 和闭环房间里没经闸门的全部重跑；其余目录按「目录/标签」的 sha1 取模，每 ' + P.every + ' 个抽 1 个，另加点名的 ' + (P.always ?? 0) + ' 个。「自述」= 结果文件里自己记的局、断面、窗口长度、通道写法、种子、策略文件的内容散列。由 `tools/run_prov.py` 生成。');
+    val('prov.total', P.total); val('prov.ungated', P.ungatedN); val('prov.gated', P.total - P.ungatedN); val('prov.sample', P.sampleN); val('prov.every', P.every);
+    val('prov.sample.full', P.sampleFull ?? 0); val('prov.sample.hash', P.sampleHash ?? P.sampleN); val('prov.sample.always', P.always ?? 0);
+    val('prov.check.n', P.check.n); val('prov.check.same', P.check.same); val('prov.check.pending', P.check.pending); val('prov.check.notGated', P.check.notGated);
+    val('prov.check.leaves', int(P.check.leaves)); val('prov.check.leavesN', P.check.leaves); val('prov.check.bad', P.check.bad.length);
+    val('prov.describe.n', P.describe ? P.describe.n : 0); val('prov.describe.ok', P.describe ? P.describe.ok : 0); val('prov.describe.noRow', P.describe ? P.describe.noRow : 0);
+    val('prov.strayStart', String(P.strayStart).slice(11, 16)); val('prov.strayLast', P.strayLast ? String(P.strayLast).slice(11, 16) : '-');
+    val('prov.done', P.check.pending === 0 && P.check.notGated === 0 && P.check.n === P.sampleN ? 1 : 0);
+    const PH = P.history || { windows: 0, results: 0, badWindows: [], ungated: 0, anchored: 0, anchoredWindows: 0, ungatedWindows: 0 };
+    val('prov.hist.windows', PH.windows); val('prov.hist.results', PH.results); val('prov.hist.bad', PH.badWindows.length);
+    val('prov.hist.ungated', PH.ungated); val('prov.hist.anchored', PH.anchored);
+    val('prov.hist.ungatedWindows', PH.ungatedWindows); val('prov.hist.anchoredWindows', PH.anchoredWindows);
+    for (const b of PH.badWindows) notes.push(`同一窗口里各结果的历史那一半不一致：${b}`);
+    for (const b of P.check.bad) notes.push(`没经闸门跑的结果抽查重跑后不同：${b}`);
+    for (const b of (P.describe ? P.describe.bad : [])) notes.push(`结果文件的自述与清单不一致：${b}`);
+  } else notes.push('缺 calib/run-prov.json（python3 sim-v2/tools/run_prov.py）');
 }
 
 // =====================================================================================================================
@@ -266,6 +301,11 @@ if (want('verify')) {
   val('verify.ticks', int(ticks)); val('verify.cpuPer1000', f(cpu / ticks, 2));
   for (const co of VORDER) val(`verify.${co}.n`, MIDS.filter((m) => cohortOf(m) === co && V.has(m)).length);
   val('verify.partial.n', partial.length);
+  val('verify.partial.mids', partial.map((x) => x.split('（')[0]).join('、') || '没有');
+  // 窗口伸进分歧之后、因此没有用的运行（loadRuns 里跳过的）
+  val('verify.tail.skipped.n', tailSkipped.length); val('verify.tail.skipped', tailSkipped.map((x) => '`' + x.split('（')[0] + '`').join('、') || '没有');
+  for (const x of tailSkipped) notes.push(`没有用：${x}`);
+  for (const mid of MIDS) { const r = V.get(mid); if (r && r.logSnaps && r.logSnaps.firstBadT >= 0) val(`verify.tail.${mid}.snapBadT`, int(r.logSnaps.firstBadT)); }
   // 没有一致到最后的局，分歧之前那一拍场上的局面（tools/verify_tail.mjs）
   const tf = path.join(CALIB, 'verify-tail.json');
   if (fs.existsSync(tf)) {
@@ -289,6 +329,12 @@ if (want('verify')) {
         val(`${k}.diff.huskBal`, husk.length ? k1(Math.max(...husk.map((z) => z.bal[1] - z.bal[0]))) : '-');
         val(`${k}.diff.cmdsBetween`, sum(D.seats.map((z) => z.cmdsBetween || 0)));
         val(`${k}.diff.huskLeaveT`, husk.length ? int(Math.min(...husk.map((z) => z.leaveT))) : '-');
+        // 托管席位的兵：模拟器 ÷ 真引擎（模拟器里捐掉了的话，这个比值接近 0）
+        val(`${k}.diff.huskBalSim`, husk.length ? k1(husk[0].bal[0]) : '-'); val(`${k}.diff.huskBalTruth`, husk.length ? k1(husk[0].bal[1]) : '-');
+        val(`${k}.diff.restBalSim`, rest.length ? k1(rest[0].bal[0]) : '-'); val(`${k}.diff.restBalTruth`, rest.length ? k1(rest[0].bal[1]) : '-');
+        val(`${k}.diff.huskLessSim`, husk.length && husk.every((z) => z.bal[0] < z.bal[1]) ? '是' : '否');
+        val(`${k}.diff.restMoreSim`, rest.length && rest.every((z) => z.bal[0] > z.bal[1]) ? '是' : '否');
+        val(`${k}.unowned`, int(x.land - x.owned));
         val(`${k}.diff.list`, D.seats.map((z) => `${z.p} 号（${z.husk ? '离场托管' : '在场'}）领土 ${int(z.terr[0])} ↔ ${int(z.terr[1])}、兵 ${k1(z.bal[0])} ↔ ${k1(z.bal[1])}`).join('；'));
       }
     }
@@ -400,6 +446,7 @@ if (want('chan')) {
     let doomed = 0;
     for (const [p, ll] of Object.entries(T.lastLog || {})) { const d = (pk.deathT || {})[p] ?? -1; if (ll >= 0 && ll + 1 < (d >= 0 ? d : pk.replayLast - 90)) doomed++; }
     rows.push([mid + (CORE.has(mid) ? '' : ' ＋'), VER[cohortOf(mid)], CLS[clsOf(mid)] || '?', int(T.rows), int(tmax), ...cells, String(doomed)]);
+    val(`chan.doomed.${mid}`, doomed);
   }
   // 已知点有多密：630~1530 拍这个窗口里，每个席位有几个已知点、最长多少拍没有已知点（录像够长的局）
   {
@@ -665,6 +712,7 @@ if (want('ckpt')) {
       val(`wall.${mid}.near.behind`, `${int(Math.round(r.serverTick - hi))}~${int(Math.round(r.serverTick - lo))}`);
       val(`wall.${mid}.near.behindMin`, int(Math.round(r.serverTick - hi)));
       val(`wall.${mid}.afterEnd`, int(Math.round(r.serverTick - PACK[mid].replayLast)));
+      val(`wall.${mid}.recEnd`, int(PACK[mid].replayLast));
     }
     const orow = [];
     const devs = { blind: [], seen: [] };
@@ -947,6 +995,9 @@ if (want('attr') && ATTR_ALL.length) {
     val(`attr.noise.${t0}.${arm}.in10`, `${r.filter((v) => v >= 0.9 && v <= 1.1).length} / ${r.length}`); val(`attr.noise.${t0}.${arm}.n`, cs.length);
     val(`attr.noise.${t0}.${arm}.spread`, spread.length ? f(100 * med(spread), 0) : '-');
     val(`attr.noise.${t0}.${arm}.range`, `${f(q(r, 0.1))}~${f(q(r, 0.9))}`);
+    // 偏出 ±10% 的是哪几局
+    val(`attr.noise.${t0}.${arm}.out`, cs.map((c, i) => [c.mid, r[i]]).filter((v) => ok(v[1]) && (v[1] < 0.9 || v[1] > 1.1)).map((v) => `${v[0]}（${f(v[1])}）`).join('、') || '没有');
+    val(`attr.noise.${t0}.${arm}.noRatio`, cs.filter((c, i) => !ok(r[i])).map((c) => c.mid).join('、') || '没有');
   }
   table('attr-noise', ['断面 t0', '窗口', '复现臂', '局数', '窗口末编队领土 复现 ÷ 历史：P10 / P25 / 中位 / P75 / P90', '偏离 1 的中位', '落在 ±10% 内的局', '同一局换种子的最大 − 最小（中位）', '人均相对领土 复现 − 历史（中位）', '在场席位 复现 − 历史（各局合计）', '历史在场席位（合计）'], nrow,
     '复现臂跑的是这一局当年那一版策略、当年那条通道，本该重现历史；它与历史的差就是「模拟器 + 开环重放其余真人」这套办法自身的误差，后面各通道之间的差要比它大才算数。换种子只换通道里 d 的抽样（卡顿波所在的两个断面，C1 / C2 各 2 个种子）。');
@@ -975,6 +1026,69 @@ if (want('attr') && ATTR_ALL.length) {
     val(`${key}.f22`, has2.length ? rpc(med(f22)) : '-'); val(`${key}.fh2`, has2.length ? rpc(med(fh2)) : '-'); val(`${key}.up`, has2.length ? `${up} / ${has2.length}` : '-');
     val(`${key}.f10.neg`, `${f10.filter((v) => v < 1).length} / ${f10.length}`);
     val(`${key}.c1.gt110`, `${r1.filter((v) => v > 1.1).length} / ${r1.length}`);
+    // 逐局：C1 比历史高出一成以上的是哪几局、其余的局离 1 多远；这条臂里其余真人的陆攻还有多少能照录像执行（开环前提还剩多少）
+    const byGame = cs.map((x, i) => [x.mid, r1[i]]).filter((v) => ok(v[1]));
+    val(`${key}.c1.gt110.list`, byGame.filter((v) => v[1] > 1.1).sort((a, b) => b[1] - a[1]).map((v) => `${v[0]} ${f(v[1])}`).join('、') || '没有');
+    val(`${key}.c1.rest.in5`, `${byGame.filter((v) => v[1] <= 1.1 && Math.abs(v[1] - 1) <= 0.05).length} / ${byGame.filter((v) => v[1] <= 1.1).length}`);
+    val(`${key}.c1.max`, byGame.length ? f(Math.max(...byGame.map((v) => v[1]))) : '-');
+    val(`${key}.c1.maxMid`, byGame.length ? byGame.slice().sort((a, b) => b[1] - a[1])[0][0] : '-');
+    val(`${key}.ratios.n`, byGame.length);
+    for (const arm of ['C2', 'C1', 'C0']) {
+      const ar = cs.filter((x) => x.arms[arm]).map((x) => avg(x, arm, 'othersAsRec'));
+      val(`${key}.asrec.${arm}`, pc(med(ar))); val(`${key}.asrec.${arm}.min`, pc(clean(ar).length ? Math.min(...clean(ar)) : null));
+      const am = cs.filter((x) => x.arms[arm]).map((x) => [x.mid, avg(x, arm, 'othersAsRec')]).filter((v) => ok(v[1])).sort((a, b) => a[1] - b[1]);
+      val(`${key}.asrec.${arm}.minMid`, am.length ? am[0][0] : '-');
+    }
+    // 逐局的 ②（关掉页面停摆的 C2 ÷ C1 − 1）：掉了一成以上的是哪几局，其余的局在什么范围
+    {
+      const g2 = has2.map((x, i) => [x.mid, f21[i]]).filter((v) => ok(v[1])).sort((a, b) => a[1] - b[1]);
+      const big2 = g2.filter((v) => v[1] <= 0.9), rest2 = g2.filter((v) => v[1] > 0.9);
+      val(`${key}.f21.le10`, `${big2.length} / ${g2.length}`);
+      val(`${key}.f21.le10.list`, big2.map((v) => `${v[0]} ${rpc(v[1])}`).join('、') || '没有');
+      val(`${key}.f21.rest.n`, rest2.length);
+      val(`${key}.f21.rest.range`, rest2.length ? `${rpc(rest2[0][1])}~${rpc(rest2[rest2.length - 1][1])}` : '-');
+      val(`${key}.f21.min`, g2.length ? rpc(g2[0][1]) : '-'); val(`${key}.f21.max`, g2.length ? rpc(g2[g2.length - 1][1]) : '-');
+      val(`${key}.f21.minMid`, g2.length ? g2[0][0] : '-');
+      val(`${key}.f21.second`, g2.length > 1 ? rpc(g2[1][1]) : '-');
+      val(`${key}.f21.list`, g2.map((v) => `${v[0]} ${rpc(v[1])}`).join('、') || '-');
+      // 逐局的 ③（C2 ÷ 关掉页面停摆的 C2 − 1）：掉了一成以上的是哪几局
+      const g3 = has2.map((x, i) => [x.mid, f22[i]]).filter((v) => ok(v[1])).sort((a, b) => a[1] - b[1]);
+      const big3 = g3.filter((v) => v[1] <= 0.9);
+      val(`${key}.f22.le10`, `${big3.length} / ${g3.length}`);
+      val(`${key}.f22.le10.list`, big3.map((v) => `${v[0]} ${rpc(v[1])}`).join('、') || '没有');
+      val(`${key}.f22.rest.range`, g3.length > big3.length ? `${rpc(g3[big3.length][1])}~${rpc(g3[g3.length - 1][1])}` : '-');
+      val(`${key}.f21.rest.list`, rest2.map((v) => `${v[0]} ${rpc(v[1])}`).join('、') || '没有');
+    }
+    val(`${key}.c0.max`, clean(r0).length ? f(Math.max(...clean(r0))) : '-'); val(`${key}.c0.min`, clean(r0).length ? f(Math.min(...clean(r0))) : '-');
+    val(`${key}.c1.minAll`, clean(r1).length ? f(Math.min(...clean(r1))) : '-');
+    val(`${key}.c2.max`, clean(r2).length ? f(Math.max(...clean(r2))) : '-'); val(`${key}.c2.min`, clean(r2).length ? f(Math.min(...clean(r2))) : '-');
+  }
+  // 开局窗口（0~630 拍）里各局已经落后了多少：下令到执行超过 30 拍的指令占比（实录配对），对照这一局断面 0 的 ②
+  {
+    const lateShare = (mid) => {
+      const tf = path.join(SIMV2, 'traces', `${mid}.json`);
+      if (!fs.existsSync(tf)) return null;
+      const all = [];
+      for (const rs of Object.values(readJson(tf).seats)) for (const r of rs) if (r[0] >= 0 && r[0] < 630) all.push(r[1] - r[0]);
+      return all.length >= 5 ? all.filter((d) => d > 30).length / all.length : null;
+    };
+    const rankOf = (a) => { const idx = a.map((v, i) => [v, i]).sort((x, y) => x[0] - y[0]); const r = new Array(a.length); for (let i = 0; i < idx.length;) { let j = i; while (j + 1 < idx.length && idx[j + 1][0] === idx[i][0]) j++; for (let k = i; k <= j; k++) r[idx[k][1]] = (i + j) / 2 + 1; i = j + 1; } return r; };
+    const corr = (x, y) => { const mx = mean(x), my = mean(y); let a = 0, b = 0, c = 0; for (let i = 0; i < x.length; i++) { a += (x[i] - mx) * (y[i] - my); b += (x[i] - mx) ** 2; c += (y[i] - my) ** 2; } return b > 0 && c > 0 ? a / Math.sqrt(b * c) : null; };
+    const cs = cells.filter((x) => x.t0 === 0 && x.arms.C0 && x.arms.C1 && x.arms.C2);
+    const pts = cs.map((x) => ({ mid: x.mid, cls: clsOf(x.mid), late: lateShare(x.mid), f21: div(c2nd(x, 'terr1'), avg(x, 'C1', 'terr1')) })).filter((p) => ok(p.late) && ok(p.f21));
+    const lagP = pts.filter((p) => p.cls === 'lag'), big = lagP.filter((p) => p.f21 <= 0.9), rest = lagP.filter((p) => p.f21 > 0.9), cl = pts.filter((p) => p.cls === 'clean');
+    const rng = (a) => (a.length ? `${pc(Math.min(...a))}~${pc(Math.max(...a))}` : '-');
+    const bigMin = big.length ? Math.min(...big.map((p) => p.late)) : null;
+    val('attr.early.big.n', big.length);
+    val('attr.early.big.list', big.slice().sort((a, b) => b.late - a.late).map((p) => `${p.mid} ${pc(p.late)}`).join('、') || '没有');
+    val('attr.early.big.range', rng(big.map((p) => p.late)));
+    val('attr.early.rest.n', rest.length); val('attr.early.rest.range', rng(rest.map((p) => p.late)));
+    val('attr.early.rest.med', pc(med(rest.map((p) => p.late))));
+    val('attr.early.rest.over', rest.filter((p) => ok(bigMin) && p.late >= bigMin).map((p) => `${p.mid} ${pc(p.late)}（② ${rpc(p.f21)}）`).join('、') || '没有');
+    val('attr.early.rest.over.n', rest.filter((p) => ok(bigMin) && p.late >= bigMin).length);
+    val('attr.early.clean.range', rng(cl.map((p) => p.late)));
+    val('attr.early.n', pts.length);
+    val('attr.early.spearman', pts.length >= 5 ? f(corr(rankOf(pts.map((p) => p.late)), rankOf(pts.map((p) => p.f21))), 2).replace('-', '−') : '-');
   }
   // 归因占比：把「即时通道 → 历史」的总差按对数拆成四段。各局的对数差取平均（= 比值的几何平均），四段相加正好等于总差。
   const share = [];
