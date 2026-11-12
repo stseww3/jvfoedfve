@@ -8,8 +8,8 @@
 //
 // 用法（必须套重计算闸；一次只跑一个）：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/v28_shadow.mjs <matchId> \
-//        [--src 路径] [--label 名字] [--params '{"enableInflightLedger":0}'] [--from T0] [--until T1] [--bots a,b|all]
-//        [--quit engine|none] [--share-window 1|0]
+//        [--src 路径] [--label 名字] [--modules none|all|p1,p3] [--params '{"p8Margin":0.2}'] [--from T0] [--until T1]
+//        [--bots a,b|all] [--quit engine|none]
 // 输出：
 //   out/v28/<matchId>_<label>.json            （进仓库，小）报错清单、各号指令计数、[V28-*] 日志按标签计数、策略对象上的计数器（policy.v28n）
 //   out/_cache/v28/<matchId>_<label>_cmds.tsv （不进仓库）每条影子指令：t、号、种类、pct、目标、附加参数
@@ -31,7 +31,16 @@ fs.mkdirSync(RAW, { recursive: true });
 
 const srcPath = path.resolve(opt('--src', path.join(HERE, '..', 'v28', 'v28-team-organism.js')));
 const label = opt('--label', path.basename(srcPath).replace(/\.m?js$/, ''));
-const params = JSON.parse(opt('--params', '{}'));
+// --modules none|all|p1,p3,…：模块开关的简写（none = 八个全关 = Vc；p1,p3 = 只开这两个）；--params 里写的优先。
+const SWITCH = { p1: 'enableInflightLedger', p2: 'enableSpawnClosedLoop', p3: 'enableAiFloorCap', p4: 'enableCoordinatedStrike', p5: 'enableSmartOverCap', p6: 'enableQuotaExactDonate', p7: 'enableSeaPrecision', p8: 'enableCollapseGuard' };
+const modSel = opt('--modules', '');
+const modParams = {};
+if (modSel && modSel !== 'all') {
+  const on = new Set(modSel === 'none' ? [] : modSel.toLowerCase().split(','));
+  for (const m of on) if (!SWITCH[m]) { console.error(`--modules 里不认识 ${m}`); process.exit(2); }
+  for (const [m, k] of Object.entries(SWITCH)) modParams[k] = on.has(m) ? 1 : 0;
+}
+const params = { ...modParams, ...JSON.parse(opt('--params', '{}')) };
 const from = +opt('--from', 0);
 const until = +opt('--until', 1e9);
 const quitMode = opt('--quit', 'engine');

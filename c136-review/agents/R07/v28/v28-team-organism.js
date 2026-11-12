@@ -3830,11 +3830,53 @@ export const PARAMS = {
   a06AloneSafe: 0,
   a06AggMemGate: 0,
   a06BoatUnderAtk: 0,
+
+  // ---- v28 module switches (ROUNDTABLE-SYNTHESIS section 3). 0 = that module behaves as Vc. ----
+  enableInflightLedger: 1, // P1
+  enableSpawnClosedLoop: 1, // P2 (client half)
+  enableAiFloorCap: 1, // P3
+  enableCoordinatedStrike: 1, // P4
+  enableSmartOverCap: 1, // P5
+  enableQuotaExactDonate: 1, // P6
+  enableSeaPrecision: 1, // P7
+  enableCollapseGuard: 1, // P8
+
+  // ---- v28/P8: own collapse-line guard ----
+  p8Isolate: 1, // exception isolation around the sub-steps of act()
+  p8Roster: 1, // squad recognition by team + coordinator roster, seats that left excluded
+  p8LifeGuard: 1, // the guard itself
+  p8Margin: 0.12, // on when land - peak / 4 < p8Margin x peak ...
+  p8LossWin: 30, // ... and our land is lower than one or two windows of this many ticks ago, under attack
+  p8KeepFrac: 0.30, // share of the balance the guard never spends
+  p8PulseFrac: 0.12, // largest land pulse of the guard (x balance)
+  p8CounterFrac: 0.35, // largest counter on the main attacker (x balance)
+  p8CounterMin: 0.02, // troops of the main attacker on us (x balance) from which it is countered
+  p8WeakRatio: 0.6, // a neighbour person counts as weak below this x our balance
 };
+
+// v28: first frame of an error stack, for the log.
+function firstFrame(e) {
+  const s = String((e && e.stack) || "").split("\n");
+  return (s[1] || "").trim().slice(0, 160);
+}
 
 export class Policy extends V17 {
   constructor(params = {}, me = 0) {
     super({ ...PARAMS, ...params }, me);
+    // v28 state (see the v28 sections at the end of the class)
+    this.v28n = {}; // trigger counters by name (read by the self-test harness)
+    this.v28Faults = {}; // P8: exceptions caught, by step
+    this.v28Any = false;
+    for (const k of ["enableInflightLedger", "enableSpawnClosedLoop", "enableAiFloorCap", "enableCoordinatedStrike", "enableSmartOverCap", "enableQuotaExactDonate", "enableSeaPrecision", "enableCollapseGuard"]) {
+      if (this.p[k] > 0) this.v28Any = true;
+    }
+    this.peakSeen = 0;
+    this.peakT = -1;
+    this.lgOn = false;
+    this.lgLastKind = null;
+    this.lgSampleT = -1e9;
+    this.lgTerrOld = 0;
+    this.lgTerrNew = 0;
     this.hitTo = new Map();
     this.hitFrom = new Map();
     this.lastLandSpendTick = -999;
@@ -4023,7 +4065,21 @@ export class Policy extends V17 {
     return -1;
   }
 
+  // v28/P8: a seat is one of ours when it is on our team, has not left the game (a seat that left is
+  // run as a bot) and is on the roster of the spawn coordinator for this room; without a roster, the
+  // name list of Vc below.
   isOurSquadBot(g, p) {
+    const P = this.p;
+    if (!(P.enableCollapseGuard > 0 && P.p8Roster > 0)) return this.isSquadName(g, p);
+    if (p !== this.me) {
+      if (this.vShell(g, p)) return false;
+      if (g.teams && g.teams[this.me] > 0 && g.teams[p] !== g.teams[this.me]) return false;
+    }
+    const roster = this.vRoster(g);
+    return roster ? roster.includes(p) : this.isSquadName(g, p);
+  }
+
+  isSquadName(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
     return (
@@ -4864,10 +4920,23 @@ export class Policy extends V17 {
     return false;
   }
 
+  // v28/P8: nothing thrown inside a tick may reach the bridge (the bridge would lose the whole tick,
+  // and with it every later step of this seat).
   act(g) {
+    const P = this.p;
+    if (!(P.enableCollapseGuard > 0 && P.p8Isolate > 0)) return this.actCore(g);
+    try {
+      this.actCore(g);
+    } catch (e) {
+      this.vFault(g, "act", e);
+    }
+  }
+
+  actCore(g) {
     const P = this.p, me = this.me;
+    if (this.v28Any) this.safeStep(g, "vTick", () => this.vTick(g));
     if (!g.canAct(me)) return;
-    if (P.quotaGuardMode > 0) this.updateShadowQuota(g);
+    if (P.quotaGuardMode > 0) this.safeStep(g, "shadowQuota", () => this.updateShadowQuota(g));
 
     // 0. Every single tick: step the 50k debt cap flash-loan state machine if active!
     if (P.flashLoanMode > 0 && this.flState) {
@@ -4877,7 +4946,7 @@ export class Policy extends V17 {
 
     // 1. Every single tick: check 2-tick `P_BORDER` bridgehead handoffs (#6 / #8)!
     if (P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0) {
-      handoffFootholds(g, me, this.seaState, (gm, q) => this.safeAt(gm, q));
+      this.safeStep(g, "handoff", () => handoffFootholds(g, me, this.seaState, (gm, q) => this.safeAt(gm, q)));
     }
 
     // 2. Combo 1 (#2): In online `LiveGame` (where only 1 command can be sent per tick),
@@ -4910,10 +4979,11 @@ export class Policy extends V17 {
         const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
         window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
       }
-      if (this.tryEmergencyBossRescue(g) && g.online) return;
+      if (this.safeStep(g, "bossRescue", () => this.tryEmergencyBossRescue(g)) && g.online) return;
+      if (this.safeStep(g, "lifeGuard", () => this.lifeGuardAct(g))) return;
       const before = this.cmds;
       const balBefore = g.bal[me];
-      super.act(g);
+      this.safeStep(g, "earlyAct", () => super.act(g));
       if (this.cmds > before && g.bal[me] <= 0.75 * balBefore) {
         this.lastLandSpendTick = g.t;
       }
@@ -4974,7 +5044,7 @@ export class Policy extends V17 {
         }
       }
     }
-    this.tryPeaceVote(g);
+    this.safeStep(g, "peaceVote", () => this.tryPeaceVote(g));
     if (g.t > 8500 && g.terr[me] < 0.04 * Math.max(1, g.land)) {
       let aliveBros = 0, sumBroTerr = 0;
       for (let p = 0; p < g.humans; p++) {
@@ -4991,33 +5061,38 @@ export class Policy extends V17 {
         return;
       }
     }
-    if (this.tryEmergencyBossRescue(g) && g.online) return;
-    this.updateGrudges(g);
-    this.updateWars(g);
+    if (this.safeStep(g, "bossRescue", () => this.tryEmergencyBossRescue(g)) && g.online) return;
+    this.safeStep(g, "wars", () => {
+      this.updateGrudges(g);
+      this.updateWars(g);
+    });
+
+    // v28/P8: near our own collapse line the guard goes first (one command, then the tick is over).
+    if (this.safeStep(g, "lifeGuard", () => this.lifeGuardAct(g))) return;
 
     // Combo 2 (#7): If an active human attack target gained >= 8 new `P_BORDER` pixels
     // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is large enough,
     // re-ignite those borders!
     if (P.seaCore > 0 && P.reigniteBorders > 0) {
-      if (reigniteNewBorders(g, me, this.seaState, this.cnt, P.reigniteMinShare) && g.online) return;
+      if (this.safeStep(g, "reignite", () => reigniteNewBorders(g, me, this.seaState, this.cnt, P.reigniteMinShare)) && g.online) return;
     }
 
     const cmdsBefore = this.cmds;
-    if (P.flashLoanMode > 0 && this.tryStartFlashLoan(g)) return;
-    if (this.neutral > 0) this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
-    this.buyLand(g);
+    if (P.flashLoanMode > 0 && this.safeStep(g, "flashLoan", () => this.tryStartFlashLoan(g))) return;
+    if (this.neutral > 0) this.safeStep(g, "expandNeutral", () => this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1)));
+    this.safeStep(g, "buyLand", () => this.buyLand(g));
 
     if (P.seaCore > 0 && g.t - this.seaState.lastWiden >= 30) {
       const fee = iV(32 * g.bal[me], 1024);
       if (
-        widenFrontBoats(g, me, this.seaState, this.cnt, {
+        this.safeStep(g, "widenFront", () => widenFrontBoats(g, me, this.seaState, this.cnt, {
           maxFront: 22,
           minSteps: P.widenStepsMin ?? 0,
           minAtkShare: 0.08,
           maxBoats: 5,
           atkFreshBoats: P.atkFreshBoats > 0,
           baseRatePer10: P.seaRebateMode > 0 ? this.baseRate(g) : 0,
-        })
+        }))
       ) {
         this.seaState.lastWiden = g.t;
         this.seaState.stats.widen.boats++;
@@ -5025,8 +5100,8 @@ export class Policy extends V17 {
       }
     }
 
-    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
-    if (this.cmds === cmdsBefore) this.idleBoats(g);
+    if (this.cmds === cmdsBefore) this.safeStep(g, "donate", () => this.tryDonateToTeammate(g));
+    if (this.cmds === cmdsBefore) this.safeStep(g, "idleBoats", () => this.idleBoats(g));
 
     // Line 1: Independent Island-Hopping Line ("算账再发" cost-benefit gate):
     if (P.seaCore > 0 && g.t - this.seaState.lastFrogHop >= 30) {
@@ -5034,13 +5109,13 @@ export class Policy extends V17 {
       const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)) : 550;
       const maxAbsCost = !this.hasBorderFood(g) ? Math.max(1800, negInterestCap) : negInterestCap;
       if (
-        frogHopStep(g, me, this.seaState, {
+        this.safeStep(g, "frogHop", () => frogHopStep(g, me, this.seaState, {
           maxHopBoats: 2,
           maxTotalBoats: 5,
           maxAbsCost,
           safeFloor: this.safeAt(g, -1),
           botPhaseMode: P.botPhaseMode > 0,
-        })
+        }))
       ) {
         this.seaState.lastFrogHop = g.t;
         this.seaState.stats.froghop.boats++;
@@ -5768,6 +5843,207 @@ export class Policy extends V17 {
       }
     }
     return hit;
+  }
+
+  // ==========================================================================================
+  // v28 infrastructure: counters, log, clock, host reads shared by the modules
+  // ==========================================================================================
+
+  vCount(k, n = 1) {
+    this.v28n[k] = (this.v28n[k] || 0) + n;
+  }
+
+  vLog(tag, g, msg) {
+    if (typeof window !== "undefined" && window.__hlLog) window.__hlLog(`[V28-${tag}] t=${g.t} me=${this.me} ${msg}`);
+  }
+
+  // Wall clock in ms. A harness sets window.__c136Now to its simulated time.
+  vNow() {
+    if (typeof window !== "undefined" && typeof window.__c136Now === "function") return window.__c136Now();
+    return typeof performance !== "undefined" ? performance.now() : Date.now();
+  }
+
+  // A person who left the game: the game runs the seat as a bot from then on (state 2 in the
+  // simulator; in the live page the bridge keeps window.__quitPlayers, and the player state array of
+  // the page is read through window.dictionary when it is there).
+  vShell(g, p) {
+    if (p >= g.humans) return false;
+    if (g.state && ArrayBuffer.isView(g.state) && g.state.length >= g.humans) return g.state[p] === 2;
+    if (typeof window === "undefined") return false;
+    if (window.__quitPlayers && window.__quitPlayers.has(p)) return true;
+    try {
+      const d = window.dictionary, pd = d && d.playerData && window[d.playerData];
+      const st = pd && d.playerStates && pd[d.playerStates];
+      if (st && st[p] === 2) return true;
+    } catch {}
+    return false;
+  }
+
+  // Room key: map size, land, seat count and a hash of all the people's names (two rooms on the same
+  // map at the same time differ in their names).
+  vRoomKey(g) {
+    let h = 2166136261 >>> 0;
+    for (let p = 0; p < g.humans; p++) {
+      const s = String(g.names?.[p] ?? "");
+      for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619) >>> 0;
+      h = Math.imul(h ^ 0x2c, 16777619) >>> 0;
+    }
+    return `${g.W}x${g.H}_${g.land}_${g.humans}_${h.toString(36)}`;
+  }
+
+  // The ids of our seats in this room as the spawn coordinator placed them (spawn-coordinator-v28
+  // puts `roster` and `roomKey` into every answer); null without one or when it is another room's.
+  vRoster(g) {
+    if (typeof window === "undefined") return null;
+    const a = window.__c136Roster || window.__tsbAssignedSpawn;
+    if (!a || !Array.isArray(a.roster) || !a.roster.length) return null;
+    if (a.roomKey && a.roomKey !== this.vRoomKey(g)) return null;
+    return a.roster;
+  }
+
+  // Every tick, before anything else: what the modules watch between decisions.
+  vTick(g) {
+    const P = this.p, me = this.me;
+    if (P.enableCollapseGuard > 0) this.peakTick(g);
+  }
+
+  // ==========================================================================================
+  // v28/P8: own collapse-line guard
+  // ==========================================================================================
+
+  vFault(g, name, e) {
+    const n = (this.v28Faults[name] = (this.v28Faults[name] || 0) + 1);
+    this.vCount("p8_fault");
+    if (n <= 3 || n % 200 === 0) this.vLog("FAULT", g, `step=${name} n=${n} ${e && e.message} @ ${firstFrame(e)}`);
+  }
+
+  // Run one sub-step of act(); with P8 on, what it throws is logged and counted and the tick goes on.
+  safeStep(g, name, fn) {
+    const P = this.p;
+    if (!(P.enableCollapseGuard > 0 && P.p8Isolate > 0)) return fn();
+    try {
+      return fn();
+    } catch (e) {
+      this.vFault(g, name, e);
+      return false;
+    }
+  }
+
+  // Our peak land as the game keeps it for the collapse test (aliveTick: it jumps up to our land at
+  // once and falls by max(1, (peak - land) / 1000) a tick while we are below it); g.peak when the
+  // host has it, else the copy kept here. Also the two land samples of the guard (see p8LossWin).
+  peakTick(g) {
+    const P = this.p, me = this.me, L = g.terr[me];
+    const dt = this.peakT < 0 ? 1 : Math.max(1, Math.min(256, g.t - this.peakT));
+    this.peakT = g.t;
+    if (!(this.peakSeen > L)) this.peakSeen = L;
+    else for (let i = 0; i < dt && this.peakSeen > L; i++) this.peakSeen -= Math.max(1, iV(this.peakSeen - L, 1000));
+    if (g.t - this.lgSampleT >= P.p8LossWin) {
+      this.lgTerrOld = this.lgSampleT < 0 ? L : this.lgTerrNew;
+      this.lgTerrNew = L;
+      this.lgSampleT = g.t;
+    }
+  }
+
+  myPeak(g) {
+    const pk = g.peak ? g.peak[this.me] : 0;
+    return pk > 0 ? pk : Math.max(this.peakSeen, g.terr[this.me]);
+  }
+
+  // Null, or what the guard needs when we are within p8Margin x peak of our collapse line and are
+  // losing land to an attack.
+  lifeGuardState(g) {
+    const P = this.p, me = this.me, L = g.terr[me];
+    const peak = this.myPeak(g), line = iV(peak, 4), margin = L - line;
+    if (!(margin < P.p8Margin * peak)) return null;
+    if (!(L < Math.max(this.lgTerrOld, this.lgTerrNew))) return null;
+    let inc = 0, main = -1, mainTr = 0;
+    for (const a of g.attackersOf(me)) {
+      if (a === me || this.isTeammate(g, a)) continue;
+      const tr = g.attackTroopsOn(a, me);
+      inc += tr;
+      if (tr > mainTr) {
+        mainTr = tr;
+        main = a;
+      }
+    }
+    if (!(inc > 0)) return null;
+    return { L, peak, line, margin, inc, main, mainTr };
+  }
+
+  // One command of the guard (true when sent): the price gate and the dpKeep freeze do not apply
+  // here, only p8KeepFrac of the balance stays home. In turn: a counter on the main attacker (our
+  // troops cancel its troops on us one for one before any land changes hands), then land: neutral
+  // land first, else the cheapest neighbour per pixel that is a bot, a seat that left, or a weak person.
+  lifeGuardAct(g) {
+    const P = this.p, me = this.me;
+    if (!(P.enableCollapseGuard > 0 && P.p8LifeGuard > 0)) return false;
+    const st = this.lifeGuardState(g);
+    if (!st) {
+      if (this.lgOn) this.vLog("LIFEGUARD", g, `leave L=${g.terr[me]} peak=${this.myPeak(g)}`);
+      this.lgOn = false;
+      return false;
+    }
+    if (!this.lgOn) {
+      this.lgOn = true;
+      this.vCount("p8_guard_enter");
+      this.vLog("LIFEGUARD", g, `enter L=${st.L} peak=${st.peak} line=${st.line} margin=${st.margin} inc=${st.inc} main=${st.main}`);
+    }
+    this.vCount("p8_guard_tick");
+    const B = g.bal[me], fee = iV(12 * B, 1024), min = this.minCmd(g);
+    const avail = B - fee - P.p8KeepFrac * B;
+    if (avail < min) return false;
+
+    const tryCounter = () => {
+      const q = st.main;
+      if (q < 0 || q === NEUTRAL || !(st.mainTr >= P.p8CounterMin * B)) return false;
+      if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) return false;
+      const x = Math.min(avail, P.p8CounterFrac * B, 1.05 * st.mainTr - g.attackTroopsOn(me, q));
+      if (!(x >= min) || !this.send(g, q, x)) return false;
+      this.vCount("p8_guard_counter");
+      this.vLog("LIFEGUARD", g, `counter q=${q} x=${Math.round(x)} inc=${st.mainTr} margin=${st.margin}`);
+      return true;
+    };
+    const tryLand = () => {
+      const needPx = Math.ceil(P.p8Margin * st.peak - st.margin) + 8;
+      if (this.neutral > 0) {
+        const x = Math.min(avail, P.p8PulseFrac * B, Math.max(min, 3 * Math.max(needPx, this.neutral)));
+        if (x >= min && this.send(g, NEUTRAL, x)) {
+          this.vCount("p8_guard_land");
+          this.vLog("LIFEGUARD", g, `land neutral x=${Math.round(x)} margin=${st.margin}`);
+          return true;
+        }
+      }
+      let best = -1, bestPx = Infinity;
+      for (const q of this.nb) {
+        if (!g.alive[q] || !g.terr[q] || q === st.main) continue;
+        if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) continue;
+        if (this.person(g, q) && !this.vShell(g, q) && g.bal[q] > P.p8WeakRatio * B) continue;
+        const px = this.price(g, q);
+        if (px < bestPx) {
+          bestPx = px;
+          best = q;
+        }
+      }
+      if (best < 0) return false;
+      const x = Math.min(avail, P.p8PulseFrac * B, Math.max(min, bestPx * needPx + 3 * this.cnt[best]));
+      if (!(x >= min) || !this.send(g, best, x)) return false;
+      this.vCount("p8_guard_land");
+      this.vLog("LIFEGUARD", g, `land q=${best} px=${bestPx.toFixed(1)} x=${Math.round(x)} margin=${st.margin}`);
+      return true;
+    };
+
+    const first = this.lgLastKind === "counter" ? tryLand : tryCounter;
+    const second = this.lgLastKind === "counter" ? tryCounter : tryLand;
+    if (first()) {
+      this.lgLastKind = first === tryCounter ? "counter" : "land";
+      return true;
+    }
+    if (second()) {
+      this.lgLastKind = second === tryCounter ? "counter" : "land";
+      return true;
+    }
+    return false;
   }
 }
 
