@@ -456,6 +456,31 @@ def at2():
         if m != WIN:
             g1 += math.log(l1); g2 += math.log(l2); g0 += math.log(ratio); n += 1
     w(f"10 个输局的几何平均：人均地比 {math.exp(g0 / n):.2f} = 经验出生层 {math.exp(g1 / n):.2f} × 剩余转化 {math.exp(g2 / n):.2f}")
+
+    def split(slope):
+        a1 = a2 = 0.0
+        k = 0
+        for m in MIDS:
+            if m == WIN:
+                continue
+            others, squad = data[m]
+            _b, _a, xs, ys = per[m]
+            if len(xs) < 3:
+                continue
+            mx, my = sum(xs) / len(xs), sum(ys) / len(ys)
+            smear = sum(math.exp(y - (my + slope * (x - mx))) for x, y in zip(xs, ys)) / len(xs)
+            sq = [s_ for s_ in squad if s_.get("ctl") and s_["L1500"] > 0]
+            e = sum(math.exp(my + slope * (math.log(s_["cells"]) - mx)) * smear for s_ in sq) / len(sq)
+            oth_mean = sum(math.exp(y) for y in ys) / len(ys)
+            act = sum(s_["L1500"] for s_ in sq) / len(sq)
+            a1 += math.log(e / oth_mean); a2 += math.log(act / e); k += 1
+        return math.exp(a1 / k), math.exp(a2 / k), a1 / (a1 + a2)
+
+    parts = []
+    for name, sl in (("合并斜率", bpool), ("区间下端", lo), ("区间上端", hi), ("斜率取 1（地与名下成正比）", 1.0)):
+        e1, e2, shr = split(sl)
+        parts.append(f"{name} {sl:.2f}：经验出生层 {e1:.2f} × 剩余转化 {e2:.2f}，对数差距里出生层占 {100 * shr:.0f}%")
+    w("  这个拆法对斜率的敏感度（10 个输局的几何平均）：" + "；".join(parts))
     w("注：其他真人名下小，多半是因为挤在真人堆里（四周是能打也会打过来的真人）；编队名下小，是因为和打不了的编队友排在一起。两种「小」不是一回事，这张表只回答「按别人的经验，名下这么大的人 1500 拍有多少地」。")
     w("    编队的名下常常比本局任何一个活到 1500 拍的其他真人都小（最后一列），那些号的推算是外推。")
     w()

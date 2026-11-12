@@ -438,6 +438,11 @@ def main():
     with open(path, "w", encoding="utf8") as f:
         f.write("\n".join(L) + "\n")
     print(f"写 {os.path.relpath(path, ROOT)}（{len(L)} 行）")
+    # [G0-2b] 这一段另存一份，报告里原文引用
+    i = next(k for k, x in enumerate(L) if x.startswith("[G0-2b]"))
+    j = next(k for k in range(i, len(L)) if not L[k].strip())
+    with open(os.path.join(OUT, "council", "G0-2b-cmds.txt"), "w", encoding="utf8") as f:
+        f.write("\n".join(x.strip() for x in L[i + 1:j]) + "\n")
 
 
 if __name__ == "__main__":
