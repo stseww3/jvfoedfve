@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # m7_numcheck.py — 核对手写正文里的数：每一个数都要能在脚本产物（或复盘 JSON、模式表）里原样找到。
-# 用法：python3 scripts/m7_numcheck.py [正文文件 …]      （默认 scripts/m7_src/*.md 和 cards/*.md）
+# 用法：python3 scripts/m7_numcheck.py [正文文件 …]      （默认 scripts/m7_src/*.md 和 scripts/m7_cards_src/*.md）
 #   正文里的记号行（{{…}}）不查：那些是构建时从产物里原样拼进来的。
 #   查的是「带小数、带百分号、带万 / 拍等单位、或 ≥3 位」的数；一两位的整数太常见，不查。
 #   找不到的逐条印出来（文件:行号、数、所在的那一小段），退出码 1。
@@ -30,7 +30,7 @@ def tokens(text):
 def main():
     files = [a for a in sys.argv[1:] if not a.startswith('--')]
     if not files:
-        files = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md'))) + sorted(glob.glob(os.path.join(ROOT, 'cards', '*.md')))
+        files = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md'))) + sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_cards_src', '*.md')))
     corpus = set()
     for pat in CORPUS:
         for fp in glob.glob(os.path.join(ROOT, pat)):

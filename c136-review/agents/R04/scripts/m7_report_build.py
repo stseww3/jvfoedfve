@@ -12,6 +12,7 @@
 #   {{FILE:路径}}      把另一个脚本排好的 markdown 原样放进来（三级标题换成「表 …」的题注）
 # {{T:n}} 会在表前面加一行题注「表 n　<TABLES.md 里的标题>」，正文里说「表 n」指的就是它。
 # 用法：python3 scripts/m7_report_build.py [目标文件]
+#       python3 scripts/m7_report_build.py --cards      把 scripts/m7_cards_src/*.md 逐张拼成 cards/ 下的同名文件
 import sys, os, re, json, glob
 sys.dont_write_bytecode = True
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,8 +43,7 @@ def table_of(lines, note=False, caption=None):
     return head + tab
 
 
-def main():
-    dst = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'reports', 'CROSS-MATCH-SUMMARY.md')
+def load_all():
     T, TT = sections(os.path.join(ROOT, 'out', 'm7', 'TABLES.md'), 3)
     M, _ = sections(os.path.join(ROOT, 'out', 'pattern_matrix.md'), 2)
     lib = json.load(open(os.path.join(ROOT, 'scripts', 'patterns_r04.json'), encoding='utf8'))
@@ -51,10 +51,12 @@ def main():
     for fp in sorted(glob.glob(os.path.join(ROOT, 'reviews', '*.json'))):
         d = json.load(open(fp, encoding='utf8'))
         revs[d['matchId']] = d
+    return T, TT, M, lib, revs
+
+
+def render(srcs, ctx):
+    T, TT, M, lib, revs = ctx
     out = []
-    srcs = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md')))
-    if not srcs:
-        raise SystemExit('scripts/m7_src/ 下没有正文')
     for src in srcs:
         for ln in open(src, encoding='utf8'):
             ln = ln.rstrip('\n')
@@ -87,7 +89,9 @@ def main():
                 if len(x) != 1:
                     raise SystemExit('%s 里没有 %s' % (mid, did))
                 x = x[0]
-                out.append('- **%s %s**（%s 拍；%s；%s）：%s' % (mid, did, x['t'], x['bot'], LET[x['verdict']], x['what']))
+                t = str(x['t'])
+                when = t if re.search(r'[\u4e00-\u9fff]', t) else t + ' 拍'
+                out.append('- **%s %s**（%s；%s；%s）：%s' % (mid, did, when, x['bot'], LET[x['verdict']], x['what']))
                 continue
             m = re.match(r'^\{\{TP:(\w+)\}\}$', s)
             if m:
@@ -116,6 +120,29 @@ def main():
                 raise SystemExit('认不出的记号：' + ln)
             out.append(ln)
         out.append('')
+    return out
+
+
+def main():
+    args = sys.argv[1:]
+    ctx = load_all()
+    if '--cards' in args:
+        srcs = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_cards_src', '*.md')))
+        if not srcs:
+            raise SystemExit('scripts/m7_cards_src/ 下没有假设卡的正文')
+        os.makedirs(os.path.join(ROOT, 'cards'), exist_ok=True)
+        for src in srcs:
+            out = render([src], ctx)
+            dst = os.path.join(ROOT, 'cards', os.path.basename(src))
+            with open(dst, 'w', encoding='utf8') as f:
+                f.write('\n'.join(out).rstrip('\n') + '\n')
+        print('写出 cards/：%d 张' % len(srcs))
+        return
+    dst = args[0] if args else os.path.join(ROOT, 'reports', 'CROSS-MATCH-SUMMARY.md')
+    srcs = sorted(glob.glob(os.path.join(ROOT, 'scripts', 'm7_src', '*.md')))
+    if not srcs:
+        raise SystemExit('scripts/m7_src/ 下没有正文')
+    out = render(srcs, ctx)
     with open(dst, 'w', encoding='utf8') as f:
         f.write('\n'.join(out).rstrip('\n') + '\n')
     print('写出 %s：%d 行（正文 %d 个文件）' % (os.path.relpath(dst, ROOT), len(out), len(srcs)))
