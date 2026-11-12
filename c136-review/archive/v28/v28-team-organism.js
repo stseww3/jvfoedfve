@@ -3945,7 +3945,7 @@ export const PARAMS = {
 
   // ---- v28/P6: quota-exact transfer, coastal floor, anti-pingpong & deficit rescue ----
   p6QuotaExact: 1, // track 100L/300t cumulative transfer quota & 142L recipient room, send 1 larger chunk
-  p6MinDonatePct: 92, // minimum pct/1024 (~9.0%B) when quota-clamped (vs 150 in Vc)
+  p6MinDonatePct: 145, // minimum pct/1024 (~14.2%B) so 6.25% transfer tax is <30% of sent troops
   p6CoastFloor: 1, // raise coastal boxed-in reserve floor to 82L (normal) / 65L (emergency)
   p6CoastProdDens: 82,
   p6CoastEmergDens: 65,
@@ -6230,7 +6230,9 @@ export class Policy extends V17 {
     const mySafe = Math.min(this.safeAt(g, q), P.oppFloorCap * L);
     const myAvail = Math.max(0, g.bal[me] - mySafe) + g.attackTroopsOn(me, q) + this.inflightOn(g, q);
     if (!(myAvail > 0)) return 0;
-    let sumAvail = myAvail, allies = 1;
+    const activeEngagement = g.attackTroopsOn(q, me) > 0 || g.attackTroopsOn(me, q) > 0;
+    const roster = this.vRoster(g);
+    let sumAvail = myAvail, allies = 1, anyAllyEngaged = activeEngagement;
     const B = g.border[q], px = g.px, own = g.own, d = g.dir4;
     const n = B.length, step = n > 512 ? Math.ceil(n / 512) : 1;
     const seen = this.oseen, st = ++this.ostamp;
@@ -6243,6 +6245,8 @@ export class Policy extends V17 {
         if (a === q || a === me || seen[a] === st) continue;
         seen[a] = st;
         if (!g.alive[a] || g.isBot(a) || this.vShell(g, a) || !this.isTeammate(g, a)) continue;
+        if (roster ? !roster.includes(a) : !this.isSquadName(g, a)) continue;
+        if (g.attackTroopsOn(a, q) > 0 || g.attackTroopsOn(q, a) > 0) anyAllyEngaged = true;
         const aAvail = Math.max(0, g.bal[a] - 68 * g.terr[a]) + g.attackTroopsOn(a, q);
         if (aAvail > 0) {
           sumAvail += aAvail;
@@ -6250,7 +6254,7 @@ export class Policy extends V17 {
         }
       }
     }
-    if (allies < 2 || sumAvail < P.p4JointK * rawNeed) return 0;
+    if (allies < 2 || (!anyAllyEngaged && g.t < 2400) || sumAvail < P.p4JointK * rawNeed) return 0;
     const share = Math.max(P.p4MinShare, myAvail / Math.max(1, sumAvail));
     return Math.max(1, Math.floor(rawNeed * share));
   }

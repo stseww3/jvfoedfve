@@ -1,0 +1,55 @@
+{
+ "match": "A049",
+ "replay": "A049",
+ "map": "10_0",
+ "humans": 75,
+ "replayTicks": 7533,
+ "nTeams": 3,
+ "botsTeamed": false,
+ "teamsVsEngine": {
+  "same": 75,
+  "of": 75,
+  "nTeamsOk": true,
+  "botTeamsOk": true
+ },
+ "squad": 10,
+ "squadTeams": [
+  1
+ ],
+ "squadLogVsPack": {
+  "pack": 10,
+  "log": 10,
+  "onlyPack": [],
+  "onlyLog": []
+ },
+ "endT": 7534,
+ "over": false,
+ "truth": {
+  "samples": 253,
+  "lastOkT": 7534,
+  "firstBadT": -1,
+  "truthEndT": 7534
+ },
+ "clone": {
+  "at": 1200,
+  "len": 300,
+  "cloneMs": 2,
+  "proto": true,
+  "twinSame": 300,
+  "twinFirstBad": -1,
+  "fpEnd": "1f7d2202",
+  "origSame": true
+ },
+ "oddLandings": 0,
+ "oddLandingTroops": 0,
+ "ms": 7063,
+ "cpuMs": 6463,
+ "cpuMsPer1000": 858,
+ "heapMB": 19,
+ "logSnaps": {
+  "n": 686,
+  "ok": 686,
+  "firstBadT": -1
+ },
+ "truncated": false
+}

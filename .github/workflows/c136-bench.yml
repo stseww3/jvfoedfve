@@ -1,0 +1,76 @@
+name: c136 bench
+# Runs c136 high-fidelity multi-agent simulator benchmark & ablation jobs
+# across 20 parallel GitHub Actions runners.
+on:
+  push:
+    paths:
+      - 'sim-jobs/c136-bench.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.p.outputs.shards }}
+      name: ${{ steps.p.outputs.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: |
+          name=$(node -e "console.log(require('./sim-jobs/c136-bench.json').name)")
+          shards=$(node -e "const j=require('./sim-jobs/c136-bench.json'); const n=j.tasks?j.tasks.length:(j.shards||1); console.log(JSON.stringify([...Array(n).keys()]))")
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "shards=$shards" >> "$GITHUB_OUTPUT"
+
+  run:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Unpack c136 simulation dataset
+        run: |
+          mkdir -p /agent/repos/c136-data
+          tar -xzf c136-review/ci/c136-ci-data.tar.gz -C /agent/repos/c136-data
+      - name: Run c136 benchmark shard
+        run: node c136-review/ci/ci-bench.mjs "${{ matrix.shard }}" c136-ci-out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ needs.plan.outputs.name }}-shard-${{ matrix.shard }}
+          path: c136-ci-out/
+          retention-days: 7
+
+  summary:
+    needs: [plan, run]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ${{ needs.plan.outputs.name }}-shard-*
+          path: c136-ci-out/
+          merge-multiple: true
+      - name: Summarize all shards
+        run: node c136-review/ci/ci-bench.mjs --summarize c136-ci-out | tee c136-ci-out/SUMMARY.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ needs.plan.outputs.name }}-summary
+          path: c136-ci-out/
+          retention-days: 7
