@@ -19,6 +19,7 @@
   gates      核心期（t>=1500）影子策略对真人 / 非真人报价的出口；被真人打的拍有没有还手（读 out/<id>/coregates.json，coregates.py <id> json 写的）
   donflow    输血账（录像真值）：捐款按千分比档 / 收款人状态 / 收款后 300 拍的去向（读 out/<id>/donflow.json，donflow.py <id> json 写的）
   foes       对手画像（录像真值）：外人对我方号的打击（目标 / 出手方密度、兵力比、千分比）、围攻与还手、登陆、外人之间的捐款（读 out/<id>/foeprofile.json）
+  boats      船账（录像真值）：我方发船的条数、船上兵、手续费、靠岸去向、小船 / 空船、被围时发的船（读 out/<id>/boatflow.json）
   money      兵力账：利息、顶格少拿、手续费、捐款损耗（录像真值）+ 日志侧估算（15 局同口径）
   logside    只靠日志的计数：sent / accepted、骤降、垮着还捐、零指令时段、满仓不动、缺快照、没开局的席位
   patterns   15 局 JSON 里的模式名：出现在几局、多少实例
@@ -61,6 +62,7 @@ class M:
         self.K = jl(os.path.join(OUT, mid, 'coregates.json')) or {}
         self.F = jl(os.path.join(OUT, mid, 'donflow.json')) or {}
         self.P = jl(os.path.join(OUT, mid, 'foeprofile.json')) or {}
+        self.B = jl(os.path.join(OUT, mid, 'boatflow.json')) or {}
         self.ctx = self.R.get('context', {})
         self.oc = self.R.get('outcome', {})
         te = self.ctx.get('truthEnd')
@@ -747,6 +749,49 @@ def sec_foes(ms):
     return [dict(id=d['matchId'], hits={k: v for k, v in d['hits'].items()}, sieges={k: v for k, v in d['sieges'].items() if k != 'rows'}, landings=d['landings'], foeDon=d['foeDon'], top=d['top'], ours=d['ours']) for d in ps] + [dict(id='ALL', hits=T, sieges=S)]
 
 
+def sec_boats(ms):
+    print('### 船账（录像真值，boatflow.py）：我方号发出的每条船，带多少兵、交多少手续费、最后靠在谁的岸上')
+    print('   手续费 = 发船那一拍余额的 3.125%，与船上带多少兵无关。小船 = 船上的兵不到发船时余额的 5%；空船 = 千分比 0。被围 = 发船那一拍影子策略眼里 nb=0 且 neut=0。')
+    bs = [m.B for m in ms if m.B.get('n')]
+    if not bs:
+        print('   （没有 boatflow.json）')
+        print()
+        return []
+    DEST = ['自己的岸', '无主地', '内置AI', '敌方真人', '敌方真人（空壳）', '异队我方号的岸', '同队的岸（移交）', '无空槽白损', '沉没', '消失（主人阵亡等）', '终局还在海上']
+    g = lambda d, k, f='n': (d.get(k) or {}).get(f, 0)
+    rows = []
+    for d in bs:
+        rows.append([d['matchId'], f"{d['n']}（{d['bots']} 个号）", wan(d['sent']), f"{wan(d['fee'])}（{pc(d['fee'], d['sent'], 0)}；{pc(d['fee'], d['inc'])}）",
+                     f"{g(d['size'], '<5%')} / {wan(g(d['size'], '<5%', 'sent'))} / {wan(g(d['size'], '<5%', 'fee'))}", f"{d['zero']['n']} / {wan(d['zero']['fee'])}",
+                     f"{g(d['box'], '被围')} / {wan(g(d['box'], '被围', 'sent'))} / {wan(g(d['box'], '被围', 'fee'))}", f"{d['big']['n']} / {wan(d['big']['sent'])}", f"{wan(d['sea']['decay'])} / {wan(d['sea']['hit'])}",
+                     f"{d['aim']['aimHumanLandedOnIt']}/{d['aim']['aimHuman']}"])
+    T = lambda k: sum(d[k] for d in bs)
+    S2 = lambda a, k, f='n': sum(g(d[a], k, f) for d in bs)
+    rows.append(['合计', f"{T('n'):,}", wan(T('sent')), f"{wan(T('fee'))}（{pc(T('fee'), T('sent'), 0)}；{pc(T('fee'), T('inc'))}）", f"{S2('size', '<5%')} / {wan(S2('size', '<5%', 'sent'))} / {wan(S2('size', '<5%', 'fee'))}",
+                 f"{sum(d['zero']['n'] for d in bs)} / {wan(sum(d['zero']['fee'] for d in bs))}", f"{S2('box', '被围')} / {wan(S2('box', '被围', 'sent'))} / {wan(S2('box', '被围', 'fee'))}",
+                 f"{sum(d['big']['n'] for d in bs)} / {wan(sum(d['big']['sent'] for d in bs))}", f"{wan(sum(d['sea']['decay'] for d in bs))} / {wan(sum(d['sea']['hit'] for d in bs))}",
+                 f"{sum(d['aim']['aimHumanLandedOnIt'] for d in bs)}/{sum(d['aim']['aimHuman'] for d in bs)}"])
+    table(['局', '发船（条）', '船上兵', '手续费（÷船上兵；÷实得利息）', '小船（<5% 余额）：条 / 船上 / 手续费', '空船：条 / 手续费', '被围时发的：条 / 船上 / 手续费', '>=10 万兵的大船：条 / 兵', '海上自然损耗 / 被敌船打掉', '瞄准敌方真人的船靠上了那个人的岸'], rows)
+    rows = []
+    for d in bs:
+        rows.append([d['matchId']] + [f"{g(d['dest'], k)} / {wan(g(d['dest'], k, 'sent'))}" if g(d['dest'], k) else '0' for k in DEST])
+    rows.append(['合计'] + [f"{S2('dest', k)} / {wan(S2('dest', k, 'sent'))}（{pc(S2('dest', k), T('n'), 0)} / {pc(S2('dest', k, 'sent'), T('sent'), 0)}）" for k in DEST])
+    table(['局（靠岸：条 / 船上兵）'] + DEST, rows)
+    bigd = defaultdict(lambda: [0, 0])
+    for d in bs:
+        for k, v in d['big']['dest'].items():
+            bigd[k][0] += v['n']
+            bigd[k][1] += v['sent']
+    print('   >=10 万兵的大船去了哪（合计）：' + '；'.join(f"{k} {v[0]} 条 / {wan(v[1])}" for k, v in sorted(bigd.items(), key=lambda kv: -kv[1][1])))
+    tb = ['<600', '600~1500', '1500~3000', '3000~4284', '>=4284']
+    print('   按发船拍（合计）：' + '；'.join(f"{k} {S2('tband', k)} 条 / 船上 {wan(S2('tband', k, 'sent'))} / 费 {wan(S2('tband', k, 'fee'))}" for k in tb))
+    print('   按船上兵占余额（合计）：' + '；'.join(f"{k} {S2('size', k)} 条 / 船上 {wan(S2('size', k, 'sent'))} / 费 {wan(S2('size', k, 'fee'))}" for k in ('<5%', '5~20%', '20~50%', '>=50%')))
+    print('   被围与否（合计）：' + '；'.join(f"{k} {S2('box', k)} 条 / 船上 {wan(S2('box', k, 'sent'))} / 费 {wan(S2('box', k, 'fee'))}" for k in ('被围', '不被围', '未知')))
+    print('   船靠上异队我方号的岸，引擎按进攻结算；靠上同队的岸，兵直接归对方（不收捐款手续费，但发船手续费照收）。')
+    print()
+    return bs
+
+
 def sec_money(ms):
     print('### 兵力账（录像真值：reviews/*.json 的 truthSummary；单位 兵）')
     keys = ['利息+地租', '顶格少拿', '出兵手续费', '捐款手续费', '捐出到账', '回兵溢出', '空壳少拿', '船兵交接蒸发', '海上损失', '其它白损', '战斗耗兵', '被打掉兵', '得地', '失地']
@@ -1073,7 +1118,7 @@ def sec_spawnfx(ms):
 
 
 SECS = dict(relate=sec_relate, struct=sec_struct, split=sec_split, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
-            gates=sec_gates, donflow=sec_donflow, foes=sec_foes, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
+            gates=sec_gates, donflow=sec_donflow, foes=sec_foes, boats=sec_boats, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
 def main():

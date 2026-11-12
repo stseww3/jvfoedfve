@@ -54,6 +54,8 @@ case "$grp" in
     timeout 60 python3 "$here/donflow.py" "$mid" json > "$sec/donflow.txt" 2>&1 || echo "  [donflow 跳过] $(tail -1 "$sec/donflow.txt")"
     # 对手画像（需要 sim_state.json）
     timeout 60 python3 "$here/foeprofile.py" "$mid" json > "$sec/foeprofile.txt" 2>&1 || echo "  [foeprofile 跳过] $(tail -1 "$sec/foeprofile.txt")"
+    # 船账（需要 sim_state.json；被围与否读 probe.json）
+    timeout 60 python3 "$here/boatflow.py" "$mid" json > "$sec/boatflow.txt" 2>&1 || echo "  [boatflow 跳过] $(tail -1 "$sec/boatflow.txt")"
     ;;
   *) echo "未知批次 $grp"; exit 2 ;;
 esac
