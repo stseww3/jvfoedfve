@@ -1,0 +1,10 @@
+# B034 核心期贴着内置 AI 的行动拍 [1500,3500)：共 531 个号·行动拍，其中贴着弱 AI（兵 < 地）的 455 个
+第一条 AI 报价的去向：send 303（57%），floor/dp 99（19%），behind 49（9%），floor/sf/enemy 35（7%），price 26（5%），covered 17（3%），chunk 2（0%）
+其中贴着弱 AI 的：send 303（67%），floor/dp 99（22%），behind 3（1%），floor/sf/enemy 35（8%），covered 13（3%），chunk 2（0%）
+safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：enemy:20 29，enemy:18 5，enemy:4 1
+  31        210 拍（1500~2545）：send 82，floor/dp 98，floor/sf/enemy 29，chunk 1
+  48        123 拍（1500~3495）：send 41，behind 46，floor/sf/enemy 1，price 26，covered 9
+  45         90 拍（1500~1945）：send 88，behind 2
+  26         47 拍（1500~1730）：send 46，chunk 1
+  22         39 拍（1500~1690）：send 32，floor/dp 1，behind 1，floor/sf/enemy 5
+  41         22 拍（1515~1620）：send 14，covered 8

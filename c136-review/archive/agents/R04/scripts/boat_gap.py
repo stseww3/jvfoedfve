@@ -33,12 +33,20 @@ def main():
             if int(r['spawnStep']) < 0 and int(r['id']) == 3:
                 rec[int(r['p'])].append(int(r['t']))
     logc = collections.defaultdict(list)   # bot -> [(t, boats)]
+    # 日志用号名（B 组还会中途换名），影子表在 B 组用引擎编号当标签：号名先归到影子的标签上（log_alias.py）
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import log_alias
+    al = log_alias.alias(mid)
+    labels = set(ours.values())
+
+    def canon(nm):
+        return nm if nm in labels else ours.get(al.get(nm), nm)
     pat = re.compile(r'\[([^\]]+)\] \[HL-TICK\] t=(\d+) .* boats=(\d+)')
     with open(os.path.join(DATA, mid, 'in_game.log'), encoding='utf8', errors='replace') as f:
         for L in f:
             m = pat.search(L)
             if m:
-                logc[m.group(1)].append((int(m.group(2)), int(m.group(3))))
+                logc[canon(m.group(1))].append((int(m.group(2)), int(m.group(3))))
     print(f'# {mid} 发船：影子想发 / 真号计数增量 / 录像执行（按时段；兵 = 影子想装的兵）')
     head = '号       ' + ' | '.join(f'[{bounds[i]},{bounds[i+1] if bounds[i+1] < 10**9 else "末"})' for i in range(len(bounds) - 1)) + ' | 全场'
     print(head)

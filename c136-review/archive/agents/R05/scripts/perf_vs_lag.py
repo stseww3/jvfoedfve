@@ -23,8 +23,9 @@ import re
 import statistics
 import sys
 
-SRC = '/agent/repos/c136-data'
-CMDS = '/tmp/c136-r05/cmds'
+SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
+BUN = os.environ.get('C136_BUNDLES', 'bundles')
+CMDS = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds')
 a = sys.argv[1:]
 opt = lambda k, d=None: a[a.index(k) + 1] if k in a else d
 ids = [x for i, x in enumerate(a) if not x.startswith('--') and (i == 0 or a[i - 1] not in ('--only', '--tmax', '--t0'))]
@@ -65,7 +66,7 @@ def spearman(x, y):
 
 
 def load(mid):
-    B = f'{SRC}/bundles/{mid}'
+    B = f'{SRC}/{BUN}/{mid}'
     hd = HEAD[mid]
     H, names, total = hd['humans'], hd['names'], hd['totalTicks']
     alias = {}

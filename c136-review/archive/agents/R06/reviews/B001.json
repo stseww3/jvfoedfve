@@ -32,6 +32,7 @@
    "Steve": 4039
   },
   "neverPlayed": [],
+  "neverPlayedSource": "log: 整局没有 HL-TICK 快照、也没有 HL-OPENING 行",
   "sameMatchPeer": null,
   "dataCompleteness": {
    "results": true,
@@ -57,6 +58,9 @@
   "ourFinalShare": 0.0,
   "peakSquadLandShare": 0.3191,
   "peakPrimaryTeamShareSeen": 0.416,
+  "endRowSeen": true,
+  "lastSnapshotTick": 5040,
+  "lastTeamTotalsTick": 5111,
   "note": "卡片标签 split_straggler_won：主队按人数是队1（14 个号），t=4999 最后一个队1 的号 Landsknecht 阵亡；赢的是队2，我方 5 个队2 的号从 t≈1350 起被围在 2,514~5,759 格里活到终局（t=5040 合计 301 万兵、密度 135）。"
  },
  "timeline": [
@@ -2048,6 +2052,20 @@
    "statementType": "inferred"
   }
  ],
+ "latencyLedger": {
+  "matchId": "B001",
+  "replayLast": 0,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 233,
+   "backendLines": 0
+  }
+ },
  "decisions": [
   {
    "t": 50,

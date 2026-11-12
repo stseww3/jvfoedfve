@@ -1,0 +1,4 @@
+B022: 合并 2 片 → probe.json（影子 11 个，tally 13126 行，actual 921 条，到 t=7933，日志快照核对 685/685）
+B022: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=7932，第一处不同 t=-1（-1 = 没有）；我方号最大兵力相对偏差 0；日志快照核对 685/685；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Rommel@805，Eisenhower@922，LeBron@926，Kamakura@462｜始终为假：BigBrain
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：MasterChief@756，Sever (rus)@4257，Manchu@847，Ethereum@653，Heisenberg@287｜始终为假：无

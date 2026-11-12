@@ -689,5 +689,9 @@
   "scripts/boat_list.py A047；scripts/fee_ledger.py A047（船与手续费）",
   "scripts/truth_query.py A047 cmds|on|bal|flow|gain|team …（逐条指令、余额轨迹、窗口得失）",
   "scripts/engine_settings.cjs（13 局的 aE.lC；结果在 out/engine_settings.txt）；scripts/live-rules-check.cjs（出局线 = 峰值/4）"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "读法：600~1499 拍延迟中位 43 拍、落地 ÷ 受理 95%，但落地的单子里 93 条到站时目标已出局（按当初想出的兵算占 33%）。",
+  "land": "读法：两段都以策略闸门为主（60% / 64%）；1500~2999 拍被卡的 270 个决策拍里单价闸 123 个、dpKeep 119 个。"
+ }
 }

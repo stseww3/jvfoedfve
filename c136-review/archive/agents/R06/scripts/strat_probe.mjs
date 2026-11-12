@@ -467,7 +467,7 @@ const explain = (sh) => {
         if (curAtk >= 0.08 * B || curAtk >= 0.65 * need) { row.gate = 'L5490 对它的在途兵已够（>=8% 兵或 >=65% need）→ 跳过'; continue; }
         const targetSlot = Math.min(0.85 * need + 3 * cnt, Math.floor(P.pulseFrac * B));
         const pulse = Math.min(avail, Math.max(targetSlot - curAtk, Math.floor(0.08 * B)));
-        if (pulse < floorCmd) { row.gate = `L5497 pulse=${k(pulse)} 小于 max(minCmd, 4% 兵)=${k(floorCmd)} → 跳过`; continue; }
+        if (pulse < floorCmd) { row.gate = `L5498 pulse=${k(pulse)} 小于 max(minCmd, 4% 兵)=${k(floorCmd)} → 跳过`; continue; }
         row.send = pulse; row.gate = 'L5500 出兵（t>=3800 对将崩/被别人打的真人：pulse，上限 12% 兵）'; done = '已出兵';
         continue;
       }

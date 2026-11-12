@@ -51,7 +51,7 @@ def analyze_bundle(bdir, is_val, exec_map):
     events = load_csv(bdir / "events.csv")
     results = json.loads((bdir / "results.json").read_text(encoding="utf-8"))
 
-    land = max(1, int(card.get("map", {}).get("land") or card.get("land") or 500000))
+    land = max(1, int(card.get("mapLand") or card.get("map", {}).get("land") or card.get("land") or 500000))
     seeded = max(1, int(card.get("seededPlayers") or 1))
     fair_per_human = land / seeded
     actual_teams = max(2, int(card.get("actualTeams") or 2))

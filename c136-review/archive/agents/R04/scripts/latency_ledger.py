@@ -26,6 +26,7 @@ import exec_gap  # noqa: E402
 import client_lag  # noqa: E402
 import batch_targets  # noqa: E402
 from burst_runs import find_run  # noqa: E402
+import log_alias  # noqa: E402
 
 BUNDLES = '/agent/repos/c136-data/bundles'
 BANDS = [(0, 600, '0~599'), (600, 1500, '600~1499'), (1500, 3000, '1500~2999'), (3000, 10 ** 9, '3000+')]
@@ -193,13 +194,22 @@ def delay_part(mid, M, out):
     out['batchLag'] = {lab: dict(batches=nb[lab], matched=nmatch[lab], newestP50=pq(newest[lab], .5), oldestP50=pq(oldest[lab], .5),
                                  oldestMax=max(oldest[lab]) if oldest[lab] else None) for _, _, lab in BANDS if nb[lab]}
     # 漏斗
+    # 日志 / traj.csv / results.csv 用号名，影子表在 B 组用引擎编号当标签，且号名中途会换：先把号名归到影子的标签上（log_alias.py）
+    al = log_alias.alias(mid)
+    labels = set(ours.values())
+
+    def canon(nm):
+        if nm in labels:
+            return nm
+        p = al.get(nm)
+        return ours.get(p, nm)
     traj = collections.defaultdict(list)
     tp = os.path.join(BUNDLES, mid, 'traj.csv')
     if os.path.exists(tp):
         with open(tp, encoding='utf8') as f:
             for r in csv.DictReader(f):
                 try:
-                    traj[r['bot']].append((int(r['t']), int(r['cmds'])))
+                    traj[canon(r['bot'])].append((int(r['t']), int(r['cmds'])))
                 except ValueError:
                     pass
     print('  漏斗（影子想发 → 桥受理（日志 cmds 计数的增量，不含出生指令）→ 录像落地；影子与录像按服务器拍、日志按各号本地拍，快照对齐分段；影子只数到各号日志的最后一个快照）：')
@@ -228,9 +238,9 @@ def delay_part(mid, M, out):
     if os.path.exists(rp):
         with open(rp, encoding='utf8') as f:
             for r in csv.DictReader(f):
-                if r['bot'] in ours.values():
+                if canon(r['bot']) in labels:
                     try:
-                        res[r['bot']] = (int(r['sent']), int(r['accepted']))
+                        res[canon(r['bot'])] = (int(r['sent']), int(r['accepted']))
                     except ValueError:
                         pass
     print('    合计 想发 %d → 受理 %d → 落地 %d（落地 ÷ 受理 %.0f%%）' % (tot[0], tot[1], tot[2], 100.0 * tot[2] / max(1, tot[1])) + (
@@ -239,7 +249,12 @@ def delay_part(mid, M, out):
     out['funnel']['total'] = dict(want=tot[0], accepted=tot[1], landed=tot[2], resSent=sum(v[0] for v in res.values()), resAccepted=sum(v[1] for v in res.values()))
     out['funnel']['perBot'] = {b: dict(want=v[0], accepted=v[1], landed=v[2]) for b, v in perbot.items()}
     # 客户端落后
-    L = client_lag.lags(client_lag.load(mid))
+    L0 = client_lag.lags(client_lag.load(mid))
+    L = collections.defaultdict(list)
+    for nm0, v0 in L0.items():
+        L[canon(nm0)].extend(v0)
+    for k0 in L:
+        L[k0].sort()
     print('  各号客户端落后（相对最快的队友，拍；中位 / 最大）：')
     out['clientLag'] = {}
     for b in ours.values():

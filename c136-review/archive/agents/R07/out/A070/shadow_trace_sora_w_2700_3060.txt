@@ -1,0 +1,295 @@
+# A070 sora_w 影子决策明细 t=2700~3060（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 73 拍（t=2700~3060）
+t=2700 sora_w B=241427 L=42861 d=5.6 nb=3 neut=0 cmds=174 noFull=1 shQ=49805 | m=0.900 worth=10.7 cheap=7.2 over=0 dMedOther=14.0 safe(-1)=602331
+    → Qart-ḥadašt#16[T1] terr=116161 bal=1136440 dq=9.8 cnt=34 | c=25.2 rankC=25.2 need=2199793 tD=0.70 人 pulse | safe=602331 keep=Inf avail=-Inf chunkB=48285 pulseB=28971 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=100308 bal=941562 dq=9.4 cnt=183 | c=32.7 rankC=32.7 need=1828667 tD=0.67 人 pulse crowdedHard | safe=602331 keep=Inf avail=-Inf chunkB=48285 pulseB=28971 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2705 sora_w B=241427 L=42866 d=5.6 nb=2 neut=0 cmds=174 noFull=1 shQ=54025 | m=0.900 worth=10.7 cheap=7.2 over=0 dMedOther=14.0 safe(-1)=602326
+    → Qart-ḥadašt#16[T1] terr=116161 bal=1136440 dq=9.8 cnt=34 | c=25.2 rankC=25.2 need=2199793 tD=0.70 人 pulse | safe=602326 keep=Inf avail=-Inf chunkB=48285 pulseB=28971 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=100936 bal=941562 dq=9.3 cnt=191 | c=32.5 rankC=32.5 need=1829609 tD=0.66 人 pulse crowdedHard | safe=602326 keep=Inf avail=-Inf chunkB=48285 pulseB=28971 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2710 sora_w B=473271 L=42866 d=11.0 nb=2 neut=0 cmds=174 noFull=1 shQ=61424 | m=0.900 worth=10.9 cheap=7.2 over=0 dMedOther=14.3 safe(-1)=612861
+    → Player 436#14[T1] terr=101185 bal=956794 dq=9.5 cnt=194 | c=24.4 rankC=24.4 need=1857135 tD=0.66 人 pulse | safe=612861 keep=Inf avail=-Inf chunkB=94654 pulseB=56793 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=116161 bal=1155191 dq=9.9 cnt=34 | c=25.7 rankC=25.7 need=2233214 tD=0.70 人 pulse | safe=612861 keep=Inf avail=-Inf chunkB=94654 pulseB=56793 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2715 sora_w B=473271 L=42866 d=11.0 nb=2 neut=0 cmds=174 noFull=1 shQ=69704 | m=0.900 worth=10.9 cheap=7.2 over=0 dMedOther=14.3 safe(-1)=612861
+    → Player 436#14[T1] terr=101185 bal=968175 dq=9.6 cnt=194 | c=24.7 rankC=24.7 need=1877420 tD=0.67 人 pulse | safe=612861 keep=Inf avail=-Inf chunkB=94654 pulseB=56793 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=116161 bal=1155191 dq=9.9 cnt=34 | c=25.7 rankC=25.7 need=2233214 tD=0.70 人 pulse | safe=612861 keep=Inf avail=-Inf chunkB=94654 pulseB=56793 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2720 sora_w B=479849 L=42866 d=11.2 nb=2 neut=0 cmds=174 noFull=1 shQ=78007 | m=0.900 worth=11.1 cheap=7.2 over=0 dMedOther=14.5 safe(-1)=537242
+    → Qart-ḥadašt#16[T1] terr=116161 bal=1020590 dq=8.8 cnt=34 | c=17.2 rankC=12.0 need=1993306 tD=0.61 人 pulse | safe=537242 keep=Inf avail=-Inf chunkB=95970 pulseB=57582 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101185 bal=983762 dq=9.7 cnt=194 | c=25.1 rankC=25.1 need=1905202 tD=0.67 人 pulse | safe=537242 keep=Inf avail=-Inf chunkB=95970 pulseB=57582 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2725 sora_w B=479849 L=42866 d=11.2 nb=2 neut=0 cmds=174 noFull=1 shQ=86402 | m=0.900 worth=11.1 cheap=7.2 over=0 dMedOther=14.5 safe(-1)=537242
+    → Qart-ḥadašt#16[T1] terr=116522 bal=1020590 dq=8.8 cnt=36 | c=17.1 rankC=12.0 need=1993851 tD=0.61 人 pulse | safe=537242 keep=Inf avail=-Inf chunkB=95970 pulseB=57582 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101025 bal=981274 dq=9.7 cnt=194 | c=25.1 rankC=25.1 need=1899921 tD=0.67 人 pulse | safe=537242 keep=Inf avail=-Inf chunkB=95970 pulseB=57582 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2730 sora_w B=486518 L=42866 d=11.3 nb=2 neut=0 cmds=174 noFull=1 shQ=94820 | m=0.900 worth=11.2 cheap=7.2 over=0 dMedOther=14.7 safe(-1)=546702
+    → Qart-ḥadašt#16[T1] terr=117408 bal=1037429 dq=8.8 cnt=40 | c=17.3 rankC=12.1 need=2025186 tD=0.60 人 pulse | safe=546702 keep=Inf avail=-Inf chunkB=97304 pulseB=58382 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101025 bal=997072 dq=9.9 cnt=194 | c=25.4 rankC=25.4 need=1928086 tD=0.67 人 pulse | safe=546702 keep=Inf avail=-Inf chunkB=97304 pulseB=58382 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2735 sora_w B=486518 L=42866 d=11.3 nb=2 neut=0 cmds=174 noFull=1 shQ=103330 | m=0.900 worth=11.2 cheap=7.2 over=0 dMedOther=14.7 safe(-1)=546702
+    → Qart-ḥadašt#16[T1] terr=118297 bal=1037429 dq=8.8 cnt=43 | c=22.9 rankC=22.9 need=2026523 tD=0.60 人 pulse | safe=546702 keep=Inf avail=-Inf chunkB=97304 pulseB=58382 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101025 bal=931835 dq=9.2 cnt=194 | c=23.9 rankC=23.9 need=1811874 tD=0.63 人 pulse | safe=546702 keep=Inf avail=-Inf chunkB=97304 pulseB=58382 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2740 sora_w B=493280 L=42866 d=11.5 nb=2 neut=0 cmds=174 noFull=1 shQ=111864 | m=0.900 worth=11.4 cheap=7.2 over=0 dMedOther=14.9 safe(-1)=556443
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1054768 dq=8.9 cnt=45 | c=23.1 rankC=23.1 need=2058239 tD=0.60 人 pulse | safe=556443 keep=Inf avail=-Inf chunkB=98656 pulseB=59194 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101368 bal=946837 dq=9.3 cnt=199 | c=24.2 rankC=24.2 need=1839659 tD=0.63 人 pulse | safe=556443 keep=Inf avail=-Inf chunkB=98656 pulseB=59194 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2745 sora_w B=493280 L=42866 d=11.5 nb=2 neut=0 cmds=174 noFull=1 shQ=120494 | m=0.900 worth=11.4 cheap=7.2 over=0 dMedOther=14.9 safe(-1)=556443
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1054768 dq=8.9 cnt=45 | c=23.1 rankC=23.1 need=2058239 tD=0.60 人 pulse | safe=556443 keep=Inf avail=-Inf chunkB=98656 pulseB=59194 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=101964 bal=946837 dq=9.3 cnt=207 | c=24.0 rankC=24.0 need=1840553 tD=0.62 人 pulse | safe=556443 keep=Inf avail=-Inf chunkB=98656 pulseB=59194 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2750 sora_w B=500136 L=42866 d=11.7 nb=2 neut=0 cmds=174 noFull=1 shQ=125034 | m=0.900 worth=11.6 cheap=7.2 over=0 dMedOther=15.1 safe(-1)=566280
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1072277 dq=9.0 cnt=45 | c=23.5 rankC=23.5 need=2089446 tD=0.60 人 pulse | safe=566280 keep=Inf avail=-Inf chunkB=100027 pulseB=60016 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=102303 bal=958135 dq=9.4 cnt=217 | c=24.2 rankC=24.2 need=1861210 tD=0.62 人 pulse | safe=566280 keep=Inf avail=-Inf chunkB=100027 pulseB=60016 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2755 sora_w B=500136 L=42866 d=11.7 nb=2 neut=0 cmds=174 noFull=1 shQ=125034 | m=0.900 worth=11.6 cheap=7.2 over=0 dMedOther=15.1 safe(-1)=566280
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1072277 dq=9.0 cnt=45 | c=23.5 rankC=23.5 need=2089446 tD=0.60 人 pulse | safe=566280 keep=Inf avail=-Inf chunkB=100027 pulseB=60016 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=102819 bal=958135 dq=9.3 cnt=237 | c=24.1 rankC=24.1 need=1861983 tD=0.62 人 pulse | safe=566280 keep=Inf avail=-Inf chunkB=100027 pulseB=60016 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2760 sora_w B=507087 L=42866 d=11.8 nb=2 neut=0 cmds=174 noFull=1 shQ=126771 | m=0.900 worth=11.8 cheap=7.2 over=0 dMedOther=15.4 safe(-1)=576279
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1090076 dq=9.2 cnt=45 | c=23.8 rankC=23.8 need=2121170 tD=0.60 人 pulse | safe=576279 keep=Inf avail=-Inf chunkB=101417 pulseB=60850 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=103289 bal=973560 dq=9.4 cnt=241 | c=24.3 rankC=24.3 need=1890174 tD=0.61 人 pulse | safe=576279 keep=Inf avail=-Inf chunkB=101417 pulseB=60850 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2765 sora_w B=507087 L=42866 d=11.8 nb=2 neut=0 cmds=174 noFull=1 shQ=126771 | m=0.900 worth=11.8 cheap=7.2 over=0 dMedOther=15.4 safe(-1)=576279
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1090076 dq=9.2 cnt=45 | c=23.8 rankC=23.8 need=2121170 tD=0.60 人 pulse | safe=576279 keep=Inf avail=-Inf chunkB=101417 pulseB=60850 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=103769 bal=973560 dq=9.4 cnt=245 | c=24.2 rankC=24.2 need=1890894 tD=0.61 人 pulse | safe=576279 keep=Inf avail=-Inf chunkB=101417 pulseB=60850 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2770 sora_w B=514135 L=42866 d=12.0 nb=2 neut=0 cmds=174 noFull=1 shQ=128533 | m=0.900 worth=11.9 cheap=7.2 over=0 dMedOther=15.6 safe(-1)=586445
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1108171 dq=9.3 cnt=45 | c=24.2 rankC=24.2 need=2153422 tD=0.60 人 pulse | safe=586445 keep=Inf avail=-Inf chunkB=102827 pulseB=61696 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=103867 bal=989253 dq=9.5 cnt=246 | c=24.6 rankC=24.6 need=1919019 tD=0.61 人 pulse | safe=586445 keep=Inf avail=-Inf chunkB=102827 pulseB=61696 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2775 sora_w B=514135 L=42866 d=12.0 nb=2 neut=0 cmds=174 noFull=1 shQ=128533 | m=0.900 worth=11.9 cheap=7.2 over=0 dMedOther=15.6 safe(-1)=586445
+    → Player 436#14[T1] terr=103867 bal=924528 dq=8.9 cnt=246 | c=23.1 rankC=23.1 need=1803655 tD=0.57 人 pulse | safe=586445 keep=Inf avail=-Inf chunkB=102827 pulseB=61696 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1108171 dq=9.3 cnt=45 | c=24.2 rankC=24.2 need=2153422 tD=0.60 人 pulse | safe=586445 keep=Inf avail=-Inf chunkB=102827 pulseB=61696 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2780 sora_w B=521281 L=42866 d=12.2 nb=2 neut=0 cmds=174 noFull=1 shQ=130320 | m=0.900 worth=10.9 cheap=7.2 over=0 dMedOther=13.8 safe(-1)=596779
+    → Player 436#14[T1] terr=104287 bal=877947 dq=8.4 cnt=246 | c=22.0 rankC=22.0 need=1721260 tD=0.61 人 pulse | safe=596779 keep=Inf avail=-Inf chunkB=104256 pulseB=62554 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1126566 dq=9.5 cnt=45 | c=24.5 rankC=24.5 need=2186209 tD=0.69 人 pulse | safe=596779 keep=Inf avail=-Inf chunkB=104256 pulseB=62554 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2785 sora_w B=521281 L=42866 d=12.2 nb=2 neut=0 cmds=174 noFull=1 shQ=130320 | m=0.900 worth=10.9 cheap=7.2 over=0 dMedOther=13.8 safe(-1)=596779
+    → Player 436#14[T1] terr=106207 bal=877947 dq=8.3 cnt=246 | c=21.6 rankC=21.6 need=1724140 tD=0.60 人 pulse | safe=596779 keep=Inf avail=-Inf chunkB=104256 pulseB=62554 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1126566 dq=9.5 cnt=45 | c=24.5 rankC=24.5 need=2186209 tD=0.69 人 pulse | safe=596779 keep=Inf avail=-Inf chunkB=104256 pulseB=62554 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2790 sora_w B=528526 L=42866 d=12.3 nb=2 neut=0 cmds=174 noFull=1 shQ=132131 | m=0.900 worth=11.1 cheap=7.2 over=0 dMedOther=13.7 safe(-1)=607285
+    → Player 436#14[T1] terr=107713 bal=892169 dq=8.3 cnt=246 | c=21.6 rankC=21.6 need=1751741 tD=0.60 人 pulse | safe=607285 keep=Inf avail=-Inf chunkB=105705 pulseB=63423 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1145266 dq=9.6 cnt=45 | c=24.9 rankC=24.9 need=2219539 tD=0.70 人 pulse | safe=607285 keep=Inf avail=-Inf chunkB=105705 pulseB=63423 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2795 sora_w B=518819 L=42373 d=12.2 nb=2 neut=0 cmds=174 noFull=1 shQ=129704 | m=0.900 worth=11.0 cheap=7.2 over=0 dMedOther=13.4 safe(-1)=607700
+    → Player 436#14[T1] terr=109223 bal=833795 dq=7.6 cnt=247 | c=20.4 rankC=20.4 need=1677488 tD=0.57 人 pulse onMe | safe=607700 keep=Inf avail=-Inf chunkB=103764 pulseB=62258 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1145266 dq=9.6 cnt=45 | c=24.9 rankC=24.9 need=2219539 tD=0.72 人 pulse | safe=607700 keep=Inf avail=-Inf chunkB=103764 pulseB=62258 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2800 sora_w B=554780 L=41874 d=13.2 nb=2 neut=0 cmds=174 noFull=1 shQ=128408 | m=0.900 worth=11.9 cheap=7.2 over=0 dMedOther=14.3 safe(-1)=685565
+    → Player 436#14[T1] terr=110209 bal=957776 dq=8.7 cnt=250 | c=22.6 rankC=22.6 need=1872421 tD=0.61 人 pulse | safe=685565 keep=Inf avail=-Inf chunkB=110956 pulseB=66574 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1283117 dq=10.8 cnt=45 | c=27.7 rankC=27.7 need=2465239 tD=0.76 人 pulse | safe=685565 keep=Inf avail=-Inf chunkB=110956 pulseB=66574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2805 sora_w B=554780 L=41874 d=13.2 nb=2 neut=0 cmds=174 noFull=1 shQ=138043 | m=0.900 worth=11.9 cheap=7.2 over=0 dMedOther=14.0 safe(-1)=685565
+    → Player 436#14[T1] terr=110295 bal=957776 dq=8.7 cnt=250 | c=22.5 rankC=22.5 need=1872557 tD=0.62 人 pulse | safe=685565 keep=Inf avail=-Inf chunkB=110956 pulseB=66574 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1283117 dq=10.8 cnt=45 | c=27.7 rankC=27.7 need=2465239 tD=0.77 人 pulse | safe=685565 keep=Inf avail=-Inf chunkB=110956 pulseB=66574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2810 sora_w B=562435 L=41874 d=13.4 nb=2 neut=0 cmds=174 noFull=1 shQ=140608 | m=0.900 worth=12.1 cheap=7.2 over=0 dMedOther=13.9 safe(-1)=697531
+    → Player 436#14[T1] terr=110295 bal=1066804 dq=9.7 cnt=250 | c=24.9 rankC=24.9 need=2066885 tD=0.70 人 pulse | safe=697531 keep=Inf avail=-Inf chunkB=112487 pulseB=67492 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1304416 dq=11.0 cnt=45 | c=28.1 rankC=28.1 need=2503202 tD=0.79 人 pulse | safe=697531 keep=Inf avail=-Inf chunkB=112487 pulseB=67492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2815 sora_w B=562435 L=41874 d=13.4 nb=2 neut=0 cmds=174 noFull=1 shQ=140608 | m=0.900 worth=12.1 cheap=7.2 over=0 dMedOther=13.6 safe(-1)=697531
+    → Player 436#14[T1] terr=110295 bal=997004 dq=9.0 cnt=250 | c=23.4 rankC=23.4 need=1942476 tD=0.66 人 pulse | safe=697531 keep=Inf avail=-Inf chunkB=112487 pulseB=67492 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1304416 dq=11.0 cnt=45 | c=28.1 rankC=28.1 need=2503202 tD=0.81 人 pulse | safe=697531 keep=Inf avail=-Inf chunkB=112487 pulseB=67492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2820 sora_w B=570196 L=41874 d=13.6 nb=2 neut=0 cmds=174 noFull=1 shQ=142549 | m=0.900 worth=12.3 cheap=7.2 over=0 dMedOther=13.8 safe(-1)=709696
+    → Player 436#14[T1] terr=110295 bal=1013255 dq=9.2 cnt=250 | c=23.7 rankC=23.7 need=1971441 tD=0.66 人 pulse | safe=709696 keep=Inf avail=-Inf chunkB=114039 pulseB=68424 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1326069 dq=11.2 cnt=45 | c=28.5 rankC=28.5 need=2541795 tD=0.81 人 pulse | safe=709696 keep=Inf avail=-Inf chunkB=114039 pulseB=68424 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2825 sora_w B=570196 L=41874 d=13.6 nb=2 neut=0 cmds=174 noFull=1 shQ=142549 | m=0.900 worth=12.3 cheap=7.2 over=0 dMedOther=13.8 safe(-1)=709696
+    → Player 436#14[T1] terr=110692 bal=1013255 dq=9.2 cnt=252 | c=23.7 rankC=23.7 need=1972026 tD=0.66 人 pulse | safe=709696 keep=Inf avail=-Inf chunkB=114039 pulseB=68424 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1326069 dq=11.2 cnt=45 | c=28.5 rankC=28.5 need=2541795 tD=0.81 人 pulse | safe=709696 keep=Inf avail=-Inf chunkB=114039 pulseB=68424 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2830 sora_w B=578064 L=41874 d=13.8 nb=2 neut=0 cmds=174 noFull=1 shQ=144516 | m=0.900 worth=12.4 cheap=7.2 over=0 dMedOther=14.0 safe(-1)=722062
+    → Player 436#14[T1] terr=111202 bal=1029771 dq=9.3 cnt=255 | c=23.9 rankC=23.9 need=2002236 tD=0.66 人 pulse | safe=722062 keep=Inf avail=-Inf chunkB=115613 pulseB=69368 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1348081 dq=11.3 cnt=45 | c=29.0 rankC=29.0 need=2581029 tD=0.81 人 pulse | safe=722062 keep=Inf avail=-Inf chunkB=115613 pulseB=69368 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2835 sora_w B=578064 L=41874 d=13.8 nb=2 neut=0 cmds=174 noFull=1 shQ=144516 | m=0.900 worth=12.4 cheap=7.2 over=0 dMedOther=14.0 safe(-1)=727016
+    → Player 436#14[T1] terr=111728 bal=1029771 dq=9.2 cnt=257 | c=23.8 rankC=23.8 need=2003017 tD=0.66 人 pulse | safe=727016 keep=Inf avail=-Inf chunkB=115613 pulseB=69368 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1356899 dq=11.4 cnt=45 | c=29.2 rankC=29.2 need=2596746 tD=0.81 人 pulse | safe=727016 keep=Inf avail=-Inf chunkB=115613 pulseB=69368 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2840 sora_w B=586041 L=41874 d=14.0 nb=2 neut=0 cmds=174 noFull=1 shQ=146510 | m=0.900 worth=12.6 cheap=7.2 over=0 dMedOther=12.4 safe(-1)=739670
+    → Player 436#14[T1] terr=112262 bal=1046659 dq=9.3 cnt=261 | c=24.1 rankC=24.1 need=2033926 tD=0.75 人 pulse | safe=739670 keep=Inf avail=-Inf chunkB=117208 pulseB=70325 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1379423 dq=11.6 cnt=45 | c=29.6 rankC=29.6 need=2636892 tD=0.94 人 pulse | safe=739670 keep=Inf avail=-Inf chunkB=117208 pulseB=70325 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2845 sora_w B=586041 L=41874 d=14.0 nb=2 neut=0 cmds=174 noFull=1 shQ=146510 | m=0.900 worth=12.6 cheap=7.2 over=0 dMedOther=12.3 safe(-1)=739670
+    → Player 436#14[T1] terr=112805 bal=1046659 dq=9.3 cnt=267 | c=23.9 rankC=23.9 need=2034737 tD=0.76 人 pulse | safe=739670 keep=Inf avail=-Inf chunkB=117208 pulseB=70325 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1379423 dq=11.6 cnt=45 | c=29.6 rankC=29.6 need=2636892 tD=0.95 人 pulse | safe=739670 keep=Inf avail=-Inf chunkB=117208 pulseB=70325 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2850 sora_w B=594128 L=41874 d=14.2 nb=2 neut=0 cmds=174 noFull=1 shQ=148532 | m=0.900 worth=12.8 cheap=7.2 over=0 dMedOther=12.2 safe(-1)=752534
+    → Player 436#14[T1] terr=113334 bal=1063824 dq=9.4 cnt=272 | c=24.2 rankC=24.2 need=2066128 tD=0.77 人 pulse | safe=752534 keep=Inf avail=-Inf chunkB=118826 pulseB=71295 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1402321 dq=11.8 cnt=45 | c=30.1 rankC=30.1 need=2677704 tD=0.97 人 pulse | safe=752534 keep=Inf avail=-Inf chunkB=118826 pulseB=71295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2855 sora_w B=594128 L=41874 d=14.2 nb=2 neut=0 cmds=174 noFull=1 shQ=148532 | m=0.900 worth=12.8 cheap=7.2 over=0 dMedOther=12.0 safe(-1)=752534
+    → Player 436#14[T1] terr=113439 bal=1063859 dq=9.4 cnt=273 | c=24.2 rankC=24.2 need=2066352 tD=0.78 人 pulse | safe=752534 keep=Inf avail=-Inf chunkB=118826 pulseB=71295 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1402321 dq=11.8 cnt=45 | c=30.1 rankC=30.1 need=2677704 tD=0.99 人 pulse | safe=752534 keep=Inf avail=-Inf chunkB=118826 pulseB=71295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2860 sora_w B=602326 L=41874 d=14.4 nb=2 neut=0 cmds=174 noFull=1 shQ=150581 | m=0.900 worth=12.9 cheap=7.2 over=0 dMedOther=12.0 safe(-1)=765611
+    → Player 436#14[T1] terr=113439 bal=1081306 dq=9.5 cnt=273 | c=24.5 rankC=24.5 need=2097449 tD=0.79 人 pulse | safe=765611 keep=Inf avail=-Inf chunkB=120465 pulseB=72279 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1425599 dq=12.0 cnt=45 | c=30.5 rankC=30.5 need=2719194 tD=1.00 人 pulse | safe=765611 keep=Inf avail=-Inf chunkB=120465 pulseB=72279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2865 sora_w B=602326 L=41874 d=14.4 nb=2 neut=0 cmds=174 noFull=1 shQ=150581 | m=0.900 worth=12.9 cheap=7.2 over=0 dMedOther=12.0 safe(-1)=765611
+    → Player 436#14[T1] terr=113439 bal=1081306 dq=9.5 cnt=273 | c=24.5 rankC=24.5 need=2097449 tD=0.79 人 pulse | safe=765611 keep=Inf avail=-Inf chunkB=120465 pulseB=72279 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1425599 dq=12.0 cnt=45 | c=30.5 rankC=30.5 need=2719194 tD=1.00 人 pulse | safe=765611 keep=Inf avail=-Inf chunkB=120465 pulseB=72279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2870 sora_w B=610638 L=41874 d=14.6 nb=2 neut=0 cmds=174 noFull=1 shQ=152659 | m=0.900 worth=13.1 cheap=7.2 over=0 dMedOther=12.2 safe(-1)=778906
+    → Player 436#14[T1] terr=113439 bal=1099039 dq=9.7 cnt=273 | c=24.9 rankC=24.9 need=2129056 tD=0.79 人 pulse | safe=778906 keep=Inf avail=-Inf chunkB=122128 pulseB=73277 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1449263 dq=12.2 cnt=45 | c=31.0 rankC=31.0 need=2761372 tD=1.00 人 pulse | safe=778906 keep=Inf avail=-Inf chunkB=122128 pulseB=73277 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2875 sora_w B=610638 L=41874 d=14.6 nb=2 neut=0 cmds=174 noFull=1 shQ=152659 | m=0.900 worth=13.1 cheap=7.2 over=0 dMedOther=11.5 safe(-1)=642942
+    → Qart-ḥadašt#16[T1] terr=118840 bal=1207248 dq=10.2 cnt=45 | c=19.6 rankC=13.7 need=2330013 tD=0.88 人 pulse | safe=642942 keep=Inf avail=-Inf chunkB=122128 pulseB=73277 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=113439 bal=1099039 dq=9.7 cnt=273 | c=24.9 rankC=24.9 need=2129056 tD=0.84 人 pulse | safe=642942 keep=Inf avail=-Inf chunkB=122128 pulseB=73277 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2880 sora_w B=619064 L=41874 d=14.8 nb=2 neut=0 cmds=174 noFull=1 shQ=154766 | m=0.900 worth=13.3 cheap=7.2 over=0 dMedOther=11.5 safe(-1)=654201
+    → Qart-ḥadašt#16[T1] terr=119347 bal=1227288 dq=10.3 cnt=47 | c=19.8 rankC=13.9 need=2366505 tD=0.90 人 pulse | safe=654201 keep=Inf avail=-Inf chunkB=123813 pulseB=74288 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=113439 bal=1117063 dq=9.8 cnt=273 | c=25.3 rankC=25.3 need=2161181 tD=0.86 人 pulse | safe=654201 keep=Inf avail=-Inf chunkB=123813 pulseB=74288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2885 sora_w B=619064 L=41874 d=14.8 nb=2 neut=0 cmds=174 noFull=1 shQ=154766 | m=0.900 worth=13.3 cheap=7.2 over=0 dMedOther=11.3 safe(-1)=654201
+    → Qart-ḥadašt#16[T1] terr=120193 bal=1227288 dq=10.2 cnt=50 | c=19.7 rankC=13.8 need=2367765 tD=0.90 人 pulse | safe=654201 keep=Inf avail=-Inf chunkB=123813 pulseB=74288 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=113439 bal=1117063 dq=9.8 cnt=273 | c=25.3 rankC=25.3 need=2161181 tD=0.87 人 pulse | safe=654201 keep=Inf avail=-Inf chunkB=123813 pulseB=74288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2890 sora_w B=627607 L=41874 d=15.0 nb=2 neut=0 cmds=174 noFull=1 shQ=156901 | m=0.900 worth=13.5 cheap=7.2 over=0 dMedOther=11.4 safe(-1)=665646
+    → Qart-ḥadašt#16[T1] terr=121063 bal=1247660 dq=10.3 cnt=52 | c=19.9 rankC=13.9 need=2405389 tD=0.90 人 pulse | safe=665646 keep=Inf avail=-Inf chunkB=125521 pulseB=75313 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=113439 bal=1135382 dq=10.0 cnt=273 | c=25.7 rankC=25.7 need=2193833 tD=0.88 人 pulse | safe=665646 keep=Inf avail=-Inf chunkB=125521 pulseB=75313 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2895 sora_w B=627607 L=41874 d=15.0 nb=2 neut=0 cmds=174 noFull=1 shQ=156901 | m=0.900 worth=13.5 cheap=7.2 over=0 dMedOther=11.4 safe(-1)=665646
+    → Player 436#14[T1] terr=113439 bal=1061095 dq=9.4 cnt=273 | c=24.1 rankC=24.1 need=2061426 tD=0.82 人 pulse | safe=665646 keep=Inf avail=-Inf chunkB=125521 pulseB=75313 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=121958 bal=1247660 dq=10.2 cnt=55 | c=26.3 rankC=26.3 need=2406727 tD=0.90 人 pulse | safe=665646 keep=Inf avail=-Inf chunkB=125521 pulseB=75313 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2900 sora_w B=678141 L=41874 d=16.2 nb=2 neut=0 cmds=174 noFull=1 shQ=159257 | m=0.900 worth=14.6 cheap=7.2 over=0 dMedOther=12.6 safe(-1)=746187
+    → Player 436#14[T1] terr=113647 bal=1192039 dq=10.5 cnt=275 | c=26.8 rankC=26.8 need=2295128 tD=0.83 人 pulse | safe=746187 keep=Inf avail=-Inf chunkB=135628 pulseB=81377 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1391024 dq=11.4 cnt=56 | c=29.0 rankC=29.0 need=2663083 tD=0.90 人 pulse | safe=746187 keep=Inf avail=-Inf chunkB=135628 pulseB=81377 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2905 sora_w B=678141 L=41874 d=16.2 nb=2 neut=26 cmds=174 noFull=1 shQ=169535 | m=0.900 worth=14.6 cheap=7.2 over=0 dMedOther=12.6 safe(-1)=746187
+    → Player 436#14[T1] terr=114166 bal=1192039 dq=10.4 cnt=278 | c=26.7 rankC=26.7 need=2295903 tD=0.83 人 pulse | safe=746187 keep=Inf avail=-Inf chunkB=135628 pulseB=81377 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1391024 dq=11.4 cnt=56 | c=29.0 rankC=29.0 need=2663083 tD=0.90 人 pulse | safe=746187 keep=Inf avail=-Inf chunkB=135628 pulseB=81377 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2910 sora_w B=687499 L=41874 d=16.4 nb=2 neut=23 cmds=174 noFull=1 shQ=171874 | m=0.900 worth=14.8 cheap=7.2 over=0 dMedOther=12.8 safe(-1)=759159
+    → Player 436#14[T1] terr=114695 bal=1211707 dq=10.6 cnt=281 | c=27.0 rankC=27.0 need=2331756 tD=0.82 人 pulse | safe=759159 keep=Inf avail=-Inf chunkB=137500 pulseB=82500 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1414114 dq=11.5 cnt=56 | c=29.4 rankC=29.4 need=2704238 tD=0.90 人 pulse | safe=759159 keep=Inf avail=-Inf chunkB=137500 pulseB=82500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2915 sora_w B=687499 L=41874 d=16.4 nb=2 neut=21 cmds=174 noFull=1 shQ=171874 | m=0.900 worth=14.8 cheap=7.2 over=0 dMedOther=12.8 safe(-1)=761808
+    → Player 436#14[T1] terr=115232 bal=1211707 dq=10.5 cnt=283 | c=26.9 rankC=26.9 need=2332549 tD=0.82 人 pulse | safe=761808 keep=Inf avail=-Inf chunkB=137500 pulseB=82500 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1418829 dq=11.6 cnt=56 | c=29.5 rankC=29.5 need=2712642 tD=0.90 人 pulse | safe=761808 keep=Inf avail=-Inf chunkB=137500 pulseB=82500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2920 sora_w B=696986 L=41874 d=16.6 nb=2 neut=18 cmds=174 noFull=1 shQ=174246 | m=0.900 worth=15.0 cheap=7.2 over=0 dMedOther=11.8 safe(-1)=775039
+    → Player 436#14[T1] terr=115689 bal=1231700 dq=10.6 cnt=286 | c=27.2 rankC=27.2 need=2368873 tD=0.90 人 pulse | safe=775039 keep=Inf avail=-Inf chunkB=139397 pulseB=83638 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1442381 dq=11.8 cnt=56 | c=30.0 rankC=30.0 need=2754620 tD=1.00 人 pulse | safe=775039 keep=Inf avail=-Inf chunkB=139397 pulseB=83638 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2925 sora_w B=696986 L=41874 d=16.6 nb=2 neut=16 cmds=174 noFull=1 shQ=174246 | m=0.900 worth=15.0 cheap=7.2 over=0 dMedOther=11.8 safe(-1)=775039
+    → Player 436#14[T1] terr=116078 bal=1231700 dq=10.6 cnt=288 | c=27.1 rankC=27.1 need=2369461 tD=0.90 人 pulse | safe=775039 keep=Inf avail=-Inf chunkB=139397 pulseB=83638 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1442381 dq=11.8 cnt=56 | c=30.0 rankC=30.0 need=2754620 tD=1.00 人 pulse | safe=775039 keep=Inf avail=-Inf chunkB=139397 pulseB=83638 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2930 sora_w B=706604 L=41874 d=16.9 nb=2 neut=13 cmds=174 noFull=1 shQ=176651 | m=0.900 worth=15.2 cheap=7.2 over=0 dMedOther=12.0 safe(-1)=788490
+    → Player 436#14[T1] terr=116367 bal=1252023 dq=10.8 cnt=291 | c=27.4 rankC=27.4 need=2406122 tD=0.90 人 pulse | safe=788490 keep=Inf avail=-Inf chunkB=141321 pulseB=84792 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1466324 dq=12.0 cnt=56 | c=30.5 rankC=30.5 need=2797295 tD=1.00 人 pulse | safe=788490 keep=Inf avail=-Inf chunkB=141321 pulseB=84792 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2935 sora_w B=706604 L=41874 d=16.9 nb=2 neut=9 cmds=174 noFull=1 shQ=176651 | m=0.900 worth=15.2 cheap=7.2 over=0 dMedOther=12.0 safe(-1)=788490
+    → Player 436#14[T1] terr=116570 bal=1252023 dq=10.7 cnt=295 | c=27.4 rankC=27.4 need=2406422 tD=0.90 人 pulse | safe=788490 keep=Inf avail=-Inf chunkB=141321 pulseB=84792 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1466324 dq=12.0 cnt=56 | c=30.5 rankC=30.5 need=2797295 tD=1.00 人 pulse | safe=788490 keep=Inf avail=-Inf chunkB=141321 pulseB=84792 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2940 sora_w B=716355 L=41874 d=17.1 nb=2 neut=4 cmds=174 noFull=1 shQ=179088 | m=0.900 worth=15.4 cheap=7.2 over=0 dMedOther=12.2 safe(-1)=802165
+    → Player 436#14[T1] terr=116733 bal=1272681 dq=10.9 cnt=300 | c=27.8 rankC=27.8 need=2443483 tD=0.90 人 pulse | safe=802165 keep=Inf avail=-Inf chunkB=143271 pulseB=85963 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1490664 dq=12.2 cnt=56 | c=30.9 rankC=30.9 need=2840678 tD=1.00 人 pulse | safe=802165 keep=Inf avail=-Inf chunkB=143271 pulseB=85963 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2945 sora_w B=716355 L=41874 d=17.1 nb=2 neut=1 cmds=174 noFull=1 shQ=179088 | m=0.900 worth=15.4 cheap=7.2 over=0 dMedOther=12.2 safe(-1)=802165
+    → Player 436#14[T1] terr=116864 bal=1272681 dq=10.9 cnt=303 | c=27.7 rankC=27.7 need=2443675 tD=0.89 人 pulse | safe=802165 keep=Inf avail=-Inf chunkB=143271 pulseB=85963 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1490664 dq=12.2 cnt=56 | c=30.9 rankC=30.9 need=2840678 tD=1.00 人 pulse | safe=802165 keep=Inf avail=-Inf chunkB=143271 pulseB=85963 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2950 sora_w B=726240 L=41874 d=17.3 nb=2 neut=0 cmds=174 noFull=1 shQ=181560 | m=0.900 worth=15.6 cheap=7.2 over=0 dMedOther=11.3 safe(-1)=691499
+    → Qart-ḥadašt#16[T1] terr=122507 bal=1262348 dq=10.3 cnt=56 | c=19.9 rankC=13.9 need=2433734 tD=0.91 人 pulse | safe=691499 keep=Inf avail=-Inf chunkB=145248 pulseB=87149 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=116958 bal=1293680 dq=11.1 cnt=304 | c=28.1 rankC=28.1 need=2481252 tD=0.98 人 pulse | safe=691499 keep=Inf avail=-Inf chunkB=145248 pulseB=87149 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2955 sora_w B=726240 L=41874 d=17.3 nb=2 neut=0 cmds=174 noFull=1 shQ=181560 | m=0.900 worth=15.6 cheap=7.2 over=0 dMedOther=11.3 safe(-1)=691499
+    → Qart-ḥadašt#16[T1] terr=122685 bal=1262348 dq=10.3 cnt=57 | c=19.9 rankC=13.9 need=2433993 tD=0.91 人 pulse | safe=691499 keep=Inf avail=-Inf chunkB=145248 pulseB=87149 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=117021 bal=1293680 dq=11.1 cnt=304 | c=28.1 rankC=28.1 need=2481342 tD=0.98 人 pulse | safe=691499 keep=Inf avail=-Inf chunkB=145248 pulseB=87149 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2960 sora_w B=736262 L=41874 d=17.6 nb=2 neut=0 cmds=174 noFull=1 shQ=184065 | m=0.900 worth=15.8 cheap=7.2 over=0 dMedOther=12.8 safe(-1)=703491
+    → Qart-ḥadašt#16[T1] terr=123575 bal=1283429 dq=10.4 cnt=59 | c=20.0 rankC=14.0 need=2472910 tD=0.81 人 pulse | safe=703491 keep=Inf avail=-Inf chunkB=147252 pulseB=88351 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=117086 bal=1315025 dq=11.2 cnt=304 | c=28.5 rankC=28.5 need=2519489 tD=0.88 人 pulse | safe=703491 keep=Inf avail=-Inf chunkB=147252 pulseB=88351 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2965 sora_w B=736262 L=41874 d=17.6 nb=2 neut=0 cmds=174 noFull=1 shQ=184065 | m=0.900 worth=15.8 cheap=7.2 over=0 dMedOther=12.8 safe(-1)=703491
+    → Qart-ḥadašt#16[T1] terr=124477 bal=1283429 dq=10.3 cnt=62 | c=19.9 rankC=13.9 need=2474255 tD=0.81 人 pulse | safe=703491 keep=Inf avail=-Inf chunkB=147252 pulseB=88351 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=117171 bal=1315025 dq=11.2 cnt=304 | c=28.5 rankC=28.5 need=2519621 tD=0.88 人 pulse | safe=703491 keep=Inf avail=-Inf chunkB=147252 pulseB=88351 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2970 sora_w B=746422 L=41874 d=17.8 nb=2 neut=0 cmds=174 noFull=1 shQ=186605 | m=0.900 worth=16.0 cheap=7.2 over=0 dMedOther=13.0 safe(-1)=697781
+    → Qart-ḥadašt#16[T1] terr=125412 bal=1304862 dq=10.4 cnt=64 | c=26.7 rankC=26.7 need=2513855 tD=0.80 人 pulse | safe=697781 keep=Inf avail=-Inf chunkB=149284 pulseB=89571 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=117515 bal=1249262 dq=10.6 cnt=305 | c=27.1 rankC=27.1 need=2402923 tD=0.82 人 pulse | safe=697781 keep=Inf avail=-Inf chunkB=149284 pulseB=89571 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2975 sora_w B=746422 L=41874 d=17.8 nb=2 neut=0 cmds=174 noFull=1 shQ=186605 | m=0.900 worth=16.0 cheap=7.2 over=0 dMedOther=13.0 safe(-1)=697781
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1304862 dq=10.3 cnt=69 | c=26.6 rankC=26.6 need=2515289 tD=0.79 人 pulse | safe=697781 keep=Inf avail=-Inf chunkB=149284 pulseB=89571 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=118228 bal=1249262 dq=10.6 cnt=307 | c=27.0 rankC=27.0 need=2403980 tD=0.81 人 pulse | safe=697781 keep=Inf avail=-Inf chunkB=149284 pulseB=89571 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2980 sora_w B=756722 L=41874 d=18.1 nb=2 neut=0 cmds=174 noFull=1 shQ=189180 | m=0.900 worth=16.3 cheap=7.2 over=0 dMedOther=13.2 safe(-1)=710161
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1326898 dq=10.5 cnt=69 | c=27.0 rankC=27.0 need=2554565 tD=0.80 人 pulse | safe=710161 keep=Inf avail=-Inf chunkB=151344 pulseB=90807 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=118793 bal=1270054 dq=10.7 cnt=309 | c=27.3 rankC=27.3 need=2441890 tD=0.81 人 pulse | safe=710161 keep=Inf avail=-Inf chunkB=151344 pulseB=90807 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2985 sora_w B=756722 L=41874 d=18.1 nb=2 neut=0 cmds=174 noFull=1 shQ=189180 | m=0.900 worth=16.3 cheap=7.2 over=0 dMedOther=13.2 safe(-1)=710161
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1326898 dq=10.5 cnt=69 | c=27.0 rankC=27.0 need=2554565 tD=0.80 人 pulse | safe=710161 keep=Inf avail=-Inf chunkB=151344 pulseB=90807 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=118851 bal=1270054 dq=10.7 cnt=309 | c=27.3 rankC=27.3 need=2441986 tD=0.81 人 pulse | safe=710161 keep=Inf avail=-Inf chunkB=151344 pulseB=90807 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2990 sora_w B=767164 L=41874 d=18.3 nb=2 neut=0 cmds=174 noFull=1 shQ=191791 | m=0.900 worth=16.5 cheap=7.2 over=0 dMedOther=13.4 safe(-1)=722684
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1349189 dq=10.7 cnt=69 | c=27.4 rankC=27.4 need=2594295 tD=0.80 人 pulse | safe=722684 keep=Inf avail=-Inf chunkB=153433 pulseB=92060 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=118903 bal=1291136 dq=10.9 cnt=309 | c=27.7 rankC=27.7 need=2479640 tD=0.81 人 pulse | safe=722684 keep=Inf avail=-Inf chunkB=153433 pulseB=92060 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2995 sora_w B=767164 L=41874 d=18.3 nb=2 neut=0 cmds=174 noFull=1 shQ=191791 | m=0.900 worth=16.5 cheap=7.2 over=0 dMedOther=13.4 safe(-1)=722684
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1349189 dq=10.7 cnt=69 | c=27.4 rankC=27.4 need=2594295 tD=0.80 人 pulse | safe=722684 keep=Inf avail=-Inf chunkB=153433 pulseB=92060 价高(c>=worth)→break hNb=2
+    → Player 436#14[T1] terr=118949 bal=1291136 dq=10.9 cnt=309 | c=27.7 rankC=27.7 need=2479700 tD=0.81 人 pulse | safe=722684 keep=Inf avail=-Inf chunkB=153433 pulseB=92060 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3000 sora_w B=819624 L=41874 d=19.6 nb=2 neut=0 cmds=174 noFull=1 shQ=194639 | m=0.900 worth=17.6 cheap=7.2 over=0 dMedOther=14.6 safe(-1)=806410
+    → Player 436#14[T1] terr=119529 bal=1346077 dq=11.3 cnt=311 | c=28.6 rankC=28.6 need=2578495 tD=0.77 人 pulse | safe=806410 keep=Inf avail=-Inf chunkB=163925 pulseB=98355 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1498220 dq=11.9 cnt=69 | c=30.2 rankC=30.2 need=2859923 tD=0.81 人 pulse | safe=806410 keep=Inf avail=-Inf chunkB=163925 pulseB=98355 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3005 sora_w B=819624 L=41874 d=19.6 nb=2 neut=0 cmds=174 noFull=1 shQ=204906 | m=0.900 worth=17.6 cheap=7.2 over=0 dMedOther=14.6 safe(-1)=806410
+    → Player 436#14[T1] terr=120231 bal=1346077 dq=11.2 cnt=314 | c=28.5 rankC=28.5 need=2579557 tD=0.77 人 pulse | safe=806410 keep=Inf avail=-Inf chunkB=163925 pulseB=98355 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1498220 dq=11.9 cnt=69 | c=30.2 rankC=30.2 need=2859923 tD=0.81 人 pulse | safe=806410 keep=Inf avail=-Inf chunkB=163925 pulseB=98355 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3010 sora_w B=830934 L=41874 d=19.8 nb=2 neut=0 cmds=174 noFull=1 shQ=207733 | m=0.900 worth=17.9 cheap=7.2 over=0 dMedOther=14.9 safe(-1)=820550
+    → Player 436#14[T1] terr=120387 bal=1368532 dq=11.4 cnt=314 | c=28.9 rankC=28.9 need=2619814 tD=0.76 人 pulse | safe=820550 keep=Inf avail=-Inf chunkB=166187 pulseB=99712 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1523390 dq=12.1 cnt=69 | c=30.7 rankC=30.7 need=2904785 tD=0.81 人 pulse | safe=820550 keep=Inf avail=-Inf chunkB=166187 pulseB=99712 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3015 sora_w B=830934 L=41874 d=19.8 nb=2 neut=0 cmds=174 noFull=1 shQ=207733 | m=0.900 worth=17.9 cheap=7.2 over=0 dMedOther=14.9 safe(-1)=820550
+    → Player 436#14[T1] terr=120413 bal=1368532 dq=11.4 cnt=314 | c=28.9 rankC=28.9 need=2619844 tD=0.76 人 pulse | safe=820550 keep=Inf avail=-Inf chunkB=166187 pulseB=99712 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1523390 dq=12.1 cnt=69 | c=30.7 rankC=30.7 need=2904785 tD=0.81 人 pulse | safe=820550 keep=Inf avail=-Inf chunkB=166187 pulseB=99712 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3020 sora_w B=842400 L=41874 d=20.1 nb=2 neut=0 cmds=174 noFull=1 shQ=210600 | m=0.900 worth=18.1 cheap=7.2 over=0 dMedOther=15.1 safe(-1)=834928
+    → Player 436#14[T1] terr=120421 bal=1435401 dq=11.9 cnt=314 | c=30.2 rankC=30.2 need=2739041 tD=0.79 人 pulse | safe=834928 keep=Inf avail=-Inf chunkB=168480 pulseB=101088 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1548982 dq=12.3 cnt=69 | c=31.1 rankC=31.1 need=2950399 tD=0.81 人 pulse | safe=834928 keep=Inf avail=-Inf chunkB=168480 pulseB=101088 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3025 sora_w B=842400 L=41874 d=20.1 nb=2 neut=0 cmds=174 noFull=1 shQ=210600 | m=0.900 worth=18.1 cheap=7.2 over=0 dMedOther=15.1 safe(-1)=834928
+    → Player 436#14[T1] terr=120421 bal=1341484 dq=11.1 cnt=314 | c=28.3 rankC=28.3 need=2571646 tD=0.74 人 pulse | safe=834928 keep=Inf avail=-Inf chunkB=168480 pulseB=101088 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1548982 dq=12.3 cnt=69 | c=31.1 rankC=31.1 need=2950399 tD=0.81 人 pulse | safe=834928 keep=Inf avail=-Inf chunkB=168480 pulseB=101088 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3030 sora_w B=854025 L=41874 d=20.4 nb=2 neut=0 cmds=174 noFull=1 shQ=213506 | m=0.900 worth=18.4 cheap=7.2 over=0 dMedOther=15.4 safe(-1)=849547
+    → Player 436#14[T1] terr=120421 bal=1363752 dq=11.3 cnt=314 | c=28.8 rankC=28.8 need=2611336 tD=0.74 人 pulse | safe=849547 keep=Inf avail=-Inf chunkB=170805 pulseB=102483 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1575004 dq=12.5 cnt=69 | c=31.6 rankC=31.6 need=2996780 tD=0.81 人 pulse | safe=849547 keep=Inf avail=-Inf chunkB=170805 pulseB=102483 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3035 sora_w B=854025 L=41874 d=20.4 nb=2 neut=0 cmds=174 noFull=1 shQ=213506 | m=0.900 worth=18.4 cheap=7.2 over=0 dMedOther=15.4 safe(-1)=849547
+    → Player 436#14[T1] terr=121010 bal=1363752 dq=11.3 cnt=316 | c=28.6 rankC=28.6 need=2612224 tD=0.73 人 pulse | safe=849547 keep=Inf avail=-Inf chunkB=170805 pulseB=102483 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1575004 dq=12.5 cnt=69 | c=31.6 rankC=31.6 need=2996780 tD=0.81 人 pulse | safe=849547 keep=Inf avail=-Inf chunkB=170805 pulseB=102483 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3040 sora_w B=865810 L=41874 d=20.7 nb=2 neut=0 cmds=174 noFull=1 shQ=216452 | m=0.900 worth=18.6 cheap=7.2 over=0 dMedOther=15.6 safe(-1)=864412
+    → Player 436#14[T1] terr=121744 bal=1386390 dq=11.4 cnt=319 | c=28.9 rankC=28.9 need=2653665 tD=0.73 人 pulse | safe=864412 keep=Inf avail=-Inf chunkB=173162 pulseB=103897 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1601464 dq=12.7 cnt=69 | c=32.1 rankC=32.1 need=3043942 tD=0.81 人 pulse | safe=864412 keep=Inf avail=-Inf chunkB=173162 pulseB=103897 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3045 sora_w B=865810 L=41874 d=20.7 nb=2 neut=0 cmds=174 noFull=1 shQ=216452 | m=0.900 worth=18.6 cheap=7.2 over=0 dMedOther=15.6 safe(-1)=864412
+    → Player 436#14[T1] terr=122042 bal=1386408 dq=11.4 cnt=320 | c=28.9 rankC=28.9 need=2654153 tD=0.73 人 pulse | safe=864412 keep=Inf avail=-Inf chunkB=173162 pulseB=103897 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1601464 dq=12.7 cnt=69 | c=32.1 rankC=32.1 need=3043942 tD=0.81 人 pulse | safe=864412 keep=Inf avail=-Inf chunkB=173162 pulseB=103897 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3050 sora_w B=877758 L=41874 d=21.0 nb=2 neut=0 cmds=174 noFull=1 shQ=219439 | m=0.900 worth=18.9 cheap=7.2 over=0 dMedOther=15.8 safe(-1)=879526
+    → Player 436#14[T1] terr=122042 bal=1409422 dq=11.5 cnt=320 | c=29.3 rankC=29.3 need=2695173 tD=0.73 人 pulse | safe=879526 keep=Inf avail=-Inf chunkB=175552 pulseB=105331 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1628368 dq=12.9 cnt=69 | c=32.6 rankC=32.6 need=3091894 tD=0.81 人 pulse | safe=879526 keep=Inf avail=-Inf chunkB=175552 pulseB=105331 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3055 sora_w B=877758 L=41874 d=21.0 nb=2 neut=0 cmds=174 noFull=1 shQ=219439 | m=0.900 worth=18.9 cheap=7.2 over=0 dMedOther=15.8 safe(-1)=879526
+    → Player 436#14[T1] terr=122042 bal=1409422 dq=11.5 cnt=320 | c=29.3 rankC=29.3 need=2695173 tD=0.73 人 pulse | safe=879526 keep=Inf avail=-Inf chunkB=175552 pulseB=105331 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1628368 dq=12.9 cnt=69 | c=32.6 rankC=32.6 need=3091894 tD=0.81 人 pulse | safe=879526 keep=Inf avail=-Inf chunkB=175552 pulseB=105331 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3060 sora_w B=889871 L=41874 d=21.3 nb=2 neut=0 cmds=174 noFull=1 shQ=222467 | m=0.900 worth=19.1 cheap=7.2 over=0 dMedOther=16.1 safe(-1)=894895
+    → Player 436#14[T1] terr=122042 bal=1339070 dq=11.0 cnt=320 | c=27.9 rankC=27.9 need=2569780 tD=0.68 人 pulse | safe=894895 keep=Inf avail=-Inf chunkB=177974 pulseB=106785 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=126365 bal=1655724 dq=13.1 cnt=69 | c=33.2 rankC=33.2 need=3140653 tD=0.81 人 pulse | safe=894895 keep=Inf avail=-Inf chunkB=177974 pulseB=106785 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

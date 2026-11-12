@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // resim_r08.mjs — R08 的副本：原件是统筹分发的 /agent/repos/c136-data/src/tools/resim.mjs（逻辑未改）。
-// 只改了三处：(1) 输出写到 agents/R08/out/<局>/resim.json；(2) --replay-from <局2>：录像取自同一房间的另一个对局包
+// 只改了四处：(1) 输出写到 agents/R08/out/<局>/resim.json；(2) --replay-from <局2>：录像取自同一房间的另一个对局包
 // （例如 B043 自己的录像只到 t=819，同房的 A062 录到 t=6568）；(3) --peer <局2>：把同房另一支编队的号也按名字认出来，
 // 写进 squad（键名前加「局2:」），这样两边的号都有在途兵、邻居、额度的逐拍明细；--peer-tag <标签>：不读对方的对局包，
 // 只按本局录像里名字带的战队标签（如 APEX）认出同房另一支编队（对方的包在验证集里时用）。
+// (4) resim() 的 opts.cmdFilter：返回 false 的录像指令不执行（cfprobe.mjs 的反事实探针用；不传时重演和原来逐位一样）。
 // resim.mjs — 全量重放一局：用 c136-data/src/sim 的纯 JS 引擎（512 个玩家）把 replay.txt 从头跑一遍，
 // 输出全场账本到 out/cache/<mid>-resim.json，并把本队每个号的地/兵与 traj.csv 逐快照核对。
 //
@@ -426,7 +427,36 @@ export function resim(mid, opts = {}) {
     let r = pairAcc.get(key);
     if (!r) { r = [0, 0, 0, 0, 0]; pairAcc.set(key, r); }
     r[0] += tiles; r[1] += burnt; r[2] += dB; r[3] += dS; r[4] += 1;
+    // 无主地的来历（opts.neutralFrom = [t0, t1]）：刚吃下的格就是 this.cand[0..tiles)（expandAttack 赢的那条路把 cand 原样留着）
+    if (nFrom && target === NEUTRAL && tiles > 0 && p < H && this.t > nfT0 && this.t <= nfT1) {
+      const cand = this.cand;
+      for (let i = 0; i < tiles; i++) {
+        const c = cand[i];
+        if (this.own[c] !== p) { nfBad++; continue; }
+        const key2 = p * 1024 + nFrom[c];
+        nfAcc.set(key2, (nfAcc.get(key2) || 0) + 1);
+      }
+    }
   };
+  // 每一格变成无主地之前是谁的（0 = 开局就是无主地；否则 1 + 那个号）。只读引擎状态，不改任何东西。
+  const nFrom = opts.neutralFrom ? new Uint16Array(g.W * g.H) : null;
+  const nfT0 = opts.neutralFrom ? opts.neutralFrom[0] : 0, nfT1 = opts.neutralFrom ? opts.neutralFrom[1] : 0;
+  const nfAcc = new Map();
+  let nfBad = 0;
+  if (nFrom) {
+    g.clearTerritory = function (p) {
+      if (this.terr[p]) {
+        const W = this.W;
+        for (let x = this.x1[p]; x >= this.x0[p]; x--) {
+          for (let y = this.y1[p]; y >= this.y0[p]; y--) {
+            const c = y * W + x;
+            if (this.ownedBy(p, c)) nFrom[c] = p + 1;
+          }
+        }
+      }
+      proto.clearTerritory.call(this, p);
+    };
+  }
   const flushPairs = (t) => {
     for (const [key, r] of pairAcc) pairLog.push([t, key >> 10, key & 1023, r[0], r[1], r[2], r[3], r[4]]);
     pairAcc = new Map();
@@ -569,7 +599,11 @@ export function resim(mid, opts = {}) {
     if (iv >= d.ja.length) return false;
     const jZ = d.ja[iv];
     if (d.jY[iv]) {
-      for (let a1 = iw; a1 < iw + jZ; a1++) execCmd(d.cmds[a1]);
+      // opts.cmdFilter(指令, g)：返回 false 就不执行这条录像指令（反事实探针用；默认不传，重演和原来逐位一样）
+      for (let a1 = iw; a1 < iw + jZ; a1++) {
+        if (opts.cmdFilter && !opts.cmdFilter(d.cmds[a1], g)) continue;
+        execCmd(d.cmds[a1]);
+      }
       iw += jZ;
       iv++;
     } else if (++ix >= jZ) {
@@ -774,6 +808,7 @@ export function resim(mid, opts = {}) {
     validate: val,
     snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, snapAi, teamLand, botLand, aliveH,
     sq, pairLog, cmdLog, deaths, landings, maps, engineEvents, huskGifts,
+    neutralFrom: nFrom ? { rows: [...nfAcc].map(([k, v]) => [k >> 10, (k & 1023) - 1, v]), bad: nfBad } : null,
   };
   return out;
 }

@@ -1150,5 +1150,2014 @@
   "R10 ①（4284 拍前调度落不了地）：本局 443 次只落地 19 次（2142 拍前 73 次落地 0，2142~3212 拍 162 次落地 9，3213~4283 拍 208 次落地 10）；没落地的 424 次里累计用满 348、单笔超上限 71、解释不了 5。",
   "R10 ②（4284 拍后的税损）：本局 4284 拍后 102 次全部落地，到账 1330 万；全场税 601 万。来回倒手集中在终局 7770~8358 拍 zero_7 ↔ sora_w（到账 335 万、税 371 万，D14），发生在胜负已定之后。",
   "R10 ⑦（DROP30 多数是自己花的）：本局 71 次全部是自己花掉的（捐款 56、陆攻打真人 13、装船 1、打无主地 1），没有一次是被打穿。"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "读法：本局是赢局，但 630~1530 拍受理的 380 条只落地 136 条、600~1499 拍延迟中位 325 拍——通道差的局不一定输。",
+  "land": "读法：人均天然地盘只有全场的 0.67 倍；实际 ÷ 天然地盘 1500 拍 0.75（其他真人 1.00），3000 拍 1.23——地是 1500 拍以后补上来的。"
+ },
+ "latencyLedger": {
+  "match": "A022",
+  "spawn": {
+   "steps": 351,
+   "solves": 47,
+   "lastChange": 47,
+   "classes": {
+    "落在最后一轮的点上": 8,
+    "停在旧坐标": 2
+   },
+   "samePoint": 0,
+   "lastStepMin": 113,
+   "lastStepMax": 351
+  },
+  "delay": {
+   "0~599": {
+    "intents": 125,
+    "landed": 118,
+    "attackIntents": 125,
+    "attackLanded": 118,
+    "p50": 15,
+    "p90": 167,
+    "max": 308,
+    "strictN": 89,
+    "strictP50": 13,
+    "strictP90": 109,
+    "strictMax": 260
+   },
+   "600~1499": {
+    "intents": 410,
+    "landed": 164,
+    "attackIntents": 410,
+    "attackLanded": 164,
+    "p50": 325,
+    "p90": 627,
+    "max": 865,
+    "strictN": 54,
+    "strictP50": 212,
+    "strictP90": 616,
+    "strictMax": 676
+   },
+   "1500~2999": {
+    "intents": 511,
+    "landed": 102,
+    "attackIntents": 318,
+    "attackLanded": 94,
+    "p50": 83,
+    "p90": 240,
+    "max": 315,
+    "strictN": 23,
+    "strictP50": 18,
+    "strictP90": 179,
+    "strictMax": 194
+   },
+   "3000+": {
+    "intents": 448,
+    "landed": 209,
+    "attackIntents": 89,
+    "attackLanded": 89,
+    "p50": 12,
+    "p90": 19,
+    "max": 68,
+    "strictN": 25,
+    "strictP50": 10,
+    "strictP90": 14,
+    "strictMax": 17
+   }
+  },
+  "batchLag": {
+   "600~1499": {
+    "batches": 19,
+    "matched": 16,
+    "newestP50": 157,
+    "oldestP50": 198,
+    "oldestMax": 463
+   },
+   "1500~2999": {
+    "batches": 15,
+    "matched": 11,
+    "newestP50": 159,
+    "oldestP50": 329,
+    "oldestMax": 537
+   },
+   "3000+": {
+    "batches": 1,
+    "matched": 1,
+    "newestP50": 8,
+    "oldestP50": 28,
+    "oldestMax": 28
+   }
+  },
+  "funnel": {
+   "≤630": {
+    "want": 147,
+    "accepted": 138,
+    "landed": 85
+   },
+   "630~1530": {
+    "want": 384,
+    "accepted": 380,
+    "landed": 136
+   },
+   "1530~3060": {
+    "want": 442,
+    "accepted": 445,
+    "landed": 166
+   },
+   ">3060": {
+    "want": 427,
+    "accepted": 427,
+    "landed": 206
+   },
+   "total": {
+    "want": 1400,
+    "accepted": 1390,
+    "landed": 593,
+    "resSent": 1592,
+    "resAccepted": 1584
+   },
+   "perBot": {
+    "ryan_m": {
+     "want": 183,
+     "accepted": 182,
+     "landed": 52
+    },
+    "sora_w": {
+     "want": 96,
+     "accepted": 94,
+     "landed": 62
+    },
+    "zexos1": {
+     "want": 86,
+     "accepted": 85,
+     "landed": 29
+    },
+    "noah88": {
+     "want": 170,
+     "accepted": 169,
+     "landed": 47
+    },
+    "zero_7": {
+     "want": 206,
+     "accepted": 206,
+     "landed": 144
+    },
+    "alex_k": {
+     "want": 106,
+     "accepted": 105,
+     "landed": 53
+    },
+    "talon5": {
+     "want": 16,
+     "accepted": 15,
+     "landed": 14
+    },
+    "leo_tx": {
+     "want": 180,
+     "accepted": 177,
+     "landed": 74
+    },
+    "kaito9": {
+     "want": 253,
+     "accepted": 253,
+     "landed": 67
+    },
+    "riku_x": {
+     "want": 104,
+     "accepted": 104,
+     "landed": 51
+    }
+   }
+  },
+  "clientLag": {
+   "ryan_m": {
+    "max": 450,
+    "n180": 8
+   },
+   "sora_w": {
+    "max": 0,
+    "n180": 0
+   },
+   "zexos1": {
+    "max": 540,
+    "n180": 6
+   },
+   "noah88": {
+    "max": 360,
+    "n180": 7
+   },
+   "zero_7": {
+    "max": 360,
+    "n180": 6
+   },
+   "alex_k": {
+    "max": 360,
+    "n180": 6
+   },
+   "talon5": {
+    "max": 90,
+    "n180": 0
+   },
+   "leo_tx": {
+    "max": 540,
+    "n180": 10
+   },
+   "kaito9": {
+    "max": 360,
+    "n180": 6
+   },
+   "riku_x": {
+    "max": 0,
+    "n180": 0
+   }
+  },
+  "lateWrong": {
+   "0~599": {
+    "landed": 78,
+    "aimed": 20,
+    "aimedTroops": 6635,
+    "retargeted": 0,
+    "wantTroops": 0,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 0,
+    "noAttackTroops": 0,
+    "aimedIntents": 65,
+    "onTarget": 20,
+    "onTargetTroops": 5107
+   },
+   "600~1499": {
+    "landed": 139,
+    "aimed": 109,
+    "aimedTroops": 113384,
+    "retargeted": 72,
+    "wantTroops": 82623,
+    "toNeutralN": 8,
+    "toNeutralTroops": 14195,
+    "toNeutralFee": 2287,
+    "noAttackN": 64,
+    "noAttackTroops": 74184,
+    "aimedIntents": 402,
+    "onTarget": 37,
+    "onTargetTroops": 66904
+   },
+   "1500~2999": {
+    "landed": 159,
+    "aimed": 123,
+    "aimedTroops": 5672044,
+    "retargeted": 52,
+    "wantTroops": 274878,
+    "toNeutralN": 3,
+    "toNeutralTroops": 14203,
+    "toNeutralFee": 1251,
+    "noAttackN": 49,
+    "noAttackTroops": 258620,
+    "aimedIntents": 307,
+    "onTarget": 71,
+    "onTargetTroops": 2407160
+   },
+   "3000+": {
+    "landed": 89,
+    "aimed": 83,
+    "aimedTroops": 19377659,
+    "retargeted": 0,
+    "wantTroops": 0,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 0,
+    "noAttackTroops": 0,
+    "aimedIntents": 83,
+    "onTarget": 82,
+    "onTargetTroops": 17057053
+   }
+  },
+  "repeat": {
+   "0~599": {
+    "n": 5,
+    "troops": 1544,
+    "sharePct": 30.2
+   },
+   "600~1499": {
+    "n": 22,
+    "troops": 31840,
+    "sharePct": 47.6
+   },
+   "1500~2999": {
+    "n": 53,
+    "troops": 1454309,
+    "sharePct": 60.4
+   },
+   "3000+": {
+    "n": 46,
+    "troops": 8296601,
+    "sharePct": 47.3
+   },
+   "total": {
+    "n": 126,
+    "troops": 9784294,
+    "sharePct": 48.9
+   }
+  },
+  "drain": {
+   "600~1499": {
+    "批": 19,
+    "条": 112,
+    "兵": 163586,
+    "第2条起的兵": 130298,
+    "手续费": 13532,
+    "抽到四成以下": 3,
+    "一兵没出": 9
+   },
+   "1500~2999": {
+    "批": 15,
+    "条": 117,
+    "兵": 1069063,
+    "第2条起的兵": 671155,
+    "手续费": 46859,
+    "一兵没出": 10,
+    "抽到四成以下": 4
+   },
+   "3000+": {
+    "批": 1,
+    "条": 5,
+    "兵": 1500697,
+    "第2条起的兵": 1175715,
+    "手续费": 164119
+   },
+   "sizes": {
+    "4": 2,
+    "3": 8,
+    "5": 3,
+    "8": 6,
+    "9": 14,
+    "7": 1,
+    "6": 1
+   }
+  }
+ },
+ "goodLand": {
+  "match": "A022",
+  "land": 546152,
+  "humansPresent": 103,
+  "ours": 10,
+  "t0": 630,
+  "at": [
+   630,
+   1080,
+   1500,
+   1800,
+   2250,
+   3000
+  ],
+  "voronoi": {
+   "euclid": {
+    "ourPx": 35772,
+    "ourSharePct": 6.55,
+    "headSharePct": 9.71,
+    "ourMedian": 3856,
+    "otherMedian": 5288,
+    "perBot": {
+     "16": 2537,
+     "17": 5011,
+     "18": 3766,
+     "19": 3902,
+     "20": 3856,
+     "21": 3950,
+     "22": 2074,
+     "23": 3370,
+     "24": 4668,
+     "25": 2638
+    }
+   },
+   "landpath": {
+    "ourPx": 35652,
+    "ourSharePct": 6.53,
+    "headSharePct": 9.71,
+    "ourMedian": 3680,
+    "otherMedian": 5186,
+    "perBot": {
+     "16": 2559,
+     "17": 4945,
+     "18": 3561,
+     "19": 3979,
+     "20": 3680,
+     "21": 4005,
+     "22": 2110,
+     "23": 3527,
+     "24": 4005,
+     "25": 3281
+    }
+   },
+   "unreachable": 8399
+  },
+  "capture": {
+   "630": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 22002,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 0.615,
+      "ratioL": 0.617,
+      "medE": 0.608,
+      "medL": 0.596
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 93,
+      "actual": 248115,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 0.486,
+      "ratioL": 0.494,
+      "medE": 0.504,
+      "medL": 0.493
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 25,
+      "actual": 66669,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.443,
+      "ratioL": 0.439,
+      "medE": 0.468,
+      "medL": 0.453
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 33,
+      "actual": 87962,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 0.495,
+      "ratioL": 0.487,
+      "medE": 0.537,
+      "medL": 0.525
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 35,
+      "actual": 93484,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.514,
+      "ratioL": 0.55,
+      "medE": 0.548,
+      "medL": 0.59
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "无主": 2323,
+      "内置AI": 9725,
+      "我方": 21994,
+      "同队其他真人": 1276,
+      "敌方真人": 454
+     }
+    },
+    "ourOutside": 8,
+    "ourAll": 22002
+   },
+   "1080": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 25260,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 0.706,
+      "ratioL": 0.709,
+      "medE": 0.719,
+      "medL": 0.723
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 91,
+      "actual": 483021,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 0.946,
+      "ratioL": 0.962,
+      "medE": 0.963,
+      "medL": 0.992
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 25,
+      "actual": 133529,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.887,
+      "ratioL": 0.88,
+      "medE": 0.847,
+      "medL": 0.91
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 32,
+      "actual": 176968,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 0.995,
+      "ratioL": 0.98,
+      "medE": 0.993,
+      "medL": 1
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 34,
+      "actual": 172524,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.948,
+      "ratioL": 1.016,
+      "medE": 1.01,
+      "medL": 1.013
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "内置AI": 5980,
+      "我方": 24698,
+      "敌方真人": 2066,
+      "同队其他真人": 3024,
+      "无主": 4
+     }
+    },
+    "ourOutside": 562,
+    "ourAll": 25260
+   },
+   "1500": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 26708,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 0.747,
+      "ratioL": 0.749,
+      "medE": 0.816,
+      "medL": 0.745
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 83,
+      "actual": 512472,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 1.004,
+      "ratioL": 1.021,
+      "medE": 1.039,
+      "medL": 1.062
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 23,
+      "actual": 140284,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.932,
+      "ratioL": 0.925,
+      "medE": 0.925,
+      "medL": 1.031
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 31,
+      "actual": 200877,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 1.129,
+      "ratioL": 1.113,
+      "medE": 1.203,
+      "medL": 1.158
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 29,
+      "actual": 171311,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.941,
+      "ratioL": 1.008,
+      "medE": 1.072,
+      "medL": 1.062
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "敌方真人": 3971,
+      "无主": 47,
+      "我方": 26259,
+      "同队其他真人": 4139,
+      "内置AI": 1356
+     }
+    },
+    "ourOutside": 449,
+    "ourAll": 26708
+   },
+   "1800": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 32891,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 0.919,
+      "ratioL": 0.923,
+      "medE": 0.841,
+      "medL": 0.866
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 82,
+      "actual": 511787,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 1.003,
+      "ratioL": 1.019,
+      "medE": 1.048,
+      "medL": 1.11
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 23,
+      "actual": 138490,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.92,
+      "ratioL": 0.913,
+      "medE": 0.925,
+      "medL": 1.043
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 31,
+      "actual": 203338,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 1.143,
+      "ratioL": 1.127,
+      "medE": 1.214,
+      "medL": 1.226
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 28,
+      "actual": 169959,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.934,
+      "ratioL": 1.001,
+      "medE": 0.991,
+      "medL": 1.058
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "敌方真人": 2367,
+      "我方": 29899,
+      "同队其他真人": 3506
+     }
+    },
+    "ourOutside": 2992,
+    "ourAll": 32891
+   },
+   "2250": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 38328,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 1.071,
+      "ratioL": 1.075,
+      "medE": 0.953,
+      "medL": 0.978
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 75,
+      "actual": 507037,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 0.993,
+      "ratioL": 1.01,
+      "medE": 1.034,
+      "medL": 1.087
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 20,
+      "actual": 136276,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.906,
+      "ratioL": 0.898,
+      "medE": 0.973,
+      "medL": 1.043
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 29,
+      "actual": 209124,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 1.176,
+      "ratioL": 1.159,
+      "medE": 1.179,
+      "medL": 1.11
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 26,
+      "actual": 161637,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.888,
+      "ratioL": 0.952,
+      "medE": 0.933,
+      "medL": 1.087
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "敌方真人": 267,
+      "我方": 31999,
+      "同队其他真人": 3506
+     }
+    },
+    "ourOutside": 6329,
+    "ourAll": 38328
+   },
+   "3000": {
+    "groups": {
+     "我方": {
+      "n": 10,
+      "alive": 10,
+      "actual": 43829,
+      "euclid": 35772,
+      "landpath": 35652,
+      "ratioE": 1.225,
+      "ratioL": 1.229,
+      "medE": 1.178,
+      "medL": 1.155
+     },
+     "全部其他真人": {
+      "n": 93,
+      "alive": 67,
+      "actual": 501821,
+      "euclid": 510380,
+      "landpath": 502101,
+      "ratioE": 0.983,
+      "ratioL": 0.999,
+      "medE": 0.958,
+      "medL": 0.973
+     },
+     "同队其他真人": {
+      "n": 25,
+      "alive": 17,
+      "actual": 142241,
+      "euclid": 150494,
+      "landpath": 151729,
+      "ratioE": 0.945,
+      "ratioL": 0.937,
+      "medE": 0.84,
+      "medL": 0.853
+     },
+     "敌队1": {
+      "n": 33,
+      "alive": 26,
+      "actual": 195881,
+      "euclid": 177872,
+      "landpath": 180498,
+      "ratioE": 1.101,
+      "ratioL": 1.085,
+      "medE": 1.069,
+      "medL": 0.999
+     },
+     "敌队3": {
+      "n": 35,
+      "alive": 24,
+      "actual": 163699,
+      "euclid": 182014,
+      "landpath": 169874,
+      "ratioE": 0.899,
+      "ratioL": 0.964,
+      "medE": 0.73,
+      "medL": 1.021
+     }
+    },
+    "ourCell": {
+     "px": 35772,
+     "owners": {
+      "我方": 32266,
+      "同队其他真人": 3506
+     }
+    },
+    "ourOutside": 11563,
+    "ourAll": 43829
+   }
+  },
+  "aiFate": {
+   "1080": {
+    "owners": {
+     "原来那个AI": 3378,
+     "敌方真人": 1242,
+     "我方": 3077,
+     "同队其他真人": 1297,
+     "别的AI": 426,
+     "无主": 4
+    },
+    "perBot": {
+     "16": 575,
+     "17": 154,
+     "18": 661,
+     "19": 459,
+     "20": 231,
+     "21": 62,
+     "22": 380,
+     "23": 0,
+     "24": 0,
+     "25": 555
+    },
+    "topOthers": [
+     {
+      "p": 4,
+      "name": "Sandrone",
+      "cls": "同队其他真人",
+      "px": 988
+     },
+     {
+      "p": 68,
+      "name": "Player 245",
+      "cls": "敌方真人",
+      "px": 897
+     },
+     {
+      "p": 52,
+      "name": "Yor",
+      "cls": "敌方真人",
+      "px": 345
+     },
+     {
+      "p": 74,
+      "name": "[137] Percentage",
+      "cls": "同队其他真人",
+      "px": 309
+     }
+    ]
+   },
+   "1500": {
+    "owners": {
+     "敌方真人": 2358,
+     "我方": 4515,
+     "同队其他真人": 1880,
+     "原来那个AI": 671
+    },
+    "perBot": {
+     "16": 575,
+     "17": 154,
+     "18": 674,
+     "19": 462,
+     "20": 494,
+     "21": 706,
+     "22": 954,
+     "23": 0,
+     "24": 0,
+     "25": 496
+    },
+    "topOthers": [
+     {
+      "p": 68,
+      "name": "Player 245",
+      "cls": "敌方真人",
+      "px": 1681
+     },
+     {
+      "p": 4,
+      "name": "Sandrone",
+      "cls": "同队其他真人",
+      "px": 988
+     },
+     {
+      "p": 74,
+      "name": "[137] Percentage",
+      "cls": "同队其他真人",
+      "px": 708
+     },
+     {
+      "p": 52,
+      "name": "Yor",
+      "cls": "敌方真人",
+      "px": 677
+     },
+     {
+      "p": 31,
+      "name": "Veni Vidi Vici",
+      "cls": "同队其他真人",
+      "px": 184
+     }
+    ]
+   },
+   "1800": {
+    "owners": {
+     "敌方真人": 1605,
+     "我方": 6385,
+     "同队其他真人": 1434
+    },
+    "perBot": {
+     "16": 593,
+     "17": 154,
+     "18": 743,
+     "19": 817,
+     "20": 830,
+     "21": 706,
+     "22": 954,
+     "23": 0,
+     "24": 771,
+     "25": 817
+    },
+    "topOthers": [
+     {
+      "p": 52,
+      "name": "Yor",
+      "cls": "敌方真人",
+      "px": 1054
+     },
+     {
+      "p": 4,
+      "name": "Sandrone",
+      "cls": "同队其他真人",
+      "px": 988
+     },
+     {
+      "p": 68,
+      "name": "Player 245",
+      "cls": "敌方真人",
+      "px": 551
+     },
+     {
+      "p": 74,
+      "name": "[137] Percentage",
+      "cls": "同队其他真人",
+      "px": 262
+     },
+     {
+      "p": 31,
+      "name": "Veni Vidi Vici",
+      "cls": "同队其他真人",
+      "px": 184
+     }
+    ]
+   },
+   "2250": {
+    "owners": {
+     "敌方真人": 87,
+     "我方": 7903,
+     "同队其他真人": 1434
+    },
+    "perBot": {
+     "16": 593,
+     "17": 154,
+     "18": 1084,
+     "19": 817,
+     "20": 852,
+     "21": 706,
+     "22": 954,
+     "23": 626,
+     "24": 1152,
+     "25": 965
+    },
+    "topOthers": [
+     {
+      "p": 4,
+      "name": "Sandrone",
+      "cls": "同队其他真人",
+      "px": 988
+     },
+     {
+      "p": 74,
+      "name": "[137] Percentage",
+      "cls": "同队其他真人",
+      "px": 262
+     },
+     {
+      "p": 31,
+      "name": "Veni Vidi Vici",
+      "cls": "同队其他真人",
+      "px": 184
+     },
+     {
+      "p": 52,
+      "name": "Yor",
+      "cls": "敌方真人",
+      "px": 87
+     }
+    ]
+   },
+   "3000": {
+    "owners": {
+     "我方": 7990,
+     "同队其他真人": 1434
+    },
+    "perBot": {
+     "16": 593,
+     "17": 154,
+     "18": 1171,
+     "19": 817,
+     "20": 852,
+     "21": 706,
+     "22": 954,
+     "23": 626,
+     "24": 1152,
+     "25": 965
+    },
+    "topOthers": [
+     {
+      "p": 4,
+      "name": "Sandrone",
+      "cls": "同队其他真人",
+      "px": 988
+     },
+     {
+      "p": 74,
+      "name": "[137] Percentage",
+      "cls": "同队其他真人",
+      "px": 262
+     },
+     {
+      "p": 31,
+      "name": "Veni Vidi Vici",
+      "cls": "同队其他真人",
+      "px": 184
+     }
+    ]
+   },
+   "t0": {
+    "n": 25,
+    "px": 9424,
+    "adjacentN": 24,
+    "adjacentPx": 8903,
+    "allAiPx": 171678
+   }
+  }
+ },
+ "captureAttrib": {
+  "match": "A022",
+  "f1": 0.674562,
+  "f1Landpath": 0.672503,
+  "windows": {
+   "600~1499": {
+    "adjTicks": 1558,
+    "acted": 409,
+    "locked": 1100,
+    "free": 49,
+    "lockDetail": {
+     "项1 价格项": 49,
+     "项3 safeFinite/编队号": 893,
+     "项3 safeFinite/同队真人": 19,
+     "项3 safeFinite/外队真人": 84,
+     "项2 dpKeep": 55
+    },
+    "f2": 0.293967,
+    "f3a": 0.357895,
+    "f3b": 0.271299,
+    "product": 0.019254,
+    "shareSpawn": 9.9668,
+    "shareLock": 30.9944,
+    "shareLate": 59.0388,
+    "shareNotLanded": 26.0129,
+    "shareDeadTarget": 33.0259,
+    "result": {
+     "tick": 1500,
+     "ourRatio": 0.747,
+     "otherRatio": 1.004,
+     "aiOurPct": 47.9,
+     "aiAllyPct": 19.9,
+     "aiEnemyPct": 25.0
+    }
+   },
+   "1500~2999": {
+    "adjTicks": 214,
+    "acted": 98,
+    "locked": 80,
+    "free": 36,
+    "lockDetail": {
+     "safeAt→safeFinite/外队真人": 3,
+     "单价闸（单价 ≥ worth 且余额没过 100×地）": 77
+    },
+    "f2": 0.626168,
+    "f3a": 0.373034,
+    "f3b": 0.951538,
+    "product": 0.14993,
+    "shareSpawn": 20.7469,
+    "shareLock": 24.67,
+    "shareLate": 54.583,
+    "shareNotLanded": 51.9652,
+    "shareDeadTarget": 2.6178,
+    "result": {
+     "tick": 3000,
+     "ourRatio": 1.225,
+     "otherRatio": 0.983,
+     "aiOurPct": 84.8,
+     "aiAllyPct": 15.2,
+     "aiEnemyPct": 0.0
+    }
+   }
+  }
+ },
+ "delayVsRate": {
+  "match": "A022",
+  "win": 50,
+  "own": {
+   "1 条": {
+    "n": 227,
+    "landed": 190,
+    "p50": 13,
+    "p90": 68
+   },
+   "2~3 条": {
+    "n": 603,
+    "landed": 172,
+    "p50": 14,
+    "p90": 205
+   },
+   "4~6 条": {
+    "n": 150,
+    "landed": 84,
+    "p50": 83,
+    "p90": 409
+   },
+   "≥7 条": {
+    "n": 514,
+    "landed": 147,
+    "p50": 245,
+    "p90": 572
+   }
+  },
+  "squad": {
+   "1~5 条": {
+    "n": 139,
+    "landed": 133,
+    "p50": 12,
+    "p90": 23
+   },
+   "6~15 条": {
+    "n": 607,
+    "landed": 198,
+    "p50": 13,
+    "p90": 88
+   },
+   "16~30 条": {
+    "n": 324,
+    "landed": 115,
+    "p50": 184,
+    "p90": 632
+   },
+   "≥31 条": {
+    "n": 424,
+    "landed": 147,
+    "p50": 180,
+    "p90": 550
+   }
+  },
+  "squadFine": {
+   "1~3": {
+    "n": 92,
+    "landed": 89,
+    "p50": 12,
+    "p90": 19
+   },
+   "4~6": {
+    "n": 101,
+    "landed": 60,
+    "p50": 12,
+    "p90": 51
+   },
+   "7~9": {
+    "n": 177,
+    "landed": 46,
+    "p50": 13,
+    "p90": 42
+   },
+   "10~12": {
+    "n": 237,
+    "landed": 89,
+    "p50": 14,
+    "p90": 294
+   },
+   "13~15": {
+    "n": 139,
+    "landed": 47,
+    "p50": 13,
+    "p90": 48
+   },
+   "16~20": {
+    "n": 84,
+    "landed": 34,
+    "p50": 83,
+    "p90": 527
+   },
+   "21~30": {
+    "n": 240,
+    "landed": 81,
+    "p50": 280,
+    "p90": 637
+   },
+   "≥31": {
+    "n": 424,
+    "landed": 147,
+    "p50": 180,
+    "p90": 550
+   }
+  },
+  "cross": {
+   "自己 1 条、编队 ≥16 条": {
+    "n": 29,
+    "landed": 17,
+    "p50": 109,
+    "p90": 785
+   },
+   "自己 1 条、编队 ≤5 条": {
+    "n": 94,
+    "landed": 91,
+    "p50": 12,
+    "p90": 22
+   },
+   "自己 ≥4 条、编队 ≤15 条": {
+    "n": 65,
+    "landed": 42,
+    "p50": 14,
+    "p90": 314
+   },
+   "自己 ≥4 条、编队 ≥16 条": {
+    "n": 599,
+    "landed": 189,
+    "p50": 208,
+    "p90": 576
+   }
+  },
+  "throughput": {
+   "想发 <15 条": {
+    "windows": 44,
+    "landedP50": 4,
+    "landedMax": 17
+   },
+   "15~39 条": {
+    "windows": 27,
+    "landedP50": 4,
+    "landedMax": 22
+   },
+   "40~79 条": {
+    "windows": 6,
+    "landedP50": 20,
+    "landedMax": 60
+   },
+   "≥80 条": {
+    "windows": 3,
+    "landedP50": 28,
+    "landedMax": 33
+   }
+  },
+  "throughputMax": 60,
+  "batchGap": {
+   "<1500": {
+    "n": 7,
+    "p50": 301,
+    "min": 140,
+    "max": 434
+   },
+   "1500~2999": {
+    "n": 12,
+    "p50": 133,
+    "min": 28,
+    "max": 448
+   }
+  }
+ },
+ "slowTicks": {
+  "match": "A022",
+  "lines": 4,
+  "bots": {
+   "zero_7": {
+    "n": 3,
+    "first": 7725,
+    "med": 34.8,
+    "max": 35.6,
+    "segments": [
+     [
+      7725,
+      7765,
+      3
+     ]
+    ]
+   },
+   "sora_w": {
+    "n": 1,
+    "first": 1375,
+    "med": 33.3,
+    "max": 33.3,
+    "segments": []
+   }
+  },
+  "lagIn": {
+   "n": 3,
+   "p50": 25,
+   "p90": 54
+  },
+  "lagOut": {
+   "n": 203,
+   "p50": 12,
+   "p90": 187
+  },
+  "byBand": {
+   "0~599": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 24,
+    "outP50": 16
+   },
+   "600~1499": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 25,
+    "outP50": 280
+   },
+   "1500~2999": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 31,
+    "outP50": 104
+   },
+   "3000+": {
+    "inN": 3,
+    "inP50": 25,
+    "outN": 123,
+    "outP50": 11
+   }
+  }
+ },
+ "burstChunks": {
+  "match": "A022",
+  "bands": {
+   "600~1499": {
+    "batches": 19,
+    "matched": 16,
+    "sizeP50": 5,
+    "full": 6,
+    "withTail": 5,
+    "fullWithTail": 4,
+    "tailP50": 4,
+    "tailMax": 46,
+    "tailSum": 61,
+    "spanP50": 9,
+    "spanMax": 84,
+    "newestLagP50": 157,
+    "shortP50": 136,
+    "shortP90": 288,
+    "contiguous": 1,
+    "sizes": {
+     "9": 3,
+     "3": 5,
+     "4": 2,
+     "8": 3,
+     "5": 2,
+     "7": 1
+    }
+   },
+   "1500~2999": {
+    "batches": 15,
+    "matched": 11,
+    "sizeP50": 9,
+    "full": 9,
+    "withTail": 7,
+    "fullWithTail": 6,
+    "tailP50": 14,
+    "tailMax": 24,
+    "tailSum": 80,
+    "spanP50": 23,
+    "spanMax": 85,
+    "newestLagP50": 159,
+    "shortP50": 133,
+    "shortP90": 306,
+    "contiguous": 1,
+    "sizes": {
+     "9": 7,
+     "3": 1,
+     "6": 1,
+     "8": 2
+    }
+   },
+   "3000+": {
+    "batches": 1,
+    "matched": 1,
+    "sizeP50": 5,
+    "full": 0,
+    "withTail": 0,
+    "fullWithTail": 0,
+    "tailP50": 0,
+    "tailMax": 0,
+    "tailSum": 0,
+    "spanP50": 5,
+    "spanMax": 5,
+    "newestLagP50": 8,
+    "shortP50": 1,
+    "shortP90": 1,
+    "contiguous": 0,
+    "sizes": {
+     "5": 1
+    }
+   }
+  },
+  "small": {
+   "n": 13,
+   "withTail": 2
+  },
+  "big": {
+   "n": 15,
+   "withTail": 10
+  },
+  "rows": [
+   {
+    "bot": "ryan_m",
+    "T": 868,
+    "n": 9,
+    "matched": true,
+    "first": 605,
+    "lastLanded": 645,
+    "tail": 0,
+    "tailTo": 645,
+    "newestLag": 223,
+    "oldestLag": 263,
+    "short": 216,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "ryan_m",
+    "T": 1260,
+    "n": 3,
+    "matched": false
+   },
+   {
+    "bot": "ryan_m",
+    "T": 1764,
+    "n": 9,
+    "matched": true,
+    "first": 1435,
+    "lastLanded": 1475,
+    "tail": 0,
+    "tailTo": 1475,
+    "newestLag": 289,
+    "oldestLag": 329,
+    "short": 282,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "ryan_m",
+    "T": 1806,
+    "n": 3,
+    "matched": true,
+    "first": 1655,
+    "lastLanded": 1665,
+    "tail": 0,
+    "tailTo": 1665,
+    "newestLag": 141,
+    "oldestLag": 151,
+    "short": 134,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "sora_w",
+    "T": 1400,
+    "n": 3,
+    "matched": true,
+    "first": 1195,
+    "lastLanded": 1325,
+    "tail": 0,
+    "tailTo": 1325,
+    "newestLag": 75,
+    "oldestLag": 205,
+    "short": 68,
+    "span": 27,
+    "contiguous": false
+   },
+   {
+    "bot": "zexos1",
+    "T": 623,
+    "n": 4,
+    "matched": true,
+    "first": 520,
+    "lastLanded": 540,
+    "tail": 0,
+    "tailTo": 540,
+    "newestLag": 83,
+    "oldestLag": 103,
+    "short": 76,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "zexos1",
+    "T": 805,
+    "n": 9,
+    "matched": true,
+    "first": 545,
+    "lastLanded": 585,
+    "tail": 3,
+    "tailTo": 600,
+    "newestLag": 220,
+    "oldestLag": 260,
+    "short": 198,
+    "span": 12,
+    "contiguous": true
+   },
+   {
+    "bot": "zexos1",
+    "T": 1281,
+    "n": 9,
+    "matched": false
+   },
+   {
+    "bot": "noah88",
+    "T": 672,
+    "n": 8,
+    "matched": true,
+    "first": 545,
+    "lastLanded": 585,
+    "tail": 0,
+    "tailTo": 585,
+    "newestLag": 87,
+    "oldestLag": 127,
+    "short": 80,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "noah88",
+    "T": 833,
+    "n": 3,
+    "matched": true,
+    "first": 635,
+    "lastLanded": 645,
+    "tail": 0,
+    "tailTo": 645,
+    "newestLag": 188,
+    "oldestLag": 198,
+    "short": 181,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "noah88",
+    "T": 1617,
+    "n": 6,
+    "matched": true,
+    "first": 1080,
+    "lastLanded": 1495,
+    "tail": 1,
+    "tailTo": 1500,
+    "newestLag": 122,
+    "oldestLag": 537,
+    "short": 110,
+    "span": 85,
+    "contiguous": false
+   },
+   {
+    "bot": "noah88",
+    "T": 1750,
+    "n": 8,
+    "matched": true,
+    "first": 1290,
+    "lastLanded": 1515,
+    "tail": 19,
+    "tailTo": 1610,
+    "newestLag": 235,
+    "oldestLag": 460,
+    "short": 133,
+    "span": 65,
+    "contiguous": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 658,
+    "n": 5,
+    "matched": true,
+    "first": 560,
+    "lastLanded": 580,
+    "tail": 0,
+    "tailTo": 580,
+    "newestLag": 78,
+    "oldestLag": 98,
+    "short": 71,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 798,
+    "n": 3,
+    "matched": true,
+    "first": 645,
+    "lastLanded": 655,
+    "tail": 0,
+    "tailTo": 655,
+    "newestLag": 143,
+    "oldestLag": 153,
+    "short": 136,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 1099,
+    "n": 5,
+    "matched": true,
+    "first": 685,
+    "lastLanded": 800,
+    "tail": 0,
+    "tailTo": 800,
+    "newestLag": 299,
+    "oldestLag": 414,
+    "short": 292,
+    "span": 24,
+    "contiguous": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 1554,
+    "n": 9,
+    "matched": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 1694,
+    "n": 8,
+    "matched": true,
+    "first": 1500,
+    "lastLanded": 1535,
+    "tail": 4,
+    "tailTo": 1555,
+    "newestLag": 159,
+    "oldestLag": 194,
+    "short": 132,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "zero_7",
+    "T": 1757,
+    "n": 9,
+    "matched": true,
+    "first": 1560,
+    "lastLanded": 1600,
+    "tail": 17,
+    "tailTo": 1690,
+    "newestLag": 157,
+    "oldestLag": 197,
+    "short": 60,
+    "span": 27,
+    "contiguous": true
+   },
+   {
+    "bot": "zero_7",
+    "T": 6223,
+    "n": 5,
+    "matched": true,
+    "first": 6195,
+    "lastLanded": 6215,
+    "tail": 0,
+    "tailTo": 6215,
+    "newestLag": 8,
+    "oldestLag": 28,
+    "short": 1,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 651,
+    "n": 3,
+    "matched": true,
+    "first": 550,
+    "lastLanded": 560,
+    "tail": 0,
+    "tailTo": 560,
+    "newestLag": 91,
+    "oldestLag": 101,
+    "short": 84,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1085,
+    "n": 8,
+    "matched": true,
+    "first": 665,
+    "lastLanded": 760,
+    "tail": 6,
+    "tailTo": 790,
+    "newestLag": 325,
+    "oldestLag": 420,
+    "short": 288,
+    "span": 26,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1533,
+    "n": 9,
+    "matched": true,
+    "first": 1065,
+    "lastLanded": 1220,
+    "tail": 0,
+    "tailTo": 1220,
+    "newestLag": 313,
+    "oldestLag": 468,
+    "short": 306,
+    "span": 32,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1687,
+    "n": 3,
+    "matched": false
+   },
+   {
+    "bot": "talon5",
+    "T": 742,
+    "n": 3,
+    "matched": true,
+    "first": 575,
+    "lastLanded": 585,
+    "tail": 0,
+    "tailTo": 585,
+    "newestLag": 157,
+    "oldestLag": 167,
+    "short": 150,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "leo_tx",
+    "T": 833,
+    "n": 4,
+    "matched": true,
+    "first": 595,
+    "lastLanded": 630,
+    "tail": 0,
+    "tailTo": 630,
+    "newestLag": 203,
+    "oldestLag": 238,
+    "short": 196,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "leo_tx",
+    "T": 1351,
+    "n": 9,
+    "matched": false
+   },
+   {
+    "bot": "leo_tx",
+    "T": 1799,
+    "n": 8,
+    "matched": false
+   },
+   {
+    "bot": "leo_tx",
+    "T": 1890,
+    "n": 9,
+    "matched": true,
+    "first": 1555,
+    "lastLanded": 1595,
+    "tail": 1,
+    "tailTo": 1600,
+    "newestLag": 295,
+    "oldestLag": 335,
+    "short": 283,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "leo_tx",
+    "T": 1918,
+    "n": 9,
+    "matched": true,
+    "first": 1805,
+    "lastLanded": 1845,
+    "tail": 14,
+    "tailTo": 1915,
+    "newestLag": 73,
+    "oldestLag": 113,
+    "short": -4,
+    "span": 23,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 833,
+    "n": 8,
+    "matched": true,
+    "first": 645,
+    "lastLanded": 680,
+    "tail": 2,
+    "tailTo": 690,
+    "newestLag": 153,
+    "oldestLag": 188,
+    "short": 136,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1148,
+    "n": 7,
+    "matched": true,
+    "first": 685,
+    "lastLanded": 870,
+    "tail": 46,
+    "tailTo": 1100,
+    "newestLag": 278,
+    "oldestLag": 463,
+    "short": 41,
+    "span": 84,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1561,
+    "n": 9,
+    "matched": true,
+    "first": 1175,
+    "lastLanded": 1215,
+    "tail": 0,
+    "tailTo": 1215,
+    "newestLag": 346,
+    "oldestLag": 386,
+    "short": 339,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1687,
+    "n": 9,
+    "matched": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1743,
+    "n": 9,
+    "matched": true,
+    "first": 1575,
+    "lastLanded": 1615,
+    "tail": 24,
+    "tailTo": 1740,
+    "newestLag": 128,
+    "oldestLag": 168,
+    "short": -4,
+    "span": 34,
+    "contiguous": false
+   },
+   {
+    "bot": "riku_x",
+    "T": 826,
+    "n": 9,
+    "matched": true,
+    "first": 680,
+    "lastLanded": 720,
+    "tail": 4,
+    "tailTo": 740,
+    "newestLag": 106,
+    "oldestLag": 146,
+    "short": 79,
+    "span": 13,
+    "contiguous": false
+   }
+  ]
+ },
+ "wallLag": {
+  "match": "A022",
+  "bots": [
+   {
+    "bot": "alex_k",
+    "event": "end",
+    "tick": 8359,
+    "server": 8359.0,
+    "lag": 0.0,
+    "group": "one",
+    "lastCmdDelayP50": 13,
+    "lastCmdDelayMax": 17,
+    "lastCmdFrom": 6307,
+    "lastCmdTo": 8274
+   },
+   {
+    "bot": "leo_tx",
+    "event": "end",
+    "tick": 8359,
+    "server": 8360.6,
+    "lag": 1.6,
+    "group": "one",
+    "lastCmdDelayP50": 14,
+    "lastCmdDelayMax": 51,
+    "lastCmdFrom": 6055,
+    "lastCmdTo": 7861
+   },
+   {
+    "bot": "sora_w",
+    "event": "end",
+    "tick": 8359,
+    "server": 8361.4,
+    "lag": 2.4,
+    "group": "one",
+    "lastCmdDelayP50": 10,
+    "lastCmdDelayMax": 48,
+    "lastCmdFrom": 8183,
+    "lastCmdTo": 8344
+   },
+   {
+    "bot": "riku_x",
+    "event": "end",
+    "tick": 8359,
+    "server": 8362.0,
+    "lag": 3.0,
+    "group": "one",
+    "lastCmdDelayP50": 17,
+    "lastCmdDelayMax": 56,
+    "lastCmdFrom": 6048,
+    "lastCmdTo": 7861
+   },
+   {
+    "bot": "noah88",
+    "event": "end",
+    "tick": 8359,
+    "server": 8363.9,
+    "lag": 4.9,
+    "group": "one",
+    "lastCmdDelayP50": 22,
+    "lastCmdDelayMax": 42,
+    "lastCmdFrom": 6055,
+    "lastCmdTo": 8197
+   },
+   {
+    "bot": "kaito9",
+    "event": "end",
+    "tick": 8359,
+    "server": 8364.2,
+    "lag": 5.2,
+    "group": "one",
+    "lastCmdDelayP50": 15,
+    "lastCmdDelayMax": 68,
+    "lastCmdFrom": 6048,
+    "lastCmdTo": 7868
+   },
+   {
+    "bot": "zero_7",
+    "event": "end",
+    "tick": 8359,
+    "server": 8364.7,
+    "lag": 5.7,
+    "group": "one",
+    "lastCmdDelayP50": 11,
+    "lastCmdDelayMax": 13,
+    "lastCmdFrom": 8197,
+    "lastCmdTo": 8358
+   },
+   {
+    "bot": "ryan_m",
+    "event": "end",
+    "tick": 8359,
+    "server": 8365.8,
+    "lag": 6.8,
+    "group": "one",
+    "lastCmdDelayP50": 13,
+    "lastCmdDelayMax": 16,
+    "lastCmdFrom": 6041,
+    "lastCmdTo": 8358
+   }
+  ],
+  "n": 8,
+  "ge35": 0,
+  "ge90": 0,
+  "max": 6.8
+ }
 }

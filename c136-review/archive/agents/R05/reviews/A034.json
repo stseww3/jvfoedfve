@@ -611,7 +611,7 @@
     }
    ],
    "statementType": "inferred",
-   "note": "地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因各占多少没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。"
+   "note": "地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因按决策拍的占比见 tickAttribution（留底 53.3%、发了没用 31.7%、结构 4.6%、有效 8.1%），各自少拿多少地没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。"
   },
   {
    "id": "TP3",
@@ -2899,10 +2899,25 @@
     "neverLandedTroops": 0
    }
   ],
+  "funnelTotals": {
+   "intended": 1422,
+   "matched": 705,
+   "executed": 706,
+   "unmatchedExec": 1,
+   "unmatchedExecByPeriod": [
+    0,
+    1,
+    0,
+    0
+   ],
+   "neverLandedByMatch": 717,
+   "neverLandedByCount": 716
+  },
   "selfReport": {
    "shadow": 1441,
    "cmds": 1440,
-   "landed": 722
+   "landed": 722,
+   "executedAll": 725
   },
   "phantomDecisions": {},
   "lateVoid": [
@@ -4599,6 +4614,224 @@
     "只剩中立边": 4,
     "只贴敌方真人": 75,
     "围在里面": 0
+   }
+  },
+  "exits": {
+   "留底·有在途": {
+    "V13.boatFood:2003": 325,
+    "V13.boatFood:2005": 98,
+    "V13.boatFood:2004": 66
+   },
+   "留底锁·无在途": {
+    "V13.boatFood:2004": 130,
+    "V13.boatFood:2005": 125,
+    "V13.boatFood:2003": 120
+   },
+   "有目标没发": {
+    "V13.boatFood:2003": 17,
+    "V13.boatFood:2004": 9,
+    "V13.boatFood:2005": 6
+   },
+   "只剩中立边": {
+    "V13.boatFood:2003": 4
+   },
+   "只贴敌方真人": {
+    "V13.boatFood:2004": 75
+   }
+  },
+  "ptGates": {
+   "留底·有在途": {
+    "1161": 219,
+    "1157,1161": 154,
+    "1157": 116
+   },
+   "留底锁·无在途": {
+    "1161": 308,
+    "1157,1161": 64,
+    "1161,1165": 2,
+    "1157": 1
+   },
+   "有目标没发": {
+    "1161": 9,
+    "1157,1161,1163": 6,
+    "1157,1161": 6,
+    "1161,1163": 5,
+    "(循环里没有 continue)": 3,
+    "1157,1163": 2,
+    "1161,1165": 1
+   },
+   "只剩中立边": {
+    "1161": 4
+   },
+   "只贴敌方真人": {
+    "1161": 75
+   }
+  },
+  "gaExit": {
+   "留底·有在途": {
+    "799": 325,
+    "end": 164
+   },
+   "留底锁·无在途": {
+    "799": 120,
+    "end": 255
+   },
+   "有目标没发": {
+    "end": 4,
+    "797": 23,
+    "799": 5
+   },
+   "只剩中立边": {
+    "799": 4
+   },
+   "只贴敌方真人": {
+    "end": 75
+   }
+  },
+  "notSentSplit": {
+   "rows": 32,
+   "split": {
+    "在途已够": 9,
+    "配额闸拒发": 23
+   },
+   "lines": {
+    "cooldown": [],
+    "guard": [
+     3858,
+     3861
+    ],
+    "enough": [
+     978,
+     1163
+    ]
+   },
+   "byBot": {
+    "noah88": {
+     "在途已够": 1
+    },
+    "riku_x": {
+     "配额闸拒发": 1,
+     "在途已够": 3
+    },
+    "zero_7": {
+     "配额闸拒发": 10,
+     "在途已够": 5
+    },
+    "ryan_m": {
+     "配额闸拒发": 1
+    },
+    "sora_w": {
+     "配额闸拒发": 5
+    },
+    "alex_k": {
+     "配额闸拒发": 1
+    },
+    "talon5": {
+     "配额闸拒发": 3
+    },
+    "kaito9": {
+     "配额闸拒发": 2
+    }
+   }
+  },
+  "sendRefused": {
+   "rows": 23,
+   "share": 0.014,
+   "byCat": {
+    "有目标没发": {
+     "Policy.send 3861 → 没到 Strategy.send｜isNoFullSend=1": 23
+    }
+   },
+   "byBot": {
+    "riku_x": 1,
+    "zero_7": 10,
+    "ryan_m": 1,
+    "sora_w": 5,
+    "alex_k": 1,
+    "talon5": 3,
+    "kaito9": 2
+   }
+  },
+  "noFullSendRows": {
+   "all": 1620,
+   "nfs1": 1428,
+   "nfs1_nocmd": 836
+  }
+ },
+ "quotaGuard": {
+  "source": "scripts/quota_guard.py A034（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）",
+  "ver": "vb",
+  "okLine": 3924,
+  "calls": 1560,
+  "refused": 56,
+  "nfsAt": {
+   "ryan_m": 748,
+   "zero_7": 722,
+   "talon5": 477,
+   "kaito9": 694,
+   "sora_w": 748,
+   "noah88": 456,
+   "alex_k": 463,
+   "leo_tx": 942,
+   "riku_x": 694
+  },
+  "byPeriod": [
+   {
+    "period": "0–600",
+    "calls": 94,
+    "refused": 0
+   },
+   {
+    "period": "600–1500",
+    "calls": 669,
+    "refused": 23
+   },
+   {
+    "period": "1500–3000",
+    "calls": 710,
+    "refused": 21
+   },
+   {
+    "period": "3000+",
+    "calls": 87,
+    "refused": 12
+   }
+  ],
+  "byBot": {
+   "ryan_m": {
+    "calls": 172,
+    "refused": 4
+   },
+   "zero_7": {
+    "calls": 214,
+    "refused": 13
+   },
+   "sora_w": {
+    "calls": 188,
+    "refused": 5
+   },
+   "noah88": {
+    "calls": 181
+   },
+   "talon5": {
+    "calls": 119,
+    "refused": 3
+   },
+   "kaito9": {
+    "calls": 205,
+    "refused": 10
+   },
+   "alex_k": {
+    "calls": 263,
+    "refused": 10
+   },
+   "leo_tx": {
+    "calls": 112,
+    "refused": 10
+   },
+   "riku_x": {
+    "calls": 106,
+    "refused": 1
    }
   }
  },

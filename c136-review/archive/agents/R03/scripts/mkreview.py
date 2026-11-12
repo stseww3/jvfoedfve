@@ -71,6 +71,7 @@ def build(mid):
     sfacts = _load(os.path.join(ROOT, "out", "dossier", f"{mid}-shadow-facts.json")) or {}
     freeze = _load(os.path.join(ROOT, "out", "cache", f"{mid}-freeze.json"))
     shadow = _load(os.path.join(ROOT, "out", "cache", f"{mid}-shadow.json")) or {}
+    replay_hdr = {k: v for k, v in (_load(os.path.join(ROOT, "out", "cache", f"{mid}-replay.json")) or {}).items() if not isinstance(v, (list, dict))}
     oc = card.get("outcome", {})
     my_team = facts.get("myTeam", card.get("ourPrimaryTeam"))
     ver = facts.get("version")
@@ -87,7 +88,11 @@ def build(mid):
     context = {
         "time": card.get("timeUtc"), "squad": card.get("cohort"), "bots": len(in_room) or card.get("squadBots"),
         "strategyVersion": f"{ver}（{STRATEGY_FILE.get(ver, '?')}）" if ver else None,
-        "map": card.get("mapId"), "mapSeed": card.get("mapSeed"), "mapLand": card.get("mapLand"),
+        # 图号/陆地取重放（本房间）的；card.json 的值在编队有号进了别的房间时可能是那个房间的
+        "map": facts.get("mapIdx") if facts.get("mapIdx") is not None else card.get("mapId"),
+        "mapSeed": replay_hdr.get("mapSeed", card.get("mapSeed")), "mapLand": facts.get("land", card.get("mapLand")),
+        "cardMap": ({"mapId": card.get("mapId"), "mapSeed": card.get("mapSeed"), "mapLand": card.get("mapLand")}
+                    if (facts.get("land") and card.get("mapLand") != facts.get("land")) else None),
         "teams": facts.get("nTeams", card.get("actualTeams")), "teamsInReplayHeader": facts.get("nTeamsHeader"),
         "teamSizes": facts.get("teamSizes"), "humans": facts.get("humans", card.get("seededPlayers")),
         "ourTeam": my_team, "teamSplitCard": card.get("teamSplitCounts"),
