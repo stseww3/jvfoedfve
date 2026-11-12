@@ -110,6 +110,9 @@ def load_match(row):
     mid = row["matchId"]
     cp = os.path.join(CELLS, f"{mid}.json")
     if not os.path.exists(cp):
+        fp_ = os.path.join(CELLS, f"{mid}.fail.json")
+        if os.path.exists(fp_):
+            return None, "cells.mjs 算不出名下格数（" + json.load(open(fp_, encoding="utf-8")).get("error", "") + "）"
         return None, "cells.mjs 没有输出"
     c = json.load(open(cp, encoding="utf-8"))
     sq = [p["cells"] for p in c["pts"] if p["squad"]]
@@ -122,12 +125,24 @@ def load_match(row):
     land = {T0: 0, T1: 0}
     bal = {T0: 0.0, T1: 0.0}
     nrow = {T0: 0, T1: 0}
+    per = {}
     for r in csv.DictReader(open(tp, encoding="utf-8")):
         t = int(r["t"])
+        per.setdefault(r["bot"], {})[t] = int(float(r["terr"]))
         if t in land:
             land[t] += int(float(r["terr"]))
             bal[t] += float(r["bal"])
             nrow[t] += 1
+    # 事后敏感性检查用：某个号在这一拍没有行、但前后各 90 拍都有行，取前后两拍的平均（日志缺行，不是出局）
+    fill = {T0: 0.0, T1: 0.0}
+    nfill = {T0: 0, T1: 0}
+    for bot, tt in per.items():
+        for t in (T0, T1):
+            if t in tt:
+                fill[t] += tt[t]
+            elif (t - 90) in tt and (t + 90) in tt:
+                fill[t] += (tt[t - 90] + tt[t + 90]) / 2.0
+                nfill[t] += 1
     if nrow[T0] == 0 or nrow[T1] == 0:
         return None, f"traj.csv 在 {T0} 拍有 {nrow[T0]} 行、{T1} 拍有 {nrow[T1]} 行"
     if land[T0] <= 0:
@@ -135,7 +150,8 @@ def load_match(row):
     s = (sum(sq) / len(sq)) / (sum(ot) / len(ot))
     return dict(mid=mid, S=s, G=land[T1] / land[T0], D=(bal[T1] / land[T1]) if land[T1] > 0 else None,
                 N=c["humans"], nsq=len(sq), n0=nrow[T0], n1=nrow[T1], land0=land[T0], land1=land[T1],
-                won=row["outcome"]["resultLabel"] == "won", teams=row.get("actualTeams"), mine=mid in MINE), None
+                won=row["outcome"]["resultLabel"] == "won", teams=row.get("actualTeams"), mine=mid in MINE,
+                G2=(fill[T1] / fill[T0]) if fill[T0] > 0 else None, nfill0=nfill[T0], nfill1=nfill[T1]), None
 
 
 def block(P, title, rows):
@@ -210,6 +226,44 @@ def main():
     for r in rows:
         P(f"{r['mid']} | {'否' if r['mine'] else '是'} | {'赢' if r['won'] else '输'} | {r['teams']} | {r['N']} | {r['nsq']} | {r['S']:.2f} | "
           f"{r['land0']:,}（{r['n0']}） | {r['land1']:,}（{r['n1']}） | {r['G']:.2f} | {(f'{r_D:.1f}' if (r_D := r['D']) is not None else '—')}")
+    P("")
+    P("[E2-5] 事后加的敏感性检查（看到 [E2-1] 的结果之后才加的；只作参考，不改 [E2-2] 的判读）")
+    P("做法 | 样本外局数 | 出生份额 × 地的倍数：控制开局人数的偏秩相关")
+    part = [r for r in out if r["nsq"] < r["n0"]]
+    gap = [r for r in out if r["nfill0"] or r["nfill1"]]
+
+    def line(name, rs, gk):
+        rs = [r for r in rs if r[gk] is not None]
+        if len(rs) < 5:
+            P(f"{name} | {len(rs)} | 局数太少")
+            return
+        r1, p1 = partial([r["S"] for r in rs], [r[gk] for r in rs], [r["N"] for r in rs])
+        P(f"{name} | {len(rs)} | {fr(r1)}（{fp(p1)}）")
+
+    line("预先写的做法（同 [E2-1] 主检验）", out, "G")
+    line("去掉编队号没认全的局", [r for r in out if r["nsq"] >= r["n0"]], "G")
+    line("缺行按前后两拍补", out, "G2")
+    line("两样都做", [r for r in out if r["nsq"] >= r["n0"]], "G2")
+    P(f"说明：样本外 {len(out)} 局里，名下格数表里认出的编队号数少于 630 拍 traj 行数的 {len(part)} 局（{'、'.join(r['mid'] for r in part) or '没有'}）；"
+      f"630 或 1530 拍有号缺行、但前后两拍都有行的 {len(gap)} 局（{'、'.join(r['mid'] for r in gap) or '没有'}）")
+    # 口径对照：我名下 11 局在跨局汇总 X12 的 E1 行里也有出生份额（land-ledger 的口径），和这里的逐局比一下
+    x12 = os.path.join(ROOT, "out", "cross", "X12-summary.txt")
+    if os.path.exists(x12):
+        e1 = next((l for l in open(x12, encoding="utf-8") if l.startswith("E1 ")), None)
+        if e1:
+            vals = [float(x) for x in e1.split(" | ")[1].split()]
+            if len(vals) == len(MINE):
+                mine = {r["mid"]: r["S"] for r in rows if r["mine"]}
+                P("")
+                P("[E2-6] 口径对照：我名下 11 局的出生份额，本表（cells.mjs，开局有地的全部真人）对 跨局汇总 X12 的 E1 行")
+                P("局 | 本表 | X12 的 E1 | 差")
+                ds = []
+                for m, v in zip(MINE, vals):
+                    if m in mine:
+                        ds.append(abs(mine[m] - v))
+                        P(f"{m} | {mine[m]:.2f} | {v:.2f} | {mine[m] - v:+.2f}")
+                if ds:
+                    P(f"合计：{len(ds)} 局，差的绝对值最大 {max(ds):.2f}、中位 {statistics.median(ds):.2f}")
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
     print(f"写 {os.path.relpath(OUT, ROOT)}（{len(L)} 行；进表 {len(rows)} 局，排除 {len(skipped)} 局）")
