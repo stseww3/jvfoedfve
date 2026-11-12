@@ -1,4 +1,57 @@
 {
+ "A001": {
+  "t": 4770,
+  "replayTicks": 4929,
+  "firstBadT": 4800,
+  "land": 292727,
+  "owned": 292686,
+  "leadTeam": 2,
+  "leadLand": 292686,
+  "leadShareOfLand": 0.9999,
+  "leadShareOfOwned": 1,
+  "humansPresent": 31,
+  "humansHusk": 3,
+  "squadPresent": 5,
+  "squad": 9,
+  "over": false,
+  "diff": {
+   "t": 4800,
+   "humans": 113,
+   "n": 2,
+   "seats": [
+    {
+     "p": 11,
+     "team": 2,
+     "husk": true,
+     "leaveT": 4732,
+     "cmdsBetween": 0,
+     "terr": [
+      7009,
+      7009
+     ],
+     "bal": [
+      7012,
+      918033
+     ]
+    },
+    {
+     "p": 87,
+     "team": 2,
+     "husk": false,
+     "leaveT": -1,
+     "cmdsBetween": 0,
+     "terr": [
+      9487,
+      9487
+     ],
+     "bal": [
+      1035741,
+      20261
+     ]
+    }
+   ]
+  }
+ },
  "B023": {
   "t": 8760,
   "replayTicks": 9857,

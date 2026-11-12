@@ -21,6 +21,7 @@
 // 截止时刻 = min(--deadline, 本进程起跑后 104 秒)：前者是外层 timeout 120 的界，后者是重计算闸门 110 秒的界（它从排到槽位起算）。
 // 一次运行如果被本批剩下的时间截断，结果不留，留给下一批从头跑。结果先写到 <名字>.part，跑完才改名，半路被杀留不下半个文件。
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from '../lib/util.mjs';
@@ -99,7 +100,29 @@ async function runnerOf(kind) {
   return runners[kind];
 }
 
-let done = 0, starved = 0, stop = false;
+// 同一份清单可能有两个进程同时在跑（比如队列被重启、旧的一批还没退出）。每个任务开跑前先占一个 .claim 文件，
+// 别的进程看到 150 秒以内的 .claim 就跳过这个任务；跑完（或失败）就删掉。超过 150 秒的 .claim 当作上一个进程被杀留下的，接手。
+const claimOf = (j) => j.out + '.claim';
+function claim(j) {
+  const c = claimOf(j);
+  try { fs.writeFileSync(c, String(process.pid), { flag: 'wx' }); return true; } catch (e) {
+    try { if (Date.now() - fs.statSync(c).mtimeMs > 150000) { fs.writeFileSync(c, String(process.pid)); return true; } } catch (e2) { /* 刚好被删掉：留给下一批 */ }
+    return false;
+  }
+}
+const unclaim = (j) => { try { fs.rmSync(claimOf(j)); } catch (e) { /* 已经没有了 */ } };
+
+// 每跑完一次，在 calib/run-log.jsonl 里记一行：哪个结果、什么时候、这个进程的 nice 值。
+// 经重计算闸门（run-heavy.sh）跑的进程 nice 是 19；不是 19 的就是没经闸门跑的。g0_report.mjs 按这份流水数两种各有多少次。
+const NICE = (() => { try { return os.getPriority(); } catch (e) { return null; } })();
+function runLog(st, j, ms) {
+  try {
+    fs.appendFileSync(path.join(SIMV2, 'calib', 'run-log.jsonl'),
+      JSON.stringify({ dir: st.dirName, tag: j.tag, at: new Date().toISOString(), ms, nice: NICE, pid: process.pid, ppid: process.ppid }) + '\n');
+  } catch (e) { /* 流水写不进去不影响结果 */ }
+}
+
+let done = 0, starved = 0, stop = false, busy = 0;
 const longest = { checkpoint: 12000, arena: 20000, verify: 12000 };
 const log = [], failedAll = [];
 for (const st of steps) {
@@ -111,6 +134,9 @@ for (const st of steps) {
     const left = deadline - Date.now();
     // 剩下的时间不够跑一次像样的运行就收工（第一个任务至少给它试一次，免得一个特别慢的任务永远轮不上）
     if (left < Math.min(60000, 1.6 * longest[st.kind]) + 4000 && (done > 0 || left < 30000)) { stop = true; break; }
+    if (has(j)) continue;                    // 这一批开始之后别的进程已经跑完了它
+    if (!claim(j)) { busy++; continue; }     // 别的进程正在跑它
+    try {
     const t0 = Date.now();
     resetCompiled();
     const part = j.out + '.part';
@@ -140,9 +166,11 @@ for (const st of steps) {
     }
     if (!fs.existsSync(part)) { log.push(`${j.tag} 出错：没有写出结果`); j.failed = true; failedAll.push(j); continue; }
     fs.renameSync(part, j.out);
+    runLog(st, j, ms);
     done++;
     if (ms > longest[st.kind]) longest[st.kind] = ms;
     log.push(`${j.tag} ${ms} ms${res && res.truncated ? '（时间预算截断）' : ''}`);
+    } finally { unclaim(j); }
   }
 }
 for (const l of log) console.log(l);
@@ -151,5 +179,6 @@ const remain = steps.reduce((n, st) => n + st.jobs.filter((j) => !has(j) && !j.f
 const name = kind0 === 'plan' ? `plan ${path.basename(argv0[0])}` : `${kind0} ${argv0[0]}`;
 const perStep = kind0 === 'plan' ? `（${steps.map((st) => st.jobs.filter((j) => !has(j) && !j.failed).length).join(' + ')}）` : '';
 // 一个都没跑完、原因只是时间不够（槽位排得晚，或机器太挤）：也按「没轮上」报，外层接着排，不算卡住
-if (!done && !failedAll.length && remain > 0 && (!log.length || starved)) console.log(`[g0_batch] ${name}：没轮上（${starved ? '轮到了但这一批剩下的时间不够跑完一个' : `排到重计算槽位时离截止只剩 ${Math.round((deadline - startAt) / 1000)} 秒`}）；还剩 ${remain} 个${perStep}`);
+if (!done && !failedAll.length && remain > 0 && busy > 0 && !starved && !log.length) console.log(`[g0_batch] ${name}：没轮上（清单上剩下的 ${busy} 个任务都有别的进程正在跑）；还剩 ${remain} 个${perStep}`);
+else if (!done && !failedAll.length && remain > 0 && (!log.length || starved)) console.log(`[g0_batch] ${name}：没轮上（${starved ? '轮到了但这一批剩下的时间不够跑完一个' : `排到重计算槽位时离截止只剩 ${Math.round((deadline - startAt) / 1000)} 秒`}）；还剩 ${remain} 个${perStep}`);
 else console.log(`[g0_batch] ${name}：本批跑完 ${done} 个${failedAll.length ? `，出错 ${failedAll.length} 个（${failedAll.map((j) => j.tag).join(' ')}）` : ''}；还剩 ${remain} 个${perStep}`);

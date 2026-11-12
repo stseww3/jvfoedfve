@@ -5,7 +5,7 @@
 # 只用历史旧策略：每一局跑它当年线上那一版（清单里写的版本和局号不符时，模拟器拒绝）。
 #
 # 用法（在 c136-review/agents/R06 下；整条队很长，放后台）：
-#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省：live bands lists core plan tail delay old oldcode profile tables
+#   bash sim-v2/tools/g0_all.sh [阶段…]     缺省：live bands lists core plan tail delay prov old oldcode profile tables
 # 各阶段的产物：
 #   live       sim-v2/calib/live/<局>.json            全部有录像的局的实盘签名（只放录像）
 #   bands      sim-v2/calib/live-bands.json           实盘区间：策略版本 × 卡顿档，各项签名的 P25 / 中位 / P75
@@ -22,6 +22,7 @@
 #              arena-rp   sim-v2/calib/arena-rp1530/<局>.json    闭环，但前 1530 拍其余真人照录像（区分「前期误差滚雪球」和「后期行为没拟合上」）
 #   tail       sim-v2/calib/verify-tail.json          verify 里没有一致到最后的局：分歧之前的局面、是哪几个真人不同（tools/verify_tail.mjs）
 #   delay      sim-v2/calib/opening-delay.json        不卡的局里「下令拍 → 录像执行拍」间隔的实测分布（对 C1 模型）
+#   prov       sim-v2/calib/run-prov.json             哪些运行不是经闸门跑的（别的进程代跑的）；抽一部分经闸门重跑到 calib/batchcheck/prov/ 再逐字段核对（tools/run_prov.py）
 #   old        sim-v2/calib/old-vs-new.json           拆掉候选臂之前入库的旧结果（单独起进程逐个跑的）对现在批量重跑的同名结果，逐字段核对（tools/old_vs_new.sh）
 #   oldcode    sim-v2/calib/old-code-arena.json       闭环模式：把拆掉候选臂之前的代码取出来重跑两个房间，对现在的结果逐字段核对（tools/old_code_arena.sh）
 #   profile    sim-v2/calib/human-profile-check.json  对手模型的参数文件 calib/human-profile.json 从录像从头重算一遍，与入库的那份逐字节比（tools/profile_check.sh）
@@ -32,11 +33,12 @@ cd "$(dirname "$0")/../.." || exit 2
 # 重计算闸门（run-heavy.sh）管排队：全机的重计算槽位很挤，等一个槽位常常要好几分钟，所以排队交给闸门自己（最多等 HEAVY_QUEUE 秒），
 # timeout 120 加在 node 命令上、从拿到槽位那一刻起算（闸门自己还有 HEAVY_TIMEOUT=110 秒的上限）。
 export HEAVY_TIMEOUT=110
+export HEAVY_SLOTS=2    # 统筹广播 0006 定的上限；写死在这里，不跟着 run-heavy.sh 里的缺省值走
 export HEAVY_QUEUE=900
 HEAVY="bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700"
 T=sim-v2/tools
 LAST=/tmp/r06-g0all-last.txt
-stages="${*:-live bands lists core plan tail delay old oldcode profile tables}"
+stages="${*:-live bands lists core plan tail delay prov old oldcode profile tables}"
 say() { echo "=== $(date -u +%H:%M:%S) $*"; }
 
 # pre_in_slot：排到槽位之后、这一批之前，顺带在同一个槽位里做掉的小件（十几秒以内的单个 node，一个接一个，不并行）。
@@ -103,6 +105,11 @@ for st in $stages; do
       say plan
       # hold 清单是从 C2 的结果里挑出来的，C2 的结果一边跑一边多：每批之前重新挑一遍
       BEFORE="timeout 60 python3 $T/hold_list.py" batch plan $T/g0_plan.txt ;;
+    prov)
+      say prov
+      # 没经闸门跑的运行（别的进程在 R06 的工作区里代跑的）：抽一部分由这条队经闸门重跑，再逐字段核对（tools/run_prov.py）
+      BEFORE="timeout 100 python3 $T/run_prov.py" batch plan $T/provcheck_plan.txt
+      timeout 100 python3 $T/run_prov.py | head -3 ;;
     old)
       say old
       timeout 120 bash $T/old_vs_new.sh | tail -3 ;;

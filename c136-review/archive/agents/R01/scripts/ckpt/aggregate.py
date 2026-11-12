@@ -1151,17 +1151,25 @@ def main():
             c1, c2 = seeds(e, 'C1'), seeds(e, 'C2')
             if not (c1 and c2) or e['meta'].get('truncated') or 'series' not in e['history']:
                 continue
+            # 人均相对领土 = (我方领土 ÷ 席位) ÷ (全体真人领土 ÷ 人数)；同一局里席位数与人数相同，比值里约掉
+            sq = e['meta'].get('squad')
+            nseat = len(sq) if isinstance(sq, (list, tuple)) else sq
+            scale = (e['meta']['humans'] / nseat) if (nseat and e['meta'].get('humans')) else None
             for t in CPS:
-                h = rel_at(e['history']['series'], t)
-                a1 = [rel_at(m['series'], t) for m in c1 if m.get('series')]
-                a2 = [rel_at(m['series'], t) for m in c2 if m.get('series')]
+                if t == e['meta']['t1'] and scale:
+                    # 终点不在 30 拍的采样格上，直接用终点值
+                    h = e['history']['relTerr1'] / scale
+                    a1 = [m['relTerr1'] / scale for m in c1]
+                    a2 = [m['relTerr1'] / scale for m in c2]
+                else:
+                    h = rel_at(e['history']['series'], t)
+                    a1 = [rel_at(m['series'], t) for m in c1 if m.get('series')]
+                    a2 = [rel_at(m['series'], t) for m in c2 if m.get('series')]
                 if h is None or not a1 or not a2 or None in a1 or None in a2:
                     continue
-                # 人均相对领土 = (我方领土 ÷ 席位) ÷ (全体真人领土 ÷ 人数)；同一局里席位数与人数相同，比值里约掉
-                scale = e['history']['relTerr1'] / rel_at(e['history']['series'], e['meta']['t1']) if rel_at(e['history']['series'], e['meta']['t1']) else None
                 tr.setdefault(t, []).append({'mid': k[0], 'lag': GROUP.get(k[0]) != '通道干净', 'h': h, 'c1': mean(a1), 'c2': mean(a2), 'hrel': h * scale if scale else None, 'scale': scale})
         if tr:
-            P('同一批放开跑沿途各断面的水平（每 30 拍一个采样，取离断面最近的；历史的人均相对领土低于 %.2f 的局在那个断面不算）：' % CHAIN_FLOOR)
+            P('同一批放开跑沿途各断面的水平（每 30 拍一个采样，取离断面最近的，终点用终点值；历史的人均相对领土低于 %.2f 的局在那个断面不算）：' % CHAIN_FLOOR)
             P('')
             P('| 断面 | 组 | 局数 | 水平（人均相对领土的几何均值）：历史 / C2 / C1 | 历史 ÷ C2 放开跑 | C2 ÷ C1（放开跑） | 历史 ÷ C1 放开跑 | 历史低于 C2 的局数 | 通道模型解释的占比 ln(C2÷C1) ÷ ln(历史÷C1) |')
             P('| :-- | :-- | --: | :-- | --: | --: | --: | :-- | --: |')
@@ -1233,6 +1241,18 @@ def main():
                 w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
         P('连乘 = 把首尾相接的窗口（每个都从历史的断面起跑）的比值乘起来；放开跑 = 从区间起点一口气跑到终点，中间不回到历史。放开跑只有 C1、C2 各 2–3 个种子。括号里是按局重抽样的 90%% 区间（不到 4 局的不给）。'
           '两种算法进的是同一批局：有一条臂或历史的人均相对领土低于 %.2f 的局两边都不算。' % CHAIN_FLOOR)
+        P('')
+        # 结论用的紧凑版：只留从开局起算的三段
+        P('从开局起算的三段，紧凑版（每格：连乘 / 放开跑）：')
+        P('')
+        P('| 从开局到 | 组 | 局数 | 历史 ÷ 健康通道（C1） | 其中通道模型复现的：C2 ÷ C1 | 没解释的残差：历史 ÷ C2 | 通道模型复现的占比（ln 口径） |')
+        P('| :-- | :-- | --: | :-- | :-- | :-- | :-- |')
+        for z in z_rows:
+            if not z['span'].startswith('0→'):
+                continue
+            sh = (f"{z['shareChain']:.0%} / {z['shareFree']:.0%}" if z.get('shareChain') is not None and z.get('shareFree') is not None else '-')
+            P(f"| {z['span'].replace('0→', '').replace('（或录像结束）', ' 拍或录像结束') + ('' if '录像' in z['span'] else ' 拍')} | {z['group']} | {z['n']} | ×{z['histOverC1chain']:.2f} / ×{z['histOverC1free']:.2f} | ×{z['c2OverC1chain']:.2f} / ×{z['c2OverC1free']:.2f} | "
+              f"×{z['histOverC2chain']:.2f} / ×{z['histOverC2free']:.2f} | {sh} |")
         P('')
 
     # ---- 敏感度：换阶梯来源、换补法

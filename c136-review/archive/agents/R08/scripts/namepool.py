@@ -10,6 +10,8 @@ c110 的互保是按名字认人的（v27-team-c110.js L3973-3996）：名字在
 
 原料：namepool.mjs → out/_run/namepool/<局>.json（整局重演；只读 /agent/repos/c136-data 发现集）
     python3 namepool.py [--quiet]     → out/_cross/namepool.txt、namepool.json
+录像：同一个房间出了两份包、自己的录像又短的局，用同房另一份包更长的录像重演（roompairs.py；本包的号按名字认）。
+      模拟器的重演中途和真引擎对不上的录像（fidabl.txt [FA-E]），只算到对不上的那一拍之前。
 
 口径：
   · 我方号 = 对局包里有它的日志、席位和名字都对得上的号（facts.py 的席位表）∪ 重演器按 traj / results 认出来的号。
@@ -41,6 +43,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import xbatch as XB  # noqa: E402
 import facts  # noqa: E402
+import roompairs as RP  # noqa: E402
 
 OUT = os.path.join(os.path.dirname(HERE), "out")
 RUN = os.path.join(OUT, "_run", "namepool")
@@ -133,6 +136,21 @@ def main():
         own = sorted(own_set)
         if not own:
             continue
+        rec = R.get("replayFrom") or mid
+        cut, _checked = RP.cut_of(rec)
+        end = R["endTick"]
+        if cut is not None and cut < end:
+            # 模拟器和引擎从 cut 这一拍起对不上：快照、流水（300 拍一窗，整窗都在 cut 之前的才留）、指令、靠岸、捐兵都只留 cut 之前的
+            n_ok = sum(1 for t in R["snapT"] if t < cut)
+            R["snapT"], R["terr"] = R["snapT"][:n_ok], R["terr"][:n_ok]
+            R["flows"] = [f for f in R["flows"] if f[0] + 300 < cut]
+            R["nb"] = {k: [x for x in v if x[0] < cut] for k, v in R["nb"].items()}
+            R["atk"] = [a for a in R["atk"] if a[0] + 300 <= cut]
+            for key in ("boats", "lands", "dons", "husk"):
+                R[key] = [x for x in R[key] if x[0] < cut]
+            end = cut
+        else:
+            cut = None
         in_pool = [low[s] in pool or "[npl]" in low[s] or "[nope]" in low[s] for s in range(H)]
         boss = [is_boss(low[s]) and not in_pool[s] for s in range(H)]
         apex = ["[apex]" in low[s] for s in range(H)]
@@ -369,7 +387,7 @@ def main():
         own_teams = Counter(teams[s] for s in own) if team_game else Counter({0: len(own)})
         samples = sum(c["samples"] for c in m_contact)
         early = sum(1 for s in own if 0 <= left[s] <= 400)
-        row = dict(mid=mid, H=H, teamGame=team_game, nTeams=R["nTeams"], end=R["endTick"], own=len(own), ownSq=len(sq), ownTeams=len(own_teams), ownLargest=max(own_teams.values()),
+        row = dict(mid=mid, H=H, teamGame=team_game, nTeams=R["nTeams"], end=end, rec=rec, cut=cut, exact=R.get("exact"), mismT=R.get("mismT"), own=len(own), ownSq=len(sq), ownTeams=len(own_teams), ownLargest=max(own_teams.values()),
                    ul=len(ul), outsiders=len(outsiders), ownLeft=sum(1 for s in own if left[s] >= 0), ownLeftEarly=early, tOff=t_off, tOffLoose=t_off_loose, gapSnaps=gap_n,
                    samples=samples, touchPE=sum(c["touchPE"] for c in m_contact), onlyPE=sum(c["onlyPE"] for c in m_contact),
                    lostPE=sum(lost[True][k] for k in PE_KINDS), lostPEoff=sum(lost[False][k] for k in PE_KINDS),
@@ -384,9 +402,23 @@ def main():
         J["matches"][mid] = row
 
     n_used = len(rows)
+    try:
+        extra = [r[0] for r in json.load(open(os.path.join(OUT, "_run", "fid_extra.json"), encoding="utf-8")) if r[2] == "squad20"]
+    except Exception:
+        extra = []
+    have_extra = [x for x in extra if x in J["matches"]]
+    miss_extra = [x for x in extra if x not in J["matches"]]
+    borrowed = [r for r in rows if r["rec"] != r["mid"]]
+    cut_rows = [r for r in rows if r["cut"] is not None]
     P(f"namepool.py — 「名字池误认」的真相口径账：squad20（c110）有对局段且重演对得上的 {n_used} 局（整局重演）" + (f"；另有 {len(old)} 局的原料还是旧版、没算进来：{' '.join(old)}" if old else ""))
     P()
     P("[NP-A] 名册")
+    P(f"  {n_used} 局里，自己的录像有对局段的 {n_used - len(have_extra)} 局"
+      + (f"，自己的录像只有出生期、用同房另一份包的录像重演的 {len(have_extra)} 局（{' '.join(have_extra)}）" if have_extra else "")
+      + (f"；还在后台排队的 {len(miss_extra)} 局（{' '.join(miss_extra)}）" if miss_extra else ""))
+    P(f"  用同房另一份包更长的录像重演的 {len(borrowed)} 局（roompairs.py）"
+      + ("：" + "；".join(f"{r['mid']} ← {r['rec']}（日志逐行核对 {r['exact'][0]} / {r['exact'][1]}" + (f"，第一次对不上在 {r['mismT']} 拍" if r["mismT"] is not None else "") + "）" for r in borrowed) if borrowed else ""))
+    P(f"  模拟器的重演中途和真引擎对不上、只算到那一拍之前的 {len(cut_rows)} 局" + ("：" + "；".join(f"{r['mid']}（录像 {r['rec']}）算到 {r['cut']} 拍" for r in cut_rows) if cut_rows else ""))
     tg = [r for r in rows if r["teamGame"]]
     n_own = sum(r["own"] for r in rows)
     P(f"  组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}；我方号合计 {n_own} 个（重演器认出来的 {sum(r['ownSq'] for r in rows)} 个 + 只在对局包席位表里的 {n_own - sum(r['ownSq'] for r in rows)} 个）；"
@@ -524,10 +556,11 @@ def main():
         mode_table.append(f"| {label} | " + " | ".join(cells) + " |")
         J["byMode"][label] = d
     P()
-    P("[NP-H] 逐局：局 | 真人 | 队数 | 录像拍 | 我方号（分在几个队 / 最大一块）| 离开的我方号（400 拍以前）| 池名无日志席位 | 保护解除的拍 主口径 / 宽口径 | 接触样本 | 贴着 PE | 只剩 PE 可打 | "
+    P("[NP-H] 逐局：局 | 真人 | 队数 | 算到哪一拍（录像取自别的包 / 截短的另注）| 我方号（分在几个队 / 最大一块）| 离开的我方号（400 拍以前）| 池名无日志席位 | 保护解除的拍 主口径 / 宽口径 | 接触样本 | 贴着 PE | 只剩 PE 可打 | "
       "我方在线的号被吃走的格：全部 / 内置 AI / 野人 / 保护开着时的 PE / 解除后的池内跨队席位 | 保护开着时从 PE 吃到 | 保护开着时对 PE：陆攻 / 靠岸 | 解除后对池内跨队席位的陆攻 | 跨队捐兵 / 全部捐兵")
     for r in sorted(rows, key=lambda r: r["mid"]):
-        P(f"  {r['mid']} | {r['H']} | {r['nTeams'] if r['teamGame'] else '混战'} | {r['end']} | {r['own']}（{r['ownTeams']} / {r['ownLargest']}）| {r['ownLeft']}（{r['ownLeftEarly']}）| {r['ul']} | "
+        note = (f"（录像取自 {r['rec']}）" if r["rec"] != r["mid"] else "") + ("（截短）" if r["cut"] is not None else "")
+        P(f"  {r['mid']} | {r['H']} | {r['nTeams'] if r['teamGame'] else '混战'} | {r['end']}{note} | {r['own']}（{r['ownTeams']} / {r['ownLargest']}）| {r['ownLeft']}（{r['ownLeftEarly']}）| {r['ul']} | "
           f"{r['tOff'] if r['tOff'] is not None else '–'} / {r['tOffLoose'] if r['tOffLoose'] is not None else '–'} | {r['samples']} | {pct(r['touchPE'], r['samples'])} | {pct(r['onlyPE'], r['samples'])} | "
           f"{r['lostAll']} / {r['lostAI']} / {r['lostWild']} / {r['lostPE']} / {r['lostPEoff']} | {r['gainPE_on']} | {r['atkPE_on']} / {r['landPE_on']} | {r['atkPE_off']} | {r['donX']} / {r['donAll']}")
 
@@ -536,8 +569,12 @@ def main():
     all_tiles = sum(tot_origin_tiles.values())
     J["report"] = {
         "NP_N": str(n_used), "NP_OLD_N": str(len(old)), "NP_OLD": " ".join(old), "NP_ALL": str(n_used + len(old)),
-        "NP_COVER": (f"squad20 有对局段、重演对得上的 {n_used + len(old)} 局" + (f"里的 {n_used} 局" if old else "") + f"：组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}"
-                     + (f"；另外 {len(old)} 局（{' '.join(old)}）的重演还在后台排队，没算进来" if old else "")),
+        "NP_COVER": (f"squad20 自己的录像有对局段、重演对得上的 {n_used - len(have_extra) + len(old)} 局" + (f"里的 {n_used - len(have_extra)} 局" if old else "")
+                     + (f"，加上 {len(have_extra)} 局自己的录像只有出生期、用同房另一份包的录像重演的（{' '.join(have_extra)}），合计 {n_used} 局" if have_extra else "")
+                     + f"：组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}"
+                     + (f"；另外 {len(old + miss_extra)} 局（{' '.join(old + miss_extra)}）的重演还在后台排队，没算进来" if old or miss_extra else "")
+                     + (f"。用同房另一份包更长的录像重演的 {len(borrowed)} 局（" + "；".join(f"{r['mid']} ← {r['rec']}" for r in borrowed) + "）" if borrowed else "")
+                     + ("。" + "；".join(f"{r['mid']} 用的那份录像（{r['rec']}）模拟器从 {r['cut']} 拍起和真引擎对不上，只算到那一拍" for r in cut_rows) if cut_rows else "")),
         "NP_MODE_TABLE": "\n".join(mode_table),
         "NP_LAND_MATE": str(tot_land[True]["ownteam_on"]), "NP_BOAT_MATE": str(tot_boat[True]["ownteam_on"]), "NP_LAND_CHANGED": str(land_changed),
         "NP_TEAM_N": str(len(tg)), "NP_FFA_N": str(len(rows) - len(tg)),
