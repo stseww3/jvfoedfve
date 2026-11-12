@@ -265,7 +265,30 @@ def main():
                f"{tot2['evPar']}（{pc(tot2['evPar'], tot2['evCells'], 1)}）/ {tot2['evSquad'] - tot2['evPar']} | "
                f"{tot2['inReach']} = {tot2['gate']}（{pc(tot2['gate'], tot2['inReach'])}）+ {tot2['late']}（{pc(tot2['late'], tot2['inReach'])}）+ {tot2['inReach'] - tot2['gate'] - tot2['late']}"
                f"（{pc(tot2['inReach'] - tot2['gate'] - tot2['late'], tot2['inReach'])}）| {tot2['geom']}")
+    # 同一笔差额按接壤口径拆开（各局相加；landcap.py attrContact：差额 = 贴不着 + 接壤口径的各类）
+    cat_tot = Counter()
+    short_tot = 0
+    for m in truth:
+        if m not in core:
+            continue
+        ac = (LAND[m].get("attrContact") or {})
+        short_tot += ac.get("short") or 0
+        for k, v in (ac.get("cats") or {}).items():
+            if not k.startswith("不接壤"):
+                cat_tot[k] += v
+    pos_tot = short_tot - tot2["inReach"]
+    rest_tot = tot2["inReach"] - tot2["gate"] - tot2["late"]
+    out.append(f"    同一笔差额 {short_tot} 格按接壤口径拆（不含 B030，各局相加）：①站位（被吃掉之前没有编队号贴着，差额 − 接壤口径）{pos_tot}（{pc(pos_tot, short_tot)}）；"
+               f"②门槛挡住 {tot2['gate']}（{pc(tot2['gate'], short_tot)}）；③迟到 {tot2['late']}（{pc(tot2['late'], short_tot)}）；其它 {rest_tot}（{pc(rest_tot, short_tot)}）")
+    pos_by = [(m, (LAND[m].get("attrContact") or {}).get("position")) for m in truth if m in core]
+    pos_by = [(m, v) for m, v in pos_by if v is not None]
+    out.append("    站位这一项逐局：" + "、".join(f"{m} {v}" for m, v in pos_by)
+               + f"（为正的 {sum(1 for _, v in pos_by if v > 0)} 局，为负的 {sum(1 for _, v in pos_by if v < 0)} 局——负数 = 编队号贴着的人机地比按人头应得的还多，丢在门槛和迟到上的超过了差额）")
+    out.append("    接壤口径 " + str(tot2["inReach"]) + " 格的细类：" + "；".join(f"{k} {v}（{pc(v, tot2['inReach'])}）" for k, v in cat_tot.most_common()))
+    out.append(f"    站位的另一个口径（Voronoi 自然地盘）：编队号自然地盘里的人机地比按人头应得少 {tot2['geom']} 格（相当于差额的 {pc(tot2['geom'], short_tot)}）；"
+               "两个口径不相加——号可以越过自己的自然地盘去吃。")
     J["aiLandTotal"] = dict(tot2)
+    J["aiLandSplit"] = dict(short=short_tot, position=pos_tot, gate=tot2["gate"], late=tot2["late"], rest=rest_tot, cats=dict(cat_tot))
 
     # ------------------------------------------------------------------ [XM-E]
     out.append("[XM-E] 出生点（spawncheck.py / spawngeo.py）。局 | 最后一条指派被执行的号 / 号数 | 每号指派条数中位 | 引擎落点同像素（<40 像素）的号对 | 离地图边的中位 编队 / 其他真人 | "
