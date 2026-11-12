@@ -109,6 +109,8 @@ def main():
     tot_atk = {st: Counter() for st in STATES}
     tot_boat = {st: Counter() for st in STATES}
     tot_land = {st: Counter() for st in STATES}
+    all_lands = Counter()
+    bad_lands = []
     tot_origin = Counter()
     tot_origin_tiles = Counter()
     tot_don = Counter()
@@ -300,6 +302,11 @@ def main():
         landc = {st: Counter() for st in STATES}
         land_pair = defaultdict(int)
         for t, p, q, troops, got in R["lands"]:
+            # 全场真人席位的船靠岸（不只我方）：靠在「既不是无主地、也没有主人」的格上的单记（boatprobe.mjs 逐艘取证用）
+            all_lands["n"] += 1
+            if q < 0:
+                all_lands["bad"] += 1
+                bad_lands.append((mid, rec, t, p, names[p].strip(), troops, p in own_set))
             if p not in own_set or not online(p, t):
                 continue
             on = tick_state(t)
@@ -527,6 +534,8 @@ def main():
     land_pe_on = sum(tot_land[True][k] for k in PE_KINDS)
     land_pe_troops = sum(tot_land[True][k + "|troops"] for k in PE_KINDS)
     P(f"  保护开着时对 PE：陆攻 {atk_pe_on} 条；发船时目的地是 PE 的地 {boat_pe_on} 艘；靠岸时那一格是 PE 的地 {land_pe_on} 艘（船上 {land_pe_troops} 兵）")
+    P(f"  全场真人席位（不只我方）的船靠岸 {all_lands['n']} 艘；其中靠在「既不是无主地、也没有主人」的格上的 {all_lands['bad']} 艘"
+      f"（我方号的 {sum(1 for b in bad_lands if b[6])} 艘）" + ("：" + "；".join(f"{m}{'（录像 ' + rc + '）' if rc != m else ''} {t} 拍 #{p_}「{nm}」{tr} 兵" for m, rc, t, p_, nm, tr, _ in bad_lands) if bad_lands else ""))
     atk_pe_open = sum(tot_atk["open"][k] for k in PE_KINDS)
     open_m = [r for r in rows if r["atkPE_open"]]
     P(f"  开局窗（头 300 拍，上表的陆攻两列都不含这一窗）：我方在线的号对池内跨队席位的陆攻 {atk_pe_open} 条（生效 {sum(tot_atk['open'][k + '|ok'] for k in PE_KINDS)} 条），"
@@ -633,6 +642,7 @@ def main():
         "NP_X_TILES": str(tot_xfight["on|tiles"]), "NP_X_BURNT": str(tot_xfight["on|burnt"]), "NP_X_DB": str(tot_xfight["on|dB"]),
         "NP_XOFF_TILES": str(tot_xfight["off|tiles"]), "NP_XOFF_BURNT": str(tot_xfight["off|burnt"]), "NP_XOFF_BY": xoff_txt or "无",
         "NP_REACH1500": str(reach[1500]), "NP_REACH4284": str(reach[4284]),
+        "NP_LANDS_ALL": str(all_lands["n"]), "NP_LANDS_BAD": str(all_lands["bad"]), "NP_LANDS_BAD_OWN": str(sum(1 for b in bad_lands if b[6])),
         "NP_XOPEN_TILES": str(tot_xfight["open|tiles"]), "NP_XOPEN_BURNT": str(tot_xfight["open|burnt"]),
         "NP_LOST_ALL": str(lost_all), "NP_LOST_PE": str(lost_pe), "NP_LOST_PE_PCT": pct(lost_pe, lost_all, 1),
         "NP_LOST_PEOFF": str(lost_pe_off), "NP_LOST_PEOFF_PCT": pct(lost_pe_off, lost_all, 1),
