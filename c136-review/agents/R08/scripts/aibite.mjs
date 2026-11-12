@@ -11,7 +11,8 @@
 //       [t, 出手的号, 出手的是不是空壳, 目标, 派出的兵 dn, 出手方余额,
 //        过滤前候选里：无主地 0/1、AI 或空壳的个数、真人的个数,
 //        最后那份候选名单（引擎真正在里面挑的）里的真人：[[号, 余额 + 它压在出手方身上的兵, 兵密度×10, 包围盒中心到出手方中心的距离平方]…],
-//        目标的地, 目标的余额, 这一口的战果 [吃到的格, 出手方烧的兵, 目标被打掉的余额, 圈数]]
+//        目标的地, 目标的余额, 这一口的战果 [吃到的格, 出手方烧的兵, 目标被打掉的余额, 圈数],
+//        出手那一拍目标压在出手方身上的兵（引擎 expandAttack 里的 counter：> 0 时新进攻的第一圈不能赊账）]
 //     战果 = 这一对 [出手方 → 目标] 从这次出手到下一次出手（最多 150 拍）之间的逐对战损账（30 拍一结，所以相邻两口挨得近时会有少量串账）。
 //   · 决策计数：按「过滤前的候选是什么构成」分四类（有无主地 / 只有 AI 或空壳 / 只有真人 / 真人和 AI 或空壳都有），每类里最后打了谁。
 //   · 逐对战损账（resim 自带的 pairLog，30 拍一结）：[出手方 → 真人] 吃了几格、出手方烧的兵、真人被打掉的余额、圈数。
@@ -121,7 +122,7 @@ for (const mid of ids) {
               const ox = (this.x1[o] + this.x0[o]) / 2, oy = (this.y1[o] + this.y0[o]) / 2;
               cands.push([o, this.bal[o] + this.attackTroopsOn(o, p), Math.round((10 * this.bal[o]) / Math.max(1, this.terr[o])), Math.round((cx - ox) ** 2 + (cy - oy) ** 2)]);
             }
-            bites.push([this.t, p, p < H ? 1 : 0, target, dn, this.bal[p], pr.neutral, pr.bots, pr.humans, cands, this.terr[target], this.bal[target], [0, 0, 0, 0]]);
+            bites.push([this.t, p, p < H ? 1 : 0, target, dn, this.bal[p], pr.neutral, pr.bots, pr.humans, cands, this.terr[target], this.bal[target], [0, 0, 0, 0], this.attackTroopsOn(target, p)]);
           }
           pre = null;
           return botAttackPlayer0.call(this, p, dn, target, diff);

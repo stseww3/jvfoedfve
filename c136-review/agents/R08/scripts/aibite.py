@@ -13,6 +13,7 @@
   [AB-D] 真人被内置 AI 咬走的地、被打掉的余额：按组、按窗的人均。
   [AB-E] 一口咬下去的战果和目标兵密度的关系。
   [AB-F] 空壳（离开的真人，引擎按难度 6 接管）同样几张表的简版。
+  [AB-G] 目标正压着这只 AI 的时候挨的那一口（赊账的第一圈还有没有）。
 """
 import json
 import os
@@ -90,6 +91,8 @@ def main():
     # 战果按密度：actor → 组 → 密度档 → 累计
     eff = {a: {g: [defaultdict(float) for _ in DBINS] for g in ("own", "wild")} for a in (0, 1)}
     bite_frac = {g: [] for g in ("own", "wild")}   # 一口咬走的格 ÷ 目标的地（内置 AI，600~1500）
+    # 目标在 AI 出手那一拍有没有兵压在这只 AI 身上：组 → [没有, 有] → 密度档 → 累计
+    ctrs = {g: [[defaultdict(float) for _ in DBINS] for _ in (0, 1)] for g in ("own", "wild")}
     send_frac = []                                   # 内置 AI 打真人时派出的兵 ÷ 自己的余额
     gap = []                                         # 同一个 AI 相邻两次打真人的间隔
     rows_json = []
@@ -119,7 +122,8 @@ def main():
         last_bite = {}
         mrow = dict(matchId=mid, cohort=card.get("cohort"), bites=[0] * len(WN))
         for b in A["bites"]:
-            t, atk, shell, tgt, dn, bal_atk, pn, pb, phm, cands, t_terr, t_bal, res = b
+            t, atk, shell, tgt, dn, bal_atk, pn, pb, phm, cands, t_terr, t_bal, res = b[:13]
+            ctr = b[13] if len(b) > 13 else None
             k = next((i for i in range(len(WN)) if WIN[i] < t <= WIN[i + 1]), -1)
             if k < 0:
                 continue
@@ -169,6 +173,16 @@ def main():
                 e["rings"] += res[3]
                 if shell == 0 and t <= 1500 and t_terr > 0:
                     bite_frac[g].append(res[0] / t_terr)
+                if shell == 0 and ctr is not None:
+                    c_ = ctrs[g][1 if ctr > 0 else 0][bi]
+                    c_["n"] += 1
+                    c_["dn"] += dn
+                    c_["cells"] += res[0]
+                    c_["burnt"] += res[1]
+                    c_["dB"] += res[2]
+                    c_["zero"] += res[0] == 0
+                    c_["rings"] += res[3]
+                    c_["ctr"] += ctr
             ph[k][g]["bites" if shell == 0 else "sbites"] += 1
         for k in range(len(WN)):
             c = A["cp"].get(str(WIN[k]))
@@ -295,6 +309,32 @@ def main():
             P(f"  {GN[g]}：600~1500 拍一口咬走的格 ÷ 目标当时的地：P50 / P90 / P99 / 最大 = {fmt(100 * q(v, .5), 1)}% / {fmt(100 * q(v, .9), 1)}% / {fmt(100 * q(v, .99), 1)}% / {fmt(100 * max(v), 1)}%（{len(v)} 口）")
     P()
 
+    P("[AB-G] 目标正压着这只 AI 的时候挨的那一口（内置 AI 打真人；「压着」= AI 出手那一拍，目标压在它身上的兵 > 0）")
+    P("  引擎 expandAttack：新发起的进攻第一圈，目标没有兵压在进攻方身上时（counter = 0）不够兵也算赢（赊账）；目标有兵压着就得真付得起。")
+    P("  组·压没压着 | 目标兵密度档：口数 / 一格没咬到 / 每口咬走的格 / 每口圈数 / AI 每 1000 兵咬走的格 / 目标每口被打掉的余额")
+    out_ctr = {}
+    for g in ("own", "wild"):
+        for has in (0, 1):
+            cells_ = []
+            tot = defaultdict(float)
+            for bi, bn in enumerate(DBN):
+                c_ = ctrs[g][has][bi]
+                for k_, v_ in c_.items():
+                    tot[k_] += v_
+                if c_["n"] < 20:
+                    cells_.append(f"{bn}：{int(c_['n'])} 口（太少）")
+                    continue
+                cells_.append(f"{bn}：{int(c_['n'])} / {pct(c_['zero'], c_['n'])} / {fmt(c_['cells'] / c_['n'])} / {fmt(c_['rings'] / c_['n'], 1)} / "
+                              f"{fmt(1000 * c_['cells'] / max(1, c_['dn']))} / {fmt(c_['dB'] / c_['n'])}")
+                out_ctr[f"{g}|{has}|{bn}"] = dict(c_)
+            P(f"  {GN[g]}·{'压着' if has else '没压着'} | " + "｜".join(cells_))
+            if tot["n"]:
+                P(f"    合计 {int(tot['n'])} 口：一格没咬到 {pct(tot['zero'], tot['n'])}，每口咬走 {fmt(tot['cells'] / tot['n'])} 格、{fmt(tot['rings'] / tot['n'], 1)} 圈，"
+                  f"AI 每 1000 兵咬走 {fmt(1000 * tot['cells'] / max(1, tot['dn']))} 格，目标每口被打掉 {fmt(tot['dB'] / tot['n'])} 余额"
+                  + (f"，目标压在 AI 身上的兵每口平均 {fmt(tot['ctr'] / tot['n'])}" if has else ""))
+                out_ctr[f"{g}|{has}|all"] = dict(tot)
+    P()
+
     P("[AB-F] 空壳（离开的真人）的决策和战果")
     P("  窗 | 决策数 | 候选里有无主地：占比（其中打无主地） | 只有 AI / 空壳：占比 | 只有真人：占比（其中打真人） | 真人和 AI / 空壳都有：占比（其中打真人）")
     P(dec_row("600~1500 合计", [0, 1, 2], 1))
@@ -313,7 +353,7 @@ def main():
         f.write(txt)
     with open(os.path.join(OUT, "_cross", "aibite.json"), "w", encoding="utf-8") as f:
         json.dump(dict(matches=n_valid, dec=dec, sel={str(a): {k: (dict(v) if isinstance(v, Counter) else v) for k, v in sel[a].items()} for a in sel},
-                       perHead=out_ph, eff=out_eff, rows=rows_json), f, ensure_ascii=False, indent=1)
+                       perHead=out_ph, eff=out_eff, counter=out_ctr, rows=rows_json), f, ensure_ascii=False, indent=1)
     if quiet:
         print(f"aibite: {n_valid} 局 → out/_cross/aibite.txt")
     else:
