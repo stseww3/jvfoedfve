@@ -40,6 +40,8 @@ def pc(x, nd=0):
 
 
 def md(head, rows, align=None):
+    if not rows:
+        return "（这张表对应的对照还没有跑出来。）"
     out = ["| " + " | ".join(head) + " |", "|" + "|".join((":--" if (align and align[i] == "l") or (not align and i == 0) else "--:") for i in range(len(head))) + "|"]
     for r in rows:
         out.append("| " + " | ".join(str(c) for c in r) + " |")
@@ -118,6 +120,8 @@ def main():
             a = "两边都是 0" if c["LSratio"] is None else r3(c["LSratio"])
             row += ["没有" if c["firstDiff"] is None else c["firstDiff"], f"{a} / {r3(c['LOratio'])}"]
         rows.append(row)
+    if not any(c != "—" for r in rows for c in r[1:]):
+        rows = []
     T["复现-其余断面"] = md(["局", "断面 630：第一处不同的记录拍", "看 900 拍后领土 C2 ÷ 历史（我方 / 其他真人）", "断面 1500：第一处不同", "C2 ÷ 历史（我方 / 其他真人）", "断面 4284：第一处不同", "C2 ÷ 历史（我方 / 其他真人）"], rows)
 
     # ---- 通道状况
@@ -166,9 +170,6 @@ def main():
             rows.append([f"{n} 局中位数", "", "", "", "", ""] + [sg(sm["median"][k]) for k in keys])
             if sm["total"] > 0.2 * n:
                 rows.append(["占合计的比例", "", "", "", "", ""] + [pc(sm[k] / sm["total"]) for k in keys])
-                pos = sm["spawn"] + sm["base"] + sm["hold"]
-                if sm["spawn"] > 0 and sm["base"] > 0 and sm["hold"] > 0:
-                    rows.append(["三个失分项之间的比例", "", "", "", "", "", pc(sm["spawn"] / pos), "", pc(sm["base"] / pos), pc(sm["hold"] / pos), ""])
             notes[f"分层-{TT}"] = (f"{n} 局相加：出生站位 {sg(sm['spawn'])}，规则（余项）{sg(sm['rule'])}，基础延迟 {sg(sm['base'])}，按住与成批放行 {sg(sm['hold'])}，合计 {sg(sm['total'])}；"
                                     f"走偏带来的虚高 {sg(sm['bias'])}（平均 {sg(sm['bias'] / n, 3)}，中位数 {sg(sm['median']['bias'], 3)}）；"
                                     f"零延迟下相对基准 ln v_γ − ln ρC0：平均 {sg(sm['raw0'] / n)}，中位数 {sg(sm['median']['raw0'])}；正常延迟下 ln v_γ − ln ρC1：平均 {sg(sm['raw1'] / n)}，中位数 {sg(sm['median']['raw1'])}；"
@@ -308,6 +309,8 @@ def main():
             x = (J.get("sens") or {}).get(f"t0_h{hh}_{k}")
             row += [f"{sg(x['median'])}（{x['n']} 局）" if x else "—", f"{sg(x['min'])} ~ {sg(x['max'])}" if x else "—"]
         rows.append(row)
+    if not any(c != "—" for r in rows for c in r[2:]):
+        rows = []
     T["敏感性-延迟"] = md(["通道取法", "发令到生效平均拍数", "到 630 拍：ln ρ − ln ρ(C0) 中位数", "最小 ~ 最大", "到 1500 拍：中位数", "最小 ~ 最大"], rows, align="llrrrr")
     rows = [[x["g"], x["T0"], x["h"], x["C1"], x["C2"]] for x in (J.get("leave") or [])]
     T["敏感性-离开"] = md(["局", "断面", "看多少拍", "C1：ln ρ(不离开) − ln ρ(照录像离开)", "C2"], rows)
@@ -509,11 +512,13 @@ def main():
     for key, nm in (("LS", "S"), ("LO", "O"), ("bot", "A")):
         for ch, cn in (("历史", "H"), ("C2p", "C2"), ("C1", "C1"), ("C0", "C0")):
             if acc.get((key, ch)):
-                F[f"land{nm}_{cn}"] = f"{mean(acc[(key, ch)]):.1f}"
+                F[f"land{nm}_{cn}"] = f"{mean(acc[(key, ch)]):.1f}%"
     lo_all = [(G[g]["land1500"]["历史"]["LO"], G[g]["land1500"]["C2p"]["LO"]) for g in GAMES if G.get(g, {}).get("land1500", {}).get("C2p")]
     if lo_all:
-        F["loDropN"] = str(sum(1 for a, b in lo_all if b < a))
+        nd = sum(1 for a, b in lo_all if b < a)
+        F["loDropN"] = str(nd)
         F["loDropOf"] = str(len(lo_all))
+        F["loDropPhrase"] = f"{len(lo_all)} 局无一例外" if nd == len(lo_all) else f"{len(lo_all)} 局里 {nd} 局如此"
     for TT in (630, 1500):
         sp = J.get(f"split_{TT}")
         if sp:
@@ -610,7 +615,12 @@ def main():
             if s.startswith("@@表 ") and s.endswith("@@"):
                 key = s[4:-2].strip()
                 if key in T:
-                    res.append(T[key])
+                    prev = next((x for x in reversed(res) if x.strip()), "")
+                    if T[key].startswith("（这张表") and prev == T[key]:
+                        while res and not res[-1].strip():
+                            res.pop()      # 连着两张都还没有数据的表：只留一句
+                    else:
+                        res.append(T[key])
                 else:
                     missing.append("表 " + key)
                     res.append(f"（缺表：{key}）")
