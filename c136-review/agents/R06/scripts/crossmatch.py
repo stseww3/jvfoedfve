@@ -6,6 +6,7 @@
 
 用法：python3 crossmatch.py <段> [matchId ...]        （不给对局号 = R06 的 15 局）
   struct     结构：地图、队数、真人数、席位、拆队、去向、终局、分型、录像覆盖
+  split      拆队账：编队合计的地与兵（t≈1530 与峰值）对最强的非我方集团
   spawn      选点执行延迟：下发 / 落地、最后一版是不是出生点、撞点、延迟下界
   delay      指令延迟（下令拍 → 执行拍）分位数，按下令拍分 4 段；没有对局录像的局给日志侧墙上时钟读数
   course     延迟的时间过程：每 150 拍一格的中位
@@ -124,6 +125,58 @@ def sec_struct(ms):
           f"最大一队占席位的中位 {pc(med([x['split'][0] / sum(x['split']) for x in out if x['split']]), 1, 0)}。卡片标签：" + '、'.join(f"{k} {v}" for k, v in lab.most_common())
           + '。分型：' + '、'.join(f"{k} {v}" for k, v in arch.most_common()) + '；次分型：' + '、'.join(f"{k} {v}" for k, v in sec.most_common()) + '。')
     print(f"去向合计：阵亡 {sum(x['died'] for x in out)}、离开 {sum(x['left'] for x in out)}、活到终局 {sum(x['end'] for x in out)}、日志无声（没有结算行）{sum(x['silent'] for x in out)}；其中没开局的席位 {sum(x['neverPlayed'] for x in out)} 个。")
+    print()
+    return out
+
+
+def sec_split(ms):
+    print('### 拆队账：编队合计的地与兵，对「最强的非我方集团」（reviews/*.json 的 timeline；allTeams 只有有对局录像的局有）')
+    print('   非我方集团 = 某个队去掉我方号之后剩下的地 / 兵（外人真人 + 该队的空壳）。合计 ÷ 最强非我方集团 > 1 = 20 个号要是在一个队里，按地算已经是全场第一。')
+    rows, out = [], []
+    for m in ms:
+        tl = m.R.get('timeline') or []
+        land = m.ctx.get('mapLand')
+        if not tl or not land:
+            continue
+        humans = m.ctx.get('humans') or 0
+        seats = m.ctx.get('bots') or 0
+        near = min(tl, key=lambda r: abs(r['t'] - 1530))
+        peak = max(tl, key=lambda r: r.get('squadLandShare') or 0)
+
+        def cut(r):
+            pt = {k: v for k, v in (r.get('perTeam') or {}).items() if v.get('land')}
+            s_land = sum(v['land'] for v in pt.values())
+            s_tr = sum(v['troops'] for v in pt.values())
+            big = max(pt.items(), key=lambda kv: kv[1]['land']) if pt else None
+            o = dict(t=r['t'], share=s_land / land, troops=s_tr, nTeams=len(pt), parts={k: v['land'] / land for k, v in pt.items()}, bigTeam=big[0] if big else None, bigShare=big[1]['land'] / land if big else 0,
+                     alive=r.get('alive'))
+            at = r.get('allTeams')
+            if at:
+                rest = {k: (v['landShare'] - (pt.get(k, {}).get('land', 0) / land), v['troops'] - pt.get(k, {}).get('troops', 0)) for k, v in at.items()}
+                k = max(rest, key=lambda k: rest[k][0])
+                o.update(restTeam=k, restShare=rest[k][0], restTroops=rest[k][1], ratio=o['share'] / rest[k][0] if rest[k][0] > 0 else None,
+                         winShare=(at.get(str(m.oc.get('winnerTeam'))) or {}).get('landShare'), topShare=max(v['landShare'] for v in at.values()))
+            return o
+        a, b = cut(near), cut(peak)
+        head = seats / humans if humans else None
+        o = dict(id=m.id, head=head, near=a, peak=b, winner=m.oc.get('winnerTeam'))
+        out.append(o)
+        parts = ' / '.join(f"队{k} {100 * v:.1f}%" for k, v in sorted(b['parts'].items(), key=lambda kv: -kv[1]))
+        rows.append([m.id, '/'.join(str(x) for x in sorted((m.ctx.get('teamSplitTrue') or {}).values(), reverse=True)), pc(head or 0, 1),
+                     f"t={a['t']}：{pc(a['share'], 1)}（÷人头 {a['share'] / head:.2f}）" if head else None,
+                     f"t={b['t']}：{pc(b['share'], 1)}，{wan(b['troops'])}兵，在场 {b['alive']} 个", f"{b['nTeams']} 个队：{parts}",
+                     f"队{b['restTeam']} {pc(b['restShare'], 1)}，{wan(b['restTroops'])}兵" if 'restTeam' in b else None,
+                     f"{b['ratio']:.2f}（兵 {b['troops'] / b['restTroops']:.2f}）" if b.get('ratio') and b.get('restTroops') else None,
+                     f"队{m.oc.get('winnerTeam')}" + (f"：当时 {pc(b['winShare'], 1)}" if b.get('winShare') is not None else '')])
+    table(['局', '拆队', '人头占比', 't≈1530 编队合计领土份额', '编队合计份额的峰值', '峰值时我方地分在', '峰值时最强的非我方集团', '合计 ÷ 最强非我方集团：地（兵）', '终局赢家队'], rows)
+    hi = [o for o in out if o['peak']['share'] >= 0.40]
+    ge1 = [o for o in out if o['peak'].get('ratio') and o['peak']['ratio'] > 1 and o['peak']['t'] >= 1500]
+    early = [o for o in out if o['peak'].get('ratio') and o['peak']['t'] < 1500]
+    r15 = sorted((o['near']['share'] / o['head'], o['id']) for o in out if o['head'])
+    print(f"   峰值 >=40% 的局：{'、'.join(o['id'] + ' ' + pc(o['peak']['share'], 1, 0) for o in hi)}；有对局录像、峰值在 t>=1500 的局里，峰值时合计 > 最强非我方集团的：{'、'.join(o['id'] + ' ' + format(o['peak']['ratio'], '.2f') + ' 倍' for o in ge1) or '无'}")
+    print(f"   峰值落在 t<1500 的局（{'、'.join(o['id'] for o in early)}）：峰值是开局阶段的读数（之后录像断了或号没了），那一格的比值不代表「合起来能赢」。")
+    print(f"   t≈1530 编队份额 ÷ 人头占比：{' / '.join(f'{i[1]} {i[0]:.2f}' for i in r15)}（中位 {med([i[0] for i in r15]):.2f}；<1 的 {sum(1 for i in r15 if i[0] < 1)} 局）。"
+          '分母是全图陆地，t≈1530 时内置 AI 和无主地还没分完，人头里也含没开局 / 已离开的席位，所以这个比值天然低于 1；与其他真人的人均对比见 ai 段的「人均净增」。')
     print()
     return out
 
@@ -944,7 +997,7 @@ def sec_spawnfx(ms):
     return out
 
 
-SECS = dict(relate=sec_relate, struct=sec_struct, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
+SECS = dict(relate=sec_relate, struct=sec_struct, split=sec_split, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
             gates=sec_gates, donflow=sec_donflow, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
