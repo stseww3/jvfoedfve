@@ -41,7 +41,8 @@ jobs:
           node-version: 22
       - name: Unpack c136 simulation dataset
         run: |
-          mkdir -p /agent/repos/c136-data
+          sudo mkdir -p /agent/repos/c136-data
+          sudo chown -R "$USER:$USER" /agent/repos
           tar -xzf c136-review/ci/c136-ci-data.tar.gz -C /agent/repos/c136-data
       - name: Run c136 benchmark shard
         run: node c136-review/ci/ci-bench.mjs "${{ matrix.shard }}" c136-ci-out
