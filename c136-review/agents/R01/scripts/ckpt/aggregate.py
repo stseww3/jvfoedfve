@@ -1405,6 +1405,34 @@ def main():
         P(f"{n} 个（局, 窗口）的均值：落后波 先加 {mean([x[0] for x in acc]):+.3f} / 后加 {mean([x[1] for x in acc]):+.3f}；页面/掉线 先加 {mean([x[2] for x in acc]):+.3f} / 后加 {mean([x[3] for x in acc]):+.3f}；"
           f"交互项均值 {mean([x[3] - x[2] for x in acc]):+.3f}，|交互项| 均值 {mean([abs(x[3] - x[2]) for x in acc]):.3f}。")
         P('')
+        # 整条对数链按倒过来的次序重算（没有 C1p 的窗口页面一段本来就是 0 上下，两种次序一样）
+        Od = dict(O)
+        rev, miss = {}, []
+        for mid, use in chain_use.items():
+            w = pg = 0.0
+            for r in use:
+                e = Od.get((mid, r['t0']))
+                if e:
+                    c1p = mean([m['relTerr1'] for m in seeds(e, 'C1p')])
+                    if c1p > CHAIN_FLOOR:
+                        pg += math.log(c1p / r['relTerr1_C1'])
+                        w += math.log(r['relTerr1_C2'] / c1p)
+                        continue
+                if abs(math.log(r['relTerr1_C2'] / r['relTerr1_C2w'])) > 0.02:
+                    miss.append(f"{mid} {WN.get(r['t0'], r['t0'])}")
+                w += math.log(r['relTerr1_C2w'] / r['relTerr1_C1'])
+                pg += math.log(r['relTerr1_C2'] / r['relTerr1_C2w'])
+            rev[mid] = (w, pg)
+        if rev:
+            mids_ = list(rev)
+            w0, p0 = mean([chain[m]['wave'] for m in mids_]), mean([chain[m]['page'] for m in mids_])
+            w1_, p1_ = mean([rev[m][0] for m in mids_]), mean([rev[m][1] for m in mids_])
+            r0 = mean([chain[m]['resid'] for m in mids_])
+            tot0 = w0 + p0 + r0
+            P(f"{len(mids_)} 局的对数链按两种次序算：先加落后波（正文的口径）落后波 ×{math.exp(w0):.2f}、页面/掉线 ×{math.exp(p0):.2f}；先加页面 落后波 ×{math.exp(w1_):.2f}、页面/掉线 ×{math.exp(p1_):.2f}。"
+              f"两段合计都是 ×{math.exp(w0 + p0):.2f}。占「历史 ÷ C1 路径」ln 差的份额（落后波 / 页面 / 残差）：{w0 / tot0:.0%} / {p0 / tot0:.0%} / {r0 / tot0:.0%} → {w1_ / tot0:.0%} / {p1_ / tot0:.0%} / {r0 / tot0:.0%}。"
+              + (f"页面一段不为零（|ln| > 0.02）但还没有 C1p 臂的窗口：{'、'.join(miss)}，这些窗口按原次序算。" if miss else '页面一段不为零的窗口都有 C1p 臂。'))
+            P('')
 
     # ---- 历史版本互换（c116 家族内 Va / Vb / Vc；c110 与 c116 家族之间）
     V = load(r'(va|vb|vc|c110)[a-z]', historical=False, keyfn=lambda d, tag: (d['match'], d['t0'], d.get('stratKey')))
