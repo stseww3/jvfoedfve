@@ -1139,6 +1139,23 @@ def x12():
     put("H3 卡编队友底占比 1500起", "%", lambda m: core(m, "frozenSF"))
     put("H4 卡真人留底占比 1500起", "%", lambda m: core(m, "frozenKeep"))
     put("H5 发令占比 1500起", "%", lambda m: core(m, "sent"))
+    def peak_over_head(m):
+        d = D(m)
+        v = vor(m)
+        peak = 0
+        for i, t in enumerate(d.T):
+            ctl = [q for q in d.sqids if not (0 <= d.left[q] <= t)]
+            peak = max(peak, sum(d.R["snapTerr"][i][q] for q in ctl))
+        return (peak / d.land) / (v["squadBots"] / v["humans"])
+
+    def share_at(m, t):
+        d = D(m)
+        return 100.0 * d.team_rows([t])[0][6] / d.land
+
+    put("J1 峰值÷人头", "编队地份额峰值 ÷ 人头占比", peak_over_head)
+    put("J2 结束拍", "重放到的最后一拍", lambda m: D(m).R["endTick"])
+    put("J3 开局真人数", "开局有地的真人", lambda m: vor(m)["humans"])
+    put("J4 编队地份额 1500÷630", "编队在控的号的地合计，1500 拍 ÷ 630 拍", lambda m: share_at(m, 1500) / share_at(m, 630))
     put("I1 低于worth÷(低于+高于) 1500~2399", "%", bw_low)
     put("I2 低于worth里不给脉冲档 1500~2399", "%", bw_nopulse)
 
@@ -1244,6 +1261,12 @@ def x12():
     for nm in ("I1 低于worth÷(低于+高于) 1500~2399", "I2 低于worth里不给脉冲档 1500~2399"):
         L_.append(stat(nm, 0))
     L_ += [count("I1 低于worth÷(低于+高于) 1500~2399", "≥30%", lambda v: v >= 30), count("I2 低于worth里不给脉冲档 1500~2399", "≥50%", lambda v: v >= 50)]
+    L_ += ["", "[J] 结局与规模"]
+    L_.append(stat("J1 峰值÷人头"))
+    L_.append(stat("J2 结束拍", 0))
+    L_.append(stat("J3 开局真人数", 0))
+    L_.append(stat("J4 编队地份额 1500÷630"))
+    L_ += [count("J1 峰值÷人头", ">1", lambda v: v > 1), count("J2 结束拍", ">4284", lambda v: v > 4284)]
     write("X12-summary.txt", L_)
 
 

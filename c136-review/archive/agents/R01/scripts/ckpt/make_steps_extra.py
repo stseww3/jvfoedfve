@@ -6,6 +6,7 @@
   swap       同一个断面上把我方换成**另外两个历史版本**（只在 c116 家族内：Va / Vb / Vc 互换），C1 与 C2 各 3 个种子，
              断面 0 / 630 / 1500。用来量「历史版本之间既有规则的差」在同一局面、同一通道下值多少，和通道那几段并排比。
              不涉及任何新策略。
+  swaplate   同上，断面 3213 / 4284（捐兵配额放开以后；Vb 与 Vc 的差全在捐兵规则里）
 
   g0         从开局一口气放开跑到 t=1500（14 局；C0 / C1×3 / C2×3，1500 拍前有页面停摆的再加 C2w×3）
   band       C2 / C2w 换成阶梯的上界 / 下界（traces-hi / traces-lo，见 make_trace.py）并按日志次序的地板抬高（floor/，见 logorder_floor.py），
@@ -184,19 +185,23 @@ def main():
                 for k, ch in enumerate(chunks(['C2', 'C2@2', 'C2@3'], len(live), t0, WIN[t0])):
                     tag = f'fill{fill}{chr(97 + k)}'
                     print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --arms {','.join(ch)} --fill {fill} --tag {tag}")
-    if 'swap' in what:
+    if 'swap' in what or 'swaplate' in what:
+        # Vb 与 Vc 两个文件只差 1500 拍以后才启用的捐兵规则（tryDonateToTeammate 里 g.t < 1500 直接返回），
+        # 1500 拍之前逐字相同 → 断面 0 / 630 上 Vc 不用单独跑（留 A075、A094 的开局窗口各一条当确定性核对：应与 Vb 逐位相同）。
+        wins = ((0, 630, 1500) if 'swap' in what else ()) + ((3213, 4284) if 'swaplate' in what else ())
         for mid in A_MIDS:
             for ver in ('va', 'vb', 'vc'):
                 if ver == hist_ver(mid):
                     continue
-                for t0 in (0, 630, 1500):
+                for t0 in wins:
+                    if ver == 'vc' and t0 < 1500 and not (t0 == 0 and mid in ('A075', 'A094')):
+                        continue
                     live, end = live_seats(mid, t0)
                     if t0 >= end - 100 or not live:
                         continue
                     for k, ch in enumerate(chunks(['C1', 'C2', 'C1@2', 'C2@2', 'C1@3', 'C2@3'], len(live), t0, WIN[t0])):
                         tag = f'{ver}{chr(97 + k)}'
                         print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --strat {ver} --arms {','.join(ch)} --tag {tag}")
-
 
 if __name__ == '__main__':
     main()

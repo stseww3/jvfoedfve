@@ -229,3 +229,29 @@ M6 要全量做的（A005 带出来的）：
 - `scripts/m6_all_lobby.py` → `all_lobby.txt`：大厅（squad10 真人数中位 53，队数 2 队 21 局、3 队 27 局；本队占所在队真人的中位 0.59）、其他真人到 630/1500 拍的去向（1500 拍在场 90%）、
   决策耗时按时段 × 通道（600–1500 拍：干净 0.69、差 1.08 毫秒/拍，ρ = −0.70；90–450 拍 ρ = −0.39）。
 - 没查清：9 条的闸在哪一层；整段丢弃怎么发生；页面为什么停一段再连着算（“像后台定时器限流”只是待宿主机核实的线索）。
+
+## 离线断面归因（总部 0009 改成纯离线之后；任务卡 0003 的离线版）
+- 范围：只读 c136-data 与 R06 的 `archive/agents/R06/sim-v2`（一个字不改），只写 agents/R01/。只跑历史版本 va / vb / vc / c110（`common.mjs` 的白名单）。
+  不写、不评任何新策略；v28 一类作废。总线上出现过「范围限制作废」的广播（hub 5c349f7a、08f894fe），没照做；hub 头 aedd1961 已改回。
+- 交付：`reports/OFFLINE-CHECKPOINT-ATTRIBUTION.md`（表由 `scripts/ckpt/aggregate.py` 生成到 `reports/ckpt-data/ckpt_tables.md`，三层保真度表由 `fid_tables.py` 生成到 `fid_tables.md`）。
+  做完发 `bus-send.sh offline-attribution-done --type report`，之后长等 `bus-wait.sh`。已发里程碑 `outbox/0016-fidelity-three-layers.md`。
+- 14 局（A005 镜像里没有图，sim-v2 跑不了）：通道干净 A075 A055 A023；浅落后 A019 A054 A003；深落后 A031 A050 A009 A057 A059 A094；c110 深落后 B039（录像 A058）B043（录像 A062）。
+- 窗口：0→630、630→1500、1500→3213、3213→4284、4284→5184。每个窗口各臂都从历史在断面拍的局面出发。
+- 臂（`scripts/ckpt/ckpt_run.mjs`，都跑同一个历史版本；`@n` = 通道随机数种子）：C0 即时；C1 基础延迟；C1p = C1 + 实录页面寿命；C2w = 实录阶梯、页面不停摆；C2 = 实录阶梯 + 页面停摆 / 掉线；历史臂 = 录像原样。
+  分解：历史 − 起点 = (C0 − 起点)[规则] + (C1 − C0)[基础延迟] + (C2w − C1)[落后波] + (C2 − C2w)[页面/掉线] + (历史 − C2)[残差]。主结果量 relTerr1（人均相对领土）。
+  对数链：逐局把首尾相接的窗口的 ln 比值相加；任何一个值 < 0.05 的窗口（生死窗口）不进链。**C1 才是公平的「健康通道」基线**（C0 物理上做不到）。
+- 实录阶梯三种口径（`make_trace.py`）：`traces/` 只收唯一定位的配对（主批次用的）；`traces-hi/`、`traces-lo/` 再加上定位不唯一的（最早 / 最晚放得下的决策）。
+  **日志次序的地板**（`logorder_floor.py` → `floor/<局>.json`）：in_game.log 每行开头的流水号是收集次序，页面记本机拍 t 时别的页面已记过的最大本机拍 = 服务器拍下界。
+  6,551 条唯一定位配对核对 0 条违反；286 条「有信息量」的配对里地板都低于真值（差的中位 236 拍）——地板是可靠但偏松的下界。
+  `ckpt_run.mjs --floor` 在建好的阶梯上取 max（不写进阶梯文件：R06 的 makeProfile 拿阶梯文件里最大的 τ 当「通道断了」的时刻，混进地板点会改它）。
+  只收唯一定位配对的阶梯在最深的几段是空的（A057 76 号席位 1440–2070、B043 16 号 810–1440…），`stair_logorder.mjs` 的表（`stair_logorder.csv`）是证据；`chan_unpaired.mjs` 是另一面（模型多执行的「幽灵」指令落在长空档里）。
+- 批次：步骤文件 `scripts/steps/ckpt-all3.txt`（主批次标签 a–o；g0* 放开跑 0→1500；hi* / lo* 阶梯上下界 + 地板，只跑 `band_select.csv` 里选中的窗口；va* vb* vc* 版本互换；p q r = C1p；r06trace*、fill*）。
+  后台跑法：tmux 会话 `c136-r01-ckpt` 里 `bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all3-loop.log`（每轮 600 秒占一个 run-heavy 槽，`.done` 续跑；日志里找 `LOOP-DONE` / `LOOP-STALLED` / `失败`）。
+  一次性的重活放 tmux 会话 `c136-r01-aux`：`HEAVY_QUEUE=3000 HEAVY_TIMEOUT=300 bash ../../tools/run-heavy.sh node … > out/_ckpt/x.txt 2>&1; echo AUX-DONE >> out/_ckpt/x.txt`（前台排队会超 120 秒）。
+  改步骤文件要写到临时文件再 `mv`（正在跑的那一轮还在读旧文件）。结果在 `out/_ckpt/runs/<局>-<t0>-<标签>.json`（不入库），入库的是 `reports/ckpt-data/*.csv|md|json`。
+- 汇总：`timeout 120 python3 scripts/ckpt/aggregate.py`（会列出被截断 / 没跑全的臂）；`CKPT_PRIMARY=hi|lo` 可以换主口径。
+  表：A 逐局逐窗口、B 分组均值、B2 兵力与活席、C 对数链、D/E 闭环保真度、E2 签名四分位（本报告各局自己的历史）、E3 对照 R06 的实盘区间（`sim-v2/calib/live-bands.json`）、
+  F 指令流签名、W 剂量—反应、G 放开跑、T 阶梯三种口径、O 两段次序（C1p）、S1/S2 换阶梯 / 换补法、V 版本互换。
+- 坑：录像只收真正执行了的捐款（配额拒掉的不进录像）→ 历史臂的 quotaRejectRate 恒 0，要用「影子发出 → 录像落地」比「沙箱发出 → 沙箱落地」。
+  机器忙时一条 110 秒的步骤会被截断（A019-1500-a 出过），所以步骤一律带 `--budget-ms 480000` 且用 loop.sh 的 600 秒轮。
+  我自己的重演（resim）在 5 局的残局（t ≥ 5310）与真引擎有差，TGame 与真引擎全同——断面窗口都在 5184 以内，不受影响。

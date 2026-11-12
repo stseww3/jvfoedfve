@@ -217,6 +217,9 @@ def decompose(R, keys, BAND, variant):
             row[f'{y}_C1'] = mean([m[y] for m in c1 if m.get(y) is not None]) if any(m.get(y) is not None for m in c1) else None
             row[f'{y}_C0'] = c0[0].get(y)
         row['lagN'], row['lagP50'], row['lagP75'], row['lagP90'], row['lagMean'] = window_lag(k[0], k[1], e['meta']['t1'], variant)
+        # 阶梯本身的落后：C2 臂的通道档每 150 拍采一次全体席位的平均落后拍数（含已阵亡的席位），取窗口内的均值
+        lc = (c2w[0].get('lagCourse') or c2[0].get('lagCourse') or [])
+        row['lagStairMean'] = mean([x[1] for x in lc]) if lc else None
         # 捐款：发出 → 进录像（没进的 = 被配额静默拒掉的 + 路上丢的）。历史的「发出」取影子；各臂取沙箱自己的账
         di = shadow_don_issued(k[0], k[1], e['meta']['t1'])
         row['donIssued_hist'] = di
@@ -243,19 +246,20 @@ def decompose(R, keys, BAND, variant):
     return D
 
 
-def chain_of(D, force_cut=None):
-    """逐局把首尾相接的窗口串成对数链。→ (chain, cut, use)。
+def chain_of(D, force_cut=None, y='relTerr1', floor=None):
+    """逐局把首尾相接的窗口串成对数链。→ (chain, cut, use)。y = 结果量（relTerr1 人均相对领土 / wealth1 兵力）。
     我方被打到几乎归零的窗口不进链（ln 会被一个接近 0 的数撑爆；这种「生死窗口」另看活席数）。
-    force_cut = {局: 断面}：强制在这个窗口前截断（比较不同阶梯口径时，让各口径用同一组窗口）。"""
+    force_cut = {局: 断面}：强制在这个窗口前截断（比较不同阶梯口径 / 不同结果量时，让它们用同一组窗口）。"""
     chain, cut, uses = {}, {}, {}
     ln = math.log
+    floor = CHAIN_FLOOR if floor is None else floor
     for mid in MID_ORDER:
         rows = [r for r in D if r['mid'] == mid]
         rows.sort(key=lambda r: r['t0'])
         use = []
         for r in rows:
-            vals = [r['relTerr1_start'], r['relTerr1_hist'], r['relTerr1_C0'], r['relTerr1_C1'], r['relTerr1_C2w'], r['relTerr1_C2']]
-            if min(vals) < CHAIN_FLOOR or (force_cut and force_cut.get(mid) == r['t0']):
+            vals = [r[f'{y}_start'], r[f'{y}_hist'], r[f'{y}_C0'], r[f'{y}_C1'], r[f'{y}_C2w'], r[f'{y}_C2']]
+            if min(vals) < floor or (force_cut and force_cut.get(mid) == r['t0']):
                 cut[mid] = r['t0']
                 break
             if use and use[-1]['t1'] != r['t0']:
@@ -263,15 +267,25 @@ def chain_of(D, force_cut=None):
             use.append(r)
         if not use:
             continue
-        tot = sum(ln(r['relTerr1_hist'] / r['relTerr1_start']) for r in use)
-        rules = sum(ln(r['relTerr1_C0'] / r['relTerr1_start']) for r in use)
-        base = sum(ln(r['relTerr1_C1'] / r['relTerr1_C0']) for r in use)
-        wave = sum(ln(r['relTerr1_C2w'] / r['relTerr1_C1']) for r in use)
-        page = sum(ln(r['relTerr1_C2'] / r['relTerr1_C2w']) for r in use)
-        resid = sum(ln(r['relTerr1_hist'] / r['relTerr1_C2']) for r in use)
-        chain[mid] = dict(n=len(use), tot=tot, rules=rules, base=base, wave=wave, page=page, resid=resid, start=use[0]['relTerr1_start'], end=use[-1]['relTerr1_hist'], t0=use[0]['t0'], t1=use[-1]['t1'])
+        tot = sum(ln(r[f'{y}_hist'] / r[f'{y}_start']) for r in use)
+        rules = sum(ln(r[f'{y}_C0'] / r[f'{y}_start']) for r in use)
+        base = sum(ln(r[f'{y}_C1'] / r[f'{y}_C0']) for r in use)
+        wave = sum(ln(r[f'{y}_C2w'] / r[f'{y}_C1']) for r in use)
+        page = sum(ln(r[f'{y}_C2'] / r[f'{y}_C2w']) for r in use)
+        resid = sum(ln(r[f'{y}_hist'] / r[f'{y}_C2']) for r in use)
+        chain[mid] = dict(n=len(use), tot=tot, rules=rules, base=base, wave=wave, page=page, resid=resid, start=use[0][f'{y}_start'], end=use[-1][f'{y}_hist'], t0=use[0]['t0'], t1=use[-1]['t1'])
         uses[mid] = use
     return chain, cut, uses
+
+
+def boot_ci(vals, n_boot=4000, seed=20261112):
+    """按局重抽样的均值 90% 区间（局数少，只当量级看）。"""
+    import random
+    if len(vals) < 4:
+        return None
+    rnd = random.Random(seed)
+    ms = sorted(sum(rnd.choice(vals) for _ in vals) / len(vals) for _ in range(n_boot))
+    return ms[int(0.05 * n_boot)], ms[int(0.95 * n_boot) - 1]
 
 
 def main():
@@ -402,6 +416,44 @@ def main():
         for r in chain_rows:
             w.writerow([f"均值：{r['group']}", '', '', '', r['n'], '', ''] + [round(r[k], 5) for k in ('tot', 'rules', 'base', 'wave', 'page', 'resid')])
 
+    # 以健康通道（C1）为基线的一句话口径：历史终点 ÷ C1 一路走下来的终点 = exp(落后波 + 页面 + 残差)；领土与兵力各算一遍（同一组窗口）
+    wchain = chain_of(D, cut, y='wealth1', floor=1)[0]
+    P('### 表 H　以健康通道（C1）为基线：历史终点 ÷ C1 一路走下来的终点，分到落后波 / 页面掉线 / 残差（几何均值；领土与兵力）')
+    P('')
+    P('| 组 | 局数 | 结果量 | 历史 ÷ C1 路径 | 其中：落后波 | 页面/掉线 | 残差 | ln 差里各段占比：落后波 / 页面 / 残差 | 落后波+页面 的 ln 均值（按局重抽样 90% 区间） | 另：C1 路径 ÷ C0 路径（基础延迟） |')
+    P('| :-- | --: | :-- | --: | --: | --: | --: | :-- | :-- | --: |')
+    head_rows = []
+    for g in GROUP_ORDER + ['A 局（c116 家族）', '全部']:
+        for y, ch, label in (('relTerr1', chain, '人均相对领土'), ('wealth1', wchain, '兵力（余额 + 在攻）')):
+            ms = [m for m in ch if m in chain and ch[m]['n'] == chain[m]['n'] and (g == '全部' or GROUP[m] == g or (g.startswith('A 局') and m.startswith('A')))]
+            if not ms:
+                continue
+            mw, mp, mr, mb = (mean([ch[m][k] for m in ms]) for k in ('wave', 'page', 'resid', 'base'))
+            gap = mw + mp + mr
+            pc = lambda v: f'{100 * v / gap:.0f}%' if abs(gap) > 0.05 else '-'
+            ci = boot_ci([ch[m]['wave'] + ch[m]['page'] for m in ms])
+            head_rows.append({'group': g, 'n': len(ms), 'y': y, 'histOverC1': math.exp(gap), 'wave': math.exp(mw), 'page': math.exp(mp), 'resid': math.exp(mr), 'lnWavePage': mw + mp,
+                              'ciLo': ci[0] if ci else None, 'ciHi': ci[1] if ci else None, 'c1OverC0': math.exp(mb)})
+            P(f"| {g} | {len(ms)} | {label} | ×{math.exp(gap):.2f} | ×{math.exp(mw):.2f} | ×{math.exp(mp):.2f} | ×{math.exp(mr):.2f} | {pc(mw)} / {pc(mp)} / {pc(mr)} | {mw + mp:+.3f}" + (f"（{ci[0]:+.3f} ~ {ci[1]:+.3f}）" if ci else '（局数太少，不给区间）') + f" | ×{math.exp(mb):.2f} |")
+    P('')
+    with open(os.path.join(DST, 'ckpt_headline.csv'), 'w', newline='') as fo:
+        w = csv.DictWriter(fo, fieldnames=list(head_rows[0].keys()))
+        w.writeheader()
+        for r in head_rows:
+            w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
+    P('逐局（人均相对领土 / 兵力）：历史 ÷ C1 路径，及其中落后波+页面：')
+    P('')
+    P('| 局 | 组 | 窗口 | 领土：历史 ÷ C1 路径 | 领土：落后波 × 页面 | 领土：残差 | 兵力：历史 ÷ C1 路径 | 兵力：落后波 × 页面 | 兵力：残差 |')
+    P('| :-- | :-- | :-- | --: | --: | --: | --: | --: | --: |')
+    for m in MID_ORDER:
+        if m not in chain:
+            continue
+        c = chain[m]; wc = wchain.get(m)
+        ok = wc and wc['n'] == c['n']
+        P(f"| {m} | {GROUP[m]} | {c['t0']}→{c['t1']} | ×{math.exp(c['wave'] + c['page'] + c['resid']):.2f} | ×{math.exp(c['wave'] + c['page']):.2f} | ×{math.exp(c['resid']):.2f} | "
+          + (f"×{math.exp(wc['wave'] + wc['page'] + wc['resid']):.2f} | ×{math.exp(wc['wave'] + wc['page']):.2f} | ×{math.exp(wc['resid']):.2f} |" if ok else '- | - | - |'))
+    P('')
+
     P('### 表 D　闭环保真度：C2 臂（实录通道 + 实录页面）对历史臂，逐局逐窗口')
     P('')
     P('| 局 | 窗口 | 人均相对领土 历史 / C2 | 差（C2−历史） | C2 噪声底 sd | 沿途领土相对误差 | 活席(非壳) 历史 / C2 | 空壳 历史 / C2 | 进录像条数 历史 / C2 | 同拍批≥3 历史 / C2 | 满 9 批 历史 / C2 | 清仓批 历史 / C2 | 同拍批占比 历史 / C2 | 陆攻落空率 历史 / C2 | 重复单占比 历史 / C2 | 捐款 发出→进录像 历史 / C2 | 席位级领土 L1÷历史 | 其余真人领土 L1÷历史 | 其余真人陆攻被改打或作废 |')
@@ -465,6 +517,22 @@ def main():
     rho2 = spearman([r['lagP75'] for r in dose], [r['relTerr1_wave'] / r['relTerr1_C1'] if r['relTerr1_C1'] > 0 else None for r in dose])
     P('')
     P(f"{len(dose)} 个（局, 窗口）：落后 P75 与落后波的秩相关 {'-' if rho is None else f'{rho:.2f}'}；与落后波相对量（÷C1）的秩相关 {'-' if rho2 is None else f'{rho2:.2f}'}。")
+    P('')
+    P('| 窗口内阶梯的平均落后（拍；全体席位、每 150 拍采样的均值） | （局, 窗口）数 | 平均落后 中位 | 落后波：均值 | 落后波：中位 | 落后波 < 0 的个数 | 落后波 ÷ C1（相对量）均值 | 页面/掉线：均值 | C1 噪声底 sd 均值 |')
+    P('| :-- | --: | --: | --: | --: | --: | --: | --: | --: |')
+    BINS2 = [(-1, 3, '≤ 3'), (3, 15, '3–15'), (15, 60, '15–60'), (60, 10 ** 9, '> 60')]
+    dose2 = [r for r in D if r.get('lagStairMean') is not None]
+    for lo, hi, label in BINS2:
+        rows = [r for r in dose2 if lo < r['lagStairMean'] <= hi]
+        if not rows:
+            continue
+        wv = [r['relTerr1_wave'] for r in rows]
+        rel = [r['relTerr1_wave'] / r['relTerr1_C1'] for r in rows if r['relTerr1_C1'] > 0]
+        P(f"| {label} | {len(rows)} | {fmt(quart([r['lagStairMean'] for r in rows])[1], 1)} | {fmt(mean(wv), 3, True)} | {fmt(quart(wv)[1], 3, True)} | {sum(1 for x in wv if x < 0)}/{len(wv)} | {fmt(100 * mean(rel), 1, True)}% | {fmt(mean([r['relTerr1_page'] for r in rows]), 3, True)} | {fmt(mean([r['relTerr1_C1sd'] for r in rows]))} |")
+    rho = spearman([r['lagStairMean'] for r in dose2], [r['relTerr1_wave'] for r in dose2])
+    rho2 = spearman([r['lagStairMean'] for r in dose2], [r['relTerr1_wave'] / r['relTerr1_C1'] if r['relTerr1_C1'] > 0 else None for r in dose2])
+    P('')
+    P(f"{len(dose2)} 个（局, 窗口）：阶梯平均落后与落后波的秩相关 {'-' if rho is None else f'{rho:.2f}'}；与落后波相对量（÷C1）的秩相关 {'-' if rho2 is None else f'{rho2:.2f}'}。")
     P('')
 
     # ---- G0 统计签名的四分位核对

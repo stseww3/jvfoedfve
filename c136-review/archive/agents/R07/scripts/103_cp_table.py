@@ -9,14 +9,17 @@
 量的定义：
   ρ(t) = 我方号人均领土 ÷ 其他真人人均领土（人数都按开局第 1 拍有地的席位数算，中途离开或死亡的席位仍算在分母里）
   v    = 我方号人均天然地盘 ÷ 其他真人人均天然地盘（天然地盘 = 全图陆地按直线距离分给最近的真人出生点）
+  别的真人在离线对照里只会照录像出招。局面一旦和历史走偏，他们那些针对原局面下的指令就不再合适，领土会比历史上少
+  （11 局里无一例外，见表 1b）。所以通道之间必须在「同样走偏」的局面里比：
+     C2p = C2 的扰动种子（1、2：接管那一拍让引擎随机数多走 1、2 步）；C2 种子 0 不走偏，只用来验证能否复现历史。
   从断面 0 出发、看到 T 拍（数都是自然对数差，正数 = 让我方落后）：
-     −ln ρ历史(T) = [−ln v]            出生站位：天然地盘比别的真人少
-                  + [ln v − ln ρC0(T)]   规则：零延迟下，原策略把天然地盘变成领土的效率比别的真人低多少（负数 = 比别人高）
-                  + [ln ρC0 − ln ρC1]    基础延迟：正常线上通道（每条指令晚 1~2 个回合）
-                  + [ln ρC1 − ln ρC2]    按住与成批放行：历史实录轨迹相对正常通道
-                  + [ln ρC2 − ln ρ历史]  没对上：通道模型没复现历史的部分
+     −ln ρ历史(T) = [−ln v_β]             出生站位：天然地盘比别的真人少（v_β 见 106_spawn_par.py）
+                  + [ln ρC0 − ln ρC1]     基础延迟：正常线上通道（每条指令晚 1~2 个回合）相对零延迟
+                  + [ln ρC1 − ln ρC2p]    按住与成批放行：历史实录轨迹相对正常通道
+                  + 规则（余项）          = 合计 − 以上三项 = [ln v_β − ln ρC0] + [ln ρC2p − ln ρ历史]
+                                           前一个方括号：零延迟下原策略相对「同样出生点上的一般真人」；后一个：走偏带来的虚高，要扣回去
   从断面 T0>0 出发、看 h 拍：Δ通道 = ln ρ通道(T0+h) − ln ρ历史(T0)
-     Δ历史 = ΔC0 − [ΔC0 − ΔC1] − [ΔC1 − ΔC2] − [ΔC2 − Δ历史]
+     基础延迟 = ΔC0 − ΔC1；按住与成批放行 = ΔC1 − ΔC2p；走偏带来的虚高 = ΔC2p − Δ历史
 用法：python3 103_cp_table.py
 """
 import csv
@@ -102,6 +105,10 @@ def main():
             else:
                 runs[(g, tag)] = j
     vor = {g: jload(os.path.join(OUT, g, "voronoi.json")) for g in GAMES}
+    spar = jload(os.path.join(CROSS, "spawn_par.json")) or {"games": {}, "beta": {}}
+
+    def vbeta(g, T):
+        return (spar["games"].get(g) or {}).get(f"vb{T}")
 
     def vpar(g):
         v = vor[g]
@@ -214,67 +221,114 @@ def main():
     P("")
 
     # ---------- 表 1：断面 0 的分层
+    PERT = (1, 2)
     for T in (630, 1500):
-        P(f"## 表 1-{T}：断面 0 → {T} 拍的分层")
-        P("局\tv\tρ历史\tρC2\tρC1\tρC0\t出生站位 −ln v\t规则（零延迟下）ln v − ln ρC0\t基础延迟 ln ρC0 − ln ρC1\t按住与成批放行 ln ρC1 − ln ρC2\t没对上 ln ρC2 − ln ρ历史\t合计 −ln ρ历史\t种子数 C0/C1/C2\tC1、C2 的种子标准差")
-        keys = ("spawn", "rule", "base", "hold", "resid", "total")
-        agg = {k: [] for k in keys}
+        b = (spar["beta"].get(str(T)) or {}).get("b")
+        P(f"## 表 1-{T}：断面 0 → {T} 拍的分层（出生站位的基准用 v_β，β = {f(b, 2)}：同一批对局里其他真人到 {T} 拍「领土对天然地盘」的弹性，见 spawn_par.txt）")
+        P("局\tv\tv_β\tρ历史\tρC2 种子 0\tρC2p\tρC1\tρC0\t出生站位 −ln v_β\t规则（余项）\t基础延迟 ln ρC0 − ln ρC1\t按住与成批放行 ln ρC1 − ln ρC2p\t合计 −ln ρ历史\t其中走偏带来的虚高 ln ρC2p − ln ρ历史（已并在规则里扣回）\t零延迟下相对 v_β：ln v_β − ln ρC0\t种子数 C0/C1/C2p\t种子标准差 C1 / C2p\t若基准改用 v：出生站位 / 规则")
+        keys = ("spawn", "rule", "base", "hold", "total")
+        agg = {k: [] for k in keys + ("bias", "spawnV", "ruleV")}
         for g in GAMES:
             if g not in base:
                 continue
             v = vpar(g)
+            vb = vbeta(g, T) or v
             rh = hist_rho(g, T)
-            c2, c1, c0 = lnm(g, "C2", 0, T), lnm(g, "C1", 0, T), lnm(g, "C0", 0, T)
+            c2s0 = lnm(g, "C2", 0, T, seeds=(0,))
+            c2p, c1, c0 = lnm(g, "C2", 0, T, seeds=PERT), lnm(g, "C1", 0, T), lnm(g, "C0", 0, T)
             if rh is None or v is None:
                 continue
             lh = math.log(rh)
-            l2 = c2[0] if c2[0] is not None else None
-            d = {"spawn": -math.log(v), "rule": sub(math.log(v), c0[0]), "base": sub(c0[0], c1[0]), "hold": sub(c1[0], l2), "resid": sub(l2, lh), "total": -lh}
-            J["games"].setdefault(g, {})[f"t0_{T}"] = dict(d, v=v, rhoH=rh, rhoC2=math.exp(c2[0]) if c2[0] is not None else None, rhoC1=math.exp(c1[0]) if c1[0] is not None else None,
-                                                             rhoC0=math.exp(c0[0]) if c0[0] is not None else None, n=[c0[2], c1[2], c2[2]], sdC1=c1[1], sdC2=c2[1])
+            d = {"spawn": -math.log(vb), "base": sub(c0[0], c1[0]), "hold": sub(c1[0], c2p[0]), "total": -lh}
+            d["rule"] = None if d["base"] is None or d["hold"] is None else d["total"] - d["spawn"] - d["base"] - d["hold"]
+            bias = sub(c2p[0], lh)
+            raw = sub(math.log(vb), c0[0])
+            spawnV = -math.log(v)
+            ruleV = None if d["rule"] is None else d["total"] - spawnV - d["base"] - d["hold"]
+            ex = lambda c: f(math.exp(c[0])) if c[0] is not None else "-"
+            J["games"].setdefault(g, {})[f"t0_{T}"] = dict(d, v=v, vb=vb, rhoH=rh, rhoC2s0=math.exp(c2s0[0]) if c2s0[0] is not None else None,
+                                                             rhoC2p=math.exp(c2p[0]) if c2p[0] is not None else None, rhoC1=math.exp(c1[0]) if c1[0] is not None else None,
+                                                             rhoC0=math.exp(c0[0]) if c0[0] is not None else None, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1],
+                                                             bias=bias, rawRule=raw, spawnV=spawnV, ruleV=ruleV)
             if all(d[k] is not None for k in keys):
                 for k in keys:
                     agg[k].append(d[k])
-            ex = lambda c: f(math.exp(c[0])) if c[0] is not None else "-"
-            P(f"{g}\t{v:.3f}\t{rh:.3f}\t{ex(c2)}\t{ex(c1)}\t{ex(c0)}\t" + "\t".join(f(d[k], sign=True) for k in keys) + f"\t{c0[2]}/{c1[2]}/{c2[2]}\t{f(c1[1], 2)} / {f(c2[1], 2)}")
+                agg["bias"].append(bias); agg["spawnV"].append(spawnV); agg["ruleV"].append(ruleV)
+            P(f"{g}\t{v:.3f}\t{vb:.3f}\t{rh:.3f}\t{ex(c2s0)}\t{ex(c2p)}\t{ex(c1)}\t{ex(c0)}\t" + "\t".join(f(d[k], sign=True) for k in keys)
+              + f"\t{f(bias, sign=True)}\t{f(raw, sign=True)}\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}\t{f(spawnV, sign=True)} / {f(ruleV, sign=True)}")
         n = len(agg["total"])
         if n:
-            P(f"{n} 局相加\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]), sign=True) for k in keys))
-            P(f"{n} 局中位数\t\t\t\t\t\t" + "\t".join(f(med(agg[k]), sign=True) for k in keys))
+            P(f"{n} 局相加\t\t\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]), sign=True) for k in keys) + f"\t{f(sum(agg['bias']), sign=True)}\t\t\t\t{f(sum(agg['spawnV']), sign=True)} / {f(sum(agg['ruleV']), sign=True)}")
+            P(f"{n} 局平均\t\t\t\t\t\t\t\t" + "\t".join(f(sum(agg[k]) / n, sign=True) for k in keys) + f"\t{f(sum(agg['bias']) / n, sign=True)}\t\t\t\t{f(sum(agg['spawnV']) / n, sign=True)} / {f(sum(agg['ruleV']) / n, sign=True)}")
+            P(f"{n} 局中位数\t\t\t\t\t\t\t\t" + "\t".join(f(med(agg[k]), sign=True) for k in keys) + f"\t{f(med(agg['bias']), sign=True)}")
             tot = sum(agg["total"])
             if abs(tot) > 1e-9:
-                P(f"占合计的比例\t\t\t\t\t\t" + "\t".join(f"{100 * sum(agg[k]) / tot:.0f}%" for k in keys))
-            pos = sum(max(0, sum(agg[k])) for k in ("spawn", "rule", "base", "hold"))
-            J[f"sum_t0_{T}"] = {k: sum(agg[k]) for k in keys}
-            J[f"sum_t0_{T}"]["n"] = n
+                P(f"占合计的比例\t\t\t\t\t\t\t\t" + "\t".join(f"{100 * sum(agg[k]) / tot:.0f}%" for k in keys) + f"\t\t\t\t\t{100 * sum(agg['spawnV']) / tot:.0f}% / {100 * sum(agg['ruleV']) / tot:.0f}%")
+            J[f"sum_t0_{T}"] = {k: sum(agg[k]) for k in agg}
+            J[f"sum_t0_{T}"].update(n=n, beta=b)
         P("")
 
     # ---------- 表 1b：断面 0 → 1500 拍，领土的去向
-    P("## 表 1b：断面 0 → 1500 拍时全图陆地的分布（占全图陆地的百分比；种子 0）")
-    P("局\t通道\t我方号\t其他真人\t内置 AI\t没人占\t我方号存活 / 开局")
+    P("## 表 1b：断面 0 → 1500 拍时全图陆地的分布（占全图陆地的百分比；多个种子取平均）")
+    P("局\t通道\t我方号\t其他真人\t内置 AI\t没人占\t我方号存活 / 开局\t种子数")
     for g in GAMES:
         h = base.get(g)
         if not h:
             continue
         land = h["land"]
-        for ch in ("历史", "C2", "C1", "C0"):
-            j = h if ch == "历史" else runs.get((g, f"{ch}-t0-s0"))
-            if not j:
+        for ch, tags in (("历史", None), ("C2 种子 0", ["C2-t0-s0"]), ("C2p", ["C2-t0-s1", "C2-t0-s2"]), ("C1", ["C1-t0-s0", "C1-t0-s1", "C1-t0-s2"]), ("C0", ["C0-t0-s0", "C0-t0-s1", "C0-t0-s2"])):
+            js = [h] if tags is None else [runs[(g, t)] for t in tags if (g, t) in runs]
+            ss = [snap_at(j["snaps"], 1500) for j in js]
+            ss = [x for x in ss if x]
+            if not ss:
                 continue
-            s = snap_at(j["snaps"], 1500)
-            if not s:
-                continue
-            free = land - s["LS"] - s["LO"] - s["botL"]
-            P(f"{g}\t{ch}\t{100 * s['LS'] / land:.1f}\t{100 * s['LO'] / land:.1f}\t{100 * s['botL'] / land:.1f}\t{100 * free / land:.1f}\t{s['aS']} / {h['nSquad']}")
+            m = lambda k: sum(x[k] for x in ss) / len(ss)
+            free = land - m("LS") - m("LO") - m("botL")
+            P(f"{g}\t{ch}\t{100 * m('LS') / land:.1f}\t{100 * m('LO') / land:.1f}\t{100 * m('botL') / land:.1f}\t{100 * free / land:.1f}\t{m('aS'):.1f} / {h['nSquad']}\t{len(ss)}")
+            J["games"].setdefault(g, {}).setdefault("land1500", {})[ch] = {"LS": m("LS") / land, "LO": m("LO") / land, "bot": m("botL") / land, "aS": m("aS"), "n": len(ss)}
     P("")
+
+    # ---------- 表 1c：同一组对照拆成「我方领土」和「其他真人领土」两半
+    def lnL(g, chan, T0, hh, key, seeds):
+        v = [math.log(r[key]) for r in sel(g, chan, T0, hh, seeds=seeds) if r[key] > 0]
+        return mean(v)
+
+    for T in (630, 1500):
+        P(f"## 表 1c-{T}：断面 0 → {T} 拍，把 ρ 的变化拆成我方领土和其他真人领土（自然对数差；ρ 的差 = 我方的差 − 其他真人的差）")
+        P("局\t基础延迟：我方 ln(C0 ÷ C1)\t其他真人 ln(C0 ÷ C1)\t按住与成批放行：我方 ln(C1 ÷ C2p)\t其他真人 ln(C1 ÷ C2p)\t走偏：我方 ln(C2p ÷ 历史)\t其他真人 ln(C2p ÷ 历史)")
+        acc = [[] for _ in range(6)]
+        for g in GAMES:
+            h = base.get(g)
+            if not h:
+                continue
+            sh = snap_at(h["snaps"], T)
+            vals = []
+            for key, hk in (("LS", "LS"), ("LO", "LO")):
+                c0, c1, c2p = lnL(g, "C0", 0, T, key, (0, 1, 2)), lnL(g, "C1", 0, T, key, (0, 1, 2)), lnL(g, "C2", 0, T, key, (1, 2))
+                lh = math.log(sh[hk]) if sh and sh[hk] > 0 else None
+                vals.append((sub(c0, c1), sub(c1, c2p), sub(c2p, lh)))
+            row = [vals[0][0], vals[1][0], vals[0][1], vals[1][1], vals[0][2], vals[1][2]]
+            if all(x is None for x in row):
+                continue
+            for i, x in enumerate(row):
+                acc[i].append(x)
+            J["games"].setdefault(g, {})[f"split_{T}"] = {"baseS": row[0], "baseO": row[1], "holdS": row[2], "holdO": row[3], "biasS": row[4], "biasO": row[5]}
+            P(f"{g}\t" + "\t".join(f(x, sign=True) for x in row))
+        if any(any(x is not None for x in a) for a in acc):
+            P("平均\t" + "\t".join(f(mean(a), sign=True) for a in acc))
+            P("中位数\t" + "\t".join(f(med(a), sign=True) for a in acc))
+            J[f"split_{T}"] = {"mean": [mean(a) for a in acc], "median": [med(a) for a in acc]}
+        P("")
 
     # ---------- 表 2：各断面的窗口分解
     J["win"] = {}
+    J["winSum"] = {}
     for T0 in (630, 1500, 4284):
         for hh in (300, 600, 900):
             P(f"## 表 2-{T0}+{hh}：断面 {T0} → {T0 + hh} 拍")
-            P("局\tρ(断面)\tΔ历史\tΔC2\tΔC1\tΔC0\t基础延迟 ΔC0 − ΔC1\t按住与成批放行 ΔC1 − ΔC2\t没对上 ΔC2 − Δ历史\t种子数 C0/C1/C2\tC1、C2 的种子标准差\t别的真人指令结果翻转（C1，占条数）")
-            acc = {k: [] for k in ("dH", "d2", "d1", "d0", "base", "hold", "resid")}
+            P("局\tρ(断面)\tΔ历史\tΔC2 种子 0\tΔC2p\tΔC1\tΔC0\t基础延迟 ΔC0 − ΔC1\t按住与成批放行 ΔC1 − ΔC2p\t走偏带来的虚高 ΔC2p − Δ历史\t种子数 C0/C1/C2p\t种子标准差 C1 / C2p\t别的真人指令结果翻转（C1，占条数）")
+            ks = ("dH", "d2s0", "d2p", "d1", "d0", "base", "hold", "bias")
+            acc = {k: [] for k in ks}
             for g in GAMES:
                 h = base.get(g)
                 if not h:
@@ -283,22 +337,23 @@ def main():
                 rh = hist_rho(g, T0 + hh)
                 if r0 is None or r0 <= 0:
                     continue
-                c2, c1, c0 = lnm(g, "C2", T0, hh), lnm(g, "C1", T0, hh), lnm(g, "C0", T0, hh)
-                if c1[0] is None and c2[0] is None and c0[0] is None:
+                c2s0, c2p, c1, c0 = lnm(g, "C2", T0, hh, seeds=(0,)), lnm(g, "C2", T0, hh, seeds=(1, 2)), lnm(g, "C1", T0, hh), lnm(g, "C0", T0, hh)
+                if c1[0] is None and c2p[0] is None and c0[0] is None and c2s0[0] is None:
                     continue
                 l0 = math.log(r0)
-                d = {"dH": sub(ln(rh), l0), "d2": sub(c2[0], l0), "d1": sub(c1[0], l0), "d0": sub(c0[0], l0)}
-                d["base"] = sub(d["d0"], d["d1"]); d["hold"] = sub(d["d1"], d["d2"]); d["resid"] = sub(d["d2"], d["dH"])
+                d = {"dH": sub(ln(rh), l0), "d2s0": sub(c2s0[0], l0), "d2p": sub(c2p[0], l0), "d1": sub(c1[0], l0), "d0": sub(c0[0], l0)}
+                d["base"] = sub(d["d0"], d["d1"]); d["hold"] = sub(d["d1"], d["d2p"]); d["bias"] = sub(d["d2p"], d["dH"])
                 fl = sel(g, "C1", T0, hh)
                 flip = (sum(x["oppOkFlip"] for x in fl) / max(1, sum(x["oppCmds"] for x in fl))) if fl else None
                 for k in acc:
                     acc[k].append(d[k])
-                J["win"].setdefault(g, {})[f"t{T0}_h{hh}"] = dict(d, rho0=r0, rhoH=rh, n=[c0[2], c1[2], c2[2]], sdC1=c1[1], sdC2=c2[1], flip=flip)
+                J["win"].setdefault(g, {})[f"t{T0}_h{hh}"] = dict(d, rho0=r0, rhoH=rh, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1], flip=flip)
                 dh = "历史上已全灭" if rh is not None and rh == 0 else f(d["dH"], sign=True)
-                P(f"{g}\t{r0:.3f}\t{dh}\t{f(d['d2'], sign=True)}\t{f(d['d1'], sign=True)}\t{f(d['d0'], sign=True)}\t{f(d['base'], sign=True)}\t{f(d['hold'], sign=True)}\t{f(d['resid'], sign=True)}\t{c0[2]}/{c1[2]}/{c2[2]}\t{f(c1[1], 2)} / {f(c2[1], 2)}\t{f(100 * flip, 1) + '%' if flip is not None else '-'}")
+                P(f"{g}\t{r0:.3f}\t{dh}\t" + "\t".join(f(d[k], sign=True) for k in ks[1:]) + f"\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}\t{f(100 * flip, 1) + '%' if flip is not None else '-'}")
             if any(x is not None for x in acc["d1"]):
-                P("中位数\t\t" + "\t".join(f(med(acc[k]), sign=True) for k in ("dH", "d2", "d1", "d0", "base", "hold", "resid")))
-                P("相加\t\t" + "\t".join(f(sum(x for x in acc[k] if x is not None), sign=True) + f"（{sum(1 for x in acc[k] if x is not None)} 局）" for k in ("dH", "d2", "d1", "d0", "base", "hold", "resid")))
+                P("中位数\t\t" + "\t".join(f(med(acc[k]), sign=True) for k in ks))
+                P("平均\t\t" + "\t".join(f(mean(acc[k]), sign=True) + f"（{sum(1 for x in acc[k] if x is not None)} 局）" for k in ks))
+                J["winSum"][f"t{T0}_h{hh}"] = {k: {"mean": mean(acc[k]), "median": med(acc[k]), "n": sum(1 for x in acc[k] if x is not None)} for k in ks}
             P("")
 
     # ---------- 表 3：版本对照

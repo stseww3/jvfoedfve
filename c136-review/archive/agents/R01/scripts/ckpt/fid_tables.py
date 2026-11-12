@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""fid_tables.py — 把三层保真度核对的结果（out/ 下的缓存）汇成入库的表。
+"""fid_tables.py — 把保真度核对的结果（out/ 下的缓存与 reports/ckpt-data 下的中间表）汇成入库的表。
 
   ① 物理底座：out/<局>/ckpt_base.json           （base_xcheck.mjs 写的）
   ② 通道开环：reports/ckpt-data/chan_openloop.json （chan_openloop.mjs 写的）
   ③ 决策层：  out/<局>/ckpt_shadow_fid.json       （shadow_fid.mjs 写的）
+  ④ 阶梯完整性：reports/ckpt-data/chan_unpaired.csv、trace_summary.csv、floor_check.csv、stair_logorder.csv
 
 输出 reports/ckpt-data/fid_base.csv、fid_channel.csv、fid_decision.csv、fid_tables.md
 用法：python3 scripts/ckpt/fid_tables.py
@@ -150,6 +151,60 @@ def main():
         ('R01 自己的影子：相等点', lambda r: f"{r['r01_eqCmds']}/{r['r01_n']}"),
     ]))
     md += ['']
+
+    # ④ 实录阶梯的完整性：只收唯一定位配对的阶梯在哪里是空的
+    def read(name):
+        path = os.path.join(DATA, name)
+        return list(csv.DictReader(open(path))) if os.path.exists(path) else []
+    ghosts, lo_rows, fl_rows, tsum = read('chan_unpaired.csv'), read('stair_logorder.csv'), read('floor_check.csv'), read('trace_summary.csv')
+    if ghosts or lo_rows or fl_rows:
+        md += ['## ④ 实录阶梯的完整性：只收唯一定位配对的阶梯，在落后最深的几段是空的', '',
+               '阶梯只在「有指令落地、而且这条落地指令在影子序列里只有一个位置放得下」的地方有点。两种情况会让它在该有落后的地方显得健康：',
+               '落地指令定位不唯一（同一条指令每个决策拍都在重发，成批落地只活下来几条）；这一段根本没有指令落地（全被 9 条顶丢，或页面在憋着）。', '']
+    if ghosts:
+        md += ['**(a) 模型多执行的指令落在哪**（`chan_unpaired.mjs`）：没配上录像、通道模型却判为执行的进攻。「长空档」= 它前后两条真落地的指令相隔 > 210 拍。', '']
+        md.append(md_table([g for g in ghosts if g['mid'] in MIDS], [
+            ('局', lambda r: r['mid']), ('没配上的进攻', lambda r: r['atkUnpaired']), ('其中模型判执行', lambda r: r['ghosts']),
+            ('落在长空档里', lambda r: r['inLongGap']), ('最后一条落地指令之后', lambda r: r['afterLastLanded']), ('零散', lambda r: r['isolated']),
+            ('所在空档 P50 / P90（拍）', lambda r: f"{r['gapP50']} / {r['gapP90']}" if r['gapP50'] else ''),
+            ('这些指令上模型给的落后 P50 / P90', lambda r: f"{r['modelLagP50']} / {r['modelLagP90']}" if r['modelLagP50'] else ''),
+            ('集中在哪几席', lambda r: r['top3']),
+        ]))
+        md += ['']
+    if tsum:
+        md += ['**(b) 定位不唯一的落地指令**（`make_trace.py`）：按「最早放得下的决策」配是落后的上界，按「最晚放得下的」配是下界。', '']
+        md.append(md_table([t for t in tsum if t['mid'] in MIDS], [
+            ('局', lambda r: r['mid']), ('唯一定位', lambda r: r['pairs']), ('落后 P50 / P75 / P90', lambda r: f"{r['lagP50']} / {r['lagP75']} / {r['lagP90']}"),
+            ('定位不唯一', lambda r: r['unlocated']),
+            ('上界口径：补上的条数，落后 P50 / P90', lambda r: f"{r['hiAdded']}，{r['hiAddedLagP50']} / {r['hiAddedLagP90']}" if r.get('hiAdded') not in ('', '0', None) else r.get('hiAdded', '')),
+            ('下界口径：补上的条数，落后 P50 / P90', lambda r: f"{r['loAdded']}，{r['loAddedLagP50']} / {r['loAddedLagP90']}" if r.get('loAdded') not in ('', '0', None) else r.get('loAdded', '')),
+            ('全体落后 P75 / P90：上界', lambda r: f"{r['hiLagP75']} / {r['hiLagP90']}"), ('下界', lambda r: f"{r['loLagP75']} / {r['loLagP90']}"),
+        ]))
+        md += ['']
+    if fl_rows:
+        md += ['**(c) 日志次序给的地板**（`logorder_floor.py`）：`in_game.log` 每行开头的流水号是收集次序。页面记下本机拍 t 的那一刻，流水号更小的行里出现过的最大本机拍',
+               '就是服务器拍的下界（本机拍不会超过服务器拍）。粒度 90 拍。拿唯一定位的配对核对：τ 发出的指令不该早于「τ 之前最近一个日志点的下界 + 5 拍」落地。', '']
+        md.append(md_table([f for f in fl_rows if f['mid'] in MIDS], [
+            ('局', lambda r: r['mid']), ('日志点', lambda r: r['logPoints']), ('有落后下界（≥45 拍）的点', lambda r: r['floorPoints']), ('涉及席位', lambda r: r['floorSeats']),
+            ('下界 P50 / P90 / 最大（拍）', lambda r: f"{r['floorLagP50']} / {r['floorLagP90']} / {r['floorLagMax']}" if r['floorLagP50'] else ''),
+            ('核对的配对', lambda r: r['pairsChecked']), ('违反', lambda r: r['violations']),
+        ]))
+        md += ['', f"合计：{sum(int(f['pairsChecked']) for f in fl_rows if f['mid'] in MIDS)} 条配对，违反 {sum(int(f['violations']) for f in fl_rows if f['mid'] in MIDS)} 条。", '']
+    if lo_rows:
+        md += ['**(d) 三种只靠配对的阶梯够不够得着这个下界**（`stair_logorder.mjs`；「够得着」= 阶梯在这个日志点给的落后 ≥ 下界 − 45 拍）。只列有落后下界 ≥ 90 拍的局。', '']
+        by = {}
+        for r in lo_rows:
+            by.setdefault(r['mid'], {})[r['variant']] = r
+        rows = [(m, by[m]) for m in MIDS if m in by and int(by[m]['located']['behind'] or 0) > 0]
+        md.append(md_table(rows, [
+            ('局', lambda r: r[0]), ('下界 ≥ 90 拍的日志点', lambda r: r[1]['located']['behind']), ('下界 P50 / P90', lambda r: f"{r[1]['located']['lbP50']} / {r[1]['located']['lbP90']}"),
+            ('够得着：唯一定位', lambda r: f"{r[1]['located']['reach']}（{100 * float(r[1]['located']['reachShare']):.0f}%）"),
+            ('上界口径', lambda r: f"{r[1]['hi']['reach']}（{100 * float(r[1]['hi']['reachShare']):.0f}%）"),
+            ('下界口径', lambda r: f"{r[1]['lo']['reach']}（{100 * float(r[1]['lo']['reachShare']):.0f}%）"),
+            ('这些点上平均还差多少拍（max(0, 下界 − 阶梯落后) 的均值）：唯一定位 / 上界 / 下界', lambda r: f"{r[1]['located']['shortfallMean']} / {r[1]['hi']['shortfallMean']} / {r[1]['lo']['shortfallMean']}"),
+        ]))
+        tot = {v: (sum(int(by[m][v]['reach']) for m, _ in rows), sum(int(by[m][v]['behind']) for m, _ in rows)) for v in ('located', 'hi', 'lo')}
+        md += ['', '合计够得着：' + '、'.join(f"{n} {a}/{b}" for n, (a, b) in (('唯一定位', tot['located']), ('上界口径', tot['hi']), ('下界口径', tot['lo']))) + '。', '']
     open(os.path.join(DATA, 'fid_tables.md'), 'w').write('\n'.join(md) + '\n')
     print(f'底座 {len(base)} 局、通道 {len(chan)} 局、决策层 {len(dec)} 局 → reports/ckpt-data/fid_base.csv、fid_channel.csv、fid_decision.csv、fid_tables.md')
 
