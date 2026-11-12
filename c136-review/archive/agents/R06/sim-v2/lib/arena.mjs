@@ -126,7 +126,11 @@ function snapOf(w, squad, squadSet, mainTeam) {
   let lead = 0;
   for (let t = 1; t < lands.length; t++) if (lands[t] > lands[lead]) lead = t;
   const r4 = (x) => +x.toFixed(4);
+  oList.sort((a, b) => a - b);
+  const oq = (f) => (oList.length ? oList[Math.min(oList.length - 1, Math.floor(f * oList.length))] : 0);
   return {
+    othersQ: [oq(0.1), oq(0.25), oq(0.5), oq(0.75), oq(0.9), oq(1)],      // 其余在场真人的地：P10 / P25 / 中位 / P75 / P90 / 最大
+    neutralShare: r4(1 - (humTerr + aiTerr) / w.land),
     t: w.t, squadTerr: sqTerr, squadShare: r4(sqTerr / w.land), squadAlive: sqAlive, squadDensity: sqTerr ? +(sqBal / sqTerr).toFixed(1) : 0,
     squadPerSeat: Math.round(sqTerr / Math.max(1, squad.length)),
     relTerr: humTerr > 0 ? r4((sqTerr / Math.max(1, squad.length)) / (humTerr / H)) : null,
@@ -174,15 +178,33 @@ export async function runArena(o) {
       const w = buildWorld(M);
       const st = new ReplayStepper(M, w);
       st.runSpawnPhase();
+      // 这一局其余真人自己的出手强度（与 Crowd 的账同口径、同阶段划分）：对手模型按房间逐一对照用
+      const RI = loadProfile().phases.map((p) => ({ t0: p.t0, cmds: 0, sent: 0, aliveTicks: 0, balTicks: 0, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 } }));
+      const riOf = (t) => { for (let i = RI.length - 1; i >= 0; i--) if (t >= RI[i].t0) return RI[i]; return RI[0]; };
       st.exec = (c) => {
         const p = c.player;
         if ((c.id === 8 || c.id === 9) && p < H && w.alive[p] && w.state[p] !== 2) reality.leaveAlive.set(p, w.t);
-        return execRecorded(w, c);
+        let cls = null;
+        if (p < H && !squadSet.has(p) && w.alive[p] && w.state[p] !== 2) {
+          if (c.id === 1) {
+            let tg = Math.min(c.dZ, NEUTRAL);
+            if (tg < NEUTRAL && !w.alive[tg]) tg = NEUTRAL;
+            cls = tg === NEUTRAL ? 'neutral' : tg >= H || w.state[tg] === 2 ? 'ai' : 'hum';
+          } else if (c.id === 3) cls = 'boat';
+        }
+        const r = execRecorded(w, c);
+        if (cls && r.ok) { const I = riOf(w.t); I.cmds++; I.sent += w.attackTroopsTmp; I.sentBy[cls] += w.attackTroopsTmp; I.okBy[cls]++; }
+        return r;
       };
       const end = Math.min(len, M.replayTicks - 1);
       reality.cps[0] = snapOf(w, squad, squadSet, mainTeam);
+      reality.intensityRaw = RI;
       while (w.t < end) {
         if (!st.step()) break;
+        if (w.t % 7 === 0) {
+          const I = riOf(w.t);
+          for (const p of others) if (w.alive[p] && w.state[p] !== 2) { I.aliveTicks += 7; I.balTicks += 7 * w.bal[p]; }
+        }
         w.tick();
         if (CHECKPOINTS.includes(w.t)) reality.cps[w.t] = snapOf(w, squad, squadSet, mainTeam);
         if (w.over) break;
@@ -338,7 +360,17 @@ export async function runArena(o) {
     opts: { ...armOptsOf(o), ...chanOptsOf(o) },
     arms: {},
   };
-  if (reality) res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size };
+  if (reality) {
+    res.reality = { cps: reality.cps, t1: reality.t1, over: reality.over ?? null, winnerTeam: reality.winnerTeam ?? null, leftAlive: reality.leaveAlive.size };
+    if (reality.intensityRaw) {
+      res.reality.intensity = reality.intensityRaw.map((I) => ({
+        t0: I.t0, cmds: I.cmds, sent: I.sent, ratePerAlive100: I.aliveTicks ? +(100 * I.cmds / I.aliveTicks).toFixed(3) : null, spendPer100: I.balTicks ? +(100 * I.sent / I.balTicks).toFixed(4) : null, sentPerCmd: I.cmds ? Math.round(I.sent / I.cmds) : null,
+        spendBy: Object.fromEntries(Object.keys(I.sentBy).map((k) => [k, I.balTicks ? +(100 * I.sentBy[k] / I.balTicks).toFixed(4) : null])),
+        okRateBy: Object.fromEntries(Object.keys(I.okBy).map((k) => [k, I.aliveTicks ? +(100 * I.okBy[k] / I.aliveTicks).toFixed(3) : null])),
+        sentBy: I.sentBy,
+      }));
+    }
+  }
   for (const a of arms) {
     const w = a.world;
     for (const p of squad) if (!w.alive[p] && !a.deadAt.has(p)) a.deadAt.set(p, w.t);

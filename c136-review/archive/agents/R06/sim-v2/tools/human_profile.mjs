@@ -15,7 +15,7 @@ const o = parseArgs(process.argv.slice(2));
 const packs = JSON.parse(fs.readFileSync(path.join(SIMV2, 'packs', 'index.json'), 'utf8'));
 const mids = !o.matches || o.matches === 'packs' ? Object.keys(packs).sort() : list(o.matches);
 const TO = num(o.to, 9000);
-const budget = num(o['budget-ms'], 100000);
+const budget = num(o['budget-ms'], 80000);
 const wall0 = Date.now();
 
 // 阶段划分：fine（默认，给对手模型用：开局利息每 10 拍 5~7%，同一个 357 拍里前后的打法差很多，必须切细）；
@@ -76,27 +76,39 @@ const q = (a, f) => { if (!a.length) return null; const s = a.slice().sort((x, y
 const q3 = (a, d = 0) => (a.length ? [q(a, 0.25), q(a, 0.5), q(a, 0.75)].map((v) => +v.toFixed(d)).join('/') : '-');
 
 // 明细：rows[phase] = { atk: [...], boat: n, don: n, ... }
-const acc = PH.map(() => ({ cmds: 0, okCmds: 0, sent: 0, balTicks: 0, terrTicks: 0, aliveTicks: 0, neutral: [], ai: [], hum: [], boats: [], dons: [], gaps: [], perHuman: [] }));
-const leaves = [];      // 其余真人在场时离场的拍（一局一组）
-let humansTotal = 0;
-const snapsAll = {};   // t → { humTerr:[], humBal:[], sqTerr:[], sqBal:[], humAlive, humN, sqAlive, sqN }
-const SNAP_T = [357, 630, 1071, 1530, 2142, 3210, 4284, 6000];
-const doneMatches = [];
+// 某类对象占自己全部接壤的几成（接壤 = 边界格的四邻里不是自己的陆地格，按格数计；含队友）
+function fracs(w, p, H, adj) {
+  let tot = 0, n = 0, b = 0, h = 0;
+  for (const [q2, c2] of adj) {
+    tot += c2;
+    if (q2 === NEUTRAL) n += c2;
+    else if (w.alive[q2] && w.isEnemy(p, q2)) { if (q2 >= H || w.state[q2] === 2) b += c2; else h += c2; }
+  }
+  return tot > 0 ? { fN: n / tot, fB: b / tot, fH: h / tot } : { fN: 0, fB: 0, fH: 0 };
+}
+const bucket = (f) => (f <= 0 ? -1 : f <= 0.1 ? 0 : f <= 0.3 ? 1 : f <= 0.6 ? 2 : 3);
 
-for (const mid of mids) {
-  if (Date.now() - wall0 > budget) break;
+const newAcc = () => PH.map(() => ({ cmds: 0, okCmds: 0, sent: 0, balTicks: 0, terrTicks: 0, aliveTicks: 0, expo: { neutral: 0, ai: 0, hum: 0, all: 0, aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, ok2: { aiN: 0, aiNoN: 0, humFarm: 0, humNoFarm: 0 }, expoB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, okB: { neutral: [0, 0, 0, 0], ai: [0, 0, 0, 0], hum: [0, 0, 0, 0] }, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, seats: [], neutral: [], ai: [], hum: [], boats: [], dons: [], gaps: [], perHuman: [] }));
+const SNAP_T = [357, 630, 1071, 1530, 2142, 3210, 4284, 6000];
+
+// 一局的明细（按局缓存到 sim-v2/_cache/hp/：机器忙的时候 20 局一次跑不完，再跑一次同样的命令接着算，已算过的局直接读缓存）
+function collect(mid) {
+  const acc = newAcc(), leaves = [], snapsAll = {};
+  let humansTotal = 0;
   let M;
-  try { M = loadMatch(mid); } catch (e) { console.error(`${mid}: ${e.message}`); continue; }
+  try { M = loadMatch(mid); } catch (e) { console.error(`${mid}: ${e.message}`); return null; }
   const H = M.H, squad = new Set(M.squad);
   const w = buildWorld(M);
   const st = new ReplayStepper(M, w);
   st.runSpawnPhase();
   const lastCmdT = new Int32Array(H).fill(-1);
   const cnt = PH.map(() => new Uint16Array(H));
+  // 每人每阶段的账：在场拍数、余额·拍、出手的兵、生效指令数
+  const seatAcc = PH.map(() => ({ alive: new Float64Array(H), bal: new Float64Array(H), sent: new Float64Array(H), ok: new Uint16Array(H) }));
   const atkOn = (a, b) => w.alive[a] && w.hasAttack(a, b);
   st.exec = (c) => {
     const p = c.player;
-    let tally = null;
+    let tally = null, cls = null, cls2 = null, clsB = -1;
     if (p < H && !squad.has(p) && w.alive[p] && w.state[p] !== 2 && (c.id === 1 || c.id === 2 || c.id === 3)) {
       const t = w.t, ph = phOf(t), A = acc[ph];
       const B = w.bal[p], T = w.terr[p];
@@ -108,7 +120,10 @@ for (const mid of mids) {
       if (c.id === 1) {
         let tg = Math.min(c.dZ, NEUTRAL);
         if (tg < NEUTRAL && !w.alive[tg]) tg = NEUTRAL;
-        const row = { pct: c.dX, B, T, D: T > 0 ? B / T : 0, seat: doneMatches.length * 1000 + p, t };
+        const row = { pct: c.dX, B, T, D: T > 0 ? B / T : 0, seat: p, t };
+        cls = 'neutral';
+        const fr = fracs(w, p, H, contacts(w, p));
+        clsB = tg === NEUTRAL ? bucket(fr.fN) : (tg >= H || w.state[tg] === 2) ? bucket(fr.fB) : bucket(fr.fH);
         if (tg === NEUTRAL) A.neutral.push(row);
         else {
           row.tB = w.bal[tg]; row.tT = w.terr[tg]; row.tD = w.terr[tg] > 0 ? w.bal[tg] / w.terr[tg] : 0;
@@ -119,9 +134,10 @@ for (const mid of mids) {
           const isAi = tg >= H || w.state[tg] === 2;
           // 在同类的邻居里，他挑的是哪一个：接壤最长的 / 地最多的 / 兵最少的 / 密度最低的
           const adj = contacts(w, p);
-          let n = 0, maxC = -1, maxT = -1, minB = Infinity, minD = Infinity;
+          let n = 0, maxC = -1, maxT = -1, minB = Infinity, minD = Infinity, anyBot = 0;
           for (const [q2, c2] of adj) {
             if (q2 === NEUTRAL || !w.alive[q2] || !w.isEnemy(p, q2)) continue;
+            if (q2 >= H || w.state[q2] === 2) anyBot = 1;
             if ((q2 >= H || w.state[q2] === 2) !== isAi) continue;
             n++;
             if (c2 > maxC) maxC = c2;
@@ -138,15 +154,25 @@ for (const mid of mids) {
             row.isMinD = row.tD <= minD + 1e-9 ? 1 : 0;
           }
           row.hasNeutral = adj.has(NEUTRAL) ? 1 : 0;
+          cls = isAi ? 'ai' : 'hum';
+          // 细分：打 AI 时身边还有没有无主地；打真人时身边还有没有「能白吃的」（无主地或 AI）
+          cls2 = isAi ? (row.hasNeutral ? 'aiN' : 'aiNoN') : (row.hasNeutral || anyBot ? 'humFarm' : 'humNoFarm');
           if (isAi) A.ai.push(row); else A.hum.push(row);
         }
-      } else if (c.id === 3) A.boats.push({ pct: c.dX, B, T });
+      } else if (c.id === 3) { cls = 'boat'; A.boats.push({ pct: c.dX, B, T }); }
       else if (c.id === 2) A.dons.push({ pct: c.dX, B, T, toSq: squad.has(c.dZ) ? 1 : 0 });
     }
     if (p < H && !squad.has(p) && (c.id === 8 || c.id === 9) && w.alive[p] && w.state[p] !== 2 && !w.spawnPhase) leaves.push(w.t);
     const r = execRecorded(w, c);
     // 实际出手的兵（陆攻、发船生效的那些），按阶段累计：对照「在场真人的余额·拍」得到每 100 拍花掉余额的几成
-    if (tally && r.ok && (c.id === 1 || c.id === 3)) { tally.sent += w.attackTroopsTmp; tally.okCmds++; }
+    if (tally && r.ok && (c.id === 1 || c.id === 3)) {
+      tally.sent += w.attackTroopsTmp; tally.okCmds++;
+      tally.sentBy[cls] += w.attackTroopsTmp; tally.okBy[cls]++;
+      if (cls2) tally.ok2[cls2]++;
+      if (c.id === 1 && clsB >= 0) tally.okB[cls][clsB]++;
+      const sa = seatAcc[phOf(w.t)];
+      sa.sent[p] += w.attackTroopsTmp; sa.ok[p]++;
+    }
     return r;
   };
   for (let p = 0; p < H; p++) if (!squad.has(p) && w.alive[p]) humansTotal++;
@@ -156,9 +182,32 @@ for (const mid of mids) {
     if (!st.step()) break;
     if (w.t % 7 === 0) {
       let n = 0, bs = 0, ts = 0;
-      for (let p = 0; p < H; p++) if (!squad.has(p) && w.alive[p] && w.state[p] !== 2) { n++; bs += w.bal[p]; ts += w.terr[p]; }
+      const sa = seatAcc[phOf(w.t)];
+      for (let p = 0; p < H; p++) if (!squad.has(p) && w.alive[p] && w.state[p] !== 2) { n++; bs += w.bal[p]; ts += w.terr[p]; sa.alive[p] += 7; sa.bal[p] += 7 * w.bal[p]; }
       const A = acc[phOf(w.t)];
       A.aliveTicks += 7 * n; A.balTicks += 7 * bs; A.terrTicks += 7 * ts;
+      // 每 70 拍看一眼每个在场真人身边有没有这三类对象（无主地 / 内置 AI 与空壳 / 敌方真人）：
+      // 「身边有这类对象的人·拍」是各类指令密度的分母 —— 打 AI 的密度随时间下降主要是 AI 被吃光了，不是人变懒了
+      if (w.t % 70 === 0) {
+        for (let p = 0; p < H; p++) {
+          if (squad.has(p) || !w.alive[p] || w.state[p] === 2) continue;
+          let hasN = 0, hasB = 0, hasH = 0;
+          const adj = contacts(w, p);
+          for (const q2 of adj.keys()) {
+            if (q2 === NEUTRAL) hasN = 1;
+            else if (w.alive[q2] && w.isEnemy(p, q2)) { if (q2 >= H || w.state[q2] === 2) hasB = 1; else hasH = 1; }
+          }
+          // 分档：这类对象占自己全部接壤的几成（≤10% / 10~30% / 30~60% / >60%）
+          const fr = fracs(w, p, H, adj);
+          const bn = bucket(fr.fN), bb = bucket(fr.fB), bh = bucket(fr.fH);
+          if (bn >= 0) A.expoB.neutral[bn] += 70;
+          if (bb >= 0) A.expoB.ai[bb] += 70;
+          if (bh >= 0) A.expoB.hum[bh] += 70;
+          A.expo.neutral += 70 * hasN; A.expo.ai += 70 * hasB; A.expo.hum += 70 * hasH; A.expo.all += 70;
+          if (hasB) A.expo[hasN ? 'aiN' : 'aiNoN'] += 70;
+          if (hasH) A.expo[hasN || hasB ? 'humFarm' : 'humNoFarm'] += 70;
+        }
+      }
     }
     w.tick();
     while (si < SNAP_T.length && w.t === SNAP_T[si]) {
@@ -179,8 +228,50 @@ for (const mid of mids) {
     const span = Math.max(0, Math.min(end, PH[ph][1]) - PH[ph][0]);
     if (span <= 0) continue;
     for (let p = 0; p < H; p++) if (!squad.has(p)) acc[ph].perHuman.push(cnt[ph][p] * 100 / span);
+    const sa = seatAcc[ph];
+    for (let p = 0; p < H; p++) if (!squad.has(p) && sa.alive[p] > 0) acc[ph].seats.push({ seat: p, alive: sa.alive[p], bal: sa.bal[p], sent: sa.sent[p], n: cnt[ph][p], ok: sa.ok[p] });
   }
+  return { mid, acc, leaves, humans: humansTotal, snaps: snapsAll };
+}
+
+const acc = newAcc();
+const leaves = [];      // 其余真人在场时离场的拍
+let humansTotal = 0;
+const snapsAll = {};   // t → [{ mid, humTerr:[], humBal:[], sqTerr:[], sqBal:[], humAlive, humN, sqAlive, sqN }]
+const doneMatches = [];
+const cacheDir = path.join(SIMV2, '_cache', 'hp');
+const CACHE_V = 8;
+const cacheKey = `v${CACHE_V}-${o.phases === 'coarse' ? 'c' : 'f'}${TO}`;
+let pending = 0;
+for (const mid of mids) {
+  const cf = path.join(cacheDir, `${mid}-${cacheKey}.json`);
+  let R = null;
+  if (fs.existsSync(cf) && !o.fresh) R = JSON.parse(fs.readFileSync(cf, 'utf8'));
+  else if (Date.now() - wall0 > budget) { pending++; continue; }
+  else {
+    R = collect(mid);
+    if (R) { fs.mkdirSync(cacheDir, { recursive: true }); fs.writeFileSync(cf, JSON.stringify(R)); }
+  }
+  if (!R) continue;
+  const off = doneMatches.length * 1000;
+  for (let i = 0; i < PH.length; i++) {
+    const A = acc[i], B = R.acc[i];
+    for (const k of ['cmds', 'okCmds', 'sent', 'balTicks', 'terrTicks', 'aliveTicks']) A[k] += B[k];
+    for (const k of ['neutral', 'ai', 'hum', 'boat']) { A.sentBy[k] += B.sentBy[k]; A.okBy[k] += B.okBy[k]; }
+    for (const k of Object.keys(A.expo)) A.expo[k] += B.expo[k];
+    for (const k of Object.keys(A.ok2)) A.ok2[k] += B.ok2[k];
+    for (const k of ['neutral', 'ai', 'hum']) for (let b = 0; b < 4; b++) { A.expoB[k][b] += B.expoB[k][b]; A.okB[k][b] += B.okB[k][b]; }
+    for (const k of ['neutral', 'ai', 'hum', 'seats']) for (const r of B[k]) { r.seat += off; A[k].push(r); }
+    for (const k of ['boats', 'dons', 'gaps', 'perHuman']) for (const r of B[k]) A[k].push(r);
+  }
+  for (const t of R.leaves) leaves.push(t);
+  humansTotal += R.humans;
+  for (const [t, a] of Object.entries(R.snaps)) for (const r of a) (snapsAll[t] ||= []).push(r);
   doneMatches.push(mid);
+}
+if (pending) {
+  console.log(`时间预算到了：已算 ${doneMatches.length} 局，还差 ${pending} 局。再跑一次同样的命令接着算（已算过的读缓存）。`);
+  process.exit(3);
 }
 
 const sumBy = (a, f) => a.reduce((s, x) => s + f(x), 0);
@@ -198,7 +289,19 @@ for (let i = 0; i < PH.length; i++) {
     phase: phName(i), t0: PH[i][0], t1: PH[i][1], cmds: A.cmds, aliveTicks: A.aliveTicks,
     spendPer100: A.balTicks ? +(100 * A.sent / A.balTicks).toFixed(4) : 0, sentPerTile100: A.terrTicks ? +(100 * A.sent / A.terrTicks).toFixed(4) : 0, sentPerCmd: A.okCmds ? Math.round(A.sent / A.okCmds) : 0, ratePerAlive100: A.aliveTicks ? +(100 * A.cmds / A.aliveTicks).toFixed(3) : 0, perHumanPer100: [q(A.perHuman, 0.25), q(A.perHuman, 0.5), q(A.perHuman, 0.75), +mean],
     mix: { neutral: A.neutral.length, ai: A.ai.length, hum: A.hum.length, boat: A.boats.length, don: A.dons.length },
+    // 各类对象每 100 拍花掉余额的几成、生效指令每人每 100 拍几条（对手模型的验收口径）
+    spendBy: Object.fromEntries(['neutral', 'ai', 'hum', 'boat'].map((k) => [k, A.balTicks ? +(100 * A.sentBy[k] / A.balTicks).toFixed(4) : 0])),
+    okRateBy: Object.fromEntries(['neutral', 'ai', 'hum', 'boat'].map((k) => [k, A.aliveTicks ? +(100 * A.okBy[k] / A.aliveTicks).toFixed(3) : 0])),
+    // 身边有这类对象的人·拍占比，以及「身边有这类对象时」每 100 拍的生效指令数（对手模型各类指令流的强度）
+    expoShare: Object.fromEntries(['neutral', 'ai', 'hum'].map((k) => [k, A.expo.all ? +(A.expo[k] / A.expo.all).toFixed(3) : 0])),
+    condRateBy: Object.fromEntries(['neutral', 'ai', 'hum'].map((k) => [k, A.expo[k] ? +(100 * A.okBy[k] / (A.aliveTicks * A.expo[k] / Math.max(1, A.expo.all))).toFixed(3) : 0])),
+    // 按「这类对象占自己接壤的几成」分四档（≤10% / 10~30% / 30~60% / >60%）的条件密度：expo = 这一档的人·拍占比，cmds = 生效指令数
+    condB: Object.fromEntries(['neutral', 'ai', 'hum'].map((k) => [k, [0, 1, 2, 3].map((b) => ({ expo: A.expo.all ? +(A.expoB[k][b] / A.expo.all).toFixed(4) : 0, cmds: A.okB[k][b], rate: A.expoB[k][b] ? +(100 * A.okB[k][b] / (A.aliveTicks * A.expoB[k][b] / Math.max(1, A.expo.all))).toFixed(3) : 0 }))])),
+    // 再细一层：打 AI（身边还有 / 已经没有无主地）、打真人（身边还有 / 已经没有能白吃的无主地或 AI）；n = 这类处境的人·拍占比
+    cond2: Object.fromEntries(['aiN', 'aiNoN', 'humFarm', 'humNoFarm'].map((k) => [k, { share: A.expo.all ? +(A.expo[k] / A.expo.all).toFixed(3) : 0, cmds: A.ok2[k], rate: A.expo[k] ? +(100 * A.ok2[k] / (A.aliveTicks * A.expo[k] / Math.max(1, A.expo.all))).toFixed(3) : 0 }])),
     gap: [q(A.gaps, 0.25), q(A.gaps, 0.5), q(A.gaps, 0.75)],
+    // 连点：同一个人相邻两条指令只隔 1 个回合（7 拍）/ 不超过 2 个回合的占比（占本阶段全部指令）
+    burst7: A.cmds ? +(A.gaps.filter((x) => x <= 7).length / A.cmds).toFixed(3) : 0, burst14: A.cmds ? +(A.gaps.filter((x) => x <= 14).length / A.cmds).toFixed(3) : 0,
   };
   const desc = (name, rows, withTarget) => {
     if (!rows.length) return;
@@ -222,12 +325,51 @@ for (let i = 0; i < PH.length; i++) {
     console.log(line);
     P[{ 无主地: 'neutral', AI: 'ai', 真人: 'hum' }[name]] = o2;
   };
+  console.log(`  身边有这类对象的人·拍占比：无主地 ${Math.round(100 * P.expoShare.neutral)}% / AI ${Math.round(100 * P.expoShare.ai)}% / 敌方真人 ${Math.round(100 * P.expoShare.hum)}%；身边有时每 100 拍生效指令：无主地 ${P.condRateBy.neutral} / AI ${P.condRateBy.ai} / 真人 ${P.condRateBy.hum}（不分有没有：${P.okRateBy.neutral} / ${P.okRateBy.ai} / ${P.okRateBy.hum}，船 ${P.okRateBy.boat}）`);
+  console.log(`  细分（处境占比 → 每 100 拍生效指令）：打 AI，身边还有无主地 ${Math.round(100 * P.cond2.aiN.share)}% → ${P.cond2.aiN.rate}，已经没有无主地 ${Math.round(100 * P.cond2.aiNoN.share)}% → ${P.cond2.aiNoN.rate}；打真人，身边还有无主地或 AI ${Math.round(100 * P.cond2.humFarm.share)}% → ${P.cond2.humFarm.rate}，都没有了 ${Math.round(100 * P.cond2.humNoFarm.share)}% → ${P.cond2.humNoFarm.rate}`);
   console.log(`  出手强度：每 100 拍花掉余额的 ${A.balTicks ? (100 * 100 * A.sent / A.balTicks).toFixed(1) : '-'}%；每格地每 100 拍出兵 ${A.terrTicks ? (100 * A.sent / A.terrTicks).toFixed(2) : '-'}；每条生效指令平均 ${A.okCmds ? Math.round(A.sent / A.okCmds) : '-'} 兵`);
   desc('无主地', A.neutral, false);
   desc('AI', A.ai, true);
   desc('真人', A.hum, true);
-  if (A.boats.length) { console.log(`  船（${A.boats.length}）：千分比 ${q3(A.boats.map((r) => Math.round((r.pct + 1) * 1000 / 1024)))}`); P.boat = { n: A.boats.length, pct: [q(A.boats.map((r) => r.pct), 0.25), q(A.boats.map((r) => r.pct), 0.5), q(A.boats.map((r) => r.pct), 0.75)] }; }
-  if (A.dons.length) { console.log(`  捐（${A.dons.length}）：千分比 ${q3(A.dons.map((r) => Math.round((r.pct + 1) * 1000 / 1024)))}；给我方席位 ${share(A.dons, (r) => r.toSq)}`); P.don = { n: A.dons.length, pct: [q(A.dons.map((r) => r.pct), 0.25), q(A.dons.map((r) => r.pct), 0.5), q(A.dons.map((r) => r.pct), 0.75)] }; }
+  // 滑块档位 × 点击密度 × 花钱速度：把本阶段下过打无主地 / 打 AI 指令的人按个人平均「滑块名次」分五档
+  {
+    const zs = new Map();
+    for (const r of A.neutral.concat(A.ai)) { if (r.z === undefined) continue; let a = zs.get(r.seat); if (!a) zs.set(r.seat, (a = [0, 0, 0])); a[0] += r.z; a[1]++; a[2] += r.pct; }
+    const act = A.seats.filter((s) => zs.has(s.seat)).map((s) => { const a = zs.get(s.seat); return { ...s, z: a[0] / a[1], pct: a[2] / a[1] }; }).sort((x, y) => x.z - y.z);
+    const idle = A.seats.filter((s) => !zs.has(s.seat));
+    // 每人的连点占比：他本阶段打无主地 / 打 AI 的指令里，离自己上一条不超过 1 个回合（7 拍）的占多少
+    const b7 = new Map();
+    {
+      const last = new Map();
+      for (const r of A.neutral.concat(A.ai).sort((x, y) => x.t - y.t)) {
+        let a = b7.get(r.seat); if (!a) b7.set(r.seat, (a = [0, 0]));
+        a[1]++;
+        if (last.has(r.seat) && r.t - last.get(r.seat) <= 7) a[0]++;
+        last.set(r.seat, r.t);
+      }
+    }
+    const allAlive = sumBy(A.seats, (s) => s.alive), allBal = sumBy(A.seats, (s) => s.bal);
+    const groups = [];
+    for (let k = 0; k < 5; k++) {
+      const g = act.slice(Math.floor(k * act.length / 5), Math.floor((k + 1) * act.length / 5));
+      if (!g.length) continue;
+      const al = sumBy(g, (s) => s.alive), bl = sumBy(g, (s) => s.bal);
+      groups.push({ seats: g.length, burst7: +(sumBy(g, (s) => (b7.get(s.seat) || [0, 0])[0]) / Math.max(1, sumBy(g, (s) => (b7.get(s.seat) || [0, 0])[1]))).toFixed(3), pct: Math.round(sumBy(g, (s) => s.pct) / g.length), rate: +(100 * sumBy(g, (s) => s.n) / al).toFixed(2), spend: bl > 0 ? +(100 * sumBy(g, (s) => s.sent) / bl).toFixed(3) : 0, balShare: allBal > 0 ? +(bl / allBal).toFixed(3) : 0, aliveShare: +(al / allAlive).toFixed(3) });
+    }
+    // 按人的滑块分布（每人一个值 = 他本阶段在这一类上的平均千分比）：对手模型给席位定滑块用。按指令数的分布会把点得勤的低滑块重复算
+    for (const [key, rows] of [['neutral', A.neutral], ['ai', A.ai], ['hum', A.hum]]) {
+      if (!P[key]) continue;
+      const m = new Map();
+      for (const r of rows) { let a = m.get(r.seat); if (!a) m.set(r.seat, (a = [0, 0])); a[0] += r.pct; a[1]++; }
+      P[key].seats = m.size;
+      P[key].seatQ = Q21([...m.values()].map((a) => Math.round(a[0] / a[1])));
+    }
+    const idleAl = sumBy(idle, (s) => s.alive), idleBl = sumBy(idle, (s) => s.bal);
+    P.byStyle = { groups, idle: { seats: idle.length, aliveShare: allAlive > 0 ? +(idleAl / allAlive).toFixed(3) : 0, balShare: allBal > 0 ? +(idleBl / allBal).toFixed(3) : 0, rate: idleAl > 0 ? +(100 * sumBy(idle, (s) => s.n) / idleAl).toFixed(2) : 0 } };
+    console.log(`  按滑块分五档（低→高）：平均千分比 ${groups.map((g) => Math.round((g.pct + 1) * 1000 / 1024)).join(' / ')}；每 100 拍指令 ${groups.map((g) => g.rate).join(' / ')}；每 100 拍花掉余额 ${groups.map((g) => Math.round(100 * g.spend) + '%').join(' / ')}；手里的余额占比 ${groups.map((g) => Math.round(100 * g.balShare) + '%').join(' / ')}；本阶段没打过无主地和 AI 的人：${idle.length} 人，在场人·拍占 ${Math.round(100 * P.byStyle.idle.aliveShare)}%、余额占 ${Math.round(100 * P.byStyle.idle.balShare)}%`);
+  }
+  if (A.boats.length) { console.log(`  船（${A.boats.length}）：千分比 ${q3(A.boats.map((r) => Math.round((r.pct + 1) * 1000 / 1024)))}`); P.boat = { n: A.boats.length, pct: [q(A.boats.map((r) => r.pct), 0.25), q(A.boats.map((r) => r.pct), 0.5), q(A.boats.map((r) => r.pct), 0.75)], pctQ: Q21(A.boats.map((r) => r.pct)) }; }
+  if (A.dons.length) { console.log(`  捐（${A.dons.length}）：千分比 ${q3(A.dons.map((r) => Math.round((r.pct + 1) * 1000 / 1024)))}；给我方席位 ${share(A.dons, (r) => r.toSq)}`); P.don = { n: A.dons.length, pct: [q(A.dons.map((r) => r.pct), 0.25), q(A.dons.map((r) => r.pct), 0.5), q(A.dons.map((r) => r.pct), 0.75)], pctQ: Q21(A.dons.map((r) => r.pct)) }; }
   out.phases.push(P);
 }
 // 出手风格的个人一致性：把 1530 拍以前打无主地 / 打 AI 的指令（各自在本阶段本类别里打过正态分）按人合起来
