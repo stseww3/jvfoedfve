@@ -6268,6 +6268,7 @@ export class Policy extends V17 {
   ledgerSend(g, kind, pct, target, site, fn) {
     const P = this.p, me = this.me;
     const bal0 = g.bal[me];
+    let scaled = false;
     // A command takes its share of the balance of the tick it lands, after the commands in flight
     // have taken theirs: the share is raised so that what lands is what the caller sized on
     // today's balance (pct 0 is the one-ring probe and stays).
@@ -6298,6 +6299,7 @@ export class Policy extends V17 {
     if (this.ledSent.length > 32) this.ledSent.splice(0, this.ledSent.length - 32);
     if (this.ledStall && kind === "attack") this.ledRound = Math.floor(t / 7);
     this.vCount("p1_issue_" + kind);
+    if (scaled) this.vCount("p1_scale_up");
     // a host that executes at once has made us pay by now: nothing is in flight
     const paid = fee > 0 ? g.bal[me] <= bal0 - iV(fee * bal0, 1024) && g.bal[me] < bal0 : kind === "retreat" && !g.hasAttack(me, target);
     if (paid) {
@@ -6429,7 +6431,6 @@ export class Policy extends V17 {
           b = before;
           rem -= got;
         }
-    let scaled = false;
       }
       for (const e of [...this.led]) {
         if (e.kind === "retreat" && !g.hasAttack(me, e.target)) this.ledClose(g, e, "land");
@@ -6460,7 +6461,6 @@ export class Policy extends V17 {
             if (++this.nfsTrunc >= P.p1NoFullM && !this.isNoFullSend) {
               this.isNoFullSend = true;
               this.nfsByProbe = true;
-    if (scaled) this.vCount("p1_scale_up");
               this.shadowQuota = 0;
               this.vCount("p1_nfs_set");
               this.vLog("NFS", g, `set after ${this.nfsTrunc} truncated landings (want=${want} sent=${sent})`);
