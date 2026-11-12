@@ -114,12 +114,22 @@ function spreadSpawn(w, others, seed) {
 function snapOf(w, squad, squadSet, mainTeam) {
   const H = w.humans;
   let sqTerr = 0, sqAlive = 0, sqBal = 0, humTerr = 0, oTerr = 0, oBal = 0, oAlive = 0, oN = 0, aiTerr = 0, aiAlive = 0;
-  const oList = [], dList = [];
+  let oShort = 0, oDebt = 0, oFly = 0, oOwe = 0;
+  const oList = [], dList = [], L = w.odLog;
   for (let p = 0; p < H; p++) {
     const present = w.alive[p] && w.state[p] !== 2;
     if (w.alive[p]) humTerr += w.terr[p];
     if (squadSet.has(p)) { if (present) { sqAlive++; sqTerr += w.terr[p]; sqBal += w.bal[p]; } }
-    else { oN++; if (present) { oAlive++; oTerr += w.terr[p]; oBal += w.bal[p]; oList.push(w.terr[p]); if (w.terr[p] > 0) dList.push(w.bal[p] / w.terr[p]); } }
+    else {
+      oN++;
+      if (L) { oShort += L[2 * p]; oDebt += L[2 * p + 1]; }
+      if (present) {
+        oAlive++; oTerr += w.terr[p]; oBal += w.bal[p]; oList.push(w.terr[p]); if (w.terr[p] > 0) dList.push(w.bal[p] / w.terr[p]);
+        oOwe += w.debt[p];
+        const b = w.slotBase(p);
+        for (let i = w.atkCount[p] - 1; i >= 0; i--) oFly += w.atkTroops[b + i];
+      }
+    }
   }
   dList.sort((a, b) => a - b);
   const dq = (f) => (dList.length ? +dList[Math.min(dList.length - 1, Math.floor(f * dList.length))].toFixed(1) : 0);
@@ -140,6 +150,8 @@ function snapOf(w, squad, squadSet, mainTeam) {
     relOthers: oTerr > 0 && oN > 0 ? r4((sqTerr / Math.max(1, squad.length)) / (oTerr / oN)) : null,
     othersAliveShare: oN ? r4(oAlive / oN) : null, othersMedTerr: oList.length ? Math.round(median(oList)) : 0, othersPerSeat: oN ? Math.round(oTerr / oN) : 0,
     othersDensity: oTerr ? +(oBal / oTerr).toFixed(1) : 0,
+    // 其余真人的账：余额合计、在途的进攻兵、此刻的欠账；到此刻为止累计透支了多少兵、因此记了多少欠账（要开 enableOverdraftLog）
+    othersBal: Math.round(oBal), othersInFlight: Math.round(oFly), othersOwe: Math.round(oOwe), othersShort: L ? Math.round(oShort) : null, othersDebtAdded: L ? Math.round(oDebt) : null,
     aiShare: r4(aiTerr / w.land), aiAlive,
     mainTeamShare: mainTeam > 0 && lands.length ? r4(lands[mainTeam] / w.land) : null, leadTeam: lead, teamLands: lands,
   };
@@ -211,6 +223,7 @@ export async function runArena(o) {
     for (const p of others) if (!M.lastCmd.has(p)) idle.add(p);
     if (room.tag === 'asis' || o['reality-any']) {
       const w = buildWorld(M);
+      w.enableOverdraftLog();
       const st = new ReplayStepper(M, w);
       st.runSpawnPhase();
       // 这一局其余真人自己的出手强度（与 Crowd 的账同口径、同阶段划分）：对手模型按房间逐一对照用
@@ -345,6 +358,7 @@ export async function runArena(o) {
 
   const arms = specs.map((s) => {
     const w = room.make();
+    w.enableOverdraftLog();
     const profile = makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: len + 2000, pageEnd: null, doomed: null, ownTrace: false });
     if (squadHusk.size) { profile.pageEnd = new Map([...squadHusk].map(([p, v]) => [p, v[0]])); profile.doomed = new Set(squadHusk.keys()); }
     const crowd = new Crowd(null, { seed, members, startT: replayUntil, squad, rateScale: num(o['opp-rate'], 1), leaveAt, rhythm: o['opp-rhythm'] ? list(o['opp-rhythm']).map(Number) : null, sigma: o['opp-sigma'] !== undefined ? num(o['opp-sigma'], 0.35) : undefined, densFrom: o['opp-dens-from'] !== undefined ? num(o['opp-dens-from'], 1530) : undefined, densRate: !!o['opp-dens-rate'], aiBy: o['opp-ai-by'] });

@@ -261,6 +261,7 @@ export class Crowd {
     this.intensity = this.prof.phases.map((p) => ({
       t0: p.t0, cmds: 0, sent: 0, aliveTicks: 0, balTicks: 0, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 },
       clkNum: 0, clkDen: 0, clkNumW: 0, clkDenW: 0, onSq: 0, onSqSent: 0,
+      humKind: {},                                                                       // 打真人按打法分：{ 条数 n, 出兵 sent, 出手时的余额 bal }
       expoD: z8(), balD: z8(), cmdsD: z8(), sentD: z8(), pctD: z8().map(() => []),      // 按自己的兵密度八档：人·拍、余额·拍、生效指令数、出手的兵、滑块样本
       byStyle: [0, 1, 2, 3, 4].map(() => ({ alive: 0, bal: 0, sent: 0, cmds: 0 })),      // 按滑块五档：在场人·拍、余额·拍、出手的兵、生效指令数
     }));
@@ -400,7 +401,7 @@ export class Crowd {
         continue;
       }
       // O1：补刀空仓（每个回合都看；同一个号 70 拍内只补一次；补了也记在打真人的账上）
-      if (s.arche === 'O1' && t >= 1071 && t - s.lastFinish >= 70 && this.finisher(s, t)) { credit[2] -= 1; continue; }
+      if (s.arche === 'O1' && t >= 1530 && t - s.lastFinish >= 70 && this.finisher(s, t)) { credit[2] -= 1; continue; }
       // 个人权重：活跃度 × 滑块档位的相对密度；顶到软上限（密度 ≥ 100）加倍；正在围一个人时打真人加倍；再乘原型偏好。
       // 开了 --opp-dens-rate 时（dn）：滑块档位和软上限这两项换成「自己此刻兵密度那一档」的实测相对密度，分对象类别。
       let g = s.act * (dn ? 1 : ph.relRate[s.q5]);
@@ -474,11 +475,23 @@ export class Crowd {
     c.focus = best;
   }
 
-  // 滑块：中后期按自己此刻兵密度那一档的实测分位表取（席位的滑块名次决定取表里的哪个分位），之前按本阶段本类别的表
-  slider(ph, key, up, D, hL) {
+  // 席位在「人」里的滑块名次 → 在「指令」里的名次。滑块拉得低的人点得勤（relRate），按指令排的分位表里低滑块的指令占得多；
+  // 拿按人排的名次直接去查按指令排的表，等于把「低滑块的人点得勤」算了两遍，每条指令的兵会偏少。
+  cmdRank(ph, up) {
+    const r = ph.relRate, x = Math.max(0, Math.min(0.999999, up)) * 5, i = Math.floor(x);
+    let c = 0;
+    for (let k = 0; k < i; k++) c += r[k];
+    return (c + (x - i) * r[i]) / 5;
+  }
+
+  // 滑块。之前按本阶段本类别的表、取席位自己的滑块名次；中后期（dn）按自己此刻兵密度那一档的实测分位表、每条指令独立抽：
+  // 兵密度那一档本身已经带着「这个人平时怎么点」的信息（滑块拉得高的人才会掉到低档里），再按个人名次去查会算两遍 ——
+  // 名次高的那一成半席位掉进 <2 那一档以后回回抽到 1000‰，永远攒不起兵（3210 拍以后 17% 的人·拍兵密度 <2，实测 4%），
+  // 成了谁都能白吃的空地。
+  slider(ph, key, s, t, up, D, hL) {
     const dn = this.dn;
-    if (dn) { const tab = dn.pctQ[dBucket(D)]; if (tab) return sampleQ(tab, up); }
-    if (key === 'ai' && ph.aiH && ph.aiH[hL]) return sampleQ(ph.aiH[hL], up);
+    if (dn) { const tab = dn.pctQ[dBucket(D)]; if (tab) return sampleQ(tab, hashU(this.seed, s.p, t, 17)); }
+    if (key === 'ai' && ph.aiH && ph.aiH[hL]) return sampleQ(ph.aiH[hL], this.cmdRank(ph, up));
     return sampleQ(ph[key], up);
   }
 
@@ -509,6 +522,7 @@ export class Crowd {
     const back = w.hasAttack(q, p) ? 1 : 0;
     const ok = w.attack(pct, q, p);
     const onSq = this.squad.has(q);
+    if (ok && this.curI) { const k = (this.curI.humKind[kind] ||= { n: 0, sent: 0, bal: 0 }); k.n++; k.sent += w.attackTroopsTmp; k.bal += B; }
     this.note(s, 'hum', ok, onSq ? { t, p, q, arche: s.arche, kind, pct, sent: ok ? w.attackTroopsTmp : 0, B, tB, tD: tT > 0 ? tB / tT : 0, D: w.terr[p] > 0 ? B / w.terr[p] : 0, back } : null, pct);
     return ok;
   }
@@ -521,21 +535,24 @@ export class Crowd {
     if (cls !== 4 && hashU(this.seed, s.p, t, 15) < ph.follow[s.q5]) { s.followT = t + 7; s.followCls = cls; }
   }
 
-  // O1 的补刀：身边有地 ≥ 30、兵密度 < 35、兵不到自己一半的敌方真人 → 一条大比例指令收掉。返回是否出了手。
+  // O1 的补刀：身边有地 ≥ 30、兵密度 < 35 且不到自己一半（「空仓」是相对的：1530 拍以前全场的兵密度都不到 35）、
+  // 兵不到自己一半的敌方真人 → 按「够吃掉它」的量出一条指令（不低于自己平时那一档）。返回是否出了手。
+  // 旧写法（1071 拍起、只看密度 < 35、每条不低于 300‰）在 1071~1300 拍占了模型里打真人出兵的一半（77 条、每条花掉余额的 79%），
+  // 实测那一段兵密度 ≥ 2 的人打真人 P90 才 200~240‰。
   finisher(s, t) {
-    const w = this.arm.world, p = s.p, B = w.bal[p];
+    const w = this.arm.world, p = s.p, B = w.bal[p], D = B / Math.max(1, w.terr[p]);
     let best = -1;
     for (const q of contacts(w, p).keys()) {
       if (q === NEUTRAL || !w.alive[q] || w.isBot(q) || !w.isEnemy(p, q)) continue;
       const tB = w.bal[q], tT = w.terr[q];
-      if (tT < 30 || tB / tT >= 35 || B < 2 * tB) continue;
+      if (tT < 30 || tB / tT >= 35 || tB / tT >= 0.5 * D || B < 2 * tB) continue;
       if (best < 0 || w.terr[q] > w.terr[best]) best = q;
     }
     if (best < 0) return false;
     const need = Math.ceil(1.5 * (w.bal[best] + 2 * w.terr[best]) * 1024 / B);
     s.lastFinish = t;
     this.log.finish++;
-    return this.attackHuman(s, best, Math.max(307, Math.min(1023, need)), t, 'finish');
+    return this.attackHuman(s, best, Math.max(s.tier, Math.min(1023, need)), t, 'finish');
   }
 
   // 让席位 s 出一条 cls 类的指令（0 无主地 / 1 内置 AI 与空壳 / 2 真人 / 3 船 / 4 捐款）。返回是否落地（捐款：是否下达）。
@@ -556,7 +573,7 @@ export class Crowd {
 
     if (cls === 0) {
       if (!adj.has(NEUTRAL)) return false;
-      const pctN = this.slider(ph, 'neutral', up, D);
+      const pctN = this.slider(ph, 'neutral', s, t, up, D);
       const ok = w.attack(pctN, NEUTRAL, p);
       this.note(s, 'neutral', ok, null, pctN);
       return ok;
@@ -570,7 +587,7 @@ export class Crowd {
       for (const [, n] of bots) tw += Math.sqrt(n);
       let ub = hashU(sd, p, t, 9) * tw, q = bots[bots.length - 1][0];
       for (const [o, n] of bots) { ub -= Math.sqrt(n); if (ub < 0) { q = o; break; } }
-      const tB = w.bal[q], tT = w.terr[q], pctA = this.slider(ph, 'ai', up, D, s.hL);
+      const tB = w.bal[q], tT = w.terr[q], pctA = this.slider(ph, 'ai', s, t, up, D, s.hL);
       const okA = w.attack(pctA, q, p);
       this.note(s, 'ai', okA, null, pctA);
       // 打 AI 的明细（验收用，与 human_profile.mjs 的 ai 行同口径）：出兵 ÷ 对方的兵、自己的兵 ÷ 对方的兵、对方的地和密度
@@ -588,7 +605,7 @@ export class Crowd {
     let atk = -1, atkTroops = 0;
     for (const [q] of hums) { const a = w.attackTroopsOn(q, p); if (a > atkTroops) { atkTroops = a; atk = q; } }
     if (atk >= 0 && hashU(sd, p, t, 4) < (B >= 2 * w.bal[atk] ? 0.46 : 0.22)) {
-      return this.attackHuman(s, atk, s.arche === 'O4' && B >= 1.3 * w.bal[atk] ? hashInt(921, 1023, sd, p, t, 5) : s.arche === 'G' || t < 1530 ? humanPct(ph, this.slider(ph, 'hum', up, D), hashU(sd, p, t, 11), B, w.bal[atk]) : s.tier, t, 'back');
+      return this.attackHuman(s, atk, s.arche === 'O4' && B >= 1.3 * w.bal[atk] ? hashInt(921, 1023, sd, p, t, 5) : s.arche === 'G' || t < 1530 ? humanPct(ph, this.slider(ph, 'hum', s, t, up, D), hashU(sd, p, t, 11), B, w.bal[atk]) : s.tier, t, 'back');
     }
     // 满仓型：没攒够不主动打真人。出手密度按兵密度分档时不用（那时各档的出手密度已经是实测的：3210 拍以后
     // 密度 5~40 的人反而比满仓的人点得勤，只是每条的兵少）
@@ -629,7 +646,7 @@ export class Crowd {
     let best = -1;
     if (hashU(sd, p, t, 7) < 0.67) { for (const [o] of hums) if (best < 0 || w.bal[o] < w.bal[best]) best = o; }
     else best = hums[hashInt(0, hums.length - 1, sd, p, t, 10)][0];
-    return best >= 0 ? this.attackHuman(s, best, humanPct(ph, this.slider(ph, 'hum', up, D), hashU(sd, p, t, 11), B, w.bal[best]), t, 'plain') : false;
+    return best >= 0 ? this.attackHuman(s, best, humanPct(ph, this.slider(ph, 'hum', s, t, up, D), hashU(sd, p, t, 11), B, w.bal[best]), t, 'plain') : false;
   }
 
   sendBoat(s, t, ph, B, up) {
@@ -650,7 +667,7 @@ export class Crowd {
     if (best < 0) return false;
     const coast = w.coast[best];
     const tile = coast[hashInt(0, coast.length - 1, sd, p, t, 60)];
-    let pct = this.slider(ph, 'boat', up, B / Math.max(1, w.terr[p]));
+    let pct = this.slider(ph, 'boat', s, t, up, B / Math.max(1, w.terr[p]));
     if (hunter) pct = Math.max(pct, Math.min(614, Math.ceil(0.5 * w.bal[best] * 1024 / B)));   // 大登陆：不少于对方兵的一半，封顶 600‰
     const tB = w.bal[best], tT = w.terr[best];
     const ok = w.boatTo(pct, tile, p);
@@ -719,7 +736,7 @@ export class Crowd {
         t0: I.t0, cmds: I.cmds, ratePerAlive100: I.aliveTicks ? +(100 * I.cmds / I.aliveTicks).toFixed(3) : null, spendPer100: I.balTicks ? +(100 * I.sent / I.balTicks).toFixed(4) : null, sentPerCmd: I.cmds ? Math.round(I.sent / I.cmds) : null,
         spendBy: Object.fromEntries(Object.keys(I.sentBy).map((k) => [k, I.balTicks ? +(100 * I.sentBy[k] / I.balTicks).toFixed(4) : null])),
         okRateBy: Object.fromEntries(Object.keys(I.okBy).map((k) => [k, I.aliveTicks ? +(100 * I.okBy[k] / I.aliveTicks).toFixed(3) : null])),
-        sent: I.sent, sentBy: I.sentBy, onSq: I.onSq, onSqSent: I.onSqSent,
+        sent: I.sent, sentBy: I.sentBy, onSq: I.onSq, onSqSent: I.onSqSent, humKind: I.humKind,
         clickBal: I.clkDen > 0 ? +(I.clkNum / I.clkDen).toFixed(3) : null, clickBalW: I.clkDenW > 0 ? +(I.clkNumW / I.clkDenW).toFixed(3) : null,
         // 按自己的兵密度八档（与画像 byDensity 同口径）：人·拍、余额·拍、生效指令数、出手的兵、滑块 P25/中位/P75
         byDensity: {
