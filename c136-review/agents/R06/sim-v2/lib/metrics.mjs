@@ -238,6 +238,10 @@ export class Metrics {
       given: sum(don.filter((c) => c.ok).map((c) => c.sent)), fee: sum(don.filter((c) => c.ok).map((c) => c.fee)),
     };
     out.quotaRejectRate = ratio(out.don.quota, don.length);
+    // 捐款发出后没成交的占比：分母 = 窗口里发出的捐款（策略得到 true 的），分子 = 分母 − 窗口里成交的。
+    // 真局的同一项 = 1 − 录像里的捐款条数 ÷ 策略日志 [HL-DISPATCH] 的条数（checkpoint / live 模式在外面填）。
+    out.donIssued = out.byKind.don.issued;
+    out.donNotLanded = out.donIssued > 0 ? +Math.max(0, 1 - out.don.ok / out.donIssued).toFixed(4) : null;
     const donEarly = don.filter((c) => c.Ex < 3213);
     out.quotaRejectRateEarly = ratio(donEarly.filter((c) => !c.ok && c.why === 'quota').length, donEarly.length);
     const sq = new Set(this.squad);
@@ -335,7 +339,8 @@ export const PAIR_KEYS = [
   ['batchShare', '同拍批占进录像条数', -1],
   ['dupShare', '重复单占比（进录像）', -1],
   ['dupShareIssued', '重复单占比（发出）', -1],
-  ['quotaRejectRate', '配额拒单率', -1],
+  ['quotaRejectRate', '配额拒单率（到达结算的捐款里）', -1],
+  ['donNotLanded', '捐款发出后没成交的占比', -1],
   ['atkVoidRate', '陆攻落空率', -1],
   ['rerouteRate', '目标已死改道率', -1],
   ['atkNeutralShare', '陆攻落地记成无主地的占比', 0],

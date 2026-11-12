@@ -64,11 +64,7 @@ export async function runCheckpoint(o) {
   const traceMid = o['trace-from'] || mid;
   const trace = /^c2/i.test(chanSpec) ? loadTrace(SIMV2, traceMid) : null;
   let seatMap = null;
-  if (trace && traceMid !== mid) {
-    // 借别的局的阶梯：按席位次序一一对上
-    const src = Object.keys(trace.seats).map(Number).sort((a, b) => a - b);
-    seatMap = new Map(squad.map((p, i) => [p, src[i % src.length]]));
-  }
+  if (trace && traceMid !== mid) seatMap = borrowSeats(trace, traceMid, squad, t0, t1);
   // 页面寿命是这一局自己的页面的事（借别的局的阶梯也照用）；「最后一条落地指令之后发出的算丢失」要本局自己的配对才知道
   const mkProfile = () => makeProfile(chanSpec, { seed, seats: squad, trace, seatMap, Wmax: t1 + 2000, pageEnd: M.pageEnd, doomed: M.deathT ? M.doomed : null, ownTrace: traceMid === mid });
 
@@ -130,7 +126,7 @@ export async function runCheckpoint(o) {
     mode: 'checkpoint', match: mid, replay: M.replayMid, map: M.mapKey, humans: H, nTeams: M.ta ? M.ta.nTeams : 0, botsTeamed: M.ta ? M.ta.botsTeamed : false,
     squad, squadTeams: [...new Set(squad.map((p) => (M.ta ? M.ta.fX[p] : 0)))],
     t0, t1, tw, lenAsked: len, truncated, ended,
-    channel: profile.name, channelNote: profile.note, channelSpec: chanSpec, seed,
+    channel: profile.name, channelNote: profile.note + (seatMap ? `；阶梯借自 ${traceMid} 的席位 ${[...new Set(seatMap.values())].join(',')}` : ''), channelSpec: chanSpec + (seatMap ? `←${traceMid}` : ''), seed,
     lagCourse: profile.instant ? [] : profile.lagCourse(squad, t0, t1, 150),
     opts: { ...armOptsOf(o), ...chanOptsOf(o) },
     history: hist.finalize(natural, { arm: 'history' }),
@@ -144,6 +140,12 @@ export async function runCheckpoint(o) {
   res.history.rerouteRate = ts ? ts.rerouteRate : null;
   res.history.rerouteRateExec = null;
   res.history.dupShareIssued = null;
+  // 真局的捐款：发出 = 策略日志 [HL-DISPATCH]（c116 系才打这条日志；本机拍落在窗口里的），成交 = 录像里的捐款指令
+  {
+    const disp = M.log.dispatch.filter((d) => d.t >= t0 && d.t < t1 && squadSet.has(M.log.seatOf.get(d.label)));
+    res.history.donIssued = disp.length ? disp.length : null;
+    res.history.donNotLanded = disp.length ? +Math.max(0, 1 - res.history.don.ok / disp.length).toFixed(4) : null;
+  }
   if (ts) res.history.trace = ts;
   for (const a of arms) res.arms[a.name] = a.finish(natural, { file: a.strat.file });
   if (res.arms.baseline && res.arms.candidate) res.delta = deltaOf(res.arms.baseline, res.arms.candidate);
@@ -168,6 +170,22 @@ export async function runCheckpoint(o) {
     fs.writeFileSync(o.out, JSON.stringify(res));
   }
   return res;
+}
+
+// 借别的局的实录阶梯（--trace-from）：只借「页面活到窗口结束」的席位（页面中途停摆的席位，阶梯在停摆后没有意义），
+// 按窗口内已知点多的排前，我方席位按次序轮着用。
+export function borrowSeats(trace, traceMid, squad, t0, t1) {
+  let doomed = new Set();
+  let pageEnd = new Map();
+  try { const S = loadMatch(traceMid); doomed = S.deathT ? S.doomed : new Set(); pageEnd = S.pageEnd; } catch (e) { /* 来源局的对局包不在本机：只按已知点筛 */ }
+  const all = Object.keys(trace.seats).map(Number);
+  const inWin = (p) => trace.seats[String(p)].filter((r) => r[0] >= t0 - 300 && r[0] < t1).length;
+  const lastTau = (p) => Math.max(...trace.seats[String(p)].map((r) => r[0]));
+  let src = all.filter((p) => !doomed.has(p) && (pageEnd.get(p) ?? Infinity) >= t1 && lastTau(p) >= t1 - 400 && inWin(p) >= 3);
+  if (src.length < 3) src = all.filter((p) => lastTau(p) >= t1 - 400 && inWin(p) >= 3);
+  if (!src.length) src = all;
+  src.sort((a, b) => inWin(b) - inWin(a) || a - b);
+  return new Map(squad.map((p, i) => [p, src[i % src.length]]));
 }
 
 function cpuMs(c0) { const c = process.cpuUsage(c0); return Math.round((c.user + c.system) / 1000); }

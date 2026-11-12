@@ -44,11 +44,14 @@ function packs() {
 // 日志：号名 → 席位号（[HL-GAME-INIT] me=）、编队槽位（[HL-SPAWN] / [HL-SPAWN-BACKEND] 的 slot=）、快照（[HL-TICK]）
 export function readLog(mid) {
   const file = path.join(BUNDLES, mid, 'in_game.log');
-  const out = { seatOf: new Map(), slotOf: new Map(), snaps: [], cmdsAt: [] };
+  const out = { seatOf: new Map(), slotOf: new Map(), snaps: [], cmdsAt: [], dispatch: [] };
   if (!fs.existsSync(file)) return out;
   for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
     let m = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*\bme=(\d+)/);
     if (m) { if (!out.seatOf.has(m[1])) out.seatOf.set(m[1], +m[2]); continue; }
+    // 捐款发出的日志（c116 系）：策略在本机第 t 拍调了 g.donate 并得到 true
+    m = line.match(/\[([^\]]+)\] \[HL-DISPATCH\] t=(\d+) \S+ pct=(\d+)\/1024 -> ally=(\d+)/);
+    if (m) { out.dispatch.push({ label: m[1], t: +m[2], pct: +m[3], to: +m[4] }); continue; }
     m = line.match(/\[([^\]]+)\] \[HL-SPAWN(?:-BACKEND)?\] me=(\d+) slot=(\d+)/);
     if (m) {
       if (!out.seatOf.has(m[1])) out.seatOf.set(m[1], +m[2]);
