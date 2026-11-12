@@ -28,6 +28,7 @@ import json
 import math
 import os
 import statistics
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "out")
@@ -126,6 +127,19 @@ def main():
                     tag = tag.replace(f"-t{SHIFT[g]}-", "-t4284-")
                     j["T0real"], j["T0"] = j["T0"], 4284
             runs[(g, tag)] = j
+    # 保护已有的结果：各次运行的输出（out/_cache/cp）不进 git，可能丢失或不全。
+    # out/_cross/cp_runs.tsv 里已经有、而缓存里现在没有的运行只要有一条，就不重算、不覆盖 out/_cross 下的表
+    # （否则会拿残缺的缓存把已提交的底表和报告冲掉）。确实要按现有缓存重算时加 --force。
+    prev = os.path.join(CROSS, "cp_runs.tsv")
+    if os.path.exists(prev) and "--force" not in sys.argv:
+        with open(prev, encoding="utf-8") as fh:
+            old_keys = {tuple(line.rstrip("\n").split("\t")[:2]) for i, line in enumerate(fh) if i and line.strip()}
+        gone = sorted(k for k in old_keys if k not in runs)
+        if gone or any(g not in base for g in {k[0] for k in old_keys}):
+            print(f"CP-TABLE-ABORT 缓存不全：cp_runs.tsv 里已有 {len(old_keys)} 条运行，其中 {len(gone)} 条在 out/_cache/cp 里找不到"
+                  f"（例：{'、'.join(' '.join(k) for k in gone[:3]) or '历史基线 H.json'}）。没有重算，out/_cross 下的表保持原样。"
+                  "要按现有缓存重算，加 --force。", file=sys.stderr)
+            sys.exit(3)
     # 4284 断面的窗末（5184 拍）不是 30 的倍数，H.json 没有这一拍的记录（最近的是 5190 拍）。
     # 有不扰动的历史重放（H-t4284-s0：全按录像、不动随机数、跑到 5184 拍）时，先核对它与 H.json 在共同的记录拍上逐个相同，
     # 再把它最后一拍的记录补进历史的记录里；这样窗末的历史值与各通道取的是同一拍。
