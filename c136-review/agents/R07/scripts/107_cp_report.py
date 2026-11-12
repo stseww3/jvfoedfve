@@ -587,6 +587,10 @@ def main():
             wl_.append(f"- 断面 {T0_} → {T0_ + 900} 拍，C1 已有两个种子的 {len(xs)} 局：两个种子之间 ln ρ 相差的中位数是 {r3(med(rg), 2)}，最大 {r3(max(rg), 2)}（{top['g']}）。")
             F0[f"seedC1_{T0_}n"], F0[f"seedC1_{T0_}med"], F0[f"seedC1_{T0_}max"] = str(len(xs)), r3(med(rg), 2), r3(max(rg), 2)
     F0["seedWinLine"] = "\n".join(wl_)
+    # A039 的 630 断面：这一窗没有指令被按住，按住这一项却不小；有了第二个种子就拿两个种子之差来说明
+    a39 = next((x_ for x_ in SS if x_["g"] == "A039" and x_["T0"] == 630 and x_["h"] == 900 and x_["ch"] == "C1"), None)
+    F0["a039noise630"] = (f"C1 换一个种子，这一窗的 ln ρ 就相差 {r3(a39['range'], 2)}，这个数在只换种子的波动之内" if a39
+                          else "这个数是单个种子的噪声量级")
     late_n = [len([x_ for x_ in SS if x_["T0"] == T0_ and x_["h"] == 900 and x_["ch"] == "C1"]) for T0_ in (1500, 4284)]
     F0["seedLateNote"] = "（这两个断面 C1 的第二个种子还没有跑出来）" if not any(late_n) else \
         f"（1500 断面已有 {late_n[0]} 局，4284 断面" + (f"已有 {late_n[1]} 局" if late_n[1] else "还没有") + "，见上表）"
@@ -754,6 +758,33 @@ def main():
             row.append("/".join(str(k) for k in x["n"]) if x else "—")
         rows.append(row)
     T["种子数"] = md(["局", "断面 0（C0 / C1 / C2 走偏）", "断面 630", "断面 1500", "断面 4284"], rows)
+    # 结论里「每格有几个种子」这句话：按实际的种子数写
+    def n_two(key, idx):
+        """这一断面里，C1（idx=1）或走偏的 C2（idx=2）有两个以上种子的局数 / 有结果的局数"""
+        if key == "t0_1500":
+            xs_ = [(J.get("games") or {}).get(g, {}).get(key) for g in GAMES]
+        else:
+            xs_ = [(J.get("win") or {}).get(g, {}).get(key) for g in GAMES]
+        xs_ = [x_ for x_ in xs_ if x_ and not x_.get("excl")]
+        return sum(1 for x_ in xs_ if x_["n"][idx] >= 2), len(xs_)
+    parts_, rest_ = [], []
+    for key, nm in (("t0_1500", "0"), ("t630_h900", "630"), ("t1500_h900", "1500"), ("t4284_h900", "4284")):
+        (a1, tot), (a2, _) = n_two(key, 1), n_two(key, 2)
+        if not tot:
+            continue
+        if a1 == tot and a2 == tot:
+            parts_.append(f"断面 {nm} 的 C1 和走偏的 C2 都有 2 个种子")
+        elif a1 == tot:
+            parts_.append(f"断面 {nm} 的 C1 有 2 个种子、走偏的 C2 只有 1 个")
+        else:
+            rest_.append(nm)
+    if rest_:
+        parts_.append(f"断面 {'、'.join(rest_)} 大多只有 1 个种子")
+    F0["seedStateLine"] = "；".join(parts_)
+    hc_ = [((J.get("games") or {}).get(g, {}).get("t0_1500") or {}).get("hold") for g in ("A033", "A039")]
+    if all(v is not None for v in hc_):
+        F0["ctlHoldLine"] = (f"基本没被按住的 A033、A039 两局，按住这一项是 {sg(hc_[0])} 和 {sg(hc_[1])}，接近 0，与预期一致" if max(abs(v) for v in hc_) < 0.05
+                             else f"基本没被按住的 A033、A039 两局，按住这一项也有 {sg(hc_[0])} 和 {sg(hc_[1])}")
 
     # ---- 复现：录像里落地的指令 vs 影子在同一位置发的指令（108_closure_mismatch.py）
     rows = []
