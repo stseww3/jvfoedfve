@@ -170,6 +170,7 @@ R01，任务卡 0003 的离线版。本文件由 `scripts/ckpt/build_report.py` 
 
 - **1500 拍之前，Va、Vb、Vc 三个版本的出手完全相同。** 630→1500 全部 12 局、两种通道、每种 2 个种子，窗口末的领土、兵力、进录像条数逐位相同；0→630 抽查的 4 个也相同（核对过换上去的确实是另一个文件）。代码上的原因：三个文件的 `coreFrom` 都是 1500，这一拍之前 `act` 走父类的开局逻辑，这一段三个文件相同；有差别的 16 项参数只在 1500 拍以后的核心阶段代码里读到，捐兵函数在 1500 拍之前直接返回。唯一在 1500 拍之前也走得到的差别是那个轻量助攻的门槛，这 12 局里它没有造成任何差别。所以 0→630、630→1500 这两个窗口（§3.2 里损失最集中的 630→1500 在内），三个版本之间的差解释的是 0。
 - **1500→3213，Vb 与 Va 的平均差在噪声以内，逐局有正有负。** 健康通道下 Vb − Va = −0.011（按局重抽样的 90% 区间 −0.053 ~ +0.031），3 局正、9 局负；实录通道下 +0.037（+0.001 ~ +0.079），6 正 6 负。逐局 |差| 的均值是 0.06 个点；同一批局、同一个窗口里落后波 + 页面的均值是 −0.102。差得大的是 4 局：A023（Vb 高 0.14–0.19）、A003（Vb 高 0.14–0.16）、A009（健康通道下 Va 高 0.22，实录通道下几乎没差）、A059（两种通道下方向相反）。
+- **3213→4284，Vb 与 Va 的差更小。** 健康通道下 Vb − Va = +0.008（−0.006 ~ +0.025），实录通道下 +0.010（−0.014 ~ +0.038），逐局 |差| 的均值 0.02–0.04（这个断面每种通道只跑了 1 个种子）。
 - **Vb 与 Vc 的差更小。** 两个文件只差一个捐兵函数，1500→3213 的 |差| 均值在健康通道下约 0.01、实录通道下约 0.03，均值都在 ±0.01 以内。
 - **版本差在两种通道下不是同一个数。** 同一局里「实录通道下的版本差 − 健康通道下的版本差」的绝对值平均 0.06（Vb 对 Va），和版本差本身一样大。在这个精度上，这批数据答不了「哪个版本好」，只能给出版本差的量级：1500 拍以后一个窗口里约 0.06 个点，是同窗口通道效应的一半上下，方向不定。
 
@@ -211,7 +212,7 @@ R01，任务卡 0003 的离线版。本文件由 `scripts/ckpt/build_report.py` 
 
 ## 4. 保真度（G0）
 
-表在 `reports/ckpt-data/fid_tables.md`（①–④）与 `ckpt_tables.md`（表 D、E、R、E2、E3、G、T、S1、S2）。
+表在 `reports/ckpt-data/fid_tables.md`（①–④）与 `ckpt_tables.md`（表 D、E、R、E2、E3、G、G2、G3、G4、Z、T、S1、L）。
 
 ### 4.1 物理底座
 
@@ -356,7 +357,15 @@ c116 家族的决策层基本逐条复现；c110 只到统计量级。
 - 逐窗口看，变化最大的是落后最深的 630→1500：A057 的落后波从 −0.097 变成 −0.149 / −0.176（上界 / 下界口径），残差从 −0.052 变成 −0.014 / −0.023；A009、A059 的落后波各多 0.03–0.05，页面那一段相应变小。
 - 所以 §4.4 里「落后重的窗口 C2 比历史略强」这件事，阶梯的空档只解释了其中一小部分，其余还在通道模型多执行的那部分指令（§4.2）和开环的对手上。
 
-换 R06 入库的那份阶梯（另一套影子、另一套配对规则）与换补法（nearest / linear）：待补。
+**换成 R06 入库的那份阶梯**（另一套影子、另一套配对规则），重跑了 3 局各 2 个窗口：
+
+{{ckpt:表 S1:1}}
+
+- 6 个窗口里 5 个的 C2 差在 0.03 个点以内。A057 的两个窗口用 R06 的阶梯离历史更近（残差 −0.052 → −0.020，−0.025 → −0.002），方向和上面的上界 / 下界口径一样：补进更多落后的配对，模型里的通道损失更大，残差更小。
+- A023 的 1500→3213 低 0.133，离历史更远（残差 +0.045 → +0.178）。两份阶梯在这个窗口里的点数和分位数差不多（64 对 67 个点，P50 13 对 12 拍，P90 18 对 15 拍），差别只在一个点：R06 的阶梯在 31 号席位上有一条落后 185 拍的配对，我的阶梯（只收唯一定位的）里最大是 18 拍。一个配对点把一个窗口的 C2 挪了 0.13 个点：阶梯上的点稀，通道模型会把孤零零的一个大落后点铺成一段落后。
+- 所以逐局逐窗口的数对阶梯里的个别点敏感，不能细读；分组均值和整条链受的影响小（上面三种口径的链只差 0.01–0.02）。
+
+换补法（nearest / linear）排了 8 步，机器负载高，取消了没有跑（§6）。
 
 ### 4.8 反事实的水平：对照真实的通道干净局
 
@@ -430,7 +439,7 @@ python3 scripts/ckpt/logorder_floor.py            # 日志次序的下界 → re
 python3 scripts/ckpt/make_trace.py                # 实录阶梯三种口径 → reports/ckpt-data/traces{,-hi,-lo}/
 python3 scripts/ckpt/make_steps.py                # 主批的步骤
 python3 scripts/ckpt/make_steps_extra.py g0 span full full5 band c1p r06trace fill swap0 swap swapvc swaplate swapx swapc110
-bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/loop.log          # 放在 tmux 里；每一步都经 run-heavy.sh
+HEAVY_SLOTS=2 LOOP_ROUND=1800 bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/loop.log   # 放在 tmux 里；每一步都经 run-heavy.sh
 python3 scripts/ckpt/aggregate.py                 # → reports/ckpt-data/ckpt_*.csv、ckpt_tables.md
 python3 scripts/ckpt/fid_tables.py                # → reports/ckpt-data/fid_tables.md
 python3 scripts/ckpt/build_report.py              # → 本文件
@@ -438,16 +447,24 @@ python3 scripts/ckpt/build_report.py              # → 本文件
 
 单独跑一个（局, 窗口）：`bash ../../tools/run-heavy.sh node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870`。
 
+**排了队、最后没有跑的。** 补充批是在一台 4 核、负载 15–20 的机器上按槽位排队跑的，一步要 3–7 分钟。价值最低的 110 步取消了，清单在 `scripts/steps/ckpt-dropped.txt`：
+
+- 阶梯上界 / 下界口径里阶梯差得小的 30 个窗口，32 步（差得大的 30 个已重跑，§4.7）；
+- 换补法（nearest / linear）的 8 步；
+- 各断面版本互换的第 2、3 个通道种子，70 步（3213、4284 两个断面的版本互换因此每种通道只有 1 个种子；c110 在 3213 是 2 个）。
+
+要补跑，把那个文件里的行接回 `ckpt-all3.txt` 末尾再起循环。
+
 | 文件 | 内容 |
 | :-- | :-- |
-| `reports/ckpt-data/ckpt_tables.md` | 全部归因表（M、A、B、B2、C、C2、H、D、E、R、F、P、W、E2、E3、K、L、G、G2、G3、G4、Z、S1、S2、T、O、V） |
+| `reports/ckpt-data/ckpt_tables.md` | 全部归因表（M、A、B、B2、C、C2、H、D、E、R、F、P、W、E2、E3、K、L、G、G2、G3、G4、Z、S1、T、O、V） |
 | `reports/ckpt-data/fid_tables.md` | 保真度 ①–④ |
 | `reports/ckpt-data/ckpt_arms.csv` | 每条臂一行的原始结果 |
 | `reports/ckpt-data/ckpt_decomp.csv` | 每个（局, 窗口）一行的分解 |
 | `reports/ckpt-data/ckpt_chain.csv`、`ckpt_headline.csv` | 对数链与总账 |
 | `reports/ckpt-data/ckpt_signatures.csv`、`ckpt_livebands.csv` | 统计签名与实盘区间的对照 |
 | `reports/ckpt-data/ckpt_extra.csv` | 放开跑、阶梯口径、次序、版本互换各批的结果 |
-| `reports/ckpt-data/ckpt_cumulative.csv`、`ckpt_chainadj.csv`、`ckpt_levels.csv` | 累计通道效应的几种估计（连乘、放开跑、斜率修正）、与真实干净局的水平对照 |
+| `reports/ckpt-data/ckpt_cumulative.csv`、`ckpt_freerun_path.csv`、`ckpt_chainadj.csv`、`ckpt_levels.csv` | 累计通道效应的几种估计（连乘、放开跑、斜率修正）、放开跑沿途各断面的水平、与真实干净局的水平对照 |
 | `reports/ckpt-data/traces{,-hi,-lo}/`、`floor/`、`logorder/` | 实录阶梯三种口径、日志下界 |
 | `reports/ckpt-data/band_select.csv` | 哪些窗口的阶梯在三种口径下不同（重跑的清单） |
 | `scripts/ckpt/` | 全部脚本；物理、沙箱、通道、账本只读地用 R06 的 `sim-v2/lib` |
