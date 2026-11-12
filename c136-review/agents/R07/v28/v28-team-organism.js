@@ -1,3 +1,29 @@
+// v28-team-organism (draft by R07 for the c136 council, stage B).
+//
+// Base: v27-team-c116.js ("Vc") copied verbatim (first commit of this file), then the eight modules of
+// c136-review/council/ROUNDTABLE-SYNTHESIS.md section 3, each behind its own switch in PARAMS:
+//
+//   P1  enableInflightLedger     in-flight command ledger, one command per tick, anti-drain product
+//                                constraint, buyLand / expandNeutral arbitration, isNoFullSend fix
+//   P2  enableSpawnClosedLoop    client half of the spawn rework (the coordinator half is
+//                                spawn-coordinator-v28.mjs): room-isolated matchKey, one coordinate per
+//                                spawn step, resend until the spawn box sits on the target
+//   P3  enableAiFloorCap         threatOf / safeFinite ignore teammates and shells and are capped by the
+//                                bot's own troops; dpKeep decoupled when eating bots, shells, remnants
+//   P4  enableCoordinatedStrike  joint strike pricing, collapse-line denominator, narrow-front wave cap
+//   P5  enableSmartOverCap       controlled release above 100 x land, sole-buffer unlock
+//   P6  enableQuotaExactDonate   quota-exact dispatch, room and in-flight trimming, one full donation,
+//                                coastal floors, anti-pingpong, deficit-based doomed-pocket rule
+//   P7  enableSeaPrecision       sail time and decay filter, minimum load against the boat fee, boxed
+//                                short-range breakout, landing-owner precheck, same-island lock
+//   P8  enableCollapseGuard      own collapse-line guard, exception isolation in act(), roster-based
+//                                teammate recognition
+//
+// With every switch at 0 the decisions are those of Vc, command for command (checked by
+// agents/R07/scripts/v28_shadow.mjs + v28_equiv.py on recorded games). All v28 code is marked "v28/Pn".
+// Every command leaves through Strategy.xAttack / xDonate / xBoatTo / xBoat / xRetreat / xChase / xRecall.
+//
+// ---- original header of the base file ----
 // Self-contained strategy v27 (Unified Synthesis of c81 A07 + c80 A06 Safety Clauses over v24, by c58).
 // Inlines v17.js (V13 + V17), sea.js (trip/troopsFor), sea-core.js, and v24+A06 fixes into a single file
 // with zero external strategy imports, ready for live browser deployment.
@@ -470,6 +496,37 @@ class Strategy {
 
   // ---- commands -----------------------------------------------------------------
 
+  // v28: the command exits. Every command to the game leaves through one of these and nowhere else
+  // (plain pass-through here; Policy puts the P1 ledger and the P7 landing checks in front of them
+  // when their switches are on). `site` names the caller for the ledger and the logs.
+  xAttack(g, pct, target, site) {
+    return g.attack(pct, target, this.me);
+  }
+
+  xDonate(g, pct, target, site) {
+    return g.donate(pct, target, this.me);
+  }
+
+  xBoatTo(g, pct, land, radius, site) {
+    return radius === undefined ? g.boatTo(pct, land, this.me) : g.boatTo(pct, land, this.me, radius);
+  }
+
+  xBoat(g, pct, water, dir, site) {
+    return g.boat(pct, water, dir, this.me);
+  }
+
+  xRetreat(g, target, site) {
+    return g.retreat(target, this.me);
+  }
+
+  xChase(g, pct, id, site) {
+    return g.chase(pct, id, this.me);
+  }
+
+  xRecall(g, id, site) {
+    return g.recall(id, this.me);
+  }
+
   // Smallest command worth its fee (feeK x the fee of a land attack).
   minCmd(g) {
     return this.p.feeK * iV(12 * g.bal[this.me], 1024);
@@ -481,7 +538,7 @@ class Strategy {
     if (bal <= 0 || troops <= 0) return false;
     let pct = Math.ceil((troops * 1024) / bal) - 1;
     pct = Math.max(0, Math.min(1023, pct));
-    const ok = g.attack(pct, target, this.me);
+    const ok = this.xAttack(g, pct, target, 'send');
     if (ok) this.cmds++;
     return ok;
   }
@@ -1008,7 +1065,7 @@ class General extends Strategy {
     if (max < min) return false;
     const amount = hit.neutral ? Math.min(max, Math.max(3 * hit.size + 300, min)) : max;
     const pct = Math.max(0, Math.min(1023, Math.ceil((amount * 1024) / bal) - 1));
-    if (!g.boatTo(pct, hit.land, me)) return false;
+    if (!this.xBoatTo(g, pct, hit.land, undefined, 'boatOut')) return false;
     this.boats++;
     this.cmds++;
     return true;
@@ -1842,7 +1899,7 @@ class V13 extends Style {
     const land = this.beachhead(g, q);
     if (land < 0) return 0;
     const pct = Math.max(0, Math.min(1023, Math.ceil((amount * 1024) / bal) - 1));
-    if (!g.boatTo(pct, land, me)) return 0;
+    if (!this.xBoatTo(g, pct, land, undefined, 'frontBoat')) return 0;
     this.boats++;
     this.cmds++;
     return amount;
@@ -1887,8 +1944,8 @@ class V13 extends Style {
     const P = this.p, me = this.me;
     // In the real game a chase at 849/1024 aimed at one's own boat turns it
     // back (the sim's chase skips 849 and offers recall instead).
-    const recall = typeof g.recall === 'function' ? (id) => g.recall(id, me)
-      : typeof g.chase === 'function' ? (id) => g.chase(849, id, me) : null;
+    const recall = typeof g.recall === 'function' ? (id) => this.xRecall(g, id, 'bank')
+      : typeof g.chase === 'function' ? (id) => this.xChase(g, 849, id, 'bank') : null;
     if (!recall || !g.bRoute || g.boatNextId === undefined) return false;
     if (!this.bankIds) this.bankIds = new Set();
     let on = 0;
@@ -1922,7 +1979,7 @@ class V13 extends Style {
     }
     if (land < 0) return false;
     const pct = Math.max(0, Math.min(1023, Math.floor(((bal - fee - keep) * 1024) / bal) - 1));
-    if (!g.boatTo(pct, land, me)) return false;
+    if (!this.xBoatTo(g, pct, land, undefined, 'bank')) return false;
     this.bankIds.add((g.boatNextId + 65535) % 65536);
     this.lastBank = g.t;
     this.boats++;
@@ -2014,7 +2071,7 @@ class V13 extends Style {
     if (max < min) return false;
     const amount = Math.min(max, Math.max(P.foodK * hit.cost, min));
     const pct = Math.max(0, Math.min(1023, Math.ceil((amount * 1024) / bal) - 1));
-    if (!g.boatTo(pct, hit.land, me)) return false;
+    if (!this.xBoatTo(g, pct, hit.land, undefined, 'boatFood13')) return false;
     this.boats++;
     this.cmds++;
     return true;
@@ -2086,7 +2143,7 @@ class V13 extends Style {
     const base = g.slotBase(me);
     for (let i = g.atkCount[me] - 1; i >= 0; i--) {
       const q = g.atkTarget[base + i];
-      if (q < g.humans) g.retreat(q, me);
+      if (q < g.humans) this.xRetreat(g, q, 'hold');
     }
     return true;
   }
@@ -2900,6 +2957,12 @@ function trip(d, troops, t0) {
   }
 }
 
+// v28: the command exit of the module-level sea functions below is the Policy that owns `state`
+// (state.gate, set in the Policy constructor); a bare state gets the pass-through exits of Strategy.
+function gateOf(state, me) {
+  return state.gate ?? (state.gate = new Strategy({}, me));
+}
+
 function troopsFor(need, d, t0) {
   need = Math.max(1, need);
   let lo = Math.max(60, need), hi = 2 * lo + 200;
@@ -3217,7 +3280,8 @@ function frogHopStep(g, me, state, opts = {}) {
   if (sendTr + fee > maxAbsCost) return false;
 
   const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / B) - 1));
-  const launched = g.boatTo ? g.boatTo(pct, hop.landPix, me, 12) : g.boat(pct, hop.waterPix, hop.dir, me);
+  const gate = gateOf(state, me);
+  const launched = g.boatTo ? gate.xBoatTo(g, pct, hop.landPix, 12, 'frogHop') : gate.xBoat(g, pct, hop.waterPix, hop.dir, 'frogHop');
   if (!launched) {
     state.inFlightIsles.set(bestIdx, g.t + 90);
     return false;
@@ -3524,13 +3588,13 @@ function handoffFootholds(g, me, state, safeFloorFn) {
     const avail = B - fee - safe;
     if (info.reigniteOnly) {
       if (g.attackTroopsOn(me, q) >= 0.08 * B) {
-        g.attack(0, q, me);
+        gateOf(state, me).xAttack(g, 0, q, 'handoffReignite');
       }
     } else if (avail > fee * 2) {
       const want = info.wantTroops ? Math.min(avail, info.wantTroops) : Math.min(avail, Math.floor(0.12 * B));
       if (want > fee * 2) {
         const pct = Math.max(0, Math.min(1023, Math.ceil((want * 1024) / B) - 1));
-        g.attack(pct, q, me);
+        gateOf(state, me).xAttack(g, pct, q, 'handoff');
       }
     }
     state.pendingHandoffs.delete(q);
@@ -3584,7 +3648,7 @@ function reigniteNewBorders(g, me, state, cnt, minShare = 0.10) {
       }
       if (unignited >= 6) {
         state.lastActiveCnt.set(q, curCnt);
-        if (g.attack(0, q, me)) return true;
+        if (gateOf(state, me).xAttack(g, 0, q, 'reignite')) return true;
       }
     }
   }
@@ -3641,7 +3705,8 @@ function widenFrontBoats(g, me, state, cnt, opts = {}) {
   if (!sendTr || sendTr + effFee > 0.07 * B) return false;
 
   const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / B) - 1));
-  const ok = g.boatTo ? g.boatTo(pct, bestSpot.landPix, me, 12) : g.boat(pct, bestSpot.waterPix, bestSpot.dir, me);
+  const gate = gateOf(state, me);
+  const ok = g.boatTo ? gate.xBoatTo(g, pct, bestSpot.landPix, 12, 'widenFront') : gate.xBoat(g, pct, bestSpot.waterPix, bestSpot.dir, 'widenFront');
   if (!ok) return false;
   state.widenCount.set(targetQ, (state.widenCount.get(targetQ) ?? 0) + 1);
   state.widenLandings ??= new Map();
@@ -3781,6 +3846,7 @@ export class Policy extends V17 {
     this.lastFlashLoan = -999;
     this.flStats = { runs: 0, printed: 0, targets: 0 };
     this.seaState = {
+      gate: this, // v28: the module-level sea functions send their commands through this Policy (see gateOf)
       sentBoats: new Map(),
       pendingHandoffs: new Map(),
       widenCount: new Map(),
@@ -3904,7 +3970,7 @@ export class Policy extends V17 {
                 if (curB < 500 || iV(32 * curB, 1024) > 0.16 * budgetHint) break;
                 const sendTr = Math.max(60, Math.ceil(needOnShore * Math.exp(P.boatDecay * sp.d)));
                 const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / curB) - 1));
-                const launched = g.boatTo ? g.boatTo(pct, sp.landPix, me, 12) : g.boat(pct, sp.waterPix, sp.dir, me);
+                const launched = g.boatTo ? this.xBoatTo(g, pct, sp.landPix, 12, 'sendWiden') : this.xBoat(g, pct, sp.waterPix, sp.dir, 'sendWiden');
                 if (launched) {
                   this.seaState.widenLandings ??= new Map();
                   const wl = this.seaState.widenLandings.get(target) ?? [];
@@ -4274,7 +4340,7 @@ export class Policy extends V17 {
               ? (underEmergencyFire ? 220 : 160)
               : (underEmergencyFire ? 150 : 115);
           const pct = Math.min(maxPct, targetPct);
-          if (pct >= 55 && g.donate(pct, bossId, me)) {
+          if (pct >= 55 && this.xDonate(g, pct, bossId, 'bossRescue')) {
             this.lastDonateTick = g.t;
             this.lastBossDonateTick = g.t;
             this.cmds++;
@@ -4293,7 +4359,7 @@ export class Policy extends V17 {
       for (const { q } of bossAttackers) {
         if (!g.alive[q] || g.terr[q] < 100) continue;
         if ((this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)) {
-          if (g.attack(82, q, me)) { // ~8.0%B light assist with 36t cooldown!
+          if (this.xAttack(g, 82, q, 'bossAssist')) { // ~8.0%B light assist with 36t cooldown!
             this.cmds++;
             this.lastAssistPokeTick = g.t;
             this.hitTo.set(q, g.t);
@@ -4365,7 +4431,7 @@ export class Policy extends V17 {
       if ((bossInAtk > 0 || dBoss < 112) && B > 1.15 * bossFloor) {
         const maxPct = Math.floor(((B - bossFloor) * 1024) / B);
         const pct = Math.min(maxPct, boxedIn ? 260 : 180);
-        if (pct >= 120 && g.donate(pct, bossId, me)) {
+        if (pct >= 120 && this.xDonate(g, pct, bossId, 'bossDonate')) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
@@ -4505,7 +4571,7 @@ export class Policy extends V17 {
     const pct = Math.min(maxSafePct, idealPct);
     if (pct < 150) return false; // Never send tiny transfers (<12.5%B) that suffer >33% tax loss!
 
-    if (g.donate(pct, bestTarget, me)) {
+    if (this.xDonate(g, pct, bestTarget, bestKind)) {
       this.lastDonateTick = g.t;
       this.cmds++;
       if (typeof window !== "undefined" && window.__hlLog) {
@@ -4658,7 +4724,7 @@ export class Policy extends V17 {
     if (!st) return false;
     if (g.t > st.expireTick) {
       if (st.phase === 'wait_expand' && g.hasAttack(me, st.E)) {
-        g.retreat(st.E, me);
+        this.xRetreat(g, st.E, 'flashLoan');
       }
       this.flState = null;
       return false;
@@ -4671,12 +4737,12 @@ export class Policy extends V17 {
           this.flState = null;
           return false;
         }
-        if (g.attack(1023, st.E, me)) {
+        if (this.xAttack(g, 1023, st.E, 'flashLoan')) {
           this.cmds++;
           if (!g.online && st.extraTargets?.length) {
             for (const b of st.extraTargets) {
               if (g.alive[b] && g.attackTroopsOn(b, me) === 0 && !g.hasAttack(me, b) && g.hasFreeSlot(me)) {
-                g.attack(0, b, me);
+                this.xAttack(g, 0, b, 'flashLoan');
                 this.cmds++;
               }
             }
@@ -4700,7 +4766,7 @@ export class Policy extends V17 {
       }
       if (!bFresh || g.t >= st.armTick + 9) {
         if (g.hasAttack(me, st.E)) {
-          if (g.retreat(st.E, me)) {
+          if (this.xRetreat(g, st.E, 'flashLoan')) {
             this.cmds++;
             this.flStats.runs++;
             this.flStats.printed += st.estPrint;
@@ -4781,7 +4847,7 @@ export class Policy extends V17 {
     const extraTargets = !g.online && P.flashLoanMode >= 2 ? cands.slice(1, 3).map((x) => x.q) : [];
     const estPrint = cands.slice(0, 1 + extraTargets.length).reduce((s, x) => s + x.cost, 0);
 
-    if (g.attack(0, B1, me)) {
+    if (this.xAttack(g, 0, B1, 'flashLoan')) {
       this.cmds++;
       this.hitTo.set(B1, g.t);
       this.flState = {
@@ -5389,7 +5455,7 @@ export class Policy extends V17 {
           if (curB < 200 || g.boatCount[me] >= 5) break;
           const sendTr = Math.max(30, dh.boatTroops);
           const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / curB) - 1));
-          const ok = g.boatTo ? g.boatTo(pct, sp.landPix, me, 12) : g.boat(pct, sp.waterPix, sp.dir, me);
+          const ok = g.boatTo ? this.xBoatTo(g, pct, sp.landPix, 12, 'doorHarvest') : this.xBoat(g, pct, sp.waterPix, sp.dir, 'doorHarvest');
           if (ok) {
             this.seaState.stats.door_harvest.boats++;
             this.seaState.stats.door_harvest.fee += iV(32 * curB, 1024);
@@ -5500,7 +5566,7 @@ export class Policy extends V17 {
           if (curB < 500 || iV(32 * curB, 1024) > 0.14 * wantLandTroops) break;
           const sendTr = Math.max(60, Math.ceil(6 * Math.exp(P.boatDecay * sp.d)));
           const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / curB) - 1));
-          const ok = g.boatTo ? g.boatTo(pct, sp.landPix, me, 12) : g.boat(pct, sp.waterPix, sp.dir, me);
+          const ok = g.boatTo ? this.xBoatTo(g, pct, sp.landPix, 12, 'narrowBoatFirst') : this.xBoat(g, pct, sp.waterPix, sp.dir, 'narrowBoatFirst');
           if (ok) {
             this.seaState.widenLandings ??= new Map();
             const wl = this.seaState.widenLandings.get(q) ?? [];
@@ -5659,7 +5725,7 @@ export class Policy extends V17 {
               ? Math.min(fullAmount, Math.max(60, Math.ceil(6 * grow)))
               : Math.min(fullAmount, Math.max(60, Math.ceil((3 * (2 + 3.2 * doDens) + 25) * grow)));
           const pct = Math.max(0, Math.min(1023, Math.ceil((bridgeAmt * 1024) / bal) - 1));
-          if (g.boatTo(pct, hit.land, me)) {
+          if (this.xBoatTo(g, pct, hit.land, undefined, 'boatFoodBridge')) {
             this.seaState.pendingHandoffs.set(o, {
               expireTick: g.t + 160,
               initialCnt: 0,
@@ -5675,7 +5741,7 @@ export class Policy extends V17 {
     }
 
     const pct = Math.max(0, Math.min(1023, Math.ceil((fullAmount * 1024) / bal) - 1));
-    if (!g.boatTo(pct, hit.land, me)) return false;
+    if (!this.xBoatTo(g, pct, hit.land, undefined, 'boatFood')) return false;
     this.boats++;
     this.cmds++;
     return true;
