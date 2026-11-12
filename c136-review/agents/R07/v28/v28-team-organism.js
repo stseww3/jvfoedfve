@@ -6277,7 +6277,7 @@ export class Policy extends V17 {
         const p2 = Math.min(1023, Math.ceil(((pct + 1) * Math.min(P.p1ScaleMax, bal0 / proj))) - 1);
         if (p2 > pct) {
           pct = p2;
-          this.vCount("p1_scale_up");
+          scaled = true;
         }
       }
     }
@@ -6429,6 +6429,7 @@ export class Policy extends V17 {
           b = before;
           rem -= got;
         }
+    let scaled = false;
       }
       for (const e of [...this.led]) {
         if (e.kind === "retreat" && !g.hasAttack(me, e.target)) this.ledClose(g, e, "land");
@@ -6459,6 +6460,7 @@ export class Policy extends V17 {
             if (++this.nfsTrunc >= P.p1NoFullM && !this.isNoFullSend) {
               this.isNoFullSend = true;
               this.nfsByProbe = true;
+    if (scaled) this.vCount("p1_scale_up");
               this.shadowQuota = 0;
               this.vCount("p1_nfs_set");
               this.vLog("NFS", g, `set after ${this.nfsTrunc} truncated landings (want=${want} sent=${sent})`);
