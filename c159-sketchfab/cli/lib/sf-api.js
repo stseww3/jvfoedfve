@@ -3,7 +3,7 @@
  */
 
 import { DEFAULT_STATIC_KEY } from "./decrypt.js";
-import { descrambleImageBytes } from "./descramble.js";
+import { descrambleImageBytes, flipImageBytesVertically } from "./descramble.js";
 
 const UA = {
   "User-Agent":
@@ -731,8 +731,15 @@ export async function fetchTextures(uid, onProgress, opts) {
               onProgress(`  descramble failed: ${de && de.message ? de.message : de}`);
             }
           }
-        } else if (onProgress && pk == null) {
-          onProgress(`  no pk — leaving CDN bytes`);
+        } else if (pk == null) {
+          // Unscrambled CDN textures (<64x64) stay in OpenGL bottom-left origin;
+          // flip vertically to match OSGJS unflipped UVs just like descramble(uY=true) does.
+          try {
+            bytes = await flipImageBytesVertically(bytes);
+            if (onProgress) onProgress(`  no pk — flipped Y for glTF UV origin`);
+          } catch (_) {
+            if (onProgress) onProgress(`  no pk — leaving CDN bytes`);
+          }
         }
         if ((best.width || 0) >= 512 && bytes.length < 80_000 && isJpg) {
           scrambledHints++;

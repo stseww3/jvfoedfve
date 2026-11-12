@@ -581,3 +581,14 @@ export async function descrambleImageBytes(bytes, pk, onProgress) {
   const out = descrambleRgba(rgba, width, height, key, true);
   return encodePngRgba(out, width, height);
 }
+
+export async function flipImageBytesVertically(bytes) {
+  const { rgba, width, height } = await decodeToRgba(bytes);
+  const out = new Uint8ClampedArray(width * height * 4);
+  const stride = width * 4;
+  for (let y = 0; y < height; y++) {
+    const srcOff = (height - 1 - y) * stride;
+    out.set(rgba.subarray(srcOff, srcOff + stride), y * stride);
+  }
+  return encodePngRgba(out, width, height);
+}
