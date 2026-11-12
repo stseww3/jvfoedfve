@@ -43,8 +43,8 @@
    "described": 266,
    "describedOk": 266,
    "sample": 33,
-   "checked": 5,
-   "same": 5
+   "checked": 6,
+   "same": 6
   },
   "verify": {
    "total": 31,
@@ -55,20 +55,6 @@
    "sample": 11,
    "checked": 0,
    "same": 0
-  },
-  "fill": {
-   "total": 0,
-   "gated": 0,
-   "ungated": 0,
-   "described": 0,
-   "describedOk": 0
-  },
-  "arena-rp1530": {
-   "total": 0,
-   "gated": 0,
-   "ungated": 0,
-   "described": 0,
-   "describedOk": 0
   }
  },
  "ungated": [
@@ -462,11 +448,12 @@
  "strayLogged": 152,
  "strategyShas": 4,
  "check": {
-  "n": 11,
-  "same": 11,
-  "leaves": 15878,
-  "pending": 50,
+  "n": 12,
+  "same": 12,
+  "leaves": 17013,
+  "pending": 49,
   "notGated": 0,
+  "redo": 0,
   "bad": []
  },
  "history": {
@@ -474,8 +461,8 @@
   "results": 406,
   "badWindows": [],
   "ungated": 280,
-  "anchored": 75,
-  "anchoredWindows": 33,
+  "anchored": 79,
+  "anchoredWindows": 34,
   "ungatedWindows": 84
  }
 }

@@ -9,6 +9,8 @@
 #   1. calib/run-log.jsonl 里有它的流水（g0_batch.mjs 每跑完一次记一行，带进程的 nice 值）：nice = 19 是经闸门，其余不是；
 #   2. 没有流水的（记流水之前跑的）：文件时间早于 STRAY_START 的是 R06 的队列经闸门跑的（那之前没有别的进程在跑）；
 #      晚于它的不是（16:36 之后到开始记流水为止，R06 的队列没有排到过槽位，队列日志可以核对）。
+#      这一条的结果已经定格在 calib/run-prov-base.json 里（11 月 12 日 17:50 的分类）：工作区在 20:53 被整个清掉、重新检出过，
+#      文件时间从那以后不可信，列在定格文件里的结果按定格的分类算。
 #
 # 抽哪些：ALL_DIRS 里的目录（verify、闭环房间）没经闸门的全部重跑；其余目录按「目录/标签」的 sha1 取模，余数是 0 的抽中
 #（清单后来变长了，原先抽中的还是抽中的），再加上 ALWAYS 里点名的。
@@ -111,6 +113,13 @@ def main():
                 stray_logged += 1
                 if stray_last is None or r['at'] > stray_last:
                     stray_last = r['at']
+    # 定格的分类：工作区在 11 月 12 日 20:53（UTC）被整个清掉、重新检出过，文件的修改时间从那以后不可信。
+    # 清掉之前最后一次提交里的分类（当时文件时间还是原样的）存成 calib/run-prov-base.json，这里列出的结果按它算，不再看文件时间。
+    base_gated, base_ungated = set(), set()
+    bf = os.path.join(CALIB, 'run-prov-base.json')
+    if os.path.exists(bf):
+        b = json.load(open(bf, encoding='utf8'))
+        base_gated, base_ungated = set(b.get('gated', [])), set(b.get('ungated', []))
     plan = plan_lines()
     dirs = []
     for p in plan:
@@ -134,8 +143,13 @@ def main():
             tag = f[:-5]
             tot += 1
             r = log.get((d, tag))
+            key = '%s/%s' % (d, tag)
             if r is not None:
                 ok = r.get('nice') == 19
+            elif key in base_gated:
+                ok = True                     # 定格的分类（calib/run-prov-base.json）：当时按文件时间判定是经闸门跑的
+            elif key in base_ungated:
+                ok = False
             else:
                 ok = os.path.getmtime(os.path.join(full, f)) < STRAY_START
             if ok:
@@ -231,7 +245,13 @@ def main():
     prov['strategyShas'] = len(shas)
 
     # 核对：抽查清单里已经由 R06 的队列经闸门重跑出来的（流水里 nice = 19），对原结果逐字段比（tools/same_result.mjs，计时字段除外）
-    chk = {'n': 0, 'same': 0, 'leaves': 0, 'pending': 0, 'notGated': 0, 'bad': []}
+    chk = {'n': 0, 'same': 0, 'leaves': 0, 'pending': 0, 'notGated': 0, 'redo': 0, 'bad': []}
+    def trunc_only_rerun(rerun, orig):
+        try:
+            a = json.load(open(rerun, encoding='utf8')); b = json.load(open(orig, encoding='utf8'))
+        except (ValueError, OSError):
+            return False
+        return bool(a.get('truncated')) and not b.get('truncated')
     for d, tags in by_dir.items():
         rdir = os.path.join(CALIB, 'batchcheck', 'prov', d)
         tmp = tempfile.mkdtemp(prefix='r06-prov-')
@@ -240,6 +260,10 @@ def main():
             for tag in tags:
                 f = os.path.join(rdir, tag + '.json')
                 r = log.get(('batchcheck/prov/' + d, tag))
+                if os.path.exists(f) and trunc_only_rerun(f, os.path.join(CALIB, d, tag + '.json')):
+                    # 重跑的这一次被时间预算截断了、原结果没有截断：两个结果停在不同的拍上，不能比。删掉，留给队列下一批重跑。
+                    os.remove(f)
+                    chk['redo'] += 1
                 if not os.path.exists(f):
                     chk['pending'] += 1
                 elif r is None or r.get('nice') != 19:
