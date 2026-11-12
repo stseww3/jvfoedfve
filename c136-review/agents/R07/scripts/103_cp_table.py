@@ -450,7 +450,7 @@ def main():
 
     # ---------- 表 3：版本对照
     P("## 表 3：另一个历史版本（原文）在同一断面、同一通道下：ln ρ(Vb) − ln ρ(Va)")
-    P("（A007 历史上用 Va，其余 10 局用 Vb；另一版本和本局版本用同样的种子比）")
+    P("（A007 历史上用 Va，其余 10 局用 Vb；另一版本和本局版本用同样的种子比；C2 只用扰动种子，因为种子 0 的本局版本不走偏）")
     P("局\t断面\t看多少拍\tC1：ln ρ(Vb) − ln ρ(Va)\tC2：ln ρ(Vb) − ln ρ(Va)\t种子数")
     verd = {"C1": [], "C2": []}
     for g in GAMES:
@@ -462,7 +462,8 @@ def main():
                 for ch in ("C1", "C2"):
                     ra = {r["seed"]: math.log(float(r["rho"])) for r in sel(g, ch, T0, hh, variant=alt, native=False) if float(r["rho"]) > 0}
                     rn = {r["seed"]: math.log(float(r["rho"])) for r in sel(g, ch, T0, hh) if float(r["rho"]) > 0}
-                    common = sorted(set(ra) & set(rn))
+                    # C2 的种子 0 不走偏（等于历史），另一版本一接管就走偏，两者不能直接比：C2 只用扰动种子
+                    common = sorted(x for x in set(ra) & set(rn) if not (ch == "C2" and x == 0))
                     if not common:
                         cells.append("-")
                         ns.append(0)

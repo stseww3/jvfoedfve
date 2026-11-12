@@ -326,6 +326,29 @@ def main():
             rows.append([ch, x["games"], x["n"], r3(x["slope"], 2), r3(x["r"], 2)])
     T["席位弹性"] = md(["通道", "局数", "席位数", "斜率", "相关系数"], rows)
 
+    # ---- 逐局一行
+    rows = []
+    for g in GAMES:
+        e = E.get(g) or {}
+        spans = []
+        for w in WINS:
+            x = (e.get("win") or {}).get(w)
+            if x and x["n"] and x["heldShare"] >= 0.5:
+                a, b = (w.split("~") + [""])[:2] if "~" in w else (w.split(" ")[0], "终局")
+                if spans and spans[-1][1] == a:
+                    spans[-1][1] = b
+                else:
+                    spans.append([a, b])
+        sp = "、".join(f"{a}~{b}" for a, b in spans) if spans else "没有"
+        d = (J.get("games") or {}).get(g, {}).get("t0_1500") or {}
+        rb = d["rule"] + d["base"] if d.get("rule") is not None and d.get("base") is not None else None
+        row = [g, (e.get("ver") or "").capitalize(), sp, r3(d.get("rhoH")), sg(d.get("total")), sg(d.get("spawn")), sg(rb), sg(d.get("hold"))]
+        for T0 in (630, 1500, 4284):
+            x = (J.get("win") or {}).get(g, {}).get(f"t{T0}_h900")
+            row.append(sg(x["hold"]) if x else "—")
+        rows.append(row)
+    T["逐局"] = md(["局", "版本", "历史上过半指令被按住的时段（发令拍）", "1500 拍的 ρ", "到 1500 拍的落后", "出生站位", "既有规则（含基础延迟）", "按住与成批放行", "按住与成批放行：630 → 1530", "1500 → 2400", "4284 → 5184"], rows, align="lllrrrrrrrr")
+
     # ---- 种子数一览
     rows = []
     for g in GAMES:
