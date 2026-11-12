@@ -41,7 +41,7 @@ def pc(x, nd=0):
 
 def md(head, rows, align=None):
     if not rows:
-        return "（这张表对应的对照还没有跑出来。）"
+        return "（这张表对应的对照没有跑，表留空。）"
     out = ["| " + " | ".join(head) + " |", "|" + "|".join((":--" if (align and align[i] == "l") or (not align and i == 0) else "--:") for i in range(len(head))) + "|"]
     for r in rows:
         out.append("| " + " | ".join(str(c) for c in r) + " |")
@@ -592,8 +592,8 @@ def main():
     F0["a039noise630"] = (f"C1 换一个种子，这一窗的 ln ρ 就相差 {r3(a39['range'], 2)}，这个数在只换种子的波动之内" if a39
                           else "这个数是单个种子的噪声量级")
     late_n = [len([x_ for x_ in SS if x_["T0"] == T0_ and x_["h"] == 900 and x_["ch"] == "C1"]) for T0_ in (1500, 4284)]
-    F0["seedLateNote"] = "（这两个断面 C1 的第二个种子还没有跑出来）" if not any(late_n) else \
-        f"（1500 断面已有 {late_n[0]} 局，4284 断面" + (f"已有 {late_n[1]} 局" if late_n[1] else "还没有") + "，见上表）"
+    F0["seedLateNote"] = "（这两个断面 C1 的第二个种子没有跑）" if not any(late_n) else \
+        f"（1500 断面有 {late_n[0]} 局，4284 断面" + (f"有 {late_n[1]} 局" if late_n[1] else "没有") + "，见上表）"
     # C2 的帧内先后改成随机的检查
     RP = J.get("rpCheck") or []
     if RP:
@@ -1082,10 +1082,12 @@ def main():
     lack = [f"断面 {T0}（{'还没有' if not nseed[T0] else f'已有 {nseed[T0]} 局'}）" for T0 in (0, 630, 1500) if nseed[T0] < 11]
     if lack:
         todo.append("C1 的第二个随机数种子：" + "、".join(lack) + "（§8）")
-    F["delaySensNote"] = "（§8 给了几种取法下的结果）" if (J.get("sens") or {}) else "（§8 原计划给出几种取法下的结果，这一组对照还没有跑出来）"
+    F["delaySensNote"] = "（§8 给了几种取法下的结果）" if (J.get("sens") or {}) else "（§8 原计划给出几种取法下的结果，这一组对照没有跑）"
     if todo:
-        F["todoLine"] = "重计算槽位紧张（`outbox/0021`、`outbox/0023`），下面几样没有跑完，报告里对应的表留空或只有部分局：" + "；".join(todo) + \
-            "。跑出来以后补进这份报告。原计划每种通道 3 个种子，现在大多数格只有 1 个（§8 末尾的表）；第三个种子、零延迟通道的其余种子、4284 断面的第二个种子等次要对照已从清单里删掉，不再补。"
+        F["todoLine"] = "下面几样没有跑完，也不再补，报告里对应的表留空或只有部分局：" + "；".join(todo) + \
+            "。它们是敏感性对照，不是上面几条结论所依据的主对照。没跑完的原因：重计算槽位一直紧张（`outbox/0021`、`outbox/0023`）；" \
+            "2026-11-12 20:53 UTC 各次对照的输出缓存丢失（`outbox/0025`），之后我没有重建缓存，也不再往这份报告里加新的对照（原因见 §1 第 4 点和 `outbox/0027`）。" \
+            "原计划每种通道 3 个种子，现在大多数格只有 1 个（§8 末尾的表）；第三个种子、零延迟通道的其余种子、4284 断面的第二个种子等次要对照此前已从清单里删掉。"
     else:
         F["todoLine"] = "计划内的对照都已跑完。原计划每种通道 3 个种子，实际大多数格只有 1~2 个（§8 末尾的表）；第三个种子等次要对照已从清单里删掉。"
     # 接管那一拍在途的指令：离线通道放行的条数 对 录像里实际在途并落地的条数
