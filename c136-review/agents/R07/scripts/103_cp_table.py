@@ -783,7 +783,8 @@ def main():
             for key, chan, seeds in (("C2p", "C2", PERT), ("C1", "C1", (0, 1, 2)), ("C0", "C0", (0, 1, 2))):
                 rr = sel(g, chan, T0, 900, seeds=seeds)
                 if rr:
-                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr)}
+                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr),
+                                "aSs": [r["aS"] for r in rr], "rhos": [float(r["rho"]) for r in rr]}
             if not any(k in rec for k in ("C2p", "C1", "C0")):
                 continue
             J["winLevel"].setdefault(g, {})[str(T0)] = rec

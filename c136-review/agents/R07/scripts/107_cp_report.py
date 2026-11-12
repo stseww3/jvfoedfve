@@ -395,6 +395,7 @@ def main():
     WL = J.get("winLevel") or {}
     rows = []
     wl_h = []
+    wl_multi = []
     for g in GAMES:
         x = (WL.get(g) or {}).get("4284")
         if not x:
@@ -403,7 +404,14 @@ def main():
 
         def lvl(k):
             y = x.get(k)
-            return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）" if y else "—"
+            if not y:
+                return "—"
+            ss = y.get("aSs") or [y["aS"]]
+            if len(set(ss)) > 1:
+                # 几个种子的在场号不一样：ρ 写平均，在场号写范围，并在表前说明
+                wl_multi.append(f"{g} 的 {'C2' if k == 'C2p' else k}（{len(ss)} 个种子）")
+                return f"{r3(y['rho'], 2)}（{min(ss):g}~{max(ss):g} 个号）"
+            return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）"
         c1, c2 = x.get("C1"), x.get("C2p")
         if ((J.get("win") or {}).get(g, {}).get("t4284_h900") or {}).get("excl"):
             hs = "不计入（见下文）"
@@ -416,6 +424,7 @@ def main():
         else:
             hs = "—"
         rows.append([g, f"{r3(x['rho0'], 2)}（{x['aS0']} 个号）", pc(held) if held is not None else "—", lvl("H"), lvl("C2p"), lvl("C1"), hs])
+    F0["wlMultiNote"] = (f"有几个种子的格写的是各种子的平均；{'、'.join(wl_multi)}各种子窗末的在场号不同，写的是范围。") if wl_multi else ""
     T["窗口-4284-水平"] = md(["局", "4284 拍：ρ（我方在场号）", "这 900 拍里被按住的指令占比", "5184 拍 历史", "C2（同样走偏）", "C1", "按住与成批放行（ln ρ 之差）"], rows)
     if wl_h:
         hv_ = [h_ for _, h_, _ in wl_h]
@@ -650,11 +659,30 @@ def main():
             F0["a082dMin"], F0["a082dMax"] = sg(min(ds_), 2), sg(max(ds_), 2)
             F0["a082armsN"] = str(len(AW["arms"]))
             F0["a082histWorst"] = "历史上的结果是其中最低的" if hh_["d"] <= min(x["d"] for x in AW["arms"]) + 1e-9 else "历史上的结果不是其中最低的"
+        a85c1s1, a85c2s1 = arm(4285, "C1", 1), arm(4285, "C2", 1)
         if a84c2 and a84c2s1:
             F0["a082pertSame"] = "窗末的领土和在场号完全相同" if (a84c2["LS"], a84c2["aS"]) == (a84c2s1["LS"], a84c2s1["aS"]) else f"窗末的 ln ρ 变化是 {sg(a84c2s1['d'], 2)}"
-        # 4285 拍接管以后新增的种子（有了才写）
-        more = [x for x in AW["arms"] if x["take"] == 4285 and not (x["chan"] in ("C1", "C2") and x["seed"] == 0 and not x["variant"])]
-        F0["a082moreLine"] = ("从 4285 拍接管再换种子跑：" + "；".join(f"{arm_name(x)} 是 {sg(x['d'], 2)}（剩 {x['aS']} 个号）" for x in more) + "。") if more else ""
+            if a85c2s1:
+                F0["a082pertSame"] += "；从 4285 拍接管的那一条" + ("每个记录拍都与历史相同" if a85c2s1["sameAsHist"] else f"窗末的 ln ρ 变化是 {sg(a85c2s1['d'], 2)}")
+        described = [a85c2, a85c1]
+        if a85c2 and a85c1 and a84c2 and a84c1:
+            if a85c1s1:
+                # C1 有了第二个种子：通道之差两个种子各写一个；同一种通道只换种子差多少另写一条
+                F0["a082gapChanLine"] = (f"有这条赠兵时（4285 拍接管）C1 的两个种子与 C2 分别差 {r3(abs(a85c1['d'] - a85c2['d']), 2)} 和 {r3(abs(a85c1s1['d'] - a85c2['d']), 2)}，"
+                                         f"没有时（4284 拍接管）只差 {F0['a082gapChan4284']}。")
+                F0["a082c1seedLine"] = (f"\n- 同一种通道（C1）、同样从 4285 拍接管，只换一组随机抽的延迟和帧内先后，ln ρ 的变化一条是 {sg(a85c1['d'], 2)}（剩 {a85c1['aS']} 个号），"
+                                        f"另一条是 {sg(a85c1s1['d'], 2)}（剩 {a85c1s1['aS']} 个号），相差 {r3(abs(a85c1['d'] - a85c1s1['d']), 2)}：换种子的差别与换通道的差别一样大。")
+                described += [a85c1s1]
+            else:
+                F0["a082gapChanLine"] = f"有这条赠兵时（4285 拍接管）C1 与 C2 差 {F0['a082gapChan4285']}，没有时（4284 拍接管）只差 {F0['a082gapChan4284']}。"
+                F0["a082c1seedLine"] = ""
+        if a85c2s1:
+            described += [a85c2s1]
+        near = [x for x in AW["arms"] if x["take"] == 4285 and x["chan"] == "C1" and not x["variant"] and abs(x["d"] - hh_["d"]) < 0.2]
+        F0["a082nearHist"] = f"基础延迟通道的一条轨迹（{sg(near[0]['d'], 2)}）也落在历史（{sg(hh_['d'], 2)}）附近；" if near else ""
+        # 4285 拍接管的其余轨迹（上面几条没有写到的；有了才写）
+        more = [x for x in AW["arms"] if x["take"] == 4285 and not any(x is y for y in described)]
+        F0["a082moreLine"] = ("从 4285 拍接管的其余轨迹：" + "；".join(f"{arm_name(x)} 是 {sg(x['d'], 2)}（剩 {x['aS']} 个号）" for x in more) + "。") if more else ""
     A79 = (J.get("alt4285") or {}).get("A079")
     if A79:
         F0["a079gap4285"], F0["a079gap4284"] = sg(A79["gap4285"]), sg(A79["gap4284"])
