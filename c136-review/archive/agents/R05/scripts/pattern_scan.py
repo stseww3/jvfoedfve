@@ -42,6 +42,8 @@
  P 回合容量   服务器每 7 拍一个回合，指令只在回合的第一拍执行（录像里全部指令的执行拍都是 7 的倍数）。
               统计「一个玩家在一个回合里执行了几条指令」（选点、离场除外）的分布，我方号和其他真人分开。只进 --agg。
  G 中段增长   timeline.csv：编队合计地 630 拍 → 1500 拍的倍数；1500 拍编队份额 ÷ 人数份额（在录像盘的号数 ÷ 真人数；拆盘局不算）。
+              自围 = 采样里 nb=0 且 neut=0（四周只有队友和水，= 策略 `tryDonateToTeammate` L4355 的 boxedIn、`idleBoats` L5023 的被围）；列自围的采样数和其后 90 拍没出手的窗口数。
+ S 不在这一盘 日志里有轨迹的号数 − 这一盘录像名单里对得上的号数。差 ≥2 个 = 编队被分到了不止一个平行实例（拆盘），或有号没进房；只进 --agg / --classes。
 """
 import bisect
 import collections
@@ -52,14 +54,15 @@ import re
 import statistics
 import sys
 
-SRC = '/agent/repos/c136-data'
-CMDS = '/tmp/c136-r05/cmds'
+SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
+BUN = os.environ.get('C136_BUNDLES', 'bundles')   # 验证集：C136_BUNDLES=validation_bundles
+CMDS = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds')
 a = sys.argv[1:]
 opt = lambda k: a[a.index(k) + 1] if k in a else None
 ids = [x for i, x in enumerate(a) if not x.startswith('--') and (i == 0 or a[i - 1] not in ('--tsv', '--json', '--only'))]
 detail, dosum, doclasses, doagg = '--detail' in a, '--sum' in a, '--classes' in a, '--agg' in a
 if not ids:
-    ids = sorted(d for d in os.listdir(f'{SRC}/bundles') if os.path.exists(f'{SRC}/bundles/{d}/replay.txt'))
+    ids = sorted(d for d in os.listdir(f'{SRC}/{BUN}') if os.path.exists(f'{SRC}/{BUN}/{d}/replay.txt'))
 if opt('--only'):
     ids = [x for x in ids if x[0] in opt('--only')]
 HEAD = json.load(open(f'{CMDS}/headers.json'))
@@ -68,7 +71,8 @@ PN = ['0-600', '600-1500', '1500-3000', '3000+']
 per = lambda t: next(i for i, (lo, hi) in enumerate(PER) if lo <= max(0, t) < hi)
 bare = lambda n: re.sub(r'\[[^\]]*\]', '', n or '').strip().lower()
 IDMAP = collections.defaultdict(list)
-for r in csv.DictReader(open(f'{SRC}/src/tools/identity-map-discovery.csv', encoding='utf-8')):
+_idmap = os.environ.get('C136_IDMAP', f'{SRC}/src/tools/identity-map-discovery.csv')   # 验证集没有这份表时：C136_IDMAP=''（B 组轮换名就不换回）
+for r in (csv.DictReader(open(_idmap, encoding='utf-8')) if _idmap and os.path.exists(_idmap) else []):
     IDMAP[r['matchId']].append(r)
 
 
@@ -91,7 +95,7 @@ def ver_of(mid):
 
 
 def scan(mid):
-    B = f'{SRC}/bundles/{mid}'
+    B = f'{SRC}/{BUN}/{mid}'
     card = json.load(open(f'{B}/card.json'))
     hd = HEAD.get(mid) or {}
     if 'error' in hd or not os.path.exists(f'{CMDS}/{mid}.tsv'):
@@ -294,15 +298,18 @@ def scan(mid):
                         rp[per(run[0])][1] += len(run)
                     run = [t]
     # ---- F ----
-    fl = [[0, 0, 0, 0, 0, 0, 0, 0] for _ in PER]     # 采样数, 密度≥100, 其中没出手, 被围, 窗口数, 没出手窗口, 其中 nb≥1, 其中被围
+    fl = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0] for _ in PER]     # 采样数, 密度≥100, 其中没出手, 被围, 窗口数, 没出手窗口, 其中 nb≥1, 其中被围, 自围采样, 自围且没出手的窗口
     for b, L in traj.items():
         dl = don.get(b, [])
         for j, (t, c, dens, nb, neut, terr, _ln) in enumerate(L):
             i = per(t)
             fl[i][0] += 1
             boxed = neut == 0 and nb >= 1
+            selfbox = neut == 0 and nb == 0      # 四周只有队友和水（策略里的 boxedIn）
             if boxed:
                 fl[i][3] += 1
+            if selfbox:
+                fl[i][8] += 1
             idle = None
             if j + 1 < len(L) and L[j + 1][0] - t <= 180:
                 t2, c2 = L[j + 1][0], L[j + 1][1]
@@ -315,6 +322,8 @@ def scan(mid):
                         fl[i][6] += 1
                     if boxed:
                         fl[i][7] += 1
+                    if selfbox:
+                        fl[i][9] += 1
             if dens >= 100:
                 fl[i][1] += 1
                 if idle:
@@ -367,7 +376,7 @@ def scan(mid):
         'B': [{'period': PN[i], 'batches': bt[i][0], 'cmds': bt[i][1]} for i in range(len(PER))], 'batchMax': bmax,
         'R': [{'period': PN[i], 'runs': rp[i][0], 'cmds': rp[i][1]} for i in range(len(PER))],
         'F': [{'period': PN[i], 'samples': fl[i][0], 'dens100': fl[i][1], 'dens100idle': fl[i][2], 'boxed': fl[i][3],
-               'windows': fl[i][4], 'idle': fl[i][5], 'idleNb': fl[i][6], 'idleBoxed': fl[i][7]} for i in range(len(PER))],
+               'windows': fl[i][4], 'idle': fl[i][5], 'idleNb': fl[i][6], 'idleBoxed': fl[i][7], 'selfBoxed': fl[i][8], 'idleSelf': fl[i][9]} for i in range(len(PER))],
         'C': [{'period': PN[i], 'p50': q(cl[i], 0.5), 'p90': q(cl[i], 0.9), 'max': max(cl[i]) if cl[i] else None} for i in range(len(PER))], 'clockBots': len(cl_bots),
         'X': {'midLeaves': len(mid_leave), 'leftRows': len(left_rows), 'firstLeave': min(mid_leave.values()) if mid_leave else None,
               'lagAtLeave': sorted(lag_at_leave)},
@@ -389,7 +398,8 @@ COLS = ['matchId', 'cohort', 'ver', 'result', 'endTick', 'replayTicks', 'covered
         'F2.windows', 'F2.idle', 'F2.idleNb', 'F2.idleBoxed', 'F2.samples', 'F2.dens100', 'F2.dens100idle', 'F2.boxed',
         'C1.p50', 'C1.p90', 'C1.max', 'C2.p90', 'C2.max', 'clockBots',
         'X.midLeaves', 'X.leftRows', 'X.firstLeave', 'X.lagAtLeaveMax',
-        'G.terr630', 'G.terr1500', 'G.x', 'G.shareVsHead1500']
+        'G.terr630', 'G.terr1500', 'G.x', 'G.shareVsHead1500',
+        'F1.selfBoxed', 'F1.idleSelf', 'F2.selfBoxed', 'F2.idleSelf', 'F3.samples', 'F3.selfBoxed']
 
 
 def flat(o):
@@ -411,8 +421,9 @@ def flat(o):
               'Ball.batches': sum(x['batches'] for x in Bx), 'Ball.cmds': sum(x['cmds'] for x in Bx),
               'R1.runs': R[1]['runs'], 'R1.cmds': R[1]['cmds'], 'Rall.runs': sum(x['runs'] for x in R), 'Rall.cmds': sum(x['cmds'] for x in R)})
     for tag, i in (('F1', 1), ('F2', 2)):
-        for k in ('windows', 'idle', 'idleNb', 'idleBoxed', 'samples', 'dens100', 'dens100idle', 'boxed'):
+        for k in ('windows', 'idle', 'idleNb', 'idleBoxed', 'samples', 'dens100', 'dens100idle', 'boxed', 'selfBoxed', 'idleSelf'):
             d[f'{tag}.{k}'] = F[i][k]
+    d['F3.samples'], d['F3.selfBoxed'] = F[3]['samples'], F[3]['selfBoxed']
     d.update({'C1.p50': C[1]['p50'], 'C1.p90': C[1]['p90'], 'C1.max': C[1]['max'], 'C2.p90': C[2]['p90'], 'C2.max': C[2]['max'],
               'X.midLeaves': o['X']['midLeaves'], 'X.leftRows': o['X']['leftRows'], 'X.firstLeave': o['X']['firstLeave'],
               'X.lagAtLeaveMax': max(o['X']['lagAtLeave']) if o['X']['lagAtLeave'] else None,
@@ -516,6 +527,8 @@ if doclasses:
         ('C 有号的时钟比领先号落后 ≥180 拍', lambda o: o['replayTicks'] >= 1500 and o['inReplay'] >= 2, lambda o: o['clockBots'] > 0),
         ('F 600–1500 拍没出手窗口 ≥40%', lambda o: o['F'][1]['windows'] > 0, lambda o: o['F'][1]['idle'] / o['F'][1]['windows'] >= 0.40),
         ('F 600–1500 拍被围且没出手窗口 ≥20%', lambda o: o['F'][1]['windows'] > 0, lambda o: o['F'][1]['idleBoxed'] / o['F'][1]['windows'] >= 0.20),
+        ('F 1500–3000 拍自围的采样 ≥30%', lambda o: o['F'][2]['samples'] > 0, lambda o: o['F'][2]['selfBoxed'] / o['F'][2]['samples'] >= 0.30),
+        ('S 日志里的号有 ≥2 个不在这一盘录像里', lambda o: o['logBots'] > 0, lambda o: o['logBots'] - o['inReplay'] >= 2),
         ('G 630→1500 拍编队地不到 2 倍', lambda o: o['G']['x'] is not None, lambda o: o['G']['x'] < 2.0),
         ('G 1500 拍份额÷人数份额 < 0.5', lambda o: o['G']['shareVsHead1500'] is not None, lambda o: o['G']['shareVsHead1500'] < 0.5),
     ]
@@ -595,6 +608,14 @@ if doagg:
             lags = [x for o in X for x in o['X']['lagAtLeave']]
             print(f"X 中途离场（录像到 3000 拍的 {len(X)} 局）：3000 拍前有离场指令的 {sum(1 for o in X if o['X']['firstLeave'] is not None and o['X']['firstLeave'] < 3000)} 局；全程有的 {sum(1 for o in X if o['X']['midLeaves'])} 局、"
                   f"共 {sum(o['X']['midLeaves'] for o in X)} 个号" + (f"；离场指令拍 − 结果行本地拍 的中位 {md(lags):g} 拍（{len(lags)} 个号有结果行）" if lags else '') + '。')
+        fs = [[100 * o['F'][i]['selfBoxed'] / o['F'][i]['samples'] for o in G if o['F'][i]['samples']] for i in (1, 2, 3)]
+        fi = [100 * o['F'][2]['idleSelf'] / o['F'][2]['selfBoxed'] for o in G if o['F'][2]['selfBoxed'] >= 10 and o['F'][2]['windows']]
+        print(f"F 自围（采样里 nb=0 且 neut=0：四周只有队友和水）：占采样的比例，各局中位 600–1500 拍 {md(fs[0]):.0f}%、1500–3000 拍 {md(fs[1]):.0f}%、3000+ 拍 {md(fs[2]):.0f}%；"
+              f"1500–3000 拍 ≥30% 的 {sum(1 for x in fs[1] if x >= 30)}/{len(fs[1])} 局、≥50% 的 {sum(1 for x in fs[1] if x >= 50)} 局"
+              + (f"；1500–3000 拍自围采样之后 90 拍没出手的比例，各局中位 {md(fi):.0f}%（自围采样 ≥10 个的 {len(fi)} 局）" if fi else '') + '。')
+        Sm = [o for o in G if o['logBots'] > o['inReplay']]
+        print(f"S 不在这一盘（日志里有、这一盘录像的名单里没有的号）：有的局 {len(Sm)}/{len(G)}，其中差 1 个号的 {sum(1 for o in Sm if o['logBots'] - o['inReplay'] == 1)} 局、差 ≥2 个号的 {sum(1 for o in Sm if o['logBots'] - o['inReplay'] >= 2)} 局"
+              + ('：' + '、'.join(f"{o['matchId']}（{o['inReplay']}/{o['logBots']}）" for o in Sm if o['logBots'] - o['inReplay'] >= 2) if any(o['logBots'] - o['inReplay'] >= 2 for o in Sm) else '') + '。')
         Gx = [o['G']['x'] for o in G if o['G']['x']]
         Gs = [o['G']['shareVsHead1500'] for o in G if o['G']['shareVsHead1500'] is not None]
         if Gx:

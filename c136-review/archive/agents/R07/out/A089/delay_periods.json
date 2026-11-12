@@ -1,0 +1,960 @@
+{
+ "matchId": "A089",
+ "periods": [
+  "0~600",
+  "600~1500",
+  "1500~3000",
+  "3000+"
+ ],
+ "delay": {
+  "0~600": {
+   "want": 87,
+   "landed": 83,
+   "matched": 83,
+   "p50": 11,
+   "p90": 15,
+   "max": 18,
+   "p50fifo": 11,
+   "p90fifo": 15,
+   "ge21": 0,
+   "ge35": 0,
+   "ge90": 0,
+   "retargetN": 0,
+   "retargetP50": null,
+   "retargetP90": null
+  },
+  "600~1500": {
+   "want": 583,
+   "landed": 348,
+   "matched": 186,
+   "p50": 81,
+   "p90": 186,
+   "max": 239,
+   "p50fifo": 91,
+   "p90fifo": 206,
+   "ge21": 139,
+   "ge35": 136,
+   "ge90": 87,
+   "retargetN": 192,
+   "retargetP50": 145,
+   "retargetP90": 232
+  },
+  "1500~3000": {
+   "want": 191,
+   "landed": 140,
+   "matched": 95,
+   "p50": 149,
+   "p90": 224,
+   "max": 327,
+   "p50fifo": 151,
+   "p90fifo": 224,
+   "ge21": 77,
+   "ge35": 76,
+   "ge90": 71,
+   "retargetN": 15,
+   "retargetP50": 216,
+   "retargetP90": 246
+  },
+  "3000+": {
+   "want": 121,
+   "landed": 114,
+   "matched": 114,
+   "p50": 11,
+   "p90": 18,
+   "max": 30,
+   "p50fifo": 10,
+   "p90fifo": 15,
+   "ge21": 6,
+   "ge35": 0,
+   "ge90": 0,
+   "retargetN": 0,
+   "retargetP50": null,
+   "retargetP90": null
+  }
+ },
+ "funnel": {
+  "0~630": {
+   "shadow": 97,
+   "real": 93,
+   "landed": 90,
+   "bots": 9,
+   "donWant": 0,
+   "donLanded": 0
+  },
+  "630~1530": {
+   "shadow": 593,
+   "real": 590,
+   "landed": 350,
+   "bots": 9,
+   "donWant": 0,
+   "donLanded": 0
+  },
+  "1530~3060": {
+   "shadow": 187,
+   "real": 185,
+   "landed": 147,
+   "bots": 9,
+   "donWant": 3,
+   "donLanded": 3
+  },
+  "3060~末": {
+   "shadow": 123,
+   "real": 116,
+   "landed": 116,
+   "bots": 6,
+   "donWant": 10,
+   "donLanded": 10
+  }
+ },
+ "whiff": {
+  "0~600": {
+   "atkN": 83,
+   "troops": 64447,
+   "noop": 1,
+   "retargetN": 0,
+   "retargetTroops": 0,
+   "wantAiN": 33,
+   "wantAiTroops": 14536,
+   "onAiN": 29,
+   "onAiTroops": 9795,
+   "onNeutralN": 54,
+   "refund": 4889
+  },
+  "600~1500": {
+   "atkN": 348,
+   "troops": 796702,
+   "noop": 89,
+   "retargetN": 167,
+   "retargetTroops": 273869,
+   "wantAiN": 553,
+   "wantAiTroops": 1898639,
+   "onAiN": 163,
+   "onAiTroops": 474024,
+   "onNeutralN": 182,
+   "refund": 564766
+  },
+  "1500~3000": {
+   "atkN": 137,
+   "troops": 2035474,
+   "noop": 39,
+   "retargetN": 40,
+   "retargetTroops": 1732,
+   "wantAiN": 48,
+   "wantAiTroops": 270626,
+   "onAiN": 15,
+   "onAiTroops": 190631,
+   "onNeutralN": 46,
+   "refund": 485882
+  },
+  "3000+": {
+   "atkN": 104,
+   "troops": 15986226,
+   "noop": 4,
+   "retargetN": 0,
+   "retargetTroops": 0,
+   "wantAiN": 0,
+   "wantAiTroops": 0,
+   "onAiN": 0,
+   "onAiTroops": 0,
+   "onNeutralN": 17,
+   "refund": 3066373
+  }
+ },
+ "repeat": {
+  "0~600": {
+   "batches": 0,
+   "batchCmds": 0,
+   "batchTroops": 0,
+   "bigBatches": 0,
+   "bigTroops": 0,
+   "groups": 9,
+   "groupCmds": 22,
+   "repeatTroops": 4658,
+   "repeatFee": 390,
+   "over": 5309
+  },
+  "600~1500": {
+   "batches": 34,
+   "batchCmds": 263,
+   "batchTroops": 645600,
+   "bigBatches": 13,
+   "bigTroops": 344171,
+   "groups": 45,
+   "groupCmds": 205,
+   "repeatTroops": 492715,
+   "repeatFee": 72861,
+   "over": 341633
+  },
+  "1500~3000": {
+   "batches": 14,
+   "batchCmds": 103,
+   "batchTroops": 911037,
+   "bigBatches": 7,
+   "bigTroops": 771307,
+   "groups": 21,
+   "groupCmds": 92,
+   "repeatTroops": 1099583,
+   "repeatFee": 110417,
+   "over": 180744
+  },
+  "3000+": {
+   "batches": 1,
+   "batchCmds": 3,
+   "batchTroops": 496709,
+   "bigBatches": 0,
+   "bigTroops": 0,
+   "groups": 32,
+   "groupCmds": 92,
+   "repeatTroops": 8507758,
+   "repeatFee": 1234936,
+   "over": 1755392
+  }
+ },
+ "perBot": {
+  "alex_k": {
+   "min": 2,
+   "p50": 122,
+   "p90": 201,
+   "max": 239,
+   "n": 46
+  },
+  "kaito9": {
+   "min": 3,
+   "p50": 13,
+   "p90": 167,
+   "max": 215,
+   "n": 72
+  },
+  "noah88": {
+   "min": 7,
+   "p50": 82,
+   "p90": 209,
+   "max": 237,
+   "n": 43
+  },
+  "riku_x": {
+   "min": 1,
+   "p50": 18,
+   "p90": 70,
+   "max": 167,
+   "n": 41
+  },
+  "ryan_m": {
+   "min": 1,
+   "p50": 81,
+   "p90": 219,
+   "max": 239,
+   "n": 44
+  },
+  "sora_w": {
+   "min": 0,
+   "p50": 15,
+   "p90": 161,
+   "max": 205,
+   "n": 96
+  },
+  "talon5": {
+   "min": 0,
+   "p50": 13,
+   "p90": 193,
+   "max": 208,
+   "n": 31
+  },
+  "zero_7": {
+   "min": 7,
+   "p50": 39,
+   "p90": 302,
+   "max": 327,
+   "n": 49
+  },
+  "zexos1": {
+   "min": 1,
+   "p50": 14,
+   "p90": 170,
+   "max": 210,
+   "n": 56
+  }
+ },
+ "groups": {
+  "0~540": {
+   "我方号": {
+    "n0": 9,
+    "atkN": 68,
+    "sent": 46592,
+    "refund": 4822,
+    "tA": 6266,
+    "terr0": 103,
+    "terr1": 18030,
+    "eco": 75888
+   },
+   "T1 其他真人": {
+    "n0": 2,
+    "atkN": 17,
+    "sent": 10859,
+    "refund": 912,
+    "tA": 0,
+    "terr0": 24,
+    "terr1": 4542,
+    "eco": 18443
+   },
+   "T2 真人": {
+    "n0": 11,
+    "atkN": 103,
+    "sent": 52861,
+    "refund": 6193,
+    "tA": 0,
+    "terr0": 132,
+    "terr1": 20453,
+    "eco": 93601
+   },
+   "T3 真人": {
+    "n0": 11,
+    "atkN": 97,
+    "sent": 53705,
+    "refund": 6409,
+    "tA": 842,
+    "terr0": 132,
+    "terr1": 18626,
+    "eco": 82824
+   },
+   "T4 真人": {
+    "n0": 10,
+    "atkN": 60,
+    "sent": 43461,
+    "refund": 6226,
+    "tA": 0,
+    "terr0": 120,
+    "terr1": 15190,
+    "eco": 84522
+   }
+  },
+  "540~1530": {
+   "我方号": {
+    "n0": 9,
+    "atkN": 273,
+    "sent": 814557,
+    "refund": 646549,
+    "tA": 477553,
+    "terr0": 18030,
+    "terr1": 58433,
+    "eco": 1587203
+   },
+   "T1 其他真人": {
+    "n0": 2,
+    "atkN": 85,
+    "sent": 313571,
+    "refund": 152514,
+    "tA": 283945,
+    "terr0": 4542,
+    "terr1": 41466,
+    "eco": 352102
+   },
+   "T2 真人": {
+    "n0": 11,
+    "atkN": 271,
+    "sent": 1012925,
+    "refund": 466772,
+    "tA": 820218,
+    "terr0": 20453,
+    "terr1": 161675,
+    "eco": 2202912
+   },
+   "T3 真人": {
+    "n0": 11,
+    "atkN": 184,
+    "sent": 966829,
+    "refund": 319245,
+    "tA": 670915,
+    "terr0": 18626,
+    "terr1": 111143,
+    "eco": 1538946
+   },
+   "T4 真人": {
+    "n0": 10,
+    "atkN": 173,
+    "sent": 777253,
+    "refund": 246202,
+    "tA": 505365,
+    "terr0": 15190,
+    "terr1": 125293,
+    "eco": 1585980
+   }
+  },
+  "1530~2790": {
+   "我方号": {
+    "n0": 9,
+    "atkN": 85,
+    "sent": 1387355,
+    "refund": 403254,
+    "tA": 190631,
+    "terr0": 58433,
+    "terr1": 58277,
+    "eco": 3227982
+   },
+   "T1 其他真人": {
+    "n0": 2,
+    "atkN": 69,
+    "sent": 301780,
+    "refund": 204372,
+    "tA": 206876,
+    "terr0": 41466,
+    "terr1": 60207,
+    "eco": 1305583
+   },
+   "T2 真人": {
+    "n0": 11,
+    "atkN": 60,
+    "sent": 1268357,
+    "refund": 913948,
+    "tA": 213337,
+    "terr0": 161675,
+    "terr1": 227525,
+    "eco": 8678467
+   },
+   "T3 真人": {
+    "n0": 9,
+    "atkN": 57,
+    "sent": 1541753,
+    "refund": 603738,
+    "tA": 328113,
+    "terr0": 111143,
+    "terr1": 132078,
+    "eco": 4568524
+   },
+   "T4 真人": {
+    "n0": 10,
+    "atkN": 104,
+    "sent": 1028581,
+    "refund": 596952,
+    "tA": 253449,
+    "terr0": 125293,
+    "terr1": 180053,
+    "eco": 5807557
+   }
+  },
+  "2790~7242": {
+   "我方号": {
+    "n0": 6,
+    "atkN": 113,
+    "sent": 16634345,
+    "refund": 3021015,
+    "tA": 0,
+    "terr0": 58277,
+    "terr1": 0,
+    "eco": 30060047
+   },
+   "T1 其他真人": {
+    "n0": 2,
+    "atkN": 137,
+    "sent": 6315819,
+    "refund": 1794849,
+    "tA": 0,
+    "terr0": 60207,
+    "terr1": 11566,
+    "eco": 16583410
+   },
+   "T2 真人": {
+    "n0": 9,
+    "atkN": 123,
+    "sent": 91459878,
+    "refund": 26346661,
+    "tA": 1585201,
+    "terr0": 227525,
+    "terr1": 545464,
+    "eco": 158853655
+   },
+   "T3 真人": {
+    "n0": 5,
+    "atkN": 21,
+    "sent": 6481843,
+    "refund": 1116586,
+    "tA": 0,
+    "terr0": 132078,
+    "terr1": 1385,
+    "eco": 9615927
+   },
+   "T4 真人": {
+    "n0": 7,
+    "atkN": 74,
+    "sent": 35639796,
+    "refund": 6546518,
+    "tA": 0,
+    "terr0": 180053,
+    "terr1": 102343,
+    "eco": 72043449
+   }
+  }
+ },
+ "late": [
+  {
+   "T": 812,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 4,
+   "intentMin": 750,
+   "intentMax": 750,
+   "b0": 19246,
+   "b1": 11889
+  },
+  {
+   "T": 868,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 6,
+   "intentMin": 800,
+   "intentMax": 800,
+   "b0": 21429,
+   "b1": 17355
+  },
+  {
+   "T": 875,
+   "bot": "riku_x",
+   "n": 5,
+   "sameTick": 8,
+   "intentMin": 795,
+   "intentMax": 815,
+   "b0": 17581,
+   "b1": 5636
+  },
+  {
+   "T": 882,
+   "bot": "noah88",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 785,
+   "intentMax": 820,
+   "b0": 21000,
+   "b1": 3061
+  },
+  {
+   "T": 896,
+   "bot": "ryan_m",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 800,
+   "intentMax": 830,
+   "b0": 15948,
+   "b1": 7894
+  },
+  {
+   "T": 924,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 4,
+   "intentMin": 855,
+   "intentMax": 855,
+   "b0": 28058,
+   "b1": 20577
+  },
+  {
+   "T": 945,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 4,
+   "intentMin": 885,
+   "intentMax": 885,
+   "b0": 10320,
+   "b1": 8219
+  },
+  {
+   "T": 987,
+   "bot": "alex_k",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 860,
+   "intentMax": 905,
+   "b0": 42874,
+   "b1": 19050
+  },
+  {
+   "T": 987,
+   "bot": "kaito9",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 890,
+   "intentMax": 895,
+   "b0": 21808,
+   "b1": 9379
+  },
+  {
+   "T": 994,
+   "bot": "zexos1",
+   "n": 5,
+   "sameTick": 5,
+   "intentMin": 875,
+   "intentMax": 895,
+   "b0": 24199,
+   "b1": 14989
+  },
+  {
+   "T": 1001,
+   "bot": "zexos1",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 920,
+   "intentMax": 920,
+   "b0": 19370,
+   "b1": 18237
+  },
+  {
+   "T": 1008,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 930,
+   "intentMax": 930,
+   "b0": 37531,
+   "b1": 34782
+  },
+  {
+   "T": 1043,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 950,
+   "intentMax": 950,
+   "b0": 47449,
+   "b1": 44669
+  },
+  {
+   "T": 1050,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 965,
+   "intentMax": 965,
+   "b0": 44669,
+   "b1": 42802
+  },
+  {
+   "T": 1064,
+   "bot": "ryan_m",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 925,
+   "intentMax": 985,
+   "b0": 40255,
+   "b1": 21849
+  },
+  {
+   "T": 1078,
+   "bot": "kaito9",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 985,
+   "intentMax": 985,
+   "b0": 20675,
+   "b1": 17186
+  },
+  {
+   "T": 1085,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 990,
+   "intentMax": 990,
+   "b0": 35384,
+   "b1": 26021
+  },
+  {
+   "T": 1099,
+   "bot": "sora_w",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 945,
+   "intentMax": 975,
+   "b0": 50790,
+   "b1": 14887
+  },
+  {
+   "T": 1155,
+   "bot": "zero_7",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 955,
+   "intentMax": 1095,
+   "b0": 69898,
+   "b1": 37636
+  },
+  {
+   "T": 1211,
+   "bot": "alex_k",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1000,
+   "intentMax": 1035,
+   "b0": 97974,
+   "b1": 24224
+  },
+  {
+   "T": 1225,
+   "bot": "sora_w",
+   "n": 6,
+   "sameTick": 9,
+   "intentMin": 1020,
+   "intentMax": 1045,
+   "b0": 28740,
+   "b1": 14292
+  },
+  {
+   "T": 1225,
+   "bot": "zexos1",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1015,
+   "intentMax": 1070,
+   "b0": 52825,
+   "b1": 3741
+  },
+  {
+   "T": 1344,
+   "bot": "alex_k",
+   "n": 3,
+   "sameTick": 9,
+   "intentMin": 1105,
+   "intentMax": 1115,
+   "b0": 123989,
+   "b1": 84650
+  },
+  {
+   "T": 1442,
+   "bot": "noah88",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 1205,
+   "intentMax": 1320,
+   "b0": 127653,
+   "b1": 76878
+  },
+  {
+   "T": 1477,
+   "bot": "kaito9",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1290,
+   "intentMax": 1325,
+   "b0": 107075,
+   "b1": 66061
+  },
+  {
+   "T": 1624,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1500,
+   "intentMax": 1500,
+   "b0": 181236,
+   "b1": 181236
+  },
+  {
+   "T": 1645,
+   "bot": "zero_7",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 1455,
+   "intentMax": 1550,
+   "b0": 202494,
+   "b1": 149732
+  },
+  {
+   "T": 1687,
+   "bot": "riku_x",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 1520,
+   "intentMax": 1525,
+   "b0": 148783,
+   "b1": 90358
+  },
+  {
+   "T": 1708,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1590,
+   "intentMax": 1590,
+   "b0": 286054,
+   "b1": 201970
+  },
+  {
+   "T": 1708,
+   "bot": "talon5",
+   "n": 7,
+   "sameTick": 7,
+   "intentMin": 1500,
+   "intentMax": 1530,
+   "b0": 106785,
+   "b1": 5701
+  },
+  {
+   "T": 1715,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1590,
+   "intentMax": 1590,
+   "b0": 250021,
+   "b1": 176042
+  },
+  {
+   "T": 1743,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1635,
+   "intentMax": 1635,
+   "b0": 231276,
+   "b1": 180685
+  },
+  {
+   "T": 1757,
+   "bot": "sora_w",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 1640,
+   "intentMax": 1645,
+   "b0": 183449,
+   "b1": 106030
+  },
+  {
+   "T": 1764,
+   "bot": "alex_k",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1595,
+   "intentMax": 1635,
+   "b0": 221821,
+   "b1": 10097
+  },
+  {
+   "T": 1799,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1685,
+   "intentMax": 1685,
+   "b0": 10537,
+   "b1": 15835
+  },
+  {
+   "T": 1799,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1705,
+   "intentMax": 1705,
+   "b0": 112324,
+   "b1": 107689
+  },
+  {
+   "T": 1827,
+   "bot": "zero_7",
+   "n": 6,
+   "sameTick": 8,
+   "intentMin": 1500,
+   "intentMax": 1525,
+   "b0": 266115,
+   "b1": 129196
+  },
+  {
+   "T": 1834,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1770,
+   "intentMax": 1770,
+   "b0": 230267,
+   "b1": 199910
+  },
+  {
+   "T": 1834,
+   "bot": "ryan_m",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1595,
+   "intentMax": 1685,
+   "b0": 173440,
+   "b1": 5002
+  },
+  {
+   "T": 1841,
+   "bot": "kaito9",
+   "n": 4,
+   "sameTick": 4,
+   "intentMin": 1725,
+   "intentMax": 1760,
+   "b0": 137449,
+   "b1": 78085
+  },
+  {
+   "T": 1841,
+   "bot": "noah88",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 1760,
+   "intentMax": 1765,
+   "b0": 202408,
+   "b1": 152559
+  },
+  {
+   "T": 1848,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1755,
+   "intentMax": 1755,
+   "b0": 152559,
+   "b1": 132448
+  },
+  {
+   "T": 1876,
+   "bot": "alex_k",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 1695,
+   "intentMax": 1710,
+   "b0": 13857,
+   "b1": 6585
+  },
+  {
+   "T": 1876,
+   "bot": "sora_w",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1690,
+   "intentMax": 1740,
+   "b0": 117540,
+   "b1": 25860
+  },
+  {
+   "T": 1918,
+   "bot": "ryan_m",
+   "n": 2,
+   "sameTick": 6,
+   "intentMin": 1785,
+   "intentMax": 1810,
+   "b0": 9121,
+   "b1": 2624
+  },
+  {
+   "T": 1925,
+   "bot": "kaito9",
+   "n": 4,
+   "sameTick": 4,
+   "intentMin": 1710,
+   "intentMax": 1790,
+   "b0": 95858,
+   "b1": 49007
+  },
+  {
+   "T": 1939,
+   "bot": "noah88",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1715,
+   "intentMax": 1750,
+   "b0": 158308,
+   "b1": 51362
+  }
+ ]
+}

@@ -1,0 +1,535 @@
+{
+ "matchId": "A070",
+ "spawnEndT": 1,
+ "humans": 19,
+ "land": 695915,
+ "groups": {
+  "我方号": {
+   "n": 10,
+   "headShare": 0.5263157894736842,
+   "vor": 275502,
+   "vorShare": 0.39588455486661445,
+   "perHeadRel": 0.7521806542465675,
+   "vorMedian": 21513
+  },
+  "T1 真人": {
+   "n": 9,
+   "headShare": 0.47368421052631576,
+   "vor": 420413,
+   "vorShare": 0.6041154451333856,
+   "perHeadRel": 1.275354828614925,
+   "vorMedian": 46731
+  }
+ },
+ "squad": {
+  "kaito9": {
+   "vor": 54605,
+   "rank": 4,
+   "at": {
+    "630": {
+     "terr": 3333,
+     "self": 3333,
+     "mate": 0,
+     "human": 0,
+     "ai": 19400,
+     "neutral": 31872
+    },
+    "1500": {
+     "terr": 16711,
+     "self": 13464,
+     "mate": 1124,
+     "human": 0,
+     "ai": 39507,
+     "neutral": 510
+    }
+   }
+  },
+  "leo_tx": {
+   "vor": 53405,
+   "rank": 5,
+   "at": {
+    "630": {
+     "terr": 3096,
+     "self": 3096,
+     "mate": 0,
+     "human": 0,
+     "ai": 16757,
+     "neutral": 33552
+    },
+    "1500": {
+     "terr": 15847,
+     "self": 15847,
+     "mate": 0,
+     "human": 0,
+     "ai": 37486,
+     "neutral": 72
+    }
+   }
+  },
+  "noah88": {
+   "vor": 45203,
+   "rank": 8,
+   "at": {
+    "630": {
+     "terr": 3023,
+     "self": 2853,
+     "mate": 0,
+     "human": 65,
+     "ai": 14524,
+     "neutral": 27761
+    },
+    "1500": {
+     "terr": 7449,
+     "self": 5552,
+     "mate": 0,
+     "human": 1451,
+     "ai": 37653,
+     "neutral": 547
+    }
+   }
+  },
+  "zexos1": {
+   "vor": 33088,
+   "rank": 9,
+   "at": {
+    "630": {
+     "terr": 3544,
+     "self": 3544,
+     "mate": 0,
+     "human": 0,
+     "ai": 11074,
+     "neutral": 18470
+    },
+    "1500": {
+     "terr": 9344,
+     "self": 7673,
+     "mate": 0,
+     "human": 12305,
+     "ai": 12605,
+     "neutral": 505
+    }
+   }
+  },
+  "ryan_m": {
+   "vor": 22103,
+   "rank": 12,
+   "at": {
+    "630": {
+     "terr": 3019,
+     "self": 3019,
+     "mate": 0,
+     "human": 0,
+     "ai": 6603,
+     "neutral": 12481
+    },
+    "1500": {
+     "terr": 16373,
+     "self": 14644,
+     "mate": 0,
+     "human": 766,
+     "ai": 6692,
+     "neutral": 1
+    }
+   }
+  },
+  "talon5": {
+   "vor": 20923,
+   "rank": 13,
+   "at": {
+    "630": {
+     "terr": 3453,
+     "self": 3453,
+     "mate": 0,
+     "human": 0,
+     "ai": 8849,
+     "neutral": 8621
+    },
+    "1500": {
+     "terr": 7670,
+     "self": 6973,
+     "mate": 1621,
+     "human": 166,
+     "ai": 12161,
+     "neutral": 2
+    }
+   }
+  },
+  "zero_7": {
+   "vor": 14493,
+   "rank": 15,
+   "at": {
+    "630": {
+     "terr": 3140,
+     "self": 3140,
+     "mate": 0,
+     "human": 0,
+     "ai": 4399,
+     "neutral": 6954
+    },
+    "1500": {
+     "terr": 7848,
+     "self": 7632,
+     "mate": 827,
+     "human": 4024,
+     "ai": 2010,
+     "neutral": 0
+    }
+   }
+  },
+  "sora_w": {
+   "vor": 12807,
+   "rank": 17,
+   "at": {
+    "630": {
+     "terr": 3387,
+     "self": 3350,
+     "mate": 0,
+     "human": 9,
+     "ai": 4337,
+     "neutral": 5111
+    },
+    "1500": {
+     "terr": 9885,
+     "self": 8145,
+     "mate": 248,
+     "human": 2975,
+     "ai": 1438,
+     "neutral": 1
+    }
+   }
+  },
+  "alex_k": {
+   "vor": 11705,
+   "rank": 18,
+   "at": {
+    "630": {
+     "terr": 3526,
+     "self": 3382,
+     "mate": 0,
+     "human": 30,
+     "ai": 4428,
+     "neutral": 3865
+    },
+    "1500": {
+     "terr": 10118,
+     "self": 9347,
+     "mate": 1039,
+     "human": 1319,
+     "ai": 0,
+     "neutral": 0
+    }
+   }
+  },
+  "riku_x": {
+   "vor": 7170,
+   "rank": 19,
+   "at": {
+    "630": {
+     "terr": 3243,
+     "self": 3131,
+     "mate": 43,
+     "human": 1,
+     "ai": 1721,
+     "neutral": 2274
+    },
+    "1500": {
+     "terr": 5471,
+     "self": 3832,
+     "mate": 46,
+     "human": 661,
+     "ai": 2629,
+     "neutral": 2
+    }
+   }
+  }
+ },
+ "at": {
+  "630": {
+   "我方号": {
+    "terr": 32764,
+    "vor": 275502,
+    "ratio": 0.11892472649926317,
+    "ownIn": 32344,
+    "humanIn": 105,
+    "aiIn": 92092,
+    "neutralIn": 150961,
+    "outside": 420
+   },
+   "T1 真人": {
+    "terr": 26960,
+    "vor": 420413,
+    "ratio": 0.06412741756320571,
+    "ownIn": 26855,
+    "humanIn": 420,
+    "aiIn": 160629,
+    "neutralIn": 232509,
+    "outside": 105
+   }
+  },
+  "1500": {
+   "我方号": {
+    "terr": 106716,
+    "vor": 275502,
+    "ratio": 0.3873510900102359,
+    "ownIn": 98014,
+    "humanIn": 23667,
+    "aiIn": 152181,
+    "neutralIn": 1640,
+    "outside": 8702
+   },
+   "T1 真人": {
+    "terr": 192509,
+    "vor": 420413,
+    "ratio": 0.45790448915709075,
+    "ownIn": 168842,
+    "humanIn": 8702,
+    "aiIn": 233708,
+    "neutralIn": 9161,
+    "outside": 23667
+   }
+  }
+ },
+ "ai": {
+  "我方号": {
+   "n": 38,
+   "cells": 16858,
+   "bal": 15174,
+   "to": {
+    "1500": {
+     "own": 9529,
+     "human": 2885,
+     "ai": 4444,
+     "neutral": 0
+    },
+    "1800": {
+     "own": 12020,
+     "human": 1883,
+     "ai": 2929,
+     "neutral": 26
+    }
+   },
+   "mateAi": {
+    "n": 0,
+    "cells": 0
+   }
+  },
+  "T1 真人": {
+   "n": 38,
+   "cells": 17972,
+   "bal": 16733,
+   "to": {
+    "1500": {
+     "own": 13786,
+     "human": 1886,
+     "ai": 2296,
+     "neutral": 4
+    },
+    "1800": {
+     "own": 14906,
+     "human": 2632,
+     "ai": 335,
+     "neutral": 99
+    }
+   },
+   "mateAi": {
+    "n": 0,
+    "cells": 0
+   }
+  }
+ },
+ "squadVorMedian": 21513,
+ "otherVorMedian": 46731,
+ "aiInOurVor": {
+  "n": 178,
+  "cells": 91846,
+  "adjacent": 34,
+  "to": {
+   "1500": {
+    "own": 23836,
+    "mate": 0,
+    "human": 12328,
+    "ai": 55332,
+    "neutral": 350
+   },
+   "1800": {
+    "own": 32219,
+    "mate": 0,
+    "human": 17058,
+    "ai": 41800,
+    "neutral": 769
+   }
+  }
+ },
+ "aiLandInVor": {
+  "我方号": 92092,
+  "T1 真人": 160629
+ },
+ "aiLandAll": 252721,
+ "geom": {
+  "cx": 720,
+  "cy": 343,
+  "sectors": [
+   {
+    "dir": "北",
+    "land0": 8174,
+    "water0": 461,
+    "land1": 14934,
+    "water1": 1564,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 0,
+    "enemyNearest": null,
+    "mates": 0
+   },
+   {
+    "dir": "东北",
+    "land0": 8641,
+    "water0": 0,
+    "land1": 16012,
+    "water1": 484,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 0,
+    "enemyNearest": null,
+    "mates": 0
+   },
+   {
+    "dir": "东",
+    "land0": 8526,
+    "water0": 109,
+    "land1": 16491,
+    "water1": 7,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 1,
+    "enemyNearest": 217.8921751692795,
+    "mates": 0
+   },
+   {
+    "dir": "东南",
+    "land0": 5882,
+    "water0": 2759,
+    "land1": 15765,
+    "water1": 731,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 1,
+    "enemyNearest": 249.82593940581913,
+    "mates": 0
+   },
+   {
+    "dir": "南",
+    "land0": 5454,
+    "water0": 3181,
+    "land1": 16342,
+    "water1": 156,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 1,
+    "enemyNearest": 251.24689052802228,
+    "mates": 0
+   },
+   {
+    "dir": "西南",
+    "land0": 2975,
+    "water0": 5666,
+    "land1": 16449,
+    "water1": 47,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 1,
+    "enemyNearest": 225.03777460684242,
+    "mates": 0
+   },
+   {
+    "dir": "西",
+    "land0": 0,
+    "water0": 8635,
+    "land1": 3276,
+    "water1": 13222,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 0,
+    "enemyNearest": null,
+    "mates": 0
+   },
+   {
+    "dir": "西北",
+    "land0": 2406,
+    "water0": 6235,
+    "land1": 10266,
+    "water1": 6230,
+    "off0": 0,
+    "off1": 0,
+    "enemies": 0,
+    "enemyNearest": null,
+    "mates": 0
+   }
+  ],
+  "nearestEnemies": [
+   {
+    "p": 3,
+    "team": 1,
+    "dir": "东北",
+    "bot": "noah88",
+    "dist": 38.07886552931954
+   },
+   {
+    "p": 18,
+    "team": 1,
+    "dir": "西南",
+    "bot": "riku_x",
+    "dist": 46.8187996428785
+   },
+   {
+    "p": 1,
+    "team": 1,
+    "dir": "南",
+    "bot": "sora_w",
+    "dist": 81.02468759581859
+   },
+   {
+    "p": 15,
+    "team": 1,
+    "dir": "西南",
+    "bot": "alex_k",
+    "dist": 91.21951545584969
+   },
+   {
+    "p": 0,
+    "team": 1,
+    "dir": "东",
+    "bot": "zexos1",
+    "dist": 134.45073447177595
+   },
+   {
+    "p": 16,
+    "team": 1,
+    "dir": "南",
+    "bot": "zero_7",
+    "dist": 183.53473785635242
+   },
+   {
+    "p": 2,
+    "team": 1,
+    "dir": "东南",
+    "bot": "talon5",
+    "dist": 225.8162970203878
+   },
+   {
+    "p": 14,
+    "team": 1,
+    "dir": "西",
+    "bot": "ryan_m",
+    "dist": 267
+   },
+   {
+    "p": 19,
+    "team": 1,
+    "dir": "西北",
+    "bot": "riku_x",
+    "dist": 311.31334696732813
+   }
+  ]
+ }
+}

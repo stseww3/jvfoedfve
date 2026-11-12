@@ -2,7 +2,7 @@
 // shadow.mjs — 「影子策略」：在精确重放（resim.mjs）的每一拍真实状态上，旁路运行当局实际使用的策略源码
 // （Va/Vb/Vc/c110 的 class Policy），记录它在每个本地拍会发出什么指令、走的是源码哪一行。
 //
-//   bash c136-review/tools/run-heavy.sh node shadow.mjs <matchId> [--maps t1,t2] [--until T] [--multi] [--strict-donate] [--quiet]
+//   bash c136-review/tools/run-heavy.sh node shadow.mjs <matchId> [--maps t1,t2] [--until T] [--multi] [--strict-donate] [--minlat N] [--quiet]
 //   （同一趟也写出 out/cache/<mid>-resim.json，等于顺带跑了 resim.mjs）
 //
 // 为什么可行：页面本地拍号 T 时策略读到的状态 = 服务器第 T 拍的状态（traj.csv 逐行核对 100% 一致），
@@ -102,6 +102,7 @@ export function shadow(mid, opts = {}) {
   const personsAt = opts.persons ? new Map(String(opts.persons).split(',').map((x) => { const [a, b] = x.split('@'); return [+a, +(b || 0)]; })) : null;
   const boatMate = opts.boatMate || 'reject';
   const isBotMode = opts.isBotMode || 'clan';
+  const minLat = Number.isFinite(opts.minLat) && opts.minLat > 0 ? opts.minLat : 6;
   const clanTag = (name) => { const m = /^\s*\[([^\]]*)\]/.exec(String(name || '')); return m ? m[1].trim().toUpperCase() : ''; };
   const mateAfter = /^mate-after:/.test(opts.isBotMode || '') ? +opts.isBotMode.split(':')[1] : -1;
   const quitSeen = new Set();
@@ -357,7 +358,7 @@ export function shadow(mid, opts = {}) {
   globalThis.window = {};
 
   // ---- 校验 ----
-  const report = { matchId: mid, strategy: path.basename(file), multi, strictDonate, adapter, boatMate, isBotMode, quitMode, actEvery, skipAfterCmd, validate: R.validate, bots: {} };
+  const report = { matchId: mid, strategy: path.basename(file), multi, strictDonate, adapter, boatMate, isBotMode, quitMode, actEvery, skipAfterCmd, minLat, validate: R.validate, bots: {} };
   if (opts.boatDebug) report.boatDbg = boatDbg;
   for (const b of Object.values(bots)) {
     const chk = { tick: { rows: 0, nb: 0, neut: 0, cmds: 0, boats: 0, firstCmdsDiff: null }, dispatch: { log: 0, shadow: 0, same: 0, firstDiff: null }, opening: { log: 0, shadow: 0, same: 0, firstDiff: null } };
@@ -410,7 +411,9 @@ export function shadow(mid, opts = {}) {
     // 放不下再逐条取最晚可行的——所以对重复签名（同 pct 同目标）给出的是延迟的下界。
     let pairs = []; // [serverT, localT, kind, pct, execTarget, effective, issuedIdx, issuedTarget]
     let unmatchedExec = 0;
-    const MINLAT = 6;
+    // 最小延迟下界：默认 6 拍（前九局全部成交都对得上）。个别局有 5 拍落地的指令，下界卡住会让保序对齐整段串位，
+    // 这时用 --minlat 5 重跑（A046 的 zero_7：3635 拍发、3640 拍落地）。
+    const MINLAT = minLat;
     const sigOk = (s, kind, pct, target, S) => {
       if (s[1] !== kind || s[2] !== pct) return false;
       if (s[0] > S - MINLAT) return false;
@@ -490,7 +493,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const until = opt('until', null);
   const t0 = Date.now();
   const mapsArg = opt('maps', '');
-  const rep = shadow(mid, { until: until ? +until : undefined, multi: args.includes('--multi'), strictDonate: args.includes('--strict-donate'), strategy: opt('strategy', null), adapter: opt('adapter', null), boatAdapter: opt('boat-adapter', null), boatDebug: args.includes('--boat-debug'), isBotMode: opt('isbot', null), quitMode: opt('quit', null), persons: opt('persons', null), actEvery: +(opt('act-every', 0) || 0), skipAfterCmd: args.includes('--skip-after-cmd'), boatMate: opt('boat-mate', null), maps: mapsArg ? mapsArg.split(',').map(Number) : [] });
+  const rep = shadow(mid, { until: until ? +until : undefined, multi: args.includes('--multi'), strictDonate: args.includes('--strict-donate'), strategy: opt('strategy', null), adapter: opt('adapter', null), boatAdapter: opt('boat-adapter', null), boatDebug: args.includes('--boat-debug'), isBotMode: opt('isbot', null), quitMode: opt('quit', null), persons: opt('persons', null), actEvery: +(opt('act-every', 0) || 0), skipAfterCmd: args.includes('--skip-after-cmd'), minLat: +(opt('minlat', 6)), boatMate: opt('boat-mate', null), maps: mapsArg ? mapsArg.split(',').map(Number) : [] });
   fs.mkdirSync(OUT, { recursive: true });
   const R = rep.resim;
   delete rep.resim;

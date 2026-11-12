@@ -1380,7 +1380,7 @@
      "bot": "Benin / Zizka / JohnMarston / Redcoat",
      "decision": "防人机留底 sb 取『旁边那个人机除我之外最弱的邻居』的余额；这个邻居是异队编队友时，两个号里弱的那个永远出不了手。",
      "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1180-1213（L1197：可用 ≤ minShare×余额 就跳过）；floorFor0 L2270-2276 → winFloor L4542-4550（取 dpKeep、价位底、sb 的最大值）；safeFinite L2532-2541 → threatOf L464-490（minOther 不排除编队友，也不看人机自己有没有兵）",
-     "why": "引擎的内置 AI 以 weakestPct 的概率打余额最低的邻居（bots.js weakestTarget L301-313），sb 就是照这条规则『别当最弱』。Benin 的地只有 Zizka 的一半，利息追不上，留底永远高于余额；它不出手，领土越来越小，更追不上。"
+     "why": "sb 照的是引擎里 weakestTarget（bots.js L301-313，挑余额最低的邻居）这条规则『别当最弱』；但内置 AI 用这条挑法的概率是 weakestPct[难度] = 0 / 0 / 5 / 25 / 50 / 100 / 0（game.js L24），这一局录像头里的难度是 0（out/_cross/hdrdiff.txt），空壳按难度 6 跑——两档都不按余额挑，挑的是包围盒中心最近的 / 随机的邻居（nearestTarget L315-331、randomTarget L347-349）。Benin 的地只有 Zizka 的一半，利息追不上，留底永远高于余额；它不出手，领土越来越小，更追不上。"
     },
     {
      "t": "0~90",

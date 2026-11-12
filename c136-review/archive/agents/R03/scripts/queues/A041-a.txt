@@ -1,0 +1,8 @@
+# A041 第一批调试重计算（bash scripts/heavy-queue.sh A041-a scripts/queues/A041-a.txt）
+out/trace/A041-coast.txt|node scripts/dbg/coast.mjs A041 1500,1800,2100,2400,2700,3000,3300,3600
+out/trace/A041-caploss.txt|node scripts/dbg/cap-loss.mjs A041 --all
+out/trace/A041-buywhy-kaito9.txt|node scripts/dbg/buy-why.mjs A041 kaito9 1500 2290 --every 30
+out/trace/A041-buywhy-noah88.txt|node scripts/dbg/buy-why.mjs A041 noah88 1500 2290 --every 30
+out/trace/A041-idleboats-sora_w.txt|node scripts/dbg/idle-boats.mjs A041 sora_w 1500 4400 --bucket 300
+out/trace/A041-idleboats-talon5.txt|node scripts/dbg/idle-boats.mjs A041 talon5 1500 4300 --bucket 300
+out/trace/A041-params.txt|node scripts/dbg/params.mjs A041

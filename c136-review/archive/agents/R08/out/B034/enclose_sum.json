@@ -1,0 +1,863 @@
+{
+ "matchId": "B034",
+ "step": 30,
+ "perBot": {
+  "British Empire": {
+   "team": 2,
+   "samples": 106,
+   "sealedA": 20,
+   "sealedB": 17,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1440,
+    "t1": 2010,
+    "ticks": 600,
+    "terr0": 5242,
+    "terr1": 6600,
+    "bal0": 147136,
+    "bal1": 303607,
+    "densMax": 59.3,
+    "landAtk": 0,
+    "boats": 0,
+    "donations": 0,
+    "mates": [
+     "Zhuge Liang"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 600,
+    "boats": 0,
+    "boatTroops": 0,
+    "boatFees": 0,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "landAtk": 10,
+    "landAtkOk": 9,
+    "landAtkTroops": 117685,
+    "over100": 0,
+    "hardCap": 0
+   }
+  },
+  "Tal": {
+   "team": 2,
+   "samples": 132,
+   "sealedA": 17,
+   "sealedB": 46,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1530,
+    "t1": 2010,
+    "ticks": 510,
+    "terr0": 4926,
+    "terr1": 10104,
+    "bal0": 265723,
+    "bal1": 262976,
+    "densMax": 61.1,
+    "landAtk": 0,
+    "boats": 0,
+    "donations": 0,
+    "mates": [
+     "Zhuge Liang"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 510,
+    "boats": 0,
+    "boatTroops": 0,
+    "boatFees": 0,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "landAtk": 0,
+    "landAtkOk": 0,
+    "landAtkTroops": 0,
+    "over100": 0,
+    "hardCap": 0
+   }
+  },
+  "Ireland": {
+   "team": 1,
+   "samples": 72,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Bulgar": {
+   "team": 1,
+   "samples": 82,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Cyrus": {
+   "team": 1,
+   "samples": 189,
+   "sealedA": 0,
+   "sealedB": 2,
+   "sealedC": 0
+  },
+  "Levi": {
+   "team": 1,
+   "samples": 95,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Jokic": {
+   "team": 2,
+   "samples": 82,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Fischer": {
+   "team": 2,
+   "samples": 97,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Broly": {
+   "team": 3,
+   "samples": 86,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Zhuge Liang": {
+   "team": 3,
+   "samples": 68,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Kilwa": {
+   "team": 4,
+   "samples": 304,
+   "sealedA": 0,
+   "sealedB": 12,
+   "sealedC": 0
+  },
+  "Pagan": {
+   "team": 3,
+   "samples": 77,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "LightYagami": {
+   "team": 2,
+   "samples": 172,
+   "sealedA": 0,
+   "sealedB": 15,
+   "sealedC": 0
+  },
+  "East India Co": {
+   "team": 3,
+   "samples": 210,
+   "sealedA": 0,
+   "sealedB": 8,
+   "sealedC": 0
+  },
+  "Sanada": {
+   "team": 4,
+   "samples": 83,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  }
+ },
+ "timeline": [
+  {
+   "t": 0,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 177,
+   "balA": 0,
+   "balAll": 7680,
+   "over100": 0,
+   "protect": false
+  },
+  {
+   "t": 270,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 6675,
+   "balA": 0,
+   "balAll": 20282,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 540,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 29273,
+   "balA": 0,
+   "balAll": 63806,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 810,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 60395,
+   "balA": 0,
+   "balAll": 239367,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1080,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 84436,
+   "balA": 0,
+   "balAll": 628261,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1350,
+   "bots": 15,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 95404,
+   "balA": 0,
+   "balAll": 1781616,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1620,
+   "bots": 15,
+   "A": 2,
+   "B": 0,
+   "C": 0,
+   "terrA": 10281,
+   "terrAll": 100607,
+   "balA": 523368,
+   "balAll": 3221600,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1890,
+   "bots": 15,
+   "A": 2,
+   "B": 0,
+   "C": 0,
+   "terrA": 12816,
+   "terrAll": 112822,
+   "balA": 575026,
+   "balAll": 3989022,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2160,
+   "bots": 13,
+   "A": 0,
+   "B": 2,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 112326,
+   "balA": 0,
+   "balAll": 2243825,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2430,
+   "bots": 12,
+   "A": 0,
+   "B": 2,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 92382,
+   "balA": 0,
+   "balAll": 1595519,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2700,
+   "bots": 8,
+   "A": 0,
+   "B": 2,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 77890,
+   "balA": 0,
+   "balAll": 2048045,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2970,
+   "bots": 6,
+   "A": 0,
+   "B": 1,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 55464,
+   "balA": 0,
+   "balAll": 1970206,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 3240,
+   "bots": 5,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 51297,
+   "balA": 0,
+   "balAll": 2777943,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 3510,
+   "bots": 5,
+   "A": 0,
+   "B": 1,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 45693,
+   "balA": 0,
+   "balAll": 3280473,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 3780,
+   "bots": 5,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 38136,
+   "balA": 0,
+   "balAll": 3054703,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4050,
+   "bots": 4,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 30543,
+   "balA": 0,
+   "balAll": 2902884,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4320,
+   "bots": 4,
+   "A": 0,
+   "B": 1,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 31058,
+   "balA": 0,
+   "balAll": 3043389,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4590,
+   "bots": 4,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 35790,
+   "balA": 0,
+   "balAll": 3875349,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4860,
+   "bots": 4,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 38119,
+   "balA": 0,
+   "balAll": 3818835,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5130,
+   "bots": 4,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 36681,
+   "balA": 0,
+   "balAll": 3925101,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5400,
+   "bots": 3,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 33676,
+   "balA": 0,
+   "balAll": 3381770,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5670,
+   "bots": 2,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 29000,
+   "balA": 0,
+   "balAll": 3786149,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5940,
+   "bots": 2,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 30406,
+   "balA": 0,
+   "balAll": 4032919,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 6210,
+   "bots": 2,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 30406,
+   "balA": 0,
+   "balAll": 4383898,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 6480,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 24546,
+   "balA": 0,
+   "balAll": 3681900,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 6750,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 24546,
+   "balA": 0,
+   "balAll": 3681900,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 7020,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 24546,
+   "balA": 0,
+   "balAll": 3681900,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 7290,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 26449,
+   "balA": 0,
+   "balAll": 2658713,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 7560,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 25191,
+   "balA": 0,
+   "balAll": 2647781,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 7830,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 25479,
+   "balA": 0,
+   "balAll": 2652026,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 8100,
+   "bots": 1,
+   "A": 0,
+   "B": 1,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 26088,
+   "balA": 0,
+   "balAll": 3347059,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 8370,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 26088,
+   "balA": 0,
+   "balAll": 3389960,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 8640,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 29437,
+   "balA": 0,
+   "balAll": 2843816,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 8910,
+   "bots": 1,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 18225,
+   "balA": 0,
+   "balAll": 1441486,
+   "over100": 0,
+   "protect": true
+  }
+ ],
+ "pairs": [
+  {
+   "a": "Tal",
+   "b": "Zhuge Liang",
+   "samples": 51,
+   "t0": 510,
+   "t1": 2010,
+   "maxCells": 132,
+   "sealedA": 17,
+   "sealedB": 0,
+   "aToB": [
+    5850,
+    50196
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "British Empire",
+   "b": "Zhuge Liang",
+   "samples": 26,
+   "t0": 1140,
+   "t1": 2010,
+   "maxCells": 51,
+   "sealedA": 20,
+   "sealedB": 0,
+   "aToB": [
+    1503,
+    7038
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  }
+ ],
+ "border": [
+  {
+   "t": 0,
+   "bots": 15,
+   "neutral": 175,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 540,
+   "bots": 15,
+   "neutral": 802,
+   "ai": 1756,
+   "foe": 66,
+   "mateX": 6,
+   "own": 36,
+   "teamAi": 0,
+   "peer": 67
+  },
+  {
+   "t": 1080,
+   "bots": 15,
+   "neutral": 122,
+   "ai": 3773,
+   "foe": 863,
+   "mateX": 158,
+   "own": 128,
+   "teamAi": 0,
+   "peer": 187
+  },
+  {
+   "t": 1620,
+   "bots": 15,
+   "neutral": 147,
+   "ai": 753,
+   "foe": 3103,
+   "mateX": 222,
+   "own": 682,
+   "teamAi": 0,
+   "peer": 423
+  },
+  {
+   "t": 2160,
+   "bots": 13,
+   "neutral": 52,
+   "ai": 117,
+   "foe": 2485,
+   "mateX": 0,
+   "own": 933,
+   "teamAi": 0,
+   "peer": 834
+  },
+  {
+   "t": 2700,
+   "bots": 8,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 1008,
+   "mateX": 0,
+   "own": 863,
+   "teamAi": 0,
+   "peer": 596
+  },
+  {
+   "t": 3240,
+   "bots": 5,
+   "neutral": 13,
+   "ai": 0,
+   "foe": 602,
+   "mateX": 0,
+   "own": 621,
+   "teamAi": 0,
+   "peer": 634
+  },
+  {
+   "t": 3780,
+   "bots": 5,
+   "neutral": 54,
+   "ai": 0,
+   "foe": 457,
+   "mateX": 0,
+   "own": 534,
+   "teamAi": 0,
+   "peer": 645
+  },
+  {
+   "t": 4320,
+   "bots": 4,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 498,
+   "mateX": 0,
+   "own": 214,
+   "teamAi": 0,
+   "peer": 750
+  },
+  {
+   "t": 4860,
+   "bots": 4,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 544,
+   "mateX": 0,
+   "own": 416,
+   "teamAi": 0,
+   "peer": 673
+  },
+  {
+   "t": 5400,
+   "bots": 3,
+   "neutral": 36,
+   "ai": 0,
+   "foe": 588,
+   "mateX": 0,
+   "own": 482,
+   "teamAi": 0,
+   "peer": 269
+  },
+  {
+   "t": 5940,
+   "bots": 2,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 273,
+   "mateX": 0,
+   "own": 492,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 6480,
+   "bots": 1,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 35,
+   "mateX": 0,
+   "own": 492,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 7020,
+   "bots": 1,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 31,
+   "mateX": 0,
+   "own": 496,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 7560,
+   "bots": 1,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 31,
+   "mateX": 0,
+   "own": 511,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 8100,
+   "bots": 1,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 597,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 8640,
+   "bots": 1,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 258,
+   "mateX": 0,
+   "own": 377,
+   "teamAi": 0,
+   "peer": 0
+  }
+ ],
+ "total": {
+  "samples": 1855,
+  "sealedA": 37,
+  "botTicksA": 1110,
+  "botsEverA": 2
+ },
+ "pairCount": 2,
+ "inSealA": {
+  "botTicks": 1110,
+  "boats": 0,
+  "boatTroops": 0,
+  "boatFees": 0,
+  "boatsFeeOverTroops": 0,
+  "donations": 0,
+  "donArrived": 0,
+  "donTax": 0,
+  "over100": 0,
+  "hardCap": 0
+ }
+}

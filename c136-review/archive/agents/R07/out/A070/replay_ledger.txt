@@ -1,0 +1,127 @@
+=== A070 执行层账本（录像命令流 + 真引擎余额）===
+A. 引擎接受的指令（每号）：种类×条数 | 首拍~末拍 | 离开拍 | 最后一条 HL-TICK 日志拍
+  alex_k#11: attack×108 | 局内 108 条 77~2373 | 离开 - | 末条日志 3060
+  kaito9#12: attack×110 boat×1 | 局内 111 条 84~2499 | 离开 - | 末条日志 3780
+  leo_tx#9: attack×101 | 局内 101 条 84~3136 | 离开 - | 末条日志 3600
+  noah88#5: attack×115 | 局内 115 条 84~2632 | 离开 - | 末条日志 2790
+  riku_x#13: attack×88 boat×8 | 局内 96 条 84~2632 | 离开 - | 末条日志 2880
+  ryan_m#4: attack×82 | 局内 82 条 70~2520 | 离开 - | 末条日志 2610
+  sora_w#6: attack×116 | 局内 116 条 77~3101 | 离开 - | 末条日志 3600
+  talon5#8: attack×118 | 局内 118 条 77~3514 | 离开 - | 末条日志 3870
+  zero_7#10: attack×98 boat×1 | 局内 99 条 77~2520 | 离开 - | 末条日志 3330
+  zexos1#7: attack×75 boat×3 | 局内 78 条 77~3654 | 离开 - | 末条日志 4140
+
+B. 捐款/调度：日志 0 条，引擎执行 0 条（0.0%）；另有非我方号捐给我方号 0 条
+   我方执行合计：到账 0，手续费 0（费/到账 = 0.000）
+   逐笔：执行拍 捐出方→受捐方 pct | 执行前余额→后 | 到账 费 | 受捐方领土 余额前→后 | 配额 需点/累计前/上限 | 对应日志 t(延迟) L行 种类
+   每号：
+
+C. 没被执行的日志捐款（落地拍未知：对「发令拍 + 7~17 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款里 <= 60 拍的实测延迟；表里的需点、上限取 +12 拍那一档）
+
+D. 顶格时长（10 拍采样；在场且没离开的拍）：硬上限 = 余额 >= 150×领土-1；软上限以上 = 余额 >= 100×领土
+
+E. 同一号同一拍被接受 >=3 条指令（清仓批）：拍 号 条数 | 指令(种类 pct→目标) | 批前余额 → 批后余额
+  847 riku_x ×3 | attack 59→NEUTRAL attack 47→NEUTRAL attack 50→NEUTRAL | 16954 → 13929 | 整数对账：3 条扣了款（反序），手续费合计 559，发出的兵合计 2466
+  861 talon5 ×4 | attack 90→bot#464 attack 86→bot#464 attack 84→bot#464 attack 139→NEUTRAL | 16555 → 10372 | 整数对账：4 条扣了款（正序），手续费合计 667，发出的兵合计 5516
+  875 sora_w ×4 | attack 47→bot#211 attack 133→bot#211 attack 134→bot#211 attack 131→bot#211 | 15878 → 9435 | 整数对账：4 条扣了款（正序），手续费合计 639，发出的兵合计 5804
+  875 kaito9 ×6 | attack 85→bot#464 attack 84→bot#464 attack 77→bot#464 attack 76→bot#464 attack 72→bot#464 attack 71→bot#464 | 20680 → 11873 | 整数对账：6 条扣了款（反序），手续费合计 1176，发出的兵合计 7631
+  882 ryan_m ×4 | attack 74→bot#407 attack 76→bot#407 attack 75→bot#407 attack 124→bot#21 | 17020 → 11262 | 整数对账：4 条扣了款（正序），手续费合计 699，发出的兵合计 5059
+  882 zero_7 ×5 | attack 94→bot#102 attack 92→bot#102 attack 87→bot#102 attack 81→bot#102 attack 71→bot#102 | 14328 → 8668 | 整数对账：5 条扣了款（正序），手续费合计 682，发出的兵合计 4978
+  896 riku_x ×7 | attack 336→bot#128 attack 330→bot#128 attack 329→bot#128 attack 47→NEUTRAL attack 266→bot#128 attack 47→NEUTRAL attack 47→NEUTRAL | 20083 → 3563 | 整数对账：7 条扣了款（正序），手续费合计 716，发出的兵合计 15804
+  910 talon5 ×8 | attack 85→bot#400 attack 79→bot#400 attack 111→NEUTRAL attack 112→NEUTRAL attack 105→NEUTRAL attack 105→NEUTRAL attack 101→NEUTRAL attack 100→NEUTRAL | 21165 → 8324 | 整数对账：8 条扣了款（正序），手续费合计 1383，发出的兵合计 11458
+  924 leo_tx ×7 | attack 176→bot#438 attack 177→bot#438 attack 174→bot#438 attack 176→bot#438 attack 170→bot#438 attack 174→bot#438 attack 168→bot#438 | 26131 → 6395 | 整数对账：7 条扣了款（正序），手续费合计 1261，发出的兵合计 18475
+  924 alex_k ×5 | attack 64→bot#229 attack 59→bot#229 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 30709 → 26405 | 整数对账：2 条扣了款（反序），手续费合计 693，发出的兵合计 3611
+  924 kaito9 ×7 | attack 170→bot#215 attack 77→NEUTRAL attack 85→NEUTRAL attack 91→NEUTRAL attack 94→NEUTRAL attack 94→NEUTRAL attack 88→NEUTRAL | 19264 → 22698 | 整数对账：无精确解（批内另有利息/挨打）
+  931 ryan_m ×7 | attack 47→NEUTRAL attack 91→bot#137 attack 91→bot#137 attack 82→bot#137 attack 82→bot#137 attack 73→NEUTRAL attack 74→NEUTRAL | 23970 → 12572 | 整数对账：7 条扣了款（正序），手续费合计 1523，发出的兵合计 9875
+  931 sora_w ×5 | attack 51→NEUTRAL attack 59→bot#230 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 29601 → 27521 | 整数对账：1 条扣了款（反序），手续费合计 346，发出的兵合计 1734
+  931 zero_7 ×6 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 151→bot#242 | 20857 → 12957 | 整数对账：6 条扣了款（正序），手续费合计 1265，发出的兵合计 6635
+  938 riku_x ×8 | attack 131→bot#128 attack 127→bot#397 attack 130→bot#397 attack 128→bot#397 attack 307→bot#128 attack 306→bot#128 attack 316→bot#128 attack 334→bot#128 | 11000 → 1290 | 整数对账：8 条扣了款（正序），手续费合计 589，发出的兵合计 9121
+  973 talon5 ×7 | attack 71→bot#97 attack 225→bot#215 attack 197→bot#215 attack 192→bot#215 attack 194→bot#215 attack 191→bot#215 attack 89→NEUTRAL | 26402 → 7560 | 整数对账：6 条扣了款（反序），手续费合计 1132，发出的兵合计 17710
+  973 alex_k ×6 | attack 174→bot#128 attack 179→bot#128 attack 184→bot#128 attack 200→bot#128 attack 202→bot#128 attack 64→NEUTRAL | 29783 → 9247 | 整数对账：6 条扣了款（反序），手续费合计 1422，发出的兵合计 19114
+  980 leo_tx ×4 | attack 137→bot#440 attack 141→bot#440 attack 137→bot#440 attack 164→bot#440 | 6553 → 3358 | 整数对账：4 条扣了款（反序），手续费合计 239，发出的兵合计 2956
+  980 kaito9 ×8 | attack 47→bot#215 attack 82→NEUTRAL attack 263→bot#123 attack 258→bot#123 attack 243→bot#123 attack 246→bot#123 attack 171→bot#215 attack 168→bot#215 | 28742 → 4993 | 整数对账：8 条扣了款（正序），手续费合计 1576，发出的兵合计 22173
+  994 ryan_m ×9 | attack 211→bot#325 attack 111→bot#325 attack 112→bot#325 attack 111→bot#325 attack 132→bot#393 attack 131→bot#393 attack 155→bot#393 attack 197→NEUTRAL attack 153→NEUTRAL | 25077 → 8199 | 整数对账：7 条扣了款（正序），手续费合计 1302，发出的兵合计 15576
+  994 sora_w ×5 | attack 161→bot#314 attack 168→bot#314 attack 96→bot#249 attack 97→bot#249 attack 92→bot#249 | 29804 → 14582 | 整数对账：5 条扣了款（正序），手续费合计 1279，发出的兵合计 13943
+  1015 zero_7 ×5 | attack 47→NEUTRAL attack 47→NEUTRAL attack 68→NEUTRAL attack 94→NEUTRAL attack 132→NEUTRAL | 30764 → 19304 | 整数对账：5 条扣了款（反序），手续费合计 1441，发出的兵合计 10019
+  1057 alex_k ×7 | attack 47→bot#324 attack 47→bot#324 attack 47→bot#324 attack 205→NEUTRAL attack 205→NEUTRAL attack 209→NEUTRAL attack 209→NEUTRAL | 22237 → 7055 | 整数对账：7 条扣了款（反序），手续费合计 1027，发出的兵合计 14155
+  1057 kaito9 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 21003 → 21003 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1064 talon5 ×9 | attack 112→NEUTRAL attack 129→NEUTRAL attack 157→NEUTRAL attack 168→NEUTRAL attack 182→NEUTRAL attack 200→NEUTRAL attack 210→NEUTRAL attack 224→NEUTRAL attack 233→NEUTRAL | 35084 → 35084 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1085 ryan_m ×9 | attack 153→bot#380 attack 166→bot#252 attack 184→bot#252 attack 113→bot#79 attack 195→bot#252 attack 75→bot#505 attack 72→bot#505 attack 65→bot#505 attack 215→bot#325 | 21566 → 5072 | 整数对账：9 条扣了款（正序），手续费合计 1247，发出的兵合计 15247
+  1085 sora_w ×9 | attack 47→NEUTRAL attack 47→bot#230 attack 47→NEUTRAL attack 47→NEUTRAL attack 118→NEUTRAL attack 47→NEUTRAL attack 141→NEUTRAL attack 132→NEUTRAL attack 146→NEUTRAL | 50504 → 20068 | 整数对账：9 条扣了款（正序），手续费合计 4017，发出的兵合计 26419
+  1085 zexos1 ×3 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 52313 → 52313 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1127 zero_7 ×8 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 68→NEUTRAL attack 81→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 52→NEUTRAL | 48930 → 28346 | 整数对账：8 条扣了款（正序），手续费合计 3668，发出的兵合计 16916
+  1162 alex_k ×8 | attack 67→bot#351 attack 79→bot#351 attack 86→bot#351 attack 99→bot#351 attack 112→bot#351 attack 113→bot#351 attack 129→bot#351 attack 142→bot#351 | 53731 → 20416 | 整数对账：8 条扣了款（正序），手续费合计 3620，发出的兵合计 29695
+  1169 noah88 ×8 | attack 47→bot#69 attack 47→bot#69 attack 47→bot#69 attack 47→bot#69 attack 47→bot#69 attack 47→bot#69 attack 78→NEUTRAL attack 72→NEUTRAL | 66631 → 40051 | 整数对账：无精确解（批内另有利息/挨打）
+  1169 kaito9 ×9 | attack 66→bot#489 attack 65→bot#489 attack 155→bot#335 attack 98→bot#489 attack 97→bot#489 attack 182→bot#335 attack 185→bot#335 attack 256→bot#346 attack 262→bot#346 | 54451 → 11243 | 整数对账：无精确解（批内另有利息/挨打）
+  1183 talon5 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 99→NEUTRAL attack 108→NEUTRAL attack 134→NEUTRAL | 62936 → 29473 | 整数对账：9 条扣了款（正序），手续费合计 5196，发出的兵合计 28267
+  1197 ryan_m ×8 | attack 62→NEUTRAL attack 178→bot#50 attack 77→NEUTRAL attack 77→NEUTRAL attack 91→NEUTRAL attack 89→NEUTRAL attack 91→NEUTRAL attack 175→bot#50 | 27164 → 18042 | 整数对账：2 条扣了款（正序），手续费合计 576，发出的兵合计 8546
+  1197 sora_w ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 97→NEUTRAL attack 106→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 74658 → 74658 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1232 leo_tx ×8 | attack 72→bot#440 attack 68→bot#440 attack 61→bot#440 attack 56→bot#440 attack 50→bot#440 attack 131→bot#75 attack 140→bot#440 attack 47→bot#440 | 92490 → 43647 | 整数对账：8 条扣了款（反序），手续费合计 6229，发出的兵合计 42614
+  1288 zero_7 ×9 | attack 48→NEUTRAL attack 47→NEUTRAL attack 60→NEUTRAL attack 58→NEUTRAL attack 63→NEUTRAL attack 63→NEUTRAL attack 64→NEUTRAL attack 64→NEUTRAL attack 64→NEUTRAL | 76361 → 76361 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1302 noah88 ×9 | attack 76→bot#189 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 100→bot#189 attack 88→bot#189 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 103717 → 75945 | 整数对账：3 条扣了款（反序），手续费合计 3284，发出的兵合计 24488
+  1302 alex_k ×8 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 54→NEUTRAL attack 47→NEUTRAL | 88187 → 88187 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1302 kaito9 ×9 | attack 149→bot#190 attack 151→bot#190 attack 83→NEUTRAL attack 56→NEUTRAL attack 56→NEUTRAL attack 58→NEUTRAL attack 58→NEUTRAL attack 60→NEUTRAL attack 59→NEUTRAL | 58669 → 24456 | 整数对账：9 条扣了款（正序），手续费合计 3979，发出的兵合计 30234
+  1337 ryan_m ×3 | attack 236→bot#115 attack 230→bot#115 attack 234→bot#115 | 53396 → 23390 | 整数对账：3 条扣了款（反序），手续费合计 1461，发出的兵合计 28545
+  1337 sora_w ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 138940 → 138940 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1337 zexos1 ×6 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 138447 → 96377 | 整数对账：6 条扣了款（反序），手续费合计 8412，发出的兵合计 33658
+  1337 talon5 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 107935 → 107935 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1344 riku_x ×7 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 55→NEUTRAL attack 346→bot#466 attack 341→bot#466 | 72312 → 72312 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1379 leo_tx ×9 | attack 100→bot#75 attack 100→bot#75 attack 103→bot#75 attack 103→bot#75 attack 107→bot#75 attack 107→bot#75 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 119059 → 59301 | 整数对账：无精确解（批内另有利息/挨打）
+  1463 zero_7 ×9 | attack 228→NEUTRAL attack 211→NEUTRAL attack 235→NEUTRAL attack 268→NEUTRAL attack 302→NEUTRAL attack 305→NEUTRAL attack 305→NEUTRAL attack 402→NEUTRAL attack 47→NEUTRAL | 142787 → 142787 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1463 alex_k ×8 | attack 162→NEUTRAL attack 161→NEUTRAL attack 162→NEUTRAL attack 199→NEUTRAL attack 232→NEUTRAL attack 106→NEUTRAL attack 117→NEUTRAL attack 129→NEUTRAL | 147674 → 147674 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1463 kaito9 ×9 | attack 190→NEUTRAL attack 184→NEUTRAL attack 184→NEUTRAL attack 181→NEUTRAL attack 101→bot#496 attack 252→NEUTRAL attack 279→NEUTRAL attack 287→NEUTRAL attack 284→NEUTRAL | 86222 → 8641 | 整数对账：9 条扣了款（正序），手续费合计 4435，发出的兵合计 73146
+  1470 noah88 ×9 | attack 62→NEUTRAL attack 62→NEUTRAL attack 177→NEUTRAL attack 177→NEUTRAL attack 180→NEUTRAL attack 180→NEUTRAL attack 100→NEUTRAL attack 100→NEUTRAL attack 119→NEUTRAL | 149325 → 149325 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1505 zexos1 ×8 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 206825 → 127598 | 整数对账：8 条扣了款（反序），手续费合计 15844，发出的兵合计 63383
+  1512 sora_w ×9 | attack 503→Israel Defense Force attack 506→Israel Defense Force attack 405→Israel Defense Force attack 402→Israel Defense Force attack 404→Israel Defense Force attack 398→Israel Defense Force attack 3 | 241395 → 1201 | 整数对账：9 条扣了款（正序），手续费合计 5883，发出的兵合计 234311
+  1526 talon5 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 54→bot#496 attack 54→bot#496 attack 99→NEUTRAL attack 102→NEUTRAL | 182407 → 93142 | 整数对账：9 条扣了款（正序），手续费合计 15170，发出的兵合计 74095
+  1526 riku_x ×4 | attack 567→Player 191 attack 562→Player 191 boat 379→NaN boat 339→NaN | 108391 → 7845 | 整数对账：无精确解（批内另有利息/挨打）
+  1547 leo_tx ×8 | attack 116→bot#176 attack 113→bot#176 attack 115→bot#176 attack 111→bot#176 attack 111→bot#176 attack 109→bot#176 attack 109→bot#176 attack 107→bot#176 | 188750 → 66989 | 整数对账：8 条扣了款（正序），手续费合计 11668，发出的兵合计 110093
+  1638 alex_k ×9 | attack 540→Israel Defense Force attack 536→Israel Defense Force attack 558→Israel Defense Force attack 559→Israel Defense Force attack 66→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL  | 236102 → 236102 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1645 noah88 ×9 | attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 attack 47→bot#381 | 231374 → 134379 | 整数对账：9 条扣了款（反序），手续费合计 19396，发出的兵合计 77599
+  1666 zero_7 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 50→NEUTRAL attack 57→NEUTRAL attack 47→NEUTRAL | 229935 → 229935 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1694 riku_x ×8 | attack 432→Player 191 attack 473→Player 191 attack 473→Player 191 attack 472→Player 191 attack 472→Player 191 attack 602→Player 191 attack 602→Player 191 boat 127→NaN | 17233 → 58 | 整数对账：无精确解（批内另有利息/挨打）
+  1708 zexos1 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→bot#318 attack 47→bot#318 attack 47→bot#318 attack 47→bot#318 attack 47→bot#318 | 285639 → 211208 | 整数对账：5 条扣了款（反序），手续费合计 14885，发出的兵合计 59546
+  1715 sora_w ×9 | attack 420→Israel Defense Force attack 350→Israel Defense Force attack 348→Israel Defense Force attack 351→Israel Defense Force attack 348→Israel Defense Force attack 420→Israel Defense Force attack 4 | 42771 → 479 | 整数对账：9 条扣了款（正序），手续费合计 1277，发出的兵合计 41015
+  1722 talon5 ×9 | attack 47→NEUTRAL attack 52→bot#415 attack 47→NEUTRAL attack 53→bot#415 attack 52→bot#415 attack 53→bot#415 attack 53→bot#415 attack 54→bot#415 attack 53→bot#415 | 236625 → 131689 | 整数对账：9 条扣了款（正序），手续费合计 19596，发出的兵合计 85340
+  1729 leo_tx ×9 | attack 76→bot#90 attack 75→bot#90 attack 76→bot#90 attack 56→bot#235 attack 55→bot#235 attack 54→bot#235 attack 280→NEUTRAL attack 186→NEUTRAL attack 111→NEUTRAL | 136617 → 43509 | 整数对账：无精确解（批内另有利息/挨打）
+  1799 kaito9 ×5 | attack 48→NEUTRAL attack 46→NEUTRAL attack 62→NEUTRAL attack 64→NEUTRAL attack 63→NEUTRAL | 194809 → 154802 | 整数对账：无精确解（批内另有利息/挨打）
+  1813 alex_k ×8 | attack 122→NEUTRAL attack 465→NEUTRAL attack 464→NEUTRAL attack 463→NEUTRAL attack 449→NEUTRAL attack 448→NEUTRAL attack 453→NEUTRAL attack 453→NEUTRAL | 340049 → 340049 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1827 noah88 ×8 | attack 22→NEUTRAL attack 22→NEUTRAL attack 103→bot#171 attack 104→bot#171 attack 103→bot#171 attack 47→NEUTRAL attack 47→NEUTRAL attack 52→bot#171 | 276695 → 180471 | 整数对账：4 条扣了款（正序），手续费合计 10921，发出的兵合计 85303
+  1890 zexos1 ×9 | attack 28→bot#175 attack 28→bot#175 attack 28→bot#175 attack 28→bot#175 attack 28→bot#175 attack 28→bot#175 attack 29→bot#175 attack 28→bot#175 attack 47→NEUTRAL | 351453 → 253201 | 整数对账：8 条扣了款（正序），手续费合计 28676，发出的兵合计 69576
+  1890 zero_7 ×8 | attack 20→bot#311 attack 20→bot#311 attack 20→bot#311 attack 21→bot#311 attack 21→bot#311 attack 47→bot#311 attack 47→bot#311 attack 47→bot#311 | 328465 → 232177 | 整数对账：8 条扣了款（正序），手续费合计 27261，发出的兵合计 69027
+  1890 riku_x ×8 | attack 889→Player 191 attack 867→Player 191 attack 815→Player 191 attack 792→Player 191 attack 742→Player 191 attack 735→Player 191 attack 701→Player 191 attack 677→Player 191 | 20759 → 1 | 整数对账：8 条扣了款（反序），手续费合计 353，发出的兵合计 20405
+  1904 sora_w ×3 | attack 122→Player 191 attack 122→Player 191 attack 133→Player 191 | 66695 → 43103 | 整数对账：3 条扣了款（正序），手续费合计 2048，发出的兵合计 21544
+  1932 leo_tx ×9 | attack 222→bot#33 attack 135→bot#33 attack 135→bot#33 attack 138→bot#33 attack 138→bot#33 attack 142→bot#33 attack 142→bot#33 attack 145→bot#33 attack 47→NEUTRAL | 285132 → 71178 | 整数对账：8 条扣了款（正序），手续费合计 15124，发出的兵合计 198830
+  1939 talon5 ×9 | attack 44→NEUTRAL attack 44→NEUTRAL attack 39→NEUTRAL attack 40→NEUTRAL attack 54→NEUTRAL attack 55→NEUTRAL attack 54→NEUTRAL attack 55→NEUTRAL attack 55→NEUTRAL | 290288 → 167598 | 整数对账：无精确解（批内另有利息/挨打）
+  1981 kaito9 ×4 | attack 38→bot#60 attack 39→bot#60 attack 47→NEUTRAL attack 47→NEUTRAL | 252926 → 228128 | 整数对账：2 条扣了款（反序），手续费合计 5776，发出的兵合计 19022
+  1995 alex_k ×9 | attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 | 432687 → 432687 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2009 noah88 ×9 | attack 146→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 310259 → 163676 | 整数对账：无精确解（批内另有利息/挨打）
+  2072 zexos1 ×8 | attack 33→NEUTRAL attack 33→NEUTRAL attack 33→NEUTRAL attack 33→NEUTRAL attack 33→NEUTRAL attack 32→NEUTRAL attack 32→NEUTRAL attack 32→NEUTRAL | 345255 → 239770 | 整数对账：8 条扣了款（反序），手续费合计 27768，发出的兵合计 77717
+  2086 riku_x ×8 | attack 47→NEUTRAL attack 122→NEUTRAL attack 171→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 123→NEUTRAL | 38640 → 38640 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2100 sora_w ×8 | attack 343→bot#111 attack 337→bot#111 attack 345→bot#111 attack 338→Player 191 attack 212→Player 191 attack 219→Player 191 attack 212→Player 191 attack 219→Player 191 | 327714 → 21901 | 整数对账：无精确解（批内另有利息/挨打）
+  2114 zero_7 ×9 | attack 14→NEUTRAL attack 14→NEUTRAL attack 14→NEUTRAL attack 14→NEUTRAL attack 14→NEUTRAL attack 14→NEUTRAL attack 515→🌞 attack 14→NEUTRAL attack 122→🌞 | 401489 → 168836 | 整数对账：2 条扣了款（正序），手续费合计 6982，发出的兵合计 225671
+  2128 leo_tx ×8 | attack 23→NEUTRAL attack 21→NEUTRAL attack 21→NEUTRAL attack 19→NEUTRAL attack 20→NEUTRAL attack 20→NEUTRAL attack 20→NEUTRAL attack 17→NEUTRAL | 365838 → 365838 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2156 kaito9 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 38→NEUTRAL attack 38→NEUTRAL | 322764 → 322764 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2163 talon5 ×8 | attack 47→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 23→NEUTRAL | 373429 → 373429 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2212 noah88 ×9 | attack 17→NEUTRAL attack 17→NEUTRAL attack 17→NEUTRAL attack 17→NEUTRAL attack 17→NEUTRAL attack 15→NEUTRAL attack 14→NEUTRAL attack 12→NEUTRAL attack 9→NEUTRAL | 395219 → 395219 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2240 alex_k ×9 | attack 751→🌞 attack 750→🌞 attack 751→🌞 attack 749→🌞 attack 481→🌞 attack 481→🌞 attack 481→🌞 attack 493→🌞 attack 492→🌞 | 616071 → 93 | 整数对账：9 条扣了款（反序），手续费合计 14523，发出的兵合计 601455
+  2261 ryan_m ×3 | attack 11→NEUTRAL attack 13→NEUTRAL attack 13→NEUTRAL | 476045 → 476045 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2261 riku_x ×8 | attack 1012→Player 191 attack 1012→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 | 80279 → 0 | 整数对账：8 条扣了款（反序），手续费合计 4480，发出的兵合计 75799
+  2282 sora_w ×9 | attack 122→Player 191 attack 122→Player 191 attack 122→Player 191 attack 77→NEUTRAL attack 75→NEUTRAL attack 74→NEUTRAL attack 191→NEUTRAL attack 162→NEUTRAL attack 169→NEUTRAL | 55940 → 15191 | 整数对账：无精确解（批内另有利息/挨打）
+  2303 leo_tx ×9 | attack 205→bot#67 attack 205→bot#67 attack 206→bot#67 attack 204→bot#67 attack 205→bot#67 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 518416 → 156627 | 整数对账：5 条扣了款（正序），手续费合计 19908，发出的兵合计 341881
+  2310 kaito9 ×8 | attack 12→bot#66 attack 12→bot#66 attack 10→bot#66 attack 10→bot#66 attack 10→bot#66 attack 10→bot#66 attack 10→bot#66 attack 11→bot#66 | 427030 → 354298 | 整数对账：8 条扣了款（正序），手续费合计 36903，发出的兵合计 35829
+  2352 zero_7 ×9 | attack 329→🌞 attack 331→🌞 attack 330→🌞 attack 417→🌞 attack 417→🌞 attack 418→🌞 attack 357→🌞 attack 359→🌞 attack 358→🌞 | 147465 → 2194 | 整数对账：9 条扣了款（反序），手续费合计 4571，发出的兵合计 140700
+  2359 noah88 ×9 | attack 37→NEUTRAL attack 31→NEUTRAL attack 32→NEUTRAL attack 31→NEUTRAL attack 32→NEUTRAL attack 37→NEUTRAL attack 48→NEUTRAL attack 60→NEUTRAL attack 70→NEUTRAL | 485997 → 299077 | 整数对账：无精确解（批内另有利息/挨打）
+  2359 talon5 ×8 | attack 243→🌞 attack 314→🌞 attack 295→🌞 attack 295→🌞 attack 296→🌞 attack 296→🌞 attack 298→🌞 attack 298→🌞 | 495034 → 29558 | 整数对账：无精确解（批内另有利息/挨打）
+  2373 alex_k ×9 | attack 122→🌞 attack 122→🌞 attack 122→🌞 attack 389→🌞 attack 390→🌞 attack 392→🌞 attack 411→🌞 attack 412→🌞 attack 413→🌞 | 16284 → 478 | 整数对账：9 条扣了款（反序），手续费合计 462，发出的兵合计 15344
+  2408 ryan_m ×9 | attack 215→Player 436 attack 216→Player 436 attack 216→Player 436 attack 217→Player 436 attack 217→Player 436 attack 236→Player 436 attack 47→NEUTRAL attack 47→NEUTRAL attack 5→NEUTRAL | 602902 → 128543 | 整数对账：6 条扣了款（反序），手续费合计 24205，发出的兵合计 450154
+  2408 riku_x ×8 | attack 705→Player 191 attack 718→Player 191 attack 743→Player 191 attack 750→Player 191 attack 782→Player 191 attack 823→Player 191 attack 864→Player 191 attack 1012→Player 191 | 39978 → 1 | 整数对账：8 条扣了款（正序），手续费合计 660，发出的兵合计 39317
+  2429 kaito9 ×9 | attack 8→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL attack 9→NEUTRAL | 462586 → 468414 | 整数对账：无精确解（批内另有利息/挨打）
+  2443 leo_tx ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 48→NEUTRAL attack 49→NEUTRAL attack 49→NEUTRAL attack 49→NEUTRAL attack 47→NEUTRAL | 224458 → 129283 | 整数对账：9 条扣了款（正序），手续费合计 18779，发出的兵合计 76396
+  2485 noah88 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 535227 → 535227 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2520 ryan_m ×7 | attack 107→Player 436 attack 109→Player 436 attack 213→Player 436 attack 215→Player 436 attack 218→Player 436 attack 233→Player 436 attack 210→Player 436 | 171757 → 37143 | 整数对账：无精确解（批内另有利息/挨打）
+  2520 talon5 ×9 | attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL | 489683 → 489683 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2527 sora_w ×5 | attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL attack 122→NEUTRAL | 386814 → 386814 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2569 noah88 ×9 | attack 122→*Cr-nA* :3 [AuS] ? attack 122→*Cr-nA* :3 [AuS] ? attack 122→*Cr-nA* :3 [AuS] ? attack 122→*Cr-nA* :3 [AuS] ? attack 122→*Cr-nA* :3 [AuS] ? attack 122→*Cr-nA* :3 [AuS] ? attack 274→*Cr-nA* : | 607433 → 98293 | 整数对账：无精确解（批内另有利息/挨打）
+  2597 sora_w ×7 | attack 109→bot#392 attack 109→bot#392 attack 110→bot#392 attack 110→bot#392 attack 111→bot#392 attack 111→bot#392 attack 124→bot#392 | 364748 → 146615 | 整数对账：7 条扣了款（反序），手续费合计 20770，发出的兵合计 197363
+  2632 noah88 ×8 | attack 104→*Cr-nA* :3 [AuS] ? attack 101→*Cr-nA* :3 [AuS] ? attack 103→*Cr-nA* :3 [AuS] ? attack 100→*Cr-nA* :3 [AuS] ? attack 102→*Cr-nA* :3 [AuS] ? attack 99→*Cr-nA* :3 [AuS] ? attack 102→*Cr-nA* :3 | 128110 → 49673 | 整数对账：8 条扣了款（正序），手续费合计 8208，发出的兵合计 70229

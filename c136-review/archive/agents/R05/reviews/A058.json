@@ -2177,6 +2177,20 @@
     "neverLandedTroops": 754868
    }
   ],
+  "funnelTotals": {
+   "intended": 645,
+   "matched": 331,
+   "executed": 334,
+   "unmatchedExec": 3,
+   "unmatchedExecByPeriod": [
+    0,
+    0,
+    1,
+    2
+   ],
+   "neverLandedByMatch": 314,
+   "neverLandedByCount": 311
+  },
   "selfReport": {
    "shadow": 669,
    "cmds": 666,
@@ -4091,6 +4105,215 @@
     "只贴敌方真人": 0,
     "围在里面": 0
    }
+  },
+  "exits": {
+   "留底·有在途": {
+    "V13.boatFood:2003": 308,
+    "V13.boatFood:2005": 20,
+    "V13.boatFood:2004": 7
+   },
+   "留底锁·无在途": {
+    "V13.boatFood:2005": 184,
+    "V13.boatFood:2004": 141,
+    "V13.boatFood:2003": 92
+   },
+   "有目标没发": {
+    "V13.boatFood:2003": 9,
+    "V13.boatFood:2004": 4,
+    "V13.boatFood:2005": 2
+   },
+   "只剩中立边": {
+    "V13.boatFood:2003": 9
+   },
+   "围在里面": {
+    "V13.boatFood:2004": 48
+   }
+  },
+  "ptGates": {
+   "留底·有在途": {
+    "1157": 151,
+    "1157,1161": 110,
+    "1161": 74
+   },
+   "留底锁·无在途": {
+    "1161": 360,
+    "1157,1161": 40,
+    "1157": 13,
+    "1161,1165": 4
+   },
+   "有目标没发": {
+    "1161,1163": 5,
+    "1157": 3,
+    "(循环里没有 continue)": 2,
+    "1157,1163": 1,
+    "1157,1161": 1,
+    "1163": 1,
+    "1161": 1,
+    "1165": 1
+   },
+   "只剩中立边": {
+    "(循环里没有 continue)": 9
+   },
+   "围在里面": {
+    "(循环里没有 continue)": 48
+   }
+  },
+  "gaExit": {
+   "留底·有在途": {
+    "799": 308,
+    "end": 27
+   },
+   "留底锁·无在途": {
+    "799": 92,
+    "end": 325
+   },
+   "有目标没发": {
+    "797": 10,
+    "799": 5
+   },
+   "只剩中立边": {
+    "799": 9
+   },
+   "围在里面": {
+    "end": 48
+   }
+  },
+  "notSentSplit": {
+   "rows": 15,
+   "split": {
+    "配额闸拒发": 10,
+    "在途已够": 5
+   },
+   "lines": {
+    "cooldown": [],
+    "guard": [
+     3858,
+     3861
+    ],
+    "enough": [
+     978,
+     1163
+    ]
+   },
+   "byBot": {
+    "noah88": {
+     "配额闸拒发": 3
+    },
+    "riku_x": {
+     "配额闸拒发": 2
+    },
+    "zexos1": {
+     "配额闸拒发": 2
+    },
+    "alex_k": {
+     "在途已够": 5,
+     "配额闸拒发": 1
+    },
+    "sora_w": {
+     "配额闸拒发": 2
+    }
+   }
+  },
+  "sendRefused": {
+   "rows": 10,
+   "share": 0.009,
+   "byCat": {
+    "有目标没发": {
+     "Policy.send 3861 → 没到 Strategy.send｜isNoFullSend=1": 10
+    }
+   },
+   "byBot": {
+    "noah88": 3,
+    "riku_x": 2,
+    "zexos1": 2,
+    "alex_k": 1,
+    "sora_w": 2
+   }
+  },
+  "noFullSendRows": {
+   "all": 1146,
+   "nfs1": 719,
+   "nfs1_nocmd": 459
+  }
+ },
+ "quotaGuard": {
+  "source": "scripts/quota_guard.py A058（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）",
+  "ver": "vb",
+  "okLine": 3924,
+  "calls": 1200,
+  "refused": 34,
+  "nfsAt": {
+   "zero_7": null,
+   "alex_k": 659,
+   "talon5": 1019,
+   "sora_w": 561,
+   "leo_tx": null,
+   "kaito9": 872,
+   "ryan_m": null,
+   "noah88": 742,
+   "riku_x": 825,
+   "zexos1": 834
+  },
+  "byPeriod": [
+   {
+    "period": "0–600",
+    "calls": 177,
+    "refused": 0
+   },
+   {
+    "period": "600–1500",
+    "calls": 575,
+    "refused": 13
+   },
+   {
+    "period": "1500–3000",
+    "calls": 369,
+    "refused": 18
+   },
+   {
+    "period": "3000+",
+    "calls": 79,
+    "refused": 3
+   }
+  ],
+  "byBot": {
+   "alex_k": {
+    "calls": 203,
+    "refused": 2
+   },
+   "sora_w": {
+    "calls": 228,
+    "refused": 7
+   },
+   "kaito9": {
+    "calls": 60,
+    "refused": 2
+   },
+   "noah88": {
+    "calls": 43,
+    "refused": 3
+   },
+   "zero_7": {
+    "calls": 80
+   },
+   "talon5": {
+    "calls": 120,
+    "refused": 16
+   },
+   "leo_tx": {
+    "calls": 74
+   },
+   "ryan_m": {
+    "calls": 115
+   },
+   "riku_x": {
+    "calls": 169,
+    "refused": 2
+   },
+   "zexos1": {
+    "calls": 108,
+    "refused": 2
+   }
   }
  },
  "squadVsRealHumans": [
@@ -4609,7 +4832,7 @@
  "unknowns": [
   "客户端为什么落后/失联：日志里没有主机负载或网络指标；只看到同房两支编队的 30 个号一起恶化，而 44 名真人里 t≤2000 只掉 6 个。",
   "指令从策略到服务器之间在哪里丢的：引擎的发送函数是直接 WebSocket.send，没有本地队列；每帧每号最多 9 条、反序落地的规则出自哪一层（服务器？接入层？）没有源码。",
-  "TP1 里「机器人锁」和「指令没落地」各占多少：被锁的号（talon5、noah88、ryan_m）几乎不发令，没被锁的号（alex_k、riku_x、kaito9）发了不落地，两者同时存在，没有做反事实重演。",
+  "TP1 里「机器人锁」和「指令没落地」各自少拿多少地（按决策拍的占比见 tickAttribution：留底 65.6%、发了没用 25.0%）：被锁的号（talon5、noah88、ryan_m）几乎不发令，没被锁的号（alex_k、riku_x、kaito9）发了不落地，两者同时存在，没有做反事实重演。",
   "noah88 t=2205 那三笔给 talon5 的捐兵对应哪三条日志（推测是本地 1980/2005/2030），以及本地 2055–2105 三条给 sora_w 的调度为什么没有痕迹（推测被配额在源头拒掉）。",
   "真实客户端里 isNoFullSend 的置真拍没有直接日志，只有影子复算。"
  ],

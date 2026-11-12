@@ -1,0 +1,1355 @@
+{
+ "matchId": "A070",
+ "periods": [
+  "0~600",
+  "600~1500",
+  "1500~3000",
+  "3000+"
+ ],
+ "delay": {
+  "0~600": {
+   "want": 89,
+   "landed": 84,
+   "matched": 84,
+   "p50": 11,
+   "p90": 14,
+   "max": 18,
+   "p50fifo": 11,
+   "p90fifo": 14,
+   "ge21": 0,
+   "ge35": 0,
+   "ge90": 0,
+   "retargetN": 0,
+   "retargetP50": null,
+   "retargetP90": null
+  },
+  "600~1500": {
+   "want": 932,
+   "landed": 456,
+   "matched": 301,
+   "p50": 74,
+   "p90": 292,
+   "max": 410,
+   "p50fifo": 79,
+   "p90fifo": 316,
+   "ge21": 245,
+   "ge35": 233,
+   "ge90": 128,
+   "retargetN": 252,
+   "retargetP50": 120,
+   "retargetP90": 297
+  },
+  "1500~3000": {
+   "want": 1186,
+   "landed": 454,
+   "matched": 242,
+   "p50": 248,
+   "p90": 379,
+   "max": 893,
+   "p50fifo": 295,
+   "p90fifo": 432,
+   "ge21": 231,
+   "ge35": 231,
+   "ge90": 215,
+   "retargetN": 115,
+   "retargetP50": 304,
+   "retargetP90": 384
+  },
+  "3000+": {
+   "want": 17,
+   "landed": 17,
+   "matched": 17,
+   "p50": 13,
+   "p90": 17,
+   "max": 26,
+   "p50fifo": 12,
+   "p90fifo": 14,
+   "ge21": 1,
+   "ge35": 0,
+   "ge90": 0,
+   "retargetN": 0,
+   "retargetP50": null,
+   "retargetP90": null
+  }
+ },
+ "funnel": {
+  "0~630": {
+   "shadow": 94,
+   "real": 89,
+   "landed": 88,
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
+  },
+  "630~1530": {
+   "shadow": 990,
+   "real": 977,
+   "landed": 483,
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
+  },
+  "1530~3060": {
+   "shadow": 1140,
+   "real": 1038,
+   "landed": 436,
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
+  },
+  "3060~末": {
+   "shadow": 17,
+   "real": 17,
+   "landed": 17,
+   "bots": 6,
+   "donWant": 0,
+   "donLanded": 0
+  }
+ },
+ "whiff": {
+  "0~600": {
+   "atkN": 84,
+   "troops": 74833,
+   "noop": 0,
+   "retargetN": 0,
+   "retargetTroops": 0,
+   "wantAiN": 29,
+   "wantAiTroops": 16378,
+   "onAiN": 24,
+   "onAiTroops": 11915,
+   "onNeutralN": 60,
+   "refund": 5646
+  },
+  "600~1500": {
+   "atkN": 456,
+   "troops": 905574,
+   "noop": 131,
+   "retargetN": 220,
+   "retargetTroops": 257610,
+   "wantAiN": 836,
+   "wantAiTroops": 3519609,
+   "onAiN": 211,
+   "onAiTroops": 575522,
+   "onNeutralN": 245,
+   "refund": 668025
+  },
+  "1500~3000": {
+   "atkN": 454,
+   "troops": 5906614,
+   "noop": 151,
+   "retargetN": 147,
+   "retargetTroops": 621962,
+   "wantAiN": 627,
+   "wantAiTroops": 6587756,
+   "onAiN": 120,
+   "onAiTroops": 1899503,
+   "onNeutralN": 208,
+   "refund": 3340477
+  },
+  "3000+": {
+   "atkN": 17,
+   "troops": 1659144,
+   "noop": 0,
+   "retargetN": 0,
+   "retargetTroops": 0,
+   "wantAiN": 0,
+   "wantAiTroops": 0,
+   "onAiN": 0,
+   "onAiTroops": 0,
+   "onNeutralN": 2,
+   "refund": 87520
+  }
+ },
+ "repeat": {
+  "0~600": {
+   "batches": 0,
+   "batchCmds": 0,
+   "batchTroops": 0,
+   "bigBatches": 0,
+   "bigTroops": 0,
+   "groups": 7,
+   "groupCmds": 17,
+   "repeatTroops": 4979,
+   "repeatFee": 438,
+   "over": 5310
+  },
+  "600~1500": {
+   "batches": 50,
+   "batchCmds": 356,
+   "batchTroops": 708104,
+   "bigBatches": 21,
+   "bigTroops": 535562,
+   "groups": 60,
+   "groupCmds": 246,
+   "repeatTroops": 506973,
+   "repeatFee": 62350,
+   "over": 351393
+  },
+  "1500~3000": {
+   "batches": 54,
+   "batchCmds": 435,
+   "batchTroops": 5579946,
+   "bigBatches": 23,
+   "bigTroops": 4344834,
+   "groups": 45,
+   "groupCmds": 286,
+   "repeatTroops": 3531356,
+   "repeatFee": 442310,
+   "over": 2070963
+  },
+  "3000+": {
+   "batches": 0,
+   "batchCmds": 0,
+   "batchTroops": 0,
+   "bigBatches": 0,
+   "bigTroops": 0,
+   "groups": 6,
+   "groupCmds": 17,
+   "repeatTroops": 1016134,
+   "repeatFee": 142613,
+   "over": 185842
+  }
+ },
+ "perBot": {
+  "alex_k": {
+   "min": 7,
+   "p50": 132,
+   "p90": 365,
+   "max": 405,
+   "n": 70
+  },
+  "kaito9": {
+   "min": 0,
+   "p50": 90,
+   "p90": 276,
+   "max": 301,
+   "n": 63
+  },
+  "leo_tx": {
+   "min": 2,
+   "p50": 222,
+   "p90": 352,
+   "max": 893,
+   "n": 82
+  },
+  "noah88": {
+   "min": 4,
+   "p50": 102,
+   "p90": 205,
+   "max": 329,
+   "n": 75
+  },
+  "riku_x": {
+   "min": 4,
+   "p50": 176,
+   "p90": 275,
+   "max": 338,
+   "n": 65
+  },
+  "ryan_m": {
+   "min": 7,
+   "p50": 101,
+   "p90": 248,
+   "max": 340,
+   "n": 65
+  },
+  "sora_w": {
+   "min": 2,
+   "p50": 142,
+   "p90": 325,
+   "max": 365,
+   "n": 73
+  },
+  "talon5": {
+   "min": 1,
+   "p50": 45,
+   "p90": 362,
+   "max": 384,
+   "n": 57
+  },
+  "zero_7": {
+   "min": 8,
+   "p50": 54,
+   "p90": 417,
+   "max": 434,
+   "n": 46
+  },
+  "zexos1": {
+   "min": 0,
+   "p50": 19,
+   "p90": 308,
+   "max": 330,
+   "n": 48
+  }
+ },
+ "groups": {
+  "0~600": {
+   "我方号": {
+    "n0": 10,
+    "atkN": 84,
+    "sent": 74833,
+    "refund": 5646,
+    "tA": 11915,
+    "terr0": 120,
+    "terr1": 28919,
+    "eco": 123408
+   },
+   "T1 真人": {
+    "n0": 9,
+    "atkN": 82,
+    "sent": 54991,
+    "refund": 7193,
+    "tA": 0,
+    "terr0": 108,
+    "terr1": 23127,
+    "eco": 101053
+   }
+  },
+  "600~1500": {
+   "我方号": {
+    "n0": 10,
+    "atkN": 325,
+    "sent": 905574,
+    "refund": 668025,
+    "tA": 575522,
+    "terr0": 28919,
+    "terr1": 106716,
+    "eco": 1941424
+   },
+   "T1 真人": {
+    "n0": 9,
+    "atkN": 191,
+    "sent": 1014082,
+    "refund": 255940,
+    "tA": 927172,
+    "terr0": 23127,
+    "terr1": 192509,
+    "eco": 1733223
+   }
+  },
+  "1500~3000": {
+   "我方号": {
+    "n0": 10,
+    "atkN": 303,
+    "sent": 5906614,
+    "refund": 3340477,
+    "tA": 1899503,
+    "terr0": 106716,
+    "terr1": 143100,
+    "eco": 8141447
+   },
+   "T1 真人": {
+    "n0": 9,
+    "atkN": 156,
+    "sent": 6287646,
+    "refund": 2248823,
+    "tA": 2267526,
+    "terr0": 192509,
+    "terr1": 544787,
+    "eco": 13185715
+   }
+  },
+  "3000~4349": {
+   "我方号": {
+    "n0": 7,
+    "atkN": 17,
+    "sent": 1659144,
+    "refund": 87520,
+    "tA": 0,
+    "terr0": 143100,
+    "terr1": 0,
+    "eco": 5766786
+   },
+   "T1 真人": {
+    "n0": 6,
+    "atkN": 98,
+    "sent": 16569964,
+    "refund": 3611387,
+    "tA": 0,
+    "terr0": 544787,
+    "terr1": 689829,
+    "eco": 30121733
+   }
+  }
+ },
+ "early": {
+  "300~600 AI邻居": {
+   "dec": 430,
+   "fired": 29,
+   "floor": 73,
+   "cls": {
+    "不让打（单价高于出价 / 没有动机）": 312,
+    "只打无主地 / 其他指令": 16,
+    "留底：价格项": 73,
+    "出手": 29
+   }
+  },
+  "600~1500 AI邻居": {
+   "dec": 1649,
+   "fired": 841,
+   "floor": 330,
+   "cls": {
+    "不让打（单价高于出价 / 没有动机）": 380,
+    "只打无主地 / 其他指令": 22,
+    "留底：价格项": 97,
+    "出手": 841,
+    "过了留底但没发（need≤0 / 不够一条 / 没有空槽）": 76,
+    "留底：safeFinite（参照敌方真人）": 157,
+    "留底：safeFinite（参照我方队友）": 43,
+    "留底：dpKeep": 33
+   }
+  },
+  "600~1500 只剩真人": {
+   "dec": 136,
+   "fired": 67,
+   "floor": 14,
+   "cls": {
+    "出手": 67,
+    "猎杀规则：一次吃不光就不发（preyKill）": 55,
+    "留底：价格留底（reserve）": 14
+   }
+  }
+ },
+ "late": [
+  {
+   "T": 875,
+   "bot": "kaito9",
+   "n": 1,
+   "sameTick": 6,
+   "intentMin": 815,
+   "intentMax": 815,
+   "b0": 20680,
+   "b1": 11873
+  },
+  {
+   "T": 896,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 7,
+   "intentMin": 830,
+   "intentMax": 830,
+   "b0": 20083,
+   "b1": 3563
+  },
+  {
+   "T": 924,
+   "bot": "leo_tx",
+   "n": 3,
+   "sameTick": 7,
+   "intentMin": 850,
+   "intentMax": 860,
+   "b0": 26131,
+   "b1": 6395
+  },
+  {
+   "T": 931,
+   "bot": "ryan_m",
+   "n": 2,
+   "sameTick": 7,
+   "intentMin": 865,
+   "intentMax": 870,
+   "b0": 23970,
+   "b1": 12572
+  },
+  {
+   "T": 931,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 6,
+   "intentMin": 850,
+   "intentMax": 850,
+   "b0": 20857,
+   "b1": 12957
+  },
+  {
+   "T": 938,
+   "bot": "riku_x",
+   "n": 4,
+   "sameTick": 8,
+   "intentMin": 860,
+   "intentMax": 875,
+   "b0": 11000,
+   "b1": 1290
+  },
+  {
+   "T": 973,
+   "bot": "alex_k",
+   "n": 3,
+   "sameTick": 6,
+   "intentMin": 900,
+   "intentMax": 910,
+   "b0": 29783,
+   "b1": 9247
+  },
+  {
+   "T": 973,
+   "bot": "talon5",
+   "n": 6,
+   "sameTick": 7,
+   "intentMin": 880,
+   "intentMax": 910,
+   "b0": 26402,
+   "b1": 7560
+  },
+  {
+   "T": 980,
+   "bot": "kaito9",
+   "n": 6,
+   "sameTick": 8,
+   "intentMin": 890,
+   "intentMax": 915,
+   "b0": 27653,
+   "b1": 4993
+  },
+  {
+   "T": 980,
+   "bot": "leo_tx",
+   "n": 4,
+   "sameTick": 4,
+   "intentMin": 905,
+   "intentMax": 920,
+   "b0": 6305,
+   "b1": 3358
+  },
+  {
+   "T": 994,
+   "bot": "ryan_m",
+   "n": 6,
+   "sameTick": 9,
+   "intentMin": 905,
+   "intentMax": 930,
+   "b0": 25077,
+   "b1": 8199
+  },
+  {
+   "T": 994,
+   "bot": "sora_w",
+   "n": 5,
+   "sameTick": 5,
+   "intentMin": 910,
+   "intentMax": 930,
+   "b0": 29804,
+   "b1": 14582
+  },
+  {
+   "T": 1001,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 940,
+   "intentMax": 940,
+   "b0": 24481,
+   "b1": 20562
+  },
+  {
+   "T": 1022,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 950,
+   "intentMax": 950,
+   "b0": 29918,
+   "b1": 26588
+  },
+  {
+   "T": 1043,
+   "bot": "leo_tx",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 965,
+   "intentMax": 965,
+   "b0": 36903,
+   "b1": 34886
+  },
+  {
+   "T": 1057,
+   "bot": "alex_k",
+   "n": 3,
+   "sameTick": 7,
+   "intentMin": 960,
+   "intentMax": 970,
+   "b0": 22237,
+   "b1": 7055
+  },
+  {
+   "T": 1064,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 985,
+   "intentMax": 985,
+   "b0": 43032,
+   "b1": 43032
+  },
+  {
+   "T": 1078,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 995,
+   "intentMax": 995,
+   "b0": 7518,
+   "b1": 6045
+  },
+  {
+   "T": 1078,
+   "bot": "leo_tx",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 995,
+   "intentMax": 995,
+   "b0": 40590,
+   "b1": 38213
+  },
+  {
+   "T": 1085,
+   "bot": "ryan_m",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 945,
+   "intentMax": 985,
+   "b0": 21566,
+   "b1": 5072
+  },
+  {
+   "T": 1141,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1040,
+   "intentMax": 1040,
+   "b0": 17696,
+   "b1": 14655
+  },
+  {
+   "T": 1162,
+   "bot": "alex_k",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1010,
+   "intentMax": 1045,
+   "b0": 53731,
+   "b1": 20416
+  },
+  {
+   "T": 1169,
+   "bot": "kaito9",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1005,
+   "intentMax": 1045,
+   "b0": 54451,
+   "b1": 11243
+  },
+  {
+   "T": 1169,
+   "bot": "noah88",
+   "n": 5,
+   "sameTick": 8,
+   "intentMin": 1035,
+   "intentMax": 1105,
+   "b0": 66631,
+   "b1": 40051
+  },
+  {
+   "T": 1169,
+   "bot": "zexos1",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1075,
+   "intentMax": 1075,
+   "b0": 78447,
+   "b1": 76317
+  },
+  {
+   "T": 1197,
+   "bot": "ryan_m",
+   "n": 2,
+   "sameTick": 8,
+   "intentMin": 1050,
+   "intentMax": 1080,
+   "b0": 27164,
+   "b1": 18042
+  },
+  {
+   "T": 1232,
+   "bot": "leo_tx",
+   "n": 7,
+   "sameTick": 8,
+   "intentMin": 1000,
+   "intentMax": 1030,
+   "b0": 92490,
+   "b1": 43647
+  },
+  {
+   "T": 1246,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1120,
+   "intentMax": 1120,
+   "b0": 35688,
+   "b1": 26523
+  },
+  {
+   "T": 1260,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1125,
+   "intentMax": 1125,
+   "b0": 51017,
+   "b1": 52578
+  },
+  {
+   "T": 1302,
+   "bot": "kaito9",
+   "n": 2,
+   "sameTick": 9,
+   "intentMin": 1110,
+   "intentMax": 1120,
+   "b0": 58669,
+   "b1": 24456
+  },
+  {
+   "T": 1302,
+   "bot": "noah88",
+   "n": 2,
+   "sameTick": 9,
+   "intentMin": 1155,
+   "intentMax": 1195,
+   "b0": 103717,
+   "b1": 75945
+  },
+  {
+   "T": 1302,
+   "bot": "zexos1",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1175,
+   "intentMax": 1175,
+   "b0": 135800,
+   "b1": 127181
+  },
+  {
+   "T": 1337,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1205,
+   "intentMax": 1205,
+   "b0": 95999,
+   "b1": 81751
+  },
+  {
+   "T": 1337,
+   "bot": "ryan_m",
+   "n": 3,
+   "sameTick": 3,
+   "intentMin": 1125,
+   "intentMax": 1135,
+   "b0": 53396,
+   "b1": 23390
+  },
+  {
+   "T": 1344,
+   "bot": "riku_x",
+   "n": 2,
+   "sameTick": 7,
+   "intentMin": 1130,
+   "intentMax": 1135,
+   "b0": 72312,
+   "b1": 72312
+  },
+  {
+   "T": 1379,
+   "bot": "leo_tx",
+   "n": 6,
+   "sameTick": 9,
+   "intentMin": 1130,
+   "intentMax": 1155,
+   "b0": 119059,
+   "b1": 59301
+  },
+  {
+   "T": 1463,
+   "bot": "kaito9",
+   "n": 1,
+   "sameTick": 9,
+   "intentMin": 1205,
+   "intentMax": 1205,
+   "b0": 86222,
+   "b1": 8641
+  },
+  {
+   "T": 1512,
+   "bot": "sora_w",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 1265,
+   "intentMax": 1310,
+   "b0": 241395,
+   "b1": 1201
+  },
+  {
+   "T": 1526,
+   "bot": "riku_x",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 1345,
+   "intentMax": 1350,
+   "b0": 108391,
+   "b1": 7845
+  },
+  {
+   "T": 1526,
+   "bot": "talon5",
+   "n": 2,
+   "sameTick": 9,
+   "intentMin": 1210,
+   "intentMax": 1215,
+   "b0": 182407,
+   "b1": 93142
+  },
+  {
+   "T": 1547,
+   "bot": "leo_tx",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1250,
+   "intentMax": 1395,
+   "b0": 188750,
+   "b1": 66989
+  },
+  {
+   "T": 1638,
+   "bot": "alex_k",
+   "n": 4,
+   "sameTick": 9,
+   "intentMin": 1370,
+   "intentMax": 1385,
+   "b0": 236102,
+   "b1": 236102
+  },
+  {
+   "T": 1645,
+   "bot": "noah88",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1430,
+   "intentMax": 1470,
+   "b0": 231374,
+   "b1": 134379
+  },
+  {
+   "T": 1687,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1595,
+   "intentMax": 1595,
+   "b0": 179755,
+   "b1": 179755
+  },
+  {
+   "T": 1694,
+   "bot": "riku_x",
+   "n": 7,
+   "sameTick": 7,
+   "intentMin": 1490,
+   "intentMax": 1525,
+   "b0": 17233,
+   "b1": 58
+  },
+  {
+   "T": 1708,
+   "bot": "zexos1",
+   "n": 6,
+   "sameTick": 9,
+   "intentMin": 1400,
+   "intentMax": 1645,
+   "b0": 285639,
+   "b1": 211208
+  },
+  {
+   "T": 1715,
+   "bot": "sora_w",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1350,
+   "intentMax": 1395,
+   "b0": 42771,
+   "b1": 479
+  },
+  {
+   "T": 1722,
+   "bot": "talon5",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 1350,
+   "intentMax": 1385,
+   "b0": 236625,
+   "b1": 131689
+  },
+  {
+   "T": 1729,
+   "bot": "leo_tx",
+   "n": 6,
+   "sameTick": 9,
+   "intentMin": 1410,
+   "intentMax": 1440,
+   "b0": 136617,
+   "b1": 43509
+  },
+  {
+   "T": 1764,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1500,
+   "intentMax": 1500,
+   "b0": 219327,
+   "b1": 219327
+  },
+  {
+   "T": 1771,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1600,
+   "intentMax": 1600,
+   "b0": 16690,
+   "b1": 5698
+  },
+  {
+   "T": 1827,
+   "bot": "noah88",
+   "n": 5,
+   "sameTick": 8,
+   "intentMin": 1500,
+   "intentMax": 1695,
+   "b0": 276695,
+   "b1": 180471
+  },
+  {
+   "T": 1876,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1690,
+   "intentMax": 1690,
+   "b0": 34194,
+   "b1": 29988
+  },
+  {
+   "T": 1890,
+   "bot": "riku_x",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1605,
+   "intentMax": 1640,
+   "b0": 20507,
+   "b1": 1
+  },
+  {
+   "T": 1890,
+   "bot": "zero_7",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1480,
+   "intentMax": 1525,
+   "b0": 324731,
+   "b1": 232177
+  },
+  {
+   "T": 1890,
+   "bot": "zexos1",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1560,
+   "intentMax": 1640,
+   "b0": 347355,
+   "b1": 253201
+  },
+  {
+   "T": 1904,
+   "bot": "sora_w",
+   "n": 3,
+   "sameTick": 3,
+   "intentMin": 1695,
+   "intentMax": 1705,
+   "b0": 66695,
+   "b1": 43103
+  },
+  {
+   "T": 1932,
+   "bot": "leo_tx",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1560,
+   "intentMax": 1600,
+   "b0": 285132,
+   "b1": 71178
+  },
+  {
+   "T": 1981,
+   "bot": "kaito9",
+   "n": 4,
+   "sameTick": 4,
+   "intentMin": 1805,
+   "intentMax": 1895,
+   "b0": 252926,
+   "b1": 228128
+  },
+  {
+   "T": 1988,
+   "bot": "kaito9",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1825,
+   "intentMax": 1825,
+   "b0": 228128,
+   "b1": 216767
+  },
+  {
+   "T": 1995,
+   "bot": "alex_k",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1660,
+   "intentMax": 1700,
+   "b0": 432687,
+   "b1": 432687
+  },
+  {
+   "T": 2009,
+   "bot": "noah88",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 1680,
+   "intentMax": 1945,
+   "b0": 310259,
+   "b1": 163676
+  },
+  {
+   "T": 2072,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1810,
+   "intentMax": 1810,
+   "b0": 359693,
+   "b1": 350210
+  },
+  {
+   "T": 2086,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 8,
+   "intentMin": 1830,
+   "intentMax": 1830,
+   "b0": 38640,
+   "b1": 38640
+  },
+  {
+   "T": 2093,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1905,
+   "intentMax": 1905,
+   "b0": 358877,
+   "b1": 350116
+  },
+  {
+   "T": 2100,
+   "bot": "sora_w",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1825,
+   "intentMax": 1875,
+   "b0": 284975,
+   "b1": 21901
+  },
+  {
+   "T": 2114,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1930,
+   "intentMax": 1930,
+   "b0": 22144,
+   "b1": 18058
+  },
+  {
+   "T": 2114,
+   "bot": "zero_7",
+   "n": 2,
+   "sameTick": 9,
+   "intentMin": 1680,
+   "intentMax": 1690,
+   "b0": 401489,
+   "b1": 168836
+  },
+  {
+   "T": 2135,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 1915,
+   "intentMax": 1915,
+   "b0": 172826,
+   "b1": 109874
+  },
+  {
+   "T": 2156,
+   "bot": "kaito9",
+   "n": 7,
+   "sameTick": 9,
+   "intentMin": 1855,
+   "intentMax": 1885,
+   "b0": 322764,
+   "b1": 322764
+  },
+  {
+   "T": 2163,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2005,
+   "intentMax": 2005,
+   "b0": 61871,
+   "b1": 53715
+  },
+  {
+   "T": 2163,
+   "bot": "talon5",
+   "n": 4,
+   "sameTick": 8,
+   "intentMin": 1920,
+   "intentMax": 1935,
+   "b0": 373429,
+   "b1": 373429
+  },
+  {
+   "T": 2240,
+   "bot": "alex_k",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1835,
+   "intentMax": 1880,
+   "b0": 608887,
+   "b1": 93
+  },
+  {
+   "T": 2261,
+   "bot": "riku_x",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1975,
+   "intentMax": 2095,
+   "b0": 80279,
+   "b1": 0
+  },
+  {
+   "T": 2282,
+   "bot": "sora_w",
+   "n": 3,
+   "sameTick": 9,
+   "intentMin": 1965,
+   "intentMax": 1975,
+   "b0": 55940,
+   "b1": 15191
+  },
+  {
+   "T": 2303,
+   "bot": "leo_tx",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1960,
+   "intentMax": 2130,
+   "b0": 518416,
+   "b1": 156627
+  },
+  {
+   "T": 2310,
+   "bot": "kaito9",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 2030,
+   "intentMax": 2165,
+   "b0": 421759,
+   "b1": 354298
+  },
+  {
+   "T": 2352,
+   "bot": "zero_7",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1920,
+   "intentMax": 1965,
+   "b0": 147465,
+   "b1": 2194
+  },
+  {
+   "T": 2359,
+   "bot": "talon5",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 1975,
+   "intentMax": 2070,
+   "b0": 495034,
+   "b1": 29558
+  },
+  {
+   "T": 2373,
+   "bot": "alex_k",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 2085,
+   "intentMax": 2240,
+   "b0": 16284,
+   "b1": 478
+  },
+  {
+   "T": 2408,
+   "bot": "riku_x",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 2070,
+   "intentMax": 2195,
+   "b0": 39978,
+   "b1": 1
+  },
+  {
+   "T": 2408,
+   "bot": "ryan_m",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 2145,
+   "intentMax": 2290,
+   "b0": 602902,
+   "b1": 128543
+  },
+  {
+   "T": 2422,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2280,
+   "intentMax": 2280,
+   "b0": 314164,
+   "b1": 289007
+  },
+  {
+   "T": 2436,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2305,
+   "intentMax": 2305,
+   "b0": 293024,
+   "b1": 272708
+  },
+  {
+   "T": 2443,
+   "bot": "leo_tx",
+   "n": 4,
+   "sameTick": 9,
+   "intentMin": 1550,
+   "intentMax": 1955,
+   "b0": 224458,
+   "b1": 129283
+  },
+  {
+   "T": 2485,
+   "bot": "noah88",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 2315,
+   "intentMax": 2355,
+   "b0": 535227,
+   "b1": 535227
+  },
+  {
+   "T": 2520,
+   "bot": "ryan_m",
+   "n": 7,
+   "sameTick": 7,
+   "intentMin": 2180,
+   "intentMax": 2405,
+   "b0": 169973,
+   "b1": 37143
+  },
+  {
+   "T": 2541,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2440,
+   "intentMax": 2440,
+   "b0": 397563,
+   "b1": 340492
+  },
+  {
+   "T": 2562,
+   "bot": "leo_tx",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2460,
+   "intentMax": 2460,
+   "b0": 624211,
+   "b1": 578161
+  },
+  {
+   "T": 2569,
+   "bot": "noah88",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 2385,
+   "intentMax": 2495,
+   "b0": 607433,
+   "b1": 98293
+  },
+  {
+   "T": 2597,
+   "bot": "sora_w",
+   "n": 7,
+   "sameTick": 7,
+   "intentMin": 2445,
+   "intentMax": 2475,
+   "b0": 364748,
+   "b1": 146615
+  },
+  {
+   "T": 2632,
+   "bot": "noah88",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 2505,
+   "intentMax": 2565,
+   "b0": 128110,
+   "b1": 49673
+  },
+  {
+   "T": 2639,
+   "bot": "leo_tx",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2465,
+   "intentMax": 2465,
+   "b0": 663310,
+   "b1": 625652
+  },
+  {
+   "T": 2653,
+   "bot": "leo_tx",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 2580,
+   "intentMax": 2580,
+   "b0": 634098,
+   "b1": 591991
+  }
+ ]
+}

@@ -100,7 +100,7 @@
 
 ### B14 t<1500 打内置 AI 的底线（`General.act` L804-845 → `Style.pickTarget` L1180-1213）
 - L1196-1197 `avail = 余额 − floorFor`，`avail <= minSend×余额` → 跳过。`V13.floorFor0` L2270-2276 → `winFloor` L2521-2528 = `max(botPx×领土/(winR×t), dpKeep, this.sb)`。
-- `this.sb = safeFinite` L2532-2542：对每个内置 AI 邻居，取它所有邻居里兵最多的那个号的兵——不排除队友和保护名单里的号。两个我方号共享同一批内置 AI 邻居时，互相把对方的兵当底线。
+- `this.sb = safeFinite` L2532-2542：对我的每个内置 AI 邻居 q（在场、有空槽、没在打我），用 `threatOf` L464-491 取「q 除我以外的邻居里最弱的那个」的（兵 + 它压在 q 上的兵）= `minOther`；`safeFinite = max over q (minOther − 我压在 q 上的兵)`。意思是「我的兵不能比 q 的另一个最弱邻居少，否则 q 下一个打我」。`threatOf` 只排除 q 自己和我（L483），不排除队友、保护名单里的号、空壳。两个我方号共享同一个内置 AI 邻居时，互相把对方的兵当底线。（2026-11-11 订正：这里原来写成「取兵最多的那个号」，写错了；代码是对 q 的邻居取最小、再对各个 q 取最大。）
 - 实测（`simdigest.py <id> gates` 第一段）：B038 2,199 个决策拍里 889 个（40.4%）只因为这一项不出兵（同队 102、异队 787）；B041 见该局复盘。
 
 ### B15 c110 `tryDonateToTeammate`（L4369-4499）

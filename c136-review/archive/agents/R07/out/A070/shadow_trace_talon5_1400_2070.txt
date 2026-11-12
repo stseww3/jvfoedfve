@@ -1,0 +1,784 @@
+# A070 talon5 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 124 拍（t=1400~2070）；可用兵 9978~186878，一条指令下限(20%余额) 26756~64808，比值 36%~485%
+#   没走到 buyLand: 1 拍（t=1420~1420）
+#   首选目标无可用兵（avail<=0）: 4 拍（t=1530~1950）；可用兵 -10263~-963，一条指令下限(20%余额) 19042~33922，比值 -54%~-3%
+#   有可用兵但没发（其他）: 5 拍（t=1625~1965）；可用兵 14939~183035，一条指令下限(20%余额) 26338~54591，比值 56%~485%
+#   其他指令: 1 拍（t=1955~1955）；可用兵 97629~97629，一条指令下限(20%余额) 53944~53944，比值 181%~181%
+#   └ 「出手打人/bot」里：124 条对人/bot 的出兵共约 3016286 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 talon5 B=138007 L=7796 d=17.7 nb=5 neut=20 cmds=120 noFull=1 shQ=32628 | m=1.400 worth=24.8 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=47689
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=64 → AI#462（约 8760 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1405 talon5 B=138007 L=7796 d=17.7 nb=5 neut=19 cmds=121 noFull=1 shQ=34501 | m=1.405 worth=24.9 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=47689
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=65 → AI#462（约 8894 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1410 talon5 B=141581 L=7796 d=18.2 nb=5 neut=18 cmds=122 noFull=1 shQ=35395 | m=1.410 worth=25.6 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=2198
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=85 → AI#415（约 11890 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1415 talon5 B=141581 L=7796 d=18.2 nb=5 neut=5 cmds=123 noFull=1 shQ=35395 | m=1.415 worth=25.7 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=2259
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#496（约 6636 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1420 talon5 B=141451 L=7670 d=18.4 nb=5 neut=0 cmds=123 noFull=1 shQ=3563 | m=1.420 worth=26.2 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=50176
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 talon5 B=141451 L=7670 d=18.4 nb=5 neut=0 cmds=124 noFull=1 shQ=8076 | m=1.425 worth=26.3 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=50176
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 6630 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1430 talon5 B=145029 L=7670 d=18.9 nb=5 neut=0 cmds=125 noFull=1 shQ=12581 | m=1.430 worth=27.0 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=51445
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 6798 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1435 talon5 B=145029 L=7670 d=18.9 nb=5 neut=0 cmds=126 noFull=1 shQ=17154 | m=1.435 worth=27.1 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=51445
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 6798 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1440 talon5 B=148654 L=7670 d=19.4 nb=5 neut=0 cmds=127 noFull=1 shQ=21719 | m=1.440 worth=27.9 cheap=4.0 over=0 dMedOther=3.6 safe(-1)=82141
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 6968 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1445 talon5 B=148654 L=7670 d=19.4 nb=5 neut=0 cmds=128 noFull=1 shQ=26344 | m=1.445 worth=28.0 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=82141
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 6968 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1450 talon5 B=152325 L=7670 d=19.9 nb=5 neut=0 cmds=129 noFull=1 shQ=30964 | m=1.450 worth=28.8 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=84169
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7140 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1455 talon5 B=152325 L=7670 d=19.9 nb=5 neut=0 cmds=130 noFull=1 shQ=35644 | m=1.455 worth=28.9 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=84169
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7140 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1460 talon5 B=156041 L=7670 d=20.3 nb=5 neut=0 cmds=131 noFull=1 shQ=39010 | m=1.460 worth=29.7 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=86222
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7314 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1465 talon5 B=156041 L=7670 d=20.3 nb=6 neut=0 cmds=132 noFull=1 shQ=39010 | m=1.465 worth=29.8 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=8641
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7314 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1470 talon5 B=159785 L=7670 d=20.8 nb=6 neut=0 cmds=133 noFull=1 shQ=39946 | m=1.470 worth=30.6 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=8848
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7489 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1475 talon5 B=159785 L=7670 d=20.8 nb=6 neut=0 cmds=134 noFull=1 shQ=39946 | m=1.475 worth=30.7 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=8848
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7489 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1480 talon5 B=163571 L=7670 d=21.3 nb=6 neut=0 cmds=135 noFull=1 shQ=40892 | m=1.480 worth=31.6 cheap=4.2 over=0 dMedOther=3.8 safe(-1)=9098
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7667 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1485 talon5 B=163571 L=7670 d=21.3 nb=6 neut=0 cmds=136 noFull=1 shQ=40892 | m=1.485 worth=31.7 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=78486
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7667 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1490 talon5 B=167398 L=7670 d=21.8 nb=6 neut=0 cmds=137 noFull=1 shQ=41849 | m=1.490 worth=32.5 cheap=4.3 over=0 dMedOther=3.8 safe(-1)=80322
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7846 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1495 talon5 B=167398 L=7670 d=21.8 nb=6 neut=0 cmds=138 noFull=1 shQ=41849 | m=1.495 worth=32.6 cheap=4.3 over=0 dMedOther=3.3 safe(-1)=80322
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#415（约 7846 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1500 talon5 B=178934 L=7670 d=23.3 nb=6 neut=0 cmds=139 noFull=1 shQ=42882 | m=1.500 worth=35.0 cheap=4.3 over=0 dMedOther=4.3 safe(-1)=98888
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=122 | c=2.8 rankC=2.8 need=4786 tD=0.00 机 | safe=98888 keep=98888 avail=77950 chunkB=35787 pulseB=21472  x=6349 hNb=0
+    → AI#370 terr=4323 bal=4658 dq=1.1 cnt=8 | c=5.2 rankC=5.2 need=14789 tD=0.25 机 | safe=98888 keep=98888 avail=77950 chunkB=35787 pulseB=21472  x=18511 hNb=0
+    → AI#167 terr=3254 bal=3399 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=10910 tD=0.24 机 | safe=98888 keep=98888 avail=77950 chunkB=35787 pulseB=21472  x=13706 hNb=0
+    → AI#146 terr=2632 bal=2699 dq=1.0 cnt=88 | c=5.4 rankC=5.4 need=8759 tD=0.24 机 | safe=98888 keep=98888 avail=77950 chunkB=35787 pulseB=21472  x=11212 hNb=0
+    → AI#496 terr=2459 bal=13700 dq=5.6 cnt=78 | c=16.3 rankC=16.3 need=27658 tD=1.29 机 | safe=98888 keep=120691 avail=56147 chunkB=35787 pulseB=21472  x=34806 hNb=0
+    → AI#462 terr=638 bal=657 dq=1.0 cnt=3 | c=24.1 rankC=24.1 need=558 tD=0.24 机 | safe=98888 keep=144731 avail=32107 chunkB=35787 pulseB=21472  x=707 hNb=0
+    ⇒ 影子指令 attack pct=36 → AI#415（约 6465 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1505 talon5 B=178934 L=7670 d=23.3 nb=6 neut=0 cmds=140 noFull=1 shQ=44733 | m=1.499 worth=35.0 cheap=4.4 over=0 dMedOther=4.3 safe(-1)=97620
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=122 | c=2.8 rankC=2.8 need=4786 tD=0.00 机 | safe=97620 keep=97620 avail=79218 chunkB=35787 pulseB=21472  x=6349 hNb=0
+    → AI#370 terr=4323 bal=4658 dq=1.1 cnt=8 | c=5.2 rankC=5.2 need=14789 tD=0.25 机 | safe=97620 keep=97620 avail=79218 chunkB=35787 pulseB=21472  x=18511 hNb=0
+    → AI#167 terr=3254 bal=3399 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=10913 tD=0.24 机 | safe=97620 keep=97620 avail=79218 chunkB=35787 pulseB=21472  x=13711 hNb=0
+    → AI#146 terr=2681 bal=2699 dq=1.0 cnt=88 | c=5.3 rankC=5.3 need=8833 tD=0.23 机 | safe=97620 keep=97620 avail=79218 chunkB=35787 pulseB=21472  x=11305 hNb=0
+    → AI#496 terr=2459 bal=13700 dq=5.6 cnt=78 | c=16.3 rankC=16.3 need=27668 tD=1.29 机 | safe=97620 keep=120718 avail=56120 chunkB=35787 pulseB=21472  x=34819 hNb=0
+    → AI#462 terr=573 bal=553 dq=1.0 cnt=3 | c=49.4 rankC=49.4 need=231 tD=0.22 机 | safe=97620 keep=Inf avail=-Inf chunkB=35787 pulseB=21472 价高(c>=worth)→break hNb=0
+    ⇒ 影子指令 attack pct=36 → AI#415（约 6465 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1510 talon5 B=183013 L=7670 d=23.9 nb=5 neut=3 cmds=142 noFull=1 shQ=45753 | m=1.498 worth=35.8 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=99845
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=122 | c=2.8 rankC=2.8 need=4786 tD=0.00 机 | safe=99845 keep=99845 avail=81024 chunkB=36603 pulseB=21962  x=6349 hNb=0
+    → AI#370 terr=4323 bal=4764 dq=1.1 cnt=8 | c=5.3 rankC=5.3 need=14978 tD=0.25 机 | safe=99845 keep=99845 avail=81024 chunkB=36603 pulseB=21962  x=18747 hNb=0
+    → AI#146 terr=2786 bal=2760 dq=1.0 cnt=88 | c=5.3 rankC=5.3 need=9100 tD=0.22 机 | safe=99845 keep=99845 avail=81024 chunkB=36603 pulseB=21962  x=11639 hNb=0
+    → AI#167 terr=3254 bal=3476 dq=1.1 cnt=23 | c=5.4 rankC=5.4 need=11057 tD=0.24 机 | safe=99845 keep=99845 avail=81024 chunkB=36603 pulseB=21962  x=13891 hNb=0
+    → AI#496 terr=2459 bal=14012 dq=5.7 cnt=78 | c=16.6 rankC=16.6 need=28226 tD=1.29 机 | safe=99845 keep=123359 avail=57510 chunkB=36603 pulseB=21962  x=35517 hNb=0
+    ⇒ 影子指令 attack pct=47 → 无主地（约 8578 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6434 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1515 talon5 B=183013 L=7670 d=23.9 nb=5 neut=3 cmds=144 noFull=1 shQ=45753 | m=1.498 worth=35.7 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=3476
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=122 | c=2.8 rankC=2.8 need=4786 tD=0.00 机 | safe=3476 keep=3476 avail=177393 chunkB=36603 pulseB=21962  x=6349 hNb=0
+    → AI#496 terr=2459 bal=281 dq=0.1 cnt=78 | c=3.4 rankC=3.4 need=4100 tD=0.03 机 | safe=3476 keep=3476 avail=177393 chunkB=36603 pulseB=21962  x=5359 hNb=0
+    → AI#146 terr=2891 bal=2760 dq=1.0 cnt=88 | c=5.2 rankC=5.2 need=9258 tD=0.22 机 | safe=3476 keep=88317 avail=92552 chunkB=36603 pulseB=21962  x=11837 hNb=0
+    → AI#370 terr=4323 bal=4764 dq=1.1 cnt=8 | c=5.3 rankC=5.3 need=14978 tD=0.25 机 | safe=3476 keep=88607 avail=92262 chunkB=36603 pulseB=21962  x=18747 hNb=0
+    → AI#167 terr=3254 bal=3476 dq=1.1 cnt=23 | c=5.4 rankC=5.4 need=11061 tD=0.24 机 | safe=3476 keep=88988 avail=91881 chunkB=36603 pulseB=21962  x=13895 hNb=0
+    ⇒ 影子指令 attack pct=47 → 无主地（约 8578 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6434 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1520 talon5 B=182407 L=7549 d=24.2 nb=5 neut=3 cmds=146 noFull=1 shQ=45601 | m=1.497 worth=36.2 cheap=4.4 over=0 dMedOther=4.5 safe(-1)=3554
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=3554 keep=3554 avail=176716 chunkB=36481 pulseB=21889  x=6561 hNb=0
+    → AI#496 terr=2459 bal=287 dq=0.1 cnt=78 | c=3.4 rankC=3.4 need=4113 tD=0.03 机 | safe=3554 keep=3554 avail=176716 chunkB=36481 pulseB=21889  x=5375 hNb=0
+    → AI#146 terr=2946 bal=2822 dq=1.0 cnt=88 | c=5.2 rankC=5.2 need=9450 tD=0.21 机 | safe=3554 keep=87815 avail=92455 chunkB=36481 pulseB=21889  x=12077 hNb=0
+    → AI#370 terr=4323 bal=4871 dq=1.1 cnt=8 | c=5.3 rankC=5.3 need=15169 tD=0.25 机 | safe=3554 keep=88310 avail=91960 chunkB=36481 pulseB=21889  x=18985 hNb=0
+    → AI#167 terr=3254 bal=3554 dq=1.1 cnt=23 | c=5.5 rankC=5.5 need=11203 tD=0.24 机 | safe=3554 keep=88674 avail=91596 chunkB=36481 pulseB=21889  x=14073 hNb=0
+    ⇒ 影子指令 attack pct=47 → 无主地（约 8550 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=36 → AI#415（约 6590 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1525 talon5 B=182407 L=7549 d=24.2 nb=5 neut=2 cmds=148 noFull=1 shQ=45601 | m=1.496 worth=36.2 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=102091
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=102091 keep=102091 avail=78179 chunkB=36481 pulseB=21889  x=6561 hNb=0
+    → AI#496 terr=2492 bal=287 dq=0.1 cnt=79 | c=3.4 rankC=3.4 need=4182 tD=0.02 机 | safe=102091 keep=102091 avail=78179 chunkB=36481 pulseB=21889  x=5465 hNb=0
+    → AI#146 terr=3060 bal=2822 dq=0.9 cnt=88 | c=5.1 rankC=5.1 need=9620 tD=0.20 机 | safe=102091 keep=102091 avail=78179 chunkB=36481 pulseB=21889  x=12289 hNb=0
+    → AI#370 terr=4323 bal=4871 dq=1.1 cnt=8 | c=5.3 rankC=5.3 need=15169 tD=0.24 机 | safe=102091 keep=102091 avail=78179 chunkB=36481 pulseB=21889  x=18985 hNb=0
+    → AI#167 terr=3254 bal=3554 dq=1.1 cnt=23 | c=5.5 rankC=5.5 need=11207 tD=0.24 机 | safe=102091 keep=102091 avail=78179 chunkB=36481 pulseB=21889  x=14077 hNb=0
+    ⇒ 影子指令 attack pct=47 → 无主地（约 8550 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=36 → AI#415（约 6590 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1530 talon5 B=95209 L=7549 d=12.6 nb=5 neut=2 cmds=148 noFull=1 shQ=1563 | m=1.496 worth=18.9 cheap=4.5 over=0 dMedOther=4.7 safe(-1)=104357
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.4 rankC=2.4 need=4968 tD=0.00 机 | safe=104357 keep=104357 avail=-10263 chunkB=19042 pulseB=11425 无可用(avail<=0) hNb=0
+    → AI#370 terr=4323 bal=100 dq=0.0 cnt=8 | c=2.4 rankC=2.4 need=6664 tD=0.00 机 | safe=104357 keep=104357 avail=-10263 chunkB=19042 pulseB=11425 无可用(avail<=0) hNb=0
+    → AI#146 terr=3180 bal=2884 dq=0.9 cnt=88 | c=4.6 rankC=4.6 need=9910 tD=0.19 机 | safe=104357 keep=104357 avail=-10263 chunkB=19042 pulseB=11425 无可用(avail<=0) hNb=0
+    → AI#167 terr=3254 bal=3632 dq=1.1 cnt=23 | c=5.1 rankC=5.1 need=11353 tD=0.24 机 | safe=104357 keep=104357 avail=-10263 chunkB=19042 pulseB=11425 无可用(avail<=0) hNb=0
+    ⇒ 本拍没有指令
+t=1535 talon5 B=155290 L=7629 d=20.4 nb=5 neut=0 cmds=149 noFull=1 shQ=4854 | m=1.495 worth=30.4 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=104357
+    → AI#370 terr=4362 bal=100 dq=0.0 cnt=9 | c=2.6 rankC=2.6 need=6722 tD=0.00 机 | safe=104357 keep=104357 avail=49114 chunkB=31058 pulseB=18635  x=8430 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=104357 keep=104357 avail=49114 chunkB=31058 pulseB=18635  x=6561 hNb=0
+    → AI#146 terr=3180 bal=2931 dq=0.9 cnt=88 | c=4.9 rankC=4.9 need=9994 tD=0.20 机 | safe=104357 keep=104357 avail=49114 chunkB=31058 pulseB=18635  x=12757 hNb=0
+    → AI#167 terr=3254 bal=3632 dq=1.1 cnt=23 | c=5.4 rankC=5.4 need=11356 tD=0.24 机 | safe=104357 keep=104357 avail=49114 chunkB=31058 pulseB=18635  x=14264 hNb=0
+    ⇒ 影子指令 attack pct=55 → AI#370（约 8492 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1540 talon5 B=158690 L=7785 d=20.4 nb=5 neut=0 cmds=150 noFull=1 shQ=9130 | m=1.494 worth=30.5 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=106642
+    → AI#370 terr=4421 bal=102 dq=0.0 cnt=10 | c=2.6 rankC=2.6 need=6814 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=8547 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=6561 hNb=0
+    → AI#167 terr=3254 bal=74 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5014 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=6336 hNb=0
+    → AI#146 terr=3180 bal=2995 dq=0.9 cnt=88 | c=4.9 rankC=4.9 need=10108 tD=0.20 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=12899 hNb=0
+    ⇒ 影子指令 attack pct=55 → AI#370（约 8678 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1545 talon5 B=158690 L=7861 d=20.2 nb=5 neut=0 cmds=151 noFull=1 shQ=13442 | m=1.493 worth=30.1 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=106642
+    → AI#370 terr=4474 bal=102 dq=0.0 cnt=11 | c=2.6 rankC=2.6 need=6894 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=8650 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=6561 hNb=0
+    → AI#167 terr=3302 bal=74 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5086 tD=0.00 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=6426 hNb=0
+    → AI#146 terr=3119 bal=2904 dq=0.9 cnt=88 | c=4.9 rankC=4.9 need=9807 tD=0.20 机 | safe=106642 keep=106642 avail=50189 chunkB=31738 pulseB=19043  x=12523 hNb=0
+    ⇒ 影子指令 attack pct=55 → AI#370（约 8678 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1550 talon5 B=162101 L=8008 d=20.2 nb=5 neut=0 cmds=152 noFull=1 shQ=17749 | m=1.492 worth=30.2 cheap=4.6 over=0 dMedOther=4.5 safe(-1)=108934
+    → AI#370 terr=4500 bal=104 dq=0.0 cnt=12 | c=2.6 rankC=2.6 need=6935 tD=0.01 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=8705 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=6561 hNb=0
+    → AI#167 terr=3351 bal=75 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5162 tD=0.01 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=6521 hNb=0
+    → AI#146 terr=3002 bal=2790 dq=0.9 cnt=88 | c=5.0 rankC=5.0 need=9335 tD=0.21 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=11933 hNb=0
+    → AI#496 terr=2088 bal=13164 dq=6.3 cnt=71 | c=10.6 rankC=10.6 need=13667 tD=1.41 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=17297 hNb=0
+    ⇒ 影子指令 attack pct=54 → AI#370（约 8706 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1555 talon5 B=162101 L=8149 d=19.9 nb=5 neut=0 cmds=153 noFull=1 shQ=22096 | m=1.492 worth=29.7 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=108934
+    → AI#370 terr=4523 bal=104 dq=0.0 cnt=13 | c=2.6 rankC=2.6 need=6971 tD=0.01 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=8753 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=6561 hNb=0
+    → AI#167 terr=3452 bal=75 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5312 tD=0.00 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=6709 hNb=0
+    → AI#146 terr=2946 bal=2707 dq=0.9 cnt=88 | c=5.0 rankC=5.0 need=9060 tD=0.21 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=11589 hNb=0
+    → AI#496 terr=1947 bal=11758 dq=6.0 cnt=69 | c=11.7 rankC=11.7 need=13695 tD=1.36 机 | safe=108934 keep=108934 avail=51268 chunkB=32420 pulseB=19452  x=17326 hNb=0
+    ⇒ 影子指令 attack pct=55 → AI#370（约 8864 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1560 talon5 B=165537 L=8218 d=20.1 nb=5 neut=0 cmds=154 noFull=1 shQ=26433 | m=1.491 worth=30.0 cheap=4.7 over=0 dMedOther=4.5 safe(-1)=111243
+    → AI#370 terr=4531 bal=106 dq=0.0 cnt=14 | c=2.6 rankC=2.6 need=6987 tD=0.01 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=8776 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=6561 hNb=0
+    → AI#167 terr=3551 bal=76 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5463 tD=0.00 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=6898 hNb=0
+    → AI#146 terr=2838 bal=2604 dq=0.9 cnt=88 | c=5.1 rankC=5.1 need=8631 tD=0.20 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=11053 hNb=0
+    → AI#496 terr=1878 bal=11327 dq=6.0 cnt=68 | c=12.7 rankC=12.7 need=14094 tD=1.35 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=17822 hNb=0
+    ⇒ 影子指令 attack pct=54 → AI#370（约 8891 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1565 talon5 B=165537 L=8352 d=19.8 nb=5 neut=0 cmds=155 noFull=1 shQ=30810 | m=1.490 worth=29.5 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=111243
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=6561 hNb=0
+    → AI#167 terr=3598 bal=76 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5533 tD=0.00 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=6986 hNb=0
+    → AI#370 terr=4531 bal=4406 dq=1.0 cnt=15 | c=4.9 rankC=4.9 need=14652 tD=0.22 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=18360 hNb=0
+    → AI#146 terr=2736 bal=2456 dq=0.9 cnt=88 | c=5.1 rankC=5.1 need=8134 tD=0.20 机 | safe=111243 keep=111243 avail=52355 chunkB=33107 pulseB=19864  x=10432 hNb=0
+    → AI#496 terr=1744 bal=10049 dq=5.8 cnt=66 | c=14.2 rankC=14.2 need=14112 tD=1.30 机 | safe=111243 keep=113447 avail=50151 chunkB=33107 pulseB=19864  x=17838 hNb=0
+    ⇒ 影子指令 attack pct=40 → AI#415（约 6627 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1570 talon5 B=168996 L=8483 d=19.9 nb=5 neut=0 cmds=156 noFull=1 shQ=35173 | m=1.490 worth=29.7 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=113567
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=6561 hNb=0
+    → AI#167 terr=3695 bal=77 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=5681 tD=0.00 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=7171 hNb=0
+    → AI#370 terr=4531 bal=4498 dq=1.0 cnt=17 | c=4.9 rankC=4.9 need=14816 tD=0.22 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=18571 hNb=0
+    → AI#146 terr=2687 bal=2435 dq=0.9 cnt=88 | c=5.1 rankC=5.1 need=7984 tD=0.20 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=10244 hNb=0
+    → AI#496 terr=1613 bal=9042 dq=5.6 cnt=65 | c=16.5 rankC=16.5 need=14438 tD=1.24 机 | safe=113567 keep=123181 avail=43835 chunkB=33799 pulseB=20280  x=18243 hNb=0
+    ⇒ 影子指令 attack pct=39 → AI#415（约 6601 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1575 talon5 B=168996 L=8548 d=19.8 nb=5 neut=0 cmds=157 noFull=1 shQ=39573 | m=1.489 worth=29.4 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=113567
+    → AI#167 terr=3796 bal=77 dq=0.0 cnt=23 | c=2.7 rankC=2.7 need=5831 tD=0.00 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=7358 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.7 rankC=2.7 need=4968 tD=0.00 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=6561 hNb=0
+    → AI#370 terr=4531 bal=4498 dq=1.0 cnt=17 | c=4.9 rankC=4.9 need=14816 tD=0.22 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=18571 hNb=0
+    → AI#146 terr=2592 bal=2299 dq=0.9 cnt=88 | c=5.2 rankC=5.2 need=7525 tD=0.20 机 | safe=113567 keep=113567 avail=53449 chunkB=33799 pulseB=20280  x=9670 hNb=0
+    → AI#496 terr=1548 bal=8460 dq=5.5 cnt=64 | c=17.6 rankC=17.6 need=14466 tD=1.22 机 | safe=113567 keep=127572 avail=39444 chunkB=33799 pulseB=20280  x=18275 hNb=0
+    ⇒ 影子指令 attack pct=44 → AI#167（约 7426 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1580 talon5 B=172620 L=8548 d=20.2 nb=5 neut=0 cmds=158 noFull=1 shQ=43155 | m=1.488 worth=30.0 cheap=4.8 over=0 dMedOther=4.3 safe(-1)=115906
+    → AI#167 terr=3848 bal=78 dq=0.0 cnt=23 | c=2.7 rankC=2.7 need=5911 tD=0.00 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=7458 hNb=0
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=6561 hNb=0
+    → AI#370 terr=4531 bal=4590 dq=1.0 cnt=17 | c=5.0 rankC=5.0 need=14980 tD=0.24 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=18776 hNb=0
+    → AI#146 terr=2499 bal=2213 dq=0.9 cnt=88 | c=5.2 rankC=5.2 need=7160 tD=0.21 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=9214 hNb=0
+    → AI#496 terr=1548 bal=8634 dq=5.6 cnt=64 | c=18.1 rankC=18.1 need=14882 tD=1.30 机 | safe=115906 keep=130669 avail=39929 chunkB=34524 pulseB=20714  x=18794 hNb=0
+    ⇒ 影子指令 attack pct=44 → AI#167（约 7585 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1585 talon5 B=172620 L=8548 d=20.2 nb=5 neut=0 cmds=159 noFull=1 shQ=43155 | m=1.487 worth=30.0 cheap=4.9 over=0 dMedOther=4.3 safe(-1)=115906
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=6561 hNb=0
+    → AI#167 terr=3901 bal=175 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=6164 tD=0.01 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=7774 hNb=0
+    → AI#146 terr=2452 bal=43 dq=0.0 cnt=88 | c=3.2 rankC=3.2 need=3408 tD=0.00 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=4524 hNb=0
+    → AI#370 terr=4531 bal=4590 dq=1.0 cnt=17 | c=5.0 rankC=5.0 need=14980 tD=0.24 机 | safe=115906 keep=115906 avail=54692 chunkB=34524 pulseB=20714  x=18776 hNb=0
+    → AI#496 terr=1548 bal=8634 dq=5.6 cnt=64 | c=18.1 rankC=18.1 need=14894 tD=1.30 机 | safe=115906 keep=130691 avail=39907 chunkB=34524 pulseB=20714  x=18810 hNb=0
+    ⇒ 影子指令 attack pct=38 → AI#415（约 6574 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1590 talon5 B=176124 L=8548 d=20.6 nb=5 neut=0 cmds=160 noFull=1 shQ=44031 | m=1.486 worth=30.6 cheap=4.9 over=0 dMedOther=4.0 safe(-1)=116387
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=116387 keep=116387 avail=57674 chunkB=35225 pulseB=21135  x=6561 hNb=0
+    → AI#167 terr=3901 bal=178 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=6169 tD=0.01 机 | safe=116387 keep=116387 avail=57674 chunkB=35225 pulseB=21135  x=7781 hNb=0
+    → AI#146 terr=2452 bal=44 dq=0.0 cnt=88 | c=3.2 rankC=3.2 need=3412 tD=0.00 机 | safe=116387 keep=116387 avail=57674 chunkB=35225 pulseB=21135  x=4529 hNb=0
+    → AI#370 terr=4452 bal=4553 dq=1.0 cnt=17 | c=5.0 rankC=5.0 need=14728 tD=0.26 机 | safe=116387 keep=116387 avail=57674 chunkB=35225 pulseB=21135  x=18461 hNb=0
+    → AI#496 terr=1548 bal=8809 dq=5.7 cnt=64 | c=18.4 rankC=18.4 need=15172 tD=1.42 机 | safe=116387 keep=133229 avail=40832 chunkB=35225 pulseB=21135  x=19157 hNb=0
+    ⇒ 影子指令 attack pct=38 → AI#415（约 6707 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1595 talon5 B=176124 L=8548 d=20.6 nb=5 neut=0 cmds=161 noFull=1 shQ=44031 | m=1.486 worth=30.6 cheap=5.0 over=0 dMedOther=3.9 safe(-1)=116220
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=116220 keep=116220 avail=57841 chunkB=35225 pulseB=21135  x=6561 hNb=0
+    → AI#167 terr=3848 bal=175 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=6059 tD=0.01 机 | safe=116220 keep=116220 avail=57841 chunkB=35225 pulseB=21135  x=7643 hNb=0
+    → AI#146 terr=2545 bal=44 dq=0.0 cnt=88 | c=3.1 rankC=3.1 need=3601 tD=0.00 机 | safe=116220 keep=116220 avail=57841 chunkB=35225 pulseB=21135  x=4765 hNb=0
+    → AI#370 terr=4298 bal=4304 dq=1.0 cnt=17 | c=5.0 rankC=5.0 need=13925 tD=0.25 机 | safe=116220 keep=116220 avail=57841 chunkB=35225 pulseB=21135  x=17458 hNb=0
+    → AI#496 terr=1548 bal=8809 dq=5.7 cnt=64 | c=18.4 rankC=18.4 need=15197 tD=1.44 机 | safe=116220 keep=133233 avail=40828 chunkB=35225 pulseB=21135  x=19189 hNb=0
+    ⇒ 影子指令 attack pct=38 → AI#415（约 6707 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1600 talon5 B=188194 L=8548 d=22.0 nb=5 neut=0 cmds=162 noFull=1 shQ=44971 | m=1.485 worth=32.7 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=134957
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=6561 hNb=0
+    → AI#167 terr=3745 bal=3886 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=12417 tD=0.21 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=15590 hNb=0
+    → AI#146 terr=2592 bal=2637 dq=1.0 cnt=88 | c=5.6 rankC=5.6 need=8126 tD=0.21 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=10421 hNb=0
+    → AI#370 terr=4079 bal=8073 dq=2.0 cnt=17 | c=7.5 rankC=7.5 need=19973 tD=0.40 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=25018 hNb=0
+    → AI#496 terr=1548 bal=10533 dq=6.8 cnt=64 | c=21.3 rankC=21.3 need=17829 tD=1.38 机 | safe=134957 keep=148161 avail=37828 chunkB=37639 pulseB=22583  x=22479 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6616 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1605 talon5 B=188194 L=8548 d=22.0 nb=5 neut=0 cmds=163 noFull=1 shQ=47048 | m=1.484 worth=32.7 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=134957
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=6561 hNb=0
+    → AI#167 terr=3722 bal=3848 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=12301 tD=0.21 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=15446 hNb=0
+    → AI#146 terr=2592 bal=2710 dq=1.0 cnt=88 | c=5.7 rankC=5.7 need=8254 tD=0.21 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=10582 hNb=0
+    → AI#370 terr=3944 bal=7648 dq=1.9 cnt=17 | c=7.5 rankC=7.5 need=18864 tD=0.40 机 | safe=134957 keep=134957 avail=51032 chunkB=37639 pulseB=22583  x=23631 hNb=0
+    → AI#496 terr=1500 bal=9843 dq=6.6 cnt=64 | c=20.9 rankC=20.9 need=16455 tD=1.34 机 | safe=134957 keep=146759 avail=39230 chunkB=37639 pulseB=22583  x=20761 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6616 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1610 talon5 B=191901 L=8548 d=22.4 nb=5 neut=0 cmds=164 noFull=1 shQ=47975 | m=1.484 worth=33.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=137615
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=6561 hNb=0
+    → AI#167 terr=3669 bal=3836 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=12157 tD=0.21 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=15265 hNb=0
+    → AI#146 terr=2592 bal=2763 dq=1.1 cnt=88 | c=5.7 rankC=5.7 need=8348 tD=0.22 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=10699 hNb=0
+    → AI#370 terr=3754 bal=7205 dq=1.9 cnt=17 | c=7.5 rankC=7.5 need=17562 tD=0.39 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=22004 hNb=0
+    → AI#496 terr=1499 bal=10026 dq=6.7 cnt=64 | c=21.3 rankC=21.3 need=16736 tD=1.36 机 | safe=137615 keep=149517 avail=40136 chunkB=38380 pulseB=23028  x=21112 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6746 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1615 talon5 B=191901 L=8548 d=22.4 nb=5 neut=0 cmds=165 noFull=1 shQ=47975 | m=1.483 worth=33.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=137615
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.8 rankC=2.8 need=4968 tD=0.00 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=6561 hNb=0
+    → AI#167 terr=3585 bal=3697 dq=1.0 cnt=23 | c=5.3 rankC=5.3 need=11714 tD=0.21 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=14712 hNb=0
+    → AI#146 terr=2592 bal=2763 dq=1.1 cnt=88 | c=5.7 rankC=5.7 need=8352 tD=0.22 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=10704 hNb=0
+    → AI#370 terr=3638 bal=6851 dq=1.9 cnt=17 | c=7.5 rankC=7.5 need=16628 tD=0.39 机 | safe=137615 keep=137615 avail=52038 chunkB=38380 pulseB=23028  x=20836 hNb=0
+    → AI#496 terr=1499 bal=10026 dq=6.7 cnt=64 | c=21.2 rankC=21.2 need=16765 tD=1.37 机 | safe=137615 keep=149520 avail=40133 chunkB=38380 pulseB=23028  x=21149 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6746 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1620 talon5 B=195623 L=8548 d=22.9 nb=5 neut=0 cmds=166 noFull=1 shQ=48905 | m=1.482 worth=33.9 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=6453
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=117 | c=2.9 rankC=2.9 need=4968 tD=0.00 机 | safe=6453 keep=6453 avail=186878 chunkB=39125 pulseB=23475  x=6561 hNb=0
+    → AI#496 terr=1499 bal=204 dq=0.1 cnt=64 | c=4.8 rankC=4.8 need=2044 tD=0.03 机 | safe=6453 keep=6453 avail=186878 chunkB=39125 pulseB=23475  x=2747 hNb=0
+    → AI#167 terr=3519 bal=3658 dq=1.0 cnt=23 | c=5.4 rankC=5.4 need=11490 tD=0.21 机 | safe=6453 keep=96414 avail=96917 chunkB=39125 pulseB=23475  x=14432 hNb=0
+    → AI#146 terr=2592 bal=2816 dq=1.1 cnt=88 | c=5.8 rankC=5.8 need=8450 tD=0.22 机 | safe=6453 keep=97842 avail=95489 chunkB=39125 pulseB=23475  x=10826 hNb=0
+    → AI#370 terr=3463 bal=6453 dq=1.9 cnt=17 | c=7.6 rankC=7.6 need=15446 tD=0.38 机 | safe=6453 keep=103925 avail=89406 chunkB=39125 pulseB=23475  x=19359 hNb=0
+    ⇒ 影子指令 attack pct=34 → AI#415（约 6686 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1625 talon5 B=191376 L=8432 d=22.7 nb=5 neut=0 cmds=166 noFull=1 shQ=918 | m=1.481 worth=33.6 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=6099
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=6099 keep=6099 avail=183035 chunkB=38275 pulseB=22965  x=6761 hNb=0
+    → AI#496 terr=1499 bal=204 dq=0.1 cnt=64 | c=4.8 rankC=4.8 need=2046 tD=0.03 机 | safe=6099 keep=6099 avail=183035 chunkB=38275 pulseB=22965  x=2750 hNb=0
+    → AI#167 terr=3402 bal=3466 dq=1.0 cnt=23 | c=5.4 rankC=5.4 need=10879 tD=0.21 机 | safe=6099 keep=94440 avail=94694 chunkB=38275 pulseB=22965  x=13668 hNb=0
+    → AI#146 terr=2592 bal=2816 dq=1.1 cnt=88 | c=5.8 rankC=5.8 need=8454 tD=0.22 机 | safe=6099 keep=95815 avail=93319 chunkB=38275 pulseB=22965  x=10831 hNb=0
+    → AI#370 terr=3343 bal=6099 dq=1.8 cnt=17 | c=7.5 rankC=7.5 need=14508 tD=0.38 机 | safe=6099 keep=101765 avail=87369 chunkB=38275 pulseB=22965  x=18187 hNb=0
+    ⇒ 本拍没有指令
+t=1630 talon5 B=195012 L=8432 d=23.1 nb=5 neut=0 cmds=167 noFull=1 shQ=5511 | m=1.480 worth=34.2 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=142949
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=6761 hNb=0
+    → AI#370 terr=3156 bal=114 dq=0.0 cnt=17 | c=3.2 rankC=3.2 need=4252 tD=0.01 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=5367 hNb=0
+    → AI#496 terr=1596 bal=207 dq=0.1 cnt=64 | c=4.6 rankC=4.6 need=2257 tD=0.03 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=3013 hNb=0
+    → AI#167 terr=3302 bal=3367 dq=1.0 cnt=23 | c=5.4 rankC=5.4 need=10467 tD=0.21 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=13153 hNb=0
+    → AI#146 terr=2592 bal=2869 dq=1.1 cnt=88 | c=5.8 rankC=5.8 need=8548 tD=0.23 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=10949 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6855 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1635 talon5 B=195012 L=8432 d=23.1 nb=5 neut=0 cmds=168 noFull=1 shQ=10131 | m=1.480 worth=34.2 cheap=5.3 over=0 dMedOther=4.9 safe(-1)=142949
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=6761 hNb=0
+    → AI#370 terr=3031 bal=108 dq=0.0 cnt=17 | c=3.3 rankC=3.3 need=3992 tD=0.01 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=5041 hNb=0
+    → AI#496 terr=1696 bal=207 dq=0.1 cnt=64 | c=4.3 rankC=4.3 need=2470 tD=0.03 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=3279 hNb=0
+    → AI#167 terr=3147 bal=3117 dq=1.0 cnt=23 | c=5.4 rankC=5.4 need=9661 tD=0.20 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=12145 hNb=0
+    → AI#146 terr=2592 bal=2869 dq=1.1 cnt=88 | c=5.8 rankC=5.8 need=8552 tD=0.23 机 | safe=142949 keep=142949 avail=49778 chunkB=39002 pulseB=23401  x=10954 hNb=0
+    ⇒ 影子指令 attack pct=35 → AI#415（约 6855 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1640 talon5 B=198658 L=8432 d=23.6 nb=5 neut=0 cmds=169 noFull=1 shQ=14733 | m=1.479 worth=34.8 cheap=5.3 over=0 dMedOther=5.1 safe(-1)=145622
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=6761 hNb=0
+    → AI#370 terr=2957 bal=100 dq=0.0 cnt=19 | c=3.3 rankC=3.3 need=3832 tD=0.01 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=4847 hNb=0
+    → AI#496 terr=1746 bal=210 dq=0.1 cnt=64 | c=4.3 rankC=4.3 need=2581 tD=0.02 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=3418 hNb=0
+    → AI#167 terr=3040 bal=3005 dq=1.0 cnt=23 | c=5.5 rankC=5.5 need=9209 tD=0.19 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=11580 hNb=0
+    → AI#146 terr=2490 bal=2740 dq=1.1 cnt=86 | c=5.9 rankC=5.9 need=8082 tD=0.22 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=10360 hNb=0
+    ⇒ 影子指令 attack pct=34 → AI#415（约 6790 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1645 talon5 B=198658 L=8432 d=23.6 nb=5 neut=0 cmds=170 noFull=1 shQ=19363 | m=1.478 worth=34.8 cheap=5.4 over=0 dMedOther=5.1 safe(-1)=145622
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=6761 hNb=0
+    → AI#167 terr=2878 bal=57 dq=0.0 cnt=23 | c=3.2 rankC=3.2 need=3928 tD=0.00 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=4979 hNb=0
+    → AI#370 terr=2898 bal=96 dq=0.0 cnt=20 | c=3.4 rankC=3.4 need=3710 tD=0.01 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=4698 hNb=0
+    → AI#496 terr=1851 bal=210 dq=0.1 cnt=64 | c=4.1 rankC=4.1 need=2800 tD=0.02 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=3692 hNb=0
+    → AI#146 terr=2438 bal=2649 dq=1.1 cnt=85 | c=5.9 rankC=5.9 need=7800 tD=0.21 机 | safe=145622 keep=145622 avail=50708 chunkB=39732 pulseB=23839  x=10005 hNb=0
+    ⇒ 影子指令 attack pct=34 → AI#415（约 6790 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1650 talon5 B=202313 L=8432 d=24.0 nb=5 neut=0 cmds=171 noFull=1 shQ=23970 | m=1.478 worth=35.5 cheap=5.4 over=0 dMedOther=5.0 safe(-1)=148301
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=6761 hNb=0
+    → AI#167 terr=2817 bal=56 dq=0.0 cnt=23 | c=3.3 rankC=3.3 need=3806 tD=0.00 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=4826 hNb=0
+    → AI#370 terr=2839 bal=91 dq=0.0 cnt=21 | c=3.4 rankC=3.4 need=3585 tD=0.01 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=4544 hNb=0
+    → AI#496 terr=1956 bal=213 dq=0.1 cnt=64 | c=4.0 rankC=4.0 need=3024 tD=0.02 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=3972 hNb=0
+    → AI#146 terr=2289 bal=2439 dq=1.1 cnt=84 | c=6.1 rankC=6.1 need=7070 tD=0.21 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=9090 hNb=0
+    ⇒ 影子指令 attack pct=34 → AI#415（约 6914 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1655 talon5 B=202313 L=8432 d=24.0 nb=5 neut=0 cmds=172 noFull=1 shQ=28605 | m=1.477 worth=35.4 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=148301
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=6761 hNb=0
+    → AI#167 terr=2755 bal=53 dq=0.0 cnt=23 | c=3.3 rankC=3.3 need=3678 tD=0.00 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=4667 hNb=0
+    → AI#370 terr=2846 bal=87 dq=0.0 cnt=22 | c=3.4 rankC=3.4 need=3595 tD=0.01 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=4560 hNb=0
+    → AI#496 terr=2009 bal=213 dq=0.1 cnt=64 | c=3.9 rankC=3.9 need=3137 tD=0.02 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=4113 hNb=0
+    → AI#146 terr=2097 bal=2120 dq=1.0 cnt=83 | c=6.2 rankC=6.2 need=6052 tD=0.21 机 | safe=148301 keep=148301 avail=51642 chunkB=40463 pulseB=24278  x=7814 hNb=0
+    ⇒ 影子指令 attack pct=34 → AI#415（约 6914 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1660 talon5 B=205974 L=8432 d=24.4 nb=5 neut=0 cmds=173 noFull=1 shQ=33222 | m=1.476 worth=36.1 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=150985
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=6761 hNb=0
+    → AI#167 terr=2686 bal=52 dq=0.0 cnt=23 | c=3.4 rankC=3.4 need=3540 tD=0.00 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4494 hNb=0
+    → AI#370 terr=2749 bal=82 dq=0.0 cnt=23 | c=3.5 rankC=3.5 need=3393 tD=0.01 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4311 hNb=0
+    → AI#496 terr=2117 bal=216 dq=0.1 cnt=64 | c=3.8 rankC=3.8 need=3365 tD=0.02 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4399 hNb=0
+    → AI#146 terr=1964 bal=1943 dq=1.0 cnt=82 | c=6.3 rankC=6.3 need=5424 tD=0.20 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=7026 hNb=0
+    ⇒ 影子指令 attack pct=33 → AI#415（约 6838 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1665 talon5 B=205974 L=8432 d=24.4 nb=5 neut=0 cmds=174 noFull=1 shQ=37864 | m=1.475 worth=36.0 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=150985
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=6761 hNb=0
+    → AI#167 terr=2583 bal=49 dq=0.0 cnt=23 | c=3.5 rankC=3.5 need=3332 tD=0.00 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4234 hNb=0
+    → AI#370 terr=2759 bal=78 dq=0.0 cnt=24 | c=3.5 rankC=3.5 need=3411 tD=0.01 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4336 hNb=0
+    → AI#496 terr=2218 bal=216 dq=0.1 cnt=64 | c=3.7 rankC=3.7 need=3574 tD=0.02 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=4659 hNb=0
+    → AI#146 terr=1816 bal=1713 dq=0.9 cnt=81 | c=6.5 rankC=6.5 need=4673 tD=0.19 机 | safe=150985 keep=150985 avail=52576 chunkB=41195 pulseB=24717  x=6084 hNb=0
+    ⇒ 影子指令 attack pct=33 → AI#415（约 6838 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1670 talon5 B=209640 L=8432 d=24.9 nb=5 neut=0 cmds=175 noFull=1 shQ=42475 | m=1.474 worth=36.7 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=153672
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=6761 hNb=0
+    → AI#370 terr=2718 bal=73 dq=0.0 cnt=25 | c=3.6 rankC=3.6 need=3323 tD=0.01 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=4229 hNb=0
+    → AI#167 terr=2488 bal=48 dq=0.0 cnt=23 | c=3.6 rankC=3.6 need=3141 tD=0.00 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=3996 hNb=0
+    → AI#496 terr=2267 bal=219 dq=0.1 cnt=64 | c=3.7 rankC=3.7 need=3681 tD=0.02 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=4794 hNb=0
+    → AI#146 terr=1631 bal=1468 dq=0.9 cnt=80 | c=6.9 rankC=6.9 need=3801 tD=0.19 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=4992 hNb=0
+    ⇒ 影子指令 attack pct=33 → AI#415（约 6960 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1675 talon5 B=209640 L=8432 d=24.9 nb=5 neut=0 cmds=176 noFull=1 shQ=47115 | m=1.474 worth=36.6 cheap=5.7 over=0 dMedOther=4.6 safe(-1)=153672
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=6761 hNb=0
+    → AI#496 terr=2362 bal=219 dq=0.1 cnt=64 | c=3.6 rankC=3.6 need=3879 tD=0.02 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=5041 hNb=0
+    → AI#370 terr=2672 bal=69 dq=0.0 cnt=25 | c=3.6 rankC=3.6 need=3226 tD=0.01 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=4108 hNb=0
+    → AI#167 terr=2317 bal=45 dq=0.0 cnt=23 | c=3.8 rankC=3.8 need=2794 tD=0.00 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=3562 hNb=0
+    → AI#146 terr=1504 bal=1290 dq=0.9 cnt=80 | c=7.2 rankC=7.2 need=3195 tD=0.19 机 | safe=153672 keep=153672 avail=53512 chunkB=41928 pulseB=25157  x=4233 hNb=0
+    ⇒ 影子指令 attack pct=33 → AI#415（约 6960 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1680 talon5 B=213308 L=8432 d=25.3 nb=5 neut=0 cmds=177 noFull=1 shQ=51731 | m=1.473 worth=37.3 cheap=5.7 over=0 dMedOther=4.7 safe(-1)=156361
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=6761 hNb=0
+    → AI#496 terr=2455 bal=222 dq=0.1 cnt=64 | c=3.5 rankC=3.5 need=4076 tD=0.02 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=5286 hNb=0
+    → AI#370 terr=2633 bal=64 dq=0.0 cnt=26 | c=3.7 rankC=3.7 need=3142 tD=0.01 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=4005 hNb=0
+    → AI#167 terr=2207 bal=44 dq=0.0 cnt=23 | c=4.0 rankC=4.0 need=2573 tD=0.00 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=3285 hNb=0
+    → AI#146 terr=1356 bal=1112 dq=0.8 cnt=79 | c=7.9 rankC=7.9 need=2535 tD=0.18 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=3406 hNb=0
+    ⇒ 影子指令 attack pct=32 → AI#415（约 6874 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1685 talon5 B=213308 L=8432 d=25.3 nb=6 neut=0 cmds=178 noFull=1 shQ=53327 | m=1.472 worth=37.2 cheap=5.8 over=0 dMedOther=4.6 safe(-1)=156361
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=6761 hNb=0
+    → AI#414 terr=3145 bal=66 dq=0.0 cnt=1 | c=3.1 rankC=3.1 need=4836 tD=0.00 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=6048 hNb=0
+    → AI#496 terr=2501 bal=222 dq=0.1 cnt=64 | c=3.5 rankC=3.5 need=4148 tD=0.02 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=5377 hNb=0
+    → AI#370 terr=2632 bal=62 dq=0.0 cnt=27 | c=3.7 rankC=3.7 need=3141 tD=0.01 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=4007 hNb=0
+    → AI#167 terr=2026 bal=39 dq=0.0 cnt=23 | c=4.3 rankC=4.3 need=2205 tD=0.00 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=2825 hNb=0
+    → AI#146 terr=1209 bal=925 dq=0.8 cnt=77 | c=8.9 rankC=8.9 need=1872 tD=0.17 机 | safe=156361 keep=156361 avail=54448 chunkB=42662 pulseB=25597  x=2571 hNb=0
+    ⇒ 影子指令 attack pct=32 → AI#415（约 6874 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1690 talon5 B=216976 L=8432 d=25.7 nb=6 neut=0 cmds=179 noFull=1 shQ=54244 | m=1.472 worth=37.9 cheap=5.8 over=0 dMedOther=4.7 safe(-1)=159050
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=6761 hNb=0
+    → AI#414 terr=3188 bal=67 dq=0.0 cnt=2 | c=3.1 rankC=3.1 need=4901 tD=0.00 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=6133 hNb=0
+    → AI#496 terr=2594 bal=225 dq=0.1 cnt=64 | c=3.5 rankC=3.5 need=4293 tD=0.02 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=5558 hNb=0
+    → AI#370 terr=2529 bal=60 dq=0.0 cnt=28 | c=3.8 rankC=3.8 need=2932 tD=0.01 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=3749 hNb=0
+    → AI#167 terr=1899 bal=37 dq=0.0 cnt=23 | c=4.7 rankC=4.7 need=1948 tD=0.00 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=2503 hNb=0
+    → AI#146 terr=1114 bal=18 dq=0.0 cnt=75 | c=8.2 rankC=8.2 need=729 tD=0.00 机 | safe=159050 keep=159050 avail=55384 chunkB=43395 pulseB=26037  x=1136 hNb=0
+    ⇒ 影子指令 attack pct=31 → AI#415（约 6780 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1695 talon5 B=216976 L=8432 d=25.7 nb=6 neut=0 cmds=180 noFull=1 shQ=54244 | m=1.471 worth=37.8 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=156461
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=2.9 rankC=2.9 need=5142 tD=0.00 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=6761 hNb=0
+    → AI#414 terr=3209 bal=67 dq=0.0 cnt=3 | c=3.1 rankC=3.1 need=4933 tD=0.00 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=6176 hNb=0
+    → AI#496 terr=2674 bal=225 dq=0.1 cnt=64 | c=3.4 rankC=3.4 need=4413 tD=0.02 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=5708 hNb=0
+    → AI#370 terr=2476 bal=74 dq=0.0 cnt=28 | c=3.9 rankC=3.9 need=2847 tD=0.01 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=3643 hNb=0
+    → AI#167 terr=1718 bal=1641 dq=1.0 cnt=23 | c=7.8 rankC=7.8 need=3554 tD=0.21 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=4512 hNb=0
+    → AI#146 terr=1093 bal=18 dq=0.0 cnt=74 | c=8.5 rankC=8.5 need=688 tD=0.00 机 | safe=156461 keep=156461 avail=57973 chunkB=43395 pulseB=26037  x=1082 hNb=0
+    ⇒ 影子指令 attack pct=31 → AI#415（约 6780 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1700 talon5 B=229074 L=8432 d=27.2 nb=6 neut=0 cmds=181 noFull=1 shQ=55211 | m=1.470 worth=39.9 cheap=5.9 over=0 dMedOther=5.6 safe(-1)=175351
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=3.0 rankC=3.0 need=5142 tD=0.00 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=6761 hNb=0
+    → AI#414 terr=3253 bal=3321 dq=1.0 cnt=4 | c=5.5 rankC=5.5 need=10800 tD=0.18 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=13511 hNb=0
+    → AI#496 terr=2713 bal=2941 dq=1.1 cnt=64 | c=5.8 rankC=5.8 need=9312 tD=0.19 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=11832 hNb=0
+    → AI#370 terr=2373 bal=2444 dq=1.0 cnt=27 | c=6.8 rankC=6.8 need=5989 tD=0.18 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=7567 hNb=0
+    → AI#146 terr=1152 bal=1171 dq=1.0 cnt=74 | c=10.6 rankC=10.6 need=1945 tD=0.18 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=2653 hNb=0
+    → AI#167 terr=1609 bal=3110 dq=1.9 cnt=23 | c=11.2 rankC=11.2 need=4887 tD=0.34 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=6178 hNb=0
+    ⇒ 影子指令 attack pct=30 → AI#415（约 6934 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1705 talon5 B=229074 L=8432 d=27.2 nb=6 neut=0 cmds=182 noFull=1 shQ=57268 | m=1.469 worth=39.9 cheap=6.0 over=0 dMedOther=5.6 safe(-1)=175351
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=3.0 rankC=3.0 need=5142 tD=0.00 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=6761 hNb=0
+    → AI#414 terr=3299 bal=3321 dq=1.0 cnt=5 | c=5.5 rankC=5.5 need=10870 tD=0.18 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=13603 hNb=0
+    → AI#496 terr=2774 bal=2941 dq=1.1 cnt=64 | c=5.7 rankC=5.7 need=9405 tD=0.19 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=11948 hNb=0
+    → AI#370 terr=2373 bal=2444 dq=1.0 cnt=27 | c=6.8 rankC=6.8 need=6001 tD=0.18 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=7583 hNb=0
+    → AI#146 terr=1106 bal=1169 dq=1.1 cnt=73 | c=11.4 rankC=11.4 need=1775 tD=0.19 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=2438 hNb=0
+    → AI#167 terr=1371 bal=2404 dq=1.8 cnt=23 | c=12.9 rankC=12.9 need=3022 tD=0.31 机 | safe=175351 keep=175351 avail=51039 chunkB=45815 pulseB=27489  x=3847 hNb=0
+    ⇒ 影子指令 attack pct=30 → AI#415（约 6934 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1710 talon5 B=232853 L=8432 d=27.6 nb=6 neut=0 cmds=183 noFull=1 shQ=58213 | m=1.468 worth=40.6 cheap=6.0 over=0 dMedOther=5.7 safe(-1)=178244
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=3.0 rankC=3.0 need=5142 tD=0.00 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=6761 hNb=0
+    → AI#414 terr=3321 bal=3375 dq=1.0 cnt=5 | c=5.5 rankC=5.5 need=10998 tD=0.18 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=13762 hNb=0
+    → AI#496 terr=2803 bal=2989 dq=1.1 cnt=64 | c=5.8 rankC=5.8 need=9535 tD=0.19 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=12110 hNb=0
+    → AI#370 terr=2373 bal=2484 dq=1.0 cnt=27 | c=6.8 rankC=6.8 need=6066 tD=0.18 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=7664 hNb=0
+    → AI#146 terr=1084 bal=1150 dq=1.1 cnt=73 | c=11.8 rankC=11.8 need=1678 tD=0.19 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=2317 hNb=0
+    → AI#167 terr=1178 bal=1915 dq=1.6 cnt=23 | c=17.3 rankC=17.3 need=1630 tD=0.29 机 | safe=178244 keep=178244 avail=51881 chunkB=46571 pulseB=27942  x=2107 hNb=0
+    ⇒ 影子指令 attack pct=29 → AI#415（约 6821 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1715 talon5 B=232853 L=8432 d=27.6 nb=6 neut=0 cmds=184 noFull=1 shQ=58213 | m=1.468 worth=40.5 cheap=6.1 over=0 dMedOther=5.7 safe(-1)=175734
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=3.0 rankC=3.0 need=5142 tD=0.00 机 | safe=175734 keep=175734 avail=54391 chunkB=46571 pulseB=27942  x=6761 hNb=0
+    → AI#414 terr=3321 bal=3393 dq=1.0 cnt=5 | c=5.5 rankC=5.5 need=11030 tD=0.18 机 | safe=175734 keep=175734 avail=54391 chunkB=46571 pulseB=27942  x=13802 hNb=0
+    → AI#496 terr=2812 bal=2989 dq=1.1 cnt=64 | c=5.8 rankC=5.8 need=9545 tD=0.19 机 | safe=175734 keep=175734 avail=54391 chunkB=46571 pulseB=27942  x=12124 hNb=0
+    → AI#370 terr=2373 bal=2484 dq=1.0 cnt=27 | c=6.8 rankC=6.8 need=6079 tD=0.19 机 | safe=175734 keep=175734 avail=54391 chunkB=46571 pulseB=27942  x=7679 hNb=0
+    → AI#146 terr=1084 bal=1150 dq=1.1 cnt=73 | c=11.8 rankC=11.8 need=1683 tD=0.19 机 | safe=175734 keep=175734 avail=54391 chunkB=46571 pulseB=27942  x=2322 hNb=0
+    → AI#167 terr=1007 bal=1490 dq=1.5 cnt=23 | c=37.7 rankC=37.7 need=458 tD=0.26 机 | safe=175734 keep=221944 avail=8181 chunkB=46571 pulseB=27942  x=641 hNb=0
+    ⇒ 影子指令 attack pct=29 → AI#415（约 6821 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1720 talon5 B=236625 L=8432 d=28.1 nb=5 neut=23 cmds=186 noFull=1 shQ=59156 | m=1.467 worth=41.2 cheap=6.2 over=0 dMedOther=5.7 safe(-1)=178580
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=111 | c=3.0 rankC=3.0 need=5142 tD=0.00 机 | safe=178580 keep=178580 avail=55273 chunkB=47325 pulseB=28395  x=6761 hNb=0
+    → AI#414 terr=3321 bal=3447 dq=1.0 cnt=5 | c=5.6 rankC=5.6 need=11126 tD=0.18 机 | safe=178580 keep=178580 avail=55273 chunkB=47325 pulseB=28395  x=13923 hNb=0
+    → AI#496 terr=2825 bal=3037 dq=1.1 cnt=64 | c=5.8 rankC=5.8 need=9651 tD=0.19 机 | safe=178580 keep=178580 avail=55273 chunkB=47325 pulseB=28395  x=12256 hNb=0
+    → AI#370 terr=2373 bal=2524 dq=1.1 cnt=27 | c=6.9 rankC=6.9 need=6144 tD=0.19 机 | safe=178580 keep=178580 avail=55273 chunkB=47325 pulseB=28395  x=7760 hNb=0
+    → AI#146 terr=1084 bal=1168 dq=1.1 cnt=73 | c=11.9 rankC=11.9 need=1708 tD=0.19 机 | safe=178580 keep=178580 avail=55273 chunkB=47325 pulseB=28395  x=2354 hNb=0
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11091 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=29 → AI#415（约 6932 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1725 talon5 B=131689 L=8432 d=15.6 nb=5 neut=23 cmds=186 noFull=1 shQ=1060 | m=1.466 worth=22.9 cheap=6.2 over=0 dMedOther=5.1 safe(-1)=2497
+    → AI#496 terr=2850 bal=61 dq=0.0 cnt=65 | c=2.7 rankC=2.7 need=4385 tD=0.00 机 | safe=2497 keep=2497 avail=127649 chunkB=26338 pulseB=15803  x=5676 hNb=0
+    → AI#414 terr=3321 bal=3447 dq=1.0 cnt=5 | c=5.1 rankC=5.1 need=11126 tD=0.20 机 | safe=2497 keep=2497 avail=127649 chunkB=26338 pulseB=15803  x=13923 hNb=0
+    → AI#370 terr=2357 bal=2497 dq=1.1 cnt=26 | c=5.9 rankC=5.9 need=6066 tD=0.21 机 | safe=2497 keep=2497 avail=127649 chunkB=26338 pulseB=15803  x=7660 hNb=0
+    → AI#146 terr=1084 bal=1168 dq=1.1 cnt=73 | c=8.7 rankC=8.7 need=1713 tD=0.21 机 | safe=2497 keep=82385 avail=47761 chunkB=26338 pulseB=15803  x=2360 hNb=0
+    ⇒ 本拍没有指令
+t=1730 talon5 B=133782 L=8566 d=15.6 nb=5 neut=24 cmds=186 noFull=1 shQ=3699 | m=1.466 worth=22.9 cheap=6.3 over=0 dMedOther=5.2 safe(-1)=117276
+    → AI#414 terr=3321 bal=3501 dq=1.1 cnt=5 | c=5.1 rankC=5.1 need=11222 tD=0.20 机 | safe=117276 keep=117276 avail=14939 chunkB=26756 pulseB=16054  x=14043 hNb=0
+    → AI#370 terr=2342 bal=2511 dq=1.1 cnt=25 | c=6.0 rankC=6.0 need=6053 tD=0.21 机 | safe=117276 keep=117276 avail=14939 chunkB=26756 pulseB=16054  x=7641 hNb=0
+    → AI#496 terr=2865 bal=4127 dq=1.4 cnt=66 | c=6.1 rankC=6.1 need=11654 tD=0.28 机 | safe=117276 keep=117276 avail=14939 chunkB=26756 pulseB=16054  x=14766 hNb=0
+    → AI#146 terr=1084 bal=1186 dq=1.1 cnt=73 | c=8.8 rankC=8.8 need=1734 tD=0.21 机 | safe=117276 keep=117276 avail=14939 chunkB=26756 pulseB=16054  x=2386 hNb=0
+    ⇒ 本拍没有指令
+t=1735 talon5 B=133782 L=8701 d=15.4 nb=6 neut=17 cmds=187 noFull=1 shQ=6345 | m=1.465 worth=22.5 cheap=6.3 over=0 dMedOther=5.1 safe(-1)=117498
+    → AI#370 terr=2311 bal=50 dq=0.0 cnt=24 | c=3.3 rankC=3.3 need=2518 tD=0.00 机 | safe=117498 keep=117498 avail=14717 chunkB=26756 pulseB=16054  x=3220 hNb=1
+    → AI#414 terr=3321 bal=3501 dq=1.1 cnt=6 | c=5.1 rankC=5.1 need=11222 tD=0.20 机 | safe=117498 keep=117498 avail=14717 chunkB=26756 pulseB=16054  x=14046 hNb=1
+    → AI#496 terr=2896 bal=4127 dq=1.4 cnt=67 | c=6.0 rankC=6.0 need=11700 tD=0.28 机 | safe=117498 keep=117498 avail=14717 chunkB=26756 pulseB=16054 不够一条(x=14717)→continue hNb=1
+    → AI#146 terr=1084 bal=1186 dq=1.1 cnt=73 | c=8.7 rankC=8.7 need=1739 tD=0.21 机 | safe=117498 keep=117498 avail=14717 chunkB=26756 pulseB=16054  x=2392 hNb=1
+    → 🌞#1[T1] terr=29888 bal=110621 dq=3.7 cnt=8 | c=19.6 rankC=19.6 need=241999 tD=0.72 人 | safe=117498 keep=122664 avail=9551 chunkB=26756 pulseB=16054 不够一条(x=9551)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=24 → AI#370（约 3266 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1740 talon5 B=135868 L=8962 d=15.2 nb=6 neut=16 cmds=188 noFull=1 shQ=8977 | m=1.464 worth=22.2 cheap=6.4 over=0 dMedOther=5.2 safe(-1)=120782
+    → AI#370 terr=2277 bal=51 dq=0.0 cnt=23 | c=3.4 rankC=3.4 need=2457 tD=0.00 机 | safe=120782 keep=120782 avail=13494 chunkB=27174 pulseB=16304  x=3140 hNb=1
+    → AI#414 terr=3321 bal=3555 dq=1.1 cnt=7 | c=5.2 rankC=5.2 need=11319 tD=0.21 机 | safe=120782 keep=120782 avail=13494 chunkB=27174 pulseB=16304 不够一条(x=13494)→continue hNb=1
+    → AI#496 terr=2785 bal=3861 dq=1.4 cnt=68 | c=6.0 rankC=6.0 need=10938 tD=0.27 机 | safe=120782 keep=120782 avail=13494 chunkB=27174 pulseB=16304 不够一条(x=13494)→continue hNb=1
+    → AI#146 terr=1084 bal=1204 dq=1.1 cnt=73 | c=8.8 rankC=8.8 need=1765 tD=0.21 机 | safe=120782 keep=120782 avail=13494 chunkB=27174 pulseB=16304  x=2425 hNb=1
+    → 🌞#1[T1] terr=29939 bal=112346 dq=3.8 cnt=10 | c=19.8 rankC=19.8 need=245155 tD=0.72 人 | safe=120782 keep=126406 avail=7870 chunkB=27174 pulseB=16304 不够一条(x=7870)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=23 → AI#370（约 3184 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1745 talon5 B=135868 L=9226 d=14.7 nb=6 neut=14 cmds=189 noFull=1 shQ=11613 | m=1.463 worth=21.5 cheap=6.5 over=0 dMedOther=5.1 safe(-1)=121250
+    → AI#414 terr=3321 bal=72 dq=0.0 cnt=8 | c=2.7 rankC=2.7 need=5110 tD=0.00 机 | safe=121250 keep=121250 avail=13026 chunkB=27174 pulseB=16304  x=6412 hNb=1
+    → AI#370 terr=2355 bal=51 dq=0.0 cnt=23 | c=3.3 rankC=3.3 need=2619 tD=0.00 机 | safe=121250 keep=121250 avail=13026 chunkB=27174 pulseB=16304  x=3342 hNb=1
+    → AI#496 terr=2657 bal=3542 dq=1.3 cnt=69 | c=6.0 rankC=6.0 need=10057 tD=0.26 机 | safe=121250 keep=121250 avail=13026 chunkB=27174 pulseB=16304  x=12779 hNb=1
+    → AI#146 terr=988 bal=1037 dq=1.0 cnt=72 | c=9.9 rankC=9.9 need=1245 tD=0.20 机 | safe=121250 keep=121250 avail=13026 chunkB=27174 pulseB=16304  x=1772 hNb=1
+    → 🌞#1[T1] terr=30013 bal=112346 dq=3.7 cnt=13 | c=19.7 rankC=19.7 need=245263 tD=0.73 人 | safe=121250 keep=128406 avail=5870 chunkB=27174 pulseB=16304 不够一条(x=5870)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=48 → AI#414（约 6501 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1750 talon5 B=137946 L=9360 d=14.7 nb=6 neut=14 cmds=190 noFull=1 shQ=14228 | m=1.462 worth=21.6 cheap=6.5 over=0 dMedOther=5.2 safe(-1)=124309
+    → AI#414 terr=3321 bal=73 dq=0.0 cnt=8 | c=2.7 rankC=2.7 need=5112 tD=0.00 机 | safe=124309 keep=124309 avail=12021 chunkB=27589 pulseB=16554  x=6414 hNb=1
+    → AI#370 terr=2414 bal=52 dq=0.0 cnt=30 | c=3.2 rankC=3.2 need=2741 tD=0.00 机 | safe=124309 keep=124309 avail=12021 chunkB=27589 pulseB=16554  x=3517 hNb=1
+    → AI#496 terr=2472 bal=3140 dq=1.3 cnt=70 | c=5.9 rankC=5.9 need=8892 tD=0.24 机 | safe=124309 keep=124309 avail=12021 chunkB=27589 pulseB=16554  x=11325 hNb=1
+    → AI#146 terr=897 bal=900 dq=1.0 cnt=64 | c=12.3 rankC=12.3 need=781 tD=0.19 机 | safe=124309 keep=124309 avail=12021 chunkB=27589 pulseB=16554  x=1169 hNb=1
+    → 🌞#1[T1] terr=30060 bal=114064 dq=3.8 cnt=14 | c=19.9 rankC=19.9 need=248393 tD=0.73 人 | safe=124309 keep=131190 avail=5140 chunkB=27589 pulseB=16554 不够一条(x=5140)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → AI#414（约 6466 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1755 talon5 B=137946 L=9630 d=14.3 nb=6 neut=7 cmds=191 noFull=1 shQ=16854 | m=1.462 worth=20.9 cheap=6.6 over=0 dMedOther=5.1 safe(-1)=124805
+    → AI#414 terr=3376 bal=73 dq=0.0 cnt=14 | c=2.7 rankC=2.7 need=5194 tD=0.00 机 | safe=124805 keep=124805 avail=11525 chunkB=27589 pulseB=16554  x=6535 hNb=1
+    → AI#370 terr=2423 bal=52 dq=0.0 cnt=30 | c=3.2 rankC=3.2 need=2761 tD=0.00 机 | safe=124805 keep=124805 avail=11525 chunkB=27589 pulseB=16554  x=3542 hNb=1
+    → AI#496 terr=2360 bal=2851 dq=1.2 cnt=71 | c=5.9 rankC=5.9 need=8117 tD=0.23 机 | safe=124805 keep=124805 avail=11525 chunkB=27589 pulseB=16554  x=10359 hNb=1
+    → AI#146 terr=855 bal=833 dq=1.0 cnt=63 | c=14.1 rankC=14.1 need=579 tD=0.19 机 | safe=124805 keep=124805 avail=11525 chunkB=27589 pulseB=16554  x=912 hNb=1
+    → 🌞#1[T1] terr=30383 bal=91007 dq=3.0 cnt=17 | c=16.5 rankC=16.5 need=207787 tD=0.58 人 | safe=124805 keep=124805 avail=11525 chunkB=27589 pulseB=16554 不够一条(x=11525)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=48 → AI#414（约 6600 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1760 talon5 B=140015 L=9902 d=14.1 nb=6 neut=6 cmds=192 noFull=1 shQ=19456 | m=1.461 worth=20.7 cheap=6.7 over=0 dMedOther=5.2 safe(-1)=128129
+    → AI#414 terr=3388 bal=74 dq=0.0 cnt=15 | c=2.7 rankC=2.7 need=5214 tD=0.00 机 | safe=128129 keep=128129 avail=10246 chunkB=28003 pulseB=16802  x=6562 hNb=1
+    → AI#370 terr=2489 bal=53 dq=0.0 cnt=30 | c=3.2 rankC=3.2 need=2900 tD=0.00 机 | safe=128129 keep=128129 avail=10246 chunkB=28003 pulseB=16802  x=3715 hNb=1
+    → AI#496 terr=2165 bal=2487 dq=1.1 cnt=72 | c=5.9 rankC=5.9 need=7002 tD=0.22 机 | safe=128129 keep=128129 avail=10246 chunkB=28003 pulseB=16802  x=8968 hNb=1
+    → 🌞#1[T1] terr=30561 bal=92372 dq=3.0 cnt=19 | c=16.6 rankC=16.6 need=210483 tD=0.58 人 | safe=128129 keep=128129 avail=10246 chunkB=28003 pulseB=16802 不够一条(x=10246)→continue sole hNb=1
+    → AI#146 terr=771 bal=715 dq=0.9 cnt=62 | c=24.5 rankC=24.5 need=168 tD=0.18 机 | safe=128129 keep=Inf avail=-Inf chunkB=28003 pulseB=16802 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → AI#414（约 6563 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1765 talon5 B=140015 L=10040 d=13.9 nb=5 neut=62 cmds=193 noFull=1 shQ=22062 | m=1.460 worth=20.4 cheap=6.7 over=0 dMedOther=5.1 safe(-1)=128397
+    → AI#414 terr=3401 bal=74 dq=0.0 cnt=18 | c=2.7 rankC=2.7 need=5234 tD=0.00 机 | safe=128397 keep=128397 avail=9978 chunkB=28003 pulseB=16802  x=6596 hNb=1
+    → AI#370 terr=2539 bal=53 dq=0.0 cnt=29 | c=3.1 rankC=3.1 need=3003 tD=0.00 机 | safe=128397 keep=128397 avail=9978 chunkB=28003 pulseB=16802  x=3841 hNb=1
+    → AI#496 terr=2059 bal=2236 dq=1.1 cnt=74 | c=5.8 rankC=5.8 need=6314 tD=0.21 机 | safe=128397 keep=128397 avail=9978 chunkB=28003 pulseB=16802  x=8114 hNb=1
+    → 🌞#1[T1] terr=30791 bal=92372 dq=3.0 cnt=22 | c=16.5 rankC=16.5 need=210832 tD=0.58 人 | safe=128397 keep=128397 avail=9978 chunkB=28003 pulseB=16802 不够一条(x=9978)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=48 → AI#414（约 6699 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1770 talon5 B=162915 L=10406 d=15.7 nb=6 neut=61 cmds=195 noFull=1 shQ=24880 | m=1.460 worth=22.8 cheap=6.8 over=0 dMedOther=5.2 safe(-1)=139284
+    → AI#370 terr=2550 bal=54 dq=0.0 cnt=27 | c=3.3 rankC=3.3 need=3029 tD=0.00 机 | safe=139284 keep=139284 avail=21722 chunkB=32583 pulseB=19550  x=3867 hNb=2
+    → AI#414 terr=3402 bal=3355 dq=1.0 cnt=19 | c=5.1 rankC=5.1 need=11085 tD=0.19 机 | safe=139284 keep=139284 avail=21722 chunkB=32583 pulseB=19550  x=13913 hNb=2
+    → AI#496 terr=1878 bal=1906 dq=1.0 cnt=74 | c=6.1 rankC=6.1 need=5306 tD=0.20 机 | safe=139284 keep=139284 avail=21722 chunkB=32583 pulseB=19550  x=6854 hNb=2
+    → 🌞#1[T1] terr=30921 bal=99686 dq=3.2 cnt=22 | c=17.5 rankC=17.5 need=224060 tD=0.62 人 | safe=139284 keep=139601 avail=21405 chunkB=32583 pulseB=19550 不够一条(x=21405)→continue hNb=2
+    → Papik#0[T1] terr=25941 bal=263535 dq=10.2 cnt=2 | c=47.2 rankC=47.2 need=508630 tD=1.96 人 | safe=139284 keep=Inf avail=-Inf chunkB=32583 pulseB=19550 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7636 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=24 → AI#370（约 3977 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1775 talon5 B=162915 L=10624 d=15.3 nb=6 neut=60 cmds=197 noFull=1 shQ=27850 | m=1.459 worth=22.4 cheap=6.9 over=0 dMedOther=5.1 safe(-1)=139101
+    → AI#370 terr=2621 bal=54 dq=0.0 cnt=27 | c=3.3 rankC=3.3 need=3174 tD=0.00 机 | safe=139101 keep=139101 avail=21905 chunkB=32583 pulseB=19550  x=4049 hNb=2
+    → AI#414 terr=3402 bal=3355 dq=1.0 cnt=19 | c=5.1 rankC=5.1 need=11085 tD=0.19 机 | safe=139101 keep=139101 avail=21905 chunkB=32583 pulseB=19550  x=13913 hNb=2
+    → AI#496 terr=1758 bal=1694 dq=1.0 cnt=71 | c=6.2 rankC=6.2 need=4659 tD=0.19 机 | safe=139101 keep=139101 avail=21905 chunkB=32583 pulseB=19550  x=6037 hNb=2
+    → 🌞#1[T1] terr=31106 bal=99686 dq=3.2 cnt=22 | c=17.4 rankC=17.4 need=224339 tD=0.62 人 | safe=139101 keep=140839 avail=20167 chunkB=32583 pulseB=19550 不够一条(x=20167)→continue hNb=2
+    → Papik#0[T1] terr=26074 bal=263535 dq=10.1 cnt=6 | c=47.0 rankC=47.0 need=508834 tD=1.97 人 | safe=139101 keep=Inf avail=-Inf chunkB=32583 pulseB=19550 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7636 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=25 → AI#370（约 4136 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1780 talon5 B=165260 L=10918 d=15.1 nb=6 neut=57 cmds=199 noFull=1 shQ=30796 | m=1.458 worth=22.1 cheap=7.0 over=0 dMedOther=5.2 safe(-1)=140984
+    → AI#370 terr=2680 bal=55 dq=0.0 cnt=27 | c=3.2 rankC=3.2 need=3299 tD=0.00 机 | safe=140984 keep=140984 avail=22340 chunkB=33052 pulseB=19831  x=4204 hNb=2
+    → AI#414 terr=3402 bal=3403 dq=1.0 cnt=19 | c=5.1 rankC=5.1 need=11170 tD=0.19 机 | safe=140984 keep=140984 avail=22340 chunkB=33052 pulseB=19831  x=14020 hNb=2
+    → AI#496 terr=1592 bal=1431 dq=0.9 cnt=70 | c=6.4 rankC=6.4 need=3813 tD=0.17 机 | safe=140984 keep=140984 avail=22340 chunkB=33052 pulseB=19831  x=4977 hNb=2
+    → 🌞#1[T1] terr=31226 bal=78705 dq=2.5 cnt=22 | c=14.5 rankC=14.5 need=187123 tD=0.49 人 | safe=140984 keep=140984 avail=22340 chunkB=33052 pulseB=19831 不够一条(x=22340)→continue hNb=2
+    → Papik#0[T1] terr=26265 bal=267329 dq=10.2 cnt=10 | c=47.3 rankC=47.3 need=515879 tD=1.97 人 | safe=140984 keep=Inf avail=-Inf chunkB=33052 pulseB=19831 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7746 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=26 → AI#370（约 4357 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1785 talon5 B=165260 L=11091 d=14.9 nb=6 neut=57 cmds=201 noFull=1 shQ=33742 | m=1.457 worth=21.7 cheap=7.0 over=0 dMedOther=5.1 safe(-1)=140838
+    → AI#370 terr=2658 bal=98 dq=0.0 cnt=26 | c=3.3 rankC=3.3 need=3322 tD=0.01 机 | safe=140838 keep=140838 avail=22486 chunkB=33052 pulseB=19831  x=4231 hNb=2
+    → AI#414 terr=3402 bal=3403 dq=1.0 cnt=19 | c=5.1 rankC=5.1 need=11170 tD=0.20 机 | safe=140838 keep=140838 avail=22486 chunkB=33052 pulseB=19831  x=14020 hNb=2
+    → AI#496 terr=1487 bal=1253 dq=0.8 cnt=68 | c=6.5 rankC=6.5 need=3270 tD=0.16 机 | safe=140838 keep=140838 avail=22486 chunkB=33052 pulseB=19831  x=4291 hNb=2
+    → 🌞#1[T1] terr=31402 bal=78705 dq=2.5 cnt=22 | c=14.5 rankC=14.5 need=187387 tD=0.49 人 | safe=140838 keep=140838 avail=22486 chunkB=33052 pulseB=19831 不够一条(x=22486)→continue hNb=2
+    → Papik#0[T1] terr=26392 bal=267329 dq=10.1 cnt=13 | c=47.1 rankC=47.1 need=516065 tD=1.97 人 | safe=140838 keep=Inf avail=-Inf chunkB=33052 pulseB=19831 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7746 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=26 → AI#370（约 4357 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1790 talon5 B=167573 L=11322 d=14.8 nb=5 neut=115 cmds=202 noFull=1 shQ=36668 | m=1.457 worth=21.6 cheap=7.1 over=0 dMedOther=4.5 safe(-1)=130403
+    → AI#370 terr=2519 bal=93 dq=0.0 cnt=25 | c=3.4 rankC=3.4 need=3035 tD=0.01 机 | safe=130403 keep=130403 avail=35207 chunkB=33515 pulseB=20109  x=3868 hNb=2
+    → AI#414 terr=3402 bal=3450 dq=1.0 cnt=19 | c=5.2 rankC=5.2 need=11254 tD=0.22 机 | safe=130403 keep=130403 avail=35207 chunkB=33515 pulseB=20109  x=14124 hNb=2
+    → AI#496 terr=1322 bal=1038 dq=0.8 cnt=65 | c=7.0 rankC=7.0 need=2513 tD=0.17 机 | safe=130403 keep=130403 avail=35207 chunkB=33515 pulseB=20109  x=3337 hNb=2
+    → 🌞#1[T1] terr=31517 bal=79806 dq=2.5 cnt=22 | c=14.6 rankC=14.6 need=189520 tD=0.56 人 | safe=130403 keep=134561 avail=31049 chunkB=33515 pulseB=20109 不够一条(x=31049)→continue hNb=2
+    → Papik#0[T1] terr=26696 bal=249101 dq=9.3 cnt=17 | c=43.7 rankC=43.7 need=484032 tD=2.06 人 | safe=130403 keep=Inf avail=-Inf chunkB=33515 pulseB=20109 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=23 → AI#370（约 3927 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1795 talon5 B=167573 L=11435 d=14.7 nb=5 neut=107 cmds=203 noFull=1 shQ=39590 | m=1.456 worth=21.3 cheap=7.2 over=0 dMedOther=4.5 safe(-1)=130308
+    → AI#370 terr=2415 bal=89 dq=0.0 cnt=23 | c=3.5 rankC=3.5 need=2820 tD=0.01 机 | safe=130308 keep=130308 avail=35302 chunkB=33515 pulseB=20109  x=3594 hNb=2
+    → AI#414 terr=3402 bal=3450 dq=1.0 cnt=19 | c=5.2 rankC=5.2 need=11254 tD=0.23 机 | safe=130308 keep=130308 avail=35302 chunkB=33515 pulseB=20109  x=14124 hNb=2
+    → AI#496 terr=1242 bal=913 dq=0.7 cnt=63 | c=7.3 rankC=7.3 need=2133 tD=0.16 机 | safe=130308 keep=130308 avail=35302 chunkB=33515 pulseB=20109  x=2855 hNb=2
+    → 🌞#1[T1] terr=31683 bal=79806 dq=2.5 cnt=22 | c=14.5 rankC=14.5 need=189772 tD=0.56 人 | safe=130308 keep=135005 avail=30605 chunkB=33515 pulseB=20109 不够一条(x=30605)→continue hNb=2
+    → Papik#0[T1] terr=26880 bal=249101 dq=9.3 cnt=21 | c=43.4 rankC=43.4 need=484308 tD=2.06 人 | safe=130308 keep=Inf avail=-Inf chunkB=33515 pulseB=20109 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=21 → AI#370（约 3600 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1800 talon5 B=181398 L=11573 d=15.7 nb=5 neut=94 cmds=204 noFull=1 shQ=42518 | m=1.455 worth=22.8 cheap=7.3 over=0 dMedOther=5.5 safe(-1)=147307
+    → AI#370 terr=2270 bal=2322 dq=1.0 cnt=22 | c=6.4 rankC=6.4 need=5658 tD=0.19 机 | safe=147307 keep=147307 avail=31966 chunkB=36280 pulseB=21768  x=7139 hNb=2
+    → AI#414 terr=3402 bal=6899 dq=2.0 cnt=19 | c=7.6 rankC=7.6 need=17402 tD=0.37 机 | safe=147307 keep=147307 avail=31966 chunkB=36280 pulseB=21768  x=21809 hNb=2
+    → AI#496 terr=1128 bal=1855 dq=1.6 cnt=60 | c=11.0 rankC=11.0 need=2765 tD=0.30 机 | safe=147307 keep=147307 avail=31966 chunkB=36280 pulseB=21768  x=3636 hNb=2
+    → 🌞#1[T1] terr=31776 bal=112675 dq=3.5 cnt=22 | c=18.9 rankC=18.9 need=248492 tD=0.64 人 | safe=147307 keep=162175 avail=17098 chunkB=36280 pulseB=21768 不够一条(x=17098)→continue hNb=2
+    → Papik#0[T1] terr=27139 bal=279566 dq=10.3 cnt=25 | c=26.5 rankC=26.5 need=539009 tD=1.87 人 | safe=147307 keep=Inf avail=-Inf chunkB=36280 pulseB=21768 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=40 → AI#370（约 7263 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1805 talon5 B=181398 L=11637 d=15.6 nb=5 neut=77 cmds=205 noFull=1 shQ=45349 | m=1.454 worth=22.7 cheap=7.4 over=0 dMedOther=5.5 safe(-1)=147253
+    → AI#370 terr=2177 bal=2173 dq=1.0 cnt=21 | c=6.5 rankC=6.5 need=5181 tD=0.18 机 | safe=147253 keep=147253 avail=32020 chunkB=36280 pulseB=21768  x=6540 hNb=2
+    → AI#414 terr=3402 bal=6899 dq=2.0 cnt=19 | c=7.6 rankC=7.6 need=17402 tD=0.37 机 | safe=147253 keep=147253 avail=32020 chunkB=36280 pulseB=21768  x=21809 hNb=2
+    → AI#496 terr=1055 bal=1636 dq=1.6 cnt=58 | c=11.6 rankC=11.6 need=2220 tD=0.28 机 | safe=147253 keep=147253 avail=32020 chunkB=36280 pulseB=21768  x=2949 hNb=2
+    → 🌞#1[T1] terr=31898 bal=112675 dq=3.5 cnt=22 | c=18.9 rankC=18.9 need=248678 tD=0.65 人 | safe=147253 keep=162439 avail=16834 chunkB=36280 pulseB=21768 不够一条(x=16834)→continue hNb=2
+    → Papik#0[T1] terr=27305 bal=279566 dq=10.2 cnt=28 | c=26.4 rankC=26.4 need=539249 tD=1.87 人 | safe=147253 keep=Inf avail=-Inf chunkB=36280 pulseB=21768 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=36 → AI#370（约 6554 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1810 talon5 B=183828 L=11685 d=15.7 nb=5 neut=71 cmds=206 noFull=1 shQ=45957 | m=1.454 worth=22.9 cheap=7.4 over=0 dMedOther=6.2 safe(-1)=149317
+    → AI#370 terr=2027 bal=1965 dq=1.0 cnt=20 | c=6.8 rankC=6.8 need=4459 tD=0.16 机 | safe=149317 keep=149317 avail=32357 chunkB=36766 pulseB=22059  x=5634 hNb=2
+    → AI#414 terr=3402 bal=6991 dq=2.1 cnt=19 | c=7.7 rankC=7.7 need=17566 tD=0.33 机 | safe=149317 keep=149317 avail=32357 chunkB=36766 pulseB=22059  x=22014 hNb=2
+    → AI#496 terr=958 bal=1358 dq=1.4 cnt=56 | c=13.3 rankC=13.3 need=1530 tD=0.23 机 | safe=149317 keep=149317 avail=32357 chunkB=36766 pulseB=22059  x=2081 hNb=2
+    → 🌞#1[T1] terr=31965 bal=114184 dq=3.6 cnt=22 | c=19.0 rankC=19.0 need=251467 tD=0.57 人 | safe=149317 keep=164656 avail=17018 chunkB=36766 pulseB=22059 不够一条(x=17018)→continue hNb=2
+    → Papik#0[T1] terr=27552 bal=283312 dq=10.3 cnt=31 | c=26.5 rankC=26.5 need=546293 tD=1.66 人 | safe=149317 keep=Inf avail=-Inf chunkB=36766 pulseB=22059 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=31 → AI#370（约 5744 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1815 talon5 B=183828 L=11708 d=15.7 nb=5 neut=66 cmds=207 noFull=1 shQ=45957 | m=1.453 worth=22.8 cheap=7.5 over=0 dMedOther=6.2 safe(-1)=149298
+    → AI#370 terr=1933 bal=1822 dq=0.9 cnt=20 | c=7.0 rankC=7.0 need=3992 tD=0.15 机 | safe=149298 keep=149298 avail=32376 chunkB=36766 pulseB=22059  x=5051 hNb=2
+    → AI#414 terr=3402 bal=6991 dq=2.1 cnt=19 | c=7.7 rankC=7.7 need=17566 tD=0.33 机 | safe=149298 keep=149298 avail=32376 chunkB=36766 pulseB=22059  x=22014 hNb=2
+    → AI#496 terr=884 bal=1162 dq=1.3 cnt=54 | c=15.5 rankC=15.5 need=1047 tD=0.21 机 | safe=149298 keep=149298 avail=32376 chunkB=36766 pulseB=22059  x=1471 hNb=2
+    → 🌞#1[T1] terr=32163 bal=91102 dq=2.8 cnt=22 | c=15.9 rankC=15.9 need=210626 tD=0.46 人 | safe=149298 keep=149790 avail=31884 chunkB=36766 pulseB=22059 不够一条(x=31884)→continue hNb=2
+    → Papik#0[T1] terr=27720 bal=283312 dq=10.2 cnt=33 | c=26.3 rankC=26.3 need=546545 tD=1.65 人 | safe=149298 keep=Inf avail=-Inf chunkB=36766 pulseB=22059 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=28 → AI#370（约 5206 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1820 talon5 B=186236 L=11734 d=15.9 nb=5 neut=65 cmds=208 noFull=1 shQ=46559 | m=1.452 worth=23.0 cheap=7.6 over=0 dMedOther=6.3 safe(-1)=151361
+    → AI#370 terr=1783 bal=1622 dq=0.9 cnt=19 | c=7.4 rankC=7.4 need=3287 tD=0.15 机 | safe=151361 keep=151361 avail=32693 chunkB=37247 pulseB=22348  x=4165 hNb=2
+    → AI#414 terr=3402 bal=7082 dq=2.1 cnt=19 | c=7.8 rankC=7.8 need=17728 tD=0.33 机 | safe=151361 keep=151361 avail=32693 chunkB=37247 pulseB=22348  x=22217 hNb=2
+    → 🌞#1[T1] terr=32446 bal=92322 dq=2.8 cnt=22 | c=15.9 rankC=15.9 need=213223 tD=0.46 人 | safe=151361 keep=151361 avail=32693 chunkB=37247 pulseB=22348 不够一条(x=32693)→continue hNb=2
+    → Papik#0[T1] terr=27980 bal=287023 dq=10.3 cnt=36 | c=26.4 rankC=26.4 need=553549 tD=1.64 人 | safe=151361 keep=Inf avail=-Inf chunkB=37247 pulseB=22348 价高(c>=worth)→break hNb=2
+    → AI#496 terr=774 bal=2473 dq=3.2 cnt=52 | c=29.4 rankC=29.4 need=813 tD=0.51 机 | safe=151361 keep=Inf avail=-Inf chunkB=37247 pulseB=22348 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=22 → AI#370（约 4183 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1825 talon5 B=186236 L=11747 d=15.9 nb=5 neut=61 cmds=209 noFull=1 shQ=46559 | m=1.451 worth=23.0 cheap=7.7 over=0 dMedOther=6.2 safe(-1)=151350
+    → AI#414 terr=3402 bal=7082 dq=2.1 cnt=19 | c=7.8 rankC=7.8 need=17728 tD=0.34 机 | safe=151350 keep=151350 avail=32704 chunkB=37247 pulseB=22348  x=22217 hNb=2
+    → AI#370 terr=1668 bal=1458 dq=0.9 cnt=18 | c=7.9 rankC=7.9 need=2737 tD=0.14 机 | safe=151350 keep=151350 avail=32704 chunkB=37247 pulseB=22348  x=3475 hNb=2
+    → 🌞#1[T1] terr=32832 bal=92322 dq=2.8 cnt=22 | c=15.8 rankC=15.8 need=213799 tD=0.45 人 | safe=151350 keep=151350 avail=32704 chunkB=37247 pulseB=22348 不够一条(x=32704)→continue hNb=2
+    → Papik#0[T1] terr=28157 bal=287023 dq=10.2 cnt=40 | c=26.3 rankC=26.3 need=553819 tD=1.64 人 | safe=151350 keep=Inf avail=-Inf chunkB=37247 pulseB=22348 价高(c>=worth)→break hNb=2
+    → AI#496 terr=712 bal=2161 dq=3.0 cnt=49 | c=55.0 rankC=55.0 need=93 tD=0.49 机 | safe=151350 keep=Inf avail=-Inf chunkB=37247 pulseB=22348 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → AI#414（约 22370 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1830 talon5 B=188619 L=11756 d=16.0 nb=4 neut=105 cmds=210 noFull=1 shQ=47154 | m=1.451 worth=23.3 cheap=7.8 over=0 dMedOther=6.0 safe(-1)=153454
+    → AI#414 terr=3306 bal=6851 dq=2.1 cnt=19 | c=7.8 rankC=7.8 need=17059 tD=0.35 机 | safe=153454 keep=153454 avail=32955 chunkB=37724 pulseB=22634  x=21381 hNb=2
+    → AI#370 terr=1516 bal=1265 dq=0.8 cnt=16 | c=9.0 rankC=9.0 need=2044 tD=0.14 机 | safe=153454 keep=153454 avail=32955 chunkB=37724 pulseB=22634  x=2603 hNb=2
+    → 🌞#1[T1] terr=33067 bal=93559 dq=2.8 cnt=22 | c=15.8 rankC=15.8 need=216361 tD=0.47 人 | safe=153454 keep=153454 avail=32955 chunkB=37724 pulseB=22634 不够一条(x=32955)→continue hNb=2
+    → Papik#0[T1] terr=28402 bal=290783 dq=10.2 cnt=44 | c=26.4 rankC=26.4 need=560892 tD=1.71 人 | safe=153454 keep=Inf avail=-Inf chunkB=37724 pulseB=22634 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=116 → AI#414（约 21551 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1835 talon5 B=246666 L=11756 d=21.0 nb=4 neut=102 cmds=212 noFull=1 shQ=50286 | m=1.450 worth=30.4 cheap=7.9 over=0 dMedOther=5.9 safe(-1)=153454
+    → AI#414 terr=3255 bal=6682 dq=2.1 cnt=19 | c=8.1 rankC=8.1 need=16625 tD=0.35 机 | safe=153454 keep=153454 avail=90322 chunkB=49333 pulseB=29600  x=20838 hNb=2
+    → AI#370 terr=1418 bal=1136 dq=0.8 cnt=15 | c=11.9 rankC=11.9 need=1599 tD=0.14 机 | safe=153454 keep=156393 avail=87383 chunkB=49333 pulseB=29600  x=2044 hNb=2
+    → 🌞#1[T1] terr=33381 bal=93559 dq=2.8 cnt=22 | c=15.8 rankC=15.8 need=216829 tD=0.47 人 | safe=153454 keep=175248 avail=68528 chunkB=49333 pulseB=29600  x=68528 hNb=2
+    → Papik#0[T1] terr=28566 bal=290783 dq=10.2 cnt=47 | c=26.3 rankC=26.3 need=561138 tD=1.72 人 | safe=153454 keep=225548 avail=18228 chunkB=49333 pulseB=29600 不够一条(x=18228)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11562 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=86 → AI#414（约 20956 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1840 talon5 B=249749 L=11756 d=21.2 nb=4 neut=99 cmds=214 noFull=1 shQ=54164 | m=1.449 worth=30.8 cheap=8.0 over=0 dMedOther=6.0 safe(-1)=155611
+    → AI#414 terr=3149 bal=6416 dq=2.0 cnt=19 | c=8.1 rankC=8.1 need=15866 tD=0.34 机 | safe=155611 keep=155611 avail=91212 chunkB=49950 pulseB=29970  x=19890 hNb=2
+    → AI#370 terr=1288 bal=21 dq=0.0 cnt=6 | c=13.9 rankC=13.9 need=492 tD=0.00 机 | safe=155611 keep=167744 avail=79079 chunkB=49950 pulseB=29970  x=633 hNb=2
+    → 🌞#1[T1] terr=33561 bal=94812 dq=2.8 cnt=22 | c=15.9 rankC=15.9 need=219332 tD=0.47 人 | safe=155611 keep=177010 avail=69813 chunkB=49950 pulseB=29970  x=69813 hNb=2
+    → Papik#0[T1] terr=28799 bal=294621 dq=10.2 cnt=59 | c=26.4 rankC=26.4 need=568332 tD=1.72 人 | safe=155611 keep=227372 avail=19451 chunkB=49950 pulseB=29970 不够一条(x=19451)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11706 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=81 → AI#414（约 19999 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1845 talon5 B=249749 L=11756 d=21.2 nb=4 neut=95 cmds=216 noFull=1 shQ=58033 | m=1.448 worth=30.8 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=155611
+    → AI#414 terr=3035 bal=6048 dq=2.0 cnt=19 | c=8.1 rankC=8.1 need=14912 tD=0.34 机 | safe=155611 keep=155611 avail=91212 chunkB=49950 pulseB=29970  x=18697 hNb=2
+    → AI#370 terr=1245 bal=19 dq=0.0 cnt=8 | c=16.2 rankC=16.2 need=407 tD=0.00 机 | safe=155611 keep=178631 avail=68192 chunkB=49950 pulseB=29970  x=533 hNb=2
+    → 🌞#1[T1] terr=33804 bal=109633 dq=3.2 cnt=22 | c=17.7 rankC=17.7 need=246112 tD=0.56 人 | safe=155611 keep=185638 avail=61185 chunkB=49950 pulseB=29970  x=61185 hNb=2
+    → Papik#0[T1] terr=28953 bal=294621 dq=10.2 cnt=61 | c=26.2 rankC=26.2 need=568555 tD=1.74 人 | safe=155611 keep=226812 avail=20011 chunkB=49950 pulseB=29970 不够一条(x=20011)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11706 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=76 → AI#414（约 18779 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1850 talon5 B=252795 L=11756 d=21.5 nb=4 neut=83 cmds=218 noFull=1 shQ=61866 | m=1.448 worth=31.1 cheap=8.2 over=0 dMedOther=5.9 safe(-1)=157795
+    → AI#414 terr=2975 bal=119 dq=0.0 cnt=19 | c=3.5 rankC=3.5 need=4468 tD=0.01 机 | safe=157795 keep=157795 avail=92038 chunkB=50559 pulseB=30335  x=5642 hNb=2
+    → 🌞#1[T1] terr=33953 bal=111102 dq=3.3 cnt=22 | c=17.8 rankC=17.8 need=248955 tD=0.56 人 | safe=157795 keep=187528 avail=62305 chunkB=50559 pulseB=30335  x=62305 hNb=2
+    → Papik#0[T1] terr=29184 bal=298509 dq=10.2 cnt=73 | c=26.4 rankC=26.4 need=575827 tD=1.74 人 | safe=157795 keep=228647 avail=21186 chunkB=50559 pulseB=30335 不够一条(x=21186)→continue hNb=2
+    → AI#370 terr=1153 bal=17 dq=0.0 cnt=8 | c=27.3 rankC=27.3 need=225 tD=0.00 机 | safe=157795 keep=233344 avail=16489 chunkB=50559 pulseB=30335  x=305 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11849 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=22 → AI#414（约 5678 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1855 talon5 B=252795 L=11756 d=21.5 nb=4 neut=78 cmds=220 noFull=1 shQ=63198 | m=1.447 worth=31.1 cheap=8.3 over=0 dMedOther=5.8 safe(-1)=157820
+    → AI#414 terr=2850 bal=112 dq=0.0 cnt=19 | c=3.6 rankC=3.6 need=4206 tD=0.01 机 | safe=157820 keep=157820 avail=92013 chunkB=50559 pulseB=30335  x=5315 hNb=2
+    → 🌞#1[T1] terr=34162 bal=111102 dq=3.3 cnt=22 | c=17.7 rankC=17.7 need=249270 tD=0.56 人 | safe=157820 keep=187168 avail=62665 chunkB=50559 pulseB=30335  x=62665 hNb=2
+    → Papik#0[T1] terr=29276 bal=298553 dq=10.2 cnt=74 | c=26.3 rankC=26.3 need=576044 tD=1.76 人 | safe=157820 keep=228363 avail=21470 chunkB=50559 pulseB=30335 不够一条(x=21470)→continue hNb=2
+    → AI#370 terr=1130 bal=15 dq=0.0 cnt=12 | c=31.2 rankC=31.2 need=186 tD=0.00 机 | safe=157820 keep=Inf avail=-Inf chunkB=50559 pulseB=30335 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11849 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=21 → AI#414（约 5431 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1860 talon5 B=255828 L=11756 d=21.8 nb=4 neut=70 cmds=222 noFull=1 shQ=63957 | m=1.446 worth=31.5 cheap=8.3 over=0 dMedOther=5.8 safe(-1)=160033
+    → AI#414 terr=2682 bal=102 dq=0.0 cnt=19 | c=3.7 rankC=3.7 need=3852 tD=0.01 机 | safe=160033 keep=160033 avail=92798 chunkB=51166 pulseB=30699  x=4872 hNb=2
+    → 🌞#1[T1] terr=34354 bal=89840 dq=2.6 cnt=23 | c=15.0 rankC=15.0 need=211661 tD=0.45 人 | safe=160033 keep=175368 avail=77463 chunkB=51166 pulseB=30699  x=77463 hNb=2
+    → Papik#0[T1] terr=29417 bal=302493 dq=10.3 cnt=76 | c=26.5 rankC=26.5 need=583282 tD=1.78 人 | safe=160033 keep=230622 avail=22209 chunkB=51166 pulseB=30699 不够一条(x=22209)→continue hNb=2
+    → AI#370 terr=1048 bal=15 dq=0.0 cnt=17 | c=114.0 rankC=114.0 need=25 tD=0.00 机 | safe=160033 keep=Inf avail=-Inf chunkB=51166 pulseB=30699 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11991 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=19 → AI#414（约 4996 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1865 talon5 B=255828 L=11756 d=21.8 nb=3 neut=84 cmds=224 noFull=1 shQ=63957 | m=1.445 worth=31.5 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=160033
+    → AI#414 terr=2565 bal=95 dq=0.0 cnt=19 | c=3.8 rankC=3.8 need=3608 tD=0.01 机 | safe=160033 keep=160033 avail=92798 chunkB=51166 pulseB=30699  x=4567 hNb=2
+    → 🌞#1[T1] terr=34610 bal=89840 dq=2.6 cnt=25 | c=8.3 rankC=8.3 need=212045 tD=0.45 人 | safe=160033 keep=160033 avail=92798 chunkB=51166 pulseB=30699  x=92798 hNb=2
+    → Papik#0[T1] terr=29507 bal=302493 dq=10.3 cnt=77 | c=26.4 rankC=26.4 need=583425 tD=1.79 人 | safe=160033 keep=230328 avail=22503 chunkB=51166 pulseB=30699 不够一条(x=22503)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11991 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=18 → AI#414（约 4746 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1870 talon5 B=258897 L=11756 d=22.0 nb=3 neut=83 cmds=226 noFull=1 shQ=64724 | m=1.445 worth=31.8 cheap=8.3 over=0 dMedOther=5.8 safe(-1)=162276
+    → AI#414 terr=2389 bal=86 dq=0.0 cnt=17 | c=4.0 rankC=4.0 need=3240 tD=0.01 机 | safe=162276 keep=162276 avail=93588 chunkB=51779 pulseB=31068  x=4101 hNb=2
+    → 🌞#1[T1] terr=34763 bal=91052 dq=2.6 cnt=27 | c=8.3 rankC=8.3 need=214436 tD=0.45 人 | safe=162276 keep=162276 avail=93588 chunkB=51779 pulseB=31068  x=93588 hNb=2
+    → Papik#0[T1] terr=29642 bal=306485 dq=10.3 cnt=78 | c=26.6 rankC=26.6 need=590739 tD=1.79 人 | safe=162276 keep=232642 avail=23222 chunkB=51779 pulseB=31068 不够一条(x=23222)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12135 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=16 → AI#414（约 4298 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1875 talon5 B=258897 L=11756 d=22.0 nb=3 neut=81 cmds=228 noFull=1 shQ=64724 | m=1.444 worth=31.8 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=162276
+    → AI#414 terr=2198 bal=75 dq=0.0 cnt=16 | c=4.3 rankC=4.3 need=2838 tD=0.01 机 | safe=162276 keep=162276 avail=93588 chunkB=51779 pulseB=31068  x=3595 hNb=2
+    → 🌞#1[T1] terr=34979 bal=91052 dq=2.6 cnt=29 | c=8.3 rankC=8.3 need=214760 tD=0.46 人 | safe=162276 keep=162276 avail=93588 chunkB=51779 pulseB=31068  x=93588 hNb=2
+    → Papik#0[T1] terr=29732 bal=306485 dq=10.3 cnt=79 | c=26.5 rankC=26.5 need=590865 tD=1.81 人 | safe=162276 keep=232352 avail=23512 chunkB=51779 pulseB=31068 不够一条(x=23512)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12135 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=14 → AI#414（约 3792 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1880 talon5 B=262003 L=11756 d=22.3 nb=3 neut=78 cmds=230 noFull=1 shQ=65500 | m=1.443 worth=32.2 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=150408
+    → AI#414 terr=2109 bal=70 dq=0.0 cnt=16 | c=4.5 rankC=4.5 need=2652 tD=0.01 机 | safe=150408 keep=150408 avail=108525 chunkB=52401 pulseB=31440  x=3363 hNb=2
+    → 🌞#1[T1] terr=35109 bal=92281 dq=2.6 cnt=30 | c=8.4 rankC=8.4 need=217143 tD=0.46 人 | safe=150408 keep=150408 avail=108525 chunkB=52401 pulseB=31440  x=108525 hNb=2
+    → Papik#0[T1] terr=30080 bal=285361 dq=9.5 cnt=81 | c=24.6 rankC=24.6 need=553737 tD=1.66 人 | safe=150408 keep=224312 avail=34621 chunkB=52401 pulseB=31440 不够一条(x=34621)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12281 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=13 → AI#414（约 3582 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1885 talon5 B=262003 L=11756 d=22.3 nb=3 neut=70 cmds=232 noFull=1 shQ=65500 | m=1.442 worth=32.1 cheap=8.3 over=0 dMedOther=5.6 safe(-1)=150408
+    → AI#414 terr=1904 bal=60 dq=0.0 cnt=15 | c=4.9 rankC=4.9 need=2226 tD=0.01 机 | safe=150408 keep=150408 avail=108525 chunkB=52401 pulseB=31440  x=2827 hNb=2
+    → 🌞#1[T1] terr=35276 bal=92281 dq=2.6 cnt=32 | c=8.3 rankC=8.3 need=217392 tD=0.46 人 | safe=150408 keep=150408 avail=108525 chunkB=52401 pulseB=31440  x=108525 hNb=2
+    → Papik#0[T1] terr=30364 bal=285361 dq=9.4 cnt=88 | c=24.4 rankC=24.4 need=554163 tD=1.67 人 | safe=150408 keep=223325 avail=35608 chunkB=52401 pulseB=31440 不够一条(x=35608)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12281 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=11 → AI#414（约 3070 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1890 talon5 B=265147 L=11756 d=22.6 nb=3 neut=67 cmds=234 noFull=1 shQ=66286 | m=1.442 worth=32.5 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=152540
+    → AI#414 terr=1766 bal=53 dq=0.0 cnt=15 | c=5.4 rankC=5.4 need=1938 tD=0.01 机 | safe=152540 keep=152540 avail=109500 chunkB=53029 pulseB=31818  x=2468 hNb=2
+    → 🌞#1[T1] terr=35376 bal=109726 dq=3.1 cnt=33 | c=9.5 rankC=9.5 need=248635 tD=0.54 人 | safe=152540 keep=152950 avail=109090 chunkB=53029 pulseB=31818  x=109090 hNb=2
+    → Papik#0[T1] terr=30739 bal=289156 dq=9.4 cnt=90 | c=24.4 rankC=24.4 need=561501 tD=1.65 人 | safe=152540 keep=224751 avail=37289 chunkB=53029 pulseB=31818 不够一条(x=37289)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12428 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=9 → AI#414（约 2589 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1895 talon5 B=265147 L=11756 d=22.6 nb=3 neut=65 cmds=236 noFull=1 shQ=66286 | m=1.441 worth=32.5 cheap=8.3 over=0 dMedOther=5.6 safe(-1)=152540
+    → AI#414 terr=1663 bal=48 dq=0.0 cnt=15 | c=5.8 rankC=5.8 need=1724 tD=0.01 机 | safe=152540 keep=152540 avail=109500 chunkB=53029 pulseB=31818  x=2200 hNb=2
+    → 🌞#1[T1] terr=35508 bal=109726 dq=3.1 cnt=34 | c=9.4 rankC=9.4 need=248833 tD=0.56 人 | safe=152540 keep=152862 avail=109178 chunkB=53029 pulseB=31818  x=109178 hNb=2
+    → Papik#0[T1] terr=30961 bal=289156 dq=9.3 cnt=91 | c=24.2 rankC=24.2 need=561826 tD=1.68 人 | safe=152540 keep=224044 avail=37996 chunkB=53029 pulseB=31818 不够一条(x=37996)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12428 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=8 → AI#414（约 2330 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1900 talon5 B=280084 L=11756 d=23.8 nb=3 neut=63 cmds=238 noFull=1 shQ=67126 | m=1.440 worth=34.3 cheap=8.3 over=0 dMedOther=6.5 safe(-1)=172207
+    → AI#414 terr=1523 bal=1566 dq=1.0 cnt=15 | c=9.5 rankC=9.5 need=3324 tD=0.16 机 | safe=172207 keep=172207 avail=104595 chunkB=56017 pulseB=33610  x=4199 hNb=2
+    → 🌞#1[T1] terr=35598 bal=146816 dq=4.1 cnt=35 | c=11.9 rankC=11.9 need=315080 tD=0.63 人 | safe=172207 keep=172207 avail=104595 chunkB=56017 pulseB=33610  x=104595 hNb=2
+    → Papik#0[T1] terr=31260 bal=324162 dq=10.4 cnt=92 | c=26.7 rankC=26.7 need=624664 tD=1.59 人 | safe=172207 keep=241938 avail=34864 chunkB=56017 pulseB=33610 不够一条(x=34864)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13128 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=15 → AI#414（约 4376 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1905 talon5 B=280084 L=11756 d=23.8 nb=3 neut=61 cmds=240 noFull=1 shQ=70021 | m=1.439 worth=34.3 cheap=8.3 over=0 dMedOther=6.5 safe(-1)=157446
+    → AI#414 terr=1362 bal=1237 dq=0.9 cnt=14 | c=10.6 rankC=10.6 need=2418 tD=0.14 机 | safe=157446 keep=164459 avail=112343 chunkB=56017 pulseB=33610  x=3064 hNb=2
+    → 🌞#1[T1] terr=35751 bal=146816 dq=4.1 cnt=37 | c=11.9 rankC=11.9 need=315312 tD=0.63 人 | safe=157446 keep=170656 avail=106146 chunkB=56017 pulseB=33610  x=106146 hNb=2
+    → Papik#0[T1] terr=31456 bal=297888 dq=9.5 cnt=93 | c=24.5 rankC=24.5 need=578128 tD=1.45 人 | safe=157446 keep=231739 avail=45063 chunkB=56017 pulseB=33610 不够一条(x=45063)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13128 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=11 → AI#414（约 3282 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1910 talon5 B=283445 L=11756 d=24.1 nb=3 neut=44 cmds=242 noFull=1 shQ=70861 | m=1.439 worth=34.7 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=159688
+    → AI#414 terr=1258 bal=1055 dq=0.8 cnt=22 | c=11.8 rankC=11.8 need=1889 tD=0.13 机 | safe=159688 keep=171838 avail=108286 chunkB=56689 pulseB=34013  x=2428 hNb=2
+    → 🌞#1[T1] terr=35863 bal=148812 dq=4.1 cnt=38 | c=12.0 rankC=12.0 need=319037 tD=0.63 人 | safe=159688 keep=172565 avail=107559 chunkB=56689 pulseB=34013  x=107559 hNb=2
+    → Papik#0[T1] terr=31810 bal=301879 dq=9.5 cnt=101 | c=24.6 rankC=24.6 need=585780 tD=1.44 人 | safe=159688 keep=233363 avail=46761 chunkB=56689 pulseB=34013 不够一条(x=46761)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13286 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=8 → AI#414（约 2491 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1915 talon5 B=283445 L=11756 d=24.1 nb=3 neut=38 cmds=244 noFull=1 shQ=70861 | m=1.438 worth=34.7 cheap=8.3 over=0 dMedOther=6.3 safe(-1)=159688
+    → 🌞#1[T1] terr=36022 bal=148812 dq=4.1 cnt=39 | c=11.9 rankC=11.9 need=319274 tD=0.66 人 | safe=159688 keep=172405 avail=107719 chunkB=56689 pulseB=34013  x=107719 hNb=2
+    → AI#414 terr=1047 bal=776 dq=0.7 cnt=22 | c=18.2 rankC=18.2 need=932 tD=0.12 机 | safe=159688 keep=202914 avail=77210 chunkB=56689 pulseB=34013  x=1231 hNb=2
+    → Papik#0[T1] terr=32025 bal=301879 dq=9.4 cnt=105 | c=24.4 rankC=24.4 need=586099 tD=1.51 人 | safe=159688 keep=232685 avail=47439 chunkB=56689 pulseB=34013 不够一条(x=47439)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13286 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=389 → 🌞#1[T1]（约 107952 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1920 talon5 B=286846 L=11756 d=24.4 nb=3 neut=29 cmds=246 noFull=1 shQ=71711 | m=1.437 worth=35.1 cheap=8.3 over=0 dMedOther=6.3 safe(-1)=161961
+    → 🌞#1[T1] terr=36119 bal=150835 dq=4.2 cnt=40 | c=12.0 rankC=12.0 need=323027 tD=0.66 人 | safe=161961 keep=174355 avail=109130 chunkB=57369 pulseB=34422  x=109130 hNb=2
+    → Papik#0[T1] terr=32302 bal=305924 dq=9.5 cnt=112 | c=24.5 rankC=24.5 need=593728 tD=1.50 人 | safe=161961 keep=234610 avail=48875 chunkB=57369 pulseB=34422 不够一条(x=48875)→continue hNb=2
+    → AI#414 terr=899 bal=599 dq=0.7 cnt=23 | c=40.9 rankC=40.9 need=310 tD=0.11 机 | safe=161961 keep=Inf avail=-Inf chunkB=57369 pulseB=34422 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13445 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=389 → 🌞#1[T1]（约 109247 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1925 talon5 B=286846 L=11756 d=24.4 nb=2 neut=45 cmds=248 noFull=1 shQ=71711 | m=1.436 worth=35.0 cheap=8.3 over=0 dMedOther=6.3 safe(-1)=161961
+    → 🌞#1[T1] terr=36240 bal=150835 dq=4.2 cnt=42 | c=12.0 rankC=12.0 need=323203 tD=0.66 人 | safe=161961 keep=174244 avail=109241 chunkB=57369 pulseB=34422  x=109241 hNb=2
+    → Papik#0[T1] terr=32477 bal=305924 dq=9.4 cnt=117 | c=24.4 rankC=24.4 need=593987 tD=1.50 人 | safe=161961 keep=234073 avail=49412 chunkB=57369 pulseB=34422 不够一条(x=49412)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13445 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=389 → 🌞#1[T1]（约 109247 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1930 talon5 B=290288 L=11756 d=24.7 nb=2 neut=31 cmds=250 noFull=1 shQ=72572 | m=1.435 worth=35.4 cheap=8.3 over=0 dMedOther=6.2 safe(-1)=164263
+    → 🌞#1[T1] terr=36307 bal=121981 dq=3.4 cnt=43 | c=10.1 rankC=10.1 need=271880 tD=0.55 人 | safe=164263 keep=166508 avail=120379 chunkB=58058 pulseB=34835  x=120379 hNb=2
+    → Papik#0[T1] terr=32737 bal=310023 dq=9.5 cnt=130 | c=24.5 rankC=24.5 need=601683 tD=1.54 人 | safe=164263 keep=236057 avail=50830 chunkB=58058 pulseB=34835 不够一条(x=50830)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13607 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=424 → 🌞#1[T1]（约 120480 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1935 talon5 B=290288 L=11756 d=24.7 nb=2 neut=27 cmds=252 noFull=1 shQ=72572 | m=1.435 worth=35.4 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=164263
+    → 🌞#1[T1] terr=36401 bal=121981 dq=3.4 cnt=45 | c=10.1 rankC=10.1 need=272018 tD=0.58 人 | safe=164263 keep=166456 avail=120431 chunkB=58058 pulseB=34835  x=120431 hNb=2
+    → Papik#0[T1] terr=32906 bal=310023 dq=9.4 cnt=132 | c=24.4 rankC=24.4 need=601940 tD=1.64 人 | safe=164263 keep=235562 avail=51325 chunkB=58058 pulseB=34835 不够一条(x=51325)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13607 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=424 → 🌞#1[T1]（约 120480 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1940 talon5 B=167598 L=11756 d=14.3 nb=2 neut=25 cmds=252 noFull=1 shQ=0 | m=1.434 worth=20.4 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=166597
+    → 🌞#1[T1] terr=36463 bal=123639 dq=3.4 cnt=46 | c=10.1 rankC=10.1 need=275069 tD=0.59 人 | safe=166597 keep=166597 avail=-963 chunkB=33520 pulseB=20112 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=33171 bal=314177 dq=9.5 cnt=133 | c=24.4 rankC=24.4 need=609745 tD=1.65 人 | safe=166597 keep=Inf avail=-Inf chunkB=33520 pulseB=20112 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 talon5 B=167598 L=11756 d=14.3 nb=2 neut=17 cmds=252 noFull=1 shQ=2510 | m=1.433 worth=20.4 cheap=8.3 over=0 dMedOther=5.7 safe(-1)=166597
+    → 🌞#1[T1] terr=36555 bal=123639 dq=3.4 cnt=47 | c=10.1 rankC=10.1 need=275207 tD=0.59 人 | safe=166597 keep=166597 avail=-963 chunkB=33520 pulseB=20112 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=33351 bal=314177 dq=9.4 cnt=140 | c=24.3 rankC=24.3 need=610015 tD=1.66 人 | safe=166597 keep=Inf avail=-Inf chunkB=33520 pulseB=20112 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 talon5 B=169609 L=11781 d=14.4 nb=2 neut=7 cmds=252 noFull=1 shQ=5026 | m=1.433 worth=20.6 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=168941
+    → 🌞#1[T1] terr=36599 bal=125320 dq=3.4 cnt=50 | c=10.2 rankC=10.2 need=278269 tD=0.56 人 | safe=168941 keep=168941 avail=-1319 chunkB=33922 pulseB=20353 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=33591 bal=318386 dq=9.5 cnt=144 | c=24.4 rankC=24.4 need=617877 tD=1.55 人 | safe=168941 keep=Inf avail=-Inf chunkB=33922 pulseB=20353 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 talon5 B=269720 L=11793 d=22.9 nb=2 neut=0 cmds=253 noFull=1 shQ=7867 | m=1.432 worth=32.7 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=168931
+    → 🌞#1[T1] terr=36645 bal=125320 dq=3.4 cnt=55 | c=10.2 rankC=10.2 need=278335 tD=0.57 人 | safe=168931 keep=168931 avail=97629 chunkB=53944 pulseB=32366  x=97629 hNb=2
+    → Papik#0[T1] terr=33736 bal=318386 dq=9.4 cnt=146 | c=24.4 rankC=24.4 need=618083 tD=1.56 人 | safe=168931 keep=227929 avail=38631 chunkB=53944 pulseB=32366 不够一条(x=38631)→continue hNb=2
+    ⇒ 影子指令 boatTo pct=221 → 水/岸#226804（约 58474 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1960 talon5 B=272956 L=11793 d=23.1 nb=2 neut=0 cmds=253 noFull=1 shQ=11921 | m=1.431 worth=33.1 cheap=8.3 over=0 dMedOther=6.2 safe(-1)=189781
+    → 🌞#1[T1] terr=36662 bal=127024 dq=3.5 cnt=55 | c=10.3 rankC=10.3 need=281399 tD=0.56 人 | safe=189781 keep=189781 avail=79977 chunkB=54591 pulseB=32755  x=79977 hNb=2
+    → Papik#0[T1] terr=33952 bal=355499 dq=10.5 cnt=146 | c=26.8 rankC=26.8 need=684556 tD=1.69 人 | safe=189781 keep=241158 avail=28600 chunkB=54591 pulseB=32755 不够一条(x=28600)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1965 talon5 B=272956 L=11793 d=23.1 nb=2 neut=0 cmds=253 noFull=1 shQ=16011 | m=1.430 worth=33.1 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=189781
+    → 🌞#1[T1] terr=36687 bal=127024 dq=3.5 cnt=55 | c=10.3 rankC=10.3 need=281438 tD=0.57 人 | safe=189781 keep=189781 avail=79977 chunkB=54591 pulseB=32755  x=79977 hNb=2
+    → Papik#0[T1] terr=34080 bal=355499 dq=10.4 cnt=146 | c=26.7 rankC=26.7 need=684748 tD=1.71 人 | safe=189781 keep=240783 avail=28975 chunkB=54591 pulseB=32755 不够一条(x=28975)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1970 talon5 B=276231 L=11793 d=23.4 nb=2 neut=0 cmds=254 noFull=1 shQ=20111 | m=1.429 worth=33.5 cheap=8.3 over=0 dMedOther=6.0 safe(-1)=192477
+    → 🌞#1[T1] terr=36701 bal=128751 dq=3.5 cnt=55 | c=10.4 rankC=10.4 need=284534 tD=0.58 人 | safe=192477 keep=192477 avail=80517 chunkB=55246 pulseB=33148  x=80517 hNb=2
+    → Papik#0[T1] terr=34222 bal=360298 dq=10.5 cnt=146 | c=27.0 rankC=27.0 need=693523 tD=1.74 人 | safe=192477 keep=243308 avail=29686 chunkB=55246 pulseB=33148 不够一条(x=29686)→continue hNb=2
+    ⇒ 影子指令 attack pct=298 → 🌞#1[T1]（约 80657 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1975 talon5 B=276231 L=11793 d=23.4 nb=2 neut=0 cmds=255 noFull=1 shQ=24251 | m=1.429 worth=33.5 cheap=8.3 over=0 dMedOther=6.0 safe(-1)=192477
+    → 🌞#1[T1] terr=36703 bal=183037 dq=5.0 cnt=55 | c=13.9 rankC=13.9 need=381299 tD=0.83 人 | safe=192477 keep=192477 avail=80517 chunkB=55246 pulseB=33148  x=80517 hNb=2
+    → Papik#0[T1] terr=34302 bal=360298 dq=10.5 cnt=146 | c=26.9 rankC=26.9 need=693643 tD=1.74 人 | safe=192477 keep=243102 avail=29892 chunkB=55246 pulseB=33148 不够一条(x=29892)→continue hNb=2
+    ⇒ 影子指令 attack pct=298 → 🌞#1[T1]（约 80657 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1980 talon5 B=279545 L=11793 d=23.7 nb=2 neut=0 cmds=256 noFull=1 shQ=28401 | m=1.428 worth=33.8 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=195209
+    → 🌞#1[T1] terr=36703 bal=185526 dq=5.1 cnt=55 | c=14.1 rankC=14.1 need=385736 tD=0.83 人 | safe=195209 keep=195209 avail=81061 chunkB=55909 pulseB=33545  x=81061 hNb=2
+    → Papik#0[T1] terr=34413 bal=365162 dq=10.6 cnt=146 | c=27.2 rankC=27.2 need=702475 tD=1.74 人 | safe=195209 keep=245768 avail=30502 chunkB=55909 pulseB=33545 不够一条(x=30502)→continue hNb=2
+    ⇒ 影子指令 attack pct=296 → 🌞#1[T1]（约 81078 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1985 talon5 B=279545 L=11793 d=23.7 nb=2 neut=0 cmds=257 noFull=1 shQ=32591 | m=1.427 worth=33.8 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=195209
+    → 🌞#1[T1] terr=36703 bal=148023 dq=4.0 cnt=55 | c=11.7 rankC=11.7 need=318891 tD=0.66 人 | safe=195209 keep=195209 avail=81061 chunkB=55909 pulseB=33545  x=81061 hNb=2
+    → Papik#0[T1] terr=34479 bal=365162 dq=10.6 cnt=146 | c=27.1 rankC=27.1 need=702582 tD=1.74 人 | safe=195209 keep=245611 avail=30659 chunkB=55909 pulseB=33545 不够一条(x=30659)→continue hNb=2
+    ⇒ 影子指令 attack pct=296 → 🌞#1[T1]（约 81078 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1990 talon5 B=282899 L=11793 d=24.0 nb=2 neut=0 cmds=258 noFull=1 shQ=36791 | m=1.427 worth=34.2 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=197978
+    → 🌞#1[T1] terr=36724 bal=150036 dq=4.1 cnt=55 | c=11.8 rankC=11.8 need=322505 tD=0.67 人 | safe=197978 keep=197978 avail=81606 chunkB=56580 pulseB=33948  x=81606 hNb=2
+    → Papik#0[T1] terr=34559 bal=370091 dq=10.7 cnt=146 | c=27.4 rankC=27.4 need=711487 tD=1.74 人 | safe=197978 keep=248417 avail=31167 chunkB=56580 pulseB=33948 不够一条(x=31167)→continue hNb=2
+    ⇒ 影子指令 attack pct=295 → 🌞#1[T1]（约 81775 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1995 talon5 B=282899 L=11793 d=24.0 nb=2 neut=0 cmds=259 noFull=1 shQ=41031 | m=1.426 worth=34.2 cheap=8.3 over=0 dMedOther=6.1 safe(-1)=197978
+    → 🌞#1[T1] terr=36750 bal=150036 dq=4.1 cnt=55 | c=11.8 rankC=11.8 need=322547 tD=0.67 人 | safe=197978 keep=197978 avail=81606 chunkB=56580 pulseB=33948  x=81606 hNb=2
+    → Papik#0[T1] terr=34592 bal=370091 dq=10.7 cnt=146 | c=27.4 rankC=27.4 need=711524 tD=1.75 人 | safe=197978 keep=248379 avail=31205 chunkB=56580 pulseB=33948 不够一条(x=31205)→continue hNb=2
+    ⇒ 影子指令 attack pct=295 → 🌞#1[T1]（约 81775 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2000 talon5 B=298086 L=11793 d=25.3 nb=2 neut=0 cmds=260 noFull=1 shQ=45317 | m=1.425 worth=36.0 cheap=8.3 over=0 dMedOther=7.2 safe(-1)=203153
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=55 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=203153 keep=203153 avail=91440 chunkB=59617 pulseB=35770  x=91440 hNb=2
+    → Papik#0[T1] terr=34620 bal=379301 dq=11.0 cnt=146 | c=28.0 rankC=28.0 need=727982 tD=1.52 人 | safe=203153 keep=257612 avail=36981 chunkB=59617 pulseB=35770 不够一条(x=36981)→continue hNb=2
+    ⇒ 影子指令 attack pct=314 → 🌞#1[T1]（约 91696 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2005 talon5 B=298086 L=11793 d=25.3 nb=2 neut=0 cmds=261 noFull=1 shQ=49787 | m=1.420 worth=35.9 cheap=8.3 over=0 dMedOther=7.1 safe(-1)=223565
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=55 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=223565 keep=223565 avail=71028 chunkB=59617 pulseB=35770  x=71028 hNb=2
+    → Papik#0[T1] terr=34620 bal=415635 dq=12.0 cnt=146 | c=30.5 rankC=30.5 need=792742 tD=1.68 人 | safe=223565 keep=270249 avail=24344 chunkB=59617 pulseB=35770 不够一条(x=24344)→continue hNb=2
+    ⇒ 影子指令 attack pct=243 → 🌞#1[T1]（约 71028 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2010 talon5 B=301663 L=11793 d=25.6 nb=2 neut=0 cmds=262 noFull=1 shQ=54267 | m=1.415 worth=36.2 cheap=8.3 over=0 dMedOther=7.0 safe(-1)=226717
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=55 | c=16.8 rankC=16.8 need=460784 tD=0.88 人 | safe=226717 keep=226717 avail=71411 chunkB=60333 pulseB=36200  x=71411 hNb=2
+    → Papik#0[T1] terr=34620 bal=421246 dq=12.2 cnt=146 | c=30.9 rankC=30.9 need=802743 tD=1.74 人 | safe=226717 keep=274178 avail=23950 chunkB=60333 pulseB=36200 不够一条(x=23950)→continue hNb=2
+    ⇒ 影子指令 attack pct=242 → 🌞#1[T1]（约 71586 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2015 talon5 B=301663 L=11793 d=25.6 nb=2 neut=0 cmds=263 noFull=1 shQ=58787 | m=1.409 worth=36.0 cheap=8.3 over=0 dMedOther=7.0 safe(-1)=226717
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=55 | c=16.8 rankC=16.8 need=460784 tD=0.89 人 | safe=226717 keep=226717 avail=71411 chunkB=60333 pulseB=36200  x=71411 hNb=2
+    → Papik#0[T1] terr=34620 bal=421246 dq=12.2 cnt=146 | c=30.9 rankC=30.9 need=802743 tD=1.75 人 | safe=226717 keep=274776 avail=23352 chunkB=60333 pulseB=36200 不够一条(x=23352)→continue hNb=2
+    ⇒ 影子指令 attack pct=242 → 🌞#1[T1]（约 71586 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2020 talon5 B=305282 L=11793 d=25.9 nb=2 neut=0 cmds=264 noFull=1 shQ=63318 | m=1.404 worth=36.3 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=229912
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=55 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=229912 keep=229912 avail=71793 chunkB=61056 pulseB=36634  x=71793 hNb=2
+    → Papik#0[T1] terr=34620 bal=426932 dq=12.3 cnt=146 | c=31.2 rankC=31.2 need=812878 tD=1.86 人 | safe=229912 keep=278774 avail=22931 chunkB=61056 pulseB=36634 不够一条(x=22931)→continue hNb=2
+    ⇒ 影子指令 attack pct=240 → 🌞#1[T1]（约 71848 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2025 talon5 B=305282 L=11793 d=25.9 nb=2 neut=0 cmds=265 noFull=1 shQ=67893 | m=1.399 worth=36.2 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=229912
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=55 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=229912 keep=229912 avail=71793 chunkB=61056 pulseB=36634  x=71793 hNb=2
+    → Papik#0[T1] terr=34620 bal=426932 dq=12.3 cnt=146 | c=31.2 rankC=31.2 need=812878 tD=1.88 人 | safe=229912 keep=279384 avail=22321 chunkB=61056 pulseB=36634 不够一条(x=22321)→continue hNb=2
+    ⇒ 影子指令 attack pct=240 → 🌞#1[T1]（约 71848 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2030 talon5 B=308945 L=11793 d=26.2 nb=2 neut=0 cmds=266 noFull=1 shQ=72479 | m=1.393 worth=36.5 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=233149
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=55 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=233149 keep=233149 avail=72176 chunkB=61789 pulseB=37073  x=72176 hNb=2
+    → Papik#0[T1] terr=34620 bal=432695 dq=12.5 cnt=146 | c=31.6 rankC=31.6 need=823149 tD=1.88 人 | safe=233149 keep=283454 avail=21871 chunkB=61789 pulseB=37073 不够一条(x=21871)→continue hNb=2
+    ⇒ 影子指令 attack pct=239 → 🌞#1[T1]（约 72408 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2035 talon5 B=308945 L=11793 d=26.2 nb=2 neut=0 cmds=267 noFull=1 shQ=77109 | m=1.388 worth=36.4 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=213446
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=55 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=213446 keep=213446 avail=91879 chunkB=61789 pulseB=37073  x=91879 hNb=2
+    → Papik#0[T1] terr=34620 bal=397624 dq=11.5 cnt=146 | c=29.2 rankC=29.2 need=760640 tD=1.74 人 | safe=213446 keep=272265 avail=33060 chunkB=61789 pulseB=37073 不够一条(x=33060)→continue hNb=2
+    ⇒ 影子指令 attack pct=304 → 🌞#1[T1]（约 92019 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2040 talon5 B=312652 L=11793 d=26.5 nb=2 neut=0 cmds=268 noFull=1 shQ=78163 | m=1.383 worth=36.7 cheap=8.3 over=0 dMedOther=6.7 safe(-1)=216462
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=55 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=216462 keep=216462 avail=92527 chunkB=62530 pulseB=37518  x=92527 hNb=2
+    → Papik#0[T1] terr=34849 bal=402991 dq=11.6 cnt=146 | c=29.4 rankC=29.4 need=770554 tD=1.73 人 | safe=216462 keep=275321 avail=33668 chunkB=62530 pulseB=37518 不够一条(x=33668)→continue hNb=2
+    ⇒ 影子指令 attack pct=303 → 🌞#1[T1]（约 92818 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2045 talon5 B=312652 L=11793 d=26.5 nb=2 neut=0 cmds=269 noFull=1 shQ=78163 | m=1.378 worth=36.5 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=216462
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=55 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=216462 keep=216462 avail=92527 chunkB=62530 pulseB=37518  x=92527 hNb=2
+    → Papik#0[T1] terr=35069 bal=402991 dq=11.5 cnt=146 | c=29.3 rankC=29.3 need=770884 tD=1.73 人 | safe=216462 keep=275073 avail=33916 chunkB=62530 pulseB=37518 不够一条(x=33916)→continue hNb=2
+    ⇒ 影子指令 attack pct=303 → 🌞#1[T1]（约 92818 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2050 talon5 B=316403 L=11793 d=26.8 nb=2 neut=0 cmds=270 noFull=1 shQ=79100 | m=1.373 worth=36.8 cheap=8.3 over=0 dMedOther=6.7 safe(-1)=219518
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=55 | c=17.6 rankC=17.6 need=483304 tD=0.98 人 | safe=219518 keep=219518 avail=93178 chunkB=63281 pulseB=37968  x=93178 hNb=2
+    → Papik#0[T1] terr=35366 bal=408431 dq=11.5 cnt=146 | c=29.4 rankC=29.4 need=781030 tD=1.72 人 | safe=219518 keep=277920 avail=34776 chunkB=63281 pulseB=37968 不够一条(x=34776)→continue hNb=2
+    ⇒ 影子指令 attack pct=301 → 🌞#1[T1]（约 93314 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2055 talon5 B=316403 L=11793 d=26.8 nb=2 neut=0 cmds=271 noFull=1 shQ=79100 | m=1.367 worth=36.7 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=219518
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=55 | c=17.6 rankC=17.6 need=483304 tD=0.99 人 | safe=219518 keep=219934 avail=92762 chunkB=63281 pulseB=37968  x=92762 hNb=2
+    → Papik#0[T1] terr=35558 bal=408431 dq=11.5 cnt=146 | c=29.2 rankC=29.2 need=781318 tD=1.73 人 | safe=219518 keep=277799 avail=34897 chunkB=63281 pulseB=37968 不够一条(x=34897)→continue hNb=2
+    ⇒ 影子指令 attack pct=300 → 🌞#1[T1]（约 93005 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2060 talon5 B=320199 L=11793 d=27.2 nb=2 neut=0 cmds=272 noFull=1 shQ=80049 | m=1.362 worth=37.0 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=222638
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=55 | c=17.8 rankC=17.8 need=489127 tD=1.00 人 | safe=222638 keep=223072 avail=93375 chunkB=64040 pulseB=38424  x=93375 hNb=2
+    → Papik#0[T1] terr=35841 bal=413985 dq=11.6 cnt=146 | c=29.4 rankC=29.4 need=791637 tD=1.74 人 | safe=222638 keep=280768 avail=35679 chunkB=64040 pulseB=38424 不够一条(x=35679)→continue hNb=2
+    ⇒ 影子指令 attack pct=298 → 🌞#1[T1]（约 93495 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2065 talon5 B=320199 L=11793 d=27.2 nb=2 neut=0 cmds=273 noFull=1 shQ=80049 | m=1.357 worth=36.8 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=222638
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=55 | c=17.8 rankC=17.8 need=489127 tD=1.01 人 | safe=222638 keep=223569 avail=92878 chunkB=64040 pulseB=38424  x=92878 hNb=2
+    → Papik#0[T1] terr=36029 bal=413985 dq=11.5 cnt=146 | c=29.3 rankC=29.3 need=791919 tD=1.74 人 | safe=222638 keep=280679 avail=35768 chunkB=64040 pulseB=38424 不够一条(x=35768)→continue hNb=2
+    ⇒ 影子指令 attack pct=297 → 🌞#1[T1]（约 93182 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2070 talon5 B=324041 L=11793 d=27.5 nb=2 neut=0 cmds=274 noFull=1 shQ=81010 | m=1.352 worth=37.1 cheap=8.3 over=0 dMedOther=6.3 safe(-1)=225801
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=55 | c=18.1 rankC=18.1 need=495028 tD=1.07 人 | safe=225801 keep=226762 avail=93482 chunkB=64808 pulseB=38885  x=93482 hNb=2
+    → Papik#0[T1] terr=36307 bal=419615 dq=11.6 cnt=146 | c=29.4 rankC=29.4 need=802380 tD=1.83 人 | safe=225801 keep=283718 avail=36526 chunkB=64808 pulseB=38885 不够一条(x=36526)→continue hNb=2
+    ⇒ 影子指令 attack pct=295 → 🌞#1[T1]（约 93668 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕

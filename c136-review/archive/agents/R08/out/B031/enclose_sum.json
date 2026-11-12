@@ -1,0 +1,342 @@
+{
+ "matchId": "B031",
+ "step": 30,
+ "perBot": {
+  "JohnMarston": {
+   "team": 4,
+   "samples": 63,
+   "sealedA": 22,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1470,
+    "t1": 1860,
+    "ticks": 420,
+    "terr0": 3555,
+    "terr1": 4140,
+    "bal0": 81686,
+    "bal1": 103937,
+    "densMax": 31.0,
+    "landAtk": 1,
+    "boats": 1,
+    "donations": 0,
+    "mates": [
+     "Croatia"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 660,
+    "boats": 7,
+    "boatTroops": 71645,
+    "boatFees": 6645,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "landAtk": 3,
+    "landAtkOk": 0,
+    "landAtkTroops": 0,
+    "over100": 0,
+    "hardCap": 0
+   }
+  },
+  "Aurelian": {
+   "team": 4,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Tifa": {
+   "team": 4,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Transylvania": {
+   "team": 1,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Redcoat": {
+   "team": 1,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Cataphract": {
+   "team": 4,
+   "samples": 62,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Togo": {
+   "team": 5,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Benin": {
+   "team": 1,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Croatia": {
+   "team": 1,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "BigSmoke": {
+   "team": 1,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Zizka": {
+   "team": 3,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Manchu": {
+   "team": 3,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "TaxCollector": {
+   "team": 5,
+   "samples": 63,
+   "sealedA": 0,
+   "sealedB": 16,
+   "sealedC": 0
+  }
+ },
+ "timeline": [
+  {
+   "t": 0,
+   "bots": 13,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 147,
+   "balA": 0,
+   "balAll": 6656,
+   "over100": 0,
+   "protect": false
+  },
+  {
+   "t": 270,
+   "bots": 13,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 4810,
+   "balA": 0,
+   "balAll": 18200,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 540,
+   "bots": 13,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 23818,
+   "balA": 0,
+   "balAll": 48523,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 810,
+   "bots": 13,
+   "A": 1,
+   "B": 0,
+   "C": 0,
+   "terrA": 2390,
+   "terrAll": 48250,
+   "balA": 15294,
+   "balAll": 208614,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1080,
+   "bots": 13,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 65570,
+   "balA": 0,
+   "balAll": 474563,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1350,
+   "bots": 13,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 70879,
+   "balA": 0,
+   "balAll": 1301998,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1620,
+   "bots": 13,
+   "A": 1,
+   "B": 1,
+   "C": 0,
+   "terrA": 3555,
+   "terrAll": 73805,
+   "balA": 65309,
+   "balAll": 2350689,
+   "over100": 0,
+   "protect": true
+  }
+ ],
+ "pairs": [
+  {
+   "a": "Zizka",
+   "b": "Benin",
+   "samples": 43,
+   "t0": 600,
+   "t1": 1860,
+   "maxCells": 94,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "JohnMarston",
+   "b": "Croatia",
+   "samples": 38,
+   "t0": 750,
+   "t1": 1860,
+   "maxCells": 75,
+   "sealedA": 22,
+   "sealedB": 0,
+   "aToB": [
+    1176,
+    56031
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Redcoat",
+   "b": "Cataphract",
+   "samples": 34,
+   "t0": 840,
+   "t1": 1830,
+   "maxCells": 135,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    1197,
+    12773
+   ],
+   "bToA": [
+    261,
+    28221
+   ]
+  }
+ ],
+ "border": [
+  {
+   "t": 0,
+   "bots": 13,
+   "neutral": 134,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 540,
+   "bots": 13,
+   "neutral": 699,
+   "ai": 1263,
+   "foe": 55,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1080,
+   "bots": 13,
+   "neutral": 119,
+   "ai": 2421,
+   "foe": 469,
+   "mateX": 239,
+   "own": 243,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1620,
+   "bots": 13,
+   "neutral": 37,
+   "ai": 576,
+   "foe": 1604,
+   "mateX": 535,
+   "own": 619,
+   "teamAi": 0,
+   "peer": 0
+  }
+ ],
+ "total": {
+  "samples": 818,
+  "sealedA": 22,
+  "botTicksA": 660,
+  "botsEverA": 1
+ },
+ "pairCount": 3,
+ "inSealA": {
+  "botTicks": 660,
+  "boats": 7,
+  "boatTroops": 71645,
+  "boatFees": 6645,
+  "boatsFeeOverTroops": 0,
+  "donations": 0,
+  "donArrived": 0,
+  "donTax": 0,
+  "over100": 0,
+  "hardCap": 0
+ }
+}

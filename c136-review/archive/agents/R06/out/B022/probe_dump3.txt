@@ -1,0 +1,169 @@
+[探针] t=2400 Dixie(16·队1) 地 39961 兵 350k 密 8.8 ｜策略眼里 nb=0 neut=35 ｜worth=8.8（m=1.005）cheap=7.2 超软上限=否 其余真人密度中位=7 ｜NFS 锁=是 影子配额=78k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接382 地20607 密28；Sever (rus)(10·队3) 接235 地33355 密9；Kamakura(19·队4) 接35 地47477 密11
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 798，mopUp=否；前置条件挡住：有无主邻格（L4995 return）；searchWater 命中 无主地（price=2.0 eff=5.1）；可发 max=boatFrac×(兵−floor 133k)=109k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.00M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 133k, refFloor 0))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3000 Dixie(16·队1) 地 45332 兵 1.13M 密 25.0 ｜策略眼里 nb=0 neut=11 ｜worth=22.5（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=18 ｜NFS 锁=是 影子配额=272k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接382 地20607 密69；Sever (rus)(10·队3) 接235 地25479 密25；Kamakura(19·队4) 接35 地47477 密34
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 1424，mopUp=否；前置条件挡住：有无主邻格（L4995 return）；searchWater 命中 无主地（price=2.0 eff=39.9）；可发 max=boatFrac×(兵−floor 151k)=491k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.53M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 151k, refFloor 0))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3500 Dixie(16·队1) 地 46862 兵 2.68M 密 57.2 ｜策略眼里 nb=1 neut=0 ｜worth=51.5（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=36 ｜NFS 锁=是 影子配额=659k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接382 地20607 密79；Sever (rus)(10·队3) 接216 地22014 密50；Kamakura(19·队4) 接35 地47477 密75
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接14 地77049 兵2.86M 密37 tD=1.04 c=163.3 need=5.21M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 1730，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 5.86M（L4996 return）；searchWater 命中 Major McNade🍋[OFF](0·队4)（price=2.0 eff=5.1）；可发 max=boatFrac×(兵−floor 4.69M)=-1.00M，下限 min=335k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.69M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 156k, refFloor 4.69M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3700 Dixie(16·队1) 地 46862 兵 3.65M 密 77.8 ｜策略眼里 nb=1 neut=0 ｜worth=70.0（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=46 ｜NFS 锁=是 影子配额=900k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接382 地20607 密79；Sever (rus)(10·队3) 接211 地20271 密62；Kamakura(19·队4) 接35 地47477 密78
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接17 地78792 兵3.60M 密46 tD=0.98 c=200.0 need=6.53M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 1730，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 5.86M（L4996 return）；searchWater 命中 Major McNade🍋[OFF](0·空壳)（price=7.1 eff=16.1）；可发 max=boatFrac×(兵−floor 4.69M)=-520k，下限 min=456k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.69M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 553k, refFloor 4.69M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=4000 Dixie(16·队1) 地 49580 兵 5.11M 密 103.0 ｜策略眼里 nb=1 neut=0 ｜worth=92.7（m=0.900）cheap=7.0 超软上限=是 其余真人密度中位=58 ｜NFS 锁=是 影子配额=1.26M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接382 地20607 密91；Sever (rus)(10·队3) 接270 地16734 密112；Kamakura(19·队4) 接35 地47477 密71
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接75 地79611 兵4.47M 密56 tD=0.98 c=136.2 need=8.07M [pulse] safe=2.47M keep=4.46M avail=583k → L5528 买不起整笔（want=10.09M）且 avail=583k 不足 chunk×兵=1.02M → 跳过
+        发船检查：岸格 1774，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 6.20M（L4996 return）；searchWater 命中 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2)（price=179.5 eff=205.7）；可发 max=boatFrac×(兵−floor 4.96M)=74k，下限 min=638k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.96M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 4.96M, refFloor 4.96M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=4280 Eisenhower(15·队2) 地 20607 兵 2.55M 密 123.5 ｜策略眼里 nb=1 neut=0 ｜worth=111.2（m=0.900）cheap=7.8 超软上限=是 其余真人密度中位=0 ｜NFS 锁=是 影子配额=636k
+        不在 nb 里的真实邻居（保护名单）：Kamakura(19·队4) 接420 地47477 密62；Dixie(16·队1) 接382 地55688 密104；Sever (rus)(10·队3) 接359 地12519 密74
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接13 地77718 兵4 密0 tD=0.00 c=2.1 need=116k [将崩,被别人打,pulse] safe=0(封顶 85×地；原 0) keep=0 avail=2.52M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：144k（5.7% 兵）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：距上次发船检查 55 拍 < boatEvery 60；有可打的邻居且兵 < idleCap×100×地 = 2.58M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：攻→🤗🤗🤗🤗🤗(3·队4) 102‰ 256k
+[探针] t=4290 Eisenhower(15·队2) 地 20607 兵 3.09M 密 150.0 ｜策略眼里 nb=1 neut=0 ｜worth=135.0（m=0.900）cheap=7.8 超软上限=是 其余真人密度中位=0 ｜NFS 锁=是 影子配额=690k
+        不在 nb 里的真实邻居（保护名单）：Kamakura(19·队4) 接420 地47477 密62；Dixie(16·队1) 接382 地56156 密105；Sever (rus)(10·队3) 接308 地10498 密67
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接43 地79271 兵5 密0 tD=0.00 c=2.1 need=119k [将崩,被别人打,pulse] safe=0(封顶 85×地；原 0) keep=0 avail=3.05M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：148k（4.8% 兵）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：距上次发船检查 5 拍 < boatEvery 60；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：攻→🤗🤗🤗🤗🤗(3·队4) 49‰ 151k
+[探针] t=4300 Eisenhower(15·队2) 地 20669 兵 2.59M 密 125.5 ｜策略眼里 nb=1 neut=0 ｜worth=113.0（m=0.900）cheap=7.8 超软上限=是 其余真人密度中位=1 ｜NFS 锁=是 影子配额=585k
+        不在 nb 里的真实邻居（保护名单）：Kamakura(19·队4) 接420 地47477 密64；Dixie(16·队1) 接382 地56819 密105；Sever (rus)(10·队3) 接264 地8641 密80
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：距上次发船检查 15 拍 < boatEvery 60；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=4400 Eisenhower(15·队2) 地 26974 兵 3.78M 密 140.1 ｜策略眼里 nb=1 neut=0 ｜worth=126.0（m=0.900）cheap=7.6 超软上限=是 其余真人密度中位=1 ｜NFS 锁=是 影子配额=19k
+        不在 nb 里的真实邻居（保护名单）：Dixie(16·队1) 接598 地68104 密94；Kamakura(19·队4) 接436 地47477 密75
+        报价 🤗🤗🤗🤗🤗(3·队4) 真人 接130 地71454 兵71k 密1 tD=1.00 c=19.8 need=1.20M [被别人打,在打我,pulse] safe=565k(封顶 88×地；原 565k) keep=2.25M avail=1.49M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：1.49M（39.4% 兵）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：距上次发船检查 30 拍 < boatEvery 60；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=4435 Eisenhower(15·队2) 地 26411 兵 2.68M 密 101.4 ｜策略眼里 nb=1 neut=0 ｜worth=91.2（m=0.900）cheap=7.6 超软上限=是 其余真人密度中位=102 ｜NFS 锁=是 影子配额=322k
+        不在 nb 里的真实邻居（保护名单）：Dixie(16·队1) 接699 地70467 密86；Kamakura(19·队4) 接434 地47477 密78
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.30M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=4470 Eisenhower(15·队2) 地 27617 兵 1.42M 密 51.6 ｜策略眼里 nb=1 neut=0 ｜worth=72.0（m=0.900）cheap=7.6 超软上限=否 其余真人密度中位=94 ｜NFS 锁=是 影子配额=356k
+        不在 nb 里的真实邻居（保护名单）：Dixie(16·队1) 接735 地72933 密79；Kamakura(19·队4) 接452 地47477 密83
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 7，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.45M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=4900 Dixie(16·队1) 地 111084 兵 12.66M 密 114.0 ｜策略眼里 nb=0 neut=0 ｜worth=102.6（m=0.900）cheap=6.1 超软上限=是 其余真人密度中位=85 ｜NFS 锁=是 影子配额=3.14M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密59
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 2873，mopUp=否；前置条件挡住：距上次发船检查 55 拍 < boatEvery 60；searchWater 命中 无主地（price=2.0 eff=107.4）；可发 max=boatFrac×(兵−floor 370k)=6.14M，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 11.11M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 370k, refFloor 0))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=5000 Dixie(16·队1) 地 111084 兵 14.09M 密 126.8 ｜策略眼里 nb=0 neut=0 ｜worth=114.1（m=0.900）cheap=6.1 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=3.50M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密68
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 2873，mopUp=否；前置条件挡住：距上次发船检查 35 拍 < boatEvery 60；searchWater 命中 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2)（price=180.9 eff=184.4）；可发 max=boatFrac×(兵−floor 11.11M)=1.49M，下限 min=1.76M → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 11.11M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 11.11M, refFloor 0))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=5300 Dixie(16·队1) 地 119067 兵 13.76M 密 115.6 ｜策略眼里 nb=1 neut=0 ｜worth=104.0（m=0.900）cheap=6.0 超软上限=是 其余真人密度中位=85 ｜NFS 锁=是 影子配额=3.41M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密93
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接131 地161152 兵12.14M 密75 tD=0.88 c=155.5 need=21.69M [pulse,agg] safe=6.72M keep=10.72M avail=2.88M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：2.88M（20.9% 兵）
+        发船检查：岸格 3259，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 14.88M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=4058.5）；可发 max=boatFrac×(兵−floor 11.91M)=926k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 11.91M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 397k, refFloor 11.91M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：攻→𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 214‰ 2.89M
+[探针] t=5400 Dixie(16·队1) 地 130515 兵 12.71M 密 97.4 ｜策略眼里 nb=1 neut=0 ｜worth=87.6（m=0.900）cheap=5.9 超软上限=否 其余真人密度中位=88 ｜NFS 锁=是 影子配额=3.15M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密107；LeBron(18·队2) 接95 地54769 密122
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接134 地149704 兵9.57M 密64 tD=0.73 c=157.2 need=16.87M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 3506，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 16.31M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=3748.5）；可发 max=boatFrac×(兵−floor 13.05M)=-172k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 13.05M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 435k, refFloor 13.05M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=5500 Dixie(16·队1) 地 130515 兵 14.91M 密 114.2 ｜策略眼里 nb=1 neut=0 ｜worth=102.8（m=0.900）cheap=5.9 超软上限=是 其余真人密度中位=77 ｜NFS 锁=是 影子配额=3.69M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密120；LeBron(18·队2) 接95 地54769 密129
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接134 地149704 兵11.52M 密77 tD=1.00 c=188.5 need=20.31M [pulse] safe=6.36M keep=11.75M avail=2.99M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：2.99M（20.0% 兵）
+        发船检查：岸格 3506，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 16.31M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=4397.9）；可发 max=boatFrac×(兵−floor 13.05M)=929k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 13.05M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 435k, refFloor 13.05M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：攻→𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 205‰ 3.00M
+[探针] t=6400 Dixie(16·队1) 地 141374 兵 16.05M 密 113.5 ｜策略眼里 nb=2 neut=0 ｜worth=102.2（m=0.900）cheap=5.8 超软上限=是 其余真人密度中位=88 ｜NFS 锁=是 影子配额=3.98M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；LeBron(18·队2) 接471 地55042 密147；Kamakura(19·队4) 接425 地47477 密150
+        报价 Player 569(5·队2) 真人 接168 地273390 兵10.72M 密39 tD=0.44 c=72.9 need=19.51M [pulse,agg] safe=7.95M(封顶 88×地；原 7.95M) keep=12.72M avail=3.14M → L5528 买不起整笔（want=24.39M）且 avail=3.14M 不足 chunk×兵=3.21M → 跳过
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接49 地131918 兵11.64M 密88 tD=1.00 c=208.6 need=23.13M [在打我,pulse] safe=7.95M keep=12.72M avail=3.14M → L5528 买不起整笔（want=28.92M）且 avail=3.14M 不足 chunk×兵=3.21M → 跳过
+        发船检查：岸格 3598，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 17.67M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=5172.6）；可发 max=boatFrac×(兵−floor 14.14M)=956k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 14.14M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 471k, refFloor 14.14M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=6700 Dixie(16·队1) 地 117944 兵 10.99M 密 93.2 ｜策略眼里 nb=2 neut=0 ｜worth=83.9（m=0.900）cheap=6.0 超软上限=否 其余真人密度中位=61 ｜NFS 锁=是 影子配额=2.72M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接811 地28324 密150；Kamakura(19·队4) 接425 地47477 密150；LeBron(18·队2) 接186 地55199 密145
+        报价 Player 569(5·队2) 真人 接157 地272510 兵11.66M 密43 tD=0.70 c=68.8 need=18.39M [pulse,agg] safe=6.45M keep=9.99M avail=877k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接108 地156228 兵9.59M 密61 tD=1.00 c=140.0 need=19.21M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 3119，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 14.74M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=7159.8）；可发 max=boatFrac×(兵−floor 11.79M)=-400k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 11.79M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 393k, refFloor 11.79M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7000 Dixie(16·队1) 地 90119 兵 5.57M 密 61.8 ｜策略眼里 nb=2 neut=0 ｜worth=55.6（m=0.900）cheap=6.3 超软上限=否 其余真人密度中位=44 ｜NFS 锁=是 影子配额=1.19M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接676 地28324 密150；Kamakura(19·队4) 接425 地47477 密150；LeBron(18·队2) 接94 地55326 密138
+        报价 Player 569(5·队2) 真人 接97 地268124 兵7.75M 密29 tD=0.65 c=58.6 need=13.80M [pulse,agg] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接291 地188439 兵8.34M 密44 tD=1.00 c=97.9 need=16.30M [在打我,pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 2466，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 11.26M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=4146.4）；可发 max=boatFrac×(兵−floor 9.01M)=-1.72M，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 9.01M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 300k, refFloor 9.01M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7100 Dixie(16·队1) 地 69257 兵 4.35M 密 62.9 ｜策略眼里 nb=2 neut=0 ｜worth=56.6（m=0.900）cheap=6.7 超软上限=否 其余真人密度中位=40 ｜NFS 锁=是 影子配额=1.09M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接451 地28324 密150；Kamakura(19·队4) 接425 地47477 密150；LeBron(18·队2) 接34 地55326 密140
+        报价 Player 569(5·队2) 真人 接179 地273912 兵7.39M 密27 tD=0.68 c=65.8 need=13.58M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接282 地203513 兵8.06M 密40 tD=1.00 c=96.3 need=14.71M [在打我,pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 2171，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 8.66M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=3243.6）；可发 max=boatFrac×(兵−floor 6.93M)=-1.29M，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 6.93M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 231k, refFloor 6.93M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7150 Kamakura(19·队4) 地 47477 兵 7.12M 密 150.0 ｜策略眼里 nb=0 neut=0 ｜worth=135.0（m=0.900）cheap=7.1 超软上限=是 其余真人密度中位=34 ｜NFS 锁=是 影子配额=1.78M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接499 地28324 密150；Dixie(16·队1) 接425 地69257 密67
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 102，mopUp=否；前置条件挡住：距上次发船检查 5 拍 < boatEvery 60；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=7165 Kamakura(19·队4) 地 47477 兵 7.12M 密 150.0 ｜策略眼里 nb=1 neut=0 ｜worth=135.0（m=0.900）cheap=7.1 超软上限=是 其余真人密度中位=34 ｜NFS 锁=是 影子配额=1.78M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接499 地28324 密150；Dixie(16·队1) 接410 地62198 密64
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接9 地210572 兵7.07M 密34 tD=1.00 c=148.2 need=12.92M [pulse] safe=3.93M keep=4.27M avail=2.77M → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：2.77M（38.8% 兵）
+        发船检查：岸格 102，mopUp=否；前置条件挡住：距上次发船检查 20 拍 < boatEvery 60；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：攻→𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 397‰ 2.77M
+[探针] t=7180 Kamakura(19·队4) 地 47477 兵 4.33M 密 91.2 ｜策略眼里 nb=1 neut=0 ｜worth=82.1（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=35 ｜NFS 锁=是 影子配额=1.08M
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接499 地28324 密150；Dixie(16·队1) 接401 地60957 密65
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接15 地211813 兵7.34M 密35 tD=1.00 c=121.0 need=10.63M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 102，mopUp=否；前置条件挡住：距上次发船检查 35 拍 < boatEvery 60；有可打的邻居且兵 < idleCap×100×地 = 5.93M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=7200 Dixie(16·队1) 地 60957 兵 4.16M 密 68.2 ｜策略眼里 nb=2 neut=0 ｜worth=61.4（m=0.900）cheap=6.8 超软上限=否 其余真人密度中位=37 ｜NFS 锁=是 影子配额=1.02M
+        不在 nb 里的真实邻居（保护名单）：Kamakura(19·队4) 接418 地47648 密94；Eisenhower(15·队2) 接375 地28324 密150；LeBron(18·队2) 接8 地55326 密144
+        报价 Player 569(5·队2) 真人 接179 地273912 兵7.12M 密26 tD=0.70 c=60.5 need=14.70M [在打我,pulse] safe=4.85M keep=4.85M avail=-739k → L5361 avail<=0：保底线 keep=4.85M（safe=4.85M，来自 dpKeep=4.85M）不低于余额
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接295 地211642 兵7.82M 密37 tD=1.00 c=73.6 need=14.25M [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 1878，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 7.62M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=3096.3）；可发 max=boatFrac×(兵−floor 6.10M)=-970k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 6.10M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 203k, refFloor 6.10M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7300 Dixie(16·队1) 地 46422 兵 3.11M 密 66.9 ｜策略眼里 nb=2 neut=0 ｜worth=60.2（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=25 ｜NFS 锁=是 影子配额=765k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接375 地28324 密150；Kamakura(19·队4) 接320 地45753 密60；LeBron(18·队2) 接8 地55364 密143
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接353 地213537 兵3.78M 密18 tD=0.72 c=30.7 need=7.06M [被别人打,pulse,agg] safe=3.94M(封顶 88×地；原 3.94M) keep=3.94M avail=-865k → L5361 avail<=0：保底线 keep=3.94M（safe=3.94M，来自 dpKeep=3.94M）不低于余额
+        报价 Player 569(5·队2) 真人 接272 地288447 兵7.08M 密25 tD=1.00 c=59.8 need=13.04M [pulse] safe=3.94M keep=3.94M avail=-865k → L5361 avail<=0：保底线 keep=3.94M（safe=3.94M，来自 dpKeep=3.94M）不低于余额
+        发船检查：岸格 1580，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 5.80M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=2315.6）；可发 max=boatFrac×(兵−floor 4.64M)=-768k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 4.64M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 155k, refFloor 4.64M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7300 Kamakura(19·队4) 地 45753 兵 2.76M 密 60.3 ｜策略眼里 nb=1 neut=0 ｜worth=54.3（m=0.900）cheap=7.1 超软上限=否 其余真人密度中位=25 ｜NFS 锁=是 影子配额=679k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接453 地28324 密150；Dixie(16·队1) 接320 地46422 密67
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接64 地213537 兵3.78M 密18 tD=0.72 c=35.6 need=6.69M [pulse,agg] safe=2.09M keep=2.29M avail=433k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        发船检查：岸格 102，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 5.72M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=7400 Dixie(16·队1) 地 34128 兵 2.20M 密 64.5 ｜策略眼里 nb=1 neut=0 ｜worth=58.0（m=0.900）cheap=7.4 超软上限=否 其余真人密度中位=15 ｜NFS 锁=是 影子配额=542k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接375 地28324 密150；Kamakura(19·队4) 接35 地42071 密66；LeBron(18·队2) 接8 地55364 密143
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接237 地217219 兵3.02M 密14 tD=0.92 c=29.8 need=5.71M [pulse] safe=1.67M keep=1.68M avail=495k → L5522 出兵（pulse：上限 12% 兵）：264k（12.0% 兵）
+        发船检查：岸格 1407，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 4.27M（L4996 return）；searchWater 命中 Player 569(5·队2)（price=50.5 eff=50.8）；可发 max=boatFrac×(兵−floor 3.41M)=-606k，下限 min=275k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 3.41M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 2.87M, refFloor 3.41M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7400 Kamakura(19·队4) 地 42071 兵 2.77M 密 65.8 ｜策略眼里 nb=2 neut=0 ｜worth=59.2（m=0.900）cheap=7.2 超软上限=否 其余真人密度中位=15 ｜NFS 锁=是 影子配额=688k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接391 地28324 密150；Dixie(16·队1) 接35 地34128 密64
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接114 地217219 兵3.02M 密14 tD=0.92 c=25.4 need=6.00M [在打我,pulse,agg] safe=3.15M keep=3.15M avail=-410k → L5361 avail<=0：保底线 keep=3.15M（safe=3.15M，来自 dpKeep=3.15M）不低于余额
+        报价 Player 569(5·队2) 真人 接160 地300741 兵4.55M 密15 tD=1.00 c=36.4 need=9.68M [在打我,pulse] safe=3.15M keep=3.15M avail=-410k → L5361 avail<=0：保底线 keep=3.15M（safe=3.15M，来自 dpKeep=3.15M）不低于余额
+        发船检查：岸格 102，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 5.26M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=7500 Dixie(16·队1) 地 34610 兵 1.93M 密 55.6 ｜策略眼里 nb=2 neut=0 ｜worth=50.1（m=0.900）cheap=7.4 超软上限=否 其余真人密度中位=14 ｜NFS 锁=是 影子配额=473k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接381 地28324 密150；Kamakura(19·队4) 接35 地25721 密57；LeBron(18·队2) 接9 地55364 密147
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接248 地218113 兵3.00M 密14 tD=1.00 c=34.7 need=5.67M [pulse] safe=2.06M keep=2.06M avail=-156k → L5361 avail<=0：保底线 keep=2.06M（safe=2.06M，来自 dpKeep=2.06M）不低于余额
+        报价 Player 569(5·队2) 真人 接3 地315715 兵3.72M 密12 tD=0.86 c=54.1 need=7.10M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 1429，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 4.33M（L4996 return）；searchWater 命中 无主地（price=2.0 eff=1436.6）；可发 max=boatFrac×(兵−floor 3.46M)=-768k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 3.46M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 115k, refFloor 3.46M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=7500 Kamakura(19·队4) 地 25721 兵 1.46M 密 56.8 ｜策略眼里 nb=2 neut=0 ｜worth=51.1（m=0.900）cheap=7.7 超软上限=否 其余真人密度中位=14 ｜NFS 锁=是 影子配额=359k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接351 地28324 密150；Dixie(16·队1) 接35 地34610 密56
+        报价 Player 569(5·队2) 真人 接107 地315715 兵3.72M 密12 tD=0.86 c=29.9 need=7.10M [pulse] safe=2.07M keep=2.07M avail=-624k → L5361 avail<=0：保底线 keep=2.07M（safe=2.07M，来自 dpKeep=2.07M）不低于余额
+        报价 𓃗 𝐆𝐘𝐑𝐎🟢(8·队2) 真人 接24 地218113 兵3.00M 密14 tD=1.00 c=62.6 need=5.67M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 87，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.22M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=7600 Kamakura(19·队4) 地 17380 兵 895k 密 51.5 ｜策略眼里 nb=1 neut=0 ｜worth=46.3（m=0.900）cheap=8.0 超软上限=否 其余真人密度中位=11 ｜NFS 锁=是 影子配额=219k
+        不在 nb 里的真实邻居（保护名单）：Eisenhower(15·队2) 接324 地28324 密150；Dixie(16·队1) 接35 地34055 密42
+        报价 Player 569(5·队2) 真人 接134 地324056 兵3.10M 密10 tD=0.88 c=24.7 need=6.02M [pulse] safe=1.73M keep=1.73M avail=-845k → L5361 avail<=0：保底线 keep=1.73M（safe=1.73M，来自 dpKeep=1.73M）不低于余额
+        发船检查：岸格 79，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 2.17M（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+B022: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=7680，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B022: 影子重演到 t=7700，耗时 47.9s；日志快照核对 673/673；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Eisenhower@922，Dixie@637，Kamakura@462｜始终为假：无

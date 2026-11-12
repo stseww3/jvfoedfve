@@ -1,0 +1,624 @@
+{
+ "matchId": "B033",
+ "step": 30,
+ "perBot": {
+  "Lannes": {
+   "team": 2,
+   "samples": 188,
+   "sealedA": 96,
+   "sealedB": 4,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 3150,
+    "t1": 5430,
+    "ticks": 2310,
+    "terr0": 6380,
+    "terr1": 6555,
+    "bal0": 412753,
+    "bal1": 702007,
+    "densMax": 107.5,
+    "landAtk": 2,
+    "boats": 21,
+    "donations": 6,
+    "mates": [
+     "Guderian"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 2880,
+    "boats": 28,
+    "boatTroops": 338609,
+    "boatFees": 353895,
+    "boatsFeeOverTroops": 20,
+    "donations": 6,
+    "donArrived": 506998,
+    "donTax": 189203,
+    "landAtk": 2,
+    "landAtkOk": 1,
+    "landAtkTroops": 33264,
+    "over100": 3,
+    "hardCap": 0
+   }
+  },
+  "Guderian": {
+   "team": 1,
+   "samples": 181,
+   "sealedA": 86,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 2700,
+    "t1": 4170,
+    "ticks": 1500,
+    "terr0": 4919,
+    "terr1": 4919,
+    "bal0": 252989,
+    "bal1": 295452,
+    "densMax": 134.5,
+    "landAtk": 0,
+    "boats": 1,
+    "donations": 5,
+    "mates": [
+     "Lannes"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 2580,
+    "boats": 11,
+    "boatTroops": 346752,
+    "boatFees": 73210,
+    "boatsFeeOverTroops": 2,
+    "donations": 7,
+    "donArrived": 524478,
+    "donTax": 193786,
+    "landAtk": 4,
+    "landAtkOk": 0,
+    "landAtkTroops": 0,
+    "over100": 19,
+    "hardCap": 0
+   }
+  },
+  "Gladiator": {
+   "team": 1,
+   "samples": 106,
+   "sealedA": 21,
+   "sealedB": 30,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 2340,
+    "t1": 2940,
+    "ticks": 630,
+    "terr0": 6096,
+    "terr1": 4304,
+    "bal0": 5885,
+    "bal1": 17290,
+    "densMax": 4.0,
+    "landAtk": 0,
+    "boats": 0,
+    "donations": 0,
+    "mates": [
+     "Tunis"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 630,
+    "boats": 0,
+    "boatTroops": 0,
+    "boatFees": 0,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "landAtk": 0,
+    "landAtkOk": 0,
+    "landAtkTroops": 0,
+    "over100": 0,
+    "hardCap": 0
+   }
+  },
+  "Ainz": {
+   "team": 2,
+   "samples": 188,
+   "sealedA": 0,
+   "sealedB": 47,
+   "sealedC": 0
+  },
+  "Mossad": {
+   "team": 1,
+   "samples": 73,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Tunis": {
+   "team": 2,
+   "samples": 188,
+   "sealedA": 0,
+   "sealedB": 41,
+   "sealedC": 0
+  },
+  "JinKazama": {
+   "team": 2,
+   "samples": 188,
+   "sealedA": 0,
+   "sealedB": 23,
+   "sealedC": 0
+  },
+  "Kanem-Bornu": {
+   "team": 1,
+   "samples": 177,
+   "sealedA": 0,
+   "sealedB": 93,
+   "sealedC": 0
+  },
+  "Livonian": {
+   "team": 2,
+   "samples": 107,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Bhutan": {
+   "team": 2,
+   "samples": 51,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  }
+ },
+ "timeline": [
+  {
+   "t": 0,
+   "bots": 10,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 120,
+   "balA": 0,
+   "balAll": 5120,
+   "over100": 0,
+   "protect": false
+  },
+  {
+   "t": 270,
+   "bots": 10,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 3902,
+   "balA": 0,
+   "balAll": 13733,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 540,
+   "bots": 10,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 18989,
+   "balA": 0,
+   "balAll": 37812,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 810,
+   "bots": 10,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 42182,
+   "balA": 0,
+   "balAll": 139315,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1080,
+   "bots": 10,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 53867,
+   "balA": 0,
+   "balAll": 432265,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1350,
+   "bots": 10,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 9709,
+   "terrAll": 61918,
+   "balA": 280769,
+   "balAll": 1037749,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1620,
+   "bots": 9,
+   "A": 2,
+   "B": 2,
+   "C": 0,
+   "terrA": 9709,
+   "terrAll": 61674,
+   "balA": 315918,
+   "balAll": 1754582,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1890,
+   "bots": 9,
+   "A": 1,
+   "B": 2,
+   "C": 0,
+   "terrA": 4919,
+   "terrAll": 61428,
+   "balA": 23786,
+   "balAll": 1692413,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2160,
+   "bots": 9,
+   "A": 0,
+   "B": 2,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 66178,
+   "balA": 0,
+   "balAll": 853908,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2430,
+   "bots": 8,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 10784,
+   "terrAll": 62860,
+   "balA": 176645,
+   "balAll": 1026624,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2700,
+   "bots": 8,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 9110,
+   "terrAll": 55885,
+   "balA": 267186,
+   "balAll": 1469358,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 2970,
+   "bots": 8,
+   "A": 1,
+   "B": 1,
+   "C": 0,
+   "terrA": 4919,
+   "terrAll": 56550,
+   "balA": 352993,
+   "balAll": 1582847,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 3240,
+   "bots": 6,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 11299,
+   "terrAll": 37253,
+   "balA": 850181,
+   "balAll": 1787364,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 3510,
+   "bots": 6,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 11299,
+   "terrAll": 35628,
+   "balA": 1031602,
+   "balAll": 2366537,
+   "over100": 1,
+   "protect": true
+  },
+  {
+   "t": 3780,
+   "bots": 6,
+   "A": 2,
+   "B": 1,
+   "C": 0,
+   "terrA": 11299,
+   "terrAll": 39298,
+   "balA": 1016731,
+   "balAll": 2583331,
+   "over100": 1,
+   "protect": true
+  },
+  {
+   "t": 4050,
+   "bots": 6,
+   "A": 2,
+   "B": 0,
+   "C": 0,
+   "terrA": 11299,
+   "terrAll": 43616,
+   "balA": 718901,
+   "balAll": 3108407,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4320,
+   "bots": 6,
+   "A": 2,
+   "B": 2,
+   "C": 0,
+   "terrA": 11314,
+   "terrAll": 46735,
+   "balA": 821981,
+   "balAll": 3428928,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4590,
+   "bots": 6,
+   "A": 1,
+   "B": 2,
+   "C": 0,
+   "terrA": 4919,
+   "terrAll": 48093,
+   "balA": 321938,
+   "balAll": 3579103,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 4860,
+   "bots": 6,
+   "A": 0,
+   "B": 2,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 45468,
+   "balA": 0,
+   "balAll": 3320497,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5130,
+   "bots": 6,
+   "A": 1,
+   "B": 2,
+   "C": 0,
+   "terrA": 6528,
+   "terrAll": 44832,
+   "balA": 552874,
+   "balAll": 3942964,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 5400,
+   "bots": 5,
+   "A": 1,
+   "B": 3,
+   "C": 0,
+   "terrA": 6547,
+   "terrAll": 38203,
+   "balA": 703773,
+   "balAll": 3985550,
+   "over100": 1,
+   "protect": true
+  }
+ ],
+ "pairs": [
+  {
+   "a": "Guderian",
+   "b": "Lannes",
+   "samples": 143,
+   "t0": 1170,
+   "t1": 5430,
+   "maxCells": 19,
+   "sealedA": 86,
+   "sealedB": 96,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Tunis",
+   "b": "Gladiator",
+   "samples": 29,
+   "t0": 2310,
+   "t1": 3150,
+   "maxCells": 49,
+   "sealedA": 0,
+   "sealedB": 21,
+   "aToB": [
+    2325,
+    14836
+   ],
+   "bToA": [
+    318,
+    23444
+   ]
+  }
+ ],
+ "border": [
+  {
+   "t": 0,
+   "bots": 10,
+   "neutral": 115,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 540,
+   "bots": 10,
+   "neutral": 505,
+   "ai": 485,
+   "foe": 24,
+   "mateX": 0,
+   "own": 6,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1080,
+   "bots": 10,
+   "neutral": 6,
+   "ai": 832,
+   "foe": 135,
+   "mateX": 0,
+   "own": 192,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1620,
+   "bots": 9,
+   "neutral": 8,
+   "ai": 147,
+   "foe": 376,
+   "mateX": 38,
+   "own": 343,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 2160,
+   "bots": 9,
+   "neutral": 65,
+   "ai": 51,
+   "foe": 711,
+   "mateX": 38,
+   "own": 470,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 2700,
+   "bots": 8,
+   "neutral": 0,
+   "ai": 57,
+   "foe": 538,
+   "mateX": 115,
+   "own": 382,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 3240,
+   "bots": 6,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 374,
+   "mateX": 38,
+   "own": 402,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 3780,
+   "bots": 6,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 221,
+   "mateX": 38,
+   "own": 552,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 4320,
+   "bots": 6,
+   "neutral": 19,
+   "ai": 0,
+   "foe": 20,
+   "mateX": 38,
+   "own": 833,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 4860,
+   "bots": 6,
+   "neutral": 16,
+   "ai": 0,
+   "foe": 149,
+   "mateX": 38,
+   "own": 842,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 5400,
+   "bots": 5,
+   "neutral": 0,
+   "ai": 0,
+   "foe": 106,
+   "mateX": 38,
+   "own": 744,
+   "teamAi": 0,
+   "peer": 0
+  }
+ ],
+ "total": {
+  "samples": 1447,
+  "sealedA": 203,
+  "botTicksA": 6090,
+  "botsEverA": 3
+ },
+ "pairCount": 2,
+ "inSealA": {
+  "botTicks": 6090,
+  "boats": 39,
+  "boatTroops": 685361,
+  "boatFees": 427105,
+  "boatsFeeOverTroops": 22,
+  "donations": 13,
+  "donArrived": 1031476,
+  "donTax": 382989,
+  "over100": 22,
+  "hardCap": 0
+ }
+}

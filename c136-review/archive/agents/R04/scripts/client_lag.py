@@ -20,6 +20,20 @@ def load(mid):
             if m:
                 rows.append((int(m.group(1)), m.group(2), int(m.group(3))))
     rows.sort()
+    # 同一个号中途换了号名（B 组：Kilwa → Ganondorf → Nelson）时，把后来的名字并回第一个名字（log_alias.py 按 拍 / 领土 / 余额 认号）
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import log_alias
+        al = log_alias.alias(mid)
+    except Exception:
+        al = {}
+    first = {}
+    for seq, bot, t in rows:
+        p = al.get(bot)
+        if p is not None:
+            first.setdefault(p, bot)
+    if len(set(al.get(b) for _, b, _ in rows if al.get(b) is not None)) < len(set(b for _, b, _ in rows if al.get(b) is not None)):
+        rows = [(seq, first.get(al.get(bot), bot), t) for seq, bot, t in rows]
     return rows
 
 

@@ -891,7 +891,7 @@
    "prefix": "SP",
    "name": "选点指令没有落地，出生点是引擎随机给的",
    "definition": "录像出生阶段里这个号的选点指令（id=0）条数为 0，而日志里有 [HL-SPAWN] / [HL-SPAWN-BACKEND] 选点记录。计数 = 这样的号数。",
-   "detector": "tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
+   "detector": "scripts/spawn_first_cmd.py [局号…] [--list]（日志里想要的点 vs 录像里落地的出生指令，逐号对）；tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
    "codePath": "Policy.chooseSpawn L3983~4129；引擎 qi.i0（只查阶段、存活、格子可用）；出生阶段步数 a7a（真人 ≤2 时 30 步，约 11.8 秒）",
    "id": "NEW-SP-NOEXEC"
   },
@@ -1091,5 +1091,2131 @@
   "0005-(3) over 跳过价格检查：成立。over 状态下的出手 24 轮 3.30 亿兵；出手时地不比对方少的 15 轮 14 轮净得地为正，地比对方少的 9 轮 8 轮为负；另有对着滩头出 4,700 万兵的空打 2 次（D17）。",
   "0005-(4)(5) 为利息而捐、弃子判定：本局不适用。",
   "0005-(6) 单点登陆与兵退回：成立。22 条船回到自己地上作废（2.45 亿兵），其中 11 条是「同一落点的第二条船」；另外登陆的船多次登在碎岛上（D15）。"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "读法：1v1 房间，协调器的点没有用上：两个号的出生指令 0 条落地，出生点是引擎随机给的。日志有 9 个号（分在 5 个房间），录像只有这一个房间，慢拍和墙上时钟两项含别的房间的号。",
+  "land": "读法：没有其他真人也没有队友，alex_k 和 kaito9 是对手，这里都算在「我方」里；「同队 / 敌方」两栏不适用。这一行只说明两个号把身边的内置 AI 吃掉了多少（1500 拍 6%，3000 拍 32%）。"
+ },
+ "latencyLedger": {
+  "match": "A073",
+  "spawn": {
+   "steps": 211,
+   "solves": 10,
+   "lastChange": 0,
+   "classes": {
+    "一条出生指令都没落地": 2
+   },
+   "samePoint": 0,
+   "lastStepMin": null,
+   "lastStepMax": null
+  },
+  "delay": {
+   "0~599": {
+    "intents": 20,
+    "landed": 18,
+    "attackIntents": 20,
+    "attackLanded": 18,
+    "p50": 10,
+    "p90": 13,
+    "max": 13,
+    "strictN": 18,
+    "strictP50": 10,
+    "strictP90": 13,
+    "strictMax": 13
+   },
+   "600~1499": {
+    "intents": 198,
+    "landed": 169,
+    "attackIntents": 198,
+    "attackLanded": 169,
+    "p50": 63,
+    "p90": 124,
+    "max": 269,
+    "strictN": 72,
+    "strictP50": 63,
+    "strictP90": 95,
+    "strictMax": 129
+   },
+   "1500~2999": {
+    "intents": 356,
+    "landed": 279,
+    "attackIntents": 356,
+    "attackLanded": 279,
+    "p50": 97,
+    "p90": 147,
+    "max": 275,
+    "strictN": 137,
+    "strictP50": 102,
+    "strictP90": 136,
+    "strictMax": 170
+   },
+   "3000+": {
+    "intents": 455,
+    "landed": 410,
+    "attackIntents": 379,
+    "attackLanded": 334,
+    "p50": 15,
+    "p90": 62,
+    "max": 233,
+    "strictN": 67,
+    "strictP50": 13,
+    "strictP90": 38,
+    "strictMax": 129
+   }
+  },
+  "batchLag": {
+   "600~1499": {
+    "batches": 17,
+    "matched": 17,
+    "newestP50": 57,
+    "oldestP50": 95,
+    "oldestMax": 129
+   },
+   "1500~2999": {
+    "batches": 35,
+    "matched": 31,
+    "newestP50": 77,
+    "oldestP50": 117,
+    "oldestMax": 173
+   },
+   "3000+": {
+    "batches": 22,
+    "matched": 22,
+    "newestP50": 34,
+    "oldestP50": 56,
+    "oldestMax": 182
+   }
+  },
+  "funnel": {
+   "≤630": {
+    "want": 21,
+    "accepted": 18,
+    "landed": 18
+   },
+   "630~1530": {
+    "want": 208,
+    "accepted": 213,
+    "landed": 154
+   },
+   "1530~3060": {
+    "want": 361,
+    "accepted": 438,
+    "landed": 286
+   },
+   ">3060": {
+    "want": 435,
+    "accepted": 350,
+    "landed": 420
+   },
+   "total": {
+    "want": 1025,
+    "accepted": 1019,
+    "landed": 878,
+    "resSent": 1031,
+    "resAccepted": 997
+   },
+   "perBot": {
+    "alex_k": {
+     "want": 600,
+     "accepted": 594,
+     "landed": 508
+    },
+    "kaito9": {
+     "want": 425,
+     "accepted": 425,
+     "landed": 370
+    }
+   }
+  },
+  "clientLag": {
+   "alex_k": {
+    "max": 90,
+    "n180": 0
+   },
+   "kaito9": {
+    "max": 180,
+    "n180": 2
+   }
+  },
+  "lateWrong": {
+   "0~599": {
+    "landed": 18,
+    "aimed": 6,
+    "aimedTroops": 4817,
+    "retargeted": 0,
+    "wantTroops": 0,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 0,
+    "noAttackTroops": 0,
+    "aimedIntents": 8,
+    "onTarget": 6,
+    "onTargetTroops": 3814
+   },
+   "600~1499": {
+    "landed": 154,
+    "aimed": 147,
+    "aimedTroops": 344026,
+    "retargeted": 58,
+    "wantTroops": 79101,
+    "toNeutralN": 46,
+    "toNeutralTroops": 60087,
+    "toNeutralFee": 13861,
+    "noAttackN": 12,
+    "noAttackTroops": 20903,
+    "aimedIntents": 189,
+    "onTarget": 88,
+    "onTargetTroops": 250669
+   },
+   "1500~2999": {
+    "landed": 285,
+    "aimed": 254,
+    "aimedTroops": 4825604,
+    "retargeted": 46,
+    "wantTroops": 368509,
+    "toNeutralN": 34,
+    "toNeutralTroops": 237049,
+    "toNeutralFee": 68356,
+    "noAttackN": 12,
+    "noAttackTroops": 115751,
+    "aimedIntents": 325,
+    "onTarget": 208,
+    "onTargetTroops": 3305537
+   },
+   "3000+": {
+    "landed": 345,
+    "aimed": 340,
+    "aimedTroops": 667406943,
+    "retargeted": 4,
+    "wantTroops": 125756,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 4,
+    "noAttackTroops": 125756,
+    "aimedIntents": 374,
+    "onTarget": 327,
+    "onTargetTroops": 363992779
+   }
+  },
+  "repeat": {
+   "0~599": {
+    "n": 1,
+    "troops": 602,
+    "sharePct": 15.8
+   },
+   "600~1499": {
+    "n": 46,
+    "troops": 114757,
+    "sharePct": 45.7
+   },
+   "1500~2999": {
+    "n": 141,
+    "troops": 1964517,
+    "sharePct": 57.2
+   },
+   "3000+": {
+    "n": 136,
+    "troops": 190860159,
+    "sharePct": 52.4
+   },
+   "total": {
+    "n": 324,
+    "troops": 192940035,
+    "sharePct": 52.4
+   }
+  },
+  "drain": {
+   "600~1499": {
+    "批": 17,
+    "条": 125,
+    "兵": 254289,
+    "第2条起的兵": 206330,
+    "手续费": 40399,
+    "抽到四成以下": 2,
+    "一兵没出": 1
+   },
+   "1500~2999": {
+    "批": 35,
+    "条": 260,
+    "兵": 3401119,
+    "第2条起的兵": 2557488,
+    "手续费": 341307,
+    "抽到四成以下": 17,
+    "一兵没出": 2
+   },
+   "3000+": {
+    "批": 22,
+    "条": 122,
+    "兵": 50983117,
+    "第2条起的兵": 34791498,
+    "手续费": 12253862,
+    "抽到四成以下": 3,
+    "一兵没出": 9
+   },
+   "sizes": {
+    "5": 6,
+    "4": 6,
+    "6": 10,
+    "7": 9,
+    "8": 15,
+    "9": 21,
+    "3": 7
+   }
+  }
+ },
+ "goodLand": {
+  "match": "A073",
+  "land": 664497,
+  "humansPresent": 2,
+  "ours": 2,
+  "t0": 630,
+  "at": [
+   630,
+   1080,
+   1500,
+   1800,
+   2250,
+   3000
+  ],
+  "voronoi": {
+   "euclid": {
+    "ourPx": 664497,
+    "ourSharePct": 100,
+    "headSharePct": 100,
+    "ourMedian": 483167,
+    "otherMedian": 0,
+    "perBot": {
+     "0": 181330,
+     "1": 483167
+    }
+   },
+   "landpath": {
+    "ourPx": 244592,
+    "ourSharePct": 36.81,
+    "headSharePct": 100,
+    "ourMedian": 143220,
+    "otherMedian": 0,
+    "perBot": {
+     "0": 143220,
+     "1": 101372
+    }
+   },
+   "unreachable": 419905
+  },
+  "capture": {
+   "630": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 7082,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.011,
+      "ratioL": 0.029,
+      "medE": 0.019,
+      "medL": 0.035
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "无主": 364047,
+      "内置AI": 293368,
+      "我方": 7082
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 7082
+   },
+   "1080": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 24308,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.037,
+      "ratioL": 0.099,
+      "medE": 0.072,
+      "medL": 0.11
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "无主": 24551,
+      "内置AI": 615638,
+      "我方": 24308
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 24308
+   },
+   "1500": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 45127,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.068,
+      "ratioL": 0.184,
+      "medE": 0.106,
+      "medL": 0.256
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "无主": 16943,
+      "内置AI": 602427,
+      "我方": 45127
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 45127
+   },
+   "1800": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 69800,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.105,
+      "ratioL": 0.285,
+      "medE": 0.176,
+      "medL": 0.373
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "无主": 18982,
+      "内置AI": 575715,
+      "我方": 69800
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 69800
+   },
+   "2250": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 145252,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.219,
+      "ratioL": 0.594,
+      "medE": 0.43,
+      "medL": 0.664
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "内置AI": 504066,
+      "无主": 15179,
+      "我方": 145252
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 145252
+   },
+   "3000": {
+    "groups": {
+     "我方": {
+      "n": 2,
+      "alive": 2,
+      "actual": 217697,
+      "euclid": 664497,
+      "landpath": 244592,
+      "ratioE": 0.328,
+      "ratioL": 0.89,
+      "medE": 0.494,
+      "medL": 1.263
+     }
+    },
+    "ourCell": {
+     "px": 664497,
+     "owners": {
+      "内置AI": 433321,
+      "无主": 13479,
+      "我方": 217697
+     }
+    },
+    "ourOutside": 0,
+    "ourAll": 217697
+   }
+  },
+  "aiFate": {
+   "1080": {
+    "owners": {
+     "原来那个AI": 200227,
+     "别的AI": 86251,
+     "无主": 1072,
+     "我方": 5818
+    },
+    "perBot": {
+     "0": 3368,
+     "1": 2450
+    },
+    "topOthers": []
+   },
+   "1500": {
+    "owners": {
+     "原来那个AI": 96280,
+     "别的AI": 179047,
+     "无主": 727,
+     "我方": 17314
+    },
+    "perBot": {
+     "0": 6923,
+     "1": 10391
+    },
+    "topOthers": []
+   },
+   "1800": {
+    "owners": {
+     "别的AI": 204876,
+     "我方": 26619,
+     "无主": 2822,
+     "原来那个AI": 59051
+    },
+    "perBot": {
+     "0": 12352,
+     "1": 14267
+    },
+    "topOthers": []
+   },
+   "2250": {
+    "owners": {
+     "别的AI": 200261,
+     "我方": 61040,
+     "原来那个AI": 30183,
+     "无主": 1884
+    },
+    "perBot": {
+     "0": 34472,
+     "1": 26568
+    },
+    "topOthers": []
+   },
+   "3000": {
+    "owners": {
+     "别的AI": 184319,
+     "我方": 93804,
+     "原来那个AI": 13750,
+     "无主": 1495
+    },
+    "perBot": {
+     "0": 37086,
+     "1": 56718
+    },
+    "topOthers": []
+   },
+   "t0": {
+    "n": 510,
+    "px": 293368,
+    "adjacentN": 11,
+    "adjacentPx": 4512,
+    "allAiPx": 293368
+   }
+  }
+ },
+ "captureAttrib": {
+  "match": "A073",
+  "f1": 1.0,
+  "f1Landpath": 0.3681,
+  "windows": {
+   "600~1499": {
+    "adjTicks": 360,
+    "acted": 194,
+    "locked": 131,
+    "free": 35,
+    "lockDetail": {
+     "项1 价格项": 131
+    },
+    "f2": 0.636111,
+    "f3a": 0.723005,
+    "f3b": 0.770073,
+    "product": 0.354165,
+    "shareSpawn": 0.0,
+    "shareLock": 43.5824,
+    "shareLate": 56.4176,
+    "shareNotLanded": 31.2468,
+    "shareDeadTarget": 25.1708,
+    "result": {
+     "tick": 1500,
+     "ourRatio": 0.068,
+     "otherRatio": null,
+     "aiOurPct": 5.9,
+     "aiAllyPct": 0.0,
+     "aiEnemyPct": 0.0
+    }
+   },
+   "1500~2999": {
+    "adjTicks": 600,
+    "acted": 328,
+    "locked": 150,
+    "free": 122,
+    "lockDetail": {
+     "单价闸（单价 ≥ worth 且余额没过 100×地）": 9,
+     "safeAt→safeFinite/另一个AI": 35,
+     "safeAt→safeFinite/编队号": 79,
+     "safeAt 的 dpKeep": 27
+    },
+    "f2": 0.75,
+    "f3a": 0.652968,
+    "f3b": 0.923635,
+    "product": 0.452328,
+    "shareSpawn": 0.0,
+    "shareLock": 36.2618,
+    "shareLate": 63.7382,
+    "shareNotLanded": 53.7251,
+    "shareDeadTarget": 10.0131,
+    "result": {
+     "tick": 3000,
+     "ourRatio": 0.328,
+     "otherRatio": null,
+     "aiOurPct": 32.0,
+     "aiAllyPct": 0.0,
+     "aiEnemyPct": 0.0
+    }
+   }
+  }
+ },
+ "delayVsRate": {
+  "match": "A073",
+  "win": 50,
+  "own": {
+   "1 条": {
+    "n": 118,
+    "landed": 113,
+    "p50": 15,
+    "p90": 56
+   },
+   "2~3 条": {
+    "n": 192,
+    "landed": 178,
+    "p50": 13,
+    "p90": 100
+   },
+   "4~6 条": {
+    "n": 235,
+    "landed": 221,
+    "p50": 67,
+    "p90": 140
+   },
+   "≥7 条": {
+    "n": 484,
+    "landed": 364,
+    "p50": 76,
+    "p90": 143
+   }
+  },
+  "squad": {
+   "1~5 条": {
+    "n": 279,
+    "landed": 261,
+    "p50": 13,
+    "p90": 47
+   },
+   "6~15 条": {
+    "n": 561,
+    "landed": 475,
+    "p50": 77,
+    "p90": 145
+   },
+   "16~30 条": {
+    "n": 189,
+    "landed": 140,
+    "p50": 67,
+    "p90": 120
+   }
+  },
+  "squadFine": {
+   "1~3": {
+    "n": 198,
+    "landed": 186,
+    "p50": 13,
+    "p90": 43
+   },
+   "4~6": {
+    "n": 121,
+    "landed": 114,
+    "p50": 15,
+    "p90": 69
+   },
+   "7~9": {
+    "n": 147,
+    "landed": 135,
+    "p50": 44,
+    "p90": 136
+   },
+   "10~12": {
+    "n": 186,
+    "landed": 159,
+    "p50": 83,
+    "p90": 152
+   },
+   "13~15": {
+    "n": 188,
+    "landed": 142,
+    "p50": 89,
+    "p90": 145
+   },
+   "16~20": {
+    "n": 189,
+    "landed": 140,
+    "p50": 67,
+    "p90": 120
+   }
+  },
+  "cross": {
+   "自己 1 条、编队 ≤5 条": {
+    "n": 104,
+    "landed": 100,
+    "p50": 14,
+    "p90": 34
+   },
+   "自己 ≥4 条、编队 ≤15 条": {
+    "n": 534,
+    "landed": 449,
+    "p50": 77,
+    "p90": 147
+   },
+   "自己 ≥4 条、编队 ≥16 条": {
+    "n": 185,
+    "landed": 136,
+    "p50": 66,
+    "p90": 120
+   }
+  },
+  "throughput": {
+   "想发 <15 条": {
+    "windows": 83,
+    "landedP50": 3,
+    "landedMax": 21
+   },
+   "15~39 条": {
+    "windows": 27,
+    "landedP50": 18,
+    "landedMax": 35
+   }
+  },
+  "throughputMax": 35,
+  "batchGap": {
+   "<1500": {
+    "n": 15,
+    "p50": 63,
+    "min": 42,
+    "max": 112
+   },
+   "1500~2999": {
+    "n": 35,
+    "p50": 77,
+    "min": 49,
+    "max": 175
+   },
+   "3000+": {
+    "n": 14,
+    "p50": 112,
+    "min": 7,
+    "max": 392
+   }
+  }
+ },
+ "slowTicks": {
+  "match": "A073",
+  "lines": 144,
+  "bots": {
+   "alex_k": {
+    "n": 87,
+    "first": 3340,
+    "med": 74.2,
+    "max": 183.5,
+    "segments": [
+     [
+      3340,
+      3520,
+      4
+     ],
+     [
+      6000,
+      6180,
+      4
+     ],
+     [
+      7680,
+      8135,
+      16
+     ],
+     [
+      8615,
+      8680,
+      4
+     ],
+     [
+      9165,
+      9285,
+      3
+     ],
+     [
+      9900,
+      10095,
+      8
+     ],
+     [
+      10160,
+      10590,
+      16
+     ],
+     [
+      10785,
+      11035,
+      9
+     ],
+     [
+      11230,
+      11470,
+      5
+     ]
+    ]
+   },
+   "kaito9": {
+    "n": 43,
+    "first": 3800,
+    "med": 68.8,
+    "max": 150.9,
+    "segments": [
+     [
+      4610,
+      4730,
+      3
+     ],
+     [
+      4935,
+      5115,
+      4
+     ],
+     [
+      9170,
+      9350,
+      5
+     ],
+     [
+      10125,
+      10665,
+      10
+     ],
+     [
+      10730,
+      11260,
+      10
+     ]
+    ]
+   },
+   "zero_7": {
+    "n": 5,
+    "first": 4580,
+    "med": 77.8,
+    "max": 89.3,
+    "segments": [
+     [
+      5505,
+      5625,
+      3
+     ]
+    ]
+   },
+   "noah88": {
+    "n": 3,
+    "first": 1210,
+    "med": 41.6,
+    "max": 68.9,
+    "segments": []
+   },
+   "sora_w": {
+    "n": 3,
+    "first": 4990,
+    "med": 89.3,
+    "max": 119.9,
+    "segments": []
+   },
+   "zexos1": {
+    "n": 2,
+    "first": 3110,
+    "med": 41.9,
+    "max": 46.8,
+    "segments": []
+   },
+   "talon5": {
+    "n": 1,
+    "first": 5275,
+    "med": 43.5,
+    "max": 43.5,
+    "segments": []
+   }
+  },
+  "lagIn": {
+   "n": 84,
+   "p50": 12,
+   "p90": 20
+  },
+  "lagOut": {
+   "n": 792,
+   "p50": 57,
+   "p90": 129
+  },
+  "byBand": {
+   "0~599": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 18,
+    "outP50": 10
+   },
+   "600~1499": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 169,
+    "outP50": 63
+   },
+   "1500~2999": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 279,
+    "outP50": 97
+   },
+   "3000+": {
+    "inN": 84,
+    "inP50": 12,
+    "outN": 326,
+    "outP50": 16
+   }
+  }
+ },
+ "burstChunks": {
+  "match": "A073",
+  "bands": {
+   "600~1499": {
+    "batches": 17,
+    "matched": 17,
+    "sizeP50": 8,
+    "full": 9,
+    "withTail": 3,
+    "fullWithTail": 2,
+    "tailP50": 2,
+    "tailMax": 4,
+    "tailSum": 7,
+    "spanP50": 8,
+    "spanMax": 12,
+    "newestLagP50": 57,
+    "shortP50": 50,
+    "shortP90": 64,
+    "contiguous": 4,
+    "sizes": {
+     "5": 1,
+     "7": 3,
+     "6": 3,
+     "9": 5,
+     "8": 4,
+     "4": 1
+    }
+   },
+   "1500~2999": {
+    "batches": 35,
+    "matched": 31,
+    "sizeP50": 8,
+    "full": 19,
+    "withTail": 7,
+    "fullWithTail": 7,
+    "tailP50": 3,
+    "tailMax": 12,
+    "tailSum": 29,
+    "spanP50": 10,
+    "spanMax": 22,
+    "newestLagP50": 77,
+    "shortP50": 67,
+    "shortP90": 83,
+    "contiguous": 7,
+    "sizes": {
+     "9": 12,
+     "8": 7,
+     "4": 1,
+     "7": 3,
+     "3": 1,
+     "5": 3,
+     "6": 4
+    }
+   },
+   "3000+": {
+    "batches": 22,
+    "matched": 22,
+    "sizeP50": 5,
+    "full": 7,
+    "withTail": 7,
+    "fullWithTail": 6,
+    "tailP50": 2,
+    "tailMax": 8,
+    "tailSum": 21,
+    "spanP50": 6,
+    "spanMax": 18,
+    "newestLagP50": 34,
+    "shortP50": 26,
+    "shortP90": 105,
+    "contiguous": 1,
+    "sizes": {
+     "6": 2,
+     "8": 4,
+     "7": 1,
+     "3": 6,
+     "4": 4,
+     "9": 3,
+     "5": 2
+    }
+   }
+  },
+  "small": {
+   "n": 35,
+   "withTail": 2
+  },
+  "big": {
+   "n": 35,
+   "withTail": 15
+  },
+  "rows": [
+   {
+    "bot": "alex_k",
+    "T": 959,
+    "n": 5,
+    "matched": true,
+    "first": 910,
+    "lastLanded": 930,
+    "tail": 0,
+    "tailTo": 930,
+    "newestLag": 29,
+    "oldestLag": 49,
+    "short": 22,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1008,
+    "n": 7,
+    "matched": true,
+    "first": 940,
+    "lastLanded": 975,
+    "tail": 0,
+    "tailTo": 975,
+    "newestLag": 33,
+    "oldestLag": 68,
+    "short": 26,
+    "span": 8,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 1057,
+    "n": 6,
+    "matched": true,
+    "first": 980,
+    "lastLanded": 1005,
+    "tail": 0,
+    "tailTo": 1005,
+    "newestLag": 52,
+    "oldestLag": 77,
+    "short": 45,
+    "span": 6,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 1113,
+    "n": 7,
+    "matched": true,
+    "first": 1025,
+    "lastLanded": 1055,
+    "tail": 0,
+    "tailTo": 1055,
+    "newestLag": 58,
+    "oldestLag": 88,
+    "short": 51,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1176,
+    "n": 7,
+    "matched": true,
+    "first": 1080,
+    "lastLanded": 1110,
+    "tail": 0,
+    "tailTo": 1110,
+    "newestLag": 66,
+    "oldestLag": 96,
+    "short": 59,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1232,
+    "n": 9,
+    "matched": true,
+    "first": 1135,
+    "lastLanded": 1175,
+    "tail": 0,
+    "tailTo": 1175,
+    "newestLag": 57,
+    "oldestLag": 97,
+    "short": 50,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1309,
+    "n": 9,
+    "matched": true,
+    "first": 1195,
+    "lastLanded": 1240,
+    "tail": 0,
+    "tailTo": 1240,
+    "newestLag": 69,
+    "oldestLag": 114,
+    "short": 62,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1379,
+    "n": 8,
+    "matched": true,
+    "first": 1250,
+    "lastLanded": 1285,
+    "tail": 4,
+    "tailTo": 1305,
+    "newestLag": 94,
+    "oldestLag": 129,
+    "short": 67,
+    "span": 12,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 1484,
+    "n": 9,
+    "matched": true,
+    "first": 1440,
+    "lastLanded": 1480,
+    "tail": 0,
+    "tailTo": 1480,
+    "newestLag": 4,
+    "oldestLag": 44,
+    "short": -3,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1554,
+    "n": 9,
+    "matched": true,
+    "first": 1440,
+    "lastLanded": 1480,
+    "tail": 0,
+    "tailTo": 1480,
+    "newestLag": 74,
+    "oldestLag": 114,
+    "short": 67,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1624,
+    "n": 8,
+    "matched": true,
+    "first": 1505,
+    "lastLanded": 1550,
+    "tail": 0,
+    "tailTo": 1550,
+    "newestLag": 74,
+    "oldestLag": 119,
+    "short": 67,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1694,
+    "n": 9,
+    "matched": true,
+    "first": 1575,
+    "lastLanded": 1615,
+    "tail": 3,
+    "tailTo": 1635,
+    "newestLag": 79,
+    "oldestLag": 119,
+    "short": 52,
+    "span": 13,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1757,
+    "n": 9,
+    "matched": true,
+    "first": 1640,
+    "lastLanded": 1680,
+    "tail": 2,
+    "tailTo": 1690,
+    "newestLag": 77,
+    "oldestLag": 117,
+    "short": 60,
+    "span": 11,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 1827,
+    "n": 6,
+    "matched": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1911,
+    "n": 9,
+    "matched": true,
+    "first": 1780,
+    "lastLanded": 1825,
+    "tail": 0,
+    "tailTo": 1825,
+    "newestLag": 86,
+    "oldestLag": 131,
+    "short": 79,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 1995,
+    "n": 9,
+    "matched": true,
+    "first": 1850,
+    "lastLanded": 1910,
+    "tail": 0,
+    "tailTo": 1910,
+    "newestLag": 85,
+    "oldestLag": 145,
+    "short": 78,
+    "span": 13,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2170,
+    "n": 8,
+    "matched": true,
+    "first": 2015,
+    "lastLanded": 2075,
+    "tail": 0,
+    "tailTo": 2075,
+    "newestLag": 95,
+    "oldestLag": 155,
+    "short": 88,
+    "span": 13,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2247,
+    "n": 9,
+    "matched": true,
+    "first": 2115,
+    "lastLanded": 2165,
+    "tail": 0,
+    "tailTo": 2165,
+    "newestLag": 82,
+    "oldestLag": 132,
+    "short": 75,
+    "span": 11,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2352,
+    "n": 4,
+    "matched": true,
+    "first": 2235,
+    "lastLanded": 2265,
+    "tail": 0,
+    "tailTo": 2265,
+    "newestLag": 87,
+    "oldestLag": 117,
+    "short": 80,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2443,
+    "n": 7,
+    "matched": true,
+    "first": 2270,
+    "lastLanded": 2300,
+    "tail": 0,
+    "tailTo": 2300,
+    "newestLag": 143,
+    "oldestLag": 173,
+    "short": 136,
+    "span": 7,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 2527,
+    "n": 7,
+    "matched": true,
+    "first": 2410,
+    "lastLanded": 2440,
+    "tail": 0,
+    "tailTo": 2440,
+    "newestLag": 87,
+    "oldestLag": 117,
+    "short": 80,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2625,
+    "n": 3,
+    "matched": true,
+    "first": 2515,
+    "lastLanded": 2535,
+    "tail": 0,
+    "tailTo": 2535,
+    "newestLag": 90,
+    "oldestLag": 110,
+    "short": 83,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2730,
+    "n": 9,
+    "matched": true,
+    "first": 2560,
+    "lastLanded": 2600,
+    "tail": 12,
+    "tailTo": 2665,
+    "newestLag": 130,
+    "oldestLag": 170,
+    "short": 58,
+    "span": 22,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2800,
+    "n": 9,
+    "matched": true,
+    "first": 2670,
+    "lastLanded": 2730,
+    "tail": 0,
+    "tailTo": 2730,
+    "newestLag": 70,
+    "oldestLag": 130,
+    "short": 63,
+    "span": 13,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 2849,
+    "n": 9,
+    "matched": true,
+    "first": 2750,
+    "lastLanded": 2790,
+    "tail": 1,
+    "tailTo": 2800,
+    "newestLag": 59,
+    "oldestLag": 99,
+    "short": 42,
+    "span": 11,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 2912,
+    "n": 5,
+    "matched": true,
+    "first": 2825,
+    "lastLanded": 2855,
+    "tail": 0,
+    "tailTo": 2855,
+    "newestLag": 57,
+    "oldestLag": 87,
+    "short": 50,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 3080,
+    "n": 6,
+    "matched": true,
+    "first": 2935,
+    "lastLanded": 2990,
+    "tail": 0,
+    "tailTo": 2990,
+    "newestLag": 90,
+    "oldestLag": 145,
+    "short": 83,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 3192,
+    "n": 8,
+    "matched": true,
+    "first": 3030,
+    "lastLanded": 3065,
+    "tail": 3,
+    "tailTo": 3080,
+    "newestLag": 127,
+    "oldestLag": 162,
+    "short": 105,
+    "span": 11,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 3248,
+    "n": 7,
+    "matched": true,
+    "first": 3130,
+    "lastLanded": 3195,
+    "tail": 0,
+    "tailTo": 3195,
+    "newestLag": 53,
+    "oldestLag": 118,
+    "short": 46,
+    "span": 14,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 3444,
+    "n": 3,
+    "matched": true,
+    "first": 3305,
+    "lastLanded": 3315,
+    "tail": 0,
+    "tailTo": 3315,
+    "newestLag": 129,
+    "oldestLag": 139,
+    "short": 122,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 5572,
+    "n": 8,
+    "matched": true,
+    "first": 5460,
+    "lastLanded": 5495,
+    "tail": 4,
+    "tailTo": 5515,
+    "newestLag": 77,
+    "oldestLag": 112,
+    "short": 50,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 5607,
+    "n": 8,
+    "matched": true,
+    "first": 5475,
+    "lastLanded": 5510,
+    "tail": 1,
+    "tailTo": 5515,
+    "newestLag": 97,
+    "oldestLag": 132,
+    "short": 85,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 6286,
+    "n": 4,
+    "matched": true,
+    "first": 6260,
+    "lastLanded": 6275,
+    "tail": 0,
+    "tailTo": 6275,
+    "newestLag": 11,
+    "oldestLag": 26,
+    "short": 4,
+    "span": 4,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 6384,
+    "n": 3,
+    "matched": true,
+    "first": 6345,
+    "lastLanded": 6355,
+    "tail": 0,
+    "tailTo": 6355,
+    "newestLag": 29,
+    "oldestLag": 39,
+    "short": 22,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 8393,
+    "n": 4,
+    "matched": true,
+    "first": 8350,
+    "lastLanded": 8365,
+    "tail": 0,
+    "tailTo": 8365,
+    "newestLag": 28,
+    "oldestLag": 43,
+    "short": 21,
+    "span": 4,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 8603,
+    "n": 9,
+    "matched": true,
+    "first": 8560,
+    "lastLanded": 8600,
+    "tail": 0,
+    "tailTo": 8600,
+    "newestLag": 3,
+    "oldestLag": 43,
+    "short": -4,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 8995,
+    "n": 3,
+    "matched": true,
+    "first": 8975,
+    "lastLanded": 8985,
+    "tail": 0,
+    "tailTo": 8985,
+    "newestLag": 10,
+    "oldestLag": 20,
+    "short": 3,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 9156,
+    "n": 5,
+    "matched": true,
+    "first": 9100,
+    "lastLanded": 9125,
+    "tail": 0,
+    "tailTo": 9125,
+    "newestLag": 31,
+    "oldestLag": 56,
+    "short": 24,
+    "span": 6,
+    "contiguous": false
+   },
+   {
+    "bot": "alex_k",
+    "T": 9163,
+    "n": 4,
+    "matched": true,
+    "first": 9130,
+    "lastLanded": 9145,
+    "tail": 1,
+    "tailTo": 9150,
+    "newestLag": 18,
+    "oldestLag": 33,
+    "short": 6,
+    "span": 5,
+    "contiguous": true
+   },
+   {
+    "bot": "alex_k",
+    "T": 10759,
+    "n": 9,
+    "matched": true,
+    "first": 10670,
+    "lastLanded": 10710,
+    "tail": 8,
+    "tailTo": 10755,
+    "newestLag": 49,
+    "oldestLag": 89,
+    "short": -3,
+    "span": 18,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 959,
+    "n": 4,
+    "matched": true,
+    "first": 910,
+    "lastLanded": 930,
+    "tail": 1,
+    "tailTo": 940,
+    "newestLag": 29,
+    "oldestLag": 49,
+    "short": 12,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1001,
+    "n": 6,
+    "matched": true,
+    "first": 940,
+    "lastLanded": 970,
+    "tail": 0,
+    "tailTo": 970,
+    "newestLag": 31,
+    "oldestLag": 61,
+    "short": 24,
+    "span": 7,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1043,
+    "n": 6,
+    "matched": true,
+    "first": 975,
+    "lastLanded": 1000,
+    "tail": 0,
+    "tailTo": 1000,
+    "newestLag": 43,
+    "oldestLag": 68,
+    "short": 36,
+    "span": 6,
+    "contiguous": true
+   },
+   {
+    "bot": "kaito9",
+    "T": 1155,
+    "n": 8,
+    "matched": true,
+    "first": 1060,
+    "lastLanded": 1095,
+    "tail": 0,
+    "tailTo": 1095,
+    "newestLag": 60,
+    "oldestLag": 95,
+    "short": 53,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1211,
+    "n": 9,
+    "matched": true,
+    "first": 1115,
+    "lastLanded": 1155,
+    "tail": 2,
+    "tailTo": 1170,
+    "newestLag": 56,
+    "oldestLag": 96,
+    "short": 34,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1281,
+    "n": 9,
+    "matched": true,
+    "first": 1170,
+    "lastLanded": 1210,
+    "tail": 0,
+    "tailTo": 1210,
+    "newestLag": 71,
+    "oldestLag": 111,
+    "short": 64,
+    "span": 9,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1351,
+    "n": 8,
+    "matched": true,
+    "first": 1245,
+    "lastLanded": 1280,
+    "tail": 0,
+    "tailTo": 1280,
+    "newestLag": 71,
+    "oldestLag": 106,
+    "short": 64,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1414,
+    "n": 8,
+    "matched": true,
+    "first": 1315,
+    "lastLanded": 1350,
+    "tail": 0,
+    "tailTo": 1350,
+    "newestLag": 64,
+    "oldestLag": 99,
+    "short": 57,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1540,
+    "n": 8,
+    "matched": true,
+    "first": 1430,
+    "lastLanded": 1475,
+    "tail": 0,
+    "tailTo": 1475,
+    "newestLag": 65,
+    "oldestLag": 110,
+    "short": 58,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1610,
+    "n": 8,
+    "matched": true,
+    "first": 1500,
+    "lastLanded": 1535,
+    "tail": 0,
+    "tailTo": 1535,
+    "newestLag": 75,
+    "oldestLag": 110,
+    "short": 68,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1729,
+    "n": 5,
+    "matched": true,
+    "first": 1635,
+    "lastLanded": 1670,
+    "tail": 0,
+    "tailTo": 1670,
+    "newestLag": 59,
+    "oldestLag": 94,
+    "short": 52,
+    "span": 8,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 1792,
+    "n": 6,
+    "matched": true,
+    "first": 1680,
+    "lastLanded": 1725,
+    "tail": 0,
+    "tailTo": 1725,
+    "newestLag": 67,
+    "oldestLag": 112,
+    "short": 60,
+    "span": 10,
+    "contiguous": true
+   },
+   {
+    "bot": "kaito9",
+    "T": 1946,
+    "n": 8,
+    "matched": true,
+    "first": 1810,
+    "lastLanded": 1865,
+    "tail": 0,
+    "tailTo": 1865,
+    "newestLag": 81,
+    "oldestLag": 136,
+    "short": 74,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2016,
+    "n": 9,
+    "matched": true,
+    "first": 1895,
+    "lastLanded": 1940,
+    "tail": 0,
+    "tailTo": 1940,
+    "newestLag": 76,
+    "oldestLag": 121,
+    "short": 69,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2093,
+    "n": 8,
+    "matched": true,
+    "first": 1970,
+    "lastLanded": 2015,
+    "tail": 0,
+    "tailTo": 2015,
+    "newestLag": 78,
+    "oldestLag": 123,
+    "short": 71,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2177,
+    "n": 6,
+    "matched": true,
+    "first": 2065,
+    "lastLanded": 2090,
+    "tail": 0,
+    "tailTo": 2090,
+    "newestLag": 87,
+    "oldestLag": 112,
+    "short": 80,
+    "span": 6,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2247,
+    "n": 7,
+    "matched": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2380,
+    "n": 7,
+    "matched": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2450,
+    "n": 9,
+    "matched": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2534,
+    "n": 7,
+    "matched": true,
+    "first": 2395,
+    "lastLanded": 2465,
+    "tail": 0,
+    "tailTo": 2465,
+    "newestLag": 69,
+    "oldestLag": 139,
+    "short": 62,
+    "span": 15,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2611,
+    "n": 8,
+    "matched": true,
+    "first": 2470,
+    "lastLanded": 2505,
+    "tail": 7,
+    "tailTo": 2520,
+    "newestLag": 106,
+    "oldestLag": 141,
+    "short": 84,
+    "span": 11,
+    "contiguous": true
+   },
+   {
+    "bot": "kaito9",
+    "T": 2674,
+    "n": 9,
+    "matched": true,
+    "first": 2560,
+    "lastLanded": 2605,
+    "tail": 3,
+    "tailTo": 2620,
+    "newestLag": 69,
+    "oldestLag": 114,
+    "short": 47,
+    "span": 13,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2730,
+    "n": 9,
+    "matched": true,
+    "first": 2625,
+    "lastLanded": 2665,
+    "tail": 1,
+    "tailTo": 2670,
+    "newestLag": 65,
+    "oldestLag": 105,
+    "short": 53,
+    "span": 10,
+    "contiguous": true
+   },
+   {
+    "bot": "kaito9",
+    "T": 2870,
+    "n": 6,
+    "matched": true,
+    "first": 2810,
+    "lastLanded": 2835,
+    "tail": 0,
+    "tailTo": 2835,
+    "newestLag": 35,
+    "oldestLag": 60,
+    "short": 28,
+    "span": 6,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 2919,
+    "n": 6,
+    "matched": true,
+    "first": 2845,
+    "lastLanded": 2870,
+    "tail": 0,
+    "tailTo": 2870,
+    "newestLag": 49,
+    "oldestLag": 74,
+    "short": 42,
+    "span": 6,
+    "contiguous": true
+   },
+   {
+    "bot": "kaito9",
+    "T": 2996,
+    "n": 5,
+    "matched": true,
+    "first": 2895,
+    "lastLanded": 2915,
+    "tail": 0,
+    "tailTo": 2915,
+    "newestLag": 81,
+    "oldestLag": 101,
+    "short": 74,
+    "span": 5,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 3122,
+    "n": 9,
+    "matched": true,
+    "first": 2940,
+    "lastLanded": 2985,
+    "tail": 2,
+    "tailTo": 2995,
+    "newestLag": 137,
+    "oldestLag": 182,
+    "short": 120,
+    "span": 12,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 3185,
+    "n": 6,
+    "matched": true,
+    "first": 3055,
+    "lastLanded": 3080,
+    "tail": 0,
+    "tailTo": 3080,
+    "newestLag": 105,
+    "oldestLag": 130,
+    "short": 98,
+    "span": 6,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 5768,
+    "n": 3,
+    "matched": true,
+    "first": 5745,
+    "lastLanded": 5755,
+    "tail": 0,
+    "tailTo": 5755,
+    "newestLag": 13,
+    "oldestLag": 23,
+    "short": 6,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 5803,
+    "n": 4,
+    "matched": true,
+    "first": 5750,
+    "lastLanded": 5765,
+    "tail": 0,
+    "tailTo": 5765,
+    "newestLag": 38,
+    "oldestLag": 53,
+    "short": 31,
+    "span": 4,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 5831,
+    "n": 3,
+    "matched": true,
+    "first": 5810,
+    "lastLanded": 5820,
+    "tail": 0,
+    "tailTo": 5820,
+    "newestLag": 11,
+    "oldestLag": 21,
+    "short": 4,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 6398,
+    "n": 3,
+    "matched": true,
+    "first": 6355,
+    "lastLanded": 6365,
+    "tail": 0,
+    "tailTo": 6365,
+    "newestLag": 33,
+    "oldestLag": 43,
+    "short": 26,
+    "span": 3,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 9156,
+    "n": 8,
+    "matched": true,
+    "first": 9100,
+    "lastLanded": 9135,
+    "tail": 2,
+    "tailTo": 9145,
+    "newestLag": 21,
+    "oldestLag": 56,
+    "short": 4,
+    "span": 10,
+    "contiguous": false
+   },
+   {
+    "bot": "kaito9",
+    "T": 10759,
+    "n": 5,
+    "matched": true,
+    "first": 10705,
+    "lastLanded": 10725,
+    "tail": 0,
+    "tailTo": 10725,
+    "newestLag": 34,
+    "oldestLag": 54,
+    "short": 27,
+    "span": 5,
+    "contiguous": false
+   }
+  ]
+ },
+ "wallLag": {
+  "match": "A073",
+  "bots": [
+   {
+    "bot": "ryan_m",
+    "event": "end",
+    "tick": 4181,
+    "server": 4181.0,
+    "lag": -0.0,
+    "group": "rep=N"
+   },
+   {
+    "bot": "leo_tx",
+    "event": "end",
+    "tick": 4942,
+    "server": 4945.8,
+    "lag": 3.8,
+    "group": "rep=N"
+   },
+   {
+    "bot": "zexos1",
+    "event": "end",
+    "tick": 5547,
+    "server": 5547.9,
+    "lag": 0.9,
+    "group": "rep=N"
+   },
+   {
+    "bot": "talon5",
+    "event": "end",
+    "tick": 5657,
+    "server": 5668.5,
+    "lag": 11.5,
+    "group": "rep=N"
+   },
+   {
+    "bot": "zero_7",
+    "event": "end",
+    "tick": 5657,
+    "server": 5681.3,
+    "lag": 24.3,
+    "group": "rep=N"
+   }
+  ],
+  "n": 5,
+  "ge35": 0,
+  "ge90": 0,
+  "max": 24.3
+ }
 }
