@@ -1139,13 +1139,71 @@ def main():
         P('### 表 G4　从开局一口气放开跑到 t=5184 或录像结束（中间不重新对齐）')
         P('')
         CVF['0→5184（或录像结束）'] = chain_vs_free(FS, [0, None], '0→5184', per_match=True)
+        # 同一批放开跑沿途的水平：每 30 拍有一个采样，取离断面最近的那个
+        def rel_at(series, t):
+            x = min(series, key=lambda q: abs(q['t'] - t))
+            if abs(x['t'] - t) > 30 or not x['humTerr']:
+                return None
+            return x['terr'] / x['humTerr']
+        CPS = [630, 1500, 2400, 3213, 4284, 5184]
+        tr = {}
+        for k, e in FS.items():
+            c1, c2 = seeds(e, 'C1'), seeds(e, 'C2')
+            if not (c1 and c2) or e['meta'].get('truncated') or 'series' not in e['history']:
+                continue
+            for t in CPS:
+                h = rel_at(e['history']['series'], t)
+                a1 = [rel_at(m['series'], t) for m in c1 if m.get('series')]
+                a2 = [rel_at(m['series'], t) for m in c2 if m.get('series')]
+                if h is None or not a1 or not a2 or None in a1 or None in a2:
+                    continue
+                # 人均相对领土 = (我方领土 ÷ 席位) ÷ (全体真人领土 ÷ 人数)；同一局里席位数与人数相同，比值里约掉
+                sq = e['meta'].get('squad')
+                nseat = len(sq) if isinstance(sq, (list, tuple)) else sq
+                scale = (e['meta']['humans'] / nseat) if (nseat and e['meta'].get('humans')) else None
+                tr.setdefault(t, []).append({'mid': k[0], 'lag': GROUP.get(k[0]) != '通道干净', 'h': h, 'c1': mean(a1), 'c2': mean(a2), 'hrel': h * scale if scale else None, 'scale': scale})
+        if tr:
+            P('同一批放开跑沿途各断面的水平（每 30 拍一个采样，取离断面最近的；历史的人均相对领土低于 %.2f 的局在那个断面不算）：' % CHAIN_FLOOR)
+            P('')
+            P('| 断面 | 组 | 局数 | 水平（人均相对领土的几何均值）：历史 / C2 / C1 | 历史 ÷ C2 放开跑 | C2 ÷ C1（放开跑） | 历史 ÷ C1 放开跑 | 历史低于 C2 的局数 | 通道模型解释的占比 ln(C2÷C1) ÷ ln(历史÷C1) |')
+            P('| :-- | :-- | --: | :-- | --: | --: | --: | :-- | --: |')
+            g5 = []
+            for t in CPS:
+                rows = [r for r in tr.get(t, []) if r['hrel'] is not None and r['hrel'] >= CHAIN_FLOOR and r['c1'] > 0 and r['c2'] > 0]
+                for lab, sel in (('通道干净', [r for r in rows if not r['lag']]), ('有落后', [r for r in rows if r['lag']]), ('全部', rows)):
+                    if not sel:
+                        continue
+                    g = lambda f: math.exp(mean([math.log(f(r)) for r in sel]))
+                    def gci(f):
+                        ci = boot_ci([math.log(f(r)) for r in sel])
+                        return f"（×{math.exp(ci[0]):.2f} ~ ×{math.exp(ci[1]):.2f}）" if ci else ''
+                    hc2, c21, hc1 = g(lambda r: r['h'] / r['c2']), g(lambda r: r['c2'] / r['c1']), g(lambda r: r['h'] / r['c1'])
+                    share = f"{math.log(c21) / math.log(hc1):.0%}" if abs(math.log(hc1)) > 0.15 else '-'
+                    lv = (g(lambda r: r['hrel']), g(lambda r: r['c2'] * r['scale']), g(lambda r: r['c1'] * r['scale']))
+                    P(f"| t={t} | {lab} | {len(sel)} | {lv[0]:.2f} / {lv[1]:.2f} / {lv[2]:.2f} | ×{hc2:.2f}{gci(lambda r: r['h'] / r['c2'])} | ×{c21:.2f}{gci(lambda r: r['c2'] / r['c1'])} | ×{hc1:.2f}{gci(lambda r: r['h'] / r['c1'])} | {sum(1 for r in sel if r['h'] < r['c2'])}/{len(sel)} | {share} |")
+                    g5.append({'t': t, 'group': lab, 'n': len(sel), 'histLevel': lv[0], 'c2Level': lv[1], 'c1Level': lv[2], 'histOverC2': hc2, 'c2OverC1': c21, 'histOverC1': hc1})
+            P('')
+            oth = []
+            for k, e in FS.items():
+                for m in seeds(e, 'C2') or []:
+                    if m.get('others') and m.get('div'):
+                        oth.append(((m['others']['rerouted'] + m['others']['dropped']) / max(1, m['others']['atk']), m['div']['othersL1'] / max(1, m['div']['othersHist'])))
+            if oth:
+                P(f"放开跑到终点时，C2 臂里其余真人的陆攻有 {mean([x[0] for x in oth]) * 100:.0f}% 改打或作废（各局各种子的均值），他们逐人领土与历史的 L1 偏差是历史总量的 {mean([x[1] for x in oth]) * 100:.0f}%。"
+                  '（每个窗口各自起跑时这两个数是 7% 上下与 1%–6%，见表 P。）')
+                P('')
+            with open(os.path.join(DST, 'ckpt_freerun_path.csv'), 'w', newline='') as fo:
+                w = csv.DictWriter(fo, fieldnames=list(g5[0].keys()))
+                w.writeheader()
+                for r in g5:
+                    w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
 
     # ---- 累计通道效应的几种估计放在一张表里
     if any(CVF.values()):
         P('### 表 Z　累计的通道效应：窗口连乘 对 一口气放开跑（人均相对领土，几何均值；「历史 ÷ C1」越小 = 通道效应越大）')
         P('')
-        P('| 区间 | 组 | 局数 | 历史 ÷ C1：连乘 | 历史 ÷ C1：放开跑 | C2 ÷ C1：连乘 | C2 ÷ C1：放开跑 | 历史 ÷ C2：连乘 | 历史 ÷ C2：放开跑 | C1 的水平：连乘 ÷ 放开跑 | 历史 ÷ C1（放开跑）< 1 的局数 |')
-        P('| :-- | :-- | --: | --: | --: | --: | --: | --: | --: | --: | :-- |')
+        P('| 区间 | 组 | 局数 | 历史 ÷ C1：连乘 | 历史 ÷ C1：放开跑 | C2 ÷ C1：连乘 | C2 ÷ C1：放开跑 | 历史 ÷ C2：连乘 | 历史 ÷ C2：放开跑 | C1 的水平：连乘 ÷ 放开跑 | 历史 ÷ C1（放开跑）< 1 的局数 | 通道模型解释的占比 ln(C2÷C1) ÷ ln(历史÷C1)：连乘 / 放开跑 |')
+        P('| :-- | :-- | --: | --: | --: | --: | --: | --: | --: | --: | :-- | :-- |')
         z_rows = []
         for label, rows in CVF.items():
             for lab, sel in (('通道干净', [r for r in rows or [] if not r['lag']]), ('有落后', [r for r in rows or [] if r['lag']]), ('全部', rows or [])):
@@ -1164,7 +1222,11 @@ def main():
                 z_rows.append(z)
                 P(f"| {label} | {lab} | {z['n']} | ×{z['histOverC1chain']:.2f}{gci(lambda r: r['hist'] / r['ch']['C1'])} | ×{z['histOverC1free']:.2f}{gci(lambda r: r['hist'] / r['free']['C1'])} | "
                   f"×{z['c2OverC1chain']:.2f} | ×{z['c2OverC1free']:.2f}{gci(lambda r: r['free']['C2'] / r['free']['C1'])} | ×{z['histOverC2chain']:.2f} | ×{z['histOverC2free']:.2f}{gci(lambda r: r['hist'] / r['free']['C2'])} | "
-                  f"×{z['c1ChainOverFree']:.2f}{gci(lambda r: r['ch']['C1'] / r['free']['C1'])} | {z['nBelow']}/{z['n']} |")
+                  f"×{z['c1ChainOverFree']:.2f}{gci(lambda r: r['ch']['C1'] / r['free']['C1'])} | {z['nBelow']}/{z['n']} | "
+                  + (f"{math.log(z['c2OverC1chain']) / math.log(z['histOverC1chain']):.0%} / {math.log(z['c2OverC1free']) / math.log(z['histOverC1free']):.0%}"
+                     if min(abs(math.log(z['histOverC1chain'])), abs(math.log(z['histOverC1free']))) > 0.15 else '-') + ' |')
+                z['shareChain'] = math.log(z['c2OverC1chain']) / math.log(z['histOverC1chain']) if abs(math.log(z['histOverC1chain'])) > 0.15 else None
+                z['shareFree'] = math.log(z['c2OverC1free']) / math.log(z['histOverC1free']) if abs(math.log(z['histOverC1free'])) > 0.15 else None
         P('')
         with open(os.path.join(DST, 'ckpt_cumulative.csv'), 'w', newline='') as fo:
             w = csv.DictWriter(fo, fieldnames=list(z_rows[0].keys()))
@@ -1173,6 +1235,18 @@ def main():
                 w.writerow({k: (round(v, 5) if isinstance(v, float) else v) for k, v in r.items()})
         P('连乘 = 把首尾相接的窗口（每个都从历史的断面起跑）的比值乘起来；放开跑 = 从区间起点一口气跑到终点，中间不回到历史。放开跑只有 C1、C2 各 2–3 个种子。括号里是按局重抽样的 90%% 区间（不到 4 局的不给）。'
           '两种算法进的是同一批局：有一条臂或历史的人均相对领土低于 %.2f 的局两边都不算。' % CHAIN_FLOOR)
+        P('')
+        # 结论用的紧凑版：只留从开局起算的三段
+        P('从开局起算的三段，紧凑版（每格：连乘 / 放开跑）：')
+        P('')
+        P('| 从开局到 | 组 | 局数 | 历史 ÷ 健康通道（C1） | 其中通道模型复现的：C2 ÷ C1 | 没解释的残差：历史 ÷ C2 | 通道模型复现的占比（ln 口径） |')
+        P('| :-- | :-- | --: | :-- | :-- | :-- | :-- |')
+        for z in z_rows:
+            if not z['span'].startswith('0→'):
+                continue
+            sh = (f"{z['shareChain']:.0%} / {z['shareFree']:.0%}" if z.get('shareChain') is not None and z.get('shareFree') is not None else '-')
+            P(f"| {z['span'].replace('0→', '').replace('（或录像结束）', ' 拍或录像结束') + ('' if '录像' in z['span'] else ' 拍')} | {z['group']} | {z['n']} | ×{z['histOverC1chain']:.2f} / ×{z['histOverC1free']:.2f} | ×{z['c2OverC1chain']:.2f} / ×{z['c2OverC1free']:.2f} | "
+              f"×{z['histOverC2chain']:.2f} / ×{z['histOverC2free']:.2f} | {sh} |")
         P('')
 
     # ---- 敏感度：换阶梯来源、换补法
