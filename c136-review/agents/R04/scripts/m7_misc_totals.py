@@ -4,6 +4,7 @@
 #   1) 真引擎重放与日志快照的对账点数合计（out/engine-replay-check.txt，scripts/engine_replay_check.sh 的输出）
 #   2) hub 的纯 JS 重放脚本对日志快照的核对合计（out/hub-resim-check.txt，scripts/hub_resim_check.sh 的输出）
 #   3) 我早先的重放脚本重放 A013 的对账结果原文（out/resim-A013.txt，scripts/resim.mjs 的输出）里的汇总行
+#   4) 表 14 里「贴着内置 AI 的号·决策拍：总数 / 出手 / 被闸门卡住」一行的两个占比（out/m7/TABLES.md 只给了条数）
 import os, re, sys
 sys.dont_write_bytecode = True
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,6 +54,16 @@ def main():
         for ln in open(fp, encoding='utf8'):
             if re.search(r'完全一致|中位|拒|首次不一致|首个不一致', ln):
                 print('  ' + ln.rstrip()[:400])
+    fp = os.path.join(ROOT, 'out', 'm7', 'TABLES.md')
+    if os.path.exists(fp):
+        for ln in open(fp, encoding='utf8'):
+            if not ln.startswith('| 贴着内置 AI 的号·决策拍 600~1499 拍：总数 / 出手 / 被闸门卡住'):
+                continue
+            cells = [c.strip() for c in ln.strip().strip('|').split('|')]
+            for name, cell in (('13 局合计', cells[2]), ('去掉 A073', cells[3])):
+                tot, act, blk = [int(x) for x in re.findall(r'\d+', cell)]
+                print('表 14「贴着内置 AI 的号·决策拍 600~1499 拍」%s：总数 %d，出手 %d（%.0f%%），被闸门卡住 %d（%.0f%%）' % (
+                    name, tot, act, 100.0 * act / tot, blk, 100.0 * blk / tot))
 
 
 if __name__ == '__main__':

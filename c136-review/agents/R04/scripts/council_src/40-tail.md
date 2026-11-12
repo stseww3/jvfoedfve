@@ -54,4 +54,4 @@
 | 配额、税、上限的规则和沙箱比对 | `scripts/live-donation-check.cjs` | `reports/MECHANICS-B.md`、`out/live-donation-check.txt` |
 | 跨局归纳和 14 张假设卡 | `scripts/m7_report_build.py` | `reports/CROSS-MATCH-SUMMARY.md`、`cards/H01~H14` |
 
-正文里带小数、带百分号、或三位以上的数，用 `scripts/m7_numcheck.py reports/COUNCIL-PROPOSAL.md` 对过，都能在上面的产物里原样找到（由 `scripts/council_build.sh` 在拼文件时一并跑）。一两位的整数脚本不查，是我对着产物读的。脚本只保证数没有抄错，不保证句子没有说错。公式里的常数（`12/1024`、`64/1024`、`100×`、`150×` 等）写在代码体里，出处是 `reports/M1-KNOWN-MECHANICS.md` 和 `reports/MECHANICS-B.md`。
+正文里带小数、带百分号、或三位以上的数，用 `scripts/m7_numcheck.py reports/COUNCIL-PROPOSAL.md` 对过，都能在上面的产物里原样找到（由 `scripts/council_build.sh` 在拼文件时一并跑）。一两位的整数脚本不查，是我对着产物读的。点了局号的句子和表格行，再用 `scripts/council_attrcheck.py` 查过里面的数是不是出现在所点的那几局自己的产物里（结果在 `out/m7/council_attrcheck.txt`）：对不上的都是跨局的合计或区间，没有张冠李戴的。这两个脚本只保证数没有抄错、没有安错局，不保证句子没有说错。公式里的常数（`12/1024`、`64/1024`、`100×`、`150×` 等）写在代码体里，出处是 `reports/M1-KNOWN-MECHANICS.md` 和 `reports/MECHANICS-B.md`。
