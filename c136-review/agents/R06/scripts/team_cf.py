@@ -3,6 +3,7 @@
 在同一份录像头（全体真人的名字、颜色、真人数、配置队数）上，只改我方号「进房间时的名字标签 / 颜色」，看 20 个号会被分到哪。
 
 用法：python3 team_cf.py [<matchId> ...]        不带局号 = 有录像头的 12 局
+      python3 team_cf.py --peek <解码目录> <matchId> ...   别的编队（如 A 组）的录像头：战队标签与入队方式
 
 每局四行：
   实际       ：按真实名字和颜色重算（先与真引擎重放的队伍表核对，全部一致才往下算）。
@@ -88,7 +89,31 @@ def one(mid):
     return out
 
 
+def peek(ids, d):
+    """别的编队进房间时带不带标签、被引擎怎么分：只读录像头。
+    先解码：bash c136-review/tools/run-heavy.sh node scripts/replay_decode.mjs <局> <目录>，再 python3 team_cf.py --peek <目录> <局> ..."""
+    import json
+    print('| 局 | 真人 / 配置队数 → 实际队数 | 人数 >=2 的战队（标签：人数 → 队号） | 这些战队成员的入队方式 |')
+    print('|---|---|---|---|')
+    for mid in ids:
+        f = os.path.join(d, mid, 'replay_decoded.json')
+        if not os.path.exists(f):
+            print(f"| {mid} | 没有 {f} | | |")
+            continue
+        dec = json.load(open(f))
+        s = dec['settings']
+        H, n, P = s['humanCount'], s['numberTeams'], s['playerCount']
+        res = TA.assign_teams(list(dec['names']), list(dec['colors']), H, n, P)
+        big = {t: m for t, m in res['clans'].items() if len(m) >= 2}
+        how = Counter(res['how'][p] for m in big.values() for p in m)
+        clans = '；'.join(f"[{t}]：{len(m)} 人 → 队{'/'.join(str(x) for x in sorted(set(res['team'][p] for p in m)))}" for t, m in sorted(big.items(), key=lambda kv: -len(kv[1])))
+        print(f"| {mid} | {H} / {n} → {res['teams']} | {clans or '无'} | {'、'.join(f'{k} {v}' for k, v in how.items()) or '—'} |")
+
+
 def main():
+    if '--peek' in sys.argv:
+        i = sys.argv.index('--peek')
+        return peek(sys.argv[i + 2:], sys.argv[i + 1])
     ids = [a for a in sys.argv[1:] if not a.startswith('-')] or DEFAULT
     rows = [o for o in (one(m) for m in ids) if o]
     print('| 局 | 真人 / 配置队数 / 每队上限 | 我方号 | 与真引擎队伍表核对 | 实际 | 同一个标签 | 同一个颜色 | 两个颜色各一半 |')

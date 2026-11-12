@@ -789,6 +789,19 @@ def sec_foes(ms):
                  f"{S['bigL']} / {wan(S['bigLT'])}", f"{S['fdN']} / {wan(S['fdD'])}", f"{S['fdHiN']} / {wan(S['fdHiD'])}", None])
     table(['局', '围攻（>=20 万兵的组）：组 / 兵', '第一条时目标密度中位', '出手方密度中位', '兵力比中位', '目标自己还手（占对方出兵）', '一兵没还的组', '别的我方号同期打这个外人', '末条后 600 拍内阵亡', '末条后 100 拍领土不到开打时一半',
            '大登陆（>= 目标兵的一半且 >=2 万）：次 / 兵', '外人之间的捐款：笔 / 到账', '其中 pct>=900：笔 / 到账', '收得最多的外人'], rows)
+    # 合计的几条细分（按拍、按出手方密度、围攻期间目标的捐款进出、登陆、外人捐款的时间）
+    bands = ['<1500', '1500~3000', '3000~4284', '>=4284']
+    tb = {k: [sum(g(d['hits']['tband'], k, 'n') for d in ps), sum(g(d['hits']['tband'], k) for d in ps)] for k in bands}
+    ad = {k: sum(g(d['hits']['adens'], k) for d in ps) for k in ('<60', '60~90', '90~110', '>=110')}
+    print('   打击按执行拍（条 / 兵）：' + '；'.join(f"{k} {tb[k][0]} / {wan(tb[k][1])}" for k in bands) + f"。4284 拍以后占兵的 {pc(tb['>=4284'][1], T['troops'], 0)}")
+    print('   打击按出手方密度（兵占比）：' + '、'.join(f"{k} {pc(v, T['troops'], 0)}" for k, v in ad.items()))
+    print(f"   围攻窗口内目标收到捐款 {wan(sum(d['sieges']['donIn'] for d in ps))}、捐出 {wan(sum(d['sieges']['donOut'] for d in ps))}")
+    ln, lt = sum(d['landings']['n'] for d in ps), sum(d['landings']['troops'] for d in ps)
+    lb = {k: sum(d['landings']['tband'].get(k, 0) for d in ps) for k in bands}
+    print(f"   外人登陆我方在场号：{ln} 次 / {wan(lt)}（各局 {' / '.join(str(d['landings']['n']) for d in ps)}）；大登陆按拍：" + '、'.join(f"{k} {lb[k]}" for k in bands)
+          + '；4284 拍以后的各局：' + '、'.join(f"{d['matchId']} {d['landings']['tband'].get('>=4284', 0)}" for d in ps))
+    print(f"   外人之间的捐款里 t>=3213 的：{sum(d['foeDon'].get('late', 0) for d in ps)} 笔；pct>=900 各局：" + '、'.join(f"{d['matchId']} {d['foeDon']['hiN']} / {wan(d['foeDon']['hiDelivered'])}" for d in ps))
+    print()
     print('**每局对我方出兵最多的 3 个外人**')
     rows = []
     for d in ps:
@@ -804,6 +817,38 @@ def sec_foes(ms):
           f"{pc(op('<100'), o_t, 0)} / {pc(op('100~199'), o_t, 0)} / {pc(op('200~399'), o_t, 0)} / {pc(op('400~899'), o_t, 0)} / {pc(op('>=900'), o_t, 0)}；各局千分比中位 {' / '.join(str(d['ours']['pctMed']) for d in ps)}")
     print('   同一局里的打击互相关联（同一个外人连着打同一个号），合计占比只作描述。出手方密度按「出手前余额 ÷ 当拍领土」，连续出兵的人这个值会一路走低。')
     print()
+    # 围攻：目标自己还手多少 × 结局（观察性对照；按开打时的兵力比分层）
+    allr = [dict(r, id=d['matchId']) for d in ps for r in d['sieges']['rows']]
+    if allr:
+        def cell(L):
+            if not L:
+                return '—'
+            dd = sum(1 for r in L if r['died'])
+            hh = sum(1 for r in L if r['terr1'] < 0.5 * r['terr0'])
+            return f"{len(L)} 组：600 拍内阵亡 {dd}（{pc(dd, len(L), 0)}）、领土剩不到一半 {hh}（{pc(hh, len(L), 0)}）"
+        back = [('一兵没还', lambda r: r['mine'] == 0), ('还手 < 对方出兵的 25%', lambda r: 0 < r['mine'] < 0.25 * r['troops']),
+                ('还手 25%~100%', lambda r: 0.25 * r['troops'] <= r['mine'] < r['troops']), ('还手 >= 对方出兵', lambda r: r['mine'] >= r['troops'])]
+        print('**围攻：目标自己还手多少 × 之后的结局**（还手 = [首条 −300, 末条 +100] 里目标对这个外人的出兵；兵力比 = 开打时外人余额 ÷ 目标的兵）')
+        rows = []
+        for name, fn in back:
+            L = [r for r in allr if fn(r)]
+            rows.append([name, cell(L)] + [cell([r for r in L if lo <= r['ratio'] < hi]) for lo, hi in ((0, 2), (2, 4), (4, 1e18))])
+        table(['目标的还手', '全部', '兵力比 <2', '兵力比 2~4', '兵力比 >=4'], rows)
+        some_lower = tie = 0
+        parts = []
+        for d in ps:
+            z = [r for r in d['sieges']['rows'] if r['mine'] == 0]
+            sm = [r for r in d['sieges']['rows'] if r['mine'] > 0]
+            if not z or not sm:
+                continue
+            a_ = sum(1 for r in z if r['died']) / len(z)
+            b_ = sum(1 for r in sm if r['died']) / len(sm)
+            some_lower += b_ < a_
+            tie += b_ == a_
+            parts.append(f"{d['matchId']} {sum(1 for r in z if r['died'])}/{len(z)} 对 {sum(1 for r in sm if r['died'])}/{len(sm)}")
+        print(f"   按局（一兵没还 对 有还手，600 拍内阵亡）：{'、'.join(parts)}；有还手的阵亡比例更低的 {some_lower} 局、相同 {tie} 局、更高 {len(parts) - some_lower - tie} 局")
+        print('   这是观察性对照：还得了手的号本来就更强、活得更久（死得快的来不及还手）。按兵力比分层以后，兵力比 <4 的组里差别还在，>=4 的组里没有差别。')
+        print()
     return [dict(id=d['matchId'], hits={k: v for k, v in d['hits'].items()}, sieges={k: v for k, v in d['sieges'].items() if k != 'rows'}, landings=d['landings'], foeDon=d['foeDon'], top=d['top'], ours=d['ours']) for d in ps] + [dict(id='ALL', hits=T, sieges=S)]
 
 
