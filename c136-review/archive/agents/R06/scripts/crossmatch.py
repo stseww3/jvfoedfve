@@ -828,6 +828,13 @@ def sec_foes(ms):
             return f"{len(L)} 组：600 拍内阵亡 {dd}（{pc(dd, len(L), 0)}）、领土剩不到一半 {hh}（{pc(hh, len(L), 0)}）"
         back = [('一兵没还', lambda r: r['mine'] == 0), ('还手 < 对方出兵的 25%', lambda r: 0 < r['mine'] < 0.25 * r['troops']),
                 ('还手 25%~100%', lambda r: 0.25 * r['troops'] <= r['mine'] < r['troops']), ('还手 >= 对方出兵', lambda r: r['mine'] >= r['troops'])]
+        qq = lambda v, p_: sorted(v)[min(len(v) - 1, int(p_ * len(v)))]
+        ns, ls, ts = [r['n'] for r in allr], [r['t1'] - r['t0'] for r in allr], [r['troops'] for r in allr]
+        t0b = [(0, 1500, '<1500'), (1500, 3000, '1500~3000'), (3000, 4284, '3000~4284'), (4284, 10 ** 9, '>=4284')]
+        print(f"   围攻的形状（{len(allr)} 组）：每组指令数中位 {qq(ns, 0.5)}、P90 {qq(ns, 0.9)}、最多 {max(ns)}；首末条相隔中位 {qq(ls, 0.5)} 拍、P90 {qq(ls, 0.9)} 拍；每组出兵中位 {wan(qq(ts, 0.5))}、P90 {wan(qq(ts, 0.9))}；"
+              f"带登陆的 {sum(1 for r in allr if r.get('boats'))} 组；开打时兵力比 >=2 的 {sum(1 for r in allr if r['ratio'] >= 2)} 组、<1 的 {sum(1 for r in allr if r['ratio'] < 1)} 组；"
+              '开打拍：' + '、'.join(f"{nm} {sum(1 for r in allr if lo <= r['t0'] < hi)}" for lo, hi, nm in t0b))
+        print()
         print('**围攻：目标自己还手多少 × 之后的结局**（还手 = [首条 −300, 末条 +100] 里目标对这个外人的出兵；兵力比 = 开打时外人余额 ÷ 目标的兵）')
         rows = []
         for name, fn in back:
@@ -921,6 +928,13 @@ def sec_money(ms):
               f"捐款 {sum(o['don'].get('n', 0) for o in out)} 笔、到账 {wan(del_d)}、手续费 {wan(fee_d)}（损耗率 {pc(fee_d, fee_d + del_d)}；÷利息 {pc(fee_d, I)}）；给空壳 {sum(o['don'].get('toHuskN', 0) for o in out)} 笔、到账 {wan(sum(o['don'].get('toHuskDelivered', 0) for o in out))}、手续费 {wan(sum(o['don'].get('toHuskFee', 0) for o in out))}；"
               f"小额 pct {sum(o['don'].get('smallPctN', 0) for o in out)} 笔、到账 {wan(sum(o['don'].get('smallPctDelivered', 0) for o in out))}、手续费 {wan(sum(o['don'].get('smallPctFee', 0) for o in out))}；回兵溢出 {wan(sum(o['回兵溢出'] for o in out))}；空壳少拿 {wan(sum(o['空壳少拿'] for o in out))}；"
               f"战斗耗兵 {wan(sum(o['战斗耗兵'] for o in out))}、被打掉兵 {wan(sum(o['被打掉兵'] for o in out))}；得地 {sum(o['得地'] for o in out):,} 格、失地 {sum(o['失地'] for o in out):,} 格")
+    if out:
+        cap = sum(o['顶格少拿'] for o in out)
+        fa = sum(o['出兵手续费'] for o in out)
+        ov = sum(o['回兵溢出'] for o in out)
+        eff = I - fee_d - fa - ov
+        print(f"   有效产兵 = 实得利息 − 捐款手续费 − 出兵/发船手续费 − 回兵溢出 = {wan(eff)}；应得利息 = 实得 + 顶格少拿 = {wan(I + cap)}；有效产兵率 = {pc(eff, I + cap)}")
+        print('   各局有效产兵率：' + '、'.join(f"{o['id']} {pc(o['利息+地租'] - o['don'].get('fee', 0) - o['出兵手续费'] - o['回兵溢出'], o['利息+地租'] + o['顶格少拿'], 0)}" for o in out))
     print()
     print('### 兵力账（日志侧估算，15 局同口径：logdigest.py overcap / donlog）')
     rows2, out2 = [], []

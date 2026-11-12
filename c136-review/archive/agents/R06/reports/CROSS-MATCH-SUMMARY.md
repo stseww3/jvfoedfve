@@ -484,6 +484,7 @@ squad10 进房间的名字都带 `[APEX]`，重算里 10 个号的入队方式�
 | `scripts/boatflow.py <局> [json]` | 船账：每条船带多少兵、交多少费、靠在谁的岸上（本次新增） | `sim_state.json`、`probe.json` |
 | `scripts/boxsum.py`、`scripts/husksum.py` | 被围账、空壳账（跨局合计，写 `out/_cross/boxsum.txt`、`husksum.txt`；本次新增） | `sim_state.json` |
 | `scripts/team_assign.py`、`scripts/team_cf.py` | 引擎分队算法的移植；分队反事实（同一个标签 / 同一个颜色），写 `out/_cross/team_cf.txt`（本次新增） | `replay_decoded.json` |
+| `scripts/apexchk.py`、`scripts/tickcost.py`、`scripts/ccb_feas.py` | 外人统计里另一支我方编队占多少；页面决策耗时（HL-TICK 的 avgMs / maxMs）；历史断面重演的可行性（断面可用局数、外人指令构成）。产物在 `out/_cross/`（本次新增） | `sim_state.json`、日志、`probe.json` |
 | `scripts/simdigest.py <局> <段>` | 单局真值事实表（41 段） | `sim_state.json` |
 | `scripts/logdigest.py <局> <段>`、`digest.py` | 单局日志侧事实表 | 对局包 |
 | `scripts/sections.sh <局> dig｜log｜sim｜led｜foe` | 把一局的全部事实表落到 `out/<局>/sec/` | — |
