@@ -198,6 +198,14 @@ def main():
     T["分层-逐拍"] = md(["观察拍", "局数", "ρ 历史（几何平均）", "出生站位", "规则（余项）", "基础延迟", "按住与成批放行", "合计", "规则 + 基础延迟（正常通道下原策略相对基准）"], rows)
 
     rows = []
+    cpth = J.get("chanPath") or {}
+    for t in (60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 1500):
+        x = cpth.get(str(t))
+        if x:
+            rows.append([t, x["n"], sg(x["base"]), sg(x["baseMed"]), sg(x["hold"]), sg(x["holdMed"])])
+    T["通道差-逐拍"] = md(["观察拍", "局数", "基础延迟：平均", "中位数", "按住与成批放行：平均", "中位数"], rows)
+
+    rows = []
     sh = J.get("shares") or {}
     SK = ("spawn", "hold", "rulebase", "rule", "base")
     for key, name in (("level1500", "到 1500 拍的落后"), ("change630_1500", "630 → 1500 拍之间新增的落后")):
@@ -488,6 +496,8 @@ def main():
         notes["分层-1500-相关2"] = f"按住与成批放行这一项 与 0~1500 拍没落地的指令占比：秩相关 {F['holdCorrDrop']}（{len(hd)} 局）"
     rbv = {g: G[g]["t0_1500"]["rule"] + G[g]["t0_1500"]["base"] for g in GAMES if G.get(g, {}).get("t0_1500") and G[g]["t0_1500"].get("rule") is not None}
     if rbv:
+        for g, x in rbv.items():
+            F[f"rb_{g}"] = sg(x)
         F["rbNegN"] = str(sum(1 for x in rbv.values() if x < 0))
         F["rbPosList"] = "、".join(f"{g}（{sg(rbv[g])}）" for g in GAMES if g in rbv and rbv[g] >= 0)
         F["rbPosN"] = str(sum(1 for x in rbv.values() if x >= 0))

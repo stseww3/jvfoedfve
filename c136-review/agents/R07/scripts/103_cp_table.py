@@ -360,6 +360,44 @@ def main():
         P(f"{T}\t{f(gm, 2)}\t{n}\t{math.exp(-m['total']):.3f}\t" + "\t".join(f(m[k], sign=True) for k in ("spawn", "rule", "base", "hold", "total", "bias", "raw1")))
     P("")
 
+    # ---------- 表 1d：断面 0 出发，两项通道差逐拍怎么长出来（每 60 拍；各局平均）
+    P("## 表 1d：断面 0 出发，两项通道差逐拍（各局平均；每局先对种子取平均）")
+    P("观察拍\t局数\t基础延迟 ln ρC0 − ln ρC1\t其中我方领土 ln(C0 ÷ C1)\t按住与成批放行 ln ρC1 − ln ρC2p\t其中我方领土 ln(C1 ÷ C2p)\t基础延迟：各局中位数\t按住与成批放行：各局中位数")
+    J["chanPath"] = {}
+
+    def run_ln(g, tags, t, key):
+        h = base[g]
+        vals = []
+        for tg in tags:
+            j = runs.get((g, tg))
+            if not j:
+                continue
+            s = snap_at(j["snaps"], t, 1)
+            if not s:
+                continue
+            x = rho(s, h["nSquad"], h["nOther"]) if key == "rho" else s[key]
+            if x and x > 0:
+                vals.append(math.log(x))
+        return mean(vals)
+
+    C0T, C1T, C2T = [f"C0-t0-s{i}" for i in (0, 1, 2)], [f"C1-t0-s{i}" for i in (0, 1, 2)], [f"C2-t0-s{i}" for i in (1, 2)]
+    for t in range(60, 1501, 60):
+        acc = {k: [] for k in ("base", "baseS", "hold", "holdS")}
+        for g in GAMES:
+            if g not in base:
+                continue
+            c0, c1, c2 = run_ln(g, C0T, t, "rho"), run_ln(g, C1T, t, "rho"), run_ln(g, C2T, t, "rho")
+            s0, s1, s2 = run_ln(g, C0T, t, "LS"), run_ln(g, C1T, t, "LS"), run_ln(g, C2T, t, "LS")
+            if None in (c0, c1, c2, s0, s1, s2):
+                continue
+            acc["base"].append(c0 - c1); acc["baseS"].append(s0 - s1); acc["hold"].append(c1 - c2); acc["holdS"].append(s1 - s2)
+        n = len(acc["base"])
+        if not n:
+            continue
+        J["chanPath"][str(t)] = dict({k: sum(v) / n for k, v in acc.items()}, n=n, baseMed=med(acc["base"]), holdMed=med(acc["hold"]))
+        P(f"{t}\t{n}\t" + "\t".join(f(sum(acc[k]) / n, sign=True) for k in ("base", "baseS", "hold", "holdS")) + f"\t{f(med(acc['base']), sign=True)}\t{f(med(acc['hold']), sign=True)}")
+    P("")
+
     # ---------- 表 1b：断面 0 → 1500 拍，领土的去向
     P("## 表 1b：断面 0 → 1500 拍时全图陆地的分布（占全图陆地的百分比；多个种子取平均）")
     P("局\t通道\t我方号\t其他真人\t内置 AI\t没人占\t我方号存活 / 开局\t种子数")
