@@ -249,7 +249,13 @@ def main():
 
     L = []
     P = L.append
-    J = {"games": {}, "nRuns": len(runs), "histEnd5184": {"exact": hist_end_exact, "mismatch": hist_end_bad, "fromC2": hist_end_c2, "late": hist_end_late}}
+    # 窗末历史值只能取 5190 拍的局：历史上 5160 → 5190 这 30 拍里 ln ρ 变了多少（晚 6 拍带来的差别不会超过这个量级）
+    late_drift = {}
+    for g in hist_end_late:
+        h = base[g]
+        a, b = snap_at(h["snaps"], 5160, 1), snap_at(h["snaps"], 5190, 1)
+        late_drift[g] = sub(ln(rho(b, h["nSquad"], h["nOther"])), ln(rho(a, h["nSquad"], h["nOther"]))) if a and b else None
+    J = {"games": {}, "nRuns": len(runs), "histEnd5184": {"exact": hist_end_exact, "mismatch": hist_end_bad, "fromC2": hist_end_c2, "late": hist_end_late, "lateDrift": late_drift}}
     P("# 历史断面离线对照：分层归因的底表（103_cp_table.py）")
     P("# ρ = 我方号人均领土 ÷ 其他真人人均领土；v = 我方号人均天然地盘 ÷ 其他真人人均天然地盘")
     P("# 各层的数是自然对数差：正数 = 这一层让我方落后（0.10 ≈ 10%，0.69 = 差一倍），负数 = 这一层上我方占便宜")

@@ -669,7 +669,9 @@ def main():
         if HE.get("fromC2"):
             parts.append(f"{len(HE['fromC2'])} 局（{'、'.join(HE['fromC2'])}）不扰动的 C2 从接管到 5160 拍每个记录拍的领土、余额、在场人数都与历史相同，取这条 C2 在 5184 拍的值")
         if HE.get("late"):
-            parts.append(f"{len(HE['late'])} 局（{'、'.join(HE['late'])}）两样都没有，取历史基线在 5190 拍的值，比各通道晚 6 拍")
+            dr = [abs(v) for v in (HE.get("lateDrift") or {}).values() if v is not None]
+            parts.append(f"其余 {len(HE['late'])} 局（{'、'.join(HE['late'])}）取历史基线在 5190 拍的值，比各通道晚 6 拍" +
+                         (f"（这{'两' if len(dr) == 2 else f' {len(dr)} '}局历史上 5160 → 5190 这 30 拍里 ln ρ 的变化不超过 {r3(max(dr))}，晚 6 拍的影响不会超过这个量级）" if dr else ""))
         F0["histEndLine"] = "历史基线每 30 拍记一次，5184 拍不在其中（前后是 5160 和 5190 拍）。窗末的历史值这样取：" + "；".join(parts) + "。"
         F0["histEndLateN"] = str(len(HE.get("late") or []))
         F0["histEndLateList"] = "、".join(HE.get("late") or []) or "没有"
