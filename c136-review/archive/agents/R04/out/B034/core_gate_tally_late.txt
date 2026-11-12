@@ -1,0 +1,11 @@
+# B034 核心期行动拍的去向 [3500,9115)：共 2448 个号·行动拍
+合计：floor 986（40%），price 763（31%），sole 283（12%），send 192（8%），nooffer 126（5%），出手 35（1%），small 27（1%），chunk 16（1%），inflight 15（1%），boat 5（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 912，dp 68，cap+sf/enemy 6
+  41       1123 拍：floor 341（30%），price 265（24%），sole 206（18%），send 126（11%），nooffer 126（11%），出手 13（1%），small 17（2%），chunk 16（1%），inflight 8（1%），boat 5（0%）
+          按目标：floor→17 311，send→14 109，sole→14 105，price→14 101，sole→17 89，price→2 73，price→17 44，price→18 41
+  31        559 拍：floor 315（56%），price 126（23%），sole 77（14%），send 34（6%），出手 7（1%）
+          按目标：floor→44 283，sole→44 77，price→44 62，price→20 59，floor→20 23，send→16 15，send→20 14，floor→16 9
+  45        434 拍：floor 172（40%），price 214（49%），send 18（4%），出手 13（3%），small 10（2%），inflight 7（2%）
+          按目标：price→7 101，floor→7 95，price→10 52，floor→13 29，floor→10 26，price→11 23，send→7 18，price→44 18
+  48        332 拍：floor 158（48%），price 158（48%），send 14（4%），出手 2（1%）
+          按目标：price→7 137，floor→39 120，floor→7 38，price→18 16，send→7 14，price→32 5

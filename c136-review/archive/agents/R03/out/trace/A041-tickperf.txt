@@ -1,0 +1,30 @@
+# A041 策略计算耗时（tickperf.py；in_game.log 的 HL-TICK 行，整局，共 491 行；avgMs/maxMs 是日志里的累计值，这里取各行里的最大值）
+  号：行数 | avgMs 最大 | maxMs 最大 | skip 最大 | 最后一行的拍号
+  alex_k   48 行 | avgMs ≤ 0.49 | maxMs ≤ 3.5 | skip ≤ 0 | 最后一行 t=4320
+  kaito9   53 行 | avgMs ≤ 0.50 | maxMs ≤ 21.8 | skip ≤ 0 | 最后一行 t=4770
+  leo_tx   46 行 | avgMs ≤ 0.49 | maxMs ≤ 10.0 | skip ≤ 0 | 最后一行 t=4140
+  noah88   52 行 | avgMs ≤ 0.48 | maxMs ≤ 14.9 | skip ≤ 0 | 最后一行 t=4680
+  riku_x   48 行 | avgMs ≤ 0.46 | maxMs ≤ 3.5 | skip ≤ 0 | 最后一行 t=4320
+  ryan_m   50 行 | avgMs ≤ 0.49 | maxMs ≤ 9.5 | skip ≤ 0 | 最后一行 t=4500
+  sora_w   51 行 | avgMs ≤ 0.48 | maxMs ≤ 3.4 | skip ≤ 0 | 最后一行 t=4590
+  talon5   50 行 | avgMs ≤ 0.46 | maxMs ≤ 10.1 | skip ≤ 0 | 最后一行 t=4500
+  zero_7   46 行 | avgMs ≤ 0.50 | maxMs ≤ 12.0 | skip ≤ 0 | 最后一行 t=4140
+  zexos1   47 行 | avgMs ≤ 0.48 | maxMs ≤ 9.7 | skip ≤ 0 | 最后一行 t=4230
+  全队：avgMs ≤ 0.50，maxMs ≤ 21.8，skip ≤ 0
+  每 300 拍窗口（全队）：行数 | avgMs 最大 | maxMs 最大 | skip 最大
+      0~300    30 行 | avgMs ≤ 0.34 | maxMs ≤ 3.5 | skip ≤ 0
+    300~600    30 行 | avgMs ≤ 0.37 | maxMs ≤ 3.5 | skip ≤ 0
+    600~900    30 行 | avgMs ≤ 0.43 | maxMs ≤ 3.6 | skip ≤ 0
+    900~1200   40 行 | avgMs ≤ 0.50 | maxMs ≤ 9.6 | skip ≤ 0
+   1200~1500   30 行 | avgMs ≤ 0.50 | maxMs ≤ 9.6 | skip ≤ 0
+   1500~1800   30 行 | avgMs ≤ 0.50 | maxMs ≤ 12.0 | skip ≤ 0
+   1800~2100   40 行 | avgMs ≤ 0.50 | maxMs ≤ 12.0 | skip ≤ 0
+   2100~2400   30 行 | avgMs ≤ 0.48 | maxMs ≤ 12.0 | skip ≤ 0
+   2400~2700   30 行 | avgMs ≤ 0.48 | maxMs ≤ 13.4 | skip ≤ 0
+   2700~3000   40 行 | avgMs ≤ 0.49 | maxMs ≤ 14.9 | skip ≤ 0
+   3000~3300   30 行 | avgMs ≤ 0.49 | maxMs ≤ 14.9 | skip ≤ 0
+   3300~3600   30 行 | avgMs ≤ 0.48 | maxMs ≤ 14.9 | skip ≤ 0
+   3600~3900   40 行 | avgMs ≤ 0.49 | maxMs ≤ 14.9 | skip ≤ 0
+   3900~4200   30 行 | avgMs ≤ 0.49 | maxMs ≤ 14.9 | skip ≤ 0
+   4200~4500   20 行 | avgMs ≤ 0.49 | maxMs ≤ 21.8 | skip ≤ 0
+   4500~4800   11 行 | avgMs ≤ 0.49 | maxMs ≤ 21.8 | skip ≤ 0

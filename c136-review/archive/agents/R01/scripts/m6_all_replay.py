@@ -18,8 +18,10 @@
 用法：python3 scripts/m6_all_replay.py [局号 ...] [--csv] [--quiet]
       不给局号 = 全部有 out/<局号>/replay_cmds.csv 的包；--csv 写 out/_all/replay_facts.csv；末尾按编队汇总。
 说明：
-  * 席位号取日志里的 `[号] [HL-GAME-INIT] … me=N` / `[HL-SPAWN…] me=N`。一个包里混了两场的标 multi=1（一个名字先后对上两个席位、开局行参数不止一种、
-    某个号的快照拍号倒退、或 card.seededPlayers 和录像头的人数对不上：A071、A073、A094、B049），不进汇总。
+  * 席位号取日志里的 `[号] [HL-GAME-INIT] … me=N` / `[HL-SPAWN…] me=N`。一个包里不是同一场对局的标 multi=1，不进汇总：
+    先后两场（一个名字先后对上两个席位、开局行参数不止一种、某个号的快照拍号倒退、或 card.seededPlayers 和录像头的人数对不上），
+    或平行两场（编队的页面分进了同时开局的两间房：日志里的席位号在录像名单里是别人，或各页面的开局时刻差 3 秒以上；
+    见 m6_match_split.py，表在 out/_all/match_split.csv）。
   * 同一场对局有两个包时（A057/B038、A058/B039、A062/B043…：地图、种子相同，开局时间差 < 5 分钟，录像里的席位名单相同），用录像更长的那一份。
   * 延迟让落地跨时段，所以累计比值是“到这一拍为止”，不是严格的同一批指令；只当漏斗的粗筛，逐条的延迟要用影子策略（lag_periods.py）。
 """
@@ -27,6 +29,9 @@ import csv, gzip, json, os, re, statistics, struct, sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import m6_match_split  # noqa: E402
+
 OUT = os.path.join(HERE, '..', 'out')
 DATA = '/agent/repos/c136-data/bundles'
 MAPS = '/agent/repos/c136-data/src/sim/maps'
@@ -80,17 +85,38 @@ def read_log(mid):
     return seats, multi, solves
 
 
+def same_match(mid, cards):
+    """同一场对局的另一个包（另一支编队的视角）：地图、种子相同，开局时间差 < 300 秒。"""
+    card = cards[mid]
+    return [o for o, c in cards.items() if o != mid and c['mapId'] == card['mapId'] and c['mapSeed'] == card['mapSeed']
+            and abs(c['timestampMs'] - card['timestampMs']) < 300000]
+
+
+def pick_replay(mid, cards, replays):
+    """这个包用哪一份录像：自己的；同一场的另一个包的录像名单相同且更长时用那一份；自己没有录像时用同场的。都没有返回 None。"""
+    best = mid
+    for o in same_match(mid, cards):
+        if o not in replays:
+            continue
+        if mid not in replays or (replays[o][0]['names'] == replays[mid][0]['names'] and replays[o][0]['lastTick'] > replays[best][0]['lastTick']):
+            best = o
+    return best if best in replays else None
+
+
+def load_all():
+    cards = {m: json.load(open(os.path.join(DATA, m, 'card.json'))) for m in sorted(os.listdir(DATA))}
+    replays = {}
+    for m in cards:
+        x = load_replay(m)
+        if x:
+            replays[m] = x
+    return cards, replays
+
+
 def one(mid, cards, replays):
     card = cards[mid]
-    # 同一场的另一个包：地图、种子相同，开局时间差 < 300 秒，录像里的名单相同 → 用录像更长的
-    best = mid
-    for o, c in cards.items():
-        if o == mid or o not in replays:
-            continue
-        if c['mapId'] == card['mapId'] and c['mapSeed'] == card['mapSeed'] and abs(c['timestampMs'] - card['timestampMs']) < 300000:
-            if mid not in replays or (replays[o][0]['names'] == replays[mid][0]['names'] and replays[o][0]['lastTick'] > replays[best][0]['lastTick']):
-                best = o
-    if best not in replays:
+    best = pick_replay(mid, cards, replays)
+    if best is None:
         return None
     meta, rows = replays[best]
     # B039/B043 的 out/ 目录里放的就是同局 A 包的录像（replayOf）
@@ -98,6 +124,8 @@ def one(mid, cards, replays):
     seats, multi, solves = read_log(mid)
     if card.get('seededPlayers') != H:
         multi = True   # 日志开局行的人数和录像头对不上：录像不是日志里这一场（A094 的录像是第二场）
+    if mid in SPLIT:
+        multi = True   # 平行两场或先后两场（m6_match_split.py）
     S = set(seats.values())
     r = {'mid': mid, 'cohort': card['cohort'], 'result': card['outcome']['resultLabel'], 'won': int(bool(card['outcome']['primaryTeamWon'])),
          'replay': meta.get('replayOf') or best, 'endTick': card['outcome']['endTick'], 'lastTick': L, 'humans': H, 'squad': len(S), 'multi': int(multi)}
@@ -138,6 +166,7 @@ def one(mid, cards, replays):
         if any(snaps[i][0] < snaps[i - 1][0] for i in range(1, len(snaps))):
             multi = True
     r['multi'] = int(multi)
+    r['split'] = SPLIT.get(mid, '')
 
     def funnel(T):
         """逐席位对齐：取该席位本地拍 ≤ T（且 ≤ lastTick）的最后一个快照 ts，页面放行的陆攻+船 = cmds(ts) − 捐兵行数(≤ ts)；
@@ -241,14 +270,13 @@ def one(mid, cards, replays):
     return r
 
 
+SPLIT = {}
+
+
 def main():
     argv = sys.argv[1:]
-    cards = {m: json.load(open(os.path.join(DATA, m, 'card.json'))) for m in sorted(os.listdir(DATA))}
-    replays = {}
-    for m in cards:
-        x = load_replay(m)
-        if x:
-            replays[m] = x
+    SPLIT.update(m6_match_split.load_split())
+    cards, replays = load_all()
     mids = [x for x in argv if not x.startswith('--')] or sorted(cards)
     rows = []
     for m in mids:
@@ -271,12 +299,13 @@ def main():
         print(f'# 已写 out/_all/replay_facts.csv（{len(rows)} 局）')
     # —— 汇总 ——
     ok = [r for r in rows if not r['multi']]
-    print(f'# 汇总：{len(rows)} 局有录像，其中 {len(rows) - len(ok)} 局一个包里混了两场（不计入下面）')
+    print(f"# 汇总：{len(rows)} 局有录像，其中 {len(rows) - len(ok)} 个包不是同一场对局（不计入下面）：{' '.join(r['mid'] for r in rows if r['multi'])}")
     for co in sorted({r['cohort'] for r in ok}):
         L = [r for r in ok if r['cohort'] == co]
         med = lambda k: (lambda v: f'{statistics.median(v):.2f}' if v else '-')([r[k] for r in L if r[k] is not None])
-        full = [r for r in L if r['lastTick'] >= 1530]
-        low = [r for r in full if r['nd600_1500'] is not None and r['nd600_1500'] < 0.7]
+        # 落地的比页面计数还多的局（A018：日志的 cmds 计数不全）比值不可用，不进分母；和 m6_all_outcomes.py 同一条规则
+        full = [r for r in L if r['lastTick'] >= 1530 and r['nd600_1500'] is not None and r['nd600_1500'] <= 1.15]
+        low = [r for r in full if r['nd600_1500'] < 0.7]
         print(f"#   {co}：{len(L)} 局；陆攻+船 落地/放行 全程中位 {med('ndRatio')}，到 600 拍 {med('nd600')}，到 1500 拍 {med('nd1500')}，到 3000 拍 {med('nd3000')}；"
               f"600–1500 拍这一段的比值 < 0.7 的 {len(low)}/{len(full)} 局（其中主队赢 {sum(r['won'] for r in low)} 局；≥ 0.7 的 {len(full) - len(low)} 局里赢 {sum(r['won'] for r in full if r not in low)} 局）")
         print(f"#      捐兵 日志 {sum(r['logDon'] for r in L)} 行 → 录像落地 {sum(r['landDon'] for r in L)} 条；给已离场席位的 {sum(r['donToLeft'] for r in L)} 条（{sum(1 for r in L if r['donToLeft'])} 局）")

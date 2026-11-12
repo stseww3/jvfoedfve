@@ -1,0 +1,33 @@
+[QA] B033 出生点离地图边的距离（地图 1541×1080，短边的 12% = 130 像素）
+  编队 10 个号：中位 76、下四分位 19、上四分位 138；离边 ≤130 的 7 个（70%）
+  其他真人 57 个：中位 241、下四分位 191、上四分位 343；离边 ≤130 的 4 个（7%）
+  逐号（离边从近到远）：Guderian(T1) 10（下）；Lannes(T2) 13（下）；Kanem-Bornu(T1) 19（下）；Bhutan(T2) 22（下）；Livonian(T2) 71（右）；JinKazama(T2) 82（上）；Mossad(T1) 130（上）；Ainz(T2) 138（下）；Tunis(T2) 150（左）；Gladiator(T1) 366（左）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 128｜最近的编队友 中位 235｜最近的非编队真人 中位 128｜最近的真人就是编队友的 2/10 个
+  其他真人：最近的任意真人 中位 71
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：7 团；≥3 个号的团 0 个，装了 0 个号
+  2 个号（中心 799,1066）：Guderian(T1) Kanem-Bornu(T1)｜队的构成 T1×2｜≤260 像素的号对：异队 0、同队 1
+  2 个号（中心 396,1004）：Ainz(T2) Lannes(T2)｜队的构成 T2×2｜≤260 像素的号对：异队 0、同队 1
+  2 个号（中心 1384,978）：Bhutan(T2) Livonian(T2)｜队的构成 T2×2｜≤260 像素的号对：异队 0、同队 1
+  1 个号（中心 766,130）：Mossad(T1)｜队的构成 T1×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 150,406）：Tunis(T2)｜队的构成 T2×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 366,558）：Gladiator(T1)｜队的构成 T1×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 402,82）：JinKazama(T2)｜队的构成 T2×1｜≤260 像素的号对：异队 0、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤130 像素；沿边相邻间距 ≤520）
+  下沿 4 个号：Lannes(T2)@419 Guderian(T1)@722 Kanem-Bornu(T1)@876 Bhutan(T2)@1298｜相邻间距 [303, 154, 422]｜队 T1 T2
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Kanem-Bornu      | Greater Canada~T1 138=；Guderian*T1 154=；Ordenstaat~T2 257≠
+    Guderian         | Kanem-Bornu*T1 154=；Greater Canada~T1 203=；Lannes*T2 303≠
+    Mossad           | 🟥🟥Jaxcat🟥🟥T2 64≠；☭СССР☭T2 95≠；LANSPAN [OG]T2 127≠
+    Tunis            | MobileT1 106≠；👨⚡T2 108=；NCR 🐻T2 160=
+    Ainz             | Player 896~T1 131≠；Lannes*T2 133=；[VN] Player 96T1 312≠
+    Bhutan           | Jeriel ChrisT1 41≠；🟡🐍⚫️☭⃠~T1 192≠；Livonian*T2 235=
+    Gladiator        | Player 918T1 54=；[VN] Player 96T1 110=；Player 896~T1 254=
+    Livonian         | 🟡🐍⚫️☭⃠~T1 138≠；Player 727~T1 139≠；Bhutan*T2 235=
+    Lannes           | Ainz*T2 133=；Player 896~T1 258≠；Guderian*T1 303≠
+    JinKazama        | [Ss]Duda batut~T1 124≠；[OFF]handedT2 156=；Mollymauk [ZENT2 196=
+  最近 3 个真人里是异队编队友的：2 / 30

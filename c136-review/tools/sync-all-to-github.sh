@@ -16,7 +16,7 @@ for r in 01 02 03 04 05 06 07 08 09 10; do
   # 1. 把已完成的 reviews / reports / scripts / notes / cards / outbox 镜像到主分支 archive/agents/Rxx/
   DST="$ARCHIVE_DIR/$R"
   mkdir -p "$DST"
-  for sub in reviews reports scripts notes cards outbox review-src reviews_src analysis; do
+  for sub in reviews reports scripts notes cards outbox review-src reviews_src analysis sim-v2; do
     if [ -d "$SRC/$sub" ]; then
       rm -rf "$DST/$sub"
       mkdir -p "$DST/$sub"

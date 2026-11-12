@@ -24,6 +24,7 @@ import csv, datetime, json, os, re, statistics, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import tick_clock  # noqa: E402
+import m6_match_split  # noqa: E402
 
 DATA = '/agent/repos/c136-data/bundles'
 PAT_TICK = re.compile(r'^\d+\t\[([^\]]+)\] \[HL-TICK\] t=(\d+)')
@@ -110,11 +111,15 @@ def main():
     mids = [x for x in argv if not x.startswith('--') and x != str(int(lag_min))] or sorted(os.listdir(DATA))
     a, b, _, _ = tick_clock.fit()
     rows = [r for r in (one(m, a, b, lag_min) for m in mids) if r]
+    # 不是同一场对局的包（m6_match_split.py）：各页面的开局时刻不同，“落后”是两场的开局时差，不是掉队。列出但不进汇总。
+    split = m6_match_split.load_split()
+    for r in rows:
+        r['split'] = split.get(r['mid'], '')
     print(f'# 正常的钟 seconds = {a:.1f} + {1000 * b:.2f} 毫秒 × tick；落后 ≥ {lag_min:.0f} 拍算掉队。lag 的分辨率 ±45 拍（HL-TICK 每 90 拍一行）')
     print('局 | 编队 | 结果 | RESULT 行/号数 | 8500 拍前 left（其中 2500 拍前）| 第一条 RESULT：服务器拍 / 在跑的号落后中位 / 掉队号数 / 已停住的页面 | 落后中位的峰值@服务器拍')
     for r in rows:
         f = lambda x: '-' if x is None else str(x)
-        print(f"{r['mid']} | {r['cohort']} | {r['result']} | {r['rows']}/{r['bots']} | {r['left']}（{r['leftEarly']}）| {f(r['srv1'])} / {f(r['lag1'])} / {f(r['slow1'])}/{f(r['n1'])} / {f(r['stalled1'])} | {f(r['lagPeak'])}@{f(r['srvPeak'])}")
+        print(f"{r['mid']} | {r['cohort']}{'（不是同一场）' if r['split'] else ''} | {r['result']} | {r['rows']}/{r['bots']} | {r['left']}（{r['leftEarly']}）| {f(r['srv1'])} / {f(r['lag1'])} / {f(r['slow1'])}/{f(r['n1'])} / {f(r['stalled1'])} | {f(r['lagPeak'])}@{f(r['srvPeak'])}")
     if '--csv' in argv:
         od = os.path.join(HERE, '..', 'out', '_all')
         os.makedirs(od, exist_ok=True)
@@ -125,7 +130,9 @@ def main():
     # 汇总：一局算“掉队局” = 落后中位的峰值 ≥ lag_min，或第一条 RESULT 时已有停住的页面，或 2500 拍前有 ≥3 个号 left
     def lagged(r):
         return (r['lagPeak'] is not None and r['lagPeak'] >= lag_min) or (r['stalled1'] or 0) >= 1 or r['leftEarly'] >= 3
-    print(f'# 汇总（掉队局 = 落后中位峰值 ≥ {lag_min:.0f} 拍，或第一条 RESULT 时已有停住的页面，或 2500 拍前 ≥3 个号 left）')
+    nx = [r['mid'] for r in rows if r['split']]
+    rows = [r for r in rows if not r['split']]
+    print(f"# 汇总（掉队局 = 落后中位峰值 ≥ {lag_min:.0f} 拍，或第一条 RESULT 时已有停住的页面，或 2500 拍前 ≥3 个号 left）；不是同一场对局的 {len(nx)} 个包不计：{' '.join(nx)}")
     for co in sorted({r['cohort'] for r in rows}):
         for flag in (True, False):
             L = [r for r in rows if r['cohort'] == co and lagged(r) == flag]

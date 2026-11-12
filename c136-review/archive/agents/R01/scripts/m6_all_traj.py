@@ -22,12 +22,15 @@
              lost = 领土同时掉 ≥3%（在挨打）；don = 没丢地、区间里有没被标 likelyRejected 的捐兵行；cmd = 没丢地、只放行了陆攻/船（cmdGain = 其中领土涨 ≥3%）；
              none = 这 90 拍页面一条指令也没放行（余额是被更早放行、现在才落地的令划走的，或被别人的船/陆攻换掉而领土没掉到 3%）   → IO02 / DN / AT08 的全量上限
 用法：python3 scripts/m6_all_traj.py [局号 ...] [--csv]      不给局号 = 全部；--csv 写 out/_all/traj.csv。末尾按编队 × 输赢汇总。
+     不是同一场对局的包（m6_match_split.py：平行两场、先后两场）逐局照列，不进末尾的汇总。
 说明：这是只靠日志的上限估计——“有对象不发令”不区分保底线、价格线还是在等 DP 租期；逐拍的原因要用影子策略（attrib3.py、shadow_report --section idle）。
 """
 import csv, json, os, statistics, sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import m6_match_split  # noqa: E402
 DATA = '/agent/repos/c136-data/bundles'
 PHASES = (('p1', 600, 1500), ('p2', 1500, 3000), ('p3', 3000, 10 ** 9))
 
@@ -136,10 +139,13 @@ def main():
     argv = sys.argv[1:]
     mids = [x for x in argv if not x.startswith('--')] or sorted(os.listdir(DATA))
     rows = [r for r in (one(m) for m in mids) if r]
+    split = m6_match_split.load_split()
+    for r in rows:
+        r['split'] = split.get(r['mid'], '')
     f = lambda x: '-' if x is None else (f'{100 * x:.0f}%' if isinstance(x, float) else str(x))
     print('局 | 编队 结果 | 600–1500：对数 / 没对象 / 有对象不发令（其中身边有无主地）/ 每对放行 | 1500–3000：对数 / 没对象 / 有对象不发令 / 满仓 / 没对象且满仓 | 3000+：同前 | 捐兵行（疑似被拒）<3213 / 3213–4284 / ≥4284 | 给 400 拍内阵亡的号')
     for r in rows:
-        print(f"{r['mid']} | {r['cohort']} {r['result']} | {r['p1_pairs']} / {f(r['p1_boxed'])} / {f(r['p1_idleTgt'])}（{f(r['p1_idleNeut'])}）/ {r['p1_cmdRate']} | "
+        print(f"{r['mid']} | {r['cohort']} {r['result']}{'（不是同一场）' if r['split'] else ''} | {r['p1_pairs']} / {f(r['p1_boxed'])} / {f(r['p1_idleTgt'])}（{f(r['p1_idleNeut'])}）/ {r['p1_cmdRate']} | "
               f"{r['p2_pairs']} / {f(r['p2_boxed'])} / {f(r['p2_idleTgt'])} / {f(r['p2_full'])} / {f(r['p2_boxedFull'])} | "
               f"{r['p3_pairs']} / {f(r['p3_boxed'])} / {f(r['p3_idleTgt'])} / {f(r['p3_full'])} / {f(r['p3_boxedFull'])} | "
               f"{r['q1_don']}（{r['q1_rej']}）/ {r['q2_don']}（{r['q2_rej']}）/ {r['q3_don']}（{r['q3_rej']}）| {r['doomed']}")
@@ -150,7 +156,9 @@ def main():
             w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
             w.writeheader(); w.writerows(rows)
         print(f'# 已写 out/_all/traj.csv（{len(rows)} 局）')
-    print('# 汇总（各局比例的中位数；括号里是把所有局的快照对合在一起算的比例）')
+    nx = [r['mid'] for r in rows if r['split']]
+    rows = [r for r in rows if not r['split']]
+    print(f"# 汇总（各局比例的中位数；括号里是把所有局的快照对合在一起算的比例）；不是同一场对局的 {len(nx)} 个包不计：{' '.join(nx)}")
     for co in sorted({r['cohort'] for r in rows}):
         for won in (1, 0):
             L = [r for r in rows if r['cohort'] == co and r['won'] == won]

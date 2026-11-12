@@ -13,7 +13,7 @@
   medians [前缀]     单号领土中位数：我方在场号 / 名字带前缀的一组 / 其余真人
   pair <me> [t0 t1]  某个号在窗口内与每个对手的交换（耗兵/得地/失地/被打掉兵）
   cmdlist <me> [t0 t1]  某个号在窗口内进了录像的每条指令，以及别人对它下的陆攻、给它的捐款
-  teams              各队真实领土/兵力/在场真人/空壳占地（协议拍 + 我方阵亡拍）
+  teams [t…]         各队真实领土/兵力/在场真人/空壳占地（协议拍 + 我方阵亡拍）；我方号领土合计的逐拍最高值；给 t 则加印这些拍的逐拍合计
   roster             我方每个号：队、出生、离开拍、阵亡拍、被谁拿走的地、峰值
   dens [t]           各队在场真人：我方号 vs 外人的地、兵、密度、单号领土中位（缺省取重放末拍）
   ledger [me]        兵力去向账：整局合计；给 me 则按 500 拍窗口展开
@@ -46,6 +46,7 @@
   pokes              HL-ASSIST 的 10% 协防戳：替谁打的（同队/异队/空壳）、打了谁、录像里的执行、戳前戳后对方对出手号的陆攻
   boatwar            船打船（引擎 acV：每 2 拍，7.5 格内不同队的船互相打）：我方号的船被谁的船打掉多少兵、打掉了谁的；
                      其中两头都是我方号（异队的我方号在海上互打）单列
+  foehabit [top] [t…] 外人的出手档位（每个千分比档位的条数、首末拍、目标类别）与按执行拍分窗口的下单条数 / 领土增量（对照我方单号中位）
   json               写 out/<id>/simdigest.json（复盘 JSON 引用的事实）
 所有数字都来自重演；重演可信范围见 check 段。
 """
@@ -213,7 +214,7 @@ def team_rows(X, ticks=None):
     return rows
 
 
-def sec_teams(X):
+def sec_teams(X, at=None):
     S = X.S
     nT = S['nTeams']
     bots_teamed = any(X.team[p] for p in range(X.H, 512))
@@ -231,6 +232,21 @@ def sec_teams(X):
         ai = f" | {100 * r['teamLand'][0] / X.land:5.1f}" if not bots_teamed else ''
         sq = ' '.join(f"队{tm}:{r['sqAlive'].get(tm, 0)}/{100 * r['sqLand'].get(tm, 0) / X.land:.1f}" for tm in sorted(sq_team))
         print(f"{r['t']:5d} | " + ' | '.join(cells) + ai + ' | ' + sq)
+    pt = S.get('perTick')
+    if pt and pt.get('terr'):
+        n = min(len(v) for v in pt['terr'].values())
+        tot = [sum(v[i] for v in pt['terr'].values()) for i in range(n)]
+        m = max(tot)
+        i = tot.index(m)
+        print(f"我方号领土合计的逐拍最高值：t={pt['t0'] + i}，{m} 格（{100 * m / X.land:.2f}%）；"
+              + '各号逐拍峰值：' + '、'.join(f"{X.name(int(k))} {max(v)}（t={pt['t0'] + v.index(max(v))}）" for k, v in sorted(pt['terr'].items(), key=lambda kv: -max(kv[1]))))
+        for t in at or []:
+            j = t - pt['t0']
+            if not 0 <= j < n:
+                continue
+            bal = sum(v[j] for v in pt['bal'].values())
+            live = sum(1 for v in pt['terr'].values() if v[j] > 0)
+            print(f"   逐拍值 t={t}：我方 {live} 个号有地，领土合计 {tot[j]} 格（{100 * tot[j] / X.land:.2f}%），兵 {fmt(bal)}（密度 {bal / max(1, tot[j]):.1f}）")
 
 
 # ------------------------------------------------------------------ dens（各队：我方号 vs 外人，在场号的地/兵/密度/单号领土中位）
@@ -487,11 +503,16 @@ def sec_ledger(X, me=None, win=500):
         print('整局兵力去向账（单位：兵；得地/失地单位：格）。顶格少拿 = 兵力超过 100×领土后利率被降档、以及撞 150×领土硬顶而少拿的利息；空壳少拿 = 离开后不再有利息')
         for part in (KINDS[:14], KINDS[14:]):
             print(' me 名字            队 ' + ' '.join(f'{KIND_CN[k]:>8s}' for k in part))
+            tot = {k: 0 for k in part}
             for p in X.squad:
                 T = ledger_totals(X, p)
+                for k in part:
+                    tot[k] += T[k]
                 if part is not KINDS[:14] and not any(T[k] for k in part):
                     continue
                 print(f"{p:3d} {X.M.bots[p].name if p in X.M.bots else '?':14s} {X.team[p]:2d} " + ' '.join(f'{fmt(T[k]):>10s}' for k in part))
+            if part is KINDS[:14] or any(tot.values()):
+                print(f"    {'合计（精确值）':14s}    " + ' '.join(f'{tot[k]:>10d}' for k in part))
         print('\n战斗耗兵 / 得地 按对方类别：')
         for p in X.squad:
             sp = X.led_sum(p, 'spent', by='cls')
@@ -2595,6 +2616,56 @@ def sec_foepct(X, top=8):
               + (f"离开 t={leave[0]}" if leave else ('阵亡 t=%d' % X.deathT[p] if X.deathT[p] >= 0 else '活到终局')))
 
 
+def sec_foehabit(X, top=3, edges=None):
+    """外人的出手档位与下单密度（录像指令 id 1 = 陆攻；dX = 千分比，dZ = 目标）：
+    一、对我方出兵最多的 top 个外人：每个千分比档位的条数、首末拍、目标类别（无主地 / 内置 AI / 真人名字）。
+    二、按执行拍分窗口：每个外人进录像的指令条数（全部种类）与窗口两端的领土；我方在场号同窗口的条数（合计、单号中位、最少~最多）与领土增量中位。
+    用法：simdigest.py <id> foehabit [top] [t1 t2 ...]（切点；默认 600 1500 3000）"""
+    S = X.S
+    edges = [0] + (edges or [600, 1500, 3000]) + [X.endT + 1]
+    tot = defaultdict(int)
+    for c in S['squadCmds']:
+        if c['k'] == 'atk' and c.get('ok') and c['p'] not in X.squad and c['p'] < X.H and c.get('to') in X.squad:
+            tot[c['p']] += c['sent']
+    who = [p for p, _ in sorted(tot.items(), key=lambda kv: -kv[1])[:top]]
+    game = [c for c in X.M.cmds if c.get('phase') == 'game' and c['player'] < X.H]
+
+    def tcls(z):
+        if z >= 512:
+            return '无主地'
+        return X.name(z) if z < X.H else '内置AI'
+
+    print(f'外人的出手档位（录像里的陆攻指令；对我方出兵最多的 {len(who)} 个外人）')
+    for p in who:
+        cs = [c for c in game if c['player'] == p and c['id'] == 1]
+        mine = [c for c in S['squadCmds'] if c['k'] == 'atk' and c['p'] == p and c.get('to') in X.squad]
+        print(f"   {X.name(p)}（队{X.team[p]}）整局陆攻 {len(cs)} 条；对我方 {len(mine)} 条、出兵 {fmt(sum(c['sent'] for c in mine if c.get('ok')))}"
+              f"（千分比 {' '.join(f'{k}:{v}' for k, v in sorted(_count(c['pct'] for c in mine).items(), key=lambda kv: -kv[1]))}）")
+        for pct in sorted(set(c['dX'] for c in cs), key=lambda k: min(c['t'] for c in cs if c['dX'] == k)):
+            L = [c for c in cs if c['dX'] == pct]
+            tg = _count(tcls(c['dZ']) for c in L)
+            print(f"      {pct:>4}‰ ×{len(L):<3} t={min(c['t'] for c in L)}~{max(c['t'] for c in L)}：" + '、'.join(f"{k} {v}" for k, v in sorted(tg.items(), key=lambda kv: -kv[1])))
+    print('按执行拍分窗口：进录像的指令条数（陆攻 + 发船 + 捐款等全部种类）与领土')
+    act = [p for p in X.squad if max(X.hum[p]['terr']) >= 100]
+    for i in range(len(edges) - 1):
+        a, b = edges[i], edges[i + 1]
+        tb = min(b, X.endT)
+        per = _count(c['player'] for c in game if a <= c['t'] < b)
+        sq = sorted(per.get(p, 0) for p in act)
+        gr = sorted(X.terr(p, tb) - X.terr(p, a) for p in act if X.deathT[p] < 0 or X.deathT[p] > tb)
+        med = (lambda v: (v[(len(v) - 1) // 2] + v[len(v) // 2]) / 2 if v else 0)
+        print(f"   t={a}~{tb}：我方 {len(act)} 个号（峰值 >=100 格）合计 {sum(sq)} 条，单号中位 {med(sq):.0f}（{sq[0]}~{sq[-1]}）；窗口末仍在场的 {len(gr)} 个号领土增量中位 {med(gr):+.0f} 格")
+        for p in who:
+            print(f"      {X.name(p)}：{per.get(p, 0)} 条，领土 {X.terr(p, a)}→{X.terr(p, tb)}（{X.terr(p, tb) - X.terr(p, a):+d}）")
+
+
+def _count(it):
+    d = defaultdict(int)
+    for k in it:
+        d[k] += 1
+    return d
+
+
 def build_json(X):
     S = X.S
     doc = dict(matchId=S['matchId'], replaySource=S['replayPath'].split('/')[-2], replayEnd=X.endT,
@@ -2632,7 +2703,7 @@ def main():
     if sec == 'check':
         sec_check(X)
     elif sec == 'teams':
-        sec_teams(X)
+        sec_teams(X, [int(v) for v in a] or None)
     elif sec == 'bursts':
         sec_bursts(X, int(sys.argv[3]) if len(sys.argv) > 3 else 3, float(sys.argv[4]) if len(sys.argv) > 4 else 0.4)
     elif sec == 'collapse':
@@ -2720,6 +2791,8 @@ def main():
         sec_foedon(X)
     elif sec == 'foepct':
         sec_foepct(X, int(a[0]) if a else 8)
+    elif sec == 'foehabit':
+        sec_foehabit(X, int(a[0]) if a else 3, [int(v) for v in a[1:]] or None)
     elif sec == 'foeled':
         sec_foeled(X, int(a[0]) if a else 8, [int(v) for v in a[1:]] or None)
     elif sec == 'foewho':

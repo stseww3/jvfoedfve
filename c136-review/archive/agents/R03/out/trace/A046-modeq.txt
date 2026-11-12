@@ -1,0 +1,16 @@
+# manifest.jsonl 共 123 局；页面 mode × 卡片 nominalTeams × actualTeams → 局数（modeq.py）
+  mode=0: 23 局（名义 2 队/实际 2 队 × 22；名义 2 队/实际 4 队 × 1）
+  mode=1: 40 局（名义 3 队/实际 2 队 × 4；名义 3 队/实际 3 队 × 36）
+  mode=2: 9 局（名义 4 队/实际 2 队 × 4；名义 4 队/实际 4 队 × 5）
+  mode=3: 18 局（名义 5 队/实际 2 队 × 4；名义 5 队/实际 4 队 × 3；名义 5 队/实际 5 队 × 11）
+  mode=4: 12 局（名义 6 队/实际 2 队 × 2；名义 6 队/实际 4 队 × 1；名义 6 队/实际 5 队 × 3；名义 6 队/实际 6 队 × 6）
+  mode=5: 5 局（名义 7 队/实际 4 队 × 1；名义 7 队/实际 5 队 × 1；名义 7 队/实际 6 队 × 2；名义 7 队/实际 7 队 × 1）
+  mode=6: 12 局（名义 8 队/实际 2 队 × 1；名义 8 队/实际 4 队 × 1；名义 8 队/实际 5 队 × 2；名义 8 队/实际 6 队 × 1；名义 8 队/实际 7 队 × 2；名义 8 队/实际 8 队 × 5）
+  mode=7: 3 局（名义 2 队/实际 2 队 × 3）
+  mode=8: 1 局（名义 2 队/实际 2 队 × 1）
+  -- mode=7 的 3 局：
+     A046 squad10 图 22 真人 48 | 卡片 名义 2 队 实际 2 队 baseWinExpectation=0.5 ourPrimaryTeam=None distinctSquadTeams=0 | 结果 lost anyBotWon=False endTick=5501 peakSquadLandShare=0.1287
+     B027 squad20 图 11 真人 72 | 卡片 名义 2 队 实际 2 队 baseWinExpectation=0.5 ourPrimaryTeam=None distinctSquadTeams=0 | 结果 lost anyBotWon=False endTick=9662 peakSquadLandShare=0.263
+     B030 squad20 图 19 真人 6 | 卡片 名义 2 队 实际 2 队 baseWinExpectation=0.5 ourPrimaryTeam=None distinctSquadTeams=0 | 结果 won anyBotWon=True endTick=113679 peakSquadLandShare=1.0
+  -- mode=8 的 1 局：
+     A073 squad10 图 22 真人 2 | 卡片 名义 2 队 实际 2 队 baseWinExpectation=0.5 ourPrimaryTeam=None distinctSquadTeams=0 | 结果 won anyBotWon=True endTick=11504 peakSquadLandShare=1.9249

@@ -611,5 +611,9 @@
     "scripts/fee_ledger.py A029（陆攻手续费与「出兵比手续费还少」的指令）",
     "scripts/policy_params.mjs vb（Vb 生效参数）；scripts/engine_settings.cjs（13 局的 aE.lC；out/engine_settings.txt）",
     "scripts/truth_query.py A029 cmds|bal|gain|team …（逐条指令、余额轨迹、窗口得失）"
-  ]
+  ],
+  "hub0007Notes": {
+    "latency": "读法：慢拍 227 行集中在 1410 拍以后，但慢拍段内外的延迟差不多（48 对 44 拍）；1500~2999 拍延迟中位 183 拍，比 600~1499 拍的 59 拍更差。",
+    "land": "读法：出生一层占 33% / 40%：人均天然地盘只有全场的 0.43 倍。"
+  }
 }

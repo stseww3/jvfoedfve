@@ -36,9 +36,16 @@ rows = []
 for f in files:
     for line in open(f, encoding='utf-8', errors='replace'):
         m = rx.match(line.rstrip('\n'))
-        if not m or m.group(1) != fn:
+        if not m:
             continue
-        bot, a, b, n = m.group(2), int(m.group(3)), int(m.group(4)), int(m.group(5))
+        tag, who = m.group(1), m.group(2)
+        if '@' in who:   # --mids 一次给了多个函数时，行里是「函数@号」
+            f1, who = who.split('@', 1)
+            if f1 != fn:
+                continue
+        elif tag != fn:
+            continue
+        bot, a, b, n = who, int(m.group(3)), int(m.group(4)), int(m.group(5))
         if a < t0 or a >= t1:
             continue
         ex = Counter({num(x.split('×')[0]): int(x.split('×')[1]) for x in m.group(6).split() if '×' in x})

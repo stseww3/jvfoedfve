@@ -1,0 +1,157 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "p3",
+ "params": {
+  "enableInflightLedger": 0,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 1,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 0
+ },
+ "from": 0,
+ "until": null,
+ "endTick": 4349,
+ "seconds": 4.5,
+ "replayCheck": {
+  "rows": 374,
+  "terrExact": 374,
+  "balExact": 374,
+  "bothExact": 374
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 2717,
+ "kinds": {
+  "attack": 2700,
+  "boatTo": 17
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 289
+  },
+  "zero_7": {
+   "attack": 255,
+   "boatTo": 1
+  },
+  "zexos1": {
+   "attack": 257,
+   "boatTo": 3
+  },
+  "talon5": {
+   "attack": 336,
+   "boatTo": 1
+  },
+  "sora_w": {
+   "attack": 204,
+   "boatTo": 2
+  },
+  "alex_k": {
+   "attack": 267
+  },
+  "noah88": {
+   "attack": 375,
+   "boatTo": 1
+  },
+  "leo_tx": {
+   "attack": 292
+  },
+  "riku_x": {
+   "attack": 128,
+   "boatTo": 8
+  },
+  "kaito9": {
+   "attack": 297,
+   "boatTo": 1
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 85,
+  "HL-TICK": 374,
+  "V28-P3": 61
+ },
+ "v28Counters": {
+  "p3_sb_eval": 5203,
+  "p3_sb_lower": 1717,
+  "p3_whole_early": 65,
+  "p3_relax_send": 61,
+  "p3_sb_unlock": 480
+ },
+ "v28CountersPerBot": {
+  "ryan_m": {
+   "p3_sb_eval": 437,
+   "p3_sb_lower": 287,
+   "p3_whole_early": 43,
+   "p3_relax_send": 17,
+   "p3_sb_unlock": 199
+  },
+  "sora_w": {
+   "p3_sb_eval": 459,
+   "p3_sb_lower": 183,
+   "p3_sb_unlock": 32,
+   "p3_relax_send": 10
+  },
+  "zero_7": {
+   "p3_sb_eval": 417,
+   "p3_whole_early": 1,
+   "p3_sb_lower": 94,
+   "p3_sb_unlock": 4
+  },
+  "alex_k": {
+   "p3_sb_eval": 363,
+   "p3_sb_lower": 93,
+   "p3_sb_unlock": 3
+  },
+  "noah88": {
+   "p3_sb_eval": 467,
+   "p3_sb_lower": 261,
+   "p3_sb_unlock": 64
+  },
+  "zexos1": {
+   "p3_sb_eval": 790,
+   "p3_sb_lower": 175,
+   "p3_sb_unlock": 30,
+   "p3_whole_early": 5,
+   "p3_relax_send": 26
+  },
+  "leo_tx": {
+   "p3_sb_eval": 493,
+   "p3_sb_lower": 194,
+   "p3_whole_early": 1,
+   "p3_sb_unlock": 43,
+   "p3_relax_send": 7
+  },
+  "riku_x": {
+   "p3_sb_eval": 228,
+   "p3_sb_lower": 36,
+   "p3_sb_unlock": 12,
+   "p3_relax_send": 1
+  },
+  "talon5": {
+   "p3_sb_eval": 842,
+   "p3_sb_lower": 205,
+   "p3_sb_unlock": 2
+  },
+  "kaito9": {
+   "p3_sb_eval": 707,
+   "p3_sb_lower": 189,
+   "p3_whole_early": 15,
+   "p3_sb_unlock": 91
+  }
+ }
+}

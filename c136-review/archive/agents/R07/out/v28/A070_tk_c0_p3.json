@@ -1,0 +1,479 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "tk_c0_p3",
+ "params": {
+  "enableInflightLedger": 0,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 1,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 0
+ },
+ "from": 0,
+ "until": 2300,
+ "endTick": 2300,
+ "seconds": 3.1,
+ "replayCheck": {
+  "rows": 250,
+  "terrExact": 77,
+  "balExact": 75,
+  "bothExact": 75
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 719,
+ "kinds": {
+  "attack": 705,
+  "boatTo": 7,
+  "boat": 7
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 95
+  },
+  "zero_7": {
+   "attack": 67
+  },
+  "zexos1": {
+   "attack": 60,
+   "boatTo": 3,
+   "boat": 3
+  },
+  "talon5": {
+   "attack": 85
+  },
+  "sora_w": {
+   "attack": 55
+  },
+  "alex_k": {
+   "attack": 64
+  },
+  "noah88": {
+   "attack": 61,
+   "boatTo": 1,
+   "boat": 1
+  },
+  "leo_tx": {
+   "attack": 74
+  },
+  "riku_x": {
+   "attack": 76,
+   "boatTo": 2,
+   "boat": 2
+  },
+  "kaito9": {
+   "attack": 68,
+   "boatTo": 1,
+   "boat": 1
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 28,
+  "HL-TICK": 180,
+  "V28-P3": 85
+ },
+ "v28Counters": {
+  "p3_sb_eval": 2954,
+  "p3_sb_lower": 1208,
+  "p3_whole_early": 80,
+  "p3_relax_send": 85,
+  "p3_sb_unlock": 323,
+  "p3_whole_core": 1
+ },
+ "v28CountersPerBot": {
+  "ryan_m": {
+   "p3_sb_eval": 385,
+   "p3_sb_lower": 150,
+   "p3_whole_early": 21,
+   "p3_relax_send": 29,
+   "p3_sb_unlock": 17,
+   "p3_whole_core": 1
+  },
+  "sora_w": {
+   "p3_sb_eval": 306,
+   "p3_sb_lower": 48,
+   "p3_whole_early": 2,
+   "p3_relax_send": 4
+  },
+  "zero_7": {
+   "p3_sb_eval": 262,
+   "p3_sb_lower": 125,
+   "p3_sb_unlock": 43,
+   "p3_whole_early": 22,
+   "p3_relax_send": 16
+  },
+  "alex_k": {
+   "p3_sb_eval": 241,
+   "p3_sb_lower": 68,
+   "p3_whole_early": 9,
+   "p3_sb_unlock": 1
+  },
+  "noah88": {
+   "p3_sb_eval": 249,
+   "p3_sb_lower": 141,
+   "p3_sb_unlock": 28,
+   "p3_whole_early": 9
+  },
+  "zexos1": {
+   "p3_sb_eval": 251,
+   "p3_sb_lower": 115,
+   "p3_sb_unlock": 77,
+   "p3_whole_early": 1,
+   "p3_relax_send": 8
+  },
+  "leo_tx": {
+   "p3_sb_eval": 273,
+   "p3_sb_lower": 70,
+   "p3_whole_early": 4
+  },
+  "riku_x": {
+   "p3_sb_eval": 414,
+   "p3_sb_lower": 260,
+   "p3_whole_early": 1,
+   "p3_sb_unlock": 129,
+   "p3_relax_send": 11
+  },
+  "talon5": {
+   "p3_sb_eval": 261,
+   "p3_sb_lower": 129,
+   "p3_whole_early": 6,
+   "p3_sb_unlock": 22,
+   "p3_relax_send": 1
+  },
+  "kaito9": {
+   "p3_sb_eval": 312,
+   "p3_sb_lower": 102,
+   "p3_whole_early": 5,
+   "p3_sb_unlock": 6,
+   "p3_relax_send": 16
+  }
+ },
+ "takeover": {
+  "from": 700,
+  "chan": "c0",
+  "seed": 1,
+  "stall": null,
+  "suppressedRecorded": 748,
+  "stillInChannel": 0,
+  "total": {
+   "issued": 605,
+   "attack": 591,
+   "dupAttack": 0,
+   "dupNeutral": 0,
+   "dupBot": 0,
+   "dupPerson": 0,
+   "dupCovered": 0,
+   "dupTopUp": 0,
+   "executed": 579,
+   "failed": 26,
+   "dropped": 0,
+   "latSum": 0
+  },
+  "dupAttackShare": 0,
+  "dupCoveredShare": 0,
+  "meanLatency": 0,
+  "perBot": {
+   "ryan_m": {
+    "issued": 84,
+    "attack": 84,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 81,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "sora_w": {
+    "issued": 45,
+    "attack": 45,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 41,
+    "failed": 4,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "alex_k": {
+    "issued": 53,
+    "attack": 53,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 51,
+    "failed": 2,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "noah88": {
+    "issued": 52,
+    "attack": 50,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 52,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "talon5": {
+    "issued": 75,
+    "attack": 75,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 72,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "kaito9": {
+    "issued": 57,
+    "attack": 55,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 54,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "zero_7": {
+    "issued": 50,
+    "attack": 50,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 47,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "zexos1": {
+    "issued": 51,
+    "attack": 45,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 47,
+    "failed": 4,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "riku_x": {
+    "issued": 72,
+    "attack": 68,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 70,
+    "failed": 2,
+    "dropped": 0,
+    "latSum": 0
+   },
+   "leo_tx": {
+    "issued": 66,
+    "attack": 66,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 64,
+    "failed": 2,
+    "dropped": 0,
+    "latSum": 0
+   }
+  },
+  "trajectory_t_alive_land_troops": [
+   [
+    100,
+    10,
+    779,
+    6460
+   ],
+   [
+    200,
+    10,
+    2369,
+    9512
+   ],
+   [
+    300,
+    10,
+    5011,
+    15011
+   ],
+   [
+    400,
+    10,
+    9513,
+    24773
+   ],
+   [
+    500,
+    10,
+    17184,
+    38888
+   ],
+   [
+    600,
+    10,
+    28919,
+    56542
+   ],
+   [
+    700,
+    10,
+    43733,
+    69767
+   ],
+   [
+    800,
+    10,
+    58093,
+    123573
+   ],
+   [
+    900,
+    10,
+    77977,
+    189269
+   ],
+   [
+    1000,
+    10,
+    101735,
+    257742
+   ],
+   [
+    1100,
+    10,
+    130275,
+    368013
+   ],
+   [
+    1200,
+    10,
+    159403,
+    470000
+   ],
+   [
+    1300,
+    10,
+    195020,
+    641795
+   ],
+   [
+    1400,
+    10,
+    231482,
+    794802
+   ],
+   [
+    1500,
+    10,
+    268618,
+    942822
+   ],
+   [
+    1600,
+    10,
+    304736,
+    1135532
+   ],
+   [
+    1700,
+    10,
+    351930,
+    1419808
+   ],
+   [
+    1800,
+    10,
+    395109,
+    1711218
+   ],
+   [
+    1900,
+    10,
+    439157,
+    2252103
+   ],
+   [
+    2000,
+    10,
+    477769,
+    2947778
+   ],
+   [
+    2100,
+    10,
+    499255,
+    3754902
+   ],
+   [
+    2200,
+    10,
+    510087,
+    4577533
+   ],
+   [
+    2300,
+    10,
+    518287,
+    5715260
+   ],
+   [
+    2300,
+    10,
+    518287,
+    5715260
+   ]
+  ]
+ }
+}

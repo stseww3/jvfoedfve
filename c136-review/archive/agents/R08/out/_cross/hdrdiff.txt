@@ -1,0 +1,8 @@
+[HD-A] 录像头里的内置 AI 难度字段（发现集 123 局；有录像且解得开的 107 局；没录像 16 局；解不开 0 局）
+  多人房（humanCount > 1）：107 局
+  botDifficultyType：0：107 局
+  botDifficultyValue：0：107 局
+  neutralBots：0：107 局
+  botDifficultyTeam（各队一格）全是 0 的：107 局
+  botDifficultyData（AI 席位逐个一格）只有一个取值的：107 局；取值分布：空：107 局
+  说明：重放器在多人房不读这些字段，一律按难度 0 建局；按 0 重演和日志逐位对上的局数见 xtruth.txt 开头。
