@@ -329,6 +329,8 @@ def sec_void(X):
         if rl:
             print(f"      被改挂出来的无主地线 {len(rl)} 条：挂上去 {fmt(sum(e['sent'] for e in rl))} 兵，之后打掉 {fmt(sum(e['spent'] for e in rl))}、得地 {sum(e['gain'] for e in rl)} 格、退回 {fmt(sum(e['ret'] for e in rl))}；"
                   f"挂着的拍数 中位/最大 {pctl([e['t1'] - e['t0'] for e in rl], 0.5)}/{max(e['t1'] - e['t0'] for e in rl)}")
+            out.append(dict(band='all', cls='redir', lines=len(rl), sent=sum(e['sent'] for e in rl), spent=sum(e['spent'] for e in rl), gain=sum(e['gain'] for e in rl), ret=sum(e['ret'] for e in rl),
+                            durMed=pctl([e['t1'] - e['t0'] for e in rl], 0.5), durMax=max(e['t1'] - e['t0'] for e in rl)))
     return out
 
 

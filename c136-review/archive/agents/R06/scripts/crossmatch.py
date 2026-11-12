@@ -6,6 +6,7 @@
 
 用法：python3 crossmatch.py <段> [matchId ...]        （不给对局号 = R06 的 15 局）
   struct     结构：地图、队数、真人数、席位、拆队、去向、终局、分型、录像覆盖
+  split      拆队账：编队合计的地与兵（t≈1530 与峰值）对最强的非我方集团
   spawn      选点执行延迟：下发 / 落地、最后一版是不是出生点、撞点、延迟下界
   delay      指令延迟（下令拍 → 执行拍）分位数，按下令拍分 4 段；没有对局录像的局给日志侧墙上时钟读数
   course     延迟的时间过程：每 150 拍一格的中位
@@ -15,6 +16,10 @@
   land       好地账：Voronoi 天然份额、实抢 ÷ 天然份额
   ai         身边 AI 地的去向
   layers     没抢到 AI 地的三层归因
+  gates      核心期（t>=1500）影子策略对真人 / 非真人报价的出口；被真人打的拍有没有还手（读 out/<id>/coregates.json，coregates.py <id> json 写的）
+  donflow    输血账（录像真值）：捐款按千分比档 / 收款人状态 / 收款后 300 拍的去向（读 out/<id>/donflow.json，donflow.py <id> json 写的）
+  foes       对手画像（录像真值）：外人对我方号的打击（目标 / 出手方密度、兵力比、千分比）、围攻与还手、登陆、外人之间的捐款（读 out/<id>/foeprofile.json）
+  boats      船账（录像真值）：我方发船的条数、船上兵、手续费、靠岸去向、小船 / 空船、被围时发的船（读 out/<id>/boatflow.json）
   money      兵力账：利息、顶格少拿、手续费、捐款损耗（录像真值）+ 日志侧估算（15 局同口径）
   logside    只靠日志的计数：sent / accepted、骤降、垮着还捐、零指令时段、满仓不动、缺快照、没开局的席位
   patterns   15 局 JSON 里的模式名：出现在几局、多少实例
@@ -54,6 +59,10 @@ class M:
         self.C = jl(os.path.join(OUT, mid, 'landcap.json')) or {}
         self.G = jl(os.path.join(OUT, mid, 'logdigest.json')) or {}
         self.D = jl(os.path.join(OUT, mid, 'digest.json')) or {}
+        self.K = jl(os.path.join(OUT, mid, 'coregates.json')) or {}
+        self.F = jl(os.path.join(OUT, mid, 'donflow.json')) or {}
+        self.P = jl(os.path.join(OUT, mid, 'foeprofile.json')) or {}
+        self.B = jl(os.path.join(OUT, mid, 'boatflow.json')) or {}
         self.ctx = self.R.get('context', {})
         self.oc = self.R.get('outcome', {})
         te = self.ctx.get('truthEnd')
@@ -120,6 +129,68 @@ def sec_struct(ms):
           f"最大一队占席位的中位 {pc(med([x['split'][0] / sum(x['split']) for x in out if x['split']]), 1, 0)}。卡片标签：" + '、'.join(f"{k} {v}" for k, v in lab.most_common())
           + '。分型：' + '、'.join(f"{k} {v}" for k, v in arch.most_common()) + '；次分型：' + '、'.join(f"{k} {v}" for k, v in sec.most_common()) + '。')
     print(f"去向合计：阵亡 {sum(x['died'] for x in out)}、离开 {sum(x['left'] for x in out)}、活到终局 {sum(x['end'] for x in out)}、日志无声（没有结算行）{sum(x['silent'] for x in out)}；其中没开局的席位 {sum(x['neverPlayed'] for x in out)} 个。")
+    # 开过局、之后被登记离开的号：登记离开时的服务器拍（context.leftTicks 去掉 neverPlayed）
+    lt = []
+    for m in ms:
+        nv = set(m.ctx.get('neverPlayed') or [])
+        lt += [(m.id, n, t) for n, t in (m.ctx.get('leftTicks') or {}).items() if n not in nv]
+    if lt:
+        bands = [(0, 600, '<600'), (600, 2100, '600~2100'), (2100, 4284, '2100~4284'), (4284, 10 ** 9, '>=4284')]
+        by = Counter(m for m, _, _ in lt if True)
+        print(f"开过局、之后被登记离开、有离开拍的号 {len(lt)} 个：按登记离开的服务器拍 " + '、'.join(f"{n} {sum(1 for _, _, t in lt if a <= t < b)} 个" for a, b, n in bands)
+              + '；各局 ' + '、'.join(f"{k} {v}" for k, v in sorted(by.items())) + '。（没开局的席位都在 t<600 被登记离开，不计在内。）')
+    print()
+    return out
+
+
+def sec_split(ms):
+    print('### 拆队账：编队合计的地与兵，对「最强的非我方集团」（reviews/*.json 的 timeline；allTeams 只有有对局录像的局有）')
+    print('   非我方集团 = 某个队去掉我方号之后剩下的地 / 兵（外人真人 + 该队的空壳）。合计 ÷ 最强非我方集团 > 1 = 20 个号要是在一个队里，按地算已经是全场第一。')
+    rows, out = [], []
+    for m in ms:
+        tl = m.R.get('timeline') or []
+        land = m.ctx.get('mapLand')
+        if not tl or not land:
+            continue
+        humans = m.ctx.get('humans') or 0
+        seats = m.ctx.get('bots') or 0
+        near = min(tl, key=lambda r: abs(r['t'] - 1530))
+        peak = max(tl, key=lambda r: r.get('squadLandShare') or 0)
+
+        def cut(r):
+            pt = {k: v for k, v in (r.get('perTeam') or {}).items() if v.get('land')}
+            s_land = sum(v['land'] for v in pt.values())
+            s_tr = sum(v['troops'] for v in pt.values())
+            big = max(pt.items(), key=lambda kv: kv[1]['land']) if pt else None
+            o = dict(t=r['t'], share=s_land / land, troops=s_tr, nTeams=len(pt), parts={k: v['land'] / land for k, v in pt.items()}, bigTeam=big[0] if big else None, bigShare=big[1]['land'] / land if big else 0,
+                     alive=r.get('alive'))
+            at = r.get('allTeams')
+            if at:
+                rest = {k: (v['landShare'] - (pt.get(k, {}).get('land', 0) / land), v['troops'] - pt.get(k, {}).get('troops', 0)) for k, v in at.items()}
+                k = max(rest, key=lambda k: rest[k][0])
+                o.update(restTeam=k, restShare=rest[k][0], restTroops=rest[k][1], ratio=o['share'] / rest[k][0] if rest[k][0] > 0 else None,
+                         winShare=(at.get(str(m.oc.get('winnerTeam'))) or {}).get('landShare'), topShare=max(v['landShare'] for v in at.values()))
+            return o
+        a, b = cut(near), cut(peak)
+        head = seats / humans if humans else None
+        o = dict(id=m.id, head=head, near=a, peak=b, winner=m.oc.get('winnerTeam'))
+        out.append(o)
+        parts = ' / '.join(f"队{k} {100 * v:.1f}%" for k, v in sorted(b['parts'].items(), key=lambda kv: -kv[1]))
+        rows.append([m.id, '/'.join(str(x) for x in sorted((m.ctx.get('teamSplitTrue') or {}).values(), reverse=True)), pc(head or 0, 1),
+                     f"t={a['t']}：{pc(a['share'], 1)}（÷人头 {a['share'] / head:.2f}）" if head else None,
+                     f"t={b['t']}：{pc(b['share'], 1)}，{wan(b['troops'])}兵，在场 {b['alive']} 个", f"{b['nTeams']} 个队：{parts}",
+                     f"队{b['restTeam']} {pc(b['restShare'], 1)}，{wan(b['restTroops'])}兵" if 'restTeam' in b else None,
+                     f"{b['ratio']:.2f}（兵 {b['troops'] / b['restTroops']:.2f}）" if b.get('ratio') and b.get('restTroops') else None,
+                     f"队{m.oc.get('winnerTeam')}" + (f"：当时 {pc(b['winShare'], 1)}" if b.get('winShare') is not None else '')])
+    table(['局', '拆队', '人头占比', 't≈1530 编队合计领土份额', '编队合计份额的峰值', '峰值时我方地分在', '峰值时最强的非我方集团', '合计 ÷ 最强非我方集团：地（兵）', '终局赢家队'], rows)
+    hi = [o for o in out if o['peak']['share'] >= 0.40]
+    ge1 = [o for o in out if o['peak'].get('ratio') and o['peak']['ratio'] > 1 and o['peak']['t'] >= 1500]
+    early = [o for o in out if o['peak'].get('ratio') and o['peak']['t'] < 1500]
+    r15 = sorted((o['near']['share'] / o['head'], o['id']) for o in out if o['head'])
+    print(f"   峰值 >=40% 的局：{'、'.join(o['id'] + ' ' + pc(o['peak']['share'], 1, 0) for o in hi)}；有对局录像、峰值在 t>=1500 的局里，峰值时合计 > 最强非我方集团的：{'、'.join(o['id'] + ' ' + format(o['peak']['ratio'], '.2f') + ' 倍' for o in ge1) or '无'}")
+    print(f"   峰值落在 t<1500 的局（{'、'.join(o['id'] for o in early)}）：峰值是开局阶段的读数（之后编队份额一路往下，或录像到此为止），那一格的比值不代表「合起来能赢」。")
+    print(f"   t≈1530 编队份额 ÷ 人头占比：{' / '.join(f'{i[1]} {i[0]:.2f}' for i in r15)}（中位 {med([i[0] for i in r15]):.2f}；<1 的 {sum(1 for i in r15 if i[0] < 1)} 局）。"
+          '分母是全图陆地，t≈1530 时内置 AI 和无主地还没分完，人头里也含没开局 / 已离开的席位，所以这个比值天然低于 1；与其他真人的人均对比见 ai 段的「人均净增」。')
     print()
     return out
 
@@ -304,6 +375,13 @@ def sec_void(ms):
                   f"目标出局后被改挂 {wan(sum(x['moved'] for x in a))}（{pc(sum(x['moved'] for x in a), sum(x['sent'] for x in a))}）")
         if u:
             print(f"      开线拍 {b} 打无主地的线：出兵 {wan(sum(x['sent'] for x in u))}、打掉 {wan(sum(x['spent'] for x in u))}、得地 {sum(x['gain'] for x in u):,} 格、线结束时退回余额 {wan(sum(x['ret'] for x in u))}（{pc(sum(x['ret'] for x in u), sum(x['sent'] for x in u))}）")
+    rd = [(m.id, v) for m in ms if m.full for v in m.L['void'] if v.get('cls') == 'redir']
+    if rd:
+        s = lambda k: sum(v[k] for _, v in rd)
+        print(f"   被改挂出来的无主地线（整局，{len(rd)} 局合计）：{s('lines'):,} 条，挂上去 {wan(s('sent'))}兵，之后打掉 {wan(s('spent'))}、得地 {s('gain'):,} 格、退回余额 {wan(s('ret'))}（{pc(s('ret'), s('sent'))}）；"
+              f"挂着的拍数各局中位 = " + ' / '.join(f"{i} {v['durMed']}" for i, v in rd) + f"；最长 {max(v['durMax'] for _, v in rd)} 拍")
+        for o in out:
+            o['redir'] = next((v for i, v in rd if i == o['id']), None)
     print()
     return out
 
@@ -421,6 +499,9 @@ def sec_ai(ms):
               + f"（中位 {100 * med([o['later'][1500]['squad'] for o in f15]):.0f}%）；其他真人拿走的中位 {100 * med([o['later'][1500]['other'] for o in f15]):.0f}%；"
               f"其余 AI 地我方拿到的中位 {100 * med([o['later'][1500]['restSquad'] for o in f15]):.1f}%、其他真人 {100 * med([o['later'][1500]['restOther'] for o in f15]):.0f}%")
     print(f"   人均从 AI 手里拿到的地我方 < 其他真人的 {sum(1 for o in out if o['perCapAi'][0] < o['perCapAi'][1])}/{len(out)} 局；我方 ÷ 其他真人 = " + ' / '.join(f"{o['id']} {o['perCapAi'][0] / max(1, o['perCapAi'][1]):.2f}" for o in out))
+    rn = [(o['id'], o['perCapNet'][0] / max(1, o['perCapNet'][1])) for o in out]
+    print(f"   人均净增（同一段的全部来源：无主地 + AI + 真人 − 丢的）我方 < 其他真人的 {sum(1 for _, r in rn if r < 1)}/{len(rn)} 局；我方 ÷ 其他真人 = " + ' / '.join(f"{i} {r:.2f}" for i, r in rn)
+          + f"（中位 {med([r for _, r in rn]):.2f}）")
     print()
     return out
 
@@ -452,6 +533,375 @@ def sec_layers(ms):
     return out
 
 
+GATE_BANDS = ['1500~3000', '3000~4284', '4284+']
+HUM_KEYS = [('send', '出兵'), ('price', '地价闸 L5267'), ('dpKeep', '保底线 dpKeep L5361'), ('sbOurs', '保底线 safeFinite·我方号 L5361'), ('sbOther', '保底线 safeFinite·别人 L5361'),
+            ('chunk', '买不起整笔 L5528'), ('sole', '唯一真人缓冲 L5271'), ('crowded', 'crowdedHard L5280'), ('siege', 'siegeShrink L5345'), ('inflight', '在途兵已够'), ('pulse', 'pulse 太小'),
+            ('later', '前一个报价已 break'), ('other', '其他')]
+AI_KEYS = [('send', '出兵'), ('minCmd', '单太小 < minCmd L5367'), ('chunk', '买不起整笔 L5367'), ('dpKeep', '保底线 dpKeep L5361'), ('sbOursPass', 'safeFinite·我方号、去掉就能出兵'),
+           ('sbOther', 'safeFinite·其余'), ('already', '已在打它 L5364'), ('price', '地价闸 L5267'), ('later', '前一个报价已 break'), ('other', '其他')]
+
+
+def sec_gates(ms):
+    print('### 核心期（t>=1500）有兵不出手：影子策略每个决策拍从 buyLand 的哪一行出去（coregates.py；录像到 t>=1500 的局）')
+    print('   影子 = 策略源码跑在录像重演的真实局面上，指令只记不执行。真人报价的决策拍 = offers 里至少有一个真人邻居；这一拍对真人出了兵记「出兵」，否则记排第一的真人报价的出口。')
+    out = []
+    ks = [m for m in ms if m.K.get('bands')]
+    add = lambda d, e: [d.__setitem__(k, d.get(k, 0) + v) for k, v in e.items()]
+    for title, side, keys in (('真人报价', 'hum', HUM_KEYS), ('非真人报价（内置 AI / 空壳）', 'ai', AI_KEYS)):
+        rows = []
+        tot_b = {b: {} for b in GATE_BANDS}
+        n_b = {b: 0 for b in GATE_BANDS}
+        for m in ks:
+            ex, n = {}, 0
+            for b in GATE_BANDS:
+                y = (m.K['bands'].get(b) or {}).get(side)
+                if not y or not y['n']:
+                    continue
+                add(ex, y['exits'])
+                add(tot_b[b], y['exits'])
+                n += y['n']
+                n_b[b] += y['n']
+            if not n:
+                continue
+            rows.append([m.id, f"{n:,}"] + [pc(ex.get(k, 0), n) if ex.get(k) else '0' for k, _ in keys])
+            out.append(dict(id=m.id, side=side, n=n, exits=ex))
+        for b in GATE_BANDS:
+            if n_b[b]:
+                rows.append([f"合计 {b}", f"{n_b[b]:,}"] + [pc(tot_b[b].get(k, 0), n_b[b]) if tot_b[b].get(k) else '0' for k, _ in keys])
+        allx = {}
+        for b in GATE_BANDS:
+            add(allx, tot_b[b])
+        na = sum(n_b.values())
+        if na:
+            rows.append(['合计 t>=1500', f"{na:,}"] + [pc(allx.get(k, 0), na) if allx.get(k) else '0' for k, _ in keys])
+            out.append(dict(id='ALL', side=side, n=na, exits=allx, byBand={b: dict(n=n_b[b], exits=tot_b[b]) for b in GATE_BANDS}))
+        print(f"**{title}的决策拍：出口占比**")
+        table(['局', '决策拍'] + [t for _, t in keys], rows)
+    # 被打不还手、超软上限出不出手、地价闸上的报价
+    rows = []
+    T = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
+    TB = {b: dict(T) for b in GATE_BANDS}
+    om_all = {}
+    ov_all, ovh_all = {}, {}
+    OH = dict(overHiN=0, overHiSend=0)
+    ov_rows = []
+    for m in ks:
+        s = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
+        om = {}
+        ov, ovh, oh = {}, {}, dict(overHiN=0, overHiSend=0)
+        pg = []
+        for b in GATE_BANDS:
+            h = (m.K['bands'].get(b) or {}).get('hum')
+            if not h or not h['n']:
+                continue
+            for k in s:
+                s[k] += h.get(k, 0)
+                TB[b][k] += h.get(k, 0)
+            add(om, h.get('onMeNoSendExits') or {})
+            add(ov, h.get('overExits') or {})
+            add(ovh, h.get('overHiExits') or {})
+            for k in oh:
+                oh[k] += h.get(k, 0)
+            g = h.get('priceGate') or {}
+            if g.get('n'):
+                pg.append(f"{b}：{g['hcMed']:.0f} / {g['worthMed']:.0f} / {g['ratioMed']:.2f} / {g['densMed']:.0f}")
+        for k in s:
+            T[k] += s[k]
+        add(om_all, om)
+        add(ov_all, ov)
+        add(ovh_all, ovh)
+        for k in oh:
+            OH[k] += oh[k]
+        short = lambda d, n: '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v:,}（{pc(v, n)}）" for k, v in sorted(d.items(), key=lambda kv: -kv[1])[:4])
+        ov_rows.append([m.id, f"{s['overN']:,}", f"{s['overSend']:,}（{pc(s['overSend'], s['overN'])}）", short(ov, s['overN'] - s['overSend']),
+                        f"{oh['overHiN']:,}", f"{oh['overHiSend']:,}（{pc(oh['overHiSend'], oh['overHiN'])}）", short(ovh, oh['overHiN'] - oh['overHiSend'])])
+        top = '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v}" for k, v in sorted(om.items(), key=lambda kv: -kv[1])[:4])
+        rows.append([m.id, f"{s['onMe']:,}", f"{s['onMeNoSend']:,}（{pc(s['onMeNoSend'], s['onMe'])}）", top, f"{s['overN']:,}：{pc(s['overSend'], s['overN'])}", f"{s['underN']:,}：{pc(s['underSend'], s['underN'])}",
+                     s['noSendDon'], '；'.join(pg)])
+        out.append(dict(id=m.id, side='onMe', **s, onMeNoSendExits=om))
+    table(['局', '正被真人打的决策拍', '其中这一拍没有对任何真人出兵', '这些拍卡在哪（前 4）', '超软上限的拍：出兵比例', '没超软上限的拍：出兵比例', '没对真人出兵、同拍影子发了捐款', '地价闸上的拍：最低真人报价 / worth / 报价÷worth / 自己密度（中位）'], rows)
+    if T['onMe']:
+        top = '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, T['onMeNoSend'])}）" for k, v in sorted(om_all.items(), key=lambda kv: -kv[1])[:6])
+        print(f"   {len(ks)} 局合计：正被真人打的决策拍 {T['onMe']:,}，其中这一拍没有对任何真人出兵 {T['onMeNoSend']:,}（{pc(T['onMeNoSend'], T['onMe'])}）；卡在：{top}")
+        print(f"   超软上限的决策拍 {T['overN']:,}，出兵 {T['overSend']:,}（{pc(T['overSend'], T['overN'])}）；没超软上限的 {T['underN']:,}，出兵 {T['underSend']:,}（{pc(T['underSend'], T['underN'])}）；"
+              f"没对真人出兵而同拍影子发了捐款的 {T['noSendDon']:,} 拍")
+        for b in GATE_BANDS:
+            x = TB[b]
+            if x['onMe'] or x['overN'] or x['underN']:
+                print(f"      {b}：被打 {x['onMe']:,}、没还手 {x['onMeNoSend']:,}（{pc(x['onMeNoSend'], x['onMe'])}）；超软上限 {x['overN']:,}、出兵 {pc(x['overSend'], x['overN'])}；没超 {x['underN']:,}、出兵 {pc(x['underSend'], x['underN'])}")
+        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB, overExits=ov_all, overHiExits=ovh_all, **OH))
+        print()
+        print('**超软上限（兵 > 100×领土）而有真人报价的决策拍：没对真人出兵的卡在哪**（密度 >=125 = 利息已被扣掉一半以上）')
+        table(['局', '超软上限的拍', '其中出兵', '没出兵的卡在（前 4；占没出兵的拍）', '密度 >=125 的拍', '其中出兵', '没出兵的卡在（前 4）'], ov_rows)
+        nn = T['overN'] - T['overSend']
+        print(f"   {len(ks)} 局合计：超软上限而没对真人出兵 {nn:,} 拍，卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nn)}）" for k, v in sorted(ov_all.items(), key=lambda kv: -kv[1])[:6]))
+        nh = OH['overHiN'] - OH['overHiSend']
+        print(f"   密度 >=125 的拍 {OH['overHiN']:,}，出兵 {OH['overHiSend']:,}（{pc(OH['overHiSend'], OH['overHiN'])}）；没出兵的 {nh:,} 拍卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nh)}）" for k, v in sorted(ovh_all.items(), key=lambda kv: -kv[1])[:6]))
+    print('   口径：一个决策拍只记一个出口（排第一的真人报价）；「没出兵」是策略在真实局面上当拍的决定，不是录像里有没有指令落地。同一个号的相邻决策拍高度相关，占比只作描述。')
+    print()
+    return out
+
+
+def sec_donflow(ms):
+    print('### 输血账（录像真值，donflow.py）：我方号捐出、已执行的每一笔，按千分比档、收款人、收款后 300 拍做了什么')
+    print('   手续费 = 捐款人余额的 6.25%，与 pct 无关；到账 = min(余额×(pct+1)/1024, 余额−手续费, 收款人离硬上限的余量)。损耗率 = 手续费 ÷ (手续费 + 到账)。')
+    ds = [m.F for m in ms if m.F.get('n')]
+    if not ds:
+        print('   （没有 donflow.json）')
+        print()
+        return []
+    f = lambda a: f"{a['n']} / {wan(a['delivered'])} / {wan(a['fee'])}（{pc(a['fee'], a['fee'] + a['delivered'], 0)}）" if a and a.get('n') else '0'
+    z = lambda: dict(n=0, delivered=0, fee=0)
+
+    def addacc(a, b):
+        if b:
+            for k in ('n', 'delivered', 'fee'):
+                a[k] += b.get(k, 0)
+        return a
+    pk = ['<64', '64~149', '150~199', '200~299', '>=300']
+    rows = []
+    tot = dict(all=z(), pct={k: z() for k in pk}, husk=z(), trunc=z(), short=0, zero_n=0, zero_fee=0)
+    for d in ds:
+        husk = addacc(addacc(z(), d['to'].get('我方空壳')), d['to'].get('外人空壳'))
+        rows.append([d['matchId'], f(d)] + [f(d['pct'].get(k)) for k in pk] + [f(husk), f"{f(d['trunc'])}，少到账 {wan(d['trunc']['short'])}", f"{d['zero']['n']} 笔 / 费 {wan(d['zero']['fee'])}"])
+        addacc(tot['all'], d)
+        for k in pk:
+            addacc(tot['pct'][k], d['pct'].get(k))
+        addacc(tot['husk'], husk)
+        addacc(tot['trunc'], d['trunc'])
+        tot['short'] += d['trunc']['short']
+        tot['zero_n'] += d['zero']['n']
+        tot['zero_fee'] += d['zero']['fee']
+    rows.append(['合计', f(tot['all'])] + [f(tot['pct'][k]) for k in pk] + [f(tot['husk']), f"{f(tot['trunc'])}，少到账 {wan(tot['short'])}", f"{tot['zero_n']} 笔 / 费 {wan(tot['zero_fee'])}"])
+    table(['局', '已执行：笔 / 到账 / 手续费（损耗率）', 'pct <64', '64~149', '150~199', '200~299', '>=300', '给空壳', '被截断（到账 < 名义值的 90%）', '到账 = 0'], rows)
+    # 收款人状态与之后 300 拍
+    dk = ['<50', '50~100', '100~125', '>=125']
+    rows = []
+    T = dict(dens={k: z() for k in dk}, fire=z(), ddead=z(), W=dict(n=0, recv=0, spentCap=0, donOutCap=0, donOutFee=0, gain=0, noCmd=0, noCmdRecv=0, lt=0, ltRecv=0, dead=0, deadRecv=0), pp=dict(pairs=0, fee=0, back=0),
+             F=dict(all=0, noCmd=0, donOut=0, spent=0, dead=0, none=0))
+    for d in ds:
+        W = d.get('windows') or {}
+        F = d.get('follow') or {}
+        rows.append([d['matchId']] + [f(d['dens'].get(k)) for k in dk] + [f(d['underFire']), f(d['donorDead']),
+                    f"{W.get('n', 0)} 个 / {wan(W.get('recv', 0))}", f"{wan(W.get('spentCap', 0))}（{pc(W.get('spentCap', 0), W.get('recv', 0), 0)}）",
+                    f"{wan(W.get('donOutCap', 0))}（{pc(W.get('donOutCap', 0), W.get('recv', 0), 0)}）；再付 {wan(W.get('donOutFee', 0))}",
+                    f"{W.get('spentLtTenth', {}).get('n', 0)} 个 / {wan(W.get('spentLtTenth', {}).get('recv', 0))}（{pc(W.get('spentLtTenth', {}).get('recv', 0), W.get('recv', 0), 0)}）",
+                    f"{W.get('noCmd', {}).get('n', 0)} 个 / {wan(W.get('noCmd', {}).get('recv', 0))}",
+                    f"{d['pingpong']['pairs']} 组 / 费 {wan(d['pingpong']['fee'])}"])
+        for k in dk:
+            addacc(T['dens'][k], d['dens'].get(k))
+        addacc(T['fire'], d['underFire'])
+        addacc(T['ddead'], d['donorDead'])
+        for k in ('n', 'recv', 'spentCap', 'donOutCap', 'donOutFee', 'gain'):
+            T['W'][k] += W.get(k, 0)
+        T['W']['noCmd'] += W.get('noCmd', {}).get('n', 0)
+        T['W']['noCmdRecv'] += W.get('noCmd', {}).get('recv', 0)
+        T['W']['lt'] += W.get('spentLtTenth', {}).get('n', 0)
+        T['W']['ltRecv'] += W.get('spentLtTenth', {}).get('recv', 0)
+        T['W']['dead'] += W.get('dead', {}).get('n', 0)
+        T['W']['deadRecv'] += W.get('dead', {}).get('recv', 0)
+        for k in T['pp']:
+            T['pp'][k] += d['pingpong'][k]
+        for k in T['F']:
+            T['F'][k] += (F.get(k) or {}).get('n', 0)
+    W = T['W']
+    rows.append(['合计'] + [f(T['dens'][k]) for k in dk] + [f(T['fire']), f(T['ddead']), f"{W['n']} 个 / {wan(W['recv'])}", f"{wan(W['spentCap'])}（{pc(W['spentCap'], W['recv'], 0)}）",
+                f"{wan(W['donOutCap'])}（{pc(W['donOutCap'], W['recv'], 0)}）；再付 {wan(W['donOutFee'])}", f"{W['lt']} 个 / {wan(W['ltRecv'])}（{pc(W['ltRecv'], W['recv'], 0)}）", f"{W['noCmd']} 个 / {wan(W['noCmdRecv'])}",
+                f"{T['pp']['pairs']} 组 / 费 {wan(T['pp']['fee'])}"])
+    table(['局', '收款时密度 <50（在场的我方号）', '50~100', '100~125', '>=125', '收款时正被人打', '捐款人 300 拍内阵亡', '收款窗口：个 / 收到', '窗口内战斗耗兵至多抵掉', '窗口内又捐出去至多；这些再捐的手续费', '窗口内战斗耗兵不到收到的一成', '窗口内没有任何陆攻 / 发船指令', '对倒（150 拍内原路捐回）'], rows)
+    Fa = T['F']
+    print(f"   逐笔打标（在场的我方号收款、之后还有 300 拍录像的 {Fa['all']:,} 笔；一笔可挂几个标）：收款人 300 拍内没有任何陆攻 / 发船指令进录像 {Fa['noCmd']:,}（{pc(Fa['noCmd'], Fa['all'])}）；"
+          f"又捐出 >= 到账的一半 {Fa['donOut']:,}（{pc(Fa['donOut'], Fa['all'])}）；战斗耗兵 >= 到账的一半 {Fa['spent']:,}（{pc(Fa['spent'], Fa['all'])}）；收款人阵亡 {Fa['dead']:,}（{pc(Fa['dead'], Fa['all'])}）；三样都不沾 {Fa['none']:,}")
+    print('   收款窗口 = 同一个收款人相隔 <=300 拍的几笔并成一个 [第一笔, 最后一笔+300]，窗口之间不重叠。「至多」= min(收到, 窗口内的战斗耗兵 / 又捐出)：收款人自己的利息也在花，所以是上限。')
+    # 按代码分支（由 pct 反推 tryDonateToTeammate 走的哪一支）；后排 = 被围或纯内陆的捐款人
+    BRN = ['盈余·不被围（153）', '盈余·被围（185 / 280）', '救援（155）', '救援·纯内陆（240）', '救援·被钳小（<155）', '救援·纯内陆被钳（156~239）', '其他']
+    REAR = ('盈余·被围（185 / 280）', '救援·纯内陆（240）', '救援·纯内陆被钳（156~239）')
+    keys = ('n', 'delivered', 'fee', 'truncN', 'short', 'husk', 'huskFee', 'fAll', 'fSpent', 'fDonOut', 'fNoCmd', 'fDead', 'fire', 'live', 'up', 'upDelivered', 'upFee', 'recv100', 'recv100Fee')
+    BT = {k: dict({x: 0 for x in keys}, donorDens=[], recvDens=[]) for k in BRN + ['后排合计', '前排合计']}
+    for d in ds:
+        for k, v in (d.get('branch') or {}).items():
+            for tgt in (k, '后排合计' if k in REAR else '前排合计'):
+                for x in keys:
+                    BT[tgt][x] += v.get(x, 0)
+                BT[tgt]['donorDens'] += v.get('donorDens', [])
+                BT[tgt]['recvDens'] += v.get('recvDens', [])
+    if any(BT[k]['n'] for k in BRN):
+        print()
+        print('**按代码分支（由 pct 反推 `tryDonateToTeammate` L4369-4499 走的哪一支）。后排 = 捐款时被围（boxedIn）或纯内陆（isPureInlandSafe）的捐款人**')
+        rows = []
+        md = lambda v: (f"{sorted(v)[len(v) // 2]:.0f}" if v else '—')
+        for k in BRN + ['后排合计', '前排合计']:
+            v = BT[k]
+            if not v['n']:
+                continue
+            rows.append([k, f"{v['n']}", wan(v['delivered']), f"{wan(v['fee'])}（{pc(v['fee'], v['fee'] + v['delivered'])}）", f"{v['truncN']} 笔 / 少到账 {wan(v['short'])}", f"{v['husk']} 笔 / 费 {wan(v['huskFee'])}",
+                         md(v['donorDens']), md(v['recvDens']), f"{v['up']}/{v['live']}（{pc(v['up'], v['live'], 0)}）：到账 {wan(v['upDelivered'])}、费 {wan(v['upFee'])}", f"{v['recv100']}（{pc(v['recv100'], v['live'], 0)}）", f"{v['fire']}（{pc(v['fire'], v['n'], 0)}）",
+                         f"{v['fSpent']}/{v['fAll']}（{pc(v['fSpent'], v['fAll'], 0)}）", f"{v['fDonOut']}/{v['fAll']}（{pc(v['fDonOut'], v['fAll'], 0)}）", f"{v['fNoCmd']}/{v['fAll']}（{pc(v['fNoCmd'], v['fAll'], 0)}）", f"{v['fDead']}/{v['fAll']}"])
+        table(['分支', '笔', '到账', '手续费（损耗率）', '被截断', '给空壳', '捐款人密度中位', '收款人密度中位（在场的我方号）', '收款人比捐款人还密', '收款人密度 >=100', '收款时正被人打', '之后 300 拍战斗耗兵 >= 到账的一半', '又捐出 >= 一半', '零陆攻 / 发船指令', '阵亡'], rows)
+        print('   153 也可能是救援捐款被 maxSafePct 钳出来的，分不开，全算盈余。任务卡里的 ECO_BANK 是后端选点协调器（spawn-coordinator-c110.mjs）分配的出生角色：15 局里 HL-SPAWN-BACKEND 0 行，没有号被分到过角色，局内代码也不读角色；这里的「后排」按捐款时的局面定义。')
+    print()
+    return [dict(id=d['matchId'], n=d['n'], delivered=d['delivered'], fee=d['fee'], pct=d['pct'], to=d['to'], dens=d['dens'], trunc=d['trunc'], zero=d['zero'], underFire=d['underFire'],
+                 windows=d.get('windows'), follow=d.get('follow'), pingpong=d['pingpong']) for d in ds] + [dict(id='ALL', tot=tot, T=T)]
+
+
+def sec_foes(ms):
+    print('### 对手画像（录像真值，foeprofile.py）：外人真人对「在场的我方号」的陆攻、围攻、登陆，和外人之间的捐款')
+    print('   打击 = 外人真人对在场我方号（异队、没离开）生效的陆攻指令。目标密度 = 目标当拍 兵 ÷ 地；出手方密度 = 出手前余额 ÷ 它的地；兵力比 = 出手前余额 ÷ 目标的兵。'
+          '刚清过仓 = 目标当拍的兵不到之前 150 拍最高值的一半、而领土没掉 10%。')
+    ps = [m.P for m in ms if m.P.get('hits') and m.P['endT'] >= 1500]
+    if not ps:
+        print('   （没有 foeprofile.json）')
+        print()
+        return []
+    g = lambda d, k, f='troops': (d.get(k) or {}).get(f, 0)
+    rows = []
+    T = dict(n=0, troops=0, lowN=0, lowT=0, midT=0, hiT=0, a90=0, r2=0, dN=0, dT=0, p100=0, p200=0, p900=0)
+    for d in ps:
+        h = d['hits']
+        low_n, low_t = g(h['tdens'], '<35', 'n'), g(h['tdens'], '<35')
+        mid_t = g(h['tdens'], '60~100')
+        hi_t = g(h['tdens'], '>=100')
+        a90 = g(h['adens'], '90~110') + g(h['adens'], '>=110')
+        r2 = g(h['ratio'], '2~4') + g(h['ratio'], '>=4')
+        p100, p200, p900 = g(h['pct'], '100~199'), g(h['pct'], '200~399'), g(h['pct'], '>=900')
+        rows.append([d['matchId'], f"{h['n']} / {wan(h['troops'])}", f"{pc(low_n, h['n'], 0)} / {pc(low_t, h['troops'])}", pc(mid_t, h['troops'], 0), pc(hi_t, h['troops'], 0), h['tdensMed'], pc(a90, h['troops'], 0), h['adensMed'],
+                     pc(r2, h['troops'], 0), f"{h['pctMed']:.0f}‰：{pc(p100, h['troops'], 0)} / {pc(p200, h['troops'], 0)} / {pc(p900, h['troops'], 0)}", f"{h['dumped']['n']}（{pc(h['dumped']['n'], h['n'], 0)}）/ {pc(h['dumped']['troops'], h['troops'])}"])
+        for k, v in (('n', h['n']), ('troops', h['troops']), ('lowN', low_n), ('lowT', low_t), ('midT', mid_t), ('hiT', hi_t), ('a90', a90), ('r2', r2), ('dN', h['dumped']['n']), ('dT', h['dumped']['troops']),
+                     ('p100', p100), ('p200', p200), ('p900', p900)):
+            T[k] += v
+    rows.append(['合计', f"{T['n']:,} / {wan(T['troops'])}", f"{pc(T['lowN'], T['n'], 0)} / {pc(T['lowT'], T['troops'])}", pc(T['midT'], T['troops'], 0), pc(T['hiT'], T['troops'], 0), None, pc(T['a90'], T['troops'], 0), None, pc(T['r2'], T['troops'], 0),
+                 f"{pc(T['p100'], T['troops'], 0)} / {pc(T['p200'], T['troops'], 0)} / {pc(T['p900'], T['troops'], 0)}", f"{T['dN']}（{pc(T['dN'], T['n'], 0)}）/ {pc(T['dT'], T['troops'])}"])
+    table(['局', '打击：条 / 兵', '目标密度 <35：条占比 / 兵占比', '目标密度 60~100：兵占比', '目标密度 >=100：兵占比', '目标密度中位（按条）', '出手方密度 >=90：兵占比', '出手方密度中位（按条）', '兵力比 >=2：兵占比',
+           '千分比中位：100~199 / 200~399 / >=900 的兵占比', '目标刚清过仓：条（占比）/ 兵占比'], rows)
+    rows = []
+    S = dict(n=0, troops=0, mine=0, others=0, zero=0, died=0, half=0, bigL=0, bigLT=0, fdN=0, fdD=0, fdHiN=0, fdHiD=0)
+    for d in ps:
+        s, ld, f = d['sieges'], d['landings'], d['foeDon']
+        top = f['top'][0] if f['top'] else None
+        win = next((m.oc.get('winnerTeam') for m in ms if m.id == d['matchId']), None)
+        rows.append([d['matchId'], f"{s['n']} / {wan(s['troops'])}", s['tdensMed'], s['fdensMed'], s['ratioMed'], f"{wan(s['mine'])}（{pc(s['mine'], s['troops'], 0)}）", f"{s['zeroBack']}/{s['n']}", wan(s['others']),
+                     f"{s['died']}/{s['n']}", f"{s['lostHalf']}/{s['n']}", f"{ld['big']} / {wan(ld['bigTroops'])}", f"{f['n']} / {wan(f['delivered'])}", f"{f['hiN']} / {wan(f['hiDelivered'])}",
+                     f"{top['name']}（队{top['team']}{'·赢家队' if top['team'] == win else ''}）{wan(top['delivered'])}，峰值 {top['peakTerr']:,} 格" if top else None])
+        for k, v in (('n', s['n']), ('troops', s['troops']), ('mine', s['mine']), ('others', s['others']), ('zero', s['zeroBack']), ('died', s['died']), ('half', s['lostHalf']), ('bigL', ld['big']), ('bigLT', ld['bigTroops']),
+                     ('fdN', f['n']), ('fdD', f['delivered']), ('fdHiN', f['hiN']), ('fdHiD', f['hiDelivered'])):
+            S[k] += v
+    rows.append(['合计', f"{S['n']} / {wan(S['troops'])}", None, None, None, f"{wan(S['mine'])}（{pc(S['mine'], S['troops'], 0)}）", f"{S['zero']}/{S['n']}", wan(S['others']), f"{S['died']}/{S['n']}", f"{S['half']}/{S['n']}",
+                 f"{S['bigL']} / {wan(S['bigLT'])}", f"{S['fdN']} / {wan(S['fdD'])}", f"{S['fdHiN']} / {wan(S['fdHiD'])}", None])
+    table(['局', '围攻（>=20 万兵的组）：组 / 兵', '第一条时目标密度中位', '出手方密度中位', '兵力比中位', '目标自己还手（占对方出兵）', '一兵没还的组', '别的我方号同期打这个外人', '末条后 600 拍内阵亡', '末条后 100 拍领土不到开打时一半',
+           '大登陆（>= 目标兵的一半且 >=2 万）：次 / 兵', '外人之间的捐款：笔 / 到账', '其中 pct>=900：笔 / 到账', '收得最多的外人'], rows)
+    # 合计的几条细分（按拍、按出手方密度、围攻期间目标的捐款进出、登陆、外人捐款的时间）
+    bands = ['<1500', '1500~3000', '3000~4284', '>=4284']
+    tb = {k: [sum(g(d['hits']['tband'], k, 'n') for d in ps), sum(g(d['hits']['tband'], k) for d in ps)] for k in bands}
+    ad = {k: sum(g(d['hits']['adens'], k) for d in ps) for k in ('<60', '60~90', '90~110', '>=110')}
+    print('   打击按执行拍（条 / 兵）：' + '；'.join(f"{k} {tb[k][0]} / {wan(tb[k][1])}" for k in bands) + f"。4284 拍以后占兵的 {pc(tb['>=4284'][1], T['troops'], 0)}")
+    print('   打击按出手方密度（兵占比）：' + '、'.join(f"{k} {pc(v, T['troops'], 0)}" for k, v in ad.items()))
+    print(f"   围攻窗口内目标收到捐款 {wan(sum(d['sieges']['donIn'] for d in ps))}、捐出 {wan(sum(d['sieges']['donOut'] for d in ps))}")
+    ln, lt = sum(d['landings']['n'] for d in ps), sum(d['landings']['troops'] for d in ps)
+    lb = {k: sum(d['landings']['tband'].get(k, 0) for d in ps) for k in bands}
+    print(f"   外人登陆我方在场号：{ln} 次 / {wan(lt)}（各局 {' / '.join(str(d['landings']['n']) for d in ps)}）；大登陆按拍：" + '、'.join(f"{k} {lb[k]}" for k in bands)
+          + '；4284 拍以后的各局：' + '、'.join(f"{d['matchId']} {d['landings']['tband'].get('>=4284', 0)}" for d in ps))
+    print(f"   外人之间的捐款里 t>=3213 的：{sum(d['foeDon'].get('late', 0) for d in ps)} 笔；pct>=900 各局：" + '、'.join(f"{d['matchId']} {d['foeDon']['hiN']} / {wan(d['foeDon']['hiDelivered'])}" for d in ps))
+    print()
+    print('**每局对我方出兵最多的 3 个外人**')
+    rows = []
+    for d in ps:
+        for t in d['top'][:3]:
+            rows.append([d['matchId'], f"{t['name']}（队{t['team']}）", t['fate'], f"{t['peakTerr']:,}", ' / '.join(f"{x:,}" if x is not None else '—' for x in t['terr']), f"{t['n']} / {wan(t['troops'])}", ' '.join(f"{k}‰×{v}" for k, v in t['pctTop']),
+                         f"{t['modePct']}‰ 占 {pc(t['modeShare'], 1, 0)}（{t['distinctPct']} 种）", t['adensMed'], t['tdensMed'], t['ratioMed'], f"{t['targets']} 个，主目标 {pc(t['mainShare'], 1, 0)}，同时 {t['atOnce']}",
+                         t['boats'], f"{t['donIn']} 笔 / {wan(t['donInTroops'])}"])
+    table(['局', '外人', '结局', '峰值领土', 't=630 / 1500 / 3000 领土', '对我方：条 / 兵', '对我方最常用的千分比', '整局陆攻最常用的千分比（种数）', '出手时自己密度中位', '目标密度中位', '兵力比中位', '打过几个我方号', '登陆我方', '收到捐款'], rows)
+    o_n = sum(d['ours']['n'] for d in ps)
+    o_t = sum(d['ours']['troops'] for d in ps)
+    op = lambda k: sum(d['ours']['pct'][k]['troops'] for d in ps)
+    print(f"   对照｜我方号对外人真人的陆攻（{len(ps)} 局）：{o_n:,} 条、{wan(o_t)}兵；千分比 <100 / 100~199 / 200~399 / 400~899 / >=900 的兵占比 = "
+          f"{pc(op('<100'), o_t, 0)} / {pc(op('100~199'), o_t, 0)} / {pc(op('200~399'), o_t, 0)} / {pc(op('400~899'), o_t, 0)} / {pc(op('>=900'), o_t, 0)}；各局千分比中位 {' / '.join(str(d['ours']['pctMed']) for d in ps)}")
+    print('   同一局里的打击互相关联（同一个外人连着打同一个号），合计占比只作描述。出手方密度按「出手前余额 ÷ 当拍领土」，连续出兵的人这个值会一路走低。')
+    print()
+    # 围攻：目标自己还手多少 × 结局（观察性对照；按开打时的兵力比分层）
+    allr = [dict(r, id=d['matchId']) for d in ps for r in d['sieges']['rows']]
+    if allr:
+        def cell(L):
+            if not L:
+                return '—'
+            dd = sum(1 for r in L if r['died'])
+            hh = sum(1 for r in L if r['terr1'] < 0.5 * r['terr0'])
+            return f"{len(L)} 组：600 拍内阵亡 {dd}（{pc(dd, len(L), 0)}）、领土剩不到一半 {hh}（{pc(hh, len(L), 0)}）"
+        back = [('一兵没还', lambda r: r['mine'] == 0), ('还手 < 对方出兵的 25%', lambda r: 0 < r['mine'] < 0.25 * r['troops']),
+                ('还手 25%~100%', lambda r: 0.25 * r['troops'] <= r['mine'] < r['troops']), ('还手 >= 对方出兵', lambda r: r['mine'] >= r['troops'])]
+        qq = lambda v, p_: sorted(v)[min(len(v) - 1, int(p_ * len(v)))]
+        ns, ls, ts = [r['n'] for r in allr], [r['t1'] - r['t0'] for r in allr], [r['troops'] for r in allr]
+        t0b = [(0, 1500, '<1500'), (1500, 3000, '1500~3000'), (3000, 4284, '3000~4284'), (4284, 10 ** 9, '>=4284')]
+        print(f"   围攻的形状（{len(allr)} 组）：每组指令数中位 {qq(ns, 0.5)}、P90 {qq(ns, 0.9)}、最多 {max(ns)}；首末条相隔中位 {qq(ls, 0.5)} 拍、P90 {qq(ls, 0.9)} 拍；每组出兵中位 {wan(qq(ts, 0.5))}、P90 {wan(qq(ts, 0.9))}；"
+              f"带登陆的 {sum(1 for r in allr if r.get('boats'))} 组；开打时兵力比 >=2 的 {sum(1 for r in allr if r['ratio'] >= 2)} 组、<1 的 {sum(1 for r in allr if r['ratio'] < 1)} 组；"
+              '开打拍：' + '、'.join(f"{nm} {sum(1 for r in allr if lo <= r['t0'] < hi)}" for lo, hi, nm in t0b))
+        print()
+        print('**围攻：目标自己还手多少 × 之后的结局**（还手 = [首条 −300, 末条 +100] 里目标对这个外人的出兵；兵力比 = 开打时外人余额 ÷ 目标的兵）')
+        rows = []
+        for name, fn in back:
+            L = [r for r in allr if fn(r)]
+            rows.append([name, cell(L)] + [cell([r for r in L if lo <= r['ratio'] < hi]) for lo, hi in ((0, 2), (2, 4), (4, 1e18))])
+        table(['目标的还手', '全部', '兵力比 <2', '兵力比 2~4', '兵力比 >=4'], rows)
+        some_lower = tie = 0
+        parts = []
+        for d in ps:
+            z = [r for r in d['sieges']['rows'] if r['mine'] == 0]
+            sm = [r for r in d['sieges']['rows'] if r['mine'] > 0]
+            if not z or not sm:
+                continue
+            a_ = sum(1 for r in z if r['died']) / len(z)
+            b_ = sum(1 for r in sm if r['died']) / len(sm)
+            some_lower += b_ < a_
+            tie += b_ == a_
+            parts.append(f"{d['matchId']} {sum(1 for r in z if r['died'])}/{len(z)} 对 {sum(1 for r in sm if r['died'])}/{len(sm)}")
+        print(f"   按局（一兵没还 对 有还手，600 拍内阵亡）：{'、'.join(parts)}；有还手的阵亡比例更低的 {some_lower} 局、相同 {tie} 局、更高 {len(parts) - some_lower - tie} 局")
+        print('   这是观察性对照：还得了手的号本来就更强、活得更久（死得快的来不及还手）。按兵力比分层以后，兵力比 <4 的组里差别还在，>=4 的组里没有差别。')
+        print()
+    return [dict(id=d['matchId'], hits={k: v for k, v in d['hits'].items()}, sieges={k: v for k, v in d['sieges'].items() if k != 'rows'}, landings=d['landings'], foeDon=d['foeDon'], top=d['top'], ours=d['ours']) for d in ps] + [dict(id='ALL', hits=T, sieges=S)]
+
+
+def sec_boats(ms):
+    print('### 船账（录像真值，boatflow.py）：我方号发出的每条船，带多少兵、交多少手续费、最后靠在谁的岸上')
+    print('   手续费 = 发船那一拍余额的 3.125%，与船上带多少兵无关。小船 = 船上的兵不到发船时余额的 5%；空船 = 千分比 0。被围 = 发船那一拍影子策略眼里 nb=0 且 neut=0。')
+    bs = [m.B for m in ms if m.B.get('n')]
+    if not bs:
+        print('   （没有 boatflow.json）')
+        print()
+        return []
+    DEST = ['自己的岸', '无主地', '内置AI', '敌方真人', '敌方真人（空壳）', '异队我方号的岸', '同队的岸（移交）', '无空槽白损', '沉没', '消失（主人阵亡等）', '终局还在海上']
+    g = lambda d, k, f='n': (d.get(k) or {}).get(f, 0)
+    rows = []
+    for d in bs:
+        rows.append([d['matchId'], f"{d['n']}（{d['bots']} 个号）", wan(d['sent']), f"{wan(d['fee'])}（{pc(d['fee'], d['sent'], 0)}；{pc(d['fee'], d['inc'])}）",
+                     f"{g(d['size'], '<5%')} / {wan(g(d['size'], '<5%', 'sent'))} / {wan(g(d['size'], '<5%', 'fee'))}", f"{d['zero']['n']} / {wan(d['zero']['fee'])}",
+                     f"{g(d['box'], '被围')} / {wan(g(d['box'], '被围', 'sent'))} / {wan(g(d['box'], '被围', 'fee'))}", f"{d['big']['n']} / {wan(d['big']['sent'])}", f"{wan(d['sea']['decay'])} / {wan(d['sea']['hit'])}",
+                     f"{d['aim']['aimHumanLandedOnIt']}/{d['aim']['aimHuman']}"])
+    T = lambda k: sum(d[k] for d in bs)
+    S2 = lambda a, k, f='n': sum(g(d[a], k, f) for d in bs)
+    rows.append(['合计', f"{T('n'):,}", wan(T('sent')), f"{wan(T('fee'))}（{pc(T('fee'), T('sent'), 0)}；{pc(T('fee'), T('inc'))}）", f"{S2('size', '<5%')} / {wan(S2('size', '<5%', 'sent'))} / {wan(S2('size', '<5%', 'fee'))}",
+                 f"{sum(d['zero']['n'] for d in bs)} / {wan(sum(d['zero']['fee'] for d in bs))}", f"{S2('box', '被围')} / {wan(S2('box', '被围', 'sent'))} / {wan(S2('box', '被围', 'fee'))}",
+                 f"{sum(d['big']['n'] for d in bs)} / {wan(sum(d['big']['sent'] for d in bs))}", f"{wan(sum(d['sea']['decay'] for d in bs))} / {wan(sum(d['sea']['hit'] for d in bs))}",
+                 f"{sum(d['aim']['aimHumanLandedOnIt'] for d in bs)}/{sum(d['aim']['aimHuman'] for d in bs)}"])
+    table(['局', '发船（条）', '船上兵', '手续费（÷船上兵；÷实得利息）', '小船（<5% 余额）：条 / 船上 / 手续费', '空船：条 / 手续费', '被围时发的：条 / 船上 / 手续费', '>=10 万兵的大船：条 / 兵', '海上自然损耗 / 被敌船打掉', '瞄准敌方真人的船靠上了那个人的岸'], rows)
+    rows = []
+    for d in bs:
+        rows.append([d['matchId']] + [f"{g(d['dest'], k)} / {wan(g(d['dest'], k, 'sent'))}" if g(d['dest'], k) else '0' for k in DEST])
+    rows.append(['合计'] + [f"{S2('dest', k)} / {wan(S2('dest', k, 'sent'))}（{pc(S2('dest', k), T('n'), 0)} / {pc(S2('dest', k, 'sent'), T('sent'), 0)}）" for k in DEST])
+    table(['局（靠岸：条 / 船上兵）'] + DEST, rows)
+    bigd = defaultdict(lambda: [0, 0])
+    for d in bs:
+        for k, v in d['big']['dest'].items():
+            bigd[k][0] += v['n']
+            bigd[k][1] += v['sent']
+    print('   >=10 万兵的大船去了哪（合计）：' + '；'.join(f"{k} {v[0]} 条 / {wan(v[1])}" for k, v in sorted(bigd.items(), key=lambda kv: -kv[1][1])))
+    tb = ['<600', '600~1500', '1500~3000', '3000~4284', '>=4284']
+    print('   按发船拍（合计）：' + '；'.join(f"{k} {S2('tband', k)} 条 / 船上 {wan(S2('tband', k, 'sent'))} / 费 {wan(S2('tband', k, 'fee'))}" for k in tb))
+    print('   按船上兵占余额（合计）：' + '；'.join(f"{k} {S2('size', k)} 条 / 船上 {wan(S2('size', k, 'sent'))} / 费 {wan(S2('size', k, 'fee'))}" for k in ('<5%', '5~20%', '20~50%', '>=50%')))
+    print('   被围与否（合计）：' + '；'.join(f"{k} {S2('box', k)} 条 / 船上 {wan(S2('box', k, 'sent'))} / 费 {wan(S2('box', k, 'fee'))}" for k in ('被围', '不被围', '未知')))
+    print('   船靠上异队我方号的岸，引擎按进攻结算；靠上同队的岸，兵直接归对方（不收捐款手续费，但发船手续费照收）。')
+    print()
+    return bs
+
+
 def sec_money(ms):
     print('### 兵力账（录像真值：reviews/*.json 的 truthSummary；单位 兵）')
     keys = ['利息+地租', '顶格少拿', '出兵手续费', '捐款手续费', '捐出到账', '回兵溢出', '空壳少拿', '船兵交接蒸发', '海上损失', '其它白损', '战斗耗兵', '被打掉兵', '得地', '失地']
@@ -478,6 +928,13 @@ def sec_money(ms):
               f"捐款 {sum(o['don'].get('n', 0) for o in out)} 笔、到账 {wan(del_d)}、手续费 {wan(fee_d)}（损耗率 {pc(fee_d, fee_d + del_d)}；÷利息 {pc(fee_d, I)}）；给空壳 {sum(o['don'].get('toHuskN', 0) for o in out)} 笔、到账 {wan(sum(o['don'].get('toHuskDelivered', 0) for o in out))}、手续费 {wan(sum(o['don'].get('toHuskFee', 0) for o in out))}；"
               f"小额 pct {sum(o['don'].get('smallPctN', 0) for o in out)} 笔、到账 {wan(sum(o['don'].get('smallPctDelivered', 0) for o in out))}、手续费 {wan(sum(o['don'].get('smallPctFee', 0) for o in out))}；回兵溢出 {wan(sum(o['回兵溢出'] for o in out))}；空壳少拿 {wan(sum(o['空壳少拿'] for o in out))}；"
               f"战斗耗兵 {wan(sum(o['战斗耗兵'] for o in out))}、被打掉兵 {wan(sum(o['被打掉兵'] for o in out))}；得地 {sum(o['得地'] for o in out):,} 格、失地 {sum(o['失地'] for o in out):,} 格")
+    if out:
+        cap = sum(o['顶格少拿'] for o in out)
+        fa = sum(o['出兵手续费'] for o in out)
+        ov = sum(o['回兵溢出'] for o in out)
+        eff = I - fee_d - fa - ov
+        print(f"   有效产兵 = 实得利息 − 捐款手续费 − 出兵/发船手续费 − 回兵溢出 = {wan(eff)}；应得利息 = 实得 + 顶格少拿 = {wan(I + cap)}；有效产兵率 = {pc(eff, I + cap)}")
+        print('   各局有效产兵率：' + '、'.join(f"{o['id']} {pc(o['利息+地租'] - o['don'].get('fee', 0) - o['出兵手续费'] - o['回兵溢出'], o['利息+地租'] + o['顶格少拿'], 0)}" for o in out))
     print()
     print('### 兵力账（日志侧估算，15 局同口径：logdigest.py overcap / donlog）')
     rows2, out2 = [], []
@@ -777,8 +1234,8 @@ def sec_spawnfx(ms):
     return out
 
 
-SECS = dict(relate=sec_relate, struct=sec_struct, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
-            money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
+SECS = dict(relate=sec_relate, struct=sec_struct, split=sec_split, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
+            gates=sec_gates, donflow=sec_donflow, foes=sec_foes, boats=sec_boats, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
 def main():

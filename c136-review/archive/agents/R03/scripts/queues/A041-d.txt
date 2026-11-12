@@ -1,0 +1,3 @@
+# A041 第四批调试重计算（bash scripts/heavy-queue.sh A041-d scripts/queues/A041-d.txt）
+out/trace/A041-contact-cold1.txt|node scripts/dbg/contact.mjs A041 kaito9,noah88 23 1500,1650,1800,2100,2280,2285,2300
+out/trace/A041-params-worth.txt|node scripts/dbg/params.mjs A041 ^(bleedDiscount|bleedSafeCap|collapseFloorCap|collapseRatio|contactPenalty|contactStepsMax|coreFrom|defendDiscount|defendDiscountMid|dpEnd|growth|killW|marketFloor|marketFrom|maxW|post|postKill|shareW|surplus|thinDiscount|thinMaxTD|winR|winT)$

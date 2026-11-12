@@ -69,6 +69,12 @@ timeout 120 python3 $A/scripts/xdose.py --quiet
 timeout 120 python3 $A/scripts/xsig.py --quiet
 timeout 60 python3 $A/scripts/codemap.py --quiet
 bash c136-review/tools/run-heavy.sh node $A/scripts/params_all.mjs
+# 录像头里内置 AI 的难度；指令通道、对手行为、房间构成（会审提案用）
+bash c136-review/tools/run-heavy.sh node $A/scripts/hdrdiff.mjs
+# 内置 AI / 空壳怎么挑目标、咬了真人多少（逐拍重演到 3000 拍；一轮做不完就再跑一次接着做）
+bash c136-review/tools/run-heavy.sh node $A/scripts/aibite.mjs
+timeout 120 python3 $A/scripts/aibite.py --quiet
+timeout 120 python3 $A/scripts/xchan.py --quiet
 # 我的 16 局的跨局表（要先有各局的事实表）
 timeout 120 python3 $A/scripts/crossmatch.py --quiet
 timeout 120 python3 $A/scripts/flowcheck.py
