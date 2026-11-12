@@ -1469,7 +1469,8 @@ def main():
                 row[f'{ch}_d'] = mean(d)
                 row[f'{ch}_se'] = (sd(d) / math.sqrt(len(d))) if len(d) > 1 else None
                 row[f'{ch}_ln'] = mean([math.log(A[n]['relTerr1'] / B[n]['relTerr1']) for n in common]) if all(A[n]['relTerr1'] > CHAIN_FLOOR and B[n]['relTerr1'] > CHAIN_FLOOR for n in common) else None
-                row[f'{ch}_w'] = math.exp(mean([math.log(max(1, A[n]['wealth1']) / max(1, B[n]['wealth1'])) for n in common]))
+                # 生死窗口（有一边的人均相对领土接近 0）不算兵力比：除以一个接近 0 的数没有意义
+                row[f'{ch}_w'] = math.exp(mean([math.log(max(1, A[n]['wealth1']) / max(1, B[n]['wealth1'])) for n in common])) if row[f'{ch}_ln'] is not None else None
                 row[f'{ch}_alive'] = mean([A[n]['alive1'] - B[n]['alive1'] for n in common])
                 same = same and all(A[n]['terr1'] == B[n]['terr1'] and A[n]['wealth1'] == B[n]['wealth1'] and A[n]['recorded'] == B[n]['recorded'] for n in common)
                 extra.append({'table': 'V', 'mid': k[0], 't0': k[1], 't1': e['meta']['t1'], 'variant': f'{k[2]}-{hv}:{ch}', 'hist': h['history']['relTerr1'], 'C0': None,
@@ -1507,7 +1508,7 @@ def main():
             name, sgn = norm(r)
             for ch in ('C1', 'C2'):
                 if f'{ch}_n' in r:
-                    vs.setdefault((r['t0'], name, ch), []).append((sgn * r[f'{ch}_d'], (sgn * r[f'{ch}_ln']) if r[f'{ch}_ln'] is not None else None, r[f'{ch}_w'] ** sgn, r[f'{ch}_se'], r))
+                    vs.setdefault((r['t0'], name, ch), []).append((sgn * r[f'{ch}_d'], (sgn * r[f'{ch}_ln']) if r[f'{ch}_ln'] is not None else None, (r[f'{ch}_w'] ** sgn) if r[f'{ch}_w'] is not None else None, r[f'{ch}_se'], r))
         for (t0, name, ch), v in sorted(vs.items()):
             ds = [x[0] for x in v]
             lns = [x[1] for x in v if x[1] is not None]
@@ -1516,7 +1517,7 @@ def main():
             mabs = mean([abs(d) for d in ds]); cabs = mean([abs(x[4]['chan']) for x in v if x[4]['chan'] is not None])
             ci = boot_ci(ds)
             P(f"| {WN.get(t0, t0)} | {name} | {ch} | {len(ds)} | {fmt(mean(ds), 3, True)}{f'（{ci[0]:+.3f} ~ {ci[1]:+.3f}）' if ci else ''} | {fmt(quart(ds)[1], 3, True)} | {sum(1 for d in ds if d > 1e-9)} / {sum(1 for d in ds if d < -1e-9)} | {fmt(mabs)} | "
-              f"{(fmt(mean(lns), 3, True) + '（×' + format(math.exp(mean(lns)), '.2f') + '）') if lns else '-'} | ×{math.exp(mean([math.log(x[2]) for x in v])):.2f} | {fmt(mean(ses)) if ses else '-'} | "
+              f"{(fmt(mean(lns), 3, True) + '（×' + format(math.exp(mean(lns)), '.2f') + '）') if lns else '-'} | {('×' + format(math.exp(mean([math.log(x[2]) for x in v if x[2] is not None])), '.2f')) if any(x[2] is not None for x in v) else '-'} | {fmt(mean(ses)) if ses else '-'} | "
               f"{fmt(base, 3, True)} / {fmt(chan, 3, True)} | {(format(mabs / cabs, '.2f')) if cabs and cabs > 1e-9 else '-'} |")
         P('')
         # 版本差在两种通道下是不是一回事（交互）
