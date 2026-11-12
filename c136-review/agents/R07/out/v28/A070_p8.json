@@ -1,0 +1,151 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "p8",
+ "params": {
+  "enableInflightLedger": 0,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 0,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 1
+ },
+ "from": 0,
+ "until": null,
+ "endTick": 4349,
+ "seconds": 4.5,
+ "replayCheck": {
+  "rows": 374,
+  "terrExact": 374,
+  "balExact": 374,
+  "bothExact": 374
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 2274,
+ "kinds": {
+  "attack": 2257,
+  "boatTo": 17
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 98
+  },
+  "zero_7": {
+   "attack": 255,
+   "boatTo": 1
+  },
+  "zexos1": {
+   "attack": 186,
+   "boatTo": 3
+  },
+  "talon5": {
+   "attack": 338,
+   "boatTo": 1
+  },
+  "sora_w": {
+   "attack": 177,
+   "boatTo": 2
+  },
+  "alex_k": {
+   "attack": 272
+  },
+  "noah88": {
+   "attack": 306,
+   "boatTo": 1
+  },
+  "leo_tx": {
+   "attack": 273
+  },
+  "riku_x": {
+   "attack": 119,
+   "boatTo": 8
+  },
+  "kaito9": {
+   "attack": 233,
+   "boatTo": 1
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 85,
+  "HL-TICK": 374,
+  "V28-LIFEGUARD": 57
+ },
+ "v28Counters": {
+  "p8_guard_enter": 17,
+  "p8_guard_tick": 65,
+  "p8_guard_counter": 19,
+  "p8_guard_land": 14
+ },
+ "v28CountersPerBot": {
+  "ryan_m": {
+   "p8_guard_enter": 1,
+   "p8_guard_tick": 3,
+   "p8_guard_counter": 1
+  },
+  "sora_w": {
+   "p8_guard_enter": 2,
+   "p8_guard_tick": 10,
+   "p8_guard_counter": 3
+  },
+  "zero_7": {
+   "p8_guard_enter": 3,
+   "p8_guard_tick": 5,
+   "p8_guard_counter": 3,
+   "p8_guard_land": 1
+  },
+  "alex_k": {
+   "p8_guard_enter": 3,
+   "p8_guard_tick": 15,
+   "p8_guard_counter": 6,
+   "p8_guard_land": 6
+  },
+  "noah88": {
+   "p8_guard_enter": 1,
+   "p8_guard_tick": 2,
+   "p8_guard_counter": 1
+  },
+  "zexos1": {
+   "p8_guard_enter": 1,
+   "p8_guard_tick": 4,
+   "p8_guard_counter": 1,
+   "p8_guard_land": 1
+  },
+  "leo_tx": {
+   "p8_guard_enter": 1,
+   "p8_guard_tick": 7,
+   "p8_guard_counter": 2
+  },
+  "riku_x": {
+   "p8_guard_enter": 2,
+   "p8_guard_tick": 5,
+   "p8_guard_counter": 1,
+   "p8_guard_land": 1
+  },
+  "talon5": {
+   "p8_guard_enter": 1,
+   "p8_guard_tick": 5,
+   "p8_guard_counter": 1,
+   "p8_guard_land": 1
+  },
+  "kaito9": {
+   "p8_guard_enter": 2,
+   "p8_guard_tick": 9,
+   "p8_guard_land": 4
+  }
+ }
+}
