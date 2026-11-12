@@ -363,6 +363,13 @@ def sec_void(ms):
                   f"目标出局后被改挂 {wan(sum(x['moved'] for x in a))}（{pc(sum(x['moved'] for x in a), sum(x['sent'] for x in a))}）")
         if u:
             print(f"      开线拍 {b} 打无主地的线：出兵 {wan(sum(x['sent'] for x in u))}、打掉 {wan(sum(x['spent'] for x in u))}、得地 {sum(x['gain'] for x in u):,} 格、线结束时退回余额 {wan(sum(x['ret'] for x in u))}（{pc(sum(x['ret'] for x in u), sum(x['sent'] for x in u))}）")
+    rd = [(m.id, v) for m in ms if m.full for v in m.L['void'] if v.get('cls') == 'redir']
+    if rd:
+        s = lambda k: sum(v[k] for _, v in rd)
+        print(f"   被改挂出来的无主地线（整局，{len(rd)} 局合计）：{s('lines'):,} 条，挂上去 {wan(s('sent'))}兵，之后打掉 {wan(s('spent'))}、得地 {s('gain'):,} 格、退回余额 {wan(s('ret'))}（{pc(s('ret'), s('sent'))}）；"
+              f"挂着的拍数各局中位 = " + ' / '.join(f"{i} {v['durMed']}" for i, v in rd) + f"；最长 {max(v['durMax'] for _, v in rd)} 拍")
+        for o in out:
+            o['redir'] = next((v for i, v in rd if i == o['id']), None)
     print()
     return out
 
@@ -480,6 +487,9 @@ def sec_ai(ms):
               + f"（中位 {100 * med([o['later'][1500]['squad'] for o in f15]):.0f}%）；其他真人拿走的中位 {100 * med([o['later'][1500]['other'] for o in f15]):.0f}%；"
               f"其余 AI 地我方拿到的中位 {100 * med([o['later'][1500]['restSquad'] for o in f15]):.1f}%、其他真人 {100 * med([o['later'][1500]['restOther'] for o in f15]):.0f}%")
     print(f"   人均从 AI 手里拿到的地我方 < 其他真人的 {sum(1 for o in out if o['perCapAi'][0] < o['perCapAi'][1])}/{len(out)} 局；我方 ÷ 其他真人 = " + ' / '.join(f"{o['id']} {o['perCapAi'][0] / max(1, o['perCapAi'][1]):.2f}" for o in out))
+    rn = [(o['id'], o['perCapNet'][0] / max(1, o['perCapNet'][1])) for o in out]
+    print(f"   人均净增（同一段的全部来源：无主地 + AI + 真人 − 丢的）我方 < 其他真人的 {sum(1 for _, r in rn if r < 1)}/{len(rn)} 局；我方 ÷ 其他真人 = " + ' / '.join(f"{i} {r:.2f}" for i, r in rn)
+          + f"（中位 {med([r for _, r in rn]):.2f}）")
     print()
     return out
 
