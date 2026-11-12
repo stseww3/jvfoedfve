@@ -337,6 +337,14 @@ def main():
                 if hh == 900:
                     rho, nn = spearman(hs, hd)
                     notes[f"窗口-{T0}-相关"] = f"断面 {T0} 往后 900 拍：按住与成批放行这一项 与 这一窗被按住的指令占比 的秩相关 {r3(rho, 2)}（{nn} 局）"
+                    bv = [(J["win"][g_][f"t{T0}_h{hh}"]["base"], g_) for g_ in GAMES if (J.get("win") or {}).get(g_, {}).get(f"t{T0}_h{hh}", {}).get("base") is not None]
+                    if bv:
+                        F0[f"wb{T0}n"] = str(len(bv))
+                        F0[f"wb{T0}mean"], F0[f"wb{T0}med"] = sg(mean([x_[0] for x_ in bv])), sg(med([x_[0] for x_ in bv]))
+                        F0[f"wb{T0}pos"] = str(sum(1 for x_ in bv if x_[0] > 0))
+                        F0[f"wb{T0}min"], F0[f"wb{T0}max"] = sg(min(bv)[0]), sg(max(bv)[0])
+                        F0[f"wb{T0}minG"], F0[f"wb{T0}maxG"] = min(bv)[1], max(bv)[1]
+                        F0[f"wc0_{T0}mean"] = sg(ws["d0"]["mean"])
                     hv = [(g_, h_, s_) for g_, h_, s_, _, _ in gd if h_ is not None]
                     if hv:
                         F0[f"wh{T0}n"] = str(len(hv))
