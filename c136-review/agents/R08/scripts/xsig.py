@@ -9,6 +9,7 @@
   [XG-C] 赢的局 vs 没赢的局：xscan 每个模式命中率的 Fisher 精确检验（双侧）
   [XG-D] 赢的局 vs 没赢的局：剂量 / 结果的中位数之差，置换检验（20000 次，种子同上）
   [XG-E] 多重比较：本表一共做了多少个检验，Bonferroni 门槛是多少，过门槛的有哪些
+1500 拍以后的几行读 out/_cross/xpost.json（先跑 xpost_batch.sh 和 xpost.py）；没有这个文件时这几行跳过，检验总数也跟着少。
 口径提醒：这里的显著只说明「发现集里这个差别不像是抽样噪声」，不等于因果；因果要靠验证集复现（E3）和模拟器配对消融（E4）。
 """
 import json
@@ -143,6 +144,8 @@ def main():
     XS = json.load(open(os.path.join(OUT, "xscan.json"), encoding="utf-8"))
     XT = json.load(open(os.path.join(OUT, "xtruth.json"), encoding="utf-8"))
     XD = json.load(open(os.path.join(OUT, "xdose.json"), encoding="utf-8"))
+    xp_path = os.path.join(OUT, "xpost.json")
+    XP = json.load(open(xp_path, encoding="utf-8")) if os.path.exists(xp_path) else None
     # 每个检验用自己的随机数流（种子 = SEED 加检验名），增删别的检验不会改动它的 p
     rng_for = lambda name: random.Random(f"{SEED}|{name}")
     rows = XD["rows"]
@@ -231,6 +234,31 @@ def main():
             dn.append((sum(1 for x in pre if x[2] == "ACC") / len(pre), sum(1 for x in post if x[2] == "ACC") / len(post)))
     sign_row("扩张之后 450 拍内被吃（跌 ≥30% 或阵亡）的比例：邻居没变多 低于 邻居变多（日志；每局两组各 ≥5 个事件）", gw)
     sign_row("捐款日志行的成交占比：t<4284 低于 t≥4284（日志；每局两段各 ≥5 条有判定的）", dn)
+    # 1500 拍以后（xpost.json：重演到 3000 拍的分窗收支和接壤普查）
+    post_rows = []
+    if XP:
+        ai0, ai1, ne0, hit0, adj0 = [], [], [], [], []
+        for r in XP["matches"]:
+            if not r.get("valid"):
+                continue
+            for k, bag_ai in ((0, ai0), (1, ai1)):
+                c = r["ledger"][k] if r["okWin"][k] else None
+                if not c or c["own"]["n"] < 3 or c["wild"]["n"] < 5:
+                    continue
+                o, w = c["own"], c["wild"]
+                bag_ai.append((o["gain"][0] / o["n"], w["gain"][0] / w["n"]))
+                if k == 0:
+                    ne0.append((o["gain"][2] / o["n"], w["gain"][2] / w["n"]))
+                    if o["reach"][6] >= 10 and w["reach"][6] >= 10:
+                        hit0.append((o["reach"][5] / o["reach"][6], w["reach"][5] / w["reach"][6]))
+                        post_rows.append(dict(NOEFF=r["noeff"][0], HITR=(o["reach"][5] / o["reach"][6]) / (w["reach"][5] / w["reach"][6]) if w["reach"][5] else None))
+                    if o["reach"][0] >= 20 and w["reach"][0] >= 20:
+                        adj0.append((w["reach"][1] / w["reach"][0], o["reach"][1] / o["reach"][0]))
+        sign_row("(1500,1800] 人均从内置 AI 吃到的格：own 低于 野人", ai0)
+        sign_row("(1800,2400] 人均从内置 AI 吃到的格：own 低于 野人", ai1)
+        sign_row("(1500,1800] 人均从无主地吃到的格：own 低于 野人", ne0)
+        sign_row("(1500,1800] 挨着内置 AI 的样本里 90 拍内出手的比例：own 低于 野人", hit0)
+        sign_row("(1500,1800] 挨着内置 AI 的样本占比：野人 低于 own", adj0)
 
     # ---- [XG-B] ----
     P("")
@@ -285,6 +313,8 @@ def main():
     corr_row("NLEFT × 卡顿剂量 B", rows, "NLEFT", "B")
     corr_row("NADJ × R1500", rows, "NADJ", "R1500")
     corr_row("NADJ × CLUSTER", rows, "NADJ", "CLUSTER")
+    if post_rows:
+        corr_row("(1500,1800] own 陆攻没生效占比 × 挨着内置 AI 的出手占比对照（own ÷ 野人）", post_rows, "NOEFF", "HITR")
 
     P("  偏相关（扣掉卡顿剂量 B；秩口径，置换检验）：两个量 | 局数 | 偏 rho | p")
 

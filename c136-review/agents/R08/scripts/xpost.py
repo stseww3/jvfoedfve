@@ -136,7 +136,8 @@ def post_eval(rw, P, c110, protected, dmed, land):
         gain = max(1, T - left + left * P["shareW"] * share)
         offers.append(((need + fee) / gain, a, need))
     if not offers:
-        return ("slot" if n_slot else "done"), det
+        det["first"] = "slot" if n_slot else "done"
+        return det["first"], det
     offers.sort(key=lambda o: o[0])
     first = None
     gated = False
@@ -182,7 +183,9 @@ def post_eval(rw, P, c110, protected, dmed, land):
             det["okSmall"] = x < min_cmd      # 放行的这一单不到 minCmd（c116 才会出现）
             det["okWant"] = want
             det["okX"] = x
+            det["first"] = first              # 最便宜的那个内置 AI 报价卡在哪一关（和样本的类别可以不同：便宜的被挡、贵一点的放行）
             return "ok", det
+    det["first"] = first
     return first, det
 
 
@@ -239,6 +242,8 @@ def scan(mid, row, pool, PARAMS):
                            adjZero=sum(1 for q in sel if X["reach"][k][q][1] > 0 and X["gain"][k][q][0] == 0))
         led.append(cell)
     rec["ledger"] = led
+    # 这一窗卡不卡：own 落地的陆攻里没生效的占比（落地不到 10 条的不分）
+    rec["noeff"] = [(1 - c["own"]["cmds"][1] / c["own"]["cmds"][0]) if (c and c["own"]["cmds"][0] >= 10) else None for c in led]
     # 规则照抄
     is_prot = [grp.get(q) in ("own", "pool") or "[npl]" in low[q] or "[nope]" in low[q] for q in range(H)]
 
@@ -283,12 +288,13 @@ def scan(mid, row, pool, PARAMS):
         if cls == "ok" and det.get("okSmall"):
             cell["okSmall"] += 1
         if g == "own":
-            pts[(t, q)] = cls
+            pts[(t, q)] = (cls, det.get("first") or cls)
             d = cell["det"]
             d["dens|" + cls].append(round(det["dens"], 1))
             if cls in ("minCmd(want)", "minCmd(avail)", "chunk", "sb", "sb(cap)", "dp", "dp(cap)", "keep"):
                 d["T|" + cls].append(det.get("T", 0))
                 d["wantShare|" + cls].append(round(det.get("want", 0) / max(1, rw[2]), 4))
+                d["c|" + cls].append(round(det.get("c", 0), 2))
             if cls in ("sb", "sb(cap)", "dp", "dp(cap)"):
                 d["safeShare|" + cls].append(round(det.get("safe", 0) / max(1, rw[2]), 3))
     for k in range(len(WINS)):
@@ -310,23 +316,27 @@ def shadow_compare(rec):
         return None
     S = json.load(open(p, encoding="utf-8"))
     name_to_q = {str(n).strip().lower(): q for q, n in enumerate(rec["_names"])}
-    same = diff = 0
+    same = diff = later_ok = 0
     conf = Counter()
     for name, b in S["bots"].items():
         q = b.get("id")
         for r in b.get("census2", []):
             t, why = r[0], r[16]
-            mine = rec["_pts"].get((t, q))
-            if mine is None or why in ("noAI",):
+            pt = rec["_pts"].get((t, q))
+            if pt is None or why in ("noAI",):
                 continue
+            cls, first = pt
             theirs = {"safe:sb": "sb", "safe:sb(cap)": "sb(cap)", "safe:people": "dp", "noOffer": "slot"}.get(why, why)
-            mine2 = {"dp(cap)": "dp", "done": "slot"}.get(mine, mine)
+            mine2 = {"dp(cap)": "dp", "done": "slot"}.get(first, first)
             if theirs == mine2 or (theirs == "attacking" and mine2 == "ok") or (theirs == "ok" and mine2 == "ok"):
                 same += 1
             else:
                 diff += 1
                 conf[(theirs, mine2)] += 1
-    return dict(matchId=mid, strategy=S.get("strategy"), replayFrom=S.get("replayFrom"), same=same, diff=diff, conf=[[a, b, n] for (a, b), n in conf.most_common(8)])
+            if first != "ok" and cls == "ok":
+                later_ok += 1
+    return dict(matchId=mid, strategy=S.get("strategy"), replayFrom=S.get("replayFrom"), same=same, diff=diff, laterOk=later_ok,
+                conf=[[a, b, n] for (a, b), n in conf.most_common(8)])
 
 
 def main():
@@ -403,10 +413,45 @@ def main():
             return f"    {tag}逐局 own ÷ 野人（人均吃到的格）：" + "；".join(parts)
 
         Pn(line("", sel))
-        for tag, fn in (("squad10·", lambda r: r["cohort"] == "squad10"), ("squad20·", lambda r: r["cohort"] == "squad20"), ("主队赢的局·", lambda r: r["won"]), ("没赢的局·", lambda r: not r["won"])):
+        for tag, fn in (("squad10·", lambda r: r["cohort"] == "squad10"), ("squad20·", lambda r: r["cohort"] == "squad20"), ("主队赢的局·", lambda r: r["won"]), ("没赢的局·", lambda r: not r["won"]),
+                        ("这一窗不卡的局（own 落地的陆攻没生效 ≤5%）·", lambda r: r["noeff"][k] is not None and r["noeff"][k] <= 0.05),
+                        ("这一窗卡的局（>5%）·", lambda r: r["noeff"][k] is not None and r["noeff"][k] > 0.05)):
             sub = [r for r in sel if fn(r)]
             if sub:
                 Pn(line(tag, sub))
+        # 按窗首的地折算（每 100 格窗首的地吃到多少格）：号小，边界短、兵少，按人头比会把「号小」和「不出手」混在一起
+        def per_land(r, g, i):
+            c = r["ledger"][k][g]
+            if not c["land"]:
+                return None
+            if i == "net":
+                gn_ = c["gain"]
+                return 100 * (gn_[0] + gn_[7] + gn_[2] + gn_[4] - gn_[6]) / c["land"]
+            return 100 * c["gain"][i] / c["land"]
+
+        def land_line(tag, sub):
+            parts = []
+            for i, cn in ((0, "内置 AI"), (2, "无主地"), (4, "在线真人"), ("net", "净增")):
+                po = [per_land(r, "own", i) for r in sub]
+                pw = [per_land(r, "wild", i) for r in sub]
+                pr = [(a, b) for a, b in zip(po, pw) if a is not None and b is not None]
+                lower = sum(1 for a, b in pr if a < b)
+                higher = sum(1 for a, b in pr if a > b)
+                parts.append(f"{cn} own 中位 {fmt(med([a for a, _ in pr]), 1)} / 野人 中位 {fmt(med([b for _, b in pr]), 1)}（own 低的 {lower} 局、高的 {higher} 局）")
+            return f"    {tag}逐局，每 100 格窗首的地吃到的格：" + "；".join(parts)
+
+        tot_o = [sum(r["ledger"][k]["own"]["gain"][i] for r in sel) for i in range(9)]
+        tot_w = [sum(r["ledger"][k]["wild"]["gain"][i] for r in sel) for i in range(9)]
+        lo_, lw_ = sum(r["ledger"][k]["own"]["land"] for r in sel), sum(r["ledger"][k]["wild"]["land"] for r in sel)
+        Pn(f"    合计口径，每 100 格窗首的地：从内置 AI own {100 * tot_o[0] / max(1, lo_):.1f} / 野人 {100 * tot_w[0] / max(1, lw_):.1f}；从无主地 {100 * tot_o[2] / max(1, lo_):.1f} / {100 * tot_w[2] / max(1, lw_):.1f}；"
+           f"从在线真人 {100 * tot_o[4] / max(1, lo_):.1f} / {100 * tot_w[4] / max(1, lw_):.1f}；被真人拿走 {100 * tot_o[6] / max(1, lo_):.1f} / {100 * tot_w[6] / max(1, lw_):.1f}；"
+           f"净增 {100 * (tot_o[0] + tot_o[7] + tot_o[2] + tot_o[4] - tot_o[6]) / max(1, lo_):.1f} / {100 * (tot_w[0] + tot_w[7] + tot_w[2] + tot_w[4] - tot_w[6]) / max(1, lw_):.1f}")
+        Pn(land_line("", sel))
+        for tag, fn in (("squad10·", lambda r: r["cohort"] == "squad10"), ("squad20·", lambda r: r["cohort"] == "squad20"),
+                        ("这一窗不卡的局·", lambda r: r["noeff"][k] is not None and r["noeff"][k] <= 0.05), ("这一窗卡的局·", lambda r: r["noeff"][k] is not None and r["noeff"][k] > 0.05)):
+            sub = [r for r in sel if fn(r)]
+            if sub:
+                Pn(land_line(tag, sub))
         z_own = sum(1 for r in sel if r["ledger"][k]["own"]["gain"][0] == 0)
         z_wild = sum(1 for r in sel if r["ledger"][k]["wild"]["gain"][0] == 0)
         heads_o = sum(r["ledger"][k]["own"]["n"] for r in sel)
@@ -438,6 +483,24 @@ def main():
             agg_d[nm][g] = rc
             Pn(f"  {nm} | {CN[g]} | {len(sel)} | {rc[0]} | {pct(rc[1], rc[0])} | {pct(rc[2], rc[0])} | {pct(rc[3], rc[0])} | {rc[4] / max(1, rc[1]):.0f} | {rc[5]}/{rc[6]}（{pct(rc[5], rc[6])}） | "
                + (f"{fmt(med(pm))}（{len(pm)} 局，<1 的 {sum(1 for x in pm if x < 1)}）" if g == "own" and pm else "—"))
+
+    Pn("  按这一窗卡不卡分开（own 落地的陆攻没生效 ≤5% = 不卡）：窗 | 卡不卡 | 局 | own：样本 / 挨着内置 AI / 挨着的样本里 90 拍内出手 | 野人：同口径 | 逐局 own ÷ 野人 的出手占比 中位")
+    agg_d["lag"] = {}
+    for k, (nm, _a, _z) in enumerate(WINS):
+        for tag, fn in (("不卡（≤5%）", lambda x: x <= 0.05), ("卡（>5%）", lambda x: x > 0.05)):
+            sel = [r for r in val if r["okWin"][k] and r["ledger"][k] and r["ledger"][k]["own"]["n"] >= 3 and r["ledger"][k]["wild"]["n"] >= 5 and r["noeff"][k] is not None and fn(r["noeff"][k])]
+            if not sel:
+                continue
+            ro = [sum(r["ledger"][k]["own"]["reach"][i] for r in sel) for i in range(7)]
+            rw_ = [sum(r["ledger"][k]["wild"]["reach"][i] for r in sel) for i in range(7)]
+            pm = []
+            for r in sel:
+                o, w = r["ledger"][k]["own"]["reach"], r["ledger"][k]["wild"]["reach"]
+                if o[6] >= 10 and w[6] >= 10 and w[5] > 0:
+                    pm.append((o[5] / o[6]) / (w[5] / w[6]))
+            agg_d["lag"][f"{nm}|{tag}"] = dict(matches=len(sel), own=ro, wild=rw_, ratio=med(pm), n=len(pm))
+            Pn(f"    {nm} | {tag} | {len(sel)} | {ro[0]} / {pct(ro[1], ro[0])} / {ro[5]}/{ro[6]}（{pct(ro[5], ro[6])}） | {rw_[0]} / {pct(rw_[1], rw_[0])} / {rw_[5]}/{rw_[6]}（{pct(rw_[5], rw_[6])}） | "
+               + (f"{fmt(med(pm))}（{len(pm)} 局，<1 的 {sum(1 for x in pm if x < 1)}）" if pm else "—"))
 
     # ---- [XP-E] ----
     Pn("")
@@ -478,6 +541,64 @@ def main():
             blocked = n - tot["ok"] - busy
             agg_e["merged"][f"{nm}|{coh}"] = dict(n=n, ok=tot["ok"], busy=busy, blocked=blocked, safe=safe, keep=tot["keep"], price=tot["price"], minCmd=mc, chunk=tot["chunk"], slot=tot["slot"])
             Pn(f"    {nm} | {coh} | {n} | {pct(tot['ok'], n)} | {pct(busy, n)} | {pct(blocked, n)} | {pct(safe, n)} | {pct(tot['keep'], n)} | {pct(tot['price'], n)} | {pct(mc, n)} | {pct(tot['chunk'], n)} | {pct(tot['slot'], n)}")
+    # 各类在多少局里出现
+    Pn("  各类在多少局里出现（own）：窗 | 档 | 有样本的局 | 出现 minCmd 类的局 | 出现 safe 类的局 | 出现「报价 ≥ worth」的局 | 一个放行样本都没有的局 | 每局样本数 中位 / 最大")
+    agg_e["spread"] = {}
+    for k, (nm, _a, _z) in enumerate(WINS):
+        for coh in ("squad10", "squad20"):
+            ms = []
+            for r in val:
+                if not r["okWin"][k] or r["cohort"] != coh:
+                    continue
+                cl = r["rule"][k]["own"]["cls"]
+                n = sum(v[0] for v in cl.values())
+                if n:
+                    ms.append((n, cl["minCmd(want)"][0] + cl["minCmd(avail)"][0], sum(cl[c][0] for c in ("sb", "sb(cap)", "dp", "dp(cap)")), cl["price"][0], cl["ok"][0]))
+            if not ms:
+                continue
+            agg_e["spread"][f"{nm}|{coh}"] = dict(matches=len(ms), minCmd=sum(1 for x in ms if x[1]), safe=sum(1 for x in ms if x[2]), price=sum(1 for x in ms if x[3]), noOk=sum(1 for x in ms if not x[4]))
+            Pn(f"    {nm} | {coh} | {len(ms)} | {sum(1 for x in ms if x[1])} | {sum(1 for x in ms if x[2])} | {sum(1 for x in ms if x[3])} | {sum(1 for x in ms if not x[4])} | {fmt(med([x[0] for x in ms]), 0)} / {max(x[0] for x in ms)}")
+    # 按这一窗卡不卡分开
+    Pn("  按这一窗卡不卡分开（卡不卡 = own 这一窗落地的陆攻里没生效的占比；落地不到 10 条的局不分）：窗 | 档 | 卡不卡 | 局 | own 样本 | 规则放行 | 放行的样本里 90 拍内出手 | 全部样本里出手 | "
+       "同一批局的野人：样本 | 放行 | 放行的样本里出手 | 全部样本里出手")
+    agg_e["lag"] = {}
+    for k, (nm, _a, _z) in enumerate(WINS):
+        for coh in ("squad10", "squad20", "全部"):
+            for tag, fn in (("不卡（≤5%）", lambda x: x <= 0.05), ("轻（5%~25%）", lambda x: 0.05 < x <= 0.25), ("重（>25%）", lambda x: x > 0.25)):
+                ss = [r for r in val if r["okWin"][k] and (coh == "全部" or r["cohort"] == coh) and r["noeff"][k] is not None and fn(r["noeff"][k])]
+
+                def tot(g):
+                    cl = {c: [sum(r["rule"][k][g]["cls"][c][i] for r in ss) for i in range(3)] for c in CLASSES}
+                    return sum(v[0] for v in cl.values()), cl["ok"], sum(v[1] for v in cl.values()), sum(v[2] for v in cl.values())
+
+                no, oko, obso, hito = tot("own")
+                nw, okw, obsw, hitw = tot("wild")
+                if not no:
+                    continue
+                agg_e["lag"][f"{nm}|{coh}|{tag}"] = dict(matches=len(ss), own=dict(n=no, ok=oko, obs=obso, hit=hito), wild=dict(n=nw, ok=okw, obs=obsw, hit=hitw))
+                Pn(f"    {nm} | {coh} | {tag} | {len(ss)} | {no} | {pct(oko[0], no)} | {oko[2]}/{oko[1]}（{pct(oko[2], oko[1])}） | {hito}/{obso}（{pct(hito, obso)}） | "
+                   f"{nw} | {pct(okw[0], nw)} | {okw[2]}/{okw[1]}（{pct(okw[2], okw[1])}） | {hitw}/{obsw}（{pct(hitw, obsw)}）")
+    Pn("  同一张表，own 样本的类别构成（括号 = 这一类里 90 拍内出手）：窗 | 档 | 卡不卡 | 样本 | 放行 | 已经在打 / 兵已压够 | safe（sb / dpKeep） | 报价 ≥ worth | minCmd | 其它 || 同一批局的野人（同一把尺子）：放行 | 已经在打 / 兵已压够 | safe | 报价 ≥ worth | minCmd")
+    for k, (nm, _a, _z) in enumerate(WINS):
+        for coh in ("squad10", "squad20"):
+            for tag, fn in (("不卡（≤5%）", lambda x: x <= 0.05), ("卡（>5%）", lambda x: x > 0.05)):
+                ss = [r for r in val if r["okWin"][k] and r["cohort"] == coh and r["noeff"][k] is not None and fn(r["noeff"][k])]
+
+                def parts(g):
+                    cl = {c: [sum(r["rule"][k][g]["cls"][c][i] for r in ss) for i in range(3)] for c in CLASSES}
+                    n = sum(v[0] for v in cl.values())
+
+                    def grp_(names):
+                        a = [sum(cl[c][i] for c in names) for i in range(3)]
+                        return f"{pct(a[0], n)}（{pct(a[2], a[1])}）"
+                    rest = [c for c in CLASSES if c not in ("ok", "attacking", "done", "sb", "sb(cap)", "dp", "dp(cap)", "price", "minCmd(want)", "minCmd(avail)")]
+                    return n, [grp_(("ok",)), grp_(("attacking", "done")), grp_(("sb", "sb(cap)", "dp", "dp(cap)")), grp_(("price",)), grp_(("minCmd(want)", "minCmd(avail)")), grp_(rest)]
+
+                no, po = parts("own")
+                nw, pw = parts("wild")
+                if not no:
+                    continue
+                Pn(f"    {nm} | {coh} | {tag} | {no} | " + " | ".join(po) + " || " + (" | ".join(pw[:5]) if nw else "—"))
     # safe 的来源
     Pn("  safe 起作用的那些样本（own），那个数是谁的兵：窗 | 档 | sb 类样本 → 来源 | dpKeep 类样本 → 来源")
     agg_e["src"] = {}
@@ -495,7 +616,7 @@ def main():
             f2 = "、".join(f"{SRC_CN[s]} {pct(dps[s], sum(dps.values()))}" for s in SRC if dps[s]) or "—"
             Pn(f"    {nm} | {coh} | {sum(sbs.values())} → {f1} | {sum(dps.values())} → {f2}")
     # 各类样本的画像
-    Pn("  各类样本的画像（own；中位）：窗 | 档 | 类 | 样本 | 本号兵密度 | 最便宜那个内置 AI 的地 | 吃光它要的 want ÷ 本号余额 | safe ÷ 本号余额")
+    Pn("  各类样本的画像（own；中位）：窗 | 档 | 类 | 样本 | 本号兵密度 | 最便宜那个内置 AI 的地 | 吃光它要的 want ÷ 本号余额 | safe ÷ 本号余额 | 那个报价连手续费每格多少兵（offers 里的 c）")
     agg_e["profile"] = {}
     for k, (nm, _a, _z) in enumerate(WINS):
         for coh in ("squad10", "squad20"):
@@ -507,8 +628,9 @@ def main():
                 tt = [x for r in ss for x in r["rule"][k]["own"]["det"].get("T|" + c, [])]
                 ws = [x for r in ss for x in r["rule"][k]["own"]["det"].get("wantShare|" + c, [])]
                 sf = [x for r in ss for x in r["rule"][k]["own"]["det"].get("safeShare|" + c, [])]
-                agg_e["profile"][f"{nm}|{coh}|{c}"] = dict(n=len(dn), dens=med(dn), T=med(tt), wantShare=med(ws), safeShare=med(sf))
-                Pn(f"    {nm} | {coh} | {CLS_CN[c]} | {len(dn)} | {fmt(med(dn), 1)} | {fmt(med(tt), 0)} | {('%.1f%%' % (100 * med(ws))) if ws else '—'} | {('%.2f' % med(sf)) if sf else '—'}")
+                cc = [x for r in ss for x in r["rule"][k]["own"]["det"].get("c|" + c, [])]
+                agg_e["profile"][f"{nm}|{coh}|{c}"] = dict(n=len(dn), dens=med(dn), T=med(tt), wantShare=med(ws), safeShare=med(sf), c=med(cc))
+                Pn(f"    {nm} | {coh} | {CLS_CN[c]} | {len(dn)} | {fmt(med(dn), 1)} | {fmt(med(tt), 0)} | {('%.1f%%' % (100 * med(ws))) if ws else '—'} | {('%.2f' % med(sf)) if sf else '—'} | {fmt(med(cc), 1) if cc else '—'}")
     sm = {coh: [sum(r["rule"][k]["own"]["okSmall"] for r in val if r["okWin"][k] and r["cohort"] == coh) for k in range(len(WINS))] for coh in ("squad10", "squad20")}
     okn = {coh: [sum(r["rule"][k]["own"]["cls"]["ok"][0] for r in val if r["okWin"][k] and r["cohort"] == coh) for k in range(len(WINS))] for coh in ("squad10", "squad20")}
     Pn("  规则放行的样本里，放行的那一单不到 minCmd（4 倍手续费）的：" + "；".join(
@@ -551,10 +673,11 @@ def main():
             continue
         agg_g.append(sc)
         Pn(f"  {sc['matchId']}（影子用的策略档 {sc['strategy']}" + (f"，录像取自 {sc['replayFrom']}" if sc.get("replayFrom") else "") + f"）：对上 {sc['same']}/{sc['same'] + sc['diff']}"
-           + ("；对不上的（影子 → 照抄）：" + "、".join(f"{a} → {b} ×{n}" for a, b, n in sc["conf"]) if sc["diff"] else ""))
+           + ("；对不上的（影子 → 照抄）：" + "、".join(f"{a} → {b} ×{n}" for a, b, n in sc["conf"]) if sc["diff"] else "")
+           + (f"；最便宜的那个被挡、但贵一点的另一个内置 AI 放行的点 {sc['laterOk']} 个（样本按「放行」记）" if sc["laterOk"] else ""))
     if agg_g:
         s_, d_ = sum(x["same"] for x in agg_g), sum(x["diff"] for x in agg_g)
-        Pn(f"  合计：对上 {s_}/{s_ + d_}（{pct(s_, s_ + d_)}）")
+        Pn(f"  合计：对上 {s_}/{s_ + d_}（{pct(s_, s_ + d_)}）；最便宜的被挡、另一个放行的点 {sum(x['laterOk'] for x in agg_g)} 个")
     else:
         Pn("  （没有可对照的点）")
 
