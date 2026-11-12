@@ -3,10 +3,12 @@
 
   r06trace   C2 档的实录阶梯换成 R06 入库的那一份（另一套影子、另一套配对）：A023 / A057 / B039，断面 630 与 1500
   fill       C2 档已知点之间的补法换成 nearest / linear：A031 / A009 / A059 / B043，断面 630
-  swap       同一个断面上把我方换成**另外两个历史版本**（只在 c116 家族内：Va / Vb / Vc 互换），C1 与 C2 各 3 个种子，
-             断面 0 / 630 / 1500。用来量「历史版本之间既有规则的差」在同一局面、同一通道下值多少，和通道那几段并排比。
-             不涉及任何新策略。
-  swaplate   同上，断面 3213 / 4284（捐兵配额放开以后；Vb 与 Vc 的差全在捐兵规则里）
+  swap       同一个断面上把我方换成**另一个历史版本**（只在 c116 家族内）：Va ↔ Vb，断面 630 / 1500，C1 与 C2 各 2 个种子。
+             用来量「历史版本之间既有规则的差」在同一局面、同一通道下值多少，和通道那几段并排比。不涉及任何新策略。
+  swap0      开局窗口（0→630）的核对：Va / Vb / Vc 在 1500 拍以前是不是同一套出手（4 条，C1 一个种子）
+  swap0all   开局窗口其余各局的 Va ↔ Vb（swap0 显示不相同时才需要）
+  swapvc     换成 Vc，断面 1500（Vb 与 Vc 的差全在 1500 拍以后才启用的捐兵函数里）
+  swaplate   断面 3213（捐兵配额放开以后）：Va ↔ Vb 与 Vc，只跑 C1 两个种子
 
   g0         从开局一口气放开跑到 t=1500（14 局；C0 / C1×3 / C2×3，1500 拍前有页面停摆的再加 C2w×3）
   band       C2 / C2w 换成阶梯的上界 / 下界（traces-hi / traces-lo，见 make_trace.py）并按日志次序的地板抬高（floor/，见 logorder_floor.py），
@@ -185,23 +187,35 @@ def main():
                 for k, ch in enumerate(chunks(['C2', 'C2@2', 'C2@3'], len(live), t0, WIN[t0])):
                     tag = f'fill{fill}{chr(97 + k)}'
                     print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --arms {','.join(ch)} --fill {fill} --tag {tag}")
-    if 'swap' in what or 'swaplate' in what:
-        # Vb 与 Vc 两个文件只差 1500 拍以后才启用的捐兵规则（tryDonateToTeammate 里 g.t < 1500 直接返回），
-        # 1500 拍之前逐字相同 → 断面 0 / 630 上 Vc 不用单独跑（留 A075、A094 的开局窗口各一条当确定性核对：应与 Vb 逐位相同）。
-        wins = ((0, 630, 1500) if 'swap' in what else ()) + ((3213, 4284) if 'swaplate' in what else ())
+    # ---- 历史版本互换（只在 c116 家族内：Va / Vb / Vc）。臂名与主批相同，汇总时按同名种子配对。
+    def swap_steps(mid, ver, t0, arms):
+        live, end = live_seats(mid, t0)
+        if t0 >= end - 100 or not live:
+            return
+        for k, ch in enumerate(chunks(arms, len(live), t0, WIN[t0])):
+            tag = f'{ver}{chr(97 + k)}'
+            print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --strat {ver} --arms {','.join(ch)} --tag {tag}")
+    ab = lambda mid: 'vb' if hist_ver(mid) == 'va' else 'va'
+    if 'swap0' in what:
+        # 开局窗口的核对：Va 与 Vb 的差在参数表（对真人的出手尺度、围攻、领头羊）和 1500 拍以后的捐兵 / 助攻；
+        # Vb 与 Vc 的差全在 tryDonateToTeammate 里（g.t < 1500 直接返回）。0→630 只跑 C1 一个种子，看是不是逐位相同。
+        for mid, ver in (('A075', 'va'), ('A003', 'vb'), ('A075', 'vc'), ('A094', 'vc')):
+            swap_steps(mid, ver, 0, ['C1'])
+    if 'swap0all' in what:
         for mid in A_MIDS:
-            for ver in ('va', 'vb', 'vc'):
-                if ver == hist_ver(mid):
-                    continue
-                for t0 in wins:
-                    if ver == 'vc' and t0 < 1500 and not (t0 == 0 and mid in ('A075', 'A094')):
-                        continue
-                    live, end = live_seats(mid, t0)
-                    if t0 >= end - 100 or not live:
-                        continue
-                    for k, ch in enumerate(chunks(['C1', 'C2', 'C1@2', 'C2@2', 'C1@3', 'C2@3'], len(live), t0, WIN[t0])):
-                        tag = f'{ver}{chr(97 + k)}'
-                        print(f"out/_ckpt/logs/{mid}-{t0}-{tag}.txt node scripts/ckpt/ckpt_run.mjs --match {mid} --t0 {t0} --len {WIN[t0]} --strat {ver} --arms {','.join(ch)} --tag {tag}")
+            if (mid, ab(mid)) not in (('A075', 'va'), ('A003', 'vb')):
+                swap_steps(mid, ab(mid), 0, ['C1', 'C1@2', 'C2', 'C2@2'])
+    if 'swap' in what:
+        for t0 in (630, 1500):
+            for mid in A_MIDS:
+                swap_steps(mid, ab(mid), t0, ['C1', 'C1@2', 'C2', 'C2@2'])
+    if 'swapvc' in what:
+        for mid in A_MIDS:
+            swap_steps(mid, 'vc', 1500, ['C1', 'C1@2', 'C2', 'C2@2'])
+    if 'swaplate' in what:
+        for mid in A_MIDS:
+            for ver in (ab(mid), 'vc'):
+                swap_steps(mid, ver, 3213, ['C1', 'C1@2'])
 
 if __name__ == '__main__':
     main()
