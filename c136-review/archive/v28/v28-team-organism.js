@@ -6556,7 +6556,7 @@ export class Policy extends V17 {
     const me = this.me;
     let safe = 0, was = 0;
     for (const q of this.nb) {
-      if (q === skip || g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+      if (q === skip || g.alive[q] === 0 || !g.isBot(q) || (P.p3ThreatSkip > 0 && this.vShell(g, q)) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
       const th = this.threatOf(g, q);
       if (th.neutral) continue;
       const mine = g.attackTroopsOn(me, q);
