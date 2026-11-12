@@ -79,14 +79,16 @@ export class Profile {
   // C3 合成卡顿波。每个席位一条「落后拍数」曲线：w0 起错开 onset 拍内开始掉队 → ramp 个本机拍内爬到峰值 L（lagMin~lagMax 里取）
   // → 峰值上停 plateau 个本机拍 → 线性追回，到 w1 追平。页面不是匀速慢放，而是「停一段、把一串本机拍在同一个服务器时刻算完」：
   // 每串 burstMin~burstMax 个本机拍，这一串里每一拍的 S 都等于串尾那一拍的 本机拍 + 落后拍数。
-  // 缺省形状取自 6 局卡顿局的实录（B039 / B023 / B017 / B038 / B010 / B022 的 600~2100 拍）：平均落后 73→323→358→…→17，
-  // 同一回合落地的一串指令跨 60~110 个本机拍（中位）、相邻两个落地回合隔 63~196 拍（中位）。
+  // 缺省形状取自 12 局卡顿局的实录（c110：B010 B017 B022 B023 B038 B039；Vb：A021 A027 A049 A057 A058 A070）：每 300 拍一段的
+  // 平均落后拍数（12 局的均值）约 600~900:150、900~1200:390、1200~1500:390、1500~1800:300、1800~2100:150、2100~2400:60、之后 ≈ 0；
+  // 各局峰值 140~940 拍。同一回合落地的一串指令跨 60~110 个本机拍（中位）、相邻两个落地回合隔 63~196 拍（中位）。
+  // 任务卡写的「600~2100 拍、落后 150~400 拍」可以用 C3:w1=2100,lagMin=150,lagMax=400,ramp=250,plateau=150 得到。
   buildC3(seats) {
     const o = this.o;
-    const w0 = o.w0 ?? 600, w1 = o.w1 ?? 2100, lagMin = o.lagMin ?? 150, lagMax = o.lagMax ?? 400;
+    const w0 = o.w0 ?? 600, w1 = o.w1 ?? 2400, lagMin = o.lagMin ?? 150, lagMax = o.lagMax ?? 450;
     const bMin = o.burstMin ?? 30, bMax = o.burstMax ?? 150;
-    const onset = o.onset ?? 150, ramp = Math.max(1, o.ramp ?? 250), plateau = o.plateau ?? 150, share = o.share ?? 1;
-    const smooth = o.smooth ?? 0.2;   // 落后期间「一拍一拍算」的段落占比（其余是成串算）
+    const onset = o.onset ?? 150, ramp = Math.max(1, o.ramp ?? 350), plateau = o.plateau ?? 450, share = o.share ?? 1;
+    const smooth = o.smooth ?? 0.12;  // 落后期间「一拍一拍算」的段落占比（其余是成串算）
     const N = this.Wmax + 1;
     let k = 0;
     for (const p of seats) {
@@ -120,9 +122,10 @@ export class Profile {
   }
 
   // C2：traces/<局>.json 里每个席位的 (下令拍 τ, 执行拍 E) 配对 → S(τ) = max(τ, E − dMid)。已知点之间怎么补：
-  //   nearest（缺省）取近的那个已知点：S 是纯阶梯——页面停一段、再把一串本机拍在同一个服务器时刻算完；没有可调参数。
+  //   auto（缺省）相邻两个已知点都只落后一点（≤ thr 拍，缺省 28）→ 页面在连续地算、只是慢半步：线性；有一头落后得多 → 页面在成串地追：取近的那个已知点。
+  //   nearest     一律取近的那个已知点：S 是纯阶梯——页面停一段、再把一串本机拍在同一个服务器时刻算完。
   //   burst,m=16  已知点前后各 m 个本机拍与它同一串、两串之间线性；linear 全线性（页面匀速慢放）；upper / lower 取后 / 前一个点。
-  //   各种补法对着真局的对照见 SIM-V2-CALIBRATION-G0.md：linear 的同拍批占比明显偏低，nearest 与 burst(16~32) 都贴近真局。
+  //   各种补法对着真局的对照见 SIM-V2-CALIBRATION-G0.md：linear 的同拍批占比明显偏低；nearest 在轻微落后的局里同拍批偏多；auto 两头都贴近。
   // 最后一个已知点之后保持不降直到追平。
   buildC2(seats, trace, fill = 'linear', seatMap = null) {
     const N = this.Wmax + 1;
