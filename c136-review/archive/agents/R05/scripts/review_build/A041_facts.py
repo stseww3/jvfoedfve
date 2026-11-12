@@ -18,7 +18,8 @@
 #        一个受赠方从开局到该拍「最多一共能收」多少兵；与同拍没有敌邻的号握着的兵、有敌邻的号数对照。
 #   §12 3900–4274 拍三个最有兵的不被围的号（kaito9、ryan_m、noah88）对正被真人打的队友：探针里逐（捐出方×候选×采样拍）的拦截行
 #        （读 /tmp/c136-r05/work/A041-donprobe.txt = shadow.mjs A041 --cold --quiet --t0 3595 --t1 4830 --don-probe 3600,3625,…,4825 的输出）。
-# 用法：python3 scripts/review_build/A041_facts.py [--sec 1,2,3,4,5,6,7,8,9,10,11,12]
+#   §13 路人队友的易手（pairAll）：每个路人队友从谁手里拿地、丢给谁，按 600 拍窗口；以及它们每 300 拍的地/兵/密度与同拍被围的我方号握着的兵。
+# 用法：python3 scripts/review_build/A041_facts.py [--sec 1,2,3,4,5,6,7,8,9,10,11,12,13]
 import bisect
 import csv
 import json
@@ -29,7 +30,7 @@ import sys
 from collections import defaultdict
 
 M = 'A041'
-sec = set((sys.argv[sys.argv.index('--sec') + 1] if '--sec' in sys.argv else '1,2,3,4,5,6,7,8,9,10,11,12').split(','))
+sec = set((sys.argv[sys.argv.index('--sec') + 1] if '--sec' in sys.argv else '1,2,3,4,5,6,7,8,9,10,11,12,13').split(','))
 J = json.load(open(f'/tmp/c136-r05/truth/{M}.json'))
 P = {p['id']: p for p in J['players']}
 sq = {s['p']: s['bot'] for s in J['squad']}
@@ -491,3 +492,48 @@ if '12' in sec:
                     cand[r[6]][1].add(r[0])
         for c, (a1, a2) in sorted(cand.items(), key=lambda z: -len(z[1][0])):
             print(f'      {c}: {len(a1)} / {len(a2)}')
+
+if '13' in sec:
+    print('§13 路人队友的易手（pairAll = [600 拍窗口序号, 得地方, 失地方, 格数]；只计真人之间）')
+    mates = [q for q in range(H) if q not in sq and P[q]['team'] == OUR and max(HS['terr'][i][q] for i in range(len(HS['t']))) > 0]
+    tot_gain = tot_loss = 0
+    for m in mates:
+        gain = defaultdict(int)
+        loss = defaultdict(int)
+        gw = defaultdict(lambda: defaultdict(int))
+        lw = defaultdict(lambda: defaultdict(int))
+        for w, tk, ls, n in J['pairAll']:
+            if tk == m and ls < H:
+                gain[ls] += n
+                gw[w][ls] += n
+            if ls == m and tk < H:
+                loss[tk] += n
+                lw[w][tk] += n
+        tot_gain += sum(v for q, v in gain.items() if P[q]['team'] != OUR)
+        tot_loss += sum(v for q, v in loss.items() if P[q]['team'] != OUR)
+        print(f'   {nm(m)}：从真人手里拿 {sum(gain.values())} 格（' + ('、'.join(f'{nm(q)} {v}' for q, v in sorted(gain.items(), key=lambda z: -z[1])[:5]) or '无')
+              + f'）｜丢给真人 {sum(loss.values())} 格（' + ('、'.join(f'{nm(q)} {v}' for q, v in sorted(loss.items(), key=lambda z: -z[1])[:6]) or '无') + '）')
+        for w in sorted(set(gw) | set(lw)):
+            print(f'      窗口 {w}（{w * 600}–{w * 600 + 599} 拍）：拿 ' + ('、'.join(f'{nm(q)} {v}' for q, v in sorted(gw[w].items(), key=lambda z: -z[1])[:4]) or '0')
+                  + '｜丢 ' + ('、'.join(f'{nm(q)} {v}' for q, v in sorted(lw[w].items(), key=lambda z: -z[1])[:4]) or '0'))
+    print(f'   路人队友合计：从敌方真人手里拿 {tot_gain} 格，丢给敌方真人 {tot_loss} 格')
+    print('   每 300 拍：路人队友的 地/兵/密度（HS）｜同拍没有敌邻的我方号握着的兵（C30 eh=0，S10 存兵）')
+
+    def s10c(p, t):
+        s_ = J['S10'][str(p)]
+        i = bisect.bisect_right(s_['t'], t) - 1
+        return (s_['terr'][i], s_['bal'][i]) if i >= 0 else (0, 0)
+
+    def c30c(p, t):
+        c = J['C30'][str(p)]
+        i = bisect.bisect_right(c['t'], t) - 1
+        return {kk: c[kk][i] for kk in c if kk != 't'} if i >= 0 else {}
+
+    for t in range(1500, 3601, 300):
+        if t not in HS['t']:
+            continue
+        i = HS['t'].index(t)
+        parts = [f"{P[m]['name'][:14]} {HS['terr'][i][m]}/{k(HS['bal'][i][m])}/密 {HS['bal'][i][m] / max(1, HS['terr'][i][m]):.0f}" for m in mates if HS['terr'][i][m] > 0]
+        idle = sum(s10c(p, t)[1] for p in sq if c30c(p, t).get('eh', 0) == 0)
+        tot = sum(HS['terr'][i][m] for m in mates)
+        print(f'      t={t}: ' + ('；'.join(parts) or '（都不在了）') + f'｜路人合计 {tot} 格｜没有敌邻的我方号握 {k(idle)}')

@@ -1,0 +1,601 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "tk_c1_p1p3",
+ "params": {
+  "enableInflightLedger": 1,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 1,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 0
+ },
+ "from": 0,
+ "until": 2300,
+ "endTick": 2300,
+ "seconds": 3.2,
+ "replayCheck": {
+  "rows": 250,
+  "terrExact": 79,
+  "balExact": 78,
+  "bothExact": 78
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 566,
+ "kinds": {
+  "attack": 563,
+  "boatTo": 3
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 75
+  },
+  "zero_7": {
+   "attack": 30
+  },
+  "zexos1": {
+   "attack": 43,
+   "boatTo": 2
+  },
+  "talon5": {
+   "attack": 68
+  },
+  "sora_w": {
+   "attack": 55
+  },
+  "alex_k": {
+   "attack": 60
+  },
+  "noah88": {
+   "attack": 52
+  },
+  "leo_tx": {
+   "attack": 84
+  },
+  "riku_x": {
+   "attack": 30
+  },
+  "kaito9": {
+   "attack": 66,
+   "boatTo": 1
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 24,
+  "HL-TICK": 180,
+  "V28-STALL": 2,
+  "V28-P3": 70
+ },
+ "v28Counters": {
+  "p1_issue_attack": 480,
+  "p1_land_attack": 471,
+  "p1_lat_sum": 8181,
+  "p1_lat_n": 477,
+  "p1_lat_max": 24,
+  "p3_sb_eval": 2733,
+  "p3_sb_lower": 1092,
+  "p1_veto_keep": 228,
+  "p1_scale_up": 246,
+  "p3_whole_early": 107,
+  "p1_retarget": 13,
+  "p3_sb_unlock": 212,
+  "p3_relax_send": 70,
+  "p1_step_attack": 3,
+  "p1_arb_buy_first": 11,
+  "p1_soft": 5,
+  "p1_kill_budget": 4,
+  "p1_veto_tick": 3,
+  "p1_carry_turn": 3,
+  "p1_lost_attack": 3,
+  "p1_soft_attack": 2,
+  "p1_issue_boat": 3,
+  "p1_land_boat": 3,
+  "p1_stall_enter": 1,
+  "p1_stall_tick": 1
+ },
+ "v28CountersPerBot": {
+  "ryan_m": {
+   "p1_issue_attack": 68,
+   "p1_land_attack": 66,
+   "p1_lat_sum": 1097,
+   "p1_lat_n": 67,
+   "p1_lat_max": 23,
+   "p3_sb_eval": 378,
+   "p3_sb_lower": 176,
+   "p1_veto_keep": 46,
+   "p1_scale_up": 32,
+   "p3_whole_early": 29,
+   "p1_retarget": 2,
+   "p3_sb_unlock": 4,
+   "p3_relax_send": 22,
+   "p1_step_attack": 1,
+   "p1_arb_buy_first": 1
+  },
+  "sora_w": {
+   "p1_issue_attack": 47,
+   "p1_land_attack": 46,
+   "p1_lat_sum": 786,
+   "p1_lat_n": 47,
+   "p1_lat_max": 24,
+   "p3_sb_eval": 275,
+   "p3_sb_lower": 93,
+   "p1_scale_up": 24,
+   "p1_step_attack": 1,
+   "p1_veto_keep": 5,
+   "p3_whole_early": 11,
+   "p1_retarget": 1,
+   "p1_soft": 1,
+   "p1_kill_budget": 1,
+   "p3_relax_send": 6,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1
+  },
+  "zero_7": {
+   "p1_issue_attack": 19,
+   "p3_sb_eval": 268,
+   "p1_land_attack": 17,
+   "p1_lat_sum": 325,
+   "p1_lat_n": 18,
+   "p1_lat_max": 23,
+   "p3_sb_lower": 40,
+   "p1_scale_up": 10,
+   "p1_veto_keep": 13,
+   "p1_step_attack": 1,
+   "p1_retarget": 2,
+   "p1_soft": 1,
+   "p1_lost_attack": 1,
+   "p3_whole_early": 1,
+   "p3_sb_unlock": 2
+  },
+  "alex_k": {
+   "p1_issue_attack": 51,
+   "p3_sb_eval": 268,
+   "p3_sb_lower": 112,
+   "p1_veto_keep": 25,
+   "p1_land_attack": 50,
+   "p1_lat_sum": 845,
+   "p1_lat_n": 50,
+   "p1_lat_max": 24,
+   "p1_scale_up": 29,
+   "p3_sb_unlock": 11,
+   "p3_whole_early": 9,
+   "p1_retarget": 1,
+   "p1_kill_budget": 2,
+   "p1_soft": 1,
+   "p1_soft_attack": 1
+  },
+  "noah88": {
+   "p1_issue_attack": 44,
+   "p3_sb_eval": 252,
+   "p1_veto_keep": 30,
+   "p1_land_attack": 44,
+   "p1_lat_sum": 752,
+   "p1_lat_n": 44,
+   "p1_lat_max": 24,
+   "p3_sb_lower": 97,
+   "p3_sb_unlock": 15,
+   "p1_scale_up": 18,
+   "p3_whole_early": 27,
+   "p3_relax_send": 12,
+   "p1_arb_buy_first": 2
+  },
+  "zexos1": {
+   "p1_issue_attack": 35,
+   "p3_sb_eval": 206,
+   "p3_sb_lower": 111,
+   "p1_veto_keep": 11,
+   "p1_land_attack": 35,
+   "p1_lat_sum": 648,
+   "p1_lat_n": 37,
+   "p1_lat_max": 24,
+   "p3_sb_unlock": 71,
+   "p3_whole_early": 6,
+   "p1_scale_up": 17,
+   "p1_retarget": 2,
+   "p1_issue_boat": 2,
+   "p1_land_boat": 2
+  },
+  "leo_tx": {
+   "p1_issue_attack": 76,
+   "p1_land_attack": 76,
+   "p1_lat_sum": 1278,
+   "p1_lat_n": 76,
+   "p1_lat_max": 24,
+   "p3_sb_eval": 304,
+   "p3_sb_lower": 133,
+   "p1_veto_keep": 12,
+   "p3_whole_early": 7,
+   "p1_scale_up": 49,
+   "p1_retarget": 1,
+   "p3_sb_unlock": 49,
+   "p1_arb_buy_first": 1
+  },
+  "riku_x": {
+   "p3_sb_eval": 169,
+   "p3_sb_lower": 66,
+   "p1_issue_attack": 23,
+   "p1_scale_up": 7,
+   "p1_land_attack": 22,
+   "p1_lat_sum": 374,
+   "p1_lat_n": 22,
+   "p1_lat_max": 22,
+   "p1_retarget": 1,
+   "p1_veto_keep": 15,
+   "p1_stall_enter": 1,
+   "p1_stall_tick": 1,
+   "p1_lost_attack": 1,
+   "p3_whole_early": 2,
+   "p1_kill_budget": 1,
+   "p1_arb_buy_first": 1,
+   "p3_sb_unlock": 1
+  },
+  "talon5": {
+   "p1_issue_attack": 61,
+   "p3_sb_eval": 288,
+   "p1_veto_keep": 26,
+   "p1_land_attack": 61,
+   "p1_lat_sum": 1106,
+   "p1_lat_n": 61,
+   "p1_lat_max": 24,
+   "p3_sb_lower": 160,
+   "p1_scale_up": 36,
+   "p1_retarget": 3,
+   "p3_whole_early": 5,
+   "p3_sb_unlock": 38,
+   "p3_relax_send": 8,
+   "p1_arb_buy_first": 5,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1
+  },
+  "kaito9": {
+   "p1_issue_attack": 56,
+   "p3_sb_eval": 325,
+   "p3_sb_lower": 104,
+   "p1_veto_keep": 45,
+   "p1_land_attack": 54,
+   "p1_lat_sum": 970,
+   "p1_lat_n": 55,
+   "p1_lat_max": 24,
+   "p3_whole_early": 10,
+   "p1_scale_up": 24,
+   "p1_soft": 2,
+   "p1_lost_attack": 1,
+   "p1_soft_attack": 1,
+   "p3_sb_unlock": 21,
+   "p3_relax_send": 22,
+   "p1_issue_boat": 1,
+   "p1_land_boat": 1,
+   "p1_arb_buy_first": 1,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1
+  }
+ },
+ "takeover": {
+  "from": 700,
+  "chan": "c1",
+  "seed": 1,
+  "stall": null,
+  "suppressedRecorded": 748,
+  "stillInChannel": 1,
+  "total": {
+   "issued": 483,
+   "attack": 480,
+   "dupAttack": 31,
+   "dupNeutral": 0,
+   "dupBot": 30,
+   "dupPerson": 1,
+   "dupCovered": 1,
+   "dupTopUp": 30,
+   "executed": 477,
+   "failed": 5,
+   "dropped": 0,
+   "latSum": 8195
+  },
+  "dupAttackShare": 0.0646,
+  "dupCoveredShare": 0.0021,
+  "meanLatency": 17.18,
+  "perBot": {
+   "ryan_m": {
+    "issued": 68,
+    "attack": 68,
+    "dupAttack": 1,
+    "dupNeutral": 0,
+    "dupBot": 1,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 1,
+    "executed": 67,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 1097
+   },
+   "sora_w": {
+    "issued": 47,
+    "attack": 47,
+    "dupAttack": 8,
+    "dupNeutral": 0,
+    "dupBot": 7,
+    "dupPerson": 1,
+    "dupCovered": 0,
+    "dupTopUp": 8,
+    "executed": 47,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 786
+   },
+   "alex_k": {
+    "issued": 51,
+    "attack": 51,
+    "dupAttack": 4,
+    "dupNeutral": 0,
+    "dupBot": 4,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 4,
+    "executed": 50,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 845
+   },
+   "noah88": {
+    "issued": 44,
+    "attack": 44,
+    "dupAttack": 2,
+    "dupNeutral": 0,
+    "dupBot": 2,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 2,
+    "executed": 44,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 752
+   },
+   "talon5": {
+    "issued": 61,
+    "attack": 61,
+    "dupAttack": 2,
+    "dupNeutral": 0,
+    "dupBot": 2,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 2,
+    "executed": 61,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 1106
+   },
+   "kaito9": {
+    "issued": 57,
+    "attack": 56,
+    "dupAttack": 5,
+    "dupNeutral": 0,
+    "dupBot": 5,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 5,
+    "executed": 55,
+    "failed": 2,
+    "dropped": 0,
+    "latSum": 970
+   },
+   "zero_7": {
+    "issued": 19,
+    "attack": 19,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 0,
+    "executed": 18,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 325
+   },
+   "zexos1": {
+    "issued": 37,
+    "attack": 35,
+    "dupAttack": 1,
+    "dupNeutral": 0,
+    "dupBot": 1,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 1,
+    "executed": 37,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 648
+   },
+   "riku_x": {
+    "issued": 23,
+    "attack": 23,
+    "dupAttack": 2,
+    "dupNeutral": 0,
+    "dupBot": 2,
+    "dupPerson": 0,
+    "dupCovered": 0,
+    "dupTopUp": 2,
+    "executed": 22,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 388
+   },
+   "leo_tx": {
+    "issued": 76,
+    "attack": 76,
+    "dupAttack": 6,
+    "dupNeutral": 0,
+    "dupBot": 6,
+    "dupPerson": 0,
+    "dupCovered": 1,
+    "dupTopUp": 5,
+    "executed": 76,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 1278
+   }
+  },
+  "trajectory_t_alive_land_troops": [
+   [
+    100,
+    10,
+    779,
+    6460
+   ],
+   [
+    200,
+    10,
+    2369,
+    9512
+   ],
+   [
+    300,
+    10,
+    5011,
+    15011
+   ],
+   [
+    400,
+    10,
+    9513,
+    24773
+   ],
+   [
+    500,
+    10,
+    17184,
+    38888
+   ],
+   [
+    600,
+    10,
+    28919,
+    56542
+   ],
+   [
+    700,
+    10,
+    43733,
+    86406
+   ],
+   [
+    800,
+    10,
+    56009,
+    142887
+   ],
+   [
+    900,
+    10,
+    74459,
+    190096
+   ],
+   [
+    1000,
+    10,
+    95061,
+    261716
+   ],
+   [
+    1100,
+    10,
+    123416,
+    348052
+   ],
+   [
+    1200,
+    10,
+    147105,
+    486844
+   ],
+   [
+    1300,
+    10,
+    184561,
+    670391
+   ],
+   [
+    1400,
+    10,
+    213665,
+    801222
+   ],
+   [
+    1500,
+    10,
+    243609,
+    1048466
+   ],
+   [
+    1600,
+    10,
+    277174,
+    1237647
+   ],
+   [
+    1700,
+    10,
+    325191,
+    1392866
+   ],
+   [
+    1800,
+    10,
+    370215,
+    1787962
+   ],
+   [
+    1900,
+    10,
+    405090,
+    2351713
+   ],
+   [
+    2000,
+    10,
+    427340,
+    3014429
+   ],
+   [
+    2100,
+    10,
+    442327,
+    3752161
+   ],
+   [
+    2200,
+    10,
+    452202,
+    4595474
+   ],
+   [
+    2300,
+    10,
+    484026,
+    5498972
+   ],
+   [
+    2300,
+    10,
+    484026,
+    5498972
+   ]
+  ]
+ }
+}
