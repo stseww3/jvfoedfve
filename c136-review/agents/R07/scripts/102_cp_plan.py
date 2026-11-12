@@ -6,7 +6,8 @@
 
   主网格（历史上这一局实际用的版本）：断面 0 / 630 / 1500 / 4284 × 通道 C0 / C1 / C2
       断面 0 看到 1500 拍，其余看 900 拍
-      种子：C0 只跑种子 0；C1 跑种子 0、1（4284 断面只跑种子 0）；C2 跑种子 0（不扰动）、1、2（4284 断面只到 1）
+      种子：C0 只跑种子 0；C1 跑种子 0、1（4284 断面只跑种子 0）；C2 跑种子 0（不扰动）、1、2（1500、4284 断面只到 1：
+          这两个断面扰动引擎随机数几乎不改变局面，第二个扰动种子没有信息，报告 §8）
       A082 的 4284 断面从 4285 拍接管（--t0 4285 --h 899，窗末仍是 5184 拍；原因见报告 §3），名字里写 t4285；
           这一局这一窗不计入汇总，所以不跑 C0，另加 C1 种子 1 看离散程度
       另加 C0b（零延迟 + 一拍一条）断面 0 种子 0
@@ -24,7 +25,7 @@
       mt-bd4285：A079、A082 的 C2 不扰动、从 4285 拍接管（4284 拍落地的指令照录像执行）能否复现历史
       A079 另跑 C1 / C2 从 4285 拍接管（看接管拍对这一局的读数有没有影响）
       A082 另跑 C1 / C2 从 4284 拍接管（说明这一局为什么改从 4285 拍接管、为什么不计入汇总，报告 §6.2 的表）
-      -rp：C2 的帧内先后改成随机（--pos rand），与放回历史原位置的同一条相比
+      -rp：C2 的帧内先后改成随机（--pos rand），与放回历史原位置的同一条相比（A070 的 1500 断面一条）
 用法：python3 102_cp_plan.py [--full] [--games A007,A033] > 清单
       之后用 102b_plan_order.py 排先后（只改先后，不增不减）
 """
@@ -67,7 +68,7 @@ for g in only:
         more.append(arm(g, "C1", t0, 2))
         # C2
         core += [arm(g, "C2", t0, 0), arm(g, "C2", t0, 1)]
-        (core if t0 != 4284 else more).append(arm(g, "C2", t0, 2))
+        (core if t0 in (0, 630) else more).append(arm(g, "C2", t0, 2))
         # H：只扰动随机数
         (core if t0 != 4284 else more).append(arm(g, "H", t0, 1))
         more.append(arm(g, "H", t0, 2))
@@ -107,7 +108,10 @@ extra = [
     "A082 C2-t4284-s0 --chan C2 --t0 4284 --h 900 --seed 0",
     "A082 C2-t4284-s1 --chan C2 --t0 4284 --h 900 --seed 1",
     "A070 C2-t1500-s1-rp --chan C2 --t0 1500 --h 900 --seed 1 --pos rand",
-    "A082 C2-t4285-s1-rp --chan C2 --t0 4285 --h 899 --seed 1 --pos rand",
 ]
+dropped_extra = [
+    "A082 C2-t4285-s1-rp --chan C2 --t0 4285 --h 899 --seed 1 --pos rand",      # 这一局这一窗不计入汇总，帧内先后的检查留 A070 一条
+]
+more += [x for x in dropped_extra if x.split()[0] in only]
 core += [x for x in extra if x.split()[0] in only]
 print("\n".join(core + (more if full else [])))
