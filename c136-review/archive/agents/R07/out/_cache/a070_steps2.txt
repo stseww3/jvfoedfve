@@ -1,0 +1,12 @@
+## steps2 — 兵流
+node c136-review/agents/R07/scripts/67_troop_flow.mjs A070 --cuts 0,990,2142,3213,4160
+node c136-review/agents/R07/scripts/67_troop_flow.mjs A070 --cuts 0,540,990,1530,1800,2070,2340,2430,2520,2700,2880,3060,3420,3690,3960,4160 --tag tp
+node c136-review/agents/R07/scripts/74_side_flow.mjs A070 --cuts 0,990,2142,3213,4160 --top 8
+node c136-review/agents/R07/scripts/74_side_flow.mjs A070 --cuts 0,540,990,1530,1800,2070,2340,2430,2520,2700,2880,3060,3420,3690,3960,4160 --top 6 --tag tp
+node c136-review/agents/R07/scripts/74_side_flow.mjs A070 --cuts 0,600,1500,3000,4160 --top 6 --tag p4
+## steps3 — 影子 / 船 / 前沿
+node c136-review/agents/R07/scripts/65_shadow.mjs A070 --trace ryan_m:1400:2070 --trace ryan_m:2070:2430 --trace ryan_m:2430:2674 --trace noah88:1400:2070 --trace noah88:2070:2430 --trace noah88:2430:2883 --trace riku_x:1400:2070 --trace riku_x:2070:2430 --trace riku_x:2430:2902 --trace alex_k:1400:2070 --trace alex_k:2070:2430 --trace alex_k:2430:2700 --trace alex_k:2700:3075 --trace zero_7:1400:2070 --trace zero_7:2070:2430 --trace zero_7:2430:2700 --trace zero_7:2700:3418 --trace sora_w:1400:2070 --trace sora_w:2070:2430 --trace sora_w:2430:2700 --trace sora_w:2700:3060 --trace sora_w:3060:3652 --trace leo_tx:1400:2070 --trace leo_tx:2070:2430 --trace leo_tx:2430:2700 --trace leo_tx:2700:3060 --trace leo_tx:3060:3662 --trace kaito9:1400:2070 --trace kaito9:2070:2430 --trace kaito9:2430:2700 --trace kaito9:2700:3060 --trace kaito9:3060:3420 --trace kaito9:3420:3810 --trace talon5:1400:2070 --trace talon5:2070:2430 --trace talon5:2430:2700 --trace talon5:2700:3060 --trace talon5:3060:3420 --trace talon5:3420:3904 --trace zexos1:1400:2070 --trace zexos1:2070:2430 --trace zexos1:2430:2700 --trace zexos1:2700:3060 --trace zexos1:3060:3420 --trace zexos1:3420:3960 --trace zexos1:3960:4155
+node c136-review/agents/R07/scripts/76_boat_targets.mjs A070
+node c136-review/agents/R07/scripts/93_frontier.mjs A070 --at 360,540,630,720,810,900,990,1080,1170,1260,1350,1440,1530,1620,1710,1800,1890,1980,2070,2160,2250,2340
+## steps4 — 逐格过户
+node c136-review/agents/R07/scripts/94_conquest.mjs A070 --cuts 0,540,990,1530,1800,2070,2340,2430,2520,2700,2880,3060,3420,3690,3960,4160 --focus 0,1,2,3,14,15,16,17,18,19,ryan_m,noah88,riku_x,alex_k,zero_7,sora_w,leo_tx,kaito9,talon5,zexos1

@@ -1,0 +1,410 @@
+{
+ "matchId": "B030",
+ "edges": [
+  0,
+  600,
+  1500,
+  3000,
+  4284,
+  6300,
+  37561
+ ],
+ "groups": {
+  "编队": 3,
+  "其他真人": 2
+ },
+ "periods": [
+  {
+   "t0": 0,
+   "t1": 600,
+   "编队": {
+    "inc": 38472,
+    "ret": 1798,
+    "balTicks": 3496510,
+    "cellTicks": 1407250,
+    "botTicks": 1800,
+    "forgone": 47,
+    "overTicks": 50,
+    "atkN": 23,
+    "atkOk": 23,
+    "atkTroops": 22459,
+    "atkFee": 713,
+    "burnt": 18260,
+    "tilesGot": 8908,
+    "hitBal": 240,
+    "tilesLost": 78,
+    "hardTicks": 0,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 2566,
+    "ret": 210,
+    "balTicks": 1494640,
+    "cellTicks": 54810,
+    "botTicks": 1200,
+    "forgone": 407,
+    "overTicks": 160,
+    "burnt": 508,
+    "tilesGot": 254,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 9.995
+  },
+  {
+   "t0": 600,
+   "t1": 1500,
+   "编队": {
+    "inc": 644268,
+    "ret": 62765,
+    "balTicks": 68743150,
+    "cellTicks": 37608190,
+    "botTicks": 2700,
+    "atkN": 173,
+    "atkOk": 173,
+    "atkTroops": 421348,
+    "atkFee": 58590,
+    "burnt": 314581,
+    "tilesGot": 101605,
+    "hitBal": 2680,
+    "tilesLost": 842,
+    "forgone": 0,
+    "overTicks": 0,
+    "hardTicks": 0,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 679,
+    "ret": 78,
+    "balTicks": 633270,
+    "cellTicks": 80090,
+    "botTicks": 590,
+    "burnt": 449,
+    "tilesGot": 132,
+    "hitBal": 2956,
+    "tilesLost": 373,
+    "forgone": 0,
+    "overTicks": 0,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 632.566
+  },
+  {
+   "t0": 1500,
+   "t1": 3000,
+   "编队": {
+    "inc": 11144326,
+    "ret": 1477668,
+    "balTicks": 4055543700,
+    "cellTicks": 376465620,
+    "botTicks": 4500,
+    "atkN": 114,
+    "atkOk": 111,
+    "atkTroops": 2157426,
+    "atkFee": 480448,
+    "burnt": 726206,
+    "tilesGot": 215843,
+    "hitBal": 596211,
+    "tilesLost": 30304,
+    "forgone": 0,
+    "overTicks": 0,
+    "hardTicks": 0,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 0,
+    "ret": 0,
+    "balTicks": 0,
+    "cellTicks": 0,
+    "forgone": 0,
+    "overTicks": 0,
+    "botTicks": 0,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 3714775333333333.5
+  },
+  {
+   "t0": 3000,
+   "t1": 4284,
+   "编队": {
+    "inc": 40846642,
+    "ret": 703872,
+    "balTicks": 33319408190,
+    "cellTicks": 356422200,
+    "botTicks": 3870,
+    "forgone": 22502090,
+    "overTicks": 1960,
+    "atkN": 5,
+    "atkOk": 5,
+    "atkTroops": 6902021,
+    "atkFee": 469702,
+    "hitBal": 8707330,
+    "tilesLost": 51491,
+    "burnt": 6198149,
+    "tilesGot": 14469,
+    "hardTicks": 0,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 0,
+    "ret": 0,
+    "balTicks": 0,
+    "cellTicks": 0,
+    "forgone": 0,
+    "overTicks": 0,
+    "botTicks": 0,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 1.3615547333333334e+16
+  },
+  {
+   "t0": 4284,
+   "t1": 6300,
+   "编队": {
+    "inc": 64435537,
+    "ret": 7380776,
+    "balTicks": 54379187460,
+    "cellTicks": 469560350,
+    "botTicks": 4440,
+    "forgone": 47664350,
+    "overTicks": 2970,
+    "atkN": 19,
+    "atkOk": 19,
+    "atkTroops": 43616314,
+    "atkFee": 3634739,
+    "hitBal": 27860066,
+    "tilesLost": 161832,
+    "burnt": 35533674,
+    "tilesGot": 138631,
+    "hardTicks": 0,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 0,
+    "ret": 0,
+    "balTicks": 0,
+    "cellTicks": 0,
+    "forgone": 0,
+    "overTicks": 0,
+    "botTicks": 0,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 2.1478512333333332e+16
+  },
+  {
+   "t0": 6300,
+   "t1": 37561,
+   "编队": {
+    "inc": 87110173,
+    "ret": 19513960,
+    "balTicks": 987295781658,
+    "cellTicks": 6658757299,
+    "botTicks": 31261,
+    "forgone": 2092146753,
+    "overTicks": 31001,
+    "hardTicks": 12090,
+    "atkN": 20,
+    "atkOk": 19,
+    "atkTroops": 21397154,
+    "atkFee": 5313881,
+    "hitBal": 89616782,
+    "tilesLost": 377633,
+    "burnt": 1883193,
+    "tilesGot": 311117,
+    "heads": 3
+   },
+   "其他真人": {
+    "inc": 0,
+    "ret": 0,
+    "balTicks": 0,
+    "cellTicks": 0,
+    "forgone": 0,
+    "overTicks": 0,
+    "botTicks": 0,
+    "hardTicks": 0,
+    "heads": 2
+   },
+   "incPerCapRatio": 2.9036724333333332e+16
+  }
+ ],
+ "perBot": {
+  "Landsknecht": {
+   "inc": 165613891,
+   "forgone": 2142678914,
+   "overTicks": 33211,
+   "hardTicks": 12090,
+   "burnt": 33912671,
+   "hitBal": 101321865,
+   "boatFee": 0,
+   "donTax": 0,
+   "boatTroops": 0,
+   "donOut": 0,
+   "donIn": 0
+  },
+  "Luxembourg": {
+   "inc": 21625410,
+   "forgone": 15514512,
+   "overTicks": 1830,
+   "burnt": 1317403,
+   "hitBal": 19050867,
+   "boatFee": 0,
+   "donTax": 0,
+   "hardTicks": 0,
+   "boatTroops": 0,
+   "donOut": 0,
+   "donIn": 0
+  },
+  "Nader Shah": {
+   "inc": 16980117,
+   "forgone": 4119814,
+   "overTicks": 940,
+   "burnt": 9443989,
+   "hitBal": 6410577,
+   "boatFee": 0,
+   "donTax": 0,
+   "hardTicks": 0,
+   "boatTroops": 0,
+   "donOut": 0,
+   "donIn": 0
+  }
+ },
+ "total": {
+  "编队": {
+   "inc": 204219418,
+   "ret": 29140839,
+   "balTicks": 1079122160668,
+   "cellTicks": 7900220909,
+   "botTicks": 48571,
+   "forgone": 2162313240,
+   "overTicks": 35981,
+   "atkN": 354,
+   "atkOk": 350,
+   "atkTroops": 74516722,
+   "atkFee": 9958073,
+   "burnt": 44674063,
+   "tilesGot": 790573,
+   "hitBal": 126783309,
+   "tilesLost": 622180,
+   "hardTicks": 12090,
+   "boatFee": 0,
+   "donTax": 0,
+   "boatN": 0,
+   "boatTroops": 0,
+   "boatHiN": 0,
+   "boatHiFee": 0,
+   "donN": 0,
+   "donGot": 0,
+   "donIn": 0
+  },
+  "其他真人": {
+   "inc": 3245,
+   "ret": 288,
+   "balTicks": 2127910,
+   "cellTicks": 134900,
+   "botTicks": 1790,
+   "forgone": 407,
+   "overTicks": 160,
+   "burnt": 957,
+   "tilesGot": 386,
+   "hardTicks": 0,
+   "boatFee": 0,
+   "donTax": 0,
+   "atkN": 0,
+   "atkOk": 0,
+   "atkTroops": 0,
+   "boatN": 0,
+   "boatTroops": 0,
+   "boatHiN": 0,
+   "boatHiFee": 0,
+   "donN": 0,
+   "donGot": 0,
+   "donIn": 0,
+   "hitBal": 2956,
+   "tilesLost": 373
+  }
+ },
+ "stock": [
+  {
+   "t": 600,
+   "squad": [
+    3,
+    8866,
+    18394
+   ],
+   "others": [
+    2,
+    278,
+    2877
+   ]
+  },
+  {
+   "t": 1500,
+   "squad": [
+    3,
+    109629,
+    242764
+   ],
+   "others": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 3000,
+   "squad": [
+    3,
+    295168,
+    9630673
+   ],
+   "others": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 4280,
+   "squad": [
+    3,
+    257823,
+    34867816
+   ],
+   "others": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 6300,
+   "squad": [
+    1,
+    207605,
+    30774291
+   ],
+   "others": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "t": 37561,
+   "squad": [
+    1,
+    141089,
+    21070608
+   ],
+   "others": [
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

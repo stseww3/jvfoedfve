@@ -65,12 +65,20 @@ def brief(mid):
             + {"same-step-inversion": "，原因：终解那条和上一条在同一步落地、旧的后处理", "trailing-unexecuted": "，原因：终解那条没落地",
                "trailing-unexecuted+same-step-inversion": "，原因：终解那条没落地，且最后落地的两条在同一步、旧的后处理"}.get(v.get("reason"), "")
             for b, v in off)
-        w(f"[B1] 选点落地：重解 {sp['rounds']} 轮（{sp['distinctSolutions']} 套不同的解），最小间距 {sp['minSepFirst']}→{sp['minSepLast']} 像素，boss={sp['boss']}；"
-          f"{len(bots)} 个号里 {sp['onFinal']} 个落在最后一轮的坐标上，{sp['notOnFinal']} 个没落到" + (f"（{off_txt}）" if off_txt else "")
-          + f"，{len(zero)} 个一条选点指令都没落地" + (f"（{'、'.join(zero)}）" if zero else "")
-          + f"；{len(trail)} 个号最后的指派没落地" + (f"（{'、'.join(trail)}）" if trail else "")
-          + (f"；最后一步落地 ≥2 条、先发的旧坐标生效的 {len(sp.get('sameStepInversionBots') or [])} 个" + (f"（{'、'.join(sp['sameStepInversionBots'])}）" if sp.get("sameStepInversionBots") else ""))
-          + f"；叠点 {len(sp['stackPairs'])} 对" + (f"（{'；'.join('+'.join(p) for p in sp['stackPairs'])}）" if sp["stackPairs"] else ""))
+        tail = ((f"；最后一步落地 ≥2 条、先发的旧坐标生效的 {len(sp.get('sameStepInversionBots') or [])} 个" + (f"（{'、'.join(sp['sameStepInversionBots'])}）" if sp.get("sameStepInversionBots") else ""))
+                + f"；叠点 {len(sp['stackPairs'])} 对" + (f"（{'；'.join('+'.join(p) for p in sp['stackPairs'])}）" if sp["stackPairs"] else ""))
+        if sp.get("comparable", True) and sp.get("rounds"):
+            w(f"[B1] 选点落地：重解 {sp['rounds']} 轮（{sp['distinctSolutions']} 套不同的解），最小间距 {sp['minSepFirst']}→{sp['minSepLast']} 像素，boss={sp['boss']}；"
+              f"{len(bots)} 个号里 {sp['onFinal']} 个落在最后一轮的坐标上，{sp['notOnFinal']} 个没落到" + (f"（{off_txt}）" if off_txt else "")
+              + f"，{len(zero)} 个一条选点指令都没落地" + (f"（{'、'.join(zero)}）" if zero else "")
+              + f"；{len(trail)} 个号最后的指派没落地" + (f"（{'、'.join(trail)}）" if trail else "") + tail)
+        else:
+            # 本包日志里没有这个房间的选点求解行（A071：日志从不在本房间的号进另一局那一行起切），只能报录像里落地的选点指令
+            fr = sp.get("foreignRounds")
+            ex = sorted(v.get("executed", 0) for v in bots.values())
+            w("[B1] 选点落地：本包日志里没有本房间的选点求解行，无法和终解对账"
+              + (f"（日志里的 {fr['rounds']} 轮求解是在 {fr['map'][0]}x{fr['map'][1]} 的地图上做的，本房间是 {fr['roomMap'][0]}x{fr['roomMap'][1]}，属于另一个房间）" if fr else "")
+              + f"；录像里 {len(bots)} 个号各落地 {ex[0]}~{ex[-1]} 条选点指令，{len(zero)} 个一条都没落地" + (f"（{'、'.join(zero)}）" if zero else "") + tail)
         lg = d["lag"]
         w("[B2] 指令延迟（发令拍→服务器处理拍，按发令拍分段，n 条 P50/P90/最大）：" + "｜".join(
             f"{r['period']} {r['n']} 条 {r['p50']}/{r['p90']}/{r['max']}" + (f"（>30 拍 {r['gt30']} 条、>90 拍 {r['gt90']} 条）" if r["gt30"] else "") if r["n"] else f"{r['period']} 0 条"

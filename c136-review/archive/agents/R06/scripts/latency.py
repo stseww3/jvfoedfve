@@ -214,6 +214,7 @@ def sec_delay(X):
         if r['tau'] is not None:
             cells[r['tau'] // 150].append(r['delay'])
     print('   每 150 拍一格（下令拍：条数 中位/最大）：' + ' '.join(f"{k * 150}:{len(v)} {pctl(v, 0.5)}/{max(v)}" for k, v in sorted(cells.items())))
+    X.cells = [[k * 150, len(v), pctl(v, 0.5), max(v)] for k, v in sorted(cells.items())]
     return out
 
 
@@ -226,16 +227,17 @@ def sec_bots(X):
         m = [r for r in rows if r['me'] == me]
         if not m:
             continue
-        cells = []
+        cells, per_band = [], {}
         for i in range(len(EDGES) - 1):
             d = [r['delay'] for r in m if r['tau'] is not None and band(r['tau']) == i]
             if d:
                 cells.append(f"{band_name(i)}: {len(d)} 条 {pctl(d, 0.5)}/{max(d)}")
+                per_band[band_name(i)] = [len(d), pctl(d, 0.5), max(d)]
         c_end = cmds_at(b, X.last)
         d_all = [r['delay'] for r in m if r['tau'] is not None]
         last_d = [r['delay'] for r in m if r['tau'] is not None][-5:]
         print(f"   {b.name:14s} 队{b.team} {'；'.join(cells):62s}｜cmds {c_end} / 进录像 {len(m)}（差 {c_end - len(m)}）｜最后 5 条的延迟 {last_d}")
-        out.append(dict(me=me, name=b.name, team=b.team, n=len(m), p50=pctl(d_all, 0.5), max=max(d_all) if d_all else None, cmdsLog=c_end, landed=len(m)))
+        out.append(dict(me=me, name=b.name, team=b.team, n=len(m), p50=pctl(d_all, 0.5), max=max(d_all) if d_all else None, cmdsLog=c_end, landed=len(m), bands=per_band))
     return out
 
 
@@ -245,18 +247,24 @@ def sec_funnel(X):
     print('-- 漏斗（条）。按下令拍分段：影子下令 → 到重放末拍为止进了录像的（配上的）→ 其中生效；没进录像的分两种：后面还有本号更晚下的令进了录像（= 丢了，或影子比客户端多想了一条）、'
           '后面再没有本号的令进录像（= 重放结束时还在路上）')
     out = []
+    # 客户端「本机拍」走到哪：本号日志最后一条快照的拍 + 89（快照 90 拍一条）。影子在这之后下的令，客户端自己没有算过（日志已停：停摆 / 离开 / 阵亡前的落后）
+    last_log = {me: (bb.traj[-1]['t'] + 89 if bb.traj else -1) for me, bb in M.bots.items()}
     for i in range(len(EDGES) - 1):
         a, b = EDGES[i], EDGES[i + 1]
         if a > X.last:
             break
         sh = [(me, c) for me, v in probe['shadows'].items() for c in v['cmds'] if a <= c['t'] < b]
+        sh_live = [1 for me, c in sh if c['t'] <= last_log.get(int(me), -1)]
         m = [r for r in rows if r['tau'] is not None and a <= r['tau'] < b]
         ok = sum(1 for r in m if r['ok'])
         lb = [x for x in lost if a <= x['t'] < b and x['before']]
         la = [x for x in lost if a <= x['t'] < b and not x['before']]
+        la_live = [x for x in la if x['t'] <= last_log.get(x['me'], -1)]
         print(f"   τ={band_name(i):10s} 影子下令 {len(sh)}｜进录像 {len(m)}（{100 * len(m) / max(1, len(sh)):.0f}%）｜生效 {ok}（{100 * ok / max(1, len(sh)):.0f}%）、进了录像但没生效 {len(m) - ok}"
-              f"｜没进录像：丢了/多想 {len(lb)}、重放结束时还在路上 {len(la)}（想发 {fmt(sum(x['amt'] for x in la))} 兵）")
-        out.append(dict(band=band_name(i), shadow=len(sh), landed=len(m), ok=ok, void=len(m) - ok, lost=len(lb), pending=len(la), pendingAmt=sum(x['amt'] for x in la)))
+              f"｜没进录像：丢了/多想 {len(lb)}、重放结束时还在路上 {len(la)}（想发 {fmt(sum(x['amt'] for x in la))} 兵）"
+              f"｜只算本号日志还在打印的拍：影子下令 {len(sh_live)}、还在路上 {len(la_live)}（想发 {fmt(sum(x['amt'] for x in la_live))} 兵）")
+        out.append(dict(band=band_name(i), shadow=len(sh), landed=len(m), ok=ok, void=len(m) - ok, lost=len(lb), pending=len(la), pendingAmt=sum(x['amt'] for x in la),
+                        shadowLive=len(sh_live), pendingLive=len(la_live), pendingLiveAmt=sum(x['amt'] for x in la_live)))
     # 日志核对：各号在快照拍上的 cmds 计数（策略自己数的已发指令）对 影子同拍累计 对 录像里执行拍 <= 该拍的条数
     snaps = sorted(set(s['t'] for b in M.bots.values() for s in b.traj if s['t'] <= X.last))
     pick = [t for t in snaps if t % 270 == 0 or t == snaps[-1]] if snaps else []
@@ -321,6 +329,8 @@ def sec_void(X):
         if rl:
             print(f"      被改挂出来的无主地线 {len(rl)} 条：挂上去 {fmt(sum(e['sent'] for e in rl))} 兵，之后打掉 {fmt(sum(e['spent'] for e in rl))}、得地 {sum(e['gain'] for e in rl)} 格、退回 {fmt(sum(e['ret'] for e in rl))}；"
                   f"挂着的拍数 中位/最大 {pctl([e['t1'] - e['t0'] for e in rl], 0.5)}/{max(e['t1'] - e['t0'] for e in rl)}")
+            out.append(dict(band='all', cls='redir', lines=len(rl), sent=sum(e['sent'] for e in rl), spent=sum(e['spent'] for e in rl), gain=sum(e['gain'] for e in rl), ret=sum(e['ret'] for e in rl),
+                            durMed=pctl([e['t1'] - e['t0'] for e in rl], 0.5), durMax=max(e['t1'] - e['t0'] for e in rl)))
     return out
 
 
@@ -521,6 +531,7 @@ def main():
         if sec in ('delay', 'all', 'json'):
             doc['fidelity'] = sec_fidelity(X)
             doc['delay'] = sec_delay(X)
+            doc['cells'] = getattr(X, 'cells', [])
         if sec in ('bots', 'all', 'json'):
             doc['bots'] = sec_bots(X)
         if sec in ('funnel', 'all', 'json'):

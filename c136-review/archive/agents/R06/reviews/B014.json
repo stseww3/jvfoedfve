@@ -1,0 +1,4252 @@
+{
+ "matchId": "B014",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-09T15:58:20Z",
+  "squad": "squad20",
+  "bots": 19,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 10,
+  "mapSeed": 3633,
+  "mapLand": 546152,
+  "teams": 3,
+  "humans": 83,
+  "ourTeam": 2,
+  "teamSplitTrue": {
+   "1": 3,
+   "2": 9,
+   "3": 7
+  },
+  "teamSplitSource": "replay-header-recompute",
+  "teamSplitCard": {
+   "1": 3,
+   "2": 7,
+   "3": 7
+  },
+  "presence": {
+   "died": 14,
+   "end": 3,
+   "left": 2
+  },
+  "leftTicks": {
+   "Ayyubid": 0,
+   "Lusitania": 0
+  },
+  "neverPlayed": [
+   "Ayyubid",
+   "Lusitania"
+  ],
+  "neverPlayedSource": "log: 整局没有 HL-TICK 快照、也没有 HL-OPENING 行",
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "录像只有选点阶段（真引擎重放到 t=1：出生点、分队、t=0 的局面是真值；t>0 没有录像）"
+  },
+  "contamination": [
+   "录像只有选点阶段：t>0 的攻击者、每条指令是否生效、策略停在哪个分支都看不到。捐款执行与否是用捐款人自己的余额读数推的（logdigest donlog）；这套推法在有录像的 B023/B039/B038 上对过表：执行与否的一致率 87.4% / 85.4% / 81.2%",
+   "本机落后的那一段（本机拍 1350~1800）指令晚到，donlog 会把支出记到错的间隔上：Cringe t=1570~1670 的 5 条捐款被判「没执行、看不出原因」，而它 t=1620~1710 一个间隔掉了 71% 的余额（5 条 21% 的捐款连乘剩 30%，对得上）。这一段的捐款条数只能当下界",
+   "对局卡的分队 {1:3,2:7,3:7} 只数了带队号的结算行；本复盘用录像队伍表 {1:3,2:9,3:7}（差的 2 个是没进对局的 Ayyubid、Lusitania）",
+   "改名：Nader Shah 的结算名是 Madara（日志里还用过 Shaq）；Luigi 的结算名是 KaiCenat（还用过 Aurelian、Yamamoto）；NullPointer 的结算名是 Bosnia；Ayyubid = Pepsi，Lusitania = Belisarius。r06lib 按「紧挨着的下一条快照、cmds / boats 计数接得上」归并，本文一律用第一个名字",
+   "NullPointer 的结算行是 end（名次 14、0 格、0 兵）：它 t≈4410 和 t≈9000 两次领土归零，页面一直开到终局；按席位算它「活到终局」，按领土算它在 t≈9000 出局",
+   "结算行的 peak 是抽样值，不可靠（Nader Shah 写 30,007，快照最高 30,463）；本复盘的峰值都取快照。卡片的 peakSquadLandShare 20.4%，按快照合计最高是 t=3510 的 20.24%",
+   "日志快照缺 58/1,034 条（5.6%；t=180 缺 9/17，t=630~1260 缺 16.0%）；Nimitz 缺 t=1350、1440、1800 等 6 条",
+   "logdigest stale 有误报；延迟执行的证据以 zerodrop + noefftl + sentchk 为准",
+   "日志的 nb 只数「非同队、非编队」的邻居，是真人还是内置 AI 分不清；nb=0 且 neut=0 说明四周只有队友、受保护的编队号或水。「唯一真人邻居」分支的读法（Nader Shah、Luigi）建立在那个邻居是真人的前提上"
+  ],
+  "truthEnd": 1
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "anyBotWon": true,
+  "ourTeamRank": null,
+  "winnerTeam": 3,
+  "endTick": 9185,
+  "ourFinalShare": 0.0,
+  "peakSquadLandShare": 0.2039,
+  "peakPrimaryTeamShareSeen": 0.2697,
+  "endRowSeen": true,
+  "lastSnapshotTick": 9180,
+  "lastTeamTotalsTick": 9185,
+  "note": "卡片记输：按卡片的主队队2（9 个席位、7 个进了对局）算，Inca、Goryeo、Leonidas、Russian Empire、Ainz、Luigi 在 t=2032~7917 阵亡，NullPointer 活到终局但领土为 0。赢家是队3：我方在队3 的 7 个号里 Cringe、Nimitz、SonHeungMin、Sparta、Stonks 在 t=2898~5318 阵亡，Nader Shah（24,331 格、365 万兵）和 Harald（17,474 格、189 万兵）活到 t=9185，合计 41,805 格 = 7.65%。队1 的 3 个号 t=2249~5436 全部阵亡。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 559,
+   "squadLandShare": 0.001,
+   "teamTroops": 9215,
+   "squadDens": 16.5,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 90,
+     "troops": 1666
+    },
+    "2": {
+     "bots": 7,
+     "land": 273,
+     "troops": 3703
+    },
+    "3": {
+     "bots": 7,
+     "land": 196,
+     "troops": 3846
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 180,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 1522,
+   "squadLandShare": 0.0028,
+   "teamTroops": 12358,
+   "squadDens": 8.1,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 217,
+     "troops": 2221
+    },
+    "2": {
+     "bots": 7,
+     "land": 877,
+     "troops": 6177
+    },
+    "3": {
+     "bots": 7,
+     "land": 428,
+     "troops": 3960
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 270,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 6345,
+   "squadLandShare": 0.0116,
+   "teamTroops": 23114,
+   "squadDens": 3.6,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 1108,
+     "troops": 4577
+    },
+    "2": {
+     "bots": 7,
+     "land": 2693,
+     "troops": 7684
+    },
+    "3": {
+     "bots": 7,
+     "land": 2544,
+     "troops": 10853
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 630,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 44284,
+   "squadLandShare": 0.0811,
+   "teamTroops": 104444,
+   "squadDens": 2.4,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 7088,
+     "troops": 13521
+    },
+    "2": {
+     "bots": 7,
+     "land": 17329,
+     "troops": 44594
+    },
+    "3": {
+     "bots": 7,
+     "land": 19867,
+     "troops": 46329
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 1170,
+   "alive": 17,
+   "seen": 16,
+   "squadLand": 76386,
+   "squadLandShare": 0.1399,
+   "teamTroops": 1004165,
+   "squadDens": 13.1,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 14434,
+     "troops": 203245
+    },
+    "2": {
+     "bots": 6,
+     "land": 27099,
+     "troops": 333934
+    },
+    "3": {
+     "bots": 7,
+     "land": 34853,
+     "troops": 466986
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 1530,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 90933,
+   "squadLandShare": 0.1665,
+   "teamTroops": 2813629,
+   "squadDens": 30.9,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 15740,
+     "troops": 529769
+    },
+    "2": {
+     "bots": 7,
+     "land": 35277,
+     "troops": 907831
+    },
+    "3": {
+     "bots": 7,
+     "land": 39916,
+     "troops": 1376029
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 2032,
+   "alive": 16,
+   "seen": 16,
+   "squadLand": 105558,
+   "squadLandShare": 0.1933,
+   "teamTroops": 3232986,
+   "squadDens": 30.6,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 17274,
+     "troops": 236808
+    },
+    "2": {
+     "bots": 6,
+     "land": 31691,
+     "troops": 1386858
+    },
+    "3": {
+     "bots": 7,
+     "land": 56593,
+     "troops": 1609320
+    }
+   },
+   "teamLandShare": 0.2488,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3728,
+   "teamSnapT": 2032
+  },
+  {
+   "t": 2070,
+   "alive": 16,
+   "seen": 16,
+   "squadLand": 105275,
+   "squadLandShare": 0.1928,
+   "teamTroops": 3587124,
+   "squadDens": 34.1,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 15872,
+     "troops": 244512
+    },
+    "2": {
+     "bots": 6,
+     "land": 31604,
+     "troops": 1568779
+    },
+    "3": {
+     "bots": 7,
+     "land": 57799,
+     "troops": 1773833
+    }
+   },
+   "teamLandShare": 0.2488,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3728,
+   "teamSnapT": 2032
+  },
+  {
+   "t": 2249,
+   "alive": 15,
+   "seen": 15,
+   "squadLand": 101442,
+   "squadLandShare": 0.1857,
+   "teamTroops": 3968118,
+   "squadDens": 39.1,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 13540,
+     "troops": 231035
+    },
+    "2": {
+     "bots": 6,
+     "land": 31615,
+     "troops": 1726237
+    },
+    "3": {
+     "bots": 7,
+     "land": 56287,
+     "troops": 2010846
+    }
+   },
+   "teamLandShare": 0.2479,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.378,
+   "teamSnapT": 2249
+  },
+  {
+   "t": 2898,
+   "alive": 14,
+   "seen": 14,
+   "squadLand": 94708,
+   "squadLandShare": 0.1734,
+   "teamTroops": 6224094,
+   "squadDens": 65.7,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 11134,
+     "troops": 473475
+    },
+    "2": {
+     "bots": 6,
+     "land": 35236,
+     "troops": 3033699
+    },
+    "3": {
+     "bots": 6,
+     "land": 48338,
+     "troops": 2716920
+    }
+   },
+   "teamLandShare": 0.265,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3814,
+   "teamSnapT": 2898
+  },
+  {
+   "t": 3060,
+   "alive": 14,
+   "seen": 14,
+   "squadLand": 99724,
+   "squadLandShare": 0.1826,
+   "teamTroops": 6481901,
+   "squadDens": 65.0,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 10709,
+     "troops": 577210
+    },
+    "2": {
+     "bots": 6,
+     "land": 36824,
+     "troops": 3032410
+    },
+    "3": {
+     "bots": 6,
+     "land": 52191,
+     "troops": 2872281
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 3400,
+   "alive": 13,
+   "seen": 13,
+   "squadLand": 109026,
+   "squadLandShare": 0.1996,
+   "teamTroops": 7741661,
+   "squadDens": 71.0,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 9324,
+     "troops": 607007
+    },
+    "2": {
+     "bots": 6,
+     "land": 43555,
+     "troops": 3637753
+    },
+    "3": {
+     "bots": 5,
+     "land": 56147,
+     "troops": 3496901
+    }
+   },
+   "teamLandShare": 0.2417,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.4022,
+   "teamSnapT": 3400
+  },
+  {
+   "t": 3735,
+   "alive": 12,
+   "seen": 12,
+   "squadLand": 106142,
+   "squadLandShare": 0.1943,
+   "teamTroops": 9162900,
+   "squadDens": 86.3,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 8537,
+     "troops": 769126
+    },
+    "2": {
+     "bots": 6,
+     "land": 49732,
+     "troops": 4553164
+    },
+    "3": {
+     "bots": 4,
+     "land": 47873,
+     "troops": 3840610
+    }
+   },
+   "teamLandShare": 0.2401,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.4096,
+   "teamSnapT": 3735
+  },
+  {
+   "t": 4050,
+   "alive": 12,
+   "seen": 12,
+   "squadLand": 101834,
+   "squadLandShare": 0.1865,
+   "teamTroops": 10600906,
+   "squadDens": 104.1,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 3973,
+     "troops": 301580
+    },
+    "2": {
+     "bots": 6,
+     "land": 50768,
+     "troops": 5385680
+    },
+    "3": {
+     "bots": 4,
+     "land": 47093,
+     "troops": 4913646
+    }
+   },
+   "teamLandShare": 0.2442,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3962,
+   "teamSnapT": 4136
+  },
+  {
+   "t": 4136,
+   "alive": 11,
+   "seen": 11,
+   "squadLand": 99325,
+   "squadLandShare": 0.1819,
+   "teamTroops": 10425054,
+   "squadDens": 105.0,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1464,
+     "troops": 125728
+    },
+    "2": {
+     "bots": 6,
+     "land": 50768,
+     "troops": 5385680
+    },
+    "3": {
+     "bots": 4,
+     "land": 47093,
+     "troops": 4913646
+    }
+   },
+   "teamLandShare": 0.2442,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3962,
+   "teamSnapT": 4136
+  },
+  {
+   "t": 4211,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 98483,
+   "squadLandShare": 0.1803,
+   "teamTroops": 9421734,
+   "squadDens": 95.7,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1464,
+     "troops": 131861
+    },
+    "2": {
+     "bots": 6,
+     "land": 49379,
+     "troops": 5086040
+    },
+    "3": {
+     "bots": 3,
+     "land": 47640,
+     "troops": 4203833
+    }
+   },
+   "teamLandShare": 0.2512,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3905,
+   "teamSnapT": 4211
+  },
+  {
+   "t": 4500,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 100710,
+   "squadLandShare": 0.1844,
+   "teamTroops": 8432486,
+   "squadDens": 83.7,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1668,
+     "troops": 147729
+    },
+    "2": {
+     "bots": 6,
+     "land": 51924,
+     "troops": 4423029
+    },
+    "3": {
+     "bots": 3,
+     "land": 47118,
+     "troops": 3861728
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 4887,
+   "alive": 9,
+   "seen": 9,
+   "squadLand": 82968,
+   "squadLandShare": 0.1519,
+   "teamTroops": 8394310,
+   "squadDens": 101.2,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1779,
+     "troops": 183877
+    },
+    "2": {
+     "bots": 5,
+     "land": 42907,
+     "troops": 4201366
+    },
+    "3": {
+     "bots": 3,
+     "land": 38282,
+     "troops": 4009067
+    }
+   },
+   "teamLandShare": 0.2573,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.4075,
+   "teamSnapT": 4887
+  },
+  {
+   "t": 5040,
+   "alive": 9,
+   "seen": 9,
+   "squadLand": 85187,
+   "squadLandShare": 0.156,
+   "teamTroops": 8538323,
+   "squadDens": 100.2,
+   "boxed": 0,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1779,
+     "troops": 216323
+    },
+    "2": {
+     "bots": 5,
+     "land": 45130,
+     "troops": 4051791
+    },
+    "3": {
+     "bots": 3,
+     "land": 38278,
+     "troops": 4270209
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 5318,
+   "alive": 8,
+   "seen": 8,
+   "squadLand": 74946,
+   "squadLandShare": 0.1372,
+   "teamTroops": 7323323,
+   "squadDens": 97.7,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1898,
+     "troops": 227600
+    },
+    "2": {
+     "bots": 5,
+     "land": 39970,
+     "troops": 3790695
+    },
+    "3": {
+     "bots": 2,
+     "land": 33078,
+     "troops": 3305028
+    }
+   },
+   "teamLandShare": 0.2697,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3808,
+   "teamSnapT": 5318
+  },
+  {
+   "t": 5363,
+   "alive": 7,
+   "seen": 7,
+   "squadLand": 71957,
+   "squadLandShare": 0.1318,
+   "teamTroops": 7113230,
+   "squadDens": 98.9,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 1898,
+     "troops": 227600
+    },
+    "2": {
+     "bots": 4,
+     "land": 36981,
+     "troops": 3580602
+    },
+    "3": {
+     "bots": 2,
+     "land": 33078,
+     "troops": 3305028
+    }
+   },
+   "teamLandShare": 0.2624,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3857,
+   "teamSnapT": 5363
+  },
+  {
+   "t": 5436,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 71293,
+   "squadLandShare": 0.1305,
+   "teamTroops": 6964879,
+   "squadDens": 97.7,
+   "boxed": 1,
+   "perTeam": {
+    "2": {
+     "bots": 4,
+     "land": 37509,
+     "troops": 3519511
+    },
+    "3": {
+     "bots": 2,
+     "land": 33784,
+     "troops": 3445368
+    }
+   },
+   "teamLandShare": 0.2594,
+   "teamRank": 3,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3873,
+   "teamSnapT": 5436
+  },
+  {
+   "t": 6030,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 74459,
+   "squadLandShare": 0.1363,
+   "teamTroops": 7409077,
+   "squadDens": 99.5,
+   "boxed": 1,
+   "perTeam": {
+    "2": {
+     "bots": 4,
+     "land": 42809,
+     "troops": 4333005
+    },
+    "3": {
+     "bots": 2,
+     "land": 31650,
+     "troops": 3076072
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 6879,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 79110,
+   "squadLandShare": 0.1448,
+   "teamTroops": 8084190,
+   "squadDens": 102.2,
+   "boxed": 1,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 39537,
+     "troops": 3555902
+    },
+    "3": {
+     "bots": 2,
+     "land": 39573,
+     "troops": 4528288
+    }
+   },
+   "teamLandShare": 0.1909,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.4911,
+   "teamSnapT": 6879
+  },
+  {
+   "t": 7020,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 80894,
+   "squadLandShare": 0.1481,
+   "teamTroops": 7745098,
+   "squadDens": 95.7,
+   "boxed": 2,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 39116,
+     "troops": 3927858
+    },
+    "3": {
+     "bots": 2,
+     "land": 41778,
+     "troops": 3817240
+    }
+   },
+   "teamLandShare": 0.1909,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.4911,
+   "teamSnapT": 6879
+  },
+  {
+   "t": 7916,
+   "alive": 4,
+   "seen": 4,
+   "squadLand": 50694,
+   "squadLandShare": 0.0928,
+   "teamTroops": 5621516,
+   "squadDens": 110.9,
+   "boxed": 2,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 7429,
+     "troops": 656538
+    },
+    "3": {
+     "bots": 2,
+     "land": 43265,
+     "troops": 4964978
+    }
+   },
+   "teamLandShare": 0.0607,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.6366,
+   "teamSnapT": 7916
+  },
+  {
+   "t": 7917,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 43442,
+   "squadLandShare": 0.0795,
+   "teamTroops": 4976804,
+   "squadDens": 114.6,
+   "boxed": 2,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 177,
+     "troops": 11826
+    },
+    "3": {
+     "bots": 2,
+     "land": 43265,
+     "troops": 4964978
+    }
+   },
+   "teamLandShare": 0.0607,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.637,
+   "teamSnapT": 7917
+  },
+  {
+   "t": 8010,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 44400,
+   "squadLandShare": 0.0813,
+   "teamTroops": 3793728,
+   "squadDens": 85.4,
+   "boxed": 2,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 184,
+     "troops": 6714
+    },
+    "3": {
+     "bots": 2,
+     "land": 44216,
+     "troops": 3787014
+    }
+   },
+   "teamLandShare": 0.0607,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.637,
+   "teamSnapT": 7917
+  },
+  {
+   "t": 9000,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 41782,
+   "squadLandShare": 0.0765,
+   "teamTroops": 5190939,
+   "squadDens": 124.2,
+   "boxed": 3,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 0,
+     "troops": 0
+    },
+    "3": {
+     "bots": 2,
+     "land": 41782,
+     "troops": 5190939
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 9185,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 41805,
+   "squadLandShare": 0.0765,
+   "teamTroops": 5535766,
+   "squadDens": 132.4,
+   "boxed": 3,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 0,
+     "troops": 0
+    },
+    "3": {
+     "bots": 2,
+     "land": 41805,
+     "troops": 5535766
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.9988,
+   "teamSnapT": 9185
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "地图 10（陆地 546,152 格；与 B018、B045 同图）、83 个真人、三队（每队上限 28 个真人：队1 27、队2 28、队3 28），内置 AI 不入队。我方 19 个席位：队1 3 个、队2 9 个、队3 7 个。",
+    "选点（录像真值）：51 步，全场选点指令 301 条，我方 127 条；日志 HL-SPAWN 241 行（每号 6~37 行）、没有 HL-SPAWN-BACKEND 行。我方选过 85 个不同坐标，21 个被 >=2 个号先后选过、9 个被 >=3 个号选过：(578,770) 先后落到 Ayyubid、CyberNinja、NullPointer、Sparta（两次）、Ainz、Inca（两次）头上，最后归 Inca；(658,50) 被 NullPointer（两次）、CyberNinja、Sparta、Inca、Harald 选过；(802,18) 在第 26 步同时落下 Leonidas、CyberNinja、Russian Empire 三条。最后两步还有 10 条改点。",
+    "按槽位看「录像里生效的选点 / 日志 HL-SPAWN 行」：槽位 0~12 的 12 个号 100/121（83%），最后一条生效在第 45~50 步；槽位 13~19 的 7 个号 27/120（22.5%），最后一条生效在第 39、32、26、13、14、3、11 步。日志最后一条 HL-SPAWN 等于真实出生点的只有 3/19；停在更早一版坐标的 16 个号（差 1 条 7 个、>=3 条 9 个）。结算行 sent/accepted 显示 241 条选点全部被服务器收下。",
+    "槽位 18、19（Lusitania、Ayyubid，队2）没有走出选点阶段：录像里各生效 1、2 条（第 3、11 步），日志各 24、37 行 HL-SPAWN，之后没有 HL-OPENING、没有任何快照。两条 left 行落盘时（服务器拍约 403、628）其余号的日志已经打到本机拍 360~450、540~630。",
+    "最终出生点相距 <80 格的 7 对（同像素 2 对、异队 4 对）：Russian Empire（队2）与 CyberNinja（队1）同点 (802,18)；Ayyubid 与 Lusitania 同点 (818,818)（都没进对局）；Leonidas↔NullPointer 16 格（同在队2）、NullPointer↔Nimitz（队3）59 格、Leonidas↔Nimitz 74 格；CocaCola（队1）↔Cringe（队3）48 格、Stonks↔Cringe 65 格（同在队3）。",
+    "Voronoi 天然份额（陆路最近出生点）：我方 102,321 格 = 可达陆地的 19.2%，人头占 22.9%，比值 0.84；单号中位 4,169 格，其他真人 6,415 格；6 个号不到全场人均（6,436 格）的一半，全场后 16 名里占 7 个：Russian Empire 1,881（75/83）、Inca 1,587、Sparta 1,573、Lusitania 673（78/83）。最大的是 Luigi 13,102（第 5）、Nader Shah 12,662（第 8）、Nimitz 10,577（第 12）、Goryeo 9,476（第 16）。",
+    "开局周期出兵：HL-OPENING 124 行（17 个号），同号相邻两条间隔中位 95 拍（p10 70、p90 105），没有空转的轮次。",
+    "t=630：17 个在场号合计 44,284 格（8.11%）、10.4 万兵，单号 1,791~3,894 格、中位 2,468。80 格内有另一个我方号的 8 个号中位 2,275 格（最小的 8 名里占 5 个），其余 9 个号 2,922 格。"
+   ],
+   "issues": [
+    "选点没有跨号协调：各机各算、反复改点，同一个坐标在不同号的槽位之间轮转；Russian Empire 与 CyberNinja 落在同一个像素，而且不同队（互在保护名单里，不能互打也不能互捐）。",
+    "槽位越高，下发的选点落地越少（槽位 13~19 只有 22.5%）；槽位 18、19 整局没进对局。原因看不到（见 unknowns）。"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "t=630→900→1170→1530：17 个号合计领土 44,284→63,761→76,386→90,933（8.11%→11.67%→13.99%→16.65%），兵 10.4 万→41.3 万→100 万→281 万。t=630~1530 出兵/发船指令 515 条（每千号·拍 33.1 条），没有捐款。",
+    "实抢 ÷ 天然份额（只有我方有读数）：t=630 43.3%（进了对局的 17 个号 45.3%，四分位 31/65/83%），t=1530 88.9%（17 个号 93.0%，四分位 79/93/130%）。天然份额大的 8 个号 31.0%→73.7%，小的 9 个号 84.2%→145.4%。Luigi 24.5%→71.1%、Nader Shah 30.8%→77.1%、Nimitz 18.5%→53.0%、Goryeo 20.7%→55.7%。",
+    "便宜的集中出手 18 次（logdigest bursts），14 次起点在 t<=1080（开局扩张，每格 −1~17 兵），600 拍后都还在。",
+    "t=1260 前后就停在原地的号：Stonks 5,968~6,104 格（nb=1）从 t=1260 到 t=2700；SonHeungMin 5,970 格（nb=2）从 t=1260 到 t=2250；Cringe 2,329 格（nb=1）从 t=1080 到 t=1800；CyberNinja 4,500 格（nb=2）t=1170~1620；Ainz 5,869 格（nb=2）t=1440~1800；Russian Empire 2,082 格（nb 1~2）t=1530~2610。",
+    "被围（nb=0、neut=0）：Goryeo t=1350 起 5,275 格（到 t=2970），整局没有发过一条船；Leonidas t=1440 起 6,049 格（到 t=3240），t=1350~1530 发了 6 条船；NullPointer t=1350~1890 约 3,000 格，6 条船。三个号出生在一起（Leonidas↔NullPointer 16 格），旁边是队2 的外人 nato、ayoub（离 Goryeo 30、36 格）和异队的 Nimitz。",
+    "本机落后（日志序号对表）：本机拍 720~1800 有 10 个号比最快的号落后 >=90 拍，49/976 个快照：Cringe 最多 360 拍（t=1170~1260）、Sparta 270、Stonks / Harald / Russian Empire / Ainz 180、Nader Shah / Inca / Goryeo / SonHeungMin 90。落后的号数：本机拍 1080 3 个、1170 5 个、1260 8 个、1350 9 个、1440 10 个、1530 7 个、1620 2 个；t=1800 之后一个都没有。策略自己的耗时很小（HL-TICK 的 avgMs 最大 0.9 毫秒，HL-SLOW-TICK 43 行、最长 52.6 毫秒）。",
+    "指令在本机局面里不见效（logdigest noefftl，t=630~3600 共 441 条出兵/发船指令）：t=630~1260 发的 293 条里 27.0% 落在「没有净支出」的间隔，t=1260~1890 的 99 条里 41.4%，t=1890~2520 的 9 条 0%，t=2520~3600 的 40 条 5.0%。"
+   ],
+   "issues": [
+    "到 t=1530 天然份额最大的 8 个号只拿到自己份额的 73.7%；Nimitz、Goryeo 只有 53.0%、55.7%。",
+    "t=1260 起 6 个有邻居的号停在原地攒兵；3 个同点出生的号被围住。"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "追帧清仓（本机拍 1350~1890）：「零新令的余额下跌」5 段、5 个号、47.4 万兵，全部在 t=1260~1890；超发的清仓（一个间隔花掉的兵折合 k 条 12% 的指令，k 比这个间隔新发的指令多 >=3 条）全局 11 段、10 个号，全部起在 t=1350~1800：Cringe k=26.2（新发 0 条）、CocaCola 14.2（3 条）、Leonidas 14.0（0 条）、Nader Shah 11.5（2 条）、Harald 11.1（3 条）、Inca 11.0（1 条）、Lithuania 10.0（3 条）、NullPointer 9.9（2 条）和 9.3（0 条）、Sparta 8.7（0 条）、Nimitz 6.5（0 条）。",
+    "清仓打在便宜地上的 5 个号：Nader Shah t=1620~1710 22.7 万→5.3 万，9,764→14,817 格（t=1980）；Harald t=1710~1800 16.3 万→3.9 万，4,629→9,313 格；Lithuania t=1530~1620 14.4 万→4.2 万，6,797→11,191 格；Nimitz t=1620~1710（零新令）20.3 万→9.5 万，5,983→12,671 格（t=2070）；Sparta t=1350~1440（零新令）14.8 万→5.4 万，3,260→6,363 格。买完密度 5~12。",
+    "清仓白扔的 5 个号：Leonidas 被围时 6 条船，t=1530~1620 零新令 17.7 万→2.9 万，领土不变；NullPointer 6 条船 13.0 万→1.3 万，领土不变；CocaCola t=1530~1620 3 条指令 21.6 万→3.5 万只换来 624 格，之后 629 拍零指令，t=2249 阵亡；Cringe t=1620~1710 28.2 万→8.3 万，t=1800~1890 零新令再掉到 2,627 兵（密度 0.9）；Inca t=1350~1440 1 条船 9.4 万→2.5 万，t=2032 阵亡。",
+    "t=1350→2070 合计领土 87,484→105,275（16.02%→19.28%）。此后到 t=4211 一直在 17.3%~20.2% 之间（t=2520 17.49%、3060 18.26%、3510 20.24%、4050 18.65%），同期兵 359 万→530 万→648 万→842 万→1,060 万（密度 34→55→65→76→104）。",
+    "指令构成（logdigest cmdmix；出兵发船 / 捐款 / 戳）：t=630~1530 515 / 0 / 0（每千号·拍 33.1 条出兵发船）；t=1530~2070 69 / 39 / 1（7.6）；t=2070~3510 49 / 96 / 4（2.3）；t=3510~5040 33 / 70 / 17（2.0）；t=5040~7020 39 / 41 / 2（3.1）。",
+    "零指令 >=450 拍的 27 段、15 个号、21,600 拍：Lithuania t=1890 起 2,160 拍直到阵亡（nb=2，密度 7→90，60 万兵）；CyberNinja t=1980~3690；Harald t=1800~3330（9,313 格、nb=1，密度 6→92）；Nimitz t=1890 起 1,440 拍直到阵亡（丢 10,462 格，手里 15~27 万兵）；Cringe t=1710~2880 直到阵亡；Sparta t=1710~2790；Nader Shah t=1710~2610；Luigi t=1710~2610（9,033 格、nb=1，密度 24→107）。",
+    "兵去哪了（t=1890~3510，估）：这 1,620 拍利息 1,240 万。只出兵/发船的 24 个间隔花掉 134 万（+18,995 格）；只捐款的 42 个间隔 367 万；无指令的 180 个间隔 161 万（挨打，−10,668 格）；其余攒在账上（293 万→842 万）。有邻居且密度 <100 的 213 个间隔里有出兵/发船的 25 个（11.7%）；在丢地的 56 个间隔全部零出兵。",
+    "配额拒单：捐款日志 257 条，没执行 102 条，其中 86 条是超额（t=1620~4275）：捐款人 Goryeo 26、SonHeungMin 23、Leonidas 11、Stonks 9、Luigi 7、Ainz 7；收款人 Nimitz 27、Russian Empire 18、Inca 15。Goryeo 被围后 t=1620~2140 每 20 拍一条共 27 条只执行 1 条，余额 29.4 万→60.6 万；其中给 Inca 的 15 条（14 条 pct=240，想给 7.2~12.6 万 = 133~232 点；当时上限 91~115 点，约 4.9~6.3 万）全部被拒，Inca t=2032 阵亡，上限在 t=2142 才跳到约 21.9 万。",
+    "捐款账（logdigest donlog，估）：执行 153 条，手续费 982 万 = 全队整局利息（6,507 万）的 15.1%，到账约 2,036 万。救援捐款执行 71 条：手续费 458 万、到账约 772 万，其中 pct<=99 的 38 条手续费 206 万、到账 239 万。余粮捐款执行 82 条：手续费 524 万、到账约 1,264 万。收款人收款前密度已 >=100 的 46 条（手续费 391 万）；A→B 执行后 150 拍内 B→A 也执行的 11 对、20 笔、手续费 198 万。",
+    "t=3510→5436：13 个号 110,517 格（20.24%）→ 6 个号 71,293 格（13.05%），兵 842 万→696 万。这 1,926 拍利息 2,077 万：只捐款的 45 个间隔 893 万；只出兵/发船的 14 个间隔 267 万（+652 格）；混合 19 个间隔 369 万（+5,601 格）；只戳 13 个间隔 121 万（+1,656 格）；无指令 116 个间隔 574 万（−27,301 格）。",
+    "协防戳 24 条，22 条是替异队的编队号戳的：CyberNinja（队1）替 Russian Empire（队2）戳 [UA]（队3）5 次，每次换来 82~119 格；Harald（队3）替 Lithuania（队1）戳 Shikadze[og]（队2）4 次；NullPointer（队2）替 Nimitz（队3）戳 U.A.S（队1）4 次。t=5350 之后没有协防戳。"
+   ],
+   "issues": [
+    "t=1890~3510 有邻居的号大多停手：利息 1,240 万里只有 134 万花在只出兵/发船的间隔，兵从 293 万攒到 842 万，份额停在 17~20%；同期队1 的外人从 33.4% 涨到 38.5%。",
+    "t=2070 之后捐款是最大的一项支出：只捐款的间隔全局净支出 2,132 万，只出兵/发船的间隔 1,666 万；手续费 982 万。",
+    "被救援的号阵亡时都还有兵：Stonks 43.2 万、Nimitz 14.5 万、Sparta 10.9 万、SonHeungMin 8.1 万、Goryeo 15.7 万。14 个阵亡号账上合计 269 万。"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "t=5436：6 个号 71,293 格（13.05%）：队2 的 Luigi、Ainz、Russian Empire、NullPointer 合计 37,509 格、352 万兵；队3 的 Nader Shah、Harald 33,784 格、345 万兵。各队份额 队1 38.7 / 队2 25.9 / 队3 35.1。",
+    "t=5436→6879：队3 35.1→49.1（其余 29.0→41.9），队1 38.7→31.1，队2 25.9→19.1（其余 19.1→11.9）。我方：Luigi t=5940~6390 4 条指令，8,928→20,000 格（t=6480）；Harald t=6030~6120 4 条指令，之后 360 拍 7,142→16,691 格；Russian Empire t=5940~6840 16,734→6,858 格（5 条指令里 4 条是捐款），t=6879 阵亡，账上 49.5 万。",
+    "队2 的三个大号互相捐：t=5436 之后 Luigi、Ainz、Russian Empire 之间 20 条捐款、执行 19 条，手续费 209 万、到账约 451 万；其中 t=6100~6900（Russian Empire 从 14,769 掉到 6,858 格的那 800 拍）执行 11 条、手续费 132 万，收款人收款前的密度 72~113。t=5850~7830 三个号合计 13 条出兵/发船指令、17 条捐款。",
+    "t=6879→7916：队3 49.1→63.7（其余 41.9→55.7），队2 19.1→6.1（我方 7.2→1.4、其余 11.9→4.7）。Ainz t=7200→7290 一个间隔 21,349→13,608 格、236 万→65 万兵；之后到阵亡 cmds 停在 77（540 拍零指令），13,608→5,282 格（密度 48→111），t=7916 阵亡，账上 41.3 万。Luigi t=7020~7830 19,564→7,252 格、203 万→64 万兵，期间 3 条捐款、0 条出兵，t=7917 阵亡，账上 39.8 万。",
+    "Nader Shah（队3）t=3510~8280：21,434~30,463 格，nb=1。54 个间隔里有出兵/发船的 9 个；起点密度 137~142 的 3 个间隔全部出手，114~137 的 11 个间隔出手 2 个。t=6750~6930 3 条指令 317 万→190 万，22,587→30,463 格（t=7290）。整局捐款 17 条、执行 14 条：手续费 205 万、到账约 365 万；超软上限少拿利息估 581 万（全队 751 万）。",
+    "Luigi（队2，天然份额全场第 5）t=1530~5850 的 4,320 拍领土一直是 8,012~9,623 格、nb 1~3：t=1710~5850 的 33 条指令里 24 条是捐款（执行 15 条）、7 条出兵、2 条船；密度 t=2700 到 117 之后在 74~117 之间来回。整局利息 824 万，捐款执行 22 条（手续费 175 万、到账约 391 万），只出兵/发船的间隔净支出 91 万。",
+    "t=7917→9185：队3 63.7→99.9，队1 28.8→0.0。Nader Shah t=8280~8550 丢了 2,853 格（27,184→24,331），t=8550 起 nb=0（四周只剩队友），304 万→365 万兵顶到硬上限（密度 150）；Harald t=7020 起 nb=0，t=6840~9180 发了 19 条船，其中 t=8100~9180 的 12 条约 98.5 万兵换来 309 格。NullPointer t≈4410 领土归零后靠船回到 97~261 格，t=7830~8820 7 条船 177→1,509 格，t≈9000 再次归零。"
+   ],
+   "issues": [
+    "队2 的三个大号（t=6480 前后合计约 5.5 万格、550 万兵）在 1,400 拍里被吃掉；期间 13 条出兵/发船、17 条互捐。",
+    "Nader Shah 整局利息 1,602 万，t=3510~8280 的 4,770 拍净得 5,750 格；Luigi 的 9,000 格 4,320 拍没有动。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 0,
+   "t1": 630,
+   "what": "选点：7 对相距 <80 格（1 对异队同像素），天然份额只有人头的 84%；槽位 13~19 的选点只落地 22.5%，槽位 18、19 没进对局",
+   "shareBefore": 0.0,
+   "shareAfter": 0.0811,
+   "ourBots": [
+    "Russian Empire",
+    "CyberNinja",
+    "Leonidas",
+    "NullPointer",
+    "Nimitz",
+    "CocaCola",
+    "Cringe",
+    "Stonks",
+    "Ayyubid",
+    "Lusitania"
+   ],
+   "enemies": [
+    "全场其他 64 个真人（天然份额中位 6,415 格）"
+   ],
+   "evidence": [
+    "latency spawn：HL-SPAWN 241 行、进录像 127 条（53%）、BACKEND 0 行；最后一条下发的选点 = 出生点的 3/19；停在更早坐标的 16 个号（差 1 条 7、>=3 条 9）；选点延迟下界 中位 / P90 / 最大 0 / 0 / 5 步",
+    "digest slots：槽位 0~12 生效 100/121 行（最后一条在第 45~50 步），槽位 13~19 生效 27/120 行（最后一条在第 39、32、26、13、14、3、11 步）；logdigest sentchk：Ayyubid sent 37 / accepted 37、Lusitania 24 / 24",
+    "digest picks / spawn：<80 格 7 对，同像素 2 对（Russian Empire/CyberNinja 异队、Ayyubid/Lusitania 同队），异队 4 对；85 个坐标里 21 个被 >=2 个号选过，(578,770) 被 6 个号选过 8 次",
+    "landcap voronoi：我方 102,321 格 = 可达陆地的 19.2%，人头 22.9%，比值 0.84（直线距离版 19.5%，0.85）；单号中位 4,169 对 6,415；全场前 16 名里 4 个、后 16 名里 7 个",
+    "logdigest wallms：两条 left 行（tick=0）落盘在服务器拍约 403、628，那时其余号的日志在本机拍 360~450、540~630；这 2 个席位没有任何快照，天然份额合计 4,588 格",
+    "digest spawn：80 格内有另一个我方号的 8 个号 t≈630 领土中位 2,275，其余 9 个号 2,922；最小的 8 名里 5 个是叠着的"
+   ],
+   "priorDecisions": [
+    {
+     "t": 0,
+     "bot": "全队",
+     "what": "每个号在本机各算候选表，按自己的槽位取点；改点 6~37 次",
+     "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4019 slot = mySquadIdx % 20；L4067-4072 把别的编队号从局面里抹掉再算（gClean）；L4074-4085 候选表每 2.2 秒在本机重算；L4117 取 chosenSlots[slot]",
+     "why": "各机的候选表是在不同时刻、不同局面上算的，同一个坐标先后落到不同号的槽位上；后端统一分配的分支（L4050-4062）本局 0 次命中"
+    },
+    {
+     "t": 0,
+     "bot": "Ayyubid、Lusitania",
+     "what": "槽位 19、18：一直在选点，没有进对局",
+     "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4117-4145：chosenSlots 不到 slot+1 个时逐个缺的槽位做一遍全图网格的最远点采样；Policy.act L4783 canAct 为假时整拍不决策",
+     "why": "原因看不到（调用 chooseSpawn、切换到对局阶段的外层不在对局包里）；同图的 B018 是槽位 15、16、18、19，B045 是槽位 16~19"
+    }
+   ],
+   "alternatives": "同一批坐标如果由一处统一分给 20 个槽位，同像素的 2 对不会出现。能多拿多少地要看对手，录像只到选点阶段，没法重放反事实",
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 1350,
+   "t1": 2070,
+   "what": "本机追上服务器的那一段积压的指令一起生效：11 段超发的清仓。5 个号打在便宜地上（+2.4 万格，密度 5~12），5 个号白扔，CocaCola、Inca 随后阵亡",
+   "shareBefore": 0.1602,
+   "shareAfter": 0.1928,
+   "ourBots": [
+    "Nader Shah",
+    "Harald",
+    "Lithuania",
+    "Nimitz",
+    "Sparta",
+    "Leonidas",
+    "NullPointer",
+    "CocaCola",
+    "Cringe",
+    "Inca"
+   ],
+   "enemies": [
+    "🇦🇿🤍（队2；t=1650 在打 CocaCola）",
+    "其余攻击者看不到（没有 t>0 的录像）"
+   ],
+   "evidence": [
+    "logdigest seqlag：49/976 个快照比最快的号落后 >=90 拍，10 个号，全部在本机拍 720~1800（Cringe 360 拍、Sparta 270 拍）；logdigest wallms：服务器拍约 628 时落后 −2~+88 拍，服务器拍 2,035 起的 14 条阵亡行落后下界中位 −35、上界中位 +55 拍",
+    "logdigest zerodrop：5 段、5 个号、47.4 万兵，全部在 t=1260~1890；发令到扣兵 Sparta 90~270 拍、Cringe 90~270 拍，其余 0~180 拍",
+    "logdigest noefftl：t=1260~1890 发的指令 41.4% 落在没有净支出的间隔（前后 27.0% / 0% / 5.0%）；超发的清仓全局 11 段，全部在 t=1350~1800、10 个号",
+    "logdigest sentchk：sent 1,351 对 cmds + 选点行 1,339（17 个号差 0~3），sent − accepted 合计 7 → 指令没有丢，是晚到",
+    "digest bot：Nader Shah +5,053 格、Harald +4,684、Lithuania +4,394、Nimitz +6,688、Sparta +3,103；Leonidas、NullPointer 的 12 条船 26.4 万兵换 0 格；CocaCola 18.1 万兵换 624 格",
+    "digest timeline：17 个号 87,484 格（16.02%，t=1350）→ 105,275 格（19.28%，t=2070）；logdigest spend 1350 2070：只出兵/发船的 33 个间隔净支出 151 万、+9,573 格"
+   ],
+   "priorDecisions": [
+    {
+     "t": 1100,
+     "bot": "全队",
+     "what": "指令在本机局面里没有生效时，照常每 15 个本机拍对同一目标再下一条",
+     "codePath": "src/strategy/v27-team-c110.js Strategy.send L526-539：L531 同一目标 15 个本机拍内不重发；L536-537 发出即 cmds++；没有「已发出、还没生效」的在途账",
+     "why": "推断：本机落后服务器时，发出的指令要等本机模拟到服务器收下它的那一拍才看得到；这期间策略看到的余额没少，同一笔兵被反复下单"
+    },
+    {
+     "t": 1350,
+     "bot": "Leonidas、NullPointer",
+     "what": "被围时连发 6 条船，每条取（余额 − 底线）的一半",
+     "codePath": "src/strategy/v27-team-c110.js General.act L835-842（没有无主邻格、nb=0 时每 boatEvery=60 拍 boatOut）→ boatOut L1035-1051：对有主的落点 amount = boatFrac(0.5)×(余额 − floorAt)",
+     "why": "推断：船也是按执行那一拍的余额取千分比，积压的几条一起执行就把余额取空"
+    }
+   ],
+   "alternatives": "没有录像，做不了反事实。同图的 B018 在同一时段有 8 段零新令掉兵、7 个号被清到密度 1~4、5 个号随后阵亡；本局落后得轻（号与号之间最多差 360 拍），清仓多数打在便宜地上，合计领土反而涨了 3.3 个点",
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 1890,
+   "t1": 3510,
+   "what": "有邻居的号停手攒兵：1,620 拍里利息 1,240 万，只出兵/发船的间隔只花了 134 万；捐款 86 条撞在受捐额度上；份额停在 17~20%",
+   "shareBefore": 0.1956,
+   "shareAfter": 0.2024,
+   "ourBots": [
+    "Stonks",
+    "SonHeungMin",
+    "Harald",
+    "Lithuania",
+    "CyberNinja",
+    "Nimitz",
+    "Luigi",
+    "Ainz",
+    "Russian Empire",
+    "Goryeo",
+    "Leonidas"
+   ],
+   "enemies": [
+    "U.A.S（队1；t=2360~3070 在打 Nimitz）",
+    "队1 的其余（33.4%→38.5%）"
+   ],
+   "evidence": [
+    "logdigest cmdmix：每千号·拍的出兵/发船指令 33.1（t=630~1530）→ 7.6（1530~2070）→ 2.3（2070~3510）；t=2070~3510 出兵发船 49 条、捐款 96 条、戳 4 条",
+    "logdigest spend 1890 3510：利息 12,404,058；只出兵/发船 24 个间隔 1,344,386（+18,995 格）；只捐款 42 个间隔 3,669,385；无指令 180 个间隔 1,606,762（−10,668 格）；digest timeline：兵 293 万（t=1890）→ 842 万（t=3510）",
+    "logdigest fireband 1890 3510：有邻居且密度 <100 的 213 个间隔里有出兵/发船的 25 个（11.7%）；在丢地的 56 个间隔全部零出兵",
+    "logdigest silent：>=450 拍零指令 27 段、15 个号、21,600 拍；Harald 1,530 拍（9,313 格、nb=1，密度 6→92）、Lithuania 2,160 拍、Nimitz 1,440 拍、Luigi 900 拍（密度 24→107）",
+    "logdigest donlog / quotacap：没执行的 102 条里配额不够 86 条；Goryeo→Inca 15 条全部被拒；SonHeungMin、Stonks 给 Nimitz 的 33 条里 26 条被拒；本图 t=1800 单笔上限约 5.6 万，t=2142 跳到 21.9 万，用量按收款人整局累计",
+    "digest outsiders：队1 = 我方 + 其余，36.5 = 3.2 + 33.4（t=2032）→ 40.2 = 1.7 + 38.5（t=3400）；队2 24.9 = 5.8 + 19.1 → 24.2 = 8.0 + 16.2；队3 37.3 = 10.4 + 26.9 → 34.5 = 10.3 + 24.2",
+    "digest bot 46：Nimitz t=2070~3330 cmds 68 不变，12,671→2,209 格，手里 15.4~27.0 万兵，t=3400 阵亡时账上 14.5 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": 1890,
+     "bot": "Harald、Lithuania、Nimitz、Stonks、SonHeungMin",
+     "what": "有邻居、没超软上限：几百到两千拍一条出兵指令都不发",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5534：L5261 over = 余额 > 100×领土；L5267 没超软上限且报价 c >= worth → 整轮不买；L5269-5273 唯一健康真人邻居且余额 < overHumanCap(1.28)×100×领土 → 跳过；L5348-5356 超软上限后 keep = min(keep, 倍数×100×领土)，倍数 = 唯一真人邻居 1.12 / 缩水被围 1.24 / 拥挤 1.08 / 其余 hold 0.9（参数 L2704、L3729-3730、L3738、L3773-3774）；L5358 keep = max(keep, safe)；L5360-5361 avail <= 0 → 跳过；L5526-5528 x = min(avail, want)，x < want 且 x < chunk(0.2)×余额 → 跳过",
+     "why": "推断：没超软上限时停在 L5267（邻居的报价不低于 worth）还是 L5361（保底线 >= 余额）看不到；有录像的 B017 同一版本这类决策拍主要停在 safeFinite / dpKeep"
+    },
+    {
+     "t": 1620,
+     "bot": "Goryeo、SonHeungMin、Stonks、Leonidas",
+     "what": "每 18~20 拍对同一个收款人重发一条超额的捐款",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；全文件没有任何地方查受捐额度；src/sim/sim/game.js donationCost L348-357、bookDonation L370-376",
+     "why": "救援分支的 pct 按捐款人自己的余额取（155 或 240），捐款人越攒越多，想给的金额离上限越来越远；被拒不扣冷却以外的任何东西，于是原样重发"
+    }
+   ],
+   "alternatives": "没有录像，做不了反事实。这 1,620 拍里只出兵/发船的间隔每格净支出约 71 兵（134 万换 18,995 格）；攒在账上的 549 万按这个价是 7 万多格，但便宜地有多少看不到",
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 3510,
+   "t1": 5436,
+   "what": "7 个号被队1、队2、队3 的外人逐个吃掉；这 1,926 拍里只捐款的间隔花掉 893 万，只出兵/发船的间隔 267 万",
+   "shareBefore": 0.2024,
+   "shareAfter": 0.1305,
+   "ourBots": [
+    "SonHeungMin",
+    "Lithuania",
+    "Sparta",
+    "Goryeo",
+    "Stonks",
+    "Leonidas",
+    "CyberNinja",
+    "NullPointer",
+    "Nader Shah",
+    "Harald"
+   ],
+   "enemies": [
+    "[GLD]Van Rossem（队1）",
+    "Shikadze[og]（队2）",
+    "[UA]（队3）",
+    "Player 552、Player 628、Captagon（队1）"
+   ],
+   "evidence": [
+    "logdigest spend 3510 5436：利息 20,770,694；只捐款 45 个间隔 8,931,668（−4,934 格）；只出兵/发船 14 个间隔 2,672,318（+652 格）；混合 19 个间隔 3,687,993（+5,601 格）；无指令 116 个间隔 5,742,231（−27,301 格）",
+    "logdigest fireband 3510 5436：密度 <100 的 141 个间隔里有出兵/发船的 13 个（9.2%），丢地且零出兵 29 个；密度 >=100 的 63 个间隔里 15 个（23.8%），丢地且零出兵 13 个",
+    "logdigest donlog：t=4300~5300 给 Stonks 的 15 条捐款执行 14 条，手续费 146 万、到账约 289 万（6 条到账时它的密度已 >=100）；digest bot 13：同期 Stonks 17,771→4,022 格，自己只发了 6 条出兵指令，t=5318 阵亡时账上 43.2 万",
+    "logdigest dondying：已执行的捐款里 9 条是正在垮的号发的（手续费 33.1 万、想给 79.7 万）：Sparta t=3960（251 拍后阵亡）、Goryeo t=4650 / 4765（237 / 122 拍后阵亡）、Stonks t=4930、NullPointer t=4295；另有 Stonks t=5230、Leonidas t=5330 两条在阵亡前 88 / 33 拍下的",
+    "logdigest assists / foes：24 条协防戳里 22 条替异队的编队号戳；[UA]（队3）被点名 7 次（t=3775~5350，打 Russian Empire×5、CyberNinja×2），[GLD]Van Rossem（队1）4 次（打 Sparta×3、Stonks），Shikadze[og]（队2）4 次（打 Lithuania）",
+    "digest timeline / outsiders：13 个号 110,517 格（20.24%）→ 6 个号 71,293 格（13.05%）；队1 的其余 38.5→38.7，队2 的其余 16.2→19.1，队3 的其余 24.2→29.0"
+   ],
+   "priorDecisions": [
+    {
+     "t": 3400,
+     "bot": "Nader Shah、Harald、Luigi、Ainz",
+     "what": "密度一过 112 就把 15% 的兵捐给同队的编队号（另付 6.25% 手续费），回到 88~98 再攒",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；src/strategy/v27-team-c110.js Policy.act L4902 buyLand、L4922 这一拍 buyLand 没出手才 tryDonateToTeammate",
+     "why": "超软上限后出兵的几条线（keep 0.9 → 密度 114.2；唯一真人邻居 128 / 142.1；拥挤 126 / 137）都在余粮捐款线 112 之上：只要有合格的收款人，余额先被捐款削掉 21%"
+    },
+    {
+     "t": 3600,
+     "bot": "Harald、Sparta、Goryeo、SonHeungMin",
+     "what": "救援捐款的 pct 被自己的保底线压到 55~99",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；Policy.safeAt L4524-4540（q<0 时封顶 oppFloorCap=88×领土）；src/engine/live_game_js.js 捐款手续费 = 捐款人余额 × 64/1024，与 pct 无关",
+     "why": "有敌方真人邻居时 safeFloor 取到 88×领土：密度 100.4~112 之间 maxSafePct 只有 55~155，pct<64 时手续费比送出去的还多"
+    }
+   ],
+   "alternatives": "没有录像，做不了反事实。CyberNinja 的 5 条协防戳（各约 10% 余额，不过 buyLand 的任何一道线）每条换来 82~119 格，说明它的邻居是打得动的",
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 5436,
+   "t1": 7917,
+   "what": "队3 的外人吃掉队2：Russian Empire、Ainz、Luigi 三个大号 1,400 拍内阵亡，期间 13 条出兵、17 条互捐（手续费 209 万）",
+   "shareBefore": 0.1305,
+   "shareAfter": 0.0795,
+   "ourBots": [
+    "Russian Empire",
+    "Ainz",
+    "Luigi",
+    "NullPointer",
+    "Nader Shah",
+    "Harald"
+   ],
+   "enemies": [
+    "队3 的其余（29.0%→55.7%）",
+    "[UA]（队3；t=5350 还在打 CyberNinja）"
+   ],
+   "evidence": [
+    "digest outsiders：队2 25.9 = 我方 6.9 + 其余 19.1（t=5436）→ 19.1 = 7.2 + 11.9（t=6879）→ 6.1 = 1.4 + 4.7（t=7916）；队3 35.1 = 6.2 + 29.0 → 49.1 = 7.2 + 41.9 → 63.7 = 7.9 + 55.7；队1 38.7→31.1→28.8",
+    "logdigest donlog（Luigi、Ainz、Russian Empire 之间）：t>=5436 日志 20 条、执行 19 条，手续费 2,086,214、到账约 451 万；t=6100~6900 执行 11 条、手续费 1,319,404",
+    "digest bot 24：Russian Empire t=5940~6840 16,734→6,858 格，cmds 42→47（4 条捐款、1 条出兵），余额 104~155 万；t=6660 密度 141 时捐给 Luigi，219 拍后阵亡",
+    "digest bot 25：Ainz t=7200→7290 21,349→13,608 格、2,361,859→654,673 兵；t=7290~7830 cmds 77 不变，13,608→5,282 格，密度 48→111",
+    "digest bot 17：Luigi t=7020~7830 19,564→7,252 格，cmds 99→102 全是捐款（t=7130、7285、7445 给 Ainz）",
+    "logdigest spend 5436 7920：只捐款 29 个间隔 838 万（−3,806 格）；只出兵/发船 22 个间隔 796 万（−3,778 格：+9,022 / −12,800）；fireband 5436 7920：密度 >=100 的 52 个间隔里有出兵/发船的 14 个（26.9%）"
+   ],
+   "priorDecisions": [
+    {
+     "t": 5780,
+     "bot": "Luigi、Ainz、Russian Empire",
+     "what": "三个号轮流过 112 线，把余粮捐给另外两个里密度低一点的那个",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）",
+     "why": "收款条件只看对方密度 <132 且有在途攻击（或自己 >=120、对方 <98）：三个号都在 90~141 之间来回，谁刚捐完谁就成了下一个收款人；每笔按捐款人全部余额收 6.25%"
+    },
+    {
+     "t": 7290,
+     "bot": "Ainz、Luigi、Russian Empire",
+     "what": "领土跌到历史最高的 72% 以下之后不再对健康的真人出兵",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5336-5347：t >= leaderHardFrom(5000)、领土 < siegeShrinkRatio(0.72)×历史最高、在场真人>=4、目标是健康真人 → 余额 < crowdedHardCap(1.26)×100×领土 时跳过；L5351-5352 keep 倍数 siegeOverKeep=1.24（要留出 20% 可用兵需要密度 157，硬上限是 150）",
+     "why": "推断：Ainz t=7290 起 13,608 格 < 0.72×21,510，Luigi t=7650 起、Russian Empire t=6570 起也满足；是不是停在这一支看不到"
+    }
+   ],
+   "alternatives": "没有录像，做不了反事实。同一段里我方在队3 的两个号是在涨的：Harald t=6120~6480 +9,549 格、Nader Shah t=6750~7290 +7,876 格",
+   "statementType": "inferred",
+   "confidence": "medium-low"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Stonks",
+   "me": 13,
+   "team": 3,
+   "t": 5318,
+   "peakLand": 17771,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4770,
+     6549,
+     633348,
+     97
+    ],
+    [
+     4860,
+     6789,
+     624357,
+     92
+    ],
+    [
+     4950,
+     7160,
+     745599,
+     104
+    ],
+    [
+     5040,
+     6785,
+     768314,
+     113
+    ],
+    [
+     5130,
+     5176,
+     719969,
+     139
+    ],
+    [
+     5220,
+     4022,
+     360020,
+     90
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 74→79 boats 3→3"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Nader Shah@4920s153",
+    "Nader Shah@5050s153",
+    "Nader Shah@5220r118",
+    "Nader Shah@5295r136",
+    "Harald@4860r155",
+    "Harald@5060s153",
+    "Harald@5295r121"
+   ],
+   "assistsForMe": [
+    "NullPointer@5000→[GLD]Van Rossem"
+   ],
+   "stillDonating": [
+    "s153→*Nader Shah@4930",
+    "s153→*Nader Shah@5230"
+   ],
+   "balanceAtDeath": 432239,
+   "cause": "队3。t=1260~2700 6,000 格不动（nb=1）。t=2700~3420 8 条指令 6,104→16,921 格（邻居崩盘后收地）。t=4410~4770 17,771→6,549 格、112 万→63 万，期间只发 1 条指令；t=4320~5295 Nader Shah、Harald 给它 15 条捐款（执行 14 条，手续费 146 万、到账约 289 万）。它自己 t=4930（密度 134）、t=5230（密度 150）还把 15% 捐回给 Nader Shah。t=5318 阵亡，账上 43.2 万。攻击者按戳是 [GLD]Van Rossem、Player 552（队1）。",
+   "patternIds": [
+    "NEW:DN-frozen-recipient",
+    "NEW:DN-dying-donor",
+    "NEW:DN-pingpong",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Inca",
+   "me": 15,
+   "team": 2,
+   "t": 2032,
+   "peakLand": 5065,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1440,
+     3830,
+     24935,
+     6
+    ],
+    [
+     1530,
+     3702,
+     19709,
+     5
+    ],
+    [
+     1620,
+     3305,
+     79387,
+     24
+    ],
+    [
+     1710,
+     3324,
+     49482,
+     15
+    ],
+    [
+     1800,
+     4441,
+     53631,
+     12
+    ],
+    [
+     1890,
+     5065,
+     46872,
+     9
+    ],
+    [
+     1980,
+     3868,
+     39655,
+     10
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 27→31 boats 8→9"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Goryeo@1640r240",
+    "Goryeo@1660r240",
+    "Goryeo@1680r240",
+    "Goryeo@1700r240",
+    "Goryeo@1720r240",
+    "Goryeo@1740r240",
+    "Goryeo@1760s185",
+    "Goryeo@1860r240",
+    "Goryeo@1900r240",
+    "Goryeo@1920r240",
+    "Goryeo@1940r240",
+    "Goryeo@1960r240",
+    "Goryeo@1980r240",
+    "Goryeo@2000r240",
+    "Goryeo@2020r240"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 17737,
+   "cause": "队2。天然份额 1,587 格（全场 76/83）。t=900~1620 发了 9 条船；t=1350~1440 1 条船 9.4 万→2.5 万（追帧时积压的指令一起执行，推断），密度 5~24。Goryeo t=1640~2020 给它的 15 条救援捐款（14 条 pct=240，想给 7.2~12.6 万）全部超过受捐额度，一条没到。t=1890~1980 丢 1,197 格，t=2032 阵亡，账上 1.8 万。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DN-quota-retry-loop"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Luigi",
+   "me": 17,
+   "team": 2,
+   "t": 7917,
+   "peakLand": 20000,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     7380,
+     15898,
+     1540907,
+     97
+    ],
+    [
+     7470,
+     15898,
+     1458159,
+     92
+    ],
+    [
+     7560,
+     14625,
+     1440777,
+     98
+    ],
+    [
+     7650,
+     13504,
+     1412403,
+     105
+    ],
+    [
+     7740,
+     11115,
+     1145491,
+     103
+    ],
+    [
+     7830,
+     7252,
+     644712,
+     89
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 101→102 boats 2→2"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r99→*Ainz@7445"
+   ],
+   "balanceAtDeath": 397865,
+   "cause": "队2。天然份额 13,102 格（全场第 5），t=1530 拿到 71.1%。t=1530~5850 领土一直是 8,012~9,623 格（nb 1~3）：t=1710~5850 的 33 条指令里 24 条是捐款、7 条出兵、2 条船。t=5940~6390 4 条指令 8,928→20,000 格。t=6570~7470 7 条指令里 6 条是捐款；t=7020~7830 19,564→7,252 格、203 万→64 万兵，零出兵。t=7917 阵亡，账上 39.8 万。",
+   "patternIds": [
+    "NEW:DN-donate-preempts-attack",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DN-pingpong",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Sparta",
+   "me": 18,
+   "team": 3,
+   "t": 4211,
+   "peakLand": 6363,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3600,
+     3933,
+     393743,
+     100
+    ],
+    [
+     3690,
+     3317,
+     280326,
+     84
+    ],
+    [
+     3780,
+     3317,
+     313503,
+     94
+    ],
+    [
+     3870,
+     2449,
+     273815,
+     112
+    ],
+    [
+     3960,
+     1777,
+     256298,
+     144
+    ],
+    [
+     4050,
+     1777,
+     180480,
+     102
+    ],
+    [
+     4140,
+     1100,
+     86003,
+     78
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 51→55 boats 0→1"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Nader Shah@3945r155",
+    "Nader Shah@4060r155",
+    "Harald@3825r67"
+   ],
+   "assistsForMe": [
+    "Stonks@3790→[GLD]Van Rossem",
+    "Stonks@4050→[GLD]Van Rossem",
+    "Leonidas@3655→[GLD]Van Rossem"
+   ],
+   "stillDonating": [
+    "r62→*Stonks@3615",
+    "s153→*Nader Shah@3960"
+   ],
+   "balanceAtDeath": 109346,
+   "cause": "队3。天然份额 1,573 格（77/83），出生点离 Player 710（队2）43 格。t=1350~1440 零新令 14.8 万→5.4 万，领土到 6,363；t=1710~2790 的 1,080 拍零指令，6,252→3,933 格。t=1710 之后到阵亡的 11 条指令是 9 笔捐款（t=2845~3615 的 8 笔救援里 7 笔 pct 61~91）、1 条戳、1 条船，没有一条 buyLand 的出兵。t=3600~3960 3,933→1,777 格；t=3945 Nader Shah 给它一笔（手续费 14.3 万，它离硬上限只有 9.4 万的空间），t=3960 它密度 144、反手把 15% 捐回给 Nader Shah。t=4211 阵亡，账上 10.9 万。攻击者按 3 条戳是 [GLD]Van Rossem（队1）。",
+   "patternIds": [
+    "NEW:DN-small-pct",
+    "NEW:DN-pingpong",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "CocaCola",
+   "me": 19,
+   "team": 1,
+   "t": 2249,
+   "peakLand": 5067,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1710,
+     4493,
+     29545,
+     7
+    ],
+    [
+     1800,
+     2980,
+     43817,
+     15
+    ],
+    [
+     1890,
+     2034,
+     14266,
+     7
+    ],
+    [
+     1980,
+     2034,
+     17909,
+     9
+    ],
+    [
+     2070,
+     1714,
+     16162,
+     9
+    ],
+    [
+     2160,
+     1422,
+     13875,
+     10
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 29→29 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "CyberNinja@1780r155"
+   ],
+   "assistsForMe": [
+    "Cringe@1650→🇦🇿🤍"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 12098,
+   "cause": "队1。出生点离 Cringe（队3）48 格、离 🇦🇿🤍（队2）33 格。t=1440~1530 2 条指令不见效，t=1530~1620 再发 3 条：21.6 万→3.5 万（剩 16%），只换来 624 格。之后到阵亡 629 拍 cmds 停在 29：5,067→1,422 格，密度 7~15。Cringe t=1650 替它戳过 🇦🇿🤍。t=2249 阵亡，账上 1.2 万。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Leonidas",
+   "me": 20,
+   "team": 2,
+   "t": 5363,
+   "peakLand": 8266,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4770,
+     8266,
+     748193,
+     90
+    ],
+    [
+     4860,
+     8266,
+     840287,
+     102
+    ],
+    [
+     4950,
+     8266,
+     929769,
+     112
+    ],
+    [
+     5040,
+     8266,
+     803294,
+     97
+    ],
+    [
+     5130,
+     5931,
+     516925,
+     87
+    ],
+    [
+     5220,
+     5624,
+     521064,
+     93
+    ],
+    [
+     5310,
+     2989,
+     210093,
+     70
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 82→84 boats 9→9"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Russian Empire@5295r155"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r83→*Russian Empire@4750",
+    "r88→*Goryeo@4880",
+    "s153→*Russian Empire@5000",
+    "s153→*Luigi@5330"
+   ],
+   "balanceAtDeath": 219251,
+   "cause": "队2。与 NullPointer 相距 16 格出生，t=1440~3240 被围在 6,049~6,060 格；被围时 6 条船 17.7 万→2.9 万没换到地。t=2590~3220 17 条捐款执行 6 条（8 条超额被拒）。t=3330 起有邻居，涨到 8,266 格（t=4500）。t=4500~5040 密度 90~112、nb=1，4 条指令全是捐款。t=5040~5310 零指令，8,266→2,989 格、80 万→21 万；t=5330（阵亡前 33 拍）还给 Luigi 下了一笔余粮捐款。t=5363 阵亡，账上 21.9 万。",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:BT-boxed-no-gain",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Goryeo",
+   "me": 22,
+   "team": 2,
+   "t": 4887,
+   "peakLand": 6438,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4320,
+     6438,
+     633217,
+     98
+    ],
+    [
+     4410,
+     6438,
+     625843,
+     97
+    ],
+    [
+     4500,
+     6438,
+     610793,
+     95
+    ],
+    [
+     4590,
+     6268,
+     648673,
+     104
+    ],
+    [
+     4680,
+     4790,
+     506981,
+     106
+    ],
+    [
+     4860,
+     2224,
+     229783,
+     103
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 74→78 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Luigi@4715s153",
+    "Luigi@4830r84",
+    "Leonidas@4880r88",
+    "Ainz@4600s153"
+   ],
+   "assistsForMe": [
+    "Stonks@4800→Player 628"
+   ],
+   "stillDonating": [
+    "r57→*NullPointer@4340",
+    "r68→*Russian Empire@4455",
+    "r155→*Luigi@4650",
+    "s153→*Russian Empire@4765"
+   ],
+   "balanceAtDeath": 157059,
+   "cause": "队2。t=1350~2970 被围在 5,275~5,453 格，整局没有发过一条船；t=1620~2140 27 条捐款只执行 1 条，兵攒到 60.6 万。t=2142 额度放宽后每 210 拍给前排捐一笔（pct=185）。t=3060 起 nb=1：540 拍零指令（密度 46→115），t=3600~3690 密度 115~119 时捐一笔、出手一次（+985 格）；t=4130~4455 的 4 条指令全是捐款（3 笔 pct 57~68）。t=4590~4860 6,268→2,224 格、64.9 万→23.0 万；这 270 拍里它还捐出 2 笔（t=4765 那笔是领土跌了、密度涨到 121 触发的）。t=4887 阵亡，账上 15.7 万。攻击者按 1 条戳是 Player 628（队1）。",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:DN-quota-retry-loop",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Russian Empire",
+   "me": 24,
+   "team": 2,
+   "t": 6879,
+   "peakLand": 16871,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     6300,
+     13672,
+     1204102,
+     88
+    ],
+    [
+     6390,
+     13455,
+     1302060,
+     97
+    ],
+    [
+     6480,
+     12745,
+     1340447,
+     105
+    ],
+    [
+     6570,
+     12000,
+     1334617,
+     111
+    ],
+    [
+     6660,
+     10982,
+     1546058,
+     141
+    ],
+    [
+     6750,
+     10256,
+     926273,
+     90
+    ],
+    [
+     6840,
+     6858,
+     672348,
+     98
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 44→47 boats 6→6"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Luigi@6640s153",
+    "Luigi@6850r155",
+    "Ainz@6275r111",
+    "Ainz@6570s153",
+    "Ainz@6760r155"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s153→*Ainz@6590",
+    "s153→*Luigi@6660",
+    "s153→*Ainz@6735"
+   ],
+   "balanceAtDeath": 495301,
+   "cause": "队2。与 CyberNinja（队1）同像素出生，天然份额 1,881 格（75/83）；t=1530~2610 2,082 格不动。t=2610 起靠队友的捐款（整局收到约 560 万，捐款人付手续费 254 万）和自己的 17 条出兵指令（t=2610~5490 的 23 条指令里另有 4 条捐款、2 条戳）涨到 16,871 格（t=5490）。t=5940~6840 16,734→6,858 格，期间 5 条指令里 4 条是捐款（t=6660 密度 141 时捐给 Luigi、t=6735 捐给 Ainz）。t=6879 阵亡，账上 49.5 万。攻击者按 7 条戳是 [UA]（队3）。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:DN-pingpong",
+    "NEW:DN-dying-donor",
+    "NEW:EG-giant-neighbor-freeze"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Ainz",
+   "me": 25,
+   "team": 2,
+   "t": 7916,
+   "peakLand": 21510,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     7380,
+     9025,
+     630255,
+     70
+    ],
+    [
+     7470,
+     6709,
+     566964,
+     84
+    ],
+    [
+     7560,
+     6131,
+     547109,
+     89
+    ],
+    [
+     7650,
+     6131,
+     612898,
+     100
+    ],
+    [
+     7740,
+     6037,
+     662748,
+     110
+    ],
+    [
+     7830,
+     5282,
+     587168,
+     111
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 77→77 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Luigi@7445r99"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 413394,
+   "cause": "队2。t=1440~2970 5,869~6,707 格不动（nb=2，密度到 115 后 5 笔捐款都给了 Russian Empire）；t=2970~3510 涨到 16,024 格。t=3600~7200 密度在 75~117 之间靠捐款来回（整局捐款执行 18 条，手续费 181 万）。t=7200→7290 一个间隔 21,349→13,608 格、236 万→65 万兵。之后 540 拍 cmds 停在 77：13,608→5,282 格，密度 48→111。t=7916 阵亡，账上 41.3 万。",
+   "patternIds": [
+    "NEW:DN-donate-preempts-attack",
+    "NEW:DN-pingpong",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "CyberNinja",
+   "me": 27,
+   "team": 1,
+   "t": 5436,
+   "peakLand": 5446,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     4860,
+     1779,
+     183877,
+     103
+    ],
+    [
+     4950,
+     1779,
+     201229,
+     113
+    ],
+    [
+     5040,
+     1779,
+     216323,
+     122
+    ],
+    [
+     5130,
+     1779,
+     228980,
+     129
+    ],
+    [
+     5220,
+     1898,
+     210828,
+     111
+    ],
+    [
+     5310,
+     1898,
+     227600,
+     120
+    ],
+    [
+     5400,
+     565,
+     30742,
+     54
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 40→41 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [
+    "Russian Empire@5350→[UA]"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 31359,
+   "cause": "队1。与 Russian Empire（队2）同像素出生。t=1980~3690 的 1,710 拍零指令，5,446→1,809 格（密度 26→92）。t=3775~5120 只发了 5 条替 Russian Empire 戳 [UA]（队3）的指令和 1 笔捐款，每条戳换来 82~119 格；自己的 buyLand 一条没发，密度 100~129、nb=1。t=5310→5400 1,898→565 格、22.8 万→3.1 万，t=5436 阵亡，账上 3.1 万。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:AS-cross-team-poke",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Lithuania",
+   "me": 29,
+   "team": 1,
+   "t": 4136,
+   "peakLand": 11191,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3600,
+     6728,
+     542566,
+     81
+    ],
+    [
+     3690,
+     6728,
+     602443,
+     90
+    ],
+    [
+     3780,
+     5656,
+     476574,
+     84
+    ],
+    [
+     3870,
+     5072,
+     459373,
+     91
+    ],
+    [
+     3960,
+     4148,
+     366414,
+     88
+    ],
+    [
+     4050,
+     2509,
+     175852,
+     70
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 36→36 boats 5→5"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "CyberNinja@3785r74"
+   ],
+   "assistsForMe": [
+    "Harald@3750→Shikadze[og]",
+    "Harald@3925→Shikadze[og]",
+    "Harald@4030→Shikadze[og]",
+    "Harald@4130→Shikadze[og]"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 137713,
+   "cause": "队1。t=1530~1620 3 条指令 14.4 万→4.2 万，6,797→11,191 格（密度 5）。t=1890 起到阵亡 2,246 拍 cmds 停在 36（nb=2）：兵 7.5 万→60.2 万（密度 7→90），领土 10,173→6,728。t=3690~4050 6,728→2,509 格、60.2 万→17.6 万；Harald（队3）替它戳了 4 次 Shikadze[og]（队2）。t=4136 阵亡，账上 13.8 万。",
+   "patternIds": [
+    "NEW:AT-worth-gate",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "SonHeungMin",
+   "me": 31,
+   "team": 3,
+   "t": 3735,
+   "peakLand": 6488,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3150,
+     5326,
+     551454,
+     104
+    ],
+    [
+     3330,
+     5958,
+     327528,
+     55
+    ],
+    [
+     3420,
+     5744,
+     348104,
+     61
+    ],
+    [
+     3510,
+     4252,
+     240833,
+     57
+    ],
+    [
+     3600,
+     2695,
+     124675,
+     46
+    ],
+    [
+     3690,
+     1586,
+     82626,
+     52
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 66→70 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Stonks@3720r67",
+    "Nader Shah@3720r72",
+    "Sparta@3120r128",
+    "Harald@3600r59",
+    "Harald@3720r81"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r78→*Stonks@3160",
+    "s153→*Stonks@3235",
+    "r155→*Stonks@3255"
+   ],
+   "balanceAtDeath": 80880,
+   "cause": "队3。出生点离 BeLaRousso（队2）36 格。t=1260~2250 5,970 格不动（nb=2），兵 13 万→60 万；t=1170~3330 的 36 条指令里 34 条是捐款，其中给 Nimitz 的 22 条（t=1780~3070）有 17 条被拒（都在 t=1945~2395）。t=3160~3255 给 Stonks 3 笔：55.1 万→32.8 万。t=3420~3690 零指令，5,744→1,586 格、34.8 万→8.3 万。t=3735 阵亡，账上 8.1 万。",
+   "patternIds": [
+    "NEW:AT-worth-gate",
+    "NEW:DN-quota-retry-loop",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Nimitz",
+   "me": 46,
+   "team": 3,
+   "t": 3400,
+   "peakLand": 12671,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2790,
+     5366,
+     209748,
+     39
+    ],
+    [
+     2880,
+     4813,
+     199111,
+     41
+    ],
+    [
+     2970,
+     3582,
+     194871,
+     54
+    ],
+    [
+     3060,
+     2913,
+     145494,
+     50
+    ],
+    [
+     3150,
+     2802,
+     191604,
+     68
+    ],
+    [
+     3240,
+     2802,
+     214350,
+     76
+    ],
+    [
+     3330,
+     2209,
+     158727,
+     72
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 68→68 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Sparta@2950r62",
+    "Sparta@3070r73",
+    "Sparta@3375r71",
+    "SonHeungMin@2960r55",
+    "SonHeungMin@3070r66"
+   ],
+   "assistsForMe": [
+    "NullPointer@2990→U.A.S",
+    "NullPointer@3070→U.A.S"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 144516,
+   "cause": "队3。天然份额 10,577 格（全场第 12），t=1530 只拿到 53.0%。t=1620~1710 零新令 20.3 万→9.5 万，领土 5,983→12,671（t=2070，密度 11~12，nb 2→5）。此后到阵亡 1,330 拍 cmds 停在 68：12,671→2,209 格，手里一直有 15~27 万兵。SonHeungMin、Stonks 给它的 33 条救援捐款 26 条超额被拒；NullPointer（队2）替它戳了 4 次 U.A.S（队1）。t=3400 阵亡，账上 14.5 万。",
+   "patternIds": [
+    "NEW:DF-passive-death",
+    "NEW:DN-quota-retry-loop",
+    "NEW:DN-frozen-recipient"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Cringe",
+   "me": 47,
+   "team": 3,
+   "t": 2898,
+   "peakLand": 4453,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2340,
+     4058,
+     47940,
+     12
+    ],
+    [
+     2430,
+     4058,
+     57186,
+     14
+    ],
+    [
+     2520,
+     4059,
+     67362,
+     17
+    ],
+    [
+     2610,
+     3750,
+     69304,
+     18
+    ],
+    [
+     2700,
+     1963,
+     28908,
+     15
+    ],
+    [
+     2790,
+     1323,
+     59762,
+     45
+    ],
+    [
+     2880,
+     1051,
+     46029,
+     44
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 40→40 boats 6→6"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Stonks@2690r65",
+    "SonHeungMin@2760r63"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 45574,
+   "cause": "队3。天然份额 2,813 格，离 CocaCola 48 格、Stonks 65 格；t=1080 起 2,329 格不动（nb=1），日志位置最多比别的号落后 360 拍。t=1530~1710 密度 104~121 时发了 6 条捐款、1 条戳、9 条别的指令：28.2 万→8.3 万（t=1620~1710），t=1800~1890 零新令再掉到 2,627 兵（密度 0.9），领土到 4,059。此后到阵亡 1,188 拍 cmds 停在 40；t=2520~2880 4,059→1,051 格（密度 15~45），t=2898 阵亡，账上 4.6 万。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "latencyLedger": {
+  "matchId": "B014",
+  "replayLast": 1,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 241,
+   "landed": 127,
+   "lastOk": 3,
+   "late": 16,
+   "late1": 7,
+   "late2": 0,
+   "late3": 9,
+   "zero": 0,
+   "batch3": 3,
+   "staleBatch": 2,
+   "backendLines": 0,
+   "steps": 51,
+   "lbP50": 0,
+   "lbP90": 0,
+   "lbMax": 5,
+   "near": 7,
+   "samePixel": 2,
+   "per": {
+    "13": {
+     "name": "Stonks",
+     "team": 3,
+     "logged": 6,
+     "landed": 4,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 46,
+     "final": [
+      551,
+      923
+     ],
+     "lastLog": [
+      253,
+      786
+     ]
+    },
+    "14": {
+     "name": "Nader Shah",
+     "team": 3,
+     "logged": 8,
+     "landed": 2,
+     "late": 5,
+     "lateAlt": 5,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 14,
+     "final": [
+      898,
+      546
+     ],
+     "lastLog": [
+      194,
+      530
+     ]
+    },
+    "15": {
+     "name": "Inca",
+     "team": 2,
+     "logged": 16,
+     "landed": 14,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      578,
+      770
+     ],
+     "lastLog": [
+      754,
+      562
+     ]
+    },
+    "16": {
+     "name": "Ayyubid",
+     "team": 2,
+     "logged": 37,
+     "landed": 2,
+     "late": 34,
+     "lateAlt": 34,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 11,
+     "final": [
+      818,
+      818
+     ],
+     "lastLog": [
+      818,
+      18
+     ]
+    },
+    "17": {
+     "name": "Luigi",
+     "team": 2,
+     "logged": 7,
+     "landed": 6,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      458,
+      234
+     ],
+     "lastLog": [
+      458,
+      234
+     ]
+    },
+    "18": {
+     "name": "Sparta",
+     "team": 3,
+     "logged": 15,
+     "landed": 13,
+     "late": 3,
+     "lateAlt": 3,
+     "batch": 3,
+     "finalBatch": 3,
+     "finalStep": 50,
+     "final": [
+      290,
+      610
+     ],
+     "lastLog": [
+      450,
+      114
+     ]
+    },
+    "19": {
+     "name": "CocaCola",
+     "team": 1,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      438,
+      930
+     ],
+     "lastLog": [
+      346,
+      770
+     ]
+    },
+    "20": {
+     "name": "Leonidas",
+     "team": 2,
+     "logged": 14,
+     "landed": 7,
+     "late": 6,
+     "lateAlt": 6,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 32,
+     "final": [
+      194,
+      754
+     ],
+     "lastLog": [
+      370,
+      322
+     ]
+    },
+    "22": {
+     "name": "Goryeo",
+     "team": 2,
+     "logged": 12,
+     "landed": 3,
+     "late": 8,
+     "lateAlt": 8,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 13,
+     "final": [
+      306,
+      930
+     ],
+     "lastLog": [
+      754,
+      18
+     ]
+    },
+    "23": {
+     "name": "Harald",
+     "team": 3,
+     "logged": 8,
+     "landed": 6,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      658,
+      50
+     ],
+     "lastLog": [
+      134,
+      762
+     ]
+    },
+    "24": {
+     "name": "Russian Empire",
+     "team": 2,
+     "logged": 12,
+     "landed": 5,
+     "late": 6,
+     "lateAlt": 6,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 26,
+     "final": [
+      802,
+      18
+     ],
+     "lastLog": [
+      786,
+      18
+     ]
+    },
+    "25": {
+     "name": "Ainz",
+     "team": 2,
+     "logged": 15,
+     "landed": 13,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 3,
+     "finalBatch": 1,
+     "finalStep": 49,
+     "final": [
+      754,
+      562
+     ],
+     "lastLog": [
+      658,
+      50
+     ]
+    },
+    "26": {
+     "name": "NullPointer",
+     "team": 2,
+     "logged": 14,
+     "landed": 12,
+     "late": 3,
+     "lateAlt": 3,
+     "batch": 3,
+     "finalBatch": 3,
+     "finalStep": 49,
+     "final": [
+      210,
+      754
+     ],
+     "lastLog": [
+      18,
+      770
+     ]
+    },
+    "27": {
+     "name": "CyberNinja",
+     "team": 1,
+     "logged": 13,
+     "landed": 7,
+     "late": 5,
+     "lateAlt": 5,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 39,
+     "final": [
+      802,
+      18
+     ],
+     "lastLog": [
+      210,
+      754
+     ]
+    },
+    "29": {
+     "name": "Lithuania",
+     "team": 1,
+     "logged": 7,
+     "landed": 6,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      594,
+      194
+     ],
+     "lastLog": [
+      594,
+      194
+     ]
+    },
+    "30": {
+     "name": "Lusitania",
+     "team": 2,
+     "logged": 24,
+     "landed": 1,
+     "late": 22,
+     "lateAlt": 22,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 3,
+     "final": [
+      818,
+      818
+     ],
+     "lastLog": [
+      818,
+      18
+     ]
+    },
+    "31": {
+     "name": "SonHeungMin",
+     "team": 3,
+     "logged": 9,
+     "landed": 7,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      742,
+      910
+     ],
+     "lastLog": [
+      878,
+      530
+     ]
+    },
+    "46": {
+     "name": "Nimitz",
+     "team": 3,
+     "logged": 7,
+     "landed": 5,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      262,
+      782
+     ],
+     "lastLog": [
+      418,
+      662
+     ]
+    },
+    "47": {
+     "name": "Cringe",
+     "team": 3,
+     "logged": 9,
+     "landed": 8,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      486,
+      930
+     ],
+     "lastLog": [
+      486,
+      930
+     ]
+    }
+   }
+  }
+ },
+ "landLedger": {
+  "matchId": "B014",
+  "gridTicks": [
+   0,
+   1
+  ],
+  "replayLast": 1,
+  "voronoi": {
+   "land": 546152,
+   "humans": 83,
+   "squad": 19,
+   "unreach": 11910,
+   "reach": 534242,
+   "squadVor": 102321,
+   "squadVorPct": 19.15,
+   "headPct": 22.89,
+   "ratio": 0.837,
+   "squadMed": 4169,
+   "otherMed": 6415,
+   "squadEuclid": 106657,
+   "squadEuclidPct": 19.53,
+   "euclidSquadMed": 4771,
+   "euclidOtherMed": 7002,
+   "small": 6,
+   "top16": 4,
+   "bottom16": 7,
+   "bots": [
+    {
+     "me": 17,
+     "name": "*Luigi",
+     "team": 2,
+     "vor": 13102,
+     "rank": 5,
+     "euclid": 11896,
+     "spawn": [
+      458,
+      234
+     ],
+     "nearest": 78,
+     "nearestWho": "South Asia",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 14,
+     "name": "*Nader Shah",
+     "team": 3,
+     "vor": 12662,
+     "rank": 8,
+     "euclid": 11821,
+     "spawn": [
+      898,
+      546
+     ],
+     "nearest": 125,
+     "nearestWho": "Turan imparatorluğu",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 46,
+     "name": "*Nimitz",
+     "team": 3,
+     "vor": 10577,
+     "rank": 12,
+     "euclid": 10528,
+     "spawn": [
+      262,
+      782
+     ],
+     "nearest": 59,
+     "nearestWho": "*NullPointer",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 22,
+     "name": "*Goryeo",
+     "team": 2,
+     "vor": 9476,
+     "rank": 16,
+     "euclid": 9233,
+     "spawn": [
+      306,
+      930
+     ],
+     "nearest": 30,
+     "nearestWho": "nato",
+     "nearestKind": "其他真人同队"
+    },
+    {
+     "me": 29,
+     "name": "*Lithuania",
+     "team": 1,
+     "vor": 7568,
+     "rank": 31,
+     "euclid": 7636,
+     "spawn": [
+      594,
+      194
+     ],
+     "nearest": 47,
+     "nearestWho": "Tukker Army",
+     "nearestKind": "其他真人同队"
+    },
+    {
+     "me": 31,
+     "name": "*SonHeungMin",
+     "team": 3,
+     "vor": 6638,
+     "rank": 37,
+     "euclid": 6829,
+     "spawn": [
+      742,
+      910
+     ],
+     "nearest": 36,
+     "nearestWho": "BeLaRousso",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 13,
+     "name": "*Stonks",
+     "team": 3,
+     "vor": 6428,
+     "rank": 38,
+     "euclid": 6438,
+     "spawn": [
+      551,
+      923
+     ],
+     "nearest": 65,
+     "nearestWho": "*Cringe",
+     "nearestKind": "我方同队"
+    },
+    {
+     "me": 23,
+     "name": "*Harald",
+     "team": 3,
+     "vor": 4925,
+     "rank": 51,
+     "euclid": 5727,
+     "spawn": [
+      654,
+      54
+     ],
+     "nearest": 106,
+     "nearestWho": "Tukker Army",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 27,
+     "name": "*CyberNinja",
+     "team": 1,
+     "vor": 4753,
+     "rank": 53,
+     "euclid": 4771,
+     "spawn": [
+      806,
+      22
+     ],
+     "nearest": 6,
+     "nearestWho": "*Russian Empire",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 20,
+     "name": "*Leonidas",
+     "team": 2,
+     "vor": 4169,
+     "rank": 59,
+     "euclid": 4136,
+     "spawn": [
+      194,
+      754
+     ],
+     "nearest": 16,
+     "nearestWho": "*NullPointer",
+     "nearestKind": "我方同队"
+    },
+    {
+     "me": 16,
+     "name": "*Ayyubid",
+     "team": 2,
+     "vor": 3915,
+     "rank": 61,
+     "euclid": 3798,
+     "spawn": [
+      822,
+      822
+     ],
+     "nearest": 6,
+     "nearestWho": "*Lusitania",
+     "nearestKind": "我方同队"
+    },
+    {
+     "me": 19,
+     "name": "*CocaCola",
+     "team": 1,
+     "vor": 3749,
+     "rank": 62,
+     "euclid": 3693,
+     "spawn": [
+      438,
+      930
+     ],
+     "nearest": 33,
+     "nearestWho": "🇦🇿🤍",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 25,
+     "name": "*Ainz",
+     "team": 2,
+     "vor": 3537,
+     "rank": 65,
+     "euclid": 6111,
+     "spawn": [
+      754,
+      562
+     ],
+     "nearest": 113,
+     "nearestWho": "Sobhan Tamim",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 47,
+     "name": "*Cringe",
+     "team": 3,
+     "vor": 2813,
+     "rank": 69,
+     "euclid": 2814,
+     "spawn": [
+      486,
+      930
+     ],
+     "nearest": 48,
+     "nearestWho": "*CocaCola",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 26,
+     "name": "*NullPointer",
+     "team": 2,
+     "vor": 2295,
+     "rank": 74,
+     "euclid": 2101,
+     "spawn": [
+      210,
+      754
+     ],
+     "nearest": 16,
+     "nearestWho": "*Leonidas",
+     "nearestKind": "我方同队"
+    },
+    {
+     "me": 24,
+     "name": "*Russian Empire",
+     "team": 2,
+     "vor": 1881,
+     "rank": 75,
+     "euclid": 2279,
+     "spawn": [
+      802,
+      18
+     ],
+     "nearest": 6,
+     "nearestWho": "*CyberNinja",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 15,
+     "name": "*Inca",
+     "team": 2,
+     "vor": 1587,
+     "rank": 76,
+     "euclid": 2753,
+     "spawn": [
+      578,
+      770
+     ],
+     "nearest": 109,
+     "nearestWho": "Player 552",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 18,
+     "name": "*Sparta",
+     "team": 3,
+     "vor": 1573,
+     "rank": 77,
+     "euclid": 3682,
+     "spawn": [
+      290,
+      610
+     ],
+     "nearest": 43,
+     "nearestWho": "Player 710",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 30,
+     "name": "*Lusitania",
+     "team": 2,
+     "vor": 673,
+     "rank": 78,
+     "euclid": 411,
+     "spawn": [
+      818,
+      818
+     ],
+     "nearest": 6,
+     "nearestWho": "*Ayyubid",
+     "nearestKind": "我方同队"
+    }
+   ],
+   "teams": {
+    "1": [
+     27,
+     185496,
+     3,
+     16070
+    ],
+    "2": [
+     28,
+     176236,
+     9,
+     40635
+    ],
+    "3": [
+     28,
+     172510,
+     7,
+     45616
+    ]
+   }
+  },
+  "logCapture": {
+   "source": "log",
+   "ticks": [
+    {
+     "t": 630,
+     "squadTerr": 44284,
+     "squadVor": 102321,
+     "squadRate": 0.4328,
+     "haveSnap": 17,
+     "haveVor": 97733,
+     "haveRate": 0.4531,
+     "medRate": 0.6508,
+     "medTerr": 2468,
+     "teams": {
+      "1": [
+       7088,
+       16070,
+       3
+      ],
+      "2": [
+       17329,
+       40635,
+       9
+      ],
+      "3": [
+       19867,
+       45616,
+       7
+      ]
+     }
+    },
+    {
+     "t": 1530,
+     "squadTerr": 90933,
+     "squadVor": 102321,
+     "squadRate": 0.8887,
+     "haveSnap": 17,
+     "haveVor": 97733,
+     "haveRate": 0.9304,
+     "medRate": 0.9294,
+     "medTerr": 5609,
+     "teams": {
+      "1": [
+       15740,
+       16070,
+       3
+      ],
+      "2": [
+       35277,
+       40635,
+       9
+      ],
+      "3": [
+       39916,
+       45616,
+       7
+      ]
+     }
+    }
+   ],
+   "bots": [
+    {
+     "me": 17,
+     "name": "*Luigi",
+     "team": 2,
+     "vor": 13102,
+     "t630": 3216,
+     "t1530": 9315
+    },
+    {
+     "me": 14,
+     "name": "*Nader Shah",
+     "team": 3,
+     "vor": 12662,
+     "t630": 3894,
+     "t1530": 9764
+    },
+    {
+     "me": 46,
+     "name": "*Nimitz",
+     "team": 3,
+     "vor": 10577,
+     "t630": 1952,
+     "t1530": 5609
+    },
+    {
+     "me": 22,
+     "name": "*Goryeo",
+     "team": 2,
+     "vor": 9476,
+     "t630": 1964,
+     "t1530": 5275
+    },
+    {
+     "me": 29,
+     "name": "*Lithuania",
+     "team": 1,
+     "vor": 7568,
+     "t630": 1791,
+     "t1530": 6797
+    },
+    {
+     "me": 31,
+     "name": "*SonHeungMin",
+     "team": 3,
+     "vor": 6638,
+     "t630": 3604,
+     "t1530": 5970
+    },
+    {
+     "me": 13,
+     "name": "*Stonks",
+     "team": 3,
+     "vor": 6428,
+     "t630": 2468,
+     "t1530": 5974
+    },
+    {
+     "me": 23,
+     "name": "*Harald",
+     "team": 3,
+     "vor": 4925,
+     "t630": 3205,
+     "t1530": 3907
+    },
+    {
+     "me": 27,
+     "name": "*CyberNinja",
+     "team": 1,
+     "vor": 4753,
+     "t630": 2275,
+     "t1530": 4500
+    },
+    {
+     "me": 20,
+     "name": "*Leonidas",
+     "team": 2,
+     "vor": 4169,
+     "t630": 3015,
+     "t1530": 6049
+    },
+    {
+     "me": 16,
+     "name": "*Ayyubid",
+     "team": 2,
+     "vor": 3915,
+     "t630": null,
+     "t1530": null
+    },
+    {
+     "me": 19,
+     "name": "*CocaCola",
+     "team": 1,
+     "vor": 3749,
+     "t630": 3022,
+     "t1530": 4443
+    },
+    {
+     "me": 25,
+     "name": "*Ainz",
+     "team": 2,
+     "vor": 3537,
+     "t630": 2922,
+     "t1530": 5869
+    },
+    {
+     "me": 47,
+     "name": "*Cringe",
+     "team": 3,
+     "vor": 2813,
+     "t630": 1961,
+     "t1530": 2329
+    },
+    {
+     "me": 26,
+     "name": "*NullPointer",
+     "team": 2,
+     "vor": 2295,
+     "t630": 2123,
+     "t1530": 2985
+    },
+    {
+     "me": 24,
+     "name": "*Russian Empire",
+     "team": 2,
+     "vor": 1881,
+     "t630": 2064,
+     "t1530": 2082
+    },
+    {
+     "me": 15,
+     "name": "*Inca",
+     "team": 2,
+     "vor": 1587,
+     "t630": 2025,
+     "t1530": 3702
+    },
+    {
+     "me": 18,
+     "name": "*Sparta",
+     "team": 3,
+     "vor": 1573,
+     "t630": 2783,
+     "t1530": 6363
+    },
+    {
+     "me": 30,
+     "name": "*Lusitania",
+     "team": 2,
+     "vor": 673,
+     "t630": null,
+     "t1530": null
+    }
+   ]
+  }
+ },
+ "latencyNotes": [
+  "选点：241 行下发（全部被服务器收下）、127 条落地（53%）；16/19 个号的最后一版选点没有成为出生点（差 1 条 7、>=3 条 9）；0 个号被引擎随机落位；同像素 2 对、<80 格 7 对；选点延迟下界 0/0/5 步；0 轮后端协调。按槽位：0~12 落地 83%，13~19 落地 22.5%，槽位 18、19 没进对局。",
+  "本机落后（只有日志侧）：结算行毫秒对表 at = 15:58:44.678 + 0.056×拍。两条 tick=0 的 left 行（服务器拍约 403、628）落盘时在场号的日志位置落后 −47~+43、−2~+88 拍；服务器拍 2,035~7,930 的 14 条阵亡行落后下界中位 −35、上界中位 +55 拍（实时）。中间这段没有结算行，只有号与号之间的相对读数（seqlag）：本机拍 720~1800 有 10 个号比最快的号落后 >=90 拍（49/976 个快照），Cringe 最多 360 拍、Sparta 270 拍；落后的号数在本机拍 1080 / 1170 / 1260 / 1350 / 1440 / 1530 / 1620 是 3 / 5 / 8 / 9 / 10 / 7 / 2 个，1800 以后 0 个。最快的那个号自己落后多少没有读数。",
+  "发令到扣兵（zerodrop，零新令的余额下跌）：全局 5 段、5 个号、47.4 万兵，全部在本机拍 1260~1890；间隔上下界 Sparta 90~270、Cringe 90~270 拍，Leonidas、Inca、Nimitz 0~180 拍。t=1890 之后 0 段。",
+  "计数对表（sentchk）：sent 1,351 对 cmds + 选点行 1,339（17 个号差 0~3），sent − accepted 合计 7：指令没有丢，是晚到。",
+  "不见效的指令占比（noefftl）：t=630~1260 27.0%、1260~1890 41.4%、1890~2520 0%、2520~3600 5.0%；超发的清仓全局 11 段，全部在本机拍 1350~1800、10 个号。开局周期（t<630）间隔中位 95 拍，没有拉长。",
+  "本局算不了的项（需要对局阶段的录像或影子探针）：下令→执行延迟的 P50/P90/Max、下令→进录像→生效的漏斗、迟到落空与打错目标、21 拍内重复下单与同拍批；本机落后的绝对拍数（t=630~2035 之间没有结算行）。",
+  "对照：同图的 B018 服务器拍约 1,132 时 16 个号落后 142~232 拍，零新令掉兵 9 段（8 段在追帧的那 360 拍里），5 个号随后阵亡；有录像的 B017 下令→执行在 600~1500 拍段 P50 244 拍、P90 573 拍；低延迟的 B021（P50 12~15 拍）zerodrop 只有 2 段。本局落后得轻，清仓 11 段里一半打在便宜地上。"
+ ],
+ "landNotes": [
+  "Voronoi 天然份额（陆路）：我方 102,321 格 = 19.2%（人头 22.9%，比值 0.84；直线距离版 0.85）；单号中位 4,169 对 6,415；6 个号不到全场人均的一半；按队 队1 16,070（3 个席位）、队2 40,635（9 个）、队3 45,616（7 个）。Luigi 13,102（全场第 5）、Nader Shah 12,662（第 8）、Nimitz 10,577（第 12）、Goryeo 9,476（第 16）；Russian Empire 1,881、Inca 1,587、Sparta 1,573、Lusitania 673 在全场后 9 名里。",
+  "实抢 ÷ 天然份额（只有我方的日志快照）：t=630 43.3%（进了对局的 17 个号 45.3%），t=1530 88.9%（17 个号 93.0%）。按队 t=630 队1 44.1%、队2 42.6%、队3 43.6%；t=1530 97.9% / 86.8% / 87.5%。天然份额大的 8 个号 31.0%→73.7%，小的 9 个号 84.2%→145.4%。",
+  "三层归因里本局只能给第一层（出生位置）：天然份额比按人头少 16.0%；另有 2 个没进对局的席位占我方天然份额的 4.5%（4,588 格）。进了对局的 17 个号的天然份额 97,733 格 = 可达陆地的 18.3%；全队领土最高到过 110,517 格（t=3510），是 17 个号天然份额的 113%。",
+  "本局算不了的项（需要对局阶段的录像）：其他真人的实抢率、我方天然份额里的地最后在谁手里、身边内置 AI 的地的流向、策略底线（safeFinite / botOk / dpKeep）挡掉多少决策拍、迟到落空多少。",
+  "最贵的三处：Luigi 的 13,102 格 t=1530 拿到 71.1%，之后 4,320 拍停在 9,000 格上下；Nimitz 的 10,577 格 t=1530 只拿到 53.0%，t=2070 涨到 12,671 格后 1,330 拍零指令丢光；Goryeo 的 9,476 格 t=1530 拿到 55.7%，随后被围 1,620 拍。"
+ ],
+ "decisions": [
+  {
+   "t": 50,
+   "bot": "全队选点",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "最终出生点 7 对相距 <80 格，同像素 2 对：Russian Empire（队2）/ CyberNinja（队1）在 (802,18)，Ayyubid / Lusitania 在 (818,818)；Leonidas、NullPointer（队2）、Nimitz（队3）三个号互相在 74 格以内。叠着的 8 个号 t≈630 领土中位 2,275，其余 9 个号 2,922",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4067-4072 把别的编队号从局面里抹掉再算（gClean，编队号之间互不排斥）；L4074-4085 候选表每 2.2 秒在本机重算；L4117 取 chosenSlots[slot]",
+   "why": "每个号在自己机器上、在不同时刻算候选表，同一个坐标先后落到不同槽位上（85 个坐标里 21 个被 >=2 个号选过；(802,18) 在第 26 步同时落下三条）",
+   "estCost": "叠着的号 t≈630 中位少 647 格（−22%）；Leonidas、NullPointer、Goryeo 在 t=1350 被围；Russian Empire 的天然份额只有 1,881 格",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "digest.py B014 picks；digest.py B014 spawn；landcap.py B014 voronoi"
+  },
+  {
+   "t": 50,
+   "bot": "槽位 13~19 的 7 个号",
+   "kind": "spawn",
+   "verdict": "unclear",
+   "state": "槽位 13~19 下发 120 行选点、录像里生效 27 条（22.5%），最后一条生效在第 39、32、26、13、14、3、11 步；槽位 0~12 是 100/121（83%），最后一条在第 45~50 步。241 行全部被服务器收下（sent = accepted）",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4147-4150（坐标移动 >6 格才打一行 HL-SPAWN，返回值由外层下发）",
+   "why": "选点延迟下界只有 0~5 步，不像是迟到；高槽位的号从某一步起下发的选点就不再进录像，原因看不到（外层不在对局包里）",
+   "estCost": "量不出：后来的坐标是否更好没法比。Russian Empire 后 6 条、CyberNinja 后 5 条没落地，两个号停在同一个像素上",
+   "patternId": "NEW:SP-stale-pick-lands",
+   "evidenceRef": "latency.py B014 spawn；digest.py B014 slots；logdigest.py B014 sentchk"
+  },
+  {
+   "t": 50,
+   "bot": "Ayyubid、Lusitania",
+   "kind": "spawn",
+   "verdict": "unclear",
+   "state": "槽位 19、18：录像里各生效 2、1 条选点（第 3~11 步），日志各 37、24 行 HL-SPAWN，之后没有 HL-OPENING、没有任何快照；结算行 left、tick=0，开局后 59 秒、46 秒落盘",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4117-4145（chosenSlots 不到 slot+1 个时逐槽位做全图最远点采样）；Policy.act L4783 canAct 为假时不决策",
+   "why": "原因看不到（外层不在对局包里）。同图的 B018 是槽位 15、16、18、19，B045 是槽位 16~19",
+   "estCost": "2 个席位整局没有参与：天然份额 4,588 格 = 我方的 4.5%；队2 的 9 个席位只剩 7 个",
+   "patternId": "NEW:SP-seat-never-starts",
+   "evidenceRef": "digest.py B014 slots；logdigest.py B014 wallms；logdigest.py B014 sentchk"
+  },
+  {
+   "t": 630,
+   "bot": "17 个在场号",
+   "kind": "expand",
+   "verdict": "unclear",
+   "state": "HL-OPENING 124 行（间隔中位 95 拍）；t=630 合计 44,284 格（8.11%），单号 1,791~3,894、中位 2,468；= 17 个号天然份额的 45.3%，t=1530 93.0%",
+   "codePath": "src/strategy/v27-team-c110.js t<1500：Policy.act L4820-4860 → super.act（开局周期出兵）；L4826 每 90 拍打一条 HL-TICK",
+   "why": "节奏与设计一致；录像只到选点阶段，无法与其余 64 个真人同拍比较",
+   "estCost": "量不出",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "logdigest.py B014 opening；landcap.py B014 logcap"
+  },
+  {
+   "t": 1350,
+   "bot": "Leonidas、NullPointer",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "t=1350 起被围（nb=0、neut=0）。Leonidas t=1350~1530 6 条船，t=1530~1620 零新令 17.7 万→2.9 万，领土 6,049 不变；NullPointer t=1350~1530 6 条船 13.0 万→1.3 万，领土 3,083→2,888",
+   "codePath": "src/strategy/v27-team-c110.js General.act L835-842（没有无主邻格、nb=0 时每 boatEvery=60 拍 boatOut）→ boatOut L1035-1051：对有主的落点 amount = boatFrac(0.5)×(余额 − floorAt)；Strategy.send / boatOut 都是发出即 cmds++",
+   "why": "推断：两个号当时比最快的号落后（NullPointer 没有落后读数，Leonidas 的 6 条船隔 0~180 拍才扣兵），几条各取一半余额的船一起执行；船去了哪里看不到",
+   "estCost": "26.4 万兵换 0 格；两个号之后 500~1,700 拍密度只有 4~15",
+   "patternId": "NEW:BT-boxed-no-gain",
+   "evidenceRef": "logdigest.py B014 boxboats；logdigest.py B014 zerodrop；digest.py B014 bot 20"
+  },
+  {
+   "t": 1530,
+   "bot": "CocaCola",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "t=1440~1530 2 条指令不见效（余额只涨利息）；t=1530~1620 3 条新指令：21.6 万→3.5 万（剩 16%），4,443→5,067 格。之后 629 拍 cmds 不变，5,067→1,422 格，t=2249 阵亡",
+   "codePath": "src/strategy/v27-team-c110.js Strategy.send L526-539（L531 同一目标 15 拍内不重发；没有在途账）；buyLand L5510-5523（真人目标每条 pulse 12%）；src/engine/live_game_js.js 出兵的兵 = 执行拍余额 × pct/1024",
+   "why": "推断：5 条指令按 12% 连乘应剩 53%，实际剩 16%：还有更早的指令积压到这一段才执行。每格 290 兵，买的是有人守的地",
+   "estCost": "18.1 万兵换 624 格；一个号（队1 的 3 个席位之一）",
+   "patternId": "NEW:IO-stale-pulse-dump",
+   "evidenceRef": "logdigest.py B014 noefftl；digest.py B014 bot 19"
+  },
+  {
+   "t": 1620,
+   "bot": "Nader Shah",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=1530~1620 6 条指令不见效；t=1620~1710 2 条新指令：22.7 万→5.3 万。领土 9,764→14,817（t=1980，+5,053 格，每格约 35 兵），密度 5~6；之后 630 拍没丢（t=2610 14,072 格）",
+   "codePath": "src/strategy/v27-team-c110.js Strategy.send L526-539；buyLand L5363-5369（目标不是真人：want = 1.25×need + 3×接壤格）",
+   "why": "同一种积压后的清仓，这一次打在便宜的地上而且守住了；这 5,000 格是它后来成为全队最大号的底子",
+   "estCost": "无（+5,053 格）；风险是 270 拍密度只有 5",
+   "patternId": "NEW:AT-cheap-burst",
+   "evidenceRef": "logdigest.py B014 noefftl；digest.py B014 bot 14"
+  },
+  {
+   "t": 1710,
+   "bot": "Harald",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=1710~1890 3 条指令：16.3 万→3.9 万，4,629→8,435 格（+3,806，每格 37.9 兵）；t=1980 9,313 格，之后一直守住",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4902 buyLand L5363-5369 / L5510-5523",
+   "why": "logdigest bursts 命中（600 拍后还是 2.01 倍）。之后它 1,530 拍没有再出手",
+   "estCost": "无",
+   "patternId": "NEW:AT-cheap-burst",
+   "evidenceRef": "logdigest.py B014 bursts；digest.py B014 bot 23"
+  },
+  {
+   "t": 1620,
+   "bot": "Goryeo",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "被围（nb=0、neut=0）在 5,275 格，整局 boats=0。t=1620~2140 每 20 拍一条捐款共 27 条（Inca 15、Leonidas 9、Luigi 3），只执行最后 1 条；余额 29.4 万→60.6 万（密度 56→115）。给 Inca 的 14 条 pct=240、想给 7.2~12.6 万（133~232 点），当时上限 91~115 点（约 4.9~6.3 万）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；全文件没有任何地方查受捐额度；src/sim/sim/game.js donationCost L348-357、bookDonation L370-376；idleBoats L4979-5006 → boatOut L1035-1051（searchWater 没有命中就不发）",
+   "why": "纯内陆的号救援 pct 取 240：捐款人余额越大越超额。被拒之后只有 18 拍冷却，原样重发",
+   "estCost": "26 条指令落空；Inca 没收到一条，t=2032 阵亡；Goryeo 的 60.6 万兵 790 拍没有用上",
+   "patternId": "NEW:DN-quota-retry-loop",
+   "evidenceRef": "logdigest.py B014 donlog 22；logdigest.py B014 quotacap；digest.py B014 bot 22"
+  },
+  {
+   "t": 2070,
+   "bot": "Nimitz",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=2070 12,671 格、15.4 万兵（密度 12、nb=4）。此后 1,330 拍 cmds 停在 68：12,671→2,209 格，余额 15~27 万。队友给它的 36 条捐款执行 9 条（到账约 47.6 万）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5534：L5261 over = 余额 > 100×领土；L5267 没超软上限且报价 c >= worth → 整轮不买；L5269-5273 唯一健康真人邻居且余额 < overHumanCap(1.28)×100×领土 → 跳过；L5348-5356 超软上限后 keep = min(keep, 倍数×100×领土)，倍数 = 唯一真人邻居 1.12 / 缩水被围 1.24 / 拥挤 1.08 / 其余 hold 0.9（参数 L2704、L3729-3730、L3738、L3773-3774）；L5358 keep = max(keep, safe)；L5360-5361 avail <= 0 → 跳过；L5526-5528 x = min(avail, want)，x < want 且 x < chunk(0.2)×余额 → 跳过",
+   "why": "推断：没超软上限，停在 L5267 还是 L5361 看不到。收到的兵也没有打出去",
+   "estCost": "10,462 格全部丢在零出兵的间隔里；阵亡时账上 14.5 万",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "logdigest.py B014 idleloss；logdigest.py B014 silent；digest.py B014 bot 46"
+  },
+  {
+   "t": 1890,
+   "bot": "Lithuania",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=1890 起到阵亡 2,246 拍 cmds 停在 36：nb=2，10,173→6,728 格（t=3330）→2,509 格（t=4050），兵 7.5 万→60.2 万（密度 7→90）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5534：L5261 over = 余额 > 100×领土；L5267 没超软上限且报价 c >= worth → 整轮不买；L5269-5273 唯一健康真人邻居且余额 < overHumanCap(1.28)×100×领土 → 跳过；L5348-5356 超软上限后 keep = min(keep, 倍数×100×领土)，倍数 = 唯一真人邻居 1.12 / 缩水被围 1.24 / 拥挤 1.08 / 其余 hold 0.9（参数 L2704、L3729-3730、L3738、L3773-3774）；L5358 keep = max(keep, safe)；L5360-5361 avail <= 0 → 跳过；L5526-5528 x = min(avail, want)，x < want 且 x < chunk(0.2)×余额 → 跳过",
+   "why": "推断：同上。队1 里我方只有 3 个号，另两个是 CocaCola（t=2249 阵亡）和远在右上角的 CyberNinja：没有合格的收款人，也没有人能给它捐",
+   "estCost": "一个号；60.2 万兵闲置，阵亡时账上 13.8 万",
+   "patternId": "NEW:AT-worth-gate",
+   "evidenceRef": "logdigest.py B014 silent；digest.py B014 bot 29"
+  },
+  {
+   "t": 2700,
+   "bot": "Stonks",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=2700~3420 8 条指令（含 1 条船）：6,104→16,921 格，余额 49.0 万→84.1 万（一边涨地一边涨兵）；t=3150 身边出现 39 格无主地（邻居崩盘）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4901 expandNeutral → L4902 buyLand L5363-5369",
+   "why": "logdigest harvest 命中：邻居崩盘后收地，净支出为负。CocaCola、Cringe 阵亡后空出来的那一片被它接住了",
+   "estCost": "无（+10,817 格）",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "logdigest.py B014 harvest；digest.py B014 bot 13"
+  },
+  {
+   "t": 2610,
+   "bot": "Russian Empire",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=2610~2880 3 条指令（1 条捐款）2,082→5,178 格；t=4140~4320 4 条指令，7,810→14,369 格（t=4590，余额 85.9 万→45.5 万→72.2 万）；t=5490 到 16,871 格。同期收到队友约 560 万兵",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4902 buyLand；收款来自 Ainz、Luigi、Leonidas、Goryeo 的 tryDonateToTeammate",
+   "why": "天然份额只有 1,881 格的号被队友的余粮养大：这是本局捐款换到地的一处",
+   "estCost": "捐款人为这 560 万付了 254 万手续费；这个号 t=6879 阵亡",
+   "patternId": "NEW:DN-rear-to-front",
+   "evidenceRef": "logdigest.py B014 donlog 24；digest.py B014 bot 24"
+  },
+  {
+   "t": 3400,
+   "bot": "Harald",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=3400~5295 10 笔救援捐款，其中 t=3400~4665 的 8 笔 pct 55~93（密度 101~105 时发的）：例如 t=4430 pct=55，余额 101.1 万，手续费 6.3 万，送出 5.5 万。这 8 个 pct 用 safeFloor = 88×领土 代进 L4387-4388 全部对得上（t=4430：(100.53 − 95.04)/100.53×1024 = 55.9）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；Policy.safeAt L4524-4540（q<0 时封顶 oppFloorCap=88×领土）；src/engine/live_game_js.js 手续费 = 余额 × 64/1024",
+   "why": "有敌方真人邻居时 safeFloor 取到 88×领土：密度刚过 100.4 就满足 maxSafePct>=55，此时手续费比送出去的还多。pct 的数值本身说明 Harald 那个唯一的邻居是真人",
+   "estCost": "全队 pct<=99 的救援执行 38 条：手续费 206 万、到账 239 万",
+   "patternId": "NEW:DN-small-pct",
+   "evidenceRef": "logdigest.py B014 donlog 23；digest.py B014 bot 23"
+  },
+  {
+   "t": 3945,
+   "bot": "Nader Shah、Sparta",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=3945 Nader Shah（229.5 万兵）给 Sparta 救援 pct=155：手续费 14.3 万，想给 35.0 万，Sparta（1,777 格）离硬上限只有 9.4 万的空间。t=3960 Sparta 密度 144，把 15%（3.9 万，另付 1.6 万手续费）捐回给 Nader Shah。Sparta 251 拍后阵亡",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；src/engine/live_game_js.js 到账 = min(想给, 150×对方领土 − 对方余额)",
+   "why": "救援不看对方装不装得下；Sparta 的密度是因为领土缩了才过 112 的，余粮分支只看密度",
+   "estCost": "两笔手续费 15.9 万，净送到 Sparta 的不到 5.5 万",
+   "patternId": "NEW:DN-fee-exceeds-delivery",
+   "evidenceRef": "logdigest.py B014 donlog 18；logdigest.py B014 dondying"
+  },
+  {
+   "t": 4320,
+   "bot": "Nader Shah、Harald → Stonks",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=4320~5295 给 Stonks 15 条捐款、执行 14 条：手续费 146 万、到账约 289 万（6 条到账时 Stonks 的密度已 >=100）。同期 Stonks 17,771→4,022 格，自己只发 6 条出兵指令，还两次把 15% 捐回给 Nader Shah；t=5318 阵亡，账上 43.2 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）",
+   "why": "救援条件只看对方「正在挨打」和密度 <75 或在途攻击 >=8%：对方有兵不出手时，送过去的兵跟着它一起没了",
+   "estCost": "435 万兵（到账 + 手续费）没有换到地",
+   "patternId": "NEW:DN-frozen-recipient",
+   "evidenceRef": "logdigest.py B014 donlog 13；digest.py B014 bot 13"
+  },
+  {
+   "t": 3510,
+   "bot": "Nader Shah",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=3510~8280：21,434~30,463 格，nb=1，兵 144 万→373 万。54 个间隔里有出兵/发船的 9 个；起点密度 137~142 的 3 个间隔全部出手、114~137 的 11 个间隔出手 2 个。t=3510~5040 的 1,530 拍领土一格没动（21,434），这段的 10 条指令全是捐款（Stonks 7 笔、Sparta 2 笔、SonHeungMin 1 笔），密度在 75~121 之间来回",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5534：L5261 over = 余额 > 100×领土；L5267 没超软上限且报价 c >= worth → 整轮不买；L5269-5273 唯一健康真人邻居且余额 < overHumanCap(1.28)×100×领土 → 跳过；L5348-5356 超软上限后 keep = min(keep, 倍数×100×领土)，倍数 = 唯一真人邻居 1.12 / 缩水被围 1.24 / 拥挤 1.08 / 其余 hold 0.9（参数 L2704、L3729-3730、L3738、L3773-3774）；L5358 keep = max(keep, safe)；L5360-5361 avail <= 0 → 跳过；L5526-5528 x = min(avail, want)，x < want 且 x < chunk(0.2)×余额 → 跳过；src/strategy/v27-team-c110.js Policy.act L4902 buyLand、L4922 没出手才 tryDonateToTeammate（L4462 余粮线 112）",
+   "why": "推断：唯一的邻居是健康的真人时出兵线是 128 / 142.1，捐款线是 112。三段零指令（t=5310~5760、6300~6750、7200~7830：同队只剩 Harald，它密度 >=98 且没有在途攻击，或四周已没有敌人，不是合格的收款人）密度才爬到 139、140、141，随后各出手一次。t=5295 之后它的救援 pct（136、116、69）对得上 safeFloor = 88×领土，即邻居是真人；t=3620~4395 的 pct（63、72、99）对得上 68×领土，那一段邻居是不是真人定不了",
+   "estCost": "整局利息 1,602 万：捐出 365 万 + 手续费 205 万，超软上限少拿 581 万；4,770 拍净得 5,750 格",
+   "patternId": "NEW:EG-giant-neighbor-freeze",
+   "evidenceRef": "logdigest.py B014 fireband 3420 8300 \"Nader Shah\"；logdigest.py B014 freezebound；digest.py B014 bot 14"
+  },
+  {
+   "t": 2700,
+   "bot": "Luigi",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=1530~5850 领土 8,012~9,623 格、nb 1~3。t=1710~2610 的 900 拍零指令（密度 24→107）；t=2700 密度第一次到 117，此后到 t=5850 的 33 条指令里 24 条是捐款（执行 15 条）、7 条出兵、2 条船，密度在 74~117 之间来回",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）；src/strategy/v27-team-c110.js Policy.act L4922；buyLand L5269-5273、L5348-5356",
+   "why": "推断：同 Nader Shah。它的天然份额全场第 5，4,320 拍没有涨地",
+   "estCost": "整局利息 824 万：捐款手续费 175 万、到账约 391 万；只出兵/发船的间隔净支出 91 万",
+   "patternId": "NEW:DN-donate-preempts-attack",
+   "evidenceRef": "logdigest.py B014 donlog 17；digest.py B014 bot 17"
+  },
+  {
+   "t": 3775,
+   "bot": "CyberNinja",
+   "kind": "assist",
+   "verdict": "unclear",
+   "state": "t=3775~5120 5 条替 Russian Empire（队2）戳 [UA]（队3）的指令，每条约 10% 余额，换来 82、98、106、111、119 格；同期自己的 buyLand 一条没发（密度 81~129、nb=1）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4420-4459：L4424 场上还有野生外人时任意队的编队号都算；L4448-4457 对主攻者 g.attack(102)，条件只有 接壤、没在打它、有空槽、密度>=65、25 拍冷却",
+   "why": "戳不过 buyLand 的 worth / keep 各道线，所以发得出去；每条都换到了地，说明 [UA] 这条边是打得动的。全队 24 条戳里 22 条是替异队的号戳的",
+   "estCost": "只戳的 17 个间隔全队净支出 133 万、+1,768 格",
+   "patternId": "NEW:AS-cross-team-poke",
+   "evidenceRef": "logdigest.py B014 assists；digest.py B014 bot 27"
+  },
+  {
+   "t": 6570,
+   "bot": "Luigi、Ainz、Russian Empire",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=6100~6900：三个号之间执行 11 条捐款，手续费 132 万（单笔 7.3~14.7 万），收款人收款前密度 72~113。同一段 Russian Empire 14,769→6,858 格，t=6879 阵亡；它自己 t=6660（密度 141）、6735 还各捐出一笔",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4380-4389 safeFloor = max(有海岸且 t>=1100 时 68×领土, 有敌方真人邻居时 safeAt(g,-1))，maxSafePct = (余额 − 1.08×safeFloor)/余额×1024，>=55 才捐；L4434-4445 救援 pct = min(maxSafePct, 纯内陆 ? 240 : 155)；L4462-4463 余粮线：没被围 密度>=112、被围 >=55；L4466-4486 收款人 = 同队编队号、领土>=600、密度<132，且（在途攻击 >4% 余额，或自己密度>=120 而对方<98，或自己被围）；L4489 pct = 被围 ? (密度>110 ? 280 : 185) : 153；g.donate 返回真就 cmds++（L4438-4440、L4490-4492）",
+   "why": "三个号都在 90~141 之间来回：谁刚捐完、谁有在途攻击，谁就是下一个收款人；Russian Empire 的密度是领土缩出来的",
+   "estCost": "800 拍烧掉 132 万手续费；t=5436 之后三个号互捐的手续费合计 209 万",
+   "patternId": "NEW:DN-pingpong",
+   "evidenceRef": "logdigest.py B014 donlog 24；logdigest.py B014 dondying"
+  },
+  {
+   "t": 5940,
+   "bot": "Luigi",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=5940~6390 4 条指令：8,928→20,000 格（t=6480），余额 91 万→193 万（一边涨地一边涨兵）；t=6390 身边出现 66 格无主地",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4902 buyLand",
+   "why": "4,320 拍没动之后的第一次出手，打在正在垮的邻居身上（推断）；编队份额从 13.05% 回到 14.81%（t=7020）",
+   "estCost": "无（+11,072 格）；这些地 1,400 拍后随它阵亡丢掉",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "digest.py B014 bot 17；digest.py B014 timeline"
+  },
+  {
+   "t": 6750,
+   "bot": "Nader Shah",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "密度 140.4（317 万兵、nb=1）：t=6750~6930 3 条指令 317 万→190 万，22,587→30,463 格（t=7290，+7,876）；之后 180 拍丢回 4,016 格",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5534：L5261 over = 余额 > 100×领土；L5267 没超软上限且报价 c >= worth → 整轮不买；L5269-5273 唯一健康真人邻居且余额 < overHumanCap(1.28)×100×领土 → 跳过；L5348-5356 超软上限后 keep = min(keep, 倍数×100×领土)，倍数 = 唯一真人邻居 1.12 / 缩水被围 1.24 / 拥挤 1.08 / 其余 hold 0.9（参数 L2704、L3729-3730、L3738、L3773-3774）；L5358 keep = max(keep, safe)；L5360-5361 avail <= 0 → 跳过；L5526-5528 x = min(avail, want)，x < want 且 x < chunk(0.2)×余额 → 跳过",
+   "why": "过了 142 线之后的一次出手：每格约 160 兵。同一时刻队3 的外人正在吃队2",
+   "estCost": "无；可比的是之前 3,240 拍它在 85~141 的密度上只出手 6 个间隔",
+   "patternId": "NEW:AT-over-cap-dump",
+   "evidenceRef": "logdigest.py B014 fireband 3420 8300 \"Nader Shah\"；digest.py B014 bot 14"
+  },
+  {
+   "t": 7290,
+   "bot": "Ainz",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=7200→7290 一个间隔 21,349→13,608 格、236 万→65 万兵。之后 540 拍 cmds 停在 77：13,608→5,282 格，密度 48→111，nb=2；t=7916 阵亡，账上 41.3 万",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5267（没超软上限：c >= worth → 不买）；L5336-5347（t>=5000、领土 < 0.72×历史最高 → 余额 < 1.26×100×领土 时不打健康的真人）",
+   "why": "推断：停在哪一行看不到。被打掉 170 万兵之后它还有 55~66 万兵，一条指令没发",
+   "estCost": "一个号；8,326 格丢在零出兵的间隔里",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "logdigest.py B014 idleloss；digest.py B014 bot 25"
+  },
+  {
+   "t": 7830,
+   "bot": "NullPointer",
+   "kind": "boat",
+   "verdict": "good",
+   "state": "领土两次归零的小号：t=7830~8820 被围在 177 格时发了 7 条船（约 1.8 万兵），涨到 1,509 格（8.5 倍）；t≈9000 再次归零",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4923 idleBoats L4979-5006 → boatOut L1035-1051",
+   "why": "被围的小号唯一的出路是船；每条只花两三千兵",
+   "estCost": "无",
+   "patternId": "NEW:BT-boxed-breakout",
+   "evidenceRef": "logdigest.py B014 boxboats；digest.py B014 bot 26"
+  },
+  {
+   "t": 8100,
+   "bot": "Harald",
+   "kind": "boat",
+   "verdict": "unclear",
+   "state": "t=7020 起 nb=0（四周只剩队友）。t=6840~9180 19 条船，领土 16,689→17,474（+785）；其中 t=7470~7650 的 3 条约 12.0 万兵、t=8100~9180 的 12 条约 98.5 万兵（+309 格）。t=6925~7940 另有 6 笔 pct=185 的捐款给 Nader Shah（它收款前密度 77~127）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4923 idleBoats L4979-5006（nb=0 时不受 idleCap 限制）→ boatOut L1035-1051；tryDonateToTeammate L4463、L4489（被围：密度>=55 就捐，pct=185）",
+   "why": "胜局已定、身边没有敌人：兵只能发船或捐给同样满仓的队友",
+   "estCost": "110 万兵换 787 格；对胜负没有影响",
+   "patternId": "NEW:BT-boxed-no-gain",
+   "evidenceRef": "logdigest.py B014 boxboats；digest.py B014 bot 23"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:DN-donate-preempts-attack",
+   "definition": "有可打的邻居（nb>=1）的号密度过 112 就发余粮捐款（15% + 6.25% 手续费），密度回到 88~98；超软上限后出兵需要的密度（114.2 / 137 / 142.1）一直够不着。判据：连续 >=3 笔已执行的余粮捐款之间没有任何出兵/发船指令，且领土没涨",
+   "detectionSketch": "logdigest donlog <号>（surplus 行）+ digest bot（cmds 增量 = 捐款条数）+ logdigest fireband 的 nb 分档。本局 Luigi t=2700~5850（28 条捐款）、Nader Shah t=4050~5300、Harald t=4230~5310、Ainz t=3600~7200",
+   "instances": [
+    {
+     "t": 2700,
+     "bot": "Luigi"
+    },
+    {
+     "t": 4320,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 4330,
+     "bot": "Harald"
+    },
+    {
+     "t": 5780,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-seat-never-starts",
+   "definition": "席位在日志里只有 HL-SPAWN 行：整局没有 HL-OPENING、没有 HL-TICK 快照（没有走出选点阶段）",
+   "detectionSketch": "make_review 的 context.neverPlayed；digest slots 按槽位列生效选点 / 日志行数。本局槽位 18、19；B018 槽位 15、16、18、19；B045 槽位 16~19",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 0,
+     "bot": "Ayyubid"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+   "detectionSketch": "digest picks 的 near 表；digest spawn 末尾两行（叠着的号与其余号 t≈630 的领土）",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "Russian Empire"
+    },
+    {
+     "t": 0,
+     "bot": "CyberNinja"
+    },
+    {
+     "t": 0,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 0,
+     "bot": "NullPointer"
+    },
+    {
+     "t": 0,
+     "bot": "Nimitz"
+    },
+    {
+     "t": 0,
+     "bot": "CocaCola"
+    },
+    {
+     "t": 0,
+     "bot": "Cringe"
+    },
+    {
+     "t": 0,
+     "bot": "Stonks"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-stale-pick-lands",
+   "definition": "录像里的出生点不是日志最后一条 HL-SPAWN 的坐标",
+   "detectionSketch": "latency.py <id> spawn：本局 16/19 个号；槽位 13~19 的号最后 5~34 条没落地",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "16 个号"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-cycle-open",
+   "definition": "开局周期出兵按时执行且 t=630 单号领土中位不低于同局其余真人中位",
+   "detectionSketch": "本局录像只到选点阶段，后一半验证不了",
+   "instances": [
+    {
+     "t": 630,
+     "bot": "17 个在场号"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-protect-box",
+   "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着队友或异队的编队号",
+   "detectionSketch": "无录像：日志 nb=0 && neut=0（digest boxed）：本局 NullPointer 50/101、Harald 23/98、Leonidas 19/54、Goryeo 18/48、Nader Shah 8/97 个快照",
+   "instances": [
+    {
+     "t": 1350,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 1440,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 1350,
+     "bot": "NullPointer"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-client-behind",
+   "definition": "本机拍比服务器拍落后 >=90 拍",
+   "detectionSketch": "logdigest seqlag（号与号之间的相对落后）：本局 49 个快照、10 个号、本机拍 720~1800；没有落在这一段里的结算行，绝对值量不出",
+   "instances": [
+    {
+     "t": 1170,
+     "bot": "Cringe"
+    },
+    {
+     "t": 1260,
+     "bot": "Sparta"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-stale-pulse-dump",
+   "definition": "发令不见效 → 集中清仓：日志 cmds 在涨而余额贴着纯利息预测；随后一个间隔花掉的兵比新发指令按 12% 连乘多出 >=3 条",
+   "detectionSketch": "logdigest noefftl（超发的清仓：本局 11 段，全部在 t=1350~1800）+ zerodrop（5 段）+ sentchk（cmds 没有漏数）",
+   "instances": [
+    {
+     "t": 1530,
+     "bot": "CocaCola"
+    },
+    {
+     "t": 1620,
+     "bot": "Cringe"
+    },
+    {
+     "t": 1530,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 1350,
+     "bot": "NullPointer"
+    },
+    {
+     "t": 1350,
+     "bot": "Inca"
+    },
+    {
+     "t": 1620,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 1710,
+     "bot": "Harald"
+    },
+    {
+     "t": 1530,
+     "bot": "Lithuania"
+    },
+    {
+     "t": 1620,
+     "bot": "Nimitz"
+    },
+    {
+     "t": 1350,
+     "bot": "Sparta"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-cheap-burst",
+   "definition": "一个快照间隔内 >=3 条出兵/发船指令，这个间隔加下一个间隔领土 +25% 以上，净支出/净得格 <80 兵，且 600 拍后领土仍 >= 扩张前的 1.2 倍",
+   "detectionSketch": "logdigest bursts：本局 18 次，起点 t>=1440 的 4 次（Harald、Lithuania、Nimitz、NullPointer）；Nader Shah t=1620 只有 2 条新指令，按近似实例记",
+   "instances": [
+    {
+     "t": 1710,
+     "bot": "Harald"
+    },
+    {
+     "t": 1530,
+     "bot": "Lithuania"
+    },
+    {
+     "t": 1530,
+     "bot": "Nimitz"
+    },
+    {
+     "t": 1620,
+     "bot": "Nader Shah"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-collapse-harvest",
+   "definition": "t>=630，相邻快照无主邻格从 0 跳到 >=8，从跳变前一个快照起 270 拍内领土 >=1.2 倍",
+   "detectionSketch": "logdigest harvest：本局 6 次 +23,200 格，其中起点 t>=1440 的 3 次 +14,450 格、净支出合计 −3,474（Stonks t=3060、Ainz t=3240、Russian Empire t=4410）。Luigi t=5940~6480（+11,072 格，t=6390 neut=66）是近似实例：无主邻格出现得晚，脚本判据没命中",
+   "instances": [
+    {
+     "t": 3060,
+     "bot": "Stonks"
+    },
+    {
+     "t": 3240,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4410,
+     "bot": "Russian Empire"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-over-cap-dump",
+   "definition": "兵超过 100×领土后一次出手打掉 >=15% 余额并在 300 拍内领土 +10% 以上",
+   "detectionSketch": "无录像：密度 >100 的快照后相邻快照余额跌 >=15% 且 300 拍内领土 +10%",
+   "instances": [
+    {
+     "t": 6750,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 5760,
+     "bot": "Harald"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-worth-gate",
+   "definition": "有可打的邻居（nb>=1）而长时间不出手：没超软上限时 buyLand 的报价停在 L5267",
+   "detectionSketch": "无录像：日志 nb>=1、密度 <100、cmds 计数 >=300 拍不变（logdigest silent / fireband）；本局 >=450 拍的零指令段 27 段、15 个号、21,600 拍",
+   "instances": [
+    {
+     "t": 1890,
+     "bot": "Lithuania"
+    },
+    {
+     "t": 1800,
+     "bot": "Harald"
+    },
+    {
+     "t": 1260,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 1260,
+     "bot": "Stonks"
+    },
+    {
+     "t": 1980,
+     "bot": "CyberNinja"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-giant-neighbor-freeze",
+   "definition": "自己超软上限、有可打的邻居（nb>=1），却长时间不出手",
+   "detectionSketch": "无录像：logdigest freezebound（本局 12 个号、100 个间隔，其中密度 >=114.2 的 17 个、>=142.1 的 0 个；这些间隔里丢 27,959 格）；fireband 的 nb 分档：nb=1 时 114~137 出手 5/20、137~142 出手 3/3",
+   "instances": [
+    {
+     "t": 4050,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 2610,
+     "bot": "Luigi"
+    },
+    {
+     "t": 4230,
+     "bot": "CyberNinja"
+    },
+    {
+     "t": 6030,
+     "bot": "Russian Empire"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-passive-death",
+   "definition": "阵亡前 >=450 拍没有任何指令，期间 nb>=1 且在丢地；或连续 >=270 拍「丢地 + 零出兵」后 600 拍内阵亡",
+   "detectionSketch": "logdigest silent 里「直到阵亡」的段；logdigest idleloss 的连续段（本局 Stonks、Luigi、CocaCola、Leonidas、Goryeo、Russian Empire）",
+   "instances": [
+    {
+     "t": 2070,
+     "bot": "Nimitz"
+    },
+    {
+     "t": 1890,
+     "bot": "Lithuania"
+    },
+    {
+     "t": 1710,
+     "bot": "Cringe"
+    },
+    {
+     "t": 1620,
+     "bot": "CocaCola"
+    },
+    {
+     "t": 7290,
+     "bot": "Ainz"
+    },
+    {
+     "t": 7470,
+     "bot": "Luigi"
+    },
+    {
+     "t": 5040,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 3420,
+     "bot": "SonHeungMin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-quota-retry-loop",
+   "definition": "同一个捐款人对同一个收款人连续 >=5 条捐款都没执行，按配额账「已用 + 需要 > 上限」；每条间隔就是捐款冷却（18~20 拍）",
+   "detectionSketch": "logdigest donlog 的「配额不够」行：本局 86 条（Goryeo 26、SonHeungMin 23、Leonidas 11、Stonks 9、Luigi 7、Ainz 7）",
+   "instances": [
+    {
+     "t": 1640,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 2175,
+     "bot": "SonHeungMin"
+    },
+    {
+     "t": 2140,
+     "bot": "Stonks"
+    },
+    {
+     "t": 2800,
+     "bot": "Leonidas"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-rear-to-front",
+   "definition": "被围的后排号把兵（pct>=185）捐给同队有邻居的号，且捐款被执行",
+   "detectionSketch": "logdigest donlog 里 pct=185 / 280 的 surplus 行（被围分支）：本局 Goryeo t=2140~3000 执行 8 笔（其中给有邻居的 Luigi、Russian Empire、Ainz 各 1 笔，其余给同样被围的 Leonidas、NullPointer）、Harald t=6925~7940 6 笔（给 Nader Shah）",
+   "instances": [
+    {
+     "t": 2370,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 2790,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 6925,
+     "bot": "Harald"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-to-overcap",
+   "definition": "收款人收款时密度已 >=100",
+   "detectionSketch": "logdigest donlog：本局 46 条，手续费 391 万、想给 916 万",
+   "instances": [
+    {
+     "t": 3945,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 5800,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 6570,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6735,
+     "bot": "Luigi"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-pingpong",
+   "definition": "A→B 的捐款执行后 150 拍内 B→A 的捐款也执行",
+   "detectionSketch": "logdigest donlog 的「反向配对」：本局 11 对、20 笔、手续费 198 万",
+   "instances": [
+    {
+     "t": 3945,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 3960,
+     "bot": "Sparta"
+    },
+    {
+     "t": 4920,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 4930,
+     "bot": "Stonks"
+    },
+    {
+     "t": 5800,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 5830,
+     "bot": "Harald"
+    },
+    {
+     "t": 6640,
+     "bot": "Luigi"
+    },
+    {
+     "t": 6660,
+     "bot": "Russian Empire"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-fee-exceeds-delivery",
+   "definition": "已执行的捐款到账 < 手续费：手续费按捐款人余额的 6.25% 收，到账被收款人离硬上限的空间截断；或 pct<64 本来就到账不及手续费",
+   "detectionSketch": "logdigest donlog：按捐款人余额链 17 笔（手续费 91.1 万、到账 71.3 万）；按引擎规则 16 笔，其中 pct<64 的 15 笔、被对方空间截掉的 1 笔（Nader Shah→Sparta t=3945）",
+   "instances": [
+    {
+     "t": 3945,
+     "bot": "Nader Shah"
+    },
+    {
+     "t": 4430,
+     "bot": "Harald"
+    },
+    {
+     "t": 4240,
+     "bot": "Goryeo"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-small-pct",
+   "definition": "救援捐款的 pct 被捐款人自己的保底线压到 <100（6.25% 的手续费占送出金额的六成以上）",
+   "detectionSketch": "logdigest donlog：本局 pct<=99 的救援日志 46 条、执行 38 条，手续费 206 万、到账 239 万",
+   "instances": [
+    {
+     "t": 3400,
+     "bot": "Harald"
+    },
+    {
+     "t": 2845,
+     "bot": "Sparta"
+    },
+    {
+     "t": 4240,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 2860,
+     "bot": "SonHeungMin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-dying-donor",
+   "definition": "捐款人自己的领土在 300 拍内已跌 >=25%，或捐款后 300 拍内阵亡，仍然往外捐",
+   "detectionSketch": "logdigest dondying：本局已执行的 9 条（手续费 33.1 万、想给 79.7 万；领土已跌 >=25% 的 7 条里 6 条是只看密度的余粮分支），另有 2 条在阵亡前 88 / 33 拍下的判不了",
+   "instances": [
+    {
+     "t": 3960,
+     "bot": "Sparta"
+    },
+    {
+     "t": 4765,
+     "bot": "Goryeo"
+    },
+    {
+     "t": 4930,
+     "bot": "Stonks"
+    },
+    {
+     "t": 5230,
+     "bot": "Stonks"
+    },
+    {
+     "t": 5330,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 6660,
+     "bot": "Russian Empire"
+    },
+    {
+     "t": 4295,
+     "bot": "NullPointer"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-frozen-recipient",
+   "definition": "收款人在收款的那 900 拍里自己几乎不出兵（出兵/发船指令 <=6 条）而领土在跌",
+   "detectionSketch": "logdigest donlog <收款人> + digest bot：本局 Stonks（t=4320~5295 收 14 笔、到账约 289 万、丢 13,749 格）、Nimitz（收 9 笔约 47.6 万、1,330 拍零指令）",
+   "instances": [
+    {
+     "t": 4320,
+     "bot": "Stonks"
+    },
+    {
+     "t": 2142,
+     "bot": "Nimitz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AS-cross-team-poke",
+   "definition": "协防戳（HL-ASSIST）是替另一支队的编队号发的",
+   "detectionSketch": "logdigest assists：本局 24 条里 22 条",
+   "instances": [
+    {
+     "t": 3775,
+     "bot": "CyberNinja"
+    },
+    {
+     "t": 3750,
+     "bot": "Harald"
+    },
+    {
+     "t": 2360,
+     "bot": "NullPointer"
+    },
+    {
+     "t": 4035,
+     "bot": "Russian Empire"
+    },
+    {
+     "t": 1650,
+     "bot": "Cringe"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-boxed-breakout",
+   "definition": "策略眼里 nb=0、neut=0 时发船，之后 500 拍内领土 +50% 以上",
+   "detectionSketch": "logdigest boxboats 的「突围」行：本局 1 段 7 条船、约 1.8 万兵",
+   "instances": [
+    {
+     "t": 7830,
+     "bot": "NullPointer"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-boxed-no-gain",
+   "definition": "被围（起点快照 nb=0 且 neut=0）时发船，段首到段尾 +500 拍内最高领土 < 起点的 1.05 倍",
+   "detectionSketch": "logdigest boxboats：本局 7 段 35 条船，其中没换到地的 5 段 26 条（约 123 万兵）",
+   "instances": [
+    {
+     "t": 1440,
+     "bot": "Leonidas"
+    },
+    {
+     "t": 1350,
+     "bot": "NullPointer"
+    },
+    {
+     "t": 7470,
+     "bot": "Harald"
+    },
+    {
+     "t": 8100,
+     "bot": "Harald"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "outscaled",
+ "secondaryArchetype": "team-split",
+ "teamSplit": true,
+ "externalFactors": [
+  "三队局，19 个席位被拆成 队1 3 个、队2 9 个、队3 7 个（录像队伍表；首选队进了 9 个、补位 9 个、第二志愿 1 个）。赢家是队3：我方在队3 的 Nader Shah、Harald 活到终局（合计 7.65%），队3 其余的人占 92.2%。卡片按主队队2 记输（split_straggler_won）",
+  "19 个席位里 2 个没进对局：槽位 18、19 的 Lusitania、Ayyubid（都在队2，选的是同一个像素）整局只有 HL-SPAWN 行，没有 HL-OPENING、没有快照；结算行 left、tick=0，落盘在开局后 46 秒、59 秒（服务器拍约 403、628）。两个席位的天然份额合计 4,588 格 = 我方的 4.5%",
+  "本机落后服务器（推断，只有号与号之间的相对读数）：本机拍 720~1800 有 10 个号比最快的号落后 >=90 拍（Cringe 最多 360 拍、Sparta 270 拍）；服务器拍约 403、628 时在场号的日志位置在 −47~+88 拍以内，服务器拍 2,035 起的 14 条阵亡行都在 ±96 拍以内。本机拍 1350~1800 有 11 段超发的清仓",
+  "队2（卡片记的主队，9 个席位、7 个进了对局）从第一条结算行起就是最小的队：24.9%（t=2032）→25.9%（5436）→19.1%（6879）→6.1%（7916）。队3 的外人 26.9%（t=2032）→29.0%（5436）→41.9%（6879）→55.7%（7916）→92.2%（终局）；队1 在最后 1,268 拍里从 28.8% 掉到 0.0%"
+ ],
+ "winnerNotes": "赢家是队3（28 个真人：我方 7 个席位 + 21 个外人）。结算行里队3 的份额 37.3%（t=2032）→34.5%（3400）→33.2%（4887）→35.1%（5436）→49.1%（6879）→63.7%（7916）→99.9%（9185）。其中我方的号：10.4%（7 个号）→10.3%（5 个）→7.0%（3 个）→6.2%（2 个）→7.2%→7.9%→7.7%；队3 的外人（含该队内置 AI）：26.9%→24.2%→26.1%→29.0%→41.9%→55.7%→92.2%。也就是说队3 的胜利是外人打出来的：t=5436 之前三队相持（队1 36~41%、队2 24~27%、队3 33~38%），t=5436~7916 队3 的外人涨了 26.7 个点，吃的是队2（25.9%→6.1%）和队1（38.7%→28.8%）；最后 1,268 拍队1 从 28.8% 掉到 0.0%。我方在队3 的两个号这一段从 6.2% 涨到 7.9%（+1.7 个点，队3 整体 +28.6 个点）：Harald t=6120~6480 +9,549 格、Nader Shah t=6750~7290 +7,876 格（之后丢回 4,016 格）。队3 的外人吃掉的队2 里有我方三个大号（Russian Empire、Ainz、Luigi，t=6480 前后合计约 5.5 万格 = 全图的 10%）：同一个编队的号分在赢家和输家两边。能点出名字的外人（都来自协防戳日志）：[UA]（队3，出生点离 Russian Empire / CyberNinja 78 格；t=3775~5350 打 Russian Empire×5、CyberNinja×2）；[GLD]Van Rossem（队1，离 Sparta 100 格；t=3655~5000 打 Sparta×3、Stonks）；U.A.S（队1，离 Leonidas 109 格；t=2360~3070 打 Nimitz×4）；Shikadze[og]（队2，离 Lithuania 95 格；t=3750~4130 打 Lithuania×4）；Player 552、Player 628、Captagon（队1；打 Leonidas、Stonks、Goryeo、NullPointer）；🇦🇿🤍（队2，离 CocaCola 33 格；t=1650 打 CocaCola）。没有逐人榜单，也没有 t>0 的录像：这些外人各有多少地、多少兵，队3 的外人里是谁在 t=5436 之后发力，都看不到。能看到的差别只有节奏：我方 t=2070~5040 每千号·拍 2.0~2.3 条出兵/发船指令，丢掉的 148,135 格里 82% 丢在零出兵的间隔，对手一直在出手。",
+ "wentWell": [
+  "开局扩张按时：HL-OPENING 间隔中位 95 拍，没有空转的轮次；t=1530 进了对局的 17 个号拿到天然份额的 93.0%，t=2070~4211 全队份额 17.3%~20.2%，接近 17 个号的人头份额（20.5%）。",
+  "追帧清仓有一半打在便宜地上：Nader Shah +5,053 格、Harald +4,684、Lithuania +4,394、Nimitz +6,688、Sparta +3,103；Nader Shah、Harald 的地一直守到终局。",
+  "邻居崩盘后收地 4 次：Stonks +10,817 格（t=2790~3420）、Ainz +9,317（t=2970~3510）、Russian Empire +6,559（t=4140~4590）、Luigi +11,072（t=5940~6480），余额都是一边涨地一边涨。",
+  "Russian Empire 是捐款换到地的例子：天然份额 1,881 格，靠队友约 560 万兵涨到 16,871 格。",
+  "Nader Shah 过 142 线后的一次出手 +7,876 格；它和 Harald 在赢家队里活到终局（24,331 + 17,474 格）。",
+  "NullPointer 领土归零后靠船又活了 4,700 拍，最后一次突围 177→1,509 格。"
+ ],
+ "unknowns": [
+  "槽位 13~19 的号为什么从第 3~39 步起下发的选点就不再进录像（sent = accepted，日志照常打印），槽位 18、19 为什么走不出选点阶段：调用 chooseSpawn、把选点发给服务器、切到对局阶段的外层不在对局包里。同像素的选点会被收下（(802,18) 第 26 步同时落下三条），所以不是「坐标被占」。",
+  "本机在服务器拍约 630~2035 之间到底落后多少：这一段没有结算行，只有号与号之间的相对读数（最多 360 拍）；最快的那个号自己落后多少看不到。",
+  "每个阵亡号是被谁打死的：没有 t>0 的录像；24 条 HL-ASSIST 只点到 8 个名字，t=5350 之后一条也没有。Russian Empire、Ainz、Luigi 是被谁吃掉的只能从各队份额推（队3 的外人）。",
+  "清仓的兵打在了谁身上、Leonidas 和 NullPointer 的 12 条船去了哪里。",
+  "Goryeo 被围 1,620 拍为什么一条船也没发（searchWater 没有命中？没有海岸？）；同一片的 Leonidas、NullPointer 是发得出船的。",
+  "有邻居不出手到底停在 buyLand 的哪一行（L5267 的报价门槛、L5271 的唯一真人邻居、L5345 的缩水被围、L5361 的保底线）无法区分。「唯一健康真人邻居 → 128 / 142.1」的读法只有 4 个间隔直接支持：Nader Shah 三次爬到密度 139~141 才出手，Harald t=5760 密度 129 之后出手；两个号的邻居是真人，是从救援 pct 的数值反推的（对得上 88×领土的保底线）。",
+  "16 条看不出原因的没执行捐款（其中 5 条是 Cringe 在落后期间的，多半其实执行了）；Ainz t=7200→7290 一个间隔少掉的 171 万兵里有多少是被打掉的、多少是自己那 1 条指令花的。",
+  "队3 的外人里是谁在 t=5436 之后发力；队1 为什么在最后 1,268 拍从 28.8% 掉到 0。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "额度拒单",
+   "a": "257 条捐款日志，余额链判执行 153、没执行 102、判不了 2。没执行的 86 条能确认是超额（t=1620~4275）：Goryeo 26、SonHeungMin 23、Leonidas 11、Stonks 9、Luigi 7、Ainz 7；收款人 Nimitz 27、Russian Empire 18、Inca 15。t=2142 之前 37 条：本图 t=1500~1800 单笔上限约 4.6~5.6 万，Goryeo 的救援 pct=240、想给 7.2~12.6 万。t=2142 之后还有 49 条：用量按收款人整局累计，Nimitz、Russian Empire 这样被好几个人同时救的号很快又顶到上限。策略里没有任何地方查受捐额度，被拒后只等 18 拍冷却就原样重发。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "执行的 153 笔手续费合计 982 万（全队整局利息的 15.1%），到账约 2,036 万。pct<=63 的 17 笔手续费 74.7 万、想给 70.7 万；pct<=99 的救援 38 笔手续费 206 万、到账 239 万；pct<150 的 48 笔手续费 290 万。小 pct 都来自救援分支：有敌方真人邻居时保底线取到 88×领土，密度 100.4~112 之间 maxSafePct 只有 55~155。手续费按捐款人的全部余额收：Nader Shah 一笔 14.3~20.4 万。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "nb=0 且 neut=0 的号 5 个：NullPointer 50/101 个快照、Harald 23/98、Leonidas 19/54、Goryeo 18/48、Nader Shah 8/97；被围且密度 >=95 的快照 13 个（Nader Shah t=8550~9180 的 8 个：304 万→365 万兵顶到硬上限，胜局已定）。被围时发船 7 段 35 条：突围 1 段 7 条（约 1.8 万兵），没换到地 5 段 26 条（约 123 万兵）。Goryeo 被围 1,620 拍一条船没发。超软上限（密度 >100）的快照 150/860 个，少拿利息估 751 万（Nader Shah 581 万）。"
+  },
+  {
+   "q": "出生与开局被围",
+   "a": "7 对号出生在 80 格以内，同像素 2 对（Russian Empire / CyberNinja 异队；Ayyubid / Lusitania 都没进对局）；叠着的 8 个号 t≈630 领土中位 2,275、其余 9 个 2,922。Leonidas、NullPointer（相距 16 格）和 Goryeo 在 t=1350 被围，四周是队2 的外人和异队的 Nimitz；开局阶段（t<630）没有号被围。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "本局没有「领先后送掉」：编队最高 20.24%（t=3510），约等于 17 个号的人头份额。三类死法：（1）追帧清仓后变薄——CocaCola、Inca、Cringe（密度 1~15）；（2）有兵不还手——Nimitz（1,330 拍零指令）、Lithuania（2,246 拍）、SonHeungMin、Sparta、Goryeo、Stonks、Leonidas、CyberNinja、Russian Empire、Ainz、Luigi，14 个号阵亡时账上合计 269 万；（3）NullPointer 两次领土归零。丢掉的 148,135 格里 82% 丢在零出兵的间隔。按密度档（t>=2070、nb>=1）：密度 <100 的 388 个间隔里有出兵/发船的 47 个（12.1%），>=100 的 138 个间隔里 36 个（26.1%），>=114 的 30 个里 12 个（40.0%）。超软上限后 nb=1 的号在 114~137 出手 5/20、137~142 出手 3/3；nb>=2 的号 114~126 出手 3/4。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "三队局，3/9/7（首选 9、补位 9、第二志愿 1）。没有同室操戈的直接证据（没有录像；保护名单下异队的我方号互不陆攻）。拆队的代价：（1）Russian Empire（队2）与 CyberNinja（队1）同像素出生，互相不能打、不能捐；（2）24 条协防戳里 22 条是替别的队的号戳的，只戳的 17 个间隔净支出 133 万兵、+1,768 格；（3）外人各打各的：队1 的 U.A.S、[GLD]Van Rossem、Player 552 吃我方在队2、队3 的号，队2 的 Shikadze[og]、🇦🇿🤍 吃我方在队1 的号，队3 的 [UA] 吃我方在队1、队2 的号——[UA] 是 Harald 的队友，Harald 既不能打它也不能给异队的 Russian Empire 捐款；（4）队1 的 3 个号彼此够不着（Lithuania 整局没有收款人，也没有人能给它捐）；（5）终盘队3 的外人吃掉的队2 里有我方三个大号（约 5.5 万格），而我方在队3 的两个号是赢家。"
+  },
+  {
+   "q": "HUB 0003~0005 的几项",
+   "a": "录像只有选点阶段，影子探针跑不了：safeFinite 互锁、expandNeutral 挤单、minCmd 门槛、21 拍内重复下单、isNoFullSend 都无法计数。能从日志核对的：（1）「落后期间的指令在追上时一起生效」成立但比 B018 轻：零新令掉兵 5 段、47.4 万兵，超发的清仓 11 段全部在本机拍 1350~1800；sent / accepted 对表证明指令没丢。（2）开局周期间隔中位 95 拍，没有空转。（3）从代码读出的一条：超软上限后出兵需要的密度（114.2 / 137 / 142.1 / 157）都高于余粮捐款线 112，buyLand 没出手的那一拍就轮到捐款（L4922）；日志里 Luigi、Nader Shah、Harald、Ainz 的密度都在 88~121 之间靠捐款来回（推断）。"
+  }
+ ],
+ "scripts": [
+  "bash c136-review/agents/R06/scripts/run_truth.sh B014（选点阶段的真引擎重放，套 run-heavy.sh；得到出生点、分队、t=0 的地图）",
+  "python3 c136-review/agents/R06/scripts/digest.py B014 roster|teams|timeline [t ...]|outsiders|snap [t ...]|bot <me>|deaths|boxed|picks|slots|spawn|spawnlog|drops|donations|lag|json",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B014 wallms|sentchk|zerodrop|noefftl|noeffect|gaps|seqlag|stale|silent|cmdmix|fireband [t0 [t1] [名字...]]|idleloss|capidle|freezebound|overcap|drop30|spend [t0 t1]|donlog [me|-1]|dondying|quotacap|foes|assists|opening|bursts|harvest|boxboats|thinbig|json（只用日志）",
+  "python3 c136-review/agents/R06/scripts/latency.py B014 spawn|json；python3 c136-review/agents/R06/scripts/landcap.py B014 voronoi|logcap|json",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B018 zerodrop；logdigest.py B018|B017|B021 dondying（跨局对照）",
+  "bash c136-review/agents/R06/scripts/sections.sh B014 dig|log|led（把以上各段落盘到 out/B014/sec/）",
+  "python3 c136-review/agents/R06/scripts/make_review.py B014（合并 reviews_src/B014.py，自检）"
+ ],
+ "confidenceOverall": "medium-low：选点阶段（出生点、选点条数、分队、天然份额）是录像真值；t>0 的全部数字来自日志快照、日志原文和结算行，可由脚本重算。份额、领土、兵、指令条数、各队领土、sent/accepted 是直接读数，可信度高；捐款的执行与否和到账是按余额链估的（有录像的三局一致率 81~87%），落后那一段更不准；「捐款线在出兵线之下」是读代码得出的阈值关系加日志里的密度循环，哪一拍停在哪一行看不到；攻击者、席位为什么没进对局都看不到。"
+}

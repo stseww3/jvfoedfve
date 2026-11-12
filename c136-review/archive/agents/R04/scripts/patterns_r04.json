@@ -418,5 +418,33 @@
   "definition": "我方号活着、压在它身上的敌方真人在途兵 > 1.65×它的余额 的时段（中断 ≤30 拍算同一段）。每段记：号当时的地 / 余额 / 密度、在途兵峰值、此前 600 拍它捐出多少、这一段里收到的捐款、段开始时其余我方号「余额 − 88×领土」的正数部分、300 拍内是否出局。计数 = 段数、其中 300 拍内出局的段数、这些段里收到的捐款合计。只用真引擎的状态表，是 isDoomedPocket 第一个条件成立的时段，不是策略走到那一行的次数。 是 NEW-DF-NORESCUE 里能机械计数的一个子类（NORESCUE 还包括配额、不相邻、没兵）。",
   "detector": "scripts/doomed_pocket.py <局号> [<局号> …] [--list] [--ours id,…]；逐拍看候选人怎么被跳过：scripts/shadow.mjs <局号> --bots <号> --at <拍>（[tryDonateToTeammate] 一段的「判为弃子，跳过」）",
   "codePath": "Policy.tryDonateToTeammate L4455~4456（isDoomedPocket = 不是滩头 且（被攻 > 1.65×余额 或（t ≥ 4500 且 领土 < 0.22×编队最大领土 且 被攻 > 0.45×余额））→ continue）；救急分支 L4463~4466 还要捐款人密度 ≥102（没封死时）且比对方高 16、余额 > 1.12×救急底线。Vb 的行号。"
+ },
+ "NEW-IO-STRIKELAG": {
+  "prefix": "IO",
+  "name": "对真人的第一次出手晚到：策略想打的那一拍目标还弱，第一串落地时已经隔了几百拍，落下来的是攒成一摞的全压",
+  "definition": "我方某号对某个真人：影子策略第一次想打它的拍（第一条想出 ≥2 万兵）到录像里第一条真的出了兵的陆攻之间隔了 ≥90 拍。每对记：想打的拍、落地的拍、这段时间影子重复下了多少条、想打时双方的 领土 / 余额、落地时双方的 领土 / 余额、第一串（相邻落地拍 ≤7 拍）真出的兵占落地前余额的比例。计数 = 这样的（号, 目标）对数、晚的拍数中位 / 最大、其中第一串 ≥60% 余额的对数、没落地的对数。成因在上线适配层（指令迟到、成摞落地、同拍第 2 条不受理）和出兵闸门读引擎状态（上一条没生效就重发同一条，便宜的内置 AI 小单一直排在真人前面）两头，逐对写清是哪一头。",
+  "detector": "scripts/first_strike_lag.py <局号> [<局号> …] [--min 兵]（要有 tmp/shadow/<局号>/intents.tsv 和 tmp/truth/<局号>/）；逐拍看那个号在等什么：scripts/batch_targets.py <局号> --list --t0 … --t1 …、scripts/same_tick.py <局号> --list、scripts/big_batches.py <局号>",
+  "codePath": "Policy.buyLand（Va L5355~5616：报价单按单价从低到高，第一条发得出去的就 return，一拍一条）；L5448~5452（内置 AI 目标：出 1.25×需要量，常只有余额的 2%）；L5458（curAtk = g.attackTroopsOn(me, q) 读引擎状态，上一条没生效就当没下过）；Policy.act L4940~4941（expandNeutral 在前、buyLand 在后，线上一拍只受理一条）；传输层不在仓库里。"
+ },
+ "NEW-EX-SPLITTEAMS": {
+  "prefix": "EX",
+  "name": "不带战队标签的编队被大厅拆进好几支队伍：各号各为其队，互为对手，编队层面的得失互相抵消",
+  "definition": "组队局里，同一支编队（按 [HL-GAME-INIT] 日志认出的号）在引擎里的队号 ≥2 种。记：每支队里有几个编队号、几个掉线的编队号；编队号向「主队」（编队号最多的那支队）其他成员出的兵（条数 / 兵）和从它们净拿的地；主队 300 拍跌幅最大的窗口里，净拿走主队地的各方里编队号占多少；另一支本方编队（另一套战队标签）被整队分到对面时，两边互相出的兵和净易手的地。这种局的对局卡把所有号加在一起算 peakSquadLandShare / ourFinalTeamShare，不能当成「一支队」的数。",
+  "detector": "scripts/split_roster.py <局号>（第 1 节花名册与队号、第 3 节各类号占比、第 4~5 节类别之间的出兵与净得地、第 7 节主队跌得最狠的 300 拍里地给了谁）；tmp/truth/<局号>/meta.json 的 players[].team；对局卡 card.json 的 teamSplitCounts",
+  "codePath": "分队发生在策略代码之外（大厅 / 上线适配层，不在对局包里）。策略侧与此有关的三处（v27-team-c110.js）：Policy.isTeammate L3937~3939（只认引擎的队号）；Policy.isProtectedSquadMate L3993~3996（场上还有「野生真人」时，名字在默认名池里的号跨队也不打）；Policy.offers / buyLand 对其余真人一视同仁——主队里不在名池里的真人，对分到别队的编队号来说就是普通目标。"
+ },
+ "NEW-EX-NAMEPOOL": {
+  "prefix": "EX",
+  "name": "靠默认名池认「兄弟」：名字撞池的真人和已经掉线的编队号都被当成不能打、也看不见的邻居",
+  "definition": "c110 的 isOurSquadBot 只看名字是否在 740 个默认名的池里（或带 [NPL] / [NOPE]）。三种后果各自计数：(a) 名字撞池的真人（没有 [HL-GAME-INIT] 日志的号）对编队号出的兵、净拿的地，编队号对它的还手条数；(b) 已经离场（引擎状态 2、由内置 AI 接管）的编队号对在场编队号出的兵、净拿的地，在场号影子表里的邻居数是否漏掉它；(c) 日志里 [HL-ASSIST] 的「squad-rescue poke」里 ally 不是本队成员的条数（替别队的名池号去戳人）。另记选点：chooseSpawn 给名池号排位时把它们从地图上摘掉再打分，落点离撞名真人 / 掉线号的距离。",
+  "detector": "scripts/split_roster.py <局号>（第 1 节 P 类 = 名字在池里但没有日志的号；第 5 节「兄弟」之间的进攻；第 6 节逐号的出手与挨打；第 8 节出生点）；tmp/shadow/<局号>/rows.tsv 的 nb / nHum 两列（看不见的邻居不计入）；对局包 in_game.log 的 [HL-ASSIST] / [HL-DONATE] 行",
+  "codePath": "v27-team-c110.js：SQUAD_POOL_SET L1；Policy.isOurSquadBot L3973~3976（只比名字，不看有没有离场）；Policy.isProtectedSquadMate L3993~3996；Strategy.analyze L440（受保护的号不进 this.nb：不进报价单，也不进 dpKeep / safeFinite 的威胁估计）；Policy.chooseSpawn L4067~4072（gClean = withoutPlayer(g, sid)：名池号已选的点在打分前被摘掉）；Policy.tryDonateToTeammate L4423~4460（救援对象 = 名池号，跨队；L4448~4457 对主攻者出 102/1024 的一戳，不要求是队友）。"
+ },
+ "NEW-EC-CAPFLOOR": {
+  "prefix": "EC",
+  "name": "顶着 150×领土 的硬上限不动：唯一的邻居是兵多于自己 1.78 倍的健康真人，留兵底线不封顶；同队又没有名池里的号可捐",
+  "definition": "核心期某号密度（余额 ÷ 领土）≥ 149 连续 ≥ 300 拍（利息为 0），这段时间的决策拍在 core_gate_tally.py 里记为 floor:<目标>:cap+dp 或 floor:<目标>:dp（底线 = dpKeep，对方「余额 + 压在我身上的兵 − 1.5×我的领土」÷ 1.78 ≥ 我的余额），同期捐款意图 0。记：号·拍数、当时的余额、对方的余额、同队在场真人的地和兵、这段时间少拿的利息（按同期密度 100 的利率估，标 inferred）、解套的那一次出手的去向与结果。",
+  "detector": "scripts/cap_time.py <局号>；scripts/core_gate_tally.py <局号> t0 t1 --by-target；scripts/flat_windows.py <局号>；tmp/shadow/<局号>/intents.tsv（同期有没有捐款意图）；scripts/human_strikes.py <局号> --list N（解套那一次出手）",
+  "codePath": "v27-team-c110.js：Policy.buyLand L5322~5326（真人目标的 safe 只有在对方 nearCollapse 或 bleeding / tD<0.45 时才封顶到 oppFloorCap×领土，健康真人不封顶）、L5358~5361（keep = max(keep, safe)；avail = B − 手续费 − keep ≤ 0 就 continue）；V13.dpKeep L2491~2496（(对方余额 + 它打我的兵 − 1.5×L) ÷ 1.78）；Policy.tryDonateToTeammate L4462（没被围住且密度 <112 才不捐——这里密度够）、L4467（候选必须是队友，且是 boss 或名池号）；Policy.idleBoats L4996（有陆上邻居时余额 ≥ idleCap×100×领土 才发船）。"
  }
 }

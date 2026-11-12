@@ -36,6 +36,9 @@ for k in ('--t0', '--t1', '--list', '--json'):
     if k in a:
         skip |= {a.index(k), a.index(k) + 1}
 mids = [x for i, x in enumerate(a) if i not in skip]
+if not mids:      # 不给局号 = 所有已有决策级延迟账的局
+    import glob, os
+    mids = sorted(os.path.basename(f)[:-len('-delay.json')] for f in glob.glob('/tmp/c136-r05/work/*-delay.json'))
 W = '/tmp/c136-r05/work'
 med = lambda v: (st.median(v) if v else None)
 f0 = lambda v: '–' if v is None else f'{v:.0f}'

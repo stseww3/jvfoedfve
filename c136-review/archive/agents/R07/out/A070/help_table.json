@@ -1,0 +1,754 @@
+{
+ "check": "复刻校验：764 行一致 / 0 行不一致",
+ "A": {
+  "total": {
+   "D:nocall-atkAI": 122,
+   "no-cand": 294,
+   "D:nocall-neutral": 4,
+   "D:nocall-atkH": 92,
+   "D:meAttacking": 48,
+   "D:meUnderFire": 113,
+   "D:bal<min": 71,
+   "D:terr<1200": 20
+  },
+  "byDonor": {
+   "ryan_m": {
+    "D:nocall-atkAI": 1,
+    "no-cand": 30,
+    "D:nocall-neutral": 1,
+    "D:nocall-atkH": 5,
+    "D:meAttacking": 3,
+    "D:meUnderFire": 5,
+    "D:bal<min": 2
+   },
+   "kaito9": {
+    "no-cand": 49,
+    "D:nocall-atkAI": 20,
+    "D:meAttacking": 7,
+    "D:meUnderFire": 17
+   },
+   "noah88": {
+    "D:nocall-atkAI": 23,
+    "D:nocall-neutral": 1,
+    "D:nocall-atkH": 10,
+    "no-cand": 15,
+    "D:meAttacking": 3,
+    "D:meUnderFire": 3
+   },
+   "riku_x": {
+    "D:nocall-atkH": 11,
+    "D:bal<min": 22,
+    "no-cand": 15,
+    "D:meUnderFire": 8
+   },
+   "sora_w": {
+    "D:nocall-atkH": 4,
+    "D:bal<min": 15,
+    "D:meAttacking": 2,
+    "no-cand": 34,
+    "D:nocall-atkAI": 8,
+    "D:meUnderFire": 22,
+    "D:nocall-neutral": 1
+   },
+   "leo_tx": {
+    "D:nocall-atkAI": 27,
+    "no-cand": 28,
+    "D:nocall-neutral": 1,
+    "D:nocall-atkH": 2,
+    "D:meUnderFire": 24,
+    "D:meAttacking": 4
+   },
+   "alex_k": {
+    "D:nocall-atkH": 30,
+    "D:bal<min": 10,
+    "D:meUnderFire": 13,
+    "no-cand": 10
+   },
+   "zexos1": {
+    "D:nocall-atkAI": 15,
+    "no-cand": 64,
+    "D:meAttacking": 18,
+    "D:nocall-atkH": 2,
+    "D:meUnderFire": 7
+   },
+   "zero_7": {
+    "D:nocall-atkAI": 12,
+    "D:nocall-atkH": 10,
+    "no-cand": 7,
+    "D:meAttacking": 6,
+    "D:bal<min": 21,
+    "D:terr<1200": 20
+   },
+   "talon5": {
+    "D:nocall-atkAI": 16,
+    "D:nocall-atkH": 18,
+    "no-cand": 42,
+    "D:bal<min": 1,
+    "D:meAttacking": 5,
+    "D:meUnderFire": 14
+   }
+  }
+ },
+ "B": {
+  "leo_tx": {
+   "ticks": 122,
+   "underFire": 122,
+   "doomedA": 5,
+   "doomedB": 0,
+   "maxRatio": 2.347,
+   "maxRatioT": 3655
+  },
+  "sora_w": {
+   "ticks": 113,
+   "underFire": 113,
+   "doomedA": 13,
+   "doomedB": 0,
+   "maxRatio": 13.922,
+   "maxRatioT": 1590
+  },
+  "kaito9": {
+   "ticks": 92,
+   "underFire": 92,
+   "doomedA": 0,
+   "doomedB": 0,
+   "maxRatio": 1.495,
+   "maxRatioT": 3770
+  },
+  "riku_x": {
+   "ticks": 75,
+   "underFire": 75,
+   "doomedA": 8,
+   "doomedB": 0,
+   "maxRatio": 9115.333,
+   "maxRatioT": 2420
+  },
+  "alex_k": {
+   "ticks": 67,
+   "underFire": 67,
+   "doomedA": 0,
+   "doomedB": 0,
+   "maxRatio": 1.2,
+   "maxRatioT": 3060
+  },
+  "talon5": {
+   "ticks": 56,
+   "underFire": 56,
+   "doomedA": 5,
+   "doomedB": 0,
+   "maxRatio": 2.485,
+   "maxRatioT": 3900
+  },
+  "zero_7": {
+   "ticks": 39,
+   "underFire": 39,
+   "doomedA": 33,
+   "doomedB": 0,
+   "maxRatio": 35.768,
+   "maxRatioT": 2395
+  },
+  "ryan_m": {
+   "ticks": 31,
+   "underFire": 31,
+   "doomedA": 26,
+   "doomedB": 0,
+   "maxRatio": 23.144,
+   "maxRatioT": 2650
+  },
+  "zexos1": {
+   "ticks": 30,
+   "underFire": 30,
+   "doomedA": 12,
+   "doomedB": 0,
+   "maxRatio": 4.358,
+   "maxRatioT": 4150
+  },
+  "noah88": {
+   "ticks": 16,
+   "underFire": 16,
+   "doomedA": 5,
+   "doomedB": 0,
+   "maxRatio": 2.058,
+   "maxRatioT": 2840
+  }
+ },
+ "C": {
+  "ryan_m:2430:2674": {
+   "total": {
+    "D:nocall-atkH": 6,
+    "D:bal<min": 7,
+    "B:dMe": 9,
+    "D:meUnderFire": 14,
+    "D:nocall-atkAI": 1,
+    "D:meAttacking": 11,
+    "A:dMe": 4,
+    "C:doomedA": 25,
+    "D:terr<1200": 6,
+    "ABSENT": 6
+   },
+   "byDonor": {
+    "noah88": {
+     "D:nocall-atkH": 5,
+     "C:doomedA": 1,
+     "D:meAttacking": 3,
+     "ABSENT": 1
+    },
+    "riku_x": {
+     "D:bal<min": 1,
+     "D:meUnderFire": 5,
+     "C:doomedA": 3,
+     "ABSENT": 1
+    },
+    "sora_w": {
+     "B:dMe": 2,
+     "D:nocall-atkAI": 1,
+     "D:meUnderFire": 1,
+     "C:doomedA": 5,
+     "ABSENT": 1
+    },
+    "leo_tx": {
+     "B:dMe": 1,
+     "D:nocall-atkH": 1,
+     "D:meUnderFire": 4,
+     "C:doomedA": 3,
+     "ABSENT": 1
+    },
+    "alex_k": {
+     "D:bal<min": 3,
+     "D:meUnderFire": 4,
+     "C:doomedA": 3
+    },
+    "zexos1": {
+     "B:dMe": 1,
+     "D:meAttacking": 2,
+     "A:dMe": 1,
+     "C:doomedA": 5,
+     "ABSENT": 1
+    },
+    "zero_7": {
+     "D:bal<min": 3,
+     "A:dMe": 1,
+     "D:terr<1200": 6
+    },
+    "talon5": {
+     "B:dMe": 3,
+     "A:dMe": 1,
+     "C:doomedA": 5,
+     "ABSENT": 1
+    },
+    "kaito9": {
+     "B:dMe": 2,
+     "A:dMe": 1,
+     "D:meAttacking": 6
+    }
+   }
+  },
+  "noah88:2700:2883": {
+   "total": {
+    "B:dMe": 20,
+    "D:meUnderFire": 12,
+    "D:terr<1200": 7,
+    "A:dMe": 12,
+    "C:doomedA": 5,
+    "D:bal<min": 2
+   },
+   "byDonor": {
+    "kaito9": {
+     "B:dMe": 2,
+     "D:meUnderFire": 4,
+     "C:doomedA": 1,
+     "A:dMe": 1
+    },
+    "riku_x": {
+     "D:meUnderFire": 3,
+     "B:dMe": 1,
+     "A:dMe": 2,
+     "D:bal<min": 2
+    },
+    "sora_w": {
+     "B:dMe": 4,
+     "A:dMe": 2,
+     "C:doomedA": 1
+    },
+    "leo_tx": {
+     "B:dMe": 4,
+     "D:meUnderFire": 2,
+     "C:doomedA": 1
+    },
+    "alex_k": {
+     "D:meUnderFire": 2,
+     "B:dMe": 2,
+     "A:dMe": 2,
+     "C:doomedA": 1
+    },
+    "zexos1": {
+     "B:dMe": 3,
+     "A:dMe": 3,
+     "C:doomedA": 1
+    },
+    "zero_7": {
+     "D:terr<1200": 7
+    },
+    "talon5": {
+     "B:dMe": 4,
+     "A:dMe": 2,
+     "D:meUnderFire": 1
+    }
+   }
+  },
+  "riku_x:2430:2902": {
+   "total": {
+    "D:nocall-atkH": 6,
+    "C:doomedA": 5,
+    "D:bal<min": 8,
+    "A:dMe": 41,
+    "D:meAttacking": 14,
+    "D:nocall-atkAI": 1,
+    "D:meUnderFire": 28,
+    "B:dMe": 42,
+    "D:terr<1200": 15
+   },
+   "byDonor": {
+    "noah88": {
+     "D:nocall-atkH": 5,
+     "B:dMe": 4,
+     "D:meAttacking": 3,
+     "A:dMe": 3,
+     "D:meUnderFire": 3
+    },
+    "sora_w": {
+     "C:doomedA": 1,
+     "D:nocall-atkAI": 1,
+     "A:dMe": 5,
+     "D:meUnderFire": 2,
+     "B:dMe": 10
+    },
+    "leo_tx": {
+     "C:doomedA": 1,
+     "D:nocall-atkH": 1,
+     "D:meUnderFire": 6,
+     "B:dMe": 6,
+     "A:dMe": 5
+    },
+    "alex_k": {
+     "D:bal<min": 3,
+     "D:meUnderFire": 7,
+     "B:dMe": 2,
+     "A:dMe": 7
+    },
+    "zexos1": {
+     "C:doomedA": 1,
+     "D:meAttacking": 2,
+     "A:dMe": 8,
+     "B:dMe": 8
+    },
+    "zero_7": {
+     "D:bal<min": 3,
+     "A:dMe": 1,
+     "D:terr<1200": 15
+    },
+    "talon5": {
+     "A:dMe": 7,
+     "B:dMe": 10,
+     "D:meUnderFire": 1,
+     "C:doomedA": 1
+    },
+    "ryan_m": {
+     "D:meAttacking": 2,
+     "D:meUnderFire": 5,
+     "D:bal<min": 2
+    },
+    "kaito9": {
+     "A:dMe": 5,
+     "D:meAttacking": 7,
+     "B:dMe": 2,
+     "D:meUnderFire": 4,
+     "C:doomedA": 1
+    }
+   }
+  },
+  "alex_k:2700:3075": {
+   "total": {
+    "B:dMe": 25,
+    "A:dMe": 44,
+    "D:meUnderFire": 19,
+    "D:terr<1200": 12,
+    "D:bal<min": 5,
+    "ABSENT": 1
+   },
+   "byDonor": {
+    "kaito9": {
+     "B:dMe": 4,
+     "A:dMe": 6,
+     "D:meUnderFire": 6
+    },
+    "noah88": {
+     "A:dMe": 2,
+     "B:dMe": 2,
+     "D:meUnderFire": 3
+    },
+    "riku_x": {
+     "D:meUnderFire": 3,
+     "A:dMe": 2,
+     "B:dMe": 1,
+     "D:bal<min": 2
+    },
+    "sora_w": {
+     "A:dMe": 11,
+     "B:dMe": 4
+    },
+    "leo_tx": {
+     "A:dMe": 8,
+     "B:dMe": 3,
+     "D:meUnderFire": 4
+    },
+    "zexos1": {
+     "A:dMe": 9,
+     "B:dMe": 6
+    },
+    "zero_7": {
+     "D:terr<1200": 12,
+     "D:bal<min": 3
+    },
+    "talon5": {
+     "A:dMe": 6,
+     "B:dMe": 5,
+     "D:meUnderFire": 3,
+     "ABSENT": 1
+    }
+   }
+  },
+  "zero_7:2430:2700": {
+   "total": {
+    "D:nocall-atkH": 6,
+    "D:bal<min": 6,
+    "C:doomedA": 8,
+    "D:meAttacking": 14,
+    "D:meUnderFire": 20,
+    "D:nocall-atkAI": 1,
+    "A:dMe": 1,
+    "B:dMe": 3,
+    "C:small": 38
+   },
+   "byDonor": {
+    "noah88": {
+     "D:nocall-atkH": 5,
+     "C:small": 3,
+     "D:meAttacking": 3
+    },
+    "riku_x": {
+     "D:bal<min": 1,
+     "D:meUnderFire": 5,
+     "C:small": 5
+    },
+    "sora_w": {
+     "C:doomedA": 2,
+     "D:nocall-atkAI": 1,
+     "D:meUnderFire": 2,
+     "C:small": 6
+    },
+    "leo_tx": {
+     "C:doomedA": 1,
+     "D:nocall-atkH": 1,
+     "D:meUnderFire": 4,
+     "C:small": 5
+    },
+    "alex_k": {
+     "D:bal<min": 3,
+     "D:meUnderFire": 4,
+     "C:small": 4
+    },
+    "zexos1": {
+     "C:doomedA": 1,
+     "D:meAttacking": 2,
+     "B:dMe": 1,
+     "C:small": 7
+    },
+    "talon5": {
+     "C:doomedA": 2,
+     "A:dMe": 1,
+     "B:dMe": 1,
+     "C:small": 7
+    },
+    "ryan_m": {
+     "D:meAttacking": 2,
+     "D:meUnderFire": 5,
+     "D:bal<min": 2
+    },
+    "kaito9": {
+     "C:doomedA": 2,
+     "B:dMe": 1,
+     "D:meAttacking": 7,
+     "C:small": 1
+    }
+   }
+  },
+  "sora_w:3060:3652": {
+   "total": {
+    "B:dMe": 29,
+    "D:meUnderFire": 29,
+    "D:bal<min": 13,
+    "D:nocall-atkH": 4,
+    "A:dMe": 24,
+    "D:meAttacking": 9,
+    "D:terr<1200": 1,
+    "ABSENT": 2
+   },
+   "byDonor": {
+    "leo_tx": {
+     "B:dMe": 2,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 4,
+     "D:meUnderFire": 16,
+     "A:dMe": 1
+    },
+    "alex_k": {
+     "D:meUnderFire": 1
+    },
+    "zexos1": {
+     "B:dMe": 11,
+     "A:dMe": 8,
+     "D:nocall-atkH": 2,
+     "D:meAttacking": 2,
+     "D:meUnderFire": 1
+    },
+    "zero_7": {
+     "D:bal<min": 13,
+     "D:terr<1200": 1
+    },
+    "talon5": {
+     "B:dMe": 9,
+     "A:dMe": 7,
+     "D:meAttacking": 3,
+     "D:meUnderFire": 3,
+     "D:nocall-atkH": 1,
+     "ABSENT": 1
+    },
+    "kaito9": {
+     "D:meUnderFire": 8,
+     "B:dMe": 7,
+     "A:dMe": 8,
+     "ABSENT": 1
+    }
+   }
+  },
+  "leo_tx:3060:3662": {
+   "total": {
+    "B:dMe": 18,
+    "D:meUnderFire": 28,
+    "D:bal<min": 13,
+    "D:nocall-neutral": 1,
+    "D:meAttacking": 5,
+    "A:dMe": 40,
+    "D:nocall-atkH": 3,
+    "D:terr<1200": 1,
+    "C:doomedA": 2
+   },
+   "byDonor": {
+    "sora_w": {
+     "B:dMe": 3,
+     "D:nocall-neutral": 1,
+     "D:meUnderFire": 15,
+     "A:dMe": 5
+    },
+    "alex_k": {
+     "D:meUnderFire": 1
+    },
+    "zexos1": {
+     "B:dMe": 7,
+     "A:dMe": 12,
+     "D:nocall-atkH": 2,
+     "D:meAttacking": 2,
+     "D:meUnderFire": 1
+    },
+    "zero_7": {
+     "D:bal<min": 13,
+     "D:terr<1200": 1
+    },
+    "talon5": {
+     "B:dMe": 5,
+     "D:meAttacking": 3,
+     "D:meUnderFire": 3,
+     "A:dMe": 11,
+     "D:nocall-atkH": 1,
+     "C:doomedA": 1
+    },
+    "kaito9": {
+     "D:meUnderFire": 8,
+     "A:dMe": 12,
+     "B:dMe": 3,
+     "C:doomedA": 1
+    }
+   }
+  },
+  "kaito9:3420:3810": {
+   "total": {
+    "B:dMe": 12,
+    "D:meUnderFire": 23,
+    "D:nocall-atkH": 2,
+    "A:dMe": 6,
+    "D:meAttacking": 6
+   },
+   "byDonor": {
+    "talon5": {
+     "B:dMe": 7,
+     "D:nocall-atkH": 1,
+     "D:meUnderFire": 5,
+     "A:dMe": 3
+    },
+    "sora_w": {
+     "D:meUnderFire": 8,
+     "B:dMe": 1
+    },
+    "leo_tx": {
+     "D:meUnderFire": 9
+    },
+    "zexos1": {
+     "D:meUnderFire": 1,
+     "B:dMe": 4,
+     "A:dMe": 3,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 6
+    }
+   }
+  },
+  "talon5:3420:3904": {
+   "total": {
+    "A:dMe": 4,
+    "D:meUnderFire": 24,
+    "B:dMe": 14,
+    "D:nocall-atkH": 1,
+    "D:meAttacking": 10
+   },
+   "byDonor": {
+    "kaito9": {
+     "A:dMe": 3,
+     "B:dMe": 7,
+     "D:meUnderFire": 6
+    },
+    "sora_w": {
+     "D:meUnderFire": 8,
+     "B:dMe": 1
+    },
+    "leo_tx": {
+     "D:meUnderFire": 9
+    },
+    "zexos1": {
+     "D:meUnderFire": 1,
+     "B:dMe": 6,
+     "A:dMe": 1,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 10
+    }
+   }
+  },
+  "zexos1:3960:4155": {
+   "total": {},
+   "byDonor": {}
+  }
+ },
+ "D": {
+  "1500:2070": {
+   "n": 230,
+   "reasons": {
+    "D:nocall-atkAI": 100,
+    "no-cand": 51,
+    "D:nocall-atkH": 51,
+    "D:bal<min": 24,
+    "D:nocall-neutral": 2,
+    "D:meAttacking": 2
+   },
+   "noCandPairs": {
+    "B:dMe": 382,
+    "C:rear": 67,
+    "C:doomedA": 1,
+    "A:dMe": 9
+   }
+  },
+  "2070:2430": {
+   "n": 146,
+   "reasons": {
+    "D:nocall-atkH": 34,
+    "no-cand": 52,
+    "D:nocall-atkAI": 21,
+    "D:bal<min": 22,
+    "D:meAttacking": 11,
+    "D:nocall-neutral": 1,
+    "D:meUnderFire": 5
+   },
+   "noCandPairs": {
+    "B:dMe": 386,
+    "C:rear": 44,
+    "C:doomedA": 12,
+    "A:dMe": 26
+   }
+  },
+  "2430:2700": {
+   "n": 108,
+   "reasons": {
+    "D:nocall-atkH": 6,
+    "D:bal<min": 9,
+    "no-cand": 51,
+    "D:meAttacking": 14,
+    "D:meUnderFire": 20,
+    "D:nocall-atkAI": 1,
+    "D:terr<1200": 7
+   },
+   "noCandPairs": {
+    "B:dMe": 292,
+    "C:doomedA": 36,
+    "C:rear": 10,
+    "A:dMe": 70,
+    "C:small": 38
+   }
+  },
+  "2700:3060": {
+   "n": 116,
+   "reasons": {
+    "no-cand": 74,
+    "D:meUnderFire": 26,
+    "D:terr<1200": 12,
+    "D:bal<min": 4
+   },
+   "noCandPairs": {
+    "B:dMe": 317,
+    "C:small": 66,
+    "A:dMe": 133,
+    "C:doomedA": 7,
+    "C:rear": 8
+   }
+  },
+  "3060:3420": {
+   "n": 89,
+   "reasons": {
+    "no-cand": 40,
+    "D:meUnderFire": 23,
+    "D:bal<min": 13,
+    "D:nocall-neutral": 1,
+    "D:nocall-atkH": 2,
+    "D:meAttacking": 9,
+    "D:terr<1200": 1
+   },
+   "noCandPairs": {
+    "B:dMe": 112,
+    "C:rear": 30,
+    "A:dMe": 51,
+    "C:doomedA": 4,
+    "C:small": 3
+   }
+  },
+  "3420:4155": {
+   "n": 83,
+   "reasons": {
+    "no-cand": 30,
+    "D:meUnderFire": 39,
+    "D:nocall-atkH": 2,
+    "D:meAttacking": 12
+   },
+   "noCandPairs": {
+    "B:dMe": 57,
+    "A:dMe": 43,
+    "C:doomedA": 2
+   }
+  }
+ }
+}

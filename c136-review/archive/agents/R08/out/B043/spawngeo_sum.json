@@ -1,0 +1,79 @@
+{
+ "matchId": "B043",
+ "W": 931,
+ "H": 959,
+ "edgeLimit": 112,
+ "squad": {
+  "n": 20,
+  "edgeMedian": 200.5,
+  "nearEdge": 7,
+  "nnAny": 70.02715039128333,
+  "nnMate": 96.9251819305415,
+  "nnWild": 81.72796971880979,
+  "nearestIsMate": 9
+ },
+ "others": {
+  "n": 67,
+  "edgeMedian": 154,
+  "nearEdge": 29,
+  "nnAny": 56.79788728465171
+ },
+ "groups": [
+  {
+   "n": 12,
+   "bots": [
+    "deRuyter",
+    "Murat",
+    "Janissary",
+    "Srivijaya",
+    "Hussite",
+    "Celtic",
+    "KGB",
+    "Bongcloud",
+    "Kokand",
+    "Spiderman",
+    "Barbary",
+    "Viking"
+   ],
+   "teams": {
+    "1": 4,
+    "3": 4,
+    "2": 4
+   },
+   "crossPairs": 22,
+   "samePairs": 8
+  },
+  {
+   "n": 7,
+   "bots": [
+    "Trajan",
+    "Yoshi",
+    "Jordan",
+    "Timurid",
+    "Itachi",
+    "Zenobia",
+    "ProGamer99"
+   ],
+   "teams": {
+    "1": 3,
+    "3": 3,
+    "2": 1
+   },
+   "crossPairs": 11,
+   "samePairs": 4
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Zhuge Liang"
+   ],
+   "teams": {
+    "3": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [],
+ "nn3CrossTeamMates": 9
+}

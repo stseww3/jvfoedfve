@@ -5,6 +5,7 @@
 #   步骤：shadow（要 MAPS 环境变量，逗号分隔的地图拍）  dossier（轻，跟在 shadow 后面，同样用 MAPS）
 #         freeze  donwhy  land
 #   例：MAPS=630,1530,3060 bash scripts/heavy-chain.sh A090 shadow dossier freeze donwhy land
+#   SHADOW_ARGS：附加给 shadow.mjs 的参数（例：SHADOW_ARGS="--minlat 5"，A046 用）
 #
 # 机器忙的时候 run-heavy 的排队可能要等好几分钟。外面再套 timeout 120 的话，超时只杀掉闸本身，
 # 里面的 node 变成没人管的孤儿、槽位锁也提前放掉。所以这里不套外层 timeout：单步运行时间由闸自己的
@@ -37,7 +38,7 @@ heavy() { # heavy <名字> <命令…>；最多试 3 次（排队超时 75 或�
 for step in "$@"; do
   case $step in
     shadow)
-      heavy shadow node scripts/shadow.mjs "$mid" --quiet --maps "${MAPS:?shadow 要 MAPS}" || { echo "CHAIN-FAIL shadow" >> "$log"; exit 1; } ;;
+      heavy shadow node scripts/shadow.mjs "$mid" --quiet --maps "${MAPS:?shadow 要 MAPS}" ${SHADOW_ARGS:-} || { echo "CHAIN-FAIL shadow" >> "$log"; exit 1; } ;;
     dossier)
       timeout 120 python3 scripts/dossier.py "$mid" --quiet --map "${MAPS:?dossier 要 MAPS}" > /tmp/r03-chain-$mid-dossier.out 2>&1
       echo "dossier rc=$?" >> "$log"

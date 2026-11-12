@@ -3316,10 +3316,25 @@
     "neverLandedTroops": 5294203
    }
   ],
+  "funnelTotals": {
+   "intended": 1133,
+   "matched": 642,
+   "executed": 646,
+   "unmatchedExec": 4,
+   "unmatchedExecByPeriod": [
+    0,
+    0,
+    0,
+    4
+   ],
+   "neverLandedByMatch": 491,
+   "neverLandedByCount": 487
+  },
   "selfReport": {
    "shadow": 1682,
    "cmds": 1673,
-   "landed": 785
+   "landed": 785,
+   "executedAll": 785
   },
   "phantomDecisions": {},
   "lateVoid": [

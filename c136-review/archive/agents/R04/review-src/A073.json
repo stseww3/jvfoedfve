@@ -584,5 +584,9 @@
     "scripts/idle_scan.py A073；scripts/truth_query.py A073 cmds|bal|flow …",
     "scripts/traj_at.py A073 <号名,…> <拍,…>（新：没有录像的 4 个房间，从 traj.csv 取快照）",
     "scripts/review_base.py A073；scripts/review_write.py A073；scripts/check_reviews.py A073"
-  ]
+  ],
+  "hub0007Notes": {
+    "latency": "读法：1v1 房间，协调器的点没有用上：两个号的出生指令 0 条落地，出生点是引擎随机给的。日志有 9 个号（分在 5 个房间），录像只有这一个房间，慢拍和墙上时钟两项含别的房间的号。",
+    "land": "读法：没有其他真人也没有队友，alex_k 和 kaito9 是对手，这里都算在「我方」里；「同队 / 敌方」两栏不适用。这一行只说明两个号把身边的内置 AI 吃掉了多少（1500 拍 6%，3000 拍 32%）。"
+  }
 }

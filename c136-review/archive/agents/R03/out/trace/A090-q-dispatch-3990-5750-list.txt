@@ -1,0 +1,67 @@
+# A090 events.csv 的调度行 拍段 3990~5750：合计 60 条：defense_dispatch 42，yield_opt_dispatch 13，offense_dispatch 5
+  按受捐方：zexos1 defense_dispatch×24 offense_dispatch×4 yield_opt_dispatch×3；zero_7 defense_dispatch×9 yield_opt_dispatch×4；leo_tx defense_dispatch×6；ryan_m defense_dispatch×3 yield_opt_dispatch×2 offense_dispatch×1；sora_w yield_opt_dispatch×2；kaito9 yield_opt_dispatch×2
+  按捐方是否被围：boxedIn=False yield_opt_dispatch×13 defense_dispatch×8 offense_dispatch×4；boxedIn=True defense_dispatch×34 offense_dispatch×1
+  捐方发令时的密度 dMe（最小/中位/最大）：defense_dispatch boxedIn=False 107/111/116（8 条）；defense_dispatch boxedIn=True 31/43/103（34 条）；offense_dispatch boxedIn=False 113/116/120（4 条）；offense_dispatch boxedIn=True 61/61/61（1 条）；yield_opt_dispatch boxedIn=False 112/113/128（13 条）
+  受捐方当时的密度 dAlly（最小/中位/最大）：defense_dispatch boxedIn=False 50/90/94（8 条）；defense_dispatch boxedIn=True 43/91/104（34 条）；offense_dispatch boxedIn=False 73/81/95（4 条）；offense_dispatch boxedIn=True 48/48/48（1 条）；yield_opt_dispatch boxedIn=False 49/91/95（13 条）
+  受捐方比捐方密（dAlly > dMe）的条数：defense_dispatch 33/42；yield_opt_dispatch 0/13；offense_dispatch 0/5｜受捐方已过软上限（dAlly ≥ 100）的条数：defense_dispatch 8/42；yield_opt_dispatch 0/13；offense_dispatch 0/5
+  按 1000 拍：3000~3999 defense_dispatch×3；4000~4999 defense_dispatch×18 yield_opt_dispatch×12 offense_dispatch×1；5000~5999 defense_dispatch×21 offense_dispatch×4 yield_opt_dispatch×1
+3990 alex_k defense_dispatch pct 267 -> zero_7 | boxed True B 277239 dMe 43 dAlly 94 | rej False
+3990 zexos1 defense_dispatch pct 240 -> zero_7 | boxed False B 5059690 dMe 116 dAlly 94 | rej False
+3995 talon5 defense_dispatch pct 380 -> zero_7 | boxed True B 570114 dMe 81 dAlly 94 | rej False
+4000 kaito9 defense_dispatch pct 290 -> zero_7 | boxed True B 236140 dMe 45 dAlly 100 | rej False
+4020 talon5 defense_dispatch pct 380 -> zexos1 | boxed True B 337863 dMe 48 dAlly 96 | rej False
+4050 kaito9 defense_dispatch pct 264 -> zexos1 | boxed True B 228262 dMe 43 dAlly 103 | rej False
+4145 talon5 defense_dispatch pct 328 -> leo_tx | boxed True B 226989 dMe 32 dAlly 43 | rej False
+4155 noah88 defense_dispatch pct 377 -> leo_tx | boxed True B 209649 dMe 35 dAlly 44 | rej False
+4155 riku_x defense_dispatch pct 268 -> leo_tx | boxed True B 209940 dMe 43 dAlly 44 | rej False
+4240 alex_k defense_dispatch pct 256 -> zero_7 | boxed True B 273284 dMe 43 dAlly 78 | rej False
+4350 kaito9 defense_dispatch pct 293 -> zero_7 | boxed True B 237222 dMe 45 dAlly 92 | rej False
+4375 ryan_m yield_opt_dispatch pct 180 -> zero_7 | boxed False B 1341319 dMe 112 dAlly 95 | rej False
+4435 leo_tx yield_opt_dispatch pct 194 -> zero_7 | boxed False B 489254 dMe 114 dAlly 71 | rej False
+4460 sora_w yield_opt_dispatch pct 203 -> zero_7 | boxed False B 3142531 dMe 115 dAlly 79 | rej False
+4490 zexos1 yield_opt_dispatch pct 194 -> sora_w | boxed False B 5160023 dMe 114 dAlly 88 | rej False
+4510 sora_w yield_opt_dispatch pct 220 -> zexos1 | boxed False B 3490660 dMe 128 dAlly 88 | rej False
+4540 alex_k defense_dispatch pct 297 -> zero_7 | boxed True B 288658 dMe 45 dAlly 91 | rej False
+4540 zexos1 defense_dispatch pct 193 -> zero_7 | boxed False B 4928688 dMe 109 dAlly 91 | rej False
+4545 talon5 defense_dispatch pct 380 -> zero_7 | boxed True B 257973 dMe 37 dAlly 91 | rej False
+4600 kaito9 defense_dispatch pct 247 -> leo_tx | boxed True B 223197 dMe 42 dAlly 92 | rej False
+4605 noah88 defense_dispatch pct 380 -> leo_tx | boxed True B 237604 dMe 40 dAlly 90 | rej False
+4605 riku_x defense_dispatch pct 380 -> leo_tx | boxed True B 266653 dMe 55 dAlly 90 | rej False
+4700 ryan_m yield_opt_dispatch pct 185 -> zero_7 | boxed False B 1391942 dMe 112 dAlly 92 | rej False
+4765 zexos1 yield_opt_dispatch pct 185 -> ryan_m | boxed False B 5106050 dMe 112 dAlly 91 | rej False
+4770 zero_7 yield_opt_dispatch pct 187 -> ryan_m | boxed False B 2267868 dMe 113 dAlly 92 | rej True
+4785 sora_w yield_opt_dispatch pct 186 -> zexos1 | boxed False B 3147396 dMe 112 dAlly 92 | rej False
+4795 zero_7 yield_opt_dispatch pct 203 -> zexos1 | boxed False B 2311848 dMe 115 dAlly 93 | rej False
+4815 zexos1 offense_dispatch pct 220 -> ryan_m | boxed False B 5453677 dMe 120 dAlly 95 | rej False
+4840 alex_k defense_dispatch pct 293 -> zexos1 | boxed True B 287234 dMe 45 dAlly 100 | rej False
+4845 talon5 defense_dispatch pct 380 -> zexos1 | boxed True B 246120 dMe 35 dAlly 100 | rej False
+4855 noah88 defense_dispatch pct 319 -> zexos1 | boxed True B 192297 dMe 32 dAlly 103 | rej False
+4855 riku_x defense_dispatch pct 380 -> zexos1 | boxed True B 265982 dMe 55 dAlly 103 | rej False
+4985 sora_w yield_opt_dispatch pct 181 -> kaito9 | boxed False B 3128855 dMe 112 dAlly 49 | rej False
+4985 leo_tx yield_opt_dispatch pct 181 -> kaito9 | boxed False B 430966 dMe 112 dAlly 49 | rej True
+5010 leo_tx offense_dispatch pct 209 -> zexos1 | boxed False B 445668 dMe 116 dAlly 73 | rej False
+5020 zero_7 offense_dispatch pct 202 -> zexos1 | boxed False B 2308994 dMe 115 dAlly 74 | rej False
+5050 ryan_m yield_opt_dispatch pct 196 -> sora_w | boxed False B 1721550 dMe 114 dAlly 95 | rej False
+5080 riku_x defense_dispatch pct 255 -> zexos1 | boxed True B 206410 dMe 43 dAlly 91 | rej False
+5085 sora_w defense_dispatch pct 212 -> zexos1 | boxed False B 3106579 dMe 111 dAlly 90 | rej False
+5115 alex_k defense_dispatch pct 268 -> zexos1 | boxed True B 277661 dMe 43 dAlly 104 | rej False
+5120 talon5 defense_dispatch pct 296 -> zexos1 | boxed True B 217004 dMe 31 dAlly 79 | rej False
+5130 noah88 defense_dispatch pct 297 -> zexos1 | boxed True B 186551 dMe 31 dAlly 61 | rej False
+5185 leo_tx defense_dispatch pct 380 -> zexos1 | boxed True B 397101 dMe 103 dAlly 49 | rej False
+5210 leo_tx offense_dispatch pct 282 -> zexos1 | boxed True B 234021 dMe 61 dAlly 48 | rej False
+5245 zero_7 defense_dispatch pct 225 -> zexos1 | boxed False B 2272036 dMe 113 dAlly 50 | rej False
+5260 leo_tx defense_dispatch pct 252 -> zexos1 | boxed True B 163577 dMe 42 dAlly 61 | rej False
+5285 sora_w defense_dispatch pct 187 -> zexos1 | boxed False B 3012913 dMe 108 dAlly 61 | rej False
+5330 riku_x defense_dispatch pct 251 -> zexos1 | boxed True B 205279 dMe 42 dAlly 77 | rej False
+5390 alex_k defense_dispatch pct 259 -> zexos1 | boxed True B 274588 dMe 43 dAlly 83 | rej False
+5405 noah88 defense_dispatch pct 289 -> zexos1 | boxed True B 184527 dMe 31 dAlly 86 | rej False
+5420 talon5 defense_dispatch pct 317 -> zexos1 | boxed True B 223441 dMe 32 dAlly 89 | rej False
+5470 zero_7 defense_dispatch pct 203 -> ryan_m | boxed False B 2212600 dMe 110 dAlly 90 | rej False
+5510 leo_tx defense_dispatch pct 246 -> zexos1 | boxed True B 162302 dMe 42 dAlly 103 | rej False
+5525 ryan_m defense_dispatch pct 183 -> zexos1 | boxed False B 1426056 dMe 107 dAlly 63 | rej False
+5605 riku_x defense_dispatch pct 265 -> zexos1 | boxed True B 209062 dMe 43 dAlly 70 | rej False
+5640 alex_k defense_dispatch pct 257 -> zexos1 | boxed True B 273756 dMe 43 dAlly 75 | rej False
+5685 sora_w defense_dispatch pct 217 -> zexos1 | boxed False B 3260230 dMe 112 dAlly 80 | rej False
+5705 noah88 defense_dispatch pct 312 -> ryan_m | boxed True B 190442 dMe 32 dAlly 95 | rej False
+5720 talon5 defense_dispatch pct 315 -> ryan_m | boxed True B 222852 dMe 32 dAlly 98 | rej False
+5750 kaito9 offense_dispatch pct 189 -> zexos1 | boxed False B 815952 dMe 113 dAlly 81 | rej False

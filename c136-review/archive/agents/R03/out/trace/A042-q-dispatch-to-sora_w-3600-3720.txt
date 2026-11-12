@@ -1,0 +1,14 @@
+# A042 events.csv 的调度行 受捐方=sora_w 拍段 3600~3720：合计 7 条：defense_dispatch 7
+  按受捐方：sora_w defense_dispatch×7
+  按捐方是否被围：boxedIn=True defense_dispatch×7
+  捐方发令时的密度 dMe（最小/中位/最大）：defense_dispatch boxedIn=True 43/60/74（7 条）
+  受捐方当时的密度 dAlly（最小/中位/最大）：defense_dispatch boxedIn=True 52/53/87（7 条）
+  受捐方比捐方密（dAlly > dMe）的条数：defense_dispatch 4/7｜受捐方已过软上限（dAlly ≥ 100）的条数：defense_dispatch 0/7
+  按 1000 拍：3000~3999 defense_dispatch×7
+3645 zero_7 defense_dispatch pct 380 -> sora_w | boxed True B 1605693 dMe 67 dAlly 52 | rej False
+3645 talon5 defense_dispatch pct 380 -> sora_w | boxed True B 256830 dMe 49 dAlly 52 | rej False
+3650 ryan_m defense_dispatch pct 380 -> sora_w | boxed True B 1955988 dMe 73 dAlly 53 | rej False
+3650 kaito9 defense_dispatch pct 380 -> sora_w | boxed True B 718484 dMe 74 dAlly 53 | rej False
+3655 noah88 defense_dispatch pct 380 -> sora_w | boxed True B 1110556 dMe 60 dAlly 86 | rej False
+3655 riku_x defense_dispatch pct 380 -> sora_w | boxed True B 623417 dMe 43 dAlly 86 | rej False
+3660 leo_tx defense_dispatch pct 380 -> sora_w | boxed True B 791361 dMe 58 dAlly 87 | rej False

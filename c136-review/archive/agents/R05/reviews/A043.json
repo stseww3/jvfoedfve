@@ -1742,10 +1742,25 @@
     "neverLandedTroops": 0
    }
   ],
+  "funnelTotals": {
+   "intended": 170,
+   "matched": 169,
+   "executed": 170,
+   "unmatchedExec": 1,
+   "unmatchedExecByPeriod": [
+    0,
+    1,
+    0,
+    0
+   ],
+   "neverLandedByMatch": 1,
+   "neverLandedByCount": 0
+  },
   "selfReport": {
    "shadow": 188,
    "cmds": 188,
-   "landed": 188
+   "landed": 188,
+   "executedAll": 188
   },
   "phantomDecisions": {},
   "lateVoid": [
@@ -2822,6 +2837,158 @@
     "只剩中立边": 8,
     "只贴敌方真人": 0,
     "围在里面": 64
+   }
+  },
+  "exits": {
+   "留底·有在途": {
+    "V13.boatFood:2003": 117,
+    "V13.boatFood:2004": 34
+   },
+   "有目标没发": {
+    "V13.boatFood:2003": 9,
+    "V13.boatFood:2004": 8
+   },
+   "留底锁·无在途": {
+    "V13.boatFood:2003": 20,
+    "V13.boatFood:2004": 14
+   },
+   "只剩中立边": {
+    "V13.boatFood:2003": 8
+   },
+   "围在里面": {
+    "V13.boatFood:2004": 64
+   }
+  },
+  "ptGates": {
+   "留底·有在途": {
+    "1157,1161": 106,
+    "1157": 36,
+    "1161": 9
+   },
+   "有目标没发": {
+    "1157,1161,1163": 7,
+    "1157,1163": 7,
+    "1163": 3
+   },
+   "留底锁·无在途": {
+    "1161": 19,
+    "1157,1161": 15
+   },
+   "只剩中立边": {
+    "(循环里没有 continue)": 8
+   },
+   "围在里面": {
+    "(循环里没有 continue)": 64
+   }
+  },
+  "gaExit": {
+   "留底·有在途": {
+    "799": 117,
+    "end": 34
+   },
+   "有目标没发": {
+    "797": 8,
+    "end": 4,
+    "799": 5
+   },
+   "留底锁·无在途": {
+    "end": 14,
+    "799": 20
+   },
+   "只剩中立边": {
+    "799": 8
+   },
+   "围在里面": {
+    "end": 64
+   }
+  },
+  "notSentSplit": {
+   "rows": 17,
+   "split": {
+    "配额闸拒发": 8,
+    "在途已够": 9
+   },
+   "lines": {
+    "cooldown": [],
+    "guard": [
+     3858,
+     3861
+    ],
+    "enough": [
+     978,
+     1163
+    ]
+   },
+   "byBot": {
+    "ryan_m": {
+     "配额闸拒发": 7,
+     "在途已够": 2
+    },
+    "sora_w": {
+     "在途已够": 7,
+     "配额闸拒发": 1
+    }
+   }
+  },
+  "sendRefused": {
+   "rows": 8,
+   "share": 0.022,
+   "byCat": {
+    "有目标没发": {
+     "Policy.send 3861 → 没到 Strategy.send｜isNoFullSend=1": 8
+    }
+   },
+   "byBot": {
+    "ryan_m": 7,
+    "sora_w": 1
+   }
+  },
+  "noFullSendRows": {
+   "all": 360,
+   "nfs1": 244,
+   "nfs1_nocmd": 194
+  }
+ },
+ "quotaGuard": {
+  "source": "scripts/quota_guard.py A043（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）",
+  "ver": "vb",
+  "okLine": 3924,
+  "calls": 181,
+  "refused": 12,
+  "nfsAt": {
+   "ryan_m": 771,
+   "sora_w": 1002
+  },
+  "byPeriod": [
+   {
+    "period": "0–600",
+    "calls": 13,
+    "refused": 0
+   },
+   {
+    "period": "600–1500",
+    "calls": 94,
+    "refused": 8
+   },
+   {
+    "period": "1500–3000",
+    "calls": 22,
+    "refused": 0
+   },
+   {
+    "period": "3000+",
+    "calls": 52,
+    "refused": 4
+   }
+  ],
+  "byBot": {
+   "ryan_m": {
+    "calls": 135,
+    "refused": 11
+   },
+   "sora_w": {
+    "calls": 46,
+    "refused": 1
    }
   }
  },

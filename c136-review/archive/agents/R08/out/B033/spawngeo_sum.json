@@ -1,0 +1,124 @@
+{
+ "matchId": "B033",
+ "W": 1541,
+ "H": 1080,
+ "edgeLimit": 130,
+ "squad": {
+  "n": 10,
+  "edgeMedian": 76.5,
+  "nearEdge": 7,
+  "nnAny": 127.96595048376264,
+  "nnMate": 234.91274976041638,
+  "nnWild": 127.96595048376264,
+  "nearestIsMate": 2
+ },
+ "others": {
+  "n": 57,
+  "edgeMedian": 241,
+  "nearEdge": 4,
+  "nnAny": 70.80254232723568
+ },
+ "groups": [
+  {
+   "n": 2,
+   "bots": [
+    "Kanem-Bornu",
+    "Guderian"
+   ],
+   "teams": {
+    "1": 2
+   },
+   "crossPairs": 0,
+   "samePairs": 1
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Ainz",
+    "Lannes"
+   ],
+   "teams": {
+    "2": 2
+   },
+   "crossPairs": 0,
+   "samePairs": 1
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Bhutan",
+    "Livonian"
+   ],
+   "teams": {
+    "2": 2
+   },
+   "crossPairs": 0,
+   "samePairs": 1
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Mossad"
+   ],
+   "teams": {
+    "1": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Tunis"
+   ],
+   "teams": {
+    "2": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Gladiator"
+   ],
+   "teams": {
+    "1": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "JinKazama"
+   ],
+   "teams": {
+    "2": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "下",
+   "bots": [
+    "Lannes",
+    "Guderian",
+    "Kanem-Bornu",
+    "Bhutan"
+   ],
+   "gaps": [
+    303,
+    154,
+    422
+   ],
+   "teams": [
+    1,
+    2
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 2
+}

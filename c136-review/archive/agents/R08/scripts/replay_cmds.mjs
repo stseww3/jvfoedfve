@@ -18,7 +18,12 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(HERE, '..', 'out');
 const DATA = process.env.C136_DATA || '/agent/repos/c136-data';
 
-for (const mid of process.argv.slice(2)) {
+// --out-dir <目录>：把 <局>.json 写到这个目录（跨局扫描用，目录一般是不入库的 out/_run/streams）；不给就写 out/<局>/replay_cmds.json。
+const argv = process.argv.slice(2);
+const odIdx = argv.indexOf('--out-dir');
+const outDir = odIdx >= 0 ? path.resolve(argv[odIdx + 1]) : null;
+if (odIdx >= 0) argv.splice(odIdx, 2);
+for (const mid of argv) {
   const p = path.join(DATA, 'bundles', mid, 'replay.txt');
   if (!fs.existsSync(p)) {
     console.log(`${mid}: 无 replay.txt`);
@@ -67,7 +72,12 @@ for (const mid of process.argv.slice(2)) {
     names: vu.playerNamesData ? Array.from(vu.playerNamesData).slice(0, H) : null,
     colors: vu.colorsData ? Array.from(vu.colorsData).slice(0, H) : null,
   };
-  fs.mkdirSync(path.join(OUT, mid), { recursive: true });
-  fs.writeFileSync(path.join(OUT, mid, 'replay_cmds.json'), JSON.stringify({ meta, cmds: out }));
+  if (outDir) {
+    fs.mkdirSync(outDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, `${mid}.json`), JSON.stringify({ meta, cmds: out }));
+  } else {
+    fs.mkdirSync(path.join(OUT, mid), { recursive: true });
+    fs.writeFileSync(path.join(OUT, mid, 'replay_cmds.json'), JSON.stringify({ meta, cmds: out }));
+  }
   console.log(`${mid}: humans=${H} teams=${vu.numberTeams} selected=${vu.selectedPlayer} spawnSteps=${spawnSteps} lastTick=${t} cmds=${out.length} byId=${JSON.stringify(byId)}`);
 }

@@ -91,6 +91,24 @@ class Match:
         self.events = bundle_csv(mid, 'events.csv')
         self.spawn = bundle_csv(mid, 'spawn.csv')
         self.opening = bundle_csv(mid, 'opening.csv')
+        # B 组的日志号名中途会换（Kilwa → Ganondorf → Nelson）：对局包各表的 bot 列统一换回录像里的名字（log_alias.py 按 拍 / 领土 / 余额 认号）。
+        # 只在确实有「一个号多个号名」时才改，A 组不受影响。
+        self.renamed = {}
+        try:
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            import log_alias
+            al = log_alias.alias(mid)
+            byp = collections.defaultdict(set)
+            for b_, p_ in al.items():
+                byp[p_].add(b_)
+            if any(len(v) > 1 for v in byp.values()):
+                self.renamed = {b_: self.name[p_] for b_, p_ in al.items() if b_ != self.name.get(p_)}
+                for tab in (self.results, self.traj, self.events, self.spawn, self.opening):
+                    for r in tab:
+                        if r.get('bot') in self.renamed:
+                            r['bot'] = self.renamed[r['bot']]
+        except Exception:
+            pass
         try:
             self.anom = json.load(open(os.path.join(DATA, mid, 'anomalies.json'), encoding='utf8'))
         except Exception:
