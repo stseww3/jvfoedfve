@@ -10,8 +10,11 @@
 //   原样   clone() 返回什么就用什么（原型是基类）
 //   恢复类 把拷贝的原型改回原对象的类（TGame），其余不动——这一条只考「状态拷全了没有」
 // 每个断面（630 / 1500 / 4284）各克隆一次，续跑到下一个断面（最后一个续跑到局末），段末把两边的全部字段逐个比一遍。
-// 顺手记一件事（huskprobe 查到的那一处走偏的暴露面）：组队局里「还有地的队只剩一个、而第二名个人还有地」第一次出现在哪一拍。
-// 从这一拍起线上引擎会重扫无主地（bD.gv.mf() 看队数），模拟器不会（bots.js scanTick L723 看第二名个人的地）。
+// 顺手记一件事（huskprobe 查到的那一处走偏的暴露面），两个量：
+//   gap      组队局里「还有地的队只剩一个、而第二名个人还有地」第一次出现在哪一拍（各队总地读 32 拍缓存，和线上引擎 bk.a6U() 同一份）。
+//   scanGap  模拟器的 scanTick 走到「要不要重扫」那一步（bots.js L723）、按模拟器的规则不重扫（第二名个人还有地）、
+//            而按线上引擎组队局的规则（bD.gv.mf()：还有地的队多于一个才不重扫）该重扫——第一次出现在哪一拍。
+//            从这一拍起两边的无主地扫描表分开。这是照着模拟器自己的状态推的，没有跑线上引擎；A001 上 huskprobe 直接读到的是 4676 拍这一步、4678 拍表里有了格子。
 // 只读 /agent/repos/c136-data（发现集的对局包 + src/sim）；不跑策略。
 //
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/cloneprobe.mjs [--budget 秒] [--at 630,1500,4284] <局> [<局> ...]
@@ -79,6 +82,12 @@ function probe(mid) {
   let live = [];
   let G = null;
   let gap = null;
+  let scanGap = null;
+  const teamsLeft = (g) => {
+    let left = 0;
+    for (const v of g.teamCacheGet().subarray(0, g.nTeams + 1)) left += v > 0 ? 1 : 0;
+    return left;
+  };
   const mk = (g, T, arm) => {
     const s = { T, arm, origClass: g.constructor.name, cloneProto: null, cloneErr: null, g: null, live: false,
       firstVis: null, vis: null, firstHid: null, hid: null, err: null, errT: null, endT: null, endWhy: null, diffAtEnd: null, subOnlyStale: null };
@@ -138,6 +147,18 @@ function probe(mid) {
     replayFrom: pairs[mid] || undefined,
     onStart: (g) => {
       G = g;
+      // scanTick 外面包一层只读的壳：原样调用，调用完按 bots.js L696-727 的分支条件判断这一拍有没有走到「要不要重扫」那一步
+      // （走到了而没有重扫 = 模拟器的规则认为第二名个人还有地）。
+      const scan0 = g.scanTick;
+      g.scanTick = function () {
+        const pass0 = this.scanPass, seen0 = this.scanSeen;
+        scan0.call(this);
+        if (scanGap !== null || !this.teamGame || pass0 < 300 || this.scanPass < 300) return;
+        const n = this.scanLen, t = this.t;
+        if (n >= 512) return;
+        const reached = n ? (t % 350 === 1 && seen0 === n && this.isBot(this.rank[0])) : t % 12 === 8;
+        if (reached && teamsLeft(this) <= 1) scanGap = { t, scanLen: n, alive: this.aliveCount, second: this.terr[this.rank[1]] };
+      };
       let depth = 0;
       for (const name of ENTRY) {
         const f = g[name];
@@ -157,10 +178,8 @@ function probe(mid) {
     },
     onTick: (g) => {
       if (gap === null && g.teamGame) {
-        let left = 0;
-        for (const v of g.teamCacheGet().subarray(0, g.nTeams + 1)) left += v > 0 ? 1 : 0;
         const second = g.aliveCount < 2 ? 0 : g.terr[g.rank[1]];
-        if (left <= 1 && second > 0) gap = { t: g.t, second, alive: g.aliveCount, scanLen: g.scanLen, scanPass: g.scanPass };
+        if (teamsLeft(g) <= 1 && second > 0) gap = { t: g.t, second, alive: g.aliveCount, scanLen: g.scanLen, scanPass: g.scanPass };
       }
       for (const s of live) if (s.live && !cheap(g, s)) close(g, s, '地或兵不等');
       if (AT.includes(g.t)) {
@@ -172,7 +191,7 @@ function probe(mid) {
   for (const s of live) close(G, s, G.over ? '局末' : '录像到头');
   for (const s of segs) delete s.g;
   const ev = (X.engineEvents || []).map((e) => [e[0], e[1]]);
-  return { matchId: mid, replayFrom: pairs[mid] || null, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, gap, segs };
+  return { matchId: mid, replayFrom: pairs[mid] || null, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, gap, scanGap, segs };
 }
 
 fs.mkdirSync(OUT, { recursive: true });
@@ -181,10 +200,14 @@ for (const mid of mids) {
   const fp = path.join(OUT, `${mid}.json`);
   if (fs.existsSync(fp)) continue;
   if (done && (Date.now() - T0) / 1000 > budget) break;
+  // 开跑前留一个记号：跑到一半被时间上限杀掉的局，批处理下一轮跳过（汇总里单列），免得卡在同一局上
+  const mark = path.join(OUT, `${mid}.started`);
+  fs.writeFileSync(mark, String(Date.now()));
   const t1 = Date.now();
   const R = probe(mid);
   R.sec = Math.round((Date.now() - t1) / 100) / 10;
   fs.writeFileSync(fp, JSON.stringify(R));
+  fs.unlinkSync(mark);
   done++;
   console.log(`${mid} 真人 ${R.H} 队 ${R.nTeams} 到 ${R.endTick} 拍 ${R.sec}s | ` + R.segs.map((s) => `${s.T}/${s.arm}:${s.cloneErr ? '克隆抛错' : s.firstVis !== null ? `走偏@${s.firstVis}` : s.err ? `抛错@${s.errT}` : `一致到${s.endT}${s.diffAtEnd && s.diffAtEnd.length ? `（字段不等 ${s.diffAtEnd.length}）` : ''}`}`).join(' '));
 }

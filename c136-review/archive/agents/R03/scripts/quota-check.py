@@ -28,8 +28,7 @@ def analyze(mid, detail=False):
     if rep is None:
         print(f"{mid}: 没有局内指令流，跳过")
         return
-    card = L.load_card(mid)
-    land = card["mapLand"]
+    land = L.match_land(mid, rep)
     traj = L.load_traj(mid)
     squad = L.squad_map(mid, rep)
     name2pid = {b: p for p, b in squad.items()}

@@ -50,7 +50,7 @@ def check_a():
         rep = L.load_replay(mid)
         if rep is None:
             continue
-        land = L.load_card(mid)["mapLand"]
+        land = L.match_land(mid, rep)
         traj = L.load_traj(mid)
         for pid, bot in L.squad_map(mid, rep).items():
             rows = traj.get(bot, [])
@@ -146,7 +146,7 @@ def check_c():
         rep = L.load_replay(mid)
         if rep is None:
             continue
-        land = L.load_card(mid)["mapLand"]
+        land = L.match_land(mid, rep)
         traj = L.load_traj(mid)
         opening = {}
         for o in L.load_opening(mid):
@@ -247,7 +247,7 @@ def check_d():
         rep = L.load_replay(mid)
         if rep is None:
             continue
-        land = L.load_card(mid)["mapLand"]
+        land = L.match_land(mid, rep)
         traj = L.load_traj(mid)
         for pid, bot in L.squad_map(mid, rep).items():
             rows = traj.get(bot, [])
@@ -313,7 +313,7 @@ def check_f():
         rep = L.load_replay(mid)
         if rep is None:
             continue
-        land = L.load_card(mid)["mapLand"]
+        land = L.match_land(mid, rep)
         traj = L.load_traj(mid)
         by_tick = L.cmds_by_tick(rep)
         for pid, bot in L.squad_map(mid, rep).items():
@@ -346,7 +346,7 @@ def check_f():
         rep = L.load_replay(mid)
         if rep is None:
             continue
-        land = L.load_card(mid)["mapLand"]
+        land = L.match_land(mid, rep)
         traj = L.load_traj(mid)
         by_tick = L.cmds_by_tick(rep)
         for pid, bot in L.squad_map(mid, rep).items():

@@ -41,7 +41,7 @@ def pc(x, nd=0):
 
 def md(head, rows, align=None):
     if not rows:
-        return "（这张表对应的对照还没有跑出来。）"
+        return "（这张表对应的对照没有跑，表留空。）"
     out = ["| " + " | ".join(head) + " |", "|" + "|".join((":--" if (align and align[i] == "l") or (not align and i == 0) else "--:") for i in range(len(head))) + "|"]
     for r in rows:
         out.append("| " + " | ".join(str(c) for c in r) + " |")
@@ -395,6 +395,7 @@ def main():
     WL = J.get("winLevel") or {}
     rows = []
     wl_h = []
+    wl_multi = []
     for g in GAMES:
         x = (WL.get(g) or {}).get("4284")
         if not x:
@@ -403,7 +404,14 @@ def main():
 
         def lvl(k):
             y = x.get(k)
-            return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）" if y else "—"
+            if not y:
+                return "—"
+            ss = y.get("aSs") or [y["aS"]]
+            if len(set(ss)) > 1:
+                # 几个种子的在场号不一样：ρ 写平均，在场号写范围，并在表前说明
+                wl_multi.append(f"{g} 的 {'C2' if k == 'C2p' else k}（{len(ss)} 个种子）")
+                return f"{r3(y['rho'], 2)}（{min(ss):g}~{max(ss):g} 个号）"
+            return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）"
         c1, c2 = x.get("C1"), x.get("C2p")
         if ((J.get("win") or {}).get(g, {}).get("t4284_h900") or {}).get("excl"):
             hs = "不计入（见下文）"
@@ -416,6 +424,7 @@ def main():
         else:
             hs = "—"
         rows.append([g, f"{r3(x['rho0'], 2)}（{x['aS0']} 个号）", pc(held) if held is not None else "—", lvl("H"), lvl("C2p"), lvl("C1"), hs])
+    F0["wlMultiNote"] = (f"有几个种子的格写的是各种子的平均；{'、'.join(wl_multi)}各种子窗末的在场号不同，写的是范围。") if wl_multi else ""
     T["窗口-4284-水平"] = md(["局", "4284 拍：ρ（我方在场号）", "这 900 拍里被按住的指令占比", "5184 拍 历史", "C2（同样走偏）", "C1", "按住与成批放行（ln ρ 之差）"], rows)
     if wl_h:
         hv_ = [h_ for _, h_, _ in wl_h]
@@ -578,9 +587,13 @@ def main():
             wl_.append(f"- 断面 {T0_} → {T0_ + 900} 拍，C1 已有两个种子的 {len(xs)} 局：两个种子之间 ln ρ 相差的中位数是 {r3(med(rg), 2)}，最大 {r3(max(rg), 2)}（{top['g']}）。")
             F0[f"seedC1_{T0_}n"], F0[f"seedC1_{T0_}med"], F0[f"seedC1_{T0_}max"] = str(len(xs)), r3(med(rg), 2), r3(max(rg), 2)
     F0["seedWinLine"] = "\n".join(wl_)
+    # A039 的 630 断面：这一窗没有指令被按住，按住这一项却不小；有了第二个种子就拿两个种子之差来说明
+    a39 = next((x_ for x_ in SS if x_["g"] == "A039" and x_["T0"] == 630 and x_["h"] == 900 and x_["ch"] == "C1"), None)
+    F0["a039noise630"] = (f"C1 换一个种子，这一窗的 ln ρ 就相差 {r3(a39['range'], 2)}，这个数在只换种子的波动之内" if a39
+                          else "这个数是单个种子的噪声量级")
     late_n = [len([x_ for x_ in SS if x_["T0"] == T0_ and x_["h"] == 900 and x_["ch"] == "C1"]) for T0_ in (1500, 4284)]
-    F0["seedLateNote"] = "（这两个断面 C1 的第二个种子还没有跑出来）" if not any(late_n) else \
-        f"（1500 断面已有 {late_n[0]} 局，4284 断面" + (f"已有 {late_n[1]} 局" if late_n[1] else "还没有") + "，见上表）"
+    F0["seedLateNote"] = "（这两个断面 C1 的第二个种子没有跑）" if not any(late_n) else \
+        f"（1500 断面有 {late_n[0]} 局，4284 断面" + (f"有 {late_n[1]} 局" if late_n[1] else "没有") + "，见上表）"
     # C2 的帧内先后改成随机的检查
     RP = J.get("rpCheck") or []
     if RP:
@@ -634,7 +647,7 @@ def main():
             return nm
         for x in AW["arms"]:
             rows.append([arm_name(x), "4285" if x["take"] == 4285 else "4284（没有那条 4284 拍落地的赠兵）", sg(x["d"], 2), f"{x['LS']:,}", x["aS"],
-                         "每个记录拍都相同" if x["sameAsHist"] else "不同"])
+                         "每个记录拍都相同" if x.get("sameAll") else ("每个记录拍的领土都相同" if x["sameAsHist"] else "不同")])
 
         def arm(take, chan, seed, variant=""):
             return next((x for x in AW["arms"] if x["take"] == take and x["chan"] == chan and x["seed"] == seed and x["variant"] == variant), None)
@@ -650,11 +663,32 @@ def main():
             F0["a082dMin"], F0["a082dMax"] = sg(min(ds_), 2), sg(max(ds_), 2)
             F0["a082armsN"] = str(len(AW["arms"]))
             F0["a082histWorst"] = "历史上的结果是其中最低的" if hh_["d"] <= min(x["d"] for x in AW["arms"]) + 1e-9 else "历史上的结果不是其中最低的"
+        a85c1s1, a85c2s1 = arm(4285, "C1", 1), arm(4285, "C2", 1)
         if a84c2 and a84c2s1:
             F0["a082pertSame"] = "窗末的领土和在场号完全相同" if (a84c2["LS"], a84c2["aS"]) == (a84c2s1["LS"], a84c2s1["aS"]) else f"窗末的 ln ρ 变化是 {sg(a84c2s1['d'], 2)}"
-        # 4285 拍接管以后新增的种子（有了才写）
-        more = [x for x in AW["arms"] if x["take"] == 4285 and not (x["chan"] in ("C1", "C2") and x["seed"] == 0 and not x["variant"])]
-        F0["a082moreLine"] = ("从 4285 拍接管再换种子跑：" + "；".join(f"{arm_name(x)} 是 {sg(x['d'], 2)}（剩 {x['aS']} 个号）" for x in more) + "。") if more else ""
+            if a85c2s1:
+                F0["a082pertSame"] += "；从 4285 拍接管的那一条" + ("每个记录拍都与历史相同" if a85c2s1.get("sameAll") else
+                                                           ("每个记录拍的领土都与历史相同（" + ("只有其他真人的余额" if a85c2s1.get("diffKeys") == ["BO"] else "余额或在场人数") +
+                                                            f"有差别，最大的一处相差 {a85c2s1['balRelMax'] * 100:.3f}%）") if a85c2s1["sameAsHist"] else f"窗末的 ln ρ 变化是 {sg(a85c2s1['d'], 2)}")
+        described = [a85c2, a85c1]
+        if a85c2 and a85c1 and a84c2 and a84c1:
+            if a85c1s1:
+                # C1 有了第二个种子：通道之差两个种子各写一个；同一种通道只换种子差多少另写一条
+                F0["a082gapChanLine"] = (f"有这条赠兵时（4285 拍接管）C1 的两个种子与 C2 分别差 {r3(abs(a85c1['d'] - a85c2['d']), 2)} 和 {r3(abs(a85c1s1['d'] - a85c2['d']), 2)}，"
+                                         f"没有时（4284 拍接管）只差 {F0['a082gapChan4284']}。")
+                F0["a082c1seedLine"] = (f"\n- 同一种通道（C1）、同样从 4285 拍接管，只换一组随机抽的延迟和帧内先后，ln ρ 的变化一条是 {sg(a85c1['d'], 2)}（剩 {a85c1['aS']} 个号），"
+                                        f"另一条是 {sg(a85c1s1['d'], 2)}（剩 {a85c1s1['aS']} 个号），相差 {r3(abs(a85c1['d'] - a85c1s1['d']), 2)}：换种子的差别与换通道的差别一样大。")
+                described += [a85c1s1]
+            else:
+                F0["a082gapChanLine"] = f"有这条赠兵时（4285 拍接管）C1 与 C2 差 {F0['a082gapChan4285']}，没有时（4284 拍接管）只差 {F0['a082gapChan4284']}。"
+                F0["a082c1seedLine"] = ""
+        if a85c2s1:
+            described += [a85c2s1]
+        near = [x for x in AW["arms"] if x["take"] == 4285 and x["chan"] == "C1" and not x["variant"] and abs(x["d"] - hh_["d"]) < 0.2]
+        F0["a082nearHist"] = f"基础延迟通道的一条轨迹（{sg(near[0]['d'], 2)}）也落在历史（{sg(hh_['d'], 2)}）附近；" if near else ""
+        # 4285 拍接管的其余轨迹（上面几条没有写到的；有了才写）
+        more = [x for x in AW["arms"] if x["take"] == 4285 and not any(x is y for y in described)]
+        F0["a082moreLine"] = ("从 4285 拍接管的其余轨迹：" + "；".join(f"{arm_name(x)} 是 {sg(x['d'], 2)}（剩 {x['aS']} 个号）" for x in more) + "。") if more else ""
     A79 = (J.get("alt4285") or {}).get("A079")
     if A79:
         F0["a079gap4285"], F0["a079gap4284"] = sg(A79["gap4285"]), sg(A79["gap4284"])
@@ -724,6 +758,33 @@ def main():
             row.append("/".join(str(k) for k in x["n"]) if x else "—")
         rows.append(row)
     T["种子数"] = md(["局", "断面 0（C0 / C1 / C2 走偏）", "断面 630", "断面 1500", "断面 4284"], rows)
+    # 结论里「每格有几个种子」这句话：按实际的种子数写
+    def n_two(key, idx):
+        """这一断面里，C1（idx=1）或走偏的 C2（idx=2）有两个以上种子的局数 / 有结果的局数"""
+        if key == "t0_1500":
+            xs_ = [(J.get("games") or {}).get(g, {}).get(key) for g in GAMES]
+        else:
+            xs_ = [(J.get("win") or {}).get(g, {}).get(key) for g in GAMES]
+        xs_ = [x_ for x_ in xs_ if x_ and not x_.get("excl")]
+        return sum(1 for x_ in xs_ if x_["n"][idx] >= 2), len(xs_)
+    parts_, rest_ = [], []
+    for key, nm in (("t0_1500", "0"), ("t630_h900", "630"), ("t1500_h900", "1500"), ("t4284_h900", "4284")):
+        (a1, tot), (a2, _) = n_two(key, 1), n_two(key, 2)
+        if not tot:
+            continue
+        if a1 == tot and a2 == tot:
+            parts_.append(f"断面 {nm} 的 C1 和走偏的 C2 都有 2 个种子")
+        elif a1 == tot:
+            parts_.append(f"断面 {nm} 的 C1 有 2 个种子、走偏的 C2 只有 1 个")
+        else:
+            rest_.append(nm)
+    if rest_:
+        parts_.append(f"断面 {'、'.join(rest_)} 大多只有 1 个种子")
+    F0["seedStateLine"] = "；".join(parts_)
+    hc_ = [((J.get("games") or {}).get(g, {}).get("t0_1500") or {}).get("hold") for g in ("A033", "A039")]
+    if all(v is not None for v in hc_):
+        F0["ctlHoldLine"] = (f"基本没被按住的 A033、A039 两局，按住这一项是 {sg(hc_[0])} 和 {sg(hc_[1])}，接近 0，与预期一致" if max(abs(v) for v in hc_) < 0.05
+                             else f"基本没被按住的 A033、A039 两局，按住这一项也有 {sg(hc_[0])} 和 {sg(hc_[1])}")
 
     # ---- 复现：录像里落地的指令 vs 影子在同一位置发的指令（108_closure_mismatch.py）
     rows = []
@@ -1021,10 +1082,12 @@ def main():
     lack = [f"断面 {T0}（{'还没有' if not nseed[T0] else f'已有 {nseed[T0]} 局'}）" for T0 in (0, 630, 1500) if nseed[T0] < 11]
     if lack:
         todo.append("C1 的第二个随机数种子：" + "、".join(lack) + "（§8）")
-    F["delaySensNote"] = "（§8 给了几种取法下的结果）" if (J.get("sens") or {}) else "（§8 原计划给出几种取法下的结果，这一组对照还没有跑出来）"
+    F["delaySensNote"] = "（§8 给了几种取法下的结果）" if (J.get("sens") or {}) else "（§8 原计划给出几种取法下的结果，这一组对照没有跑）"
     if todo:
-        F["todoLine"] = "重计算槽位紧张（`outbox/0021`、`outbox/0023`），下面几样没有跑完，报告里对应的表留空或只有部分局：" + "；".join(todo) + \
-            "。跑出来以后补进这份报告。原计划每种通道 3 个种子，现在大多数格只有 1 个（§8 末尾的表）；第三个种子、零延迟通道的其余种子、4284 断面的第二个种子等次要对照已从清单里删掉，不再补。"
+        F["todoLine"] = "下面几样没有跑完，也不再补，报告里对应的表留空或只有部分局：" + "；".join(todo) + \
+            "。它们是敏感性对照，不是上面几条结论所依据的主对照。没跑完的原因：重计算槽位一直紧张（`outbox/0021`、`outbox/0023`）；" \
+            "2026-11-12 20:53 UTC 各次对照的输出缓存丢失（`outbox/0025`），之后我没有重建缓存，也不再往这份报告里加新的对照（原因见 §1 第 4 点和 `outbox/0027`）。" \
+            "原计划每种通道 3 个种子，现在大多数格只有 1 个（§8 末尾的表）；第三个种子、零延迟通道的其余种子、4284 断面的第二个种子等次要对照此前已从清单里删掉。"
     else:
         F["todoLine"] = "计划内的对照都已跑完。原计划每种通道 3 个种子，实际大多数格只有 1~2 个（§8 末尾的表）；第三个种子等次要对照已从清单里删掉。"
     # 接管那一拍在途的指令：离线通道放行的条数 对 录像里实际在途并落地的条数

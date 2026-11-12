@@ -319,8 +319,22 @@ def boot_ci(vals, n_boot=4000, seed=20261112):
     return ms[int(0.05 * n_boot)], ms[int(0.95 * n_boot) - 1]
 
 
+def guard_cache(R):
+    """out/ 不入库。缓存丢了或不全时照它重算，会把 reports/ckpt-data/ 下入库的表覆盖成空的或残缺的。"""
+    p = os.path.join(DST, 'ckpt_decomp.csv')
+    if '--force' in sys.argv or not os.path.exists(p):
+        return
+    with open(p, newline='') as f:
+        have = {(r['mid'], int(r['t0'])) for r in csv.DictReader(f)}
+    gone = sorted(have - set(R.keys()))
+    if gone:
+        sys.exit(f'aggregate.py：入库的表里有 {len(have)} 个（局, 断面），out/_ckpt/runs/ 里缺其中 {len(gone)} 个的原始结果（例如 {gone[0][0]}-{gone[0][1]}）。\n'
+                 '照这份缓存重算会覆盖 reports/ckpt-data/ 下的表，没有执行。先按报告 §6 把步骤重跑出来；确实要覆盖就加 --force。')
+
+
 def main():
     R = load()
+    guard_cache(R)
     os.makedirs(DST, exist_ok=True)
     keys = sorted(R.keys(), key=lambda k: (MID_ORDER.index(k[0]) if k[0] in MID_ORDER else 99, k[1]))
 
@@ -1334,7 +1348,7 @@ def main():
             if not any(k in idx[v] and idx[v][k]['variantRerun'] for v in ('hi', 'lo')):
                 continue
             lag3 = ' / '.join(str(idx[v][k]['lagP75']) if k in idx[v] else '-' for v in ('located', 'hi', 'lo'))
-            star = ''.join('（' + {'hi': '上界', 'lo': '下界'}[v] + '还没跑，先沿用主口径）' for v in ('hi', 'lo') if k in idx[v] and idx[v][k]['variantPending'])
+            star = ''.join('（' + {'hi': '上界', 'lo': '下界'}[v] + '没有重跑，沿用主口径）' for v in ('hi', 'lo') if k in idx[v] and idx[v][k]['variantPending'])
             P(f"| {r['mid']} | {WN.get(r['t0'], r['t0'])}{star} | {fmt(r[y + '_hist'])} | {lag3} | {trip(k, y + '_C2w')} | {trip(k, y + '_C2')} | {trip(k, y + '_wave', 3, True)} | {trip(k, y + '_page', 3, True)} | {trip(k, y + '_resid', 3, True)} | {trip(k, y + '_C2sd')} |")
             for v in ('hi', 'lo'):
                 rv = idx[v].get(k)
@@ -1343,7 +1357,7 @@ def main():
         P('')
         npend = {v: [f"{r['mid']} {WN.get(r['t0'], r['t0'])}" for r in DV[v] if r['variantPending']] for v in ('hi', 'lo')}
         P(f"重跑的（局, 窗口）：上界 {nband['hi']} 个、下界 {nband['lo']} 个。阶梯与主口径平均相差不到 2 拍的窗口没有重跑，沿用主口径的数。"
-          + (f"选中要重跑、还没跑出来的：上界 {len(npend['hi'])} 个、下界 {len(npend['lo'])} 个（按阶梯差从大到小排的队，没跑的是差得小的；下面的汇总里它们先沿用主口径的数）"
+          + (f"选中要重跑、最后没有跑的：上界 {len(npend['hi'])} 个、下界 {len(npend['lo'])} 个（按阶梯差从大到小排的队，机器负载高，差得小的这些取消了；下面的汇总里它们沿用主口径的数）"
              f"——上界：{'、'.join(npend['hi']) or '无'}；下界：{'、'.join(npend['lo']) or '无'}。" if (npend['hi'] or npend['lo']) else '选中的窗口都跑完了。'))
         P('')
         P('| 窗口 | 局数 | 落后波 均值：主 / 上界 / 下界 | 页面/掉线 均值：主 / 上界 / 下界 | 残差 均值：主 / 上界 / 下界 | \\|残差\\| 均值：主 / 上界 / 下界 | \\|残差\\| 中位：主 / 上界 / 下界 |')
@@ -1381,7 +1395,7 @@ def main():
               f"（{' / '.join(ex(tsum[v]['wave'] + tsum[v]['page']) for v in ('located', 'hi', 'lo'))}）；"
               f"其中落后波 {' / '.join(ex(tsum[v]['wave']) for v in ('located', 'hi', 'lo'))}、页面/掉线 {' / '.join(ex(tsum[v]['page']) for v in ('located', 'hi', 'lo'))}；"
               f"残差 {' / '.join(fmt(tsum[v]['resid'], 3, True) for v in ('located', 'hi', 'lo'))}（{' / '.join(ex(tsum[v]['resid']) for v in ('located', 'hi', 'lo'))}）。"
-              f"已重跑 上界 {nband['hi']} 个、下界 {nband['lo']} 个窗口" + (f"，排着队还没跑的 上界 {len(npend['hi'])} 个、下界 {len(npend['lo'])} 个（阶梯差得小的）。" if (npend['hi'] or npend['lo']) else '，选中的都跑完了。'))
+              f"已重跑 上界 {nband['hi']} 个、下界 {nband['lo']} 个窗口" + (f"；阶梯差得小的 上界 {len(npend['hi'])} 个、下界 {len(npend['lo'])} 个窗口没有重跑，沿用主口径的数。" if (npend['hi'] or npend['lo']) else '，选中的都跑完了。'))
             P('')
 
     # ---- 敏感度：落后波与页面停摆两段的先后次序（C1p = 基础延迟 + 实录页面寿命，不带落后波）

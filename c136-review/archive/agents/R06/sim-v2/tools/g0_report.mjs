@@ -21,13 +21,21 @@ import { fileURLToPath } from 'node:url';
 import { SIG as LIVE_SIG, loadLive, lagClass, bands } from './live_table.mjs';
 import { cohortOf, quantile } from '../lib/util.mjs';
 import { Profile } from '../lib/channel.mjs';
-import { HISTORICAL_STRATEGIES } from '../lib/sandbox.mjs';
 import { compareDirs } from './same_result.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SIMV2 = path.resolve(HERE, '..');
 const argv = process.argv.slice(2);
 // --calib：换一个结果目录读（调试用；缺省 sim-v2/calib），表和数字写到它下面的 report/
+// 历史策略白名单：从 lib/sandbox.mjs 的源码里把那张表读出来（不 import 它：sandbox.mjs 会连带装载数据包里的引擎，
+// 而这个脚本只读结果文件，数据包不在的机器上也要能重新生成报告）。
+const HISTORICAL_STRATEGIES = (() => {
+  const src = fs.readFileSync(path.join(SIMV2, 'lib', 'sandbox.mjs'), 'utf8');
+  const out = {};
+  for (const m of src.matchAll(/^\s*(va|vb|vc|c110): \['([^']+)', '([0-9a-f]{64})'\],?\s*$/gm)) out[m[1]] = { file: m[2], sha256: m[3] };
+  if (Object.keys(out).length !== 4) throw new Error('lib/sandbox.mjs 里的历史策略白名单读不出来');
+  return out;
+})();
 const CALIB = argv.includes('--calib') ? path.resolve(argv[argv.indexOf('--calib') + 1]) : path.join(SIMV2, 'calib');
 const OUT = path.join(CALIB, 'report');
 const ONLY = argv.includes('--only') ? argv[argv.indexOf('--only') + 1] : '';
@@ -251,7 +259,7 @@ if (want('scope')) {
     }
     rows.push(['合计', String(P.total), String(P.total - P.ungatedN), String(P.ungatedN), String(P.sampleN), `${P.check.same} / ${P.check.n}`, `${P.describe ? P.describe.ok : '-'} / ${P.describe ? P.describe.n : '-'}`]);
     table('prov', ['结果目录', '结果数', '经闸门跑的', '没经闸门跑的', '其中要经闸门重跑的', '重跑结果与原结果逐字段相同 / 已重跑', '自述与清单一致 / 已核对'], rows,
-      '「经闸门」= 流水 `calib/run-log.jsonl` 里这次运行的进程优先级是 19（闸门 `run-heavy.sh` 给的），或者（记流水之前的）文件时间早于 ' + String(P.strayStart).replace('T', ' ').replace('+00:00', ' UTC') + '。重跑哪些：verify 和闭环房间里没经闸门的全部重跑；其余目录按「目录/标签」的 sha1 取模，每 ' + P.every + ' 个抽 1 个，另加点名的 ' + (P.always ?? 0) + ' 个。「自述」= 结果文件里自己记的局、断面、窗口长度、通道写法、种子、策略文件的内容散列。由 `tools/run_prov.py` 生成。');
+      '「经闸门」= 流水 `calib/run-log.jsonl` 里这次运行的进程优先级是 19（闸门 `run-heavy.sh` 给的），或者（记流水之前的）文件时间早于 ' + String(P.strayStart).replace('T', ' ').replace('+00:00', ' UTC') + '（这一条的分类是 11 月 12 日 17:50 定下来的，存在 `calib/run-prov-base.json`：工作区后来重新检出过，文件时间不再可信）。重跑哪些：verify 和闭环房间里没经闸门的全部重跑；其余目录按「目录/标签」的 sha1 取模，每 ' + P.every + ' 个抽 1 个，另加点名的 ' + (P.always ?? 0) + ' 个。「自述」= 结果文件里自己记的局、断面、窗口长度、通道写法、种子、策略文件的内容散列。由 `tools/run_prov.py` 生成。');
     val('prov.total', P.total); val('prov.ungated', P.ungatedN); val('prov.gated', P.total - P.ungatedN); val('prov.sample', P.sampleN); val('prov.every', P.every);
     val('prov.sample.full', P.sampleFull ?? 0); val('prov.sample.hash', P.sampleHash ?? P.sampleN); val('prov.sample.always', P.always ?? 0);
     val('prov.check.n', P.check.n); val('prov.check.same', P.check.same); val('prov.check.pending', P.check.pending); val('prov.check.notGated', P.check.notGated);
@@ -259,6 +267,9 @@ if (want('scope')) {
     val('prov.describe.n', P.describe ? P.describe.n : 0); val('prov.describe.ok', P.describe ? P.describe.ok : 0); val('prov.describe.noRow', P.describe ? P.describe.noRow : 0);
     val('prov.strayStart', String(P.strayStart).slice(11, 16)); val('prov.strayLast', P.strayLast ? String(P.strayLast).slice(11, 16) : '-');
     val('prov.done', P.check.pending === 0 && P.check.notGated === 0 && P.check.n === P.sampleN ? 1 : 0);
+    // 生成这一版时数据包在不在（模拟器要读它；不在的话剩下的重跑做不了）
+    const DATA_DIR = process.env.C136_DATA || '/agent/repos/c136-data';
+    val('env.data', fs.existsSync(path.join(DATA_DIR, 'src')) && fs.existsSync(path.join(DATA_DIR, 'bundles')) ? 1 : 0);
     const PH = P.history || { windows: 0, results: 0, badWindows: [], ungated: 0, anchored: 0, anchoredWindows: 0, ungatedWindows: 0 };
     val('prov.hist.windows', PH.windows); val('prov.hist.results', PH.results); val('prov.hist.bad', PH.badWindows.length);
     val('prov.hist.ungated', PH.ungated); val('prov.hist.anchored', PH.anchored);
