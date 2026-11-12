@@ -367,6 +367,37 @@ def main():
                         F0[f"wc1_{T0}of"] = str(len(dd))
             head = ["局", "断面时的 ρ", "这 900 拍里历史上被按住的指令占比" if hh == 900 else "", "历史", "C2（同样走偏）", "C1", "C0", "基础延迟", "按住与成批放行", "走偏带来的虚高"]
             T[f"窗口-{T0}-{hh}"] = md(head, rows)
+    # ---- 4284 断面：窗口末尾的水平值（这一窗有的局我方被打光，ln ρ 没有定义）
+    WL = J.get("winLevel") or {}
+    rows = []
+    wl_h = []
+    for g in GAMES:
+        x = (WL.get(g) or {}).get("4284")
+        if not x:
+            continue
+        held = ((E.get(g, {}).get("win") or {}).get("4284~5184") or {}).get("heldShare")
+
+        def lvl(k):
+            y = x.get(k)
+            return f"{r3(y['rho'], 2)}（{y['aS']:g} 个号）" if y else "—"
+        c1, c2 = x.get("C1"), x.get("C2p")
+        if c1 and c2 and c1["rho"] > 0 and c2["rho"] > 0:
+            hd_ = math.log(c1["rho"]) - math.log(c2["rho"])
+            hs = sg(hd_)
+            wl_h.append((g, hd_, held))
+        elif c1 and c2:
+            hs = "两种通道下都全灭" if c1["rho"] == 0 and c2["rho"] == 0 else ("C2 下全灭" if c2["rho"] == 0 else "C1 下全灭")
+        else:
+            hs = "—"
+        rows.append([g, f"{r3(x['rho0'], 2)}（{x['aS0']} 个号）", pc(held) if held is not None else "—", lvl("H"), lvl("C2p"), lvl("C1"), hs])
+    T["窗口-4284-水平"] = md(["局", "4284 拍：ρ（我方在场号）", "这 900 拍里被按住的指令占比", "5184 拍 历史", "C2（同样走偏）", "C1", "按住与成批放行（ln ρ 之差）"], rows)
+    if wl_h:
+        hv_ = [h_ for _, h_, _ in wl_h]
+        F0["wl4284n"] = str(len(wl_h))
+        F0["wl4284min"], F0["wl4284max"] = sg(min(hv_)), sg(max(hv_))
+        F0["wl4284mean"] = sg(mean(hv_))
+        F0["wl4284absMax"] = r3(max(abs(h_) for h_ in hv_), 2)
+        F0["wl4284rows"] = str(len(rows))
     # A053：630~1200 拍被按住的指令里，晚到但落地的和没落地的各多少（正文用）
     ex = [(E.get("A053", {}).get("win") or {}).get(w_) for w_ in ("630~900", "900~1200")]
     if all(ex):
@@ -476,6 +507,13 @@ def main():
         F0["verSameIdentical"] = str(vs["identical"])
         F0["verSnaps"] = str(vs["snaps"])
         F0["verIssuedDiff"] = str(vs["issuedDiff"])
+    # 同一条对照重跑一次是否逐拍相同
+    RR = J.get("rerun") or []
+    if RR:
+        F0["rerunN"] = str(len(RR))
+        F0["rerunSnaps"] = "、".join(str(x_["snaps"]) for x_ in RR)
+        F0["rerunDiff"] = str(sum(x_["diff"] for x_ in RR))
+        F0["rerunWhat"] = "；".join({"mt-a": "A089，断面 0，C1，种子 1", "mt-b": "A089，断面 630，C2，种子 0"}.get(x_["a"], x_["a"]) for x_ in RR)
     # 只换种子时 ln ρ 的差（正文和「种子间差别」表用）
     SS = J.get("seedSpread") or []
     rows = []

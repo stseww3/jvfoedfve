@@ -106,6 +106,7 @@ C1 和 C2 共用两条线上规则：一个决策拍只受理一条指令；每�
 | 全按录像重演（基线）| 11 局的轨迹表逐行相同（A007 441 / 441 行，其余 10 局同样全部相同）|
 | 影子策略发的指令能否对上录像里落地的指令 | 11 局逐条对上的比例 99.4%~100.0% |
 | C1 的延迟模型 | 实测（10 局、0~600 拍、791 条）平均 11.94 拍，14 拍内落地的占 85.7%；模型平均 11.59 拍，14 拍内 90.4% |
+| 同一条对照换一个进程重跑 | {{rerunN}} 条（{{rerunWhat}}）：{{rerunSnaps}} 个记录拍里不同的有 {{rerunDiff}} 个。另外，{{verSameN}} 局换成另一个版本的运行在 1500 拍前等于把本局版本重跑一次，也全部逐拍相同（§7）。同样的输入得到同样的结果 |
 | C2 不扰动时能否复现历史（断面 0 → 1500 拍）| {{clsExactN}} 局逐拍完全相同；其余 {{clsDiffN}} 局的差别都出现在 {{clsFirstDiffMin}} 拍以后，到 1500 拍我方领土与历史相差 {{clsLSmin}} ~ {{clsLSmax}}（下表）|
 
 @@表 复现-断面0@@
@@ -289,6 +290,10 @@ C1 和 C2 共用两条线上规则：一个决策拍只受理一条指令；每�
 
 **断面 4284 → 5184 拍**
 
+这一窗有的局我方被打光，ln ρ 没有定义，所以先列窗口末尾的水平值：
+
+@@表 窗口-4284-水平@@
+
 @@表 窗口-4284-900@@
 
 @@表 三层-窗口-4284@@
@@ -379,6 +384,7 @@ C1 和 C2 共用两条线上规则：一个决策拍只受理一条指令；每�
 4. **按住的机制仍然未知。** C2 只是照搬每一局实录的轨迹，没有解释指令为什么被按住（跨局汇总 §9.3~§9.4）。本报告量的是「这条轨迹造成了多少损失」，不是「按住的原因是什么」。
 5. **C1 的延迟分布取自 0~600 拍。** 如果正常通道的延迟在对局后段不同，基础延迟这一项会跟着变（§8 给了几种取法下的结果）。
 6. **A062 同场还有同一操作者的第二支队伍**（对局包 `sameMatchPeer`：B043，不在同一队）。这一局的「其他真人」里包含那些号。其余 10 局没有这种情况。
+7. **各断面的窗口不能加总。** 每个断面的窗口都从当时的历史局面出发。630 拍以前被按住的指令还不多（只有 A062、A007 两局在 300~630 拍有较多指令被按住，§4），所以 630 断面的窗口可以和断面 0 的结果对照。1500 和 4284 拍的历史局面已经带着此前被按住的后果（领土少、手里的兵多），这两个断面窗口里的三层，与断面 0 的三层不是同一笔账的前后两段（§6.2）。
 
 ---
 
@@ -416,6 +422,7 @@ bash c136-review/agents/R07/scripts/102_cp_batch.sh /tmp/r07_plan.txt
 # 汇总
 python3 c136-review/agents/R07/scripts/104_channel_exposure.py
 bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/105_human_fill.mjs A007 A033 A039
+bash c136-review/agents/R07/scripts/105b_fill_late.sh      # 1500 拍以后的站位基准（重演到 5184 拍）
 python3 c136-review/agents/R07/scripts/106_spawn_par.py
 python3 c136-review/agents/R07/scripts/103_cp_table.py
 python3 c136-review/agents/R07/scripts/108_closure_mismatch.py
@@ -429,7 +436,7 @@ python3 c136-review/agents/R07/scripts/107_cp_report.py
 | `scripts/102_cp_plan.py`、`102_cp_batch.sh` | 运行清单与批量运行 |
 | `scripts/103_cp_table.py` | 汇总成底表 |
 | `scripts/104_channel_exposure.py` | 历史上指令的去向（§4）|
-| `scripts/105_human_fill.mjs`、`106_spawn_par.py` | 天然地盘与站位基准（§5.1）|
+| `scripts/105_human_fill.mjs`、`105b_fill_late.sh`、`106_spawn_par.py` | 天然地盘与站位基准（§5.1；1500 拍以后的见 §6.2）|
 | `scripts/108_closure_mismatch.py` | 录像里落地的指令与影子在同一位置发的指令逐条比对（§3）|
 | `scripts/107_cp_report.py`、`cp_report_src.md` | 报告用表与正文（正文里的数由脚本填入）|
 | `out/_cross/cp_runs.tsv` | 每次运行、每个观察拍一行的原始结果 |

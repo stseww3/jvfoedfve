@@ -514,6 +514,34 @@ def main():
                 J["winSum"][f"t{T0}_h{hh}"] = {k: {"mean": mean(acc[k]), "median": med(acc[k]), "n": sum(1 for x in acc[k] if x is not None)} for k in ks}
             P("")
 
+    # ---------- 表 2e：窗口末尾的水平值（我方全灭时 ρ = 0，ln ρ 没有定义，所以另列水平值）
+    P("## 表 2e：各断面 → 900 拍后的水平值（多个种子取平均；我方全灭时 ρ = 0，ln ρ 没有定义）")
+    P("局\t断面\t断面时：ρ / 我方领土 / 我方在场号\t历史：ρ / 我方领土 / 在场号\tC2p\tC1\tC0")
+    J["winLevel"] = {}
+    for T0 in (630, 1500, 4284):
+        for g in GAMES:
+            h = base.get(g)
+            if not h:
+                continue
+            s0, s1 = snap_at(h["snaps"], T0, 1), snap_at(h["snaps"], T0 + 900)
+            if not s0 or not s1:
+                continue
+            rec = {"rho0": rho(s0, h["nSquad"], h["nOther"]), "LS0": s0["LS"], "aS0": s0["aS"],
+                   "H": {"rho": rho(s1, h["nSquad"], h["nOther"]), "LS": s1["LS"], "aS": s1["aS"], "n": 1}}
+            for key, chan, seeds in (("C2p", "C2", PERT), ("C1", "C1", (0, 1, 2)), ("C0", "C0", (0, 1, 2))):
+                rr = sel(g, chan, T0, 900, seeds=seeds)
+                if rr:
+                    rec[key] = {"rho": mean([float(r["rho"]) for r in rr]), "LS": mean([r["LS"] for r in rr]), "aS": mean([r["aS"] for r in rr]), "n": len(rr)}
+            if not any(k in rec for k in ("C2p", "C1", "C0")):
+                continue
+            J["winLevel"].setdefault(g, {})[str(T0)] = rec
+
+            def lv(k):
+                x = rec.get(k)
+                return f"{x['rho']:.3f} / {x['LS']:.0f} / {x['aS']:g}" if x else "-"
+            P(f"{g}\t{T0}\t{rec['rho0']:.3f} / {rec['LS0']} / {rec['aS0']}\t" + "\t".join(lv(k) for k in ("H", "C2p", "C1", "C0")))
+    P("")
+
     # ---------- 表 2w：各断面窗口的三层（站位基准用窗口两端的 v_γ；1500 拍以后的 v_γ 来自 105_human_fill.mjs --late）
     late = (spar.get("late") or {}).get("games") or {}
 
@@ -733,6 +761,26 @@ def main():
             P(f"{g}\t{T0}\t{hh}\t{d:.3f}\t{n}")
         P("")
         J["noise"] = [{"g": g, "T0": T0, "h": hh, "maxDev": d, "n": n} for g, T0, hh, d, n in nz]
+
+    # ---------- 表 10：同一条对照重跑（mt-a = A089 C1 断面 0 种子 1；mt-b = A089 C2 断面 630 种子 0）：每个记录拍是否相同
+    rer = []
+    for g, ta, tb in (("A089", "mt-a", "C1-t0-s1"), ("A089", "mt-b", "C2-t630-s0")):
+        ja, jb = jload(os.path.join(CP, g, ta + ".json")), runs.get((g, tb))
+        if not ja or not jb:
+            continue
+        sa = {x["t"]: x for x in ja["snaps"]}
+        sb = {x["t"]: x for x in jb["snaps"]}
+        ks2 = ("LS", "LO", "BS", "BO", "botL", "seat", "seatB", "aS", "aO")
+        common = sorted(set(sa) & set(sb))
+        rer.append({"g": g, "a": ta, "b": tb, "snaps": len(common), "diff": sum(1 for t in common if any(sa[t][k] != sb[t][k] for k in ks2)),
+                    "cmdSame": ja.get("cmdSum") == jb.get("cmdSum")})
+    if rer:
+        P("## 表 10：同一条对照在不同进程里重跑一次：记录拍是否相同")
+        P("局\t两次运行\t记录拍数\t不同的记录拍数\t指令汇总是否相同")
+        for x in rer:
+            P(f"{x['g']}\t{x['a']} / {x['b']}\t{x['snaps']}\t{x['diff']}\t{'相同' if x['cmdSame'] else '不同'}")
+        P("")
+        J["rerun"] = rer
 
     # ---------- 表 9：同一局、同一通道、同一断面，只换种子：ln ρ 的最大值 − 最小值
     ss = []
