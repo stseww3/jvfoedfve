@@ -16,6 +16,9 @@
   收款后 300 拍    阵亡 / 没有任何陆攻或发船指令进录像 / 又捐出 >= 到账的一半 / 战斗耗兵 >= 到账的一半（都只算在场的我方号；可以同时成立）
   捐款人           捐款后 300 拍内阵亡
   对倒             A→B 之后 150 拍内 B→A（两笔都执行）
+  代码分支         由 pct 反推 tryDonateToTeammate 走的是哪一支（L4369-4499）：153 = 盈余捐款、不被围（L4489）；185 / 280 = 盈余捐款、被围（boxedIn，L4489）；
+                   155 = 救援（L4437）；240 = 救援、纯内陆（isPureInlandSafe，L4437）；<155 的其他值 = 救援被 maxSafePct 钳小（L4388、L4437）；
+                   156~239 的其他值 = 纯内陆救援被钳。「后排」= 被围或纯内陆的捐款人（185 / 280 / 240 / 156~239）。153 也可能是钳出来的，分不开，算盈余。
 """
 import json
 import os
@@ -43,6 +46,30 @@ def acc():
     return dict(n=0, delivered=0, fee=0)
 
 
+BRANCHES = ['盈余·不被围（153）', '盈余·被围（185 / 280）', '救援（155）', '救援·纯内陆（240）', '救援·被钳小（<155）', '救援·纯内陆被钳（156~239）', '其他']
+REAR = ('盈余·被围（185 / 280）', '救援·纯内陆（240）', '救援·纯内陆被钳（156~239）')
+
+
+def branch(pct):
+    if pct == 153:
+        return BRANCHES[0]
+    if pct in (185, 280):
+        return BRANCHES[1]
+    if pct == 155:
+        return BRANCHES[2]
+    if pct == 240:
+        return BRANCHES[3]
+    if pct < 155:
+        return BRANCHES[4]
+    if 156 <= pct < 240:
+        return BRANCHES[5]
+    return BRANCHES[6]
+
+
+def bacc():
+    return dict(n=0, delivered=0, fee=0, truncN=0, short=0, husk=0, huskFee=0, fAll=0, fSpent=0, fDonOut=0, fNoCmd=0, fDead=0, donorDens=[], recvDens=[], fire=0, live=0, up=0, upDelivered=0, upFee=0, recv100=0, recv100Fee=0)
+
+
 def put(d, key, r):
     a = d.setdefault(key, acc())
     a['n'] += 1
@@ -60,8 +87,43 @@ def build(mid):
     doc['trunc']['short'] = 0
     bp = defaultdict(int)
     live = []
+    BR = doc['branch'] = {}
     for r in out:
         q, t = r['to'], r['t']
+        b = BR.setdefault(branch(r['pct']), bacc())
+        b['n'] += 1
+        b['delivered'] += r['delivered']
+        b['fee'] += r['fee']
+        b['donorDens'].append(round(r['B0'] / max(1, r.get('fromTerr') or 1), 1))
+        if r.get('onRecv'):
+            b['fire'] += 1
+        nom = r['B0'] * (r['pct'] + 1) // 1024
+        if r['delivered'] < 0.9 * nom:
+            b['truncN'] += 1
+            b['short'] += nom - r['delivered']
+        if r['toLeft']:
+            b['husk'] += 1
+            b['huskFee'] += r['fee']
+        elif q in X.squad:
+            b['recvDens'].append(round(r['toDens'], 1))
+            b['live'] += 1
+            if r['toDens'] > r['B0'] / max(1, r.get('fromTerr') or 1):
+                b['up'] += 1
+                b['upDelivered'] += r['delivered']
+                b['upFee'] += r['fee']
+            if r['toDens'] >= 100:
+                b['recv100'] += 1
+                b['recv100Fee'] += r['fee']
+            if t + 300 <= X.endT:
+                b['fAll'] += 1
+                if r['toAlive300'] is False:
+                    b['fDead'] += 1
+                if r['toCmds300'] == 0:
+                    b['fNoCmd'] += 1
+                if r['delivered'] > 0 and r.get('toDonOut300', 0) >= 0.5 * r['delivered']:
+                    b['fDonOut'] += 1
+                if r['delivered'] > 0 and r.get('toSpent300', 0) >= 0.5 * r['delivered']:
+                    b['fSpent'] += 1
         put(doc['pct'], band(r['pct'], PCT_BANDS), r)
         put(doc['tband'], band(t, T_BANDS), r)
         bp[r['pct']] += 1
@@ -201,6 +263,16 @@ def show(d):
               f"又捐出去至多 {wan(W['donOutCap'])}（{pc(W['donOutCap'], W['recv'])}，这些再捐又付手续费 {wan(W['donOutFee'])}）；窗口内得地 {W['gain']:,} 格")
         print(f"      窗口内没有任何陆攻 / 发船指令的 {W['noCmd']['n']} 个（收到 {wan(W['noCmd']['recv'])}，{pc(W['noCmd']['recv'], W['recv'])}）；战斗耗兵不到收到的一成的 {W['spentLtTenth']['n']} 个（收到 {wan(W['spentLtTenth']['recv'])}，{pc(W['spentLtTenth']['recv'], W['recv'])}）；"
               f"收款人在窗口内阵亡的 {W['dead']['n']} 个（收到 {wan(W['dead']['recv'])}）")
+    if d.get('branch'):
+        print('  按代码分支（由 pct 反推）：')
+        for k in BRANCHES:
+            b = d['branch'].get(k)
+            if not b:
+                continue
+            md = lambda v: (sorted(v)[len(v) // 2] if v else 0)
+            print(f"      {k}：{b['n']} 笔 / 到账 {wan(b['delivered'])} / 手续费 {wan(b['fee'])}（损耗率 {pc(b['fee'], b['fee'] + b['delivered'])}）；被截断 {b['truncN']} 笔、少到账 {wan(b['short'])}；给空壳 {b['husk']} 笔；"
+                  f"捐款人密度中位 {md(b['donorDens'])}、收款人密度中位 {md(b['recvDens'])}；收款人比捐款人还密 {b['up']}/{b['live']} 笔（到账 {wan(b['upDelivered'])}、费 {wan(b['upFee'])}）；收款人密度 >=100 {b['recv100']} 笔；收款时正被打 {b['fire']} 笔；"
+                  f"之后 300 拍（{b['fAll']} 笔有读数）：耗兵 >= 一半 {b['fSpent']}、又捐出 >= 一半 {b['fDonOut']}、零指令 {b['fNoCmd']}、阵亡 {b['fDead']}")
     p = d['pingpong']
     print(f"  对倒（150 拍内原路捐回）：{p['pairs']} 组，两头手续费 {wan(p['fee'])}，回流 {wan(p['back'])}")
 

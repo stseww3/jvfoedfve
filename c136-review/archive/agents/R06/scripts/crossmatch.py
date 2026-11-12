@@ -129,6 +129,16 @@ def sec_struct(ms):
           f"最大一队占席位的中位 {pc(med([x['split'][0] / sum(x['split']) for x in out if x['split']]), 1, 0)}。卡片标签：" + '、'.join(f"{k} {v}" for k, v in lab.most_common())
           + '。分型：' + '、'.join(f"{k} {v}" for k, v in arch.most_common()) + '；次分型：' + '、'.join(f"{k} {v}" for k, v in sec.most_common()) + '。')
     print(f"去向合计：阵亡 {sum(x['died'] for x in out)}、离开 {sum(x['left'] for x in out)}、活到终局 {sum(x['end'] for x in out)}、日志无声（没有结算行）{sum(x['silent'] for x in out)}；其中没开局的席位 {sum(x['neverPlayed'] for x in out)} 个。")
+    # 开过局、之后被登记离开的号：登记离开时的服务器拍（context.leftTicks 去掉 neverPlayed）
+    lt = []
+    for m in ms:
+        nv = set(m.ctx.get('neverPlayed') or [])
+        lt += [(m.id, n, t) for n, t in (m.ctx.get('leftTicks') or {}).items() if n not in nv]
+    if lt:
+        bands = [(0, 600, '<600'), (600, 2100, '600~2100'), (2100, 4284, '2100~4284'), (4284, 10 ** 9, '>=4284')]
+        by = Counter(m for m, _, _ in lt if True)
+        print(f"开过局、之后被登记离开、有离开拍的号 {len(lt)} 个：按登记离开的服务器拍 " + '、'.join(f"{n} {sum(1 for _, _, t in lt if a <= t < b)} 个" for a, b, n in bands)
+              + '；各局 ' + '、'.join(f"{k} {v}" for k, v in sorted(by.items())) + '。（没开局的席位都在 t<600 被登记离开，不计在内。）')
     print()
     return out
 
@@ -572,9 +582,13 @@ def sec_gates(ms):
     T = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
     TB = {b: dict(T) for b in GATE_BANDS}
     om_all = {}
+    ov_all, ovh_all = {}, {}
+    OH = dict(overHiN=0, overHiSend=0)
+    ov_rows = []
     for m in ks:
         s = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
         om = {}
+        ov, ovh, oh = {}, {}, dict(overHiN=0, overHiSend=0)
         pg = []
         for b in GATE_BANDS:
             h = (m.K['bands'].get(b) or {}).get('hum')
@@ -584,12 +598,23 @@ def sec_gates(ms):
                 s[k] += h.get(k, 0)
                 TB[b][k] += h.get(k, 0)
             add(om, h.get('onMeNoSendExits') or {})
+            add(ov, h.get('overExits') or {})
+            add(ovh, h.get('overHiExits') or {})
+            for k in oh:
+                oh[k] += h.get(k, 0)
             g = h.get('priceGate') or {}
             if g.get('n'):
                 pg.append(f"{b}：{g['hcMed']:.0f} / {g['worthMed']:.0f} / {g['ratioMed']:.2f} / {g['densMed']:.0f}")
         for k in s:
             T[k] += s[k]
         add(om_all, om)
+        add(ov_all, ov)
+        add(ovh_all, ovh)
+        for k in oh:
+            OH[k] += oh[k]
+        short = lambda d, n: '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v:,}（{pc(v, n)}）" for k, v in sorted(d.items(), key=lambda kv: -kv[1])[:4])
+        ov_rows.append([m.id, f"{s['overN']:,}", f"{s['overSend']:,}（{pc(s['overSend'], s['overN'])}）", short(ov, s['overN'] - s['overSend']),
+                        f"{oh['overHiN']:,}", f"{oh['overHiSend']:,}（{pc(oh['overHiSend'], oh['overHiN'])}）", short(ovh, oh['overHiN'] - oh['overHiSend'])])
         top = '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v}" for k, v in sorted(om.items(), key=lambda kv: -kv[1])[:4])
         rows.append([m.id, f"{s['onMe']:,}", f"{s['onMeNoSend']:,}（{pc(s['onMeNoSend'], s['onMe'])}）", top, f"{s['overN']:,}：{pc(s['overSend'], s['overN'])}", f"{s['underN']:,}：{pc(s['underSend'], s['underN'])}",
                      s['noSendDon'], '；'.join(pg)])
@@ -604,7 +629,14 @@ def sec_gates(ms):
             x = TB[b]
             if x['onMe'] or x['overN'] or x['underN']:
                 print(f"      {b}：被打 {x['onMe']:,}、没还手 {x['onMeNoSend']:,}（{pc(x['onMeNoSend'], x['onMe'])}）；超软上限 {x['overN']:,}、出兵 {pc(x['overSend'], x['overN'])}；没超 {x['underN']:,}、出兵 {pc(x['underSend'], x['underN'])}")
-        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB))
+        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB, overExits=ov_all, overHiExits=ovh_all, **OH))
+        print()
+        print('**超软上限（兵 > 100×领土）而有真人报价的决策拍：没对真人出兵的卡在哪**（密度 >=125 = 利息已被扣掉一半以上）')
+        table(['局', '超软上限的拍', '其中出兵', '没出兵的卡在（前 4；占没出兵的拍）', '密度 >=125 的拍', '其中出兵', '没出兵的卡在（前 4）'], ov_rows)
+        nn = T['overN'] - T['overSend']
+        print(f"   {len(ks)} 局合计：超软上限而没对真人出兵 {nn:,} 拍，卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nn)}）" for k, v in sorted(ov_all.items(), key=lambda kv: -kv[1])[:6]))
+        nh = OH['overHiN'] - OH['overHiSend']
+        print(f"   密度 >=125 的拍 {OH['overHiN']:,}，出兵 {OH['overHiSend']:,}（{pc(OH['overHiSend'], OH['overHiN'])}）；没出兵的 {nh:,} 拍卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nh)}）" for k, v in sorted(ovh_all.items(), key=lambda kv: -kv[1])[:6]))
     print('   口径：一个决策拍只记一个出口（排第一的真人报价）；「没出兵」是策略在真实局面上当拍的决定，不是录像里有没有指令落地。同一个号的相邻决策拍高度相关，占比只作描述。')
     print()
     return out
@@ -681,6 +713,32 @@ def sec_donflow(ms):
     print(f"   逐笔打标（在场的我方号收款、之后还有 300 拍录像的 {Fa['all']:,} 笔；一笔可挂几个标）：收款人 300 拍内没有任何陆攻 / 发船指令进录像 {Fa['noCmd']:,}（{pc(Fa['noCmd'], Fa['all'])}）；"
           f"又捐出 >= 到账的一半 {Fa['donOut']:,}（{pc(Fa['donOut'], Fa['all'])}）；战斗耗兵 >= 到账的一半 {Fa['spent']:,}（{pc(Fa['spent'], Fa['all'])}）；收款人阵亡 {Fa['dead']:,}（{pc(Fa['dead'], Fa['all'])}）；三样都不沾 {Fa['none']:,}")
     print('   收款窗口 = 同一个收款人相隔 <=300 拍的几笔并成一个 [第一笔, 最后一笔+300]，窗口之间不重叠。「至多」= min(收到, 窗口内的战斗耗兵 / 又捐出)：收款人自己的利息也在花，所以是上限。')
+    # 按代码分支（由 pct 反推 tryDonateToTeammate 走的哪一支）；后排 = 被围或纯内陆的捐款人
+    BRN = ['盈余·不被围（153）', '盈余·被围（185 / 280）', '救援（155）', '救援·纯内陆（240）', '救援·被钳小（<155）', '救援·纯内陆被钳（156~239）', '其他']
+    REAR = ('盈余·被围（185 / 280）', '救援·纯内陆（240）', '救援·纯内陆被钳（156~239）')
+    keys = ('n', 'delivered', 'fee', 'truncN', 'short', 'husk', 'huskFee', 'fAll', 'fSpent', 'fDonOut', 'fNoCmd', 'fDead', 'fire', 'live', 'up', 'upDelivered', 'upFee', 'recv100', 'recv100Fee')
+    BT = {k: dict({x: 0 for x in keys}, donorDens=[], recvDens=[]) for k in BRN + ['后排合计', '前排合计']}
+    for d in ds:
+        for k, v in (d.get('branch') or {}).items():
+            for tgt in (k, '后排合计' if k in REAR else '前排合计'):
+                for x in keys:
+                    BT[tgt][x] += v.get(x, 0)
+                BT[tgt]['donorDens'] += v.get('donorDens', [])
+                BT[tgt]['recvDens'] += v.get('recvDens', [])
+    if any(BT[k]['n'] for k in BRN):
+        print()
+        print('**按代码分支（由 pct 反推 `tryDonateToTeammate` L4369-4499 走的哪一支）。后排 = 捐款时被围（boxedIn）或纯内陆（isPureInlandSafe）的捐款人**')
+        rows = []
+        md = lambda v: (f"{sorted(v)[len(v) // 2]:.0f}" if v else '—')
+        for k in BRN + ['后排合计', '前排合计']:
+            v = BT[k]
+            if not v['n']:
+                continue
+            rows.append([k, f"{v['n']}", wan(v['delivered']), f"{wan(v['fee'])}（{pc(v['fee'], v['fee'] + v['delivered'])}）", f"{v['truncN']} 笔 / 少到账 {wan(v['short'])}", f"{v['husk']} 笔 / 费 {wan(v['huskFee'])}",
+                         md(v['donorDens']), md(v['recvDens']), f"{v['up']}/{v['live']}（{pc(v['up'], v['live'], 0)}）：到账 {wan(v['upDelivered'])}、费 {wan(v['upFee'])}", f"{v['recv100']}（{pc(v['recv100'], v['live'], 0)}）", f"{v['fire']}（{pc(v['fire'], v['n'], 0)}）",
+                         f"{v['fSpent']}/{v['fAll']}（{pc(v['fSpent'], v['fAll'], 0)}）", f"{v['fDonOut']}/{v['fAll']}（{pc(v['fDonOut'], v['fAll'], 0)}）", f"{v['fNoCmd']}/{v['fAll']}（{pc(v['fNoCmd'], v['fAll'], 0)}）", f"{v['fDead']}/{v['fAll']}"])
+        table(['分支', '笔', '到账', '手续费（损耗率）', '被截断', '给空壳', '捐款人密度中位', '收款人密度中位（在场的我方号）', '收款人比捐款人还密', '收款人密度 >=100', '收款时正被人打', '之后 300 拍战斗耗兵 >= 到账的一半', '又捐出 >= 一半', '零陆攻 / 发船指令', '阵亡'], rows)
+        print('   153 也可能是救援捐款被 maxSafePct 钳出来的，分不开，全算盈余。任务卡里的 ECO_BANK 是后端选点协调器（spawn-coordinator-c110.mjs）分配的出生角色：15 局里 HL-SPAWN-BACKEND 0 行，没有号被分到过角色，局内代码也不读角色；这里的「后排」按捐款时的局面定义。')
     print()
     return [dict(id=d['matchId'], n=d['n'], delivered=d['delivered'], fee=d['fee'], pct=d['pct'], to=d['to'], dens=d['dens'], trunc=d['trunc'], zero=d['zero'], underFire=d['underFire'],
                  windows=d.get('windows'), follow=d.get('follow'), pingpong=d['pingpong']) for d in ds] + [dict(id='ALL', tot=tot, T=T)]
@@ -731,6 +789,19 @@ def sec_foes(ms):
                  f"{S['bigL']} / {wan(S['bigLT'])}", f"{S['fdN']} / {wan(S['fdD'])}", f"{S['fdHiN']} / {wan(S['fdHiD'])}", None])
     table(['局', '围攻（>=20 万兵的组）：组 / 兵', '第一条时目标密度中位', '出手方密度中位', '兵力比中位', '目标自己还手（占对方出兵）', '一兵没还的组', '别的我方号同期打这个外人', '末条后 600 拍内阵亡', '末条后 100 拍领土不到开打时一半',
            '大登陆（>= 目标兵的一半且 >=2 万）：次 / 兵', '外人之间的捐款：笔 / 到账', '其中 pct>=900：笔 / 到账', '收得最多的外人'], rows)
+    # 合计的几条细分（按拍、按出手方密度、围攻期间目标的捐款进出、登陆、外人捐款的时间）
+    bands = ['<1500', '1500~3000', '3000~4284', '>=4284']
+    tb = {k: [sum(g(d['hits']['tband'], k, 'n') for d in ps), sum(g(d['hits']['tband'], k) for d in ps)] for k in bands}
+    ad = {k: sum(g(d['hits']['adens'], k) for d in ps) for k in ('<60', '60~90', '90~110', '>=110')}
+    print('   打击按执行拍（条 / 兵）：' + '；'.join(f"{k} {tb[k][0]} / {wan(tb[k][1])}" for k in bands) + f"。4284 拍以后占兵的 {pc(tb['>=4284'][1], T['troops'], 0)}")
+    print('   打击按出手方密度（兵占比）：' + '、'.join(f"{k} {pc(v, T['troops'], 0)}" for k, v in ad.items()))
+    print(f"   围攻窗口内目标收到捐款 {wan(sum(d['sieges']['donIn'] for d in ps))}、捐出 {wan(sum(d['sieges']['donOut'] for d in ps))}")
+    ln, lt = sum(d['landings']['n'] for d in ps), sum(d['landings']['troops'] for d in ps)
+    lb = {k: sum(d['landings']['tband'].get(k, 0) for d in ps) for k in bands}
+    print(f"   外人登陆我方在场号：{ln} 次 / {wan(lt)}（各局 {' / '.join(str(d['landings']['n']) for d in ps)}）；大登陆按拍：" + '、'.join(f"{k} {lb[k]}" for k in bands)
+          + '；4284 拍以后的各局：' + '、'.join(f"{d['matchId']} {d['landings']['tband'].get('>=4284', 0)}" for d in ps))
+    print(f"   外人之间的捐款里 t>=3213 的：{sum(d['foeDon'].get('late', 0) for d in ps)} 笔；pct>=900 各局：" + '、'.join(f"{d['matchId']} {d['foeDon']['hiN']} / {wan(d['foeDon']['hiDelivered'])}" for d in ps))
+    print()
     print('**每局对我方出兵最多的 3 个外人**')
     rows = []
     for d in ps:
@@ -746,6 +817,38 @@ def sec_foes(ms):
           f"{pc(op('<100'), o_t, 0)} / {pc(op('100~199'), o_t, 0)} / {pc(op('200~399'), o_t, 0)} / {pc(op('400~899'), o_t, 0)} / {pc(op('>=900'), o_t, 0)}；各局千分比中位 {' / '.join(str(d['ours']['pctMed']) for d in ps)}")
     print('   同一局里的打击互相关联（同一个外人连着打同一个号），合计占比只作描述。出手方密度按「出手前余额 ÷ 当拍领土」，连续出兵的人这个值会一路走低。')
     print()
+    # 围攻：目标自己还手多少 × 结局（观察性对照；按开打时的兵力比分层）
+    allr = [dict(r, id=d['matchId']) for d in ps for r in d['sieges']['rows']]
+    if allr:
+        def cell(L):
+            if not L:
+                return '—'
+            dd = sum(1 for r in L if r['died'])
+            hh = sum(1 for r in L if r['terr1'] < 0.5 * r['terr0'])
+            return f"{len(L)} 组：600 拍内阵亡 {dd}（{pc(dd, len(L), 0)}）、领土剩不到一半 {hh}（{pc(hh, len(L), 0)}）"
+        back = [('一兵没还', lambda r: r['mine'] == 0), ('还手 < 对方出兵的 25%', lambda r: 0 < r['mine'] < 0.25 * r['troops']),
+                ('还手 25%~100%', lambda r: 0.25 * r['troops'] <= r['mine'] < r['troops']), ('还手 >= 对方出兵', lambda r: r['mine'] >= r['troops'])]
+        print('**围攻：目标自己还手多少 × 之后的结局**（还手 = [首条 −300, 末条 +100] 里目标对这个外人的出兵；兵力比 = 开打时外人余额 ÷ 目标的兵）')
+        rows = []
+        for name, fn in back:
+            L = [r for r in allr if fn(r)]
+            rows.append([name, cell(L)] + [cell([r for r in L if lo <= r['ratio'] < hi]) for lo, hi in ((0, 2), (2, 4), (4, 1e18))])
+        table(['目标的还手', '全部', '兵力比 <2', '兵力比 2~4', '兵力比 >=4'], rows)
+        some_lower = tie = 0
+        parts = []
+        for d in ps:
+            z = [r for r in d['sieges']['rows'] if r['mine'] == 0]
+            sm = [r for r in d['sieges']['rows'] if r['mine'] > 0]
+            if not z or not sm:
+                continue
+            a_ = sum(1 for r in z if r['died']) / len(z)
+            b_ = sum(1 for r in sm if r['died']) / len(sm)
+            some_lower += b_ < a_
+            tie += b_ == a_
+            parts.append(f"{d['matchId']} {sum(1 for r in z if r['died'])}/{len(z)} 对 {sum(1 for r in sm if r['died'])}/{len(sm)}")
+        print(f"   按局（一兵没还 对 有还手，600 拍内阵亡）：{'、'.join(parts)}；有还手的阵亡比例更低的 {some_lower} 局、相同 {tie} 局、更高 {len(parts) - some_lower - tie} 局")
+        print('   这是观察性对照：还得了手的号本来就更强、活得更久（死得快的来不及还手）。按兵力比分层以后，兵力比 <4 的组里差别还在，>=4 的组里没有差别。')
+        print()
     return [dict(id=d['matchId'], hits={k: v for k, v in d['hits'].items()}, sieges={k: v for k, v in d['sieges'].items() if k != 'rows'}, landings=d['landings'], foeDon=d['foeDon'], top=d['top'], ours=d['ours']) for d in ps] + [dict(id='ALL', hits=T, sieges=S)]
 
 

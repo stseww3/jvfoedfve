@@ -18,6 +18,8 @@ p0 探针规则立即执行 / p14 固定 14 拍 / pj 7~19 拍抖动 / ph 抖动 
   [CF-E] 通道签名：成批落地占比、落地生效占比、单拍限流丢掉的条数、想派的兵和实际派出去的兵。
   [CF-F] 开环偏差：别的真人的录像陆攻有多少条「生效 / 没生效」翻了面，分窗。
   [CF-G] own 在 630~1500 拍出局的人数。
+  [CF-H] 各臂 own 的兵密度（余额 ÷ 地）和野人的对照。
+  [CF-I] 630~1500 拍的人均地账：从 AI / 无主地 / 真人手里拿到的、被 AI / 真人拿走的、被打掉的余额（护栏量）。
 """
 import json
 import os
@@ -121,9 +123,13 @@ def main():
             n_invalid += 1
             continue
         row = dict(matchId=mid, cohort=card.get("cohort"), endTick=A["endTick"], own=len(own_s), ownProbe=len(A["own"]),
-                   wild=len(wild), stalls=sum(len(v) for v in A["stalls"].values()), R={}, ai={}, aiShare={}, sig={}, div={}, dead={})
+                   wild=len(wild), stalls=sum(len(v) for v in A["stalls"].values()), R={}, ai={}, aiShare={}, sig={}, div={}, dead={}, dens={}, bud={})
         heads0 = sum(1 for p_ in own_s if A["arms"]["fact"]["cp"]["630"]["terr"][p_] > 0)
         row["heads630"] = heads0
+        # 历史卡顿段盖住的时间（夹到 630~min(1500, 录像末拍)）÷（630 拍在线人数 × 这段时长）
+        span = max(1, min(1500, A["endTick"]) - 630)
+        cov = sum(max(0, min(b_, 630 + span) - max(a_, 630)) for v in A["stalls"].values() for a_, b_, _n in v)
+        row["stallCover"] = cov / (max(1, heads0) * span)
         for arm in ARMS:
             V = A["arms"][arm]
             row["R"][arm] = {str(t): ratio(V["cp"][str(t)], own_s, wild) for t in CPS if str(t) in V["cp"]}
@@ -132,6 +138,24 @@ def main():
             row["ai"][arm] = ai_own / heads0 if heads0 else None
             row["aiShare"][arm] = ai_own / ai_all if ai_all else None
             row["dead"][arm] = V["ownDead"]
+            dens = {}
+            for t in CPS:
+                c = V["cp"].get(str(t))
+                if not c:
+                    continue
+                for lab, seats in (("own", own_s), ("wild", wild)):
+                    tt = sum(c["terr"][p_] for p_ in seats if c["terr"][p_] > 0)
+                    bb = sum(c["bal"][p_] for p_ in seats if c["terr"][p_] > 0)
+                    dens[f"{lab}{t}"] = bb / tt if tt else None
+            row["dens"][arm] = dens
+            bd = V.get("bud")
+            if bd:
+                wh = sum(1 for p_ in wild if A["arms"]["fact"]["cp"]["630"]["terr"][p_] > 0)
+                row["wildHeads630"] = wh
+                row["bud"][arm] = {
+                    "own": {k_: sum(bd[k_][p_] for p_ in own_s) for k_ in bd} | {"gAI": sum(V["aiCells"][p_] for p_ in own_s)},
+                    "wild": {k_: sum(bd[k_][p_] for p_ in wild) for k_ in bd} | {"gAI": sum(V["aiCells"][p_] for p_ in wild)},
+                }
             if V.get("probe"):
                 pr = V["probe"]
                 row["sig"][arm] = dict(dec=pr["dec"], exec=pr["exec"], ok=pr["ok"], capDrop=pr["capDrop"], intended=pr["intended"], sent=pr["sent"],
@@ -189,7 +213,7 @@ def main():
         P(f"  {lab}：{fmt(q(d, 0.5))}（{fmt(q(d, 0.25))}~{fmt(q(d, 0.75))}）｜{up} / {dn}｜p={fp(p)}（{len(d)} 局）")
         J["pairs"][f"{a}-{b}"] = dict(n=len(d), p50=q(d, 0.5), p25=q(d, 0.25), p75=q(d, 0.75), up=up, down=dn, p=p)
     P("  按这一局录像里本编队的历史卡顿段数（每个号的「沉默 ≥70 拍后一拍落地 ≥3 条」，630~1500 拍）÷ 630 拍在线人数分档：")
-    P("  档 | 局数 | 每号卡顿段数 中位 | R1500：fact | p0 | pj | ph | ph ÷ pj 中位 | ph ÷ p0 中位")
+    P("  档 | 局数 | 每号卡顿段数 中位 | 卡顿段盖住的时间占比 中位 | R1500：fact | p0 | pj | ph | ph ÷ pj 中位 | ph ÷ p0 中位 | fact ÷ p0 中位")
     r15s = sorted(r15, key=lambda r: r["stalls"] / max(1, r["heads630"]))
     k = len(r15s)
     cuts = [("少（下三分之一）", r15s[: k // 3]), ("中", r15s[k // 3: 2 * k // 3]), ("多（上三分之一）", r15s[2 * k // 3:])]
@@ -202,9 +226,11 @@ def main():
 
         rel = [r["R"]["ph"]["1500"] / r["R"]["pj"]["1500"] for r in grp_ if r["R"]["pj"].get("1500")]
         rel0 = [r["R"]["ph"]["1500"] / r["R"]["p0"]["1500"] for r in grp_ if r["R"]["p0"].get("1500")]
-        P(f"  {lab} | {len(grp_)} | {fmt(q(st, 0.5), 1)} | {fmt(med('fact'))} | {fmt(med('p0'))} | {fmt(med('pj'))} | {fmt(med('ph'))} | {fmt(q(rel, 0.5))} | {fmt(q(rel0, 0.5))}")
+        relf = [r["R"]["fact"]["1500"] / r["R"]["p0"]["1500"] for r in grp_ if r["R"]["p0"].get("1500")]
+        cv = [r["stallCover"] for r in grp_]
+        P(f"  {lab} | {len(grp_)} | {fmt(q(st, 0.5), 1)} | {pct(q(cv, 0.5), 1)} | {fmt(med('fact'))} | {fmt(med('p0'))} | {fmt(med('pj'))} | {fmt(med('ph'))} | {fmt(q(rel, 0.5))} | {fmt(q(rel0, 0.5))} | {fmt(q(relf, 0.5))}")
         J["dose"].append(dict(label=lab, n=len(grp_), stallsPerSeat=q(st, 0.5), fact=med("fact"), p0=med("p0"), pj=med("pj"), ph=med("ph"),
-                              phOverPj=q(rel, 0.5), phOverP0=q(rel0, 0.5)))
+                              phOverPj=q(rel, 0.5), phOverP0=q(rel0, 0.5), factOverP0=q(relf, 0.5), stallCover=q(cv, 0.5)))
     P("")
 
     # ---------- [CF-D]
@@ -269,6 +295,60 @@ def main():
     P("  " + "｜".join(f"{arm} {sum(r['dead'][arm] for r in rows)}" for arm in ARMS))
     for arm in ARMS:
         J["dead"][arm] = sum(r["dead"][arm] for r in rows)
+    P("")
+
+    # ---------- [CF-H]
+    P("[CF-H] 兵密度（组内合计余额 ÷ 合计地；逐局算，取各局中位）")
+    P("  臂 | own t=900 | own t=1260 | own t=1500 | 野人 t=1500")
+    J["dens"] = {}
+    for arm in ARMS:
+        cells = []
+        J["dens"][arm] = {}
+        for key, tmin in (("own900", 900), ("own1260", 1260), ("own1500", 1500), ("wild1500", 1500)):
+            v = [r["dens"][arm].get(key) for r in rows if r["endTick"] >= tmin and r["dens"][arm].get(key) is not None]
+            cells.append(fmt(q(v, 0.5), 1))
+            J["dens"][arm][key] = q(v, 0.5)
+        P(f"  {AN[arm]} | " + " | ".join(cells))
+    P("")
+
+    # ---------- [CF-I]
+    P("[CF-I] 630~1500 拍的人均地账（走到 1500 拍的局合计 ÷ 630 拍在线人数；格）")
+    P("  臂·组 | 人头 | 从内置 AI 拿到 | 吃无主地 | 从真人（含空壳）拿到 | 被内置 AI 咬走 | 被真人（含空壳）拿走 | 被 AI 打掉的余额 | 被真人打掉的余额 | 打 AI 每格花的兵 | 吃无主地每格花的兵")
+    J["bud"] = {}
+    for arm in ARMS:
+        J["bud"][arm] = {}
+        for lab, hk in (("own", "heads630"), ("wild", "wildHeads630")):
+            if lab == "wild" and arm not in ("fact", "p0", "ph"):
+                continue
+            rr = [r for r in r15 if r["bud"].get(arm)]
+            heads = sum(r[hk] for r in rr)
+            S = defaultdict(float)
+            for r in rr:
+                for k_, v in r["bud"][arm][lab].items():
+                    S[k_] += v
+            if not heads:
+                continue
+            P(f"  {arm}·{'own' if lab == 'own' else '野人'} | {heads} | {S['gAI'] / heads:.0f} | {S['gN'] / heads:.0f} | {S['gH'] / heads:.0f} | {S['lAI'] / heads:.0f} | {S['lH'] / heads:.0f} | "
+              f"{S['dAI'] / heads:.0f} | {S['dH'] / heads:.0f} | {fmt(S['bAI'] / S['gAI'] if S['gAI'] else None, 1)} | {fmt(S['bN'] / S['gN'] if S['gN'] else None, 1)}")
+            J["bud"][arm][lab] = dict(heads=heads, **{k_: v / heads for k_, v in S.items()})
+    P("  逐局成对（own 被内置 AI 咬走的格 ÷ 630 拍在线人数）：")
+    for a, b in (("p0", "fact"), ("ph", "fact"), ("idle", "fact")):
+        d = []
+        for r in r15:
+            if r["bud"].get(a) and r["bud"].get(b) and r["heads630"]:
+                d.append((r["bud"][a]["own"]["lAI"] - r["bud"][b]["own"]["lAI"]) / r["heads630"])
+        up = sum(1 for x in d if x > 0)
+        dn = sum(1 for x in d if x < 0)
+        P(f"    {a} − {b}：中位 {fmt(q(d, 0.5), 0)}（P25~P75 {fmt(q(d, 0.25), 0)}~{fmt(q(d, 0.75), 0)}）｜更多 {up} 局 / 更少 {dn} 局｜p={fp(sign_p(up, up + dn))}")
+    P("  逐局成对（own 被真人拿走的格 ÷ 630 拍在线人数）：")
+    for a, b in (("p0", "fact"), ("ph", "fact"), ("idle", "fact")):
+        d = []
+        for r in r15:
+            if r["bud"].get(a) and r["bud"].get(b) and r["heads630"]:
+                d.append((r["bud"][a]["own"]["lH"] - r["bud"][b]["own"]["lH"]) / r["heads630"])
+        up = sum(1 for x in d if x > 0)
+        dn = sum(1 for x in d if x < 0)
+        P(f"    {a} − {b}：中位 {fmt(q(d, 0.5), 0)}（P25~P75 {fmt(q(d, 0.25), 0)}~{fmt(q(d, 0.75), 0)}）｜更多 {up} 局 / 更少 {dn} 局｜p={fp(sign_p(up, up + dn))}")
     P("")
     P("读数时的三条限制：")
     P("  1. 别的真人是开环的（照录像走，不会因为本编队变强而改打法、也不会来打变厚或变薄的号），[CF-F] 的翻面比例就是这个偏差的量；探针臂的绝对水平偏乐观。")
