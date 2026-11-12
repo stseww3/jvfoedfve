@@ -280,6 +280,20 @@ def main():
     P("")
     block(P, f"去掉编队号没认全的 {len(part)} 局之后，同一套量（事后加的；这几局为什么要去掉见 out/council/E2-idcheck.txt）：",
           [r for r in out if r["nsq"] >= r["n0"]])
+    # 假设卡 H01 的机械判据（出生份额小于 1）和它预先写的可证伪说法（样本外的中位落在 0.8 以上就不成立）
+    P("")
+    P("[E2-7] 假设卡 H01 的判据在样本外的局上：出生份额小于 1 的局数（符号检验：对「一半的局小于 1」的双侧精确二项 p），以及中位是否到 0.8")
+
+    def sign_line(name, rs):
+        n_ = len(rs)
+        k_ = sum(1 for r in rs if r["S"] < 1)
+        tail = sum(math.comb(n_, i) for i in range(0, min(k_, n_ - k_) + 1)) / 2.0 ** n_
+        pv = min(1.0, 2 * tail)
+        m_ = med([r["S"] for r in rs])
+        P(f"{name} | {n_} 局 | 小于 1 的 {k_} 局 | p={pv:.1e} | 中位 {m_:.2f}（{'没到 0.8，卡片的可证伪说法没有被触发' if m_ < 0.8 else '到了 0.8，卡片不成立'}） | 小于 0.8 的 {sum(1 for r in rs if r['S'] < 0.8)} 局")
+
+    sign_line("样本外全部", out)
+    sign_line("样本外、编队全在回放房间里", [r for r in out if r["nsq"] >= r["n0"]])
     # 口径对照：我名下 11 局在跨局汇总 X12 的 E1 行里也有出生份额（land-ledger 的口径），和这里的逐局比一下
     x12 = os.path.join(ROOT, "out", "cross", "X12-summary.txt")
     if os.path.exists(x12):

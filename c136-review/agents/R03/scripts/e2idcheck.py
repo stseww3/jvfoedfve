@@ -134,6 +134,13 @@ def main():
             nminor += 1 if minor else 0
             P(f"{m} | {'否' if m in MINE else '是'} | {desc} | 房间 {r['mainRoom']} | 房间 {rep['roomIdx']} | {rep['nBots']} | {'不是' if minor else '是'}")
         P(f"合计：不止 1 个房间的 {len(multi)} 局里，对局包带的回放不是号最多的那个房间的 {nminor} 局")
+        cards = {r["matchId"]: r for r in rows}
+        one = sum(1 for m in multi if cards[m].get("seededPlayers") in {x["seeded"] for x in rd[m]["rooms"]})
+        allb = sum(1 for m in multi if cards[m].get("squadBots") == sum(x["nBots"] for x in rd[m]["rooms"]))
+        P(f"manifest 对照：这 {len(multi)} 局里，manifest 的 seededPlayers 等于其中某一个房间的开局真人数的 {one} 局；squadBots 等于各房间编队号数之和的 {allb} 局")
+        allrd = json.load(open(rp_, encoding="utf-8"))
+        P("拆分表里各编队档不止 1 个房间的局数：" + "；".join(
+            f"{co} {sum(1 for r in allrd if r.get('cohort') == co and r['nRooms'] > 1)} 局（共 {sum(1 for r in allrd if r.get('cohort') == co)} 局）" for co in ("squad8", "squad10", "squad20")))
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n".join(L) + "\n")
     print(f"写 {os.path.relpath(OUT, ROOT)}（{len(L)} 行）")
