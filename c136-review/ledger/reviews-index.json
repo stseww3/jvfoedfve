@@ -3,7 +3,7 @@
   "matchId": "A003",
   "file": "A003",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -481,7 +481,7 @@
   "matchId": "A005",
   "file": "A005",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -862,7 +862,7 @@
   "matchId": "A009",
   "file": "A009",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -1460,7 +1460,7 @@
   "matchId": "A019",
   "file": "A019",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -2063,7 +2063,7 @@
   "matchId": "A023",
   "file": "A023",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -2583,7 +2583,7 @@
   "matchId": "A031",
   "file": "A031",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -3137,7 +3137,7 @@
   "matchId": "A050",
   "file": "A050",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -3661,7 +3661,7 @@
   "matchId": "A054",
   "file": "A054",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -4242,7 +4242,7 @@
   "matchId": "A055",
   "file": "A055",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -4776,7 +4776,7 @@
   "matchId": "A057",
   "file": "A057",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -5177,7 +5177,7 @@
   "matchId": "A059",
   "file": "A059",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -5562,7 +5562,7 @@
   "matchId": "A075",
   "file": "A075",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -5931,7 +5931,7 @@
   "matchId": "A094",
   "file": "A094",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -6354,7 +6354,7 @@
   "matchId": "B039",
   "file": "B039",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -6877,7 +6877,7 @@
   "matchId": "B043",
   "file": "B043",
   "reviewer": "R01",
-  "sha": "c8991c18",
+  "sha": "5467d90e",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -7443,7 +7443,7 @@
   "matchId": "A025",
   "file": "A025",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -8250,10 +8250,983 @@
   "checklistFails": []
  },
  {
+  "matchId": "A041",
+  "file": "A041",
+  "reviewer": "R03",
+  "sha": "f475fbb6",
+  "result": "lost",
+  "archetype": "outscaled",
+  "context": {
+   "time": "2026-11-10T03:12:00Z",
+   "squad": "squad10",
+   "bots": 10,
+   "strategyVersion": "Vb（v27-team-c116-vb.js）",
+   "map": 15,
+   "mapSeed": 12708,
+   "mapLand": 480957,
+   "cardMap": null,
+   "teams": 2,
+   "teamsInReplayHeader": 6,
+   "teamSizes": [
+    0,
+    14,
+    15
+   ],
+   "humans": 29,
+   "ourTeam": 1,
+   "teamSplitCard": {
+    "1": 10
+   },
+   "baseWinExpectation": 0.5,
+   "sameMatchPeer": null,
+   "presence": {
+    "died": 10
+   },
+   "leftTicks": {},
+   "dataCompleteness": {
+    "replay": true,
+    "resimTrajCheck": {
+     "rows": 491,
+     "terrExact": 491,
+     "balExact": 491,
+     "bothExact": 491,
+     "mism": []
+    },
+    "shadowCheck": {
+     "rows": 491,
+     "cmds": 491,
+     "nb": 491,
+     "neut": 491,
+     "dl": 419,
+     "ds": 419,
+     "ol": 72,
+     "os": 72,
+     "ex": 460,
+     "mt": 460
+    }
+   },
+   "peerSquad": "没有分房：10 个号全在本房间、同在队1。队1 另有 4 个路人：Spero#0（出生 (797,850)，就在阵里：离 leo_tx 60、riku_x 69、alex_k 73 像素；峰值 8,634 格，4276 拍出局）、Player 586#20（(803,624)，峰值 24,552 格，3108 拍离线、3113 拍出局）、Player 743#16（峰值 23,828 格，3533 拍出局）、el imperio de tobi#17（(662,775)，峰值 4,339 格，3126 拍出局）。4500 拍起队1 只剩编队的号",
+   "tickRate": "results.csv：leo_tx 4165 拍@253 秒，kaito9 4835 拍@291 秒（约 17 拍/秒）",
+   "pageStops": "10 个号都控到出局；出局时页面拍号 − 服务器拍号 +2~+8。没有一个号落后队友 ≥90 拍",
+   "liveAdapterModel": "影子策略用的页面适配规则（每拍只收 1 条指令、陆攻按相邻受理、船不发队友地）是从日志计数器反推的；本局 491 行 HL-TICK 的 cmds、nb、neut 全对，419/419 条调度、72/72 条开局日志、460/460 条成交配回影子发令；整局重放 491/491 行地、兵与 traj 逐行相等",
+   "cardNote": "card.json：图 15（种子 12708，陆地 480,957 格，884×960）、29 个真人（27 个开局有地）、两队。endTick=4835，录像到 4944 拍 over=0，引擎事件 4627 拍提速（队2）。peakSquadLandShare=0.2372 和重放 3960 拍的 23.72% 一致。card 的 likelyRejectedTransfers=382 是页面自己标的；重放里没成交的调度是 388 条（额度拒 384、其它 4）。drop30Count=35 与重放的 35 个区间一致",
+   "execDelay": "同步局。成交延迟（服务器落地拍 − 本地发令拍）P50/P90/最大：0~600 拍 12/18/75，600~1500 拍 12/17/102，1500~3000 拍 13/75/85，3000 拍后 12/17/65；460 条里 25 条超过 30 拍，全是 zexos1 一个号（各段延迟中位 14、14、70、18，最大 75、102、85、65）；其余 9 个号中位 6~17、最大不超过 23"
+  },
+  "outcome": {
+   "result": "lost",
+   "resultLabel": "lost",
+   "winnerTeam": 2,
+   "endTick": 4835,
+   "ourFinalShare": 0.0,
+   "peakSquadLandShare": 0.2372,
+   "peakPrimaryTeamShareSeen": 0.2055,
+   "anyBotWon": false,
+   "note": "输。两队图（队1 14 人、队2 15 人，另有 483 个不入队的内置 AI）。队1 的地：1500 拍 19.5%（队2 42.3%），2280 拍 26.1%（队2 73.3%），3000 拍 28.3%（队2 71.4%），3960 拍 25.5%，4500 拍 13.4%，4835 拍 0。编队 10 个号 1500 拍 11.51%（人头占 37.04%），1800~2280 拍停在 14.22%，3000 拍 18.18%，3960 拍 23.72%（整局最高）。同队路人 2100 拍 11.67%，3300 拍 6.47%，3600 拍 1.80%，4500 拍 0。4161~4829 拍 10 个号先后触到出局线：整局被 twojaStara 吃掉 35,174 格、[cn]i🍇TV 33,100 格、Reed 27,581 格、Oylesine 25,294 格",
+   "archetypeSecondary": "出生份额（人均名下只有其他真人的 0.24 倍）；never-grew 的成分：sora_w、alex_k、riku_x、talon5 整局峰值 4,136、4,604、5,342、7,269 格，1500 拍起没有陆上邻居，1800~2280 拍编队的地一格没动（14.22%），同一段队2 把 AI 腹地吃完（60.5%→73.3%）；同队 4 个路人 3113~4276 拍全部出局（不是分房）"
+  },
+  "turningPoints": [
+   {
+    "t0": 0,
+    "t1": 1500,
+    "what": "10 个号出生排在东南角一块名下 12.2% 的地里（人头 37.0%）：开局和抢 AI 地都比别人快（转化 1.51 倍），但这一块只有这么大，而且陆上只通同队路人和两个敌人",
+    "shareKind": "队1 占全图陆地",
+    "shareBefore": 0.0,
+    "shareAfter": 0.195,
+    "enemyShareBefore": 0.0,
+    "enemyShareAfter": 0.423,
+    "squadShareBefore": 0.0,
+    "squadShareAfter": 0.1151,
+    "ourBots": [
+     "全部 10 个号"
+    ],
+    "enemies": [
+     "队2（1500 拍 42.3%，13 人名下 365,922 格）",
+     "BiBLiCaL[iowa]#1（离 zero_7 70 像素）",
+     "dsc.gg/cold1#23（离 kaito9 106 像素）"
+    ],
+    "evidence": [
+     "out/dossier/A041-land.txt [G1]：编队名下 58,759 格 = 全图 12.2%，人头占 37.0%，份额÷人头 0.33；每号名下中位 5725.5、最小 2,894（sora_w）、最大 9,937（kaito9）；其他真人中位 26,547。各队人均名下：队2 28,148、队1 路人 14,069、编队 5,876",
+     "A041-ledger-brief.txt [B1]：求解 15 轮（7 套不同的解），最小间距 70→68 像素；7 个号落在最后一轮的坐标上，sora_w、alex_k、talon5 停在第 9 轮的坐标（差 68、30、52 像素），叠点 0 对",
+     "A041-ledger-brief.txt [B9]：1500 拍人均地 编队 5,536 对其他真人 15,131 = 0.37 倍 = 出生份额 0.24 × 转化 1.51；按其他真人的转化算该有 36,570 格，实际 55,361 格，多 18,791 格",
+     "A041-land.txt [G4]：600 拍与编队接壤的 57 个 AI 共 22,537 格，1800 拍编队 82.2%、同队路人 16.9%（Spero 3,801 格）、敌方真人 0.9%；[G2]：1500 拍 地÷名下 编队 0.94、队1 路人 0.68、队2 0.61",
+     "卷宗[D]：末次指派 zero_7 (727,810) CORNER_APEX_BANK，最近敌真人 BiBLiCaL 70 像素；6 个 OUTER_SHIELD_WALL 在 (568,919)、(637,941)、(747,941)、(822,907)、(865,836)、(865,751)；最近路人队友 Spero 离 leo_tx 60、riku_x 69、alex_k 73 像素",
+     "A041-freeze.txt 第一段：1,800 个决策拍里 safeFinite 冻结 622（卡在编队友 587），去掉这一项当拍就能出手的 591",
+     "out/trace/A041-winledger.txt 600~1500 拍：编队对 AI/中立得地 31,585 格（烧 8.9 万），队2 176,972 格（烧 70.6 万），队1 路人 32,570 格",
+     "out/trace/A041-coast.txt（1500 拍）：sora_w、ryan_m、noah88、kaito9、alex_k、riku_x、zexos1 海岸 0 格、「可发船 否」；陆邻 0 的有 sora_w、talon5、ryan_m、alex_k、riku_x"
+    ],
+    "priorDecisions": [
+     {
+      "t": "选点期",
+      "bot": "全部 10 个号",
+      "what": "10 个号落在 x 568~868、y 750~942 的一块里，最近队内号 42~78 像素",
+      "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs solve L790（角落扇形 L1065-1170：锚点与朝向 L1089-1131，三圈角色 L1134-1170；评分 L1262-1268）→ matchBotsToTargets L1431-1493",
+      "why": "编队人均名下 5,876 格，是其他真人（24,312）的 0.24 倍；外圈贴地图边的 sora_w、talon5、riku_x 和里圈的 alex_k 整局峰值 4,136、7,269、5,342、4,604 格"
+     },
+     {
+      "t": "选点期第 -21 步",
+      "bot": "sora_w、alex_k、talon5",
+      "what": "终解那条和上一条在同一步落地，引擎后处理先发的那条，生效的是第 9 轮的旧坐标（差 68、30、52 像素）",
+      "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs matchBotsToTargets L1431-1493；指派由页面逐条发选点指令，同一步落地两条时旧的生效（重放缓存里的选点指令顺序）",
+      "why": "sora_w 停在离 noah88 42 像素的地方，名下 2,894 格；终解是 (747,941)"
+     },
+     {
+      "t": "600~1500",
+      "bot": "全部",
+      "what": "买 AI 地的决策拍 34.6% 被编队友的余额冻住（safeFinite），仍然把名下范围里 85.8% 的地拿到手",
+      "codePath": "src/strategy/v27-team-c116-vb.js V17.safeFinite L2757-2768、Policy.winFloor L4562-4570；Style.pickTarget L1144-1177",
+      "why": "这一局冻结没有量出丢地：身边 AI 的地敌方真人只拿到 0.9%，同队路人拿到 16.9%"
+     }
+    ],
+    "alternatives": [
+     "按其他真人的 地÷名下（0.6224）算，编队 1500 拍该有 36,570 格，实际 55,361 格（算术，不是重演）：转化这一层是赚的，亏在出生份额",
+     "间距放大、把 10 个号摊开，名下会是多少没有重算；按全图 27 个有地真人人均 17,813 格算，10 个号的人头份额是 37.0%，实际名下 12.2%"
+    ],
+    "statementType": "observed",
+    "confidence": "high"
+   },
+   {
+    "t0": 1500,
+    "t1": 2280,
+    "what": "AI 腹地被队2 吃完的 780 拍：编队 8 个号被围，贴着 cold1 的两个号一个被整吃档的预算闸挡着、一个被接触惩罚抬价；1800~2280 拍地一格没动，兵 307 万→542 万；队2 42.3%→73.3%",
+    "shareKind": "队1 占全图陆地",
+    "shareBefore": 0.195,
+    "shareAfter": 0.261,
+    "enemyShareBefore": 0.423,
+    "enemyShareAfter": 0.733,
+    "squadShareBefore": 0.1151,
+    "squadShareAfter": 0.1422,
+    "ourBots": [
+     "kaito9",
+     "noah88",
+     "sora_w",
+     "alex_k",
+     "riku_x",
+     "talon5",
+     "ryan_m",
+     "zero_7",
+     "leo_tx",
+     "zexos1"
+    ],
+    "enemies": [
+     "dsc.gg/cold1#23（1500 拍 14,923 格/11.9 万兵、密度 8.0 → 2280 拍 15,162 格/61.7 万兵、密度 40.7）",
+     "队2（1500~2280 拍对 AI/中立得地 176,235 格）"
+    ],
+    "evidence": [
+     "out/trace/A041-tlq.txt：1800、2100、2130、2160、2280 拍编队都是 14.22%（68,411 格），兵 307 万→452 万→542 万；队2 60.5%→71.6%→73.3%；AI 13.3%→1.4%→0.0%",
+     "out/trace/A041-belowworth-1500-2284.txt：kaito9 157 个决策拍全部「低于 worth 却没发令」（c 20.86→98.06 对 worth 30.93→110.62）；noah88 低于 worth 20 个（1500~1595 拍）、高于 worth 137 个（1600~2280 拍，c 51.41→178.69 对 worth 49.76→103.01）；10 个号 1,570 个决策拍里没报价（没有陆上邻居）1,027 个",
+     "out/trace/A041-buywhy-kaito9.txt、A041-buywhy-kaito9-2255.txt：抽样 12 拍（1500~2280）全部「拦在 worth,chunk」，去掉后想发 10.5 万（1500 拍）~44.5 万（2280 拍）",
+     "out/trace/A041-contact-cold1.txt：kaito9 cnt=162、对方边界 375、share=0.432、steps 69~70、接触惩罚 ×1.00；noah88 cnt=5、share=0.013、steps 2238~2274、接触惩罚 ×1.80（contactStepsMax=350、contactPenalty=0.002）",
+     "out/trace/A041-worthgate.txt：整吃档要 c ≤ 0.982×自己密度（1500 拍）→ 0.716×（2250 拍）→ 0.593×（2399 拍）；单独出手的 worth 门槛 1.500×自己密度（1500 拍）→ 1.163×（2250 拍）",
+     "A041-freeze.txt 第二段：被围 sora_w 1500~4390 拍（579 个决策拍）、talon5 1500~4275（556）、alex_k 1500~4175（536）、riku_x 1500~4160（533）、ryan_m 1500~2985（298）、zexos1 1640~3110（295）、zero_7 1680~3030（271）、leo_tx 1670~2660（199）",
+     "卷宗[H]、out/trace/A041-dispatch-follow.txt：kaito9 1510~2145 拍 89 条进攻档调度来自 6 个号，前后 150 拍它都没打过真人；sora_w → kaito9 1710~2110 拍 17 次全拒（首次需 246 点、剩 97 点），alex_k 1715~2290 拍 24 次（240/97），zero_7 1870~2245 拍 16 次（211/103）",
+     "out/trace/A041-quotaunit.txt：1071~2141 拍每点 481.2 兵、每 100 拍多放行 2,887 兵；2142~3212 拍每点 1,604.0 兵、每 100 拍多放行 12,832 兵",
+     "out/trace/A041-winledger.txt 1500~2280 拍：编队利息 374 万，对真人 25 条得地 11,264、对 AI/中立得地 1,874、船 0 条；队2 利息 487 万、对 AI/中立得地 176,235（烧 67.3 万）、船 24 条",
+     "out/trace/A041-coast.txt、A041-water-reach.txt：2100 拍 7 个号海岸 0 格；zero_7 19 格海岸只通 13 格水面、talon5 8 格只通 4 格、leo_tx 86 格通 204 格水面（岸上只有自己和同队路人）",
+     "out/trace/A041-acts-front-2270-2420.txt、A041-cmdq-cold1-2200-2330.txt：2282 拍 cold1 pct 132 一条 8.0 万打 Player 743（余额 61.7 万）；2285 拍 kaito9 c 98.06→63.42（need 112 万→96.7 万）发 1 条，noah88 余额 77.0 万、密度 122.2、over=1、c 178.69→115.81 对 worth 137.53 发 1 条"
+    ],
+    "priorDecisions": [
+     {
+      "t": "1500~2280",
+      "bot": "kaito9",
+      "what": "对 cold1 的报价 157 个决策拍全部低于 worth，一条没发",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5291-5294（2400 拍前、对方没在打我、need > 0.35×余额 → 不走脉冲）→ Policy.buyLand L5422-5426（预算 = (worth×地 − 手续费×m − c×地) ÷ (1+m)）→ L5611-5613（x < want 且 x < chunk×余额 → continue；chunk=0.2、pplKill=0）",
+      "why": "cold1 1500 拍只有 11.9 万兵（密度 8.0），kaito9 16.7 万、noah88 16.6 万；等到 2285 拍出手时它是 53.0 万兵"
+     },
+     {
+      "t": "1600~2280",
+      "bot": "noah88",
+      "what": "和 cold1 只贴着 5 格，报价乘上接触惩罚 1.80 之后 137 个决策拍高于 worth",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5177-5180（cnt < 25 且 steps = 0.75×对方地÷cnt > contactStepsMax → c ×= 1 + contactPenalty×min(400, steps − contactStepsMax)）→ Policy.buyLand L5350-5359（L5359 break）",
+      "why": "同一拍 kaito9 对同一个目标的报价是它的一半上下（2280 拍 98.06 对 178.69）"
+     },
+     {
+      "t": "1510~2145",
+      "bot": "sora_w、alex_k、riku_x、talon5、ryan_m、zero_7 → kaito9",
+      "what": "89 条进攻档调度发给一个不出手的号，全部被额度拒",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4457-4459（hasPreyOpening：敌邻密度 < 0.70×受捐方密度 且受捐方密度 < 96）、L4474-4494、L4500-4508（pct 320）；引擎 src/sim/sim/game.js donationCost L348-357、bookDonation L370-376",
+      "why": "调度层 0.70、出手层整吃档 0.37~0.42（worthgate.py）：两层对 cold1 用的是两套门槛"
+     },
+     {
+      "t": "1500~3000",
+      "bot": "sora_w、alex_k、riku_x、talon5、ryan_m、zero_7、leo_tx、zexos1",
+      "what": "没有陆上邻居，也没有能出海的岸",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5019-5035（被围分支：L5031 有兄弟在前线且密度 < 115 就返回，L5032 g.boatsAllowed）；Policy.buyLand L5356（offers 为空）",
+      "why": "1500~4284 拍超软上限合计 7,170 拍、贴硬上限 1,460 拍，少拿利息 232 万"
+     }
+    ],
+    "alternatives": [
+     "没重演：kaito9 在 1500 拍（cold1 密度 8.0）就出手会怎样。账面上确定的只有：buy-why「去掉后想发」10.5 万（1500 拍）；最后 2280~3060 拍两个号对 cold1 烧 51.2 万、56.4 万拿 4,795、6,839 格",
+     "即使 1500 拍吃下 cold1（14,923 格），再往外是 Player 105（1500 拍 2.57%）和 [cn]i🍇TV（5.62%）；能不能赶上 AI 腹地（1500 拍 AI 36.0%、1800 拍 13.3%）没有重演"
+    ],
+    "statementType": "inferred",
+    "confidence": "medium"
+   },
+   {
+    "t0": 3000,
+    "t1": 3960,
+    "what": "同队路人垮掉、编队成了队1 的全部前线：地涨到 23.72%，兵没涨（777 万→793 万）；后排被换档后的调度抽空，最厚的 kaito9 攒着不打；队2 的兵 886 万→1,912 万",
+    "shareKind": "队1 占全图陆地",
+    "shareBefore": 0.283,
+    "shareAfter": 0.255,
+    "enemyShareBefore": 0.714,
+    "enemyShareAfter": 0.743,
+    "squadShareBefore": 0.1818,
+    "squadShareAfter": 0.2372,
+    "ourBots": [
+     "kaito9",
+     "noah88",
+     "ryan_m",
+     "zexos1",
+     "leo_tx",
+     "zero_7",
+     "sora_w",
+     "alex_k",
+     "talon5",
+     "riku_x"
+    ],
+    "enemies": [
+     "[USA] Reed#14（3000 拍 16.44%/178 万兵）",
+     "[TR] Oylesine#25（3600 拍 104 万 → 3960 拍 324 万）",
+     "[cn]i🍇TV#26",
+     "twojaStara#11",
+     "Fish N Chips#15（3960 拍 383 万兵、密度 144）"
+    ],
+    "evidence": [
+     "out/trace/A041-tlq.txt：3000 拍队1 28.3%（14 人 832 万兵）、队2 71.4%（10 人 886 万）；3150 拍队1 在线 12 人；3600 拍队1 24.3%（11 人）、队2 8 人 1,511 万；3960 拍编队 23.72%、793 万兵，队2 1,912 万",
+     "out/trace/A041-roster.txt、卷宗[B]：Player 586 3108 拍离线、3113 拍出局，el imperio 3126 拍出局，Player 743 3533 拍出局；本队路人地 3000 拍 10.10% → 3300 拍 6.47% → 3600 拍 1.80%",
+     "out/trace/A041-winledger.txt 3210~3960 拍：编队利息 770 万、余额 736 万→793 万、捐出 24 笔到账 338 万税 70.6 万、对真人 40 条送出 453 万费 54.5 万得地 26,994、挨打掉兵 208 万失地 17,331、三项费 = 利息的 17.7%；队2 利息 1,691 万、余额 1,074 万→1,912 万、三项费 6.6%、捐出 1 笔 223 万",
+     "卷宗[I]：sora_w 3150~3240 拍 58.9 万→37.6 万、3240~3330 拍→8.5 万（−77%）；talon5 3150~3240 拍 102 万→59.4 万；alex_k 64.3 万→37.2 万→23.5 万；riku_x 3420~3510 拍 58.7 万→25.7 万（−56%）",
+     "卷宗[H]：3220 拍 riku_x、sora_w → kaito9 23.5 万、18.5 万（受方 21,083 格/90.2 万、密度 43）；3227 拍 talon5、alex_k → leo_tx 38.2 万、23.9 万（pct 380）；3745 拍 noah88 → kaito9 40.0 万（受方 218 万、密度 86，税 12.7 万）",
+     "A041-freeze.txt 第二段：kaito9 报价高于 worth 3285~3565 拍（57 个决策拍，兵 129 万→235 万）、3615~3745（27）、3855~4095（49）；卡真人留底 zexos1 3615~3945 拍（67 个，想买 Oylesine c=22.95、need 186 万、想发 10.4 万）、ryan_m 3320~3515 拍（40 个）",
+     "out/trace/A041-retq.txt 3210~3960 拍：对真人 40 条出 453 万、费 54.5 万、烧 207 万、对消 89.8 万、得地 26,994、退 203 万（退÷出 45%，费÷烧 26%）；其中 kaito9 7 条出 185 万、烧 47.2 万、对消 56.3 万、得地 2,079、退 126 万",
+     "卷宗[F]：zexos1 → Oylesine 3180~3630 拍烧 55.8 万得地 11,584（0.48）；leo_tx ← Reed 3120~4170 拍对方烧 400 万、失地 17,400；kaito9 → Барбос 3750~4530 拍烧 149 万得地 1,721（掉反击槽 109 万，交换比 0.13）",
+     "out/trace/A041-snap-t2.txt、A041-pingpong.txt：Fish N Chips 3000 拍 145 万（密度 55）→ 3960 拍 383 万（144）；Player 193 → Oylesine 3948 拍 1 笔 223 万（pct 756，税 18.9 万，税/到账 0.08）"
+    ],
+    "priorDecisions": [
+     {
+      "t": "3220~3577",
+      "bot": "sora_w、alex_k、talon5、riku_x、zero_7 → kaito9、leo_tx、noah88",
+      "what": "额度换档后被围的后排把余额的三成多一笔一笔捐给前线号",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4355（boxedIn）、L4382-4388（被围的号留底 34/22×地，有海岸 44/32）、L4463-4494、L4500-4508（pct 380/320）；引擎 src/sim/sim/game.js donationCost L350（3213 拍起按受捐方软上限折算）",
+      "why": "3600 拍 sora_w、alex_k、talon5、riku_x 密度 22~33；收捐的三个号 leo_tx 14 笔 170 万、kaito9 13 笔 155 万、noah88 10 笔 129 万（含路人捐的）；kaito9 这一段大部分决策拍报价高于 worth"
+     },
+     {
+      "t": "3285~4095",
+      "bot": "kaito9",
+      "what": "攒到 129 万→262 万不出手：报价高于 worth",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5095-5100、L5248-5250（唯一的真人邻居且吃掉它会露出新邻居 → soleBufferPenalty=1.6）→ Policy.buyLand L5350-5359（L5359 break）；winRatio L2875-2882（2500 拍起 worth = 0.900×自己密度）",
+      "why": "2500 拍起单独出手要对方密度 < 自己的 0.34~0.38；[cn]i🍇TV、Барбос 的密度是它的一半以上"
+     },
+     {
+      "t": "3320~3945",
+      "bot": "zexos1、ryan_m、zero_7、leo_tx",
+      "what": "报价低于 worth，想发的一成兵被对真人邻居的留底挡住",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.safeAt L4543-4560（oppFloorCap=88 封顶）→ V17.safeAt L2728-2738（killW×dpKeep）→ V13.dpKeep L2459-2464（(最厚真人邻居的余额 + 它压过来的兵 − 1.5×自己地) ÷ 1.78）→ Policy.buyLand L5414-5418、L5444",
+      "why": "1500 拍后 721 个决策拍卡在这里，这些拍平均余额 73.4 万"
+     },
+     {
+      "t": "整局",
+      "bot": "全部",
+      "what": "路人队友垮的时候没有给过一笔",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4414（候选只收 isOurSquadBot 或 boss）",
+      "why": "路人 2280~3210 拍失地 58,088 格、掉兵 83.3 万；编队 → 路人 0 笔"
+     }
+    ],
+    "alternatives": [
+     "没重演：后排不外捐、留着密度；kaito9 把 3600 拍的 250 万压到 Reed 或 Oylesine 的前线上。账面上确定的只有：这一段捐款税 70.6 万、攻击手续费 54.5 万、槽内对消 89.8 万、退回 203 万",
+     "路人的墙倒不倒不由编队决定；编队能不能在 3000 拍前给 Player 586、Player 743 捐兵要改候选表，没有重演"
+    ],
+    "statementType": "inferred",
+    "confidence": "medium"
+   },
+   {
+    "t0": 3960,
+    "t1": 4835,
+    "what": "队2 用攒下的兵平推：875 拍里对真人 70 条送出 3,194 万兵，编队 23.72%→0，10 个号 4161~4829 拍先后出局",
+    "shareKind": "队1 占全图陆地",
+    "shareBefore": 0.255,
+    "shareAfter": 0.0,
+    "enemyShareBefore": 0.743,
+    "enemyShareAfter": 0.985,
+    "squadShareBefore": 0.2372,
+    "squadShareAfter": 0.0,
+    "ourBots": [
+     "全部 10 个号"
+    ],
+    "enemies": [
+     "twojaStara#11（吃编队 35,174 格）",
+     "[cn]i🍇TV#26（33,100 格）",
+     "[USA] Reed#14（27,581 格）",
+     "[TR] Oylesine#25（25,294 格）",
+     "Барбос#22（4,643 格）"
+    ],
+    "evidence": [
+     "out/trace/A041-winledger.txt 3960~4830 拍：队2 对真人 70 条出 3,194 万、烧 1,973 万、得地 111,457，利息 2,041 万，捐出 12 笔 628 万；编队利息 580 万、挨打掉兵 950 万、失地 104,878、对真人 16 条出 241 万得地 16,876、捐出 5 笔 122 万税 39.7 万",
+     "卷宗[O]：3900~4200 拍队1 25.5%→19.5%（zexos1 16,288→6,991 格，被 Oylesine 吃 9,297 格/烧 213 万；leo_tx 9,282→0，Reed 8,073 格/烧 166 万；zero_7 8,731→0，[cn]i🍇TV 6,729 格/烧 167 万）；4200~4500 拍 19.5%→13.4%；4500~4800 拍 13.4%→1.8%（kaito9 26,755→8,537 格：twojaStara 12,115 格/烧 260 万）",
+     "卷宗[K]：twojaStara 打掉本队 35,174 格/360 万兵（自烧 757 万）、[cn]i🍇TV 33,100 格/275 万（557 万）、Reed 27,581 格/267 万（553 万）、Oylesine 25,294 格/239 万（494 万）",
+     "卷宗[L]：被真人吃掉的地每格让对方付的兵 zero_7 250、noah88 247、leo_tx 243、kaito9 222、zexos1 205、talon5 205、ryan_m 136、sora_w 84、riku_x 79、alex_k 67；合计 127,931 格、对方烧 2,546 万（每格 199）",
+     "卷宗[H]、out/trace/A041-pingpong.txt：kaito9 → noah88 4158 拍 51.2 万（pct 182，税 17.9 万；捐方 286 万、密度 107）、kaito9 → talon5 4361 拍 55.2 万（pct 192，税 18.3 万；捐方 293 万、密度 110）",
+     "out/trace/A041-retq.txt 3960~4835 拍：kaito9 对真人 5 条出 105 万、费 13.2 万、烧 206、对消 62.1 万、得地 0",
+     "A041-donwhy.txt：挨打候选的判定 doomed:x1.65 74 次（alex_k 27、ryan_m 13、leo_tx 12、riku_x 11、zero_7 7、kaito9 3、zexos1 1）、doomed:small 6 次",
+     "卷宗[N]：队2 ≥4284 拍捐款到账 628 万；[cn]i🍇TV 4634~4774 拍收捐 6 笔 498 万（Fish N Chips 374 万、Oylesine 124 万）"
+    ],
+    "priorDecisions": [
+     {
+      "t": "4158、4361",
+      "bot": "kaito9",
+      "what": "过软上限的兵走协防档捐给 noah88、talon5，两笔交税 17.9 万、18.3 万；自己对 Барбос 的报价高于 worth、不打",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4473（协防档：非被围的捐方要密度 ≥ 102 且比受捐方高 16）、L4386-4388（留底 max(88×地, safeAt)）、L4500-4508；Policy.buyLand L5361-5365（唯一的健康邻居：报价高于 worth 时要余额 ≥ 128×地才打）",
+      "why": "税按捐方整笔余额的 64/1024 收（286 万、293 万），税/到账 0.35、0.33"
+     },
+     {
+      "t": "3960~4830",
+      "bot": "kaito9、noah88",
+      "what": "对 Барбос、twojaStara 的出手大半在槽里被对消",
+      "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5595-5608（脉冲档：每条 min(1.20×need + 3×接壤, 0.12×余额)，在途 ≥ 0.04×余额 才停；上一条没落地时在途是 0）；3800 拍后对掉血目标走 L5574-5586",
+      "why": "kaito9 4510 拍一串 3 条首条 34.6 万、多花 57.9 万；3960~4830 拍 5 条 105 万拿 0 格"
+     }
+    ],
+    "alternatives": [
+     "没重演。这一窗是前面三窗的结果：3960 拍队2 1,912 万兵对编队 793 万，之后 875 拍队2 的利息 2,041 万对编队 580 万"
+    ],
+    "statementType": "observed",
+    "confidence": "high"
+   }
+  ],
+  "deaths": [
+   {
+    "bot": "leo_tx",
+    "me": 8,
+    "event": "died",
+    "t": 4161,
+    "localStopTick": 4165,
+    "leftServerTick": null,
+    "peakLand": 14315,
+    "peakTick": 3080,
+    "landAtDeath": 2688,
+    "balanceAtDeath": 118886,
+    "killers": [
+     "[USA] Reed#14T2（压在身上 198611）"
+    ],
+    "last500": {
+     "land0": 7909,
+     "bal0": 735141,
+     "tilesLost": 8099,
+     "balLostDefending": 857893,
+     "lostTo": [
+      "[USA] Reed#14T2 7543格/784518兵",
+      "[TR] Oylesin#25T2 556格/73375兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 227661,
+     "attackSent": 380321
+    },
+    "cause": "里圈北侧的号。1512~1596 拍 8 条吃 BiBLiCaL 7,745 格（1530~1620 拍余额 13.9 万→3.1 万），之后 1670~2660 拍没有陆上邻居；86 格海岸只通一片 204 格的水面。3030 拍起和 Reed 对打：自己烧 61.0 万拿 7,879 格，被 Reed 3120~4170 拍吃 17,400 格（对方烧 400 万）。3227~4025 拍收捐 14 笔 170 万。3960~4050 拍 69.2 万→37.1 万、4050~4140 拍→15.5 万；4161 拍出局（2,688 格/11.9 万兵，身上压着 Reed 的 19.9 万）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-DN04",
+     "NEW-MT-OUTNUMBERED"
+    ]
+   },
+   {
+    "bot": "zero_7",
+    "me": 9,
+    "event": "died",
+    "t": 4176,
+    "localStopTick": 4181,
+    "leftServerTick": null,
+    "peakLand": 8731,
+    "peakTick": 3870,
+    "landAtDeath": 2002,
+    "balanceAtDeath": 120695,
+    "killers": [
+     "[cn]i🍇TV#26T2（压在身上 333576）"
+    ],
+    "last500": {
+     "land0": 7292,
+     "bal0": 672650,
+     "tilesLost": 6503,
+     "balLostDefending": 805749,
+     "lostTo": [
+      "[cn]i🍇TV#26T2 6503格/805749兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 74620,
+     "attackSent": 124726
+    },
+    "cause": "标成 CORNER_APEX_BANK 的号，实际离 BiBLiCaL 只有 70 像素。1512~1526 拍 3 条吃 BiBLiCaL 1,967 格，1680~3030 拍没有陆上邻居（3000 拍密度 136）；2282 拍捐 19.6 万给 noah88。3030~3240 拍打 [cn]i🍇TV 烧 26.5 万拿 2,356 格；3210~4200 拍被它吃 7,923 格（对方烧 198 万）。3577 拍又捐 16.1 万给 leo_tx（pct 204，税 5.0 万）。4050~4140 拍 49.5 万→17.6 万；4176 拍出局（2,002 格/12.1 万兵，身上压着 [cn]i🍇TV 的 33.4 万）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-AT05",
+     "NEW-MT-OUTNUMBERED"
+    ]
+   },
+   {
+    "bot": "zexos1",
+    "me": 4,
+    "event": "died",
+    "t": 4273,
+    "localStopTick": 4278,
+    "leftServerTick": null,
+    "peakLand": 19432,
+    "peakTick": 3620,
+    "landAtDeath": 4201,
+    "balanceAtDeath": 197854,
+    "killers": [
+     "[TR] Oylesin#25T2（压在身上 458614）"
+    ],
+    "last500": {
+     "land0": 16578,
+     "bal0": 888884,
+     "tilesLost": 12117,
+     "balLostDefending": 1321166,
+     "lostTo": [
+      "[TR] Oylesin#25T2 12117格/1321166兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 37982,
+     "attackSent": 0
+    },
+    "cause": "东缘的号，页面整局落后（延迟最大 102 拍；25 条 >30 拍的指令全是它）。1582~1645 拍三批 7、5、5 条把余额清到 615，只拿 BiBLiCaL 1,552 格；1640~3110 拍没有陆上邻居。3180~3630 拍吃 Oylesine 11,584 格（烧 55.8 万），3620 拍峰值 19,432 格。3615~3945 拍 67 个决策拍想发 10.4 万、被留底挡住；Oylesine 3948 拍收到 223 万，3390~4290 拍吃它 16,260 格（对方烧 333 万）：4050~4140 拍 104 万→61.8 万、4140~4230 拍→27.1 万；4273 拍出局（4,201 格/19.8 万兵，身上压着 Oylesine 的 45.9 万）",
+    "patternIds": [
+     "NEW:IO-lag-burst",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-AT05",
+     "NEW-MT-OUTNUMBERED"
+    ]
+   },
+   {
+    "bot": "riku_x",
+    "me": 12,
+    "event": "died",
+    "t": 4336,
+    "localStopTick": 4338,
+    "leftServerTick": null,
+    "peakLand": 5342,
+    "peakTick": 4230,
+    "landAtDeath": 1265,
+    "balanceAtDeath": 18386,
+    "killers": [
+     "[USA] Reed#14T2（压在身上 228683）"
+    ],
+    "last500": {
+     "land0": 5091,
+     "bal0": 138260,
+     "tilesLost": 3345,
+     "balLostDefending": 136582,
+     "lostTo": [
+      "[USA] Reed#14T2 3345格/136582兵"
+     ],
+     "donatedOut": 43944,
+     "donationTax": 9903,
+     "received": 0,
+     "attackSent": 20221
+    },
+    "cause": "东缘的号，1500~4160 拍没有陆上邻居、没有一格海岸，峰值 5,342 格。整局利息 129 万，捐出到账 91.0 万（税 17.8 万）：3150~3690 拍 4 个 DROP30 区间都是捐款，3600 拍只剩 16.6 万（密度 33）。4230~4350 拍 Reed 吃 4,077 格（对方烧 32.1 万，每格 79 兵）；被判弃子 11 次；4336 拍出局（1,265 格/1.8 万兵）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-DN03",
+     "NEW-R03-EC01",
+     "R08:挨打的小号被判弃子"
+    ]
+   },
+   {
+    "bot": "alex_k",
+    "me": 6,
+    "event": "died",
+    "t": 4390,
+    "localStopTick": 4398,
+    "leftServerTick": null,
+    "peakLand": 4604,
+    "peakTick": 4230,
+    "landAtDeath": 1074,
+    "balanceAtDeath": 13551,
+    "killers": [
+     "[USA] Reed#14T2（压在身上 146424）",
+     "[cn]i🍇TV#26T2（压在身上 99008）"
+    ],
+    "last500": {
+     "land0": 4284,
+     "bal0": 109384,
+     "tilesLost": 2804,
+     "balLostDefending": 97476,
+     "lostTo": [
+      "[cn]i🍇TV#26T2 2804格/97476兵"
+     ],
+     "donatedOut": 40784,
+     "donationTax": 8502,
+     "received": 0,
+     "attackSent": 14821
+    },
+    "cause": "里圈的号（终解没生效，停在离 ryan_m 44 像素处）：名下 4,295 格，1500~4175 拍没有陆上邻居、没有海岸，1200~4200 拍地都是 4,284 格，1500~4284 拍贴硬上限 630 拍。整局利息 89.5 万，捐出到账 63.4 万（税 11.2 万）：3150~3330 拍 64.3 万→23.5 万，3600 拍 12.2 万（密度 28）。4200~4410 拍 [cn]i🍇TV 吃 3,101 格（对方烧 21.6 万）、Reed 472 格，每格只让对方付 67 兵；被判弃子 27 次；4390 拍出局（1,074 格/1.4 万兵）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-DN03",
+     "NEW-R03-EC01",
+     "R08:挨打的小号被判弃子"
+    ]
+   },
+   {
+    "bot": "ryan_m",
+    "me": 2,
+    "event": "died",
+    "t": 4565,
+    "localStopTick": 4571,
+    "leftServerTick": null,
+    "peakLand": 24198,
+    "peakTick": 4410,
+    "landAtDeath": 5536,
+    "balanceAtDeath": 124607,
+    "killers": [
+     "[TR] Oylesin#25T2（压在身上 599619）",
+     "[cn]i🍇TV#26T2（压在身上 380600）"
+    ],
+    "last500": {
+     "land0": 18194,
+     "bal0": 1289358,
+     "tilesLost": 22499,
+     "balLostDefending": 1540824,
+     "lostTo": [
+      "twojaStara#11T2 8476格/645185兵",
+      "[cn]i🍇TV#26T2 7919格/553243兵",
+      "[TR] Oylesin#25T2 6093格/341100兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 0,
+     "attackSent": 332356
+    },
+    "cause": "里圈西侧的号，1500~2985 拍没有陆上邻居（3000 拍 87.1 万、密度 129）。围解开后 3000~3210 拍打 [cn]i🍇TV 烧 48.4 万拿 5,144 格，3630~4440 拍打 Reed 烧 77.5 万拿 15,910 格（交换比 0.48），4410 拍峰值 24,198 格、125 万兵。3320~3515 拍 40 个决策拍卡在对 Reed 的留底；4165~4172 拍 3 条 pct 6 打空壳 Player 105（送出 3.0 万、手续费 5.2 万）。4290~4590 拍 twojaStara、[cn]i🍇TV、Oylesine 三家一起吃（8,476、9,147、6,261 格）：4410~4500 拍 125 万→47.5 万；被判弃子 13 次；4565 拍出局（5,536 格/12.5 万兵，身上压着 Oylesine 60.0 万、[cn]i🍇TV 38.1 万）",
+    "patternIds": [
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-AT05",
+     "NEW:FE-tiny-cmd-fee",
+     "NEW-MT-OUTNUMBERED",
+     "NEW-DF-NORESCUE"
+    ]
+   },
+   {
+    "bot": "talon5",
+    "me": 7,
+    "event": "died",
+    "t": 4571,
+    "localStopTick": 4574,
+    "leftServerTick": null,
+    "peakLand": 7269,
+    "peakTick": 4330,
+    "landAtDeath": 1670,
+    "balanceAtDeath": 63688,
+    "killers": [
+     "[USA] Reed#14T2（压在身上 257207）"
+    ],
+    "last500": {
+     "land0": 6836,
+     "bal0": 283820,
+     "tilesLost": 6753,
+     "balLostDefending": 687934,
+     "lostTo": [
+      "[USA] Reed#14T2 5527格/578819兵",
+      "[cn]i🍇TV#26T2 1226格/109115兵"
+     ],
+     "donatedOut": 74617,
+     "donationTax": 18801,
+     "received": 552451,
+     "attackSent": 250267
+    },
+    "cause": "东南角的号（终解没生效），1500~4275 拍没有陆上邻居，8 格海岸只贴着 4 格的小水面。3000 拍 101 万兵（密度 148）；换档后 6 笔捐款（DROP30 三个区间），3600 拍只剩 21.8 万（密度 32）；整局捐出到账 104 万（税 19.8 万）。4320 拍 Reed 打到跟前；4361 拍收到 kaito9 的 55.2 万；4365~4410 拍两次扩无主地的指令挤掉了同拍对 Reed 的出手，4410~4440 拍对 Reed 烧 11.8 万拿 994 格（对方掉反击槽 8.5 万）。4320~4590 拍被 Reed 吃 5,632 格（对方烧 118 万）；4571 拍出局（1,670 格/6.4 万兵）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-DN03",
+     "NEW-R03-EC01",
+     "NEW-R03-IO03"
+    ]
+   },
+   {
+    "bot": "sora_w",
+    "me": 3,
+    "event": "died",
+    "t": 4623,
+    "localStopTick": 4629,
+    "leftServerTick": null,
+    "peakLand": 4136,
+    "peakTick": 4440,
+    "landAtDeath": 955,
+    "balanceAtDeath": 15197,
+    "killers": [
+     "[cn]i🍇TV#26T2（压在身上 340995）"
+    ],
+    "last500": {
+     "land0": 3927,
+     "bal0": 79408,
+     "tilesLost": 2960,
+     "balLostDefending": 123796,
+     "lostTo": [
+      "[cn]i🍇TV#26T2 2960格/123796兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 0,
+     "attackSent": 11191
+    },
+    "cause": "南缘的号（终解没生效，停在离 noah88 42 像素处）：名下 2,894 格是 10 个号里最小的，1500~4390 拍没有陆上邻居，1200~4200 拍地都是 3,927 格，没有一格海岸；1500~4284 拍贴硬上限 700 拍、实得利息只有满额的 36%。日志里 76 条调度成交 7 条：3150~3330 拍 58.9 万→8.5 万，之后密度 22~32。4470~4650 拍 [cn]i🍇TV 吃 3,181 格（对方烧 26.6 万，每格 84 兵）；4623 拍出局（955 格/1.5 万兵）",
+    "patternIds": [
+     "R07-SP-CLUSTER",
+     "R07-EC-BOXED-RICH",
+     "NEW-R03-DN01",
+     "NEW-R03-EC01",
+     "R08:挨打的小号被判弃子"
+    ]
+   },
+   {
+    "bot": "noah88",
+    "me": 5,
+    "event": "died",
+    "t": 4735,
+    "localStopTick": 4739,
+    "leftServerTick": null,
+    "peakLand": 18319,
+    "peakTick": 3470,
+    "landAtDeath": 3747,
+    "balanceAtDeath": 166312,
+    "killers": [
+     "[cn]i🍇TV#26T2（压在身上 3719516）",
+     "twojaStara#11T2（压在身上 86100）"
+    ],
+    "last500": {
+     "land0": 17155,
+     "bal0": 1035587,
+     "tilesLost": 12194,
+     "balLostDefending": 1430104,
+     "lostTo": [
+      "twojaStara#11T2 8086格/997026兵",
+      "[cn]i🍇TV#26T2 4108格/433078兵"
+     ],
+     "donatedOut": 0,
+     "donationTax": 0,
+     "received": 0,
+     "attackSent": 0
+    },
+    "cause": "西南的号，和 cold1 只贴着 5 格：1600~2280 拍 137 个决策拍报价带接触惩罚 ×1.80、高于 worth。2285 拍过软上限连发 3 条（送出 53.3 万、只烧 2.5 万、50.9 万退回）；2280~3060 拍吃 cold1 6,839 格（烧 56.4 万），3470 拍峰值 18,319 格。3340~3885 拍对 [cn]i🍇TV 报价高于 worth（3600 拍 169 万兵、密度 92）；3745 拍捐 40.0 万给 kaito9（税 12.7 万）。3895、4185 拍对 twojaStara 两串各 3 条（多花 38.4 万、33.1 万），烧 83.6 万拿 2,042 格（掉反击槽 49.6 万）。twojaStara 3870~4740 拍吃它 12,977 格（对方烧 344 万）、[cn]i🍇TV 4590~4740 拍 4,885 格：4590~4680 拍 103 万→25.2 万；4735 拍出局（3,747 格/16.6 万兵，身上压着 [cn]i🍇TV 的 372 万）",
+    "patternIds": [
+     "NEW-R03-AT08",
+     "NEW-R03-IO01",
+     "NEW-R03-AT06",
+     "NEW:DN-pingpong",
+     "NEW-MT-OUTNUMBERED"
+    ]
+   },
+   {
+    "bot": "kaito9",
+    "me": 13,
+    "event": "died",
+    "t": 4829,
+    "localStopTick": 4835,
+    "leftServerTick": null,
+    "peakLand": 27150,
+    "peakTick": 3940,
+    "landAtDeath": 6173,
+    "balanceAtDeath": 241066,
+    "killers": [
+     "Барбос#22T2（压在身上 2651529）",
+     "twojaStara#11T2（压在身上 457863）"
+    ],
+    "last500": {
+     "land0": 26755,
+     "bal0": 2794574,
+     "tilesLost": 20582,
+     "balLostDefending": 2005971,
+     "lostTo": [
+      "twojaStara#11T2 13721格/1339217兵",
+      "Барбос#22T2 3582格/346415兵",
+      "[cn]i🍇TV#26T2 3279格/320339兵"
+     ],
+     "donatedOut": 552451,
+     "donationTax": 183196,
+     "received": 0,
+     "attackSent": 1046178
+    },
+    "cause": "最西边的号，名下 9,937 格（最大）。1500~2280 拍 157 个决策拍对 cold1 的报价低于 worth 却不出手；2285 拍起吃 cold1 4,795 格、Player 105 10,103 格，3940 拍峰值 27,150 格。日志里 336 条进攻档调度指着它，整局收捐 13 笔 155 万（含路人捐的）。3300 拍后攒到 220~293 万（密度 82~110）：报价高于 worth，对 Барбос 烧 149 万只拿 1,721 格（掉反击槽 109 万）；4158、4361 拍把 51.2 万、55.2 万捐给 noah88、talon5（税 17.9 万、18.3 万）。4620~4830 拍 twojaStara 吃 13,721 格（对方烧 282 万），Барбос、[cn]i🍇TV 一起上：4680~4770 拍 171 万→71.7 万；4829 拍出局（6,173 格/24.1 万兵，身上压着 Барбос 的 265 万）",
+    "patternIds": [
+     "NEW-R03-AT03",
+     "NEW-R03-AT07",
+     "NEW-R03-AT06",
+     "NEW:DN-pingpong",
+     "NEW-MT-OUTNUMBERED"
+    ]
+   }
+  ],
+  "decisions": [
+   {
+    "t": "选点期",
+    "bot": "全部 10 个号",
+    "kind": "spawn",
+    "verdict": "error",
+    "state": "10 个号落在东南角一块（x 568~868、y 750~942），最近队内号 42~78 像素；同队路人 Spero 的出生点在阵里，敌方 BiBLiCaL 离 zero_7 70 像素",
+    "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs solve L790（角落扇形 L1065-1170；评分 L1262-1268）→ matchBotsToTargets L1431-1493",
+    "why": "名下 58,759 格 = 人头份额的 0.33；人均 5,876 对其他真人 24,312。这一块陆上只通同队路人和 BiBLiCaL、cold1，1500 拍起 5 个号没有陆上邻居",
+    "estCost": "1500 拍人均地是其他真人的 0.37 倍（出生份额 0.24 × 转化 1.51）",
+    "patternId": "R07-SP-CLUSTER",
+    "evidenceRef": "A041-land.txt [G1]；A041-ledger-brief.txt [B1]、[B6]、[B9]；卷宗[D]；A041-coast.txt"
+   },
+   {
+    "t": "选点期第 -21 步",
+    "bot": "sora_w、alex_k、talon5",
+    "kind": "spawn",
+    "verdict": "error",
+    "state": "终解要 sora_w 去 (747,941)、alex_k 去 (759,870)、talon5 去 (822,907)；生效的是第 9 轮的 (679,941)、(734,887)、(782,941)——终解那条也落地了，但和上一条挤在同一步，引擎后处理先发的",
+    "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs matchBotsToTargets L1431-1493；指派由页面逐条发选点指令，同一步落地两条时旧的生效",
+    "why": "求解 15 轮里这三个号的点位在最后几轮还在变；执行层没有保证「最后一条最后处理」",
+    "estCost": "sora_w 名下 2,894 格（10 个号里最小）、离 noah88 42 像素；alex_k 离 ryan_m 44 像素",
+    "patternId": "NEW-R01-SP03",
+    "evidenceRef": "A041-delay.txt [L1]；A041-ledger-brief.txt [B1]；A041-land.txt [G1] 逐号"
+   },
+   {
+    "t": "90~1500",
+    "bot": "全部",
+    "kind": "attack",
+    "verdict": "good",
+    "state": "开局比其他真人快（630 拍 地÷名下 0.46 对 0.10），1500 拍 0.94 对 0.62；名下范围里的地 85.8% 进了编队",
+    "codePath": "src/strategy/v27-team-c116-vb.js V13.dpNeutral L2383-2412、Style.pickTarget L1144-1177、General.act L794-797",
+    "why": "按其他真人的转化算 1500 拍该有 36,570 格，实际 55,361 格；600 拍接壤的 57 个 AI 22,537 格到 1800 拍 82.2% 进了编队",
+    "estCost": "—",
+    "patternId": "NEW:OP-cycle-open",
+    "evidenceRef": "A041-land.txt [G2]~[G4]；A041-ledger-brief.txt [B7]~[B9]"
+   },
+   {
+    "t": "600~1495",
+    "bot": "zexos1、talon5、riku_x、leo_tx",
+    "kind": "attack",
+    "verdict": "unclear",
+    "state": "买 AI 地的 1,800 个决策拍里 622 个（34.6%）被 safeFinite 冻结，587 个卡在编队友：zexos1 107（leo_tx×97）、talon5 104（riku_x×59、alex_k×43）、riku_x 91（talon5×67）、leo_tx 80（zexos1×51）",
+    "codePath": "src/strategy/v27-team-c116-vb.js V17.safeFinite L2757-2768 → Policy.winFloor L4562-4570（t<1500）",
+    "why": "591 个去掉这一项当拍就能出手；身边 AI 的地同队路人拿走 16.9%（Spero 3,801 格）、敌方真人 0.9%，冻结和这 16.9% 有没有关系没有量",
+    "estCost": "没有量出损失",
+    "patternId": "NEW-R03-OP01",
+    "evidenceRef": "A041-freeze.txt 第一段；A041-ledger-brief.txt [B8]、[B9]"
+   },
+   {
+    "t": "1512~1596",
+    "bot": "leo_tx、zero_7",
+    "kind": "attack",
+    "verdict": "good",
+    "state": "BiBLiCaL 18,377 格/11.9 万兵（密度 6）、同队路人也在咬它：leo_tx 8 条送出 16.6 万（手续费 1.1 万）、zero_7 3 条 6.8 万，前几条每条 pct 122（余额的 12%），leo_tx 1575~1596 拍 4 条 pct 357~385（对方已经濒死）",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5182-5185、L5200-5207（路人队友在打 → ×0.68；编队友在打 → ×0.58）→ Policy.buyLand L5595-5608（脉冲档，buyLand:5607）、L5588-5593（濒死档，buyLand:5592）",
+    "why": "两个号烧 13.5 万、3.8 万拿 7,745、1,967 格（交换比 0.44、0.45）；编队 11.51%→14.22% 靠的就是这一口",
+    "estCost": "—",
+    "patternId": "NEW-R03-AT01",
+    "evidenceRef": "卷宗[F]；out/trace/A041-cmdq-1500-1720.txt；A041-retq.txt；A041-snap-west-biblical.txt"
+   },
+   {
+    "t": "1582~1645",
+    "bot": "zexos1",
+    "kind": "attack",
+    "verdict": "error",
+    "state": "页面落后 70 拍上下，同一个决定在落地前重复发：1582 拍 7 条一起落地（余额 16.4 万→4.7 万）、1610 拍 5 条（4.9 万→3.6 千）、1645 拍 5 条（3.8 千→615）",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5595-5608、L5588-5593（在途检查 curAtk 在上一条落地前是 0）；Policy.send L3838-3877",
+    "why": "14 条对真人送出 10.4 万、只烧 2.3 万、拿 1,552 格（这一段退回余额 13.4 万）；余额清空后 1640 拍起被围，1800 拍只有 16.8 万（密度 23）",
+    "estCost": "1530~1620 拍余额 −98%；同一段 leo_tx 拿 7,745 格",
+    "patternId": "NEW:IO-lag-burst / NEW-R03-IO01",
+    "evidenceRef": "卷宗[I]、[J]；A041-delay.txt [L2]、[L5]；A041-cmdq-1500-1720.txt；A041-retq.txt"
+   },
+   {
+    "t": "1500~2280",
+    "bot": "kaito9",
+    "kind": "attack",
+    "verdict": "error",
+    "state": "唯一的真人邻居 cold1（接壤 162 格）；157 个决策拍报价全部低于 worth（20.86→98.06 对 30.93→110.62），一条没发；cold1 密度 8.0→40.7",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5291-5294 → Policy.buyLand L5422-5426、L5611-5613（x < want 且 x < chunk×余额 → continue）",
+    "why": "2400 拍前对没在打自己的真人、need > 0.35×余额时只走整吃档；整吃档要预算 ≥ 余额的两成，等价于 c ≤ 0.982×自己密度（1500 拍）~0.593×（2399 拍）。报价低于 worth 但高于这条线，整拍不发",
+    "estCost": "编队 1800~2280 拍 14.22% 没动；最后对 cold1 烧 51.2 万拿 4,795 格",
+    "patternId": "NEW-R03-AT03",
+    "evidenceRef": "A041-belowworth-1500-2284.txt；A041-buywhy-kaito9.txt；A041-buywhy-kaito9-2255.txt；A041-worthgate.txt；A041-contact-cold1.txt"
+   },
+   {
+    "t": "1600~2280",
+    "bot": "noah88",
+    "kind": "attack",
+    "verdict": "error",
+    "state": "和 cold1 只贴着 5 格（对方边界 375 格）：steps 2238~2274，接触惩罚 ×1.80；137 个决策拍报价 51.41→178.69 高于 worth 49.76→103.01",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5177-5180 → Policy.buyLand L5350-5359（L5359 break）",
+    "why": "同拍 kaito9 对同一个目标报价 98.06（2280 拍）；noah88 的兵 16.6 万→57.4 万只能等",
+    "estCost": "2285 拍过软上限后 3 条送出 53.3 万、只烧 2.5 万、50.9 万退回（前线只有 5~8 格）",
+    "patternId": "NEW-R03-AT08",
+    "evidenceRef": "A041-contact-cold1.txt；A041-belowworth-1500-2284.txt；A041-buywhy-noah88.txt；A041-freeze.txt 第二段"
+   },
+   {
+    "t": "1510~3195",
+    "bot": "8 个号 → kaito9",
+    "kind": "donate",
+    "verdict": "error",
+    "state": "调度层判 kaito9「身边有猎物」，整局 336 条进攻档调度指着它；2142 拍前一笔没成交，2142~3212 拍成交 1 笔 15.8 万；kaito9 1510~2145 拍（89 条）、2540~3405 拍（177 条）前后 150 拍都没打过真人",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4457-4459、L4474-4494、L4500-4508；引擎 src/sim/sim/game.js donationCost L348-357",
+    "why": "调度层的门槛是敌邻密度 < 0.70×受捐方密度，出手层整吃档是 0.37~0.42（1500 拍）；额度按绝对兵数计，一笔要 211~246 点、只剩 97~103 点",
+    "estCost": "调度本身没成交、没花兵；它说明两层判断不一致",
+    "patternId": "NEW-R03-AT07 / NEW-R03-DN01",
+    "evidenceRef": "卷宗[H]；A041-dispatch-follow.txt；A041-dispatchq.txt；A041-quotaunit.txt；A041-worthgate.txt"
+   },
+   {
+    "t": "1500~3213",
+    "bot": "sora_w、alex_k、talon5、riku_x",
+    "kind": "donate",
+    "verdict": "unclear",
+    "state": "没有陆上邻居、没有能出海的岸、额度不放行：sora_w、alex_k 攒到密度 150，贴硬上限 700、630 拍",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5019-5035；Policy.tryDonateToTeammate L4355、L4418；引擎 src/sim/sim/game.js interestRate L739-746、addBalance L752-764",
+    "why": "四个号 1500~4284 拍实得利息只有满额的 36%、40%、51%、58%；出路在选点那一步就没了",
+    "estCost": "10 个号超软上限的拍上少拿利息 232 万",
+    "patternId": "R07-EC-BOXED-RICH",
+    "evidenceRef": "卷宗[P]；A041-coast.txt；A041-water-reach.txt；A041-idleboats-sora_w.txt；A041-caploss.txt"
+   },
+   {
+    "t": "2285~2295",
+    "bot": "kaito9、noah88",
+    "kind": "attack",
+    "verdict": "unclear",
+    "state": "cold1 2282 拍去打路人 Player 743（8.0 万兵）：kaito9 的报价 98.06→63.42 过了预算闸；noah88 收到 19.6 万过软上限。两个号各连发 3 条（首条 11 拍后落地）",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5211-5213（对方打我队友的兵 > 它余额的 6% → ×0.75）；Policy.buyLand L5353（over）、L5440-5444、L5611-5616（buyLand:5616）",
+    "why": "出手是对的，时机是别人给的；连发 3 条：kaito9 首条 18.5 万、多花 26.1 万（都烧在地上），noah88 首条 25.5 万、多花 29.8 万（占余额 71%，50.9 万原路退回）",
+    "estCost": "noah88 三条手续费 2.0 万，55.5 万→24.7 万的 90 拍里只拿 137 格",
+    "patternId": "NEW-R03-IO01 / NEW-R03-AT06",
+    "evidenceRef": "A041-acts-front-2270-2420.txt；A041-cmdq-cold1-2200-2330.txt；A041-delay.txt [L5]；卷宗[I]"
+   },
+   {
+    "t": "2340~2730",
+    "bot": "kaito9",
+    "kind": "attack",
+    "verdict": "good",
+    "state": "吃到 cold1 身后露出 Player 105（2400 拍 12,450 格/7.2 万兵）：烧 14.0 万拿 10,103 格；对方 2758 拍离线",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5146-5148（bleeding）、L5291-5294 → Policy.buyLand L5595-5608（脉冲档，buyLand:5607；2355~2365 拍一串 3 条首条 5.8 万）",
+    "why": "kaito9 的地 8,120（2280 拍）→ 13,458（2400 拍）→ 22,277（2700 拍）；对方只掉余额 3.5 万",
+    "estCost": "—",
+    "patternId": "NEW-R03-AT01",
+    "evidenceRef": "卷宗[F]；A041-acts-kaito9-2385-3300.txt；A041-roster.txt"
+   },
+   {
+    "t": "3000~3630",
+    "bot": "ryan_m、zero_7、zexos1",
+    "kind": "attack",
+    "verdict": "good",
+    "state": "围解开后按脉冲档出手：ryan_m → [cn]i🍇TV 5 条烧 48.4 万拿 5,144 格，zero_7 → [cn]i🍇TV 烧 26.5 万拿 2,356 格，zexos1 → Oylesine 烧 55.8 万拿 11,584 格",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5595-5608（buyLand:5607；每条 ≤ 0.12×余额）",
+    "why": "交换比 0.44~0.49；编队 18.18%（3000 拍）→ 22.51%（3600 拍）",
+    "estCost": "—",
+    "patternId": "NEW-R03-AT01",
+    "evidenceRef": "卷宗[F]；A041-retq.txt；A041-buywhy-ryan_m-3090.txt；A041-buywhy-zexos1-3210.txt"
+   },
+   {
+    "t": "3220~3577",
+    "bot": "sora_w、alex_k、talon5、riku_x、zero_7",
+    "kind": "donate",
+    "verdict": "error",
+    "state": "3213 拍额度换档后，被围的后排按 pct 320/380 往 kaito9、leo_tx、noah88 捐：sora_w 58.9 万→8.5 万（3150~3330 拍），talon5 102 万→59.4 万→21.8 万，alex_k 64.3 万→12.2 万，riku_x 74.0 万→16.6 万",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4382-4388、L4463-4494、L4500-4508；引擎 src/sim/sim/game.js donationCost L350",
+    "why": "给 leo_tx 的协防兵用上了（leo_tx 3210~3960 拍对真人 19 条送出 136 万、拿 8,500 格）；给 kaito9 的 23.5 万、18.5 万（3220 拍）、22.8 万（3402 拍）落在一个报价高于 worth、不出手的号身上。捐完的四个号密度 22~33，4160~4390 拍被吃时 alex_k、riku_x、sora_w 让对方每格只花 67、79、84 兵",
+    "estCost": "3210~3960 拍捐出 24 笔到账 338 万、税 70.6 万",
+    "patternId": "NEW-R03-DN03 / NEW-R03-EC01",
+    "evidenceRef": "卷宗[H]、[I]、[L]；A041-donburst.txt；A041-winledger.txt"
+   },
+   {
+    "t": "3320~4270",
+    "bot": "zexos1、ryan_m、zero_7、leo_tx",
+    "kind": "attack",
+    "verdict": "unclear",
+    "state": "报价低于 worth（zexos1 对 Oylesine 22.95、ryan_m 对 Reed 25.23），想发 9.2~10.4 万；被对真人邻居的留底挡住：zexos1 3615~3945 拍 67 个决策拍、3980~4270 拍 59 个，ryan_m 3320~3515 拍 40 个",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.safeAt L4543-4560 → V17.safeAt L2728-2738 → V13.dpKeep L2459-2464 → Policy.buyLand L5414-5418、L5444",
+    "why": "留底按最厚的真人邻居的余额算；邻居的兵 200~324 万，自己 73.4 万上下，留底把余额占满",
+    "estCost": "没有量：这些兵留在手里也在挡对方的进攻",
+    "patternId": "NEW-R03-AT05",
+    "evidenceRef": "A041-freeze.txt 第二段；A041-acts-zexos1-ryan_m-late.txt；A041-belowworth-2285-4835.txt"
+   },
+   {
+    "t": "3285~4505",
+    "bot": "kaito9",
+    "kind": "attack",
+    "verdict": "error",
+    "state": "129 万→293 万、密度 62~110：大部分决策拍报价高于 worth；出手的几次对 Барбос 烧 149 万只拿 1,721 格（掉反击槽 109 万），4510 拍一串 3 条首条 34.6 万、多花 57.9 万",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5248-5250（soleBufferPenalty）→ Policy.buyLand L5350-5365；出手走脉冲档 L5595-5608（buyLand:5607），上一条没落地就重发",
+    "why": "编队最厚的号没有压在队友正在挨打的那几条前线上（Reed、Oylesine、twojaStara），它陆上只贴着 Барбос",
+    "estCost": "3210~3960 拍 7 条出 185 万、手续费 20.2 万、退 126 万；3960~4830 拍 5 条 105 万拿 0 格",
+    "patternId": "NEW-R03-AT06 / NEW-R03-IO01",
+    "evidenceRef": "A041-freeze.txt 第二段；A041-buywhy-kaito9-3285.txt；A041-retq.txt；A041-delay.txt [L5]；卷宗[F]"
+   },
+   {
+    "t": "3745、4158、4361",
+    "bot": "noah88、kaito9",
+    "kind": "donate",
+    "verdict": "error",
+    "state": "两个最厚的号互相捐：noah88 → kaito9 40.0 万（受方 218 万、密度 86），413 拍后 kaito9 → noah88 51.2 万；kaito9 → talon5 55.2 万。三笔 pct 182~201，税 12.7 万、17.9 万、18.3 万",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4473、L4474-4494、L4500-4508（pct < 180 才不捐）；引擎 src/sim/sim/game.js transfer L388-400（税 = 捐方余额的 64/1024）",
+    "why": "noah88⇄kaito9 总流量 91.2 万、净流量 11.2 万、税 30.6 万；税按整笔余额收，余额越大一笔越贵",
+    "estCost": "三笔税 12.7 万、17.9 万、18.3 万",
+    "patternId": "NEW:DN-pingpong",
+    "evidenceRef": "卷宗[H]；A041-pingpong.txt [1]、[2]"
+   },
+   {
+    "t": "4165~4214",
+    "bot": "ryan_m、noah88",
+    "kind": "attack",
+    "verdict": "error",
+    "state": "对空壳 Player 105 的零碎地：ryan_m 3 条 pct 6 送出 3.0 万、手续费 5.2 万（余额 145~149 万）；noah88 1 条 pct 5 送出 6.0 千、手续费 1.2 万",
+    "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5449-5453（非真人分支，buyLand:5453：空壳不算真人）；手续费 = 发令时余额的 12/1024",
+    "why": "这种目标 need 只有几千（ryan_m 4010 拍对 Player 105 need 6,654），一条送出 1.0 万上下；手续费按整笔余额收，一条 1.7 万",
+    "estCost": "手续费 6.4 万",
+    "patternId": "NEW:FE-tiny-cmd-fee",
+    "evidenceRef": "A041-tinycmd.txt；A041-acts-zexos1-ryan_m-late.txt"
+   }
+  ],
+  "unknowns": [
+   "没重演的反事实：kaito9 在 1500 拍（cold1 密度 8.0）就出手；10 个号摊开选点；后排不外捐、留着密度；kaito9 3600 拍的 250 万压到队友的前线上。文中这些地方给的都是账面上确定的数，不是重演结果",
+   "扇形为什么朝着地图角开（「角落最深处」的 zero_7 离敌人最近、「外圈盾墙」贴着地图边）：锚点和朝向（协调器 L1089-1131）没有重算；Spero 和协调器谁先定的点也没查",
+   "zexos1 的页面为什么慢（1500~3000 拍 14 条延迟中位 70 拍）：tickperf 里它的 avgMs ≤0.48、skip 0，和别的号一样；日志里没有原因",
+   "kaito9 2285 拍报价里的 ×0.75 是按条件代入的（cold1 压在路人身上 8.0 万 > 它余额 53.0 万的 6%，offers L5211-5213）：acts 的标记里没有单列这一项，两个号的报价同一拍按同一比例下降与此相符",
+   "quota-check.py 的独立模型判 369 条额度拒、19 条「额度够但没成交」，卷宗[H] 的口径是 384/4；差的那些没有逐条查",
+   "kaito9 3300 拍后各段报价里 soleBufferPenalty（×1.6）是不是每拍都乘上了没有逐拍打印，只知道 buy-why 抽样的 6 拍里 5 拍「真人邻居数=1」且 newNbs>0",
+   "真人行为不可见：cold1 为什么 1500~2280 拍不打编队、2282 拍去打 Player 743；Player 193、Fish N Chips 为什么把兵一次捐给前线"
+  ],
+  "mechanicsQuestions": [
+   {
+    "q": "整局兵力去向（编队在控期间，卷宗[L]）",
+    "a": "总利息 2,433 万。挨打掉兵 47.6%、打真人 30.0%（其中槽内对消 7.6%；86,864 格、62.9 兵/格，不含对消）、三种手续费 10.9%（攻击费 5.9%、捐款税 4.8%、船费 0.2%）、打 AI 2.1%（33,782 格、14.8 兵/格）、打中立 0.3%（38,698 格）、出局时还在手里 5.5%。捐出到账 496 万、税 117 万；被真人吃掉 127,931 格，对方烧 2,546 万（每格 199 兵）。全场捐款网络（卷宗[N]）：本编队 31 笔 496 万、税 117 万；队2 15 笔 857 万、税 116 万；本队路人 23 笔 71.1 万、税 26.5 万"
+   },
+   {
+    "q": "DROP30（卷宗[I]）",
+    "a": "35 个区间全部对上（card 的 drop30Events 只列了 30 条）。最重的捐款：sora_w 3240~3330 拍 37.6 万→8.5 万（−77%）、riku_x 3420~3510 拍 58.7 万→25.7 万（−56%）、talon5 3150~3240 拍 102 万→59.4 万（−42%）；攻真人：zexos1 1530~1620 拍 14.7 万→3.7 千（−98%）、leo_tx 13.9 万→3.1 万（−78%）、noah88 2250~2340 拍 55.5 万→24.7 万（−55%）；挨打：noah88 4590~4680 拍 103 万→25.2 万（−76%）、riku_x 4230~4320 拍 16.0 万→3.8 万（−76%）、zero_7 4050~4140 拍（−64%）、ryan_m 4410~4500 拍（−62%）"
+   },
+   {
+    "q": "受捐额度怎么算？",
+    "a": "引擎 game.js donationCost L348-357：3213 拍前按绝对兵数计点，本图（陆地 480,957 格，uv=1,604）1071~2141 拍每点 481.2 兵、上限每 100 拍多放行 2,887 兵，2142~3212 拍每点 1,604.0 兵、每 100 拍多放行 12,832 兵；3213 拍起每笔 = 4 + 100×到账÷受捐方软上限，上限每 100 拍 +10 点；4284 拍起免额度。本局编队捐款按落地拍：2142 拍前 0，2142~3212 拍 35.4 万，3213~4283 拍 405 万，4284 拍之后 55.2 万"
+   },
+   {
+    "q": "报价低于 worth 为什么还不出手？",
+    "a": "src/strategy/v27-team-c116-vb.js offers L5291-5294：2400 拍前、对方没在打我、need > 0.35×余额时 pulseMode=false，只走整吃档；buyLand L5422-5426 的预算 = (worth×地 − 手续费×m − c×地) ÷ (1+m)，L5611-5613 要 x ≥ want（1.25×need + 3×接壤）或 x ≥ chunk×余额（chunk=0.2；本版 pplKill=0）。按参数摊开（worthgate.py）：预算 ≥ 余额两成 ⟺ c ≤ 0.982×自己密度（1500 拍）、0.923×（2000 拍）、0.716×（2250 拍）、0.593×（2399 拍）。kaito9 1500 拍 c=20.86、密度 20.6；2280 拍 c=98.06、密度 97.8：一直在 worth 以下、这条线以上"
+   },
+   {
+    "q": "接触惩罚是什么？",
+    "a": "src/strategy/v27-team-c116-vb.js offers L5177-5180：steps = 0.75×对方地 ÷ 接壤格数；接壤 < 25 格且 steps > contactStepsMax（350），对方不濒死、没在打我时 c ×= 1 + contactPenalty（0.002）×min(400, steps − 350)。noah88 对 cold1：cnt=5、steps 2238~2274、系数 1.80；kaito9：cnt=162、steps 69~70、系数 1.00（dbg/contact.mjs）"
+   },
+   {
+    "q": "2285 拍 kaito9 的报价为什么一拍掉了三成多？",
+    "a": "cold1 2282 拍一条 8.0 万兵（pct 132）打同队路人 Player 743：它的余额 61.7 万→53.0 万，elimCost 跟着降（need 112 万→96.7 万）；src/strategy/v27-team-c116-vb.js offers L5134-5145 数「对方压在我队友身上的兵」，L5211-5213 超过对方余额的 6% 时 c ×0.75。kaito9 98.06→63.42，noah88 178.69→115.81，同一拍、同一比例（推断：标记里没有单列这一项）"
+   },
+   {
+    "q": "前线号为什么报价低于 worth 也不打（卡真人留底）？",
+    "a": "src/strategy/v27-team-c116-vb.js safeAt L4543-4560 → V17.safeAt L2728-2738（killW=1）→ V13.dpKeep L2459-2464：留底 = (最厚的真人邻居的余额 + 它压过来的兵 − 1.5×自己地) ÷ 1.78，再用 oppFloorCap（88×地）封顶；buyLand L5444 keep = max(keep, safe)。zexos1 3940 拍：余额 111 万、地 16,288 格（88×地 = 143 万），safe 143 万——留底顶到封顶，能动的兵是 0"
+   }
+  ],
+  "checklistFails": []
+ },
+ {
   "matchId": "A042",
   "file": "A042",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -9373,7 +10346,7 @@
   "matchId": "A045",
   "file": "A045",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -10558,7 +11531,7 @@
   "matchId": "A046",
   "file": "A046",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -11675,7 +12648,7 @@
   "matchId": "A051",
   "file": "A051",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -12634,7 +13607,7 @@
   "matchId": "A066",
   "file": "A066",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -13803,7 +14776,7 @@
   "matchId": "A067",
   "file": "A067",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -15010,7 +15983,7 @@
   "matchId": "A071",
   "file": "A071",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -16058,7 +17031,7 @@
   "matchId": "A087",
   "file": "A087",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -17067,7 +18040,7 @@
   "matchId": "A090",
   "file": "A090",
   "reviewer": "R03",
-  "sha": "960703da",
+  "sha": "f475fbb6",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -18175,7 +19148,7 @@
   "matchId": "A013",
   "file": "A013",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -19053,7 +20026,7 @@
   "matchId": "A015",
   "file": "A015",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -19725,7 +20698,7 @@
   "matchId": "A022",
   "file": "A022",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -20111,7 +21084,7 @@
   "matchId": "A029",
   "file": "A029",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -20828,7 +21801,7 @@
   "matchId": "A038",
   "file": "A038",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -21470,7 +22443,7 @@
   "matchId": "A047",
   "file": "A047",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -22268,7 +23241,7 @@
   "matchId": "A073",
   "file": "A073",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -22747,7 +23720,7 @@
   "matchId": "A078",
   "file": "A078",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -23499,7 +24472,7 @@
   "matchId": "A081",
   "file": "A081",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -24420,7 +25393,7 @@
   "matchId": "A083",
   "file": "A083",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -25196,7 +26169,7 @@
   "matchId": "A086",
   "file": "A086",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -26061,7 +27034,7 @@
   "matchId": "A099",
   "file": "A099",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -26938,7 +27911,7 @@
   "matchId": "B034",
   "file": "B034",
   "reviewer": "R04",
-  "sha": "b30724c7",
+  "sha": "e90e45e1",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -41874,7 +42847,7 @@
   "matchId": "B001",
   "file": "B001",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -43438,7 +44411,7 @@
   "matchId": "B002",
   "file": "B002",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -45347,7 +46320,7 @@
   "matchId": "B003",
   "file": "B003",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -46303,7 +47276,7 @@
   "matchId": "B010",
   "file": "B010",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -47953,7 +48926,7 @@
   "matchId": "B014",
   "file": "B014",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -49664,7 +50637,7 @@
   "matchId": "B017",
   "file": "B017",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -52870,7 +53843,7 @@
   "matchId": "B018",
   "file": "B018",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -54589,7 +55562,7 @@
   "matchId": "B021",
   "file": "B021",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -57201,7 +58174,7 @@
   "matchId": "B022",
   "file": "B022",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -58953,7 +59926,7 @@
   "matchId": "B023",
   "file": "B023",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -60945,7 +61918,7 @@
   "matchId": "B025",
   "file": "B025",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -62579,7 +63552,7 @@
   "matchId": "B038",
   "file": "B038",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -65258,7 +66231,7 @@
   "matchId": "B039",
   "file": "B039",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -66886,7 +67859,7 @@
   "matchId": "B041",
   "file": "B041",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -67833,7 +68806,7 @@
   "matchId": "B045",
   "file": "B045",
   "reviewer": "R06",
-  "sha": "5b56120b",
+  "sha": "67a12c9d",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -68983,7 +69956,7 @@
   "matchId": "A007",
   "file": "A007",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -70366,7 +71339,7 @@
   "matchId": "A033",
   "file": "A033",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -71303,7 +72276,7 @@
   "matchId": "A039",
   "file": "A039",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -72601,7 +73574,7 @@
   "matchId": "A053",
   "file": "A053",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -73859,7 +74832,7 @@
   "matchId": "A061",
   "file": "A061",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -75045,7 +76018,7 @@
   "matchId": "A062",
   "file": "A062",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -75761,7 +76734,7 @@
   "matchId": "A070",
   "file": "A070",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -77049,7 +78022,7 @@
   "matchId": "A079",
   "file": "A079",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -77505,7 +78478,7 @@
   "matchId": "A082",
   "file": "A082",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -78946,7 +79919,7 @@
   "matchId": "A089",
   "file": "A089",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -80255,7 +81228,7 @@
   "matchId": "A091",
   "file": "A091",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -81322,7 +82295,7 @@
   "matchId": "G00",
   "file": "G00",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -82268,7 +83241,7 @@
   "matchId": "G01",
   "file": "G01",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -83316,7 +84289,7 @@
   "matchId": "G04",
   "file": "G04",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -84270,7 +85243,7 @@
   "matchId": "G07",
   "file": "G07",
   "reviewer": "R07",
-  "sha": "c8cb596e",
+  "sha": "413e5ff1",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -84991,7 +85964,7 @@
   "matchId": "B006",
   "file": "B006",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -86646,7 +87619,7 @@
   "matchId": "B009",
   "file": "B009",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "open",
   "archetype": "external",
   "context": {
@@ -87579,7 +88552,7 @@
   "matchId": "B015",
   "file": "B015",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -89313,7 +90286,7 @@
   "matchId": "B019",
   "file": "B019",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -91846,7 +92819,7 @@
   "matchId": "B027",
   "file": "B027",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -94212,7 +95185,7 @@
   "matchId": "B029",
   "file": "B029",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -96467,7 +97440,7 @@
   "matchId": "B030",
   "file": "B030",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -97579,7 +98552,7 @@
   "matchId": "B031",
   "file": "B031",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -99341,7 +100314,7 @@
   "matchId": "B033",
   "file": "B033",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -100663,7 +101636,7 @@
   "matchId": "B034",
   "file": "B034",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -103346,7 +104319,7 @@
   "matchId": "B035",
   "file": "B035",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -104836,7 +105809,7 @@
   "matchId": "B043",
   "file": "B043",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -107502,7 +108475,7 @@
   "matchId": "B049",
   "file": "B049",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "external",
   "context": {
@@ -109250,7 +110223,7 @@
   "matchId": "G02",
   "file": "G02",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -110424,7 +111397,7 @@
   "matchId": "G05",
   "file": "G05",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -111648,7 +112621,7 @@
   "matchId": "G08",
   "file": "G08",
   "reviewer": "R08",
-  "sha": "29cb5b2c",
+  "sha": "7ae844e4",
   "result": "lost",
   "archetype": "outscaled",
   "context": {

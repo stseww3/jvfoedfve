@@ -79,6 +79,15 @@ export function fnvU32(vals) {
   return h >>> 0;
 }
 
+// 哪一局当年线上跑的是哪一版策略（数据包 src/strategy/VERSION-TIMELINE.md）。G 组（g09）没有录像，不在可验收范围内。
+export function cohortOf(mid) {
+  const n = +String(mid).slice(1);
+  if (/^A/.test(mid)) return n <= 17 ? 'va' : n <= 95 ? 'vb' : 'vc';
+  if (/^B/.test(mid)) return 'c110';
+  if (/^G/.test(mid)) return 'g09';
+  return '?';
+}
+
 export const pct = (a, b, d = 1) => (b > 0 ? (100 * a / b).toFixed(d) + '%' : '-');
 export const fmtN = (x) => (x === null || x === undefined || Number.isNaN(x) ? '-' : Math.abs(x) >= 1e6 ? (x / 1e6).toFixed(2) + 'M' : Math.abs(x) >= 1e4 ? (x / 1e3).toFixed(1) + 'k' : String(Math.round(x * 100) / 100));
 export const ceil7 = (x) => 7 * Math.ceil(x / 7);

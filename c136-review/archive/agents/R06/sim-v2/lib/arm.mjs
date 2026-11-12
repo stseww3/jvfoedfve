@@ -5,20 +5,17 @@ import { Metrics } from './metrics.mjs';
 import { execRecorded, contacts, NEUTRAL, iV } from './match.mjs';
 import { hashU, hashInt } from './util.mjs';
 
-const TAKEOVER_HOOKS = ['onTakeover', 'resetInflight', 'clearInflight', 'resetLedger'];
-
 export class Arm {
   // cfg：{ name, world, strat, params, seats:[{p, slot}], profile, chanOpts, opts, history }
   constructor(cfg) {
     this.name = cfg.name;
     this.world = cfg.world;
     this.H = cfg.world.humans;
-    this.opts = { fallback: 'cheapest', ourLeaves: 'replay', donateSubmit: 'always', keepLogs: false, aoPct: null, react: [], reactSeed: 1, inflightGuard: 'auto', takeoverHooks: TAKEOVER_HOOKS, handover: 'carry', ...(cfg.opts || {}) };
+    this.opts = { fallback: 'cheapest', ourLeaves: 'replay', donateSubmit: 'always', keepLogs: false, aoPct: null, react: [], reactSeed: 1, handover: 'carry', ...(cfg.opts || {}) };
     // 接管拍（checkpoint 模式）：handover=carry 时，影子在接管前发出、按通道算要到接管后才生效的指令，接管时算「还在路上」照常落地
     this.takeoverT = cfg.takeoverT ?? null;
-    // 桥接层的在途保护：auto = 策略文件自带补丁就按补丁（c110：8 拍且 450 ms），没有就不设；数字 = 固定拍数
-    const ig = this.opts.inflightGuard;
-    this.guard = ig === 'auto' || ig === undefined ? (cfg.strat.guard || null) : (+ig > 0 ? { ticks: +ig, ms: Infinity } : null);
+    // 桥接层的在途保护：只照历史策略文件自带的补丁（c110：8 拍且 450 ms；c116 系没有）。不提供改这个窗口的开关。
+    this.guard = cfg.strat.guard || null;
     this.profile = cfg.profile;
     this.strat = cfg.strat;
     this.quit = new Set();
@@ -205,12 +202,8 @@ export class Arm {
     const clean = this.opts.handover === 'clean';
     for (const s of this.seatList) {
       s.live = true; s.shadowIssued = s.issued; s.issued = 0; s.refused = 0;
-      if (!clean) continue;
-      // handover=clean：接管时路上没有任何指令。在途保护清零；策略若有在途账本的清零钩子就调一下
-      s.sentAt = -1;
-      for (const h of this.opts.takeoverHooks) {
-        if (typeof s.pol[h] === 'function') { try { s.pol[h](s.view); s.hooked = h; } catch (err) { s.errors++; if (!s.firstError) s.firstError = `takeover ${h}: ${err.message}`; } }
-      }
+      // handover=clean：接管时路上没有任何指令，桥接的在途保护清零（对照用；缺省 carry）
+      if (clean) s.sentAt = -1;
     }
     this.metrics.begin();
   }
@@ -263,7 +256,6 @@ export class Arm {
       others: this.other,
       react: this.reactStat,
       viewWrites: [...this.viewWrites].sort(),
-      hooks: [...new Set(this.seatList.map((s) => s.hooked).filter(Boolean))],
       over: !!w.over, winnerTeam: w.over ? w.winnerTeam : null,
       ...extra,
     });

@@ -228,6 +228,22 @@ DEFS["NEW-R03-MT01"] = {
               "+ modeq.py（manifest.jsonl 里各 mode 的局数与 mode 7、8 的名单）+ 卷宗[A] 的录像头队数 + donate-why（全部停在 noTeam）。",
 }
 
+# ---- A041 新增 ----
+DEFS["NEW-R03-AT08"] = {
+    "prefix": "AT",
+    "name": "和目标只贴着几格的号被接触惩罚抬价：同一个真人，贴得宽的队友报价低一半，贴得窄的号报价乘到 1.80 倍、一直高于 worth",
+    "sameAs": ["NEW-R03-AT03（几个号围着同一个真人、各算各的；这条单列其中「接触面窄的号被 offers 的接触惩罚抬价」这一种）", "NEW:AT-worth-gate（R06，价格线不出手）",
+               "NEW-R03-AT06（出手大小不看接壤多宽；这条是报价按接壤多宽加罚）", "暂无完全对应的条目（R03 在 A041 第一次单列；请统筹归并）"],
+    "definition": "Policy.offers（Vb L5177-5180）：steps = 0.75×对方地 ÷ 接壤格数 cnt（cnt 是 analyze 里自己边界格四邻属于对方的格数）；"
+                  "cnt < 25 且 steps > contactStepsMax（本版 350）、对方不濒死、没有在打我时，报价 c ×= 1 + contactPenalty（本版 0.002）×min(400, steps − 350)，系数最高 1.80。"
+                  "对方 1.5 万格、接壤 5 格时 steps 在 2,200 以上，系数顶满。这个系数乘在「单独吃掉对方整个号」的报价上，再去和 worth（L5350-5359）比："
+                  "同一个目标，接壤上百格的队友不受罚、报价低一半，但它那边可能被别的闸挡着（整吃档预算闸，见 NEW-R03-AT03）；两个号各算各的，联手折扣（L5182-5185、L5205-5207）要等队友的兵先压上去。"
+                  "惩罚在对方开始打我（onMe）或濒死（nearCollapse）时取消；过软上限（over）时 L5359 不 break，报价照样带着这个系数去算留底。"
+                  "计：受罚的号、受罚的决策拍数、cnt / steps / 系数、同拍不受罚队友对同一目标的报价、这段时间目标密度的变化、最后是怎么打破的。",
+    "detect": "node scripts/dbg/contact.mjs <局> <号,号> <目标席位> <拍表>（cnt、对方边界格数、share、steps、惩罚系数、当拍 offers 里的 c 与 need）"
+              "+ belowworth.py <局> <t0> <t1>（每个号 低于 worth 却没出手 / 高于 worth 的决策拍数与报价区间）+ freeze-scan 第二段「报价高于 worth」的区间 + dbg/params.mjs <局> 'contact'。",
+}
+
 
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]

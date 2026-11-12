@@ -1,0 +1,4 @@
+# 第 2 批：决策层消融（A041，跑到 2400 拍）
+out/council/abl/shadow-A041-base-2400.txt|node scripts/g0ablate.mjs A041 --shadow base --until 2400
+out/council/abl/shadow-A041-strict-donate-2400.txt|node scripts/g0ablate.mjs A041 --shadow strict-donate --until 2400
+out/council/abl/shadow-A041-multi-2400.txt|node scripts/g0ablate.mjs A041 --shadow multi --until 2400

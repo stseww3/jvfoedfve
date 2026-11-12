@@ -9,16 +9,8 @@ import path from 'node:path';
 import { loadMatch, buildWorld, ReplayStepper, execRecorded, SIMV2, NEUTRAL, BUNDLES } from './match.mjs';
 import { Metrics, naturalShares, traceStats } from './metrics.mjs';
 import { loadTrace } from './channel.mjs';
-import { num, list } from './util.mjs';
-
-// 哪一局跑的是哪一版策略（src/strategy/VERSION-TIMELINE.md）
-export function cohortOf(mid) {
-  const n = +mid.slice(1);
-  if (/^A/.test(mid)) return n <= 17 ? 'va' : n <= 95 ? 'vb' : 'vc';
-  if (/^B/.test(mid)) return 'c110';
-  if (/^G/.test(mid)) return 'g09';
-  return '?';
-}
+import { num, list, cohortOf } from './util.mjs';
+export { cohortOf };
 
 export function parseWindows(s) {
   const out = [];

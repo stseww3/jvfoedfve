@@ -213,7 +213,7 @@ export function shadow(mid, opts = {}) {
     const free = () => multi || cur.lastCmdT !== g.t;
     const simIsBot = Object.getPrototypeOf(g).isBot || g.isBot;
     const ov = {
-      online: true,
+      online: opts.online !== false,
       ...(isBotMode === 'mate-person' ? { isBot: (p) => p >= g.humans || (g.state[p] === 2 && !(cur && g.isTeammate(cur.me, p))) } : {}),
       ...(isBotMode === 'human-person' ? { isBot: (p) => p >= g.humans } : {}),
       ...(personsAt ? { isBot: (p) => p >= g.humans || (g.state[p] === 2 && !(personsAt.has(p) && g.t >= personsAt.get(p))) } : {}),
@@ -377,7 +377,8 @@ export function shadow(mid, opts = {}) {
       if (s[2] === +r.cmds) chk.tick.cmds++; else if (!chk.tick.firstCmdsDiff) chk.tick.firstCmdsDiff = [t, +r.cmds, s[2]];
       if (s[3] === +r.boats) chk.tick.boats++;
     }
-    const logD = events.filter((e) => e.type === 'DISPATCH' && e.bot === b.bot).map((e) => `${e.t}|${e.kind}|${e.pct}|${e.target}|${e.myBal}`);
+    const inRun = (e) => !opts.until || +e.t < opts.until; // --until 时只核对跑到的那一段日志
+    const logD = events.filter((e) => e.type === 'DISPATCH' && e.bot === b.bot && inRun(e)).map((e) => `${e.t}|${e.kind}|${e.pct}|${e.target}|${e.myBal}`);
     const shD = [];
     for (const l of b.logs) {
       const m = /^\[HL-DISPATCH\] t=(\d+) (\w+) pct=(\d+)\/1024 -> ally=(\d+)\(.*\) boxedIn=(\w+) myBal=(\d+)/.exec(l);
@@ -388,7 +389,7 @@ export function shadow(mid, opts = {}) {
     for (const x of logD) if (setS.has(x)) chk.dispatch.same++; else if (!chk.dispatch.firstDiff) chk.dispatch.firstDiff = x;
     const setL = new Set(logD);
     chk.dispatch.shadowOnly = shD.filter((x) => !setL.has(x)).slice(0, 3);
-    const logO = opening.filter((e) => e.bot === b.bot).map((e) => `${e.t}|${e.cyc}|${e.rings}|${e.spend}|${e.bal}|${e.terr}`);
+    const logO = opening.filter((e) => e.bot === b.bot && inRun(e)).map((e) => `${e.t}|${e.cyc}|${e.rings}|${e.spend}|${e.bal}|${e.terr}`);
     const shO = [];
     for (const l of b.logs) {
       const m = /^\[HL-OPENING\] t=(\d+) cyc=(\d+) DP expand rings=(\d+) spend=(\d+)\/(\d+) terr=(\d+)/.exec(l);
