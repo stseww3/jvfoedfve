@@ -1,0 +1,592 @@
+{
+ "games": {
+  "A007": {
+   "t0_630": {
+    "spawn": 0.2556681952581896,
+    "rule": -0.6150195544003301,
+    "base": 0.15453472452081493,
+    "hold": 0.05346988212680151,
+    "resid": -4.083964409296037e-05,
+    "total": -0.15138759213861702,
+    "v": 0.7743988753873843,
+    "rhoH": 1.1634475138121547,
+    "rhoC2": 1.1634,
+    "rhoC1": 1.2273,
+    "rhoC0": 1.4324,
+    "n": [
+     1,
+     1,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.2556681952581896,
+    "rule": -0.30769122332534143,
+    "base": 0.10373746375383058,
+    "hold": 0.03722607360996866,
+    "resid": -8.724799316697784e-06,
+    "total": 0.08893178449733073,
+    "v": 0.7743988753873843,
+    "rhoH": 0.9149079823537171,
+    "rhoC2": 0.9149,
+    "rhoC1": 0.9496,
+    "rhoC0": 1.0534,
+    "n": [
+     1,
+     1,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A033": {
+   "t0_630": {
+    "spawn": 0.6046335730821798,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": -1.2478873868661255e-05,
+    "total": -0.00936857379789369,
+    "v": 0.5462745596735895,
+    "rhoH": 1.0094125962538765,
+    "rhoC2": 1.0094,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.6046335730821798,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 6.203312864316857e-05,
+    "total": 0.5088896542319609,
+    "v": 0.5462745596735895,
+    "rhoH": 0.6011627068397773,
+    "rhoC2": 0.6012,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A039": {
+   "t0_630": {
+    "spawn": 1.38772356598366,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": -4.0872553695892044e-05,
+    "total": -0.14266827080345187,
+    "v": 0.2496429539907801,
+    "rhoH": 1.1533471392795223,
+    "rhoC2": 1.1533,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 1.38772356598366,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 3.7555685371115644e-05,
+    "total": 0.6820469918348604,
+    "v": 0.2496429539907801,
+    "rhoH": 0.5055810122020286,
+    "rhoC2": 0.5056,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A053": {
+   "t0_630": {
+    "spawn": 0.6734093631476625,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": -1.339623057605016e-06,
+    "total": 0.025419037723853618,
+    "v": 0.5099669480302713,
+    "rhoH": 0.9749013059993936,
+    "rhoC2": 0.9749,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.6734093631476625,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 4.63218562980483e-05,
+    "total": 0.44368069608196536,
+    "v": 0.5099669480302713,
+    "rhoH": 0.6416702759532554,
+    "rhoC2": 0.6417,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A061": {
+   "t0_630": {
+    "spawn": 0.6503720489551881,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": -4.827030508730741e-05,
+    "total": -0.015330893836244289,
+    "v": 0.5218515863016305,
+    "rhoH": 1.0154490148507571,
+    "rhoC2": 1.0154,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.6503720489551881,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 0.0025940303720719537,
+    "total": 0.6408743094911772,
+    "v": 0.5218515863016305,
+    "rhoH": 0.5268316087490291,
+    "rhoC2": 0.5282,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A062": {
+   "t0_630": {
+    "spawn": 0.44810094913915455,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 3.3298112272484026e-06,
+    "total": 0.18645339718896203,
+    "v": 0.638840190409404,
+    "rhoH": 0.8298972365942633,
+    "rhoC2": 0.8299,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.44810094913915455,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 0.014412882031337726,
+    "total": 0.5819852396832168,
+    "v": 0.638840190409404,
+    "rhoH": 0.5587879367089363,
+    "rhoC2": 0.5669,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A070": {
+   "t0_630": {
+    "spawn": 0.5280031890183111,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 4.232197911244184e-05,
+    "total": -0.08961554995142296,
+    "v": 0.5897814767859224,
+    "rhoH": 1.093753709198813,
+    "rhoC2": 1.0938,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.5280031890183111,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": 0.004382724317558151,
+    "total": 0.6953323213340162,
+    "v": 0.5897814767859224,
+    "rhoH": 0.4989086224540151,
+    "rhoC2": 0.5011,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     1
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A079": {
+   "t0_630": {
+    "spawn": 0.44272808378377604,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": 0.024051881175588312,
+    "v": 0.6422818301903074,
+    "rhoH": 0.9762350602214671,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.44272808378377604,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": 0.4108920824812662,
+    "v": 0.6422818301903074,
+    "rhoH": 0.6630584833661137,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A082": {
+   "t0_630": {
+    "spawn": 0.8462008340882818,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": -0.23537067265724437,
+    "v": 0.4290418406795878,
+    "rhoH": 1.2653777227362135,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.8462008340882818,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": 0.6810819469992189,
+    "v": 0.4290418406795878,
+    "rhoH": 0.5060691560493175,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A089": {
+   "t0_630": {
+    "spawn": 0.7010802520544461,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": -0.09701209583198935,
+    "v": 0.49604915613622197,
+    "rhoH": 1.101873701619572,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.7010802520544461,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": 0.6778530110995322,
+    "v": 0.49604915613622197,
+    "rhoH": 0.5077058619021239,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  },
+  "A091": {
+   "t0_630": {
+    "spawn": 0.7831534790354652,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": -0.08256366055053131,
+    "v": 0.4569627144580795,
+    "rhoH": 1.0860678109131254,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   },
+   "t0_1500": {
+    "spawn": 0.7831534790354652,
+    "rule": null,
+    "base": null,
+    "hold": null,
+    "resid": null,
+    "total": 0.6272656639280016,
+    "v": 0.4569627144580795,
+    "rhoH": 0.5340500787822239,
+    "rhoC2": null,
+    "rhoC1": null,
+    "rhoC0": null,
+    "n": [
+     0,
+     0,
+     0
+    ],
+    "sdC1": null,
+    "sdC2": null
+   }
+  }
+ },
+ "nRuns": 9,
+ "closure": {
+  "A007@0": {
+   "trajBoth": 146,
+   "trajRows": 146,
+   "firstDiff": null,
+   "lastT": 1500,
+   "LSratio": 1.0,
+   "LOratio": 1.0,
+   "firstOkFlip": -1,
+   "posHist": 226,
+   "landed": 226
+  },
+  "A033@0": {
+   "trajBoth": 144,
+   "trajRows": 144,
+   "firstDiff": null,
+   "lastT": 1500,
+   "LSratio": 1.0,
+   "LOratio": 1.0,
+   "firstOkFlip": -1,
+   "posHist": 224,
+   "landed": 224
+  },
+  "A039@0": {
+   "trajBoth": 160,
+   "trajRows": 160,
+   "firstDiff": null,
+   "lastT": 1500,
+   "LSratio": 1.0,
+   "LOratio": 1.0,
+   "firstOkFlip": -1,
+   "posHist": 419,
+   "landed": 419
+  },
+  "A053@0": {
+   "trajBoth": 144,
+   "trajRows": 144,
+   "firstDiff": null,
+   "lastT": 1500,
+   "LSratio": 1.0,
+   "LOratio": 1.0,
+   "firstOkFlip": -1,
+   "posHist": 334,
+   "landed": 334
+  },
+  "A061@0": {
+   "trajBoth": 138,
+   "trajRows": 146,
+   "firstDiff": 1080,
+   "lastT": 1500,
+   "LSratio": 0.9975869614118321,
+   "LOratio": 0.9949515195550322,
+   "firstOkFlip": 1092,
+   "posHist": 220,
+   "landed": 221
+  },
+  "A062@0": {
+   "trajBoth": 112,
+   "trajRows": 114,
+   "firstDiff": 1350,
+   "lastT": 1500,
+   "LSratio": 1.0145076568188767,
+   "LOratio": 1.000053757981567,
+   "firstOkFlip": 1491,
+   "posHist": 230,
+   "landed": 230
+  },
+  "A070@0": {
+   "trajBoth": 152,
+   "trajRows": 160,
+   "firstDiff": 1170,
+   "lastT": 1500,
+   "LSratio": 0.9983413921061509,
+   "LOratio": 0.9940262533180267,
+   "firstOkFlip": -1,
+   "posHist": 539,
+   "landed": 539
+  }
+ },
+ "sum_t0_630": {
+  "spawn": 0.2556681952581896,
+  "rule": -0.6150195544003301,
+  "base": 0.15453472452081493,
+  "hold": 0.05346988212680151,
+  "resid": -4.083964409296037e-05,
+  "total": -0.15138759213861702,
+  "n": 1
+ },
+ "sum_t0_1500": {
+  "spawn": 0.2556681952581896,
+  "rule": -0.30769122332534143,
+  "base": 0.10373746375383058,
+  "hold": 0.03722607360996866,
+  "resid": -8.724799316697784e-06,
+  "total": 0.08893178449733073,
+  "n": 1
+ },
+ "win": {},
+ "ver": {},
+ "seatElasticity": {
+  "历史": {
+   "games": 11,
+   "n": 104,
+   "slope": 0.6211776242382198,
+   "r": 0.5763722910051263
+  },
+  "C2": {
+   "games": 7,
+   "n": 67,
+   "slope": 0.7095860949278736,
+   "r": 0.5835262527101412
+  },
+  "C1": {
+   "games": 1,
+   "n": 10,
+   "slope": 0.857487014800821,
+   "r": 0.8139661740259583
+  },
+  "C0": {
+   "games": 1,
+   "n": 10,
+   "slope": 0.7151903728563026,
+   "r": 0.771685745151297
+  }
+ }
+}

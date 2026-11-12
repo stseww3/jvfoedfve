@@ -12,6 +12,6 @@ while read -r mid strat rest; do
   out="$dir/$mid.json"
   if [ -s "$out" ] && [ "${FORCE:-0}" != "1" ]; then echo "跳过 $mid（已有）"; continue; fi
   # shellcheck disable=SC2086
-  HEAVY_TIMEOUT=110 timeout 120 bash ../../tools/run-heavy.sh node sim-v2/teamgate-v2.mjs --mode arena --room "$mid" --baseline "$strat" --arm baseline \
+  HEAVY_TIMEOUT=110 timeout 120 bash ../../tools/run-heavy.sh node sim-v2/teamgate-v2.mjs --mode arena --room "$mid" --baseline "$strat" \
     --channel "$chan" --len "$len" --quiet --out "$out" "$@" $rest 2>&1 | tail -1
 done

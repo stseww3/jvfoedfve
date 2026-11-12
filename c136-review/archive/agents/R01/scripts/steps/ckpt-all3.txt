@@ -1,0 +1,266 @@
+out/_ckpt/logs/A075-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A075-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A075-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A075-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A075-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-3213-b.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 3213 --len 1071 --arms C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A055-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --arms C0,C1,C2,C1@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A055-4284-b.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --arms C2@2,C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A023-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A023-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A023-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A023-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A023-3213-b.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 3213 --len 1071 --arms C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A023-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-1500-b.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --arms C1@3,C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A019-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A019-4284-b.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --arms C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A054-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A054-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A054-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A054-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A054-3213-b.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 3213 --len 1071 --arms C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A054-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 4284 --len 900 --arms C0,C1,C2,C1@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A054-4284-b.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 4284 --len 900 --arms C2@2,C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A003-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A003-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A003-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A003-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A031-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A031-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A031-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A031-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 3213 --len 1071 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A031-3213-b.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 3213 --len 1071 --arms C1@3,C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A031-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A050-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A050-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 630 --len 870 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A050-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A050-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2 --tag a --budget-ms 480000
+out/_ckpt/logs/A050-3213-b.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 3213 --len 1071 --arms C1@3,C2@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A050-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C0,C1,C2,C2w --tag a --budget-ms 480000
+out/_ckpt/logs/A050-4284-b.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C1@2,C2@2,C2w@2,C1@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A050-4284-c.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C2@3,C2w@3 --tag c --budget-ms 480000
+out/_ckpt/logs/A009-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A009-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A009-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A009-1500-b.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --arms C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/A009-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A009-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A057-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A057-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A057-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A057-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A057-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A059-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A059-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A059-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A059-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A059-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A094-0-a.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A094-630-a.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A094-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A094-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B039-0-a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 0 --len 630 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B039-630-a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B039-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2 --tag a --budget-ms 480000
+out/_ckpt/logs/B039-1500-b.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C1@3,C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/B039-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B039-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B043-0-a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 0 --len 630 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B043-630-a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C0,C1,C2,C2w,C1@2,C2@2,C2w@2 --tag a --budget-ms 480000
+out/_ckpt/logs/B043-630-b.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C1@3,C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/B043-1500-a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C0,C1,C2,C2w,C1@2 --tag a --budget-ms 480000
+out/_ckpt/logs/B043-1500-b.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C2@2,C2w@2,C1@3,C2@3,C2w@3 --tag b --budget-ms 480000
+out/_ckpt/logs/B043-3213-a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 3213 --len 1071 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/B043-4284-a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 4284 --len 900 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag a --budget-ms 480000
+out/_ckpt/logs/A075-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A055-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A023-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A019-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A054-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A003-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A031-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A050-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A009-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A057-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A059-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/A094-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3,C2w,C2w@2,C2w@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/B039-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/B039-0-g0b.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 0 --len 1500 --arms C2w,C2w@2,C2w@3 --tag g0b --budget-ms 480000
+out/_ckpt/logs/B043-0-g0a.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 0 --len 1500 --arms C0,C1,C2,C1@2,C2@2,C1@3,C2@3 --tag g0a --budget-ms 480000
+out/_ckpt/logs/B043-0-g0b.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 0 --len 1500 --arms C2w,C2w@2,C2w@3 --tag g0b --budget-ms 480000
+out/_ckpt/logs/A055-3213-hia.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A055.json --floor reports/ckpt-data/floor/A055.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A055-3213-loa.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A055.json --floor reports/ckpt-data/floor/A055.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A055-4284-hia.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A055.json --floor reports/ckpt-data/floor/A055.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A055-4284-loa.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A055.json --floor reports/ckpt-data/floor/A055.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A019-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A019.json --floor reports/ckpt-data/floor/A019.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A019-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A019.json --floor reports/ckpt-data/floor/A019.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A019-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A019.json --floor reports/ckpt-data/floor/A019.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A019-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A019.json --floor reports/ckpt-data/floor/A019.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A019-4284-hia.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A019.json --floor reports/ckpt-data/floor/A019.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A019-4284-loa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A019.json --floor reports/ckpt-data/floor/A019.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A054-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A054.json --floor reports/ckpt-data/floor/A054.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A054-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A054.json --floor reports/ckpt-data/floor/A054.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A054-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A054.json --floor reports/ckpt-data/floor/A054.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A054-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A054.json --floor reports/ckpt-data/floor/A054.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A003-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A003.json --floor reports/ckpt-data/floor/A003.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A003-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A003.json --floor reports/ckpt-data/floor/A003.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A003-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A003.json --floor reports/ckpt-data/floor/A003.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A003-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A003.json --floor reports/ckpt-data/floor/A003.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A031-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A031.json --floor reports/ckpt-data/floor/A031.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A031-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A031.json --floor reports/ckpt-data/floor/A031.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A031-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A031.json --floor reports/ckpt-data/floor/A031.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A050-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A050.json --floor reports/ckpt-data/floor/A050.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A050-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A050.json --floor reports/ckpt-data/floor/A050.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A050-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A050.json --floor reports/ckpt-data/floor/A050.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A050-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A050.json --floor reports/ckpt-data/floor/A050.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A050-3213-hia.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A050.json --floor reports/ckpt-data/floor/A050.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A050-3213-loa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A050.json --floor reports/ckpt-data/floor/A050.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A050-4284-hia.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A050.json --floor reports/ckpt-data/floor/A050.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A050-4284-hib.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A050.json --floor reports/ckpt-data/floor/A050.json --tag hib --budget-ms 480000
+out/_ckpt/logs/A050-4284-loa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A050.json --floor reports/ckpt-data/floor/A050.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A050-4284-lob.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A050.json --floor reports/ckpt-data/floor/A050.json --tag lob --budget-ms 480000
+out/_ckpt/logs/A009-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A009.json --floor reports/ckpt-data/floor/A009.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A009-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A009.json --floor reports/ckpt-data/floor/A009.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A009-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A009.json --floor reports/ckpt-data/floor/A009.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A009-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A009.json --floor reports/ckpt-data/floor/A009.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A057-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A057.json --floor reports/ckpt-data/floor/A057.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A057-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A057.json --floor reports/ckpt-data/floor/A057.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A057-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A057.json --floor reports/ckpt-data/floor/A057.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A057-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A057.json --floor reports/ckpt-data/floor/A057.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A057-3213-hia.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A057.json --floor reports/ckpt-data/floor/A057.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A057-3213-loa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A057.json --floor reports/ckpt-data/floor/A057.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A057-4284-hia.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/A057.json --floor reports/ckpt-data/floor/A057.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A057-4284-loa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/A057.json --floor reports/ckpt-data/floor/A057.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A059-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A059.json --floor reports/ckpt-data/floor/A059.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A059-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A059.json --floor reports/ckpt-data/floor/A059.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A059-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A059.json --floor reports/ckpt-data/floor/A059.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A059-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A059.json --floor reports/ckpt-data/floor/A059.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A094-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A094.json --floor reports/ckpt-data/floor/A094.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A094-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A094.json --floor reports/ckpt-data/floor/A094.json --tag loa --budget-ms 480000
+out/_ckpt/logs/A094-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/A094.json --floor reports/ckpt-data/floor/A094.json --tag hia --budget-ms 480000
+out/_ckpt/logs/A094-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/A094.json --floor reports/ckpt-data/floor/A094.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B039-0-loa.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 0 --len 630 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/B039.json --floor reports/ckpt-data/floor/B039.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B039-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/B039.json --floor reports/ckpt-data/floor/B039.json --tag hia --budget-ms 480000
+out/_ckpt/logs/B039-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/B039.json --floor reports/ckpt-data/floor/B039.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B039-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/B039.json --floor reports/ckpt-data/floor/B039.json --tag hia --budget-ms 480000
+out/_ckpt/logs/B039-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/B039.json --floor reports/ckpt-data/floor/B039.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B039-3213-hia.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-hi/B039.json --floor reports/ckpt-data/floor/B039.json --tag hia --budget-ms 480000
+out/_ckpt/logs/B039-3213-loa.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 3213 --len 1071 --arms C2,C2@2,C2@3 --trace reports/ckpt-data/traces-lo/B039.json --floor reports/ckpt-data/floor/B039.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B043-630-hia.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/B043.json --floor reports/ckpt-data/floor/B043.json --tag hia --budget-ms 480000
+out/_ckpt/logs/B043-630-loa.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C2,C2@2,C2@3,C2w,C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/B043.json --floor reports/ckpt-data/floor/B043.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B043-1500-hia.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w --trace reports/ckpt-data/traces-hi/B043.json --floor reports/ckpt-data/floor/B043.json --tag hia --budget-ms 480000
+out/_ckpt/logs/B043-1500-hib.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C2w@2,C2w@3 --trace reports/ckpt-data/traces-hi/B043.json --floor reports/ckpt-data/floor/B043.json --tag hib --budget-ms 480000
+out/_ckpt/logs/B043-1500-loa.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C2,C2@2,C2@3,C2w --trace reports/ckpt-data/traces-lo/B043.json --floor reports/ckpt-data/floor/B043.json --tag loa --budget-ms 480000
+out/_ckpt/logs/B043-1500-lob.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C2w@2,C2w@3 --trace reports/ckpt-data/traces-lo/B043.json --floor reports/ckpt-data/floor/B043.json --tag lob --budget-ms 480000
+out/_ckpt/logs/A075-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A075-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A055-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A055-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A023-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A023-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A019-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A019-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A054-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A054-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A003-0-vba.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 0 --len 630 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A003-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A031-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A031-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A050-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A050-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A009-0-vba.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 0 --len 630 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A009-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A057-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A057-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A059-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A059-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A094-0-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 0 --len 630 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A094-0-vca.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 0 --len 630 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A075-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A075-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A055-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A055-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A023-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A023-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A019-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A019-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A054-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A054-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A003-630-vba.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 630 --len 870 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A003-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A031-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A031-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A050-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A050-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A009-630-vba.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A009-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A057-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A057-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A059-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A059-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A094-630-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A094-630-vca.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A075-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A075-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A055-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A055-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A023-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A023-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A019-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A019-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A054-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A054-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A003-1500-vba.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 1500 --len 1713 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A003-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A031-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A031-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A050-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A050-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A009-1500-vba.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --strat vb --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vba --budget-ms 480000
+out/_ckpt/logs/A009-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A057-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A057-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A059-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A059-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A094-1500-vaa.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --strat va --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vaa --budget-ms 480000
+out/_ckpt/logs/A094-1500-vca.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --strat vc --arms C1,C2,C1@2,C2@2,C1@3,C2@3 --tag vca --budget-ms 480000
+out/_ckpt/logs/A019-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A019-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A031-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A031-3213-p.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 3213 --len 1071 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A050-4284-p.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A009-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A009-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A057-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A059-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A059-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A094-630-p.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A094-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/B039-0-p.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 0 --len 630 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/B039-630-p.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/B039-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/B043-630-p.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/B043-1500-p.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 1500 --len 1713 --arms C1p,C1p@2,C1p@3 --tag p --budget-ms 480000
+out/_ckpt/logs/A023-630-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/A023.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/A023-1500-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/A023.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/A057-630-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/A057.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/A057-1500-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/A057.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/B039-630-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 630 --len 870 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/B039.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/B039-1500-r06tracea.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 1500 --len 1713 --arms C2,C2@2,C2@3 --trace ../../archive/agents/R06/sim-v2/traces/B039.json --tag r06tracea --budget-ms 480000
+out/_ckpt/logs/A031-630-fillnearesta.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill nearest --tag fillnearesta --budget-ms 480000
+out/_ckpt/logs/A031-630-filllineara.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill linear --tag filllineara --budget-ms 480000
+out/_ckpt/logs/A009-630-fillnearesta.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill nearest --tag fillnearesta --budget-ms 480000
+out/_ckpt/logs/A009-630-filllineara.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill linear --tag filllineara --budget-ms 480000
+out/_ckpt/logs/A059-630-fillnearesta.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill nearest --tag fillnearesta --budget-ms 480000
+out/_ckpt/logs/A059-630-filllineara.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill linear --tag filllineara --budget-ms 480000
+out/_ckpt/logs/B043-630-fillnearesta.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill nearest --tag fillnearesta --budget-ms 480000
+out/_ckpt/logs/B043-630-filllineara.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 630 --len 870 --arms C2,C2@2,C2@3 --fill linear --tag filllineara --budget-ms 480000

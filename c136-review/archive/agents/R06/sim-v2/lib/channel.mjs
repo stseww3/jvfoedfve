@@ -126,7 +126,8 @@ export class Profile {
   //   nearest     一律取近的那个已知点：S 是纯阶梯——页面停一段、再把一串本机拍在同一个服务器时刻算完。
   //   burst,m=16  已知点前后各 m 个本机拍与它同一串、两串之间线性；linear 全线性（页面匀速慢放）；upper / lower 取后 / 前一个点。
   //   各种补法对着真局的对照见 SIM-V2-CALIBRATION-G0.md：linear 的同拍批占比明显偏低；nearest 在轻微落后的局里同拍批偏多；auto 两头都贴近。
-  // 最后一个已知点之后保持不降直到追平。
+  // 最后一个已知点之后保持不降直到追平（缺省）；after=hold 改成一直保持那个已知点上的落后——只作对照用，
+  // 看「已知点之后其实还在卡」的局对这条假定有多敏感（SIM-V2-CALIBRATION-G0.md 断面一节）。
   buildC2(seats, trace, fill = 'linear', seatMap = null) {
     const N = this.Wmax + 1;
     // fill=burst：已知点前后各 m 个本机拍算同一串（S 与那个已知点相同），两串之间线性。m=0 就是 linear，m 很大就是 nearest。
@@ -163,7 +164,7 @@ export class Profile {
       for (let W = 0; W < N; W++) {
         while (j < pts.length && pts[j][0] < W) j++;
         let v;
-        if (j >= pts.length) v = Math.max(W, pts[pts.length - 1][1]);
+        if (j >= pts.length) v = this.o.after === 'hold' ? W + Math.max(0, pts[pts.length - 1][1] - pts[pts.length - 1][0]) : Math.max(W, pts[pts.length - 1][1]);
         else if (pts[j][0] === W) v = pts[j][1];
         else if (j === 0) v = fill === 'upper' ? pts[0][1] : W;
         else {
@@ -176,7 +177,7 @@ export class Profile {
       this.stairs.set(p, s);
       used++;
     }
-    this.note = `C2 实录阶梯：${used}/${seats.length} 个席位有实录（${trace.matchId}，配对 ${trace.rows} 条），已知点之间 ${fill}${fill === 'burst' ? `（m=${m}）` : fill === 'auto' ? `（两头落后都 ≤ ${thr} 拍时线性，否则取近的已知点）` : ''}`;
+    this.note = `C2 实录阶梯：${used}/${seats.length} 个席位有实录（${trace.matchId}，配对 ${trace.rows} 条），已知点之间 ${fill}${fill === 'burst' ? `（m=${m}）` : fill === 'auto' ? `（两头落后都 ≤ ${thr} 拍时线性，否则取近的已知点）` : ''}${this.o.after === 'hold' ? '；最后一个已知点之后保持那时的落后（对照用）' : ''}`;
     return used;
   }
 

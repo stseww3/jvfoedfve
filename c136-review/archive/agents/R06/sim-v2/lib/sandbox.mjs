@@ -8,6 +8,7 @@
 // g.online 恒为 true；策略往 g 上写的缓存（如 g._wildAlive）落在视图自己身上，一个页面一份。
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { DATA, SIM, NEUTRAL, iV } from './tgame.mjs';
 
@@ -37,10 +38,12 @@ const BLANK_WIN = {};
 
 // ---- 编译 ----------------------------------------------------------------------------------
 const compiled = new Map();
+// 一个进程里连着跑多次运行（tools/g0_batch.mjs）时，每次运行之前清掉：策略文件体重新执行一遍，
+// 文件里模块级的变量就和单独起一个进程时一样是全新的，上一次运行留不下任何东西。
+export function resetCompiled() { compiled.clear(); }
 export async function compileStrategy(file) {
-  const abs = path.resolve(file);
+  const abs = strategyPath(file);   // 只编译白名单里的历史策略（内容散列核对过）
   if (compiled.has(abs)) return compiled.get(abs);
-  if (!fs.existsSync(abs)) throw new Error(`没有策略文件 ${abs}`);
   let src = fs.readFileSync(abs, 'utf8');
   const mods = [];
   const pending = [];
@@ -85,22 +88,52 @@ export async function compileStrategy(file) {
   if (typeof res.Policy !== 'function') throw new Error(`策略文件 ${abs} 里没有 Policy 类`);
   // 策略文件自带的桥接补丁（c110 文件头）：发出一条指令后，450 ms 且 8 个本机拍之内不再调策略
   const guard = /__fixedInflight450/.test(src) ? { ticks: 8, ms: 450 } : null;
-  const out = { file: abs, name: path.basename(abs).replace(/\.m?js$/, ''), Policy: res.Policy, PARAMS: res.PARAMS, guard };
+  const sha256 = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex');
+  const out = { file: abs, name: path.basename(abs).replace(/\.m?js$/, ''), sha256, Policy: res.Policy, PARAMS: res.PARAMS, guard };
   compiled.set(abs, out);
   return out;
 }
 
-// 策略文件的简写：c110 / vb / va / vc / g09 → 共享目录里的文件；其余按路径
-const SHORT = {
-  c110: 'v27-team-c110.js', vb: 'v27-team-c116-vb.js', va: 'v27-team-c116-va.js', vc: 'v27-team-c116.js', c116: 'v27-team-c116.js', g09: 'v27-team-g09.js',
+// 策略白名单（v2.1 纯离线范围）：只装数据包里当年线上跑过、且有录像可核对的四个历史版本，按内容散列核对；
+// 其余任何文件（包括改过的历史文件、新写的策略）一律拒绝。这个模拟器只用来验收「离线模拟器把历史旧策略复现得对不对」。
+const HISTORICAL = {
+  va: ['v27-team-c116-va.js', 'a652ad88d80c818e9e7cc1660b9f4e4f792fc2d832252c369e5d30335743b488'],
+  vb: ['v27-team-c116-vb.js', 'f5ccf9806cc4380f36b3104681353b342a22338996832aa92388e4beebc43fb1'],
+  vc: ['v27-team-c116.js', '164e4c46a26799800b7e99cf63f8051bf55703748e16791efc06e0faaeaacf93'],
+  c110: ['v27-team-c110.js', '7863ad706df61ead16b007bd9205b358ee9980193293aabd40df16c5e38e2657'],
 };
+const ALIAS = { c116: 'vc' };
+const REFUSE = '纯离线范围：只接受历史旧策略 va / vb / vc / c110（数据包 src/strategy 下的原文件），不装载其他策略文件';
 export function strategyPath(s) {
-  const k = String(s).toLowerCase();
-  if (SHORT[k]) return path.join(DATA, 'src/strategy', SHORT[k]);
-  if (fs.existsSync(s)) return path.resolve(s);
-  const inData = path.join(DATA, 'src/strategy', s);
-  if (fs.existsSync(inData)) return inData;
-  return path.resolve(s);
+  let k = String(s).toLowerCase().trim();
+  k = ALIAS[k] || k;
+  if (!HISTORICAL[k]) {
+    const base = path.basename(String(s));
+    k = Object.keys(HISTORICAL).find((x) => HISTORICAL[x][0] === base && path.resolve(String(s)) === path.join(DATA, 'src/strategy', base));
+    if (!k) throw new Error(`${REFUSE}（收到：${s}）`);
+  }
+  const file = path.join(DATA, 'src/strategy', HISTORICAL[k][0]);
+  const sha = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  if (sha !== HISTORICAL[k][1]) throw new Error(`${REFUSE}（${file} 的内容与入库时的历史文件不一致：sha256 ${sha.slice(0, 12)}…）`);
+  return file;
+}
+export const HISTORICAL_STRATEGIES = Object.fromEntries(Object.entries(HISTORICAL).map(([k, v]) => [k, { file: v[0], sha256: v[1] }]));
+
+// 已停用的开关（v2.1 纯离线范围）。给了就报错退出，不悄悄忽略：
+//   处理臂、策略参数覆盖、改桥接保护窗（都是「换一种我方打法」）；给我方席位改战队标签、生成房间、人为指定我方空壳（都不是历史上发生过的房间）。
+export function refuseOutOfScope(o, own) {
+  const bad = ['candidate', 'cand-params', 'base-params', 'squad-husks', 'tag-name', 'pool', 'clans', 'teams', 'humans', 'squad', 'map'].filter((k) => o[k] !== undefined);
+  if (o.arm !== undefined && o.arm !== 'baseline') bad.push(`arm ${o.arm}`);
+  if (o['inflight-guard'] !== undefined && o['inflight-guard'] !== 'auto') bad.push(`inflight-guard ${o['inflight-guard']}`);
+  if (o.tag !== undefined && o.tag !== 'asis') bad.push(`tag ${o.tag}`);
+  if (o.room === 'synth') bad.push('room synth');
+  if (bad.length) throw new Error(`纯离线范围：--${bad.join(' / --')} 已停用。本工具只在历史上真实发生过的房间里跑一条复现臂（这一局当年线上那一版历史策略、文件里的原参数），不比较候选策略、不改策略参数或桥接补丁、不改房间`);
+  // 复现臂只能是这一局当年线上那一版：换成别的历史版本就没有录像可核对，不属于保真度验收
+  if (own && o.baseline !== undefined) {
+    const k = String(o.baseline).toLowerCase().trim();
+    const want = { c116: 'vc' }[k] || k;
+    if (want !== own && path.basename(String(o.baseline)) !== HISTORICAL[own]?.[0]) throw new Error(`纯离线范围：这一局当年线上跑的是 ${own}，复现臂只能是它（收到 --baseline ${o.baseline}）`);
+  }
 }
 
 // ---- 席位 ----------------------------------------------------------------------------------
@@ -131,7 +164,6 @@ export class Seat {
       __tsbSquadSlot: slot,
       __quitPlayers: host.quit,
       __hlLog: (line) => seat.onLog(line),
-      __c136Now: () => seat.clock,   // v28 的 vNow() 优先读它；与 performance.now() 的替身同值
       dictionary: { game: '__v2game', sbLeave: 'leave', gameState: 'state' },
       __v2game: { state: 1, leave: () => seat.submit({ k: 'leave' }) },
     };

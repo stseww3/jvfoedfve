@@ -1,0 +1,147 @@
+{
+ "match": "A054",
+ "strategy": "v27-team-c116-vb",
+ "endT": 5400,
+ "truncated": false,
+ "points": 652,
+ "arms": {
+  "C1": {
+   "n": 545,
+   "miss": 4,
+   "eqCmds": 545,
+   "eqBoats": 545,
+   "eqNb": 545,
+   "eqNeut": 545,
+   "seats": 10,
+   "seatsNeverDiverge": 10,
+   "firstDivergeMin": -1,
+   "firstDivergeMedian": -1,
+   "absDiffMedian": 0,
+   "absDiffP90": 0,
+   "endRel": 0,
+   "at": [
+    {
+     "t": 630,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 97
+    },
+    {
+     "t": 1530,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 498
+    },
+    {
+     "t": 3240,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 805
+    },
+    {
+     "t": 4320,
+     "seats": 9,
+     "eq": 9,
+     "sumAbs": 0,
+     "sumLog": 922
+    }
+   ],
+   "stratErrors": 0
+  },
+  "C2": {
+   "n": 545,
+   "miss": 4,
+   "eqCmds": 545,
+   "eqBoats": 545,
+   "eqNb": 545,
+   "eqNeut": 545,
+   "seats": 10,
+   "seatsNeverDiverge": 10,
+   "firstDivergeMin": -1,
+   "firstDivergeMedian": -1,
+   "absDiffMedian": 0,
+   "absDiffP90": 0,
+   "endRel": 0,
+   "at": [
+    {
+     "t": 630,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 97
+    },
+    {
+     "t": 1530,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 498
+    },
+    {
+     "t": 3240,
+     "seats": 10,
+     "eq": 10,
+     "sumAbs": 0,
+     "sumLog": 805
+    },
+    {
+     "t": 4320,
+     "seats": 9,
+     "eq": 9,
+     "sumAbs": 0,
+     "sumLog": 922
+    }
+   ],
+   "stratErrors": 0
+  }
+ },
+ "r01Shadow": {
+  "n": 549,
+  "miss": 0,
+  "eqCmds": 549,
+  "eqBoats": 549,
+  "eqNb": 549,
+  "eqNeut": 549,
+  "seats": 10,
+  "seatsNeverDiverge": 10,
+  "firstDivergeMin": -1,
+  "firstDivergeMedian": -1,
+  "absDiffMedian": 0,
+  "absDiffP90": 0,
+  "endRel": 0,
+  "at": [
+   {
+    "t": 630,
+    "seats": 10,
+    "eq": 10,
+    "sumAbs": 0,
+    "sumLog": 97
+   },
+   {
+    "t": 1530,
+    "seats": 10,
+    "eq": 10,
+    "sumAbs": 0,
+    "sumLog": 498
+   },
+   {
+    "t": 3240,
+    "seats": 10,
+    "eq": 10,
+    "sumAbs": 0,
+    "sumLog": 805
+   },
+   {
+    "t": 4320,
+    "seats": 9,
+    "eq": 9,
+    "sumAbs": 0,
+    "sumLog": 922
+   }
+  ]
+ },
+ "cpuMs": 12216
+}

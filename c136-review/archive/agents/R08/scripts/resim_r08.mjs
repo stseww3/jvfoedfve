@@ -5,6 +5,13 @@
 // 写进 squad（键名前加「局2:」），这样两边的号都有在途兵、邻居、额度的逐拍明细；--peer-tag <标签>：不读对方的对局包，
 // 只按本局录像里名字带的战队标签（如 APEX）认出同房另一支编队（对方的包在验证集里时用）。
 // (4) resim() 的 opts.cmdFilter：返回 false 的录像指令不执行（cfprobe.mjs 的反事实探针用；不传时重演和原来逐位一样）。
+// (5) resim() 的 opts.fid：保真度消融开关（fidabl.mjs 用：逐项关掉重放器比 src/sim 基类多出来的东西，看逐位一致还剩多少；
+//     不传时重演和原来逐位一样）。可以给的键：
+//       colors: false      不做组队配色随机数（退回基类 setupColors：每个 AI 抽 3 个随机数，而不是 512 个玩家每人 1 个）
+//       botTeams: 'always' 内置 AI 一律轮流入队（基类 setupTeams 的默认值；线上只有实际队数到 8 才入队）
+//       cache32: false     各队总地不按 32 拍缓存，猎杀 / 提速读的是上一拍末的新值
+//       teamEnd: false     猎杀（jd.jp）和终局提速（je.ee）退回基类的写法（各队总地当拍现算；提速看榜首个人占 90%）
+//       difficulty: N      内置 AI 的难度改成 N（线上录像头全是 0）
 // resim.mjs — 全量重放一局：用 c136-data/src/sim 的纯 JS 引擎（512 个玩家）把 replay.txt 从头跑一遍，
 // 输出全场账本到 out/cache/<mid>-resim.json，并把本队每个号的地/兵与 traj.csv 逐快照核对。
 //
@@ -36,6 +43,7 @@ const AKK = [[100, 100, 100], [144, 0, 0], [0, 128, 0], [0, 0, 144], [128, 128, 
 const AKL = [[4, 4, 4, 20], [4, 0, 0, 27], [0, 4, 0, 31], [0, 0, 4, 27], [4, 4, 0, 31], [4, 0, 4, 31], [0, 4, 4, 31], [4, 4, 4, 14], [4, 4, 4, 13]];
 const mj = (a, b) => (a >= 0 ? iV(a, b) : -iV(-a, b));
 let TEAM_CTX = null;
+let FID = null;
 class TGame extends Game {
   // 引擎 dQ（bk）：各队总地 a5c 每 32 拍才重算一次（bk.ee 在每拍末尾 ++w0>=32 时 aYJ），
   // 「领先队占 80% 后给 AI 派猎杀目标」(jd.jp) 和「领先队占 90% 后 AI 提速」(je.ee) 读的都是这份旧值。
@@ -60,7 +68,8 @@ class TGame extends Game {
     super.tick();
     if (this.teamGame) {
       this.teamCacheGet();
-      if (++this.teamW0 >= 32) { this.teamW0 = 0; this.teamCacheRefresh(); }
+      if (FID && FID.cache32 === false) this.teamCacheRefresh();
+      else if (++this.teamW0 >= 32) { this.teamW0 = 0; this.teamCacheRefresh(); }
     }
   }
 
@@ -83,6 +92,7 @@ class TGame extends Game {
   }
 
   teamHuntTick() {
+    if (FID && FID.teamEnd === false) return super.teamHuntTick();
     if (!this.teamGame || this.t % 109 !== 9 || this.aliveCount < 20) return;
     if (this.teamLeadLandCached() < iV(8 * this.land, 10)) return;
     const lead = this.teamLeadCached();
@@ -103,7 +113,7 @@ class TGame extends Game {
   }
 
   endgameSpeedTick() {
-    if (!this.teamGame) return super.endgameSpeedTick();
+    if (!this.teamGame || (FID && FID.teamEnd === false)) return super.endgameSpeedTick();
     if (this.endgameFast || this.t % 30 !== 7) return;
     if (this.teamLeadLandCached() < iV(90 * this.land, 100)) return;
     this.endgameFast = 1;
@@ -318,7 +328,8 @@ export function resim(mid, opts = {}) {
   const ta = teamGame ? assignTeams(names, colors, H, vu.numberTeams) : { fX: new Array(H).fill(0), nTeams: 0, lH: [], botsTeamed: false, clans: [], sizes: [] };
   const { mapIdx, mapSeed } = mapOf(vu);
   const map = loadMap(mapIdx, mapSeed);
-  if (teamGame) {
+  FID = opts.fid || null;
+  if (teamGame && !(FID && FID.colors === false)) {
     const aDn = new Uint8Array(512);
     for (let p = 0; p < 512; p++) {
       const team = p < H ? ta.fX[p] : ta.botsTeamed ? 1 + (p % ta.nTeams) : 0;
@@ -330,14 +341,14 @@ export function resim(mid, opts = {}) {
     map,
     humans: H,
     players: vu.playerCount,
-    difficulty: H > 1 ? 0 : vu.botDifficultyValue,
+    difficulty: FID && FID.difficulty !== undefined ? FID.difficulty : H > 1 ? 0 : vu.botDifficultyValue,
     spawnSeed: vu.spawningSeed,
     selectableSpawn: !!vu.selectableSpawn,
     battleRoyaleMode: vu.battleRoyaleMode,
     humanColors: vu.colorsData ? Array.from(vu.colorsData.subarray(0, H)) : [0],
     teams: teamGame ? ta.fX : undefined,
     nTeams: ta.nTeams,
-    botTeams: ta.botsTeamed,
+    botTeams: FID && FID.botTeams === 'always' ? true : ta.botsTeamed,
   });
   g.me = vu.selectedPlayer;
 
