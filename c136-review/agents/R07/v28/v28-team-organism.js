@@ -445,7 +445,7 @@ class Strategy {
     const seen = this.oseen;
     const st = ++this.ostamp;
     const busyNeutral = g.hasAttack(q, NEUTRAL);
-    let minOther = Infinity;
+    let minOther = Infinity, minAll = Infinity;
     const n = B.length;
     const step = n > 1024 ? Math.ceil(n / 1024) : 1;
     for (let i = n - 1; i >= 0; i -= step) {
@@ -454,7 +454,7 @@ class Strategy {
         const c = b + d[k];
         const v = px[c];
         if (v === T_LAND) {
-          if (!busyNeutral) return { neutral: true, minOther: 0 };
+          if (!busyNeutral) return { neutral: true, minOther: 0, minAll: 0 };
           continue;
         }
         if (v < P_INNER) continue;
@@ -463,10 +463,19 @@ class Strategy {
         seen[o] = st;
         if (g.hasAttack(q, o)) continue;
         const s = g.bal[o] + g.attackTroopsOn(o, q);
-        if (s < minOther) minOther = s;
+        // v28/P3: minAll is the weakest of all of them (what Vc used), minOther leaves out the
+        // neighbours threatSkip names
+        if (s < minAll) minAll = s;
+        if (s < minOther && !this.threatSkip(g, o)) minOther = s;
       }
     }
-    return { neutral: false, minOther };
+    return { neutral: false, minOther, minAll };
+  }
+
+  // v28/P3 hook (Policy overrides it): neighbours of a bot that do not count as the others it may
+  // prefer to us.
+  threatSkip(g, o) {
+    return false;
   }
 
   // Balance we need so that no neighbouring bot prefers us as its target.
@@ -1210,6 +1219,12 @@ class Style extends General {
     return Math.min(P.sendFrac * avail, Math.max(P.overshoot * need + 3 * this.cnt[q], min));
   }
 
+  // v28/P3 hook (Policy overrides it): troops to send on q when less than the least command is
+  // left above the floor (0: none).
+  smallSend(g, q, avail, need, min) {
+    return 0;
+  }
+
   pickTarget(g, floorAt, maxCost) {
     const P = this.p, me = this.me;
     const bal = g.bal[me];
@@ -1227,11 +1242,18 @@ class Style extends General {
       const perPx = this.price(g, q);
       if (perPx > maxCost) continue;
       const avail = bal - this.floorFor(g, q, floorAt(perPx));
-      if (avail <= this.minShare(g, q) * bal || avail < min) continue;
       const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q) - this.inflightOn(g, q);
-      if (need <= 0) continue;
-      const send = this.amount(g, q, avail, need, min);
-      if (!(send >= min)) continue;
+      let send;
+      if (avail <= this.minShare(g, q) * bal || avail < min) {
+        // v28/P3: what is left above the floor is under the least command; smallSend may still
+        // take a cheap bot whole with it (0 here: skipped as in Vc)
+        send = need > 0 ? this.smallSend(g, q, avail, need, min) : 0;
+        if (!(send > 0)) continue;
+      } else {
+        if (need <= 0) continue;
+        send = this.amount(g, q, avail, need, min);
+        if (!(send >= min)) continue;
+      }
       const left = iV(g.peak[q], 4);
       const share = Math.min(1, this.cnt[q] / Math.max(1, g.border[q].length));
       const gain = Tq - left + left * P.shareW * share;
@@ -3892,6 +3914,18 @@ export const PARAMS = {
   p1MinLat: 4, // a command younger than this many ticks is not matched to a drop in our balance
   p1StepLo: 0.8, // a drop in our balance is a command of ours when it is within these x its cost
   p1StepHi: 1.25,
+
+  // ---- v28/P3: floors when buying the land of bots, of seats that left, of remnants ----
+  p3ThreatSkip: 1, // threatOf leaves out teammates, squad seats and seats that left
+  p3SafeCap: 1, // the floor a neighbouring bot sets is at most p3ThetaAi x its balance + 2 x our border with it
+  p3ThetaAi: 1.0,
+  p3Decouple: 1, // such land may be bought with up to p3SpendFrac x balance from below dpKeep / safeFinite ...
+  p3SpendFrac: 0.15,
+  p3KeepK: 0.75, // ... while p3KeepK x dpKeep stays home
+  p3RemnantBal: 0.05, // a person is a remnant below this x our balance ...
+  p3RemnantNeed: 0.12, // ... when collapsing it takes less than this x our balance
+  p3MinCmdFix: 1, // such land priced under p3CheapK x worth is taken whole even when that is under the least command
+  p3CheapK: 0.5,
 };
 
 // v28/P1: fee of a command as 1/1024ths of the balance.
@@ -3940,6 +3974,7 @@ export class Policy extends V17 {
     this.nfsByProbe = false;
     this.vKeepNext = null;
     this.buyQuality = false;
+    this.p3Old = new Map(); // P3: target -> { t, keep } the floor without the P3 relaxation, this tick
     this.hitTo = new Map();
     this.hitFrom = new Map();
     this.lastLandSpendTick = -999;
@@ -4035,6 +4070,12 @@ export class Policy extends V17 {
 
     const ok = super.send(g, target, troops);
     if (ok) {
+      // v28/P3: a send the floors of Vc had no room for
+      const p3 = this.p3Old.get(target);
+      if (p3 && p3.t === g.t && troops > balBefore - p3.keep - (g.t >= P.dpEnd ? fee0 : 0)) {
+        this.vCount("p3_relax_send");
+        this.vLog("P3", g, `relax q=${target} x=${Math.round(troops)} bal=${balBefore} floorVc=${Math.round(p3.keep)} balQ=${g.bal[target]} terrQ=${g.terr[target]}`);
+      }
       if (!g.online) {
         const actualSent = Math.max(0, balBefore - g.bal[me] - fee0);
         if (troops >= 1.12 * actualSent && actualSent < balBefore - fee0 - 50) {
@@ -4752,7 +4793,13 @@ export class Policy extends V17 {
     }
     const P = this.p, me = this.me, L = Math.max(1, g.terr[me]);
     const mult = this.contested(g, q) ? P.sharedBotMult : 1.0;
-    return Math.max((mult * this.botPx(g, q) * L) / (P.winR * Math.max(1, g.t)), this.dpKeep(g), this.sb);
+    const price = (mult * this.botPx(g, q) * L) / (P.winR * Math.max(1, g.t));
+    const guard = Math.max(this.dpKeep(g), this.sb);
+    if (!(P.enableAiFloorCap > 0 && P.p3Decouple > 0)) return Math.max(price, guard);
+    // v28/P3: winFloor is the floor for the land of a bot (a seat that left is one to the game)
+    const relaxed = this.p3Floor(g, guard);
+    if (Math.max(price, relaxed) < Math.max(price, guard)) this.p3Old.set(q, { t: g.t, keep: Math.max(price, guard) });
+    return Math.max(price, relaxed);
   }
 
   hasBorderFood(g) {
@@ -5637,6 +5684,16 @@ export class Policy extends V17 {
         const capPerPx = person && o.nearCollapse && (o.inAtk ?? 0) < 0.02 * B && ((c < 0.25 * worth && need <= 0.10 * B) || (g.bal[q] <= 0.05 * B && c < 25)) ? Math.min(P.oppFloorCap, P.collapseFloorCap ?? 85) : P.oppFloorCap;
         safe = Math.min(safe, capPerPx * L);
       }
+      // v28/P3: the land of a bot, of a seat that left or of a remnant may be bought from below the
+      // people floor and the bot floor (see p3Floor)
+      let safeWas = -1;
+      if (P.enableAiFloorCap > 0 && P.p3Decouple > 0 && this.p3Prey(g, q, need)) {
+        const r = this.p3Floor(g, safe);
+        if (r < safe) {
+          safeWas = safe;
+          safe = r;
+        }
+      }
 
       let keep = Infinity;
       if (c < cheap) keep = 0;
@@ -5662,6 +5719,9 @@ export class Policy extends V17 {
         const overKeepMult = dMe >= 122 ? 0.82 : isSoleHealthyBuffer ? P.overHumanKeep : P.hold;
         keep = Math.min(keep, overKeepMult * 100 * L);
       }
+      // v28/P3: whether the relaxed floor is the one that binds (the floor of Vc is noted for the count in send)
+      const p3Relaxed = safeWas >= 0 && Math.max(keep, safeWas) > Math.max(keep, safe);
+      if (p3Relaxed) this.p3Old.set(q, { t: g.t, keep: Math.max(keep, safeWas) });
       keep = Math.max(keep, safe);
 
       const avail = B - fee - keep;
@@ -5671,7 +5731,10 @@ export class Policy extends V17 {
       if (!person) {
         const want = 1.25 * need + 3 * this.cnt[q];
         const x = Math.min(avail, want);
-        if (x <= 0 || (x < want && x < P.chunk * B)) continue;
+        if (x <= 0) continue;
+        // (v28/P3: under the relaxed floor at most p3SpendFrac of the balance is free, which is
+        // less than a chunk: a part of the bot's land is taken with a command of at least minCmd)
+        if (x < want && x < P.chunk * B && !(p3Relaxed && x >= this.minCmd(g))) continue;
         return this.send(g, q, x);
       }
 
@@ -5815,7 +5878,11 @@ export class Policy extends V17 {
           }
           if (blockUndersized(pulse)) continue;
           pulse = alignMultiRing(pulse);
-          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
+          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) {
+            const whole = this.p3Whole(g, o, avail, worth); // v28/P3 (0: skipped as in Vc)
+            if (whole > 0) return this.send(g, q, whole);
+            continue;
+          }
           if (tryNarrowBoatFirst(pulse)) return true;
           return canZeroPulse(pulse) ? this.send(g, q, 1, pulse) : this.send(g, q, pulse);
         }
@@ -5823,7 +5890,11 @@ export class Policy extends V17 {
         if (o.nearCollapse) {
           if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) continue;
           const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
-          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
+          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) {
+            const whole = this.p3Whole(g, o, avail, worth); // v28/P3 (0: skipped as in Vc)
+            if (whole > 0) return this.send(g, q, whole);
+            continue;
+          }
           return this.send(g, q, pulse);
         }
 
@@ -5837,7 +5908,11 @@ export class Policy extends V17 {
           let x = Math.min(avail, want);
           if (blockUndersized(x)) continue;
           x = alignMultiRing(x);
-          if (x < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
+          if (x < Math.max(this.minCmd(g), P.pulseMinShare * B)) {
+            const whole = this.p3Whole(g, o, avail, worth); // v28/P3 (0: skipped as in Vc)
+            if (whole > 0) return this.send(g, q, whole);
+            continue;
+          }
           if (tryNarrowBoatFirst(x)) return true;
           return canZeroPulse(x) ? this.send(g, q, 1, x) : this.send(g, q, x);
         }
@@ -6139,6 +6214,92 @@ export class Policy extends V17 {
       return true;
     }
     return false;
+  }
+
+  // ==========================================================================================
+  // v28/P3: floors when buying the land of bots, of seats that left, of remnants
+  //
+  // Vc keeps two floors under every purchase: safeFinite (stay above the weakest other neighbour
+  // of each bot next to us, so that the bot prefers it to us) and dpKeep (what the strongest
+  // person next to us would need to collapse us). The first took a teammate or a seat that left
+  // for "the other neighbour" and asked us to out-save it, whatever the bot itself could do; the
+  // second froze the purchase of land that costs next to nothing. Here: the bot floor leaves those
+  // neighbours out and is never more than the bot can send; and land of a bot, of a seat that left
+  // or of a remnant may be bought with up to p3SpendFrac of the balance from below both floors,
+  // p3KeepK x dpKeep staying home.
+  // ==========================================================================================
+
+  threatSkip(g, o) {
+    const P = this.p;
+    if (!(P.enableAiFloorCap > 0 && P.p3ThreatSkip > 0)) return false;
+    return this.isTeammate(g, o) || this.isOurSquadBot(g, o) || this.vShell(g, o);
+  }
+
+  safeFinite(g, skip = -1) {
+    const P = this.p;
+    if (!(P.enableAiFloorCap > 0)) return super.safeFinite(g, skip);
+    const me = this.me;
+    let safe = 0, was = 0;
+    for (const q of this.nb) {
+      if (q === skip || g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+      const th = this.threatOf(g, q);
+      if (th.neutral) continue;
+      const mine = g.attackTroopsOn(me, q);
+      if (Number.isFinite(th.minAll)) was = Math.max(was, th.minAll - mine);
+      if (!Number.isFinite(th.minOther)) continue;
+      let v = th.minOther - mine;
+      if (P.p3SafeCap > 0) v = Math.min(v, P.p3ThetaAi * g.bal[q] + 2 * this.cnt[q]);
+      safe = Math.max(safe, v);
+    }
+    this.vCount("p3_sb_eval");
+    if (safe < was) {
+      this.vCount("p3_sb_lower");
+      if (was > g.bal[me] && safe <= g.bal[me]) this.vCount("p3_sb_unlock");
+    }
+    return safe;
+  }
+
+  // Whether q's land is bought under the P3 rules: a bot, a seat that left, or a person with
+  // next to no troops whose collapse costs a small part of our balance.
+  p3Prey(g, q, need) {
+    const P = this.p, B = g.bal[this.me];
+    if (!this.person(g, q) || this.vShell(g, q)) return true;
+    return g.bal[q] < P.p3RemnantBal * B && need < P.p3RemnantNeed * B;
+  }
+
+  // The floor `guard` (people floor and bot floor) for such land.
+  p3Floor(g, guard) {
+    const P = this.p, B = g.bal[this.me];
+    return Math.min(guard, Math.max((1 - P.p3SpendFrac) * B, P.p3KeepK * this.dpKeep(g)));
+  }
+
+  // Core, pulse paths: the troops to take offer o whole when the pulse sized for it is under the
+  // least command (0: no). Only for land under p3CheapK x worth whose whole price fits above the floor.
+  p3Whole(g, o, avail, worth) {
+    const P = this.p;
+    if (!(P.enableAiFloorCap > 0 && P.p3MinCmdFix > 0)) return 0;
+    if (!(o.c < P.p3CheapK * worth) || !this.p3Prey(g, o.q, o.need)) return 0;
+    const want = 1.25 * o.need + 3 * this.cnt[o.q];
+    if (!(want <= avail)) return 0;
+    this.vCount("p3_whole_core");
+    return Math.min(avail, Math.max(want, this.minCmd(g)));
+  }
+
+  // Before the core (pickTarget): the same for a bot when less than the least command is left
+  // above its floor.
+  smallSend(g, q, avail, need, min) {
+    const P = this.p, me = this.me;
+    if (!(P.enableAiFloorCap > 0 && P.p3MinCmdFix > 0) || !(avail > 0)) return 0;
+    if (this.person(g, q) && !this.vShell(g, q)) return 0;
+    if (this.waitDump(g, q)) return 0;
+    const want = P.foodK * need + 3 * this.cnt[q];
+    if (!(want <= avail)) return 0;
+    const left = iV(g.peak[q], 4);
+    const share = Math.min(1, this.cnt[q] / Math.max(1, g.border[q].length));
+    const c = (need + iV(12 * g.bal[me], 1024)) / Math.max(1, g.terr[q] - left + left * P.shareW * share);
+    if (!(c < P.p3CheapK * this.winWorth(g))) return 0;
+    this.vCount("p3_whole_early");
+    return Math.min(avail, Math.max(want, min));
   }
 
   // ==========================================================================================
