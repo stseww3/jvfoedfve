@@ -10,6 +10,8 @@ c110 的互保是按名字认人的（v27-team-c110.js L3973-3996）：名字在
 
 原料：namepool.mjs → out/_run/namepool/<局>.json（整局重演；只读 /agent/repos/c136-data 发现集）
     python3 namepool.py [--quiet]     → out/_cross/namepool.txt、namepool.json
+录像：同一个房间出了两份包、自己的录像又短的局，用同房另一份包更长的录像重演（roompairs.py；本包的号按名字认）。
+      模拟器的重演中途和真引擎对不上的录像（fidabl.txt [FA-E]），只算到对不上的那一拍之前。
 
 口径：
   · 我方号 = 对局包里有它的日志、席位和名字都对得上的号（facts.py 的席位表）∪ 重演器按 traj / results 认出来的号。
@@ -41,6 +43,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import xbatch as XB  # noqa: E402
 import facts  # noqa: E402
+import roompairs as RP  # noqa: E402
 
 OUT = os.path.join(os.path.dirname(HERE), "out")
 RUN = os.path.join(OUT, "_run", "namepool")
@@ -52,6 +55,9 @@ KIND_CN = dict(neutral="无主地", AI="内置 AI", wild_on="野人（在线）"
                ownteam_on="同队的我方号（在线）", ownteam_shell="同队的我方空壳", ulteam_on="池名无日志席位·同队（在线）", ulteam_shell="池名无日志席位·同队的空壳",
                mate_on="同队的池外真人（在线）", mate_shell="同队的池外真人的空壳", boss="Boss 名字的席位")
 PE_KINDS = ("ownx_on", "ownx_shell", "ulx_on", "ulx_shell")
+# 保护的三种状态：True = 开着；False = 解除了；"open" = 开局窗（每局的头 300 拍）。保护要等场上有池外真人长到 80 格才生效，
+# 地的流水和陆攻是 300 拍一窗记的，头一窗里分不开生效前后，所以单列，不并进「开着」也不并进「解除以后」。
+STATES = (True, False, "open")
 WILD_KINDS = ("wild_on", "wild_shell", "apex_on", "apex_shell")
 BOSS_PAT = ("kazerd", "auouf")
 
@@ -97,12 +103,12 @@ def main():
     files = sorted(glob.glob(os.path.join(RUN, "*.json")))
     rows = []
     tot_contact = [Counter() for _ in PERIODS]
-    tot_lost = {True: Counter(), False: Counter()}
-    tot_gain = {True: Counter(), False: Counter()}
+    tot_lost = {st: Counter() for st in STATES}
+    tot_gain = {st: Counter() for st in STATES}
     tot_lost_p = [Counter() for _ in PERIODS]
-    tot_atk = {True: Counter(), False: Counter()}
-    tot_boat = {True: Counter(), False: Counter()}
-    tot_land = {True: Counter(), False: Counter()}
+    tot_atk = {st: Counter() for st in STATES}
+    tot_boat = {st: Counter() for st in STATES}
+    tot_land = {st: Counter() for st in STATES}
     tot_origin = Counter()
     tot_origin_tiles = Counter()
     tot_don = Counter()
@@ -133,6 +139,21 @@ def main():
         own = sorted(own_set)
         if not own:
             continue
+        rec = R.get("replayFrom") or mid
+        cut, _checked = RP.cut_of(rec)
+        end = R["endTick"]
+        if cut is not None and cut < end:
+            # 模拟器和引擎从 cut 这一拍起对不上：快照、流水（300 拍一窗，整窗都在 cut 之前的才留）、指令、靠岸、捐兵都只留 cut 之前的
+            n_ok = sum(1 for t in R["snapT"] if t < cut)
+            R["snapT"], R["terr"] = R["snapT"][:n_ok], R["terr"][:n_ok]
+            R["flows"] = [f for f in R["flows"] if f[0] + 300 < cut]
+            R["nb"] = {k: [x for x in v if x[0] < cut] for k, v in R["nb"].items()}
+            R["atk"] = [a for a in R["atk"] if a[0] + 300 <= cut]
+            for key in ("boats", "lands", "dons", "husk"):
+                R[key] = [x for x in R[key] if x[0] < cut]
+            end = cut
+        else:
+            cut = None
         in_pool = [low[s] in pool or "[npl]" in low[s] or "[nope]" in low[s] for s in range(H)]
         boss = [is_boss(low[s]) and not in_pool[s] for s in range(H)]
         apex = ["[apex]" in low[s] for s in range(H)]
@@ -155,6 +176,15 @@ def main():
 
         def prot_at(t):
             return strict[snap_i(t)]
+
+        def bin_state(b):
+            # 300 拍一窗的量（流水、陆攻）：头一窗单列
+            return "open" if b < 300 else prot_at(b)
+
+        def tick_state(t):
+            # 逐拍的量（接触样本、发船、靠岸）：90 拍以前还没人长到 80 格的那几拍单列，不算「解除以后」
+            on = prot_at(t)
+            return "open" if (t < 90 and not on) else on
 
         # 第一个「保护不在」的快照（90 拍以后：开局各家还没长到 80 格）
         t_off = next((snapT[i] for i in range(len(snapT)) if snapT[i] >= 90 and not strict[i]), None)
@@ -205,7 +235,7 @@ def main():
                     if not any(k in ("neutral", "AI") or k in WILD_KINDS for k in ks):
                         c["onlyPE"] += 1
                 if not on:
-                    c["protOff"] += 1
+                    c["protOpen" if t < 90 else "protOff"] += 1
                 if loose[i] and not strict[i]:
                     c["gap"] += 1
                     if pe:
@@ -214,20 +244,22 @@ def main():
             tot_contact[i].update(m_contact[i])
 
         # [NP-C] 地的流水（主体 = 窗起点还在线的我方号）
-        lost = {True: Counter(), False: Counter()}
-        gain = {True: Counter(), False: Counter()}
+        lost = {st: Counter() for st in STATES}
+        gain = {st: Counter() for st in STATES}
         gain_pairs = defaultdict(int)       # (我方在线号, PE 席位) → 保护开着时吃到的格
+        m_xfight = Counter()
         for b, p, q, tiles, burnt, dB in R["flows"]:
             if p != q and p in own_set and q in own_set and not same_team(p, q):
                 # 我方号打我方号（跨队）：两边烧掉的兵都是编队自己的
-                kk = "on" if prot_at(b) else "off"
-                tot_xfight[kk + "|tiles"] += max(0, tiles)
-                tot_xfight[kk + "|burnt"] += burnt
-                tot_xfight[kk + "|dB"] += dB
-                tot_xfight[kk + "|rows"] += 1
+                kk = {True: "on", False: "off", "open": "open"}[bin_state(b)]
+                for c_ in (tot_xfight, m_xfight):
+                    c_[kk + "|tiles"] += max(0, tiles)
+                    c_[kk + "|burnt"] += burnt
+                    c_[kk + "|dB"] += dB
+                    c_[kk + "|rows"] += 1
             if tiles <= 0 or p == q:
                 continue
-            on = prot_at(b)
+            on = bin_state(b)
             if q in own_set and online(q, b):
                 k = kind(q, p, b)
                 lost[on][k] += tiles
@@ -235,20 +267,20 @@ def main():
             if p in own_set and online(p, b) and q < 512:
                 k = kind(p, q, b)
                 gain[on][k] += tiles
-                if on and k in PE_KINDS:
+                if on is True and k in PE_KINDS:
                     gain_pairs[(p, q)] += tiles
-        for on in (True, False):
+        for on in STATES:
             tot_lost[on].update(lost[on])
             tot_gain[on].update(gain[on])
 
         # [NP-D] 指令（主体 = 发指令那一窗 / 那一拍还在线的我方号）
-        atk = {True: Counter(), False: Counter()}
+        atk = {st: Counter() for st in STATES}
         atk_pair = defaultdict(int)
         gap_atk = Counter()
         for b, p, q, n, ok, troops in R["atk"]:
             if p not in own_set or not online(p, b):
                 continue
-            on = prot_at(b)
+            on = bin_state(b)
             k = kind(p, q, b)
             atk[on][k] += n
             atk[on][k + "|ok"] += ok
@@ -257,26 +289,26 @@ def main():
             i = snap_i(b)
             if loose[i] and not strict[i] and k in PE_KINDS:
                 gap_atk["atk"] += n
-        boat = {True: Counter(), False: Counter()}
+        boat = {st: Counter() for st in STATES}
         for t, p, dest, ok, troops in R["boats"]:
             if p not in own_set or not online(p, t) or not ok:
                 continue
-            on = prot_at(t)
+            on = tick_state(t)
             k = kind(p, dest, t)
             boat[on][k] += 1
             boat[on][k + "|troops"] += troops
-        landc = {True: Counter(), False: Counter()}
+        landc = {st: Counter() for st in STATES}
         land_pair = defaultdict(int)
         for t, p, q, troops, got in R["lands"]:
             if p not in own_set or not online(p, t):
                 continue
-            on = prot_at(t)
+            on = tick_state(t)
             k = "noland" if q < 0 else kind(p, q, t)
             landc[on][k] += 1
             landc[on][k + "|troops"] += troops
             if 0 <= q < H:
                 land_pair[(p, q)] += 1
-        for on in (True, False):
+        for on in STATES:
             tot_atk[on].update(atk[on])
             tot_boat[on].update(boat[on])
             tot_land[on].update(landc[on])
@@ -338,7 +370,7 @@ def main():
                 if p != s:
                     continue
                 if q in own_set:
-                    c["own_on" if prot_at(b_) else "own_off"] += n
+                    c[{True: "own_on", False: "own_off", "open": "own_open"}[bin_state(b_)]] += n
                     c["own_ok"] += ok
                     c["own_troops"] += troops
                 elif q >= 512 or q < 0:
@@ -362,6 +394,8 @@ def main():
             ul_rows.append((mid, s, names[s], left[s], c))
 
         gap_n = sum(1 for i in range(len(snapT)) if loose[i] and not strict[i])
+        on_snaps = sum(1 for i in range(len(snapT)) if snapT[i] >= 90 and strict[i])
+        all_snaps = sum(1 for i in range(len(snapT)) if snapT[i] >= 90)
         tot_gap["snaps"] += gap_n
         tot_gap["matches"] += 1 if gap_n else 0
         tot_gap["atk"] += gap_atk["atk"]
@@ -369,28 +403,46 @@ def main():
         own_teams = Counter(teams[s] for s in own) if team_game else Counter({0: len(own)})
         samples = sum(c["samples"] for c in m_contact)
         early = sum(1 for s in own if 0 <= left[s] <= 400)
-        row = dict(mid=mid, H=H, teamGame=team_game, nTeams=R["nTeams"], end=R["endTick"], own=len(own), ownSq=len(sq), ownTeams=len(own_teams), ownLargest=max(own_teams.values()),
-                   ul=len(ul), outsiders=len(outsiders), ownLeft=sum(1 for s in own if left[s] >= 0), ownLeftEarly=early, tOff=t_off, tOffLoose=t_off_loose, gapSnaps=gap_n,
+        row = dict(mid=mid, H=H, teamGame=team_game, nTeams=R["nTeams"], end=end, rec=rec, cut=cut, exact=R.get("exact"), mismT=R.get("mismT"), own=len(own), ownSq=len(sq), ownTeams=len(own_teams), ownLargest=max(own_teams.values()),
+                   ul=len(ul), outsiders=len(outsiders), ownLeft=sum(1 for s in own if left[s] >= 0), ownLeftEarly=early, tOff=t_off, tOffLoose=t_off_loose, gapSnaps=gap_n, onSnaps=on_snaps, allSnaps=all_snaps,
                    samples=samples, touchPE=sum(c["touchPE"] for c in m_contact), onlyPE=sum(c["onlyPE"] for c in m_contact),
-                   lostPE=sum(lost[True][k] for k in PE_KINDS), lostPEoff=sum(lost[False][k] for k in PE_KINDS),
-                   lostAll=sum(v for on in (True, False) for k, v in lost[on].items() if k != "neutral"),
-                   lostWild=sum(lost[on][k] for on in (True, False) for k in WILD_KINDS),
-                   lostAI=sum(lost[on]["AI"] for on in (True, False)),
+                   lostPE=sum(lost[True][k] for k in PE_KINDS), lostPEoff=sum(lost[False][k] for k in PE_KINDS), lostPEopen=sum(lost["open"][k] for k in PE_KINDS),
+                   lostAll=sum(v for on in STATES for k, v in lost[on].items() if k != "neutral"),
+                   lostWild=sum(lost[on][k] for on in STATES for k in WILD_KINDS),
+                   lostAI=sum(lost[on]["AI"] for on in STATES),
                    gainPE_on=sum(gain[True][k] for k in PE_KINDS), gainPE_off=sum(gain[False][k] for k in PE_KINDS),
-                   atkPE_on=sum(atk[True][k] for k in PE_KINDS), atkPE_off=sum(atk[False][k] for k in PE_KINDS),
+                   atkPE_on=sum(atk[True][k] for k in PE_KINDS), atkPE_off=sum(atk[False][k] for k in PE_KINDS), atkPE_open=sum(atk["open"][k] for k in PE_KINDS),
                    boatPE_on=sum(boat[True][k] for k in PE_KINDS), landPE_on=sum(landc[True][k] for k in PE_KINDS),
-                   donX=don["跨队（引擎不收）"], donAll=sum(v for k, v in don.items() if "|" not in k))
+                   donX=don["跨队（引擎不收）"], donAll=sum(v for k, v in don.items() if "|" not in k),
+                   xOnTiles=m_xfight["on|tiles"], xOnBurnt=m_xfight["on|burnt"], xOffTiles=m_xfight["off|tiles"], xOffBurnt=m_xfight["off|burnt"],
+                   xOpenTiles=m_xfight["open|tiles"], xOpenBurnt=m_xfight["open|burnt"])
         rows.append(row)
         J["matches"][mid] = row
 
     n_used = len(rows)
+    try:
+        extra = [r[0] for r in json.load(open(os.path.join(OUT, "_run", "fid_extra.json"), encoding="utf-8")) if r[2] == "squad20"]
+    except Exception:
+        extra = []
+    have_extra = [x for x in extra if x in J["matches"]]
+    miss_extra = [x for x in extra if x not in J["matches"]]
+    borrowed = [r for r in rows if r["rec"] != r["mid"]]
+    cut_rows = [r for r in rows if r["cut"] is not None]
     P(f"namepool.py — 「名字池误认」的真相口径账：squad20（c110）有对局段且重演对得上的 {n_used} 局（整局重演）" + (f"；另有 {len(old)} 局的原料还是旧版、没算进来：{' '.join(old)}" if old else ""))
     P()
     P("[NP-A] 名册")
+    P(f"  {n_used} 局里，自己的录像有对局段的 {n_used - len(have_extra)} 局"
+      + (f"，自己的录像只有出生期、用同房另一份包的录像重演的 {len(have_extra)} 局（{' '.join(have_extra)}）" if have_extra else "")
+      + (f"；还在后台排队的 {len(miss_extra)} 局（{' '.join(miss_extra)}）" if miss_extra else ""))
+    P(f"  用同房另一份包更长的录像重演的 {len(borrowed)} 局（roompairs.py）"
+      + ("：" + "；".join(f"{r['mid']} ← {r['rec']}（日志逐行核对 {r['exact'][0]} / {r['exact'][1]}" + (f"，第一次对不上在 {r['mismT']} 拍" if r["mismT"] is not None else "") + "）" for r in borrowed) if borrowed else ""))
+    P(f"  模拟器的重演中途和真引擎对不上、只算到那一拍之前的 {len(cut_rows)} 局" + ("：" + "；".join(f"{r['mid']}（录像 {r['rec']}）算到 {r['cut']} 拍" for r in cut_rows) if cut_rows else ""))
     tg = [r for r in rows if r["teamGame"]]
     n_own = sum(r["own"] for r in rows)
     P(f"  组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}；我方号合计 {n_own} 个（重演器认出来的 {sum(r['ownSq'] for r in rows)} 个 + 只在对局包席位表里的 {n_own - sum(r['ownSq'] for r in rows)} 个）；"
       f"中途离开的 {sum(r['ownLeft'] for r in rows)} 个，其中 400 拍以前就离开的 {sum(r['ownLeftEarly'] for r in rows)} 个")
+    reach = {t: sum(1 for r in rows if r["end"] >= t) for t in (1500, 3000, 4284)}
+    P(f"  算到各断面以后的局（借了同房录像的按借来的录像、截短的按截短以后算）：1500 拍 {reach[1500]} / {len(rows)}；3000 拍 {reach[3000]} / {len(rows)}；4284 拍 {reach[4284]} / {len(rows)}")
     P("  每局进到同一个房间的我方号个数：" + " ".join(str(x) for x in sorted(r["own"] for r in rows)))
     if tg:
         P("  组队局里我方号分在几个队：" + "；".join(f"{k} 个队 {v} 局" for k, v in sorted(Counter(r['ownTeams'] for r in tg).items()))
@@ -399,50 +451,67 @@ def main():
     for mid, s, nm, lt, mx, tm, ot in unlogged:
         P(f"    {mid} #{s} {nm}｜{'没离开' if lt < 0 else f'{lt} 拍离开'}｜整局最大 {mx} 格" + ("" if tm is None else f"｜在第 {tm} 队（我方号所在的队：{ot}）"))
     off = [r for r in rows if r["tOff"] is not None]
-    P(f"  保护解除（主口径：场上不再有占地 ≥80、没离开的池外真人）发生过的局 {len(off)} / {len(rows)}" + ("：" + "；".join(f"{r['mid']} 在 {r['tOff']} 拍（录像 {r['end']} 拍）" for r in off) if off else ""))
+    def off_cn(r):
+        if r["onSnaps"] == 0:
+            return f"{r['mid']} 从头没有开过"
+        return f"{r['mid']} 在 {r['tOff']} 拍解除"
+    P(f"  保护不在（主口径：场上没有占地 ≥80、没离开的池外真人；从 90 拍的第一个断面看起）的局 {len(off)} / {len(rows)}"
+      + ("：" + "；".join(off_cn(r) + f"（录像 {r['end']} 拍；90 拍以后的断面 {r['allSnaps']} 个，其中保护开着的 {r['onSnaps']} 个）" for r in off) if off else ""))
     offl = [r for r in rows if r["tOffLoose"] is not None]
-    P(f"  宽口径（离开的池外席位也算）下解除过的局 {len(offl)} / {len(rows)}" + ("：" + "；".join(f"{r['mid']} 在 {r['tOffLoose']} 拍" for r in offl) if offl else ""))
+    P(f"  宽口径（离开的池外席位也算）下保护不在的局 {len(offl)} / {len(rows)}" + ("：" + "；".join(f"{r['mid']} 在 {r['tOffLoose']} 拍" for r in offl) if offl else ""))
     J["roster"] = dict(matches=n_used, own=n_own, ownLeft=sum(r["ownLeft"] for r in rows), ownLeftEarly=sum(r["ownLeftEarly"] for r in rows), unlogged=len(unlogged),
                        protOffMatches=[r["mid"] for r in off], protOffLooseMatches=[r["mid"] for r in offl])
     P()
     P("[NP-B] 接触：我方在线、有地的号 × 每 90 拍一个样本")
-    P("  时段 | 样本 | 贴着 PE（受保护的引擎敌人）的 | 其中 PE 是：跨队我方在线 / 跨队我方空壳 / 池名无日志在线 / 池名无日志空壳 | 只剩 PE 可打的（没有无主地、内置 AI、不受保护的真人）| 保护已解除的样本")
+    P("  时段 | 样本 | 贴着 PE（受保护的引擎敌人）的 | 其中 PE 是：跨队我方在线 / 跨队我方空壳 / 池名无日志在线 / 池名无日志空壳 | 只剩 PE 可打的（没有无主地、内置 AI、不受保护的真人）| 保护已解除的样本 | 90 拍以前、还没有池外真人长到 80 格的样本（单列）")
     for i, (cn, _, _) in enumerate(PERIODS):
         c = tot_contact[i]
         n = c["samples"]
-        P(f"  {cn} | {n} | {c['touchPE']}（{pct(c['touchPE'], n)}）| {c['touch_ownx_on']} / {c['touch_ownx_shell']} / {c['touch_ulx_on']} / {c['touch_ulx_shell']} | {c['onlyPE']}（{pct(c['onlyPE'], n)}）| {c['protOff']}")
+        P(f"  {cn} | {n} | {c['touchPE']}（{pct(c['touchPE'], n)}）| {c['touch_ownx_on']} / {c['touch_ownx_shell']} / {c['touch_ulx_on']} / {c['touch_ulx_shell']} | {c['onlyPE']}（{pct(c['onlyPE'], n)}）| {c['protOff']} | {c['protOpen']}")
     n = sum(c["samples"] for c in tot_contact)
     tp = sum(c["touchPE"] for c in tot_contact)
     op = sum(c["onlyPE"] for c in tot_contact)
-    P(f"  合计 | {n} | {tp}（{pct(tp, n)}）| {sum(c['touch_ownx_on'] for c in tot_contact)} / {sum(c['touch_ownx_shell'] for c in tot_contact)} / {sum(c['touch_ulx_on'] for c in tot_contact)} / {sum(c['touch_ulx_shell'] for c in tot_contact)} | {op}（{pct(op, n)}）| {sum(c['protOff'] for c in tot_contact)}")
+    P(f"  合计 | {n} | {tp}（{pct(tp, n)}）| {sum(c['touch_ownx_on'] for c in tot_contact)} / {sum(c['touch_ownx_shell'] for c in tot_contact)} / {sum(c['touch_ulx_on'] for c in tot_contact)} / {sum(c['touch_ulx_shell'] for c in tot_contact)} | {op}（{pct(op, n)}）| {sum(c['protOff'] for c in tot_contact)} | {sum(c['protOpen'] for c in tot_contact)}")
     J["contact"] = dict(samples=n, touchPE=tp, onlyPE=op, byPeriod=[dict(c) for c in tot_contact])
     P()
     P("[NP-C] 地的流水（格）：我方在线的号被谁吃走、从谁手里吃到")
-    P("  对方的种类 | 保护开着：我方被吃走 / 我方吃到 | 保护解除以后：我方被吃走 / 我方吃到")
+    P("  （300 拍一窗。每局的头一窗单列为「开局窗」：保护要等场上有池外真人长到 80 格才生效，这一窗里分不开生效前后）")
+    P("  对方的种类 | 保护开着：我方被吃走 / 我方吃到 | 保护解除以后：我方被吃走 / 我方吃到 | 开局窗（头 300 拍）：我方被吃走 / 我方吃到")
     for k in KINDS:
         if k == "neutral":
             continue
-        a, b, c, d = tot_lost[True][k], tot_gain[True][k], tot_lost[False][k], tot_gain[False][k]
-        if a + b + c + d == 0:
+        a, b, c, d, e, f = tot_lost[True][k], tot_gain[True][k], tot_lost[False][k], tot_gain[False][k], tot_lost["open"][k], tot_gain["open"][k]
+        if a + b + c + d + e + f == 0:
             continue
-        P(f"  {KIND_CN[k]} | {a} / {b} | {c} / {d}")
-    lost_all = sum(v for on in (True, False) for k, v in tot_lost[on].items() if k != "neutral")
+        P(f"  {KIND_CN[k]} | {a} / {b} | {c} / {d} | {e} / {f}")
+    lost_all = sum(v for on in STATES for k, v in tot_lost[on].items() if k != "neutral")
     lost_pe = sum(tot_lost[True][k] for k in PE_KINDS)
     gain_pe = sum(tot_gain[True][k] for k in PE_KINDS)
     lost_pe_off = sum(tot_lost[False][k] for k in PE_KINDS)
     gain_pe_off = sum(tot_gain[False][k] for k in PE_KINDS)
-    lost_wild = sum(tot_lost[on][k] for on in (True, False) for k in WILD_KINDS)
-    lost_ai = sum(tot_lost[on]["AI"] for on in (True, False))
-    rest = lost_all - lost_ai - lost_wild - lost_pe - lost_pe_off
+    lost_pe_open = sum(tot_lost["open"][k] for k in PE_KINDS)
+    gain_pe_open = sum(tot_gain["open"][k] for k in PE_KINDS)
+    lost_wild = sum(tot_lost[on][k] for on in STATES for k in WILD_KINDS)
+    lost_ai = sum(tot_lost[on]["AI"] for on in STATES)
+    rest = lost_all - lost_ai - lost_wild - lost_pe - lost_pe_off - lost_pe_open
     P(f"  合计：我方在线的号被别的玩家吃走 {lost_all} 格 = 内置 AI {lost_ai}（{pct(lost_ai, lost_all)}）+ 野人和 [APEX]（含空壳）{lost_wild}（{pct(lost_wild, lost_all)}）"
-      f"+ 保护开着时的 PE {lost_pe}（{pct(lost_pe, lost_all, 1)}）+ 保护解除后的池内跨队席位 {lost_pe_off}（{pct(lost_pe_off, lost_all, 1)}）+ 其它 {rest}")
-    P(f"  保护开着时：我方在线的号被 PE 吃走 {lost_pe} 格，从 PE 手里吃到 {gain_pe} 格；被 PE 吃走的按对方：" + "；".join(f"{KIND_CN[k]} {tot_lost[True][k]}" for k in PE_KINDS))
+      f"+ 保护开着时的 PE {lost_pe}（{pct(lost_pe, lost_all, 1)}）+ 保护解除后的池内跨队席位 {lost_pe_off}（{pct(lost_pe_off, lost_all, 1)}）"
+      f"+ 开局窗里的池内跨队席位 {lost_pe_open}（{pct(lost_pe_open, lost_all, 2)}）+ 其它 {rest}")
+    P(f"  开局窗（头 300 拍）：我方在线的号被池内跨队席位吃走 {lost_pe_open} 格、从它们手里吃到 {gain_pe_open} 格；跨队的我方号之间换手 {tot_xfight['open|tiles']} 格，进攻方烧掉 {tot_xfight['open|burnt']} 兵"
+      f"（有这种换手的局 {sum(1 for r in rows if r['xOpenTiles'])} / {len(rows)}）")
+    P(f"  保护开着时：我方在线的号被 PE 吃走 {lost_pe} 格，从 PE 手里吃到 {gain_pe} 格；被 PE 吃走的按对方：" + "；".join(f"{KIND_CN[k]} {tot_lost[True][k]}" for k in PE_KINDS)
+      + f"（池名无日志席位在线加空壳合计 {tot_lost[True]['ulx_on'] + tot_lost[True]['ulx_shell']}）")
     P("  我方在线的号被池内跨队席位吃走的格按时段（不分保护开没开）：" + "；".join(
         f"{cn} {sum(tot_lost_p[i][k] for k in PE_KINDS)}（同段被野人和 [APEX] 吃走 {sum(tot_lost_p[i][k] for k in WILD_KINDS)}，被内置 AI {tot_lost_p[i]['AI']}）" for i, (cn, _, _) in enumerate(PERIODS)))
     P(f"  跨队的我方号之间的战损（进攻方、被打方都是我方号，不论在线还是空壳）：保护开着时换手 {tot_xfight['on|tiles']} 格，进攻方烧掉 {tot_xfight['on|burnt']} 兵，被打方掉了 {tot_xfight['on|dB']} 余额；"
       f"保护解除以后换手 {tot_xfight['off|tiles']} 格，进攻方烧掉 {tot_xfight['off|burnt']} 兵，被打方掉了 {tot_xfight['off|dB']} 余额")
+    xoff = sorted((r for r in rows if r["tOff"] is not None or r["xOffTiles"] or r["xOffBurnt"]), key=lambda r: -r["xOffTiles"])
+    xoff_txt = "；".join(f"{r['mid']}（真人 {r['H']}，{'组队' if r['teamGame'] else '自由混战'}，"
+                        + ("保护从头没有开过" if r["onSnaps"] == 0 else f"{r['tOff']} 拍解除") + f"）换手 {r['xOffTiles']} 格、进攻方烧掉 {r['xOffBurnt']} 兵" for r in xoff)
+    P("  保护解除以后的那一部分按局：" + (xoff_txt or "无"))
     J["xfight"] = dict(tot_xfight)
     J["flow"] = dict(lostAll=lost_all, lostAI=lost_ai, lostWild=lost_wild, lostPE=lost_pe, gainPE=gain_pe, lostPEoff=lost_pe_off, gainPEoff=gain_pe_off,
+                     lostPEopen=lost_pe_open, gainPEopen=gain_pe_open,
                      lostOn={k: tot_lost[True][k] for k in KINDS}, gainOn={k: tot_gain[True][k] for k in KINDS},
                      lostOff={k: tot_lost[False][k] for k in KINDS}, gainOff={k: tot_gain[False][k] for k in KINDS})
     P()
@@ -458,6 +527,12 @@ def main():
     land_pe_on = sum(tot_land[True][k] for k in PE_KINDS)
     land_pe_troops = sum(tot_land[True][k + "|troops"] for k in PE_KINDS)
     P(f"  保护开着时对 PE：陆攻 {atk_pe_on} 条；发船时目的地是 PE 的地 {boat_pe_on} 艘；靠岸时那一格是 PE 的地 {land_pe_on} 艘（船上 {land_pe_troops} 兵）")
+    atk_pe_open = sum(tot_atk["open"][k] for k in PE_KINDS)
+    open_m = [r for r in rows if r["atkPE_open"]]
+    P(f"  开局窗（头 300 拍，上表的陆攻两列都不含这一窗）：我方在线的号对池内跨队席位的陆攻 {atk_pe_open} 条（生效 {sum(tot_atk['open'][k + '|ok'] for k in PE_KINDS)} 条），"
+      f"分布在 {len(open_m)} / {len(rows)} 局" + ("：" + "；".join(f"{r['mid']} {r['atkPE_open']} 条" for r in open_m) if open_m else "")
+      + f"；同一窗里对别的对象：无主地 {tot_atk['open']['neutral']} 条、内置 AI {tot_atk['open']['AI']} 条、野人（在线）{tot_atk['open']['wild_on']} 条")
+    P(f"  90 拍以前、还没有池外真人长到 80 格时（上表的船两列都不含）：发成的船 {sum(tot_boat['open'][k] for k in KINDS)} 艘，靠岸 {sum(tot_land['open'][k] for k in list(KINDS) + ['noland'])} 艘")
     land_changed = max(0, land_pe_on - boat_pe_on)
     P(f"  靠岸数减去发船数 = {land_changed}：靠在 PE 地上的船里至少这么多艘，发船那一拍目的地那一格还不是 PE 的（途中换了主人）；"
       f"同一时期靠在同队我方号地上的船 {tot_land[True]['ownteam_on']} 艘（引擎把船上的兵交给地的主人），发船那一拍目的地已经是同队我方号的地的 {tot_boat[True]['ownteam_on']} 艘")
@@ -493,13 +568,13 @@ def main():
     J["gap"] = dict(snaps=tot_gap["snaps"], matches=tot_gap["matches"], samples=gs, touch=gt, atk=tot_gap["atk"])
     P()
     P("[NP-I] 名字在池里、包里没有日志的席位自己怎么打（c110 的号在保护开着时不对池里的名字发陆攻；所以对我方号发过陆攻的席位，跑的不是这份规则）")
-    P("  局 席位 名字 | 陆攻条数：对我方号（保护开着 / 解除后；其中生效；出兵）/ 对别的池名席位 / 对池外真人 / 对内置 AI / 对无主地 | 船靠在我方号的地上 | 从我方号手里吃到的格：在线的 / 空壳的 | 被我方号吃走的格")
+    P("  局 席位 名字 | 陆攻条数：对我方号（保护开着 / 解除后 / 开局窗；其中生效；出兵）/ 对别的池名席位 / 对池外真人 / 对内置 AI / 对无主地 | 船靠在我方号的地上 | 从我方号手里吃到的格：在线的 / 空壳的 | 被我方号吃走的格")
     hit = []
     for mid, s, nm, lt, c in ul_rows:
-        P(f"  {mid} #{s} {nm} | {c['own_on']} / {c['own_off']}（生效 {c['own_ok']}；出兵 {c['own_troops']}）/ {c['ul']} / {c['outsider']} / {c['AI']} / {c['neutral']} | {c['landOwn']} | {c['took_on']} / {c['took_shell']} | {c['gave']}")
+        P(f"  {mid} #{s} {nm} | {c['own_on']} / {c['own_off']} / {c['own_open']}（生效 {c['own_ok']}；出兵 {c['own_troops']}）/ {c['ul']} / {c['outsider']} / {c['AI']} / {c['neutral']} | {c['landOwn']} | {c['took_on']} / {c['took_shell']} | {c['gave']}")
         if c["own_on"]:
             hit.append((mid, s, nm, c))
-    n_cmd = sum(1 for _, _, _, _, c in ul_rows if c["own_on"] + c["own_off"] + c["ul"] + c["outsider"] + c["AI"] + c["neutral"])
+    n_cmd = sum(1 for _, _, _, _, c in ul_rows if c["own_on"] + c["own_off"] + c["own_open"] + c["ul"] + c["outsider"] + c["AI"] + c["neutral"])
     P(f"  合计 {len(ul_rows)} 个席位，录像里有过陆攻指令的 {n_cmd} 个；保护开着时对我方号发过陆攻的 {len(hit)} 个，共 {sum(c['own_on'] for _, _, _, c in hit)} 条"
       f"（生效 {sum(c['own_ok'] for _, _, _, c in hit)} 条，出兵 {sum(c['own_troops'] for _, _, _, c in hit)}），从我方在线的号手里吃到 {sum(c['took_on'] for _, _, _, c in hit)} 格；"
       f"同一批席位被我方号吃走 {sum(c['gave'] for _, _, _, c in hit)} 格")
@@ -508,7 +583,7 @@ def main():
     J["unloggedBehaviour"] = [dict(mid=mid, seat=s, name=nm, left=lt, **{k: int(v) for k, v in c.items()}) for mid, s, nm, lt, c in ul_rows]
     P()
     P("[NP-J] 组队局和自由混战分开（保护开着时的量；逐局数字加起来）")
-    P("  房间 | 局 | 接触样本 | 贴着 PE | 只剩 PE 可打 | 我方在线的号被别的玩家吃走的格 | 其中保护开着时被 PE 吃走 | 保护开着时从 PE 吃到 | 保护开着时对 PE 的陆攻 | 保护开着时船靠在 PE 的地上 | 保护解除过的局")
+    P("  房间 | 局 | 接触样本 | 贴着 PE | 只剩 PE 可打 | 我方在线的号被别的玩家吃走的格 | 其中保护开着时被 PE 吃走 | 保护开着时从 PE 吃到 | 保护开着时对 PE 的陆攻 | 保护开着时船靠在 PE 的地上 | 保护不在的局")
     J["byMode"] = {}
     mode_table = []
     for label, sel in (("组队局", lambda r: r["teamGame"]), ("自由混战", lambda r: not r["teamGame"])):
@@ -524,10 +599,11 @@ def main():
         mode_table.append(f"| {label} | " + " | ".join(cells) + " |")
         J["byMode"][label] = d
     P()
-    P("[NP-H] 逐局：局 | 真人 | 队数 | 录像拍 | 我方号（分在几个队 / 最大一块）| 离开的我方号（400 拍以前）| 池名无日志席位 | 保护解除的拍 主口径 / 宽口径 | 接触样本 | 贴着 PE | 只剩 PE 可打 | "
+    P("[NP-H] 逐局：局 | 真人 | 队数 | 算到哪一拍（录像取自别的包 / 截短的另注）| 我方号（分在几个队 / 最大一块）| 离开的我方号（400 拍以前）| 池名无日志席位 | 保护解除的拍 主口径 / 宽口径 | 接触样本 | 贴着 PE | 只剩 PE 可打 | "
       "我方在线的号被吃走的格：全部 / 内置 AI / 野人 / 保护开着时的 PE / 解除后的池内跨队席位 | 保护开着时从 PE 吃到 | 保护开着时对 PE：陆攻 / 靠岸 | 解除后对池内跨队席位的陆攻 | 跨队捐兵 / 全部捐兵")
     for r in sorted(rows, key=lambda r: r["mid"]):
-        P(f"  {r['mid']} | {r['H']} | {r['nTeams'] if r['teamGame'] else '混战'} | {r['end']} | {r['own']}（{r['ownTeams']} / {r['ownLargest']}）| {r['ownLeft']}（{r['ownLeftEarly']}）| {r['ul']} | "
+        note = (f"（录像取自 {r['rec']}）" if r["rec"] != r["mid"] else "") + ("（截短）" if r["cut"] is not None else "")
+        P(f"  {r['mid']} | {r['H']} | {r['nTeams'] if r['teamGame'] else '混战'} | {r['end']}{note} | {r['own']}（{r['ownTeams']} / {r['ownLargest']}）| {r['ownLeft']}（{r['ownLeftEarly']}）| {r['ul']} | "
           f"{r['tOff'] if r['tOff'] is not None else '–'} / {r['tOffLoose'] if r['tOffLoose'] is not None else '–'} | {r['samples']} | {pct(r['touchPE'], r['samples'])} | {pct(r['onlyPE'], r['samples'])} | "
           f"{r['lostAll']} / {r['lostAI']} / {r['lostWild']} / {r['lostPE']} / {r['lostPEoff']} | {r['gainPE_on']} | {r['atkPE_on']} / {r['landPE_on']} | {r['atkPE_off']} | {r['donX']} / {r['donAll']}")
 
@@ -536,8 +612,12 @@ def main():
     all_tiles = sum(tot_origin_tiles.values())
     J["report"] = {
         "NP_N": str(n_used), "NP_OLD_N": str(len(old)), "NP_OLD": " ".join(old), "NP_ALL": str(n_used + len(old)),
-        "NP_COVER": (f"squad20 有对局段、重演对得上的 {n_used + len(old)} 局" + (f"里的 {n_used} 局" if old else "") + f"：组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}"
-                     + (f"；另外 {len(old)} 局（{' '.join(old)}）的重演还在后台排队，没算进来" if old else "")),
+        "NP_COVER": (f"squad20 自己的录像有对局段、重演对得上的 {n_used - len(have_extra) + len(old)} 局" + (f"里的 {n_used - len(have_extra)} 局" if old else "")
+                     + (f"，加上 {len(have_extra)} 局自己的录像只有出生期、用同房另一份包的录像重演的（{' '.join(have_extra)}），合计 {n_used} 局" if have_extra else "")
+                     + f"：组队局 {len(tg)}、自由混战 {len(rows) - len(tg)}"
+                     + (f"；另外 {len(old + miss_extra)} 局（{' '.join(old + miss_extra)}）的重演还在后台排队，没算进来" if old or miss_extra else "")
+                     + (f"。用同房另一份包更长的录像重演的 {len(borrowed)} 局（" + "；".join(f"{r['mid']} ← {r['rec']}" for r in borrowed) + "）" if borrowed else "")
+                     + ("。" + "；".join(f"{r['mid']} 用的那份录像（{r['rec']}）模拟器从 {r['cut']} 拍起和真引擎对不上，只算到那一拍" for r in cut_rows) if cut_rows else "")),
         "NP_MODE_TABLE": "\n".join(mode_table),
         "NP_LAND_MATE": str(tot_land[True]["ownteam_on"]), "NP_BOAT_MATE": str(tot_boat[True]["ownteam_on"]), "NP_LAND_CHANGED": str(land_changed),
         "NP_TEAM_N": str(len(tg)), "NP_FFA_N": str(len(rows) - len(tg)),
@@ -546,12 +626,14 @@ def main():
         "NP_ONLY_LATE": f"{late_c['onlyPE']}（{pct(late_c['onlyPE'], late_c['samples'])}）", "NP_LATE_SAMPLES": str(late_c["samples"]),
         "NP_TOUCH_BY": " / ".join(pct(c["touchPE"], c["samples"]) for c in tot_contact),
         "NP_ONLY_BY": " / ".join(pct(c["onlyPE"], c["samples"]) for c in tot_contact),
-        "NP_OFF": f"{len(off)} / {len(rows)}" + ("（" + "；".join(f"{r['mid']} 在 {r['tOff']} 拍" for r in off) + "）" if off else ""),
+        "NP_OFF": f"{len(off)} / {len(rows)}" + ("（" + "；".join(off_cn(r) for r in off) + "）" if off else ""),
         "NP_ATK": str(atk_pe_on), "NP_BOAT": str(boat_pe_on), "NP_LAND": str(land_pe_on), "NP_LAND_TROOPS": str(land_pe_troops),
         "NP_GAIN_PE": str(gain_pe), "NP_ORIGIN_PAIRS": str(tot_origin["只有船靠岸"]), "NP_ORIGIN_TILES": str(tot_origin_tiles["只有船靠岸"]),
         "NP_ORIGIN_PCT": pct(tot_origin_tiles["只有船靠岸"], all_tiles),
         "NP_X_TILES": str(tot_xfight["on|tiles"]), "NP_X_BURNT": str(tot_xfight["on|burnt"]), "NP_X_DB": str(tot_xfight["on|dB"]),
-        "NP_XOFF_TILES": str(tot_xfight["off|tiles"]), "NP_XOFF_BURNT": str(tot_xfight["off|burnt"]),
+        "NP_XOFF_TILES": str(tot_xfight["off|tiles"]), "NP_XOFF_BURNT": str(tot_xfight["off|burnt"]), "NP_XOFF_BY": xoff_txt or "无",
+        "NP_REACH1500": str(reach[1500]), "NP_REACH4284": str(reach[4284]),
+        "NP_XOPEN_TILES": str(tot_xfight["open|tiles"]), "NP_XOPEN_BURNT": str(tot_xfight["open|burnt"]),
         "NP_LOST_ALL": str(lost_all), "NP_LOST_PE": str(lost_pe), "NP_LOST_PE_PCT": pct(lost_pe, lost_all, 1),
         "NP_LOST_PEOFF": str(lost_pe_off), "NP_LOST_PEOFF_PCT": pct(lost_pe_off, lost_all, 1),
         "NP_LOST_AI_PCT": pct(lost_ai, lost_all), "NP_LOST_WILD_PCT": pct(lost_wild, lost_all),
