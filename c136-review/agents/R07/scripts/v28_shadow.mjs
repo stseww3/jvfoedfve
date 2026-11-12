@@ -121,7 +121,7 @@ let injecting = false, suppressed = 0, seq = 0, tookOver = false;
 let queue = [];
 const execRounds = new Map();
 const chanStat = {};
-const cs = (b) => (chanStat[b] ??= { issued: 0, attack: 0, dupAttack: 0, dupNeutral: 0, dupBot: 0, dupPerson: 0, executed: 0, failed: 0, dropped: 0, latSum: 0 });
+const cs = (b) => (chanStat[b] ??= { issued: 0, attack: 0, dupAttack: 0, dupNeutral: 0, dupBot: 0, dupPerson: 0, dupCovered: 0, dupTopUp: 0, executed: 0, failed: 0, dropped: 0, latSum: 0 });
 const taking = (g) => takeFrom >= 0 && !g.spawnPhase && g.t >= takeFrom;
 if (takeFrom >= 0) {
   const playerArg = { attack: 2, donate: 2, boat: 3, boatTo: 2, chase: 2, recall: 1, retreat: 1, leave: 0 };
@@ -141,15 +141,18 @@ const flushChannel = (g) => {
   for (const c of due) {
     const st = cs(c.b), round = Math.floor(c.due / 7);
     const hist = execRounds.get(c.me) ?? [];
-    if (hist.filter((r) => round - r < 3).length >= 9) { st.dropped++; continue; }
+    if (hist.filter((r) => round - r < 3).length >= 9) { st.dropped++; execLog(g, c, 'dropped'); continue; }
     hist.push(round);
     execRounds.set(c.me, hist.slice(-40));
     injecting = true;
     let ok = false;
     try { ok = !!c.call(); } finally { injecting = false; }
     if (ok) { st.executed++; st.latSum += g.t - c.t; } else st.failed++;
+    execLog(g, c, ok ? 'ok' : 'refused');
   }
 };
+// 信道真值：每条指令何时结算、结果如何（写进日志原文，供 v28_ledcheck.py 和策略账本的销账记录对账）
+const execLog = (g, c, how) => logs.push({ bot: c.b, t: g.t, text: `[SHADOW-EXEC] t=${g.t} me=${c.me} ${c.kind} q=${c.target} issued=${c.t} ${how}` });
 
 const cmds = [];
 const errors = [];
@@ -166,6 +169,9 @@ proto.tick = function () {
     tookOver = true;
     for (const p of pol.values()) { if (p.v28n) for (const k of Object.keys(p.v28n)) delete p.v28n[k]; if (typeof p.ledgerReset === 'function') p.ledgerReset(); }
     for (const k of Object.keys(tagCount)) delete tagCount[k];
+    const keep = logs.filter((l) => l.text.startsWith('[SHADOW-ERROR]'));
+    logs.length = 0;
+    logs.push(...keep);
   }
   if (quitMode === 'engine') { for (let q = 0; q < H; q++) if (g.state[q] === 2) quitSet.add(q); window.__quitPlayers = quitSet; }
   const onlineHad = Object.prototype.hasOwnProperty.call(g, 'online');
@@ -178,16 +184,38 @@ proto.tick = function () {
     window.__tsbSquadSlot = slotOf.has(b) ? slotOf.get(b) : me % 10;
     // 一条指令：先记进指令流；影子模式到此为止，接管模式再交给信道
     const submit = (kind, pct, target, extra, call) => {
-      cmds.push([g.t, b, kind, pct, target, extra ?? '']);
+      const row = [g.t, b, kind, pct, target, extra ?? '', ''];
+      cmds.push(row);
       if (!taking(g)) return true;
       const st = cs(b);
       st.issued++;
       if (kind === 'attack') {
         st.attack++;
         // 「重复下单」的地面真值：同一目标的上一条进攻指令还在信道里没结算（按目标分：中立 / 人机与空壳 / 真人）
-        if (queue.some((c) => c.me === me && c.kind === 'attack' && c.target === target)) {
+        const prev = queue.filter((c) => c.me === me && c.kind === 'attack' && c.target === target);
+        if (prev.length) {
           st.dupAttack++;
           if (target >= NEUTRAL) st.dupNeutral++; else if (g.isBot(target)) st.dupBot++; else st.dupPerson++;
+          // 再分一层（只对有主目标）：信道里已有的兵是否已经够把目标打到淘汰线（够 = 这条是多余的；不够 = 补单）
+          let cover = '';
+          if (target < NEUTRAL) {
+            const T = g.terr[target], Bq = g.bal[target];
+            const x = Math.min(1, Math.floor(g.peak[target] / 4) / Math.max(T, 1));
+            const needTrue = 2 * Bq * (1 - Math.pow(x, 1.6)) + 2 * T * (1 - x) + g.attackTroopsOn(target, me) - g.attackTroopsOn(me, target);
+            // 信道里这个号的指令按结算次序（先到期的先结算，同拍后发的先结算）逐条从当前余额里扣，
+            // 得到每条落地时实际能带的兵（指令带的是「落地那一拍余额」的比例，不是发出时余额的比例）
+            let bRun = g.bal[me], inChan = 0;
+            const FEE = { attack: 12, boat: 32, boatTo: 32, donate: 64 };
+            for (const c of queue.filter((c) => c.me === me && FEE[c.kind]).sort((x1, x2) => x1.due - x2.due || x2.seq - x1.seq)) {
+              const tr = Math.min(Math.floor((bRun * (c.pct + 1)) / 1024), bRun - Math.floor((FEE[c.kind] * bRun) / 1024));
+              if (c.kind === 'attack' && c.target === target) inChan += tr;
+              bRun -= tr + Math.floor((FEE[c.kind] * bRun) / 1024);
+            }
+            if (inChan >= needTrue) { st.dupCovered++; cover = ` covered inChan=${inChan} need=${Math.round(needTrue)}`; }
+            else { st.dupTopUp++; cover = ` topup inChan=${inChan} need=${Math.round(needTrue)}`; }
+          }
+          // 备注列：dup；上一条的发出拍；我方当前压在目标上的兵；目标余额；我方余额
+          row[6] = `dup prevT=${prev.map((c) => c.t).join('/')} onQ=${g.attackTroopsOn(me, target)} balQ=${target < NEUTRAL ? g.bal[target] : ''} bal=${g.bal[me]}${cover}`;
         }
       }
       if (chan === 'c0') {
@@ -199,7 +227,7 @@ proto.tick = function () {
       }
       let dly = 10 + Math.floor(rnd() * 9);
       if (stall && g.t >= stall.a && g.t <= stall.b) dly += stall.extra;
-      queue.push({ due: Math.ceil((g.t + dly) / 7) * 7, seq: ++seq, b, me, kind, target, call, t: g.t });
+      queue.push({ due: Math.ceil((g.t + dly) / 7) * 7, seq: ++seq, b, me, kind, target, call, t: g.t, pct });
       return true;
     };
     g.attack = (pct, target, pl = me) => {
@@ -239,7 +267,7 @@ const out = resim(mid, { until: Number.isFinite(until) ? until : undefined });
 proto.tick = origTick;
 const v = out.validate;
 
-fs.writeFileSync(path.join(RAW, `${mid}_${label}_cmds.tsv`), 't\tbot\tkind\tpct\ttarget\textra\n' + cmds.map((c) => c.join('\t')).join('\n') + '\n');
+fs.writeFileSync(path.join(RAW, `${mid}_${label}_cmds.tsv`), 't\tbot\tkind\tpct\ttarget\textra\tnote\n' + cmds.map((c) => c.join('\t')).join('\n') + '\n');
 const kinds = {};
 for (const c of cmds) { const k = `${c[2]}`; kinds[k] = (kinds[k] || 0) + 1; }
 const perBot = {};
@@ -261,12 +289,13 @@ const summary = {
   logTags: tagCount, v28Counters: statSum, v28CountersPerBot: stats,
 };
 if (takeFrom >= 0) {
-  const tot = { issued: 0, attack: 0, dupAttack: 0, dupNeutral: 0, dupBot: 0, dupPerson: 0, executed: 0, failed: 0, dropped: 0, latSum: 0 };
+  const tot = { issued: 0, attack: 0, dupAttack: 0, dupNeutral: 0, dupBot: 0, dupPerson: 0, dupCovered: 0, dupTopUp: 0, executed: 0, failed: 0, dropped: 0, latSum: 0 };
   for (const s of Object.values(chanStat)) for (const k of Object.keys(tot)) tot[k] += s[k];
   if (lastG) noteTraj(lastG);
   summary.takeover = {
     from: takeFrom, chan, seed: +opt('--seed', 1), stall, suppressedRecorded: suppressed, stillInChannel: queue.length,
     total: tot, dupAttackShare: tot.attack ? +(tot.dupAttack / tot.attack).toFixed(4) : null,
+    dupCoveredShare: tot.attack ? +(tot.dupCovered / tot.attack).toFixed(4) : null,
     meanLatency: tot.executed ? +(tot.latSum / tot.executed).toFixed(2) : null,
     perBot: chanStat, trajectory_t_alive_land_troops: traj,
   };
@@ -280,7 +309,7 @@ if (vt) console.log(`  [V28-*] 日志：${vt}`);
 if (Object.keys(statSum).length) console.log(`  v28 计数器：${Object.entries(statSum).sort().map(([k, n]) => `${k}=${n}`).join(' ')}`);
 if (summary.takeover) {
   const k = summary.takeover, tt = k.total;
-  console.log(`  接管 t≥${k.from} 信道 ${k.chan}：发出 ${tt.issued}（进攻 ${tt.attack}，其中重复下单 ${tt.dupAttack} = ${k.dupAttackShare === null ? '-' : (100 * k.dupAttackShare).toFixed(1) + '%'}：中立 ${tt.dupNeutral} / 人机 ${tt.dupBot} / 真人 ${tt.dupPerson}）；结算 ${tt.executed}，结算时无效 ${tt.failed}，超限丢弃 ${tt.dropped}，仍在途 ${k.stillInChannel}；平均延迟 ${k.meanLatency ?? '-'} 拍；录像里我方指令被屏蔽 ${k.suppressedRecorded} 条`);
+  console.log(`  接管 t≥${k.from} 信道 ${k.chan}：发出 ${tt.issued}（进攻 ${tt.attack}，其中重复下单 ${tt.dupAttack} = ${k.dupAttackShare === null ? '-' : (100 * k.dupAttackShare).toFixed(1) + '%'}：中立 ${tt.dupNeutral} / 人机 ${tt.dupBot} / 真人 ${tt.dupPerson}；有主目标里 在途已够 ${tt.dupCovered} / 补单 ${tt.dupTopUp}）；结算 ${tt.executed}，结算时无效 ${tt.failed}，超限丢弃 ${tt.dropped}，仍在途 ${k.stillInChannel}；平均延迟 ${k.meanLatency ?? '-'} 拍；录像里我方指令被屏蔽 ${k.suppressedRecorded} 条`);
   const last = traj[traj.length - 1];
   if (last) console.log(`  期末 t=${last[0]}：我方存活 ${last[1]} 号，地 ${last[2]}，兵 ${last[3]}`);
 }

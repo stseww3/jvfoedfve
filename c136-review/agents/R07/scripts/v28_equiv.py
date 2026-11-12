@@ -20,7 +20,8 @@ def load(mid, label):
         for ln in f:
             ln = ln.rstrip('\n')
             if ln:
-                rows.append(tuple(ln.split('\t')))
+                # 只比前 6 列（t、号、种类、pct、目标、附加参数）；第 7 列是接管模式的备注
+                rows.append(tuple(ln.split('\t')[:6]))
     return rows
 
 
