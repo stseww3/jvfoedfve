@@ -1,0 +1,410 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "tk_c1_none",
+ "params": {
+  "enableInflightLedger": 0,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 0,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 0
+ },
+ "from": 0,
+ "until": 2300,
+ "endTick": 2300,
+ "seconds": 3.1,
+ "replayCheck": {
+  "rows": 250,
+  "terrExact": 77,
+  "balExact": 76,
+  "bothExact": 76
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 692,
+ "kinds": {
+  "attack": 680,
+  "boatTo": 12
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 66
+  },
+  "zero_7": {
+   "attack": 44,
+   "boatTo": 4
+  },
+  "zexos1": {
+   "attack": 74,
+   "boatTo": 1
+  },
+  "talon5": {
+   "attack": 88
+  },
+  "sora_w": {
+   "attack": 59,
+   "boatTo": 3
+  },
+  "alex_k": {
+   "attack": 73
+  },
+  "noah88": {
+   "attack": 70
+  },
+  "leo_tx": {
+   "attack": 86
+  },
+  "riku_x": {
+   "attack": 57
+  },
+  "kaito9": {
+   "attack": 63,
+   "boatTo": 4
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 27,
+  "HL-TICK": 176
+ },
+ "v28Counters": {},
+ "v28CountersPerBot": {
+  "ryan_m": {},
+  "sora_w": {},
+  "zero_7": {},
+  "alex_k": {},
+  "noah88": {},
+  "zexos1": {},
+  "leo_tx": {},
+  "riku_x": {},
+  "talon5": {},
+  "kaito9": {}
+ },
+ "takeover": {
+  "from": 700,
+  "chan": "c1",
+  "seed": 1,
+  "stall": null,
+  "suppressedRecorded": 748,
+  "stillInChannel": 0,
+  "total": {
+   "issued": 579,
+   "attack": 567,
+   "dupAttack": 314,
+   "dupNeutral": 19,
+   "dupBot": 287,
+   "dupPerson": 8,
+   "dupCovered": 269,
+   "dupTopUp": 26,
+   "executed": 564,
+   "failed": 15,
+   "dropped": 0,
+   "latSum": 9689
+  },
+  "dupAttackShare": 0.5538,
+  "dupCoveredShare": 0.4744,
+  "meanLatency": 17.18,
+  "perBot": {
+   "ryan_m": {
+    "issued": 55,
+    "attack": 55,
+    "dupAttack": 29,
+    "dupNeutral": 0,
+    "dupBot": 29,
+    "dupPerson": 0,
+    "dupCovered": 28,
+    "dupTopUp": 1,
+    "executed": 55,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 940
+   },
+   "sora_w": {
+    "issued": 52,
+    "attack": 49,
+    "dupAttack": 27,
+    "dupNeutral": 6,
+    "dupBot": 18,
+    "dupPerson": 3,
+    "dupCovered": 18,
+    "dupTopUp": 3,
+    "executed": 49,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 826
+   },
+   "alex_k": {
+    "issued": 62,
+    "attack": 62,
+    "dupAttack": 38,
+    "dupNeutral": 1,
+    "dupBot": 32,
+    "dupPerson": 5,
+    "dupCovered": 31,
+    "dupTopUp": 6,
+    "executed": 60,
+    "failed": 2,
+    "dropped": 0,
+    "latSum": 1015
+   },
+   "noah88": {
+    "issued": 59,
+    "attack": 59,
+    "dupAttack": 34,
+    "dupNeutral": 0,
+    "dupBot": 34,
+    "dupPerson": 0,
+    "dupCovered": 31,
+    "dupTopUp": 3,
+    "executed": 58,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 1021
+   },
+   "talon5": {
+    "issued": 78,
+    "attack": 78,
+    "dupAttack": 41,
+    "dupNeutral": 2,
+    "dupBot": 39,
+    "dupPerson": 0,
+    "dupCovered": 35,
+    "dupTopUp": 4,
+    "executed": 77,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 1368
+   },
+   "kaito9": {
+    "issued": 54,
+    "attack": 50,
+    "dupAttack": 22,
+    "dupNeutral": 3,
+    "dupBot": 19,
+    "dupPerson": 0,
+    "dupCovered": 19,
+    "dupTopUp": 0,
+    "executed": 50,
+    "failed": 4,
+    "dropped": 0,
+    "latSum": 872
+   },
+   "zero_7": {
+    "issued": 32,
+    "attack": 28,
+    "dupAttack": 12,
+    "dupNeutral": 0,
+    "dupBot": 12,
+    "dupPerson": 0,
+    "dupCovered": 12,
+    "dupTopUp": 0,
+    "executed": 32,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 513
+   },
+   "zexos1": {
+    "issued": 60,
+    "attack": 59,
+    "dupAttack": 31,
+    "dupNeutral": 2,
+    "dupBot": 29,
+    "dupPerson": 0,
+    "dupCovered": 26,
+    "dupTopUp": 3,
+    "executed": 60,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 1039
+   },
+   "riku_x": {
+    "issued": 49,
+    "attack": 49,
+    "dupAttack": 31,
+    "dupNeutral": 3,
+    "dupBot": 28,
+    "dupPerson": 0,
+    "dupCovered": 22,
+    "dupTopUp": 6,
+    "executed": 46,
+    "failed": 3,
+    "dropped": 0,
+    "latSum": 797
+   },
+   "leo_tx": {
+    "issued": 78,
+    "attack": 78,
+    "dupAttack": 49,
+    "dupNeutral": 2,
+    "dupBot": 47,
+    "dupPerson": 0,
+    "dupCovered": 47,
+    "dupTopUp": 0,
+    "executed": 77,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 1298
+   }
+  },
+  "trajectory_t_alive_land_troops": [
+   [
+    100,
+    10,
+    779,
+    6460
+   ],
+   [
+    200,
+    10,
+    2369,
+    9512
+   ],
+   [
+    300,
+    10,
+    5011,
+    15011
+   ],
+   [
+    400,
+    10,
+    9513,
+    24773
+   ],
+   [
+    500,
+    10,
+    17184,
+    38888
+   ],
+   [
+    600,
+    10,
+    28919,
+    56542
+   ],
+   [
+    700,
+    10,
+    43733,
+    86406
+   ],
+   [
+    800,
+    10,
+    57349,
+    136943
+   ],
+   [
+    900,
+    10,
+    68928,
+    173443
+   ],
+   [
+    1000,
+    10,
+    85985,
+    240480
+   ],
+   [
+    1100,
+    10,
+    105052,
+    282064
+   ],
+   [
+    1200,
+    10,
+    122101,
+    401901
+   ],
+   [
+    1300,
+    10,
+    145230,
+    525925
+   ],
+   [
+    1400,
+    10,
+    159857,
+    679753
+   ],
+   [
+    1500,
+    10,
+    183346,
+    911762
+   ],
+   [
+    1600,
+    10,
+    211018,
+    1012342
+   ],
+   [
+    1700,
+    10,
+    248014,
+    1128625
+   ],
+   [
+    1800,
+    10,
+    280147,
+    1337101
+   ],
+   [
+    1900,
+    10,
+    298985,
+    1689022
+   ],
+   [
+    2000,
+    9,
+    321305,
+    2091387
+   ],
+   [
+    2100,
+    9,
+    345268,
+    2360765
+   ],
+   [
+    2200,
+    9,
+    361747,
+    2872572
+   ],
+   [
+    2300,
+    9,
+    372431,
+    3825218
+   ],
+   [
+    2300,
+    9,
+    372431,
+    3825218
+   ]
+  ]
+ }
+}
