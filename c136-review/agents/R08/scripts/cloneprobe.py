@@ -5,10 +5,14 @@
 #   原样    clone() 返回的对象（原型是基类 Game）
 #   恢复类  把拷贝的原型改回重放器的子类（TGame）
 # 比的对象是参照重演，不是线上引擎；参照重演自己和线上引擎对不对得上，见 engdiff（[FA-E]：89 局里 86 局整局全场一致）。
+# 这一项先读逐局原始输出 out/_run/engdiff/<局>.json；原始输出不在的时候（不入库），退回已入库的汇总：
+# out/_cross/fidabl.json 的 engine.diverged（走偏的局）和 out/_cross/fidabl.txt [FA-E] 里这几局第一处不一致的拍。
+# 同一个物理房间出了两份包的（两份录像是同一条指令流，短的那份是长的那份的前一段），按 roomKey 去重，只留录像长的那一份。
 #
 #   python3 c136-review/agents/R08/scripts/cloneprobe.py
 import json
 import os
+import re
 import sys
 import time
 
@@ -59,19 +63,59 @@ if not rows:
     print('还没有逐局输出')
     sys.exit(0)
 
-# 参照重演自己对线上引擎：engdiff 的整局结果
-eng = {}
+# 参照重演对本包日志快照的逐行核对（整局），去重以前先合计：和已入库的 engdiff 汇总（fidabl.json 的 engine.simLog）对一遍，
+# 两边一样 = 这一轮读到的对局包和模拟器，重演出来的东西和入库那一轮逐行相同
+FA = json.load(open(os.path.join(OUT, 'fidabl.json'), encoding='utf-8'))
+val_n = sum(1 for r in rows if r.get('val'))
+val_rows = sum(r['val']['rows'] for r in rows if r.get('val'))
+val_both = sum(r['val']['both'] for r in rows if r.get('val'))
+val_bad = sorted(r['matchId'] for r in rows if r.get('val') and r['val']['both'] != r['val']['rows'])
+all_runs = len(rows)
+
+# 按房间去重：同一个房间留录像最长的那一份
+by_room = {}
 for r in rows:
-    fp = os.path.join(RUN, 'engdiff', f"{r['matchId']}.json")
-    if os.path.exists(fp):
-        e = json.load(open(fp, encoding='utf-8'))
-        eng[r['matchId']] = e.get('firstT') if e.get('nBad') else None
+    by_room.setdefault(r.get('roomKey') or r['matchId'], []).append(r)
+dups = []
+rows = []
+for key, grp in by_room.items():
+    grp.sort(key=lambda r: (-r['endTick'], r['matchId']))
+    rows.append(grp[0])
+    for r in grp[1:]:
+        dups.append((r['matchId'], r['endTick'], grp[0]['matchId'], grp[0]['endTick']))
+rows.sort(key=lambda r: r['matchId'])
+
+# 参照重演自己对线上引擎：engdiff 的整局结果（原始输出在就读原始输出，不在就读已入库的汇总）
+eng = {}
+eng_src = '逐局原始输出 out/_run/engdiff/'
+if os.path.isdir(os.path.join(RUN, 'engdiff')):
+    for r in rows:
+        fp = os.path.join(RUN, 'engdiff', f"{r['matchId']}.json")
+        if os.path.exists(fp):
+            e = json.load(open(fp, encoding='utf-8'))
+            eng[r['matchId']] = e.get('firstT') if e.get('nBad') else None
+else:
+    eng_src = '已入库的汇总 out/_cross/fidabl.json、fidabl.txt [FA-E]'
+    first = dict((m, int(t)) for m, t in re.findall(r'^\s+(\w+)（真人 \d+，录像 \d+ 拍）：第一处 t=(\d+)', open(os.path.join(OUT, 'fidabl.txt'), encoding='utf-8').read(), re.M))
+    div = FA['engine']['diverged']
+    assert sorted(first) == sorted(div), (first, div)
+    assert FA['engine']['matches'] == len(cohort), (FA['engine']['matches'], len(cohort))   # engdiff 比过的就是局单里的全部局
+    for r in rows:
+        if r['matchId'] in cohort:
+            eng[r['matchId']] = first.get(r['matchId'])
 
 AT = sorted({s['T'] for r in rows for s in r['segs']})
 n_team = sum(1 for r in rows if r['teamGame'])
 P('cloneprobe.py — 断面克隆续跑 对 不克隆一路重演（参照重演）；逐局输出 out/_run/cloneprobe/')
 P('')
 P('[CP-A] 覆盖')
+P(f'  跑完的录像 {all_runs} 份（局单 {len(cohort)} 局，每局用自己的录像）；同一个房间出了两份的只留长的那一份，去掉 {len(dups)} 份'
+  + ('（' + '；'.join(f'{a} 录像到 {ea} 拍，和 {b}（{eb} 拍）同房' for a, ea, b, eb in sorted(dups)) + '）' if dups else '') + f'；下面按 {len(rows)} 个房间算')
+P(f'  参照重演对本包日志快照逐行核对（整局，去重以前 {val_n} 份合计）：地和兵都一致 {val_both} / {val_rows} 行'
+  + (f"；有不一致的行的局 {len(val_bad)}：{' '.join(val_bad)}" if val_bad else '；没有不一致的行'))
+P(f"  已入库的 engdiff 汇总 [FA-E]（{FA['engine']['matches']} 局）：{FA['engine']['simLog'][0]} / {FA['engine']['simLog'][1]} 行"
+  + ('' if all_runs != FA['engine']['matches'] else '——两边' + ('相同' if [val_both, val_rows] == FA['engine']['simLog'] else '不相同')))
+P(f'  参照重演对线上引擎的结果取自：{eng_src}')
 P(f"  跑完的局 {len(rows)}（squad10 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad10')} / squad20 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad20')}；"
   f'组队局 {n_team} / 自由混战 {len(rows) - n_team}）；参照重演整局和线上引擎全场一致的 {sum(1 for r in rows if eng.get(r["matchId"], 0) is None)} 局，'
   f'走偏过的 {sum(1 for r in rows if eng.get(r["matchId"]) is not None)} 局'
@@ -202,5 +246,8 @@ rep['CP_N'] = str(len(rows))
 rep['CP_TEAM'] = str(len(team))
 rep['CP_GAP'] = str(len(gap))
 rep['CP_SCANGAP'] = str(len(sg))
+rep['CP_RUNS'] = str(all_runs)
+rep['CP_VAL_ROWS'] = str(val_rows)
+rep['CP_VAL_BOTH'] = str(val_both)
 json.dump({'report': rep, 'n': len(rows), 'killed': sorted(killed), 'running': sorted(running)}, open(os.path.join(OUT, 'cloneprobe.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print('\n'.join(lines[:60]))

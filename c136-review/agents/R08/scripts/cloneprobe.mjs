@@ -15,10 +15,14 @@
 //   scanGap  模拟器的 scanTick 走到「要不要重扫」那一步（bots.js L723）、按模拟器的规则不重扫（第二名个人还有地）、
 //            而按线上引擎组队局的规则（bD.gv.mf()：还有地的队多于一个才不重扫）该重扫——第一次出现在哪一拍。
 //            从这一拍起两边的无主地扫描表分开。这是照着模拟器自己的状态推的，没有跑线上引擎；A001 上 huskprobe 直接读到的是 4676 拍这一步、4678 拍表里有了格子。
+// 每一局用它自己那份录像（不换同房另一份包的录像）：同一个物理房间出了两份包的（roompairs.txt），两份录像是同一条指令流，
+// 这里各跑各的，输出里带一个房间记号 roomKey（真人数、地图号、地图种子、整张名单的摘要），汇总时按房间去重。
+// 顺手把参照重演对本包日志快照的逐行核对结果（行数、地和兵都一致的行数）记下来，汇总时和 fidabl 已入库的数对一遍。
 // 只读 /agent/repos/c136-data（发现集的对局包 + src/sim）；不跑策略。
 //
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/cloneprobe.mjs [--budget 秒] [--at 630,1500,4284] <局> [<局> ...]
 //   → out/_run/cloneprobe/<局>.json（已有的跳过）；汇总见 cloneprobe.py
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,8 +40,6 @@ for (let i = 0; i < argv.length; i++) {
   else mids.push(argv[i]);
 }
 const T0 = Date.now();
-let pairs = {};
-try { pairs = JSON.parse(fs.readFileSync(path.join(RUN, 'room_pairs.json'), 'utf8')); } catch { /* 没有同房表就各用各的录像 */ }
 
 // 重放器喂给对局对象的入口（resim_r08.mjs execCmd 用到的全部会改状态的方法）+ 推进一拍
 const ENTRY = ['attack', 'donate', 'boat', 'recall', 'chase', 'retreat', 'leave', 'tick'];
@@ -144,7 +146,6 @@ function probe(mid) {
     return true;
   };
   const X = resim(mid, {
-    replayFrom: pairs[mid] || undefined,
     onStart: (g) => {
       G = g;
       // scanTick 外面包一层只读的壳：原样调用，调用完按 bots.js L696-727 的分支条件判断这一拍有没有走到「要不要重扫」那一步
@@ -191,7 +192,9 @@ function probe(mid) {
   for (const s of live) close(G, s, G.over ? '局末' : '录像到头');
   for (const s of segs) delete s.g;
   const ev = (X.engineEvents || []).map((e) => [e[0], e[1]]);
-  return { matchId: mid, replayFrom: pairs[mid] || null, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, gap, scanGap, segs };
+  const roomKey = crypto.createHash('sha1').update([X.H, X.mapIdx, X.mapSeed, ...X.names].join('\u0001')).digest('hex').slice(0, 12);
+  const val = X.validate ? { rows: X.validate.rows, both: X.validate.bothExact } : null;
+  return { matchId: mid, roomKey, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, val, gap, scanGap, segs };
 }
 
 fs.mkdirSync(OUT, { recursive: true });

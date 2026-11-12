@@ -6,8 +6,7 @@
 #   bash c136-review/agents/R08/scripts/fid_batch.sh deathbank    # 其余的局：deathbank.mjs（隔两局取一局，分三轮）
 #   bash c136-review/agents/R08/scripts/fid_batch.sh nocache      # engdiff.mjs --fid nocache（只跑触发过猎杀 / 终局提速的局）
 #   bash c136-review/agents/R08/scripts/fid_batch.sh noteamend    # engdiff.mjs --fid noteamend（同上）
-#   bash c136-review/agents/R08/scripts/fid_batch.sh cloneprobe   # cloneprobe.mjs：断面克隆续跑（先跑触发过猎杀 / 终局提速的局，按第一次事件的拍排；
-#                                                                 #   CLONE_EVENTS_ONLY=1 时这一轮只跑有事件的局）
+#   bash c136-review/agents/R08/scripts/fid_batch.sh cloneprobe   # cloneprobe.mjs：断面克隆续跑（局单里的局各用自己的录像，按对局卡上的末拍从长到短排）
 #   bash c136-review/agents/R08/scripts/fid_batch.sh hidstate     # hidstate.mjs：线上引擎 对 模拟器，整局逐拍比看不见的状态（固定的 8 局样本，见下面 HID_SAMPLE）
 #
 # 注意：这个脚本在跑的时候不要改它（bash 是边读边执行的，改了会从错位的地方接着读）。要改先停批处理。
@@ -26,7 +25,19 @@ KIND=${1:?用法：fid_batch.sh <namepool|deathbank|nocache|noteamend|cloneprobe
 # A001：扫描表），其余按编队档、真人数、队数、模式摊开——squad10 的 20 / 69 / 74 人组队局，squad20 的 20 人 5 队两局和 72 人自由混战一局。
 export HID_SAMPLE="B010 A001 A027 B042 A051 B027 A098 B011"
 [ -s "$A/out/_run/fidabl_list.json" ] || PYTHONDONTWRITEBYTECODE=1 python3 "$A/scripts/fidlist.py" >/dev/null
-[ -s "$A/out/_run/room_pairs.json" ] || PYTHONDONTWRITEBYTECODE=1 timeout 120 python3 "$A/scripts/roompairs.py" --quiet
+# 同房表只有 namepool / deathbank 两本账用。roompairs.py 要读 out/_run/streams 和 out/_run/engdiff（不入库的逐局原始输出）：
+# 它们不在的时候跑出来的同房表是残的，还会盖掉已入库的 out/_cross/roompairs.txt——这种时候不自动补跑，直接停下。
+case "$KIND" in
+  namepool|deathbank)
+    if [ ! -s "$A/out/_run/room_pairs.json" ]; then
+      if [ -d "$A/out/_run/streams" ] && [ -d "$A/out/_run/engdiff" ]; then
+        PYTHONDONTWRITEBYTECODE=1 timeout 120 python3 "$A/scripts/roompairs.py" --quiet
+      else
+        echo "【fid_batch】没有 out/_run/room_pairs.json，也没有重建它要用的 out/_run/streams、out/_run/engdiff：先把这两样跑回来（replay_cmds.mjs、engdiff.mjs）再跑 $KIND"
+        exit 3
+      fi
+    fi ;;
+esac
 
 remaining() {
   KIND="$KIND" PYTHONDONTWRITEBYTECODE=1 python3 - <<'EOF'
@@ -58,21 +69,18 @@ if kind == 'hidstate':
         out.append(mid)
     base, extra = [], []
 if kind == 'cloneprobe':
-    # 先跑触发过猎杀 / 终局提速的局（按第一次事件的拍从早到晚），再跑其余的（按录像长短从短到长）；
-    # 已有输出的跳过；上一轮跑到一半被杀的（留着 .started 记号）也跳过
+    # 局单里的每一局各用自己的录像。按对局卡上的末拍从长到短排：猎杀 / 终局提速只在后期出现（最早 2189 拍），
+    # 长的局先跑，中途停下来时有事件的局已经在手里。已有输出的跳过；上一轮跑到一半被杀的（留着 .started 记号）也跳过
     rows = []
     for mid, H, cohort in base:
-        late = f'{A}/fidabl/{mid}.late.json'
-        if not os.path.exists(late):
-            continue
-        full = json.load(open(late, encoding='utf-8'))['arms'].get('full') or {}
-        ev = [x for x in (full.get('firstHunt'), full.get('firstFast')) if x is not None]
-        rows.append(((0, min(ev)) if ev else (1, full.get('endTick') or 0), mid))
+        try:
+            end = json.load(open(f'/agent/repos/c136-data/bundles/{mid}/card.json', encoding='utf-8'))['outcome'].get('endTick') or 0
+        except Exception:
+            end = 0
+        rows.append((-end, mid))
     for key, mid in sorted(rows):
         if os.path.exists(f'{A}/cloneprobe/{mid}.json') or os.path.exists(f'{A}/cloneprobe/{mid}.started'):
             continue
-        if key[0] == 1 and os.environ.get('CLONE_EVENTS_ONLY'):
-            continue    # CLONE_EVENTS_ONLY=1：这一轮只跑有事件的局
         out.append(mid)
     base, extra = [], []
 for mid, H, cohort in base + extra:
@@ -116,8 +124,8 @@ while :; do
     namepool)  bash c136-review/tools/run-heavy.sh node "$A/scripts/namepool.mjs" --budget 70 $LIST ;;
     deathbank) bash c136-review/tools/run-heavy.sh node "$A/scripts/deathbank.mjs" --budget 70 $LIST ;;
     hidstate)  HEAVY_TIMEOUT=600 bash c136-review/tools/run-heavy.sh node "$A/scripts/hidstate.mjs" --budget 20 $LIST ;;
-    # 一局 40~160 秒，机器挤的时候（4 核、负载 15）超过 240 秒：一个槽只跑一局；上限放宽到 600 秒，免得跑到一半被杀白跑
-    cloneprobe) HEAVY_TIMEOUT=600 bash c136-review/tools/run-heavy.sh node "$A/scripts/cloneprobe.mjs" --budget 20 $LIST ;;
+    # 一局 40~160 秒，机器挤的时候（4 核、负载 10~15）超过 240 秒，最长的录像有 12000 拍：一个槽只跑一局；上限放宽到 900 秒，免得跑到一半被杀白跑
+    cloneprobe) HEAVY_TIMEOUT=900 bash c136-review/tools/run-heavy.sh node "$A/scripts/cloneprobe.mjs" --budget 20 $LIST ;;
     # 一局约 50 秒：超过 35 秒就不再开第二局，免得跑到一半被 110 秒上限杀掉
     *)         bash c136-review/tools/run-heavy.sh node "$A/scripts/engdiff.mjs" --fid "$KIND" --budget 35 $LIST ;;
   esac
