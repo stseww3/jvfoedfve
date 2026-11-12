@@ -85,6 +85,9 @@ def band_doc(X, D, t0, t1):
                 te[k] += v
     # 补充：直接扫 tally（与 gate_rows 同一个筛选：在场、没离开、t0<=t<t1、有真人报价）
     on_me = defaultdict(int)
+    over_exit = defaultdict(int)      # 超软上限而没对真人出兵的拍：出口
+    over_hi_n = over_hi_send = 0      # 密度 >= 125 的拍（利息已扣掉一半以上）
+    over_hi_exit = defaultdict(int)
     over_n = over_send = under_n = under_send = 0
     hc, worth, ratio, dens = [], [], [], []
     for r in D['tally']:
@@ -99,6 +102,13 @@ def band_doc(X, D, t0, t1):
         if r.get('over'):
             over_n += 1
             over_send += sent
+            if not sent:
+                over_exit[classify(first, HUM_CLASS)] += 1
+            if r['B'] >= 125 * max(1, r['L']):
+                over_hi_n += 1
+                over_hi_send += sent
+                if not sent:
+                    over_hi_exit[classify(first, HUM_CLASS)] += 1
         else:
             under_n += 1
             under_send += sent
@@ -112,6 +122,7 @@ def band_doc(X, D, t0, t1):
     return dict(
         hum=dict(n=sum(hum.values()), bots=len(core), exits=dict(hum), raw=dict(raw_h), over=te.get('humOver', 0), onMe=te.get('humOnMe', 0), onMeNoSend=te.get('humOnMeNoSend', 0),
                  onMeNoSendExits=dict(on_me), noSendDon=te.get('humNoSendDon', 0), overN=over_n, overSend=over_send, underN=under_n, underSend=under_send,
+                 overExits=dict(over_exit), overHiN=over_hi_n, overHiSend=over_hi_send, overHiExits=dict(over_hi_exit),
                  priceGate=dict(n=len(hc), hcMed=med(hc), worthMed=med(worth), ratioMed=med(ratio), densMed=med(dens))),
         ai=dict(n=sum(ai.values()), bots=len(coreai), exits=dict(ai), raw=dict(raw_a)))
 
@@ -143,6 +154,10 @@ def show(doc):
                 parts += f"，其他 {h['exits']['other']}"
             print(f"  {name}｜真人报价的决策拍 {h['n']}（{h['bots']} 个号）：{parts}")
             print(f"      超软上限的拍 {h['overN']}，其中出兵 {h['overSend']}（{pc(h['overSend'], h['overN'])}）；没超的拍 {h['underN']}，其中出兵 {h['underSend']}（{pc(h['underSend'], h['underN'])}）")
+            oe = '，'.join(f"{txt.split(' L')[0]} {h['overExits'].get(k, 0)}" for k, txt, _ in HUM_CLASS if h['overExits'].get(k))
+            print(f"      超软上限而没出兵的拍卡在：{oe}")
+            oh = '，'.join(f"{txt.split(' L')[0]} {h['overHiExits'].get(k, 0)}" for k, txt, _ in HUM_CLASS if h['overHiExits'].get(k))
+            print(f"      密度 >=125 的拍 {h['overHiN']}，其中出兵 {h['overHiSend']}（{pc(h['overHiSend'], h['overHiN'])}）；没出兵的卡在：{oh}")
             om = '，'.join(f"{txt.split(' L')[0]} {h['onMeNoSendExits'].get(k, 0)}" for k, txt, _ in HUM_CLASS if h['onMeNoSendExits'].get(k))
             print(f"      正被真人打的拍 {h['onMe']}，其中没有对任何真人出兵 {h['onMeNoSend']}（{pc(h['onMeNoSend'], h['onMe'])}）：{om}")
             g = h['priceGate']

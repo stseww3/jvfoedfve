@@ -582,9 +582,13 @@ def sec_gates(ms):
     T = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
     TB = {b: dict(T) for b in GATE_BANDS}
     om_all = {}
+    ov_all, ovh_all = {}, {}
+    OH = dict(overHiN=0, overHiSend=0)
+    ov_rows = []
     for m in ks:
         s = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
         om = {}
+        ov, ovh, oh = {}, {}, dict(overHiN=0, overHiSend=0)
         pg = []
         for b in GATE_BANDS:
             h = (m.K['bands'].get(b) or {}).get('hum')
@@ -594,12 +598,23 @@ def sec_gates(ms):
                 s[k] += h.get(k, 0)
                 TB[b][k] += h.get(k, 0)
             add(om, h.get('onMeNoSendExits') or {})
+            add(ov, h.get('overExits') or {})
+            add(ovh, h.get('overHiExits') or {})
+            for k in oh:
+                oh[k] += h.get(k, 0)
             g = h.get('priceGate') or {}
             if g.get('n'):
                 pg.append(f"{b}：{g['hcMed']:.0f} / {g['worthMed']:.0f} / {g['ratioMed']:.2f} / {g['densMed']:.0f}")
         for k in s:
             T[k] += s[k]
         add(om_all, om)
+        add(ov_all, ov)
+        add(ovh_all, ovh)
+        for k in oh:
+            OH[k] += oh[k]
+        short = lambda d, n: '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v:,}（{pc(v, n)}）" for k, v in sorted(d.items(), key=lambda kv: -kv[1])[:4])
+        ov_rows.append([m.id, f"{s['overN']:,}", f"{s['overSend']:,}（{pc(s['overSend'], s['overN'])}）", short(ov, s['overN'] - s['overSend']),
+                        f"{oh['overHiN']:,}", f"{oh['overHiSend']:,}（{pc(oh['overHiSend'], oh['overHiN'])}）", short(ovh, oh['overHiN'] - oh['overHiSend'])])
         top = '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v}" for k, v in sorted(om.items(), key=lambda kv: -kv[1])[:4])
         rows.append([m.id, f"{s['onMe']:,}", f"{s['onMeNoSend']:,}（{pc(s['onMeNoSend'], s['onMe'])}）", top, f"{s['overN']:,}：{pc(s['overSend'], s['overN'])}", f"{s['underN']:,}：{pc(s['underSend'], s['underN'])}",
                      s['noSendDon'], '；'.join(pg)])
@@ -614,7 +629,14 @@ def sec_gates(ms):
             x = TB[b]
             if x['onMe'] or x['overN'] or x['underN']:
                 print(f"      {b}：被打 {x['onMe']:,}、没还手 {x['onMeNoSend']:,}（{pc(x['onMeNoSend'], x['onMe'])}）；超软上限 {x['overN']:,}、出兵 {pc(x['overSend'], x['overN'])}；没超 {x['underN']:,}、出兵 {pc(x['underSend'], x['underN'])}")
-        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB))
+        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB, overExits=ov_all, overHiExits=ovh_all, **OH))
+        print()
+        print('**超软上限（兵 > 100×领土）而有真人报价的决策拍：没对真人出兵的卡在哪**（密度 >=125 = 利息已被扣掉一半以上）')
+        table(['局', '超软上限的拍', '其中出兵', '没出兵的卡在（前 4；占没出兵的拍）', '密度 >=125 的拍', '其中出兵', '没出兵的卡在（前 4）'], ov_rows)
+        nn = T['overN'] - T['overSend']
+        print(f"   {len(ks)} 局合计：超软上限而没对真人出兵 {nn:,} 拍，卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nn)}）" for k, v in sorted(ov_all.items(), key=lambda kv: -kv[1])[:6]))
+        nh = OH['overHiN'] - OH['overHiSend']
+        print(f"   密度 >=125 的拍 {OH['overHiN']:,}，出兵 {OH['overHiSend']:,}（{pc(OH['overHiSend'], OH['overHiN'])}）；没出兵的 {nh:,} 拍卡在：" + '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, nh)}）" for k, v in sorted(ovh_all.items(), key=lambda kv: -kv[1])[:6]))
     print('   口径：一个决策拍只记一个出口（排第一的真人报价）；「没出兵」是策略在真实局面上当拍的决定，不是录像里有没有指令落地。同一个号的相邻决策拍高度相关，占比只作描述。')
     print()
     return out
