@@ -5,12 +5,13 @@
 读：out/_cache/fill/<局>.json（105_human_fill.mjs：每个真人的天然地盘格数、各拍领土）
 写：out/_cross/spawn_par.txt / .json、out/_cross/human_fill.tsv（每个真人一行，进 git）
 
-两个基准：
+三个基准（报告正文用第二个，另外两个只做敏感性）：
   v       = 我方号人均天然地盘 ÷ 其他真人人均天然地盘（等于假设「全图陆地最后按最近出生点分完」）
-  v_β(T)  = 我方号人均 (天然地盘^β) ÷ 其他真人人均 (天然地盘^β)，β 取同一批对局里「其他真人」在 T 拍的实际情况：
-            ln 领土(T) = 每局一个常数 + β·ln 天然地盘（只用 T 拍还在场、有地的其他真人；各局合并估一个 β）
-            含义：把我方每个出生点换成「和同局其他真人一样会打的人」，到 T 拍人均领土应当是其他真人的多少。
-            β = 1 就是 v；β 越小说明到 T 拍为止天然地盘大的人还没把大的那部分变成领土。
+  v_γ(T)  = 我方号人均 (天然地盘^γ) ÷ 其他真人人均 (天然地盘^γ)，γ 取同一批对局里「其他真人」在 T 拍的实际情况：
+            领土(T) 的期望 = 每局一个常数 × 天然地盘^γ（泊松拟似然；已经出局的人按 0 算在里面，和 ρ 的算法一致；各局合并估一个 γ）
+            含义：把我方每个出生点换成「同局其他真人的平均水平」，到 T 拍人均领土应当是其他真人人均的多少。
+            γ = 1 就是 v；γ 越小说明到 T 拍为止天然地盘大的人还没把大的那部分变成领土。
+  v_β(T)  = 同上，但 β 用对数回归估（ln 领土 = 每局一个常数 + β·ln 天然地盘；只用 T 拍还在场、有地的其他真人）
 用法：python3 106_spawn_par.py
 """
 import json
@@ -51,6 +52,40 @@ def fit_fe(rows):
     return {"b": b, "se": se, "n": n, "games": k, "r2": 1 - rss / syy if syy > 0 else None}
 
 
+def ppml_gamma(by):
+    """by: {局: [(天然地盘, 领土)]}（领土可以是 0）。期望 = c_局 · x^γ，泊松拟似然，c_局 解析消掉后对 γ 一维求根。"""
+    def score(g):
+        s = 0.0
+        for pts in by.values():
+            Y = sum(y for _, y in pts)
+            S = sum(x ** g for x, _ in pts)
+            if Y <= 0 or S <= 0:
+                continue
+            for x, y in pts:
+                s += (y - Y * x ** g / S) * math.log(x)
+        return s
+    lo, hi = -2.0, 4.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if score(mid) > 0:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
+
+
+def fit_ppml(by):
+    """返回 γ、逐局剔除一局的刀切标准误、剔除一局后的最小 / 最大 γ、人数、其中领土为 0 的人数"""
+    if len(by) < 3:
+        return None
+    g = ppml_gamma(by)
+    jk = [ppml_gamma({k: v for k, v in by.items() if k != m}) for m in by]
+    n = len(jk)
+    mj = sum(jk) / n
+    se = math.sqrt((n - 1) / n * sum((x - mj) ** 2 for x in jk))
+    return {"g": g, "se": se, "lo": min(jk), "hi": max(jk), "n": sum(len(v) for v in by.values()), "zeros": sum(1 for v in by.values() for _, y in v if y == 0), "games": n}
+
+
 def main():
     data = {}
     for g in GAMES:
@@ -59,7 +94,7 @@ def main():
             data[g] = json.load(open(p, encoding="utf-8"))
     L = []
     P = L.append
-    J = {"games": {}, "beta": {}}
+    J = {"games": {}, "beta": {}, "gamma": {}}
     P("# 「出生站位」一层的基准（106_spawn_par.py）")
     P(f"# 已有 {len(data)} / {len(GAMES)} 局的逐人数据")
     P("")
@@ -93,8 +128,23 @@ def main():
         P(f"{t}\t{r['b']:.3f}\t{r['se']:.3f}\t{r['n']}\t{r['games']}\t{r['r2']:.2f}\t{fb}\t{fs}")
     P("")
 
-    P("## 表 B：每局的两个基准。v = 人均天然地盘之比；v_β(T) 用表 A 里 T 拍的合并 β")
-    P("局\t真人\t我方号\t我方人均天然地盘\t其他真人人均天然地盘\tv\t−ln v\tv_β(630)\t−ln v_β(630)\tv_β(1500)\t−ln v_β(1500)\t我方天然地盘中位 ÷ 其他真人中位")
+    P("## 表 A2：同一件事改用「期望领土 = 每局一个常数 × 天然地盘^γ」估（泊松拟似然；已出局的人按 0 算在里面；在场但操作者已离开的号的地照算，和 ρ 一致）")
+    P("拍\tγ\t刀切标准误（逐次剔除一局）\t剔除一局后 γ 的最小 ~ 最大\t人数\t其中领土为 0 的人数")
+    for t in AT:
+        by = {}
+        for g, d in data.items():
+            pts = [(s["vor"], s["at"][t]["terr"] if s["at"][t]["st"] != 0 else 0) for s in d["sites"] if not s["bot"] and s["vor"] > 0 and t in s["at"]]
+            if pts:
+                by[g] = pts
+        r = fit_ppml(by)
+        if not r:
+            continue
+        J["gamma"][t] = r
+        P(f"{t}\t{r['g']:.3f}\t{r['se']:.3f}\t{r['lo']:.3f} ~ {r['hi']:.3f}\t{r['n']}\t{r['zeros']}")
+    P("")
+
+    P("## 表 B：每局的基准。v = 人均天然地盘之比；v_γ(T) 用表 A2 里 T 拍的 γ；v_β(T) 用表 A 里 T 拍的 β")
+    P("局\t真人\t我方号\t我方人均天然地盘\t其他真人人均天然地盘\tv\t−ln v\tv_γ(630)\t−ln v_γ(630)\tv_γ(1500)\t−ln v_γ(1500)\tv_β(630)\t−ln v_β(630)\tv_β(1500)\t−ln v_β(1500)\t我方天然地盘中位 ÷ 其他真人中位")
     for g, d in data.items():
         sq = [s for s in d["sites"] if s["bot"]]
         oth = [s for s in d["sites"] if not s["bot"]]
@@ -105,14 +155,19 @@ def main():
         v = mS / mO
         rec = {"n": len(d["sites"]), "nS": len(sq), "nO": len(oth), "vorS": mS, "vorO": mO, "v": v}
         cells = []
-        for t in ("630", "1500"):
-            b = J["beta"].get(t, {}).get("b")
-            if b is None:
-                cells += ["-", "-"]
-                continue
-            vb = (sum(s["vor"] ** b for s in sq) / len(sq)) / (sum(s["vor"] ** b for s in oth) / len(oth))
-            rec[f"vb{t}"] = vb
-            cells += [f"{vb:.3f}", f"{-math.log(vb):+.3f}"]
+        for key, src, fld in (("vg", "gamma", "g"), ("vb", "beta", "b")):
+            for t in ("630", "1500"):
+                b = (J[src].get(t) or {}).get(fld)
+                if b is None:
+                    cells += ["-", "-"]
+                    continue
+                vb = (sum(s["vor"] ** b for s in sq) / len(sq)) / (sum(s["vor"] ** b for s in oth) / len(oth))
+                rec[f"{key}{t}"] = vb
+                cells += [f"{vb:.3f}", f"{-math.log(vb):+.3f}"]
+        for t in AT:   # 其余各拍的 v_γ 只进 JSON（103_cp_table.py 的逐拍表用）
+            gm = (J["gamma"].get(t) or {}).get("g")
+            if gm is not None:
+                rec[f"vg{t}"] = (sum(s["vor"] ** gm for s in sq) / len(sq)) / (sum(s["vor"] ** gm for s in oth) / len(oth))
         medr = statistics.median(s["vor"] for s in sq) / statistics.median(s["vor"] for s in oth)
         rec["medRatio"] = medr
         J["games"][g] = rec
