@@ -283,6 +283,8 @@ B049、B009 的包里带的是另一个房间的录像，G02、G05、G08、B006 
 
 规则（c110 行号）：`pickTarget` L1180-1214 对每个挨着的 AI 算 `avail = 余额 − max(地价项, dpKeep, sb)`（`floorFor0` L2270-2276 → `winFloor` L4542-4550），
 `avail` 不超过余额的 21.41% 就跳过（L1197）。`sb = safeFinite`（L2532-2542）= 我挨着的 AI 里，「它别的邻居中最弱的那个的余额」的最大值。
+sb 照抄的是引擎里 AI「挑最弱的邻居」那条（`bots.js` `weakestTarget` L301-313），而 AI 用这条挑法的概率按难度 0~6 是 0 / 0 / 5 / 25 / 50 / 100 / 0（`game.js` L24）；
+发现集 107 份录像头里的难度全部是 0（`hdrdiff.txt` [HD-A]），空壳按难度 6 跑：这些房间里的 AI 不按强弱挑目标（详见 H03 的机制一节）。
 
 | own 的白给样本 16793 个 | 占比 | 其中 90 拍内出手 |
 |---|---|---|
@@ -493,6 +495,9 @@ timeout 120 python3 $A/scripts/xdose.py --quiet
 timeout 120 python3 $A/scripts/xsig.py --quiet
 timeout 60 python3 $A/scripts/codemap.py --quiet
 bash c136-review/tools/run-heavy.sh node $A/scripts/params_all.mjs
+# 录像头里内置 AI 的难度；指令通道、对手行为、房间构成（会审提案用）
+bash c136-review/tools/run-heavy.sh node $A/scripts/hdrdiff.mjs
+timeout 120 python3 $A/scripts/xchan.py --quiet
 # 我的 16 局的跨局表（要先有各局的事实表）
 timeout 120 python3 $A/scripts/crossmatch.py --quiet
 timeout 120 python3 $A/scripts/flowcheck.py
