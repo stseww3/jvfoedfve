@@ -1252,7 +1252,7 @@ squad10 的 75 局按「成摞落地的占比」分三等份（`out/bundle_join.
 
 `bundle_join.py` 把两张逐局表拼起来算局间的秩相关和偏相关（§3.1、§7.3 引的那几个数）。
 
-**同局别的真人怎么下指令（`bundle_humans.py` → `out/bundle_humans.txt`）。** 同样 99 局的录像，把落地指令按「别人 / 我方 / 另一支本方编队」分开，比例是落地那一拍余额的百分之几。录像里只有指令，出了多少兵、捐款有没有被拒，这里看不到。
+**同局别的真人怎么下指令（`bundle_humans.py` → `out/bundle_humans.txt`）。** 同样 99 局的录像，把落地指令按「别人 / 我方 / 另一支本方编队」分开，比例是落地那一拍余额的百分之几。录像里只有引擎执行了的指令：被配额拒掉的捐款不在里面，出了多少兵、捐了多少兵也看不到。
 
 - **目标。** 600~1499 拍别人的 64,830 条陆攻里 72% 打内置 AI、16% 打无主地、11% 打真人；我方 22,497 条里 57% 打内置 AI、42% 落在无主地上。1500~3212 拍别人 74% 打真人、6% 落在无主地上；我方 43% 打真人、41% 落在无主地上。
 - **一发多大。** 别人打真人的陆攻，比例的分位数（P10 / P25 / P50 / P75 / P90）：1500~3212 拍 5.7% / 9.0% / 13.4% / 29.6% / 100.0%，4284 拍以后 6.2% / 8.9% / 11.4% / 17.6% / 44.6%；1500~3212 拍比例 ≥20% 的占 34%、≥50% 的占 18%。我方 3213 拍以后 P50、P75、P90 都是 12.0%。
@@ -1342,6 +1342,9 @@ squad10 的 75 局按「成摞落地的占比」分三等份（`out/bundle_join.
 | `doomed_pocket.py`、`allin_strikes.py`、`seal_floor.py`、`neutral_pickup.py` | 四个跨局专项（弃子时段、全压、封死发船、捡无主地） | `out/*_all.txt` |
 | `hub0007_table.py` | 延迟账 / 好地账的逐局大表 | `out/hub0007/m7_table.md` |
 | `m7_report_build.py`、`m7_numcheck.py` | 拼这份报告；核对正文里手写的数 | `reports/CROSS-MATCH-SUMMARY.md` |
+| `engine_replay_check.sh`、`hub_resim_check.sh` | 两种重放对日志快照的自检：线上客户端原文在 Node 里跑；hub 的纯 JS 重放脚本（原样拷来跑，一次一局） | `out/engine-replay-check.txt`、`out/hub-resim-check.txt` |
+| `m7_misc_totals.py` | 上面两份自检的合计，和我早先那份重放脚本的偏差摘行 | `out/m7/misc_totals.txt` |
+| `power_calc.py` | 按全量基线胜率，算分辨给定的胜率差每组要多少局 | `out/m7/power.txt` |
 
 **重跑的顺序**（都在 `c136-review/agents/R04/` 下；前三条只读 `c136-data/bundles/`）：
 
