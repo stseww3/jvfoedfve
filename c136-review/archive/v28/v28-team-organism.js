@@ -3945,6 +3945,7 @@ export const PARAMS = {
 
   // ---- v28/P6: quota-exact transfer, coastal floor, anti-pingpong & deficit rescue ----
   p6QuotaExact: 1, // track 100L/300t cumulative transfer quota & 142L recipient room, send 1 larger chunk
+  p6MinDonatePct: 92, // minimum pct/1024 (~9.0%B) when quota-clamped (vs 150 in Vc)
   p6CoastFloor: 1, // raise coastal boxed-in reserve floor to 82L (normal) / 65L (emergency)
   p6CoastProdDens: 82,
   p6CoastEmergDens: 65,
@@ -4655,12 +4656,13 @@ export class Policy extends V17 {
     //   - Even a boxed-in rear bank MUST keep `76 * L` during normal play so its land produces maximum interest (`+r0` on 76*L)
     //     and only skims off the top when it hits `dMe >= 98` (right before the `100*L` negative-marginal-interest cliff)!
     //   - Frontline territory keeps `Math.max(86 * L, this.safeAt(g, -1))` and only skims off surplus when `dMe >= 106` (where marginal interest is negative `-1.24*r0`).
+    const hasSeaEnemy = hasExposedCoast && (!this.p.enableQuotaExactDonate || !this.p.p6CoastFloor || this.seaPeople(g).length > 0);
     const prodOptFloor = boxedIn
-      ? (hasExposedCoast ? (this.p.enableQuotaExactDonate > 0 && this.p.p6CoastFloor > 0 ? this.p.p6CoastProdDens * L : 76 * L) : 70 * L)
+      ? (hasSeaEnemy ? (this.p.enableQuotaExactDonate > 0 && this.p.p6CoastFloor > 0 ? this.p.p6CoastProdDens * L : 76 * L) : 70 * L)
       : Math.max(94 * L, this.safeAt(g, -1));
 
     const emergDefFloor = boxedIn
-      ? (hasExposedCoast ? (this.p.enableQuotaExactDonate > 0 && this.p.p6CoastFloor > 0 ? this.p.p6CoastEmergDens * L : 58 * L) : 48 * L)
+      ? (hasSeaEnemy ? (this.p.enableQuotaExactDonate > 0 && this.p.p6CoastFloor > 0 ? this.p.p6CoastEmergDens * L : 58 * L) : 48 * L)
       : Math.max(88 * L, this.safeAt(g, -1));
 
     let maxSquadTerr = 0, topSquadId = -1, maxRandomTeamTerr = 0;
@@ -4697,8 +4699,9 @@ export class Policy extends V17 {
         continue;
       }
       if (this.p.enableQuotaExactDonate > 0 && this.p.p6QuotaExact > 0) {
+        const minPct = this.p.p6MinDonatePct || 92;
         const capP = Math.min(Math.max(0, 142 * Lp - Bp - this.p6InflightTo(g, p)), this.p6MaxQuotaTroops(g, p));
-        if (capP * 1024 < 150 * B) {
+        if (capP * 1024 < minPct * B) {
           this.vCount("p6_quota_veto");
           continue;
         }
@@ -4807,9 +4810,10 @@ export class Policy extends V17 {
     }
     const maxSafePct = Math.floor((maxTransfer * 1024) / Math.max(1, B));
     const pct = Math.min(maxSafePct, idealPct);
-    if (pct < 150) {
-      if (maxSurplus * 1024 >= 150 * B) this.vCount("p6_quota_veto");
-      return false; // Never send tiny transfers (<12.5%B) that suffer >33% tax loss!
+    const minPct = this.p.enableQuotaExactDonate > 0 && this.p.p6QuotaExact > 0 ? (this.p.p6MinDonatePct || 92) : 150;
+    if (pct < minPct) {
+      if (maxSurplus * 1024 >= minPct * B) this.vCount("p6_quota_veto");
+      return false;
     }
 
     if (this.xDonate(g, pct, bestTarget, bestKind)) {
@@ -6227,12 +6231,23 @@ export class Policy extends V17 {
     const myAvail = Math.max(0, g.bal[me] - mySafe) + g.attackTroopsOn(me, q) + this.inflightOn(g, q);
     if (!(myAvail > 0)) return 0;
     let sumAvail = myAvail, allies = 1;
-    for (const a of this.peopleOf(g, q)) {
-      if (a === me || !g.alive[a] || !this.isTeammate(g, a) || this.vShell(g, a)) continue;
-      const aAvail = Math.max(0, g.bal[a] - 68 * g.terr[a]) + g.attackTroopsOn(a, q);
-      if (aAvail > 0) {
-        sumAvail += aAvail;
-        allies++;
+    const B = g.border[q], px = g.px, own = g.own, d = g.dir4;
+    const n = B.length, step = n > 512 ? Math.ceil(n / 512) : 1;
+    const seen = this.oseen, st = ++this.ostamp;
+    for (let i = n - 1; i >= 0; i -= step) {
+      const b = B[i];
+      for (let k = 0; k < 4; k++) {
+        const c = b + d[k];
+        if (px[c] < P_INNER) continue;
+        const a = own[c];
+        if (a === q || a === me || seen[a] === st) continue;
+        seen[a] = st;
+        if (!g.alive[a] || g.isBot(a) || this.vShell(g, a) || !this.isTeammate(g, a)) continue;
+        const aAvail = Math.max(0, g.bal[a] - 68 * g.terr[a]) + g.attackTroopsOn(a, q);
+        if (aAvail > 0) {
+          sumAvail += aAvail;
+          allies++;
+        }
       }
     }
     if (allies < 2 || sumAvail < P.p4JointK * rawNeed) return 0;

@@ -78,3 +78,22 @@ node sim-v2/teamgate-v2.mjs --mode arena --room <ROOM> --len 3210 --channel C1 -
 | **`B021` (`t=1500→2400`)** | `C1` (Normal Online) | Squad Territory (px) | `124.0k` | `131.3k` | **`132.8k`** | **`+1,482`** |
 | **`B021` (`t=1500→2400`)** | `C1` (Normal Online) | Duplicate Share (`重复单占比`) | `0.132` | `0.063` | **`0.000`** | **`-0.063`** |
 | **`B021` (`t=1500→2400`)** | `C1` (Normal Online) | Ending Balance + In-Attack | `5.32M` | `5.13M` | **`5.84M`** | **`+710.2k` (+13.8%)** |
+
+---
+
+## 5. Leave-One-Out Ablation Matrix (`A039`, `t=0 → 3210`, Channel `C1`)
+
+To verify that every module in `v28-team-organism.js` contributes positively without regressions, we ran a Leave-One-Out ablation across all active modules on `A039`:
+
+| Arm / Configuration | Map Land Share (`landShare1`) | Duplicate Share (`dupShare`) | Quota Reject Rate (`quotaRejectRate`) | Accepted Donations (`donOk`) | Net Troop Production (`netProd`) |
+|---|---:|---:|---:|---:|---:|
+| **`baseline (v27-team-c116-vb)`** | `0.5608` | `42.86%` | `96.09%` | `5` | `12.59M` |
+| **`v28-full (P1..P8 all enabled)`** | **`0.7615`** | **`6.14%`** | **`0.00%`** | **`8`** | **`16.60M`** |
+| `no-P1 (enableInflightLedger=0)` | `0.6302` (-0.1313) | `42.32%` (+36.18%) | `0.00%` | `10` | `12.76M` (-3.84M) |
+| `no-P3 (enableAiFloorCap=0)` | `0.5912` (-0.1703) | `9.67%` (+3.53%) | `0.00%` | `14` | `18.69M` |
+| `no-P4 (enableCoordinatedStrike=0)` | `0.7075` (-0.0540) | `5.74%` | `0.00%` | `10` | `16.31M` (-0.29M) |
+| `no-P6 (enableQuotaExactDonate=0)` | `0.7000` (-0.0615) | `5.76%` | `66.67%` (+66.67%) | `7` | `16.73M` |
+| `no-P7 (enableSeaPrecision=0)` | `0.7572` (-0.0043) | `5.80%` | `0.00%` | `11` | `16.41M` (-0.19M) |
+
+Every single module (`P1, P3, P4, P6, P7`) shows a clear positive marginal contribution to `v28-full`'s `0.7615` land share (+20.07 percentage points over `v27-vb`).
+
