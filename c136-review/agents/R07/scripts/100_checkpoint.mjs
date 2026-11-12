@@ -25,6 +25,8 @@
 //   C2：这个号历史上在这一帧有指令 → 注入的指令放在它历史上的原位置；
 //   C1、以及 C2 里历史上这一帧没有这个号的指令时 → 每个号每帧掷一次，一半排在这一帧录像指令之前，一半排在之后；
 //   C0 / C0b 在策略决策那一刻执行（排在这一帧录像指令之前）。
+//   --pos rand：C2 也不放回历史原位置，和 C1 一样掷（名字后缀 -rp）。用在 1500 / 4284 断面「走偏的 C2」上：
+//   这两个断面内置 AI 所剩无几，只扰动引擎随机数时 C2 基本不偏离历史，起不到「同样走偏」的对照作用。
 // 桥接语义（与 65_shadow.mjs 的影子相同；11 局录像里我方落地的指令 97% 以上能和它逐条对上，见 release_map 的统计）：
 //   进攻：目标是活着的队友 → 假；没有空槽且不是加兵 → 假；否则真。捐款：对方活着且是队友 → 真（被配额拒掉也是真，
 //   按发令拍的盘面查，过不了就不进通道）。船：不能出船 → 假。一个决策拍里第一条返回真的指令之后，其余都返回假。
@@ -35,7 +37,7 @@
 // 用法（必须套重计算闸）：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/100_checkpoint.mjs <局> --chan H
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/100_checkpoint.mjs <局> --chan C0|C0b|C1|C2 --t0 630 [--h 900] [--seed 0]
-//        [--ver native|va|vb] [--dmodel emp|uni --dmin 5 --dmax 12] [--keep earliest|latest] [--leave hist|none] [--tag 名字]
+//        [--ver native|va|vb] [--dmodel emp|uni --dmin 5 --dmax 12] [--keep earliest|latest] [--leave hist|none] [--pos hist|rand] [--tag 名字]
 //   同一进程连跑多条：把各条的参数用 +++ 隔开（每条都从录像第 0 拍重演，互不影响）；超出时间预算的留给下一次。
 // 输出：out/_cache/cp/<局>/<名字>.json（不进 git；汇总表由 103_cp_table.py 生成，批量运行见 102_cp_plan.py / 102_cp_batch.sh）
 import fs from 'node:fs';
@@ -67,6 +69,8 @@ const dmodel = opt('--dmodel', 'emp');
 const dmin = +opt('--dmin', 5), dmax = +opt('--dmax', 12);
 const keepMode = opt('--keep', 'earliest');
 const leaveMode = opt('--leave', 'hist');
+const posMode = opt('--pos', 'hist');   // C2 一帧之内的先后：hist = 放回历史原位置；rand = 和 C1 一样随机排在这一帧录像指令之前或之后
+if (!['hist', 'rand'].includes(posMode)) { console.error(`未知 --pos ${posMode}`); process.exit(2); }
 const verOpt = opt('--ver', 'native');
 const until = chan === 'H' && T0 < 0 ? +opt('--until', 1e9) : T0 + horizon;
 
@@ -80,7 +84,7 @@ const CACHE = path.join(HERE, '..', 'out', '_cache');
 const CPDIR = path.join(CACHE, 'cp', mid);
 fs.mkdirSync(CPDIR, { recursive: true });
 const defTag = chan === 'H' && T0 < 0 ? 'H'
-  : `${chan}-t${T0}-s${seed}${ver !== nativeVer ? '-' + ver : ''}${chan === 'C1' && dmodel === 'uni' ? `-d${dmin}_${dmax}` : ''}${keepMode !== 'earliest' ? '-kl' : ''}${leaveMode !== 'hist' ? '-nl' : ''}`;
+  : `${chan}-t${T0}-s${seed}${ver !== nativeVer ? '-' + ver : ''}${chan === 'C1' && dmodel === 'uni' ? `-d${dmin}_${dmax}` : ''}${keepMode !== 'earliest' ? '-kl' : ''}${leaveMode !== 'hist' ? '-nl' : ''}${posMode !== 'hist' ? '-rp' : ''}`;
 const tag = opt('--tag', defTag);
 const outPath = path.join(CPDIR, `${tag}.json`);
 
@@ -244,7 +248,7 @@ const execNow = (g, c) => {
 //   C2：这个号历史上在这一帧有指令 → 注入的指令放在它历史上的原位置（第 k 次录像调用换成第 k 条；最后一次把剩下的都执行掉）
 //   其余（C1，以及 C2 里历史上这一帧没有这个号的指令）：每个号每帧掷一次，一半排在这一帧录像指令之前，一半排在之后
 const histCalls = new Map();   // 拍 → Map(号 → 历史上这一帧的指令条数)
-if (chan === 'C2' && HB && HB.landed) {
+if (chan === 'C2' && posMode === 'hist' && HB && HB.landed) {
   const CALLS = new Set(['attack', 'donate', 'boat', 'chase', 'recall', 'retreat']);
   for (const r of HB.landed) {
     if (!CALLS.has(r[2]) || (r[2] === 'retreat' && r[3] === 513)) continue;
@@ -518,7 +522,7 @@ const delays = cmdRec.filter((r) => r[6] >= 0).map((r) => r[6] - r[0]).sort((a, 
 const q = (a, f) => (a.length ? a[Math.min(a.length - 1, Math.floor(f * a.length))] : null);
 
 const res = {
-  mid, ver, nativeVer, chan, T0, seed, until, tag, dmodel, dmin, dmax, keepMode, leaveMode,
+  mid, ver, nativeVer, chan, T0, seed, until, tag, dmodel, dmin, dmax, keepMode, leaveMode, posMode,
   endTick: out.endTick, over: out.over, winnerTeam: out.winnerTeam, land: out.land, H,
   squad: [...idOf].map(([b, p]) => ({ bot: b, id: p, slot: slotOf.get(b) ?? null, team: out.teams[p] })),
   squadTeam, nSquad: n0S, nOther: n0O,
