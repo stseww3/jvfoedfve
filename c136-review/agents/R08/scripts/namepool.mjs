@@ -6,8 +6,12 @@
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/namepool.mjs <局> <局> …
 //   → out/_run/namepool/<局>.json（不入库）；汇总：python3 namepool.py → out/_cross/namepool.txt
 //
+// 录像取自哪一份包：out/_run/room_pairs.json（roompairs.py 写）里列了的局，用同房另一份包更长的录像，本包的号按名字认；
+//   [--own-recording] 强制用自己的。已有输出用的录像和现在该用的不是同一份，就重跑。
+//
 // 每局写出：
 //   names / teams / leftT / deathT / squad（我方号 → 席位）/ H / land / endTick / nTeams / gameMode
+//   replayFrom（录像取自哪一份包；自己的就是 null）/ mismT（重演和本包日志第一次对不上的那一拍；全对得上是 null）
 //   snapT / terr：每 90 拍全部真人席位的地
 //   flows：[窗(300 拍一窗的起点), 进攻方, 被打方, 进攻方吃到的格, 进攻方烧掉的兵, 被打方掉的余额]，只留「至少一方是真人席位」的对
 //   nb：我方每个号每 90 拍贴着谁（接触格数最多的 12 个；512 = 无主地）
@@ -22,7 +26,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { resim } from './resim_r08.mjs';
-import { deathRows, writeDeathbank } from './deathbank.mjs';
+import { deathRows, writeDeathbank, recordingOf, sameRecording } from './deathbank.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const RUN = path.join(HERE, '..', 'out', '_run', 'namepool');
@@ -30,6 +34,8 @@ fs.mkdirSync(RUN, { recursive: true });
 const BIN = 300;
 const ARGV = process.argv.slice(2);
 const FORCE = ARGV.includes('--force');
+// 录像取自哪一份包：out/_run/room_pairs.json（roompairs.py 写）里列了的局用同房另一份包更长的录像；--own-recording 强制用自己的
+const OWN_REC = ARGV.includes('--own-recording');
 // --budget <秒>：开跑下一局之前看一眼已经用掉的时间，超了就停，剩下的下一批接着跑
 const BI = ARGV.indexOf('--budget');
 const BUDGET = BI >= 0 ? +ARGV.splice(BI, 2)[1] : Infinity;
@@ -38,11 +44,13 @@ const hasDeaths = (file) => { try { return Array.isArray(JSON.parse(fs.readFileS
 
 for (const mid of ARGV.filter((a) => !a.startsWith('--'))) {
   const file = path.join(RUN, `${mid}.json`);
-  if (fs.existsSync(file) && !FORCE && hasDeaths(file)) { console.log(`${mid}: 已有，跳过`); continue; }   // 旧版输出（没有 deaths / boats / lands）会重跑
+  const src = recordingOf(mid, OWN_REC);
+  // 旧版输出（没有 deaths / boats / lands）会重跑；用的录像和现在该用的不是同一份，也重跑
+  if (fs.existsSync(file) && !FORCE && hasDeaths(file) && sameRecording(file, src)) { console.log(`${mid}: 已有，跳过`); continue; }
   if ((Date.now() - T_START) / 1000 > BUDGET) { console.log(`${mid}: 这一批的时间预算用完，留给下一批`); break; }
   const t0 = Date.now();
   let X;
-  try { X = resim(mid, {}); } catch (e) { console.log(`${mid}: 重演失败：${String(e.message || e).slice(0, 160)}`); continue; }
+  try { X = resim(mid, { replayFrom: src || undefined }); } catch (e) { console.log(`${mid}: 重演失败：${String(e.message || e).slice(0, 160)}`); continue; }
   const H = X.H;
   const snapT = [], terr = [];
   for (let i = 0; i < X.snapT.length; i++) if (X.snapT[i] % 90 === 0) { snapT.push(X.snapT[i]); terr.push(X.snapTerr[i]); }
@@ -82,14 +90,15 @@ for (const mid of ARGV.filter((a) => !a.startsWith('--'))) {
   const husk = X.huskGifts.map((g) => [g[0], g[1], g[2], g[4], g[6] - g[5]]);
   const lands = X.landings.filter((r) => r[1] < H).map((r) => [r[0], r[1], r[2], r[3], r[4]]);
   const deaths = deathRows(X);
-  writeDeathbank(mid, X, deaths);
+  writeDeathbank(mid, X, deaths, src);
   const out = {
     matchId: mid, H, land: X.land, endTick: X.endTick, over: X.over, winnerTeam: X.winnerTeam, gameMode: X.gameMode, nTeams: X.nTeams, botsTeamed: X.botsTeamed,
     names: X.names.slice(0, H), teams: Array.from(X.teams).slice(0, H), leftT: X.leftT, deathT: X.deathT,
     squad: Object.fromEntries(Object.entries(X.squad).map(([b, s]) => [b, s.id])),
     exact: [X.validate.bothExact, X.validate.rows],
+    replayFrom: src || null, mismT: X.validate.mism.length ? X.validate.mism[0][0] : null,
     snapT, terr, flows, nb, atk, dons, husk, boats, lands, deaths,
   };
   fs.writeFileSync(file, JSON.stringify(out));
-  console.log(`${mid}: H=${H} 到 ${X.endTick} 拍，日志 ${X.validate.bothExact}/${X.validate.rows}，流水 ${flows.length} 行，捐款 ${dons.length} 条 | ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+  console.log(`${mid}: H=${H} 到 ${X.endTick} 拍${src ? `（录像取自 ${src}）` : ''}，日志 ${X.validate.bothExact}/${X.validate.rows}，流水 ${flows.length} 行，捐款 ${dons.length} 条 | ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 }
