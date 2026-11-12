@@ -446,6 +446,10 @@ def main():
         Pn(f"    合计口径，每 100 格窗首的地：从内置 AI own {100 * tot_o[0] / max(1, lo_):.1f} / 野人 {100 * tot_w[0] / max(1, lw_):.1f}；从无主地 {100 * tot_o[2] / max(1, lo_):.1f} / {100 * tot_w[2] / max(1, lw_):.1f}；"
            f"从在线真人 {100 * tot_o[4] / max(1, lo_):.1f} / {100 * tot_w[4] / max(1, lw_):.1f}；被真人拿走 {100 * tot_o[6] / max(1, lo_):.1f} / {100 * tot_w[6] / max(1, lw_):.1f}；"
            f"净增 {100 * (tot_o[0] + tot_o[7] + tot_o[2] + tot_o[4] - tot_o[6]) / max(1, lo_):.1f} / {100 * (tot_w[0] + tot_w[7] + tot_w[2] + tot_w[4] - tot_w[6]) / max(1, lw_):.1f}")
+        if tot_w[0] and lo_:
+            ho_, hw_ = sum(r["ledger"][k]["own"]["n"] for r in sel), sum(r["ledger"][k]["wild"]["n"] for r in sel)
+            gap = tot_w[0] / hw_ - tot_o[0] / ho_
+            Pn(f"    合计口径，own 人均比野人少吃 {gap:.0f} 格内置 AI 的地，相当于 own 窗首人均地的 {100 * gap / (lo_ / ho_):.1f}%")
         Pn(land_line("", sel))
         for tag, fn in (("squad10·", lambda r: r["cohort"] == "squad10"), ("squad20·", lambda r: r["cohort"] == "squad20"),
                         ("这一窗不卡的局·", lambda r: r["noeff"][k] is not None and r["noeff"][k] <= 0.05), ("这一窗卡的局·", lambda r: r["noeff"][k] is not None and r["noeff"][k] > 0.05)):
