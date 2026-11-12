@@ -428,6 +428,18 @@ def main():
         F0[f"w3_{T0}_rbMin"], F0[f"w3_{T0}_rbMax"] = sg(w3rb[0][0]), sg(w3rb[-1][0])
         w3sp = [x_["spawn"] for x_ in w3["games"].values()]
         F0[f"w3_{T0}_spMin"], F0[f"w3_{T0}_spMax"] = sg(min(w3sp)), sg(max(w3sp))
+        for k in ("total", "spawn", "hold", "rulebase"):
+            F0[f"w3med_{T0}_{k}"] = sg(med([x_[k] for x_ in w3["games"].values()]))
+        # 合计最大的一局单列（4284 断面里是我方号大量出局的那一局），其余各局另算平均
+        w3top = max(w3["games"], key=lambda g_: abs(w3["games"][g_]["total"]))
+        w3oth = [x_ for g_, x_ in w3["games"].items() if g_ != w3top]
+        F0[f"w3top_{T0}"] = w3top
+        F0[f"w3ex_{T0}_n"] = str(len(w3oth))
+        for k in ("total", "spawn", "hold", "rulebase"):
+            F0[f"w3ex_{T0}_{k}"] = sg(mean([x_[k] for x_ in w3oth]))
+        F0[f"w3ex_{T0}_rbNeg"] = str(sum(1 for x_ in w3oth if x_["rulebase"] < -0.1))
+        F0[f"w3ex_{T0}_rbZero"] = str(sum(1 for x_ in w3oth if abs(x_["rulebase"]) <= 0.1))
+        F0[f"w3ex_{T0}_holdMin"], F0[f"w3ex_{T0}_holdMax"] = sg(min(x_["hold"] for x_ in w3oth)), sg(max(x_["hold"] for x_ in w3oth))
         w3sum.append(w3row)
         w3rows = []
         for g in GAMES:
@@ -794,7 +806,7 @@ def main():
 
     SRC = {"J": J, "E": E, "S": S, "M": M}
     FMT = {"sg": sg, "sg3": lambda v: sg(v, 3), "r2": lambda v: r3(v, 2), "r3": r3, "r1": lambda v: r3(v, 1), "pc": pc, "pc1": lambda v: pc(v, 1),
-           "int": lambda v: f"{v:,}", "x": lambda v: r3(math.exp(-v), 2), "str": str}
+           "int": lambda v: f"{v:,}", "int0": lambda v: f"{round(v):,}", "g": lambda v: f"{v:g}", "x": lambda v: r3(math.exp(-v), 2), "str": str}
     used = {}
 
     def lookup(expr):

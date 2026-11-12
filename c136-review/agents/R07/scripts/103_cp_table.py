@@ -503,8 +503,10 @@ def main():
                 d["base"] = sub(d["d0"], d["d1"]); d["hold"] = sub(d["d1"], d["d2p"]); d["bias"] = sub(d["d2p"], d["dH"])
                 fl = sel(g, "C1", T0, hh)
                 flip = (sum(x["oppOkFlip"] for x in fl) / max(1, sum(x["oppCmds"] for x in fl))) if fl else None
+                # 平均和中位数只用「历史、C2p、C1 都有定义」的局（我方全灭时 ln ρ 没有定义），免得各列的局不一样
+                core_ok = all(d[k] is not None for k in ("dH", "d2p", "d1"))
                 for k in acc:
-                    acc[k].append(d[k])
+                    acc[k].append(d[k] if core_ok else None)
                 J["win"].setdefault(g, {})[f"t{T0}_h{hh}"] = dict(d, rho0=r0, rhoH=rh, n=[c0[2], c1[2], c2p[2]], sdC1=c1[1], sdC2p=c2p[1], flip=flip)
                 dh = "历史上已全灭" if rh is not None and rh == 0 else f(d["dH"], sign=True)
                 P(f"{g}\t{r0:.3f}\t{dh}\t" + "\t".join(f(d[k], sign=True) for k in ks[1:]) + f"\t{c0[2]}/{c1[2]}/{c2p[2]}\t{f(c1[1], 2)} / {f(c2p[1], 2)}\t{f(100 * flip, 1) + '%' if flip is not None else '-'}")
