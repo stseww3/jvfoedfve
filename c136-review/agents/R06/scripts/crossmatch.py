@@ -15,6 +15,7 @@
   land       好地账：Voronoi 天然份额、实抢 ÷ 天然份额
   ai         身边 AI 地的去向
   layers     没抢到 AI 地的三层归因
+  gates      核心期（t>=1500）影子策略对真人 / 非真人报价的出口；被真人打的拍有没有还手（读 out/<id>/coregates.json，coregates.py <id> json 写的）
   money      兵力账：利息、顶格少拿、手续费、捐款损耗（录像真值）+ 日志侧估算（15 局同口径）
   logside    只靠日志的计数：sent / accepted、骤降、垮着还捐、零指令时段、满仓不动、缺快照、没开局的席位
   patterns   15 局 JSON 里的模式名：出现在几局、多少实例
@@ -54,6 +55,7 @@ class M:
         self.C = jl(os.path.join(OUT, mid, 'landcap.json')) or {}
         self.G = jl(os.path.join(OUT, mid, 'logdigest.json')) or {}
         self.D = jl(os.path.join(OUT, mid, 'digest.json')) or {}
+        self.K = jl(os.path.join(OUT, mid, 'coregates.json')) or {}
         self.ctx = self.R.get('context', {})
         self.oc = self.R.get('outcome', {})
         te = self.ctx.get('truthEnd')
@@ -452,6 +454,93 @@ def sec_layers(ms):
     return out
 
 
+GATE_BANDS = ['1500~3000', '3000~4284', '4284+']
+HUM_KEYS = [('send', '出兵'), ('price', '地价闸 L5267'), ('dpKeep', '保底线 dpKeep L5361'), ('sbOurs', '保底线 safeFinite·我方号 L5361'), ('sbOther', '保底线 safeFinite·别人 L5361'),
+            ('chunk', '买不起整笔 L5528'), ('sole', '唯一真人缓冲 L5271'), ('crowded', 'crowdedHard L5280'), ('siege', 'siegeShrink L5345'), ('inflight', '在途兵已够'), ('pulse', 'pulse 太小'),
+            ('later', '前一个报价已 break'), ('other', '其他')]
+AI_KEYS = [('send', '出兵'), ('minCmd', '单太小 < minCmd L5367'), ('chunk', '买不起整笔 L5367'), ('dpKeep', '保底线 dpKeep L5361'), ('sbOursPass', 'safeFinite·我方号、去掉就能出兵'),
+           ('sbOther', 'safeFinite·其余'), ('already', '已在打它 L5364'), ('price', '地价闸 L5267'), ('later', '前一个报价已 break'), ('other', '其他')]
+
+
+def sec_gates(ms):
+    print('### 核心期（t>=1500）有兵不出手：影子策略每个决策拍从 buyLand 的哪一行出去（coregates.py；录像到 t>=1500 的局）')
+    print('   影子 = 策略源码跑在录像重演的真实局面上，指令只记不执行。真人报价的决策拍 = offers 里至少有一个真人邻居；这一拍对真人出了兵记「出兵」，否则记排第一的真人报价的出口。')
+    out = []
+    ks = [m for m in ms if m.K.get('bands')]
+    add = lambda d, e: [d.__setitem__(k, d.get(k, 0) + v) for k, v in e.items()]
+    for title, side, keys in (('真人报价', 'hum', HUM_KEYS), ('非真人报价（内置 AI / 空壳）', 'ai', AI_KEYS)):
+        rows = []
+        tot_b = {b: {} for b in GATE_BANDS}
+        n_b = {b: 0 for b in GATE_BANDS}
+        for m in ks:
+            ex, n = {}, 0
+            for b in GATE_BANDS:
+                y = (m.K['bands'].get(b) or {}).get(side)
+                if not y or not y['n']:
+                    continue
+                add(ex, y['exits'])
+                add(tot_b[b], y['exits'])
+                n += y['n']
+                n_b[b] += y['n']
+            if not n:
+                continue
+            rows.append([m.id, f"{n:,}"] + [pc(ex.get(k, 0), n) if ex.get(k) else '0' for k, _ in keys])
+            out.append(dict(id=m.id, side=side, n=n, exits=ex))
+        for b in GATE_BANDS:
+            if n_b[b]:
+                rows.append([f"合计 {b}", f"{n_b[b]:,}"] + [pc(tot_b[b].get(k, 0), n_b[b]) if tot_b[b].get(k) else '0' for k, _ in keys])
+        allx = {}
+        for b in GATE_BANDS:
+            add(allx, tot_b[b])
+        na = sum(n_b.values())
+        if na:
+            rows.append(['合计 t>=1500', f"{na:,}"] + [pc(allx.get(k, 0), na) if allx.get(k) else '0' for k, _ in keys])
+            out.append(dict(id='ALL', side=side, n=na, exits=allx, byBand={b: dict(n=n_b[b], exits=tot_b[b]) for b in GATE_BANDS}))
+        print(f"**{title}的决策拍：出口占比**")
+        table(['局', '决策拍'] + [t for _, t in keys], rows)
+    # 被打不还手、超软上限出不出手、地价闸上的报价
+    rows = []
+    T = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
+    TB = {b: dict(T) for b in GATE_BANDS}
+    om_all = {}
+    for m in ks:
+        s = dict(onMe=0, onMeNoSend=0, overN=0, overSend=0, underN=0, underSend=0, noSendDon=0)
+        om = {}
+        pg = []
+        for b in GATE_BANDS:
+            h = (m.K['bands'].get(b) or {}).get('hum')
+            if not h or not h['n']:
+                continue
+            for k in s:
+                s[k] += h.get(k, 0)
+                TB[b][k] += h.get(k, 0)
+            add(om, h.get('onMeNoSendExits') or {})
+            g = h.get('priceGate') or {}
+            if g.get('n'):
+                pg.append(f"{b}：{g['hcMed']:.0f} / {g['worthMed']:.0f} / {g['ratioMed']:.2f} / {g['densMed']:.0f}")
+        for k in s:
+            T[k] += s[k]
+        add(om_all, om)
+        top = '、'.join(f"{dict(HUM_KEYS).get(k, k).split(' L')[0]} {v}" for k, v in sorted(om.items(), key=lambda kv: -kv[1])[:4])
+        rows.append([m.id, f"{s['onMe']:,}", f"{s['onMeNoSend']:,}（{pc(s['onMeNoSend'], s['onMe'])}）", top, f"{s['overN']:,}：{pc(s['overSend'], s['overN'])}", f"{s['underN']:,}：{pc(s['underSend'], s['underN'])}",
+                     s['noSendDon'], '；'.join(pg)])
+        out.append(dict(id=m.id, side='onMe', **s, onMeNoSendExits=om))
+    table(['局', '正被真人打的决策拍', '其中这一拍没有对任何真人出兵', '这些拍卡在哪（前 4）', '超软上限的拍：出兵比例', '没超软上限的拍：出兵比例', '没对真人出兵、同拍影子发了捐款', '地价闸上的拍：最低真人报价 / worth / 报价÷worth / 自己密度（中位）'], rows)
+    if T['onMe']:
+        top = '、'.join(f"{dict(HUM_KEYS).get(k, k)} {v:,}（{pc(v, T['onMeNoSend'])}）" for k, v in sorted(om_all.items(), key=lambda kv: -kv[1])[:6])
+        print(f"   {len(ks)} 局合计：正被真人打的决策拍 {T['onMe']:,}，其中这一拍没有对任何真人出兵 {T['onMeNoSend']:,}（{pc(T['onMeNoSend'], T['onMe'])}）；卡在：{top}")
+        print(f"   超软上限的决策拍 {T['overN']:,}，出兵 {T['overSend']:,}（{pc(T['overSend'], T['overN'])}）；没超软上限的 {T['underN']:,}，出兵 {T['underSend']:,}（{pc(T['underSend'], T['underN'])}）；"
+              f"没对真人出兵而同拍影子发了捐款的 {T['noSendDon']:,} 拍")
+        for b in GATE_BANDS:
+            x = TB[b]
+            if x['onMe'] or x['overN'] or x['underN']:
+                print(f"      {b}：被打 {x['onMe']:,}、没还手 {x['onMeNoSend']:,}（{pc(x['onMeNoSend'], x['onMe'])}）；超软上限 {x['overN']:,}、出兵 {pc(x['overSend'], x['overN'])}；没超 {x['underN']:,}、出兵 {pc(x['underSend'], x['underN'])}")
+        out.append(dict(id='ALL', side='onMe', **T, onMeNoSendExits=om_all, byBand=TB))
+    print('   口径：一个决策拍只记一个出口（排第一的真人报价）；「没出兵」是策略在真实局面上当拍的决定，不是录像里有没有指令落地。同一个号的相邻决策拍高度相关，占比只作描述。')
+    print()
+    return out
+
+
 def sec_money(ms):
     print('### 兵力账（录像真值：reviews/*.json 的 truthSummary；单位 兵）')
     keys = ['利息+地租', '顶格少拿', '出兵手续费', '捐款手续费', '捐出到账', '回兵溢出', '空壳少拿', '船兵交接蒸发', '海上损失', '其它白损', '战斗耗兵', '被打掉兵', '得地', '失地']
@@ -778,7 +867,7 @@ def sec_spawnfx(ms):
 
 
 SECS = dict(relate=sec_relate, struct=sec_struct, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
-            money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
+            gates=sec_gates, money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
 def main():
