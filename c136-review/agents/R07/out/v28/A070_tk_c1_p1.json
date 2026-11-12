@@ -1,0 +1,520 @@
+{
+ "matchId": "A070",
+ "src": "/agent/repos/c136-r07/c136-review/agents/R07/v28/v28-team-organism.js",
+ "label": "tk_c1_p1",
+ "params": {
+  "enableInflightLedger": 1,
+  "enableSpawnClosedLoop": 0,
+  "enableAiFloorCap": 0,
+  "enableCoordinatedStrike": 0,
+  "enableSmartOverCap": 0,
+  "enableQuotaExactDonate": 0,
+  "enableSeaPrecision": 0,
+  "enableCollapseGuard": 0
+ },
+ "from": 0,
+ "until": 2300,
+ "endTick": 2300,
+ "seconds": 100.3,
+ "replayCheck": {
+  "rows": 250,
+  "terrExact": 79,
+  "balExact": 78,
+  "bothExact": 78
+ },
+ "bots": [
+  "ryan_m",
+  "sora_w",
+  "zero_7",
+  "alex_k",
+  "noah88",
+  "zexos1",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "kaito9"
+ ],
+ "cmds": 569,
+ "kinds": {
+  "attack": 561,
+  "boatTo": 8
+ },
+ "perBot": {
+  "ryan_m": {
+   "attack": 68
+  },
+  "zero_7": {
+   "attack": 30
+  },
+  "zexos1": {
+   "attack": 55,
+   "boatTo": 2
+  },
+  "talon5": {
+   "attack": 61
+  },
+  "sora_w": {
+   "attack": 41,
+   "boatTo": 1
+  },
+  "alex_k": {
+   "attack": 62
+  },
+  "noah88": {
+   "attack": 62
+  },
+  "leo_tx": {
+   "attack": 86
+  },
+  "riku_x": {
+   "attack": 49
+  },
+  "kaito9": {
+   "attack": 47,
+   "boatTo": 5
+  }
+ },
+ "errors": 0,
+ "errorList": [],
+ "logTags": {
+  "HL-OPENING": 23,
+  "HL-TICK": 180,
+  "V28-STALL": 4
+ },
+ "v28Counters": {
+  "p1_issue_attack": 478,
+  "p1_land_attack": 452,
+  "p1_lat_sum": 7674,
+  "p1_lat_n": 469,
+  "p1_lat_max": 24,
+  "p1_veto_keep": 156,
+  "p1_void_attack": 13,
+  "p1_arb_buy_first": 6,
+  "p1_veto_tick": 9,
+  "p1_carry_turn": 9,
+  "p1_weak_attack": 1,
+  "p1_kill_budget": 11,
+  "p1_step_attack": 9,
+  "p1_stall_enter": 2,
+  "p1_stall_tick": 88,
+  "p1_drop_attack": 1,
+  "p1_issue_boat": 8,
+  "p1_land_boat": 8
+ },
+ "v28CountersPerBot": {
+  "ryan_m": {
+   "p1_issue_attack": 61,
+   "p1_land_attack": 59,
+   "p1_lat_sum": 933,
+   "p1_lat_n": 59,
+   "p1_lat_max": 22,
+   "p1_veto_keep": 33,
+   "p1_void_attack": 1,
+   "p1_arb_buy_first": 2,
+   "p1_veto_tick": 2,
+   "p1_carry_turn": 2,
+   "p1_weak_attack": 1,
+   "p1_kill_budget": 2
+  },
+  "sora_w": {
+   "p1_issue_attack": 33,
+   "p1_land_attack": 31,
+   "p1_lat_sum": 592,
+   "p1_lat_n": 33,
+   "p1_lat_max": 22,
+   "p1_veto_keep": 4,
+   "p1_step_attack": 1,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1,
+   "p1_stall_enter": 1,
+   "p1_stall_tick": 56,
+   "p1_drop_attack": 1,
+   "p1_issue_boat": 1,
+   "p1_land_boat": 1,
+   "p1_kill_budget": 4
+  },
+  "zero_7": {
+   "p1_issue_attack": 20,
+   "p1_land_attack": 17,
+   "p1_lat_sum": 312,
+   "p1_lat_n": 18,
+   "p1_lat_max": 22,
+   "p1_veto_keep": 5,
+   "p1_step_attack": 1,
+   "p1_void_attack": 2
+  },
+  "alex_k": {
+   "p1_issue_attack": 53,
+   "p1_veto_keep": 20,
+   "p1_land_attack": 53,
+   "p1_lat_sum": 909,
+   "p1_lat_n": 53,
+   "p1_lat_max": 24,
+   "p1_arb_buy_first": 1,
+   "p1_kill_budget": 4
+  },
+  "noah88": {
+   "p1_issue_attack": 54,
+   "p1_veto_keep": 25,
+   "p1_land_attack": 50,
+   "p1_lat_sum": 805,
+   "p1_lat_n": 51,
+   "p1_lat_max": 24,
+   "p1_veto_tick": 4,
+   "p1_carry_turn": 4,
+   "p1_void_attack": 3,
+   "p1_step_attack": 1
+  },
+  "zexos1": {
+   "p1_issue_attack": 47,
+   "p1_veto_keep": 8,
+   "p1_land_attack": 42,
+   "p1_lat_sum": 780,
+   "p1_lat_n": 46,
+   "p1_lat_max": 24,
+   "p1_void_attack": 1,
+   "p1_step_attack": 2,
+   "p1_issue_boat": 2,
+   "p1_land_boat": 2
+  },
+  "leo_tx": {
+   "p1_issue_attack": 78,
+   "p1_land_attack": 78,
+   "p1_lat_sum": 1247,
+   "p1_lat_n": 78,
+   "p1_lat_max": 23,
+   "p1_veto_keep": 10,
+   "p1_arb_buy_first": 2
+  },
+  "riku_x": {
+   "p1_issue_attack": 42,
+   "p1_land_attack": 37,
+   "p1_lat_sum": 622,
+   "p1_lat_n": 39,
+   "p1_lat_max": 22,
+   "p1_void_attack": 3,
+   "p1_step_attack": 2,
+   "p1_veto_keep": 29,
+   "p1_stall_enter": 1,
+   "p1_stall_tick": 32,
+   "p1_kill_budget": 1
+  },
+  "talon5": {
+   "p1_issue_attack": 54,
+   "p1_veto_keep": 17,
+   "p1_land_attack": 51,
+   "p1_lat_sum": 825,
+   "p1_lat_n": 52,
+   "p1_lat_max": 24,
+   "p1_void_attack": 2,
+   "p1_step_attack": 1,
+   "p1_arb_buy_first": 1,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1
+  },
+  "kaito9": {
+   "p1_issue_attack": 36,
+   "p1_veto_keep": 5,
+   "p1_land_attack": 34,
+   "p1_lat_sum": 649,
+   "p1_lat_n": 40,
+   "p1_lat_max": 24,
+   "p1_step_attack": 1,
+   "p1_veto_tick": 1,
+   "p1_carry_turn": 1,
+   "p1_void_attack": 1,
+   "p1_issue_boat": 5,
+   "p1_land_boat": 5
+  }
+ },
+ "takeover": {
+  "from": 700,
+  "chan": "c1",
+  "seed": 1,
+  "stall": null,
+  "suppressedRecorded": 748,
+  "stillInChannel": 2,
+  "total": {
+   "issued": 486,
+   "attack": 478,
+   "dupAttack": 40,
+   "dupNeutral": 0,
+   "dupBot": 40,
+   "dupPerson": 0,
+   "executed": 480,
+   "failed": 4,
+   "dropped": 0,
+   "latSum": 8174
+  },
+  "dupAttackShare": 0.0837,
+  "meanLatency": 17.03,
+  "perBot": {
+   "ryan_m": {
+    "issued": 61,
+    "attack": 61,
+    "dupAttack": 2,
+    "dupNeutral": 0,
+    "dupBot": 2,
+    "dupPerson": 0,
+    "executed": 61,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 993
+   },
+   "sora_w": {
+    "issued": 34,
+    "attack": 33,
+    "dupAttack": 2,
+    "dupNeutral": 0,
+    "dupBot": 2,
+    "dupPerson": 0,
+    "executed": 33,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 592
+   },
+   "alex_k": {
+    "issued": 53,
+    "attack": 53,
+    "dupAttack": 5,
+    "dupNeutral": 0,
+    "dupBot": 5,
+    "dupPerson": 0,
+    "executed": 53,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 909
+   },
+   "noah88": {
+    "issued": 54,
+    "attack": 54,
+    "dupAttack": 3,
+    "dupNeutral": 0,
+    "dupBot": 3,
+    "dupPerson": 0,
+    "executed": 54,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 911
+   },
+   "talon5": {
+    "issued": 54,
+    "attack": 54,
+    "dupAttack": 4,
+    "dupNeutral": 0,
+    "dupBot": 4,
+    "dupPerson": 0,
+    "executed": 54,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 891
+   },
+   "kaito9": {
+    "issued": 41,
+    "attack": 36,
+    "dupAttack": 3,
+    "dupNeutral": 0,
+    "dupBot": 3,
+    "dupPerson": 0,
+    "executed": 40,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 680
+   },
+   "zero_7": {
+    "issued": 20,
+    "attack": 20,
+    "dupAttack": 0,
+    "dupNeutral": 0,
+    "dupBot": 0,
+    "dupPerson": 0,
+    "executed": 19,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 328
+   },
+   "zexos1": {
+    "issued": 49,
+    "attack": 47,
+    "dupAttack": 6,
+    "dupNeutral": 0,
+    "dupBot": 6,
+    "dupPerson": 0,
+    "executed": 47,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 820
+   },
+   "riku_x": {
+    "issued": 42,
+    "attack": 42,
+    "dupAttack": 6,
+    "dupNeutral": 0,
+    "dupBot": 6,
+    "dupPerson": 0,
+    "executed": 41,
+    "failed": 1,
+    "dropped": 0,
+    "latSum": 726
+   },
+   "leo_tx": {
+    "issued": 78,
+    "attack": 78,
+    "dupAttack": 9,
+    "dupNeutral": 0,
+    "dupBot": 9,
+    "dupPerson": 0,
+    "executed": 78,
+    "failed": 0,
+    "dropped": 0,
+    "latSum": 1324
+   }
+  },
+  "trajectory_t_alive_land_troops": [
+   [
+    100,
+    10,
+    779,
+    6460
+   ],
+   [
+    200,
+    10,
+    2369,
+    9512
+   ],
+   [
+    300,
+    10,
+    5011,
+    15011
+   ],
+   [
+    400,
+    10,
+    9513,
+    24773
+   ],
+   [
+    500,
+    10,
+    17184,
+    38888
+   ],
+   [
+    600,
+    10,
+    28919,
+    56542
+   ],
+   [
+    700,
+    10,
+    43733,
+    86406
+   ],
+   [
+    800,
+    10,
+    56201,
+    144559
+   ],
+   [
+    900,
+    10,
+    72739,
+    196741
+   ],
+   [
+    1000,
+    10,
+    93931,
+    279138
+   ],
+   [
+    1100,
+    10,
+    114677,
+    376298
+   ],
+   [
+    1200,
+    10,
+    137808,
+    483044
+   ],
+   [
+    1300,
+    10,
+    175907,
+    566898
+   ],
+   [
+    1400,
+    10,
+    208812,
+    797284
+   ],
+   [
+    1500,
+    10,
+    231760,
+    1109859
+   ],
+   [
+    1600,
+    10,
+    267286,
+    1309497
+   ],
+   [
+    1700,
+    10,
+    296517,
+    1624482
+   ],
+   [
+    1800,
+    10,
+    326613,
+    1912837
+   ],
+   [
+    1900,
+    10,
+    365665,
+    2132262
+   ],
+   [
+    2000,
+    10,
+    403309,
+    2708828
+   ],
+   [
+    2100,
+    10,
+    420261,
+    3478663
+   ],
+   [
+    2200,
+    10,
+    436609,
+    4240669
+   ],
+   [
+    2300,
+    10,
+    468950,
+    5068965
+   ],
+   [
+    2300,
+    10,
+    468950,
+    5068965
+   ]
+  ]
+ }
+}

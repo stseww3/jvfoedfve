@@ -527,6 +527,16 @@ class Strategy {
     return g.recall(id, this.me);
   }
 
+  // v28/P1 hooks (Policy overrides them when the ledger is on): whether this tick is a decision
+  // turn, and the troops of our commands on q that have left but not landed yet.
+  isTurn(g) {
+    return g.t % this.p.period === 0;
+  }
+
+  inflightOn(g, q) {
+    return 0;
+  }
+
   // Smallest command worth its fee (feeK x the fee of a land attack).
   minCmd(g) {
     return this.p.feeK * iV(12 * g.bal[this.me], 1024);
@@ -810,7 +820,7 @@ class General extends Strategy {
     const me = this.me;
     if (!g.canAct(me)) return;
     const P = this.p;
-    if (g.t % P.period !== 0) return;
+    if (!this.isTurn(g)) return;
     if (P.planEvery > 0 && g.t % P.planEvery === 0 && g.t < P.planEnd) {
       const copy = (m) => new General({ ...P, spawnRoll: 0, planEvery: 0 }, m);
       this.floorK = P.planModes[chooseMode(this, g, P.planModes, P.planEvery, P.planH, P.rivalW, P.balW, copy)];
@@ -850,6 +860,7 @@ class General extends Strategy {
 
     let target = this.pickTarget(g, floorAt, P.maxCost);
     if (target) {
+      this.vKeepNext = target.keep ?? null; // v28/P1: the floor this send was sized against
       this.send(g, target.q, target.amount);
       return;
     }
@@ -1003,9 +1014,10 @@ class General extends Strategy {
     const min = this.minCmd(g);
     if (spend < min) return;
     const ring = this.neutral;
-    const have = g.attackTroopsOn(this.me, NEUTRAL);
+    const have = g.attackTroopsOn(this.me, NEUTRAL) + this.inflightOn(g, NEUTRAL);
     if (have >= 3 * (ring + P.nGrow) + 2 * ring * P.nLow) return;
     const want = Math.min(Math.max(3 * ring + 2 * P.nHigh * (ring + P.nGrow * P.nHigh / 2) - have, min), spend);
+    this.vKeepNext = g.bal[this.me] - spend; // v28/P1: the floor this send was sized against
     this.send(g, NEUTRAL, want);
   }
 
@@ -1216,7 +1228,7 @@ class Style extends General {
       if (perPx > maxCost) continue;
       const avail = bal - this.floorFor(g, q, floorAt(perPx));
       if (avail <= this.minShare(g, q) * bal || avail < min) continue;
-      const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q);
+      const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q) - this.inflightOn(g, q);
       if (need <= 0) continue;
       const send = this.amount(g, q, avail, need, min);
       if (!(send >= min)) continue;
@@ -1227,7 +1239,7 @@ class Style extends General {
       if (s > 0) s *= this.targetBias(g, q) * this.warBias(g, q);
       if (s < bestS) {
         bestS = s;
-        best = { q, amount: send };
+        best = { q, amount: send, keep: bal - avail };
       }
     }
     return best;
@@ -1870,8 +1882,8 @@ class V13 extends Style {
   act(g) {
     const P = this.p;
     if (P.raceEnd > 0) this.floorK = g.t < P.raceEnd ? P.raceK : 1;
-    this.held = P.holdOn > 0 && g.canAct(this.me) && g.t % P.period === 0 && this.hold(g);
-    const turn = g.canAct(this.me) && g.t % P.period === 0;
+    this.held = P.holdOn > 0 && g.canAct(this.me) && this.isTurn(g) && this.hold(g);
+    const turn = g.canAct(this.me) && this.isTurn(g);
     if (P.bank > 0 && turn && this.nb) this.bankAct(g);
     const n = this.cmds;
     super.act(g);
@@ -2460,6 +2472,7 @@ class V13 extends Style {
     const X = 2 * sum + rings[n - 1].r;
     const effMin = isFinitePocket ? Math.min(this.minCmd(g), Math.max(80, 2 * fee)) : this.minCmd(g);
     if (X < effMin) return;
+    this.vKeepNext = keepCap; // v28/P1: the floor this send was sized against
     if (this.send(g, NEUTRAL, X)) {
       this.dpCyc = cyc;
       if (typeof window !== "undefined" && window.__hlLog) {
@@ -3852,7 +3865,30 @@ export const PARAMS = {
   p8CounterFrac: 0.35, // largest counter on the main attacker (x balance)
   p8CounterMin: 0.02, // troops of the main attacker on us (x balance) from which it is countered
   p8WeakRatio: 0.6, // a neighbour person counts as weak below this x our balance
+
+  // ---- v28/P1: in-flight command ledger ----
+  p1OneCmdPerTick: 1, // at most one command leaves per tick ...
+  p1CarryOver: 1, // ... and a turn that had another command ready decides again on the next tick
+  p1CarryMax: 2, // at most this many carried turns in a row
+  p1RoundCap: 8, // commands per 21 ticks (three settlement rounds of 7; the game drops what exceeds its cap of 9)
+  p1NormalWin: 21, // ticks within which a command normally lands
+  p1StallAfter: 28, // a command in flight for longer than this: stall mode
+  p1DropAfter: 84, // a command in flight for longer than this is taken for lost
+  p1StallMs: 2500, // a wall-clock gap between two ticks that means the page stood still
+  p1BurstMs: 20, // ticks arriving faster than this many ms each ...
+  p1BurstTicks: 8, // ... for this many ticks: the bridge is catching up on a backlog
+  p1ProjFrac: 0.6, // a send without a floor from its caller: the balance projected past the commands in flight stays above this x balance
+  p1CounterExempt: 1, // guardrail 1: emergency counter exemption
+  p1UrgentMin: 0.01, // troops on us (x balance) from which an unmatched attacker is urgent
+  p1KillBudget: 1, // guardrail 2: explicit first-strike kill budget
+  p1Arbitrate: 1, // buyLand before expandNeutral when at most p1ArbNeutral neutral pixels touch us
+  p1ArbNeutral: 8,
+  p1NoFullFix: 1, // isNoFullSend from the engine flag, else from ledger landings (p1NoFullM truncations in a row)
+  p1NoFullM: 3,
 };
+
+// v28/P1: fee of a command as 1/1024ths of the balance.
+const FEE_OF = { attack: 12, boat: 32, donate: 64 };
 
 // v28: first frame of an error stack, for the log.
 function firstFrame(e) {
@@ -3877,6 +3913,24 @@ export class Policy extends V17 {
     this.lgSampleT = -1e9;
     this.lgTerrOld = 0;
     this.lgTerrNew = 0;
+    this.led = []; // P1: commands that have left and not landed, oldest first
+    this.ledSeq = 0;
+    this.ledSent = []; // ticks of the last commands that left (for the per-three-rounds cap)
+    this.ledLastCmdT = -1;
+    this.ledPrev = null; // last tick's { t, bal, boats }
+    this.ledAtkSeen = new Map(); // target -> our troops on it at the last tick (targets with a command in flight)
+    this.ledStall = false;
+    this.ledRound = -1;
+    this.ledClockT = -1;
+    this.ledClockMs = 0;
+    this.ledClockStallUntil = -1;
+    this.ledBurstTicks = 0;
+    this.ledCarryT = -1;
+    this.ledCarryN = 0;
+    this.nfsTrunc = 0;
+    this.nfsByProbe = false;
+    this.vKeepNext = null;
+    this.buyQuality = false;
     this.hitTo = new Map();
     this.hitFrom = new Map();
     this.lastLandSpendTick = -999;
@@ -3980,7 +4034,8 @@ export class Policy extends V17 {
         } else {
           this.shadowQuota = Math.max(0, this.shadowQuota - actualSent);
         }
-      } else {
+      } else if (!(P.enableInflightLedger > 0 && P.p1NoFullFix > 0)) {
+        // (v28/P1: with the ledger on, the truncation probe runs on ledger landings, see ledgerObserve)
         this.pendingQuotaCheck = { t: g.t + 1, bal0: balBefore, fee: fee0, want: troops };
       }
       if (g.bal[me] <= 0.75 * balBefore) {
@@ -4970,7 +5025,8 @@ export class Policy extends V17 {
       }
     }
 
-    if (g.t % P.period !== 0) return;
+    if (!this.isTurn(g)) return;
+    this.vKeepNext = null;
     if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
@@ -5013,7 +5069,7 @@ export class Policy extends V17 {
       }
       return;
     }
-    if (g.t % P.period !== 0) return;
+    if (!this.isTurn(g)) return;
 
     this.analyze(g);
     if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
@@ -5079,8 +5135,19 @@ export class Policy extends V17 {
 
     const cmdsBefore = this.cmds;
     if (P.flashLoanMode > 0 && this.safeStep(g, "flashLoan", () => this.tryStartFlashLoan(g))) return;
-    if (this.neutral > 0) this.safeStep(g, "expandNeutral", () => this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1)));
-    this.safeStep(g, "buyLand", () => this.buyLand(g));
+    // v28/P1 arbitration: with only a few neutral pixels left, land worth its price (or an attacker to
+    // answer) goes before the neutral top-up; the top-up and the rest of buyLand follow only when
+    // that sent nothing.
+    let boughtFirst = false;
+    if (P.enableInflightLedger > 0 && P.p1Arbitrate > 0 && g.t >= P.dpEnd && this.neutral > 0 && this.neutral <= P.p1ArbNeutral) {
+      this.buyQuality = true;
+      this.safeStep(g, "buyLandFirst", () => this.buyLand(g));
+      this.buyQuality = false;
+      boughtFirst = this.cmds !== cmdsBefore;
+      if (boughtFirst) this.vCount("p1_arb_buy_first");
+    }
+    if (this.neutral > 0 && !boughtFirst) this.safeStep(g, "expandNeutral", () => this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1)));
+    if (!boughtFirst) this.safeStep(g, "buyLand", () => this.buyLand(g));
 
     if (P.seaCore > 0 && g.t - this.seaState.lastWiden >= 30) {
       const fee = iV(32 * g.bal[me], 1024);
@@ -5232,7 +5299,8 @@ export class Policy extends V17 {
       const Lq = g.terr[q], Bq = g.bal[q], dq = Bq / Math.max(1, Lq);
       const person = this.person(g, q);
       const inAtk = g.attackTroopsOn(q, me);
-      const myAtk = g.attackTroopsOn(me, q);
+      // v28/P1: troops of ours on q that have left but not landed count as already there (need_eff)
+      const myAtk = g.attackTroopsOn(me, q) + this.inflightOn(g, q);
       const rawNeed = this.elimCost(g, q) + inAtk - myAtk;
       if (rawNeed <= 0) continue;
       const left = iV(g.peak[q], 4);
@@ -5496,8 +5564,11 @@ export class Policy extends V17 {
 
     for (const o of this.offers(g)) {
       const { q, c, need, person } = o;
+      this.vKeepNext = null;
 
       if (c >= worth && c >= cheap && !over) break;
+      // v28/P1 arbitration pass (see actCore): only land worth its price, or an attacker to answer
+      if (this.buyQuality && !(c < worth || o.onMe)) continue;
 
       const isSoleHealthyBuffer =
         person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
@@ -5586,6 +5657,7 @@ export class Policy extends V17 {
 
       const avail = B - fee - keep;
       if (avail <= 0) continue;
+      this.vKeepNext = keep; // v28/P1: the floor every send on this offer is sized against
 
       if (!person) {
         const want = 1.25 * need + 3 * this.cnt[q];
@@ -5594,10 +5666,23 @@ export class Policy extends V17 {
         return this.send(g, q, x);
       }
 
+      // v28/P1 guardrail 2, the explicit first-strike kill budget: when 1.25 x need fits above dpKeep
+      // (no person next to us, or next to the land we take, could collapse us with what is left) the
+      // whole of it leaves in one command, never as a row of 12% pulses.
+      if (P.enableInflightLedger > 0 && P.p1KillBudget > 0 && !this.isNoFullSend && (c < worth || o.onMe)) {
+        const wantKill = 1.25 * need + 3 * this.cnt[q];
+        const keepKill = Math.max(this.dpKeep(g), this.killKeep(g, 1, this.peopleOf(g, q)));
+        if (wantKill >= this.minCmd(g) && wantKill + fee <= B - keepKill) {
+          this.vCount("p1_kill_budget");
+          this.vKeepNext = keepKill;
+          return this.send(g, q, wantKill);
+        }
+      }
+
       const usePulseBlock =
         P.pulseFrac > 0 && (!over || o.nearCollapse || o.bleeding || need > 0.30 * B || avail < P.chunk * B);
       const inAtk = o.inAtk ?? 0;
-      const curAtk = g.attackTroopsOn(me, q);
+      const curAtk = g.attackTroopsOn(me, q) + this.inflightOn(g, q);
       const blockUndersized = (amt) => {
         if (P.counterClearMode === 6) return false;
         if (!(P.counterClearMode >= 1) || o.nearCollapse || !(inAtk > 0) || !(curAtk + amt <= 1.05 * inAtk)) return false;
@@ -5903,8 +5988,9 @@ export class Policy extends V17 {
 
   // Every tick, before anything else: what the modules watch between decisions.
   vTick(g) {
-    const P = this.p, me = this.me;
+    const P = this.p;
     if (P.enableCollapseGuard > 0) this.peakTick(g);
+    if (P.enableInflightLedger > 0) this.ledgerObserve(g);
   }
 
   // ==========================================================================================
@@ -5998,7 +6084,7 @@ export class Policy extends V17 {
       const q = st.main;
       if (q < 0 || q === NEUTRAL || !(st.mainTr >= P.p8CounterMin * B)) return false;
       if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) return false;
-      const x = Math.min(avail, P.p8CounterFrac * B, 1.05 * st.mainTr - g.attackTroopsOn(me, q));
+      const x = Math.min(avail, P.p8CounterFrac * B, 1.05 * st.mainTr - g.attackTroopsOn(me, q) - this.inflightOn(g, q));
       if (!(x >= min) || !this.send(g, q, x)) return false;
       this.vCount("p8_guard_counter");
       this.vLog("LIFEGUARD", g, `counter q=${q} x=${Math.round(x)} inc=${st.mainTr} margin=${st.margin}`);
@@ -6044,6 +6130,306 @@ export class Policy extends V17 {
       return true;
     }
     return false;
+  }
+
+  // ==========================================================================================
+  // v28/P1: in-flight command ledger
+  //
+  // In the live game a command lands 10 to 20 ticks after it leaves (far longer in a stall), and
+  // until then nothing we can read has changed: Vc decides again on the same balance and the same
+  // need and sends the same thing again. The ledger keeps every command that has left and not
+  // landed; the decisions count its troops as already on the way (inflightOn), and the exits below
+  // let at most one command out per tick, hold back what the balance left after the commands in
+  // flight cannot carry, and fall back to a short list of safe commands while the channel stalls.
+  // A host that executes at once (the simulator) never has anything in flight.
+  // ==========================================================================================
+
+  xAttack(g, pct, target, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xAttack(g, pct, target, site);
+    return this.ledgerSend(g, "attack", pct, target, site, () => super.xAttack(g, pct, target, site));
+  }
+
+  xDonate(g, pct, target, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xDonate(g, pct, target, site);
+    return this.ledgerSend(g, "donate", pct, target, site, () => super.xDonate(g, pct, target, site));
+  }
+
+  xBoatTo(g, pct, land, radius, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xBoatTo(g, pct, land, radius, site);
+    return this.ledgerSend(g, "boat", pct, land, site, () => super.xBoatTo(g, pct, land, radius, site));
+  }
+
+  xBoat(g, pct, water, dir, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xBoat(g, pct, water, dir, site);
+    return this.ledgerSend(g, "boat", pct, water, site, () => super.xBoat(g, pct, water, dir, site));
+  }
+
+  xRetreat(g, target, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xRetreat(g, target, site);
+    return this.ledgerSend(g, "retreat", 0, target, site, () => super.xRetreat(g, target, site));
+  }
+
+  xChase(g, pct, id, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xChase(g, pct, id, site);
+    return this.ledgerSend(g, "chase", pct, id, site, () => super.xChase(g, pct, id, site));
+  }
+
+  xRecall(g, id, site) {
+    if (!(this.p.enableInflightLedger > 0)) return super.xRecall(g, id, site);
+    return this.ledgerSend(g, "recall", 0, id, site, () => super.xRecall(g, id, site));
+  }
+
+  isTurn(g) {
+    const P = this.p;
+    if (g.t % P.period === 0) {
+      this.ledCarryN = 0;
+      return true;
+    }
+    if (!(P.enableInflightLedger > 0 && P.p1CarryOver > 0) || this.ledCarryT !== g.t) return false;
+    if (this.ledCarryAt !== g.t) {
+      this.ledCarryAt = g.t;
+      this.ledCarryN++;
+      this.vCount("p1_carry_turn");
+    }
+    return true;
+  }
+
+  inflightOn(g, q) {
+    if (!(this.p.enableInflightLedger > 0)) return 0;
+    let s = 0;
+    for (const e of this.led) if (e.kind === "attack" && e.target === q) s += e.exp;
+    return s;
+  }
+
+  // Our balance once every command in flight has landed (each takes its share of what is left).
+  ledProjected(g) {
+    let b = g.bal[this.me];
+    for (const e of this.led) if (e.share > 0) b *= 1 - e.share;
+    return b;
+  }
+
+  // Guardrail 1: q has troops on us that our troops on it, landed or in flight, do not match.
+  ledUrgent(g, q) {
+    const me = this.me;
+    if (q === NEUTRAL || q < 0 || !g.alive[q]) return false;
+    const inc = g.attackTroopsOn(q, me);
+    if (!(inc > 0) || inc < this.p.p1UrgentMin * g.bal[me]) return false;
+    return g.attackTroopsOn(me, q) + this.inflightOn(g, q) < inc;
+  }
+
+  // Why a command may not leave now (null: it may).
+  ledgerVeto(g, kind, pct, target) {
+    const P = this.p, me = this.me, t = g.t;
+    if (P.p1OneCmdPerTick > 0 && this.ledLastCmdT === t) {
+      if (P.p1CarryOver > 0 && this.ledCarryN < P.p1CarryMax) this.ledCarryT = t + 1;
+      return "tick";
+    }
+    if (!(FEE_OF[kind] > 0)) return null;
+    const urgent = kind === "attack" && P.p1CounterExempt > 0 && this.ledUrgent(g, target);
+    if (urgent) return null;
+    let recent = 0;
+    for (let i = this.ledSent.length - 1; i >= 0 && t - this.ledSent[i] < 21; i--) recent++;
+    if (recent >= P.p1RoundCap) return "cap";
+    if (this.ledStall) {
+      if (kind === "donate") return "stall_donate";
+      if (kind === "boat") return "stall_boat";
+      if (target !== NEUTRAL) {
+        for (const e of this.led) if (e.kind === "attack" && e.target === target && !e.weak) return "stall_same";
+        if (target >= 0 && this.person(g, target) && !this.vShell(g, target)) return "stall_person";
+      }
+      if (Math.floor(t / 7) === this.ledRound) return "stall_round";
+    }
+    const B = g.bal[me], proj = this.ledProjected(g);
+    if (proj < B) {
+      const keep = this.vKeepNext;
+      if (keep === null || keep === undefined) {
+        if (proj < P.p1ProjFrac * B) return "proj";
+      } else if (proj * (1 - (pct + 1 + FEE_OF[kind]) / 1024) < keep) return "keep";
+    }
+    return null;
+  }
+
+  ledgerSend(g, kind, pct, target, site, fn) {
+    const me = this.me;
+    const why = this.ledgerVeto(g, kind, pct, target);
+    this.vKeepNext = null;
+    if (why) {
+      this.vCount("p1_veto_" + why);
+      return false;
+    }
+    const bal0 = g.bal[me];
+    const ok = fn();
+    if (!ok) {
+      this.vCount("p1_host_refused");
+      return false;
+    }
+    const t = g.t, fee = FEE_OF[kind] ?? 0;
+    this.ledLastCmdT = t;
+    this.ledSent.push(t);
+    if (this.ledSent.length > 32) this.ledSent.splice(0, this.ledSent.length - 32);
+    if (this.ledStall && kind === "attack") this.ledRound = Math.floor(t / 7);
+    this.vCount("p1_issue_" + kind);
+    // a host that executes at once has made us pay by now: nothing is in flight
+    const paid = fee > 0 ? g.bal[me] <= bal0 - iV(fee * bal0, 1024) && g.bal[me] < bal0 : kind === "retreat" && !g.hasAttack(me, target);
+    if (paid) {
+      this.vCount("p1_sync");
+      return true;
+    }
+    const exp = fee > 0 ? Math.max(0, Math.min(iV(bal0 * (pct + 1), 1024), bal0 - iV(fee * bal0, 1024))) : 0;
+    this.led.push({ id: ++this.ledSeq, t, kind, target, pct, share: fee > 0 ? (pct + 1 + fee) / 1024 : 0, exp, site, weak: !(fee > 0) || pct === 0 });
+    if (kind === "attack" && !this.ledAtkSeen.has(target)) this.ledAtkSeen.set(target, g.attackTroopsOn(me, target));
+    return true;
+  }
+
+  // Forget every command in flight (for a host that takes the seat over mid-game, or a bridge that
+  // reconnects: what was in flight before is not ours to wait for).
+  ledgerReset() {
+    this.led.length = 0;
+    this.ledAtkSeen.clear();
+    this.ledPrev = null;
+    this.ledStall = false;
+    this.ledCarryT = -1;
+  }
+
+  ledClose(g, e, how) {
+    const i = this.led.indexOf(e);
+    if (i >= 0) this.led.splice(i, 1);
+    this.vCount(`p1_${how}_${e.kind}`);
+    if (how === "land" || how === "step") {
+      const lat = g.t - e.t;
+      this.vCount("p1_lat_sum", lat);
+      this.vCount("p1_lat_n");
+      if (lat > (this.v28n.p1_lat_max || 0)) this.v28n.p1_lat_max = lat;
+    }
+  }
+
+  // Wall clock against ticks (live only): a long gap between two ticks (the page stood still) or
+  // ticks arriving in a burst (the bridge replaying what it missed) both mean that what we read is
+  // old and what we send is late.
+  ledClock(g) {
+    const P = this.p, t = g.t;
+    if (!g.online) return;
+    const now = this.vNow();
+    if (this.ledClockT >= 0 && t > this.ledClockT) {
+      const dMs = now - this.ledClockMs, dT = t - this.ledClockT;
+      if (dMs > P.p1StallMs) this.ledClockStallUntil = t + 21;
+      this.ledBurstTicks = dMs / dT < P.p1BurstMs ? this.ledBurstTicks + dT : 0;
+      if (this.ledBurstTicks >= P.p1BurstTicks) this.ledClockStallUntil = t + 14;
+    }
+    this.ledClockT = t;
+    this.ledClockMs = now;
+  }
+
+  // Every tick: which commands in flight have landed (event driven: a boat of ours more at sea, our
+  // troops on a target up, a step down in our balance of the right size), which have no target left,
+  // which are lost; then whether the channel stalls.
+  ledgerObserve(g) {
+    const P = this.p, me = this.me, t = g.t, B = g.bal[me];
+    const boats = g.boatCount ? g.boatCount[me] : 0;
+    const prev = this.ledPrev;
+    this.ledPrev = { t, bal: B, boats };
+    this.ledClock(g);
+
+    const flag = "noFullSend" in g ? Boolean(g.noFullSend) : null;
+    if (P.p1NoFullFix > 0 && flag !== null) this.isNoFullSend = flag || Boolean(P.noFullSend);
+
+    if (this.led.length && prev) {
+      let explained = 0, landed = 0, landedAtk = null, donLanded = false;
+      const close = (e, how) => {
+        explained += prev.bal * e.share;
+        landed++;
+        if (e.kind === "attack") landedAtk = e;
+        if (e.kind === "donate") donLanded = true;
+        this.ledClose(g, e, how);
+      };
+      for (let k = boats - prev.boats; k > 0; k--) {
+        const e = this.led.find((x) => x.kind === "boat");
+        if (!e) break;
+        close(e, "land");
+      }
+      for (const [q, seen] of this.ledAtkSeen) {
+        const cur = g.attackTroopsOn(me, q);
+        this.ledAtkSeen.set(q, cur);
+        let rise = cur - seen;
+        while (rise > 0) {
+          const e = this.led.find((x) => x.kind === "attack" && x.target === q);
+          if (!e) break;
+          close(e, "land");
+          rise -= Math.max(1, e.exp);
+          const next = this.led.find((x) => x.kind === "attack" && x.target === q);
+          if (!next || rise < 0.5 * next.exp) break;
+        }
+      }
+      for (const e of [...this.led]) {
+        if (e.kind === "retreat" && !g.hasAttack(me, e.target)) this.ledClose(g, e, "land");
+      }
+      // what is left of a drop in our balance: the oldest command in flight whose cost it matches
+      if (t - prev.t === 1) {
+        let rest = prev.bal - B - explained;
+        for (const e of [...this.led]) {
+          if (!(e.share > 0) || e.weak) continue;
+          const cost = prev.bal * e.share;
+          if (rest >= 0.6 * cost && rest <= 1.4 * cost) {
+            close(e, "step");
+            rest -= cost;
+          }
+        }
+        // isNoFullSend probe: exactly one attack landed this tick, no donation of ours with it, no
+        // interest in between (interest and rent come on ticks 9 of 10; one tick of slack either side)
+        const ph = prev.t % 10;
+        if (P.p1NoFullFix > 0 && flag === null && landed === 1 && landedAtk && !landedAtk.weak && !donLanded && ph !== 8 && ph !== 9 && ph !== 0) {
+          const fee = iV(12 * prev.bal, 1024);
+          const sent = Math.max(0, prev.bal - B - fee);
+          const want = iV(prev.bal * (landedAtk.pct + 1), 1024);
+          if (want >= 1.12 * sent && sent < prev.bal - fee - 50) {
+            this.vCount("p1_nfs_trunc");
+            if (++this.nfsTrunc >= P.p1NoFullM && !this.isNoFullSend) {
+              this.isNoFullSend = true;
+              this.nfsByProbe = true;
+              this.shadowQuota = 0;
+              this.vCount("p1_nfs_set");
+              this.vLog("NFS", g, `set after ${this.nfsTrunc} truncated landings (want=${want} sent=${sent})`);
+            }
+          } else {
+            this.nfsTrunc = 0;
+            this.shadowQuota = Math.max(0, this.shadowQuota - sent);
+            if (this.nfsByProbe && this.isNoFullSend) {
+              this.isNoFullSend = Boolean(P.noFullSend);
+              this.nfsByProbe = false;
+              this.vCount("p1_nfs_reset");
+              this.vLog("NFS", g, `reset by a full landing (want=${want} sent=${sent})`);
+            }
+          }
+        }
+      }
+    }
+
+    for (const e of [...this.led]) {
+      const age = t - e.t;
+      if (e.kind === "attack" && e.target !== NEUTRAL && (!g.alive[e.target] || !g.terr[e.target])) this.ledClose(g, e, "void");
+      else if (e.weak ? age > P.p1NormalWin : age > P.p1DropAfter) this.ledClose(g, e, e.weak ? "weak" : "drop");
+    }
+    for (const q of [...this.ledAtkSeen.keys()]) {
+      if (!this.led.some((e) => e.kind === "attack" && e.target === q)) this.ledAtkSeen.delete(q);
+    }
+
+    let why = "";
+    for (const e of this.led) {
+      if (!e.weak && t - e.t > P.p1StallAfter) {
+        why = "late";
+        break;
+      }
+    }
+    if (!why && t < this.ledClockStallUntil) why = "clock";
+    if (why && !this.ledStall) {
+      this.ledStall = true;
+      this.vCount("p1_stall_enter");
+      this.vLog("STALL", g, `enter why=${why} inflight=${this.led.length} oldest=${this.led.length ? t - this.led[0].t : 0}`);
+    } else if (!why && this.ledStall) {
+      this.ledStall = false;
+      this.vLog("STALL", g, "leave");
+    }
+    if (this.ledStall) this.vCount("p1_stall_tick");
   }
 }
 
