@@ -681,6 +681,32 @@ def sec_donflow(ms):
     print(f"   逐笔打标（在场的我方号收款、之后还有 300 拍录像的 {Fa['all']:,} 笔；一笔可挂几个标）：收款人 300 拍内没有任何陆攻 / 发船指令进录像 {Fa['noCmd']:,}（{pc(Fa['noCmd'], Fa['all'])}）；"
           f"又捐出 >= 到账的一半 {Fa['donOut']:,}（{pc(Fa['donOut'], Fa['all'])}）；战斗耗兵 >= 到账的一半 {Fa['spent']:,}（{pc(Fa['spent'], Fa['all'])}）；收款人阵亡 {Fa['dead']:,}（{pc(Fa['dead'], Fa['all'])}）；三样都不沾 {Fa['none']:,}")
     print('   收款窗口 = 同一个收款人相隔 <=300 拍的几笔并成一个 [第一笔, 最后一笔+300]，窗口之间不重叠。「至多」= min(收到, 窗口内的战斗耗兵 / 又捐出)：收款人自己的利息也在花，所以是上限。')
+    # 按代码分支（由 pct 反推 tryDonateToTeammate 走的哪一支）；后排 = 被围或纯内陆的捐款人
+    BRN = ['盈余·不被围（153）', '盈余·被围（185 / 280）', '救援（155）', '救援·纯内陆（240）', '救援·被钳小（<155）', '救援·纯内陆被钳（156~239）', '其他']
+    REAR = ('盈余·被围（185 / 280）', '救援·纯内陆（240）', '救援·纯内陆被钳（156~239）')
+    keys = ('n', 'delivered', 'fee', 'truncN', 'short', 'husk', 'huskFee', 'fAll', 'fSpent', 'fDonOut', 'fNoCmd', 'fDead', 'fire', 'live', 'up', 'upDelivered', 'upFee', 'recv100', 'recv100Fee')
+    BT = {k: dict({x: 0 for x in keys}, donorDens=[], recvDens=[]) for k in BRN + ['后排合计', '前排合计']}
+    for d in ds:
+        for k, v in (d.get('branch') or {}).items():
+            for tgt in (k, '后排合计' if k in REAR else '前排合计'):
+                for x in keys:
+                    BT[tgt][x] += v.get(x, 0)
+                BT[tgt]['donorDens'] += v.get('donorDens', [])
+                BT[tgt]['recvDens'] += v.get('recvDens', [])
+    if any(BT[k]['n'] for k in BRN):
+        print()
+        print('**按代码分支（由 pct 反推 `tryDonateToTeammate` L4369-4499 走的哪一支）。后排 = 捐款时被围（boxedIn）或纯内陆（isPureInlandSafe）的捐款人**')
+        rows = []
+        md = lambda v: (f"{sorted(v)[len(v) // 2]:.0f}" if v else '—')
+        for k in BRN + ['后排合计', '前排合计']:
+            v = BT[k]
+            if not v['n']:
+                continue
+            rows.append([k, f"{v['n']}", wan(v['delivered']), f"{wan(v['fee'])}（{pc(v['fee'], v['fee'] + v['delivered'])}）", f"{v['truncN']} 笔 / 少到账 {wan(v['short'])}", f"{v['husk']} 笔 / 费 {wan(v['huskFee'])}",
+                         md(v['donorDens']), md(v['recvDens']), f"{v['up']}/{v['live']}（{pc(v['up'], v['live'], 0)}）：到账 {wan(v['upDelivered'])}、费 {wan(v['upFee'])}", f"{v['recv100']}（{pc(v['recv100'], v['live'], 0)}）", f"{v['fire']}（{pc(v['fire'], v['n'], 0)}）",
+                         f"{v['fSpent']}/{v['fAll']}（{pc(v['fSpent'], v['fAll'], 0)}）", f"{v['fDonOut']}/{v['fAll']}（{pc(v['fDonOut'], v['fAll'], 0)}）", f"{v['fNoCmd']}/{v['fAll']}（{pc(v['fNoCmd'], v['fAll'], 0)}）", f"{v['fDead']}/{v['fAll']}"])
+        table(['分支', '笔', '到账', '手续费（损耗率）', '被截断', '给空壳', '捐款人密度中位', '收款人密度中位（在场的我方号）', '收款人比捐款人还密', '收款人密度 >=100', '收款时正被人打', '之后 300 拍战斗耗兵 >= 到账的一半', '又捐出 >= 一半', '零陆攻 / 发船指令', '阵亡'], rows)
+        print('   153 也可能是救援捐款被 maxSafePct 钳出来的，分不开，全算盈余。任务卡里的 ECO_BANK 是后端选点协调器（spawn-coordinator-c110.mjs）分配的出生角色：15 局里 HL-SPAWN-BACKEND 0 行，没有号被分到过角色，局内代码也不读角色；这里的「后排」按捐款时的局面定义。')
     print()
     return [dict(id=d['matchId'], n=d['n'], delivered=d['delivered'], fee=d['fee'], pct=d['pct'], to=d['to'], dens=d['dens'], trunc=d['trunc'], zero=d['zero'], underFire=d['underFire'],
                  windows=d.get('windows'), follow=d.get('follow'), pingpong=d['pingpong']) for d in ds] + [dict(id='ALL', tot=tot, T=T)]
