@@ -129,6 +129,16 @@ def sec_struct(ms):
           f"最大一队占席位的中位 {pc(med([x['split'][0] / sum(x['split']) for x in out if x['split']]), 1, 0)}。卡片标签：" + '、'.join(f"{k} {v}" for k, v in lab.most_common())
           + '。分型：' + '、'.join(f"{k} {v}" for k, v in arch.most_common()) + '；次分型：' + '、'.join(f"{k} {v}" for k, v in sec.most_common()) + '。')
     print(f"去向合计：阵亡 {sum(x['died'] for x in out)}、离开 {sum(x['left'] for x in out)}、活到终局 {sum(x['end'] for x in out)}、日志无声（没有结算行）{sum(x['silent'] for x in out)}；其中没开局的席位 {sum(x['neverPlayed'] for x in out)} 个。")
+    # 开过局、之后被登记离开的号：登记离开时的服务器拍（context.leftTicks 去掉 neverPlayed）
+    lt = []
+    for m in ms:
+        nv = set(m.ctx.get('neverPlayed') or [])
+        lt += [(m.id, n, t) for n, t in (m.ctx.get('leftTicks') or {}).items() if n not in nv]
+    if lt:
+        bands = [(0, 600, '<600'), (600, 2100, '600~2100'), (2100, 4284, '2100~4284'), (4284, 10 ** 9, '>=4284')]
+        by = Counter(m for m, _, _ in lt if True)
+        print(f"开过局、之后被登记离开、有离开拍的号 {len(lt)} 个：按登记离开的服务器拍 " + '、'.join(f"{n} {sum(1 for _, _, t in lt if a <= t < b)} 个" for a, b, n in bands)
+              + '；各局 ' + '、'.join(f"{k} {v}" for k, v in sorted(by.items())) + '。（没开局的席位都在 t<600 被登记离开，不计在内。）')
     print()
     return out
 
