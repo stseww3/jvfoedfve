@@ -89,6 +89,7 @@ def main():
     J = jload("checkpoint_attribution.json")
     E = jload("channel_exposure.json")
     S = jload("spawn_par.json")
+    M = jload("closure_mismatch.json")
     T = {}
     F0 = {}  # 正文用数（先放这里，后面并进 F）
     notes = {}
@@ -110,20 +111,29 @@ def main():
             continue
         rows.append([g, f"{c['trajBoth']} / {c['trajRows']}", "没有" if c["firstDiff"] is None else c["firstDiff"], r3(c["LSratio"]), r3(c["LOratio"]), f"{c['posHist']} / {c['landed']}"])
     T["复现-断面0"] = md(["局", "轨迹表逐行相同的行数", "第一处领土与历史不同的记录拍", "1500 拍我方领土：C2 ÷ 历史", "1500 拍其他真人领土：C2 ÷ 历史", "落在历史原位置的指令 / 全部落地"], rows)
+    # 其余断面：每个断面三列 = 这一窗录像里不等价的指令（条数，第一条的落地拍）/ C2 第一处领土不同的记录拍 / 窗末领土 C2 ÷ 历史
     rows = []
     for g in GAMES:
         row = [g]
         for T0 in (630, 1500, 4284):
+            if T0 == 4284 and g == "A070":
+                row += ["不适用", "不适用", "不适用"]
+                continue
+            x = (M.get(g) or {}).get(f"{T0}_{T0 + 900}")
+            row.append("—" if not x else ("0" if not x["bad"] else f"{x['bad']}（{x['firstBad']} 拍）"))
             c = (J.get("closure") or {}).get(f"{g}@{T0}")
             if not c:
-                row += ["—", "—"]
+                row += ["还没跑", "还没跑"]
                 continue
             a = "两边都是 0" if c["LSratio"] is None else r3(c["LSratio"])
             row += ["没有" if c["firstDiff"] is None else c["firstDiff"], f"{a} / {r3(c['LOratio'])}"]
         rows.append(row)
-    if not any(c != "—" for r in rows for c in r[1:]):
+    if not any((J.get("closure") or {}).get(f"{g}@{T0}") for g in GAMES for T0 in (630, 1500, 4284)):
         rows = []
-    T["复现-其余断面"] = md(["局", "断面 630：第一处不同的记录拍", "看 900 拍后领土 C2 ÷ 历史（我方 / 其他真人）", "断面 1500：第一处不同", "C2 ÷ 历史（我方 / 其他真人）", "断面 4284：第一处不同", "C2 ÷ 历史（我方 / 其他真人）"], rows)
+    hd = ["局"]
+    for T0 in (630, 1500, 4284):
+        hd += [f"{T0} 拍 ①", f"{T0} 拍 ②", f"{T0} 拍 ③"]
+    T["复现-其余断面"] = md(hd, rows)
 
     # ---- 通道状况
     rows = []
@@ -599,7 +609,6 @@ def main():
     T["种子数"] = md(["局", "断面 0（C0 / C1 / C2 走偏）", "断面 630", "断面 1500", "断面 4284"], rows)
 
     # ---- 复现：录像里落地的指令 vs 影子在同一位置发的指令（108_closure_mismatch.py）
-    M = jload("closure_mismatch.json")
     rows = []
     for g in GAMES:
         x = (M.get(g) or {}).get("0_1500")
@@ -787,6 +796,86 @@ def main():
         fdl = [c["firstDiff"] for g, c in df if c["firstDiff"] is not None]
         if fdl:
             F["clsFirstDiffMin"] = str(min(fdl))
+    # 其余断面的复现：每个断面一行读数（局数不齐时写明还缺几局）
+    clsLines, clsTodo = [], []
+    for T0 in (630, 1500, 4284):
+        need = [g for g in GAMES if not (T0 == 4284 and g == "A070")]
+        cl = [(g, (J.get("closure") or {}).get(f"{g}@{T0}")) for g in need]
+        cl = [(g, c) for g, c in cl if c]
+        F[f"clsX{T0}n"] = str(len(cl))
+        if len(cl) < len(need):
+            clsTodo.append(f"{T0} 拍（{'还没有结果' if not cl else f'还缺 {len(need) - len(cl)} 局'}）")
+        if not cl:
+            continue
+        strict = [g for g, c in cl if c["firstDiff"] is None and c["trajBoth"] == c["trajRows"]]
+        same = [g for g, c in cl if c["firstDiff"] is None]
+        df = [(g, c) for g, c in cl if c["firstDiff"] is not None]
+        F[f"clsX{T0}same"], F[f"clsX{T0}diffN"] = str(len(same)), str(len(df))
+        s = f"**{T0} 拍接管，看到 {T0 + 900} 拍**（{len(cl)} 局" + ("" if len(cl) == len(need) else f"，另外 {len(need) - len(cl)} 局还在排队") + "）："
+        s += f"{len(same)} 局每个记录拍的领土都与历史相同"
+        if len(strict) != len(same):
+            s += f"（其中 {len(strict)} 局的轨迹表也逐行相同）"
+        if df:
+            s += f"；领土有差别的 {len(df)} 局是 {'、'.join(g for g, c in df)}"
+            dv = [c["LSratio"] - 1 for g, c in df if c["LSratio"]]
+            dvo = [c["LOratio"] - 1 for g, c in df if c["LOratio"]]
+            if dv and dvo:
+                s += f"，到 {T0 + 900} 拍我方领土与历史相差 {100 * min(dv):+.1f}% ~ {100 * max(dv):+.1f}%，其他真人领土相差 {100 * min(dvo):+.1f}% ~ {100 * max(dvo):+.1f}%"
+                F[f"clsX{T0}absMax"] = f"{100 * max(abs(x) for x in dv + dvo):.1f}%"
+        # 与这一窗录像里不等价的指令对照：有差别的局是否都有不等价指令、第一处不同是否在第一条不等价指令落地之后
+        wk = f"{T0}_{T0 + 900}"
+        bad = {g: (M.get(g) or {}).get(wk) for g, c in cl}
+        hasBad = [g for g, c in cl if bad[g] and bad[g]["bad"]]
+        noBad = [g for g, c in cl if bad[g] and not bad[g]["bad"]]
+        odd1 = [g for g, c in df if g not in hasBad]                                   # 没有不等价指令却有差别
+        odd2 = [g for g, c in df if g in hasBad and c["firstDiff"] < bad[g]["firstBad"]]   # 差别出现在第一条不等价指令之前
+        quiet = [g for g in hasBad if g not in {x for x, _ in df}]                     # 有不等价指令但领土没有差别
+        s += f"。这一窗录像里落地的指令与影子发的不等价的有 {len(hasBad)} 局"
+        if not odd1 and not odd2:
+            if df:
+                s += f"，领土有差别的 {len(df)} 局都在其中，第一处不同都出现在第一条不等价指令落地之后"
+            if noBad:
+                s += f"；指令全部等价的 {len(noBad)} 局全部复现"
+            if quiet:
+                s += f"；{'、'.join(quiet)} 有不等价指令但每个记录拍的领土仍与历史相同"
+        else:
+            if odd1:
+                s += f"；{'、'.join(odd1)} 这一窗没有不等价指令，领土却与历史不同（原因未查明）"
+            if odd2:
+                s += f"；{'、'.join(odd2)} 的差别出现在第一条不等价指令落地之前（原因未查明）"
+        if T0 == 630 and df:
+            # 与断面 0 的那一组比：是不是同几局、第一处不同是不是同一个记录拍
+            c0 = {g: (J.get("closure") or {}).get(f"{g}@0") for g, c in cl}
+            d0 = {g for g, c in c0.items() if c and c["firstDiff"] is not None}
+            if d0 == {g for g, c in df} and all(c0[g]["firstDiff"] == c["firstDiff"] for g, c in df):
+                s += "。有差别的几局、第一处不同的记录拍都与断面 0 那一组相同：从 630 拍接管没有带来新的差别，断面之前在途指令的处理（§2.1）没有破坏复现"
+            else:
+                s += f"。与断面 0 那一组相比，有差别的局或第一处不同的记录拍不完全一样（断面 0：{'、'.join(sorted(d0))}）"
+        clsLines.append("- " + s + "。")
+    if clsTodo:
+        clsLines.append("- 还在排队：" + "、".join(clsTodo) + "。")
+    F["clsXlines"] = "\n".join(clsLines)
+    # 赠兵：发令那一拍额度不够、落地时够了（离线通道不发，录像里生效）
+    dfp = M.get("donFlip")
+    if dfp and dfp.get("n"):
+        lst = dfp["list"]
+        F["donFlipN"], F["donAllN"] = str(dfp["n"]), str(dfp["donAll"])
+        F["donFlipShare"] = pc(dfp["n"] / dfp["donAll"], 1)
+        F["donFlipGames"] = str(len(dfp["games"]))
+        F["donFlipStepN"] = str(dfp["byWhy"].get("规则换档", 0))
+        F["donFlipCapN"] = str(dfp["byWhy"].get("额度增加", 0))
+        F["donFlipOtherN"] = str(dfp["byWhy"].get("其他", 0))
+        lags = [x["land"] - x["issue"] for x in lst]
+        F["donFlipLagMin"], F["donFlipLagMax"] = str(min(lags)), str(max(lags))
+        for T0 in (630, 1500, 4284):
+            inw = [x for x in lst if T0 < x["land"] <= T0 + 900]
+            F[f"donFlipW{T0}n"] = str(len(inw))
+            F[f"donFlipW{T0}list"] = "、".join(sorted({x["g"] for x in inw})) or "没有"
+            F[f"donFlipW{T0}ticks"] = "、".join(str(t) for t in sorted({x["land"] for x in inw})) or "—"
+        at = [x for x in lst if x["land"] == 4284]
+        F["donFlipAt4284n"] = str(len(at))
+        F["donFlipAt4284list"] = "、".join(f"{g}（{sum(1 for x in at if x['g'] == g)} 条）" for g in sorted({x["g"] for x in at})) or "没有"
+        F["donOtherBadN"] = str(dfp.get("donOtherBad", 0))
     x = (M.get("all") or {}).get("0_1500")
     if x:
         F["mmN"], F["mmExact"], F["mmDead"], F["mmBad"] = f"{x['n']:,}", f"{x['exact']:,}", str(x["deadEq"]), str(x["bad"])
