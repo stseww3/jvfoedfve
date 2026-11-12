@@ -7,8 +7,9 @@ out/cache/<mid>-resim.json 的 cmdLog 每条：
   发船 [t, 号, 3, pct, 落点格, ok, 上船的兵, 船费, 处理前余额, 处理前领土, 落点归属]
 
 用法：
-  python3 scripts/cmdq.py <mid> <号[,号…]|squad|all> <t0> <t1> [--kind 1,2,3] [--target 名字片段] [--batch]
+  python3 scripts/cmdq.py <mid> <号[,号…]|squad|all> <t0> <t1> [--kind 1,2,3] [--target 名字片段] [--batch] [--sum]
   --batch  按（号、处理拍）合并成批：条数、pct 列表、批前余额、批内送出合计、批后剩余比例
+  --sum    列表之后再按（种类、目标）打合计：条数、处理拍范围、送出/到账、手续费/税
 号可以写名字（kaito9）或席位号（15）；squad = 编队 10 个号；all = 全部真人。
 """
 import json
@@ -46,7 +47,7 @@ def main():
     tgt = opt("--target")
     d = json.load(open(os.path.join(ROOT, "out", "cache", f"{mid}-resim.json")))
     H, names = d["H"], d["names"]
-    sq = {v["id"]: n for n, v in d["squad"].items()}
+    sq = {v["id"]: n for n, v in d["squad"].items() if v["id"] >= 0 and not v.get("mismatch")}
 
     def nm(p):
         if p == NEUTRAL:
@@ -97,6 +98,23 @@ def main():
             print(f"{t:5d} {nm(p):8s} 捐 pct={pct:4d} → {nm(q):22s} ok={ok} | {k(r[6]):>7s} {k(r[7]):>6s} | {k(r[8]):>7s} {r[9]:6d} | 对象额度 {r[10]}+{r[12]}/{r[11]} 对象 地 {r[13]} 兵 {k(r[14])}")
         elif kind == 3:
             print(f"{t:5d} {nm(p):8s} 船 pct={pct:4d} → 落点归属 {nm(r[10]):14s} ok={ok} | {k(r[6]):>7s} {k(r[7]):>6s} | {k(r[8]):>7s} {r[9]:6d} |")
+    if "--sum" in sys.argv:
+        # 按（种类、目标）合计：条数、处理拍范围、送出/到账、手续费/税；只算 ok=1 的
+        KN = {1: "攻", 2: "捐", 3: "船"}
+        tot = {}
+        for r in rows:
+            if not r[5]:
+                continue
+            key = (r[2], nm(r[10]) if r[2] == 3 else nm(r[4]))
+            a = tot.setdefault(key, [0, 0, 0, r[0], r[0], set()])
+            a[0] += 1
+            a[1] += r[6]
+            a[2] += r[7]
+            a[3], a[4] = min(a[3], r[0]), max(a[4], r[0])
+            a[5].add(r[1])
+        print("# 合计（种类 → 目标：条数、处理拍、送出/到账、手续费/税、发令的号数）")
+        for (kind, q), a in sorted(tot.items(), key=lambda kv: (kv[0][0], kv[1][3])):
+            print(f"  {KN[kind]} → {q}：{a[0]} 条，{a[3]}~{a[4]} 拍，{'到账' if kind == 2 else '送出'} {k(a[1])}，{'税' if kind == 2 else '手续费'} {k(a[2])}，{len(a[5])} 个号")
 
 
 if __name__ == "__main__":

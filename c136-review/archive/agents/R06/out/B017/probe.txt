@@ -1,0 +1,9 @@
+B017: 合并 4 片 → probe.json（影子 19 个，tally 17989 行，actual 1074 条，到 t=9676，日志快照核对 930/932）
+B017: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=9480，第一处不同 t=9510：Matthias(26·队4)#26 模拟器 地4972/兵431712 真引擎 地4972/兵433670
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：Matthias(26·队4) 2.80%@9595 0格@-1 偏差首次超过2%的拍=9519
+        我方号逐拍第一处不同：Matthias(26·队4)@9505(模拟器 4972/426804 真 4972/428740)
+B017: 影子重演到 t=9676，耗时 9.9s；日志快照核对 930/932；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：AlphaZero@651，Spruance@707，Luffy@1308，Legionnaire@705，Simeon@1032｜始终为假：无
+影子的 isNoFullSend 置真拍（同上）：Blucher@462，Haaland@896，Georgia@607，Mori@784，Charizard@742｜始终为假：无
+影子的 isNoFullSend 置真拍（同上）：Yoshi@774，Matthias@755，Goryeo@462，Dahomey@454，Dragoon@1103｜始终为假：无
+影子的 isNoFullSend 置真拍（同上）：Alucard@1693，Khmer@775，L_Lawliet@897，Venice@605｜始终为假：无

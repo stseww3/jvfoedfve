@@ -1,0 +1,289 @@
+# A070 zero_7 影子决策明细 t=2070~2430（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 9 拍（t=2070~2110）；可用兵 138431~141694，一条指令下限(20%余额) 74807~80298，比值 174%~186%
+#   首选目标无可用兵（avail<=0）: 52 拍（t=2115~2380）；可用兵 -334258~-84586，一条指令下限(20%余额) 439~35616，比值 -73431%~-250%
+#   首选目标价高（c>=worth）: 11 拍（t=2240~2430）
+#   其他指令: 1 拍（t=2295~2295）；可用兵 -146463~-146463，一条指令下限(20%余额) 30053~30053，比值 -487%~-487%
+#   └ 「出手打人/bot」里：9 条对人/bot 的出兵共约 1260397 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=2070 zero_7 B=374037 L=9527 d=39.3 nb=2 neut=0 cmds=243 noFull=1 shQ=93509 | m=1.352 worth=53.1 cheap=8.5 over=0 dMedOther=6.3 safe(-1)=226377
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=123 | c=18.0 rankC=18.0 need=495028 tD=1.07 人 | safe=226377 keep=230271 avail=139383 chunkB=74807 pulseB=44884  x=139383 hNb=2
+    → Qart-ḥadašt#16[T1] terr=56284 bal=417241 dq=7.4 cnt=70 | c=19.7 rankC=19.7 need=828101 tD=1.18 人 | safe=226377 keep=236823 avail=132831 chunkB=74807 pulseB=44884  x=132831 hNb=2
+    ⇒ 影子指令 attack pct=381 → 🌞#1[T1]（约 139533 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2075 zero_7 B=374037 L=9527 d=39.3 nb=2 neut=0 cmds=244 noFull=1 shQ=93509 | m=1.346 worth=52.9 cheap=8.5 over=0 dMedOther=6.2 safe(-1)=226377
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=123 | c=18.0 rankC=18.0 need=495028 tD=1.08 人 | safe=226377 keep=230786 avail=138868 chunkB=74807 pulseB=44884  x=138868 hNb=2
+    → Qart-ḥadašt#16[T1] terr=56493 bal=417241 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=828417 tD=1.18 人 | safe=226377 keep=237089 avail=132565 chunkB=74807 pulseB=44884  x=132565 hNb=2
+    ⇒ 影子指令 attack pct=380 → 🌞#1[T1]（约 139168 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2080 zero_7 B=378413 L=9527 d=39.7 nb=2 neut=0 cmds=245 noFull=1 shQ=94603 | m=1.341 worth=53.3 cheap=8.5 over=0 dMedOther=6.0 safe(-1)=208643
+    → Qart-ḥadašt#16[T1] terr=56859 bal=385675 dq=6.8 cnt=70 | c=18.2 rankC=18.2 need=772710 tD=1.13 人 | safe=208643 keep=233659 avail=140320 chunkB=75683 pulseB=45410  x=140320 hNb=2
+    → 🌞#1[T1] terr=36750 bal=250162 dq=6.8 cnt=123 | c=18.3 rankC=18.3 need=501010 tD=1.13 人 | safe=208643 keep=234038 avail=139941 chunkB=75683 pulseB=45410  x=139941 hNb=2
+    ⇒ 影子指令 attack pct=379 → Qart-ḥadašt#16[T1]（约 140426 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2085 zero_7 B=378413 L=9527 d=39.7 nb=2 neut=0 cmds=246 noFull=1 shQ=94603 | m=1.336 worth=53.1 cheap=8.5 over=0 dMedOther=5.9 safe(-1)=208643
+    → Qart-ḥadašt#16[T1] terr=57171 bal=385675 dq=6.7 cnt=70 | c=18.1 rankC=18.1 need=773178 tD=1.14 人 | safe=208643 keep=233823 avail=140156 chunkB=75683 pulseB=45410  x=140156 hNb=2
+    → 🌞#1[T1] terr=36750 bal=250162 dq=6.8 cnt=123 | c=18.3 rankC=18.3 need=501010 tD=1.15 人 | safe=208643 keep=234564 avail=139415 chunkB=75683 pulseB=45410  x=139415 hNb=2
+    ⇒ 影子指令 attack pct=379 → Qart-ḥadašt#16[T1]（约 140426 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2090 zero_7 B=382840 L=9527 d=40.2 nb=2 neut=0 cmds=247 noFull=1 shQ=95710 | m=1.331 worth=53.5 cheap=8.5 over=0 dMedOther=5.9 safe(-1)=211806
+    → Qart-ḥadašt#16[T1] terr=57623 bal=391305 dq=6.8 cnt=70 | c=18.2 rankC=18.2 need=783890 tD=1.14 人 | safe=211806 keep=236660 avail=141694 chunkB=76568 pulseB=45941  x=141694 hNb=2
+    → 🌞#1[T1] terr=36750 bal=253564 dq=6.9 cnt=123 | c=18.5 rankC=18.5 need=507074 tD=1.16 人 | safe=211806 keep=237873 avail=140481 chunkB=76568 pulseB=45941  x=140481 hNb=2
+    ⇒ 影子指令 attack pct=378 → Qart-ḥadašt#16[T1]（约 141695 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2095 zero_7 B=382840 L=9527 d=40.2 nb=2 neut=0 cmds=248 noFull=1 shQ=95710 | m=1.325 worth=53.3 cheap=8.5 over=0 dMedOther=5.9 safe(-1)=211806
+    → Qart-ḥadašt#16[T1] terr=57913 bal=391305 dq=6.8 cnt=70 | c=18.1 rankC=18.1 need=784320 tD=1.15 人 | safe=211806 keep=236861 avail=141493 chunkB=76568 pulseB=45941  x=141493 hNb=2
+    → 🌞#1[T1] terr=36750 bal=253564 dq=6.9 cnt=123 | c=18.5 rankC=18.5 need=507074 tD=1.17 人 | safe=211806 keep=238410 avail=139944 chunkB=76568 pulseB=45941  x=139944 hNb=2
+    ⇒ 影子指令 attack pct=378 → Qart-ḥadašt#16[T1]（约 141695 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2100 zero_7 B=396846 L=9527 d=41.7 nb=2 neut=0 cmds=249 noFull=1 shQ=96870 | m=1.320 worth=55.0 cheap=8.5 over=0 dMedOther=6.9 safe(-1)=247710
+    → Qart-ḥadašt#16[T1] terr=58336 bal=455215 dq=7.8 cnt=70 | c=20.6 rankC=20.6 need=898862 tD=1.13 人 | safe=247710 keep=253551 avail=138645 chunkB=79369 pulseB=47622  x=138645 hNb=2
+    → 🌞#1[T1] terr=36750 bal=293762 dq=8.0 cnt=123 | c=21.1 rankC=21.1 need=578722 tD=1.16 人 | safe=247710 keep=255565 avail=136631 chunkB=79369 pulseB=47622  x=136631 hNb=2
+    ⇒ 影子指令 attack pct=357 → Qart-ḥadašt#16[T1]（约 138741 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2105 zero_7 B=396846 L=9527 d=41.7 nb=2 neut=0 cmds=250 noFull=1 shQ=99211 | m=1.315 worth=54.8 cheap=8.5 over=0 dMedOther=6.8 safe(-1)=247710
+    → Qart-ḥadašt#16[T1] terr=58612 bal=455215 dq=7.8 cnt=70 | c=20.5 rankC=20.5 need=899276 tD=1.13 人 | safe=247710 keep=253765 avail=138431 chunkB=79369 pulseB=47622  x=138431 hNb=2
+    → 🌞#1[T1] terr=36750 bal=293762 dq=8.0 cnt=123 | c=21.1 rankC=21.1 need=578722 tD=1.17 人 | safe=247710 keep=256145 avail=136051 chunkB=79369 pulseB=47622  x=136051 hNb=2
+    ⇒ 影子指令 attack pct=357 → Qart-ḥadašt#16[T1]（约 138741 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2110 zero_7 B=401489 L=9527 d=42.1 nb=2 neut=0 cmds=251 noFull=1 shQ=100372 | m=1.310 worth=55.2 cheap=8.5 over=0 dMedOther=6.9 safe(-1)=251444
+    → Qart-ḥadašt#16[T1] terr=59024 bal=461861 dq=7.8 cnt=70 | c=20.6 rankC=20.6 need=911740 tD=1.14 人 | safe=251444 keep=256901 avail=139884 chunkB=80298 pulseB=48179  x=139884 hNb=2
+    → 🌞#1[T1] terr=36750 bal=297757 dq=8.1 cnt=123 | c=21.3 rankC=21.3 need=585843 tD=1.18 人 | safe=251444 keep=259783 avail=137002 chunkB=80298 pulseB=48179  x=137002 hNb=2
+    ⇒ 影子指令 attack pct=356 → Qart-ḥadašt#16[T1]（约 139972 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2115 zero_7 B=168836 L=9527 d=17.7 nb=2 neut=0 cmds=251 noFull=1 shQ=0 | m=1.304 worth=23.1 cheap=8.5 over=0 dMedOther=6.8 safe(-1)=251444
+    → 🌞#1[T1] terr=36750 bal=297757 dq=8.1 cnt=123 | c=13.1 rankC=13.1 need=360172 tD=1.18 人 | safe=251444 keep=251444 avail=-84586 chunkB=33767 pulseB=20260 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=59297 bal=461861 dq=7.8 cnt=70 | c=20.5 rankC=20.5 need=912152 tD=1.14 人 | safe=251444 keep=251444 avail=-84586 chunkB=33767 pulseB=20260 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=2120 zero_7 B=170811 L=9527 d=17.9 nb=2 neut=0 cmds=251 noFull=1 shQ=2471 | m=1.299 worth=23.3 cheap=8.5 over=0 dMedOther=6.9 safe(-1)=255232
+    → 🌞#1[T1] terr=36750 bal=301806 dq=8.2 cnt=123 | c=13.3 rankC=13.3 need=367388 tD=1.19 人 | safe=255232 keep=255232 avail=-86422 chunkB=34162 pulseB=20497 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=59704 bal=468604 dq=7.8 cnt=70 | c=20.6 rankC=20.6 need=924778 tD=1.13 人 | safe=255232 keep=255232 avail=-86422 chunkB=34162 pulseB=20497 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=2125 zero_7 B=170811 L=9773 d=17.5 nb=2 neut=0 cmds=251 noFull=1 shQ=5002 | m=1.294 worth=22.6 cheap=8.4 over=0 dMedOther=6.9 safe(-1)=255025
+    → 🌞#1[T1] terr=36504 bal=298578 dq=8.2 cnt=123 | c=13.5 rankC=13.5 need=367402 tD=1.18 人 | safe=255025 keep=255025 avail=-86215 chunkB=34162 pulseB=20497 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=59973 bal=468604 dq=7.8 cnt=71 | c=20.5 rankC=20.5 need=925185 tD=1.13 人 | safe=255025 keep=255025 avail=-86215 chunkB=34162 pulseB=20497 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=2130 zero_7 B=172826 L=9896 d=17.5 nb=2 neut=0 cmds=251 noFull=1 shQ=7548 | m=1.288 worth=22.5 cheap=8.4 over=0 dMedOther=6.5 safe(-1)=258791
+    → 🌞#1[T1] terr=36381 bal=301007 dq=8.3 cnt=124 | c=13.8 rankC=13.8 need=374599 tD=1.27 人 | safe=258791 keep=258791 avail=-87990 chunkB=34565 pulseB=20739 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=60507 bal=475492 dq=7.9 cnt=72 | c=20.6 rankC=20.6 need=938269 tD=1.20 人 | safe=258791 keep=258791 avail=-87990 chunkB=34565 pulseB=20739 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=2135 zero_7 B=172826 L=10142 d=17.0 nb=2 neut=0 cmds=251 noFull=1 shQ=10118 | m=1.283 worth=21.9 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=258584
+    → 🌞#1[T1] terr=36135 bal=297755 dq=8.2 cnt=120 | c=13.9 rankC=13.9 need=374613 tD=1.25 人 | safe=258584 keep=258584 avail=-87783 chunkB=34565 pulseB=20739 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=61168 bal=475492 dq=7.8 cnt=73 | c=20.4 rankC=20.4 need=939251 tD=1.18 人 | safe=258584 keep=258584 avail=-87783 chunkB=34565 pulseB=20739 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=2140 zero_7 B=111170 L=10498 d=10.6 nb=2 neut=0 cmds=251 noFull=1 shQ=11752 | m=1.278 worth=13.5 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=262210
+    → 🌞#1[T1] terr=35779 bal=237008 dq=6.6 cnt=115 | c=6.0 rankC=4.2 need=212450 tD=1.00 人 | safe=262210 keep=262210 avail=-152342 chunkB=22234 pulseB=13340 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=61820 bal=482481 dq=7.8 cnt=74 | c=20.5 rankC=20.5 need=952686 tD=1.18 人 | safe=262210 keep=Inf avail=-Inf chunkB=22234 pulseB=13340 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2145 zero_7 B=111170 L=10729 d=10.4 nb=2 neut=0 cmds=251 noFull=1 shQ=13402 | m=1.273 worth=13.2 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=262015
+    → 🌞#1[T1] terr=35781 bal=234567 dq=6.6 cnt=119 | c=6.0 rankC=4.2 need=213486 tD=1.00 人 | safe=262015 keep=262015 avail=-152147 chunkB=22234 pulseB=13340 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=62465 bal=482481 dq=7.7 cnt=76 | c=20.3 rankC=20.3 need=953657 tD=1.18 人 | safe=262015 keep=Inf avail=-Inf chunkB=22234 pulseB=13340 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2150 zero_7 B=112504 L=11098 d=10.1 nb=2 neut=0 cmds=251 noFull=1 shQ=15065 | m=1.268 worth=12.8 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=265716
+    → 🌞#1[T1] terr=35646 bal=233856 dq=6.6 cnt=130 | c=6.2 rankC=4.4 need=220114 tD=1.00 人 | safe=265716 keep=265716 avail=-154530 chunkB=22501 pulseB=13500 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=63102 bal=489621 dq=7.8 cnt=78 | c=20.4 rankC=20.4 need=967341 tD=1.18 人 | safe=265716 keep=Inf avail=-Inf chunkB=22501 pulseB=13500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2155 zero_7 B=112504 L=11360 d=9.9 nb=2 neut=0 cmds=251 noFull=1 shQ=16750 | m=1.262 worth=12.5 cheap=8.3 over=0 dMedOther=6.5 safe(-1)=265495
+    → 🌞#1[T1] terr=35740 bal=231123 dq=6.5 cnt=135 | c=6.3 rankC=4.4 need=221683 tD=1.00 人 | safe=265495 keep=265495 avail=-154309 chunkB=22501 pulseB=13500 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=63731 bal=489621 dq=7.7 cnt=81 | c=20.2 rankC=20.2 need=968288 tD=1.19 人 | safe=265495 keep=Inf avail=-Inf chunkB=22501 pulseB=13500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2160 zero_7 B=113854 L=11769 d=9.7 nb=2 neut=0 cmds=251 noFull=1 shQ=18439 | m=1.257 worth=12.2 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=269221
+    → 🌞#1[T1] terr=35574 bal=230002 dq=6.5 cnt=142 | c=6.5 rankC=4.5 need=228266 tD=0.98 人 | safe=269221 keep=269221 avail=-156701 chunkB=22771 pulseB=13662 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=64356 bal=496867 dq=7.7 cnt=85 | c=20.3 rankC=20.3 need=982131 tD=1.17 人 | safe=269221 keep=Inf avail=-Inf chunkB=22771 pulseB=13662 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2165 zero_7 B=113854 L=12057 d=9.4 nb=2 neut=0 cmds=251 noFull=1 shQ=20144 | m=1.252 worth=11.8 cheap=8.3 over=0 dMedOther=6.6 safe(-1)=268978
+    → 🌞#1[T1] terr=35658 bal=227043 dq=6.4 cnt=150 | c=6.5 rankC=4.6 need=229893 tD=0.97 人 | safe=268978 keep=268978 avail=-156458 chunkB=22771 pulseB=13662 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=64977 bal=496867 dq=7.6 cnt=86 | c=20.1 rankC=20.1 need=983066 tD=1.16 人 | safe=268978 keep=Inf avail=-Inf chunkB=22771 pulseB=13662 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2170 zero_7 B=115231 L=12517 d=9.2 nb=2 neut=0 cmds=251 noFull=1 shQ=21862 | m=1.247 worth=11.5 cheap=8.2 over=0 dMedOther=6.6 safe(-1)=272750
+    → 🌞#1[T1] terr=35451 bal=225411 dq=6.4 cnt=162 | c=6.7 rankC=4.7 need=236392 tD=0.96 人 | safe=272750 keep=272750 avail=-158869 chunkB=23046 pulseB=13828 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=65599 bal=504270 dq=7.7 cnt=87 | c=20.2 rankC=20.2 need=997200 tD=1.16 人 | safe=272750 keep=Inf avail=-Inf chunkB=23046 pulseB=13828 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2175 zero_7 B=115231 L=12844 d=9.0 nb=2 neut=0 cmds=251 noFull=1 shQ=23602 | m=1.241 worth=11.1 cheap=8.2 over=0 dMedOther=6.6 safe(-1)=276402
+    → 🌞#1[T1] terr=35512 bal=222108 dq=6.3 cnt=171 | c=6.8 rankC=4.7 need=238079 tD=0.95 人 | safe=276402 keep=276402 avail=-162521 chunkB=23046 pulseB=13828 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=66219 bal=511262 dq=7.7 cnt=88 | c=20.3 rankC=20.3 need=1010592 tD=1.17 人 | safe=276402 keep=Inf avail=-Inf chunkB=23046 pulseB=13828 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2180 zero_7 B=116625 L=13339 d=8.7 nb=2 neut=0 cmds=251 noFull=1 shQ=25346 | m=1.236 worth=10.8 cheap=8.2 over=0 dMedOther=6.7 safe(-1)=280264
+    → 🌞#1[T1] terr=35272 bal=220139 dq=6.2 cnt=156 | c=7.0 rankC=4.9 need=244459 tD=0.93 人 | safe=280264 keep=280264 avail=-165005 chunkB=23325 pulseB=13995 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=66830 bal=518879 dq=7.8 cnt=96 | c=20.4 rankC=20.4 need=1025082 tD=1.16 人 | safe=280264 keep=Inf avail=-Inf chunkB=23325 pulseB=13995 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2185 zero_7 B=116625 L=13649 d=8.5 nb=2 neut=0 cmds=251 noFull=1 shQ=27112 | m=1.231 worth=10.5 cheap=8.2 over=0 dMedOther=6.7 safe(-1)=280003
+    → 🌞#1[T1] terr=35335 bal=173250 dq=4.9 cnt=153 | c=6.0 rankC=4.2 need=209531 tD=0.74 人 | safe=280003 keep=280003 avail=-164744 chunkB=23325 pulseB=13995 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67436 bal=518879 dq=7.7 cnt=106 | c=20.2 rankC=20.2 need=1025984 tD=1.16 人 | safe=280003 keep=Inf avail=-Inf chunkB=23325 pulseB=13995 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2190 zero_7 B=118047 L=14112 d=8.4 nb=2 neut=0 cmds=251 noFull=1 shQ=28892 | m=1.226 worth=10.3 cheap=8.2 over=0 dMedOther=6.7 safe(-1)=284003
+    → 🌞#1[T1] terr=35120 bal=171931 dq=4.9 cnt=156 | c=6.2 rankC=4.3 need=214563 tD=0.73 人 | safe=284003 keep=284003 avail=-167339 chunkB=23609 pulseB=14166 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=526694 dq=7.8 cnt=116 | c=20.4 rankC=20.4 need=1040282 tD=1.16 人 | safe=284003 keep=Inf avail=-Inf chunkB=23609 pulseB=14166 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2195 zero_7 B=118047 L=14423 d=8.2 nb=2 neut=0 cmds=251 noFull=1 shQ=29511 | m=1.220 worth=10.0 cheap=8.2 over=0 dMedOther=6.7 safe(-1)=283741
+    → 🌞#1[T1] terr=35168 bal=169512 dq=4.8 cnt=156 | c=6.2 rankC=4.4 need=215940 tD=0.72 人 | safe=283741 keep=283741 avail=-167077 chunkB=23609 pulseB=14166 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=526694 dq=7.8 cnt=121 | c=20.4 rankC=20.4 need=1040282 tD=1.16 人 | safe=283741 keep=Inf avail=-Inf chunkB=23609 pulseB=14166 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2200 zero_7 B=134213 L=14874 d=9.0 nb=2 neut=0 cmds=251 noFull=1 shQ=29920 | m=1.215 worth=11.0 cheap=8.2 over=0 dMedOther=7.8 safe(-1)=325789
+    → 🌞#1[T1] terr=34947 bal=203155 dq=5.8 cnt=151 | c=8.2 rankC=5.8 need=282813 tD=0.75 人 | safe=325789 keep=325789 avail=-193148 chunkB=26843 pulseB=16106 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=602216 dq=8.9 cnt=130 | c=23.0 rankC=23.0 need=1174890 tD=1.14 人 | safe=325789 keep=Inf avail=-Inf chunkB=26843 pulseB=16106 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2205 zero_7 B=134213 L=15173 d=8.8 nb=2 neut=0 cmds=251 noFull=1 shQ=31993 | m=1.210 worth=10.7 cheap=8.1 over=0 dMedOther=7.8 safe(-1)=325537
+    → 🌞#1[T1] terr=34995 bal=200393 dq=5.7 cnt=152 | c=8.2 rankC=5.8 need=284270 tD=0.74 人 | safe=325537 keep=325537 avail=-192896 chunkB=26843 pulseB=16106 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=602216 dq=8.9 cnt=138 | c=23.0 rankC=23.0 need=1174890 tD=1.15 人 | safe=325537 keep=Inf avail=-Inf chunkB=26843 pulseB=16106 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2210 zero_7 B=135863 L=15633 d=8.7 nb=2 neut=0 cmds=251 noFull=1 shQ=33965 | m=1.205 worth=10.5 cheap=8.1 over=0 dMedOther=7.8 safe(-1)=330191
+    → 🌞#1[T1] terr=34766 bal=198853 dq=5.7 cnt=158 | c=8.5 rankC=5.9 need=289945 tD=0.73 人 | safe=330191 keep=330191 avail=-195920 chunkB=27173 pulseB=16304 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=611189 dq=9.0 cnt=147 | c=23.3 rankC=23.3 need=1190884 tD=1.15 人 | safe=330191 keep=Inf avail=-Inf chunkB=27173 pulseB=16304 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2215 zero_7 B=135863 L=15949 d=8.5 nb=2 neut=0 cmds=251 noFull=1 shQ=33965 | m=1.199 worth=10.2 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=329924
+    → 🌞#1[T1] terr=34793 bal=195980 dq=5.6 cnt=161 | c=8.5 rankC=6.0 need=291379 tD=0.77 人 | safe=329924 keep=329924 avail=-195653 chunkB=27173 pulseB=16304 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=611189 dq=9.0 cnt=153 | c=23.3 rankC=23.3 need=1190884 tD=1.23 人 | safe=329924 keep=Inf avail=-Inf chunkB=27173 pulseB=16304 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2220 zero_7 B=137534 L=16434 d=8.4 nb=2 neut=0 cmds=251 noFull=1 shQ=34383 | m=1.194 worth=10.0 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=303663
+    → 🌞#1[T1] terr=34537 bal=194224 dq=5.6 cnt=163 | c=8.8 rankC=6.1 need=296938 tD=0.76 人 | safe=303663 keep=303663 avail=-167740 chunkB=27507 pulseB=16504 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=565172 dq=8.4 cnt=164 | c=21.7 rankC=21.7 need=1108864 tD=1.13 人 | safe=303663 keep=Inf avail=-Inf chunkB=27507 pulseB=16504 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2225 zero_7 B=137534 L=16763 d=8.2 nb=2 neut=0 cmds=251 noFull=1 shQ=34383 | m=1.189 worth=9.8 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=303386
+    → 🌞#1[T1] terr=34552 bal=191284 dq=5.5 cnt=169 | c=8.8 rankC=6.2 need=298392 tD=0.76 人 | safe=303386 keep=303386 avail=-167463 chunkB=27507 pulseB=16504 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=67675 bal=565172 dq=8.4 cnt=172 | c=21.7 rankC=21.7 need=1108864 tD=1.14 人 | safe=303386 keep=Inf avail=-Inf chunkB=27507 pulseB=16504 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2230 zero_7 B=139239 L=17275 d=8.1 nb=2 neut=0 cmds=251 noFull=1 shQ=34809 | m=1.183 worth=9.5 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=307686
+    → 🌞#1[T1] terr=34269 bal=189300 dq=5.5 cnt=179 | c=9.1 rankC=6.3 need=303829 tD=0.75 人 | safe=307686 keep=307686 avail=-170078 chunkB=27848 pulseB=16709 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=68148 bal=573593 dq=8.4 cnt=180 | c=21.8 rankC=21.8 need=1124573 tD=1.14 人 | safe=307686 keep=Inf avail=-Inf chunkB=27848 pulseB=16709 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2235 zero_7 B=139239 L=17634 d=7.9 nb=2 neut=0 cmds=251 noFull=1 shQ=34809 | m=1.178 worth=9.3 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=307383
+    → 🌞#1[T1] terr=34254 bal=186149 dq=5.4 cnt=183 | c=9.1 rankC=6.4 need=305278 tD=0.74 人 | safe=307383 keep=307383 avail=-169775 chunkB=27848 pulseB=16709 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=68729 bal=573593 dq=8.3 cnt=180 | c=21.7 rankC=21.7 need=1125447 tD=1.13 人 | safe=307383 keep=Inf avail=-Inf chunkB=27848 pulseB=16709 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2240 zero_7 B=140979 L=18191 d=7.7 nb=2 neut=0 cmds=251 noFull=1 shQ=35244 | m=1.173 worth=9.1 cheap=8.0 over=0 dMedOther=7.5 safe(-1)=311747
+    → 🌞#1[T1] terr=33930 bal=183787 dq=5.4 cnt=191 | c=9.4 rankC=6.6 need=310591 tD=0.73 人 | safe=311747 keep=Inf avail=-Inf chunkB=28196 pulseB=16917 价高(c>=worth)→break hNb=2
+    → Qart-ḥadašt#16[T1] terr=69301 bal=582196 dq=8.4 cnt=183 | c=29.4 rankC=29.4 need=1141639 tD=1.12 人 crowdedHard | safe=311747 keep=Inf avail=-Inf chunkB=28196 pulseB=16917 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2245 zero_7 B=140979 L=18576 d=7.6 nb=2 neut=0 cmds=251 noFull=1 shQ=35244 | m=1.168 worth=8.9 cheap=8.0 over=0 dMedOther=7.5 safe(-1)=311422
+    → 🌞#1[T1] terr=33894 bal=180474 dq=5.3 cnt=197 | c=0.0 rankC=0.0 need=312058 tD=0.71 人 pulse nearCollapse bleeding | safe=311422 keep=311422 avail=-172095 chunkB=28196 pulseB=16917 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=69860 bal=582196 dq=8.3 cnt=183 | c=29.2 rankC=29.2 need=1142474 tD=1.12 人 crowdedHard | safe=311422 keep=Inf avail=-Inf chunkB=28196 pulseB=16917 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2250 zero_7 B=142741 L=19164 d=7.4 nb=2 neut=0 cmds=251 noFull=1 shQ=35685 | m=1.163 worth=8.7 cheap=7.9 over=0 dMedOther=6.9 safe(-1)=315833
+    → 🌞#1[T1] terr=33204 bal=175028 dq=5.3 cnt=199 | c=0.0 rankC=0.0 need=310850 tD=0.76 人 pulse nearCollapse bleeding | safe=315833 keep=315833 avail=-174764 chunkB=28548 pulseB=17129 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=70405 bal=590928 dq=8.4 cnt=186 | c=29.4 rankC=29.4 need=1158859 tD=1.21 人 crowdedHard | safe=315833 keep=Inf avail=-Inf chunkB=28548 pulseB=17129 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2255 zero_7 B=142741 L=19566 d=7.3 nb=2 neut=0 cmds=251 noFull=1 shQ=35685 | m=1.157 worth=8.4 cheap=7.9 over=0 dMedOther=6.9 safe(-1)=315494
+    → 🌞#1[T1] terr=32814 bal=168878 dq=5.1 cnt=206 | c=0.0 rankC=0.0 need=306057 tD=0.74 人 pulse nearCollapse bleeding | safe=315494 keep=315494 avail=-174425 chunkB=28548 pulseB=17129 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=70925 bal=590928 dq=8.3 cnt=186 | c=29.2 rankC=29.2 need=1159639 tD=1.20 人 crowdedHard | safe=315494 keep=Inf avail=-Inf chunkB=28548 pulseB=17129 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2260 zero_7 B=144539 L=20183 d=7.2 nb=2 neut=0 cmds=251 noFull=1 shQ=36134 | m=1.152 worth=8.2 cheap=7.9 over=0 dMedOther=7.0 safe(-1)=319987
+    → 🌞#1[T1] terr=31920 bal=161894 dq=5.1 cnt=209 | c=0.0 rankC=0.0 need=301563 tD=0.72 人 pulse nearCollapse bleeding | safe=319987 keep=319987 avail=-177141 chunkB=28908 pulseB=17345 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=71364 bal=599851 dq=8.4 cnt=187 | c=29.4 rankC=29.4 need=1176198 tD=1.20 人 crowdedHard | safe=319987 keep=Inf avail=-Inf chunkB=28908 pulseB=17345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2265 zero_7 B=144539 L=20604 d=7.0 nb=2 neut=0 cmds=251 noFull=1 shQ=36134 | m=1.147 worth=8.0 cheap=7.8 over=0 dMedOther=7.0 safe(-1)=289685
+    → 🌞#1[T1] terr=31495 bal=155818 dq=4.9 cnt=216 | c=0.0 rankC=0.0 need=296928 tD=0.70 人 pulse nearCollapse bleeding | safe=289685 keep=289685 avail=-146839 chunkB=28908 pulseB=17345 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=71842 bal=546545 dq=7.6 cnt=190 | c=26.9 rankC=26.9 need=1081911 tD=1.08 人 crowdedHard | safe=289685 keep=Inf avail=-Inf chunkB=28908 pulseB=17345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2270 zero_7 B=146374 L=21249 d=6.9 nb=2 neut=0 cmds=251 noFull=1 shQ=36593 | m=1.142 worth=7.9 cheap=7.8 over=0 dMedOther=7.1 safe(-1)=293777
+    → 🌞#1[T1] terr=30548 bal=148691 dq=4.9 cnt=218 | c=0.0 rankC=0.0 need=292148 tD=0.68 人 pulse nearCollapse bleeding | safe=293777 keep=293777 avail=-149118 chunkB=29275 pulseB=17565 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=72275 bal=554797 dq=7.7 cnt=191 | c=27.1 rankC=27.1 need=1097271 tD=1.08 人 crowdedHard | safe=293777 keep=Inf avail=-Inf chunkB=29275 pulseB=17565 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2275 zero_7 B=146522 L=21467 d=6.8 nb=2 neut=0 cmds=251 noFull=1 shQ=36630 | m=1.136 worth=7.8 cheap=7.8 over=0 dMedOther=7.1 safe(-1)=315324
+    → 🌞#1[T1] terr=30287 bal=143947 dq=4.8 cnt=220 | c=0.0 rankC=0.0 need=288056 tD=0.67 人 pulse nearCollapse bleeding | safe=315324 keep=315324 avail=-170519 chunkB=29304 pulseB=17583 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=72639 bal=593477 dq=8.2 cnt=192 | c=28.7 rankC=28.7 need=1166760 tD=1.15 人 crowdedHard | safe=315324 keep=Inf avail=-Inf chunkB=29304 pulseB=17583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2280 zero_7 B=148382 L=21467 d=6.9 nb=2 neut=0 cmds=251 noFull=1 shQ=37095 | m=1.131 worth=7.8 cheap=7.8 over=0 dMedOther=6.6 safe(-1)=320358
+    → 🌞#1[T1] terr=29945 bal=141654 dq=4.7 cnt=222 | c=0.0 rankC=0.0 need=282763 tD=0.71 人 pulse nearCollapse bleeding | safe=320358 keep=320358 avail=-173714 chunkB=29676 pulseB=17806 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=73007 bal=602438 dq=8.3 cnt=192 | c=28.9 rankC=28.9 need=1183283 tD=1.25 人 crowdedHard | safe=320358 keep=Inf avail=-Inf chunkB=29676 pulseB=17806 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2285 zero_7 B=148382 L=21467 d=6.9 nb=2 neut=0 cmds=251 noFull=1 shQ=37095 | m=1.126 worth=7.8 cheap=7.8 over=0 dMedOther=6.9 safe(-1)=290282
+    → 🌞#1[T1] terr=29884 bal=138800 dq=4.6 cnt=226 | c=0.0 rankC=0.0 need=277723 tD=0.67 人 pulse nearCollapse bleeding | safe=290282 keep=290282 avail=-143638 chunkB=29676 pulseB=17806 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=73547 bal=548902 dq=7.5 cnt=192 | c=19.6 rankC=19.6 need=1088672 tD=1.08 人 | safe=290282 keep=Inf avail=-Inf chunkB=29676 pulseB=17806 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2290 zero_7 B=150266 L=21467 d=7.0 nb=2 neut=0 cmds=251 noFull=1 shQ=37566 | m=1.121 worth=7.8 cheap=7.8 over=0 dMedOther=7.0 safe(-1)=294969
+    → 🌞#1[T1] terr=29514 bal=108700 dq=3.7 cnt=230 | c=0.0 rankC=0.0 need=225170 tD=0.52 人 pulse nearCollapse bleeding | safe=294969 keep=294969 avail=-146463 chunkB=30053 pulseB=18032 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=74170 bal=557245 dq=7.5 cnt=192 | c=19.7 rankC=19.7 need=1104474 tD=1.07 人 | safe=294969 keep=Inf avail=-Inf chunkB=30053 pulseB=18032 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2295 zero_7 B=150266 L=21467 d=7.0 nb=2 neut=0 cmds=252 noFull=1 shQ=37566 | m=1.115 worth=7.8 cheap=7.8 over=0 dMedOther=7.0 safe(-1)=294969
+    → 🌞#1[T1] terr=29436 bal=106356 dq=3.6 cnt=234 | c=0.0 rankC=0.0 need=220964 tD=0.51 人 pulse nearCollapse bleeding | safe=294969 keep=294969 avail=-146463 chunkB=30053 pulseB=18032 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=74801 bal=557245 dq=7.4 cnt=192 | c=19.5 rankC=19.5 need=1105417 tD=1.06 人 | safe=294969 keep=Inf avail=-Inf chunkB=30053 pulseB=18032 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#907927（约 18783 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2300 zero_7 B=173641 L=21467 d=8.1 nb=2 neut=0 cmds=252 noFull=1 shQ=38117 | m=1.110 worth=9.0 cheap=7.8 over=0 dMedOther=8.2 safe(-1)=342045
+    → 🌞#1[T1] terr=29036 bal=133111 dq=4.6 cnt=240 | c=0.1 rankC=0.0 need=264697 tD=0.56 人 pulse nearCollapse bleeding | safe=342045 keep=342045 avail=-170438 chunkB=34728 pulseB=20837 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=75461 bal=641041 dq=8.5 cnt=192 | c=22.0 rankC=22.0 need=1255762 tD=1.04 人 | safe=342045 keep=Inf avail=-Inf chunkB=34728 pulseB=20837 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2305 zero_7 B=173641 L=21467 d=8.1 nb=2 neut=0 cmds=252 noFull=1 shQ=40872 | m=1.105 worth=8.9 cheap=7.8 over=0 dMedOther=8.2 safe(-1)=342045
+    → 🌞#1[T1] terr=28936 bal=130019 dq=4.5 cnt=242 | c=0.1 rankC=0.0 need=259125 tD=0.55 人 pulse nearCollapse bleeding | safe=342045 keep=342045 avail=-170438 chunkB=34728 pulseB=20837 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=76138 bal=641041 dq=8.4 cnt=192 | c=21.8 rankC=21.8 need=1256781 tD=1.03 人 | safe=342045 keep=Inf avail=-Inf chunkB=34728 pulseB=20837 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2310 zero_7 B=175846 L=21467 d=8.2 nb=2 neut=0 cmds=252 noFull=1 shQ=43634 | m=1.099 worth=9.0 cheap=7.8 over=0 dMedOther=8.3 safe(-1)=347555
+    → 🌞#1[T1] terr=28504 bal=127005 dq=4.5 cnt=242 | c=0.1 rankC=0.0 need=252291 tD=0.54 人 pulse nearCollapse bleeding | safe=347555 keep=347555 avail=-173769 chunkB=35169 pulseB=21102 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=76807 bal=650848 dq=8.5 cnt=192 | c=22.0 rankC=22.0 need=1275268 tD=1.02 人 | safe=347555 keep=Inf avail=-Inf chunkB=35169 pulseB=21102 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2315 zero_7 B=175846 L=21467 d=8.2 nb=2 neut=0 cmds=252 noFull=1 shQ=43961 | m=1.094 worth=9.0 cheap=7.8 over=0 dMedOther=8.3 safe(-1)=347555
+    → 🌞#1[T1] terr=28386 bal=123789 dq=4.4 cnt=242 | c=0.1 rankC=0.0 need=246469 tD=0.53 人 pulse nearCollapse bleeding | safe=347555 keep=347555 avail=-173769 chunkB=35169 pulseB=21102 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=77482 bal=650848 dq=8.4 cnt=192 | c=21.8 rankC=21.8 need=1276277 tD=1.01 人 | safe=347555 keep=Inf avail=-Inf chunkB=35169 pulseB=21102 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2320 zero_7 B=178079 L=21467 d=8.3 nb=2 neut=0 cmds=252 noFull=1 shQ=44519 | m=1.089 worth=9.0 cheap=7.8 over=0 dMedOther=8.4 safe(-1)=353149
+    → 🌞#1[T1] terr=27917 bal=120502 dq=4.3 cnt=242 | c=0.1 rankC=0.0 need=239057 tD=0.51 人 pulse nearCollapse bleeding | safe=353149 keep=353149 avail=-177156 chunkB=35616 pulseB=21369 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=78165 bal=660805 dq=8.5 cnt=192 | c=21.9 rankC=21.9 need=1295045 tD=1.01 人 | safe=353149 keep=Inf avail=-Inf chunkB=35616 pulseB=21369 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2325 zero_7 B=175518 L=21274 d=8.3 nb=2 neut=0 cmds=252 noFull=1 shQ=43879 | m=1.084 worth=8.9 cheap=7.8 over=0 dMedOther=7.3 safe(-1)=345867
+    → 🌞#1[T1] terr=27803 bal=117239 dq=4.2 cnt=242 | c=0.1 rankC=0.0 need=233213 tD=0.58 人 pulse nearCollapse bleeding | safe=345867 keep=345867 avail=-172405 chunkB=35104 pulseB=21062 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=79050 bal=574334 dq=7.3 cnt=186 | c=15.3 rankC=10.7 need=1215472 tD=1.00 人 pulse onMe | safe=345867 keep=Inf avail=-Inf chunkB=35104 pulseB=21062 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2330 zero_7 B=165750 L=20367 d=8.1 nb=2 neut=0 cmds=252 noFull=1 shQ=41437 | m=1.079 worth=8.8 cheap=7.9 over=0 dMedOther=7.2 safe(-1)=337238
+    → 🌞#1[T1] terr=27322 bal=113875 dq=4.2 cnt=239 | c=0.1 rankC=0.0 need=225658 tD=0.58 人 pulse nearCollapse bleeding | safe=337238 keep=337238 avail=-173430 chunkB=33150 pulseB=19890 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=80657 bal=583178 dq=7.2 cnt=176 | c=14.9 rankC=10.4 need=1208079 tD=1.00 人 pulse onMe | safe=337238 keep=Inf avail=-Inf chunkB=33150 pulseB=19890 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2335 zero_7 B=154490 L=19493 d=7.9 nb=2 neut=0 cmds=252 noFull=1 shQ=38622 | m=1.073 worth=8.5 cheap=7.9 over=0 dMedOther=7.1 safe(-1)=324341
+    → 🌞#1[T1] terr=27203 bal=110633 dq=4.1 cnt=227 | c=0.1 rankC=0.0 need=219861 tD=0.57 人 pulse nearCollapse bleeding | safe=324341 keep=324341 avail=-171661 chunkB=30898 pulseB=18539 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=82239 bal=583178 dq=7.1 cnt=169 | c=19.1 rankC=19.1 need=1186190 tD=1.00 人 pulse onMe | safe=324341 keep=Inf avail=-Inf chunkB=30898 pulseB=18539 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2340 zero_7 B=145727 L=18651 d=7.8 nb=2 neut=0 cmds=252 noFull=1 shQ=36431 | m=1.068 worth=8.3 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=317286
+    → 🌞#1[T1] terr=26445 bal=107325 dq=4.1 cnt=224 | c=0.1 rankC=0.0 need=211260 tD=0.57 人 pulse nearCollapse bleeding | safe=317286 keep=317286 avail=-173266 chunkB=29145 pulseB=17487 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=83712 bal=592217 dq=7.1 cnt=164 | c=18.7 rankC=18.7 need=1181641 tD=1.00 人 pulse onMe | safe=317286 keep=Inf avail=-Inf chunkB=29145 pulseB=17487 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2345 zero_7 B=145645 L=18651 d=7.8 nb=2 neut=0 cmds=252 noFull=1 shQ=36411 | m=1.063 worth=8.3 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=317008
+    → 🌞#1[T1] terr=25952 bal=104134 dq=4.0 cnt=224 | c=0.1 rankC=0.0 need=204001 tD=0.57 人 pulse nearCollapse bleeding | safe=317008 keep=317008 avail=-173069 chunkB=29129 pulseB=17477 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=84253 bal=592250 dq=7.0 cnt=164 | c=18.6 rankC=18.6 need=1181987 tD=1.00 人 | safe=317008 keep=Inf avail=-Inf chunkB=29129 pulseB=17477 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2350 zero_7 B=147465 L=18651 d=7.9 nb=2 neut=0 cmds=252 noFull=1 shQ=36866 | m=1.058 worth=8.4 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=322164
+    → 🌞#1[T1] terr=25242 bal=100897 dq=4.0 cnt=224 | c=0.1 rankC=0.0 need=195721 tD=0.56 人 pulse nearCollapse bleeding | safe=322164 keep=322164 avail=-176427 chunkB=29493 pulseB=17696 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=84782 bal=601429 dq=7.1 cnt=164 | c=18.7 rankC=18.7 need=1199143 tD=1.00 人 | safe=322164 keep=Inf avail=-Inf chunkB=29493 pulseB=17696 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2355 zero_7 B=2194 L=18651 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.052 worth=0.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=322164
+    → 🌞#1[T1] terr=24761 bal=97831 dq=4.0 cnt=224 | c=0.0 rankC=0.0 need=48291 tD=0.56 人 pulse nearCollapse bleeding | safe=322164 keep=322164 avail=-319995 chunkB=439 pulseB=263 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=85180 bal=601429 dq=7.1 cnt=164 | c=25.1 rankC=25.1 need=1199734 tD=1.00 人 crowdedHard | safe=322164 keep=Inf avail=-Inf chunkB=439 pulseB=263 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2360 zero_7 B=2221 L=18875 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.047 worth=0.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=327213
+    → 🌞#1[T1] terr=23810 bal=93058 dq=3.9 cnt=220 | c=0.0 rankC=0.0 need=39761 tD=0.55 人 pulse nearCollapse bleeding | safe=327213 keep=327213 avail=-325018 chunkB=444 pulseB=267 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=85459 bal=610751 dq=7.1 cnt=165 | c=25.4 rankC=25.4 need=1216777 tD=1.00 人 crowdedHard | safe=327213 keep=Inf avail=-Inf chunkB=444 pulseB=267 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2365 zero_7 B=2221 L=19314 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.042 worth=0.1 cheap=7.9 over=0 dMedOther=7.1 safe(-1)=326843
+    → 🌞#1[T1] terr=22880 bal=87296 dq=3.8 cnt=201 | c=0.0 rankC=0.0 need=32852 tD=0.54 人 pulse nearCollapse bleeding | safe=326843 keep=326843 avail=-324648 chunkB=444 pulseB=267 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=85694 bal=610751 dq=7.1 cnt=166 | c=25.3 rankC=25.3 need=1217127 tD=1.00 人 crowdedHard | safe=326843 keep=Inf avail=-Inf chunkB=444 pulseB=267 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2370 zero_7 B=2248 L=19869 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.036 worth=0.1 cheap=7.9 over=0 dMedOther=7.2 safe(-1)=331727
+    → 🌞#1[T1] terr=21548 bal=80308 dq=3.7 cnt=160 | c=0.0 rankC=0.0 need=23693 tD=0.52 人 pulse nearCollapse bleeding | safe=331727 keep=331727 avail=-329505 chunkB=450 pulseB=270 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=85904 bal=620278 dq=7.2 cnt=167 | c=25.6 rankC=25.6 need=1234416 tD=1.00 人 crowdedHard | safe=331727 keep=Inf avail=-Inf chunkB=450 pulseB=270 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2375 zero_7 B=2248 L=20182 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.031 worth=0.1 cheap=7.9 over=0 dMedOther=7.2 safe(-1)=331463
+    → 🌞#1[T1] terr=20627 bal=74878 dq=3.6 cnt=154 | c=0.0 rankC=0.0 need=15486 tD=0.50 人 pulse nearCollapse bleeding | safe=331463 keep=331463 avail=-329241 chunkB=450 pulseB=270 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=86089 bal=620278 dq=7.2 cnt=168 | c=25.6 rankC=25.6 need=1234697 tD=1.00 人 crowdedHard | safe=331463 keep=Inf avail=-Inf chunkB=450 pulseB=270 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2380 zero_7 B=2276 L=20647 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.026 worth=0.1 cheap=7.8 over=0 dMedOther=7.3 safe(-1)=336508
+    → 🌞#1[T1] terr=19399 bal=68715 dq=3.5 cnt=159 | c=0.0 rankC=0.0 need=6675 tD=0.48 人 pulse nearCollapse bleeding | safe=336508 keep=336508 avail=-334258 chunkB=455 pulseB=273 无可用(avail<=0) hNb=2
+    → Qart-ḥadašt#16[T1] terr=86225 bal=629954 dq=7.3 cnt=170 | c=25.9 rankC=25.9 need=1252147 tD=1.00 人 crowdedHard | safe=336508 keep=Inf avail=-Inf chunkB=455 pulseB=273 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2385 zero_7 B=2276 L=20970 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.021 worth=0.1 cheap=7.8 over=0 dMedOther=7.3 safe(-1)=336235
+    → Qart-ḥadašt#16[T1] terr=86279 bal=629954 dq=7.3 cnt=171 | c=25.9 rankC=25.9 need=1252234 tD=1.00 人 crowdedHard | safe=336235 keep=Inf avail=-Inf chunkB=455 pulseB=273 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2390 zero_7 B=2304 L=21455 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.016 worth=0.1 cheap=7.8 over=0 dMedOther=7.0 safe(-1)=368246
+    → Qart-ḥadašt#16[T1] terr=86279 bal=605884 dq=7.0 cnt=172 | c=14.8 rankC=10.4 need=1291109 tD=1.00 人 pulse onMe | safe=368246 keep=Inf avail=-Inf chunkB=461 pulseB=276 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2395 zero_7 B=2275 L=21581 d=0.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2048 | m=1.010 worth=0.1 cheap=7.8 over=0 dMedOther=7.0 safe(-1)=367913
+    → Qart-ḥadašt#16[T1] terr=86452 bal=605884 dq=7.0 cnt=174 | c=14.8 rankC=10.3 need=1290956 tD=1.00 人 pulse onMe | safe=367913 keep=Inf avail=-Inf chunkB=455 pulseB=273 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2400 zero_7 B=23068 L=21154 d=1.1 nb=2 neut=0 cmds=252 noFull=1 shQ=2121 | m=1.005 worth=1.1 cheap=7.8 over=0 dMedOther=8.0 safe(-1)=421099
+    → Qart-ḥadašt#16[T1] terr=87318 bal=702481 dq=8.0 cnt=169 | c=16.6 rankC=11.6 need=1461866 tD=1.00 人 pulse onMe | safe=421099 keep=Inf avail=-Inf chunkB=4614 pulseB=2768 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2405 zero_7 B=21556 L=20557 d=1.0 nb=2 neut=0 cmds=252 noFull=1 shQ=2471 | m=1.000 worth=1.0 cheap=7.8 over=0 dMedOther=8.0 safe(-1)=418913
+    → Qart-ḥadašt#16[T1] terr=88200 bal=702481 dq=8.0 cnt=182 | c=16.4 rankC=11.5 need=1458395 tD=1.00 人 pulse onMe | safe=418913 keep=Inf avail=-Inf chunkB=4311 pulseB=2587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2410 zero_7 B=20307 L=20007 d=1.0 nb=2 neut=0 cmds=252 noFull=1 shQ=2797 | m=0.995 worth=1.0 cheap=7.9 over=0 dMedOther=8.0 safe(-1)=422855
+    → Qart-ḥadašt#16[T1] terr=89113 bal=713509 dq=8.0 cnt=181 | c=16.4 rankC=11.5 need=1474587 tD=1.00 人 pulse onMe | safe=422855 keep=Inf avail=-Inf chunkB=4061 pulseB=2437 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2415 zero_7 B=18884 L=19350 d=1.0 nb=2 neut=0 cmds=252 noFull=1 shQ=3102 | m=0.989 worth=1.0 cheap=7.9 over=0 dMedOther=7.9 safe(-1)=420807
+    → Qart-ḥadašt#16[T1] terr=90005 bal=713509 dq=7.9 cnt=189 | c=16.2 rankC=11.3 need=1471295 tD=1.00 人 pulse onMe | safe=420807 keep=Inf avail=-Inf chunkB=3777 pulseB=2266 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2420 zero_7 B=17679 L=18762 d=0.9 nb=2 neut=0 cmds=252 noFull=1 shQ=3385 | m=0.984 worth=0.9 cheap=8.0 over=0 dMedOther=8.0 safe(-1)=424949
+    → Qart-ḥadašt#16[T1] terr=90935 bal=724711 dq=8.0 cnt=198 | c=16.2 rankC=11.3 need=1487951 tD=1.00 人 pulse onMe | safe=424949 keep=Inf avail=-Inf chunkB=3536 pulseB=2121 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2425 zero_7 B=16292 L=18031 d=0.9 nb=2 neut=0 cmds=252 noFull=1 shQ=3648 | m=0.979 worth=0.9 cheap=8.0 over=0 dMedOther=8.0 safe(-1)=422954
+    → Qart-ḥadašt#16[T1] terr=91872 bal=724711 dq=7.9 cnt=188 | c=16.0 rankC=11.2 need=1484699 tD=0.99 人 pulse onMe | safe=422954 keep=Inf avail=-Inf chunkB=3258 pulseB=1955 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2430 zero_7 B=15178 L=17384 d=0.9 nb=2 neut=0 cmds=252 noFull=1 shQ=3794 | m=0.974 worth=0.8 cheap=8.0 over=0 dMedOther=8.1 safe(-1)=427438
+    → Qart-ḥadašt#16[T1] terr=92789 bal=736161 dq=7.9 cnt=176 | c=16.0 rankC=11.2 need=1502047 tD=0.98 人 pulse onMe | safe=427438 keep=Inf avail=-Inf chunkB=3036 pulseB=1821 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

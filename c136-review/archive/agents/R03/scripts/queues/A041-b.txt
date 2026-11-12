@@ -1,0 +1,10 @@
+# A041 第二批调试重计算（bash scripts/heavy-queue.sh A041-b scripts/queues/A041-b.txt）
+out/trace/A041-water-reach.txt|node scripts/dbg/water-reach.mjs A041 squad 1500,2100,2700,3300,3900
+out/trace/A041-idleboats-zero_7.txt|node scripts/dbg/idle-boats.mjs A041 zero_7 1500 4170 --bucket 300
+out/trace/A041-idleboats-leo_tx.txt|node scripts/dbg/idle-boats.mjs A041 leo_tx 1500 4160 --bucket 300
+out/trace/A041-buywhy-kaito9-2385.txt|node scripts/dbg/buy-why.mjs A041 kaito9 2385 3285 --every 60
+out/trace/A041-buywhy-kaito9-3285.txt|node scripts/dbg/buy-why.mjs A041 kaito9 3285 4500 --every 45
+out/trace/A041-buywhy-noah88-3340.txt|node scripts/dbg/buy-why.mjs A041 noah88 3340 4200 --every 45
+out/trace/A041-buywhy-ryan_m-3090.txt|node scripts/dbg/buy-why.mjs A041 ryan_m 3090 4230 --every 60
+out/trace/A041-buywhy-zexos1-3210.txt|node scripts/dbg/buy-why.mjs A041 zexos1 3210 4260 --every 60
+out/trace/A041-buywhy-leo_tx-2665.txt|node scripts/dbg/buy-why.mjs A041 leo_tx 2665 4150 --every 60

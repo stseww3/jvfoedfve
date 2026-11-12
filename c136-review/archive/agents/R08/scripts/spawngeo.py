@@ -98,8 +98,8 @@ def main():
         teams = {}
         for p in g:
             teams[T.team(p)] = teams.get(T.team(p), 0) + 1
-        cross = sum(1 for i, a in enumerate(g) for b in g[i + 1:] if T.team(a) != T.team(b) and dist(a, b) <= LINK)
-        same = sum(1 for i, a in enumerate(g) for b in g[i + 1:] if T.team(a) == T.team(b) and dist(a, b) <= LINK)
+        cross = sum(1 for i, a in enumerate(g) for b in g[i + 1:] if not T.same(a, b) and dist(a, b) <= LINK)
+        same = sum(1 for i, a in enumerate(g) for b in g[i + 1:] if T.same(a, b) and dist(a, b) <= LINK)
         cx = sum(xy[p][0] for p in g) / len(g)
         cy = sum(xy[p][1] for p in g) / len(g)
         out.append(f"  {len(g)} 个号（中心 {cx:.0f},{cy:.0f}）：" + " ".join(f"{nm[p]}(T{T.team(p)})" for p in sorted(g, key=lambda p: xy[p]))
@@ -134,9 +134,9 @@ def main():
         cells = []
         for o in near:
             mate = o in T.sqIds
-            if mate and T.team(o) != T.team(p):
+            if mate and not T.same(o, p):
                 nn3cross += 1
-            cells.append(f"{T.nm(o)} {dist(p, o):.0f}{'=' if T.team(o) == T.team(p) else '≠'}")
+            cells.append(f"{T.nm(o)} {dist(p, o):.0f}{'=' if T.same(o, p) else '≠'}")
         out.append(f"    {nm[p]:<16} | " + "；".join(cells))
     out.append(f"  最近 3 个真人里是异队编队友的：{nn3cross} / {3 * len(sq)}")
 

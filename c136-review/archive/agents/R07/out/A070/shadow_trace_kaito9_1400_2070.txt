@@ -1,0 +1,804 @@
+# A070 kaito9 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   首选目标无可用兵（avail<=0）: 52 拍（t=1500~1785）；可用兵 -84338~-13843，一条指令下限(20%余额) 19524~39088，比值 -422%~-36%
+#   出手打人/bot: 58 拍（t=1515~2070）；可用兵 6886~77594，一条指令下限(20%余额) 19969~55731，比值 22%~175%
+#   有可用兵但没发（其他）: 5 拍（t=1800~2025）；可用兵 6965~73716，一条指令下限(20%余额) 30960~48263，比值 22%~157%
+#   └ 「出手打人/bot」里：58 条对人/bot 的出兵共约 300775 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 kaito9 B=47689 L=16207 d=2.9 nb=6 neut=79 cmds=107 noFull=1 shQ=7982 | m=1.400 worth=4.1 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=138007
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 kaito9 B=47689 L=16286 d=2.9 nb=6 neut=61 cmds=107 noFull=1 shQ=9540 | m=1.405 worth=4.1 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=138007
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 kaito9 B=48924 L=16323 d=3.0 nb=6 neut=51 cmds=107 noFull=1 shQ=11094 | m=1.410 worth=4.2 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=65345
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 kaito9 B=48924 L=16369 d=3.0 nb=6 neut=44 cmds=107 noFull=1 shQ=12231 | m=1.415 worth=4.2 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=65306
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 kaito9 B=50176 L=16393 d=3.1 nb=6 neut=37 cmds=107 noFull=1 shQ=12544 | m=1.420 worth=4.3 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=141451
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 kaito9 B=50176 L=16420 d=3.1 nb=6 neut=29 cmds=107 noFull=1 shQ=12544 | m=1.425 worth=4.4 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=141451
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 kaito9 B=51445 L=16431 d=3.1 nb=6 neut=26 cmds=107 noFull=1 shQ=12861 | m=1.430 worth=4.5 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=145029
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 kaito9 B=51445 L=16439 d=3.1 nb=6 neut=23 cmds=107 noFull=1 shQ=12861 | m=1.435 worth=4.5 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=145029
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 kaito9 B=82141 L=16439 d=5.0 nb=6 neut=22 cmds=107 noFull=1 shQ=14878 | m=1.440 worth=7.2 cheap=4.0 over=0 dMedOther=3.6 safe(-1)=148654
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 kaito9 B=82141 L=16439 d=5.0 nb=6 neut=22 cmds=107 noFull=1 shQ=17433 | m=1.445 worth=7.2 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=148654
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 kaito9 B=84169 L=16439 d=5.1 nb=6 neut=22 cmds=107 noFull=1 shQ=19986 | m=1.450 worth=7.4 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=152325
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 kaito9 B=84169 L=16439 d=5.1 nb=6 neut=22 cmds=107 noFull=1 shQ=21042 | m=1.455 worth=7.4 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=152325
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 kaito9 B=86222 L=16439 d=5.2 nb=6 neut=22 cmds=107 noFull=1 shQ=21555 | m=1.460 worth=7.7 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=156041
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 kaito9 B=8641 L=16439 d=0.5 nb=6 neut=22 cmds=107 noFull=1 shQ=2160 | m=1.465 worth=0.8 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=156041
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 kaito9 B=8848 L=16439 d=0.5 nb=6 neut=22 cmds=107 noFull=1 shQ=2212 | m=1.470 worth=0.8 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=159785
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 kaito9 B=8848 L=16648 d=0.5 nb=6 neut=5 cmds=107 noFull=1 shQ=2212 | m=1.475 worth=0.8 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=159785
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 kaito9 B=9098 L=16710 d=0.5 nb=6 neut=1 cmds=107 noFull=1 shQ=2274 | m=1.480 worth=0.8 cheap=4.2 over=0 dMedOther=3.8 safe(-1)=163571
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 kaito9 B=78486 L=16711 d=4.7 nb=6 neut=0 cmds=107 noFull=1 shQ=3665 | m=1.485 worth=7.0 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=163571
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 kaito9 B=80322 L=16711 d=4.8 nb=6 neut=0 cmds=107 noFull=1 shQ=5980 | m=1.490 worth=7.2 cheap=4.3 over=0 dMedOther=3.8 safe(-1)=167398
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 kaito9 B=80322 L=16711 d=4.8 nb=6 neut=0 cmds=107 noFull=1 shQ=8319 | m=1.495 worth=7.2 cheap=4.3 over=0 dMedOther=3.3 safe(-1)=167398
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 kaito9 B=98888 L=16711 d=5.9 nb=6 neut=0 cmds=107 noFull=1 shQ=10752 | m=1.500 worth=8.9 cheap=4.3 over=0 dMedOther=4.3 safe(-1)=178934
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4786 tD=0.00 机 | safe=178934 keep=178934 avail=-81204 chunkB=19778 pulseB=11867 无可用(avail<=0) hNb=1
+    → AI#60 terr=2211 bal=2268 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7361 tD=0.24 机 | safe=178934 keep=178934 avail=-81204 chunkB=19778 pulseB=11867 无可用(avail<=0) hNb=1
+    → AI#201 terr=1270 bal=1312 dq=1.0 cnt=36 | c=5.9 rankC=5.9 need=3881 tD=0.24 机 | safe=178934 keep=178934 avail=-81204 chunkB=19778 pulseB=11867 无可用(avail<=0) hNb=1
+    → AI#496 terr=2459 bal=13700 dq=5.6 cnt=56 | c=15.8 rankC=15.8 need=27658 tD=1.29 机 | safe=178934 keep=Inf avail=-Inf chunkB=19778 pulseB=11867 价高(c>=worth)→break hNb=1
+    → AI#66 terr=510 bal=533 dq=1.0 cnt=125 | c=17.5 rankC=17.5 need=1616 tD=0.24 机 | safe=178934 keep=Inf avail=-Inf chunkB=19778 pulseB=11867 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=16439 bal=169702 dq=10.3 cnt=46 | c=35.8 rankC=35.8 need=327141 tD=2.39 人 crowdedHard | safe=178934 keep=Inf avail=-Inf chunkB=19778 pulseB=11867 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1505 kaito9 B=97620 L=16577 d=5.9 nb=6 neut=0 cmds=107 noFull=1 shQ=13591 | m=1.499 worth=8.8 cheap=4.4 over=0 dMedOther=4.3 safe(-1)=178934
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=63 | c=2.4 rankC=2.4 need=4786 tD=0.00 机 | safe=178934 keep=178934 avail=-82457 chunkB=19524 pulseB=11714 无可用(avail<=0) hNb=1
+    → AI#60 terr=2235 bal=2268 dq=1.0 cnt=162 | c=4.9 rankC=4.9 need=7397 tD=0.24 机 | safe=178934 keep=178934 avail=-82457 chunkB=19524 pulseB=11714 无可用(avail<=0) hNb=1
+    → AI#201 terr=1335 bal=1312 dq=1.0 cnt=36 | c=5.6 rankC=5.6 need=4049 tD=0.23 机 | safe=178934 keep=178934 avail=-82457 chunkB=19524 pulseB=11714 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.9 rankC=5.9 need=585 tD=0.00 机 | safe=178934 keep=178934 avail=-82457 chunkB=19524 pulseB=11714 无可用(avail<=0) hNb=1
+    → AI#496 terr=2459 bal=13700 dq=5.6 cnt=56 | c=15.8 rankC=15.8 need=27668 tD=1.29 机 | safe=178934 keep=Inf avail=-Inf chunkB=19524 pulseB=11714 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=16627 bal=169702 dq=10.2 cnt=46 | c=35.5 rankC=35.5 need=327423 tD=2.37 人 crowdedHard | safe=178934 keep=Inf avail=-Inf chunkB=19524 pulseB=11714 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1510 kaito9 B=99845 L=16577 d=6.0 nb=6 neut=0 cmds=107 noFull=1 shQ=16390 | m=1.498 worth=9.0 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=183013
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4786 tD=0.00 机 | safe=183013 keep=183013 avail=-84338 chunkB=19969 pulseB=11981 无可用(avail<=0) hNb=1
+    → AI#60 terr=2259 bal=2319 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7524 tD=0.23 机 | safe=183013 keep=183013 avail=-84338 chunkB=19969 pulseB=11981 无可用(avail<=0) hNb=1
+    → AI#201 terr=1396 bal=1341 dq=1.0 cnt=36 | c=5.5 rankC=5.5 need=4252 tD=0.22 机 | safe=183013 keep=183013 avail=-84338 chunkB=19969 pulseB=11981 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.7 rankC=5.7 need=508 tD=0.00 机 | safe=183013 keep=183013 avail=-84338 chunkB=19969 pulseB=11981 无可用(avail<=0) hNb=1
+    → AI#496 terr=2459 bal=14012 dq=5.7 cnt=56 | c=16.1 rankC=16.1 need=28226 tD=1.29 机 | safe=183013 keep=Inf avail=-Inf chunkB=19969 pulseB=11981 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=16886 bal=173571 dq=10.3 cnt=46 | c=35.7 rankC=35.7 need=334704 tD=2.33 人 crowdedHard | safe=183013 keep=Inf avail=-Inf chunkB=19969 pulseB=11981 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1515 kaito9 B=99845 L=16577 d=6.0 nb=6 neut=0 cmds=108 noFull=1 shQ=19226 | m=1.498 worth=9.0 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=83542
+    → AI#415 terr=3190 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4786 tD=0.00 机 | safe=83542 keep=83542 avail=15133 chunkB=19969 pulseB=11981  x=6172 hNb=1
+    → AI#496 terr=2459 bal=281 dq=0.1 cnt=56 | c=2.9 rankC=2.9 need=4100 tD=0.03 机 | safe=83542 keep=83542 avail=15133 chunkB=19969 pulseB=11981  x=5293 hNb=1
+    → AI#60 terr=2271 bal=2319 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7542 tD=0.23 机 | safe=83542 keep=83542 avail=15133 chunkB=19969 pulseB=11981  x=9914 hNb=1
+    → AI#201 terr=1427 bal=1341 dq=0.9 cnt=36 | c=5.4 rankC=5.4 need=4331 tD=0.21 机 | safe=83542 keep=83542 avail=15133 chunkB=19969 pulseB=11981  x=5522 hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.7 rankC=5.7 need=510 tD=0.00 机 | safe=83542 keep=83542 avail=15133 chunkB=19969 pulseB=11981  x=1040 hNb=1
+    → Papik#0[T1] terr=17038 bal=173571 dq=10.2 cnt=46 | c=35.4 rankC=35.4 need=334932 tD=2.32 人 crowdedHard | safe=83542 keep=Inf avail=-Inf chunkB=19969 pulseB=11981 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=63 → AI#415（约 6240 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1520 kaito9 B=102091 L=16577 d=6.2 nb=6 neut=0 cmds=109 noFull=1 shQ=22053 | m=1.497 worth=9.2 cheap=4.4 over=0 dMedOther=4.5 safe(-1)=77655
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=77655 keep=77655 avail=23240 chunkB=20418 pulseB=12251  x=6399 hNb=1
+    → AI#496 terr=2459 bal=287 dq=0.1 cnt=56 | c=2.9 rankC=2.9 need=4113 tD=0.03 机 | safe=77655 keep=77655 avail=23240 chunkB=20418 pulseB=12251  x=5309 hNb=1
+    → AI#60 terr=2297 bal=2371 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7672 tD=0.23 机 | safe=77655 keep=77655 avail=23240 chunkB=20418 pulseB=12251  x=10076 hNb=1
+    → AI#201 terr=1492 bal=1371 dq=0.9 cnt=36 | c=5.3 rankC=5.3 need=4545 tD=0.20 机 | safe=77655 keep=77655 avail=23240 chunkB=20418 pulseB=12251  x=5790 hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.8 rankC=5.8 need=512 tD=0.00 机 | safe=77655 keep=78671 avail=22224 chunkB=20418 pulseB=12251  x=1042 hNb=1
+    → Papik#0[T1] terr=17279 bal=163091 dq=9.4 cnt=46 | c=33.0 rankC=33.0 need=316617 tD=2.11 人 crowdedHard | safe=77655 keep=Inf avail=-Inf chunkB=20418 pulseB=12251 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=64 → AI#415（约 6480 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1525 kaito9 B=102091 L=16577 d=6.2 nb=6 neut=0 cmds=109 noFull=1 shQ=24909 | m=1.496 worth=9.2 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=182407
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=182407 keep=182407 avail=-81512 chunkB=20418 pulseB=12251 无可用(avail<=0) hNb=1
+    → AI#496 terr=2492 bal=287 dq=0.1 cnt=56 | c=2.9 rankC=2.9 need=4182 tD=0.02 机 | safe=182407 keep=182407 avail=-81512 chunkB=20418 pulseB=12251 无可用(avail<=0) hNb=1
+    → AI#60 terr=2323 bal=2371 dq=1.0 cnt=162 | c=4.9 rankC=4.9 need=7713 tD=0.22 机 | safe=182407 keep=182407 avail=-81512 chunkB=20418 pulseB=12251 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1412 dq=0.9 cnt=36 | c=5.3 rankC=5.3 need=4620 tD=0.20 机 | safe=182407 keep=182407 avail=-81512 chunkB=20418 pulseB=12251 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.8 rankC=5.8 need=514 tD=0.00 机 | safe=182407 keep=182407 avail=-81512 chunkB=20418 pulseB=12251 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=17497 bal=163091 dq=9.3 cnt=46 | c=32.6 rankC=32.6 need=316937 tD=2.01 人 crowdedHard | safe=182407 keep=Inf avail=-Inf chunkB=20418 pulseB=12251 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1530 kaito9 B=104357 L=16577 d=6.3 nb=6 neut=0 cmds=110 noFull=1 shQ=26089 | m=1.496 worth=9.4 cheap=4.5 over=0 dMedOther=4.7 safe(-1)=95209
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=95209 keep=95209 avail=7926 chunkB=20871 pulseB=12523  x=6399 hNb=1
+    → AI#496 terr=2506 bal=293 dq=0.1 cnt=56 | c=2.9 rankC=2.9 need=4224 tD=0.03 机 | safe=95209 keep=95209 avail=7926 chunkB=20871 pulseB=12523  x=5448 hNb=1
+    → AI#60 terr=2334 bal=2423 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7821 tD=0.22 机 | safe=95209 keep=95209 avail=7926 chunkB=20871 pulseB=12523 不够一条(x=7926)→continue hNb=1
+    → AI#201 terr=1492 bal=1443 dq=1.0 cnt=36 | c=5.4 rankC=5.4 need=4678 tD=0.21 机 | safe=95209 keep=95209 avail=7926 chunkB=20871 pulseB=12523  x=5955 hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.8 rankC=5.8 need=518 tD=0.00 机 | safe=95209 keep=95209 avail=7926 chunkB=20871 pulseB=12523  x=1050 hNb=1
+    → Papik#0[T1] terr=17775 bal=166711 dq=9.4 cnt=46 | c=32.8 rankC=32.8 need=323813 tD=2.01 人 crowdedHard | safe=95209 keep=Inf avail=-Inf chunkB=20871 pulseB=12523 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=62 → AI#415（约 6420 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1535 kaito9 B=104357 L=16577 d=6.3 nb=6 neut=0 cmds=110 noFull=1 shQ=26089 | m=1.495 worth=9.4 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=155290
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=155290 keep=155290 avail=-52155 chunkB=20871 pulseB=12523 无可用(avail<=0) hNb=1
+    → AI#496 terr=2452 bal=279 dq=0.1 cnt=55 | c=2.9 rankC=2.9 need=4093 tD=0.02 机 | safe=155290 keep=155290 avail=-52155 chunkB=20871 pulseB=12523 无可用(avail<=0) hNb=1
+    → AI#60 terr=2348 bal=2423 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7841 tD=0.22 机 | safe=155290 keep=155290 avail=-52155 chunkB=20871 pulseB=12523 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1443 dq=1.0 cnt=36 | c=5.4 rankC=5.4 need=4681 tD=0.21 机 | safe=155290 keep=155290 avail=-52155 chunkB=20871 pulseB=12523 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.8 rankC=5.8 need=520 tD=0.00 机 | safe=155290 keep=155290 avail=-52155 chunkB=20871 pulseB=12523 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=17955 bal=166711 dq=9.3 cnt=46 | c=32.5 rankC=32.5 need=324083 tD=2.02 人 crowdedHard | safe=155290 keep=Inf avail=-Inf chunkB=20871 pulseB=12523 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1540 kaito9 B=106642 L=16577 d=6.4 nb=6 neut=0 cmds=110 noFull=1 shQ=26660 | m=1.494 worth=9.6 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=158690
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#496 terr=2309 bal=257 dq=0.1 cnt=53 | c=3.0 rankC=3.0 need=3764 tD=0.02 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#60 terr=2359 bal=2476 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7954 tD=0.23 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1474 dq=1.0 cnt=36 | c=5.5 rankC=5.5 need=4742 tD=0.21 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.9 rankC=5.9 need=522 tD=0.00 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=18220 bal=170361 dq=9.4 cnt=46 | c=32.7 rankC=32.7 need=330975 tD=2.01 人 crowdedHard | safe=158690 keep=Inf avail=-Inf chunkB=21328 pulseB=12797 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1545 kaito9 B=106642 L=16577 d=6.4 nb=6 neut=0 cmds=110 noFull=1 shQ=26660 | m=1.493 worth=9.6 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=158690
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#496 terr=2235 bal=244 dq=0.1 cnt=53 | c=3.0 rankC=3.0 need=3593 tD=0.02 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#60 terr=2363 bal=2476 dq=1.0 cnt=162 | c=5.0 rankC=5.0 need=7960 tD=0.23 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1474 dq=1.0 cnt=36 | c=5.5 rankC=5.5 need=4746 tD=0.21 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.9 rankC=5.9 need=524 tD=0.00 机 | safe=158690 keep=158690 avail=-53297 chunkB=21328 pulseB=12797 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=18386 bal=170361 dq=9.3 cnt=46 | c=32.5 rankC=32.5 need=331231 tD=2.00 人 crowdedHard | safe=158690 keep=Inf avail=-Inf chunkB=21328 pulseB=12797 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1550 kaito9 B=108934 L=16577 d=6.6 nb=6 neut=0 cmds=110 noFull=1 shQ=27233 | m=1.492 worth=9.8 cheap=4.6 over=0 dMedOther=4.5 safe(-1)=162101
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#60 terr=2369 bal=2529 dq=1.1 cnt=162 | c=5.1 rankC=5.1 need=8062 tD=0.24 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1505 dq=1.0 cnt=36 | c=5.6 rankC=5.6 need=4803 tD=0.23 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.9 rankC=5.9 need=528 tD=0.00 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#496 terr=2088 bal=13164 dq=6.3 cnt=51 | c=18.1 rankC=18.1 need=25159 tD=1.41 机 | safe=162101 keep=Inf avail=-Inf chunkB=21787 pulseB=13072 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=18693 bal=159918 dq=8.6 cnt=46 | c=30.2 rankC=30.2 need=313075 tD=1.91 人 crowdedHard | safe=162101 keep=Inf avail=-Inf chunkB=21787 pulseB=13072 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1555 kaito9 B=108934 L=16577 d=6.6 nb=6 neut=0 cmds=110 noFull=1 shQ=27233 | m=1.492 worth=9.8 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=162101
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#60 terr=2372 bal=2529 dq=1.1 cnt=162 | c=5.1 rankC=5.1 need=8066 tD=0.24 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1505 dq=1.0 cnt=36 | c=5.6 rankC=5.6 need=4807 tD=0.23 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=5.9 rankC=5.9 need=530 tD=0.00 机 | safe=162101 keep=162101 avail=-54443 chunkB=21787 pulseB=13072 无可用(avail<=0) hNb=1
+    → AI#496 terr=1947 bal=11758 dq=6.0 cnt=50 | c=17.7 rankC=17.7 need=22093 tD=1.36 机 | safe=162101 keep=Inf avail=-Inf chunkB=21787 pulseB=13072 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=18863 bal=159918 dq=8.5 cnt=46 | c=29.9 rankC=29.9 need=313337 tD=1.91 人 crowdedHard | safe=162101 keep=Inf avail=-Inf chunkB=21787 pulseB=13072 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1560 kaito9 B=111243 L=16577 d=6.7 nb=6 neut=0 cmds=110 noFull=1 shQ=27810 | m=1.491 worth=10.0 cheap=4.7 over=0 dMedOther=4.5 safe(-1)=165537
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#60 terr=2374 bal=2582 dq=1.1 cnt=162 | c=5.1 rankC=5.1 need=8165 tD=0.24 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1536 dq=1.0 cnt=36 | c=5.6 rankC=5.6 need=4868 tD=0.23 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.0 rankC=6.0 need=532 tD=0.00 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#496 terr=1878 bal=11327 dq=6.0 cnt=50 | c=17.8 rankC=17.8 need=21022 tD=1.35 机 | safe=165537 keep=Inf avail=-Inf chunkB=22249 pulseB=13349 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=19091 bal=163308 dq=8.6 cnt=46 | c=30.2 rankC=30.2 need=319721 tD=1.91 人 crowdedHard | safe=165537 keep=Inf avail=-Inf chunkB=22249 pulseB=13349 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1565 kaito9 B=111243 L=16577 d=6.7 nb=6 neut=0 cmds=110 noFull=1 shQ=27810 | m=1.490 worth=10.0 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=165537
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#60 terr=2376 bal=2582 dq=1.1 cnt=162 | c=5.1 rankC=5.1 need=8166 tD=0.24 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1536 dq=1.0 cnt=36 | c=5.6 rankC=5.6 need=4872 tD=0.23 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.0 rankC=6.0 need=534 tD=0.00 机 | safe=165537 keep=165537 avail=-55597 chunkB=22249 pulseB=13349 无可用(avail<=0) hNb=1
+    → AI#496 terr=1744 bal=10049 dq=5.8 cnt=49 | c=17.4 rankC=17.4 need=18216 tD=1.30 机 | safe=165537 keep=Inf avail=-Inf chunkB=22249 pulseB=13349 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=19238 bal=182235 dq=9.5 cnt=46 | c=33.1 rankC=33.1 need=353673 tD=2.13 人 crowdedHard | safe=165537 keep=Inf avail=-Inf chunkB=22249 pulseB=13349 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1570 kaito9 B=113567 L=16577 d=6.9 nb=6 neut=0 cmds=110 noFull=1 shQ=28391 | m=1.490 worth=10.2 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=168996
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1568 dq=1.1 cnt=36 | c=5.7 rankC=5.7 need=4931 tD=0.23 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=538 tD=0.00 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#60 terr=2376 bal=4812 dq=2.0 cnt=162 | c=7.3 rankC=7.3 need=12141 tD=0.45 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#496 terr=1613 bal=9042 dq=5.6 cnt=48 | c=17.4 rankC=17.4 need=15872 tD=1.24 机 | safe=168996 keep=Inf avail=-Inf chunkB=22713 pulseB=13628 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=19465 bal=186043 dq=9.6 cnt=46 | c=33.4 rankC=33.4 need=360797 tD=2.12 人 crowdedHard | safe=168996 keep=Inf avail=-Inf chunkB=22713 pulseB=13628 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1575 kaito9 B=113567 L=16577 d=6.9 nb=6 neut=0 cmds=110 noFull=1 shQ=28391 | m=1.489 worth=10.2 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=168996
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1568 dq=1.1 cnt=36 | c=5.7 rankC=5.7 need=4935 tD=0.23 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=540 tD=0.00 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#60 terr=2376 bal=4812 dq=2.0 cnt=162 | c=7.3 rankC=7.3 need=12141 tD=0.45 机 | safe=168996 keep=168996 avail=-56759 chunkB=22713 pulseB=13628 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=8460 dq=5.5 cnt=47 | c=17.2 rankC=17.2 need=14606 tD=1.22 机 | safe=168996 keep=Inf avail=-Inf chunkB=22713 pulseB=13628 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=19623 bal=186043 dq=9.5 cnt=46 | c=33.1 rankC=33.1 need=361042 tD=2.11 人 crowdedHard | safe=168996 keep=Inf avail=-Inf chunkB=22713 pulseB=13628 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1580 kaito9 B=115906 L=16577 d=7.0 nb=6 neut=0 cmds=110 noFull=1 shQ=28976 | m=1.488 worth=10.4 cheap=4.8 over=0 dMedOther=4.3 safe(-1)=172620
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1600 dq=1.1 cnt=36 | c=5.8 rankC=5.8 need=4998 tD=0.25 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=542 tD=0.00 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#60 terr=2376 bal=4911 dq=2.1 cnt=162 | c=7.4 rankC=7.4 need=12317 tD=0.48 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=8634 dq=5.6 cnt=47 | c=17.5 rankC=17.5 need=14882 tD=1.30 机 | safe=172620 keep=Inf avail=-Inf chunkB=23181 pulseB=13909 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=19868 bal=189875 dq=9.6 cnt=46 | c=33.4 rankC=33.4 need=368228 tD=2.23 人 crowdedHard | safe=172620 keep=Inf avail=-Inf chunkB=23181 pulseB=13909 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1585 kaito9 B=115906 L=16577 d=7.0 nb=6 neut=0 cmds=110 noFull=1 shQ=28976 | m=1.487 worth=10.4 cheap=4.9 over=0 dMedOther=4.3 safe(-1)=172620
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#60 terr=2376 bal=99 dq=0.0 cnt=162 | c=5.3 rankC=5.3 need=8495 tD=0.01 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1600 dq=1.1 cnt=36 | c=5.8 rankC=5.8 need=5002 tD=0.25 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=544 tD=0.00 机 | safe=172620 keep=172620 avail=-58072 chunkB=23181 pulseB=13909 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=8634 dq=5.6 cnt=47 | c=17.5 rankC=17.5 need=14894 tD=1.30 机 | safe=172620 keep=Inf avail=-Inf chunkB=23181 pulseB=13909 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=20029 bal=189875 dq=9.5 cnt=46 | c=33.1 rankC=33.1 need=368473 tD=2.22 人 crowdedHard | safe=172620 keep=Inf avail=-Inf chunkB=23181 pulseB=13909 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1590 kaito9 B=116387 L=16413 d=7.1 nb=6 neut=0 cmds=110 noFull=1 shQ=29096 | m=1.486 worth=10.5 cheap=4.9 over=0 dMedOther=4.0 safe(-1)=176124
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=176124 keep=176124 avail=-61100 chunkB=23277 pulseB=13966 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=101 dq=0.0 cnt=164 | c=3.1 rankC=3.1 need=4675 tD=0.01 机 | safe=176124 keep=176124 avail=-61100 chunkB=23277 pulseB=13966 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1632 dq=1.1 cnt=36 | c=5.8 rankC=5.8 need=5062 tD=0.27 机 | safe=176124 keep=176124 avail=-61100 chunkB=23277 pulseB=13966 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=548 tD=0.00 机 | safe=176124 keep=176124 avail=-61100 chunkB=23277 pulseB=13966 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=8809 dq=5.7 cnt=47 | c=17.8 rankC=17.8 need=15172 tD=1.42 机 | safe=176124 keep=Inf avail=-Inf chunkB=23277 pulseB=13966 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=20307 bal=178027 dq=8.8 cnt=46 | c=30.9 rankC=30.9 need=347780 tD=2.19 人 crowdedHard | safe=176124 keep=Inf avail=-Inf chunkB=23277 pulseB=13966 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1595 kaito9 B=116220 L=16413 d=7.1 nb=6 neut=0 cmds=110 noFull=1 shQ=29055 | m=1.486 worth=10.5 cheap=5.0 over=0 dMedOther=3.9 safe(-1)=176124
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.5 rankC=2.5 need=4968 tD=0.00 机 | safe=176124 keep=176124 avail=-61265 chunkB=23244 pulseB=13946 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=118 dq=0.0 cnt=164 | c=2.7 rankC=2.7 need=4020 tD=0.01 机 | safe=176124 keep=176124 avail=-61265 chunkB=23244 pulseB=13946 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=33 dq=0.0 cnt=36 | c=3.3 rankC=3.3 need=2250 tD=0.01 机 | safe=176124 keep=176124 avail=-61265 chunkB=23244 pulseB=13946 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.1 rankC=6.1 need=550 tD=0.00 机 | safe=176124 keep=176124 avail=-61265 chunkB=23244 pulseB=13946 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=8809 dq=5.7 cnt=47 | c=17.8 rankC=17.8 need=15197 tD=1.44 机 | safe=176124 keep=Inf avail=-Inf chunkB=23244 pulseB=13946 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=20588 bal=178027 dq=8.6 cnt=46 | c=30.5 rankC=30.5 need=348191 tD=2.19 人 crowdedHard | safe=176124 keep=Inf avail=-Inf chunkB=23244 pulseB=13946 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1600 kaito9 B=134957 L=16413 d=8.2 nb=6 neut=0 cmds=110 noFull=1 shQ=29729 | m=1.485 worth=12.2 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=188194
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.6 rankC=2.6 need=4968 tD=0.00 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2660 dq=1.0 cnt=164 | c=5.1 rankC=5.1 need=8551 tD=0.21 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#201 terr=1492 bal=1526 dq=1.0 cnt=36 | c=5.8 rankC=5.8 need=4885 tD=0.21 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.8 rankC=6.8 need=552 tD=0.00 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#496 terr=1548 bal=10533 dq=6.8 cnt=47 | c=20.8 rankC=20.8 need=17829 tD=1.38 机 | safe=188194 keep=Inf avail=-Inf chunkB=26991 pulseB=16195 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=21011 bal=202457 dq=9.6 cnt=46 | c=33.7 rankC=33.7 need=392380 tD=1.95 人 crowdedHard | safe=188194 keep=Inf avail=-Inf chunkB=26991 pulseB=16195 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1605 kaito9 B=134957 L=16413 d=8.2 nb=6 neut=0 cmds=110 noFull=1 shQ=33084 | m=1.484 worth=12.2 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=188194
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.6 rankC=2.6 need=4968 tD=0.00 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2660 dq=1.0 cnt=164 | c=5.1 rankC=5.1 need=8551 tD=0.21 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#201 terr=1540 bal=1534 dq=1.0 cnt=36 | c=5.7 rankC=5.7 need=5017 tD=0.20 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#66 terr=644 bal=0 dq=0.0 cnt=134 | c=6.8 rankC=6.8 need=554 tD=0.00 机 | safe=188194 keep=188194 avail=-54818 chunkB=26991 pulseB=16195 无可用(avail<=0) hNb=1
+    → AI#496 terr=1500 bal=9843 dq=6.6 cnt=47 | c=20.4 rankC=20.4 need=16455 tD=1.34 机 | safe=188194 keep=Inf avail=-Inf chunkB=26991 pulseB=16195 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=21290 bal=202457 dq=9.5 cnt=46 | c=33.3 rankC=33.3 need=392794 tD=1.94 人 crowdedHard | safe=188194 keep=Inf avail=-Inf chunkB=26991 pulseB=16195 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1610 kaito9 B=137615 L=16413 d=8.4 nb=6 neut=0 cmds=110 noFull=1 shQ=34403 | m=1.484 worth=12.4 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=191901
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.6 rankC=2.6 need=4968 tD=0.00 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2712 dq=1.1 cnt=164 | c=5.2 rankC=5.2 need=8644 tD=0.22 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#201 terr=1540 bal=1564 dq=1.0 cnt=36 | c=5.8 rankC=5.8 need=5074 tD=0.21 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=6.8 rankC=6.8 need=560 tD=0.00 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#496 terr=1499 bal=10026 dq=6.7 cnt=46 | c=20.7 rankC=20.7 need=16736 tD=1.36 机 | safe=191901 keep=Inf avail=-Inf chunkB=27523 pulseB=16514 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=21550 bal=206624 dq=9.6 cnt=46 | c=33.5 rankC=33.5 need=400612 tD=1.95 人 crowdedHard | safe=191901 keep=Inf avail=-Inf chunkB=27523 pulseB=16514 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1615 kaito9 B=137615 L=16413 d=8.4 nb=6 neut=0 cmds=110 noFull=1 shQ=34403 | m=1.483 worth=12.4 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=191901
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.6 rankC=2.6 need=4968 tD=0.00 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2712 dq=1.1 cnt=164 | c=5.2 rankC=5.2 need=8644 tD=0.22 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#201 terr=1540 bal=1564 dq=1.0 cnt=36 | c=5.8 rankC=5.8 need=5077 tD=0.21 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=6.8 rankC=6.8 need=562 tD=0.00 机 | safe=191901 keep=191901 avail=-55898 chunkB=27523 pulseB=16514 无可用(avail<=0) hNb=1
+    → AI#496 terr=1499 bal=10026 dq=6.7 cnt=46 | c=20.7 rankC=20.7 need=16765 tD=1.37 机 | safe=191901 keep=Inf avail=-Inf chunkB=27523 pulseB=16514 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=21666 bal=206624 dq=9.5 cnt=46 | c=33.3 rankC=33.3 need=400785 tD=1.95 人 crowdedHard | safe=191901 keep=Inf avail=-Inf chunkB=27523 pulseB=16514 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1620 kaito9 B=140284 L=16413 d=8.5 nb=6 neut=0 cmds=111 noFull=1 shQ=35071 | m=1.482 worth=12.7 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=104501
+    → AI#415 terr=3311 bal=0 dq=0.0 cnt=63 | c=2.6 rankC=2.6 need=4968 tD=0.00 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=6399 hNb=1
+    → AI#496 terr=1499 bal=204 dq=0.1 cnt=46 | c=4.1 rankC=4.1 need=2044 tD=0.03 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=2693 hNb=1
+    → AI#60 terr=2540 bal=2764 dq=1.1 cnt=164 | c=5.3 rankC=5.3 need=8736 tD=0.22 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=11413 hNb=1
+    → AI#201 terr=1540 bal=1594 dq=1.0 cnt=36 | c=5.8 rankC=5.8 need=5137 tD=0.21 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=6530 hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=6.9 rankC=6.9 need=564 tD=0.00 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=1110 hNb=1
+    → Papik#0[T1] terr=21841 bal=210632 dq=9.6 cnt=46 | c=33.7 rankC=33.7 need=408188 tD=1.97 人 crowdedHard | safe=104501 keep=Inf avail=-Inf chunkB=28057 pulseB=16834 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=46 → AI#415（约 6438 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1625 kaito9 B=140284 L=16413 d=8.5 nb=6 neut=0 cmds=112 noFull=1 shQ=35071 | m=1.481 worth=12.7 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=104501
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=6620 hNb=1
+    → AI#496 terr=1499 bal=204 dq=0.1 cnt=46 | c=4.1 rankC=4.1 need=2046 tD=0.03 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=2696 hNb=1
+    → AI#60 terr=2540 bal=2764 dq=1.1 cnt=164 | c=5.3 rankC=5.3 need=8736 tD=0.22 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=11413 hNb=1
+    → AI#201 terr=1540 bal=1594 dq=1.0 cnt=36 | c=5.8 rankC=5.8 need=5141 tD=0.21 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=6534 hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=6.9 rankC=6.9 need=566 tD=0.00 机 | safe=104501 keep=104501 avail=34140 chunkB=28057 pulseB=16834  x=1113 hNb=1
+    → Papik#0[T1] terr=21961 bal=210632 dq=9.6 cnt=46 | c=33.5 rankC=33.5 need=408368 tD=1.97 人 crowdedHard | safe=104501 keep=Inf avail=-Inf chunkB=28057 pulseB=16834 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=48 → AI#415（约 6712 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1630 kaito9 B=142949 L=16413 d=8.7 nb=6 neut=0 cmds=112 noFull=1 shQ=35737 | m=1.480 worth=12.9 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=195012
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#496 terr=1596 bal=207 dq=0.1 cnt=47 | c=4.0 rankC=4.0 need=2257 tD=0.03 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2816 dq=1.1 cnt=164 | c=5.3 rankC=5.3 need=8829 tD=0.23 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#201 terr=1443 bal=1463 dq=1.0 cnt=35 | c=6.0 rankC=6.0 need=4682 tD=0.21 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.0 rankC=7.0 need=570 tD=0.00 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22148 bal=214634 dq=9.7 cnt=46 | c=33.8 rankC=33.8 need=415778 tD=1.98 人 crowdedHard | safe=195012 keep=Inf avail=-Inf chunkB=28590 pulseB=17154 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1635 kaito9 B=142949 L=16413 d=8.7 nb=6 neut=0 cmds=112 noFull=1 shQ=35737 | m=1.480 worth=12.9 cheap=5.3 over=0 dMedOther=4.9 safe(-1)=195012
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#496 terr=1696 bal=207 dq=0.1 cnt=48 | c=3.8 rankC=3.8 need=2470 tD=0.03 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2816 dq=1.1 cnt=164 | c=5.3 rankC=5.3 need=8829 tD=0.23 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#201 terr=1343 bal=1303 dq=1.0 cnt=34 | c=6.1 rankC=6.1 need=4166 tD=0.20 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=6.9 rankC=6.9 need=572 tD=0.00 机 | safe=195012 keep=195012 avail=-53738 chunkB=28590 pulseB=17154 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22273 bal=214634 dq=9.6 cnt=46 | c=33.7 rankC=33.7 need=415969 tD=1.99 人 crowdedHard | safe=195012 keep=Inf avail=-Inf chunkB=28590 pulseB=17154 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1640 kaito9 B=145622 L=16413 d=8.9 nb=6 neut=0 cmds=112 noFull=1 shQ=36405 | m=1.479 worth=13.1 cheap=5.3 over=0 dMedOther=5.1 safe(-1)=198658
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#496 terr=1746 bal=210 dq=0.1 cnt=48 | c=3.8 rankC=3.8 need=2581 tD=0.02 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2868 dq=1.1 cnt=164 | c=5.4 rankC=5.4 need=8922 tD=0.22 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#201 terr=1293 bal=1248 dq=1.0 cnt=34 | c=6.2 rankC=6.2 need=3956 tD=0.19 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.0 rankC=7.0 need=574 tD=0.00 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22449 bal=218647 dq=9.7 cnt=46 | c=34.0 rankC=34.0 need=423386 tD=1.91 人 crowdedHard | safe=198658 keep=Inf avail=-Inf chunkB=29124 pulseB=17475 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1645 kaito9 B=145622 L=16413 d=8.9 nb=6 neut=0 cmds=112 noFull=1 shQ=36405 | m=1.478 worth=13.1 cheap=5.4 over=0 dMedOther=5.1 safe(-1)=198658
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#496 terr=1851 bal=210 dq=0.1 cnt=52 | c=3.6 rankC=3.6 need=2800 tD=0.02 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2868 dq=1.1 cnt=164 | c=5.4 rankC=5.4 need=8922 tD=0.22 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#201 terr=1188 bal=1089 dq=0.9 cnt=30 | c=6.3 rankC=6.3 need=3432 tD=0.18 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.0 rankC=7.0 need=576 tD=0.00 机 | safe=198658 keep=198658 avail=-54742 chunkB=29124 pulseB=17475 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22560 bal=218647 dq=9.7 cnt=46 | c=33.8 rankC=33.8 need=423548 tD=1.91 人 crowdedHard | safe=198658 keep=Inf avail=-Inf chunkB=29124 pulseB=17475 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1650 kaito9 B=148301 L=16413 d=9.0 nb=6 neut=0 cmds=112 noFull=1 shQ=37075 | m=1.478 worth=13.4 cheap=5.4 over=0 dMedOther=5.0 safe(-1)=202313
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#496 terr=1956 bal=213 dq=0.1 cnt=53 | c=3.5 rankC=3.5 need=3024 tD=0.02 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2920 dq=1.1 cnt=164 | c=5.5 rankC=5.5 need=9014 tD=0.23 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#201 terr=1083 bal=955 dq=0.9 cnt=29 | c=6.6 rankC=6.6 need=2951 tD=0.18 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.1 rankC=7.1 need=580 tD=0.00 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22725 bal=222670 dq=9.8 cnt=46 | c=34.2 rankC=34.2 need=430970 tD=1.96 人 crowdedHard | safe=202313 keep=Inf avail=-Inf chunkB=29660 pulseB=17796 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1655 kaito9 B=148301 L=16413 d=9.0 nb=6 neut=0 cmds=112 noFull=1 shQ=37075 | m=1.477 worth=13.3 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=202313
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.6 rankC=2.6 need=5142 tD=0.00 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#496 terr=2009 bal=213 dq=0.1 cnt=53 | c=3.5 rankC=3.5 need=3137 tD=0.02 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2920 dq=1.1 cnt=164 | c=5.5 rankC=5.5 need=9014 tD=0.23 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#201 terr=1030 bal=881 dq=0.9 cnt=29 | c=6.8 rankC=6.8 need=2701 tD=0.17 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.1 rankC=7.1 need=582 tD=0.00 机 | safe=202313 keep=202313 avail=-55749 chunkB=29660 pulseB=17796 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22826 bal=222670 dq=9.8 cnt=46 | c=25.2 rankC=25.2 need=431125 tD=1.99 人 | safe=202313 keep=Inf avail=-Inf chunkB=29660 pulseB=17796 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1660 kaito9 B=150985 L=16413 d=9.2 nb=6 neut=0 cmds=112 noFull=1 shQ=37746 | m=1.476 worth=13.6 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=205974
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#496 terr=2117 bal=216 dq=0.1 cnt=56 | c=3.4 rankC=3.4 need=3365 tD=0.02 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2972 dq=1.2 cnt=164 | c=5.5 rankC=5.5 need=9107 tD=0.24 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.1 rankC=7.1 need=584 tD=0.00 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#201 terr=922 bal=750 dq=0.8 cnt=26 | c=7.3 rankC=7.3 need=2224 tD=0.17 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=22978 bal=226700 dq=9.9 cnt=46 | c=25.5 rankC=25.5 need=438536 tD=2.01 人 | safe=205974 keep=Inf avail=-Inf chunkB=30197 pulseB=18118 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1665 kaito9 B=150985 L=16413 d=9.2 nb=6 neut=0 cmds=112 noFull=1 shQ=37746 | m=1.475 worth=13.6 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=205974
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#496 terr=2218 bal=216 dq=0.1 cnt=58 | c=3.3 rankC=3.3 need=3574 tD=0.02 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=2972 dq=1.2 cnt=164 | c=5.5 rankC=5.5 need=9107 tD=0.24 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.1 rankC=7.1 need=586 tD=0.00 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → AI#201 terr=821 bal=622 dq=0.8 cnt=24 | c=7.9 rankC=7.9 need=1770 tD=0.16 机 | safe=205974 keep=205974 avail=-56758 chunkB=30197 pulseB=18118 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=23079 bal=226700 dq=9.8 cnt=46 | c=25.4 rankC=25.4 need=438692 tD=2.03 人 | safe=205974 keep=Inf avail=-Inf chunkB=30197 pulseB=18118 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1670 kaito9 B=153672 L=16413 d=9.4 nb=6 neut=0 cmds=112 noFull=1 shQ=38418 | m=1.474 worth=13.8 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=209640
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#496 terr=2267 bal=219 dq=0.1 cnt=59 | c=3.3 rankC=3.3 need=3681 tD=0.02 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=3024 dq=1.2 cnt=164 | c=5.6 rankC=5.6 need=9200 tD=0.25 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.2 rankC=7.2 need=590 tD=0.00 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#201 terr=772 bal=573 dq=0.7 cnt=23 | c=8.4 rankC=8.4 need=1572 tD=0.16 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=23233 bal=230735 dq=9.9 cnt=46 | c=25.6 rankC=25.6 need=446107 tD=2.08 人 | safe=209640 keep=Inf avail=-Inf chunkB=30734 pulseB=18441 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1675 kaito9 B=153672 L=16413 d=9.4 nb=6 neut=0 cmds=112 noFull=1 shQ=38418 | m=1.474 worth=13.8 cheap=5.7 over=0 dMedOther=4.6 safe(-1)=209640
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#496 terr=2362 bal=219 dq=0.1 cnt=60 | c=3.2 rankC=3.2 need=3879 tD=0.02 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=3024 dq=1.2 cnt=164 | c=5.6 rankC=5.6 need=9200 tD=0.26 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.2 rankC=7.2 need=592 tD=0.00 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → AI#201 terr=677 bal=464 dq=0.7 cnt=22 | c=9.7 rankC=9.7 need=1168 tD=0.15 机 | safe=209640 keep=209640 avail=-57768 chunkB=30734 pulseB=18441 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=23367 bal=212034 dq=9.1 cnt=46 | c=23.6 rankC=23.6 need=412983 tD=1.97 人 | safe=209640 keep=Inf avail=-Inf chunkB=30734 pulseB=18441 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1680 kaito9 B=156361 L=16413 d=9.5 nb=6 neut=0 cmds=112 noFull=1 shQ=39090 | m=1.473 worth=14.0 cheap=5.7 over=0 dMedOther=4.7 safe(-1)=213308
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#496 terr=2455 bal=222 dq=0.1 cnt=62 | c=3.2 rankC=3.2 need=4076 tD=0.02 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=3076 dq=1.2 cnt=164 | c=5.6 rankC=5.6 need=9293 tD=0.26 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.3 rankC=7.3 need=594 tD=0.00 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#201 terr=584 bal=371 dq=0.6 cnt=20 | c=12.2 rankC=12.2 need=798 tD=0.14 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=23580 bal=215744 dq=9.1 cnt=46 | c=23.8 rankC=23.8 need=419904 tD=1.96 人 | safe=213308 keep=Inf avail=-Inf chunkB=31272 pulseB=18763 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1685 kaito9 B=156361 L=16413 d=9.5 nb=6 neut=0 cmds=112 noFull=1 shQ=39090 | m=1.472 worth=14.0 cheap=5.8 over=0 dMedOther=4.6 safe(-1)=213308
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#496 terr=2501 bal=222 dq=0.1 cnt=63 | c=3.2 rankC=3.2 need=4148 tD=0.02 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=3076 dq=1.2 cnt=164 | c=5.6 rankC=5.6 need=9293 tD=0.26 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.3 rankC=7.3 need=596 tD=0.00 机 | safe=213308 keep=213308 avail=-58779 chunkB=31272 pulseB=18763 无可用(avail<=0) hNb=1
+    → AI#201 terr=538 bal=325 dq=0.6 cnt=19 | c=14.3 rankC=14.3 need=618 tD=0.13 机 | safe=213308 keep=Inf avail=-Inf chunkB=31272 pulseB=18763 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=23721 bal=215744 dq=9.1 cnt=46 | c=23.7 rankC=23.7 need=420119 tD=1.97 人 | safe=213308 keep=Inf avail=-Inf chunkB=31272 pulseB=18763 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1690 kaito9 B=159050 L=16413 d=9.7 nb=6 neut=0 cmds=112 noFull=1 shQ=39762 | m=1.472 worth=14.3 cheap=5.8 over=0 dMedOther=4.7 safe(-1)=216976
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=216976 keep=216976 avail=-59789 chunkB=31810 pulseB=19086 无可用(avail<=0) hNb=1
+    → AI#496 terr=2594 bal=225 dq=0.1 cnt=64 | c=3.1 rankC=3.1 need=4293 tD=0.02 机 | safe=216976 keep=216976 avail=-59789 chunkB=31810 pulseB=19086 无可用(avail<=0) hNb=1
+    → AI#60 terr=2540 bal=63 dq=0.0 cnt=164 | c=4.4 rankC=4.4 need=6900 tD=0.01 机 | safe=216976 keep=216976 avail=-59789 chunkB=31810 pulseB=19086 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.3 rankC=7.3 need=600 tD=0.00 机 | safe=216976 keep=216976 avail=-59789 chunkB=31810 pulseB=19086 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=23933 bal=219454 dq=9.2 cnt=46 | c=23.8 rankC=23.8 need=427050 tD=1.95 人 | safe=216976 keep=Inf avail=-Inf chunkB=31810 pulseB=19086 价高(c>=worth)→break hNb=1
+    → AI#201 terr=445 bal=243 dq=0.5 cnt=18 | c=26.8 rankC=26.8 need=267 tD=0.12 机 | safe=216976 keep=Inf avail=-Inf chunkB=31810 pulseB=19086 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1695 kaito9 B=156461 L=16246 d=9.6 nb=5 neut=16 cmds=112 noFull=1 shQ=39115 | m=1.471 worth=14.2 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=216976
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.7 rankC=2.7 need=5142 tD=0.00 机 | safe=216976 keep=216976 avail=-62348 chunkB=31292 pulseB=18775 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4201 tD=0.00 机 | safe=216976 keep=216976 avail=-62348 chunkB=31292 pulseB=18775 无可用(avail<=0) hNb=1
+    → AI#496 terr=2674 bal=225 dq=0.1 cnt=66 | c=3.1 rankC=3.1 need=4413 tD=0.02 机 | safe=216976 keep=216976 avail=-62348 chunkB=31292 pulseB=18775 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.2 rankC=7.2 need=602 tD=0.00 机 | safe=216976 keep=216976 avail=-62348 chunkB=31292 pulseB=18775 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24023 bal=219547 dq=9.1 cnt=46 | c=23.8 rankC=23.8 need=427358 tD=2.01 人 | safe=216976 keep=Inf avail=-Inf chunkB=31292 pulseB=18775 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1700 kaito9 B=175351 L=16246 d=10.8 nb=5 neut=15 cmds=112 noFull=1 shQ=39855 | m=1.470 worth=15.9 cheap=5.9 over=0 dMedOther=5.6 safe(-1)=229074
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#496 terr=2713 bal=2941 dq=1.1 cnt=67 | c=5.5 rankC=5.5 need=9312 tD=0.19 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.9 rankC=7.9 need=604 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24078 bal=247317 dq=10.3 cnt=46 | c=26.5 rankC=26.5 need=476934 tD=1.83 人 | safe=229074 keep=Inf avail=-Inf chunkB=35070 pulseB=21042 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1705 kaito9 B=175351 L=16246 d=10.8 nb=5 neut=13 cmds=112 noFull=1 shQ=43531 | m=1.469 worth=15.9 cheap=6.0 over=0 dMedOther=5.6 safe(-1)=229074
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#496 terr=2774 bal=2941 dq=1.1 cnt=68 | c=5.4 rankC=5.4 need=9405 tD=0.19 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.8 rankC=7.8 need=606 tD=0.00 机 | safe=229074 keep=229074 avail=-55777 chunkB=35070 pulseB=21042 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24248 bal=227272 dq=9.4 cnt=47 | c=24.3 rankC=24.3 need=441453 tD=1.67 人 | safe=229074 keep=Inf avail=-Inf chunkB=35070 pulseB=21042 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1710 kaito9 B=178244 L=16246 d=11.0 nb=5 neut=9 cmds=112 noFull=1 shQ=44561 | m=1.468 worth=16.1 cheap=6.0 over=0 dMedOther=5.7 safe(-1)=232853
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=232853 keep=232853 avail=-56697 chunkB=35649 pulseB=21389 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=232853 keep=232853 avail=-56697 chunkB=35649 pulseB=21389 无可用(avail<=0) hNb=1
+    → AI#496 terr=2803 bal=2989 dq=1.1 cnt=70 | c=5.5 rankC=5.5 need=9535 tD=0.19 机 | safe=232853 keep=232853 avail=-56697 chunkB=35649 pulseB=21389 无可用(avail<=0) hNb=1
+    → AI#66 terr=645 bal=0 dq=0.0 cnt=135 | c=7.9 rankC=7.9 need=610 tD=0.00 机 | safe=232853 keep=232853 avail=-56697 chunkB=35649 pulseB=21389 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24400 bal=231021 dq=9.5 cnt=49 | c=24.5 rankC=24.5 need=448363 tD=1.67 人 | safe=232853 keep=Inf avail=-Inf chunkB=35649 pulseB=21389 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1715 kaito9 B=175734 L=16103 d=10.9 nb=5 neut=7 cmds=112 noFull=1 shQ=43933 | m=1.468 worth=16.0 cheap=6.1 over=0 dMedOther=5.7 safe(-1)=232853
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=232853 keep=232853 avail=-59178 chunkB=35147 pulseB=21088 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=232853 keep=232853 avail=-59178 chunkB=35147 pulseB=21088 无可用(avail<=0) hNb=1
+    → AI#496 terr=2812 bal=2989 dq=1.1 cnt=71 | c=5.4 rankC=5.4 need=9545 tD=0.19 机 | safe=232853 keep=232853 avail=-59178 chunkB=35147 pulseB=21088 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.1 rankC=6.1 need=898 tD=0.00 机 | safe=232853 keep=232853 avail=-59178 chunkB=35147 pulseB=21088 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24461 bal=231021 dq=9.4 cnt=50 | c=24.5 rankC=24.5 need=448458 tD=1.67 人 | safe=232853 keep=Inf avail=-Inf chunkB=35147 pulseB=21088 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1720 kaito9 B=178580 L=16103 d=11.1 nb=5 neut=4 cmds=112 noFull=1 shQ=44645 | m=1.467 worth=16.3 cheap=6.2 over=0 dMedOther=5.7 safe(-1)=236625
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=236625 keep=236625 avail=-60137 chunkB=35716 pulseB=21430 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=236625 keep=236625 avail=-60137 chunkB=35716 pulseB=21430 无可用(avail<=0) hNb=1
+    → AI#496 terr=2825 bal=3037 dq=1.1 cnt=72 | c=5.5 rankC=5.5 need=9651 tD=0.19 机 | safe=236625 keep=236625 avail=-60137 chunkB=35716 pulseB=21430 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.2 rankC=6.2 need=900 tD=0.00 机 | safe=236625 keep=236625 avail=-60137 chunkB=35716 pulseB=21430 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24525 bal=234763 dq=9.6 cnt=52 | c=24.8 rankC=24.8 need=455224 tD=1.67 人 | safe=236625 keep=Inf avail=-Inf chunkB=35716 pulseB=21430 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1725 kaito9 B=178580 L=16103 d=11.1 nb=5 neut=1 cmds=114 noFull=1 shQ=44645 | m=1.466 worth=16.3 cheap=6.2 over=0 dMedOther=5.1 safe(-1)=118319
+    → AI#415 terr=3427 bal=0 dq=0.0 cnt=64 | c=2.8 rankC=2.8 need=5142 tD=0.00 机 | safe=118319 keep=118319 avail=58169 chunkB=35716 pulseB=21430  x=6620 hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=118319 keep=118319 avail=58169 chunkB=35716 pulseB=21430  x=5578 hNb=1
+    → AI#496 terr=2850 bal=61 dq=0.0 cnt=73 | c=3.0 rankC=3.0 need=4385 tD=0.00 机 | safe=118319 keep=118319 avail=58169 chunkB=35716 pulseB=21430  x=5700 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.2 rankC=6.2 need=902 tD=0.00 机 | safe=118319 keep=118319 avail=58169 chunkB=35716 pulseB=21430  x=1554 hNb=1
+    → Papik#0[T1] terr=24560 bal=234763 dq=9.6 cnt=54 | c=24.8 rankC=24.8 need=455273 tD=1.86 人 | safe=118319 keep=Inf avail=-Inf chunkB=35716 pulseB=21430 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 8370 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=37 → AI#415（约 6626 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1730 kaito9 B=181419 L=16103 d=11.3 nb=5 neut=0 cmds=114 noFull=1 shQ=45354 | m=1.466 worth=16.5 cheap=6.3 over=0 dMedOther=5.2 safe(-1)=197925
+    → AI#415 terr=3316 bal=0 dq=0.0 cnt=63 | c=2.8 rankC=2.8 need=4920 tD=0.00 机 | safe=197925 keep=197925 avail=-18632 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=197925 keep=197925 avail=-18632 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.2 rankC=6.2 need=906 tD=0.00 机 | safe=197925 keep=197925 avail=-18632 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#496 terr=2865 bal=4127 dq=1.4 cnt=73 | c=6.3 rankC=6.3 need=11654 tD=0.28 机 | safe=197925 keep=197925 avail=-18632 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24596 bal=238495 dq=9.7 cnt=55 | c=25.1 rankC=25.1 need=461979 tD=1.87 人 | safe=197925 keep=Inf avail=-Inf chunkB=36284 pulseB=21770 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1735 kaito9 B=181419 L=16103 d=11.3 nb=5 neut=0 cmds=114 noFull=1 shQ=45354 | m=1.465 worth=16.5 cheap=6.3 over=0 dMedOther=5.1 safe(-1)=197703
+    → AI#415 terr=3205 bal=0 dq=0.0 cnt=63 | c=2.9 rankC=2.9 need=4700 tD=0.00 机 | safe=197703 keep=197703 avail=-18410 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=2.9 rankC=2.9 need=4062 tD=0.00 机 | safe=197703 keep=197703 avail=-18410 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.2 rankC=6.2 need=908 tD=0.00 机 | safe=197703 keep=197703 avail=-18410 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → AI#496 terr=2896 bal=4127 dq=1.4 cnt=73 | c=6.3 rankC=6.3 need=11700 tD=0.28 机 | safe=197703 keep=197703 avail=-18410 chunkB=36284 pulseB=21770 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24614 bal=238495 dq=9.7 cnt=55 | c=25.1 rankC=25.1 need=462013 tD=1.88 人 | safe=197703 keep=Inf avail=-Inf chunkB=36284 pulseB=21770 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1740 kaito9 B=184249 L=16103 d=11.4 nb=5 neut=0 cmds=114 noFull=1 shQ=46062 | m=1.464 worth=16.8 cheap=6.4 over=0 dMedOther=5.2 safe(-1)=199335
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=199335 keep=199335 avail=-17245 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#415 terr=2978 bal=0 dq=0.0 cnt=61 | c=3.0 rankC=3.0 need=4248 tD=0.00 机 | safe=199335 keep=199335 avail=-17245 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.3 rankC=6.3 need=910 tD=0.00 机 | safe=199335 keep=199335 avail=-17245 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#496 terr=2785 bal=3861 dq=1.4 cnt=72 | c=6.3 rankC=6.3 need=10938 tD=0.27 机 | safe=199335 keep=199335 avail=-17245 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24786 bal=222583 dq=9.0 cnt=56 | c=23.4 rankC=23.4 need=433910 tD=1.73 人 | safe=199335 keep=Inf avail=-Inf chunkB=36850 pulseB=22110 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1745 kaito9 B=184249 L=16103 d=11.4 nb=5 neut=0 cmds=114 noFull=1 shQ=46062 | m=1.463 worth=16.7 cheap=6.5 over=0 dMedOther=5.1 safe(-1)=198867
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=198867 keep=198867 avail=-16777 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#415 terr=2744 bal=0 dq=0.0 cnt=60 | c=3.1 rankC=3.1 need=3784 tD=0.00 机 | safe=198867 keep=198867 avail=-16777 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#496 terr=2657 bal=3542 dq=1.3 cnt=71 | c=6.2 rankC=6.2 need=10057 tD=0.26 机 | safe=198867 keep=198867 avail=-16777 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.3 rankC=6.3 need=912 tD=0.00 机 | safe=198867 keep=198867 avail=-16777 chunkB=36850 pulseB=22110 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=24948 bal=222583 dq=8.9 cnt=57 | c=23.2 rankC=23.2 need=434146 tD=1.73 人 | safe=198867 keep=Inf avail=-Inf chunkB=36850 pulseB=22110 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1750 kaito9 B=187068 L=16103 d=11.6 nb=5 neut=0 cmds=114 noFull=1 shQ=46767 | m=1.462 worth=17.0 cheap=6.5 over=0 dMedOther=5.2 safe(-1)=200705
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=200705 keep=200705 avail=-15829 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#415 terr=2624 bal=0 dq=0.0 cnt=60 | c=3.2 rankC=3.2 need=3546 tD=0.00 机 | safe=200705 keep=200705 avail=-15829 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#496 terr=2472 bal=3140 dq=1.3 cnt=68 | c=6.3 rankC=6.3 need=8892 tD=0.24 机 | safe=200705 keep=200705 avail=-15829 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.3 rankC=6.3 need=916 tD=0.00 机 | safe=200705 keep=200705 avail=-15829 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=25185 bal=225988 dq=9.0 cnt=60 | c=23.4 rankC=23.4 need=440574 tD=1.73 人 | safe=200705 keep=Inf avail=-Inf chunkB=37414 pulseB=22448 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1755 kaito9 B=187068 L=16103 d=11.6 nb=5 neut=0 cmds=114 noFull=1 shQ=46767 | m=1.462 worth=17.0 cheap=6.6 over=0 dMedOther=5.1 safe(-1)=200209
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=200209 keep=200209 avail=-15333 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#415 terr=2376 bal=0 dq=0.0 cnt=59 | c=3.4 rankC=3.4 need=3052 tD=0.00 机 | safe=200209 keep=200209 avail=-15333 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#496 terr=2360 bal=2851 dq=1.2 cnt=67 | c=6.2 rankC=6.2 need=8117 tD=0.23 机 | safe=200209 keep=200209 avail=-15333 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.3 rankC=6.3 need=918 tD=0.00 机 | safe=200209 keep=200209 avail=-15333 chunkB=37414 pulseB=22448 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=25344 bal=225988 dq=8.9 cnt=61 | c=23.2 rankC=23.2 need=440809 tD=1.73 人 | safe=200209 keep=Inf avail=-Inf chunkB=37414 pulseB=22448 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1760 kaito9 B=189874 L=16103 d=11.8 nb=5 neut=0 cmds=114 noFull=1 shQ=47468 | m=1.461 worth=17.2 cheap=6.7 over=0 dMedOther=5.2 safe(-1)=201760
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=201760 keep=201760 avail=-14111 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#415 terr=2117 bal=0 dq=0.0 cnt=57 | c=3.7 rankC=3.7 need=2536 tD=0.00 机 | safe=201760 keep=201760 avail=-14111 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#496 terr=2165 bal=2487 dq=1.1 cnt=64 | c=6.3 rankC=6.3 need=7002 tD=0.22 机 | safe=201760 keep=201760 avail=-14111 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.4 rankC=6.4 need=920 tD=0.00 机 | safe=201760 keep=201760 avail=-14111 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=25577 bal=229377 dq=9.0 cnt=64 | c=23.3 rankC=23.3 need=447202 tD=1.73 人 | safe=201760 keep=Inf avail=-Inf chunkB=37975 pulseB=22785 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1765 kaito9 B=189874 L=16103 d=11.8 nb=5 neut=0 cmds=114 noFull=1 shQ=47468 | m=1.460 worth=17.2 cheap=6.7 over=0 dMedOther=5.1 safe(-1)=201492
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=201492 keep=201492 avail=-13843 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#415 terr=1983 bal=0 dq=0.0 cnt=52 | c=3.9 rankC=3.9 need=2272 tD=0.00 机 | safe=201492 keep=201492 avail=-13843 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#496 terr=2059 bal=2236 dq=1.1 cnt=63 | c=6.3 rankC=6.3 need=6314 tD=0.21 机 | safe=201492 keep=201492 avail=-13843 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.4 rankC=6.4 need=922 tD=0.00 机 | safe=201492 keep=201492 avail=-13843 chunkB=37975 pulseB=22785 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=25729 bal=229377 dq=8.9 cnt=65 | c=23.2 rankC=23.2 need=447430 tD=1.74 人 | safe=201492 keep=Inf avail=-Inf chunkB=37975 pulseB=22785 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1770 kaito9 B=192665 L=16103 d=12.0 nb=5 neut=0 cmds=114 noFull=1 shQ=48166 | m=1.460 worth=17.5 cheap=6.8 over=0 dMedOther=5.2 safe(-1)=223662
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=223662 keep=223662 avail=-33254 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#415 terr=1618 bal=0 dq=0.0 cnt=51 | c=4.8 rankC=4.8 need=1544 tD=0.00 机 | safe=223662 keep=223662 avail=-33254 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.4 rankC=6.4 need=926 tD=0.00 机 | safe=223662 keep=223662 avail=-33254 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#496 terr=1878 bal=1906 dq=1.0 cnt=60 | c=6.4 rankC=6.4 need=5306 tD=0.20 机 | safe=223662 keep=223662 avail=-33254 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=25941 bal=263535 dq=10.2 cnt=68 | c=26.2 rankC=26.2 need=508630 tD=1.96 人 | safe=223662 keep=Inf avail=-Inf chunkB=38533 pulseB=23120 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1775 kaito9 B=192665 L=16103 d=12.0 nb=5 neut=0 cmds=114 noFull=1 shQ=48166 | m=1.459 worth=17.5 cheap=6.9 over=0 dMedOther=5.1 safe(-1)=223226
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=223226 keep=223226 avail=-32818 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#415 terr=1400 bal=0 dq=0.0 cnt=50 | c=5.8 rankC=5.8 need=1110 tD=0.00 机 | safe=223226 keep=223226 avail=-32818 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.4 rankC=6.4 need=928 tD=0.00 机 | safe=223226 keep=223226 avail=-32818 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → AI#496 terr=1758 bal=1694 dq=1.0 cnt=58 | c=6.5 rankC=6.5 need=4659 tD=0.19 机 | safe=223226 keep=223226 avail=-32818 chunkB=38533 pulseB=23120 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=26074 bal=263535 dq=10.1 cnt=70 | c=26.0 rankC=26.0 need=508834 tD=1.97 人 | safe=223226 keep=Inf avail=-Inf chunkB=38533 pulseB=23120 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1780 kaito9 B=195439 L=16103 d=12.1 nb=5 neut=0 cmds=114 noFull=1 shQ=48859 | m=1.458 worth=17.7 cheap=7.0 over=0 dMedOther=5.2 safe(-1)=224983
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=224983 keep=224983 avail=-31834 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.5 rankC=6.5 need=930 tD=0.00 机 | safe=224983 keep=224983 avail=-31834 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#496 terr=1592 bal=1431 dq=0.9 cnt=55 | c=6.8 rankC=6.8 need=3813 tD=0.17 机 | safe=224983 keep=224983 avail=-31834 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#415 terr=1106 bal=0 dq=0.0 cnt=48 | c=9.5 rankC=9.5 need=528 tD=0.00 机 | safe=224983 keep=224983 avail=-31834 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → Papik#0[T1] terr=26265 bal=267329 dq=10.2 cnt=73 | c=26.2 rankC=26.2 need=515879 tD=1.97 人 | safe=224983 keep=Inf avail=-Inf chunkB=39088 pulseB=23453 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1785 kaito9 B=195439 L=16103 d=12.1 nb=5 neut=0 cmds=114 noFull=1 shQ=48859 | m=1.457 worth=17.7 cheap=7.0 over=0 dMedOther=5.1 safe(-1)=224637
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=224637 keep=224637 avail=-31488 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.4 rankC=6.4 need=932 tD=0.00 机 | safe=224637 keep=224637 avail=-31488 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#496 terr=1487 bal=1253 dq=0.8 cnt=54 | c=7.0 rankC=7.0 need=3270 tD=0.16 机 | safe=224637 keep=224637 avail=-31488 chunkB=39088 pulseB=23453 无可用(avail<=0) hNb=1
+    → AI#415 terr=933 bal=0 dq=0.0 cnt=47 | c=19.7 rankC=19.7 need=186 tD=0.00 机 | safe=224637 keep=Inf avail=-Inf chunkB=39088 pulseB=23453 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=26392 bal=267329 dq=10.1 cnt=74 | c=26.1 rankC=26.1 need=516065 tD=1.97 人 | safe=224637 keep=Inf avail=-Inf chunkB=39088 pulseB=23453 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1790 kaito9 B=198175 L=16103 d=12.3 nb=4 neut=44 cmds=116 noFull=1 shQ=49543 | m=1.457 worth=17.9 cheap=7.1 over=0 dMedOther=4.5 safe(-1)=126374
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=126374 keep=126374 avail=69479 chunkB=39635 pulseB=23781  x=5578 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.5 rankC=6.5 need=936 tD=0.00 机 | safe=126374 keep=126374 avail=69479 chunkB=39635 pulseB=23781  x=1596 hNb=1
+    → AI#496 terr=1322 bal=1038 dq=0.8 cnt=49 | c=7.7 rankC=7.7 need=2513 tD=0.17 机 | safe=126374 keep=130143 avail=65710 chunkB=39635 pulseB=23781  x=3289 hNb=1
+    → Papik#0[T1] terr=26696 bal=249101 dq=9.3 cnt=79 | c=24.2 rankC=24.2 need=484032 tD=2.06 人 | safe=126374 keep=Inf avail=-Inf chunkB=39635 pulseB=23781 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9289 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 5612 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1795 kaito9 B=198175 L=16103 d=12.3 nb=4 neut=43 cmds=118 noFull=1 shQ=49543 | m=1.456 worth=17.9 cheap=7.2 over=0 dMedOther=4.5 safe(-1)=126374
+    → AI#60 terr=2707 bal=0 dq=0.0 cnt=167 | c=3.0 rankC=3.0 need=4062 tD=0.00 机 | safe=126374 keep=126374 avail=69479 chunkB=39635 pulseB=23781  x=5578 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=6.5 rankC=6.5 need=938 tD=0.00 机 | safe=126374 keep=126374 avail=69479 chunkB=39635 pulseB=23781  x=1598 hNb=1
+    → AI#496 terr=1242 bal=913 dq=0.7 cnt=45 | c=8.1 rankC=8.1 need=2133 tD=0.16 机 | safe=126374 keep=132885 avail=62968 chunkB=39635 pulseB=23781  x=2801 hNb=1
+    → Papik#0[T1] terr=26880 bal=249101 dq=9.3 cnt=83 | c=24.0 rankC=24.0 need=484308 tD=2.06 人 | safe=126374 keep=Inf avail=-Inf chunkB=39635 pulseB=23781 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9289 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 5612 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1800 kaito9 B=154802 L=15932 d=9.7 nb=4 neut=41 cmds=118 noFull=1 shQ=1206 | m=1.455 worth=14.1 cheap=7.3 over=0 dMedOther=5.5 safe(-1)=143634
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.7 rankC=2.7 need=4318 tD=0.00 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=5902 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=5.5 rankC=5.5 need=940 tD=0.00 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=1601 hNb=1
+    → AI#496 terr=1128 bal=1855 dq=1.6 cnt=41 | c=10.5 rankC=10.5 need=2765 tD=0.30 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=3579 hNb=1
+    → Papik#0[T1] terr=27139 bal=279566 dq=10.3 cnt=87 | c=26.4 rankC=26.4 need=539009 tD=1.87 人 | safe=143634 keep=Inf avail=-Inf chunkB=30960 pulseB=18576 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1805 kaito9 B=154802 L=15932 d=9.7 nb=4 neut=38 cmds=119 noFull=1 shQ=3848 | m=1.454 worth=14.1 cheap=7.4 over=0 dMedOther=5.5 safe(-1)=143634
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.7 rankC=2.7 need=4318 tD=0.00 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=5902 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=5.5 rankC=5.5 need=942 tD=0.00 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=1604 hNb=1
+    → AI#496 terr=1055 bal=1636 dq=1.6 cnt=36 | c=11.1 rankC=11.1 need=2220 tD=0.28 机 | safe=143634 keep=143634 avail=9354 chunkB=30960 pulseB=18576  x=2883 hNb=1
+    → Papik#0[T1] terr=27305 bal=279566 dq=10.2 cnt=92 | c=26.3 rankC=26.3 need=539249 tD=1.87 人 | safe=143634 keep=Inf avail=-Inf chunkB=30960 pulseB=18576 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=39 → AI#60（约 6046 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1810 kaito9 B=156876 L=16002 d=9.8 nb=4 neut=33 cmds=120 noFull=1 shQ=6465 | m=1.454 worth=14.2 cheap=7.4 over=0 dMedOther=6.2 safe(-1)=145679
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.8 rankC=2.8 need=4318 tD=0.00 机 | safe=145679 keep=145679 avail=9359 chunkB=31375 pulseB=18825  x=5902 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=5.5 rankC=5.5 need=946 tD=0.00 机 | safe=145679 keep=145679 avail=9359 chunkB=31375 pulseB=18825  x=1609 hNb=1
+    → AI#496 terr=958 bal=1358 dq=1.4 cnt=35 | c=12.7 rankC=12.7 need=1530 tD=0.23 机 | safe=145679 keep=145791 avail=9247 chunkB=31375 pulseB=18825  x=2018 hNb=1
+    → Papik#0[T1] terr=27552 bal=283312 dq=10.3 cnt=93 | c=26.4 rankC=26.4 need=546293 tD=1.66 人 | safe=145679 keep=Inf avail=-Inf chunkB=31375 pulseB=18825 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=38 → AI#60（约 5974 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1815 kaito9 B=156876 L=16089 d=9.8 nb=4 neut=24 cmds=121 noFull=1 shQ=9078 | m=1.453 worth=14.2 cheap=7.5 over=0 dMedOther=6.2 safe(-1)=145606
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.8 rankC=2.8 need=4318 tD=0.00 机 | safe=145606 keep=145606 avail=9432 chunkB=31375 pulseB=18825  x=5902 hNb=1
+    → AI#66 terr=788 bal=0 dq=0.0 cnt=142 | c=5.5 rankC=5.5 need=948 tD=0.00 机 | safe=145606 keep=145606 avail=9432 chunkB=31375 pulseB=18825  x=1611 hNb=1
+    → AI#496 terr=884 bal=1162 dq=1.3 cnt=34 | c=14.8 rankC=14.8 need=1047 tD=0.21 机 | safe=145606 keep=Inf avail=-Inf chunkB=31375 pulseB=18825 价高(c>=worth)→break hNb=1
+    → Papik#0[T1] terr=27720 bal=283312 dq=10.2 cnt=94 | c=26.2 rankC=26.2 need=546545 tD=1.65 人 | safe=145606 keep=Inf avail=-Inf chunkB=31375 pulseB=18825 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=38 → AI#60（约 5974 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1820 kaito9 B=156576 L=15987 d=9.8 nb=4 neut=21 cmds=121 noFull=1 shQ=1532 | m=1.452 worth=14.2 cheap=7.6 over=0 dMedOther=6.3 safe(-1)=147777
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.8 rankC=2.8 need=4318 tD=0.00 机 | safe=147777 keep=147777 avail=6965 chunkB=31315 pulseB=18789  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=4.7 rankC=4.7 need=1248 tD=0.00 机 | safe=147777 keep=147777 avail=6965 chunkB=31315 pulseB=18789  x=2004 hNb=1
+    → Papik#0[T1] terr=27980 bal=287023 dq=10.3 cnt=96 | c=26.3 rankC=26.3 need=553549 tD=1.64 人 | safe=147777 keep=Inf avail=-Inf chunkB=31315 pulseB=18789 价高(c>=worth)→break hNb=1
+    → AI#496 terr=774 bal=2473 dq=3.2 cnt=30 | c=30.2 rankC=30.2 need=813 tD=0.51 机 | safe=147777 keep=Inf avail=-Inf chunkB=31315 pulseB=18789 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1825 kaito9 B=156576 L=16037 d=9.8 nb=4 neut=9 cmds=122 noFull=1 shQ=4080 | m=1.451 worth=14.2 cheap=7.7 over=0 dMedOther=6.2 safe(-1)=147735
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.8 rankC=2.8 need=4318 tD=0.00 机 | safe=147735 keep=147735 avail=7007 chunkB=31315 pulseB=18789  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=4.7 rankC=4.7 need=1250 tD=0.00 机 | safe=147735 keep=147735 avail=7007 chunkB=31315 pulseB=18789  x=2007 hNb=1
+    → Papik#0[T1] terr=28157 bal=287023 dq=10.2 cnt=97 | c=26.2 rankC=26.2 need=553819 tD=1.64 人 | safe=147735 keep=Inf avail=-Inf chunkB=31315 pulseB=18789 价高(c>=worth)→break hNb=1
+    → AI#496 terr=712 bal=2161 dq=3.0 cnt=29 | c=69.4 rankC=69.4 need=93 tD=0.49 机 | safe=147735 keep=Inf avail=-Inf chunkB=31315 pulseB=18789 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=38 → AI#60（约 5963 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1830 kaito9 B=158580 L=16050 d=9.9 nb=3 neut=29 cmds=123 noFull=1 shQ=6600 | m=1.451 worth=14.3 cheap=7.8 over=0 dMedOther=6.0 safe(-1)=149836
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=2.8 rankC=2.8 need=4318 tD=0.00 机 | safe=149836 keep=149836 avail=6886 chunkB=31716 pulseB=19030  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=4.7 rankC=4.7 need=1254 tD=0.00 机 | safe=149836 keep=149836 avail=6886 chunkB=31716 pulseB=19030  x=2012 hNb=1
+    → Papik#0[T1] terr=28402 bal=290783 dq=10.2 cnt=98 | c=26.3 rankC=26.3 need=560892 tD=1.71 人 | safe=149836 keep=Inf avail=-Inf chunkB=31716 pulseB=19030 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=38 → AI#60（约 6039 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1835 kaito9 B=205799 L=16051 d=12.8 nb=3 neut=27 cmds=125 noFull=1 shQ=9569 | m=1.450 worth=18.6 cheap=7.9 over=0 dMedOther=5.9 safe(-1)=149835
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.0 rankC=3.0 need=4318 tD=0.00 机 | safe=149835 keep=149835 avail=53553 chunkB=41160 pulseB=24696  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.6 rankC=5.6 need=1256 tD=0.00 机 | safe=149835 keep=149835 avail=53553 chunkB=41160 pulseB=24696  x=2014 hNb=1
+    → Papik#0[T1] terr=28566 bal=290783 dq=10.2 cnt=99 | c=26.2 rankC=26.2 need=561138 tD=1.72 人 | safe=149835 keep=Inf avail=-Inf chunkB=41160 pulseB=24696 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9646 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=29 → AI#60（约 6029 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1840 kaito9 B=208371 L=16051 d=13.0 nb=3 neut=25 cmds=127 noFull=1 shQ=12807 | m=1.449 worth=18.8 cheap=8.0 over=0 dMedOther=6.0 safe(-1)=151991
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.0 rankC=3.0 need=4318 tD=0.00 机 | safe=151991 keep=151991 avail=53939 chunkB=41674 pulseB=25005  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.6 rankC=5.6 need=1258 tD=0.00 机 | safe=151991 keep=151991 avail=53939 chunkB=41674 pulseB=25005  x=2017 hNb=1
+    → Papik#0[T1] terr=28799 bal=294621 dq=10.2 cnt=101 | c=26.3 rankC=26.3 need=568332 tD=1.72 人 | safe=151991 keep=Inf avail=-Inf chunkB=41674 pulseB=25005 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9767 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=29 → AI#60（约 6104 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1845 kaito9 B=208371 L=16051 d=13.0 nb=3 neut=24 cmds=129 noFull=1 shQ=16038 | m=1.448 worth=18.8 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=151991
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.0 rankC=3.0 need=4318 tD=0.00 机 | safe=151991 keep=151991 avail=53939 chunkB=41674 pulseB=25005  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.6 rankC=5.6 need=1260 tD=0.00 机 | safe=151991 keep=151991 avail=53939 chunkB=41674 pulseB=25005  x=2019 hNb=1
+    → Papik#0[T1] terr=28953 bal=294621 dq=10.2 cnt=102 | c=26.2 rankC=26.2 need=568555 tD=1.74 人 | safe=151991 keep=Inf avail=-Inf chunkB=41674 pulseB=25005 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9767 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=29 → AI#60（约 6104 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1850 kaito9 B=210933 L=16051 d=13.1 nb=3 neut=23 cmds=131 noFull=1 shQ=19271 | m=1.448 worth=19.0 cheap=8.1 over=0 dMedOther=5.9 safe(-1)=154176
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.0 rankC=3.0 need=4318 tD=0.00 机 | safe=154176 keep=154176 avail=54286 chunkB=42187 pulseB=25312  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.6 rankC=5.6 need=1264 tD=0.00 机 | safe=154176 keep=154176 avail=54286 chunkB=42187 pulseB=25312  x=2024 hNb=1
+    → Papik#0[T1] terr=29184 bal=298509 dq=10.2 cnt=103 | c=26.3 rankC=26.3 need=575827 tD=1.74 人 | safe=154176 keep=Inf avail=-Inf chunkB=42187 pulseB=25312 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9887 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 5973 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1855 kaito9 B=210933 L=16051 d=13.1 nb=3 neut=23 cmds=133 noFull=1 shQ=22536 | m=1.447 worth=19.0 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=154200
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.0 rankC=3.0 need=4318 tD=0.00 机 | safe=154200 keep=154200 avail=54262 chunkB=42187 pulseB=25312  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.6 rankC=5.6 need=1266 tD=0.00 机 | safe=154200 keep=154200 avail=54262 chunkB=42187 pulseB=25312  x=2027 hNb=1
+    → Papik#0[T1] terr=29276 bal=298553 dq=10.2 cnt=103 | c=26.2 rankC=26.2 need=576044 tD=1.76 人 | safe=154200 keep=Inf avail=-Inf chunkB=42187 pulseB=25312 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9887 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 5973 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1860 kaito9 B=213527 L=16051 d=13.3 nb=3 neut=23 cmds=135 noFull=1 shQ=25809 | m=1.446 worth=19.2 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=156414
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=156414 keep=156414 avail=54611 chunkB=42705 pulseB=25623  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1268 tD=0.00 机 | safe=156414 keep=156414 avail=54611 chunkB=42705 pulseB=25623  x=2029 hNb=1
+    → Papik#0[T1] terr=29417 bal=302493 dq=10.3 cnt=103 | c=26.4 rankC=26.4 need=583282 tD=1.78 人 | safe=156414 keep=Inf avail=-Inf chunkB=42705 pulseB=25623 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10009 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 6047 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1865 kaito9 B=213527 L=16051 d=13.3 nb=3 neut=23 cmds=137 noFull=1 shQ=29114 | m=1.445 worth=19.2 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=156414
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=156414 keep=156414 avail=54611 chunkB=42705 pulseB=25623  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1270 tD=0.00 机 | safe=156414 keep=156414 avail=54611 chunkB=42705 pulseB=25623  x=2032 hNb=1
+    → Papik#0[T1] terr=29507 bal=302493 dq=10.3 cnt=103 | c=26.3 rankC=26.3 need=583425 tD=1.79 人 | safe=156414 keep=Inf avail=-Inf chunkB=42705 pulseB=25623 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10009 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=28 → AI#60（约 6047 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1870 kaito9 B=216153 L=16051 d=13.5 nb=3 neut=23 cmds=139 noFull=1 shQ=32428 | m=1.445 worth=19.5 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=158656
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=158656 keep=158656 avail=54964 chunkB=43231 pulseB=25938  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1274 tD=0.00 机 | safe=158656 keep=158656 avail=54964 chunkB=43231 pulseB=25938  x=2037 hNb=1
+    → Papik#0[T1] terr=29642 bal=306485 dq=10.3 cnt=103 | c=26.6 rankC=26.6 need=590739 tD=1.79 人 | safe=158656 keep=Inf avail=-Inf chunkB=43231 pulseB=25938 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10132 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 5910 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1875 kaito9 B=216153 L=16051 d=13.5 nb=3 neut=23 cmds=141 noFull=1 shQ=35778 | m=1.444 worth=19.4 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=158656
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=158656 keep=158656 avail=54964 chunkB=43231 pulseB=25938  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1276 tD=0.00 机 | safe=158656 keep=158656 avail=54964 chunkB=43231 pulseB=25938  x=2039 hNb=1
+    → Papik#0[T1] terr=29732 bal=306485 dq=10.3 cnt=103 | c=26.5 rankC=26.5 need=590865 tD=1.81 人 | safe=158656 keep=Inf avail=-Inf chunkB=43231 pulseB=25938 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10132 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 5910 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1880 kaito9 B=218811 L=16051 d=13.6 nb=3 neut=23 cmds=143 noFull=1 shQ=39136 | m=1.443 worth=19.7 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=146789
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=146789 keep=146789 avail=69458 chunkB=43762 pulseB=26257  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1278 tD=0.00 机 | safe=146789 keep=146789 avail=69458 chunkB=43762 pulseB=26257  x=2042 hNb=1
+    → Papik#0[T1] terr=30080 bal=285361 dq=9.5 cnt=103 | c=24.5 rankC=24.5 need=553737 tD=1.66 人 | safe=146789 keep=Inf avail=-Inf chunkB=43762 pulseB=26257 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10256 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 5983 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1885 kaito9 B=218811 L=16051 d=13.6 nb=3 neut=23 cmds=145 noFull=1 shQ=42526 | m=1.442 worth=19.7 cheap=8.1 over=0 dMedOther=5.6 safe(-1)=146789
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=146789 keep=146789 avail=69458 chunkB=43762 pulseB=26257  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.7 rankC=5.7 need=1280 tD=0.00 机 | safe=146789 keep=146789 avail=69458 chunkB=43762 pulseB=26257  x=2044 hNb=1
+    → Papik#0[T1] terr=30364 bal=285361 dq=9.4 cnt=103 | c=24.3 rankC=24.3 need=554163 tD=1.67 人 | safe=146789 keep=Inf avail=-Inf chunkB=43762 pulseB=26257 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10256 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 5983 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1890 kaito9 B=221502 L=16051 d=13.8 nb=3 neut=23 cmds=147 noFull=1 shQ=45924 | m=1.442 worth=19.9 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=148921
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=148921 keep=148921 avail=69986 chunkB=44300 pulseB=26580  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.8 rankC=5.8 need=1284 tD=0.00 机 | safe=148921 keep=148921 avail=69986 chunkB=44300 pulseB=26580  x=2049 hNb=1
+    → Papik#0[T1] terr=30739 bal=289156 dq=9.4 cnt=103 | c=24.3 rankC=24.3 need=561501 tD=1.65 人 | safe=148921 keep=Inf avail=-Inf chunkB=44300 pulseB=26580 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10382 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 6056 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1895 kaito9 B=221502 L=16051 d=13.8 nb=3 neut=23 cmds=149 noFull=1 shQ=49354 | m=1.441 worth=19.9 cheap=8.1 over=0 dMedOther=5.6 safe(-1)=148921
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.1 rankC=3.1 need=4318 tD=0.00 机 | safe=148921 keep=148921 avail=69986 chunkB=44300 pulseB=26580  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.8 rankC=5.8 need=1286 tD=0.00 机 | safe=148921 keep=148921 avail=69986 chunkB=44300 pulseB=26580  x=2052 hNb=1
+    → Papik#0[T1] terr=30961 bal=289156 dq=9.3 cnt=103 | c=24.2 rankC=24.2 need=561826 tD=1.68 人 | safe=148921 keep=Inf avail=-Inf chunkB=44300 pulseB=26580 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10382 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=27 → AI#60（约 6056 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1900 kaito9 B=240277 L=16051 d=15.0 nb=3 neut=23 cmds=151 noFull=1 shQ=52842 | m=1.440 worth=21.6 cheap=8.1 over=0 dMedOther=6.5 safe(-1)=168587
+    → AI#60 terr=2878 bal=0 dq=0.0 cnt=168 | c=3.2 rankC=3.2 need=4318 tD=0.00 机 | safe=168587 keep=168587 avail=68875 chunkB=48055 pulseB=28833  x=5902 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=6.1 rankC=6.1 need=1288 tD=0.00 机 | safe=168587 keep=168587 avail=68875 chunkB=48055 pulseB=28833  x=2054 hNb=1
+    → Papik#0[T1] terr=31260 bal=324162 dq=10.4 cnt=103 | c=26.6 rankC=26.6 need=624664 tD=1.59 人 | safe=168587 keep=Inf avail=-Inf chunkB=48055 pulseB=28833 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11262 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6100 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1905 kaito9 B=222366 L=15881 d=14.0 nb=3 neut=23 cmds=151 noFull=1 shQ=2153 | m=1.439 worth=20.2 cheap=8.1 over=0 dMedOther=6.5 safe(-1)=153970
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.0 rankC=3.0 need=4572 tD=0.00 机 | safe=153970 keep=153970 avail=65791 chunkB=44473 pulseB=26684  x=6225 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.8 rankC=5.8 need=1290 tD=0.00 机 | safe=153970 keep=153970 avail=65791 chunkB=44473 pulseB=26684  x=2057 hNb=1
+    → Papik#0[T1] terr=31456 bal=297888 dq=9.5 cnt=103 | c=24.5 rankC=24.5 need=578128 tD=1.45 人 | safe=153970 keep=Inf avail=-Inf chunkB=44473 pulseB=26684 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1910 kaito9 B=225101 L=15881 d=14.2 nb=3 neut=21 cmds=152 noFull=1 shQ=5606 | m=1.439 worth=20.4 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=156212
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.0 rankC=3.0 need=4572 tD=0.00 机 | safe=156212 keep=156212 avail=66252 chunkB=45020 pulseB=27012  x=6225 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=148 | c=5.8 rankC=5.8 need=1294 tD=0.00 机 | safe=156212 keep=156212 avail=66252 chunkB=45020 pulseB=27012  x=2062 hNb=1
+    → Papik#0[T1] terr=31810 bal=301879 dq=9.5 cnt=105 | c=24.5 rankC=24.5 need=585780 tD=1.44 人 | safe=156212 keep=Inf avail=-Inf chunkB=45020 pulseB=27012 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=28 → AI#60（约 6374 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1915 kaito9 B=225101 L=15922 d=14.1 nb=3 neut=12 cmds=153 noFull=1 shQ=9091 | m=1.438 worth=20.3 cheap=8.1 over=0 dMedOther=6.3 safe(-1)=156178
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.0 rankC=3.0 need=4572 tD=0.00 机 | safe=156178 keep=156178 avail=66286 chunkB=45020 pulseB=27012  x=6225 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=151 | c=5.8 rankC=5.8 need=1296 tD=0.00 机 | safe=156178 keep=156178 avail=66286 chunkB=45020 pulseB=27012  x=2073 hNb=1
+    → Papik#0[T1] terr=32025 bal=301879 dq=9.4 cnt=114 | c=24.4 rankC=24.4 need=586099 tD=1.51 人 | safe=156178 keep=Inf avail=-Inf chunkB=45020 pulseB=27012 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=28 → AI#60（约 6374 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1920 kaito9 B=238829 L=15937 d=15.0 nb=3 neut=0 cmds=154 noFull=1 shQ=12619 | m=1.437 worth=21.5 cheap=8.1 over=0 dMedOther=6.3 safe(-1)=158437
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=158437 keep=158437 avail=77594 chunkB=47766 pulseB=28659  x=6225 hNb=1
+    → AI#66 terr=937 bal=0 dq=0.0 cnt=151 | c=6.0 rankC=6.0 need=1298 tD=0.00 机 | safe=158437 keep=158437 avail=77594 chunkB=47766 pulseB=28659  x=2076 hNb=1
+    → Papik#0[T1] terr=32302 bal=305924 dq=9.5 cnt=121 | c=24.5 rankC=24.5 need=593728 tD=1.50 人 | safe=158437 keep=Inf avail=-Inf chunkB=47766 pulseB=28659 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6297 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1925 kaito9 B=235041 L=15779 d=14.9 nb=3 neut=0 cmds=154 noFull=1 shQ=2912 | m=1.436 worth=21.4 cheap=8.1 over=0 dMedOther=6.3 safe(-1)=158571
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=158571 keep=158571 avail=73716 chunkB=47008 pulseB=28205  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.2 rankC=5.2 need=1616 tD=0.00 机 | safe=158571 keep=158571 avail=73716 chunkB=47008 pulseB=28205  x=2497 hNb=1
+    → Papik#0[T1] terr=32477 bal=305924 dq=9.4 cnt=121 | c=24.4 rankC=24.4 need=593987 tD=1.50 人 | safe=158571 keep=Inf avail=-Inf chunkB=47008 pulseB=28205 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1930 kaito9 B=237932 L=15779 d=15.1 nb=3 neut=0 cmds=155 noFull=1 shQ=6561 | m=1.435 worth=21.6 cheap=8.1 over=0 dMedOther=6.2 safe(-1)=160873
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=160873 keep=160873 avail=74271 chunkB=47586 pulseB=28552  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.2 rankC=5.2 need=1620 tD=0.00 机 | safe=160873 keep=160873 avail=74271 chunkB=47586 pulseB=28552  x=2502 hNb=1
+    → Papik#0[T1] terr=32737 bal=310023 dq=9.5 cnt=121 | c=24.5 rankC=24.5 need=601683 tD=1.54 人 | safe=160873 keep=Inf avail=-Inf chunkB=47586 pulseB=28552 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6273 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1935 kaito9 B=237932 L=15779 d=15.1 nb=3 neut=0 cmds=156 noFull=1 shQ=10246 | m=1.435 worth=21.6 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=160873
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=160873 keep=160873 avail=74271 chunkB=47586 pulseB=28552  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.2 rankC=5.2 need=1622 tD=0.00 机 | safe=160873 keep=160873 avail=74271 chunkB=47586 pulseB=28552  x=2505 hNb=1
+    → Papik#0[T1] terr=32906 bal=310023 dq=9.4 cnt=121 | c=24.4 rankC=24.4 need=601940 tD=1.64 人 | safe=160873 keep=Inf avail=-Inf chunkB=47586 pulseB=28552 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6273 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1940 kaito9 B=240858 L=15779 d=15.3 nb=3 neut=0 cmds=157 noFull=1 shQ=13940 | m=1.434 worth=21.9 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=163207
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=163207 keep=163207 avail=74829 chunkB=48172 pulseB=28903  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1624 tD=0.00 机 | safe=163207 keep=163207 avail=74829 chunkB=48172 pulseB=28903  x=2507 hNb=1
+    → Papik#0[T1] terr=33171 bal=314177 dq=9.5 cnt=121 | c=24.5 rankC=24.5 need=609745 tD=1.65 人 | safe=163207 keep=Inf avail=-Inf chunkB=48172 pulseB=28903 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6350 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1945 kaito9 B=240858 L=15779 d=15.3 nb=3 neut=0 cmds=158 noFull=1 shQ=17670 | m=1.433 worth=21.9 cheap=8.1 over=0 dMedOther=5.7 safe(-1)=163207
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=163207 keep=163207 avail=74829 chunkB=48172 pulseB=28903  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1626 tD=0.00 机 | safe=163207 keep=163207 avail=74829 chunkB=48172 pulseB=28903  x=2510 hNb=1
+    → Papik#0[T1] terr=33351 bal=314177 dq=9.4 cnt=121 | c=24.4 rankC=24.4 need=610015 tD=1.66 人 | safe=163207 keep=Inf avail=-Inf chunkB=48172 pulseB=28903 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6350 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1950 kaito9 B=243820 L=15779 d=15.5 nb=3 neut=0 cmds=159 noFull=1 shQ=21409 | m=1.433 worth=22.1 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=165572
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=165572 keep=165572 avail=75391 chunkB=48764 pulseB=29258  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1630 tD=0.00 机 | safe=165572 keep=165572 avail=75391 chunkB=48764 pulseB=29258  x=2515 hNb=1
+    → Papik#0[T1] terr=33591 bal=318386 dq=9.5 cnt=121 | c=24.5 rankC=24.5 need=617877 tD=1.55 人 | safe=165572 keep=Inf avail=-Inf chunkB=48764 pulseB=29258 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6428 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1955 kaito9 B=243820 L=15779 d=15.5 nb=3 neut=0 cmds=160 noFull=1 shQ=25184 | m=1.432 worth=22.1 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=165572
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.1 rankC=3.1 need=4572 tD=0.00 机 | safe=165572 keep=165572 avail=75391 chunkB=48764 pulseB=29258  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1632 tD=0.00 机 | safe=165572 keep=165572 avail=75391 chunkB=48764 pulseB=29258  x=2517 hNb=1
+    → Papik#0[T1] terr=33736 bal=318386 dq=9.4 cnt=121 | c=24.4 rankC=24.4 need=618083 tD=1.56 人 | safe=165572 keep=Inf avail=-Inf chunkB=48764 pulseB=29258 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=26 → AI#60（约 6428 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1960 kaito9 B=246818 L=15779 d=15.6 nb=3 neut=0 cmds=161 noFull=1 shQ=28969 | m=1.431 worth=22.4 cheap=8.1 over=0 dMedOther=6.2 safe(-1)=186422
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.2 rankC=3.2 need=4572 tD=0.00 机 | safe=186422 keep=186422 avail=57504 chunkB=49364 pulseB=29618  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1634 tD=0.00 机 | safe=186422 keep=186422 avail=57504 chunkB=49364 pulseB=29618  x=2520 hNb=1
+    → Papik#0[T1] terr=33952 bal=355499 dq=10.5 cnt=121 | c=26.9 rankC=26.9 need=684556 tD=1.69 人 | safe=186422 keep=Inf avail=-Inf chunkB=49364 pulseB=29618 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6266 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1965 kaito9 B=246818 L=15779 d=15.6 nb=3 neut=0 cmds=162 noFull=1 shQ=32794 | m=1.430 worth=22.4 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=186422
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.2 rankC=3.2 need=4572 tD=0.00 机 | safe=186422 keep=186422 avail=57504 chunkB=49364 pulseB=29618  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1636 tD=0.00 机 | safe=186422 keep=186422 avail=57504 chunkB=49364 pulseB=29618  x=2522 hNb=1
+    → Papik#0[T1] terr=34080 bal=355499 dq=10.4 cnt=121 | c=26.8 rankC=26.8 need=684748 tD=1.71 人 | safe=186422 keep=Inf avail=-Inf chunkB=49364 pulseB=29618 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6266 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1970 kaito9 B=249853 L=15779 d=15.8 nb=3 neut=0 cmds=163 noFull=1 shQ=36628 | m=1.429 worth=22.6 cheap=8.1 over=0 dMedOther=6.0 safe(-1)=189118
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.2 rankC=3.2 need=4572 tD=0.00 机 | safe=189118 keep=189118 avail=57808 chunkB=49971 pulseB=29982  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.4 rankC=5.4 need=1640 tD=0.00 机 | safe=189118 keep=189118 avail=57808 chunkB=49971 pulseB=29982  x=2527 hNb=1
+    → Papik#0[T1] terr=34222 bal=360298 dq=10.5 cnt=121 | c=27.0 rankC=27.0 need=693523 tD=1.74 人 | safe=189118 keep=Inf avail=-Inf chunkB=49971 pulseB=29982 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6343 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1975 kaito9 B=249853 L=15779 d=15.8 nb=3 neut=0 cmds=164 noFull=1 shQ=40498 | m=1.429 worth=22.6 cheap=8.1 over=0 dMedOther=6.0 safe(-1)=189118
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.2 rankC=3.2 need=4572 tD=0.00 机 | safe=189118 keep=189118 avail=57808 chunkB=49971 pulseB=29982  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.4 rankC=5.4 need=1642 tD=0.00 机 | safe=189118 keep=189118 avail=57808 chunkB=49971 pulseB=29982  x=2530 hNb=1
+    → Papik#0[T1] terr=34302 bal=360298 dq=10.5 cnt=121 | c=26.9 rankC=26.9 need=693643 tD=1.74 人 | safe=189118 keep=Inf avail=-Inf chunkB=49971 pulseB=29982 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6343 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1980 kaito9 B=252926 L=15779 d=16.0 nb=3 neut=0 cmds=165 noFull=1 shQ=44378 | m=1.428 worth=22.9 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=191850
+    → AI#60 terr=3048 bal=0 dq=0.0 cnt=170 | c=3.2 rankC=3.2 need=4572 tD=0.00 机 | safe=191850 keep=191850 avail=58113 chunkB=50585 pulseB=30351  x=6225 hNb=1
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.4 rankC=5.4 need=1644 tD=0.00 机 | safe=191850 keep=191850 avail=58113 chunkB=50585 pulseB=30351  x=2532 hNb=1
+    → Papik#0[T1] terr=34413 bal=365162 dq=10.6 cnt=121 | c=27.2 rankC=27.2 need=702475 tD=1.74 人 | safe=191850 keep=Inf avail=-Inf chunkB=50585 pulseB=30351 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=25 → AI#60（约 6421 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1985 kaito9 B=228128 L=15779 d=14.5 nb=3 neut=0 cmds=166 noFull=1 shQ=26155 | m=1.427 worth=20.6 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=191850
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.1 rankC=5.1 need=1644 tD=0.00 机 | safe=191850 keep=191850 avail=33605 chunkB=45626 pulseB=27375  x=2532 hNb=1
+    → Papik#0[T1] terr=34479 bal=365162 dq=10.6 cnt=121 | c=27.1 rankC=27.1 need=702582 tD=1.74 人 | safe=191850 keep=Inf avail=-Inf chunkB=45626 pulseB=27375 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2673 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1990 kaito9 B=219433 L=15949 d=13.8 nb=3 neut=0 cmds=167 noFull=1 shQ=20939 | m=1.427 worth=19.6 cheap=8.1 over=0 dMedOther=6.1 safe(-1)=194476
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.0 rankC=5.0 need=1644 tD=0.00 机 | safe=194476 keep=194476 avail=22386 chunkB=43887 pulseB=26332  x=2532 hNb=1
+    → Papik#0[T1] terr=34559 bal=370091 dq=10.7 cnt=121 | c=27.4 rankC=27.4 need=711487 tD=1.74 人 | safe=194476 keep=Inf avail=-Inf chunkB=43887 pulseB=26332 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2571 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1995 kaito9 B=219433 L=16442 d=13.3 nb=3 neut=0 cmds=168 noFull=1 shQ=24344 | m=1.426 worth=19.0 cheap=8.0 over=0 dMedOther=6.1 safe(-1)=194061
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.0 rankC=5.0 need=1644 tD=0.00 机 | safe=194061 keep=194061 avail=22801 chunkB=43887 pulseB=26332  x=2532 hNb=1
+    → Papik#0[T1] terr=34592 bal=370091 dq=10.7 cnt=121 | c=27.4 rankC=27.4 need=711524 tD=1.75 人 | safe=194061 keep=Inf avail=-Inf chunkB=43887 pulseB=26332 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2571 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2000 kaito9 B=238907 L=16754 d=14.3 nb=3 neut=0 cmds=169 noFull=1 shQ=27830 | m=1.425 worth=20.3 cheap=8.0 over=0 dMedOther=7.2 safe(-1)=198972
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.2 rankC=5.2 need=1644 tD=0.00 机 | safe=198972 keep=198972 avail=37136 chunkB=47781 pulseB=28669  x=2532 hNb=1
+    → Papik#0[T1] terr=34620 bal=379301 dq=11.0 cnt=121 | c=28.0 rankC=28.0 need=727982 tD=1.52 人 | safe=198972 keep=Inf avail=-Inf chunkB=47781 pulseB=28669 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2566 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2005 kaito9 B=238907 L=17192 d=13.9 nb=3 neut=0 cmds=170 noFull=1 shQ=31560 | m=1.420 worth=19.7 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=219015
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.2 rankC=5.2 need=1644 tD=0.00 机 | safe=219015 keep=219015 avail=17093 chunkB=47781 pulseB=28669  x=2532 hNb=1
+    → Papik#0[T1] terr=34620 bal=415635 dq=12.0 cnt=121 | c=30.5 rankC=30.5 need=792742 tD=1.68 人 | safe=219015 keep=Inf avail=-Inf chunkB=47781 pulseB=28669 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2566 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2010 kaito9 B=241869 L=17466 d=13.8 nb=3 neut=0 cmds=171 noFull=1 shQ=35299 | m=1.415 worth=19.6 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=221937
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1644 tD=0.00 机 | safe=221937 keep=221937 avail=17098 chunkB=48374 pulseB=29024  x=2532 hNb=1
+    → Papik#0[T1] terr=34620 bal=421246 dq=12.2 cnt=121 | c=30.9 rankC=30.9 need=802743 tD=1.74 人 | safe=221937 keep=Inf avail=-Inf chunkB=48374 pulseB=29024 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2598 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2015 kaito9 B=241869 L=17851 d=13.5 nb=3 neut=0 cmds=172 noFull=1 shQ=39092 | m=1.409 worth=19.1 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=221612
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1644 tD=0.00 机 | safe=221612 keep=221612 avail=17423 chunkB=48374 pulseB=29024  x=2532 hNb=1
+    → Papik#0[T1] terr=34620 bal=421246 dq=12.2 cnt=121 | c=30.9 rankC=30.9 need=802743 tD=1.75 人 | safe=221612 keep=Inf avail=-Inf chunkB=48374 pulseB=29024 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2598 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2020 kaito9 B=244892 L=18081 d=13.5 nb=2 neut=103 cmds=173 noFull=1 shQ=42907 | m=1.404 worth=19.0 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=224613
+    → AI#66 terr=1095 bal=0 dq=0.0 cnt=159 | c=5.3 rankC=5.3 need=1644 tD=0.00 机 | safe=224613 keep=224613 avail=17410 chunkB=48978 pulseB=29387  x=2532 hNb=1
+    → Papik#0[T1] terr=34620 bal=426932 dq=12.3 cnt=121 | c=31.3 rankC=31.3 need=812878 tD=1.86 人 | safe=224613 keep=Inf avail=-Inf chunkB=48978 pulseB=29387 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2630 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2025 kaito9 B=241314 L=18209 d=13.3 nb=2 neut=60 cmds=173 noFull=1 shQ=0 | m=1.399 worth=18.5 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=224505
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.8 rankC=4.8 need=1894 tD=0.00 机 | safe=224505 keep=224505 avail=13982 chunkB=48263 pulseB=28958  x=2866 hNb=1
+    → Papik#0[T1] terr=34620 bal=426932 dq=12.3 cnt=121 | c=31.2 rankC=31.2 need=812878 tD=1.88 人 | safe=224505 keep=Inf avail=-Inf chunkB=48263 pulseB=28958 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2030 kaito9 B=244330 L=18323 d=13.3 nb=2 neut=54 cmds=174 noFull=1 shQ=3809 | m=1.393 worth=18.6 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=227646
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=227646 keep=227646 avail=13821 chunkB=48866 pulseB=29320  x=2866 hNb=1
+    → Papik#0[T1] terr=34620 bal=432695 dq=12.5 cnt=121 | c=31.6 rankC=31.6 need=823149 tD=1.88 人 | safe=227646 keep=Inf avail=-Inf chunkB=48866 pulseB=29320 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=12 → AI#66（约 3101 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2035 kaito9 B=244330 L=18477 d=13.2 nb=2 neut=34 cmds=175 noFull=1 shQ=7654 | m=1.388 worth=18.4 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=207814
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=207814 keep=207814 avail=33653 chunkB=48866 pulseB=29320  x=2866 hNb=1
+    → Papik#0[T1] terr=34620 bal=397624 dq=11.5 cnt=121 | c=29.3 rankC=29.3 need=760640 tD=1.74 人 | safe=207814 keep=Inf avail=-Inf chunkB=48866 pulseB=29320 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=12 → AI#66（约 3101 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2040 kaito9 B=247384 L=18529 d=13.4 nb=2 neut=15 cmds=176 noFull=1 shQ=11509 | m=1.383 worth=18.5 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=210785
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=210785 keep=210785 avail=33700 chunkB=49477 pulseB=29686  x=2866 hNb=1
+    → Papik#0[T1] terr=34849 bal=402991 dq=11.6 cnt=121 | c=29.4 rankC=29.4 need=770554 tD=1.73 人 | safe=210785 keep=Inf avail=-Inf chunkB=49477 pulseB=29686 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2899 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2045 kaito9 B=247384 L=18571 d=13.3 nb=2 neut=13 cmds=177 noFull=1 shQ=15404 | m=1.378 worth=18.4 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=210750
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=210750 keep=210750 avail=33735 chunkB=49477 pulseB=29686  x=2866 hNb=1
+    → Papik#0[T1] terr=35069 bal=402991 dq=11.5 cnt=121 | c=29.3 rankC=29.3 need=770884 tD=1.73 人 | safe=210750 keep=Inf avail=-Inf chunkB=49477 pulseB=29686 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2899 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2050 kaito9 B=250476 L=18596 d=13.5 nb=2 neut=12 cmds=178 noFull=1 shQ=19308 | m=1.373 worth=18.5 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=213785
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=213785 keep=213785 avail=33756 chunkB=50095 pulseB=30057  x=2866 hNb=1
+    → Papik#0[T1] terr=35366 bal=408431 dq=11.5 cnt=121 | c=29.4 rankC=29.4 need=781030 tD=1.72 人 | safe=213785 keep=Inf avail=-Inf chunkB=50095 pulseB=30057 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2935 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2055 kaito9 B=250476 L=18632 d=13.4 nb=2 neut=10 cmds=179 noFull=1 shQ=23248 | m=1.367 worth=18.4 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=213754
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=4.9 rankC=4.9 need=1894 tD=0.00 机 | safe=213754 keep=213754 avail=33787 chunkB=50095 pulseB=30057  x=2866 hNb=1
+    → Papik#0[T1] terr=35558 bal=408431 dq=11.5 cnt=121 | c=29.3 rankC=29.3 need=781318 tD=1.73 人 | safe=213754 keep=Inf avail=-Inf chunkB=50095 pulseB=30057 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2935 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2060 kaito9 B=253606 L=18650 d=13.6 nb=2 neut=6 cmds=180 noFull=1 shQ=27198 | m=1.362 worth=18.5 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=216860
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=5.0 rankC=5.0 need=1894 tD=0.00 机 | safe=216860 keep=216860 avail=33775 chunkB=50721 pulseB=30433  x=2866 hNb=1
+    → Papik#0[T1] terr=35841 bal=413985 dq=11.6 cnt=121 | c=29.4 rankC=29.4 need=791637 tD=1.74 人 | safe=216860 keep=Inf avail=-Inf chunkB=50721 pulseB=30433 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2971 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2065 kaito9 B=253606 L=18660 d=13.6 nb=2 neut=0 cmds=181 noFull=1 shQ=31188 | m=1.357 worth=18.4 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=216851
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=5.0 rankC=5.0 need=1894 tD=0.00 机 | safe=216851 keep=216851 avail=33784 chunkB=50721 pulseB=30433  x=2866 hNb=1
+    → Papik#0[T1] terr=36029 bal=413985 dq=11.5 cnt=121 | c=29.3 rankC=29.3 need=791919 tD=1.74 人 | safe=216851 keep=Inf avail=-Inf chunkB=50721 pulseB=30433 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=11 → AI#66（约 2971 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2070 kaito9 B=278657 L=18660 d=14.9 nb=2 neut=0 cmds=182 noFull=1 shQ=35461 | m=1.352 worth=20.2 cheap=8.0 over=0 dMedOther=6.3 safe(-1)=220014
+    → AI#66 terr=1262 bal=0 dq=0.0 cnt=166 | c=5.3 rankC=5.3 need=1894 tD=0.00 机 | safe=220014 keep=220014 avail=55378 chunkB=55731 pulseB=33439  x=2866 hNb=1
+    → Papik#0[T1] terr=36307 bal=419615 dq=11.6 cnt=121 | c=29.4 rankC=29.4 need=802380 tD=1.83 人 | safe=220014 keep=Inf avail=-Inf chunkB=55731 pulseB=33439 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=10 → AI#66（约 2993 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕

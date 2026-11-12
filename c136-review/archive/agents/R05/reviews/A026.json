@@ -1825,10 +1825,25 @@
     "neverLandedTroops": 0
    }
   ],
+  "funnelTotals": {
+   "intended": 2558,
+   "matched": 703,
+   "executed": 703,
+   "unmatchedExec": 0,
+   "unmatchedExecByPeriod": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "neverLandedByMatch": 1855,
+   "neverLandedByCount": 1855
+  },
   "selfReport": {
    "shadow": 2541,
    "cmds": 2540,
-   "landed": 689
+   "landed": 689,
+   "executedAll": 703
   },
   "phantomDecisions": {
    "noah88": {
@@ -3034,6 +3049,227 @@
     "只剩中立边": 0,
     "只贴敌方真人": 0,
     "围在里面": 0
+   }
+  },
+  "exits": {
+   "只贴敌方真人": {
+    "V13.boatFood:2003": 89,
+    "V13.boatFood:2004": 10,
+    "V13.botOk:2471": 2,
+    "isMopUp:4532": 1
+   },
+   "留底·有在途": {
+    "V13.boatFood:2003": 268,
+    "V13.boatFood:2005": 53
+   },
+   "留底锁·无在途": {
+    "V13.boatFood:2003": 21,
+    "V13.boatFood:2005": 13
+   },
+   "有目标没发": {
+    "V13.boatFood:2005": 30,
+    "V13.boatFood:2003": 15
+   },
+   "只剩中立边": {
+    "V13.boatFood:2003": 37
+   }
+  },
+  "ptGates": {
+   "只贴敌方真人": {
+    "1161": 91,
+    "1165": 10,
+    "1163": 1
+   },
+   "留底·有在途": {
+    "1157,1161": 132,
+    "1157": 126,
+    "1161": 47,
+    "1156,1157": 9,
+    "1161,1165": 7
+   },
+   "留底锁·无在途": {
+    "1157,1161": 14,
+    "1161": 12,
+    "1157": 8
+   },
+   "有目标没发": {
+    "1157,1161,1163": 10,
+    "1161,1163": 10,
+    "1161": 6,
+    "(循环里没有 continue)": 6,
+    "1157,1161": 4,
+    "1163": 3,
+    "1157,1163": 2,
+    "1161,1163,1165": 2,
+    "1157": 1,
+    "1163,1165": 1
+   },
+   "只剩中立边": {
+    "(循环里没有 continue)": 20,
+    "1161": 16,
+    "1165": 1
+   }
+  },
+  "gaExit": {
+   "只贴敌方真人": {
+    "end": 102
+   },
+   "留底·有在途": {
+    "799": 268,
+    "end": 53
+   },
+   "留底锁·无在途": {
+    "799": 21,
+    "end": 13
+   },
+   "有目标没发": {
+    "end": 13,
+    "797": 28,
+    "799": 4
+   },
+   "只剩中立边": {
+    "799": 37
+   }
+  },
+  "notSentSplit": {
+   "rows": 45,
+   "split": {
+    "在途已够": 17,
+    "配额闸拒发": 28
+   },
+   "lines": {
+    "cooldown": [],
+    "guard": [
+     3858,
+     3861
+    ],
+    "enough": [
+     978,
+     1163
+    ]
+   },
+   "byBot": {
+    "noah88": {
+     "在途已够": 6,
+     "配额闸拒发": 1
+    },
+    "talon5": {
+     "配额闸拒发": 9
+    },
+    "kaito9": {
+     "配额闸拒发": 10,
+     "在途已够": 2
+    },
+    "sora_w": {
+     "配额闸拒发": 4
+    },
+    "ryan_m": {
+     "配额闸拒发": 2,
+     "在途已够": 5
+    },
+    "zexos1": {
+     "配额闸拒发": 2
+    },
+    "leo_tx": {
+     "在途已够": 4
+    }
+   }
+  },
+  "sendRefused": {
+   "rows": 28,
+   "share": 0.019,
+   "byCat": {
+    "有目标没发": {
+     "Policy.send 3861 → 没到 Strategy.send｜isNoFullSend=1": 28
+    }
+   },
+   "byBot": {
+    "talon5": 9,
+    "kaito9": 10,
+    "noah88": 1,
+    "sora_w": 4,
+    "ryan_m": 2,
+    "zexos1": 2
+   }
+  },
+  "noFullSendRows": {
+   "all": 1488,
+   "nfs1": 774,
+   "nfs1_nocmd": 305
+  }
+ },
+ "quotaGuard": {
+  "source": "scripts/quota_guard.py A026（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）",
+  "ver": "vb",
+  "okLine": 3924,
+  "calls": 2958,
+  "refused": 54,
+  "nfsAt": {
+   "ryan_m": 538,
+   "noah88": 789,
+   "sora_w": 631,
+   "kaito9": 743,
+   "talon5": 666,
+   "zexos1": 1030,
+   "riku_x": null,
+   "leo_tx": null,
+   "alex_k": null
+  },
+  "byPeriod": [
+   {
+    "period": "0–600",
+    "calls": 74,
+    "refused": 1
+   },
+   {
+    "period": "600–1500",
+    "calls": 1035,
+    "refused": 34
+   },
+   {
+    "period": "1500–3000",
+    "calls": 1843,
+    "refused": 19
+   },
+   {
+    "period": "3000+",
+    "calls": 6,
+    "refused": 0
+   }
+  ],
+  "byBot": {
+   "ryan_m": {
+    "calls": 163,
+    "refused": 4
+   },
+   "kaito9": {
+    "calls": 327,
+    "refused": 18
+   },
+   "leo_tx": {
+    "calls": 509
+   },
+   "sora_w": {
+    "calls": 481,
+    "refused": 10
+   },
+   "noah88": {
+    "calls": 32,
+    "refused": 1
+   },
+   "talon5": {
+    "calls": 480,
+    "refused": 14
+   },
+   "zexos1": {
+    "calls": 136,
+    "refused": 7
+   },
+   "riku_x": {
+    "calls": 429
+   },
+   "alex_k": {
+    "calls": 401
    }
   }
  },
@@ -4576,13 +4812,13 @@
   {
    "id": "D01",
    "t": "−41…−1",
-   "bots": [
-    "全部九个号"
-   ],
+   "bots": "全部九个号",
    "what": "出生指令只在坐标变化时发送，没有「我还没有地」的重发：八个号发了 1–2 条就不再发，一条都没进录像，被引擎随机落子。",
    "why": "前几条发送不落地是每一局都有的现象；别的局因为协调器不停换坐标（23–43 种解）才有后面的发送。本局只有 2 种解。丢在哪一层看不到。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.chooseSpawn L3983-4039（L4020-4025 上报 curX=−1；L4034-4037）；src/strategy/spawn-coordinator-c116-vb.mjs: matchBotsToTargets L1439-1447；src/sim/sim/game.js: endSpawnPhase L657-666",
-   "evidence": "spawn_exec.py A026 --detail --seq；A026_facts.py §A；replay_cmds.mjs：我方出生指令 1 条（talon5 的第 3 次发送）。跨局：13 局 112 个号，每个号开头都有 1–3 条坐标不在录像里。",
+   "evidence": [
+    "spawn_exec.py A026 --detail --seq；A026_facts.py §A；replay_cmds.mjs：我方出生指令 1 条（talon5 的第 3 次发送）。跨局：13 局 112 个号，每个号开头都有 1–3 条坐标不在录像里。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "SP-NO-SPAWN-CMD",
@@ -4591,18 +4827,13 @@
   {
    "id": "D02",
    "t": "−41…−1",
-   "bots": [
-    "ryan_m",
-    "sora_w",
-    "zexos1",
-    "talon5",
-    "leo_tx",
-    "alex_k"
-   ],
+   "bots": "ryan_m、sora_w、zexos1、talon5、leo_tx、alex_k",
    "what": "协调器答复前策略自己兜底的点：6 个号的点挤在 (939–955, 419–433)（互相 ≤20 格），另 2 个号同在 (1397,343)。这是每个号的第一条出生发送。",
    "why": "本局这些发送全部丢失，没有后果；如果第一条发送落地而协调器没答复，六个号会堆在同一处。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.chooseSpawn L3995、L4042-4080、L4093-4125",
-   "evidence": "in_game.log 第 3–25 行的 8 条 [HL-SPAWN]（chosenSlots=1/6、2/6，minSep=175）；A026_facts.py §A。",
+   "evidence": [
+    "in_game.log 第 3–25 行的 8 条 [HL-SPAWN]（chosenSlots=1/6、2/6，minSep=175）；A026_facts.py §A。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "SP-FALLBACK-STACK",
@@ -4611,13 +4842,13 @@
   {
    "id": "D03",
    "t": "0–600",
-   "bots": [
-    "全部九个号"
-   ],
+   "bots": "全部九个号",
    "what": "随机落子之后的 DP 开局：t=600 我方号地中位 2,846，是其余真人（1,948）的 1.46 倍；实际地 ÷ 名下份额 0.11 对 T2 的 0.05。",
    "why": "",
    "codePath": "src/strategy/v27-team-c116-vb.js: V17.act L2690-2692 → General.act L786-799（L792 中立扩张）",
-   "evidence": "review_skel.py cmp；land_account.mjs（t=630）；delay_account.py：0–600 拍 71 条决策全部按原意落地，延迟 P50 11。",
+   "evidence": [
+    "review_skel.py cmp；land_account.mjs（t=630）；delay_account.py：0–600 拍 71 条决策全部按原意落地，延迟 P50 11。"
+   ],
    "verdict": "good",
    "patternId": "NEW",
    "patternKey": "OP-DP-PAR",
@@ -4626,13 +4857,13 @@
   {
    "id": "D04",
    "t": "600–900",
-   "bots": [
-    "全部九个号"
-   ],
+   "bots": "全部九个号",
    "what": "指令还基本准时（延迟中位 50 拍）的 300 拍里，贴身机器人照常吃：600 拍贴着我方号的 28 个机器人 11,207 格，到 1800 拍 86.2% 归了我方（敌方真人 5.0%）；t=900 我方号地中位 5,696 对真人 5,459。",
    "why": "",
    "codePath": "src/strategy/v27-team-c116-vb.js: General.act L794-797 → Style.pickTarget L1144-1176；V13.allow L2110-2118；V13.botOk L2467-2472",
-   "evidence": "land_account.mjs A026（机器人地去向 B 组）；A026_facts.py §E：600–899 拍 182 条决策落地 177 条、按原意 115 条。",
+   "evidence": [
+    "land_account.mjs A026（机器人地去向 B 组）；A026_facts.py §E：600–899 拍 182 条决策落地 177 条、按原意 115 条。"
+   ],
    "verdict": "good",
    "patternId": "NEW",
    "patternKey": "AT-BOT-HARVEST",
@@ -4641,13 +4872,13 @@
   {
    "id": "D05",
    "t": "600–1500",
-   "bots": [
-    "全部九个号"
-   ],
+   "bots": "全部九个号",
    "what": "每 5 拍对同一目标重下一条：943 条陆攻决策里 685 条（73%）下在上一条同目标指令还没落地的时候。落地的 277 条里 201 条是重复，占打出兵数的 76%（525k）加手续费 40k。",
    "why": "准时的时候上一条 11 拍就落地，重复只有 8/71；延迟一长，本地局面里永远看不到自己发出去的兵。策略里没有「已发未落地」的账。",
    "codePath": "src/strategy/v27-team-c116-vb.js: General.act L794-797 → Policy.send L3838-3924 → V13.send L1825-1827 → Strategy.send L479-487",
-   "evidence": "delay_account.py A026（确认窗口内重复）；tick_attrib.py：留底挡住的 355 个决策拍里 321 个是「上一条还在路上」。",
+   "evidence": [
+    "delay_account.py A026（确认窗口内重复）；tick_attrib.py：留底挡住的 355 个决策拍里 321 个是「上一条还在路上」。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "AT-PULSE-REPEAT",
@@ -4656,13 +4887,13 @@
   {
    "id": "D06",
    "t": "600–3000",
-   "bots": [
-    "下发链路"
-   ],
+   "bots": "下发链路",
    "what": "指令延迟：600–1500 拍 P50 120 / P90 264 / 最大 379 拍；1500–3000 拍 P50 538 / P90 810 / 最大 858 拍。九个号一起慢（各号中位比基线多 66–188、465–809 拍）；2700–3000 拍追上。",
    "why": "外因，原因不明。策略每拍只用 0.5–1.0 毫秒（[HL-TICK] avgMs），skip=0。",
    "codePath": "src/engine/live_game_js.js: sbSendAttack；src/sim/sim/game.js: attack L1263-1285；src/strategy/v27-team-c116-vb.js: Strategy.send L479-487",
-   "evidence": "delay_account.py A026（按时段、按 300 拍、按号）；client_clock.py A026：ryan_m 上报阵亡时落后 90 拍，其余 6 个号 −2…+2 拍；A026_facts.py §D。",
+   "evidence": [
+    "delay_account.py A026（按时段、按 300 拍、按号）；client_clock.py A026：ryan_m 上报阵亡时落后 90 拍，其余 6 个号 −2…+2 拍；A026_facts.py §D。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "IO-LAG-STALE",
@@ -4671,13 +4902,13 @@
   {
    "id": "D07",
    "t": "600–3000",
-   "bots": [
-    "下发链路"
-   ],
+   "bots": "下发链路",
    "what": "同拍批：73 批 560 条 = 落地指令的 80%，每批 ≤9 条相邻决策；批与批之间的决策不落地（600–1500 拍 551 条、1500–3000 拍 1,304 条）。",
    "why": "哪一层攒批、哪一层丢弃看不到。",
    "codePath": "src/sim/sim/game.js: attack L1263-1285、quote L1239-1248；src/engine/live_game_js.js: sbSendAttack",
-   "evidence": "delay_account.py A026 --list-batches：9 条的 43 批、8 条的 12 批；1500–3000 拍 37 批里 17 批全作废，手续费 662k。",
+   "evidence": [
+    "delay_account.py A026 --list-batches：9 条的 43 批、8 条的 12 批；1500–3000 拍 37 批里 17 批全作废，手续费 662k。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "IO-BATCH9",
@@ -4686,13 +4917,13 @@
   {
    "id": "D08",
    "t": "600–3000",
-   "bots": [
-    "全部九个号"
-   ],
+   "bots": "全部九个号",
    "what": "打机器人的指令到达时目标已死：600–1500 拍 111 条（53 条作废、58 条被改成打中立 195k，退回 97%，拿 2,122 格）；1500–3000 拍 191 条（52 条改打中立 1.16M，手续费 204k，拿 427 格）。",
    "why": "兵退得回来，赔的是手续费和这一拍本来能发的那一条。",
    "codePath": "src/sim/sim/game.js: attack L1263-1285（目标编号 ≥ 存活玩家时按中立处理）、quote L1239-1248（手续费 = 12/1024×存兵，每条一次）",
-   "evidence": "delay_account.py A026（迟到作废/目标已死）；A026_facts.py §B：leo_tx 2415 拍 9 条改打中立，手续费 65k 换 1 格。",
+   "evidence": [
+    "delay_account.py A026（迟到作废/目标已死）；A026_facts.py §B：leo_tx 2415 拍 9 条改打中立，手续费 65k 换 1 格。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "IO-STALE-TARGET",
@@ -4701,14 +4932,13 @@
   {
    "id": "D09",
    "t": "1464",
-   "bots": [
-    "noah88",
-    "zexos1"
-   ],
+   "bots": "noah88、zexos1",
    "what": "两个客户端同一拍离场，最后一条日志 t=1080（本地拍至少落后 294 拍）；21,008 格/215k 留在场上被吃掉。",
    "why": "外因：外层程序的行为，源码不在 c136-data/src。",
    "codePath": "src/engine/live_game_js.js: 离场指令（id 8/9）；src/sim/sim/game.js: leave",
-   "evidence": "A026_facts.py §D；results.csv 没有这两个号的行；card.json squadBots=7。",
+   "evidence": [
+    "A026_facts.py §D；results.csv 没有这两个号的行；card.json squadBots=7。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "EX-CLIENT-DROP",
@@ -4717,15 +4947,13 @@
   {
    "id": "D10",
    "t": "1500–2700",
-   "bots": [
-    "leo_tx",
-    "talon5",
-    "sora_w"
-   ],
+   "bots": "leo_tx、talon5、sora_w",
    "what": "同一拍里先发的中立补兵（pct=47，最小额）占掉了「每拍一条」，后面打机器人的那条被本地拒收：全队 300 条里 278 条是这一种（leo_tx 144、talon5 72、sora_w 48、alex_k 26），名义 7.93M；另有 17 条被挤掉的是打真人（名义 2.41M，alex_k 7 条打 goodland、riku_x 5 条打 Thailand）。",
    "why": "本局这些指令即使发出去大多也不会落地；机制本身与延迟无关。",
    "codePath": "src/strategy/v27-team-c116-vb.js: General.expandNeutral L944-952（L952 send）→ Policy.buyLand L5449-5454（同拍第二次 send）；Strategy.send L479-487",
-   "evidence": "shadow.mjs A026 --quiet --tc 600:1500 的 [每拍限 1 条] 段（被挤掉 300 条；按 300 拍 1500: 89、1800: 76、2100: 91、2400: 39）；results.csv：7 个号 sent − accepted = 299，与影子逐号相等。",
+   "evidence": [
+    "shadow.mjs A026 --quiet --tc 600:1500 的 [每拍限 1 条] 段（被挤掉 300 条；按 300 拍 1500: 89、1800: 76、2100: 91、2400: 39）；results.csv：7 个号 sent − accepted = 299，与影子逐号相等。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "OP-SAME-TICK-SQUEEZE",
@@ -4734,13 +4962,13 @@
   {
    "id": "D11",
    "t": "1500–3000",
-   "bots": [
-    "全部在场的号"
-   ],
+   "bots": "全部在场的号",
    "what": "全程 0 笔捐兵：捐兵逻辑 1,500 拍里只被走到 493 次，走完的 57 次没有受赠人过门槛；编队 4.27M 存兵分握在 7 个号手里。",
    "why": "门槛是按「密度 78–100 最赚利息」设计的；本局各号密度 50–146 却没有一个同时过得了密度和留底两道门。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.tryDonateToTeammate L4329（t≥1500 等）、L4331（时隙）、L4343、L4453、L4481（捐出方密度 ≥108、存兵 > 1.14×max(92×地, safeAt)）、L4498",
-   "evidence": "shadow.mjs A026 --win 1500 --mids tryDonateToTeammate；split_logs/events.csv：[HL-DISPATCH] 0 条；match_truth.mjs allDon：我方 0 笔、T2 在 3017–3409 拍 4 笔到账 2.83M。",
+   "evidence": [
+    "shadow.mjs A026 --win 1500 --mids tryDonateToTeammate；split_logs/events.csv：[HL-DISPATCH] 0 条；match_truth.mjs allDon：我方 0 笔、T2 在 3017–3409 拍 4 笔到账 2.83M。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "DN-DONOR-GATE",
@@ -4749,13 +4977,13 @@
   {
    "id": "D12",
    "t": "1845–2632",
-   "bots": [
-    "alex_k"
-   ],
+   "bots": "alex_k",
    "what": "158 条打 goodland 的决策一条没落地；2632 拍 9 条同拍执行，逐条按 1.03M 计价：打出 99%，+20,159 格，密度 129 → 1，350 拍后阵亡。",
    "why": "决策时每条 16–23 万、打的是 258k–427k 的 goodland；落地时九条合计 99.6 万、对面 762k。准时落地时价格留底（254k–357k）会在第一条之后收口。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand L5610-5616（通用出口不看在途）；src/sim/sim/game.js: quote L1239-1248",
-   "evidence": "A026_facts.py §B；shadow.mjs --offers 1845,2070,2100（每条可用兵 162k–231k = 存兵的 38–40%）；drop30：2610–2700 拍残差 0。",
+   "evidence": [
+    "A026_facts.py §B；shadow.mjs --offers 1845,2070,2100（每条可用兵 162k–231k = 存兵的 38–40%）；drop30：2610–2700 拍残差 0。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "IO-LATE-DUMP",
@@ -4764,13 +4992,13 @@
   {
    "id": "D13",
    "t": "2645–2912",
-   "bots": [
-    "riku_x"
-   ],
+   "bots": "riku_x",
    "what": "密度过 100（over）后对存兵 1.3–1.65 倍于己、吃掉要 2.4–3.0 倍存兵的 Thailand 每 5 拍一条 pulse；16 条在 2891/2912 两拍落地，801k 剩 87k，换 4,336 格（152 兵/格）。",
    "why": "出手本身是策略的选择（与延迟无关）；一拍落 8 条是延迟放大的。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand L5353（over）、L5359（估值 = m×自己的密度 → 自己越密越肯出价）、L5440-5443、L5594-5607",
-   "evidence": "shadow.mjs --offers 2650,2800：over=true，每格 84.0–98.8 = 估值的 0.66–0.76 倍，可用 286k–303k；game_facts.py §28；Thailand 其后 300 拍 999k 回推。",
+   "evidence": [
+    "shadow.mjs --offers 2650,2800：over=true，每格 84.0–98.8 = 估值的 0.66–0.76 倍，可用 286k–303k；game_facts.py §28；Thailand 其后 300 拍 999k 回推。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "EG-GIANT-POKE",
@@ -4779,13 +5007,13 @@
   {
    "id": "D14",
    "t": "2650–3003",
-   "bots": [
-    "sora_w"
-   ],
+   "bots": "sora_w",
    "what": "65 条打 Player 702 的 pulse 决策（每条 12%），2982/3003 两拍落地 18 条：1.57M 剩 131k，地 14,805 → 37,307、密度 5；Player 702 随后收到 2.16M 捐兵。",
    "why": "2982 这一批的延迟只有 2–42 拍：九个相邻决策拍的指令在同一拍到达。限流靠的「在途兵」在本地一直是 0。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand L5594-5607（curAtk ≥ 0.04×B 才停）；src/sim/sim/game.js: quote L1239-1248",
-   "evidence": "A026_facts.py §B（延迟 2–108 拍：客户端已经追上，9 条仍同拍落地）；drop30：2970–3060 拍 −1.47M 残差 0。",
+   "evidence": [
+    "A026_facts.py §B（延迟 2–108 拍：客户端已经追上，9 条仍同拍落地）；drop30：2970–3060 拍 −1.47M 残差 0。"
+   ],
    "verdict": "error",
    "patternId": "NEW",
    "patternKey": "AT-PULSE-REPEAT",
@@ -4794,13 +5022,13 @@
   {
    "id": "D15",
    "t": "1500–3188",
-   "bots": [
-    "kaito9"
-   ],
+   "bots": "kaito9",
    "what": "只有 7–9k 格地的角落号握着密度 60–90 的兵不出手（Thailand 报价 > 估值，价格门收口；后来留底封顶 ≥ 存兵）：对面三家花 1.99M 才吃掉 6,976 格（285 兵/格），撑到 3188 拍。",
    "why": "守得贵，但 56 万兵 1,700 拍没有产出，也没有捐给任何人。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand L5359（价格门）、L5440-5447；Policy.safeAt L4543-4605",
-   "evidence": "A026_facts.py §C（对照 alex_k 16 兵/格）；shadow.mjs --offers 2500,2800,3100。",
+   "evidence": [
+    "A026_facts.py §C（对照 alex_k 16 兵/格）；shadow.mjs --offers 2500,2800,3100。"
+   ],
    "verdict": "good",
    "patternId": "NEW",
    "patternKey": "DF-DENSE-HOLD",
@@ -4809,13 +5037,13 @@
   {
    "id": "D16",
    "t": "3416–3423",
-   "bots": [
-    "talon5"
-   ],
+   "bots": "talon5",
    "what": "指令已准时：三条 471k 打 Player 702（608k、密度 9）；对面 3304 拍收到 1.80M，3486/3528 拍 2.76M 回推。",
    "why": "T2 已有 87%，打不打结果一样。",
    "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand L5594-5607",
-   "evidence": "game_facts.py §28；match_truth.mjs events：3486 拍 1.25M、3528 拍 1.50M + Radical Edward 1.05M。",
+   "evidence": [
+    "game_facts.py §28；match_truth.mjs events：3486 拍 1.25M、3528 拍 1.50M + Radical Edward 1.05M。"
+   ],
    "verdict": "unclear",
    "patternId": "NEW",
    "patternKey": "EG-GIANT-POKE",

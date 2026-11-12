@@ -1,0 +1,6 @@
+out/B043/batch/p_jan2.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Janissary --to 3990 --probe "Janissary:1800:3990" --tag jan2
+out/B043/batch/p_bar2.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Barbary --to 4365 --probe "Barbary:1800:4365" --tag bar2
+out/B043/batch/p_pro.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots ProGamer99 --to 6415 --probe "ProGamer99:4800:6415" --tag pro
+out/B043/batch/p_zen2.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Zenobia --to 5500 --probe "Zenobia:3900:5500" --tag zen2
+out/B043/batch/p_hus2.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Hussite --to 5825 --probe "Hussite:3000:5825" --tag hus2
+out/B043/batch/p_tra2.txt node scripts/shadow.mjs B043 --replay A062 --log B043 --strategy c110 --quiet --bots Trajan --to 6300 --probe "Trajan:5400:6300" --tag tra2

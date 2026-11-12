@@ -1,0 +1,123 @@
+[CM-A] 策略文件里的定义行（类.函数 起~止）：函数 | c110 | c116-vb | c116 | c116-va | g09
+  chooseSpawn | Strategy.chooseSpawn L320-323；General.chooseSpawn L773-780；V13.chooseSpawn L1674-1688；Policy.chooseSpawn L4007-4154 | Strategy.chooseSpawn L273-276；General.chooseSpawn L721-728；V13.chooseSpawn L1637-1651；Policy.chooseSpawn L3983-4129 | Strategy.chooseSpawn L273-276；General.chooseSpawn L721-728；V13.chooseSpawn L1637-1651；Policy.chooseSpawn L3983-4129 | Strategy.chooseSpawn L273-276；General.chooseSpawn L721-728；V13.chooseSpawn L1637-1651；Policy.chooseSpawn L3983-4129 | Strategy.chooseSpawn L273-276；General.chooseSpawn L723-730；V13.chooseSpawn L1615-1629；Policy.chooseSpawn L4194-4317
+  analyze | Strategy.analyze L420-448；V13.analyze L2561-2564 | Strategy.analyze L373-401；V13.analyze L2529-2532 | Strategy.analyze L373-401；V13.analyze L2529-2532 | Strategy.analyze L373-401；V13.analyze L2529-2532 | Strategy.analyze L373-401；V13.analyze L2505-2508
+  threatOf | Strategy.threatOf L464-491 | Strategy.threatOf L417-444 | Strategy.threatOf L417-444 | Strategy.threatOf L417-444 | Strategy.threatOf L417-444
+  safeBalance | Strategy.safeBalance L494-507 | Strategy.safeBalance L447-460 | Strategy.safeBalance L447-460 | Strategy.safeBalance L447-460 | Strategy.safeBalance L447-460
+  elimCost | Strategy.elimCost L511-516；V13.elimCost L2604-2608 | Strategy.elimCost L464-469；V13.elimCost L2572-2576 | Strategy.elimCost L464-469；V13.elimCost L2572-2576 | Strategy.elimCost L464-469；V13.elimCost L2572-2576 | Strategy.elimCost L464-469；V13.elimCost L2548-2552
+  minCmd | Strategy.minCmd L521-523 | Strategy.minCmd L474-476 | Strategy.minCmd L474-476 | Strategy.minCmd L474-476 | Strategy.minCmd L474-476
+  send | Strategy.send L526-539；V13.send L1862-1867；Policy.send L3848-3935 | Strategy.send L479-487；V13.send L1825-1830；Policy.send L3838-3925 | Strategy.send L479-487；V13.send L1825-1830；Policy.send L3838-3925 | Strategy.send L479-487；V13.send L1825-1830；Policy.send L3838-3925 | Strategy.send L479-487；V13.send L1803-1808；Policy.send L4047-4134
+  act | Strategy.act L541-606；General.act L804-846；V13.act L1850-1860；V17.act L2722-2741；Policy.act L4781-4944 | Strategy.act L489-554；General.act L752-810；V13.act L1813-1823；V17.act L2690-2725；Policy.act L4801-4984 | Strategy.act L489-554；General.act L752-810；V13.act L1813-1823；V17.act L2690-2725；Policy.act L4801-4984 | Strategy.act L489-554；General.act L752-810；V13.act L1813-1823；V17.act L2690-2725；Policy.act L4800-4983 | Strategy.act L489-556；General.act L754-788；V13.act L1791-1801；V17.act L2877-2888；Policy.act L5236-5395
+  floors | General.floors L855-867；V13.floors L2229-2233；V17.floors L2866-2871 | General.floors L819-831；V13.floors L2192-2196；V17.floors L2849-2854 | General.floors L819-831；V13.floors L2192-2196；V17.floors L2849-2854 | General.floors L819-831；V13.floors L2192-2196；V17.floors L2849-2854 | General.floors L797-809；V13.floors L2170-2174；V17.floors L3012-3017
+  pickTarget | General.pickTarget L992-1028；Style.pickTarget L1180-1214 | General.pickTarget L956-992；Style.pickTarget L1144-1177 | General.pickTarget L956-992；Style.pickTarget L1144-1177 | General.pickTarget L956-992；Style.pickTarget L1144-1177 | General.pickTarget L934-970；Style.pickTarget L1122-1155
+  price | Style.price L1141-1143 | Style.price L1105-1107 | Style.price L1105-1107 | Style.price L1105-1107 | Style.price L1083-1085
+  allow | Style.allow L1159-1161；V13.allow L2147-2156 | Style.allow L1123-1125；V13.allow L2110-2119 | Style.allow L1123-1125；V13.allow L2110-2119 | Style.allow L1123-1125；V13.allow L2110-2119 | Style.allow L1101-1103；V13.allow L2088-2097
+  minShare | Style.minShare L1170-1172；V13.minShare L2131-2134 | Style.minShare L1134-1136；V13.minShare L2094-2097 | Style.minShare L1134-1136；V13.minShare L2094-2097 | Style.minShare L1134-1136；V13.minShare L2094-2097 | Style.minShare L1112-1114；V13.minShare L2072-2075
+  amount | Style.amount L1175-1178；V13.amount L2350-2358 | Style.amount L1139-1142；V13.amount L2315-2323 | Style.amount L1139-1142；V13.amount L2315-2323 | Style.amount L1139-1142；V13.amount L2315-2323 | Style.amount L1117-1120；V13.amount L2291-2299
+  amount0 | V13.amount0 L2367-2393 | V13.amount0 L2332-2358 | V13.amount0 L2332-2358 | V13.amount0 L2332-2358 | V13.amount0 L2308-2334
+  expandNeutral | General.expandNeutral L980-989；V13.expandNeutral L2408-2414 | General.expandNeutral L944-953；V13.expandNeutral L2373-2379 | General.expandNeutral L944-953；V13.expandNeutral L2373-2379 | General.expandNeutral L944-953；V13.expandNeutral L2373-2379 | General.expandNeutral L922-931；V13.expandNeutral L2349-2358
+  food | V13.food L2213-2218 | V13.food L2176-2181 | V13.food L2176-2181 | V13.food L2176-2181 | V13.food L2154-2159
+  peopleFloor | V13.peopleFloor L2240-2251 | V13.peopleFloor L2203-2214 | V13.peopleFloor L2203-2214 | V13.peopleFloor L2203-2214 | V13.peopleFloor L2181-2192
+  floorFor | Style.floorFor L1164-1166；V13.floorFor L2265-2268 | Style.floorFor L1128-1130；V13.floorFor L2228-2231 | Style.floorFor L1128-1130；V13.floorFor L2228-2231 | Style.floorFor L1128-1130；V13.floorFor L2228-2231 | Style.floorFor L1106-1108；V13.floorFor L2206-2209
+  floorFor0 | V13.floorFor0 L2270-2276 | V13.floorFor0 L2233-2241 | V13.floorFor0 L2233-2241 | V13.floorFor0 L2233-2241 | V13.floorFor0 L2211-2217
+  dpKeep | V13.dpKeep L2491-2496 | V13.dpKeep L2459-2464 | V13.dpKeep L2459-2464 | V13.dpKeep L2459-2464 | V13.dpKeep L2435-2440
+  botOk | V13.botOk L2499-2505 | V13.botOk L2467-2473 | V13.botOk L2467-2473 | V13.botOk L2467-2473 | V13.botOk L2443-2449
+  botPx | V13.botPx L2508-2510 | V13.botPx L2476-2478 | V13.botPx L2476-2478 | V13.botPx L2476-2478 | V13.botPx L2452-2454
+  winWorth | V13.winWorth L2513-2516；V17.winWorth L2894-2897 | V13.winWorth L2481-2484；V17.winWorth L2884-2887 | V13.winWorth L2481-2484；V17.winWorth L2884-2887 | V13.winWorth L2481-2484；V17.winWorth L2884-2887 | V13.winWorth L2457-2460；V17.winWorth L3067-3070
+  winFloor | V13.winFloor L2521-2528；Policy.winFloor L4542-4550 | V13.winFloor L2489-2496；Policy.winFloor L4562-4570 | V13.winFloor L2489-2496；Policy.winFloor L4562-4570 | V13.winFloor L2489-2496；Policy.winFloor L4561-4569 | V13.winFloor L2465-2472；Policy.winFloor L4957-4965
+  safeFinite | V13.safeFinite L2532-2542；V17.safeFinite L2773-2784 | V13.safeFinite L2500-2510；V17.safeFinite L2757-2768 | V13.safeFinite L2500-2510；V17.safeFinite L2757-2768 | V13.safeFinite L2500-2510；V17.safeFinite L2757-2768 | V13.safeFinite L2476-2486；V17.safeFinite L2920-2931
+  waitDump | V13.waitDump L2592-2602 | V13.waitDump L2560-2570 | V13.waitDump L2560-2570 | V13.waitDump L2560-2570 | V13.waitDump L2536-2546
+  reserve | V13.reserve L2618-2622 | V13.reserve L2586-2590 | V13.reserve L2586-2590 | V13.reserve L2586-2590 | V13.reserve L2562-2566
+  contested | V13.contested L2678-2692 | V13.contested L2646-2660 | V13.contested L2646-2660 | V13.contested L2646-2660 | V13.contested L2622-2636
+  safeAt | V17.safeAt L2744-2754；Policy.safeAt L4524-4540 | V17.safeAt L2728-2738；Policy.safeAt L4543-4560 | V17.safeAt L2728-2738；Policy.safeAt L4543-4560 | V17.safeAt L2728-2738；Policy.safeAt L4542-4559 | V17.safeAt L2891-2901；Policy.safeAt L4939-4955
+  buyLand | V17.buyLand L2808-2830；Policy.buyLand L5250-5534 | V17.buyLand L2792-2813；Policy.buyLand L5342-5619 | V17.buyLand L2792-2813；Policy.buyLand L5342-5619 | V17.buyLand L2792-2813；Policy.buyLand L5341-5618 | V17.buyLand L2955-2976；Policy.buyLand L5715-6034
+  idleBoats | V17.idleBoats L2874-2881；Policy.idleBoats L4979-5006 | V17.idleBoats L2857-2871；Policy.idleBoats L5019-5070 | V17.idleBoats L2857-2871；Policy.idleBoats L5019-5070 | V17.idleBoats L2857-2871；Policy.idleBoats L5018-5069 | V17.idleBoats L3047-3054；Policy.idleBoats L5430-5457
+  idle | V13.idle L1846-1848 | V13.idle L1809-1811 | V13.idle L1809-1811 | V13.idle L1809-1811 | V13.idle L1787-1789
+  isOurSquadBot | Policy.isOurSquadBot L3973-3976 | Policy.isOurSquadBot L3960-3972 | Policy.isOurSquadBot L3960-3972 | Policy.isOurSquadBot L3960-3972 | Policy.isOurSquadBot L4176-4187
+  hasWildOutsidersAlive | Policy.hasWildOutsidersAlive L3978-3989 | — | — | — | —
+  isProtectedSquadMate | Policy.isProtectedSquadMate L3993-3996 | — | — | — | —
+  tryEmergencyBossRescue | Policy.tryEmergencyBossRescue L4273-4366 | Policy.tryEmergencyBossRescue L4215-4309 | Policy.tryEmergencyBossRescue L4215-4309 | Policy.tryEmergencyBossRescue L4215-4308 | Policy.tryEmergencyBossRescue L4396-4486
+  tryDonateToTeammate | Policy.tryDonateToTeammate L4369-4499 | Policy.tryDonateToTeammate L4325-4518 | Policy.tryDonateToTeammate L4325-4518 | Policy.tryDonateToTeammate L4324-4517 | Policy.tryDonateToTeammate L4786-4914
+  updateShadowQuota | Policy.updateShadowQuota L3810-3846 | Policy.updateShadowQuota L3800-3836 | Policy.updateShadowQuota L3800-3836 | Policy.updateShadowQuota L3800-3836 | Policy.updateShadowQuota L4009-4045
+  hasBorderFood | Policy.hasBorderFood L4552-4558 | Policy.hasBorderFood L4572-4578 | Policy.hasBorderFood L4572-4578 | Policy.hasBorderFood L4571-4577 | Policy.hasBorderFood L4967-4973
+
+[CM-B] 引擎 src/sim/sim/game.js：方法 | 起~止
+  slotBase | L157-159
+  isBot | L215-217
+  isAlive | L219-221
+  isEnemy | L266-268
+  isEnemyOf | L271-273
+  isTeammate | L275-277
+  leave | L229-233
+  runAsBot | L235-239
+  receiverRoom | L340-345
+  donationCost | L348-357
+  donate | L404-416
+  tick | L708-723
+  interestRate | L739-746
+  softCap | L748-750
+  addBalance | L752-764
+  takeBalance | L766-776
+  economyTick | L778-791
+  hasAttack | L795-799
+  hasFreeSlot | L801-803
+  attackTroopsOn | L805-809
+  redirectAttackToNeutral | L858-872
+  attackersOf | L874-887
+  expandAttack | L958-1060
+  cancelAttack | L852-856
+  damage | L1062-1074
+  endAttack | L1076-1080
+  loseTiles | L1083-1108
+  commitAttack | L1229-1236
+  quote | L1239-1248
+  payQuote | L1250-1254
+  canAct | L1258-1260
+  attack | L1263-1285
+  retreat | L1288-1294
+  aliveTick | L1298-1312
+  collapse | L1314-1334
+  eliminate | L1336-1350
+  clearTerritory | L1352-1365
+  victoryTick | L1398-1412
+
+[CM-C] 正文逐字比对（去掉每行首尾空白；同名方法按出现顺序一一对；「同」= 和 c110 的正文完全一样）：函数 | c116-vb | c116 | c116-va | g09
+  chooseSpawn | 不同：Policy | 不同：Policy | 不同：Policy | 不同：Policy
+  analyze | 不同：Strategy | 不同：Strategy | 不同：Strategy | 不同：Strategy
+  threatOf | 同 | 同 | 同 | 同
+  safeBalance | 同 | 同 | 同 | 同
+  elimCost | 同 | 同 | 同 | 同
+  minCmd | 同 | 同 | 同 | 同
+  send | 不同：Strategy | 不同：Strategy | 不同：Strategy | 不同：Strategy
+  act | 不同：General、V17、Policy | 不同：General、V17、Policy | 不同：General、V17、Policy | 不同：Strategy、General、V17、Policy
+  floors | 同 | 同 | 同 | 同
+  pickTarget | 不同：Style | 不同：Style | 不同：Style | 不同：Style
+  price | 同 | 同 | 同 | 同
+  allow | 同 | 同 | 同 | 同
+  minShare | 同 | 同 | 同 | 同
+  amount | 同 | 同 | 同 | 同
+  amount0 | 同 | 同 | 同 | 同
+  expandNeutral | 同 | 同 | 同 | 不同：V13
+  food | 同 | 同 | 同 | 同
+  peopleFloor | 同 | 同 | 同 | 同
+  floorFor | 同 | 同 | 同 | 同
+  floorFor0 | 不同：V13 | 不同：V13 | 不同：V13 | 同
+  dpKeep | 同 | 同 | 同 | 同
+  botOk | 同 | 同 | 同 | 同
+  botPx | 同 | 同 | 同 | 同
+  winWorth | 同 | 同 | 同 | 同
+  winFloor | 同 | 同 | 同 | 同
+  safeFinite | 同 | 同 | 同 | 同
+  waitDump | 同 | 同 | 同 | 同
+  reserve | 同 | 同 | 同 | 同
+  contested | 同 | 同 | 同 | 同
+  safeAt | 不同：Policy | 不同：Policy | 不同：Policy | 同
+  buyLand | 不同：V17、Policy | 不同：V17、Policy | 不同：V17、Policy | 不同：V17、Policy
+  idleBoats | 不同：V17、Policy | 不同：V17、Policy | 不同：V17、Policy | 同
+  idle | 同 | 同 | 同 | 同
+  isOurSquadBot | 不同：Policy | 不同：Policy | 不同：Policy | 不同：Policy
+  hasWildOutsidersAlive | 定义个数不同（1 / 0） | 定义个数不同（1 / 0） | 定义个数不同（1 / 0） | 定义个数不同（1 / 0）
+  isProtectedSquadMate | 定义个数不同（1 / 0） | 定义个数不同（1 / 0） | 定义个数不同（1 / 0） | 定义个数不同（1 / 0）
+  tryEmergencyBossRescue | 不同：Policy | 不同：Policy | 同 | 不同：Policy
+  tryDonateToTeammate | 不同：Policy | 不同：Policy | 不同：Policy | 不同：Policy
+  updateShadowQuota | 同 | 同 | 同 | 同
+  hasBorderFood | 同 | 同 | 同 | 同

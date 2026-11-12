@@ -1,0 +1,7477 @@
+{
+ "matches": [
+  "G02",
+  "G05",
+  "G08",
+  "B043",
+  "B033",
+  "B034",
+  "B031",
+  "B049",
+  "B006",
+  "B030",
+  "B019",
+  "B009",
+  "B015",
+  "B029",
+  "B035",
+  "B027"
+ ],
+ "truth": [
+  "B043",
+  "B033",
+  "B034",
+  "B031",
+  "B030",
+  "B019",
+  "B015",
+  "B029",
+  "B035",
+  "B027"
+ ],
+ "roster": {
+  "G02": {
+   "cohort": "squad8",
+   "mode": 3,
+   "nominalTeams": 5,
+   "actualTeams": 5,
+   "seeded": 61,
+   "squadBots": 8,
+   "squadTeams": 1,
+   "base": 0.2,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "outscaled",
+   "endTick": 4470,
+   "peakShare": 0.1265,
+   "truthEnd": null,
+   "died": 7,
+   "left": 1,
+   "bots": 8,
+   "firstDeath": 2356
+  },
+  "G05": {
+   "cohort": "squad8",
+   "mode": 5,
+   "nominalTeams": 7,
+   "actualTeams": 6,
+   "seeded": 55,
+   "squadBots": 8,
+   "squadTeams": 1,
+   "base": 0.1667,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "never-grew",
+   "endTick": 3890,
+   "peakShare": 0.0865,
+   "truthEnd": null,
+   "died": 6,
+   "left": 2,
+   "bots": 8,
+   "firstDeath": 2417
+  },
+  "G08": {
+   "cohort": "squad8",
+   "mode": 4,
+   "nominalTeams": 6,
+   "actualTeams": 6,
+   "seeded": 49,
+   "squadBots": 7,
+   "squadTeams": 1,
+   "base": 0.1667,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "outscaled",
+   "endTick": 5895,
+   "peakShare": 0.1986,
+   "truthEnd": null,
+   "died": 6,
+   "left": 0,
+   "bots": 7,
+   "firstDeath": 2585
+  },
+  "B043": {
+   "cohort": "squad20",
+   "mode": 1,
+   "nominalTeams": 3,
+   "actualTeams": 3,
+   "seeded": 88,
+   "squadBots": 15,
+   "squadTeams": 3,
+   "base": 0.3333,
+   "cardLabel": "split_straggler_won",
+   "reviewLabel": "split_straggler_won",
+   "archetype": "external",
+   "endTick": 6651,
+   "peakShare": 0.1116,
+   "truthEnd": 6568,
+   "died": 11,
+   "left": 7,
+   "bots": 20,
+   "firstDeath": 1761
+  },
+  "B033": {
+   "cohort": "squad20",
+   "mode": 0,
+   "nominalTeams": 2,
+   "actualTeams": 2,
+   "seeded": 69,
+   "squadBots": 10,
+   "squadTeams": 2,
+   "base": 0.5,
+   "cardLabel": "won",
+   "reviewLabel": "won",
+   "archetype": "win",
+   "endTick": 5790,
+   "peakShare": 0.0932,
+   "truthEnd": 5637,
+   "died": 5,
+   "left": 1,
+   "bots": 10,
+   "firstDeath": 1701
+  },
+  "B034": {
+   "cohort": "squad20",
+   "mode": 6,
+   "nominalTeams": 8,
+   "actualTeams": 5,
+   "seeded": 50,
+   "squadBots": 9,
+   "squadTeams": 4,
+   "base": 0.2,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "mid-collapse",
+   "endTick": 9114,
+   "peakShare": 0.1551,
+   "truthEnd": 9660,
+   "died": 9,
+   "left": 6,
+   "bots": 15,
+   "firstDeath": 2028
+  },
+  "B031": {
+   "cohort": "squad20",
+   "mode": 4,
+   "nominalTeams": 6,
+   "actualTeams": 2,
+   "seeded": 50,
+   "squadBots": 11,
+   "squadTeams": 0,
+   "base": 0.5,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "external",
+   "endTick": 2121,
+   "peakShare": 0.1195,
+   "truthEnd": 1864,
+   "died": 0,
+   "left": 12,
+   "bots": 13,
+   "firstDeath": null
+  },
+  "B049": {
+   "cohort": "squad20",
+   "mode": 1,
+   "nominalTeams": 3,
+   "actualTeams": 3,
+   "seeded": 53,
+   "squadBots": 13,
+   "squadTeams": 3,
+   "base": 0.3333,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "external",
+   "endTick": 11510,
+   "peakShare": 0.3112,
+   "truthEnd": null,
+   "died": 8,
+   "left": 0,
+   "bots": 13,
+   "firstDeath": 2420
+  },
+  "B006": {
+   "cohort": "squad20",
+   "mode": 0,
+   "nominalTeams": 2,
+   "actualTeams": 2,
+   "seeded": 57,
+   "squadBots": 20,
+   "squadTeams": 2,
+   "base": 0.5,
+   "cardLabel": "split_straggler_won",
+   "reviewLabel": "split_straggler_won",
+   "archetype": "never-grew",
+   "endTick": 6217,
+   "peakShare": 0.2447,
+   "truthEnd": null,
+   "died": 9,
+   "left": 0,
+   "bots": 20,
+   "firstDeath": 1903
+  },
+  "B030": {
+   "cohort": "squad20",
+   "mode": 7,
+   "nominalTeams": 2,
+   "actualTeams": 2,
+   "seeded": 6,
+   "squadBots": 5,
+   "squadTeams": 0,
+   "base": 0.5,
+   "cardLabel": "won",
+   "reviewLabel": "won",
+   "archetype": "win",
+   "endTick": 113679,
+   "peakShare": 1.0,
+   "truthEnd": 37561,
+   "died": 2,
+   "left": 0,
+   "bots": 3,
+   "firstDeath": 5363
+  },
+  "B019": {
+   "cohort": "squad20",
+   "mode": 1,
+   "nominalTeams": 3,
+   "actualTeams": 3,
+   "seeded": 51,
+   "squadBots": 11,
+   "squadTeams": 3,
+   "base": 0.3333,
+   "cardLabel": "won",
+   "reviewLabel": "won",
+   "archetype": "win",
+   "endTick": 12286,
+   "peakShare": 0.1793,
+   "truthEnd": 1246,
+   "died": 8,
+   "left": 1,
+   "bots": 20,
+   "firstDeath": 164
+  },
+  "B009": {
+   "cohort": "squad20",
+   "mode": 2,
+   "nominalTeams": 4,
+   "actualTeams": 4,
+   "seeded": 20,
+   "squadBots": 9,
+   "squadTeams": 4,
+   "base": 0.25,
+   "cardLabel": "won",
+   "reviewLabel": "open",
+   "archetype": "external",
+   "endTick": 6643,
+   "peakShare": 0.7692,
+   "truthEnd": null,
+   "died": 1,
+   "left": 8,
+   "bots": 9,
+   "firstDeath": 5288
+  },
+  "B015": {
+   "cohort": "squad20",
+   "mode": 6,
+   "nominalTeams": 8,
+   "actualTeams": 8,
+   "seeded": 55,
+   "squadBots": 11,
+   "squadTeams": 5,
+   "base": 0.125,
+   "cardLabel": "split_straggler_won",
+   "reviewLabel": "split_straggler_won",
+   "archetype": "never-grew",
+   "endTick": 13175,
+   "peakShare": 0.182,
+   "truthEnd": 13176,
+   "died": 9,
+   "left": 0,
+   "bots": 11,
+   "firstDeath": 1984
+  },
+  "B029": {
+   "cohort": "squad20",
+   "mode": 3,
+   "nominalTeams": 5,
+   "actualTeams": 5,
+   "seeded": 64,
+   "squadBots": 18,
+   "squadTeams": 4,
+   "base": 0.2,
+   "cardLabel": "split_straggler_won",
+   "reviewLabel": "split_straggler_won",
+   "archetype": "never-grew",
+   "endTick": 11887,
+   "peakShare": 0.2221,
+   "truthEnd": 11888,
+   "died": 14,
+   "left": 0,
+   "bots": 18,
+   "firstDeath": 2068
+  },
+  "B035": {
+   "cohort": "squad20",
+   "mode": 4,
+   "nominalTeams": 6,
+   "actualTeams": 6,
+   "seeded": 22,
+   "squadBots": 10,
+   "squadTeams": 5,
+   "base": 0.1667,
+   "cardLabel": "split_straggler_won",
+   "reviewLabel": "split_straggler_won",
+   "archetype": "outscaled",
+   "endTick": 9885,
+   "peakShare": 0.5322,
+   "truthEnd": 2436,
+   "died": 8,
+   "left": 1,
+   "bots": 10,
+   "firstDeath": 3036
+  },
+  "B027": {
+   "cohort": "squad20",
+   "mode": 7,
+   "nominalTeams": 2,
+   "actualTeams": 2,
+   "seeded": 72,
+   "squadBots": 19,
+   "squadTeams": 0,
+   "base": 0.5,
+   "cardLabel": "lost",
+   "reviewLabel": "lost",
+   "archetype": "never-grew",
+   "endTick": 9662,
+   "peakShare": 0.263,
+   "truthEnd": 1428,
+   "died": 17,
+   "left": 1,
+   "bots": 19,
+   "firstDeath": 3626
+  }
+ },
+ "archetypes": {
+  "outscaled": 3,
+  "never-grew": 5,
+  "external": 4,
+  "win": 3,
+  "mid-collapse": 1
+ },
+ "share": {
+  "G02": {
+   "head": 0.1311,
+   "630": {
+    "share": 0.0341,
+    "ratio": 0.26
+   },
+   "1530": {
+    "share": 0.1206,
+    "ratio": 0.92
+   },
+   "3060": {
+    "share": 0.09,
+    "ratio": 0.69
+   },
+   "peak": {
+    "t": 1620,
+    "share": 0.1265
+   }
+  },
+  "G05": {
+   "head": 0.1455,
+   "630": {
+    "share": 0.0279,
+    "ratio": 0.19
+   },
+   "1530": {
+    "share": 0.0774,
+    "ratio": 0.53
+   },
+   "3060": {
+    "share": 0.0234,
+    "ratio": 0.16
+   },
+   "peak": {
+    "t": 1710,
+    "share": 0.0865
+   }
+  },
+  "G08": {
+   "head": 0.1429,
+   "630": {
+    "share": 0.0497,
+    "ratio": 0.35
+   },
+   "1530": {
+    "share": 0.1673,
+    "ratio": 1.17
+   },
+   "3060": {
+    "share": 0.1651,
+    "ratio": 1.16
+   },
+   "4500": {
+    "share": 0.1663,
+    "ratio": 1.16
+   },
+   "peak": {
+    "t": 2070,
+    "share": 0.1986
+   }
+  },
+  "B043": {
+   "head": 0.1705,
+   "630": {
+    "share": 0.0775,
+    "ratio": 0.45
+   },
+   "1530": {
+    "share": 0.0974,
+    "ratio": 0.57
+   },
+   "3060": {
+    "share": 0.082,
+    "ratio": 0.48
+   },
+   "4500": {
+    "share": 0.078,
+    "ratio": 0.46
+   },
+   "peak": {
+    "t": 1710,
+    "share": 0.1116
+   }
+  },
+  "B033": {
+   "head": 0.1449,
+   "630": {
+    "share": 0.0343,
+    "ratio": 0.24
+   },
+   "1530": {
+    "share": 0.0682,
+    "ratio": 0.47
+   },
+   "3060": {
+    "share": 0.0739,
+    "ratio": 0.51
+   },
+   "4500": {
+    "share": 0.0502,
+    "ratio": 0.35
+   },
+   "peak": {
+    "t": 1800,
+    "share": 0.0932
+   }
+  },
+  "B034": {
+   "head": 0.18,
+   "630": {
+    "share": 0.0617,
+    "ratio": 0.34
+   },
+   "1530": {
+    "share": 0.0712,
+    "ratio": 0.4
+   },
+   "3060": {
+    "share": 0.0738,
+    "ratio": 0.41
+   },
+   "4500": {
+    "share": 0.0722,
+    "ratio": 0.4
+   },
+   "peak": {
+    "t": 990,
+    "share": 0.1551
+   }
+  },
+  "B031": {
+   "head": 0.22,
+   "630": {
+    "share": 0.0606,
+    "ratio": 0.28
+   },
+   "1530": {
+    "share": 0.1068,
+    "ratio": 0.49
+   },
+   "peak": {
+    "t": 990,
+    "share": 0.1195
+   }
+  },
+  "B049": {
+   "head": 0.2453,
+   "630": {
+    "share": 0.046,
+    "ratio": 0.19
+   },
+   "1530": {
+    "share": 0.0741,
+    "ratio": 0.3
+   },
+   "3060": {
+    "share": 0.1156,
+    "ratio": 0.47
+   },
+   "4500": {
+    "share": 0.1091,
+    "ratio": 0.44
+   },
+   "peak": {
+    "t": 9540,
+    "share": 0.3112
+   }
+  },
+  "B006": {
+   "head": 0.3509,
+   "630": {
+    "share": 0.1239,
+    "ratio": 0.35
+   },
+   "1530": {
+    "share": 0.2001,
+    "ratio": 0.57
+   },
+   "3060": {
+    "share": 0.2363,
+    "ratio": 0.67
+   },
+   "4500": {
+    "share": 0.2359,
+    "ratio": 0.67
+   },
+   "peak": {
+    "t": 3600,
+    "share": 0.2447
+   }
+  },
+  "B030": {
+   "head": 0.8333,
+   "630": {
+    "share": 0.0234,
+    "ratio": 0.03
+   },
+   "1530": {
+    "share": 0.2917,
+    "ratio": 0.35
+   },
+   "3060": {
+    "share": 0.7312,
+    "ratio": 0.88
+   },
+   "4500": {
+    "share": 0.6285,
+    "ratio": 0.75
+   },
+   "peak": {
+    "t": 113670,
+    "share": 1.0
+   }
+  },
+  "B019": {
+   "head": 0.2157,
+   "630": {
+    "share": 0.0628,
+    "ratio": 0.29
+   },
+   "1530": {
+    "share": 0.0759,
+    "ratio": 0.35
+   },
+   "3060": {
+    "share": 0.1383,
+    "ratio": 0.64
+   },
+   "4500": {
+    "share": 0.1451,
+    "ratio": 0.67
+   },
+   "peak": {
+    "t": 4860,
+    "share": 0.1793
+   }
+  },
+  "B009": {
+   "head": 0.45,
+   "630": {
+    "share": 0.0617,
+    "ratio": 0.14
+   },
+   "1530": {
+    "share": 0.1571,
+    "ratio": 0.35
+   },
+   "3060": {
+    "share": 0.4308,
+    "ratio": 0.96
+   },
+   "4500": {
+    "share": 0.516,
+    "ratio": 1.15
+   },
+   "peak": {
+    "t": 6390,
+    "share": 0.7692
+   }
+  },
+  "B015": {
+   "head": 0.2,
+   "630": {
+    "share": 0.0385,
+    "ratio": 0.19
+   },
+   "1530": {
+    "share": 0.1184,
+    "ratio": 0.59
+   },
+   "3060": {
+    "share": 0.1703,
+    "ratio": 0.85
+   },
+   "4500": {
+    "share": 0.111,
+    "ratio": 0.56
+   },
+   "peak": {
+    "t": 2430,
+    "share": 0.182
+   }
+  },
+  "B029": {
+   "head": 0.2812,
+   "630": {
+    "share": 0.0809,
+    "ratio": 0.29
+   },
+   "1530": {
+    "share": 0.1559,
+    "ratio": 0.55
+   },
+   "3060": {
+    "share": 0.2132,
+    "ratio": 0.76
+   },
+   "4500": {
+    "share": 0.2042,
+    "ratio": 0.73
+   },
+   "peak": {
+    "t": 4860,
+    "share": 0.2221
+   }
+  },
+  "B035": {
+   "head": 0.4545,
+   "630": {
+    "share": 0.0448,
+    "ratio": 0.1
+   },
+   "1530": {
+    "share": 0.1687,
+    "ratio": 0.37
+   },
+   "3060": {
+    "share": 0.3017,
+    "ratio": 0.66
+   },
+   "4500": {
+    "share": 0.3565,
+    "ratio": 0.78
+   },
+   "peak": {
+    "t": 8100,
+    "share": 0.5322
+   }
+  },
+  "B027": {
+   "head": 0.2639,
+   "630": {
+    "share": 0.0874,
+    "ratio": 0.33
+   },
+   "1530": {
+    "share": 0.1797,
+    "ratio": 0.68
+   },
+   "3060": {
+    "share": 0.2525,
+    "ratio": 0.96
+   },
+   "4500": {
+    "share": 0.2595,
+    "ratio": 0.98
+   },
+   "peak": {
+    "t": 3870,
+    "share": 0.263
+   }
+  }
+ },
+ "lag": {
+  "B043": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 118,
+    "matched": 116,
+    "p50": 12,
+    "p90": 26,
+    "max": 182,
+    "ge35": 8,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 292,
+    "matched": 244,
+    "p50": 182,
+    "p90": 495,
+    "max": 786,
+    "ge35": 217,
+    "noEffect": 91
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 114,
+    "matched": 109,
+    "p50": 236,
+    "p90": 779,
+    "max": 912,
+    "ge35": 70,
+    "noEffect": 37
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 114,
+    "matched": 113,
+    "p50": 11,
+    "p90": 14,
+    "max": 28,
+    "ge35": 0,
+    "noEffect": 0
+   }
+  },
+  "B033": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 66,
+    "matched": 66,
+    "p50": 12,
+    "p90": 17,
+    "max": 28,
+    "ge35": 0,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 171,
+    "matched": 144,
+    "p50": 138,
+    "p90": 400,
+    "max": 555,
+    "ge35": 115,
+    "noEffect": 51
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 185,
+    "matched": 172,
+    "p50": 375,
+    "p90": 775,
+    "max": 1295,
+    "ge35": 157,
+    "noEffect": 62
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 117,
+    "matched": 111,
+    "p50": 12,
+    "p90": 21,
+    "max": 61,
+    "ge35": 8,
+    "noEffect": 0
+   }
+  },
+  "B034": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 115,
+    "matched": 114,
+    "p50": 13,
+    "p90": 70,
+    "max": 105,
+    "ge35": 15,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 327,
+    "matched": 271,
+    "p50": 149,
+    "p90": 385,
+    "max": 592,
+    "ge35": 240,
+    "noEffect": 115
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 194,
+    "matched": 181,
+    "p50": 315,
+    "p90": 632,
+    "max": 832,
+    "ge35": 171,
+    "noEffect": 93
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 39,
+    "matched": 39,
+    "p50": 11,
+    "p90": 17,
+    "max": 19,
+    "ge35": 0,
+    "noEffect": 1
+   }
+  },
+  "B031": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 93,
+    "matched": 91,
+    "p50": 12,
+    "p90": 27,
+    "max": 64,
+    "ge35": 2,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 259,
+    "matched": 236,
+    "p50": 143,
+    "p90": 325,
+    "max": 548,
+    "ge35": 188,
+    "noEffect": 72
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 70,
+    "matched": 58,
+    "p50": 443,
+    "p90": 600,
+    "max": 751,
+    "ge35": 55,
+    "noEffect": 58
+   }
+  },
+  "B030": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 23,
+    "matched": 22,
+    "p50": 11,
+    "p90": 49,
+    "max": 84,
+    "ge35": 3,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 173,
+    "matched": 160,
+    "p50": 11,
+    "p90": 18,
+    "max": 328,
+    "ge35": 1,
+    "noEffect": 0
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 114,
+    "matched": 100,
+    "p50": 10,
+    "p90": 17,
+    "max": 172,
+    "ge35": 2,
+    "noEffect": 3
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 44,
+    "matched": 44,
+    "p50": 11,
+    "p90": 17,
+    "max": 18,
+    "ge35": 0,
+    "noEffect": 1
+   }
+  },
+  "B019": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 139,
+    "matched": 139,
+    "p50": 12,
+    "p90": 17,
+    "max": 26,
+    "ge35": 0,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 237,
+    "matched": 200,
+    "p50": 130,
+    "p90": 328,
+    "max": 687,
+    "ge35": 157,
+    "noEffect": 48
+   }
+  },
+  "B015": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 76,
+    "matched": 76,
+    "p50": 12,
+    "p90": 15,
+    "max": 18,
+    "ge35": 0,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 186,
+    "matched": 170,
+    "p50": 30,
+    "p90": 121,
+    "max": 242,
+    "ge35": 79,
+    "noEffect": 9
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 127,
+    "matched": 118,
+    "p50": 88,
+    "p90": 218,
+    "max": 290,
+    "ge35": 72,
+    "noEffect": 16
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 205,
+    "matched": 204,
+    "p50": 12,
+    "p90": 22,
+    "max": 194,
+    "ge35": 15,
+    "noEffect": 1
+   }
+  },
+  "B029": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 121,
+    "matched": 120,
+    "p50": 13,
+    "p90": 20,
+    "max": 95,
+    "ge35": 3,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 367,
+    "matched": 304,
+    "p50": 178,
+    "p90": 397,
+    "max": 828,
+    "ge35": 255,
+    "noEffect": 150
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 323,
+    "matched": 284,
+    "p50": 167,
+    "p90": 506,
+    "max": 824,
+    "ge35": 204,
+    "noEffect": 93
+   },
+   "3000+": {
+    "period": "3000+",
+    "executed": 974,
+    "matched": 963,
+    "p50": 16,
+    "p90": 272,
+    "max": 1113,
+    "ge35": 182,
+    "noEffect": 58
+   }
+  },
+  "B035": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 76,
+    "matched": 76,
+    "p50": 12,
+    "p90": 18,
+    "max": 49,
+    "ge35": 2,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 346,
+    "matched": 234,
+    "p50": 48,
+    "p90": 162,
+    "max": 835,
+    "ge35": 133,
+    "noEffect": 45
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "executed": 106,
+    "matched": 80,
+    "p50": 30,
+    "p90": 184,
+    "max": 339,
+    "ge35": 39,
+    "noEffect": 2
+   }
+  },
+  "B027": {
+   "0~600": {
+    "period": "0~600",
+    "executed": 125,
+    "matched": 125,
+    "p50": 12,
+    "p90": 17,
+    "max": 29,
+    "ge35": 0,
+    "noEffect": 0
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "executed": 426,
+    "matched": 365,
+    "p50": 89,
+    "p90": 212,
+    "max": 363,
+    "ge35": 262,
+    "noEffect": 121
+   }
+  }
+ },
+ "lagTotal": {
+  "0~600": {
+   "executed": 929,
+   "matched": 923,
+   "ge35": 30,
+   "noEffect": 0,
+   "matches": 9,
+   "slow": 0
+  },
+  "600~1500": {
+   "executed": 2611,
+   "matched": 2168,
+   "ge35": 1646,
+   "noEffect": 702,
+   "matches": 9,
+   "slow": 8
+  },
+  "1500~3000": {
+   "executed": 1119,
+   "matched": 1002,
+   "ge35": 768,
+   "noEffect": 361,
+   "matches": 7,
+   "slow": 6
+  },
+  "3000+": {
+   "executed": 1449,
+   "matched": 1430,
+   "ge35": 205,
+   "noEffect": 60,
+   "matches": 5,
+   "slow": 0
+  }
+ },
+ "funnel": {
+  "B043": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 175,
+    "shadowMatched": 151,
+    "clientCmds": 119,
+    "replay": 118,
+    "effective": 118
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 571,
+    "shadowMatched": 256,
+    "clientCmds": 461,
+    "replay": 292,
+    "effective": 201
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 101,
+    "shadowMatched": 64,
+    "clientCmds": 106,
+    "replay": 114,
+    "effective": 77
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 118,
+    "shadowMatched": 111,
+    "clientCmds": 119,
+    "replay": 114,
+    "effective": 114
+   }
+  },
+  "B033": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 70,
+    "shadowMatched": 67,
+    "clientCmds": 59,
+    "replay": 66,
+    "effective": 66
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 360,
+    "shadowMatched": 228,
+    "clientCmds": 315,
+    "replay": 171,
+    "effective": 120
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 178,
+    "shadowMatched": 87,
+    "clientCmds": 218,
+    "replay": 185,
+    "effective": 123
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 127,
+    "shadowMatched": 111,
+    "clientCmds": 123,
+    "replay": 117,
+    "effective": 117
+   }
+  },
+  "B034": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 119,
+    "shadowMatched": 115,
+    "clientCmds": 97,
+    "replay": 115,
+    "effective": 115
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 678,
+    "shadowMatched": 341,
+    "clientCmds": 513,
+    "replay": 327,
+    "effective": 212
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 309,
+    "shadowMatched": 110,
+    "clientCmds": 235,
+    "replay": 194,
+    "effective": 101
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 39,
+    "shadowMatched": 39,
+    "clientCmds": 39,
+    "replay": 39,
+    "effective": 38
+   }
+  },
+  "B031": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 104,
+    "shadowMatched": 92,
+    "clientCmds": 77,
+    "replay": 93,
+    "effective": 93
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 486,
+    "shadowMatched": 289,
+    "clientCmds": 395,
+    "replay": 259,
+    "effective": 187
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 165,
+    "shadowMatched": 4,
+    "clientCmds": 84,
+    "replay": 70,
+    "effective": 12
+   }
+  },
+  "B030": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 23,
+    "shadowMatched": 22,
+    "clientCmds": 21,
+    "replay": 23,
+    "effective": 23
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 176,
+    "shadowMatched": 163,
+    "clientCmds": 163,
+    "replay": 173,
+    "effective": 173
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 122,
+    "shadowMatched": 97,
+    "clientCmds": 126,
+    "replay": 114,
+    "effective": 111
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 44,
+    "shadowMatched": 44,
+    "clientCmds": 96,
+    "replay": 44,
+    "effective": 43
+   }
+  },
+  "B019": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 144,
+    "shadowMatched": 141,
+    "clientCmds": 116,
+    "replay": 139,
+    "effective": 139
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 558,
+    "shadowMatched": 198,
+    "clientCmds": 493,
+    "replay": 237,
+    "effective": 189
+   }
+  },
+  "B015": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 78,
+    "shadowMatched": 78,
+    "clientCmds": 67,
+    "replay": 76,
+    "effective": 76
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 226,
+    "shadowMatched": 193,
+    "clientCmds": 209,
+    "replay": 186,
+    "effective": 177
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 108,
+    "shadowMatched": 93,
+    "clientCmds": 114,
+    "replay": 127,
+    "effective": 111
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 206,
+    "shadowMatched": 204,
+    "clientCmds": 206,
+    "replay": 205,
+    "effective": 204
+   }
+  },
+  "B029": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 125,
+    "shadowMatched": 122,
+    "clientCmds": 112,
+    "replay": 121,
+    "effective": 121
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 597,
+    "shadowMatched": 415,
+    "clientCmds": 557,
+    "replay": 367,
+    "effective": 217
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 207,
+    "shadowMatched": 172,
+    "clientCmds": 274,
+    "replay": 323,
+    "effective": 230
+   },
+   "3000+": {
+    "period": "3000+",
+    "shadow": 1156,
+    "shadowMatched": 962,
+    "clientCmds": 1159,
+    "replay": 974,
+    "effective": 916
+   }
+  },
+  "B035": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 84,
+    "shadowMatched": 78,
+    "clientCmds": 62,
+    "replay": 76,
+    "effective": 76
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 370,
+    "shadowMatched": 257,
+    "clientCmds": 376,
+    "replay": 346,
+    "effective": 301
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "shadow": 99,
+    "shadowMatched": 55,
+    "clientCmds": 102,
+    "replay": 106,
+    "effective": 104
+   }
+  },
+  "B027": {
+   "0~600": {
+    "period": "0~600",
+    "shadow": 133,
+    "shadowMatched": 126,
+    "clientCmds": 110,
+    "replay": 125,
+    "effective": 125
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "shadow": 488,
+    "shadowMatched": 364,
+    "clientCmds": 472,
+    "replay": 426,
+    "effective": 305
+   }
+  }
+ },
+ "late": {
+  "B043": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 118,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 105031
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 257,
+    "noEffect": 91,
+    "targetGone": 96,
+    "goneAI": 96,
+    "redirected": 26,
+    "redirectedTroops": 76748,
+    "void": 70,
+    "voidTroops": 516005,
+    "aliveNoEffect": 2,
+    "unmatched512NoEffect": 10,
+    "sentTroops": 533790
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 68,
+    "noEffect": 37,
+    "targetGone": 30,
+    "goneAI": 25,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 30,
+    "voidTroops": 431601,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 3,
+    "sentTroops": 968244
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 58,
+    "noEffect": 0,
+    "targetGone": 2,
+    "goneAI": 0,
+    "redirected": 2,
+    "redirectedTroops": 281271,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 8839030
+   }
+  },
+  "B033": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 66,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 62663
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 162,
+    "noEffect": 51,
+    "targetGone": 56,
+    "goneAI": 56,
+    "redirected": 12,
+    "redirectedTroops": 52423,
+    "void": 44,
+    "voidTroops": 308960,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 5,
+    "sentTroops": 345368
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 140,
+    "noEffect": 62,
+    "targetGone": 43,
+    "goneAI": 40,
+    "redirected": 2,
+    "redirectedTroops": 19585,
+    "void": 41,
+    "voidTroops": 657036,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 2,
+    "sentTroops": 1298554
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 17,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 1109979
+   }
+  },
+  "B034": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 115,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 103809
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 325,
+    "noEffect": 115,
+    "targetGone": 124,
+    "goneAI": 124,
+    "redirected": 35,
+    "redirectedTroops": 126638,
+    "void": 89,
+    "voidTroops": 515472,
+    "aliveNoEffect": 2,
+    "unmatched512NoEffect": 19,
+    "sentTroops": 845053
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 184,
+    "noEffect": 93,
+    "targetGone": 63,
+    "goneAI": 57,
+    "redirected": 11,
+    "redirectedTroops": 127010,
+    "void": 52,
+    "voidTroops": 978045,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 5,
+    "sentTroops": 3139837
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 34,
+    "noEffect": 1,
+    "targetGone": 1,
+    "goneAI": 0,
+    "redirected": 1,
+    "redirectedTroops": 24203,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 9107307
+   }
+  },
+  "B031": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 93,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 83015
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 253,
+    "noEffect": 72,
+    "targetGone": 106,
+    "goneAI": 105,
+    "redirected": 44,
+    "redirectedTroops": 154050,
+    "void": 62,
+    "voidTroops": 323636,
+    "aliveNoEffect": 4,
+    "unmatched512NoEffect": 3,
+    "sentTroops": 550646
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 69,
+    "noEffect": 58,
+    "targetGone": 52,
+    "goneAI": 52,
+    "redirected": 4,
+    "redirectedTroops": 44993,
+    "void": 48,
+    "voidTroops": 750610,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 10,
+    "sentTroops": 96849
+   }
+  },
+  "B030": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 23,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 22459
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 173,
+    "noEffect": 0,
+    "targetGone": 7,
+    "goneAI": 7,
+    "redirected": 7,
+    "redirectedTroops": 9900,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 421348
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 114,
+    "noEffect": 3,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 2157426
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 44,
+    "noEffect": 1,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 71915489
+   }
+  },
+  "B019": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 139,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 130515
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 237,
+    "noEffect": 48,
+    "targetGone": 58,
+    "goneAI": 58,
+    "redirected": 31,
+    "redirectedTroops": 170380,
+    "void": 27,
+    "voidTroops": 108204,
+    "aliveNoEffect": 2,
+    "unmatched512NoEffect": 9,
+    "sentTroops": 757984
+   }
+  },
+  "B015": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 76,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 65995
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 160,
+    "noEffect": 9,
+    "targetGone": 29,
+    "goneAI": 29,
+    "redirected": 22,
+    "redirectedTroops": 65934,
+    "void": 7,
+    "voidTroops": 28559,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 393005
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 84,
+    "noEffect": 16,
+    "targetGone": 9,
+    "goneAI": 9,
+    "redirected": 1,
+    "redirectedTroops": 24327,
+    "void": 8,
+    "voidTroops": 123758,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 1,
+    "sentTroops": 952832
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 73,
+    "noEffect": 1,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 23025069
+   }
+  },
+  "B029": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 121,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 112131
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 344,
+    "noEffect": 150,
+    "targetGone": 162,
+    "goneAI": 162,
+    "redirected": 34,
+    "redirectedTroops": 142431,
+    "void": 128,
+    "voidTroops": 804558,
+    "aliveNoEffect": 1,
+    "unmatched512NoEffect": 16,
+    "sentTroops": 737823
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 206,
+    "noEffect": 93,
+    "targetGone": 75,
+    "goneAI": 75,
+    "redirected": 7,
+    "redirectedTroops": 77526,
+    "void": 68,
+    "voidTroops": 799240,
+    "aliveNoEffect": 10,
+    "unmatched512NoEffect": 3,
+    "sentTroops": 2339705
+   },
+   "3000+": {
+    "period": "3000+",
+    "attacks": 341,
+    "noEffect": 58,
+    "targetGone": 15,
+    "goneAI": 0,
+    "redirected": 11,
+    "redirectedTroops": 1463352,
+    "void": 4,
+    "voidTroops": 32247,
+    "aliveNoEffect": 17,
+    "unmatched512NoEffect": 1,
+    "sentTroops": 33368403
+   }
+  },
+  "B035": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 76,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 66692
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 338,
+    "noEffect": 45,
+    "targetGone": 61,
+    "goneAI": 61,
+    "redirected": 42,
+    "redirectedTroops": 115252,
+    "void": 19,
+    "voidTroops": 78816,
+    "aliveNoEffect": 5,
+    "unmatched512NoEffect": 19,
+    "sentTroops": 913006
+   },
+   "1500~3000": {
+    "period": "1500~3000",
+    "attacks": 87,
+    "noEffect": 2,
+    "targetGone": 14,
+    "goneAI": 14,
+    "redirected": 13,
+    "redirectedTroops": 69819,
+    "void": 1,
+    "voidTroops": 6986,
+    "aliveNoEffect": 1,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 888360
+   }
+  },
+  "B027": {
+   "0~600": {
+    "period": "0~600",
+    "attacks": 125,
+    "noEffect": 0,
+    "targetGone": 0,
+    "goneAI": 0,
+    "redirected": 0,
+    "redirectedTroops": 0,
+    "void": 0,
+    "voidTroops": 0,
+    "aliveNoEffect": 0,
+    "unmatched512NoEffect": 0,
+    "sentTroops": 118929
+   },
+   "600~1500": {
+    "period": "600~1500",
+    "attacks": 411,
+    "noEffect": 121,
+    "targetGone": 165,
+    "goneAI": 160,
+    "redirected": 68,
+    "redirectedTroops": 176433,
+    "void": 97,
+    "voidTroops": 368510,
+    "aliveNoEffect": 1,
+    "unmatched512NoEffect": 12,
+    "sentTroops": 761339
+   }
+  }
+ },
+ "dup": {
+  "B043": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 118,
+     "chains": 1,
+     "chain2": 0,
+     "chain3": 1,
+     "chain4": 0,
+     "chainExtraCmds": 2,
+     "chainExtraTroops": 520,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 723,
+     "chains": 80,
+     "chain2": 33,
+     "chain3": 22,
+     "chain4": 25,
+     "chainExtraCmds": 257,
+     "chainExtraTroops": 55723,
+     "batches": 1,
+     "batchCmds": 3,
+     "drain50": 1,
+     "drain90": 0,
+     "batchExtraTroops": 143
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 292,
+     "chains": 52,
+     "chain2": 16,
+     "chain3": 14,
+     "chain4": 22,
+     "chainExtraCmds": 155,
+     "chainExtraTroops": 557867,
+     "batches": 38,
+     "batchCmds": 200,
+     "drain50": 13,
+     "drain90": 0,
+     "batchExtraTroops": 495585
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 848,
+     "chains": 50,
+     "chain2": 40,
+     "chain3": 8,
+     "chain4": 2,
+     "chainExtraCmds": 66,
+     "chainExtraTroops": 127827,
+     "batches": 6,
+     "batchCmds": 24,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 12952
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 114,
+     "chains": 19,
+     "chain2": 8,
+     "chain3": 1,
+     "chain4": 10,
+     "chainExtraCmds": 64,
+     "chainExtraTroops": 616238,
+     "batches": 9,
+     "batchCmds": 69,
+     "drain50": 7,
+     "drain90": 2,
+     "batchExtraTroops": 485025
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 355,
+     "chains": 17,
+     "chain2": 9,
+     "chain3": 2,
+     "chain4": 6,
+     "chainExtraCmds": 55,
+     "chainExtraTroops": 435847,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 114,
+     "chains": 10,
+     "chain2": 8,
+     "chain3": 2,
+     "chain4": 0,
+     "chainExtraCmds": 12,
+     "chainExtraTroops": 609567,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 535,
+     "chains": 28,
+     "chain2": 18,
+     "chain3": 7,
+     "chain4": 3,
+     "chainExtraCmds": 50,
+     "chainExtraTroops": 8559191,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B033": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 66,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 544,
+     "chains": 37,
+     "chain2": 10,
+     "chain3": 3,
+     "chain4": 24,
+     "chainExtraCmds": 198,
+     "chainExtraTroops": 24328,
+     "batches": 1,
+     "batchCmds": 3,
+     "drain50": 1,
+     "drain90": 0,
+     "batchExtraTroops": 10
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 171,
+     "chains": 28,
+     "chain2": 9,
+     "chain3": 8,
+     "chain4": 11,
+     "chainExtraCmds": 82,
+     "chainExtraTroops": 212931,
+     "batches": 18,
+     "batchCmds": 101,
+     "drain50": 6,
+     "drain90": 0,
+     "batchExtraTroops": 230884
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 1028,
+     "chains": 70,
+     "chain2": 39,
+     "chain3": 5,
+     "chain4": 26,
+     "chainExtraCmds": 238,
+     "chainExtraTroops": 231561,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 185,
+     "chains": 33,
+     "chain2": 11,
+     "chain3": 3,
+     "chain4": 19,
+     "chainExtraCmds": 135,
+     "chainExtraTroops": 1790496,
+     "batches": 22,
+     "batchCmds": 159,
+     "drain50": 14,
+     "drain90": 6,
+     "batchExtraTroops": 1871551
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 512,
+     "chains": 35,
+     "chain2": 16,
+     "chain3": 4,
+     "chain4": 15,
+     "chainExtraCmds": 165,
+     "chainExtraTroops": 382368,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 117,
+     "chains": 9,
+     "chain2": 9,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 9,
+     "chainExtraTroops": 517256,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 526,
+     "chains": 46,
+     "chain2": 27,
+     "chain3": 10,
+     "chain4": 9,
+     "chainExtraCmds": 114,
+     "chainExtraTroops": 5370127,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B034": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 115,
+     "chains": 7,
+     "chain2": 6,
+     "chain3": 0,
+     "chain4": 1,
+     "chainExtraCmds": 10,
+     "chainExtraTroops": 2641,
+     "batches": 1,
+     "batchCmds": 5,
+     "drain50": 1,
+     "drain90": 0,
+     "batchExtraTroops": 327
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 150,
+     "chains": 1,
+     "chain2": 1,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 1,
+     "chainExtraTroops": 924,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 327,
+     "chains": 57,
+     "chain2": 29,
+     "chain3": 9,
+     "chain4": 19,
+     "chainExtraCmds": 151,
+     "chainExtraTroops": 377646,
+     "batches": 41,
+     "batchCmds": 242,
+     "drain50": 13,
+     "drain90": 0,
+     "batchExtraTroops": 547047
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 352,
+     "chains": 2,
+     "chain2": 1,
+     "chain3": 1,
+     "chain4": 0,
+     "chainExtraCmds": 3,
+     "chainExtraTroops": 17028,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 194,
+     "chains": 33,
+     "chain2": 7,
+     "chain3": 5,
+     "chain4": 21,
+     "chainExtraCmds": 144,
+     "chainExtraTroops": 1850018,
+     "batches": 22,
+     "batchCmds": 170,
+     "drain50": 13,
+     "drain90": 4,
+     "batchExtraTroops": 1930976
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 164,
+     "chains": 8,
+     "chain2": 6,
+     "chain3": 2,
+     "chain4": 0,
+     "chainExtraCmds": 10,
+     "chainExtraTroops": 237104,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 39,
+     "chains": 6,
+     "chain2": 6,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 6,
+     "chainExtraTroops": 253898,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 340,
+     "chains": 12,
+     "chain2": 6,
+     "chain3": 2,
+     "chain4": 4,
+     "chainExtraCmds": 45,
+     "chainExtraTroops": 10832890,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B031": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 93,
+     "chains": 1,
+     "chain2": 1,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 1,
+     "chainExtraTroops": 590,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 218,
+     "chains": 12,
+     "chain2": 3,
+     "chain3": 2,
+     "chain4": 7,
+     "chainExtraCmds": 49,
+     "chainExtraTroops": 10417,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 259,
+     "chains": 43,
+     "chain2": 17,
+     "chain3": 9,
+     "chain4": 17,
+     "chainExtraCmds": 109,
+     "chainExtraTroops": 230366,
+     "batches": 27,
+     "batchCmds": 164,
+     "drain50": 7,
+     "drain90": 0,
+     "batchExtraTroops": 311979
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 535,
+     "chains": 31,
+     "chain2": 20,
+     "chain3": 5,
+     "chain4": 6,
+     "chainExtraCmds": 67,
+     "chainExtraTroops": 54433,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 70,
+     "chains": 10,
+     "chain2": 2,
+     "chain3": 1,
+     "chain4": 7,
+     "chainExtraCmds": 53,
+     "chainExtraTroops": 59131,
+     "batches": 8,
+     "batchCmds": 61,
+     "drain50": 1,
+     "drain90": 0,
+     "batchExtraTroops": 67000
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 52,
+     "chains": 5,
+     "chain2": 4,
+     "chain3": 0,
+     "chain4": 1,
+     "chainExtraCmds": 7,
+     "chainExtraTroops": 30399,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B030": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 23,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 0,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 173,
+     "chains": 8,
+     "chain2": 8,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 8,
+     "chainExtraTroops": 18359,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 0,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 114,
+     "chains": 22,
+     "chain2": 19,
+     "chain3": 3,
+     "chain4": 0,
+     "chainExtraCmds": 25,
+     "chainExtraTroops": 556767,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 0,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 44,
+     "chains": 10,
+     "chain2": 10,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 10,
+     "chainExtraTroops": 10660645,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 0,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B019": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 139,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 334,
+     "chains": 18,
+     "chain2": 3,
+     "chain3": 1,
+     "chain4": 14,
+     "chainExtraCmds": 128,
+     "chainExtraTroops": 5883,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 237,
+     "chains": 42,
+     "chain2": 23,
+     "chain3": 8,
+     "chain4": 11,
+     "chainExtraCmds": 91,
+     "chainExtraTroops": 269252,
+     "batches": 23,
+     "batchCmds": 121,
+     "drain50": 8,
+     "drain90": 0,
+     "batchExtraTroops": 389296
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 512,
+     "chains": 16,
+     "chain2": 7,
+     "chain3": 0,
+     "chain4": 9,
+     "chainExtraCmds": 113,
+     "chainExtraTroops": 46684,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B015": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 76,
+     "chains": 1,
+     "chain2": 1,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 1,
+     "chainExtraTroops": 379,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 352,
+     "chains": 12,
+     "chain2": 9,
+     "chain3": 1,
+     "chain4": 2,
+     "chainExtraCmds": 30,
+     "chainExtraTroops": 13524,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 186,
+     "chains": 20,
+     "chain2": 14,
+     "chain3": 4,
+     "chain4": 2,
+     "chainExtraCmds": 29,
+     "chainExtraTroops": 122118,
+     "batches": 7,
+     "batchCmds": 28,
+     "drain50": 1,
+     "drain90": 0,
+     "batchExtraTroops": 77710
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 688,
+     "chains": 13,
+     "chain2": 11,
+     "chain3": 0,
+     "chain4": 2,
+     "chainExtraCmds": 21,
+     "chainExtraTroops": 52404,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 127,
+     "chains": 28,
+     "chain2": 14,
+     "chain3": 5,
+     "chain4": 9,
+     "chainExtraCmds": 61,
+     "chainExtraTroops": 642373,
+     "batches": 14,
+     "batchCmds": 68,
+     "drain50": 7,
+     "drain90": 0,
+     "batchExtraTroops": 552595
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 304,
+     "chains": 9,
+     "chain2": 6,
+     "chain3": 1,
+     "chain4": 2,
+     "chainExtraCmds": 30,
+     "chainExtraTroops": 178998,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 205,
+     "chains": 15,
+     "chain2": 13,
+     "chain3": 2,
+     "chain4": 0,
+     "chainExtraCmds": 17,
+     "chainExtraTroops": 1784604,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 802,
+     "chains": 26,
+     "chain2": 18,
+     "chain3": 4,
+     "chain4": 4,
+     "chainExtraCmds": 39,
+     "chainExtraTroops": 22427428,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B029": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 121,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 476,
+     "chains": 32,
+     "chain2": 10,
+     "chain3": 5,
+     "chain4": 17,
+     "chainExtraCmds": 141,
+     "chainExtraTroops": 26062,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 367,
+     "chains": 66,
+     "chain2": 27,
+     "chain3": 13,
+     "chain4": 26,
+     "chainExtraCmds": 191,
+     "chainExtraTroops": 480306,
+     "batches": 40,
+     "batchCmds": 242,
+     "drain50": 10,
+     "drain90": 2,
+     "batchExtraTroops": 558476
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 821,
+     "chains": 44,
+     "chain2": 38,
+     "chain3": 5,
+     "chain4": 1,
+     "chainExtraCmds": 52,
+     "chainExtraTroops": 136940,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 323,
+     "chains": 53,
+     "chain2": 18,
+     "chain3": 9,
+     "chain4": 26,
+     "chainExtraCmds": 189,
+     "chainExtraTroops": 1751460,
+     "batches": 31,
+     "batchCmds": 208,
+     "drain50": 14,
+     "drain90": 6,
+     "batchExtraTroops": 1587844
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 395,
+     "chains": 31,
+     "chain2": 15,
+     "chain3": 7,
+     "chain4": 9,
+     "chainExtraCmds": 77,
+     "chainExtraTroops": 572007,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "3000+": {
+    "编队": {
+     "period": "3000+",
+     "group": "编队",
+     "cmds": 974,
+     "chains": 95,
+     "chain2": 66,
+     "chain3": 11,
+     "chain4": 18,
+     "chainExtraCmds": 171,
+     "chainExtraTroops": 8032848,
+     "batches": 20,
+     "batchCmds": 115,
+     "drain50": 10,
+     "drain90": 2,
+     "batchExtraTroops": 1705726
+    },
+    "其他真人": {
+     "period": "3000+",
+     "group": "其他真人",
+     "cmds": 804,
+     "chains": 47,
+     "chain2": 27,
+     "chain3": 8,
+     "chain4": 12,
+     "chainExtraCmds": 131,
+     "chainExtraTroops": 70279200,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B035": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 76,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 94,
+     "chains": 3,
+     "chain2": 1,
+     "chain3": 1,
+     "chain4": 1,
+     "chainExtraCmds": 7,
+     "chainExtraTroops": 3630,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 346,
+     "chains": 59,
+     "chain2": 28,
+     "chain3": 15,
+     "chain4": 16,
+     "chainExtraCmds": 121,
+     "chainExtraTroops": 348749,
+     "batches": 35,
+     "batchCmds": 178,
+     "drain50": 11,
+     "drain90": 0,
+     "batchExtraTroops": 410095
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 335,
+     "chains": 3,
+     "chain2": 2,
+     "chain3": 0,
+     "chain4": 1,
+     "chainExtraCmds": 10,
+     "chainExtraTroops": 15346,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "1500~3000": {
+    "编队": {
+     "period": "1500~3000",
+     "group": "编队",
+     "cmds": 106,
+     "chains": 21,
+     "chain2": 11,
+     "chain3": 4,
+     "chain4": 6,
+     "chainExtraCmds": 43,
+     "chainExtraTroops": 306035,
+     "batches": 10,
+     "batchCmds": 44,
+     "drain50": 3,
+     "drain90": 0,
+     "batchExtraTroops": 230077
+    },
+    "其他真人": {
+     "period": "1500~3000",
+     "group": "其他真人",
+     "cmds": 92,
+     "chains": 4,
+     "chain2": 3,
+     "chain3": 0,
+     "chain4": 1,
+     "chainExtraCmds": 10,
+     "chainExtraTroops": 104710,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  },
+  "B027": {
+   "0~600": {
+    "编队": {
+     "period": "0~600",
+     "group": "编队",
+     "cmds": 125,
+     "chains": 0,
+     "chain2": 0,
+     "chain3": 0,
+     "chain4": 0,
+     "chainExtraCmds": 0,
+     "chainExtraTroops": 0,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    },
+    "其他真人": {
+     "period": "0~600",
+     "group": "其他真人",
+     "cmds": 667,
+     "chains": 69,
+     "chain2": 33,
+     "chain3": 7,
+     "chain4": 29,
+     "chainExtraCmds": 305,
+     "chainExtraTroops": 28273,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   },
+   "600~1500": {
+    "编队": {
+     "period": "600~1500",
+     "group": "编队",
+     "cmds": 426,
+     "chains": 80,
+     "chain2": 37,
+     "chain3": 11,
+     "chain4": 32,
+     "chainExtraCmds": 192,
+     "chainExtraTroops": 349343,
+     "batches": 47,
+     "batchCmds": 237,
+     "drain50": 7,
+     "drain90": 0,
+     "batchExtraTroops": 342772
+    },
+    "其他真人": {
+     "period": "600~1500",
+     "group": "其他真人",
+     "cmds": 924,
+     "chains": 52,
+     "chain2": 26,
+     "chain3": 7,
+     "chain4": 19,
+     "chainExtraCmds": 183,
+     "chainExtraTroops": 175989,
+     "batches": 0,
+     "batchCmds": 0,
+     "drain50": 0,
+     "drain90": 0,
+     "batchExtraTroops": 0
+    }
+   }
+  }
+ },
+ "funnelTotal": {
+  "0~600": {
+   "shadow": 1032,
+   "replay": 929,
+   "effective": 929,
+   "attacks": 929,
+   "noEffect": 0,
+   "targetGone": 0,
+   "redirected": 0,
+   "redirectedTroops": 0,
+   "void": 0,
+   "voidTroops": 0,
+   "sentTroops": 848780,
+   "s_cmds": 929,
+   "o_cmds": 3558,
+   "s_batches": 1,
+   "o_batches": 2,
+   "s_batchCmds": 5,
+   "o_batchCmds": 6,
+   "s_drain50": 1,
+   "o_drain50": 2,
+   "s_drain90": 0,
+   "o_drain90": 0,
+   "s_chainExtraCmds": 14,
+   "o_chainExtraCmds": 1116
+  },
+  "600~1500": {
+   "shadow": 4334,
+   "replay": 2611,
+   "effective": 1909,
+   "attacks": 2487,
+   "noEffect": 702,
+   "targetGone": 857,
+   "redirected": 314,
+   "redirectedTroops": 1080289,
+   "void": 543,
+   "voidTroops": 3052720,
+   "sentTroops": 5838014,
+   "s_cmds": 2611,
+   "o_cmds": 6043,
+   "s_batches": 276,
+   "o_batches": 6,
+   "s_batchCmds": 1513,
+   "o_batchCmds": 24,
+   "s_drain50": 76,
+   "o_drain50": 0,
+   "s_drain90": 2,
+   "o_drain90": 0,
+   "s_chainExtraCmds": 1121,
+   "o_chainExtraCmds": 753
+  },
+  "1500~3000": {
+   "shadow": 1167,
+   "replay": 1119,
+   "effective": 758,
+   "attacks": 838,
+   "noEffect": 361,
+   "targetGone": 286,
+   "redirected": 38,
+   "redirectedTroops": 363260,
+   "void": 248,
+   "voidTroops": 3747276,
+   "sentTroops": 9684381,
+   "s_cmds": 1119,
+   "o_cmds": 1874,
+   "s_batches": 116,
+   "o_batches": 0,
+   "s_batchCmds": 779,
+   "o_batchCmds": 0,
+   "s_drain50": 59,
+   "o_drain50": 0,
+   "s_drain90": 18,
+   "o_drain90": 0,
+   "s_chainExtraCmds": 689,
+   "o_chainExtraCmds": 354
+  },
+  "3000+": {
+   "shadow": 1646,
+   "replay": 1449,
+   "effective": 1389,
+   "attacks": 523,
+   "noEffect": 60,
+   "targetGone": 18,
+   "redirected": 14,
+   "redirectedTroops": 1768826,
+   "void": 4,
+   "voidTroops": 32247,
+   "sentTroops": 75449788,
+   "s_cmds": 1449,
+   "o_cmds": 3007,
+   "s_batches": 20,
+   "o_batches": 0,
+   "s_batchCmds": 115,
+   "o_batchCmds": 0,
+   "s_drain50": 10,
+   "o_drain50": 0,
+   "s_drain90": 2,
+   "o_drain90": 0,
+   "s_chainExtraCmds": 215,
+   "o_chainExtraCmds": 379
+  }
+ },
+ "fateTotal": {
+  "0~600|编队": {
+   "aiEpisodes": 107,
+   "aiBurn": 35826,
+   "aiTiles": 14446,
+   "aiLeftover": 4123,
+   "neutEpisodes": 640,
+   "neutBurn": 471304,
+   "neutTiles": 235652,
+   "neutReturned": 65091,
+   "sent": 848780,
+   "returnedAll": 68588
+  },
+  "0~600|其他真人": {
+   "aiEpisodes": 166,
+   "aiBurn": 49592,
+   "aiTiles": 13277,
+   "aiLeftover": 29118,
+   "neutEpisodes": 2243,
+   "neutBurn": 1255895,
+   "neutTiles": 642909,
+   "neutReturned": 235715,
+   "sent": 1992809,
+   "returnedAll": 237617
+  },
+  "600~1500|编队": {
+   "aiEpisodes": 816,
+   "aiBurn": 1186347,
+   "aiTiles": 309177,
+   "aiLeftover": 2217491,
+   "neutEpisodes": 625,
+   "neutBurn": 574228,
+   "neutTiles": 287114,
+   "neutReturned": 3502001,
+   "sent": 5838014,
+   "returnedAll": 3616788
+  },
+  "600~1500|其他真人": {
+   "aiEpisodes": 3817,
+   "aiBurn": 7381074,
+   "aiTiles": 1693257,
+   "aiLeftover": 6756523,
+   "neutEpisodes": 2038,
+   "neutBurn": 1893787,
+   "neutTiles": 947481,
+   "neutReturned": 7473387,
+   "sent": 20342210,
+   "returnedAll": 7871544
+  },
+  "1500~3000|编队": {
+   "aiEpisodes": 76,
+   "aiBurn": 329826,
+   "aiTiles": 80574,
+   "aiLeftover": 1614346,
+   "neutEpisodes": 134,
+   "neutBurn": 111594,
+   "neutTiles": 55797,
+   "neutReturned": 3819372,
+   "sent": 9684381,
+   "returnedAll": 4403872
+  },
+  "1500~3000|其他真人": {
+   "aiEpisodes": 232,
+   "aiBurn": 1351136,
+   "aiTiles": 266716,
+   "aiLeftover": 2094626,
+   "neutEpisodes": 514,
+   "neutBurn": 502860,
+   "neutTiles": 251481,
+   "neutReturned": 12532134,
+   "sent": 40603465,
+   "returnedAll": 15335030
+  },
+  "3000+|编队": {
+   "aiEpisodes": 9,
+   "aiBurn": 13677,
+   "aiTiles": 2739,
+   "aiLeftover": 408019,
+   "neutEpisodes": 242,
+   "neutBurn": 106812,
+   "neutTiles": 53406,
+   "neutReturned": 10769977,
+   "sent": 75449788,
+   "returnedAll": 30155177
+  },
+  "3000+|其他真人": {
+   "aiEpisodes": 23,
+   "aiBurn": 110459,
+   "aiTiles": 10260,
+   "aiLeftover": 1713768,
+   "neutEpisodes": 656,
+   "neutBurn": 1213278,
+   "neutTiles": 606639,
+   "neutReturned": 275088244,
+   "sent": 1003620763,
+   "returnedAll": 494763270
+  }
+ },
+ "lagload": {
+  "B043": {
+   "spearman": {
+    "tiles": 0.41,
+    "expand": 0.75,
+    "pairs": 0.76,
+    "humans": 0.62,
+    "tilesPrev": 0.52
+   },
+   "waves": [
+    {
+     "t0": 540,
+     "t1": 1800,
+     "n": 7,
+     "peakLag": 663,
+     "tilesMed": 56728,
+     "tilesMax": 126984,
+     "before": 109053,
+     "after": 30613
+    }
+   ]
+  },
+  "B033": {
+   "spearman": {
+    "tiles": 0.63,
+    "expand": 0.64,
+    "pairs": 0.56,
+    "humans": 0.36,
+    "tilesPrev": 0.73
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 2520,
+     "n": 10,
+     "peakLag": 481,
+     "tilesMed": 64596,
+     "tilesMax": 116287,
+     "before": 116454,
+     "after": 25446
+    },
+    {
+     "t0": 2700,
+     "t1": 3060,
+     "n": 2,
+     "peakLag": 59,
+     "tilesMed": 35564,
+     "tilesMax": 35564,
+     "before": 25446,
+     "after": 40684
+    }
+   ]
+  },
+  "B034": {
+   "spearman": {
+    "tiles": 0.39,
+    "expand": 0.3,
+    "pairs": 0.3,
+    "humans": -0.31,
+    "tilesPrev": 0.42
+   },
+   "waves": [
+    {
+     "t0": 0,
+     "t1": 180,
+     "n": 1,
+     "peakLag": 70,
+     "tilesMed": 7096,
+     "tilesMax": 7096,
+     "before": null,
+     "after": 21130
+    },
+    {
+     "t0": 720,
+     "t1": 2340,
+     "n": 9,
+     "peakLag": 382,
+     "tilesMed": 70330,
+     "tilesMax": 80956,
+     "before": 80074,
+     "after": 45081
+    }
+   ]
+  },
+  "B031": {
+   "spearman": {
+    "tiles": 0.08,
+    "expand": 0.09,
+    "pairs": 0.1,
+    "humans": -0.91,
+    "tilesPrev": 0.74
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 1620,
+     "n": 5,
+     "peakLag": 317,
+     "tilesMed": 60692,
+     "tilesMax": 79221,
+     "before": 64518,
+     "after": 26265
+    },
+    {
+     "t0": 1800,
+     "t1": 1980,
+     "n": 1,
+     "peakLag": 545,
+     "tilesMed": 16243,
+     "tilesMax": 16243,
+     "before": 26265,
+     "after": null
+    }
+   ]
+  },
+  "B030": {
+   "spearman": {
+    "tiles": -0.12,
+    "expand": -0.1,
+    "pairs": 0.52,
+    "humans": -0.15,
+    "tilesPrev": -0.26
+   },
+   "waves": []
+  },
+  "B019": {
+   "spearman": {
+    "tiles": 0.67,
+    "expand": 0.88,
+    "pairs": 0.85,
+    "humans": -0.61,
+    "tilesPrev": 0.77
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 1260,
+     "n": 3,
+     "peakLag": 288,
+     "tilesMed": 96047,
+     "tilesMax": 113423,
+     "before": 119641,
+     "after": null
+    }
+   ]
+  },
+  "B015": {
+   "spearman": {
+    "tiles": 0.34,
+    "expand": 0.34,
+    "pairs": 0.26,
+    "humans": 0.0,
+    "tilesPrev": 0.62
+   },
+   "waves": [
+    {
+     "t0": 900,
+     "t1": 1800,
+     "n": 5,
+     "peakLag": 185,
+     "tilesMed": 103448,
+     "tilesMax": 112051,
+     "before": 86693,
+     "after": 58590
+    },
+    {
+     "t0": 12060,
+     "t1": 12240,
+     "n": 1,
+     "peakLag": 85,
+     "tilesMed": 1699,
+     "tilesMax": 1699,
+     "before": 9121,
+     "after": 5014
+    }
+   ]
+  },
+  "B029": {
+   "spearman": {
+    "tiles": 0.28,
+    "expand": 0.16,
+    "pairs": -0.15,
+    "humans": -0.22,
+    "tilesPrev": 0.38
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 1980,
+     "n": 7,
+     "peakLag": 349,
+     "tilesMed": 54220,
+     "tilesMax": 99812,
+     "before": 95443,
+     "after": 32737
+    },
+    {
+     "t0": 8280,
+     "t1": 8460,
+     "n": 1,
+     "peakLag": 45,
+     "tilesMed": 51056,
+     "tilesMax": 51056,
+     "before": 39497,
+     "after": 25887
+    },
+    {
+     "t0": 9720,
+     "t1": 10620,
+     "n": 5,
+     "peakLag": 467,
+     "tilesMed": 37343,
+     "tilesMax": 82353,
+     "before": 50958,
+     "after": 2159
+    }
+   ]
+  },
+  "B035": {
+   "spearman": {
+    "tiles": 0.63,
+    "expand": 0.79,
+    "pairs": 0.78,
+    "humans": 0.6,
+    "tilesPrev": 0.26
+   },
+   "waves": [
+    {
+     "t0": 900,
+     "t1": 1620,
+     "n": 4,
+     "peakLag": 130,
+     "tilesMed": 80566,
+     "tilesMax": 82492,
+     "before": 39679,
+     "after": 50842
+    }
+   ]
+  },
+  "B027": {
+   "spearman": {
+    "tiles": 0.25,
+    "expand": 0.56,
+    "pairs": 0.67,
+    "humans": -0.91,
+    "tilesPrev": 0.74
+   },
+   "waves": [
+    {
+     "t0": 720,
+     "t1": 1440,
+     "n": 4,
+     "peakLag": 149,
+     "tilesMed": 95578,
+     "tilesMax": 104768,
+     "before": 103855,
+     "after": null
+    }
+   ]
+  }
+ },
+ "land": {
+  "B043": {
+   "headShare": 0.2273,
+   "vorEShare": 0.1974,
+   "vorEPerHead": 0.868,
+   "lowQuartile": 6,
+   "squad": 20,
+   "capture": {
+    "300": {
+     "squad": 0.089,
+     "squadMed": 0.092,
+     "other": 0.07,
+     "otherMed": 0.066,
+     "perHeadRatio": 1.01,
+     "squadB": 0.094,
+     "otherB": 0.07,
+     "squadTerr": 9613,
+     "otherTerr": 27614,
+     "vorRatio": 0.787,
+     "captureRatio": 1.283
+    },
+    "630": {
+     "squad": 0.423,
+     "squadMed": 0.424,
+     "other": 0.413,
+     "otherMed": 0.439,
+     "perHeadRatio": 0.805,
+     "squadB": 0.443,
+     "otherB": 0.417,
+     "squadTerr": 45554,
+     "otherTerr": 164151,
+     "vorRatio": 0.787,
+     "captureRatio": 1.022
+    },
+    "900": {
+     "squad": 0.659,
+     "squadMed": 0.726,
+     "other": 0.705,
+     "otherMed": 0.756,
+     "perHeadRatio": 0.736,
+     "squadB": 0.692,
+     "otherB": 0.712,
+     "squadTerr": 71086,
+     "otherTerr": 280007,
+     "vorRatio": 0.787,
+     "captureRatio": 0.935
+    },
+    "1260": {
+     "squad": 0.719,
+     "squadMed": 0.786,
+     "other": 1.016,
+     "otherMed": 1.071,
+     "perHeadRatio": 0.557,
+     "squadB": 0.754,
+     "otherB": 1.026,
+     "squadTerr": 77469,
+     "otherTerr": 403665,
+     "vorRatio": 0.787,
+     "captureRatio": 0.707
+    },
+    "1500": {
+     "squad": 0.771,
+     "squadMed": 0.776,
+     "other": 1.055,
+     "otherMed": 1.08,
+     "perHeadRatio": 0.575,
+     "squadB": 0.809,
+     "otherB": 1.065,
+     "squadTerr": 83139,
+     "otherTerr": 419112,
+     "vorRatio": 0.787,
+     "captureRatio": 0.731
+    },
+    "1800": {
+     "squad": 0.827,
+     "squadMed": 0.8,
+     "other": 1.024,
+     "otherMed": 1.103,
+     "perHeadRatio": 0.636,
+     "squadB": 0.867,
+     "otherB": 1.034,
+     "squadTerr": 89139,
+     "otherTerr": 406713,
+     "vorRatio": 0.787,
+     "captureRatio": 0.808
+    }
+   }
+  },
+  "B033": {
+   "headShare": 0.1493,
+   "vorEShare": 0.1149,
+   "vorEPerHead": 0.77,
+   "lowQuartile": 3,
+   "squad": 10,
+   "capture": {
+    "300": {
+     "squad": 0.069,
+     "squadMed": 0.077,
+     "other": 0.042,
+     "otherMed": 0.042,
+     "perHeadRatio": 1.124,
+     "squadB": 0.081,
+     "otherB": 0.044,
+     "squadTerr": 5240,
+     "otherTerr": 21906,
+     "vorRatio": 0.69,
+     "captureRatio": 1.629
+    },
+    "630": {
+     "squad": 0.364,
+     "squadMed": 0.437,
+     "other": 0.222,
+     "otherMed": 0.251,
+     "perHeadRatio": 1.133,
+     "squadB": 0.429,
+     "otherB": 0.234,
+     "squadTerr": 27812,
+     "otherTerr": 115420,
+     "vorRatio": 0.69,
+     "captureRatio": 1.641
+    },
+    "900": {
+     "squad": 0.598,
+     "squadMed": 0.758,
+     "other": 0.432,
+     "otherMed": 0.511,
+     "perHeadRatio": 0.955,
+     "squadB": 0.706,
+     "otherB": 0.456,
+     "squadTerr": 45704,
+     "otherTerr": 224981,
+     "vorRatio": 0.69,
+     "captureRatio": 1.384
+    },
+    "1260": {
+     "squad": 0.8,
+     "squadMed": 0.886,
+     "other": 0.769,
+     "otherMed": 0.849,
+     "perHeadRatio": 0.717,
+     "squadB": 0.943,
+     "otherB": 0.812,
+     "squadTerr": 61101,
+     "otherTerr": 400275,
+     "vorRatio": 0.69,
+     "captureRatio": 1.04
+    },
+    "1500": {
+     "squad": 0.795,
+     "squadMed": 0.872,
+     "other": 0.933,
+     "otherMed": 1.045,
+     "perHeadRatio": 0.588,
+     "squadB": 0.937,
+     "otherB": 0.984,
+     "squadTerr": 60691,
+     "otherTerr": 485246,
+     "vorRatio": 0.69,
+     "captureRatio": 0.852
+    },
+    "1800": {
+     "squad": 0.811,
+     "squadMed": 0.88,
+     "other": 1.009,
+     "otherMed": 1.147,
+     "perHeadRatio": 0.555,
+     "squadB": 0.956,
+     "otherB": 1.064,
+     "squadTerr": 61933,
+     "otherTerr": 524683,
+     "vorRatio": 0.69,
+     "captureRatio": 0.804
+    }
+   }
+  },
+  "B034": {
+   "headShare": 0.3061,
+   "vorEShare": 0.3089,
+   "vorEPerHead": 1.009,
+   "lowQuartile": 4,
+   "squad": 15,
+   "capture": {
+    "300": {
+     "squad": 0.056,
+     "squadMed": 0.055,
+     "other": 0.034,
+     "otherMed": 0.028,
+     "perHeadRatio": 1.545,
+     "squadB": 0.058,
+     "otherB": 0.033,
+     "squadTerr": 8548,
+     "otherTerr": 8850,
+     "vorRatio": 0.923,
+     "captureRatio": 1.675
+    },
+    "630": {
+     "squad": 0.294,
+     "squadMed": 0.323,
+     "other": 0.202,
+     "otherMed": 0.231,
+     "perHeadRatio": 1.343,
+     "squadB": 0.304,
+     "otherB": 0.198,
+     "squadTerr": 44717,
+     "otherTerr": 53284,
+     "vorRatio": 0.923,
+     "captureRatio": 1.455
+    },
+    "900": {
+     "squad": 0.443,
+     "squadMed": 0.49,
+     "other": 0.378,
+     "otherMed": 0.391,
+     "perHeadRatio": 1.082,
+     "squadB": 0.457,
+     "otherB": 0.369,
+     "squadTerr": 67370,
+     "otherTerr": 99664,
+     "vorRatio": 0.923,
+     "captureRatio": 1.172
+    },
+    "1260": {
+     "squad": 0.619,
+     "squadMed": 0.584,
+     "other": 0.76,
+     "otherMed": 0.818,
+     "perHeadRatio": 0.751,
+     "squadB": 0.639,
+     "otherB": 0.744,
+     "squadTerr": 94181,
+     "otherTerr": 200721,
+     "vorRatio": 0.923,
+     "captureRatio": 0.814
+    },
+    "1500": {
+     "squad": 0.65,
+     "squadMed": 0.584,
+     "other": 1.041,
+     "otherMed": 1.162,
+     "perHeadRatio": 0.576,
+     "squadB": 0.672,
+     "otherB": 1.019,
+     "squadTerr": 98972,
+     "otherTerr": 274782,
+     "vorRatio": 0.923,
+     "captureRatio": 0.625
+    },
+    "1800": {
+     "squad": 0.718,
+     "squadMed": 0.617,
+     "other": 1.183,
+     "otherMed": 1.321,
+     "perHeadRatio": 0.56,
+     "squadB": 0.742,
+     "otherB": 1.157,
+     "squadTerr": 109238,
+     "otherTerr": 312213,
+     "vorRatio": 0.923,
+     "captureRatio": 0.607
+    }
+   }
+  },
+  "B031": {
+   "headShare": 0.2766,
+   "vorEShare": 0.3081,
+   "vorEPerHead": 1.114,
+   "lowQuartile": 2,
+   "squad": 13,
+   "capture": {
+    "300": {
+     "squad": 0.044,
+     "squadMed": 0.055,
+     "other": 0.034,
+     "otherMed": 0.04,
+     "perHeadRatio": 1.302,
+     "squadB": 0.055,
+     "otherB": 0.035,
+     "squadTerr": 6587,
+     "otherTerr": 9339,
+     "vorRatio": 1.006,
+     "captureRatio": 1.295
+    },
+    "630": {
+     "squad": 0.231,
+     "squadMed": 0.252,
+     "other": 0.22,
+     "otherMed": 0.277,
+     "perHeadRatio": 1.056,
+     "squadB": 0.288,
+     "otherB": 0.224,
+     "squadTerr": 34331,
+     "otherTerr": 60045,
+     "vorRatio": 1.006,
+     "captureRatio": 1.05
+    },
+    "900": {
+     "squad": 0.358,
+     "squadMed": 0.427,
+     "other": 0.389,
+     "otherMed": 0.436,
+     "perHeadRatio": 0.925,
+     "squadB": 0.447,
+     "otherB": 0.397,
+     "squadTerr": 53302,
+     "otherTerr": 106411,
+     "vorRatio": 1.006,
+     "captureRatio": 0.92
+    },
+    "1260": {
+     "squad": 0.477,
+     "squadMed": 0.564,
+     "other": 0.816,
+     "otherMed": 0.888,
+     "perHeadRatio": 0.588,
+     "squadB": 0.596,
+     "otherB": 0.831,
+     "squadTerr": 71014,
+     "otherTerr": 223087,
+     "vorRatio": 1.006,
+     "captureRatio": 0.584
+    },
+    "1500": {
+     "squad": 0.485,
+     "squadMed": 0.509,
+     "other": 1.075,
+     "otherMed": 1.133,
+     "perHeadRatio": 0.454,
+     "squadB": 0.605,
+     "otherB": 1.094,
+     "squadTerr": 72174,
+     "otherTerr": 293721,
+     "vorRatio": 1.006,
+     "captureRatio": 0.451
+    },
+    "1800": {
+     "squad": 0.494,
+     "squadMed": 0.53,
+     "other": 1.184,
+     "otherMed": 1.133,
+     "perHeadRatio": 0.419,
+     "squadB": 0.617,
+     "otherB": 1.206,
+     "squadTerr": 73537,
+     "otherTerr": 323660,
+     "vorRatio": 1.006,
+     "captureRatio": 0.417
+    }
+   }
+  },
+  "B030": {
+   "headShare": 0.6,
+   "vorEShare": 0.8227,
+   "vorEPerHead": 1.371,
+   "lowQuartile": 0,
+   "squad": 3,
+   "capture": {
+    "300": {
+     "squad": 0.005,
+     "squadMed": 0.005,
+     "other": 0.001,
+     "otherMed": 0.002,
+     "perHeadRatio": 17.5,
+     "squadB": 0.005,
+     "otherB": 0.001,
+     "squadTerr": 1680,
+     "otherTerr": 64,
+     "vorRatio": 3.094,
+     "captureRatio": 5.655
+    },
+    "630": {
+     "squad": 0.028,
+     "squadMed": 0.032,
+     "other": 0.004,
+     "otherMed": 0.008,
+     "perHeadRatio": 21.356,
+     "squadB": 0.029,
+     "otherB": 0.004,
+     "squadTerr": 9418,
+     "otherTerr": 294,
+     "vorRatio": 3.094,
+     "captureRatio": 6.901
+    },
+    "900": {
+     "squad": 0.066,
+     "squadMed": 0.078,
+     "other": 0.0,
+     "otherMed": 0.0,
+     "perHeadRatio": 7247000000000.0,
+     "squadB": 0.066,
+     "otherB": 0.0,
+     "squadTerr": 21741,
+     "otherTerr": 0,
+     "vorRatio": 3.094,
+     "captureRatio": 0
+    },
+    "1260": {
+     "squad": 0.186,
+     "squadMed": 0.221,
+     "other": 0.0,
+     "otherMed": 0.0,
+     "perHeadRatio": 20523666666666.668,
+     "squadB": 0.187,
+     "otherB": 0.0,
+     "squadTerr": 61571,
+     "otherTerr": 0,
+     "vorRatio": 3.094,
+     "captureRatio": 0
+    },
+    "1500": {
+     "squad": 0.331,
+     "squadMed": 0.375,
+     "other": 0.0,
+     "otherMed": 0.0,
+     "perHeadRatio": 36543000000000.0,
+     "squadB": 0.333,
+     "otherB": 0.0,
+     "squadTerr": 109629,
+     "otherTerr": 0,
+     "vorRatio": 3.094,
+     "captureRatio": 0
+    },
+    "1800": {
+     "squad": 0.572,
+     "squadMed": 0.579,
+     "other": 0.0,
+     "otherMed": 0.0,
+     "perHeadRatio": 63074333333333.33,
+     "squadB": 0.574,
+     "otherB": 0.0,
+     "squadTerr": 189223,
+     "otherTerr": 0,
+     "vorRatio": 3.094,
+     "captureRatio": 0
+    }
+   }
+  },
+  "B019": {
+   "headShare": 0.4,
+   "vorEShare": 0.2565,
+   "vorEPerHead": 0.641,
+   "lowQuartile": 11,
+   "squad": 20,
+   "capture": {
+    "300": {
+     "squad": 0.051,
+     "squadMed": 0.063,
+     "other": 0.027,
+     "otherMed": 0.031,
+     "perHeadRatio": 0.995,
+     "squadB": 0.055,
+     "otherB": 0.027,
+     "squadTerr": 10016,
+     "otherTerr": 15104,
+     "vorRatio": 0.517,
+     "captureRatio": 1.922
+    },
+    "630": {
+     "squad": 0.293,
+     "squadMed": 0.345,
+     "other": 0.15,
+     "otherMed": 0.171,
+     "perHeadRatio": 1.009,
+     "squadB": 0.316,
+     "otherB": 0.152,
+     "squadTerr": 57291,
+     "otherTerr": 85169,
+     "vorRatio": 0.517,
+     "captureRatio": 1.95
+    },
+    "900": {
+     "squad": 0.514,
+     "squadMed": 0.729,
+     "other": 0.315,
+     "otherMed": 0.35,
+     "perHeadRatio": 0.846,
+     "squadB": 0.555,
+     "otherB": 0.318,
+     "squadTerr": 100629,
+     "otherTerr": 178525,
+     "vorRatio": 0.517,
+     "captureRatio": 1.634
+    }
+   }
+  },
+  "B015": {
+   "headShare": 0.2075,
+   "vorEShare": 0.1619,
+   "vorEPerHead": 0.78,
+   "lowQuartile": 6,
+   "squad": 11,
+   "capture": {
+    "300": {
+     "squad": 0.056,
+     "squadMed": 0.061,
+     "other": 0.033,
+     "otherMed": 0.03,
+     "perHeadRatio": 1.245,
+     "squadB": 0.068,
+     "otherB": 0.034,
+     "squadTerr": 5979,
+     "otherTerr": 18331,
+     "vorRatio": 0.737,
+     "captureRatio": 1.689
+    },
+    "630": {
+     "squad": 0.282,
+     "squadMed": 0.358,
+     "other": 0.211,
+     "otherMed": 0.214,
+     "perHeadRatio": 0.983,
+     "squadB": 0.345,
+     "otherB": 0.217,
+     "squadTerr": 30301,
+     "otherTerr": 117743,
+     "vorRatio": 0.737,
+     "captureRatio": 1.332
+    },
+    "900": {
+     "squad": 0.539,
+     "squadMed": 0.613,
+     "other": 0.393,
+     "otherMed": 0.466,
+     "perHeadRatio": 1.013,
+     "squadB": 0.66,
+     "otherB": 0.402,
+     "squadTerr": 57977,
+     "otherTerr": 218626,
+     "vorRatio": 0.737,
+     "captureRatio": 1.373
+    },
+    "1260": {
+     "squad": 0.675,
+     "squadMed": 0.714,
+     "other": 0.708,
+     "otherMed": 0.836,
+     "perHeadRatio": 0.703,
+     "squadB": 0.827,
+     "otherB": 0.725,
+     "squadTerr": 72557,
+     "otherTerr": 394096,
+     "vorRatio": 0.737,
+     "captureRatio": 0.953
+    },
+    "1500": {
+     "squad": 0.731,
+     "squadMed": 0.753,
+     "other": 0.885,
+     "otherMed": 1.04,
+     "perHeadRatio": 0.609,
+     "squadB": 0.896,
+     "otherB": 0.906,
+     "squadTerr": 78633,
+     "otherTerr": 492776,
+     "vorRatio": 0.737,
+     "captureRatio": 0.826
+    },
+    "1800": {
+     "squad": 0.829,
+     "squadMed": 0.774,
+     "other": 0.94,
+     "otherMed": 1.009,
+     "perHeadRatio": 0.65,
+     "squadB": 1.016,
+     "otherB": 0.963,
+     "squadTerr": 89159,
+     "otherTerr": 523538,
+     "vorRatio": 0.737,
+     "captureRatio": 0.882
+    }
+   }
+  },
+  "B029": {
+   "headShare": 0.2903,
+   "vorEShare": 0.2177,
+   "vorEPerHead": 0.75,
+   "lowQuartile": 7,
+   "squad": 18,
+   "capture": {
+    "300": {
+     "squad": 0.08,
+     "squadMed": 0.079,
+     "other": 0.056,
+     "otherMed": 0.063,
+     "perHeadRatio": 0.966,
+     "squadB": 0.089,
+     "otherB": 0.058,
+     "squadTerr": 8960,
+     "otherTerr": 22663,
+     "vorRatio": 0.68,
+     "captureRatio": 1.421
+    },
+    "630": {
+     "squad": 0.42,
+     "squadMed": 0.405,
+     "other": 0.293,
+     "otherMed": 0.294,
+     "perHeadRatio": 0.976,
+     "squadB": 0.469,
+     "otherB": 0.305,
+     "squadTerr": 47336,
+     "otherTerr": 118595,
+     "vorRatio": 0.68,
+     "captureRatio": 1.434
+    },
+    "900": {
+     "squad": 0.585,
+     "squadMed": 0.581,
+     "other": 0.5,
+     "otherMed": 0.494,
+     "perHeadRatio": 0.797,
+     "squadB": 0.654,
+     "otherB": 0.519,
+     "squadTerr": 65912,
+     "otherTerr": 202197,
+     "vorRatio": 0.68,
+     "captureRatio": 1.171
+    },
+    "1260": {
+     "squad": 0.725,
+     "squadMed": 0.722,
+     "other": 0.848,
+     "otherMed": 0.873,
+     "perHeadRatio": 0.581,
+     "squadB": 0.81,
+     "otherB": 0.882,
+     "squadTerr": 81645,
+     "otherTerr": 343382,
+     "vorRatio": 0.68,
+     "captureRatio": 0.854
+    },
+    "1500": {
+     "squad": 0.744,
+     "squadMed": 0.735,
+     "other": 0.952,
+     "otherMed": 0.998,
+     "perHeadRatio": 0.531,
+     "squadB": 0.831,
+     "otherB": 0.99,
+     "squadTerr": 83774,
+     "otherTerr": 385398,
+     "vorRatio": 0.68,
+     "captureRatio": 0.781
+    },
+    "1800": {
+     "squad": 0.908,
+     "squadMed": 0.863,
+     "other": 0.962,
+     "otherMed": 0.997,
+     "perHeadRatio": 0.642,
+     "squadB": 1.015,
+     "otherB": 1.0,
+     "squadTerr": 102295,
+     "otherTerr": 389291,
+     "vorRatio": 0.68,
+     "captureRatio": 0.944
+    }
+   }
+  },
+  "B035": {
+   "headShare": 0.4545,
+   "vorEShare": 0.4167,
+   "vorEPerHead": 0.917,
+   "lowQuartile": 5,
+   "squad": 10,
+   "capture": {
+    "300": {
+     "squad": 0.026,
+     "squadMed": 0.047,
+     "other": 0.015,
+     "otherMed": 0.013,
+     "perHeadRatio": 1.49,
+     "squadB": 0.03,
+     "otherB": 0.015,
+     "squadTerr": 5177,
+     "otherTerr": 4169,
+     "vorRatio": 0.857,
+     "captureRatio": 1.738
+    },
+    "630": {
+     "squad": 0.14,
+     "squadMed": 0.292,
+     "other": 0.104,
+     "otherMed": 0.137,
+     "perHeadRatio": 1.152,
+     "squadB": 0.163,
+     "otherB": 0.107,
+     "squadTerr": 28111,
+     "otherTerr": 29273,
+     "vorRatio": 0.857,
+     "captureRatio": 1.344
+    },
+    "900": {
+     "squad": 0.268,
+     "squadMed": 0.504,
+     "other": 0.21,
+     "otherMed": 0.257,
+     "perHeadRatio": 1.095,
+     "squadB": 0.314,
+     "otherB": 0.217,
+     "squadTerr": 54072,
+     "otherTerr": 59270,
+     "vorRatio": 0.857,
+     "captureRatio": 1.277
+    },
+    "1260": {
+     "squad": 0.44,
+     "squadMed": 0.567,
+     "other": 0.499,
+     "otherMed": 0.594,
+     "perHeadRatio": 0.757,
+     "squadB": 0.514,
+     "otherB": 0.514,
+     "squadTerr": 88691,
+     "otherTerr": 140545,
+     "vorRatio": 0.857,
+     "captureRatio": 0.883
+    },
+    "1500": {
+     "squad": 0.565,
+     "squadMed": 0.585,
+     "other": 0.761,
+     "otherMed": 0.906,
+     "perHeadRatio": 0.637,
+     "squadB": 0.66,
+     "otherB": 0.785,
+     "squadTerr": 113815,
+     "otherTerr": 214568,
+     "vorRatio": 0.857,
+     "captureRatio": 0.742
+    },
+    "1800": {
+     "squad": 0.783,
+     "squadMed": 0.981,
+     "other": 0.882,
+     "otherMed": 0.938,
+     "perHeadRatio": 0.761,
+     "squadB": 0.914,
+     "otherB": 0.91,
+     "squadTerr": 157698,
+     "otherTerr": 248688,
+     "vorRatio": 0.857,
+     "captureRatio": 0.888
+    }
+   }
+  },
+  "B027": {
+   "headShare": 0.2676,
+   "vorEShare": 0.1971,
+   "vorEPerHead": 0.736,
+   "lowQuartile": 10,
+   "squad": 19,
+   "capture": {
+    "300": {
+     "squad": 0.1,
+     "squadMed": 0.117,
+     "other": 0.052,
+     "otherMed": 0.059,
+     "perHeadRatio": 1.281,
+     "squadB": 0.107,
+     "otherB": 0.055,
+     "squadTerr": 10171,
+     "otherTerr": 21737,
+     "vorRatio": 0.672,
+     "captureRatio": 1.906
+    },
+    "630": {
+     "squad": 0.489,
+     "squadMed": 0.6,
+     "other": 0.303,
+     "otherMed": 0.314,
+     "perHeadRatio": 1.085,
+     "squadB": 0.523,
+     "otherB": 0.317,
+     "squadTerr": 49877,
+     "otherTerr": 125759,
+     "vorRatio": 0.672,
+     "captureRatio": 1.616
+    },
+    "900": {
+     "squad": 0.726,
+     "squadMed": 0.847,
+     "other": 0.537,
+     "otherMed": 0.545,
+     "perHeadRatio": 0.908,
+     "squadB": 0.776,
+     "otherB": 0.562,
+     "squadTerr": 74012,
+     "otherTerr": 223188,
+     "vorRatio": 0.672,
+     "captureRatio": 1.351
+    },
+    "1260": {
+     "squad": 0.945,
+     "squadMed": 1.054,
+     "other": 0.849,
+     "otherMed": 0.892,
+     "perHeadRatio": 0.748,
+     "squadB": 1.011,
+     "otherB": 0.889,
+     "squadTerr": 96357,
+     "otherTerr": 352693,
+     "vorRatio": 0.672,
+     "captureRatio": 1.113
+    }
+   }
+  }
+ },
+ "aiLand": {
+  "B043": {
+   "adjacent": {
+    "cells": 22321,
+    "eaten": 22284,
+    "squad": 13088,
+    "peer": 0,
+    "other": 9196
+   },
+   "ever": {
+    "cells": 261865,
+    "eaten": 254960,
+    "squad": 24228,
+    "par": 57945
+   },
+   "attr": {
+    "U": 254960,
+    "par": 57945,
+    "got": 24228,
+    "lost": 28454,
+    "geomDeficit": 9506,
+    "gate": 646,
+    "late": 11805,
+    "noContact": 5674
+   },
+   "contact": {
+    "short": 33717,
+    "inReach": 38293,
+    "gate": 2793,
+    "late": 20149,
+    "rest": 15351,
+    "position": -4576
+   }
+  },
+  "B033": {
+   "adjacent": {
+    "cells": 10843,
+    "eaten": 9943,
+    "squad": 9485,
+    "peer": 0,
+    "other": 458
+   },
+   "ever": {
+    "cells": 396967,
+    "eaten": 343308,
+    "squad": 25670,
+    "par": 51240
+   },
+   "attr": {
+    "U": 343308,
+    "par": 51240,
+    "got": 25670,
+    "lost": 6796,
+    "geomDeficit": 23783,
+    "gate": 0,
+    "late": 2710,
+    "noContact": 3856
+   },
+   "contact": {
+    "short": 25570,
+    "inReach": 11846,
+    "gate": 255,
+    "late": 11251,
+    "rest": 340,
+    "position": 13724
+   }
+  },
+  "B034": {
+   "adjacent": {
+    "cells": 38205,
+    "eaten": 30732,
+    "squad": 21413,
+    "peer": 430,
+    "other": 8889
+   },
+   "ever": {
+    "cells": 334452,
+    "eaten": 273219,
+    "squad": 48698,
+    "par": 83638
+   },
+   "attr": {
+    "U": 273219,
+    "par": 83638,
+    "got": 48698,
+    "lost": 40906,
+    "geomDeficit": 8618,
+    "gate": 4085,
+    "late": 11645,
+    "noContact": 14406
+   },
+   "contact": {
+    "short": 34940,
+    "inReach": 60167,
+    "gate": 9181,
+    "late": 29849,
+    "rest": 21137,
+    "position": -25227
+   }
+  },
+  "B031": {
+   "adjacent": {
+    "cells": 24939,
+    "eaten": 20885,
+    "squad": 14589,
+    "peer": 0,
+    "other": 6296
+   },
+   "ever": {
+    "cells": 339898,
+    "eaten": 262319,
+    "squad": 35127,
+    "par": 72556
+   },
+   "attr": {
+    "U": 262319,
+    "par": 72556,
+    "got": 35127,
+    "lost": 32508,
+    "geomDeficit": 11795,
+    "gate": 5023,
+    "late": 9096,
+    "noContact": 7777
+   },
+   "contact": {
+    "short": 37429,
+    "inReach": 43885,
+    "gate": 12308,
+    "late": 23590,
+    "rest": 7987,
+    "position": -6456
+   }
+  },
+  "B030": {
+   "adjacent": {
+    "cells": 13676,
+    "eaten": 13068,
+    "squad": 13068,
+    "peer": 0,
+    "other": 0
+   },
+   "ever": {
+    "cells": 390926,
+    "eaten": 98894,
+    "squad": 98850,
+    "par": 59336
+   },
+   "attr": {
+    "U": 98894,
+    "par": 59336,
+    "got": 98850,
+    "lost": 0,
+    "geomDeficit": -37874,
+    "gate": 0,
+    "late": 0,
+    "noContact": 0
+   },
+   "contact": {
+    "short": -39514,
+    "inReach": 0,
+    "gate": 0,
+    "late": 0,
+    "rest": 0,
+    "position": -39514
+   }
+  },
+  "B019": {
+   "adjacent": {
+    "cells": 11386,
+    "eaten": 11386,
+    "squad": 9591,
+    "peer": 0,
+    "other": 1795
+   },
+   "ever": {
+    "cells": 230384,
+    "eaten": 230384,
+    "squad": 39872,
+    "par": 89333
+   },
+   "attr": {
+    "U": 230384,
+    "par": 89333,
+    "got": 39872,
+    "lost": 11198,
+    "geomDeficit": 48530,
+    "gate": 860,
+    "late": 2569,
+    "noContact": 4434
+   },
+   "contact": {
+    "short": 49461,
+    "inReach": 27431,
+    "gate": 5565,
+    "late": 10836,
+    "rest": 11030,
+    "position": 22030
+   }
+  },
+  "B015": {
+   "adjacent": {
+    "cells": 13003,
+    "eaten": 11187,
+    "squad": 9406,
+    "peer": 0,
+    "other": 1781
+   },
+   "ever": {
+    "cells": 430905,
+    "eaten": 356305,
+    "squad": 41736,
+    "par": 73950
+   },
+   "attr": {
+    "U": 356305,
+    "par": 73950,
+    "got": 41736,
+    "lost": 20944,
+    "geomDeficit": 19680,
+    "gate": 4028,
+    "late": 2180,
+    "noContact": 8392
+   },
+   "contact": {
+    "short": 32214,
+    "inReach": 21905,
+    "gate": 5709,
+    "late": 6729,
+    "rest": 3599,
+    "position": 10309
+   }
+  },
+  "B029": {
+   "adjacent": {
+    "cells": 21902,
+    "eaten": 18306,
+    "squad": 14651,
+    "peer": 0,
+    "other": 3655
+   },
+   "ever": {
+    "cells": 304217,
+    "eaten": 268023,
+    "squad": 31617,
+    "par": 77813
+   },
+   "attr": {
+    "U": 268023,
+    "par": 77813,
+    "got": 31617,
+    "lost": 11716,
+    "geomDeficit": 38452,
+    "gate": 3378,
+    "late": 5640,
+    "noContact": 1980
+   },
+   "contact": {
+    "short": 46196,
+    "inReach": 17121,
+    "gate": 6369,
+    "late": 9696,
+    "rest": 1056,
+    "position": 29075
+   }
+  },
+  "B035": {
+   "adjacent": {
+    "cells": 21124,
+    "eaten": 18128,
+    "squad": 15507,
+    "peer": 0,
+    "other": 2621
+   },
+   "ever": {
+    "cells": 403724,
+    "eaten": 257097,
+    "squad": 81394,
+    "par": 116862
+   },
+   "attr": {
+    "U": 257097,
+    "par": 116862,
+    "got": 81394,
+    "lost": 18059,
+    "geomDeficit": 28645,
+    "gate": 3545,
+    "late": 5096,
+    "noContact": 8622
+   },
+   "contact": {
+    "short": 35468,
+    "inReach": 18778,
+    "gate": 5671,
+    "late": 9142,
+    "rest": 3965,
+    "position": 16690
+   }
+  },
+  "B027": {
+   "adjacent": {
+    "cells": 23844,
+    "eaten": 23844,
+    "squad": 20165,
+    "peer": 0,
+    "other": 3679
+   },
+   "ever": {
+    "cells": 282908,
+    "eaten": 282908,
+    "squad": 48047,
+    "par": 76789
+   },
+   "attr": {
+    "U": 282908,
+    "par": 76789,
+    "got": 48047,
+    "lost": 16926,
+    "geomDeficit": 29427,
+    "gate": 2737,
+    "late": 7027,
+    "noContact": 3641
+   },
+   "contact": {
+    "short": 28742,
+    "inReach": 39918,
+    "gate": 10940,
+    "late": 22422,
+    "rest": 6556,
+    "position": -11176
+   }
+  }
+ },
+ "aiLandTotal": {
+  "adjCells": 187567,
+  "adjEaten": 166695,
+  "adjSquad": 127895,
+  "evCells": 2985320,
+  "evSquad": 376389,
+  "evPar": 700126,
+  "gate": 58791,
+  "late": 143664,
+  "inReach": 279344,
+  "rest": 71021,
+  "geom": 218436
+ },
+ "aiLandSplit": {
+  "short": 323737,
+  "position": 44393,
+  "gate": 58791,
+  "late": 143664,
+  "rest": 76889,
+  "cats": {
+   "③ 迟到（出手了，最快的一条也晚到 ≥35 拍）": 26632,
+   "③ 迟到落空（影子发了，录像里没有生效的）": 117032,
+   "出手了、按时生效，被别人分走": 17660,
+   "② 门槛挡住：值不值门槛（winWorth）": 20885,
+   "② 门槛挡住：防人机留底 sb（safeFinite）": 32575,
+   "② 门槛挡住：价位底（winFloor）": 1431,
+   "客户端停了（日志已断）": 44379,
+   "过了门槛但没发（影子也没发：先打别的 / 轮次）": 8573,
+   "② 门槛挡住：开局留底 dpKeep": 3900,
+   "同队的内置 AI（不能打）": 5868,
+   "接壤但策略没把它列为邻居": 409
+  }
+ },
+ "spawn": {
+  "B043": {
+   "bots": 20,
+   "lastExecuted": 2,
+   "assignMedian": 13,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 200.5,
+   "edgeOthers": 154,
+   "nearEdgeSquad": 7,
+   "nearEdgeOthers": 29,
+   "nSquad": 20,
+   "nOthers": 67,
+   "nearestIsMate": 9,
+   "nnMate": 96.9251819305415
+  },
+  "B033": {
+   "bots": 10,
+   "lastExecuted": 5,
+   "assignMedian": 9,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 76.5,
+   "edgeOthers": 241,
+   "nearEdgeSquad": 7,
+   "nearEdgeOthers": 4,
+   "nSquad": 10,
+   "nOthers": 57,
+   "nearestIsMate": 2,
+   "nnMate": 234.91274976041638
+  },
+  "B034": {
+   "bots": 15,
+   "lastExecuted": 9,
+   "assignMedian": 2,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 46,
+   "edgeOthers": 92,
+   "nearEdgeSquad": 9,
+   "nearEdgeOthers": 14,
+   "nSquad": 15,
+   "nOthers": 33,
+   "nearestIsMate": 2,
+   "nnMate": 176.0
+  },
+  "B031": {
+   "bots": 13,
+   "lastExecuted": 3,
+   "assignMedian": 8,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 290,
+   "edgeOthers": 314,
+   "nearEdgeSquad": 0,
+   "nearEdgeOthers": 1,
+   "nSquad": 13,
+   "nOthers": 33,
+   "nearestIsMate": 5,
+   "nnMate": 150.94369811290565
+  },
+  "B030": {
+   "bots": 3,
+   "lastExecuted": 0,
+   "assignMedian": 4,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 274,
+   "edgeOthers": 210,
+   "nearEdgeSquad": 0,
+   "nearEdgeOthers": 0,
+   "nSquad": 3,
+   "nOthers": 3,
+   "nearestIsMate": 0,
+   "nnMate": 295.0254226333724
+  },
+  "B019": {
+   "bots": 20,
+   "lastExecuted": 11,
+   "assignMedian": 5,
+   "samePixelPairs": null,
+   "near40Pairs": null,
+   "edgeSquad": 30.0,
+   "edgeOthers": 134.0,
+   "nearEdgeSquad": 15,
+   "nearEdgeOthers": 12,
+   "nSquad": 20,
+   "nOthers": 30,
+   "nearestIsMate": 14,
+   "nnMate": 114.03702434442519
+  },
+  "B015": {
+   "bots": 11,
+   "lastExecuted": 3,
+   "assignMedian": 11,
+   "samePixelPairs": 0,
+   "near40Pairs": 0,
+   "edgeSquad": 22,
+   "edgeOthers": 264,
+   "nearEdgeSquad": 8,
+   "nearEdgeOthers": 4,
+   "nSquad": 11,
+   "nOthers": 33,
+   "nearestIsMate": 3,
+   "nnMate": 230.26940743398808
+  },
+  "B029": {
+   "bots": 18,
+   "lastExecuted": 8,
+   "assignMedian": 11,
+   "samePixelPairs": 3,
+   "near40Pairs": 3,
+   "edgeSquad": 106.0,
+   "edgeOthers": 277,
+   "nearEdgeSquad": 12,
+   "nearEdgeOthers": 4,
+   "nSquad": 18,
+   "nOthers": 43,
+   "nearestIsMate": 15,
+   "nnMate": 98.40036184591395
+  },
+  "B035": {
+   "bots": 10,
+   "lastExecuted": 0,
+   "assignMedian": 4,
+   "samePixelPairs": 0,
+   "near40Pairs": 0,
+   "edgeSquad": 328.0,
+   "edgeOthers": 265.5,
+   "nearEdgeSquad": 1,
+   "nearEdgeOthers": 1,
+   "nSquad": 10,
+   "nOthers": 10,
+   "nearestIsMate": 5,
+   "nnMate": 175.02913973691275
+  },
+  "B027": {
+   "bots": 19,
+   "lastExecuted": 5,
+   "assignMedian": 13,
+   "samePixelPairs": 3,
+   "near40Pairs": 3,
+   "edgeSquad": 122,
+   "edgeOthers": 249.5,
+   "nearEdgeSquad": 9,
+   "nearEdgeOthers": 7,
+   "nSquad": 19,
+   "nOthers": 48,
+   "nearestIsMate": 9,
+   "nnMate": 116.48175822848829
+  }
+ },
+ "spawnTotal": {
+  "lastExecuted": 46,
+  "bots": 136
+ },
+ "econ": {
+  "B043": {
+   "enclose": {
+    "samples": 2391,
+    "sealedA": 79,
+    "botTicksA": 2370,
+    "botsEverA": 4
+   },
+   "squad": {
+    "inc": 26563473,
+    "ret": 2476231,
+    "atkTroops": 10446095,
+    "burnt": 9609518,
+    "boatFee": 681840,
+    "donTax": 2066486,
+    "tilesGot": 157976,
+    "tilesLost": 104985,
+    "hitBal": 7932578
+   },
+   "others": {
+    "inc": 215989228,
+    "ret": 31166482,
+    "atkTroops": 128633699,
+    "burnt": 109000008,
+    "boatFee": 4551861,
+    "donTax": 5498432,
+    "tilesGot": 1224633,
+    "tilesLost": 603332,
+    "hitBal": 49047167
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     0.962
+    ],
+    [
+     600,
+     1500,
+     0.947
+    ],
+    [
+     1500,
+     3000,
+     0.397
+    ],
+    [
+     3000,
+     4284,
+     0.299
+    ],
+    [
+     4284,
+     6300,
+     0.311
+    ],
+    [
+     6300,
+     6568,
+     0.311
+    ]
+   ]
+  },
+  "B033": {
+   "enclose": {
+    "samples": 1447,
+    "sealedA": 203,
+    "botTicksA": 6090,
+    "botsEverA": 3
+   },
+   "squad": {
+    "inc": 14282913,
+    "ret": 3053380,
+    "atkTroops": 2816564,
+    "burnt": 2164840,
+    "boatFee": 1762972,
+    "donTax": 936660,
+    "tilesGot": 139989,
+    "tilesLost": 94589,
+    "hitBal": 3061705
+   },
+   "others": {
+    "inc": 134296487,
+    "ret": 24707135,
+    "atkTroops": 61467384,
+    "burnt": 50611734,
+    "boatFee": 7016927,
+    "donTax": 3553902,
+    "tilesGot": 1203994,
+    "tilesLost": 492290,
+    "hitBal": 20672221
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     1.066
+    ],
+    [
+     600,
+     1500,
+     1.21
+    ],
+    [
+     1500,
+     3000,
+     0.604
+    ],
+    [
+     3000,
+     4284,
+     0.409
+    ],
+    [
+     4284,
+     5637,
+     0.419
+    ]
+   ]
+  },
+  "B034": {
+   "enclose": {
+    "samples": 1855,
+    "sealedA": 37,
+    "botTicksA": 1110,
+    "botsEverA": 2
+   },
+   "squad": {
+    "inc": 23420156,
+    "ret": 3261732,
+    "atkTroops": 13196006,
+    "burnt": 10546861,
+    "boatFee": 554906,
+    "donTax": 1204,
+    "tilesGot": 217017,
+    "tilesLost": 183371,
+    "hitBal": 10035732
+   },
+   "others": {
+    "inc": 307147900,
+    "ret": 45328367,
+    "atkTroops": 175180109,
+    "burnt": 130259908,
+    "boatFee": 9653870,
+    "donTax": 1495561,
+    "tilesGot": 1134225,
+    "tilesLost": 558060,
+    "hitBal": 60352286
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     1.112
+    ],
+    [
+     600,
+     1500,
+     1.236
+    ],
+    [
+     1500,
+     3000,
+     0.44
+    ],
+    [
+     3000,
+     4284,
+     0.147
+    ],
+    [
+     4284,
+     6300,
+     0.115
+    ],
+    [
+     6300,
+     9660,
+     0.054
+    ]
+   ]
+  },
+  "B031": {
+   "enclose": {
+    "samples": 818,
+    "sealedA": 22,
+    "botTicksA": 660,
+    "botsEverA": 1
+   },
+   "squad": {
+    "inc": 3990789,
+    "ret": 526527,
+    "atkTroops": 730510,
+    "burnt": 318386,
+    "boatFee": 6645,
+    "donTax": 0,
+    "tilesGot": 83222,
+    "tilesLost": 11621,
+    "hitBal": 268472
+   },
+   "others": {
+    "inc": 8591704,
+    "ret": 827743,
+    "atkTroops": 2215500,
+    "burnt": 1419680,
+    "boatFee": 124586,
+    "donTax": 717,
+    "tilesGot": 344645,
+    "tilesLost": 12982,
+    "hitBal": 97339
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     0.938
+    ],
+    [
+     600,
+     1500,
+     0.894
+    ],
+    [
+     1500,
+     1864,
+     0.806
+    ]
+   ]
+  },
+  "B030": {
+   "enclose": {
+    "samples": 1621,
+    "sealedA": 0,
+    "botTicksA": 0,
+    "botsEverA": 0
+   },
+   "squad": {
+    "inc": 204219418,
+    "ret": 29140839,
+    "atkTroops": 74516722,
+    "burnt": 44674063,
+    "boatFee": 0,
+    "donTax": 0,
+    "tilesGot": 790573,
+    "tilesLost": 622180,
+    "hitBal": 126783309
+   },
+   "others": {
+    "inc": 3245,
+    "ret": 288,
+    "atkTroops": 0,
+    "burnt": 957,
+    "boatFee": 0,
+    "donTax": 0,
+    "tilesGot": 386,
+    "tilesLost": 373,
+    "hitBal": 2956
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     9.995
+    ],
+    [
+     600,
+     1500,
+     632.566
+    ],
+    [
+     1500,
+     3000,
+     3714775333333333.5
+    ],
+    [
+     3000,
+     4284,
+     1.3615547333333334e+16
+    ],
+    [
+     4284,
+     6300,
+     2.1478512333333332e+16
+    ],
+    [
+     6300,
+     37561,
+     2.9036724333333332e+16
+    ]
+   ]
+  },
+  "B019": {
+   "enclose": {
+    "samples": 804,
+    "sealedA": 0,
+    "botTicksA": 0,
+    "botsEverA": 0
+   },
+   "squad": {
+    "inc": 2252404,
+    "ret": 371637,
+    "atkTroops": 888499,
+    "burnt": 331624,
+    "boatFee": 0,
+    "donTax": 0,
+    "tilesGot": 129973,
+    "tilesLost": 4418,
+    "hitBal": 56769
+   },
+   "others": {
+    "inc": 3333580,
+    "ret": 485149,
+    "atkTroops": 1873841,
+    "burnt": 1141496,
+    "boatFee": 7480,
+    "donTax": 155,
+    "tilesGot": 361380,
+    "tilesLost": 9236,
+    "hitBal": 29538
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     0.95
+    ],
+    [
+     600,
+     1246,
+     1.021
+    ]
+   ]
+  },
+  "B015": {
+   "enclose": {
+    "samples": 2539,
+    "sealedA": 400,
+    "botTicksA": 12000,
+    "botsEverA": 3
+   },
+   "squad": {
+    "inc": 65348705,
+    "ret": 7967516,
+    "atkTroops": 24436901,
+    "burnt": 24184008,
+    "boatFee": 3892675,
+    "donTax": 4047820,
+    "tilesGot": 230590,
+    "tilesLost": 190634,
+    "hitBal": 25711475
+   },
+   "others": {
+    "inc": 775309661,
+    "ret": 147915211,
+    "atkTroops": 427365748,
+    "burnt": 354667995,
+    "boatFee": 55278695,
+    "donTax": 4348660,
+    "tilesGot": 2160810,
+    "tilesLost": 1306516,
+    "hitBal": 191865816
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     0.888
+    ],
+    [
+     600,
+     1500,
+     0.898
+    ],
+    [
+     1500,
+     3000,
+     0.754
+    ],
+    [
+     3000,
+     4284,
+     0.704
+    ],
+    [
+     4284,
+     6300,
+     0.582
+    ],
+    [
+     6300,
+     13176,
+     0.186
+    ]
+   ]
+  },
+  "B029": {
+   "enclose": {
+    "samples": 5148,
+    "sealedA": 1548,
+    "botTicksA": 46440,
+    "botsEverA": 11
+   },
+   "squad": {
+    "inc": 84451739,
+    "ret": 18936038,
+    "atkTroops": 36558062,
+    "burnt": 28554466,
+    "boatFee": 6797831,
+    "donTax": 16240168,
+    "tilesGot": 263826,
+    "tilesLost": 196158,
+    "hitBal": 24089121
+   },
+   "others": {
+    "inc": 484904071,
+    "ret": 265770845,
+    "atkTroops": 264182100,
+    "burnt": 175563504,
+    "boatFee": 83278546,
+    "donTax": 6836650,
+    "tilesGot": 1446483,
+    "tilesLost": 807677,
+    "hitBal": 79034974
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     1.015
+    ],
+    [
+     600,
+     1500,
+     1.261
+    ],
+    [
+     1500,
+     3000,
+     0.897
+    ],
+    [
+     3000,
+     4284,
+     0.743
+    ],
+    [
+     4284,
+     6300,
+     0.671
+    ],
+    [
+     6300,
+     11888,
+     0.267
+    ]
+   ]
+  },
+  "B035": {
+   "enclose": {
+    "samples": 820,
+    "sealedA": 0,
+    "botTicksA": 0,
+    "botsEverA": 0
+   },
+   "squad": {
+    "inc": 5604314,
+    "ret": 1113574,
+    "atkTroops": 1868058,
+    "burnt": 974549,
+    "boatFee": 110349,
+    "donTax": 0,
+    "tilesGot": 186796,
+    "tilesLost": 21092,
+    "hitBal": 328847
+   },
+   "others": {
+    "inc": 9200042,
+    "ret": 1039255,
+    "atkTroops": 2836053,
+    "burnt": 1756667,
+    "boatFee": 170896,
+    "donTax": 0,
+    "tilesGot": 340880,
+    "tilesLost": 37558,
+    "hitBal": 325365
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     0.911
+    ],
+    [
+     600,
+     1500,
+     0.855
+    ],
+    [
+     1500,
+     2436,
+     0.686
+    ]
+   ]
+  },
+  "B027": {
+   "enclose": {
+    "samples": 912,
+    "sealedA": 37,
+    "botTicksA": 1110,
+    "botsEverA": 1
+   },
+   "squad": {
+    "inc": 2854071,
+    "ret": 537790,
+    "atkTroops": 880268,
+    "burnt": 309572,
+    "boatFee": 30416,
+    "donTax": 0,
+    "tilesGot": 111183,
+    "tilesLost": 11594,
+    "hitBal": 123794
+   },
+   "others": {
+    "inc": 7078780,
+    "ret": 967274,
+    "atkTroops": 2804813,
+    "burnt": 1805658,
+    "boatFee": 64427,
+    "donTax": 0,
+    "tilesGot": 426805,
+    "tilesLost": 33469,
+    "hitBal": 265748
+   },
+   "incPerCap": [
+    [
+     0,
+     600,
+     1.023
+    ],
+    [
+     600,
+     1428,
+     1.11
+    ]
+   ]
+  }
+ },
+ "donations": {
+  "G02": {
+   "logged": 7,
+   "accepted": 0,
+   "rejected": 0,
+   "undetermined": 7,
+   "arrivedUpper": 256,
+   "taxUpper": 317,
+   "taxMinusGift": 59,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    7,
+    0,
+    0
+   ]
+  },
+  "G05": {
+   "logged": 2,
+   "accepted": 0,
+   "rejected": 0,
+   "undetermined": 2,
+   "arrivedUpper": 4451,
+   "taxUpper": 5479,
+   "taxMinusGift": 1028,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    2,
+    0,
+    0
+   ]
+  },
+  "G08": {
+   "logged": 9,
+   "accepted": 7,
+   "rejected": 0,
+   "undetermined": 2,
+   "arrivedUpper": 715326,
+   "taxUpper": 880404,
+   "taxMinusGift": 165075,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 568581,
+   "accFee": 699795,
+   "before4284": [
+    6,
+    4,
+    0
+   ]
+  },
+  "B043": {
+   "logged": 78,
+   "accepted": 48,
+   "rejected": 25,
+   "undetermined": 5,
+   "arrivedUpper": 3886669,
+   "taxUpper": 1953681,
+   "taxMinusGift": 22680,
+   "pingpong": 3,
+   "bounce": 0,
+   "accArrived": 3724538,
+   "accFee": 1794320,
+   "before4284": [
+    66,
+    38,
+    24
+   ]
+  },
+  "B033": {
+   "logged": 37,
+   "accepted": 14,
+   "rejected": 17,
+   "undetermined": 6,
+   "arrivedUpper": 2310325,
+   "taxUpper": 791941,
+   "taxMinusGift": 5600,
+   "pingpong": 8,
+   "bounce": 0,
+   "accArrived": 1559446,
+   "accFee": 537659,
+   "before4284": [
+    29,
+    8,
+    17
+   ]
+  },
+  "B034": {
+   "logged": 6,
+   "accepted": 0,
+   "rejected": 6,
+   "undetermined": 0,
+   "arrivedUpper": 0,
+   "taxUpper": 0,
+   "taxMinusGift": 0,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    6,
+    0,
+    6
+   ]
+  },
+  "B031": {
+   "logged": 6,
+   "accepted": 0,
+   "rejected": 5,
+   "undetermined": 1,
+   "arrivedUpper": 0,
+   "taxUpper": 0,
+   "taxMinusGift": 0,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    6,
+    0,
+    5
+   ]
+  },
+  "B049": {
+   "logged": 124,
+   "accepted": 68,
+   "rejected": 31,
+   "undetermined": 25,
+   "arrivedUpper": 15705470,
+   "taxUpper": 7436875,
+   "taxMinusGift": 67576,
+   "pingpong": 6,
+   "bounce": 0,
+   "accArrived": 11166147,
+   "accFee": 5656756,
+   "before4284": [
+    33,
+    16,
+    11
+   ]
+  },
+  "B006": {
+   "logged": 525,
+   "accepted": 134,
+   "rejected": 359,
+   "undetermined": 32,
+   "arrivedUpper": 10001871,
+   "taxUpper": 4822891,
+   "taxMinusGift": 36927,
+   "pingpong": 9,
+   "bounce": 0,
+   "accArrived": 8655857,
+   "accFee": 3637469,
+   "before4284": [
+    423,
+    75,
+    340
+   ]
+  },
+  "B030": {
+   "logged": 0,
+   "accepted": 0,
+   "rejected": 0,
+   "undetermined": 0,
+   "arrivedUpper": 0,
+   "taxUpper": 0,
+   "taxMinusGift": 0,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    0,
+    0,
+    0
+   ]
+  },
+  "B019": {
+   "logged": 224,
+   "accepted": 83,
+   "rejected": 112,
+   "undetermined": 29,
+   "arrivedUpper": 15586059,
+   "taxUpper": 8357580,
+   "taxMinusGift": 69796,
+   "pingpong": 3,
+   "bounce": 0,
+   "accArrived": 12850415,
+   "accFee": 6102623,
+   "before4284": [
+    96,
+    38,
+    50
+   ]
+  },
+  "B009": {
+   "logged": 65,
+   "accepted": 43,
+   "rejected": 7,
+   "undetermined": 15,
+   "arrivedUpper": 24433641,
+   "taxUpper": 10566380,
+   "taxMinusGift": 39159,
+   "pingpong": 21,
+   "bounce": 0,
+   "accArrived": 17294449,
+   "accFee": 7195613,
+   "before4284": [
+    17,
+    14,
+    1
+   ]
+  },
+  "B015": {
+   "logged": 43,
+   "accepted": 32,
+   "rejected": 6,
+   "undetermined": 5,
+   "arrivedUpper": 6446905,
+   "taxUpper": 3113037,
+   "taxMinusGift": 29530,
+   "pingpong": 16,
+   "bounce": 2,
+   "accArrived": 5213460,
+   "accFee": 2588058,
+   "before4284": [
+    15,
+    12,
+    1
+   ]
+  },
+  "B029": {
+   "logged": 463,
+   "accepted": 234,
+   "rejected": 158,
+   "undetermined": 71,
+   "arrivedUpper": 30887788,
+   "taxUpper": 14707410,
+   "taxMinusGift": 31921,
+   "pingpong": 121,
+   "bounce": 5,
+   "accArrived": 25482092,
+   "accFee": 11207722,
+   "before4284": [
+    172,
+    61,
+    92
+   ]
+  },
+  "B035": {
+   "logged": 79,
+   "accepted": 66,
+   "rejected": 4,
+   "undetermined": 9,
+   "arrivedUpper": 40699963,
+   "taxUpper": 18066474,
+   "taxMinusGift": 67918,
+   "pingpong": 19,
+   "bounce": 2,
+   "accArrived": 35677728,
+   "accFee": 15725416,
+   "before4284": [
+    14,
+    13,
+    0
+   ]
+  },
+  "B027": {
+   "logged": 0,
+   "accepted": 0,
+   "rejected": 0,
+   "undetermined": 0,
+   "arrivedUpper": 0,
+   "taxUpper": 0,
+   "taxMinusGift": 0,
+   "pingpong": 0,
+   "bounce": 0,
+   "accArrived": 0,
+   "accFee": 0,
+   "before4284": [
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "donationTotals": {
+  "logged": 1668,
+  "accepted": 729,
+  "rejected": 730,
+  "undetermined": 209,
+  "taxMinusGift": 537269,
+  "pingpong": 206,
+  "bounce": 9,
+  "accArrived": 122192713,
+  "accFee": 55145431,
+  "before4284": [
+   892,
+   279,
+   547
+  ],
+  "arrivedUpper": 150678724,
+  "taxUpper": 70702469
+ },
+ "deaths": {
+  "G02": {
+   "died": 7,
+   "left": 1,
+   "leftWithLand": 0,
+   "bots": 8,
+   "bank": 233883,
+   "bankBig": 0,
+   "quarterN": 0,
+   "quarterBal": 0,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 8,
+   "passiveCells": 75272
+  },
+  "G05": {
+   "died": 6,
+   "left": 2,
+   "leftWithLand": 0,
+   "bots": 8,
+   "bank": 73047,
+   "bankBig": 0,
+   "quarterN": 0,
+   "quarterBal": 0,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 10,
+   "passiveCells": 58132
+  },
+  "G08": {
+   "died": 6,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 7,
+   "bank": 765110,
+   "bankBig": 2,
+   "quarterN": 2,
+   "quarterBal": 641129,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 6,
+   "passiveCells": 59809
+  },
+  "B043": {
+   "died": 11,
+   "left": 7,
+   "leftWithLand": 2,
+   "bots": 20,
+   "bank": 669500,
+   "bankBig": 2,
+   "quarterN": 2,
+   "quarterBal": 438978,
+   "fullN": 1,
+   "fullBal": 1587087,
+   "passiveN": 10,
+   "passiveCells": 46257
+  },
+  "B033": {
+   "died": 5,
+   "left": 1,
+   "leftWithLand": 1,
+   "bots": 10,
+   "bank": 215044,
+   "bankBig": 0,
+   "quarterN": 0,
+   "quarterBal": 0,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 9,
+   "passiveCells": 54207
+  },
+  "B034": {
+   "died": 9,
+   "left": 6,
+   "leftWithLand": 0,
+   "bots": 15,
+   "bank": 844377,
+   "bankBig": 2,
+   "quarterN": 2,
+   "quarterBal": 596959,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 13,
+   "passiveCells": 99323
+  },
+  "B031": {
+   "died": 0,
+   "left": 12,
+   "leftWithLand": 11,
+   "bots": 13,
+   "bank": 0,
+   "bankBig": 0,
+   "quarterN": 0,
+   "quarterBal": 0,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 0,
+   "passiveCells": 0
+  },
+  "B049": {
+   "died": 8,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 13,
+   "bank": 5289404,
+   "bankBig": 6,
+   "quarterN": 6,
+   "quarterBal": 5196426,
+   "fullN": 4,
+   "fullBal": 10842677,
+   "passiveN": 14,
+   "passiveCells": 292764
+  },
+  "B006": {
+   "died": 9,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 20,
+   "bank": 967759,
+   "bankBig": 4,
+   "quarterN": 4,
+   "quarterBal": 682399,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 15,
+   "passiveCells": 71531
+  },
+  "B030": {
+   "died": 2,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 3,
+   "bank": 2226769,
+   "bankBig": 2,
+   "quarterN": 2,
+   "quarterBal": 2226769,
+   "fullN": 2,
+   "fullBal": 8583472,
+   "passiveN": 7,
+   "passiveCells": 748965
+  },
+  "B019": {
+   "died": 8,
+   "left": 1,
+   "leftWithLand": 1,
+   "bots": 20,
+   "bank": 1931824,
+   "bankBig": 5,
+   "quarterN": 5,
+   "quarterBal": 1877747,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 5,
+   "passiveCells": 119578
+  },
+  "B009": {
+   "died": 1,
+   "left": 8,
+   "leftWithLand": 8,
+   "bots": 9,
+   "bank": 257943,
+   "bankBig": 1,
+   "quarterN": 1,
+   "quarterBal": 257943,
+   "fullN": 0,
+   "fullBal": 0,
+   "passiveN": 2,
+   "passiveCells": 19773
+  },
+  "B015": {
+   "died": 9,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 11,
+   "bank": 1952101,
+   "bankBig": 6,
+   "quarterN": 5,
+   "quarterBal": 1471425,
+   "fullN": 1,
+   "fullBal": 3285524,
+   "passiveN": 14,
+   "passiveCells": 124547
+  },
+  "B029": {
+   "died": 14,
+   "left": 0,
+   "leftWithLand": 0,
+   "bots": 18,
+   "bank": 3512542,
+   "bankBig": 6,
+   "quarterN": 2,
+   "quarterBal": 384699,
+   "fullN": 2,
+   "fullBal": 2168301,
+   "passiveN": 21,
+   "passiveCells": 96113
+  },
+  "B035": {
+   "died": 8,
+   "left": 1,
+   "leftWithLand": 1,
+   "bots": 10,
+   "bank": 4737812,
+   "bankBig": 6,
+   "quarterN": 5,
+   "quarterBal": 4418798,
+   "fullN": 6,
+   "fullBal": 29387977,
+   "passiveN": 6,
+   "passiveCells": 164949
+  },
+  "B027": {
+   "died": 17,
+   "left": 1,
+   "leftWithLand": 0,
+   "bots": 19,
+   "bank": 2734406,
+   "bankBig": 9,
+   "quarterN": 9,
+   "quarterBal": 2331847,
+   "fullN": 2,
+   "fullBal": 3786802,
+   "passiveN": 25,
+   "passiveCells": 192062
+  }
+ },
+ "deathsTotal": {
+  "died": 120,
+  "left": 40,
+  "leftWithLand": 24,
+  "bots": 204,
+  "bank": 26411521,
+  "bankBig": 51,
+  "quarterN": 45,
+  "quarterBal": 20525119,
+  "fullN": 18,
+  "fullBal": 59641840,
+  "passiveN": 165,
+  "passiveCells": 2223282
+ },
+ "decisionPatterns": {
+  "NEW-OP-G1": {
+   "matches": [
+    "G02",
+    "G08",
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B049",
+    "B006",
+    "B030",
+    "B019",
+    "B009",
+    "B015",
+    "B029",
+    "B035",
+    "B027"
+   ],
+   "n": 15,
+   "verdicts": {
+    "good": 15
+   }
+  },
+  "NEW-AT-G1": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B043",
+    "B031",
+    "B030",
+    "B019",
+    "B009",
+    "B015",
+    "B035",
+    "B027"
+   ],
+   "n": 13,
+   "verdicts": {
+    "good": 13
+   }
+  },
+  "NEW-EC-05": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B049",
+    "B019",
+    "B015",
+    "B029",
+    "B035",
+    "B027"
+   ],
+   "n": 11,
+   "verdicts": {
+    "error": 11
+   }
+  },
+  "NEW-AT-02": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B043",
+    "B033",
+    "B034",
+    "B006",
+    "B019",
+    "B027"
+   ],
+   "n": 15,
+   "verdicts": {
+    "error": 12,
+    "unclear": 3
+   }
+  },
+  "NEW-DF-01": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B043",
+    "B049",
+    "B006",
+    "B019",
+    "B009",
+    "B015"
+   ],
+   "n": 14,
+   "verdicts": {
+    "error": 14
+   }
+  },
+  "NEW-IO-01": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B019",
+    "B009",
+    "B015",
+    "B035"
+   ],
+   "n": 8,
+   "verdicts": {
+    "error": 6,
+    "unclear": 2
+   }
+  },
+  "NEW-SP-05": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B030",
+    "B015",
+    "B029",
+    "B035"
+   ],
+   "n": 8,
+   "verdicts": {
+    "error": 7,
+    "unclear": 1
+   }
+  },
+  "NEW-EC-04": {
+   "matches": [
+    "G08",
+    "B031",
+    "B006",
+    "B009",
+    "B015",
+    "B035",
+    "B027"
+   ],
+   "n": 7,
+   "verdicts": {
+    "unclear": 3,
+    "error": 4
+   }
+  },
+  "NEW-MT-02": {
+   "matches": [
+    "B043",
+    "B034",
+    "B049",
+    "B019",
+    "B009",
+    "B015",
+    "B035"
+   ],
+   "n": 7,
+   "verdicts": {
+    "unclear": 7
+   }
+  },
+  "NEW-EC-07": {
+   "matches": [
+    "B033",
+    "B034",
+    "B031",
+    "B030",
+    "B009",
+    "B015"
+   ],
+   "n": 7,
+   "verdicts": {
+    "error": 5,
+    "unclear": 2
+   }
+  },
+  "NEW-AT-01": {
+   "matches": [
+    "G02",
+    "B034",
+    "B030",
+    "B009",
+    "B029",
+    "B027"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 4,
+    "unclear": 2
+   }
+  },
+  "NEW-DN-02": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B019",
+    "B009",
+    "B035"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 6
+   }
+  },
+  "NEW-DN-12": {
+   "matches": [
+    "B049",
+    "B006",
+    "B019",
+    "B009",
+    "B015",
+    "B029"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 6
+   }
+  },
+  "NEW-IO-02": {
+   "matches": [
+    "B043",
+    "B031",
+    "B015",
+    "B029",
+    "B035",
+    "B027"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 6
+   }
+  },
+  "NEW-SE-05": {
+   "matches": [
+    "B049",
+    "B006",
+    "B019",
+    "B009",
+    "B015",
+    "B027"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 3,
+    "unclear": 3
+   }
+  },
+  "NEW-SE-04": {
+   "matches": [
+    "B031",
+    "B015",
+    "B029",
+    "B035",
+    "B027"
+   ],
+   "n": 6,
+   "verdicts": {
+    "error": 6
+   }
+  },
+  "NEW-EC-06": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B019"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 5
+   }
+  },
+  "NEW-EC-08": {
+   "matches": [
+    "B031",
+    "B030",
+    "B019",
+    "B009",
+    "B035"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 5
+   }
+  },
+  "NEW-EC-09": {
+   "matches": [
+    "B049",
+    "B030",
+    "B015",
+    "B035",
+    "B027"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 5
+   }
+  },
+  "NEW-EX-04": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B031",
+    "B015"
+   ],
+   "n": 5,
+   "verdicts": {
+    "unclear": 5
+   }
+  },
+  "NEW-EX-05": {
+   "matches": [
+    "B033",
+    "B034",
+    "B030",
+    "B035",
+    "B027"
+   ],
+   "n": 5,
+   "verdicts": {
+    "unclear": 4,
+    "error": 1
+   }
+  },
+  "NEW-SE-03": {
+   "matches": [
+    "B033",
+    "B034",
+    "B009",
+    "B015",
+    "B029"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 5
+   }
+  },
+  "NEW-SP-07": {
+   "matches": [
+    "B006",
+    "B019",
+    "B009",
+    "B015",
+    "B027"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 4,
+    "unclear": 1
+   }
+  },
+  "NEW-AT-04": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B029"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 4,
+    "unclear": 1
+   }
+  },
+  "NEW-DF-04": {
+   "matches": [
+    "B049",
+    "B019",
+    "B015",
+    "B035"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 4,
+    "unclear": 1
+   }
+  },
+  "NEW-EC-02": {
+   "matches": [
+    "G02",
+    "G05",
+    "B049",
+    "B006"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 3,
+    "unclear": 2
+   }
+  },
+  "NEW-EX-02": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B049"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 4,
+    "unclear": 1
+   }
+  },
+  "NEW-DN-01": {
+   "matches": [
+    "G02",
+    "G05",
+    "G08",
+    "B035"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 4
+   }
+  },
+  "NEW-DN-04": {
+   "matches": [
+    "B043",
+    "B033",
+    "B049",
+    "B019"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 4
+   }
+  },
+  "NEW-DN-05": {
+   "matches": [
+    "B043",
+    "B034",
+    "B009",
+    "B035"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 3,
+    "unclear": 1
+   }
+  },
+  "NEW-DN-08": {
+   "matches": [
+    "B033",
+    "B034",
+    "B031",
+    "B006"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 4
+   }
+  },
+  "NEW-EG-G1": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034",
+    "B030"
+   ],
+   "n": 4,
+   "verdicts": {
+    "good": 4
+   }
+  },
+  "NEW-MT-04": {
+   "matches": [
+    "B034",
+    "B009",
+    "B015",
+    "B035"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 3,
+    "unclear": 1
+   }
+  },
+  "NEW-AT-03": {
+   "matches": [
+    "G02",
+    "G05",
+    "B049"
+   ],
+   "n": 5,
+   "verdicts": {
+    "error": 5
+   }
+  },
+  "NEW-EC-03": {
+   "matches": [
+    "G08",
+    "B034",
+    "B030"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 3,
+    "unclear": 1
+   }
+  },
+  "NEW-EX-01": {
+   "matches": [
+    "B033",
+    "B034",
+    "B049"
+   ],
+   "n": 4,
+   "verdicts": {
+    "error": 4
+   }
+  },
+  "NEW-SE-01": {
+   "matches": [
+    "G02",
+    "G05",
+    "B034"
+   ],
+   "n": 4,
+   "verdicts": {
+    "unclear": 2,
+    "error": 2
+   }
+  },
+  "NEW-AT-05": {
+   "matches": [
+    "B043",
+    "B033",
+    "B034"
+   ],
+   "n": 3,
+   "verdicts": {
+    "error": 3
+   }
+  },
+  "NEW-AT-G3": {
+   "matches": [
+    "B009",
+    "B015",
+    "B027"
+   ],
+   "n": 3,
+   "verdicts": {
+    "good": 3
+   }
+  },
+  "NEW-DN-07": {
+   "matches": [
+    "B033",
+    "B009",
+    "B015"
+   ],
+   "n": 3,
+   "verdicts": {
+    "error": 2,
+    "unclear": 1
+   }
+  },
+  "NEW-DN-14": {
+   "matches": [
+    "B006",
+    "B019",
+    "B009"
+   ],
+   "n": 3,
+   "verdicts": {
+    "error": 3
+   }
+  },
+  "NEW-DN-G2": {
+   "matches": [
+    "B049",
+    "B009",
+    "B035"
+   ],
+   "n": 3,
+   "verdicts": {
+    "good": 3
+   }
+  },
+  "NEW-IO-03": {
+   "matches": [
+    "B043",
+    "B031",
+    "B049"
+   ],
+   "n": 3,
+   "verdicts": {
+    "error": 2,
+    "unclear": 1
+   }
+  },
+  "NEW-IO-05": {
+   "matches": [
+    "B043",
+    "B031",
+    "B019"
+   ],
+   "n": 3,
+   "verdicts": {
+    "unclear": 3
+   }
+  },
+  "NEW-MT-01": {
+   "matches": [
+    "B031",
+    "B006",
+    "B019"
+   ],
+   "n": 3,
+   "verdicts": {
+    "good": 1,
+    "unclear": 2
+   }
+  },
+  "NEW-SE-G1": {
+   "matches": [
+    "B049",
+    "B019",
+    "B029"
+   ],
+   "n": 3,
+   "verdicts": {
+    "good": 3
+   }
+  },
+  "NEW-AT-G2": {
+   "matches": [
+    "B049",
+    "B029"
+   ],
+   "n": 2,
+   "verdicts": {
+    "good": 2
+   }
+  },
+  "NEW-DF-03": {
+   "matches": [
+    "B031",
+    "B030"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DF-07": {
+   "matches": [
+    "B035",
+    "B027"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DN-10": {
+   "matches": [
+    "B049",
+    "B019"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DN-11": {
+   "matches": [
+    "B049",
+    "B006"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DN-16": {
+   "matches": [
+    "B029",
+    "B035"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DN-G1": {
+   "matches": [
+    "B033",
+    "B049"
+   ],
+   "n": 2,
+   "verdicts": {
+    "good": 2
+   }
+  },
+  "NEW-EC-01": {
+   "matches": [
+    "G02",
+    "G05"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-EC-G1": {
+   "matches": [
+    "G02",
+    "B034"
+   ],
+   "n": 2,
+   "verdicts": {
+    "good": 2
+   }
+  },
+  "NEW-EG-01": {
+   "matches": [
+    "B043",
+    "B034"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-EG-G2": {
+   "matches": [
+    "B019",
+    "B035"
+   ],
+   "n": 2,
+   "verdicts": {
+    "good": 1,
+    "unclear": 1
+   }
+  },
+  "NEW-IO-04": {
+   "matches": [
+    "B034",
+    "B031"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 1,
+    "unclear": 1
+   }
+  },
+  "NEW-IO-07": {
+   "matches": [
+    "B031",
+    "B009"
+   ],
+   "n": 2,
+   "verdicts": {
+    "unclear": 2
+   }
+  },
+  "NEW-IO-10": {
+   "matches": [
+    "B006",
+    "B009"
+   ],
+   "n": 2,
+   "verdicts": {
+    "unclear": 2
+   }
+  },
+  "NEW-IO-12": {
+   "matches": [
+    "B006",
+    "B019"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 1,
+    "unclear": 1
+   }
+  },
+  "NEW-IO-14": {
+   "matches": [
+    "B029",
+    "B027"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-MT-06": {
+   "matches": [
+    "B019",
+    "B015"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-MT-09": {
+   "matches": [
+    "B029",
+    "B035"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 1,
+    "unclear": 1
+   }
+  },
+  "NEW-MT-10": {
+   "matches": [
+    "B029",
+    "B035"
+   ],
+   "n": 2,
+   "verdicts": {
+    "unclear": 2
+   }
+  },
+  "NEW-OP-01": {
+   "matches": [
+    "B033",
+    "B027"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-SE-02": {
+   "matches": [
+    "B043",
+    "B033"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-SP-01": {
+   "matches": [
+    "G02",
+    "G05"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-SP-08": {
+   "matches": [
+    "B029",
+    "B027"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DF-05": {
+   "matches": [
+    "B030"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DF-06": {
+   "matches": [
+    "B029"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-EX-03": {
+   "matches": [
+    "G08"
+   ],
+   "n": 2,
+   "verdicts": {
+    "error": 2
+   }
+  },
+  "NEW-DF-02": {
+   "matches": [
+    "B033"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DF-08": {
+   "matches": [
+    "B027"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DF-G1": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "unclear": 1
+   }
+  },
+  "NEW-DN-03": {
+   "matches": [
+    "G05"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DN-06": {
+   "matches": [
+    "B019"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DN-09": {
+   "matches": [
+    "B034"
+   ],
+   "n": 1,
+   "verdicts": {
+    "unclear": 1
+   }
+  },
+  "NEW-DN-13": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DN-15": {
+   "matches": [
+    "B019"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DN-17": {
+   "matches": [
+    "B035"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-DN-G3": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "good": 1
+   }
+  },
+  "NEW-EC-10": {
+   "matches": [
+    "B015"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-EG-03": {
+   "matches": [
+    "B030"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-EX-06": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-IO-11": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "unclear": 1
+   }
+  },
+  "NEW-IO-13": {
+   "matches": [
+    "B019"
+   ],
+   "n": 1,
+   "verdicts": {
+    "unclear": 1
+   }
+  },
+  "NEW-IO-15": {
+   "matches": [
+    "B029"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-MT-03": {
+   "matches": [
+    "B034"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-MT-05": {
+   "matches": [
+    "B030"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-MT-07": {
+   "matches": [
+    "B009"
+   ],
+   "n": 1,
+   "verdicts": {
+    "unclear": 1
+   }
+  },
+  "NEW-MT-11": {
+   "matches": [
+    "B027"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-OP-02": {
+   "matches": [
+    "G05"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-OP-G2": {
+   "matches": [
+    "G05"
+   ],
+   "n": 1,
+   "verdicts": {
+    "good": 1
+   }
+  },
+  "NEW-SE-06": {
+   "matches": [
+    "B030"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-SE-G2": {
+   "matches": [
+    "B006"
+   ],
+   "n": 1,
+   "verdicts": {
+    "good": 1
+   }
+  },
+  "NEW-SP-02": {
+   "matches": [
+    "G05"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-SP-03": {
+   "matches": [
+    "G08"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-SP-04": {
+   "matches": [
+    "B019"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  },
+  "NEW-SP-06": {
+   "matches": [
+    "B049"
+   ],
+   "n": 1,
+   "verdicts": {
+    "error": 1
+   }
+  }
+ },
+ "decisionPrefixes": {
+  "OP": {
+   "matches": 16,
+   "n": 19,
+   "verdicts": {
+    "good": 16,
+    "error": 3
+   }
+  },
+  "SP": {
+   "matches": 16,
+   "n": 21,
+   "verdicts": {
+    "error": 19,
+    "unclear": 2
+   }
+  },
+  "AT": {
+   "matches": 16,
+   "n": 52,
+   "verdicts": {
+    "good": 18,
+    "error": 28,
+    "unclear": 6
+   }
+  },
+  "EC": {
+   "matches": 16,
+   "n": 54,
+   "verdicts": {
+    "error": 44,
+    "unclear": 8,
+    "good": 2
+   }
+  },
+  "DF": {
+   "matches": 15,
+   "n": 30,
+   "verdicts": {
+    "error": 28,
+    "unclear": 2
+   }
+  },
+  "DN": {
+   "matches": 14,
+   "n": 52,
+   "verdicts": {
+    "error": 43,
+    "unclear": 3,
+    "good": 6
+   }
+  },
+  "SE": {
+   "matches": 15,
+   "n": 28,
+   "verdicts": {
+    "unclear": 5,
+    "error": 19,
+    "good": 4
+   }
+  },
+  "EX": {
+   "matches": 13,
+   "n": 22,
+   "verdicts": {
+    "error": 12,
+    "unclear": 10
+   }
+  },
+  "IO": {
+   "matches": 12,
+   "n": 33,
+   "verdicts": {
+    "error": 19,
+    "unclear": 14
+   }
+  },
+  "MT": {
+   "matches": 12,
+   "n": 24,
+   "verdicts": {
+    "unclear": 14,
+    "error": 9,
+    "good": 1
+   }
+  },
+  "EG": {
+   "matches": 6,
+   "n": 9,
+   "verdicts": {
+    "error": 3,
+    "good": 5,
+    "unclear": 1
+   }
+  }
+ },
+ "turning": {
+  "G02": {
+   "n": 3,
+   "first": {
+    "t0": 1620,
+    "t1": 2340,
+    "shareBefore": 12.65,
+    "shareAfter": 9.56,
+    "shareUnit": "编队领土占全图 %"
+   },
+   "worst": {
+    "t0": 4140,
+    "t1": 4467,
+    "shareBefore": 4.85,
+    "shareAfter": 0.65,
+    "shareUnit": "编队领土占全图 %"
+   }
+  },
+  "G05": {
+   "n": 3,
+   "first": {
+    "t0": 1620,
+    "t1": 2070,
+    "shareBefore": 8.6,
+    "shareAfter": 7.33,
+    "shareUnit": "编队领土占全图 %"
+   },
+   "worst": {
+    "t0": 2160,
+    "t1": 2610,
+    "shareBefore": 7.42,
+    "shareAfter": 4.28,
+    "shareUnit": "编队领土占全图 %"
+   }
+  },
+  "G08": {
+   "n": 3,
+   "first": {
+    "t0": 2070,
+    "t1": 3600,
+    "shareBefore": 19.86,
+    "shareAfter": 16.7,
+    "shareUnit": "编队领土占全图 %"
+   },
+   "worst": {
+    "t0": 4230,
+    "t1": 4950,
+    "shareBefore": 16.86,
+    "shareAfter": 7.97,
+    "shareUnit": "编队领土占全图 %"
+   }
+  },
+  "B043": {
+   "n": 3,
+   "first": {
+    "t0": 540,
+    "t1": 1350,
+    "shareBefore": 0.97,
+    "shareAfter": 0.59,
+    "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土"
+   },
+   "worst": {
+    "t0": 1260,
+    "t1": 2520,
+    "shareBefore": 11.43,
+    "shareAfter": 8.25,
+    "shareUnit": "我方在线号领土占全图 %（在线号 16→7）"
+   }
+  },
+  "B033": {
+   "n": 3,
+   "first": {
+    "t0": 630,
+    "t1": 1800,
+    "shareBefore": 1.07,
+    "shareAfter": 0.63,
+    "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土"
+   },
+   "worst": {
+    "t0": 2790,
+    "t1": 3240,
+    "shareBefore": 6.3,
+    "shareAfter": 3.75,
+    "shareUnit": "T2 分支在线号领土占全图 %（t=2880 5 个号 → t=3240 4 个号）"
+   }
+  },
+  "B034": {
+   "n": 3,
+   "first": {
+    "t0": 630,
+    "t1": 1530,
+    "shareBefore": 1.04,
+    "shareAfter": 0.67,
+    "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土"
+   },
+   "worst": {
+    "t0": 1603,
+    "t1": 2520,
+    "shareBefore": 20.13,
+    "shareAfter": 8.73,
+    "shareUnit": "我方在线号领土占全图 %（t=1530 15 个号 → t=2520 5 个号）"
+   }
+  },
+  "B031": {
+   "n": 3,
+   "first": {
+    "t0": 720,
+    "t1": 1260,
+    "shareBefore": 1.07,
+    "shareAfter": 0.79,
+    "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土"
+   },
+   "worst": {
+    "t0": 1365,
+    "t1": 2121,
+    "shareBefore": 13.19,
+    "shareAfter": 0.0,
+    "shareUnit": "我方在线号领土占全图 %（t=1864 真值 → 结果表：11 行全是 left，对局没打完）"
+   }
+  },
+  "B049": {
+   "n": 4,
+   "first": {
+    "t0": 900,
+    "t1": 1170,
+    "shareBefore": 10.43,
+    "shareAfter": 8.68,
+    "shareUnit": "有日志的编队号合计占房间 0 陆地 %（t=900 是 13 个号，t=1170 是 9 个号）"
+   },
+   "worst": {
+    "t0": 9540,
+    "t1": 10890,
+    "shareBefore": 31.12,
+    "shareAfter": 10.57,
+    "shareUnit": "有日志的编队号合计占房间 0 陆地 %"
+   }
+  },
+  "B006": {
+   "n": 4,
+   "first": {
+    "t0": 630,
+    "t1": 1890,
+    "shareBefore": 12.39,
+    "shareAfter": 20.34,
+    "shareUnit": "编队 20 个号合计占陆地 %（digest [C]，各号本地拍）"
+   },
+   "worst": {
+    "t0": 4588,
+    "t1": 5977,
+    "shareBefore": 38.9,
+    "shareAfter": 6.1,
+    "shareUnit": "T1（主队）全队占陆地 %（结果行 team.totals：t=4588 → t=5977）"
+   }
+  },
+  "B030": {
+   "n": 4,
+   "first": {
+    "t0": 2730,
+    "t1": 4010,
+    "shareBefore": 74.99,
+    "shareAfter": 65.91,
+    "shareUnit": "三个在线编队号合计占陆地 %（真值；t=2730 是全场峰值 301584 格，t=4010 是 265065 格）"
+   },
+   "worst": {
+    "t0": 4000,
+    "t1": 5647,
+    "shareBefore": 65.91,
+    "shareAfter": 54.75,
+    "shareUnit": "在线编队号合计占陆地 %（真值；t=4010 三个号 265065 格，t=5670 只剩 Landsknecht 220162 格）"
+   }
+  },
+  "B019": {
+   "n": 6,
+   "first": {
+    "t0": 0,
+    "t1": 164,
+    "shareBefore": 20,
+    "shareAfter": 19,
+    "shareUnit": "活着的编队账号数（T1 分支 5 → 4）"
+   },
+   "worst": {
+    "t0": 1440,
+    "t1": 2351,
+    "shareBefore": 3744475,
+    "shareAfter": 2797338,
+    "shareUnit": "9 个在线号的余额合计（t=2070 → t=2351；同期领土合计 71631 → 96718 格）"
+   }
+  },
+  "B009": {
+   "n": 3,
+   "first": {
+    "t0": 2250,
+    "t1": 3240,
+    "shareBefore": 46.35,
+    "shareAfter": 43.05,
+    "shareUnit": "编队 9 个号占陆地 %（HL-TICK 合计）"
+   },
+   "worst": {
+    "t0": 2250,
+    "t1": 3240,
+    "shareBefore": 46.35,
+    "shareAfter": 43.05,
+    "shareUnit": "编队 9 个号占陆地 %（HL-TICK 合计）"
+   }
+  },
+  "B015": {
+   "n": 3,
+   "first": {
+    "t0": 900,
+    "t1": 1500,
+    "shareBefore": 0.99,
+    "shareAfter": 0.61,
+    "shareUnit": "编队在线号人均领土 ÷ 全房在线真人人均领土"
+   },
+   "worst": {
+    "t0": 6300,
+    "t1": 7920,
+    "shareBefore": 14.83,
+    "shareAfter": 8.4,
+    "shareUnit": "编队占全图陆地 %"
+   }
+  },
+  "B029": {
+   "n": 4,
+   "first": {
+    "t0": 900,
+    "t1": 1500,
+    "shareBefore": 0.82,
+    "shareAfter": 0.55,
+    "shareUnit": "人均比（编队在线号人均领土 ÷ 全房在线真人人均领土）"
+   },
+   "worst": {
+    "t0": 9450,
+    "t1": 10206,
+    "shareBefore": 14.12,
+    "shareAfter": 8.6,
+    "shareUnit": "编队占全图陆地 %（t=9000 → t=10800）"
+   }
+  },
+  "B035": {
+   "n": 4,
+   "first": {
+    "t0": 900,
+    "t1": 1650,
+    "shareBefore": 1.09,
+    "shareAfter": 0.64,
+    "shareUnit": "人均比（t=900 → t=1500）"
+   },
+   "worst": {
+    "t0": 8100,
+    "t1": 9654,
+    "shareBefore": 53.22,
+    "shareAfter": 11.24,
+    "shareUnit": "编队占全图陆地 %（t=8100 → t=9720；日志口径）"
+   }
+  },
+  "B027": {
+   "n": 4,
+   "first": {
+    "t0": 720,
+    "t1": 1440,
+    "shareBefore": 1.06,
+    "shareAfter": 0.62,
+    "shareUnit": "人均比（t=630 → t=1420，真值）"
+   },
+   "worst": {
+    "t0": 6570,
+    "t1": 9662,
+    "shareBefore": 19.45,
+    "shareAfter": 0.0,
+    "shareUnit": "编队占全图 %（日志口径；在场 11 个号 → 0）"
+   }
+  }
+ }
+}

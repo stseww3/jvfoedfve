@@ -109,7 +109,12 @@ def main():
         if te is not None:
             cap = land['capture'][str(te)]['groups']
             me, ot = cap.get('我方'), cap.get('全部其他真人')
-            line = '结果（拍 %d）：我方 实际 ÷ 天然地盘 = %.2f（单号中位 %.2f），其他真人 %.2f（中位 %.2f）' % (te, me['ratioE'], me['medE'], ot['ratioE'], ot['medE'])
+            if ot is None:
+                # 到场的真人全是我方（A073）：没有「其他真人」可比
+                ot = dict(ratioE=None, medE=None)
+                line = '结果（拍 %d）：我方 实际 ÷ 天然地盘 = %.2f（单号中位 %.2f），到场的真人全是我方，没有其他真人可比' % (te, me['ratioE'], me['medE'])
+            else:
+                line = '结果（拍 %d）：我方 实际 ÷ 天然地盘 = %.2f（单号中位 %.2f），其他真人 %.2f（中位 %.2f）' % (te, me['ratioE'], me['medE'], ot['ratioE'], ot['medE'])
             fate = land['aiFate'].get(str(te))
             if fate:
                 px = land['aiFate']['t0']['px']

@@ -1,0 +1,226 @@
+# A070 zexos1 影子决策明细 t=2430~2700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标已有在途进攻（curAtk 过门槛）: 7 拍（t=2430~2495）；可用兵 8608~17932，一条指令下限(20%余额) 92761~99939，比值 9%~19%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 5 拍（t=2435~2455）；可用兵 17451~18132，一条指令下限(20%余额) 92761~95095，比值 18%~20%
+#   首选目标无可用兵（avail<=0）: 24 拍（t=2470~2670）；可用兵 -74678~-169，一条指令下限(20%余额) 95524~114057，比值 -69%~-0%
+#   首选目标价高（c>=worth）: 19 拍（t=2500~2700）
+t=2430 zexos1 B=463804 L=17980 d=25.8 nb=2 neut=0 cmds=181 noFull=1 shQ=115951 | m=0.974 worth=25.1 cheap=8.0 over=0 dMedOther=8.1 safe(-1)=440437
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91719 bal=742353 dq=8.1 cnt=77 | c=20.9 rankC=20.9 need=1438086 tD=1.00 人 pulse | safe=440437 keep=440437 avail=17932 chunkB=92761 pulseB=55656 在途(curAtk=21794)→continue hNb=2
+    → Papik#0[T1] terr=39756 bal=810947 dq=20.4 cnt=287 | c=50.1 rankC=50.1 need=1505035 tD=2.52 人 pulse | safe=440437 keep=Inf avail=-Inf chunkB=92761 pulseB=55656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2435 zexos1 B=463804 L=18217 d=25.5 nb=2 neut=0 cmds=181 noFull=1 shQ=115951 | m=0.968 worth=24.7 cheap=8.0 over=0 dMedOther=8.1 safe(-1)=440237
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91557 bal=739287 dq=8.1 cnt=83 | c=21.0 rankC=21.0 need=1438462 tD=1.00 人 pulse | safe=440237 keep=440237 avail=18132 chunkB=92761 pulseB=55656 低于最小指令(x=18132<21740)→continue hNb=2
+    → Papik#0[T1] terr=39805 bal=810947 dq=20.4 cnt=287 | c=50.0 rankC=50.0 need=1505117 tD=2.52 人 pulse | safe=440237 keep=Inf avail=-Inf chunkB=92761 pulseB=55656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2440 zexos1 B=469601 L=18385 d=25.5 nb=2 neut=0 cmds=181 noFull=1 shQ=117400 | m=0.963 worth=24.6 cheap=8.0 over=0 dMedOther=10.8 safe(-1)=446382
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91479 bal=748765 dq=8.2 cnt=87 | c=21.3 rankC=21.3 need=1459646 tD=0.76 人 pulse | safe=446382 keep=446382 avail=17716 chunkB=93920 pulseB=56352 低于最小指令(x=17716<22012)→continue hNb=2
+    → Papik#0[T1] terr=39850 bal=822138 dq=20.6 cnt=287 | c=50.6 rankC=50.6 need=1525138 tD=1.91 人 pulse | safe=446382 keep=Inf avail=-Inf chunkB=93920 pulseB=56352 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2445 zexos1 B=469601 L=18652 d=25.2 nb=2 neut=0 cmds=181 noFull=1 shQ=117400 | m=0.958 worth=24.1 cheap=8.0 over=0 dMedOther=10.7 safe(-1)=446157
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91270 bal=745273 dq=8.2 cnt=93 | c=21.4 rankC=21.4 need=1459942 tD=0.76 人 pulse | safe=446157 keep=446157 avail=17941 chunkB=93920 pulseB=56352 低于最小指令(x=17941<22012)→continue hNb=2
+    → Papik#0[T1] terr=39909 bal=822138 dq=20.6 cnt=287 | c=50.6 rankC=50.6 need=1525219 tD=1.92 人 pulse | safe=446157 keep=Inf avail=-Inf chunkB=93920 pulseB=56352 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2450 zexos1 B=475475 L=18745 d=25.4 nb=2 neut=0 cmds=181 noFull=1 shQ=118868 | m=0.953 worth=24.2 cheap=8.0 over=0 dMedOther=11.2 safe(-1)=452453
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91226 bal=755644 dq=8.3 cnt=95 | c=21.7 rankC=21.7 need=1481208 tD=0.74 人 pulse | safe=452453 keep=452453 avail=17451 chunkB=95095 pulseB=57057 低于最小指令(x=17451<22284)→continue hNb=2
+    → Papik#0[T1] terr=39934 bal=833483 dq=20.9 cnt=287 | c=51.2 rankC=51.2 need=1545485 tD=1.87 人 pulse | safe=452453 keep=Inf avail=-Inf chunkB=95095 pulseB=57057 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2455 zexos1 B=475475 L=18745 d=25.4 nb=2 neut=0 cmds=181 noFull=1 shQ=118868 | m=0.947 worth=24.0 cheap=8.0 over=0 dMedOther=11.1 safe(-1)=452453
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91270 bal=755644 dq=8.3 cnt=95 | c=21.7 rankC=21.7 need=1481438 tD=0.75 人 pulse | safe=452453 keep=452453 avail=17451 chunkB=95095 pulseB=57057 低于最小指令(x=17451<22284)→continue hNb=2
+    → Papik#0[T1] terr=39957 bal=833483 dq=20.9 cnt=287 | c=51.2 rankC=51.2 need=1545512 tD=1.88 人 pulse | safe=452453 keep=Inf avail=-Inf chunkB=95095 pulseB=57057 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2460 zexos1 B=481418 L=18745 d=25.7 nb=2 neut=0 cmds=181 noFull=1 shQ=120354 | m=0.942 worth=24.2 cheap=8.0 over=0 dMedOther=11.2 safe(-1)=458914
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91320 bal=767583 dq=8.4 cnt=95 | c=21.2 rankC=21.2 need=1448140 tD=0.75 人 pulse | safe=458914 keep=458914 avail=16863 chunkB=96284 pulseB=57770 在途(curAtk=54809)→continue hNb=2
+    → Papik#0[T1] terr=39965 bal=844985 dq=21.1 cnt=287 | c=51.8 rankC=51.8 need=1566025 tD=1.89 人 pulse | safe=458914 keep=Inf avail=-Inf chunkB=96284 pulseB=57770 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2465 zexos1 B=481418 L=18751 d=25.7 nb=2 neut=0 cmds=181 noFull=1 shQ=120354 | m=0.937 worth=24.1 cheap=8.0 over=0 dMedOther=11.1 safe(-1)=458909
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91346 bal=767504 dq=8.4 cnt=102 | c=21.2 rankC=21.2 need=1448312 tD=0.76 人 pulse | safe=458909 keep=458909 avail=16868 chunkB=96284 pulseB=57770 在途(curAtk=54639)→continue hNb=2
+    → Papik#0[T1] terr=39970 bal=844985 dq=21.1 cnt=287 | c=51.8 rankC=51.8 need=1566040 tD=1.90 人 pulse | safe=458909 keep=Inf avail=-Inf chunkB=96284 pulseB=57770 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2470 zexos1 B=487435 L=18767 d=26.0 nb=2 neut=0 cmds=181 noFull=1 shQ=121858 | m=0.931 worth=24.2 cheap=8.0 over=0 dMedOther=11.2 safe(-1)=481928
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91331 bal=794385 dq=8.7 cnt=107 | c=21.9 rankC=21.9 need=1496581 tD=0.78 人 pulse | safe=481928 keep=481928 avail=-205 chunkB=97487 pulseB=58492 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=39970 bal=885983 dq=22.2 cnt=287 | c=54.2 rankC=54.2 need=1639114 tD=1.98 人 pulse | safe=481928 keep=Inf avail=-Inf chunkB=97487 pulseB=58492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2475 zexos1 B=487435 L=18810 d=25.9 nb=2 neut=0 cmds=181 noFull=1 shQ=121858 | m=0.926 worth=24.0 cheap=8.0 over=0 dMedOther=11.1 safe(-1)=481892
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91288 bal=793789 dq=8.7 cnt=107 | c=21.9 rankC=21.9 need=1496595 tD=0.78 人 pulse | safe=481892 keep=481892 avail=-169 chunkB=97487 pulseB=58492 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=39970 bal=885983 dq=22.2 cnt=287 | c=54.2 rankC=54.2 need=1639114 tD=1.99 人 pulse | safe=481892 keep=Inf avail=-Inf chunkB=97487 pulseB=58492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2480 zexos1 B=493527 L=18844 d=26.2 nb=2 neut=0 cmds=181 noFull=1 shQ=123381 | m=0.921 worth=24.1 cheap=8.0 over=0 dMedOther=11.2 safe(-1)=447831
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91254 bal=805851 dq=8.8 cnt=105 | c=22.2 rankC=22.2 need=1518917 tD=0.79 人 pulse | safe=447831 keep=472034 avail=15710 chunkB=98705 pulseB=59223 在途(curAtk=51883)→continue hNb=2
+    → Papik#0[T1] terr=39970 bal=825406 dq=20.7 cnt=287 | c=38.0 rankC=26.6 need=1531143 tD=1.85 人 pulse | safe=447831 keep=Inf avail=-Inf chunkB=98705 pulseB=59223 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2485 zexos1 B=493527 L=18903 d=26.1 nb=2 neut=0 cmds=181 noFull=1 shQ=123381 | m=0.916 worth=23.9 cheap=8.0 over=0 dMedOther=11.1 safe(-1)=447782
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91195 bal=805019 dq=8.8 cnt=109 | c=22.3 rankC=22.3 need=1518931 tD=0.79 人 pulse | safe=447782 keep=474169 avail=13575 chunkB=98705 pulseB=59223 在途(curAtk=50101)→continue hNb=2
+    → Papik#0[T1] terr=39970 bal=825406 dq=20.7 cnt=287 | c=38.0 rankC=26.6 need=1531143 tD=1.86 人 pulse | safe=447782 keep=Inf avail=-Inf chunkB=98705 pulseB=59223 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2490 zexos1 B=499696 L=18952 d=26.4 nb=2 neut=0 cmds=181 noFull=1 shQ=124924 | m=0.911 worth=24.0 cheap=8.0 over=0 dMedOther=10.5 safe(-1)=454139
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91146 bal=816955 dq=9.0 cnt=112 | c=22.6 rankC=22.6 need=1541428 tD=0.86 人 pulse | safe=454139 keep=482632 avail=11209 chunkB=99939 pulseB=59964 在途(curAtk=48621)→continue hNb=2
+    → Papik#0[T1] terr=39985 bal=836796 dq=20.9 cnt=287 | c=38.5 rankC=27.0 need=1551459 tD=2.00 人 pulse | safe=454139 keep=Inf avail=-Inf chunkB=99939 pulseB=59964 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2495 zexos1 B=499696 L=19037 d=26.2 nb=2 neut=0 cmds=181 noFull=1 shQ=124924 | m=0.905 worth=23.8 cheap=8.0 over=0 dMedOther=10.4 safe(-1)=454068
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91061 bal=815737 dq=9.0 cnt=114 | c=22.6 rankC=22.6 need=1541442 tD=0.86 人 pulse | safe=454068 keep=485233 avail=8608 chunkB=99939 pulseB=59964 在途(curAtk=46015)→continue hNb=2
+    → Papik#0[T1] terr=39998 bal=836796 dq=20.9 cnt=287 | c=38.5 rankC=26.9 need=1551486 tD=2.01 人 pulse | safe=454068 keep=Inf avail=-Inf chunkB=99939 pulseB=59964 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2500 zexos1 B=525092 L=19100 d=27.5 nb=2 neut=0 cmds=181 noFull=1 shQ=126591 | m=0.900 worth=24.7 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=499986
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90998 bal=918625 dq=10.1 cnt=116 | c=25.3 rankC=25.3 need=1726087 tD=0.94 人 pulse | safe=499986 keep=Inf avail=-Inf chunkB=105018 pulseB=63011 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40024 bal=888357 dq=22.2 cnt=287 | c=40.8 rankC=28.5 need=1643410 tD=2.06 人 pulse | safe=499986 keep=Inf avail=-Inf chunkB=105018 pulseB=63011 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2505 zexos1 B=525092 L=19208 d=27.3 nb=2 neut=0 cmds=181 noFull=1 shQ=131273 | m=0.900 worth=24.6 cheap=7.9 over=0 dMedOther=10.7 safe(-1)=498916
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90890 bal=916882 dq=10.1 cnt=120 | c=25.4 rankC=25.4 need=1726103 tD=0.94 人 pulse | safe=498916 keep=Inf avail=-Inf chunkB=105018 pulseB=63011 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40047 bal=888357 dq=22.2 cnt=287 | c=40.7 rankC=28.5 need=1643469 tD=2.07 人 pulse | safe=498916 keep=Inf avail=-Inf chunkB=105018 pulseB=63011 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2510 zexos1 B=531708 L=19289 d=27.6 nb=2 neut=0 cmds=181 noFull=1 shQ=132927 | m=0.900 worth=24.8 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=506189
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90809 bal=929950 dq=10.2 cnt=123 | c=25.8 rankC=25.8 need=1751695 tD=0.95 人 pulse | safe=506189 keep=Inf avail=-Inf chunkB=106342 pulseB=63805 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40092 bal=900616 dq=22.5 cnt=287 | c=41.2 rankC=28.9 need=1665362 tD=2.08 人 pulse | safe=506189 keep=Inf avail=-Inf chunkB=106342 pulseB=63805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2515 zexos1 B=531708 L=19423 d=27.4 nb=2 neut=0 cmds=181 noFull=1 shQ=132927 | m=0.900 worth=24.6 cheap=7.9 over=0 dMedOther=10.7 safe(-1)=504844
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90675 bal=927756 dq=10.2 cnt=127 | c=25.8 rankC=25.8 need=1751711 tD=0.96 人 pulse | safe=504844 keep=Inf avail=-Inf chunkB=106342 pulseB=63805 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40125 bal=900616 dq=22.4 cnt=287 | c=54.9 rankC=54.9 need=1665420 tD=2.10 人 pulse | safe=504844 keep=Inf avail=-Inf chunkB=106342 pulseB=63805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2520 zexos1 B=538407 L=19522 d=27.6 nb=2 neut=0 cmds=181 noFull=1 shQ=134601 | m=0.900 worth=24.8 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=512019
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90576 bal=940676 dq=10.4 cnt=130 | c=26.2 rankC=26.2 need=1777570 tD=0.96 人 pulse | safe=512019 keep=Inf avail=-Inf chunkB=107681 pulseB=64609 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40181 bal=913044 dq=22.7 cnt=287 | c=55.6 rankC=55.6 need=1687655 tD=2.11 人 pulse | safe=512019 keep=Inf avail=-Inf chunkB=107681 pulseB=64609 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2525 zexos1 B=538407 L=19686 d=27.3 nb=2 neut=0 cmds=181 noFull=1 shQ=134601 | m=0.900 worth=24.6 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=510351
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90412 bal=937954 dq=10.4 cnt=134 | c=26.3 rankC=26.3 need=1777586 tD=0.96 人 pulse | safe=510351 keep=Inf avail=-Inf chunkB=107681 pulseB=64609 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40222 bal=913044 dq=22.7 cnt=287 | c=55.5 rankC=55.5 need=1687725 tD=2.11 人 pulse | safe=510351 keep=Inf avail=-Inf chunkB=107681 pulseB=64609 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2530 zexos1 B=545190 L=19805 d=27.5 nb=2 neut=0 cmds=181 noFull=1 shQ=136297 | m=0.900 worth=24.8 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=517397
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90293 bal=950674 dq=10.5 cnt=137 | c=26.7 rankC=26.7 need=1803719 tD=0.97 人 pulse | safe=517397 keep=Inf avail=-Inf chunkB=109038 pulseB=65423 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40289 bal=925644 dq=23.0 cnt=287 | c=56.2 rankC=56.2 need=1710275 tD=2.12 人 pulse | safe=517397 keep=Inf avail=-Inf chunkB=109038 pulseB=65423 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2535 zexos1 B=460005 L=19998 d=23.0 nb=2 neut=0 cmds=181 noFull=1 shQ=115001 | m=0.900 worth=20.7 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=515410
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90100 bal=947426 dq=10.5 cnt=142 | c=26.8 rankC=26.8 need=1803736 tD=0.98 人 pulse | safe=515410 keep=Inf avail=-Inf chunkB=92001 pulseB=55201 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40338 bal=925644 dq=22.9 cnt=287 | c=56.1 rankC=56.1 need=1710357 tD=2.13 人 pulse | safe=515410 keep=Inf avail=-Inf chunkB=92001 pulseB=55201 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2540 zexos1 B=465801 L=20138 d=23.1 nb=2 neut=0 cmds=181 noFull=1 shQ=116450 | m=0.900 worth=20.8 cheap=7.9 over=0 dMedOther=10.9 safe(-1)=522305
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89960 bal=959910 dq=10.7 cnt=145 | c=27.2 rankC=27.2 need=1830087 tD=0.98 人 pulse | safe=522305 keep=Inf avail=-Inf chunkB=93160 pulseB=55896 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40417 bal=938417 dq=23.2 cnt=287 | c=56.7 rankC=56.7 need=1733233 tD=2.14 人 pulse | safe=522305 keep=Inf avail=-Inf chunkB=93160 pulseB=55896 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2545 zexos1 B=465810 L=20283 d=23.0 nb=2 neut=0 cmds=181 noFull=1 shQ=116452 | m=0.900 worth=20.7 cheap=7.9 over=0 dMedOther=10.8 safe(-1)=520149
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89815 bal=956289 dq=10.6 cnt=145 | c=27.3 rankC=27.3 need=1830537 tD=0.98 人 pulse | safe=520149 keep=Inf avail=-Inf chunkB=93162 pulseB=55897 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40473 bal=938417 dq=23.2 cnt=287 | c=56.7 rankC=56.7 need=1733317 tD=2.14 人 pulse | safe=520149 keep=Inf avail=-Inf chunkB=93162 pulseB=55897 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2550 zexos1 B=471679 L=20283 d=23.3 nb=2 neut=0 cmds=181 noFull=1 shQ=117919 | m=0.900 worth=20.9 cheap=7.9 over=0 dMedOther=10.9 safe(-1)=528583
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89815 bal=971302 dq=10.8 cnt=145 | c=27.7 rankC=27.7 need=1857228 tD=0.99 人 pulse | safe=528583 keep=Inf avail=-Inf chunkB=94336 pulseB=56601 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40561 bal=951367 dq=23.5 cnt=287 | c=57.3 rankC=57.3 need=1756531 tD=2.14 人 pulse | safe=528583 keep=Inf avail=-Inf chunkB=94336 pulseB=56601 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2555 zexos1 B=471679 L=20283 d=23.3 nb=2 neut=0 cmds=181 noFull=1 shQ=117919 | m=0.900 worth=20.9 cheap=7.9 over=0 dMedOther=10.9 safe(-1)=528583
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89815 bal=971302 dq=10.8 cnt=145 | c=27.7 rankC=27.7 need=1857262 tD=0.99 人 pulse | safe=528583 keep=Inf avail=-Inf chunkB=94336 pulseB=56601 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40622 bal=951367 dq=23.4 cnt=287 | c=57.2 rankC=57.2 need=1756631 tD=2.15 人 pulse | safe=528583 keep=Inf avail=-Inf chunkB=94336 pulseB=56601 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2560 zexos1 B=477622 L=20283 d=23.5 nb=2 neut=0 cmds=181 noFull=1 shQ=119405 | m=0.900 worth=21.2 cheap=7.9 over=0 dMedOther=11.0 safe(-1)=537150
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89815 bal=986551 dq=11.0 cnt=145 | c=28.1 rankC=28.1 need=1884374 tD=0.99 人 pulse | safe=537150 keep=Inf avail=-Inf chunkB=95524 pulseB=57315 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40721 bal=964495 dq=23.7 cnt=287 | c=57.9 rankC=57.9 need=1780170 tD=2.14 人 pulse | safe=537150 keep=Inf avail=-Inf chunkB=95524 pulseB=57315 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2565 zexos1 B=477622 L=20283 d=23.5 nb=2 neut=0 cmds=181 noFull=1 shQ=119405 | m=0.900 worth=21.2 cheap=7.9 over=0 dMedOther=11.0 safe(-1)=537150
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89815 bal=986551 dq=11.0 cnt=145 | c=16.0 rankC=8.0 need=1884409 tD=0.99 人 pulse | safe=537150 keep=537150 avail=-65125 chunkB=95524 pulseB=57315 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40793 bal=964495 dq=23.6 cnt=287 | c=57.8 rankC=57.8 need=1780278 tD=2.14 人 pulse | safe=537150 keep=Inf avail=-Inf chunkB=95524 pulseB=57315 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2570 zexos1 B=483640 L=20283 d=23.8 nb=2 neut=0 cmds=181 noFull=1 shQ=120910 | m=0.900 worth=21.5 cheap=7.9 over=0 dMedOther=11.1 safe(-1)=544798
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89710 bal=1000165 dq=11.1 cnt=145 | c=12.8 rankC=6.4 need=1907970 tD=1.00 人 pulse bleeding | safe=544798 keep=544798 avail=-66825 chunkB=96728 pulseB=58037 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40910 bal=977805 dq=23.9 cnt=287 | c=58.4 rankC=58.4 need=1804185 tD=2.14 人 pulse | safe=544798 keep=Inf avail=-Inf chunkB=96728 pulseB=58037 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2575 zexos1 B=483640 L=20283 d=23.8 nb=2 neut=0 cmds=181 noFull=1 shQ=120910 | m=0.900 worth=21.5 cheap=7.9 over=0 dMedOther=11.1 safe(-1)=542775
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89508 bal=996564 dq=11.1 cnt=145 | c=12.8 rankC=6.4 need=1900418 tD=1.00 人 pulse bleeding | safe=542775 keep=542775 avail=-64802 chunkB=96728 pulseB=58037 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=977805 dq=23.9 cnt=287 | c=58.3 rankC=58.3 need=1804297 tD=2.14 人 pulse | safe=542775 keep=Inf avail=-Inf chunkB=96728 pulseB=58037 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2580 zexos1 B=489733 L=20283 d=24.1 nb=2 neut=0 cmds=181 noFull=1 shQ=122433 | m=0.900 worth=21.7 cheap=7.9 over=0 dMedOther=11.2 safe(-1)=539822
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88325 bal=990770 dq=11.2 cnt=145 | c=13.3 rankC=6.6 need=1883000 tD=1.00 人 pulse bleeding | safe=539822 keep=539822 avail=-55828 chunkB=97947 pulseB=58768 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=991308 dq=24.2 cnt=287 | c=59.0 rankC=59.0 need=1828364 tD=2.16 人 pulse | safe=539822 keep=Inf avail=-Inf chunkB=97947 pulseB=58768 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2585 zexos1 B=489733 L=20283 d=24.1 nb=2 neut=0 cmds=181 noFull=1 shQ=122433 | m=0.900 worth=21.7 cheap=7.9 over=0 dMedOther=11.1 safe(-1)=539822
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=86806 bal=963615 dq=11.1 cnt=145 | c=13.5 rankC=6.7 need=1825732 tD=1.00 人 pulse bleeding | safe=539822 keep=539822 avail=-55828 chunkB=97947 pulseB=58768 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=991308 dq=24.2 cnt=287 | c=59.0 rankC=59.0 need=1828364 tD=2.18 人 pulse | safe=539822 keep=Inf avail=-Inf chunkB=97947 pulseB=58768 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2590 zexos1 B=495903 L=20283 d=24.4 nb=2 neut=0 cmds=181 noFull=1 shQ=123975 | m=0.900 worth=22.0 cheap=7.9 over=0 dMedOther=11.2 safe(-1)=547508
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=85838 bal=959562 dq=11.2 cnt=145 | c=13.9 rankC=6.9 need=1812649 tD=1.00 人 pulse bleeding | safe=547508 keep=547508 avail=-57416 chunkB=99181 pulseB=59508 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1004988 dq=24.5 cnt=287 | c=59.8 rankC=59.8 need=1852747 tD=2.19 人 pulse | safe=547508 keep=Inf avail=-Inf chunkB=99181 pulseB=59508 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2595 zexos1 B=495903 L=20283 d=24.4 nb=2 neut=0 cmds=181 noFull=1 shQ=123975 | m=0.900 worth=22.0 cheap=7.9 over=0 dMedOther=11.1 safe(-1)=547508
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=84544 bal=936489 dq=11.1 cnt=145 | c=14.1 rankC=7.1 need=1764051 tD=1.00 人 pulse bleeding | safe=547508 keep=547508 avail=-57416 chunkB=99181 pulseB=59508 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1004988 dq=24.5 cnt=287 | c=59.8 rankC=59.8 need=1852747 tD=2.21 人 pulse | safe=547508 keep=Inf avail=-Inf chunkB=99181 pulseB=59508 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2600 zexos1 B=522434 L=20283 d=25.8 nb=2 neut=0 cmds=181 noFull=1 shQ=125633 | m=0.900 worth=23.2 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=578330
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=83698 bal=1019500 dq=12.2 cnt=145 | c=15.9 rankC=7.9 need=1903881 tD=1.00 人 pulse bleeding | safe=578330 keep=578330 avail=-62018 chunkB=104487 pulseB=62692 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1059852 dq=25.9 cnt=287 | c=63.0 rankC=63.0 need=1950534 tD=2.12 人 pulse | safe=578330 keep=Inf avail=-Inf chunkB=104487 pulseB=62692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2605 zexos1 B=522434 L=20283 d=25.8 nb=2 neut=0 cmds=181 noFull=1 shQ=130608 | m=0.900 worth=23.2 cheap=7.9 over=0 dMedOther=12.1 safe(-1)=578330
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=82476 bal=995757 dq=12.1 cnt=145 | c=16.1 rankC=8.1 need=1854159 tD=1.00 人 pulse bleeding | safe=578330 keep=578330 avail=-62018 chunkB=104487 pulseB=62692 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1059852 dq=25.9 cnt=287 | c=63.0 rankC=63.0 need=1950534 tD=2.14 人 pulse | safe=578330 keep=Inf avail=-Inf chunkB=104487 pulseB=62692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2610 zexos1 B=529016 L=20283 d=26.1 nb=2 neut=0 cmds=181 noFull=1 shQ=132254 | m=0.900 worth=23.5 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=586546
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=81664 bal=995189 dq=12.2 cnt=145 | c=16.6 rankC=8.3 need=1847697 tD=1.00 人 pulse bleeding | safe=586546 keep=586546 avail=-63729 chunkB=105803 pulseB=63482 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1074477 dq=26.2 cnt=287 | c=63.8 rankC=63.8 need=1976601 tD=2.15 人 pulse | safe=586546 keep=Inf avail=-Inf chunkB=105803 pulseB=63482 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2615 zexos1 B=529016 L=20283 d=26.1 nb=2 neut=0 cmds=181 noFull=1 shQ=132254 | m=0.900 worth=23.5 cheap=7.9 over=0 dMedOther=12.1 safe(-1)=586546
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=80451 bal=971610 dq=12.1 cnt=145 | c=16.8 rankC=8.4 need=1798364 tD=1.00 人 pulse | safe=586546 keep=586546 avail=-63729 chunkB=105803 pulseB=63482 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1074477 dq=26.2 cnt=287 | c=63.8 rankC=63.8 need=1976601 tD=2.17 人 pulse | safe=586546 keep=Inf avail=-Inf chunkB=105803 pulseB=63482 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2620 zexos1 B=535681 L=20283 d=26.4 nb=2 neut=0 cmds=181 noFull=1 shQ=133920 | m=0.900 worth=23.8 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=594876
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=79652 bal=970920 dq=12.2 cnt=145 | c=17.3 rankC=8.6 need=1791675 tD=1.00 人 pulse | safe=594876 keep=594876 avail=-65472 chunkB=107136 pulseB=64282 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1089304 dq=26.6 cnt=287 | c=64.7 rankC=64.7 need=2003028 tD=2.18 人 pulse | safe=594876 keep=Inf avail=-Inf chunkB=107136 pulseB=64282 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2625 zexos1 B=535681 L=20283 d=26.4 nb=2 neut=0 cmds=181 noFull=1 shQ=133920 | m=0.900 worth=23.8 cheap=7.9 over=0 dMedOther=12.1 safe(-1)=594876
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=78469 bal=947918 dq=12.1 cnt=145 | c=17.6 rankC=8.8 need=1743621 tD=1.00 人 pulse | safe=594876 keep=594876 avail=-65472 chunkB=107136 pulseB=64282 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1089304 dq=26.6 cnt=287 | c=64.7 rankC=64.7 need=2003028 tD=2.20 人 pulse | safe=594876 keep=Inf avail=-Inf chunkB=107136 pulseB=64282 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2630 zexos1 B=542430 L=20283 d=26.7 nb=2 neut=0 cmds=181 noFull=1 shQ=135607 | m=0.900 worth=24.1 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=603321
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=77686 bal=947079 dq=12.2 cnt=145 | c=18.0 rankC=9.0 need=1736684 tD=1.00 人 pulse | safe=603321 keep=603321 avail=-67247 chunkB=108486 pulseB=65092 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1104336 dq=26.9 cnt=287 | c=65.5 rankC=65.5 need=2029821 tD=2.21 人 pulse | safe=603321 keep=Inf avail=-Inf chunkB=108486 pulseB=65092 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2635 zexos1 B=542430 L=20283 d=26.7 nb=2 neut=0 cmds=181 noFull=1 shQ=135607 | m=0.900 worth=24.1 cheap=7.9 over=0 dMedOther=12.1 safe(-1)=603321
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=76545 bal=924890 dq=12.1 cnt=145 | c=17.7 rankC=8.8 need=1690406 tD=1.00 人 pulse | safe=603321 keep=603321 avail=-67247 chunkB=108486 pulseB=65092 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1104336 dq=26.9 cnt=287 | c=65.5 rankC=65.5 need=2029821 tD=2.23 人 pulse | safe=603321 keep=Inf avail=-Inf chunkB=108486 pulseB=65092 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2640 zexos1 B=549264 L=20283 d=27.1 nb=2 neut=0 cmds=181 noFull=1 shQ=137316 | m=0.900 worth=24.4 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=611882
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=75797 bal=924290 dq=12.2 cnt=145 | c=17.8 rankC=8.9 need=1684038 tD=1.00 人 pulse | safe=611882 keep=611882 avail=-69054 chunkB=109853 pulseB=65912 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1119575 dq=27.3 cnt=287 | c=66.4 rankC=66.4 need=2056982 tD=2.24 人 pulse | safe=611882 keep=Inf avail=-Inf chunkB=109853 pulseB=65912 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2645 zexos1 B=549264 L=20283 d=27.1 nb=2 neut=0 cmds=181 noFull=1 shQ=137316 | m=0.900 worth=24.4 cheap=7.9 over=0 dMedOther=12.1 safe(-1)=611882
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=75422 bal=912673 dq=12.1 cnt=145 | c=17.9 rankC=8.9 need=1661722 tD=1.00 人 pulse | safe=611882 keep=611882 avail=-69054 chunkB=109853 pulseB=65912 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1119575 dq=27.3 cnt=287 | c=66.4 rankC=66.4 need=2056982 tD=2.26 人 pulse | safe=611882 keep=Inf avail=-Inf chunkB=109853 pulseB=65912 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2650 zexos1 B=556184 L=20283 d=27.4 nb=2 neut=0 cmds=181 noFull=1 shQ=139046 | m=0.900 worth=24.7 cheap=7.9 over=0 dMedOther=12.3 safe(-1)=620562
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=75215 bal=922479 dq=12.3 cnt=145 | c=18.2 rankC=9.1 need=1677236 tD=1.00 人 pulse | safe=620562 keep=620562 avail=-70895 chunkB=111237 pulseB=66742 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1135025 dq=27.7 cnt=287 | c=67.3 rankC=67.3 need=2084520 tD=2.26 人 pulse | safe=620562 keep=Inf avail=-Inf chunkB=111237 pulseB=66742 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2655 zexos1 B=556184 L=20283 d=27.4 nb=2 neut=0 cmds=181 noFull=1 shQ=139046 | m=0.900 worth=24.7 cheap=7.9 over=0 dMedOther=12.2 safe(-1)=620562
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74893 bal=916167 dq=12.2 cnt=145 | c=18.0 rankC=9.0 need=1664370 tD=1.00 人 pulse | safe=620562 keep=620562 avail=-70895 chunkB=111237 pulseB=66742 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1135025 dq=27.7 cnt=287 | c=67.3 rankC=67.3 need=2084520 tD=2.26 人 pulse | safe=620562 keep=Inf avail=-Inf chunkB=111237 pulseB=66742 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2660 zexos1 B=563191 L=20283 d=27.8 nb=2 neut=0 cmds=181 noFull=1 shQ=140797 | m=0.900 worth=25.0 cheap=7.9 over=0 dMedOther=12.4 safe(-1)=629362
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74664 bal=925545 dq=12.4 cnt=145 | c=18.3 rankC=9.1 need=1678959 tD=1.00 人 pulse | safe=629362 keep=629362 avail=-72770 chunkB=112638 pulseB=67583 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1150688 dq=28.1 cnt=287 | c=68.2 rankC=68.2 need=2112437 tD=2.26 人 pulse | safe=629362 keep=Inf avail=-Inf chunkB=112638 pulseB=67583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2665 zexos1 B=563191 L=20283 d=27.8 nb=2 neut=0 cmds=181 noFull=1 shQ=140797 | m=0.900 worth=25.0 cheap=7.9 over=0 dMedOther=12.4 safe(-1)=629362
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74298 bal=918294 dq=12.4 cnt=145 | c=18.4 rankC=9.2 need=1664154 tD=1.00 人 pulse | safe=629362 keep=629362 avail=-72770 chunkB=112638 pulseB=67583 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1150688 dq=28.1 cnt=287 | c=68.2 rankC=68.2 need=2112437 tD=2.27 人 pulse | safe=629362 keep=Inf avail=-Inf chunkB=112638 pulseB=67583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2670 zexos1 B=570287 L=20283 d=28.1 nb=2 neut=0 cmds=181 noFull=1 shQ=142571 | m=0.900 worth=25.3 cheap=7.9 over=0 dMedOther=12.5 safe(-1)=638282
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74043 bal=927136 dq=12.5 cnt=145 | c=18.7 rankC=9.4 need=1677574 tD=1.00 人 pulse | safe=638282 keep=638282 avail=-74678 chunkB=114057 pulseB=68434 无可用(avail<=0) hNb=2
+    → Papik#0[T1] terr=40996 bal=1166567 dq=28.5 cnt=287 | c=69.1 rankC=69.1 need=2140739 tD=2.27 人 pulse | safe=638282 keep=Inf avail=-Inf chunkB=114057 pulseB=68434 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2675 zexos1 B=570287 L=20283 d=28.1 nb=2 neut=0 cmds=181 noFull=1 shQ=142571 | m=0.900 worth=25.3 cheap=7.9 over=0 dMedOther=12.5 safe(-1)=638282
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=919613 dq=12.5 cnt=145 | c=32.4 rankC=32.4 need=1663128 tD=1.00 人 pulse | safe=638282 keep=Inf avail=-Inf chunkB=114057 pulseB=68434 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1166567 dq=28.5 cnt=287 | c=69.1 rankC=69.1 need=2140739 tD=2.28 人 pulse | safe=638282 keep=Inf avail=-Inf chunkB=114057 pulseB=68434 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2680 zexos1 B=577472 L=20283 d=28.5 nb=2 neut=0 cmds=181 noFull=1 shQ=144368 | m=0.900 worth=25.6 cheap=7.9 over=0 dMedOther=12.7 safe(-1)=647326
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=933591 dq=12.7 cnt=145 | c=32.9 rankC=32.9 need=1687292 tD=1.00 人 pulse | safe=647326 keep=Inf avail=-Inf chunkB=115494 pulseB=69297 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1182665 dq=28.8 cnt=287 | c=70.0 rankC=70.0 need=2169432 tD=2.28 人 pulse | safe=647326 keep=Inf avail=-Inf chunkB=115494 pulseB=69297 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2685 zexos1 B=577472 L=20283 d=28.5 nb=2 neut=0 cmds=181 noFull=1 shQ=144368 | m=0.900 worth=25.6 cheap=7.9 over=0 dMedOther=12.7 safe(-1)=647326
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=933591 dq=12.7 cnt=145 | c=32.9 rankC=32.9 need=1687731 tD=1.00 人 pulse | safe=647326 keep=Inf avail=-Inf chunkB=115494 pulseB=69297 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1182665 dq=28.8 cnt=287 | c=70.0 rankC=70.0 need=2169432 tD=2.28 人 pulse | safe=647326 keep=Inf avail=-Inf chunkB=115494 pulseB=69297 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2690 zexos1 B=584748 L=20283 d=28.8 nb=2 neut=0 cmds=181 noFull=1 shQ=146187 | m=0.900 worth=25.9 cheap=7.9 over=0 dMedOther=12.8 safe(-1)=656495
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=947781 dq=12.8 cnt=145 | c=33.3 rankC=33.3 need=1712272 tD=1.00 人 pulse | safe=656495 keep=Inf avail=-Inf chunkB=116950 pulseB=70170 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1198985 dq=29.2 cnt=287 | c=71.0 rankC=71.0 need=2198520 tD=2.28 人 pulse | safe=656495 keep=Inf avail=-Inf chunkB=116950 pulseB=70170 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2695 zexos1 B=584748 L=20283 d=28.8 nb=2 neut=0 cmds=181 noFull=1 shQ=146187 | m=0.900 worth=25.9 cheap=7.9 over=0 dMedOther=12.8 safe(-1)=656495
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=947781 dq=12.8 cnt=145 | c=33.3 rankC=33.3 need=1712717 tD=1.00 人 pulse | safe=656495 keep=Inf avail=-Inf chunkB=116950 pulseB=70170 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1198985 dq=29.2 cnt=287 | c=71.0 rankC=71.0 need=2198520 tD=2.28 人 pulse | safe=656495 keep=Inf avail=-Inf chunkB=116950 pulseB=70170 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2700 zexos1 B=612398 L=20283 d=30.2 nb=2 neut=0 cmds=181 noFull=1 shQ=148131 | m=0.900 worth=27.2 cheap=7.9 over=0 dMedOther=14.0 safe(-1)=688821
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73781 bal=1035968 dq=14.0 cnt=145 | c=36.2 rankC=36.2 need=1863032 tD=1.00 人 pulse | safe=688821 keep=Inf avail=-Inf chunkB=122480 pulseB=73488 价高(c>=worth)→break hNb=2
+    → Papik#0[T1] terr=40996 bal=1256526 dq=30.6 cnt=287 | c=74.3 rankC=74.3 need=2301079 tD=2.18 人 pulse | safe=688821 keep=Inf avail=-Inf chunkB=122480 pulseB=73488 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

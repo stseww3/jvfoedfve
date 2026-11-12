@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // spawn_actual.mjs — 每个本队号实际从哪里出生（开局第 1 拍领土包围盒的中心），和日志里拿到的出生位置对不对得上。
 // 用途：出生指令没有落地的号由引擎在出生阶段结束时随机放（game.js endSpawnPhase L657–666），resim_report 的 spawn 一节对这些号只写“没有出生指令”，这里补上实际位置。
-// 用法：node spawn_actual.mjs <matchId> [--replay other] [--log id1,id2]
+// 用法：node spawn_actual.mjs <matchId> [--replay other] [--log id1,id2] [--bots a,b]
 // 输出：号 | 席位 | 实际出生点 | 录像里落地的出生指令条数（最后一条在出生阶段第几步） | 日志里协调器给的位置（各版，[HL-SPAWN-BACKEND]）| 本地兜底位置（[HL-SPAWN]）
 //       | 实际点离最后一版协调器位置多远 | 最近的本队号及距离；末尾：出生阶段共几步、全场有出生指令的人类席位数、本队两两距离的最小/中位/最大。
 import fs from 'node:fs';
@@ -19,7 +19,7 @@ const logs = opt('log', mid).split(',');
 
 const me = {}; const backend = {}; const local = {};
 for (const id of logs) {
-  const r = readLogSnaps(id);
+  const r = readLogSnaps(id, '', opt('bots', null) ? new Set(opt('bots', '').split(',')) : null);
   Object.assign(me, r.me);
   const f = `${BUNDLES}/${id}/in_game.log`;
   if (!fs.existsSync(f)) continue;

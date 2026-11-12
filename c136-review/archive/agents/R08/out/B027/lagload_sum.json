@@ -1,0 +1,165 @@
+{
+ "matchId": "B027",
+ "step": 180,
+ "rows": [
+  {
+   "w": 0,
+   "tiles": 13815,
+   "humanTiles": 249,
+   "expand": 768,
+   "pairs": 73,
+   "humans": 71,
+   "ais": 440,
+   "lag": {
+    "n": 28,
+    "p50": 13,
+    "p90": 18,
+    "mx": 29,
+    "atk": 28,
+    "void": 0
+   }
+  },
+  {
+   "w": 180,
+   "tiles": 28926,
+   "humanTiles": 304,
+   "expand": 931,
+   "pairs": 69,
+   "humans": 71,
+   "ais": 436,
+   "lag": {
+    "n": 39,
+    "p50": 12,
+    "p90": 17,
+    "mx": 22,
+    "atk": 39,
+    "void": 0
+   }
+  },
+  {
+   "w": 360,
+   "tiles": 77419,
+   "humanTiles": 365,
+   "expand": 1767,
+   "pairs": 97,
+   "humans": 70,
+   "ais": 435,
+   "lag": {
+    "n": 44,
+    "p50": 12,
+    "p90": 16,
+    "mx": 20,
+    "atk": 44,
+    "void": 0
+   }
+  },
+  {
+   "w": 540,
+   "tiles": 103855,
+   "humanTiles": 1678,
+   "expand": 3457,
+   "pairs": 173,
+   "humans": 70,
+   "ais": 424,
+   "lag": {
+    "n": 58,
+    "p50": 16,
+    "p90": 25,
+    "mx": 35,
+    "atk": 60,
+    "void": 0
+   }
+  },
+  {
+   "w": 720,
+   "tiles": 95578,
+   "humanTiles": 2704,
+   "expand": 4411,
+   "pairs": 359,
+   "humans": 69,
+   "ais": 358,
+   "lag": {
+    "n": 67,
+    "p50": 42,
+    "p90": 86,
+    "mx": 125,
+    "atk": 78,
+    "void": 8
+   }
+  },
+  {
+   "w": 900,
+   "tiles": 104768,
+   "humanTiles": 6042,
+   "expand": 4419,
+   "pairs": 340,
+   "humans": 68,
+   "ais": 194,
+   "lag": {
+    "n": 88,
+    "p50": 96,
+    "p90": 146,
+    "mx": 201,
+    "atk": 108,
+    "void": 34
+   }
+  },
+  {
+   "w": 1080,
+   "tiles": 72055,
+   "humanTiles": 3335,
+   "expand": 3317,
+   "pairs": 218,
+   "humans": 66,
+   "ais": 90,
+   "lag": {
+    "n": 95,
+    "p50": 149,
+    "p90": 262,
+    "mx": 350,
+    "atk": 105,
+    "void": 52
+   }
+  },
+  {
+   "w": 1260,
+   "tiles": 59680,
+   "humanTiles": 12278,
+   "expand": 2217,
+   "pairs": 136,
+   "humans": 66,
+   "ais": 31,
+   "lag": {
+    "n": 71,
+    "p50": 133,
+    "p90": 260,
+    "mx": 363,
+    "atk": 74,
+    "void": 27
+   }
+  }
+ ],
+ "slowWindows": 4,
+ "fastWindows": 4,
+ "spearman": {
+  "tiles": 0.25,
+  "expand": 0.56,
+  "pairs": 0.67,
+  "humans": -0.91,
+  "tilesPrev": 0.74
+ },
+ "waves": [
+  {
+   "t0": 720,
+   "t1": 1440,
+   "n": 4,
+   "peakLag": 149,
+   "tilesMed": 95578,
+   "tilesMax": 104768,
+   "before": 103855,
+   "after": null
+  }
+ ],
+ "slowTilesMedian": 95578,
+ "fastTilesMedian": 77419
+}

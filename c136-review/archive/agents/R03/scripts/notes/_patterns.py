@@ -122,6 +122,113 @@ DEFS["NEW-R03-SE04"] = {
 }
 
 
+# ---- A071 起新增 ----
+DEFS["NEW-R03-DN03"] = {
+    "prefix": "DN",
+    "name": "被围的后排把兵捐给比自己还密的前线号：受捐方已过软上限，税照收，双方利息合计下降",
+    "sameAs": ["NEW-DN-14（R08，喂给已经超软上限的号）", "NEW-R01-DN10（yield_opt_dispatch 落地后双方利息合计下降）", "统筹 0005 号广播第 ④ 项（yield_opt_dispatch 的净利息）",
+               "NEW-R03-EC01（同一件事在捐出方那一头的后果）"],
+    "definition": "Policy.tryDonateToTeammate（Vb L4325-4518）对 boxedIn 的捐方放得很宽：产出档（Case B，L4479-4481）只要自己密度 ≥58，受捐方有敌邻时密度 ≤140（没有敌邻 ≤128）都算合格——L4476-4478 的注释写的是「被围的捐方密度 ≥98、受捐方必须低于 92×领土」，代码里是 58 和 128/140；"
+                  "紧急档（Case A，L4463-4466）受捐方只要正在被真人打（L4457：在途 ≥ 受捐方余额的 6%，或受捐方密度 <88），被围捐方密度 ≥30（有海岸 42）就捐，留底 22/32×领土（L4386-4388）。两档都不比较双方密度（L4481、L4466 的 dMe ≥ dAlly+16 只对没被围的捐方生效）。"
+                  "受捐方过了软上限（100×领土）之后每多一个兵利息是负的，硬上限 150×领土 处利息为零。"
+                  "计：调度条数里受捐方密度 > 捐方密度的条数、受捐方密度 ≥100 的条数；成交笔数、到账、税；落地当拍双方「每 10 拍利息」合计变化 ≤0 的笔数；受捐方随后的出手（报价对 worth、烧兵、得地）。",
+    "detect": "dispatchq.py <局> [--to 号]（events.csv 的调度行：类型、boxedIn、dMe、dAlly；数 dAlly > dMe 与 dAlly ≥ 100 的条数）+ pingpong.py <局> 第 [1][3] 段（逐对到账/税、落地当拍利息合计变化）"
+              "+ acts.py <局> <受捐号> <t0> <t1> --sent（受捐方出手时的 over、报价、worth）。",
+}
+
+
+# ---- A090 起新增 ----
+DEFS["NEW-R03-AT05"] = {
+    "prefix": "AT",
+    "name": "隔壁的空壳（或 AI）几万兵就能吃完，却一直判「留底不够」：为身边最强真人留的底吃掉了几乎整个余额",
+    "sameAs": ["NEW-R03-OP01（同一道 safeAt 留底：那条是 1500 拍前买 AI 地被编队友/路人的余额冻住 safeFinite，这条是 1500 拍后被敌方真人的余额冻住 dpKeep）",
+               "R07-EC-IDLE-RICH（有兵不花）", "暂无完全对应的条目（R03 在 A090 第一次单列；请统筹归并）"],
+    "definition": "V13.dpKeep（Vb L2459-2464）= (身边最强的真人的余额 + 它压在我身上的兵 − 1.5×我的领土) ÷ 1.78。V17.safeAt（L2728-2738）在 killW=1 时取 max(safeFinite, dpKeep)，"
+                  "Policy.safeAt（L4543-4560）再封顶到 oppFloorCap(88)×领土。Policy.buyLand 对非真人目标（内置 AI、离线后由内置 AI 托管的空壳）：keep = max(keep, safe)（L5444），"
+                  "avail = 余额 − 手续费 − keep（L5446），want = 1.25×need + 3×接壤数（L5450），avail < want 且 avail < chunk(0.2)×余额 就跳过（L5452）。"
+                  "于是身边站着一个余额比我高的真人时，留底跟着它的余额涨，我的余额要涨过 88×领土 这条封顶线再加上 want，才会去吃隔壁那个几万兵就能吃完的空壳；在那之前每个决策拍都判留底不够。"
+                  "计：空壳在场的拍数、其间它的地/兵、我方该号的余额与密度、buy-why 的分类计数（单独去掉 safe / chunk 能不能出手）、最终出手的拍与兵力、空壳最后归谁。",
+    "detect": "dbg/buy-why.mjs <局> <号> <t0> <t1>（逐决策拍：最便宜的报价是不是非真人目标、单独去掉哪一道闸就能出手）+ dbg/act-trace.mjs（那一拍的 safeFinite、dpKeep、safeAt、各邻居的 elimCost）"
+              "+ freeze-scan.mjs 第二段「卡真人留底」的区间 + cmdq.py <局> all <t0> <t1> --kind 1 --target <空壳名>（谁在什么时候打了它）+ snapq.py（空壳和我方该号的地/兵）。",
+}
+
+DEFS["NEW-R03-AT06"] = {
+    "prefix": "AT",
+    "name": "出手的大小只看余额和对方整个号的 need，不看接壤多宽：对着十几到几十格的滩头压上百万兵，烧掉一小部分、其余原路退回，手续费每条照收",
+    "sameAs": ["NEW-R03-IO01（同一串里上一条没落地就重发；这条说的是每条的大小和前线宽度不匹配）", "NEW-AT-CAPDUMP / R08:超软上限后高价倾泻（过软上限后对高价目标出手）",
+               "NEW:FE-tiny-cmd-fee（手续费按整笔余额收）", "暂无完全对应的条目（R03 在 A090 第一次单列；请统筹归并）"],
+    "definition": "Policy.buyLand 的真人分支（Vb L5530-5608）：脉冲档 L5595-5607 每条 = min(1.20×need + 3×接壤数, pulseFrac(0.12)×余额)；3800 拍后对 bleeding/nearCollapse 的目标走 L5574-5585，"
+                  "每条 = max(min(0.85×need + 3×接壤数, 0.12×余额) − 在途, 0.08×余额)。need 是 offers 里吃掉对方整个号的 elimCost，不是眼前这段前线后面那块地；"
+                  "按前线宽度修剪的三段代码（alignMultiRing L5555-5572、canZeroPulse L5539-5551、tryNarrowBoatFirst L5470-5528）在 Vb 的参数里都是关的（exactRingMode=0、zeroPulseMode=0、narrowBoatFirstMode=0）。"
+                  "引擎里进攻兵沿前线格逐格推进，接壤的那一小块（对方船登陆的滩头、被切下来的飞地）吃完、和目标不再相邻时，槽里剩下的兵退回余额；每条陆攻的手续费 = 发令时余额的 12/1024，与送多少无关。"
+                  "于是对一块十几到几十格宽的滩头连发 3~4 条（在途检查在第一条落地前是 0），槽里压上百万兵，烧掉 2~15%，其余 20~60 拍后退回；其间本体的余额少一截，手续费付 3~4 份。"
+                  "计：对真人的陆攻按时段、按号的 条数/送出/手续费/烧掉/槽内对消/得地 和 退回余额的兵；逐串的接壤格数、槽里兵的变化、退回的拍。",
+    "detect": "retq.py <局> [切点]（和卷宗[E] 同一套区间账：对真人 条数/出/费/烧/对消/得地 与 退兵）+ dbg/attack-state.mjs <局> <号> <t0> <t1> <目标席位>（逐拍：和目标接壤的边界格数、进攻槽里的兵、余额）"
+              "+ shadow-digest [S6]（同步串的首条/多花与其中的手续费）+ dbg/params.mjs <局> 'exactRing|zeroPulse|narrow'。",
+}
+
+# ---- A042 起新增 ----
+DEFS["NEW-R03-AT07"] = {
+    "prefix": "AT",
+    "name": "调度层说「前线有猎物」，出手层说「太贵」：两层对同一个真人邻居用的是两套门槛，后排的兵往一个不出手的号身上送",
+    "sameAs": ["NEW-R03-AT03（几个号围着同一个真人、各算各的价；这条说的是调度层同时把它判成猎物）", "NEW:AT-worth-gate（R06，价格线不出手）",
+               "NEW-R03-AT02（接敌后捐款门槛低于出手门槛；那条是前线号自己捐，这条是后排往前线喂）", "暂无完全对应的条目（R03 在 A042 第一次单列；请统筹归并）"],
+    "definition": "调度层 Policy.tryDonateToTeammate（Vb L4457-4459）：受捐方有敌邻、密度 < 96，且（敌邻在掉血，或最稀的敌邻密度 < 0.70×受捐方密度）就算 hasPreyOpening，走进攻档 offense_dispatch（L4479-4494）。"
+                  "出手层 Policy.buyLand（L5350-5359）：对真人的报价 c = (elimCost + 手续费) ÷ 能拿到的地（offers L5095-5100；elimCost L464-469 是「单独吃掉对方整个号」要的兵），"
+                  "worth = maxW×winRatio(t)×自己密度；c ≥ worth 且没过软上限就 break。按本版参数摊开（worthgate.py）：对方没掉过地时 c ≈ 2.3~2.4×对方密度 + 2，"
+                  "worth 在 1500 拍是 1.5×自己密度、2500 拍起是 0.9×自己密度——对方密度要低于自己的 0.59~0.64（1500 拍）、0.34~0.38（2500 拍起）才单独出手。"
+                  "两个门槛之间（对方密度是自己的 0.38~0.70）调度层在喂、出手层不打；联手折扣（offers L5182-5185、L5205-5207）要等队友的兵已经压在对方身上才生效，所以谁都不是第一个。"
+                  "计：进攻档调度条数；发出前后各 150 拍受捐方都没对真人落过一条陆攻的条数、最长连续段；期间受捐方的报价对 worth、几个接壤的号与目标的兵力对比；最后是怎么打破的（过软上限 over / 目标自己变薄）。",
+    "detect": "dispatch-follow.py <局> [--window 150]（events.csv 的 offense_dispatch 对重放 cmdLog 里受捐方打在线真人的陆攻）+ worthgate.py <局>（公式代入：各拍 对方密度÷自己密度 的出手上限）"
+              "+ freeze-scan 第二段「报价高于 worth」的区间 + acts.py <局> <号> <t0> <t1> --sent（出手那几拍的 over、c、worth、标记）+ snapq.py（目标和接壤各号的地/兵）。",
+}
+
+DEFS["NEW-R03-DN04"] = {
+    "prefix": "DN",
+    "name": "调度扎堆：一个号被判「被打」或「值得喂」，其它号在同一轮相位里各捐三成多，谁也不看别人已经捐了多少",
+    "sameAs": ["NEW-R03-DN03（被围的后排捐给比自己密的前线号；这条说的是多个捐方同一轮一起捐）", "NEW-R03-DN02（到账被硬上限截短、税照收）", "NEW:IO-lag-burst（同一个决定在落地前重复发）",
+               "暂无完全对应的条目（R03 在 A042 第一次单列；请统筹归并）"],
+    "definition": "Policy.tryDonateToTeammate：每个号每 25 拍轮到一次（Vb L4331：(t/5)%5 == 自己槽位%5，10 个号分 5 个槽位）；候选受捐方只按页面上当时的密度筛（L4418：被围的捐方看到受捐方密度 ≥142 才跳过，没被围 115）；"
+                  "紧急档的触发是受捐方身上真人的在途兵 ≥ 它余额的 6%，或有在途兵且密度 < 88（L4457）；pct 只按捐方自己的留底算（L4500-4505：被围 380/320，即余额的 37%/31%）。"
+                  "捐款 11~13 拍后才落地，同一轮里先后轮到的号看到的都是别人的捐款还没到账（或刚到一两笔）的受捐方，没有任何一处记「这一轮别人已经捐了多少」。"
+                  "于是同一个受捐方在相邻 ≤30 拍的间隔里连收 ≥3 个号的捐款。"
+                  "计：串数、笔数、到账、税；受捐方串前、串末的密度；串末密度 ≥100、≥140 的串数；被硬上限截短的笔数；紧急档的串另记触发它的在途来犯兵。",
+    "detect": "donburst.py <局> [--squad-only] [--gap 30] [--min 3]（重放 cmdLog 的成交捐款按受捐方并串）+ dispatchq.py <局> --to <号> --range t0 t1 --list（每条调度的类型、dMe、dAlly）"
+              "+ acts.py <局> <受捐号> <t0> <t1>（那几拍 in= 压在它身上的在途兵）。",
+}
+
+DEFS["NEW-R03-EC02"] = {
+    "prefix": "EC",
+    "name": "顶着硬上限出手或发船：槽里的兵退回来、船靠回自己岸上时装不下，多出来的直接消失",
+    "sameAs": ["NEW-R03-DN02（捐款被接收方硬上限截短；这条是自己的兵回不来）", "NEW-R03-SE04（船靠编队友岸被额度/硬上限拒收）", "NEW-R03-AT06（窄前线上压一大笔、大部分原路退回；退回时撞上硬上限就是这条）",
+               "NEW-AT-CAPDUMP / R08:超软上限后高价倾泻", "暂无完全对应的条目（R03 在 A042 第一次单列；请统筹归并）"],
+    "definition": "引擎 game.js addBalance L752-764：入账 = min(要入账的兵, 150×领土 − 余额)，多出来的不记账、直接没了。走这条路的有：进攻打完或和目标不再相邻时槽里剩的兵（endAttack L1076-1080）、"
+                  "撤回进攻（cancelAttack L852-856）、船靠在自己的地上（boats.js landAt L268-271）、每 10 拍的利息（L783；余额到硬上限时利率本来就是 0，interestRate L739-746）。"
+                  "策略里出手的大小（Vb buyLand L5595-5607 等）和发船的大小（boatOut L1006-1010）都不看「这些兵回来时装不装得下」；"
+                  "号在密度 130~150 时出手，或者兵在外面的时候被队友的捐款填满（NEW-R03-DN04），退回来的那部分就蒸发。"
+                  "计：按来源（退兵 / 靠己岸 / 利息）的次数、要入账的兵、没入账的兵；逐条的拍、号、入账前余额与密度。",
+    "detect": "dbg/cap-loss.mjs <局> [--all] [--list N]（真值重演里给 addBalance 挂钩子，按 endAttack / cancelAttack / landAt / 利息 分来源数「要入账 > 实际入账」的每一次）"
+              "+ dbg/attack-state.mjs（逐拍看槽里的兵和余额）+ retq.py（退兵总量：是槽里退出来的量，没有扣掉被硬上限吃掉的部分）。",
+}
+
+# ---- A046 新增 ----
+DEFS["NEW-R03-MT01"] = {
+    "prefix": "MT",
+    "name": "编队进了没有队伍的房间（自由混战）：策略只认 g.teams，编队友互相报价、互相吃",
+    "sameAs": ["R07-SP-CLUSTER（一团选点；这条说的是一团里的号互为目标）", "R08:出手后变薄，随后被吃（这条里吃它的是编队友）",
+               "暂无完全对应的条目（R03 在 A046 第一次遇到；请统筹归并）"],
+    "definition": "页面 mode=7（card.json、日志 [HL-GAME-INIT]），录像头 gameMode=0、numberTeams=0，RESULT 行 team=null；卡片的 nominalTeams/actualTeams=2、baseWinExpectation=0.5 是默认值。"
+                  "Vb 全文没有对局模式判断，所有「队友」判断都是 g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]（analyze L393、isTeammate L3927-3929）；"
+                  "按名字认编队号的 isOurSquadBot（L3960-3972）每一处使用都要 isTeammate 同时成立。g.teams 为空时：编队友进邻居表 this.nb（L393-395）、进 offers 的报价表（L5086-5100）；"
+                  "tryDonateToTeammate 第一行就返回（L4327）；被围分支的船不开（idleBoats L5022）；联手折扣和 engagedTeams（offers L5182-5207）都不生效；"
+                  "选点协调器收到 myTeam=0（L4024），teamId 留 0（spawn-coordinator solve L806-814）、别的真人全算敌人（L828-833）、没有 boss 就找虚拟锚点（L857-860），照样把编队排成一团。"
+                  "计：在控的编队号打在控编队号的陆攻条数、送出、手续费、烧、得地；每 300 拍 编队互打 / 打其他真人 / 被其他真人打 的烧兵与格数；"
+                  "每个号出局前 300 拍丢给编队友、其他真人的格数；DROP30 里主因是打编队友或被编队友打的个数。",
+    "detect": "intrasquad.py <局>（[X1] 总账、[X2] 每 300 拍、[X3] 每个号、[X4] 每一对、[X5] DROP30 分类；读 resim 的 pairLog/cmdLog 和 facts 的 drops）"
+              "+ modeq.py（manifest.jsonl 里各 mode 的局数与 mode 7、8 的名单）+ 卷宗[A] 的录像头队数 + donate-why（全部停在 noTeam）。",
+}
+
+
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]
     return {"proposedId": pid, "prefix": d["prefix"], "name": d["name"], "sameAs": list(d["sameAs"]) + list(extra_same or []),

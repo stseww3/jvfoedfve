@@ -241,7 +241,12 @@ class Dossier:
         sizes = R["teamSizes"]
         self.p(f"===== {self.mid} 卷宗（重放精确值；traj 核对 {R['validate']['bothExact']}/{R['validate']['rows']} 行一致）=====")
         teams = " ".join(f"T{i}={sizes[i]}" for i in range(1, len(sizes))) if self.team_game else "自由混战（无队伍）"
-        self.p(f"[A] {c.get('cohort')} 策略 {version_of(self.mid)} | 图 {c.get('mapId')} 陆地 {self.land} | 真人 {self.H} AI {R['players'] - self.H}{'（未入队，与所有人为敌）' if self.team_game and not R['botsTeamed'] else ''} | 录像头队数 {R['nTeamsHeader']} → 实际 {R['nTeams']}：{teams}")
+        # 图号取录像头解出来的（R['mapIdx']）。card.json 的 mapId/mapSeed/mapLand 取自 results.csv 的某一行，
+        # 编队里有号进了别的房间时可能是那个房间的图（A071：card 写图 12/陆地 695915，本房间是图 22/陆地 664497）。
+        map_id = R.get("mapIdx", c.get("mapId"))
+        card_map = "" if c.get("mapId") in (None, map_id) and c.get("mapLand") in (None, self.land) else f"（card.json 写的是图 {c.get('mapId')}/陆地 {c.get('mapLand')}，那是不在本房间的号所在的房间）"
+        self.map_id = map_id
+        self.p(f"[A] {c.get('cohort')} 策略 {version_of(self.mid)} | 图 {map_id} 陆地 {self.land}{card_map} | 真人 {self.H} AI {R['players'] - self.H}{'（未入队，与所有人为敌）' if self.team_game and not R['botsTeamed'] else ''} | 录像头队数 {R['nTeamsHeader']} → 实际 {R['nTeams']}：{teams}")
         self.p(f"    本队 T{self.my_team}，本房间 {len(self.sq)} 个号{('，不在本房间：' + ','.join(self.foreign)) if self.foreign else ''} | 结果 {oc.get('resultLabel')} 结束拍 {oc.get('endTick')} 赢家 T{oc.get('winnerTeam')} | 录像到 {R['endTick']} 拍 over={R['over']} winnerTeam={R['winnerTeam']}")
         self.p("    战队标签：" + " ".join(f"{x['tag']}×{x['size']}→T{x['team']}" for x in R["clans"]))
         peer = c.get("sameMatchPeer")
@@ -612,7 +617,8 @@ class Dossier:
                     evs.append({"bot": b, "t0": int(r0["t"]), "t1": int(r1["t"]), "bal0": b0, "bal1": b1,
                                 "dropPct": round(100.0 * (b0 - b1) / b0, 1), "terr0": int(float(r0["terr"])), "terr1": int(float(r1["terr"]))})
         self.drop_count_card = an.get("drop30Count")
-        self.p(f"[I] DROP30 逐笔对账（traj 相邻两行快照余额跌幅≥30% 的全部区间，共 {len(evs)} 个；anomalies.json 的 drop30Count={an.get('drop30Count')}，其 drop30Events 只列了 {len(an.get('drop30Events', []))} 条；各项为该区间重放精确值）")
+        n_room = sum(1 for e in evs if e["bot"] in self.sq)
+        self.p(f"[I] DROP30 逐笔对账（traj 相邻两行快照余额跌幅≥30% 的全部区间，共 {len(evs)} 个，其中本房间编队号的 {n_room} 个；anomalies.json 的 drop30Count={an.get('drop30Count')}，其 drop30Events 只列了 {len(an.get('drop30Events', []))} 条；各项为该区间重放精确值）")
         self.drops = []
         for e in evs:
             b = e["bot"]
@@ -1036,7 +1042,8 @@ class Dossier:
         R = self.R
         oc = self.card.get("outcome", {})
         end = oc.get("endTick") or R["endTick"]
-        f = {"matchId": self.mid, "land": self.land, "humans": self.H, "nTeams": R["nTeams"], "nTeamsHeader": R["nTeamsHeader"], "teamSizes": R["teamSizes"], "myTeam": self.my_team, "squadInRoom": sorted(self.sq), "foreign": self.foreign, "version": version_of(self.mid)}
+        f = {"matchId": self.mid, "land": self.land, "mapIdx": R.get("mapIdx"), "mapSize": [R.get("W"), R.get("Hh")],
+             "humans": self.H, "nTeams": R["nTeams"], "nTeamsHeader": R["nTeamsHeader"], "teamSizes": R["teamSizes"], "myTeam": self.my_team, "squadInRoom": sorted(self.sq), "foreign": self.foreign, "version": version_of(self.mid)}
         tl = []
         for t in sorted(set([90, 180, 270, 630, 1080, 1530, 2130, 2700, 3060, 3600, 4500, 5400, 6300, 7200, 8100, 9000, 10800, 12600] + list(getattr(self, "extra_tl", [])) + [end])):
             if t > end:
@@ -1052,6 +1059,23 @@ class Dossier:
                 row["teamSharePct"] = {f"T{i}": round(100 * tland[i] / self.land, 1) for i in range(1, R["nTeams"] + 1)}
                 row["aiSharePct"] = round(100 * bl / self.land, 1)
                 row["neutralSharePct"] = round(100 * neu / self.land, 1)
+            else:
+                # 自由混战（没有队伍）：全体真人的地、在线真人数、编队之外最大的真人、编队里最大的号在真人里排第几
+                i = self.ix(t)
+                terr, bal = R["snapTerr"][i], R["snapBal"][i]
+                row["humanSharePct"] = round(100 * tland[0] / self.land, 1)
+                row["aiSharePct"] = round(100 * bl / self.land, 1)
+                row["neutralSharePct"] = round(100 * neu / self.land, 1)
+                row["onlineHumans"] = ta[0]
+                others = [q for q in range(self.H) if q not in self.bot_of and terr[q] > 0 and not (0 <= self.left[q] <= t)]
+                if others:
+                    q = max(others, key=lambda x: terr[x])
+                    row["topOther"] = {"who": self.nm(q, t), "terr": terr[q], "sharePct": round(100 * terr[q] / self.land, 2), "bal": bal[q]}
+                ctl = [q for q in self.sqids if terr[q] > 0 and not (0 <= self.left[q] <= t)]
+                if ctl:
+                    q = max(ctl, key=lambda x: terr[x])
+                    row["topSquad"] = {"bot": self.bot_of[q], "terr": terr[q], "sharePct": round(100 * terr[q] / self.land, 2), "bal": bal[q],
+                                       "rankAmongHumans": 1 + sum(1 for x in range(self.H) if terr[x] > terr[q])}
             tl.append(row)
         f["timeline"] = tl
         deaths = []

@@ -394,6 +394,18 @@ CATALOG = [
          definition="日志 HL-TICK + 结果行：阵亡号最后一个『领土 ≥ 最后一轮峰值的 90%』的快照密度 ≥60、余额 ≥100 万，该快照到阵亡拍 ≤360 拍，期间 cmds 增量 ≤4；"
                     "记起点的领土 / 余额 / 密度、下坡拍数、cmds 增量（其中捐款几条）、nb。有真值时并记进攻者是谁、压上来多少兵、对它的买地结论（NEW-DF-04 / NEW-DF-06）",
          detect="scripts/logstats.py [QD]（峰值 → 阵亡的指令数）；scripts/flow.py [VE]（挨打窗）；有录像时 scripts/dossier.py + gatecensus.py [WC]"),
+    dict(id="NEW-MT-11", prefix="MT", name="自由混战也按名字互保：没有队伍，捐款 / 协防 / 救援整段不走，编队友之间只剩『不能打』——被围的号的兵除了船没有出路",
+         definition="录像头 0 队（对局卡 teamSplitCounts 为空）、同房 ≥2 个名字池里的号。c110 isProtectedSquadMate L3993-3996 只要场上还有池外真人活着就保护名字池里的号（analyze L440 不进 nb）；"
+                    "tryDonateToTeammate L4371、tryEmergencyBossRescue L4275 开头都是 !g.teams || !(g.teams[me] > 0) 直接返回——救援捐款、协防戳刺、盈余捐款在没有队伍的房间里一条都发不出。"
+                    "记：整局 HL-DONATE / HL-ASSIST 条数（= 0）、每个号 nb=0 且 neut=0 的快照数和最长一段（领土、余额起止、段内指令 / 船）；有录像时并记编队边界里朝着编队友的占比。"
+                    "命中 = 队数 0 且至少一个号被围 ≥10 个快照",
+         detect="scripts/ffa.py [FD]（被围的账 + 捐款条数）、[FC]（分段指令）；有录像时 scripts/enclose.py [EA]~[EE]"),
+    dict(id="NEW-DF-08", prefix="DF", name="四分之一线出局时账上还有大笔兵：领土掉到历史峰值的 1/4 就被引擎除名、余额清零；策略只算别人的这条线，不看自己的",
+         definition="结果行 died 且 lastTerritory ÷ peak ≤ 0.25、出局时 balance ≥10 万。引擎 game.js aliveTick L1298-1312：每拍检查，领土 ≤ ⌊峰值/4⌋ 就 collapse（L1303）；"
+                    "领土低于峰值时峰值每拍只回落 max(1, 差额/1000)（L1307）；collapse L1314-1334：有船在海上时不除名，但陆上的地和余额全清（L1316-1330）；否则 eliminate，余额清零。"
+                    "c110 全文 9 处读 g.peak，都是算对方的出局线（elimCost L513、L591、L1017、L1203、L2109、L2600、L2800、L3448、L5033），没有一处读 g.peak[me]。"
+                    "记：每个阵亡号的峰值、最后领土、出局时余额和密度；全队合计、余额 ≥10 万的个数",
+         detect="scripts/ffa.py [FB]（结果行的 peak / lastTerritory / balance）"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

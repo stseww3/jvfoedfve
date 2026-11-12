@@ -23,15 +23,28 @@ PAT = re.compile(r'\[HL-TICK\] t=(\d+) terr=(\d+)\([^)]*\) bal=(-?\d+) .* cmds=(
 
 def main():
     mid = sys.argv[1]
+    # B 组的影子表用引擎编号当号的标签，日志用号名（还会中途换名）：号名先归到影子的标签上（log_alias.py）
+    labels = set()
+    with open(os.path.join(ROOT, 'tmp', 'shadow', mid, 'intents.tsv'), encoding='utf8') as f:
+        for r in csv.DictReader(f, delimiter='\t'):
+            labels.add(r['bot'])
+    al = {}
+    if labels and all(x.isdigit() for x in labels):
+        sys.path.insert(0, HERE)
+        import log_alias
+        al = {k: str(v) for k, v in log_alias.alias(mid).items()}
+
+    def canon(nm):
+        return al.get(nm, nm)
     real = collections.defaultdict(dict)
     with open(os.path.join(DATA, mid, 'in_game.log'), encoding='utf8', errors='replace') as f:
         for L in f:
             if 'HL-TICK' not in L:
                 continue
             m = PAT.search(L)
-            b = re.search(r'\[([A-Za-z0-9_]+)\] \[HL-TICK\]', L)
+            b = re.search(r'\[([^\]]+)\] \[HL-TICK\]', L)
             if m and b:
-                real[b.group(1)][int(m.group(1))] = (int(m.group(2)), int(m.group(3)), int(m.group(4)))
+                real[canon(b.group(1))][int(m.group(1))] = (int(m.group(2)), int(m.group(3)), int(m.group(4)))
     shadow = collections.defaultdict(list)
     with open(os.path.join(ROOT, 'tmp', 'shadow', mid, 'logs.txt'), encoding='utf8', errors='replace') as f:
         for L in f:

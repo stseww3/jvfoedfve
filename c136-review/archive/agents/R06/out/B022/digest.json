@@ -1,0 +1,3648 @@
+{
+ "matchId": "B022",
+ "replaySrc": "B022",
+ "replayLast": 7933,
+ "endTick": 7932,
+ "land": 695915,
+ "humans": 20,
+ "presence": {
+  "9": {
+   "lastSnap": 2610,
+   "leaveT": null,
+   "deathT": 2633,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 2633
+  },
+  "10": {
+   "lastSnap": 4230,
+   "leaveT": null,
+   "deathT": 4323,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 4323
+  },
+  "11": {
+   "lastSnap": 5130,
+   "leaveT": null,
+   "deathT": 5147,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 5147
+  },
+  "12": {
+   "lastSnap": 3060,
+   "leaveT": null,
+   "deathT": 3102,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 3102
+  },
+  "13": {
+   "lastSnap": 7920,
+   "leaveT": null,
+   "deathT": null,
+   "endT": 7932,
+   "how": "end",
+   "leaveSrc": null,
+   "outT": 7932
+  },
+  "14": {
+   "lastSnap": 4410,
+   "leaveT": null,
+   "deathT": 4431,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 4431
+  },
+  "15": {
+   "lastSnap": 7920,
+   "leaveT": null,
+   "deathT": null,
+   "endT": 7932,
+   "how": "end",
+   "leaveSrc": null,
+   "outT": 7932
+  },
+  "16": {
+   "lastSnap": 7650,
+   "leaveT": null,
+   "deathT": 7696,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 7696
+  },
+  "17": {
+   "lastSnap": 7920,
+   "leaveT": null,
+   "deathT": null,
+   "endT": 7932,
+   "how": "end",
+   "leaveSrc": null,
+   "outT": 7932
+  },
+  "18": {
+   "lastSnap": 7920,
+   "leaveT": null,
+   "deathT": null,
+   "endT": 7932,
+   "how": "end",
+   "leaveSrc": null,
+   "outT": 7932
+  },
+  "19": {
+   "lastSnap": 7650,
+   "leaveT": null,
+   "deathT": 7681,
+   "endT": null,
+   "how": "died",
+   "leaveSrc": null,
+   "outT": 7681
+  }
+ },
+ "roster": {
+  "9": {
+   "names": [
+    "MasterChief"
+   ],
+   "team": 1,
+   "spawn": [
+    1266,
+    369
+   ],
+   "snaps": 24
+  },
+  "10": {
+   "names": [
+    "Sever (rus)"
+   ],
+   "team": 3,
+   "spawn": [
+    306,
+    322
+   ],
+   "snaps": 41
+  },
+  "11": {
+   "names": [
+    "Manchu"
+   ],
+   "team": 4,
+   "spawn": [
+    1270,
+    506
+   ],
+   "snaps": 53
+  },
+  "12": {
+   "names": [
+    "Ethereum"
+   ],
+   "team": 4,
+   "spawn": [
+    1010,
+    578
+   ],
+   "snaps": 29
+  },
+  "13": {
+   "names": [
+    "Rommel"
+   ],
+   "team": 2,
+   "spawn": [
+    994,
+    578
+   ],
+   "snaps": 83
+  },
+  "14": {
+   "names": [
+    "Heisenberg"
+   ],
+   "team": 3,
+   "spawn": [
+    1010,
+    578
+   ],
+   "snaps": 43
+  },
+  "15": {
+   "names": [
+    "Eisenhower"
+   ],
+   "team": 2,
+   "spawn": [
+    178,
+    194
+   ],
+   "snaps": 83
+  },
+  "16": {
+   "names": [
+    "Dixie"
+   ],
+   "team": 1,
+   "spawn": [
+    18,
+    274
+   ],
+   "snaps": 72
+  },
+  "17": {
+   "names": [
+    "BigBrain",
+    "Maradona",
+    "Mamluk",
+    "MaxVerstappen"
+   ],
+   "team": 3,
+   "spawn": [
+    658,
+    722
+   ],
+   "snaps": 88
+  },
+  "18": {
+   "names": [
+    "LeBron"
+   ],
+   "team": 2,
+   "spawn": [
+    658,
+    722
+   ],
+   "snaps": 86
+  },
+  "19": {
+   "names": [
+    "Kamakura",
+    "Oda Nobunaga",
+    "Askeladd"
+   ],
+   "team": 4,
+   "spawn": [
+    226,
+    18
+   ],
+   "snaps": 83
+  }
+ },
+ "teams": {
+  "1": {
+   "humans": 5,
+   "ours": [
+    9,
+    16
+   ],
+   "clans": {},
+   "poolOutsiders": []
+  },
+  "2": {
+   "humans": 5,
+   "ours": [
+    13,
+    15,
+    18
+   ],
+   "clans": {},
+   "poolOutsiders": []
+  },
+  "3": {
+   "humans": 5,
+   "ours": [
+    10,
+    14,
+    17
+   ],
+   "clans": {},
+   "poolOutsiders": []
+  },
+  "4": {
+   "humans": 5,
+   "ours": [
+    11,
+    12,
+    19
+   ],
+   "clans": {},
+   "poolOutsiders": []
+  }
+ },
+ "teamSnaps": [
+  {
+   "t": 2633,
+   "totals": {
+    "0": 5393,
+    "1": 114605,
+    "2": 232415,
+    "3": 132319,
+    "4": 195542
+   },
+   "by": "MasterChief",
+   "mine": 1,
+   "event": "died"
+  },
+  {
+   "t": 3102,
+   "totals": {
+    "0": 1640,
+    "1": 107561,
+    "2": 259534,
+    "3": 131574,
+    "4": 191225
+   },
+   "by": "Ethereum",
+   "mine": 4,
+   "event": "died"
+  },
+  {
+   "t": 4323,
+   "totals": {
+    "1": 126046,
+    "2": 310670,
+    "3": 88118,
+    "4": 163959
+   },
+   "by": "Sever (rus)",
+   "mine": 3,
+   "event": "died"
+  },
+  {
+   "t": 4431,
+   "totals": {
+    "1": 143216,
+    "2": 338314,
+    "3": 54613,
+    "4": 153220
+   },
+   "by": "Heisenberg",
+   "mine": 3,
+   "event": "died"
+  },
+  {
+   "t": 5147,
+   "totals": {
+    "1": 241196,
+    "2": 397784,
+    "3": 12,
+    "4": 47477
+   },
+   "by": "Manchu",
+   "mine": 4,
+   "event": "died"
+  },
+  {
+   "t": 7681,
+   "totals": {
+    "1": 24959,
+    "2": 661335,
+    "3": 12
+   },
+   "by": "Oda Nobunaga",
+   "mine": 4,
+   "event": "died"
+  },
+  {
+   "t": 7696,
+   "totals": {
+    "2": 671198,
+    "3": 12
+   },
+   "by": "Dixie",
+   "mine": 1,
+   "event": "died"
+  },
+  {
+   "t": 7932,
+   "totals": {
+    "2": 692282,
+    "3": 12
+   },
+   "by": "Rommel",
+   "mine": 2,
+   "event": "end"
+  },
+  {
+   "t": 7932,
+   "totals": {
+    "2": 692282,
+    "3": 12
+   },
+   "by": "Eisenhower",
+   "mine": 2,
+   "event": "end"
+  },
+  {
+   "t": 7932,
+   "totals": {
+    "2": 692282,
+    "3": 12
+   },
+   "by": "Maradona",
+   "mine": 3,
+   "event": "end"
+  },
+  {
+   "t": 7932,
+   "totals": {
+    "2": 692282,
+    "3": 12
+   },
+   "by": "LeBron",
+   "mine": 2,
+   "event": "end"
+  }
+ ],
+ "timeline": [
+  {
+   "t": 90,
+   "active": 11,
+   "seen": 11,
+   "terr": 132,
+   "share": 0.0001896783371532443,
+   "bal": 10142,
+   "dens": 76.83333333333333,
+   "boxed": 0,
+   "perTeam": {
+    "1": [
+     2,
+     24,
+     1844
+    ],
+    "3": [
+     3,
+     36,
+     2766
+    ],
+    "4": [
+     3,
+     36,
+     2766
+    ],
+    "2": [
+     3,
+     36,
+     2766
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 180,
+   "active": 11,
+   "seen": 11,
+   "terr": 328,
+   "share": 0.00047132192868381916,
+   "bal": 15062,
+   "dens": 45.920731707317074,
+   "boxed": 0,
+   "perTeam": {
+    "1": [
+     2,
+     24,
+     3058
+    ],
+    "3": [
+     3,
+     36,
+     4587
+    ],
+    "4": [
+     3,
+     36,
+     3980
+    ],
+    "2": [
+     3,
+     232,
+     3437
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 270,
+   "active": 11,
+   "seen": 11,
+   "terr": 3137,
+   "share": 0.004507734421588843,
+   "bal": 13281,
+   "dens": 4.2336627350972265,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     2,
+     708,
+     1678
+    ],
+    "3": [
+     3,
+     451,
+     4169
+    ],
+    "4": [
+     3,
+     977,
+     3471
+    ],
+    "2": [
+     3,
+     1001,
+     3963
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 450,
+   "active": 11,
+   "seen": 11,
+   "terr": 9692,
+   "share": 0.013926988209766997,
+   "bal": 26905,
+   "dens": 2.7760008254230293,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     2,
+     2086,
+     5609
+    ],
+    "3": [
+     3,
+     1899,
+     5018
+    ],
+    "4": [
+     3,
+     3231,
+     8637
+    ],
+    "2": [
+     3,
+     2476,
+     7641
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 630,
+   "active": 11,
+   "seen": 11,
+   "terr": 25768,
+   "share": 0.03702751054367272,
+   "bal": 51616,
+   "dens": 2.00310462589258,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     2,
+     4751,
+     9820
+    ],
+    "3": [
+     3,
+     4658,
+     11652
+    ],
+    "4": [
+     3,
+     8607,
+     15671
+    ],
+    "2": [
+     3,
+     7752,
+     14473
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 900,
+   "active": 11,
+   "seen": 11,
+   "terr": 58580,
+   "share": 0.08417694689725039,
+   "bal": 177000,
+   "dens": 3.02150904745647,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     2,
+     11677,
+     28781
+    ],
+    "3": [
+     3,
+     10425,
+     31743
+    ],
+    "4": [
+     3,
+     17524,
+     58283
+    ],
+    "2": [
+     3,
+     18954,
+     58193
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 1170,
+   "active": 11,
+   "seen": 10,
+   "terr": 74880,
+   "share": 0.10759934762147676,
+   "bal": 245162,
+   "dens": 3.274065170940171,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     1,
+     6850,
+     14654
+    ],
+    "3": [
+     3,
+     14998,
+     35701
+    ],
+    "4": [
+     3,
+     26217,
+     97087
+    ],
+    "2": [
+     3,
+     26815,
+     97720
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 1530,
+   "active": 11,
+   "seen": 11,
+   "terr": 141673,
+   "share": 0.20357802317811802,
+   "bal": 939844,
+   "dens": 6.6338963669859465,
+   "boxed": 1,
+   "perTeam": {
+    "1": [
+     2,
+     24631,
+     206526
+    ],
+    "3": [
+     3,
+     27576,
+     134937
+    ],
+    "4": [
+     3,
+     47587,
+     277402
+    ],
+    "2": [
+     3,
+     41879,
+     320979
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 2070,
+   "active": 11,
+   "seen": 10,
+   "terr": 211599,
+   "share": 0.30405868532794955,
+   "bal": 1708757,
+   "dens": 8.075449316868227,
+   "boxed": 2,
+   "perTeam": {
+    "1": [
+     1,
+     16920,
+     235369
+    ],
+    "3": [
+     3,
+     57280,
+     299546
+    ],
+    "4": [
+     3,
+     78409,
+     542609
+    ],
+    "2": [
+     3,
+     58990,
+     631233
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 2520,
+   "active": 11,
+   "seen": 11,
+   "terr": 265430,
+   "share": 0.38141152295898206,
+   "bal": 4225202,
+   "dens": 15.91832874957616,
+   "boxed": 5,
+   "perTeam": {
+    "1": [
+     2,
+     53379,
+     521917
+    ],
+    "3": [
+     3,
+     57963,
+     846420
+    ],
+    "4": [
+     3,
+     82636,
+     1203465
+    ],
+    "2": [
+     3,
+     71452,
+     1653400
+    ]
+   },
+   "teamSnapT": 2633
+  },
+  {
+   "t": 2633,
+   "active": 10,
+   "seen": 10,
+   "terr": 253022,
+   "share": 0.3635817592665771,
+   "bal": 4987278,
+   "dens": 19.7108472781023,
+   "boxed": 4,
+   "perTeam": {
+    "3": [
+     3,
+     56607,
+     979376
+    ],
+    "4": [
+     3,
+     83754,
+     1440540
+    ],
+    "2": [
+     3,
+     71355,
+     1922945
+    ],
+    "1": [
+     1,
+     41306,
+     644417
+    ]
+   },
+   "teamSnapT": 2633
+  },
+  {
+   "t": 3060,
+   "active": 10,
+   "seen": 10,
+   "terr": 246374,
+   "share": 0.35402886846813186,
+   "bal": 9568060,
+   "dens": 38.83551024052863,
+   "boxed": 5,
+   "perTeam": {
+    "3": [
+     3,
+     50996,
+     1658150
+    ],
+    "4": [
+     3,
+     78786,
+     3051055
+    ],
+    "2": [
+     3,
+     70855,
+     3627546
+    ],
+    "1": [
+     1,
+     45737,
+     1231309
+    ]
+   },
+   "teamSnapT": 3102
+  },
+  {
+   "t": 3102,
+   "active": 9,
+   "seen": 9,
+   "terr": 246374,
+   "share": 0.35402886846813186,
+   "bal": 9568060,
+   "dens": 38.83551024052863,
+   "boxed": 4,
+   "perTeam": {
+    "3": [
+     3,
+     50996,
+     1658150
+    ],
+    "4": [
+     2,
+     78786,
+     3051055
+    ],
+    "2": [
+     3,
+     70855,
+     3627546
+    ],
+    "1": [
+     1,
+     45737,
+     1231309
+    ]
+   },
+   "teamSnapT": 3102
+  },
+  {
+   "t": 3510,
+   "active": 9,
+   "seen": 9,
+   "terr": 243407,
+   "share": 0.3497654167534828,
+   "bal": 17692022,
+   "dens": 72.68493510868628,
+   "boxed": 4,
+   "perTeam": {
+    "3": [
+     3,
+     47531,
+     3006085
+    ],
+    "4": [
+     2,
+     78049,
+     6089812
+    ],
+    "2": [
+     3,
+     70965,
+     5878479
+    ],
+    "1": [
+     1,
+     46862,
+     2717646
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 4050,
+   "active": 9,
+   "seen": 9,
+   "terr": 267330,
+   "share": 0.38414174144830904,
+   "bal": 28170451,
+   "dens": 105.37706579882543,
+   "boxed": 4,
+   "perTeam": {
+    "3": [
+     3,
+     42251,
+     4995128
+    ],
+    "4": [
+     2,
+     85243,
+     7179136
+    ],
+    "2": [
+     3,
+     90256,
+     10560161
+    ],
+    "1": [
+     1,
+     49580,
+     5436026
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 4323,
+   "active": 8,
+   "seen": 8,
+   "terr": 252053,
+   "share": 0.36218934783702034,
+   "bal": 23624543,
+   "dens": 93.72847377337305,
+   "boxed": 3,
+   "perTeam": {
+    "4": [
+     2,
+     82456,
+     5053317
+    ],
+    "2": [
+     3,
+     92676,
+     11083088
+    ],
+    "3": [
+     2,
+     18860,
+     1701236
+    ],
+    "1": [
+     1,
+     58061,
+     5786902
+    ]
+   },
+   "teamSnapT": 4323
+  },
+  {
+   "t": 4431,
+   "active": 7,
+   "seen": 7,
+   "terr": 250238,
+   "share": 0.3595812707011632,
+   "bal": 22843243,
+   "dens": 91.28606766358426,
+   "boxed": 4,
+   "perTeam": {
+    "4": [
+     2,
+     84382,
+     5676471
+    ],
+    "2": [
+     3,
+     96935,
+     10666580
+    ],
+    "1": [
+     1,
+     68909,
+     6499574
+    ],
+    "3": [
+     1,
+     12,
+     618
+    ]
+   },
+   "teamSnapT": 4431
+  },
+  {
+   "t": 4500,
+   "active": 7,
+   "seen": 7,
+   "terr": 258540,
+   "share": 0.3715108885424226,
+   "bal": 19943050,
+   "dens": 77.13719347102963,
+   "boxed": 4,
+   "perTeam": {
+    "4": [
+     2,
+     83346,
+     5637944
+    ],
+    "2": [
+     3,
+     99504,
+     8205779
+    ],
+    "1": [
+     1,
+     75678,
+     6098643
+    ],
+    "3": [
+     1,
+     12,
+     684
+    ]
+   },
+   "teamSnapT": 4431
+  },
+  {
+   "t": 5040,
+   "active": 7,
+   "seen": 7,
+   "terr": 274121,
+   "share": 0.3939001171120036,
+   "bal": 30396267,
+   "dens": 110.88631297857515,
+   "boxed": 6,
+   "perTeam": {
+    "4": [
+     2,
+     62790,
+     4536701
+    ],
+    "2": [
+     3,
+     100235,
+     11363186
+    ],
+    "1": [
+     1,
+     111084,
+     14495171
+    ],
+    "3": [
+     1,
+     12,
+     1209
+    ]
+   },
+   "teamSnapT": 5147
+  },
+  {
+   "t": 5147,
+   "active": 6,
+   "seen": 6,
+   "terr": 259636,
+   "share": 0.37308579352363436,
+   "bal": 25856929,
+   "dens": 99.58915173550663,
+   "boxed": 5,
+   "perTeam": {
+    "2": [
+     3,
+     100235,
+     12025108
+    ],
+    "1": [
+     1,
+     111912,
+     10441034
+    ],
+    "3": [
+     1,
+     12,
+     1318
+    ],
+    "4": [
+     1,
+     47477,
+     3389469
+    ]
+   },
+   "teamSnapT": 5147
+  },
+  {
+   "t": 6030,
+   "active": 6,
+   "seen": 6,
+   "terr": 296284,
+   "share": 0.4257473973114533,
+   "bal": 37564720,
+   "dens": 126.78619162695252,
+   "boxed": 5,
+   "perTeam": {
+    "2": [
+     3,
+     100542,
+     14484786
+    ],
+    "1": [
+     1,
+     148253,
+     16013675
+    ],
+    "3": [
+     1,
+     12,
+     1796
+    ],
+    "4": [
+     1,
+     47477,
+     7064463
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 7020,
+   "active": 6,
+   "seen": 6,
+   "terr": 234214,
+   "share": 0.33655547013643905,
+   "bal": 26818729,
+   "dens": 114.50523452910586,
+   "boxed": 5,
+   "perTeam": {
+    "2": [
+     3,
+     100932,
+     14543150
+    ],
+    "1": [
+     1,
+     85793,
+     5152229
+    ],
+    "3": [
+     1,
+     12,
+     1800
+    ],
+    "4": [
+     1,
+     47477,
+     7121550
+    ]
+   },
+   "teamSnapT": null
+  },
+  {
+   "t": 7681,
+   "active": 5,
+   "seen": 5,
+   "terr": 133166,
+   "share": 0.19135382913143129,
+   "bal": 16470651,
+   "dens": 123.68510730967364,
+   "boxed": 4,
+   "perTeam": {
+    "2": [
+     3,
+     100970,
+     15094202
+    ],
+    "1": [
+     1,
+     32184,
+     1374649
+    ],
+    "3": [
+     1,
+     12,
+     1800
+    ]
+   },
+   "teamSnapT": 7681
+  },
+  {
+   "t": 7696,
+   "active": 4,
+   "seen": 4,
+   "terr": 100982,
+   "share": 0.14510680183643118,
+   "bal": 15096002,
+   "dens": 149.49200847675823,
+   "boxed": 4,
+   "perTeam": {
+    "2": [
+     3,
+     100970,
+     15094202
+    ],
+    "3": [
+     1,
+     12,
+     1800
+    ]
+   },
+   "teamSnapT": 7696
+  },
+  {
+   "t": 7932,
+   "active": 4,
+   "seen": 4,
+   "terr": 104837,
+   "share": 0.1506462714555657,
+   "bal": 14696908,
+   "dens": 140.18817783797704,
+   "boxed": 3,
+   "perTeam": {
+    "2": [
+     3,
+     104825,
+     14695108
+    ],
+    "3": [
+     1,
+     12,
+     1800
+    ]
+   },
+   "teamSnapT": 7932
+  }
+ ],
+ "donations": [
+  {
+   "t": 3010,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1343943,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589606,
+   "me": 13,
+   "accepted": true,
+   "execT": 3017,
+   "fee": 83996,
+   "amount": 244114,
+   "eff": 0.744,
+   "recvTerr": 33078,
+   "recvBal": 641563,
+   "limit": 193,
+   "points": 107,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3220,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1353622,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589634,
+   "me": 13,
+   "accepted": true,
+   "execT": 3227,
+   "fee": 84601,
+   "amount": 245872,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1178765,
+   "limit": 209,
+   "points": 11,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3420,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1346866,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589659,
+   "me": 13,
+   "accepted": true,
+   "execT": 3430,
+   "fee": 84179,
+   "amount": 244645,
+   "eff": 0.744,
+   "recvTerr": 32084,
+   "recvBal": 2812210,
+   "limit": 229,
+   "points": 11,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3630,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1356952,
+   "dMe": 79,
+   "dAlly": null,
+   "line": 8589685,
+   "me": 13,
+   "accepted": true,
+   "execT": 3640,
+   "fee": 84809,
+   "amount": 246477,
+   "eff": 0.744,
+   "recvTerr": 39633,
+   "recvBal": 3937343,
+   "limit": 249,
+   "points": 10,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4275,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 2206644,
+   "dMe": 128,
+   "dAlly": null,
+   "line": 8589763,
+   "me": 13,
+   "accepted": true,
+   "execT": 4284,
+   "fee": 137915,
+   "amount": 605534,
+   "eff": 0.8144927536231884,
+   "recvTerr": 20607,
+   "recvBal": 2452648,
+   "limit": 309,
+   "points": 33,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4300,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 1590086,
+   "dMe": 92,
+   "dAlly": null,
+   "line": 8589767,
+   "me": 13,
+   "accepted": true,
+   "execT": 4312,
+   "fee": 99380,
+   "amount": 288824,
+   "eff": 0.744,
+   "recvTerr": 20607,
+   "recvBal": 2452648,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4415,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 1393864,
+   "dMe": 81,
+   "dAlly": null,
+   "line": 8589790,
+   "me": 13,
+   "accepted": true,
+   "execT": 4466,
+   "fee": 87116,
+   "amount": 253182,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4445,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 1446360,
+   "dMe": 84,
+   "dAlly": null,
+   "line": 8589795,
+   "me": 13,
+   "accepted": false,
+   "fee": 90397,
+   "amount": 262717,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4465,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 1482451,
+   "dMe": 86,
+   "dAlly": null,
+   "line": 8589799,
+   "me": 13,
+   "accepted": false,
+   "fee": 92653,
+   "amount": 269273,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3805,
+   "kind": "rescue",
+   "pct": 145,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": null,
+   "myBal": 2824359,
+   "dMe": 111,
+   "dAlly": 67,
+   "line": 8589709,
+   "me": 14,
+   "accepted": true,
+   "execT": 3815,
+   "fee": 176522,
+   "amount": 402691,
+   "eff": 0.6952380952380952,
+   "recvTerr": 18419,
+   "recvBal": 1188468,
+   "limit": 269,
+   "points": 25,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 4120,
+   "kind": "surplus",
+   "pct": 153,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "false",
+   "myBal": 3221985,
+   "dMe": 126,
+   "dAlly": null,
+   "line": 8589742,
+   "me": 14,
+   "accepted": true,
+   "execT": 4130,
+   "fee": 201374,
+   "amount": 484556,
+   "eff": 0.7064220183486238,
+   "recvTerr": 16734,
+   "recvBal": 1956486,
+   "limit": 299,
+   "points": 32,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 4285,
+   "kind": "rescue",
+   "pct": 81,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": null,
+   "myBal": 2086196,
+   "dMe": 103,
+   "dAlly": 70,
+   "line": 8589765,
+   "me": 14,
+   "accepted": true,
+   "execT": 4298,
+   "fee": 130387,
+   "amount": 167058,
+   "eff": 0.5616438356164384,
+   "recvTerr": 17603,
+   "recvBal": 1987408,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 3100,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1632689,
+   "dMe": 79,
+   "dAlly": null,
+   "line": 8589617,
+   "me": 15,
+   "accepted": false,
+   "fee": 102043,
+   "amount": 296562,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1014427,
+   "limit": 201,
+   "points": 129,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3120,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1674422,
+   "dMe": 81,
+   "dAlly": null,
+   "line": 8589619,
+   "me": 15,
+   "accepted": false,
+   "fee": 104651,
+   "amount": 304143,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1014427,
+   "limit": 201,
+   "points": 133,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3140,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1717222,
+   "dMe": 83,
+   "dAlly": null,
+   "line": 8589620,
+   "me": 15,
+   "accepted": true,
+   "execT": 3213,
+   "fee": 107326,
+   "amount": 311917,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1014427,
+   "limit": 201,
+   "points": 136,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3160,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1761115,
+   "dMe": 85,
+   "dAlly": null,
+   "line": 8589630,
+   "me": 15,
+   "accepted": false,
+   "fee": 110069,
+   "amount": 319890,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1178765,
+   "limit": 201,
+   "points": 139,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3180,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1806131,
+   "dMe": 88,
+   "dAlly": null,
+   "line": 8589632,
+   "me": 15,
+   "accepted": false,
+   "fee": 112883,
+   "amount": 328066,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1178765,
+   "limit": 201,
+   "points": 143,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3200,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1872904,
+   "dMe": 91,
+   "dAlly": null,
+   "line": 8589633,
+   "me": 15,
+   "accepted": false,
+   "fee": 117056,
+   "amount": 340195,
+   "eff": 0.744,
+   "recvTerr": 32966,
+   "recvBal": 1178765,
+   "limit": 209,
+   "points": 148,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3300,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1626673,
+   "dMe": 79,
+   "dAlly": null,
+   "line": 8589645,
+   "me": 15,
+   "accepted": true,
+   "execT": 3311,
+   "fee": 101667,
+   "amount": 295469,
+   "eff": 0.744,
+   "recvTerr": 32851,
+   "recvBal": 1967071,
+   "limit": 219,
+   "points": 12,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3500,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1626526,
+   "dMe": 79,
+   "dAlly": null,
+   "line": 8589665,
+   "me": 15,
+   "accepted": true,
+   "execT": 3507,
+   "fee": 101657,
+   "amount": 295443,
+   "eff": 0.744,
+   "recvTerr": 32084,
+   "recvBal": 2812210,
+   "limit": 239,
+   "points": 13,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3700,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 18,
+   "toName": "LeBron",
+   "boxedIn": "true",
+   "myBal": 1626382,
+   "dMe": 79,
+   "dAlly": null,
+   "line": 8589697,
+   "me": 15,
+   "accepted": true,
+   "execT": 3710,
+   "fee": 101648,
+   "amount": 295417,
+   "eff": 0.744,
+   "recvTerr": 44588,
+   "recvBal": 4684324,
+   "limit": 259,
+   "points": 10,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 1500,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589433,
+   "me": 17,
+   "accepted": true,
+   "execT": 1757,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 85,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1520,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589435,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 85,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1540,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589439,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 85,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1560,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589444,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 85,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1580,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589445,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 85,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1600,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589446,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 91,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1620,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589450,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 91,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1640,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589456,
+   "me": 17,
+   "accepted": true,
+   "execT": 1911,
+   "late": true,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 91,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1660,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589457,
+   "me": 17,
+   "accepted": true,
+   "execT": 1736,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 91,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1680,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589458,
+   "me": 17,
+   "accepted": true,
+   "execT": 1736,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 91,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1700,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589459,
+   "me": 17,
+   "accepted": true,
+   "execT": 1736,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 97,
+   "points": 2,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 1720,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 1800,
+   "dMe": 150,
+   "dAlly": null,
+   "line": 8589463,
+   "me": 17,
+   "accepted": true,
+   "execT": 1736,
+   "fee": 112,
+   "amount": 493,
+   "eff": 0.8144927536231884,
+   "recvTerr": 11469,
+   "recvBal": 41628,
+   "limit": 97,
+   "points": 2,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 3740,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 10,
+   "toName": "Sever (rus)",
+   "boxedIn": "true",
+   "myBal": 664,
+   "dMe": 55,
+   "dAlly": null,
+   "line": 8589699,
+   "me": 17,
+   "accepted": true,
+   "execT": 3752,
+   "fee": 41,
+   "amount": 120,
+   "eff": 0.744,
+   "recvTerr": 20271,
+   "recvBal": 1224639,
+   "limit": 259,
+   "points": 4,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 3990,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 14,
+   "toName": "Heisenberg",
+   "boxedIn": "true",
+   "myBal": 661,
+   "dMe": 55,
+   "dAlly": null,
+   "line": 8589731,
+   "me": 17,
+   "accepted": true,
+   "execT": 3997,
+   "fee": 41,
+   "amount": 120,
+   "eff": 0.744,
+   "recvTerr": 25505,
+   "recvBal": 2764037,
+   "limit": 279,
+   "points": 4,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 4230,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 14,
+   "toName": "Heisenberg",
+   "boxedIn": "true",
+   "myBal": 664,
+   "dMe": 55,
+   "dAlly": null,
+   "line": 8589759,
+   "me": 17,
+   "accepted": true,
+   "execT": 4242,
+   "fee": 41,
+   "amount": 120,
+   "eff": 0.744,
+   "recvTerr": 25505,
+   "recvBal": 2886886,
+   "limit": 309,
+   "points": 4,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 3
+  },
+  {
+   "t": 4275,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 7163399,
+   "dMe": 133,
+   "dAlly": null,
+   "line": 8589764,
+   "me": 18,
+   "accepted": true,
+   "execT": 4319,
+   "fee": 447712,
+   "amount": 1965737,
+   "eff": 0.8144927536231884,
+   "recvTerr": 20607,
+   "recvBal": 2452648,
+   "limit": 309,
+   "points": 99,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4300,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 7322491,
+   "dMe": 136,
+   "dAlly": null,
+   "line": 8589768,
+   "me": 18,
+   "accepted": true,
+   "execT": 4368,
+   "fee": 457655,
+   "amount": 2009394,
+   "eff": 0.8144927536231884,
+   "recvTerr": 20607,
+   "recvBal": 2452648,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4345,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 6743822,
+   "dMe": 125,
+   "dAlly": null,
+   "line": 8589778,
+   "me": 18,
+   "accepted": true,
+   "execT": 4403,
+   "fee": 421488,
+   "amount": 1850599,
+   "eff": 0.8144927536231884,
+   "recvTerr": 21396,
+   "recvBal": 3209400,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4365,
+   "kind": "surplus",
+   "pct": 280,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 6840602,
+   "dMe": 127,
+   "dAlly": null,
+   "line": 8589779,
+   "me": 18,
+   "accepted": false,
+   "fee": 427537,
+   "amount": 1877157,
+   "eff": 0.8144927536231884,
+   "recvTerr": 21396,
+   "recvBal": 3209400,
+   "limit": null,
+   "points": null,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4415,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 5502343,
+   "dMe": 102,
+   "dAlly": null,
+   "line": 8589786,
+   "me": 18,
+   "accepted": true,
+   "execT": 4466,
+   "fee": 343896,
+   "amount": 999449,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4435,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 5654139,
+   "dMe": 105,
+   "dAlly": null,
+   "line": 8589792,
+   "me": 18,
+   "accepted": true,
+   "execT": 4501,
+   "fee": 353383,
+   "amount": 1027021,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4455,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 5800956,
+   "dMe": 107,
+   "dAlly": null,
+   "line": 8589796,
+   "me": 18,
+   "accepted": true,
+   "execT": 4522,
+   "fee": 362559,
+   "amount": 1053689,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4475,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 4502555,
+   "dMe": 83,
+   "dAlly": null,
+   "line": 8589798,
+   "me": 18,
+   "accepted": false,
+   "fee": 281409,
+   "amount": 817846,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 4495,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 15,
+   "toName": "Eisenhower",
+   "boxedIn": "true",
+   "myBal": 4633161,
+   "dMe": 86,
+   "dAlly": null,
+   "line": 8589801,
+   "me": 18,
+   "accepted": false,
+   "fee": 289572,
+   "amount": 841570,
+   "eff": 0.744,
+   "recvTerr": 25655,
+   "recvBal": 3770373,
+   "limit": null,
+   "points": null,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 2
+  },
+  {
+   "t": 3520,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3685496,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589675,
+   "me": 19,
+   "accepted": true,
+   "execT": 3528,
+   "fee": 230343,
+   "amount": 669435,
+   "eff": 0.744,
+   "recvTerr": 30572,
+   "recvBal": 2455558,
+   "limit": 239,
+   "points": 25,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 3700,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3686270,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589696,
+   "me": 19,
+   "accepted": true,
+   "execT": 3710,
+   "fee": 230391,
+   "amount": 669576,
+   "eff": 0.744,
+   "recvTerr": 30572,
+   "recvBal": 3761804,
+   "limit": 259,
+   "points": 25,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 3890,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3689334,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589719,
+   "me": 19,
+   "accepted": true,
+   "execT": 3899,
+   "fee": 230583,
+   "amount": 670132,
+   "eff": 0.744,
+   "recvTerr": 33664,
+   "recvBal": 3972154,
+   "limit": 269,
+   "points": 23,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4070,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3700518,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589741,
+   "me": 19,
+   "accepted": true,
+   "execT": 4081,
+   "fee": 231282,
+   "amount": 672164,
+   "eff": 0.744,
+   "recvTerr": 37766,
+   "recvBal": 3580805,
+   "limit": 289,
+   "points": 21,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4250,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3708284,
+   "dMe": 78,
+   "dAlly": null,
+   "line": 8589762,
+   "me": 19,
+   "accepted": true,
+   "execT": 4263,
+   "fee": 231767,
+   "amount": 673575,
+   "eff": 0.744,
+   "recvTerr": 38875,
+   "recvBal": 4040351,
+   "limit": 309,
+   "points": 21,
+   "heur": null,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4430,
+   "kind": "rescue",
+   "pct": 62,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3712812,
+   "dMe": 78,
+   "dAlly": 54,
+   "line": 8589793,
+   "me": 19,
+   "accepted": true,
+   "execT": 4487,
+   "fee": 232050,
+   "amount": 228424,
+   "eff": 0.49606299212598426,
+   "recvTerr": 36905,
+   "recvBal": 2066186,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4450,
+   "kind": "rescue",
+   "pct": 88,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3818250,
+   "dMe": 80,
+   "dAlly": 51,
+   "line": 8589797,
+   "me": 19,
+   "accepted": true,
+   "execT": 4550,
+   "late": true,
+   "fee": 238640,
+   "amount": 331859,
+   "eff": 0.5816993464052288,
+   "recvTerr": 36905,
+   "recvBal": 2066186,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4470,
+   "kind": "surplus",
+   "pct": 185,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": "true",
+   "myBal": 3926683,
+   "dMe": 83,
+   "dAlly": null,
+   "line": 8589800,
+   "me": 19,
+   "accepted": true,
+   "execT": 4557,
+   "fee": 245417,
+   "amount": 713245,
+   "eff": 0.744,
+   "recvTerr": 36905,
+   "recvBal": 2066186,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4510,
+   "kind": "rescue",
+   "pct": 55,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3685967,
+   "dMe": 78,
+   "dAlly": 54,
+   "line": 8589810,
+   "me": 19,
+   "accepted": true,
+   "execT": 4669,
+   "late": true,
+   "fee": 230372,
+   "amount": 201576,
+   "eff": 0.4666666666666667,
+   "recvTerr": 35869,
+   "recvBal": 2003226,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4530,
+   "kind": "rescue",
+   "pct": 82,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3790643,
+   "dMe": 80,
+   "dAlly": 51,
+   "line": 8589812,
+   "me": 19,
+   "accepted": true,
+   "execT": 4669,
+   "late": true,
+   "fee": 236915,
+   "amount": 307249,
+   "eff": 0.564625850340136,
+   "recvTerr": 35869,
+   "recvBal": 2003226,
+   "limit": null,
+   "points": null,
+   "heur": true,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 4550,
+   "kind": "rescue",
+   "pct": 108,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3898292,
+   "dMe": 82,
+   "dAlly": 49,
+   "line": 8589813,
+   "me": 19,
+   "accepted": true,
+   "execT": 4669,
+   "late": true,
+   "fee": 243643,
+   "amount": 414954,
+   "eff": 0.630057803468208,
+   "recvTerr": 35869,
+   "recvBal": 2003226,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 4
+  },
+  {
+   "t": 5100,
+   "kind": "rescue",
+   "pct": 79,
+   "to": 11,
+   "toName": "Manchu",
+   "boxedIn": null,
+   "myBal": 3781870,
+   "dMe": 80,
+   "dAlly": 63,
+   "line": 8589869,
+   "me": 19,
+   "accepted": true,
+   "execT": 5110,
+   "fee": 236366,
+   "amount": 295458,
+   "eff": 0.5555555555555556,
+   "recvTerr": 15313,
+   "recvBal": 1103212,
+   "limit": null,
+   "points": null,
+   "heur": false,
+   "toSquad": true,
+   "toTeam": 4
+  }
+ ],
+ "drops": [
+  {
+   "me": 9,
+   "name": "MasterChief",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 992,
+   "dropPct": 35.12099411379987,
+   "terr0": 12,
+   "terr1": 488,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1016,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 9,
+   "name": "MasterChief",
+   "t0": 2070,
+   "t1": 2160,
+   "bal0": 235369,
+   "bal1": 70884,
+   "dropPct": 69.88388445377258,
+   "terr0": 16920,
+   "terr1": 22010,
+   "nAtk": 9,
+   "nBoat": 0,
+   "estAtk": 193156,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "7": 5,
+    "512": 4
+   },
+   "attackers": {
+    "7": 1
+   },
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 13.9,
+   "nb0": 1
+  },
+  {
+   "me": 9,
+   "name": "MasterChief",
+   "t0": 2520,
+   "t1": 2610,
+   "bal0": 67133,
+   "bal1": 30290,
+   "dropPct": 54.88061013212578,
+   "terr0": 12378,
+   "terr1": 6917,
+   "nAtk": 0,
+   "nBoat": 1,
+   "estAtk": 0,
+   "estBoat": 10488,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "7": 1
+   },
+   "cause": "发船+被打",
+   "covered": true,
+   "dens0": 5.4,
+   "nb0": 1
+  },
+  {
+   "me": 10,
+   "name": "Sever (rus)",
+   "t0": 270,
+   "t1": 360,
+   "bal0": 1753,
+   "bal1": 444,
+   "dropPct": 74.67199087278951,
+   "terr0": 12,
+   "terr1": 414,
+   "nAtk": 3,
+   "nBoat": 0,
+   "estAtk": 1443,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 3
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 146.1,
+   "nb0": 0
+  },
+  {
+   "me": 10,
+   "name": "Sever (rus)",
+   "t0": 900,
+   "t1": 1080,
+   "bal0": 11643,
+   "bal1": 7035,
+   "dropPct": 39.57742849780984,
+   "terr0": 5831,
+   "terr1": 7350,
+   "nAtk": 6,
+   "nBoat": 0,
+   "estAtk": 9657,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 1,
+    "258": 4,
+    "266": 1
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 2.0,
+   "nb0": 7
+  },
+  {
+   "me": 10,
+   "name": "Sever (rus)",
+   "t0": 1980,
+   "t1": 2070,
+   "bal0": 146120,
+   "bal1": 33835,
+   "dropPct": 76.84437448672324,
+   "terr0": 29799,
+   "terr1": 31479,
+   "nAtk": 8,
+   "nBoat": 0,
+   "estAtk": 130384,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 5,
+    "228": 3
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 4.9,
+   "nb0": 3
+  },
+  {
+   "me": 11,
+   "name": "Manchu",
+   "t0": 1170,
+   "t1": 1260,
+   "bal0": 50211,
+   "bal1": 24080,
+   "dropPct": 52.042381151540496,
+   "terr0": 9779,
+   "terr1": 11782,
+   "nAtk": 8,
+   "nBoat": 0,
+   "estAtk": 38136,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "259": 2,
+    "457": 3,
+    "512": 1,
+    "414": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 5.1,
+   "nb0": 3
+  },
+  {
+   "me": 11,
+   "name": "Manchu",
+   "t0": 4230,
+   "t1": 4320,
+   "bal0": 4040351,
+   "bal1": 1912923,
+   "dropPct": 52.654534222398006,
+   "terr0": 38875,
+   "terr1": 34979,
+   "nAtk": 4,
+   "nBoat": 0,
+   "estAtk": 2486096,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "7": 4
+   },
+   "attackers": {
+    "7": 1
+   },
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 103.9,
+   "nb0": 1
+  },
+  {
+   "me": 11,
+   "name": "Manchu",
+   "t0": 4860,
+   "t1": 4950,
+   "bal0": 2457506,
+   "bal1": 1211365,
+   "dropPct": 50.70754659398594,
+   "terr0": 29313,
+   "terr1": 17477,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "5": 1
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 83.8,
+   "nb0": 2
+  },
+  {
+   "me": 11,
+   "name": "Manchu",
+   "t0": 5040,
+   "t1": 5130,
+   "bal0": 1103212,
+   "bal1": 747480,
+   "dropPct": 32.24511698567456,
+   "terr0": 15313,
+   "terr1": 8592,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "5": 1
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 72.0,
+   "nb0": 2
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 701,
+   "dropPct": 54.15304120340092,
+   "terr0": 12,
+   "terr1": 126,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1075,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "t0": 1170,
+   "t1": 1260,
+   "bal0": 21194,
+   "bal1": 13002,
+   "dropPct": 38.65244880626592,
+   "terr0": 6746,
+   "terr1": 6838,
+   "nAtk": 8,
+   "nBoat": 0,
+   "estAtk": 17034,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "162": 2,
+    "512": 2,
+    "72": 2,
+    "243": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 3.1,
+   "nb0": 8
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "t0": 2160,
+   "t1": 2250,
+   "bal0": 236446,
+   "bal1": 52151,
+   "dropPct": 77.94380112160916,
+   "terr0": 15340,
+   "terr1": 19101,
+   "nAtk": 5,
+   "nBoat": 2,
+   "estAtk": 150424,
+   "estBoat": 47090,
+   "estDon": 0,
+   "targets": {
+    "5": 5
+   },
+   "attackers": {
+    "5": 1
+   },
+   "cause": "陆攻+发船",
+   "covered": true,
+   "dens0": 15.4,
+   "nb0": 1
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "t0": 2430,
+   "t1": 2520,
+   "bal0": 64556,
+   "bal1": 29852,
+   "dropPct": 53.75797756986182,
+   "terr0": 14329,
+   "terr1": 6526,
+   "nAtk": 0,
+   "nBoat": 1,
+   "estAtk": 0,
+   "estBoat": 10086,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {},
+   "cause": "发船+被打",
+   "covered": true,
+   "dens0": 4.5,
+   "nb0": 1
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "t0": 2700,
+   "t1": 2790,
+   "bal0": 38730,
+   "bal1": 0,
+   "dropPct": 100.0,
+   "terr0": 6526,
+   "terr1": 0,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "5": 1
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 5.9,
+   "nb0": 1
+  },
+  {
+   "me": 13,
+   "name": "Rommel",
+   "t0": 990,
+   "t1": 1080,
+   "bal0": 27012,
+   "bal1": 15510,
+   "dropPct": 42.58107507774322,
+   "terr0": 6491,
+   "terr1": 7750,
+   "nAtk": 5,
+   "nBoat": 0,
+   "estAtk": 17766,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "93": 2,
+    "191": 2,
+    "425": 1
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 4.2,
+   "nb0": 10
+  },
+  {
+   "me": 13,
+   "name": "Rommel",
+   "t0": 4230,
+   "t1": 4320,
+   "bal0": 2154043,
+   "bal1": 1231874,
+   "dropPct": 42.81107665910105,
+   "terr0": 17282,
+   "terr1": 17282,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 1131653,
+   "targets": {},
+   "attackers": {},
+   "cause": "捐款",
+   "covered": true,
+   "dens0": 124.6,
+   "nb0": 0
+  },
+  {
+   "me": 14,
+   "name": "Heisenberg",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 663,
+   "dropPct": 56.6383257030739,
+   "terr0": 12,
+   "terr1": 427,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1101,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 14,
+   "name": "Heisenberg",
+   "t0": 1890,
+   "t1": 1980,
+   "bal0": 166042,
+   "bal1": 100450,
+   "dropPct": 39.50325821177774,
+   "terr0": 22695,
+   "terr1": 25415,
+   "nAtk": 6,
+   "nBoat": 0,
+   "estAtk": 86740,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "291": 6
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 7.3,
+   "nb0": 3
+  },
+  {
+   "me": 14,
+   "name": "Heisenberg",
+   "t0": 4230,
+   "t1": 4320,
+   "bal0": 2886886,
+   "bal1": 1700676,
+   "dropPct": 41.08960312253411,
+   "terr0": 25505,
+   "terr1": 18848,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 297445,
+   "targets": {},
+   "attackers": {
+    "8": 2
+   },
+   "cause": "捐款+被打",
+   "covered": true,
+   "dens0": 113.2,
+   "nb0": 2
+  },
+  {
+   "me": 14,
+   "name": "Heisenberg",
+   "t0": 4320,
+   "t1": 4410,
+   "bal0": 1700676,
+   "bal1": 421866,
+   "dropPct": 75.19421688787283,
+   "terr0": 18848,
+   "terr1": 7335,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "8": 2
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 90.2,
+   "nb0": 2
+  },
+  {
+   "me": 15,
+   "name": "Eisenhower",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 761,
+   "dropPct": 50.22890778286462,
+   "terr0": 12,
+   "terr1": 285,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1014,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 15,
+   "name": "Eisenhower",
+   "t0": 4410,
+   "t1": 4500,
+   "bal0": 3770373,
+   "bal1": 1509011,
+   "dropPct": 59.97714284501825,
+   "terr0": 25655,
+   "terr1": 28224,
+   "nAtk": 3,
+   "nBoat": 0,
+   "estAtk": 2483477,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "3": 3
+   },
+   "attackers": {
+    "3": 1
+   },
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 147.0,
+   "nb0": 1
+  },
+  {
+   "me": 16,
+   "name": "Dixie",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 686,
+   "dropPct": 55.13407455853499,
+   "terr0": 12,
+   "terr1": 220,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1043,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 16,
+   "name": "Dixie",
+   "t0": 6660,
+   "t1": 6840,
+   "bal0": 13338389,
+   "bal1": 6007073,
+   "dropPct": 54.964029014298504,
+   "terr0": 118565,
+   "terr1": 101735,
+   "nAtk": 5,
+   "nBoat": 0,
+   "estAtk": 6987596,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "5": 5
+   },
+   "attackers": {
+    "5": 3,
+    "8": 1
+   },
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 112.5,
+   "nb0": 2
+  },
+  {
+   "me": 17,
+   "name": "BigBrain",
+   "t0": 1710,
+   "t1": 1800,
+   "bal0": 1800,
+   "bal1": 267,
+   "dropPct": 85.16666666666667,
+   "terr0": 12,
+   "terr1": 12,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 605,
+   "targets": {},
+   "attackers": {},
+   "cause": "捐款",
+   "covered": true,
+   "dens0": 150.0,
+   "nb0": 0
+  },
+  {
+   "me": 17,
+   "name": "BigBrain",
+   "t0": 1890,
+   "t1": 1980,
+   "bal0": 294,
+   "bal1": 28,
+   "dropPct": 90.47619047619048,
+   "terr0": 12,
+   "terr1": 12,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {},
+   "cause": "不明",
+   "covered": true,
+   "dens0": 24.5,
+   "nb0": 0
+  },
+  {
+   "me": 18,
+   "name": "LeBron",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 18082,
+   "bal1": 6071,
+   "dropPct": 66.4251742063931,
+   "terr0": 6073,
+   "terr1": 7842,
+   "nAtk": 5,
+   "nBoat": 0,
+   "estAtk": 13679,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "112": 1,
+    "203": 3,
+    "75": 1
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 3.0,
+   "nb0": 9
+  },
+  {
+   "me": 18,
+   "name": "LeBron",
+   "t0": 4410,
+   "t1": 4590,
+   "bal0": 5502343,
+   "bal1": 3088962,
+   "dropPct": 43.86096977233153,
+   "terr0": 53998,
+   "terr1": 54245,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 4139997,
+   "targets": {},
+   "attackers": {},
+   "cause": "捐款",
+   "covered": true,
+   "dens0": 101.9,
+   "nb0": 0
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 180,
+   "t1": 270,
+   "bal0": 1529,
+   "bal1": 994,
+   "dropPct": 34.99018966644866,
+   "terr0": 12,
+   "terr1": 487,
+   "nAtk": 2,
+   "nBoat": 0,
+   "estAtk": 1016,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 127.4,
+   "nb0": 0
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 1350,
+   "t1": 1440,
+   "bal0": 44583,
+   "bal1": 25262,
+   "dropPct": 43.33714644595474,
+   "terr0": 18717,
+   "terr1": 19779,
+   "nAtk": 8,
+   "nBoat": 0,
+   "estAtk": 31319,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "50": 5,
+    "512": 2,
+    "370": 1
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 2.4,
+   "nb0": 11
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 2070,
+   "t1": 2160,
+   "bal0": 171695,
+   "bal1": 83915,
+   "dropPct": 51.1255423862081,
+   "terr0": 41742,
+   "terr1": 46434,
+   "nAtk": 9,
+   "nBoat": 0,
+   "estAtk": 126365,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "512": 2,
+    "198": 7
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 4.1,
+   "nb0": 1
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 7110,
+   "t1": 7200,
+   "bal0": 7121550,
+   "bal1": 4500982,
+   "dropPct": 36.79771959755952,
+   "terr0": 47477,
+   "terr1": 47648,
+   "nAtk": 1,
+   "nBoat": 0,
+   "estAtk": 2851401,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "8": 1
+   },
+   "attackers": {},
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 150.0,
+   "nb0": 0
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 7200,
+   "t1": 7290,
+   "bal0": 4500982,
+   "bal1": 3081607,
+   "dropPct": 31.53478507579013,
+   "terr0": 47648,
+   "terr1": 45753,
+   "nAtk": 3,
+   "nBoat": 0,
+   "estAtk": 1555794,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {
+    "8": 3
+   },
+   "attackers": {
+    "8": 4
+   },
+   "cause": "陆攻",
+   "covered": true,
+   "dens0": 94.5,
+   "nb0": 1
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 7380,
+   "t1": 7470,
+   "bal0": 2851461,
+   "bal1": 1787325,
+   "dropPct": 37.3189743783976,
+   "terr0": 44008,
+   "terr1": 30198,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "8": 1,
+    "5": 3
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 64.8,
+   "nb0": 2
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 7470,
+   "t1": 7560,
+   "bal0": 1787325,
+   "bal1": 1168869,
+   "dropPct": 34.60232470311779,
+   "terr0": 30198,
+   "terr1": 21420,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "5": 2
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 59.2,
+   "nb0": 2
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "t0": 7560,
+   "t1": 7650,
+   "bal0": 1168869,
+   "bal1": 611046,
+   "dropPct": 47.723312022134216,
+   "terr0": 21420,
+   "terr1": 13230,
+   "nAtk": 0,
+   "nBoat": 0,
+   "estAtk": 0,
+   "estBoat": 0,
+   "estDon": 0,
+   "targets": {},
+   "attackers": {
+    "5": 1
+   },
+   "cause": "被打",
+   "covered": true,
+   "dens0": 54.6,
+   "nb0": 2
+  }
+ ],
+ "boxed": [
+  {
+   "me": 11,
+   "name": "Manchu",
+   "boxedSnaps": 4,
+   "hiDensSnaps": 0,
+   "first": null,
+   "last": null,
+   "maxDens": 0,
+   "maxBal": 0,
+   "earlyNoNeutral": [],
+   "total": 53
+  },
+  {
+   "me": 12,
+   "name": "Ethereum",
+   "boxedSnaps": 4,
+   "hiDensSnaps": 0,
+   "first": null,
+   "last": null,
+   "maxDens": 0,
+   "maxBal": 0,
+   "earlyNoNeutral": [],
+   "total": 29
+  },
+  {
+   "me": 13,
+   "name": "Rommel",
+   "boxedSnaps": 71,
+   "hiDensSnaps": 39,
+   "first": 4050,
+   "last": 7920,
+   "maxDens": 150.0,
+   "maxBal": 2592300,
+   "earlyNoNeutral": [],
+   "total": 83
+  },
+  {
+   "me": 15,
+   "name": "Eisenhower",
+   "boxedSnaps": 60,
+   "hiDensSnaps": 40,
+   "first": 4050,
+   "last": 7920,
+   "maxDens": 150.0,
+   "maxBal": 4536715,
+   "earlyNoNeutral": [],
+   "total": 83
+  },
+  {
+   "me": 16,
+   "name": "Dixie",
+   "boxedSnaps": 5,
+   "hiDensSnaps": 3,
+   "first": 4860,
+   "last": 5040,
+   "maxDens": 130.5,
+   "maxBal": 14495171,
+   "earlyNoNeutral": [],
+   "total": 72
+  },
+  {
+   "me": 17,
+   "name": "BigBrain",
+   "boxedSnaps": 82,
+   "hiDensSnaps": 50,
+   "first": 270,
+   "last": 7920,
+   "maxDens": 150.0,
+   "maxBal": 1800,
+   "earlyNoNeutral": [
+    270,
+    360,
+    450,
+    540
+   ],
+   "total": 88
+  },
+  {
+   "me": 18,
+   "name": "LeBron",
+   "boxedSnaps": 34,
+   "hiDensSnaps": 30,
+   "first": 3960,
+   "last": 7650,
+   "maxDens": 149.1,
+   "maxBal": 8253302,
+   "earlyNoNeutral": [],
+   "total": 86
+  },
+  {
+   "me": 19,
+   "name": "Kamakura",
+   "boxedSnaps": 54,
+   "hiDensSnaps": 20,
+   "first": 5400,
+   "last": 7110,
+   "maxDens": 150.0,
+   "maxBal": 7121550,
+   "earlyNoNeutral": [],
+   "total": 83
+  }
+ ]
+}

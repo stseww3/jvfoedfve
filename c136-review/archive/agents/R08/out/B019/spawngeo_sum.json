@@ -1,0 +1,200 @@
+{
+ "matchId": "B019",
+ "W": 1900,
+ "H": 764,
+ "edgeLimit": 92,
+ "squad": {
+  "n": 20,
+  "edgeMedian": 30.0,
+  "nearEdge": 15,
+  "nnAny": 85.87052417020732,
+  "nnMate": 114.03702434442519,
+  "nnWild": 162.75992772535216,
+  "nearestIsMate": 14
+ },
+ "others": {
+  "n": 30,
+  "edgeMedian": 134.0,
+  "nearEdge": 12,
+  "nnAny": 86.81792392433023
+ },
+ "groups": [
+  {
+   "n": 5,
+   "bots": [
+    "Kandy",
+    "Watermelon",
+    "Mansa Musa",
+    "Zenobia",
+    "Goguryeo"
+   ],
+   "teams": {
+    "2": 3,
+    "1": 2
+   },
+   "crossPairs": 4,
+   "samePairs": 2
+  },
+  {
+   "n": 3,
+   "bots": [
+    "xX_Shadow_Xx",
+    "Swiss Guard",
+    "Barbary"
+   ],
+   "teams": {
+    "3": 1,
+    "1": 1,
+    "2": 1
+   },
+   "crossPairs": 3,
+   "samePairs": 0
+  },
+  {
+   "n": 3,
+   "bots": [
+    "Charlemagne",
+    "bruh",
+    "Leif Erikson"
+   ],
+   "teams": {
+    "2": 2,
+    "3": 1
+   },
+   "crossPairs": 2,
+   "samePairs": 1
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Denmark",
+    "New York"
+   ],
+   "teams": {
+    "3": 1,
+    "2": 1
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Farnese",
+    "Genos"
+   ],
+   "teams": {
+    "1": 1,
+    "2": 1
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Carthage",
+    "Sukuna"
+   ],
+   "teams": {
+    "3": 2
+   },
+   "crossPairs": 0,
+   "samePairs": 1
+  },
+  {
+   "n": 1,
+   "bots": [
+    "EZ_Clap"
+   ],
+   "teams": {
+    "3": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "CJ"
+   ],
+   "teams": {
+    "1": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Raiden"
+   ],
+   "teams": {
+    "2": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "上",
+   "bots": [
+    "Swiss Guard",
+    "Barbary",
+    "Charlemagne",
+    "EZ_Clap"
+   ],
+   "gaps": [
+    48,
+    260,
+    376
+   ],
+   "teams": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "side": "下",
+   "bots": [
+    "CJ",
+    "New York",
+    "Denmark",
+    "Kandy"
+   ],
+   "gaps": [
+    288,
+    212,
+    342
+   ],
+   "teams": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "side": "右",
+   "bots": [
+    "Farnese",
+    "Genos",
+    "Mansa Musa",
+    "Zenobia",
+    "Watermelon"
+   ],
+   "gaps": [
+    0,
+    376,
+    184,
+    72
+   ],
+   "teams": [
+    1,
+    2
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 19
+}

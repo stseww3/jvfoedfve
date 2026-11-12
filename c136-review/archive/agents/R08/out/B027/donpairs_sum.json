@@ -1,0 +1,274 @@
+{
+ "matchId": "B027",
+ "total": {
+  "logged": 0,
+  "executed": 0,
+  "arrived": 0,
+  "tax": 0,
+  "clamped": 0,
+  "clampedArrived": 0,
+  "clampedTax": 0,
+  "taxGeArrived": 0,
+  "netMoved": 0,
+  "churned": 0,
+  "pairCount": 0,
+  "twoWayPairs": 0,
+  "pingPong": 0,
+  "ppMin": 0,
+  "ppTax": 0,
+  "donorSealedN": 0,
+  "donorSealedArrived": 0,
+  "donorSealedTax": 0,
+  "recvSealedN": 0,
+  "recvSealedArrived": 0,
+  "bothSealedN": 0,
+  "bothSealedArrived": 0,
+  "bothSealedTax": 0
+ },
+ "periods": [],
+ "teams": {},
+ "pairs": [],
+ "recvDensity": [
+  {
+   "band": "<50",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "recvDiedIn600": 0,
+   "diedArrived": 0
+  },
+  {
+   "band": "50~80",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "recvDiedIn600": 0,
+   "diedArrived": 0
+  },
+  {
+   "band": "80~100",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "recvDiedIn600": 0,
+   "diedArrived": 0
+  },
+  {
+   "band": "100~132",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "recvDiedIn600": 0,
+   "diedArrived": 0
+  },
+  {
+   "band": "≥132",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "recvDiedIn600": 0,
+   "diedArrived": 0
+  }
+ ],
+ "donorDensity": [
+  {
+   "band": "<60",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "sealedN": 0,
+   "sealedArrived": 0,
+   "sealedTax": 0
+  },
+  {
+   "band": "60~80",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "sealedN": 0,
+   "sealedArrived": 0,
+   "sealedTax": 0
+  },
+  {
+   "band": "80~100",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "sealedN": 0,
+   "sealedArrived": 0,
+   "sealedTax": 0
+  },
+  {
+   "band": "100~132",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "sealedN": 0,
+   "sealedArrived": 0,
+   "sealedTax": 0
+  },
+  {
+   "band": "≥132",
+   "n": 0,
+   "arrived": 0,
+   "tax": 0,
+   "sealedN": 0,
+   "sealedArrived": 0,
+   "sealedTax": 0
+  }
+ ],
+ "perBot": {
+  "player_007": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "SyntaxError": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Mewtwo": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Sparta": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Tripoli": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Phoenicia": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "King": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Liao": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Savoy": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Ronin": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Hashashin": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "New England": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Davout": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Vinland": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Doge": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Habsburg": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Raeder": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Kuban": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  },
+  "Cringe": {
+   "team": 0,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 0,
+   "inArrived": 0
+  }
+ }
+}
