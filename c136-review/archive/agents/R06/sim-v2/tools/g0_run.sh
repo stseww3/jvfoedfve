@@ -13,6 +13,6 @@ while read -r tag mid t0 len strat chan rest; do
   out="$dir/$tag.json"
   if [ -s "$out" ] && [ "${FORCE:-0}" != "1" ]; then echo "跳过 $tag（已有）"; continue; fi
   # shellcheck disable=SC2086
-  HEAVY_TIMEOUT=110 timeout 120 bash ../../tools/run-heavy.sh node sim-v2/teamgate-v2.mjs --mode checkpoint --match "$mid" --t0 "$t0" --len "$len" \
+  HEAVY_TIMEOUT=110 bash ../../tools/run-heavy.sh timeout 120 node --max-old-space-size=700 sim-v2/teamgate-v2.mjs --mode checkpoint --match "$mid" --t0 "$t0" --len "$len" \
     --baseline "$strat" --channel "$chan" --quiet --out "$out" $rest 2>&1 | tail -2
 done

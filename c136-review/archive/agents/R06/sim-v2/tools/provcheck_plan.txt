@@ -1,0 +1,5 @@
+# 没经闸门跑的运行的抽查（tools/run_prov.py 生成）：每行 = 类型 结果目录 清单 [开关]。结果写到 calib/batchcheck/prov/<原目录>/
+checkpoint batchcheck/prov/hold sim-v2/tools/provcheck/hold.txt
+checkpoint batchcheck/prov/attr sim-v2/tools/provcheck/attr.txt
+verify     batchcheck/prov/verify sim-v2/tools/provcheck/verify.txt
+arena      batchcheck/prov/arena-acc20 sim-v2/tools/provcheck/arena-acc20.txt --len 4300 --channel C2 --squad-fate real

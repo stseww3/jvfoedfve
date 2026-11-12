@@ -1,0 +1,2 @@
+# 开环消融试跑 2：A051（延迟最重的一局）机制臂与安慰剂臂，跑到 2400 拍
+out/council/cf/A051-open-630.txt|node scripts/cfopen.mjs A051 --until 2400 --arms dead@600-1500,dups@600-1500,drop1@630:0,drop1@630:19,drop1@630:83,drop1@630:211

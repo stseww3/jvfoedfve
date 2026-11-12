@@ -1,18 +1,19 @@
-// checkpoint.mjs — 模式 1：真局断面反事实。
+// checkpoint.mjs — 模式 1：真局断面重演（只用历史旧策略）。
 //
-// 流程：录像从 0 重放到热身起点 tw（没有策略）→ 在 tw 把世界分叉成两条臂（对照 / 处理），各自继续照录像重放，
-// 我方席位的策略作「影子」跟着决策（指令不生效，只为把策略内部状态带到断面）→ 到 t0 接管：我方席位的录像指令作废，
-// 改由各臂的策略经同一条指令通道下令；其余真人照放录像（目标已出局或已不接壤的陆攻改打身边最便宜的内置 AI / 无主地）→
-// 跑到 t1。原始世界一路照录像放到 t1，作「历史臂」（当年真实发生的），用来看对照臂离历史有多远。
-// 三个世界逐拍交替推进，所以半路被时间预算截断时，三者停在同一拍，成对差仍然有效。
+// 流程：录像从 0 重放到热身起点 tw（没有策略）→ 在 tw 把世界分叉出一条「复现臂」，继续照录像重放，
+// 我方席位挂这一局当年线上那一版历史策略作「影子」跟着决策（指令不生效，只为把策略内部状态带到断面）→ 到 t0 接管：
+// 我方席位的录像指令作废，改由策略经指令通道下令；其余真人照放录像（目标已出局或已不接壤的陆攻改打身边最便宜的内置 AI / 无主地）→
+// 跑到 t1。原始世界一路照录像放到 t1，作「历史臂」（当年真实发生的），用来看复现臂离历史有多远（模拟器保真度）。
+// 换一档通道（C0 / C1 / C2 / C3）再跑同一个断面，两次结果之差 = 这一段里通道延迟这一个环节的归因量。
+// 两个世界逐拍交替推进，所以半路被时间预算截断时，二者停在同一拍。
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadMatch, buildWorld, ReplayStepper, execRecorded, SIMV2, NEUTRAL } from './match.mjs';
-import { compileStrategy, strategyPath } from './sandbox.mjs';
+import { compileStrategy, strategyPath, refuseOutOfScope } from './sandbox.mjs';
 import { makeProfile, loadTrace } from './channel.mjs';
 import { Arm } from './arm.mjs';
 import { Metrics, naturalShares, PAIR_KEYS, traceStats } from './metrics.mjs';
-import { num, list, fmtN } from './util.mjs';
+import { num, list, fmtN, cohortOf } from './util.mjs';
 
 export function chanOptsOf(o) {
   return { multi: !!o.multi, cap: num(o.cap, 9), capRounds: num(o['cap-rounds'], 3), keep: o.keep || 'first', order: o.order || 'lifo' };
@@ -26,11 +27,9 @@ export function armOptsOf(o) {
     aoPct: o['ao-id'] === undefined || o['ao-id'] === 'off' ? null : num(o['ao-id'], 511),
     react: o.react === undefined || o.react === 'off' ? [] : (o.react === true || o.react === 'on' ? ['first', 'thin'] : list(o.react)),
     reactSeed: num(o.seed, 1),
-    inflightGuard: o['inflight-guard'] === undefined || o['inflight-guard'] === 'auto' ? 'auto' : num(o['inflight-guard'], 0),
     handover: o.handover === 'clean' ? 'clean' : 'carry',
   };
 }
-const parseJson = (s, what) => { if (s === undefined || s === true) return {}; try { return JSON.parse(s); } catch (e) { throw new Error(`${what} 不是合法的 JSON：${s}`); } };
 
 export async function runCheckpoint(o) {
   const wall0 = Date.now(), cpu0 = process.cpuUsage();
@@ -52,11 +51,9 @@ export async function runCheckpoint(o) {
   const seatDefs = squad.map((p) => ({ p, slot: M.slotOf.get(p) ?? p % 20 }));
   const squadSet = new Set(squad);
 
-  const which = o.arm || 'both';
-  const specs = [];
-  if (which !== 'candidate') specs.push({ name: 'baseline', file: strategyPath(o.baseline || 'vb'), params: parseJson(o['base-params'], '--base-params') });
-  if (which !== 'baseline' && o.candidate) specs.push({ name: 'candidate', file: strategyPath(o.candidate), params: parseJson(o['cand-params'], '--cand-params') });
-  if (!specs.length) throw new Error('没有可跑的臂：给 --baseline（缺省 vb）和 / 或 --candidate <策略文件>');
+  // 只有一条复现臂：这一局当年线上那一版历史策略（白名单与内容散列核对见 sandbox.mjs），策略参数用文件里的原值
+  refuseOutOfScope(o, cohortOf(mid));
+  const specs = [{ name: 'baseline', file: strategyPath(cohortOf(mid)), params: {} }];
   for (const s of specs) s.strat = await compileStrategy(s.file);
 
   const chanSpec = o.channel || 'C1';
@@ -147,8 +144,7 @@ export async function runCheckpoint(o) {
     res.history.donNotLanded = disp.length ? +Math.max(0, 1 - res.history.don.ok / disp.length).toFixed(4) : null;
   }
   if (ts) res.history.trace = ts;
-  for (const a of arms) res.arms[a.name] = a.finish(natural, { file: a.strat.file });
-  if (res.arms.baseline && res.arms.candidate) res.delta = deltaOf(res.arms.baseline, res.arms.candidate);
+  for (const a of arms) res.arms[a.name] = a.finish(natural, { file: a.strat.file, sha256: a.strat.sha256 });
   res.cpuMs = cpuMs(cpu0); res.wallMs = Date.now() - wall0; res.cpuReplayMs = cpuReplay; res.cpuWarmMs = cpuWarm;
   res.heapMB = Math.round(process.memoryUsage().heapUsed / 1048576);
 
@@ -190,29 +186,19 @@ export function borrowSeats(trace, traceMid, squad, t0, t1) {
 
 function cpuMs(c0) { const c = process.cpuUsage(c0); return Math.round((c.user + c.system) / 1000); }
 
-export function deltaOf(a, b) {
-  const d = {};
-  for (const [k] of PAIR_KEYS) {
-    const x = a[k], y = b[k];
-    d[k] = typeof x === 'number' && typeof y === 'number' ? +(y - x).toFixed(4) : null;
-  }
-  return d;
-}
-
 const show = (v) => (v === null || v === undefined ? '-' : typeof v === 'number' ? (Number.isInteger(v) ? fmtN(v) : Math.abs(v) < 10 ? v.toFixed(3) : fmtN(v)) : String(v));
 
 export function printCheckpoint(res) {
-  const b = res.arms.baseline, c = res.arms.candidate, h = res.history;
+  const b = res.arms.baseline, h = res.history;
   console.log(`[checkpoint] ${res.match}（录像 ${res.replay}，真人 ${res.humans}，${res.nTeams} 队）断面 t0=${res.t0} → t1=${res.t1}${res.truncated ? '（时间预算截断）' : ''}${res.ended ? `（${res.ended}）` : ''}，热身从 t=${res.tw}`);
   console.log(`  我方 ${res.squad.length} 席（队 ${res.squadTeams.join('/')}）；通道 ${res.channelNote}`);
   if (res.lagCourse.length) console.log(`  我方平均落后拍数（每 150 拍）：${res.lagCourse.map(([t, v]) => `${t}:${v}`).join(' ')}`);
-  const cols = [['历史(录像)', h]];
-  if (b) cols.push([`对照 ${b.strategy}`, b]);
-  if (c) cols.push([`处理 ${c.strategy}`, c]);
-  const head = ['指标'.padEnd(26), ...cols.map(([n]) => n.padStart(22)), ...(res.delta ? ['Δ(处理−对照)'.padStart(14)] : [])];
+  const cols = [['历史(录像)', h], [`复现 ${b.strategy}`, b]];
+  const diff = (k) => (typeof h[k] === 'number' && typeof b[k] === 'number' ? +(b[k] - h[k]).toFixed(4) : null);
+  const head = ['指标'.padEnd(26), ...cols.map(([n]) => n.padStart(22)), '复现−历史'.padStart(14)];
   console.log('  ' + head.join(' '));
   for (const [k, label] of PAIR_KEYS) {
-    const row = [label.padEnd(26 - Math.max(0, cjk(label))), ...cols.map(([, m]) => show(m[k]).padStart(22)), ...(res.delta ? [show(res.delta[k]).padStart(14)] : [])];
+    const row = [label.padEnd(26 - Math.max(0, cjk(label))), ...cols.map(([, m]) => show(m[k]).padStart(22)), show(diff(k)).padStart(14)];
     console.log('  ' + row.join(' '));
   }
   for (const [n, m] of cols.slice(1)) {

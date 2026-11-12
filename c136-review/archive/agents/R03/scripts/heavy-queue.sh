@@ -8,6 +8,7 @@
 # 机器忙的时候影子重放一遍要 100 秒上下，默认的 110 秒闸不够，所以这里单条超时 Q_TIMEOUT（默认 900 秒）、
 # 排队最多等 Q_QUEUE（默认 1800 秒）。要放在 tmux 里跑；进度写 /tmp/r03-q-<名字>.log，每条一行 rc，最后一行 Q-DONE。
 # 输出先写到 <输出文件>.tmp，成功才改名，失败的不留半截文件；错误输出在 /tmp/r03-q-<名字>.err。
+# 只抢联络分支定下的前 2 个重计算位（Q_SLOTS，默认 2），不跟着工作区里 run-heavy.sh 的默认值走。
 set -u
 HERE=$(cd "$(dirname "$0")" && pwd)
 cd "$HERE/.." || exit 1
@@ -21,7 +22,7 @@ while IFS='|' read -r out cmd <&3; do
   case "$out" in ''|'#'*) continue ;; esac
   s=$(date +%s)
   # shellcheck disable=SC2086
-  HEAVY_QUEUE=${Q_QUEUE:-1800} HEAVY_TIMEOUT=${Q_TIMEOUT:-900} bash "$GATE" $cmd > "$out.tmp" 2> "/tmp/r03-q-$name.err" < /dev/null
+  HEAVY_SLOTS=${Q_SLOTS:-2} HEAVY_QUEUE=${Q_QUEUE:-1800} HEAVY_TIMEOUT=${Q_TIMEOUT:-900} bash "$GATE" $cmd > "$out.tmp" 2> "/tmp/r03-q-$name.err" < /dev/null
   rc=$?
   if [ $rc -eq 0 ]; then mv "$out.tmp" "$out"; else rm -f "$out.tmp"; fi
   echo "$out rc=$rc secs=$(( $(date +%s) - s ))" >> "$log"

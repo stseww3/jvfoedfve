@@ -1,0 +1,10 @@
+# 抽查清单：这 6 次断面运行在另一批里再跑一遍（结果放 sim-v2/calib/batchcheck/g0-batched/），与 sim-v2/calib/g0/ 里的同名结果逐字段核对
+#   node sim-v2/tools/g0_batch.mjs checkpoint batchcheck/g0-batched sim-v2/tools/batchcheck_list.txt
+#   node sim-v2/tools/same_result.mjs sim-v2/calib/batchcheck/g0-batched sim-v2/calib/g0
+# <标签> <局> <t0> <len> <对照策略> <通道>
+A018-0630-vb-C3 A018 630 900 vb C3
+A021-0630-vb-C2 A021 630 900 vb C2
+A070-1530-vb-C2 A070 1530 1680 vb C2
+B017-0630-c110-C2 B017 630 900 c110 C2
+B021-0630-c110-C1 B021 630 900 c110 C1
+B039-1530-c110-C2 B039 1530 1680 c110 C2

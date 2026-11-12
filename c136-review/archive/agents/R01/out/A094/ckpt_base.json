@@ -1,0 +1,66 @@
+{
+ "match": "A094",
+ "replay": "A094",
+ "map": "12_0",
+ "humans": 20,
+ "nTeams": 4,
+ "squad": [
+  17,
+  18,
+  19
+ ],
+ "endT": 8555,
+ "over": false,
+ "replayTicks": 8555,
+ "natural": [
+  27280,
+  25052,
+  20683
+ ],
+ "vsResim": {
+  "samples": 97,
+  "cells": 1940,
+  "same": 1940,
+  "firstBadT": -1,
+  "firstBad": null,
+  "lastT": 8555
+ },
+ "vsEngine": {
+  "samples": 96,
+  "cells": 1920,
+  "same": 1920,
+  "firstBadT": -1,
+  "firstBad": null,
+  "lastT": 8550
+ },
+ "vsLog": {
+  "samples": 46,
+  "cells": 86,
+  "same": 86,
+  "firstBadT": -1,
+  "firstBad": null,
+  "lastT": 4140
+ },
+ "deathT": {
+  "17": 4154,
+  "18": 2570,
+  "19": 2623
+ },
+ "deathDiff": [],
+ "doomed": [
+  19
+ ],
+ "pageEnd": {
+  "17": 4229,
+  "18": 2609,
+  "19": 1169
+ },
+ "pageEndR06": {
+  "17": 4229,
+  "18": 2609,
+  "19": 1169
+ },
+ "oddLandings": 0,
+ "cpuMs": 1256,
+ "cpuMsPer1000": 147
+}

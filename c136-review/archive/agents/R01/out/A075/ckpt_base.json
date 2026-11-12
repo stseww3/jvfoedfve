@@ -1,0 +1,84 @@
+{
+ "match": "A075",
+ "replay": "A075",
+ "map": "11_0",
+ "humans": 95,
+ "nTeams": 5,
+ "squad": [
+  85,
+  86,
+  87,
+  88
+ ],
+ "endT": 6568,
+ "over": false,
+ "replayTicks": 6567,
+ "natural": [
+  5657,
+  4779,
+  3312,
+  7572
+ ],
+ "vsResim": {
+  "samples": 74,
+  "cells": 7030,
+  "same": 7017,
+  "firstBadT": 6390,
+  "firstBad": {
+   "p": 37,
+   "ref": {
+    "p": 37,
+    "alive": 1,
+    "state": 2,
+    "terr": 15758,
+    "bal": 2292669
+   },
+   "got": {
+    "alive": 1,
+    "state": 2,
+    "terr": 15773,
+    "bal": 2219228
+   }
+  },
+  "lastT": 6568
+ },
+ "vsEngine": {
+  "samples": 73,
+  "cells": 6935,
+  "same": 6935,
+  "firstBadT": -1,
+  "firstBad": null,
+  "lastT": 6480
+ },
+ "vsLog": {
+  "samples": 72,
+  "cells": 288,
+  "same": 288,
+  "firstBadT": -1,
+  "firstBad": null,
+  "lastT": 6480
+ },
+ "deathT": {
+  "85": -1,
+  "86": -1,
+  "87": -1,
+  "88": -1
+ },
+ "deathDiff": [],
+ "doomed": [],
+ "pageEnd": {
+  "85": 6569,
+  "86": 6569,
+  "87": 6569,
+  "88": 6569
+ },
+ "pageEndR06": {
+  "85": 6569,
+  "86": 6569,
+  "87": 6569,
+  "88": 6569
+ },
+ "oddLandings": 0,
+ "cpuMs": 1315,
+ "cpuMsPer1000": 200
+}
