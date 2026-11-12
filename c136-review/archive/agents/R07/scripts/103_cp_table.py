@@ -450,6 +450,34 @@ def main():
             J[f"split_{T}"] = {"mean": [mean(a) for a in acc], "median": [med(a) for a in acc]}
         P("")
 
+    # ---------- 表 2h：各断面往后 900 拍，历史上发生了什么（只用整局重放，不需要对照）
+    P("## 表 2h：各断面往后 900 拍的历史（整局重放）")
+    P("局\t断面\tρ(断面)\tρ(900 拍后)\tln ρ 的变化\t我方在场号 断面 → 900 拍后\t其他真人在场 断面 → 900 拍后\t我方占全图陆地 断面 → 900 拍后")
+    J["histWin"] = {}
+    for T0 in (630, 1500, 4284):
+        acc = []
+        for g in GAMES:
+            h = base.get(g)
+            if not h:
+                continue
+            s0 = snap_at(h["snaps"], T0, 1)
+            s1 = snap_at(h["snaps"], T0 + 900)
+            if not s0:
+                continue
+            r0 = rho(s0, h["nSquad"], h["nOther"])
+            r1 = rho(s1, h["nSquad"], h["nOther"]) if s1 else None
+            d = math.log(r1) - math.log(r0) if r0 and r1 else None
+            rec = {"rho0": r0, "rho1": r1, "d": d, "aS0": s0["aS"], "aS1": s1["aS"] if s1 else None, "aO0": s0["aO"], "aO1": s1["aO"] if s1 else None,
+                   "ls0": s0["LS"] / h["land"], "ls1": s1["LS"] / h["land"] if s1 else None, "nSquad": h["nSquad"], "end": h["endTick"]}
+            J["histWin"].setdefault(g, {})[str(T0)] = rec
+            if d is not None:
+                acc.append(d)
+            P(f"{g}\t{T0}\t{f(r0)}\t{f(r1)}\t{f(d, sign=True)}\t{s0['aS']} → {s1['aS'] if s1 else '-'}\t{s0['aO']} → {s1['aO'] if s1 else '-'}\t{100 * rec['ls0']:.1f}% → " + (f"{100 * rec['ls1']:.1f}%" if s1 else "-"))
+        if acc:
+            J["histWin"].setdefault("sum", {})[str(T0)] = {"mean": mean(acc), "median": med(acc), "n": len(acc), "up": sum(1 for x in acc if x > 0), "down": sum(1 for x in acc if x < 0)}
+            P(f"平均（{len(acc)} 局，不含我方已全灭的）\t{T0}\t\t\t{f(mean(acc), sign=True)}")
+    P("")
+
     # ---------- 表 2：各断面的窗口分解
     J["win"] = {}
     J["winSum"] = {}

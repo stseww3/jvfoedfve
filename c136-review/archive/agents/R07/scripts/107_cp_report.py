@@ -266,6 +266,38 @@ def main():
                      c2["mapDrop"] if c2 else "—", f"{c2['delayP50']} / {c2['delayP90']}" if c2 else "—", pc(hshare)])
     T["指令去向-1500"] = md(["局", "C0 发出", "C1 发出", "C1 落地", "C2 发出", "C2 落地", "C2 按历史轨迹没落地", "C2 在途拍数 中位 / P90", "历史上 0~1500 拍被按住的占比"], rows)
 
+    # ---- 各断面往后 900 拍的历史（不需要对照）
+    HW = J.get("histWin") or {}
+    F0 = {}
+    for T0 in (630, 1500, 4284):
+        rows = []
+        hx, hy = [], []
+        for g in GAMES:
+            d = HW.get(g, {}).get(str(T0))
+            if not d:
+                continue
+            hsh, hn = held(g, T0)
+            if d["d"] is not None and hsh is not None:
+                hx.append(hsh)
+                hy.append(d["d"])
+            if d["aS0"] == 0:
+                rows.append([g, "我方已全灭", "", "", f"0 / {d['nSquad']}", "", ""])
+                continue
+            r1 = "—" if d["rho1"] is None else ("0（全灭）" if d["rho1"] == 0 else r3(d["rho1"], 2))
+            rows.append([g, r3(d["rho0"], 2), r1, sg(d["d"]) if d["d"] is not None else "—", f"{d['aS0']} → {d['aS1'] if d['aS1'] is not None else '—'}", hn if hn else "—", pc(hsh) if hn else "—"])
+        sm = HW.get("sum", {}).get(str(T0))
+        if len(hx) >= 5:
+            F0[f"hw{T0}corr"] = sg(spearman(hx, hy)[0])
+        if sm:
+            if T0 != 4284:      # 4284 这一窗有两局全灭、一局崩盘，平均没有意义
+                rows.append([f"**平均**（{sm['n']} 局）", "", "", f"**{sg(sm['mean'])}**", "", "", ""])
+            F0[f"hw{T0}mean"] = sg(sm["mean"])
+            F0[f"hw{T0}n"] = str(sm["n"])
+            F0[f"hw{T0}up"] = str(sm["up"])
+            F0[f"hw{T0}down"] = str(sm["down"])
+        span = "630~1500" if T0 == 630 else f"{T0}~{T0 + 900}"
+        T[f"窗口-历史-{T0}"] = md(["局", f"{T0} 拍的 ρ", "900 拍后的 ρ", "ln ρ 的变化", "我方在场号：断面 → 900 拍后", f"{span} 拍我方发令", "其中被按住的占比"], rows)
+
     # ---- 各断面往后的窗口
     for T0 in (630, 1500, 4284):
         for hh in (300, 600, 900):
@@ -433,7 +465,7 @@ def main():
     T["敏感性-基准"] = md(["站位基准的取法", "出生站位（11 局平均）", "规则（余项）", "出生站位占 1500 拍落后的比例"], rows, align="lrrr")
 
     # ---- 正文用数：正文里的 {{名字}} 换成这里的值
-    F = {}
+    F = dict(F0)
     G = J.get("games") or {}
     for TT, x in (J.get("path") or {}).items():
         F[f"rho{TT}"] = r3(math.exp(-x["total"]), 2)

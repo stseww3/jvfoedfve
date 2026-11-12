@@ -39,12 +39,21 @@ LAST=/tmp/r06-g0all-last.txt
 stages="${*:-live bands lists core plan tail delay old oldcode profile tables}"
 say() { echo "=== $(date -u +%H:%M:%S) $*"; }
 
-# batch <g0_batch.mjs 的参数…>：一批接一批，直到清单（或整份计划）跑完。BEFORE 里有命令的话，每批之前先执行一遍
+# pre_in_slot：排到槽位之后、这一批之前，顺带在同一个槽位里做掉的小件（十几秒以内的单个 node，一个接一个，不并行）。
+# 槽位很难排到，单独为一个十几秒的脚本排一次队不划算。现在只有一件：实测延迟分布（delay 阶段的产物）还没有的话先算它。
+pre_in_slot() {
+  [ -s sim-v2/calib/opening-delay.json ] || printf '%s' "node --max-old-space-size=700 $T/opening_delay.mjs --live-clean sim-v2/calib/live --json sim-v2/calib/opening-delay.json > /tmp/r06-g0all-delay.txt 2>&1; "
+}
+
+# batch <g0_batch.mjs 的参数…>：一批接一批，直到清单（或整份计划）跑完。BEFORE 里有命令的话，每批之前先执行一遍。
+# 每批是一次槽位：timeout 120 加在槽位里的命令上；这一批的截止时刻从拿到槽位那一刻起算 104 秒（--deadline），
+# 所以前面顺带做的小件占掉多少时间，这一批就少跑多少，不会顶到闸门 110 秒的上限。
 batch() {
-  local i r stuck=0 nowait=0
+  local i r pre stuck=0 nowait=0
   for i in $(seq 1 900); do
     [ -n "${BEFORE:-}" ] && $BEFORE > /dev/null 2>&1
-    r=$($HEAVY $T/g0_batch.mjs "$@" 2>&1 | tail -1 | cut -c1-240)
+    pre=$(pre_in_slot)
+    r=$(bash ../../tools/run-heavy.sh timeout 120 bash -c "$pre node --max-old-space-size=700 $T/g0_batch.mjs $* --deadline \$((\$(date +%s%3N) + 104000))" 2>&1 | tail -1 | cut -c1-240)
     case "$r" in
       *"[g0_batch]"*"没轮上"*) nowait=$((nowait + 1)) ;;
       *"[g0_batch]"*"还剩 0 个"*) echo "$(date -u +%H:%M:%S) $r（另有 $nowait 次没排到槽位）"; return 0 ;;

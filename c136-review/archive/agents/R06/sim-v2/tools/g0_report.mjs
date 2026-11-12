@@ -317,6 +317,7 @@ if (LIVE.length) {
       rows.push([VER[co] || co, ...row.map(String)]);
     }
     rows.push(['合计', ...tot.map(String)]);
+    ['n', 'snapOk', 'inBands', 'clean', 'mid', 'lag'].forEach((k, i) => val(`live.cover.all.${k}`, tot[i]));
     table('live-cover', ['当年版本', '扫过的局（有录像）', '日志快照与重放逐条相同', '进区间的局', '其中 不卡', '轻度', '卡顿'], rows,
       '进区间的条件：日志快照与重放逐条相同、我方 ≥ 6 席、630~1530 拍这个窗口跑满。卡顿档按这一局 630~1530 拍录像里的同拍批占比分：< 15% 不卡，≥ 50% 卡顿，其间轻度。');
     val('live.n', LIVE.length); val('live.inBands', Object.keys(BANDS.matches).length);

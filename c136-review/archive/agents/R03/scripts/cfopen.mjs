@@ -176,6 +176,34 @@ function buildArm(spec) {
   return null;
 }
 
+// 开环臂的有效性指标：同一条录像指令（拍/号/种类/千分比/目标/第几次出现）在真值臂和反事实臂里的受理结果是否相同。
+// 别人的指令是照原录像发的，世界一变，原来受理的会被拒、原来被拒的会受理；变的越多，这一臂离「别人照旧」越远。
+function okMap(log, H) {
+  const m = new Map(), occ = new Map();
+  for (const c of log) {
+    if (c[1] >= H || c[2] < 1 || c[2] > 3) continue;
+    const k0 = `${c[0]}/${c[1]}/${c[2]}/${c[3]}/${c[4]}`;
+    const n = occ.get(k0) || 0;
+    occ.set(k0, n + 1);
+    m.set(`${k0}#${n}`, c[5] ? 1 : 0);
+  }
+  return m;
+}
+const truthOk = okMap(T.cmdLog, T.H);
+function flips(C) {
+  const m = okMap(C.cmdLog, C.H);
+  const r = { sq: [0, 0, -1], ot: [0, 0, -1] };
+  for (const [k, ok] of m) {
+    const t = truthOk.get(k);
+    if (t === undefined) continue;
+    const parts = k.split('/');
+    const g = TS.isSq[+parts[1]] ? r.sq : r.ot;
+    g[1]++;
+    if (t !== ok) { g[0]++; if (g[2] < 0 || +parts[0] < g[2]) g[2] = +parts[0]; }
+  }
+  return r;
+}
+
 for (const spec of arms) {
   const arm = buildArm(spec);
   if (!arm) { console.log(`${mid} | ${spec} | 这一臂没有可丢的指令或写法不对`); continue; }
@@ -185,6 +213,8 @@ for (const spec of arms) {
   const v = C.validate;
   const firstMis = v.mism.length ? v.mism[0][0] : -1;
   console.log(`${mid} | ${spec} | ${arm.label} | ${arm.stat()} | traj ${v.bothExact}/${v.rows} 行仍与日志一致，首个不一致拍 ${firstMis < 0 ? '无' : firstMis} | 结束拍 ${C.endTick}${C.over ? `，胜队 ${C.winnerTeam}` : ''}（真值 ${T.endTick}） | ${((Date.now() - t1) / 1000).toFixed(0)}s`);
+  const fl = flips(C);
+  console.log(`${mid} | ${spec} | 受理结果变了的录像指令：其他真人 ${fl.ot[0]}/${fl.ot[1]} 条${fl.ot[2] >= 0 ? `（最早 ${fl.ot[2]} 拍）` : ''}，编队其余指令 ${fl.sq[0]}/${fl.sq[1]} 条${fl.sq[2] >= 0 ? `（最早 ${fl.sq[2]} 拍）` : ''}`);
   const base = arm.win[0];
   const cps = atArg || [base + 90, base + 300, base + 600, base + 900, base + 1500, base + 2400];
   const endT = Math.min(T.endTick, C.endTick);
