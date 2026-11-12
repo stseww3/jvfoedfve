@@ -1,0 +1,1416 @@
+{
+ "A075": {
+  "mid": "A075",
+  "dec": 292,
+  "paired": 252,
+  "unpaired": 0,
+  "atkDec": 188,
+  "atkLanded": 188,
+  "atkModelExec": 188,
+  "inSample": {
+   "n": 252,
+   "exec": 252,
+   "dropCap": 0,
+   "lost": 0,
+   "exact": 0.881,
+   "within7": 0.9683,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 0,
+   "exec": 0,
+   "dropCap": 0,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 201,
+   "rounds": 166,
+   "b3": 1,
+   "b9": 0,
+   "share3": 0.0149,
+   "max": 3
+  },
+  "actual": {
+   "cmds": 201,
+   "rounds": 167,
+   "b3": 1,
+   "b9": 0,
+   "share3": 0.0149,
+   "max": 3
+  },
+  "squeezed": 27,
+  "loo": {
+   "auto": {
+    "n": 252,
+    "exact": 0.6786,
+    "within7": 0.9444,
+    "within21": 0.9841,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": -0.5,
+    "nLag": 9,
+    "lagWithin21": 0.5556,
+    "lagMedAbs": 7,
+    "lagP90Abs": 126,
+    "lagBias": -18.7
+   },
+   "nearest": {
+    "n": 252,
+    "exact": 0.377,
+    "within7": 0.7738,
+    "within21": 0.8373,
+    "medAbs": 7,
+    "p90Abs": 70,
+    "bias": 17.9,
+    "nLag": 9,
+    "lagWithin21": 0.5556,
+    "lagMedAbs": 7,
+    "lagP90Abs": 126,
+    "lagBias": -17.1
+   },
+   "linear": {
+    "n": 252,
+    "exact": 0.6746,
+    "within7": 0.9365,
+    "within21": 0.9921,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": -0.1,
+    "nLag": 9,
+    "lagWithin21": 0.7778,
+    "lagMedAbs": 14,
+    "lagP90Abs": 91,
+    "lagBias": -14
+   },
+   "none": {
+    "n": 252,
+    "exact": 0.5198,
+    "within7": 0.9008,
+    "within21": 0.9643,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": -4,
+    "nLag": 9,
+    "lagWithin21": 0,
+    "lagMedAbs": 49,
+    "lagP90Abs": 126,
+    "lagBias": -63
+   }
+  }
+ },
+ "A055": {
+  "mid": "A055",
+  "dec": 1183,
+  "paired": 450,
+  "unpaired": 17,
+  "atkDec": 445,
+  "atkLanded": 428,
+  "atkModelExec": 430,
+  "inSample": {
+   "n": 450,
+   "exec": 446,
+   "dropCap": 4,
+   "lost": 0,
+   "exact": 0.8969,
+   "within7": 0.9843,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 17,
+   "exec": 2,
+   "dropCap": 15,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 449,
+   "rounds": 336,
+   "b3": 19,
+   "b9": 1,
+   "share3": 0.1693,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 462,
+   "rounds": 346,
+   "b3": 15,
+   "b9": 2,
+   "share3": 0.1558,
+   "max": 9
+  },
+  "squeezed": 708,
+  "loo": {
+   "auto": {
+    "n": 450,
+    "exact": 0.6289,
+    "within7": 0.9156,
+    "within21": 0.9489,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 8.5,
+    "nLag": 61,
+    "lagWithin21": 0.7705,
+    "lagMedAbs": 7,
+    "lagP90Abs": 42,
+    "lagBias": -5.2
+   },
+   "nearest": {
+    "n": 450,
+    "exact": 0.4356,
+    "within7": 0.7756,
+    "within21": 0.8489,
+    "medAbs": 7,
+    "p90Abs": 56,
+    "bias": 20.7,
+    "nLag": 61,
+    "lagWithin21": 0.7705,
+    "lagMedAbs": 0,
+    "lagP90Abs": 42,
+    "lagBias": 11.5
+   },
+   "linear": {
+    "n": 450,
+    "exact": 0.6289,
+    "within7": 0.9178,
+    "within21": 0.9711,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 0,
+    "nLag": 61,
+    "lagWithin21": 0.8525,
+    "lagMedAbs": 7,
+    "lagP90Abs": 28,
+    "lagBias": -4.5
+   },
+   "none": {
+    "n": 450,
+    "exact": 0.48,
+    "within7": 0.7622,
+    "within21": 0.8911,
+    "medAbs": 7,
+    "p90Abs": 28,
+    "bias": -8.9,
+    "nLag": 61,
+    "lagWithin21": 0.1967,
+    "lagMedAbs": 42,
+    "lagP90Abs": 77,
+    "lagBias": -47
+   }
+  }
+ },
+ "A023": {
+  "mid": "A023",
+  "dec": 830,
+  "paired": 490,
+  "unpaired": 2,
+  "atkDec": 463,
+  "atkLanded": 461,
+  "atkModelExec": 463,
+  "inSample": {
+   "n": 490,
+   "exec": 490,
+   "dropCap": 0,
+   "lost": 0,
+   "exact": 0.8796,
+   "within7": 0.9776,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 2,
+   "exec": 2,
+   "dropCap": 0,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 482,
+   "rounds": 387,
+   "b3": 11,
+   "b9": 0,
+   "share3": 0.0851,
+   "max": 6
+  },
+  "actual": {
+   "cmds": 482,
+   "rounds": 390,
+   "b3": 6,
+   "b9": 0,
+   "share3": 0.0519,
+   "max": 6
+  },
+  "squeezed": 321,
+  "loo": {
+   "auto": {
+    "n": 490,
+    "exact": 0.6837,
+    "within7": 0.9735,
+    "within21": 0.998,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 0,
+    "nLag": 11,
+    "lagWithin21": 0.9091,
+    "lagMedAbs": 21,
+    "lagP90Abs": 21,
+    "lagBias": -8.9
+   },
+   "nearest": {
+    "n": 490,
+    "exact": 0.4122,
+    "within7": 0.8163,
+    "within21": 0.8796,
+    "medAbs": 7,
+    "p90Abs": 42,
+    "bias": 14,
+    "nLag": 11,
+    "lagWithin21": 0.9091,
+    "lagMedAbs": 21,
+    "lagP90Abs": 21,
+    "lagBias": -8.3
+   },
+   "linear": {
+    "n": 490,
+    "exact": 0.6837,
+    "within7": 0.9735,
+    "within21": 0.998,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 0.1,
+    "nLag": 11,
+    "lagWithin21": 0.9091,
+    "lagMedAbs": 7,
+    "lagP90Abs": 21,
+    "lagBias": -6.4
+   },
+   "none": {
+    "n": 490,
+    "exact": 0.6061,
+    "within7": 0.949,
+    "within21": 0.9898,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": -2,
+    "nLag": 11,
+    "lagWithin21": 0.5455,
+    "lagMedAbs": 21,
+    "lagP90Abs": 42,
+    "lagBias": -26.7
+   }
+  }
+ },
+ "A019": {
+  "mid": "A019",
+  "dec": 1339,
+  "paired": 723,
+  "unpaired": 547,
+  "atkDec": 1244,
+  "atkLanded": 697,
+  "atkModelExec": 873,
+  "inSample": {
+   "n": 723,
+   "exec": 677,
+   "dropCap": 46,
+   "lost": 0,
+   "exact": 0.9143,
+   "within7": 0.9852,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 0
+  },
+  "un": {
+   "n": 547,
+   "exec": 222,
+   "dropCap": 325,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 912,
+   "rounds": 552,
+   "b3": 52,
+   "b9": 15,
+   "share3": 0.3202,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 792,
+   "rounds": 434,
+   "b3": 50,
+   "b9": 22,
+   "share3": 0.4141,
+   "max": 9
+  },
+  "squeezed": 574,
+  "loo": {
+   "auto": {
+    "n": 723,
+    "exact": 0.6916,
+    "within7": 0.9267,
+    "within21": 0.9627,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": -0.7,
+    "nLag": 242,
+    "lagWithin21": 0.9091,
+    "lagMedAbs": 0,
+    "lagP90Abs": 14,
+    "lagBias": -3.3
+   },
+   "nearest": {
+    "n": 723,
+    "exact": 0.5892,
+    "within7": 0.8354,
+    "within21": 0.9046,
+    "medAbs": 0,
+    "p90Abs": 21,
+    "bias": 6.3,
+    "nLag": 242,
+    "lagWithin21": 0.9091,
+    "lagMedAbs": 0,
+    "lagP90Abs": 21,
+    "lagBias": -3.6
+   },
+   "linear": {
+    "n": 723,
+    "exact": 0.6556,
+    "within7": 0.9073,
+    "within21": 0.9668,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 0.3,
+    "nLag": 242,
+    "lagWithin21": 0.9256,
+    "lagMedAbs": 0,
+    "lagP90Abs": 14,
+    "lagBias": -1.7
+   },
+   "none": {
+    "n": 723,
+    "exact": 0.3638,
+    "within7": 0.5989,
+    "within21": 0.704,
+    "medAbs": 7,
+    "p90Abs": 203,
+    "bias": -51.9,
+    "nLag": 242,
+    "lagWithin21": 0.1157,
+    "lagMedAbs": 91,
+    "lagP90Abs": 378,
+    "lagBias": -149.3
+   }
+  }
+ },
+ "A054": {
+  "mid": "A054",
+  "dec": 1132,
+  "paired": 707,
+  "unpaired": 82,
+  "atkDec": 753,
+  "atkLanded": 671,
+  "atkModelExec": 684,
+  "inSample": {
+   "n": 707,
+   "exec": 703,
+   "dropCap": 4,
+   "lost": 0,
+   "exact": 0.8876,
+   "within7": 0.9886,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 82,
+   "exec": 15,
+   "dropCap": 67,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 693,
+   "rounds": 448,
+   "b3": 42,
+   "b9": 8,
+   "share3": 0.3001,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 696,
+   "rounds": 447,
+   "b3": 41,
+   "b9": 6,
+   "share3": 0.2945,
+   "max": 9
+  },
+  "squeezed": 416,
+  "loo": {
+   "auto": {
+    "n": 707,
+    "exact": 0.6407,
+    "within7": 0.9137,
+    "within21": 0.9477,
+    "medAbs": 0,
+    "p90Abs": 7,
+    "bias": 0.3,
+    "nLag": 197,
+    "lagWithin21": 0.8274,
+    "lagMedAbs": 0,
+    "lagP90Abs": 70,
+    "lagBias": -5.9
+   },
+   "nearest": {
+    "n": 707,
+    "exact": 0.505,
+    "within7": 0.8175,
+    "within21": 0.8826,
+    "medAbs": 0,
+    "p90Abs": 42,
+    "bias": 8,
+    "nLag": 197,
+    "lagWithin21": 0.8274,
+    "lagMedAbs": 0,
+    "lagP90Abs": 70,
+    "lagBias": -6.1
+   },
+   "linear": {
+    "n": 707,
+    "exact": 0.6096,
+    "within7": 0.8854,
+    "within21": 0.9448,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": 0.3,
+    "nLag": 197,
+    "lagWithin21": 0.8122,
+    "lagMedAbs": 0,
+    "lagP90Abs": 49,
+    "lagBias": -0.4
+   },
+   "none": {
+    "n": 707,
+    "exact": 0.3734,
+    "within7": 0.6605,
+    "within21": 0.7383,
+    "medAbs": 7,
+    "p90Abs": 140,
+    "bias": -33.9,
+    "nLag": 197,
+    "lagWithin21": 0.0609,
+    "lagMedAbs": 112,
+    "lagP90Abs": 203,
+    "lagBias": -115.4
+   }
+  }
+ },
+ "A003": {
+  "mid": "A003",
+  "dec": 579,
+  "paired": 457,
+  "unpaired": 121,
+  "atkDec": 577,
+  "atkLanded": 456,
+  "atkModelExec": 463,
+  "inSample": {
+   "n": 457,
+   "exec": 456,
+   "dropCap": 1,
+   "lost": 0,
+   "exact": 0.8531,
+   "within7": 0.9715,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 121,
+   "exec": 8,
+   "dropCap": 113,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 464,
+   "rounds": 263,
+   "b3": 34,
+   "b9": 6,
+   "share3": 0.4289,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 497,
+   "rounds": 262,
+   "b3": 34,
+   "b9": 11,
+   "share3": 0.4668,
+   "max": 9
+  },
+  "squeezed": 121,
+  "loo": {
+   "auto": {
+    "n": 457,
+    "exact": 0.7199,
+    "within7": 0.8665,
+    "within21": 0.9125,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": -0.1,
+    "nLag": 239,
+    "lagWithin21": 0.8536,
+    "lagMedAbs": 0,
+    "lagP90Abs": 63,
+    "lagBias": -2.3
+   },
+   "nearest": {
+    "n": 457,
+    "exact": 0.5908,
+    "within7": 0.7877,
+    "within21": 0.8534,
+    "medAbs": 0,
+    "p90Abs": 70,
+    "bias": 5.1,
+    "nLag": 239,
+    "lagWithin21": 0.8536,
+    "lagMedAbs": 0,
+    "lagP90Abs": 63,
+    "lagBias": -2.6
+   },
+   "linear": {
+    "n": 457,
+    "exact": 0.6608,
+    "within7": 0.8271,
+    "within21": 0.919,
+    "medAbs": 0,
+    "p90Abs": 21,
+    "bias": 0.9,
+    "nLag": 239,
+    "lagWithin21": 0.8494,
+    "lagMedAbs": 0,
+    "lagP90Abs": 42,
+    "lagBias": 0.7
+   },
+   "none": {
+    "n": 457,
+    "exact": 0.2998,
+    "within7": 0.442,
+    "within21": 0.4989,
+    "medAbs": 28,
+    "p90Abs": 175,
+    "bias": -60.5,
+    "nLag": 239,
+    "lagWithin21": 0.0418,
+    "lagMedAbs": 112,
+    "lagP90Abs": 203,
+    "lagBias": -113.8
+   }
+  }
+ },
+ "A031": {
+  "mid": "A031",
+  "dec": 983,
+  "paired": 519,
+  "unpaired": 441,
+  "atkDec": 927,
+  "atkLanded": 486,
+  "atkModelExec": 505,
+  "inSample": {
+   "n": 519,
+   "exec": 455,
+   "dropCap": 64,
+   "lost": 0,
+   "exact": 0.8945,
+   "within7": 0.9824,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 441,
+   "exec": 82,
+   "dropCap": 359,
+   "lost": 0
+  },
+  "model": {
+   "cmds": 505,
+   "rounds": 268,
+   "b3": 38,
+   "b9": 18,
+   "share3": 0.4891,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 526,
+   "rounds": 276,
+   "b3": 36,
+   "b9": 17,
+   "share3": 0.4829,
+   "max": 9
+  },
+  "squeezed": 464,
+  "loo": {
+   "auto": {
+    "n": 519,
+    "exact": 0.6956,
+    "within7": 0.8863,
+    "within21": 0.9364,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": -0.9,
+    "nLag": 253,
+    "lagWithin21": 0.8814,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -2.8
+   },
+   "nearest": {
+    "n": 519,
+    "exact": 0.5549,
+    "within7": 0.7746,
+    "within21": 0.8555,
+    "medAbs": 0,
+    "p90Abs": 63,
+    "bias": 8.7,
+    "nLag": 253,
+    "lagWithin21": 0.8775,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -3
+   },
+   "linear": {
+    "n": 519,
+    "exact": 0.6378,
+    "within7": 0.8555,
+    "within21": 0.9364,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": 0.3,
+    "nLag": 253,
+    "lagWithin21": 0.8814,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -0.3
+   },
+   "none": {
+    "n": 519,
+    "exact": 0.3044,
+    "within7": 0.4509,
+    "within21": 0.5376,
+    "medAbs": 14,
+    "p90Abs": 308,
+    "bias": -92.3,
+    "nLag": 253,
+    "lagWithin21": 0.0514,
+    "lagMedAbs": 168,
+    "lagP90Abs": 357,
+    "lagBias": -187
+   }
+  }
+ },
+ "A050": {
+  "mid": "A050",
+  "dec": 1260,
+  "paired": 582,
+  "unpaired": 387,
+  "atkDec": 942,
+  "atkLanded": 555,
+  "atkModelExec": 633,
+  "inSample": {
+   "n": 582,
+   "exec": 503,
+   "dropCap": 79,
+   "lost": 0,
+   "exact": 0.8986,
+   "within7": 0.9543,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 387,
+   "exec": 154,
+   "dropCap": 230,
+   "lost": 3
+  },
+  "model": {
+   "cmds": 633,
+   "rounds": 301,
+   "b3": 53,
+   "b9": 20,
+   "share3": 0.534,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 647,
+   "rounds": 286,
+   "b3": 52,
+   "b9": 27,
+   "share3": 0.5811,
+   "max": 9
+  },
+  "squeezed": 678,
+  "loo": {
+   "auto": {
+    "n": 582,
+    "exact": 0.7423,
+    "within7": 0.8797,
+    "within21": 0.9227,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": 0.7,
+    "nLag": 343,
+    "lagWithin21": 0.8834,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -1.1
+   },
+   "nearest": {
+    "n": 582,
+    "exact": 0.6598,
+    "within7": 0.8058,
+    "within21": 0.866,
+    "medAbs": 0,
+    "p90Abs": 49,
+    "bias": 6.8,
+    "nLag": 343,
+    "lagWithin21": 0.8805,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -0.8
+   },
+   "linear": {
+    "n": 582,
+    "exact": 0.6701,
+    "within7": 0.8505,
+    "within21": 0.9313,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": 0.9,
+    "nLag": 343,
+    "lagWithin21": 0.8892,
+    "lagMedAbs": 0,
+    "lagP90Abs": 28,
+    "lagBias": 0.4
+   },
+   "none": {
+    "n": 582,
+    "exact": 0.2784,
+    "within7": 0.366,
+    "within21": 0.4536,
+    "medAbs": 35,
+    "p90Abs": 203,
+    "bias": -74,
+    "nLag": 343,
+    "lagWithin21": 0.0729,
+    "lagMedAbs": 105,
+    "lagP90Abs": 238,
+    "lagBias": -124.7
+   }
+  }
+ },
+ "A009": {
+  "mid": "A009",
+  "dec": 2117,
+  "paired": 634,
+  "unpaired": 1405,
+  "atkDec": 2019,
+  "atkLanded": 614,
+  "atkModelExec": 638,
+  "inSample": {
+   "n": 634,
+   "exec": 423,
+   "dropCap": 211,
+   "lost": 0,
+   "exact": 0.8747,
+   "within7": 0.9882,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 1405,
+   "exec": 234,
+   "dropCap": 1083,
+   "lost": 88
+  },
+  "model": {
+   "cmds": 645,
+   "rounds": 223,
+   "b3": 66,
+   "b9": 35,
+   "share3": 0.7209,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 642,
+   "rounds": 211,
+   "b3": 62,
+   "b9": 36,
+   "share3": 0.7368,
+   "max": 9
+  },
+  "squeezed": 1468,
+  "loo": {
+   "auto": {
+    "n": 634,
+    "exact": 0.7934,
+    "within7": 0.8849,
+    "within21": 0.9069,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": 4.6,
+    "nLag": 485,
+    "lagWithin21": 0.8907,
+    "lagMedAbs": 0,
+    "lagP90Abs": 56,
+    "lagBias": 4.6
+   },
+   "nearest": {
+    "n": 634,
+    "exact": 0.7555,
+    "within7": 0.8438,
+    "within21": 0.8722,
+    "medAbs": 0,
+    "p90Abs": 77,
+    "bias": 8.4,
+    "nLag": 485,
+    "lagWithin21": 0.8907,
+    "lagMedAbs": 0,
+    "lagP90Abs": 56,
+    "lagBias": 4.6
+   },
+   "linear": {
+    "n": 634,
+    "exact": 0.6893,
+    "within7": 0.8281,
+    "within21": 0.9054,
+    "medAbs": 0,
+    "p90Abs": 21,
+    "bias": 2.4,
+    "nLag": 485,
+    "lagWithin21": 0.8804,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": 2.8
+   },
+   "none": {
+    "n": 634,
+    "exact": 0.1278,
+    "within7": 0.2129,
+    "within21": 0.2413,
+    "medAbs": 224,
+    "p90Abs": 609,
+    "bias": -258.3,
+    "nLag": 485,
+    "lagWithin21": 0.0082,
+    "lagMedAbs": 294,
+    "lagP90Abs": 644,
+    "lagBias": -336.9
+   }
+  }
+ },
+ "A057": {
+  "mid": "A057",
+  "dec": 567,
+  "paired": 271,
+  "unpaired": 291,
+  "atkDec": 546,
+  "atkLanded": 255,
+  "atkModelExec": 386,
+  "inSample": {
+   "n": 271,
+   "exec": 262,
+   "dropCap": 9,
+   "lost": 0,
+   "exact": 0.9084,
+   "within7": 1,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 0
+  },
+  "un": {
+   "n": 291,
+   "exec": 140,
+   "dropCap": 20,
+   "lost": 131
+  },
+  "model": {
+   "cmds": 386,
+   "rounds": 254,
+   "b3": 18,
+   "b9": 3,
+   "share3": 0.2487,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 282,
+   "rounds": 176,
+   "b3": 15,
+   "b9": 7,
+   "share3": 0.3617,
+   "max": 9
+  },
+  "squeezed": 296,
+  "loo": {
+   "auto": {
+    "n": 271,
+    "exact": 0.6273,
+    "within7": 0.8044,
+    "within21": 0.8413,
+    "medAbs": 0,
+    "p90Abs": 63,
+    "bias": 0.5,
+    "nLag": 113,
+    "lagWithin21": 0.6726,
+    "lagMedAbs": 0,
+    "lagP90Abs": 182,
+    "lagBias": -4.1
+   },
+   "nearest": {
+    "n": 271,
+    "exact": 0.5018,
+    "within7": 0.7232,
+    "within21": 0.7601,
+    "medAbs": 0,
+    "p90Abs": 98,
+    "bias": 8.6,
+    "nLag": 113,
+    "lagWithin21": 0.6726,
+    "lagMedAbs": 0,
+    "lagP90Abs": 182,
+    "lagBias": -4.1
+   },
+   "linear": {
+    "n": 271,
+    "exact": 0.5904,
+    "within7": 0.8118,
+    "within21": 0.893,
+    "medAbs": 0,
+    "p90Abs": 28,
+    "bias": 0.5,
+    "nLag": 113,
+    "lagWithin21": 0.7611,
+    "lagMedAbs": 0,
+    "lagP90Abs": 105,
+    "lagBias": -0.3
+   },
+   "none": {
+    "n": 271,
+    "exact": 0.3321,
+    "within7": 0.5572,
+    "within21": 0.5941,
+    "medAbs": 7,
+    "p90Abs": 343,
+    "bias": -121.3,
+    "nLag": 113,
+    "lagWithin21": 0.0265,
+    "lagMedAbs": 280,
+    "lagP90Abs": 672,
+    "lagBias": -287.3
+   }
+  }
+ },
+ "A059": {
+  "mid": "A059",
+  "dec": 1036,
+  "paired": 384,
+  "unpaired": 574,
+  "atkDec": 936,
+  "atkLanded": 362,
+  "atkModelExec": 394,
+  "inSample": {
+   "n": 384,
+   "exec": 327,
+   "dropCap": 57,
+   "lost": 0,
+   "exact": 0.9083,
+   "within7": 0.9878,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 0
+  },
+  "un": {
+   "n": 574,
+   "exec": 85,
+   "dropCap": 375,
+   "lost": 114
+  },
+  "model": {
+   "cmds": 394,
+   "rounds": 185,
+   "b3": 33,
+   "b9": 16,
+   "share3": 0.5685,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 390,
+   "rounds": 187,
+   "b3": 31,
+   "b9": 12,
+   "share3": 0.5564,
+   "max": 9
+  },
+  "squeezed": 652,
+  "loo": {
+   "auto": {
+    "n": 384,
+    "exact": 0.7109,
+    "within7": 0.849,
+    "within21": 0.8776,
+    "medAbs": 0,
+    "p90Abs": 56,
+    "bias": -0.2,
+    "nLag": 239,
+    "lagWithin21": 0.8201,
+    "lagMedAbs": 0,
+    "lagP90Abs": 77,
+    "lagBias": -1.8
+   },
+   "nearest": {
+    "n": 384,
+    "exact": 0.6042,
+    "within7": 0.75,
+    "within21": 0.7969,
+    "medAbs": 0,
+    "p90Abs": 98,
+    "bias": 8,
+    "nLag": 239,
+    "lagWithin21": 0.8117,
+    "lagMedAbs": 0,
+    "lagP90Abs": 91,
+    "lagBias": -1.3
+   },
+   "linear": {
+    "n": 384,
+    "exact": 0.6458,
+    "within7": 0.8125,
+    "within21": 0.8776,
+    "medAbs": 0,
+    "p90Abs": 35,
+    "bias": 1.6,
+    "nLag": 239,
+    "lagWithin21": 0.8159,
+    "lagMedAbs": 0,
+    "lagP90Abs": 63,
+    "lagBias": 1.3
+   },
+   "none": {
+    "n": 384,
+    "exact": 0.224,
+    "within7": 0.3516,
+    "within21": 0.4063,
+    "medAbs": 77,
+    "p90Abs": 441,
+    "bias": -176.2,
+    "nLag": 239,
+    "lagWithin21": 0.046,
+    "lagMedAbs": 252,
+    "lagP90Abs": 651,
+    "lagBias": -282.1
+   }
+  }
+ },
+ "A094": {
+  "mid": "A094",
+  "dec": 454,
+  "paired": 210,
+  "unpaired": 244,
+  "atkDec": 454,
+  "atkLanded": 210,
+  "atkModelExec": 212,
+  "inSample": {
+   "n": 210,
+   "exec": 153,
+   "dropCap": 57,
+   "lost": 0,
+   "exact": 0.902,
+   "within7": 1,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 0
+  },
+  "un": {
+   "n": 244,
+   "exec": 59,
+   "dropCap": 176,
+   "lost": 9
+  },
+  "model": {
+   "cmds": 212,
+   "rounds": 88,
+   "b3": 21,
+   "b9": 8,
+   "share3": 0.6368,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 231,
+   "rounds": 89,
+   "b3": 22,
+   "b9": 8,
+   "share3": 0.6623,
+   "max": 9
+  },
+  "squeezed": 244,
+  "loo": {
+   "auto": {
+    "n": 210,
+    "exact": 0.7381,
+    "within7": 0.8952,
+    "within21": 0.9095,
+    "medAbs": 0,
+    "p90Abs": 14,
+    "bias": -0.3,
+    "nLag": 155,
+    "lagWithin21": 0.8839,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -1
+   },
+   "nearest": {
+    "n": 210,
+    "exact": 0.6762,
+    "within7": 0.819,
+    "within21": 0.8571,
+    "medAbs": 0,
+    "p90Abs": 56,
+    "bias": 3.7,
+    "nLag": 155,
+    "lagWithin21": 0.871,
+    "lagMedAbs": 0,
+    "lagP90Abs": 35,
+    "lagBias": -1.1
+   },
+   "linear": {
+    "n": 210,
+    "exact": 0.6381,
+    "within7": 0.8524,
+    "within21": 0.9333,
+    "medAbs": 0,
+    "p90Abs": 21,
+    "bias": 1.3,
+    "nLag": 155,
+    "lagWithin21": 0.9097,
+    "lagMedAbs": 0,
+    "lagP90Abs": 21,
+    "lagBias": 1.2
+   },
+   "none": {
+    "n": 210,
+    "exact": 0.1714,
+    "within7": 0.2238,
+    "within21": 0.3,
+    "medAbs": 84,
+    "p90Abs": 350,
+    "bias": -131.3,
+    "nLag": 155,
+    "lagWithin21": 0.0516,
+    "lagMedAbs": 161,
+    "lagP90Abs": 357,
+    "lagBias": -177.1
+   }
+  }
+ },
+ "B039": {
+  "mid": "B039",
+  "dec": 794,
+  "paired": 347,
+  "unpaired": 291,
+  "atkDec": 609,
+  "atkLanded": 318,
+  "atkModelExec": 390,
+  "inSample": {
+   "n": 347,
+   "exec": 330,
+   "dropCap": 17,
+   "lost": 0,
+   "exact": 0.9455,
+   "within7": 0.997,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 0
+  },
+  "un": {
+   "n": 291,
+   "exec": 84,
+   "dropCap": 88,
+   "lost": 119
+  },
+  "model": {
+   "cmds": 503,
+   "rounds": 312,
+   "b3": 30,
+   "b9": 8,
+   "share3": 0.3777,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 492,
+   "rounds": 306,
+   "b3": 31,
+   "b9": 7,
+   "share3": 0.4248,
+   "max": 9
+  },
+  "squeezed": 295,
+  "loo": {
+   "auto": {
+    "n": 347,
+    "exact": 0.5418,
+    "within7": 0.7003,
+    "within21": 0.7608,
+    "medAbs": 0,
+    "p90Abs": 105,
+    "bias": 6.2,
+    "nLag": 222,
+    "lagWithin21": 0.7027,
+    "lagMedAbs": 0,
+    "lagP90Abs": 119,
+    "lagBias": -0.1
+   },
+   "nearest": {
+    "n": 347,
+    "exact": 0.4726,
+    "within7": 0.5735,
+    "within21": 0.6398,
+    "medAbs": 7,
+    "p90Abs": 119,
+    "bias": 21.9,
+    "nLag": 222,
+    "lagWithin21": 0.6982,
+    "lagMedAbs": 0,
+    "lagP90Abs": 119,
+    "lagBias": -0.1
+   },
+   "linear": {
+    "n": 347,
+    "exact": 0.464,
+    "within7": 0.6599,
+    "within21": 0.7695,
+    "medAbs": 7,
+    "p90Abs": 70,
+    "bias": 2.2,
+    "nLag": 222,
+    "lagWithin21": 0.6622,
+    "lagMedAbs": 7,
+    "lagP90Abs": 105,
+    "lagBias": 0.5
+   },
+   "none": {
+    "n": 347,
+    "exact": 0.1988,
+    "within7": 0.3372,
+    "within21": 0.3862,
+    "medAbs": 77,
+    "p90Abs": 609,
+    "bias": -186.3,
+    "nLag": 222,
+    "lagWithin21": 0.0405,
+    "lagMedAbs": 238,
+    "lagP90Abs": 665,
+    "lagBias": -289.5
+   }
+  }
+ },
+ "B043": {
+  "mid": "B043",
+  "dec": 887,
+  "paired": 460,
+  "unpaired": 303,
+  "atkDec": 706,
+  "atkLanded": 403,
+  "atkModelExec": 519,
+  "inSample": {
+   "n": 460,
+   "exec": 448,
+   "dropCap": 12,
+   "lost": 0,
+   "exact": 0.8817,
+   "within7": 0.9754,
+   "within14": 1,
+   "medAbs": 0,
+   "p90Abs": 7
+  },
+  "un": {
+   "n": 303,
+   "exec": 128,
+   "dropCap": 106,
+   "lost": 69
+  },
+  "model": {
+   "cmds": 615,
+   "rounds": 381,
+   "b3": 43,
+   "b9": 10,
+   "share3": 0.3854,
+   "max": 9
+  },
+  "actual": {
+   "cmds": 579,
+   "rounds": 350,
+   "b3": 47,
+   "b9": 4,
+   "share3": 0.456,
+   "max": 9
+  },
+  "squeezed": 321,
+  "loo": {
+   "auto": {
+    "n": 460,
+    "exact": 0.5913,
+    "within7": 0.7543,
+    "within21": 0.8022,
+    "medAbs": 0,
+    "p90Abs": 112,
+    "bias": 1.9,
+    "nLag": 241,
+    "lagWithin21": 0.6846,
+    "lagMedAbs": 0,
+    "lagP90Abs": 133,
+    "lagBias": -6.5
+   },
+   "nearest": {
+    "n": 460,
+    "exact": 0.4891,
+    "within7": 0.5783,
+    "within21": 0.6283,
+    "medAbs": 7,
+    "p90Abs": 147,
+    "bias": 23,
+    "nLag": 241,
+    "lagWithin21": 0.6846,
+    "lagMedAbs": 0,
+    "lagP90Abs": 133,
+    "lagBias": -6.4
+   },
+   "linear": {
+    "n": 460,
+    "exact": 0.4957,
+    "within7": 0.713,
+    "within21": 0.7935,
+    "medAbs": 7,
+    "p90Abs": 63,
+    "bias": 0.6,
+    "nLag": 241,
+    "lagWithin21": 0.6515,
+    "lagMedAbs": 7,
+    "lagP90Abs": 98,
+    "lagBias": -2.1
+   },
+   "none": {
+    "n": 460,
+    "exact": 0.3196,
+    "within7": 0.4522,
+    "within21": 0.4848,
+    "medAbs": 35,
+    "p90Abs": 413,
+    "bias": -133.8,
+    "nLag": 241,
+    "lagWithin21": 0.0166,
+    "lagMedAbs": 182,
+    "lagP90Abs": 672,
+    "lagBias": -254.4
+   }
+  }
+ }
+}

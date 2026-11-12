@@ -1,0 +1,3 @@
+# 第 5 批：8 队的局（内置 AI 入队的正方向）。A007 不在我名下的 11 局里，这里只拿它验「8 队及以上内置 AI 才入队」这一条引擎规则。
+out/council/abl/phys-A007-base-end.txt|node scripts/g0ablate.mjs A007 --phys base
+out/council/abl/phys-A007-nobotteams-900.txt|node scripts/g0ablate.mjs A007 --phys nobotteams --until 900

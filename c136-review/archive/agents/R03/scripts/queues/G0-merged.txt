@@ -1,0 +1,5 @@
+# 合并批（scripts/queues/CF-p1.txt）反复排几遍：一遍占位最多 Q_TIMEOUT 秒，没做完的步骤下一遍接着做（做完的会跳过）。
+out/council/cf/_m1.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt
+out/council/cf/_m2.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt
+out/council/cf/_m3.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt
+out/council/cf/_m4.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt

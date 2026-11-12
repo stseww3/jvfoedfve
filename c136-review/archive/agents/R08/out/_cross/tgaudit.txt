@@ -1,0 +1,106 @@
+tgaudit.py — 模拟器建局 / 跑局代码逐行对照（teamgate.mjs 328 行）
+
+[TG-A] sim/tools/c117/teamgate.mjs
+  策略装载入口（数据镜像里没有这个文件，所以 teamgate 在镜像里跑不起来）：1 处
+    L35: import { getMap, makePolicy } from '../../strategy/run.js';
+  文件头：内置 AI 怎么入队：1 处
+    L8: // blocks; the AI bots join teams round robin as in the live game. All people
+  文件头：window 对象：1 处
+    L27: // with a bare `window` object so its guarded browser hooks stay off.
+  判胜份额：1 处
+    L38: const WIN_SHARE = 0.96;
+  检查点：1 处
+    L39: const CHECKPOINTS = [700, 1500, 3000, 4500, 6000];
+  装策略时的 window：1 处
+    L93: if (typeof globalThis.window === 'undefined') globalThis.window = {};
+  编队策略的参数：2 处
+    L101: const params = { spawnRoll: 0, planEvery: 0, ...job.squadParams };
+    L118: pols[h] = h < size ? squadPolicyOf(job, h) : makePolicy({ policy: job.others[(h - size) % job.others.length], spawnRoll: 0, planEvery: 0 }, h);
+  真人数 / 分队：2 处
+    L112: const humans = size + (nTeams - 1) * per;
+    L114: for (let h = 0; h < humans; h++) teams[h] = h < size ? 1 : 2 + Math.floor((h - size) / per);
+  建局（用的是哪个类、传了什么）：1 处
+    L115: const g = new Game({ map, difficulty: job.diff, spawnSeed: job.seed, selectableSpawn: true, humans, teams, nTeams });
+  对手的策略：1 处
+    L118: pols[h] = h < size ? squadPolicyOf(job, h) : makePolicy({ policy: job.others[(h - size) % job.others.length], spawnRoll: 0, planEvery: 0 }, h);
+  出生：每个席位调几次：3 处
+    L125: s = pols[h].chooseSpawn ? pols[h].chooseSpawn(g, true) : null;
+    L129: if (s) g.chooseSpawn(s.x, s.y, h, false);
+    L131: g.endSpawnPhase();
+  主循环：每拍谁出手：2 处
+    L156: pols[h].act(g);
+    L166: g.tick();
+  判胜：3 处
+    L38: const WIN_SHARE = 0.96;
+    L184: if (share >= WIN_SHARE) {
+    L190: if (!win && g.over && g.winnerTeam === 1) {
+  默认参数（命令行没给时的取值）：
+    L59: const squadPolicy = opt('squad-policy', squad ? null : 'v27');
+    L64: squadSize: +opt('squad-size', 8),
+    L65: teams: +opt('teams', 6),
+    L66: per: +opt('per', 8),
+    L67: others: opt('others', 'v27').split(','),
+    L68: diff: +opt('diff', 0),
+    L69: maps: opt('maps', '10_0,11_0,12_0,13_0,16_0,18_0,22_0,23_0,24_0').split(','),
+    L70: seeds: range(opt('seeds', '1-4')),
+    L71: ticks: +opt('ticks', 8000),
+
+[TG-B] teamgate.mjs 里各关键词出现的次数（0 = 这件事在 teamgate 里不存在）
+  g.names / names:（席位名字）：0
+  leave（离开 / 空壳）：0
+  delay / lag / latency（指令时延）：0
+  queue / pending（在途指令）：0
+  % 7（回合格点）：0
+  rate limit / per turn（每回合限流）：0
+  online（线上分支开关）：0
+  clone（断面克隆）：0
+  difficulty / diff：11
+  setupColors / assignTeams / botsTeamed（组队配色、减队、AI 入不入队）：0
+
+[TG-C] sim/sim/clone.js（32 行）
+  克隆出来的对象的原型：1 处
+    L18: const g = Object.create(Game.prototype);
+  不认识的字段：1 处
+    L29: } else throw new Error(`clone: unhandled field ${k}`);
+  共享不拷的字段表：1 处
+    L8: const SHARED = new Set([
+
+[TG-D] sim/sim/game.js（1440 行）和策略文件
+  基类缺省的内置 AI 难度：1 处
+    L56: this.difficulty = opts.difficulty ?? 5;
+  基类的分队：内置 AI 入不入队：2 处
+    L245: // index as the live game does (fX[p] = 1 + p % nTeams) unless
+    L261: if (opts.botTeams !== false) for (let p = this.humans; p < this.players; p++) teams[p] = 1 + (p % this.nTeams);
+  isBot：离开的真人算不算 AI：1 处
+    L216: return p >= this.humans || this.state[p] === 2;
+  leave：离开以后：1 处
+    L232: this.runAsBot(p);
+  四分之一线：1 处
+    L1303: if (bx <= iV(jP, 4)) this.collapse(p);
+  峰值怎么降：1 处
+    L1307: } else this.peak[p] = jP - Math.max(1, iV(jP - bx, 1e3));
+  出局清零：3 处
+    L771: this.bal[p] = 0;
+    L1323: this.bal[p] = 0;
+    L1340: this.bal[p] = 0;
+  game.js 里 names 出现 0 处（基类不存席位名字；策略读到的 g.names 是 undefined）
+  c110（5621 行）：g.online 出现 16 处，typeof window 出现 26 处，window.__ 开头的钩子名 11 个；isBot 的定义 1 处
+  策略文件里唯一的 isBot 定义（出生期用的局面副本；线上那一层给策略的 g.isBot 不在这个文件里）：1 处
+    L202: isBot: (o) => o >= g.humans,
+  按名字认编队友：1 处
+    L3975: return SQUAD_POOL_SET.has(raw.toLowerCase()) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
+  保护开关：1 处
+    L3982: if (g.alive[p] && g.terr[p] >= 80 && !g.isBot(p) && !this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) {
+  出生槽位：3 处
+    L4003: //      - Fixed slot = window.__tsbSquadSlot (0..19) so all 20 workers have deterministic, non-overlapping slots
+    L4010: const mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
+    L4196: const slot = ((typeof window.__tsbSquadSlot === "number" ? window.__tsbSquadSlot : me) | 0) % 20;
+  c116（5737 行）：g.online 出现 13 处，typeof window 出现 23 处，window.__ 开头的钩子名 12 个；isBot 的定义 1 处
+  策略文件里唯一的 isBot 定义（出生期用的局面副本；线上那一层给策略的 g.isBot 不在这个文件里）：1 处
+    L155: isBot: (o) => o >= g.humans,
+  按名字认编队友：没找到（/SQUAD_POOL_SET\.has\(raw\.toLowerCase\(\)\)/）
+  保护开关：没找到（/g\.terr\[p\] >= 80 && !g\.isBot\(p\) && !this\.isOurSquadBot/）
+  出生槽位：4 处（只列前 3 处）
+    L3979: //      - Fixed slot = window.__tsbSquadSlot (0..4) so all 5 workers have deterministic, non-overlapping slots
+    L3986: const mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
+    L4330: const mySlot = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 10);

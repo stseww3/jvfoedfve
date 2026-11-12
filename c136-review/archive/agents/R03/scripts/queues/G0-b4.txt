@@ -1,0 +1,5 @@
+# 第 4 批：32 拍缓存消融（A051 整局，有 11 次猎杀）+ isBot 口径消融（A066）
+out/council/abl/phys-A051-base-end.txt|node scripts/g0ablate.mjs A051 --phys base
+out/council/abl/phys-A051-cache32-end.txt|node scripts/g0ablate.mjs A051 --phys cache32
+out/council/abl/shadow-A066-base-2400.txt|node scripts/g0ablate.mjs A066 --shadow base --until 2400
+out/council/abl/shadow-A066-isbot-sim-2400.txt|node scripts/g0ablate.mjs A066 --shadow isbot-sim --until 2400

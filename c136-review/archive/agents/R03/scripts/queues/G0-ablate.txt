@@ -1,0 +1,18 @@
+# G0 保真度消融（g0ablate.mjs）、逐人名下格数（cells.mjs）与开环消融试跑（cfopen.mjs）。
+# 每行一批：<批日志>|bash scripts/heavy-batch.sh <步骤文件>；一批占一个重计算槽。排第二遍是为了补第一遍超时没做完的步骤（做完的会跳过）。
+out/council/abl/_b1.log|bash scripts/heavy-batch.sh scripts/queues/G0-b1.txt
+out/council/abl/_b2.log|bash scripts/heavy-batch.sh scripts/queues/G0-b2.txt
+out/council/cf/_p1.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt
+out/council/abl/_b3.log|bash scripts/heavy-batch.sh scripts/queues/G0-b3.txt
+out/council/cf/_p2.log|bash scripts/heavy-batch.sh scripts/queues/CF-p2.txt
+out/council/cf/_p3.log|bash scripts/heavy-batch.sh scripts/queues/CF-p3.txt
+out/council/abl/_b5.log|bash scripts/heavy-batch.sh scripts/queues/G0-b5.txt
+out/council/abl/_b4.log|bash scripts/heavy-batch.sh scripts/queues/G0-b4.txt
+out/council/abl/_b1r.log|bash scripts/heavy-batch.sh scripts/queues/G0-b1.txt
+out/council/abl/_b2r.log|bash scripts/heavy-batch.sh scripts/queues/G0-b2.txt
+out/council/cf/_p1r.log|bash scripts/heavy-batch.sh scripts/queues/CF-p1.txt
+out/council/abl/_b3r.log|bash scripts/heavy-batch.sh scripts/queues/G0-b3.txt
+out/council/cf/_p2r.log|bash scripts/heavy-batch.sh scripts/queues/CF-p2.txt
+out/council/cf/_p3r.log|bash scripts/heavy-batch.sh scripts/queues/CF-p3.txt
+out/council/abl/_b5r.log|bash scripts/heavy-batch.sh scripts/queues/G0-b5.txt
+out/council/abl/_b4r.log|bash scripts/heavy-batch.sh scripts/queues/G0-b4.txt

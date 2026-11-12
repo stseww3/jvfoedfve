@@ -2,7 +2,8 @@
 // human_profile.mjs — 量「其余真人」（不是我方席位的真人）在真局里怎么下指令，给 arena 的对手模型定参数、做验收对照。
 //
 // 用法（在 c136-review/agents/R06 下，套 run-heavy.sh）：
-//   node sim-v2/tools/human_profile.mjs [--matches A018,B021,…|packs] [--to 9000] [--out sim-v2/calib/human-profile.json]
+//   node sim-v2/tools/human_profile.mjs [--matches A018,B021,…|packs] [--to 9000] [--out sim-v2/calib/human-profile.json] [--cache-dir 目录] [--budget-ms 80000]
+//   入库的 sim-v2/calib/human-profile.json 用的是核心 20 局（tools/arena_calib_list20.txt 里的局号）；tools/profile_check.sh 从头重算一遍与它逐字节比。
 // 做法：录像原样重放；每条其余真人的指令在执行前记下：阶段、种类、对象类别（无主地 / 内置 AI 与空壳 / 真人）、千分比、
 // 自己的兵和地、对象的兵和地、对象当时有没有在打自己、离自己上一条指令隔了多少拍。
 // 输出：各阶段的分布摘要（终端）和明细汇总（JSON）。
@@ -283,18 +284,37 @@ const leaves = [];      // 其余真人在场时离场的拍
 let humansTotal = 0;
 const snapsAll = {};   // t → [{ mid, humTerr:[], humBal:[], sqTerr:[], sqBal:[], humAlive, humN, sqAlive, sqN }]
 const doneMatches = [];
-const cacheDir = path.join(SIMV2, '_cache', 'hp');
+const cacheDir = typeof o['cache-dir'] === 'string' ? path.resolve(o['cache-dir']) : path.join(SIMV2, '_cache', 'hp');   // --cache-dir：换一个缓存目录（从头重算一遍核对用，tools/profile_check.sh）
 const CACHE_V = 12;
 const cacheKey = `v${CACHE_V}-${o.phases === 'coarse' ? 'c' : 'f'}${TO}`;
 let pending = 0;
+// 两道只管「这一次算不算、算几局」的闸，不影响算出来的数：
+//   --min-share 0.15  开算第一局之前量一下这个进程眼下分得到多少 CPU（空转 1.5 秒）；不到这个比例就这一次不算
+//                     （经重计算闸门跑的进程 nice 19，机器挤的时候一局在一个槽位里算不完，白占槽位）
+//   --hard-ms 100000  已经用掉的墙钟 + 1.3 × 目前最慢的一局 超过这个数，就不再开新的一局（免得算到一半被闸门的上限杀掉）
+const minShare = num(o['min-share'], 0), hardMs = num(o['hard-ms'], Infinity);
+let shareNow = null, crowded = false, slowest = 0;
+function cpuShare() {
+  if (shareNow !== null) return shareNow;
+  const c0 = process.cpuUsage(), t0 = Date.now();
+  let x = 0;
+  while (Date.now() - t0 < 1500) { for (let i = 0; i < 200000; i++) x += i % 7; }
+  const c = process.cpuUsage(c0);
+  shareNow = Math.max(0.01, Math.min(1, (c.user + c.system) / 1000 / Math.max(1, Date.now() - t0)));
+  return shareNow;
+}
 for (const mid of mids) {
   const cf = path.join(cacheDir, `${mid}-${cacheKey}.json`);
   let R = null;
   if (fs.existsSync(cf) && !o.fresh) R = JSON.parse(fs.readFileSync(cf, 'utf8'));
   else if (Date.now() - wall0 > budget) { pending++; continue; }
+  else if (minShare > 0 && cpuShare() < minShare) { crowded = true; pending++; continue; }
+  else if (Date.now() - wall0 + 1.3 * slowest > hardMs) { pending++; continue; }
   else {
+    const g0 = Date.now();
     R = collect(mid);
     if (R) { fs.mkdirSync(cacheDir, { recursive: true }); fs.writeFileSync(cf, JSON.stringify(R)); }
+    slowest = Math.max(slowest, Date.now() - g0);
   }
   if (!R) continue;
   const off = doneMatches.length * 1000;
@@ -322,7 +342,8 @@ for (const mid of mids) {
   doneMatches.push(mid);
 }
 if (pending) {
-  console.log(`时间预算到了：已算 ${doneMatches.length} 局，还差 ${pending} 局。再跑一次同样的命令接着算（已算过的读缓存）。`);
+  if (crowded) console.log(`机器太挤：这个进程眼下只分得到 ${Math.round(100 * shareNow)}% 的 CPU（要求至少 ${Math.round(100 * minShare)}%），这一次没有算。已算 ${doneMatches.length} 局，还差 ${pending} 局。`);
+  else console.log(`时间预算到了：已算 ${doneMatches.length} 局，还差 ${pending} 局。再跑一次同样的命令接着算（已算过的读缓存）。`);
   process.exit(3);
 }
 

@@ -1,0 +1,20 @@
+# 合并批（原第 2 批起的全部步骤并成一批，按优先顺序）：重放一遍只要几秒，慢的是等重计算位，所以一次拿到位就连着跑完。
+# 先开环消融试跑（cfopen.mjs），再 8 队的局与 32 拍缓存的反向检验，最后决策层的反向检验（影子重跑，最慢）。
+out/council/cf/A041-open-630.txt|node scripts/cfopen.mjs A041 --until 2400 --arms drop1@630:0,drop1@630:7,drop1@630:19,drop1@630:41,drop1@630:83,drop1@630:127,dead@600-1500,dups@600-1500
+out/council/cf/A041-open-4284.txt|node scripts/cfopen.mjs A041 --arms enemydon@4284,squaddon@4284-99999,squaddon@1500-4284,drop1@4284:0,drop1@4284:2,drop1@4284:4,drop1@4284:7,drop1@4284:10,drop1@4284:13
+out/council/cf/A066-open-4284.txt|node scripts/cfopen.mjs A066 --arms enemydon@4284,squaddon@4284-99999,drop1@4284:0,drop1@4284:9,drop1@4284:31,drop1@4284:77,drop1@4284:150,drop1@4284:301
+out/council/cf/A051-open-630.txt|node scripts/cfopen.mjs A051 --until 2400 --arms dead@600-1500,dups@600-1500,drop1@630:0,drop1@630:19,drop1@630:47,drop1@630:83,drop1@630:150,drop1@630:211
+out/council/abl/phys-A007-base-end.txt|node scripts/g0ablate.mjs A007 --phys base
+out/council/abl/phys-A007-nobotteams-900.txt|node scripts/g0ablate.mjs A007 --phys nobotteams --until 900
+out/council/abl/phys-A041-base-end.txt|node scripts/g0ablate.mjs A041 --phys base
+out/council/abl/phys-A041-cache32-end.txt|node scripts/g0ablate.mjs A041 --phys cache32
+out/council/abl/phys-A051-base-end.txt|node scripts/g0ablate.mjs A051 --phys base
+out/council/abl/phys-A051-cache32-end.txt|node scripts/g0ablate.mjs A051 --phys cache32
+out/council/cf/A042-open-1500-4284.txt|node scripts/cfopen.mjs A042 --arms enemydon@4284,squaddon@1500-4284,drop1@4284:0,drop1@4284:25,drop1@4284:60,drop1@1500:0,drop1@1500:40,drop1@1500:90
+out/council/abl/shadow-A041-base-2400.txt|node scripts/g0ablate.mjs A041 --shadow base --until 2400
+out/council/abl/shadow-A041-offline-2400.txt|node scripts/g0ablate.mjs A041 --shadow offline --until 2400
+out/council/abl/shadow-A041-multi-2400.txt|node scripts/g0ablate.mjs A041 --shadow multi --until 2400
+out/council/abl/shadow-A041-strict-donate-2400.txt|node scripts/g0ablate.mjs A041 --shadow strict-donate --until 2400
+out/council/abl/shadow-A041-adapter-sim-2400.txt|node scripts/g0ablate.mjs A041 --shadow adapter-sim --until 2400
+out/council/abl/shadow-A066-base-2400.txt|node scripts/g0ablate.mjs A066 --shadow base --until 2400
+out/council/abl/shadow-A066-isbot-sim-2400.txt|node scripts/g0ablate.mjs A066 --shadow isbot-sim --until 2400

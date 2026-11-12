@@ -1,0 +1,7 @@
+# 第 1 批：逐人名下格数 + 物理层消融（跑到 900 拍）
+out/council/cells/_run.txt|node scripts/cells.mjs A051 A087 A066 A025 A045 A067 A071 A090 A042 A046 A041
+out/council/abl/phys-A041-base-900.txt|node scripts/g0ablate.mjs A041 --phys base --until 900
+out/council/abl/phys-A041-colors-900.txt|node scripts/g0ablate.mjs A041 --phys colors --until 900
+out/council/abl/phys-A041-botteams-900.txt|node scripts/g0ablate.mjs A041 --phys botteams --until 900
+out/council/abl/phys-A045-colors-900.txt|node scripts/g0ablate.mjs A045 --phys colors --until 900
+out/council/abl/phys-A045-botteams-900.txt|node scripts/g0ablate.mjs A045 --phys botteams --until 900
