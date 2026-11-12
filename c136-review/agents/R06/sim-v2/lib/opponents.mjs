@@ -31,6 +31,16 @@ const COUNT_T = [105, 231, 357, 630, 1071];
 // 出手节奏的指数（权重 ∝ 离上一条的时间 ÷ 本人平均间隔 的几次方；0 = 随时都可能点）：0~357 / 357~850 / 850~1530 / 以后。
 // 对着实测的「间隔 ÷ 本人平均间隔」分位和个人变异系数定的（arena_people.mjs 第 2 项）；arena 的 --opp-rhythm 可以改
 const RHYTHM = [1.5, 1, 1, 0.5];
+// 从哪一拍起，滑块改按「自己此刻的兵密度」取（之前按个人固定的滑块习惯）。实测密度 ≥ 5 的人不管原来什么习惯，
+// 单条指令很少超过 20%（P75 120~200‰）；只按个人习惯抽的话，习惯拉得高的那两成席位一辈子攒不起兵，3210 拍时
+// 其余真人兵密度的 P25 只有实测的一半多（20.6 对 37.1），成了我方的口粮。arena 的 --opp-dens-from 可以改（填很大的数 = 关掉）。
+// 出手密度也按兵密度分档（--opp-dens-rate）试过，缺省不开：「兵薄的人点得勤」有一半是倒果为因（点得勤所以兵薄），
+// 当成规则以后兵薄的越点越薄、兵厚的越攒越厚，1530 / 2142 拍时兵密度的 P10 和 P90 两头都跑出实测范围
+//（2142 拍 P10 3.4 对实测 6.2，P90 100 对实测 43）。
+const DENS_T0 = 1530;
+const D_EDGES = [2, 5, 10, 20, 40, 70, 100];
+const dBucket = (d) => { let b = 0; while (b < D_EDGES.length && d >= D_EDGES[b]) b++; return b; };
+const z8 = () => [0, 0, 0, 0, 0, 0, 0, 0];
 
 let PROFILE = null;
 export function loadProfile(file) {
@@ -68,15 +78,64 @@ export function loadProfile(file) {
       return x && (x.cmds >= 20 || x.expo >= 0.02) ? x.rate : base;
     });
     const nBase = c1.neutral ?? flat('neutral'), aBase = c1.ai ?? flat('ai');
+    // 打 AI 再按「身边有没有敌方真人」分三档（没有 / 真人占接壤 ≤30% / >30%）：同样被 AI 围着（AI 占接壤 >60%），
+    // 身边没有真人的人 630~850 拍打 AI 每 100 拍 1.40 条、有真人的 2.03~2.88 条（抢地）；到 1300~1530 拍反过来，
+    // 没有真人的 2.62 条、有真人的 1.57~1.98 条（要留兵防人）。真人只有十来个的小房间里几乎人人都是「身边没有真人」，
+    // 不分这一档的话小房间里的人前面打 AI 太急、后面收手太早，1530 拍时人均地只有录像的 75%~80%。
+    const aiB = byB('ai', aBase);
+    const c3 = p.byHum && p.byHum.cond3 ? p.byHum.cond3.ai : null;
+    const aiBH = [0, 1, 2, 3].map((b) => [0, 1, 2].map((l) => {
+      const x = c3 && c3[b] && c3[b][l];
+      return x && (x.cmds >= 20 || x.expo >= 0.02) ? x.rate : aiB[b];
+    }));
+    // 打 AI 的密度主要跟着「身边接壤的 AI 有几个」走（1 / 2 / 3~4 / 5~7 / ≥8 个）：同是 AI 占接壤 >60% 的人，1071~1300 拍
+    // 每 100 拍 0.68 / 1.51 / 1.91 / 2.30 / 3.35 条 —— 真人是挨个点身边的 AI 的。真人只有十来个的小房间里每人身边 8 个以上 AI，
+    // 只按接壤占比配密度的话，小房间里 1071~1530 拍打 AI 的条数只有录像的七八成，1530 拍时人均地是录像的 75%~80%。
+    // aiNA[接壤占比档][个数档]；样本少的格用只分个数的合并值，再没有就用只分占比的。
+    const cN = p.byHum && p.byHum.aiByCount ? p.byHum.aiByCount : null;
+    let aiNA = null;
+    if (cN) {
+      const marg = [0, 1, 2, 3, 4].map((n) => {
+        let c = 0, e = 0;
+        for (let b = 0; b < 4; b++) { c += cN[b][n].cmds; e += cN[b][n].expo; }
+        return (c >= 20 || e >= 0.02) && e > 0 && p.aliveTicks > 0 ? 100 * c / (e * p.aliveTicks) : null;
+      });
+      aiNA = [0, 1, 2, 3].map((b) => [0, 1, 2, 3, 4].map((n) => {
+        const x = cN[b][n];
+        if (x.cmds >= 20 || x.expo >= 0.02) return x.rate;
+        return marg[n] !== null ? marg[n] : aiB[b];
+      }));
+    }
     return {
       neutral: nBase, ai: aBase, humFarm: farm, humNoFarm: noFarm,
-      neutralB: byB('neutral', nBase), aiB: byB('ai', aBase), humB: byB('hum', hum),
+      neutralB: byB('neutral', nBase), aiB, aiBH, aiNA, humB: byB('hum', hum),
       farmK: hum > 0 ? farm / hum : 1, noFarmK: hum > 0 ? noFarm / hum : 1,
       boat: flat('boat'), don: p.aliveTicks ? 100 * (p.mix.don || 0) / p.aliveTicks : 0,
     };
   };
+  // 中后期按「自己此刻的兵密度」分八档（<2 / 2~5 / 5~10 / 10~20 / 20~40 / 40~70 / 70~100 / ≥100）的出手密度和滑块：
+  //   rel[b]      这一档的人每 100 拍的生效指令数 ÷ 全体平均（1530~2142 拍：2.4 / 2.5 / 1.5 / 0.8 / 0.6 / 0.5 / 0.5 / 0.5 —— 兵薄的人点得勤，攒着兵的人点得少）
+  //   relBy[c][b] 分对象类别的同一个量（类别在这一档里的占比往总体占比收缩，伪计数 10 条）
+  //   pctQ[b]     这一档里指令的滑块分位表（密度 ≥ 5 的各档 P75 只有 120~200‰、P90 180~470‰；密度 < 2 的中位 290~920‰）
+  // 人·拍占比不到 1% 或不足 15 条指令的档借最近的有效档。
+  const densOf = (p) => {
+    const d = p.byDensity;
+    if (!d || !d.pctQ) return null;
+    const totC = d.cmds.reduce((a, b) => a + b, 0);
+    if (totC < 300) return null;
+    const valid = d.expo.map((e, b) => e >= 0.01 && d.cmds[b] >= 15);
+    const near = (b, ok) => { for (let k = 0; k < 8; k++) for (const j of [b - k, b + k]) if (j >= 0 && j < 8 && ok(j)) return j; return -1; };
+    const src = d.expo.map((e, b) => near(b, (i) => valid[i]));
+    const rel = src.map((j) => (j >= 0 ? (d.cmds[j] / d.expo[j]) / totC : 1));
+    const by = (c) => {
+      const cc = d.byClass[c], tc = cc.reduce((a, b) => a + b, 0), sc = tc / totC;
+      return rel.map((x, b) => (src[b] < 0 || tc < 100 ? x : x * ((cc[src[b]] + 10 * sc) / (d.cmds[src[b]] + 10)) / sc));
+    };
+    const pctQ = d.pctQ.map((t, b) => { const j = near(b, (i) => !!d.pctQ[i]); return j >= 0 ? d.pctQ[j] : null; });
+    return { rel, relBy: [by('neutral'), by('ai'), by('hum'), by('boat'), rel], pctQ, expo: d.expo, rate: d.rate, spend: d.spend, pct: d.pct };
+  };
   const ph = raw.phases.map((p, i) => ({
-    t0: p.t0, t1: p.t1, rate: p.ratePerAlive100, relRate: relRate(p),
+    t0: p.t0, t1: p.t1, rate: p.ratePerAlive100, relRate: relRate(p), dens: densOf(p),
     mix: CLASSES.map((c) => p.mix[c] || 0),
     // 各类指令流的强度（每 100 拍几条生效指令）。陆攻三类是「身边有这类对象时」的条件密度 —— 打 AI 的总密度 1071 拍以后往下掉，
     // 主要是 AI 被吃光了（身边还有 AI 的人照样每 100 拍打 1.5~2 条），所以 AI 多的小房间里真人会一直吃到 1530 拍以后；
@@ -87,6 +146,9 @@ export function loadProfile(file) {
     // 连点主要是滑块拉满的人（开局 500 拍内最高一档的连点占比 41%~53%，其余档 15%~30%），所以按滑块五档分别给概率。
     follow: (p.byStyle && p.byStyle.groups && p.byStyle.groups.length === 5 && p.byStyle.groups.every((g) => g.seats >= 25) ? p.byStyle.groups.map((g) => g.burst7) : [0, 1, 2, 3, 4].map(() => p.burst7 ?? 0.12)).map((b) => Math.max(0, (b - 0.12) / 0.88)),
     neutral: tabOf(borrow(i, 'neutral')), ai: tabOf(borrow(i, 'ai')), hum: tabOf(borrow(i, 'hum')),
+    // 打 AI 的滑块按「身边有没有敌方真人」分三档的分位表（没有真人时拉得高：630~1530 拍 P75 199~296‰、P90 544~593‰，
+    // 有真人时 P75 136~183‰、P90 211~287‰）；样本不足 40 条的档是 null，用不分档的表
+    aiH: p.byHum && p.byHum.pctQ3 ? p.byHum.pctQ3.ai : null,
     humRatio: (borrow(i, 'hum') || {}).sendRatio || null,       // 打真人时 出兵 ÷ 对方的兵 的 P25/中位/P75
     boat: tabOf(borrow(i, 'boat')), don: tabOf(borrow(i, 'don')),
   }));
@@ -124,8 +186,7 @@ const STYLE = { life: 0.45, slow: 0.49, jitter: 0.06, phi: 0.7 };
 
 // 打真人的千分比（通用打法）：实测的千分比分布里混着大量「余额接近 0 的人连点全压」，直接照抽会让一个兵力正常的号拿三成以上的
 // 余额去撞另一个真人。实测更稳的量是 出兵 ÷ 对方的兵（各阶段中位 0.14~0.20、P75 0.36~0.82），所以两者都抽、取小的那个。
-function humanPct(ph, u1, u2, B, tB) {
-  const byPct = sampleQ(ph.hum, u1);
+function humanPct(ph, byPct, u2, B, tB) {
   if (!ph.humRatio || !(B > 0)) return byPct;
   const ks = ph.humRatio;
   const r = u2 <= 0.25 ? ks[0] : u2 <= 0.5 ? ks[0] + (ks[1] - ks[0]) * (u2 - 0.25) / 0.25 : u2 <= 0.75 ? ks[1] + (ks[2] - ks[1]) * (u2 - 0.5) / 0.25 : ks[2];
@@ -145,6 +206,11 @@ export class Crowd {
     this.prof = cfg.profile || loadProfile();
     this.rateScale = cfg.rateScale ?? 1;
     this.rhythm = Array.isArray(cfg.rhythm) && cfg.rhythm.length === 4 && cfg.rhythm.every((x) => x >= 0) ? cfg.rhythm : RHYTHM;
+    this.densT0 = cfg.densFrom ?? DENS_T0;
+    this.densRate = !!cfg.densRate;
+    // 打 AI 的条件密度按什么分档：count = 接壤占比 × 身边 AI 个数（缺省）；human = 接壤占比 × 身边有没有真人；share = 只按接壤占比
+    this.aiBy = cfg.aiBy || 'count';
+    this.dn = null; this.dr = null;
     this.squad = new Set(cfg.squad || []);
     this.leaveAt = cfg.leaveAt || new Map();
     // 活跃度的个人差异（对数正态的 σ）：对着「到 630 / 1071 拍每人下过几条有兵的陆攻指令」的实测分布定的
@@ -169,8 +235,8 @@ export class Crowd {
         victim: -1, avoid: new Map(), lastFinish: -1e9, n: 0,
         zs, slow: [],                                           // 滑块名次的终身分量、各阶段的慢变分量
         avN: true, avB: false, avH: false,                      // 身边有没有无主地 / 内置 AI 与空壳 / 敌方真人（每 70 拍刷新）
-        bN: 3, bB: -1, bH: -1,                                  // 这三类各占自己接壤的几成（四档；-1 = 没有）
-        followT: -1, followCls: 0, lastT: -1, q5: 2, okN: 0, sentSum: 0,
+        bN: 3, bB: -1, bH: -1, hL: 0, nA: -1,                   // 这三类各占自己接壤的几成（四档；-1 = 没有）；hL = 真人那一项并成三档；nA = 身边 AI 个数的档
+        followT: -1, followCls: 0, lastT: -1, q5: 2, okN: 0, sentSum: 0, dB: 0,
         clk: [], times: [], pi: -1, pb: 0, pa: 0,               // 验收用：本阶段每条陆攻出手时的余额和出兵、全部陆攻的时刻、本阶段的余额·拍和在场拍
       };
       // 第一条指令什么时候下：实测 95% 的人在 154 拍以前下了第一条（中位 70 拍；第一条就全压的人中位 35 拍），
@@ -195,6 +261,8 @@ export class Crowd {
     this.intensity = this.prof.phases.map((p) => ({
       t0: p.t0, cmds: 0, sent: 0, aliveTicks: 0, balTicks: 0, sentBy: { neutral: 0, ai: 0, hum: 0, boat: 0 }, okBy: { neutral: 0, ai: 0, hum: 0, boat: 0 },
       clkNum: 0, clkDen: 0, clkNumW: 0, clkDenW: 0, onSq: 0, onSqSent: 0,
+      humKind: {},                                                                       // 打真人按打法分：{ 条数 n, 出兵 sent, 出手时的余额 bal }
+      expoD: z8(), balD: z8(), cmdsD: z8(), sentD: z8(), pctD: z8().map(() => []),      // 按自己的兵密度八档：人·拍、余额·拍、生效指令数、出手的兵、滑块样本
       byStyle: [0, 1, 2, 3, 4].map(() => ({ alive: 0, bal: 0, sent: 0, cmds: 0 })),      // 按滑块五档：在场人·拍、余额·拍、出手的兵、生效指令数
     }));
     this.aiRows = [];
@@ -224,15 +292,17 @@ export class Crowd {
 
   setAvail(s, adj) {
     const w = this.arm.world, p = s.p;
-    let tot = 0, n = 0, b = 0, h = 0;
+    let tot = 0, n = 0, b = 0, h = 0, nb = 0;
     for (const [q, c] of adj) {
       tot += c;
       if (q === NEUTRAL) n += c;
-      else if (w.alive[q] && w.isEnemy(p, q)) { if (w.isBot(q)) b += c; else h += c; }
+      else if (w.alive[q] && w.isEnemy(p, q)) { if (w.isBot(q)) { b += c; nb++; } else h += c; }
     }
     const bk = (x) => (x <= 0 ? -1 : x <= 0.1 * tot ? 0 : x <= 0.3 * tot ? 1 : x <= 0.6 * tot ? 2 : 3);
     s.avN = n > 0; s.avB = b > 0; s.avH = h > 0;
     s.bN = bk(n); s.bB = bk(b); s.bH = bk(h);
+    s.hL = s.bH < 0 ? 0 : s.bH <= 1 ? 1 : 2;
+    s.nA = nb <= 0 ? -1 : nb === 1 ? 0 : nb === 2 ? 1 : nb <= 4 ? 2 : nb <= 7 ? 3 : 4;
   }
 
   phaseIdx(t) {
@@ -288,6 +358,8 @@ export class Crowd {
     }
     const cd = ph.cond, W = this.W, credit = this.credit, tot = [0, 0, 0, 0, 0];
     const n = this.seats.length, k = 0.07 * this.rateScale;
+    this.dn = ph.dens && t >= this.densT0 ? ph.dens : null;
+    const dn = (this.dr = this.densRate ? this.dn : null);      // 下面的 dn 只管出手密度那一半（缺省不开）
     let present = 0;
     for (let i = 0; i < n; i++) {
       const s = this.seats[i], p = s.p;
@@ -298,13 +370,16 @@ export class Crowd {
       present++;
       const B = w.bal[p], T = w.terr[p];
       I.aliveTicks += 7; I.balTicks += 7 * B;
+      const dB = (s.dB = T > 0 ? dBucket(B / T) : 0);
+      I.expoD[dB] += 7; I.balD[dB] += 7 * B;
       if (s.pi !== pi) { this.flushClicks(s); s.pi = pi; }
       s.pb += 7 * B; s.pa += 7;
       s.q5 = Math.min(4, Math.floor(Phi(this.styleBase(s, t)) * 5));
       const Iq = I.byStyle[s.q5];
       Iq.alive += 7; Iq.bal += 7 * B;
       // 应有条数：所有在场席位都记（含挂机的、此刻没有余额的 —— 实测密度的分母就是全部在场真人）
-      const b0 = s.bN >= 0 ? cd.neutralB[s.bN] : 0, b1 = s.bB >= 0 ? cd.aiB[s.bB] : 0;
+      const b0 = s.bN >= 0 ? cd.neutralB[s.bN] : 0;
+      const b1 = s.bB < 0 ? 0 : this.aiBy === 'count' && cd.aiNA && s.nA >= 0 ? cd.aiNA[s.bB][s.nA] : this.aiBy === 'share' ? cd.aiB[s.bB] : cd.aiBH[s.bB][s.hL];
       const b2 = s.bH >= 0 ? cd.humB[s.bH] * (s.avN || s.avB ? cd.farmK : cd.noFarmK) : 0;
       const b3 = cd.boat, b4 = w.teamGame && t >= 357 ? cd.don : 0;
       credit[0] += b0 * k; credit[1] += b1 * k; credit[2] += b2 * k; credit[3] += b3 * k; credit[4] += b4 * k;
@@ -326,28 +401,30 @@ export class Crowd {
         continue;
       }
       // O1：补刀空仓（每个回合都看；同一个号 70 拍内只补一次；补了也记在打真人的账上）
-      if (s.arche === 'O1' && t >= 1071 && t - s.lastFinish >= 70 && this.finisher(s, t)) { credit[2] -= 1; continue; }
-      // 个人权重：活跃度 × 滑块档位的相对密度；顶到软上限（密度 ≥ 100）加倍；正在围一个人时打真人加倍；再乘原型偏好
-      let g = s.act * ph.relRate[s.q5];
-      if (B >= 100 * T) g *= 2;
+      if (s.arche === 'O1' && t >= 1530 && t - s.lastFinish >= 70 && this.finisher(s, t)) { credit[2] -= 1; continue; }
+      // 个人权重：活跃度 × 滑块档位的相对密度；顶到软上限（密度 ≥ 100）加倍；正在围一个人时打真人加倍；再乘原型偏好。
+      // 开了 --opp-dens-rate 时（dn）：滑块档位和软上限这两项换成「自己此刻兵密度那一档」的实测相对密度，分对象类别。
+      let g = s.act * (dn ? 1 : ph.relRate[s.q5]);
+      if (!dn && B >= 100 * T) g *= 2;
+      const r0 = dn ? dn.relBy[0][dB] : 1, r1 = dn ? dn.relBy[1][dB] : 1, r2 = dn ? dn.relBy[2][dB] : 1, r3 = dn ? dn.relBy[3][dB] : 1, r4 = dn ? dn.relBy[4][dB] : 1;
       // 出手的节奏：实测同一个人相邻两条指令的间隔比「随时都可能点」规整得多（间隔的个人变异系数中位 0.48~0.67，
       // 随机派单是 0.82），出手时的余额也因此比本人平均余额高 17%~34%（攒一阵、出一手）。离自己上一条越久，权重越大。
       if (s.lastT >= 0) {
-        const x = (t - s.lastT) * (b0 + b1 + b2) * g / 100;
+        const x = (t - s.lastT) * (b0 * r0 + b1 * r1 + b2 * r2) * g / 100;
         const rh = this.rhythm;
         g *= Math.max(0.02, Math.min(4, Math.pow(x, t < 357 ? rh[0] : t < 850 ? rh[1] : t < 1530 ? rh[2] : rh[3])));
       }
       const clan = s.clan >= 0 ? this.clans.get(s.clan) : null;
       const isBoss = clan && clan.arche === 'O2' && clan.boss === p;
-      let h = s.victim >= 0 ? 2 : 1, bo = 1, dn = 1;
+      let h = s.victim >= 0 ? 2 : 1, bo = 1, dnK = 1;
       if (s.arche === 'O1') h *= 0.35;
       if (s.arche === 'O3' || isBoss) h *= 1.4;
       if (s.arche === 'O4') h *= 0.6;
       if (s.arche === 'O5' && t >= 1071) bo *= 3;
       if (s.arche === 'O6' && t >= 1530) h *= 1.5;
-      if (clan && clan.arche === 'O2' && !isBoss && clan.boss >= 0) dn *= t >= 3213 ? 5 : 1.5;
-      tot[0] += (W[0][i] = b0 * g); tot[1] += (W[1][i] = b1 * g); tot[2] += (W[2][i] = b2 * g * h);
-      tot[3] += (W[3][i] = b3 * g * bo); tot[4] += (W[4][i] = b4 * g * dn);
+      if (clan && clan.arche === 'O2' && !isBoss && clan.boss >= 0) dnK *= t >= 3213 ? 5 : 1.5;
+      tot[0] += (W[0][i] = b0 * g * r0); tot[1] += (W[1][i] = b1 * g * r1); tot[2] += (W[2][i] = b2 * g * h * r2);
+      tot[3] += (W[3][i] = b3 * g * bo * r3); tot[4] += (W[4][i] = b4 * g * dnK * r4);
     }
     const cap = 2 + 0.03 * present;
     for (let c = 0; c < 5; c++) {
@@ -398,12 +475,34 @@ export class Crowd {
     c.focus = best;
   }
 
-  note(s, cls, ok, extra) {
+  // 席位在「人」里的滑块名次 → 在「指令」里的名次。滑块拉得低的人点得勤（relRate），按指令排的分位表里低滑块的指令占得多；
+  // 拿按人排的名次直接去查按指令排的表，等于把「低滑块的人点得勤」算了两遍，每条指令的兵会偏少。
+  cmdRank(ph, up) {
+    const r = ph.relRate, x = Math.max(0, Math.min(0.999999, up)) * 5, i = Math.floor(x);
+    let c = 0;
+    for (let k = 0; k < i; k++) c += r[k];
+    return (c + (x - i) * r[i]) / 5;
+  }
+
+  // 滑块。之前按本阶段本类别的表、取席位自己的滑块名次；中后期（dn）按自己此刻兵密度那一档的实测分位表、每条指令独立抽：
+  // 兵密度那一档本身已经带着「这个人平时怎么点」的信息（滑块拉得高的人才会掉到低档里），再按个人名次去查会算两遍 ——
+  // 名次高的那一成半席位掉进 <2 那一档以后回回抽到 1000‰，永远攒不起兵（3210 拍以后 17% 的人·拍兵密度 <2，实测 4%），
+  // 成了谁都能白吃的空地。
+  slider(ph, key, s, t, up, D, hL) {
+    const dn = this.dn;
+    if (dn) { const tab = dn.pctQ[dBucket(D)]; if (tab) return sampleQ(tab, hashU(this.seed, s.p, t, 17)); }
+    if (key === 'ai' && ph.aiH && ph.aiH[hL]) return sampleQ(ph.aiH[hL], this.cmdRank(ph, up));
+    return sampleQ(ph[key], up);
+  }
+
+  note(s, cls, ok, extra, pct) {
     const L = this.log;
     L.cmds++; if (ok) L.ok++;
     if (ok && cls !== 'don' && this.curI) {
       const I = this.curI, sent = this.arm.world.attackTroopsTmp;
       I.cmds++; I.sent += sent; I.sentBy[cls] += sent; I.okBy[cls]++;
+      I.cmdsD[s.dB]++; I.sentD[s.dB] += sent;
+      if (pct !== undefined && I.pctD[s.dB].length < 4000) I.pctD[s.dB].push(pct);
       const Iq = I.byStyle[s.q5 ?? 2];
       Iq.sent += sent; Iq.cmds++;
       s.sentSum += sent;
@@ -423,7 +522,8 @@ export class Crowd {
     const back = w.hasAttack(q, p) ? 1 : 0;
     const ok = w.attack(pct, q, p);
     const onSq = this.squad.has(q);
-    this.note(s, 'hum', ok, onSq ? { t, p, q, arche: s.arche, kind, pct, sent: ok ? w.attackTroopsTmp : 0, B, tB, tD: tT > 0 ? tB / tT : 0, D: w.terr[p] > 0 ? B / w.terr[p] : 0, back } : null);
+    if (ok && this.curI) { const k = (this.curI.humKind[kind] ||= { n: 0, sent: 0, bal: 0 }); k.n++; k.sent += w.attackTroopsTmp; k.bal += B; }
+    this.note(s, 'hum', ok, onSq ? { t, p, q, arche: s.arche, kind, pct, sent: ok ? w.attackTroopsTmp : 0, B, tB, tD: tT > 0 ? tB / tT : 0, D: w.terr[p] > 0 ? B / w.terr[p] : 0, back } : null, pct);
     return ok;
   }
 
@@ -435,21 +535,24 @@ export class Crowd {
     if (cls !== 4 && hashU(this.seed, s.p, t, 15) < ph.follow[s.q5]) { s.followT = t + 7; s.followCls = cls; }
   }
 
-  // O1 的补刀：身边有地 ≥ 30、兵密度 < 35、兵不到自己一半的敌方真人 → 一条大比例指令收掉。返回是否出了手。
+  // O1 的补刀：身边有地 ≥ 30、兵密度 < 35 且不到自己一半（「空仓」是相对的：1530 拍以前全场的兵密度都不到 35）、
+  // 兵不到自己一半的敌方真人 → 按「够吃掉它」的量出一条指令（不低于自己平时那一档）。返回是否出了手。
+  // 旧写法（1071 拍起、只看密度 < 35、每条不低于 300‰）在 1071~1300 拍占了模型里打真人出兵的一半（77 条、每条花掉余额的 79%），
+  // 实测那一段兵密度 ≥ 2 的人打真人 P90 才 200~240‰。
   finisher(s, t) {
-    const w = this.arm.world, p = s.p, B = w.bal[p];
+    const w = this.arm.world, p = s.p, B = w.bal[p], D = B / Math.max(1, w.terr[p]);
     let best = -1;
     for (const q of contacts(w, p).keys()) {
       if (q === NEUTRAL || !w.alive[q] || w.isBot(q) || !w.isEnemy(p, q)) continue;
       const tB = w.bal[q], tT = w.terr[q];
-      if (tT < 30 || tB / tT >= 35 || B < 2 * tB) continue;
+      if (tT < 30 || tB / tT >= 35 || tB / tT >= 0.5 * D || B < 2 * tB) continue;
       if (best < 0 || w.terr[q] > w.terr[best]) best = q;
     }
     if (best < 0) return false;
     const need = Math.ceil(1.5 * (w.bal[best] + 2 * w.terr[best]) * 1024 / B);
     s.lastFinish = t;
     this.log.finish++;
-    return this.attackHuman(s, best, Math.max(307, Math.min(1023, need)), t, 'finish');
+    return this.attackHuman(s, best, Math.max(s.tier, Math.min(1023, need)), t, 'finish');
   }
 
   // 让席位 s 出一条 cls 类的指令（0 无主地 / 1 内置 AI 与空壳 / 2 真人 / 3 船 / 4 捐款）。返回是否落地（捐款：是否下达）。
@@ -470,8 +573,9 @@ export class Crowd {
 
     if (cls === 0) {
       if (!adj.has(NEUTRAL)) return false;
-      const ok = w.attack(sampleQ(ph.neutral, up), NEUTRAL, p);
-      this.note(s, 'neutral', ok);
+      const pctN = this.slider(ph, 'neutral', s, t, up, D);
+      const ok = w.attack(pctN, NEUTRAL, p);
+      this.note(s, 'neutral', ok, null, pctN);
       return ok;
     }
     if (cls === 1) {
@@ -483,9 +587,9 @@ export class Crowd {
       for (const [, n] of bots) tw += Math.sqrt(n);
       let ub = hashU(sd, p, t, 9) * tw, q = bots[bots.length - 1][0];
       for (const [o, n] of bots) { ub -= Math.sqrt(n); if (ub < 0) { q = o; break; } }
-      const tB = w.bal[q], tT = w.terr[q], pctA = sampleQ(ph.ai, up);
+      const tB = w.bal[q], tT = w.terr[q], pctA = this.slider(ph, 'ai', s, t, up, D, s.hL);
       const okA = w.attack(pctA, q, p);
-      this.note(s, 'ai', okA);
+      this.note(s, 'ai', okA, null, pctA);
       // 打 AI 的明细（验收用，与 human_profile.mjs 的 ai 行同口径）：出兵 ÷ 对方的兵、自己的兵 ÷ 对方的兵、对方的地和密度
       if (okA && this.aiRows.length < 60000) this.aiRows.push([this.phaseIdx(t), pctA, tB > 0 ? w.attackTroopsTmp / tB : -1, tB > 0 ? B / tB : -1, tT, tT > 0 ? tB / tT : 0, bots.length]);
       return okA;
@@ -501,9 +605,11 @@ export class Crowd {
     let atk = -1, atkTroops = 0;
     for (const [q] of hums) { const a = w.attackTroopsOn(q, p); if (a > atkTroops) { atkTroops = a; atk = q; } }
     if (atk >= 0 && hashU(sd, p, t, 4) < (B >= 2 * w.bal[atk] ? 0.46 : 0.22)) {
-      return this.attackHuman(s, atk, s.arche === 'O4' && B >= 1.3 * w.bal[atk] ? hashInt(921, 1023, sd, p, t, 5) : s.arche === 'G' || t < 1530 ? humanPct(ph, up, hashU(sd, p, t, 11), B, w.bal[atk]) : s.tier, t, 'back');
+      return this.attackHuman(s, atk, s.arche === 'O4' && B >= 1.3 * w.bal[atk] ? hashInt(921, 1023, sd, p, t, 5) : s.arche === 'G' || t < 1530 ? humanPct(ph, this.slider(ph, 'hum', s, t, up, D), hashU(sd, p, t, 11), B, w.bal[atk]) : s.tier, t, 'back');
     }
-    if (s.full && t >= 3210 && D < 60) return false;     // 满仓型：没攒够不主动打真人
+    // 满仓型：没攒够不主动打真人。出手密度按兵密度分档时不用（那时各档的出手密度已经是实测的：3210 拍以后
+    // 密度 5~40 的人反而比满仓的人点得勤，只是每条的兵少）
+    if (!this.dr && s.full && t >= 3210 && D < 60) return false;
 
     // 集火（O6）/ 大号（O2）优先打战队选定的对象
     if (clan && clan.arche === 'O6' && clan.focus >= 0 && hums.some(([q]) => q === clan.focus)) {
@@ -540,7 +646,7 @@ export class Crowd {
     let best = -1;
     if (hashU(sd, p, t, 7) < 0.67) { for (const [o] of hums) if (best < 0 || w.bal[o] < w.bal[best]) best = o; }
     else best = hums[hashInt(0, hums.length - 1, sd, p, t, 10)][0];
-    return best >= 0 ? this.attackHuman(s, best, humanPct(ph, up, hashU(sd, p, t, 11), B, w.bal[best]), t, 'plain') : false;
+    return best >= 0 ? this.attackHuman(s, best, humanPct(ph, this.slider(ph, 'hum', s, t, up, D), hashU(sd, p, t, 11), B, w.bal[best]), t, 'plain') : false;
   }
 
   sendBoat(s, t, ph, B, up) {
@@ -561,12 +667,12 @@ export class Crowd {
     if (best < 0) return false;
     const coast = w.coast[best];
     const tile = coast[hashInt(0, coast.length - 1, sd, p, t, 60)];
-    let pct = sampleQ(ph.boat, up);
+    let pct = this.slider(ph, 'boat', s, t, up, B / Math.max(1, w.terr[p]));
     if (hunter) pct = Math.max(pct, Math.min(614, Math.ceil(0.5 * w.bal[best] * 1024 / B)));   // 大登陆：不少于对方兵的一半，封顶 600‰
     const tB = w.bal[best], tT = w.terr[best];
     const ok = w.boatTo(pct, tile, p);
     const onSq = this.squad.has(best);
-    this.note(s, 'boat', ok, onSq ? { t, p, q: best, arche: s.arche, kind: 'boat', pct, sent: ok ? w.attackTroopsTmp : 0, B, tB, tD: tT > 0 ? tB / tT : 0, D: w.terr[p] > 0 ? B / w.terr[p] : 0, back: 0 } : null);
+    this.note(s, 'boat', ok, onSq ? { t, p, q: best, arche: s.arche, kind: 'boat', pct, sent: ok ? w.attackTroopsTmp : 0, B, tB, tD: tT > 0 ? tB / tT : 0, D: w.terr[p] > 0 ? B / w.terr[p] : 0, back: 0 } : null, pct);
     return ok;
   }
 
@@ -630,8 +736,13 @@ export class Crowd {
         t0: I.t0, cmds: I.cmds, ratePerAlive100: I.aliveTicks ? +(100 * I.cmds / I.aliveTicks).toFixed(3) : null, spendPer100: I.balTicks ? +(100 * I.sent / I.balTicks).toFixed(4) : null, sentPerCmd: I.cmds ? Math.round(I.sent / I.cmds) : null,
         spendBy: Object.fromEntries(Object.keys(I.sentBy).map((k) => [k, I.balTicks ? +(100 * I.sentBy[k] / I.balTicks).toFixed(4) : null])),
         okRateBy: Object.fromEntries(Object.keys(I.okBy).map((k) => [k, I.aliveTicks ? +(100 * I.okBy[k] / I.aliveTicks).toFixed(3) : null])),
-        sent: I.sent, sentBy: I.sentBy, onSq: I.onSq, onSqSent: I.onSqSent,
+        sent: I.sent, sentBy: I.sentBy, onSq: I.onSq, onSqSent: I.onSqSent, humKind: I.humKind,
         clickBal: I.clkDen > 0 ? +(I.clkNum / I.clkDen).toFixed(3) : null, clickBalW: I.clkDenW > 0 ? +(I.clkNumW / I.clkDenW).toFixed(3) : null,
+        // 按自己的兵密度八档（与画像 byDensity 同口径）：人·拍、余额·拍、生效指令数、出手的兵、滑块 P25/中位/P75
+        byDensity: {
+          expo: I.expoD, bal: I.balD.map((x) => Math.round(x)), cmds: I.cmdsD, sent: I.sentD.map((x) => Math.round(x)),
+          pct: I.pctD.map((a) => { if (a.length < 8) return null; const s2 = a.slice().sort((x, y) => x - y); return [0.25, 0.5, 0.75].map((f) => s2[Math.min(s2.length - 1, Math.floor(f * s2.length))]); }),
+        },
         byStyle: I.byStyle.map((q) => ({ rate: q.alive ? +(100 * q.cmds / q.alive).toFixed(2) : null, spend: q.bal ? +(100 * q.sent / q.bal).toFixed(3) : null, balShare: I.balTicks ? +(q.bal / I.balTicks).toFixed(3) : null })),
       })),
       onSquad: {

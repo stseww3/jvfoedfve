@@ -246,6 +246,24 @@ export class TGame extends Game {
     return this.acct;
   }
 
+  // ---- 透支记账（可选）：真人席位每次「余额不够、引擎照扣」的差额和因此记下的欠账 ------------------
+  // 引擎规则：新下的进攻第一圈不够兵（每格不到 3 兵；打人时不够整圈的成本）会从余额里补，余额也不够就记欠账 = 差额 × 1.25
+  //（封顶 5 万），以后的收入先还账。也就是说余额见底时再点一下，是按 1.25 倍的价钱借兵。
+  enableOverdraftLog() {
+    if (!this.odLog) this.odLog = new Float64Array(2 * this.humans);
+    return this.odLog;
+  }
+
+  takeBalance(p, v) {
+    const L = this.odLog;
+    if (L && p < this.humans && v > this.bal[p]) {
+      const short = v - this.bal[p], d0 = this.debt[p];
+      L[2 * p] += short;
+      L[2 * p + 1] += Math.min(5e4, d0 + 5 * (short >> 2)) - d0;
+    }
+    return super.takeBalance(p, v);
+  }
+
   economyTick() {
     if (this.t % 10 !== 9) return;
     const a = this.acct;
