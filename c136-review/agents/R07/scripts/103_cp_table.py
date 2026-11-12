@@ -734,6 +734,22 @@ def main():
         P("")
         J["noise"] = [{"g": g, "T0": T0, "h": hh, "maxDev": d, "n": n} for g, T0, hh, d, n in nz]
 
+    # ---------- 表 9：同一局、同一通道、同一断面，只换种子：ln ρ 的最大值 − 最小值
+    ss = []
+    for g in GAMES:
+        for T0, hh in ((0, 1500), (630, 900), (1500, 900), (4284, 900)):
+            for ch, chan, seeds in (("C1", "C1", (0, 1, 2)), ("C2p", "C2", PERT)):
+                xs = [math.log(float(r["rho"])) for r in sel(g, chan, T0, hh, seeds=seeds) if float(r["rho"]) > 0]
+                if len(xs) >= 2:
+                    ss.append({"g": g, "T0": T0, "h": hh, "ch": ch, "n": len(xs), "range": max(xs) - min(xs)})
+    if ss:
+        P("## 表 9：只换种子，ln ρ 的最大值 − 最小值（C1 种子 0~2；C2p 种子 1~2）")
+        P("局\t断面\t看多少拍\t通道\t种子数\tln ρ 最大 − 最小")
+        for x in ss:
+            P(f"{x['g']}\t{x['T0']}\t{x['h']}\t{x['ch']}\t{x['n']}\t{x['range']:.3f}")
+        P("")
+        J["seedSpread"] = ss
+
     open(os.path.join(CROSS, "checkpoint_attribution.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     json.dump(J, open(os.path.join(CROSS, "checkpoint_attribution.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("\n".join(L))

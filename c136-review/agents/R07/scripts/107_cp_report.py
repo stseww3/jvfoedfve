@@ -90,6 +90,7 @@ def main():
     E = jload("channel_exposure.json")
     S = jload("spawn_par.json")
     T = {}
+    F0 = {}  # 正文用数（先放这里，后面并进 F）
     notes = {}
 
     def held(g, T0):
@@ -150,6 +151,22 @@ def main():
             continue
         rows.append([g, x["n"], x["nS"], f"{x['vorS']:,.0f}", f"{x['vorO']:,.0f}", r3(x["v"]), r3(x.get("vg630")), r3(x.get("vg1500"))])
     T["站位基准"] = md(["局", "真人席位", "我方号", "我方人均天然地盘（格）", "其他真人人均天然地盘（格）", "天然地盘之比 v", "站位基准（630 拍）", "站位基准（1500 拍）"], rows)
+
+    # ---- 1500 拍以后的站位基准（105_human_fill.mjs --late → 106 表 E）
+    LATE = S.get("late") or {}
+    rows = []
+    for t in ("1500", "1800", "2100", "2400", "3300", "4284", "5184"):
+        x = (LATE.get("gamma") or {}).get(t)
+        if not x:
+            continue
+        vv = [y[f"vg{t}"] for y in (LATE.get("games") or {}).values() if y.get(f"vg{t}")]
+        gm = math.exp(mean([math.log(v_) for v_ in vv])) if vv else None
+        rows.append([t, f"{r3(x['g'], 2)} ± {r3(x['se'], 2)}", x["games"], pc(x["zeros"] / x["n"]) if x.get("n") else "—", r3(gm, 2), f"{r3(min(vv), 2)} ~ {r3(max(vv), 2)}" if vv else "—"])
+        F0[f"gammaL{t}"], F0[f"gammaLse{t}"] = r3(x["g"], 2), r3(x["se"], 2)
+        F0[f"zeroL{t}"] = pc(x["zeros"] / x["n"]) if x.get("n") else "—"
+        if gm:
+            F0[f"vgL{t}"] = r3(gm, 2)
+    T["站位基准-后段"] = md(["拍", "弹性 γ（± 刀切标准误）", "局数", "其他真人里已经没有领土的", "站位基准 v_γ：各局几何平均", "各局最小 ~ 最大"], rows)
 
     # ---- 断面 0 的分层
     for TT in (630, 1500):
@@ -268,7 +285,6 @@ def main():
 
     # ---- 各断面往后 900 拍的历史（不需要对照）
     HW = J.get("histWin") or {}
-    F0 = {}
     for T0 in (630, 1500, 4284):
         rows = []
         hx, hy = [], []
@@ -374,6 +390,13 @@ def main():
                 F0[f"w3r_{T0}_{k}"] = f"{pc(w3sh[k]['lo'])} ~ {pc(w3sh[k]['hi'])}"
         F0[f"w3_{T0}_total"] = sg(w3m["total"])
         F0[f"w3_{T0}_n"] = str(w3["n"])
+        w3rb = sorted((x_["rulebase"], g_) for g_, x_ in w3["games"].items())
+        F0[f"w3_{T0}_rbNeg"] = str(sum(1 for v_, _ in w3rb if v_ < 0))
+        F0[f"w3_{T0}_rbPos"] = str(sum(1 for v_, _ in w3rb if v_ >= 0))
+        F0[f"w3_{T0}_rbPosList"] = "、".join(f"{g_}（{sg(v_)}）" for v_, g_ in w3rb if v_ >= 0) or "没有"
+        F0[f"w3_{T0}_rbMin"], F0[f"w3_{T0}_rbMax"] = sg(w3rb[0][0]), sg(w3rb[-1][0])
+        w3sp = [x_["spawn"] for x_ in w3["games"].values()]
+        F0[f"w3_{T0}_spMin"], F0[f"w3_{T0}_spMax"] = sg(min(w3sp)), sg(max(w3sp))
         w3sum.append(w3row)
         w3rows = []
         for g in GAMES:
@@ -428,6 +451,22 @@ def main():
     for g in GAMES:
         if g in vr:
             rows.append([g, "Va" if g == "A007" else "Vb", sg(vr[g].get(300)), sg(vr[g].get(900))])
+    v15 = sorted((d_, g_) for g_, hh_ in vr.items() for h2_, d_ in hh_.items() if h2_ == 900)
+    if v15:
+        ds = [d_ for d_, _ in v15]
+        F0["ver1500n"] = str(len(ds))
+        F0["ver1500med"] = sg(med(ds))
+        F0["ver1500mean"] = sg(mean(ds))
+        F0["ver1500min"], F0["ver1500max"] = sg(min(ds)), sg(max(ds))
+        F0["ver1500pos"] = str(sum(1 for d_ in ds if d_ > 0))
+        F0["ver1500neg"] = str(sum(1 for d_ in ds if d_ < 0))
+        big = [(d_, g_) for d_, g_ in v15 if abs(d_) >= 0.15]
+        rest = [d_ for d_, g_ in v15 if abs(d_) < 0.15]
+        F0["ver1500bigN"] = str(len(big))
+        F0["ver1500big"] = "、".join(f"{g_}（{sg(d_)}）" for d_, g_ in big) if big else "没有"
+        F0["ver1500restN"] = str(len(rest))
+        if rest:
+            F0["ver1500restMin"], F0["ver1500restMax"] = sg(min(rest)), sg(max(rest))
     T["版本对调-逐局"] = md(["局", "历史上用的版本", "1500 → 1800 拍：ln ρ(Vb) − ln ρ(Va)", "1500 → 2400 拍：ln ρ(Vb) − ln ρ(Va)"], rows)
     vs = J.get("verSame") or {}
     rows = [[r["g"], r["snaps"], r["diff"], f"{r['issuedA']} / {r['issuedB']}", f"{r['landedA']} / {r['landedB']}"] for r in vs.get("rows", [])]
@@ -437,6 +476,19 @@ def main():
         F0["verSameIdentical"] = str(vs["identical"])
         F0["verSnaps"] = str(vs["snaps"])
         F0["verIssuedDiff"] = str(vs["issuedDiff"])
+    # 只换种子时 ln ρ 的差（正文和「种子间差别」表用）
+    SS = J.get("seedSpread") or []
+    rows = []
+    for T0_, h_ in ((0, 1500), (630, 900), (1500, 900), (4284, 900)):
+        for ch_ in ("C1", "C2p"):
+            xs = [x_["range"] for x_ in SS if x_["T0"] == T0_ and x_["h"] == h_ and x_["ch"] == ch_]
+            if xs:
+                rows.append([f"{T0_} → {T0_ + h_}", "C1" if ch_ == "C1" else "C2（走偏）", len(xs), r3(med(xs), 2), f"{r3(min(xs), 2)} ~ {r3(max(xs), 2)}"])
+        xs = [x_["range"] for x_ in SS if x_["T0"] == T0_ and x_["h"] == h_]
+        if xs:
+            F0[f"seed{T0_}n"] = str(len({x_["g"] for x_ in SS if x_["T0"] == T0_ and x_["h"] == h_}))
+            F0[f"seed{T0_}min"], F0[f"seed{T0_}max"], F0[f"seed{T0_}med"] = r3(min(xs), 2), r3(max(xs), 2), r3(med(xs), 2)
+    T["种子间差别"] = md(["断面 → 观察拍", "通道", "有两个以上种子的局数", "ln ρ 最大 − 最小：各局中位数", "各局最小 ~ 最大"], rows)
     nz = J.get("noise") or []
     rows = []
     for T0 in (0, 630, 1500, 4284):
@@ -529,6 +581,14 @@ def main():
         dh, d1 = hh["BS"] / hh["LS"], c1["BS"] / c1["LS"]
         dens[g] = dh / d1
         rows.append([g, f"{hh['LS']:,}", f"{hh['BS']:,}", r3(dh, 1), f"{c1['LS']:,}", f"{c1['BS']:,}", r3(d1, 1), r3(dh / d1, 2)])
+    # 1500 → 2400 拍「既有规则」这一层 与 1500 拍时每格余额（历史 ÷ C1）的秩相关
+    w15 = ((J.get("win3") or {}).get("1500") or {}).get("games") or {}
+    cx = [(dens[g_], w15[g_]["rulebase"]) for g_ in GAMES if g_ in dens and g_ in w15]
+    if len(cx) >= 6:
+        rho_ = spearman([a_ for a_, _ in cx], [b_ for _, b_ in cx])[0]
+        if rho_ is not None:
+            F0["w3_1500_rbDensCorr"] = sg(rho_)
+            F0["w3_1500_rbDensN"] = str(len(cx))
     T["兵力-1500"] = md(["局", "历史：我方领土（格）", "我方余额", "每格余额", "C1：我方领土（格）", "我方余额", "每格余额", "每格余额 历史 ÷ C1"], rows)
 
     # ---- 站位基准取法的敏感性
