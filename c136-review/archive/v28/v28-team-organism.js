@@ -3917,13 +3917,13 @@ export const PARAMS = {
 
   // ---- v28/P3: floors when buying the land of bots, of seats that left, of remnants ----
   p3ThreatSkip: 1, // threatOf leaves out teammates, squad seats and seats that left
-  p3SafeCap: 1, // the floor a neighbouring bot sets is at most p3ThetaAi x its balance + 2 x our border with it
-  p3ThetaAi: 1.0,
-  p3Decouple: 1, // such land may be bought with up to p3SpendFrac x balance from below dpKeep / safeFinite ...
-  p3SpendFrac: 0.15,
-  p3KeepK: 0.75, // ... while p3KeepK x dpKeep stays home
-  p3RemnantBal: 0.05, // a person is a remnant below this x our balance ...
-  p3RemnantNeed: 0.12, // ... when collapsing it takes less than this x our balance
+  p3SafeCap: 1, // the floor a neighbouring bot sets is at most p3ThetaAi x its balance + 2 x our border with it (only for small/weak bots)
+  p3ThetaAi: 1.5,
+  p3Decouple: 1, // such land may be bought with up to p3SpendFrac x balance from below dpKeep / safeFinite (only when g.t >= coreFrom)
+  p3SpendFrac: 0.12,
+  p3KeepK: 0.85, // ... while p3KeepK x dpKeep stays home
+  p3RemnantBal: 0.04, // a person is a remnant below this x our balance ...
+  p3RemnantNeed: 0.10, // ... when collapsing it takes less than this x our balance
   p3MinCmdFix: 1, // such land priced under p3CheapK x worth is taken whole even when that is under the least command
   p3CheapK: 0.5,
 
@@ -4880,11 +4880,7 @@ export class Policy extends V17 {
     const mult = this.contested(g, q) ? P.sharedBotMult : 1.0;
     const price = (mult * this.botPx(g, q) * L) / (P.winR * Math.max(1, g.t));
     const guard = Math.max(this.dpKeep(g), this.sb);
-    if (!(P.enableAiFloorCap > 0 && P.p3Decouple > 0)) return Math.max(price, guard);
-    // v28/P3: winFloor is the floor for the land of a bot (a seat that left is one to the game)
-    const relaxed = this.p3Floor(g, guard);
-    if (Math.max(price, relaxed) < Math.max(price, guard)) this.p3Old.set(q, { t: g.t, keep: Math.max(price, guard) });
-    return Math.max(price, relaxed);
+    return Math.max(price, guard);
   }
 
   hasBorderFood(g) {
@@ -6567,7 +6563,9 @@ export class Policy extends V17 {
       if (Number.isFinite(th.minAll)) was = Math.max(was, th.minAll - mine);
       if (!Number.isFinite(th.minOther)) continue;
       let v = th.minOther - mine;
-      if (P.p3SafeCap > 0) v = Math.min(v, P.p3ThetaAi * g.bal[q] + 2 * this.cnt[q]);
+      if (P.p3SafeCap > 0 && (g.terr[q] < 0.85 * g.terr[me] || g.bal[q] < 0.25 * g.bal[me])) {
+        v = Math.min(v, P.p3ThetaAi * g.bal[q] + 2 * this.cnt[q]);
+      }
       safe = Math.max(safe, v);
     }
     this.vCount("p3_sb_eval");
@@ -6582,7 +6580,8 @@ export class Policy extends V17 {
   // next to no troops whose collapse costs a small part of our balance.
   p3Prey(g, q, need) {
     const P = this.p, B = g.bal[this.me];
-    if (!this.person(g, q) || this.vShell(g, q)) return true;
+    if (this.vShell(g, q)) return need < 0.18 * B;
+    if (!this.person(g, q)) return g.bal[q] < 0.25 * B && need < 0.18 * B;
     return g.bal[q] < P.p3RemnantBal * B && need < P.p3RemnantNeed * B;
   }
 
