@@ -17,3 +17,12 @@ def build():
     main.build(c, (0, 0, 0))     # context: the main building massing, for the V2 framing
     sky.build(c, (0, 0, 0))      # light sources last (no sky package merged yet: a no-op for now)
     return c
+
+
+def build_models():
+    """Custom display-entity models the scene needs (render.py / makepack.py read this). The court
+    places none; the lines are merged so the context lines keep working if they add entities."""
+    out = {}
+    for line in (main, site, sky):
+        out.update(line.models() or {})
+    return out
