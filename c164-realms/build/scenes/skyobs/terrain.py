@@ -24,6 +24,7 @@ class Land:
         self.top = {}      # (x, z) -> y of the highest terrain block
         self.kind = {}     # (x, z) -> "grass" | "moss" | "rock" | "path" | "water" | "built"
         self.edge = {}     # (x, z) -> 0 at the rim .. 1 in the middle
+        self.spires = []   # (x, z, depth, radius) of the spires hanging from the underside
 
     def y(self, x, z):
         return self.top.get((x, z))
@@ -37,6 +38,48 @@ def _pads(T, Xg, Zg, pads):
         w = 1 - N.smoothstep(0, margin, np.hypot(dx, dz))
         T = T * (1 - w) + h * w
     return T
+
+
+GREAT_SPIRE = (14.0, -8.0, 52.0, 16.0)   # x, z, how far it hangs below the belly, radius at its root
+
+
+def _spires(Xg, Zg, e):
+    """Extra depth of the hanging spires and their plan [(x, z, depth, radius)]."""
+    rng = np.random.default_rng(SEED + 40)
+    plan = [GREAT_SPIRE]
+    for _ in range(600):
+        if len(plan) >= 10:
+            break
+        x, z = rng.uniform(X0 + 10, X1 - 10), rng.uniform(Z0 + 8, Z1 - 8)
+        ei = float(e[int(round(x)) - X0, int(round(z)) - Z0])
+        r = rng.uniform(5.5, 9.5)
+        if ei < 0.2 or any(np.hypot(x - px, z - pz) < 0.8 * (r + pr) for px, pz, _, pr in plan):
+            continue
+        plan.append((x, z, rng.uniform(12.0, 34.0) * (0.55 + 0.9 * ei), r))
+    out = np.zeros(Xg.shape)
+    for i, (x, z, h, r) in enumerate(plan):
+        ang = np.arctan2(Zg - z, Xg - x)
+        rr = r * (1 + 0.28 * N.perlin2(np.cos(ang) * 1.4 + 0.37 * x, np.sin(ang) * 1.4 + 0.41 * z, SEED + 41 + i))
+        t = np.clip(1 - np.hypot(Xg - x, Zg - z) / rr, 0, 1)
+        out = np.maximum(out, h * t ** 1.45)
+    return out, plan
+
+
+def _teeth(Xg, Zg, cell=6):
+    """Small stalactites all over the underside: one per jittered grid cell, some cells empty."""
+    rng = np.random.default_rng(SEED + 42)
+    out = np.zeros(Xg.shape)
+    for gx in range(X0, X1, cell):
+        for gz in range(Z0, Z1, cell):
+            x, z = gx + rng.uniform(0, cell), gz + rng.uniform(0, cell)
+            h, r = rng.uniform(3.0, 11.0), rng.uniform(1.6, 3.3)
+            if rng.random() < 0.4:
+                continue
+            i0, i1 = max(0, int(x - r) - 1 - X0), min(Xg.shape[0], int(x + r) + 2 - X0)
+            k0, k1 = max(0, int(z - r) - 1 - Z0), min(Xg.shape[1], int(z + r) + 2 - Z0)
+            t = np.clip(1 - np.hypot(Xg[i0:i1, k0:k1] - x, Zg[i0:i1, k0:k1] - z) / r, 0, 1)
+            out[i0:i1, k0:k1] = np.maximum(out[i0:i1, k0:k1], h * t ** 1.2)
+    return out
 
 
 def _largest_component(solid):
@@ -89,12 +132,13 @@ def build(c, pads=()):
     T = _pads(T, Xg, Zg, pads)
     T = T - 3.2 * (1 - N.smoothstep(0.0, 0.11, e))
 
-    # --- underside ----------------------------------------------------------------------------
+    # --- underside: a shallow belly from which spires hang, a great one under the knoll -------
     core = N.smoothstep(0.0, 0.92, e)
-    depth = 3.5 + 44 * core ** 1.25 * (0.8 + 0.4 * N.perlin2(Xg * 0.045, Zg * 0.045, SEED + 5))
-    depth += 13 * np.exp(-((Xg - 14) ** 2 + (Zg + 8) ** 2) / (2 * 15.0 ** 2))
+    depth = 3.5 + 21 * core ** 1.15 * (0.8 + 0.4 * N.perlin2(Xg * 0.045, Zg * 0.045, SEED + 5))
     ridge = 1 - np.abs(N.perlin2(Xg * 0.085, Zg * 0.085, SEED + 6))
-    depth += 10 * N.smoothstep(0.70, 0.98, ridge) * core
+    depth += 7 * N.smoothstep(0.70, 0.98, ridge) * core
+    spires, plan = _spires(Xg, Zg, e)
+    depth += spires + _teeth(Xg, Zg) * N.smoothstep(0.08, 0.35, core)
     bot = -depth
 
     X3, Y3, Z3 = np.meshgrid(xs, ys, zs, indexing="ij")
@@ -156,6 +200,7 @@ def build(c, pads=()):
     hcol = rng.random(top_y.shape)
 
     land = Land()
+    land.spires = plan
     for i in range(nx):
         x = int(xs[i])
         for kz in range(nz):
