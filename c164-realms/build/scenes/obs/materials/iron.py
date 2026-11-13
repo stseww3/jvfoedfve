@@ -92,11 +92,26 @@ def _ring(px, cx, cy, r, hi, lo, width=1.0):
                 _put(px, x, y, hi if (x - cx) + (y - cy) < 0 else lo)
 
 
-def _diamond(px, cx, cy, r, hi, lo):
-    for y in range(TILE):
-        for x in range(TILE):
-            if abs(abs(x - cx) + abs(y - cy) - r) <= 0.6:
-                _put(px, x, y, hi if (x - cx) + (y - cy) < 0 else lo)
+def _cells(inside):
+    """The pixels of the tile for which inside(dx, dy) holds, dx and dy measured from the tile centre."""
+    c = (TILE - 1) / 2
+    return [(x, y) for y in range(TILE) for x in range(TILE) if inside(x - c, y - c)]
+
+
+def _relief(px, cells, shade=(), bright=()):
+    """A cast figure standing proud of the plate: I5 all the way round, so a ring stays a closed ring
+    instead of losing its far half in the plate and reading as a letter; I4 on the few cells turned
+    from the light, I6 on the bright points, and a one-pixel I1 shadow thrown down and right of it."""
+    figure = set(cells) | set(shade) | set(bright)
+    for x, y in cells:
+        _put(px, x, y, _i(5))
+    for x, y in shade:
+        _put(px, x, y, _i(4))
+    for x, y in bright:
+        _put(px, x, y, _i(6))
+    for x, y in figure:
+        if (x + 1, y + 1) not in figure:
+            _put(px, x + 1, y + 1, _i(1))
 
 
 def _disc(px, cx, cy, r, inner, edge):
@@ -126,22 +141,25 @@ def _riveted(seed):
 
 
 def _cast(seed, motif):
-    """IRON_CAST: a riveted plate with a raised cast motif -- the station emblem, or a lozenge."""
-    px = _plate(seed, base=2, noise=0.10)
+    """IRON_CAST: a riveted plate with a raised cast motif -- the station emblem, or a lozenge. Its
+    field is smooth (a casting, not a rolled plate), so no brushing streak cuts across the motif."""
+    px = _plate(seed, base=2, noise=0.0)
     _panel_frame(px)
     _rivets(px, _CORNERS)
-    cx = cy = 7.5
-    if motif == "emblem":                                   # ring + meridian + a star at upper right
-        _ring(px, cx, cy, 4.3, _i(5), _i(1))
-        for y in range(3, 13):                              # the meridian line, lit left, shadow right
-            _put(px, 7, y, _i(5))
-            _put(px, 8, y, _i(2))
-        for dx, dy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):   # the star
-            _put(px, 11 + dx, 4 + dy, _i(6))
-    else:                                                   # a raised lozenge with a boss
-        _diamond(px, cx, cy, 5.5, _i(5), _i(1))
-        _diamond(px, cx, cy, 2.6, _i(5), _i(1))
-        _put(px, 7, 7, _i(6))
+    if motif == "emblem":
+        # the station emblem as the plan words it: a ring, the meridian down it, a star at upper right.
+        # The ring is the plain ten-pixel circle, one pixel thick all round; the star sits on its
+        # shoulder, so the circle runs into the star's arms instead of crowding the corner rivet.
+        ring = _cells(lambda dx, dy: 4.2 <= math.hypot(dx, dy) <= 4.9)
+        meridian = [(7, y) for y in range(3, 13)]
+        star = [(11, 4), (10, 4), (12, 4), (11, 3), (11, 5)]
+        _relief(px, ring + meridian, bright=star)
+    else:
+        # a raised lozenge (one pixel thick, ten across) round a domed boss
+        edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
+        boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
+        lee = [(x, y) for x, y in boss if x + y >= TILE - 1]        # the half of the dome turned away
+        _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
     return px
 
 
