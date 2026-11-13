@@ -40,6 +40,15 @@ export LP_NUM_THREADS="${LP_NUM_THREADS:-3}"
 export SDL_VIDEODRIVER=x11
 export ALSOFT_DRIVERS=null
 
+# fetch_client.py writes one path per line, relative to MC_HOME; older copies wrote one line of
+# absolute paths
+CP_FILE="$MC_HOME/classpath-$MC_VERSION.txt"
+if grep -q ':' "$CP_FILE"; then
+  CLASSPATH_LIST="$(cat "$CP_FILE")"
+else
+  CLASSPATH_LIST="$(sed "s|^|$MC_HOME/|" "$CP_FILE" | paste -sd: -)"
+fi
+
 cd "$GAME_DIR"
 exec nice -n 10 "$JAVA" -Xms512M "-Xmx${MC_CLIENT_HEAP:-2G}" \
   -XX:StackShadowPages=32 --enable-native-access=ALL-UNNAMED \
@@ -48,7 +57,7 @@ exec nice -n 10 "$JAVA" -Xms512M "-Xmx${MC_CLIENT_HEAP:-2G}" \
   -Dorg.lwjgl.system.SharedLibraryExtractPath="$NATIVES/lwjgl" \
   -Dio.netty.native.workdir="$NATIVES/netty" \
   -Dminecraft.launcher.brand=c164-test -Dminecraft.launcher.version=1 \
-  -cp "$(cat "$MC_HOME/classpath-$MC_VERSION.txt")" \
+  -cp "$CLASSPATH_LIST" \
   net.minecraft.client.main.Main \
   --username "$NAME" --version "$MC_VERSION" --gameDir "$GAME_DIR" \
   --assetsDir "$MC_HOME/assets" --assetIndex "$ASSET_INDEX" \
