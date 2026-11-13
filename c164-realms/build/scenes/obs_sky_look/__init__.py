@@ -18,7 +18,7 @@ Lights here are placed by hand; the placement tool is the card sky/lights.
 import math
 
 from artkit.canvas import Canvas
-from scenes import obs
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 
@@ -26,8 +26,11 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80           # the look has to reach every camera position, not only the blocks
 BIOME_MARGIN_Y = 120
 
-build_models = obs.build_models      # the board uses the master scene's resource pack as it is
-write_pack = obs.write_pack
+
+def write_pack(pack_dir):
+    """The sky's pictures and the repainted blocks the board is built of."""
+    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+
 
 PAVING = B.TUFF_SMOOTH.block
 STONE = B.ASHLAR_FINE.block
