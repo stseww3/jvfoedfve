@@ -13,6 +13,7 @@ questions (plan/packages/sky/look.md):
     posts    six pillars with a lit band, 30 to 200 blocks from the "posts" camera: the fog ramp
     sky      shots of the zenith, the west (afterglow, comet), east and south
 
+The shot list is written from VIEWS and the look's times: python -m scenes.obs_sky_look (in build/).
 Lights here are placed by hand; the placement tool is the card sky/lights.
 """
 import math
@@ -21,6 +22,7 @@ from artkit.canvas import Canvas
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.sky import mood as look
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80           # the look has to reach every camera position, not only the blocks
@@ -128,6 +130,43 @@ def _posts(c):
         c.box(x - 2, S.PAVING_Y, z - 2, x + 2, S.PAVING_Y, z + 2, PAVING)
         c.box(x - 1, 0, z - 1, x + 1, 11, z + 1, STONE)
         c.box(x - 1, 8, z + 1, x + 1, 9, z + 1, B.WINDOW_LIT.block)
+
+
+EYE = 1.62
+VIEWS = {   # name: (eye, looks at), scene coordinates
+    "wall_near": ((24, EYE, 0), (0, 9, 0)),
+    "wall_side": ((12, EYE, 14), (0, 8, 0)),
+    "wall_mid": ((44, EYE, 0), (0, 10, 0)),        # as far off as the stair head is from the main front
+    "wall_far": ((90, EYE, 0), (0, 12, 0)),        # as far off as the cable station
+    "cards": ((47, 7, 0), (32, 0.5, 0)),
+    "posts": ((POSTS_FROM[0], EYE, POSTS_FROM[1]), (POSTS_FROM[0], 6, POSTS_FROM[1] - 100)),
+    "west": ((-30, EYE, 0), (-130, 26, 0)),
+    "comet": ((-30, EYE, 0), (-130, 110, 0)),
+    "zenith": ((60, EYE, 10), (59.9, 200, 10)),
+    "east": ((60, EYE, 0), (160, 12, 0)),
+    "south": ((60, EYE, 0), (60, 12, 100)),
+}
+EVERY_LOOK = ("wall_near", "wall_mid", "wall_far", "cards", "west", "comet", "zenith")
+DEFAULT_ONLY = ("wall_side", "posts", "east", "south")
+TRIAL_VIEWS = {"card": ("comet",), "pink": ("west", "wall_mid"), "near": ("posts",), "far": ("posts",)}
+
+
+def shots():
+    """The shot list: every look from the same places, each trial where it shows, one at noon."""
+    out = []
+
+    def add(name, view, at):
+        eye, target = VIEWS[view]
+        out.append({"name": f"{name}_{view}", "pos": list(eye), "look_at": list(target), "time": at})
+
+    for name in look.LOOKS:
+        for view in EVERY_LOOK + (DEFAULT_ONLY if name == look.DEFAULT else ()):
+            add(name, view, look.tick(name))
+    for name, views in TRIAL_VIEWS.items():
+        for view in views:
+            add(name, view, look.tick(name))
+    add("noon", "wall_near", 6000)      # the drivers' default time shows the default look
+    return out
 
 
 def build():
