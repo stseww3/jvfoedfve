@@ -4024,7 +4024,7 @@ function firstFrame(e) {
   return (s[1] || "").trim().slice(0, 160);
 }
 
-export class Policy extends V17 {
+class Policy extends V17 {
   constructor(params = {}, me = 0) {
     super({ ...PARAMS, ...params }, me);
     // v28 state (see the v28 sections at the end of the class)
@@ -7064,36 +7064,5 @@ export class Policy extends V17 {
       this.vLog("STALL", g, "leave");
     }
     if (this.ledStall) this.vCount("p1_stall_tick");
-  }
-}
-
-
-if (typeof window !== "undefined" && typeof window.__fx === "object" && window.__fx?.strategyBot && !window.__fx.strategyBot.__hookedReplayLog) {
-  window.__fx.strategyBot.__hookedReplayLog = true;
-  const origReplay = window.__fx.strategyBot.replay ? window.__fx.strategyBot.replay.bind(window.__fx.strategyBot) : null;
-  window.__fx.strategyBot.replay = function(text) {
-    try {
-      if (typeof text === "string" && text.length > 50 && window.__hlLog) {
-        const prefix = text.indexOf("=") >= 0 ? text : ("https://territorial.io/?replay=" + text);
-        window.__hlLog("[HL-REPLAY-RAW] " + prefix);
-      }
-    } catch {}
-    if (origReplay) return origReplay(text);
-  };
-}
-
-
-if (typeof window !== "undefined" && typeof bC === "object" && bC?.a7s?.a2b && window.__hlLog && window.__tsbSquadSlot === 2) {
-  const curT = typeof bi === "object" && bi?.kr ? bi.kr() : -1;
-  if (curT < 500) window.__lastReplayDumpTick = 0;
-  if (curT >= 4500 && curT - (window.__lastReplayDumpTick || 0) >= 1500) {
-    window.__lastReplayDumpTick = curT;
-    try {
-      const repStr = bC.a7s.a2b();
-      if (typeof repStr === "string" && repStr.length > 100) {
-        const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + repStr);
-        window.__hlLog("[HL-LIVE-REPLAY-URL] " + fullUrl);
-      }
-    } catch {}
   }
 }
