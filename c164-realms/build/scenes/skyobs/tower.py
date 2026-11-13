@@ -95,11 +95,19 @@ def build(c, land, cx, cz, y0):
             c.set(x1 - tx, y0 + h0 + r, z1 - tz, "stone_bricks")
             c.set(x2 + tx, y0 + h0 + r, z2 + tz, "stone_bricks")
 
+    def glow(face, h):
+        cells, (ox, oz), _ = faces[face]
+        for (x, z) in cells:
+            c.set(x - ox, y0 + h, z - oz, "light[level=15]", keep=True)
+
     for face in ("north", "east", "west", "south"):
         window(face, 5)
         window(face, 13)
+        glow(face, 6)
+        glow(face, 14)
     for face in ("north", "east", "west"):
         window(face, 22, rows=2, arch=False, sill=False)
+        glow(face, 22)
 
     # ground door (south), recessed into the plinth
     for i, x in enumerate((icx - 1, icx)):

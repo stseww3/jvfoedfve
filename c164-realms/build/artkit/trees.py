@@ -145,6 +145,25 @@ def broadleaf(c, x, y, z, height, spread, seed, log="oak_log", leaves=None, squa
                     c.set(bx, by - 2, bz, leaves, keep=True)
 
 
+def birch(c, x, y, z, height, seed, log="birch_log", leaves=None):
+    """Slender straight trunk under a tall, narrow crown."""
+    rng = random.Random(seed)
+    leaves = leaves or leaf_mix("birch_leaves")
+    for i in range(height - 1):
+        c.set(x, y + i, z, log)
+    start = y + max(3, round(height * 0.42))
+    span = y + height - start
+    r = max(1.9, min(3.0, height * 0.25))
+    k = max(2, round(span / 2.5))
+    for j in range(k):
+        cy = start + span * (j + 0.5) / k
+        rr = r * (1.0 if j < k - 1 else 0.72) * rng.uniform(0.9, 1.1)
+        ox, oz = rng.uniform(-0.6, 0.6), rng.uniform(-0.6, 0.6)
+        blob(c, x + ox, cy, z + oz, rr, max(1.6, span / k * 0.95), rr, leaves, seed + 5 + j, squash=0.9)
+    c.set(x, y + height - 1, z, leaves, keep=True)
+    c.set(x, y + height, z, leaves, keep=True)
+
+
 def bush(c, x, y, z, seed, leaves, size=1):
     """Low shrub made of a few leaf blocks; (x, y, z) is the first block above ground."""
     c.set(x, y, z, leaves, keep=True)

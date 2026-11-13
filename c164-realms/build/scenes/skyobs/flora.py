@@ -36,8 +36,7 @@ def plant_trees(c, land, plan):
                         leaves=T.leaf_mix("cherry_leaves"), squash=0.5, lift=(0.2, 0.55), thick=t.get("thick", False),
                         hang=0.14, clumps=1.12)
         elif kind == "birch":
-            T.broadleaf(c, x, y, z, t["height"], t["spread"], seed, log="birch_log",
-                        leaves=T.leaf_mix("birch_leaves"), squash=0.7, lift=(0.5, 1.0), clumps=0.85)
+            T.birch(c, x, y, z, t["height"], seed)
         elif kind == "oak":
             T.broadleaf(c, x, y, z, t["height"], t["spread"], seed, log="oak_log",
                         leaves=T.leaf_mix("oak_leaves", "azalea_leaves", 0.12), squash=0.85, lift=(0.5, 0.95),

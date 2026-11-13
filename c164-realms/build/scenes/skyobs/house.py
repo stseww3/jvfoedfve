@@ -181,3 +181,8 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
     for x in (x0 + 3, x1 - 3):
         c.set(x, y0 + 3, zm, "lantern[hanging=true]")
         c.set(x, y0 + 5, zm, "lantern[hanging=false]")
+    # windows should glow at dusk: invisible light just inside the long walls
+    for x in range(x0 + 1, x1, 2):
+        for z in (z0 + 1, z1 - 1):
+            for y in (y0 + 1, y0 + 6):
+                c.set(x, y, z, "light[level=15]", keep=True)

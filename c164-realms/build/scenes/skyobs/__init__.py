@@ -57,7 +57,7 @@ def build():
     rim_x = min(x for (x, z) in land.top if -1 <= z <= 3)
     dock_out = rim_x - 7
     site.dock(c, land, rim_x + 9, dock_out, 1, 2, GROUND)
-    site.airship(c, dock_out - 6, GROUND + 10, 1)
+    site.airship(c, dock_out - 6, GROUND, 1)
     c.set(dock_out - 1, GROUND, 1, "spruce_slab[type=top]")
 
     site.pond(c, land, px, pz, prx, prz, GROUND, [(25.0, 26.5), (28.0, 29.5), (34.0, 35.5)])
@@ -81,6 +81,7 @@ def build():
             land.kind[(x, 4)] = "built"
 
     flora.plant_trees(c, land, TREES)
+    site.boulders(c, land, seed=5)
     flora.petals(c, land, -33, -5, 10, 5)
     flora.petals(c, land, -27, 24, 6, 6)
     flora.rim_shrubs(c, land)

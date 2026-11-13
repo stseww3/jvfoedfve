@@ -222,10 +222,11 @@ def dock(c, land, x_in, x_out, z0, half_w, y):
     c.set(x_out + 7, y + 1, z0 - half_w + 1, "barrel[facing=up]")
 
 
-def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
-    """Small moored airship, nose to the west: striped teardrop envelope, open gondola beneath."""
+def airship(c, cx, gy, cz, half_len=11.0, radius=5.0):
+    """Small moored airship, nose to the west. gy is the gondola floor; the envelope hangs above it."""
     cream, red = "white_terracotta", "red_terracotta"
-    cx, cy, cz = int(cx), int(cy), int(cz)
+    cx, gy, cz = int(cx), int(gy), int(cz)
+    cy = gy + int(radius) + 6
 
     def at(u, v):  # u runs towards the nose, v sideways
         return cx - u, cz + v
@@ -234,7 +235,7 @@ def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
         t = u / half_len
         if abs(t) >= 1:
             return 0.0
-        return radius * math.sqrt(1 - t * t) * (0.85 + 0.15 * t)
+        return radius * math.sqrt(1 - t * t) * (0.86 + 0.14 * t)
 
     n = int(half_len) + 1
     for u in range(-n, n + 1):
@@ -246,14 +247,14 @@ def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
                 d = math.hypot(v, w)
                 if d > r or d < r - 1.6:
                     continue
-                gore = int(math.floor((math.atan2(w, v) + math.pi + math.pi / 8) / (math.tau / 8))) % 8
                 x, z = at(u, v)
-                c.set(x, cy + w, z, red if (gore % 2 or abs(u) > half_len - 1.2) else cream)
-    # cruciform tail
+                band = abs(u) > half_len - 1.6 or u % 4 == 0
+                c.set(x, cy + w, z, red if band else cream)
+    # swept tail fins
     for k, u in enumerate(range(-n + 1, -n + 6)):
-        reach = 4.0 - 0.45 * k
         r = r_at(u)
-        for j in range(int(r), int(math.ceil(reach)) + 1):
+        reach = r + max(0.0, 3.0 - 0.75 * k)
+        for j in range(0, int(math.ceil(reach)) + 1):
             if j < r - 0.5 or j > reach:
                 continue
             for v, w in ((0, j), (0, -j), (j, 0), (-j, 0)):
@@ -261,7 +262,6 @@ def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
                 c.set(x, cy + w, z, red, keep=True)
 
     # gondola
-    gy = cy - int(radius) - 6
     for du in range(-4, 5):
         hw = 2 if abs(du) <= 2 else 1 if abs(du) == 3 else 0
         for v in range(-hw, hw + 1):
@@ -275,6 +275,10 @@ def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
                 c.set(x, gy + 1, z, "spruce_planks" if abs(du) < 4 else "dark_oak_log")
                 if abs(du) < 4:
                     c.set(x, gy + 2, z, "spruce_fence")
+    # keel
+    for du in range(-3, 4):
+        x, z = at(du, 0)
+        c.set(x, gy - 1, z, "dark_oak_slab[type=top]")
     for du in (-4, 4):
         x, z = at(du, 0)
         c.set(x, gy + 2, z, "dark_oak_log")
@@ -290,7 +294,57 @@ def airship(c, cx, cy, cz, half_len=9.5, radius=4.4):
     c.set(x, gy + 1, z, "barrel[facing=up]")
     x, z = at(-1, 1)
     c.set(x, gy + 1, z, "chest[facing=north]")
-    return gy
+    return cy
+
+
+def boulders(c, land, seed=0, spacing=8.0):
+    """Weathered rocks: a loose string near the rim and a few further in."""
+    picked = []
+    for (x, z) in sorted(land.edge):
+        e = land.edge[(x, z)]
+        if not 0.035 < e < 0.30 or land.kind.get((x, z)) not in ("grass", "moss"):
+            continue
+        if hash3(x, 51, z, seed) > (0.02 if e < 0.14 else 0.004):
+            continue
+        if any(math.hypot(x - a, z - b) < spacing for a, b in picked):
+            continue
+        picked.append((x, z))
+    for (x0, z0) in picked:
+        r = 1.3 + 1.9 * hash3(x0, 52, z0, seed)
+        hmax = 0.9 + 0.85 * r * (0.6 + 0.4 * hash3(x0, 53, z0, seed))
+        sx = 0.75 + 0.5 * hash3(x0, 54, z0, seed)
+        n = int(r / min(sx, 1.0)) + 2
+        cells = []
+        for dx in range(-n, n + 1):
+            for dz in range(-n, n + 1):
+                cell = (x0 + dx, z0 + dz)
+                if cell not in land.top or land.kind.get(cell) not in ("grass", "moss", "rock"):
+                    continue
+                d = math.hypot(dx / sx, dz * sx) / r + 0.35 * (hash3(cell[0], 55, cell[1], seed) - 0.5)
+                if d >= 1:
+                    continue
+                cells.append((cell, hmax * math.sqrt(1 - d * d)))
+        base = min((land.top[cell] for cell, _ in cells), default=None)
+        if base is None:
+            continue
+        for cell, h in cells:
+            x, z = cell
+            ty = land.top[cell]
+            top = base + h          # the rock's crown is level, the ground may slope under it
+            full = int(math.floor(top + 0.25))
+            if full < ty:
+                continue
+            c.set(x, ty, z, ROCK)
+            for y in range(ty + 1, full + 1):
+                c.set(x, y, z, ROCK if hash3(x, y, z, seed + 56) > 0.16 else "moss_block")
+            land.top[cell] = max(ty, full)
+            land.kind[cell] = "rock"
+            if top - full >= 0.3 and not c.has(x, full + 1, z):
+                name = c.name(x, full, z)
+                sl = B.variant(name, "slab") if name != "moss_block" else None
+                if sl:
+                    c.set(x, full + 1, z, f"{sl}[type=bottom]")
+                    land.kind[cell] = "built"
 
 
 def garden(c, land, x0, z0, x1, z1, y):
