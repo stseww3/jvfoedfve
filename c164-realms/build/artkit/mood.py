@@ -57,6 +57,51 @@ def track(keyframes, modifier=None, ease=None):
     return out
 
 
+def _vanilla_sun_angle(tick):
+    """Where vanilla puts the sun: 0 overhead at noon (tick 6000), 90 on the western horizon,
+    180 straight below, 270 on the eastern horizon. It runs a little slower around noon."""
+    x1, y1, x2, y2 = 0.362, 0.241, 0.638, 0.759   # the cubic bezier ease of the vanilla day timeline
+    p = ((tick - 6000) % 24000) / 24000.0
+    lo, hi = 0.0, 1.0
+    for _ in range(40):
+        s = (lo + hi) / 2.0
+        if 3 * (1 - s) ** 2 * s * x1 + 3 * (1 - s) * s * s * x2 + s ** 3 < p:
+            lo = s
+        else:
+            hi = s
+    s = (lo + hi) / 2.0
+    return 360.0 * (3 * (1 - s) ** 2 * s * y1 + 3 * (1 - s) * s * s * y2 + s ** 3)
+
+
+def one_body_sky(day, night, dusk=13050, dawn=22850, step=500):
+    """Tracks that make the moon object play both sun and moon, so that only one body is ever drawn.
+
+    Vanilla always draws both, opposite each other. On the ground the lower one is hidden; from a
+    floating island it is in plain view below the horizon: a moon under the island at noon, a sun
+    under it at midnight. Here the moon object follows the sun's path by day and its own by night,
+    and its phase picks the picture; the resource pack paints the eight phase textures to match
+    and blanks the sun texture.
+
+    day, night  [(tick, phase), ...]: the picture from each tick on, within the day (dawn..dusk
+                over midnight's far side) and within the night (dusk..dawn)
+    dusk, dawn  ticks at which the object jumps across the sky; it should show a blank phase then
+    Returns {"moon_angle": track, "moon_phase": track}.
+    """
+    def sun(t):                      # continuous through noon: -108 before sunrise .. +106 after sunset
+        a = _vanilla_sun_angle(t)
+        return a - 360.0 if a > 180.0 else a
+
+    def moon(t):                     # the same for the night side, through midnight
+        return _vanilla_sun_angle(t) - 180.0
+
+    angle = [(t, sun(t)) for t in range(0, dusk, step)] + [(dusk, sun(dusk))]
+    angle += [(t, moon(t)) for t in range(dusk + 1, dawn - 1, step)] + [(dawn - 1, moon(dawn - 1))]
+    angle += [(t, sun(t)) for t in range(dawn, 24000, step)]
+    phases = sorted(list(day) + list(night))
+    return {"moon_angle": track([(t, round(a, 3)) for t, a in angle]),
+            "moon_phase": track(phases)}
+
+
 def timeline(tracks, clock="minecraft:overworld", period=24000):
     return {"clock": clock, "period_ticks": period,
             "tracks": {(k if ":" in k else VISUAL + k): v for k, v in tracks.items()}}

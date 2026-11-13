@@ -9,6 +9,8 @@ import numpy as np
 from artkit import clouds, respack
 from artkit import noise as N
 
+from . import mood
+
 SEA_Y = -84                        # underside of the cloud sea; the island's lowest rock is at -65
 BOX = (-236, -236, 236, 172)       # x0, z0, x1, z1: reaches as far as the pictures look
 TOP_Y = SEA_Y + 152
@@ -100,11 +102,23 @@ def _celestial(radius, core, rim, glow, halo, marks=()):
 
 
 def write_pack(pack_dir):
+    """Cloud tones, and the pictures for the one body in the sky (mood.PHASES): the moon object plays
+    the sun too, so its eight phase textures hold two suns, the moon, their fades and a blank."""
     out = clouds.write_pack(pack_dir)
-    sun = _celestial(7.6, "#fffdf2", "#fff0b4", "#ffc878", [(0.40, 2.0), (0.16, 8.0)])
-    out.append("sun -> " + respack.texture(pack_dir, "environment/celestial/sun", sun))
+    # the moon's square is two thirds the size of the sun's, hence the large discs
+    sun = _celestial(11.4, "#fffdf2", "#fff0b4", "#ffc878", [(0.40, 3.0), (0.16, 12.0)]).astype(float)
+    warm = _celestial(11.4, "#fff6dc", "#ffd98a", "#ffa052", [(0.48, 3.2), (0.20, 12.0)]).astype(float)
     moon = _celestial(10.6, "#f2f6ff", "#d3ddf4", "#7fa2f0", [(0.30, 2.4), (0.10, 8.0)],
                       marks=[(-3.5, -2.5, 2.3, "#cdd8f0"), (3.0, 3.5, 1.8, "#cdd8f0"), (2.5, -4.5, 1.2, "#bcc9e6"),
-                             (-4.5, 4.0, 1.2, "#bcc9e6"), (5.5, -0.5, 0.9, "#cdd8f0"), (-0.5, 1.0, 0.9, "#bcc9e6")])
-    out.append("moon -> " + respack.texture(pack_dir, "environment/celestial/moon/full_moon", moon))
+                             (-4.5, 4.0, 1.2, "#bcc9e6"), (5.5, -0.5, 0.9, "#cdd8f0"), (-0.5, 1.0, 0.9, "#bcc9e6")]).astype(float)
+    pictures = {
+        "sun": sun, "sun_warm": warm, "sun_half": warm * 0.5, "sun_faint": warm * 0.2, "blank": sun * 0.0,
+        "moon_faint": moon * 0.2, "moon_half": moon * 0.5, "moon": moon,
+    }
+    for role, px in pictures.items():
+        phase = mood.PHASES[role]
+        respack.texture(pack_dir, "environment/celestial/moon/" + phase, px.astype(np.uint8))
+        out.append(f"{role} -> moon/{phase}")
+    respack.texture(pack_dir, "environment/celestial/sun", (sun * 0.0).astype(np.uint8))
+    out.append("sun texture blanked")
     return out

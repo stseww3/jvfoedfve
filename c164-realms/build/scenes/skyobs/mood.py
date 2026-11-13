@@ -37,19 +37,40 @@ BIOMES = {
     "skyobs": _look(),
 }
 
+# One body in the sky at a time (see artkit.mood.one_body_sky): which moon phase texture stands for
+# what. sky.py paints them.
+PHASES = {
+    "sun": "waxing_gibbous", "sun_warm": "waning_crescent", "sun_half": "first_quarter",
+    "sun_faint": "waxing_crescent", "blank": "new_moon", "moon_faint": "third_quarter",
+    "moon_half": "waning_gibbous", "moon": "full_moon",
+}
+# The sun crosses the horizon near ticks 12780 and 23215. It warms on the way down, sinks in plain
+# view (there is no ground to hide it) and fades out once it is some 12 degrees below; then the
+# moon fades in, already 15 degrees up in the east. Dawn mirrors that.
+BODY = M.one_body_sky(
+    dusk=13600, dawn=22400,
+    day=[(t, PHASES[p]) for t, p in (
+        (22450, "sun_faint"), (22550, "sun_half"), (22700, "sun_warm"), (800, "sun"), (11200, "sun_warm"),
+        (13400, "sun_half"), (13480, "sun_faint"), (13550, "blank"))],
+    night=[(t, PHASES[p]) for t, p in (
+        (13650, "moon_faint"), (13750, "moon_half"), (13900, "moon"), (22150, "moon_half"),
+        (22250, "moon_faint"), (22350, "blank"))],
+)
+
 TIMELINES = {
     "skyobs_day": M.timeline({
         "sunrise_sunset_color": M.track([(0, "#00000000")]),
-        "moon_phase": M.track([(0, "full_moon")]),
+        "moon_angle": BODY["moon_angle"],
+        "moon_phase": BODY["moon_phase"],
         "sky_color": M.track([
             (200, "#4a7fd8"), (1300, DAY_SKY), (10700, DAY_SKY), (11700, "#4384dc"), (12300, "#4a5fb4"),
             (12800, "#34387f"), (13300, "#161d55"), (13700, "#0b1238"), (22300, "#0b1238"), (23000, "#1b2460"),
             (23500, "#33479a"),
         ]),
         "fog_color": M.track([
-            (400, "#f6e2cc"), (1300, DAY_FOG), (10700, DAY_FOG), (11500, "#d6e2f2"), (11950, "#ffe1c4"),
-            (12350, "#ffb27a"), (12750, "#f28a66"), (13100, "#a05f86"), (13400, "#3f3470"), (13700, "#151a40"),
-            (22300, "#151a40"), (22900, "#4b3f78"), (23350, "#e08a72"), (23800, "#ffc39a"),
+            (400, "#f6e2cc"), (1300, DAY_FOG), (10700, DAY_FOG), (11500, "#d6e2f2"), (11900, "#f0e4da"),
+            (12150, "#ffd2a6"), (12400, "#ffb27a"), (12750, "#f28a66"), (13100, "#a05f86"), (13400, "#3f3470"),
+            (13700, "#151a40"), (22300, "#151a40"), (22900, "#4b3f78"), (23350, "#e08a72"), (23800, "#ffc39a"),
         ]),
         "sky_light_color": M.track([
             (100, "#ffe2c0"), (700, "#fff4e4"), (1400, "#ffffff"), (10800, "#ffffff"), (11600, "#fff0d8"),
