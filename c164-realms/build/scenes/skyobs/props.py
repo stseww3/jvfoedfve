@@ -418,7 +418,7 @@ _BUILT = None
 
 def build_models():
     out = {}
-    for f in MODELS + instruments.MODELS:
+    for f in MODELS + instruments.MODELS + skystone.MODELS:
         m = f()
         out[m.name] = m
     for side in (1, -1):
@@ -469,7 +469,47 @@ GALLERY = [
     ("rail", [("dome_rail", (0, 0, -3.0), {})], (7.0, 5.0, 6.0), (0, 4.5, 0)),
 ]
 
-from . import instruments  # noqa: E402  the room under the dome
+from . import instruments, skystone  # noqa: E402  the room under the dome; crystal and chain
 
 SCALE.update(instruments.SCALE)
-GALLERY = GALLERY + instruments.GALLERY
+SCALE.update(skystone.SCALE)
+GALLERY = GALLERY + instruments.GALLERY + skystone.GALLERY
+
+
+def chain(c, a, b, sag=0.0, scale=None, **opts):
+    """Hang heavy chain from point a to point b, `sag` blocks below the straight line half way.
+
+    Runs of three links follow the curve; the links are stretched a few per cent so that a whole
+    number of runs ends exactly on b. Returns the number of runs placed.
+    """
+    s = scale or SCALE["chain_run"]
+    n = 240
+    pts = []
+    for i in range(n + 1):
+        t = i / n
+        pts.append(tuple(a[k] + (b[k] - a[k]) * t - (sag * 4.0 * t * (1.0 - t) if k == 1 else 0.0) for k in range(3)))
+    lengths = [0.0]
+    for p, q in zip(pts, pts[1:]):
+        lengths.append(lengths[-1] + math.dist(p, q))
+    total = lengths[-1]
+    lap = (skystone.CHAIN_RUN - skystone.CHAIN_STEP) * s / 16.0
+    count = max(1, int(round((total - lap) / (skystone.CHAIN_STEP * s / 16.0))))
+    stretch_by = total / (count * skystone.CHAIN_STEP * s / 16.0 + lap)
+    step, run = skystone.CHAIN_STEP * s / 16.0 * stretch_by, skystone.CHAIN_RUN * s / 16.0 * stretch_by
+
+    def at(length):
+        length = min(max(length, 0.0), total)
+        i = min(n - 1, max(0, next((j for j, v in enumerate(lengths) if v >= length), n) - 1))
+        span = lengths[i + 1] - lengths[i]
+        t = 0.0 if span < 1e-9 else (length - lengths[i]) / span
+        return tuple(pts[i][k] + (pts[i + 1][k] - pts[i][k]) * t for k in range(3))
+
+    for k in range(count):
+        p, q = at(k * step), at(k * step + run)
+        dx, dy, dz = (q[i] - p[i] for i in range(3))
+        flat = math.hypot(dx, dz)
+        yaw = math.degrees(math.atan2(-dx, dz)) if flat > 1e-6 else 0.0
+        pitch = math.degrees(math.atan2(dy, flat))
+        c.add_entity(p[0], p[1], p[2], M.display(models()["chain_run"], yaw=yaw, scale=(s, s, s * stretch_by),
+                                                 turns=(("z", 90.0 * (k % 2)), ("x", -pitch)), **opts))
+    return count

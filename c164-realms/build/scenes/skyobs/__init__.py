@@ -7,7 +7,7 @@ front of the crag drains over the southern rim.
 from artkit import respack
 from artkit.canvas import Canvas
 
-from . import flora, house, instruments, props, site, sky, terrain, tower
+from . import flora, house, instruments, props, site, sky, terrain, tower, under
 
 TOWER = (20.0, -12.0)
 HOUSE = (-19, -7, 3, 11)   # x0, x1, z0, z1
@@ -24,6 +24,14 @@ def write_pack(pack_dir):
     out = sky.write_pack(pack_dir)
     out.append(respack.cube_variants(pack_dir, instruments.VAULT, instruments.vault_tiles(), name="star_vault"))
     return out
+
+# x, y, z, radius, depth, tree
+ISLETS = [
+    (-72, -4, -34, 6.5, 13, ("spruce", 13)),
+    (66, -12, 34, 5.0, 10, ("birch", 7)),
+    (74, 4, -24, 3.6, 7, None),
+    (-50, -22, 44, 3.0, 6, None),
+]
 
 TREES = [
     {"kind": "cherry", "x": -33, "z": -5, "height": 13, "spread": 9, "thick": True},
@@ -57,6 +65,7 @@ def build():
     ]
     land = terrain.build(c, pads)
     flora.underside(c, land)
+    low = under.dress(c, land)
 
     tower.build(c, land, TOWER[0], TOWER[1], terrain.KNOLL_H + 1)
     foot_z = site.grand_stair(c, land, 18, 21, -1, terrain.KNOLL_H, GROUND)
@@ -113,10 +122,11 @@ def build():
     flora.rim_shrubs(c, land)
     flora.ground_cover(c, land)
 
-    site.islet(c, -72, -4, -34, 6.5, 13, 801, tree=("spruce", 13))
-    site.islet(c, 66, -12, 34, 5.0, 10, 802, tree=("birch", 7))
-    site.islet(c, 74, 4, -24, 3.6, 7, 803)
-    site.islet(c, -50, -22, 44, 3.0, 6, 804)
+    for n, (x, y, z, r, depth, tree) in enumerate(ISLETS):
+        site.islet(c, x, y, z, r, depth, 801 + n, tree=tree)
+    # the two larger islets are still chained to the island
+    for x, y, z, r, _, _ in ISLETS[:2]:
+        under.tether(c, land, low, (x, y, z, r))
 
     sky.build(c)
     return c

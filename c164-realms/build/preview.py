@@ -27,14 +27,19 @@ from artkit import clouds  # noqa: E402
 PAINTED = {b: tuple(int(c[i:i + 2], 16) for i in (1, 3, 5)) for b, c in zip(clouds.TONES, clouds.COLOURS)}
 COLOURS = [
     ("snow", (244, 247, 250)), ("white_concrete", (214, 220, 226)), ("cherry_leaves", (236, 170, 200)),
+    ("pale_oak_leaves", (226, 170, 48)), ("leaf_litter", (170, 120, 50)),
     ("leaves", (62, 118, 52)), ("grass_block", (118, 170, 70)), ("moss", (96, 130, 50)), ("water", (60, 130, 205)),
     ("copper", (86, 164, 134)), ("prismarine", (52, 92, 80)), ("brick", (150, 92, 76)), ("deepslate", (72, 72, 78)),
+    ("calcite", (223, 224, 220)), ("basalt", (74, 74, 80)), ("lapis", (16, 26, 62)),
     ("tuff", (108, 110, 104)), ("stone", (128, 128, 128)), ("andesite", (136, 137, 138)), ("cobble", (122, 122, 122)),
     ("spruce", (112, 82, 48)), ("dark_oak", (64, 42, 20)), ("oak", (160, 130, 78)), ("planks", (150, 112, 66)),
-    ("log", (98, 76, 46)), ("wool", (190, 80, 70)), ("terracotta", (160, 90, 70)), ("dirt", (134, 96, 67)),
+    ("log", (98, 76, 46)), ("wool", (190, 80, 70)), ("white_terracotta", (210, 178, 161)),
+    ("red_terracotta", (143, 61, 47)), ("terracotta", (160, 90, 70)), ("dirt", (134, 96, 67)),
     ("path", (148, 122, 65)), ("gravel", (130, 127, 126)), ("lantern", (250, 200, 90)), ("glass", (190, 220, 235)),
 ]
 SKIP = ("light", "air", "barrier", "structure_void")
+# models that matter for the composition of a wide picture: part of the name -> dot colour
+MARKS = [("crystal", (70, 230, 220)), ("chain", (40, 42, 50)), ("telescope", (200, 160, 60))]
 
 
 def colour(state, cache={}):
@@ -160,8 +165,9 @@ class Blocks:
         sign = np.where(d[np.arange(n), axis] > 0, 1, -1)
         return hit, dist, axis, sign, where
 
-    def view(self, pos, look_at, size=(640, 360), fov=70.0, far=520.0):
-        """A picture from a camera position, block faces shaded the way the game shades them."""
+    def view(self, pos, look_at, size=(640, 360), fov=70.0, far=520.0, marks=()):
+        """A picture from a camera position, block faces shaded the way the game shades them.
+        marks = [((x, y, z), colour, size in blocks)] are drawn as dots unless a block hides them."""
         w, h = size
         pos, look_at = np.array(pos, dtype=float), np.array(look_at, dtype=float)
         f = (look_at - pos) / np.linalg.norm(look_at - pos)
@@ -190,8 +196,21 @@ class Blocks:
         lit = np.where(self.flat[hit], 1.0, face * shade * grain)
         rgb = self.rgb[hit] * lit[:, None]
         haze = (1 - np.exp(-(np.where(got, dist, 0.0) / 420.0) ** 1.5))[:, None]
-        img = np.where(got[:, None], rgb * (1 - haze) + horizon * haze, img)
-        return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8).reshape(h, w, 3), "RGB")
+        img = np.where(got[:, None], rgb * (1 - haze) + horizon * haze, img).reshape(h, w, 3)
+        # models are not drawn; the larger ones get a dot where they stand, sized by their scale
+        depth = dist.reshape(h, w)
+        for at, colour, size in marks:
+            v = np.array(at, dtype=float) - pos
+            z = float(v @ f)
+            if z < 0.5:
+                continue
+            px = int((float(v @ r) / z / (half * w / h) + 1) * w / 2)
+            py = int((1 - float(v @ u) / z / half) * h / 2)
+            rad = max(1, int(round(size * h / (2 * half * z))))
+            if not (0 <= px < w and 0 <= py < h) or depth[py, px] < np.linalg.norm(v) - 1.5:
+                continue
+            img[max(0, py - rad):py + rad + 1, max(0, px - rad):px + rad + 1] = colour
+        return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8), "RGB")
 
 
 def main():
@@ -215,9 +234,17 @@ def main():
         shots = [s for s in shots if s["name"] in args.only.split(",")]
     blocks = Blocks(canvas)
     size = tuple(int(v) for v in args.size.split("x"))
+    marks = []
+    for x, y, z, nbt in canvas.entities:
+        model = nbt["item"]["components"]["minecraft:item_model"].partition(":")[2]
+        scale = float(nbt["transformation"]["scale"][0])
+        for key, colour in MARKS:
+            if key in model and scale >= 1.5:
+                marks.append(((x, y, z), colour, scale * 0.35))
+                break
     for shot in shots:
         path = f"{args.out}-{shot['name']}.png"
-        blocks.view(shot["pos"], shot["look_at"], size).save(path)
+        blocks.view(shot["pos"], shot["look_at"], size, marks=marks).save(path)
         print(path)
 
 

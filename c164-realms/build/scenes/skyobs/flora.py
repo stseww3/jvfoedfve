@@ -134,6 +134,8 @@ def ground_cover(c, land):
                 c.set(x, y, z, "moss_carpet")
 
 
+BELLY_LIGHT = 10
+
 WALL_FOR = {
     "stone": "cobblestone_wall", "cobblestone": "cobblestone_wall", "mossy_cobblestone": "mossy_cobblestone_wall",
     "andesite": "andesite_wall", "tuff": "tuff_wall", "deepslate": "cobbled_deepslate_wall",
@@ -153,9 +155,10 @@ def underside(c, land):
         name = c.name(x, y, z)
         e = land.edge.get((x, z), 0)
         h = hash3(x, 21, z, SEED)
-        # hidden light so the belly of the island is not a black hole
+        # faint hidden light so the belly of the island is not a black hole; what really lights
+        # it is the crystal (under.py)
         if x % 5 == (z // 5) % 2 * 2 and z % 5 == 0 and not c.has(x, y - 1, z):
-            c.set(x, y - 1, z, "light[level=13]")
+            c.set(x, y - 1, z, f"light[level={BELLY_LIGHT}]")
             continue
         if name in ("dirt", "coarse_dirt", "rooted_dirt", "grass_block"):
             if h < 0.45 and not c.has(x, y - 1, z):
