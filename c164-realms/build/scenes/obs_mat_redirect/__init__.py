@@ -60,7 +60,9 @@ def shots():
 
     for name, (x0, x1) in spans.items():
         x1 -= 2                                         # the station's own last x, without the gap
-        if x1 - x0 > 18:
+        if name == "clouds":
+            front(name, x0, x0 + 13)                    # the five tones; the bank has a shot of its own
+        elif x1 - x0 > 18:
             mid = (x0 + x1) // 2
             front(f"{name}_a", x0, mid)
             front(f"{name}_b", mid, x1)
@@ -74,5 +76,7 @@ def shots():
     out.append({"name": "panels_side", "pos": [x0 + 4.5, 1.8, Z + 4.5], "look_at": [x0 + 10.5, 0.5, Z + 0.5], "time": TIME})
     x0 = spans["windows"][0]
     out.append({"name": "windows_side", "pos": [x0 - 3.5, 2.4, Z + 3.5], "look_at": [x0 + 9.0, 1.4, Z + 0.5], "time": TIME})
+    mid = spans["clouds"][1] - 7.0                      # the middle of the bank, seen from above its foot
+    out.append({"name": "clouds_bank", "pos": [mid - 6.0, 8.0, Z + 13.0], "look_at": [mid, 1.5, Z + 1.0], "time": TIME})
     return out
 
