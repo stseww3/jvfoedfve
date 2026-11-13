@@ -105,6 +105,40 @@ def east_face(canvas, y, z, x_lo, x_hi, origin=(0, 0, 0)):
 
 
 # ---- shapes that more than one family uses --------------------------------------------------------
+RIVET = flat("iron", 5)
+
+
+def rivet(m, p, out="z", mat=RIVET):
+    """A rivet head: one texel square, half a texel proud of the face it sits on. p is the middle of
+    its foot on that face; `out` is the way the face looks: "x", "-x", "y", "-y", "z" or "-z"."""
+    k = M.AXES.index(out[-1])
+    lo, hi = [v - 0.5 for v in p], [v + 0.5 for v in p]
+    lo[k], hi[k] = sorted((p[k], p[k] + (-0.5 if out.startswith("-") else 0.5)))
+    m.box(tuple(lo), tuple(hi), mat)
+    return m
+
+
+def wall_entry(m, x, y, radius=0.75):
+    """Where a conduit that runs up or down a wall turns into it, so that it never just stops. For a
+    wall-mounted model (the wall is its plane z = 0): a round flange on the wall and the knuckle of
+    the bend, about the point (x, y) where the conduit's axis ends. The conduit itself is a tube of
+    this radius whose axis is one texel off the wall."""
+    m.tube("z", (x, y), 0.0, 1.0, radius + 1.0, IRON)
+    m.tube("z", (x, y), 1.0, radius + 1.25, radius, IRON_D)
+    return m
+
+
+def switch_key(m, at, side=1.0):
+    """The turn key of a brass lampholder: a stem and a flat grip, out along x from `at`, a point
+    on the holder's surface. side=-1 points it the other way."""
+    x, y, z = at
+    a, b = sorted((x, x + side))
+    m.box((a, y - 0.5, z - 0.5), (b, y + 0.5, z + 0.5), BRASS_D)
+    a, b = sorted((x + side, x + 2.0 * side))
+    m.box((a, y - 1.0, z - 0.5), (b, y + 1.0, z + 0.5), BRASS)
+    return m
+
+
 def glass_ball(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
     """A glass ball drawn as bands of flat tone: bands = [(from, to, layers, material)] with from/to
     as in Model.ball (-1 the bottom, 1 the top). Every face of a band has the one tone, so the ball

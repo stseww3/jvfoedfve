@@ -15,7 +15,7 @@ For the other lines:
     n += lamps.place(canvas, "bracket", (x, y, z), facing="east", origin=origin)   # on a wall face
     n += lamps.place(canvas, "street", (x, y, z), origin=origin)                   # foot centre
     n += lamps.place(canvas, "pendant", (x, y, z), origin=origin)                  # hanging point
-    n += lamps.festoon(canvas, a, b, origin=origin)                                # cable and bulbs
+    n += lamps.festoon(canvas, a, b, origin=origin)                                # cable, bulbs, hangers
 
 Both return the number of display entities they placed.
 """
@@ -36,7 +36,6 @@ IRON, IRON_D, BRASS, BRASS_D, COPPER, ENAMEL = K.IRON, K.IRON_D, K.BRASS, K.BRAS
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]          # dark to light
 GLOW = [K.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]
 RED = [K.flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
-RIVET = K.flat("iron", 5)
 RIM = K.flat("cream", 2)
 CABLE = K.flat("old_copper", 1)
 GREEN = P.mat("phosphor", kind="plain", noise=0.10, bevel=1, base=1)     # cased green glass
@@ -113,7 +112,7 @@ def _bracket_a():
     m.ring("x", (0, -4.1, 4.1), 2.6, 1.0, 2.0, IRON_D, sides=12)
     m.tube("y", (0, 11), 1.0, 2.5, 1.5, BRASS)                          # cup
     m.tube("y", (0, 11), 2.5, 3.25, 3.0, BRASS_D)                       # gallery
-    _opal_globe(m, (0, 7.5, 11), 4.5)
+    _opal_globe(m, (0, 7.5, 11), 4.5, fine=True)
     return m
 
 
@@ -124,7 +123,7 @@ def _bracket_b():
     m.box((-3, -9, 0), (3, 4, 1), IRON, grain="y")                      # riveted wall plate
     for x in (-2, 2):
         for y in (-8, 3):
-            m.box((x - 0.5, y - 0.5, 1), (x + 0.5, y + 0.5, 1.5), RIVET)
+            K.rivet(m, (x, y, 1))
     m.box((-1, 0, 1), (1, 2, 12.5), IRON, grain="z")                    # square arm
     m.beam((0, -7.5, 1.0), (0, 0.5, 9.0), 1.0, 1.0, IRON_D)             # strut
     m.box((-1.5, -1, 9.0), (1.5, 3, 12.5), IRON_D)                      # junction box
@@ -141,7 +140,8 @@ def _cage_a():
     m = M.Model(PREFIX + "cage_a")
     m.tube("z", (0, 0), 0.0, 1.5, 5.0, IRON)                            # base
     m.tube("z", (0, 0), 1.5, 2.5, 4.0, IRON_D)                          # glass seat
-    m.tube("y", (0, 1.0), 4.5, 9.0, 0.75, IRON_D)                       # conduit
+    m.tube("y", (0, 1.0), 4.5, 9.5, 0.75, IRON_D)                       # conduit, up and into the wall
+    K.wall_entry(m, 0, 9.5)
     with m.turned(("x", 90), about=(0, 0, 2.5)):                        # the dome looks out of the wall
         K.glass_ball(m, (0, 0, 2.5), 3.5,
                      [(0.0, 0.4, 1, GLOW[1]), (0.4, 0.75, 1, GLOW[2]), (0.75, 1.0, 1, GLOW[3])])
@@ -158,9 +158,10 @@ def _cage_b():
     m.box((-4, -6, 0), (4, 6, 1), IRON, grain="y")
     for x in (-3, 3):
         for y in (-5, 5):
-            m.box((x - 0.5, y - 0.5, 1), (x + 0.5, y + 0.5, 1.5), RIVET)
+            K.rivet(m, (x, y, 1))
     m.box((-3, -5, 1), (3, 5, 2), IRON_D)                               # body
-    m.tube("y", (0, 1.0), 6.0, 9.0, 0.75, IRON_D)                       # conduit
+    m.tube("y", (0, 1.0), 6.0, 9.5, 0.75, IRON_D)                       # conduit, up and into the wall
+    K.wall_entry(m, 0, 9.5)
     m.box((-2, -4, 2), (2, 4, 5), GLOW[1], faces={"s": BULB_FACE}, emit=15, shade=False)
     for x in (-3, 2):
         m.box((x, -5, 5.5), (x + 1, 5, 6.5), IRON, grain="y")           # guard: uprights
@@ -177,8 +178,9 @@ def _pendant_a():
     _rose(m)
     m.tube("y", (0, 0), -12.0, -2.0, 0.5, BRASS_D, sides=4)             # rod
     m.tube("y", (0, 0), -14.0, -12.0, 2.0, BRASS)                       # holder
+    K.switch_key(m, (2.0, -13.0, 0))
     m.tube("y", (0, 0), -15.0, -14.0, 3.5, BRASS_D)                     # gallery
-    _opal_globe(m, (0, -19.25, 0), 5.5, sides=12, squash=0.82)
+    _opal_globe(m, (0, -19.25, 0), 5.5, sides=12, squash=0.82, fine=True)
     m.tube("y", (0, 0), -24.5, -23.75, 1.0, BRASS)
     return m
 
@@ -187,8 +189,9 @@ def _pendant_b():
     """Version B pendant: an enamel cone shade and a bare bulb on a rod. Anchor: the hanging point."""
     m = M.Model(PREFIX + "pendant_b")
     _rose(m)
-    m.tube("y", (0, 0), -9.0, -2.0, 0.5, BRASS_D, sides=4)
-    m.tube("y", (0, 0), -12.0, -9.0, 1.25, BRASS)                       # lampholder
+    m.tube("y", (0, 0), -8.0, -2.0, 0.5, BRASS_D, sides=4)
+    m.tube("y", (0, 0), -12.0, -8.0, 1.25, BRASS)                       # lampholder
+    K.switch_key(m, (1.25, -9.0, 0))
     _cone_shade(m, (0, 0), -10.0, -15.0, 2.0, 8.0, 5)
     K.bulb(m, (0, -12.0, 0), glass=3.0)
     return m
@@ -200,6 +203,7 @@ def _desk_green():
     m = M.Model(PREFIX + "desk_green")
     m.tube("y", (0, 0), 0.0, 1.0, 3.0, BRASS)
     m.tube("y", (0, 0), 1.0, 2.0, 1.5, BRASS_D)
+    m.box((1.5, 1.0, -0.5), (2.5, 2.0, 0.5), BRASS_D)                   # the switch
     m.tube("y", (0, 0), 2.0, 7.5, 0.5, BRASS, sides=4)
     m.box((-4.5, 7.5, -0.5), (4.5, 8.5, 0.5), BRASS_D, grain="x")       # cross bar
     lit = dict(emit=15, shade=False)
@@ -219,7 +223,8 @@ def _signal(name, lit):
     centre of the plate."""
     m = M.Model(PREFIX + name)
     m.box((-3.5, -3.5, 0), (3.5, 3.5, 1), IRON, grain="y")
-    m.tube("y", (0, 1.0), -7.5, -3.5, 0.75, IRON_D)                     # conduit
+    m.tube("y", (0, 1.0), -7.5, -3.5, 0.75, IRON_D)                     # conduit, down and into the wall
+    K.wall_entry(m, 0, -7.5)
     m.tube("z", (0, 0), 1.0, 4.0, 3.0, IRON_D)                          # housing
     m.tube("z", (0, 0), 4.0, 4.75, 3.25, BRASS_D)                       # bezel
     tones = (RED[1], RED[2], RED[3]) if lit else (RED[0], RED[0], RED[1])
@@ -263,6 +268,16 @@ def _bulb():
     return m
 
 
+def _hanger():
+    """What holds a festoon up under a ceiling: a clip on the cable, a short rod, a foot plate.
+    Anchor: on the cable's axis; the top of the plate is HANG above it."""
+    m = M.Model(PREFIX + "hanger")
+    m.box((-1, -1, -0.5), (1, 1, 0.5), IRON_D)
+    m.box((-0.5, 1, -0.5), (0.5, 2.5, 0.5), IRON)
+    m.box((-1.5, 2.5, -1.5), (1.5, 3.0, 1.5), IRON_D)
+    return m
+
+
 # name -> how it is mounted, its scale, where its glowing part is (blocks, in the model's frame) and
 # the light level A2 asked for (None: throws no light)
 SPEC = {
@@ -279,10 +294,12 @@ SPEC = {
     "uplight": dict(build=_uplight, mount="floor", light=(0.0, 0.4, 0.15), level=8),
     "wire": dict(build=_wire, mount="floor", light=None),
     "bulb": dict(build=_bulb, mount="floor", light=(0.0, -0.25, 0.0), level=12),
+    "hanger": dict(build=_hanger, mount="floor", light=None),
 }
 SCALE = {PREFIX + name: spec.get("scale", 1.0) for name, spec in SPEC.items()}
 VERSIONED = ("bracket", "cage", "pendant")
 STREET_CLEARANCE = 8    # A2: a street lamp stands at least this far from a main wall face
+HANG = 3.0 / 16.0       # a festoon under a ceiling runs this far below it: the height of its hangers
 
 
 @functools.lru_cache(maxsize=None)
@@ -323,10 +340,14 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, lig
     return n
 
 
-def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None):
-    """A string of bare bulbs on a cable from a to b (scene coordinates, both in the air): one
-    stretched cable and a bulb every `spacing` blocks, half a spacing in from each end. Every third
-    bulb offers a light source. Returns the number of display entities (1 + the bulbs)."""
+def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None, hangers=True):
+    """A string of bare bulbs on a cable from a to b (scene coordinates, both in the air, level or
+    nearly): one stretched cable and a bulb every `spacing` blocks, half a spacing in from each end.
+    Every third bulb offers a light source.
+
+    hangers  the cable hangs under a ceiling, HANG below it: a hanger at each end and one every
+             fourth bulb hold it up. A cable strung between two walls or posts needs none.
+    Returns the number of display entities (the cable, the bulbs, the hangers)."""
     a = tuple(a[i] + origin[i] for i in range(3))
     b = tuple(b[i] + origin[i] for i in range(3))
     built = _models()
@@ -335,16 +356,20 @@ def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None)
     count = max(1, int(round(length / spacing)))
     yaw = math.degrees(math.atan2(-(b[0] - a[0]), b[2] - a[2]))
     spec = SPEC["bulb"]
-    lights = []
+    n, lights = 1, []
     for i in range(count):
         t = (i + 0.5) / count
         p = tuple(a[k] + (b[k] - a[k]) * t for k in range(3))
-        K.put(canvas, built[PREFIX + "bulb"], p, yaw=yaw)
+        n += K.put(canvas, built[PREFIX + "bulb"], p, yaw=yaw)
         if i % 3 == 1 or count < 3 and i == 0:
             lights.append((K.light_cell(p, yaw, spec["light"]), spec["level"] if level is None else level))
+    if hangers:                                         # between two bulbs, never on one
+        for j in [j for j in range(0, count, 4) if count - j >= 3 or j == 0] + [count]:
+            p = tuple(a[k] + (b[k] - a[k]) * j / count for k in range(3))
+            n += K.put(canvas, built[PREFIX + "hanger"], p, yaw=yaw)
     if light:
         K.offer_lights(canvas, lights, "props/lamps:festoon")
-    return 1 + count
+    return n
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
