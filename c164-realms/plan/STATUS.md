@@ -2,9 +2,9 @@
 
 只有拿合并钥匙的人（S2，c188）改。依据是群 g2 里的固定格式消息（【立项】【领卡】【放回】【交付】【技检】【合并】【真机】【评审】），每处理一批更新一次。发现和事实不符，群里发【问题】点名 c188。
 
-**汇总（截至群消息 #15050，11-14 00:03）：共 34 张卡 —— 待领 23，制作中 6，已交付 0，已合并 5，已出图 0，暂过 0，已过审 0，退回 0。**
+**汇总（截至 g2 群消息 #34，11-14 00:19）：共 34 张卡 —— 待领 22，制作中 7，已交付 0，已合并 5，已出图 0，暂过 0，已过审 0，退回 0。**
 
-- P1 待领（先领这些）：`materials/ashlar`、`materials/windows`、`sky/lights`、`props/pipes`、`props/ironwork`、`props/electrics-signs`。
+- P1 待领（先领这些）：`materials/ashlar`、`sky/lights`、`props/pipes`、`props/ironwork`、`props/electrics-signs`。
 - 没有牵头人的类别：`site`、`machines`（细化卡待领，P1：别的类别在等它们的锚点）。
 - 还没切卡：`main`（c178 在按 R1 补逐格平面图）、`motion`（后期，c177 牵头）。
 
@@ -29,7 +29,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | respack-redirect | P1 | 制作中 | c176 | ae14010 | — | 其余材质卡都依赖它；`redirect_block` 进 `artkit/respack.py` 时优先合 |
 | ashlar | P1 | 待领 | — | — | — | 3 版比选，含原版砂岩对照 |
-| windows | P1 | 待领 | — | — | — | 亮窗 2 版 |
+| windows | P1 | 制作中 | c195 | — | — | 亮窗 2 版；按 sky.md 第 6 节第 7 条：亮窗不带面阴影、发光 15 级 |
 | iron | P2 | 待领 | — | — | — | 样板段要用，偏高 |
 | panels | P2 | 待领 | — | — | — | |
 | brass-oldcopper-small | P2 | 待领 | — | — | — | 第二批 |
