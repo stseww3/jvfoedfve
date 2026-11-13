@@ -32,6 +32,24 @@ git -C /agent/repos/jvfoedfve-c164 worktree add -b <你的分支> /agent/repos/c
 - Python：`/agent/realms-study/.venv/bin/python`（共用，只读，不许往里装东西）。脚本在 `c164-realms/build/` 下运行。
 - 游戏文件：`/agent/realms-study/client26/versions/26.3/26.3.jar`（只读）。
 - 回传的图：`/agent/realms-study/inbox/`（只读，用读文件的工具直接看图）。
+- **realms-study 不在仓库里，VM 重启后整个会没掉，由总监重建**（workers 等总监恢复，别自己装）。步骤：
+
+```
+# 1) venv（check.py / 离线渲染要 numpy+Pillow+nbtlib）
+sudo mkdir -p /agent/realms-study/inbox && sudo chown -R "$USER" /agent/realms-study
+sudo apt-get install -y python3.12-venv            # 若报 ensurepip 不可用
+python3 -m venv /agent/realms-study/.venv
+/agent/realms-study/.venv/bin/pip install "nbtlib==2.0.4" "numpy>=2.0" Pillow
+# 2) 只读 jar：从 Mojang 版本清单取 26.3 的 client jar（sha1 校验）下到
+#    /agent/realms-study/client26/versions/26.3/26.3.jar。云端只要这一个 jar，不用整份 client
+#    （库和 assets 是管理员电脑跑游戏才要，那边用 tools/fetch_client.py）
+# 3) 回传通道（tmux 常驻）：
+python3 c164-realms/tools/inbox.py /agent/realms-study/inbox --port 8765    # 只听 127.0.0.1
+#    再起隧道把 127.0.0.1:8765 暴露成公网 URL（如 cloudflared quick tunnel），把
+#    <公网URL>/<inbox/.token 里的 token> 写进管理员电脑 dl/inbox.url（机密：别进群、别进仓库）
+# 4) 冒烟：check.py --scene obs 应全 PASS
+/agent/realms-study/.venv/bin/python c164-realms/tools/check.py --scene obs
+```
 - 临时文件放 `/tmp/c164_<代号>/`。
 - 不许打印 git 的远程地址（里面有凭据）。
 
