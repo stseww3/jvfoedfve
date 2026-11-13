@@ -3,6 +3,8 @@
 Each material is a short colour ramp (dark to light) plus a rule for how levels vary across a face, in
 the manner of the vanilla textures: a few flat tones, one-pixel shading, no gradients.
 """
+import copy
+
 import numpy as np
 
 
@@ -49,9 +51,11 @@ class Mat:
             return self
         key = (shift, b)
         if key not in self._variants:
-            m = Mat(f"{self.name}~{shift}~{b}", [], self.kind, self.noise, b, 0, self.alpha)
-            m.ramp = self.ramp
+            m = copy.copy(self)   # keeps subclasses and whatever else they carry
+            m.name = f"{self.name}~{shift}~{b}"
+            m.bevel = b
             m.base = int(min(len(self.ramp) - 1, max(0, self.base + shift)))
+            m._variants = {}
             self._variants[key] = m
         return self._variants[key]
 

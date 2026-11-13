@@ -217,10 +217,13 @@ class Model:
                       sides=sides, seed=seed, **kw)
         return self
 
-    def ball(self, centre, radius, mat, sides=12, layers=6, squash=1.0, part=(-1.0, 1.0), **kw):
+    def ball(self, centre, radius, mat, sides=12, layers=6, squash=1.0, part=(-1.0, 1.0), patchy=False, **kw):
         """Sphere as a stack of prisms about the vertical axis. squash < 1 flattens it;
-        part = (from, to) keeps a slice of its height, -1 the bottom and 1 the top."""
+        part = (from, to) keeps a slice of its height, -1 the bottom and 1 the top. patchy gives
+        every face its own piece of texture instead of one per layer (for surfaces with a pattern)."""
         seed = self._seed(kw)
+        if patchy:
+            self._n += sides
         h = radius * squash
         hw_k = math.tan(math.pi / sides)
         for i in range(layers):
@@ -237,7 +240,7 @@ class Model:
             for s in range(sides // 2):
                 angle = 360.0 * s / sides
                 self.box(lo, hi, mat, rot=("y", angle, tuple(centre)) if angle else None, skip="ew", lit=lit,
-                         seed=seed, grain="x", **kw)
+                         seed=seed + (s if patchy else 0), grain="x", **kw)
         return self
 
     def rod(self, a, b, radius, mat, sides=8, **kw):

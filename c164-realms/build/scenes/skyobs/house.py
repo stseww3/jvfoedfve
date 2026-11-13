@@ -6,6 +6,8 @@ from artkit import arch as A
 from artkit import blocks as B
 from artkit.canvas import Mix
 
+from . import lights
+
 STONE = Mix({"cobblestone": 30, "stone_bricks": 34, "andesite": 14, "mossy_cobblestone": 10, "stone": 8,
              "mossy_stone_bricks": 4}, seed=41)
 FOUND = Mix({"cobblestone": 55, "mossy_cobblestone": 25, "stone": 20}, seed=42)
@@ -119,10 +121,17 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
                     c.set(x, y, zb, PANE)
                     c.set(x, y, za, PANE)
                 c.set(x, yb, zb + 1, "flowering_azalea_leaves[persistent=true]")
+            lights.window(c, xa, y0 + 5, zb, xa + 1, y0 + 6, zb, (0, 1))
+            lights.window(c, xa, y0 + 5, za, xa + 1, y0 + 6, za, (0, -1))
     for x in (x0, x1):
         for z in (z0 + 1, z0 + 2) if x == x0 else (z0 + 1, z0 + 2, z1 - 2, z1 - 1):
             for y in (y0 + 5, y0 + 6):
                 c.set(x, y, z, PANE)
+    lights.window(c, x0, y0 + 5, z0 + 1, x0, y0 + 6, z0 + 2, (-1, 0))
+    lights.window(c, x1, y0 + 5, z0 + 1, x1, y0 + 6, z0 + 2, (1, 0))
+    lights.window(c, x1, y0 + 5, z1 - 2, x1, y0 + 6, z1 - 1, (1, 0))
+    for x, out in ((x0, -1), (x1, 1)):   # attic windows in the gables
+        lights.window(c, x, y0 + 9, zm, x, y0 + 10, zm, (out, 0))
 
     xd = x0 + door_dx
     c.set(xd, y0, z1, "spruce_door[facing=south,half=lower,hinge=left]")
@@ -135,6 +144,7 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
             for y in (y0 + 1, y0 + 2):
                 c.set(x, y, z, PANE)
             c.set(x, y0, z + out, B.stairs("stone_bricks", "north" if out > 0 else "south", "top"))
+        lights.window(c, xa, y0 + 1, z, xa + 1, y0 + 2, z, (0, out))
         if shutters:
             face = "south" if out > 0 else "north"
             for x in (xa - 1, xa + 2):
@@ -149,6 +159,7 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
     for z in (zm - 1, zm):
         for y in (y0 + 1, y0 + 2):
             c.set(x1, y, z, PANE)
+    lights.window(c, x1, y0 + 1, zm - 1, x1, y0 + 2, zm, (1, 0))
 
     # ---- dormers -----------------------------------------------------------------------------
     for xc in (x0 + 3, x1 - 3):
@@ -156,6 +167,7 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
             c.set(xc - 1, y, zb, LOG_Y)
             c.set(xc + 1, y, zb, LOG_Y)
             c.set(xc, y, zb, PANE)
+        lights.window(c, xc, y0 + 8, zb, xc, y0 + 9, zb, (0, 1))
         c.set(xc, y0 + 10, zb, PLASTER)
         for y, dx in ((y0 + 9, 2), (y0 + 10, 1)):
             for z in range(zb + 2 - (y - (y0 + 7)), zb + 2):

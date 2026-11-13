@@ -4,14 +4,21 @@ Every model is drawn in sixteenths of a block around its anchor and shown throug
 (see artkit.models.display). `SCALE` holds the display scale each model was drawn for; its `px`
 matches, so the textures keep the vanilla sixteen pixels per block.
 """
+import math
+
 from artkit import models as M
 from artkit import pixelart as P
 
 SCALE = {
     "lamp_post": 1.0, "telescope_tube": 5.0, "telescope_mount": 5.0, "armillary": 2.0, "armillary_core": 2.0,
     "weathervane": 1.0, "sign_board": 1.0, "crate": 1.0, "trunk": 1.0, "engine_pod_s": 2.0, "engine_pod_n": 2.0, "rope": 1.0,
-    "windsock": 2.0, "bunting": 1.0, "signpost": 1.0, "cattail": 1.0, "ship_wheel": 1.0,
+    "windsock": 2.0, "bunting": 1.0, "signpost": 1.0, "cattail": 1.0, "ship_wheel": 1.0, "dome_rail": 5.0,
 }
+
+# the rails beside the observing slit follow the dome: radius of their arc in blocks, and its
+# extent in degrees from straight up (negative: behind the crown) down towards the sill
+RAIL_R = 8.9
+RAIL_ARC = (-18.0, 84.0)
 
 STAR = [
     "...#...",
@@ -78,6 +85,7 @@ LENS_C = P.Mat("lens_c", ["#8cc4da"], kind="flat", bevel=0)
 GLINT = P.Mat("glint", ["#eefaff"], kind="flat", bevel=0)
 LEATHER = P.Mat("leather", ["#3b2418", "#4f3020", "#653e29", "#7b4d34", "#916040"], noise=0.18)
 CANVAS = P.Mat("canvas", ["#27382a", "#334a36", "#415c44", "#507052", "#628563"], noise=0.22)
+SOCK_IN = P.Mat("sock_in", ["#3d0f10"], kind="flat", bevel=0)
 REED = P.Mat("reed", ["#3c5a24", "#4d7030", "#62893c", "#7ba24c"], kind="wood", bevel=0)
 REED_HEAD = P.Mat("reed_head", ["#3a2414", "#4e311b", "#634024", "#7a512f"], noise=0.3, bevel=0)
 
@@ -92,7 +100,9 @@ def lamp_post():
     m.box((-1, 47, -1), (1, 48, 1), P.DARK_WOOD)
     m.box((-2, 12, -2), (2, 13.5, 2), P.IRON)
     m.box((1.5, 41, -1), (11.5, 43, 1), P.DARK_WOOD, grain="x")
-    m.box((4.25, 32.5, -0.75), (5.75, 42.5, 0.75), P.DARK_WOOD, rot=("z", -45.0, (5, 37.5, 0)), grain="y")
+    # wrought bracket: a quarter round under the arm with a small curl at its foot
+    m.ring("z", (1.5, 41.0, 0), 7.0, 0.8, 0.8, P.IRON, sides=40, arc=(270.0, 360.0))
+    m.ring("z", (2.9, 34.2, 0), 1.3, 0.6, 0.8, P.IRON, sides=12, arc=(-60.0, 210.0))
     m.box((-2, 40.5, -2), (2, 43.5, 2), P.IRON)
     # hook, chain and lantern
     m.box((8.5, 37.5, -0.5), (9.5, 41, 0.5), P.IRON)
@@ -110,24 +120,27 @@ def lamp_post():
 def telescope_tube():
     """Brass refractor, objective towards -z. Anchor: the pivot on the tube's axis."""
     m = M.Model("telescope_tube", px=5)
-    m.tube("z", (0, 0), -33, 8, 2.5, P.BRASS, sides=16)
+    m.tube("z", (0, 0), -33, 8, 2.5, P.BRASS, sides=24)
     # hollow dew shield with the lens set back inside it
-    m.ring("z", (0, 0, -33.5), 3.0, 0.5, 5.0, P.BRASS_DARK)
-    m.tube("z", (0, 0), -34.4, -33, 2.75, P.BRASS_DARK, cap=LENS_A)
-    m.tube("z", (0, 0), -34.5, -33, 2.0, P.BRASS_DARK, cap=LENS_B)
-    m.tube("z", (0, 0), -34.6, -33, 1.1, P.BRASS_DARK, cap=LENS_C)
+    m.ring("z", (0, 0, -33.5), 3.0, 0.5, 5.0, P.BRASS_DARK, sides=24)
+    m.ring("z", (0, 0, -35.7), 3.15, 0.5, 0.6, P.BRASS, sides=24)
+    m.tube("z", (0, 0), -34.4, -33, 2.75, P.BRASS_DARK, sides=24, cap=LENS_A)
+    m.tube("z", (0, 0), -34.5, -33, 2.0, P.BRASS_DARK, sides=16, cap=LENS_B)
+    m.tube("z", (0, 0), -34.6, -33, 1.1, P.BRASS_DARK, sides=12, cap=LENS_C)
     m.box((-1.5, 0.7, -34.7), (-0.7, 1.5, -34.5), GLINT, skip="sewud", shade=False)
     for z in (-31, -20, -9):
-        m.tube("z", (0, 0), z, z + 1, 2.85, P.BRASS_DARK, sides=16)
-    m.tube("z", (0, 0), -2, 2, 2.9, P.IRON, sides=16)
-    m.tube("z", (0, 0), 6, 8.2, 2.9, P.BRASS_DARK, sides=16)
-    m.tube("z", (0, 0), 8.2, 10.5, 1.7, P.BRASS_DARK)
-    m.tube("z", (0, 0), 10.5, 12, 1.1, P.IRON)
+        m.tube("z", (0, 0), z, z + 1, 2.85, P.BRASS_DARK, sides=24)
+    m.tube("z", (0, 0), -2, 2, 2.9, P.IRON, sides=24)
+    m.tube("z", (0, 0), 6, 8.2, 2.9, P.BRASS_DARK, sides=24)
+    m.taper("z", (0, 0), 8.2, 10.5, 2.3, 1.5, P.BRASS_DARK, sides=16, steps=3)
+    m.tube("z", (0, 0), 10.5, 11.6, 1.1, P.IRON, sides=12)
+    m.tube("z", (0, 0), 11.6, 12, 1.35, P.BRASS, sides=12)
     m.tube("y", (0, 11.0), 0.6, 3.4, 0.8, P.BRASS)
     for sx in (-2.6, 1.7):
         m.box((sx, -0.5, 8.8), (sx + 0.9, 0.5, 9.8), P.IRON, seed=912)
     # finder scope on stalks
-    m.tube("z", (0, 3.8), -19, -8, 0.7, P.BRASS_DARK)
+    m.tube("z", (0, 3.8), -19, -8, 0.7, P.BRASS_DARK, sides=12)
+    m.tube("z", (0, 3.8), -19.6, -19, 0.9, P.BRASS, sides=12, cap=LENS_B)
     m.box((-0.3, 2.4, -17.5), (0.3, 3.3, -16.5), P.IRON, seed=902)
     m.box((-0.3, 2.4, -10.5), (0.3, 3.3, -9.5), P.IRON, seed=902)
     # trunnions
@@ -154,25 +167,33 @@ def telescope_mount():
 
 
 def armillary():
-    """Three fixed brass rings on a short stem. Anchor: underside of the base."""
+    """Three fixed brass rings in a cradle on a turned stand. Anchor: underside of the base."""
     m = M.Model("armillary", px=2, anchor=(0, -16, 0))
-    m.ring("y", (0, 0, 0), 10.0, 1.0, 1.2, P.BRASS)
-    m.ring("x", (0, 0, 0), 10.0, 1.0, 1.0, P.BRASS_DARK)
-    m.ring("z", (0, 0, 0), 10.0, 1.0, 1.0, P.BRASS_DARK)
-    m.box((-0.75, -14, -0.75), (0.75, -10.4, 0.75), P.BRASS_DARK)
-    m.tube("y", (0, 0), -15, -14, 3.0, P.BRASS_DARK)
-    m.tube("y", (0, 0), -16, -15, 4.2, P.BRASS_DARK)
+    m.ring("y", (0, 0, 0), 10.0, 1.0, 1.2, P.BRASS, sides=32)
+    m.ring("x", (0, 0, 0), 10.0, 1.0, 1.0, P.BRASS_DARK, sides=32)
+    m.ring("z", (0, 0, 0), 10.0, 1.0, 1.0, P.BRASS_DARK, sides=32)
+    m.ring("z", (0, 0, 0), 11.3, 0.9, 1.6, P.IRON, sides=32, arc=(195.0, 345.0))
+    for sx in (-1, 1):
+        m.ball((sx * 11.0, -2.9, 0), 0.9, P.BRASS, sides=8, layers=4)
+    m.tube("y", (0, 0), -13.6, -11.7, 0.8, P.BRASS_DARK, sides=12)
+    m.ball((0, -12.9, 0), 1.3, P.BRASS, sides=12, layers=4)
+    m.taper("y", (0, 0), -14.6, -13.6, 2.6, 1.0, P.BRASS_DARK, sides=16, steps=3)
+    m.tube("y", (0, 0), -15.3, -14.6, 3.2, P.BRASS_DARK, sides=16)
+    m.tube("y", (0, 0), -16, -15.3, 4.4, P.BRASS_DARK, sides=16)
     return m
 
 
 def armillary_core():
-    """The tilted inner ring, its axis and the globe. Anchor: centre."""
+    """The tilted inner band, its axis, the globe and a small moon. Anchor: centre."""
     m = M.Model("armillary_core", px=2)
-    m.ring("y", (0, 0, 0), 7.6, 0.9, 1.0, P.COPPER)
-    m.box((-0.4, -9.4, -0.4), (0.4, 9.4, 0.4), P.IRON)
-    m.box((-2, -1.25, -1.25), (2, 1.25, 1.25), P.VERDIGRIS, seed=905)
-    m.box((-1.25, -2, -1.25), (1.25, 2, 1.25), P.VERDIGRIS, seed=906)
-    m.box((-1.25, -1.25, -2), (1.25, 1.25, 2), P.VERDIGRIS, seed=907)
+    m.ring("y", (0, 0, 0), 7.6, 0.9, 1.6, P.COPPER, sides=32)
+    m.ring("x", (0, 0, 0), 7.5, 0.7, 0.7, P.BRASS_DARK, sides=32)
+    m.tube("y", (0, 0), -9.5, 9.5, 0.35, P.IRON, sides=8)
+    for sy in (-1, 1):
+        m.ball((0, sy * 9.8, 0), 0.7, P.BRASS, sides=8, layers=4)
+    m.ball((0, 0, 0), 2.4, P.VERDIGRIS, sides=12, layers=6)
+    m.rod((0, 0, 0), (4.3, 0.9, 2.2), 0.18, P.IRON, sides=4)
+    m.ball((4.5, 0.95, 2.3), 0.8, P.PARCHMENT, sides=8, layers=4)
     return m
 
 
@@ -249,21 +270,26 @@ def engine_pod(side=1):
     za, zb = sorted((-11.0 * side, -1.6 * side))
     m.box((0.4, -0.4, za), (1.4, 0.4, zb), P.IRON, grain="z", seed=960)
     m.box((-3.0, -0.4, za), (-2.0, 0.4, zb), P.IRON, grain="z", seed=960)
-    m.tube("x", (0, 0), -4.5, 3, 2.2, P.IRON)
-    m.tube("x", (0, 0), -5.5, -4.5, 1.5, P.IRON)
-    m.tube("x", (0, 0), -2.5, -1.5, 2.45, P.BRASS_DARK)
-    m.tube("x", (0, 0), 0.5, 1.5, 2.45, P.BRASS_DARK)
-    m.tube("x", (0, 0), 3, 4, 1.6, P.BRASS_DARK)
-    m.tube("x", (0, 0), 4, 5.6, 1.0, P.BRASS)
-    m.box((-3.6, 1.8, -0.5), (-2.6, 4.6, 0.5), P.IRON)            # exhaust stack
-    m.box((-3.85, 4.6, -0.75), (-2.35, 5.2, 0.75), P.BRASS_DARK)
+    m.rod((-2.5, 0, -11.0 * side), (0.9, 0, -1.9 * side), 0.25, P.IRON, sides=4)   # diagonal stay
+    # nacelle, rounded off at both ends
+    m.taper("x", (0, 0), -5.8, -3.6, 1.0, 2.2, P.IRON, sides=12, steps=4)
+    m.tube("x", (0, 0), -3.6, 2.2, 2.2, P.IRON, sides=12)
+    m.taper("x", (0, 0), 2.2, 3.4, 2.2, 1.5, P.IRON, sides=12, steps=3)
+    m.tube("x", (0, 0), -2.6, -1.8, 2.45, P.BRASS_DARK, sides=12)
+    m.tube("x", (0, 0), 0.6, 1.4, 2.45, P.BRASS_DARK, sides=12)
+    # exhaust stack, raked aft
+    m.rod((-1.9, 1.7, 0), (-3.3, 4.8, 0), 0.55, P.IRON, sides=8)
+    m.rod((-3.3, 4.8, 0), (-3.6, 5.5, 0), 0.8, P.BRASS_DARK, sides=8)
+    # propeller: hub, spinner and four pitched blades with brass tips
+    m.tube("x", (0, 0), 3.4, 4.9, 1.1, P.BRASS_DARK, sides=12)
+    m.taper("x", (0, 0), 4.9, 6.7, 1.0, 0.3, P.BRASS, sides=12, steps=4)
     blade = P.PALE_WOOD
-    m.box((4.3, 1.0, -1.1), (4.7, 9.0, 1.1), blade, rot=("y", 22.5, (4.5, 5.0, 0)), grain="y", seed=918)
-    m.box((4.3, -9.0, -1.1), (4.7, -1.0, 1.1), blade, rot=("y", -22.5, (4.5, -5.0, 0)), grain="y", seed=918)
-    m.box((4.3, -1.1, 1.0), (4.7, 1.1, 9.0), blade, rot=("z", -22.5, (4.5, 0, 5.0)), grain="z", seed=919)
-    m.box((4.3, -1.1, -9.0), (4.7, 1.1, -1.0), blade, rot=("z", 22.5, (4.5, 0, -5.0)), grain="z", seed=919)
-    for y, z in ((9.0, 0), (-9.0, 0), (0, 9.0), (0, -9.0)):
-        m.box((4.25, y - 0.6, z - 0.6), (4.75, y + 0.6, z + 0.6), P.BRASS, seed=961)
+    for i in range(4):
+        with m.turned(("x", 90.0 * i + 18.0), about=(4.15, 0, 0)), m.turned(("y", 26.0), about=(4.15, 0, 0)):
+            m.box((3.95, 0.8, -0.5), (4.35, 3.0, 0.5), blade, grain="y", seed=918)
+            m.box((3.95, 3.0, -1.15), (4.35, 8.0, 1.15), blade, grain="y", seed=919)
+            m.box((3.95, 8.0, -0.8), (4.35, 9.0, 0.8), blade, grain="y", seed=920)
+            m.box((3.9, 8.5, -0.85), (4.4, 9.2, 0.85), P.BRASS, seed=961)
     return m
 
 
@@ -275,17 +301,28 @@ def rope():
 
 
 def windsock():
-    """Striped windsock on a pole, blown towards +x. Anchor: foot of the pole."""
+    """Striped windsock on a pole in a light breeze towards +x: it fills at the mouth and droops
+    towards the tail. Anchor: foot of the pole."""
     m = M.Model("windsock", px=2)
-    m.box((-0.5, 0, -0.5), (0.5, 40, 0.5), P.DARK_WOOD, grain="y")
-    m.box((-1, 0, -1), (1, 1.5, 1), P.IRON)
-    m.box((-0.75, 40, -0.75), (0.75, 41, 0.75), P.BRASS)
-    m.box((0.5, 36.6, -0.3), (1.6, 37.4, 0.3), P.IRON)
-    m.ring("x", (1.9, 37, 0), 2.7, 0.5, 0.6, P.IRON, sides=8)
-    x = 2.2
-    for i, r in enumerate((2.6, 2.4, 2.2, 2.0, 1.8, 1.6, 1.4)):
-        m.tube("x", (37 - 0.25 * i, 0), x, x + 2.5, r, P.RED_CLOTH if i % 2 == 0 else P.CREAM_CLOTH)
-        x += 2.5
+    m.tube("y", (0, 0), 0, 40, 0.5, P.DARK_WOOD, sides=8)
+    m.tube("y", (0, 0), 0, 1.5, 1.1, P.IRON, sides=8)
+    m.ball((0, 40.7, 0), 0.9, P.BRASS, sides=8, layers=4)
+    m.tube("y", (0, 0), 36.2, 37.8, 0.75, P.IRON, sides=8)
+    # hoop held by four cords from the swivel
+    hoop = (3.6, 37.0, 0.0)
+    m.ring("x", hoop, 2.9, 0.5, 0.5, P.IRON, sides=16)
+    for dy, dz in ((2.9, 0), (-2.9, 0), (0, 2.9), (0, -2.9)):
+        m.rod((0.6, 37.0, 0), (hoop[0], hoop[1] + dy, dz), 0.14, P.ROPE, sides=4)
+    pts, radii, mats = [hoop], [], []
+    n = 8
+    for i in range(n):
+        t = (i + 0.5) / n
+        fall = math.radians(4.0 + 58.0 * t ** 1.6)
+        x, y, z = pts[-1]
+        pts.append((x + 2.3 * math.cos(fall), y - 2.3 * math.sin(fall), z + 0.09 * i))
+        radii.append(2.75 - 1.45 * t)
+        mats.append(P.RED_CLOTH if i % 2 == 0 else P.CREAM_CLOTH)
+    m.hose(pts, radii, mats, sides=12, cap=SOCK_IN)
     return m
 
 
@@ -319,15 +356,23 @@ def signpost():
 def cattail():
     """A clump of reeds with brown heads, tall enough to stand in a block of water. Anchor: centre of the foot."""
     m = M.Model("cattail")
-    stalks = [(-3, -2, 34, "z", 0.0), (0, 1, 41, "x", 0.0), (3, -1, 30, "z", -22.5), (-1, 3, 27, "x", 22.5),
-              (2, 3, 37, "x", 0.0)]
-    for i, (x, z, h, ax, lean) in enumerate(stalks):
-        rot = (ax, lean, (x, 0, z)) if lean else None
-        m.box((x - 0.4, 0, z - 0.4), (x + 0.4, h, z + 0.4), REED, rot=rot, grain="y", seed=920 + i)
+    # stalks: foot x, z, height, lean towards (dx, dz) in units over the full height
+    stalks = [(-3, -2, 34, -2.5, -1.0), (0, 1, 41, 0.8, 1.5), (3, -1, 30, 4.5, -2.0), (-1, 3, 27, -3.0, 4.0),
+              (2, 3, 37, 2.2, 3.0)]
+    for i, (x, z, h, dx, dz) in enumerate(stalks):
+        top = (x + dx, h, z + dz)
+        m.rod((x, 0, z), top, 0.4, REED, sides=4, seed=920 + i)
         if h > 28:
-            m.box((x - 0.8, h - 8, z - 0.8), (x + 0.8, h - 2, z + 0.8), REED_HEAD, rot=rot, seed=930)
-    for x, z, h, ax, lean in ((-2, 1, 26, "z", 22.5), (1, -3, 24, "x", -22.5), (4, 1, 25, "z", -22.5)):
-        m.box((x - 0.9, 0, z - 0.15), (x + 0.9, h, z + 0.15), REED, rot=(ax, lean, (x, 0, z)), grain="y", seed=940)
+            a = tuple(p + (q - p) * (1 - 8.0 / h) for p, q in zip((x, 0, z), top))
+            b = tuple(p + (q - p) * (1 - 2.0 / h) for p, q in zip((x, 0, z), top))
+            m.rod(a, b, 0.85, REED_HEAD, sides=8, seed=930)
+    # leaf blades: up, then bending over
+    for i, (x, z, h, dx, dz) in enumerate(((-2, 1, 22, -5.0, 2.0), (1, -3, 20, 2.0, -6.0), (4, 1, 21, 6.0, 1.5),
+                                         (-4, -1, 17, -5.5, -3.0))):
+        knee = (x + dx * 0.35, h * 0.62, z + dz * 0.35)
+        tip = (x + dx * 1.25, h * 0.9, z + dz * 1.25)
+        m.beam((x, 0, z), knee, 1.7, 0.3, REED, seed=940 + i)
+        m.beam(knee, tip, 1.3, 0.3, REED, seed=944 + i)
     return m
 
 
@@ -336,27 +381,44 @@ def ship_wheel():
     m = M.Model("ship_wheel")
     m.box((-1.5, 0, -1.5), (1.5, 9, 1.5), P.DARK_WOOD, grain="y")
     m.box((-2, 9, -2), (2, 10, 2), P.DARK_WOOD)
-    m.box((1.5, 11.5, -0.75), (3, 13, 0.75), P.BRASS)
     m.box((-0.75, 10, -0.75), (1.5, 13.5, 0.75), P.DARK_WOOD)
     cx, cy = 3.0, 12.25
-    m.ring("x", (cx, cy, 0), 5.0, 1.0, 0.8, P.WOOD, sides=8)
-    m.box((cx - 0.3, cy - 7.5, -0.4), (cx + 0.3, cy + 7.5, 0.4), P.DARK_WOOD, grain="y", seed=950)
-    m.box((cx - 0.3, cy - 0.4, -7.5), (cx + 0.3, cy + 0.4, 7.5), P.DARK_WOOD, grain="z", seed=951)
-    m.box((cx - 0.3, cy - 7.5, -0.4), (cx + 0.3, cy + 7.5, 0.4), P.DARK_WOOD, rot=("x", 45.0, (cx, cy, 0)),
-          grain="y", seed=950)
-    m.box((cx - 0.3, cy - 0.4, -7.5), (cx + 0.3, cy + 0.4, 7.5), P.DARK_WOOD, rot=("x", 45.0, (cx, cy, 0)),
-          grain="z", seed=951)
+    m.tube("x", (cy, 0), 1.5, cx, 0.7, P.BRASS, sides=8)
+    m.ring("x", (cx, cy, 0), 5.0, 1.0, 0.8, P.WOOD, sides=24)
+    for i in range(8):
+        with m.turned(("x", 45.0 * i + 11.0), about=(cx, cy, 0)):
+            m.box((cx - 0.3, cy + 1.0, -0.4), (cx + 0.3, cy + 5.4, 0.4), P.DARK_WOOD, grain="y", seed=950)
+            m.tube("y", (cx, 0), cy + 5.4, cy + 7.2, 0.42, P.DARK_WOOD, sides=8, seed=951)
+            m.tube("y", (cx, 0), cy + 6.9, cy + 7.6, 0.62, P.DARK_WOOD, sides=8, seed=952)
+    m.tube("x", (cy, 0), cx - 0.55, cx + 0.55, 1.5, P.DARK_WOOD, sides=12)
+    m.tube("x", (cy, 0), cx + 0.55, cx + 0.9, 0.9, P.BRASS, sides=12)
+    return m
+
+
+def dome_rail():
+    """Brass rail along one edge of the observing slit: an arc over the dome from behind the crown
+    down to the sill. Anchor: the centre of the dome's curve; the arc lies in the plane x = 0 and
+    comes down towards +z."""
+    m = M.Model("dome_rail", px=5, anchor=(0, 0, 0))
+    r = RAIL_R * 16.0 / SCALE["dome_rail"]
+    m.ring("x", (0, 0, 0), r, 1.5, 1.7, P.BRASS_DARK, sides=48, arc=RAIL_ARC)
+    m.ring("x", (0, 0, 0), r + 0.9, 0.5, 0.8, P.BRASS, sides=48, arc=RAIL_ARC)
+    # rollers of the shutter gear, evenly along the rail
+    for k in range(5):
+        a = math.radians(RAIL_ARC[0] + (RAIL_ARC[1] - RAIL_ARC[0]) * (k + 0.5) / 5.0)
+        y, z = (r + 1.1) * math.cos(a), (r + 1.1) * math.sin(a)
+        m.tube("x", (y, z), -1.25, 1.25, 0.75, P.IRON, sides=8, seed=970)
     return m
 
 
 MODELS = [lamp_post, telescope_tube, telescope_mount, armillary, armillary_core, weathervane, sign_board, crate,
-          trunk, rope, windsock, bunting, signpost, cattail, ship_wheel]
+          trunk, rope, windsock, bunting, signpost, cattail, ship_wheel, dome_rail]
 _BUILT = None
 
 
 def build_models():
     out = {}
-    for f in MODELS:
+    for f in MODELS + instruments.MODELS:
         m = f()
         out[m.name] = m
     for side in (1, -1):
@@ -404,4 +466,10 @@ GALLERY = [
     ("signpost", [("signpost", None, {})], (1.6, 1.8, 3.0), (0, 1.3, 0)),
     ("cattail", [("cattail", None, {}), ("cattail", (0.8, 0, 0.5), {"yaw": 140.0})], (1.6, 1.8, 3.0), (0.3, 1.2, 0)),
     ("wheel", [("ship_wheel", None, {})], (2.0, 1.6, 1.6), (0, 0.8, 0)),
+    ("rail", [("dome_rail", (0, 0, -3.0), {})], (7.0, 5.0, 6.0), (0, 4.5, 0)),
 ]
+
+from . import instruments  # noqa: E402  the room under the dome
+
+SCALE.update(instruments.SCALE)
+GALLERY = GALLERY + instruments.GALLERY

@@ -5,7 +5,7 @@ from artkit import arch as A
 from artkit import blocks as B
 from artkit.canvas import Mix, hash3
 
-from . import props
+from . import lights, props, study
 
 BASE = Mix({"cobblestone": 30, "mossy_cobblestone": 14, "stone_bricks": 26, "mossy_stone_bricks": 14,
             "andesite": 10, "cracked_stone_bricks": 6}, seed=31)
@@ -96,6 +96,7 @@ def build(c, land, cx, cz, y0):
         for r in range(-1, rows + 1):
             c.set(x1 - tx, y0 + h0 + r, z1 - tz, "stone_bricks")
             c.set(x2 + tx, y0 + h0 + r, z2 + tz, "stone_bricks")
+        lights.window(c, x1, y0 + h0, z1, x2, y0 + h0 + rows - 1, z2, (ox, oz))
 
     def glow(face, h):
         cells, (ox, oz), _ = faces[face]
@@ -200,3 +201,7 @@ def build(c, land, cx, cz, y0):
     pivot = (cx, y0 + top_wall + 1 + 4.0, cz)
     props.place(c, "telescope_mount", *pivot, yaw=180.0, brightness=(15, 0))
     props.place(c, "telescope_tube", *pivot, yaw=180.0, turns=(("x", 45.0),), brightness=(15, 0))
+    # brass rails on both edges of the slit: they give the stepped copper a clean curved line
+    for side in (-2.5, 2.5):
+        props.place(c, "dome_rail", cx + side, yb + 0.6, cz, brightness=(15, 0))
+    study.furnish(c, cx, cz, y0 + top_wall + 1, yb)
