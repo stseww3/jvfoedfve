@@ -2,24 +2,25 @@
 
     python bin/job.py <part> [--heavy] [--wait 900] [--timeout 1500] -- <script> [args...]
 
-<part> is a0 (the integration copy) or a part's folder under agents/ (a1, a2, ...). The script path
+<part> is a0 (the integration copy) or a folder under agents/ (lamps, stone-b, ...). The script path
 is relative to that part's copy of c164-realms/build, and the script runs there with the workspace's
 Python, e.g.
 
-    python bin/job.py a1 -- preview.py obs_a1 --out @out/preview
-    python bin/job.py a1 --heavy -- render.py obs_a1 --shots scenes/obs_a1/shots.json --out @out/board
+    python bin/job.py lamps -- preview.py pkg_lamps --out @out/preview
+    python bin/job.py lamps --heavy -- render.py pkg_lamps --shots scenes/pkg_lamps/shots.json --out @out/rt/x
 
-What it takes care of, because the machine is somebody's desktop and several parts share it:
+What it takes care of, because the machine is somebody's desktop and many parts share it:
   - the job runs below normal priority, so the owner's work and other programs come first;
   - thread pools are capped (bin/limits.json, "threads");
-  - --heavy takes the one heavy slot (offline rendering and anything else that fills the cores):
-    one such job runs at a time in the whole workspace, the others wait in line for --wait seconds
-    and then give up;
+  - --heavy takes a heavy slot (offline rendering and anything else that fills the cores): as many
+    such jobs run at a time in the whole workspace as bin/limits.json allows ("heavy_slots", default
+    1), the others wait in line for --wait seconds and then give up (exit code 75);
   - in the arguments @out stands for the part's out/ folder and @root for the workspace;
   - the output goes to the console and to the part's logs/ folder;
   - temporary files go to the part's tmp/ folder and are removed when the job ends; compiled-code
     caches go to the part's cache/ folder, so nothing is written outside the workspace;
-  - scripts that drive the test server or the game are refused unless the part is a0.
+  - scripts that drive the test server or the game are refused unless the part is one of the render
+    station's (bin/limits.json, "operators", default ["a0"]).
 """
 import argparse
 import datetime
@@ -33,7 +34,7 @@ import threading
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOCK = os.path.join(ROOT, "locks", "heavy.lock")
+LOCKS = os.path.join(ROOT, "locks")
 SERVER_AND_GAME = {"winmc.py", "winctl.py", "shoot.py", "place.py", "gallery.py", "rcon.py", "mcbot.py",
                    "fetch_client.py", "inbox.py"}
 BELOW_NORMAL = 0x00004000
@@ -72,50 +73,59 @@ def alive(pid):
     return bool(ok) and code.value == 259
 
 
-def holder():
+def holder(path):
     try:
-        with open(LOCK) as fh:
+        with open(path) as fh:
             return json.load(fh)
     except (OSError, ValueError):
         return None
 
 
 def take_slot(part, script, wait):
-    """The heavy slot is a file that exists while its owner runs; a dead owner's file is cleared."""
-    os.makedirs(os.path.dirname(LOCK), exist_ok=True)
+    """A heavy slot is a file that exists while its owner runs; a dead owner's file is cleared.
+    There are as many slots as bin/limits.json says ("heavy_slots", default 1). Returns the slot's
+    file, or None when none came free in time."""
+    os.makedirs(LOCKS, exist_ok=True)
     told, t0 = False, time.time()
     while True:
-        try:
-            fd = os.open(LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError:
-            h = holder()
-            if h is None or not alive(int(h.get("pid", 0))):
-                try:
-                    os.remove(LOCK)
-                except OSError:
-                    pass
-                time.sleep(0.2)
+        slots = max(1, int(limits().get("heavy_slots", 1)))
+        busy = []
+        for n in range(slots):
+            path = os.path.join(LOCKS, f"heavy-{n}.lock")
+            try:
+                fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            except FileExistsError:
+                h = holder(path)
+                if h is None or not alive(int(h.get("pid", 0))):
+                    try:
+                        os.remove(path)
+                    except OSError:
+                        pass
+                else:
+                    busy.append(h)
                 continue
-            if not told:
-                print(f"[job] heavy slot is taken by {h.get('part')} ({h.get('script')}, since {h.get('since')}); "
-                      f"waiting up to {wait} s", flush=True)
-                told = True
-            if time.time() - t0 > wait:
-                print("[job] gave up waiting for the heavy slot; try again later", flush=True)
-                return False
-            time.sleep(2)
+            with os.fdopen(fd, "w") as fh:
+                json.dump({"pid": os.getpid(), "part": part, "script": script,
+                           "since": datetime.datetime.now().strftime("%H:%M:%S")}, fh)
+            return path
+        if len(busy) < slots:
+            time.sleep(0.2)   # a stale file was cleared: try again at once
             continue
-        with os.fdopen(fd, "w") as fh:
-            json.dump({"pid": os.getpid(), "part": part, "script": script,
-                       "since": datetime.datetime.now().strftime("%H:%M:%S")}, fh)
-        return True
+        if not told:
+            who = "; ".join(f"{h.get('part')} ({h.get('script')}, since {h.get('since')})" for h in busy)
+            print(f"[job] heavy slots are taken by {who}; waiting up to {wait} s", flush=True)
+            told = True
+        if time.time() - t0 > wait:
+            print("[job] gave up waiting for a heavy slot; try again later", flush=True)
+            return None
+        time.sleep(2)
 
 
-def release_slot():
-    h = holder()
+def release_slot(path):
+    h = holder(path)
     if h and int(h.get("pid", 0)) == os.getpid():
         try:
-            os.remove(LOCK)
+            os.remove(path)
         except OSError:
             pass
 
@@ -150,16 +160,18 @@ def main():
     cmd = argv[cut + 1:]
     if not cmd:
         sys.exit(__doc__)
-    if not re.fullmatch(r"a\d{1,2}", args.part):
-        sys.exit("part must be a0, a1, a2, ...")
+    if not re.fullmatch(r"[a-z][a-z0-9-]{1,31}", args.part):
+        sys.exit("part must be a0 or a folder name under agents/: lower-case letters, digits and dashes")
     home = ROOT if args.part == "a0" else os.path.join(ROOT, "agents", args.part)
     repo = os.path.join(home, "repo")
     build = os.path.join(repo, "c164-realms", "build")
     if not os.path.isdir(build):
         sys.exit(f"no copy of the code in {repo}: run bin/sync.py <branch> --to agents/{args.part} first")
     script = cmd[0]
-    if args.part != "a0" and os.path.basename(script).lower() in SERVER_AND_GAME:
-        sys.exit(f"{os.path.basename(script)} drives the test server or the game; only a0 runs it. Ask A0 in the group.")
+    operators = limits().get("operators", ["a0"])
+    if args.part not in operators and os.path.basename(script).lower() in SERVER_AND_GAME:
+        sys.exit(f"{os.path.basename(script)} drives the test server or the game; only the render station "
+                 f"({', '.join(operators)}) runs it. Ask for real-game pictures in the group.")
     if not os.path.exists(os.path.join(build, script)):
         sys.exit(f"no such script: {os.path.join(build, script)}")
     out = os.path.join(home, "out")
@@ -181,8 +193,11 @@ def main():
     if not os.path.exists(python):
         python = sys.executable
 
-    if args.heavy and not take_slot(args.part, script, args.wait):
-        sys.exit(75)
+    slot = None
+    if args.heavy:
+        slot = take_slot(args.part, script, args.wait)
+        if slot is None:
+            sys.exit(75)
     code = 1
     try:
         os.makedirs(scratch, exist_ok=True)
@@ -215,8 +230,8 @@ def main():
             print(tail, flush=True)
     finally:
         shutil.rmtree(scratch, ignore_errors=True)
-        if args.heavy:
-            release_slot()
+        if slot:
+            release_slot(slot)
     sys.exit(code)
 
 
