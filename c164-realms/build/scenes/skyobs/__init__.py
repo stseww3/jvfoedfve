@@ -26,6 +26,7 @@ def write_pack(pack_dir):
     out = sky.write_pack(pack_dir)
     out.append(respack.cube_variants(pack_dir, instruments.VAULT, instruments.vault_tiles(), name="star_vault"))
     out.append(isles.write_pack(pack_dir))
+    out.extend(site.write_pack(pack_dir))
     return out
 
 
@@ -81,12 +82,14 @@ def build():
     rim_x = min(x for (x, z) in land.top if -1 <= z <= 3)
     dock_out = rim_x - 7
     site.dock(c, land, rim_x + 9, dock_out, 1, 2, GROUND)
-    site.airship(c, dock_out - 6, GROUND, 1)
+    nose = site.airship(c, dock_out - 6, GROUND, 1)
     c.set(dock_out - 1, GROUND, 1, "spruce_slab[type=top]")
-    # mooring lines from the two outer dock posts to the after rail of the car
+    # mooring lines: from the two outer dock posts to the rail of the car, and from the rail of
+    # the dock up to the nose, which rides over the landing stage
     for side in (-1, 1):
         props.stretch(c, "rope", (dock_out + 0.5, GROUND + 2.6, 1.5 + 2 * side),
                       (dock_out - 2.5, GROUND + 3.0, 1.5 + side), thick=1.5)
+        props.stretch(c, "rope", (nose[0] + 3.0, GROUND + 2.0, 1.5 + 2 * side), nose, thick=1.5, brightness=(15, 0))
 
     site.pond(c, land, px, pz, prx, prz, GROUND, [(25.0, 26.5), (28.0, 29.5), (34.0, 35.5)])
 

@@ -3,6 +3,8 @@ import math
 
 from artkit import arch as A
 from artkit import blocks as B
+from artkit import pixelart as P
+from artkit import respack
 from artkit import trees as T
 from artkit.canvas import Mix, hash3
 
@@ -303,44 +305,103 @@ def dock(c, land, x_in, x_out, z0, half_w, y):
     garland(c, (x_in - 0.5, y + 3.7, z0 - half_w + 0.5), (x_in - 0.5, y + 3.7, z0 + half_w + 0.5), sag=0.3)
 
 
-def airship(c, cx, gy, cz, half_len=11.0, radius=5.0):
-    """Small moored airship, nose to the west. gy is the gondola floor; the envelope hangs above it."""
-    cream, red = "white_terracotta", "red_terracotta"
+# the envelope is made of blocks the resource pack repaints as canvas (see scenes/skyobs/__init__.py)
+CANVAS = {"cream": "white_glazed_terracotta", "shade": "yellow_glazed_terracotta",
+          "red": "red_glazed_terracotta", "dark": "orange_glazed_terracotta"}
+CANVAS_TONES = {
+    "cream": ["#d9cba6", "#e4d7b4", "#ece1c2", "#f3ead0"],
+    "shade": ["#bfae86", "#cbbb94", "#d5c7a2", "#ddd0ae"],
+    "red": ["#8f2c25", "#a2352b", "#b24032", "#bf4c3b"],
+    "dark": ["#6c1f1c", "#7b2520", "#8a2c25", "#96342b"],
+}
+
+
+def write_pack(pack_dir):
+    """The canvas of the airship: four plain weaves painted over blocks the scene does not use otherwise."""
+    out = []
+    for n, (key, block) in enumerate(CANVAS.items()):
+        mat = P.Mat("canvas_" + key, CANVAS_TONES[key], noise=0.5, bevel=0, base=2)
+        out.append(respack.cube(pack_dir, block, mat.paint(16, 16, "u", 400 + n), name="canvas_" + key))
+    return out
+
+
+def airship(c, cx, gy, cz, half_len=17.0, radius=6.2, bow=1):
+    """Moored airship, nose to the east (bow=1) or west (bow=-1). gy is the floor of the car; the
+    envelope hangs above it with its greatest girth over the car and a long taper aft. Its canvas
+    is cream, sewn from eight gores with red seams; nose cap, tail and fins are red.
+    Returns the point of the nose, for a mooring line."""
+    cream, shade, red, dark = (CANVAS[k] for k in ("cream", "shade", "red", "dark"))
     cx, gy, cz = int(cx), int(gy), int(cz)
-    cy = gy + int(radius) + 6
+    cy = gy + int(radius) + 7
+    mid = -0.2 * half_len   # the envelope's middle lies aft of the car's by this much
+    nose_u, tail_u = mid + 0.8 * half_len, mid - 1.2 * half_len
+    turn = 180.0 if bow > 0 else 0.0   # the models were drawn for a nose to the west
 
     def at(u, v):  # u runs towards the nose, v sideways
-        return cx - u, cz + v
+        return cx + bow * u, cz + v
 
     def r_at(u):
-        t = u / half_len
-        if abs(t) >= 1:
-            return 0.0
-        return radius * math.sqrt(1 - t * t) * (0.86 + 0.14 * t)
+        t = (u - mid) / half_len
+        if t >= 0.2:
+            k = (t - 0.2) / 0.6
+            return radius * math.sqrt(1 - k * k) if k < 1 else 0.0
+        k = (0.2 - t) / 1.4
+        return radius * (1 - k * k) ** 0.8 if k < 1 else 0.0
 
-    n = int(half_len) + 1
-    for u in range(-n, n + 1):
+    n = int(radius) + 2
+    for u in range(math.floor(tail_u), math.ceil(nose_u) + 1):
         r = r_at(u)
-        if r <= 0:
+        if r < 0.6:
             continue
-        for v in range(-int(radius) - 1, int(radius) + 2):
-            for w in range(-int(radius) - 1, int(radius) + 2):
+        t = (u - mid) / half_len
+        for v in range(-n, n + 1):
+            for w in range(-n, n + 1):
                 d = math.hypot(v, w)
-                if d > r or d < r - 1.6:
+                if d > r + 0.3 or d < r - 1.15:
                     continue
+                ang = math.degrees(math.atan2(w, v)) % 360.0
+                off = abs((ang + 22.5) % 45.0 - 22.5)          # degrees to the nearest of eight seams
+                seam = math.radians(off) * d < 0.55
+                if t > 0.64 or t < -0.96:
+                    state = dark if seam and r > 2.5 else red
+                elif seam:
+                    state = red
+                else:
+                    state = shade if w < -0.45 * r and hash3(u, v, w, 77) < 0.75 else cream
                 x, z = at(u, v)
-                band = abs(u) > half_len - 1.6 or u % 4 == 0
-                c.set(x, cy + w, z, red if band else cream)
-    # swept tail fins
-    for k, u in enumerate(range(-n + 1, -n + 6)):
-        r = r_at(u)
-        reach = r + max(0.0, 3.0 - 0.75 * k)
-        for j in range(0, int(math.ceil(reach)) + 1):
-            if j < r - 0.5 or j > reach:
+                c.set(x, cy + w, z, state)
+    # a copper spike on the nose
+    x, z = at(math.floor(nose_u) + 1, 0)
+    c.set(x, cy, z, f"lightning_rod[facing={'east' if bow > 0 else 'west'}]", keep=True)
+    nose = (x + 0.5, cy + 0.5, z + 0.5)
+    # four swept fins around the tail
+    rise = (1.4, 2.4, 3.2, 3.7, 3.8, 3.4, 2.6, 1.6, 0.8)
+    for k, h in enumerate(rise):
+        u = math.floor(tail_u) + 1 + k
+        r = max(r_at(u), 0.5)
+        for j in range(int(r), int(math.ceil(r + h)) + 1):
+            if j > r + h:
                 continue
+            tip = j > r + h - 1.0 or k == len(rise) - 1
             for v, w in ((0, j), (0, -j), (j, 0), (-j, 0)):
                 x, z = at(u, v)
-                c.set(x, cy + w, z, red, keep=True)
+                c.set(x, cy + w, z, dark if tip else red, keep=j <= r - 0.5)
+    # keel under the belly, where the car hangs from; lanterns under it fore and aft of the car
+    for u in range(-7, 8):
+        x, z = at(u, 0)
+        w = -int(math.floor(r_at(u) + 0.3))
+        while w < 0 and not c.has(x, cy + w, z):
+            w += 1
+        c.set(x, cy + w, z, "dark_oak_planks" if abs(u) % 3 else "dark_oak_log[axis=x]")
+        if abs(u) == 6:
+            c.set(x, cy + w - 1, z, "waxed_copper_chain[axis=y]")
+            c.set(x, cy + w - 2, z, "lantern[hanging=true]")
+    for du, v in ((3, 1), (3, -1), (-3, 1), (-3, -1)):
+        x, z = at(du, v)
+        for y in range(gy + 3, cy):
+            if c.has(x, y, z):
+                break
+            c.set(x, y, z, "dark_oak_fence")
 
     # gondola
     for du in range(-4, 5):
@@ -372,23 +433,24 @@ def airship(c, cx, gy, cz, half_len=11.0, radius=5.0):
         x, z = at(u, 0)
         return x + 0.5, cy + 0.5 - r * math.cos(math.radians(deg)), z + 0.5 + r * math.sin(math.radians(deg))
 
-    for du, v, ue, deg in ((2, 2, 4, 32), (2, -2, 4, -32), (-2, 2, -4, 32), (-2, -2, -4, -32),
-                           (3, 1, 8, 20), (3, -1, 8, -20), (-3, 1, -7, 20), (-3, -1, -7, -20),
-                           (0, 2, 0, 38), (0, -2, 0, -38)):
+    for du, v, ue, deg in ((2, 2, 5, 40), (2, -2, 5, -40), (-2, 2, -6, 40), (-2, -2, -6, -40),
+                           (3, 1, 9, 26), (3, -1, 9, -26), (-3, 1, -11, 26), (-3, -1, -11, -26),
+                           (0, 2, 0, 50), (0, -2, 0, -50)):
         x, z = at(du, v)
         props.stretch(c, "rope", (x + 0.5, gy + 3.0, z + 0.5), hull(ue, deg), thick=1.5)
-    # outboard engines on the after part of the car
+    # outboard engines on the after part of the car, propellers astern
     x, _ = at(-2, 0)
-    props.place(c, "engine_pod_s", x + 0.5, gy + 1.5, cz + 3.02)
-    props.place(c, "engine_pod_n", x + 0.5, gy + 1.5, cz - 2.02)
+    south, north = ("engine_pod_n", "engine_pod_s") if bow > 0 else ("engine_pod_s", "engine_pod_n")
+    props.place(c, south, x + 0.5, gy + 1.5, cz + 3.02, yaw=turn)
+    props.place(c, north, x + 0.5, gy + 1.5, cz - 2.02, yaw=turn)
     # helm at the forward end, cargo aft
     x, z = at(2, 0)
-    props.place(c, "ship_wheel", x + 0.5, gy + 1, z + 0.5)
+    props.place(c, "ship_wheel", x + 0.5, gy + 1, z + 0.5, yaw=turn)
     x, z = at(-1, 1)
     c.set(x, gy + 1, z, "barrel[facing=up]")
     x, z = at(-2, -1)
     props.place(c, "trunk", x + 0.5, gy + 1, z + 0.6, yaw=90.0)
-    return cy
+    return nose
 
 
 def boulders(c, land, seed=0, spacing=8.0):
