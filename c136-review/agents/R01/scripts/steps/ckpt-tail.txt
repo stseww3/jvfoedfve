@@ -1,0 +1,52 @@
+# ckpt-tail.txt — 2026-11-12 20:53 工作区被清空时没有结果的版本互换尾巴（44 步），行原样取自 ckpt-all3.txt。
+# 原始结果缓存丢了以后不重跑全部 354 步：这些互换的基线（当年那一版的 C1 / C2 同名种子）取自入库的 reports/ckpt-data/ckpt_arms.csv，
+# 由 scripts/ckpt/swap_tail.py 汇总成 reports/ckpt-data/ckpt_vtail.md。
+# c110 换到 A 局（4284 断面）；头一条 A075 已在入库的表里，重跑用来核对恢复后的镜像：10 步
+out/_ckpt/logs/A075-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A055-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A023-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A019-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A054-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A031-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A050-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A009-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A057-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+out/_ckpt/logs/A059-4284-c110a.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 4284 --len 900 --strat c110 --arms C1,C2 --tag c110a --budget-ms 1200000
+# B 局换 Vb（4284 断面）：2 步
+out/_ckpt/logs/B039-4284-vba.txt node scripts/ckpt/ckpt_run.mjs --match B039 --t0 4284 --len 900 --strat vb --arms C1,C2 --tag vba --budget-ms 1200000
+out/_ckpt/logs/B043-4284-vba.txt node scripts/ckpt/ckpt_run.mjs --match B043 --t0 4284 --len 900 --strat vb --arms C1,C2 --tag vba --budget-ms 1200000
+# Va 与 Vb 互换（4284 断面）：10 步
+out/_ckpt/logs/A054-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A075-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A055-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A023-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A019-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A031-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A050-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A009-4284-vbs.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 4284 --len 900 --strat vb --arms C1,C2 --tag vbs --budget-ms 1200000
+out/_ckpt/logs/A057-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+out/_ckpt/logs/A059-4284-vas.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 4284 --len 900 --strat va --arms C1,C2 --tag vas --budget-ms 1200000
+# Vc（3213 断面）：12 步
+out/_ckpt/logs/A075-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A055-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A023-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A019-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A054-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A003-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A003 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A031-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A050-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A009-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A057-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A059-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+out/_ckpt/logs/A094-3213-vca.txt node scripts/ckpt/ckpt_run.mjs --match A094 --t0 3213 --len 1071 --strat vc --arms C1,C2 --tag vca --budget-ms 1200000
+# Vc（4284 断面）：10 步
+out/_ckpt/logs/A054-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A054 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A075-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A075 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A055-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A055 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A023-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A023 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A019-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A019 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A031-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A031 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A050-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A050 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A009-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A009 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A057-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A057 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000
+out/_ckpt/logs/A059-4284-vcs.txt node scripts/ckpt/ckpt_run.mjs --match A059 --t0 4284 --len 900 --strat vc --arms C1,C2 --tag vcs --budget-ms 1200000

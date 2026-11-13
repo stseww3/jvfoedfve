@@ -18,10 +18,17 @@
   → **`aggregate.py` 不能再跑**（已加保护：缓存缺入库表里已有的（局, 断面）就拒绝执行，`--force` 才覆盖）。`reports/ckpt-data/` 下的表（19:55 那次汇总）就是定稿的数。
   → 没有 c136-data，任何 node 重放都跑不了（`sim-v2/lib/tgame.mjs` 的 DATA）。
 - 找回来的：`out/` 下深度 ≤ 2 的文件总部归档里有副本（`archive/agents/R01/out/`，98 MB），已经 `cp -a` 回 `out/`；`fid_tables.py` 照它重算与入库的逐字节相同。
-  20:53 那一刻正在跑的 `B043-4284-vba.json` 写在了清空之后的空目录里，捡回来放在 `out/_ckpt/runs/`（没进表：Vb 在 C1 / C2 下窗口末都是 0.2768，历史 0.3702）。
-- 报告已定稿（810 行，0 个「待补」）：状态行、§0（总部分支上 v28 的提交与启动指令不一致，写明了没碰）、§3.5（4284→5184 版本互换只有 A075、A055 两局进表，不下结论；Vc @3213 / @4284 没跑）、§5 第 8 条、§6「中断」。
-- 以后如果 c136-data 恢复：`HEAVY_SLOTS=2 LOOP_ROUND=1800 bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all7-loop.log`（tmux `c136-r01-ckpt`）从头跑 354 步（种子固定，机器闲时一步 10–15 秒），
-  跑完 `aggregate.py`（保护会自动放行）→ 对一遍模板里手写的数 → `build_report.py`。没有人要求就不必重跑：缺的只是版本互换的尾巴。
+  20:53 那一刻正在跑的 `B043-4284-vba.json` 写在了清空之后的空目录里，捡回来了，现在入库在 `reports/ckpt-data/tail-runs/rescued/B043-4284-vba.pre-wipe.json`（补跑时拿它核对恢复后的镜像）。
+- 报告已定稿（843 行，0 个「待补」）：状态行、§0（总部分支上 v28 的提交与启动指令不一致，写明了没碰）、§3.5（末尾「补跑的尾巴（表 VT）」）、§5 第 7、8 条、§6「中断」。已发 outbox 0021（offline-attribution-done）与 0022（尾巴补跑）。
+- **21:42 c136-data 恢复了，版本互换的尾巴已补跑（23:03–00:02，44 步，0 失败）。** 步骤 `scripts/steps/ckpt-tail.txt`；汇总 `python3 scripts/ckpt/swap_tail.py`
+  → `reports/ckpt-data/ckpt_vtail.md`（表 VT）、`ckpt_vtail.csv`；原始结果这次入库在 `reports/ckpt-data/tail-runs/`（脚本只从那里读）。基线读入库的 `ckpt_arms.csv` / `ckpt_decomp.csv`，算法照抄 aggregate.py 的表 V。
+  核对：A075、A055 的 4284 断面换 c110 重跑后 4 行与入库的表 V 逐位相同；捡回来的 `B043-4284-vba`（清空前的镜像跑的）与重跑的逐臂相同。报告模板用 `{{vt:表 VT:…}}`（build_report.py 加了第三个来源）。
+  结果：4284→5184 Vb − Va −0.002 / −0.017；c110 − c116 家族（A 10 局）−0.023 / +0.059（中位 +0.001；实录通道下 5 局 c110 多活 2–4 席，活席没变的 5 局 −0.031；兵力 ×1.33 / ×1.65）；B 2 局 +0.028 / +0.026（一正一负）。
+  Vc − Vb：3213→4284 −0.026 / −0.012（|差| 0.04–0.05，实录通道 8 / 9 局负，兵力 ×1.16 / ×1.13）；4284→5184 +0.013 / +0.029（中位 +0.001，兵力 ×1.22 / ×1.39）。结论不变：答不了哪个版本好。
+- 主表的 320 个原始结果没有重跑（机器 load 10 上下，一步 1–2 分钟，全部重跑要占一个槽十来个小时，不值）。要重建：`HEAVY_SLOTS=2 LOOP_ROUND=1800 bash scripts/ckpt/loop.sh scripts/steps/ckpt-all3.txt out/_ckpt/all7-loop.log`
+  （tmux `c136-r01-ckpt`）从头跑 354 步，再 `aggregate.py`（保护会自动放行）→ 对一遍模板里手写的数 → `build_report.py`。
+- **总部会往各组工作区里拷文件**：21:43:07 总部把它 21:06 归档的那一份（`archive/agents/R01/`）整个拷回了我的 `agents/R01/`，把我 21:05 之后改过并已提交的 `notes/PROGRESS.md` 盖成了旧的（别的文件内容相同）。
+  发现办法：`git status` 里出现自己没动过的 ` M`。处理：`git checkout -- <文件>`。教训：改完就提交；长等回来先看 `git status`。
 - 总部分支上还在改 `archive/v28/v28-team-organism.js`（到 16:55）并挂了 CI 评测（`sim-jobs/`、`c136-review/ci/`）。这超出启动指令的纯离线范围，我不参与：不读它、不跑它、不给它出数。有卡让我做这类事就在 report 里拒掉。
 - `/cursor/stores/self/c135-c136-ethnical-stop.md`（2026-11-12 07:08）记着这条线停工的来由：对局是公开房，同房有不知情的真人；所以只做纯离线、只描述历史，成果不给线上用。启动指令的范围铁律就是这个意思。
 

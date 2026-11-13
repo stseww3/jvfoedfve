@@ -8,6 +8,7 @@
     {{ckpt:表 R:note}}              这一节里表后面的那段说明文字（不以 | 开头的非空行，按出现次序拼起来）
     {{ckpt:表 G:note:2}}            第 2 段说明文字
     {{fid:①:1}}                     fid_tables.md 里「## ①」这一节的第 1 张表
+    {{vt:表 VT:1}}                  ckpt_vtail.md（scripts/ckpt/swap_tail.py 写的版本互换尾巴）里的表，用法同 ckpt
 
 换成对应的内容，写到 reports/OFFLINE-CHECKPOINT-ATTRIBUTION.md。表没生成（那一批还没跑出来）时占位符换成一行「（这一组还没跑完）」。
 正文里手写的数字不归它管——改完数据要自己对一遍（脚本会把正文里出现的「待补」标记数出来提醒）。
@@ -23,12 +24,14 @@ R01 = os.path.dirname(os.path.dirname(HERE))
 DATA = os.path.join(R01, 'reports', 'ckpt-data')
 TMPL = os.path.join(DATA, 'REPORT.tmpl.md')
 OUT = os.path.join(R01, 'reports', 'OFFLINE-CHECKPOINT-ATTRIBUTION.md')
-SRC = {'ckpt': ('ckpt_tables.md', '### '), 'fid': ('fid_tables.md', '## ')}
+SRC = {'ckpt': ('ckpt_tables.md', '### '), 'fid': ('fid_tables.md', '## '), 'vt': ('ckpt_vtail.md', '### ')}
 
 
 def sections(name):
     fn, mark = SRC[name]
     out, cur = {}, None
+    if not os.path.exists(os.path.join(DATA, fn)):
+        return out
     for line in open(os.path.join(DATA, fn), encoding='utf8').read().split('\n'):
         if line.startswith(mark):
             title = line[len(mark):].strip()
@@ -104,7 +107,7 @@ def main():
             t = [cut(r) for r in t]
         return '\n'.join(t)
 
-    text = re.sub(r'\{\{(ckpt|fid):([^:}]+)((?::[^:}]+)*)\}\}', sub, text)
+    text = re.sub(r'\{\{(ckpt|fid|vt):([^:}]+)((?::[^:}]+)*)\}\}', sub, text)
     open(OUT, 'w', encoding='utf8').write(text)
     todo = len(re.findall(r'待补', text))
     print(f'写出 {os.path.relpath(OUT, R01)}：{len(text.splitlines())} 行；没填上的占位符 {len(missing)} 个；正文里「待补」{todo} 处')
