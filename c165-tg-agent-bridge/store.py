@@ -236,6 +236,7 @@ COLUMNS = (
     ("devices", "window_sec", "INTEGER DEFAULT -1"),  # 这台电脑点批准时的默认放行秒数；-1=沿用全局 LOCAL_WINDOW；0=每次都问
     ("devices", "auth_until", "REAL DEFAULT 0"),      # 整机免批截止时间戳；>now() 时该电脑主人名下所有开启本地通道的聊天直接放行
     ("convs", "in_tg", "INTEGER DEFAULT 1"),          # 1=接入Telegram聊天列表；0=纯后台MCP子agent（不进TG菜单/列表，不向TG发消息）
+    ("agent_traces", "thought_ts", "REAL DEFAULT 0"), # 最后一次 afterAgentThought 真实思考完成时间戳（判死核心指标）
 )
 
 INDEXES = """

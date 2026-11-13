@@ -400,10 +400,11 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.5"
+        assert tdata["ok"] and tdata["version"] == "3.4.6"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
+        assert c1_trace["last_thought_time"] != "" and c1_trace["last_thought_ago_sec"] is not None
         assert len(c1_trace["recent_events"]) >= 4
 
         # 5. Verify path-based auto-binding (conv_hint: /tmp/c2_work/ -> c2) AND auto inbox delivery on BOTH MCP tools & Shell!

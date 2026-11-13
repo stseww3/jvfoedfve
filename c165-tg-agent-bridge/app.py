@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.5"
+VERSION = "3.4.6"
 
 
 def load_dotenv(path: Path) -> None:
@@ -981,6 +981,19 @@ PHASE_LABELS = {
 }
 
 
+def trace_liveness(trow) -> tuple[bool, float, float]:
+    """返回 (is_zombie_dead, last_thought_ts, last_active_ts)。
+    注意：守护进程心跳绝不刷新 updated_ts / thought_ts，只刷新终端真实新输出 output_ts！"""
+    if trow is None or not trow["phase"]:
+        return False, 0.0, 0.0
+    updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
+    thought_ts = float(trow["thought_ts"] or 0)
+    out_ts = float(trow["output_ts"] or 0)
+    last_active = max(updated, thought_ts, out_ts)
+    is_zombie = trow["phase"] not in ("idle_wait", "stopped", "") and last_active > 0 and (now() - last_active > TRACE_STALL_SEC)
+    return is_zombie, thought_ts, last_active
+
+
 def trace_one_liner(conv_id: str) -> str:
     trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv_id,))
     if trow is None or not trow["phase"]:
@@ -988,30 +1001,35 @@ def trace_one_liner(conv_id: str) -> str:
     phase = trow["phase"]
     started = float(trow["started_ts"] or trow["updated_ts"] or now())
     updated = float(trow["updated_ts"] or started)
+    is_zombie, thought_ts, last_active = trace_liveness(trow)
     elapsed = max(0.0, now() - started)
-    stale = max(0.0, now() - updated)
     label = PHASE_LABELS.get(phase, phase)
     try:
         detail = json.loads(trow["detail"]) if trow["detail"] else {}
     except Exception:
         detail = {}
-    tail = ""
+    meta_parts = []
+    if thought_ts > 0:
+        meta_parts.append(f"最后思考 {stamp(thought_ts, '%H:%M:%S')}({human_dur(now() - thought_ts)}前)")
+    if updated > 0 and phase != "idle_wait":
+        meta_parts.append(f"最后动作 {stamp(updated, '%H:%M:%S')}({human_dur(now() - updated)}前)")
     if phase == "shell":
         out_ts = float(trow["output_ts"] or 0)
         if out_ts > 0:
-            tail = f" [终端 {human_dur(now() - out_ts)}前有新输出"
+            out_s = f"终端输出 {human_dur(now() - out_ts)}前"
             if detail.get("last_output"):
-                tail += f": {str(detail['last_output'])[:50]}"
-            tail += "]"
+                out_s += f": {str(detail['last_output'])[:45]}"
+            meta_parts.append(out_s)
     elif detail.get("last_thought") and phase == "thinking":
-        tail = f" [最近思考: {str(detail['last_thought'])[:60]}]"
-    stall_warn = ""
-    if phase not in ("idle_wait", "stopped"):
-        out_ref = max(updated, float(trow["output_ts"] or 0))
-        if now() - out_ref > TRACE_STALL_SEC:
-            stall_warn = f" ⚠️疑似停滞({human_dur(now() - out_ref)}无新进展)"
+        meta_parts.append(f"思考摘要: {str(detail['last_thought'])[:55]}")
+    meta_str = f" [{' | '.join(meta_parts)}]" if meta_parts else ""
+    stall_warn = (
+        f" 💀【僵尸假活/已卡死：{human_dur(now() - last_active)}无任何新思考或输出】"
+        if is_zombie
+        else ""
+    )
     summary = (trow["summary"] or "").strip()
-    return f"{label}（已持续 {human_dur(elapsed)}）：{summary}{tail}{stall_warn}"
+    return f"{label}（当前步已持续 {human_dur(elapsed)}）：{summary}{meta_str}{stall_warn}"
 
 
 def conv_status(row) -> list[str]:
@@ -6465,18 +6483,28 @@ async def watchdog_tick() -> None:
                 batch.append((conv, info))
             continue
         if state in ("stuck", "lost"):
-            key = state
             tid = (conv["task_agent_id"] or "").strip()
+            trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
+            is_zombie, _, last_act = trace_liveness(trow_w)
             tline = trace_one_liner(conv["id"])
             trace_info = f"\n实时追踪状态：{tline}" if tline else ""
             tid_hint = f"（记录的旧agent_id=\"{tid}\"）" if tid else "（用你启动它时拿到的旧agent_id）"
-            text = (
-                f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
-                f"请严格按 [主控] 三句处理：\n"
-                f"1) 先判活/续跑：调用 Task(resume=旧agent_id, prompt=\"请立刻回到 dais read_chat 继续挂起等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
-                f"2) 若 resume 回「currently running」= 活着别动（尤其留意上方实时追踪是否在跑长命令）；\n"
-                f"3) 若回 timeout/aborted 或没反应 = 已死，直接调 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
-            )
+            if is_zombie:
+                key = "zombie"
+                text = (
+                    f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
+                    f"🚨 判死结论：该子 agent 最后思考/动作时间停留在 {human_dur(now() - last_act)} 前，已确认为【僵尸假活】（此时即使调用 Task resume 返回 `currently running` 也是底层流卡死假象，绝不能等）！\n"
+                    f"请立即调用 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码 → `Task(prompt=桥给的原文, run_in_background=true)` 重新拉起接手（进度已在库和 Git 中保留）！"
+                )
+            else:
+                key = state
+                text = (
+                    f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
+                    f"请严格按 [主控] 三句处理：\n"
+                    f"1) 先判活/续跑：调用 Task(resume=旧agent_id, prompt=\"请立刻回到 dais read_chat 继续挂起等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
+                    f"2) 若 resume 回「currently running」且上方【最后思考/终端输出】仍在刷新 = 活着别动；若最后思考已停滞超过 10 分钟 = 僵尸假活，同样按已死处理；\n"
+                    f"3) 若已死（timeout/aborted/僵尸假活），直接调 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
+                )
         elif state == "unclaimed":
             if away(conv):
                 # 任务只有现在的主控能开
@@ -6745,14 +6773,28 @@ async def trace_post_event(request: Request) -> JSONResponse:
     if output_ts <= 0 and existing is not None and phase == "shell" and existing["phase"] == "shell":
         output_ts = float(existing["output_ts"] or 0)
 
+    # 核心关键：守护进程 heartbeat 绝不能刷新真实动作时间 updated_ts 和最后思考时间 thought_ts！
+    prev_updated = float(existing["updated_ts"] or started_ts) if existing is not None else now()
+    prev_thought = float(existing["thought_ts"] or 0) if existing is not None else 0.0
+    if not prev_thought and not conv_key.startswith("cid:"):
+        last_tev = store.one(
+            "SELECT ts FROM agent_trace_events WHERE conv=? AND event='afterAgentThought' ORDER BY id DESC LIMIT 1",
+            (conv_key,),
+        )
+        if last_tev is not None:
+            prev_thought = float(last_tev["ts"] or 0)
+
+    new_updated = prev_updated if is_hb else now()
+    new_thought = now() if (not is_hb and event == "afterAgentThought") else prev_thought
+
     store.run(
-        "INSERT INTO agent_traces(conv,agent_id,conversation_id,phase,tool_name,summary,detail,started_ts,updated_ts,output_ts) "
-        "VALUES(?,?,?,?,?,?,?,?,?,?) "
+        "INSERT INTO agent_traces(conv,agent_id,conversation_id,phase,tool_name,summary,detail,started_ts,updated_ts,output_ts,thought_ts) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?) "
         "ON CONFLICT(conv) DO UPDATE SET "
         "agent_id=CASE WHEN excluded.agent_id!='' THEN excluded.agent_id ELSE agent_traces.agent_id END,"
         "conversation_id=CASE WHEN excluded.conversation_id!='' THEN excluded.conversation_id ELSE agent_traces.conversation_id END,"
         "phase=excluded.phase, tool_name=excluded.tool_name, summary=excluded.summary, detail=excluded.detail,"
-        "started_ts=excluded.started_ts, updated_ts=excluded.updated_ts, output_ts=excluded.output_ts",
+        "started_ts=excluded.started_ts, updated_ts=excluded.updated_ts, output_ts=excluded.output_ts, thought_ts=excluded.thought_ts",
         (
             conv_key,
             arow["id"] if arow is not None else "",
@@ -6762,8 +6804,9 @@ async def trace_post_event(request: Request) -> JSONResponse:
             summary,
             json.dumps(detail_obj, ensure_ascii=False)[:2000],
             started_ts,
-            now(),
+            new_updated,
             output_ts,
+            new_thought,
         ),
     )
 
@@ -6820,9 +6863,9 @@ async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONRe
         started = float(tr["started_ts"] or tr["updated_ts"] or now())
         updated = float(tr["updated_ts"] or started)
         out_ts = float(tr["output_ts"] or 0)
+        is_zombie, thought_ts, _ = trace_liveness(tr)
         elapsed = round(max(0.0, now() - started), 1)
-        out_ref = max(updated, out_ts)
-        suspected_stuck = tr["phase"] not in ("idle_wait", "stopped", "") and (now() - out_ref > TRACE_STALL_SEC)
+        suspected_stuck = is_zombie
         try:
             detail = json.loads(tr["detail"]) if tr["detail"] else {}
         except Exception:
@@ -6846,7 +6889,10 @@ async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONRe
             "tool": tr["tool_name"],
             "summary": tr["summary"],
             "elapsed_sec": elapsed,
+            "last_event_time": stamp(updated, "%H:%M:%S") if updated > 0 else "",
             "updated_ago_sec": round(max(0.0, now() - updated), 1),
+            "last_thought_time": stamp(thought_ts, "%H:%M:%S") if thought_ts > 0 else "",
+            "last_thought_ago_sec": round(max(0.0, now() - thought_ts), 1) if thought_ts > 0 else None,
             "output_ago_sec": round(max(0.0, now() - out_ts), 1) if out_ts > 0 else None,
             "suspected_stuck": suspected_stuck,
             "detail": detail,
