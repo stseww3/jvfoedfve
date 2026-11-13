@@ -42,6 +42,8 @@
 
 命名空间：新贴图/模型一律放 `c164:`（和现有 `respack.cube_variants` 默认一致），vanilla 命名空间只放"要替换原版同名贴图"的那几张。
 
+色阶权威来源：**`build/scenes/obs/common/palette.py`（由 A0 发布，含方案 3.1 色阶 + `mat(name)` 工厂）**。A1 画方块、A6 画模型都从它取色，各部分不再自建 palette。上面的缩写只是本稿引用用，落地时一律调 `common.palette.mat(...)`。（A0 2026-11-13 定）
+
 ---
 
 ## 2. 占用表逐项（方案 6.2）——石材（砂岩族）
@@ -176,8 +178,8 @@
 ## 7. 命名空间与文件布局
 
 - `build/scenes/obs/materials/`（A1 代码，A0 的 `obs` 场景在 `write_pack` 里调它）：
-  - `palette.py`：从色板定义全部 `Mat`（A/I/R/G/P/S/E/night_glass），供贴图和 A5/A6 模型共用取色（只读导出，色板本身仍归 A0）。
-  - `textures.py`：各材质 16×16 贴图生成函数（石、铁、窗、面板、黄铜、小件），都带变体与 seed。
+  - **不建 palette.py**：取色一律 `from scenes.obs.common import palette`，用 A0 的 `mat(name)` 工厂（A0 2026-11-13 定）。
+  - `textures.py`：各材质 16×16 贴图生成函数（石、铁、窗、面板、黄铜、小件），都带变体与 seed；取色全走 `common.palette`。
   - `blocks.py`：① 砂岩族换同名贴图（`respack.cube_variants`）；② 铸铁族 + 16 面板 blockstate 重定向；③ 玻璃发光模型；④ 动画 `.mcmeta`；⑤ `sounds.json` 脚步声。暴露 `write_pack(pack_dir)`。
   - `redirect.py`：blockstate 重定向的本地实现（在 A0 把公共版合并进 `respack` 前用，合并后切换，见 12.2）。
 - `build/scenes/obs_a1/`（材质板测试场景）：`__init__.py`（`build()`+`write_pack()`+`BIOME`）、`shots.json`（材质板相机）。
@@ -281,7 +283,7 @@ python render.py ...   # 离线自查图
 把 `dark_oak_trapdoor` 重画成护墙板，可能与 A7 室内家具用的深色木冲突。请确认 `dark_oak_trapdoor` 可专用于护墙板（或换占别的块）。
 
 ### 12.5 依赖
-- 色板、方块占用表、场景骨架（`build/scenes/obs/common/`）：**A0**。
+- 色板 `common/palette.py`（`mat(name)` 工厂，已确认由 A0 发布）、方块占用表、场景骨架 `build/scenes/obs/`（含 `common/`）：**A0**。各部分不自建 palette、不提占位骨架（A0 2026-11-13 定）。
 - 定稿光线（mood/生物群系/时间线/雾/天光）、亮窗/灯的隐形世界光源摆放：**A2**。
 - 动画帧率/节奏、每刻命令预算：**A8**。
 - 门窗铁件/灯具等模型（用我的 `palette.py` 取色，保持 16px 一致）：**A6**。
@@ -294,8 +296,9 @@ python render.py ...   # 离线自查图
 - [x] 查实非蜡/蜡封铜族的 blockstate-model 共享关系，定"blockstate 重定向"分家法
 - [x] 查实 `light_emission`（元素级）、玻璃 pane 模板、带釉陶瓦模板、竹子/铜脚步声事件
 - [x] 交细化稿（本文件）← **当前，待 A0 审**
+- [x] 对齐 A0 决定：取色改走 `common/palette.py`（不自建 palette）、不提占位骨架（§7/§12.5 已更新）
 - [ ] A0 审核意见、占用表勘误处理
-- [ ] 写 `palette.py` / `textures.py`（石 + 铁 + 窗）
+- [ ] 写 `textures.py`（石 + 铁 + 窗；取色走 `common.palette`）
 - [ ] 写 `redirect.py` + `blocks.py`（分家 + 发光）
 - [ ] 建 `obs_a1` 材质板 + `shots.json`，出 M1 自查图
 - [ ] 16 面板 + 动画；黄铜族 + 脚步声；小件（M2）
