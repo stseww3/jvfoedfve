@@ -11,6 +11,7 @@ sides can then work without waiting for each other.
     B.IRON_RIVETED.slab      "oxidized_cut_copper_slab"
     B.WINDOW_LIT.pane        "yellow_stained_glass_pane"
     B.PANELS["dial"]         "white_glazed_terracotta"
+    B.CLOUD[2]               "dead_bubble_coral_block"   (the middle one of the five cloud tones)
 
 Block states are added by the caller: B.ASHLAR_FINE.stairs + "[half=top,facing=east]".
 
@@ -115,6 +116,11 @@ WAINSCOT = "dark_oak_trapdoor"                                  # wall panelling
 BRASS_INLAY = "yellow_carpet"                                   # brass line in the floor (the meridian)
 ENAMEL_SIGN = ("oak_sign", "oak_wall_sign", "oak_hanging_sign", "oak_wall_hanging_sign")
 
+# --- repainted: the cloud sea built of blocks (five flat tones, dark to light like RAMPS["cloud"]) ----
+# Provisional (A0, 2026-11-14): the family is settled on the real-game pictures of the cloudsea card.
+CLOUD = ("dead_horn_coral_block", "dead_fire_coral_block", "dead_bubble_coral_block",
+         "dead_brain_coral_block", "dead_tube_coral_block")
+
 # --- used as the vanilla game draws them ---------------------------------------------------------------
 VERDIGRIS = "waxed_oxidized_copper"
 VERDIGRIS_CUT = _family("waxed_oxidized_cut_copper", "stairs slab")   # dome plates, spire, ridges
@@ -138,7 +144,7 @@ REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE,
              WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT,
              *PANELS.values(), BRASS_PLATE, BRASS_PATTERN, BRASS_COLUMN, BRASS_RAIL, BRASS_GATE, BRASS_DOOR,
              BRASS_HATCH, BRASS_BUTTON, *BRASS_SIGN, BRASS_SHELF, OLD_COPPER, OLD_COPPER_CUT, WAINSCOT,
-             BRASS_INLAY, *ENAMEL_SIGN]
+             BRASS_INLAY, *ENAMEL_SIGN, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
            TUFF_BRICK, TUFF_SMOOTH, TUFF, DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
 
