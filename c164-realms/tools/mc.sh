@@ -54,8 +54,9 @@ server_up() {
     "${T[@]}" new-session -d -s "$S_SES" -c "$SERVER" \
       "nice -n 10 '$JAVA' -Xms512M -Xmx${MC_SERVER_HEAP:-1500M} -jar server.jar nogui 2>&1 | tee console.log"
   fi
-  for _ in $(seq 1 90); do
-    if rcon "list" >/dev/null 2>&1; then yield_memory "server.jar nogui"; echo "server is up"; return 0; fi
+  for _ in $(seq 1 200); do
+    yield_memory "server.jar nogui"
+    if rcon "list" >/dev/null 2>&1; then echo "server is up"; return 0; fi
     sleep 2
   done
   echo "server did not come up; see $SERVER/console.log" >&2; return 1
@@ -66,10 +67,9 @@ client_up() {
     "${T[@]}" new-session -d -s "$C_SES" -c "$ROOT" \
       "'$HERE/run_client.sh' '$CAM' 2>&1 | tee '$ROOT/client26/client.log'"
   fi
-  for _ in $(seq 1 150); do
-    if rcon "list" 2>/dev/null | grep -q "$CAM"; then
-      yield_memory "net.minecraft.client.main.Main.*--username $CAM"; echo "$CAM is online"; return 0
-    fi
+  for _ in $(seq 1 240); do
+    yield_memory "net.minecraft.client.main.Main.*--username $CAM"
+    if rcon "list" 2>/dev/null | grep -q "$CAM"; then echo "$CAM is online"; return 0; fi
     sleep 2
   done
   echo "$CAM did not join; see $ROOT/client26/client.log" >&2; return 1
