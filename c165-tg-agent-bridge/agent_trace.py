@@ -356,8 +356,13 @@ def handle_hook() -> int:
                     )
                 )
                 return 0
-            is_dais_call = str(payload.get("tool_name") or "") == "CallDynamicTool" and str(ti.get("namespace") or "") == "dais"
             tname_cur = str(payload.get("tool_name") or "")
+            is_dais_call = (
+                tname_cur.startswith("MCP:")
+                or "dais" in tname_cur.lower()
+                or tname_cur in ("read_chat", "send_message", "send_file", "get_file", "ask", "join", "send_agent_message", "send_group_message")
+                or (tname_cur == "CallDynamicTool" and str(ti.get("namespace") or "") == "dais")
+            )
             if peek_pre and peek_pre.get("has_messages") and not is_dais_call:
                 cnt_p = int(peek_pre.get("count") or 1)
                 conv_p = str(peek_pre.get("conv") or "")
@@ -577,7 +582,10 @@ def handle_hook() -> int:
     if event == "preToolUse" and pre_alert_ctx:
         out_obj["additional_context"] = pre_alert_ctx
     elif agent_id and event in ("postToolUse", "postToolUseFailure"):
-        is_dais_read = tool_name == "CallDynamicTool" and str(ti.get("toolName") or "") in ("read_chat", "join")
+        is_dais_read = (
+            tool_name in ("MCP:read_chat", "MCP:join", "read_chat", "join")
+            or (tool_name == "CallDynamicTool" and str(ti.get("toolName") or "") in ("read_chat", "join"))
+        )
         if not is_dais_read:
             alert_txt = build_inbox_alert(bridge_url, agent_id)
             if alert_txt:
