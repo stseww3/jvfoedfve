@@ -772,9 +772,18 @@ def main() -> int:
     if cmd == "run":
         return run_wrapped(argv[1:])
     if cmd == "status":
-        url = argv[1] if len(argv) > 1 else load_config()["bridge_url"]
-        data = get_json(f"{url.rstrip('/')}/trace", timeout=3.0)
-        print(json.dumps(data or {"error": "unreachable"}, ensure_ascii=False, indent=2))
+        url = argv[1] if len(argv) > 1 and not argv[1].startswith("a_") and not argv[1].startswith("m_") else load_config()["bridge_url"]
+        agent_hdr = os.environ.get("TG_AGENT_ID", "")
+        for item in argv[1:]:
+            if item.startswith(("a_", "m_")):
+                agent_hdr = item
+        req = urllib.request.Request(f"{url.rstrip('/')}/trace", headers={"X-Agent": agent_hdr} if agent_hdr else {})
+        try:
+            with urllib.request.urlopen(req, timeout=3.0) as resp:
+                data = json.loads(resp.read().decode("utf-8", errors="replace"))
+        except Exception as exc:
+            data = {"error": str(exc)}
+        print(json.dumps(data, ensure_ascii=False, indent=2))
         return 0
     print(f"未知子命令: {cmd}", file=sys.stderr)
     return 2

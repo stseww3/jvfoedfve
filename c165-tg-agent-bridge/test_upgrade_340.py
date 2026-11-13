@@ -216,7 +216,55 @@ async def run_core_tests() -> dict[str, str]:
     ok_stop = await bridge.call_tool("stop_spawned_agent", {"agent": a1, "chat": "c5", "close": True})
     assert not ok_stop.is_error
 
-    return {"main": main_id, "a1": a1, "a2": a2, "a4": a4, "a5_stopped": a5}
+    # 7. Verify strict cross-owner isolation in reverse (ExternalUser a3_ext cannot see/message/group Admin's c1/g1)
+    peers_ext = text_of(await bridge.call_tool("list_peers", {"agent": a3_ext}))
+    assert "c3「外部助手」" in peers_ext
+    assert "c1" not in peers_ext and "g1" not in peers_ext
+    assert (await bridge.call_tool("send_agent_message", {"agent": a3_ext, "to": "c1", "text": "hi"})).is_error
+    assert (await bridge.call_tool("send_agent_message", {"agent": a1, "to": "main", "text": "hi"})).is_error
+    assert (await bridge.call_tool("send_group_message", {"agent": a3_ext, "group": "g1", "text": "hi"})).is_error
+    assert (await bridge.call_tool("group_history", {"agent": a3_ext, "group": "g1"})).is_error
+
+    # 8. Verify 3.4.1 custom duration parser, smart admin device resolution, /local & /device duration controls
+    assert bridge.parse_duration_spec("45m") == 2700
+    assert bridge.parse_duration_spec("1h30m") == 5400
+    assert bridge.parse_duration_spec("7d") == 604800
+    assert bridge.parse_duration_spec("2.5") == 9000
+    assert bridge.parse_duration_spec("永久") == bridge.PERMANENT_SEC
+    assert bridge.parse_duration_spec("0") == 0
+
+    # Set up unused d0 and online d3 (admin's Windows PC) + online d1 (external user 8002's PC)
+    bridge.store.run("INSERT OR REPLACE INTO devices(id,name,owner,status,last_seen) VALUES('d0','管理员的电脑',0,'active',0)")
+    bridge.store.run("INSERT OR REPLACE INTO devices(id,name,owner,status,last_seen) VALUES('d3','auouf的电脑',7001,'active',?)", (now,))
+    bridge.store.run("INSERT OR REPLACE INTO devices(id,name,owner,status,last_seen) VALUES('d1','ext的电脑',8002,'active',?)", (now,))
+    bridge.LOCAL["clients"]["d3"] = object()
+    bridge.LOCAL["clients"]["d1"] = object()
+
+    # Admin chat c1 automatically resolves to online d3 (not dead d0, and NEVER d1!)
+    assert bridge.conv_device(bridge.conv_row("c1"))["id"] == "d3"
+    assert bridge.conv_device(bridge.conv_row("c3"))["id"] == "d1"
+
+    # Test /local without chat id (uses selected chat c1!) + custom duration "45m" + "永久"
+    bridge.store.set("sel:7001", "c1")
+    await bridge.on_command({"from": {"id": 7001}}, "/local", "45m", 7001, "private", 7001)
+    c1_after = bridge.conv_row("c1")
+    assert 2600 < c1_after["local_until"] - bridge.now() <= 2705 and c1_after["local_dev"] == "d3"
+
+    # Test /device computer-wide pass ("24h") & ensure d3 pass NEVER leaks to external user's c3!
+    await bridge.on_command({"from": {"id": 7001}}, "/device", "24h", 7001, "private", 7001)
+    d3_row = bridge.device_row("d3")
+    assert d3_row["auth_until"] > bridge.now() + 86000
+    assert bridge.device_pass_active(d3_row, bridge.conv_row("c2")) is True
+    assert bridge.device_pass_active(d3_row, bridge.conv_row("c3")) is False
+
+    # Test /device window 30m and /device lock
+    await bridge.on_command({"from": {"id": 7001}}, "/device", "window 30m", 7001, "private", 7001)
+    assert bridge.device_window_sec(bridge.device_row("d3")) == 1800
+    await bridge.on_command({"from": {"id": 7001}}, "/device", "lock", 7001, "private", 7001)
+    assert bridge.device_row("d3")["auth_until"] == 0
+    assert bridge.conv_row("c1")["local_until"] == 0
+
+    return {"main": main_id, "a1": a1, "a2": a2, "a3_ext": a3_ext, "a4": a4, "a5_stopped": a5}
 
 
 def run_http_and_hook_tests(ids: dict[str, str]) -> None:
@@ -312,15 +360,35 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         })
         assert stop_inactive == {}, f"Stopped agent should not be bounced back: {stop_inactive}"
 
-        # 4. Verify /trace HTTP JSON & trace_status MCP tool
+        # 4. Verify /trace HTTP JSON requires auth & enforces owner isolation
+        import urllib.error
         import urllib.request
-        with urllib.request.urlopen("http://127.0.0.1:18787/trace?chat=c1&limit=10", timeout=3) as resp:
+        try:
+            urllib.request.urlopen("http://127.0.0.1:18787/trace?chat=c1&limit=10", timeout=3)
+            raise AssertionError("Unauthenticated GET /trace should return 403!")
+        except urllib.error.HTTPError as exc:
+            assert exc.code == 403
+
+        req_admin_sub = urllib.request.Request(
+            "http://127.0.0.1:18787/trace?chat=c1&limit=10",
+            headers={"X-Agent": ids["a1"]},
+        )
+        with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.0"
+        assert tdata["ok"] and tdata["version"] == "3.4.1"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
         assert len(c1_trace["recent_events"]) >= 4
+
+        # External user's sub-agent MUST NOT see c1 in GET /trace!
+        req_ext_sub = urllib.request.Request(
+            "http://127.0.0.1:18787/trace?chat=c1&limit=10",
+            headers={"X-Agent": ids["a3_ext"]},
+        )
+        with urllib.request.urlopen(req_ext_sub, timeout=3) as resp:
+            tdata_ext = json.loads(resp.read().decode("utf-8"))
+        assert tdata_ext["traces"] == [], f"Owner leak in GET /trace: {tdata_ext}"
 
         with urllib.request.urlopen("http://127.0.0.1:18787/trace/install.sh", timeout=3) as resp:
             install_sh = resp.read().decode("utf-8")

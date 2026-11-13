@@ -233,6 +233,8 @@ COLUMNS = (
     ("convs", "spawn_notified", "INTEGER DEFAULT 0"), # 子 agent 首次 join 时是否已通知父 agent
     ("convs", "task_agent_id", "TEXT DEFAULT ''"),    # 主控记录的 Cursor Task agent_id，供 resume 判活/续跑
     ("chats", "owner", "INTEGER DEFAULT 0"),          # 群归谁：0 = 管理员；否则是把 bot 拉进群的被授权用户
+    ("devices", "window_sec", "INTEGER DEFAULT -1"),  # 这台电脑点批准时的默认放行秒数；-1=沿用全局 LOCAL_WINDOW；0=每次都问
+    ("devices", "auth_until", "REAL DEFAULT 0"),      # 整机免批截止时间戳；>now() 时该电脑主人名下所有开启本地通道的聊天直接放行
 )
 
 INDEXES = """

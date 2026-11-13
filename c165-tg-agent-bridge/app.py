@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.0"
+VERSION = "3.4.1"
 
 
 def load_dotenv(path: Path) -> None:
@@ -99,6 +99,8 @@ STREAK_WINDOW = env_int("AGENT_STREAK_WINDOW_SEC", 600)      # 连续互发计�
 MAX_SPAWN_PER_PARENT = env_int("MAX_SPAWN_PER_PARENT", 8)    # 单个父 agent 同时活跃派生子 agent 上限
 MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 24)             # 全局活跃派生子 agent 上限
 TRACE_STALL_SEC = env_int("TRACE_STALL_SEC", 600)            # 追踪事件/终端输出停滞告警秒数
+PERMANENT_SEC = 10 * 365 * 86400                             # 「永久」授权对应的秒数（10 年）
+PERMANENT_THRESHOLD = 5 * 365 * 86400                        # 剩余大于 5 年即显示为「永久」
 
 DATA.mkdir(parents=True, exist_ok=True)
 (DATA / "files").mkdir(exist_ok=True)
@@ -1027,8 +1029,11 @@ def conv_status(row) -> list[str]:
     dev = conv_device(row)
     if dev is not None and dev["id"] != ADMIN_DEVICE:
         extras.append(f"本地电脑 {device_label(dev)}")
-    if row["local_until"] > now() and dev is not None and row["local_dev"] == dev["id"]:
-        extras.append(f"本地通道授权剩 {int(row['local_until'] - now()) // 60} 分钟")
+    eff_until = effective_local_until(row, dev) if dev is not None and row["local_enabled"] else 0.0
+    if eff_until > now():
+        rem_txt = "永久免批" if eff_until - now() >= PERMANENT_THRESHOLD else f"剩 {human_dur(eff_until - now())}"
+        via = "（整机免批）" if float(dev["auth_until"] or 0) >= eff_until and float(dev["auth_until"] or 0) > now() else ""
+        extras.append(f"本地通道授权{rem_txt}{via}")
     repo = git_text(row)
     if repo:
         extras.append("GitHub " + repo)
@@ -1599,12 +1604,113 @@ def set_approval(approval_id: str, status: str, payload: dict | None = None) -> 
     approval_events.setdefault(approval_id, asyncio.Event()).set()
 
 
-def approve_buttons(approval_id: str, lang: str = "zh") -> dict:
-    yes, no = ("Approve", "Deny") if lang == "en" else ("批准", "拒绝")
-    return {"inline_keyboard": [[
-        {"text": yes, "callback_data": f"ap:{approval_id}:y"},
-        {"text": no, "callback_data": f"ap:{approval_id}:n"},
-    ]]}
+DURATION_PART_RE = re.compile(
+    r"(\d+(?:\.\d+)?)\s*(s|sec|secs|秒|m|min|mins|分钟|分|h|hr|hrs|hour|hours|小时|时|d|day|days|天|w|wk|week|weeks|周)",
+    re.IGNORECASE,
+)
+
+
+def parse_duration_spec(raw: str) -> int | None:
+    """支持自然时长写法：30m / 2h / 1.5h / 7d / 1h30m / 45分钟 / 12小时 / 7天 / 永久 / forever / 0(每次问) / 纯数字(默认按小时)。"""
+    s = (raw or "").strip().lower()
+    if not s:
+        return None
+    if s in ("0", "once", "ask", "每次", "逐条", "单次", "每次问"):
+        return 0
+    if s in ("forever", "always", "perm", "permanent", "inf", "unlimited", "永久", "一直", "不限", "长期"):
+        return PERMANENT_SEC
+    try:
+        hours = float(s)
+        if hours < 0:
+            return None
+        return min(PERMANENT_SEC, int(round(hours * 3600)))
+    except ValueError:
+        pass
+    pos = 0
+    total = 0.0
+    for m in DURATION_PART_RE.finditer(s):
+        if s[pos:m.start()].strip():
+            return None
+        pos = m.end()
+        val = float(m.group(1))
+        unit = m.group(2).lower()
+        if unit in ("s", "sec", "secs", "秒"):
+            total += val
+        elif unit in ("m", "min", "mins", "分钟", "分"):
+            total += val * 60
+        elif unit in ("h", "hr", "hrs", "hour", "hours", "小时", "时"):
+            total += val * 3600
+        elif unit in ("d", "day", "days", "天"):
+            total += val * 86400
+        elif unit in ("w", "wk", "week", "weeks", "周"):
+            total += val * 7 * 86400
+    if pos == 0 or s[pos:].strip():
+        return None
+    return min(PERMANENT_SEC, max(0, int(round(total))))
+
+
+def short_span(sec: float, lang: str = "zh") -> str:
+    sec = int(max(0, sec))
+    if sec >= PERMANENT_THRESHOLD:
+        return "forever" if lang == "en" else "永久"
+    if sec <= 0:
+        return "once" if lang == "en" else "仅单次"
+    if sec % 86400 == 0:
+        d = sec // 86400
+        return f"{d}d" if lang == "en" else f"{d}天"
+    if sec % 3600 == 0:
+        h = sec // 3600
+        return f"{h}h" if lang == "en" else f"{h}小时"
+    if sec >= 3600:
+        h, m = sec // 3600, (sec % 3600) // 60
+        return (f"{h}h{m}m" if m else f"{h}h") if lang == "en" else (f"{h}小时{m}分" if m else f"{h}小时")
+    if sec >= 60:
+        m = sec // 60
+        return f"{m}m" if lang == "en" else f"{m}分钟"
+    return f"{sec}s" if lang == "en" else f"{sec}秒"
+
+
+def approve_buttons(approval_id: str, lang: str = "zh", default_sec: int | None = None) -> dict:
+    wsec = LOCAL_WINDOW if default_sec is None else default_sec
+    if lang == "en":
+        def_label = f"✅ Approve ({short_span(wsec, 'en')})"
+        return {"inline_keyboard": [
+            [
+                {"text": def_label, "callback_data": f"ap:{approval_id}:y"},
+                {"text": "Once only", "callback_data": f"ap:{approval_id}:0"},
+                {"text": "❌ Deny", "callback_data": f"ap:{approval_id}:n"},
+            ],
+            [
+                {"text": "30m", "callback_data": f"ap:{approval_id}:s1800"},
+                {"text": "4h", "callback_data": f"ap:{approval_id}:s14400"},
+                {"text": "24h", "callback_data": f"ap:{approval_id}:s86400"},
+                {"text": "7d", "callback_data": f"ap:{approval_id}:s604800"},
+                {"text": "Forever", "callback_data": f"ap:{approval_id}:s{PERMANENT_SEC}"},
+            ],
+            [
+                {"text": "💻 All my chats 24h", "callback_data": f"ap:{approval_id}:d86400"},
+                {"text": "💻 All my chats Forever", "callback_data": f"ap:{approval_id}:d{PERMANENT_SEC}"},
+            ],
+        ]}
+    def_label = f"✅ 批准（默认 {short_span(wsec)}）"
+    return {"inline_keyboard": [
+        [
+            {"text": def_label, "callback_data": f"ap:{approval_id}:y"},
+            {"text": "仅本次", "callback_data": f"ap:{approval_id}:0"},
+            {"text": "❌ 拒绝", "callback_data": f"ap:{approval_id}:n"},
+        ],
+        [
+            {"text": "30分钟", "callback_data": f"ap:{approval_id}:s1800"},
+            {"text": "4小时", "callback_data": f"ap:{approval_id}:s14400"},
+            {"text": "24小时", "callback_data": f"ap:{approval_id}:s86400"},
+            {"text": "7天", "callback_data": f"ap:{approval_id}:s604800"},
+            {"text": "永久", "callback_data": f"ap:{approval_id}:s{PERMANENT_SEC}"},
+        ],
+        [
+            {"text": "💻 整机免批 24小时", "callback_data": f"ap:{approval_id}:d86400"},
+            {"text": "💻 整机永久免批", "callback_data": f"ap:{approval_id}:d{PERMANENT_SEC}"},
+        ],
+    ]}
 
 
 def cloud_has_chats(n: int) -> bool:
@@ -1904,10 +2010,70 @@ def device_label(dev, lang: str = "zh") -> str:
     return f"{dev['id']} \"{dev['name']}\"" if lang == "en" else f"{dev['id']}「{dev['name']}」"
 
 
+def admin_owned_devices() -> list:
+    rows = store.q("SELECT * FROM devices WHERE status='active' ORDER BY CAST(SUBSTR(id, 2) AS INTEGER)")
+    return [r for r in rows if r["id"] == ADMIN_DEVICE or is_admin(int(r["owner"] or 0))]
+
+
+def preferred_admin_device():
+    pinned = store.get("admin_default_device").strip()
+    if pinned:
+        dev = device_row(pinned)
+        if dev is not None and dev["status"] == "active" and (dev["id"] == ADMIN_DEVICE or is_admin(int(dev["owner"] or 0))):
+            return dev
+    cands = admin_owned_devices()
+    if not cands:
+        return None
+    # 自动优先选当前在线的管理员电脑（例如 d3），其次选曾经连上过的，最后才是未连接过的 d0
+    cands.sort(
+        key=lambda d: (
+            1 if d["id"] in LOCAL["clients"] else 0,
+            float(d["last_seen"] or 0),
+            1 if d["id"] != ADMIN_DEVICE else 0,
+        ),
+        reverse=True,
+    )
+    return cands[0]
+
+
+def owner_primary_device(user_id: int):
+    return preferred_admin_device() if is_admin(user_id) else user_device(user_id)
+
+
+def device_window_sec(dev) -> int:
+    if dev is None:
+        return LOCAL_WINDOW
+    raw = dev["window_sec"]
+    w = -1 if raw is None else int(raw)
+    return LOCAL_WINDOW if w < 0 else w
+
+
+def is_admin_device(dev) -> bool:
+    return dev is not None and (dev["id"] == ADMIN_DEVICE or is_admin(int(dev["owner"] or 0)))
+
+
+def device_pass_active(dev, conv) -> bool:
+    """整机免批严格限定在设备主人的自有聊天内，绝不跨主人放行。"""
+    if dev is None or float(dev["auth_until"] or 0) <= now():
+        return False
+    c_owner = conv_owner(conv)
+    if is_admin_device(dev):
+        return c_owner == 0
+    return c_owner != 0 and c_owner == int(dev["owner"] or 0)
+
+
+def effective_local_until(conv, dev) -> float:
+    if dev is None:
+        return 0.0
+    c_until = float(conv["local_until"] or 0) if conv["local_dev"] == dev["id"] else 0.0
+    d_until = float(dev["auth_until"] or 0) if device_pass_active(dev, conv) else 0.0
+    return max(c_until, d_until)
+
+
 def conv_device(conv):
     """本地操作发到哪台电脑。
     用户建的聊天：只用他自己的电脑，他没装就是没有，绝不退回到管理员的电脑上。
-    管理员的聊天：管理员指定的 > 负责的私聊用户自己的电脑 > 管理员的电脑。"""
+    管理员的聊天：显式指定的 > 负责的私聊用户自己的电脑 > 管理员在线/默认电脑（自动识别 d3 等，无需逐个绑）。"""
     owner = conv_owner(conv)
     if conv["device"]:
         dev = device_row(conv["device"])
@@ -1923,20 +2089,19 @@ def conv_device(conv):
             dev = user_device(chat_id)
             if dev is not None:
                 return dev
-    dev = device_row(ADMIN_DEVICE)
-    return dev if dev is not None and dev["status"] == "active" else None
+    return preferred_admin_device()
 
 
 def device_chats(dev) -> list[int]:
     """批准请求发给谁：管理员的电脑发给管理员，别人的电脑只发给电脑主人。"""
-    if dev["id"] == ADMIN_DEVICE:
+    if is_admin_device(dev):
         return admin_chats()
     row = store.one("SELECT dm_chat_id FROM users WHERE user_id=?", (dev["owner"],))
     return [row["dm_chat_id"] if row is not None and row["dm_chat_id"] else dev["owner"]]
 
 
 def may_approve(dev, user_id: int) -> bool:
-    return is_admin(user_id) if dev["id"] == ADMIN_DEVICE else user_id == dev["owner"]
+    return is_admin(user_id) if is_admin_device(dev) else user_id == dev["owner"]
 
 
 def next_device_id() -> str:
@@ -2033,19 +2198,29 @@ async def issue_device(owner: int, name: str):
 def devices_text() -> str:
     rows = store.q("SELECT * FROM devices WHERE status='active' ORDER BY CAST(SUBSTR(id, 2) AS INTEGER)")
     if not rows:
-        return "还没有本地电脑。你自己的电脑在服务器 .env 里配 CLIENT_TOKEN；被授权的用户私聊 bot 发 /device 自己安装。"
+        return "还没有本地电脑。私聊 bot 发 /device 安装，或在服务器 .env 里配 CLIENT_TOKEN。"
     convs = [r for r in [conv_row("main"), *open_convs()] if r is not None]
+    pref = preferred_admin_device()
     lines = ["本地电脑："]
     for dev in rows:
         if dev["id"] == ADMIN_DEVICE:
-            owner = "管理员"
+            owner = "管理员(.env)"
+        elif is_admin(int(dev["owner"] or 0)):
+            user = store.one("SELECT name FROM users WHERE user_id=?", (dev["owner"],))
+            owner = f"管理员 {user['name'] if user and user['name'] else dev['owner']}"
         else:
             user = store.one("SELECT name FROM users WHERE user_id=?", (dev["owner"],))
             owner = f"{user['name'] if user and user['name'] else dev['owner']}（id {dev['owner']}）"
         online = "🟢 在线" if dev["id"] in LOCAL["clients"] else "⚪ 不在线"
+        def_mark = " ⭐管理员默认" if pref is not None and pref["id"] == dev["id"] else ""
+        a_until = float(dev["auth_until"] or 0)
+        if a_until > now():
+            pass_txt = "整机永久免批" if a_until - now() >= PERMANENT_THRESHOLD else f"整机免批剩 {human_dur(a_until - now())}"
+        else:
+            pass_txt = f"默认单次窗 {short_span(device_window_sec(dev))}"
         users = [c["id"] for c in convs if (d := conv_device(c)) is not None and d["id"] == dev["id"]]
-        lines.append(f"{device_label(dev)}  主人 {owner}  {online}  用它的聊天：{'、'.join(users) or '无'}")
-    lines.append("/device del d2 作废某台；/local c1 device d2|auto 指定聊天用哪台电脑（auto = 自动）。")
+        lines.append(f"{device_label(dev)}{def_mark}  主人 {owner}  {online}  [{pass_txt}]  聊天：{'、'.join(users[:12]) + ('…' if len(users) > 12 else '') if users else '无'}")
+    lines.append("\n管理：/device 打开授权时长面板（或 /device d3 24h、/device 永久、/device lock）；/device default d3 设为管理员默认电脑；/device del d2 作废某台。")
     return "\n".join(lines)
 
 
@@ -2055,22 +2230,20 @@ LOCAL_OPS = {"shell": "执行命令", "read": "读取文件", "write": "写入�
 LOCAL_OPS_EN = {"shell": "run a command", "read": "read a file", "write": "write a file", "list": "list a folder"}
 
 
-def window_text(lang: str = "zh") -> str:
+def window_text(lang: str = "zh", sec: int | None = None) -> str:
+    wsec = LOCAL_WINDOW if sec is None else sec
     if lang == "en":
-        if LOCAL_WINDOW <= 0:
+        if wsec <= 0:
             return "only this one operation is allowed; the next one needs approval again"
-        if LOCAL_WINDOW >= 3600:
-            hours = LOCAL_WINDOW / 3600
-            span = f"{hours:g} hour" + ("" if hours == 1 else "s")
-        else:
-            minutes = LOCAL_WINDOW // 60
-            span = f"{minutes} minute" + ("" if minutes == 1 else "s")
+        if wsec >= PERMANENT_THRESHOLD:
+            return "this chat's local operations run permanently without asking again (until revoked)"
+        span = short_span(wsec, "en")
         return f"for {span} this chat's local operations run without asking again"
-    if LOCAL_WINDOW <= 0:
+    if wsec <= 0:
         return "只放行这一个操作，下一个还要再批"
-    if LOCAL_WINDOW >= 3600:
-        return f"{LOCAL_WINDOW / 3600:g} 小时内这个聊天的本地操作直接执行，不再逐条确认"
-    return f"{LOCAL_WINDOW // 60} 分钟内这个聊天的本地操作直接执行，不再逐条确认"
+    if wsec >= PERMANENT_THRESHOLD:
+        return "这个聊天的本地操作永久直接执行（手动收回前不再询问）"
+    return f"{short_span(wsec)} 内这个聊天的本地操作直接执行，不再逐条确认"
 
 
 def describe_local(op: str, payload: dict, lang: str = "zh") -> str:
@@ -2094,8 +2267,9 @@ async def local_gate(agent, op: str, payload: dict):
         raise ToolFail("这个聊天没有可用的本地电脑：指定的电脑已作废，或者管理员没配本地通道。请管理员用 /devices 查看。")
     if dev["id"] not in LOCAL["clients"]:
         raise ToolFail(f"本地客户端不在线：{device_label(dev)} 上的 local_client.py 没有运行，请电脑主人打开它。")
-    who = "管理员" if dev["id"] == ADMIN_DEVICE else "电脑主人"
-    if conv["local_until"] < now() or conv["local_dev"] != dev["id"]:
+    who = "管理员" if is_admin_device(dev) else "电脑主人"
+    wsec = device_window_sec(dev)
+    if effective_local_until(conv, dev) < now():
         request = describe_local(op, payload)
         key = json.dumps({"conv": conv["id"], "device": dev["id"], "request": request}, ensure_ascii=False)
         row = store.one("SELECT id FROM approvals WHERE kind='local' AND status='pending' AND payload=?", (key,))
@@ -2112,31 +2286,31 @@ async def local_gate(agent, op: str, payload: dict):
                         "⚠️ Others can also talk to this chat: " + ", ".join(chat_label(c, "en") for c in others[:5])
                         + ". The AI sees what they say, which could be used to make it run commands on your computer.\n"
                     ) if others else ""
-                    where = "your computer" if dev["id"] == ADMIN_DEVICE else f"your computer {device_label(dev, 'en')}"
+                    where = f"your computer {device_label(dev, 'en')}"
                     text = (
                         f"Chat {conv_tag(conv)} asks to use the local channel on {where} (workspace {conv['id']}).\n"
                         f"It wants to {describe_local(op, payload, 'en')}\n{warn}"
-                        f"If you approve, {window_text('en')}. You can pause any time in the local console."
+                        f"Pick how long to approve below (or use /device to set a computer-wide pass)."
                     )
                 else:
                     warn = (
                         "⚠️ 能和这个聊天说话的还有 " + "、".join(chat_label(c) for c in others[:5])
                         + "：他们说的话 AI 也能看到，可能被利用来让它在你电脑上执行命令。\n"
                     ) if others else ""
-                    where = "你电脑上的本地通道" if dev["id"] == ADMIN_DEVICE else f"你的电脑 {device_label(dev)} 上的本地通道"
+                    where = f"你的电脑 {device_label(dev)} 上的本地通道"
                     text = (
                         f"聊天 {conv_tag(conv)} 申请使用{where}（工作区 {conv['id']}）。\n"
                         f"它要{request}\n{warn}"
-                        f"批准后{window_text()}；本机控制台可以随时暂停。"
+                        f"点下方按钮选择放行时长（也可随时发 /device 设整机免批或收回）："
                     )
-                await reply(chat_id, text, approve_buttons(approval_id, lang),
+                await reply(chat_id, text, approve_buttons(approval_id, lang, wsec),
                             conv_id=conv["id"] if enterable(chat_id, conv) else "")
         budget, _ = wait_budget(900)
         status = await wait_approval(approval_id, budget)
         if status == "denied":
             raise ToolFail(f"{who}拒绝了本地通道。不要换个写法重试，先问用户。")
         if status != "approved":
-            raise ToolFail(f"{who}还没批准本地通道（批准后{window_text()}），过一会儿再试。")
+            raise ToolFail(f"{who}还没批准本地通道（批准后{window_text(sec=wsec)}），过一会儿再试。")
     return dev
 
 
@@ -2696,15 +2870,17 @@ async def t_set_repo(agent, args):
 async def t_local_status(agent, args):
     conv = conv_row(agent["conv"])
     dev = conv_device(conv)
-    remaining = max(0, int(conv["local_until"] - now())) if dev is not None and conv["local_dev"] == dev["id"] else 0
+    eff_until = effective_local_until(conv, dev) if dev is not None and conv["local_enabled"] else 0.0
+    remaining = max(0, int(eff_until - now()))
     return text_result(json.dumps({
         "device": device_label(dev) if dev is not None else "没有可用的电脑",
-        "approver": ("管理员" if dev["id"] == ADMIN_DEVICE else "电脑主人") if dev is not None else "",
+        "approver": ("管理员" if is_admin_device(dev) else "电脑主人") if dev is not None else "",
         "local_client_online": dev is not None and dev["id"] in LOCAL["clients"],
         "client": LOCAL["info"].get(dev["id"], {}) if dev is not None else {},
         "local_enabled": bool(conv["local_enabled"]),
         "workspace": conv["id"],
-        "window_remaining_min": remaining // 60,
+        "window_remaining_min": "permanent" if remaining >= PERMANENT_THRESHOLD else remaining // 60,
+        "device_pass_active": bool(dev is not None and device_pass_active(dev, conv)),
     }, ensure_ascii=False))
 
 
@@ -2947,8 +3123,8 @@ async def t_send_agent_message(agent, args):
         raise ToolFail("text 不能为空。")
     raw_to = str(args.get("to") or "").strip()
     to_id = parse_conv(raw_to)
-    if not to_id:
-        raise ToolFail(f"无效的目标编号 {raw_to!r}，请填 c1、c2 或 main（可用 list_peers 查看）。")
+    if not to_id or to_id == "main":
+        raise ToolFail(f"无效的目标编号 {raw_to!r}：send_agent_message 只用于同一个主人名下的子 agent 之间互聊（如 c1、c2，可用 list_peers 查看）；需要请求主控创建子 agent 请用 spawn_subagent。")
     me_id = agent["conv"]
     if to_id == me_id:
         raise ToolFail("不能给自己发消息。")
@@ -2956,11 +3132,8 @@ async def t_send_agent_message(agent, args):
     target = conv_row(to_id)
     if target is None or target["status"] != "open":
         raise ToolFail(f"目标聊天 {to_id} 不存在或已关闭。")
-    if to_id == "main":
-        if owner != 0:
-            raise ToolFail("你无权直接给主控发消息；需要开新子 agent 请用 spawn_subagent。")
-    elif conv_owner(target) != owner:
-        raise ToolFail(f"权限隔离：不能跨主人与 {to_id} 通信。")
+    if conv_owner(target) != owner:
+        raise ToolFail(f"权限隔离：一个人的子 agent 只能和自己同一个主人名下的子 agent 对话，不能跨主人与 {to_id} 通信。")
 
     want_wake = bool(args.get("wake", True))
     me_row = conv_row(me_id)
@@ -3298,9 +3471,12 @@ async def t_spawn_subagent(agent, args):
             f"防失控保护：你当前已有 {my_active_children} 个未关闭的派生子 agent（上限 {MAX_SPAWN_PER_PARENT}）。"
             "请先复用现有子 agent 或用 stop_spawned_agent 回收已完成的子 agent。"
         )
-    total_spawned = store.one("SELECT COUNT(*) AS n FROM convs WHERE status='open' AND IFNULL(parent_conv,'')!=''")["n"]
+    total_spawned = store.one(
+        "SELECT COUNT(*) AS n FROM convs WHERE status='open' AND IFNULL(parent_conv,'')!='' AND IFNULL(owner,0)=?",
+        (owner,),
+    )["n"]
     if MAX_SPAWN_TOTAL > 0 and total_spawned >= MAX_SPAWN_TOTAL:
-        raise ToolFail(f"防失控保护：全局活跃派生子 agent 已达上限（{MAX_SPAWN_TOTAL} 个）。")
+        raise ToolFail(f"防失控保护：当前主人名下活跃派生子 agent 已达上限（{MAX_SPAWN_TOTAL} 个）。")
 
     grow = None
     if want_group:
@@ -3322,7 +3498,8 @@ async def t_spawn_subagent(agent, args):
     if include_memory:
         grant_share(child["id"], me["id"])
         for src in share_sources(me["id"]):
-            if src != child["id"]:
+            src_row = conv_row(src)
+            if src != child["id"] and src_row is not None and conv_owner(src_row) == owner:
                 grant_share(child["id"], src)
         if (me["git"] or "").strip():
             store.run("UPDATE convs SET git=? WHERE id=?", (me["git"], child["id"]))
@@ -3351,8 +3528,9 @@ async def t_spawn_subagent(agent, args):
 
 async def t_stop_spawned_agent(agent, args):
     target = arg_conv(args)
-    me_id = agent["conv"]
-    if (target["parent_conv"] or "").strip() != me_id:
+    me = conv_row(agent["conv"])
+    me_id = me["id"]
+    if conv_owner(target) != conv_owner(me) or (target["parent_conv"] or "").strip() != me_id:
         raise ToolFail(f"只能停掉由你自己（{me_id}）通过 spawn_subagent 创建的子 agent；{target['id']} 不是你派生的。")
     close_it = bool(args.get("close", True))
     old = active_agent(target)
@@ -3648,9 +3826,9 @@ HELP_ADMIN = f"""用法：打 / 弹出的菜单就是聊天列表，点哪个进
 /grant <用户id 或 @用户名>（或回复他的消息、他被转发的消息；在群里发会顺便在本群激活他）  /revoke 同样的写法
 没资格的人私聊 bot 或在群里 @bot 时，会给你发一条带【授权】按钮的通知，点一下就行。
 被授权的人在自己私聊里也有聊天菜单：/new 建自己的聊天（{LIMIT_ZH}，满了要先 /list 删掉不用的；你不受限制），只能用自己建的聊天和自己拉 bot 进的群；本地通道他自己 /device 安装、自己批。
-/local c1 on|off|<小时数>  本地通道开关，或直接给授权时间（只限你自己的电脑）
-/devices  本地电脑列表   /device del d2  作废某台   /local c1 device d2|auto  指定聊天用哪台电脑
-/device  在你自己的另一台电脑上装本地通道
+/local [c1|all] [时长|on|off|lock]  本地通道管理面板或自定义时长（如 /local、/local 45m、/local 12h、/local 7d、/local 永久、/local all 24h）
+/device [时长|window 时长|lock|install]  电脑整机免批时长与默认审批窗管理面板（如 /device、/device 24h、/device 永久、/device window 30m、/device lock）
+/devices  本地电脑列表   /device default d3  设管理员默认电脑   /device del d2  作废某台   /local c1 device d3|auto  指定某聊天用哪台电脑
 群里：/bind c1|main  /listen all|mention  /open on|off  /activate（回复某人或带 id；群主人也能用这几个）
 /id  查看 chat id 和你的用户 id   /language  选语言（群里发就是设这个群的语言，默认英文）
 
@@ -3673,8 +3851,8 @@ HELP_MEMBER = f"""直接发消息就是和当前聊天的 AI 说话。打 / 弹�
 /c5 …  切到你的某个聊天   /history  你的所有聊天   /export c5  导出记录
 /rename c5 名字   /close c5  关闭（记录保留）   /reopen c5  重开   /restart c5  换一个 AI 接手   /stop c5  停掉 AI
 /share c5 c7  让 c7 读 c5 的记录（只限你自己的聊天）   /unshare c5 c7  撤销
-/device  在自己电脑上装本地通道（不用等管理员批）；AI 要在你电脑上执行操作时，会先问你批准
-/local c5 on|off|<小时数>  本地通道开关，或直接给授权时间
+/device [时长|lock]  在自己电脑装本地通道，或打开整机免批时长面板（如 /device 4h、/device 7d、/device 永久、/device lock）
+/local [c5|all] [时长|on|off|lock]  本地通道面板或自定义时长（不写 c5 默认管当前聊天，如 /local 30m、/local 24h、/local 永久）
 群：你把 bot 拉进群，群就归你。群里发 /bind c5 指定你的哪个聊天负责；/listen all|mention、/open on|off；回复某人发 /activate 让他也能叫醒 bot。
 /id  你的用户 id   /language  选语言"""
 
@@ -4524,48 +4702,346 @@ async def cmd_export(chat_id: int, user_id: int, rest: str) -> None:
         await reply(chat_id, f"导出失败：{exc}", en=f"Export failed: {exc}")
 
 
+def release_pending_for_device(dev_id: str, conv_id: str = "") -> int:
+    """当用户在 /device 或 /local 主动授权后，顺便把正在挂起等待批准的同类本地请求立即放行。"""
+    dev = device_row(dev_id)
+    if dev is None:
+        return 0
+    released = 0
+    for other in store.q("SELECT id, payload FROM approvals WHERE kind='local' AND status='pending'"):
+        opay = json.loads(other["payload"] or "{}")
+        if opay.get("device", ADMIN_DEVICE) != dev_id:
+            continue
+        ocid = opay.get("conv", "")
+        if conv_id and ocid != conv_id:
+            continue
+        ocrow = conv_row(ocid)
+        if ocrow is None:
+            continue
+        if not conv_id and not (
+            (is_admin_device(dev) and conv_owner(ocrow) == 0)
+            or (not is_admin_device(dev) and conv_owner(ocrow) == int(dev["owner"] or 0))
+        ):
+            continue
+        set_approval(other["id"], "approved")
+        released += 1
+    return released
+
+
+def device_panel(dev, viewer_id: int, note: str = "") -> tuple[str, dict]:
+    en = not is_admin(viewer_id) and lang_of(viewer_id) == "en"
+    dev = device_row(dev["id"])
+    online = dev["id"] in LOCAL["clients"]
+    a_until = float(dev["auth_until"] or 0)
+    wsec = device_window_sec(dev)
+    convs = [r for r in open_convs() if (d := conv_device(r)) is not None and d["id"] == dev["id"] and can_manage(viewer_id, r)]
+
+    if en:
+        status_s = "🟢 online" if online else "⚪ offline (local_client.py not running)"
+        if a_until > now():
+            pass_s = "🟢 Forever (all your chats run without asking)" if a_until - now() >= PERMANENT_THRESHOLD else f"🟢 Active ({short_span(a_until - now(), 'en')} left for all your chats)"
+        else:
+            pass_s = "⚪ Off (approved per chat)"
+        win_s = "Ask every operation" if wsec <= 0 else short_span(wsec, "en")
+        chat_items = []
+        for c in convs[:15]:
+            cu = float(c["local_until"] or 0) if c["local_dev"] == dev["id"] else 0.0
+            if not c["local_enabled"]:
+                chat_items.append(f"{c['id']}(off)")
+            elif cu > now():
+                chat_items.append(f"{c['id']}({'forever' if cu - now() >= PERMANENT_THRESHOLD else short_span(cu - now(), 'en')})")
+            else:
+                chat_items.append(c["id"])
+        lines = [
+            f"💻 Computer: {device_label(dev, 'en')}  {status_s}",
+            f"• Computer-wide pass: {pass_s}",
+            f"• Default popup approval window: {win_s}",
+            f"• Chats using it: {', '.join(chat_items) or 'none'}",
+            "",
+            "Custom commands: /device 45m | /device 8h | /device 7d | /device forever | /device lock | /device window 1h30m | /device reset | /device del",
+        ]
+        kb = [
+            [
+                {"text": "🔓 Pass 1h", "callback_data": f"ldv:{dev['id']}:p:3600"},
+                {"text": "4h", "callback_data": f"ldv:{dev['id']}:p:14400"},
+                {"text": "24h", "callback_data": f"ldv:{dev['id']}:p:86400"},
+                {"text": "7d", "callback_data": f"ldv:{dev['id']}:p:604800"},
+                {"text": "Forever", "callback_data": f"ldv:{dev['id']}:p:{PERMANENT_SEC}"},
+            ],
+            [
+                {"text": "⏱ Def:Once", "callback_data": f"ldv:{dev['id']}:w:0"},
+                {"text": "30m", "callback_data": f"ldv:{dev['id']}:w:1800"},
+                {"text": "2h", "callback_data": f"ldv:{dev['id']}:w:7200"},
+                {"text": "24h", "callback_data": f"ldv:{dev['id']}:w:86400"},
+                {"text": "Forever", "callback_data": f"ldv:{dev['id']}:w:{PERMANENT_SEC}"},
+            ],
+            [
+                {"text": "🔒 Revoke all active authorizations now", "callback_data": f"ldv:{dev['id']}:lock:0"},
+            ],
+        ]
+    else:
+        status_s = "🟢 在线" if online else "⚪ 不在线（local_client.py 没开）"
+        if a_until > now():
+            pass_s = "🟢 永久免批（你名下所有聊天直接放行）" if a_until - now() >= PERMANENT_THRESHOLD else f"🟢 开启中（剩余 {human_dur(a_until - now())}，你名下所有聊天免批）"
+        else:
+            pass_s = "⚪ 未开启（按各聊天单独计时）"
+        win_s = "每次逐条确认（0）" if wsec <= 0 else short_span(wsec)
+        chat_items = []
+        for c in convs[:15]:
+            cu = float(c["local_until"] or 0) if c["local_dev"] == dev["id"] else 0.0
+            if not c["local_enabled"]:
+                chat_items.append(f"{c['id']}(已关)")
+            elif cu > now():
+                chat_items.append(f"{c['id']}({'永久' if cu - now() >= PERMANENT_THRESHOLD else human_dur(cu - now())})")
+            else:
+                chat_items.append(c["id"])
+        lines = [
+            f"💻 本地电脑：{device_label(dev)}  {status_s}",
+            f"• 整机免批通行：{pass_s}",
+            f"• 弹窗默认批准时长：{win_s}",
+            f"• 关联聊天：{'、'.join(chat_items) + ('…' if len(convs) > 15 else '') if chat_items else '暂无'}",
+            "",
+            "任意自定义时长命令：/device 45m | /device 6h | /device 3d | /device 永久 | /device lock（一键收回）\n"
+            "改默认弹窗时长：/device window 30m（或 0=每次问 / 12h / 永久）\n"
+            "重发安装包：/device reset（新装另一台发 /device install） | 删除电脑：/device del",
+        ]
+        kb = [
+            [
+                {"text": "🔓 整机1h", "callback_data": f"ldv:{dev['id']}:p:3600"},
+                {"text": "4h", "callback_data": f"ldv:{dev['id']}:p:14400"},
+                {"text": "24h", "callback_data": f"ldv:{dev['id']}:p:86400"},
+                {"text": "7天", "callback_data": f"ldv:{dev['id']}:p:604800"},
+                {"text": "永久", "callback_data": f"ldv:{dev['id']}:p:{PERMANENT_SEC}"},
+            ],
+            [
+                {"text": "⏱ 默认:每次问", "callback_data": f"ldv:{dev['id']}:w:0"},
+                {"text": "30m", "callback_data": f"ldv:{dev['id']}:w:1800"},
+                {"text": "2h", "callback_data": f"ldv:{dev['id']}:w:7200"},
+                {"text": "24h", "callback_data": f"ldv:{dev['id']}:w:86400"},
+                {"text": "永久", "callback_data": f"ldv:{dev['id']}:w:{PERMANENT_SEC}"},
+            ],
+            [
+                {"text": "🔒 一键收回本机与所有聊天授权", "callback_data": f"ldv:{dev['id']}:lock:0"},
+            ],
+        ]
+        if is_admin(viewer_id):
+            adm_devs = admin_owned_devices()
+            if len(adm_devs) > 1:
+                pref = preferred_admin_device()
+                row_btns = []
+                for ad in adm_devs[:4]:
+                    star = "⭐" if pref and pref["id"] == ad["id"] else "切到 "
+                    row_btns.append({"text": f"{star}{ad['id']}", "callback_data": f"ldv:{ad['id']}:def:0"})
+                kb.append(row_btns)
+    full_text = (f"✅ {note}\n\n" if note else "") + "\n".join(lines)
+    return full_text, {"inline_keyboard": kb}
+
+
+def local_conv_panel(conv, viewer_id: int, note: str = "") -> tuple[str, dict]:
+    en = not is_admin(viewer_id) and lang_of(viewer_id) == "en"
+    conv = conv_row(conv["id"])
+    dev = conv_device(conv)
+    enabled = bool(conv["local_enabled"])
+    eff = effective_local_until(conv, dev) if enabled and dev is not None else 0.0
+    can_grant = dev is not None and may_approve(dev, viewer_id)
+
+    if en:
+        dev_s = f"{device_label(dev, 'en')} ({'🟢 online' if dev['id'] in LOCAL['clients'] else '⚪ offline'})" if dev else "none (send /device to install)"
+        if not enabled:
+            auth_s = "📴 Disabled"
+        elif eff > now():
+            via = " (via computer-wide pass)" if dev and float(dev["auth_until"] or 0) >= eff and float(dev["auth_until"] or 0) > now() else ""
+            auth_s = ("🟢 Forever" if eff - now() >= PERMANENT_THRESHOLD else f"🟢 {short_span(eff - now(), 'en')} left") + via
+        else:
+            auth_s = "⚪ Will ask when needed"
+        lines = [
+            f"🔧 Local channel for {conv_tag(conv)}",
+            f"• Switch: {'ON' if enabled else 'OFF'}",
+            f"• Computer: {dev_s}",
+            f"• Authorization: {auth_s}",
+            "",
+            f"Custom commands (chat id optional when inside chat): /local 45m | /local 12h | /local 7d | /local forever | /local lock | /local off | /local all 24h",
+        ]
+        kb = []
+        if can_grant:
+            kb.append([
+                {"text": "✅ 30m", "callback_data": f"llc:{conv['id']}:s:1800"},
+                {"text": "2h", "callback_data": f"llc:{conv['id']}:s:7200"},
+                {"text": "12h", "callback_data": f"llc:{conv['id']}:s:43200"},
+                {"text": "24h", "callback_data": f"llc:{conv['id']}:s:86400"},
+                {"text": "7d", "callback_data": f"llc:{conv['id']}:s:604800"},
+                {"text": "Forever", "callback_data": f"llc:{conv['id']}:s:{PERMANENT_SEC}"},
+            ])
+        ctrl = []
+        if can_grant:
+            ctrl.append({"text": "🔒 Revoke window", "callback_data": f"llc:{conv['id']}:lock:0"})
+        ctrl.append({"text": "📴 Turn OFF" if enabled else "🟢 Turn ON", "callback_data": f"llc:{conv['id']}:{'off' if enabled else 'on'}:0"})
+        kb.append(ctrl)
+    else:
+        dev_s = f"{device_label(dev)}（{'🟢 在线' if dev['id'] in LOCAL['clients'] else '⚪ 不在线'}）" if dev else "未配置（发 /device 安装）"
+        if not enabled:
+            auth_s = "📴 本地通道已关闭"
+        elif eff > now():
+            via = "（来自 /device 整机免批）" if dev and float(dev["auth_until"] or 0) >= eff and float(dev["auth_until"] or 0) > now() else ""
+            auth_s = ("🟢 永久免批" if eff - now() >= PERMANENT_THRESHOLD else f"🟢 剩余 {human_dur(eff - now())}") + via
+        else:
+            auth_s = "⚪ 未预授权（首次调用时弹窗询问）"
+        bind_mode = f"指定绑定 {conv['device']}" if conv["device"] else "自动匹配"
+        lines = [
+            f"🔧 聊天 {conv_tag(conv)} 本地通道管理",
+            f"• 通道开关：{'🟢 已开启' if enabled else '📴 已关闭'}",
+            f"• 目标电脑：{dev_s}（{bind_mode}）",
+            f"• 当前授权：{auth_s}",
+            "",
+            "任意自定义时长（在当前聊天内可省略编号）：\n"
+            f"/local 45m | /local 6h | /local 7d | /local 永久 | /local lock | /local off\n"
+            "批量授权名下所有聊天：/local all 24h（或 /local all 永久、/local all lock）",
+        ]
+        kb = []
+        if can_grant:
+            kb.append([
+                {"text": "✅ 30m", "callback_data": f"llc:{conv['id']}:s:1800"},
+                {"text": "2h", "callback_data": f"llc:{conv['id']}:s:7200"},
+                {"text": "12h", "callback_data": f"llc:{conv['id']}:s:43200"},
+                {"text": "24h", "callback_data": f"llc:{conv['id']}:s:86400"},
+                {"text": "7天", "callback_data": f"llc:{conv['id']}:s:604800"},
+                {"text": "永久", "callback_data": f"llc:{conv['id']}:s:{PERMANENT_SEC}"},
+            ])
+        ctrl = []
+        if can_grant:
+            ctrl.append({"text": "🔒 收回本聊天授权", "callback_data": f"llc:{conv['id']}:lock:0"})
+        ctrl.append({"text": "📴 关闭通道" if enabled else "🟢 开启通道", "callback_data": f"llc:{conv['id']}:{'off' if enabled else 'on'}:0"})
+        kb.append(ctrl)
+    full_text = (f"✅ {note}\n\n" if note else "") + "\n".join(lines)
+    return full_text, {"inline_keyboard": kb}
+
+
 async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> None:
-    dev = user_device(user_id)
+    admin = is_admin(user_id)
+    tokens = arg.split()
+    picked_dev = None
+    if admin and tokens and re.fullmatch(r"d\d+", tokens[0].lower()):
+        cand = device_row(tokens[0].lower())
+        if cand is not None and cand["status"] == "active" and is_admin_device(cand):
+            picked_dev = cand
+            tokens = tokens[1:]
+            arg = " ".join(tokens).strip()
+
+    dev = picked_dev or owner_primary_device(user_id)
+    sub = tokens[0].lower() if tokens else ""
+
+    if sub in ("install", "new"):
+        name = display_name(message.get("from") or {})
+        new_dev = await issue_device(user_id, name)
+        if admin:
+            store.set("admin_default_device", new_dev["id"])
+            await reply(chat_id, f"已生成你的电脑安装包并设为管理员默认电脑：{device_label(new_dev)}。")
+        return
+
     if arg == "":
         if dev is not None:
-            online = dev["id"] in LOCAL["clients"]
-            convs = [r for r in [conv_row("main"), *open_convs()] if r is not None]
-            users = [c["id"] for c in convs if (d := conv_device(c)) is not None and d["id"] == dev["id"]]
-            await reply(
-                chat_id,
-                f"你的电脑：{device_label(dev)}，{'🟢 在线' if online else '⚪ 不在线（local_client.py 没开）'}。\n"
-                f"用它的聊天：{'、'.join(users) or '暂时没有'}\n"
-                "/device reset 换 token 并重发安装文件；/device del 删除这台电脑。",
-                en=f"Your computer: {device_label(dev, 'en')}, {'🟢 online' if online else '⚪ offline (local_client.py is not running)'}.\n"
-                   f"Chats using it: {', '.join(users) or 'none yet'}\n"
-                   "/device reset issues a new token and resends the install files; /device del removes this computer.",
-            )
+            text, markup = device_panel(dev, user_id)
+            await reply(chat_id, text, markup)
             return
         name = display_name(message.get("from") or {})
         dev = await issue_device(user_id, name)
-        if is_admin(user_id):
-            await reply(chat_id, f"你的私聊不走自动绑定：用 /local c1 device {dev['id']} 指定哪个聊天用 {device_label(dev)}。")
+        if admin:
+            store.set("admin_default_device", dev["id"])
+            await reply(chat_id, f"已设为管理员默认本地电脑：{device_label(dev)}（以后你的聊天自动连这台，也可发 /device 管理免批时长）。")
             return
-        # 被授权的用户自己装、自己批，管理员只收一条通知
         for row in store.q("SELECT id FROM approvals WHERE kind='device' AND status='pending'"):
             if approval_payload(row["id"]).get("user_id") == user_id:
                 set_approval(row["id"], "done")
         await notify_admins(f"用户 {person_label(user_id)} 在自己电脑上装了本地通道 {device_label(dev)}。"
                             "只有他自己的聊天会用这台电脑，执行操作要他本人批准。")
         return
-    if arg in ("reset", "del") and dev is None:
+
+    if admin and sub == "default" and len(tokens) >= 2:
+        did = tokens[1].lower()
+        target_d = device_row(did)
+        if target_d is None or target_d["status"] != "active" or not is_admin_device(target_d):
+            await reply(chat_id, "只能把你自己的活跃电脑（如 d0、d3）设为管理员默认电脑。/devices 查看列表。")
+            return
+        store.set("admin_default_device", target_d["id"])
+        text, markup = device_panel(target_d, user_id, f"已将 {device_label(target_d)} 设为管理员默认电脑")
+        await reply(chat_id, text, markup)
+        return
+
+    if dev is None:
         await reply(chat_id, "你还没有本地电脑，先发 /device 安装。", en="You don't have a local computer yet. Send /device to set one up.")
         return
-    if arg == "reset":
-        await issue_device(user_id, "")
+
+    if sub == "reset":
+        target_user_dev = user_device(user_id)
+        if admin and target_user_dev is None and dev["id"] == ADMIN_DEVICE:
+            await reply(chat_id, "d0 用的是服务器 .env 里的 CLIENT_TOKEN；想生成独立安装包发 /device install。")
+            return
+        await issue_device(user_id, display_name(message.get("from") or ""))
         return
-    if arg == "del":
+
+    if sub == "del" and len(tokens) == 1:
+        if dev["id"] == ADMIN_DEVICE:
+            await reply(chat_id, "d0 是服务器 .env 配置的电脑，不能用 /device del 删除。")
+            return
         await revoke_device(dev, "电脑主人删除了")
+        if store.get("admin_default_device") == dev["id"]:
+            store.delete("admin_default_device")
         await reply(chat_id, f"已删除 {device_label(dev)}，它的 token 作废了。",
                     en=f"Removed {device_label(dev, 'en')}. Its token no longer works.")
         return
-    await reply(chat_id, "用法：/device 安装或查看；/device reset 换 token 并重发安装文件；/device del 删除",
-                en="Usage: /device to set up or see the status; /device reset for a new token and the install files again; /device del to remove")
+
+    if sub in ("lock", "off", "revoke", "clear", "收回", "关闭"):
+        store.run("UPDATE devices SET auth_until=0 WHERE id=?", (dev["id"],))
+        store.run("UPDATE convs SET local_until=0 WHERE local_dev=?", (dev["id"],))
+        text, markup = device_panel(dev, user_id, f"已收回 {device_label(dev)} 的整机免批及所有关联聊天时间窗")
+        await reply(chat_id, text, markup)
+        return
+
+    if sub in ("window", "win", "default-window", "默认"):
+        dur_raw = " ".join(tokens[1:]).strip()
+        sec = parse_duration_spec(dur_raw)
+        if sec is None:
+            await reply(
+                chat_id,
+                "用法：/device window <时长>，支持如 0（每次问）、30m、2h、12h、7d、永久",
+                en="Usage: /device window <duration>, e.g. 0 (ask every time), 30m, 2h, 12h, 7d, forever",
+            )
+            return
+        store.run("UPDATE devices SET window_sec=? WHERE id=?", (sec, dev["id"]))
+        text, markup = device_panel(dev, user_id, f"已将弹窗默认批准时长设为：{short_span(sec, 'en' if not admin and lang_of(user_id) == 'en' else 'zh')}")
+        await reply(chat_id, text, markup)
+        return
+
+    dur_raw = " ".join(tokens[1:]).strip() if sub in ("auth", "pass", "allow", "授权", "免批") else arg
+    sec = parse_duration_spec(dur_raw)
+    if sec is not None:
+        if sec <= 0:
+            store.run("UPDATE devices SET auth_until=0 WHERE id=?", (dev["id"],))
+            note = f"已关闭 {device_label(dev)} 的整机免批（恢复按各聊天批准）"
+        else:
+            store.run("UPDATE devices SET auth_until=? WHERE id=?", (now() + sec, dev["id"]))
+            released = release_pending_for_device(dev["id"])
+            span_s = short_span(sec, "en" if not admin and lang_of(user_id) == "en" else "zh")
+            note = f"{device_label(dev)} 已开启整机免批：{span_s}" + (f"（已自动放行 {released} 个挂起请求）" if released else "")
+        text, markup = device_panel(dev, user_id, note)
+        await reply(chat_id, text, markup)
+        return
+
+    await reply(
+        chat_id,
+        "用法：\n"
+        "• /device — 打开整机免批与默认时长按钮面板\n"
+        "• /device 45m | 8h | 7d | 永久 — 自定义整机免批时长\n"
+        "• /device window 30m | 0 | 24h | 永久 — 改弹窗默认放行时长\n"
+        "• /device lock — 一键收回本机全部已授权时间窗\n"
+        "• /device reset — 换 token 重发文件 | /device del — 删除电脑",
+        en="Usage:\n"
+           "• /device — open interactive duration panel\n"
+           "• /device 45m | 8h | 7d | forever — set computer-wide pass\n"
+           "• /device window 30m | 0 | 24h | forever — set default approval window\n"
+           "• /device lock — revoke all active windows\n"
+           "• /device reset | /device del",
+    )
 
 
 ADMIN_COMMANDS = {"/main", "/key", "/agents", "/grant", "/revoke", "/devices"}
@@ -4877,25 +5353,112 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         await reply(chat_id, f"已作废 {device_label(dev)}，它的 token 不能再用了。")
         return
     if command == "/local":
-        target, _, value = rest.partition(" ")
-        conv = conv_row(parse_conv(target)) if parse_conv(target) else None
-        value = value.strip()
-        usage = "用法：/local c1 on|off|<小时数>，或 /local c1 device d2|auto"
-        usage_en = "Usage: /local c5 on|off|<hours>, or /local c5 device auto"
-        if conv is None or not can_manage(user_id, conv):
-            await reply(chat_id, usage, en=usage_en)
+        tokens = rest.split()
+        usage = (
+            "用法：\n"
+            "• /local — 打开当前聊天的本地通道面板（带快捷时长按钮）\n"
+            "• /local 45m | 6h | 7d | 永久 | lock | on | off — 直接设当前聊天（也可写成 /local c165 45m）\n"
+            "• /local all 24h | 永久 | lock | off — 批量设你名下所有聊天\n"
+            "• /local [c165] device d3|auto — 指定聊天用哪台电脑"
+        )
+        usage_en = (
+            "Usage:\n"
+            "• /local — open interactive panel for current chat\n"
+            "• /local 45m | 6h | 7d | forever | lock | on | off — set current chat (or /local c5 45m)\n"
+            "• /local all 24h | forever | lock | off — set all your open chats"
+        )
+
+        # 1) 批量管理名下所有开放聊天：/local all <value>
+        if tokens and tokens[0].lower() == "all":
+            val = " ".join(tokens[1:]).strip()
+            own_id = 0 if admin else user_id
+            my_convs = own_convs(own_id, "open")
+            if not my_convs:
+                await reply(chat_id, "你现在还没有开着的聊天。", en="You have no open chats right now.")
+                return
+            low_val = val.lower()
+            if low_val == "off":
+                for c in my_convs:
+                    store.run("UPDATE convs SET local_enabled=0, local_until=0 WHERE id=?", (c["id"],))
+                    deny_local_requests(conv_id=c["id"])
+                await reply(chat_id, f"已关闭你名下全部 {len(my_convs)} 个聊天的本地通道。", en=f"Turned off local channel for all {len(my_convs)} chats.")
+                return
+            if low_val == "on":
+                for c in my_convs:
+                    store.run("UPDATE convs SET local_enabled=1 WHERE id=?", (c["id"],))
+                await reply(chat_id, f"已开启你名下全部 {len(my_convs)} 个聊天的本地通道。", en=f"Turned on local channel for all {len(my_convs)} chats.")
+                return
+            if low_val in ("lock", "revoke", "clear", "收回"):
+                for c in my_convs:
+                    store.run("UPDATE convs SET local_until=0 WHERE id=?", (c["id"],))
+                await reply(chat_id, f"已收回你名下全部 {len(my_convs)} 个聊天的单独授权时间窗（若开了 /device 整机免批请用 /device lock 收回）。",
+                            en=f"Revoked local windows on all {len(my_convs)} chats.")
+                return
+            sec = parse_duration_spec(val)
+            if sec is None:
+                await reply(chat_id, usage, en=usage_en)
+                return
+            ok_cnt = 0
+            for c in my_convs:
+                dev = conv_device(c)
+                if dev is not None and may_approve(dev, user_id):
+                    until = 0.0 if sec <= 0 else now() + sec
+                    store.run("UPDATE convs SET local_enabled=1, local_until=?, local_dev=? WHERE id=?", (until, dev["id"], c["id"]))
+                    if sec > 0:
+                        release_pending_for_device(dev["id"], c["id"])
+                    ok_cnt += 1
+            if not ok_cnt:
+                await reply(chat_id, "没有可授权的本地电脑，请先发 /device 查看或安装。", en="No local computer available. Send /device first.")
+                return
+            span_s = short_span(sec, "en" if not admin and lang_of(user_id) == "en" else "zh")
+            await reply(chat_id, f"已为你名下 {ok_cnt} 个聊天批量设置本地授权时长：{span_s}。",
+                        en=f"Set local authorization to {span_s} for {ok_cnt} chat(s).")
             return
+
+        # 2) 解析目标聊天：传了 cXXX 就用 cXXX，没传就自动取当前选中的聊天（或群绑定的聊天）
+        if tokens and parse_conv(tokens[0]) and parse_conv(tokens[0]) != "main":
+            conv = conv_row(parse_conv(tokens[0]))
+            value = " ".join(tokens[1:]).strip()
+        else:
+            cur_id = selected(chat_id) if private else route_of(chat_id)
+            conv = conv_row(cur_id) if cur_id and cur_id != "main" else None
+            value = rest.strip()
+            if conv is None:
+                own_list = own_convs(0 if admin else user_id, "open")
+                if len(own_list) == 1:
+                    conv = own_list[0]
+
+        if conv is None or not can_manage(user_id, conv):
+            await reply(
+                chat_id,
+                ("当前在 /main（主控不用本地通道），请先切到某个聊天（如 /c165）再发 /local，或指定编号如 `/local c165 24h`；"
+                 "想一次性设整台电脑免批直接发 `/device`。\n\n" if private and selected(chat_id) == "main" else "") + usage,
+                en=usage_en,
+            )
+            return
+
+        if value == "":
+            text, markup = local_conv_panel(conv, user_id)
+            await reply(chat_id, text, markup)
+            return
+
         owner = conv_owner(conv)
-        if value == "off":
+        low_val = value.lower()
+        if low_val == "off":
             store.run("UPDATE convs SET local_enabled=0, local_until=0 WHERE id=?", (conv["id"],))
             deny_local_requests(conv_id=conv["id"])
-            await reply(chat_id, f"{conv_tag(conv)} 本地通道已关闭。", en=f"Turned off the local channel for {conv_tag(conv)}.")
-        elif value == "on":
+            text, markup = local_conv_panel(conv, user_id, f"{conv_tag(conv)} 本地通道已关闭")
+            await reply(chat_id, text, markup)
+        elif low_val == "on":
             store.run("UPDATE convs SET local_enabled=1 WHERE id=?", (conv["id"],))
-            await reply(chat_id, f"{conv_tag(conv)} 本地通道已开启，第一次用时会再请电脑主人批准。",
-                        en=f"Turned on the local channel for {conv_tag(conv)}. The first time it's used, the computer's owner is asked to approve.")
-        elif value.split(" ", 1)[0] == "device":
-            choice = value[len("device"):].strip()
+            text, markup = local_conv_panel(conv, user_id, f"{conv_tag(conv)} 本地通道已开启")
+            await reply(chat_id, text, markup)
+        elif low_val in ("lock", "revoke", "clear", "收回"):
+            store.run("UPDATE convs SET local_until=0 WHERE id=?", (conv["id"],))
+            text, markup = local_conv_panel(conv, user_id, f"已收回 {conv_tag(conv)} 的单独授权时间窗")
+            await reply(chat_id, text, markup)
+        elif low_val.split(" ", 1)[0] == "device":
+            choice = value[len("device"):].strip().lower()
             if choice in ("", "auto"):
                 store.run("UPDATE convs SET device='' WHERE id=?", (conv["id"],))
             else:
@@ -4908,32 +5471,35 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                                 en=f"{conv_tag(conv)} can only use your own computer (/device).")
                     return
                 store.run("UPDATE convs SET device=? WHERE id=?", (picked["id"], conv["id"]))
-            dev = conv_device(conv_row(conv["id"]))
-            await reply(chat_id, f"{conv_tag(conv)} 的本地操作发到：{device_label(dev) if dev is not None else '没有可用的电脑'}。"
-                                 "换了电脑要由新电脑的主人重新批准。",
-                        en=f"{conv_tag(conv)}'s local operations go to: "
-                           f"{device_label(dev, 'en') if dev is not None else 'no computer (send /device to set one up)'}.")
+            conv = conv_row(conv["id"])
+            dev = conv_device(conv)
+            text, markup = local_conv_panel(conv, user_id, f"已将目标电脑设为：{device_label(dev) if dev else '无'}")
+            await reply(chat_id, text, markup)
         else:
-            try:
-                hours = float(value)
-            except ValueError:
-                hours = 0.0
-            if not 0 < hours <= 720:
+            sec = parse_duration_spec(value)
+            if sec is None:
                 await reply(chat_id, usage, en=usage_en)
                 return
             dev = conv_device(conv)
             if dev is None or not may_approve(dev, user_id):
-                where = device_label(dev) if dev is not None else "没有可用的电脑"
-                where_en = device_label(dev, "en") if dev is not None else "no computer"
+                where = device_label(dev) if dev is not None else "没有可用的电脑（请先发 /device 安装）"
+                where_en = device_label(dev, "en") if dev is not None else "no computer (send /device first)"
                 await reply(chat_id, f"{conv_tag(conv)} 用的是 {where}，只有电脑主人能批准，你不能直接给时间。",
                             en=f"{conv_tag(conv)} uses {where_en}; only that computer's owner can approve it.")
                 return
+            until = 0.0 if sec <= 0 else now() + sec
             store.run(
                 "UPDATE convs SET local_enabled=1, local_until=?, local_dev=? WHERE id=?",
-                (now() + hours * 3600, dev["id"], conv["id"]),
+                (until, dev["id"], conv["id"]),
             )
-            await reply(chat_id, f"{conv_tag(conv)} 在 {device_label(dev)} 上的本地通道授权 {hours:g} 小时。",
-                        en=f"Approved {conv_tag(conv)}'s local channel on {device_label(dev, 'en')} for {hours:g} hour(s).")
+            released = release_pending_for_device(dev["id"], conv["id"]) if sec > 0 else 0
+            span_s = short_span(sec, "en" if not admin and lang_of(user_id) == "en" else "zh")
+            note = (
+                f"已收回时间窗（恢复每次确认）" if sec <= 0
+                else f"已在 {device_label(dev)} 上授权 {span_s}" + (f"（并放行了 {released} 个等待请求）" if released else "")
+            )
+            text, markup = local_conv_panel(conv_row(conv["id"]), user_id, note)
+            await reply(chat_id, text, markup)
         return
 
     if not group:
@@ -5063,6 +5629,80 @@ async def on_callback(callback: dict) -> None:
         await answer(f"已记录：{choice}", en=f"Recorded: {choice}")
         return
 
+    if data.startswith("ldv:"):
+        parts = data.split(":")
+        if len(parts) < 4:
+            await answer()
+            return
+        _, dev_id, act, val_s = parts[:4]
+        dev = device_row(dev_id)
+        if dev is None or dev["status"] != "active" or not may_approve(dev, user_id):
+            await answer("无权操作或电脑已作废", en="Not allowed or computer removed")
+            return
+        sec = int(val_s) if val_s.lstrip("-").isdigit() else 0
+        en = not is_admin(user_id) and lang_of(user_id) == "en"
+        if act == "p":
+            store.run("UPDATE devices SET auth_until=? WHERE id=?", (now() + sec, dev["id"]))
+            release_pending_for_device(dev["id"])
+            note = f"Pass set: {short_span(sec, 'en')}" if en else f"已开启整机免批：{short_span(sec)}"
+        elif act == "w":
+            store.run("UPDATE devices SET window_sec=? WHERE id=?", (sec, dev["id"]))
+            note = f"Default window: {short_span(sec, 'en')}" if en else f"默认弹窗时长已设为：{short_span(sec)}"
+        elif act == "lock":
+            store.run("UPDATE devices SET auth_until=0 WHERE id=?", (dev["id"],))
+            store.run("UPDATE convs SET local_until=0 WHERE local_dev=?", (dev["id"],))
+            note = "Revoked all active windows" if en else "已收回整机免批与所有关联聊天授权"
+        elif act == "def" and is_admin(user_id):
+            store.set("admin_default_device", dev["id"])
+            note = f"已切换管理员默认电脑为 {device_label(dev)}"
+        else:
+            await answer()
+            return
+        await answer(note[:180])
+        if msg_chat and message.get("message_id"):
+            text, markup = device_panel(dev, user_id, note)
+            await tg.try_call("editMessageText", chat_id=msg_chat, message_id=message["message_id"], text=text, reply_markup=markup)
+        return
+
+    if data.startswith("llc:"):
+        parts = data.split(":")
+        if len(parts) < 4:
+            await answer()
+            return
+        _, cid, act, val_s = parts[:4]
+        conv = conv_row(cid)
+        if conv is None or not can_manage(user_id, conv):
+            await answer("无权操作该聊天", en="Not allowed")
+            return
+        en = not is_admin(user_id) and lang_of(user_id) == "en"
+        dev = conv_device(conv)
+        sec = int(val_s) if val_s.lstrip("-").isdigit() else 0
+        if act == "on":
+            store.run("UPDATE convs SET local_enabled=1 WHERE id=?", (conv["id"],))
+            note = "Local channel ON" if en else "已开启本地通道"
+        elif act == "off":
+            store.run("UPDATE convs SET local_enabled=0, local_until=0 WHERE id=?", (conv["id"],))
+            deny_local_requests(conv_id=conv["id"])
+            note = "Local channel OFF" if en else "已关闭本地通道"
+        elif act == "lock":
+            store.run("UPDATE convs SET local_until=0 WHERE id=?", (conv["id"],))
+            note = "Window revoked" if en else "已收回本聊天单独授权时间窗"
+        elif act == "s":
+            if dev is None or not may_approve(dev, user_id):
+                await answer("只有这台电脑的主人能授权", en="Only this computer's owner can approve")
+                return
+            store.run("UPDATE convs SET local_enabled=1, local_until=?, local_dev=? WHERE id=?", (now() + sec, dev["id"], conv["id"]))
+            release_pending_for_device(dev["id"], conv["id"])
+            note = f"Approved for {short_span(sec, 'en')}" if en else f"已授权 {short_span(sec)}"
+        else:
+            await answer()
+            return
+        await answer(note[:180])
+        if msg_chat and message.get("message_id"):
+            text, markup = local_conv_panel(conv_row(conv["id"]), user_id, note)
+            await tg.try_call("editMessageText", chat_id=msg_chat, message_id=message["message_id"], text=text, reply_markup=markup)
+        return
+
     if data.startswith("ap:"):
         _, approval_id, choice = data.split(":", 2)
         row = store.one("SELECT * FROM approvals WHERE id=?", (approval_id,))
@@ -5081,15 +5721,28 @@ async def on_callback(callback: dict) -> None:
                 await mark("已拒绝", en="Denied")
                 return
             conv_id = payload.get("conv", "")
-            store.run("UPDATE convs SET local_until=?, local_dev=? WHERE id=?", (now() + LOCAL_WINDOW, dev["id"], conv_id))
+            if choice.startswith("d") and choice[1:].isdigit():
+                sec = int(choice[1:])
+                store.run("UPDATE devices SET auth_until=? WHERE id=?", (now() + sec, dev["id"]))
+                set_approval(approval_id, "approved")
+                release_pending_for_device(dev["id"])
+                await mark(
+                    f"已开启整机免批：{short_span(sec)}（你名下所有聊天直接执行）",
+                    en=f"Approved computer-wide pass: {short_span(sec, 'en')}",
+                )
+                return
+            if choice == "0":
+                sec = 0
+            elif choice.startswith("s") and choice[1:].isdigit():
+                sec = int(choice[1:])
+            else:
+                sec = device_window_sec(dev)
+            if sec > 0:
+                store.run("UPDATE convs SET local_until=?, local_dev=? WHERE id=?", (now() + sec, dev["id"], conv_id))
             set_approval(approval_id, "approved")
-            if LOCAL_WINDOW > 0:
-                # 时间窗是按聊天开的：同一个聊天在这台电脑上还在等批的其他操作一起放行
-                for other in store.q("SELECT id, payload FROM approvals WHERE kind='local' AND status='pending'"):
-                    other_payload = json.loads(other["payload"] or "{}")
-                    if other_payload.get("conv") == conv_id and other_payload.get("device", ADMIN_DEVICE) == dev["id"]:
-                        set_approval(other["id"], "approved")
-            await mark(f"已批准：{window_text()}", en=f"Approved: {window_text('en')}")
+            if sec > 0:
+                release_pending_for_device(dev["id"], conv_id)
+            await mark(f"已批准：{window_text(sec=sec)}", en=f"Approved: {window_text('en', sec=sec)}")
             return
 
     if data.startswith("sh:") or data.startswith("shd:"):
@@ -5550,6 +6203,8 @@ def build_menu(dm: int) -> list[dict]:
         commands += [{"command": cloud_tag(n), "description": cloud_desc(dm, n, n == view)} for n in sorted(clouds)]
     commands += [
         {"command": "new", "description": "➕ 新建聊天"},
+        {"command": "device", "description": "💻 电脑免批时长与本地通道管理"},
+        {"command": "local", "description": "🔧 当前聊天本地授权时长"},
         {"command": "trace", "description": "🔎 AI 实时动作/改文件/思考追踪"},
         {"command": "list", "description": "🗂 管理聊天（切换 / 删除）"},
         {"command": "history", "description": "📜 所有聊天（含已关闭）"},
@@ -5920,7 +6575,17 @@ async def trace_post_event(request: Request) -> JSONResponse:
 
 
 @app.get("/trace")
-async def trace_get(chat: str = "", limit: int = 10) -> JSONResponse:
+async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONResponse:
+    """HTTP 查看实时追踪：需带 X-Agent 身份头（严格按该 agent 的主人隔离过滤）或账号级 Bearer 密钥。"""
+    agent_hdr = request.headers.get("x-agent", "").strip()
+    tok = bearer(request)
+    is_full_admin = bool(tok and hmac.compare_digest(tok, store.get("account_key")))
+    arow = agent_row(agent_hdr) if agent_hdr else None
+    if not is_full_admin and (arow is None or arow["status"] != "active"):
+        return JSONResponse({"ok": False, "error": "unauthorized: provide X-Agent header or use Telegram /trace / MCP trace_status"}, status_code=403)
+    viewer_owner = 0 if is_full_admin else agent_owner_scope(arow)
+    allow_main = is_full_admin or (arow is not None and arow["role"] == "main")
+
     limit = max(0, min(int(limit), 50))
     target = parse_conv(chat) if chat else ""
     if target:
@@ -5931,6 +6596,11 @@ async def trace_get(chat: str = "", limit: int = 10) -> JSONResponse:
     for tr in trows:
         cid = tr["conv"]
         crow = conv_row(cid)
+        if cid == "main":
+            if not allow_main:
+                continue
+        elif crow is not None and not is_full_admin and conv_owner(crow) != viewer_owner:
+            continue
         started = float(tr["started_ts"] or tr["updated_ts"] or now())
         updated = float(tr["updated_ts"] or started)
         out_ts = float(tr["output_ts"] or 0)
