@@ -11,7 +11,8 @@ from artkit import models as M
 from artkit import pixelart as P
 
 SCALE = {"orrery": 1.5, "star_globe": 1.5, "chart_desk": 1.0, "observer_steps": 1.0, "star_easel": 1.5,
-         "book_pile": 1.0, "book_row": 1.0}
+         "book_pile": 1.0, "book_row": 1.0, "floor_dial": 2.5}
+VAULT = "lapis_block"   # repainted by the resource pack as the night sky inside the dome
 
 
 class Starry(P.Mat):
@@ -270,28 +271,150 @@ GLOW_SIZES = [(2, 3), (2, 2), (1, 2)]
 
 
 def window_glow(w, h):
-    """Lamplight to stand behind a window of w by h blocks: a warm sheet with leaded lines, brightest
-    in the middle, seen from +z only and always fully lit. Anchor: its middle."""
+    """Lamplight to stand behind a window of w by h blocks: a lit room seen through leaded panes,
+    drawn curtains at the sides and a pelmet above, brightest around the lamp. Seen from +z only and
+    always fully lit. Anchor: its middle."""
     tones = "abcde"
+    nx, ny = 16 * w, 16 * h
+    side = 4 if w >= 2 else 2
+    lamp_u = -0.25 if w >= 2 else 0.0
     rows = []
-    for j in range(16 * h):
+    for j in range(ny):
         row = ""
-        for i in range(16 * w):
-            u = (i + 0.5) / (16 * w) * 2.0 - 1.0
-            v = (j + 0.5) / (16 * h) * 2.0 - 1.0
-            level = 4.4 - 2.6 * (u * u + v * v) + 0.9 * (P._hash(i, j, 77 + w * 10 + h) - 0.5)
-            if i % 8 == 0 or j % 8 == 0:
-                level -= 1.0   # the leads between the small panes
-            row += tones[max(0, min(4, int(level)))]
+        for i in range(nx):
+            u = (i + 0.5) / nx * 2.0 - 1.0
+            v = (j + 0.5) / ny * 2.0 - 1.0
+            edge = min(i, nx - 1 - i)
+            # the curtain hangs in folds and is gathered a little wider at the top
+            reach = side + (2 if j < ny // 5 else 0) + (1 if (j // 5) % 2 == 0 else 0)
+            if j < 2:
+                row += "q" if (i // 2) % 2 else "p"            # pelmet
+            elif edge < reach:
+                row += "p" if (edge + j // 7) % 3 == 0 else "q"   # curtain folds
+            else:
+                level = 4.3 - 2.3 * ((u - lamp_u) ** 2 + (v + 0.1) ** 2) + 0.9 * (P._hash(i, j, 77 + w * 10 + h) - 0.5)
+                if i % 8 == 0 or j % 8 == 0:
+                    level -= 1.0   # the leads between the small panes
+                row += tones[max(0, min(4, int(level)))]
         rows.append(row)
     light = P.Sprite(f"window_light_{w}x{h}", rows,
-                     {"a": "#b8611c", "b": "#dc8226", "c": "#f4a23a", "d": "#ffc45a", "e": "#ffe08a"})
+                     {"a": "#9a4f18", "b": "#c06e20", "c": "#de8c30", "d": "#f2ac48", "e": "#ffd070",
+                      "p": "#5c2a14", "q": "#74381a"})
     m = M.Model(f"glow_{w}x{h}")
     m.box((-8 * w, -8 * h, -0.05), (8 * w, 8 * h, 0.05), light, skip="newud", emit=15, shade=False)
     return m
 
 
-MODELS = [orrery, star_globe, chart_desk, observer_steps, star_easel, book_pile, book_row]
+def dial_rows(n=120):
+    """The floor inlay as pixels: eight-pointed star, two rings and a scale of ticks between them."""
+    c = (n - 1) / 2.0
+    R = n / 2.0
+
+    def point(dx, dy, ang, length, half):
+        """Which half of a star point this pixel is in: -1, +1, or 0 when outside it."""
+        ux, uy = math.cos(ang), math.sin(ang)
+        p, q = dx * ux + dy * uy, -dx * uy + dy * ux
+        if 0.0 <= p <= length and abs(q) <= half * (1.0 - p / length):
+            return 1 if q >= 0 else -1
+        return 0
+
+    rows = []
+    for j in range(n):
+        row = ""
+        for i in range(n):
+            dx, dy = i - c, j - c
+            r = math.hypot(dx, dy)
+            a = math.degrees(math.atan2(dy, dx)) % 360.0
+            ch = "."
+            # rings, each with a dark line on both sides so that it reads against the planks
+            for r0, r1 in ((R - 5.0, R - 1.5), (R - 15.5, R - 13.5)):
+                if r0 - 1.0 <= r < r1 + 1.0:
+                    ch = "o"
+                if r0 <= r < r1:
+                    ch = "b" if (r - r0) < (r1 - r0) / 2.0 else "l"
+            # scale between the rings: a tick every 5 degrees, longer every 15, heavy every 45
+            if R - 13.5 + 1.0 <= r < R - 5.0 - 1.0:
+                near = round(a / 5.0) * 5.0
+                off = abs(r * math.sin(math.radians(a - near)))
+                k = int(near) % 360
+                inner = R - 12.5 if k % 45 == 0 else R - 10.5 if k % 15 == 0 else R - 8.5
+                if r >= inner and off < (1.0 if k % 45 == 0 else 0.55):
+                    ch = "l" if k % 45 == 0 else "b"
+            if R - 27.0 <= r < R - 26.0:
+                ch = "d"   # a thin circle that the short points just touch
+            hit = 0
+            for k in range(4):
+                hit = hit or point(dx, dy, math.radians(45.0 + 90.0 * k), R - 26.5, 6.5)
+            if hit:
+                ch = "b" if hit > 0 else "k"
+            hit = 0
+            for k in range(4):
+                hit = hit or point(dx, dy, math.radians(90.0 * k), R - 17.0, 8.5)
+            if hit:
+                ch = "l" if hit > 0 else "d"
+            row += ch
+        rows.append(row)
+    return rows
+
+
+def floor_dial():
+    """Brass let into the floor around the telescope pier: an eight-pointed star inside two rings.
+    It lies flat and is seen from above only. Anchor: its middle, on the floor."""
+    dial = P.Sprite("floor_dial", dial_rows(120),
+                    {"l": "#dcb650", "b": "#bf9433", "d": "#9c7424", "k": "#7a551a", "o": "#2c1d10"})
+    m = M.Model("floor_dial", px=2.5)
+    m.box((-24, 0.0, -24), (24, 0.12, 24), dial, skip="nsewd")
+    return m
+
+
+VAULT_TONES = ["#0b1130", "#0e1638", "#111b42", "#15204c"]
+
+
+def vault_tiles():
+    """The painted night sky lining the dome, as block pictures with weights: most of them plain
+    deep blue, some with small gold stars, a few with a bright one."""
+    tones = np.array([P.hx(t) for t in VAULT_TONES], dtype=np.uint8)
+    dim, gold, bright = P.hx("#8a6a2c"), P.hx("#d9b04e"), P.hx("#fff2b0")
+    jj, ii = np.meshgrid(np.arange(16), np.arange(16), indexing="ij")
+
+    def sky(seed):
+        cloud = P._hash(ii // 4, jj // 4, seed) * 0.6 + P._hash(ii, jj, seed + 1) * 0.4
+        return tones[np.clip((cloud * 3.2).astype(int), 0, 3)].copy()
+
+    def small(px, x, y, colour):
+        px[y, x] = colour
+
+    def cross(px, x, y):
+        px[y, x] = bright
+        for ax, ay in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            px[y + ay, x + ax] = gold
+
+    def great(px, x, y):
+        cross(px, x, y)
+        for ax, ay in ((2, 0), (-2, 0), (0, 2), (0, -2), (1, 1), (-1, -1), (1, -1), (-1, 1)):
+            px[y + ay, x + ax] = dim
+
+    out = []
+    for seed in (1, 2, 3):
+        out.append((sky(seed), 5))
+    for seed, spots in ((4, [(4, 11, gold)]), (5, [(12, 3, bright)]), (6, [(3, 4, dim), (11, 12, gold)]),
+                        (7, [(6, 6, gold), (13, 9, dim), (2, 13, dim)]), (8, [(9, 2, dim)])):
+        px = sky(seed)
+        for x, y, colour in spots:
+            small(px, x, y, colour)
+        out.append((px, 2))
+    for seed, (x, y) in ((9, (5, 9)), (10, (11, 5))):
+        px = sky(seed)
+        cross(px, x, y)
+        out.append((px, 1))
+    px = sky(11)
+    great(px, 8, 7)
+    small(px, 2, 2, dim)
+    out.append((px, 1))
+    return out
+
+
+MODELS = [orrery, star_globe, chart_desk, observer_steps, star_easel, book_pile, book_row, floor_dial]
 MODELS += [(lambda w=w, h=h: window_glow(w, h)) for w, h in GLOW_SIZES]
 SCALE.update({f"glow_{w}x{h}": 1.0 for w, h in GLOW_SIZES})
 

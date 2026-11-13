@@ -5,7 +5,7 @@ from artkit import arch as A
 from artkit import blocks as B
 from artkit.canvas import Mix, hash3
 
-from . import lights, props, study
+from . import instruments, lights, props, study
 
 BASE = Mix({"cobblestone": 30, "mossy_cobblestone": 14, "stone_bricks": 26, "mossy_stone_bricks": 14,
             "andesite": 10, "cracked_stone_bricks": 6}, seed=31)
@@ -185,6 +185,18 @@ def build(c, land, cx, cz, y0):
         return "waxed_oxidized_cut_copper"
 
     A.shell(c, heights, dome_mat, yb)
+    # inside, the copper is lined: a painted night sky springing from a timber cornice, two layers
+    # above the ledge so that what stands there keeps the bare copper behind it
+    skin = {(x, y, z) for (x, z), h in heights.items() for y in range(yb, int(h) + 2) if c.has(x, y, z)}
+    lowest = {}
+    for x, y, z in skin:
+        lowest[(x, z)] = min(y, lowest.get((x, z), y))
+    spring = yb + 2
+    for (x, z), low in lowest.items():
+        for y in range(spring, low):
+            if any((x + dx, y + dy, z + dz) in skin
+                   for dx, dy, dz in ((1, 0, 0), (-1, 0, 0), (0, 0, 1), (0, 0, -1), (0, 1, 0))):
+                c.set(x, y, z, "dark_oak_planks" if y == spring else instruments.VAULT)
     # the observing slit is cut out of the finished skin, so its edges stay one block thick and
     # the room under the dome is one open space
     for (x, z), h in heights.items():
@@ -199,8 +211,8 @@ def build(c, land, cx, cz, y0):
 
     # ---- telescope: custom models on a pier in the middle of the dome floor ------------------
     pivot = (cx, y0 + top_wall + 1 + 4.0, cz)
-    props.place(c, "telescope_mount", *pivot, yaw=180.0, brightness=(15, 0))
-    props.place(c, "telescope_tube", *pivot, yaw=180.0, turns=(("x", 45.0),), brightness=(15, 0))
+    props.place(c, "telescope_mount", *pivot, yaw=180.0, brightness=(15, 12))
+    props.place(c, "telescope_tube", *pivot, yaw=180.0, turns=(("x", 45.0),), brightness=(15, 12))
     # brass rails on both edges of the slit: they give the stepped copper a clean curved line
     for side in (-2.5, 2.5):
         props.place(c, "dome_rail", cx + side, yb + 0.6, cz, brightness=(15, 0))

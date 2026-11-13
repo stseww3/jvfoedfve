@@ -4,9 +4,10 @@ Seen from the south the story reads left to right: airship and dock at the west 
 the cherry tree and the keeper's house, then the stair up the crag to the observatory. A pond in
 front of the crag drains over the southern rim.
 """
+from artkit import respack
 from artkit.canvas import Canvas
 
-from . import flora, house, props, site, sky, terrain, tower
+from . import flora, house, instruments, props, site, sky, terrain, tower
 
 TOWER = (20.0, -12.0)
 HOUSE = (-19, -7, 3, 11)   # x0, x1, z0, z1
@@ -16,7 +17,13 @@ BIOME = "skyobs"           # one of mood.BIOMES
 BIOME_MARGIN = 40          # the look has to reach every camera position, not only the blocks
 BIOME_MARGIN_Y = 110
 GROUND = 1                 # y of the ground blocks on the levelled parts
-write_pack = sky.write_pack  # resource pack pieces besides the prop models
+
+
+def write_pack(pack_dir):
+    """Resource pack pieces besides the prop models: the sky, and blocks painted for this scene."""
+    out = sky.write_pack(pack_dir)
+    out.append(respack.cube_variants(pack_dir, instruments.VAULT, instruments.vault_tiles(), name="star_vault"))
+    return out
 
 TREES = [
     {"kind": "cherry", "x": -33, "z": -5, "height": 13, "spread": 9, "thick": True},

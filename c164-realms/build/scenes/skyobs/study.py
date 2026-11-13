@@ -16,20 +16,11 @@ def furnish(c, cx, cz, fy, yb):
     yb: first layer of the dome shell (the ledge around the room is the layer below it)."""
     icx, icz = int(cx), int(cz)
 
-    # ---- floor: a four-pointed star let into the planks, a dark border -----------------------
-    p = 2.0 / 3.0
+    # ---- floor: plain planks with a dark border; the brass star around the pier is a model -----
     for x, z in A.disc(cx, cz, 6.0):
-        dx, dz = x + 0.5 - cx, z + 0.5 - cz
-        u, v = (dx + dz) / math.sqrt(2.0), (dx - dz) / math.sqrt(2.0)
-        if math.hypot(dx, dz) > 5.0:
-            state = "dark_oak_planks"
-        elif abs(dx) ** p + abs(dz) ** p <= 5.4 ** p:
-            state = "dark_oak_planks"
-        elif abs(u) ** p + abs(v) ** p <= 4.2 ** p:
-            state = "birch_planks"
-        else:
-            state = "spruce_planks"
-        c.set(x, fy - 1, z, state)
+        far = math.hypot(x + 0.5 - cx, z + 0.5 - cz) > 5.0
+        c.set(x, fy - 1, z, "dark_oak_planks" if far else "spruce_planks")
+    props.place(c, "floor_dial", cx, fy + 0.02, cz)
 
     # ---- hatch with a ladder from the room below, north-west ---------------------------------
     hx, hz = icx - 3, icz - 5

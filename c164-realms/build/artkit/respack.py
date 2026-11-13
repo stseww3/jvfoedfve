@@ -20,6 +20,28 @@ def texture(pack_dir, name, pixels, ns="minecraft"):
     return f"{ns}:{name}"
 
 
+def cube_variants(pack_dir, block, variants, name=None, ns="c164"):
+    """Repaint a vanilla full-cube block with several pictures that the game mixes by position.
+
+    variants: [(pixels, weight), ...]. Only for blocks without state properties: the block state
+    file is replaced by one that lists a model per picture.
+    """
+    name = name or block
+    choices = []
+    for n, (pixels, weight) in enumerate(variants):
+        tex = texture(pack_dir, f"block/{name}{n}", pixels, ns)
+        path = os.path.join(pack_dir, "assets", ns, "models", "block", f"{name}{n}.json")
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as fh:
+            json.dump({"parent": "minecraft:block/cube_all", "textures": {"all": tex}}, fh, separators=(",", ":"))
+        choices.append({"model": f"{ns}:block/{name}{n}", "weight": weight})
+    path = os.path.join(pack_dir, "assets", "minecraft", "blockstates", block + ".json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as fh:
+        json.dump({"variants": {"": choices}}, fh, separators=(",", ":"))
+    return f"{block} -> {len(choices)} pictures of {name}"
+
+
 def cube(pack_dir, block, pixels, name=None, ns="c164", shade=True, ao=True):
     """Repaint a vanilla full-cube block: all six faces show `pixels`.
 
