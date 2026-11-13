@@ -63,6 +63,17 @@ def _panel_frame(px):
     _put(px, TILE - 1, 0, _i(2))
 
 
+def _bevel(px):
+    """A shallow raised edge for a plain plate: the top and left a step lighter, the bottom and right
+    a step darker, the corners left at base -- gentler than the riveted frame, no rivets. It keeps a
+    wall of plain plates from reading flat (card materials/iron: IRON_PLATE has a shallow bevel)."""
+    for t in range(1, TILE - 1):
+        _put(px, t, 0, _i(4))
+        _put(px, 0, t, _i(4))
+        _put(px, t, TILE - 1, _i(1))
+        _put(px, TILE - 1, t, _i(1))
+
+
 # rivets hug the edge (four corners, four edge mids) so that across a seam two plates' rivets pair up
 _RIVETS = [(1, 1), (8, 1), (14, 1), (1, 8), (14, 8), (1, 14), (8, 14), (14, 14)]
 _CORNERS = [(1, 1), (14, 1), (1, 14), (14, 14)]
@@ -98,6 +109,14 @@ def _disc(px, cx, cy, r, inner, edge):
 
 
 # ---- the flat plates (designed) ----------------------------------------------------------------------
+def _plain(seed):
+    """IRON_PLATE: a plain plate for casings and tanks -- brushed, no rivets, a shallow bevel so a
+    wall of them reads as butted plates instead of going flat. Three variants, the brushing only."""
+    px = _plate(seed, base=3, noise=0.14)
+    _bevel(px)
+    return px
+
+
 def _riveted(seed):
     """IRON_RIVETED: a bolted plate, the bevel and eight rivets fixed, only the brushing varies."""
     px = _plate(seed, base=3, noise=0.11)
@@ -269,7 +288,7 @@ def _map(block, name):
 
 def pack(pack_dir):
     out = []
-    K.paint(pack_dir, "iron_plate", [_plate(s) for s in (1, 2, 3)])
+    K.paint(pack_dir, "iron_plate", [_plain(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_cast", [_cast(1, "emblem"), _cast(2, "lozenge")])
     K.paint(pack_dir, "iron_grate", [_grate(1), _grate(2)])
