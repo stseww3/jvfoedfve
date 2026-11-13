@@ -14,10 +14,12 @@ vanilla kind, and the slope of running water. Final pictures still come from the
 looking at a change before the game is started, or when it cannot be.
 """
 import argparse
+import atexit
 import importlib
 import json
 import os
 import pickle
+import shutil
 import sys
 import tempfile
 import time
@@ -83,6 +85,7 @@ def main():
     ap.add_argument("--still", action="store_true", help="draw the water as placed, without letting it run")
     ap.add_argument("--canvas", help="pickle of the built scene: read it if it exists, else build and write it")
     args = ap.parse_args()
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
 
     t0 = time.time()
     scene = importlib.import_module(f"scenes.{args.scene}")
@@ -101,6 +104,7 @@ def main():
     pack = args.pack
     if not pack:
         pack = tempfile.mkdtemp(prefix="c164pack-")
+        atexit.register(shutil.rmtree, pack, ignore_errors=True)
         write_pack(args.scene, pack)
         print(f"resource pack written to {pack} ({time.time() - t0:.0f} s)")
     assets = Assets(args.jar, [pack])
