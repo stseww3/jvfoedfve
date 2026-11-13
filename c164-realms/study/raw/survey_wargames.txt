@@ -1,0 +1,161 @@
+#### WORLD: extract/mapverse_war-games/War_Games-War_Games
+== level.dat
+  top-level keys: ['BorderCenterX', 'BorderCenterZ', 'BorderDamagePerBlock', 'BorderSafeZone', 'BorderSize', 'BorderSizeLerpTarget', 'BorderSizeLerpTime', 'BorderWarningBlocks', 'BorderWarningTime', 'CustomBossEvents', 'DataPacks', 'DataVersion', 'DayTime', 'Difficulty', 'DifficultyLocked', 'DragonFight', 'GameRules', 'GameType', 'LastPlayed', 'LevelName', 'Player', 'ScheduledEvents', 'ServerBrands', 'SpawnAngle', 'SpawnX', 'SpawnY', 'SpawnZ', 'Time', 'Version', 'WanderingTraderSpawnChance', 'WanderingTraderSpawnDelay', 'WasModded', 'WorldGenSettings', 'allowCommands', 'clearWeatherTime', 'hardcore', 'initialized', 'rainTime', 'raining', 'thunderTime', 'thundering', 'version']
+  Version: {'Snapshot': 0, 'Series': 'main', 'Id': 4440, 'Name': '1.21.8'}
+  DataVersion: Int(4440)
+  LevelName: War Games
+  GameType: Int(0)
+  Difficulty: Byte(1)
+  DifficultyLocked: Byte(0)
+  hardcore: Byte(0)
+  allowCommands: Byte(1)
+  SpawnX: Int(-18)
+  SpawnY: Int(-60)
+  SpawnZ: Int(-37)
+  DayTime: Long(1000)
+  Time: Long(35404492)
+  raining: Byte(0)
+  initialized: Byte(1)
+  DataPacks.Enabled: ['vanilla', 'file/CRD5.0-VEkNtnHj.zip', 'file/smarty_cbm-01ezTbs2.zip', 'file/bukkit', 'file/CustomMobs-z7Nub5w4.zip', 'file/Cutscene-pn2yMH7H.zip', 'file/NoCraftingNoAdvancements.zip', 'file/CreditsDialog-mBqB949c.zip', 'file/MundiDialog-KDS1dVqj']
+  DataPacks.Disabled: ['minecart_improvements', 'redstone_experiments', 'trade_rebalance']
+  GameRules (in level.dat):
+    allowFireTicksAwayFromPlayer = true
+    announceAdvancements = false
+    blockExplosionDropDecay = true
+    commandBlockOutput = false
+    commandModificationBlockLimit = 99999999
+    disableElytraMovementCheck = false
+    disablePlayerMovementCheck = false
+    disableRaids = false
+    doDaylightCycle = false
+    doEntityDrops = true
+    doFireTick = false
+    doImmediateRespawn = true
+    doInsomnia = false
+    doLimitedCrafting = false
+    doMobLoot = false
+    doMobSpawning = false
+    doPatrolSpawning = false
+    doTileDrops = false
+    doTraderSpawning = false
+    doVinesSpread = false
+    doWardenSpawning = false
+    doWeatherCycle = false
+    drowningDamage = true
+    enderPearlsVanishOnDeath = true
+    fallDamage = false
+    fireDamage = true
+    forgiveDeadPlayers = true
+    freezeDamage = true
+    globalSoundEvents = true
+    keepInventory = false
+    lavaSourceConversion = false
+    locatorBar = false
+    logAdminCommands = false
+    maxCommandChainLength = 999999999
+    maxCommandForkCount = 65536
+    maxEntityCramming = 9999
+    mobExplosionDropDecay = true
+    mobGriefing = false
+    naturalRegeneration = true
+    playersNetherPortalCreativeDelay = 0
+    playersNetherPortalDefaultDelay = 80
+    playersSleepingPercentage = 100
+    projectilesCanBreakBlocks = true
+    randomTickSpeed = 0
+    reducedDebugInfo = false
+    sendCommandFeedback = true
+    showDeathMessages = false
+    snowAccumulationHeight = 1
+    spawnChunkRadius = 2
+    spawnRadius = 0
+    spectatorsGenerateChunks = true
+    tntExplodes = true
+    tntExplosionDropDecay = false
+    universalAnger = false
+    waterSourceConversion = true
+== data/ files
+  data/chunks.dat  953B
+  data/command_storage_buildingnames.dat  126B
+  data/command_storage_crd.dat  129B
+  data/command_storage_landnames.dat  226B
+  data/command_storage_names.dat  12KB
+  data/command_storage_test.dat  91B
+  data/command_storage_worf.dat  128B
+  data/raids.dat  74B
+  data/random_sequences.dat  2KB
+  data/scoreboard.dat  68KB
+== data/scoreboard.dat: objectives=82 teams=4 scores=3605
+  criteria: {'?': 75, 'minecraft.custom:minecraft.play_time': 3, 'trigger': 1, 'minecraft.custom:minecraft.leave_game': 1, 'minecraft.used:minecraft.warped_fungus_on_a_stick': 1, 'minecraft.used:minecraft.carrot_on_a_stick': 1}
+  sample objectives: ['Health', 'The', 'Blacksmith', 'Sacrifice', 'Job', 'MiningRandom', 'Gold', 'BlueLowestHealth', 'PreviousGiantTamer', 'GiantTamer', 'VillagerLimit', 'PlaceBuildingCooldown', 'ScrollTime', 'Info', 'JobID', 'InventoryPage', 'LobbyPlayerCount', 'YPos', 'TeamProcessing', 'forcereset', 'Leave', 'Surrender', 'Warped', 'Occupied', 'Cost', 'IronCost', 'BalloonCycle', 'ClericLoop', 'NextPage', 'AnimalPen', 'Diamonds', 'Nursery', 'HideCommandSpam', 'Mode', '-1', 'WritingNoise', 'PreviousAnimalPen', 'BlueWins', 'Sapling', 'LightningLoop']
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/CRD5.0-VEkNtnHj.zip
+  pack.mcmeta: {"pack": {"pack_format": 71, "description": "Smarty's Custom Repeater Delay"}}
+  ns crd: {'function': 23, 'advancement': 1}  function-commands=98
+  ns minecraft: {'tags': 1}  function-commands=0
+  total function commands: 98
+  top command heads: [('execute', 48), ('data', 27), ('function', 7), ('scoreboard', 7), ('schedule', 3), ('fill', 2), ('tellraw', 1), ('advancement', 1), ('setblock', 1), ('give', 1)]
+  biggest functions: [(13, 'data/crd/function/z/q/jobs/run.mcfunction'), (11, 'data/crd/function/z/backend/load.mcfunction'), (10, 'data/crd/function/z/q/create.mcfunction'), (10, 'data/crd/function/z/place/setblock.mcfunction'), (9, 'data/crd/function/z/backend/uninstall.mcfunction'), (6, 'data/crd/function/z/q/search.mcfunction'), (6, 'data/crd/function/give.mcfunction'), (5, 'data/crd/function/z/q/jobs/loop.mcfunction')]
+  #load: {'values': ['crd:z/backend/load']}
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/CreditsDialog-mBqB949c.zip
+  pack.mcmeta: {"pack": {"description": "Mundi Dialog", "pack_format": 77}}
+  ns minecraft: {'worldgen': 3}  function-commands=0
+  ns worf: {'dialog': 6}  function-commands=0
+  total function commands: 0
+  top command heads: []
+  biggest functions: []
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/CustomMobs-z7Nub5w4.zip
+  pack.mcmeta: {"pack": {"description": "War Games Custom Mobs - Commands Located at 0 0 0", "pack_format": 77}}
+  ns worf: {'predicate': 1, 'function': 9}  function-commands=68
+  total function commands: 68
+  top command heads: [('execute', 57), ('scoreboard', 4), ('particle', 3), ('tp', 2), ('tag', 1), ('playsound', 1)]
+  biggest functions: [(21, 'data/worf/function/weaponsmith.mcfunction'), (16, 'data/worf/function/inventory.mcfunction'), (6, 'data/worf/function/dragonsbreath.mcfunction'), (5, 'data/worf/function/dragon.mcfunction'), (4, 'data/worf/function/roguewarp.mcfunction'), (4, 'data/worf/function/rogue.mcfunction'), (4, 'data/worf/function/lightningmage.mcfunction'), (4, 'data/worf/function/grandconquestinteraction.mcfunction')]
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/Cutscene-pn2yMH7H.zip
+  pack.mcmeta: {"pack": {"pack_format": 71, "description": "Smarty's Custom Repeater Delay"}}
+  ns worf: {'function': 2}  function-commands=1280
+  total function commands: 1280
+  top command heads: [('execute', 1280)]
+  biggest functions: [(640, 'data/worf/function/set.mcfunction'), (640, 'data/worf/function/blueset.mcfunction')]
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/MundiDialog-KDS1dVqj
+  pack.mcmeta: {"pack": {"description": "Mundi Dialog", "pack_format": 77}}
+  ns minecraft: {'tags': 1}  function-commands=0
+  ns worf: {'dialog': 23}  function-commands=0
+  total function commands: 0
+  top command heads: []
+  biggest functions: []
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/NoCraftingNoAdvancements.zip
+  pack.mcmeta: {"pack": {"pack_format": 10, "description": {"translate": "Disable Vanilla Advancements & Recipes for 1.21+"}}, "filter": {"block": [{"namespace": "minecraft", "path": "recipe/.*"}, {"namespace": "minecraft", "path": "advancement/.*"}]}}
+  total function commands: 0
+  top command heads: []
+  biggest functions: []
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/bukkit
+  pack.mcmeta: {"pack": {"description": "Data pack for resources provided by Bukkit plugins", "pack_format": 81}}
+  total function commands: 0
+  top command heads: []
+  biggest functions: []
+== datapack: extract/mapverse_war-games/War_Games-War_Games/datapacks/smarty_cbm-01ezTbs2.zip
+  pack.mcmeta: {"pack": {"pack_format": 71, "description": "Smarty's Command Block Mover"}}
+  ns cbm: {'function': 5, 'advancement': 2}  function-commands=19
+  total function commands: 19
+  top command heads: [('execute', 10), ('kill', 4), ('give', 2), ('advancement', 2), ('function', 1)]
+  biggest functions: [(6, 'data/cbm/function/move_up.mcfunction'), (6, 'data/cbm/function/move_down.mcfunction'), (3, 'data/cbm/function/raycast.mcfunction'), (2, 'data/cbm/function/rearranger.mcfunction'), (2, 'data/cbm/function/give.mcfunction')]
+== resource pack: extract/mapverse_war-games/War_Games-War_Games/resources.zip
+  files: 3560  uncompressed: 58MB
+  pack.mcmeta: {"pack": {"pack_format": 55, "supported_formats": [15, 999], "description": "§6War Games!"}, "overlays": {"entries": [{"formats": {"min_inclusive": 18, "max_inclusive": 2147483647}, "directory": "overlay_18"}]}}
+  minecraft/items: 1438 files, 384KB
+  emu/items: 1429 files, 4KB
+  minecraft/textures: 458 files, 9MB
+  minecraft/lang: 138 files, 12MB
+  worf/models: 35 files, 102KB
+  worf/items: 23 files, 4KB
+  worf/sounds: 17 files, 35MB
+  minecraft/font: 12 files, 642KB
+  minecraft/sounds: 7 files, 49KB
+  worf/sounds.json: 1 files, 2KB
+  pack.mcmeta: 1 files, 430B
+  pack.png: 1 files, 3KB
+  by extension: {'.json': 3072, '.png': 445, '.ogg': 24, '.mcmeta': 14, '.ttf': 3, '.py': 1, '.pdn': 1}
+  font json: ['assets/minecraft/font/default.json', 'assets/minecraft/font/defaultbackup.json', 'assets/minecraft/font/dialogue.json', 'assets/minecraft/font/dialoguename.json', 'assets/minecraft/font/fade.json', 'assets/minecraft/font/fancy.json', 'assets/minecraft/font/poster.json', 'assets/minecraft/font/ultrafancy.json', 'assets/minecraft/font/whitefade.json']
+== region-like dirs
+  entities: 16 files, 2MB, chunks=193, regions x[-1..6] z[-1..0]
+  poi: 16 files, 708KB, chunks=137, regions x[0..6] z[-1..0]
+  region: 16 files, 36MB, chunks=8352, regions x[-1..6] z[-1..0]

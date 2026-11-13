@@ -1,0 +1,67 @@
+#### WORLD: extract/mapverse_mossholder/Mossholder-1.0.1
+== level.dat
+  top-level keys: ['DataPacks', 'DataVersion', 'GameType', 'LastPlayed', 'LevelName', 'ServerBrands', 'Time', 'Version', 'WasModded', 'allowCommands', 'difficulty_settings', 'initialized', 'singleplayer_uuid', 'spawn', 'version']
+  Version: {'Snapshot': 0, 'Series': 'main', 'Id': 4790, 'Name': '26.1.2'}
+  DataVersion: Int(4790)
+  LevelName: Mossholder
+  GameType: Int(2)
+  allowCommands: Byte(1)
+  Time: Long(1769231)
+  initialized: Byte(1)
+  spawn: {'pos': array([  7, -49,   2], dtype='>i4'), 'pitch': 0.0, 'dimension': 'minecraft:overworld', 'yaw': 0.0}
+  difficulty_settings: {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 1}
+  DataPacks.Enabled: ['vanilla', 'axiom', 'fabric-convention-tags-v2', 'file/mossholder']
+  DataPacks.Disabled: ['minecart_improvements', 'redstone_experiments', 'trade_rebalance']
+== data/ files
+  data/mossholder/command_storage.dat  103B
+  data/minecraft/custom_boss_events.dat  48B
+  data/minecraft/game_rules.dat  883B
+  data/minecraft/random_sequences.dat  1KB
+  data/minecraft/scheduled_events.dat  59B
+  data/minecraft/scoreboard.dat  3KB
+  data/minecraft/stopwatches.dat  64B
+  data/minecraft/weather.dat  104B
+  data/minecraft/world_clocks.dat  103B
+  data/minecraft/world_gen_settings.dat  315B
+== data/minecraft/game_rules.dat
+   {"data": {"axiom:do_block_gravity": 1, "minecraft:spawn_wandering_traders": 0, "minecraft:block_drops": 0, "minecraft:reduced_debug_info": 0, "minecraft:show_death_messages": 1, "minecraft:spawner_blocks_work": 1, "minecraft:spawn_monsters": 0, "minecraft:tnt_explodes": 1, "minecraft:immediate_respawn": 0, "minecraft:player_movement_check": 1, "minecraft:block_explosion_drop_decay": 1, "minecraft:spread_vines": 0, "minecraft:max_entity_cramming": 24, "minecraft:forgive_dead_players": 1, "minecraft:fall_damage": 0, "minecraft:send_command_feedback": 1, "minecraft:global_sound_events": 1, "minecraft:elytra_movement_check": 1, "minecraft:fire_spread_radius_around_player": 128, "minecraft:freeze_damage": 0, "minecraft:mob_explosion_drop_decay": 1, "minecraft:natural_health_regeneration": 1, "minecraft:players_nether_portal_default_delay": 80, "minecraft:mob_drops": 1, "minecraft:log_admin_commands": 1, "minecraft:mob_griefing": 0, "minecraft:pvp": 0, "minecraft:spawn_mobs": 0, "minecraft:spectators_generate_chunks": 1, "minecraft:players_nether_portal_creative_delay": 0, "minecraft:max_command_sequence_length": 65536, "minecraft:players_sleeping_percentage": 100, "minecraft:advance_weather": 0, "minecraft:max_block_modifications": 400000000, "minecraft:max_command_forks": 65536, "minecraft:drowning_damage": 0, "minecraft:command_block_output": 1, "minecraft:show_advancement_messages": 1, "minecraft:locator_bar": 1, "minecraft:respawn_radius": 0, "minecraft:raids": 1, "minecraft:spawn_phantoms": 0, "minecraft:max_snow_accumulation_height": 1, "minecraft:limited_crafting": 1, "minecraft:allow_entering_nether_using_portals": 0, "minecraft:lava_source_conversion": 0, "axiom:do_trample_farmland": 1, "minecraft:tnt_explosion_drop_decay": 0, "axiom:player_invulnerability": 0, "minecraft:universal_anger": 0, "minecraft:keep_inventory": 1, "minecraft:spawn_patrols": 0, "minecraft:random_tick_speed": 0, "minecraft:fire_damage": 0, "minecraft:entity_drops": 1, "minecraft:advance_time": 0, "minecraft:command_blocks_work": 1, "minecraft:spawn_wardens": 0, "axiom:do_block_drops": 1, "minecraft:water_source_conversion": 1, "minecraft:projectiles_can_break_blocks": 0, "minecraft:ender_pearls_vanish_on_death": 1}, "DataVersion": 4790}
+== data/minecraft/scoreboard.dat: objectives=8 teams=0 scores=99
+  criteria: {'?': 7, 'minecraft.custom:minecraft.leave_game': 1}
+  sample objectives: ['give_up', 'vars', 'uses_left', 'player_ambience', 'left', 'resources', 'station_ambient_loop', 'selected_recipe']
+== datapack: extract/mapverse_mossholder/Mossholder-1.0.1/datapacks/mossholder
+  pack.mcmeta: {"pack": {"description": "-", "min_format": [101, 1], "max_format": 101}, "filter": {"block": [{"namespace": "minecraft", "path": "recipe"}, {"namespace": "minecraft", "path": "advancement"}]}}
+  ns minecraft: {'tags': 1}  function-commands=0
+  ns mossholder: {'predicate': 6, 'advancement': 1, 'function': 150, 'structure': 10}  function-commands=666
+  total function commands: 666
+  top command heads: [('execute', 299), ('scoreboard', 106), ('data', 46), ('setblock', 40), ('summon', 29), ('function', 26), ('kill', 25), ('item', 18), ('playsound', 17), ('tellraw', 16), ('fill', 14), ('particle', 9), ('tag', 7), ('title', 3), ('clear', 2), ('stopsound', 2), ('place', 2), ('gamemode', 1), ('tp', 1), ('return', 1), ('advancement', 1), ('effect', 1)]
+  biggest functions: [(27, 'data/mossholder/function/item/decompose_everything.mcfunction'), (17, 'data/mossholder/function/tick.mcfunction'), (17, 'data/mossholder/function/generate/station/controls.mcfunction'), (15, 'data/mossholder/function/write_time.mcfunction'), (14, 'data/mossholder/function/reset/end_funcs/tick.mcfunction'), (12, 'data/mossholder/function/recipe/previous.mcfunction'), (11, 'data/mossholder/function/reset/init.mcfunction'), (11, 'data/mossholder/function/recipe/next.mcfunction')]
+  #tick: {'replace': False, 'values': ['mossholder:tick']}
+== resource pack: extract/mapverse_mossholder/Mossholder-1.0.1/resources.zip
+  files: 24  uncompressed: 24KB
+  pack.mcmeta: {"pack": {"min_format": 69, "max_format": 9999999, "description": "Resource pack for Mossholder"}, "filter": {"block": [{"namespace": "minecraft", "path": "sounds/music"}]}}
+  minecraft/textures: 17 files, 2KB
+  mossholder/lang: 2 files, 11KB
+  pack.mcmeta: 1 files, 211B
+  pack.png: 1 files, 6KB
+  minecraft/font: 1 files, 215B
+  minecraft/post_effect: 1 files, 3KB
+  minecraft/shaders: 1 files, 593B
+  by extension: {'.png': 18, '.json': 4, '.mcmeta': 1, '.vsh': 1}
+  shaders: ['assets/minecraft/shaders/core/gui.vsh']
+  font json: ['assets/minecraft/font/default.json']
+== resource pack: extract/mapverse_mossholder/Mossholder-1.0.1/resourcepacks/resources.zip
+  files: 24  uncompressed: 24KB
+  pack.mcmeta: {"pack": {"min_format": 69, "max_format": 9999999, "description": "Resource pack for Mossholder"}, "filter": {"block": [{"namespace": "minecraft", "path": "sounds/music"}]}}
+  minecraft/textures: 17 files, 2KB
+  mossholder/lang: 2 files, 11KB
+  pack.mcmeta: 1 files, 211B
+  pack.png: 1 files, 6KB
+  minecraft/font: 1 files, 215B
+  minecraft/post_effect: 1 files, 3KB
+  minecraft/shaders: 1 files, 593B
+  by extension: {'.png': 18, '.json': 4, '.mcmeta': 1, '.vsh': 1}
+  shaders: ['assets/minecraft/shaders/core/gui.vsh']
+  font json: ['assets/minecraft/font/default.json']
+== region-like dirs
+  dimensions/minecraft/overworld/entities: 1 files, 16KB, chunks=1, regions x[0..0] z[0..0]
+  dimensions/minecraft/overworld/region: 16 files, 32MB, chunks=8188, regions x[-2..1] z[-2..1]

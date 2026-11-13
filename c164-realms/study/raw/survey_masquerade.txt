@@ -1,0 +1,82 @@
+#### WORLD: extract/The_Masquerade
+== level.dat
+  top-level keys: ['DataPacks', 'DataVersion', 'GameType', 'LastPlayed', 'LevelName', 'ServerBrands', 'Time', 'Version', 'WasModded', 'allowCommands', 'difficulty_settings', 'initialized', 'singleplayer_uuid', 'spawn', 'version', 'version_history']
+  Version: {'Id': 5023, 'Name': '26.3', 'Series': 'main', 'Snapshot': 0}
+  DataVersion: Int(5023)
+  LevelName: §l§f ᵀʰ§nᵉ������ ������ ������ ������ ������ ������ ������ ������ ������ ������ §r §8§l[v1.1.3]
+  GameType: Int(0)
+  allowCommands: Byte(1)
+  Time: Long(56442941)
+  initialized: Byte(1)
+  spawn: {'pos': array([-1030,   110,    39], dtype='>i4'), 'pitch': 0.0, 'yaw': -135.0, 'dimension': 'minecraft:overworld'}
+  difficulty_settings: {'hardcore': 0, 'locked': 0, 'difficulty': 'peaceful'}
+  DataPacks.Enabled: ['vanilla', 'axiom', 'collective', 'fabric-convention-tags-v2', 'file/ww_datapack_realms']
+  DataPacks.Disabled: ['minecart_improvements', 'redstone_experiments', 'trade_rebalance']
+== data/ files
+  data/shulkerboxtooltip_ender_chest_cache.dat  31B
+  data/ww_game/command_storage.dat  84KB
+  data/tutorial/command_storage.dat  350KB
+  data/pc/command_storage.dat  623B
+  data/ww/command_storage.dat  124KB
+  data/scrfx/command_storage.dat  426B
+  data/minecraft/custom_boss_events.dat  4KB
+  data/minecraft/game_rules.dat  918B
+  data/minecraft/random_sequences.dat  722B
+  data/minecraft/scheduled_events.dat  147B
+  data/minecraft/scoreboard.dat  34KB
+  data/minecraft/stopwatches.dat  98B
+  data/minecraft/wandering_trader.dat  81B
+  data/minecraft/weather.dat  108B
+  data/minecraft/world_clocks.dat  104B
+  data/minecraft/world_gen_settings.dat  314B
+  data/dork.base64/command_storage.dat  1KB
+  data/collective/itemnametranslation.txt  12B
+== data/minecraft/game_rules.dat
+   {"DataVersion": 5023, "data": {"minecraft:advance_weather": 0, "minecraft:max_entity_cramming": 24, "minecraft:fall_damage": 1, "minecraft:command_block_output": 0, "minecraft:spawn_wardens": 1, "minecraft:respawn_radius": 0, "minecraft:max_command_sequence_length": 65536, "minecraft:immediate_respawn": 1, "minecraft:drowning_damage": 0, "minecraft:natural_health_regeneration": 1, "minecraft:player_movement_check": 1, "minecraft:tnt_explosion_drop_decay": 0, "minecraft:keep_inventory": 1, "minecraft:players_nether_portal_creative_delay": 0, "minecraft:fire_damage": 0, "minecraft:command_blocks_work": 1, "minecraft:advance_time": 0, "minecraft:spectators_generate_chunks": 1, "minecraft:log_admin_commands": 1, "unjank:send_trigger_feedback": "sourceAndOps", "minecraft:block_drops": 1, "minecraft:limited_crafting": 0, "axiom:do_block_drops": 1, "minecraft:elytra_movement_check": 1, "minecraft:global_sound_events": 1, "minecraft:spread_vines": 1, "minecraft:lava_source_conversion": 0, "axiom:player_invulnerability": 0, "unjank:broadcast_macro_failure": 0, "minecraft:players_nether_portal_default_delay": 80, "minecraft:players_sleeping_percentage": 101, "minecraft:entity_drops": 1, "minecraft:spawn_phantoms": 0, "minecraft:spawn_mobs": 0, "minecraft:freeze_damage": 1, "minecraft:forgive_dead_players": 1, "minecraft:mob_drops": 1, "minecraft:show_advancement_messages": 0, "minecraft:water_source_conversion": 1, "minecraft:max_command_forks": 65536, "minecraft:allow_entering_nether_using_portals": 1, "minecraft:show_death_messages": 0, "minecraft:spawn_patrols": 1, "minecraft:block_explosion_drop_decay": 1, "unjank:log_macro_failure": 0, "minecraft:max_block_modifications": 32768, "minecraft:mob_griefing": 1, "minecraft:send_command_feedback": 0, "minecraft:pvp": 1, "minecraft:locator_bar": 0, "minecraft:spawn_monsters": 1, "minecraft:fire_spread_radius_around_player": 0, "minecraft:random_tick_speed": 0, "minecraft:ender_pearls_vanish_on_death": 1, "minecraft:spawner_blocks_work": 1, "axiom:do_block_gravity": 1, "minecraft:spawn_wandering_traders": 0, "minecraft:mob_explosion_drop_decay": 1, "axiom:do_trample_farmland": 1, "minecraft:tnt_explodes": 1, "minecraft:max_snow_accumulation_height": 1, "minecraft:projectiles_can_break_blocks": 1, "minecraft:reduced_debug_info": 1, "minecraft:universal_anger": 0, "minecraft:raids": 1}}
+== data/minecraft/scoreboard.dat: objectives=189 teams=3 scores=4111
+  criteria: {'?': 172, 'trigger': 9, 'minecraft.used:minecraft.warped_fungus_on_a_stick': 2, 'minecraft.custom:minecraft.leave_game': 2, 'minecraft.dropped:minecraft.writable_book': 1, 'minecraft.dropped:minecraft.warped_fungus_on_a_stick': 1, 'minecraft.custom:minecraft.sneak_time': 1, 'minecraft.custom:minecraft.deaths': 1}
+  sample objectives: ['ww_role.counterfeiter.stored_registered_role_id', 'ww_return.yaw', 'ww.ambience_cd.outside', 'ww_role.acrobat.target', 'ww.ambience.last_piano_pitch', 'ww_spawn_order', 'ww.ambience_cd.library_fireplace', 'ww_role.drunk.other_player_id', 'scrfx.zinternals.player.tps', 'ww_trigger.logbook_navigation', 'ww_role.necromancer.revive_target', 'ww_role.shifter.timer', 'ww_ability.use', 'ww_task.id', 'scrfx.zinternals.player.is_running_screen_effect', 'ww_drop_hotbar.2', 'ww_role.counterfeit.stored_registered_role_id', 'ww_role.generic.target', 'ww_trigger.voted_guilty', 'ww_currently_spectating', 'ww_hint.demon_kill', 'ww_hint.task_complete', 'ww_role.revenant.scrfx_timer', 'ww_role.doppelganger.state', 'ww_state.last_inventory_slot', 'ww_role.counterfeiter.stored_alignment', 'ww_return.pitch', 'ww_ability.recharge_time', 'ww_trigger.role_guess_id', 'ww_display_role', 'ww_role.tinker.timer', 'ww_state.clue_animation', 'ww_role.mimic.role_id', 'ww_role.exorcist.poison_target', 'ww_role.gorgon.petrified', 'ww_state.ability_id', 'ww_id.game', 'pc.previous.y', 'ww_data', 'ww_last_logbook_nav']
+== datapack: extract/The_Masquerade/datapacks/ww_datapack
+  pack.mcmeta: {"pack": {"description": ["", {"translate": "ww.generic.map_title", "fallback": "§l§f ᵀʰ§nᵉ𝙼 𝙰 𝚂 𝚀 𝚄 𝙴 𝚁 𝙰 𝙳 𝙴 §r §8§l", "color": "white"}, "\n", {"translate": "ww.generic.by", "fallback": "by %s", "with": [{"translate": "ww.generic.gm4", "fallback": "Gamemode 4", "color": "#4AA0C7"}], "color": "gray"}], "min_format": 121, "max_format": 121}, "filter": {"block": [{"namespace": "minecraft", "path": "recipe"}, {"namespace": "minecraft", "path": "advancement"}]}}
+  ns dork.base64: {'function': 8}  function-commands=39
+  ns gm4: {'tags': 7}  function-commands=0
+  ns minecraft: {'chat_type': 6, 'tags': 1}  function-commands=0
+  ns pc: {'advancement': 1, 'function': 201}  function-commands=1776
+  ns scrfx: {'function': 27}  function-commands=100
+  ns tutorial: {'predicate': 1, 'function': 196}  function-commands=1056
+  ns ww_game: {'predicate': 5, 'advancement': 6, 'function': 968, 'loot_table': 14, 'tags': 7}  function-commands=8194
+  total function commands: 11165
+  top command heads: [('execute', 4766), ('scoreboard', 1884), ('data', 1269), ('function', 931), ('tag', 518), ('fill', 182), ('summon', 165), ('item', 136), ('kill', 71), ('tp', 68), ('stopsound', 68), ('playsound', 65), ('title', 59), ('tellraw', 49), ('attribute', 49), ('particle', 40), ('schedule', 36), ('effect', 35), ('loot', 34), ('bossbar', 28), ('setblock', 23), ('\\', 20), ('gamemode', 19), ('team', 18), ('gamerule', 17), ('}', 15), ('],\\', 11), ('"I', 11), ('{\\', 10), ('}\\', 9), ('"I\'m', 9), ('advancement', 9), ('dialog', 8), ('ride', 8), ('"type":', 7), ('return', 7), ('{text:"', 7), ('"This', 6), ('type:"set_components",components:{\\', 6), ('equippable:{slot:"head","equip_sound":"intentionally_empty","swappable":false},\\', 6)]
+  biggest functions: [(395, 'data/ww_game/function/game_setup/cutscene/next_keyframe.mcfunction'), (246, 'data/ww_game/function/register/scripts.mcfunction'), (198, 'data/ww_game/function/load.mcfunction'), (180, 'data/ww_game/function/game_recap/cutscene_intro/next_keyframe.mcfunction'), (153, 'data/pc/function/process/element/custom_script/seed/decode/run.mcfunction'), (122, 'data/pc/function/process/element/custom_script/seed/encode/run.mcfunction'), (117, 'data/ww_game/function/technical/reset_player.mcfunction'), (105, 'data/ww_game/function/script_customize/build/run.mcfunction')]
+  #load: {'values': ['ww_game:load']}
+== resource pack: extract/The_Masquerade/resources.zip
+  files: 5299  uncompressed: 27MB
+  pack.mcmeta: {"pack": {"description": ["", {"translate": "ww.generic.map_title", "fallback": "§l§f ᵀʰ§nᵉ𝙼 𝙰 𝚂 𝚀 𝚄 𝙴 𝚁 𝙰 𝙳 𝙴 §r §8§l", "color": "white"}, "\n", {"translate": "ww.generic.by", "fallback": "by %s", "with": [{"translate": "ww.generic.gm4", "fallback": "Gamemode 4", "color": "#4AA0C7"}], "color": "gray"}], "min_format": 97, "max_format": 97}, "filter": {"block": [{"namespace": "minecraft", "path": "recipe"}, {"namespace": "minecraft", "path": "advancement"}]}}
+  ww/models: 2766 files, 3MB
+  ww/textures: 1184 files, 2MB
+  ww/items: 414 files, 556KB
+  ww/sounds: 223 files, 20MB
+  minecraft/textures: 218 files, 32KB
+  ww/font: 176 files, 440KB
+  pc/textures: 102 files, 699KB
+  pc/models: 76 files, 12KB
+  pc/items: 60 files, 17KB
+  ww/equipment: 34 files, 6KB
+  minecraft/blockstates: 27 files, 3KB
+  minecraft/shaders: 6 files, 28KB
+  pc/font: 4 files, 4KB
+  minecraft/models: 2 files, 745B
+  minecraft/atlases: 1 files, 2KB
+  minecraft/font: 1 files, 2KB
+  minecraft/lang: 1 files, 149KB
+  minecraft/sounds.json: 1 files, 2KB
+  ww/sounds.json: 1 files, 13KB
+  pack.mcmeta: 1 files, 923B
+  pack.png: 1 files, 2KB
+  by extension: {'.json': 3564, '.png': 1461, '.ogg': 223, '.mcmeta': 45, '.vsh': 3, '.fsh': 2, '.glsl': 1}
+  shaders: ['assets/minecraft/shaders/core/entity.fsh', 'assets/minecraft/shaders/core/entity.vsh', 'assets/minecraft/shaders/core/item.vsh', 'assets/minecraft/shaders/core/lightmap.fsh', 'assets/minecraft/shaders/core/text.vsh', 'assets/minecraft/shaders/include/fog.glsl']
+  font json: ['assets/minecraft/font/default.json', 'assets/pc/font/masquerade/computer/latin_big.json', 'assets/pc/font/masquerade/computer/latin_small.json', 'assets/pc/font/masquerade/projector/latin_big.json', 'assets/pc/font/masquerade/projector/latin_small.json', 'assets/ww/font/bossbar_desc1.json', 'assets/ww/font/bossbar_desc2.json', 'assets/ww/font/bossbar_role.json', 'assets/ww/font/chat_head.json', 'assets/ww/font/default_2x.json', 'assets/ww/font/include/bossbar/background.json', 'assets/ww/font/include/bossbar/european_desc1.json', 'assets/ww/font/include/bossbar/european_desc2.json', 'assets/ww/font/include/bossbar/european_role.json', 'assets/ww/font/include/role_selector/background.json', 'assets/ww/font/include/role_selector/buttons.json', 'assets/ww/font/include/role_selector/header.json', 'assets/ww/font/include/space_2x.json', 'assets/ww/font/negative.json', 'assets/ww/font/negative_1_5x.json', 'assets/ww/font/negative_1_5x_p2.json', 'assets/ww/font/negative_2x.json', 'assets/ww/font/padding.json', 'assets/ww/font/portrait.json', 'assets/ww/font/role_selector.json', 'assets/ww/font/role_wiki_subheader.json', 'assets/ww/font/screen_effects/blink0.json', 'assets/ww/font/screen_effects/blink1.json', 'assets/ww/font/screen_effects/blink10.json', 'assets/ww/font/screen_effects/blink2.json']
+== region-like dirs
+  dimensions/minecraft/overworld/entities: 11 files, 808KB, chunks=104, regions x[-3..58593] z[-1..13]
+  dimensions/minecraft/overworld/poi: 8 files, 484KB, chunks=97, regions x[-3..0] z[-1..0]
+  dimensions/minecraft/overworld/region: 38 files, 88MB, chunks=22252, regions x[-5..58594] z[-3..14]

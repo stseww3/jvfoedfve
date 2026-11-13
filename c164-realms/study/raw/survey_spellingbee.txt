@@ -1,0 +1,88 @@
+#### WORLD: extract/mapverse_spelling-bee/Spelling_Bee-1.1
+== level.dat
+  top-level keys: ['DataPacks', 'DataVersion', 'GameType', 'LastPlayed', 'LevelName', 'ServerBrands', 'Time', 'Version', 'WasModded', 'allowCommands', 'difficulty_settings', 'initialized', 'singleplayer_uuid', 'spawn', 'version']
+  Version: {'Snapshot': 0, 'Series': 'main', 'Id': 4790, 'Name': '26.1.2'}
+  DataVersion: Int(4790)
+  LevelName: Spelling Bee
+  GameType: Int(1)
+  allowCommands: Byte(1)
+  Time: Long(12453882)
+  initialized: Byte(1)
+  spawn: {'pos': array([9, 3, 3], dtype='>i4'), 'pitch': 0.0, 'dimension': 'minecraft:overworld', 'yaw': 0.0}
+  difficulty_settings: {'difficulty': 'peaceful', 'hardcore': 0, 'locked': 0}
+  DataPacks.Enabled: ['vanilla', 'file/buzz']
+  DataPacks.Disabled: ['minecart_improvements', 'redstone_experiments', 'trade_rebalance']
+== data/ files
+  data/buzz/command_storage.dat  70KB
+  data/animated_java/command_storage.dat  747B
+  data/minecraft/custom_boss_events.dat  99B
+  data/minecraft/game_rules.dat  823B
+  data/minecraft/random_sequences.dat  2KB
+  data/minecraft/scheduled_events.dat  142B
+  data/minecraft/scoreboard.dat  29KB
+  data/minecraft/stopwatches.dat  100B
+  data/minecraft/wandering_trader.dat  78B
+  data/minecraft/weather.dat  109B
+  data/minecraft/world_clocks.dat  98B
+  data/minecraft/world_gen_settings.dat  314B
+  data/aj/command_storage.dat  691B
+== data/minecraft/game_rules.dat
+   {"data": {"minecraft:spawn_wandering_traders": 1, "minecraft:block_drops": 1, "minecraft:reduced_debug_info": 0, "minecraft:show_death_messages": 1, "minecraft:spawner_blocks_work": 1, "minecraft:spawn_monsters": 1, "minecraft:tnt_explodes": 0, "minecraft:player_movement_check": 1, "minecraft:immediate_respawn": 0, "minecraft:block_explosion_drop_decay": 1, "minecraft:spread_vines": 1, "minecraft:max_entity_cramming": 24, "minecraft:forgive_dead_players": 1, "minecraft:fall_damage": 0, "minecraft:send_command_feedback": 0, "minecraft:global_sound_events": 1, "minecraft:elytra_movement_check": 1, "minecraft:fire_spread_radius_around_player": 0, "minecraft:freeze_damage": 1, "minecraft:natural_health_regeneration": 0, "minecraft:mob_explosion_drop_decay": 1, "minecraft:players_nether_portal_default_delay": 80, "minecraft:mob_drops": 1, "minecraft:log_admin_commands": 0, "minecraft:mob_griefing": 1, "minecraft:spawn_mobs": 0, "minecraft:pvp": 0, "minecraft:spectators_generate_chunks": 1, "minecraft:players_nether_portal_creative_delay": 0, "minecraft:max_command_sequence_length": 65536, "minecraft:players_sleeping_percentage": 100, "minecraft:advance_weather": 0, "minecraft:max_block_modifications": 32768, "minecraft:max_command_forks": 65536, "minecraft:drowning_damage": 1, "minecraft:show_advancement_messages": 1, "minecraft:locator_bar": 0, "minecraft:command_block_output": 0, "minecraft:respawn_radius": 10, "minecraft:raids": 1, "minecraft:spawn_phantoms": 1, "minecraft:max_snow_accumulation_height": 1, "minecraft:limited_crafting": 0, "minecraft:allow_entering_nether_using_portals": 1, "minecraft:lava_source_conversion": 0, "minecraft:tnt_explosion_drop_decay": 0, "minecraft:universal_anger": 0, "minecraft:keep_inventory": 0, "minecraft:spawn_patrols": 1, "minecraft:random_tick_speed": 0, "minecraft:fire_damage": 0, "minecraft:entity_drops": 1, "minecraft:advance_time": 0, "minecraft:command_blocks_work": 1, "minecraft:spawn_wardens": 1, "minecraft:projectiles_can_break_blocks": 1, "minecraft:water_source_conversion": 1, "minecraft:ender_pearls_vanish_on_death": 1}, "DataVersion": 4790}
+== data/minecraft/scoreboard.dat: objectives=20 teams=2 scores=1237
+  criteria: {'?': 18, 'minecraft.custom:minecraft.leave_game': 1, 'minecraft.used:minecraft.carrot_on_a_stick': 1}
+  sample objectives: ['aj.i', 'aj.buttonon.frame', 'const', 'aj.idle_nm.frame', 'streak', 'joinig', 'jump', 'aj.tween_duration', 'stick', 'aj.idle.frame', 'aj.sierra.frame', 'speed', 'aj.id', 'aj.idlezedf.frame', 'aj.is_rig_loaded', 'string_conv', 'gameid', 'aj.idletof.frame', 'aj.buttonon2.frame', 'aj.idleworfer.frame']
+== datapack: extract/mapverse_spelling-bee/Spelling_Bee-1.1/datapacks/buzz
+  pack.mcmeta: {"pack": {"pack_format": 101.1, "description": "JAI TROP DE BUZZ", "supported_formats": {"min_inclusive": 71, "max_inclusive": 101.1}}, "filter": {"block": [{"namespace": "minecraft", "path": "advancement/.*"}]}}
+  ns animated_java: {'function': 353, 'tags': 3}  function-commands=2965
+  ns buzz: {'predicate': 9, 'function': 170, 'structure': 18}  function-commands=7983
+  ns minecraft: {'tags': 2}  function-commands=0
+  ns playersfirstjoin: {'advancement': 1, 'function': 1}  function-commands=5
+  total function commands: 10953
+  top command heads: [('data', 8880), ('execute', 1228), ('tag', 267), ('scoreboard', 203), ('function', 112), ('schedule', 67), ('summon', 33), ('stopsound', 29), ('gamemode', 18), ('return', 16), ('team', 14), ('playsound', 12), ('effect', 11), ('tellraw', 9), ('kill', 9), ('tp', 8), ('title', 7), ('place', 5), ('fill', 4), ('setblock', 3), ('damage', 3), ('item', 2), ('stopwatch', 2), ('particle', 2), ('attribute', 2), ('spectate', 2), ('spawnpoint', 1), ('say', 1), ('gamerule', 1), ('ride', 1), ('clear', 1)]
+  biggest functions: [(3930, 'data/buzz/function/inizialization/settout.mcfunction'), (2500, 'data/buzz/function/inizialization/removelist.mcfunction'), (151, 'data/animated_java/function/blueprint/zzz/summon/as_data_entity.mcfunction'), (107, 'data/buzz/function/inizialization/shufflekeyboardduel.mcfunction'), (94, 'data/buzz/function/game/startgame.mcfunction'), (55, 'data/animated_java/function/blueprint/set_default_pose.mcfunction'), (54, 'data/buzz/function/inizialization/shufflekeyboard.mcfunction'), (51, 'data/buzz/function/inizialization/reset.mcfunction')]
+  #tick: {'replace': False, 'values': ['buzz:tick', 'animated_java:global/on_tick']}
+  #load: {'replace': False, 'values': ['animated_java:global/internal/gu/load', 'animated_java:global/on_load', 'buzz:load']}
+== resource pack: extract/mapverse_spelling-bee/Spelling_Bee-1.1/resources.zip
+  files: 2324  uncompressed: 36MB
+  pack.mcmeta: {"pack": {"description": "spelling bee bros ressource pack", "pack_format": 55, "min_format": 84, "max_format": 84, "supported_formats": {"min_inclusive": 55, "max_inclusive": 62}}}
+  minecraft/sounds: 2012 files, 34MB
+  minecraft/textures: 82 files, 2MB
+  minecraft/models: 66 files, 242KB
+  animated_java/models: 57 files, 52KB
+  animated_java/items: 51 files, 11KB
+  minecraft/items: 39 files, 17KB
+  animated_java/textures: 10 files, 16KB
+  minecraft/atlases: 1 files, 104B
+  minecraft/shaders: 1 files, 2KB
+  minecraft/sounds.json: 1 files, 168KB
+  pack/font: 1 files, 230B
+  pack/textures: 1 files, 152B
+  assets.ajmeta: 1 files, 8KB
+  pack.mcmeta: 1 files, 207B
+  by extension: {'.ogg': 2012, '.json': 214, '.png': 93, '.py': 1, '.txt': 1, '.vsh': 1, '.ajmeta': 1, '.mcmeta': 1}
+  shaders: ['assets/minecraft/shaders/core/rendertype_text.vsh']
+  font json: ['assets/pack/font/fullscreen_front.json']
+== resource pack: extract/mapverse_spelling-bee/Spelling_Bee-1.1/resourcepacks/resources.zip
+  files: 2324  uncompressed: 36MB
+  pack.mcmeta: {"pack": {"description": "spelling bee bros ressource pack", "pack_format": 55, "min_format": 84, "max_format": 84, "supported_formats": {"min_inclusive": 55, "max_inclusive": 62}}}
+  minecraft/sounds: 2012 files, 34MB
+  minecraft/textures: 82 files, 2MB
+  minecraft/models: 66 files, 242KB
+  animated_java/models: 57 files, 52KB
+  animated_java/items: 51 files, 11KB
+  minecraft/items: 39 files, 17KB
+  animated_java/textures: 10 files, 16KB
+  minecraft/atlases: 1 files, 104B
+  minecraft/shaders: 1 files, 2KB
+  minecraft/sounds.json: 1 files, 168KB
+  pack/font: 1 files, 230B
+  pack/textures: 1 files, 152B
+  assets.ajmeta: 1 files, 8KB
+  pack.mcmeta: 1 files, 207B
+  by extension: {'.ogg': 2012, '.json': 214, '.png': 93, '.py': 1, '.txt': 1, '.vsh': 1, '.ajmeta': 1, '.mcmeta': 1}
+  shaders: ['assets/minecraft/shaders/core/rendertype_text.vsh']
+  font json: ['assets/pack/font/fullscreen_front.json']
+== region-like dirs
+  dimensions/minecraft/overworld/entities: 4 files, 508KB, chunks=41, regions x[-1..0] z[-1..0]
+  dimensions/minecraft/overworld/poi: 4 files, 276KB, chunks=57, regions x[-1..0] z[-1..0]
+  dimensions/minecraft/overworld/region: 16 files, 41MB, chunks=10332, regions x[-2..1] z[-2..1]
