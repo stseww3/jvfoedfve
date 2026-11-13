@@ -1,6 +1,6 @@
 ## 9. 复算办法
 
-全部命令在 `c136-review/agents/R06/` 下执行。模拟器要读数据包 `/agent/repos/c136-data/`（或环境变量 `C136_DATA` 指的目录）里的引擎移植、录像、日志和历史策略文件；只读结果文件的几个脚本不需要它。队列里的每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限），槽位数写死为 2。写报告时反复执行的几个只读脚本（`g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`，只读结果文件，一秒上下）是直接跑的，不占槽位。
+全部命令在 `c136-review/agents/R06/` 下执行。模拟器要读数据包 `/agent/repos/c136-data/`（或环境变量 `C136_DATA` 指的目录）里的引擎移植、录像、日志和历史策略文件；只读结果文件的几个脚本不需要它。队列里的每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限），槽位数写死为 2。写报告时反复执行的几个只读脚本（`g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`restore_check.py`，只读结果文件，一秒上下）是直接跑的，不占槽位；`g0_batch.mjs` 里「机器太挤就先放下」那条分支做过一次空跑测试（只有量 CPU 份额的两三秒，没有跑任何运行），也是直接跑的。
 
 **整条队列（按顺序跑完本报告用到的全部运行，已有结果的跳过）：**
 
@@ -133,6 +133,7 @@ bash sim-v2/tools/add_match.sh <c110|c116-vb|c116-va|c116> <局号…>
 | `sim-v2/calib/report/tables/`、`values.json`、`notes.txt` | `g0_report.mjs` 生成的表、数字、提醒 |
 | `sim-v2/calib/old-vs-new.json`、`old-code-arena.json`、`human-profile-check.json` | 1.6 节的几项核对（`tools/old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`） |
 | `sim-v2/calib/run-log.jsonl`、`run-prov.json`、`run-prov-base.json`、`batchcheck/prov/` | 运行流水、出处分类（及其定格）、抽查重跑的结果（`tools/run_prov.py`；抽查清单在 `tools/provcheck/`、`tools/provcheck_plan.txt`） |
+| `sim-v2/calib/restore-check.json`、`batchcheck/restore/live/` | 数据包被清掉又回到原处之后的核对：实盘签名重算的结果、与入库那一份的比对（`tools/restore_check.py`；`g0_all.sh restore`，不在缺省的阶段里） |
 | `sim-v2/tools/g0_all.sh`、`g0_batch.mjs`、`g0_plan.txt`、`g0_lists.py`、`hold_list.py`、各张 `*_list*.txt` | 队列、计划、清单 |
-| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
+| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`restore_check.py`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
 | `reports/src-g0/*.md` | 本报告的正文模板 |

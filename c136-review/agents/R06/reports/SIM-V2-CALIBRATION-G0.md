@@ -149,7 +149,7 @@
 - **两种跑法。** 现在的运行是一个进程里连着跑一批的（`tools/g0_batch.mjs`，每次运行之前把策略文件重新编译一遍）；入库的旧结果和上面旧代码的重跑，都是单独起进程一个一个跑的。所以上面的核对同时说明两种跑法的结果没有区别。另外抽了 6 次断面运行放进另一批再跑一遍，6 次与原结果相同。
   闭环运行也抽了 2 个房间，换一个次序在另一批里再跑一遍，2 个与原结果相同。
   （闭环的这 2 次换次序重跑，本身是第 9 节「运行的出处」里说的那批没经闸门的进程跑的，不是 R06 的队列跑的；R06 自己经闸门重跑闭环房间的核对在第 9 节的表里。）
-- **对手模型的参数文件：从头重算的核对还没有做完。** `sim-v2/calib/human-profile.json` 是 `tools/human_profile.mjs` 从核心 20 局的录像统计出来的。把它从头重算一遍、与入库的那份逐字节比（`tools/profile_check.sh`），这一项排在队列里，这一版没有跑完。第 7 节用的是入库的那份。
+- **对手模型的参数文件。** `sim-v2/calib/human-profile.json` 是 `tools/human_profile.mjs` 从核心 20 局的录像统计出来的。从头重算一遍（`tools/profile_check.sh`，20 局），与入库的那份逐字节相同。
 
 ## 2. 物理底座对真引擎（`--mode verify`）
 
@@ -1224,7 +1224,7 @@ C1 和 C2 里有随机抽样的 d。卡顿波所在的两个断面（630、1500�
 
 ## 9. 复算办法
 
-全部命令在 `c136-review/agents/R06/` 下执行。模拟器要读数据包 `/agent/repos/c136-data/`（或环境变量 `C136_DATA` 指的目录）里的引擎移植、录像、日志和历史策略文件；只读结果文件的几个脚本不需要它。队列里的每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限），槽位数写死为 2。写报告时反复执行的几个只读脚本（`g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`，只读结果文件，一秒上下）是直接跑的，不占槽位。
+全部命令在 `c136-review/agents/R06/` 下执行。模拟器要读数据包 `/agent/repos/c136-data/`（或环境变量 `C136_DATA` 指的目录）里的引擎移植、录像、日志和历史策略文件；只读结果文件的几个脚本不需要它。队列里的每个 node 都经重计算闸门（`../../tools/run-heavy.sh`）排队，node 命令上带 `timeout 120`（从拿到槽位起算；闸门自己另有 110 秒的上限），槽位数写死为 2。写报告时反复执行的几个只读脚本（`g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`restore_check.py`，只读结果文件，一秒上下）是直接跑的，不占槽位；`g0_batch.mjs` 里「机器太挤就先放下」那条分支做过一次空跑测试（只有量 CPU 份额的两三秒，没有跑任何运行），也是直接跑的。
 
 **整条队列（按顺序跑完本报告用到的全部运行，已有结果的跳过）：**
 
@@ -1299,7 +1299,8 @@ timeout 60 node sim-v2/tools/same_result.mjs sim-v2/calib/batchcheck/g0-batched 
 - 重跑核对：要重跑的 61 个全部经闸门重跑完，61 个与原结果逐字段相同（共 91,349 个字段）。
 - **重跑中间断过一次。** 11 月 12 日 20:53（UTC），这台机器上各复盘员的工作区、临时目录和数据包 `/agent/repos/c136-data/` 被整个清掉，R06 的队列随之中断。不是 R06 做的，原因 R06 不知道（当时发了 alert：`outbox/0024-workspace-wiped-data-package-missing.md`）。R06 分支上已经提交的东西不受影响：本报告、模拟器、报告用到的全部运行结果都在提交里，现在的工作区是从提交重新检出的。数据包在 21:42（UTC，按目录的时间）回到原处；不是 R06 恢复的，是谁恢复的、和原来那一份是不是同一份，没有人告诉 R06。
   所以这 61 个重跑分两拨：12 个是清掉之前跑的，49 个是数据包回来之后跑的（清掉之前另有 17 个重跑当时核对相同，结果文件随工作区丢了，没有文件可以对，回来之后重跑了一遍，算在后一拨里）。后一拨涉及 29 个局，49 个与清掉之前的原结果逐字段相同。这顺带说明了一件事：回来的这份数据包，在这些运行用到的范围内（引擎移植、这 29 个局的录像和日志、四个历史策略文件），给出的结果和清掉之前那一份一样；四个策略文件另外每次装载都核对内容散列，对不上就拒绝装（1.6 节）。
-  这些运行没有用到的局，R06 没有核对过数据包前后是否一样。
+  除此以外专门核对了一遍数据包。R06 手里没有清掉之前数据包里各个文件的散列（四个策略文件除外），能对的是结果：全部 123 个有录像的局的实盘签名（第 3 节用的那一份：只放录像，过引擎移植，对日志快照）清掉之前算过、入了库。数据包回来之后把它经闸门从头重算了一遍（`bash sim-v2/tools/g0_all.sh restore`，结果在 `calib/batchcheck/restore/live/`，核对在 `calib/restore-check.json`），与入库的那一份逐字段比：123 个局里 123 个相同（共 12,438 个字段）。
+  所以回来的这份数据包，每一局的录像和日志、引擎移植、地图这几样，在本报告用到的范围内和清掉之前那一份给出的结果相同。
 - 「没经闸门」是从严算的：记流水之前那几分钟里写出来的结果，分不清是谁跑的，一律算没经闸门。记流水之前的结果是按文件的修改时间分的；工作区重新检出以后文件时间不再可信，所以 17:50 那一次的分类定格在 `calib/run-prov-base.json` 里，`run_prov.py` 对其中列出的结果按它算。
 - 没经闸门的结果集中在 `attr/`（0 / 1500 / 4284 三个断面的归因和换种子）：第 6 节除 630 断面以外的数，底下的运行绝大部分是这样来的。5.7 节的三种假定对照（`hold/`）、第 7 节的闭环（`arena-acc20/`）和新接的 Va / Vc 局的 verify 各有一部分。第 2 节核心 20 局的 verify、第 5 节的断面整表（`g0/`）全部是 R06 的队列经闸门跑的。
 
@@ -1321,7 +1322,7 @@ timeout 120 node sim-v2/tools/g0_report.mjs       # 全部表和数字 → sim-v
 timeout 120 node sim-v2/tools/g0_build.mjs        # 拼成 reports/SIM-V2-CALIBRATION-G0.md
 ```
 
-`g0_build.mjs` 在拼报告之前会核对正文模板里写下的数量关系（模板里的 `assert` 行，这一版核对了 157 条）。数据重跑之后，正文里哪句话不再成立，在这一步就报错，不会写出报告。模板里还有按数据到没到齐分两种写法的段落（`if` / `else` 行）：某一组运行没有跑完时，正文写的是「没有跑完」，不是空着或者用半截数据下结论。
+`g0_build.mjs` 在拼报告之前会核对正文模板里写下的数量关系（模板里的 `assert` 行，这一版核对了 158 条）。数据重跑之后，正文里哪句话不再成立，在这一步就报错，不会写出报告。模板里还有按数据到没到齐分两种写法的段落（`if` / `else` 行）：某一组运行没有跑完时，正文写的是「没有跑完」，不是空着或者用半截数据下结论。
 
 **接一局新的历史对局进来（录像、策略日志在数据包里的）：**
 
@@ -1342,6 +1343,7 @@ bash sim-v2/tools/add_match.sh <c110|c116-vb|c116-va|c116> <局号…>
 | `sim-v2/calib/report/tables/`、`values.json`、`notes.txt` | `g0_report.mjs` 生成的表、数字、提醒 |
 | `sim-v2/calib/old-vs-new.json`、`old-code-arena.json`、`human-profile-check.json` | 1.6 节的几项核对（`tools/old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`） |
 | `sim-v2/calib/run-log.jsonl`、`run-prov.json`、`run-prov-base.json`、`batchcheck/prov/` | 运行流水、出处分类（及其定格）、抽查重跑的结果（`tools/run_prov.py`；抽查清单在 `tools/provcheck/`、`tools/provcheck_plan.txt`） |
+| `sim-v2/calib/restore-check.json`、`batchcheck/restore/live/` | 数据包被清掉又回到原处之后的核对：实盘签名重算的结果、与入库那一份的比对（`tools/restore_check.py`；`g0_all.sh restore`，不在缺省的阶段里） |
 | `sim-v2/tools/g0_all.sh`、`g0_batch.mjs`、`g0_plan.txt`、`g0_lists.py`、`hold_list.py`、各张 `*_list*.txt` | 队列、计划、清单 |
-| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
+| `sim-v2/tools/g0_report.mjs`、`g0_build.mjs`、`same_result.mjs`、`run_prov.py`、`restore_check.py`、`old_vs_new.sh`、`old_code_arena.sh`、`profile_check.sh`、`verify_tail.mjs`、`opening_delay.mjs`、`live_table.mjs`、`human_profile.mjs` | 汇总、拼报告、核对 |
 | `reports/src-g0/*.md` | 本报告的正文模板 |
