@@ -9,6 +9,9 @@
 第二版相对第一版的改动（都不破坏已写的代码）：加了 `motion` 类别；`sky` 挪到最后铺；包内顺序用 `ORDER`；
 `build()` 可以带有默认值的额外参数（`version=`）；检查脚本的用法和查什么（第 6 节）；光线版本靠时间选（第 3 节）。
 
+11-14 补充（也不破坏已写的代码）：格和点的约定（第 2 节）；materials 和 props 的公用底座已在总装，例子换成真的包（第 2 节）；
+云的五个方块归 sky 画、占位怎么算（第 4 节）；合并前 S2 还跑 `tools/delivery.py`，二进制文件一律拦（第 6 节）。
+
 ---
 
 ## 1. 目录和类别
@@ -45,8 +48,12 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 - **额外参数随便加，但要有默认值**：总场景只调 `build(canvas, origin)`。要比选的包写成 `build(canvas, origin=(0,0,0), version="a")`，测试场景里并排调各版本；评审定了哪一版，就把默认值改成那一版。内部想拆成 `build_<room>(c, origin, roles, *, version=...)` 这样的函数随意，模块级的 `build()` 调它就行。
 - 放方块只认占用表角色名：`from scenes.obs.common import blocks as B` → `B.ASHLAR_FINE.block`、`B.IRON_RIVETED.slab + "[type=top]"`、`B.PANELS["dial"]`。不直接写被重画方块的原名。
 - 取坐标只认骨架：`from scenes.obs.common import skeleton as S` → `S.pilaster_z(j)`、`S.WINDOW`、`S.DOME_CENTRE`、`S.east_wall_x(bay)`、`S.BUDGET`。
+- **格和点别混**：骨架里的数都是“格”（方块的整数坐标，第 k 格占 k 到 k+1）；展示实体摆在“点”上（实数坐标），第 k 格的正中是 k+0.5。主楼关于 z=0 这一排方块的正中对称，所以入口、星厅、穹顶的轴线是 **z=0.5**（`S.AXIS_Z`），穹顶的轴是 `S.DOME_AXIS=(4.5, 0.5)`。几格的正中用 `S.mid(a, b)`（等于 (a+b+1)/2）。把模型摆在 z=0 会偏北半格。
 - 取颜色只认色板：`from scenes.obs.common import palette as P` → `P.mat("iron")`、`P.colour("brass", 3)`。缺颜色群里向 A0 提，不自定义。
-- 最小例子：`props/lamps.py`（一个模型 + `build()` 摆两个）、`main/massing.py`（白模）、`materials/stone.py`（`pack()` 重画方块）。它们是框架的演示，对应的卡交付时由做卡的人替换或删掉。
+- 例子：`props/lamps.py`（14 个模型，两版比选，`place()` 给别的类别调，`build()` 在总场景里摆 4 个）和它的测试场景 `scenes/obs_props_lamps/`；`materials/respack_redirect.py` 和 `scenes/obs_mat_redirect/`。`main/massing.py`（白模）、`site/ground.py` 还是框架的演示，对应的卡交付时由做卡的人替换或删掉。
+- 类别的公用底座（名字以 `_` 开头，归类别牵头人管，缺什么找他加，别在自己分支上改）：
+  - `materials/_kit.py`：`K.paint(pack_dir, 图名, 图)` 写方块图（自动查尺寸和色板外颜色），`K.redirect(pack_dir, 方块, {原版图: 图名})` 让一个方块换图而不动和它共用文件的方块；模块顶上 `BLOCKS = K.blocks(B.<角色>)` 写明自己画了哪些方块，占位就自动让开。要读游戏的 jar（`MC_JAR` 或 `MC_ROOT`，管理员电脑上 `job.py` 已带）。用法见文件头和 c176 的公告。
+  - `props/_kit.py`：三种挂法（floor / wall / ceiling）、`K.put()` 摆放、道具用的几档材质、铆钉、玻璃、`K.offer_lights()` 把光源交给 sky。每个道具包对外给 `place(canvas, kind, pos, facing=, origin=)`。
 - 数据包里的函数（`motion` 的循环）怎么交：等 `motion` 的细化稿出来再定，先别自己往数据包里写文件。
 
 ## 3. 怎么注册一个新包（不改共享列表，两个人各加一个包不冲突）
@@ -69,8 +76,10 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 - **模型名加类别前缀**：`materials`→`mat_`、`sky`→`sky_`、`main`→`bld_`、`props`→`prop_`、`site`→`site_`、`machines`→`mach_`、`interiors`→`int_`、`motion`→`mot_`。
   模型名唯一 ⇒ `assets/c164/…` 下的物品模型/贴图文件唯一；重名 `build_models()` 抛错，`check.py` 也查。
 - **资源包里谁写哪**（`check.py` 里的 `OWNED` 表；写进别的类别的地盘判不过，写到表里没有的地方给警告，找 S2 加）：
-  - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的那个文件夹）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些。**
+  - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些，唯一的例外是云。**
   - `sky`：`assets/minecraft/textures/environment/*`、`assets/c164/textures/environment/*`（彗星、云、星）。光的 biome/timeline 在 `sky/mood.py`（那是数据包，驱动器单独处理，不在 `pack()` 里）。
+    **云的五个方块（`B.CLOUD`）由 sky 画**（A0 批的例外：云色要和天光一起调）：它们的方块状态文件、模型文件夹 `assets/c164/models/block/<方块名>/`、名字以 `sky_` 开头的方块图 `assets/c164/textures/block/sky_*` 归 sky；照样走 `materials/_kit.py` 的 `paint` 和 `redirect`。
+  - 占位：没人画的重画方块由 `materials/respack_redirect` 套上占位色（图名 `ph_` 开头）。占位写到别人地盘里不算越界；正式的包开始写同一个文件而占位没让开，判重复。
   - `motion`：`assets/c164/sounds/*`、`assets/c164/sounds.json`、`assets/c164/particles/*`、`assets/c164/textures/particle/*`。
   - 其余类别：`pack()` 一般不写文件，只用 `materials` 的方块和自己的展示实体模型。
 - 要一种新方块材质/新色阶：群里点名 materials 的牵头人和 S2，A0 批，S2 改占用表/色板，再画。不自己占方块、不自己建色板。
@@ -113,7 +122,9 @@ build/scenes/obs_<缩写>_<包名>/
 | entities | 每个展示实体的模型资源包里有没有；实体总数和类别预算；是不是 16 像素一格 | 缺模型、超预算 FAIL；像素密度 WARN |
 | views | 按 `shots.json` 数每个视角里的展示实体（不算墙的遮挡），对照单视角上限 | WARN |
 
-`--json <文件>` 另存一份机器可读的结果；`--keep <目录>` 留下生成的资源包和数据包。S2 合并前对你的测试场景和总场景 `obs` 各复跑一次。脚本查不了的（门能不能走人、层高、文字、被重画的方块有没有按原意用）由做技检的人看图看代码。
+`--json <文件>` 另存一份机器可读的结果；`--keep <目录>` 留下生成的资源包和数据包。S2 合并前在“你的分支和总装合起来”的树上，对你的测试场景和总场景 `obs` 各复跑一次，所以交付前先 merge 一次总装分支再自查，省一轮。脚本查不了的（门能不能走人、层高、文字、被重画的方块有没有按原意用）由做技检的人看图看代码。
+
+合并前 S2 还跑 `tools/delivery.py <类别>/<包名> <提交>`（只读 git，你也可以自己先跑）：改了谁的文件（本卡的、公共的、别的卡的、总监的）；有没有不该进仓库的文件；有没有像密钥的字符串；提交说明是不是 `c164-<代号>: ` 开头；能不能干净地合进总装。**二进制文件一律拦**，只放行图片（`plan/` 下的配图；代码树里的图片会被问来源，贴图都由代码画）和 `tools/win/helper/*.class`（A0 批的唯一例外，S2 会从并排的源码重编一遍逐字节比）。声音文件也拦，要加先问 A0。
 
 过了按 `PIPELINE.md` 第 4.3 节发群，点名 S2：
 
