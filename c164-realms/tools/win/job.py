@@ -36,7 +36,7 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCKS = os.path.join(ROOT, "locks")
 SERVER_AND_GAME = {"winmc.py", "winctl.py", "shoot.py", "place.py", "gallery.py", "rcon.py", "mcbot.py",
-                   "fetch_client.py", "inbox.py"}
+                   "fetch_client.py", "inbox.py", "shuttle.py"}
 BELOW_NORMAL = 0x00004000
 
 
