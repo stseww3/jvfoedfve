@@ -1,0 +1,1209 @@
+{
+ "stamp": "2026-11-13T14-59-26-988Z",
+ "port": 9461,
+ "baseDir": "/tmp/ffprobe/c116",
+ "verdict": "INTERACTION_REQUESTED_BUT_NOT_PASSED",
+ "tokenLen": 0,
+ "steps": [
+  {
+   "t": 96,
+   "name": "firefox-spawned",
+   "data": {
+    "pid": 1794674
+   }
+  },
+  {
+   "t": 3274,
+   "name": "bidi-connected",
+   "data": null
+  },
+  {
+   "t": 5484,
+   "name": "session-new-ok",
+   "data": null
+  },
+  {
+   "t": 6060,
+   "name": "subscribe-log",
+   "data": "ok"
+  },
+  {
+   "t": 6332,
+   "name": "add-preload-script",
+   "data": "ok"
+  },
+  {
+   "t": 6350,
+   "name": "context",
+   "data": {
+    "url": "https://territorial.io/"
+   }
+  },
+  {
+   "t": 6383,
+   "name": "engine-wd-check",
+   "data": "true:object"
+  },
+  {
+   "t": 7386,
+   "name": "reload",
+   "data": "ok"
+  },
+  {
+   "t": 10896,
+   "name": "page-state-after-init",
+   "data": {
+    "wd": "false",
+    "ts": "object",
+    "tsRender": "function",
+    "rs": "complete",
+    "vis": "visible",
+    "focus": true,
+    "href": "https://territorial.io/",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+    "iw": 1280,
+    "ih": 954
+   }
+  },
+  {
+   "t": 10904,
+   "name": "engine-ts-wait",
+   "data": {
+    "readyAtIter": 0
+   }
+  },
+  {
+   "t": 13147,
+   "name": "render",
+   "data": "RENDERED:cf-chl-widget-nkpni"
+  }
+ ],
+ "pageState": {
+  "profileSocksPort": null,
+  "afterInit": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  },
+  "turnstileReadyWithinEngineWait": true,
+  "beforeRender": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  }
+ },
+ "widgetEvents": [
+  {
+   "t": 7,
+   "name": "rendered",
+   "data": "cf-chl-widget-nkpni"
+  },
+  {
+   "t": 5809,
+   "name": "before-interactive",
+   "data": null
+  }
+ ],
+ "iterations": [
+  {
+   "i": 0,
+   "t": 13808,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 1,
+   "t": 14688,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 2,
+   "t": 15585,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 3,
+   "t": 18459,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 4,
+   "t": 19322,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 5,
+   "t": 20175,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 6,
+   "t": 21043,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 7,
+   "t": 21910,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 8,
+   "t": 22767,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 9,
+   "t": 23626,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 10,
+   "t": 24623,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 11,
+   "t": 25484,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 12,
+   "t": 26346,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 13,
+   "t": 27208,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 14,
+   "t": 28055,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 15,
+   "t": 28904,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 16,
+   "t": 29745,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 17,
+   "t": 30612,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 18,
+   "t": 31466,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 19,
+   "t": 32334,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 20,
+   "t": 33279,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 21,
+   "t": 34151,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  }
+ ],
+ "frames": [
+  {
+   "depth": 0,
+   "url": "https://territorial.io/"
+  },
+  {
+   "depth": 1,
+   "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/nkpni/0x4AAAAAAEI8HZoG8nJMzxt1/auto/fbE/new/n"
+  }
+ ],
+ "resources": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 653,
+   "d": 154,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/xgd0f/0x4AAAAAAEI8HZoG8nJ",
+   "start": 827,
+   "d": 108,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "console": [
+  {
+   "t": 6028,
+   "level": "info",
+   "type": "console",
+   "text": "hostname: [territorial.io] validHostname: 1 validMod: 0"
+  },
+  {
+   "t": 6040,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 6040,
+   "level": "info",
+   "type": "console",
+   "text": "Connection to Server 0"
+  },
+  {
+   "t": 6040,
+   "level": "info",
+   "type": "console",
+   "text": "validateString error: "
+  },
+  {
+   "t": 6040,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile onload"
+  },
+  {
+   "t": 6040,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile render"
+  },
+  {
+   "t": 6131,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 6790,
+   "level": "info",
+   "type": "console",
+   "text": "socket close index 0 error 1001"
+  },
+  {
+   "t": 7260,
+   "level": "info",
+   "type": "console",
+   "text": "hostname: [territorial.io] validHostname: 1 validMod: 0"
+  },
+  {
+   "t": 7260,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 7478,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile onload"
+  },
+  {
+   "t": 7479,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile render"
+  },
+  {
+   "t": 7494,
+   "level": "info",
+   "type": "console",
+   "text": "Connection to Server 0"
+  },
+  {
+   "t": 7495,
+   "level": "info",
+   "type": "console",
+   "text": "validateString error: "
+  },
+  {
+   "t": 8254,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 9617,
+   "level": "info",
+   "type": "console",
+   "text": ""
+  },
+  {
+   "t": 9634,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9635,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9636,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9638,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9643,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9646,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9646,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 9646,
+   "level": "debug",
+   "type": "console",
+   "text": "nodelist"
+  },
+  {
+   "t": 9646,
+   "level": "debug",
+   "type": "console",
+   "text": "object"
+  },
+  {
+   "t": 9646,
+   "level": "debug",
+   "type": "console",
+   "text": "htmlcollection"
+  },
+  {
+   "t": 9646,
+   "level": "info",
+   "type": "console",
+   "text": "/.*.*=.*/"
+  },
+  {
+   "t": 9652,
+   "level": "info",
+   "type": "console",
+   "text": "function"
+  },
+  {
+   "t": 9652,
+   "level": "info",
+   "type": "console",
+   "text": "node"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 9654,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 9656,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9656,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": " Error"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9665,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9665,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9665,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9668,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9668,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9668,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 9668,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 9671,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9672,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9672,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9672,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 9672,
+   "level": "warn",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 9672,
+   "level": "warn",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 13775,
+   "level": "warn",
+   "type": "console",
+   "text": "[Cloudflare Turnstile] Cannot find Widget cf-chl-widget-xgd0f, consider using turnstile.remove() to clean up a widget."
+  },
+  {
+   "t": 17480,
+   "level": "info",
+   "type": "console",
+   "text": ""
+  },
+  {
+   "t": 17480,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17490,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17490,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17490,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17495,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17495,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17495,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 17496,
+   "level": "debug",
+   "type": "console",
+   "text": "nodelist"
+  },
+  {
+   "t": 17497,
+   "level": "debug",
+   "type": "console",
+   "text": "object"
+  },
+  {
+   "t": 17500,
+   "level": "debug",
+   "type": "console",
+   "text": "htmlcollection"
+  },
+  {
+   "t": 17500,
+   "level": "info",
+   "type": "console",
+   "text": "/.*.*=.*/"
+  },
+  {
+   "t": 17500,
+   "level": "info",
+   "type": "console",
+   "text": "function"
+  },
+  {
+   "t": 17510,
+   "level": "info",
+   "type": "console",
+   "text": "node"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 17523,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17523,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17523,
+   "level": "info",
+   "type": "console",
+   "text": " Error"
+  },
+  {
+   "t": 17533,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 17533,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 17533,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 17533,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 17533,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 17534,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17534,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17534,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17534,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17534,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17534,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17535,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17535,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17535,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 17535,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 17535,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17535,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17535,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17535,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17541,
+   "level": "warn",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 17541,
+   "level": "warn",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 17747,
+   "level": "error",
+   "type": "javascript",
+   "text": "downloadable font: rejected by sanitizer (font-family: \"Arimo\" style:normal weight:400 width:100 src index:0) source: (invalid URI)"
+  },
+  {
+   "t": 17747,
+   "level": "error",
+   "type": "javascript",
+   "text": "downloadable font: font load failed (font-family: \"Arimo\" style:normal weight:400 width:100 src index:0) source: (invalid URI)"
+  },
+  {
+   "t": 17747,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 17747,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  }
+ ],
+ "screenshots": [
+  {
+   "label": "0-before-render",
+   "file": "probe-2026-11-13T14-59-26-988Z-0-before-render.png",
+   "bytes": 121812,
+   "t": 13125
+  },
+  {
+   "label": "1-iter2",
+   "file": "probe-2026-11-13T14-59-26-988Z-1-iter2.png",
+   "bytes": 66553,
+   "t": 17608
+  },
+  {
+   "label": "2-iter9-full",
+   "file": "probe-2026-11-13T14-59-26-988Z-2-iter9-full.png",
+   "bytes": 497072,
+   "t": 23724
+  },
+  {
+   "label": "2-iter9",
+   "file": "probe-2026-11-13T14-59-26-988Z-2-iter9.png",
+   "bytes": 66713,
+   "t": 23753
+  },
+  {
+   "label": "3-end",
+   "file": "probe-2026-11-13T14-59-26-988Z-3-end.png",
+   "bytes": 66713,
+   "t": 34484
+  }
+ ],
+ "resourcesAfter": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 653,
+   "d": 154,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/xgd0f/0x4AAAAAAEI8HZoG8nJ",
+   "start": 827,
+   "d": 108,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/nkpni/0x4AAAAAAEI8HZoG8nJ",
+   "start": 6485,
+   "d": 46,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "elapsedMs": 34530
+}

@@ -1,0 +1,737 @@
+{
+ "stamp": "2026-11-13T15-07-35-973Z",
+ "port": 9461,
+ "baseDir": "/tmp/ffprobe/c116",
+ "profile": "firefox_async_9461",
+ "clickMode": "engine",
+ "wantConsole": true,
+ "clicks": 7,
+ "verdict": "TOKEN_OK",
+ "tokenLen": 709,
+ "steps": [
+  {
+   "t": 96,
+   "name": "firefox-spawned",
+   "data": {
+    "pid": 3098237
+   }
+  },
+  {
+   "t": 2537,
+   "name": "bidi-connected",
+   "data": null
+  },
+  {
+   "t": 3222,
+   "name": "session-new-ok",
+   "data": null
+  },
+  {
+   "t": 3682,
+   "name": "subscribe-log",
+   "data": "ok"
+  },
+  {
+   "t": 3733,
+   "name": "add-preload-script",
+   "data": "ok"
+  },
+  {
+   "t": 3788,
+   "name": "context",
+   "data": {
+    "url": "https://territorial.io/"
+   }
+  },
+  {
+   "t": 3952,
+   "name": "engine-wd-check",
+   "data": "true:undefined"
+  },
+  {
+   "t": 4567,
+   "name": "reload",
+   "data": "ok"
+  },
+  {
+   "t": 8087,
+   "name": "page-state-after-init",
+   "data": {
+    "wd": "false",
+    "ts": "object",
+    "tsRender": "function",
+    "rs": "complete",
+    "vis": "visible",
+    "focus": true,
+    "href": "https://territorial.io/",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+    "iw": 1280,
+    "ih": 954
+   }
+  },
+  {
+   "t": 8107,
+   "name": "engine-ts-wait",
+   "data": {
+    "readyAtIter": 0
+   }
+  },
+  {
+   "t": 8970,
+   "name": "render",
+   "data": "RENDERED:cf-chl-widget-botf4"
+  }
+ ],
+ "pageState": {
+  "profileSocksPort": null,
+  "afterInit": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  },
+  "turnstileReadyWithinEngineWait": true,
+  "beforeRender": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  }
+ },
+ "widgetEvents": [
+  {
+   "t": 11,
+   "name": "rendered",
+   "data": "cf-chl-widget-botf4"
+  },
+  {
+   "t": 6098,
+   "name": "before-interactive",
+   "data": null
+  },
+  {
+   "t": 6496,
+   "name": "after-interactive",
+   "data": null
+  },
+  {
+   "t": 6862,
+   "name": "success",
+   "data": "len=709"
+  }
+ ],
+ "iterations": [
+  {
+   "i": 0,
+   "t": 9636,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 1,
+   "t": 10560,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 2,
+   "t": 11428,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 3,
+   "t": 12340,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 4,
+   "t": 13201,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 5,
+   "t": 14057,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 6,
+   "t": 14927,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 7,
+   "t": 15843,
+   "tok": 709,
+   "ev": 4,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  }
+ ],
+ "frames": [
+  {
+   "depth": 0,
+   "url": "https://territorial.io/"
+  },
+  {
+   "depth": 1,
+   "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/botf4/0x4AAAAAAEI8HZoG8nJMzxt1/auto/fbE/new/n"
+  }
+ ],
+ "resources": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 430,
+   "d": 185,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/jvdhe/0x4AAAAAAEI8HZoG8nJ",
+   "start": 1073,
+   "d": 97,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "console": [
+  {
+   "t": 3682,
+   "level": "info",
+   "type": "console",
+   "text": "hostname: [territorial.io] validHostname: 1 validMod: 0"
+  },
+  {
+   "t": 3682,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 3725,
+   "level": "info",
+   "type": "console",
+   "text": "Connection to Server 0"
+  },
+  {
+   "t": 3729,
+   "level": "info",
+   "type": "console",
+   "text": "validateString error: "
+  },
+  {
+   "t": 3953,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile onload"
+  },
+  {
+   "t": 3953,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile render"
+  },
+  {
+   "t": 4033,
+   "level": "info",
+   "type": "console",
+   "text": "socket close index 0 error 1001"
+  },
+  {
+   "t": 4394,
+   "level": "info",
+   "type": "console",
+   "text": "hostname: [territorial.io] validHostname: 1 validMod: 0"
+  },
+  {
+   "t": 4403,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 4592,
+   "level": "info",
+   "type": "console",
+   "text": "Connection to Server 0"
+  },
+  {
+   "t": 4592,
+   "level": "info",
+   "type": "console",
+   "text": "validateString error: "
+  },
+  {
+   "t": 5054,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile onload"
+  },
+  {
+   "t": 5054,
+   "level": "info",
+   "type": "console",
+   "text": "turnstile render"
+  },
+  {
+   "t": 5801,
+   "level": "info",
+   "type": "console",
+   "text": "error 3425: SyntaxError: An invalid or illegal string was specified"
+  },
+  {
+   "t": 8084,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 8084,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 9545,
+   "level": "warn",
+   "type": "console",
+   "text": "[Cloudflare Turnstile] Cannot find Widget cf-chl-widget-jvdhe, consider using turnstile.remove() to clean up a widget."
+  },
+  {
+   "t": 11895,
+   "level": "info",
+   "type": "console",
+   "text": ""
+  },
+  {
+   "t": 11919,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11919,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11922,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "Error"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "nodelist"
+  },
+  {
+   "t": 11925,
+   "level": "debug",
+   "type": "console",
+   "text": "object"
+  },
+  {
+   "t": 11926,
+   "level": "debug",
+   "type": "console",
+   "text": "htmlcollection"
+  },
+  {
+   "t": 11941,
+   "level": "info",
+   "type": "console",
+   "text": "/.*.*=.*/"
+  },
+  {
+   "t": 11941,
+   "level": "info",
+   "type": "console",
+   "text": "function"
+  },
+  {
+   "t": 11941,
+   "level": "info",
+   "type": "console",
+   "text": "node"
+  },
+  {
+   "t": 11953,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 11953,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 1"
+  },
+  {
+   "t": 11953,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 11953,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 1"
+  },
+  {
+   "t": 11963,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "\u0000: 0"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o: 0"
+  },
+  {
+   "t": 11964,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 11964,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": " Error"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 11964,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 11964,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 11973,
+   "level": "error",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 11973,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 11973,
+   "level": "error",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 11979,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 12002,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 12002,
+   "level": "info",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 12002,
+   "level": "info",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 12002,
+   "level": "info",
+   "type": "console",
+   "text": "%c%d font-size:0;color:transparent Error"
+  },
+  {
+   "t": 12002,
+   "level": "info",
+   "type": "console",
+   "text": "%c%o font-size:0;color:transparent Object(0)"
+  },
+  {
+   "t": 12002,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 12002,
+   "level": "debug",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 12002,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 12002,
+   "level": "debug",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 12002,
+   "level": "warn",
+   "type": "console",
+   "text": "0"
+  },
+  {
+   "t": 12002,
+   "level": "warn",
+   "type": "console",
+   "text": "Object(0)"
+  },
+  {
+   "t": 14033,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 14033,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 14033,
+   "level": "error",
+   "type": "javascript",
+   "text": "Content-Security-Policy: The page’s settings blocked the loading of a resource (connect-src) at data:, because it violates the following directive: “connect-src 'self' https://hagen.challenges.cloudflare.com https://brunhild.challenges.cloudflare.com https://*.alg13.dnstest.challenges.cloudflare.com"
+  },
+  {
+   "t": 14667,
+   "level": "error",
+   "type": "javascript",
+   "text": "downloadable font: rejected by sanitizer (font-family: \"Arimo\" style:normal weight:400 width:100 src index:0) source: (invalid URI)"
+  },
+  {
+   "t": 14668,
+   "level": "error",
+   "type": "javascript",
+   "text": "downloadable font: font load failed (font-family: \"Arimo\" style:normal weight:400 width:100 src index:0) source: (invalid URI)"
+  }
+ ],
+ "screenshots": [
+  {
+   "label": "0-before-render",
+   "file": "probe-2026-11-13T15-07-35-973Z-0-before-render.png",
+   "bytes": 121812,
+   "t": 8938
+  },
+  {
+   "label": "1-iter2",
+   "file": "probe-2026-11-13T15-07-35-973Z-1-iter2.png",
+   "bytes": 66553,
+   "t": 11464
+  },
+  {
+   "label": "3-end",
+   "file": "probe-2026-11-13T15-07-35-973Z-3-end.png",
+   "bytes": 65365,
+   "t": 15897
+  }
+ ],
+ "resourcesAfter": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 430,
+   "d": 185,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/jvdhe/0x4AAAAAAEI8HZoG8nJ",
+   "start": 1073,
+   "d": 97,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/botf4/0x4AAAAAAEI8HZoG8nJ",
+   "start": 4976,
+   "d": 115,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "elapsedMs": 15953
+}

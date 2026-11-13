@@ -1,0 +1,379 @@
+{
+ "stamp": "2026-11-13T15-09-55-927Z",
+ "port": 9461,
+ "baseDir": "/tmp/ffprobe/c116",
+ "profile": "firefox_b2",
+ "clickMode": "smart",
+ "wantConsole": false,
+ "clicks": 1,
+ "verdict": "TOKEN_OK",
+ "tokenLen": 709,
+ "steps": [
+  {
+   "t": 103,
+   "name": "firefox-spawned",
+   "data": {
+    "pid": 3475702
+   }
+  },
+  {
+   "t": 2178,
+   "name": "bidi-connected",
+   "data": null
+  },
+  {
+   "t": 4824,
+   "name": "session-new-ok",
+   "data": null
+  },
+  {
+   "t": 5444,
+   "name": "add-preload-script",
+   "data": "ok"
+  },
+  {
+   "t": 5487,
+   "name": "context",
+   "data": {
+    "url": "https://territorial.io/"
+   }
+  },
+  {
+   "t": 5626,
+   "name": "engine-wd-check",
+   "data": "true:object"
+  },
+  {
+   "t": 6573,
+   "name": "reload",
+   "data": "ok"
+  },
+  {
+   "t": 10087,
+   "name": "page-state-after-init",
+   "data": {
+    "wd": "false",
+    "ts": "object",
+    "tsRender": "function",
+    "rs": "complete",
+    "vis": "visible",
+    "focus": true,
+    "href": "https://territorial.io/",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+    "iw": 1280,
+    "ih": 954
+   }
+  },
+  {
+   "t": 10105,
+   "name": "engine-ts-wait",
+   "data": {
+    "readyAtIter": 0
+   }
+  },
+  {
+   "t": 10202,
+   "name": "render",
+   "data": "RENDERED:cf-chl-widget-7p9kr"
+  },
+  {
+   "t": 16969,
+   "name": "smart-click",
+   "data": {
+    "n": 1,
+    "result": "ok"
+   }
+  }
+ ],
+ "pageState": {
+  "profileSocksPort": null,
+  "afterInit": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  },
+  "turnstileReadyWithinEngineWait": true,
+  "beforeRender": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  }
+ },
+ "widgetEvents": [
+  {
+   "t": 9,
+   "name": "rendered",
+   "data": "cf-chl-widget-7p9kr"
+  },
+  {
+   "t": 4153,
+   "name": "before-interactive",
+   "data": null
+  },
+  {
+   "t": 7040,
+   "name": "after-interactive",
+   "data": null
+  },
+  {
+   "t": 7598,
+   "name": "success",
+   "data": "len=709"
+  }
+ ],
+ "iterations": [
+  {
+   "i": 0,
+   "t": 10857,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 1,
+   "t": 11515,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 2,
+   "t": 12170,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 3,
+   "t": 12895,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 4,
+   "t": 13550,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 5,
+   "t": 14207,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 6,
+   "t": 14860,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 7,
+   "t": 15520,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 8,
+   "t": 16174,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 9,
+   "t": 18312,
+   "tok": 709,
+   "ev": 4,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  }
+ ],
+ "frames": [
+  {
+   "depth": 0,
+   "url": "https://territorial.io/"
+  },
+  {
+   "depth": 1,
+   "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/7p9kr/0x4AAAAAAEI8HZoG8nJMzxt1/auto/fbE/new/n"
+  }
+ ],
+ "resources": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 623,
+   "d": 280,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/0sa53/0x4AAAAAAEI8HZoG8nJ",
+   "start": 935,
+   "d": 192,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "console": [],
+ "screenshots": [
+  {
+   "label": "0-before-render",
+   "file": "probe-2026-11-13T15-09-55-927Z-0-before-render.png",
+   "bytes": 121812,
+   "t": 10177
+  },
+  {
+   "label": "1-iter2",
+   "file": "probe-2026-11-13T15-09-55-927Z-1-iter2.png",
+   "bytes": 121812,
+   "t": 12237
+  },
+  {
+   "label": "c1-after-click",
+   "file": "probe-2026-11-13T15-09-55-927Z-c1-after-click.png",
+   "bytes": 112578,
+   "t": 17659
+  },
+  {
+   "label": "2-iter9-full",
+   "file": "probe-2026-11-13T15-09-55-927Z-2-iter9-full.png",
+   "bytes": 980235,
+   "t": 18653
+  },
+  {
+   "label": "2-iter9",
+   "file": "probe-2026-11-13T15-09-55-927Z-2-iter9.png",
+   "bytes": 113221,
+   "t": 18701
+  },
+  {
+   "label": "3-end",
+   "file": "probe-2026-11-13T15-09-55-927Z-3-end.png",
+   "bytes": 113221,
+   "t": 18732
+  }
+ ],
+ "resourcesAfter": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 623,
+   "d": 280,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/0sa53/0x4AAAAAAEI8HZoG8nJ",
+   "start": 935,
+   "d": 192,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/7p9kr/0x4AAAAAAEI8HZoG8nJ",
+   "start": 4421,
+   "d": 50,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "elapsedMs": 18755
+}

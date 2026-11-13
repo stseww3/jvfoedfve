@@ -1,0 +1,535 @@
+{
+ "stamp": "2026-11-13T15-09-19-125Z",
+ "port": 9461,
+ "baseDir": "/tmp/ffprobe/c116",
+ "profile": "firefox_a2",
+ "clickMode": "engine",
+ "wantConsole": false,
+ "clicks": 22,
+ "verdict": "INTERACTION_REQUESTED_BUT_NOT_PASSED",
+ "tokenLen": 0,
+ "steps": [
+  {
+   "t": 54,
+   "name": "firefox-spawned",
+   "data": {
+    "pid": 3381681
+   }
+  },
+  {
+   "t": 2211,
+   "name": "bidi-connected",
+   "data": null
+  },
+  {
+   "t": 5747,
+   "name": "session-new-ok",
+   "data": null
+  },
+  {
+   "t": 6301,
+   "name": "add-preload-script",
+   "data": "ok"
+  },
+  {
+   "t": 6325,
+   "name": "context",
+   "data": {
+    "url": "https://territorial.io/"
+   }
+  },
+  {
+   "t": 6383,
+   "name": "engine-wd-check",
+   "data": "true:object"
+  },
+  {
+   "t": 7271,
+   "name": "reload",
+   "data": "ok"
+  },
+  {
+   "t": 10787,
+   "name": "page-state-after-init",
+   "data": {
+    "wd": "false",
+    "ts": "object",
+    "tsRender": "function",
+    "rs": "complete",
+    "vis": "visible",
+    "focus": true,
+    "href": "https://territorial.io/",
+    "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+    "iw": 1280,
+    "ih": 954
+   }
+  },
+  {
+   "t": 10793,
+   "name": "engine-ts-wait",
+   "data": {
+    "readyAtIter": 0
+   }
+  },
+  {
+   "t": 11567,
+   "name": "render",
+   "data": "RENDERED:cf-chl-widget-7z0iu"
+  }
+ ],
+ "pageState": {
+  "profileSocksPort": null,
+  "afterInit": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  },
+  "turnstileReadyWithinEngineWait": true,
+  "beforeRender": {
+   "wd": "false",
+   "ts": "object",
+   "tsRender": "function",
+   "rs": "complete",
+   "vis": "visible",
+   "focus": true,
+   "href": "https://territorial.io/",
+   "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0",
+   "iw": 1280,
+   "ih": 954
+  }
+ },
+ "widgetEvents": [
+  {
+   "t": 2,
+   "name": "rendered",
+   "data": "cf-chl-widget-7z0iu"
+  },
+  {
+   "t": 5365,
+   "name": "before-interactive",
+   "data": null
+  }
+ ],
+ "iterations": [
+  {
+   "i": 0,
+   "t": 12221,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 1,
+   "t": 13141,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 2,
+   "t": 14002,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 3,
+   "t": 15206,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 4,
+   "t": 16080,
+   "tok": 0,
+   "ev": 1,
+   "rect": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 5,
+   "t": 16933,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 6,
+   "t": 17797,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 7,
+   "t": 18644,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 8,
+   "t": 19510,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 9,
+   "t": 20374,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 10,
+   "t": 21429,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 11,
+   "t": 22277,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 12,
+   "t": 23121,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 13,
+   "t": 23979,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 14,
+   "t": 24830,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 15,
+   "t": 25742,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 16,
+   "t": 26601,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 17,
+   "t": 27450,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 18,
+   "t": 28299,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 19,
+   "t": 29166,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 20,
+   "t": 30008,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  },
+  {
+   "i": 21,
+   "t": 30847,
+   "tok": 0,
+   "ev": 2,
+   "rect": [
+    0,
+    0,
+    300,
+    70
+   ],
+   "kids": 1,
+   "vis": "visible",
+   "focus": true
+  }
+ ],
+ "frames": [
+  {
+   "depth": 0,
+   "url": "https://territorial.io/"
+  },
+  {
+   "depth": 1,
+   "url": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/7z0iu/0x4AAAAAAEI8HZoG8nJMzxt1/auto/fbE/new/n"
+  }
+ ],
+ "resources": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 591,
+   "d": 127,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/rmhx7/0x4AAAAAAEI8HZoG8nJ",
+   "start": 741,
+   "d": 130,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "console": [],
+ "screenshots": [
+  {
+   "label": "0-before-render",
+   "file": "probe-2026-11-13T15-09-19-125Z-0-before-render.png",
+   "bytes": 121812,
+   "t": 11524
+  },
+  {
+   "label": "1-iter2",
+   "file": "probe-2026-11-13T15-09-19-125Z-1-iter2.png",
+   "bytes": 66553,
+   "t": 14350
+  },
+  {
+   "label": "2-iter9-full",
+   "file": "probe-2026-11-13T15-09-19-125Z-2-iter9-full.png",
+   "bytes": 497072,
+   "t": 20523
+  },
+  {
+   "label": "2-iter9",
+   "file": "probe-2026-11-13T15-09-19-125Z-2-iter9.png",
+   "bytes": 66713,
+   "t": 20582
+  },
+  {
+   "label": "3-end",
+   "file": "probe-2026-11-13T15-09-19-125Z-3-end.png",
+   "bytes": 66713,
+   "t": 31099
+  }
+ ],
+ "resourcesAfter": [
+  {
+   "n": "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit",
+   "start": 591,
+   "d": 127,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/rmhx7/0x4AAAAAAEI8HZoG8nJ",
+   "start": 741,
+   "d": 130,
+   "size": 0,
+   "st": 0
+  },
+  {
+   "n": "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/av0/rch/7z0iu/0x4AAAAAAEI8HZoG8nJ",
+   "start": 4960,
+   "d": 56,
+   "size": 0,
+   "st": 0
+  }
+ ],
+ "elapsedMs": 31134
+}
