@@ -10,6 +10,7 @@
 //   原样   clone() 返回什么就用什么（原型是基类）
 //   恢复类 把拷贝的原型改回原对象的类（TGame），其余不动——这一条只考「状态拷全了没有」
 // 每个断面（630 / 1500 / 4284）各克隆一次，续跑到下一个断面（最后一个续跑到局末），段末把两边的全部字段逐个比一遍。
+// t=0 断面（出生期刚结束、还没走第一拍）单独跑一遍：--at 0 --until 630 --tag t0，只重演到 630 拍，输出写到 <局>.t0.json。
 // 顺手记一件事（huskprobe 查到的那一处走偏的暴露面），两个量：
 //   gap      组队局里「还有地的队只剩一个、而第二名个人还有地」第一次出现在哪一拍（各队总地读 32 拍缓存，和线上引擎 bk.a6U() 同一份）。
 //   scanGap  模拟器的 scanTick 走到「要不要重扫」那一步（bots.js L723）、按模拟器的规则不重扫（第二名个人还有地）、
@@ -20,8 +21,8 @@
 // 顺手把参照重演对本包日志快照的逐行核对结果（行数、地和兵都一致的行数）记下来，汇总时和 fidabl 已入库的数对一遍。
 // 只读 /agent/repos/c136-data（发现集的对局包 + src/sim）；不跑策略。
 //
-//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/cloneprobe.mjs [--budget 秒] [--at 630,1500,4284] <局> [<局> ...]
-//   → out/_run/cloneprobe/<局>.json（已有的跳过）；汇总见 cloneprobe.py
+//   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/cloneprobe.mjs [--budget 秒] [--at 630,1500,4284] [--until 拍] [--tag 记号] <局> [<局> ...]
+//   → out/_run/cloneprobe/<局>.json（带 --tag 的写到 <局>.<记号>.json；已有的跳过）；汇总见 cloneprobe.py
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -32,11 +33,13 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const RUN = path.join(HERE, '..', 'out', '_run');
 const OUT = path.join(RUN, 'cloneprobe');
 const argv = process.argv.slice(2);
-let budget = 80, AT = [630, 1500, 4284];
+let budget = 80, AT = [630, 1500, 4284], until = null, tag = '';
 const mids = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--budget') budget = +argv[++i];
   else if (argv[i] === '--at') AT = argv[++i].split(',').map(Number);
+  else if (argv[i] === '--until') until = +argv[++i];
+  else if (argv[i] === '--tag') tag = argv[++i];
   else mids.push(argv[i]);
 }
 const T0 = Date.now();
@@ -146,6 +149,7 @@ function probe(mid) {
     return true;
   };
   const X = resim(mid, {
+    until: until === null ? undefined : until,
     onStart: (g) => {
       G = g;
       // scanTick 外面包一层只读的壳：原样调用，调用完按 bots.js L696-727 的分支条件判断这一拍有没有走到「要不要重扫」那一步
@@ -176,6 +180,8 @@ function probe(mid) {
           return r;
         };
       }
+      // t=0 断面：onStart 是出生期结束以后、第一拍以前调的
+      if (AT.includes(0)) live = [mk(g, 0, 'asis'), mk(g, 0, 'class')];
     },
     onTick: (g) => {
       if (gap === null && g.teamGame) {
@@ -189,22 +195,22 @@ function probe(mid) {
       }
     },
   });
-  for (const s of live) close(G, s, G.over ? '局末' : '录像到头');
+  for (const s of live) close(G, s, G.over ? '局末' : until !== null && G.t >= until ? '到指定的拍' : '录像到头');
   for (const s of segs) delete s.g;
   const ev = (X.engineEvents || []).map((e) => [e[0], e[1]]);
   const roomKey = crypto.createHash('sha1').update([X.H, X.mapIdx, X.mapSeed, ...X.names].join('\u0001')).digest('hex').slice(0, 12);
   const val = X.validate ? { rows: X.validate.rows, both: X.validate.bothExact } : null;
-  return { matchId: mid, roomKey, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, val, gap, scanGap, segs };
+  return { matchId: mid, tag: tag || null, until, roomKey, H: X.H, nTeams: X.nTeams, teamGame: !!G.teamGame, endTick: G.t, over: G.over ? 1 : 0, at: AT, events: ev, val, gap, scanGap, segs };
 }
 
 fs.mkdirSync(OUT, { recursive: true });
 let done = 0;
 for (const mid of mids) {
-  const fp = path.join(OUT, `${mid}.json`);
+  const fp = path.join(OUT, `${mid}${tag ? `.${tag}` : ''}.json`);
   if (fs.existsSync(fp)) continue;
   if (done && (Date.now() - T0) / 1000 > budget) break;
   // 开跑前留一个记号：跑到一半被时间上限杀掉的局，批处理下一轮跳过（汇总里单列），免得卡在同一局上
-  const mark = path.join(OUT, `${mid}.started`);
+  const mark = path.join(OUT, `${mid}${tag ? `.${tag}` : ''}.started`);
   fs.writeFileSync(mark, String(Date.now()));
   const t1 = Date.now();
   const R = probe(mid);

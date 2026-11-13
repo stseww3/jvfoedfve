@@ -8,6 +8,7 @@
 # 这一项先读逐局原始输出 out/_run/engdiff/<局>.json；原始输出不在的时候（不入库），退回已入库的汇总：
 # out/_cross/fidabl.json 的 engine.diverged（走偏的局）和 out/_cross/fidabl.txt [FA-E] 里这几局第一处不一致的拍。
 # 同一个物理房间出了两份包的（两份录像是同一条指令流，短的那份是长的那份的前一段），按 roomKey 去重，只留录像长的那一份。
+# t=0 断面是单独跑的一遍（clone0_batch.sh → <局>.t0.json，只重演到 630 拍），这里把它的两次克隆并到同一局的记录里。
 #
 #   python3 c136-review/agents/R08/scripts/cloneprobe.py
 import json
@@ -49,6 +50,7 @@ except Exception:
 rows = []
 killed = []
 running = []
+t0 = {}
 for fn in sorted(os.listdir(SRC)) if os.path.isdir(SRC) else []:
     if fn.endswith('.started'):
         # 开跑时留的记号（内容是开跑的时刻）：超过时间上限还在的 = 跑到一半被杀；没超过的 = 正在跑
@@ -56,9 +58,17 @@ for fn in sorted(os.listdir(SRC)) if os.path.isdir(SRC) else []:
             age = time.time() - int(open(os.path.join(SRC, fn)).read().strip()) / 1000
         except Exception:
             age = 1e9
-        (killed if age > 660 else running).append(fn[:-8])
+        (killed if age > 960 else running).append(fn[:-8])
+    elif fn.endswith('.t0.json'):
+        t0[fn[:-8]] = json.load(open(os.path.join(SRC, fn), encoding='utf-8'))
     elif fn.endswith('.json'):
         rows.append(json.load(open(os.path.join(SRC, fn), encoding='utf-8')))
+n_t0 = 0
+for r in rows:
+    z = t0.get(r['matchId'])
+    if z:
+        n_t0 += 1
+        r['segs'] = [s for s in z['segs'] if s['T'] == 0] + r['segs']
 if not rows:
     print('还没有逐局输出')
     sys.exit(0)
@@ -116,14 +126,15 @@ P(f'  参照重演对本包日志快照逐行核对（整局，去重以前 {val
 P(f"  已入库的 engdiff 汇总 [FA-E]（{FA['engine']['matches']} 局）：{FA['engine']['simLog'][0]} / {FA['engine']['simLog'][1]} 行"
   + ('' if all_runs != FA['engine']['matches'] else '——两边' + ('相同' if [val_both, val_rows] == FA['engine']['simLog'] else '不相同')))
 P(f'  参照重演对线上引擎的结果取自：{eng_src}')
-P(f"  跑完的局 {len(rows)}（squad10 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad10')} / squad20 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad20')}；"
-  f'组队局 {n_team} / 自由混战 {len(rows) - n_team}）；参照重演整局和线上引擎全场一致的 {sum(1 for r in rows if eng.get(r["matchId"], 0) is None)} 局，'
-  f'走偏过的 {sum(1 for r in rows if eng.get(r["matchId"]) is not None)} 局'
+P(f'  t=0 断面（出生期刚结束）是单独跑的一遍，只重演到 630 拍：跑完 {n_t0} 份，并在下面各表的第一行')
+P(f"  房间 {len(rows)}（squad10 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad10')} / squad20 {sum(1 for r in rows if cohort.get(r['matchId']) == 'squad20')}；"
+  f'组队 {n_team} / 自由混战 {len(rows) - n_team}）；参照重演整局和线上引擎全场一致的 {sum(1 for r in rows if eng.get(r["matchId"], 0) is None)} 个，'
+  f'走偏过的 {sum(1 for r in rows if eng.get(r["matchId"]) is not None)} 个'
   + ('（' + '；'.join(f'{m} 从 {t} 拍' for m, t in sorted(eng.items()) if t is not None) + '）' if any(t is not None for t in eng.values()) else ''))
 evt = [min(e[0] for e in r['events']) for r in rows if r['events']]
-P(f"  参照重演里有过猎杀 / 终局提速事件的 {len(evt)} 局" + (f'（第一次事件最早 {min(evt)} 拍）' if evt else ''))
+P(f"  参照重演里有过猎杀 / 终局提速事件的 {len(evt)} 个房间" + (f'（第一次事件最早 {min(evt)} 拍）' if evt else ''))
 for T in AT:
-    P(f"  在 {T} 拍克隆的局 {sum(1 for r in rows if any(s['T'] == T for s in r['segs']))}（录像不到这一拍的局不克隆）")
+    P(f"  在 {T} 拍克隆的房间 {sum(1 for r in rows if any(s['T'] == T for s in r['segs']))}（录像不到这一拍的不克隆）")
 if killed:
     P(f"  跑到一半被时间上限杀掉、没有输出的局 {len(killed)}：{' '.join(sorted(killed))}")
 P('')
@@ -132,7 +143,7 @@ summary = {}
 for arm, cn in ARMS:
     tag = 'CP-B' if arm == 'class' else 'CP-C'
     P(f"[{tag}] {cn}臂（{'把拷贝的原型改回 TGame，只考状态拷全了没有' if arm == 'class' else 'clone() 返回什么就用什么，原型是基类 Game'}）")
-    P('  断面 | 克隆的局 | 克隆那一拍全部字段相等 | 克隆抛错 | 续跑中抛错 | 续跑到段末、全场 512 个玩家的地、兵、存活逐拍相等 | 其中段末全部字段也相等 | 地或兵走偏 | 续跑的拍数合计')
+    P('  断面 | 克隆的房间 | 克隆那一拍全部字段相等 | 克隆抛错 | 续跑中抛错 | 续跑到段末、全场 512 个玩家的地、兵、存活逐拍相等 | 其中段末全部字段也相等 | 地或兵走偏 | 续跑的拍数合计')
     for T in AT:
         S = [(r, s) for r in rows for s in r['segs'] if s['T'] == T and s['arm'] == arm]
         n = len(S)
@@ -144,7 +155,11 @@ for arm, cn in ARMS:
         bad = [(r, s) for r, s in S if s['firstVis'] is not None]
         ticks = sum((s['endT'] or T) - T for _, s in S if not s['cloneErr'])
         P(f'  {T} | {n} | {clone_eq} | {cerr} | {rerr} | {len(ok)} | {ok_all} | {len(bad)} | {ticks}')
-        summary[(arm, T)] = dict(n=n, ok=len(ok), okAll=ok_all, bad=len(bad), err=cerr + rerr, ticks=ticks)
+        summary[(arm, T)] = dict(n=n, ok=len(ok), okAll=ok_all, bad=len(bad), err=cerr + rerr, ticks=ticks, hidOnly=len(ok) - ok_all)
+        if bad:
+            lag_all = [s['firstVis'] - s['firstHid'] for _, s in bad if s['firstHid'] is not None]
+            summary[(arm, T)].update(firstMin=min(s['firstVis'] for _, s in bad), firstMed=q([s['firstVis'] for _, s in bad], .5), firstMax=max(s['firstVis'] for _, s in bad),
+                                     lagN=len(lag_all), lagMin=min(lag_all) if lag_all else '–', lagMax=max(lag_all) if lag_all else '–', lagMed=q(lag_all, .5) if lag_all else '–')
         for r, s in S:
             if s['cloneErr']:
                 P(f"    克隆抛错 {r['matchId']}：{s['cloneErr']}")
@@ -152,18 +167,24 @@ for arm, cn in ARMS:
                 P(f"    续跑抛错 {r['matchId']} {s['errT']} 拍：{s['err']}")
         hid_only = [(r, s) for r, s in ok if s['firstHid'] is not None or s['diffAtEnd']]
         if hid_only:
-            P(f"    地和兵到段末都相等、但别的状态不等的 {len(hid_only)} 局：" + '；'.join(
+            P(f"    地和兵到段末都相等、但别的状态不等的 {len(hid_only)} 个房间：" + '；'.join(
                 f"{r['matchId']}（{'第一次不等 ' + str(s['firstHid']) + ' 拍：' + '、'.join(s['hid']) if s['firstHid'] is not None else '逐拍比的几项都相等'}；段末不等的字段 {len(s['diffAtEnd'])} 个：{' '.join(s['diffAtEnd'][:8])}{' …' if len(s['diffAtEnd']) > 8 else ''}）"
                 for r, s in hid_only))
         if bad:
             lag = [s['firstVis'] - s['firstHid'] for _, s in bad if s['firstHid'] is not None]
-            P(f"    走偏的 {len(bad)} 局：第一处地或兵不等的拍 最早 {min(s['firstVis'] for _, s in bad)}、中位 {q([s['firstVis'] for _, s in bad], .5)}、最晚 {max(s['firstVis'] for _, s in bad)}；"
+            P(f"    走偏的 {len(bad)} 个房间：第一处地或兵不等的拍 最早 {min(s['firstVis'] for _, s in bad)}、中位 {q([s['firstVis'] for _, s in bad], .5)}、最晚 {max(s['firstVis'] for _, s in bad)}；"
               f"从克隆算起隔了 最短 {min(s['firstVis'] - T for _, s in bad)} 拍、中位 {q([s['firstVis'] - T for _, s in bad], .5)} 拍；"
-              + (f"在那之前别的状态先不等的 {len(lag)} 局，早 {min(lag)}~{max(lag)} 拍（中位 {q(lag, .5)}）" if lag else '在那之前逐拍比的几项状态都相等'))
+              + (f"在那之前别的状态先不等的 {len(lag)} 个，早 {min(lag)}~{max(lag)} 拍（中位 {q(lag, .5)}）" if lag else '在那之前逐拍比的几项状态都相等'))
     if arm == 'asis':
         stale = sum(1 for r in rows for s in r['segs'] if s['arm'] == 'asis' and s.get('subOnlyStale'))
         tot = sum(1 for r in rows for s in r['segs'] if s['arm'] == 'asis' and not s['cloneErr'])
         P(f'  子类自己的两个字段（各队总地缓存 teamCache、它的相位 teamW0）在这条臂里停在克隆那一拍的值：{stale} / {tot} 次克隆（基类的方法不读也不写，上面的「字段相等」不算它们）')
+    tot_n = sum(summary[(arm, T)]['n'] for T in AT)
+    tot_ok = sum(summary[(arm, T)]['okAll'] for T in AT)
+    tot_err = sum(summary[(arm, T)]['err'] for T in AT)
+    tot_ticks = sum(summary[(arm, T)]['ticks'] for T in AT)
+    summary[(arm, 'ALL')] = dict(n=tot_n, okAll=tot_ok, err=tot_err, ticks=tot_ticks)
+    P(f'  合计：{tot_n} 次克隆，续跑 {tot_ticks} 拍；到段末全场逐拍相等、全部字段也相等的 {tot_ok} 次；抛错 {tot_err} 次')
     P('')
 
 P('[CP-D] 原样臂，1500 拍以后（1500 和 4284 两次克隆合起来看：有一次不等就算）：参照重演里有没有猎杀 / 终局提速事件 × 拷贝走没走偏')
@@ -185,20 +206,47 @@ kinds = ['一致', '只有别的状态不等', '地或兵走偏', '抛错']
 P('  参照重演 | ' + ' | '.join(kinds) + ' | 合计')
 for has_ev in (True, False):
     P(f"  {'有事件' if has_ev else '没有事件'} | " + ' | '.join(str(tab.get((has_ev, k), 0)) for k in kinds) + f' | {sum(tab.get((has_ev, k), 0) for k in kinds)}')
+n_ev = sum(tab.get((True, k), 0) for k in kinds)
+n_noev = sum(tab.get((False, k), 0) for k in kinds)
+split_ev = tab.get((True, '只有别的状态不等'), 0) + tab.get((True, '地或兵走偏'), 0)
+P(f"  有事件的 {n_ev} 个房间里，拷贝和参照重演分开过的（地、兵，或者看不见的状态）{split_ev} 个：只比地和兵看得出来的 {tab.get((True, '地或兵走偏'), 0)} 个，"
+  f"要比看不见的状态才看得出来的 {tab.get((True, '只有别的状态不等'), 0)} 个；到录像结束都没有分开的 {tab.get((True, '一致'), 0)} 个"
+  + ('（' + '、'.join(sorted(r['matchId'] for r, k, v, h in detail if k == '一致' and r['events'])) + '）' if tab.get((True, '一致'), 0) else ''))
+first_hid_kind = {}
+for r in rows:
+    for s_ in r['segs']:
+        if s_['arm'] == 'asis' and s_['T'] >= 1500 and s_.get('hid'):
+            for name in s_['hid']:
+                first_hid_kind[name] = first_hid_kind.get(name, 0) + 1
+if first_hid_kind:
+    P('  看不见的状态里先不等的是哪一项（按克隆次数，一次可以有几项）：' + '；'.join(f'{k} {v}' for k, v in sorted(first_hid_kind.items(), key=lambda kv: -kv[1])))
 ev_bad = [(r, v, h) for r, k, v, h in detail if k == '地或兵走偏']
 if ev_bad:
     d1 = [(h if h is not None else v) - min(e[0] for e in r['events']) for r, v, h in ev_bad if r['events']]
     if d1:
-        P(f'  走偏的 {len(ev_bad)} 局里，拷贝第一次和参照重演不等（含看不见的状态）比参照重演的第一次事件 晚 {min(d1)}~{max(d1)} 拍（中位 {q(d1, .5)}；负数 = 早）')
+        P(f'  走偏的 {len(ev_bad)} 个房间里，拷贝第一次和参照重演不等（含看不见的状态）比参照重演的第一次事件 晚 {min(d1)}~{max(d1)} 拍（中位 {q(d1, .5)}；负数 = 早）')
     engok = sum(1 for r, v, h in ev_bad if eng.get(r['matchId'], 0) is None)
-    P(f'  这 {len(ev_bad)} 局里参照重演整局和线上引擎全场一致的 {engok} 局——在这些局上，拷贝和参照重演不等也就是和线上引擎不等')
+    P(f'  这 {len(ev_bad)} 个房间里参照重演整局和线上引擎全场一致的 {engok} 个——在这些房间上，拷贝和参照重演不等也就是和线上引擎不等')
 P('')
 
 P('[CP-E] 「只剩一个队有地以后重不重扫无主地」这一处的暴露面（照模拟器自己的状态推的，没有跑线上引擎）')
 team = [r for r in rows if r['teamGame']]
 gap = [r for r in team if r.get('gap')]
 sg = [r for r in team if r.get('scanGap')]
-P(f'  组队局 {len(team)}；录像里出现过「还有地的队只剩一个、第二名个人还有地」的 {len(gap)} 局；其中模拟器走到过「要不要重扫」那一步、按线上引擎的规则该重扫而模拟器没有重扫的 {len(sg)} 局')
+P(f'  组队房间 {len(team)}；录像里出现过「还有地的队只剩一个、第二名个人还有地」的 {len(gap)} 个；其中模拟器走到过「要不要重扫」那一步、按线上引擎的规则该重扫而模拟器没有重扫的 {len(sg)} 个')
+if gap:
+    why = {'扫描表是满的（512 条，两边都不扫）': 0, '第一轮还没扫完': 0, '别的（没等到判断的那一拍，或者榜首不是内置 AI）': 0}
+    for r in gap:
+        if r.get('scanGap'):
+            continue
+        g_ = r['gap']
+        if g_['scanLen'] >= 512:
+            why['扫描表是满的（512 条，两边都不扫）'] += 1
+        elif g_['scanPass'] < 300:
+            why['第一轮还没扫完'] += 1
+        else:
+            why['别的（没等到判断的那一拍，或者榜首不是内置 AI）'] += 1
+    P(f'  没有走到那一步的 {len(gap) - len(sg)} 个，「只剩一个队有地」第一次出现那一拍的状况：' + '；'.join(f'{k} {v}' for k, v in why.items()))
 if gap:
     rest = [r['endTick'] - r['gap']['t'] for r in gap]
     P(f'  出现以后录像还剩的拍数：最短 {min(rest)}、中位 {q(rest, .5)}、最长 {max(rest)}')
@@ -210,10 +258,10 @@ if sg:
           + ('没有比过' if r['matchId'] not in eng else '整局全场一致' if e is None else f'{e} 拍走偏'))
     P('  对照：A001 上 huskprobe 直接从线上引擎读到的是 4672 拍条件开始不同、4678 拍扫描表里有了格子、4780 拍兵不等 [HP-F]。')
     quiet = [r for r in sg if r['matchId'] in eng and eng[r['matchId']] is None]
-    P(f'  这 {len(sg)} 局里，地和兵整局都和线上引擎一致的 {len(quiet)} 局' + ('：这些局里扫描表按推算已经分开，但到录像结束都没有在地和兵上显出来。' if quiet else '。'))
+    P(f'  这 {len(sg)} 个房间里，地和兵整局都和线上引擎一致的 {len(quiet)} 个' + ('：这些房间里扫描表按推算已经分开，但到录像结束都没有在地和兵上显出来。' if quiet else '。'))
 P('')
 
-P('[CP-F] 逐局：局 | 编队档 | 真人 | 队数 | 录像末拍 | 参照重演的事件（第一次猎杀 / 第一次提速） | 各断面两条臂（恢复类 / 原样）：一致到哪一拍，或第一处不等的拍（h = 看不见的状态先不等的拍）')
+P('[CP-F] 逐个房间：局 | 编队档 | 真人 | 队数 | 录像末拍 | 参照重演的事件（第一次猎杀 / 第一次提速） | 各断面两条臂（恢复类 / 原样）：一致到哪一拍，或第一处不等的拍（h = 看不见的状态先不等的拍）')
 for r in sorted(rows, key=lambda r: r['matchId']):
     hunt = next((e[0] for e in r['events'] if e[1] == 'hunt'), None)
     fast = next((e[0] for e in r['events'] if e[1] == 'fast'), None)
@@ -243,6 +291,18 @@ for (arm, T), v in summary.items():
     for k, x in v.items():
         rep[f'CP_{arm.upper()}_{T}_{k.upper()}'] = str(x)
 rep['CP_N'] = str(len(rows))
+rep['CP_DUPS'] = str(len(dups))
+rep['CP_EVENTS'] = str(len(evt))
+rep['CP_D_EV_N'] = str(n_ev)
+rep['CP_D_EV_OK'] = str(tab.get((True, '一致'), 0))
+rep['CP_D_EV_HID'] = str(tab.get((True, '只有别的状态不等'), 0))
+rep['CP_D_EV_BAD'] = str(tab.get((True, '地或兵走偏'), 0))
+rep['CP_D_EV_SPLIT'] = str(split_ev)
+rep['CP_D_NOEV_N'] = str(n_noev)
+rep['CP_D_NOEV_OK'] = str(tab.get((False, '一致'), 0))
+rep['CP_D_BAD_ENGOK'] = str(sum(1 for r, v, h in ev_bad if eng.get(r['matchId'], 0) is None))
+rep['CP_STALE'] = str(stale)
+rep['CP_STALE_TOT'] = str(tot)
 rep['CP_TEAM'] = str(len(team))
 rep['CP_GAP'] = str(len(gap))
 rep['CP_SCANGAP'] = str(len(sg))
