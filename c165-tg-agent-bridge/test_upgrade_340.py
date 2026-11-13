@@ -218,14 +218,23 @@ async def run_core_tests() -> dict[str, str]:
     ok_stop = await bridge.call_tool("stop_spawned_agent", {"agent": a1, "chat": "c5", "close": True})
     assert not ok_stop.is_error
 
-    # 7. Verify strict cross-owner isolation in reverse (ExternalUser a3_ext cannot see/message/group Admin's c1/g1)
+    # 7. Verify strict cross-owner isolation in reverse + Admin sub-agent CAN message Main while external CANNOT
     peers_ext = text_of(await bridge.call_tool("list_peers", {"agent": a3_ext}))
     assert "c3「外部助手」" in peers_ext
     assert "c1" not in peers_ext and "g1" not in peers_ext
     assert (await bridge.call_tool("send_agent_message", {"agent": a3_ext, "to": "c1", "text": "hi"})).is_error
-    assert (await bridge.call_tool("send_agent_message", {"agent": a1, "to": "main", "text": "hi"})).is_error
+    assert (await bridge.call_tool("send_agent_message", {"agent": a3_ext, "to": "main", "text": "hi"})).is_error
+    assert not (await bridge.call_tool("send_agent_message", {"agent": a1, "to": "main", "text": "请协助检查状态"})).is_error
     assert (await bridge.call_tool("send_group_message", {"agent": a3_ext, "group": "g1", "text": "hi"})).is_error
     assert (await bridge.call_tool("group_history", {"agent": a3_ext, "group": "g1"})).is_error
+
+    # Verify spawned subagent c4 has in_tg=0 (excluded from TG menu, /list, and send_message to TG)
+    assert not bridge.conv_in_tg(bridge.conv_row("c4"))
+    menu_cmds = [x["command"] for x in bridge.build_menu(7001)]
+    assert "c1" in menu_cmds and "c4" not in menu_cmds
+    list_ids = [r["id"] for r in bridge.list_rows(7001)]
+    assert "c1" in list_ids and "c4" not in list_ids
+    assert (await bridge.call_tool("send_message", {"agent": a4, "text": "不应该发进TG"})).is_error
 
     # 8. Verify 3.4.1 custom duration parser, smart admin device resolution, /local & /device duration controls
     assert bridge.parse_duration_spec("45m") == 2700
@@ -265,6 +274,18 @@ async def run_core_tests() -> dict[str, str]:
     await bridge.on_command({"from": {"id": 7001}}, "/device", "lock", 7001, "private", 7001)
     assert bridge.device_row("d3")["auth_until"] == 0
     assert bridge.conv_row("c1")["local_until"] == 0
+
+    # Test Main -> Subagent AND Parent -> Child automatic device authorization inheritance!
+    await bridge.on_command({"from": {"id": 7001}}, "/local", "main 12h", 7001, "private", 7001)
+    d3_ref = bridge.device_row("d3")
+    # Admin's c1 & c4 automatically inherit Main's 12h window, while external user's c3 NEVER inherits it!
+    assert bridge.effective_local_until(bridge.conv_row("c1"), d3_ref) > bridge.now() + 43000
+    assert bridge.effective_local_until(bridge.conv_row("c4"), d3_ref) > bridge.now() + 43000
+    assert bridge.effective_local_until(bridge.conv_row("c3"), bridge.device_row("d1")) == 0
+    await bridge.on_command({"from": {"id": 7001}}, "/local", "main lock", 7001, "private", 7001)
+    # Parent c1 gets 2h -> child c4 automatically inherits c1's 2h!
+    await bridge.on_command({"from": {"id": 7001}}, "/local", "c1 2h", 7001, "private", 7001)
+    assert bridge.effective_local_until(bridge.conv_row("c4"), d3_ref) > bridge.now() + 7100
 
     return {"main": main_id, "a1": a1, "a2": a2, "a3_ext": a3_ext, "a4": a4, "a5_stopped": a5}
 
@@ -348,14 +369,15 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         })
         assert "followup_message" in stop_active and ids["a1"] in stop_active["followup_message"], stop_active
 
-        # Verify stopped agent (a5_stopped) is allowed to exit cleanly ({})!
+        # Verify stopped agent (a5_stopped) is allowed to exit cleanly ({}) AND preToolUse denies new commands once stopped!
         cid_stopped = "conv-uuid-stopped-c5"
-        fire_hook({
+        denied_pre = fire_hook({
             "hook_event_name": "preToolUse",
             "conversation_id": cid_stopped,
-            "tool_name": "CallDynamicTool",
-            "tool_input": {"namespace": "dais", "toolName": "list_peers", "arguments": {"agent": ids["a5_stopped"]}},
+            "tool_name": "Shell",
+            "tool_input": {"command": f"echo {ids['a5_stopped']}"},
         })
+        assert denied_pre.get("permission") == "deny", f"Expected preToolUse deny for stopped agent: {denied_pre}"
         stop_inactive = fire_hook({
             "hook_event_name": "subagentStop",
             "conversation_id": cid_stopped,
@@ -377,7 +399,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.2"
+        assert tdata["ok"] and tdata["version"] == "3.4.3"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"

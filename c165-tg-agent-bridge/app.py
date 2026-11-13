@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.2"
+VERSION = "3.4.3"
 
 
 def load_dotenv(path: Path) -> None:
@@ -558,6 +558,13 @@ def home_of(row) -> int:
     return chats[0] if chats else 0
 
 
+def conv_in_tg(row) -> bool:
+    if row is None or row["id"] == "main":
+        return True
+    raw = row["in_tg"]
+    return True if raw is None else bool(int(raw))
+
+
 def open_convs() -> list:
     return store.q("SELECT * FROM convs WHERE status='open' AND id!='main' ORDER BY num")
 
@@ -685,13 +692,14 @@ def create_conv(
     model: str = "",
     parent_conv: str = "",
     memory_note: str = "",
+    in_tg: bool = True,
 ):
     num = (store.one("SELECT IFNULL(MAX(num),0) AS n FROM convs")["n"] or 0) + 1
     conv_id = f"c{num}"
     cursor = store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages")["n"]
     store.run(
-        "INSERT INTO convs(id,num,name,brief,status,home_chat,read_cursor,created,owner,model,parent_conv,memory_note) "
-        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO convs(id,num,name,brief,status,home_chat,read_cursor,created,owner,model,parent_conv,memory_note,in_tg) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (
             conv_id,
             num,
@@ -705,10 +713,11 @@ def create_conv(
             model,
             parent_conv,
             memory_note.strip()[:8000],
+            1 if in_tg else 0,
         ),
     )
     issue_task(conv_id)
-    log.info("conv %s created (owner %s, parent %s)", conv_id, owner or "admin", parent_conv or "-")
+    log.info("conv %s created (owner %s, parent %s, in_tg=%s)", conv_id, owner or "admin", parent_conv or "-", int(in_tg))
     return conv_row(conv_id)
 
 
@@ -819,8 +828,10 @@ def set_route(chat_id: int, conv_id: str | None) -> None:
 
 
 def enterable(dm: int, row) -> bool:
-    """这个私聊能切进去的聊天：管理员进管理员的聊天和主控；用户只能进自己建的。"""
+    """这个私聊能切进去的聊天：必须是接入 TG 的开放聊天；管理员进管理员的聊天和主控；用户只能进自己建的。"""
     if row is None or row["status"] != "open":
+        return False
+    if row["id"] != "main" and not conv_in_tg(row):
         return False
     if dm in admin_chats():
         return row["id"] == "main" or conv_owner(row) == 0
@@ -828,11 +839,11 @@ def enterable(dm: int, row) -> bool:
 
 
 def own_convs(owner: int, status: str = "open") -> list:
-    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status=? ORDER BY num", (owner, status))
+    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status=? AND IFNULL(in_tg,1)=1 ORDER BY num", (owner, status))
 
 
 def chat_count(owner: int) -> int:
-    return store.one("SELECT COUNT(*) AS n FROM convs WHERE id!='main' AND owner=? AND status!='deleted'", (owner,))["n"]
+    return store.one("SELECT COUNT(*) AS n FROM convs WHERE id!='main' AND owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1", (owner,))["n"]
 
 
 def at_limit(owner: int) -> bool:
@@ -1014,6 +1025,8 @@ def conv_status(row) -> list[str]:
         extras.append(f"task_agent_id={row['task_agent_id']}")
     if (row["parent_conv"] or "").strip():
         extras.append(f"父agent={row['parent_conv']}")
+    if not conv_in_tg(row):
+        extras.append("纯后台MCP（不进TG列表）")
     if (row["model"] or "").strip():
         extras.append(f"模型={row['model']}")
     if info["pending"]:
@@ -1433,6 +1446,8 @@ async def show_typing(conv_id: str, rows) -> None:
 def can_send(agent, conv, chat_id: int) -> bool:
     if agent["role"] == "main":
         return chat_id in admin_chats()
+    if not conv_in_tg(conv):
+        return route_of(chat_id) == conv["id"]
     return chat_id == home_of(conv) or route_of(chat_id) == conv["id"]
 
 
@@ -1447,6 +1462,11 @@ def default_chat(agent, conv) -> int | None:
     if agent["role"] == "main":
         chats = admin_chats()
         return chats[0] if chats else None
+    if not conv_in_tg(conv):
+        raise ToolFail(
+            f"你是纯后台子 agent（{conv['id']}，未挂载到 Telegram 聊天列表），不能用 send_message 往 Telegram 发消息！"
+            f"请用 send_agent_message(to=\"{conv['parent_conv'] or '目标agent'}\", text=...) 或 send_group_message 通过 MCP 汇报。"
+        )
     return home_of(conv) or None
 
 
@@ -1856,7 +1876,12 @@ def welcome_chat(conv, agent_id: str) -> str:
     if my_groups:
         lines.append("你已所在的 Agent 协作群：" + "、".join(my_groups) + "（用 send_group_message / group_history 交流）。")
     chats = routed_chats(conv["id"])
-    if owner:
+    if not conv_in_tg(conv):
+        duty = (
+            f"你负责：纯后台 MCP 协作任务（编号 {conv['id']}，未挂载进 Telegram 聊天列表以免挤占列表）。"
+            f"禁止调用 send_message 发 Telegram 消息；请使用 send_agent_message(to=\"{parent_id or '目标agent'}\", text=...) 或 send_group_message 与其他 agent 通信"
+        )
+    elif owner:
         duty = (f"你负责：用户 {person_label(owner)} 私聊里的这个聊天（他切到 /{conv['id']} 时就是在和你说话）。"
                 "这是他自己建的聊天，你只为他服务")
     else:
@@ -2085,18 +2110,44 @@ def device_pass_active(dev, conv) -> bool:
     return c_owner != 0 and c_owner == int(dev["owner"] or 0)
 
 
+def inherited_conv_until(conv, dev_id: str) -> float:
+    """支持设备授权沿树自动继承：
+    1) 给主控 main 授权了某台管理员设备 -> 管理员名下所有子 agent 自动继承该授权；
+    2) 给父聊天（如 c165）授权了某台同主人设备 -> 它派生的子/孙 agent 自动继承该授权！"""
+    best = 0.0
+    c_owner = conv_owner(conv)
+    if c_owner == 0 and conv["id"] != "main":
+        mrow = conv_row("main")
+        if mrow is not None and mrow["local_enabled"] and mrow["local_dev"] == dev_id:
+            best = max(best, float(mrow["local_until"] or 0))
+    seen: set[str] = {conv["id"]}
+    pid = (conv["parent_conv"] or "").strip()
+    depth = 0
+    while pid and pid not in seen and depth < 8:
+        seen.add(pid)
+        depth += 1
+        prow = conv_row(pid)
+        if prow is None or conv_owner(prow) != c_owner:
+            break
+        if prow["local_enabled"] and prow["local_dev"] == dev_id:
+            best = max(best, float(prow["local_until"] or 0))
+        pid = (prow["parent_conv"] or "").strip()
+    return best
+
+
 def effective_local_until(conv, dev) -> float:
     if dev is None:
         return 0.0
     c_until = float(conv["local_until"] or 0) if conv["local_dev"] == dev["id"] else 0.0
+    inh_until = inherited_conv_until(conv, dev["id"])
     d_until = float(dev["auth_until"] or 0) if device_pass_active(dev, conv) else 0.0
-    return max(c_until, d_until)
+    return max(c_until, inh_until, d_until)
 
 
 def conv_device(conv):
     """本地操作发到哪台电脑。
-    用户建的聊天：只用他自己的电脑，他没装就是没有，绝不退回到管理员的电脑上。
-    管理员的聊天：显式指定的 > 负责的私聊用户自己的电脑 > 管理员在线/默认电脑（自动识别 d3 等，无需逐个绑）。"""
+    用户建的聊天：只用他自己的电脑（未显式指定时可沿父 agent 继承同主人指定设备），绝不退回到管理员的电脑上。
+    管理员的聊天：显式指定的 > 沿父 agent / 主控 main 继承指定的电脑 > 负责的私聊用户自己的电脑 > 管理员在线/默认电脑。"""
     owner = conv_owner(conv)
     if conv["device"]:
         dev = device_row(conv["device"])
@@ -2104,6 +2155,27 @@ def conv_device(conv):
         if dev is None or dev["status"] != "active" or (owner and dev["owner"] != owner):
             return None
         return dev
+    # 若本身没单独绑电脑，检查父 agent 链或主控 main 是否绑定了设备（给主控或父 agent 绑/授权设备后，子 agent 自动跟着走）
+    seen: set[str] = {conv["id"]}
+    pid = (conv["parent_conv"] or "").strip()
+    depth = 0
+    while pid and pid not in seen and depth < 8:
+        seen.add(pid)
+        depth += 1
+        prow = conv_row(pid)
+        if prow is None or conv_owner(prow) != owner:
+            break
+        if prow["device"]:
+            dev = device_row(prow["device"])
+            if dev is not None and dev["status"] == "active" and (not owner or dev["owner"] == owner):
+                return dev
+        pid = (prow["parent_conv"] or "").strip()
+    if not owner and conv["id"] != "main":
+        mrow = conv_row("main")
+        if mrow is not None and mrow["device"]:
+            dev = device_row(mrow["device"])
+            if dev is not None and dev["status"] == "active" and is_admin_device(dev):
+                return dev
     if owner:
         return user_device(owner)
     for chat_id in routed_chats(conv["id"]):
@@ -2551,7 +2623,8 @@ COMMON_TOOLS = [
     ),
     tool(
         "spawn_subagent",
-        "（子 agent 专用）向主控请求创建一个新的子 agent。主控被强制要求 100% 完全按你指定的任务、记忆传递和模型执行；新子 agent 接入后会自动唤醒通知你。",
+        "（子 agent 专用）向主控请求创建一个新的后台子 agent（纯后台走 MCP 协作，不挂载到 Telegram 聊天列表以免挤爆列表；自动继承主控或父 agent 的本地设备授权）。"
+        "主控被强制要求 100% 完全按你指定的任务、记忆传递和模型执行；新子 agent 接入后会自动唤醒通知你。",
         {
             "brief": prop("string", "给新子 agent 的完整任务说明与要求"),
             "include_memory": prop("boolean", "是否提供当前记忆：true=自动授权读取你本聊天的历史记录、继承 Git 仓库分支并附带 memory_summary；false=全新白板启动"),
@@ -2597,12 +2670,13 @@ MAIN_TOOLS = [
     ),
     tool(
         "create_chat",
-        "（仅主控）新建一个聊天，可以顺便把【未分配】的私聊或群交给它。返回给子 agent 的任务原文，拿到后用 Task(..., run_in_background=true) 开子 agent 接手。",
+        "（仅主控）新建一个聊天，可以顺便把【未分配】的私聊或群交给它。join_tg_chat 默认 true（接入 TG 菜单）；若开纯后台协作 agent 可填 false 不占 TG 列表。",
         {
             "brief": prop("string", "这个聊天负责什么，子 agent 接手时会看到"),
             "chat_ids": prop("array", "要交给它的 Telegram chat id，可省略", items={"type": "integer"}),
             "name": prop("string", "名字，可省略（默认由子 agent 自己取）"),
             "model": prop("string", "指定模型名，可省略（默认继承主控）"),
+            "join_tg_chat": prop("boolean", "是否挂载进 Telegram 聊天菜单与列表，默认 true；填 false 则为纯后台 MCP agent"),
         },
         ["brief"],
     ),
@@ -2971,7 +3045,14 @@ async def t_create_chat(agent, args):
             raise ToolFail(f"chat_ids 里有不是数字的：{item}")
     admins = admin_chats()
     model = " ".join(str(args.get("model") or "").split())[:100]
-    conv = create_conv(str(args.get("brief") or ""), admins[0] if admins else 0, str(args.get("name") or ""), model=model)
+    join_tg = bool(args.get("join_tg_chat", True)) or bool(chat_ids)
+    conv = create_conv(
+        str(args.get("brief") or ""),
+        admins[0] if admins else 0,
+        str(args.get("name") or ""),
+        model=model,
+        in_tg=join_tg,
+    )
     done, skipped = [], []
     for chat_id in chat_ids:
         crow = chat_row(chat_id)
@@ -2988,7 +3069,8 @@ async def t_create_chat(agent, args):
     extra = ("负责：" + "、".join(chat_label(c) for c in routed_chats(conv["id"]))) if done else ""
     if skipped:
         extra += ("\n" if extra else "") + "没有交给它：" + "；".join(skipped)
-    await notify_admins(f"主控新建了聊天 {conv_tag(conv)}。{extra}".strip(), conv_id=conv["id"])
+    if conv_in_tg(conv):
+        await notify_admins(f"主控新建了聊天 {conv_tag(conv)}。{extra}".strip(), conv_id=conv["id"])
     return text_result(
         f"已新建聊天 {conv_tag(conv)}。{extra}\n"
         f"现在必须用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）：{model_hint(conv)}\n"
@@ -3146,8 +3228,8 @@ async def t_send_agent_message(agent, args):
         raise ToolFail("text 不能为空。")
     raw_to = str(args.get("to") or "").strip()
     to_id = parse_conv(raw_to)
-    if not to_id or to_id == "main":
-        raise ToolFail(f"无效的目标编号 {raw_to!r}：send_agent_message 只用于同一个主人名下的子 agent 之间互聊（如 c1、c2，可用 list_peers 查看）；需要请求主控创建子 agent 请用 spawn_subagent。")
+    if not to_id:
+        raise ToolFail(f"无效的目标编号 {raw_to!r}，请填 c1、c2 或 main（可用 list_peers 查看）。")
     me_id = agent["conv"]
     if to_id == me_id:
         raise ToolFail("不能给自己发消息。")
@@ -3155,7 +3237,10 @@ async def t_send_agent_message(agent, args):
     target = conv_row(to_id)
     if target is None or target["status"] != "open":
         raise ToolFail(f"目标聊天 {to_id} 不存在或已关闭。")
-    if conv_owner(target) != owner:
+    if to_id == "main":
+        if owner != 0:
+            raise ToolFail("权限隔离：只有管理员自己的子 agent 能直接给主控(main)发消息；需要创建子 agent 请用 spawn_subagent。")
+    elif conv_owner(target) != owner:
         raise ToolFail(f"权限隔离：一个人的子 agent 只能和自己同一个主人名下的子 agent 对话，不能跨主人与 {to_id} 通信。")
 
     want_wake = bool(args.get("wake", True))
@@ -3484,9 +3569,7 @@ async def t_spawn_subagent(agent, args):
 
     me = conv_row(agent["conv"])
     owner = conv_owner(me)
-    if at_limit(owner):
-        raise ToolFail(f"该用户的聊天数量已达上限（{CHAT_LIMIT} 个），无法再派生新子 agent。")
-
+    # 注意：子 agent 派生的子 agent 一律强制 in_tg=False（纯后台 MCP，不占 TG 聊天菜单与列表，也不占用户的 TG 聊天配额）
     my_active_children = store.one(
         "SELECT COUNT(*) AS n FROM convs WHERE status='open' AND parent_conv=?",
         (me["id"],),
@@ -3519,6 +3602,7 @@ async def t_spawn_subagent(agent, args):
         model=model_clean,
         parent_conv=me["id"],
         memory_note=memory_summary,
+        in_tg=False,
     )
     if include_memory:
         grant_share(child["id"], me["id"])
@@ -3535,18 +3619,13 @@ async def t_spawn_subagent(agent, args):
         store.run("INSERT OR IGNORE INTO agent_group_members(group_id,conv,joined) VALUES(?,?,?)", (grow["id"], child["id"], now()))
         group_msg = f"，并已自动加入协作群 {group_tag(grow)}"
 
-    # 向主控发送最高优先级强制派生单，立即唤醒主控
+    # 向主控发送最高优先级强制派生单，立即唤醒主控（纯后台子 agent 不往 TG 私聊弹通知防刷屏，你在 /agents 或 /trace 可看）
     system_note("main", spawn_task_note(child, me, include_memory), wake=1)
     model_desc = model_clean or "inherit（继承主控）"
     mem_desc = "开启（已自动共享历史记录 + Git 分支" + (" + 记忆交接摘要）" if memory_summary else "）") if include_memory else "关闭（白板启动）"
-    if owner == 0:
-        await notify_admins(
-            f"🤖 子 agent {conv_tag(me)} 请求主控创建了新子 agent {conv_tag(child)}\n"
-            f"模型：{model_desc} | 记忆传递：{mem_desc}{group_msg}",
-            conv_id=child["id"],
-        )
     return text_result(
-        f"已向主控下达【强制派生指令】：新聊天编号为 {child['id']}（模型：{model_desc}；记忆传递：{mem_desc}{group_msg}）。\n"
+        f"已向主控下达【强制派生指令】：新后台子 agent 编号为 {child['id']}（纯后台 MCP 模式，不占 Telegram 聊天列表；"
+        f"自动继承主控与你的本地设备授权；模型：{model_desc}；记忆传递：{mem_desc}{group_msg}）。\n"
         f"主控已被强制要求 100% 按你的参数在后台拉起它；等 {child['id']} 完成 join 接手后，桥会自动发系统消息唤醒通知你！"
     )
 
@@ -3561,6 +3640,8 @@ async def t_stop_spawned_agent(agent, args):
     old = active_agent(target)
     if old is not None:
         stop_identity(old["id"], f"父 agent {me_id} 回收了这个派生子 agent")
+    store.run("UPDATE agent_traces SET phase='stopped', updated_ts=? WHERE conv=?", (now(), target["id"]))
+    system_note("main", f"父 agent {conv_tag(me)} 已回收并停止其派生的后台子 agent {conv_tag(target)}。", wake=0)
     if close_it and target["status"] == "open":
         store.run("DELETE FROM agent_group_members WHERE conv=?", (target["id"],))
         store.run(
@@ -3568,7 +3649,7 @@ async def t_stop_spawned_agent(agent, args):
             (now(), target["id"]),
         )
         mark_menu_dirty()
-        return text_result(f"已停止并关闭你派生的子 agent {conv_tag(target)}（历史记录保留）。")
+        return text_result(f"已停止并关闭你派生的子 agent {conv_tag(target)}（它在跑完当前单条工具调用时会被钩子立即中止退出，历史记录保留）。")
     store.run("UPDATE convs SET agent='', task_code='', task_agent_id='' WHERE id=?", (target["id"],))
     mark_menu_dirty()
     return text_result(f"已停止你派生的子 agent {conv_tag(target)}（聊天仍保留开放）。")
@@ -4456,11 +4537,13 @@ def may_share(user_id: int, reader, source) -> bool:
 
 
 def share_keyboard(reader: str) -> dict:
-    """新聊天能读哪些旧聊天：只列同一个主人的。"""
+    """新聊天能读哪些旧聊天：只列同一个主人的 TG 聊天（排除纯后台派生子 agent 免得挤爆按钮）。"""
     owner = conv_owner(conv_row(reader))
     en = bool(owner) and lang_of(owner) == "en"
-    rows = store.q("SELECT * FROM convs WHERE id NOT IN ('main', ?) AND owner=? AND status!='deleted' ORDER BY num DESC LIMIT 30",
-                   (reader, owner))
+    rows = store.q(
+        "SELECT * FROM convs WHERE id NOT IN ('main', ?) AND owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY num DESC LIMIT 30",
+        (reader, owner),
+    )
     buttons = []
     for row in rows:
         mark = "✅ " if shared(reader, row["id"]) else ""
@@ -4521,10 +4604,10 @@ async def delete_conv(conv, by: str) -> None:
 
 def list_rows(viewer: int) -> list:
     if is_admin(viewer):
-        rows = store.q("SELECT * FROM convs WHERE id!='main' AND status!='deleted' ORDER BY IFNULL(owner,0)!=0, owner, num")
+        rows = store.q("SELECT * FROM convs WHERE id!='main' AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY IFNULL(owner,0)!=0, owner, num")
         order = {n: i for i, n in enumerate(cloud_order({cloud_of(r) for r in rows} | {main_cloud()}))}
         return sorted(rows, key=lambda r: order[cloud_of(r)])
-    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status!='deleted' ORDER BY num", (viewer,))
+    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY num", (viewer,))
 
 
 def hand_over_view(conv, page: int) -> tuple[str, dict]:
@@ -4912,13 +4995,22 @@ def local_conv_panel(conv, viewer_id: int, note: str = "") -> tuple[str, dict]:
         if not enabled:
             auth_s = "📴 本地通道已关闭"
         elif eff > now():
-            via = "（来自 /device 整机免批）" if dev and float(dev["auth_until"] or 0) >= eff and float(dev["auth_until"] or 0) > now() else ""
+            inh_u = inherited_conv_until(conv, dev["id"]) if dev else 0.0
+            if dev and float(dev["auth_until"] or 0) >= eff and float(dev["auth_until"] or 0) > now():
+                via = "（来自 /device 整机免批）"
+            elif inh_u >= eff and inh_u > now() and conv["id"] != "main":
+                via = "（自动继承自主控/父agent授权）"
+            elif conv["id"] == "main":
+                via = "（主控已授权：你名下所有子 agent 自动跟着共享此授权！）"
+            else:
+                via = ""
             auth_s = ("🟢 永久免批" if eff - now() >= PERMANENT_THRESHOLD else f"🟢 剩余 {human_dur(eff - now())}") + via
         else:
             auth_s = "⚪ 未预授权（首次调用时弹窗询问）"
         bind_mode = f"指定绑定 {conv['device']}" if conv["device"] else "自动匹配"
+        title_s = "主控 main（授权后名下所有子 agent 自动跟着授权！）" if conv["id"] == "main" else f"聊天 {conv_tag(conv)}"
         lines = [
-            f"🔧 聊天 {conv_tag(conv)} 本地通道管理",
+            f"🔧 {title_s} 本地通道管理",
             f"• 通道开关：{'🟢 已开启' if enabled else '📴 已关闭'}",
             f"• 目标电脑：{dev_s}（{bind_mode}）",
             f"• 当前授权：{auth_s}",
@@ -5181,6 +5273,13 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                         en=f"{conv_tag(conv)} is closed (history is kept). /reopen {conv['id']} reopens it; /export {conv['id']} exports it.")
             return
         if not enterable(chat_id, conv):
+            if not conv_in_tg(conv) and can_manage(user_id, conv):
+                await reply(
+                    chat_id,
+                    f"{conv_tag(conv)} 是子 agent 派生的纯后台 MCP 子 agent（默认不接入 Telegram 聊天列表，防挤爆菜单）。"
+                    f"可在 /trace {conv['id']} 看实时动作，或 /export {conv['id']} 导出记录，或 /close {conv['id']} 关闭。",
+                )
+                return
             await reply(chat_id, f"{conv_tag(conv)} 是{owner_text(conv)}的聊天，只有他自己能切进去。/export {conv['id']} 可以导出记录。")
             return
         await switch_to(chat_id, conv["id"])
@@ -5445,13 +5544,13 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                         en=f"Set local authorization to {span_s} for {ok_cnt} chat(s).")
             return
 
-        # 2) 解析目标聊天：传了 cXXX 就用 cXXX，没传就自动取当前选中的聊天（或群绑定的聊天）
-        if tokens and parse_conv(tokens[0]) and parse_conv(tokens[0]) != "main":
+        # 2) 解析目标聊天：传了 cXXX 或 main 就用它，没传就自动取当前选中的聊天（包括 /main！给 main 授权时所有子 agent 自动继承）
+        if tokens and parse_conv(tokens[0]):
             conv = conv_row(parse_conv(tokens[0]))
             value = " ".join(tokens[1:]).strip()
         else:
             cur_id = selected(chat_id) if private else route_of(chat_id)
-            conv = conv_row(cur_id) if cur_id and cur_id != "main" else None
+            conv = conv_row(cur_id) if cur_id else None
             value = rest.strip()
             if conv is None:
                 own_list = own_convs(0 if admin else user_id, "open")
@@ -5459,12 +5558,7 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                     conv = own_list[0]
 
         if conv is None or not can_manage(user_id, conv):
-            await reply(
-                chat_id,
-                ("当前在 /main（主控不用本地通道），请先切到某个聊天（如 /c165）再发 /local，或指定编号如 `/local c165 24h`；"
-                 "想一次性设整台电脑免批直接发 `/device`。\n\n" if private and selected(chat_id) == "main" else "") + usage,
-                en=usage_en,
-            )
+            await reply(chat_id, usage, en=usage_en)
             return
 
         if value == "":
@@ -5522,7 +5616,7 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                 "UPDATE convs SET local_enabled=1, local_until=?, local_dev=? WHERE id=?",
                 (until, dev["id"], conv["id"]),
             )
-            released = release_pending_for_device(dev["id"], conv["id"]) if sec > 0 else 0
+            released = release_pending_for_device(dev["id"], "" if conv["id"] == "main" else conv["id"]) if sec > 0 else 0
             span_s = short_span(sec, "en" if not admin and lang_of(user_id) == "en" else "zh")
             note = (
                 f"已收回时间窗（恢复每次确认）" if sec <= 0
@@ -5722,7 +5816,7 @@ async def on_callback(callback: dict) -> None:
                 await answer("只有这台电脑的主人能授权", en="Only this computer's owner can approve")
                 return
             store.run("UPDATE convs SET local_enabled=1, local_until=?, local_dev=? WHERE id=?", (now() + sec, dev["id"], conv["id"]))
-            release_pending_for_device(dev["id"], conv["id"])
+            release_pending_for_device(dev["id"], "" if conv["id"] == "main" else conv["id"])
             note = f"Approved for {short_span(sec, 'en')}" if en else f"已授权 {short_span(sec)}"
         else:
             await answer()
@@ -6527,14 +6621,30 @@ async def trace_check_active(agent: str = "") -> JSONResponse:
 
 @app.get("/trace/peek")
 async def trace_peek_inbox(agent: str = "") -> JSONResponse:
-    """每次 AI 在 VM 内跑任何 Shell 命令（或工具）时自动顺带检查收件箱：有用户/主控/其他 Agent 消息立即插播提醒，不改 read_cursor 防丢信。"""
+    """每次 AI 在 VM 内跑任何 Shell 命令（或工具）时自动顺带检查收件箱与停用状态：
+    1) 若身份已被停用（stopped），立即返回 stopped=True，钩子直接命令 AI 停手退出；
+    2) 若有用户/主控/其他 Agent 未读消息，立即插播提醒，不改 read_cursor 防丢信。"""
     ident = agent.strip()
     arow = agent_row(ident) if ident else None
-    if arow is None or arow["status"] != "active":
-        return JSONResponse({"ok": False, "has_messages": False})
+    if arow is None:
+        return JSONResponse({"ok": False, "has_messages": False, "stopped": False})
+    if arow["status"] != "active":
+        return JSONResponse({
+            "ok": True,
+            "has_messages": False,
+            "stopped": True,
+            "conv": arow["conv"],
+            "note": arow["note"] or "该子 agent 已被停止",
+        })
     conv = conv_row(arow["conv"])
     if conv is None or conv["status"] != "open":
-        return JSONResponse({"ok": False, "has_messages": False})
+        return JSONResponse({
+            "ok": True,
+            "has_messages": False,
+            "stopped": True,
+            "conv": arow["conv"],
+            "note": "该聊天已关闭",
+        })
     rows = pending_rows(conv["id"], conv["read_cursor"])
     if not rows or not any(r["wake"] for r in rows):
         return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})

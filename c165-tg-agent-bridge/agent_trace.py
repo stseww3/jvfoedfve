@@ -199,14 +199,22 @@ def extract_conv_hint(payload: dict[str, Any], ti: dict[str, Any]) -> str:
 
 
 def build_inbox_alert(bridge_url: str, agent_id: str) -> str:
-    """每次 Shell 命令（或文件/普通工具）跑完时毫秒级顺带查收各方新消息（TG用户 / 主控 / 其他Agent私聊与群聊）。"""
+    """每次 Shell 命令（或文件/普通工具）跑完时毫秒级顺带查收各方新消息与停用状态（TG用户 / 主控 / 其他Agent私聊与群聊 / 已停止指令）。"""
     if not agent_id:
         return ""
     peek = get_json(
         f"{bridge_url}/trace/peek?agent={urllib.parse.quote(agent_id)}",
         timeout=0.9,
     )
-    if not peek or not peek.get("has_messages"):
+    if not peek:
+        return ""
+    if peek.get("stopped"):
+        note = str(peek.get("note") or "身份已停用").strip()
+        return (
+            f"【🛑 紧急停止指令：你的子 agent 身份已被停用（原因：{note}）！】\n"
+            "不要再执行任何后续命令、不要再调用任何 MCP 工具，现在立即停止所有手头工作并直接结束回合退出！"
+        )
+    if not peek.get("has_messages"):
         return ""
     cnt = int(peek.get("count") or 1)
     rendered = str(peek.get("rendered") or "").strip()
@@ -317,6 +325,24 @@ def handle_hook() -> int:
         sess = st["sessions"].setdefault(cid or agent_id or "default", {})
         if agent_id:
             sess["agent_id"] = agent_id
+
+        # 若该子 agent 已被停用（stop_spawned_agent / stop_agent），在它正准备开跑新命令前直接拦截拒绝，无需等跑完！
+        if event == "preToolUse" and agent_id and agent_id.startswith("a_"):
+            chk_pre = get_json(
+                f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",
+                timeout=0.9,
+            )
+            if chk_pre is not None and chk_pre.get("active") is False:
+                print(
+                    json.dumps(
+                        {
+                            "permission": "deny",
+                            "user_message": "【🛑 身份已停用】你的子 agent 已被父 agent 或主控停止回收，禁止再启动新命令或工具，请立即结束回合退出。",
+                        },
+                        ensure_ascii=False,
+                    )
+                )
+                return 0
 
         # 第 4 层防断连：子 agent 试图结束回合时向桥查询身份是否仍有效，有效则当场拽回 read_chat
         if event == "subagentStop":
