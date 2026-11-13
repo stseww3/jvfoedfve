@@ -120,17 +120,17 @@ def _bracket_b():
     """Version B wall lamp: an enamel cone shade and a bare bulb under a square arm with a strut,
     on a riveted plate. Anchor: on the wall, at the underside of the arm."""
     m = M.Model(PREFIX + "bracket_b")
-    m.box((-3, -9, 0), (3, 4, 1), IRON, grain="y")                      # riveted wall plate
+    m.box((-3, -11, 0), (3, 5, 1), IRON, grain="y")                     # riveted wall plate
     for x in (-2, 2):
-        for y in (-8, 3):
+        for y in (-10, 4):
             K.rivet(m, (x, y, 1))
     m.box((-1, 0, 1), (1, 2, 12.5), IRON, grain="z")                    # square arm
-    m.beam((0, -7.5, 1.0), (0, 0.5, 9.0), 1.0, 1.0, IRON_D)             # strut
+    m.beam((0, -9.5, 1.0), (0, 0.5, 9.0), 1.0, 1.0, IRON_D)             # strut
     m.box((-1.5, -1, 9.0), (1.5, 3, 12.5), IRON_D)                      # junction box
     c = (0, 10.75)
     m.tube("y", c, -2.5, -1.0, 1.25, BRASS)                             # lampholder
-    _cone_shade(m, c, -2.0, -6.0, 1.75, 6.25, 4)
-    K.bulb(m, (0, -2.5, 10.75), glass=3.5)
+    _cone_shade(m, c, -2.0, -7.0, 2.0, 7.0, 5)
+    K.bulb(m, (0, -2.5, 10.75), glass=4.0)
     return m
 
 
@@ -178,7 +178,7 @@ def _pendant_a():
     _rose(m)
     m.tube("y", (0, 0), -12.0, -2.0, 0.5, BRASS_D, sides=4)             # rod
     m.tube("y", (0, 0), -14.0, -12.0, 2.0, BRASS)                       # holder
-    K.switch_key(m, (2.0, -13.0, 0))
+    K.switch_key(m, (-2.0, -13.0, 0), side=-1.0)
     m.tube("y", (0, 0), -15.0, -14.0, 3.5, BRASS_D)                     # gallery
     _opal_globe(m, (0, -19.25, 0), 5.5, sides=12, squash=0.82, fine=True)
     m.tube("y", (0, 0), -24.5, -23.75, 1.0, BRASS)
@@ -191,7 +191,7 @@ def _pendant_b():
     _rose(m)
     m.tube("y", (0, 0), -8.0, -2.0, 0.5, BRASS_D, sides=4)
     m.tube("y", (0, 0), -12.0, -8.0, 1.25, BRASS)                       # lampholder
-    K.switch_key(m, (1.25, -9.0, 0))
+    K.switch_key(m, (-1.25, -9.0, 0), side=-1.0)
     _cone_shade(m, (0, 0), -10.0, -15.0, 2.0, 8.0, 5)
     K.bulb(m, (0, -12.0, 0), glass=3.0)
     return m
@@ -203,7 +203,7 @@ def _desk_green():
     m = M.Model(PREFIX + "desk_green")
     m.tube("y", (0, 0), 0.0, 1.0, 3.0, BRASS)
     m.tube("y", (0, 0), 1.0, 2.0, 1.5, BRASS_D)
-    m.box((1.5, 1.0, -0.5), (2.5, 2.0, 0.5), BRASS_D)                   # the switch
+    m.box((-2.5, 1.0, -0.5), (-1.5, 2.0, 0.5), BRASS_D)                 # the switch
     m.tube("y", (0, 0), 2.0, 7.5, 0.5, BRASS, sides=4)
     m.box((-4.5, 7.5, -0.5), (4.5, 8.5, 0.5), BRASS_D, grain="x")       # cross bar
     lit = dict(emit=15, shade=False)
@@ -283,7 +283,7 @@ def _hanger():
 SPEC = {
     "street": dict(build=_street, mount="floor", scale=2.0, light=(0.0, 4.375, 0.0), level=14),
     "bracket_a": dict(build=_bracket_a, mount="wall", light=(0.0, 0.47, 0.69), level=12),
-    "bracket_b": dict(build=_bracket_b, mount="wall", light=(0.0, -0.4, 0.67), level=12),
+    "bracket_b": dict(build=_bracket_b, mount="wall", light=(0.0, -0.45, 0.67), level=12),
     "cage_a": dict(build=_cage_a, mount="wall", light=(0.0, 0.0, 0.3), level=7),
     "cage_b": dict(build=_cage_b, mount="wall", light=(0.0, 0.0, 0.3), level=7),
     "pendant_a": dict(build=_pendant_a, mount="ceiling", light=(0.0, -1.2, 0.0), level=8),
