@@ -1,0 +1,1 @@
+{"dir":"attr","tag":"A007-4284-C0","at":"2026-11-13T01:19:40.600Z","ms":95712,"error":"时间预算在热身阶段就用完了（走到 t=3641，断面 t0=4284）。缩短热身：--warmup 600，或放宽 --budget-ms","where":"at runCheckpoint (file://sim-v2/lib/checkpoint.mjs:119:24) | at async file://sim-v2/tools/g0_batch.mjs:192:17"}

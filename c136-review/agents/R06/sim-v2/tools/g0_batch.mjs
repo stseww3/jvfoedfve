@@ -189,6 +189,7 @@ for (const st of steps) {
     const realLog = console.log;
     console.log = () => {};
     let res = null, err = null;
+    const cpu0run = process.cpuUsage();
     try { res = await run(o); } catch (e) { err = e; }
     console.log = realLog;
     const ms = Date.now() - t0;
@@ -196,7 +197,23 @@ for (const st of steps) {
       if (/^纯离线范围/.test(String(err.message))) { console.error(`[g0_batch] ${j.tag}：${err.message}`); process.exit(3); }
       if (fs.existsSync(part)) fs.rmSync(part);
       if (budget < FULL && /时间预算/.test(String(err.message))) { log.push(`${j.tag} 本批时间不够（${ms} ms），留给下一批`); starved++; stop = true; break; }
+      const warm = String(err.message).match(/时间预算在热身阶段就用完了（走到 t=(\d+)，断面 t0=(\d+)）/);
+      if (warm) {
+        // 给足了整份预算，连热身（从头重放到断面）都没走完：机器太挤，不是这次运行有毛病。不算出错，留给下一批；
+        // 按走到的拍数估一下整个运行要多少 CPU，记下来，下一批先算一下跑不跑得完再决定跑不跑。
+        const c = process.cpuUsage(cpu0run);
+        const total = +warm[2] + (+j.o.len || 900);
+        if (+warm[1] > 0) { estMap[j.out] = { cpu: Math.round((c.user + c.system) / 1000 * total / +warm[1]), at: Date.now() }; saveEst(); }
+        log.push(`${j.tag} 本批时间不够（${ms} ms，热身没走完），留给下一批`);
+        starved++; stop = true;
+        break;
+      }
       log.push(`${j.tag} 出错：${String(err.message).slice(0, 160)}`);
+      // 出错的运行另记一行到 calib/run-errors.jsonl（外层队列只看每批的最后一行，出错的原因在那里看不到）
+      try {
+        fs.appendFileSync(path.join(SIMV2, 'calib', 'run-errors.jsonl'), JSON.stringify({ dir: st.dirName, tag: j.tag, at: new Date().toISOString(), ms,
+          error: String(err.message).slice(0, 600), where: String(err.stack || '').split('\n').slice(1, 4).map((x) => x.trim().replace(SIMV2, 'sim-v2')).join(' | ').slice(0, 400) }) + '\n');
+      } catch (e2) { /* 记不下来不影响别的运行 */ }
       j.failed = true; failedAll.push(j);
       continue;
     }

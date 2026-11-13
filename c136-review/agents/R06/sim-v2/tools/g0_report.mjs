@@ -13,10 +13,11 @@
 //   old-vs-new.json             拆掉候选臂之前入库的旧结果（单独起进程逐个跑的）对现在批量重跑的同名结果（tools/old_vs_new.sh）
 // 写：sim-v2/calib/report/tables/<表名>.md（Markdown 表）、sim-v2/calib/report/values.json（正文里引用的单个数字）
 //
-// 用法（在 c136-review/agents/R06 下）：node sim-v2/tools/g0_report.mjs [--only 表名前缀] [--print] [--calib 结果目录]
+// 用法（在 c136-review/agents/R06 下）：node sim-v2/tools/g0_report.mjs [--only 表名前缀] [--print] [--calib 结果目录] [--set core|ext]
 // 之后 node sim-v2/tools/g0_build.mjs 把 reports/src-g0/ 下的正文模板和这些表拼成报告。
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { SIG as LIVE_SIG, loadLive, lagClass, bands } from './live_table.mjs';
 import { cohortOf, quantile } from '../lib/util.mjs';
@@ -40,6 +41,15 @@ const CALIB = argv.includes('--calib') ? path.resolve(argv[argv.indexOf('--calib
 const OUT = path.join(CALIB, 'report');
 const ONLY = argv.includes('--only') ? argv[argv.indexOf('--only') + 1] : '';
 const PRINT = argv.includes('--print');
+// --set：断面运行（g0 / attr / fill / hold）按局分成两组，各算一遍。
+//   core = 核心 20 局（Vb、c110）：正文第 4~6 节原有的全部表和数字。口径、容差、噪声底都是在这一组上定下来的。
+//   ext  = 之后新接的局（Va、Vc）：没有参与任何口径的选定，当样本外检验。只算「断面保真度」「通道延迟归因」两节，
+//          同一段代码、同一套口径；表名加后缀 -x，键加前缀 x.，并进同一个 report/ 目录。
+// 不带 --set：两组都算（先 core，写完之后再起一个子进程算 ext）。
+const SET = argv.includes('--set') ? argv[argv.indexOf('--set') + 1] : 'both';
+if (!['core', 'ext', 'both'].includes(SET)) { console.error('--set 只能是 core 或 ext'); process.exit(2); }
+const EXT = SET === 'ext';
+const PRE = EXT ? 'x.' : '', SUF = EXT ? '-x' : '';
 
 // ---------- 小工具
 const readJson = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
@@ -76,12 +86,13 @@ const tables = {};   // 表名 → Markdown
 const values = {};   // 键 → 字符串（正文里 {{v:键}} 引用）
 const notes = [];    // 生成时的提醒（缺文件、被截断的运行等）
 function table(name, head, rows, foot = '') {
+  if (EXT && !rows.length) return;     // 样本外那一组里没有内容的表不写
   const L = ['| ' + head.join(' | ') + ' |', '|' + head.map(() => '---').join('|') + '|'];
   for (const r of rows) L.push('| ' + r.join(' | ') + ' |');
-  tables[name] = L.join('\n') + (foot ? '\n\n' + foot : '');
+  tables[name + SUF] = L.join('\n') + (foot ? '\n\n' + foot : '');
 }
-const val = (k, v) => { values[k] = String(v); };
-const want = (name) => !ONLY || name.startsWith(ONLY);
+const val = (k, v) => { values[PRE + k] = String(v); };
+const want = (name) => (!EXT || name === 'ckpt' || name === 'attr') && (!ONLY || name.startsWith(ONLY));
 
 // ---------- 对局包里的局、每局的版本与卡顿档
 const PACK = readJson(path.join(SIMV2, 'packs', 'index.json'));
@@ -144,15 +155,19 @@ function loadRuns(dirName, armOf) {
   }
   return out;
 }
-const G0 = loadRuns('g0', (rest) => ({ arm: rest[1], seed: 1 }));
-const ATTR = loadRuns('attr', (rest) => ({ arm: rest[0], seed: rest[1] ? +rest[1].slice(1) : 1 }));
-const FILL = loadRuns('fill', (rest) => ({ arm: rest[0], seed: 1 }));
-const HOLD = loadRuns('hold', (rest) => ({ arm: rest[0], seed: 1 }));
+// *_EVERY = 目录里的全部运行（清点用）；不带后缀的 = 这一遍算的那一组（--set）
+const G0_EVERY = loadRuns('g0', (rest) => ({ arm: rest[1], seed: 1 }));
+const ATTR_EVERY = loadRuns('attr', (rest) => ({ arm: rest[0], seed: rest[1] ? +rest[1].slice(1) : 1 }));
+const FILL_EVERY = loadRuns('fill', (rest) => ({ arm: rest[0], seed: 1 }));
+const HOLD_EVERY = loadRuns('hold', (rest) => ({ arm: rest[0], seed: 1 }));
+const inSet = (mid) => EXT !== CORE.has(mid);
+const G0 = G0_EVERY.filter((x) => inSet(x.mid)), ATTR = ATTR_EVERY.filter((x) => inSet(x.mid));
+const FILL = FILL_EVERY.filter((x) => inSet(x.mid)), HOLD = HOLD_EVERY.filter((x) => inSet(x.mid));
 
 // 卡顿档：这一局 630~1530 拍录像里的同拍批占比（< 15% 不卡，≥ 50% 卡顿，其间轻度）——取历史臂（= 录像），没有断面结果的局取 live
 const clsOf = (() => {
   const m = new Map();
-  for (const x of G0) if (x.t0 === 630 && !m.has(x.mid)) m.set(x.mid, lagClass(x.h.batchShare));
+  for (const x of G0_EVERY) if (x.t0 === 630 && !m.has(x.mid)) m.set(x.mid, lagClass(x.h.batchShare));
   for (const mid of MIDS) if (!m.has(mid) && liveOf.has(mid)) m.set(mid, lagClass(liveOf.get(mid).windows[0].batchShare));
   return (mid) => m.get(mid) || '?';
 })();
@@ -178,7 +193,7 @@ if (want('scope')) {
   let wrong = 0, total = 0;
   for (const co of VORDER) {
     const H = HISTORICAL_STRATEGIES[co];
-    const ck = [...G0, ...ATTR, ...FILL, ...HOLD].filter((x) => x.co === co);
+    const ck = [...G0_EVERY, ...ATTR_EVERY, ...FILL_EVERY, ...HOLD_EVERY].filter((x) => x.co === co);
     const ar = ARENA_ALL.filter((x) => cohortOf(x.mid) === co && x.r.arms && x.r.arms.baseline);
     const shas = [...ck.map((x) => x.sha), ...ar.map((x) => x.r.arms.baseline.sha256)];
     const bad = shas.filter((v) => v !== H.sha256).length;
@@ -196,19 +211,26 @@ if (want('scope')) {
   const invRow = (label, mode, n, trunc, errs) => inv.push([label, mode, String(n), String(trunc), errs === null ? '-' : String(errs)]);
   invRow('`calib/verify/`', 'verify', V.size, [...V.values()].filter((r) => r.truncated).length, null);
   invRow('`calib/live/`', 'live', LIVE.length, LIVE.filter((r) => r.truncated).length, null);
-  for (const [label, a] of [['`calib/g0/`', G0], ['`calib/attr/`', ATTR], ['`calib/fill/`', FILL], ['`calib/hold/`', HOLD]]) invRow(label, 'checkpoint', a.length, a.filter((x) => x.truncated).length, a.filter((x) => x.errs > 0).length);
+  for (const [label, a] of [['`calib/g0/`', G0_EVERY], ['`calib/attr/`', ATTR_EVERY], ['`calib/fill/`', FILL_EVERY], ['`calib/hold/`', HOLD_EVERY]]) invRow(label, 'checkpoint', a.length, a.filter((x) => x.truncated).length, a.filter((x) => x.errs > 0).length);
   for (const d of ['arena-acc20', 'arena-rp1530']) {
     const a = ARENA_ALL.filter((x) => x.dir === d);
     invRow(`\`calib/${d}/\``, 'arena', a.length, a.filter((x) => x.r.truncated).length, a.filter((x) => x.r.arms && x.r.arms.baseline && (x.r.arms.baseline.stratErrors || []).length > 0).length);
   }
   table('runs', ['结果目录', '模式', '运行数', '被时间预算截断', '有席位策略报错的运行'], inv, '「被时间预算截断」= 一次运行给足 95 秒墙钟仍没跑到窗口结束（结果里带标记，统计时照常用到它停下的那一拍）。');
-  val('runs.g0', G0.length); val('runs.attr', ATTR.length); val('runs.fill', FILL.length); val('runs.hold', HOLD.length); val('runs.ckpt', G0.length + ATTR.length + FILL.length + HOLD.length);
-  val('runs.ckpt.trunc', [...G0, ...ATTR, ...FILL, ...HOLD].filter((x) => x.truncated).length); val('runs.ckpt.errs', [...G0, ...ATTR, ...FILL, ...HOLD].filter((x) => x.errs > 0).length);
+  val('runs.g0', G0_EVERY.length); val('runs.attr', ATTR_EVERY.length); val('runs.fill', FILL_EVERY.length); val('runs.hold', HOLD_EVERY.length);
+  val('runs.ckpt', G0_EVERY.length + ATTR_EVERY.length + FILL_EVERY.length + HOLD_EVERY.length);
+  val('runs.ckpt.trunc', [...G0_EVERY, ...ATTR_EVERY, ...FILL_EVERY, ...HOLD_EVERY].filter((x) => x.truncated).length);
+  val('runs.ckpt.errs', [...G0_EVERY, ...ATTR_EVERY, ...FILL_EVERY, ...HOLD_EVERY].filter((x) => x.errs > 0).length);
+  // 核心 20 局 / 之后新接的局 各多少次
+  for (const [k, a] of [['g0', G0_EVERY], ['attr', ATTR_EVERY], ['fill', FILL_EVERY], ['hold', HOLD_EVERY]]) {
+    val(`runs.${k}.core`, a.filter((x) => CORE.has(x.mid)).length); val(`runs.${k}.ext`, a.filter((x) => !CORE.has(x.mid)).length);
+    val(`runs.${k}.ext.games`, new Set(a.filter((x) => !CORE.has(x.mid)).map((x) => x.mid)).size);
+  }
   val('runs.arena', ARENA_ALL.length); val('runs.arenaAcc', ARENA_ALL.filter((x) => x.dir === 'arena-acc20').length); val('runs.arenaRp', ARENA_ALL.filter((x) => x.dir === 'arena-rp1530').length);
 
   // 任务卡说的 60 次（tools/g0_list.txt）
   const tags60 = fs.readFileSync(path.join(HERE, 'g0_list.txt'), 'utf8').split('\n').filter((l) => l.trim() && !l.startsWith('#')).map((l) => l.split(/\s+/)[0]);
-  const have60 = tags60.filter((t) => G0.some((x) => x.tag === t));
+  const have60 = tags60.filter((t) => G0_EVERY.some((x) => x.tag === t));
   val('runs.g0.card', tags60.length); val('runs.g0.cardHave', have60.length);
   val('runs.g0.cardGames', new Set(tags60.map((t) => t.split('-')[0])).size);
 
@@ -725,7 +747,7 @@ if (want('ckpt')) {
     // 这里只把它读出来（out/<局>/logdigest.json 的 wall.rows），用在「录像在卡顿当中截断」的 B041 上。
     for (const mid of MIDS) {
       const lf = path.join(SIMV2, '..', 'out', mid, 'logdigest.json');
-      if (!fs.existsSync(lf)) continue;
+      if (!inSet(mid) || !fs.existsSync(lf)) continue;
       const W = readJson(lf).wall;
       const left = W && W.rows ? W.rows.filter((r) => r.event === 'left' && r.tick > 0 && ok(r.serverTick) && r.near && r.near.length) : [];
       if (!left.length) continue;
@@ -1376,8 +1398,26 @@ if (want('arena')) {
 fs.mkdirSync(path.join(OUT, 'tables'), { recursive: true });
 for (const [name, md] of Object.entries(tables)) fs.writeFileSync(path.join(OUT, 'tables', `${name}.md`), md + '\n');
 let prev = {};
-if (ONLY && fs.existsSync(path.join(OUT, 'values.json'))) prev = readJson(path.join(OUT, 'values.json'));
-fs.writeFileSync(path.join(OUT, 'values.json'), JSON.stringify({ ...prev, ...values }, null, 1) + '\n');
-fs.writeFileSync(path.join(OUT, 'notes.txt'), notes.join('\n') + '\n');
-console.log(`表 ${Object.keys(tables).length} 张 → ${path.relative(process.cwd(), path.join(OUT, 'tables'))}/；数字 ${Object.keys(values).length} 个 → values.json；提醒 ${notes.length} 条 → notes.txt`);
+if ((ONLY || EXT) && fs.existsSync(path.join(OUT, 'values.json'))) prev = readJson(path.join(OUT, 'values.json'));
+if (!ONLY && !EXT) {
+  // 整份重算：上一次留下的样本外那一组的表（-x）先清掉，免得这一次没有的表还留着旧的
+  for (const fn of fs.readdirSync(path.join(OUT, 'tables'))) if (fn.endsWith('-x.md')) fs.rmSync(path.join(OUT, 'tables', fn));
+}
+const allValues = { ...prev, ...values };
+fs.writeFileSync(path.join(OUT, 'values.json'), JSON.stringify(allValues, null, 1) + '\n');
+// 提醒：样本外那一遍把自己的提醒并进已有的（两遍都会读到同一批运行，重复的只留一条）
+let allNotes = notes;
+if (EXT && fs.existsSync(path.join(OUT, 'notes.txt'))) {
+  const old = fs.readFileSync(path.join(OUT, 'notes.txt'), 'utf8').split('\n').filter((l) => l.trim());
+  allNotes = [...old, ...notes.filter((l) => !old.includes(l))];
+}
+fs.writeFileSync(path.join(OUT, 'notes.txt'), allNotes.join('\n') + '\n');
 if (PRINT) for (const [name, md] of Object.entries(tables)) console.log(`\n### ${name}\n\n${md}`);
+if (SET === 'both' && !ONLY) {
+  // 再算样本外那一组（子进程），它把自己的表和数字并进同一个目录，并打印最后那一行合计
+  const r = spawnSync(process.execPath, [fileURLToPath(import.meta.url), ...argv, '--set', 'ext'], { stdio: 'inherit' });
+  if (r.status !== 0) { console.error('样本外那一组（--set ext）没有算出来'); process.exit(r.status || 1); }
+} else {
+  const nT = fs.readdirSync(path.join(OUT, 'tables')).filter((x) => x.endsWith('.md')).length;
+  console.log(`表 ${nT} 张 → ${path.relative(process.cwd(), path.join(OUT, 'tables'))}/；数字 ${Object.keys(allValues).length} 个 → values.json；提醒 ${allNotes.length} 条 → notes.txt`);
+}
