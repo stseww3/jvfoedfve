@@ -52,6 +52,19 @@ nice -n 10 /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java -Xms512M -Xmx2G -ja
 
 所以需要玩家在场的逻辑也可以在云端自动测，不用真人上线。
 
+## 云端出图（已验证）
+
+云端没有显卡，但官方客户端可以用软件渲染跑起来，能看到真实的游戏画面：
+
+- `tools/fetch_client.py 26.3 <目录> --skip-music`：从 Mojang 官方地址下载客户端、依赖库和资源（约 320 MB），逐个校验 SHA-1。不进仓库。
+- `tools/run_client.sh`：在 Xvfb 虚拟显示器上以离线模式启动客户端，直接连本机测试服。
+- 26.3 的客户端用 SDL 开窗口，有 OpenGL 和 Vulkan 两个渲染后端。在 Xvfb 下 OpenGL 后端失败（“Couldn't find matching GLX visual”），自动换成 Vulkan，由 Mesa 的 llvmpipe 软件实现渲染。日志：“Using graphics backend Vulkan … llvmpipe Mesa 25.2.8”。
+- `tools/shoot.py`：用 RCON 把镜头玩家切到旁观模式并 `/tp` 到指定机位，等几秒，再抓 X 显示器的画面存成 PNG。
+- 客户端启动时会向 Mojang 的登录和 Realms 接口发请求，令牌无效所以返回 401，不影响进本机服务器。
+- 镜头不动时客户端自己会降帧，CPU 占用大约 20%（nice 10）。
+
+所以“生成、摆放、出图、看图”整个循环都能在云端完成。
+
 ## 注意到的细节
 
 - RCON：服务端每次 socket 读只处理一个包，命令不能连发，要等上一条的回复。`tools/rcon.py` 已按这个写。
@@ -63,7 +76,6 @@ nice -n 10 /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java -Xms512M -Xmx2G -ja
 ## 还没验证
 
 - 假玩家目前不会移动、不会点击实体、不会用物品、不会点对话框里的按钮。这些要用到时再加。
-- 画面。云端没有显卡，看不到游戏里的实际效果。
 - 资源包。
 - Realms 上的真实行为（小游戏槽位重置、延迟等）。本地只能模拟“没有 OP”这一条。
 - 真人玩起来好不好玩。
