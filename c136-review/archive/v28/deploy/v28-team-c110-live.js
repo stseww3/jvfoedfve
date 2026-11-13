@@ -7068,7 +7068,6 @@ export class Policy extends V17 {
 }
 
 
-  const origReplay = window.__fx.strategyBot.replay ? window.__fx.strategyBot.replay.bind(window.__fx.strategyBot) : null;
   window.__fx.strategyBot.replay = function(text) {
     try {
       if (typeof text === "string" && text.length > 50 && window.__hlLog) {
