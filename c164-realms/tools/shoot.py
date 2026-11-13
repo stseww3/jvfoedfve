@@ -43,6 +43,8 @@ def main():
     ap.add_argument("--settle", type=float, default=6.0, help="seconds to wait after each move")
     ap.add_argument("--first-settle", type=float, default=15.0, help="wait for the first shot (chunks have to load)")
     ap.add_argument("--only", help="comma separated shot names")
+    ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
+                    help="added to every pos/look_at, for shot lists written in scene coordinates")
     args = ap.parse_args()
 
     with open(args.shots) as fh:
@@ -60,9 +62,9 @@ def main():
 
     last_time = None
     for i, shot in enumerate(shots):
-        pos = shot["pos"]
+        pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
         if "look_at" in shot:
-            yaw, pitch = angles(pos, shot["look_at"])
+            yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
         else:
             yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
         when = shot.get("time", "noon")
