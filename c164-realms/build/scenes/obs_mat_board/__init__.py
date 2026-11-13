@@ -1,14 +1,15 @@
 """The material board (ART-PLAN 6.4, milestone M1): every material of the map as a wall of eight by
 eight with its stairs, slabs and low walls at the foot, under the light of the sky line.
 
-Four tiers, each stepped back and up so that one picture holds them all:
+Four tiers, each stepped back and up so that one picture holds them all; from the front:
 
+    pieces    doors, hatches, bars, pipes, lamps, the brass pieces, signs: against fine stone, as
+              they stand on the building
     stone     the four grey-white stones, the stones used as the game draws them, and one wall that
               puts them together as a facade does (plinth, rough base, string course, fine wall
               with sunk panels and emblems)
     metal     cast iron, verdigris, old copper, brass
     glass     the six windows, the instrument panels, the woods
-    pieces    doors, hatches, bars, pipes, lamps, signs
 
 Repainted blocks show whatever the material packages paint today (stand-ins until a family is
 painted); the other blocks are the game's. A lamp row stands at the foot of every tier except in
@@ -88,18 +89,17 @@ def verdigris(c, x, y, z):
     c.box(x + 4, y + N - 2, z, x + N - 1, y + N - 1, z, B.VERDIGRIS_CAST)
 
 
-def iron_pieces(c, x, y, z):
-    """The shaped iron blocks, each on its own two cells."""
-    at = lambda put, block, i: put(_Lifted(c, y), block, x + 3 * i, z)      # noqa: E731
-    at(_board.door, B.IRON_DOOR, 0)
-    at(_board.hatch, B.IRON_HATCH, 1)
-    at(_board.run, B.IRON_BARS, 2)
-    at(_board.pipe, B.IRON_PIPE, 3)
-    at(_board.rod, B.IRON_ROD, 4)
-    at(_board.bulb, B.IRON_BULB, 5)
-    at(_board.lantern, B.IRON_LANTERN, 6)
-    at(_board.run, B.VANILLA_BARS, 7)
-    at(_board.pipe, B.VANILLA_CHAIN, 8)
+def pieces(c, x, y, z):
+    """The shaped blocks, each on its own two cells, in front of a fine stone wall: iron, the two
+    vanilla iron pieces for comparison, then the brass family and the signs."""
+    c.box(x, y, z - 1, x + width(), y + 3, z - 1, B.ASHLAR_FINE.block)
+    lifted = _Lifted(c, y)
+    for i, (put, block) in enumerate([
+            (_board.door, B.IRON_DOOR), (_board.hatch, B.IRON_HATCH), (_board.run, B.IRON_BARS),
+            (_board.pipe, B.IRON_PIPE), (_board.rod, B.IRON_ROD), (_board.bulb, B.IRON_BULB),
+            (_board.lantern, B.IRON_LANTERN), (_board.run, B.VANILLA_BARS), (_board.pipe, B.VANILLA_CHAIN)]):
+        put(lifted, block, x + 2 + 4 * i, z)
+    _board.brass(lifted, x + BRASS_AT, z, staged=False)
 
 
 class _Lifted:
@@ -125,6 +125,7 @@ def _window(role):
 
 # name -> the walls of the tier, left to right: (short name, how to put it, lamp in front?)
 TIERS = [
+    ("pieces", []),             # no walls: one row of small things, see pieces()
     ("stone", [("slate_brick", _block(B.SLATE_BRICK), True), ("rough", _block(B.ASHLAR_ROUGH), True),
                ("fine", _block(B.ASHLAR_FINE), True), ("together", together, True),
                ("panel", _block(B.ASHLAR_PANEL), True), ("tuff_brick", _block(B.TUFF_BRICK), True),
@@ -138,7 +139,7 @@ TIERS = [
                ("window_blind", _window(B.WINDOW_BLIND), False), ("skylight", _window(B.SKYLIGHT), False),
                ("instruments", instruments, True), ("woods", woods, True)]),
 ]
-PIECES = len(TIERS)             # the tier of the shaped blocks stands on top
+BRASS_AT = 40                   # x where the brass pieces start in the row of small things
 
 
 def at(tier):
@@ -153,22 +154,21 @@ def width():
 def build():
     c = Canvas()
     w = width()
-    for k in range(PIECES + 1):
+    for k in range(len(TIERS)):
         y, z = at(k)
         c.box(-1, y - 1, z - 1, w, y - 1, z + BACK - 2, FLOOR)             # the floor, up to the tier below
         c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                 # the riser behind the walls
-    for k, (_, walls) in enumerate(TIERS):
+    for k, (name, walls) in enumerate(TIERS):
         y, z = at(k)
+        if name == "pieces":
+            pieces(c, 0, y, z)
+            for x in range(1, w, 4):
+                c.set(x, y + 1, z + 4, st(B.LIGHT, level=LAMP))
         for i, (_, put, lamp) in enumerate(walls):
             put(c, i * PITCH, y, z)
             if lamp:
                 for dx in (1, 5):
                     c.set(i * PITCH + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
-    y, z = at(PIECES)
-    iron_pieces(c, 0, y, z)
-    _board.brass(_Lifted(c, y), 30, z)
-    for x in range(1, w, 4):
-        c.set(x, y + 1, z + 4, st(B.LIGHT, level=LAMP))
     return c
 
 
@@ -181,19 +181,22 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The whole board in the three light versions, each tier, and the walls two by two."""
+    """The whole board in the three light versions; each tier in two halves from where a material
+    has to be told at a glance; the walls two by two from near."""
     out, w = [], width()
     mid = w / 2.0
-    top = at(PIECES)[0] + 4
+    top = at(len(TIERS) - 1)[0] + N
     for name, time in (("all", TIME), ("all_b", 18000), ("all_c", 12900)):
-        out.append({"name": name, "pos": [mid, top / 2.0 + 6, 44.0], "look_at": [mid, top / 2.0 - 1, -BACK * 1.5], "time": time})
-    for k, (tier, walls) in enumerate(TIERS + [("pieces", [])]):
+        out.append({"name": name, "pos": [mid, top / 2.0 + 4, 46.0], "look_at": [mid, top / 2.0 - 3, -BACK * 1.5], "time": time})
+    for k, (tier, walls) in enumerate(TIERS):
         y, z = at(k)
-        out.append({"name": tier, "pos": [mid, y + 7.0, z + 30.0], "look_at": [mid, y + 3.5, z], "time": TIME})
+        for half, x in (("left", w / 4.0 - 0.5), ("right", 3 * w / 4.0 + 0.5)):
+            out.append({"name": f"{tier}_{half}", "pos": [x, y + 5.0, z + 15.5], "look_at": [x, y + 4.0, z], "time": TIME})
         for i in range(0, len(walls), 2):
             x = i * PITCH + PITCH - 1.0                                    # between the two walls
-            out.append({"name": f"{tier}_{walls[i][0]}", "pos": [x, y + 4.5, z + 13.0], "look_at": [x, y + 3.5, z], "time": TIME})
-    y, z = at(PIECES)
-    for name, x in (("pieces_iron", 13.0), ("pieces_brass", 45.0)):
-        out.append({"name": name, "pos": [x, y + 3.0, z + 11.0], "look_at": [x, y + 1.5, z], "time": TIME})
+            out.append({"name": f"{tier}_{walls[i][0]}", "pos": [x, y + 4.5, z + 8.5], "look_at": [x, y + 4.0, z], "time": TIME})
+    y, z = at(0)
+    for name, x in (("pieces_iron", 10.0), ("pieces_iron_2", 28.0), ("pieces_brass", BRASS_AT + 8.0),
+                    ("pieces_signs", BRASS_AT + 23.0)):
+        out.append({"name": name, "pos": [x, y + 2.6, z + 7.5], "look_at": [x, y + 1.5, z], "time": TIME})
     return out

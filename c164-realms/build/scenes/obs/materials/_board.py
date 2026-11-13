@@ -182,8 +182,9 @@ def panels(c, x, z):
     return x + 14
 
 
-def brass(c, x, z):
-    """The brass family (bamboo) and the small pieces."""
+def brass(c, x, z, staged=True):
+    """The brass family (bamboo) and the small pieces. staged=False leaves floor, backdrop and lamps
+    to the caller."""
     start = x
     family(c, B.BRASS_PLATE, x, z)
     family(c, B.BRASS_PATTERN, x + 2, z)
@@ -210,7 +211,8 @@ def brass(c, x, z):
     c.set(x + 28, 1, z, st(B.BRASS_SIGN[2], rotation="0"))
     c.set(x + 29, 1, z, st(B.ENAMEL_SIGN[2], rotation="0"))
     c.box(x + 5, 0, z + 2, x + 16, 0, z + 2, B.BRASS_INLAY)
-    stage(c, start, x + 29, z)
+    if staged:
+        stage(c, start, x + 29, z)
     return x + 32
 
 
