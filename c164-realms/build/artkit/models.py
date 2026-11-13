@@ -233,7 +233,7 @@ class Model:
                 el["rotation"] = {"angle": angle, "axis": axis,
                                   "origin": [round(origin[0] + sx, 4), round(origin[1] + sy, 4), round(origin[2] + sz, 4)]}
             if not p["shade"]:
-                el["shade"] = False
+                el["shade_direction_override"] = "up"  # 26.x dropped "shade": false
             if p["emit"]:
                 el["light_emission"] = int(p["emit"])
             faces = {}
