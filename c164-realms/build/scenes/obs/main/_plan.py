@@ -11,7 +11,10 @@ review locked comes from the skeleton; what is decided here on top of it is list
 "decisions of the main line" and repeated in the drawing's notes.
 
     python3 -m scenes.obs.main._plan            # print the three plans and the tables
-    python3 -m scenes.obs.main._plan ground     # one of: ground, main, roof, tables
+    python3 -m scenes.obs.main._plan ground     # one of: ground, main, roof, tables, legend
+
+Other lines read windows() from here (sky/lights puts the light behind each pane, props hangs the
+window frames). Its name and the keys of its records stay as they are.
 
 The name starts with an underscore, so the category's auto-discovery does not treat it as a work
 package.
@@ -41,14 +44,26 @@ HALL_Z = (CROSS_Z[0] + 1, CROSS_Z[1] - 1)                 # -5..5, clear
 WING_N_Z = (PAVILION_Z[0] + 1, CROSS_Z[0] - 1)            # -25..-7, clear
 WING_S_Z = (CROSS_Z[1] + 1, PAVILION_Z[1] - 1)            # 7..25, clear
 END_PIER_ROWS = (S.Z_NORTH + 1, PAVILION_Z[0] - 1, PAVILION_Z[1] + 1, S.Z_SOUTH - 1)   # -33, -27, 27, 33
-PIER_HALF = 1                                             # the pier is 3 x 3 (skeleton: provisional)
-CORE_HALF = PIER_HALF + 1                                 # the ring stair wraps it: 5 x 5
-ARCADE_PIERS_Z = (-2, 2)                                  # the west arcade of the hall: three arches
-STAIR_X = (-6, 0)                                         # grand stair: seven steps, rising west
-STAIR_Z = (-1, 1)
-LANDING_X = -7                                            # its landing under the west window
-DOOR_Z = (-1, 1)                                          # both doors on the axis (bay 9)
+# The telescope pier is an octagon five across. With the ring of one block that keeps every floor
+# off it, it fills the skeleton's pier radius of three.
+PIER_BODY_R = 2.5
+PIER_ZONE_R = S.PIER_R + 0.5
+# The hall and the apse are one room: where the west wall would cross it (x 0..1) there is a
+# passage on the ground floor and a cross gallery above. West of it the apse follows the bays of
+# the front: a flight of the grand stair in bay 8 and in bay 10, the way to the west door in bay 9
+# under a mezzanine, their cheeks on the pilaster lines between.
+CROSS_X = (S.WALL_W, S.WALL_W - S.DEPTH_GLASS)            # 0..1
+FLIGHT_X = (S.WALL_W - 6, S.WALL_W)                       # -6..0: seven steps, rising west
+FLIGHT_BAYS = (8, 10)
+AISLE_BAY = 9
+CHEEK_Z = (S.pilaster_z(8), S.pilaster_z(9))              # -2 and 2
+WEST_X = CX - R_CLEAR                                     # -7: the last column inside, on the axis
 ROOM_DOOR_X = (7, 8)                                      # gallery -> wing room, through a cross wall
+WEST_DOOR_TOP = 3                                         # the west door is 3 wide and 4 high (A0: below y 5)
+# Two cast-iron spiral stairs climb from the mezzanine level to the dome room, one in each pocket
+# of the apse: 3 x 3 round a newel, against the blind west wall of the wings.
+SPIRAL_X = (S.WALL_W - 3, S.WALL_W - 1)                   # -3..-1
+SPIRAL_Z = (CROSS_Z[1] + 1, CROSS_Z[1] + 3)               # |z| 7..9
 APSE_BAYS = 7                                             # pilaster spacing on the arc, as bays
 APSE_BAY_DEG = 19.5                                       # the outermost pilasters land on the junction
 WEST_BLIND_Z = 13                                         # |z| <= 13 on the west wall is behind the rotunda
@@ -63,7 +78,7 @@ SMALL_DOME_CENTRE = ((S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) // 2,
                      (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) // 2)     # (12, 30)
 
 # heights that go with the plans (feet levels unless said otherwise)
-GALLERY_DECK_Y = S.STRING        # 6: the deck block of galleries, landing and lanes; feet at 7
+GALLERY_DECK_Y = S.STRING        # 6: the deck block of galleries, mezzanine and pockets; feet at 7
 ROOF_EAVE_TOP = 17.0             # top surface of the roof next to the parapet
 ROOF_STEP = 0.5                  # rise per block: a 1:2 slope laid in slabs
 ROOF_RIDGE_TOP = ROOF_EAVE_TOP + ROOF_STEP * (ROOF_RIDGE_STEPS - 1)   # 20.0
@@ -78,17 +93,19 @@ LEGEND = [
     ("L", "locked door (set dressing; the space behind is closed)"),
     (".", "floor or deck at this level"),
     ("o", "void: open to the level below"),
-    ("r", "deck with the railing standing on it"),
-    ("c", "kerb and bars of the ring stair, at the height of the stair beside it"),
+    ("r", "barrier on the edge of a deck: a railing on its own block, or the top of a cheek wall"),
     ("T", "telescope pier"),
+    ("=", "iron grating, flush with the floor: the ring that keeps the floor off the pier"),
     ("< > ^ v", "stair, the arrow points uphill (west, east, north, south)"),
-    ("+", "landing of the ring stair"),
+    ("@", "newel of a spiral stair"),
     ("x", "closed space: not entered in the first version"),
     ("t", "roof terrace, deck at y 17 (top at 18.0)"),
     ("0-6", "slate roof, half-block steps above y 17.0 (0 = gutter, 6 = ridge at y 20.0)"),
     ("G", "gable wall closing the end of a pitched roof"),
     ("p", "parapet"),
 ]
+
+NEAR = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 
 # --- geometry helpers -------------------------------------------------------------------------
@@ -118,6 +135,19 @@ def east_face(z):
     return max(S.east_wall_x(b) for b in bays_at(z))
 
 
+def window_rows(bay):
+    """Rows of the window of a bay of the long fronts: three, or two next to a corner pier."""
+    return [z for z in range(S.pilaster_z(bay - 1) + 1, S.pilaster_z(bay)) if z not in END_PIER_ROWS]
+
+
+def end_wall_bays(zf):
+    """[(bay, window columns)] of an end wall: bays of four from the west, corner piers left out."""
+    xe = east_face(zf)
+    return [(i + 1, [x for x in range(S.WALL_W + S.BAY * i + 1, min(S.WALL_W + S.BAY * (i + 1), xe))
+                     if x not in (S.WALL_W + 1, xe - 1)])
+            for i in range((xe - S.WALL_W) // S.BAY)]
+
+
 def _apse_cells(r):
     """Columns of one ring that stand west of the main building's west wall."""
     return [(x, z) for x in range(X_MIN, S.WALL_W) for z in range(Z_MIN, Z_MAX + 1) if ring(x, z) == r]
@@ -140,41 +170,94 @@ def apse_windows():
     A raster circle of this radius has only three runs straight enough to carry a three-wide
     arched window: the west one on the axis and the one on either side of it. Everywhere else the
     wall steps diagonally, where three columns along the ring make an L and cannot take an arched
-    head, so the flanks stay solid."""
+    head, so the flanks stay solid. The apse has great windows only: its base storey is solid but
+    for the west door."""
     xa = CX - R_FACE                                        # -9: the run on the west axis
-    out = {"west": [(xa, z) for z in range(DOOR_Z[0], DOOR_Z[1] + 1)]}
+    out = {"west": [(xa, z) for z in window_rows(AISLE_BAY)]}
     side = sorted(c for c in _apse_cells(R_FACE) if c[0] == xa + 1)     # the next run: x = -8
     out["north-west"] = [c for c in side if c[1] < CZ]
     out["south-west"] = [c for c in side if c[1] > CZ]
     return {name: (cells, [(x + 1, z) for x, z in cells]) for name, cells in out.items()}
 
 
-def ring_stair():
-    """The ring stair round the pier, one turn: [(x, z, kind, feet after this column)].
+def pier_cells():
+    """Columns of the telescope pier: an octagon five across on the dome centre."""
+    return [(CX + dx, CZ + dz) for dx in range(-3, 4) for dz in range(-3, 4) if math.hypot(dx, dz) <= PIER_BODY_R]
 
-    It starts on the gallery (feet 7) at the south-west corner of the core and climbs east, north,
-    west and south again, eleven steps and three corner landings, to the dome-room floor (feet 18).
-    """
-    c = CORE_HALF
-    path = [(CX - c, CZ + c, "+")]
-    path += [(CX + i, CZ + c, ">") for i in range(-c + 1, c)]
-    path += [(CX + c, CZ + c, "+")]
-    path += [(CX + c, CZ - i, "^") for i in range(-c + 1, c)]
-    path += [(CX + c, CZ - c, "+")]
-    path += [(CX - i, CZ - c, "<") for i in range(-c + 1, c)]
-    path += [(CX - c, CZ - c, "+")]
-    path += [(CX - c, CZ + i, "v") for i in range(-c + 1, 1)]
-    feet, out = S.STAND, []
-    for x, z, kind in path:
-        if kind != "+":
-            feet += 1
-        out.append((x, z, kind, feet))
-    return out
+
+def pier_ring():
+    """The ring round the pier that every floor leaves open (a grating in the dome-room floor)."""
+    body = set(pier_cells())
+    return [(CX + dx, CZ + dz) for dx in range(-4, 5) for dz in range(-4, 5)
+            if math.hypot(dx, dz) <= PIER_ZONE_R and (CX + dx, CZ + dz) not in body]
+
+
+def flight_rows(side):
+    """Rows of one flight of the grand stair: side -1 is the north one (bay 8), +1 the south one."""
+    return window_rows(FLIGHT_BAYS[0] if side < 0 else FLIGHT_BAYS[1])
 
 
 def grand_stair():
-    """The grand stair in the apse: [(x, feet after this step)], rising west from the hall floor."""
-    return [(x, S.GROUND + i + 1) for i, x in enumerate(range(STAIR_X[1], STAIR_X[0] - 1, -1))]
+    """One flight of the grand stair: [(x, feet after this step)], rising west from the hall floor.
+    Both flights are the same; flight_rows() gives their rows."""
+    return [(x, S.GROUND + i + 1) for i, x in enumerate(range(FLIGHT_X[1], FLIGHT_X[0] - 1, -1))]
+
+
+def spiral(side):
+    """A spiral stair to the dome room: [(x, z, kind, feet after this step)], side -1 north, +1 south.
+
+    It starts from the pocket's deck (feet 7) west of its first step, goes once round the newel and
+    three steps more, and leaves eastwards onto the dome-room floor (feet 18)."""
+    x0, x1 = SPIRAL_X
+    za, zb = side * SPIRAL_Z[0], side * SPIRAL_Z[1]        # the row next to the hall, the far row
+    zm = (za + zb) // 2
+    away, back = ("^", "v") if side < 0 else ("v", "^")
+    lap = [(x0, za, ">"), (x0 + 1, za, ">"), (x1, za, ">"), (x1, zm, away), (x1, zb, away),
+           (x0 + 1, zb, "<"), (x0, zb, "<"), (x0, zm, back)]
+    path = lap + [(x0, za, back), (x0 + 1, za, ">"), (x1, za, ">")]
+    return [(x, z, kind, S.STAND + i + 1) for i, (x, z, kind) in enumerate(path)]
+
+
+def spiral_newel(side):
+    return ((SPIRAL_X[0] + SPIRAL_X[1]) // 2, side * (SPIRAL_Z[0] + SPIRAL_Z[1]) // 2)
+
+
+def spiral_ends(side):
+    """(the deck column the stair starts from, the dome-room column it leaves onto)."""
+    return (SPIRAL_X[0] - 1, side * SPIRAL_Z[0]), (SPIRAL_X[1] + 1, side * SPIRAL_Z[0])
+
+
+def stair_air(side):
+    """What must stay empty over a spiral stair: [(x, z, feet, top)], air in feet <= y < top.
+
+    A walker is 1.8 tall and 0.6 wide. Stepping up, the feet are already on the next step while the
+    trailing 0.1 of the body is still over this column, so a column followed by a step up needs a
+    whole block more than standing room: three blocks, as on every staircase in the game."""
+    stair = spiral(side)
+    feet_after = [c[3] for c in stair[1:]] + [S.ROOF_STAND]
+    return [(x, z, feet, feet + (3 if nxt > feet else 2)) for (x, z, _, feet), nxt in zip(stair, feet_after)]
+
+
+def _open_at(y, side):
+    """Columns where the block at height y has to be air for a spiral stair."""
+    return [(x, z) for x, z, feet, top in stair_air(side) if feet <= y < top]
+
+
+def floor_opening(side):
+    """Columns of the dome-room floor that must be open for a spiral stair. The last step is not
+    in it: its own block lies in the floor."""
+    return _open_at(S.ROOF_FLOOR, side)
+
+
+def ceiling_opening(side):
+    """The same for the ceiling under the dome room (the star hall's level)."""
+    return _open_at(S.STAR_HALL_CEIL, side)
+
+
+def orrery_well():
+    """The clear box east of the pier where the orrery hangs: ((x0, x1), (z0, z1), (y0, y1))."""
+    xs = [x for x, _ in pier_ring()]
+    return ((max(xs) + 1, HALL_X[1]), (HALL_Z[0] + 2, HALL_Z[1] - 2), (S.STAND, S.STAR_HALL_CEIL - 1))
 
 
 def roof_steps(x, z):
@@ -186,48 +269,6 @@ def roof_steps(x, z):
     if not S.WALL_W < x < xe:
         return None
     return min(x - S.WALL_W, xe - x, ROOF_RIDGE_STEPS) - 1
-
-
-def stair_guard():
-    """Columns that carry the ring stair's kerb and bars, along its outer side (the west side is
-    closed by the hall's west wall). The start of the stair stays open to the south gallery."""
-    c = CORE_HALF + 1
-    cells = {(CX + i, CZ + s * c) for i in range(-c + 1, c + 1) for s in (-1, 1)}
-    cells |= {(CX + c, CZ + i) for i in range(-c, c + 1)}
-    cells.discard((CX - CORE_HALF, CZ + c))
-    return sorted(cells)
-
-
-def stair_air():
-    """What must stay empty over the ring stair: [(x, z, feet, top)], air in feet <= y < top.
-
-    A walker is 1.8 tall and 0.6 wide. Stepping up, the feet are already on the next step while the
-    trailing 0.1 of the body is still over this column, so a column followed by a step up needs a
-    whole block more than standing room: three blocks, as on every staircase in the game."""
-    stair = ring_stair()
-    feet_after = [c[3] for c in stair[1:]] + [S.ROOF_STAND]
-    return [(x, z, feet, feet + (3 if nxt > feet else 2)) for (x, z, _, feet), nxt in zip(stair, feet_after)]
-
-
-def _open_at(y):
-    """Columns where the block at height y has to be air for the ring stair."""
-    return [(x, z) for x, z, feet, top in stair_air() if feet <= y < top]
-
-
-def floor_opening():
-    """Columns of the dome-room floor that must be open for the ring stair. The last step is not
-    in it: its own block lies in the floor."""
-    return _open_at(S.ROOF_FLOOR)
-
-
-def ceiling_opening():
-    """The same for the star hall's ceiling."""
-    return _open_at(S.STAR_HALL_CEIL)
-
-
-def window_rows(bay):
-    """Rows of the window of a bay of the long fronts: three, or two next to a corner pier."""
-    return [z for z in range(S.pilaster_z(bay - 1) + 1, S.pilaster_z(bay)) if z not in END_PIER_ROWS]
 
 
 def windows():
@@ -248,7 +289,7 @@ def windows():
     for bay in range(1, S.N_BAYS + 1):
         rows = window_rows(bay)
         xg = S.east_wall_x(bay) + S.DEPTH_GLASS
-        add("east", bay, [(xg, z) for z in rows], (-1, 0), base=rows != list(range(DOOR_Z[0], DOOR_Z[1] + 1)))
+        add("east", bay, [(xg, z) for z in rows], (-1, 0), base=bay != AISLE_BAY)
         if all(abs(z - CZ) > WEST_BLIND_Z for z in rows):
             add("west", bay, [(S.WALL_W - S.DEPTH_GLASS, z) for z in rows], (1, 0))
     for front, zf, out_step in (("north", S.Z_NORTH, -1), ("south", S.Z_SOUTH, 1)):
@@ -257,16 +298,8 @@ def windows():
                 add(front, bay, [(x, zf - out_step) for x in cols], (0, -out_step))
     names = {"north-west": -1, "west": 0, "south-west": 1}
     for name, (opening, glass) in apse_windows().items():
-        add("apse", names[name], glass, (1, 0), base=name != "west")
+        add("apse", names[name], glass, (1, 0), base=False)
     return out
-
-
-def end_wall_bays(zf):
-    """[(bay, window columns)] of an end wall: bays of four from the west, corner piers left out."""
-    xe = east_face(zf)
-    return [(i + 1, [x for x in range(S.WALL_W + S.BAY * i + 1, min(S.WALL_W + S.BAY * (i + 1), xe))
-                     if x not in (S.WALL_W + 1, xe - 1)])
-            for i in range((xe - S.WALL_W) // S.BAY)]
 
 
 # --- painting ---------------------------------------------------------------------------------
@@ -340,7 +373,7 @@ def _tower_base(g):
     g.box(x0 + 1, x1 - 2, z0 + 1, z1 - 1, "x")             # the well
 
 
-def _apse_shell(g):
+def _apse_shell(g, level):
     """The part of the rotunda that stands outside the west wall: a cylinder from the ground."""
     for x in range(X_MIN, S.WALL_W):
         for z in range(Z_MIN, Z_MAX + 1):
@@ -349,11 +382,12 @@ def _apse_shell(g):
                 g.put(x, z, "#")
             elif r <= R_CLEAR:
                 g.put(x, z, ".")
-    for opening, glass in apse_windows().values():
-        for (x, z), (gx, gz) in zip(opening, glass):
-            g.put(x, z, "w")
-            g.put(gx, gz, "g")
-            g.put(gx + 1, gz, ".")       # the column behind the glass stays empty (A2's lights)
+    if level == "main":
+        for opening, glass in apse_windows().values():
+            for (x, z), (gx, gz) in zip(opening, glass):
+                g.put(x, z, "w")
+                g.put(gx, gz, "g")
+                g.put(gx + 1, gz, ".")   # the column behind the glass stays empty (A2's lights)
     for x, z in apse_pilasters():
         g.put(x, z, "P")
 
@@ -375,44 +409,41 @@ def _partitions(g):
         g.box(S.ROOM_X[0], east_face(z) - 2, z, z, "#")
 
 
-def _arcade(g, level):
-    """The hall's west wall is an arcade of three arches into the apse."""
-    for x in (S.WALL_W, S.WALL_W + 1):
-        for z in range(HALL_Z[0], HALL_Z[1] + 1):
-            if z in ARCADE_PIERS_Z:
-                g.put(x, z, "#")
-            elif STAIR_Z[0] <= z <= STAIR_Z[1]:
-                g.put(x, z, "." if level == "ground" else "o")
-            else:
-                g.put(x, z, ".")
-
-
-def _grand_stair(g, level):
-    for x, _ in grand_stair():
-        for z in range(STAIR_Z[0], STAIR_Z[1] + 1):
-            g.put(x, z, "<")
-    for x in range(STAIR_X[0], S.WALL_W):                  # the cheeks; the railing stands on them
-        for z in (STAIR_Z[0] - 1, STAIR_Z[1] + 1):
-            g.put(x, z, "#" if level == "ground" else "r")
-
-
 def _pier(g):
-    g.box(CX - PIER_HALF, CX + PIER_HALF, CZ - PIER_HALF, CZ + PIER_HALF, "T")
+    for x, z in pier_cells():
+        g.put(x, z, "T")
+
+
+def _apse_cells_inside():
+    return [(x, z) for x in range(X_MIN, S.WALL_W) for z in range(Z_MIN, Z_MAX + 1) if ring(x, z) <= R_CLEAR]
 
 
 def plan_ground():
     """The ground floor, feet at y 0; cut through the base storey."""
     g = Grid()
     _envelope(g)
-    _apse_shell(g)
+    _apse_shell(g, "ground")
     _closed_rooms(g, wings=True)
     _tower_base(g)
-    g.box(HALL_X[0], HALL_X[1], HALL_Z[0], HALL_Z[1], ".")
+    g.box(CROSS_X[0], HALL_X[1], HALL_Z[0], HALL_Z[1], ".")    # the hall, and the passage behind the pier
     _partitions(g)
-    _arcade(g, "ground")
-    _grand_stair(g, "ground")
+    for x, z in _apse_cells_inside():
+        if abs(z) == CROSS_Z[1]:
+            g.put(x, z, "#")                               # the cross-wall line runs on under the pockets
+        elif abs(z) > CROSS_Z[1]:
+            g.put(x, z, "x")                               # the pockets are closed on the ground floor
+    for side in (-1, 1):
+        for x, _ in grand_stair():
+            for z in flight_rows(side):
+                g.put(x, z, "<")
+    for z in CHEEK_Z:                                      # the cheeks; the first step stands clear of them
+        g.box(FLIGHT_X[0], FLIGHT_X[1] - 1, z, z, "#")
+    aisle = window_rows(AISLE_BAY)
+    for x, z in _apse_cells_inside():                      # west of the flights only the aisle is open
+        if x < FLIGHT_X[0] and z not in aisle:
+            g.put(x, z, "#")
     _pier(g)
-    for z in range(DOOR_Z[0], DOOR_Z[1] + 1):
+    for z in window_rows(AISLE_BAY):
         f = east_face(z)                                   # the main door, through both leaves
         g.put(f, z, "D")
         g.put(f + S.DEPTH_GLASS, z, "D")
@@ -427,34 +458,45 @@ def plan_main():
     """The main floor, feet at y 7; cut through the great windows."""
     g = Grid()
     _envelope(g)
-    _apse_shell(g)
+    _apse_shell(g, "main")
     _closed_rooms(g, wings=False)
     _tower_base(g)
     xa, xb = S.ROOM_X
     g.box(xa, xb, WING_N_Z[0], WING_N_Z[1], ".")           # the time-service room's shell
     g.box(xa, xb, WING_S_Z[0], WING_S_Z[1], ".")           # the star-chart room's shell
-    # the star hall at gallery level: a void with a deck round it
+    # the star hall at gallery level: a void with a gallery along each long side
     g.box(HALL_X[0], HALL_X[1], HALL_Z[0], HALL_Z[1], "o")
-    for z in (HALL_Z[0], HALL_Z[1]):                       # north and south galleries
+    for z in (HALL_Z[0], HALL_Z[1]):
         g.box(HALL_X[0], HALL_X[1], z, z, ".")
         inner = z + (1 if z < 0 else -1)
-        g.box(HALL_X[0] + 1, HALL_X[1] - 1, inner, inner, "r")
-        g.put(HALL_X[0], inner, ".")
-    g.box(HALL_X[1], HALL_X[1], HALL_Z[0], HALL_Z[1], ".")     # the east gallery over the door
-    g.box(HALL_X[1] - 1, HALL_X[1] - 1, HALL_Z[0] + 2, HALL_Z[1] - 2, "r")
+        g.box(HALL_X[0], HALL_X[1], inner, inner, "r")
+    # the cross gallery behind the pier joins them to the mezzanine
+    g.box(CROSS_X[0], CROSS_X[1], HALL_Z[0], HALL_Z[1], ".")
     _partitions(g)
-    _arcade(g, "main")
-    _grand_stair(g, "main")
-    for x, z in stair_guard():
-        g.put(x, z, "c")
-    for x, z, kind, _ in ring_stair():
-        g.put(x, z, kind)
-    xw = CX - CORE_HALF                                    # x 2: the hall's west end, by the arcade
-    g.put(xw, CZ + CORE_HALF, ".")                         # the ring stair starts from the deck here,
-    g.put(xw, CZ + CORE_HALF + 1, ".")                     # reached from the south gallery;
-    g.put(xw, CZ + CORE_HALF - 1, "r")                     # everything else here that borders the
-    g.put(xw, CZ - CORE_HALF - 1, "r")                     # void gets a railing
-    g.put(xw, HALL_Z[0] + 1, "r")
+    for side in (-1, 1):
+        rows = flight_rows(side)
+        for x, _ in grand_stair():
+            for z in rows:
+                g.put(x, z, "<")
+        for z in rows:
+            g.put(FLIGHT_X[1], z, "r")                     # the railing over the first step
+        zc = CHEEK_Z[0] if side < 0 else CHEEK_Z[1]
+        g.box(FLIGHT_X[0] + 1, FLIGHT_X[1] - 1, zc, zc, "r")   # the cheek's top; open at its west end
+        zw = side * CROSS_Z[1]                             # the pocket: a low wall towards the flight,
+        g.box(SPIRAL_X[0] - 1, S.WALL_W - 1, zw, zw, "r")  # open at its west end
+        for x, z, kind, feet in spiral(side):
+            if feet <= S.STAND + 8:                        # the first turn shows at this level
+                g.put(x, z, kind)
+        g.put(*spiral_newel(side), "@")
+    for x, z in _apse_cells_inside():                      # the slivers behind the spiral stairs
+        if abs(z) > SPIRAL_Z[1]:
+            g.put(x, z, "#")
+    for z in range(HALL_Z[0], HALL_Z[1] + 1):              # the cross gallery's edge towards the hall
+        if g.get((HALL_X[0], z)) == "o":
+            g.put(HALL_X[0], z, "r")
+    for x, z in pier_ring():                               # where it passes the pier it is a grating
+        if g.get((x, z)) == ".":
+            g.put(x, z, "=")
     _pier(g)
     for z in CROSS_Z:
         g.box(ROOM_DOOR_X[0], ROOM_DOOR_X[1], z, z, "D")
@@ -490,17 +532,22 @@ def plan_roof():
                 g.put(x, z, "#")
             elif r <= R_CLEAR:
                 g.put(x, z, ".")
+    for x, z in pier_ring():
+        g.put(x, z, "=")
     _pier(g)
-    hole = floor_opening()                                 # where the ring stair comes up
-    for x, z in hole:
-        for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            if g.get((x + dx, z + dz)) == ".":
-                g.put(x + dx, z + dz, "r")
-    for x, z in hole:
-        g.put(x, z, "o")
-    x, z, kind, _ = ring_stair()[-1]
-    g.put(x, z, kind)                                      # the last step; one walks off it southwards
-    g.put(x, z + 1, ".")
+    for side in (-1, 1):                                   # where the spiral stairs come up
+        hole = floor_opening(side)
+        start, leave = spiral_ends(side)
+        for x, z in hole:
+            for dx, dz in NEAR:
+                if g.get((x + dx, z + dz)) == ".":
+                    g.put(x + dx, z + dz, "r")
+        for x, z in hole:
+            g.put(x, z, "o")
+        x, z, kind, _ = spiral(side)[-1]
+        g.put(x, z, kind)                                  # the last step; one walks off it eastwards
+        g.put(*leave, ".")
+        g.put(*spiral_newel(side), "@")
     return g
 
 
@@ -508,79 +555,104 @@ PLANS = {"ground": plan_ground, "main": plan_main, "roof": plan_roof}
 
 
 # --- tables -----------------------------------------------------------------------------------
+def _span(cells):
+    xs = sorted({x for x, _ in cells})
+    zs = sorted({z for _, z in cells})
+    if len(xs) == 1:
+        return "x %d z %d..%d" % (xs[0], zs[0], zs[-1])
+    return "x %d..%d z %d" % (xs[0], xs[-1], zs[0])
+
+
 def tables():
     rows = []
     add = rows.append
-    add("zone | x | z | feet y .. clear to | note")
+    add("zone | x | z | y | note")
     add("--- | --- | --- | --- | ---")
 
     def row(name, x, z, y, note=""):
         add("%s | %s | %s | %s | %s" % (name, "%d..%d" % x, "%d..%d" % z, y, note))
 
-    hall_y = "%d .. %d (ceiling %d)" % (S.GROUND, S.STAR_HALL_CEIL - 1, S.STAR_HALL_CEIL)
-    main_y = "%d .. %d (ceiling %d)" % (S.STAND, S.FRIEZE - 1, S.FRIEZE)
-    row("star hall, clear", HALL_X, HALL_Z, hall_y, "cross walls on z %d and %d" % CROSS_Z)
-    row("telescope pier", (CX - PIER_HALF, CX + PIER_HALF), (CZ - PIER_HALF, CZ + PIER_HALF),
-        "%d .. %d" % (S.PAVING_Y, S.ROOF_STAND), "independent; A5 stands the mount on it")
-    row("ring stair core", (CX - CORE_HALF, CX + CORE_HALF), (CZ - CORE_HALF, CZ + CORE_HALF),
-        "%d -> %d" % (S.STAND, S.ROOF_STAND), "one turn, 11 steps")
-    row("planetarium well", (CX + CORE_HALF + 2, HALL_X[1] - 2), (HALL_Z[0] + 2, HALL_Z[1] - 2),
-        hall_y, "void between the galleries and the ring stair's guard")
-    row("grand stair", STAIR_X, STAIR_Z, "%d -> %d" % (S.GROUND, S.STAND), "7 steps, rising west")
-    row("main door", (east_face(0) + S.DEPTH_GLASS, east_face(0)), DOOR_Z, "0 .. 6", "leaves 0-4, fanlight 5-6 (A6)")
-    row("west door", (CX - R_FACE, CX - R_GLASS), DOOR_Z, "0 .. 4", "to the sunset platform; proposed")
+    hall_y = "feet %d, clear to %d, ceiling %d" % (S.GROUND, S.STAR_HALL_CEIL - 1, S.STAR_HALL_CEIL)
+    main_y = "feet %d, clear to %d, ceiling %d" % (S.STAND, S.FRIEZE - 1, S.FRIEZE)
+    deck_y = "deck block %d, feet %d" % (GALLERY_DECK_Y, S.STAND)
+    px = sorted({x for x, _ in pier_cells()})
+    pz = sorted({z for _, z in pier_cells()})
+    zx = sorted({x for x, _ in pier_ring()})
+    zz = sorted({z for _, z in pier_ring()})
+    well = orrery_well()
+    row("star hall, clear", HALL_X, HALL_Z, hall_y, "cross walls on z %d and %d; open to the apse on the west" % CROSS_Z)
+    row("telescope pier", (px[0], px[-1]), (pz[0], pz[-1]), "blocks %d..%d, top at %d.0" % (S.PAVING_Y, S.ROOF_FLOOR, S.ROOF_STAND),
+        "octagon, %d columns; touches no floor" % len(pier_cells()))
+    row("ring round the pier", (zx[0], zx[-1]), (zz[0], zz[-1]), "open at y %d..%d, grating at %d" % (S.STAR_HALL_CEIL, S.ROOF_FLOOR - 1, S.ROOF_FLOOR),
+        "%d columns; with the pier it is the skeleton's radius %d" % (len(pier_ring()), S.PIER_R))
+    row("well for the orrery", well[0], well[1], "%d..%d" % well[2], "nothing of the building in it")
+    row("passage behind the pier", CROSS_X, HALL_Z, "feet %d" % S.GROUND, "cross gallery above it: " + deck_y)
+    row("galleries", HALL_X, (HALL_Z[0], HALL_Z[0]), deck_y, "and z %d; the railing stands on the next row inwards" % HALL_Z[1])
+    for side, name in ((-1, "north"), (1, "south")):
+        r = flight_rows(side)
+        row("grand stair, %s flight" % name, FLIGHT_X, (r[0], r[-1]), "%d -> %d" % (S.GROUND, S.STAND), "7 steps, rising west")
+    a = window_rows(AISLE_BAY)
+    row("way to the west door", (WEST_X, FLIGHT_X[1]), (a[0], a[-1]), "feet %d, clear to %d" % (S.GROUND, GALLERY_DECK_Y - 1), "under the mezzanine")
+    row("mezzanine", (WEST_X, S.WALL_W - 1), (a[0], a[-1]), deck_y, "widens to z %d..%d at x %d" % (CHEEK_Z[0] - 1, CHEEK_Z[1] + 1, WEST_X))
+    row("main door", (east_face(0) + S.DEPTH_GLASS, east_face(0)), (a[0], a[-1]), "%d..%d" % (S.GROUND, S.STRING), "leaves 0-4, fanlight 5-6 (A6)")
+    row("west door", (CX - R_FACE, CX - R_GLASS), (a[0], a[-1]), "%d..%d" % (S.GROUND, WEST_DOOR_TOP), "to the sunset platform; plain, always open")
     row("north wing, main floor", S.ROOM_X, WING_N_Z, main_y, "time-service room")
     row("south wing, main floor", S.ROOM_X, WING_S_Z, main_y, "star-chart room")
     for z in CROSS_Z:
-        row("room door", ROOM_DOOR_X, (z, z), "7 .. 9", "gallery to wing room")
-    row("clock-tower shaft", S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z, "0 .. %d" % S.CLOCK_SHAFT_TOP, "walls run to the ground")
-    row("small-dome drum", S.SMALL_DOME_X, S.SMALL_DOME_Z, "%d .." % S.SMALL_DRUM_BASE, "round, centre (%d, %d)" % SMALL_DOME_CENTRE)
+        row("room door", ROOM_DOOR_X, (z, z), "%d..%d" % (S.STAND, S.STAND + 2), "gallery to wing room")
+    for side, name in ((-1, "north"), (1, "south")):
+        zs = sorted((side * SPIRAL_Z[0], side * SPIRAL_Z[1]))
+        row("spiral stair, %s" % name, SPIRAL_X, tuple(zs), "%d -> %d" % (S.STAND, S.ROOF_STAND),
+            "11 steps round the newel %s" % (spiral_newel(side),))
+    row("clock-tower shaft", S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z, "%d..%d" % (S.GROUND, S.CLOCK_SHAFT_TOP), "walls run to the ground")
+    row("small-dome drum", S.SMALL_DOME_X, S.SMALL_DOME_Z, "from %d" % S.SMALL_DRUM_BASE, "round, centre (%d, %d)" % SMALL_DOME_CENTRE)
     out = ["\n".join(rows), ""]
 
-    out.append("ring stair (x, z, kind, feet after):")
-    out.append("  " + "  ".join("(%d,%d)%s%d" % c for c in ring_stair()))
-    out.append("grand stair (x, feet after): " + "  ".join("x%d:%d" % c for c in grand_stair()))
+    out.append("grand stair, each flight (x, feet after): " + "  ".join("x%d:%d" % c for c in grand_stair()))
+    for side, name in ((-1, "north"), (1, "south")):
+        start, leave = spiral_ends(side)
+        out.append("spiral stair %s, from the deck at %s to the dome-room floor at %s (x, z, uphill, feet after):" % (name, start, leave))
+        out.append("  " + "  ".join("(%d,%d)%s%d" % c for c in spiral(side)))
+        out.append("  air over each column (from y, up to y): "
+                   + "  ".join("(%d,%d)%d-%d" % (x, z, feet, top - 1) for x, z, feet, top in stair_air(side)))
+        out.append("  ceiling (y %d) open at: " % S.STAR_HALL_CEIL + "  ".join("(%d,%d)" % c for c in ceiling_opening(side))
+                   + ";  dome-room floor (y %d) open at: " % S.ROOF_FLOOR + "  ".join("(%d,%d)" % c for c in floor_opening(side)))
     out.append("apse pilasters (x, z): " + "  ".join("(%d,%d)" % c for c in apse_pilasters()))
     for name, (opening, glass) in sorted(apse_windows().items()):
         out.append("apse window %s: opening %s  glass %s" % (
             name, " ".join("(%d,%d)" % c for c in opening), " ".join("(%d,%d)" % c for c in glass)))
-    out.append("ring stair, air over each column (x, z, from y, up to y): "
-               + "  ".join("(%d,%d)%d-%d" % (x, z, feet, top - 1) for x, z, feet, top in stair_air()))
-    out.append("ring stair guard (x, z): " + "  ".join("(%d,%d)" % c for c in stair_guard()))
-    out.append("hall ceiling (y %d) open at: " % S.STAR_HALL_CEIL + "  ".join("(%d,%d)" % c for c in ceiling_opening()))
-    out.append("dome-room floor (y %d) open at: " % S.ROOF_FLOOR + "  ".join("(%d,%d)" % c for c in floor_opening()))
     z = ROOF_Z[0]
     xs = range(S.WALL_W + 1, east_face(z))
     out.append("pitched roofs: |z| %d..%d, gable walls on |z| %d and %d; top surface by x: " % (ROOF_Z + GABLE_Z)
                + "  ".join("x%d:%.1f" % (x, ROOF_EAVE_TOP + ROOF_STEP * roof_steps(x, z)) for x in xs))
     out.append("")
-    out.append("windows (front bay: glass columns; base storey y %d..%d, main storey y %d..%d):" % (BASE_WINDOW + S.WINDOW))
+    ws = windows()
+    out.append("windows, %d in all (front bay: glass columns; base storey y %d..%d, main storey y %d..%d):"
+               % ((len(ws),) + BASE_WINDOW + S.WINDOW))
     for front in ("east", "west", "north", "south", "apse"):
         both, main_only = [], []
-        ws = [w for w in windows() if w["front"] == front]
-        for w in ws:
+        mine = [w for w in ws if w["front"] == front]
+        for w in mine:
             if w["storey"] != "main":
                 continue
-            xs = sorted({x for x, _ in w["cells"]})
-            zs = sorted({z for _, z in w["cells"]})
-            span = "x %d z %d..%d" % (xs[0], zs[0], zs[-1]) if len(xs) == 1 else "x %d..%d z %d" % (xs[0], xs[-1], zs[0])
-            has_base = any(v["bay"] == w["bay"] and v["storey"] == "base" for v in ws)
-            (both if has_base else main_only).append("%s (%s)" % (w["bay"], span))
-        out.append("  %s, both storeys: %s" % (front, "  ".join(both)))
+            has_base = any(v["bay"] == w["bay"] and v["storey"] == "base" for v in mine)
+            (both if has_base else main_only).append("%s (%s)" % (w["bay"], _span(w["cells"])))
+        if both:
+            out.append("  %s, both storeys: %s" % (front, "  ".join(both)))
         if main_only:
             out.append("  %s, main storey only: %s" % (front, "  ".join(main_only)))
     out.append("  blind (stone for glass): " + "  ".join("%s %d" % b for b in BLIND_BAYS))
     return "\n".join(out)
 
 
+def legend():
+    return "\n".join("%-8s %s" % item for item in LEGEND)
+
+
+# --- checks -----------------------------------------------------------------------------------
 def check():
     """Things that must hold for the plans to be buildable. Returns a list of problems."""
     bad = []
-    stair = ring_stair()
-    if stair[0][3] != S.STAND or stair[-1][3] != S.ROOF_STAND:
-        bad.append("ring stair does not run from %d to %d" % (S.STAND, S.ROOF_STAND))
-    if len({(x, z) for x, z, _, _ in stair}) != len(stair):
-        bad.append("ring stair crosses itself")
     if grand_stair()[-1][1] != S.STAND:
         bad.append("grand stair does not reach the main floor")
     for name, (opening, glass) in apse_windows().items():
@@ -592,42 +664,75 @@ def check():
         for x, z in glass:
             if ring(x + 1, z) > R_GLASS:
                 bad.append("apse window %s: nothing closes the wall behind glass (%d, %d)" % (name, x, z))
-    near = ((1, 0), (-1, 0), (0, 1), (0, -1))
-    walk = set(".D<>^v+")
+    ground, upper, roof = plan_ground(), plan_main(), plan_roof()
+    for side, name in ((-1, "north"), (1, "south")):
+        stair = spiral(side)
+        if stair[0][3] != S.STAND + 1 or stair[-1][3] != S.ROOF_STAND:
+            bad.append("%s spiral does not run from %d to %d" % (name, S.STAND, S.ROOF_STAND))
+        seen = {}
+        for x, z, feet, top in stair_air(side):
+            if (x, z) in seen and feet - 1 < seen[(x, z)]:
+                bad.append("%s spiral: the second turn at (%d, %d) is too low over the first" % (name, x, z))
+            seen[(x, z)] = top
+            if ring(x, z) > R_CLEAR or x >= S.WALL_W:
+                bad.append("%s spiral: (%d, %d) is not inside the apse" % (name, x, z))
+        start, leave = spiral_ends(side)
+        if upper.get(start) != ".":
+            bad.append("%s spiral: no deck to start from at %s" % (name, start))
+        if roof.get(leave) != ".":
+            bad.append("%s spiral: no floor to step onto at %s" % (name, leave))
+    walk = set(".D<>^v=")
 
     def reach(g, start):
         seen, todo = {start}, [start]
         while todo:
             x, z = todo.pop()
-            for dx, dz in near:
+            for dx, dz in NEAR:
                 n = (x + dx, z + dz)
                 if n not in seen and g.get(n) in walk:
                     seen.add(n)
                     todo.append(n)
         return seen
 
-    ground, upper, roof = plan_ground(), plan_main(), plan_roof()
-    door = (east_face(CZ), CZ)
-    from_door = reach(ground, door)
-    for what, cell in (("the west door", (CX - R_FACE, CZ)), ("the foot of the grand stair", (STAIR_X[1], CZ)),
-                       ("the north pocket of the apse", (S.WALL_W - 1, HALL_Z[0])),
-                       ("the south pocket of the apse", (S.WALL_W - 1, HALL_Z[1]))):
+    aisle = window_rows(AISLE_BAY)
+    from_door = reach(ground, (east_face(CZ), CZ))
+    for what, cell in (("the west door", (CX - R_FACE, CZ)),
+                       ("the foot of the north flight", (FLIGHT_X[1], flight_rows(-1)[1])),
+                       ("the foot of the south flight", (FLIGHT_X[1], flight_rows(1)[1]))):
         if cell not in from_door:
             bad.append("ground: no way from the main door to %s" % what)
-    from_landing = reach(upper, (LANDING_X, CZ))
-    first = ring_stair()[0]
-    for what, cell in (("the north room door", (ROOM_DOOR_X[0], CROSS_Z[0])), ("the south room door", (ROOM_DOOR_X[0], CROSS_Z[1])),
-                       ("the start of the ring stair", first[:2]), ("the gallery over the main door", (HALL_X[1], CZ)),
-                       ("the north wing room", (ROOM_DOOR_X[0], WING_N_Z[1])), ("the south wing room", (ROOM_DOOR_X[0], WING_S_Z[0]))):
-        if cell not in from_landing:
-            bad.append("main: no way from the stair landing to %s" % what)
-    last = ring_stair()[-1]
-    if (CX + R_CLEAR, CZ) not in reach(roof, last[:2]):
-        bad.append("roof: the ring stair does not come out on the dome-room floor")
+    from_top = reach(upper, (FLIGHT_X[0], flight_rows(-1)[1]))
+    for what, cell in (("the mezzanine under the west window", (WEST_X, CZ)),
+                       ("the top of the south flight", (FLIGHT_X[0], flight_rows(1)[1])),
+                       ("the north room door", (ROOM_DOOR_X[0], CROSS_Z[0])), ("the south room door", (ROOM_DOOR_X[0], CROSS_Z[1])),
+                       ("the north wing room", (ROOM_DOOR_X[0], WING_N_Z[1])), ("the south wing room", (ROOM_DOOR_X[0], WING_S_Z[0])),
+                       ("the east end of the north gallery", (HALL_X[1], HALL_Z[0])),
+                       ("the north spiral stair", spiral_ends(-1)[0]), ("the south spiral stair", spiral_ends(1)[0])):
+        if cell not in from_top:
+            bad.append("main: no way from the top of the north flight to %s" % what)
+    for side, name in ((-1, "north"), (1, "south")):
+        if (CX + R_CLEAR, CZ) not in reach(roof, spiral(side)[-1][:2]):
+            bad.append("roof: the %s spiral does not come out on the dome-room floor" % name)
     for name, g in (("main", upper), ("roof", roof)):        # nobody walks off an edge
         for (x, z), ch in g.items():
-            if ch == "." and any(g.get((x + dx, z + dz)) == "o" for dx, dz in near):
+            if ch == "." and any(g.get((x + dx, z + dz)) == "o" for dx, dz in NEAR):
                 bad.append("%s: deck (%d, %d) borders a void without a railing" % (name, x, z))
+    steps = dict(grand_stair())
+    for (x, z), ch in upper.items():                         # nor off a deck into a stairwell
+        if ch != ".":
+            continue
+        for dx, dz in NEAR:
+            n = (x + dx, z + dz)
+            if upper.get(n) == "<" and S.STAND - steps[n[0]] > 1:
+                bad.append("main: deck (%d, %d) drops %d onto the grand stair" % (x, z, S.STAND - steps[n[0]]))
+    well = orrery_well()
+    for x in range(well[0][0], well[0][1] + 1):
+        for z in range(well[1][0], well[1][1] + 1):
+            if upper.get((x, z)) != "o":
+                bad.append("main: the orrery's well is not clear at (%d, %d)" % (x, z))
+    for z in aisle:                                          # the way to the west door is under a deck
+        if upper.get((WEST_X, z)) != ".":
+            bad.append("main: no mezzanine over the west door at z %d" % z)
     for storey, name, g in (("base", "ground", ground), ("main", "main", upper)):
         listed = set()
         for w in windows():                                  # A2 puts a light behind every pane
@@ -638,15 +743,11 @@ def check():
                 listed.add((x, z))
                 if g.get((x, z)) != "g":
                     bad.append("%s: window %s %s has no glass at (%d, %d)" % (name, w["front"], w["bay"], x, z))
-                if g.get((x + dx, z + dz)) not in (".", "x", "o", "r"):
+                if g.get((x + dx, z + dz)) not in (".", "x", "o", "r", "<"):
                     bad.append("%s: nothing empty behind the glass at (%d, %d)" % (name, x, z))
         for cell, ch in g.items():
             if ch == "g" and cell not in listed:
                 bad.append("%s: glass at %s belongs to no listed window" % (name, cell))
-    for x, z, feet, top in stair_air():                      # the ring stair has its headroom
-        for y in (S.STAR_HALL_CEIL, S.ROOF_FLOOR):
-            if feet <= y < top and (x, z) not in _open_at(y):
-                bad.append("ring stair: no headroom at (%d, %d), y %d" % (x, z, y))
     return bad
 
 
@@ -655,6 +756,8 @@ def main(argv):
     for name in which:
         if name == "tables":
             print(tables())
+        elif name == "legend":
+            print(legend())
         else:
             print("--- %s ---" % name)
             print(PLANS[name]().text())
