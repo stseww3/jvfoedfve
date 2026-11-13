@@ -20,6 +20,7 @@ def _look(**kw):
     base = dict(
         sky=DAY_SKY, fog=DAY_FOG, water="#42b8dc", cloud=NO_CLOUDS, lamp="#ffc278",
         grass="#9fcf5e", foliage="#86bd50",
+        dry_foliage="#d9a441",   # fallen leaves: the gold of the tree on the lookout
         # haze: the island stays crisp from the usual viewpoints, the far cloud banks fade out
         fog_start=70.0, fog_end=480.0,
         # fill light: with open sky on every side nothing is black; shadows on the clouds and the

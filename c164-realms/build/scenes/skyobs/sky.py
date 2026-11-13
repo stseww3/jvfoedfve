@@ -56,7 +56,8 @@ def _shadow(c):
     return depth
 
 
-def build(c):
+def build(c, fall=FALL, out=FALL_OUT):
+    """fall, out: where the last waterfall comes down and the side it is open to."""
     x0, z0, x1, z1 = BOX
     # thin the sea where the island dims it and leave it out where the shadow would turn it dark
     bar = N.smoothstep(1.5, 4.5, _shadow(c).astype(float))
@@ -66,8 +67,8 @@ def build(c):
         field.cumulus(x, SEA_Y + 2, z, length, width, height, seed=seed, heading=heading)
     for x, y, z, length, width, height, heading, seed in WISPS:
         field.cumulus(x, y, z, length, width, height, seed=seed, heading=heading)
-    fx, fz = FALL
-    field.cumulus(fx + 9 * FALL_OUT[0], SEA_Y, fz + 9 * FALL_OUT[1], 30, 26, 9, seed=91, puffs=16)
+    fx, fz = fall
+    field.cumulus(fx + 9 * out[0], SEA_Y, fz + 9 * out[1], 30, 26, 9, seed=91, puffs=16)
     field.well(fx, fz, 3.7)
     return field.write(c, seed=3)
 

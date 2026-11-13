@@ -87,7 +87,8 @@ def crystals(c, land, low):
 
 
 def chunk(c, cx, cy, cz, r, depth, seed, green=True):
-    """A loose rock adrift: flat on top, tapering to a point below."""
+    """A loose rock adrift: flat on top, tapering to a point below. green: True = grass and moss on
+    top, "moss" = some moss only (nothing else grows in the shade of the island), False = bare."""
     cells = []
     for x in range(math.floor(cx - r) - 1, math.ceil(cx + r) + 2):
         for z in range(math.floor(cz - r) - 1, math.ceil(cz + r) + 2):
@@ -103,8 +104,10 @@ def chunk(c, cx, cy, cz, r, depth, seed, green=True):
     for x, y, z, top in cells:
         t = (cy - y) / max(depth, 1.0)
         h = hash3(x, y, z, seed)
-        if y == top and green and h < 0.6:
+        if y == top and green is True and h < 0.6:
             state = "moss_block" if h < 0.35 else "grass_block"
+        elif y == top and green == "moss" and h < 0.3:
+            state = "moss_block"
         elif t < 0.3:
             state = "stone" if h < 0.5 else "andesite" if h < 0.8 else "cobblestone"
         elif t < 0.65:
@@ -131,7 +134,8 @@ def debris(c, land, low):
         r = rng.uniform(1.4, 3.6)
         if any(math.dist((x, y, z), p) < 9.0 for p in placed):
             continue
-        if chunk(c, x, y, z, r, r * rng.uniform(1.6, 2.8), rng.randrange(10 ** 6), green=col is None or rng.random() < 0.3):
+        green = True if col is None else "moss" if rng.random() < 0.5 else False
+        if chunk(c, x, y, z, r, r * rng.uniform(1.6, 2.8), rng.randrange(10 ** 6), green=green):
             placed.append((x, y, z))
             # below the island no daylight reaches it
             if col is not None and not c.has(math.floor(x), y + 3, math.floor(z)):
@@ -161,18 +165,21 @@ def broken_chains(c, land, low):
     return out
 
 
-def tether(c, land, low, islet, sag=4.0):
-    """A chain from the rim of the island to an islet (x, y, z, radius)."""
-    ix, iy, iz, r = islet
-    rx, rz = min(land.top, key=lambda p: math.hypot(p[0] + 0.5 - ix, p[1] + 0.5 - iz))
-    d = math.hypot(ix - rx - 0.5, iz - rz - 0.5)
-    ux, uz = (rx + 0.5 - ix) / d, (rz + 0.5 - iz) / d
-    # start two columns in from the rim, on the underside
-    sx, sz = math.floor(rx + 0.5 + 2.5 * ux), math.floor(rz + 0.5 + 2.5 * uz)
-    y = low.get((sx, sz), land.top[(rx, rz)] - 3)
-    a = (sx + 0.5, y - 0.2, sz + 0.5)
-    b = (ix + (r - 1.2) * ux, iy - 2.6, iz + (r - 1.2) * uz)
-    return props.chain(c, a, b, sag=sag, brightness=(14, 0), view=6.0)
+def rim_near(land, x, z):
+    """Middle of the island column closest to (x, z): a point on the rim for anything outside."""
+    rx, rz = min(land.top, key=lambda p: math.hypot(p[0] + 0.5 - x, p[1] + 0.5 - z))
+    return (rx + 0.5, rz + 0.5)
+
+
+def tether(c, land, low, to, sag=4.0):
+    """A chain from the underside of the island, a little in from the rim, to the point `to`
+    (x, y, z) on a rock adrift beside it."""
+    rx, rz = rim_near(land, to[0], to[2])
+    d = math.hypot(to[0] - rx, to[2] - rz)
+    ux, uz = (rx - to[0]) / d, (rz - to[2]) / d
+    sx, sz = math.floor(rx + 2.5 * ux), math.floor(rz + 2.5 * uz)
+    y = low.get((sx, sz), land.top[(math.floor(rx), math.floor(rz))] - 3)
+    return props.chain(c, (sx + 0.5, y - 0.2, sz + 0.5), to, sag=sag, brightness=(14, 0), view=6.0)
 
 
 def dress(c, land):

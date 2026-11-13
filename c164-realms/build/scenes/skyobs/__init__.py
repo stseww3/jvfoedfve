@@ -4,10 +4,12 @@ Seen from the south the story reads left to right: airship and dock at the west 
 the cherry tree and the keeper's house, then the stair up the crag to the observatory. A pond in
 front of the crag drains over the southern rim.
 """
+import math
+
 from artkit import respack
 from artkit.canvas import Canvas
 
-from . import flora, house, instruments, props, site, sky, terrain, tower, under
+from . import flora, house, instruments, isles, props, site, sky, terrain, tower, under
 
 TOWER = (20.0, -12.0)
 HOUSE = (-19, -7, 3, 11)   # x0, x1, z0, z1
@@ -23,13 +25,16 @@ def write_pack(pack_dir):
     """Resource pack pieces besides the prop models: the sky, and blocks painted for this scene."""
     out = sky.write_pack(pack_dir)
     out.append(respack.cube_variants(pack_dir, instruments.VAULT, instruments.vault_tiles(), name="star_vault"))
+    out.append(isles.write_pack(pack_dir))
     return out
 
-# x, y, z, radius, depth, tree
+
+LOOKOUT = (63.0, 11, -13.0)   # middle of the lookout island; the bridge from the crag runs along its z
+# x, y, z, radius, depth, tree: small rocks adrift; the first two are still chained to the island
 ISLETS = [
     (-72, -4, -34, 6.5, 13, ("spruce", 13)),
     (66, -12, 34, 5.0, 10, ("birch", 7)),
-    (74, 4, -24, 3.6, 7, None),
+    (88, -6, 6, 3.6, 7, None),
     (-50, -22, 44, 3.0, 6, None),
 ]
 
@@ -115,6 +120,15 @@ def build():
         for x in (-31, -30, -29):
             land.kind[(x, 4)] = "built"
 
+    # the lookout, and the rope bridge to it from the east side of the crag
+    lx, ly, lz = LOOKOUT
+    rows = range(math.floor(lz) - 2, math.floor(lz) + 2)
+    look = isles.lookout(c, lx, ly, lz, rows)
+    x0 = max(x for x in range(int(TOWER[0]), int(lx)) if all(land.top.get((x, z)) == terrain.KNOLL_H for z in rows))
+    for z in rows:
+        site.reserve(c, land, x0, z)
+    isles.rope_bridge(c, x0, look.landing[0], rows[1], terrain.KNOLL_H + 1, look.landing[1])
+
     flora.plant_trees(c, land, TREES)
     site.boulders(c, land, seed=5)
     flora.petals(c, land, -33, -5, 10, 5)
@@ -123,10 +137,11 @@ def build():
     flora.ground_cover(c, land)
 
     for n, (x, y, z, r, depth, tree) in enumerate(ISLETS):
-        site.islet(c, x, y, z, r, depth, 801 + n, tree=tree)
-    # the two larger islets are still chained to the island
-    for x, y, z, r, _, _ in ISLETS[:2]:
-        under.tether(c, land, low, (x, y, z, r))
+        rock = isles.small(c, x, y, z, r, depth, 801 + n, tree=tree)
+        if n < 2:
+            under.tether(c, land, low, isles.flank(rock, under.rim_near(land, x, z)))
 
-    sky.build(c)
+    # the water of the pond comes down in three falls, from basin to basin
+    last, heading = isles.cascade(c, sky.FALL, sky.FALL_OUT)
+    sky.build(c, last, heading)
     return c

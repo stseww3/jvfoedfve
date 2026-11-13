@@ -13,6 +13,7 @@ SCALE = {
     "lamp_post": 1.0, "telescope_tube": 5.0, "telescope_mount": 5.0, "armillary": 2.0, "armillary_core": 2.0,
     "weathervane": 1.0, "sign_board": 1.0, "crate": 1.0, "trunk": 1.0, "engine_pod_s": 2.0, "engine_pod_n": 2.0, "rope": 1.0,
     "windsock": 2.0, "bunting": 1.0, "signpost": 1.0, "cattail": 1.0, "ship_wheel": 1.0, "dome_rail": 5.0,
+    "spyglass": 1.0,
 }
 
 # the rails beside the observing slit follow the dome: radius of their arc in blocks, and its
@@ -411,8 +412,28 @@ def dome_rail():
     return m
 
 
+def spyglass():
+    """Small brass telescope on a wooden tripod, looking towards -z and a little upwards.
+    Anchor: the ground under the middle of the tripod."""
+    m = M.Model("spyglass")
+    for deg in (90.0, 210.0, 330.0):
+        a = math.radians(deg)
+        m.rod((6.5 * math.cos(a), 0.0, 6.5 * math.sin(a)), (0.6 * math.cos(a), 19.4, 0.6 * math.sin(a)), 0.55,
+              P.DARK_WOOD, sides=4, seed=981)
+    m.tube("y", (0, 0), 18.6, 20.4, 1.4, P.BRASS_DARK)
+    m.tube("y", (0, 0), 20.4, 21.8, 0.6, P.IRON)
+    m.box((-0.5, 21.4, -0.9), (0.5, 22.4, 0.9), P.IRON)
+    with m.turned(("x", 16.0), about=(0, 23.2, 0)):
+        m.tube("z", (0, 23.2), -9.0, 3.0, 1.3, P.BRASS, sides=12)
+        m.tube("z", (0, 23.2), -10.4, -9.0, 1.65, P.BRASS_DARK, sides=12, cap=LENS_B)
+        m.tube("z", (0, 23.2), -4.6, -3.8, 1.5, P.BRASS_DARK, sides=12)
+        m.tube("z", (0, 23.2), 3.0, 6.4, 0.9, P.BRASS_DARK, sides=12)
+        m.tube("z", (0, 23.2), 6.4, 7.1, 1.15, P.IRON, sides=12)
+    return m
+
+
 MODELS = [lamp_post, telescope_tube, telescope_mount, armillary, armillary_core, weathervane, sign_board, crate,
-          trunk, rope, windsock, bunting, signpost, cattail, ship_wheel, dome_rail]
+          trunk, rope, windsock, bunting, signpost, cattail, ship_wheel, dome_rail, spyglass]
 _BUILT = None
 
 
@@ -467,6 +488,7 @@ GALLERY = [
     ("cattail", [("cattail", None, {}), ("cattail", (0.8, 0, 0.5), {"yaw": 140.0})], (1.6, 1.8, 3.0), (0.3, 1.2, 0)),
     ("wheel", [("ship_wheel", None, {})], (2.0, 1.6, 1.6), (0, 0.8, 0)),
     ("rail", [("dome_rail", (0, 0, -3.0), {})], (7.0, 5.0, 6.0), (0, 4.5, 0)),
+    ("spyglass", [("spyglass", None, {"yaw": 150.0})], (1.6, 1.9, 2.2), (0, 1.1, 0)),
 ]
 
 from . import instruments, skystone  # noqa: E402  the room under the dome; crystal and chain
