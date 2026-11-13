@@ -98,6 +98,11 @@ def _emblem(c, o):
         if z == cz:
             continue                              # keep the centre clear for the armillary
         c.set(ox + cx, oy + S.GROUND, oz + z, BRASS)
+    rr = ROUND_R - 1                              # the emblem ring, in brass, on the pale disc
+    for a in range(0, 360, 6):
+        x = cx + round(rr * math.cos(math.radians(a)))
+        z = cz + round(rr * math.sin(math.radians(a)))
+        c.set(ox + x, oy + S.GROUND, oz + z, BRASS)
     for dx, dz in ((2, -2), (3, -2), (2, -3), (1, -2), (2, -1)):   # a small star, north-east of centre
         c.set(ox + cx + dx, oy + S.GROUND, oz + cz + dz, BRASS)
 
