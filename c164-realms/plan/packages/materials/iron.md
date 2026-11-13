@@ -27,4 +27,8 @@
 - 被依赖：main（梁/门/栏杆/平台）、site、machines、props、interiors。
 
 ## 记录
-- （领卡后填）
+- m5（c198）领卡。iron.py：十一个角色（13 个方块）全部走 `_kit.redirect` 重定向成铸铁，非蜡 `oxidized_*` → 铸铁、`waxed_oxidized_*` 铜绿不动（`_kit.PROTECT` 守）。平板/铆接板/铸花板是设计稿贴图（铆钉贴边 8 点、变体只变刷纹），格栅/栏杆/细管/细杆/灯沿用游戏模型的镂空重上色；灯件 `emit`（灯笼 15、灯泡 lit 8）。整类 audit 过（上一轮，总装 c6868b1 上）。
+- 11-14 重开：VM 重启后 /agent/realms-study（jar/venv/inbox）没了，云端跑不了 check.py/离线出图；接着做测试场景与云端能做的轻检查。
+- merge 总装 c3b75f9a 取 `_board` 的 wall/steps。IRON_PLATE 原来缺卡片写的“浅 bevel”，8×8 墙发平：加 `_bevel`（上/左 +1、下/右 −1、不动角，比铆接板边框浅、无铆钉），平板墙改读成对接的铁板、不发平；色阶跨度由 I2..I4 到 I1..I4（≥3，c190 预评第 3 条）。
+- 测试场景 `build/scenes/obs_mat_iron/`：`_board.twins_plates`/`twins_shapes`（铸铁↔铜绿、旧铜↔exposed 铜分家并排，含楼梯/台阶/门/格栅/灯）+ 两面 8×8 墙（铆接板带楼梯台阶、平板）。shots.json 9 机位：分家近看 ×4、灯件发光、铆接墙近看、平板墙近看、铆接踏面俯看、两墙 20 格远看（查条纹）。
+- 云端轻检查（无 jar，`/tmp/c164_m5/verify_iron.py`）：平板/铆接板/铸花/舱盖/门设计稿贴图 strays 全过；铆钉三变体位置一致、只变刷纹；8×8 平铺无贯穿斜条。shaped 件与整类 audit/离线自查图待 realms-study 恢复后由 job.py（s1）出。
