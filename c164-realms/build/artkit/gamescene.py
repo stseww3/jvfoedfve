@@ -12,7 +12,7 @@ import numpy as np
 
 from . import blockfacts as F
 from . import raytrace as R
-from .gameassets import NORMALS, Element, nearest_face, rot
+from .gameassets import NORMALS, Element, rot, split
 from .shapes import Shaper, full
 
 CARDINAL = (0.5, 1.0, 0.8, 0.8, 0.6, 0.6)          # CardinalLighting.DEFAULT: brightness by face
@@ -80,22 +80,110 @@ class _Random:
 
 
 # ---- pictures ------------------------------------------------------------------------------------
-def _halve(img):
-    """The next smaller size of a picture; see-through pixels do not darken their neighbours."""
-    h, w = img.shape[0] // 2, img.shape[1] // 2
-    q = img.reshape(h, 2, w, 2, 4).astype(float)
-    a = q[..., 3:4] / 255.0
-    lin = (q[..., :3] / 255.0) ** 2.2
-    cover = a.sum(axis=(1, 3))
-    rgb = (lin * a).sum(axis=(1, 3)) / np.maximum(cover, 1e-9)
-    out = np.empty((h, w, 4), dtype=np.uint8)
-    out[..., :3] = np.clip(rgb ** (1 / 2.2) * 255.0 + 0.5, 0, 255)
-    out[..., 3] = np.clip(cover[..., 0] / 4.0 * 255.0 + 0.5, 0, 255)
+# The smaller sizes of a texture, as MipmapGenerator makes them. They decide what things look like
+# from afar: leaves grow darker and denser, grass and flowers keep as much of their outline as
+# they have close by.
+_X = np.arange(256) / 255.0
+TO_LINEAR = np.round(np.where(_X >= 0.04045, ((_X + 0.055) / 1.055) ** 2.4, _X / 12.92) * 1023.0).astype(np.int64)
+_X = np.arange(1024) / 1023.0
+TO_SRGB = np.round(np.where(_X >= 0.0031308, 1.055 * _X ** (1 / 2.4) - 0.055, 12.92 * _X) * 255.0).astype(np.int64)
+MIP_LEVELS = 4                  # the game's "mipmap levels" option
+
+
+def _coverage(alpha, ref, scale):
+    """Share of a picture that passes the alpha test, looked at between its pixels."""
+    if alpha.shape[0] < 2 or alpha.shape[1] < 2:
+        return float("nan")
+    a = np.clip(alpha * scale, 0.0, 1.0)
+    a00, a10, a01, a11 = a[:-1, :-1], a[:-1, 1:], a[1:, :-1], a[1:, 1:]
+    count = np.zeros(a00.shape)
+    for sy in range(4):
+        fy = (sy + 0.5) / 4.0
+        for sx in range(4):
+            fx = (sx + 0.5) / 4.0
+            count += (a00 * (1 - fx) * (1 - fy) + a10 * fx * (1 - fy) + a01 * (1 - fx) * fy + a11 * fx * fy) > ref
+    return float(count.mean() / 16.0)
+
+
+def _keep_coverage(img, wanted, ref, bias):
+    """scaleAlphaToCoverage: strengthen a smaller picture's alpha until as much of it passes."""
+    alpha = img[..., 3] / 255.0
+    lo, hi, scale, best, error = 0.0, 4.0, 1.0, 1.0, float("inf")
+    for _ in range(5):
+        cover = _coverage(alpha, ref, scale)
+        if abs(cover - wanted) < error:
+            error, best = abs(cover - wanted), scale
+        if cover < wanted:
+            lo = scale
+        elif cover > wanted:
+            hi = scale
+        else:
+            break
+        scale = (lo + hi) * 0.5
+    img[..., 3] = (np.clip(alpha * best + bias + 0.025, 0.0, 1.0) * 255.0).astype(np.uint8)
+
+
+def _solidify(img):
+    """Give the empty pixels the colour of the nearest filled one (their alpha stays 0)."""
+    h, w = img.shape[:2]
+    queue = collections.deque((x, y) for x in range(w) for y in range(h) if img[y, x, 3] != 0)
+    dist = {p: 0 for p in queue}
+    while queue:
+        x, y = queue.popleft()
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            q = (x + dx, y + dy)
+            if 0 <= q[0] < w and 0 <= q[1] < h and dist.get(q, 1 << 30) > dist[(x, y)] + 1:
+                dist[q] = dist[(x, y)] + 1
+                img[q[1], q[0], :3] = img[y, x, :3]
+                queue.append(q)
+
+
+def _fill_dark(img):
+    """Give the empty pixels three quarters of the picture's darkest colour."""
+    filled = img[..., 3] != 0
+    if not filled.any():
+        return
+    colours = img[filled][:, :3].astype(int)
+    img[~filled, :3] = 3 * colours[np.argmin(colours.sum(axis=1))] // 4
+
+
+def mip_levels(img, name, strategy="auto", bias=0.0, levels=MIP_LEVELS):
+    """[picture, half size, quarter size, ...] as the game would upload them."""
+    img = img.copy()
+    alpha = img[..., 3]
+    if strategy == "auto":
+        strategy = "cutout" if (alpha == 0).any() else "mean"
+    if not name.startswith("item/"):
+        if strategy in ("cutout", "strict_cutout"):
+            _solidify(img)
+        elif strategy == "dark_cutout":
+            _fill_dark(img)
+    cutout = strategy in ("cutout", "strict_cutout", "dark_cutout")
+    ref = 0.3 if strategy == "strict_cutout" else 0.5
+    wanted = _coverage(img[..., 3] / 255.0, ref, 1.0) if cutout else 0.0
+    out = [img]
+    for _ in range(levels):
+        last = out[-1]
+        if last.shape[0] < 2 or last.shape[1] < 2 or last.shape[0] % 2 or last.shape[1] % 2:
+            break
+        h, w = last.shape[0] // 2, last.shape[1] // 2
+        q = last.reshape(h, 2, w, 2, 4).transpose(0, 2, 1, 3, 4).reshape(h, w, 4, 4).astype(np.int64)
+        new = np.empty((h, w, 4), dtype=np.uint8)
+        if strategy == "dark_cutout":
+            there = (q[..., 3:4] != 0)
+            total = (TO_LINEAR[q] / 1023.0 * there).sum(axis=2) / 4.0
+            new[...] = TO_SRGB[np.floor(total * 1023.0).astype(np.int64)]
+        else:
+            new[..., :3] = TO_SRGB[TO_LINEAR[q[..., :3]].sum(axis=2) // 4]
+            new[..., 3] = q[..., 3].sum(axis=2) // 4
+        if cutout:
+            _keep_coverage(new, wanted, ref, bias)
+        out.append(new)
     return out
 
 
 class Textures:
-    """Every picture the scene uses, in one array, each in up to four sizes."""
+    """Every picture the scene uses, in one array, each with its smaller sizes."""
 
     def __init__(self, assets):
         self.assets = assets
@@ -115,20 +203,20 @@ class Textures:
             self.kind.append(0 if a.min() == 255 else 1 if np.all((a == 0) | (a == 255)) else 2)
             self.h.append(img.shape[0])
             self.w.append(img.shape[1])
-            offs = [-1] * 4
-            for n in range(4):
+            ns, path = split(ref)
+            meta = (self.assets.json(f"assets/{ns}/textures/{path}.png.mcmeta") or {}).get("texture", {})
+            offs = [-1] * (MIP_LEVELS + 1)
+            for n, level in enumerate(mip_levels(img, path, meta.get("mipmap_strategy", "auto"),
+                                                 float(meta.get("alpha_cutoff_bias", 0.0)))):
                 offs[n] = self.total
-                self.px.append(img.reshape(-1, 4))
-                self.total += img.shape[0] * img.shape[1]
-                if img.shape[0] < 2 or img.shape[1] < 2 or img.shape[0] % 2 or img.shape[1] % 2:
-                    break
-                img = _halve(img)
+                self.px.append(level.reshape(-1, 4))
+                self.total += level.shape[0] * level.shape[1]
             self.off.append(offs)
         return hit
 
     def arrays(self):
         if not self.px:
-            return np.zeros((1, 4), np.uint8), np.full((1, 4), -1), np.ones(1), np.ones(1), np.zeros(1)
+            return np.zeros((1, 4), np.uint8), np.full((1, MIP_LEVELS + 1), -1), np.ones(1), np.ones(1), np.zeros(1)
         return np.concatenate(self.px), np.array(self.off), np.array(self.w), np.array(self.h), np.array(self.kind)
 
 
@@ -139,6 +227,23 @@ def _quat(q):
         [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
         [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)],
     ])
+
+
+FACE_UV_AXES = ((0, 2), (0, 2), (0, 1), (0, 1), (2, 1), (2, 1))     # the box axes a face's picture runs along
+
+
+def _density(lo, hi, axes, uv, uvrot, tw, th):
+    """Texels per block on a face, along the side where they lie closest. axes: how long the box's
+    own axes are in the world; uv in fractions of the picture."""
+    out = []
+    for f in range(6):
+        a, b = FACE_UV_AXES[f]
+        if uvrot[f] & 1:
+            a, b = b, a
+        across = abs(uv[f][2] - uv[f][0]) * tw[f] / max((hi[a] - lo[a]) * axes[a], 1e-6)
+        down = abs(uv[f][3] - uv[f][1]) * th[f] / max((hi[b] - lo[b]) * axes[b], 1e-6)
+        out.append(max(across, down))
+    return out
 
 
 def _whole(el):
@@ -204,7 +309,7 @@ class Scene:
         # the palette: entry 0 is air
         self.p = {k: [0] for k in ("start", "n", "flags", "emit", "cls", "opq", "occ")}
         self.e = {k: [] for k in ("inv", "off", "lo", "hi", "tex", "uv", "uvrot", "tint", "shade", "dir", "cull",
-                                  "cubic", "flags", "emit")}
+                                  "cubic", "flags", "emit", "res")}
         names = {}
         sid = np.fromiter((names.setdefault(s, len(names)) for s in cells.values()), dtype=np.int64, count=len(cells))
         wet_state = np.array([F.wet(*full(s)) for s in names], dtype=bool)
@@ -317,7 +422,7 @@ class Scene:
 
     def _element(self, el, name, extra):
         e = self.e
-        dirs = [nearest_face(v) for v in el.faces_out()]
+        dirs = list(el.dirs)
         back = np.linalg.inv(el.inv)
         cubic = []
         for f in range(6):
@@ -329,12 +434,17 @@ class Scene:
                 v = (back @ (c - el.off))[FACE_AXIS[dirs[f]]]
                 flat = int(v >= 0.9999 if dirs[f] & 1 else v <= 0.0001)
             cubic.append(flat)
+        tex = [self.tex.id(t) for t in el.tex]
+        uv = np.asarray(el.uv, dtype=float) / 16.0
+        tw, th = [self.tex.w[t] if t >= 0 else 0 for t in tex], [self.tex.h[t] if t >= 0 else 0 for t in tex]
         e["inv"].append(el.inv)
         e["off"].append(el.off)
         e["lo"].append(el.lo)
         e["hi"].append(el.hi)
-        e["tex"].append([self.tex.id(t) for t in el.tex])
-        e["uv"].append(np.asarray(el.uv, dtype=float) / 16.0)
+        e["tex"].append(tex)
+        e["uv"].append(uv)
+        e["res"].append([float(w) for w in tw] if el.world_uv else
+                        _density(el.lo, el.hi, np.linalg.norm(back, axis=0), uv, el.uvrot, tw, th))
         e["uvrot"].append(list(el.uvrot))
         e["tint"].append([self._tint(name, t) for t in el.tint])
         e["shade"].append([CARDINAL[el.override if el.override >= 0 else d] for d in dirs])
@@ -370,14 +480,19 @@ class Scene:
             off = el.inv @ (0.5 - gi @ centre) + el.off
             corners = np.array([[(el.lo, el.hi)[i][0], (el.lo, el.hi)[j][1], (el.lo, el.hi)[k][2]]
                                 for i in (0, 1) for j in (0, 1) for k in (0, 1)])
-            world = (corners - off) @ np.linalg.inv(inv).T
+            back = np.linalg.inv(inv)
+            world = (corners - off) @ back.T
+            tex = [self.tex.id(t) for t in el.tex]
+            uv = np.asarray(el.uv, dtype=float) / 16.0
+            tw, th = [self.tex.w[t] if t >= 0 else 0 for t in tex], [self.tex.h[t] if t >= 0 else 0 for t in tex]
             shade = []
-            for v in el.faces_out():
-                n = gi.T @ NORMALS[nearest_face(v)]
+            for d in el.dirs:
+                n = gi.T @ NORMALS[d]
                 n /= np.linalg.norm(n)
                 shade.append(min(1.0, 0.4 + 0.6 * (max(0.0, n @ LAMPS[0]) + max(0.0, n @ LAMPS[1]))))
-            out.append({"inv": inv, "off": off, "lo": el.lo, "hi": el.hi, "tex": [self.tex.id(t) for t in el.tex],
-                        "uv": np.asarray(el.uv, dtype=float) / 16.0, "shade": shade, "emit": float(el.emit),
+            out.append({"inv": inv, "off": off, "lo": el.lo, "hi": el.hi, "tex": tex, "uv": uv,
+                        "res": _density(el.lo, el.hi, np.linalg.norm(back, axis=0), uv, el.uvrot, tw, th),
+                        "shade": shade, "emit": float(el.emit),
                         "light": light, "at": (x, y, z), "lo_w": world.min(axis=0), "hi_w": world.max(axis=0)})
         return out
 
@@ -392,6 +507,7 @@ class Scene:
             "tex": np.array([b["tex"] for b in boxes]).reshape(n, 6),
             "uv": np.array([b["uv"] for b in boxes]).reshape(n, 6, 4),
             "shade": np.array([b["shade"] for b in boxes]).reshape(n, 6),
+            "res": np.array([b["res"] for b in boxes]).reshape(n, 6),
         }
         light = np.zeros((n, 2))
         for i, b in enumerate(boxes):
@@ -406,25 +522,14 @@ class Scene:
                     sky, blk = 15.0, 0.0
             light[i] = max(sky, b["emit"]), max(blk, b["emit"])
         self.eb["light"] = light
-        # which boxes reach into which coarse cell
-        dim = tuple((s + R.COARSE - 1) // R.COARSE for s in self.shape)
-        spans = []
-        count = np.zeros(dim, dtype=np.int32)
-        for b in boxes:
-            a = np.clip(np.floor((b["lo_w"] - lo - 0.01) / R.COARSE).astype(np.int64), 0, np.array(dim) - 1)
-            c = np.clip(np.floor((b["hi_w"] - lo + 0.01) / R.COARSE).astype(np.int64), 0, np.array(dim) - 1)
-            spans.append((a, c))
-            count[a[0]:c[0] + 1, a[1]:c[1] + 1, a[2]:c[2] + 1] += 1
-        start = (np.cumsum(count.reshape(-1)) - count.reshape(-1)).reshape(dim).astype(np.int32)
-        fill = start.copy()
-        members = np.zeros(max(1, int(count.sum())), dtype=np.int32)
-        for i, (a, c) in enumerate(spans):
-            for gx in range(a[0], c[0] + 1):
-                for gy in range(a[1], c[1] + 1):
-                    for gz in range(a[2], c[2] + 1):
-                        members[fill[gx, gy, gz]] = i
-                        fill[gx, gy, gz] += 1
-        self.cg = (start, count, members)
+        # which boxes reach into which cell of the entity grid
+        span = np.zeros((n, 6), dtype=np.int64)
+        for i, b in enumerate(boxes):
+            span[i, :3] = np.floor((b["lo_w"] - lo - 0.01) / R.COARSE)
+            span[i, 3:] = np.floor((b["hi_w"] - lo + 0.01) / R.COARSE)
+        back = np.array([np.linalg.inv(m) for m in self.eb["inv"]]).reshape(n, 3, 3)
+        self.cg = R.entity_grid(self.shape, *(np.ascontiguousarray(self.eb[k], dtype=np.float64)
+                                              for k in ("inv", "off", "lo", "hi")), back, span)
 
     # ---- the moment ------------------------------------------------------------------------------
     def stars(self):
@@ -484,6 +589,7 @@ class Scene:
             pixels.append(img.reshape(-1, 4))
             at += n * n
         tex_px, tex_off, tex_w, tex_h, tex_kind = self.tex.arrays()
+        tex_levels = np.maximum(1, (np.asarray(tex_off) >= 0).sum(axis=1))
         e, p, eb = self.e, self.p, self.eb
         ne = max(1, len(e["inv"]))
 
@@ -500,9 +606,11 @@ class Scene:
             el_tex=els("tex", (6,), -1), el_uv=els("uv", (6, 4)), el_uvrot=els("uvrot", (6,)),
             el_tint=els("tint", (6,)), el_shade=els("shade", (6,)), el_dir=els("dir", (6,)),
             el_cull=els("cull", (6,), -1), el_cubic=els("cubic", (6,)), el_flags=els("flags", ()), el_emit=els("emit", ()),
+            el_res=els("res", (6,)),
             tints=np.array(self.tints), tex_px=tex_px, tex_off=tex_off, tex_w=tex_w, tex_h=tex_h, tex_kind=tex_kind,
+            tex_levels=tex_levels,
             eb_inv=eb["inv"], eb_off=eb["off"], eb_lo=eb["lo"], eb_hi=eb["hi"], eb_tex=eb["tex"], eb_uv=eb["uv"],
-            eb_shade=eb["shade"], eb_light=eb["light"],
+            eb_shade=eb["shade"], eb_light=eb["light"], eb_res=eb["res"],
             cg_start=self.cg[0], cg_n=self.cg[1], cg_list=self.cg[2],
             lightmap=look.lightmap, env=env,
             bodies=np.array(bodies, dtype=float).reshape(-1, R.BODY_SIZE),
@@ -525,10 +633,13 @@ class Scene:
         u = np.cross(r, f)
         return np.concatenate([pos - self.lo, f, r, u, [math.tan(math.radians(fov) / 2.0)]])
 
-    def picture(self, look, cam, size=(1280, 720), ss=2, fov=70.0):
-        """8-bit RGB picture (h, w, 3) of the scene at the moment `look` from the camera `cam`."""
+    def picture(self, look, cam, size=(1280, 720), ss=1, fov=70.0):
+        """8-bit RGB picture (h, w, 3) of the scene at the moment `look` from the camera `cam`.
+        ss: rays per pixel along each side. 1 gives the game's picture, jagged edges included;
+        more gives smooth edges, each ray then reading the textures as finely as its share of the
+        pixel."""
         width, height = size
-        w = self.world(look, 2.0 * math.tan(math.radians(fov) / 2.0) / height)
+        w = self.world(look, 2.0 * math.tan(math.radians(fov) / 2.0) / (height * ss))
         out = np.zeros((height, width, 3))
         R.render(w, np.ascontiguousarray(cam, dtype=np.float64), width, height, ss, out)
         return (np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8)

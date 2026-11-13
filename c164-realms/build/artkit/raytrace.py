@@ -28,10 +28,11 @@ FIELDS = (
     ("el_inv", np.float64), ("el_off", np.float64), ("el_lo", np.float64), ("el_hi", np.float64),
     ("el_tex", np.int32), ("el_uv", np.float64), ("el_uvrot", np.int32), ("el_tint", np.int32), ("el_shade", np.float64),
     ("el_dir", np.int32), ("el_cull", np.int32), ("el_cubic", np.int32), ("el_flags", np.int32), ("el_emit", np.int32),
+    ("el_res", np.float64),
     ("tints", np.float64), ("tex_px", np.uint8), ("tex_off", np.int64), ("tex_w", np.int32), ("tex_h", np.int32),
-    ("tex_kind", np.int32),
+    ("tex_kind", np.int32), ("tex_levels", np.int32),
     ("eb_inv", np.float64), ("eb_off", np.float64), ("eb_lo", np.float64), ("eb_hi", np.float64), ("eb_tex", np.int32),
-    ("eb_uv", np.float64), ("eb_shade", np.float64), ("eb_light", np.float64),
+    ("eb_uv", np.float64), ("eb_shade", np.float64), ("eb_light", np.float64), ("eb_res", np.float64),
     ("cg_start", np.int32), ("cg_n", np.int32), ("cg_list", np.int32),
     ("lightmap", np.float64), ("env", np.float64), ("bodies", np.float64), ("body_px", np.uint8),
     ("stars", np.uint8), ("star_rot", np.float64),
@@ -48,7 +49,7 @@ def world(**arrays):
 SHADE, AO, OPAQUE, WET, OFF_XZ, OFF_XYZ = 1, 2, 4, 8, 16, 32
 # element flags
 ALIGNED, WORLD_UV, WATER = 1, 2, 4
-COARSE = 4                      # cells of the entity grid are this many blocks wide
+COARSE = 2                      # cells of the entity grid are this many blocks wide
 BIG = 1e30
 # places in World.env
 FOG, SKY, FOG_START, FOG_END, FAR_START, FAR_END, SKY_END, STARS, PIXEL = 0, 3, 6, 7, 8, 9, 10, 11, 12
@@ -61,10 +62,19 @@ CORNERS = np.array([(4, 5, 2, 3), (5, 4, 2, 3), (1, 0, 5, 4), (4, 5, 0, 1), (1, 
 
 
 @njit(cache=True)
+def _cosine(inv, axis, ex, ey, ez):
+    """|cos| of the angle between a ray and the faces of a box across one of its axes."""
+    e = ex if axis == 0 else (ey if axis == 1 else ez)
+    n = math.sqrt(inv[axis, 0] * inv[axis, 0] + inv[axis, 1] * inv[axis, 1] + inv[axis, 2] * inv[axis, 2])
+    return abs(e) / max(n, 1e-12)
+
+
+@njit(cache=True)
 def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
-    """Where a ray meets a placed box after tmin: (t, face, x, y, z in the box's frame); face -1
-    for a miss. Only the way in counts, as the game only draws the outside of a face; with `back`
-    the way out counts too (faces drawn on both sides)."""
+    """Where a ray meets a placed box after tmin: (t, face, x, y, z in the box's frame, cosine of
+    the angle at which the ray meets the face); face -1 for a miss. Only the way in counts, as the
+    game only draws the outside of a face; with `back` the way out counts too (faces drawn on both
+    sides)."""
     ox = inv[0, 0] * px + inv[0, 1] * py + inv[0, 2] * pz + off[0]
     oy = inv[1, 0] * px + inv[1, 1] * py + inv[1, 2] * pz + off[1]
     oz = inv[2, 0] * px + inv[2, 1] * py + inv[2, 2] * pz + off[2]
@@ -74,7 +84,7 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
     tn, tf, axis, far = -BIG, BIG, -1, -1
     if abs(ex) < 1e-12:
         if ox < lo[0] - 1e-9 or ox > hi[0] + 1e-9:
-            return BIG, -1, 0.0, 0.0, 0.0
+            return BIG, -1, 0.0, 0.0, 0.0, 1.0
     else:
         a, b = (lo[0] - ox) / ex, (hi[0] - ox) / ex
         if a > b:
@@ -85,7 +95,7 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
             tf, far = b, 0
     if abs(ey) < 1e-12:
         if oy < lo[1] - 1e-9 or oy > hi[1] + 1e-9:
-            return BIG, -1, 0.0, 0.0, 0.0
+            return BIG, -1, 0.0, 0.0, 0.0, 1.0
     else:
         a, b = (lo[1] - oy) / ey, (hi[1] - oy) / ey
         if a > b:
@@ -96,7 +106,7 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
             tf, far = b, 1
     if abs(ez) < 1e-12:
         if oz < lo[2] - 1e-9 or oz > hi[2] + 1e-9:
-            return BIG, -1, 0.0, 0.0, 0.0
+            return BIG, -1, 0.0, 0.0, 0.0, 1.0
     else:
         a, b = (lo[2] - oz) / ez, (hi[2] - oz) / ez
         if a > b:
@@ -106,7 +116,7 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
         if b < tf:
             tf, far = b, 2
     if axis < 0 or tn > tf + 1e-7:
-        return BIG, -1, 0.0, 0.0, 0.0
+        return BIG, -1, 0.0, 0.0, 0.0, 1.0
     if tn > tmin:
         if axis == 0:
             face = 4 if ex > 0.0 else 5
@@ -114,7 +124,7 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
             face = 0 if ey > 0.0 else 1
         else:
             face = 2 if ez > 0.0 else 3
-        return tn, face, ox + ex * tn, oy + ey * tn, oz + ez * tn
+        return tn, face, ox + ex * tn, oy + ey * tn, oz + ez * tn, _cosine(inv, axis, ex, ey, ez)
     if back and tf > tmin and far >= 0:
         if far == 0:
             face = 5 if ex > 0.0 else 4
@@ -122,8 +132,8 @@ def box_hit(inv, off, lo, hi, px, py, pz, dx, dy, dz, tmin, back):
             face = 1 if ey > 0.0 else 0
         else:
             face = 3 if ez > 0.0 else 2
-        return tf, face, ox + ex * tf, oy + ey * tf, oz + ez * tf
-    return BIG, -1, 0.0, 0.0, 0.0
+        return tf, face, ox + ex * tf, oy + ey * tf, oz + ez * tf, _cosine(inv, far, ex, ey, ez)
+    return BIG, -1, 0.0, 0.0, 0.0, 1.0
 
 
 @njit(cache=True)
@@ -170,26 +180,80 @@ def world_uv(d, x, y, z):
 
 
 @njit(cache=True)
+def _pixel(w, tid, level, x, y):
+    """One pixel of one size of a texture; beyond the edge the edge repeats."""
+    lw, lh = max(1, w.tex_w[tid] >> level), max(1, w.tex_h[tid] >> level)
+    x = 0 if x < 0 else (lw - 1 if x >= lw else x)
+    y = 0 if y < 0 else (lh - 1 if y >= lh else y)
+    return w.tex_off[tid, level] + y * lw + x
+
+
+@njit(cache=True)
+def _smooth(w, tid, level, u, v):
+    """A texture size read between its pixels (the sampler's linear filter)."""
+    lw, lh = max(1, w.tex_w[tid] >> level), max(1, w.tex_h[tid] >> level)
+    x, y = u * lw - 0.5, v * lh - 0.5
+    x0, y0 = int(math.floor(x)), int(math.floor(y))
+    fx, fy = x - x0, y - y0
+    i00, i10 = _pixel(w, tid, level, x0, y0), _pixel(w, tid, level, x0 + 1, y0)
+    i01, i11 = _pixel(w, tid, level, x0, y0 + 1), _pixel(w, tid, level, x0 + 1, y0 + 1)
+    w00, w10, w01, w11 = (1 - fx) * (1 - fy), fx * (1 - fy), (1 - fx) * fy, fx * fy
+    p = w.tex_px
+    return ((p[i00, 0] * w00 + p[i10, 0] * w10 + p[i01, 0] * w01 + p[i11, 0] * w11) / 255.0,
+            (p[i00, 1] * w00 + p[i10, 1] * w10 + p[i01, 1] * w01 + p[i11, 1] * w11) / 255.0,
+            (p[i00, 2] * w00 + p[i10, 2] * w10 + p[i01, 2] * w01 + p[i11, 2] * w11) / 255.0,
+            (p[i00, 3] * w00 + p[i10, 3] * w10 + p[i01, 3] * w01 + p[i11, 3] * w11) / 255.0)
+
+
+@njit(cache=True)
 def texel(w, tid, u, v, lod):
-    """Colour and opacity of a texture at (u, v): colour from the mip level, opacity from the full
-    picture, so that leaves keep their holes at any distance."""
+    """Colour and opacity of a block texture at (u, v), as terrain.fsh reads the atlas. lod: log2
+    of the texels one screen pixel covers. Close by that is the one pixel of the picture; from
+    afar it is a blend of the smaller sizes, opacity included (so a far tree is not the near tree
+    made small: MipmapGenerator made its smaller sizes denser and darker)."""
     tw, th = w.tex_w[tid], w.tex_h[tid]
-    x, y = int(u * tw), int(v * th)
-    x = 0 if x < 0 else (tw - 1 if x >= tw else x)
-    y = 0 if y < 0 else (th - 1 if y >= th else y)
-    i = w.tex_off[tid, 0] + y * tw + x
-    a = w.tex_px[i, 3] / 255.0
-    while lod > 0 and w.tex_off[tid, lod] < 0:
-        lod -= 1
-    if lod > 0:
-        lw, lh = max(1, tw >> lod), max(1, th >> lod)
-        x, y = int(u * lw), int(v * lh)
-        x = 0 if x < 0 else (lw - 1 if x >= lw else x)
-        y = 0 if y < 0 else (lh - 1 if y >= lh else y)
-        j = w.tex_off[tid, lod] + y * lw + x
-        if w.tex_px[j, 3] > 0:
-            i = j
-    return w.tex_px[i, 0] / 255.0, w.tex_px[i, 1] / 255.0, w.tex_px[i, 2] / 255.0, a
+    if lod <= 0.0:
+        i = _pixel(w, tid, 0, int(u * tw), int(v * th))
+        return w.tex_px[i, 0] / 255.0, w.tex_px[i, 1] / 255.0, w.tex_px[i, 2] / 255.0, w.tex_px[i, 3] / 255.0
+    # sampleNearest: the smaller a texel is on screen, the further the reading moves off its centre
+    k = 2.0 ** (-lod)
+    x, y = u * tw, v * th
+    cx, cy = math.floor(x + 0.5) - 0.5, math.floor(y + 0.5) - 0.5
+    u = (cx + min(1.0, max(0.0, (x - cx - 0.5) * k + 0.5))) / tw
+    v = (cy + min(1.0, max(0.0, (y - cy - 0.5) * k + 0.5))) / th
+    top = w.tex_levels[tid] - 1
+    l0 = min(int(lod), top)
+    r, g, b, a = _smooth(w, tid, l0, u, v)
+    if l0 < top:
+        f = lod - l0
+        r1, g1, b1, a1 = _smooth(w, tid, l0 + 1, u, v)
+        r, g, b, a = r + (r1 - r) * f, g + (g1 - g) * f, b + (b1 - b) * f, a + (a1 - a) * f
+    return r, g, b, a
+
+
+@njit(cache=True)
+def item_texel(w, tid, u, v, lod):
+    """The same for item models: the nearest pixel, of the two sizes around lod."""
+    top = w.tex_levels[tid] - 1
+    l0 = 0 if lod <= 0.0 else min(int(lod), top)
+    lw, lh = max(1, w.tex_w[tid] >> l0), max(1, w.tex_h[tid] >> l0)
+    i = _pixel(w, tid, l0, int(u * lw), int(v * lh))
+    r, g, b, a = w.tex_px[i, 0] / 255.0, w.tex_px[i, 1] / 255.0, w.tex_px[i, 2] / 255.0, w.tex_px[i, 3] / 255.0
+    if lod > 0.0 and l0 < top:
+        f = lod - l0
+        lw, lh = max(1, w.tex_w[tid] >> (l0 + 1)), max(1, w.tex_h[tid] >> (l0 + 1))
+        j = _pixel(w, tid, l0 + 1, int(u * lw), int(v * lh))
+        r += (w.tex_px[j, 0] / 255.0 - r) * f
+        g += (w.tex_px[j, 1] / 255.0 - g) * f
+        b += (w.tex_px[j, 2] / 255.0 - b) * f
+        a += (w.tex_px[j, 3] / 255.0 - a) * f
+    return r, g, b, a
+
+
+@njit(cache=True)
+def _lod(res, t, pixel, cosine):
+    """log2 of the texels a screen pixel covers on a face `t` away that is met at this angle."""
+    return math.log2(max(1e-9, res * t * pixel / max(cosine, 0.05)))
 
 
 @njit(cache=True)
@@ -394,9 +458,10 @@ def offset(flags, x, z):
 
 
 @njit(cache=True)
-def cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, tmax, lod):
+def cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, tmax, pixel):
     """First face of the block in a cell that the ray meets after tmin and whose texture holds
-    there. Returns (t, element, face, r, g, b, a, x, y, z of the point within the cell)."""
+    there. Returns (t, element, face, r, g, b, a, x, y, z of the point within the cell). pixel:
+    the angle a screen pixel covers."""
     best_t, best_e, best_f = BIG, -1, 0
     br = bg = bb = ba = 0.0
     hx = hy = hz = 0.0
@@ -409,7 +474,7 @@ def cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, tmax, lod):
     start = w.pal_start[pal]
     for e in range(start, start + w.pal_n[pal]):
         water = (w.el_flags[e] & WATER) != 0
-        t, f, lx, ly, lz = box_hit(w.el_inv[e], w.el_off[e], w.el_lo[e], w.el_hi[e], qx, qy, qz, dx, dy, dz, tmin, water)
+        t, f, lx, ly, lz, cosine = box_hit(w.el_inv[e], w.el_off[e], w.el_lo[e], w.el_hi[e], qx, qy, qz, dx, dy, dz, tmin, water)
         if f < 0 or t > best_t + 1e-6 or t > tmax + 1e-5:
             continue
         tid = w.el_tex[e, f]
@@ -431,7 +496,7 @@ def cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, tmax, lod):
             u, v = world_uv(w.el_dir[e, f], min(1.0, max(0.0, x)), min(1.0, max(0.0, y)), min(1.0, max(0.0, z)))
         else:
             u, v = face_uv(f, w.el_lo[e], w.el_hi[e], w.el_uv[e, f], w.el_uvrot[e, f], lx, ly, lz)
-        r, g, b, a = texel(w, tid, u, v, lod)
+        r, g, b, a = texel(w, tid, u, v, _lod(w.el_res[e, f], t, pixel, cosine))
         kind = w.tex_kind[tid]
         if kind == 0:
             a = 1.0
@@ -481,15 +546,15 @@ def block_colour(w, pal, e, f, cx, cy, cz, hx, hy, hz, r, g, b):
 
 
 @njit(cache=True)
-def entity_hit(w, k, px, py, pz, dx, dy, dz, tmin, lod):
-    t, f, lx, ly, lz = box_hit(w.eb_inv[k], w.eb_off[k], w.eb_lo[k], w.eb_hi[k], px, py, pz, dx, dy, dz, tmin, False)
+def entity_hit(w, k, px, py, pz, dx, dy, dz, tmin, pixel):
+    t, f, lx, ly, lz, cosine = box_hit(w.eb_inv[k], w.eb_off[k], w.eb_lo[k], w.eb_hi[k], px, py, pz, dx, dy, dz, tmin, False)
     if f < 0:
         return BIG, 0.0, 0.0, 0.0, 0.0
     tid = w.eb_tex[k, f]
     if tid < 0:
         return BIG, 0.0, 0.0, 0.0, 0.0
     u, v = face_uv(f, w.eb_lo[k], w.eb_hi[k], w.eb_uv[k, f], 0, lx, ly, lz)
-    r, g, b, a = texel(w, tid, u, v, lod)
+    r, g, b, a = item_texel(w, tid, u, v, _lod(w.eb_res[k, f], t, pixel, cosine))
     if w.tex_kind[tid] != 2:
         if a < 0.1:
             return BIG, 0.0, 0.0, 0.0, 0.0
@@ -551,16 +616,12 @@ def trace(w, px, py, pz, dx, dy, dz):
     first = t0 == 0.0
     while True:
         t_exit = min(tmx, tmy, tmz)
-        lod = 0
-        span = t_exit * env[PIXEL] * 16.0
-        if span > 1.42:
-            lod = 1 if span < 2.83 else (2 if span < 5.66 else 3)
         coarse = ((cx // COARSE) * gy + cy // COARSE) * gz + cz // COARSE
         if coarse != last:
             last = coarse
             s = w.cg_start[cx // COARSE, cy // COARSE, cz // COARSE]
             for i in range(s, s + w.cg_n[cx // COARSE, cy // COARSE, cz // COARSE]):
-                et, er, eg, eb, ea = entity_hit(w, w.cg_list[i], px, py, pz, dx, dy, dz, tmin, lod)
+                et, er, eg, eb, ea = entity_hit(w, w.cg_list[i], px, py, pz, dx, dy, dz, tmin, env[PIXEL])
                 if et < ent_t:
                     ent_t, ent_r, ent_g, ent_b, ent_a = et, er, eg, eb, ea
         pal = w.grid[cx, cy, cz]
@@ -568,7 +629,7 @@ def trace(w, px, py, pz, dx, dy, dz):
         hr = hg = hb = ha = 0.0
         hx = hy = hz = 0.0
         if pal != 0 and not (first and w.pal_flags[pal] & OPAQUE):
-            ht, he, hf, hr, hg, hb, ha, hx, hy, hz = cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, t_exit, lod)
+            ht, he, hf, hr, hg, hb, ha, hx, hy, hz = cell_hit(w, pal, cx, cy, cz, px, py, pz, dx, dy, dz, tmin, t_exit, env[PIXEL])
         if ent_t < ht and ent_t <= t_exit + 1e-6:
             fr, fg, fb = fogged(env, ent_r, ent_g, ent_b, ent_t, dx, dy, dz)
             cr += trans * ent_a * fr
@@ -637,6 +698,52 @@ def render(w, cam, width, height, ss, out):
             out[j, i, 0] = r * k
             out[j, i, 1] = g * k
             out[j, i, 2] = b * k
+
+
+# ---- where the entity boxes are -----------------------------------------------------------------
+@njit(cache=True)
+def _near(inv, off, lo, hi, back, x, y, z, reach):
+    """Does a placed box come within `reach` of the point (x, y, z)?"""
+    d = np.empty(3)
+    for a in range(3):
+        v = inv[a, 0] * x + inv[a, 1] * y + inv[a, 2] * z + off[a]
+        d[a] = v - lo[a] if v < lo[a] else (v - hi[a] if v > hi[a] else 0.0)
+    wx = back[0, 0] * d[0] + back[0, 1] * d[1] + back[0, 2] * d[2]
+    wy = back[1, 0] * d[0] + back[1, 1] * d[1] + back[1, 2] * d[2]
+    wz = back[2, 0] * d[0] + back[2, 1] * d[1] + back[2, 2] * d[2]
+    return wx * wx + wy * wy + wz * wz <= reach * reach
+
+
+@njit(cache=True)
+def entity_grid(shape, inv, off, lo, hi, back, span):
+    """Which boxes reach into which cell of the entity grid: (start, count, list). back: the
+    inverse of each inv; span[k] = the grid cells (x0, y0, z0, x1, y1, z1) box k's corners lie in."""
+    gx, gy, gz = (shape[0] + COARSE - 1) // COARSE, (shape[1] + COARSE - 1) // COARSE, (shape[2] + COARSE - 1) // COARSE
+    count = np.zeros((gx, gy, gz), dtype=np.int32)
+    start = np.zeros((gx, gy, gz), dtype=np.int32)
+    reach = COARSE * 0.8661 + 0.02           # half the diagonal of a cell, and a little
+    members = np.zeros(1, dtype=np.int32)
+    for turn in range(2):
+        if turn == 1:
+            total = 0
+            for i in range(gx):
+                for j in range(gy):
+                    for k in range(gz):
+                        start[i, j, k] = total
+                        total += count[i, j, k]
+                        count[i, j, k] = 0
+            members = np.zeros(max(1, total), dtype=np.int32)
+        for b in range(inv.shape[0]):
+            for i in range(max(0, span[b, 0]), min(gx - 1, span[b, 3]) + 1):
+                for j in range(max(0, span[b, 1]), min(gy - 1, span[b, 4]) + 1):
+                    for k in range(max(0, span[b, 2]), min(gz - 1, span[b, 5]) + 1):
+                        if not _near(inv[b], off[b], lo[b], hi[b], back[b],
+                                     (i + 0.5) * COARSE, (j + 0.5) * COARSE, (k + 0.5) * COARSE, reach):
+                            continue
+                        if turn == 1:
+                            members[start[i, j, k] + count[i, j, k]] = b
+                        count[i, j, k] += 1
+    return start, count, members
 
 
 # ---- light ---------------------------------------------------------------------------------------

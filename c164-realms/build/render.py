@@ -70,7 +70,8 @@ def main():
     ap.add_argument("--out", required=True, help="prefix of the pictures: <out>-<shot name>.png")
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--size", default="1280x720")
-    ap.add_argument("--ss", type=int, default=2, help="rays per pixel along each side")
+    ap.add_argument("--ss", type=int, default=1,
+                    help="rays per pixel along each side; 1 is what the game does (no smoothing of edges)")
     ap.add_argument("--fov", type=float, default=77.0,
                     help="vertical field of view; 77 is what tools/shoot.py gets: the option's 70, a tenth wider "
                          "because the camera player is flying")

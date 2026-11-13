@@ -42,11 +42,104 @@ def nearest_face(normal):
     return int(np.argmax(NORMALS @ np.asarray(normal, dtype=float)))
 
 
+# ---- which way a face counts as looking ------------------------------------------------------------
+# A face turned freely still gets one of the six directions, and its shade with it. The game takes
+# the direction nearest to the face's normal, the first of down, up, north, south, west, east where
+# two are equally near. A box turned by 45 degrees sits exactly on that edge, so which side it falls
+# to is decided by the last bit of the game's single-precision sums. They are repeated here step by
+# step (FaceBakery.bakeQuad, CuboidRotation and the matrix library's rotationX/Y/Z, rotationZYX,
+# cosFromSin, mulPositionGeneric, GeometryUtils.normal).
+F32 = np.float32
+_RAD = F32(math.pi / 180.0)
+_HALF_PI, _PI, _TWO_PI = F32(math.pi / 2), F32(math.pi), F32(math.pi * 2)
+# FaceInfo: the first three corners of each face, each coordinate from `from` (0) or `to` (1)
+_CORNERS = np.array([
+    ((0, 0, 1), (0, 0, 0), (1, 0, 0)), ((0, 1, 0), (0, 1, 1), (1, 1, 1)),
+    ((1, 1, 0), (1, 0, 0), (0, 0, 0)), ((0, 1, 1), (0, 0, 1), (1, 0, 1)),
+    ((0, 1, 0), (0, 0, 0), (0, 0, 1)), ((1, 1, 1), (1, 0, 1), (1, 0, 0)),
+])
+
+
+def _sin_cos(degrees):
+    a = F32(degrees) * _RAD
+    s = F32(math.sin(float(a)))
+    c = F32(math.sqrt(float(F32(1.0) - s * s)))
+    b = a + _HALF_PI
+    b = b - F32(int(b / _TWO_PI)) * _TWO_PI
+    if b < 0.0:
+        b = b + _TWO_PI
+    return s, (-c if b >= _PI else c)
+
+
+def _turn32(rotation):
+    """The matrix of an element's own turn in single precision, rows by columns; None for no turn."""
+    one, zero = F32(1.0), F32(0.0)
+    if "axis" in rotation or "angle" in rotation:
+        if F32(rotation.get("angle", 0.0)) == 0.0:
+            return None
+        s, c = _sin_cos(rotation["angle"])
+        m = {"x": ((one, zero, zero), (zero, c, -s), (zero, s, c)),
+             "y": ((c, zero, s), (zero, one, zero), (-s, zero, c)),
+             "z": ((c, -s, zero), (s, c, zero), (zero, zero, one))}[rotation["axis"]]
+        m = np.array(m, dtype=F32)
+    else:
+        sx, cx = _sin_cos(rotation.get("x", 0.0))
+        sy, cy = _sin_cos(rotation.get("y", 0.0))
+        sz, cz = _sin_cos(rotation.get("z", 0.0))
+        a, b = cz * sy, sz * sy
+        m = np.array(((cz * cy, -sz * cx + a * sx, -sz * -sx + a * cx),
+                      (sz * cy, cz * cx + b * sx, cz * -sx + b * cx),
+                      (-sy, cy * sx, cy * cx)), dtype=F32)
+    if rotation.get("rescale") and not np.array_equal(m, np.eye(3, dtype=F32)):
+        for i in range(3):
+            m[:, i] = m[:, i] * (F32(1.0) / np.abs(m[:, i]).max())
+    return m
+
+
+def _apply32(m, p, origin):
+    """Turn points about an origin the way the game's vertex code does, sum by sum."""
+    p = p - origin
+    x, y, z = p[..., 0], p[..., 1], p[..., 2]
+    zero = F32(0.0)
+    out = np.stack([m[i, 0] * x + (m[i, 1] * y + (m[i, 2] * z + zero)) for i in range(3)], axis=-1)
+    return out + origin
+
+
+def quad_directions(lo16, hi16, rotation, state=None):
+    """Per face of a box, the direction the game files it under. `lo16`, `hi16` and the rotation are
+    as written in the model file; `state` is the block state's turn (a matrix of 0 and +-1) or None."""
+    ends = np.array([lo16, hi16], dtype=F32) * F32(1.0 / 16.0)
+    p = np.stack([ends[_CORNERS[..., i], i] for i in range(3)], axis=-1)        # (6, 3, 3)
+    if rotation:
+        m = _turn32(rotation)
+        if m is not None:
+            p = _apply32(m, p, np.array(rotation["origin"], dtype=F32) * F32(0.0625))
+    if state is not None:
+        p = _apply32(np.asarray(state, dtype=F32), p, F32(0.5))
+    a, b = p[:, 1] - p[:, 0], p[:, 2] - p[:, 0]
+    n = np.stack([a[:, 1] * b[:, 2] - a[:, 2] * b[:, 1],
+                  a[:, 2] * b[:, 0] - a[:, 0] * b[:, 2],
+                  a[:, 0] * b[:, 1] - a[:, 1] * b[:, 0]], axis=-1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        scale = F32(1.0) / np.sqrt(n[:, 0] * n[:, 0] + (n[:, 1] * n[:, 1] + n[:, 2] * n[:, 2]))
+        n = n * scale[:, None]
+    out = []
+    for v in n:
+        if not np.all(np.isfinite(v)):
+            out.append(1)                                   # a face without area counts as looking up
+            continue
+        along = (-v[1], v[1], -v[2], v[2], -v[0], v[0])
+        best = int(np.argmax(along))                        # the first of equals, as in the game
+        out.append(best if along[best] > 0.0 else 1)
+    return out
+
+
 class Element:
     """One box of a model, placed: `inv` and `off` take a point of the block (or of the item's
     unit cube) into the box's own frame, where it lies between lo and hi."""
 
-    __slots__ = ("lo", "hi", "inv", "off", "tex", "uv", "uvrot", "tint", "cull", "override", "emit", "world_uv", "aligned")
+    __slots__ = ("lo", "hi", "inv", "off", "tex", "uv", "uvrot", "tint", "cull", "override", "emit", "world_uv",
+                 "aligned", "dirs")
 
     def __init__(self):
         self.tex = [None] * 6      # texture reference per face, None where the box has no face
@@ -58,6 +151,7 @@ class Element:
         self.emit = 0
         self.world_uv = False      # uvlock: the picture keeps its attitude when the model is turned
         self.aligned = True
+        self.dirs = list(range(6))  # per face: the direction the game files it under once placed
 
     def faces_out(self):
         """Per face: the direction it looks in once placed, as a unit vector."""
@@ -179,6 +273,7 @@ class Assets:
             e.off = origin + back @ (CENTRE - origin) - e.inv @ CENTRE
             e.aligned = bool(np.allclose(np.abs(e.inv).max(axis=1), 1.0, atol=1e-6) and np.allclose(np.abs(e.inv).sum(axis=1), 1.0, atol=1e-6))
             e.world_uv = bool(uvlock and (x % 360 or y % 360))
+            e.dirs = quad_directions(el["from"], el["to"], r, np.rint(turn) if x % 360 or y % 360 else None)
             e.emit = int(el.get("light_emission", 0))
             if "shade_direction_override" in el:
                 e.override = FACES.index(el["shade_direction_override"])
