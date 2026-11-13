@@ -33,6 +33,25 @@ nice -n 10 /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java -Xms512M -Xmx2G -ja
 
 结论：“Python 生成模板和函数，真服务端摆放并写存档，再用脚本读回来核对”这条路在云端走通了，不需要带显卡的电脑。
 
+## 假玩家（已验证）
+
+现成的机器人库不支持 26.3：minecraft-protocol 1.68.0 和 mineflayer 4.39.0 最高到 26.1。所以自己写了一个最小客户端 `tools/mcbot.py`（离线模式登录，协议 777）：
+
+- 包编号来自官方数据生成器的报告（`java -DbundlerMainClass=net.minecraft.data.Main -jar server.jar --reports`），精简后存在 `tools/data/packets-777.json`。
+- 包的字段布局直接读服务端 jar。26.x 的 jar 没有混淆，系统自带的 `javap`（Java 21）就能看类名和字段。
+- 26.3 里 `accept_teleportation` 变了：除了传送编号，还要回传坐标和朝向（id、x、y、z、yRot、xRot）。照旧版只发编号会被踢。
+- 假玩家不模拟物理。悬空不动几秒会被踢（“floating too long”），所以要站在方块上，或者测试服开 `allow-flight`。
+
+`verify/player_logic_check.py` 的 10 项检查全部通过：
+
+1. 假玩家能加入并保持在线。
+2. 没有 OP 的玩家用不了 `/gamemode`（和 Realms 小游戏里的条件一致）。
+3. `/trigger` 在 enable 之前被拒绝，enable 之后能改分数。
+4. `tellraw`、`title`、动作栏、`dialog show` 都能送到玩家，假玩家能读到文字内容。
+5. 断线重连后 `custom:leave_game` 计分加 1。
+
+所以需要玩家在场的逻辑也可以在云端自动测，不用真人上线。
+
 ## 注意到的细节
 
 - RCON：服务端每次 socket 读只处理一个包，命令不能连发，要等上一条的回复。`tools/rcon.py` 已按这个写。
@@ -43,10 +62,11 @@ nice -n 10 /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java -Xms512M -Xmx2G -ja
 
 ## 还没验证
 
-- 需要真实玩家才能触发的逻辑（trigger、对话框、掉线重进、进度）。需要一个能连 26.3 的无头客户端或机器人。
+- 假玩家目前不会移动、不会点击实体、不会用物品、不会点对话框里的按钮。这些要用到时再加。
 - 画面。云端没有显卡，看不到游戏里的实际效果。
 - 资源包。
-- Realms 上的行为（没有 OP、小游戏槽位重置等）。
+- Realms 上的真实行为（小游戏槽位重置、延迟等）。本地只能模拟“没有 OP”这一条。
+- 真人玩起来好不好玩。
 
 ## 复现
 
@@ -55,4 +75,5 @@ python verify/make_test_pack.py /agent/realms-study/server26/world/datapacks/c16
 # 启动服务端后
 python tools/rcon.py --pw-file /agent/realms-study/server26/.rcon_pw "function c164:build" "save-all flush"
 python tools/census.py /agent/realms-study/server26/world
+python verify/player_logic_check.py --pw-file /agent/realms-study/server26/.rcon_pw
 ```
