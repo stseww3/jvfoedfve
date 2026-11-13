@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """The figures of the art plan, drawn by code.
 
-    make_figs.py [--out <dir>] [--only palette,facade,elevation,site]
+    make_figs.py [--out <dir>] [--only palette,facade]
 
 They are design drawings (flat colour sketches at block scale), not pictures of the game: the
-palette and material board, a facade sample at 16 pixels to the block, the east elevation at dusk
-and the site plan. The numbers in them (bay width, storey heights, dome radius, colours) are the
-ones the plan fixes. Needs the 26.3 client jar for the vanilla textures (MC_JAR) and a CJK font
-(PLAN_FONT).
+palette and material board and a facade sample at 16 pixels to the block. The numbers in them
+(bay width, storey heights, colours) are the ones the plan fixes. Needs the 26.3 client jar for
+the vanilla textures (MC_JAR) and a CJK font (PLAN_FONT).
 """
 import argparse
 import math
