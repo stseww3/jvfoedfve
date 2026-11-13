@@ -27,7 +27,10 @@ PREFIX = "ph_"
 # A lit window is the brightest thing on a wall (sky line, A2): it shows its picture at full strength
 # whatever way it faces, so it takes neither the world's light nor the game's shading by direction,
 # and it is not see-through (the game's stained glass is one flat colour at 40 to 64 percent).
-LIT = {"emit": 15, "shade": False}
+# a lit window is a light: full emission, no shading by the way a face points and no corner
+# darkening, so it shows the colours of its picture exactly (sky line: a face to the east or west
+# would otherwise show at 0.6)
+LIT = {"emit": 15, "shade": False, "ao": False}
 BULB_LIT = 8                # light_emission of the caged lamp when it is on (its own light level is only 4)
 
 

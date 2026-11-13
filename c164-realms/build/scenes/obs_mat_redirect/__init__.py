@@ -48,7 +48,7 @@ def write_pack(pack_dir):
 
 def shots():
     """Camera positions from the layout: each station whole and in halves at reading distance, the
-    treads from above, the panels from the side, and the whole row from afar."""
+    treads from above, the lit windows and the panels from the side."""
     spans = layout()
     out = []
 
@@ -71,7 +71,7 @@ def shots():
     out.append({"name": "stone_treads", "pos": [x0 + 6.0, 4.2, Z + 4.6], "look_at": [x0 + 6.0, 0.2, Z + 0.7], "time": TIME})
     x0 = spans["panels"][0]
     out.append({"name": "panels_side", "pos": [x0 + 4.5, 1.8, Z + 4.5], "look_at": [x0 + 10.5, 0.5, Z + 0.5], "time": TIME})
-    lo, hi = spans["plates"][0], spans["brass"][1]
-    out.append({"name": "row", "pos": [(lo + hi) / 2.0, 16.0, Z + 70.0], "look_at": [(lo + hi) / 2.0, 1.0, Z], "time": TIME})
+    x0 = spans["windows"][0]
+    out.append({"name": "windows_side", "pos": [x0 - 3.5, 2.4, Z + 3.5], "look_at": [x0 + 9.0, 1.4, Z + 0.5], "time": TIME})
     return out
 
