@@ -5,7 +5,8 @@
 #   run_client.sh [player_name] [server_host:port]
 #
 # Environment: MC_HOME (client files from fetch_client.py), JAVA (Java 25 binary),
-#              MC_VERSION, MC_DISPLAY (X display number), MC_SIZE (WxH), LP_NUM_THREADS.
+#              MC_VERSION, MC_DISPLAY (X display number), MC_SIZE (WxH), LP_NUM_THREADS,
+#              MC_CLIENT_HEAP (default 2G).
 set -euo pipefail
 
 MC_HOME="${MC_HOME:-/agent/realms-study/client26}"
@@ -40,7 +41,7 @@ export SDL_VIDEODRIVER=x11
 export ALSOFT_DRIVERS=null
 
 cd "$GAME_DIR"
-exec nice -n 10 "$JAVA" -Xms512M -Xmx3G \
+exec nice -n 10 "$JAVA" -Xms512M "-Xmx${MC_CLIENT_HEAP:-2G}" \
   -XX:StackShadowPages=32 --enable-native-access=ALL-UNNAMED \
   --add-exports java.base/jdk.internal.misc=ALL-UNNAMED \
   -Djava.library.path="$NATIVES/java" -Djna.tmpdir="$NATIVES/jna" \

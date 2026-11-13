@@ -6,7 +6,8 @@
 #   mc.sh restart   down + up (needed after biome or timeline files change)
 #   mc.sh status
 #
-# Environment: MC_ROOT (default /agent/realms-study), MC_WORLD (level-name, default art).
+# Environment: MC_ROOT (default /agent/realms-study), MC_WORLD (level-name, default art),
+#              MC_SERVER_HEAP (default 1500M), MC_CLIENT_HEAP (default 2G, see run_client.sh).
 set -euo pipefail
 
 ROOT="${MC_ROOT:-/agent/realms-study}"
@@ -23,13 +24,38 @@ TMUX_CONF=/exec-daemon/tmux.portal.conf
 rcon() { "$PY" "$HERE/rcon.py" --pw-file "$SERVER/.rcon_pw" "$@"; }
 has() { "${T[@]}" has-session -t "=$1" 2>/dev/null; }
 
+REAL_ROOT="$(readlink -f "$ROOT")"
+
+# Pids of our own java processes matching a command line pattern. The machine is shared: other
+# people run java, game servers and the tmux server itself here, and a bare pattern match could
+# hit those. Ours run a java binary that lives under $ROOT, or at least were started in there.
+mine() {
+  local pid exe cwd
+  for pid in $(pgrep -f "$1" || true); do
+    exe="$(readlink "/proc/$pid/exe" 2>/dev/null || true)"
+    cwd="$(readlink "/proc/$pid/cwd" 2>/dev/null || true)"
+    case "$exe" in
+      "$REAL_ROOT"/*) echo "$pid" ;;
+      */java) case "$cwd" in "$REAL_ROOT"|"$REAL_ROOT"/*) echo "$pid" ;; esac ;;
+    esac
+  done
+}
+
+# If the machine runs out of memory, ours should be the ones to go, not someone else's job.
+yield_memory() {
+  local pid
+  for pid in $(mine "$1"); do
+    echo 600 > "/proc/$pid/oom_score_adj" 2>/dev/null || true
+  done
+}
+
 server_up() {
   if has "$S_SES"; then echo "server session already there"; else
     "${T[@]}" new-session -d -s "$S_SES" -c "$SERVER" \
-      "nice -n 10 '$JAVA' -Xms512M -Xmx2G -jar server.jar nogui 2>&1 | tee console.log"
+      "nice -n 10 '$JAVA' -Xms512M -Xmx${MC_SERVER_HEAP:-1500M} -jar server.jar nogui 2>&1 | tee console.log"
   fi
   for _ in $(seq 1 90); do
-    if rcon "list" >/dev/null 2>&1; then echo "server is up"; return 0; fi
+    if rcon "list" >/dev/null 2>&1; then yield_memory "server.jar nogui"; echo "server is up"; return 0; fi
     sleep 2
   done
   echo "server did not come up; see $SERVER/console.log" >&2; return 1
@@ -41,7 +67,9 @@ client_up() {
       "'$HERE/run_client.sh' '$CAM' 2>&1 | tee '$ROOT/client26/client.log'"
   fi
   for _ in $(seq 1 150); do
-    if rcon "list" 2>/dev/null | grep -q "$CAM"; then echo "$CAM is online"; return 0; fi
+    if rcon "list" 2>/dev/null | grep -q "$CAM"; then
+      yield_memory "net.minecraft.client.main.Main.*--username $CAM"; echo "$CAM is online"; return 0
+    fi
     sleep 2
   done
   echo "$CAM did not join; see $ROOT/client26/client.log" >&2; return 1
@@ -49,7 +77,10 @@ client_up() {
 
 client_down() {
   if has "$C_SES"; then
-    pkill -f "net.minecraft.client.main.Main.*--username $CAM" 2>/dev/null || true
+    local pid
+    for pid in $(mine "net.minecraft.client.main.Main.*--username $CAM"); do
+      kill "$pid" 2>/dev/null || true
+    done
     sleep 2
     "${T[@]}" kill-session -t "=$C_SES" 2>/dev/null || true
     echo "client stopped"
