@@ -93,6 +93,10 @@ def main():
                     failed += 1
                     print("  !!", line, "->", out.strip()[:200])
         print(f"placed in {time.time() - t0:.1f}s, {failed} failed")
+        biome = getattr(scene, "BIOME", None)
+        if biome:
+            (ax, ay, az), (bx, by, bz) = man["min"], man["max"]
+            print(rc.command(f"{at}fillbiome ~{ax - 4} ~{ay - 4} ~{az - 4} ~{bx + 4} ~{by + 4} ~{bz + 4} {biome}").strip())
     finally:
         rc.command("tick unfreeze")
     with open(state_file, "w") as fh:
