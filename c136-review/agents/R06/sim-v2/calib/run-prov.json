@@ -26,8 +26,8 @@
    "described": 20,
    "describedOk": 20,
    "sample": 12,
-   "checked": 1,
-   "same": 1
+   "checked": 12,
+   "same": 12
   },
   "batchcheck/arena-rerun": {
    "total": 2,
@@ -43,8 +43,8 @@
    "described": 266,
    "describedOk": 266,
    "sample": 33,
-   "checked": 6,
-   "same": 6
+   "checked": 33,
+   "same": 33
   },
   "verify": {
    "total": 31,
@@ -53,8 +53,8 @@
    "described": 31,
    "describedOk": 31,
    "sample": 11,
-   "checked": 0,
-   "same": 0
+   "checked": 11,
+   "same": 11
   }
  },
  "ungated": [
@@ -448,21 +448,25 @@
  "strayLogged": 152,
  "strategyShas": 4,
  "check": {
-  "n": 12,
-  "same": 12,
-  "leaves": 17013,
-  "pending": 49,
+  "n": 61,
+  "same": 61,
+  "leaves": 91349,
+  "pending": 0,
   "notGated": 0,
   "redo": 0,
-  "bad": []
+  "bad": [],
+  "beforeWipe": 12,
+  "afterRestore": 49,
+  "afterRestoreMatches": 29,
+  "afterRestoreSame": 49
  },
  "history": {
   "windows": 92,
   "results": 406,
   "badWindows": [],
   "ungated": 280,
-  "anchored": 79,
-  "anchoredWindows": 34,
+  "anchored": 149,
+  "anchoredWindows": 50,
   "ungatedWindows": 84
  }
 }

@@ -264,6 +264,9 @@ if (want('scope')) {
     val('prov.sample.full', P.sampleFull ?? 0); val('prov.sample.hash', P.sampleHash ?? P.sampleN); val('prov.sample.always', P.always ?? 0);
     val('prov.check.n', P.check.n); val('prov.check.same', P.check.same); val('prov.check.pending', P.check.pending); val('prov.check.notGated', P.check.notGated);
     val('prov.check.leaves', int(P.check.leaves)); val('prov.check.leavesN', P.check.leaves); val('prov.check.bad', P.check.bad.length);
+    // 工作区和数据包被清掉过一次（11 月 12 日 20:53 UTC）：重跑里清掉之前跑的 / 数据包回来之后跑的各多少个，后一拨里与原结果相同的个数、涉及的局数
+    val('prov.check.beforeWipe', P.check.beforeWipe ?? 0); val('prov.check.afterRestore', P.check.afterRestore ?? 0);
+    val('prov.check.afterRestoreSame', P.check.afterRestoreSame ?? 0); val('prov.check.afterRestoreMatches', P.check.afterRestoreMatches ?? 0);
     val('prov.describe.n', P.describe ? P.describe.n : 0); val('prov.describe.ok', P.describe ? P.describe.ok : 0); val('prov.describe.noRow', P.describe ? P.describe.noRow : 0);
     val('prov.strayStart', String(P.strayStart).slice(11, 16)); val('prov.strayLast', P.strayLast ? String(P.strayLast).slice(11, 16) : '-');
     val('prov.done', P.check.pending === 0 && P.check.notGated === 0 && P.check.n === P.sampleN ? 1 : 0);
@@ -278,6 +281,17 @@ if (want('scope')) {
     for (const b of P.check.bad) notes.push(`没经闸门跑的结果抽查重跑后不同：${b}`);
     for (const b of (P.describe ? P.describe.bad : [])) notes.push(`结果文件的自述与清单不一致：${b}`);
   } else notes.push('缺 calib/run-prov.json（python3 sim-v2/tools/run_prov.py）');
+  // 数据包被清掉又回到原处之后的核对：全部有录像的局的实盘签名重算一遍，对之前入库的那一份（tools/restore_check.py）
+  const rcf = path.join(CALIB, 'restore-check.json');
+  if (fs.existsSync(rcf)) {
+    const R = JSON.parse(fs.readFileSync(rcf, 'utf8'));
+    val('restore.total', R.total); val('restore.n', R.n); val('restore.same', R.same); val('restore.pending', R.pending);
+    val('restore.leaves', int(R.leaves)); val('restore.bad', R.bad.length); val('restore.extra', R.extra.length);
+    val('restore.done', R.pending === 0 && R.n === R.total && R.total > 0 ? 1 : 0);
+    val('restore.firstAt', R.firstAt ? String(R.firstAt).slice(11, 16) : '-'); val('restore.lastAt', R.lastAt ? String(R.lastAt).slice(11, 16) : '-');
+    val('restore.lastDay', R.lastAt ? String(+String(R.lastAt).slice(8, 10)) : '-');
+    for (const b of R.bad) notes.push(`数据包恢复后实盘签名重算与入库的不同：${b}`);
+  }
 }
 
 // =====================================================================================================================

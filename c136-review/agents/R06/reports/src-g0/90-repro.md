@@ -67,8 +67,23 @@ timeout 60 node sim-v2/tools/same_result.mjs sim-v2/calib/batchcheck/g0-batched 
 <!-- assert: n('prov.hist.bad') === 0 && n('prov.hist.results') > 300 && n('prov.hist.anchored') <= n('prov.hist.ungated') -->
 <!-- if: n('prov.done') === 1 -->
 - 重跑核对：要重跑的 {{v:prov.sample}} 个全部经闸门重跑完，{{v:prov.check.same}} 个与原结果逐字段相同（共 {{v:prov.check.leaves}} 个字段）。
+- **重跑中间断过一次。** 11 月 12 日 20:53（UTC），这台机器上各复盘员的工作区、临时目录和数据包 `/agent/repos/c136-data/` 被整个清掉，R06 的队列随之中断。不是 R06 做的，原因 R06 不知道（当时发了 alert：`outbox/0024-workspace-wiped-data-package-missing.md`）。R06 分支上已经提交的东西不受影响：本报告、模拟器、报告用到的全部运行结果都在提交里，现在的工作区是从提交重新检出的。数据包在 21:42（UTC，按目录的时间）回到原处；不是 R06 恢复的，是谁恢复的、和原来那一份是不是同一份，没有人告诉 R06。
+  所以这 {{v:prov.sample}} 个重跑分两拨：{{v:prov.check.beforeWipe}} 个是清掉之前跑的，{{v:prov.check.afterRestore}} 个是数据包回来之后跑的（清掉之前另有 17 个重跑当时核对相同，结果文件随工作区丢了，没有文件可以对，回来之后重跑了一遍，算在后一拨里）。后一拨涉及 {{v:prov.check.afterRestoreMatches}} 个局，{{v:prov.check.afterRestoreSame}} 个与清掉之前的原结果逐字段相同。这顺带说明了一件事：回来的这份数据包，在这些运行用到的范围内（引擎移植、这 {{v:prov.check.afterRestoreMatches}} 个局的录像和日志、四个历史策略文件），给出的结果和清掉之前那一份一样；四个策略文件另外每次装载都核对内容散列，对不上就拒绝装（1.6 节）。
+<!-- assert: n('prov.check.beforeWipe') + n('prov.check.afterRestore') === n('prov.check.n') && n('prov.check.afterRestoreSame') === n('prov.check.afterRestore') && n('prov.check.afterRestoreMatches') >= 20 -->
 <!-- else -->
 - 重跑核对：要重跑的 {{v:prov.sample}} 个里，到这一版为止经闸门重跑完 {{v:prov.check.n}} 个，{{v:prov.check.same}} 个与原结果逐字段相同（共 {{v:prov.check.leaves}} 个字段）；其余 {{v:prov.check.pending}} 个没有重跑（原因见下面「重跑中断的原因」）。数据包在的时候执行 `bash sim-v2/tools/g0_all.sh prov tables` 接着跑，跑完的结果由 `run_prov.py` 核对。
+<!-- endif -->
+<!-- if: n('prov.done') === 1 && has('restore.done') && n('restore.done') === 1 -->
+  除此以外专门核对了一遍数据包。R06 手里没有清掉之前数据包里各个文件的散列（四个策略文件除外），能对的是结果：全部 {{v:restore.total}} 个有录像的局的实盘签名（第 3 节用的那一份：只放录像，过引擎移植，对日志快照）清掉之前算过、入了库。数据包回来之后把它经闸门从头重算了一遍（`bash sim-v2/tools/g0_all.sh restore`，结果在 `calib/batchcheck/restore/live/`，核对在 `calib/restore-check.json`），与入库的那一份逐字段比：{{v:restore.n}} 个局里 {{v:restore.same}} 个相同（共 {{v:restore.leaves}} 个字段）。
+<!-- endif -->
+<!-- if: n('prov.done') === 1 && has('restore.done') && n('restore.done') === 1 && n('restore.same') === n('restore.n') -->
+  所以回来的这份数据包，每一局的录像和日志、引擎移植、地图这几样，在本报告用到的范围内和清掉之前那一份给出的结果相同。
+<!-- endif -->
+<!-- if: n('prov.done') === 1 && has('restore.done') && n('restore.done') === 1 && n('restore.same') !== n('restore.n') -->
+  **有 {{v:restore.bad}} 个局不同**（见 `calib/report/notes.txt`）：回来的这份数据包和清掉之前那一份不完全一样，本报告的数是按清掉之前那一份算的。
+<!-- endif -->
+<!-- if: n('prov.done') === 1 && (!has('restore.done') || n('restore.done') !== 1) -->
+  这些运行没有用到的局，R06 没有核对过数据包前后是否一样。
 <!-- endif -->
 <!-- if: n('prov.done') !== 1 -->
 - **重跑中断的原因。** 11 月 12 日 20:53（UTC），这台机器上各复盘员的工作区、临时目录和数据包 `/agent/repos/c136-data/` 被整个清掉，R06 的队列随之中断。不是 R06 做的，原因 R06 不知道。R06 分支上已经提交的东西不受影响：本报告、模拟器、报告用到的全部运行结果都在提交里，现在的工作区是从提交重新检出的。丢的是上一次提交（17:52）之后、没来得及提交的东西：那之后 R06 的队列又经闸门重跑完 17 个，当时核对也是逐字段相同，但这 17 个结果文件随工作区一起丢了，上表不算它们，这句话也就没有文件可以对。另有 1 个重跑在清理发生时正跑到一半，跑完写了出来，核对相同，算在上表里。

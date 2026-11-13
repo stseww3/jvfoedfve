@@ -27,6 +27,8 @@
 #   oldcode    sim-v2/calib/old-code-arena.json       闭环模式：把拆掉候选臂之前的代码取出来重跑两个房间，对现在的结果逐字段核对（tools/old_code_arena.sh）
 #   profile    sim-v2/calib/human-profile-check.json  对手模型的参数文件 calib/human-profile.json 从录像从头重算一遍，与入库的那份逐字节比（tools/profile_check.sh）
 #   tables     sim-v2/calib/report/                   报告里的全部表和数字（tools/g0_report.mjs）
+# 不在缺省阶段里、要点名才跑的：
+#   restore    sim-v2/calib/restore-check.json        数据包被清掉又回到原处之后的核对：全部有录像的局的实盘签名重算一遍，与之前入库的 calib/live/ 逐字段比（tools/restore_check.py）
 # 单独的阶段名 verify / g0 / g0x / attr / attrx / seeds / fill / hold / arena / arena-rp 也还能用（只跑那一张清单）。
 set -u
 cd "$(dirname "$0")/../.." || exit 2
@@ -157,6 +159,20 @@ for st in $stages; do
     delay)
       say delay
       light $T/opening_delay.mjs --live-clean sim-v2/calib/live --json sim-v2/calib/opening-delay.json ;;
+    restore)
+      say restore
+      # 数据包 11 月 12 日被清掉又回到原处之后的核对（不在缺省的阶段里）：全部有录像的局的实盘签名重算一遍到 calib/batchcheck/restore/live/，
+      # 与清掉之前入库的 calib/live/ 逐字段比（tools/restore_check.py → calib/restore-check.json）
+      ok=0
+      for i in $(seq 1 200); do
+        r=$($HEAVY sim-v2/teamgate-v2.mjs --mode live --cohort all --out-dir sim-v2/calib/batchcheck/restore/live 2>&1 | tail -1 | cut -c1-160)
+        case "$r" in
+          *"还剩 0 局"*) echo "$(date -u +%H:%M:%S) $r"; ok=1; break ;;
+          *"[live]"*) echo "$(date -u +%H:%M:%S) $r" ;;
+        esac
+      done
+      [ $ok -eq 1 ] || echo "restore：实盘签名没有重算完"
+      timeout 110 python3 $T/restore_check.py | head -6 ;;
     tables)
       say tables
       light $T/g0_report.mjs ;;

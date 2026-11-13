@@ -28,6 +28,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SIMV2 = os.path.dirname(HERE)
 CALIB = os.path.join(SIMV2, 'calib')
 STRAY_START = datetime(2026, 11, 12, 16, 59, 40, tzinfo=timezone.utc).timestamp()
+WIPE_AT = '2026-11-12T20:54:00'      # 工作区和数据包被清掉的时刻（20:53 UTC）之后的第一个整分；与流水里的 at（ISO 时刻）按字符串比
 EVERY = 8
 ALWAYS = {('hold', 'B041-0630-cut'), ('hold', 'A049-1530-cut')}
 # 这两个目录里没经闸门的结果不抽样，全部重跑：闭环 20 个房间（第 7 节每个数都是 20 个房间合起来的）、verify（G0 第 1 项的依据）
@@ -245,7 +246,11 @@ def main():
     prov['strategyShas'] = len(shas)
 
     # 核对：抽查清单里已经由 R06 的队列经闸门重跑出来的（流水里 nice = 19），对原结果逐字段比（tools/same_result.mjs，计时字段除外）
-    chk = {'n': 0, 'same': 0, 'leaves': 0, 'pending': 0, 'notGated': 0, 'redo': 0, 'bad': []}
+    # beforeWipe / afterRestore：工作区和数据包 11 月 12 日 20:53（UTC）被清掉过一次，数据包后来又回到原处。
+    # 重跑按流水里的时刻分成「清掉之前跑的」和「数据包回来之后跑的」两拨，后一拨与原结果相同 = 恢复回来的数据包对这些运行给出的结果和原来一样。
+    chk = {'n': 0, 'same': 0, 'leaves': 0, 'pending': 0, 'notGated': 0, 'redo': 0, 'bad': [],
+           'beforeWipe': 0, 'afterRestore': 0, 'afterRestoreMatches': 0, 'afterRestoreSame': 0}
+    after_tags, after_matches = [], set()
     def trunc_only_rerun(rerun, orig):
         try:
             a = json.load(open(rerun, encoding='utf8')); b = json.load(open(orig, encoding='utf8'))
@@ -271,6 +276,12 @@ def main():
                 else:
                     shutil.copy(f, os.path.join(tmp, tag + '.json'))
                     k += 1
+                    if str(r.get('at', '')) < WIPE_AT:
+                        chk['beforeWipe'] += 1
+                    else:
+                        chk['afterRestore'] += 1
+                        after_tags.append('%s/%s' % (d, tag))
+                        after_matches.add(tag.split('-')[0])
             dv = prov['dirs'].setdefault(d, {})
             dv['sample'] = len(tags); dv['checked'] = 0; dv['same'] = 0
             if k:
@@ -282,6 +293,9 @@ def main():
                 dv['checked'] = j['n']; dv['same'] = j['same']
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
+    chk['afterRestoreMatches'] = len(after_matches)
+    bad_tags = {x.split()[0] for x in chk['bad']}
+    chk['afterRestoreSame'] = sum(1 for x in after_tags if (x + '.json') not in bad_tags)     # bad 里每条以「目录/文件名.json」开头
     prov['check'] = chk
 
     # 同一局同一窗口的各个结果里，「历史」那一半（录像重放得到的真值，与挂哪条臂无关）应当逐字段相同。
