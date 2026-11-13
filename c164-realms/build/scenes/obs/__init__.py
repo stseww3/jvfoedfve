@@ -1,7 +1,7 @@
-"""obs: the master scene of the observatory. S2 assembles the seven production lines here.
+"""obs: the master scene of the observatory. S2 assembles the categories of work packages here.
 
-Each line is a subpackage under this folder (materials, sky, main, props, site, machines,
-interiors) and offers the same three functions (plan/roles/INTERFACE.md):
+Each category is a subpackage under this folder (materials, site, main, machines, interiors,
+props, motion, sky) and offers the same three functions (plan/roles/INTERFACE.md):
 
     build(canvas, origin) -> int      place blocks and display entities; return the entity count
     models()              -> {name: artkit.models.Model}   custom models, names prefixed per line
@@ -17,9 +17,11 @@ import importlib
 
 from artkit.canvas import Canvas
 
-# the seven lines, in the order they lay the scene (materials and sky place no blocks; site lays the
-# ground, then the shells, then the dressing and the interiors, then the props as display entities)
-LINES = ["materials", "sky", "site", "main", "machines", "interiors", "props"]
+# the categories, in the order they lay the scene: materials places no blocks; site lays the ground,
+# then the shells, the machines, the rooms, the props and what moves; sky comes last, because its
+# light sources are placed against the walls, windows and lamps that stand by then and its block
+# clouds keep clear of the mountain
+LINES = ["materials", "site", "main", "machines", "interiors", "props", "motion", "sky"]
 
 ORIGIN = (0, 0, 0)          # the master scene builds every line at the skeleton origin
 BIOME = "obs_blue"          # the default light version; one of sky.mood.BIOMES

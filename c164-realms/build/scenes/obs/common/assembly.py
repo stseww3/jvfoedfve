@@ -9,8 +9,11 @@ may define any of:
 
 The category's __init__.py calls category(__name__) and forwards build/models/pack to it. Adding a
 package is just adding a module -- two workers never edit a shared list, so they never conflict
-(S2-integrator 3.1). Modules run in sorted name order; a package that must run after another names
-itself to sort later (e.g. 10_ground, 20_walls) or the category lead notes it in the parts file.
+(S2-integrator 3.1).
+
+Order: where two packages write the same cell the later one wins, so a package that has to come
+after another (a facade over the massing, a room inside a shell) sets ORDER = <number> at the top
+of its module. Modules run by ORDER (50 when not set), then by name.
 
 Modules whose name starts with "_" and the module named "mood" (the look lives there) are skipped.
 """
@@ -18,13 +21,15 @@ import importlib
 import pkgutil
 
 SKIP = {"mood"}
+DEFAULT_ORDER = 50
 
 
 def _parts(package_name):
     pkg = importlib.import_module(package_name)
     names = sorted(info.name for info in pkgutil.iter_modules(pkg.__path__)
                    if not info.ispkg and not info.name.startswith("_") and info.name not in SKIP)
-    return [importlib.import_module(f"{package_name}.{n}") for n in names]
+    mods = [importlib.import_module(f"{package_name}.{n}") for n in names]
+    return sorted(mods, key=lambda m: (getattr(m, "ORDER", DEFAULT_ORDER), m.__name__))
 
 
 class Category:

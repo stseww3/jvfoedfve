@@ -1,10 +1,13 @@
 # 接口：各包怎么接进总场景和总资源包
 
-状态：**第一版，可用。** 拿合并钥匙的人（S2）维护。框架代码已在总装分支，`obs` 总场景能从头生成
-（`build()` + 资源包 + 导出都通）。有异议在群里发【问题】点名 S2。
+状态：**第二版，可用。** 拿合并钥匙的人（S2）维护。框架代码已在总装分支，`obs` 总场景能从头生成
+（`build()` + 资源包 + 导出都通），`tools/check.py` 已可用。有异议在群里发【问题】点名 S2。
 
 对接只靠四样，都由 S2 维护：**色板** `build/scenes/obs/common/palette.py`、**占用表** `common/blocks.py`、
 **骨架** `common/skeleton.py`、**本接口**。要改前三样，群里提，A0 批。
+
+第二版相对第一版的改动（都不破坏已写的代码）：加了 `motion` 类别；`sky` 挪到最后铺；包内顺序用 `ORDER`；
+`build()` 可以带有默认值的额外参数（`version=`）；检查脚本的用法和查什么（第 6 节）；光线版本靠时间选（第 3 节）。
 
 ---
 
@@ -13,15 +16,14 @@
 ```
 build/scenes/obs/
   __init__.py      总场景：build() / build_models() / write_pack()（S2）
-  mood.py          转发 A2 的光（S2；改光改 sky/mood.py）
+  mood.py          转发 sky 的光（S2；改光改 sky/mood.py）
   common/          palette.py  blocks.py  skeleton.py  assembly.py（S2）
-  materials/ sky/ main/ site/ machines/ props/ interiors/     每个类别一个子包
+  materials/ site/ main/ machines/ interiors/ props/ motion/ sky/     每个类别一个子包
 ```
 
-- 七个类别子包：`materials`（方块材质）、`sky`（光与天空）、`main`（主楼）、`site`（场地）、`machines`（大型机械）、`props`（道具）、`interiors`（室内）。
-- 一个工作包 = 类别子包里的**一个模块**（`main/order.py`、`props/lamps.py`、`materials/stone.py` 这样）。
-- `motion`（动态和声音，A8）不进这七个子包：它是数据包函数加动画贴图，走 A1 的贴图和它自己的数据包。
-- 只改自己领的卡对应类别的文件夹。公共四样找 S2。代码和注释用英文。
+- 八个类别子包，和 `PIPELINE.md` 第 4.2 节一致：`materials`（方块材质）、`site`（场地）、`main`（主楼）、`machines`（大型机械）、`interiors`（室内）、`props`（道具）、`motion`（动态和声音）、`sky`（光与天空）。
+- 一个工作包 = 类别子包里的**一个模块**，模块名就是卡片的包名（`props/lamps.py`、`materials/ashlar.py`、`interiors/starhall.py`；包名里的 `-` 写成 `_`）。
+- 只改自己领的卡对应的模块。公共四样和类别子包的 `__init__.py` 找 S2。代码和注释用英文。
 
 ## 2. 一个工作包实现三个函数（都可选）
 
@@ -31,74 +33,95 @@ def build(canvas, origin=(0, 0, 0)) -> int:
        返回这次放了多少展示实体（给实体预算）。只放方块就返回 0。"""
 
 def models() -> dict:            # {name: artkit.models.Model}
-    """本包的自绘展示实体模型。名字必须以本类别前缀开头（§4），不许和别人重名。没有就不定义。"""
+    """本包的自绘展示实体模型。键就是模型名，必须以本类别前缀开头（§4），不许和别人重名。没有就不定义。"""
 
 def pack(pack_dir) -> list:      # 一行行的说明文字
-    """把本包自己的资源包文件写进 pack_dir，只写本类别命名空间/子目录下的（§4）。
+    """把本包自己的资源包文件写进 pack_dir，只写本类别的地盘（§4）。
        展示实体的物品模型不在这里写（由 models() 统一出）。没有就不定义。"""
 ```
 
 - `canvas` 是 `artkit.canvas.Canvas`：`canvas.set(x,y,z,state)` 放方块（state 是方块状态串或 `(x,y,z)->串`）；
   `canvas.add_entity(x,y,z, M.display(model, scale=, yaw=, turns=, brightness=))` 放展示实体。
+- **额外参数随便加，但要有默认值**：总场景只调 `build(canvas, origin)`。要比选的包写成 `build(canvas, origin=(0,0,0), version="a")`，测试场景里并排调各版本；评审定了哪一版，就把默认值改成那一版。内部想拆成 `build_<room>(c, origin, roles, *, version=...)` 这样的函数随意，模块级的 `build()` 调它就行。
 - 放方块只认占用表角色名：`from scenes.obs.common import blocks as B` → `B.ASHLAR_FINE.block`、`B.IRON_RIVETED.slab + "[type=top]"`、`B.PANELS["dial"]`。不直接写被重画方块的原名。
 - 取坐标只认骨架：`from scenes.obs.common import skeleton as S` → `S.pilaster_z(j)`、`S.WINDOW`、`S.DOME_CENTRE`、`S.east_wall_x(bay)`、`S.BUDGET`。
 - 取颜色只认色板：`from scenes.obs.common import palette as P` → `P.mat("iron")`、`P.colour("brass", 3)`。缺颜色群里向 A0 提，不自定义。
-- 最小例子：`props/lamps.py`（一个模型 + `build()` 摆两个）、`main/massing.py`（白模）、`materials/stone.py`（`pack()` 重画方块）。
+- 最小例子：`props/lamps.py`（一个模型 + `build()` 摆两个）、`main/massing.py`（白模）、`materials/stone.py`（`pack()` 重画方块）。它们是框架的演示，对应的卡交付时由做卡的人替换或删掉。
+- 数据包里的函数（`motion` 的循环）怎么交：等 `motion` 的细化稿出来再定，先别自己往数据包里写文件。
 
 ## 3. 怎么注册一个新包（不改共享列表，两个人各加一个包不冲突）
 
 **加一个包 = 在类别文件夹里加一个模块。** 类别子包用 `common/assembly.py` **自动发现**本文件夹里的所有模块，
 把它们的 `build/models/pack` 汇总。没有谁要改的“总列表”，所以两个人同时各加一个模块永不冲突。
 
-- 模块按名字排序执行；要排在别的包后面就把名字起靠后（如 `10_ground.py`、`20_walls.py`），或牵头人在细化稿里写明。
-- 名字以 `_` 开头的模块（放共用 helper，如 `props/_kit.py`）和 `mood` 模块不参与自动发现。
+- 包内顺序：两个包写同一格时后放的赢。要排在别的包后面，在模块顶上写 `ORDER = <数>`（不写是 50；先按 `ORDER`、再按模块名）。例：白模 `ORDER = 10`，立面 50，往壳子里搬的房间 `ORDER = 80`。
+- 名字以 `_` 开头的模块（放共用工具，如 `props/_kit.py`、`sky/_lightkit.py`）和 `mood` 模块不参与自动发现。
 - 类别子包的 `__init__.py` 是固定样板（`_cat = assembly.category(__name__)`，转发三个函数），别去改它，只加你的模块。
 
-总场景 `scenes/obs/__init__.py` 的 `LINES` 列出七个类别，按铺设顺序（材质、天空不放方块；场地先铺地，再主楼壳子，机械、室内，最后道具）。它的 `build()` 依次调各类别的 `build(c, ORIGIN=(0,0,0))`；`build_models()` 合并七个类别的模型（重名直接报错）；`write_pack()` 依次调各类别的 `pack()`。光在 `sky/mood.py`，`obs.BIOME` 默认 `obs_blue`（另有 `obs_deep`、`obs_glow`）。
+总场景 `scenes/obs/__init__.py` 的 `LINES` 是类别的铺设顺序：`materials`（不放方块）→ `site`（铺地）→ `main`（壳子）→ `machines` → `interiors` → `props` → `motion` → `sky`。**`sky` 最后**：它的隐形光源要等墙、玻璃、灯具都放完才知道落在哪一格，方块云要让开山体。所以测试场景想要光源，在自己的 `build()` 最后调一次 `scenes.obs.sky.build(c, origin)`。
+
+总场景的 `build()` 依次调各类别的 `build(c, ORIGIN=(0,0,0))`；`build_models()` 合并各类别的模型（重名直接报错）；`write_pack()` 依次调各类别的 `pack()`。
+
+光：生物群系只有一个，`obs.BIOME = "obs_blue"`。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡；它合并之前，总装里是 S2 按方案写的占位。
 
 ## 4. 不撞车（两个包不许写同一个文件；检查脚本会查）
 
-- **模型名加类别前缀**：`materials`→`mat_`、`sky`→`sky_`、`main`→`bld_`、`props`→`prop_`、`site`→`site_`、`machines`→`mach_`、`interiors`→`int_`。
+- **模型名加类别前缀**：`materials`→`mat_`、`sky`→`sky_`、`main`→`bld_`、`props`→`prop_`、`site`→`site_`、`machines`→`mach_`、`interiors`→`int_`、`motion`→`mot_`。
   模型名唯一 ⇒ `assets/c164/…` 下的物品模型/贴图文件唯一；重名 `build_models()` 抛错，`check.py` 也查。
-- **资源包里谁写哪**：
-  - `materials`(A1)：方块贴图和重定向——`assets/minecraft/blockstates/*`、`assets/minecraft/models/block/*`、`assets/c164/textures/block/*`、替换的原版贴图。**只有 A1 写这些。**
-  - `sky`(A2)：`assets/minecraft/textures/environment/*`（彗星、云、星）。光的 biome/timeline 在 `sky/mood.py`（那是数据包，驱动器单独处理，不在 `pack()` 里）。
-  - 其余五个类别：`pack()` 一般不写文件，只用 A1 的方块和自己的展示实体模型。
-- 要一种新方块材质/新色阶：群里点名 A1 和 S2，S2 改占用表/色板、A1 画。不自己占方块、不自己建色板。
+- **资源包里谁写哪**（`check.py` 里的 `OWNED` 表；写进别的类别的地盘判不过，写到表里没有的地方给警告，找 S2 加）：
+  - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的那个文件夹）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些。**
+  - `sky`：`assets/minecraft/textures/environment/*`、`assets/c164/textures/environment/*`（彗星、云、星）。光的 biome/timeline 在 `sky/mood.py`（那是数据包，驱动器单独处理，不在 `pack()` 里）。
+  - `motion`：`assets/c164/sounds/*`、`assets/c164/sounds.json`、`assets/c164/particles/*`、`assets/c164/textures/particle/*`。
+  - 其余类别：`pack()` 一般不写文件，只用 `materials` 的方块和自己的展示实体模型。
+- 要一种新方块材质/新色阶：群里点名 materials 的牵头人和 S2，A0 批，S2 改占用表/色板，再画。不自己占方块、不自己建色板。
 
 ## 5. 每个包的测试场景
 
-一个包要能单独出图验收。约定（`PIPELINE.md` 4.2 的命名 `obs_<类别缩写>_<包名>`，缩写 mat/sky/main/site/mach/props/int）：
+一个包要能单独出图验收。命名按 `PIPELINE.md` 第 4.2 节：`obs_<缩写>_<包名>`，缩写 mat/sky/main/site/mach/props/int/mot。
 
 ```
 build/scenes/obs_<缩写>_<包名>/
-  __init__.py     def build(): 建 Canvas，调本包的 build(c,(0,0,0))（或本类别的），返回 c；设 BIOME="obs_blue"
+  __init__.py     def build(): 建 Canvas，调本包的 build(c,(0,0,0))（比选就并排调各版本），返回 c；BIOME = "obs_blue"
+                  def write_pack(pack_dir): 调本包的 pack()；要用重画的方块就再调 scenes.obs.materials.pack(pack_dir)
+  props.py        def build_models(): return <本包>.models()        # 有模型才写；场景里用到别的包的模型也并进来
   mood.py         from scenes.obs.sky.mood import BIOMES, TIMELINES    # 一行，复用总装的光
   shots.json      [{"name":.., "pos":[x,y,z], "look_at":[x,y,z], "time": 可省}]  视角至少含一远、一近、一和相邻东西同框
-  props.py        （可选，要出模型陈列时）def build_models(): return <本包>.models()；GALLERY 照 scenes/skyobs/props.py
 ```
 
-- 离线出图（自查，谁都能跑；**在管理员电脑上**经 `bin/job.py`，云端那台 4 核机只改代码，不出图不生成大场景）：
-  `render.py obs_<缩写>_<包名> --shots scenes/obs_<缩写>_<包名>/shots.json --out '@out/...'`。
-- 真机图、把总场景摆进测试服：拿出图钥匙的人（S1）统一跑，各包别自己开游戏。
-- 材质板、入口样板段、各房间盒子场景都按这个来；和 S2 对齐后建。
+- 只想陈列模型、不摆场景：不写 `build()`，在 `props.py` 里再加 `GALLERY`（照 `scenes/skyobs/props.py`）；真机上的陈列由 S1 用 `gallery.py` 摆。`check.py` 对这种场景只查模型和资源包。
+- 离线出图（自查，谁都能跑；**在管理员电脑上**经 `bin\job.py`，云端那台 4 核机只改代码，不出图不生成大场景）：
+  `render.py obs_<缩写>_<包名> --shots scenes/obs_<缩写>_<包名>/shots.json --out '@out/rt/<提交前七位>'`。
+- 真机图、把总场景摆进测试服：拿出图钥匙的人（S1）统一跑，各包别自己开游戏。地块的 y 一律 200（云的高度是世界坐标）。
 
 ## 6. 交付前自查，交付消息
 
-交付前自己先跑技术检查（`tools/check.py`，在管理员电脑上经 `bin/job.py`；云端只做语法级轻检）：
+交付前自己跑技术检查。在管理员电脑上，和别的脚本一样经 `bin\job.py`（脚本路径相对 `build`，所以带 `..\`）：
 
 ```
-python3 tools/check.py --scene obs                       # 从头生成、色板外颜色、资源包文件冲突、实体预算
-python3 tools/check.py --scene obs_<缩写>_<包名>          # 查你的包
+.\venv\Scripts\python.exe bin\job.py <代号> -- ..\tools\check.py --scene obs_<缩写>_<包名>
 ```
 
-过了按 `PIPELINE.md` 4.3 发群，点名 S2：
+不用游戏、不出图，测试场景几秒钟。每项给 PASS / WARN / FAIL，有 FAIL 就别交付（退出码 1）：
+
+| 项 | 查什么 | 不过是 |
+| --- | --- | --- |
+| regen | 场景、模型、资源包、数据包、光能不能从头生成 | FAIL |
+| strays | 生成的每张贴图有没有色板外的颜色（列出颜色、像素数、最近的色板色；天空贴图是加色的，不查） | FAIL |
+| conflicts | 两个包有没有写同一个文件；文件在不在本类别的地盘；模型名有没有类别前缀 | FAIL（表里没有的地方 WARN） |
+| repaint | 被替换的方块状态是不是都在占用表的重画名单里；替换原版模型/贴图有没有连带改了表外的方块 | FAIL |
+| blocks | 放下的方块是不是都在占用表里 | WARN（找 S2 加表，或换表里的方块） |
+| entities | 每个展示实体的模型资源包里有没有；实体总数和类别预算；是不是 16 像素一格 | 缺模型、超预算 FAIL；像素密度 WARN |
+| views | 按 `shots.json` 数每个视角里的展示实体（不算墙的遮挡），对照单视角上限 | WARN |
+
+`--json <文件>` 另存一份机器可读的结果；`--keep <目录>` 留下生成的资源包和数据包。S2 合并前对你的测试场景和总场景 `obs` 各复跑一次。脚本查不了的（门能不能走人、层高、文字、被重画的方块有没有按原意用）由做技检的人看图看代码。
+
+过了按 `PIPELINE.md` 第 4.3 节发群，点名 S2：
 
 ```
 【交付】<类别>/<包名> <分支> <提交前七位> 自查图：<文件名>
 ```
 
-S2 复跑检查，过了合并进总装分支、发【合并】点名出图工位和一个交叉看的人；不过发【技检】退回写明原因，点名做包的人。
+S2 复跑检查，过了合并进总装分支、发【合并】点名出图工位和一个交叉看的人；不过发【技检】退回写明原因和怎么复现，点名做包的人。卡片和细化稿是纯文档，不用技检，推上去点名 S2 直接合。
 
 ## 7. 实体预算（骨架 `S.BUDGET`，R1 0.4）
 
