@@ -21,11 +21,16 @@ def main():
     ap.add_argument("scene")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
-    props = importlib.import_module(f"scenes.{args.scene}.props")
-    built = props.build_models()
+    scene_mod = importlib.import_module(f"scenes.{args.scene}")
+    # a multi-line scene (obs) collects its models at the scene level; a single scene keeps them in
+    # its props module. Prefer the scene-level build_models(), fall back to scenes.<scene>.props.
+    builder = getattr(scene_mod, "build_models", None)
+    if builder is None:
+        builder = importlib.import_module(f"scenes.{args.scene}.props").build_models
+    built = builder()
     for info in M.write_pack(args.out, list(built.values())):
         print(f"{info['name']:18s} {info['elements']:3d} elements, {info['rects']:3d} texture patches, sheet {info['texture']}px")
-    extra = getattr(importlib.import_module(f"scenes.{args.scene}"), "write_pack", None)
+    extra = getattr(scene_mod, "write_pack", None)
     if extra:
         for line in extra(args.out):
             print(line)

@@ -38,9 +38,13 @@ DATA = "data/minecraft/"
 
 def write_pack(scene_name, out):
     """The same files makepack.py writes."""
-    props = importlib.import_module(f"scenes.{scene_name}.props")
-    M.write_pack(out, list(props.build_models().values()))
-    extra = getattr(importlib.import_module(f"scenes.{scene_name}"), "write_pack", None)
+    scene_mod = importlib.import_module(f"scenes.{scene_name}")
+    # prefer a scene-level build_models() (the multi-line obs scene), fall back to props (skyobs)
+    builder = getattr(scene_mod, "build_models", None)
+    if builder is None:
+        builder = importlib.import_module(f"scenes.{scene_name}.props").build_models
+    M.write_pack(out, list(builder().values()))
+    extra = getattr(scene_mod, "write_pack", None)
     if extra:
         extra(out)
 
