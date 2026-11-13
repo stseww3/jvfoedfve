@@ -145,9 +145,16 @@ P('[OL-B] 量法自己的检查')
 ctl = [(d, s) for d in have for s in d['segs'] if s['arm'] == 'ctl']
 ctl_n = sum(sum(s['n']) for d, s in ctl)
 ctl_flip = sum(sum(s['flip']) for d, s in ctl)
-ctl_bad = [f'{d["matchId"]}@{s["T"]}' for d, s in ctl if sum(s['flip']) or (s.get('ctlDiff') or []) or s.get('err') or s.get('cloneErr')]
+# clone.js 里登记为「每次调用自己清零的临时缓冲区」的字段：平时原对象和拷贝共用同一块（比不出差别）；
+# 克隆以后才第一次分配的（bfsCost：真人发船寻路用，每次调用开头整块清零）两边各有一块，内容是各自最后一次调用留下的，不是对局状态。
+SCRATCH = {'cand', 'frontCopy', 'mark', 'scratchList', 'tgt', 'bfsCost', 'spawnTiles'}
+ctl_bad = [f'{d["matchId"]}@{s["T"]}' for d, s in ctl if sum(s['flip']) or [k for k in (s.get('ctlDiff') or []) if k not in SCRATCH] or s.get('err') or s.get('cloneErr')]
+ctl_scr = [f'{d["matchId"]}@{s["T"]}（{" ".join(s["ctlDiff"])}）' for d, s in ctl if (s.get('ctlDiff') or []) and all(k in SCRATCH for k in s['ctlDiff'])]
 P(f'  1. 对照臂（拷贝原样照录像走）：{len(ctl)} 份拷贝，别人的陆攻 {ctl_n} 条逐条和参照重演比，翻面 {ctl_flip} 条；'
-  f'段末全部字段逐个比，有不等的 {len(ctl_bad)} 份' + (('：' + ' '.join(ctl_bad[:10])) if ctl_bad else ''))
+  f'段末全部字段逐个比，对局状态有不等的 {len(ctl_bad)} 份' + (('：' + ' '.join(ctl_bad[:10])) if ctl_bad else '')
+  + f'；只有临时缓冲区不等的 {len(ctl_scr)} 份' + (('：' + ' '.join(ctl_scr[:10])) if ctl_scr else '')
+  + '（真人发船寻路的那块缓冲区克隆以后才第一次分配，两边各有一块；每次调用开头整块清零，不带对局状态）')
+R['OL_CTL_SCRATCH'] = str(len(ctl_scr))
 R['OL_CTL_N'] = str(len(ctl))
 R['OL_CTL_CMDS'] = str(ctl_n)
 R['OL_CTL_FLIP'] = str(ctl_flip)
@@ -170,7 +177,8 @@ for d in rows:
     if not c:
         continue
     cp_n += 1
-    if c.get('val') == d.get('val') and c.get('events') == d.get('events') and c.get('endTick') == d.get('endTick'):
+    # cloneprobe 的事件表只存了 [拍, 哪一种]
+    if c.get('val') == d.get('val') and c.get('events') == [e[:2] for e in d.get('events') or []] and c.get('endTick') == d.get('endTick'):
         cp_ok += 1
     else:
         cp_bad.append(d['matchId'])
@@ -195,10 +203,11 @@ if CF and CF.get('rows'):
         if not r:
             continue
         n += 1
-        if r.get('own') == d['own']:
+        # cfprobe 逐局行里 ownProbe 是那一遍重演认出来的本编队号数（own 是和 xtruth 的名单取交集以后的）
+        if r.get('ownProbe') == d['own']:
             own_ok += 1
         else:
-            diff.append(f'{d["matchId"]} 本编队号数 {r.get("own")}→{d["own"]}')
+            diff.append(f'{d["matchId"]} 本编队号数 {r.get("ownProbe")}→{d["own"]}')
         for arm in ('idle', 'wj'):
             s = seg(d, 630, arm)
             mine = [[s['n'][k], s['flip'][k], s['down'][k], s['up'][k]] for k in range(3)] if s else None
@@ -212,7 +221,7 @@ if CF and CF.get('rows'):
       f'三个窗的条数、翻面数、两个方向全部相同：不下指令臂 {okk["idle"]} 份、推迟臂 {okk["wj"]} 份')
     if diff:
         P('     不同的：' + '；'.join(diff[:12]))
-    P(f'     只在 cfprobe 里的：{" ".join(only_cf) or "无"}；只在这边的（cfprobe 不收不到 900 拍的录像）：{" ".join(only_me) or "无"}')
+    P(f'     只在 cfprobe 里的：{" ".join(only_cf) or "无"}；只在这边的（cfprobe 的汇总不收录像不到 900 拍、对不上日志或者没有野人的局）：{" ".join(only_me) or "无"}')
     R['OL_CF_N'] = str(n)
     R['OL_CF_IDLE_OK'] = str(okk['idle'])
     R['OL_CF_WJ_OK'] = str(okk['wj'])
@@ -251,6 +260,20 @@ for T in SECTIONS:
         ratio.append('—' if not a or not b else f'{a / b:.1f}')
         R[f'OL_RATIO_{T}_{k}'] = ratio[-1]
     P(f'    不下指令 ÷ 地板：{" | ".join(ratio)}')
+# 哪个断面翻面最多（逐窗、逐臂），以及两个派生的数
+for k in range(3):
+    tops = []
+    for arm, an in ARMS:
+        best = max(SECTIONS, key=lambda T: J['main'][T][arm][k]['share'] or 0)
+        tops.append(f'{an} t={best}（{pc(J["main"][best][arm][k]["flipped"], J["main"][best][arm][k]["n"])}）')
+        R[f'OL_TOP_{arm.upper()}_{k}'] = f't={best}'
+    P(f'  断面后 {WN[k]} 拍翻面占比最高的断面：' + '；'.join(tops))
+x = max((J['main'][T]['wj'][k]['share'] or 0) for T in SECTIONS for k in range(3) if not (T == 630 and k == 2))
+R['OL_WJ_OTHER_MAX'] = f'{100 * x:.1f}%'
+P(f'  地板臂：t=630 断面 630~870 窗 {pc(J["main"][630]["wj"][2]["flipped"], J["main"][630]["wj"][2]["n"])}；别的断面、别的窗最高 {100 * x:.1f}%')
+x = max((J['main'][T][arm][k]['share'] or 0) for T in SECTIONS if T != 630 for arm, an in ARMS for k in range(2))
+R['OL_OTHER_MAX_630'] = f'{100 * x:.1f}%'
+P(f'  t=0 / 1500 / 4284 三个断面，两条臂到断面后 630 拍为止的两个窗，翻面占比最高 {100 * x:.1f}%')
 P()
 
 # ---------- [OL-D]
@@ -309,7 +332,46 @@ for T in SECTIONS:
 P()
 
 # ---------- [OL-G]
-P('[OL-G] 逐份录像（不下指令臂；每个断面三个窗的 翻面/条数）')
+P('[OL-G] 两种过线办法各放行哪些「断面 × 窗」（4 个断面 × 3 个窗 = 12 格；用 [OL-C] 的合计占比，格名后面是 不下指令臂 / 地板臂 的翻面占比）')
+
+
+def cell(T, k):
+    a, b = J['main'][T]['idle'][k], J['main'][T]['wj'][k]
+    return f't={T} {WN[k]}（{pc(a["flipped"], a["n"])} / {pc(b["flipped"], b["n"])}）'
+
+
+GRID = [(T, k) for T in SECTIONS for k in range(3)]
+rel_pass = [(T, k) for T, k in GRID if J['main'][T]['wj'][k]['flipped'] and J['main'][T]['idle'][k]['share'] / J['main'][T]['wj'][k]['share'] <= 2]
+rel_na = [(T, k) for T, k in GRID if not J['main'][T]['wj'][k]['flipped']]
+rel_fail = [(T, k) for T, k in GRID if (T, k) not in rel_pass and (T, k) not in rel_na]
+P('  办法一（相对）：不下指令臂的翻面占比 ÷ 地板臂的 ≤ 2')
+P(f'    放行 {len(rel_pass)} 格：' + ('；'.join(cell(T, k) for T, k in rel_pass) or '无'))
+P(f'    拦下 {len(rel_fail)} 格：' + ('；'.join(cell(T, k) for T, k in rel_fail) or '无'))
+P(f'    算不了（地板臂一条都没翻）{len(rel_na)} 格：' + ('；'.join(cell(T, k) for T, k in rel_na) or '无'))
+R['OL_REL_PASS_N'] = str(len(rel_pass))
+R['OL_REL_FAIL_N'] = str(len(rel_fail))
+R['OL_REL_NA_N'] = str(len(rel_na))
+if rel_pass:
+    x = max(J['main'][T]['idle'][k]['share'] for T, k in rel_pass)
+    R['OL_REL_PASS_MAXIDLE'] = f'{100 * x:.1f}%'
+    P(f'    放行的格里不下指令臂翻面占比最高 {100 * x:.1f}%')
+if rel_fail:
+    x = min(J['main'][T]['idle'][k]['share'] for T, k in rel_fail)
+    R['OL_REL_FAIL_MINIDLE'] = f'{100 * x:.1f}%'
+    P(f'    拦下的格里不下指令臂翻面占比最低 {100 * x:.1f}%')
+P('  办法二（绝对）：翻面占比不超过一条上限')
+for cap in (2, 5, 10):
+    cc = []
+    for arm, an in ARMS:
+        over = [(T, k) for T, k in GRID if 100 * (J['main'][T][arm][k]['share'] or 0) > cap]
+        R[f'OL_ABS{cap}_{arm.upper()}_OVER_N'] = str(len(over))
+        R[f'OL_ABS{cap}_{arm.upper()}_OVER'] = '、'.join(f't={T} 的 {WN[k]}' for T, k in over) or '无'
+        cc.append(f'{an}超过的 {len(over)} 格（' + ('、'.join(f't={T} {WN[k]}' for T, k in over) or '无') + '）')
+    P(f'    上限 {cap}%：' + '；'.join(cc))
+P()
+
+# ---------- [OL-H]
+P('[OL-H] 逐份录像（不下指令臂；每个断面三个窗的 翻面/条数）')
 P('  录像 | 档 | 真人 | 本编队 | 结束拍 | t=0 | t=630 | t=1500 | t=4284')
 for d in have:
     cells = []
@@ -319,7 +381,19 @@ for d in have:
     P(f'  {d["matchId"]} | {cohort.get(d["matchId"], "?")} | {d["H"]} | {d["own"]} | {d["endTick"]} | ' + ' | '.join(cells))
 P()
 P('读数时的限制：')
-P('  1. 两条臂都是「把本编队的历史指令拿掉 / 挪一下」，不是任何打法；本编队换成别的走法，翻面只会更多（cfprobe [CF-F] 里带规则的臂在 t=630 断面上是这两条的 1.3~3 倍）。')
+rr = []
+if CF and CF.get('div'):
+    for rule in ('p0', 'p14', 'pj', 'ph'):
+        for base in ('wj', 'idle'):
+            for k in range(3):
+                x, y = CF['div'][rule][k], CF['div'][base][k]
+                if x['n'] and y['n'] and y['flipped']:
+                    rr.append((x['flipped'] / x['n']) / (y['flipped'] / y['n']))
+if rr:
+    R['OL_RULE_RATIO_MIN'] = f'{min(rr):.1f}'
+    R['OL_RULE_RATIO_MAX'] = f'{max(rr):.1f}'
+P('  1. 两条臂都是「把本编队的历史指令拿掉 / 挪一下」，不是任何打法；本编队换成带规则的走法，翻面更多'
+  + (f'（cfprobe [CF-F] 在 t=630 断面上量过四条带规则的臂：同一个窗里是这两条的 {min(rr):.1f}~{max(rr):.1f} 倍）。' if rr else '。'))
 P('  2. 翻面只数了别的真人的陆攻；船、捐款、别人的内置 AI 邻居的走法没有数。内置 AI 在模拟器里是闭环的（看到新局面会改走法），不算开环偏差。')
 P('  3. t=4284 断面以后别的真人剩得少，够 20 条的录像数见表；那一行的比例是少数几份录像撑起来的。')
 P('  4. 比的是参照重演（89 份录像里 86 份整局和真引擎全场一致 [FA-E]），不是真引擎。')

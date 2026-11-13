@@ -4,11 +4,13 @@
 # 进程里一局一局串行做，每拿到一个槽在时间预算内尽量多做几局；已有输出的跳过。跑完打印 OPENLOOP-BATCH-DONE。
 #
 #   bash c136-review/agents/R08/scripts/openloop_batch.sh
+#   （被时间上限杀掉的局留着 <局>.started 记号、下一轮会跳过；要重跑先删记号，再把上限放宽）
 #   → out/_run/openloop/<局>.json、<局>.plain.json；汇总见 openloop.py
 set -u
 # 统筹 0006 号广播：重计算最多 2 个槽
 export HEAVY_SLOTS=2
-export HEAVY_TIMEOUT=300
+# 一个 node 进程的时间上限（秒）。机器挤的时候长局一局就要几分钟：OPENLOOP_TIMEOUT=900 bash openloop_batch.sh
+export HEAVY_TIMEOUT=${OPENLOOP_TIMEOUT:-300}
 ROOT=/agent/repos/c136-r08
 A=c136-review/agents/R08
 cd "$ROOT" || exit 2
