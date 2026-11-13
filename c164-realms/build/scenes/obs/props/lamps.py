@@ -295,28 +295,26 @@ def models():
 
 
 # ---- placing -------------------------------------------------------------------------------------------
-def _name(kind):
-    return f"{kind}_{VERSION}" if kind in VERSIONED else kind
-
-
-def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), light=True, level=None, yaw=None, **opts):
+def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, light=True, level=None,
+          yaw=None, **opts):
     """Put one lamp into the scene; returns the number of display entities (1).
 
-    kind    "street", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off", "uplight";
-            "bracket", "cage" and "pendant" are the current VERSION, "bracket_b" asks for one outright.
-    pos     scene coordinates. A wall lamp: the point on the wall face where it is fixed, `facing`
-            the way that face looks. A standing lamp: the centre of its foot on the floor (`facing`
-            turns it; the uplight looks that way). A pendant: the point on the ceiling it hangs from.
-    light   offer the lamp's light source to A2's tool at the level A2 gave for this lamp, or at
-            `level`. A line that registers its own lights passes light=False.
+    kind     "street", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off", "uplight".
+             "bracket", "cage" and "pendant" come in two versions: `version` "a" or "b" picks one,
+             left out it is VERSION.
+    pos      scene coordinates. A wall lamp: the point on the wall face where it is fixed, `facing`
+             the way that face looks. A standing lamp: the centre of its foot on the floor (`facing`
+             turns it; the uplight looks that way). A pendant: the point on the ceiling it hangs from.
+    light    offer the lamp's light source to A2's tool at the level A2 gave for this lamp, or at
+             `level`. A line that registers its own lights passes light=False.
+    opts     go to artkit.models.display (brightness, view).
     Street lamps stand at least STREET_CLEARANCE blocks from a main wall face (A2).
     """
-    name = _name(kind)
+    name = f"{kind}_{version or VERSION}" if kind in VERSIONED else kind
     spec = SPEC[name]
     yaw = K.FACING[facing] if yaw is None else yaw
-    nbt_opts = dict(opts)
     n = K.put(canvas, _models()[PREFIX + name], pos, mount=spec["mount"], yaw=yaw,
-              scale=spec.get("scale", 1.0), origin=origin, **nbt_opts)
+              scale=spec.get("scale", 1.0), origin=origin, **opts)
     if name.startswith("signal"):
         canvas.entities[-1][3]["Tags"].append("c164_signal")
     if light and spec["light"] is not None:
@@ -349,7 +347,7 @@ def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None)
     return 1 + count
 
 
-def build(canvas, origin=(0, 0, 0)):
+def build(canvas, origin=(0, 0, 0), version=VERSION):
     """What this package places in the master scene itself: the pair of bracket lamps beside the
     entrance, on whatever front the main line has built there, and two street lamps on the court.
     Lamps elsewhere are placed by the line that builds the wall or the room, with place()."""
@@ -359,7 +357,7 @@ def build(canvas, origin=(0, 0, 0)):
         z = S.pilaster_z(k)
         x = K.east_face(canvas, 4, z, S.WALL_E, front + S.DEPTH_CORNICE, origin)
         if x is not None:
-            n += place(canvas, "bracket", (x, 4.0, z + 0.5), facing="east", origin=origin)
+            n += place(canvas, "bracket", (x, 4.0, z + 0.5), facing="east", origin=origin, version=version)
     for z in (-5.5, 6.5):                               # either side of the axis, clear of the front
         n += place(canvas, "street", (front + 1 + STREET_CLEARANCE + 0.5, S.GROUND, z), origin=origin)
     return n
