@@ -72,12 +72,21 @@ DISPLAYS = {"minecraft:item_display", "minecraft:block_display", "minecraft:text
 ADDITIVE = ("assets/minecraft/textures/environment/",)
 
 # INTERFACE 4: the resource-pack areas only one category writes. The longest match owns a path.
+# The blocks of the cloud sea are the one exception to "only materials paints blocks" (A0, 2026-11-14:
+# their colours are tuned with the light of the sky): their block states, their model folders and
+# the block pictures named sky_* are the sky's.
 OWNED = {
     "materials": ("assets/minecraft/", "assets/c164/textures/block/", "assets/c164/models/block/"),
-    "sky": ("assets/minecraft/textures/environment/", "assets/c164/textures/environment/"),
+    "sky": ("assets/minecraft/textures/environment/", "assets/c164/textures/environment/",
+            "assets/c164/textures/block/sky_",
+            *(f"assets/minecraft/blockstates/{b}.json" for b in B.CLOUD),
+            *(f"assets/c164/models/block/{b}/" for b in B.CLOUD)),
     "motion": ("assets/c164/sounds/", "assets/c164/sounds.json", "assets/c164/particles/",
                "assets/c164/textures/particle/"),
 }
+# Packages that dress the repainted blocks nobody has painted yet. A placeholder may stand in any
+# block's files; once the owner writes them too, the path is written twice and that fails.
+STANDINS = ("materials/respack_redirect",)
 
 
 class Report:
@@ -206,7 +215,7 @@ def owner_of(path):
 def conflicts(rep, got, name, work):
     """Every writer fills a folder of its own; a path that turns up in two of them is a conflict."""
     scene = got["scene"]
-    by_path, fails, warns, attributed = {}, [], [], {}
+    by_path, fails, warns, attributed, standing = {}, [], [], {}, {}
     ws = writers(scene, name, got["builder"])
     for i, (owner, cat, kind, fn) in enumerate(ws):
         d = os.path.join(work, f"writer-{i}")
@@ -231,7 +240,10 @@ def conflicts(rep, got, name, work):
                 continue
             own = owner_of(path)
             if own is not None and own != cat:
-                fails.append(f"{owner}: {path} lies in the area of {own} (INTERFACE 4)")
+                if owner in STANDINS:
+                    standing.setdefault(own, []).append(path)
+                else:
+                    fails.append(f"{owner}: {path} lies in the area of {own} (INTERFACE 4)")
             elif own is None and not (path.startswith(f"assets/{MODEL_NS}/")
                                       and os.path.basename(path).startswith(prefix or "\0")):
                 warns.append(f"{owner}: {path} is outside the category's folders; tell S2 so the table "
@@ -245,6 +257,8 @@ def conflicts(rep, got, name, work):
         warns += [f"{p} is in the pack but no package's models() or pack() wrote it" for p in stray_files]
     packages = sorted({w[0] for w in ws})
     summary = f"{len(packages)} packages write {len(by_path)} files"
+    for own, paths in sorted(standing.items()):
+        summary += f"; {len(paths)} files of {own} are placeholders of the stand-ins"
     if fails:
         rep.add("conflicts", "FAIL", summary + f": {len(fails)} problems", clip(fails) + clip(warns, 4))
     elif warns:
