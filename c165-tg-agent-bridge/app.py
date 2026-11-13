@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.1"
+VERSION = "3.4.2"
 
 
 def load_dotenv(path: Path) -> None:
@@ -212,18 +212,20 @@ MAIN_DUTY = f"""你是主控：子 agent 管理器，不陪用户聊天。管理
 
 MAIN_FIXED_FOOTER = (
     f"（{MAIN_TRIPLE_RULES}\n"
-    "补充铁律：收到【强制派生指令】必须 100% 完全按子 agent 要求的记忆与模型后台启动 Task，严禁删改或拒单；"
+    "• 查实时动作/改文件/命令/思考追踪：直接调 list_agents（已直接内嵌各聊天及 VM 活跃会话的实时追踪），或在终端跑 `python3 ~/.cursor/agent_trace.py panel \"<你的agent身份>\"`。\n"
+    "• 收到【强制派生指令】必须 100% 完全按子 agent 要求的记忆与模型后台启动 Task，严禁删改或拒单；"
     "手头操作做完立刻回到 read_chat 等下一批：这是用户的强制要求，严禁结束回合。）"
 )
 CHAT_FIXED_FOOTER = (
     "（【子agent防断连固定铁律】1. 严禁断开 MCP、严禁结束回合或告别！唯一允许退出条件是收到「身份已停用」。"
     "2. 回复用户用 send_message（reply_to 可引用 # 编号）；回复其他 agent 用 send_agent_message / send_group_message"
     "（若无实质新推进则直接不回，严禁客套收尾防死循环）。"
-    "3. 有文件改动随时 commit + push 到 GitHub。手头操作做完必须立刻再调 read_chat 等下一批！）"
+    "3. 跑命令期间若看到【📬 实时消息插播】，必须第一时间调 read_chat(wait_sec=0) 签收并优先回复！"
+    "4. 有文件改动随时 commit + push 到 GitHub。手头操作做完必须立刻再调 read_chat 等下一批！）"
 )
 READ_HINT = CHAT_FIXED_FOOTER
 MAIN_READ_HINT = (
-    "（用 send_message 给管理员汇报；开子 agent 务必带 run_in_background=true！\n"
+    "（用 send_message 给管理员汇报；开子 agent 务必带 run_in_background=true！查看各子 agent 实时动作追踪直接调 list_agents。\n"
     f"{MAIN_TRIPLE_RULES}\n"
     "收到【强制派生指令】必须 100% 完全按子 agent 要求的记忆与模型原样执行，严禁删改或拒单。"
     "处理完立刻再调 read_chat 等下一批：这是用户的强制要求，不要结束回合。）"
@@ -1048,6 +1050,23 @@ def cloud_heading(n: int) -> str:
     return f"📁 {cloud_tag(n)}（" + ("现在的主控管这里" if n == main_cloud() else "没有主控：子 agent 在原来的云端 agent 里") + "）"
 
 
+def unbound_vm_trace_lines(max_age_sec: float = 1800) -> list[str]:
+    """列出云端 VM 里正在活跃执行命令/改文件/思考但尚未绑定聊天编号的底层会话，避免主控漏看旧会话。"""
+    rows = store.q(
+        "SELECT * FROM agent_traces WHERE conv LIKE 'cid:%' AND updated_ts>? ORDER BY updated_ts DESC LIMIT 20",
+        (now() - max_age_sec,),
+    )
+    if not rows:
+        return []
+    out = ["🔎 VM 内其他活跃任务实时追踪（旧会话尚未跑过 /wait 绑定聊天号，一跑 /wait 或命中目录即自动归属）："]
+    for tr in rows:
+        label = PHASE_LABELS.get(tr["phase"], tr["phase"])
+        started = float(tr["started_ts"] or tr["updated_ts"] or now())
+        short_cid = tr["conv"][4:16]
+        out.append(f"  • 会话 {short_cid}…：{label}（已持续 {human_dur(now() - started)}）：{tr['summary']}")
+    return out
+
+
 def status_overview(scope: int = 0) -> str:
     """scope 给了就只列这个 cloud 的聊天（给主控看：别的 cloud 它管不了），否则按 cloud 分段列全部（给管理员看）。"""
     lines: list[str] = []
@@ -1057,6 +1076,9 @@ def status_overview(scope: int = 0) -> str:
     if info["agent"]:
         line += f"，第 {info['agent']['renew']} 棒"
     lines.append(line)
+    mt = trace_one_liner("main")
+    if mt:
+        lines.append("  追踪：" + mt)
     rows = open_convs()
     clouds = cloud_order(clouds_in_use())
     for n in [scope] if scope else clouds:
@@ -1069,6 +1091,7 @@ def status_overview(scope: int = 0) -> str:
     if others:
         counts = "、".join(f"{cloud_tag(n)} {sum(1 for r in rows if cloud_of(r) == n)} 个聊天" for n in others)
         lines.append(f"别的 cloud：{counts}。它们的子 agent 在别的云端 agent 里，你够不着，不归你管。")
+    lines += unbound_vm_trace_lines()
     closed = store.q("SELECT * FROM convs WHERE status='closed' ORDER BY num")
     if closed:
         lines.append("已关闭（记录保留）：" + "、".join(conv_tag(r) for r in closed))
@@ -3143,6 +3166,8 @@ async def t_send_agent_message(agent, args):
     srow = store.one("SELECT * FROM agent_dm_streaks WHERE pair=?", (pair,))
     if srow is None or now() - float(srow["ts"] or 0) > STREAK_WINDOW:
         streak = 1
+    elif srow["last_sender"] == me_id:
+        streak = int(srow["streak"] or 1)
     else:
         streak = int(srow["streak"] or 0) + 1
     store.run(
@@ -3586,6 +3611,11 @@ def render_trace_report(viewer_owner: int, is_main_or_admin: bool, target_conv: 
             for ev in ev_rows:
                 dur = f" ({ev['duration_ms'] / 1000:.1f}s)" if ev["duration_ms"] else ""
                 lines.append(f"    - {stamp(ev['ts'], '%H:%M:%S')} [{ev['phase'] or ev['event']}]{dur} {ev['summary']}")
+    if is_main_or_admin and not target_conv:
+        extra_vm = unbound_vm_trace_lines()
+        if extra_vm:
+            lines.append("")
+            lines.extend(extra_vm)
     return "\n".join(lines)
 
 
@@ -6495,6 +6525,35 @@ async def trace_check_active(agent: str = "") -> JSONResponse:
     return JSONResponse({"active": bool(is_open), "conv": row["conv"], "role": row["role"]})
 
 
+@app.get("/trace/peek")
+async def trace_peek_inbox(agent: str = "") -> JSONResponse:
+    """每次 AI 在 VM 内跑任何 Shell 命令（或工具）时自动顺带检查收件箱：有用户/主控/其他 Agent 消息立即插播提醒，不改 read_cursor 防丢信。"""
+    ident = agent.strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "has_messages": False})
+    conv = conv_row(arow["conv"])
+    if conv is None or conv["status"] != "open":
+        return JSONResponse({"ok": False, "has_messages": False})
+    rows = pending_rows(conv["id"], conv["read_cursor"])
+    if not rows or not any(r["wake"] for r in rows):
+        return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
+    # 过滤掉纯保活自动问答
+    real_rows = [r for r in rows if not is_keepalive(r)]
+    if not real_rows:
+        return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
+    rendered = render(real_rows[-15:], per_chat=15, clip=500)
+    return JSONResponse({
+        "ok": True,
+        "has_messages": True,
+        "conv": conv["id"],
+        "role": arow["role"],
+        "count": len(real_rows),
+        "max_id": real_rows[-1]["id"],
+        "rendered": rendered,
+    })
+
+
 @app.post("/trace/event")
 async def trace_post_event(request: Request) -> JSONResponse:
     try:
@@ -6506,6 +6565,7 @@ async def trace_post_event(request: Request) -> JSONResponse:
 
     agent_id = str(body.get("agent_id") or "").strip()
     cid = str(body.get("conversation_id") or "").strip()[:120]
+    conv_hint = parse_conv(str(body.get("conv_hint") or "").strip())
     event = str(body.get("event") or "update").strip()[:80]
     phase = str(body.get("phase") or "").strip()[:40]
     tool_name = str(body.get("tool_name") or "").strip()[:80]
@@ -6519,11 +6579,20 @@ async def trace_post_event(request: Request) -> JSONResponse:
 
     arow = agent_row(agent_id) if agent_id else None
     if arow is None and cid:
-        # 之前已经绑定过该 conversation_id 的，直接找到对应 conv
+        # 1) 之前已经绑定过该 conversation_id 的，直接找到对应 conv
         prev = store.one("SELECT conv, agent_id FROM agent_traces WHERE conversation_id=? AND conv NOT LIKE 'cid:%'", (cid,))
         if prev is not None:
             agent_id = prev["agent_id"]
             arow = agent_row(agent_id) if agent_id else None
+    if arow is None and cid and conv_hint and conv_hint != "main":
+        # 2) 从工作目录/命令/文件路径自动识别出聊天编号（如 c161、c164），若该聊天正处于活跃且未被其他会话占用则自动归属！
+        hconv = conv_row(conv_hint)
+        hagent = active_agent(hconv) if hconv is not None and hconv["status"] == "open" else None
+        if hagent is not None:
+            htr = store.one("SELECT conversation_id, updated_ts FROM agent_traces WHERE conv=?", (conv_hint,))
+            if htr is None or not htr["conversation_id"] or htr["conversation_id"] == cid or now() - float(htr["updated_ts"] or 0) > 1800:
+                arow = hagent
+                agent_id = hagent["id"]
 
     if arow is not None:
         conv_key = arow["conv"]
@@ -6571,7 +6640,11 @@ async def trace_post_event(request: Request) -> JSONResponse:
             "(SELECT id FROM agent_trace_events WHERE conv=? ORDER BY id DESC LIMIT 150)",
             (conv_key, conv_key),
         )
-    return JSONResponse({"ok": True, "conv": conv_key})
+    return JSONResponse({
+        "ok": True,
+        "conv": conv_key,
+        "bound_agent_id": arow["id"] if arow is not None else "",
+    })
 
 
 @app.get("/trace")
@@ -6590,6 +6663,11 @@ async def trace_get(request: Request, chat: str = "", limit: int = 10) -> JSONRe
     target = parse_conv(chat) if chat else ""
     if target:
         trows = store.q("SELECT * FROM agent_traces WHERE conv=?", (target,))
+    elif allow_main:
+        trows = store.q(
+            "SELECT * FROM agent_traces WHERE conv NOT LIKE 'cid:%' OR updated_ts>? ORDER BY conv LIKE 'cid:%', conv",
+            (now() - 1800,),
+        )
     else:
         trows = store.q("SELECT * FROM agent_traces WHERE conv NOT LIKE 'cid:%' ORDER BY conv")
     items = []

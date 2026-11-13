@@ -122,10 +122,12 @@ async def run_core_tests() -> dict[str, str]:
     assert "【Agent私聊" in inbox_c2 and "请把新的表结构发我确认" in inbox_c2
     assert "【子agent防断连固定铁律】" in inbox_c2
 
-    # Trigger streak cap (AGENT_STREAK_LIMIT=4 in test env)
+    # Trigger alternating ping-pong streak cap (AGENT_STREAK_LIMIT=4 in test env)
     for i in range(4):
-        last_dm = await bridge.call_tool("send_agent_message", {"agent": a2, "to": "c1", "text": f"连发测试 #{i}"})
+        sender_a, target_c = (a2, "c1") if i % 2 == 0 else (a1, "c2")
+        last_dm = await bridge.call_tool("send_agent_message", {"agent": sender_a, "to": target_c, "text": f"连发测试 #{i}"})
     assert "防乒乓死循环保护" in text_of(last_dm)
+    bridge.reset_dm_streaks_for("c1")
 
     # 5. Pure-MCP Agent Group creation, targeted mentions, and group_history
     grp_res = await bridge.call_tool(
@@ -375,11 +377,40 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.1"
+        assert tdata["ok"] and tdata["version"] == "3.4.2"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
         assert len(c1_trace["recent_events"]) >= 4
+
+        # 5. Verify path-based auto-binding (conv_hint: /tmp/c2_work/ -> c2) AND auto inbox delivery on Shell postToolUse!
+        cid_c2 = "conv-uuid-auto-c2"
+        fire_hook({
+            "hook_event_name": "beforeShellExecution",
+            "conversation_id": cid_c2,
+            "command": "python3 /tmp/c2_work/migrate.py",
+            "cwd": "/tmp/c2_work",
+        })
+        # Now send an urgent message to c2 (from c1 via MCP) while c2 is running shell!
+        asyncio.run(bridge.call_tool(
+            "send_agent_message",
+            {"agent": ids["a1"], "to": "c2", "text": "紧急通知：迁移前请先备份 users 表！"},
+        ))
+        # When c2's arbitrary Shell command finishes, postToolUse MUST inject additional_context with the unread message!
+        shell_post = fire_hook({
+            "hook_event_name": "postToolUse",
+            "conversation_id": cid_c2,
+            "tool_name": "Shell",
+            "tool_input": {"command": "python3 /tmp/c2_work/migrate.py"},
+            "tool_output": "Migration step 1 done",
+            "duration": 1500,
+        })
+        assert "additional_context" in shell_post, f"Missing inbox alert on Shell postToolUse: {shell_post}"
+        assert "紧急通知：迁移前请先备份 users 表！" in shell_post["additional_context"]
+
+        # Verify Main's list_agents directly embeds c1 & c2 trace lines!
+        main_list_txt = text_of(asyncio.run(bridge.call_tool("list_agents", {"agent": ids["main"]})))
+        assert "追踪：" in main_list_txt and "migrate.py" in main_list_txt
 
         # External user's sub-agent MUST NOT see c1 in GET /trace!
         req_ext_sub = urllib.request.Request(

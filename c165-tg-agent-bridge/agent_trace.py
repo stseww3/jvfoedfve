@@ -38,6 +38,7 @@ HOOKS_PATH = CURSOR_DIR / "hooks.json"
 TERMINALS_DIR = CURSOR_DIR / "projects" / "agent" / "terminals"
 
 AGENT_RE = re.compile(r"\b([am]_[0-9a-f]{12,32})\b")
+CONV_HINT_RE = re.compile(r"(?<![A-Za-z0-9])(c[1-9]\d{0,3})(?=[_\-/.\s]|$)", re.I)
 SECRET_PATTERNS = [
     (re.compile(r"\b([am]_[0-9a-f]{6})[0-9a-f]{6,26}\b"), r"\1***"),
     (re.compile(r"\btgb_[A-Za-z0-9_\-]{8,}\b"), "tgb_***"),
@@ -178,6 +179,45 @@ def extract_agent_id(payload: dict[str, Any]) -> str:
     return ""
 
 
+def extract_conv_hint(payload: dict[str, Any], ti: dict[str, Any]) -> str:
+    """从工作目录、文件路径或命令参数里自动识别 c161 / c164 等聊天号，辅助把旧会话自动绑定回对应 agent。"""
+    texts: list[str] = []
+    for k in ("cwd", "file_path", "command"):
+        if isinstance(payload.get(k), str):
+            texts.append(payload[k])
+    for k in ("working_directory", "cwd", "path", "file_path", "target_file", "command"):
+        if isinstance(ti.get(k), str):
+            texts.append(ti[k])
+    for t in texts:
+        # 优先匹配路径组件里的聊天号（如 /jvfoedfve-c165/、/c161_audit/、/tmp/c164_）
+        for m in CONV_HINT_RE.finditer(t):
+            cand = m.group(1).lower()
+            num = int(cand[1:])
+            if 1 <= num <= 9999:
+                return cand
+    return ""
+
+
+def build_inbox_alert(bridge_url: str, agent_id: str) -> str:
+    """每次 Shell 命令（或文件/普通工具）跑完时毫秒级顺带查收各方新消息（TG用户 / 主控 / 其他Agent私聊与群聊）。"""
+    if not agent_id:
+        return ""
+    peek = get_json(
+        f"{bridge_url}/trace/peek?agent={urllib.parse.quote(agent_id)}",
+        timeout=0.9,
+    )
+    if not peek or not peek.get("has_messages"):
+        return ""
+    cnt = int(peek.get("count") or 1)
+    rendered = str(peek.get("rendered") or "").strip()
+    return (
+        f"【📬 实时消息插播：你刚才执行命令期间收到了 {cnt} 条未读新消息！】\n"
+        f"{rendered}\n\n"
+        f"⚡ 请立即调用 dais 的 `read_chat(agent=\"{agent_id}\", wait_sec=0)` 正式签收消息，"
+        "并用 `send_message`（回复用户）或 `send_agent_message` / `send_group_message`（回复其他 agent）优先处理回复，不要让对方久等！"
+    )
+
+
 def summarize_file_edit(payload: dict[str, Any], ti: dict[str, Any]) -> tuple[str, str]:
     path = (
         payload.get("file_path")
@@ -268,6 +308,7 @@ def handle_hook() -> int:
     ti = parse_json_maybe(payload.get("tool_input"))
     if not isinstance(ti, dict):
         ti = {}
+    conv_hint = extract_conv_hint(payload, ti)
 
     with StateLock() as st:
         if cid and found_agent:
@@ -430,11 +471,12 @@ def handle_hook() -> int:
                 st["sessions"].pop(k, None)
 
     if phase and (agent_id or cid):
-        post_json(
+        ev_resp = post_json(
             f"{bridge_url}/trace/event",
             {
                 "agent_id": agent_id,
                 "conversation_id": cid,
+                "conv_hint": conv_hint,
                 "event": event,
                 "phase": phase,
                 "tool_name": tool_name,
@@ -446,9 +488,27 @@ def handle_hook() -> int:
                 "ts": now_ts,
             },
         )
+        # 若服务端通过目录/命令里的 conv_hint 自动识别出了该会话的 agent_id，立刻写回本地映射！
+        bound_id = str((ev_resp or {}).get("bound_agent_id") or "").strip()
+        if bound_id and not agent_id and cid:
+            agent_id = bound_id
+            with StateLock() as st2:
+                st2["conv_to_agent"][cid] = bound_id
+                if cid in st2["sessions"]:
+                    st2["sessions"][cid]["agent_id"] = bound_id
 
     ensure_daemon()
-    print("{}")
+
+    # 每次运行任何 Shell 命令（或改文件等非 read_chat 工具）返回时，自动顺带收取各方未读消息并插播给 AI！
+    out_obj: dict[str, Any] = {}
+    if agent_id and event in ("postToolUse", "postToolUseFailure"):
+        is_dais_read = tool_name == "CallDynamicTool" and str(ti.get("toolName") or "") in ("read_chat", "join")
+        if not is_dais_read:
+            alert_txt = build_inbox_alert(bridge_url, agent_id)
+            if alert_txt:
+                out_obj["additional_context"] = alert_txt
+
+    print(json.dumps(out_obj, ensure_ascii=False))
     return 0
 
 
@@ -771,18 +831,37 @@ def main() -> int:
         return wait_loop(argv[1], url, max_sec)
     if cmd == "run":
         return run_wrapped(argv[1:])
-    if cmd == "status":
-        url = argv[1] if len(argv) > 1 and not argv[1].startswith("a_") and not argv[1].startswith("m_") else load_config()["bridge_url"]
+    if cmd in ("status", "panel"):
+        url = load_config()["bridge_url"]
         agent_hdr = os.environ.get("TG_AGENT_ID", "")
         for item in argv[1:]:
             if item.startswith(("a_", "m_")):
                 agent_hdr = item
+            elif item.startswith("http"):
+                url = item
+        if not agent_hdr and STATE_PATH.exists():
+            try:
+                st = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+                for v in (st.get("conv_to_agent") or {}).values():
+                    if str(v).startswith("m_"):
+                        agent_hdr = str(v)
+                        break
+            except Exception:
+                pass
         req = urllib.request.Request(f"{url.rstrip('/')}/trace", headers={"X-Agent": agent_hdr} if agent_hdr else {})
         try:
             with urllib.request.urlopen(req, timeout=3.0) as resp:
                 data = json.loads(resp.read().decode("utf-8", errors="replace"))
         except Exception as exc:
             data = {"error": str(exc)}
+        if cmd == "panel" and isinstance(data.get("traces"), list):
+            print(f"=== AI 实时动作追踪面板 (v{data.get('version', '?')}, 共 {len(data['traces'])} 条) ===")
+            for tr in data["traces"]:
+                stuck = " ⚠️疑似停滞!" if tr.get("suspected_stuck") else ""
+                print(f"• {tr['chat']} [{tr['name']}] ({tr['state']}) | {tr['phase']} {tr['elapsed_sec']}s | {tr['summary']}{stuck}")
+                for ev in tr.get("recent_events") or []:
+                    print(f"    - {ev['time']} [{ev['phase']}] {ev['summary']}")
+            return 0
         print(json.dumps(data, ensure_ascii=False, indent=2))
         return 0
     print(f"未知子命令: {cmd}", file=sys.stderr)
