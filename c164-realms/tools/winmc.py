@@ -18,7 +18,8 @@ The server listens on 127.0.0.1 only; the client is started offline and joins th
 
 The machine is somebody's desktop and has other work on its graphics card:
   - the client is not started unless MC_MIN_VRAM megabytes of video memory are free (default 2048);
-  - the game window is shown without the keyboard and put behind the other windows;
+  - the game window never becomes the active window, takes no mouse and no keyboard, and lies
+    behind the other windows (winctl.settle); pictures are taken from it where it is;
   - only processes whose program lives under MC_ROOT are ever stopped.
 
 Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), MC_VIEW (render
@@ -293,24 +294,32 @@ def client_up():
             raise SystemExit(3)
         for name in ("java", "jna", "lwjgl", "netty"):
             os.makedirs(os.path.join(CLIENT, "natives", name), exist_ok=True)
-        pid = W.start(client_command(), GAME, os.path.join(CLIENT, "client.log"))
+        pid = W.start(client_command(), GAME, os.path.join(CLIENT, "client.log"),
+                      env={**os.environ, **W.QUIET_ENV})
         with open(pid_file, "w") as fh:
             fh.write(str(pid))
-    stepped = False
-    for _ in range(240):
-        if not W.ours(pid, ROOT):
-            raise SystemExit(f"client ended; see {os.path.join(CLIENT, 'client.log')}")
+    # The window is looked for many times a second, so that it is out of the way within a moment
+    # of appearing; whether the camera player has joined is asked once a second.
+    seen, was_in_front = set(), False
+    end, ask_at = time.monotonic() + 300, 0.0
+    while time.monotonic() < end:
         for hwnd in W.game_windows(pid):
-            W.step_back(hwnd)
-            stepped = True
-        listed = answers()
-        if listed and CAM in listed:
-            time.sleep(2)
-            for hwnd in W.game_windows(pid):
-                W.step_back(hwnd)
-            print(f"{CAM} is online" + ("" if stepped else " (no window seen)"))
-            return
-        time.sleep(1)
+            if hwnd not in seen:
+                was_in_front = was_in_front or W.in_front(hwnd)
+            seen.add(hwnd)
+            W.settle(hwnd)
+        if time.monotonic() >= ask_at:
+            ask_at = time.monotonic() + 1.0
+            if not W.ours(pid, ROOT):
+                raise SystemExit(f"client ended; see {os.path.join(CLIENT, 'client.log')}")
+            listed = answers()
+            if listed and CAM in listed:
+                note = "" if seen else " (no window seen)"
+                if was_in_front:
+                    note += " (the window came up in front and was sent back)"
+                print(f"{CAM} is online{note}")
+                return
+        time.sleep(0.05)
     raise SystemExit(f"{CAM} did not join; see {os.path.join(CLIENT, 'client.log')}")
 
 
@@ -336,8 +345,10 @@ def status():
     print("server: " + (listed.strip() if listed is not None else "no answer"))
     pid = running(os.path.join(CLIENT, "client.pid"))
     if pid:
-        sizes = [W.client_size(h) for h in W.game_windows(pid)]
-        print(f"client: process {pid}, windows {sizes}")
+        windows = W.game_windows(pid)
+        quiet = all(W.settle(h) for h in windows)
+        print(f"client: process {pid}, windows {[W.client_size(h) for h in windows]}, "
+              + ("out of the way" if quiet else "IN FRONT"))
     else:
         print("client: not running")
     gpu()

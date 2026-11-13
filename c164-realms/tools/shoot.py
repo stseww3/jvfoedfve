@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Take in-game pictures: move the camera player with /tp over RCON, then grab the client's X display.
+"""Take in-game pictures: move the camera player with /tp over RCON, then grab what the client shows
+(its X display on Linux, its window on Windows).
 
     shoot.py --pw-file <server>/.rcon_pw --out <dir> shots.json
 
@@ -55,6 +56,8 @@ def camera(args):
     windows = winctl.game_windows(pid)
     if not windows:
         raise SystemExit("the client has no window")
+
+    winctl.settle(windows[0])
 
     def take(path):
         got = winctl.grab(windows[0])

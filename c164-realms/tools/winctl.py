@@ -20,15 +20,19 @@ try:
 except (AttributeError, OSError):
     pass
 
-WM_CLOSE, WM_KEYDOWN, WM_KEYUP = 0x0010, 0x0100, 0x0101
+WM_CLOSE = 0x0010
 SW_SHOWNOACTIVATE, SW_MINIMIZE = 4, 6
 HWND_BOTTOM = 1
 SWP_NOSIZE, SWP_NOMOVE, SWP_NOACTIVATE = 0x0001, 0x0002, 0x0010
+GWL_EXSTYLE = -20
+WS_EX_NOACTIVATE = 0x08000000
 PW_CLIENTONLY, PW_RENDERFULLCONTENT = 0x1, 0x2
 PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_TERMINATE = 0x1000, 0x0001
 STILL_ACTIVE = 259
-# virtual key and scan code
-KEYS = {"F1": (0x70, 0x3B), "F2": (0x71, 0x3C)}
+
+# What the client is started with so that its window library (SDL) shows and raises the window
+# without making it the active one.
+QUIET_ENV = {"SDL_WINDOW_ACTIVATE_WHEN_SHOWN": "0", "SDL_WINDOW_ACTIVATE_WHEN_RAISED": "0"}
 
 
 class BITMAPINFOHEADER(ctypes.Structure):
@@ -65,6 +69,12 @@ user32.SetWindowPos.argtypes = [wintypes.HWND, wintypes.HWND, ctypes.c_int, ctyp
                                 ctypes.c_int, wintypes.UINT]
 user32.GetForegroundWindow.restype = wintypes.HWND
 user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+user32.GetWindowLongPtrW.restype = ctypes.c_ssize_t
+user32.GetWindowLongPtrW.argtypes = [wintypes.HWND, ctypes.c_int]
+user32.SetWindowLongPtrW.restype = ctypes.c_ssize_t
+user32.SetWindowLongPtrW.argtypes = [wintypes.HWND, ctypes.c_int, ctypes.c_ssize_t]
+user32.EnableWindow.argtypes = [wintypes.HWND, wintypes.BOOL]
+user32.IsWindowEnabled.argtypes = [wintypes.HWND]
 kernel32.OpenProcess.restype = wintypes.HANDLE
 kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
 kernel32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
@@ -177,29 +187,35 @@ def grab(hwnd):
         user32.ReleaseDC(hwnd, window_dc)
 
 
-def step_back(hwnd):
-    """Keep the window drawn but out of the way: no keyboard, no mouse, behind the other windows.
+def in_front(hwnd):
+    return user32.GetForegroundWindow() == hwnd
 
-    A game window that holds the keyboard grabs the mouse as soon as a world is on screen. If it
-    is in front, minimising hands the keyboard to whatever was in front before; then it is shown
-    again without being activated. A minimised window would not draw at all.
+
+def settle(hwnd):
+    """Keep the window drawn but out of the way of whoever is working on the desktop: it cannot
+    become the active window, takes no mouse and no keyboard, and lies behind the other windows.
+    Safe to call again and again. Returns True when the window is not the one in front.
+
+    A game window that holds the keyboard grabs the mouse as soon as a world is on screen, so
+    it must never be the active one. The game acts on a key only while its window has the
+    keyboard, which means that nothing can be pressed in a settled window, the screenshot key
+    included: pictures are taken with grab().
     """
-    if user32.GetForegroundWindow() == hwnd:
+    style = user32.GetWindowLongPtrW(hwnd, GWL_EXSTYLE)
+    if not style & WS_EX_NOACTIVATE:
+        user32.SetWindowLongPtrW(hwnd, GWL_EXSTYLE, style | WS_EX_NOACTIVATE)
+    if user32.IsWindowEnabled(hwnd):
+        user32.EnableWindow(hwnd, False)
+    if in_front(hwnd):
+        # It became active before we got to it. Minimising hands the keyboard to the window that
+        # had it before.
         user32.ShowWindowAsync(hwnd, SW_MINIMIZE)
         time.sleep(0.5)
-    if user32.IsIconic(hwnd) or user32.GetForegroundWindow() != hwnd:
-        user32.ShowWindowAsync(hwnd, SW_SHOWNOACTIVATE)
+    if user32.IsIconic(hwnd):
+        user32.ShowWindowAsync(hwnd, SW_SHOWNOACTIVATE)        # a minimised window draws nothing
         time.sleep(0.3)
     user32.SetWindowPos(hwnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
-    return user32.GetForegroundWindow() != hwnd
-
-
-def press(hwnd, key):
-    """Press and release a key in the window by message; the window need not be in front."""
-    vk, scan = KEYS[key]
-    user32.PostMessageW(hwnd, WM_KEYDOWN, vk, 1 | (scan << 16))
-    time.sleep(0.06)
-    user32.PostMessageW(hwnd, WM_KEYUP, vk, 1 | (scan << 16) | (0xC0 << 24))
+    return not in_front(hwnd)
 
 
 def close(hwnd):
