@@ -43,6 +43,7 @@ BASE_GLASS = (B.WINDOW_LIT, B.WINDOW_DARK, B.WINDOW_LIT, B.WINDOW_LIT, B.WINDOW_
 CARD_LEVELS = (0, 5, 7, 8, 10, 12, 14)
 CARD_ROWS = ((28, STONE), (32, B.IRON_PLATE), (36, B.VERDIGRIS))
 CARD_STEP = 6
+CARD_Z = 44                          # the rows' middle: south of the strip, out of the wall's pictures
 POSTS_FROM = (40.0, -30.0)           # the "posts" camera stands here and looks north
 POST_DISTANCES = (30, 60, 90, 120, 160, 200)
 
@@ -109,7 +110,7 @@ def _lamps(c):
 def _cards(c):
     for x, block in CARD_ROWS:
         for i, level in enumerate(CARD_LEVELS):
-            z = (i - len(CARD_LEVELS) // 2) * CARD_STEP
+            z = CARD_Z + (i - len(CARD_LEVELS) // 2) * CARD_STEP
             c.set(x, 0, z, block)
             if level:
                 # one step up and east of the block: its east and top faces both read `level`
@@ -138,7 +139,7 @@ VIEWS = {   # name: (eye, looks at), scene coordinates
     "wall_side": ((12, EYE, 14), (0, 8, 0)),
     "wall_mid": ((44, EYE, 0), (0, 10, 0)),        # as far off as the stair head is from the main front
     "wall_far": ((90, EYE, 0), (0, 12, 0)),        # as far off as the cable station
-    "cards": ((47, 7, 0), (32, 0.5, 0)),
+    "cards": ((46, 8, CARD_Z), (32, 0.5, CARD_Z)),
     "posts": ((POSTS_FROM[0], EYE, POSTS_FROM[1]), (POSTS_FROM[0], 6, POSTS_FROM[1] - 100)),
     "west": ((-30, EYE, 0), (-130, 26, 0)),
     "comet": ((-30, EYE, 0), (-130, 110, 0)),
@@ -173,6 +174,7 @@ def build():
     c = Canvas()
     c.box(-8, S.PAVING_Y, -22, 96, S.PAVING_Y, 22, PAVING)
     c.box(34, S.PAVING_Y, -34, 46, S.PAVING_Y, -22, PAVING)
+    c.box(22, S.PAVING_Y, 22, 50, S.PAVING_Y, CARD_Z + 22, PAVING)
     _wall(c)
     _lamps(c)
     _cards(c)
