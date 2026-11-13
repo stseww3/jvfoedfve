@@ -22,7 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TPL = os.path.join(HERE, "council_src", "council.tpl.md")
 DST = os.path.join(ROOT, "reports", "COUNCIL-PROPOSAL.md")
-SOURCES = ["deathbank.json", "namepool.json", "cloneprobe.json", "openloop.json", "fixprobe.json"]
+SOURCES = ["deathbank.json", "namepool.json", "cloneprobe.json", "openloop.json", "fixprobe.json", "boatwhy.json"]
 KEY = re.compile(r"__([A-Z][A-Z0-9_]*?)__")
 
 

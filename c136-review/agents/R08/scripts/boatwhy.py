@@ -153,6 +153,11 @@ P(f'  两条来路：寻路的起点不是 water 的 {len(pathA)} 艘（其中 w
   f'航线是搜出来的 {sum(1 for x in pathA if x.get("br") == "search")} 艘）；'
   f'起点就是 water 的 {len(pathB)} 艘（其中航线是表里现成的 {sum(1 for x in pathB if x.get("br") == "table")} 艘；同一局里更早已经有船从同一个 water 发出、留下了一个点的航线的 {sum(1 for x in pathB if x["prev"])} 艘'
   + ('：' + '、'.join(f'{x["matchId"]} {x["t"]} 拍 #{x["p"]}（前一艘是 {x["prev"]}）' for x in pathB if x['prev']) if pathB else '') + '）')
+if pathA:
+    dA = [math.sqrt(x['coastDist2']) for x in pathA]
+    P(f'  来路一的 {len(pathA)} 艘：海岸表里离 water 最近的格在 {min(dA):.1f}~{max(dA):.1f} 格以外（中位 {sorted(dA)[len(dA) // 2]:.1f} 格）')
+    R['BW_PATH_A_DMIN'] = f'{min(dA):.1f}'
+    R['BW_PATH_A_DMAX'] = f'{max(dA):.1f}'
 decay = []
 for x in cmd:
     if not x['land']:
