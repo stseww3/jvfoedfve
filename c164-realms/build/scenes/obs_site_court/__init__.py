@@ -1,28 +1,35 @@
-"""Test scene for site/court (plan ART-PLAN 4): the front court paving, brass meridian and emblem,
-read against the main building's east facade so the V2 front axis composes. The main building is the
-A3 white-model demo (context only). sky.build() runs last for the light sources (none merged yet;
-the biome lights the scene for now), per INTERFACE section 5."""
+"""Test scene of the work package site/court (plan/packages/site/court.md).
+
+The court as it stands in the master scene: the terraces under it, the main building behind it
+(the white model, until the main line's shell is merged), the props line's lamps on it, and the sky
+line's light sources last. The lines are built whole, in the master scene's order, so the picture
+keeps up with them as their packages are merged.
+"""
 from artkit.canvas import Canvas
 
-from scenes.obs import main, site, sky
+from scenes.obs import main, materials, props, site, sky
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
+LINES = (site, main, props, sky)
 
 
 def build():
     c = Canvas()
-    site.build(c, (0, 0, 0))     # ground.py terraces + plaza.py (the court itself)
-    main.build(c, (0, 0, 0))     # context: the main building massing, for the V2 framing
-    sky.build(c, (0, 0, 0))      # light sources last (no sky package merged yet: a no-op for now)
+    for line in LINES:
+        line.build(c, (0, 0, 0))
     return c
 
 
 def build_models():
-    """Custom display-entity models the scene needs (render.py / makepack.py read this). The court
-    places none; the lines are merged so the context lines keep working if they add entities."""
     out = {}
-    for line in (main, site, sky):
+    for line in LINES:
         out.update(line.models() or {})
     return out
+
+
+def write_pack(pack_dir):
+    """The court paints nothing itself; it stands on the repainted blocks as the materials line has
+    them today (ashlar, brass inlay, cast iron)."""
+    return materials.pack(pack_dir)
