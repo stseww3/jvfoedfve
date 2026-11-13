@@ -35,13 +35,48 @@ def angles(pos, target):
     return yaw, pitch
 
 
+def camera(args):
+    """A function that saves what the client shows right now as a picture file.
+
+    On Linux the client has an X display of its own and the whole display is grabbed. On Windows
+    it is a window on a desktop in use: its picture is taken from the window itself, which works
+    while it sits behind other windows (not while it is minimised).
+    """
+    if os.name != "nt":
+        def take(path):
+            subprocess.run(["import", "-display", f":{args.display}", "-window", "root", path], check=True)
+        return take
+
+    import winctl
+    from PIL import Image
+
+    with open(os.path.join(args.root, "client26", "client.pid")) as fh:
+        pid = int(fh.read().strip())
+    windows = winctl.game_windows(pid)
+    if not windows:
+        raise SystemExit("the client has no window")
+
+    def take(path):
+        got = winctl.grab(windows[0])
+        if got is None:
+            raise SystemExit("the window gave no picture (minimised?)")
+        width, height, rows = got
+        picture = Image.frombuffer("RGBA", (width, height), rows, "raw", "BGRA", 0, 1).convert("RGB")
+        if picture.getextrema() in (((0, 0),) * 3, ((255, 255),) * 3):
+            raise SystemExit("the window gave an empty picture")
+        picture.save(path)
+    return take
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("shots")
     ap.add_argument("--pw-file", required=True)
     ap.add_argument("--rcon-port", type=int, default=25598)
     ap.add_argument("--player", default="C164Cam")
-    ap.add_argument("--display", default="164")
+    ap.add_argument("--display", default="164", help="X display number of the client (Linux)")
+    ap.add_argument("--root", default=os.environ.get("MC_ROOT", os.getcwd()),
+                    help="folder that holds client26/ (Windows, see winmc.py)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--settle", type=float, default=6.0, help="seconds to wait after each move")
     ap.add_argument("--first-settle", type=float, default=15.0, help="wait for the first shot (chunks have to load)")
@@ -56,6 +91,7 @@ def main():
         wanted = set(args.only.split(","))
         shots = [s for s in shots if s["name"] in wanted]
     os.makedirs(args.out, exist_ok=True)
+    take = camera(args)
 
     with open(args.pw_file) as fh:
         rc = Rcon(port=args.rcon_port, password=fh.read().strip())
@@ -82,8 +118,8 @@ def main():
         rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
         time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
         path = os.path.join(args.out, shot["name"] + ".png")
-        subprocess.run(["import", "-display", f":{args.display}", "-window", "root", path], check=True)
-        print(path)
+        take(path)
+        print(path, flush=True)
     rc.close()
 
 
