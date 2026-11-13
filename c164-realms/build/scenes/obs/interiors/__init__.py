@@ -1,18 +1,33 @@
-"""Interiors (L7 / plan section 8): the five rooms of the observatory.
+"""A7 interiors category (plan ART-PLAN 8). The five first-pass rooms: the star hall, the great dome
+room, the chart room, the time room, the engine-house floor. Each: one star piece, three layers of
+small pieces (wall, surface, floor), at least one thing moving, at least one thing glowing.
 
-Each room is a builder ``build_<room>(c, origin, roles=B, *, version=...)`` that draws into a passed
-Canvas with the room's reference corner at ``origin``. ``origin`` is the world position of the
-room's local (0, 0, 0): the north-west corner of the floor layer. S2 calls these from the master
-scene at each room's world position; the ``obs_int_<room>`` test scenes call them inside a stand-in
-box shell (``shell.build_box``) until the main-building line (c178) hands over the real shells.
+Work packages are modules in this folder (auto-discovered); each may define build/models/pack:
+  build(canvas, origin) -> int   dresses the rooms inside the shells main/site leave; returns the
+                                  number of display entities placed (budget: 1000 indoors, <=250/room).
+  models()              -> {...} room-only models, names prefixed "int_"; shared furniture comes
+                                  from the props category.
+  pack(pack_dir)        -> []    nothing of its own.
 
-Skeleton numbers come from plan/reviews/R1-first-designs.md (0.3) and the A3 shell write-up
-(plan/parts/A3-mainbuilding.md 4.6). They live as constants in ``shell.py`` until
-``scenes.obs.common.skeleton`` is published, then move there. Heavy machines (A5) and modelled props
-(c179) are stand-ins here (``stubs.py``); the real models drop onto the same anchor points without
-changing this code.
+Each room is first built in its own box test scene (build/scenes/obs_int_<room>/), then moved in once
+the shell is up. No package yet.
 """
-from . import shell, stubs, starhall
-from .starhall import build_starhall
+from ..common import assembly
 
-__all__ = ["shell", "stubs", "starhall", "build_starhall"]
+CATEGORY = "interiors"
+NS = "c164"
+PREFIX = "int_"
+
+_cat = assembly.category(__name__)
+
+
+def build(canvas, origin=(0, 0, 0)):
+    return _cat.build(canvas, origin)
+
+
+def models():
+    return _cat.models()
+
+
+def pack(pack_dir):
+    return _cat.pack(pack_dir)
