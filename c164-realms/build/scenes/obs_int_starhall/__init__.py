@@ -1,31 +1,32 @@
-"""Test scene for the star hall package: versions a and b side by side in stand-in box shells.
+"""obs_int_starhall: the box test scene of the entrance hall (work package interiors/starhall).
 
-A placeholder scene: the box shell stands in for the main-building line's (c178) real shell, and
-mood.py stands in for A2's observatory look. When S2 moves the room into the merged scene it drops
-the box and uses A3's shell and A2's biome; build_starhall itself does not change.
+The two versions stand side by side, each in a stand-in of the shell on the skeleton's coordinates:
+version a at the scene origin, version b SPACING blocks to the south, far enough that neither shows
+in the other's views. The shot names carry the version (a_*, b_*).
+
+The models and the resource pack are the master scene's, so the room is seen in the same materials
+and with the same props as it will be once it moves in.
 """
 from artkit.canvas import Canvas
 
-from scenes.obs.interiors import shell, starhall
+import scenes.obs as obs
+from scenes.obs.interiors import starhall
 
-BIOME = "obs_int"
-GAP = 10                                  # air between the two boxes
+BIOME = "obs_blue"
+SPACING = 40
+ORIGINS = {"a": (0, 0, 0), "b": (0, 0, SPACING)}
 
 
 def build():
     c = Canvas()
-    room = shell.STARHALL
-    a = starhall.build_starhall(c, (0, 0, 0), version="a")
-    b = starhall.build_starhall(c, (room.w + GAP, 0, 0), version="b")
-    # realise the suggested invisible light sources, but only in empty cells so lamp fixtures and
-    # walls are left intact (A2 owns lighting in the master scene; here it is just for self-check)
-    for x, y, z, level in a["lights"] + b["lights"]:
-        if not c.has(x, y, z):
-            c.set(x, y, z, f"light[level={level}]")
+    for version, origin in ORIGINS.items():
+        starhall.build_box(c, origin, version)
     return c
 
 
+def build_models():
+    return obs.build_models()
+
+
 def write_pack(pack_dir):
-    """No repainted blocks or custom sky of our own: the stand-in sky is in mood.py, the blocks are
-    occupancy-table vanilla blocks that A1 repaints on its own branch."""
-    return []
+    return obs.write_pack(pack_dir)
