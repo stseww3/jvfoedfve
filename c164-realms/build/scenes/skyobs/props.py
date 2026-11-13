@@ -439,7 +439,7 @@ _BUILT = None
 
 def build_models():
     out = {}
-    for f in MODELS + instruments.MODELS + skystone.MODELS:
+    for f in MODELS + instruments.MODELS + skystone.MODELS + facade.MODELS:
         m = f()
         out[m.name] = m
     for side in (1, -1):
@@ -491,11 +491,12 @@ GALLERY = [
     ("spyglass", [("spyglass", None, {"yaw": 150.0})], (1.6, 1.9, 2.2), (0, 1.1, 0)),
 ]
 
-from . import instruments, skystone  # noqa: E402  the room under the dome; crystal and chain
+from . import facade, instruments, skystone  # noqa: E402  clock and banners; the dome room; crystal and chain
 
 SCALE.update(instruments.SCALE)
 SCALE.update(skystone.SCALE)
-GALLERY = GALLERY + instruments.GALLERY + skystone.GALLERY
+SCALE.update(facade.SCALE)
+GALLERY = GALLERY + instruments.GALLERY + skystone.GALLERY + facade.GALLERY
 
 
 def chain(c, a, b, sag=0.0, scale=None, **opts):

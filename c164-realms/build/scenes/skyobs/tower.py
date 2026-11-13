@@ -105,9 +105,10 @@ def build(c, land, cx, cz, y0):
 
     for face in ("north", "east", "west", "south"):
         window(face, 5)
-        window(face, 13)
         glow(face, 6)
-        glow(face, 14)
+        if face != "south":   # the south face carries the clock there
+            window(face, 13)
+            glow(face, 14)
     for face in ("north", "east", "west"):
         window(face, 22, rows=2, arch=False, sill=False)
         glow(face, 22)
@@ -128,6 +129,46 @@ def build(c, land, cx, cz, y0):
         c.set(x, y0, icz + 8, "stone_brick_wall")
         c.set(x, y0 + 1, icz + 8, "stone_brick_wall")
         c.set(x, y0 + 2, icz + 8, "lantern[hanging=false]")
+
+    # ---- the astronomical clock, on the string course of the south face ----------------------
+    props.place(c, "sky_clock", cx, y0 + 14.5, cz + 7.02, brightness=(15, 9))
+
+    # ---- buttresses on the four diagonals: three steps, each capped with a slope ---------------
+    shaft = set(A.ring(cx, cz, 6.0, 7.0))
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            def cell(a, b):
+                return (icx + a if sx > 0 else icx - a - 1), (icz + b if sz > 0 else icz - b - 1)
+            for (a, b), top in (((5, 5), 8), ((5, 6), 5), ((6, 5), 5), ((6, 6), 2)):
+                x, z = cell(a, b)
+                if (x, z) in shaft:
+                    continue
+                for h in range(-1, top + 1):
+                    c.set(x, y0 + h, z, wall)
+                if (a, b) == (6, 6):
+                    c.set(x, y0 + top + 1, z, B.slab(TRIM(x, y0 + top + 1, z)))
+                else:
+                    c.set(x, y0 + top + 1, z, B.stairs(TRIM(x, y0 + top + 1, z), inward(x, z)))
+                if (x, z) in land.top:
+                    land.kind[(x, z)] = "built"
+
+    # ---- ivy up the south-west side, thick at the foot and thinning out below the gallery ------
+    for x, z in A.ring(cx, cz, 7.0, 8.0):
+        ang = math.degrees(math.atan2(z + 0.5 - cz, x + 0.5 - cx)) % 360.0
+        if not 118.0 <= ang <= 232.0:
+            continue
+        sides = [f for f, dx, dz in (("east", 1, 0), ("west", -1, 0), ("south", 0, 1), ("north", 0, -1))
+                 if (x + dx, z + dz) in shaft]
+        if not sides:
+            continue
+        reach = 9.0 + 9.0 * hash3(x // 2, 0, z // 2, 93) - 0.12 * abs(ang - 170.0)
+        for h in range(4, 18):
+            if c.has(x, y0 + h, z) or h > reach + 2.0 * hash3(x, h // 3, z, 94):
+                continue
+            if hash3(x, h, z, 95) < 0.86 - 0.03 * h:
+                c.set(x, y0 + h, z, "vine[" + ",".join(f"{f}=true" for f in sides) + "]")
+        if hash3(x, 1, z, 96) < 0.45 and not c.has(x, y0 + 4, z):
+            c.set(x, y0 + 4, z, "azalea_leaves[persistent=true]")
 
     # ---- timber gallery ----------------------------------------------------------------------
     g = 20  # floor layer
@@ -151,6 +192,15 @@ def build(c, land, cx, cz, y0):
             props.place(c, "windsock", px + 0.5, y0 + g + 3, pz + 0.5, brightness=(15, 0))
         else:
             c.set(px, y0 + g + 3, pz, "lantern[hanging=false]")
+    # under its edge: a lantern on each of the four sides, a banner on each diagonal
+    for dx, dz in ((9, 0), (-10, 0), (0, 9), (0, -10)):
+        x, z = icx + dx, icz + dz
+        c.set(x, y0 + g, z, "spruce_planks")
+        c.set(x, y0 + g - 1, z, "lantern[hanging=true]")
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            bx, bz = cx + 6.5 * sx, cz + 6.5 * sz
+            props.place(c, "star_banner", bx, y0 + g - 0.08, bz, yaw=math.degrees(math.atan2(-sx, sz)))
     # door from the drum onto the gallery
     for i, x in enumerate((icx - 1, icx)):
         c.clear(x, y0 + g + 1, icz + 6)
