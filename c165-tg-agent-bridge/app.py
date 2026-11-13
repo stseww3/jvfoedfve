@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.6"
+VERSION = "3.4.7"
 
 
 def load_dotenv(path: Path) -> None:
@@ -93,8 +93,8 @@ MENU_DELAY = float(os.environ.get("MENU_DELAY_SEC") or 1.0)
 FILE_LIMIT = 20 * 1024 * 1024
 CHAT_LIMIT = env_int("USER_CHAT_LIMIT", 5)   # 被授权用户每人最多几个聊天（关了的也算，删掉的不算）；管理员不限；<=0 不限
 LIST_PAGE = 8
-AGENT_STREAK_LIMIT = env_int("AGENT_STREAK_LIMIT", 30)       # 无人类介入时两个 agent 连续互发安全上限
-GROUP_STREAK_LIMIT = env_int("GROUP_STREAK_LIMIT", 40)       # 无人类介入时 agent 群连续互发安全上限
+AGENT_STREAK_LIMIT = env_int("AGENT_STREAK_LIMIT", 0)        # 两个 agent 连续互发上限（0=不限制）
+GROUP_STREAK_LIMIT = env_int("GROUP_STREAK_LIMIT", 0)        # Agent 协作群连续发言上限（0=不限制）
 STREAK_WINDOW = env_int("AGENT_STREAK_WINDOW_SEC", 600)      # 连续互发计数重置时间窗
 MAX_SPAWN_PER_PARENT = env_int("MAX_SPAWN_PER_PARENT", 0)    # 单个父 agent 同时活跃派生子 agent 上限（0=不限制）
 MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 0)              # 全局活跃派生子 agent 上限（0=不限制）
@@ -3282,7 +3282,7 @@ async def t_send_agent_message(agent, args):
 
     actual_wake = 1 if want_wake else 0
     warn_note = ""
-    if want_wake and streak > AGENT_STREAK_LIMIT:
+    if AGENT_STREAK_LIMIT > 0 and want_wake and streak > AGENT_STREAK_LIMIT:
         actual_wake = 0
         warn_note = f"（⚠️ 触发防乒乓死循环保护：{me_id} 与 {to_id} 在 {STREAK_WINDOW // 60} 分钟内已连续互发 {streak} 条，本次已记入对方收件箱但暂停自动唤醒。）"
         if streak == AGENT_STREAK_LIMIT + 1 and owner == 0:
@@ -3492,7 +3492,7 @@ async def t_send_group_message(agent, args):
     store.run("UPDATE agent_groups SET streak=?, streak_ts=? WHERE id=?", (streak, now(), gid))
 
     warn_note = ""
-    if wake_set and streak > GROUP_STREAK_LIMIT:
+    if GROUP_STREAK_LIMIT > 0 and wake_set and streak > GROUP_STREAK_LIMIT:
         wake_set = set()
         warn_note = f"（⚠️ 触发群防死循环保护：{group_tag(grow)} 在 {STREAK_WINDOW // 60} 分钟内已连续发言 {streak} 条，本次已记录但暂停自动唤醒。）"
         if streak == GROUP_STREAK_LIMIT + 1 and owner == 0:
