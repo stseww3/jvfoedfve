@@ -151,6 +151,69 @@ CREATE TABLE IF NOT EXISTS people(
     is_bot INTEGER DEFAULT 0,
     updated REAL
 );
+
+-- Agent 协作群（纯 MCP 内部群，同 owner 隔离）
+CREATE TABLE IF NOT EXISTS agent_groups(
+    id TEXT PRIMARY KEY,
+    num INTEGER DEFAULT 0,
+    name TEXT DEFAULT '',
+    topic TEXT DEFAULT '',
+    creator TEXT DEFAULT '',
+    owner INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'open',    -- open | closed
+    streak INTEGER DEFAULT 0,
+    streak_ts REAL DEFAULT 0,
+    created REAL
+);
+
+CREATE TABLE IF NOT EXISTS agent_group_members(
+    group_id TEXT,
+    conv TEXT,
+    joined REAL,
+    PRIMARY KEY(group_id, conv)
+);
+
+CREATE TABLE IF NOT EXISTS agent_group_messages(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id TEXT NOT NULL,
+    sender_conv TEXT NOT NULL,
+    sender_name TEXT DEFAULT '',
+    text TEXT NOT NULL,
+    mentions TEXT DEFAULT '',
+    ts REAL
+);
+
+-- Agent 私聊连续轮次防死循环计数
+CREATE TABLE IF NOT EXISTS agent_dm_streaks(
+    pair TEXT PRIMARY KEY,
+    streak INTEGER DEFAULT 0,
+    last_sender TEXT DEFAULT '',
+    ts REAL DEFAULT 0
+);
+
+-- AI 实时动作/改文件/命令/思考/耗时追踪快照与最近轨迹
+CREATE TABLE IF NOT EXISTS agent_traces(
+    conv TEXT PRIMARY KEY,
+    agent_id TEXT DEFAULT '',
+    conversation_id TEXT DEFAULT '',
+    phase TEXT DEFAULT '',         -- idle_wait | thinking | shell | file_edit | file_read | mcp | tool | stopped
+    tool_name TEXT DEFAULT '',
+    summary TEXT DEFAULT '',
+    detail TEXT DEFAULT '',
+    started_ts REAL DEFAULT 0,
+    updated_ts REAL DEFAULT 0,
+    output_ts REAL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS agent_trace_events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conv TEXT NOT NULL,
+    event TEXT NOT NULL,
+    phase TEXT DEFAULT '',
+    summary TEXT DEFAULT '',
+    duration_ms INTEGER DEFAULT 0,
+    ts REAL
+);
 """
 
 COLUMNS = (
@@ -163,8 +226,12 @@ COLUMNS = (
     ("convs", "local_dev", "TEXT DEFAULT ''"),        # local_until 这个时间窗是哪台电脑的主人批的
     ("convs", "owner", "INTEGER DEFAULT 0"),          # 谁建的：0 = 管理员；否则是被授权用户的 id，只有他能用
     ("convs", "git", "TEXT DEFAULT ''"),              # 子 agent 用 set_repo 记下的 GitHub 仓库和分支（JSON）
-    ("convs", "model", "TEXT DEFAULT ''"),            # 管理员 /new 时指定的模型（原话）；'' = 子 agent 继承主控的模型
+    ("convs", "model", "TEXT DEFAULT ''"),            # 管理员或父 agent 指定的模型（原话）；'' = 子 agent 继承主控的模型
     ("convs", "cloud", "INTEGER DEFAULT 0"),          # 归哪个 cloud（目录）：开它子 agent 的主控在哪个云端 agent；main 这行记现在的主控管哪个；0 = 还没分
+    ("convs", "parent_conv", "TEXT DEFAULT ''"),      # 哪个子 agent 请求创建的；'' = 人类或主控直接创建
+    ("convs", "memory_note", "TEXT DEFAULT ''"),      # 父 agent 创建子 agent 时附带的当前记忆交接摘要
+    ("convs", "spawn_notified", "INTEGER DEFAULT 0"), # 子 agent 首次 join 时是否已通知父 agent
+    ("convs", "task_agent_id", "TEXT DEFAULT ''"),    # 主控记录的 Cursor Task agent_id，供 resume 判活/续跑
     ("chats", "owner", "INTEGER DEFAULT 0"),          # 群归谁：0 = 管理员；否则是把 bot 拉进群的被授权用户
 )
 
@@ -174,6 +241,9 @@ CREATE INDEX IF NOT EXISTS idx_messages_chat ON messages(chat_id, id);
 CREATE INDEX IF NOT EXISTS idx_messages_conv ON messages(conv, id);
 CREATE INDEX IF NOT EXISTS idx_messages_unsent ON messages(chat_id, conv, delivered);
 CREATE INDEX IF NOT EXISTS idx_people_username ON people(username COLLATE NOCASE);
+CREATE INDEX IF NOT EXISTS idx_agent_group_msgs ON agent_group_messages(group_id, id);
+CREATE INDEX IF NOT EXISTS idx_agent_group_members_conv ON agent_group_members(conv);
+CREATE INDEX IF NOT EXISTS idx_agent_trace_events_conv ON agent_trace_events(conv, id);
 """
 
 
