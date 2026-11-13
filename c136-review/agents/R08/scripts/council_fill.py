@@ -7,7 +7,9 @@
 覆盖的局数会变。数字不手抄：deathbank.py、namepool.py 各自把会审稿要用的数按打印时的写法放进自己 JSON 的 report 字段，
 这里只做替换。模板里的填空写成 __名字__；有一个填空找不到来源就报错，不写文件。
 
-读：scripts/council_src/council.tpl.md、out/_cross/deathbank.json、out/_cross/namepool.json
+克隆续跑（cloneprobe）的数也走这条路。
+
+读：scripts/council_src/council.tpl.md、out/_cross/deathbank.json、out/_cross/namepool.json、out/_cross/cloneprobe.json
 写：reports/COUNCIL-PROPOSAL.md（--check 时只报告、不写）
 """
 import json
@@ -19,7 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TPL = os.path.join(HERE, "council_src", "council.tpl.md")
 DST = os.path.join(ROOT, "reports", "COUNCIL-PROPOSAL.md")
-SOURCES = ["deathbank.json", "namepool.json"]
+SOURCES = ["deathbank.json", "namepool.json", "cloneprobe.json"]
 KEY = re.compile(r"__([A-Z][A-Z0-9_]*?)__")
 
 

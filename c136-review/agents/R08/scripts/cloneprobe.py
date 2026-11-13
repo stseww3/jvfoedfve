@@ -213,13 +213,15 @@ P(f"  有事件的 {n_ev} 个房间里，拷贝和参照重演分开过的（地
   f"要比看不见的状态才看得出来的 {tab.get((True, '只有别的状态不等'), 0)} 个；到录像结束都没有分开的 {tab.get((True, '一致'), 0)} 个"
   + ('（' + '、'.join(sorted(r['matchId'] for r, k, v, h in detail if k == '一致' and r['events'])) + '）' if tab.get((True, '一致'), 0) else ''))
 first_hid_kind = {}
+hid_clones = 0
 for r in rows:
     for s_ in r['segs']:
         if s_['arm'] == 'asis' and s_['T'] >= 1500 and s_.get('hid'):
+            hid_clones += 1
             for name in s_['hid']:
                 first_hid_kind[name] = first_hid_kind.get(name, 0) + 1
 if first_hid_kind:
-    P('  看不见的状态里先不等的是哪一项（按克隆次数，一次可以有几项）：' + '；'.join(f'{k} {v}' for k, v in sorted(first_hid_kind.items(), key=lambda kv: -kv[1])))
+    P(f'  看不见的状态先于地和兵不等的克隆 {hid_clones} 次；先不等的是哪一项（一次可以有几项）：' + '；'.join(f'{k} {v}' for k, v in sorted(first_hid_kind.items(), key=lambda kv: -kv[1])))
 ev_bad = [(r, v, h) for r, k, v, h in detail if k == '地或兵走偏']
 if ev_bad:
     d1 = [(h if h is not None else v) - min(e[0] for e in r['events']) for r, v, h in ev_bad if r['events']]
@@ -300,6 +302,10 @@ rep['CP_D_EV_BAD'] = str(tab.get((True, '地或兵走偏'), 0))
 rep['CP_D_EV_SPLIT'] = str(split_ev)
 rep['CP_D_NOEV_N'] = str(n_noev)
 rep['CP_D_NOEV_OK'] = str(tab.get((False, '一致'), 0))
+rep['CP_D_NOEV_HID'] = str(tab.get((False, '只有别的状态不等'), 0))
+rep['CP_D_NOEV_BAD'] = str(tab.get((False, '地或兵走偏'), 0))
+rep['CP_HID_CLONES'] = str(hid_clones)
+rep['CP_HID_FAST'] = str(first_hid_kind.get('终局提速', 0))
 rep['CP_D_BAD_ENGOK'] = str(sum(1 for r, v, h in ev_bad if eng.get(r['matchId'], 0) is None))
 rep['CP_STALE'] = str(stale)
 rep['CP_STALE_TOT'] = str(tot)
