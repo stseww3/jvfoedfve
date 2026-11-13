@@ -212,3 +212,15 @@ def brass(c, x, z):
     c.box(x + 5, 0, z + 2, x + 16, 0, z + 2, B.BRASS_INLAY)
     stage(c, start, x + 29, z)
     return x + 32
+
+
+def clouds(c, x, z):
+    """The five tones of the cloud sea, dark to light, and a small bank of them: the darkest at the
+    foot, the lightest on the crest. No lamps: a cloud is lit by the sky alone."""
+    for i, block in enumerate(B.CLOUD):
+        c.box(x + 3 * i, 0, z, x + 3 * i + 1, 2, z, block)
+    x0, tones = x + 16, len(B.CLOUD)
+    for i, block in enumerate(B.CLOUD):                 # layer i is 2 * (tones - i) - 1 wide, stepping back
+        c.box(x0 + i, i, z - 1, x0 + 2 * tones - 2 - i, i, z + tones - 1 - i, block)
+    stage(c, x, x0 + 2 * tones - 2, z, lamps=False)
+    return x0 + 2 * tones + 1

@@ -5,7 +5,7 @@ copper block stands beside the vanilla block it shares its model and texture fil
 beside waxed verdigris, old copper beside unwaxed exposed copper -- in every shape the family has.
 The other stations are a catalogue of all repainted roles as the material packages stand today
 (stand-ins until a family is painted for real): the four stones, the six windows, the sixteen
-instrument panels, the brass family and the small pieces.
+instrument panels, the brass family and the small pieces, the five tones of the cloud sea.
 
     python -m scenes.obs_mat_redirect        writes shots.json from the layout below
 """
@@ -17,7 +17,8 @@ from scenes.obs.materials import _board
 BIOME = "obs_blue"
 Z = 0
 STATIONS = [("plates", _board.twins_plates), ("shapes", _board.twins_shapes), ("stone", _board.stone),
-            ("windows", _board.windows), ("panels", _board.panels), ("brass", _board.brass)]
+            ("windows", _board.windows), ("panels", _board.panels), ("brass", _board.brass),
+            ("clouds", _board.clouds)]
 TIME = 14000        # the default light version (sky line)
 
 

@@ -24,19 +24,28 @@ from ..common import palette as P
 from . import _kit as K
 
 PREFIX = "ph_"
-# A lit window is the brightest thing on a wall (sky line, A2): it shows its picture at full strength
-# whatever way it faces, so it takes neither the world's light nor the game's shading by direction,
-# and it is not see-through (the game's stained glass is one flat colour at 40 to 64 percent).
-# a lit window is a light: full emission, no shading by the way a face points and no corner
-# darkening, so it shows the colours of its picture exactly (sky line: a face to the east or west
-# would otherwise show at 0.6)
+# Categories whose packages may paint blocks, and so take them out of the stand-ins by listing them
+# in BLOCKS: this one, and the sky line for the blocks of the cloud sea (it tunes their colours
+# together with the light of the sky; it paints through _kit.paint and _kit.redirect like everyone).
+PAINTERS = ("materials", "sky")
+# A lit window is the brightest thing on a wall (sky line): it shows the colours of its picture
+# exactly, whatever way it faces. So it is drawn at full emission, without the game's shading by
+# direction (a face to the east or west would show at 0.6) and without the darkening of corners, and
+# it is not see-through (the game's stained glass is one flat colour at 40 to 64 percent).
 LIT = {"emit": 15, "shade": False, "ao": False}
 BULB_LIT = 8                # light_emission of the caged lamp when it is on (its own light level is only 4)
+# A block of the cloud sea is one flat tone: a bank is modelled by which tone stands where, and a
+# block of it must not show its edges.
+FLAT = {"shade": False, "ao": False}
 
 
 def _pane(name, **how):
     """A lit pane straight from the palette: brightest in the middle, a darker rim."""
     return lambda: P.mat(name, **how).paint(K.TILE, K.TILE, seed=1)
+
+
+def _flat(name, step):
+    return lambda: P.mat(name, base=step).paint(K.TILE, K.TILE)
 
 
 # roles of the occupancy table -> the ramp their stand-in is toned into, and what else it needs
@@ -55,18 +64,21 @@ _ROLES = [
     ((B.OLD_COPPER, B.OLD_COPPER_CUT), "old_copper", {}),
     ((B.WAINSCOT,), "dark_wood", {}),
     ((B.ENAMEL_SIGN,), "enamel", {}),
-]
+] + [((block,), "cloud", dict(FLAT, picture=(f"cloud_{i}", _flat("cloud", i))))      # dark to light
+     for i, block in enumerate(getattr(B, "CLOUD", ()))]
 _PANELS = list(B.PANELS.values())
 
 
 def claimed():
-    """The blocks the real packages of this folder paint: what their BLOCKS lists name."""
+    """The blocks the real packages paint: what the BLOCKS lists of their modules name."""
     out = {}
-    for module in assembly.category(__package__).parts():
-        for block in getattr(module, "BLOCKS", ()):
-            if block in out:
-                raise ValueError(f"{block} is painted by two packages: {out[block]} and {module.__name__}")
-            out[block] = module.__name__
+    scene = __package__.rpartition(".")[0]
+    for line in PAINTERS:
+        for module in assembly.category(f"{scene}.{line}").parts():
+            for block in getattr(module, "BLOCKS", ()):
+                if block in out:
+                    raise ValueError(f"{block} is painted by two packages: {out[block]} and {module.__name__}")
+                out[block] = module.__name__
     return out
 
 
@@ -164,7 +176,8 @@ def pack(pack_dir):
                     K.paint(pack_dir, name, tone(pixels, ramp, extra.get("lamp", False)), meta=meta)
             painted.add(name)
             mapping[ref] = name
-        K.redirect(pack_dir, block, mapping, emit=extra.get("emit", 0), shade=extra.get("shade", True))
+        K.redirect(pack_dir, block, mapping, emit=extra.get("emit", 0), shade=extra.get("shade", True),
+                   ao=extra.get("ao"))
         by_ramp.setdefault(ramp, []).append(block)
     for ramp, names in by_ramp.items():
         out.append(f"stand-in {ramp}: {len(names)} blocks ({', '.join(names)})")
