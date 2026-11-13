@@ -113,7 +113,7 @@ def build():
     top = site.pedestal(c, land, 25, 11)
     props.place(c, "armillary", 25.5, top, 11.5)
     props.place(c, "armillary_core", 25.5, top + 2.0, 11.5, turns=(("z", 23.5),))
-    site.woodpile(c, hx1 + 1, GROUND + 1, hz0 + 2)
+    site.woodpile(c, hx0 - 1, GROUND + 1, hz0)
     c.set(door_x + 2, GROUND + 1, hz1 + 1, "barrel[facing=up]")
     c.set(door_x + 3, GROUND + 1, hz1 + 1, "barrel[facing=up]")
     c.set(door_x + 3, GROUND + 2, hz1 + 1, "barrel[facing=south]")
