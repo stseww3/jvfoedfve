@@ -354,7 +354,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
                 "new_string": "VERSION = '3.4.0'\n# upgraded",
             },
         })
-        assert "additional_context" in pre_res and "c5" in pre_res["additional_context"]
+        assert "additional_context" in pre_res and "c1" in pre_res["additional_context"]
 
         assert fire_hook({
             "hook_event_name": "afterAgentThought",
@@ -422,15 +422,15 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         # (a) When c2 calls ANY non-read_chat MCP tool (e.g. local_status / local_read), bridge directly injects urgent unread banner!
         mcp_any_out = text_of(asyncio.run(bridge.call_tool("local_status", {"agent": ids["a2"]})))
         assert "🚨【最高优先级实时消息插播" in mcp_any_out and "紧急通知：迁移前请先备份 users 表！" in mcp_any_out
-        # (b) And when c2 runs local VM Shell, both preToolUse and postToolUse inject additional_context!
+        # (b) And when c2 runs local VM Shell, both preToolUse and postToolUse inject metadata-only hook context!
         shell_pre = fire_hook({
             "hook_event_name": "preToolUse",
             "conversation_id": cid_c2,
             "tool_name": "Shell",
             "tool_input": {"command": "ls -la"},
         })
-        assert "additional_context" in shell_pre and "紧急通知" in shell_pre["additional_context"]
-        # When c2's arbitrary Shell command finishes, postToolUse MUST inject additional_context with the unread message!
+        assert "additional_context" in shell_pre and "Chat c2 has" in shell_pre["additional_context"]
+        # When c2's arbitrary Shell command finishes, postToolUse MUST inject additional_context!
         shell_post = fire_hook({
             "hook_event_name": "postToolUse",
             "conversation_id": cid_c2,
@@ -440,7 +440,16 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "duration": 1500,
         })
         assert "additional_context" in shell_post, f"Missing inbox alert on Shell postToolUse: {shell_post}"
-        assert "紧急通知：迁移前请先备份 users 表！" in shell_post["additional_context"]
+        assert "Chat c2 has" in shell_post["additional_context"]
+        # And if a HUMAN Telegram message arrives for c2, preToolUse on Shell hard-denies once to force immediate reply!
+        bridge.post("c2", conv="c2", chat_id=7001, chat_type="private", user_id=7001, user_name="AdminUser", text="人呢", wake=1)
+        human_gate = fire_hook({
+            "hook_event_name": "preToolUse",
+            "conversation_id": cid_c2,
+            "tool_name": "Shell",
+            "tool_input": {"command": "sleep 10"},
+        })
+        assert human_gate.get("permission") == "deny" and "priority gate" in human_gate.get("user_message", "")
 
         # Verify Main's list_agents directly embeds c1 & c2 trace lines!
         main_list_txt = text_of(asyncio.run(bridge.call_tool("list_agents", {"agent": ids["main"]})))

@@ -211,7 +211,7 @@ def extract_conv_hint(payload: dict[str, Any], ti: dict[str, Any]) -> str:
 
 
 def build_inbox_alert(bridge_url: str, agent_id: str) -> str:
-    """每次 Shell 命令（或文件/普通工具）跑完时毫秒级顺带查收各方新消息与停用状态（TG用户 / 主控 / 其他Agent私聊与群聊 / 已停止指令）。"""
+    """每次 Shell 命令（或文件/普通工具）跑完时毫秒级顺带查收收件箱状态（不粘贴未脱敏外部正文，避免 GPT 模型误判为工具输出注入攻击而忽略！）。"""
     if not agent_id:
         return ""
     peek = get_json(
@@ -223,18 +223,18 @@ def build_inbox_alert(bridge_url: str, agent_id: str) -> str:
     if peek.get("stopped"):
         note = str(peek.get("note") or "身份已停用").strip()
         return (
-            f"【🛑 紧急停止指令：你的子 agent 身份已被停用（原因：{note}）！】\n"
-            "不要再执行任何后续命令、不要再调用任何 MCP 工具，现在立即停止所有手头工作并直接结束回合退出！"
+            f"[dais bridge hook] Your sub-agent identity ({agent_id[:8]}...) has been stopped ({note}). "
+            "Stop all work and end your turn immediately."
         )
     if not peek.get("has_messages"):
         return ""
     cnt = int(peek.get("count") or 1)
-    rendered = str(peek.get("rendered") or "").strip()
+    conv_s = str(peek.get("conv") or "")
+    src = "Telegram user/admin" if peek.get("has_human") else "peer agent / main controller"
     return (
-        f"【📬 实时消息插播：你刚才执行命令期间收到了 {cnt} 条未读新消息！】\n"
-        f"{rendered}\n\n"
-        f"⚡ 请立即调用 dais 的 `read_chat(agent=\"{agent_id}\", wait_sec=0)` 正式签收消息，"
-        "并用 `send_message`（回复用户）或 `send_agent_message` / `send_group_message`（回复其他 agent）优先处理回复，不要让对方久等！"
+        f"[dais bridge hook] Chat {conv_s} has {cnt} unread incoming message(s) from {src} waiting in your inbox. "
+        f"User responsiveness is top priority: before running further commands or edits, call dais `read_chat(agent=\"{agent_id}\", wait_sec=0)` "
+        "now and reply via `send_message` (or `send_agent_message`)."
     )
 
 
@@ -357,12 +357,34 @@ def handle_hook() -> int:
                 )
                 return 0
             is_dais_call = str(payload.get("tool_name") or "") == "CallDynamicTool" and str(ti.get("namespace") or "") == "dais"
+            tname_cur = str(payload.get("tool_name") or "")
             if peek_pre and peek_pre.get("has_messages") and not is_dais_call:
                 cnt_p = int(peek_pre.get("count") or 1)
-                ren_p = str(peek_pre.get("rendered") or "").strip()
+                conv_p = str(peek_pre.get("conv") or "")
+                max_id = int(peek_pre.get("max_id") or 0)
+                # 当收到人类/管理员 TG 未读消息，且当前正准备跑耗时 Shell/查找（非保存文件的 Write/StrReplace）时，直接首次硬阻断要求先秒回用户！
+                if (
+                    peek_pre.get("has_human")
+                    and tname_cur not in ("Write", "StrReplace", "GetDynamicTools")
+                    and int(sess.get("denied_msg_id") or 0) < max_id
+                ):
+                    sess["denied_msg_id"] = max_id
+                    print(
+                        json.dumps(
+                            {
+                                "permission": "deny",
+                                "user_message": (
+                                    f"[dais bridge priority gate] Chat {conv_p} has {cnt_p} unread Telegram message(s) from the user/admin (latest #{max_id}). "
+                                    f"Call dais `read_chat(agent=\"{agent_id}\", wait_sec=0)` and send a quick `send_message` reply FIRST, then re-run this tool."
+                                ),
+                            },
+                            ensure_ascii=False,
+                        )
+                    )
+                    return 0
                 pre_alert_ctx = (
-                    f"🚨【最高优先级插播：管理员/外部刚发来 {cnt_p} 条未读消息！】\n{ren_p}\n"
-                    f"⚡ 当前这一步跑完后必须立即暂停其他计划，马上调 `read_chat(agent=\"{agent_id}\", wait_sec=0)` 并用 `send_message` 秒回！"
+                    f"[dais bridge hook] Chat {conv_p} has {cnt_p} unread incoming message(s) (latest #{max_id}). "
+                    f"Immediately after this step completes, call dais `read_chat(agent=\"{agent_id}\", wait_sec=0)` and reply first."
                 )
 
         # 第 4 层防断连：子 agent 试图结束回合时向桥查询身份是否仍有效，有效则当场拽回 read_chat
@@ -501,6 +523,10 @@ def handle_hook() -> int:
             started_ts = now_ts
 
         if phase:
+            real_model = str(payload.get("model") or sess.get("model") or "").strip()
+            if real_model:
+                detail["model"] = real_model
+                sess["model"] = real_model
             sess.update(
                 {
                     "phase": phase,
