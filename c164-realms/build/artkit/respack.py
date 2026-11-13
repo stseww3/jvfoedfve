@@ -87,7 +87,7 @@ def cube(pack_dir, block, pixels, name=None, ns="c164", shade=True, ao=True):
 # block-state file, and nothing else of the game's, so that every state shows a copy of its vanilla
 # model with the pack's own pictures on it.
 
-def _full(ref):
+def full_ref(ref):
     return ref if ":" in ref else "minecraft:" + ref
 
 
@@ -95,7 +95,7 @@ def _write_json(pack_dir, rel, data):
     path = os.path.join(pack_dir, *rel.split("/"))
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as fh:
-        json.dump(data, fh, separators=(",", ":"))
+        fh.write(json.dumps(data, separators=(",", ":")))      # dumps, not dump: many times faster
     return rel
 
 
@@ -109,7 +109,7 @@ def flat_model(assets, ref):
     code (signs). "flags" holds what a model says about a picture besides its name, per reference:
     {"minecraft:block/yellow_stained_glass": {"force_translucent": True}}.
     """
-    chain, seen, at = [], set(), _full(ref)
+    chain, seen, at = [], set(), full_ref(ref)
     while at and not at.partition(":")[2].startswith("builtin/"):
         if at in seen:
             raise ValueError(f"{ref}: the parents of this model form a circle")
@@ -119,7 +119,7 @@ def flat_model(assets, ref):
         if data is None:
             raise FileNotFoundError(f"{ref}: the game has no model {at}")
         chain.append(data)
-        at = _full(data["parent"]) if "parent" in data else None
+        at = full_ref(data["parent"]) if "parent" in data else None
 
     textures, display = {}, {}
     for data in reversed(chain):                    # the root first, so that children overrule it
@@ -138,7 +138,7 @@ def flat_model(assets, ref):
                 own.update({k: v for k, v in name.items() if k != "sprite"})
                 name = name["sprite"]
             if not name.startswith("#"):
-                name = _full(name)
+                name = full_ref(name)
                 if own:
                     flags.setdefault(name, {}).update(own)
                 return name
@@ -156,21 +156,21 @@ def flat_model(assets, ref):
             for face in el["faces"].values():
                 face["texture"] = resolve(face["texture"])
     return {
-        "ref": _full(ref), "elements": elements,
+        "ref": full_ref(ref), "elements": elements,
         "particle": resolve("#particle") if "particle" in textures else None,
         "flags": flags, "ambientocclusion": bool(first("ambientocclusion", True)),
         "display": display, "gui_light": first("gui_light"),
     }
 
 
-def _models_of(state):
+def state_models(state):
     """Every "apply" of a block-state file, and the models they name, in the file's order."""
     applies = list(state["variants"].values()) if "variants" in state else [p["apply"] for p in state["multipart"]]
     refs = []
     for apply in applies:
         for a in apply if isinstance(apply, list) else [apply]:
-            if _full(a["model"]) not in refs:
-                refs.append(_full(a["model"]))
+            if full_ref(a["model"]) not in refs:
+                refs.append(full_ref(a["model"]))
     return applies, refs
 
 
@@ -181,7 +181,7 @@ def block_pictures(assets, block):
     if state is None:
         raise FileNotFoundError(f"the game has no block state file for {block}")
     out = {}
-    for ref in _models_of(state)[1]:
+    for ref in state_models(state)[1]:
         flat = flat_model(assets, ref)
         for el in flat["elements"] or []:
             for name, face in el["faces"].items():
@@ -215,7 +215,7 @@ def _numbered(pack_dir, ns, name):
 
 
 def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=None, ns="c164", emit=0,
-                   edit=None, keep=(), protect=("waxed_*",)):
+                   shade=True, ao=None, edit=None, keep=(), protect=("waxed_*",)):
     """Show one vanilla block with the pack's own pictures and leave everything it shares alone.
 
     The block's block-state file is rewritten: every state keeps its turns (x, y, uvlock) and its
@@ -239,6 +239,13 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
     emit      light_emission for every box: a level, or a function of the vanilla model reference
               ("minecraft:block/oxidized_copper_bulb_lit") that returns one. The boxes are drawn
               that bright; they do not light the world.
+    shade     False takes the game's fixed shading by direction (top 1.0, north and south 0.8,
+              east and west 0.6, bottom 0.5) off every box: each face is lit like the top one.
+              For a surface that is a light itself, or that carries its own painted shading.
+              (26.x has no "shade": false; the boxes get "shade_direction_override": "up".)
+              Like emit, a function of the model reference may decide.
+    ao        False turns the darkening of corners off as well; None leaves it as the game's
+              model has it.
     edit      edit(reference, model) may change a model before it is mapped, in place or by
               returning another: `model` is what flat_model() gives. A face it points at
               "<ns>:block/<name>" shows that picture of the pack.
@@ -256,9 +263,9 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
     if vanilla is None:
         raise FileNotFoundError(f"the game has no block state file for {block}")
     state = copy.deepcopy(vanilla)
-    rules = {_full(k): v for k, v in textures.items()}
-    keep = {_full(k) for k in keep}
-    refs = _models_of(state)[1]
+    rules = {full_ref(k): v for k, v in textures.items()}
+    keep = {full_ref(k) for k in keep}
+    refs = state_models(state)[1]
 
     # 1. every model in one piece, its faces sorted into slots: one slot per picture it will show
     models = []
@@ -295,11 +302,15 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
             return slots[key]
 
         level = int(emit(ref) if callable(emit) else emit)
+        shaded = bool(shade(ref) if callable(shade) else shade)
         for el in flat["elements"] or []:
             for name, face in el["faces"].items():
                 face["texture"] = "#" + slot(name, face["texture"])
             if level:
                 el["light_emission"] = level
+            if not shaded:
+                el.pop("shade", None)
+                el["shade_direction_override"] = "up"
         particle = "#" + slot("particle", flat["particle"]) if flat["particle"] else None
         models.append((ref, flat, slots, particle))
 
@@ -338,7 +349,7 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
             if particle:
                 shown["particle"] = particle
             data = {}
-            if not flat["ambientocclusion"]:
+            if not flat["ambientocclusion"] or ao is False:
                 data["ambientocclusion"] = False
             if flat["gui_light"]:
                 data["gui_light"] = flat["gui_light"]
@@ -356,7 +367,7 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
         out = []
         for a in apply if isinstance(apply, list) else [apply]:
             for v in range(n):
-                b = dict(a, model=copies[_full(a["model"])][v])
+                b = dict(a, model=copies[full_ref(a["model"])][v])
                 if weights is not None:
                     b["weight"] = int(a.get("weight", 1)) * int(weights[v])
                 out.append(b)
@@ -382,7 +393,7 @@ def redirect_block(pack_dir, assets, block, textures, *, variants=None, weights=
         same = [p.get("when") for p in vanilla["multipart"]] == [p.get("when") for p in state["multipart"]]
     if not same:
         raise AssertionError(f"{block}: the rewritten block state file does not have the game's states")
-    for old, new in zip(_models_of(vanilla)[0], _models_of(state)[0]):
+    for old, new in zip(state_models(vanilla)[0], state_models(state)[0]):
         old = old if isinstance(old, list) else [old]
         new = new if isinstance(new, list) else [new]
         turns = [{k: v for k, v in a.items() if k not in ("model", "weight")} for a in old for _ in range(n)]
