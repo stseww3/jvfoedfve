@@ -40,10 +40,28 @@ cause tested came back clean. No Cloudflare response stating a block was capture
 widget's own error code inside the donor page has not been read. Reading that code is the cheapest next
 piece of direct evidence. The meaning of error 4573 was not confirmed either.
 
-Probable contributing factor: before the gentle patch the engine retried mint every 15 s for each
+Possible contributing factor: before the gentle patch the engine retried mint every 15 s for each
 token-less headless bot (line 1721), ran two concurrent solves per donor, and launched waves 3.5 s
-apart. The bridge chat history says one token is good for about 60 minutes per account, so that rate
-was far above what is needed.
+apart. Whether that rate triggered the refusal is not established.
+
+## Turnstile vs cf_clearance (clarified with the admin at 22:16 to 22:25)
+
+- Lobby entry is gated by a **Turnstile widget token**, not a `cf_clearance` cookie. The mint code calls
+  `turnstile.render` with sitekey `0x4AAAAAAEI8HZoG8nJMzxt1`, `action: "enter_lobby"`,
+  `appearance: "interaction-only"`. Same call in the older engine copy at
+  `fdvg-c108: territorial-sim/tools/c97-solo-mp.mjs` (lines 290 to 299).
+- That older copy has no code that reads or uses `cf_clearance`, and its render call registers no
+  `error-callback`, so Turnstile error codes are never logged. The live d3 engine was **not** re-checked
+  for either point.
+- `curl` with no cookies got HTTP 200 on the territorial.io front page through the proxy, so there is
+  no site-wide challenge page there.
+- Per Cloudflare's Turnstile documentation a token is single-use and expires after 300 seconds. It
+  cannot be renewed, only reissued.
+- **Unverified claims to stop repeating:** "one token is good for 60 minutes per account" comes from an
+  earlier agent's message in the bridge chat, not from code or a test. "Clearance lasts 1 to 2 hours and
+  can be renewed" is a property of `cf_clearance`, which is not shown to be part of this flow. Whether
+  the game server exempts an account from re-verification for some period after one valid token is
+  unknown.
 
 ## Changes made to `tsb-apex-squad.mjs` on d3 (both applied and present in the file now)
 
@@ -81,5 +99,8 @@ is sufficient once tokens are issued again is untested.
 - Before any full restart, probe with **one** donor and one solve to see whether tokens are being
   issued again. Do not bring up 40 bots to find out.
 - Capture the Turnstile error code from the donor page during a failed solve.
-- Standing admin instruction (#14338): do not refresh CF constantly; a token lasts 1 to 2 hours and can
-  be renewed. Keep the gentle config.
+- Admin instruction at 22:15 (#14380): stop and talk first. Nothing is to be started on d3 until the
+  admin says so. The one-donor probe was announced but **not run**.
+- Admin's concern (#14338): do not hammer Cloudflare with constant refreshes. Keep the gentle config
+  unless a test shows it starves the pool (40 bots need 40 tokens inside the 300 s token lifetime at
+  one solve per donor).
