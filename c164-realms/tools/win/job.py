@@ -160,8 +160,8 @@ def main():
     cmd = argv[cut + 1:]
     if not cmd:
         sys.exit(__doc__)
-    if not re.fullmatch(r"[a-z][a-z0-9-]{1,31}", args.part):
-        sys.exit("part must be a0 or a folder name under agents/: lower-case letters, digits and dashes")
+    if not re.fullmatch(r"[a-z][a-z0-9_-]{1,31}", args.part):
+        sys.exit("part must be a0 or a folder name under agents/: lower-case letters, digits, _ and -")
     home = ROOT if args.part == "a0" else os.path.join(ROOT, "agents", args.part)
     repo = os.path.join(home, "repo")
     build = os.path.join(repo, "c164-realms", "build")
