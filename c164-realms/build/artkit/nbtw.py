@@ -144,3 +144,27 @@ def write_template(path, size, palette, blocks, entities=(), data_version=5023):
 
     with gzip.open(path, "wb", compresslevel=6) as fh:
         fh.write(out)
+
+
+def snbt(v):
+    """Text form of a value, for use inside commands."""
+    t = _tag(v)
+    if t == 1:
+        return f"{int(v)}b"
+    if t == 2:
+        return f"{int(v)}s"
+    if t == 3:
+        return str(int(v))
+    if t == 4:
+        return f"{int(v)}L"
+    if t == 5:
+        return f"{float(v):.6g}f"
+    if t == 6:
+        return f"{float(v):.6g}d"
+    if t == 8:
+        return '"' + v.replace("\\", "\\\\").replace('"', '\\"') + '"'
+    if t == 11:
+        return "[I;" + ",".join(str(int(x)) for x in v) + "]"
+    if t == 9:
+        return "[" + ",".join(snbt(x) for x in v) + "]"
+    return "{" + ",".join(f'"{k}":{snbt(x)}' for k, x in v.items()) + "}"
