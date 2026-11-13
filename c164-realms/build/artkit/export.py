@@ -89,8 +89,13 @@ def export(canvas, pack_dir, name, namespace="c164art", tile=48, description="c1
     with open(os.path.join(fdir, "clear.mcfunction"), "w") as fh:
         fh.write("\n".join(clear) + "\n")
 
+    # one forceload command takes at most 256 chunks, so wide scenes are loaded in 12-chunk squares
+    load = []
+    for x in range(bx0 - 2, bx1 + 3, 192):
+        for z in range(bz0 - 2, bz1 + 3, 192):
+            load.append(f"forceload add ~{x} ~{z} ~{min(x + 191, bx1 + 2)} ~{min(z + 191, bz1 + 2)}")
     with open(os.path.join(fdir, "forceload.mcfunction"), "w") as fh:
-        fh.write(f"forceload add ~{bx0 - 2} ~{bz0 - 2} ~{bx1 + 2} ~{bz1 + 2}\n")
+        fh.write("\n".join(load) + "\n")
 
     manifest = {
         "namespace": namespace, "name": name,

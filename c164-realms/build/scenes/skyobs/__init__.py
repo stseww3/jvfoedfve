@@ -6,14 +6,17 @@ front of the crag drains over the southern rim.
 """
 from artkit.canvas import Canvas
 
-from . import flora, house, props, site, terrain, tower
+from . import flora, house, props, site, sky, terrain, tower
 
 TOWER = (20.0, -12.0)
 HOUSE = (-19, -7, 3, 11)   # x0, x1, z0, z1
 GARDEN = (-3, 3, 4, 9)     # x0, z0, x1, z1
 POND = (22.0, 24.0, 5.2, 4.0)
-BIOME = "minecraft:cherry_grove"
+BIOME = "skyobs"           # one of mood.BIOMES
+BIOME_MARGIN = 40          # the look has to reach every camera position, not only the blocks
+BIOME_MARGIN_Y = 110
 GROUND = 1                 # y of the ground blocks on the levelled parts
+write_pack = sky.write_pack  # resource pack pieces besides the prop models
 
 TREES = [
     {"kind": "cherry", "x": -33, "z": -5, "height": 13, "spread": 9, "thick": True},
@@ -107,4 +110,6 @@ def build():
     site.islet(c, 66, -12, 34, 5.0, 10, 802, tree=("birch", 7))
     site.islet(c, 74, 4, -24, 3.6, 7, 803)
     site.islet(c, -50, -22, 44, 3.0, 6, 804)
+
+    sky.build(c)
     return c

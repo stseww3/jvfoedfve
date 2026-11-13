@@ -3,7 +3,8 @@
 
     makepack.py <scene> --out <resource pack directory>
 
-The scene module must provide scenes/<scene>/props.py with build_models().
+The scene module must provide scenes/<scene>/props.py with build_models(). If the scene package has
+a write_pack(pack_dir) function it is called too, for repainted blocks and replaced vanilla textures.
 """
 import argparse
 import importlib
@@ -24,6 +25,10 @@ def main():
     built = props.build_models()
     for info in M.write_pack(args.out, list(built.values())):
         print(f"{info['name']:18s} {info['elements']:3d} elements, {info['rects']:3d} texture patches, sheet {info['texture']}px")
+    extra = getattr(importlib.import_module(f"scenes.{args.scene}"), "write_pack", None)
+    if extra:
+        for line in extra(args.out):
+            print(line)
 
 
 if __name__ == "__main__":
