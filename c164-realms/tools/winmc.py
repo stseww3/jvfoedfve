@@ -19,24 +19,33 @@ The server listens on 127.0.0.1 only; the client is started offline and joins th
 The machine is somebody's desktop and has other work on its graphics card:
   - the client is not started unless MC_MIN_VRAM megabytes of video memory are free (default 2048);
   - the game window never becomes the active window, takes no mouse and no keyboard, and lies
-    behind the other windows (winctl.settle); pictures are taken from it where it is;
+    behind the other windows (winctl.settle);
   - only processes whose program lives under MC_ROOT are ever stopped.
 
+Pictures. The game is started through a small helper (win/CamHelper.java, built here with the Java
+under jre/) that makes the game save its own screenshot when shoot.py asks; the game's files are
+used as they are. That works whatever the desktop is doing. Without the helper (MC_HELPER=0, or
+it cannot be built) pictures are taken from the window by the desktop, which gives black ones
+while the display is asleep, so in that case the client is not started unless the display is on.
+
 Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), MC_VIEW (render
-distance in chunks at setup, 14), MC_SERVER_HEAP (2G), MC_CLIENT_HEAP (4G), MC_MIN_VRAM.
+distance in chunks at setup, 14), MC_SERVER_HEAP (2G), MC_CLIENT_HEAP (4G), MC_MIN_VRAM, MC_HELPER.
 """
 import glob
 import hashlib
 import json
 import os
 import secrets
+import subprocess
 import sys
 import time
 import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+sys.path.insert(1, os.path.join(HERE, "win"))
 
+import deskstate  # noqa: E402
 import winctl as W  # noqa: E402
 from rcon import Rcon  # noqa: E402
 
@@ -49,6 +58,9 @@ CAM = os.environ.get("MC_CAM", "C164Cam")
 SIZE = os.environ.get("MC_SIZE", "1280x720")
 MIN_VRAM = int(os.environ.get("MC_MIN_VRAM", "2048"))
 HOST, PORT, RCON_PORT = "127.0.0.1", 25599, 25598
+HELPER_SOURCE = os.path.join(HERE, "win", "CamHelper.java")
+HELPER = os.path.join(CLIENT, "helper")
+ASKS = "c164cam"        # folder under GAME through which the helper is asked for pictures (shoot.py)
 
 SERVER_PROPERTIES = """\
 allow-flight=true
@@ -249,6 +261,45 @@ def offline_uuid(name):
     return uuid.UUID(bytes=bytes(d)).hex
 
 
+def helper():
+    """The folder that holds the built picture helper (win/CamHelper.java), or None.
+
+    Built with the Java under jre/ whenever it is missing or its source has changed. None when it
+    is switched off (MC_HELPER=0) or cannot be built: the client then starts the game directly
+    and pictures have to come from the window."""
+    if os.environ.get("MC_HELPER", "1") == "0" or not os.path.exists(HELPER_SOURCE):
+        return None
+    with open(HELPER_SOURCE, "rb") as fh:
+        want = hashlib.sha1(fh.read()).hexdigest()
+    built, mark = os.path.join(HELPER, "CamHelper.class"), os.path.join(HELPER, "CamHelper.sha1")
+    try:
+        with open(mark) as fh:
+            have = fh.read().strip()
+    except OSError:
+        have = None
+    if have != want or not os.path.exists(built):
+        os.makedirs(HELPER, exist_ok=True)
+        folder = os.path.dirname(HELPER_SOURCE)
+        # Names relative to the source: nothing from above the workspace gets on the command line.
+        done = subprocess.run([java(), "--module", "jdk.compiler/com.sun.tools.javac.Main", "-nowarn",
+                               "-encoding", "UTF-8", "-d", os.path.relpath(HELPER, folder),
+                               os.path.basename(HELPER_SOURCE)],
+                              cwd=folder, capture_output=True, text=True, errors="replace",
+                              creationflags=subprocess.CREATE_NO_WINDOW)
+        if done.returncode != 0 or not os.path.exists(built):
+            print("the picture helper could not be built:\n" + (done.stdout + done.stderr).strip(), file=sys.stderr)
+            return None
+        with open(mark, "w") as fh:
+            fh.write(want)
+        print("picture helper built")
+    return HELPER
+
+
+def helper_runs(pid):
+    """True when the client with this process id was started through the helper and it is listening."""
+    return read_pid(os.path.join(GAME, ASKS, "ready")) == pid
+
+
 def client_command():
     with open(os.path.join(CLIENT, "versions", VERSION, f"{VERSION}.json")) as fh:
         asset_index = json.load(fh)["assetIndex"]["id"]
@@ -257,6 +308,11 @@ def client_command():
     natives = os.path.join(CLIENT, "natives")
     width, height = SIZE.split("x")
     heap = os.environ.get("MC_CLIENT_HEAP", "4G")
+    main, asks = "net.minecraft.client.main.Main", []
+    folder = helper()
+    if folder:
+        # The helper's main() starts that same main class; the client runs in GAME, so ASKS is under it.
+        classpath, main, asks = classpath + os.pathsep + folder, "CamHelper", [f"-Dc164.cam={ASKS}"]
     return [
         java(), "-Xms512M", f"-Xmx{heap}",
         "-XX:StackShadowPages=32", "--enable-native-access=ALL-UNNAMED",
@@ -264,8 +320,8 @@ def client_command():
         f"-Djava.library.path={os.path.join(natives, 'java')}", f"-Djna.tmpdir={os.path.join(natives, 'jna')}",
         f"-Dorg.lwjgl.system.SharedLibraryExtractPath={os.path.join(natives, 'lwjgl')}",
         f"-Dio.netty.native.workdir={os.path.join(natives, 'netty')}",
-        "-Dminecraft.launcher.brand=c164-test", "-Dminecraft.launcher.version=1",
-        "-cp", classpath, "net.minecraft.client.main.Main",
+        "-Dminecraft.launcher.brand=c164-test", "-Dminecraft.launcher.version=1", *asks,
+        "-cp", classpath, main,
         "--username", CAM, "--version", VERSION, "--gameDir", GAME,
         "--assetsDir", os.path.join(CLIENT, "assets"), "--assetIndex", asset_index,
         "--uuid", offline_uuid(CAM), "--accessToken", "0", "--clientId", "0", "--xuid", "0",
@@ -292,9 +348,17 @@ def client_up():
             raise SystemExit("server is not up")
         if not gpu():
             raise SystemExit(3)
+        command = client_command()
+        if "CamHelper" not in command:
+            # Pictures will have to come from the window: pointless while the display is asleep.
+            desk = deskstate.report()
+            if desk["ok"] is False:
+                print(f"console display: {desk['display']}, desktop: {desk['input_desktop'] or 'locked'} -> "
+                      "the window cannot be photographed now; the client is not started")
+                raise SystemExit(4)
         for name in ("java", "jna", "lwjgl", "netty"):
             os.makedirs(os.path.join(CLIENT, "natives", name), exist_ok=True)
-        pid = W.start(client_command(), GAME, os.path.join(CLIENT, "client.log"),
+        pid = W.start(command, GAME, os.path.join(CLIENT, "client.log"),
                       env={**os.environ, **W.QUIET_ENV})
         with open(pid_file, "w") as fh:
             fh.write(str(pid))
@@ -318,6 +382,8 @@ def client_up():
                 if was_in_front:
                     note += " (the window came up in front and was sent back)"
                 print(f"{CAM} is online{note}")
+                print("pictures: " + ("saved by the game itself (helper)" if helper_runs(pid)
+                                      else "taken from the window (only while the display is on)"))
                 return
         time.sleep(0.05)
     raise SystemExit(f"{CAM} did not join; see {os.path.join(CLIENT, 'client.log')}")
@@ -336,8 +402,9 @@ def client_down():
         else:
             W.stop(pid, ROOT)
         print("client stopped")
-    if os.path.exists(pid_file):
-        os.remove(pid_file)
+    for stale in (pid_file, os.path.join(GAME, ASKS, "ready")):
+        if os.path.exists(stale):
+            os.remove(stale)
 
 
 def status():
@@ -349,8 +416,11 @@ def status():
         quiet = all(W.settle(h) for h in windows)
         print(f"client: process {pid}, windows {[W.client_size(h) for h in windows]}, "
               + ("out of the way" if quiet else "IN FRONT"))
+        print("pictures: " + ("saved by the game itself (helper)" if helper_runs(pid)
+                              else "taken from the window (only while the display is on)"))
     else:
         print("client: not running")
+    print(f"console display: {deskstate.report()['display']}")
     gpu()
 
 

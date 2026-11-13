@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Take in-game pictures: move the camera player with /tp over RCON, then grab what the client shows
-(its X display on Linux, its window on Windows).
+"""Take in-game pictures: move the camera player with /tp over RCON, then save what the client shows
+(its X display on Linux; on Windows the game's own screenshot, or its window, see camera()).
 
     shoot.py --pw-file <server>/.rcon_pw --out <dir> shots.json
 
@@ -13,6 +13,7 @@ The camera player must already be online (see run_client.sh). It is put into spe
 no hand, hotbar or body shows up.
 """
 import argparse
+import itertools
 import json
 import math
 import os
@@ -36,12 +37,34 @@ def angles(pos, target):
     return yaw, pitch
 
 
+def empty(picture):
+    return picture.getextrema() in (((0, 0),) * 3, ((255, 255),) * 3)
+
+
+def why_empty():
+    """What the desktop is doing, when that explains an empty picture from the window."""
+    try:
+        sys.path.insert(1, os.path.join(os.path.dirname(os.path.abspath(__file__)), "win"))
+        import deskstate
+        desk = deskstate.report()
+    except (ImportError, OSError):
+        return ""
+    if desk["ok"] is False:
+        return (f": the console display is {desk['display']}, and the desktop hands out the game's picture "
+                "only while it is on (start the client through the helper, see winmc.py)")
+    return ""
+
+
 def camera(args):
     """A function that saves what the client shows right now as a picture file.
 
     On Linux the client has an X display of its own and the whole display is grabbed. On Windows
-    it is a window on a desktop in use: its picture is taken from the window itself, which works
-    while it sits behind other windows (not while it is minimised).
+    it is a window on a desktop in use, behind the other windows and without the keyboard, and
+    there are two ways (--capture; "auto" takes the first when the client runs with the helper):
+      game    the game saves its own screenshot, the picture F2 would save, asked through the
+              helper it was started with (win/CamHelper.java). Works whatever the desktop does.
+      window  the desktop hands out the window's picture (winctl.grab). Works behind other
+              windows, but not while the window is minimised or the display is asleep.
     """
     if os.name != "nt":
         def take(path):
@@ -51,6 +74,7 @@ def camera(args):
     import winctl
     from PIL import Image
 
+    game = os.path.join(args.root, "client26", "game")
     with open(os.path.join(args.root, "client26", "client.pid")) as fh:
         pid = int(fh.read().strip())
     windows = winctl.game_windows(pid)
@@ -59,14 +83,51 @@ def camera(args):
 
     winctl.settle(windows[0])
 
+    asks = os.path.join(game, "c164cam")
+    try:
+        with open(os.path.join(asks, "ready")) as fh:
+            helped = int(fh.read().strip()) == pid
+    except (OSError, ValueError):
+        helped = False
+    if args.capture == "game" and not helped:
+        raise SystemExit("the client was not started through the picture helper (see winmc.py)")
+
+    if helped and args.capture != "window":
+        numbers = itertools.count(1)
+
+        def take(path):
+            ask = f"{os.getpid()}-{next(numbers)}"
+            name = f"c164-{ask}.png"
+            with open(os.path.join(asks, ask + ".tmp"), "w", encoding="utf-8") as fh:
+                fh.write("shot " + name)
+            os.replace(os.path.join(asks, ask + ".tmp"), os.path.join(asks, ask + ".req"))
+            done, fail = os.path.join(asks, ask + ".done"), os.path.join(asks, ask + ".fail")
+            end = time.monotonic() + 60
+            while not os.path.exists(done):
+                if os.path.exists(fail):
+                    with open(fail, encoding="utf-8") as fh:
+                        raise SystemExit("the game could not take the picture: " + fh.read().strip())
+                if time.monotonic() > end:
+                    raise SystemExit("the game did not answer the request for a picture")
+                time.sleep(0.05)
+            saved = os.path.join(game, "screenshots", name)
+            with Image.open(saved) as shot:
+                picture = shot.convert("RGB")
+            if empty(picture):
+                raise SystemExit("the game saved an empty picture")
+            picture.save(path)
+            os.remove(saved)
+            os.remove(done)
+        return take
+
     def take(path):
         got = winctl.grab(windows[0])
         if got is None:
             raise SystemExit("the window gave no picture (minimised?)")
         width, height, rows = got
         picture = Image.frombuffer("RGBA", (width, height), rows, "raw", "BGRA", 0, 1).convert("RGB")
-        if picture.getextrema() in (((0, 0),) * 3, ((255, 255),) * 3):
-            raise SystemExit("the window gave an empty picture")
+        if empty(picture):
+            raise SystemExit("the window gave an empty picture" + why_empty())
         picture.save(path)
     return take
 
@@ -80,6 +141,8 @@ def main():
     ap.add_argument("--display", default="164", help="X display number of the client (Linux)")
     ap.add_argument("--root", default=os.environ.get("MC_ROOT", os.getcwd()),
                     help="folder that holds client26/ (Windows, see winmc.py)")
+    ap.add_argument("--capture", choices=("auto", "game", "window"), default="auto",
+                    help="Windows: who makes the picture, the game itself or the desktop from the window")
     ap.add_argument("--out", required=True)
     ap.add_argument("--settle", type=float, default=6.0, help="seconds to wait after each move")
     ap.add_argument("--first-settle", type=float, default=15.0, help="wait for the first shot (chunks have to load)")
