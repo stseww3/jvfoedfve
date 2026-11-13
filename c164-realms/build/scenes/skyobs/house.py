@@ -186,3 +186,4 @@ def build(c, land, x0, x1, z0, z1, y0, door_dx=4):
         for z in (z0 + 1, z1 - 1):
             for y in (y0 + 1, y0 + 6):
                 c.set(x, y, z, "light[level=15]", keep=True)
+    return {"ridge_y": y0 + 7 + half + 0.5, "ridge_z": ridge_z + 0.5}

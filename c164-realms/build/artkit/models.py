@@ -25,11 +25,30 @@ SIDE = {0: ("w", "e"), 1: ("d", "u"), 2: ("n", "s")}
 ANGLES = (-45.0, -22.5, 0.0, 22.5, 45.0)
 
 
-def _flat(mat):
+# where the highlight painted into round shapes comes from (model space: up, a little west and north)
+LIGHT = (-0.35, 0.80, -0.48)
+
+
+def _flat(mat, shift=-1):
     if isinstance(mat, Mat):
-        c = mat.ramp[max(0, mat.base - 1)]
-        return Mat(mat.name + "_cap", ["#%02x%02x%02x" % tuple(int(v) for v in c)], kind="flat", bevel=0)
+        i = int(min(len(mat.ramp) - 1, max(0, mat.base + shift)))
+        c = mat.ramp[i]
+        return Mat(f"{mat.name}_cap{i}", ["#%02x%02x%02x" % tuple(int(v) for v in c)], kind="flat", bevel=0)
     return mat
+
+
+def _lit(mat, normal, bevel):
+    """Variant of `mat` for a face of a round shape that looks along `normal`."""
+    if not isinstance(mat, Mat):
+        return mat
+    d = sum(n * l for n, l in zip(normal, LIGHT))
+    return mat.variant(1 if d > 0.45 else -1 if d < -0.45 else 0, bevel)
+
+
+def _unit(axis, sign=1.0):
+    v = [0.0, 0.0, 0.0]
+    v[axis] = sign
+    return tuple(v)
 
 
 class Model:
@@ -66,7 +85,8 @@ class Model:
         elif sides == 4:
             steps = [(False, 0.0)]
             hw = radius
-        cap = cap or _flat(mat)
+        lo_cap = cap or _flat(mat, -1 if k != 1 else -2)
+        hi_cap = cap or _flat(mat, -1 if k != 1 else 0)
         origin = [0.0, 0.0, 0.0]
         origin[k], origin[o1], origin[o2] = (a0 + a1) / 2.0, c[0], c[1]
         kw.setdefault("grain", axis)
@@ -80,11 +100,17 @@ class Model:
             lo[k], hi[k] = a0, a1
             lo[o1], hi[o1] = c[0] - e1, c[0] + e1
             lo[o2], hi[o2] = c[1] - e2, c[1] + e2
-            narrow = o2 if swap else o1
+            narrow, wide = (o2, o1) if swap else (o1, o2)
             skip = "" if sides == 4 else "".join(SIDE[narrow])
-            caps = {SIDE[k][0]: cap, SIDE[k][1]: cap}
+            faces = {SIDE[k][0]: lo_cap, SIDE[k][1]: hi_cap}
+            if sides != 4:
+                # the long faces continue around the tube: no bevel between them, and a painted
+                # highlight on the side that looks towards the light
+                for sign, letter in ((-1.0, SIDE[wide][0]), (1.0, SIDE[wide][1])):
+                    n = _qrot(quat(axis, angle), _unit(wide, sign))
+                    faces[letter] = _lit(mat, n, "ends")
             self.box(lo, hi, mat, rot=(axis, angle, tuple(origin)) if angle else None, skip=skip,
-                     faces=caps, seed=seed, **kw)
+                     faces=faces, seed=seed, **kw)
         return self
 
     def ring(self, axis, centre, radius, thick, width, mat, sides=16, **kw):
@@ -106,12 +132,22 @@ class Model:
             sign = 1.0 if quarter in (0, 1) else -1.0
             ra, rb = sign * (radius - thick / 2.0), sign * (radius + thick / 2.0)
             if quarter in (0, 2):
-                lo[o1], hi[o1] = centre[o1] + min(ra, rb), centre[o1] + max(ra, rb)
-                lo[o2], hi[o2] = centre[o2] - half, centre[o2] + half
+                radial, tangent = o1, o2
             else:
-                lo[o2], hi[o2] = centre[o2] + min(ra, rb), centre[o2] + max(ra, rb)
-                lo[o1], hi[o1] = centre[o1] - half, centre[o1] + half
-            self.box(lo, hi, mat, rot=(axis, delta, tuple(centre)) if delta else None, seed=seed, **kw)
+                radial, tangent = o2, o1
+            lo[radial], hi[radial] = centre[radial] + min(ra, rb), centre[radial] + max(ra, rb)
+            lo[tangent], hi[tangent] = centre[tangent] - half, centre[tangent] + half
+            turn = quat(axis, delta)
+            out = _qrot(turn, _unit(radial, sign))
+            outer, inner = (SIDE[radial][1], SIDE[radial][0]) if sign > 0 else (SIDE[radial][0], SIDE[radial][1])
+            faces = {
+                outer: _lit(mat, out, "along"),
+                inner: _lit(mat, (-out[0] * 0.5, -out[1] * 0.5 - 0.3, -out[2] * 0.5), "along"),
+                SIDE[k][0]: _lit(mat, _unit(k, -1.0), "along"),
+                SIDE[k][1]: _lit(mat, _unit(k, 1.0), "along"),
+            }
+            self.box(lo, hi, mat, rot=(axis, delta, tuple(centre)) if delta else None, seed=seed,
+                     skip="".join(SIDE[tangent]), grain=AXES[tangent], faces=faces, **kw)
         return self
 
     # ---- geometry ----------------------------------------------------------------------------
@@ -252,6 +288,8 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
 
     With yaw 0 the model's axes line up with the world's. yaw turns it about the vertical axis like
     an entity's facing; `turns` is a list of (axis, degrees) applied to the model first, in order.
+    scale is one number or (x, y, z) along the model's own axes. brightness overrides the light the
+    model would take from the block it stands in: one level, or (sky, block).
     """
     sx, sy, sz = model.shift()
     q = (0.0, 0.0, 0.0, 1.0)
@@ -260,8 +298,9 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
     # the item renderer centres the model on (8, 8, 8) and turns it half a turn about y, so the
     # rotation is expressed in that turned frame
     q = (-q[0], q[1], -q[2], q[3])
+    s = (scale, scale, scale) if isinstance(scale, (int, float)) else tuple(scale)
     a = ((model.anchor[0] + sx - 8.0) / 16.0, (model.anchor[1] + sy - 8.0) / 16.0, (model.anchor[2] + sz - 8.0) / 16.0)
-    flipped = (-a[0] * scale, a[1] * scale, -a[2] * scale)
+    flipped = (-a[0] * s[0], a[1] * s[1], -a[2] * s[2])
     t = _qrot(q, flipped)
     nbt = {
         "id": "minecraft:item_display",
@@ -270,7 +309,7 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
         "transformation": {
             "left_rotation": [Float(q[0]), Float(q[1]), Float(q[2]), Float(q[3])],
             "right_rotation": [Float(0.0), Float(0.0), Float(0.0), Float(1.0)],
-            "scale": [Float(scale), Float(scale), Float(scale)],
+            "scale": [Float(s[0]), Float(s[1]), Float(s[2])],
             "translation": [Float(-t[0]), Float(-t[1]), Float(-t[2])],
         },
         "Rotation": [Float((180.0 + yaw) % 360.0), Float(0.0)],
@@ -278,8 +317,22 @@ def display(model, yaw=0.0, scale=1.0, turns=(), brightness=None, ns="c164", vie
         "Tags": ["c164art"],
     }
     if brightness is not None:
-        nbt["brightness"] = {"sky": int(brightness), "block": int(brightness)}
+        sky, block = brightness if isinstance(brightness, (tuple, list)) else (brightness, brightness)
+        nbt["brightness"] = {"sky": int(sky), "block": int(block)}
     return nbt
+
+
+def between(model, a, b, thick=1.0, length=48.0, **kw):
+    """Display NBT (to be summoned at a) that stretches `model` from point a to point b.
+
+    The model must run along +z from its anchor and be `length` units long.
+    """
+    dx, dy, dz = b[0] - a[0], b[1] - a[1], b[2] - a[2]
+    flat = math.hypot(dx, dz)
+    dist = math.hypot(flat, dy)
+    yaw = math.degrees(math.atan2(-dx, dz))
+    pitch = math.degrees(math.atan2(dy, flat))
+    return display(model, yaw=yaw, scale=(thick, thick, dist * 16.0 / length), turns=(("x", -pitch),), **kw)
 
 
 def write_pack(pack_dir, models, ns="c164", description="c164 art test props"):

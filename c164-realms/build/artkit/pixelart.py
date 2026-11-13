@@ -27,18 +27,33 @@ class Mat:
     ramp   colours from dark to light
     kind   plain | wood | metal | glow | cloth | rope | flat
     noise  share of pixels nudged one step up or down
-    bevel  0 none, 1 light top and left edge with a dark bottom and right edge
+    bevel  0 none, 1 light top and left edge with a dark bottom and right edge,
+           "along" only the two edges that run with the grain, "ends" only the two across it
     base   index into the ramp used for the bulk of the face (default: the middle)
     """
 
     def __init__(self, name, ramp, kind="plain", noise=0.2, bevel=1, base=None, alpha=255):
         self.name = name
-        self.ramp = np.array([hx(c) for c in ramp], dtype=np.uint8)
+        self.ramp = np.array([hx(c) for c in ramp], dtype=np.uint8).reshape(-1, 3)
         self.kind = kind
         self.noise = noise
         self.bevel = bevel
         self.base = len(ramp) // 2 if base is None else base
         self.alpha = alpha
+        self._variants = {}
+
+    def variant(self, shift=0, bevel=None):
+        """The same material `shift` steps lighter or darker, optionally with another bevel mode."""
+        b = self.bevel if bevel is None else bevel
+        if shift == 0 and b == self.bevel:
+            return self
+        key = (shift, b)
+        if key not in self._variants:
+            m = Mat(f"{self.name}~{shift}~{b}", [], self.kind, self.noise, b, 0, self.alpha)
+            m.ramp = self.ramp
+            m.base = int(min(len(self.ramp) - 1, max(0, self.base + shift)))
+            self._variants[key] = m
+        return self._variants[key]
 
     def levels(self, w, h, grain, seed):
         jj, ii = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
@@ -68,21 +83,33 @@ class Mat:
             lv = lv + (fold > 0.55).astype(np.int32) - (fold < -0.55).astype(np.int32)
         elif kind == "rope":
             lv = lv - ((ii + jj) % 3 == 0).astype(np.int32) + ((ii + jj) % 3 == 1).astype(np.int32) * (r > 0.5)
-        else:  # plain, metal
+        elif kind == "metal":  # mostly flat, a few short brushed streaks along the grain
+            if grain == "cap":
+                lv = lv + (r > 1 - self.noise / 2).astype(np.int32) - (r < self.noise / 2).astype(np.int32)
+            else:
+                line, along = (jj, ii) if grain == "u" else (ii, jj)
+                streak = _hash(line, along // 5, seed + 7)
+                lv = lv + (streak > 1 - self.noise / 2).astype(np.int32) - (streak < self.noise / 2).astype(np.int32)
+        else:  # plain
             lv = lv + (r > 1 - self.noise / 2).astype(np.int32) - (r < self.noise / 2).astype(np.int32)
         if self.bevel and kind != "cloth":
-            lo, hi = (1, h - 1) if h >= 3 else (0, h)
-            if h >= 3:
-                lv[0, :] += 1
-                lv[-1, :] -= 1
-            elif h == 2:
-                lv[1, :] -= 1
-            if w >= 3:
-                lv[lo:hi, 0] += 1
-                lv[lo:hi, -1] -= 1
-            elif w == 2:
-                lv[lo:hi, 1] -= 1
-            if kind == "metal" and w >= 4 and h >= 4:
+            every = self.bevel not in ("along", "ends") or grain == "cap"
+            rows = every or (self.bevel == "along") == (grain == "u")
+            cols = every or (self.bevel == "along") == (grain == "v")
+            lo, hi = (1, h - 1) if rows and h >= 3 else (0, h)
+            if rows:
+                if h >= 3:
+                    lv[0, :] += 1
+                    lv[-1, :] -= 1
+                elif h == 2:
+                    lv[1, :] -= 1
+            if cols:
+                if w >= 3:
+                    lv[lo:hi, 0] += 1
+                    lv[lo:hi, -1] -= 1
+                elif w == 2:
+                    lv[lo:hi, 1] -= 1
+            if kind == "metal" and rows and cols and w >= 4 and h >= 4:
                 lv[1, 1] += 1  # glint
         return lv
 

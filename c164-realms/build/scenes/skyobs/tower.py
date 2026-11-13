@@ -1,9 +1,11 @@
-"""Observatory tower: stone shaft, timber gallery, copper dome with an open slit and a telescope."""
+"""Observatory tower: stone shaft, timber gallery, copper dome with an open slit and a brass telescope."""
 import math
 
 from artkit import arch as A
 from artkit import blocks as B
 from artkit.canvas import Mix, hash3
+
+from . import props
 
 BASE = Mix({"cobblestone": 30, "mossy_cobblestone": 14, "stone_bricks": 26, "mossy_stone_bricks": 14,
             "andesite": 10, "cracked_stone_bricks": 6}, seed=31)
@@ -144,7 +146,10 @@ def build(c, land, cx, cz, y0):
         a = k * math.pi / 4 + math.pi / 8
         px, pz = min(rail, key=lambda p: abs((math.atan2(p[1] + 0.5 - cz, p[0] + 0.5 - cx) - a + math.pi) % math.tau - math.pi))
         c.set(px, y0 + g + 2, pz, "spruce_fence")
-        c.set(px, y0 + g + 3, pz, "lantern[hanging=false]")
+        if k == 0:  # the east-south-east post carries the windsock instead of a lantern
+            props.place(c, "windsock", px + 0.5, y0 + g + 3, pz + 0.5, brightness=(15, 0))
+        else:
+            c.set(px, y0 + g + 3, pz, "lantern[hanging=false]")
     # door from the drum onto the gallery
     for i, x in enumerate((icx - 1, icx)):
         c.clear(x, y0 + g + 1, icz + 6)
@@ -162,8 +167,6 @@ def build(c, land, cx, cz, y0):
     slit = range(icx - 2, icx + 2)
     heights = {}
     for x, z in A.disc(cx, cz, rd):
-        if x in slit and z >= icz - 2:
-            continue  # the observing slit
         d = A.dist(x, z, cx, cz)
         heights[(x, z)] = yb + 0.6 + math.sqrt(rd * rd - d * d)
     for x, z in A.ring(cx, cz, 7.0, rd):
@@ -181,26 +184,19 @@ def build(c, land, cx, cz, y0):
         return "waxed_oxidized_cut_copper"
 
     A.shell(c, heights, dome_mat, yb)
+    # the observing slit is cut out of the finished skin, so its edges stay one block thick and
+    # the room under the dome is one open space
+    for (x, z), h in heights.items():
+        if x in slit and z >= icz - 2:
+            for y in range(yb, int(h) + 2):
+                c.clear(x, y, z)
     # the slit is closed at its foot by a low sill
     for x in slit:
         for z in range(icz + 5, icz + 9):
             if A.dist(x, z, cx, cz) <= rd:
                 c.set(x, yb, z, "dark_prismarine")
 
-    # ---- telescope: a slanted white tube with brass fittings, poking out of the slit --------
-    n = 10
-    for i, z in enumerate(range(icz - 2, icz - 2 + n)):
-        ymid = y0 + top_wall + 3 + i
-        for x in (icx - 1, icx):
-            if i >= n - 2:
-                mat = "waxed_cut_copper"
-            elif i in (2, 6):
-                mat = "polished_blackstone"
-            else:
-                mat = "smooth_quartz"
-            c.set(x, ymid - 1, z, B.stairs(mat, "north", "top"))
-            c.set(x, ymid, z, mat)
-            c.set(x, ymid + 1, z, B.stairs(mat, "south"))
-    for x in (icx - 1, icx):
-        c.set(x, y0 + top_wall + 1, icz - 1, "polished_deepslate")
-        c.set(x, y0 + top_wall + 1, icz, "polished_deepslate")
+    # ---- telescope: custom models on a pier in the middle of the dome floor ------------------
+    pivot = (cx, y0 + top_wall + 1 + 4.0, cz)
+    props.place(c, "telescope_mount", *pivot, yaw=180.0, brightness=(15, 0))
+    props.place(c, "telescope_tube", *pivot, yaw=180.0, turns=(("x", 45.0),), brightness=(15, 0))

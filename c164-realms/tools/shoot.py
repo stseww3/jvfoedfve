@@ -4,7 +4,7 @@
     shoot.py --pw-file <server>/.rcon_pw --out <dir> shots.json
 
 shots.json is a list of shots:
-    {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera aimed at a point
+    {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera (eye) aimed at a point
     {"name": "front", "pos": [x, y, z], "yaw": 180, "pitch": 10}      explicit angles
 Optional per shot: "time" (e.g. "noon", "midnight" or a tick number), "settle" (seconds to wait).
 
@@ -22,6 +22,9 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from rcon import Rcon  # noqa: E402
+
+
+EYE = 1.62  # "pos" is where the camera's eye goes; /tp moves the feet
 
 
 def angles(pos, target):
@@ -71,7 +74,7 @@ def main():
         if when != last_time:
             rc.command(f"time set {when}")
             last_time = when
-        rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1]:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
+        rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
         time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
         path = os.path.join(args.out, shot["name"] + ".png")
         subprocess.run(["import", "-display", f":{args.display}", "-window", "root", path], check=True)

@@ -6,6 +6,8 @@ from artkit import blocks as B
 from artkit import trees as T
 from artkit.canvas import Mix, hash3
 
+from . import props
+
 STEP = Mix({"stone_bricks": 64, "mossy_stone_bricks": 14, "cobblestone": 12, "andesite": 10}, seed=61)
 MASON = Mix({"cobblestone": 34, "stone_bricks": 30, "andesite": 14, "mossy_cobblestone": 12, "stone": 10}, seed=62)
 PATH = Mix({"dirt_path": 56, "gravel": 18, "coarse_dirt": 12, "cobblestone": 8, "mossy_cobblestone": 4,
@@ -17,17 +19,79 @@ ROCK = Mix({"stone": 44, "andesite": 20, "cobblestone": 18, "mossy_cobblestone":
 WATER = "water[level=0]"
 
 
-def lamp(c, land, x, z):
+def lamp(c, land, x, z, toward=None):
+    """Timber lamp post (custom model) on a stone stub; its arm reaches towards the point `toward`."""
     y = land.y(x, z)
     if y is None:
         return
     for h in range(1, 6):
         c.clear(x, y + h, z)
-    c.set(x, y + 1, z, "cobblestone_wall")
-    c.set(x, y + 2, z, "spruce_fence")
-    c.set(x, y + 3, z, "spruce_fence")
-    c.set(x, y + 4, z, "lantern[hanging=false]")
+    c.set(x, y + 1, z, "andesite_wall")
+    yaw = 0.0
+    if toward is not None:
+        yaw = math.degrees(math.atan2(toward[1] - (z + 0.5), toward[0] - (x + 0.5)))
+    props.place(c, "lamp_post", x + 0.5, y + 2, z + 0.5, yaw=yaw)
+    reach = 9.0 / 16.0
+    lx = int(math.floor(x + 0.5 + reach * math.cos(math.radians(yaw))))
+    lz = int(math.floor(z + 0.5 + reach * math.sin(math.radians(yaw))))
+    c.set(lx, y + 4, lz, "light[level=14]", keep=True)
     land.kind[(x, z)] = "built"
+
+
+def reserve(c, land, x, z, height=3):
+    """Keep a ground cell free of plants for something that will stand on it."""
+    y = land.y(x, z)
+    if y is not None:
+        for h in range(1, height + 1):
+            c.clear(x, y + h, z)
+        land.kind[(x, z)] = "built"
+    return y
+
+
+def nearest_on(pts, x, z):
+    """Closest point to (x, z) on the polyline pts."""
+    best = None
+    for (xa, za), (xb, zb) in zip(pts, pts[1:]):
+        dx, dz = xb - xa, zb - za
+        t = max(0.0, min(1.0, ((x - xa) * dx + (z - za) * dz) / (dx * dx + dz * dz)))
+        q = (xa + dx * t, za + dz * t)
+        d = math.hypot(q[0] - x, q[1] - z)
+        if best is None or d < best[0]:
+            best = (d, q)
+    return best[1]
+
+
+def garland(c, a, b, sag=0.5):
+    """Bunting from point a to point b, hanging in a shallow curve."""
+    dx, dy, dz = (b[i] - a[i] for i in range(3))
+    n = max(1, int(round(math.hypot(dx, dz))))
+    yaw = math.degrees(math.atan2(dz, dx))
+    pts = []
+    for i in range(n + 1):
+        t = i / n
+        pts.append((a[0] + dx * t, a[1] + dy * t - sag * 4 * t * (1 - t), a[2] + dz * t))
+    for q, r in zip(pts, pts[1:]):
+        run, rise = math.hypot(r[0] - q[0], r[2] - q[2]), r[1] - q[1]
+        props.place(c, "bunting", q[0], q[1], q[2], yaw=yaw, turns=(("z", math.degrees(math.atan2(rise, run))),),
+                    scale=(math.hypot(run, rise), 1.0, 1.0))
+
+
+def pedestal(c, land, x, z):
+    """Stone plinth for the armillary sphere: a slab step around a chiselled block. Returns the top y."""
+    y = land.y(x, z)
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            for h in range(1, 7):
+                c.clear(x + dx, y + h, z + dz)
+            A.fill_down(c, x + dx, y, z + dz, MASON(x + dx, y, z + dz), limit=3)
+            c.set(x + dx, y, z + dz, MASON)
+            if (dx, dz) != (0, 0):
+                c.set(x + dx, y + 1, z + dz, B.slab(STEP(x + dx, y + 1, z + dz)))
+            land.kind[(x + dx, z + dz)] = "built"
+            land.top[(x + dx, z + dz)] = y
+    c.set(x, y + 1, z, "chiseled_stone_bricks")
+    c.set(x, y + 2, z, "stone_brick_wall")
+    return y + 3
 
 
 def grand_stair(c, land, x0, x1, z_top, y_top, y_ground, landing_after=4, landing_len=3):
@@ -173,6 +237,14 @@ def pond(c, land, cx, cz, rx, rz, level, outlet):
                 for h in range(1, 2 + int(hash3(n[0], 11, n[1], 69) * 3)):
                     c.set(n[0], level + h, n[1], "sugar_cane")
                 land.kind[n] = "built"
+    # reed clumps (custom model) standing in the shallows along the bank
+    for x, z, depth in sorted(wet):
+        if depth != 1 or c.has(x, level + 1, z) or math.hypot(x + 0.5 - end[0], z + 0.5 - end[1]) < 5:
+            continue
+        on_bank = any((x + dx, z + dz) not in cells for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        if on_bank and hash3(x, 12, z, 70) < 0.3:
+            props.place(c, "cattail", x + 0.3 + 0.4 * hash3(x, 14, z, 70), level, z + 0.3 + 0.4 * hash3(x, 15, z, 70),
+                        yaw=360.0 * hash3(x, 13, z, 70))
 
 
 def dock(c, land, x_in, x_out, z0, half_w, y):
@@ -218,8 +290,17 @@ def dock(c, land, x_in, x_out, z0, half_w, y):
     c.set(x_out + 3, y + 1, z0 + half_w - 1, "barrel[facing=up]")
     c.set(x_out + 4, y + 1, z0 + half_w - 1, "barrel[facing=up]")
     c.set(x_out + 4, y + 2, z0 + half_w - 1, "barrel[facing=east]")
-    c.set(x_out + 6, y + 1, z0 - half_w + 1, "composter")
     c.set(x_out + 7, y + 1, z0 - half_w + 1, "barrel[facing=up]")
+    zn, zs = z0 - half_w + 1.5, z0 + half_w - 0.5
+    props.place(c, "crate", x_out + 6.5, y + 1, zn - 0.05, yaw=8.0)
+    props.place(c, "crate", x_out + 5.45, y + 1, zn + 0.05, yaw=-6.0)
+    props.place(c, "crate", x_out + 6.0, y + 1.75, zn, yaw=27.0)
+    props.place(c, "trunk", x_out + 9.6, y + 1, zn - 0.1, yaw=4.0)
+    props.place(c, "trunk", x_out + 9.55, y + 1 + 9.25 / 16, zn - 0.12, yaw=-9.0)
+    props.place(c, "trunk", x_out + 6.6, y + 1, zs, yaw=84.0)
+    props.place(c, "crate", x_out + 11.5, y + 1, zs - 0.02, yaw=-14.0)
+    # a garland ties the two landward lanterns together, high enough to walk under
+    garland(c, (x_in - 0.5, y + 3.7, z0 - half_w + 0.5), (x_in - 0.5, y + 3.7, z0 + half_w + 0.5), sag=0.3)
 
 
 def airship(c, cx, gy, cz, half_len=11.0, radius=5.0):
@@ -284,16 +365,29 @@ def airship(c, cx, gy, cz, half_len=11.0, radius=5.0):
         c.set(x, gy + 2, z, "dark_oak_log")
         c.set(x, gy + 3, z, "dark_oak_fence")
         c.set(x, gy + 4, z, "lantern[hanging=false]")
-    for du, v in ((-2, -2), (2, -2), (-2, 2), (2, 2), (-3, -1), (3, -1), (-3, 1), (3, 1)):
+    # rigging: ropes from the rail up to the envelope, splayed fore and aft
+    def hull(u, deg):
+        """Point just inside the envelope skin at station u, `deg` around from straight down."""
+        r = r_at(u) - 0.45
+        x, z = at(u, 0)
+        return x + 0.5, cy + 0.5 - r * math.cos(math.radians(deg)), z + 0.5 + r * math.sin(math.radians(deg))
+
+    for du, v, ue, deg in ((2, 2, 4, 32), (2, -2, 4, -32), (-2, 2, -4, 32), (-2, -2, -4, -32),
+                           (3, 1, 8, 20), (3, -1, 8, -20), (-3, 1, -7, 20), (-3, -1, -7, -20),
+                           (0, 2, 0, 38), (0, -2, 0, -38)):
         x, z = at(du, v)
-        y = gy + 3
-        while not c.has(x, y, z) and y < cy:
-            c.set(x, y, z, "iron_chain[axis=y]")
-            y += 1
-    x, z = at(1, -1)
-    c.set(x, gy + 1, z, "barrel[facing=up]")
+        props.stretch(c, "rope", (x + 0.5, gy + 3.0, z + 0.5), hull(ue, deg), thick=1.5)
+    # outboard engines on the after part of the car
+    x, _ = at(-2, 0)
+    props.place(c, "engine_pod_s", x + 0.5, gy + 1.5, cz + 3.02)
+    props.place(c, "engine_pod_n", x + 0.5, gy + 1.5, cz - 2.02)
+    # helm at the forward end, cargo aft
+    x, z = at(2, 0)
+    props.place(c, "ship_wheel", x + 0.5, gy + 1, z + 0.5)
     x, z = at(-1, 1)
-    c.set(x, gy + 1, z, "chest[facing=north]")
+    c.set(x, gy + 1, z, "barrel[facing=up]")
+    x, z = at(-2, -1)
+    props.place(c, "trunk", x + 0.5, gy + 1, z + 0.6, yaw=90.0)
     return cy
 
 

@@ -6,7 +6,7 @@ front of the crag drains over the southern rim.
 """
 from artkit.canvas import Canvas
 
-from . import flora, house, site, terrain, tower
+from . import flora, house, props, site, terrain, tower
 
 TOWER = (20.0, -12.0)
 HOUSE = (-19, -7, 3, 11)   # x0, x1, z0, z1
@@ -50,7 +50,7 @@ def build():
 
     tower.build(c, land, TOWER[0], TOWER[1], terrain.KNOLL_H + 1)
     foot_z = site.grand_stair(c, land, 18, 21, -1, terrain.KNOLL_H, GROUND)
-    house.build(c, land, hx0, hx1, hz0, hz1, GROUND + 1)
+    roof = house.build(c, land, hx0, hx1, hz0, hz1, GROUND + 1)
     site.garden(c, land, gx0, gz0, gx1, gz1, GROUND)
 
     # the rim at the west tip decides where the dock goes
@@ -59,17 +59,33 @@ def build():
     site.dock(c, land, rim_x + 9, dock_out, 1, 2, GROUND)
     site.airship(c, dock_out - 6, GROUND, 1)
     c.set(dock_out - 1, GROUND, 1, "spruce_slab[type=top]")
+    # mooring lines from the two outer dock posts to the after rail of the car
+    for side in (-1, 1):
+        props.stretch(c, "rope", (dock_out + 0.5, GROUND + 2.6, 1.5 + 2 * side),
+                      (dock_out - 2.5, GROUND + 3.0, 1.5 + side), thick=1.5)
 
     site.pond(c, land, px, pz, prx, prz, GROUND, [(25.0, 26.5), (28.0, 29.5), (34.0, 35.5)])
 
     door_x = hx0 + 4
-    site.path(c, land, [(rim_x + 9, 1.5), (-34, 6), (-24, 14), (door_x + 0.5, 15), (-4, 15.5), (8, 14.5),
-                        (17, foot_z + 2.5), (19.5, foot_z + 0.5)], width=3.2, seed=1)
+    main = [(rim_x + 9, 1.5), (-34, 6), (-24, 14), (door_x + 0.5, 15), (-4, 15.5), (8, 14.5),
+            (17, foot_z + 2.5), (19.5, foot_z + 0.5)]
+    site.path(c, land, main, width=3.2, seed=1)
     site.path(c, land, [(door_x + 0.5, 15), (door_x + 0.5, hz1 + 1)], width=2.0, seed=2)
     site.path(c, land, [(19.5, foot_z + 1), (20.5, 18.5)], width=2.0, seed=3)
     site.path(c, land, [(0, 15), (0, 10.5)], width=1.6, seed=4)
-    for x, z in ((-40, 6), (-27, 10), (-9, 18), (6, 12), (13, 18), (25, 16)):
-        site.lamp(c, land, x, z)
+    for x, z in ((-40, 6), (-27, 10), (-9, 18), (6, 12), (13, 18)):
+        site.lamp(c, land, x, z, toward=site.nearest_on(main, x + 0.5, z + 0.5))
+    site.lamp(c, land, 25, 16, toward=(21.0, 16.5))
+
+    # custom-model dressing: fingerpost at the fork, shop sign and weathervane on the house,
+    # armillary sphere where the stair starts
+    site.reserve(c, land, -12, 17)
+    props.place(c, "signpost", -11.5, GROUND + 1, 17.5)
+    props.place(c, "sign_board", hx1 + 1.0, GROUND + 4.9, hz1 - 0.5)
+    props.place(c, "weathervane", hx1 - 1.5, roof["ridge_y"], roof["ridge_z"], brightness=(15, 0))
+    top = site.pedestal(c, land, 25, 11)
+    props.place(c, "armillary", 25.5, top, 11.5)
+    props.place(c, "armillary_core", 25.5, top + 2.0, 11.5, turns=(("z", 23.5),))
     site.woodpile(c, hx1 + 1, GROUND + 1, hz0 + 2)
     c.set(door_x + 2, GROUND + 1, hz1 + 1, "barrel[facing=up]")
     c.set(door_x + 3, GROUND + 1, hz1 + 1, "barrel[facing=up]")

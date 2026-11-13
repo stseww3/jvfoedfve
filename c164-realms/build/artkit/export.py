@@ -28,12 +28,9 @@ def _palette(cells):
 
 def _write_tile(path, cells, entities=()):
     """cells: list of (x, y, z, state) in placement order. Returns the template origin."""
-    x0 = min(c[0] for c in cells) if cells else min(int(e[0] // 1) for e in entities)
-    y0 = min(c[1] for c in cells) if cells else min(int(e[1] // 1) for e in entities)
-    z0 = min(c[2] for c in cells) if cells else min(int(e[2] // 1) for e in entities)
-    x1 = max(c[0] for c in cells) if cells else x0
-    y1 = max(c[1] for c in cells) if cells else y0
-    z1 = max(c[2] for c in cells) if cells else z0
+    pts = [(c[0], c[1], c[2]) for c in cells] + [tuple(int(e[k] // 1) for k in range(3)) for e in entities]
+    x0, y0, z0 = (min(p[k] for p in pts) for k in range(3))
+    x1, y1, z1 = (max(p[k] for p in pts) for k in range(3))
     palette, blocks = _palette([(x - x0, y - y0, z - z0, s) for x, y, z, s in cells])
     ents = [(x - x0, y - y0, z - z0, nbt) for x, y, z, nbt in entities]
     nbtw.write_template(path, (x1 - x0 + 1, y1 - y0 + 1, z1 - z0 + 1), palette, blocks, ents)
