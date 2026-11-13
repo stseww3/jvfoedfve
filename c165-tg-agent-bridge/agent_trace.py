@@ -155,8 +155,10 @@ def parse_json_maybe(val: Any) -> Any:
 
 
 def extract_agent_id(payload: dict[str, Any]) -> str:
-    """从 MCP 调用参数、join 返回或 /wait 命令里自动提取 a_xxx / m_xxx 身份并绑定会话。"""
+    """只从权威输入源（MCP 调用参数、join 返回或 /wait 轮询命令）提取 a_xxx / m_xxx 身份，避免查日志输出时把别的聊天身份误绑到当前会话。"""
     candidates: list[str] = []
+    event = str(payload.get("hook_event_name") or "")
+    tname = str(payload.get("tool_name") or "")
     ti = parse_json_maybe(payload.get("tool_input"))
     if isinstance(ti, dict):
         if isinstance(ti.get("agent"), str):
@@ -164,14 +166,24 @@ def extract_agent_id(payload: dict[str, Any]) -> str:
         args = ti.get("arguments")
         if isinstance(args, dict) and isinstance(args.get("agent"), str):
             candidates.append(args["agent"])
-        if isinstance(ti.get("command"), str):
-            candidates.append(ti["command"])
-    elif isinstance(ti, str):
+        cmd_s = str(ti.get("command") or "")
+        if cmd_s and (is_wait_command(cmd_s) or "bind trace session" in cmd_s or "agent_trace.py" in cmd_s):
+            candidates.append(cmd_s)
+    elif isinstance(ti, str) and ("\"agent\"" in ti or is_wait_command(ti)):
         candidates.append(ti)
-    for key in ("command", "tool_output", "result", "output"):
-        v = payload.get(key)
-        if isinstance(v, str):
-            candidates.append(v)
+    raw_cmd = str(payload.get("command") or "")
+    if raw_cmd and (is_wait_command(raw_cmd) or "bind trace session" in raw_cmd or "agent_trace.py" in raw_cmd):
+        candidates.append(raw_cmd)
+    # 仅在 join 调用返回时从输出提取新分发的身份
+    is_join = (
+        "join" in tname.lower()
+        or (isinstance(ti, dict) and str(ti.get("toolName") or "") == "join")
+    )
+    if is_join and event in ("afterMCPExecution", "postToolUse"):
+        for key in ("tool_output", "result", "output"):
+            v = payload.get(key)
+            if isinstance(v, str):
+                candidates.append(v)
     for text in candidates:
         m = AGENT_RE.search(text)
         if m:
@@ -326,13 +338,14 @@ def handle_hook() -> int:
         if agent_id:
             sess["agent_id"] = agent_id
 
-        # 若该子 agent 已被停用（stop_spawned_agent / stop_agent），在它正准备开跑新命令前直接拦截拒绝，无需等跑完！
+        # 若该子 agent 已被停用，或在准备跑耗时工具前收件箱已有未读人类消息 -> 直接前置提醒/拦截！
+        pre_alert_ctx = ""
         if event == "preToolUse" and agent_id and agent_id.startswith("a_"):
-            chk_pre = get_json(
-                f"{bridge_url}/trace/check-active?agent={urllib.parse.quote(agent_id)}",
+            peek_pre = get_json(
+                f"{bridge_url}/trace/peek?agent={urllib.parse.quote(agent_id)}",
                 timeout=0.9,
             )
-            if chk_pre is not None and chk_pre.get("active") is False:
+            if peek_pre and peek_pre.get("stopped"):
                 print(
                     json.dumps(
                         {
@@ -343,6 +356,14 @@ def handle_hook() -> int:
                     )
                 )
                 return 0
+            is_dais_call = str(payload.get("tool_name") or "") == "CallDynamicTool" and str(ti.get("namespace") or "") == "dais"
+            if peek_pre and peek_pre.get("has_messages") and not is_dais_call:
+                cnt_p = int(peek_pre.get("count") or 1)
+                ren_p = str(peek_pre.get("rendered") or "").strip()
+                pre_alert_ctx = (
+                    f"🚨【最高优先级插播：管理员/外部刚发来 {cnt_p} 条未读消息！】\n{ren_p}\n"
+                    f"⚡ 当前这一步跑完后必须立即暂停其他计划，马上调 `read_chat(agent=\"{agent_id}\", wait_sec=0)` 并用 `send_message` 秒回！"
+                )
 
         # 第 4 层防断连：子 agent 试图结束回合时向桥查询身份是否仍有效，有效则当场拽回 read_chat
         if event == "subagentStop":
@@ -527,7 +548,9 @@ def handle_hook() -> int:
 
     # 每次运行任何 Shell 命令（或改文件等非 read_chat 工具）返回时，自动顺带收取各方未读消息并插播给 AI！
     out_obj: dict[str, Any] = {}
-    if agent_id and event in ("postToolUse", "postToolUseFailure"):
+    if event == "preToolUse" and pre_alert_ctx:
+        out_obj["additional_context"] = pre_alert_ctx
+    elif agent_id and event in ("postToolUse", "postToolUseFailure"):
         is_dais_read = tool_name == "CallDynamicTool" and str(ti.get("toolName") or "") in ("read_chat", "join")
         if not is_dais_read:
             alert_txt = build_inbox_alert(bridge_url, agent_id)

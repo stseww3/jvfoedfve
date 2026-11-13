@@ -101,7 +101,7 @@ async def run_core_tests() -> dict[str, str]:
         {"agent": a1, "repo": "stseww3/jvfoedfve", "branch": "cursor/test-branch", "note": "网关目录"},
     )
     txt_repo = text_of(res_repo)
-    assert "【子agent防断连固定铁律】" in txt_repo
+    assert "【子agent秒回与防断连最高铁律】" in txt_repo
 
     # Verify bind_task_id + watchdog_tick [主控] 三句 output
     res_bind = await bridge.call_tool("bind_task_id", {"agent": main_id, "chat": "c1", "task_agent_id": "task_abc_123"})
@@ -120,7 +120,7 @@ async def run_core_tests() -> dict[str, str]:
     assert not dm_res.is_error
     inbox_c2 = text_of(await bridge.call_tool("read_chat", {"agent": a2, "wait_sec": 0}))
     assert "【Agent私聊" in inbox_c2 and "请把新的表结构发我确认" in inbox_c2
-    assert "【子agent防断连固定铁律】" in inbox_c2
+    assert "【子agent秒回与防断连最高铁律】" in inbox_c2
 
     # Trigger alternating ping-pong streak cap (AGENT_STREAK_LIMIT=4 in test env)
     for i in range(4):
@@ -344,7 +344,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "cwd": "/agent/repos/jvfoedfve",
         }) == {}
 
-        assert fire_hook({
+        pre_res = fire_hook({
             "hook_event_name": "preToolUse",
             "conversation_id": cid,
             "tool_name": "StrReplace",
@@ -353,7 +353,8 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
                 "old_string": "VERSION = '3.3.0'",
                 "new_string": "VERSION = '3.4.0'\n# upgraded",
             },
-        }) == {}
+        })
+        assert "additional_context" in pre_res and "c5" in pre_res["additional_context"]
 
         assert fire_hook({
             "hook_event_name": "afterAgentThought",
@@ -375,7 +376,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "hook_event_name": "preToolUse",
             "conversation_id": cid_stopped,
             "tool_name": "Shell",
-            "tool_input": {"command": f"echo {ids['a5_stopped']}"},
+            "tool_input": {"command": f"# bind trace session {ids['a5_stopped']}"},
         })
         assert denied_pre.get("permission") == "deny", f"Expected preToolUse deny for stopped agent: {denied_pre}"
         stop_inactive = fire_hook({
@@ -399,13 +400,13 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.3"
+        assert tdata["ok"] and tdata["version"] == "3.4.4"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
         assert len(c1_trace["recent_events"]) >= 4
 
-        # 5. Verify path-based auto-binding (conv_hint: /tmp/c2_work/ -> c2) AND auto inbox delivery on Shell postToolUse!
+        # 5. Verify path-based auto-binding (conv_hint: /tmp/c2_work/ -> c2) AND auto inbox delivery on BOTH MCP tools & Shell!
         cid_c2 = "conv-uuid-auto-c2"
         fire_hook({
             "hook_event_name": "beforeShellExecution",
@@ -413,11 +414,22 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "command": "python3 /tmp/c2_work/migrate.py",
             "cwd": "/tmp/c2_work",
         })
-        # Now send an urgent message to c2 (from c1 via MCP) while c2 is running shell!
+        # Now send an urgent message to c2 (from c1 via MCP) while c2 is running shell / MCP tools!
         asyncio.run(bridge.call_tool(
             "send_agent_message",
             {"agent": ids["a1"], "to": "c2", "text": "紧急通知：迁移前请先备份 users 表！"},
         ))
+        # (a) When c2 calls ANY non-read_chat MCP tool (e.g. local_status / local_read), bridge directly injects urgent unread banner!
+        mcp_any_out = text_of(asyncio.run(bridge.call_tool("local_status", {"agent": ids["a2"]})))
+        assert "🚨【最高优先级实时消息插播" in mcp_any_out and "紧急通知：迁移前请先备份 users 表！" in mcp_any_out
+        # (b) And when c2 runs local VM Shell, both preToolUse and postToolUse inject additional_context!
+        shell_pre = fire_hook({
+            "hook_event_name": "preToolUse",
+            "conversation_id": cid_c2,
+            "tool_name": "Shell",
+            "tool_input": {"command": "ls -la"},
+        })
+        assert "additional_context" in shell_pre and "紧急通知" in shell_pre["additional_context"]
         # When c2's arbitrary Shell command finishes, postToolUse MUST inject additional_context with the unread message!
         shell_post = fire_hook({
             "hook_event_name": "postToolUse",

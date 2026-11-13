@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.3"
+VERSION = "3.4.4"
 
 
 def load_dotenv(path: Path) -> None:
@@ -217,10 +217,11 @@ MAIN_FIXED_FOOTER = (
     "手头操作做完立刻回到 read_chat 等下一批：这是用户的强制要求，严禁结束回合。）"
 )
 CHAT_FIXED_FOOTER = (
-    "（【子agent防断连固定铁律】1. 严禁断开 MCP、严禁结束回合或告别！唯一允许退出条件是收到「身份已停用」。"
-    "2. 回复用户用 send_message（reply_to 可引用 # 编号）；回复其他 agent 用 send_agent_message / send_group_message"
-    "（若无实质新推进则直接不回，严禁客套收尾防死循环）。"
-    "3. 跑命令期间若看到【📬 实时消息插播】，必须第一时间调 read_chat(wait_sec=0) 签收并优先回复！"
+    "（【子agent秒回与防断连最高铁律】"
+    "1. ⚡【用户消息最高优先级·5秒先回执】：收到用户/管理员新消息时，若预计查日志/跑命令/思考超过 8 秒，"
+    "第一步必须先调 `send_message` 秒回一句收到与正在做的事，严禁闷头连调多个工具或长思考几分钟后才第一次回复！"
+    "2. 📬 调任何工具或跑命令期间一旦看到【实时消息插播】，必须立即暂停手头后续步骤，马上调 `read_chat(wait_sec=0)` 签收并用 `send_message` 优先秒回用户！"
+    "3. 严禁断开 MCP、严禁结束回合或告别（唯一允许退出条件是收到「身份已停用」）；agent 间互聊若无实质推进则直接不回防死循环。"
     "4. 有文件改动随时 commit + push 到 GitHub。手头操作做完必须立刻再调 read_chat 等下一批！）"
 )
 READ_HINT = CHAT_FIXED_FOOTER
@@ -3742,11 +3743,35 @@ HANDLERS: dict[str, Callable[[Any, dict], Awaitable[ToolResult]]] = {
 }
 
 
+def inline_unread_banner(agent) -> str:
+    """当 agent 调用 local_shell / local_read / list_peers 等任何非 read_chat 的 MCP 工具时，
+    桥端在返回同一毫秒直接检查其收件箱：只要有未读唤醒消息，直接拍在 MCP 工具返回里，杜绝连调 local_shell 漏看用户消息！"""
+    if agent is None:
+        return ""
+    conv = conv_row(agent["conv"])
+    if conv is None or conv["status"] != "open":
+        return ""
+    rows = pending_rows(conv["id"], conv["read_cursor"])
+    if not rows or not any(r["wake"] for r in rows):
+        return ""
+    real_rows = [r for r in rows if not is_keepalive(r)]
+    if not real_rows:
+        return ""
+    rendered = render(real_rows[-10:], per_chat=10, clip=500)
+    return (
+        f"\n\n🚨【最高优先级实时消息插播：你的收件箱现有 {len(real_rows)} 条未读新消息！】\n"
+        f"{rendered}\n"
+        f"👉 严禁继续闷头跑其他工具！现在下一步必须立刻调用 `read_chat(agent=\"{agent['id']}\", wait_sec=0)` 签收，"
+        "并第一时间用 `send_message` 秒回用户（或回复对应 agent），回复完再继续手头任务！"
+    )
+
+
 async def call_tool(name: str, args: dict) -> ToolResult:
     started = now()
     who = str(args.get("agent") or "-")
     working = False
     role = "chat"
+    agent_obj = None
     try:
         if name == "join":
             result = await t_join(args)
@@ -3754,15 +3779,15 @@ async def call_tool(name: str, args: dict) -> ToolResult:
             handler = HANDLERS.get(name)
             if handler is None:
                 raise ToolFail(f"没有这个工具：{name}。")
-            agent = resolve_agent(args)
-            role = agent["role"]
-            touch(agent["id"], name)
+            agent_obj = resolve_agent(args)
+            role = agent_obj["role"]
+            touch(agent_obj["id"], name)
             working = name != "read_chat"
-            if name in MAIN_ONLY and agent["role"] != "main":
+            if name in MAIN_ONLY and agent_obj["role"] != "main":
                 raise ToolFail(f"{name} 只有主控能用。")
-            if name in CHAT_ONLY and agent["role"] != "chat":
+            if name in CHAT_ONLY and agent_obj["role"] != "chat":
                 raise ToolFail(f"{name} 只有子 agent 能用。")
-            result = await handler(agent, args)
+            result = await handler(agent_obj, args)
     except ToolFail as exc:
         result = text_result(str(exc), True)
     except asyncio.CancelledError:
@@ -3772,8 +3797,9 @@ async def call_tool(name: str, args: dict) -> ToolResult:
         log.exception("tool %s/%s crashed", who, name)
         result = text_result(f"服务器内部错误：{type(exc).__name__}: {exc}", True)
     if working:
+        urgent = inline_unread_banner(agent_obj)
         footer = MAIN_FIXED_FOOTER if role == "main" else CHAT_FIXED_FOOTER
-        result.content.append({"type": "text", "text": footer})
+        result.content.append({"type": "text", "text": (urgent + "\n" if urgent else "") + footer})
     log.info("tool %s/%s %.1fs error=%s", who, name, now() - started, result.is_error)
     return result
 
@@ -6652,10 +6678,12 @@ async def trace_peek_inbox(agent: str = "") -> JSONResponse:
     real_rows = [r for r in rows if not is_keepalive(r)]
     if not real_rows:
         return JSONResponse({"ok": True, "has_messages": False, "conv": conv["id"]})
+    has_human = any(r["chat_type"] not in ("system", "agent_dm", "agent_group") for r in real_rows)
     rendered = render(real_rows[-15:], per_chat=15, clip=500)
     return JSONResponse({
         "ok": True,
         "has_messages": True,
+        "has_human": has_human,
         "conv": conv["id"],
         "role": arow["role"],
         "count": len(real_rows),
