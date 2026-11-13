@@ -17,6 +17,8 @@ What it takes care of, because the machine is somebody's desktop and several par
     and then give up;
   - in the arguments @out stands for the part's out/ folder and @root for the workspace;
   - the output goes to the console and to the part's logs/ folder;
+  - temporary files go to the part's tmp/ folder and are removed when the job ends; compiled-code
+    caches go to the part's cache/ folder, so nothing is written outside the workspace;
   - scripts that drive the test server or the game are refused unless the part is a0.
 """
 import argparse
@@ -24,6 +26,7 @@ import datetime
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import threading
@@ -169,8 +172,11 @@ def main():
     env = dict(os.environ)
     for name in ("NUMBA_NUM_THREADS", "OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
         env[name] = threads
+    # Temporary files and compiled-code caches stay inside the workspace too.
+    scratch = os.path.join(home, "tmp", f"job-{os.getpid()}")
     env.update(MC_ROOT=ROOT, MC_JAR=os.path.join(ROOT, "client26", "versions", "26.3", "26.3.jar"),
-               PYTHONUTF8="1", PYTHONUNBUFFERED="1", C164_PART=args.part, C164_OUT=out)
+               PYTHONUTF8="1", PYTHONUNBUFFERED="1", C164_PART=args.part, C164_OUT=out,
+               TEMP=scratch, TMP=scratch, TMPDIR=scratch, NUMBA_CACHE_DIR=os.path.join(home, "cache", "numba"))
     python = os.path.join(ROOT, "venv", "Scripts", "python.exe")
     if not os.path.exists(python):
         python = sys.executable
@@ -179,6 +185,7 @@ def main():
         sys.exit(75)
     code = 1
     try:
+        os.makedirs(scratch, exist_ok=True)
         stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         log_path = os.path.join(logs, f"job-{stamp}-{os.getpid()}.log")
         head = (f"[job] {args.part} at {commit_of(repo)} | {script} {' '.join(rest)} | threads {threads}"
@@ -207,6 +214,7 @@ def main():
             log.write((tail + "\n").encode("utf-8"))
             print(tail, flush=True)
     finally:
+        shutil.rmtree(scratch, ignore_errors=True)
         if args.heavy:
             release_slot()
     sys.exit(code)

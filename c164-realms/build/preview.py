@@ -224,6 +224,7 @@ def main():
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--size", default="640x360")
     args = ap.parse_args()
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
     scene = importlib.import_module(f"scenes.{args.scene}")
     canvas = scene.build()
     print(f"{len(canvas.b)} blocks, {len(canvas.entities)} entities")
