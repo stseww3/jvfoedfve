@@ -11,15 +11,30 @@ paving; the paving block is at y = -1. Scene coordinates are canvas coordinates:
 builds every line at ORIGIN = (0, 0, 0).
 
 Numbers marked LOCKED come from A0's first review (R1 0.3) and do not move without A0. Numbers
-marked PROVISIONAL are the plan's section-4 figures for masses the review did not pin down yet;
-the site line (A4) proposes exact values through A0, and they are updated here.
+marked PROVISIONAL are the plan's section-4 figures for masses the review did not pin down yet.
+Numbers marked PROPOSED are the site lead's, from plan/parts/A4-site.md section 2. The other
+lines build on them; A0 may still move them on the pictures (the depth of the front court above
+all). Numbers marked UNDER REVIEW are being recalculated by A0 and are not to be built on yet.
+
+Cells and points. A number that names a block (a wall face x, a pilaster z, a floor y) is a CELL:
+the block column or layer with that integer coordinate, which fills the span k .. k + 1. A display
+entity stands at a POINT, in real coordinates: the middle of cell k is k + 0.5, its lower side is
+k. The main building is symmetric about the middle of the block row z = 0, so the axis of the
+entrance, the star hall and the dome is the plane z = 0.5 and not z = 0: a model hung "at z = 0"
+hangs half a block north of the axis. mid() turns a cell or a span of cells into its middle point.
 """
 import math
+
+
+def mid(a, b=None):
+    """The middle, as a point coordinate, of cell a, or of the cells a .. b (both included)."""
+    return (a + (a if b is None else b) + 1) / 2.0
+
 
 # --- ground plane -------------------------------------------------------------------------------
 GROUND = 0          # LOCKED. y of the first air above the upper-terrace paving
 PAVING_Y = -1       # the paving block sits here
-LOWER_DROP = 9      # PROVISIONAL. the lower platform is this many blocks below GROUND (plan 4)
+LOWER_DROP = 9      # UNDER REVIEW (see the site masses). the lower platform is this many blocks below GROUND
 
 # --- the bay grid of the main-building family (main building, clock tower, small dome, meridian hut) -
 BAY = 4             # LOCKED. one bay = pilaster (1) + window (3)
@@ -89,6 +104,8 @@ PARAPET = (16, 17)      # parapet; lightning rods stand above the pilasters
 ROOF_FLOOR = 17         # the roof-terrace / dome-room floor block
 ROOF_STAND = 18         # feet on the roof terrace and the dome-room floor stand here
 
+AXIS_Z = mid(0)         # 0.5, a point: the east-west axis of symmetry runs through the middle of row z = 0
+
 # the star hall (entrance hall): clear to y 0..13, ceiling at 14 -- NOT 12, which would cross the
 # middle of the main-storey windows (R1 0.3).
 STAR_HALL_Z = (-6, 6)
@@ -103,6 +120,7 @@ DOME_APEX = 37          # its top
 DOME_ROOM_DIAM = 22     # the great dome-room interior diameter
 SLIT_W = 5              # observing slit width, facing west, open from the drum top through the apex +2
 SLIT_FACING = "west"
+DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: what the dome turns about
 # the telescope pier is an independent column on the dome centre, from the ground to the dome room
 PIER_CENTRE = DOME_CENTRE
 PIER_R = 3              # PROVISIONAL (A3/A5 refine): radius of the stone pier
@@ -136,17 +154,33 @@ SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
 SMALL_DOME_APEX = 25
 
-# --- site masses, PROVISIONAL (plan 4; A4 proposes exact coordinates through A0) -----------------
-# Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
-FRONT_COURT = (WALL_E + 1, -30, WALL_E + 45, 30)     # ~30 x 60 east of the main building
+# --- site masses, PROPOSED by A4 (plan/parts/A4-site.md 2; A0 may move them on the pictures) -------
+# Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
+FRONT_COURT = (WALL_E + 1, -30, WALL_E + 45, 30)     # x 16..60 east of the main building (the plan says ~30 deep)
 SUNSET_PLATFORM = dict(centre=(WALL_W - 9, 0), radius=20)   # west half-circle off the rotunda
-GRAND_STAIR = dict(x=WALL_E + 45, z0=-8, z1=8, width=16, drop=LOWER_DROP)   # front-court east edge
-LOWER_PLATFORM = (WALL_E + 46, -42, WALL_E + 76, 43)  # ~30 x 85, LOWER_DROP below GROUND
-CABLE_STATION = (WALL_E + 50, -40, WALL_E + 66, -26)  # lower platform, north half; the spawn
-POWER_HOUSE = dict(box=(WALL_E + 52, 20, WALL_E + 74, 42), wall_h=10, chimney_h=30)
-RADIO_MAST = dict(foot=(WALL_E + 8, -40), height=62)   # north-east stone pad
-MERIDIAN_HUT = dict(centre=(WALL_E + 20, -30), size=9)  # north end of the meridian line
-MERIDIAN_X = WALL_E + 20        # PROVISIONAL. the brass meridian runs north-south through the court at this x
+RADIO_MAST = dict(foot=(WALL_E + 8, -40), height=62)   # (23, -40), north-east stone pad
+# UNDER REVIEW (A0, 2026-11-14): seen from the lower platform, the edge of the upper terrace hides
+# the front below y 15..30, so the first view loses its row of windows. The grand stair, the lower
+# platform and what stands on it wait for A0's figures; LOWER_DROP with them.
+# The plan says the stair is 16 wide; an even width cannot sit on an axis that runs through the
+# middle of a row, so it is 17 here (z -8..8) for A0 to confirm with the rest.
+GRAND_STAIR = dict(x=WALL_E + 45, z0=-8, z1=8, width=17, drop=LOWER_DROP)
+LOWER_PLATFORM = (WALL_E + 46, -42, WALL_E + 76, 43)  # x 61..91, LOWER_DROP below GROUND
+CABLE_STATION = (WALL_E + 50, -40, WALL_E + 66, -26)  # x 65..81, lower platform, north half; the spawn
+POWER_HOUSE = dict(box=(WALL_E + 52, 20, WALL_E + 74, 42), wall_h=10, chimney_h=30)   # x 67..89
+# PROPOSED by A4 again:
+MERIDIAN_X = WALL_E + 20        # 35. the brass meridian runs north-south through the court in this column
+MERIDIAN_Z = (-30, 30)          # from the hut's middle to the court's south edge; the top of the inlay is y 0
+# north end of the meridian line: x 31..39, z -34..-26; the door is in the south wall, on the line
+MERIDIAN_HUT = dict(centre=(MERIDIAN_X, -30), size=9, door=(MERIDIAN_X, -26))
+ARMILLARY = (MERIDIAN_X, 0)     # the cell where the meridian crosses the axis: the emblem roundel's
+#                                 middle, kept free for the armillary sphere (machines), feet at y 0
+
+# --- machine anchors ----------------------------------------------------------------------------
+# Not here yet (A0, 2026-11-14). The great orrery hangs in the well of the star hall, between the
+# telescope pier and the east wall; its middle and its diameter are worked out by interiors, main
+# and machines from the clear size of that well, and come here when the three agree. They will be
+# POINTS: the middle of the cells a .. b is mid(a, b), half a block more than (a + b) / 2.
 
 SITE_SPAN = 110                 # the hilltop is about 110 x 110 blocks (plan 4)
 
