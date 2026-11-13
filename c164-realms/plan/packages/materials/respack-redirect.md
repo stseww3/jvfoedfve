@@ -28,14 +28,15 @@
   - `blocks(*角色)`、`vanilla_picture(引用)`、`sounds(pack_dir, 事件)`（合并写 `assets/minecraft/sounds.json`，不带音频文件）。
   - `audit(pack_dir, replaced)`：对整个包的总检查。
 - `respack_redirect.py`（本卡的模块，`ORDER = 99`，排在真画的包后面）：`pack()` 先给还没人画的方块铺占位材质，再跑 `audit`。
-- `_standin.py`：占位材质。占用表重画名单里**每一个**方块从第一天起就都已重定向：原版图按明暗套进该材质的色阶（形状是游戏的，颜色是色板的）；亮窗是不透明的发光窗格；16 种仪表盘先是同一只表盘。图名一律 `ph_` 开头。一个包真画了某族，就在模块里写 `BLOCKS = K.blocks(B.XXX, ...)`，那一族自动退出占位。**成品里不许剩 `ph_`**（`_standin.left()` 列出还剩哪些）。
+- `_standin.py`：占位材质。占用表重画名单里**每一个**方块从第一天起就都已重定向：原版图按明暗套进该材质的色阶（形状是游戏的，颜色是色板的）；亮窗是不透明的发光窗格；16 种仪表盘先是同一只表盘。图名一律 `ph_` 开头。一个包真画了某族，就在模块里写 `BLOCKS = K.blocks(B.XXX, ...)`，那一族自动退出占位。**成品里不许剩 `ph_`**（`_standin.left()` 列出还剩哪些）。云海的五个方块（`B.CLOUD`）也有占位：平色、不打面阴影、不要角落变暗；它们将来由 sky/cloudsea 画（总监 #15512 的明文例外），所以 `BLOCKS` 在 `materials` 和 `sky` 两个类别的模块里都认。
 - `_board.py`：样板的零件（地台、成对摆放、各种形状的摆法），各材质卡的测试场景都用它拼。
-- 测试场景 `build/scenes/obs_mat_redirect/`：每个被占用的铜方块旁边摆上和它共用文件的原版方块（铸铁 ↔ 上蜡铜绿，旧铜 ↔ 未上蜡 exposed 铜），各种形状都有；后面是全部重画角色的目录（四种石、六种窗、十六种仪表盘、黄铜族、小件）。`python -m scenes.obs_mat_redirect` 按布局重写 `shots.json`。
+- 测试场景 `build/scenes/obs_mat_redirect/`：每个被占用的铜方块旁边摆上和它共用文件的原版方块（铸铁 ↔ 上蜡铜绿，旧铜 ↔ 未上蜡 exposed 铜），各种形状都有；后面是全部重画角色的目录（四种石、六种窗、十六种仪表盘、黄铜族、小件、云海五色）。`python -m scenes.obs_mat_redirect` 按布局重写 `shots.json`。
 
 ## 验收
 - `redirect_block` 对楼梯（40 个状态 × 4 变体）、台阶（双层态）、墙和玻璃板（multipart）、门（8 个模型 32 个状态）、灯（亮灭两套发光）、釉陶（`edit`）都跑通；被保护的方块、漏说的面、不存在的图都会报错。
 - `tools/check.py --scene obs_mat_redirect`：全过。`blocks` 一项有 12 个警告是有意的——样板上那些“应保持原状”的同胞（`waxed_oxidized_copper_grate` 等）本来就不在占用表里，只在这块样板上出现。
 - 并排图：被占用块变样、同胞铜绿不变（`plates_a`、`plates_b`、`shapes_a`、`shapes_b`、`plates_treads`）。
+- 亮窗朝西的面和朝南的面一样亮（`windows_side`）。
 
 ## 版本
 1 版。
@@ -54,4 +55,5 @@
 - 相对最初的卡：工具签名改了（多了 `assets`、按面的 `textures`、`emit`/`shade`/`ao`/`edit`）；没有 `materials/redirect.py`，公共工具直接进 `artkit/respack.py`；`materials/__init__.py` 是 S2 的固定样板，不由本卡写；`sounds.py` 并进 `_kit.sounds()`。
 - c177（#14980）：亮窗要贴图原色 → `emit=15` + `shade=False` + `ao=False`，占位亮窗已这样做。
 - c190（预评）：细琢石踏面分图 → 工具按面映射；其余四条写进各自的卡。
-- 自查图（离线图，A 版光）：`a1-<提交>-plates_a/plates_b/shapes_a/shapes_b/stone/windows_a/windows_b/windows_side/panels/panels_side/brass_a/brass_b/plates_treads/stone_treads.jpg`。
+- 云的五色（c188 #15389、c177 #15451、总监 #15512）：归 sky/cloudsea 画，这里只给占位。
+- 自查图（离线图，A 版光）：`a1-<提交>-plates_a/plates_b/shapes_a/shapes_b/stone/windows_a/windows_b/windows_side/panels/panels_side/brass_a/brass_b/clouds_a/clouds_b/plates_treads/stone_treads.jpg`。
