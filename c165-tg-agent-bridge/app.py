@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.4"
+VERSION = "3.4.5"
 
 
 def load_dotenv(path: Path) -> None:
@@ -96,8 +96,8 @@ LIST_PAGE = 8
 AGENT_STREAK_LIMIT = env_int("AGENT_STREAK_LIMIT", 30)       # 无人类介入时两个 agent 连续互发安全上限
 GROUP_STREAK_LIMIT = env_int("GROUP_STREAK_LIMIT", 40)       # 无人类介入时 agent 群连续互发安全上限
 STREAK_WINDOW = env_int("AGENT_STREAK_WINDOW_SEC", 600)      # 连续互发计数重置时间窗
-MAX_SPAWN_PER_PARENT = env_int("MAX_SPAWN_PER_PARENT", 8)    # 单个父 agent 同时活跃派生子 agent 上限
-MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 24)             # 全局活跃派生子 agent 上限
+MAX_SPAWN_PER_PARENT = env_int("MAX_SPAWN_PER_PARENT", 0)    # 单个父 agent 同时活跃派生子 agent 上限（0=不限制）
+MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 0)              # 全局活跃派生子 agent 上限（0=不限制）
 TRACE_STALL_SEC = env_int("TRACE_STALL_SEC", 600)            # 追踪事件/终端输出停滞告警秒数
 PERMANENT_SEC = 10 * 365 * 86400                             # 「永久」授权对应的秒数（10 年）
 PERMANENT_THRESHOLD = 5 * 365 * 86400                        # 剩余大于 5 年即显示为「永久」
