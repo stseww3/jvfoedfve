@@ -7019,6 +7019,9 @@ export class Policy extends V17 {
 }
 
 
+if (typeof window !== "undefined" && typeof window.__fx === "object" && window.__fx?.strategyBot && !window.__fx.strategyBot.__hookedReplayLog) {
+  window.__fx.strategyBot.__hookedReplayLog = true;
+  const origReplay = window.__fx.strategyBot.replay ? window.__fx.strategyBot.replay.bind(window.__fx.strategyBot) : null;
   window.__fx.strategyBot.replay = function(text) {
     try {
       if (typeof text === "string" && text.length > 50 && window.__hlLog) {
@@ -7045,4 +7048,3 @@ if (typeof window !== "undefined" && typeof bC === "object" && bC?.a7s?.a2b && w
     } catch {}
   }
 }
-
