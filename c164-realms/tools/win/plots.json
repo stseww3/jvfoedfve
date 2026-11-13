@@ -1,0 +1,10 @@
+{
+  "about": "Real-machine render plots for the c164 test world (a flat void server, 127.0.0.1:25599). Each test scene / work package is placed on its own plot so scenes never touch; the total (integration) scene sits on plot 0. A plot's origin is base + index*spacing on +X, and is passed unchanged to both place.py --at and shoot.py --origin, so shot lists written in scene coordinates line up. The render station (S1) owns this file: when a new package first needs a real-machine picture, add it here with the next free index, commit, then update bin/. Indices are never reused or reshuffled, so a package keeps its plot across runs.",
+  "spacing": 1000,
+  "base": [0, 200, 0],
+  "plots": {
+    "obs": 0,
+    "skyobs": 1,
+    "kitcheck": 2
+  }
+}
