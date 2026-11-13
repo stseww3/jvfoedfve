@@ -22,11 +22,12 @@ The machine is somebody's desktop and has other work on its graphics card:
     behind the other windows (winctl.settle);
   - only processes whose program lives under MC_ROOT are ever stopped.
 
-Pictures. The game is started through a small helper (win/CamHelper.java, built here with the Java
-under jre/) that makes the game save its own screenshot when shoot.py asks; the game's files are
-used as they are. That works whatever the desktop is doing. Without the helper (MC_HELPER=0, or
-it cannot be built) pictures are taken from the window by the desktop, which gives black ones
-while the display is asleep, so in that case the client is not started unless the display is on.
+Pictures. The game is started through a small helper (win/CamHelper.java; its built class comes
+with the checkout, see win/build_helper.py) that makes the game save its own screenshot when
+shoot.py asks; the game's files are used as they are. That works whatever the desktop is doing.
+Without the helper (MC_HELPER=0, or its class is not of its source) pictures are taken from the
+window by the desktop, which gives black ones while the display is asleep, so in that case the
+client is not started unless the display is on.
 
 Environment: MC_ROOT, MC_VERSION (26.3), MC_CAM (C164Cam), MC_SIZE (1280x720), MC_VIEW (render
 distance in chunks at setup, 14), MC_SERVER_HEAP (2G), MC_CLIENT_HEAP (4G), MC_MIN_VRAM, MC_HELPER.
@@ -36,7 +37,7 @@ import hashlib
 import json
 import os
 import secrets
-import subprocess
+import shutil
 import sys
 import time
 import uuid
@@ -262,36 +263,38 @@ def offline_uuid(name):
 
 
 def helper():
-    """The folder that holds the built picture helper (win/CamHelper.java), or None.
+    """The folder that holds the picture helper's class for the client's class path, or None.
 
-    Built with the Java under jre/ whenever it is missing or its source has changed. None when it
-    is switched off (MC_HELPER=0) or cannot be built: the client then starts the game directly
-    and pictures have to come from the window."""
-    if os.environ.get("MC_HELPER", "1") == "0" or not os.path.exists(HELPER_SOURCE):
+    The Java under jre/ is a runtime without a compiler, so the class comes built with the
+    checkout (win/helper/, made from win/CamHelper.java by win/build_helper.py) and is copied to
+    client26/helper/ whenever the copy there is missing or of another source. None when the
+    helper is switched off (MC_HELPER=0) or the kept class is not of the source beside it: the
+    client then starts the game directly and pictures have to come from the window."""
+    if os.environ.get("MC_HELPER", "1") == "0":
         return None
-    with open(HELPER_SOURCE, "rb") as fh:
-        want = hashlib.sha1(fh.read()).hexdigest()
-    built, mark = os.path.join(HELPER, "CamHelper.class"), os.path.join(HELPER, "CamHelper.sha1")
+    kept = os.path.join(HERE, "win", "helper")
+    try:
+        with open(HELPER_SOURCE, "rb") as fh:
+            want = hashlib.sha1(fh.read().replace(b"\r\n", b"\n")).hexdigest()
+        with open(os.path.join(kept, "CamHelper.sha1")) as fh:
+            made_from = fh.read().strip()
+    except OSError:
+        return None
+    if made_from != want or not os.path.exists(os.path.join(kept, "CamHelper.class")):
+        print("the picture helper's class is not of the source beside it (win/build_helper.py makes it); "
+              "starting without the helper", file=sys.stderr)
+        return None
+    mark = os.path.join(HELPER, "CamHelper.sha1")
     try:
         with open(mark) as fh:
             have = fh.read().strip()
     except OSError:
         have = None
-    if have != want or not os.path.exists(built):
+    if have != want or not os.path.exists(os.path.join(HELPER, "CamHelper.class")):
         os.makedirs(HELPER, exist_ok=True)
-        folder = os.path.dirname(HELPER_SOURCE)
-        # Names relative to the source: nothing from above the workspace gets on the command line.
-        done = subprocess.run([java(), "--module", "jdk.compiler/com.sun.tools.javac.Main", "-nowarn",
-                               "-encoding", "UTF-8", "-d", os.path.relpath(HELPER, folder),
-                               os.path.basename(HELPER_SOURCE)],
-                              cwd=folder, capture_output=True, text=True, errors="replace",
-                              creationflags=subprocess.CREATE_NO_WINDOW)
-        if done.returncode != 0 or not os.path.exists(built):
-            print("the picture helper could not be built:\n" + (done.stdout + done.stderr).strip(), file=sys.stderr)
-            return None
+        shutil.copyfile(os.path.join(kept, "CamHelper.class"), os.path.join(HELPER, "CamHelper.class"))
         with open(mark, "w") as fh:
             fh.write(want)
-        print("picture helper built")
     return HELPER
 
 

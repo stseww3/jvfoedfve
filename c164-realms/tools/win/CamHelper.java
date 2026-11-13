@@ -27,6 +27,8 @@ import java.util.function.Consumer;
  * name at run time, so this file compiles without the game: Minecraft.getInstance(), gameDirectory,
  * gameRenderer.mainRenderTarget(), Screenshot.grab(File, String, RenderTarget, int, Consumer) and
  * Minecraft as an Executor (checked against 26.3).
+ *
+ * Built by build_helper.py on a machine with a JDK; the class is kept in helper/ beside this file.
  */
 public final class CamHelper {
     private static final String TAG = "[c164-cam] ";
