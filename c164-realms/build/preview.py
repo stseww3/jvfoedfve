@@ -2,12 +2,17 @@
 """Rough pictures of a scene without the game: a plan from above and an elevation from the south.
 
     preview.py skyobs --out /tmp/skyobs
+    preview.py skyobs --out /tmp/skyobs --shots shots.json [--only hero,low]
+
+With --shots it draws a camera picture per shot of a tools/shoot.py list instead (scene coordinates):
+blocks only, one flat colour per block, faces shaded as the game shades them, shade under roofs.
 
 Flat colours by block name and simple shading only. It is for checking layout and proportions in
 seconds; what the scene really looks like has to be judged in the game.
 """
 import argparse
 import importlib
+import json
 import os
 import sys
 
@@ -90,16 +95,130 @@ def render(canvas, out, scale=2):
         print(path, im.size, f"x {x0}..{x1} y {y0}..{y1} z {z0}..{z1}")
 
 
+class Blocks:
+    """The scene as an array, for looking at it from a camera position."""
+
+    def __init__(self, canvas):
+        cells = [(k, v) for k, v in canvas.b.items() if v.partition("[")[0] not in SKIP]
+        pts = np.array([k for k, _ in cells])
+        self.lo = pts.min(axis=0) - 1
+        self.shape = pts.max(axis=0) - self.lo + 2
+        index, rgb, flat = {}, [(0, 0, 0)], [False]
+        ids = np.empty(len(cells), dtype=np.uint16)
+        for n, (_, state) in enumerate(cells):
+            i = index.get(state)
+            if i is None:
+                i = index[state] = len(rgb)
+                rgb.append(colour(state))
+                flat.append(state in PAINTED)
+            ids[n] = i
+        rel = pts - self.lo
+        self.grid = np.zeros(self.shape, dtype=np.uint16)
+        self.grid[rel[:, 0], rel[:, 1], rel[:, 2]] = ids
+        self.rgb = np.array(rgb, dtype=float)
+        self.flat = np.array(flat)
+        # the highest block of every column: what lies below it gets no direct sky light
+        solid = self.grid > 0
+        self.roof = np.where(solid.any(axis=1), self.shape[1] - 1 - np.argmax(solid[:, ::-1, :], axis=1), -1)
+
+    def march(self, p, d, far):
+        """First block on each ray: palette index (0 = none), distance, axis crossed, step sign, cell."""
+        n = len(p)
+        d = np.where(np.abs(d) < 1e-9, 1e-9, d)
+        q = p - self.lo
+        t0, t1 = (0 - q) / d, (self.shape - q) / d
+        start = np.maximum(np.minimum(t0, t1).max(axis=1), 0.0) + 1e-4
+        alive = (np.maximum(t0, t1).min(axis=1) > start) & (start < far)
+
+        hit = np.zeros(n, dtype=np.uint16)
+        dist = np.full(n, np.inf)
+        axis = np.zeros(n, dtype=np.int64)
+        where = np.zeros((n, 3), dtype=np.int64)
+        idx = np.nonzero(alive)[0]
+        pos = q[idx] + d[idx] * start[idx, None]
+        cell = np.clip(np.floor(pos).astype(np.int64), 0, self.shape - 1)
+        step = np.where(d[idx] > 0, 1, -1)
+        tdelta = np.abs(1.0 / d[idx])
+        tmax = start[idx, None] + (cell + (step > 0) - pos) / d[idx]
+        t = start[idx]
+        ax = np.argmax(np.minimum(t0, t1)[idx], axis=1)
+        for _ in range(int(self.shape.sum()) + 3):
+            if not len(idx):
+                break
+            v = self.grid[cell[:, 0], cell[:, 1], cell[:, 2]]
+            got = v > 0
+            if got.any():
+                g = idx[got]
+                hit[g], dist[g], axis[g], where[g] = v[got], t[got], ax[got], cell[got]
+            rows = np.arange(len(idx))
+            ax = np.argmin(tmax, axis=1)
+            t = tmax[rows, ax]
+            tmax[rows, ax] += tdelta[rows, ax]
+            cell[rows, ax] += step[rows, ax]
+            keep = ~got & (t < far) & ((cell >= 0) & (cell < self.shape)).all(axis=1)
+            idx, cell, step, tdelta, tmax, t, ax = (a[keep] for a in (idx, cell, step, tdelta, tmax, t, ax))
+        sign = np.where(d[np.arange(n), axis] > 0, 1, -1)
+        return hit, dist, axis, sign, where
+
+    def view(self, pos, look_at, size=(640, 360), fov=70.0, far=520.0):
+        """A picture from a camera position, block faces shaded the way the game shades them."""
+        w, h = size
+        pos, look_at = np.array(pos, dtype=float), np.array(look_at, dtype=float)
+        f = (look_at - pos) / np.linalg.norm(look_at - pos)
+        r = np.cross(f, (0.0, 1.0, 0.0))
+        r /= np.linalg.norm(r)
+        u = np.cross(r, f)
+        half = np.tan(np.radians(fov) / 2)
+        sx = ((np.arange(w) + 0.5) / w * 2 - 1) * half * w / h
+        sy = (1 - (np.arange(h) + 0.5) / h * 2) * half
+        d = f[None, None] + sx[None, :, None] * r[None, None] + sy[:, None, None] * u[None, None]
+        d = (d / np.linalg.norm(d, axis=2, keepdims=True)).reshape(-1, 3)
+        hit, dist, axis, sign, cell = self.march(np.broadcast_to(pos, d.shape), d, far)
+
+        # sky: paler towards the horizon
+        up = np.clip(d[:, 1], -1, 1)
+        horizon, zenith = np.array([206.0, 226, 242]), np.array([104.0, 156, 226])
+        img = horizon + (zenith - horizon) * np.clip(up * 1.6, 0, 1)[:, None] ** 0.8
+        got = hit > 0
+        face = np.where(axis == 1, np.where(sign < 0, 1.0, 0.5), np.where(axis == 2, 0.8, 0.6))
+        # the cell in front of the face that was hit: under a roof it is in shade
+        front = cell.copy()
+        front[np.arange(len(front)), axis] -= sign
+        front = np.clip(front, 0, self.shape - 1)
+        shade = np.where(front[:, 1] < self.roof[front[:, 0], front[:, 2]], 0.58, 1.0)
+        grain = 0.94 + 0.12 * ((cell[:, 0] * 73856093 ^ cell[:, 1] * 19349663 ^ cell[:, 2] * 83492791) % 97) / 96.0
+        lit = np.where(self.flat[hit], 1.0, face * shade * grain)
+        rgb = self.rgb[hit] * lit[:, None]
+        haze = (1 - np.exp(-(np.where(got, dist, 0.0) / 420.0) ** 1.5))[:, None]
+        img = np.where(got[:, None], rgb * (1 - haze) + horizon * haze, img)
+        return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8).reshape(h, w, 3), "RGB")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("scene")
     ap.add_argument("--out", required=True)
     ap.add_argument("--scale", type=int, default=2)
+    ap.add_argument("--shots", help="shot list as used by tools/shoot.py: a camera picture per shot instead")
+    ap.add_argument("--only", help="comma separated shot names")
+    ap.add_argument("--size", default="640x360")
     args = ap.parse_args()
     scene = importlib.import_module(f"scenes.{args.scene}")
     canvas = scene.build()
     print(f"{len(canvas.b)} blocks, {len(canvas.entities)} entities")
-    render(canvas, args.out, args.scale)
+    if not args.shots:
+        render(canvas, args.out, args.scale)
+        return
+    with open(args.shots) as fh:
+        shots = json.load(fh)
+    if args.only:
+        shots = [s for s in shots if s["name"] in args.only.split(",")]
+    blocks = Blocks(canvas)
+    size = tuple(int(v) for v in args.size.split("x"))
+    for shot in shots:
+        path = f"{args.out}-{shot['name']}.png"
+        blocks.view(shot["pos"], shot["look_at"], size).save(path)
+        print(path)
 
 
 if __name__ == "__main__":
