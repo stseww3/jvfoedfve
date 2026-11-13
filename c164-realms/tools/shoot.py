@@ -62,6 +62,11 @@ def main():
     if args.player not in rc.command("list"):
         raise SystemExit(f"{args.player} is not online")
     rc.command(f"gamemode spectator {args.player}")
+    # The clock stands still while pictures are taken. Left running it moves on some 20 ticks for
+    # every second of settling, and at dusk a few hundred ticks are a different picture.
+    answer = rc.command("gamerule advance_time false")
+    if "advance_time" not in answer:
+        print(f"could not stop the clock: {answer.strip()}", file=sys.stderr)
 
     last_time = None
     for i, shot in enumerate(shots):
