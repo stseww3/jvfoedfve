@@ -3,13 +3,14 @@
 Each such block is redirected, so it is already told apart from the blocks it shares files with
 (cast iron from verdigris, each stone from the others), and shows its vanilla pictures re-toned into
 the ramp of its material: the shapes and cut-outs are the game's, the colours are the palette's. The
-instrument panels get one plain cased dial, upright on the side the block faces.
+lit windows are plain lit panes, and the instrument panels get one plain cased dial, upright on the
+side the block faces.
 
-This is scaffolding. It lets the other lines build and render against roughly the right colours from
-the first day, and it runs redirect_block over every block-state file of the occupancy table. A package
-that paints a family for real lists its blocks in BLOCKS and they drop out of here; when the last one
-has, this module does nothing. The stand-in pictures all start with "ph_", and none may be left in the
-finished map (LEFT lists what is still a stand-in).
+This is scaffolding (written into the pack by respack_redirect.py). It lets the other lines build and
+render against roughly the right colours from the first day, and it runs redirect_block over every
+block-state file of the occupancy table. A package that paints a family for real lists its blocks in
+BLOCKS and they drop out of here; when the last one has, nothing is left to stand in for. The stand-in
+pictures all start with "ph_", and none may be left in the finished map (left() says what still is one).
 """
 import math
 
@@ -59,11 +60,10 @@ def claimed():
     """The blocks the real packages of this folder paint: what their BLOCKS lists name."""
     out = {}
     for module in assembly.category(__package__).parts():
-        if module.__name__ != __name__:
-            for block in getattr(module, "BLOCKS", ()):
-                if block in out:
-                    raise ValueError(f"{block} is painted by two packages: {out[block]} and {module.__name__}")
-                out[block] = module.__name__
+        for block in getattr(module, "BLOCKS", ()):
+            if block in out:
+                raise ValueError(f"{block} is painted by two packages: {out[block]} and {module.__name__}")
+            out[block] = module.__name__
     return out
 
 
