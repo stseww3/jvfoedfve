@@ -381,7 +381,7 @@ rep(
   report.squadSteps,
   'sq-eval-return-pw',
   `        const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;`,
-  `        window.__tsbActiveTag = ${JSON.stringify(activeClanTag.toLowerCase())};
+  `        window.__tsbActiveTag = \${JSON.stringify(activeClanTag.toLowerCase())};
         const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const myAccPw = typeof bm === "object" && bm?.buffer?.data?.[106] ? bm.buffer.data[106].value : null;`
 );
