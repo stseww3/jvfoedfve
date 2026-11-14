@@ -6,13 +6,12 @@ The lower platform is the arrival level and the works yard: the cable station in
 corner, the power house in its south-east, the grand stair in the middle of its west side. Feet
 stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
 
-  floor   Tuff, the middle tone under the dark slate of the upper terrace. The field is tuff brick
-          laid whole. The bands are polished tuff, the stone of the strips and walks of the upper
-          court (site/_kit STRIP), and they draw the building's grid on the yard: a band on every
-          pilaster line that carries a buttress of the retaining wall; a course along the foot of
-          that wall and one inside the kerb; an apron at the stair's foot as wide as the stair and
-          its cheeks, and from it a walk on the main axis to the east edge. Under the cable station
-          and the power house the field is left plain: they build on it.
+  floor   One stone laid whole and bands of a second (FLOORS, below). The bands draw the building's
+          grid on the yard: a band on every pilaster line that carries a buttress of the retaining
+          wall; a course along the foot of that wall and one inside the kerb; an apron at the
+          stair's foot as wide as the stair and its cheeks, and from it a walk on the main axis to
+          the east edge. Under the cable station and the power house the field is left plain: they
+          build on it.
   edge    North, east and south the platform ends over the mountain. The edge is finished as every
           terrace edge is (site/_kit.rail): kerb, piers, bars. On the east edge the piers stand on
           the pilaster lines. The cable station closes its own stretch of the east edge.
@@ -37,8 +36,19 @@ G = S.GRAND_STAIR
 APRON = 2                               # the apron reaches this far east of the stair's foot
 WALK = 1                                # the axis walk: this many rows either side of row z 0
 
-FIELD = B.TUFF_BRICK.block
-BAND = B.TUFF_SMOOTH.block
+# The floor: (field, band). The yard is the foreground of the arrival view, with the top of every
+# stone turned to the sky, so its tone weighs against the front of the building behind it.
+#   "slate"  small slate setts, as dark as the court above (site/_kit FIELD, EDGE), and the bands in
+#            polished tuff, the stone of the court's strips: the yard is no brighter than the court
+#            (c235 #21906), and the tuff-brick walls of the power house stand lighter than their floor.
+#   "tuff"   tuff brick, the letter of the card (A0 #171), and the bands in polished slate: the
+#            middle tone, about half as bright again as slate.
+# The test scene obs_site_stair shows FLOOR, obs_site_stair_b the other, shot for shot.
+FLOORS = {
+    "slate": (B.SLATE_BRICK.block, B.TUFF_SMOOTH.block),
+    "tuff": (B.TUFF_BRICK.block, B.SLATE_SMOOTH.block),
+}
+FLOOR = "slate"
 WALL = B.SLATE_BRICK.block
 WALL_BAND = B.SLATE_SMOOTH.block
 WALL_DEPTH = 7                          # courses of the outer wall under the kerb
@@ -52,17 +62,18 @@ def _in(x, z, box):
 
 def _stone(x, z):
     """The stone of the paving course at (x, z)."""
+    field, band = FLOORS[FLOOR]
     if _in(x, z, S.CABLE_STATION) or _in(x, z, S.POWER_HOUSE["box"]):
-        return FIELD
+        return field
     if x == X0 or x == X1 - 1 or z == Z0 + 1 or z == Z1 - 1:
-        return BAND                     # along the retaining wall's foot, and inside the kerb
+        return band                     # along the retaining wall's foot, and inside the kerb
     if z in BUTTRESS_Z:
-        return BAND
+        return band
     if G["z0"] - 1 <= z <= G["z1"] + 1 and x <= G["x1"] + APRON:
-        return BAND                     # the apron (west of the foot it lies under the stair)
+        return band                     # the apron (west of the foot it lies under the stair)
     if abs(z) <= WALK:
-        return BAND
-    return FIELD
+        return band
+    return field
 
 
 def _rim():

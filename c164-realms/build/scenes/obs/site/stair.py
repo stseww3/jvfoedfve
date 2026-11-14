@@ -5,9 +5,8 @@ site/lowerplatform.py.
 
 Both stand in the middle of the arrival view (S.V1): the wall is the dark band the building stands
 on, the stair comes down out of it on the left. Nothing here rises above the terrace floor except
-the two pedestals at the stair's head, and those only as high as the piers of the terrace railing
-(a block and a half): every block of solid height on that edge hides about three of the front
-(A0 #171; site/_kit).
+the cap slabs of the two pedestals at the stair's head, half a block: every block of solid height
+on that edge hides about three of the front (A0 #171; site/_kit; c235 #21906).
 
   wall       Column x 60, from under the kerb course of the terrace (y -1, site/court's) down to
              the lower paving: slate brick between a polished plinth course and a polished band
@@ -62,7 +61,7 @@ _CLEAR = min(z for z in K.beat(0, WZ1) if z > CHEEK_Z[1] + 1)                   
 BUTTRESS_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) >= _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == 0]
 DRAIN_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == K.BEAT]
 
-HEAD_TOP = S.GROUND + 1.5           # the cap of a head pedestal: as high as a pier of the railing
+HEAD_TOP = S.GROUND + 0.5           # the cap of a head pedestal: its slab alone stands above the terrace floor
 FOOT_TOP = FEET + 2.5               # the cap of a foot pedestal: a block above the cheek's low end
 LAMP_POINTS = [(x + 0.5, top, z + 0.5)
                for x, top in ((HEAD_X, HEAD_TOP), (FOOT_X, FOOT_TOP)) for z in CHEEK_Z]
