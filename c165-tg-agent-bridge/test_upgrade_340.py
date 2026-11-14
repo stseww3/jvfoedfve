@@ -182,7 +182,7 @@ async def run_core_tests() -> dict[str, str]:
 
     # Child c4 joins -> verify child receives memory_summary + shared c1 history + inherited git repo + g1 membership!
     c4_row = bridge.conv_row("c4")
-    join_c4 = await bridge.call_tool("join", {"code": c4_row["task_code"]})
+    join_c4 = await bridge.call_tool("join", {"code": c4_row["task_code"], "actual_model": "Claude 4.5 Opus", "model_match": True})
     welcome_c4 = text_of(join_c4)
     a4 = bridge.conv_row("c4")["agent"]
     assert "已完成网关鉴权改造" in welcome_c4
@@ -531,7 +531,7 @@ async def run_cloud_350_tests() -> None:
         assert c1_after["model"] == "claude-fable-5-2-max"
 
         # Verify new subagent joining c1 gets full context: git branch, trace snapshot, and group history!
-        res_j1 = await bridge.call_tool("join", {"code": c1_after["task_code"]})
+        res_j1 = await bridge.call_tool("join", {"code": c1_after["task_code"], "actual_model": "claude-fable-5-2-max", "model_match": True})
         txt_j1 = text_of(res_j1)
         assert "cursor/test-branch" in txt_j1
         assert "前任会话最后工作现场快照" in txt_j1 and "/opt/gw/config.py" in txt_j1

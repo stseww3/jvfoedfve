@@ -230,6 +230,8 @@ def _serialize_conv(bridge, crow) -> dict[str, Any]:
         "state": info["state"],
         "state_label": bridge.STATE_TEXT.get(info["state"], info["state"]),
         "model": bridge.effective_conv_model(crow) or "",
+        "actual_model": crow["actual_model"] or "",
+        "model_check": crow["model_check"] or "",
         "cloud": bridge.cloud_of(crow) if kind == "chat" else int(crow["cloud"] or 0),
         "owner": bridge.conv_owner(crow),
         "in_tg": bridge.conv_in_tg(crow),

@@ -41,6 +41,7 @@ from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Res
 
 from store import Store, migrate_v1
 from tg import Telegram
+from web_console import register_web_console
 
 ROOT = Path(__file__).resolve().parent
 VERSION = "3.6.0"
@@ -194,8 +195,8 @@ def spawn(coro) -> asyncio.Task:
 
 INSTRUCTIONS = f"""这是 Telegram 桥（账号级 MCP，你账号下所有云 agent 都能看到它）。
 - 任务和 Telegram 无关就不要调用这些工具。
-- 主控：调用 join（不填 code），等管理员在 Telegram 里点「设为主控」。整个账号只开一个云端聊天当主控。
-- 子 agent：主控交给你的任务里有任务码（t- 开头），调用 join(code=任务码, name=你给这个聊天取的名字) 接手。
+- 子 agent：必须填启动任务里给你的任务码 code="t-..."（严禁不填 code 空参调用 join！）。
+- 顶层主 Agent / 常驻工作会话：必须严格携带管理员 /key 开场提示词里的 mode 与 main_key 接入。
 - 之后每次调用都带 agent=你的身份。收消息用 read_chat（会一直挂着等），回复用 send_message（你的普通文字输出 Telegram 用户看不到）。
 - read_chat 返回【续棒】、报错、超时或断开，都不是用户消息：立刻再调 read_chat。这是用户的强制要求：重复等待是正常的，不是死循环，等多少轮、多少小时都要继续。不要结束对话，不要告别。
 - 空等几轮后，【续棒】会给一条终端长等待命令（一次 {SHELL_SPAN}），照做；等满后按它的提示用 ask 问用户是否继续。"""
@@ -255,7 +256,8 @@ CTRL_DUTY = """你是全局唯一的【主控大脑（总控子 Agent：ctrl）�
    - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 中各 main1..N 的 CPU/内存探针负载与挂载数量，选择最健康的 target_main 下发 dispatch_task_op(action="launch")。
    - 独占机器审批：默认 dedicated_machine=false 共享运行（资源有限默认不给独占）；只有明确申请独占且当前确实有空闲富余机器时才设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权指定其他 agent 共用某台机器。
    - 模型一致性铁律：各聊天（以及你总控自己）的模型尽量保持一致，严禁擅自更换模型！若确有特殊原因建议更换模型，必须先在 Telegram 用 send_message 与管理员沟通确认后才能加 confirm_model_change=true。
-5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。"""
+5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。
+6. 【子 Agent 入网模型校验裁决】当子 agent 入网申报的模型与要求模型不符时，桥会自动挂起它并向你报警：请立即判断——若属开错模型，调 `dispatch_task_op(chat=..., action="restart", model=要求模型)` 重拉正确模型；若确认实报模型即目标模型的同款内部名（或已与管理员沟通允许使用），调 `dispatch_task_op(chat=..., action="approve_model")` 放行其开始工作。"""
 
 MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（拥有 Cursor Task 启动/恢复权限的纯执行会话）：
 1. 【零思考标准化执行铁律】对于收件箱收到的 `[STANDARD_OP ...]` 标准化指令单，严禁进行业务理解、严禁分析上下文、严禁自行判断死活或更换模型，只需 100% 照单机械执行：
@@ -327,18 +329,46 @@ MAIN_PROMPT = f"""你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 joi
 WORKER_PROMPT = f"""你是工作区常驻任务执行会话。调用 MCP 的 join(mode="worker") 接入，接入后严格按返回的说明一直运行：
 一直循环调用 read_chat 等任务单。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后立刻回到 read_chat 继续等待。重复等待是正常的，严禁结束回合，严禁告别；只有工具明确返回身份已停用才结束。"""
 RESUME_PROMPT = "继续调用 read_chat 等 Telegram 消息。我的强制要求：没收到消息就立刻进入下一轮等待，重复等待是正常的，不要结束回合。"
-NEED_JOIN = "先调用 join：主控不填 code；子 agent 填主控给的任务码。已经接入过的，把当时拿到的身份填进 agent 参数。"
-RESET_MAIN = ("先核对身份和 join 返回的是否完全一致。确实一致的话，就是服务器数据重置过、旧身份全部作废了（这不是用户消息）："
-              "你是主控，现在调用 join（不填 code）重新申请，等管理员在 Telegram 里点【设为主控】，拿到新身份后照 join 返回的说明继续工作。"
-              "Cursor 要是把这个 MCP 标成了出错或需要认证：服务器已经恢复，原来的配置照样能用，重新连接它（重新查看它的工具列表，或者调用 mcp_auth）再调 join。"
-              "用户强制要求：不要结束回合，不要告别。")
 RESET_CHAT = ("先核对身份和 join 返回的是否完全一致。确实一致的话，就是服务器数据重置过、旧身份全部作废了（这不是用户消息）："
               "你是子 agent，不要调用 join 申请主控。主控重新接入后，管理员会重开聊天，由主控派新的子 agent 接手。你这边没有要做的了，直接结束即可。")
 
 
+def main_join_key() -> str:
+    val = store.get("main_join_key")
+    if not val:
+        val = "mjk_" + secrets.token_hex(6)
+        store.set("main_join_key", val)
+    return val
+
+
+def main_prompt_text() -> str:
+    return (
+        f"你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 join(mode=\"main\", main_key=\"{main_join_key()}\")，"
+        "等我在 Telegram 里点批准，然后严格按 join 返回的说明一直工作。\n"
+        f"我的强制要求：一直循环调用 read_chat 等标准化指令单或消息。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待。"
+        f"空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），它返回后照提示做；等满后它会让你问我是否继续，照做。"
+        "重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，不用重新考虑要不要停。不要结束回合，不要告别；只有我在 Telegram 里明确叫停，或者工具说身份已停用，才可以结束。"
+    )
+
+
+def worker_prompt_text() -> str:
+    return (
+        f"你是工作区常驻任务执行会话。调用 MCP 的 join(mode=\"worker\", main_key=\"{main_join_key()}\") 接入，接入后严格按返回的说明一直运行：\n"
+        f"一直循环调用 read_chat 等任务单。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。"
+        "收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后立刻回到 read_chat 继续等待。重复等待是正常的，严禁结束回合，严禁告别；只有工具明确返回身份已停用才结束。"
+    )
+
+
+NEED_JOIN = "先调用 join：子 agent 必须填启动提示词里的任务码 code=\"t-...\"；已经接入过的，把当时拿到的身份填进 agent 参数。"
+
+
 def unknown_identity(ident: str) -> str:
     if ident.startswith("m_"):
-        return RESET_MAIN
+        return (
+            "先核对身份和 join 返回的是否完全一致。确实一致的话，就是服务器数据重置过、旧身份全部作废了（这不是用户消息）："
+            f"你是主 Agent，现在调用 join(mode=\"main\", main_key=\"{main_join_key()}\") 重新申请，等管理员在 Telegram 点批准，拿到新身份后继续工作。"
+            "用户强制要求：不要结束回合，不要告别。"
+        )
     if ident.startswith("a_"):
         return RESET_CHAT
     return ""
@@ -531,12 +561,13 @@ def mcp_config() -> str:
 
 
 def rotate_key() -> str:
-    """紧急刹车：换账号密钥，停掉所有身份，作废还没批的接入和本地申请。"""
+    """紧急刹车：换账号密钥与主节点准入口令，停掉所有身份，作废还没批的接入和本地申请。"""
     store.set("account_key", "tgb_" + secrets.token_urlsafe(32))
+    store.set("main_join_key", "mjk_" + secrets.token_hex(6))
     for row in store.q("SELECT id FROM agents WHERE status='active'"):
         stop_identity(row["id"], "管理员换了账号密钥，所有云 agent 都已断开")
-    for row in store.q("SELECT id, kind FROM approvals WHERE status='pending' AND kind IN ('join','local')"):
-        set_approval(row["id"], "expired" if row["kind"] == "join" else "denied")
+    for row in store.q("SELECT id, kind FROM approvals WHERE status='pending' AND kind IN ('join','join_worker','local')"):
+        set_approval(row["id"], "expired" if row["kind"] in ("join", "join_worker") else "denied")
     log.warning("account key rotated, all identities stopped")
     return mcp_config()
 
@@ -832,7 +863,7 @@ def issue_task(conv_id: str) -> str:
     code = "t-" + secrets.token_hex(8)
     # 任务都交给现在的主控，子 agent 开在它的云端 agent 里：聊天跟着进它的 cloud
     store.run(
-        "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=? WHERE id=?",
+        "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=? WHERE id=?",
         (code, now(), main_cloud(), conv_id),
     )
     mark_menu_dirty()
@@ -890,6 +921,28 @@ def trace_install_cmd() -> str:
     )
 
 
+def _model_families(text: str) -> set[str]:
+    low = (text or "").lower()
+    fams: set[str] = set()
+    if any(k in low for k in ("claude", "opus", "sonnet", "haiku", "fable")):
+        fams.add("claude")
+    if any(k in low for k in ("gemini", "carbon")):
+        fams.add("gemini")
+    if any(k in low for k in ("gpt", "o1-", "o3", "o4", "codex")):
+        fams.add("openai")
+    if "grok" in low:
+        fams.add("grok")
+    if "deepseek" in low:
+        fams.add("deepseek")
+    return fams
+
+
+def has_obvious_model_family_conflict(req_model: str, actual_model: str) -> bool:
+    f_req = _model_families(req_model)
+    f_act = _model_families(actual_model)
+    return bool(f_req and f_act and f_req.isdisjoint(f_act))
+
+
 def task_text(conv) -> str:
     parent_id = (conv["parent_conv"] or "").strip()
     parent_row = conv_row(parent_id) if parent_id else None
@@ -904,9 +957,19 @@ def task_text(conv) -> str:
     mem_block = ""
     if (conv["memory_note"] or "").strip():
         mem_block = f"\n\n【父 agent 交接的当前记忆与上下文摘要】\n{conv['memory_note']}\n"
+    req_model = effective_conv_model(conv)
+    if req_model:
+        join_step = (
+            f"1. 【入网与模型强校验】本聊天指定要求模型为：「{req_model}」。\n"
+            f"   调用 MCP 的 join 工具时必须核对你自己当前的真实模型与档位，如实填写：code=\"{conv['task_code']}\"，{naming}，"
+            "actual_model=\"你的真实模型名与档位\"，model_match=true或false（若你的真实模型确实符合要求模型填 true 才能继续工作；"
+            "若不是要求模型必须如实填 false，严禁谎报，桥会自动上报主控判断）。\n"
+        )
+    else:
+        join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}，actual_model=\"你的真实模型名与档位\"。\n"
     return (
         f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
-        f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}。\n"
+        f"{join_step}"
         "2. 严格按 join 返回的说明一直工作：循环调用 read_chat 等消息，给用户回复用 send_message，和其他 agent 协作用 send_agent_message / send_group_message。\n"
         "3. 【防断连死命令】read_chat 返回【续棒】、报错、超时或网络断开都不是用户消息，必须立刻再调 read_chat（或按提示运行终端长等待）。"
         "严禁在任何情况下断开 MCP、结束回合、收尾总结或告别！哪怕任务已完成也必须继续挂在 read_chat 等新任务；唯一合法退出条件是工具明确说「你的身份已停用」。\n"
@@ -1631,12 +1694,17 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             if current is None or current["status"] != "active":
                 return text_result(stopped_text(current))
             conv = conv_row(conv_id)
-            rows = pending_rows(conv_id, conv["read_cursor"])
+            if agent["role"] == "chat" and conv is not None and (conv["model_check"] or "") == "mismatch_hold":
+                rows = []
+            else:
+                rows = pending_rows(conv_id, conv["read_cursor"])
             if rows and (wait_sec == 0 or any(r["wake"] for r in rows)):
                 break
             remaining = deadline - now()
             if remaining <= 0:
                 if wait_sec == 0:
+                    if agent["role"] == "chat" and conv is not None and (conv["model_check"] or "") == "mismatch_hold":
+                        return text_result(f"⏸ 仍在等待主控裁决你的模型是否放行。请不填 wait_sec 直接调用 read_chat(agent=\"{agent_id}\") 挂起等待。")
                     foot = role_footer(agent)
                     return text_result("暂无新消息（只看了一眼）。" + foot)
                 if mode == "capped":
@@ -2312,7 +2380,7 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
         prompt_body = ctrl_task_text(code)
     else:
         store.run(
-            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id=?",
+            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, model_check='', cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id=?",
             (code, now(), cloud_num, eff_model, eff_model, conv["id"]),
         )
         store.run("UPDATE convs SET cloud=? WHERE id='main'", (cloud_num,))
@@ -2755,41 +2823,18 @@ def resolve_agent(args: dict):
     return row
 
 
-async def join_by_code(code: str, args: dict) -> ToolResult:
-    conv = store.one("SELECT * FROM convs WHERE task_code=? AND status='open' AND id!='main'", (code,))
-    if conv is None:
-        raise ToolFail("任务码不对、已经用过或已作废。不要不填 code 重试；请主控用 restart_agent 拿新的任务原文。")
-    old = active_agent(conv)
-    if old is not None:
-        stop_identity(old["id"], "这个聊天已交给新的子 agent")
-    is_ctrl = conv["id"] == "ctrl"
-    role_val = "ctrl" if is_ctrl else "chat"
-    agent_id = new_identity("a_")
-    store.run(
-        "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
-        (agent_id, role_val, conv["id"], "active", now(), now(), "join"),
-    )
-    name = clean_name(args.get("name"))
-    if name and not conv["name"]:
-        store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
-    store.run("UPDATE convs SET agent=?, task_code='', alert='', alert_ts=0 WHERE id=?", (agent_id, conv["id"]))
-    conv = conv_row(conv["id"])
-    log.info("conv %s claimed by %s (%s, role=%s)", conv["id"], agent_id, conv["name"], role_val)
-    if is_ctrl:
-        mark_menu_dirty()
-        return text_result(welcome_ctrl(conv, agent_id))
-    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}）。", wake=0)
+async def _notify_conv_claimed(conv) -> None:
     parent_id = (conv["parent_conv"] or "").strip()
     if parent_id and not conv["spawn_notified"]:
         parent_row = conv_row(parent_id)
         store.run("UPDATE convs SET spawn_notified=1 WHERE id=?", (conv["id"],))
         if parent_row is not None and parent_row["status"] == "open":
-            m_txt = (conv["model"] or "").strip() or "继承主控"
+            m_txt = (conv["actual_model"] or conv["model"] or "").strip() or "继承主控"
             ded_n = (conv["dedicated_node"] or "").strip()
             ded_s = f"，独占节点：{ded_n}" if ded_n else ""
             system_note(
                 parent_id,
-                f"你请求创建的子 agent {conv_tag(conv)} 已上线接手（指定模型：{m_txt}{ded_s}）！"
+                f"你请求创建的子 agent {conv_tag(conv)} 已上线接手（模型：{m_txt}{ded_s}）！"
                 f"现在可以用 send_agent_message(to=\"{conv['id']}\", text=...) 直接和它交流，或拉它进协作群。",
                 wake=1,
             )
@@ -2800,6 +2845,92 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
         else:
             await reply(home, f"[{conv_name(conv)}] AI 已接手，可以说话了。", conv_id=conv["id"],
                         en=f"[{conv_name(conv)}] The AI is here. Go ahead.")
+
+
+async def join_by_code(code: str, args: dict) -> ToolResult:
+    conv = store.one("SELECT * FROM convs WHERE task_code=? AND status='open' AND id!='main'", (code,))
+    if conv is None:
+        raise ToolFail("任务码不对、已经用过或已作废。不要不填 code 重试；请主控用 restart_agent 拿新的任务原文。")
+    is_ctrl = conv["id"] == "ctrl"
+    req_model = "" if is_ctrl else effective_conv_model(conv)
+    actual_model = " ".join(str(args.get("actual_model") or "").split())[:120]
+    raw_match = args.get("model_match")
+
+    # 子 agent 入网模型强校验：若该聊天指定了要求模型，子 agent 必须申报真实模型并明确回答是不是要求的模型！
+    if req_model and (not actual_model or not isinstance(raw_match, bool)):
+        name_hint = f", name=\"{clean_name(args.get('name'))}\"" if args.get("name") else ""
+        raise ToolFail(
+            f"【子 Agent 入网模型校验】本聊天 {conv_tag(conv)} 指定要求的模型为：「{req_model}」。\n"
+            "请核对你自己当前运行的真实模型名称与档位（不要消耗或丢弃 code），立即重新调用 join 如实回答：\n"
+            f"join(code=\"{code}\"{name_hint}, actual_model=\"你的真实模型名与档位\", model_match=true或false)\n"
+            "• 是要求的模型填 model_match=true 才能继续工作；\n"
+            "• 不是要求的模型必须如实填 model_match=false（严禁谎报），桥会自动告知主控去判断！"
+        )
+
+    family_conflict = bool(req_model and actual_model and has_obvious_model_family_conflict(req_model, actual_model))
+    is_matched = (not req_model) or ((raw_match is True) and (not family_conflict))
+
+    old = active_agent(conv)
+    if old is not None:
+        stop_identity(old["id"], "这个聊天已交给新的子 agent")
+    role_val = "ctrl" if is_ctrl else "chat"
+    agent_id = new_identity("a_")
+    store.run(
+        "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
+        (agent_id, role_val, conv["id"], "active", now(), now(), "join"),
+    )
+    name = clean_name(args.get("name"))
+    if name and not conv["name"]:
+        store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
+
+    if not is_matched:
+        reason_note = "模型家族明显冲突" if (raw_match is True and family_conflict) else "子 agent 自检回答：不是要求模型"
+        alert_txt = f"模型不符待主控判断（要求 {req_model} / 实报 {actual_model}）"
+        store.run(
+            "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='mismatch_hold', alert=?, alert_ts=? WHERE id=?",
+            (agent_id, actual_model, alert_txt, now(), conv["id"]),
+        )
+        conv = conv_row(conv["id"])
+        log.warning("conv %s model mismatch hold: required=%r actual=%r match=%r", conv["id"], req_model, actual_model, raw_match)
+        ensure_controller_alive()
+        ctrl_dest = route_control_target()
+        system_note(
+            ctrl_dest,
+            f"⚠️【子 Agent 模型校验不匹配·请主控判断】\n"
+            f"聊天 {conv_tag(conv)} 新接入的子 agent 未通过模型校验（{reason_note}），桥已将它挂起暂停执行任务，等你判断：\n"
+            f"- 要求模型：「{req_model}」\n"
+            f"- 实报模型：「{actual_model}」（model_match={raw_match}）\n"
+            f"- 所属节点：cloud{cloud_of(conv)}\n"
+            f"👉 请主控立即判断并二选一处理：\n"
+            f"1. 【换回要求模型重开】调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\", model=\"{req_model}\")`（或旧模式 `restart_agent(chat=\"{conv['id']}\")`）停掉它并用正确模型重拉；\n"
+            f"2. 【放行当前模型继续】若核实「{actual_model}」其实就是「{req_model}」同款别名，或经确认允许使用当前模型，调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"approve_model\")` 立即放行它开始干活！",
+            wake=1,
+        )
+        mark_menu_dirty()
+        return text_result(
+            f"⏸【模型校验未通过·已上报主控判断】\n"
+            f"你是聊天 {conv['id']}「{conv_name(conv)}」的子 agent，身份 {agent_id}。\n"
+            f"- 本聊天要求模型：「{req_model}」\n"
+            f"- 你申报的实际模型：「{actual_model}」（判定：不匹配，{reason_note}）\n\n"
+            "桥已自动通知主控（ctrl/main）进行判断：\n"
+            "1. 在主控作出裁决前，**严禁执行任何业务任务、严禁改文件、严禁调用 send_message / local_shell 等工具**！\n"
+            f"2. 现在请只调用 `read_chat(agent=\"{agent_id}\")` 挂起等待主控判断结果：\n"
+            "   • 若主控决定按要求模型重开，你会收到「你的身份已停用」，直接退出即可；\n"
+            "   • 若主控批准你以当前模型继续，完整任务说明会推送到你的 `read_chat`，收到后再开始工作！"
+        )
+
+    store.run(
+        "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='ok', alert='', alert_ts=0 WHERE id=?",
+        (agent_id, actual_model, conv["id"]),
+    )
+    conv = conv_row(conv["id"])
+    log.info("conv %s claimed by %s (%s, role=%s, actual_model=%s)", conv["id"], agent_id, conv["name"], role_val, actual_model or "-")
+    if is_ctrl:
+        mark_menu_dirty()
+        return text_result(welcome_ctrl(conv, agent_id))
+    m_note = f"，核验模型：{actual_model}" if actual_model else ""
+    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}{m_note}）。", wake=0)
+    await _notify_conv_claimed(conv)
     mark_menu_dirty()
     return text_result(welcome_chat(conv, agent_id))
 
@@ -2822,7 +2953,19 @@ async def t_join(args: dict) -> ToolResult:
             )
     name = str(args.get("name") or "").strip()[:200]
     mode = str(args.get("mode") or "").strip().lower()
+    mkey = str(args.get("main_key") or "").strip()
     approval_id = str(args.get("request") or "").strip()
+    has_valid_pending_req = bool(
+        approval_id and store.one("SELECT 1 FROM approvals WHERE id=? AND kind IN ('join','join_worker')", (approval_id,)) is not None
+    )
+    if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker")):
+        # 彻底杜绝子 agent（如 nazzil / c174）漏填 code 调空 join 误触发申请成为 main agent 刷屏！
+        log.warning("blocked empty/unkeyed join attempt (name=%r, mode=%r)", name, mode)
+        raise ToolFail(
+            "拒绝无任务码接入：子 agent 严禁不填 code 调用 join！\n"
+            "请仔细检查你收到的首条任务提示词，提取 `t-` 开头的任务码（如 `code=\"t-xxxxxxxx\"`）填入 `code` 参数重新调用 `join`（不要填 mode，也不要空参重试）。\n"
+            "（若该会话确系管理员本人新开的顶层主 Agent 或工作节点，请复制管理员 `/key` 里带完整 `mode` 与 `main_key` 的开场提示词。）"
+        )
     if mode == "worker":
         # 算力机/工作会话入网：不打扰管理员弹窗，直接推给唯一总控 ctrl 审批放行！
         if not approval_id or store.one("SELECT 1 FROM approvals WHERE id=? AND kind='join_worker'", (approval_id,)) is None:
@@ -3369,14 +3512,16 @@ def tool(name: str, description: str, properties: dict | None = None, required: 
 COMMON_TOOLS = [
     tool(
         "join",
-        "接入 Telegram 桥。主 Agent 执行器填 mode=\"main\" 等管理员在 Telegram 批准；"
-        "工作区常驻任务会话填 mode=\"worker\" 由总控确认接入；"
-        "业务子 agent 填 code=任务码（t- 开头）。返回你的身份和工作说明。",
+        "接入 Telegram 桥。业务子 agent 必须填启动任务里的任务码 code=\"t-...\"（严禁不填 code 调用 join！）。"
+        "顶层主 Agent 或工作会话需严格携带管理员 /key 下发的 mode 与 main_key 接入。返回你的身份和工作说明。",
         {
-            "code": prop("string", "子 agent 的一次性任务码，t- 开头；主会话或工作会话不填"),
+            "code": prop("string", "子 agent 必填的一次性任务码（t- 开头）"),
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
-            "mode": prop("string", "接入类型：main | worker，有 code 时不用填", enum=["main", "worker", "auto"]),
-            "request": prop("string", "上次 join 返回的申请编号，等待确认再调时带上，可省略"),
+            "actual_model": prop("string", "子 agent 填写自己当前真实运行的模型名称与档位（如 Gemini 4 Carbon High / Claude 4.5 Opus / GPT-5 等）"),
+            "model_match": prop("boolean", "当聊天有要求模型时子 agent 必填：回答自己是不是要求的模型（是填 true 才能继续；不是填 false 交由主控判断）"),
+            "mode": prop("string", "仅顶层节点填写：main | worker（子 agent 严禁填写）", enum=["main", "worker"]),
+            "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 严禁填写）"),
+            "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
         },
         needs_agent=False,
     ),
@@ -3625,10 +3770,10 @@ MAIN_TOOLS = [
     ),
     tool(
         "dispatch_task_op",
-        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
+        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开 / approve_model 放行模型不符挂起中的子agent），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
         {
             "chat": CHAT_PROP,
-            "action": prop("string", "标准化指令动作：launch | resume | restart", enum=["launch", "resume", "restart"]),
+            "action": prop("string", "标准化指令动作：launch | resume | restart | approve_model", enum=["launch", "resume", "restart", "approve_model"]),
             "target_main": prop("string", "发给哪个主 Agent（默认 auto 结合 CPU/内存探针自动选最优 mainN，也可指定如 main1、main2）"),
             "model": prop("string", "模型名（默认留空沿用该聊天原模型；注意尽量别换模型，确需更换须先与管理员沟通并填 confirm_model_change=true）"),
             "confirm_model_change": prop("boolean", "已与管理员沟通确认更换该聊天既有模型时填 true，默认 false"),
@@ -4766,11 +4911,15 @@ def render_cluster_overview() -> str:
         think_stuck, stuck_s = check_thinking_stuck(c, trow)
         phase_s = trow["phase"] if trow and trow["phase"] else "-"
         m_s = effective_conv_model(c) or "默认"
+        act_m = (c["actual_model"] or "").strip()
+        if act_m and act_m != m_s:
+            m_s = f"{m_s}(实报:{act_m})"
+        mc_badge = " ⏸【模型不符待裁决】" if (c["model_check"] or "") == "mismatch_hold" else ""
         ded_s = f" 🔒独占={c['dedicated_node']}" if c["dedicated_node"] else (" ⏳申请独占" if int(c["dedicated_req"] or 0) else "")
         tid_s = f" tid={c['task_agent_id']}" if (c["task_agent_id"] or "").strip() else ""
         stuck_badge = f" 🚨思考卡死({human_dur(stuck_s)})" if think_stuck else (" 🔨Shell运行中(正常非卡死)" if phase_s == "shell" else "")
         lines.append(
-            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])} | phase={phase_s}{stuck_badge}"
+            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])}{mc_badge} | phase={phase_s}{stuck_badge}"
         )
         tline = trace_one_liner(c["id"])
         if tline:
@@ -4884,6 +5033,24 @@ async def t_dispatch_task_op(agent, args):
     ded_node_arg = str(args.get("dedicated_node") or "").strip().lower()
 
     existing_model = effective_conv_model(conv)
+    if action == "approve_model":
+        ag = active_agent(conv)
+        if ag is None:
+            raise ToolFail(f"{conv_tag(conv)} 当前没有挂起中的子 agent，请直接用 action='restart' 启动。")
+        store.run("UPDATE convs SET model_check='approved', alert='', alert_ts=0 WHERE id=?", (conv["id"],))
+        conv = conv_row(conv["id"])
+        system_note(
+            conv["id"],
+            "✅【主控模型裁决放行】主控已核实并批准你以当前模型继续负责本聊天！以下是你的完整工作说明与上下文，请立即开始工作：\n\n"
+            + welcome_chat(conv, ag["id"]),
+            wake=1,
+        )
+        await _notify_conv_claimed(conv)
+        mark_menu_dirty()
+        return text_result(
+            f"已批准 {conv_tag(conv)} 的当前子 agent（实报模型：{conv['actual_model'] or '-'}）放行继续工作，并已唤醒它下发完整上下文。"
+        )
+
     if explicit_new_model and existing_model and explicit_new_model != existing_model and not confirm_change:
         raise ToolFail(
             f"模型保护拦截：{conv_tag(conv)} 原有模型为「{existing_model}」，你传入了「{explicit_new_model}」。\n"
@@ -5164,7 +5331,7 @@ def inline_unread_banner(agent) -> str:
     if agent is None:
         return ""
     conv = conv_row(agent["conv"])
-    if conv is None or conv["status"] != "open":
+    if conv is None or conv["status"] != "open" or (conv["model_check"] or "") == "mismatch_hold":
         return ""
     rows = pending_rows(conv["id"], conv["read_cursor"])
     if not rows or not any(r["wake"] for r in rows):
@@ -5202,6 +5369,14 @@ async def call_tool(name: str, args: dict) -> ToolResult:
                 raise ToolFail(f"{name} 只有主控能用。")
             if name in CHAT_ONLY and agent_obj["role"] not in ("chat", "ctrl"):
                 raise ToolFail(f"{name} 只有子 agent 能用。")
+            if agent_obj["role"] == "chat" and name != "read_chat" and not (name == "ask" and args.get("keepalive")):
+                c_hold = conv_row(agent_obj["conv"])
+                if c_hold is not None and (c_hold["model_check"] or "") == "mismatch_hold":
+                    raise ToolFail(
+                        f"⏸ 当前处于【模型校验未通过·等待主控判断】挂起状态（要求模型：{effective_conv_model(c_hold)}，"
+                        f"实报模型：{c_hold['actual_model'] or '-'}）。主控裁决放行前严禁调用 {name}！"
+                        f"请立即调用 read_chat(agent=\"{agent_obj['id']}\") 等待主控放行或换模型重开。"
+                    )
             result = await handler(agent_obj, args)
     except ToolFail as exc:
         result = text_result(str(exc), True)
@@ -6645,7 +6820,7 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     )
 
 
-ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/key", "/agents", "/grant", "/revoke", "/devices"}
+ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/web", "/key", "/agents", "/grant", "/revoke", "/devices"}
 
 
 async def cmd_activate(message: dict, chat_id: int, user_id: int, rest: str) -> None:
@@ -6734,6 +6909,15 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         return
     if not admin and command in ADMIN_COMMANDS:
         await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
+        return
+
+    if command == "/web":
+        await reply(
+            chat_id,
+            f"🌐 Web 全功能控制台地址：\n{PUBLIC_BASE}/web\n\n"
+            "• 超级管理员账号：`zwt`（首次访问输入 zwt 直接设定你的专属加密密码，全程零日志记录）\n"
+            "• 支持查看/修改/删除对话记录、一键带全量上下文通知总控重开、实时查看并在 Agent 协作群插话、拖拽/粘贴发图发文件、多端手机自适应与用户管理。",
+        )
         return
 
     if command == "/nodes":
@@ -6852,14 +7036,15 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         elif command == "/key" and rest.strip().lower() == "reset":
             config = rotate_key()
             await reply(chat_id, "已换新密钥：所有云 agent 都断开了，没批的接入和本地申请也作废了。\n"
-                        "把下面的配置换进 cursor.com/agents，再开一个云端聊天，发开场提示词重新设主控：\n" + config
-                        + "\n\n主控开场提示词：\n" + MAIN_PROMPT)
+                        "把下面的配置换进 cursor.com/agents，再开一个云端聊天，发开场提示词重新接入主 Agent：\n" + config
+                        + "\n\n【1】主 Agent 执行器开场提示词：\n" + main_prompt_text()
+                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词：\n" + worker_prompt_text())
         elif command == "/key":
             await reply(chat_id, "账号级 MCP 配置，填进 cursor.com/agents 的 MCP 设置（所有云 agent 共用，不要贴进聊天内容）：\n"
                         + mcp_config()
                         + f"\n\n🌐 Web 全功能控制台地址：{PUBLIC_BASE}/web（超级管理员账号：zwt）"
-                        + "\n\n【1】主 Agent 执行器开场提示词（新开主 Agent 时发给它，你在 TG 点批准）：\n" + MAIN_PROMPT
-                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词（总控免打扰自动审批）：\n" + WORKER_PROMPT
+                        + "\n\n【1】主 Agent 执行器开场提示词（新开主 Agent 时发给它，你在 TG 点批准）：\n" + main_prompt_text()
+                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词（总控免打扰自动审批）：\n" + worker_prompt_text()
                         + "\n\n会话停了：打开它那个云端聊天，发：\n" + RESUME_PROMPT
                         + "\n\n怀疑密钥泄露或有云 agent 失控：发 /key reset 换密钥，所有云 agent 立刻断开。")
         else:
@@ -8236,6 +8421,7 @@ def build_menu(dm: int) -> list[dict]:
             mi = conv_state(mc)
             mi["unread"] = unread_count(mc["id"], dm)
             commands.append({"command": mc["id"], "description": menu_desc(mc, mi, current == mc["id"])})
+    commands.append({"command": "web", "description": "🌐 打开 Web 网页控制台（zwt管理/改记录/看群聊）"})
     commands.append({"command": "nodes", "description": "🖥 集群机器池 / CPU内存探针 / 算力机与Web台"})
     commands.append({"command": "clouds", "description": "☁️ Cloud 目录管理 / 聊天迁移 / 删除旧Cloud"})
     if view:
@@ -8373,6 +8559,8 @@ async def watchdog_tick() -> None:
     if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher' AND status='online'"):
         ensure_controller_alive()
     for conv in open_convs():
+        if (conv["model_check"] or "") == "mismatch_hold":
+            continue
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
         trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
@@ -8489,6 +8677,7 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
+register_web_console(app, sys.modules[__name__])
 
 
 @app.get("/healthz")

@@ -296,6 +296,8 @@ COLUMNS = (
     ("convs", "dedicated_node", "TEXT DEFAULT ''"),   # 总控实际批准绑定的独占机器（如 main2 / node1）
     ("convs", "machine_reason", "TEXT DEFAULT ''"),   # 申请独占机器的原因说明
     ("convs", "auto_restarted_ts", "REAL DEFAULT 0"), # 最近一次因 5 分钟思考卡死自动重开的时间戳（防抖保护）
+    ("convs", "actual_model", "TEXT DEFAULT ''"),     # 子 agent join 时自检申报的真实模型名与档位
+    ("convs", "model_check", "TEXT DEFAULT ''"),      # '' / 'ok' / 'mismatch_hold' / 'approved'
 )
 
 INDEXES = """
