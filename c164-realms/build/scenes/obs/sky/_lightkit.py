@@ -12,6 +12,7 @@ lines. Those call this module and nothing else of the light:
     L.take(canvas, [((x, y, z), 12), ...], "props/lamps:festoon")   # several of them
     L.glazed(canvas, windows, origin)       # the windows of a front that main's table does not list
     L.dress(canvas)                         # a test scene: light the building although the switch is off
+    with L.under("deep"): ...               # a test scene: what is built inside is glazed for that look
 
 Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nine parts white and 13
 is half white already.
@@ -60,6 +61,7 @@ with the time, so a scene is built for one look: "blue" lights the most, "glow" 
 three fixed places and hardly a window more. A window that is lit in a sparser look is lit in the
 fuller ones as well.
 """
+import contextlib
 import functools
 import math
 import zlib
@@ -166,10 +168,25 @@ def _h(key, salt):
                  SEED + salt)
 
 
+_UNDER = []                 # the looks of the under() blocks that are open, the innermost last
+
+
+@contextlib.contextmanager
+def under(look):
+    """Glaze what is built inside the block for another look than the default: the fronts that ask
+    window_lit() without naming a look get this one. For a scene that shows the same building under
+    several looks side by side; the master scene is built for mood.DEFAULT."""
+    _UNDER.append(_look(look))
+    try:
+        yield
+    finally:
+        _UNDER.pop()
+
+
 def _look(look):
     """The name of the look a scene is built for: the default, a look, or the look a trial varies."""
     if look is None:
-        look = mood.DEFAULT
+        look = _UNDER[-1] if _UNDER else mood.DEFAULT
     look = mood.TRIALS.get(look, {}).get("of", look)
     if look not in SHARE:
         raise ValueError(f"no look {look!r}; there are {', '.join(sorted(SHARE))}")
