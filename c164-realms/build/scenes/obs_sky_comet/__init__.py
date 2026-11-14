@@ -14,7 +14,9 @@ the clock tower with the time-ball mast, the small dome.
 
 The comet is always due west of the viewer, its head HEAD_ELEVATION up. It stands over the great
 dome only for someone on the axis (V2, the lower platform); from the cable station (V1) due west
-runs through the clock tower and the comet stands over the time-ball mast (A0 #19551).
+runs through the clock tower and the comet stands over the time-ball mast (A0 #19551). Both hero
+views look up by about 22 degrees: as they were framed before, the top of the picture cut the comet
+(V1: the head a tenth of the picture below its top edge, half of the tails outside).
 
 The offline pictures prove position and what hides the comet; its colour and brightness against the
 real sky are judged on the pictures from the game.
@@ -43,14 +45,18 @@ DARK = B.SLATE_SMOOTH.block          # the ground, darker than the walls, and th
 FOV = 77.0                  # what the pictures are taken at: the option's 70, a tenth wider because
 ASPECT = 16.0 / 9.0         # the camera player is flying (render.py, tools/shoot.py)
 
-# name: (eye, look_at). v1 and v2 are the hero pictures as they are framed today (skeleton S.V1; the
-# court scene's v2_axis); the *_up twins tilt the same eye up until the whole comet is in the picture.
+# The two hero views look up by about 22 degrees, so that the whole comet is in the picture and the
+# building takes the lower half (A0 #24227, 11-14): V1 keeps its place and looks at (8, 34, 0.5), V2
+# stands at (58.5, 1.7, 0.5) and looks at (17, 19, 0.5). The skeleton is being changed to say so
+# (S2); it is read here as soon as it does, until then the ruled numbers stand below.
+V1 = S.V1 if S.V1["look_at"][1] >= 30 else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+V2 = getattr(S, "V2", None) or dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5))
+
+# name: (eye, look_at)
 CAMERAS = {
-    "v1": (S.V1["pos"], S.V1["look_at"]),
-    "v1_up": (S.V1["pos"], (8, 34, 0.5)),
-    "v2": ((58.5, 1.7, 0.5), (17.0, 11.0, 0.5)),
-    "v2_up": ((58.5, 1.7, 0.5), (17.0, 19.0, 0.5)),
-    "axislow": ((82.5, S.LOWER_GROUND + S.EYE, 0.5), (4.5, 22.0, 0.5)),
+    "v1": (V1["pos"], V1["look_at"]),                # from the cable station: the comet over the clock tower
+    "v2": (V2["pos"], V2["look_at"]),                # on the axis in the forecourt: over the apex of the dome
+    "axislow": ((82.5, S.LOWER_GROUND + S.EYE, 0.5), (4.5, 22.0, 0.5)),       # on the axis, lower platform
     "slit": ((8.5, S.PIER_TOP_Y + S.EYE, 0.5), (-29.5, 58.0, 0.5)),            # V8, out of the dome room
     "sky": ((-30.0, S.GROUND + S.EYE, 0.5), (-130.0, 110.0, 0.5)),             # the comet alone
 }
@@ -229,8 +235,10 @@ def _hidden(solid, eye, d, step=0.2):
 
 def where(style=None, canvas=None):
     """For every camera and light: where the head is in the picture, how much sky the picture has
-    above it, and what share of the comet's light is in the picture, hidden by blocks, or cut off
-    by the picture's edge. A list of dicts; nothing is drawn."""
+    above it, what share of the comet's light is in the picture, hidden by blocks, or cut off by
+    the picture's edge, and how much of the picture its bright part and the whole of it take
+    (comet.report() says what counts as bright; towards the picture's edge the wide angle stretches
+    everything, the comet with it). A list of dicts; nothing is drawn."""
     style = style or STYLE
     solid = _solid(canvas or build())
     n = comet.SIZE
@@ -257,7 +265,8 @@ def where(style=None, canvas=None):
                 head_y=float((1.0 - hy) / 2.0), head_hidden=bool(_hidden(solid, cam[0], head[None])[0]),
                 room=room, seen=float(grey[seen].sum() / total), hidden=float(grey[inside & hidden].sum() / total),
                 cut=float(grey[~inside].sum() / total),
-                bright=float(area[seen & (grey >= 0.20)].sum()), lit=float(area[seen & (grey >= 0.03)].sum())))
+                bright=float(area[seen & (grey + comet.sky_behind(look) >= comet.WASHED)].sum()),
+                lit=float(area[seen & (grey >= comet.SEEN)].sum())))
     return out
 
 

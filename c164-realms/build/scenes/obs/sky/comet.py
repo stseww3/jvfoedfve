@@ -63,7 +63,7 @@ DEFAULT_STYLE = "a"          # the version pack() paints for the map; the review
 # brightness and length of the comet in each light version: deep is the brightest and longest, glow
 # the faintest and shortest, so that the three are told apart at the size of a stamp
 STRENGTH = {"blue": 1.0, "deep": 1.45, "glow": 0.6}
-TAIL = {"blue": 1.0, "deep": 1.25, "glow": 0.72}
+TAIL = {"blue": 1.0, "deep": 1.15, "glow": 0.72}
 
 LIT_WINDOW = 0.79            # the lit windows on the brightness ladder (grey 0..1, look blue)
 WASHED = 0.31                # the washed walls on the same ladder: what counts as the comet's bright part
@@ -102,6 +102,7 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #   lean, curve the tail's centre line north of the head: lean * up + curve * up^2
 #   edge        2 a Gaussian across the tail; more: a flatter middle and a firmer outline
 #   skew        0 the same on both sides; more: the north side wider and softer, the south side tighter
+#   spine       share of the dust's light gathered in a narrow bright core along its centre line
 #   dust_fall   how fast it dims along its length           cool       how late it cools (1 evenly)
 #   ion_*       the same for the straight ion tail; ion_lean negative: it parts to the south
 #   nucleus     big pixels (rows up, columns north, brightness); 0.9 and more take the hottest step.
@@ -111,18 +112,18 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #               level shows, and how far towards the cool end each level of the dust tail stands
 _SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
-    "a": dict(coma=0.60, coma_amp=0.30, dust_len=13.0, dust_w=(0.34, 1.65), flare=1.0, lean=0.13,
-              curve=0.013, edge=2.0, skew=0.25, dust_fall=1.5, dust_amp=0.34, cool=1.2,
-              ion_len=13.5, ion_w=(0.14, 0.34), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.17,
+    "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
+              curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
+              ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
               nucleus=_SQUARE),
-    "b": dict(coma=0.62, coma_amp=0.36, dust_len=12.5, dust_w=(0.36, 1.30), flare=1.0, lean=0.13,
-              curve=0.014, edge=2.4, skew=0.2, dust_fall=1.0, dust_amp=0.36, cool=1.0,
-              ion_len=12.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
+    "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.36, 1.25), flare=1.0, lean=0.12,
+              curve=0.013, edge=2.4, skew=0.2, spine=0.0, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=11.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
               nucleus=_SQUARE,
-              steps=(0.07, 0.15, 0.27), tones=(0.13, 0.22, 0.36), cooling=(0.85, 0.45, 0.0)),
-    "c": dict(coma=0.80, coma_amp=0.32, dust_len=9.5, dust_w=(0.55, 2.60), flare=0.8, lean=0.20,
-              curve=0.012, edge=3.0, skew=0.45, dust_fall=1.3, dust_amp=0.32, cool=1.0,
-              ion_len=9.5, ion_w=(0.18, 0.40), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.16,
+              steps=(0.07, 0.12, 0.20), tones=(0.14, 0.24, 0.38), cooling=(0.9, 0.5, 0.1)),
+    "c": dict(coma=0.80, coma_amp=0.34, dust_len=11.0, dust_w=(0.55, 2.35), flare=0.8, lean=0.20,
+              curve=0.012, edge=4.5, skew=0.45, spine=0.15, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=11.0, ion_w=(0.16, 0.36), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.15,
               nucleus=_SQUARE),
 }
 
@@ -178,7 +179,9 @@ def _fields(p, tail, m):
     w0, w1 = p["dust_w"]
     rise = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)             # the tail opens upwards only
     width = (w0 + (w1 - w0) * rise ** p["flare"]) * np.where(off > 0.0, 1.0 + p["skew"], 1.0 - 0.5 * p["skew"])
-    dust = np.exp(-0.5 * np.abs(off / width) ** p["edge"]) * np.exp(-p["dust_fall"] * t)
+    across = np.abs(off / width)
+    dust = (1.0 - p["spine"]) * np.exp(-0.5 * across ** p["edge"]) + p["spine"] * np.exp(-0.5 * (across / 0.4) ** 2)
+    dust *= np.exp(-p["dust_fall"] * t)
     dust *= _ramp(1.0 - t, 0.0, END) * _ramp(y, -0.35, 0.35)
 
     s = np.clip(far / (p["ion_len"] * tail), 0.0, 1.0)
