@@ -8897,6 +8897,11 @@ async def client_ws(ws: WebSocket) -> None:
             log.info("local client %s offline", device_id)
 
 
+from web_console import register_web_console  # noqa: E402
+
+register_web_console(app, sys.modules[__name__])
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] in ("mcp-config", "--mcp-config"):
         print(mcp_config())
