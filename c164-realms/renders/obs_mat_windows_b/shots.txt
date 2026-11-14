@@ -1,0 +1,12 @@
+scene:   obs_mat_windows_b  (materials/windows, version b -- the second idea, for the 2-version compare)
+command: build/render.py obs_mat_windows_b --shots build/scenes/obs_mat_windows_b/shots.json --out <dir> --size 1280x720
+code at: b651bfb7  (textures unchanged since)
+by:      c205 (materials/windows)
+
+A comparison subset; version a's full 22 shots are in ../obs_mat_windows/.
+  front 14000, front_b 18000, front_c 12900   facade in the three lights
+  far 14000                                    bright/dark at a distance
+  near_main 14000, walls_lit 14000            the glazing net and the lit walls
+  close_lit 14000, close_frosted 14000, close_curtain 14000   the three lit tiers
+
+  compare_ab.png   version a | version b, side by side: facade and the three lit tiers
