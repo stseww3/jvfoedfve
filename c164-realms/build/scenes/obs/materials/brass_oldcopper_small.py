@@ -439,13 +439,15 @@ def _line_cross():
 
 
 def _line_star():
-    """BRASS_STAR: the emblem's star in one cell: eight points, the four upright ones long, the
-    four between them short, round a solid middle. Eight points, so that it is a star and nothing
-    else."""
+    """BRASS_STAR: the emblem's star in one cell, solid metal: eight points round a full middle. The
+    four upright points are four pixels wide at the root and two at the tip, the four between them
+    a pixel wide, and all eight reach as far, so that near or far it is a star and never two bars
+    crossing (c219, 11-14)."""
     def body(x, y):
         dx, dy = abs(2 * x - 15), abs(2 * y - 15)                   # twice the distance from the middle
-        upright = (dx <= 1 and dy <= 13) or (dy <= 1 and dx <= 13)
-        slanted = dx == dy and dx <= 11
+        lo, hi = min(dx, dy), max(dx, dy)
+        upright = (lo <= 1 and hi <= 13) or (lo <= 3 and hi <= 7)
+        slanted = dx == dy and dx <= 9
         return upright or slanted or dx + dy <= 6
 
     def joint(x, y):
