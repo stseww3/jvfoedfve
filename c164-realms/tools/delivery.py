@@ -16,11 +16,14 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
   origin    added lines that speak of a copyright, a licence or a site that hands out assets
   commits   commit messages start with "c164-<code>: "
   pictures  every test scene the delivery touches keeps a picture of each of its shots in
-            renders/<scene>/ and a note of the commit they show (tools/selfshots.py draws them)
+            renders/<scene>/ and a note of the commit they show (tools/selfshots.py); each kept
+            picture is the very file the note describes (its SHA-256), the commit is in the
+            branch, and the card's code has not changed since
   merge     the branch merges into the base without conflicts; how far it is behind
 
-The technical checks of what the code generates are tools/check.py's; whether the kept pictures
-are what the delivered code draws is tools/selfshots.py --verify's (both need a checkout).
+The technical checks of what the code generates are tools/check.py's (needs a checkout). Whether
+the kept pictures are what the delivered code draws is tools/selfshots.py --verify's, which draws
+and so runs on the admin's computer only.
 """
 import argparse
 import hashlib
@@ -291,7 +294,7 @@ def main():
     scenes = sorted(scenes | {m.group(1) for _, path in pairs for m in
                               [re.match(re.escape(ROOT) + r"(?:build/scenes|renders)/(obs_[a-z]+_[^/]+)/", path)] if m})
     code = [f"{ROOT}build/scenes/obs/{cat}/{module}.py", f":(glob){ROOT}build/scenes/obs/{cat}/_*"]
-    notes, without, shown = [], [], 0
+    notes, without, altered, shown = [], [], [], 0
     for scene in scenes:
         shots = blob(merged, f"{ROOT}build/scenes/{scene}/shots.json")
         if shots is None:
@@ -317,18 +320,29 @@ def main():
         if note is None:
             notes.append(f"{scene}: no shots.txt, so which commit the pictures show is not noted")
             continue
-        drawn, noted = {}, set()
+        drawn, noted, plain = {}, set(), []
         for line in note.decode("utf-8", "replace").splitlines():
             parts = line.split("\t")
-            if len(parts) == 3 and not line.startswith("#"):
+            if len(parts) in (3, 4) and not line.startswith("#"):
                 noted.add(parts[0])
-                if parts[0] in names:
-                    drawn.setdefault(parts[2], []).append(parts[0])
+                if parts[0] not in names:
+                    continue
+                drawn.setdefault(parts[2], []).append(parts[0])
+                if parts[0] not in kept:
+                    continue
+                if len(parts) == 3:
+                    plain.append(parts[0])
+                elif hashlib.sha256(blob(merged, f"{folder}{parts[0]}.png") or b"").hexdigest()[:16] != parts[3]:
+                    altered.append(f"{scene}: {parts[0]}.png is not the file its note describes: changed or "
+                                   f"replaced after it was drawn")
         left = sorted((kept & noted) - set(names))
         if left:
             notes.append(f"{scene}: pictures left over, the list has no such shot any more: {', '.join(left)}")
         if not noted:
             notes.append(f"{scene}: shots.txt names no commit (not written by tools/selfshots.py)")
+        if plain:
+            notes.append(f"{scene}: {len(plain)} pictures have no SHA-256 in the note (drawn before the note "
+                         f"kept one): nothing says they are the files that were drawn")
         for commit, of in sorted(drawn.items()):
             if commit.endswith("+"):
                 notes.append(f"{scene}: {len(of)} pictures were drawn from uncommitted code ({commit})")
@@ -342,11 +356,13 @@ def main():
                     notes.append(f"{scene}: {len(of)} pictures show {commit}; the card's code has changed since "
                                  f"({', '.join(os.path.basename(p) for p in since[:4])}"
                                  f"{' ...' if len(since) > 4 else ''}): draw them again")
-    notes = [f"{s}: no pictures kept (tools/selfshots.py {s}, then commit renders/{s}/)" for s in without] + notes
-    results.append(say("WARN" if notes else "PASS", "pictures",
+    notes = [f"{s}: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py {s} --out, "
+             f"then --take here and commit renders/{s}/)" for s in without] + notes
+    results.append(say("FAIL" if altered else "WARN" if notes else "PASS", "pictures",
                        "no test scene with a shot list is touched" if not scenes
                        else f"{len(scenes)} test scene{'s' if len(scenes) != 1 else ''}, {shown} shots with a picture kept"
-                       + ("" if notes else "; every shot has one"), notes))
+                       + ("" if notes or altered else "; every shot has one, each the file its note describes"),
+                       altered + notes))
 
     # ---- merge ----
     behind = len(git("rev-list", f"{head}..{base}").stdout.split())
