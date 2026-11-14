@@ -123,7 +123,9 @@ SLIT_FACING = "west"
 DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: what the dome turns about
 # the telescope pier is an independent column on the dome centre, from the ground to the dome room
 PIER_CENTRE = DOME_CENTRE
-PIER_R = 3              # PROVISIONAL (A3/A5 refine): radius of the stone pier
+PIER_R = 3              # PROVISIONAL: the pier + ring-stair envelope. A0 #86.6: the shaft through the
+#                        star hall is thin (c178's 3x3 shaft with a ring stair round it); the drum-room
+#                        pier cap (PIER_TOP_Y) widens to carry the equatorial foot. c178 pins it, reports back
 
 
 def dome_profile(y):
@@ -176,11 +178,22 @@ MERIDIAN_HUT = dict(centre=(MERIDIAN_X, -30), size=9, door=(MERIDIAN_X, -26))
 ARMILLARY = (MERIDIAN_X, 0)     # the cell where the meridian crosses the axis: the emblem roundel's
 #                                 middle, kept free for the armillary sphere (machines), feet at y 0
 
-# --- machine anchors ----------------------------------------------------------------------------
-# Not here yet (A0, 2026-11-14). The great orrery hangs in the well of the star hall, between the
-# telescope pier and the east wall; its middle and its diameter are worked out by interiors, main
-# and machines from the clear size of that well, and come here when the three agree. They will be
-# POINTS: the middle of the cells a .. b is mid(a, b), half a block more than (a + b) / 2.
+# --- machine anchors (c193 #95, approved A0 #97) ------------------------------------------------
+# Points, not cells. The great orrery hangs in the well of the star hall, on the entrance axis
+# between the telescope pier and the east wall. The well is z -3..3 (gallery at z = +-5, its rail at
+# z = +-4) and, under the thin pier (A0 #86.6), x 7..15; ORRERY_CENTRE is the middle of cell (11, 0).
+ORRERY_CENTRE = (mid(11), AXIS_Z)       # (11.5, 0.5). the hung orrery's centre; the brass roundel in
+#                                         the floor below is centred on the same cell (11, 0)
+ORRERY_R = 2.5                          # outer radius; outer diameter 5, one clear cell each side of the well
+ORRERY_HANG_Y = float(STAR_HALL_CEIL)   # 14.0, the ceiling block's lower face: beam, hangers, motor seat
+ORRERY_RING_Y = 8.5                     # A0 #97: the ring of planets and the sun lamp sits here, at the
+#                                         eye height of a person on the gallery (8.6); gears/motor above it
+ORRERY_BODY_Y = (8.0, ORRERY_HANG_Y)    # the machine fills this height; the ground below (y 0..8) is walkable
+# Telescope: the equatorial foot (diameter <= 5) sits on the pier cap, centred on DOME_AXIS (4.5, 0.5).
+PIER_TOP_Y = float(ROOF_STAND)          # 18.0, the pier cap top; the foot stands on the cap, clear of the
+#                                         joint between the pier and the dome-room floor
+# Mother clock: wall-mounted on the pier's east face, on the axis (c193 #95, A0 #86.7): a box about
+# 1.5 wide x 0.75 thick x 4 high, y 1..5, facing east. Its x follows c178's pier east face; not pinned here.
 
 SITE_SPAN = 110                 # the hilltop is about 110 x 110 blocks (plan 4)
 

@@ -332,10 +332,10 @@ class Model:
         return tuple(out)
 
     # ---- export ------------------------------------------------------------------------------
-    def export(self, pack_dir, ns="c164"):
-        sx, sy, sz = self.shift()
-        rects = {}     # key -> (w, h, painter args)
-        uses = []      # (part index, face letter, key)
+    def faces(self):
+        """Every face that gets a picture: (part index, face letter, material, w, h, grain, seed),
+        w and h in pixels; the picture is material.paint(w, h, grain, seed). export() lays these out
+        on the model's sheet, and tools/check.py reads them to see what a stretch does to them."""
         for pi, p in enumerate(self.parts):
             size = [p["hi"][i] - p["lo"][i] for i in range(3)]
             if p["grain"] is None:
@@ -349,9 +349,16 @@ class Model:
                 h = max(1, int(round(size[va] * self.px)))
                 mat = p["faces"].get(f, p["mat"])
                 grain = "u" if g == ua else "v" if g == va else "cap"
-                key = (mat.name, w, h, grain, p["seed"])
-                rects.setdefault(key, (w, h, mat, grain, p["seed"]))
-                uses.append((pi, f, key))
+                yield pi, f, mat, w, h, grain, p["seed"]
+
+    def export(self, pack_dir, ns="c164"):
+        sx, sy, sz = self.shift()
+        rects = {}     # key -> (w, h, painter args)
+        uses = []      # (part index, face letter, key)
+        for pi, f, mat, w, h, grain, seed in self.faces():
+            key = (mat.name, w, h, grain, seed)
+            rects.setdefault(key, (w, h, mat, grain, seed))
+            uses.append((pi, f, key))
 
         order = sorted(rects, key=lambda kk: (-rects[kk][1], -rects[kk][0], str(kk)))
         for S in (16, 32, 64, 128, 256, 512):
