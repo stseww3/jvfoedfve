@@ -68,7 +68,7 @@ TAIL = {"blue": 1.0, "deep": 1.25, "glow": 0.72}
 LIT_WINDOW = 0.79            # the lit windows on the brightness ladder (grey 0..1, look blue)
 CEILING = 0.70               # the most light anything outside the nucleus adds
 KNEE = 0.45                  # light above this is eased towards the ceiling
-END = 0.30                   # a tail dims evenly along its length and dies away over this last share
+END = 0.50                   # a tail dims evenly along its length and melts away over this last share
 
 PHASES = ("full_moon", "waning_gibbous", "third_quarter", "waning_crescent", "new_moon",
           "waxing_crescent", "first_quarter", "waxing_gibbous")
@@ -94,29 +94,33 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 # One table for the three versions. Lengths and widths in degrees; a width is the sigma across the
 # tail, given at the head and at the tip. Amplitudes are grey (luma) added at strength 1.
 #   coma        radius where the coma has fallen to 1/e      coma_amp   its light at the nucleus
-#   dust_len    where the dust tail ends                      dust_w     (at the head, at the tip)
+#   dust_len    how far from the head the dust tail ends     dust_w     (at the head, at the tip)
 #   flare       how the width grows along the tail (1 evenly, less: early)
 #   lean, curve the tail's centre line north of the head: lean * up + curve * up^2
 #   edge        2 a Gaussian across the tail; more: a flatter middle and a firmer outline
+#   skew        0 the same on both sides; more: the north side wider and softer, the south side tighter
 #   dust_fall   how fast it dims along its length           cool       how late it cools (1 evenly)
 #   ion_*       the same for the straight ion tail; ion_lean negative: it parts to the south
-#   nucleus     big pixels (rows up, columns north, brightness); 0.9 and more take the hottest step
+#   nucleus     big pixels (rows up, columns north, brightness); 0.9 and more take the hottest step.
+#               A small square, hottest at its lower south corner, never a plus: nothing in this
+#               sky may read as a cross (A0 #22487)
 #   steps, tones, cooling   version b only: the light at which each level begins, the grey each
 #               level shows, and how far towards the cool end each level of the dust tail stands
+_SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
-    "a": dict(coma=0.55, coma_amp=0.30, dust_len=12.5, dust_w=(0.30, 1.25), flare=1.0, lean=0.14,
-              curve=0.012, edge=2.0, dust_fall=1.6, dust_amp=0.30, cool=1.2,
-              ion_len=13.5, ion_w=(0.16, 0.42), ion_lean=-0.035, ion_fall=1.2, ion_amp=0.20,
-              nucleus=((0, 0, 1.0), (1, 0, .72), (-1, 0, .72), (0, 1, .72), (0, -1, .72), (2, 0, .50))),
-    "b": dict(coma=0.60, coma_amp=0.36, dust_len=11.5, dust_w=(0.40, 1.45), flare=1.0, lean=0.14,
-              curve=0.014, edge=2.0, dust_fall=1.3, dust_amp=0.34, cool=1.0,
-              ion_len=12.0, ion_w=(0.22, 0.40), ion_lean=-0.05, ion_fall=1.0, ion_amp=0.24,
-              nucleus=((0, 0, 1.0), (1, 0, .56), (-1, 0, .56), (0, 1, .56), (0, -1, .56)),
-              steps=(0.075, 0.15, 0.27), tones=(0.14, 0.23, 0.36), cooling=(0.75, 0.40, 0.0)),
-    "c": dict(coma=0.75, coma_amp=0.32, dust_len=9.5, dust_w=(0.55, 2.70), flare=0.8, lean=0.10,
-              curve=0.016, edge=3.2, dust_fall=1.1, dust_amp=0.30, cool=1.0,
-              ion_len=9.0, ion_w=(0.20, 0.50), ion_lean=-0.12, ion_fall=1.3, ion_amp=0.20,
-              nucleus=((0, 0, 1.0), (1, 0, .72), (-1, 0, .72), (0, 1, .72), (0, -1, .72))),
+    "a": dict(coma=0.60, coma_amp=0.30, dust_len=13.0, dust_w=(0.34, 1.65), flare=1.0, lean=0.13,
+              curve=0.013, edge=2.0, skew=0.25, dust_fall=1.5, dust_amp=0.34, cool=1.2,
+              ion_len=13.5, ion_w=(0.14, 0.34), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.17,
+              nucleus=_SQUARE),
+    "b": dict(coma=0.62, coma_amp=0.36, dust_len=12.5, dust_w=(0.36, 1.30), flare=1.0, lean=0.13,
+              curve=0.014, edge=2.4, skew=0.2, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=12.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
+              nucleus=_SQUARE,
+              steps=(0.07, 0.15, 0.27), tones=(0.13, 0.22, 0.36), cooling=(0.85, 0.45, 0.0)),
+    "c": dict(coma=0.80, coma_amp=0.32, dust_len=9.5, dust_w=(0.55, 2.60), flare=0.8, lean=0.20,
+              curve=0.012, edge=3.0, skew=0.45, dust_fall=1.3, dust_amp=0.32, cool=1.0,
+              ion_len=9.5, ion_w=(0.18, 0.40), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.16,
+              nucleus=_SQUARE),
 }
 
 _LUMA = np.array([0.299, 0.587, 0.114])
@@ -160,18 +164,21 @@ def _ramp(v, lo, hi):
 
 def _fields(p, tail, m):
     """The smooth comet on an m x m grid: the grey added by coma, dust tail and ion tail, and how
-    far along the dust tail each point lies (0 at the head, 1 at the tip)."""
+    far along the dust tail each point lies (0 at the head, 1 at the tip). A tail's length is
+    counted from the head, so its end is an arc about the head and not a level cut."""
     x, y, edge = _grid(m)
     up = np.clip(y, 0.0, None)
+    far = np.hypot(x, up)
 
-    t = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)
-    centre = p["lean"] * up + p["curve"] * up * up
+    t = np.clip(far / (p["dust_len"] * tail), 0.0, 1.0)
+    off = x - (p["lean"] * up + p["curve"] * up * up)
     w0, w1 = p["dust_w"]
-    across = np.abs((x - centre) / (w0 + (w1 - w0) * t ** p["flare"]))
-    dust = np.exp(-0.5 * across ** p["edge"]) * np.exp(-p["dust_fall"] * t) * _ramp(1.0 - t, 0.0, END)
-    dust *= _ramp(y, -0.35, 0.35)
+    rise = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)             # the tail opens upwards only
+    width = (w0 + (w1 - w0) * rise ** p["flare"]) * np.where(off > 0.0, 1.0 + p["skew"], 1.0 - 0.5 * p["skew"])
+    dust = np.exp(-0.5 * np.abs(off / width) ** p["edge"]) * np.exp(-p["dust_fall"] * t)
+    dust *= _ramp(1.0 - t, 0.0, END) * _ramp(y, -0.35, 0.35)
 
-    s = np.clip(up / (p["ion_len"] * tail), 0.0, 1.0)
+    s = np.clip(far / (p["ion_len"] * tail), 0.0, 1.0)
     i0, i1 = p["ion_w"]
     ion = np.exp(-0.5 * ((x - p["ion_lean"] * up) / (i0 + (i1 - i0) * s)) ** 2)
     ion *= np.exp(-p["ion_fall"] * s) * _ramp(1.0 - s, 0.0, END) * _ramp(y, 0.0, 0.7)
