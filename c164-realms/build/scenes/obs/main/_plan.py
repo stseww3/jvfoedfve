@@ -271,14 +271,28 @@ def roof_steps(x, z):
     return min(x - S.WALL_W, xe - x, ROOF_RIDGE_STEPS) - 1
 
 
+FRONTS = ("east", "west", "north", "south", "apse")
+
+
 def windows():
     """Every glazed window of the main building, for whoever lights or frames them:
-    [dict(front, bay, storey, cells, inward, y)].
+    [dict(front, bay, storey, cells, inward, y, glass)].
 
     front and bay name the window: "east" and "west" count the skeleton's bays 1..17 from the
     north; "north" and "south" count the end walls' bays 1..4 from the west; "apse" has -1, 0, 1
     (north-west, west, south-west). storey is "base" or "main". cells are the glass columns
-    (x, z); inward is the step from the glass into the building; y is the glass's (bottom, top)."""
+    (x, z); inward is the step from the glass into the building; y is the glass's (bottom, top);
+    glass is the block state that stands there.
+
+    These are the windows main/facade.py has built, so the table cannot drift from the walls. The
+    drum's small windows are not in it (facade.windows() has them under the front "drum")."""
+    from . import facade
+    return [w for w in facade.windows() if w["front"] in FRONTS]
+
+
+def plan_windows():
+    """The same table as the plan gives it, without the building: what facade.py's self-check
+    holds the built windows against. [dict(front, bay, storey, cells, inward, y)]."""
     out = []
 
     def add(front, bay, cells, inward, base=True):
@@ -626,7 +640,7 @@ def tables():
     out.append("pitched roofs: |z| %d..%d, gable walls on |z| %d and %d; top surface by x: " % (ROOF_Z + GABLE_Z)
                + "  ".join("x%d:%.1f" % (x, ROOF_EAVE_TOP + ROOF_STEP * roof_steps(x, z)) for x in xs))
     out.append("")
-    ws = windows()
+    ws = plan_windows()
     out.append("windows, %d in all (front bay: glass columns; base storey y %d..%d, main storey y %d..%d):"
                % ((len(ws),) + BASE_WINDOW + S.WINDOW))
     for front in ("east", "west", "north", "south", "apse"):
@@ -735,7 +749,7 @@ def check():
             bad.append("main: no mezzanine over the west door at z %d" % z)
     for storey, name, g in (("base", "ground", ground), ("main", "main", upper)):
         listed = set()
-        for w in windows():                                  # A2 puts a light behind every pane
+        for w in plan_windows():                             # A2 puts a light behind every pane
             if w["storey"] != storey:
                 continue
             dx, dz = w["inward"]
