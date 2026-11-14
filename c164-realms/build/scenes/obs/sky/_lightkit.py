@@ -27,21 +27,26 @@ pilasters and n-6 on their fronts. Under the blue look stone is lifted out of th
 grey at 7 and turns warm from 9 on: 10 behind the glass makes a window's surround lighter, 12 makes
 it warm.
 
-Windows (the director's rules, group #15317 and #19277): at least a fifth of the windows of a
-front are dark; two neighbouring bays of one storey are never both lit; lit windows come in tiers
-and the brightest is kept for the entrance; a front must not turn warm all over.
+Windows (the director's rules, group #15317, #19277 and #21989): at least a fifth of the windows
+of a front are dark; two neighbouring bays of one storey are never both lit; lit windows come in
+tiers and the brightest is kept for the entrance; a front must not turn warm all over.
 
     tier 0  dark     B.WINDOW_DARK, now and then B.WINDOW_BLIND          no light behind it
-    tier 1  dim      B.WINDOW_CURTAIN, a lamp behind a drawn curtain      may stand next to a lit one
-    tier 2  lit      B.WINDOW_FROSTED
+    tier 1  dim      B.WINDOW_CURTAIN, a lamp behind a drawn curtain      fixed windows only
+    tier 2  lit      B.WINDOW_FROSTED                                     the lit window of a wing
     tier 3  bright   B.WINDOW_LIT, the entrance only
+
+The colours say where the entrance is. The curtain is the most saturated colour of the building, so
+it is kept for the entrance: the two great windows beside the brightest one (orange, gold, orange)
+and the fixed windows of the base storey. A wing shows a few opal windows and dark ones, nothing
+else; no look hands out a curtain.
 
 What no look changes (FIXED) is three places on the entrance front: the foot of the clock tower, the
 entrance, the foot of the small dome, the middle one the brightest. The bays next to a fixed window
 stay dark, so each of the three stands apart. Between them a wing shows two lit windows at the most,
-and the base storey is a dark band under the great windows: besides its fixed three, one lit window
-to a wing under the fullest look and none under the others (SHARE, LOW_SHARE, MOST, LOW_MOST: by
-storey). The drum of the dome only ever glows: the dome room is kept dark for observing (HUSHED).
+and the base storey is a dark band under the great windows that shows its fixed windows only (SHARE,
+LOW_SHARE, MOST, LOW_MOST: by storey). The drum of the dome stays dark: the dome room is kept dark
+for observing, and what shows of its light comes through the slit (HUSHED).
 
 The tier of a window follows from its name (front, bay, storey) and a seed, never from the order of
 building, so a front comes out the same every time. `front`, `bay` and `storey` are the keys of
@@ -52,7 +57,7 @@ of their own.
 
 The three looks light different shares of the same windows. Windows are blocks and do not change
 with the time, so a scene is built for one look: "blue" lights the most, "glow" fewer, "deep" the
-three fixed places and one window to a wing. A window that is lit in a sparser look is lit in the
+three fixed places and hardly a window more. A window that is lit in a sparser look is lit in the
 fuller ones as well.
 """
 import functools
@@ -110,41 +115,40 @@ BLIND_SHARE = 0.3           # of the dark windows, how many show a lowered blind
 DARK_SHARE = 0.2            # the director's floor: this share of a front's windows is dark
 DARK_FROM = 5               # a front with fewer windows is only counted in the building's total
 SEED = 3667                 # picked on main's table (the card says by what): the wings differ and none is left dark
-# Per look: of the windows that may be lit, the share that is; of the others, the share that glows
-# behind a curtain. The low storeys have shares of their own: the base storey is a dark band that
-# carries the row of great windows, and never shows more lit windows than the storey over it.
-SHARE = {"blue": (0.9, 0.4), "glow": (0.4, 0.2), "deep": (0.15, 0.08)}
+# Per look: of the windows that may be lit, the share that is. The low storeys have shares of their
+# own: the base storey is a dark band that carries the row of great windows; the director allows it
+# one lit window to a wing under the fullest look at the most, and it never shows more lit windows
+# than the storey over it. With the curtain kept for the entrance it shows its fixed windows only.
+SHARE = {"blue": 0.9, "glow": 0.4, "deep": 0.15}
 LOW = ("base",)
-LOW_SHARE = {"blue": (0.25, 0.3), "glow": (0.0, 0.2), "deep": (0.0, 0.1)}
+LOW_SHARE = {"blue": 0.0, "glow": 0.0, "deep": 0.0}
 # A stretch is a run of windows of one storey between two fixed ones or the ends of the row: a wing.
 # No look lights more than this many windows of a stretch, so that the entrance stays the one
 # bright group of its front.
 MOST = 2
 LOW_MOST = 1
 ALWAYS = ("tower",)         # fronts whose windows that may be lit are lit in every look
-HUSHED = ("drum",)          # fronts that only ever glow (tier 1): the dome room is kept dark for observing
+HUSHED = ("drum",)          # fronts that no look lights: the dome room is kept dark for observing
 RINGS = ("drum",)           # fronts that close on themselves: the last bay stands next to the first
-# What no look changes. The entrance: the window over the door is the brightest of the map; the bays
-# beside it glow behind curtains on the main storey and are lit on the base storey, so that all five
-# show light and no two lit ones are neighbours. The foot of the clock tower (bays 1 and 2 of the
-# east front), lit crosswise for the same reason, and across the front from it the foot of the small
-# dome (bay 17). The apse over the west door, which the sunset platform looks at: its middle window
-# lit, the two beside it behind curtains. The round window of the drum that looks east along the
-# axis, over the entrance and under the top of the dome.
+# What no look changes. The entrance: the window over the door is the brightest of the map, the two
+# beside it glow behind curtains, and so do the small windows under those two where the front has
+# them (an arcade of three arches has none). The foot of the clock tower (bays 1 and 2 of the east
+# front): the great window lit, the small one next to it under a curtain, crosswise, so that no two
+# lit ones are neighbours; across the front from it the foot of the small dome (bay 17). The apse
+# over the west door, which the sunset platform looks at: its middle window.
 FIXED = {
     ("east", 9, "main"): BRIGHT, ("east", 8, "main"): DIM, ("east", 10, "main"): DIM,
-    ("east", 8, "base"): LIT, ("east", 10, "base"): LIT,
-    ("east", 1, "main"): LIT, ("east", 2, "base"): LIT,
+    ("east", 8, "base"): DIM, ("east", 10, "base"): DIM,
+    ("east", 1, "main"): LIT, ("east", 2, "base"): DIM,
     ("east", 17, "main"): LIT,
-    ("apse", 0, "main"): LIT, ("apse", -1, "main"): DIM, ("apse", 1, "main"): DIM,
-    ("drum", 0, "drum"): DIM,
+    ("apse", 0, "main"): LIT,
 }
 # The level of the sources behind the glass, by tier: (a tall window, a window up to three rows
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
 BEHIND = {BRIGHT: (12, 12), LIT: (10, 9), DIM: (8, 7)}
 TALL = 4                    # a window of this many rows or more is a tall one
 
-_PRIORITY, _WAKE, _DIM, _BLIND = range(4)
+_PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
 _TIER_OF.update({block: DARK for role in (B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT) for block in role.all()})
 
@@ -173,10 +177,10 @@ def _look(look):
 
 
 def shares(look, storey):
-    """(lit share, dim share, the most lit windows of a stretch) for a storey under a look."""
+    """(the share of the windows that may be lit that is lit, the most lit windows of a stretch) for
+    a storey under a look."""
     low = storey in LOW
-    lit, dim = (LOW_SHARE if low else SHARE)[look]
-    return lit, dim, (LOW_MOST if low else MOST)
+    return (LOW_SHARE if low else SHARE)[look], (LOW_MOST if low else MOST)
 
 
 def _plain(front):
@@ -246,13 +250,10 @@ def _tier(key, look):
     if key in FIXED:
         return FIXED[key]
     front, _, storey = key
-    lit, dim, _ = shares(look, storey)
-    hushed = _plain(front) in HUSHED
-    if _framed(key):
+    if _plain(front) in HUSHED or _framed(key):
         return DARK
-    if (_plain(front) in ALWAYS or _h(key, _WAKE) < lit) and _may_be_lit(key, lambda other: True, {}):
-        return DIM if hushed else LIT
-    return DIM if not hushed and _h(key, _DIM) < dim else DARK
+    lit = _plain(front) in ALWAYS or _h(key, _WAKE) < shares(look, storey)[0]
+    return LIT if lit and _may_be_lit(key, lambda other: True, {}) else DARK
 
 
 @functools.lru_cache(maxsize=None)
@@ -265,7 +266,7 @@ def _tiers(keys, look):
     for (front, storey), bays in sorted(rows.items(), key=lambda kv: (str(kv[0][0]), str(kv[0][1]))):
         bays.sort()
         row = [(front, bay, storey) for bay in bays]
-        lit, dim, most = shares(look, storey)
+        lit, most = shares(look, storey)
         ring, memo = _ring(front, bays), {}
         hushed, always = _plain(front) in HUSHED, _plain(front) in ALWAYS
         out.update({k: FIXED[k] for k in row if k in FIXED})
@@ -274,8 +275,8 @@ def _tiers(keys, look):
         pools = [sorted((k for k in stretch if _may_be_lit(k, keys.__contains__, memo, ring)),
                         key=lambda k: _h(k, _WAKE)) for stretch in _stretches(row, ring)]
         total = sum(len(pool) for pool in pools)
-        n = total if always else int(lit * total + 0.5)
-        top = total if always or hushed else most
+        n = 0 if hushed else total if always else int(lit * total + 0.5)
+        top = total if always else most
         taken = [0] * len(pools)
         while n > 0:
             still = [i for i, pool in enumerate(pools) if pool and taken[i] < top]
@@ -283,15 +284,13 @@ def _tiers(keys, look):
                 break
             fewest = min(taken[i] for i in still)
             i = min((i for i in still if taken[i] == fewest), key=lambda i: _h(pools[i][0], _WAKE))
-            out[pools[i].pop(0)] = DIM if hushed else LIT
+            out[pools[i].pop(0)] = LIT
             taken[i] += 1
             n -= 1
-        rest = sorted((k for k in row if k not in out and not _framed(k, ring)), key=lambda k: _h(k, _DIM))
-        glow = 0 if hushed else int(dim * len(rest) + 0.5)
         for k in row:
-            out.setdefault(k, DIM if k in rest[:glow] else DARK)
-    # the floor of dark windows, front by front and then over the whole building: the dim ones that
-    # were nearest to being dark go first, then lit ones; the fixed windows stay
+            out.setdefault(k, DARK)
+    # the floor of dark windows, front by front and then over the whole building: the lit ones that
+    # were the last to be taken go first; the fixed windows stay
     fronts = sorted({key[0] for key in out}, key=str)
     for group in [[k for k in out if k[0] == f] for f in fronts] + [list(out)]:
         if len(group) < DARK_FROM:
@@ -299,7 +298,7 @@ def _tiers(keys, look):
         short = math.ceil(DARK_SHARE * len(group) - 1e-9) - sum(1 for k in group if out[k] == DARK)
         if short > 0:
             free = [k for k in group if out[k] != DARK and k not in FIXED]
-            for k in sorted(free, key=lambda k: (out[k], -_h(k, _DIM if out[k] == DIM else _WAKE)))[:short]:
+            for k in sorted(free, key=lambda k: -_h(k, _WAKE))[:short]:
                 out[k] = DARK
     return out
 
