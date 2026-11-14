@@ -340,20 +340,23 @@ def dial():
 
 
 def gauges():
-    """Two pressure gauges, a large and a small one, on the pipe that feeds them, with its valve.
-    (Two of one size side by side read as a pair of eyes.)"""
+    """Two gauges on the pipe that feeds them, with its valve: a pressure gauge, and a gauge glass
+    between its two cocks, half full. (Two round gauges side by side read as a pair of eyes.)"""
     px = _plate(15)
-    _box(px, 4, 9, 4, 11, FE[5])                            # down from the large gauge
-    _box(px, 4, 12, 11, 12, FE[5])                          # along
-    _box(px, 5, 13, 11, 13, FE[3])
-    _put(px, 11, 11, FE[5])                                 # up into the small one
+    glass = TRIO[2]
+    _box(px, 4, 9, 4, 11, FE[5])                            # down from the pressure gauge
+    _box(px, 4, 12, glass + 1, 12, FE[5])                   # along to the glass
+    _box(px, 5, 13, glass + 1, 13, FE[3])
     _stud(px, 7, 11, KNOB)                                  # the valve
     _turned(px, _round(4.5, 5.5, 3.0), 4.5, 5.5, BR[4], BR[3], BR[1], edge=2.0)
     _dots(px, _round(4.5, 5.5, 2.0), PC[3])
-    _dots(px, [(4, 6), (5, 5), (6, 4)], FE[0])              # its needle, high
-    _turned(px, _round(11, 8, 2.6), 11, 8, BR[4], BR[3], BR[1], edge=1.5)
-    _dots(px, _round(11, 8, 1.5), PC[3])
-    _dots(px, [(11, 8), (10, 7)], FE[0])                    # the small one's needle, low
+    _dots(px, [(4, 6), (5, 5)], FE[0])                      # its needle
+    for y in (3, 10):
+        _stud(px, glass, y, (BR[4], BR[2], BR[1]))          # the cocks
+    _box(px, glass, 5, glass, 6, PC[3])                     # the glass, empty above
+    _box(px, glass + 1, 5, glass + 1, 6, PC[2])
+    _box(px, glass, 7, glass, 9, PC[1])                     # and what stands in it
+    _box(px, glass + 1, 7, glass + 1, 9, PC[0])
     return px
 
 
