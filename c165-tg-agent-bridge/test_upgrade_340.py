@@ -400,7 +400,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.4.7"
+        assert tdata["ok"] and tdata["version"] == "3.5.0"
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
@@ -480,10 +480,101 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
                 pass
 
 
+async def run_cloud_350_tests() -> None:
+    """Verify 3.5.0: cloud deletion (-> unowned pool -1), zero old-cloud spam, cross-cloud restart_agent, and model/context-preserving migration UI."""
+    import re as _re
+
+    sent_admin_msgs: list[str] = []
+    orig_send_text = bridge.tg.send_text
+
+    async def _capture_send_text(chat_id: int, text: str, **kwargs):
+        sent_admin_msgs.append(text)
+        return [{"message_id": 505}]
+
+    bridge.tg.send_text = _capture_send_text
+    try:
+        # Record an underlying trace model on c1 (which had no explicit model set originally)
+        bridge.store.run(
+            "INSERT OR REPLACE INTO agent_traces(conv,agent_id,phase,tool_name,summary,detail,started_ts,updated_ts,thought_ts) "
+            "VALUES(?,?,?,?,?,?,?,?,?)",
+            (
+                "c1",
+                bridge.conv_row("c1")["agent"],
+                "thinking",
+                "Read",
+                "正在审阅网关配置",
+                json.dumps({"model": "claude-fable-5-2-max", "file_path": "/opt/gw/config.py", "last_thought": "Check timeout"}),
+                bridge.now() - 2000,
+                bridge.now() - 2000,
+                bridge.now() - 2000,
+            ),
+        )
+        # Switch to a brand new cloud (cloud2)
+        new_main = bridge.make_main(new_cloud=True)
+        assert bridge.main_cloud() == 2
+        assert bridge.cloud_of(bridge.conv_row("c1")) == 1
+        assert bridge.cloud_of(bridge.conv_row("c2")) == 1
+
+        # 1. Make c1/c2 appear "lost" in old cloud1 -> watchdog_tick MUST NOT spam admin!
+        bridge.store.run("UPDATE agents SET last_seen=? WHERE conv IN ('c1','c2')", (bridge.now() - 7200,))
+        sent_admin_msgs.clear()
+        await bridge.watchdog_tick()
+        assert not any("没在等消息" in m or "别的 cloud" in m for m in sent_admin_msgs), f"Old cloud spam leaked: {sent_admin_msgs}"
+
+        # 2. Active main in cloud2 calling restart_agent on c1 (in cloud1) MUST SUCCEED, migrate c1 -> cloud2, and lock in claude-fable-5-2-max!
+        res_rs = await bridge.call_tool("restart_agent", {"agent": new_main, "chat": "c1"})
+        txt_rs = text_of(res_rs)
+        assert not res_rs.is_error, f"Cross-cloud restart_agent failed: {txt_rs}"
+        assert "claude-fable-5-2-max" in txt_rs, f"Missing traced model in restart_agent output: {txt_rs}"
+        c1_after = bridge.conv_row("c1")
+        assert bridge.cloud_of(c1_after) == 2
+        assert c1_after["model"] == "claude-fable-5-2-max"
+
+        # Verify new subagent joining c1 gets full context: git branch, trace snapshot, and group history!
+        res_j1 = await bridge.call_tool("join", {"code": c1_after["task_code"]})
+        txt_j1 = text_of(res_j1)
+        assert "cursor/test-branch" in txt_j1
+        assert "前任会话最后工作现场快照" in txt_j1 and "/opt/gw/config.py" in txt_j1
+        assert "架构联调群" in txt_j1 and "store.py 已对齐字段" in txt_j1
+
+        # 3. Delete old cloud1 -> c2 becomes unowned (-1), old agent stopped, menu commands strictly ASCII, watchdog silent!
+        del_note = bridge.delete_cloud(1, "管理员")
+        assert "已删除 cloud1" in del_note and "无主池" in del_note
+        c2_unowned = bridge.conv_row("c2")
+        assert bridge.cloud_of(c2_unowned) == bridge.UNOWNED_CLOUD
+        assert bridge.is_unowned(c2_unowned)
+        assert c2_unowned["agent"] == "" and c2_unowned["status"] == "open"
+
+        menu_cmds = bridge.build_menu(7001)
+        cmd_names = [item["command"] for item in menu_cmds]
+        assert "clouds" in cmd_names
+        assert all(_re.fullmatch(r"[a-z0-9_]{1,32}", c) for c in cmd_names), f"Invalid TG command names: {cmd_names}"
+
+        sent_admin_msgs.clear()
+        await bridge.watchdog_tick()
+        assert sent_admin_msgs == [], f"Unowned chat triggered watchdog spam: {sent_admin_msgs}"
+
+        # 4. Verify /clouds panel & selective/batch migration from unowned pool (-1) -> cloud2!
+        panel_txt, panel_mk = bridge.clouds_panel_view(7001)
+        assert "无主池" in panel_txt and panel_mk["inline_keyboard"]
+        pick_txt, pick_mk = bridge.cloud_pick_view(7001, bridge.UNOWNED_CLOUD, 0)
+        assert "无主池" in pick_txt and "c2" in json.dumps(pick_mk, ensure_ascii=False)
+
+        mig_note = bridge.migrate_convs_to_main([c2_unowned], "管理员")
+        assert "已将 1 个聊天迁移至 cloud2" in mig_note
+        c2_migrated = bridge.conv_row("c2")
+        assert bridge.cloud_of(c2_migrated) == 2 and c2_migrated["task_code"].startswith("t-")
+        main_inbox = text_of(await bridge.call_tool("read_chat", {"agent": new_main, "wait_sec": 0}))
+        assert "c2「存储组」" in main_inbox and c2_migrated["task_code"] in main_inbox
+    finally:
+        bridge.tg.send_text = orig_send_text
+
+
 def main() -> None:
     ids = asyncio.run(run_core_tests())
     run_http_and_hook_tests(ids)
-    print("ALL_340_TESTS_PASSED_OK")
+    asyncio.run(run_cloud_350_tests())
+    print("ALL_350_TESTS_PASSED_OK")
 
 
 if __name__ == "__main__":

@@ -39,7 +39,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.4.7"
+VERSION = "3.5.0"
 
 
 def load_dotenv(path: Path) -> None:
@@ -208,7 +208,7 @@ MAIN_DUTY = f"""你是主控：子 agent 管理器，不陪用户聊天。管理
 9. 管理员在 /main 里给你的命令照做，用 send_message 汇报（用消息开头 lang 标的语言）。
 10. 你只能看各聊天的状态与动作追踪（list_agents / trace_status），看不到用户聊天内容，也不要试图读它们的记录。
 11. 你自己改了文件也要每做完一步就 commit + push 到 GitHub，不要攒着；云端 VM 随时可能被回收。
-12. 聊天按 cloud（目录）分，一个主控一个 cloud。你只管自己 cloud 里的聊天。"""
+12. 聊天按 cloud（目录）分组：看门狗默认只自动巡检你当前 cloud 里的聊天；但当管理员点击迁移，或在 /main 里直接指示你重启/接管其他旧 cloud 或无主池里的聊天时，你拥有完整权限直接调用 restart_agent(chat) 跨 cloud 接管（调用后该聊天会自动迁入你的 cloud，请严格按其原 model 与完整任务原文在后台启动）。"""
 
 MAIN_FIXED_FOOTER = (
     f"（{MAIN_TRIPLE_RULES}\n"
@@ -571,28 +571,42 @@ def open_convs() -> list:
 
 
 # ---------------------------------------------------------------- cloud（目录）
-# 子 agent 都开在主控自己的云端 agent 里。换了主控（新的云端 agent），旧子 agent 它够不着：
-# 所以聊天按 cloud 分开，现在的主控只管自己 cloud 里的，别的 cloud 出问题直接问管理员。
+# 子 agent 都开在主控自己的云端 agent 里。换了主控（新的云端 agent），旧 cloud 的聊天可通过 /clouds 迁移或删除转为无主池（cloud=-1）。
+
+UNOWNED_CLOUD = -1  # 所属旧 cloud 已被管理员删除，聊天静默保留为无主待机池（记录/模型/分支全留，不弹看门狗警报）
+
 
 def main_cloud() -> int:
     row = conv_row("main")
-    return (int(row["cloud"] or 0) if row is not None else 0) or 1
+    val = int(row["cloud"] or 0) if row is not None else 0
+    return val if val > 0 else 1
 
 
 def cloud_of(row) -> int:
-    return int(row["cloud"] or 0) or main_cloud()
+    raw = int(row["cloud"] or 0)
+    if raw == UNOWNED_CLOUD:
+        return UNOWNED_CLOUD
+    return raw if raw > 0 else main_cloud()
+
+
+def is_unowned(row) -> bool:
+    return row is not None and row["id"] != "main" and int(row["cloud"] or 0) == UNOWNED_CLOUD
 
 
 def cloud_tag(n: int) -> str:
-    return f"cloud{n}"
+    return "无主池" if n == UNOWNED_CLOUD else f"cloud{n}"
+
+
+def cloud_cmd(n: int) -> str:
+    return "unowned" if n == UNOWNED_CLOUD else f"cloud{n}"
 
 
 def max_cloud() -> int:
-    return max(int(store.one("SELECT IFNULL(MAX(cloud),0) AS n FROM convs")["n"] or 0), main_cloud())
+    return max(int(store.one("SELECT IFNULL(MAX(cloud),0) AS n FROM convs WHERE cloud>0")["n"] or 0), main_cloud())
 
 
 def away(row) -> bool:
-    """这个聊天不在现在主控的 cloud 里：主控够不着它的子 agent。"""
+    """这个聊天不在现在主控的 cloud 里（在旧 cloud 或无主池）。"""
     return row["id"] != "main" and cloud_of(row) != main_cloud()
 
 
@@ -601,9 +615,9 @@ def clouds_in_use() -> list[int]:
 
 
 def cloud_order(clouds) -> list[int]:
-    """现在主控的 cloud 排最前，其余从新到旧。"""
+    """现在主控的 cloud 排最前，其余旧 cloud 从新到旧，无主池 (-1) 排最后。"""
     current = main_cloud()
-    return sorted(clouds, key=lambda n: (n != current, -n))
+    return sorted(clouds, key=lambda n: (0 if n == current else (2 if n == UNOWNED_CLOUD else 1), -n))
 
 
 def split_clouds() -> tuple[list[str], str]:
@@ -761,20 +775,56 @@ def task_text(conv) -> str:
     )
 
 
+def trace_recorded_model(conv_id: str) -> str:
+    """从实时追踪快照提取该聊天上一次实跑的底层模型 ID（如 claude-fable-5-2-max），保障跨 cloud 迁移模型 100% 一致。"""
+    trow = store.one("SELECT detail FROM agent_traces WHERE conv=?", (conv_id,))
+    if not trow or not trow["detail"]:
+        return ""
+    try:
+        det = json.loads(trow["detail"])
+        return str(det.get("model") or "").strip() if isinstance(det, dict) else ""
+    except Exception:
+        return ""
+
+
+def effective_conv_model(conv) -> str:
+    raw = (conv["model"] or "").strip()
+    if raw and raw.lower() not in ("inherit", "default", "默认"):
+        return raw
+    return trace_recorded_model(conv["id"])
+
+
+def lock_in_conv_model(conv) -> str:
+    """跨 cloud 迁移或脱离旧 cloud 时固化聊天的实际模型，避免原本未显式填 model 的聊天在换主控后模型漂移。"""
+    cur = (conv["model"] or "").strip()
+    real_m = trace_recorded_model(conv["id"])
+    if (not cur or cur.lower() in ("inherit", "default", "默认")) and real_m:
+        store.run("UPDATE convs SET model=? WHERE id=?", (real_m, conv["id"]))
+        return real_m
+    return cur
+
+
 def model_hint(conv, strict_from_agent: bool = False) -> str:
-    """给主控看的开子 agent 用什么模型；没指定就不说，主控照常不填 model（继承）。"""
+    """给主控看的开子 agent 用什么模型；跨 cloud 迁移或指定了模型时强制保持一致。"""
     model = (conv["model"] or "").strip()
-    if not model or model.lower() in ("inherit", "default", "默认"):
+    real_m = trace_recorded_model(conv["id"])
+    has_explicit = bool(model and model.lower() not in ("inherit", "default", "默认"))
+    target = model if has_explicit else real_m
+    if not target:
         if strict_from_agent:
             return "模型要求：继承主控当前模型（调用 Task 时不填 model 参数）。"
         return ""
+    real_note = f"（上次实跑底层模型 ID: `{real_m}`）" if real_m and real_m != target else ""
     if strict_from_agent:
         return (
-            f"模型硬性要求：子 agent 明确指定使用「{model}」。调用 Task 时 **必须** 在 model 参数填入 "
-            f"available_subagent_models 中匹配「{model}」的模型 ID（若为简称则选最精确对应的同系列模型，严禁擅自换成别的模型）！"
+            f"模型硬性要求：子 agent 明确指定使用「{target}」{real_note}。调用 Task 时 **必须** 在 model 参数填入 "
+            f"available_subagent_models 中匹配「{target}」的模型 ID（若为简称则选最精确对应的同系列模型，严禁擅自换成别的模型）！"
         )
-    return (f"模型：管理员指定「{model}」。开子 agent 时 model 参数填可用模型列表（available_subagent_models）里对应的那个；"
-            "对不上就选最接近的，并用 send_message 告诉管理员实际用的是哪个。")
+    return (
+        f" ⚠️ 模型一致性硬性要求：该聊天原定模型为「{target}」{real_note}。"
+        "开子 agent 时 **必须** 在 Task 的 model 参数填入可用模型列表（available_subagent_models）里最精确对应的模型 ID，"
+        "严禁擅自换成主控默认模型或别的模型！"
+    )
 
 
 def task_note(conv, why: str) -> str:
@@ -1079,7 +1129,11 @@ def conv_status(row) -> list[str]:
 
 
 def cloud_heading(n: int) -> str:
-    return f"📁 {cloud_tag(n)}（" + ("现在的主控管这里" if n == main_cloud() else "没有主控：子 agent 在原来的云端 agent 里") + "）"
+    if n == main_cloud():
+        return f"📁 {cloud_tag(n)}（现在的主控管这里）"
+    if n == UNOWNED_CLOUD:
+        return "📂 无主池（原 cloud 已删除，记录/模型/分支完整保留，可随时用 /clouds 迁入当前主控唤醒）"
+    return f"📁 {cloud_tag(n)}（旧 cloud · 无活跃主控：可用 /clouds 迁移或删除）"
 
 
 def unbound_vm_trace_lines(max_age_sec: float = 1800) -> list[str]:
@@ -1121,8 +1175,23 @@ def status_overview(scope: int = 0) -> str:
                 lines += conv_status(row)
     others = [n for n in clouds if scope and n != scope]
     if others:
-        counts = "、".join(f"{cloud_tag(n)} {sum(1 for r in rows if cloud_of(r) == n)} 个聊天" for n in others)
-        lines.append(f"别的 cloud：{counts}。它们的子 agent 在别的云端 agent 里，你够不着，不归你管。")
+        lines.append(
+            "其他旧 cloud / 无主池（看门狗日常不自动报警；若管理员指示你接管/重开其中任何聊天，"
+            "你完全有权限直接调用 restart_agent(chat=\"cXXX\") 跨 cloud 接管并按其原模型在后台拉起）："
+        )
+        for n in others:
+            c_rows = [r for r in rows if cloud_of(r) == n]
+            tg_rows = [r for r in c_rows if conv_in_tg(r)]
+            bg_cnt = len(c_rows) - len(tg_rows)
+            shown_src = tg_rows or c_rows
+            sample = "、".join(
+                f"{r['id']}「{conv_name(r)}」"
+                + (f"[{effective_conv_model(r)}]" if effective_conv_model(r) else "")
+                for r in shown_src[:14]
+            )
+            more = f" 等共 {len(shown_src)} 个" if len(shown_src) > 14 else ""
+            bg_note = f"（另有 {bg_cnt} 个后台派生子工）" if bg_cnt else ""
+            lines.append(f"  • {cloud_tag(n)}：{sample}{more}{bg_note}")
     lines += unbound_vm_trace_lines()
     closed = store.q("SELECT * FROM convs WHERE status='closed' ORDER BY num")
     if closed:
@@ -1913,12 +1982,50 @@ def welcome_chat(conv, agent_id: str) -> str:
         when = stamp(git_info(conv).get("ts") or 0)
         lines += ["", f"这个聊天之前的文件在 GitHub：{repo}（{when} 记的）。先 git fetch，切到这个分支接着做，"
                       "每做完一步照样 commit + push。"]
+    trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
+    if trow and (trow["summary"] or trow["detail"]):
+        snap_parts = []
+        if trow["summary"]:
+            snap_parts.append(f"- 最后记录动作：{trow['summary']}")
+        try:
+            tdet = json.loads(trow["detail"] or "{}")
+        except Exception:
+            tdet = {}
+        if isinstance(tdet, dict):
+            if tdet.get("file_path"):
+                snap_parts.append(f"- 最后编辑文件：{tdet['file_path']}")
+            if tdet.get("cwd"):
+                snap_parts.append(f"- 最后工作目录：{tdet['cwd']}")
+            if tdet.get("last_thought"):
+                snap_parts.append(f"- 最后思考摘要：{tdet['last_thought']}")
+        if snap_parts:
+            lines += ["", "【前任会话最后工作现场快照（供无缝续接上下文）】", *snap_parts]
     recent = list(reversed(store.q(
-        "SELECT * FROM messages WHERE conv=? AND id<=? ORDER BY id DESC LIMIT 30",
+        "SELECT * FROM messages WHERE conv=? AND id<=? ORDER BY id DESC LIMIT 40",
         (conv["id"], conv["read_cursor"]),
     )))
     if recent:
-        lines += ["", "本聊天之前的记录（最近 30 条，供你接上上下文；更早的用 chat_history 查）：", render(recent, clip=600)]
+        lines += ["", "本聊天之前的记录（最近 40 条，供你接上上下文；更早的用 chat_history 查）：", render(recent, clip=600)]
+    if my_groups:
+        for grp in store.q(
+            "SELECT g.id, g.name FROM agent_groups g JOIN agent_group_members m ON m.group_id=g.id "
+            "WHERE m.conv=? AND g.status='open' ORDER BY g.num",
+            (conv["id"],),
+        ):
+            g_msgs = list(reversed(store.q(
+                "SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT 12",
+                (grp["id"],),
+            )))
+            if g_msgs:
+                g_lines = [
+                    f"#{gm['id']} {stamp(gm['ts'])} {gm['sender_conv']}「{gm['sender_name']}」: {gm['text'][:360]}"
+                    for gm in g_msgs
+                ]
+                lines += [
+                    "",
+                    f"你所在的协作群 {grp['id']}「{grp['name']}」最近 {len(g_msgs)} 条动态（更多用 group_history(group=\"{grp['id']}\") 查）：",
+                    "\n".join(g_lines),
+                ]
     for source in share_sources(conv["id"]):
         src = conv_row(source)
         if src is None:
@@ -2748,12 +2855,8 @@ def arg_conv(args: dict, name: str = "chat", allow_main: bool = False):
 
 
 def own_conv(args: dict):
-    """主控能动的聊天：只限它自己 cloud 里的。"""
-    row = arg_conv(args)
-    if away(row):
-        raise ToolFail(f"{conv_tag(row)} 在 {cloud_tag(cloud_of(row))}：它的子 agent 在别的云端 agent 里，你够不着，不归你管，别去动它。"
-                       f"你只管 {cloud_tag(main_cloud())}。管理员要把它交给你时，你会收到【任务】。")
-    return row
+    """当前活跃主控可管理自己 cloud 内的聊天，也可直接跨旧 cloud 或无主池接管/重启聊天（不再因旧 cloud 死透而报无权限）。"""
+    return arg_conv(args)
 
 
 async def t_read_chat(agent, args):
@@ -3138,12 +3241,30 @@ async def t_message_agent(agent, args):
     return text_result(f"已送达 {conv_tag(conv)}。{tail}")
 
 
+def sync_admin_view_after_cloud_change(target_conv_id: str = "", emptied_cloud: int | None = None) -> None:
+    """当聊天迁入当前主控或旧 cloud 被清空/删除时，自动刷新管理员私聊菜单视图，避免界面仍停留在旧 cloud。"""
+    cur_c = str(main_cloud())
+    for dm in admin_chats():
+        cur_view = store.get(f"view:{dm}")
+        if (target_conv_id and selected(dm) == target_conv_id) or (emptied_cloud is not None and cur_view == str(emptied_cloud)):
+            store.set(f"view:{dm}", cur_c)
+        elif cur_view and re.fullmatch(r"-?\d+", cur_view) and int(cur_view) not in admin_clouds(dm):
+            store.set(f"view:{dm}", cur_c)
+    mark_menu_dirty()
+
+
 def restart_conv(conv, why: str) -> None:
+    lock_in_conv_model(conv)
+    old_c = cloud_of(conv)
     old = active_agent(conv)
     if old is not None:
         stop_identity(old["id"], why)
     store.run("UPDATE convs SET task_agent_id='' WHERE id=?", (conv["id"],))
     issue_task(conv["id"])
+    sync_admin_view_after_cloud_change(
+        target_conv_id=conv["id"],
+        emptied_cloud=old_c if old_c != main_cloud() and not cloud_has_chats(old_c) else None,
+    )
 
 
 async def t_restart_agent(agent, args):
@@ -3973,9 +4094,12 @@ HELP_ADMIN = f"""用法：打 / 弹出的菜单就是聊天列表，点哪个进
 /agents  状态总览   /trace [c1]  实时动作/改文件/命令/思考/耗时追踪面板
 /key  账号级 MCP 配置   /key reset  换密钥（紧急刹车：所有云 agent 立刻断开）
 
-目录（cloud）：一个主控（云端 agent）一个 cloud，子 agent 开在主控自己的云端 agent 里。
-/cloud1 /cloud2 …  切换菜单：只列这个 cloud 的聊天。现在的主控只管它自己的 cloud；别的 cloud 的子 agent 出问题时直接提醒你，点【交给主控】或 /restart c1 就由现在的主控开新的接手（记录和 GitHub 分支都带过去）
-/cloud2 c1 c3  把 c1、c3 划进 cloud2（只改归属，不换子 agent；分错了时用）
+目录（cloud）与无缝迁移：
+/clouds  打开 Cloud 目录管理面板（一键或勾选把旧 cloud / 无主池聊天迁入当前主控，100% 保留原模型、上下文与 Git 分支；也可一键删除旧 cloud 转为无主静默保留）
+/cloud1 /cloud2 …  切换菜单看对应 cloud 并弹出快捷迁移/删除按钮    /unowned  查看无主池聊天
+/cloud4 del（或 /delcloud cloud4）  删除指定旧 cloud，里面的聊天停掉旧会话并转为无主静默保留（不再弹任何失联提醒）
+/cloud4 migrate  把 cloud4 里的主聊天一键迁移给当前主控接手
+/cloud2 c1 c3  把 c1、c3 划进 cloud2（只改归属标签，不换子 agent）
 
 用户和群：
 /grant <用户id 或 @用户名>（或回复他的消息、他被转发的消息；在群里发会顺便在本群激活他）  /revoke 同样的写法
@@ -4347,11 +4471,17 @@ async def on_message(message: dict) -> None:
     if hub:
         state = conv_state(conv_row(target))["state"]
         if chat_id in admin_chats():
-            if state in ("stuck", "lost") and away(conv_row(target)):
-                await tell_once(chat_id, f"away:{target}",
-                                f"{target} 在 {cloud_tag(cloud_of(conv_row(target)))}，它的子 agent 现在没在等消息（{STATE_TEXT[state]}），"
-                                f"{cloud_tag(main_cloud())} 的主控叫不醒它。消息先存着，它回来会看到；"
-                                f"要换人接手：/restart {target}（交给 {cloud_tag(main_cloud())} 主控，记录和 GitHub 分支都带过去）。", 1800)
+            t_row = conv_row(target)
+            if away(t_row) and state in ("stuck", "lost", "paused"):
+                where_lbl = cloud_tag(cloud_of(t_row))
+                here_lbl = cloud_tag(main_cloud())
+                m_lbl = effective_conv_model(t_row)
+                m_txt = f"（原模型：{m_lbl}）" if m_lbl else ""
+                await reply(
+                    chat_id,
+                    f"💡 {target} 当前在「{where_lbl}」无活跃会话，你刚发的消息已存好。点下方按钮即可迁入 {here_lbl} 让主控按原模型与上下文接手{m_txt}：",
+                    hand_over_markup(t_row),
+                )
             elif state == "paused":
                 await tell_once(chat_id, f"paused:{target}", f"{target} 现在没有子 agent，消息先存着。/restart {target} 让主控重开一个接手。", 1800)
             elif state == "absent":
@@ -4693,14 +4823,17 @@ def list_view(viewer: int, page: int = 0, note: str = "") -> tuple[str, dict | N
     current = selected(viewer)
     multi = admin and len({cloud_of(r) for r in rows} | {main_cloud()}) > 1
     if multi:
-        head += f"\n按 cloud 分段；「↪ {cloud_tag(main_cloud())}」= 交给现在的主控（旧子 agent 停掉，主控开新的接手）。"
+        head += f"\n按 cloud 分段；「↪ {cloud_tag(main_cloud())}」= 交给当前主控（保留原模型与上下文），或点顶部打开 Cloud 批量迁移/删除面板。"
     buttons = []
-    section = 0
+    if multi:
+        buttons.append([{"text": "☁️ Cloud 管理 / 批量迁移 / 删除旧Cloud", "callback_data": "cm:home"}])
+    section = None
     for row in rows[page * LIST_PAGE:(page + 1) * LIST_PAGE]:
         if multi and cloud_of(row) != section:
             section = cloud_of(row)
-            buttons.append([{"text": f"📁 {cloud_tag(section)} · " + ("主控" if section == main_cloud() else "没有主控"),
-                             "callback_data": f"ls:{page}"}])
+            sec_desc = "主控" if section == main_cloud() else ("静默待机" if section == UNOWNED_CLOUD else "旧cloud")
+            buttons.append([{"text": f"📁 {cloud_tag(section)} · {sec_desc}",
+                             "callback_data": "cm:home"}])
         label = conv_button(row)
         if row["status"] != "open":
             label += " (closed)" if en else "（已关闭）"
@@ -5328,23 +5461,71 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         await switch_to(chat_id, conv["id"])
         return
-    if re.fullmatch(r"/cloud\d+", command):
+    if command in ("/clouds", "/cloud", "/delcloud", "/unowned") or re.fullmatch(r"/cloud\d+", command):
         if not admin:
             await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
             return
         if not private:
             await reply(chat_id, f"请在和 bot 的私聊里用 {command}。")
             return
+        if command in ("/clouds", "/cloud") and not rest.strip():
+            txt_p, mk_p = clouds_panel_view(chat_id)
+            await reply(chat_id, txt_p, mk_p)
+            return
+        if command == "/delcloud" or (command in ("/clouds", "/cloud") and rest.strip().lower().startswith(("del ", "delete ", "rm "))):
+            arg_s = rest.strip().split()[-1].lower() if rest.strip() else ""
+            m_dc = re.fullmatch(r"(?:cloud)?(\d+)", arg_s)
+            if not m_dc:
+                txt_p, mk_p = clouds_panel_view(chat_id, "用法：/delcloud cloud4（或直接在下方点「🗑 删除」按钮）：")
+                await reply(chat_id, txt_p, mk_p)
+                return
+            note_dc = delete_cloud(int(m_dc.group(1)), "管理员")
+            txt_p, mk_p = clouds_panel_view(chat_id, note_dc)
+            await reply(chat_id, txt_p, mk_p)
+            return
+        if command == "/unowned":
+            if rest.strip().lower() in ("migrate", "mv"):
+                targets_u = [r for r in open_convs() if cloud_of(r) == UNOWNED_CLOUD and conv_in_tg(r)]
+                if not targets_u:
+                    targets_u = [r for r in open_convs() if cloud_of(r) == UNOWNED_CLOUD]
+                note_m = migrate_convs_to_main(targets_u, "管理员")
+                txt_p, mk_p = clouds_panel_view(chat_id, note_m)
+                await reply(chat_id, txt_p, mk_p)
+                return
+            if any(cloud_of(r) == UNOWNED_CLOUD for r in open_convs()):
+                store.set(f"view:{chat_id}", str(UNOWNED_CLOUD))
+                mark_menu_dirty()
+            await reply(chat_id, cloud_listing(chat_id, UNOWNED_CLOUD), cloud_single_markup(UNOWNED_CLOUD))
+            return
+        if command in ("/clouds", "/cloud"):
+            txt_p, mk_p = clouds_panel_view(chat_id)
+            await reply(chat_id, txt_p, mk_p)
+            return
         n = int(command[len("/cloud"):])
         if not 1 <= n <= max_cloud():
-            await reply(chat_id, f"没有 {cloud_tag(n)}。现在有：" + " ".join(f"/{cloud_tag(c)}" for c in admin_clouds(chat_id)))
+            await reply(chat_id, f"没有 {cloud_tag(n)}。现在有：" + " ".join(f"/{cloud_cmd(c)}" for c in admin_clouds(chat_id)))
+            return
+        sub_arg = rest.strip().lower()
+        if sub_arg in ("del", "delete", "rm", "删除"):
+            note_dc = delete_cloud(n, "管理员")
+            txt_p, mk_p = clouds_panel_view(chat_id, note_dc)
+            await reply(chat_id, txt_p, mk_p)
+            return
+        if sub_arg in ("migrate", "mv", "迁移", "migrate all", "mv all"):
+            inc_bg = sub_arg.endswith("all")
+            targets_n = [r for r in open_convs() if cloud_of(r) == n and (inc_bg or conv_in_tg(r))]
+            if not targets_n and not inc_bg:
+                targets_n = [r for r in open_convs() if cloud_of(r) == n]
+            note_m = migrate_convs_to_main(targets_n, "管理员")
+            txt_p, mk_p = clouds_panel_view(chat_id, note_m)
+            await reply(chat_id, txt_p, mk_p)
             return
         if rest.strip():
             await reply(chat_id, move_to_cloud(n, rest.split()))
             return
         store.set(f"view:{chat_id}", str(n))
         mark_menu_dirty()
-        await reply(chat_id, cloud_listing(chat_id, n))
+        await reply(chat_id, cloud_listing(chat_id, n), cloud_single_markup(n))
         return
     if command in ("/new", "/key", "/export"):
         if not private:
@@ -6071,6 +6252,96 @@ async def on_callback(callback: dict) -> None:
         await answer("只有管理员能操作", en="Only the admin can do this")
         return
 
+    if data.startswith("cm:"):
+        parts = data.split(":")
+        act = parts[1] if len(parts) > 1 else "home"
+
+        async def show_cm(text: str, markup: dict | None) -> None:
+            body: dict[str, Any] = {"chat_id": msg_chat, "message_id": message.get("message_id"), "text": text[:4000]}
+            if markup:
+                body["reply_markup"] = markup
+            await tg.try_call("editMessageText", **body)
+
+        if act == "home":
+            await answer()
+            await show_cm(*clouds_panel_view(user_id))
+            return
+        if act == "view" and len(parts) >= 3 and re.fullmatch(r"-?\d+", parts[2]):
+            n_v = int(parts[2])
+            store.set(f"view:{user_id}", str(n_v))
+            mark_menu_dirty()
+            await answer(f"菜单已切到 {cloud_tag(n_v)}")
+            await show_cm(cloud_listing(user_id, n_v), cloud_single_markup(n_v))
+            return
+        if act in ("tg", "allnow") and len(parts) >= 3 and re.fullmatch(r"-?\d+", parts[2]):
+            n_m = int(parts[2])
+            inc_bg = act == "allnow"
+            targets_m = [r for r in open_convs() if cloud_of(r) == n_m and (inc_bg or conv_in_tg(r))]
+            if not targets_m and not inc_bg:
+                targets_m = [r for r in open_convs() if cloud_of(r) == n_m]
+            note_m = migrate_convs_to_main(targets_m, "管理员")
+            await answer(f"已发起迁移 ({len(targets_m)} 个)")
+            await show_cm(*clouds_panel_view(user_id, note_m))
+            return
+        if act == "pick" and len(parts) >= 4 and re.fullmatch(r"-?\d+", parts[2]):
+            n_p = int(parts[2])
+            pg_p = int(parts[3]) if parts[3].isdigit() else 0
+            await answer()
+            await show_cm(*cloud_pick_view(user_id, n_p, pg_p))
+            return
+        if act == "tog" and len(parts) >= 5 and re.fullmatch(r"-?\d+", parts[2]):
+            n_p = int(parts[2])
+            cid_t = parts[3]
+            pg_p = int(parts[4]) if parts[4].isdigit() else 0
+            sel = cm_get_selection(user_id, n_p)
+            if cid_t in sel:
+                sel.remove(cid_t)
+            else:
+                sel.add(cid_t)
+            cm_save_selection(user_id, n_p, sel)
+            await answer()
+            await show_cm(*cloud_pick_view(user_id, n_p, pg_p))
+            return
+        if act in ("seltg", "selall", "selclr") and len(parts) >= 4 and re.fullmatch(r"-?\d+", parts[2]):
+            n_p = int(parts[2])
+            pg_p = int(parts[3]) if parts[3].isdigit() else 0
+            if act == "selclr":
+                sel = set()
+            elif act == "seltg":
+                sel = {r["id"] for r in open_convs() if cloud_of(r) == n_p and conv_in_tg(r)}
+            else:
+                sel = {r["id"] for r in open_convs() if cloud_of(r) == n_p}
+            cm_save_selection(user_id, n_p, sel)
+            await answer(f"已选 {len(sel)} 个")
+            await show_cm(*cloud_pick_view(user_id, n_p, pg_p))
+            return
+        if act == "go" and len(parts) >= 3 and re.fullmatch(r"-?\d+", parts[2]):
+            n_p = int(parts[2])
+            sel = cm_get_selection(user_id, n_p)
+            targets_g = [r for r in open_convs() if cloud_of(r) == n_p and r["id"] in sel]
+            if not targets_g:
+                await answer("请先至少勾选 1 个要迁移的聊天")
+                await show_cm(*cloud_pick_view(user_id, n_p, 0, "⚠️ 尚未勾选任何聊天，请点击下方聊天勾选后再点迁移："))
+                return
+            store.delete(f"cm_sel:{user_id}:{n_p}")
+            note_g = migrate_convs_to_main(targets_g, "管理员勾选迁移")
+            await answer(f"已迁移 {len(targets_g)} 个聊天")
+            await show_cm(*clouds_panel_view(user_id, note_g))
+            return
+        if act == "del" and len(parts) >= 3 and re.fullmatch(r"-?\d+", parts[2]):
+            n_d = int(parts[2])
+            await answer()
+            await show_cm(*cloud_del_confirm_view(n_d))
+            return
+        if act == "delok" and len(parts) >= 3 and re.fullmatch(r"-?\d+", parts[2]):
+            n_d = int(parts[2])
+            note_d = delete_cloud(n_d, "管理员")
+            await answer(f"已删除 {cloud_tag(n_d)}")
+            await show_cm(*clouds_panel_view(user_id, note_d))
+            return
+        await answer()
+        return
+
     if data.startswith("mv:"):
         conv_id = data[3:]
         # 一条提醒里可能有好几个聊天的按钮：点了哪个只去掉哪个
@@ -6093,12 +6364,8 @@ async def on_callback(callback: dict) -> None:
         if not away(conv):
             await settle(f"{conv_id} 已经在 {cloud_tag(main_cloud())} 了")
             return
-        state = conv_state(conv)["state"]
-        if state in ("online", "busy"):
-            await answer(f"{conv_id} 的子 agent 又回来了（{STATE_TEXT[state]}），不用交。真要换人用 /restart {conv_id}")
-            return
         hand_over(conv, "管理员")
-        await settle(f"已把 {conv_id} 交给 {cloud_tag(main_cloud())} 主控：旧的子 agent 已停，主控会开一个新的接手")
+        await settle(f"已把 {conv_id} 交给 {cloud_tag(main_cloud())} 主控：旧会话已停，主控将按原模型与上下文开新子 agent 接手")
         return
 
     if data.startswith("nm:"):
@@ -6146,6 +6413,15 @@ async def on_callback(callback: dict) -> None:
         payload["agent_id"] = make_main(new_cloud=choice == "new")
         set_approval(approval_id, "done", payload)
         await mark(f"已设为主控（{'新开' if choice == 'new' else '管'} {cloud_tag(main_cloud())}）")
+        if choice == "new" and msg_chat and any(away(r) for r in open_convs()):
+            store.set(f"view:{msg_chat}", str(main_cloud()))
+            mark_menu_dirty()
+            p_txt, p_mk = clouds_panel_view(
+                msg_chat,
+                f"🆕 已切换到新主控 {cloud_tag(main_cloud())}！检测到旧 cloud 里还有开放聊天，"
+                f"可在下方一键或勾选迁移到 {cloud_tag(main_cloud())}（100% 继承原模型、上下文记录与 Git 分支），或删除旧 cloud 转为无主静默保留：",
+            )
+            await reply(msg_chat, p_txt, p_mk)
     elif row["kind"] == "device":
         owner = int(payload.get("user_id") or 0)
         if not is_granted(owner):
@@ -6272,7 +6548,7 @@ def cloud_view(dm: int) -> int:
     """管理员菜单正在看哪个 cloud：自己切过去的（那里还有聊天）> 正在聊的那个聊天所在的 > 现在主控的。"""
     clouds = admin_clouds(dm)
     raw = store.get(f"view:{dm}")
-    if raw.isdigit() and int(raw) in clouds:
+    if raw and re.fullmatch(r"-?\d+", raw) and int(raw) in clouds:
         return int(raw)
     row = conv_row(selected(dm))
     if row is not None and row["id"] != "main" and cloud_of(row) in clouds:
@@ -6282,13 +6558,15 @@ def cloud_view(dm: int) -> int:
 
 def cloud_desc(dm: int, n: int, viewing: bool) -> str:
     rows = admin_cloud_rows(dm, n)
-    parts = ["📁 " + ("主控" if n == main_cloud() else "没有主控"), f"{len(rows)} 个聊天"]
+    prefix = "📂 无主静默" if n == UNOWNED_CLOUD else ("📁 主控" if n == main_cloud() else "📁 旧cloud")
+    parts = [prefix, f"{len(rows)} 个聊天"]
     unread = sum(unread_count(r["id"], dm) for r in rows)
     if unread:
         parts.append(f"🔴 {unread}条新消息")
-    alerts = sum(1 for r in rows if conv_state(r)["state"] in ("stuck", "lost", "unclaimed"))
-    if alerts:
-        parts.append(f"⚠️ {alerts}")
+    if n == main_cloud():
+        alerts = sum(1 for r in rows if conv_state(r)["state"] in ("stuck", "lost", "unclaimed"))
+        if alerts:
+            parts.append(f"⚠️ {alerts}")
     if viewing:
         parts.append("正在看")
     return " · ".join(parts)
@@ -6296,23 +6574,265 @@ def cloud_desc(dm: int, n: int, viewing: bool) -> str:
 
 def cloud_listing(dm: int, n: int) -> str:
     rows = admin_cloud_rows(dm, n)
+    bg_rows = [r for r in open_convs() if cloud_of(r) == n and not conv_in_tg(r)]
     lines = [cloud_heading(n)]
     for row in rows:
-        line = f"/{row['id']} {conv_name(row)} · {STATE_TEXT[conv_state(row)['state']]}"
+        m_lbl = effective_conv_model(row)
+        m_txt = f" · [{m_lbl}]" if m_lbl else ""
+        line = f"/{row['id']} {conv_name(row)}{m_txt} · {STATE_TEXT[conv_state(row)['state']]}"
         unread = unread_count(row["id"], dm)
         if unread:
             line += f" · 🔴 {unread}条新消息"
         lines.append(line)
-    if not rows:
-        lines.append("（这里现在没有你的聊天）")
+    if bg_rows:
+        lines.append(f"🔧 另有 {len(bg_rows)} 个后台派生子工：" + "、".join(r["id"] for r in bg_rows[:12]) + ("…" if len(bg_rows) > 12 else ""))
+    if not rows and not bg_rows:
+        lines.append("（这里现在没有开放的聊天）")
     users = sum(1 for r in open_convs() if cloud_of(r) == n and conv_owner(r))
     if users:
         lines.append(f"另有被授权用户的聊天 {users} 个（/list 里看）。")
-    if rows and n != main_cloud():
-        lines.append(f"这里的子 agent 出问题时我直接提醒你，可以【交给 {cloud_tag(main_cloud())} 主控】，"
-                     f"或者 /restart {rows[0]['id']} 这样交过去。")
+    if (rows or bg_rows) and n != main_cloud():
+        lines.append(f"💡 可直接点下方按钮迁移至 {cloud_tag(main_cloud())}（保留原模型与上下文），或删除该旧 cloud 转为无主。")
     lines.append(f"菜单已换成 {cloud_tag(n)} 的聊天（重新打 / 就能看到）。")
     return "\n".join(lines)
+
+
+def cloud_single_markup(n: int) -> dict | None:
+    cur = main_cloud()
+    c_rows = [r for r in open_convs() if cloud_of(r) == n]
+    tg_cnt = sum(1 for r in c_rows if conv_in_tg(r))
+    buttons: list[list[dict]] = []
+    if n != cur and c_rows:
+        row1: list[dict] = []
+        if tg_cnt:
+            row1.append({"text": f"📦 迁主聊天({tg_cnt}个)→{cloud_tag(cur)}", "callback_data": f"cm:tg:{n}"})
+        else:
+            row1.append({"text": f"📦 全迁({len(c_rows)}个)→{cloud_tag(cur)}", "callback_data": f"cm:allnow:{n}"})
+        row1.append({"text": "☑️ 勾选迁移", "callback_data": f"cm:pick:{n}:0"})
+        buttons.append(row1)
+        row2: list[dict] = []
+        if len(c_rows) > tg_cnt > 0:
+            row2.append({"text": f"📦 全迁含子工({len(c_rows)}个)", "callback_data": f"cm:allnow:{n}"})
+        if n != UNOWNED_CLOUD:
+            row2.append({"text": f"🗑 删除 {cloud_tag(n)}（转无主）", "callback_data": f"cm:del:{n}"})
+        if row2:
+            buttons.append(row2)
+    elif n == cur and c_rows:
+        buttons.append([{"text": f"🗑 解散 {cloud_tag(n)} 聊天为无主", "callback_data": f"cm:del:{n}"}])
+    buttons.append([{"text": "☁️ 打开全部 Cloud 管理面板 (/clouds)", "callback_data": "cm:home"}])
+    return {"inline_keyboard": buttons}
+
+
+def cm_get_selection(user_id: int, n: int) -> set[str]:
+    key = f"cm_sel:{user_id}:{n}"
+    raw = store.get(key)
+    valid_all = {r["id"] for r in open_convs() if cloud_of(r) == n}
+    if not raw:
+        default_tg = {r["id"] for r in open_convs() if cloud_of(r) == n and conv_in_tg(r)}
+        return default_tg or valid_all
+    try:
+        arr = json.loads(raw)
+        if isinstance(arr, list):
+            return {str(x) for x in arr if str(x) in valid_all}
+    except Exception:
+        pass
+    return set()
+
+
+def cm_save_selection(user_id: int, n: int, sel: set[str]) -> None:
+    store.set(f"cm_sel:{user_id}:{n}", json.dumps(sorted(sel), ensure_ascii=False))
+
+
+def delete_cloud(n: int, by: str = "管理员") -> str:
+    """删除某个 cloud：停掉其下所有旧子 agent 会话，把聊天全部转为无主待机池（cloud=-1），保留全部记录/模型/分支且不再告警。"""
+    if n == UNOWNED_CLOUD:
+        return "📂 这已经是无主池了（里面的聊天均已脱离旧 cloud 静默保留；若要彻底删除单个聊天请在 /list 里删）。"
+    rows = [r for r in store.q("SELECT * FROM convs WHERE id!='main' AND status!='deleted'") if cloud_of(r) == n]
+    if not rows and n != main_cloud():
+        sync_admin_view_after_cloud_change(emptied_cloud=n)
+        return f"{cloud_tag(n)} 里已经没有任何聊天，已清理完毕。"
+    open_cnt = 0
+    bg_cnt = 0
+    for r in rows:
+        lock_in_conv_model(r)
+        old = active_agent(r)
+        if old is not None:
+            stop_identity(old["id"], f"{by}删除了 {cloud_tag(n)}，聊天转为无主静默保留")
+        store.run(
+            "UPDATE convs SET cloud=?, agent='', task_code='', task_agent_id='', alert='', alert_ts=0 WHERE id=?",
+            (UNOWNED_CLOUD, r["id"]),
+        )
+        if r["status"] == "open":
+            open_cnt += 1
+            if not conv_in_tg(r):
+                bg_cnt += 1
+    sync_admin_view_after_cloud_change(emptied_cloud=n)
+    log.info("cloud %s deleted by %s: %d chats moved to unowned pool", cloud_tag(n), by, len(rows))
+    tg_cnt = open_cnt - bg_cnt
+    detail = f"{tg_cnt} 个主聊天" + (f" + {bg_cnt} 个后台子工" if bg_cnt else "")
+    return (
+        f"🗑 已删除 {cloud_tag(n)}！原属其中的 {detail} 已全部转为【📂 无主池】静默保留：\n"
+        "• 旧僵尸身份已全部停用，绝不再弹任何失联提醒；\n"
+        "• 原定模型、聊天记录、记忆摘要与 GitHub 分支 100% 完整保留，随时可在下方点迁移由当前主控原地复活。"
+    )
+
+
+def migrate_convs_to_main(convs_list: list, by: str = "管理员") -> str:
+    """批量或单选将旧 cloud / 无主池中的开放聊天迁移至当前活跃主控（100% 继承原模型、记忆、Git 分支与上下文）。"""
+    cur = main_cloud()
+    targets = []
+    seen = set()
+    for r in convs_list:
+        row = conv_row(r["id"]) if (not isinstance(r, str) and hasattr(r, "__getitem__")) else conv_row(str(r))
+        if row is None or row["id"] == "main" or row["status"] != "open" or row["id"] in seen:
+            continue
+        seen.add(row["id"])
+        targets.append(row)
+    if not targets:
+        return "⚠️ 没有找到需要迁移的开放聊天。"
+    migrated_labels = []
+    total = len(targets)
+    for idx, conv in enumerate(targets):
+        old_c = cloud_of(conv)
+        restart_conv(conv, f"{by}从 {cloud_tag(old_c)} 迁移到 {cloud_tag(cur)} 主控接手")
+        fresh = conv_row(conv["id"])
+        m_lbl = effective_conv_model(fresh)
+        migrated_labels.append(f"{fresh['id']}「{conv_name(fresh)}」" + (f"[{m_lbl}]" if m_lbl else ""))
+        is_last = idx == total - 1
+        why_txt = f"{by}从 {cloud_tag(old_c)} 迁移聊天到 {cloud_tag(cur)} 交给你接手（共迁移 {total} 个，第 {idx + 1}/{total} 个；请严格保持原模型与完整上下文后台拉起）"
+        system_note("main", task_note(fresh, why_txt), wake=1 if is_last else 0)
+    sync_admin_view_after_cloud_change(target_conv_id=targets[0]["id"])
+    preview = "、".join(migrated_labels[:12]) + (f" 等共 {total} 个" if total > 12 else "")
+    return (
+        f"✅ 已将 {total} 个聊天迁移至 {cloud_tag(cur)} 并下发当前主控按原模型拉起：\n"
+        f"{preview}\n"
+        "（原模型、历史上下文、工作现场快照、协作群与 GitHub 分支均已完整带过去！）"
+    )
+
+
+def clouds_panel_view(dm: int, note: str = "") -> tuple[str, dict]:
+    cur = main_cloud()
+    rows = open_convs()
+    all_clouds = cloud_order({cloud_of(r) for r in rows} | {cur})
+    main_info = conv_state(conv_row("main"))
+    lines = []
+    if note:
+        lines += [note, ""]
+    lines.append(f"☁️ Cloud 目录管理与无缝迁移中心（当前活跃主控：{cloud_tag(cur)} · {STATE_TEXT[main_info['state']]}）")
+    buttons: list[list[dict]] = []
+    for n in all_clouds:
+        c_rows = [r for r in rows if cloud_of(r) == n]
+        tg_rows = [r for r in c_rows if conv_in_tg(r)]
+        bg_cnt = len(c_rows) - len(tg_rows)
+        if n == cur:
+            hdr = f"\n🟢 📁 {cloud_tag(n)}（当前主控）：{len(tg_rows)} 个主聊天" + (f" + {bg_cnt} 个后台子工" if bg_cnt else "")
+        elif n == UNOWNED_CLOUD:
+            hdr = f"\n📂 {cloud_tag(n)}（已删旧 cloud 静默留存）：{len(tg_rows)} 个主聊天" + (f" + {bg_cnt} 个后台子工" if bg_cnt else "")
+        else:
+            hdr = f"\n⚪ 📁 {cloud_tag(n)}（旧 cloud · 无主控）：{len(tg_rows)} 个主聊天" + (f" + {bg_cnt} 个后台子工" if bg_cnt else "")
+        lines.append(hdr)
+        shown = tg_rows or c_rows
+        if shown:
+            sample = "、".join(
+                f"/{r['id']} {conv_name(r)}" + (f"[{effective_conv_model(r)}]" if effective_conv_model(r) else "")
+                for r in shown[:8]
+            )
+            if len(shown) > 8:
+                sample += f" 等 {len(shown)} 个"
+            lines.append("  " + sample)
+        else:
+            lines.append("  （暂无聊天）")
+        if n != cur and c_rows:
+            lbl = cloud_tag(n)
+            r1: list[dict] = []
+            if tg_rows:
+                r1.append({"text": f"📦 迁 {lbl} 主聊天({len(tg_rows)}个)→{cloud_tag(cur)}"[:64], "callback_data": f"cm:tg:{n}"})
+            else:
+                r1.append({"text": f"📦 全迁 {lbl}({len(c_rows)}个)→{cloud_tag(cur)}"[:64], "callback_data": f"cm:allnow:{n}"})
+            r1.append({"text": f"☑️ 勾选迁移 {lbl}", "callback_data": f"cm:pick:{n}:0"})
+            buttons.append(r1)
+            r2: list[dict] = []
+            if bg_cnt and tg_rows:
+                r2.append({"text": f"📦 全迁 {lbl} 含子工({len(c_rows)}个)", "callback_data": f"cm:allnow:{n}"})
+            if n != UNOWNED_CLOUD:
+                r2.append({"text": f"🗑 删除 {lbl}（聊天转无主）", "callback_data": f"cm:del:{n}"})
+            if r2:
+                buttons.append(r2)
+    if len(all_clouds) == 1 and not any(away(r) for r in rows):
+        lines.append("\n✨ 当前所有开放聊天都在活跃主控名下，没有残留的旧 cloud 或无主聊天。")
+    cur_rows = [r for r in rows if cloud_of(r) == cur]
+    bottom = [{"text": f"👁 切菜单看 {cloud_tag(cur)}", "callback_data": f"cm:view:{cur}"},
+              {"text": "🔄 刷新", "callback_data": "cm:home"}]
+    buttons.append(bottom)
+    if cur_rows:
+        buttons.append([{"text": f"🗑 解散当前 {cloud_tag(cur)} 聊天为无主池", "callback_data": f"cm:del:{cur}"}])
+    return "\n".join(lines), {"inline_keyboard": buttons}
+
+
+def cloud_pick_view(dm: int, n: int, page: int = 0, note: str = "") -> tuple[str, dict]:
+    cur = main_cloud()
+    c_rows = sorted(
+        [r for r in open_convs() if cloud_of(r) == n],
+        key=lambda r: (0 if conv_in_tg(r) else 1, r["num"]),
+    )
+    if not c_rows:
+        return clouds_panel_view(dm, f"{cloud_tag(n)} 里已经没有开放聊天了。")
+    sel = cm_get_selection(dm, n)
+    per_page = 10
+    pages = (len(c_rows) + per_page - 1) // per_page
+    page = min(max(page, 0), pages - 1)
+    head = (
+        f"☑️ 勾选要从「{cloud_tag(n)}」迁移到「{cloud_tag(cur)}」的聊天（已选 {len(sel)}/{len(c_rows)} 个）：\n"
+        "• 点击聊天切换勾选（🔧 表示后台派生子工；方括号为原模型，迁移后 100% 保持一致）"
+    )
+    if pages > 1:
+        head += f"\n（第 {page + 1}/{pages} 页）"
+    if note:
+        head = note + "\n\n" + head
+    buttons: list[list[dict]] = [
+        [
+            {"text": "全选主聊天", "callback_data": f"cm:seltg:{n}:{page}"},
+            {"text": "全选含子工", "callback_data": f"cm:selall:{n}:{page}"},
+            {"text": "清空", "callback_data": f"cm:selclr:{n}:{page}"},
+        ]
+    ]
+    for r in c_rows[page * per_page:(page + 1) * per_page]:
+        mark_box = "✅" if r["id"] in sel else "⬜"
+        bg_icon = " 🔧" if not conv_in_tg(r) else ""
+        m_lbl = effective_conv_model(r)
+        m_badge = f" [{m_lbl[:14]}]" if m_lbl else ""
+        lbl = f"{mark_box} {r['id']} {conv_name(r)}{bg_icon}{m_badge}"[:64]
+        buttons.append([{"text": lbl, "callback_data": f"cm:tog:{n}:{r['id']}:{page}"}])
+    if pages > 1:
+        nav = []
+        if page > 0:
+            nav.append({"text": "◀ 上一页", "callback_data": f"cm:pick:{n}:{page - 1}"})
+        if page < pages - 1:
+            nav.append({"text": "下一页 ▶", "callback_data": f"cm:pick:{n}:{page + 1}"})
+        buttons.append(nav)
+    buttons.append([{"text": f"🚀 立即迁移已选 ({len(sel)}个) → {cloud_tag(cur)}"[:64], "callback_data": f"cm:go:{n}"}])
+    buttons.append([{"text": "↩ 返回 Cloud 管理 (/clouds)", "callback_data": "cm:home"}])
+    return head, {"inline_keyboard": buttons}
+
+
+def cloud_del_confirm_view(n: int) -> tuple[str, dict]:
+    c_rows = [r for r in open_convs() if cloud_of(r) == n]
+    tg_cnt = sum(1 for r in c_rows if conv_in_tg(r))
+    bg_cnt = len(c_rows) - tg_cnt
+    desc = f"{tg_cnt} 个主聊天" + (f" + {bg_cnt} 个后台子工" if bg_cnt else "")
+    text = (
+        f"🗑 确定删除「{cloud_tag(n)}」吗？\n\n"
+        f"• 其中 {desc} 会停掉旧子 agent 会话，并统一转入【📂 无主池】静默保留；\n"
+        "• 聊天记录、原定模型、记忆摘要、GitHub 分支 **全部保留不删**，且不会再弹任何失联警报；\n"
+        f"• 之后随时可在 /clouds 一键或勾选迁入 {cloud_tag(main_cloud())} 原地唤醒。"
+    )
+    markup = {
+        "inline_keyboard": [
+            [{"text": f"✅ 确认删除 {cloud_tag(n)}（聊天转无主静默）", "callback_data": f"cm:delok:{n}"}],
+            [{"text": "↩ 取消返回", "callback_data": "cm:home"}],
+        ]
+    }
+    return text, markup
 
 
 def move_to_cloud(n: int, words: list[str]) -> str:
@@ -6335,10 +6855,7 @@ def move_to_cloud(n: int, words: list[str]) -> str:
         if n == main_cloud():
             system_note("main", f"管理员把 {names} 划进了你的 {cloud_tag(n)}（子 agent 没换）：之后它们归你管，看门狗也会提醒你。", wake=0)
         else:
-            gone = [r for r in moved if cloud_of(r) == main_cloud()]
-            if gone:
-                system_note("main", f"管理员把 {'、'.join(conv_tag(r) for r in gone)} 划到了 {cloud_tag(n)}：不归你管了，别再动它们。", wake=0)
-            lines.append(f"{cloud_tag(main_cloud())} 的主控不管它们了，出问题我直接提醒你。")
+            lines.append(f"{cloud_tag(main_cloud())} 的主控日常不再自动巡检它们；随时可用 /clouds 迁移。")
     if bad:
         lines.append("没找到：" + " ".join(bad))
     return "\n".join(lines) or f"它们本来就在 {cloud_tag(n)}。"
@@ -6367,8 +6884,9 @@ def build_menu(dm: int) -> list[dict]:
     info = conv_state(main)
     info["unread"] = unread_count("main", dm)
     commands.append({"command": "main", "description": menu_desc(main, info, current == "main")})
+    commands.append({"command": "clouds", "description": "☁️ Cloud 目录管理 / 聊天迁移 / 删除旧Cloud"})
     if view:
-        commands += [{"command": cloud_tag(n), "description": cloud_desc(dm, n, n == view)} for n in sorted(clouds)]
+        commands += [{"command": cloud_cmd(n), "description": cloud_desc(dm, n, n == view)} for n in cloud_order(clouds)]
     commands += [
         {"command": "new", "description": "➕ 新建聊天"},
         {"command": "device", "description": "💻 电脑免批时长与本地通道管理"},
@@ -6473,14 +6991,11 @@ async def notify_away(batch: list) -> None:
 
 async def watchdog_tick() -> None:
     mark_menu_dirty()
-    batch = []
     for conv in open_convs():
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
-        if state in ("stuck", "lost") and away(conv):
-            # 失联了又来消息变成卡住，还是同一次：管理员发消息时已经单独说过
-            if alert_due(conv, "away"):
-                batch.append((conv, info))
+        if away(conv) and state != "unclaimed":
+            # 旧 cloud 或无主池里的聊天不再反复弹任何失联/没等消息提醒打扰管理员
             continue
         if state in ("stuck", "lost"):
             tid = (conv["task_agent_id"] or "").strip()
@@ -6506,6 +7021,8 @@ async def watchdog_tick() -> None:
                     f"3) 若已死（timeout/aborted/僵尸假活），直接调 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
                 )
         elif state == "unclaimed":
+            if is_unowned(conv):
+                continue
             if away(conv):
                 # 任务只有现在的主控能开
                 store.run("UPDATE convs SET cloud=? WHERE id=?", (main_cloud(), conv["id"]))
@@ -6515,7 +7032,6 @@ async def watchdog_tick() -> None:
                     f"请立刻调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。{model_hint(conv)}\n"
                     f"----\n{task_text(conv)}\n----")
         await raise_alert(conv, key, text)
-    await notify_away(batch)
     main = conv_row("main")
     info = conv_state(main)
     key, text = "", ""
