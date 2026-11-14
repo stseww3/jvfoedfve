@@ -69,14 +69,14 @@ rep(
   'hb-mint-send-name',
   `          this.worker?.postMessage({
             type: 'token',
-            token,
-            strategySource: getStrategySource ? getStrategySource() : ''
+            token: tok,
+            strategySource: getStrategySource()
           });`,
   `          this.worker?.postMessage({
             type: 'token',
-            token,
+            token: tok,
             playerName: this.name,
-            strategySource: getStrategySource ? getStrategySource() : ''
+            strategySource: getStrategySource()
           });`
 );
 
