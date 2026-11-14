@@ -222,9 +222,12 @@ def _field(seed, land):
     west = np.clip((cx - X) / np.maximum(r, 1.0), 0.0, 1.0)            # 1 due west of the centre
     wobble = N.fbm2(X / 47.0, Z / 47.0, seed + 5, octaves=3) * 20.0    # the edge is not a circle
     density = N.smoothstep(SCATTER, FILL, (r - wobble) / (1.0 + WEST * west ** 1.5))
-    # where the cloud piles up: ranges that lie north-south, bent a little; 1 in a range, 0 in a lane
+    # where the cloud piles up: ranges that lie north-south, bent a little, about three quarters of
+    # the sea; 1 in a range, 0 in the lanes of calm sea that wind between them
     bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 26.0
-    core = N.smoothstep(-0.02, 0.22, N.fbm2((X + bend) / 60.0, Z / 100.0, seed + 1, octaves=2))
+    core = N.smoothstep(-0.32, -0.12, N.fbm2((X + bend) / 60.0, Z / 100.0, seed + 1, octaves=2))
+    # how hard it boils: the heads stand high here and lie low and woolly there
+    vigour = N.smoothstep(-0.25, 0.25, N.fbm2(X / 44.0, Z / 44.0, seed + 3, octaves=2))
     level = SEA + 0.6 * N.fbm2(X / 58.0, Z / 58.0, seed + 2, octaves=2)
 
     rng = np.random.default_rng(seed)
@@ -259,12 +262,13 @@ def _field(seed, land):
             u, v, w, t = rng.uniform(size=4)
             ix, iz = cell_of(px, pz)
             d, c = density[ix, iz], core[ix, iz]
-            if d <= 0.0 or u > d ** 0.8 * (0.06 + 0.86 * c):
+            if d <= 0.0 or u > d ** 0.8 * (0.10 + 0.82 * c):
                 continue                            # thinned out in the lanes and towards the edge
             rad = (2.8 + 4.2 * v ** 1.5) * (0.75 + 0.25 * d) * (0.85 + 0.3 * c)
             if c > 0.8 and t > 0.9:
                 rad = 7.0 + 25.0 * (t - 0.9)        # the broad cushions in the heart of a range
-            head(px, pz, rad, min(HEAP * (0.62 + 0.38 * w), rad * (0.5 + 0.3 * w)))
+            high = HEAP * (0.5 + 0.5 * vigour[ix, iz]) * (0.7 + 0.3 * w)
+            head(px, pz, rad, min(high, rad * (0.5 + 0.3 * w)))
 
     # the few big piles, well apart, in the ranges, away from the mountain: broad shoulders, a
     # narrower tower standing out of them, smaller domes on its flanks
@@ -300,8 +304,8 @@ def _field(seed, land):
                 ix, iz = cell_of(px, pz)
                 if not zone[ix, iz]:
                     continue
-                a = float(np.clip(0.45 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28), 0.0, 1.0))
-                if u > 0.45 + 0.55 * a:
+                a = float(np.clip(0.5 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28), 0.0, 1.0))
+                if u > 0.6 + 0.4 * a:
                     continue
                 rise = 1.3 + (HEAP - 1.3) * a * (0.75 + 0.25 * w)
                 if a > 0.8 and w > 0.35:
