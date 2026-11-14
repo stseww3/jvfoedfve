@@ -2,7 +2,7 @@
 
 只有拿合并钥匙的人（S2，c188）改。依据是群 g2 里的固定格式消息（【立项】【领卡】【放回】【交付】【技检】【合并】【真机】【评审】），每处理一批更新一次。发现和事实不符，群里发【问题】点名 c188。
 
-**汇总（c188/S2 回岗更新，11-14 09:30；VM 重启后恢复，合并钥匙已从 A0 接回，已并 sky/look）：共 50 张卡 —— 待领 28，制作中 12，已交付 0，已合并 8，已出图 2，暂过 0，已过审 0，退回 0。**
+**汇总（c188/S2 更新，11-14 10:05；VM 重启后恢复，合并钥匙已从 A0 接回，已并 sky/look；检查脚本和出图工具按 c189 的技检补完）：共 50 张卡 —— 待领 28，制作中 12，已交付 0，已合并 8，已出图 2，暂过 0，已过审 0，退回 0。**
 
 - P1 待领（先领这些）：`machines/refractor`。
 - 还没切卡：`main`（c178 在按 R1 补逐格平面图）、`motion`（后期，c177 牵头）。
@@ -16,11 +16,11 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | interface（接口说明 + 总场景框架） | P1 | 已合并 | c188 | ce56eb2 | — | `plan/roles/INTERFACE.md` 第二版；不另设技检，由第一批用它建包的人验证，撞到不对发【问题】点 c188 和 c164 |
 | skeleton（骨架） | P1 | 已合并 | c188 | 3f5b683c | — | `build/scenes/obs/common/skeleton.py`，R1 0.3；“格和点”约定（对称轴 z=0.5）、site 提议锚点；11-14 加机械锚点（c193 #95、A0 #97）：ORRERY_CENTRE(11.5,0.5)、ORRERY_R2.5、ORRERY_HANG_Y14、ORRERY_RING_Y8.5、PIER_TOP_Y18；母钟锚点 x、PIER_R 定稿等 c178 报；大台阶/下平台/缆车站/发电房的数总监在重算（V1 视线），先别照着盖 |
-| check（检查脚本） | P1 | 已合并 | c188 | e33993c | — | `tools/check.py`（7 项）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过（#16486，提了 4 处可补）；待加：5×5 平墙、拉伸件贴图均匀、c189 的 4 处 |
+| check（检查脚本） | P1 | 已合并 | c188 | 142d5b90 | — | `tools/check.py`（9 项：regen、conflicts、strays、refs、repaint、blocks、flatwall、entities、views）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过（#16486）。11-14 按它的清单补完：会漏判的 4 处和小项都改了，PIPELINE 第 6 节剩的两项（5×5 平墙、拉长件贴图均匀）已加；新加的 refs 查“点到的模型、贴图在不在”。两条标“待证实”等 c189 真机补测：展示实体水平 160 格外服务器不发；没设宽高的展示实体画面外也照画。出图工具同一批改：没写时间的机位按 14000（f431e4d5） |
 | status（状态表） | P1 | 已合并 | c188 | — | — | 本文件 |
 | rubric（评分标准） | P1 | 已合并 | c190 | a9e21f5 | — | `plan/aesthetics/`；v1.1 总监已批，是现行标准（加了离线图和真机图各怎么评）；c199 是第二评审，他的校准和速查也在这个文件夹 |
 | plots-shuttle（地块表和班车脚本） | P1 | 制作中 | c189 | 1c3260a0 | — | 分支 `cursor/c164-s1-render-9df7`；游戏自己存截图的助手（`tools/win/CamHelper.java`）总监已批，显示器休眠时也能出真机图；等【交付】 |
-| offline-sky（离线渲染补天空） | P3 | 待领 | — | b58b9f5 | — | 卡 `plan/packages/common/offline-sky.md`（c177 提的；做不做待定） |
+| offline-sky（离线渲染补天空） | P3 | 待领 | — | b58b9f5 | — | 卡 `plan/packages/common/offline-sky.md`（c177 提的；做不做待定）。其中月亮位贴图朝向那一处 c177 已给改法（`plan/packages/sky/look.md` 记录），S2 等 obs_sky_look 的真机箭头图（`card_comet`）核对朝向后改 |
 
 ## materials（牵头 c176；细化稿 `plan/parts/materials.md`）
 
