@@ -388,7 +388,9 @@ def _windows():
 def build(canvas, origin=(0, 0, 0), version=VERSION):
     """Dress the front A3 has built: an arch frame on every main-storey window, a grille on every
     base-storey one, and the entrance at the east middle bay. Places nothing until A3's wall and its
-    window table are in the tree, so the master scene always generates."""
+    window table are in the tree, so the master scene always generates. With the window table only
+    the east and west windows are dressed: the table has no doorway, so the entrance is placed on
+    the fallback path alone (open, see the card's record)."""
     n = 0
     table = _windows()
     if table is not None:
@@ -399,10 +401,11 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
             zs = [c[1] for c in w["cells"]]
             y0 = w["y"][0]
             cz = S.mid(min(zs), max(zs))        # the centre point of the glass columns (cells -> point)
-            # the frame sits on the wall face, one block out from the recessed glass column
-            wall_x = (max(xs) + 1) if w["front"] == "east" else (min(xs) - 1)
+            # the frame is pressed on the recessed pane, inside the reveal: the pane's outer face is
+            # the point max + 1 on the east front and the point min on the west one (cells -> points)
+            wall_x = (max(xs) + 1) if w["front"] == "east" else min(xs)
             pos = (wall_x, float(y0), cz)
-            if w["storey"] == "main":        # the two-wide end-pavilion windows get a narrow variant
+            if w["storey"] == "main":        # one width only: a two-wide window gets the same frame
                 n += place(canvas, "window_arch", pos, facing=w["front"], origin=origin, version=version)
             elif w["storey"] == "base":
                 n += place(canvas, "window_grille", pos, facing=w["front"], origin=origin)
