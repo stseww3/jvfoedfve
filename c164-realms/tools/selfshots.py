@@ -7,14 +7,16 @@
                                                         kept pictures what the code draws now?
 
 Drawing is build/render.py's (1280x720, every shot at its own time; no game needed). A picture is
-overwritten under its shot's name, a picture whose shot has left the list is removed, and
-renders/<scene>/shots.txt notes for every shot its tick and the commit whose code it shows. So
-commit the code first (drawing is refused otherwise; --dirty to look at a change before that),
-draw, and commit the pictures once, before the delivery: a picture stays in the history for good.
+overwritten under its shot's name, a picture this tool drew whose shot has left the list is
+removed, and renders/<scene>/shots.txt notes for every shot its tick and the commit whose code it
+shows. So commit the code first (drawing is refused otherwise; --dirty to look at a change before
+that), draw, and commit the pictures once, before the delivery: a picture stays in the history for
+good. Other pictures in the folder (a comparison sheet) are left alone.
 
---verify writes nothing and needs no clean worktree. It ends with 1 when a picture is missing, is
-left over or is not what the code draws; the merge-key holder runs it on the delivered commit.
---project <dir> works on another checkout's c164-realms, with that checkout's code.
+--verify writes nothing and needs no clean worktree. It ends with 1 when a kept picture is not
+what the code draws; a shot without a picture and a picture left over are warnings. The merge-key
+holder runs it on the delivered commit. --project <dir> works on another checkout's c164-realms,
+with that checkout's code.
 """
 import argparse
 import json
@@ -73,17 +75,22 @@ def draw(project, scene, shots, only, out, jar):
     return made
 
 
-def read_note(folder):
-    """{shot: (tick, commit)} of the folder's note; None without one."""
+def read_note(folder, ours=False):
+    """{shot: (tick, commit)} of the folder's note; None without one. With `ours`, a note this tool
+    did not write (and would overwrite) ends the run."""
     path = os.path.join(folder, NOTE)
     if not os.path.exists(path):
         return None
     out = {}
     with open(path, encoding="utf-8") as fh:
-        for line in fh:
-            parts = line.rstrip("\n").split("\t")
-            if len(parts) == 3 and not line.startswith("#"):
-                out[parts[0]] = (parts[1], parts[2])
+        lines = fh.read().split("\n")
+    if ours and lines and not lines[0].startswith(HEAD.split(",")[0]):
+        sys.exit(f"renders/{os.path.basename(folder)}/{NOTE} was not written by this tool, which would overwrite it. "
+                 f"Move what it says to another file (notes.txt) and draw again.")
+    for line in lines:
+        parts = line.split("\t")
+        if len(parts) == 3 and not line.startswith("#"):
+            out[parts[0]] = (parts[1], parts[2])
     return out
 
 
@@ -101,6 +108,7 @@ def write(project, scene, only, dirty, jar):
         sys.exit(f"{scene}: the code is not committed ({shown}), so no commit shows what the pictures would show.\n"
                  f"Commit it and draw again; --dirty draws anyway and notes the commit with a +.")
     folder = os.path.join(project, "renders", scene)
+    note = read_note(folder, ours=True) or {}
     tmp = tempfile.mkdtemp(prefix="c164-selfshots-")
     try:
         made = draw(project, scene, shots, only, tmp, jar)
@@ -109,7 +117,6 @@ def write(project, scene, only, dirty, jar):
         if missing:
             sys.exit(f"{scene}: build/render.py drew no picture of {', '.join(missing)}")
         os.makedirs(folder, exist_ok=True)
-        note = read_note(folder) or {}
         total = 0
         for name in wanted:
             path, tick = made[name]
@@ -119,12 +126,15 @@ def write(project, scene, only, dirty, jar):
             note[name] = (tick, commit + ("+" if changed else ""))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    # Only what this tool drew is removed: a picture the note lists whose shot has left the list.
+    # Other pictures in the folder (a comparison sheet of the author's) are not its business.
     gone = []
     if not only:
-        for f in sorted(os.listdir(folder)):
-            if f.endswith(".png") and f[:-4] not in names:
-                os.remove(os.path.join(folder, f))
-                gone.append(f)
+        for name in sorted(n for n in note if n not in names):
+            path = os.path.join(folder, name + ".png")
+            if os.path.exists(path):
+                os.remove(path)
+                gone.append(name + ".png")
     with open(os.path.join(folder, NOTE), "w", encoding="utf-8", newline="\n") as fh:
         fh.write(HEAD.format(size=SIZE) + "\n")
         for name in names:
@@ -143,7 +153,7 @@ def verify(project, scene, jar):
     shots, names = shot_list(project, scene)
     folder = os.path.join(project, "renders", scene)
     kept = sorted(f[:-4] for f in os.listdir(folder) if f.endswith(".png")) if os.path.isdir(folder) else []
-    fails, warns = [], []
+    fails, warns, absent = [], [], []
     tmp = tempfile.mkdtemp(prefix="c164-selfshots-")
     try:
         made = draw(project, scene, shots, None, tmp, jar)
@@ -153,7 +163,7 @@ def verify(project, scene, jar):
             if name not in made:
                 fails.append(f"{name}: build/render.py drew no picture")
             elif not os.path.exists(path):
-                fails.append(f"{name}: no picture kept")
+                absent.append(name)
             else:
                 a = np.asarray(Image.open(path).convert("RGB")).astype(np.int16)
                 b = np.asarray(Image.open(made[name][0]).convert("RGB")).astype(np.int16)
@@ -168,16 +178,24 @@ def verify(project, scene, jar):
                     same += 1
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    fails += [f"{n}.png: left over, the list has no such shot" for n in kept if n not in names]
     note = read_note(folder)
+    if absent:
+        warns.append(f"no picture kept of {', '.join(absent)}")
+    left = [n for n in kept if n not in names and n in (note or {})]
+    if left:
+        warns.append(f"left over, the list has no such shot any more: {', '.join(left)}")
     if note is None:
         warns.append(f"no {NOTE}: which commit the pictures show is not noted")
     else:
+        unnoted = [n for n in names if n not in note and n not in absent]
+        if unnoted:
+            warns.append(f"{NOTE} does not note the commit of " + (f"{', '.join(unnoted)}" if note else
+                         f"any shot (not written by this tool)"))
         for name in names:
             tick, commit = note.get(name, (None, None))
             if commit is None:
-                warns.append(f"{name}: not in {NOTE}")
-            elif commit.endswith("+"):
+                continue
+            if commit.endswith("+"):
                 warns.append(f"{name}: noted as drawn from uncommitted code ({commit})")
             elif git(project, "merge-base", "--is-ancestor", commit, "HEAD") is None:
                 warns.append(f"{name}: noted commit {commit} is not in this branch's history")
@@ -185,8 +203,9 @@ def verify(project, scene, jar):
                 warns.append(f"{name}: noted at tick {tick}, drawn at {made[name][1]}")
     status = "FAIL" if fails else "WARN" if warns else "PASS"
     head = (git(project, "rev-parse", "--short=8", "HEAD") or "?").strip()
-    print(f"[{status}] selfshots {scene} at {head}: {same} of {len(names)} kept pictures are what the code draws"
-          + (f", {len(fails)} not" if fails else ""))
+    print(f"[{status}] selfshots {scene} at {head}: {same} of {len(names) - len(absent)} kept pictures are what the "
+          f"code draws" + (f", {len(fails)} not" if fails else "")
+          + (f"; {len(absent)} of {len(names)} shots have none" if absent else ""))
     for line in fails + warns:
         print(f"                {line}")
     return not fails
