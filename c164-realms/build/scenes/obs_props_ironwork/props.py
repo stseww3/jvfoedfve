@@ -26,13 +26,12 @@ def _floor(name):
 # name, [(model, offset from the bay's floor centre or None to stand on it, display options)],
 # camera, look-at; the backdrop wall is 7.5 blocks north of the bay's centre
 GALLERY = [
-    _tall("window_arch_a"), _tall("window_arch_b"),
-    _wall("window_grille", 2.0),
-    _wall("fanlight", 1.5),
-    _wall("door_leaf", 0.5),
-    _wall("canopy", 4.0),
+    _tall("window_arch"), _tall("window_arch_2"),
+    _wall("window_grille", 2.0), _wall("window_grille_2", 2.0),
+    _tall("door_frame"), _wall("door_leaf", 0.5), _tall("gate"), _wall("glazed_leaf", 0.5),
+    _wall("canopy", 4.0), _wall("canopy_lamp", 3.0),
     _floor("railing_panel"),
-    _wall("ladder", 0.5),
+    _wall("ladder", 0.5), _wall("ladder_cage", 0.5),
     _floor("vent_cowl"),
     _floor("grate_hatch"),
 ]
