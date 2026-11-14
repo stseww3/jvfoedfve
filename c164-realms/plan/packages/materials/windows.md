@@ -60,4 +60,7 @@
 
     暗窗没动：DARK A 0.080 / B 0.050，BLIND A 0.073。
   - `tools/check.py`：`obs_mat_windows`、`obs_mat_windows_b` 全过 0 警告；`obs` 全过（只有主楼白模的 flatwall）。
+  - 图（管理员电脑出，云端不出图）：代码 dcf301da，`bin\sync.py` → `bin\job.py m2 --heavy` 跑 `render.py`，两个场景各 22 张、各约 30 秒 → `bin\send.py` 原样 PNG 回传 → 云端 `tools/selfshots.py <场景> --take --prefix m2-dcf301d-` 落位（乙的图出图时前缀带了 `_b`，先抄到临时目录改成标准前缀再 take；下次直接按 INTERFACE 第 5 节用 `selfshots.py --out`，文件名自带场景名）。甲换了 18 张（画面里有亮窗或天窗的全部），4 张和存的逐像素一样、文件没动（close_frosted、close_curtain、close_dark、close_blind）；乙换了 5 张（画面里有天窗的：slant、walls_dark、close_skylight、panes、roof），17 张没动。面板合并后过期的 walls_dark、close_skylight（甲乙各一）这次一并更新。`shots.txt` 记 dcf301da 和每张图的 SHA-256。
+  - 自查（看图）：close_lit、near_main 每格上淡下深，不再是一块平片；远看（far、front 三个时刻）亮暗分布和整体颜色没变；close_skylight、roof、walls_dark、panes 里天窗和另五种窗是同一张网，屋里那排仪表看得更清；face_* 四个朝向的亮窗仍是贴图原色。
+  - 请评审复看三张（c219 定的）：close_lit、near_main、close_skylight。
   - 交叉看记账（都不用改本卡）：c206（11-14 11:33）——窗棂列数和立面窗洞对得上，立面全用整块；鼓座的 1×1 小圆窗会显成四小格的方窗，要圆得靠 props 的圆窗框压在外面，或者以后加一种舷窗玻璃（要占用表加角色，归 A0），等整楼的图再定。c220（11-14 11:53）——窗后光源位和 `lights.build` 自动放的是同一格；档位 3/2/1/0 对 LIT / FROSTED / CURTAIN / DARK（约三成 BLIND），窗后等级 12 / 10·9 / 8·7 / 不放。本场景手摆的 9–10 是占位，`sky/lights` 合并后换成它来放。
