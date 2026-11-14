@@ -100,7 +100,7 @@
 自查：
 - `tools/check.py --scene obs_mat_ashlar`、`obs_mat_ashlar_b`、`obs_mat_ashlar_c`：全过，0 失败 0 警告。
 - `faults()`：a、b 都是空的。颜色：六张图只有 A0–A5（`_kit.paint` 写图时查色板外的颜色，有就报错）。
-- `tools/delivery.py materials/ashlar --base` 总装 cd9628ba：过，1 条警告（commits）：最早的四个提交 87532ffc、6dc277b8、353e75d5、e2fecb9f 的说明没有以 `c164-ashlar: ` 开头。已经 push，不改历史。
+- `tools/delivery.py materials/ashlar --base` 总装 d7bbdbd5（已 merge，落后 0 个提交）：过，1 条警告（commits）：最早的四个提交 87532ffc、6dc277b8、353e75d5、e2fecb9f 的说明没有以 `c164-ashlar: ` 开头。已经 push，不改历史。
 - 离线图判不了的：真机里的色调映射和雾下的石色，待真机。
 
 ### 没进仓库的图
