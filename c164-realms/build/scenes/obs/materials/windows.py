@@ -10,7 +10,7 @@ Six windows, each a full glass block and a glass pane:
   dark (hold the sky, no light of their own):
     WINDOW_DARK      glass with the blue of the sky in it, a glancing reflection here and there
     WINDOW_BLIND     a lowered blind behind dark glass
-    SKYLIGHT         the one glass that is seen through (half opaque), in a wide iron frame
+    SKYLIGHT         the one glass that is seen through (half opaque), in the net of the other five
 
 The numbers are the grey of the whole picture, glazing bars included, on a scale of 0 to 1: what a
 lit window shows on the screen, since it is drawn at full emission (agreed with c177, group g2 #82,
@@ -19,7 +19,8 @@ lit window shows on the screen, since it is drawn at full emission (agreed with 
 The glazing bars are painted into the picture, one pixel of iron, and meet across the four edges so
 that blocks join into one net; a window three blocks wide shows six lights across. The iron frames
 of a window (arch head, outer frame, a transom) are props laid over these lines, not a second grid
-(R1, c179 #14821).
+(R1, c179 #14821). That holds for the roof light too: its heavy iron frame is the curb round the
+whole light, which the roof builds; the picture carries the fine net only (review #1, c219).
 
 A lit window is drawn in its own colours whichever way it faces: emission 15, the game's shading by
 direction off, the darkening of corners off, the picture opaque. The main front faces east, where
@@ -29,8 +30,9 @@ is the invisible light source sky/lights puts behind the glass; the glass only l
 
 Two versions of the lit windows are compared (version="a" / "b"):
 
-  a  small square lights, eight pixels each way, in a net of one pixel. Even glass with a paler line
-     under each bar; milky frosted glass on which the bars throw a soft edge; a cloth curtain in folds.
+  a  small square lights, eight pixels each way, in a net of one pixel. Amber glass, each light a
+     line paler at its head and a line deeper at its foot; milky frosted glass on which the bars
+     throw a soft edge; a cloth curtain in folds.
   b  tall lights, two to a block: slender uprights and a transom of two pixels between blocks. The
      light pools at the head of each pane and deepens at its foot; frosted glass with a broken
      surface; a venetian blind with the lamp behind it.
@@ -104,28 +106,32 @@ def _bars(px, version):
     return px
 
 
-def _stroke(px, light, x, y, n, tone):
+def _stroke(px, light, x, y, n, tone, alpha=None):
     """A glancing stroke inside one light: n steps up and to the right from (x, y), two pixels wide.
-    It never leaves its light, so no line runs on from one pane into the next."""
+    It never leaves its light, so no line runs on from one pane into the next. With `alpha`, the
+    stroke is that opaque; without, the glass keeps its own."""
     x0, y0, x1, y1 = light
     for i in range(n):
         for dx in (0, 1):
             if x0 <= x + i + dx <= x1 and y0 <= y - i <= y1:
                 px[y - i, x + i + dx, :3] = P.colour(*tone)
+                if alpha is not None:
+                    px[y - i, x + i + dx, 3] = alpha
 
 
 # ---- lit windows: amber, warm white, deep orange -----------------------------------------------------
 def lit_face(version="a"):
     """WINDOW_LIT: the glass is the plan's window amber (glow 2). The step above it is kept to a line
     at the head of each light and the palest step is not used at all: the whole window stays amber,
-    the lamp shades stay the only near-white things in a view (c177, g2 #90)."""
+    the lamp shades stay the only near-white things in a view (c177, g2 #90). The step below it is a
+    line at the foot of each light, so a pane runs from pale to deep and reads as glass with a lamp
+    behind it, not as a flat sheet of light (review #1, c219); in the small lights of version a both
+    are one pixel, the lightest form of what version b does in its tall ones."""
     px = _glass(("glow", 2))
     for x0, y0, x1, y1 in _LIGHTS[version]:
-        if version == "b":
-            _fill(px, x0, y0, x1, y0 + 1, ("glow", 3))             # the light pools under the transom
-            _fill(px, x0, y1, x1, y1, ("glow", 1))                 # and deepens at the foot of the pane
-        else:
-            _fill(px, x0, y0, x1, y0, ("glow", 3))                 # one paler line under each bar
+        head = 2 if version == "b" else 1                          # b: the light pools under the transom
+        _fill(px, x0, y0, x1, y0 + head - 1, ("glow", 3))          # paler under the bar
+        _fill(px, x0, y1, x1, y1, ("glow", 1))                     # deeper at the foot of the pane
     return _bars(px, version)
 
 
@@ -228,23 +234,38 @@ def blind_face(version="a"):
     return _bars(px, version)
 
 
-def skylight_face():
-    """SKYLIGHT: the one glass that is seen through, for the canopy of the cable station, the round
-    lights of the drum and the roof lights. Half opaque, the sky in it; an iron frame of two pixels
-    all round, so that skylights side by side stand in a grid of four. Four pictures mixed by
-    position: a reflection across the light, long, short or none, so a roof of them is not one stamp."""
-    yy, xx = np.mgrid[0:TILE, 0:TILE]
-    frame = (xx < 2) | (xx >= TILE - 2) | (yy < 2) | (yy >= TILE - 2)
+# The roof light: which lights of its four pictures carry a reflection, as (x, y, length) from the
+# light's upper left corner (see _stroke). Fewer than a dark window has: a roof of them is calm, and
+# what shows through the glass is the thing to look at.
+_SKY = {
+    "a": [[(1, 5, 4), None, None, None],
+          [None, None, None, (0, 6, 5)],
+          [None, (2, 4, 3), (1, 5, 3), None],
+          [None, None, None, None]],
+    "b": [[(1, 9, 5), None],
+          [None, (0, 12, 5)],
+          [(2, 6, 4), None],
+          [None, None]],
+}
+
+
+def skylight_face(version="a"):
+    """SKYLIGHT: the one glass that is seen through, for the canopy of the cable station, the roof
+    lights and the small lights of the drum. Half opaque, the sky in it, in the same net of one-pixel
+    bars as the other windows, so that a roof light and the windows under it are one glazing (review
+    #1, c219: a frame of two pixels round every block read as a second, heavier grid). The heavy
+    frame of a roof light is not in the picture: it is the iron curb round the whole light. A single
+    block shows four panes, as every window here does; a round light wants a round frame of props
+    over it (c206's cross-reading of this package). Four pictures mixed by position: a reflection
+    across one light or two, or none, so a roof of them is not one stamp."""
     out = []
-    for across, lo, hi in ((15, 2, 13), (13, 6, 11), (18, 5, 9), (None, 0, 0)):
+    for panes in _SKY[version]:
         px = _glass(("night_glass", 3), alpha=SKYLIGHT_ALPHA)
-        if across is not None:
-            sheen = (np.abs(xx + yy - across) <= 1) & (xx >= lo) & (xx <= hi)
-            px[sheen, :3] = P.colour("night_glass", 4)
-            px[sheen, 3] = SKYLIGHT_SHEEN_ALPHA
-        px[frame, :3] = P.colour(*BAR)
-        px[frame, 3] = 255
-        out.append(px)
+        for light, stroke in zip(_LIGHTS[version], panes):
+            if stroke:
+                x, y, n = stroke
+                _stroke(px, light, light[0] + x, light[1] + y, n, ("night_glass", 4), alpha=SKYLIGHT_SHEEN_ALPHA)
+        out.append(_bars(px, version))
     return out
 
 
@@ -272,7 +293,7 @@ def faces(version=None):
         B.WINDOW_CURTAIN: (curtain_face(v), LIT),
         B.WINDOW_DARK: (dark_face(v), DARK),
         B.WINDOW_BLIND: (blind_face(v), DARK),
-        B.SKYLIGHT: (skylight_face(), DARK),
+        B.SKYLIGHT: (skylight_face(v), DARK),
     }
 
 

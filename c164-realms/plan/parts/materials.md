@@ -117,7 +117,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 
 玻璃无 `waxed_` 问题，但自发光要改模型（做法 C）。窗棂一律在贴图里画（8px 一格窗格，窗棂 1px `colour("iron",1)`，四边无缝，拼成网；3 格宽拱窗横显 6 列）。
 - 亮窗（自发光：`emit=15`、不打面阴影、不要角落变暗，显示贴图原色；贴图不透明）：`WINDOW_LIT`（黄，暖亮 `glow`）、`WINDOW_CURTAIN`（橙，上亮下压暗作半帘）、`WINDOW_FROSTED`（白，`opal` 柔光、格影弱）。亮窗始终是灯丝琥珀色、磨砂是暖白；亮度和 A2 的墙面亮度对齐；立面上至少两成暗窗、相邻跨不同时亮（点亮哪扇、几档亮度由 sky/lights 的 `window_lit` 给，S3 预评第 4 条、总监 #15316）。亮窗卡做 2 版比选。
-- 暗窗（不发光，映天色 `night_glass`）：`WINDOW_DARK`（灰，斜向冷反光）、`WINDOW_BLIND`（黑，近全黑+弱反光）、`SKYLIGHT`（浅灰，偏亮+大铁框格 12px）。
+- 暗窗（不发光，映天色 `night_glass`）：`WINDOW_DARK`（灰，斜向冷反光）、`WINDOW_BLIND`（黑，近全黑+弱反光）、`SKYLIGHT`（浅灰，半透明、能看进屋；窗棂和另五种窗是同一套细网，粗铁框不画进贴图——只在整扇天窗的外圈，由屋面围一圈铁件做。评审 #1 后改，原写“偏亮+大铁框格 12px”，A0 11-14 定）。
 - 两种形状：**整块玻璃** `*_stained_glass`（齐平大拱窗幕墙，贴图平铺成窗棂网，无缝）；**玻璃板** `*_stained_glass_pane`（凹窗/小窗/薄剖面，重定向 post/side/side_alt/noside/noside_alt 五模型，面贴图=`*_stained_glass`、边贴图=`*_stained_glass_pane_top`，亮窗同样加 `light_emission`，保留 `force_translucent`）。
 - 模型窗框分工（R1 与 A6）：玻璃贴图只画细窗棂；A6 的模型窗框只做拱头/外框/一道中横档或中竖梃，压在我的窗棂线上，不另起网格。
 
