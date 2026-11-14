@@ -64,8 +64,10 @@ WEST_DOOR_TOP = 3                                         # the west door is 3 w
 # of the apse: 3 x 3 round a newel, against the blind west wall of the wings.
 SPIRAL_X = (S.WALL_W - 3, S.WALL_W - 1)                   # -3..-1
 SPIRAL_Z = (CROSS_Z[1] + 1, CROSS_Z[1] + 3)               # |z| 7..9
-APSE_BAYS = 7                                             # pilaster spacing on the arc, as bays
-APSE_BAY_DEG = 19.5                                       # the outermost pilasters land on the junction
+# The pilasters of the apse stand under those of the drum and the ribs of the dome (main/_dome.py:
+# twenty gores, a rib every 18 degrees, the west axis in the middle of a gore), 9 and 27 degrees
+# either side of the axis. Further round the wall steps diagonally into the junction: none there.
+APSE_PILASTER_DEG = (9.0, 27.0)
 WEST_BLIND_Z = 13                                         # |z| <= 13 on the west wall is behind the rotunda
 # Roofs follow the five parts of the front: flat terraces over the three pavilions (the middle one
 # is as wide as the drum, not as the entrance), pitched slate over the wings between gable walls.
@@ -157,24 +159,26 @@ def apse_pilasters():
     """One pilaster column per pilaster angle: the ring-14 column closest to it."""
     cells = _apse_cells(R_PILASTER)
     out = []
-    for i in range(APSE_BAYS // 2 + 1):
+    for a in APSE_PILASTER_DEG:
         for sign in (-1, 1):
-            a = sign * (i + 0.5) * APSE_BAY_DEG
-            out.append(min(cells, key=lambda c: abs(west_angle(*c) - a)))
+            out.append(min(cells, key=lambda c: abs(west_angle(*c) - sign * a)))
     return sorted(set(out))
 
 
 def apse_windows():
-    """{name: (three opening columns on the wall face, the glass column one block behind each)}.
+    """{name: (the opening columns on the wall face, the glass column one block behind each)}.
 
-    A raster circle of this radius has only three runs straight enough to carry a three-wide
-    arched window: the west one on the axis and the one on either side of it. Everywhere else the
-    wall steps diagonally, where three columns along the ring make an L and cannot take an arched
-    head, so the flanks stay solid. The apse has great windows only: its base storey is solid but
-    for the west door."""
+    A raster circle of this radius has only three runs straight enough to carry an arched window:
+    the west one on the axis (three wide, between the pilasters at 9 degrees) and the one on either
+    side of it (two wide, like the windows of the end pavilions: its third column stands behind the
+    pilaster at 27 degrees). Everywhere else the wall steps diagonally, where the columns along the
+    ring make an L and cannot take an arched head, so the flanks stay solid. The apse has great
+    windows only: its base storey is solid but for the west door."""
     xa = CX - R_FACE                                        # -9: the run on the west axis
     out = {"west": [(xa, z) for z in window_rows(AISLE_BAY)]}
-    side = sorted(c for c in _apse_cells(R_FACE) if c[0] == xa + 1)     # the next run: x = -8
+    piers = set(apse_pilasters())
+    side = sorted(c for c in _apse_cells(R_FACE)            # the next run: x = -8
+                  if c[0] == xa + 1 and (c[0] - 1, c[1]) not in piers)
     out["north-west"] = [c for c in side if c[1] < CZ]
     out["south-west"] = [c for c in side if c[1] > CZ]
     return {name: (cells, [(x + 1, z) for x, z in cells]) for name, cells in out.items()}
@@ -271,23 +275,22 @@ def roof_steps(x, z):
     return min(x - S.WALL_W, xe - x, ROOF_RIDGE_STEPS) - 1
 
 
-FRONTS = ("east", "west", "north", "south", "apse")
-
-
 def windows():
     """Every glazed window of the main building, for whoever lights or frames them:
-    [dict(front, bay, storey, cells, inward, y, glass)].
+    [dict(front, bay, storey, cells, inward, y)].
 
     front and bay name the window: "east" and "west" count the skeleton's bays 1..17 from the
     north; "north" and "south" count the end walls' bays 1..4 from the west; "apse" has -1, 0, 1
-    (north-west, west, south-west). storey is "base" or "main". cells are the glass columns
-    (x, z); inward is the step from the glass into the building; y is the glass's (bottom, top);
-    glass is the block state that stands there.
+    (north-west, west, south-west); "drum" has the sixteen small windows of the dome's drum, 0
+    looking east and counting round by the south. storey is "base", "main" or "drum". cells are
+    the glass columns (x, z); inward is the step from the glass into the building; y is the
+    glass's (bottom, top).
 
-    These are the windows main/facade.py has built, so the table cannot drift from the walls. The
-    drum's small windows are not in it (facade.windows() has them under the front "drum")."""
+    These are the windows main/facade.py cuts, so the table cannot drift from the walls. It says
+    nothing about the glass: which windows are lit is the light line's to say, and what stands in
+    a window is on the canvas (facade.windows() lists it)."""
     from . import facade
-    return [w for w in facade.windows() if w["front"] in FRONTS]
+    return facade.table()
 
 
 def plan_windows():
@@ -671,8 +674,8 @@ def check():
         bad.append("grand stair does not reach the main floor")
     for name, (opening, glass) in apse_windows().items():
         zs = sorted(z for _, z in opening)
-        if len(opening) != 3 or zs != list(range(zs[0], zs[0] + 3)) or len({x for x, _ in opening}) != 1:
-            bad.append("apse window %s is not a straight run of three: %s" % (name, opening))
+        if len(opening) not in (2, 3) or zs != list(range(zs[0], zs[0] + len(zs))) or len({x for x, _ in opening}) != 1:
+            bad.append("apse window %s is not a straight run of two or three: %s" % (name, opening))
         if (set(opening) | set(glass)) & set(apse_pilasters()):
             bad.append("apse window %s: a window column is a pilaster" % name)
         for x, z in glass:
