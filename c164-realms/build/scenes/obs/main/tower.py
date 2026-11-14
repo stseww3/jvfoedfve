@@ -234,6 +234,7 @@ def _spire_b(c, o):
 
 
 SPIRES = {"a": _spire_a, "b": _spire_b}
+VERSION = "a"                       # what the master scene shows until the review picks one
 
 
 # --- the time-ball mast -----------------------------------------------------------------------------
@@ -260,9 +261,11 @@ def _mast(c, o):
 
 
 # --- the package ------------------------------------------------------------------------------------
-def build(canvas, origin=(0, 0, 0), version="a"):
+def build(canvas, origin=(0, 0, 0), version=None):
     """Place the clock tower above the north pavilion. `version` picks the spire (a: verdigris
-    cupola, b: iron platform); the shaft, clock faces, belfry and mast are shared."""
+    cupola, b: iron platform; VERSION when left out); the shaft, clock faces, belfry and mast are
+    shared."""
+    version = version or VERSION
     _shaft(canvas, origin)
     _ridge_door(canvas, origin)
     _belfry(canvas, origin)

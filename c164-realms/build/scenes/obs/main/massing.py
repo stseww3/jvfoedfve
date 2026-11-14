@@ -1,7 +1,7 @@
-"""Framework demo work package: the M3 white-model massing. The plain volumes of the clock tower
-and the small dome in the dressed-stone / dome materials on the skeleton grid, so the silhouette
-("one bar, one circle, one spire") keeps its spire until those two have their own packages. The
-main building, the rotunda and the great dome are no longer here: main/facade.py builds them."""
+"""Framework demo work package: the M3 white-model massing. The plain volume of the small dome in
+the dome material on the skeleton grid, until it has its own package. The main building, the
+rotunda and the great dome are no longer here (main/facade.py builds them), nor is the clock tower
+(main/tower.py)."""
 import math
 
 from ..common import blocks as B
@@ -55,12 +55,7 @@ def _dome(c, o, cx, cz, y0, y1, radius_at, block):
 def build(canvas, origin=(0, 0, 0)):
     c, o = canvas, origin
 
-    # the clock tower (north) and small dome (south), from the roof up: below it main/facade.py
-    # has the walls
-    _wall(c, o, S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1],
-          S.ROOF_STAND, S.CLOCK_SHAFT_TOP, WALL)
-    _wall(c, o, S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1],
-          S.CLOCK_SHAFT_TOP + 1, S.CLOCK_TOP, IRON)
+    # the small dome (south), from the roof up: below it main/facade.py has the walls
     scx = (S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0
     scz = (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) / 2.0
 
