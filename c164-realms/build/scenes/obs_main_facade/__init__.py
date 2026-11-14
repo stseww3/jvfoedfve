@@ -25,6 +25,12 @@ BIOME_MARGIN_Y = 140
 LINES = (site, main, props, sky)
 ENTRANCE = None                 # None: the package's default
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C; noon draws as A)
+# The two main views are the skeleton's. The director raised both on 11-14 (group, 13:21: they look
+# up about 22 degrees, the building in the lower half of the picture, the comet whole in the upper)
+# and had V2 written into the skeleton; a skeleton that has no V2 yet is older than that ruling,
+# and the ruling's own numbers stand in for it.
+V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
 
 
 @contextlib.contextmanager
@@ -66,15 +72,14 @@ def shots(compare=False):
     face = float(S.east_wall_x(P.AISLE_BAY))            # the wall plane of the middle pavilion
     wing = float(S.WALL_E)
     axis = 0.5
-    court = S.EAST_EDGE_X - 1.5                         # the east edge of the court, on the axis
     z3 = S.pilaster_z(P.AISLE_BAY + 2) + 0.5            # the pilaster between the two bays of V3
     out = [
-        # V2: the court's axis, at eye height -- the whole front and the dome over it
-        dict(name="v2_axis", pos=[court, 1.7, axis], look_at=[face, 11.0, axis], time=TIME),
+        # V2: the court's axis, at eye height -- the whole front, the dome over it and the sky over that
+        dict(name="v2_axis", pos=[float(n) for n in V2["pos"]], look_at=[float(n) for n in V2["look_at"]], time=TIME),
         # V4: the entrance, from the court
         dict(name="v4_entrance", pos=[face + 14.0, 2.6, axis], look_at=[face, 6.0, axis], time=TIME),
-        # V1's standpoint: the foot of the cable car station, a hundred blocks out
-        dict(name="v1_far", pos=list(S.V1["pos"]), look_at=list(S.V1["look_at"]), time=TIME),
+        # V1: the arrival, from the platform of the cable car station
+        dict(name="v1_far", pos=[float(n) for n in V1["pos"]], look_at=[float(n) for n in V1["look_at"]], time=TIME),
         # the arcade from beside the axis, close: how deep the arches are
         dict(name="arcade", pos=[face + 10.5, 1.7, 11.5], look_at=[face + 0.5, 4.5, axis - 0.5], time=TIME),
     ]
