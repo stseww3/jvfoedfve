@@ -623,12 +623,16 @@ class Scene:
         """The 13 numbers raytrace.render wants; pos is the eye, in scene coordinates."""
         pos = np.array(pos, dtype=float)
         if look_at is not None:
-            f = np.array(look_at, dtype=float) - pos
+            f, y = np.array(look_at, dtype=float) - pos, 0.0
         else:
             y, p = math.radians(yaw), math.radians(pitch)
             f = np.array([-math.sin(y) * math.cos(p), -math.sin(p), math.cos(y) * math.cos(p)])
         f /= np.linalg.norm(f)
         r = np.cross(f, (0.0, 1.0, 0.0))
+        if np.linalg.norm(r) < 1e-6:
+            # straight up or down "up" gives no right-hand side; the yaw does, and that is 0 for a
+            # look_at: tools/shoot.py turns the game's camera so
+            r = np.array([-math.cos(y), 0.0, -math.sin(y)])
         r /= np.linalg.norm(r)
         u = np.cross(r, f)
         return np.concatenate([pos - self.lo, f, r, u, [math.tan(math.radians(fov) / 2.0)]])
