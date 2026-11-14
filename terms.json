@@ -159,5 +159,194 @@
     "category": "selling",
     "aliases": ["middleman", "mm"],
     "definition": "A trusted third party who holds the account and/or payment during a deal so neither side can scam the other. Using a verified MM is standard practice. Beware of scammers impersonating known MMs."
+  },
+  {
+    "term": "4L",
+    "full": "4 Letter",
+    "category": "naming",
+    "aliases": ["4-char letters", "four letter"],
+    "definition": "A username made of exactly four letters, e.g. \"abcd\". A tier below a 3L: still clean and desirable, but more common and cheaper."
+  },
+  {
+    "term": "4C",
+    "full": "4 Character",
+    "category": "naming",
+    "aliases": ["4-char", "four character"],
+    "definition": "A username of exactly four characters that can mix letters, numbers or symbols. Below a 4L in value because it is not pure letters."
+  },
+  {
+    "term": "Handle",
+    "full": "Handle",
+    "category": "naming",
+    "aliases": ["username", "IGN"],
+    "definition": "A username or account name in general. A short handle is a brief, desirable name. IGN (in-game name) is used the same way."
+  },
+  {
+    "term": "Drop",
+    "full": "Name Drop",
+    "category": "naming",
+    "aliases": ["dropping", "dropped"],
+    "definition": "A username becoming claimable again after it is released. A changed name is held for a while before it frees up, and snipers watch for drops to grab OG names."
+  },
+  {
+    "term": "Snipe",
+    "full": "Name Snipe",
+    "category": "naming",
+    "aliases": ["sniping", "sniped", "name snipe"],
+    "definition": "Claiming a username the instant it becomes available, usually with an automated sniper. Used to grab OG names the moment they drop."
+  },
+  {
+    "term": "NCA",
+    "full": "Name Change Available",
+    "category": "account",
+    "aliases": ["name change available"],
+    "definition": "The account's 30-day username cooldown is up, so the name can be changed right now. A selling point, because the buyer can rename it immediately."
+  },
+  {
+    "term": "Alt",
+    "full": "Alternate Account",
+    "category": "account",
+    "aliases": ["alts", "alternate account"],
+    "definition": "A secondary or throwaway account kept apart from a main. Often cheap NFA accounts bought in bulk for extra logins or ban evasion."
+  },
+  {
+    "term": "Cracked",
+    "full": "Cracked Account",
+    "category": "account",
+    "aliases": ["crack"],
+    "definition": "A non-premium account, or one logged into without official Mojang or Microsoft authentication. Not genuinely owned, so it can be lost at any time. Lowest tier."
+  },
+  {
+    "term": "Unbanned",
+    "full": "Unbanned",
+    "category": "account",
+    "aliases": ["unban", "clean bans"],
+    "definition": "The account carries no bans on the major servers such as Hypixel. A real selling point, since a Hypixel or HWID ban drops value sharply."
+  },
+  {
+    "term": "Clean",
+    "full": "Clean",
+    "category": "account",
+    "aliases": ["clean account", "clean history"],
+    "definition": "An account with no bans, no scam flags and a clear owner history. The opposite of a risky or pull-prone account, and worth more."
+  },
+  {
+    "term": "Cape",
+    "full": "Cape",
+    "category": "account",
+    "aliases": ["capes"],
+    "definition": "A cosmetic cape that raises an account's value. Rare ones like the MineCon capes, the Migrator cape or the OptiFine cape are collector draws and can matter more than the name."
+  },
+  {
+    "term": "EA",
+    "full": "Email Access",
+    "category": "access",
+    "aliases": ["email access", "mail access"],
+    "definition": "You also receive the login to the account's email, not just the account itself. Stronger than plain full access because it secures the recovery path."
+  },
+  {
+    "term": "Rep",
+    "full": "Reputation",
+    "category": "community",
+    "aliases": ["reputation", "rep points"],
+    "definition": "A user's trust score on a marketplace, built from vouches and completed deals. High rep is safer to deal with; low or no rep means caution."
+  },
+  {
+    "term": "Vouch",
+    "full": "Vouch",
+    "category": "community",
+    "aliases": ["vouches", "+rep"],
+    "definition": "A public confirmation that a user is trustworthy or that a deal went through cleanly. Vouches build reputation, and fake vouch rings are a known scam."
+  },
+  {
+    "term": "Scammer",
+    "full": "Scammer",
+    "category": "community",
+    "aliases": ["scam", "scammed"],
+    "definition": "Someone who takes payment or an account and does not hold up their end. Avoided by using a trusted middleman and checking reputation first."
+  },
+  {
+    "term": "Blacklist",
+    "full": "Blacklist",
+    "category": "community",
+    "aliases": ["BL", "blacklisted"],
+    "definition": "A public list marking a user as a confirmed scammer. Being blacklisted (BL) on a major forum effectively ends someone's ability to deal there."
+  },
+  {
+    "term": "DNW",
+    "full": "Do Not Deal With",
+    "category": "community",
+    "aliases": ["do not deal with", "do not work with"],
+    "definition": "A warning tag on a user you should not trade with at all, usually a confirmed or strongly suspected scammer."
+  },
+  {
+    "term": "DWC",
+    "full": "Deal With Caution",
+    "category": "community",
+    "aliases": ["deal with caution"],
+    "definition": "A warning tag on a user who is not fully blacklisted but has unresolved disputes or red flags. Deal only through a middleman, if at all."
+  },
+  {
+    "term": "Proof",
+    "full": "Proof",
+    "category": "community",
+    "aliases": ["proofs"],
+    "definition": "Evidence backing a claim: screenshots of ownership, the original information, or a record of a completed deal. \"Proof or no deal\" is standard."
+  },
+  {
+    "term": "2FA",
+    "full": "Two-Factor Authentication",
+    "category": "security",
+    "aliases": ["two factor", "2 step"],
+    "definition": "A second login step on the account or its email. Whether 2FA is present, removable or handed over matters, because it controls who can really keep the account."
+  },
+  {
+    "term": "SE",
+    "full": "Social Engineering",
+    "category": "security",
+    "aliases": ["social engineering", "SE'd"],
+    "definition": "Tricking a support agent or a person into handing over access or resetting an account, rather than breaking in technically. A common way accounts are stolen or recovered."
+  },
+  {
+    "term": "Phished",
+    "full": "Phishing",
+    "category": "security",
+    "aliases": ["phish", "phishing"],
+    "definition": "Credentials stolen through a fake login page or link. A phished account was taken with the real password, so its provenance is dirty and the victim can recover it."
+  },
+  {
+    "term": "RAT",
+    "full": "Remote Access Trojan",
+    "category": "security",
+    "aliases": ["ratted", "rat"],
+    "definition": "Malware that gives an attacker remote control of a victim's computer, used to grab sessions and credentials. The common source of beamed accounts. Never run files from a stranger."
+  },
+  {
+    "term": "Recovery",
+    "full": "Recovery",
+    "category": "security",
+    "aliases": ["recovered", "recover"],
+    "definition": "Regaining control of an account through official support using the original information (OGI). The same path that lets a previous owner pull an account back after a sale."
+  },
+  {
+    "term": "Pulled",
+    "full": "Pulled",
+    "category": "security",
+    "aliases": ["pull", "pulled back"],
+    "definition": "An account taken back by its original owner or through support after a sale, usually via recovery. The main risk with NFA and dirty-provenance accounts."
+  },
+  {
+    "term": "Crypto",
+    "full": "Cryptocurrency",
+    "category": "selling",
+    "aliases": ["BTC", "LTC", "ETH", "crypto"],
+    "definition": "Payment in cryptocurrency such as Bitcoin, Litecoin or Ethereum. Common because it is irreversible, which protects sellers from chargebacks but leaves buyers no refund."
+  },
+  {
+    "term": "Chargeback",
+    "full": "Chargeback",
+    "category": "selling",
+    "aliases": ["CB", "charged back"],
+    "definition": "Reversing a card or PayPal payment after the fact. A buyer can pay, receive the account, then charge back to reclaim the money. A core reason sellers prefer crypto or a middleman."
   }
 ]
