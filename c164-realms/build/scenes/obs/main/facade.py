@@ -42,17 +42,20 @@ DECK = B.SLATE_SMOOTH.block             # the terraces and the dome-room floor, 
 ROOF = B.SLATE_TILE
 
 # --- which windows are lit, until the light line says ----------------------------------------------------
+# The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, e76c3721,
+# the blue look) asked for every window of table(). L the brightest glass (the window over the
+# entrance, the only one), O lit, K a lamp behind a curtain, D dark, B a lowered blind; "." where a
+# front has no window. They stand in only while sky/_lightkit.py is not in the tree.
 GLASS = {"L": B.WINDOW_LIT, "K": B.WINDOW_CURTAIN, "O": B.WINDOW_FROSTED, "D": B.WINDOW_DARK, "B": B.WINDOW_BLIND}
-EAST_MAIN = "ODLKLBOLLLKLDLOLD"         # bays 1..17 from the north; the three in the middle are the hall
 ROWS = {
-    ("east", "main"): EAST_MAIN,
-    ("east", "base"): "DDBDDDDODDDBDODDD",
-    ("west", "main"): EAST_MAIN[::-1],  # the same rooms from behind: the dark ones do not line up
-    ("west", "base"): "DDDBDDDDDDDDDODDD",
-    ("north", "main"): "LDDD", ("north", "base"): "DDDD",
-    ("south", "main"): "KLDL", ("south", "base"): "DODD",
-    ("apse", "main"): "OLO",            # bays -1, 0, 1: the grand stair behind them
-    ("drum", "drum"): "LLDLLLLDLLLDLLLL",
+    ("east", "main"): "ODOBKODKLKODDOKKO",      # bays 1..17 from the north
+    ("east", "base"): "KOBODKDO.OKDKODOD",
+    ("west", "main"): "OKODD.......OKOBK",
+    ("west", "base"): "ODOKO.......DODOD",
+    ("north", "main"): "KO", ("north", "base"): "OB",
+    ("south", "main"): "BKDO", ("south", "base"): "DOKO",
+    ("apse", "main"): "KOK",                    # bays -1, 0, 1
+    ("drum", "drum"): "ODOKKKBKODOBKODDOKBD",   # gores 0..19, 0 looks east
 }
 FIRST_BAY = {"apse": -1, "drum": 0}     # every other front counts its bays from 1
 
@@ -60,13 +63,14 @@ FIRST_BAY = {"apse": -1, "drum": 0}     # every other front counts its bays from
 def _own_glass(front, bay, storey):
     row = ROWS.get((front, storey))
     i = bay - FIRST_BAY.get(front, 1)
-    return GLASS[row[i]] if row and 0 <= i < len(row) else None
+    return GLASS.get(row[i]) if row and 0 <= i < len(row) else None
 
 
 def glass(front, bay, storey):
-    """The window role of a bay. The light line decides once its tool is in the tree; it knows the
-    fronts of _plan.windows(), the rest (the drum) keeps the rows above."""
-    if (front, storey) in ROWS and front != "drum":
+    """The window role of a bay. The light line decides once its tool is in the tree (it reads the
+    windows from _plan.windows(), that is from table() below, which does not come back here);
+    until then the rows above."""
+    if (front, storey) in ROWS:
         try:
             from ..sky import _lightkit
             window_lit = getattr(_lightkit, "window_lit", None)
@@ -168,6 +172,27 @@ def order():
 
 
 # --- the roofs ----------------------------------------------------------------------------------------
+def _on_gable(x, z):
+    return abs(z) in P.GABLE_Z and S.WALL_W < x < S.WALL_E
+
+
+def terraces():
+    """The columns of the flat roofs, by name. They get a plain deck at DECK_Y here, a stand-in
+    that closes the shell; the package that finishes a terrace runs later and lays over it.
+
+    "north", "south"   over the end pavilions (the clock tower and the small dome stand on them)
+    "middle"           the two corners between the drum, the gable walls and the east parapet
+    "dome room"        the floor inside the drum
+    """
+    plan = shell()
+    out = {"north": set(), "south": set(), "middle": set(), "dome room": set()}
+    for x, z in plan.leaf | plan.core:
+        if P.roof_steps(x, z) is None and not _on_gable(x, z):
+            name = "dome room" if (x, z) in ROTUNDA else "middle" if abs(z) < P.GABLE_Z[0] else "north" if z < 0 else "south"
+            out[name].add((x, z))
+    return out
+
+
 def _roofs(canvas, plan, origin):
     """Close the top: a deck at y 17 over the pavilions and inside the drum, slate in half-block
     steps over the wings (c178's roof plan: eaves at 17.0 behind the parapets, ridge at 20.0),
@@ -180,7 +205,7 @@ def _roofs(canvas, plan, origin):
                 canvas.set(ox + x, oy + DECK_Y + steps // 2, oz + z, f"{ROOF.slab}[type=bottom]")
             else:
                 canvas.set(ox + x, oy + DECK_Y - 1 + steps // 2, oz + z, f"{ROOF.slab}[type=top]")
-        elif abs(z) in P.GABLE_Z and S.WALL_W < x < S.WALL_E:
+        elif _on_gable(x, z):
             steps = min(x - S.WALL_W, S.WALL_E - x, P.ROOF_RIDGE_STEPS) - 1
             for y in range(DECK_Y - 1, DECK_Y + steps // 2 + 1):
                 canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_FINE.block)
@@ -197,17 +222,27 @@ def build(canvas, origin=(0, 0, 0)):
     return 0
 
 
-@functools.lru_cache(maxsize=1)
-def _windows():
+@functools.lru_cache(maxsize=None)
+def _windows(glazed):
     c = Canvas()
-    return tuple(O.build(c, shell(), order(), glass=glass) + _dome.drum(c, glass=glass))
+    how = glass if glazed else None
+    return tuple(O.build(c, shell(), order(), glass=how) + _dome.drum(c, glass=how))
+
+
+TABLE_KEYS = ("front", "bay", "storey", "cells", "inward", "y")
+
+
+def table():
+    """The windows the shell has, blind bays left out: [dict(front, bay, storey, cells, inward, y)].
+    This is what main/_plan.windows() hands to the other lines. It says where the windows are and
+    nothing about their glass: the light line reads it to decide which are lit, so making it must
+    not ask the light line."""
+    return [{k: w[k] for k in TABLE_KEYS} for w in _windows(False) if not w["blind"]]
 
 
 def windows():
-    """Every glazed window the shell has, as _order.build returns them (blind ones left out):
-    [dict(front, bay, storey, cells, inward, y, glass)]. The fronts are "east", "west", "north",
-    "south", "apse" and "drum"."""
-    return [{k: v for k, v in w.items() if k != "blind"} for w in _windows() if not w["blind"]]
+    """The same windows with the glass that stands in each: table() plus glass (a block state)."""
+    return [{k: w[k] for k in TABLE_KEYS + ("glass",)} for w in _windows(True) if not w["blind"]]
 
 
 # --- self-check and drawings ----------------------------------------------------------------------------
@@ -248,11 +283,17 @@ def check():
     for key in sorted(set(mine) | set(theirs), key=str):
         if mine.get(key) != theirs.get(key):
             out.append(f"window {key}: built {mine.get(key)}, planned {theirs.get(key)}")
-    # 4. about one window in five is dark on the east front's main storey, no two dark side by side
-    row = [w["glass"] in {f.block for f in B.DARK_WINDOWS}
-           for w in sorted((w for w in windows() if (w["front"], w["storey"]) == ("east", "main")), key=lambda w: w["bay"])]
-    if not 0.12 <= sum(row) / len(row) <= 0.30 or any(a and b for a, b in zip(row, row[1:])):
-        out.append(f"east main storey: {sum(row)} dark windows of {len(row)}, or two of them side by side")
+    # 4. the director's rules for the windows, on the entrance front's main storey: at least a fifth
+    #    dark, no two neighbouring bays both lit, the brightest glass over the entrance only
+    row = {w["bay"]: w["glass"] for w in windows() if (w["front"], w["storey"]) == ("east", "main")}
+    dark = sum(g in {f.block for f in B.DARK_WINDOWS} for g in row.values())
+    lit = {bay for bay, g in row.items() if g in (B.WINDOW_LIT.block, B.WINDOW_FROSTED.block)}
+    if dark < len(row) / 5.0:
+        out.append(f"east main storey: {dark} dark windows of {len(row)}, fewer than a fifth")
+    if any(bay + 1 in lit for bay in lit):
+        out.append(f"east main storey: two neighbouring bays are both lit: {sorted(lit)}")
+    if [bay for bay, g in row.items() if g == B.WINDOW_LIT.block] != [P.AISLE_BAY]:
+        out.append("east main storey: the brightest glass is not the entrance window's alone")
     # 5. the doorway is open from the court into the hall
     for z in P.window_rows(P.AISLE_BAY):
         for x in range(S.east_wall_x(P.AISLE_BAY) - 1, S.east_wall_x(P.AISLE_BAY) + 3):
