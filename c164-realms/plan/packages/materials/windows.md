@@ -30,4 +30,18 @@
 - 被依赖：main（立面大拱窗）、interiors、A6（窗框模型）。
 
 ## 记录
-- （领卡后填）
+- 2026-11-14 c195：六窗贴图 + 块/板两形状重定向；亮窗 `emit=15`/`shade=False`/`ao=False` 不透明、暗窗不透明不发光、SKYLIGHT α=128（0.5）；亮窗两版（甲 小方灯/匀玻璃/竖褶布帘，乙 高窗棂两灯一块/头部聚光/百叶）；暗窗一版（按位混四图），窗棂两版同占 60/256。测试场景 `obs_mat_windows`（甲）、`obs_mat_windows_b`（乙）。分支 HEAD db18a103。
+- 2026-11-14 c205（接手）：merge 最新总装 b3430bd4（check.py 九项、`_kit` 已同步，无冲突）。
+  - **亮窗三档云端复量**（Rec.601 luma = 0.299R+0.587G+0.114B，“整扇连窗棂的平均”，与 c177 口径一致：#ffc65a→0.79、#caa356→0.65），对齐 c177 g2 #90：
+
+    | 档 | 甲 整扇 | 甲 玻璃 | 乙 整扇 | 目标（整扇） |
+    | --- | --- | --- | --- | --- |
+    | WINDOW_LIT | 0.650 | 0.811 | 0.642 | ~0.65（玻璃 #ffc65a 不提到 #ffe9a6） |
+    | WINDOW_FROSTED | 0.542 | 0.671 | 0.547 | 0.52–0.55 ✓ |
+    | WINDOW_CURTAIN | 0.396 | 0.479 | 0.414 | 0.38–0.42 ✓ |
+
+    暗窗显示（贴图色 × c177 东面天光系数）：DARK A 0.080 / B 0.050、BLIND A 0.073 —— 对齐 #90 的 ~0.08 / ~0.05 / ~0.073。复量脚本 `python -m scenes.obs_mat_windows.brightness`（断言三档在档内，退出码 0，可随时复跑）。
+  - `tools/check.py --scene obs_mat_windows` 与 `--scene obs_mat_windows_b` 合并后全过（0 警告）。
+  - 云端离线自查图（v4 #1，render.py 1280×720）已 commit 进 git：`renders/obs_mat_windows/`（甲 22 张 + shots.txt）、`renders/obs_mat_windows_b/`（乙比选子集 + `compare_ab.png` 并排 + shots.txt）。自查：朝东斜看（slant/face_*）亮窗四朝向均显贴图原色、无面阴影；暗窗映天不发光、SKYLIGHT 可看进屋；窗棂拼成连续网；远看亮暗分布对（约二成暗窗、相邻不同亮）。
+  - 窗后第一格已留 A2 隐形光源位（测试场景按 sky.md §6 暂摆 level 9–10 占位，不等 A2 定稿光）。
+  - 【交付】点 c188（S2，合并钥匙）→ c188 回【合并】点 c164；同步群 g2。分支 `cursor/c164-m2-windows-7bb5`。
