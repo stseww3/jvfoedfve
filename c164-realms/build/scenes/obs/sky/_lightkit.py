@@ -11,6 +11,7 @@ lines. Those call this module and nothing else of the light:
     L.suggest(canvas, (x, y, z), 12, "props/lamps:bracket_a")       # a light source someone would like
     L.take(canvas, [((x, y, z), 12), ...], "props/lamps:festoon")   # several of them
     L.glazed(canvas, windows, origin)       # the windows of a front that main's table does not list
+    L.dress(canvas)                         # a test scene: light the building although the switch is off
 
 Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nine parts white and 13
 is half white already.
@@ -26,24 +27,32 @@ pilasters and n-6 on their fronts. Under the blue look stone is lifted out of th
 grey at 7 and turns warm from 9 on: 10 behind the glass makes a window's surround lighter, 12 makes
 it warm.
 
-Windows (the director's rules, group #15317): at least a fifth of the windows of a front are dark;
-two neighbouring bays of one storey are never both lit; lit windows come in tiers and the brightest
-is kept for the entrance; a front must not turn warm all over.
+Windows (the director's rules, group #15317 and #19277): at least a fifth of the windows of a
+front are dark; two neighbouring bays of one storey are never both lit; lit windows come in tiers
+and the brightest is kept for the entrance; a front must not turn warm all over.
 
     tier 0  dark     B.WINDOW_DARK, now and then B.WINDOW_BLIND          no light behind it
     tier 1  dim      B.WINDOW_CURTAIN, a lamp behind a drawn curtain      may stand next to a lit one
     tier 2  lit      B.WINDOW_FROSTED
     tier 3  bright   B.WINDOW_LIT, the entrance only
 
+What no look changes (FIXED) is three places on the entrance front: the foot of the clock tower, the
+entrance, the foot of the small dome, the middle one the brightest. The bays next to a fixed window
+stay dark, so each of the three stands apart. Between them a wing shows two lit windows at the most,
+and the base storey is a dark band under the great windows: besides its fixed three, one lit window
+to a wing under the fullest look and none under the others (SHARE, LOW_SHARE, MOST, LOW_MOST: by
+storey). The drum of the dome only ever glows: the dome room is kept dark for observing (HUSHED).
+
 The tier of a window follows from its name (front, bay, storey) and a seed, never from the order of
 building, so a front comes out the same every time. `front`, `bay` and `storey` are the keys of
 main's table of windows (scenes.obs.main._plan.windows()): "east" bays 1 to 17 from the north, "base"
-and "main". The plain names of the fronts belong to the main building; another building puts its
-name in front ("power.east"), and its windows get a pattern of their own.
+and "main"; "drum" the round windows of the dome's drum. The plain names of the fronts belong to the
+main building; another building puts its name in front ("power.east"), and its windows get a pattern
+of their own.
 
 The three looks light different shares of the same windows. Windows are blocks and do not change
 with the time, so a scene is built for one look: "blue" lights the most, "glow" fewer, "deep" the
-entrance, the foot of the tower and a few more. A window that is lit in a sparser look is lit in the
+three fixed places and one window to a wing. A window that is lit in a sparser look is lit in the
 fuller ones as well.
 """
 import functools
@@ -100,21 +109,35 @@ ROLE = {BRIGHT: B.WINDOW_LIT, LIT: B.WINDOW_FROSTED, DIM: B.WINDOW_CURTAIN}
 BLIND_SHARE = 0.3           # of the dark windows, how many show a lowered blind
 DARK_SHARE = 0.2            # the director's floor: this share of a front's windows is dark
 DARK_FROM = 5               # a front with fewer windows is only counted in the building's total
-SEED = 2317                 # picked on main's table: both wings of the entrance front keep lit windows in every look
-# per look: of the windows that may be lit, the share that is; of the others, the share that glows
-# behind a curtain
-SHARE = {"blue": (0.75, 0.4), "glow": (0.4, 0.2), "deep": (0.12, 0.08)}
+SEED = 3667                 # picked on main's table (the card says by what): the wings differ and none is left dark
+# Per look: of the windows that may be lit, the share that is; of the others, the share that glows
+# behind a curtain. The low storeys have shares of their own: the base storey is a dark band that
+# carries the row of great windows, and never shows more lit windows than the storey over it.
+SHARE = {"blue": (0.9, 0.4), "glow": (0.4, 0.2), "deep": (0.15, 0.08)}
+LOW = ("base",)
+LOW_SHARE = {"blue": (0.25, 0.3), "glow": (0.0, 0.2), "deep": (0.0, 0.1)}
+# A stretch is a run of windows of one storey between two fixed ones or the ends of the row: a wing.
+# No look lights more than this many windows of a stretch, so that the entrance stays the one
+# bright group of its front.
+MOST = 2
+LOW_MOST = 1
 ALWAYS = ("tower",)         # fronts whose windows that may be lit are lit in every look
+HUSHED = ("drum",)          # fronts that only ever glow (tier 1): the dome room is kept dark for observing
+RINGS = ("drum",)           # fronts that close on themselves: the last bay stands next to the first
 # What no look changes. The entrance: the window over the door is the brightest of the map; the bays
 # beside it glow behind curtains on the main storey and are lit on the base storey, so that all five
 # show light and no two lit ones are neighbours. The foot of the clock tower (bays 1 and 2 of the
-# east front), lit crosswise for the same reason. The apse over the west door, which the sunset
-# platform looks at: its middle window lit, the two beside it behind curtains.
+# east front), lit crosswise for the same reason, and across the front from it the foot of the small
+# dome (bay 17). The apse over the west door, which the sunset platform looks at: its middle window
+# lit, the two beside it behind curtains. The round window of the drum that looks east along the
+# axis, over the entrance and under the top of the dome.
 FIXED = {
     ("east", 9, "main"): BRIGHT, ("east", 8, "main"): DIM, ("east", 10, "main"): DIM,
     ("east", 8, "base"): LIT, ("east", 10, "base"): LIT,
     ("east", 1, "main"): LIT, ("east", 2, "base"): LIT,
+    ("east", 17, "main"): LIT,
     ("apse", 0, "main"): LIT, ("apse", -1, "main"): DIM, ("apse", 1, "main"): DIM,
+    ("drum", 0, "drum"): DIM,
 }
 # The level of the sources behind the glass, by tier: (a tall window, a window up to three rows
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
@@ -149,59 +172,124 @@ def _look(look):
     return look
 
 
-def _may_be_lit(key, exists, memo):
+def shares(look, storey):
+    """(lit share, dim share, the most lit windows of a stretch) for a storey under a look."""
+    low = storey in LOW
+    lit, dim = (LOW_SHARE if low else SHARE)[look]
+    return lit, dim, (LOW_MOST if low else MOST)
+
+
+def _plain(front):
+    """A front's name without the building in front of it: "power.east" is an east front."""
+    return str(front).rpartition(".")[2]
+
+
+def _ring(front, bays):
+    """(first bay, number of bays) of a row that closes on itself, else None."""
+    if _plain(front) in RINGS and len(bays) >= 3 and bays[-1] - bays[0] + 1 == len(bays):
+        return bays[0], len(bays)
+    return None
+
+
+def _beside(key, ring=None):
+    """The two windows next to one, as keys."""
+    front, bay, storey = key
+    if ring:
+        first, n = ring
+        return [(front, first + (bay - first + step) % n, storey) for step in (-1, 1)]
+    return [(front, bay - 1, storey), (front, bay + 1, storey)]
+
+
+def _framed(key, ring=None):
+    """Does a window stand next to a fixed one that shows light? Then it stays dark."""
+    return key not in FIXED and any(FIXED.get(other, DARK) >= DIM for other in _beside(key, ring))
+
+
+def _may_be_lit(key, exists, memo, ring=None):
     """Is a window one of those that may be lit? Every window has a fixed priority, and a window is
     in unless a neighbour of higher priority is. So no two neighbours are both in, and no window
     stays out that could have been in: between two of them lie one or two others."""
     if key not in memo:
-        front, bay, storey = key
         if key in FIXED:
             memo[key] = FIXED[key] >= LIT
+        elif _framed(key, ring):
+            memo[key] = False
         else:
-            mine = (_h(key, _PRIORITY), bay)
-            memo[key] = True
-            for n in (bay - 1, bay + 1):
-                other = (front, n, storey)
-                if other in FIXED:
-                    taken = FIXED[other] >= LIT
-                else:
-                    taken = (exists(other) and (_h(other, _PRIORITY), n) > mine
-                             and _may_be_lit(other, exists, memo))
-                if taken:
-                    memo[key] = False
-                    break
+            mine = (_h(key, _PRIORITY), key[1])
+            memo[key] = not any(
+                other not in FIXED and exists(other) and (_h(other, _PRIORITY), other[1]) > mine
+                and _may_be_lit(other, exists, memo, ring) for other in _beside(key, ring))
     return memo[key]
 
 
-def _always(front):
-    return str(front).rpartition(".")[2] in ALWAYS
+def _stretches(row, ring=None):
+    """The runs of neighbouring windows of a row (keys in the order of the bays) between the fixed
+    ones and the gaps: the wings of a front."""
+    out, run, last = [], [], None
+    for key in row:
+        if run and (key in FIXED or key[1] != last + 1):
+            out.append(run)
+            run = []
+        if key not in FIXED:
+            run.append(key)
+        last = key[1]
+    if run:
+        out.append(run)
+    if ring and len(out) > 1 and row[0] not in FIXED and row[-1] not in FIXED:
+        out[0] = out.pop() + out[0]
+    return out
 
 
-def _tier(key, look, exists, memo):
-    """The tier of a window that is settled by itself: the shares are kept on the average."""
+def _tier(key, look):
+    """The tier of a window that is settled by itself, as if every bay beside it had a window: the
+    shares are kept on the average, the most of a stretch is not."""
     if key in FIXED:
         return FIXED[key]
-    lit, dim = SHARE[look]
-    if _may_be_lit(key, exists, memo) and (_always(key[0]) or _h(key, _WAKE) < lit):
-        return LIT
-    return DIM if _h(key, _DIM) < dim else DARK
+    front, _, storey = key
+    lit, dim, _ = shares(look, storey)
+    hushed = _plain(front) in HUSHED
+    if _framed(key):
+        return DARK
+    if (_plain(front) in ALWAYS or _h(key, _WAKE) < lit) and _may_be_lit(key, lambda other: True, {}):
+        return DIM if hushed else LIT
+    return DIM if not hushed and _h(key, _DIM) < dim else DARK
 
 
 @functools.lru_cache(maxsize=None)
 def _tiers(keys, look):
-    """The tiers of a whole table: the shares are kept front by front, to the window."""
-    lit, dim = SHARE[look]
-    memo, out = {}, {}
-    for front in sorted({key[0] for key in keys}, key=str):
-        mine = sorted(k for k in keys if k[0] == front)
-        out.update({k: FIXED[k] for k in mine if k in FIXED})
-        free = [k for k in mine if k not in FIXED]
-        may = sorted((k for k in free if _may_be_lit(k, keys.__contains__, memo)), key=lambda k: _h(k, _WAKE))
-        for k in may[:math.ceil((1.0 if _always(front) else lit) * len(may) - 1e-9)]:
-            out[k] = LIT
-        rest = sorted((k for k in free if k not in out), key=lambda k: _h(k, _DIM))
-        for i, k in enumerate(rest):
-            out[k] = DIM if i < int(round(dim * len(rest))) else DARK
+    """The tiers of a whole table: the shares are kept storey by storey and wing by wing, to the
+    window."""
+    rows, out = {}, {}
+    for front, bay, storey in keys:
+        rows.setdefault((front, storey), []).append(bay)
+    for (front, storey), bays in sorted(rows.items(), key=lambda kv: (str(kv[0][0]), str(kv[0][1]))):
+        bays.sort()
+        row = [(front, bay, storey) for bay in bays]
+        lit, dim, most = shares(look, storey)
+        ring, memo = _ring(front, bays), {}
+        hushed, always = _plain(front) in HUSHED, _plain(front) in ALWAYS
+        out.update({k: FIXED[k] for k in row if k in FIXED})
+        # the lit ones are taken wing by wing in turn, the wing with the fewest first, so that no
+        # wing is left dark while another fills up; the order does not depend on the look
+        pools = [sorted((k for k in stretch if _may_be_lit(k, keys.__contains__, memo, ring)),
+                        key=lambda k: _h(k, _WAKE)) for stretch in _stretches(row, ring)]
+        total = sum(len(pool) for pool in pools)
+        n = total if always else int(lit * total + 0.5)
+        top = total if always or hushed else most
+        taken = [0] * len(pools)
+        while n > 0:
+            still = [i for i, pool in enumerate(pools) if pool and taken[i] < top]
+            if not still:
+                break
+            fewest = min(taken[i] for i in still)
+            i = min((i for i in still if taken[i] == fewest), key=lambda i: _h(pools[i][0], _WAKE))
+            out[pools[i].pop(0)] = DIM if hushed else LIT
+            taken[i] += 1
+            n -= 1
+        rest = sorted((k for k in row if k not in out and not _framed(k, ring)), key=lambda k: _h(k, _DIM))
+        glow = 0 if hushed else int(dim * len(rest) + 0.5)
+        for k in row:
+            out.setdefault(k, DIM if k in rest[:glow] else DARK)
     # the floor of dark windows, front by front and then over the whole building: the dim ones that
     # were nearest to being dark go first, then lit ones; the fixed windows stay
     fronts = sorted({key[0] for key in out}, key=str)
@@ -222,14 +310,30 @@ def _key(entry):
     return tuple(entry)
 
 
-@functools.lru_cache(maxsize=1)
+_MAIN = {"known": False, "keys": None, "busy": False}
+
+
 def _main_keys():
-    """The windows of the main building, when its table is in the tree."""
-    try:
-        from ..main import _plan
-    except ImportError:
+    """The windows of the main building, when its table is in the tree. Should main ever build a
+    front in order to list its windows, and that front ask window_lit() for its glass, the call
+    that comes in the middle of the listing gets None: those windows are settled by themselves,
+    and the table is read once and kept as soon as the listing returns."""
+    if _MAIN["known"]:
+        return _MAIN["keys"]
+    if _MAIN["busy"]:
         return None
-    return frozenset(_key(w) for w in _plan.windows())
+    _MAIN["busy"] = True
+    try:
+        try:
+            from ..main import _plan
+        except ImportError:
+            keys = None
+        else:
+            keys = frozenset(_key(w) for w in _plan.windows())
+    finally:
+        _MAIN["busy"] = False
+    _MAIN["keys"], _MAIN["known"] = keys, True
+    return keys
 
 
 def tiers(table, look=None):
@@ -262,7 +366,7 @@ def window_lit(front, bay, storey, look=None, table=None):
     if keys is not None and key in keys:
         tier = _tiers(keys, look)[key]
     else:
-        tier = _tier(key, look, lambda other: True, {})
+        tier = _tier(key, look)
     return tier, role_of(key, tier)
 
 
@@ -277,10 +381,15 @@ def counts(tier_by_key):
 def lit_neighbours(tier_by_key):
     """The pairs of neighbouring bays of one front and storey that are both lit (tier 2 or more):
     [(front, storey, bay, bay + 1)]. The rules allow none."""
-    out = []
-    for (front, bay, storey), tier in sorted(tier_by_key.items(), key=lambda kv: (str(kv[0][0]), kv[0][2], kv[0][1])):
-        if tier >= LIT and tier_by_key.get((front, bay + 1, storey), DARK) >= LIT:
-            out.append((front, storey, bay, bay + 1))
+    out, rows = [], {}
+    for (front, bay, storey), tier in tier_by_key.items():
+        rows.setdefault((front, storey), {})[bay] = tier
+    for (front, storey), bays in sorted(rows.items(), key=lambda kv: (str(kv[0][0]), str(kv[0][1]))):
+        ring = _ring(front, sorted(bays))
+        for bay in sorted(bays):
+            other = _beside((front, bay, storey), ring)[1][1]
+            if bays[bay] >= LIT and bays.get(other, DARK) >= LIT:
+                out.append((front, storey, bay, other))
     return out
 
 
@@ -345,6 +454,13 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
             group=str(group), origin=tuple(int(v) for v in origin), front=w["front"], bay=w["bay"],
             storey=w["storey"], cells=[tuple(c) for c in w["cells"]], inward=tuple(w["inward"]),
             y=tuple(w["y"]), level=w.get("level"), look=look))
+
+
+def dress(canvas, on=True):
+    """Ask for the building's own lights on this canvas while the switch sky/lights.DRESS is off: the
+    sources behind the windows of main's table, in the main doorway, and the wall wash. For a test
+    scene that shows a front under its lights; the master scene follows the switch."""
+    canvas.light_dress = bool(on)
 
 
 # ---- a look at the result without drawing it -------------------------------------------------------
