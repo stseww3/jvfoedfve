@@ -69,7 +69,8 @@ STYLE = {
     "a": dict(
         pale=B.ASHLAR_FINE.block, dark=B.SLATE_SMOOTH.block, chequer=True, walk=None,
         pilaster=B.ASHLAR_FINE.block, capital=B.ASHLAR_EMBLEM, base=B.ASHLAR_PANEL.block,
-        coffer=B.DARK_WOOD.block, beam=B.IRON_RIVETED.block, star=B.BRASS_PLATE.block,
+        cornice=B.ASHLAR_FINE.slab, coffer=B.DARK_WOOD.block, beam=B.IRON_RIVETED.block,
+        star=B.BRASS_PLATE.block,
         board=dict(x=(6, 10), rows=BOARD_A),
         benches=[("north", range(8, 12)), ("south", range(8, 12))],
         charts=[("north", (7, 9, 11), 9), ("south", (7, 9, 11), 9)],
@@ -79,7 +80,7 @@ STYLE = {
     "b": dict(
         pale=B.TUFF_BRICK.block, dark=B.SLATE_SMOOTH.block, chequer=False, walk=B.IRON_GRATE,
         pilaster=B.IRON_RIVETED.block, capital=B.IRON_PLATE, base=B.IRON_PLATE,
-        coffer=B.IRON_PLATE, beam=B.IRON_RIVETED.block, star=None,
+        cornice=B.IRON_RIVETED.slab, coffer=B.IRON_PLATE, beam=B.IRON_RIVETED.block, star=None,
         board=dict(x=(3, 8), rows=BOARD_B),
         benches=[("south", range(8, 13))],
         charts=[("north", (10, 11, 12), 9), ("north", (10, 11, 12), 11), ("south", (8, 10), 9)],
@@ -223,6 +224,16 @@ def _walls(put, free, st, pier, deck):
             for z in (H.Z0, H.Z1):
                 if (x, z) not in pier and x not in PIL_X:
                     put(x, y, z, st["capital"] if y == CORNICE_Y else B.ASHLAR_FINE.slab + "[type=top]")
+
+    # a crown cornice just under the ceiling, framing the coffers on the north, south and west faces
+    crown = st["cornice"] + "[type=top]"
+    for x in range(H.X0, H.X1 + 1):
+        for z in (H.Z0, H.Z1):
+            if (x, z) not in pier:
+                put(x, H.Y1, z, crown)
+    for z in range(H.Z0, H.Z1 + 1):
+        if (H.X0, z) not in pier:
+            put(H.X0, H.Y1, z, crown)
 
 
 def _gallery(put, deck, rail):
