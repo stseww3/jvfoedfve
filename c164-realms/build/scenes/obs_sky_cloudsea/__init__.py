@@ -85,25 +85,53 @@ def _mountain(c):
             c.set(x, y, z, _rock(x, y, z))
 
 
-def _station(c):
-    """The cable station's deck, two courses on the lower platform; V1 stands on it."""
+def _sunset_cells():
+    cx, cz = SUN_C
+    return {(x, z) for x in range(cx - SUN_R, cx + 1) for z in range(cz - SUN_R, cz + SUN_R + 1)
+            if math.hypot(x - cx, z - cz) <= SUN_R - 0.5}
+
+
+def _paving(c):
+    """Deep paving on the flats people stand on, the station deck two courses up on the lower
+    platform (V1 stands on it), and a thin iron rail on the rim of the sunset platform."""
+    x0, z0, x1, z1 = S.UPPER_TERRACE
+    c.box(x0, S.PAVING_Y, z0, x1, S.PAVING_Y, z1, PAVE)
+    x0, z0, x1, z1 = S.LOWER_PLATFORM
+    c.box(x0, S.LOWER_PAVING_Y, z0, x1, S.LOWER_PAVING_Y, z1, PAVE)
     x0, z0, x1, z1 = S.CABLE_STATION
     c.box(x0, S.LOWER_PAVING_Y + 1, z0, x1, S.STATION_GROUND - 1, z1, PAVE)
+    sun = _sunset_cells()
+    for x, z in sun:
+        c.set(x, S.PAVING_Y, z, PAVE)
+        if x < S.UPPER_TERRACE[0] and any((x + i, z + k) not in sun for i, k in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            c.set(x, S.GROUND, z, B.IRON_BARS)
+
+
+def _shell(c, x0, y0, z0, x1, y1, z1, block):
+    """The faces of a box, open underneath."""
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            c.set(x, y1, z, block)
+            if x in (x0, x1) or z in (z0, z1):
+                for y in range(y0, y1):
+                    c.set(x, y, z, block)
 
 
 def _massing(c):
     """A pale stand-in for the main building: the long block, the drum and dome, the clock tower."""
-    c.box(S.WALL_W, S.GROUND, S.Z_NORTH, S.WALL_E, S.PARAPET[1], S.Z_SOUTH, STONE)
+    _shell(c, S.WALL_W, S.GROUND, S.Z_NORTH, S.WALL_E, S.PARAPET[1], S.Z_SOUTH, STONE)
     dx, dz = S.DOME_CENTRE
     for y in range(S.DRUM_BASE, S.DOME_APEX + 1):
         rad = S.DOME_R if y < S.DOME_SPRING else S.dome_profile(y)
+        over = S.DOME_R if y < S.DOME_SPRING else (S.dome_profile(y + 1) or 0.0)
         block = STONE if y < S.DOME_SPRING else COPPER
         for x in range(dx - S.DOME_R, dx + S.DOME_R + 1):
             for z in range(dz - S.DOME_R, dz + S.DOME_R + 1):
-                if math.hypot(x - dx, z - dz) <= rad + 0.3:
+                d = math.hypot(x - dx, z - dz)
+                if min(rad, over) - 1.6 < d <= rad + 0.3:
                     c.set(x, y, z, block)
-    c.box(S.CLOCK_SHAFT_X[0], S.GROUND, S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_TOP,
-          S.CLOCK_SHAFT_Z[1], STONE)
+    _shell(c, S.CLOCK_SHAFT_X[0], S.GROUND, S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_TOP,
+           S.CLOCK_SHAFT_Z[1], STONE)
     cx, cz = (S.CLOCK_SHAFT_X[0] + S.CLOCK_SHAFT_X[1]) // 2, (S.CLOCK_SHAFT_Z[0] + S.CLOCK_SHAFT_Z[1]) // 2
     for y in range(S.CLOCK_SHAFT_TOP + 1, S.CLOCK_TOP + 1):          # the spire
         r = max(0, 3 - (y - S.CLOCK_SHAFT_TOP - 1) // 3)
@@ -112,22 +140,11 @@ def _massing(c):
         c.set(cx, y, cz, B.IRON_ROD)
 
 
-def _sunset_rail(c):
-    """A thin iron rail on the rim of the sunset platform; the camera looks west through it."""
-    cx, cz = SUN_C
-    for x in range(cx - SUN_R, cx + 1):
-        for z in range(cz - SUN_R, cz + SUN_R + 1):
-            r = math.hypot(x - cx, z - cz)
-            if SUN_R - 1.0 < r <= SUN_R:
-                c.set(x, S.GROUND, z, B.IRON_BARS)
-
-
 def build():
     c = Canvas()
     _mountain(c)
-    _station(c)
+    _paving(c)
     _massing(c)
-    _sunset_rail(c)
     cloudsea.build(c, (0, 0, 0), version=VERSION)
     return c
 
