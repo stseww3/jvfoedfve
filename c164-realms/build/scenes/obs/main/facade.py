@@ -64,9 +64,10 @@ def _own_glass(front, bay, storey):
 
 
 def glass(front, bay, storey):
-    """The window role of a bay. The light line decides once its tool is in the tree; it knows the
-    fronts of _plan.windows(), the rest (the drum) keeps the rows above."""
-    if (front, storey) in ROWS and front != "drum":
+    """The window role of a bay. The light line decides once its tool is in the tree (it reads the
+    windows from _plan.windows(), that is from table() below, which does not come back here);
+    until then the rows above."""
+    if (front, storey) in ROWS:
         try:
             from ..sky import _lightkit
             window_lit = getattr(_lightkit, "window_lit", None)
@@ -197,17 +198,27 @@ def build(canvas, origin=(0, 0, 0)):
     return 0
 
 
-@functools.lru_cache(maxsize=1)
-def _windows():
+@functools.lru_cache(maxsize=None)
+def _windows(glazed):
     c = Canvas()
-    return tuple(O.build(c, shell(), order(), glass=glass) + _dome.drum(c, glass=glass))
+    how = glass if glazed else None
+    return tuple(O.build(c, shell(), order(), glass=how) + _dome.drum(c, glass=how))
+
+
+TABLE_KEYS = ("front", "bay", "storey", "cells", "inward", "y")
+
+
+def table():
+    """The windows the shell has, blind bays left out: [dict(front, bay, storey, cells, inward, y)].
+    This is what main/_plan.windows() hands to the other lines. It says where the windows are and
+    nothing about their glass: the light line reads it to decide which are lit, so making it must
+    not ask the light line."""
+    return [{k: w[k] for k in TABLE_KEYS} for w in _windows(False) if not w["blind"]]
 
 
 def windows():
-    """Every glazed window the shell has, as _order.build returns them (blind ones left out):
-    [dict(front, bay, storey, cells, inward, y, glass)]. The fronts are "east", "west", "north",
-    "south", "apse" and "drum"."""
-    return [{k: v for k, v in w.items() if k != "blind"} for w in _windows() if not w["blind"]]
+    """The same windows with the glass that stands in each: table() plus glass (a block state)."""
+    return [{k: w[k] for k in TABLE_KEYS + ("glass",)} for w in _windows(True) if not w["blind"]]
 
 
 # --- self-check and drawings ----------------------------------------------------------------------------
