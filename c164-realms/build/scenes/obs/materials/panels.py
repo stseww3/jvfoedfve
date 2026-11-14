@@ -20,10 +20,10 @@ pre-review of the designs, point 5), so they are built as one set and sorted int
   - lit (three): the valves, the oscilloscope's tube, the pilot lamps. Only the pixels that glow
     (GLOW) are drawn at full brightness: a second front lies over the first and shows those
     pixels alone (see glow and _mount), the way the game lays the coloured fringe over the side of
-    its grass block. Everything else on a lit face, down to the black floor the lamps sit in,
-    takes the light of the room like the faces beside it, so in a dim room there are filaments,
-    lamps and a round green tube on a dark wall, and no glowing rectangles. Green and red are
-    single lamps.
+    its grass block. Everything else on a lit face, down to the black floor the lamps sit in and
+    a pilot lamp while it is out (OUT), takes the light of the room like the faces beside it, so
+    in a dim room there are filaments, lamps and a round green tube on a dark wall, and no
+    glowing rectangles. Green and red are single lamps.
 
 Four faces are animated, slowly, and on one beat, the second of the master clock (FRAMETIME): the
 units wheel of the register steps once a second, the pilot lamps take turns every two, the trace
@@ -128,6 +128,33 @@ GLOW = {
     "scope": _round(*TUBE),
     "pilot_lamps": [(x + dx, y + dy) for y in LAMP_ROWS for x in TRIO for dx in (0, 1) for dy in (0, 1)],
 }
+
+AMBER = ((GL[4], GL[2], GL[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and out
+GREEN = ((PH[4], PH[3], PH[2]), (PH[1], PH[0], PH[0]))
+RED = ((SG[3], SG[2], SG[1]), (SG[1], SG[0], SG[0]))
+
+
+def _lamps(frame):
+    """The pilot lamps in a frame, as (x, y, lamp, on); a lamp is two pixels each way from (x, y).
+    The upper row burns steadily (two amber, one green); below it two amber lamps take turns and
+    the red one comes on once in a round."""
+    upper = ((AMBER, True), (AMBER, True), (GREEN, True))
+    lower = ((AMBER, frame % 4 < 2), (RED, frame >= 6), (AMBER, frame % 4 >= 2))
+    return [(x, y, lamp, on) for y, row in zip(LAMP_ROWS, (upper, lower)) for x, (lamp, on) in zip(TRIO, row)]
+
+
+def _lamps_out(frame):
+    return [(x + dx, y + dy) for x, y, _, on in _lamps(frame) if not on for dx in (0, 1) for dy in (0, 1)]
+
+
+# What of GLOW is dark in a frame: a lamp that is out takes the light of the room, like the field
+# it sits in, and is gone in the dark until its turn comes.
+OUT = {"pilot_lamps": _lamps_out}
+
+
+def glowing(name, frame=0):
+    """The pixels of a lit face that glow in one of its frames."""
+    return set(GLOW[name]) - set(OUT[name](frame) if name in OUT else ())
 
 
 # ---- what every face shares --------------------------------------------------------------------------
@@ -429,22 +456,14 @@ def scope(frame=0):
     return px
 
 
-AMBER = ((GL[4], GL[2], GL[1]), (BR[1], BR[0], BR[0]))      # a lamp lit, and dark
-GREEN = ((PH[4], PH[3], PH[2]), (PH[1], PH[0], PH[0]))
-RED = ((SG[3], SG[2], SG[1]), (SG[1], SG[0], SG[0]))
-
-
 def pilot_lamps(frame=0):
-    """Two rows of pilot lamps. The upper row burns steadily (two amber, one green); below it two
-    amber lamps take turns and the red one comes on once in a round. The lamps glow (GLOW), lit
-    or dark; the black field they sit in does not."""
+    """Two rows of pilot lamps in a black field, a label under each column; which of them burn in
+    a frame is _lamps. A lamp glows while it is on (glowing); out, it does not, and neither does
+    the field."""
     px = _plate(9)
     _sunk(px, 3, 3, 12, 10, FE[0])
-    upper = ((AMBER, True), (AMBER, True), (GREEN, True))
-    lower = ((AMBER, frame % 4 < 2), (RED, frame >= 6), (AMBER, frame % 4 >= 2))
-    for y, row in zip(LAMP_ROWS, (upper, lower)):
-        for x, (lamp, on) in zip(TRIO, row):
-            _stud(px, x, y, lamp[0] if on else lamp[1])
+    for x, y, lamp, on in _lamps(frame):
+        _stud(px, x, y, lamp[0] if on else lamp[1])
     for x in TRIO:
         _put(px, x, 12, CR[1])
         _put(px, x + 1, 12, CR[0])
@@ -464,6 +483,8 @@ FRAMES = {"tubes": 4, "scope": 8, "counter": 10, "pilot_lamps": 8}
 assert sorted(FACES) == sorted(B.PANELS) == sorted(n for names in RANKS.values() for n in names)
 assert set(RANKS["lit"]) == set(GLOW) and len(GLOW) <= 4
 assert set(FRAMES) == set(FRAMETIME) and set(SMOOTH) <= set(FRAMES)
+# a lamp cannot fade out: blended, its pixels would be half empty, and the game draws a pixel or does not
+assert set(OUT) <= set(GLOW) and not set(OUT) & set(SMOOTH)
 
 
 def frames(name):
@@ -483,15 +504,16 @@ def picture(name):
 
 def glow(name):
     """What glows on a lit face as a picture of its own: (pixels, meta). It is the face's picture,
-    frame for frame and on the same beat, and empty (alpha 0) wherever the face does not glow. The
-    colours stay under the empty pixels, so whatever the game mixes into the rim of a lamp where
-    it samples between two pixels is the plate beside the lamp and never black."""
+    frame for frame and on the same beat, and empty (alpha 0) wherever the face does not glow in
+    that frame (glowing). The colours stay under the empty pixels, so whatever the game mixes into
+    the rim of a lamp where it samples between two pixels is the plate beside the lamp and never
+    black."""
     pixels, meta = picture(name)
     pixels = pixels.copy()
-    lit = np.zeros((TILE, TILE), dtype=bool)
-    for x, y in GLOW[name]:
-        lit[y, x] = True
-    pixels[..., 3] = np.where(np.tile(lit, (len(pixels) // TILE, 1)), 255, 0)
+    pixels[..., 3] = 0
+    for frame in range(len(pixels) // TILE):
+        for x, y in glowing(name, frame):
+            pixels[frame * TILE + y, x, 3] = 255
     return pixels, meta
 
 
