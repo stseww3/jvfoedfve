@@ -24,7 +24,7 @@ The brass plaque takes the game's dark lettering as it is; the enamel one needs 
 """
 import numpy as np
 
-from artkit import respack
+from artkit import noise, respack
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -48,6 +48,7 @@ W = _steps("dark_wood")         # W0..W4
 E = _steps("enamel")            # E0..E3
 M = _steps("cream")             # M0..M3
 O = _steps("opal")              # O0..O4
+I = _steps("iron")              # I0..I6: the post and the chains of a sign
 
 
 # ---- pixel helpers -----------------------------------------------------------------------------------
@@ -68,6 +69,53 @@ def _brushed(mat, seed, w=TILE, h=TILE, grain="u", **how):
     are drawn by whoever knows its shape."""
     how.setdefault("bevel", 0)
     return P.mat(mat, **how).paint(w, h, grain=grain, seed=seed).copy()
+
+
+def _dice(x, y, seed):
+    """A number in [0, 1) for every cell, the same on every machine (a hash of the cell)."""
+    n = (np.asarray(x, dtype=np.int64) * 374761393 + np.asarray(y, dtype=np.int64) * 668265263
+         + int(seed) * 2147483647) & 0xFFFFFFFF
+    n = ((n ^ (n >> 13)) * 1274126177) & 0xFFFFFFFF
+    return ((n ^ (n >> 16)) & 0xFFFFFF) / float(1 << 24)
+
+
+def _stains(w, h, seed, share, size=4.0, margin=1):
+    """Where a face is stained: soft patches about `size` pixels across over `share` of it, none
+    within `margin` of its edge, so that no patch is cut off where two blocks meet."""
+    yy, xx = np.mgrid[0:h, 0:w]
+    field = noise.perlin2(xx / size + 0.37, yy / size + 0.61, seed)
+    inner = np.zeros((h, w), dtype=bool)
+    inner[margin:h - margin, margin:w - margin] = True
+    return inner & (field > np.quantile(field[inner], 1.0 - share))
+
+
+def _worn(steps, body, seed, w=TILE, h=TILE, dark=0.0, light=0.0, pits=0.0, size=4.0):
+    """A face of sheet metal without the palette's brushed streaks (short streaks on a warm colour
+    read as the grain of a plank): the step `body` of the colours `steps`, stained a step darker
+    in soft patches over the share `dark` of it, a share `pits` of single pixels a step darker and
+    a share `light` of single pixels worn a step brighter."""
+    px = np.zeros((h, w, 4), np.uint8)
+    px[..., :3] = steps[body]
+    px[..., 3] = 255
+    lower, upper = steps[max(0, body - 1)], steps[min(len(steps) - 1, body + 1)]
+    if dark:
+        px[_stains(w, h, seed, dark, size)] = (*lower, 255)
+    yy, xx = np.mgrid[0:h, 0:w]
+    inner = (xx > 0) & (xx < w - 1) & (yy > 0) & (yy < h - 1)
+    roll = _dice(xx, yy, seed)
+    px[inner & (roll < pits)] = (*lower, 255)
+    px[inner & (roll > 1.0 - light)] = (*upper, 255)
+    return px
+
+
+def _sheen(px, seed, x0, x1, rows, colours):
+    """The long thin reflections of a polished sheet: in each of `rows` a line of one of `colours`
+    (taken in turn) between x0 and x1, each of its own length and place."""
+    for n, y in enumerate(rows):
+        length = int((x1 - x0) * (0.55 + 0.4 * _dice(n, y, seed)))
+        start = x0 + int((x1 - x0 - length) * _dice(y, n, seed + 1))
+        for x in range(start, start + length):
+            _put(px, x, y, colours[n % len(colours)])
 
 
 def _raised(px, x0, y0, x1, y1, light, dark):
@@ -128,11 +176,19 @@ def _tone(src, ramp, base, spread=3.0):
 
 
 # ---- brass: the flat faces (designed) ----------------------------------------------------------------
+_SHEEN = {1: (4, 7, 11), 2: (5, 9, 12), 3: (4, 8, 10)}       # the rows a plate's reflections lie in, by version
+
+
 def _plate(seed):
-    """BRASS_PLATE: a polished sheet with the shallow raised edge of the iron plates, so a wall of
-    them reads as butted sheets. Three versions, the brushing only."""
-    px = _brushed("brass", seed, noise=0.14)
+    """BRASS_PLATE: a polished sheet screwed on at its corners, with the shallow raised edge of the
+    iron plates, so a wall of them reads as butted sheets. Its reflections are a few long thin
+    lines, two light and one dark, that stop short of the edge: they differ from version to
+    version (three), so a wall of plates does not line them up into stripes."""
+    px = _worn(R, 3, seed)
+    _sheen(px, seed, 3, TILE - 3, _SHEEN[seed], (R[4], R[2], R[4]))
     _raised(px, 0, 0, TILE, TILE, R[4], R[1])
+    _put(px, 1, 1, R[5])                                                # the glint in the lit corner
+    _screws(px, [(2, 2), (TILE - 3, 2), (2, TILE - 4), (TILE - 3, TILE - 4)], R[5], R[1])
     return px
 
 
@@ -188,10 +244,81 @@ def _pipe_end():
     return px
 
 
+def _tube(px, x0, y0, x1, y1, along, shades):
+    """The cells x0..x1-1, y0..y1-1 as a round bar running along "x" or "y": `shades` are the steps
+    of the brass ramp across it, from its lit side (top, or left) to its far side."""
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            across = (y - y0) if along == "x" else (x - x0)
+            _put(px, x, y, R[shades[min(across, len(shades) - 1)]])
+
+
+def _rail():
+    """BRASS_RAIL: a railing of polished tube. The game's fence models read five patches of the
+    sheet (26.3: bamboo_fence_post, bamboo_fence_side_*): the post's side (0,0)-(4,16) and top
+    (4,0)-(8,4), a bar's side (4,4)-(13,7), end (13,4)-(15,7) and top (13,7)-(15,16). The post is a
+    tube with a knob at its head and a collar at its foot; the bars are thinner tubes."""
+    px = _brushed("brass", 0, noise=0.0)                           # what no face shows: plain brass
+    _tube(px, 0, 0, 4, TILE, "y", (2, 4, 3, 1))                     # the post
+    _tube(px, 0, 0, 4, 2, "y", (3, 5, 4, 2))                        # its knob
+    _tube(px, 0, 2, 4, 3, "y", (1, 3, 2, 0))                        # the neck under it
+    _tube(px, 0, TILE - 2, 4, TILE, "y", (3, 5, 4, 2))              # the collar at its foot
+    _tube(px, 0, TILE - 3, 4, TILE - 2, "y", (1, 3, 2, 0))
+    for y, row in enumerate(((3, 4, 4, 2), (4, 5, 4, 2), (4, 4, 3, 1), (2, 2, 1, 1))):   # the knob from above
+        for x, step in enumerate(row):
+            _put(px, 4 + x, y, R[step])
+    _tube(px, 4, 4, 15, 7, "x", (4, 3, 1))                          # a bar's side and its end
+    _tube(px, 13, 7, 15, TILE, "y", (4, 4))                         # a bar from above
+    return px
+
+
+def _gate():
+    """BRASS_GATE: the sheet of the game's gate is the gate seen from the front (26.3:
+    bamboo_fence_gate*): two hanging posts at its sides, two meeting stiles in the middle, two bars
+    either side between them, and above and below each the patch its top and its underside read.
+    Every member is a tube like the railing's; the latch is a bright knob where the stiles meet."""
+    px = _brushed("brass", 0, noise=0.0)
+    for x in (0, TILE - 2):                                         # the hanging posts
+        _tube(px, x, 2, x + 2, 13, "y", (4, 2))
+        _fill(px, x, 0, x + 2, 2, R[4])
+        _fill(px, x, 13, x + 2, 15, R[1])
+    for x in (2, 10):                                               # the bars: the upper pair and the lower
+        for y in (3, 9):
+            _tube(px, x, y, x + 4, y + 3, "x", (4, 3, 1))
+        _fill(px, x, 1, x + 4, 3, R[4])
+        _fill(px, x, 12, x + 4, 14, R[1])
+    for x in (6, 8):                                                # the meeting stiles
+        _tube(px, x, 3, x + 2, 12, "y", (4, 2))
+        _fill(px, x, 1, x + 2, 3, R[4])
+        _fill(px, x, 12, x + 2, 14, R[1])
+    for x in (7, 8):                                                # the latch
+        _put(px, x, 7, R[5])
+        _put(px, x, 8, R[1])
+    return px
+
+
+def _hatch():
+    """BRASS_HATCH: a brass lid: a frame with a screw in each corner, a groove, a fielded middle
+    and a flush ring to lift it by. A trapdoor shows this sheet upside down when it stands open or
+    is seen from above, and its top three rows are its edge all round: so light and shadow are the
+    same above and below, and the top three rows are frame and groove."""
+    px = _worn(R, 3, 13)
+    _ring(px, 0, 0, TILE, TILE, R[4])
+    _ring(px, 2, 2, TILE - 2, TILE - 2, R[1])
+    _ring(px, 3, 3, TILE - 3, TILE - 3, R[4])
+    for x, y in ((1, 1), (TILE - 2, 1), (1, TILE - 2), (TILE - 2, TILE - 2)):
+        _put(px, x, y, R[5])
+    _ring(px, 6, 6, 10, 10, R[1], corners=False)                    # the cup of the ring
+    _fill(px, 7, 7, 9, 9, R[2])
+    _put(px, 6, 6, R[2])
+    _put(px, 9, 9, R[2])
+    return px
+
+
 def _door_top():
     """BRASS_DOOR, upper half: a brass frame round one pane of frosted opal glass, the lock rail at
     its foot and the pull on the stile at a hand's height (a block and a little above the floor)."""
-    px = _brushed("brass", 11, noise=0.10)
+    px = _worn(R, 3, 11)
     _fill(px, 3, 3, 13, 14, O[2])
     for x in range(3, 13):
         _put(px, x, 3, O[0])                                        # the frame's shadow on the glass
@@ -213,7 +340,7 @@ def _door_top():
 
 def _door_bottom():
     """BRASS_DOOR, lower half: a sunk brass panel between the lock rail and a riveted kick plate."""
-    px = _brushed("brass", 12, noise=0.10)
+    px = _worn(R, 3, 12)
     _fill(px, 4, 3, 12, 11, R[2])
     _raised(px, 3, 2, 13, 12, R[1], R[4])
     for y in range(TILE):
@@ -230,7 +357,8 @@ def _door_bottom():
 def _plaque(w, h):
     """The board of BRASS_SIGN: a brass plaque with a screw in each corner, its middle left clear
     for the dark lettering the game writes on a sign."""
-    px = _brushed("brass", 21, w, h, noise=0.08)
+    px = _worn(R, 3, 21, w, h)
+    _sheen(px, 21, 5, w - 5, (h - 3,), (R[4],))
     _raised(px, 0, 0, w, h, R[4], R[1])
     _screws(px, [(2, 2), (w - 3, 2), (2, h - 4), (w - 3, h - 4)], R[5], R[1])
     return px
@@ -238,8 +366,10 @@ def _plaque(w, h):
 
 # ---- old copper ----------------------------------------------------------------------------------------
 def _copper(seed):
-    """OLD_COPPER: one dull brown sheet with a shallow raised edge. Three versions, the brushing."""
-    px = _brushed("old_copper", seed, noise=0.16)
+    """OLD_COPPER: one dull brown sheet with a shallow raised edge, stained darker in soft patches
+    and rubbed lighter in a few spots: copper that has stood outdoors, not polished. Three
+    versions."""
+    px = _worn(C, 2, seed, dark=0.18, light=0.02, size=5.0)
     _raised(px, 0, 0, TILE, TILE, C[3], C[1])
     return px
 
@@ -248,11 +378,13 @@ def _copper_cut(seed):
     """OLD_COPPER_CUT: the game's cut copper, four sheets of eight pixels to the block, each with
     its lit and its shadowed edge. The seams between blocks are the seams within one, so a gutter,
     a ring round a drum or a roof of it is one even grid whichever way it runs, and half a block
-    (a slab) is a row of whole sheets."""
-    px = _brushed("old_copper", seed, noise=0.12)
-    for y in (0, 8):
-        for x in (0, 8):
-            _raised(px, x, y, x + 8, y + 8, C[3], C[1])
+    (a slab) is a row of whole sheets. A sheet in four has weathered a step darker than the rest,
+    as the sheets of an old roof do; which one differs from version to version (three)."""
+    px = np.zeros((TILE, TILE, 4), np.uint8)
+    for n, (x, y) in enumerate(((0, 0), (8, 0), (0, 8), (8, 8))):
+        tone = 1 if n == seed % 4 else 2
+        px[y:y + 8, x:x + 8] = _worn(C, tone, seed * 4 + n, 8, 8, dark=0.08, size=3.0)
+        _raised(px, x, y, x + 8, y + 8, C[tone + 1], C[tone - 1])
     return px
 
 
@@ -270,10 +402,11 @@ def _wainscot():
 
 
 def _inlay(seed):
-    """BRASS_INLAY: the brass let into the paving. Dark, the low end of the ramp, brushed along the
-    line and with no edge of its own: under the night sky it is a dark metal a little warmer and
-    lighter than the slate, a line and a ring of it are unbroken, and it does not shout."""
-    return _brushed("brass_dark", seed, grain="v", noise=0.08)
+    """BRASS_INLAY: the brass let into the paving. The low end of the ramp, flat, with a few
+    pixels pitted dark and a few worn bright where feet pass; no edge and no direction of its own,
+    so a line and a ring of it are unbroken whichever way they run. Under the night sky it is a
+    dark metal, warmer than the slate and between the slate and its tuff flanks in brightness."""
+    return _worn(R, 1, seed, pits=0.05, light=0.025)
 
 
 def _nameplate(w, h):
@@ -295,23 +428,29 @@ def _nameplate(w, h):
 # edges. Read from the game's models (template_sign*, template_*hanging_sign*, 26.3); _sheet() fails
 # if a sheet of the game is not opaque there, so a changed layout is noticed and not mispainted.
 _STANDING = {"faces": ((0, 2, 24, 14), (0, 16, 24, 28)),
-             "edges": ((0, 0, 24, 2), (0, 28, 24, 30), (24, 2, 26, 14), (24, 16, 26, 28))}
+             "edges": ((0, 0, 24, 2), (0, 28, 24, 30), (24, 2, 26, 14), (24, 16, 26, 28)),
+             "post": ((28, 0, 30, 14), (30, 0, 32, 14), (28, 16, 30, 30), (30, 16, 32, 30), (28, 30, 30, 32))}
 _HANGING = {"faces": ((2, 16, 16, 26), (18, 16, 32, 26)),
-            "edges": ((2, 14, 16, 16), (2, 26, 16, 28), (0, 16, 2, 26), (16, 16, 18, 26))}
+            "edges": ((2, 14, 16, 16), (2, 26, 16, 28), (0, 16, 2, 26), (16, 16, 18, 26)),
+            "post": ()}
 
 
-def _sheet(ref, layout, face, edge, hardware, base, spread=3.0):
+def _sheet(ref, layout, face, edge, hardware, base, post=None):
     """A sign's sheet: the game's cut-out, the board's two faces drawn by face(w, h), its edges in
-    `edge`, and all the rest of it (post, bracket, chains) toned into the ramp `hardware`."""
+    `edge`, its post a rod two pixels thick in the colours `post` (lit side, far side), and the
+    rest of it (the bar and the chains of a hanging sign) toned into the ramp `hardware`."""
     src = _vanilla(ref)
-    px = _tone(src, hardware, base, spread)
-    for x0, y0, x1, y1 in layout["faces"] + layout["edges"]:
+    px = _tone(src, hardware, base)
+    for x0, y0, x1, y1 in layout["faces"] + layout["edges"] + layout["post"]:
         if not (src[y0:y1, x0:x1, 3] > 0).all():
-            raise ValueError(f"{ref}: the board is not where this package draws it ({x0}, {y0}, {x1}, {y1})")
+            raise ValueError(f"{ref}: the sign is not where this package draws it ({x0}, {y0}, {x1}, {y1})")
     for x0, y0, x1, y1 in layout["edges"]:
         _fill(px, x0, y0, x1, y1, edge)
     for x0, y0, x1, y1 in layout["faces"]:
         px[y0:y1, x0:x1] = face(x1 - x0, y1 - y0)
+    for x0, y0, x1, y1 in layout["post"]:
+        _fill(px, x0, y0, x0 + 1, y1, post[0])
+        _fill(px, x0 + 1, y0, x1, y1, post[1])
     return px
 
 
@@ -362,21 +501,22 @@ def pack(pack_dir):
     paint("brass_tread", _tread())
     paint("brass_pipe", _pipe())
     paint("brass_pipe_end", _pipe_end())
-    for name, ref in (("brass_rail", "block/bamboo_fence"), ("brass_gate", "block/bamboo_fence_gate"),
-                      ("brass_hatch", "block/bamboo_trapdoor"), ("brass_shelf", "block/bamboo_shelf")):
-        paint(name, _tone(_vanilla(ref), "brass", 3, spread=_BAMBOO))
+    paint("brass_rail", _rail())
+    paint("brass_gate", _gate())
+    paint("brass_hatch", _hatch())
+    paint("brass_shelf", _tone(_vanilla("block/bamboo_shelf"), "brass", 3, spread=_BAMBOO))
     paint("brass_door_top", _door_top())
     paint("brass_door_bottom", _door_bottom())
-    paint("brass_sign", _sheet("block/bamboo_sign", _STANDING, _plaque, R[2], "brass", 1, spread=_BAMBOO))
+    paint("brass_sign", _sheet("block/bamboo_sign", _STANDING, _plaque, R[2], "brass", 1, post=(R[2], R[0])))
     paint("brass_hanging_sign", _sheet("block/bamboo_hanging_sign", _HANGING, _plaque, R[2], "iron", 3))
     # old copper
     paint("old_copper", [_copper(s) for s in (1, 2, 3)])
-    paint("old_copper_cut", [_copper_cut(s) for s in (1, 2)])
+    paint("old_copper_cut", [_copper_cut(s) for s in (1, 2, 3)])
     # the small pieces
     paint("wainscot", _wainscot())
     paint("brass_inlay", [_inlay(s) for s in (1, 2, 3)])
     paint("enamel_plate", _brushed("enamel", 32, noise=0.04))
-    paint("enamel_sign", _sheet("block/oak_sign", _STANDING, _nameplate, E[0], "iron", 3))
+    paint("enamel_sign", _sheet("block/oak_sign", _STANDING, _nameplate, E[0], "iron", 3, post=(I[4], I[2])))
     paint("enamel_hanging_sign", _sheet("block/oak_hanging_sign", _HANGING, _nameplate, E[0], "iron", 3))
 
     out = []
