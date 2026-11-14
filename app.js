@@ -25,6 +25,9 @@ const els = {
   themeToggle: document.getElementById("theme-toggle"),
 };
 
+const prefersReduced = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
@@ -80,7 +83,7 @@ function cardHtml(term) {
   `;
 }
 
-function render() {
+function render(animate) {
   const query = state.query.trim();
   const filtered = state.terms.filter(
     (t) =>
@@ -89,6 +92,15 @@ function render() {
   );
 
   els.grid.innerHTML = filtered.map(cardHtml).join("");
+
+  if (animate && !prefersReduced()) {
+    const cards = els.grid.querySelectorAll(".card");
+    cards.forEach((card, i) => {
+      card.style.animationDelay = Math.min(i, 14) * 22 + "ms";
+      card.classList.add("card-in");
+    });
+  }
+
   els.count.textContent = `${filtered.length} of ${state.terms.length} terms`;
   els.empty.hidden = filtered.length !== 0;
 }
@@ -96,14 +108,14 @@ function render() {
 function bindEvents() {
   els.search.addEventListener("input", (e) => {
     state.query = e.target.value;
-    render();
+    render(false);
   });
 
   els.search.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && els.search.value) {
       els.search.value = "";
       state.query = "";
-      render();
+      render(false);
     }
   });
 
@@ -112,7 +124,7 @@ function bindEvents() {
     if (!btn) return;
     state.category = btn.dataset.category;
     renderFilters();
-    render();
+    render(true);
   });
 
   document.addEventListener("keydown", (e) => {
@@ -134,16 +146,51 @@ function applyTheme(theme) {
   );
 }
 
+function setTheme(next) {
+  try {
+    localStorage.setItem("theme", next);
+  } catch (e) {}
+  applyTheme(next);
+}
+
 function initTheme() {
   const current = document.documentElement.getAttribute("data-theme") || "dark";
   applyTheme(current);
   els.themeToggle.addEventListener("click", () => {
     const next =
       document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-    try {
-      localStorage.setItem("theme", next);
-    } catch (e) {}
-    applyTheme(next);
+
+    if (!document.startViewTransition || prefersReduced()) {
+      setTheme(next);
+      return;
+    }
+
+    const rect = els.themeToggle.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => setTheme(next));
+    transition.ready
+      .then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 480,
+            easing: "ease-in-out",
+            pseudoElement: "::view-transition-new(root)",
+          }
+        );
+      })
+      .catch(() => {});
   });
 }
 
@@ -159,7 +206,7 @@ async function init() {
     els.loading.hidden = true;
     renderFilters();
     bindEvents();
-    render();
+    render(true);
   } catch (err) {
     console.error(err);
     els.loading.hidden = true;
