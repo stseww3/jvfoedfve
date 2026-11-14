@@ -13,21 +13,26 @@ with the cloud setting off and fast as well):
                         master scene builds (A0 #171: "block clouds near, the game's cloud layer and
                         fog far"); with the player's clouds switched off it is "b".
 
-The block sea is a deck of cumulus tops, not a plate on a dish (the review's verdict on the
-stand-in): low domes packed side by side with a crease between them, piled higher where the cloud
-banks up (crowns to y -23, a few towers to -20, over a deck at -26), solid out to the fill radius
-and thinned to single puffs and then nothing by the scatter radius, so the edge is a ragged line of
-far puffs in the fog and never a circle. It reaches further towards the west, where the afterglow
-would show any end of it. Only empty cells are filled, one clear cell from every other block, so
-the mountain and the platforms stand in it by themselves; the sea closes round them and a sunk
-floor of cloud lies under the gap that is left along a cliff, so the eye never drops through.
+The block sea is a calm sheet with cumulus standing in it, not a plate on a dish (the review's
+verdict on the stand-in). The sheet's top is y -26, y -27 in its hollows. Heads of cloud stand out of
+it to y -23: steep round domes with smaller ones on their flanks, gathered into ranges that lie
+north-south, across the way to the afterglow, with lanes of calm sea between; a few big piles reach
+y -20. Along the mountain the cloud heaps up against the rock, high in the gullies and low on the
+capes, so the rock rises out of cloud all the way round and the line where they meet is never
+level. The sea is closed out to the fill radius and thinned to single heads and then nothing by the
+scatter radius, so its end is a ragged line of far heads in the fog and never a circle; it reaches
+further towards the west, where the afterglow would show any end of it. Only empty cells are
+filled, CLEAR cells from every other block, and a sunk floor of cloud lies under a gap that is left
+beside something that stands free, so the eye never drops through.
 
 The five tones are the occupancy roles B.CLOUD (dark to light, palette RAMPS["cloud"]). This package
 paints them (A0's exception to "only materials paints blocks": the cloud colour is tuned with the
 light of the sky), through materials/_kit like everyone else, so the stand-in steps aside the moment
 BLOCKS names them. The pictures are flat tones named sky_cloud_0..4 and the game's own face shading
 is turned off (shade=False, ao=False): which tone a block wears is baked here from the shape, lit
-from the west where the afterglow is -- crowns and west slopes light, lee slopes and creases dark.
+from the west where the afterglow is. The calm sea is the middle tone, its hollows one darker; on a
+head the tone climbs with the height, the crown and the west side lightest, the lee side and the
+foot darkest. There is no dither: the tones lie in clean bands, as pixel art shades a ball.
 """
 import numpy as np
 
@@ -46,15 +51,17 @@ VERSIONS = ("a", "b", "c")
 DEFAULT = "c"
 
 CENTRE = (30.0, 0.0)            # the sea is drawn round this point (card)
-FILL, SCATTER = 150.0, 215.0    # solid inside FILL, thinned to nothing by SCATTER (card)
+FILL, SCATTER = 150.0, 215.0    # closed inside FILL, thinned to nothing by SCATTER (card)
 WEST = 0.30                     # both radii grow by up to this share towards the west
-SHEET_TOP = -26                 # scene y of the deck's top (the vanilla layer's top is at -28)
+SHEET_TOP = -26                 # scene y of the calm sea's top (the vanilla layer's top is at -28)
 SHEET_BOTTOM = -28              # the flat underside
-FLOOR_Y = -31                   # the sunk floor under a gap along the shore
-CROWN = 3.0                     # the banked-up domes rise about this far over the deck (to y -23)
-PEAK = -20                      # the highest a tower may reach
+SEA = SHEET_TOP - 0.4           # the calm sea's mean height: blocks at y -26, y -27 in the hollows
+HEAP = 3.3                      # a head of cloud stands this far out of the sea (to y -23, card)
+PILE = 6.2                      # the few big piles (to y -20, card)
+PILES = 16                      # how many of those in the whole sea
+PEAK = -20                      # nothing is higher than this
+FLOOR_Y = -31                   # the sunk floor under a gap beside something that stands free
 CLEAR = 1                       # empty cells kept between the sea and any other block
-SHORE = 9                       # this near the land the deck is always closed
 SEED = 41
 
 # The vanilla cloud sheet (clouds.png): 256x256, one pixel is a 12x12x4-block cell, the same colour
@@ -115,9 +122,18 @@ def _clouds_sheet(blank=False):
 
 
 # --- the block sea -----------------------------------------------------------------------------------
+def _grid():
+    """The columns the sea may use, (x0, z0, nx, nz): out to the scatter radius and a margin round
+    CENTRE, wider to the west."""
+    cx, cz = CENTRE
+    x0, x1 = int(np.floor(cx - SCATTER * (1.0 + WEST) - 26.0)), int(np.ceil(cx + SCATTER + 26.0))
+    z0, z1 = int(np.floor(cz - SCATTER - 26.0)), int(np.ceil(cz + SCATTER + 26.0))
+    return x0, z0, x1 - x0 + 1, z1 - z0 + 1
+
+
 def _stamp(top, px, pz, foot, rise, rad):
-    """Raise the height field ``top`` to a low dome on (px, pz): ``rise`` high in the middle, falling
-    like a squashed sphere to ``foot`` at the rim, which is what packs into creased cumulus tops."""
+    """Raise the height field ``top`` to a dome on (px, pz): ``rise`` high in the middle, falling like
+    half an ellipsoid to ``foot`` at the rim -- steep at the foot, round on top, as cumulus is."""
     nx, nz = top.shape
     a0, a1 = max(0, int(np.floor(px - rad))), min(nx - 1, int(np.ceil(px + rad)))
     b0, b1 = max(0, int(np.floor(pz - rad))), min(nz - 1, int(np.ceil(pz + rad)))
@@ -130,57 +146,6 @@ def _stamp(top, px, pz, foot, rise, rad):
     h = foot + rise * np.sqrt(np.maximum(1.0 - d2, 0.0))
     view = top[a0:a1 + 1, b0:b1 + 1]
     view[inside] = np.maximum(view[inside], h[inside])
-
-
-def _field(seed):
-    """The sea as a height field: (top, deck, lo). ``top`` is the continuous height of the cloud top
-    per column (-inf where there is none), ``deck`` says where the closed deck lies (the rest is
-    single puffs), ``lo`` the (x, z) of the grid's first column."""
-    cx, cz = CENTRE
-    reach = SCATTER * (1.0 + WEST) + 26.0
-    x0, x1 = int(np.floor(cx - reach)), int(np.ceil(cx + SCATTER + 26.0))
-    z0, z1 = int(np.floor(cz - SCATTER - 26.0)), int(np.ceil(cz + SCATTER + 26.0))
-    nx, nz = x1 - x0 + 1, z1 - z0 + 1
-    X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
-
-    r = np.hypot(X - cx, Z - cz)
-    west = np.clip((cx - X) / np.maximum(r, 1.0), 0.0, 1.0)            # 1 due west of the centre
-    wobble = N.fbm2(X / 47.0, Z / 47.0, seed + 5, octaves=3) * 20.0    # the edge is not a circle
-    density = N.smoothstep(SCATTER, FILL, (r - wobble) / (1.0 + WEST * west ** 1.5))
-    bank = N.smoothstep(-0.22, 0.42, N.fbm2(X / 85.0, Z / 85.0, seed + 1, octaves=2))   # where it piles up
-    swell = N.fbm2(X / 55.0, Z / 55.0, seed + 2, octaves=2)
-    level = SHEET_TOP - 0.95 + 0.45 * swell                            # the creases between the domes
-
-    rng = np.random.default_rng(seed)
-    top = np.full((nx, nz), -np.inf)
-    cell = 12
-    for gx in range(0, nx, cell):                   # the domes of the deck, bigger where it banks up
-        for gz in range(0, nz, cell):
-            px, pz = gx + rng.uniform(0, cell), gz + rng.uniform(0, cell)
-            u, v, w, t = rng.uniform(size=4)
-            ix, iz = min(nx - 1, int(px)), min(nz - 1, int(pz))
-            d, b = density[ix, iz], bank[ix, iz]
-            if d <= 0.0 or u > d ** 0.8 * 1.08:
-                continue                            # thinned out towards the edge
-            rad = (6.5 + 4.0 * v) * (0.85 + 0.35 * b) * (0.72 + 0.28 * d)
-            rise = (0.95 + (CROWN - 0.6) * b ** 1.3) * (0.7 + 0.45 * w)
-            if b > 0.6 and t < 0.07:
-                rise += 2.0 + 1.4 * w               # a tower
-            _stamp(top, px, pz, level[ix, iz] + 0.2, rise, rad)
-    fine = 6
-    for gx in range(0, nx, fine):                   # smaller puffs riding on them
-        for gz in range(0, nz, fine):
-            px, pz = gx + rng.uniform(0, fine), gz + rng.uniform(0, fine)
-            u, v, w = rng.uniform(size=3)
-            ix, iz = min(nx - 1, int(px)), min(nz - 1, int(pz))
-            if not np.isfinite(top[ix, iz]) or u < 0.42:
-                continue
-            rise = (0.7 + 0.8 * v) * (0.45 + 0.75 * bank[ix, iz])
-            _stamp(top, px, pz, top[ix, iz] - 0.5 * rise, rise, 2.4 + 1.9 * w)
-    deck = density > 0.7
-    top = np.where(deck, np.maximum(top, level), top)                  # closed between the domes
-    top = np.minimum(top, PEAK + 0.45)
-    return top, deck, (x0, z0)
 
 
 def _grow(a, r):
@@ -230,22 +195,114 @@ def _others(canvas, origin, lo, shape, y0):
     return occ
 
 
-def _shade(top, has, lo):
-    """Light 0..1 per column from the continuous height field: lit from the west and from above,
-    crowns light, lee slopes and creases dark, a little lighter towards the west as a whole."""
-    x0, z0 = lo
-    nx, nz = top.shape
-    h = np.where(has, top, SHEET_BOTTOM - 1.0).astype(np.float32)
+def _field(seed, land):
+    """The sea as a height field: (top, level, deck). ``top`` is the continuous height of the cloud
+    top per column (-inf where there is none), ``level`` the calm sea's height there, ``deck`` says
+    where the sea is closed (beyond it there are single heads only). ``land`` marks the columns where
+    something stands in the cloud: the sea heaps up along it and keeps its big piles away from it."""
+    x0, z0, nx, nz = _grid()
+    cx, cz = CENTRE
+    X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
+
+    r = np.hypot(X - cx, Z - cz)
+    west = np.clip((cx - X) / np.maximum(r, 1.0), 0.0, 1.0)            # 1 due west of the centre
+    wobble = N.fbm2(X / 47.0, Z / 47.0, seed + 5, octaves=3) * 20.0    # the edge is not a circle
+    density = N.smoothstep(SCATTER, FILL, (r - wobble) / (1.0 + WEST * west ** 1.5))
+    # where the cloud piles up: ranges that lie north-south, bent a little
+    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 26.0
+    bank = N.smoothstep(-0.18, 0.30, N.fbm2((X + bend) / 60.0, Z / 100.0, seed + 1, octaves=2))
+    level = SEA + 0.6 * N.fbm2(X / 58.0, Z / 58.0, seed + 2, octaves=2)
+
+    rng = np.random.default_rng(seed)
+    top = np.full((nx, nz), -np.inf)
+
+    def cell_of(px, pz):
+        return min(nx - 1, max(0, int(px))), min(nz - 1, max(0, int(pz)))
+
+    def head(px, pz, rad, rise, kids):
+        """A head of cloud: a dome with ``kids`` smaller ones on its flanks, all rooted in the sea."""
+        ix, iz = cell_of(px, pz)
+        foot = level[ix, iz] - 0.25
+        _stamp(top, px, pz, foot, rise + 0.25, rad)
+        for _ in range(kids):
+            a, s, q, t = rng.uniform(0.0, 2.0 * np.pi), rng.uniform(0.5, 1.0), rng.uniform(0.45, 0.75), \
+                rng.uniform(0.5, 0.9)
+            _stamp(top, px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, foot, (rise + 0.25) * t, rad * q)
+
+    # the heads: close together in the ranges, a few standing alone in the lanes of calm sea
+    cell = 11
+    for gx in range(0, nx, cell):
+        for gz in range(0, nz, cell):
+            px, pz = gx + rng.uniform(0, cell), gz + rng.uniform(0, cell)
+            u, v, w = rng.uniform(size=3)
+            kids = int(rng.integers(1, 4))
+            ix, iz = cell_of(px, pz)
+            d, b = density[ix, iz], bank[ix, iz]
+            if d <= 0.0 or u > d ** 0.8 * (0.30 + 0.75 * b):
+                continue                            # thinned out in the lanes and towards the edge
+            rad = (3.4 + 3.2 * v) * (0.8 + 0.3 * b) * (0.75 + 0.25 * d)
+            head(px, pz, rad, min(HEAP, rad * (0.42 + 0.30 * w)), kids)
+
+    # the few big piles, well apart, in the ranges, away from the mountain
+    far = ~_grow(land, 28)
+    piles = []
+    for _ in range(4000):
+        if len(piles) == PILES:
+            break
+        px, pz = rng.uniform(0, nx), rng.uniform(0, nz)
+        ix, iz = cell_of(px, pz)
+        if density[ix, iz] < 0.85 or bank[ix, iz] < 0.5 or not far[ix, iz]:
+            continue
+        if any(np.hypot(px - qx, pz - qz) < 60.0 for qx, qz in piles):
+            continue
+        piles.append((px, pz))
+        rad = rng.uniform(8.0, 10.5)
+        head(px, pz, rad, PILE * rng.uniform(0.86, 1.0), 5)
+        for _ in range(6):                          # and the smaller heads round its foot
+            a, s = rng.uniform(0.0, 2.0 * np.pi), rng.uniform(1.0, 1.7)
+            head(px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, rng.uniform(3.5, 6.0),
+                 rng.uniform(2.2, HEAP), 1)
+
+    # the surf: cloud heaped against whatever stands in it, high where the land folds round it
+    if land.any():
+        zone = _grow(land, 6) & ~land
+        fold = _blur(land.astype(np.float32), 6)    # over a half in a gully, a tenth off a cape
+        surf = N.fbm2(X / 23.0, Z / 23.0, seed + 9, octaves=2)
+        step = 6
+        for gx in range(0, nx, step):
+            for gz in range(0, nz, step):
+                px, pz = gx + rng.uniform(0, step), gz + rng.uniform(0, step)
+                u, v, w = rng.uniform(size=3)
+                ix, iz = cell_of(px, pz)
+                if not zone[ix, iz]:
+                    continue
+                a = float(np.clip(0.45 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28), 0.0, 1.0))
+                if u > 0.45 + 0.55 * a:
+                    continue
+                rise = 1.3 + (HEAP - 1.3) * a * (0.75 + 0.25 * w)
+                if a > 0.8 and w > 0.35:
+                    rise += 1.9 * w * (a - 0.8) / 0.2                   # the highest, to about y -21
+                head(px, pz, 3.3 + 2.8 * v + 1.2 * a, rise, 1 + int(a > 0.5))
+
+    deck = density > 0.7
+    top = np.where(deck, np.maximum(top, level), top)                  # closed between the heads
+    top = np.minimum(top, PEAK + 0.45)
+    return top, level, deck
+
+
+def _shade(top, has, level):
+    """Light 0..1 per column from the continuous height field, lit from the west and from above: the
+    calm sea in the middle, its hollows darker; on a head the light climbs with the height, more on
+    the west side, less on the lee side and round the foot."""
+    x0, _, nx, nz = _grid()
+    h = np.where(has, top, level - 1.5).astype(np.float32)
     p = np.pad(h, 1, mode="edge")
     gx = (p[2:, 1:-1] - p[:-2, 1:-1]) * 0.5                            # rising eastwards = facing west
-    crest = h - _blur(h, 4)
-    X = (np.arange(nx) + x0)[:, None] + np.zeros((1, nz))
-    Z = (np.arange(nz) + z0)[None, :] + np.zeros((nx, 1))
-    drift = N.fbm2(X / 3.1, Z / 3.1, SEED + 13, octaves=2)
-    light = (0.47 + 0.24 * np.tanh(1.5 * crest) + 0.33 * np.tanh(1.3 * gx)
-             + 0.045 * np.clip(h - SHEET_TOP, -1.0, 6.0)
-             + 0.07 * np.clip((CENTRE[0] - X) / FILL, -1.0, 1.4) + 0.045 * drift)
-    return np.clip(light, 0.0, 1.0)
+    crest = h - _blur(h, 3)                                            # over its surroundings or under
+    rel = np.clip((h - level) / HEAP, -0.3, 1.4)
+    west = np.clip((CENTRE[0] - (np.arange(nx) + x0)) / FILL, -1.0, 1.4)[:, None]
+    return (0.40 + 0.25 * (level - SEA) + 0.34 * rel + 0.26 * np.tanh(1.1 * gx)
+            + 0.13 * np.tanh(1.4 * crest) + 0.05 * west)
 
 
 def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
@@ -261,24 +318,16 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     if version == "a":                              # vanilla layer only: no blocks
         return 0
 
-    top, deck, lo = _field(seed)
-    nx, nz = top.shape
+    x0, z0, nx, nz = _grid()
     y0, y1 = FLOOR_Y - 1, PEAK + 2
     ny = y1 - y0 + 1
-    occ = _others(canvas, origin, lo, (nx, ny, nz), y0)
+    occ = _others(canvas, origin, (x0, z0), (nx, ny, nz), y0)
 
     # The land: columns where somebody's block stands in the cloud band, and what those wall in (the
-    # hollow of the mountain; what merely has a bridge over it is not walled in and keeps its
-    # cloud). Close to the land the deck is closed and swells a little, so the rock stands in cloud
-    # all the way round.
+    # hollow of the mountain; what merely has a bridge over it is not walled in and keeps its cloud).
     band = occ[:, SHEET_BOTTOM - y0:, :].any(axis=1)
     inside = ~band & ~_reach(~band)
-    land = band | inside
-    if land.any():
-        near = _grow(land, SHORE) & deck
-        shore = _blur(_grow(land, 2).astype(np.float32), 3)
-        rest = SHEET_TOP - 0.4 + 1.3 * shore
-        top = np.where(near, np.maximum(top, rest), top)
+    top, level, deck = _field(seed, band | inside)
     has = np.isfinite(top) & ~inside
     tops = np.where(has, np.rint(top), y0 - 1).astype(np.int64)
 
@@ -286,37 +335,34 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     solid = has[:, None, :] & (ys >= SHEET_BOTTOM) & (ys <= tops[:, None, :])
     solid &= ~_grow(occ, CLEAR)                     # only empty cells, clear of every other block
 
-    # the sunk floor: where the deck was opened next to a block and nothing stands in the column,
-    # the eye would drop through to the void; a dark course of cloud lies there, low in the gap
-    open_sky = deck & ~inside & ~solid.any(axis=1) & ~occ.any(axis=1)
+    # the sunk floor: where the sea was opened beside a block and nothing stands in the column, the
+    # eye would drop through to the void; a dark course of cloud lies there, low in the gap
     floor = np.zeros_like(solid)
-    floor[:, FLOOR_Y - y0, :] = open_sky
+    floor[:, FLOOR_Y - y0, :] = deck & ~inside & ~solid.any(axis=1) & ~occ.any(axis=1)
     floor &= ~_grow(occ, CLEAR)
 
     # only what can be seen from above or from the side is placed: a cell with cloud over it and on
-    # all four sides is left out, and so is the unseen underside of the deck
+    # all four sides is left out, and so is the unseen underside of the sea
     p = np.pad(solid, 1)
     west_open, east_open = ~p[:-2, 1:-1, 1:-1], ~p[2:, 1:-1, 1:-1]
     side_open = ~p[1:-1, 1:-1, :-2] | ~p[1:-1, 1:-1, 2:]
     up_open = ~p[1:-1, 2:, 1:-1]
     skin = solid & (up_open | west_open | east_open | side_open)
 
-    light = _shade(top, has, lo)[:, None, :] + np.zeros((1, ny, 1), dtype=np.float32)
-    depth = np.clip(tops[:, None, :] - ys, 0, 8)    # how far below its column's top a cell lies
-    wall = skin & ~up_open                          # seen from the side only
-    lit = np.where(west_open, 0.70, np.where(side_open, 0.42, 0.20))
-    light = np.where(wall, 0.45 * light + 0.55 * lit - 0.07 * depth, light)
+    # a cell seen from the side only takes its column's light, more of it facing west, less facing
+    # east, and less the further down the side it lies
+    light = _shade(top, has, level)[:, None, :] + np.zeros((1, ny, 1), dtype=np.float32)
+    turn = np.where(west_open, 0.10, np.where(side_open, -0.06, -0.16))
+    light = np.where(up_open, light, light + turn - 0.05 * np.clip(tops[:, None, :] - ys, 0, 8))
 
-    ii, jj, kk = np.nonzero(skin)
-    fi, fj, fk = np.nonzero(floor)
     ox, oy, oz = origin
     last = len(names) - 1
-    xs, ys_, zs = ii + lo[0], jj + y0, kk + lo[1]
-    dither = (_hash3(xs, ys_, zs, seed) - 0.5) * 0.2
-    idx = np.clip(np.rint(last * light[ii, jj, kk] + dither), 0, last).astype(int)
-    for x, y, z, t in zip((xs + ox).tolist(), (ys_ + oy).tolist(), (zs + oz).tolist(), idx.tolist()):
+    ii, jj, kk = np.nonzero(skin)
+    idx = np.clip(np.rint(last * light[ii, jj, kk]), 0, last).astype(int)
+    for x, y, z, t in zip((ii + x0 + ox).tolist(), (jj + y0 + oy).tolist(), (kk + z0 + oz).tolist(), idx.tolist()):
         canvas.set(x, y, z, names[t], keep=True)
-    for x, y, z in zip((fi + lo[0] + ox).tolist(), (fj + y0 + oy).tolist(), (fk + lo[1] + oz).tolist()):
+    ii, jj, kk = np.nonzero(floor)
+    for x, y, z in zip((ii + x0 + ox).tolist(), (jj + y0 + oy).tolist(), (kk + z0 + oz).tolist()):
         canvas.set(x, y, z, names[0], keep=True)
     return 0
 
