@@ -66,6 +66,10 @@ EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
 # through the doorway at the sky behind the building). A stand-in: it goes when main/shell is in.
 SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
+# Where the power house's pipe enters the building (A0, 11-14: no riser on the east front): a
+# grating in the foot of the south end pavilion's corner pier, like the plinth's air gratings. The
+# pipe run of site/powerhouse comes along this row from the east and stops one block short of it.
+PIPE_INLET = (P.east_face(S.Z_SOUTH - 1) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH - 1)
 
 # --- which windows are lit, until the light line says ----------------------------------------------------
 # The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, e76c3721,
@@ -191,13 +195,18 @@ def shell(entrance=None):
 
 
 def doors(entrance=None):
-    """The doorways of the shell, for whoever hangs leaves, gates and canopies in them:
-    [dict(front, bay, cells, inward, y, gate)]. cells are the columns of the wall line the doorway
-    goes through (x, z), inward the step into the building, y its (bottom, top) rows; gate is True
-    where the doorway is closed by a gate and nobody walks through. The glass plane, where a leaf
-    hangs, is one step inward of cells."""
+    """The doorways of the shell, for whoever hangs leaves, gates and canopies in them (this is
+    what main/_plan.doors() hands out): [dict(front, bay, cells, inward, y, arch, kind)].
+
+    cells are the columns of the wall line the doorway goes through (x, z), inward the step into
+    the building, y its (bottom, top) rows. arch is True where the two top corners are rounded
+    like a great window's (a stair hung in each, in the wall plane), False for a flat head. kind
+    is "door" where people walk through, "gate" where an iron gate closes the arch. The glass
+    plane, where a leaf hangs, is one step inward of cells; a gate's arch has a stand-in of bars
+    there, which whoever hangs the real gate clears first."""
     return [dict(front=op.front, bay=op.bay, cells=list(op.cells), inward=op.inward,
-                 y=(op.door[0], DOOR_TOP if op.door[3] is _portal else op.door[1]), gate=op.door[3] is _gate)
+                 y=(op.door[0], DOOR_TOP if op.door[3] is _portal else op.door[1]),
+                 arch=op.door[2] is not None, kind="gate" if op.door[3] is _gate else "door")
             for op in shell(entrance).openings if op.door]
 
 
@@ -301,13 +310,14 @@ def _roofs(canvas, plan, origin):
 
 # --- the entrance's own stones ------------------------------------------------------------------------
 def _arcade_keys(canvas, plan, origin):
-    """Version B: a console hung under the string course over the crown of each arch, like the ones
-    under the cornice over the great windows."""
+    """Version B: the key of each arch stands in the string course over its crown, a whole block
+    where the course's moulding runs. (A console hung under the course would stand in front of the
+    crown and flatten the arch: the top row of the opening is the arch's own.)"""
     ox, oy, oz = origin
     for bay in ARCADE:
         op = plan.bays[("east", bay)]
         x, z = O.step(op.middle(), op.out)
-        canvas.set(ox + x, oy + DOOR_TOP, oz + z, f"{B.ASHLAR_FINE.stairs}[facing={O.NAME[op.inward]},half=top]")
+        canvas.set(ox + x, oy + S.STRING, oz + z, B.ASHLAR_FINE.block)
 
 
 def emblem():
@@ -367,6 +377,8 @@ def build(canvas, origin=(0, 0, 0), entrance=None):
         _arcade_keys(canvas, plan, origin)
     if EMBLEM:
         _emblem(canvas, origin)
+    x, y, z = PIPE_INLET
+    canvas.set(origin[0] + x, origin[1] + y, origin[2] + z, B.IRON_GRATE)
     _roofs(canvas, plan, origin)
     if SCREEN:
         _screen(canvas, origin)
