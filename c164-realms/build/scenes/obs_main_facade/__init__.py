@@ -2,7 +2,9 @@
 
 The main building where it stands in the master scene: the site under it, the whole main line,
 the props line's lamps on it and the sky line's light sources last. The lines are built whole, in
-the master scene's order, so the pictures keep up with them as their packages are merged.
+the master scene's order, so the pictures keep up with them as their packages are merged. One
+thing is added: the light of the entrance, as long as the package that owns it (sky/lights) is not
+in the tree.
 
 The entrance is the version the package builds by default (facade.ENTRANCE). obs_main_facade_a
 and obs_main_facade_c are this scene with the other two versions; every shot of theirs has its
@@ -11,6 +13,7 @@ twin of the same name here.
     python -m scenes.obs_main_facade        writes shots.json of the three scenes
 """
 import contextlib
+import importlib.util
 
 from artkit.canvas import Canvas
 
@@ -18,6 +21,7 @@ from scenes.obs import main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import _plan as P
 from scenes.obs.main import facade
+from scenes.obs.props import _kit as K
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
@@ -39,11 +43,32 @@ def _entrance(version):
         facade.ENTRANCE = was
 
 
+def _entrance_lights(c):
+    """The light of the entrance while sky/lights is not in the tree: the sources that package
+    places there (c220, afa1114c: 14 in the open doorway, 12 against the back of the vestibule
+    behind it, 10 behind each arch beside it), in the same cells, read off the doorways' table.
+    The pictures then show the doorway as the master scene is to have it, a warm bright face and
+    not a hole, in all three versions alike. Once sky/lights is merged it lights the entrance
+    itself and nothing is placed here."""
+    if importlib.util.find_spec("scenes.obs.sky.lights") is not None:
+        return
+    lights = []
+    for d in facade.doors():
+        if d["front"] != "east":
+            continue
+        (x, z), (dx, dz) = d["cells"][len(d["cells"]) // 2], d["inward"]
+        if d["kind"] == "door":
+            lights.append(((x + dx, S.GROUND + 1, z + dz), 14))
+        lights.append(((facade.SCREEN_X + 1, S.GROUND + 2, z), 12 if d["kind"] == "door" else 10))
+    K.offer_lights(c, lights, "obs_main_facade:entrance")
+
+
 def build(entrance=None):
     c = Canvas()
     with _entrance(entrance or ENTRANCE):
         for line in LINES:
             line.build(c, (0, 0, 0))
+        _entrance_lights(c)
     return c
 
 
