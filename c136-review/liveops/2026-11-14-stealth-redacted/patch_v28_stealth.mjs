@@ -302,22 +302,22 @@ rep(
     if (!isDirectDonor && spMap[donor.port]) {
       try {
         await rotateSocksSession(spMap[donor.port]);
-        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]}) after mint failure\`);
+        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]}) & recycling Firefox to drop stale H2 pool\`);
       } catch {}
     }
-    donor._mintFailCount = (donor._mintFailCount || 0) + 1;
-    if (mintErrNote === '300010' || mintErrNote === '300030' || mintErrNote === 'interactive-timeout') {
-      try {
-        await callBidi('browsingContext.reload', { context: ctx, wait: 'interactive' });
-      } catch {}
-    }
-    if (donor._mintFailCount >= 3) {
-      donor._mintFailCount = 0;
-      console.warn(\`[FIREFOX-DONOR] 3 consecutive mint failures on :\${donor.port} -> recycling Firefox donor!\`);
-      try { donor.ws.close(); } catch {}
-      firefoxDonors.delete(donor.port);
-      killFirefoxOnPort(donor.port);
-    }`
+    try { donor.ws.close(); } catch {}
+    firefoxDonors.delete(donor.port);
+    killFirefoxOnPort(donor.port);`
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-cooldown-threshold-5',
+  `      if (streak >= 3) {
+        const pauseMin = Math.min(streak - 2, 4) * 5;`,
+  `      if (streak >= 5) {
+        const pauseMin = Math.min(streak - 4, 4) * 5;`
 );
 
 rep(
