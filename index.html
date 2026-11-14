@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=4" />
   <script>
     (function () {
       try {
@@ -72,7 +72,8 @@
         <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
         <path d="m20 20-3.2-3.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
-      <input type="search" id="search" placeholder="search a term..." autocomplete="off" aria-label="Search terms" />
+      <input type="search" id="search" placeholder="search a term..." autocomplete="off" aria-label="Search terms" aria-keyshortcuts="/" />
+      <kbd class="search-kbd" aria-hidden="true">/</kbd>
     </div>
 
     <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
@@ -95,6 +96,6 @@
   </footer>
 
   <script>window.addEventListener("load", () => document.body.classList.remove("preload"));</script>
-  <script src="app.js"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

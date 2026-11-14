@@ -5,6 +5,7 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.8rem;
   --tap: 44px;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 [data-theme="dark"] {
@@ -15,10 +16,13 @@
   --text-2: #cfcfcf;
   --muted: #a3a3a3;
   --border: #6a6a6a;
+  --border-strong: #7d7d7d;
   --border-soft: #2a2a2a;
   --accent: #34d399;
   --accent-soft: rgba(52, 211, 153, 0.16);
   --accent-ink: #34d399;
+  --light-fill: rgba(52, 211, 153, 0.14);
+  --shadow-lift: none;
 }
 
 [data-theme="light"] {
@@ -29,10 +33,13 @@
   --text-2: #333333;
   --muted: #595959;
   --border: #8c8c8c;
+  --border-strong: #7a7a7a;
   --border-soft: #e2e2e2;
   --accent: #047857;
   --accent-soft: rgba(4, 120, 87, 0.12);
   --accent-ink: #047857;
+  --light-fill: rgba(4, 120, 87, 0.09);
+  --shadow-lift: 0 14px 26px -16px rgba(0, 0, 0, 0.3);
 }
 
 *,
@@ -64,6 +71,13 @@ body {
 
 .preload,
 .preload * {
+  transition: none !important;
+}
+
+/* While the circular theme reveal runs, colours must already be final,
+   otherwise the revealed side is still cross-fading underneath the wipe. */
+.theme-switching,
+.theme-switching *:not(.icon) {
   transition: none !important;
 }
 
@@ -136,6 +150,7 @@ h1 .sub {
 }
 
 .icon-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +160,7 @@ h1 .sub {
   color: var(--muted);
   background: transparent;
   cursor: pointer;
-  transition: color 150ms linear, background-color 150ms linear;
+  transition: color 150ms linear, background-color 150ms linear, transform 120ms var(--ease-out);
 }
 
 .icon-btn:hover {
@@ -153,21 +168,37 @@ h1 .sub {
   background: var(--surface);
 }
 
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
 .icon-btn .icon {
   width: 20px;
   height: 20px;
 }
 
-.icon-btn .icon-sun {
-  display: none;
+/* theme toggle: the two icons are stacked and swap with a quarter turn */
+
+#theme-toggle .icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transition: opacity 200ms linear, transform 420ms var(--ease-out);
 }
 
-[data-theme="light"] .icon-btn .icon-moon {
-  display: none;
+#theme-toggle .icon-sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
 }
 
-[data-theme="light"] .icon-btn .icon-sun {
-  display: block;
+[data-theme="light"] #theme-toggle .icon-moon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.6);
+}
+
+[data-theme="light"] #theme-toggle .icon-sun {
+  opacity: 1;
+  transform: none;
 }
 
 /* ---- main ---- */
@@ -193,6 +224,11 @@ h1 .sub {
   height: 20px;
   color: var(--muted);
   pointer-events: none;
+  transition: color 150ms linear;
+}
+
+.search:focus-within .search-icon {
+  color: var(--text);
 }
 
 input[type="search"] {
@@ -217,9 +253,40 @@ input[type="search"]:hover {
   border-color: var(--text-2);
 }
 
+/* keyboard hint for the "/" shortcut; only where a keyboard is likely */
+
+.search-kbd {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.22rem 0.5rem;
+  pointer-events: none;
+  transition: opacity 150ms linear;
+}
+
+input[type="search"]:focus ~ .search-kbd,
+input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
+  opacity: 0;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .search-kbd {
+    display: none;
+  }
+}
+
 /* ---- filters ---- */
 
 .filters {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -241,7 +308,8 @@ input[type="search"]:hover {
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: color 150ms linear, border-color 150ms linear, background-color 150ms linear;
+  transition: color 150ms linear, border-color 150ms linear, background-color 150ms linear,
+    transform 120ms var(--ease-out);
 }
 
 .chip:hover {
@@ -249,10 +317,37 @@ input[type="search"]:hover {
   color: var(--text);
 }
 
+.chip:active {
+  transform: scale(0.96);
+}
+
 .chip.active {
   border-color: var(--accent);
   color: var(--accent-ink);
   background-color: var(--accent-soft);
+}
+
+/* With the sliding indicator present, it carries the accent border and fill,
+   so the active chip itself only keeps the accent text. */
+
+.filters.has-indicator .chip.active {
+  border-color: transparent;
+  background-color: var(--surface);
+}
+
+.chip-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  background-color: var(--accent-soft);
+  pointer-events: none;
+  transition: transform 300ms var(--ease-out), width 300ms var(--ease-out), height 300ms var(--ease-out);
+}
+
+.chip-indicator.no-anim {
+  transition: none;
 }
 
 /* ---- count / status ---- */
@@ -300,16 +395,71 @@ input[type="search"]:hover {
 }
 
 .card {
+  position: relative;
+  isolation: isolate;
   background-color: var(--surface);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   padding: 1.1rem 1.15rem;
-  transition: border-color 150ms linear, transform 150ms linear;
+  transition: border-color 150ms linear, transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
 }
 
 .card:hover {
   border-color: var(--border);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* ---- pointer light ----
+   The one light on the page: it follows the pointer and marks the card under
+   it as "current" (and brushes the borders of its neighbours). app.js sets
+   --mx / --my per card; without them the light sits off-canvas. */
+
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms linear;
+}
+
+.card::before {
+  inset: -1px;
+  padding: 1px;
+  background: radial-gradient(
+    270px circle at var(--mx, -999px) var(--my, -999px),
+    var(--accent),
+    transparent 72%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  z-index: 1;
+}
+
+.card::after {
+  inset: 0;
+  background: radial-gradient(
+    340px circle at var(--mx, -999px) var(--my, -999px),
+    var(--light-fill),
+    transparent 70%
+  );
+  z-index: -1;
+}
+
+.grid.lit .card::before,
+.grid.lit .card:hover::after {
+  opacity: 1;
+}
+
+/* The fill light lifts the card surface a little, so the tag outlines on the
+   lit card step up one shade to stay above 3:1 against it. */
+.card:hover .badge,
+.card:hover .aliases > li {
+  border-color: var(--border-strong);
 }
 
 @keyframes card-in {
@@ -323,8 +473,10 @@ input[type="search"]:hover {
   }
 }
 
+/* fill-mode is "backwards" only: a forwards fill would pin transform to
+   "none" after the entrance and cancel the hover lift. */
 .card-in {
-  animation: card-in 300ms ease both;
+  animation: card-in 300ms ease backwards;
 }
 
 /* ---- theme switch: circular reveal (progressive enhancement) ---- */
@@ -361,6 +513,7 @@ input[type="search"]:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.12rem 0.5rem;
+  transition: border-color 150ms linear;
 }
 
 .card-full {
@@ -389,6 +542,7 @@ input[type="search"]:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.08rem 0.5rem;
+  transition: border-color 150ms linear;
 }
 
 mark {
