@@ -2,8 +2,9 @@
 
 What it is for: to see the sixteen instrument panels as what they are made for, a wall.
 
-    wall        one bay of eight by four, every kind twice, under the lamp row: each face close, the
-                bay from twenty blocks, and from the side for the casing
+    wall        one bay of eight by four that holds every kind (most of them twice, the louvre four
+                times, the oscilloscope and the recorder once), under the lamp row: each face
+                close, the bay from twenty blocks, and from the side for the casing
     room        the bay and its mirror image as the wall of a closed room of the timing room's size
                 (16 long, 12 deep, 7 high), on a riveted plinth under plain plate, with no light but
                 three weak lamps where desks would stand: the dark iron wall with a few things
