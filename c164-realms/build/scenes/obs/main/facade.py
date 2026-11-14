@@ -69,7 +69,7 @@ SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
 # The stand-in is lit, the same in all three versions (A0, 11-14): it stands for a hall with its
 # lamps on. The sources are those sky/lights places at an entrance, in its cells and at its levels
-# (c220, afa1114c), so nothing changes when that package takes over: they are set here only while
+# (c220, 248dc1d5), so nothing changes when that package takes over: they are set here only while
 # it is not in the tree.
 DOOR_LIGHT, HALL_LIGHT, SIDE_LIGHT = 14, 12, 10     # in the doorway; before the back wall behind it; behind a side arch
 DOOR_LIGHT_Y, HALL_LIGHT_Y = S.GROUND + 1, S.GROUND + 2
@@ -79,24 +79,26 @@ DOOR_LIGHT_Y, HALL_LIGHT_Y = S.GROUND + 1, S.GROUND + 2
 PIPE_INLET = (P.east_face(S.Z_SOUTH - 1) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH - 1)
 
 # --- which windows are lit, until the light line says ----------------------------------------------------
-# The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, afa1114c,
-# the blue look, after the director's rulings: the base storey a dark band, one or two lit windows
-# to a wing, the middle three bays the brightest group) asked for every window of table(). L the
-# brightest glass (the window over the entrance, the only one), O lit, K a lamp behind a curtain,
-# D dark, B a lowered blind; "." where a front has no window. They stand in only while
-# sky/_lightkit.py is not in the tree. (East base, bays 8 and 10: windows in versions A and C of
-# the entrance only, in B they are arches. The light line had them lit; A0, 11-14: dark, or the
-# doorway between them loses to them.)
+# The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, 248dc1d5,
+# the blue look, after the director's rulings: the base storey a dark band; three places always
+# lit, the foot of the clock tower, the entrance, the foot of the small dome, the entrance the
+# brightest; one or two lit windows to a wing; the orange glass at the entrance and in the base's
+# one lit window only; the drum dark, the dome room is kept dark for observing) asked for every
+# window of table(). L the brightest glass (the window over the entrance, the only one), O lit,
+# K a lamp behind a curtain, D dark, B a lowered blind; "." where a front has no window. They
+# stand in only while sky/_lightkit.py is not in the tree. (East base, bays 8 and 10: windows in
+# versions A and C of the entrance only, in B they are arches. The light line has them lit;
+# A0, 11-14: dark, or the doorway between them loses to them.)
 GLASS = {"L": B.WINDOW_LIT, "K": B.WINDOW_CURTAIN, "O": B.WINDOW_FROSTED, "D": B.WINDOW_DARK, "B": B.WINDOW_BLIND}
 ROWS = {
-    ("east", "main"): "ODODKODKLKDODOKDO",      # bays 1..17 from the north
-    ("east", "base"): "DODKDDDD.DDDKDBOD",
-    ("west", "main"): "KDODO.......ODODK",
-    ("west", "base"): "BDKKD.......DKDDO",
-    ("north", "main"): "BO", ("north", "base"): "DK",
-    ("south", "main"): "OKBO", ("south", "base"): "DKDO",
-    ("apse", "main"): "KOK",                    # bays -1, 0, 1
-    ("drum", "drum"): "KDKDKDKDKDDKDKBKDDDD",   # gores 0..19, 0 looks east
+    ("east", "main"): "ODODDODKLKDODODDO",      # bays 1..17 from the north
+    ("east", "base"): "DKDDDDDD.DDDDDBDD",
+    ("west", "main"): "DDODO.......ODODD",
+    ("west", "base"): "BDDDD.......DDDDD",
+    ("north", "main"): "BO", ("north", "base"): "DB",
+    ("south", "main"): "ODBO", ("south", "base"): "DBDD",
+    ("apse", "main"): "BOD",                    # bays -1, 0, 1
+    ("drum", "drum"): "DDDDBDBDBDDDDBBDDDDD",   # gores 0..19, 0 looks east
 }
 FIRST_BAY = {"apse": -1, "drum": 0}     # every other front counts its bays from 1
 
