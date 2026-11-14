@@ -243,6 +243,16 @@ def whole_picture(path):
     return None
 
 
+def same_picture(a, b):
+    """Do two picture files hold the same pixels? (The same picture written on two machines is not
+    the same file byte for byte.)"""
+    try:
+        with Image.open(a) as x, Image.open(b) as y:
+            return x.size == y.size and np.array_equal(np.asarray(x.convert("RGBA")), np.asarray(y.convert("RGBA")))
+    except (OSError, ValueError, SyntaxError):
+        return False
+
+
 def ticks_of(project, scene, jar):
     """{shot: tick as build/render.py takes it}, read off the shot list; "?" where a named time
     cannot be looked up (no client jar here)."""
@@ -343,16 +353,26 @@ def take(project, scene, source, prefix):
     note_here = os.path.join(folder, NOTE)
     note = read_note(note_here, ours=True) or {}
     os.makedirs(folder, exist_ok=True)
-    total = 0
+    total, new, changed = 0, [], []
     for name, (tick, commit, noted) in arrived.items():
-        target = os.path.join(folder, name + ".png")
-        shutil.copyfile(os.path.join(source, f"{stem}{name}.png"), target)
-        total += os.path.getsize(target)
-        note[name] = (tick, commit, noted or digest(target))
+        path, target = os.path.join(source, f"{stem}{name}.png"), os.path.join(folder, name + ".png")
+        # The same picture as the one kept (drawn again, nothing in it changed): the kept file stays,
+        # so the history does not take another copy of it; the note moves on to the new commit.
+        if not os.path.exists(target):
+            new.append(name)
+        elif not same_picture(path, target):
+            changed.append(name)
+        if name in new or name in changed:
+            shutil.copyfile(path, target)
+            total += os.path.getsize(target)
+        note[name] = (tick, commit, digest(target))
     gone = clear_left_over(folder, names, note)
     write_note(note_here, names, note)
+    still = len(arrived) - len(new) - len(changed)
     print(f"renders/{scene}/: {len(arrived)} picture{'s' if len(arrived) != 1 else ''} of "
-          f"{', '.join(sorted(commits))} taken from {source} ({stem}*), {total / 1048576:.1f} MB"
+          f"{', '.join(sorted(commits))} taken from {source} ({stem}*): {len(new)} new, {len(changed)} changed"
+          + (f" ({', '.join(changed)})" if changed and still else "")
+          + f", {still} the same picture as the one kept (file left as it is); {total / 1048576:.1f} MB written"
           + (f"; removed (no such shot any more): {', '.join(gone)}" if gone else ""))
     if not ours:
         print(f"                drawn with plain build/render.py: that they show {', '.join(sorted(commits))} is "
