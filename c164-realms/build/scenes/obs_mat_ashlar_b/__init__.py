@@ -1,6 +1,7 @@
 """Test scene materials/ashlar version b: the same board and shots as obs_mat_ashlar, the pack built
-with ashlar version b (rock-faced rustication, broken-coursed dressed walling, a raised panel and a
-droved emblem). The three-way compare the card asks for -- see obs_mat_ashlar for the stations.
+with ashlar version b (rock-faced rustication, broken-coursed dressed walling with light joints, a
+raised panel and an incised emblem). The three-way compare the card asks for -- see obs_mat_ashlar
+for the stations.
 
     python -m scenes.obs_mat_ashlar_b      writes shots.json (the same as obs_mat_ashlar)
 """
