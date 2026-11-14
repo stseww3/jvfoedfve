@@ -56,7 +56,7 @@ def report(canvas):
                  "by_hand": n, "pairs": [(front, storey, bay, bay)], "fronts": {front: [..4..]}}}
                  the windows as they are glazed on the canvas, group by group ("" is main's table)
       table      {look: [dark, dim, lit, bright]}   what each look lights of main's table
-      door       the cell of the door's source, or None
+      doors      [cell]                     the sources in open main doorways (one to an origin)
       wash       [cell]                     the cells of the wall wash
       fifteen    [cell]                     sources of level 15 on the canvas (whoever placed them)
       foreign    n                          sources on the canvas that this module did not place
@@ -67,7 +67,7 @@ def report(canvas):
     if not hasattr(canvas, "light_report"):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
-            windows={}, table={}, door=None, wash=[], fifteen=[], foreign=0, isolated=[], notes=[],
+            windows={}, table={}, doors=[], wash=[], fifteen=[], foreign=0, isolated=[], notes=[],
             problems=[], _seen=set(), _records=[])
     return canvas.light_report
 
@@ -88,7 +88,7 @@ def summary(canvas):
                    + (f", lit neighbours: {w['pairs']}" if w["pairs"] else ""))
     for look, n in r["table"].items():
         out.append(f"main's table under {look}: dark {n[0]}, dim {n[1]}, lit {n[2]}, bright {n[3]}")
-    out.append(f"door: {r['door']}; wash: {len(r['wash'])} cells; not placed here: {r['foreign']}; "
+    out.append(f"doors: {r['doors'] or 'none'}; wash: {len(r['wash'])} cells; not placed here: {r['foreign']}; "
                f"level 15: {len(r['fifteen'])}; isolated: {len(r['isolated'])}")
     for key in ("capped", "moved", "merged", "rejected"):
         for entry in r[key]:
@@ -251,19 +251,19 @@ def _windows(canvas, r, origin):
 def _door(canvas, r, origin):
     """The open main door: one source in the doorway. Only where a doorway stands: open from the
     glass plane to the pilaster plane, a jamb on either side, something over it, ground under it."""
-    if r["door"] is not None:
-        return
     ox, oy, oz = origin
     wall = S.east_wall_x(DOOR_BAY) + ox
     z = S.bay_center_z(DOOR_BAY) + oz
     cell = (wall + S.DEPTH_GLASS, DOOR_Y + oy, z)
+    if cell in r["doors"]:
+        return
     through = all(not canvas.has(x, y + oy, z) or (x, y + oy, z) in r["placed"]
                   for x in range(wall + S.DEPTH_GLASS, wall + S.DEPTH_PILASTER + 1) for y in range(0, 3))
     jambs = _stops(canvas, wall, 1 + oy, z - 2) and _stops(canvas, wall, 1 + oy, z + 2)
     head = any(_stops(canvas, wall, y + oy, z) for y in range(3, S.FRIEZE + 1))
     ground = canvas.has(wall, S.PAVING_Y + oy, z)
     if through and jambs and head and ground and _put(canvas, r, cell, DOOR_LEVEL, DOOR_WHY) != "taken":
-        r["door"] = cell
+        r["doors"].append(cell)
 
 
 # ---- the wall wash -----------------------------------------------------------------------------------
