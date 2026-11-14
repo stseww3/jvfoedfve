@@ -2,13 +2,13 @@
 
 只有拿合并钥匙的人（S2，c188）改。依据是群 g2 里的固定格式消息（【立项】【领卡】【放回】【交付】【技检】【合并】【真机】【评审】），每处理一批更新一次。发现和事实不符，群里发【问题】点名 c188。
 
-**汇总（c188/S2 更新，11-14 10:05；VM 重启后恢复，合并钥匙已从 A0 接回，已并 sky/look；检查脚本和出图工具按 c189 的技检补完）：共 50 张卡 —— 待领 28，制作中 12，已交付 0，已合并 8，已出图 2，暂过 0，已过审 0，退回 0。**
+**汇总（c188/S2 更新，11-14 11:15；A0 的 v4：自查图在云端出、跟分支进 git，合并钥匙留 c188；墙优先批 c204/c205/c206 上线）：共 51 张卡 —— 待领 28，制作中 13，已交付 0，已合并 8，已出图 2，暂过 0，已过审 0，退回 0。**
 
 - P1 待领（先领这些）：`machines/refractor`。
 - 还没切卡：`main`（c178 在按 R1 补逐格平面图）、`motion`（后期，c177 牵头）。
 
 状态：待领 → 制作中 → 已交付 → 已合并 → 已出图 → 已过审；旁路：退回（回到制作中）、暂过（交叉看过了、评审还没评）。
-“提交”一栏：制作中写做包的人分支上最新的提交，合并以后写总装分支上的合并提交。图在 `/agent/realms-study/inbox/`。
+“提交”一栏：制作中写做包的人分支上最新的提交，合并以后写总装分支上的合并提交。“图”一栏：v4 起自查图（离线图）在仓库 `renders/<场景名>/`（`tools/selfshots.py` 出，跟分支进 git）；11-14 前回传到 `/agent/realms-study/inbox/` 的图在 VM 重启时清掉了，表里的文件名留作记录，要看就重出。
 
 ## common（牵头 c188）
 
@@ -16,7 +16,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | interface（接口说明 + 总场景框架） | P1 | 已合并 | c188 | ce56eb2 | — | `plan/roles/INTERFACE.md` 第二版；不另设技检，由第一批用它建包的人验证，撞到不对发【问题】点 c188 和 c164 |
 | skeleton（骨架） | P1 | 已合并 | c188 | 3f5b683c | — | `build/scenes/obs/common/skeleton.py`，R1 0.3；“格和点”约定（对称轴 z=0.5）、site 提议锚点；11-14 加机械锚点（c193 #95、A0 #97）：ORRERY_CENTRE(11.5,0.5)、ORRERY_R2.5、ORRERY_HANG_Y14、ORRERY_RING_Y8.5、PIER_TOP_Y18；母钟锚点 x、PIER_R 定稿等 c178 报；大台阶/下平台/缆车站/发电房的数总监在重算（V1 视线），先别照着盖 |
-| check（检查脚本） | P1 | 已合并 | c188 | 142d5b90 | — | `tools/check.py`（9 项：regen、conflicts、strays、refs、repaint、blocks、flatwall、entities、views）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过（#16486）。11-14 按它的清单补完：会漏判的 4 处和小项都改了，PIPELINE 第 6 节剩的两项（5×5 平墙、拉长件贴图均匀）已加；新加的 refs 查“点到的模型、贴图在不在”。两条标“待证实”等 c189 真机补测：展示实体水平 160 格外服务器不发；没设宽高的展示实体画面外也照画。出图工具同一批改：没写时间的机位按 14000（f431e4d5） |
+| check（检查脚本） | P1 | 已合并 | c188 | 142d5b90 | — | `tools/check.py`（9 项：regen、conflicts、strays、refs、repaint、blocks、flatwall、entities、views）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过（#16486）。11-14 按它的清单补完：会漏判的 4 处和小项都改了，PIPELINE 第 6 节剩的两项（5×5 平墙、拉长件贴图均匀）已加；新加的 refs 查“点到的模型、贴图在不在”。两条标“待证实”等 c189 真机补测：展示实体水平 160 格外服务器不发；没设宽高的展示实体画面外也照画。出图工具同一批改：没写时间的机位按 14000（f431e4d5）。v4（10267be1）：`tools/selfshots.py` 在云端出自查图存进 `renders/<场景名>/`、`--verify` 逐像素核对存的图是不是代码出的；`delivery.py` 加 `pictures` 一项，认 `renders/obs_<缩写>_*/` 是本卡的文件 |
 | status（状态表） | P1 | 已合并 | c188 | — | — | 本文件 |
 | rubric（评分标准） | P1 | 已合并 | c190 | a9e21f5 | — | `plan/aesthetics/`；v1.1 总监已批，是现行标准（加了离线图和真机图各怎么评）；c199 是第二评审，他的校准和速查也在这个文件夹 |
 | plots-shuttle（地块表和班车脚本） | P1 | 制作中 | c189 | 1c3260a0 | — | 分支 `cursor/c164-s1-render-9df7`；游戏自己存截图的助手（`tools/win/CamHelper.java`）总监已批，显示器休眠时也能出真机图；等【交付】 |
@@ -28,10 +28,10 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | respack-redirect | P1 | 已出图 | c176 | 873f40f | `s1-d423f44-obs_mat_redirect-*.jpg`（16 张，真机） | 交付 7cdbe26；83 个重画方块全部重定向，没人画的先占位（图名 `ph_`）；真机 c189 #92 三件都对（原版方块没变、亮窗朝西朝南同亮、无紫黑格）；交叉看 c179 过（#99）；待 c190/c199 正评 |
 | board | P1 | 已合并 | c176 | c3b75f9a | `a1-board-d666c10-*.jpg`（27 张，离线图） | 方案 6.4 的材质板（每种材质一面 8×8 的墙加楼梯、台阶），给管理员的第一张图；场景 `obs_mat_board`；现全占位色，材质包合并后重出图换真材质 |
-| ashlar | P1 | 制作中 | c176 | — | — | 3 版比选，含原版砂岩对照；第一张材质板的主角；总监 00:53 指派给 c176 |
-| windows | P1 | 制作中 | c195 | 7451ab80 | — | 分支 `cursor/c164-m2-windows-7bb5`（重启后重建）；亮窗 2 版、六种窗；亮窗发光 15、不带面阴影、不要角落变暗、贴图不透明；暗窗不透明不发光；SKYLIGHT 不透明度 0.5；还差亮窗三档云端复量、场景 obs_mat_windows、check.py |
+| ashlar | P1 | 制作中 | c204 | — | — | 3 版比选，含原版砂岩对照；第一张材质板的主角；原由 c176 领，11-14 A0 改派 c204（墙优先批，#124），分支 `cursor/c164-ashlar-2cc1` |
+| windows | P1 | 制作中 | c205 | db18a103 | — | c205 接 c195（#125），分支 `cursor/c164-m2-windows-7bb5`；亮窗 2 版、六种窗；亮窗发光 15、不带面阴影、不要角落变暗、贴图不透明；暗窗不透明不发光；SKYLIGHT 不透明度 0.5；六窗贴图、重定向、场景 `obs_mat_windows`/`obs_mat_windows_b` 已有，并上总装后 check.py 两个场景全过；还差亮窗三档亮度复量（对 c177 #90）、云端自查图、a/b 比选 |
 | iron | P2 | 已合并 | c198 | 9f09b11 | `m5-b8436a3b-*.jpg`（9 张，离线图） | 铸铁 11 角色/13 方块：非蜡 oxidized_* 改铸铁、waxed_* 留铜绿；IRON_PLATE 浅 bevel、IRON_CAST 凸花整圈；场景 `obs_mat_iron`。c198 二次交付在路上（栅杆降一级、格栅/细管按 §4 重画、门舷窗移上半格，A0 #116 裁定）：真机先不拍，二次合并后一轮；台徽对 c197 回来定 |
-| panels | P2 | 制作中 | c194 | — | — | 领卡 #17405；16 仪表面板（V10 仪表墙）；照 iron 的 redirect 口径，釉陶每块重定向，facing(south) 放仪表贴图、其余五面 iron 机壳；4 块带动画；交叉看找 props |
+| panels | P2 | 制作中 | c194 | 30f58ea | — | 领卡 #17405，分支 `cursor/c164-m1-panels-8c47`；16 仪表面板（V10 仪表墙）；照 iron 的 redirect 口径，釉陶每块重定向，facing(south) 放仪表贴图、其余五面 iron 机壳；4 块带动画；场景 `obs_mat_panels`（10 机位），check.py、delivery.py 已过；等云端自查图进 git 后【交付】；交叉看找 props |
 | brass-oldcopper-small | P2 | 待领 | — | — | — | 第二批 |
 
 ## sky（牵头 c177；细化稿 `plan/parts/sky.md`、`sky-notes.md`）
@@ -49,6 +49,7 @@
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
+| facade | P1 | 制作中 | c206 | — | — | 领卡 #132（A0 指派，墙优先批），分支 `cursor/c164-facade-229b`；`main/_order.py`（立面语法引擎，site 的发电房、车站也能调）、`main/facade.py`（主楼外壳，东立面 17 跨五段式先做）、圆厅和大穹顶外壳的体块；场景 `obs_main_facade`（V2/V3/V4）；替掉 massing.py 里主楼和圆厅的白模（报时塔、小穹顶的白模先留）；目标是清掉 obs 的 flatwall 警告里主楼和圆厅那部分 |
 | 细化稿修订和切卡（逐格平面图 y0 / y7） | P1 | 制作中 | c178 | d3f2d23 | — | 切好以后按 `PIPELINE.md` 3.1 是六个包：立面语法引擎；入口样板段（3 版）；圆厅和大穹顶外壳（2 版）；报时塔和北端亭（2 版）；小穹顶和南端亭；平面、楼板、楼梯和室内空壳。另欠骨架：瘦墩（3×3 墩身+环楼梯）和墩帽定稿、母钟墩东面格位 |
 
 ## site（牵头 c192，代号 a4；细化稿 `plan/parts/A4-site.md`）
@@ -117,8 +118,8 @@
 | c191 | interiors | `cursor/c164-interiors-1d4a` |
 | c192 | a4 | `cursor/c164-a4-site-2af2` |
 | c193 | a5 | `cursor/c164-a5-machines-a70c` |
-| c194 | m1 | （待推；panels） |
-| c195 | m2 | `cursor/c164-m2-windows-7bb5` |
+| c194 | m1 | `cursor/c164-m1-panels-8c47` |
+| c195 → c205 | m2 | `cursor/c164-m2-windows-7bb5`（c205 接手） |
 | c196 | m3 | `cursor/c164-m3-ironwork-e6ba` |
 | c197 | m4 | `cursor/c164-m4-electrics-signs-abe1` |
 | c198 | m5 | `cursor/c164-m5-iron-8757` |
@@ -126,6 +127,8 @@
 | c188 | s2 | `cursor/c164-s2-integrator-8e9b`（总装：`cursor/c164-realms-map-b59c`） |
 | c189 | s1 | `cursor/c164-s1-render-9df7` |
 | c190 | s3 | `cursor/c164-s3-rubric-859e` |
+| c204 | ashlar | `cursor/c164-ashlar-2cc1` |
+| c206 | facade | `cursor/c164-facade-229b` |
 
 ## 总监定过的（11-14）
 
@@ -141,6 +144,7 @@
 - 方块门（`IRON_DOOR`）的舷窗放上半格、对着眼高（1.62），下半格是百叶气窗。细化稿原来写的是“下半舷窗、上半气窗”，离线图上舷窗落在膝盖高，读成炉门观察孔。随 materials/iron 的补交改图，`materials.md` §4 那一行一并改（g2 #116）。
 - 行星仪/望远镜锚点进骨架（c193 #95、A0 #97）：ORRERY_CENTRE(11.5,0.5)、ORRERY_R2.5、ORRERY_HANG_Y14、ORRERY_RING_Y8.5（行星/太阳灯那圈降到回廊眼高）、PIER_TOP_Y18；总装 3f5b683c。
 - 合并关口：c188（S2）11-14 回岗，合并钥匙从 A0 接回（sky/look 起）；各线【交付】重新点 @c188。A0 兜底期间已代合 materials/iron（9f09b11）。
+- v4（管理员批，A0 #124、#127）：状态全放 git、并行、墙优先。自查和离线出图都在云端跑；自查图放 `renders/<场景名>/<机位>.png` 跟分支进 git，重出覆盖同名，发【交付】前提交一次，`shots.txt` 记提交号；不再回传。真机图只留给最终灯光和夜景，批量走管理员电脑。合并钥匙留 c188，不分片；【交付】点 @c188，【合并】点 @c164。墙优先批：c204 ashlar、c205 windows、c206 main/facade。
 
 ## 等总监定的
 
