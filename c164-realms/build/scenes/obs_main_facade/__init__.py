@@ -24,7 +24,7 @@ BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
 LINES = (site, main, props, sky)
 ENTRANCE = None                 # None: the package's default
-TIME, DAY = 14000, 6000         # light version A, the default; noon, to read the stone without the lamps
+TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C; noon draws as A)
 
 
 @contextlib.contextmanager
@@ -83,7 +83,8 @@ def shots(compare=False):
             # V3: two bays of the south wing, close, with the corner of the middle pavilion
             dict(name="v3_near", pos=[wing + 10.5, 2.2, z3 + 3.0], look_at=[wing + 1.0, 6.5, z3 - 1.5], time=TIME),
             dict(name="oblique", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=TIME),
-            dict(name="oblique_day", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=DAY),
+            # from above: the roofs, the gable walls, the parapets and what stands on them
+            dict(name="roofs", pos=[58.0, 44.0, 34.0], look_at=[8.0, 14.0, 0.0], time=TIME),
             dict(name="west", pos=[-34.0, 6.0, -30.0], look_at=[4.0, 14.0, 0.0], time=TIME),
         ]
     return out

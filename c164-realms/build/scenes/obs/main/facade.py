@@ -13,7 +13,7 @@ What it builds:
   * the roofs that close it: plain decks over the three pavilions (stand-ins: terraces() names
     them for the package that finishes them), slate between gable walls over the wings;
   * the drum and the dome above (_dome.py), as massing, until main/dome.py is in the tree;
-  * a dark screen behind the entrance, a stand-in until the interiors are in.
+  * a pale wall behind the entrance, a stand-in until the interiors are in.
 
 Every number comes from the skeleton; which column is a pier and which a window comes from
 _plan.py (c178's block-by-block plan). The glass stands one block behind the wall face as whole
@@ -62,8 +62,9 @@ DOOR_TOP = S.STRING - 1                 # 5: the arches of B, the door of C
 # one row above, so the cornice breaks round it. The emblem itself is not stone: emblem() says where.
 EMBLEM = True
 EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
-# A dark screen behind the entrance and the hall's two cross walls up to it (A0: nobody looks
-# through the doorway at the sky behind the building). A stand-in: it goes when main/shell is in.
+# A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
+# looks through the doorway at the sky behind the building, and the doorway is not a black hole:
+# its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
 SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
 # Where the power house's pipe enters the building (A0, 11-14: no riser on the east front): a
@@ -351,18 +352,23 @@ def _emblem(canvas, origin):
 
 
 def _screen(canvas, origin):
-    """The stand-in behind the entrance: a screen across the hall and the hall's two cross walls
-    from it to the front, in two dark stones laid in alternate courses, as high as the string
-    course. Whoever looks in through a doorway sees the back of a vestibule."""
+    """The stand-in behind the entrance: the back wall of a vestibule across the hall and the
+    hall's two cross walls from it to the front, in dressed stone as high as the string course.
+    Whoever looks in through an arch sees a pale wall for the doorway's light to fall on (A0,
+    11-14: the doorway reads as a warm bright face, not as a hole). A strip stands one block proud
+    of the back wall behind each pier of the arcade, so the three fields answer the three arches."""
     ox, oy, oz = origin
-    dark = (B.SLATE_TILE.block, B.SLATE_BRICK.block)
+    fine, panel = B.ASHLAR_FINE.block, B.ASHLAR_PANEL.block
     z0, z1 = P.CROSS_Z
+    strips = {S.pilaster_z(k) for k in (P.AISLE_BAY - 1, P.AISLE_BAY)}
     for y in range(S.GROUND, S.STRING + 1):
         for z in range(z0, z1 + 1):
-            canvas.set(ox + SCREEN_X, oy + y, oz + z, dark[y % 2])
+            canvas.set(ox + SCREEN_X, oy + y, oz + z, panel if z in strips else fine)
+            if z in strips:
+                canvas.set(ox + SCREEN_X + 1, oy + y, oz + z, fine)
         for z in (z0, z1):
             for x in range(SCREEN_X + 1, P.east_face(z) + S.DEPTH_GLASS):
-                canvas.set(ox + x, oy + y, oz + z, dark[y % 2])
+                canvas.set(ox + x, oy + y, oz + z, fine)
 
 
 def crowned():
