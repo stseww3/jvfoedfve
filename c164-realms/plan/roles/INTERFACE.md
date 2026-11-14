@@ -9,6 +9,16 @@
 第二版相对第一版的改动（都不破坏已写的代码）：加了 `motion` 类别；`sky` 挪到最后铺；包内顺序用 `ORDER`；
 `build()` 可以带有默认值的额外参数（`version=`）；检查脚本的用法和查什么（第 6 节）；光线版本靠时间选（第 3 节）。
 
+11-14 补充（也不破坏已写的代码）：格和点的约定（第 2 节）；materials 和 props 的公用底座已在总装，例子换成真的包（第 2 节）；
+云的五个方块归 sky 画、占位怎么算（第 4 节）；合并前 S2 还跑 `tools/delivery.py`，二进制文件一律拦（第 6 节）。
+
+11-14 第二次补充（已交付的包不用改）：没写时间的机位，离线和真机两个出图工具都按 14000 拍（第 3 节）；测试场景也查地盘和前缀，
+名字不合格式的可以写 `CATEGORY`，没有模型的场景不用写 `props.py`，正俯视的机位怎么写（第 5 节）；检查脚本加了 refs、flatwall 两项，
+entities、views 多报几样（第 6 节）。
+
+11-14 第三次补充（A0 的 v4，群 #17613、#17696）：自查和离线出图都在云端跑；自查图用 `tools/selfshots.py` 出，
+放 `renders/<场景名>/`，跟着分支进 git，不再回传（第 5、6 节）。
+
 ---
 
 ## 1. 目录和类别
@@ -45,8 +55,12 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 - **额外参数随便加，但要有默认值**：总场景只调 `build(canvas, origin)`。要比选的包写成 `build(canvas, origin=(0,0,0), version="a")`，测试场景里并排调各版本；评审定了哪一版，就把默认值改成那一版。内部想拆成 `build_<room>(c, origin, roles, *, version=...)` 这样的函数随意，模块级的 `build()` 调它就行。
 - 放方块只认占用表角色名：`from scenes.obs.common import blocks as B` → `B.ASHLAR_FINE.block`、`B.IRON_RIVETED.slab + "[type=top]"`、`B.PANELS["dial"]`。不直接写被重画方块的原名。
 - 取坐标只认骨架：`from scenes.obs.common import skeleton as S` → `S.pilaster_z(j)`、`S.WINDOW`、`S.DOME_CENTRE`、`S.east_wall_x(bay)`、`S.BUDGET`。
+- **格和点别混**：骨架里的数都是“格”（方块的整数坐标，第 k 格占 k 到 k+1）；展示实体摆在“点”上（实数坐标），第 k 格的正中是 k+0.5。主楼关于 z=0 这一排方块的正中对称，所以入口、星厅、穹顶的轴线是 **z=0.5**（`S.AXIS_Z`），穹顶的轴是 `S.DOME_AXIS=(4.5, 0.5)`。几格的正中用 `S.mid(a, b)`（等于 (a+b+1)/2）。把模型摆在 z=0 会偏北半格。
 - 取颜色只认色板：`from scenes.obs.common import palette as P` → `P.mat("iron")`、`P.colour("brass", 3)`。缺颜色群里向 A0 提，不自定义。
-- 最小例子：`props/lamps.py`（一个模型 + `build()` 摆两个）、`main/massing.py`（白模）、`materials/stone.py`（`pack()` 重画方块）。它们是框架的演示，对应的卡交付时由做卡的人替换或删掉。
+- 例子：`props/lamps.py`（14 个模型，两版比选，`place()` 给别的类别调，`build()` 在总场景里摆 4 个）和它的测试场景 `scenes/obs_props_lamps/`；`materials/respack_redirect.py` 和 `scenes/obs_mat_redirect/`。`main/massing.py`（白模）、`site/ground.py` 还是框架的演示，对应的卡交付时由做卡的人替换或删掉。
+- 类别的公用底座（名字以 `_` 开头，归类别牵头人管，缺什么找他加，别在自己分支上改）：
+  - `materials/_kit.py`：`K.paint(pack_dir, 图名, 图)` 写方块图（自动查尺寸和色板外颜色），`K.redirect(pack_dir, 方块, {原版图: 图名})` 让一个方块换图而不动和它共用文件的方块；模块顶上 `BLOCKS = K.blocks(B.<角色>)` 写明自己画了哪些方块，占位就自动让开。要读游戏的 jar（`MC_JAR` 或 `MC_ROOT`，管理员电脑上 `job.py` 已带）。用法见文件头和 c176 的公告。
+  - `props/_kit.py`：三种挂法（floor / wall / ceiling）、`K.put()` 摆放、道具用的几档材质、铆钉、玻璃、`K.offer_lights()` 把光源交给 sky。每个道具包对外给 `place(canvas, kind, pos, facing=, origin=)`。
 - 数据包里的函数（`motion` 的循环）怎么交：等 `motion` 的细化稿出来再定，先别自己往数据包里写文件。
 
 ## 3. 怎么注册一个新包（不改共享列表，两个人各加一个包不冲突）
@@ -62,15 +76,18 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 
 总场景的 `build()` 依次调各类别的 `build(c, ORIGIN=(0,0,0))`；`build_models()` 合并各类别的模型（重名直接报错）；`write_pack()` 依次调各类别的 `pack()`。
 
-光：生物群系只有一个，`obs.BIOME = "obs_blue"`。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡；它合并之前，总装里是 S2 按方案写的占位。
+光：生物群系只有一个，`obs.BIOME = "obs_blue"`。三个光线版本是同一条时间线上的三个时刻，靠 `shots.json` 里的 `time` 选：`14000`（A，默认，不写就是 A）、`18000`（B）、`12900`（C）。光的实现在 `sky/mood.py`，归 `sky/look` 这张卡（已合并）。
+“不写就是 A”两个出图工具都照办：`build/render.py`（离线）和 `tools/shoot.py`（真机）对没有 `time` 的机位都按 14000 拍（11-14 前是正午）。要白天的图就写 `"time": "noon"`。
 
 ## 4. 不撞车（两个包不许写同一个文件；检查脚本会查）
 
 - **模型名加类别前缀**：`materials`→`mat_`、`sky`→`sky_`、`main`→`bld_`、`props`→`prop_`、`site`→`site_`、`machines`→`mach_`、`interiors`→`int_`、`motion`→`mot_`。
   模型名唯一 ⇒ `assets/c164/…` 下的物品模型/贴图文件唯一；重名 `build_models()` 抛错，`check.py` 也查。
 - **资源包里谁写哪**（`check.py` 里的 `OWNED` 表；写进别的类别的地盘判不过，写到表里没有的地方给警告，找 S2 加）：
-  - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的那个文件夹）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些。**
+  - `materials`：方块贴图和重定向——`assets/minecraft/*`（除了下面 `sky` 的）、`assets/c164/textures/block/*`、`assets/c164/models/block/*`。**只有它写这些，唯一的例外是云。**
   - `sky`：`assets/minecraft/textures/environment/*`、`assets/c164/textures/environment/*`（彗星、云、星）。光的 biome/timeline 在 `sky/mood.py`（那是数据包，驱动器单独处理，不在 `pack()` 里）。
+    **云的五个方块（`B.CLOUD`）由 sky 画**（A0 批的例外：云色要和天光一起调）：它们的方块状态文件、模型文件夹 `assets/c164/models/block/<方块名>/`、名字以 `sky_` 开头的方块图 `assets/c164/textures/block/sky_*` 归 sky；照样走 `materials/_kit.py` 的 `paint` 和 `redirect`。
+  - 占位：没人画的重画方块由 `materials/respack_redirect` 套上占位色（图名 `ph_` 开头）。占位写到别人地盘里不算越界；正式的包开始写同一个文件而占位没让开，判重复。
   - `motion`：`assets/c164/sounds/*`、`assets/c164/sounds.json`、`assets/c164/particles/*`、`assets/c164/textures/particle/*`。
   - 其余类别：`pack()` 一般不写文件，只用 `materials` 的方块和自己的展示实体模型。
 - 要一种新方块材质/新色阶：群里点名 materials 的牵头人和 S2，A0 批，S2 改占用表/色板，再画。不自己占方块、不自己建色板。
@@ -88,40 +105,59 @@ build/scenes/obs_<缩写>_<包名>/
   shots.json      [{"name":.., "pos":[x,y,z], "look_at":[x,y,z], "time": 可省}]  视角至少含一远、一近、一和相邻东西同框
 ```
 
+- 场景属于哪个类别，`check.py` 从名字里的缩写读；名字不按这个格式的测试场景在 `__init__.py` 里写一行 `CATEGORY = "props"`。没有模型的场景不用写 `props.py`，`makepack.py`、`render.py`、`check.py` 都当它没有模型。
+- 机位正对着头顶或脚下（`look_at` 和 `pos` 只差 y）可以写：朝下拍时画面上边朝南。要别的朝向改用 `yaw`、`pitch` 写（`pitch` 90 朝下；`yaw` 180 时画面上边朝北、右边朝东）。`pos` 和 `look_at` 是同一点不行，`check.py` 判不过。
 - 只想陈列模型、不摆场景：不写 `build()`，在 `props.py` 里再加 `GALLERY`（照 `scenes/skyobs/props.py`）；真机上的陈列由 S1 用 `gallery.py` 摆。`check.py` 对这种场景只查模型和资源包。
-- 离线出图（自查，谁都能跑；**在管理员电脑上**经 `bin\job.py`，云端那台 4 核机只改代码，不出图不生成大场景）：
-  `render.py obs_<缩写>_<包名> --shots scenes/obs_<缩写>_<包名>/shots.json --out '@out/rt/<提交前七位>'`。
+- **自查图在云端出，放进 git**（v4）。在自己 worktree 的 `c164-realms/` 下，代码提交之后：
+  ```
+  /agent/realms-study/.venv/bin/python tools/selfshots.py obs_<缩写>_<包名>      # 可以一次写几个场景
+  ```
+  它按场景的 `shots.json` 离线出图（`build/render.py`，1280×720，每个机位按自己的 `time`），存成
+  `renders/<场景名>/<机位>.png`，同目录的 `shots.txt` 记每张图是哪个提交的代码出的。九个机位的样板大约 6 秒
+  （每个 worktree 第一次多 20 秒编译）。几条规矩：
+  - **先提交代码再出图**：代码没提交它不出（`shots.txt` 要记提交号）。改到一半想先看一眼，加 `--dirty`，或者直接用
+    `build/render.py <场景> --shots build/scenes/<场景>/shots.json --out /tmp/<前缀>` 出到仓库外面。
+  - **图只在发【交付】前提交一次**，别每改一版都提交：每张 0.15–0.3 MB，进了历史删不掉。重出就覆盖同名文件，
+    机位从 `shots.json` 里删了，它的图也会被删掉；只重出几张用 `--only a,b`。
+  - `tools/selfshots.py <场景> --verify`：重新出一遍和存着的图逐像素比，告诉你存的图是不是现在的代码出的（不写文件）。
+    出完图又改了代码就会不一致，交付前跑一下。
 - 真机图、把总场景摆进测试服：拿出图钥匙的人（S1）统一跑，各包别自己开游戏。地块的 y 一律 200（云的高度是世界坐标）。
 
 ## 6. 交付前自查，交付消息
 
-交付前自己跑技术检查。在管理员电脑上，和别的脚本一样经 `bin\job.py`（脚本路径相对 `build`，所以带 `..\`）：
+交付前自己跑技术检查。在云端自己 worktree 的 `c164-realms/` 下（v4；管理员电脑上经 `bin\job.py <代号> -- ..\tools\check.py …` 也还能跑）：
 
 ```
-.\venv\Scripts\python.exe bin\job.py <代号> -- ..\tools\check.py --scene obs_<缩写>_<包名>
+/agent/realms-study/.venv/bin/python tools/check.py --scene obs_<缩写>_<包名> --shots build/scenes/obs_<缩写>_<包名>/shots.json
 ```
 
-不用游戏、不出图，测试场景几秒钟。每项给 PASS / WARN / FAIL，有 FAIL 就别交付（退出码 1）：
+不用游戏、不出图，测试场景一两秒。每项给 PASS / WARN / FAIL，有 FAIL 就别交付（退出码 1）：
 
 | 项 | 查什么 | 不过是 |
 | --- | --- | --- |
 | regen | 场景、模型、资源包、数据包、光能不能从头生成 | FAIL |
+| conflicts | 两个包有没有写同一个文件；文件在不在本类别的地盘；模型名有没有类别前缀；文件名游戏认不认（只能有小写字母、数字和 `_ - . /`）。**测试场景也查**：场景所属类别的每个包照总场景的办法单独跑一遍，写进别人地盘、模型没前缀在这里就报，不用等合并 | FAIL（表里没有的地方、不是 .png 的图 WARN） |
 | strays | 生成的每张贴图有没有色板外的颜色（列出颜色、像素数、最近的色板色；天空贴图是加色的，不查） | FAIL |
-| conflicts | 两个包有没有写同一个文件；文件在不在本类别的地盘；模型名有没有类别前缀 | FAIL（表里没有的地方 WARN） |
+| refs | 资源包里的方块状态、物品定义、模型点到的模型和贴图，资源包或游戏里有没有（没有的话游戏里是紫黑格）；没人点到的模型和贴图 | 点到的不存在 FAIL；没人点到 WARN |
 | repaint | 被替换的方块状态是不是都在占用表的重画名单里；替换原版模型/贴图有没有连带改了表外的方块 | FAIL |
-| blocks | 放下的方块是不是都在占用表里 | WARN（找 S2 加表，或换表里的方块） |
-| entities | 每个展示实体的模型资源包里有没有；实体总数和类别预算；是不是 16 像素一格 | 缺模型、超预算 FAIL；像素密度 WARN |
-| views | 按 `shots.json` 数每个视角里的展示实体（不算墙的遮挡），对照单视角上限 | WARN |
+| blocks | 放下的方块、`block_display` 展示的方块是不是都在占用表里 | WARN（找 S2 加表，或换表里的方块） |
+| flatwall | 立面上有没有超过 5×5 的平墙（同一种方块状态、没有凹凸，连成比 5×5 大的实心方块；宽或高不超过 5 的条带不算）。materials、sky、props、motion 的测试场景是样板墙，跳过 | WARN（白模阶段本来就平；立面交付时要清掉） |
+| entities | 每个展示实体的模型资源包里有没有；实体总数和类别预算；是不是 16 像素一格；沿一个方向拉长的件（`M.between`），贴图沿那个方向是不是均匀（不均匀会拉花），有没有被拉歪的斜件；直接展示原版物品的 | 缺模型、超预算 FAIL；其余 WARN |
+| views | 按 `shots.json` 数每个视角里的展示实体（不算墙的遮挡），对照单视角上限；另报两个数：游戏实际要画的（没设宽高的展示实体在画面外也照画）、离机位水平超过 160 格的（服务器不发给玩家，那张图里看不到；这条是读游戏代码得的，真机待证实）。机位没有方向（`pos` 等于 `look_at`）判不过 | WARN；机位没方向 FAIL |
 
-`--json <文件>` 另存一份机器可读的结果；`--keep <目录>` 留下生成的资源包和数据包。S2 合并前对你的测试场景和总场景 `obs` 各复跑一次。脚本查不了的（门能不能走人、层高、文字、被重画的方块有没有按原意用）由做技检的人看图看代码。
+`--json <文件>` 另存一份机器可读的结果（明细不截短，views 带每个机位的数）；`--keep <目录>` 留下生成的资源包和数据包（那个目录会先被清空，所以只收新目录、空目录、或者上一次 `--keep` 留下的目录）。S2 合并前在“你的分支和总装合起来”的树上，对你的测试场景和总场景 `obs` 各复跑一次，所以交付前先 merge 一次总装分支再自查，省一轮。脚本查不了的（门能不能走人、层高、文字、被重画的方块有没有按原意用）由做技检的人看图看代码。
 
-过了按 `PIPELINE.md` 第 4.3 节发群，点名 S2：
+合并前 S2 还跑 `tools/delivery.py <类别>/<包名> <提交>`（只读 git，你也可以自己先跑）：改了谁的文件（本卡的、公共的、别的卡的、总监的）；有没有不该进仓库的文件；有没有像密钥的字符串；提交说明是不是 `c164-<代号>: ` 开头；本包的测试场景是不是每个机位都存了图、`shots.txt` 记的提交在不在分支上、出图之后本卡的代码有没有再改（`pictures` 一项，不齐给警告）；能不能干净地合进总装。**二进制文件一律拦**，只放行图片（`renders/` 下的自查图、`plan/` 下的配图；代码树里的图片会被问来源，贴图都由代码画）和 `tools/win/helper/*.class`（A0 批的唯一例外，S2 会从并排的源码重编一遍逐字节比）。声音文件也拦，要加先问 A0。
+
+过了按 `PIPELINE.md` 第 4.3 节发群，点名 S2（c188）：
 
 ```
-【交付】<类别>/<包名> <分支> <提交前七位> 自查图：<文件名>
+【交付】<类别>/<包名> <分支> <提交前七位> 自查图：renders/<场景名>/（<张数> 张）
 ```
 
-S2 复跑检查，过了合并进总装分支、发【合并】点名出图工位和一个交叉看的人；不过发【技检】退回写明原因和怎么复现，点名做包的人。卡片和细化稿是纯文档，不用技检，推上去点名 S2 直接合。
+S2 在你交付的那个提交上跑 `selfshots.py --verify`（存的图是不是这个提交出的），再在“你的分支和总装合起来”的树上复跑 `check.py`；过了合并进总装分支、发【合并】点名总监、出图工位和一个交叉看的人；不过发【技检】退回写明原因和怎么复现，点名做包的人。卡片和细化稿是纯文档，不用技检，推上去点名 S2 直接合。
+
+合并之后总装里的 `renders/<场景名>/` 就是这个包交付时的样子。别的包后来合进来让它变了样（换了光、重画了它用到的方块），S2 合并时会用 `--verify` 看出来，在【合并】里写明哪些场景的图变了；图由那个场景的作者下次交付时重出。
 
 ## 7. 实体预算（骨架 `S.BUDGET`，R1 0.4）
 

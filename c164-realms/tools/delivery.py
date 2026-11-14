@@ -5,22 +5,32 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
     delivery.py <category>/<package> <commit> [--base <commit>]      base: HEAD (the assembly copy)
 
   scope     the files changed, sorted into: the card's own (its module, the category's _helpers,
-            its test scenes, its card, the parts files), common files (only the merge-key holder
-            changes those: agreed beforehand or not?), other cards' files, the director's files
-  files     no archives, programs, fonts or world files; pictures and sounds named; nothing large
+            its test scenes and their kept pictures, its card, the parts files), common files (only
+            the merge-key holder changes those: agreed beforehand or not?), other cards' files,
+            the director's files
+  files     no archives, programs, fonts, sounds or world files; nothing binary but pictures and
+            the built helper classes (tools/win/helper/*.class: rebuilt here from the source beside
+            them and compared byte for byte); pictures in the code tree named; nothing large
   secrets   added lines that look like a token, a key or an address with a password in it
             (the finding is shown shortened, never whole)
   origin    added lines that speak of a copyright, a licence or a site that hands out assets
   commits   commit messages start with "c164-<code>: "
+  pictures  every test scene the delivery touches keeps a picture of each of its shots in
+            renders/<scene>/ and a note of the commit they show (tools/selfshots.py draws them)
   merge     the branch merges into the base without conflicts; how far it is behind
 
-The technical checks of what the code generates are tools/check.py's.
+The technical checks of what the code generates are tools/check.py's; whether the kept pictures
+are what the delivered code draws is tools/selfshots.py --verify's (both need a checkout).
 """
 import argparse
+import hashlib
+import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
 ROOT = "c164-realms/"
 ABBR = {"materials": "mat", "sky": "sky", "main": "main", "site": "site", "machines": "mach",
@@ -31,7 +41,14 @@ DIRECTOR = ("plan/ART-PLAN.md", "plan/PIPELINE.md", "plan/roles/", "plan/reviews
 BANNED = (".zip", ".jar", ".exe", ".dll", ".so", ".ttf", ".otf", ".woff", ".woff2", ".schem", ".schematic",
           ".litematic", ".mca", ".mcworld", ".mcpack", ".7z", ".rar", ".gz", ".tar", ".pyc", ".dat")
 PICTURES = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+MAGIC = {".png": (b"\x89PNG\r\n\x1a\n",), ".jpg": (b"\xff\xd8\xff",), ".jpeg": (b"\xff\xd8\xff",),
+         ".gif": (b"GIF87a", b"GIF89a"), ".webp": (b"RIFF",)}
 SOUNDS = (".ogg", ".wav", ".mp3", ".flac")
+# The one kind of binary that is not a picture (A0, 2026-11-14): a class of our own that the Windows
+# workspace cannot build (its Java has no compiler), kept beside its source tools/win/<Name>.java and
+# a note of that source's SHA-1, tools/win/helper/<Name>.sha1.
+BUILT = re.compile(r"tools/win/helper/([A-Za-z0-9_]+)(\$[A-Za-z0-9_$]+)?\.class")
+JAVAC = ("--release", "21", "-encoding", "UTF-8")      # as tools/win/build_helper.py builds it
 LARGE, HUGE = 1 << 20, 5 << 20
 
 SECRETS = [
@@ -55,6 +72,63 @@ def git(*args, check=True):
     if check and got.returncode != 0:
         sys.exit(f"git {' '.join(args[:3])} ... failed: {got.stderr.strip()[:300]}")
     return got
+
+
+def blob(tree, path):
+    got = subprocess.run(("git", "cat-file", "blob", f"{tree}:{path}"), capture_output=True)
+    return got.stdout if got.returncode == 0 else None
+
+
+def is_binary(data):
+    if b"\0" in data[:8192]:
+        return True
+    try:
+        data.decode("utf-8")
+    except UnicodeDecodeError:
+        return True
+    return False
+
+
+def built_class(tree, rel, data, cache):
+    """Is the class file `rel` (a path of the project) what its source builds? Returns (fails, warns)."""
+    name, folder = BUILT.fullmatch(rel).group(1), ROOT + "tools/win/"
+    source = blob(tree, f"{folder}{name}.java")
+    note = blob(tree, f"{folder}helper/{name}.sha1")
+    if source is None:
+        return [f"{rel}: a built class without its source tools/win/{name}.java beside it"], []
+    mark = hashlib.sha1(source.replace(b"\r\n", b"\n")).hexdigest()
+    if note is None or note.decode("ascii", "replace").strip() != mark:
+        return [f"{rel}: the note tools/win/helper/{name}.sha1 does not name the present source ({mark[:12]})"], []
+    if name not in cache:
+        javac = os.environ.get("JAVAC") or shutil.which("javac")
+        if javac is None:
+            cache[name] = None
+        else:
+            out = tempfile.mkdtemp(prefix="c164-delivery-")
+            src = os.path.join(out, "src")
+            os.makedirs(src)
+            with open(os.path.join(src, f"{name}.java"), "wb") as fh:
+                fh.write(source)
+            got = subprocess.run((javac,) + JAVAC + ("-d", out, os.path.join(src, f"{name}.java")),
+                                 capture_output=True, text=True)
+            made = {}
+            for f in os.listdir(out):
+                if f.endswith(".class"):
+                    with open(os.path.join(out, f), "rb") as fh:
+                        made[f] = fh.read()
+            version = subprocess.run((javac, "-version"), capture_output=True, text=True)
+            cache[name] = (got.returncode, made, (version.stdout + version.stderr).strip(),
+                           got.stderr.strip().splitlines()[-1:] or [""])
+            shutil.rmtree(out, ignore_errors=True)
+    if cache[name] is None:
+        return [], [f"{rel}: its note names the present source; not rebuilt (no javac here)"]
+    code, made, version, last = cache[name]
+    if code != 0:
+        return [f"{rel}: the source does not build here ({version}): {last[0][:120]}"], []
+    if made.get(os.path.basename(rel)) != data:
+        return [f"{rel}: not what the source builds here ({version}, javac {' '.join(JAVAC)}); "
+                f"rebuilt {len(made.get(os.path.basename(rel), b''))} bytes, kept {len(data)}"], []
+    return [], []
 
 
 def say(status, check, summary, details=()):
@@ -86,7 +160,7 @@ def main():
     fork = git("merge-base", base, head).stdout.strip()
     module = pkg.replace("-", "_")
     own = (f"build/scenes/obs/{cat}/{module}.py", f"build/scenes/obs/{cat}/_",
-           f"build/scenes/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
+           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
 
     # What the merge would change in the base: the base against the merged tree. (The branch against
     # the fork point would also show what the branch took over from the assembly branch on the way.)
@@ -133,26 +207,44 @@ def main():
                        summary, details))
 
     # ---- files ----
-    fails, warns = [], []
+    fails, warns, binary, rebuilt, cache = [], [], set(), 0, {}
     for status, path in pairs:
         if status == "D":
             continue
         low = path.lower()
-        size = int(git("cat-file", "-s", f"{merged}:{path}", check=False).stdout.strip() or 0)
+        data = blob(merged, path) or b""
+        size = len(data)
         rel = path[len(ROOT):] if path.startswith(ROOT) else path
+        ext = os.path.splitext(low)[1]
         if low.endswith(BANNED):
             fails.append(f"{rel}: this kind of file does not belong in the repository")
-        elif low.endswith(PICTURES) and rel.startswith("build/"):
-            warns.append(f"{rel}: a picture in the code tree; every texture is painted by code -- where is it from?")
         elif low.endswith(SOUNDS):
-            warns.append(f"{rel}: a sound; the card has to say how it was made (nothing third-party)")
+            fails.append(f"{rel}: a sound file; the map uses the game's own sounds (ask A0 before adding one)")
+        elif low.endswith(PICTURES):
+            binary.add(path)
+            if not data.startswith(MAGIC[ext]):
+                fails.append(f"{rel}: named as a picture, but it is not one")
+            elif rel.startswith("build/"):
+                warns.append(f"{rel}: a picture in the code tree; every texture is painted by code -- "
+                             f"where is it from?")
+        elif is_binary(data):
+            binary.add(path)
+            if BUILT.fullmatch(rel) and path.startswith(ROOT):
+                f, w = built_class(merged, rel, data, cache)
+                fails += f
+                warns += w
+                rebuilt += not f and not w
+            else:
+                fails.append(f"{rel}: a binary file; only pictures and the built helper classes "
+                             f"(tools/win/helper/*.class beside their source) may be")
         if size > HUGE:
             fails.append(f"{rel}: {size / 1048576:.1f} MB")
         elif size > LARGE:
             warns.append(f"{rel}: {size / 1048576:.1f} MB")
+    note = f"; {rebuilt} built classes are byte for byte what their source builds here" if rebuilt else ""
     results.append(say("FAIL" if fails else "WARN" if warns else "PASS", "files",
-                       "nothing that should not be in the repository" if not fails and not warns
-                       else f"{len(fails)} not allowed, {len(warns)} to look at", fails + warns))
+                       "nothing that should not be in the repository" + note if not fails and not warns
+                       else f"{len(fails)} not allowed, {len(warns)} to look at" + note, fails + warns))
 
     # ---- secrets and origin: the added lines only ----
     secrets, origin, path, n = [], [], None, 0
@@ -167,7 +259,7 @@ def main():
         if not line.startswith("+") or path is None:
             continue
         n += 1
-        if path.lower().endswith(PICTURES + SOUNDS) or path.endswith("tools/delivery.py"):
+        if path in binary or path.endswith("tools/delivery.py"):
             continue
         rel = path[len(ROOT):] if path.startswith(ROOT) else path
         for what, rx in SECRETS:
@@ -190,6 +282,66 @@ def main():
     results.append(say("WARN" if odd else "PASS", "commits",
                        f"{len(odd)} commit messages do not start with \"c164-<code>: \"" if odd
                        else "commit messages are in form", odd))
+
+    # ---- pictures: the package's test scenes and those the delivery touches, as they stand after the merge ----
+    stem = f"obs_{ABBR[cat]}_{module}"
+    scenes = {os.path.basename(p) for p in
+              git("ls-tree", "--name-only", merged, f"{ROOT}build/scenes/", check=False).stdout.splitlines()
+              if os.path.basename(p) == stem or os.path.basename(p).startswith(stem + "_")} if pairs else set()
+    scenes = sorted(scenes | {m.group(1) for _, path in pairs for m in
+                              [re.match(re.escape(ROOT) + r"(?:build/scenes|renders)/(obs_[a-z]+_[^/]+)/", path)] if m})
+    code = [f"{ROOT}build/scenes/obs/{cat}/{module}.py", f":(glob){ROOT}build/scenes/obs/{cat}/_*"]
+    notes, without, shown = [], [], 0
+    for scene in scenes:
+        shots = blob(merged, f"{ROOT}build/scenes/{scene}/shots.json")
+        if shots is None:
+            if blob(merged, f"{ROOT}build/scenes/{scene}/__init__.py") is None:
+                notes.append(f"renders/{scene}/: pictures of a scene that is not there")
+            continue
+        try:
+            names = [s["name"] for s in json.loads(shots.decode("utf-8"))]
+        except (ValueError, KeyError, TypeError):
+            notes.append(f"{scene}: its shots.json cannot be read")
+            continue
+        folder = f"{ROOT}renders/{scene}/"
+        kept = {os.path.basename(p)[:-4] for p in
+                git("ls-tree", "--name-only", merged, folder, check=False).stdout.splitlines() if p.endswith(".png")}
+        if not kept:
+            without.append(scene)
+            continue
+        shown += len(kept & set(names))
+        missing, left = [n for n in names if n not in kept], sorted(kept - set(names))
+        if missing:
+            notes.append(f"{scene}: no picture of {', '.join(missing)}")
+        if left:
+            notes.append(f"{scene}: pictures left over, the list has no such shot: {', '.join(left)}")
+        note = blob(merged, folder + "shots.txt")
+        if note is None:
+            notes.append(f"{scene}: no shots.txt, so which commit the pictures show is not noted")
+            continue
+        drawn = {}
+        for line in note.decode("utf-8", "replace").splitlines():
+            parts = line.split("\t")
+            if len(parts) == 3 and not line.startswith("#"):
+                drawn.setdefault(parts[2], []).append(parts[0])
+        for commit, of in sorted(drawn.items()):
+            if commit.endswith("+"):
+                notes.append(f"{scene}: {len(of)} pictures were drawn from uncommitted code ({commit})")
+            elif git("merge-base", "--is-ancestor", commit, head, check=False).returncode != 0:
+                notes.append(f"{scene}: {len(of)} pictures are noted as showing {commit}, which is not in the "
+                             f"branch's history")
+            else:
+                since = git("diff", "--name-only", commit, head, "--", f"{ROOT}build/scenes/{scene}/", *code,
+                            check=False).stdout.split()
+                if since:
+                    notes.append(f"{scene}: {len(of)} pictures show {commit}; the card's code has changed since "
+                                 f"({', '.join(os.path.basename(p) for p in since[:4])}"
+                                 f"{' ...' if len(since) > 4 else ''}): draw them again")
+    notes = [f"{s}: no pictures kept (tools/selfshots.py {s}, then commit renders/{s}/)" for s in without] + notes
+    results.append(say("WARN" if notes else "PASS", "pictures",
+                       "no test scene with a shot list is touched" if not scenes
+                       else f"{len(scenes)} test scene{'s' if len(scenes) != 1 else ''}, {shown} shots with a picture kept"
+                       + ("" if notes else "; every shot has one"), notes))
 
     # ---- merge ----
     behind = len(git("rev-list", f"{head}..{base}").stdout.split())
