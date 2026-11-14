@@ -113,7 +113,18 @@ OLD_COPPER_CUT = _family("waxed_exposed_cut_copper", "stairs slab")   # gutters,
 
 # --- repainted: small pieces --------------------------------------------------------------------------
 WAINSCOT = "dark_oak_trapdoor"                                  # wall panelling indoors
-BRASS_INLAY = "yellow_carpet"                                   # brass line in the floor (the meridian)
+BRASS_INLAY = "yellow_carpet"                                   # a whole square of brass let into the floor
+# The thin line of worn, dark brass let into the paving (A0, 11-14: the court's meridian and emblem;
+# the whole-square carpet above read as a yellow road marking). Flat, open (the stone below shows
+# through), nothing to walk into; it lies in the cell above the paving and needs a solid block below.
+# These are the game's rails, and a rail set down in the world turns itself to join the rails beside
+# it: give every cell the shape that joins its two neighbours, and keep a line one cell clear of any
+# other. No real track is laid with these three any more.
+BRASS_LINE = "rail"             # shape=north_south | east_west: a straight run; south_east |
+#                                 south_west | north_west | north_east: a corner, named by the two
+#                                 sides it joins (two corners in a row draw a diagonal)
+BRASS_CROSS = "activator_rail"  # [shape=north_south] where two lines cross (the meridian through the ring)
+BRASS_STAR = "detector_rail"    # [shape=north_south] the emblem's star, one cell
 ENAMEL_SIGN = ("oak_sign", "oak_wall_sign", "oak_hanging_sign", "oak_wall_hanging_sign")
 
 # --- repainted: the cloud sea built of blocks (five flat tones, dark to light like RAMPS["cloud"]) ----
@@ -153,7 +164,7 @@ REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE,
              WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT,
              *PANELS.values(), BRASS_PLATE, BRASS_PATTERN, BRASS_COLUMN, BRASS_RAIL, BRASS_GATE, BRASS_DOOR,
              BRASS_HATCH, BRASS_BUTTON, *BRASS_SIGN, BRASS_SHELF, OLD_COPPER, OLD_COPPER_CUT, WAINSCOT,
-             BRASS_INLAY, *ENAMEL_SIGN, *CLOUD]
+             BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
            TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED, SNOW,
            SNOW_LAYER, DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
