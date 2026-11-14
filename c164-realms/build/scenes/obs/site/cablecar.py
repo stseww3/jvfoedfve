@@ -147,9 +147,11 @@ def _platform(p):
         p.set(X0 + 2, TOP, z, KERB)
     for x in range(X0 + 2, bay):
         p.set(x, TOP, Z1 - 2, KERB)
-    # the bay's rail and the east edge south of the track; the two cells north of the track
+    # the bay's rail and the east edge as far as the track, the canopy's corner column standing in
+    # it as a post; the cell between the track and the winch house; the north edge west of the house
     edge = [(x, Z1) for x in range(bay, X1)] + [(X1, z) for z in range(Z1, AXIS + 1, -1)]
-    K.rail(p.c, p.o, edge, [(bay, Z1), (X1, Z1), (X1, AXIS + 2)], y=FEET, kerb=False)
+    edge = [cell for cell in edge if cell not in COLUMNS]
+    K.rail(p.c, p.o, edge, [(bay, Z1), (X1, Z1)], y=FEET, kerb=False)
     K.rail(p.c, p.o, [(X1, AXIS - 2)], [], y=FEET, kerb=False)
     K.rail(p.c, p.o, [(x, Z0) for x in range(X0 + 2, WAIT[0])], [], y=FEET, kerb=False)
 
@@ -160,8 +162,8 @@ def _track(p):
         p.set(x, TOP, AXIS - 1, IRON)
         p.set(x, TOP, AXIS + 1, IRON)
         p.set(x, TOP, AXIS, GRATE)
-    for z in (AXIS - 1, AXIS + 1):
-        p.set(HEAD - 1, FEET, z, IRON_STAIR + "[facing=west]")
+    for z in (AXIS - 1, AXIS + 1):      # upright towards the car, braced behind
+        p.set(HEAD - 1, FEET, z, IRON_STAIR + "[facing=east]")
 
 
 def _shell(p, box, y0, y1):
@@ -176,16 +178,17 @@ def _shell(p, box, y0, y1):
                 p.set(x, y, z, COURSE if corner or y in (y0, y1) else WALL)
 
 
-def _gable_roof(p, box, y, ridge):
+def _gable_roof(p, box, y, ridge, gables=None):
     """A roof of two pitches over a box, the ridge east-west; the eaves course is y. The gable
-    walls are filled under it."""
+    walls (at the x of `gables`, both ends by default) are filled under it."""
     x0, z0, x1, z1 = box
     half = (z1 - z0) // 2
+    gables = (x0, x1) if gables is None else gables
     for x in range(x0, x1 + 1):
         for i in range(half):
             p.set(x, y + i, z0 + i, ROOF + "[facing=south]")
             p.set(x, y + i, z1 - i, ROOF + "[facing=north]")
-            if x in (x0, x1):
+            if x in gables:
                 for z in range(z0 + i + 1, z1 - i):
                     p.set(x, y + i, z, WALL)
         for z in range(z0 + half, z1 - half + 1):
@@ -230,7 +233,7 @@ def _waiting_room(p):
     _window(p, [(mid - 1, z1), (mid + 2, z1)], FEET + 1, FEET + 2, LIT)
     _window(p, [(x0, z0 + 1), (x0, z1 - 1)], FEET + 1, FEET + 2, WARM)      # the west end
     _window(p, [(mid - 1, z0), (mid + 2, z0)], FEET + 1, FEET + 2, DARK)    # the back
-    _gable_roof(p, WAIT, WAIT_TOP + 1, ROOF_FLAT)
+    _gable_roof(p, WAIT, WAIT_TOP + 1, ROOF_FLAT, gables=(x0,))
 
 
 def _canopy(p):
@@ -269,6 +272,10 @@ def _trestle(p):
             p.set(x, y, z + dz, IRON_SLAB + f"[type={half}]")
         if half == "top":
             p.set(x, y, z, TIE)
+    x = X1 + 1                                  # the abutment: masonry from the rock to the rails
+    for y in range(K.cable_ridge(x)[1] + 1, TOP):
+        for dz in (-1, 0, 1):
+            p.set(x, y, track_axis(x) + dz, FOOTING)
     for x in BENTS:
         z = track_axis(x)
         y, half = _slab(rail_top(x))
