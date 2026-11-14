@@ -114,7 +114,7 @@ class Opening:
     def __init__(self, front, bay, out, blind, only):
         self.front, self.bay, self.out, self.blind, self.only = front, bay, out, blind, only
         self.cells = []
-        self.door = None        # (y0, y1, stone for the arched head or None) once Plan.door() is called
+        self.door = None        # (y0, y1, stone of the arched head, leaf function) once Plan.door() is called
 
     @property
     def inward(self):
@@ -198,10 +198,14 @@ class Plan:
     def openings(self):
         return [self.bays[k] for k in sorted(self.bays, key=lambda k: (str(k[0]), k[1]))]
 
-    def door(self, front, bay, y0, y1, arch=None):
+    def door(self, front, bay, y0, y1, arch=None, leaf=None):
         """Turn a bay into a doorway from row y0 to y1, through both leaves; `arch` (a stone family)
-        rounds the two top corners like a window head. The storeys leave their windows out of it."""
-        self.bays[(front, bay)].door = (y0, y1, arch)
+        rounds the two top corners like a window head. The storeys leave their windows out of it.
+
+        leaf    leaf(laying, opening, y) says what stands in the glass plane of row y: the bars of a
+                gate, the glass of a fanlight, a transom (a block state), or None for nothing. Left
+                out, the doorway is open from top to bottom."""
+        self.bays[(front, bay)].door = (y0, y1, arch, leaf)
 
     def pier_fronts(self):
         """The columns where a pilaster's own mouldings stand: next to a pilaster and clear of the
@@ -533,12 +537,16 @@ class Parapet(Band):
 
 
 def doorway(s, op):
-    """Cut a doorway through both leaves and everything that stands in front of them."""
-    y0, y1, stone = op.door
+    """Cut a doorway through both leaves and everything that stands in front of them, then set
+    what the door's leaf function puts back into the glass plane."""
+    y0, y1, stone, leaf = op.door
     for c in op.cells:
-        for n in (-1, 0, 1, 2):
-            for y in range(y0, y1 + 1):
+        for y in range(y0, y1 + 1):
+            for n in (-1, 0, 1, 2):
                 s.clear(step(c, op.out, n), y)
+            state = leaf(s, op, y) if leaf else None
+            if state:
+                s.put(step(c, op.out, -1), y, state)
     if stone is not None:
         arch(s, op, y1, stone)
 
