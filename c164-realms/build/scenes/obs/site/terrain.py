@@ -95,12 +95,13 @@ RIDGES = (
     dict(start=(45, 56), heading=(0.30, 1), y0=-6.5, a=0.42, b=0.014, side=1.6),        # south, beyond the lookout
     dict(start=(80, 43), heading=(0.35, 1), y0=-8.0, a=0.65, b=0.020, side=1.9),        # south-east, below the power house
     dict(start=(91, 13), heading=(1, 0.30), y0=-8.5, a=0.55, b=0.016, side=1.8),        # east, below the lower platform
+    dict(start=(-29, 5), heading=(-1, 0.55), y0=-4.5, a=0.85, b=0.020, side=2.2),       # west, the keel under the sunset terrace
 )
 # A gully: where it starts under the terrace's edge, its heading, how deep it cuts, its half-width
 # at the start and how fast it widens.
 GULLIES = (
-    dict(start=(-12, -23), heading=(-1, -0.35), depth=6.0, width=2.5, grow=0.08),       # either side of the sunset
-    dict(start=(-12, 23), heading=(-1, 0.35), depth=6.0, width=2.5, grow=0.08),         # terrace: it stands on a prow
+    dict(start=(-12, -23), heading=(-1, -0.25), depth=7.0, width=3.0, grow=0.10),       # either side of the sunset
+    dict(start=(-12, 23), heading=(-1, 0.45), depth=5.0, width=2.5, grow=0.07),         # terrace: it stands on a prow
     dict(start=(11, -40), heading=(0.10, -1), depth=5.0, width=2.5, grow=0.07),         # between weather station and mast pad
     dict(start=(44, -40), heading=(0.45, -1), depth=5.0, width=3.0, grow=0.08),         # north-east
     dict(start=(12, 40), heading=(-0.15, 1), depth=6.0, width=3.0, grow=0.08),          # south
@@ -129,8 +130,12 @@ BEDS = ((DEEP, 3), (TUFF, 1), (DEEP, 2), (COBBLED, 1), (TUFF, 2), (DEEP, 3), (ST
 # a few blocks of a kindred rock in a bed, as weathering: {bed rock: (the other rock, its share)}
 FLECKS = {DEEP: (COBBLED, 0.10), COBBLED: (DEEP, 0.15), TUFF: (COBBLED, 0.08), STONE: (ANDESITE, 0.20),
           ANDESITE: (STONE, 0.20)}
+LIGHT = (TUFF, STONE, ANDESITE)     # the beds that read as light lines on a cliff
+SEAM = COBBLED                  # what stands in a light bed's place where the bed has thinned out
+LENS_OUT = -0.02                # ... which is where the bed's own slow noise is below this: a little under half of it
 SNOW_BELOW = -5                 # no snow on the rock just under the terraces
 SNOW_IN = 0.8                   # snow lies on the inner part of a shelf; its outer edge stays dark
+SNOW_DRIFT = -0.12              # ... in drifts: where a slow noise is above this, about two thirds of the shelves
 
 # --- what is built on the rim -------------------------------------------------------------------------
 RIM = B.SLATE_BRICK.block       # the terrace's rim wall under the kerb
@@ -218,7 +223,8 @@ def _mountain():
     r = np.hypot(X - 25.0, Z) + 1e-6
     west = np.clip(-(X - 25.0) / r, 0.0, 1.0)
     south = np.clip(Z / r, 0.0, 1.0)
-    steep = 1.15 + 0.85 * west ** 2 + 0.10 * south ** 2 + 0.15 * slow
+    uneven = N.fbm2(X * 0.045, Z * 0.045, SEED + 17, octaves=2)
+    steep = 1.15 + (0.85 + 0.9 * uneven) * west ** 2 + 0.10 * south ** 2 + 0.15 * slow
     s_up = np.maximum(d_up * (1 + 0.22 * slow) + np.clip(d_up / 4.0, 0, 1) * 3.2 * wander, 0.45 * d_up)
     smooth = TOP - steep * s_up
     wander2 = N.fbm2(X * 0.05, Z * 0.05, SEED + 13, octaves=3)
@@ -276,7 +282,7 @@ def _mountain():
         shelf = np.where(dist <= 1, -1.0, shelf)
 
     rough = 0.45 * N.fbm2(X * 0.31, Z * 0.31, SEED + 41, octaves=2)
-    h = np.where(kept, h, h + rough)
+    h = np.where(kept, h, h + np.where(shelf >= 0, 0.35, 1.0) * rough)     # the shelves are smoother than the cliffs
     h = np.where(d_up <= RIM_CLEAR, np.minimum(h, TOP - RIM_SHOWS - 1), h)     # the rim wall is never buried
     h = np.where(upper, float(TOP), np.minimum(h, TOP))
     H = np.rint(h).astype(int)
@@ -337,25 +343,40 @@ def _bed_table():
 _BED_ROWS = _bed_table()
 
 
-def _rock(x, y, z, dip):
-    """The rock of a block: its bed, by its height in the beds' own levels, with a few flecks."""
-    rock = _BED_ROWS[(dip - y + (1 if hash3(x, 0, z, SEED + 51) < 0.12 else 0)) % len(_BED_ROWS)]
+def _rock(x, y, z, dip, lens_a, lens_b):
+    """The rock of a block: its bed, by its height in the beds' own levels, with a few flecks.
+    A light bed is not a stripe round the whole mountain: it comes and goes in lenses, a different
+    pattern for each bed, and where it is out the dark seam rock takes its place."""
+    row = (dip - y + (1 if hash3(x, 0, z, SEED + 51) < 0.12 else 0)) % len(_BED_ROWS)
+    rock = _BED_ROWS[row]
+    if rock in LIGHT and math.cos(row * 2.4) * lens_a + math.sin(row * 2.4) * lens_b < LENS_OUT:
+        rock = SEAM
     other, share = FLECKS[rock]
     return other if hash3(x, y, z, SEED + 52) < share else rock
 
 
+def _neighbours(a):
+    """The four neighbours' values of every cell, as four arrays."""
+    return [np.roll(a, step, axis=axis) for axis, step in ((0, 1), (0, -1), (1, 1), (1, -1))]
+
+
 def _snowy(m):
-    """Where snow lies: on the shelves, in from their outer edge, where the ground is nearly level,
-    in drifts."""
+    """Where snow lies: on the shelves, in from their outer edge, where the ground is nearly level.
+    In wide drifts with bare rock between them, not a line along the foot of every cliff; and never
+    a single block of it standing proud of the ground."""
     H, valid = m["H"], m["valid"]
+    near = _neighbours(H)
     level = np.ones(H.shape, dtype=bool)
-    for axis, step in ((0, 1), (0, -1), (1, 1), (1, -1)):
-        n = np.roll(H, step, axis=axis)
+    for n in near:
         level &= np.abs(n - H) <= 1
+    bump = sum((n >= H).astype(int) for n in near) < 2          # higher than three of its neighbours
     X, Z = np.meshgrid(m["xs"].astype(float), m["zs"].astype(float), indexing="ij")
-    drift = N.fbm2(X * 0.09, Z * 0.09, SEED + 61, octaves=3)
-    return (valid & level & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= SNOW_IN)
-            & (H <= SNOW_BELOW) & (drift > -0.15))
+    drift = N.fbm2(X * 0.035, Z * 0.035, SEED + 61, octaves=3)
+    snow = (valid & level & ~bump & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= SNOW_IN)
+            & (H <= SNOW_BELOW) & (drift > SNOW_DRIFT))
+    for _ in range(2):                                          # no specks: a cell needs two snowy neighbours
+        snow &= sum(n.astype(int) for n in _neighbours(snow)) >= 2
+    return snow
 
 
 def _lay_mountain(c, o, m):
@@ -370,11 +391,15 @@ def _lay_mountain(c, o, m):
         low = np.minimum(low, n)
     low[0, :] = low[-1, :] = low[:, 0] = low[:, -1] = FLOOR
     low = np.maximum(low, FLOOR)
+    X, Z = np.meshgrid(m["xs"].astype(float), m["zs"].astype(float), indexing="ij")
+    lens_a = N.fbm2(X * 0.06, Z * 0.06, SEED + 71, octaves=2)
+    lens_b = N.fbm2(X * 0.06, Z * 0.06, SEED + 72, octaves=2)
     for i, k in zip(*np.nonzero(valid)):
         x, z = int(m["xs"][i]), int(m["zs"][k])
         y1, y0, dp = int(H[i, k]), int(low[i, k]), int(dip[i, k])
+        la, lb = float(lens_a[i, k]), float(lens_b[i, k])
         for y in range(y1, y0 - 1, -1):
-            c.set(ox + x, oy + y, oz + z, _rock(x, y, z, dp))
+            c.set(ox + x, oy + y, oz + z, _rock(x, y, z, dp, la, lb))
         if snowy[i, k]:
             c.set(ox + x, oy + y1, oz + z, SNOW)
 
