@@ -800,7 +800,33 @@ def run_daemon() -> int:
 
 
 def reload_exec_daemon() -> str:
-    """Cursor natively loads ~/.cursor/hooks.json; no process inspection needed."""
+    for cmdline_file in glob.glob("/proc/[0-9]*/cmdline"):
+        try:
+            raw = Path(cmdline_file).read_bytes().decode("utf-8", errors="replace")
+            parts = [p for p in raw.split("\x00") if p]
+            if not any("exec-daemon" in p for p in parts):
+                continue
+            port = ""
+            token = ""
+            for i, arg in enumerate(parts):
+                if arg == "--port" and i + 1 < len(parts):
+                    port = parts[i + 1]
+                elif arg == "--auth-token" and i + 1 < len(parts):
+                    token = parts[i + 1]
+            if port and token:
+                req = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/agent.v1.ControlService/ReloadAgentSkills",
+                    data=b"{}",
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {token}",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=3.0) as resp:
+                    return f"reloaded on port {port} (HTTP {resp.status})"
+        except Exception as exc:
+            return f"reload_note: {exc}"
     return "hooks.json configured"
 
 
