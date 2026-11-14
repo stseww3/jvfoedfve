@@ -284,6 +284,102 @@ rep(
 rep(
   sq,
   report.squadSteps,
+  'sq-navigate-instead-of-reload',
+  `  // Check if navigator.webdriver is already false in topCtx; if not, reload once so addPreloadScript takes effect
+  const wdCheck = await callBidi('script.evaluate', {
+    expression: 'String(navigator.webdriver) + ":" + String(typeof window.turnstile)',
+    target: { context: ctx },
+    awaitPromise: false
+  });
+  const wdVal = wdCheck?.result?.result?.value || '';
+  if (!wdVal.startsWith('false:object')) {
+    console.log(\`[FIREFOX-DONOR] Reloading territorial.io tab so preloadScript (webdriver=false) takes effect (was \${wdVal})...\`);
+    await callBidi('browsingContext.reload', { context: ctx, wait: 'interactive' });
+    await new Promise((r) => setTimeout(r, 3500));
+  }`,
+  `  // Navigate explicitly to https://territorial.io/ if tab is still on about:blank or webdriver!=false
+  const wdCheck = await callBidi('script.evaluate', {
+    expression: 'location.href + "|" + String(navigator.webdriver) + ":" + String(typeof window.turnstile?.render)',
+    target: { context: ctx },
+    awaitPromise: false
+  });
+  const wdVal = wdCheck?.result?.result?.value || '';
+  if (!wdVal.includes('territorial.io') || !wdVal.endsWith('false:function')) {
+    console.log(\`[FIREFOX-DONOR] Navigating :\${port} to https://territorial.io/ (was \${wdVal.slice(0, 60)})...\`);
+    await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'complete' });
+    await new Promise((r) => setTimeout(r, 2000));
+  }`
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-guard-turnstile-render',
+  `    for (let w = 0; w < 12; w++) {
+      const tsChk = await callBidi('script.evaluate', {
+        expression: 'typeof window.turnstile?.render',
+        target: { context: ctx },
+        awaitPromise: false
+      });
+      if (tsChk?.result?.result?.value === 'function') break;
+      await new Promise((r) => setTimeout(r, 600));
+    }
+    await callBidi('script.evaluate', {`,
+  `    let tsReady = false;
+    for (let w = 0; w < 15; w++) {
+      const tsChk = await callBidi('script.evaluate', {
+        expression: 'typeof window.turnstile?.render',
+        target: { context: ctx },
+        awaitPromise: false
+      });
+      if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      await new Promise((r) => setTimeout(r, 600));
+    }
+    if (!tsReady) {
+      await callBidi('browsingContext.navigate', { context: ctx, url: 'https://territorial.io/', wait: 'complete' });
+      for (let w = 0; w < 12; w++) {
+        await new Promise((r) => setTimeout(r, 600));
+        const tsChk = await callBidi('script.evaluate', {
+          expression: 'typeof window.turnstile?.render',
+          target: { context: ctx },
+          awaitPromise: false
+        });
+        if (tsChk?.result?.result?.value === 'function') { tsReady = true; break; }
+      }
+    }
+    if (!tsReady) {
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      killFirefoxOnPort(donor.port);
+      throw new Error('Turnstile API not loaded on :' + donor.port);
+    }
+    const rendRes = await callBidi('script.evaluate', {`
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-check-rend-res',
+  `      target: { context: ctx },
+      awaitPromise: false,
+      userActivation: true
+    });
+
+    const mintDeadline`,
+  `      target: { context: ctx },
+      awaitPromise: false,
+      userActivation: true
+    });
+    if (!String(rendRes?.result?.result?.value || '').startsWith('RENDERED:')) {
+      throw new Error('Turnstile render failed on :' + donor.port);
+    }
+
+    const mintDeadline`
+);
+
+rep(
+  sq,
+  report.squadSteps,
   'sq-mihomo-9228-portmap',
   '  const portToSocks = { 9228: 10821, 9229: 10824, 9230: 10827, 9231: 10830 };',
   '  const portToSocks = { 9228: 7890, 9229: 10824, 9230: 10827, 9231: 10830 };'
