@@ -37,6 +37,8 @@ from . import _kit as K
 
 PREFIX = "prop_iron_"
 VERSION = "a"                    # the default arch frame; the review picks one and only this changes
+DRESS = False                    # build() dresses the master scene only when on: off until the family
+                                 # has passed review on the real wall (the test scene shows it meanwhile)
 
 IRON, IRON_D = K.IRON, K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
@@ -390,7 +392,11 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
     base-storey one, and the entrance at the east middle bay. Places nothing until A3's wall and its
     window table are in the tree, so the master scene always generates. With the window table only
     the east and west windows are dressed: the table has no doorway, so the entrance is placed on
-    the fallback path alone (open, see the card's record)."""
+    the fallback path alone (open, see the card's record).
+    While DRESS is off it places nothing and does not read A3's table at all, so a card that is being
+    reworked neither shows in the master scene nor can stop it from generating."""
+    if not DRESS:
+        return 0
     n = 0
     table = _windows()
     if table is not None:
