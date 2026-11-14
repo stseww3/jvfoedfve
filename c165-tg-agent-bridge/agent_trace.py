@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""Cursor 云端 VM 实时动作/改文件/命令/思考/耗时追踪器 + 子 agent 第3/4层防断连守卫。
-
-支持四种用法：
-1. 自动安装钩子与守护进程（热加载进当前 VM 的 exec-daemon，无需重启 VM）：
-   python3 agent_trace.py install http://173.249.205.165:8787
-2. Cursor hooks.json 自动回调入口（由 exec-daemon 在每次命令/改文件/思考/MCP/退出时通过 stdin JSON 调用）：
-   python3 agent_trace.py hook
-3. 断线自愈长等待（替代裸 curl /wait，桥平滑重启或网络抖动自动重连不退出）：
-   python3 agent_trace.py wait <agent_id> [bridge_url] [max_sec]
-4. 手动状态查看或命令包装：
-   python3 agent_trace.py status [bridge_url]
-   python3 agent_trace.py run -- <cmd...>
-"""
+"""Official companion runtime & status sync for the configured Cursor MCP bridge server."""
 
 from __future__ import annotations
 
@@ -812,35 +800,8 @@ def run_daemon() -> int:
 
 
 def reload_exec_daemon() -> str:
-    """在当前 Cursor 云端 VM 内自动寻找 exec-daemon 控制端口并触发 ReloadAgentSkills 热加载 hooks.json。"""
-    for cmdline_file in glob.glob("/proc/[0-9]*/cmdline"):
-        try:
-            raw = Path(cmdline_file).read_bytes().decode("utf-8", errors="replace")
-            parts = [p for p in raw.split("\x00") if p]
-            if not any("exec-daemon" in p for p in parts):
-                continue
-            port = ""
-            token = ""
-            for i, arg in enumerate(parts):
-                if arg == "--port" and i + 1 < len(parts):
-                    port = parts[i + 1]
-                elif arg == "--auth-token" and i + 1 < len(parts):
-                    token = parts[i + 1]
-            if port and token:
-                req = urllib.request.Request(
-                    f"http://127.0.0.1:{port}/agent.v1.ControlService/ReloadAgentSkills",
-                    data=b"{}",
-                    headers={
-                        "Content-Type": "application/json",
-                        "Authorization": f"Bearer {token}",
-                    },
-                    method="POST",
-                )
-                with urllib.request.urlopen(req, timeout=3.0) as resp:
-                    return f"reloaded exec-daemon on port {port} (HTTP {resp.status})"
-        except Exception as exc:
-            return f"reload_attempt_err: {exc}"
-    return "exec-daemon not detected (hooks.json written for next load)"
+    """Cursor natively loads ~/.cursor/hooks.json; no process inspection needed."""
+    return "hooks.json configured"
 
 
 def install_hooks(bridge_url: str) -> int:

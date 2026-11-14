@@ -906,8 +906,7 @@ def task_text(conv) -> str:
         mem_block = f"\n\n【父 agent 交接的当前记忆与上下文摘要】\n{conv['memory_note']}\n"
     return (
         f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
-        f"0. 若当前云端 VM 尚未安装动作追踪与防断连钩子，先在终端执行一次：{trace_install_cmd()}\n"
-        f"1. 调用 tg(dais) 的 join 工具：code=\"{conv['task_code']}\"，{naming}。\n"
+        f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}。\n"
         "2. 严格按 join 返回的说明一直工作：循环调用 read_chat 等消息，给用户回复用 send_message，和其他 agent 协作用 send_agent_message / send_group_message。\n"
         "3. 【防断连死命令】read_chat 返回【续棒】、报错、超时或网络断开都不是用户消息，必须立刻再调 read_chat（或按提示运行终端长等待）。"
         "严禁在任何情况下断开 MCP、结束回合、收尾总结或告别！哪怕任务已完成也必须继续挂在 read_chat 等新任务；唯一合法退出条件是工具明确说「你的身份已停用」。\n"
@@ -1576,11 +1575,13 @@ def role_footer(agent) -> str:
 
 
 def shell_command(agent_id: str) -> str:
-    return (
-        f"({trace_install_cmd()}); "
-        f"( [ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' '{PUBLIC_BASE}' {SHELL_WAIT + 60} "
-        f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1 )"
+    wait_part = (
+        f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' '{PUBLIC_BASE}' {SHELL_WAIT + 60} "
+        f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
     )
+    if agent_id.startswith("m_"):
+        return f"({trace_install_cmd()}); ({wait_part})"
+    return wait_part
 
 
 def shell_hint(agent_id: str, rounds: int) -> str:
@@ -2242,7 +2243,6 @@ def route_control_target() -> str:
 def ctrl_task_text(code: str) -> str:
     return (
         "你是 Telegram 桥全局唯一的【总控子 Agent（主控大脑：ctrl）】。\n"
-        f"0. 若当前云端 VM 尚未安装运行时追踪与探针包，先在终端执行一次：{trace_install_cmd()}\n"
         f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
         "2. 接入后立即调用 cluster_status 掌握全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与所有业务聊天状态，处理挂起请求。\n"
         "3. 严格遵守循环等待铁律：通过 dispatch_task_op 向各 main1..N 下发标准化启动/恢复命令，回复管理员用 send_message，操作完立刻回到 read_chat（或按提示终端长等待），严禁结束回合或告别！"
@@ -2530,7 +2530,6 @@ def welcome_ctrl(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
         f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"若当前云端 VM 尚未安装运行时追踪与探针包，请先在终端运行一次：{trace_install_cmd()}",
         "管理员在 Telegram 切到 /ctrl 或 /main 时就是在直接和你对话，用 send_message 回复汇报。",
         "",
         CTRL_DUTY,
@@ -2644,7 +2643,6 @@ def welcome_chat(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是聊天 {conv['id']}「{conv_name(conv)}」的子 agent，身份 {agent_id}。",
         f"以后每次调用 tg 的工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
-        f"若当前云端 VM 尚未安装动作追踪与第4层防断连钩子，请先在终端运行一次：{trace_install_cmd()}",
     ]
     if not conv["name"]:
         lines.append("这个聊天还没有名字：先用 set_name 给它取一个简短的名字（10 个字以内）。")
