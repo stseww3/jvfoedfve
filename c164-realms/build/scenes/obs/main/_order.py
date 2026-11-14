@@ -538,11 +538,16 @@ class Parapet(Band):
 
 def doorway(s, op):
     """Cut a doorway through both leaves and everything that stands in front of them, then set
-    what the door's leaf function puts back into the glass plane."""
+    what the door's leaf function puts back into the glass plane. Where the front steps beside
+    the doorway the inner leaf stands several blocks deep behind its last column (the lining of
+    the return wall): the cut goes through all of it, so the doorway is as wide inside as outside."""
     y0, y1, stone, leaf = op.door
     for c in op.cells:
+        deep = -1
+        while step(c, op.out, deep - 1) in s.plan.leaf:
+            deep -= 1
         for y in range(y0, y1 + 1):
-            for n in (-1, 0, 1, 2):
+            for n in range(deep, 3):
                 s.clear(step(c, op.out, n), y)
             state = leaf(s, op, y) if leaf else None
             if state:

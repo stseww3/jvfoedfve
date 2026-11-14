@@ -67,6 +67,12 @@ EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
 # its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
 SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
+# The stand-in is lit, the same in all three versions (A0, 11-14): it stands for a hall with its
+# lamps on. The sources are those sky/lights places at an entrance, in its cells and at its levels
+# (c220, afa1114c), so nothing changes when that package takes over: they are set here only while
+# it is not in the tree.
+DOOR_LIGHT, HALL_LIGHT, SIDE_LIGHT = 14, 12, 10     # in the doorway; before the back wall behind it; behind a side arch
+DOOR_LIGHT_Y, HALL_LIGHT_Y = S.GROUND + 1, S.GROUND + 2
 # Where the power house's pipe enters the building (A0, 11-14: no riser on the east front): a
 # grating in the foot of the south end pavilion's corner pier, like the plinth's air gratings. The
 # pipe run of site/powerhouse comes along this row from the east and stops one block short of it.
@@ -79,11 +85,12 @@ PIPE_INLET = (P.east_face(S.Z_SOUTH - 1) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH
 # brightest glass (the window over the entrance, the only one), O lit, K a lamp behind a curtain,
 # D dark, B a lowered blind; "." where a front has no window. They stand in only while
 # sky/_lightkit.py is not in the tree. (East base, bays 8 and 10: windows in versions A and C of
-# the entrance only; in B they are arches.)
+# the entrance only, in B they are arches. The light line had them lit; A0, 11-14: dark, or the
+# doorway between them loses to them.)
 GLASS = {"L": B.WINDOW_LIT, "K": B.WINDOW_CURTAIN, "O": B.WINDOW_FROSTED, "D": B.WINDOW_DARK, "B": B.WINDOW_BLIND}
 ROWS = {
     ("east", "main"): "ODODKODKLKDODOKDO",      # bays 1..17 from the north
-    ("east", "base"): "DODKDDDO.ODDKDBOD",
+    ("east", "base"): "DODKDDDD.DDDKDBOD",
     ("west", "main"): "KDODO.......ODODK",
     ("west", "base"): "BDKKD.......DKDDO",
     ("north", "main"): "BO", ("north", "base"): "DK",
@@ -371,6 +378,25 @@ def _screen(canvas, origin):
                 canvas.set(ox + x, oy + y, oz + z, fine)
 
 
+def lit():
+    """True when sky/lights is in the tree: the entrance's light is that package's then."""
+    return importlib.util.find_spec(__package__.rpartition(".")[0] + ".sky.lights") is not None
+
+
+def _screen_lights(canvas, entrance, origin):
+    """The light of the stand-in (see DOOR_LIGHT): one source in the open doorway, one before the
+    back wall behind it, a dimmer one behind each arch that has a gate."""
+    ox, oy, oz = origin
+    for d in doors(entrance):
+        if d["front"] != "east":
+            continue
+        (x, z), (dx, dz) = d["cells"][len(d["cells"]) // 2], d["inward"]
+        if d["kind"] == "door":
+            canvas.set(ox + x + dx, oy + DOOR_LIGHT_Y, oz + z + dz, f"{B.LIGHT}[level={DOOR_LIGHT}]", keep=True)
+        level = HALL_LIGHT if d["kind"] == "door" else SIDE_LIGHT
+        canvas.set(ox + SCREEN_X + 1, oy + HALL_LIGHT_Y, oz + z, f"{B.LIGHT}[level={level}]", keep=True)
+
+
 def crowned():
     """True when main/dome.py is in the tree: the rotunda's drum and dome are that package's then,
     and the massing of _dome.py is not built here any more."""
@@ -391,6 +417,8 @@ def build(canvas, origin=(0, 0, 0), entrance=None):
     _roofs(canvas, plan, origin)
     if SCREEN:
         _screen(canvas, origin)
+        if not lit():
+            _screen_lights(canvas, entrance, origin)
     if not crowned():
         _dome.build(canvas, origin, glass=glass)
     return 0
@@ -477,17 +505,20 @@ def check(entrance=None):
     if [bay for bay, g in row.items() if g == B.WINDOW_LIT.block] != [P.AISLE_BAY]:
         out.append("east main storey: the brightest glass is not the entrance window's alone")
     # 5. the doorway is open from the court into the hall, and nobody sees through the hall
+    stands = lambda x, y, z: name(x, y, z) not in ("air", B.LIGHT)
     for z in P.window_rows(P.AISLE_BAY):
         for x in range(S.east_wall_x(P.AISLE_BAY) - 1, S.east_wall_x(P.AISLE_BAY) + 3):
-            if any(c.has(x, y, z) for y in range(S.GROUND, DOOR_TOP)):      # the row of the arch's corners is above
+            if any(stands(x, y, z) for y in range(S.GROUND, DOOR_TOP)):     # the row of the arch's corners is above
                 out.append(f"entrance: something stands in the doorway at x {x}, z {z}")
     for d in doors(entrance):
         if d["front"] != "east":
             continue
         for x, z in d["cells"]:
             for y in range(d["y"][0], d["y"][1] + 1):
-                if not any(c.has(n, y, z) for n in range(S.WALL_W, x - 1)):
+                if not any(stands(n, y, z) for n in range(S.WALL_W, x - 1)):
                     out.append(f"entrance: bay {d['bay']} is open right through the building at z {z}, y {y}")
+            if d["kind"] == "gate" and any(stands(n, y, z) for n in range(SCREEN_X + 1, x - 1) for y in range(d["y"][0], DOOR_TOP)):
+                out.append(f"entrance: bay {d['bay']}: something stands behind the gate at z {z}")
     return out
 
 
