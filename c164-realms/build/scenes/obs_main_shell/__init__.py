@@ -3,20 +3,24 @@
 The main line built whole (walls, drum and dome, the shell inside them) four times over:
 
   at z 0      as it stands, with a few invisible lights inside so the rooms can be seen (they are
-              this scene's only; the light line lights the real rooms);
+              this scene's only: the rooms get their lamps and their light from the interiors and
+              the light line);
   at z 100    cut off above y 5: the ground floor from above -- the hall, the west arcade, the two
               flights, the way to the west door, the foot of the pier;
   at z 200    cut off above y 13: the main floor -- galleries, mezzanine, the well, the wing rooms,
               the first turn of the ring stair;
   at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top.
 
-A slab of paving lies under each so the cuts do not look into the void.
+A slab of paving lies under each so the cuts do not look into the void. The facade's stand-in
+behind the entrance (a pale wall across the hall, until the hall is fitted out) is left out: the
+scene shows the hall as it is without it.
 """
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.main import shell
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
@@ -28,11 +32,13 @@ LIGHTS = [
     (7, 10, -11), (7, 10, -20), (7, 10, 11), (7, 10, 20),                           # the wing rooms
     (11, 20, 5), (11, 20, -5), (-3, 20, 5), (-3, 20, -5), (7, 15, 1),               # the dome room, the stair
 ]
+LIGHT_LEVEL = 14                                                        # the light line's top level; never 15
 
 
 def build():
     whole = Canvas()
-    main.build(whole, (0, 0, 0))
+    with shell.hall_open():
+        main.build(whole, (0, 0, 0))
     c = Canvas()
     x0, z0, x1, z1 = GROUND
     for dz in [0] + [z for z, _top in CUTS.values()]:
@@ -43,7 +49,7 @@ def build():
             if y <= top:
                 c.set(x, y, z + dz, state)
     for x, y, z in LIGHTS:
-        c.set(x, y, z, f"{B.LIGHT}[level=15]", keep=True)
+        c.set(x, y, z, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
     return c
 
 

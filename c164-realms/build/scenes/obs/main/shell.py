@@ -30,6 +30,7 @@ lines. ROOMS below is what they read.
     python -m scenes.obs.main.shell            # the three plans, the stair tables, the self-check
     python -m scenes.obs.main.shell check      # the self-check alone (exit code 1 on a finding)
 """
+import contextlib
 import functools
 import sys
 import types
@@ -63,7 +64,9 @@ ROOM_DOOR_X = (7, 8)                            # gallery -> wing room, through 
 ROOM_DOOR_Y = (S.STAND, S.STAND + 2)
 GALLERY_X = (S.ROOM_X[0], S.ROOM_X[1])          # 2..13: the side galleries
 BRIDGE = (7, HALL_Z - 1)                        # (7, 4): the gap in the south railing where the ring stair starts
+NIB = (BRIDGE[0] + 1, BRIDGE[1] - 1)            # (8, 3): a block of deck east of the first step, for its railing
 EXIT = (S.PIER_ENVELOPE[2] + 1, CZ)             # (8, 0): the dome-room floor one steps onto
+LAST_GUARD = (EXIT[0] - 1, CZ + 1)              # (7, 1): the unused cell of the ring south of the last step
 
 FLOOR = B.ASHLAR_FINE.block                     # the hall's ground floor, until the star hall lays its own
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
@@ -72,6 +75,8 @@ CEILING = B.DARK_WOOD.block
 RAIL = B.IRON_BARS
 GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
+PANEL = B.IRON_HATCH                            # an iron hatch on edge: the thin balustrade panel
+PANEL_FACING = {"north": "south", "south": "north", "west": "east", "east": "west"}   # it stands on the side it turns its back to
 TRIM = B.IRON_RIVETED.block                     # the iron curb round the stair's opening, ceiling to floor
 
 ROOMS = {
@@ -179,13 +184,39 @@ def layout():
     return L
 
 
+SIDE = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
+
+
+def panel(side):
+    """An iron hatch standing on edge on that side of its cell."""
+    return f"{PANEL}[facing={PANEL_FACING[side]},half=bottom,open=true]"
+
+
+def stair_panels():
+    """The ring stair's inner balustrade: {(x, y, z): the side of the cell it stands on}.
+
+    A block in the open ring would touch the pier, so the guard stands in the stair's own cells: an
+    iron hatch on edge (3 pixels thick) on the inner edge of each step, in the row over its slab.
+    Where the stair turns the two neighbours' panels meet at the corner. The first step has one
+    towards the unused part of the ring, the last two fence off the pier's cap."""
+    x0, z0, x1, z1 = S.PIER_ENVELOPE
+    out = {}
+    for x, z, y, _half, _top in ring_stair():
+        if (x, z) == (x1, z1):
+            out[(x, y + 1, z)] = "north"                # the first step: nothing stands north of it
+        elif (x in (x0, x1)) == (z in (z0, z1)):
+            continue                                    # a corner
+        else:
+            out[(x, y + 1, z)] = "north" if z == z1 else "south" if z == z0 else "east" if x == x0 else "west"
+    return out
+
+
 def stair_guards():
     """Bars beside the ring stair, on its outer side: {(x, z): (first y, last y)}.
 
     Along the south gallery they stand on the gallery's edge and rise with the steps; over the cross
     gallery they hang from the ceiling down to the steps. From the ceiling up the stair runs inside
-    the curb. The inner side looks at the pier across the open ring and has none: a block there
-    would touch the pier."""
+    the curb. East of the first step they stand on a nib of the gallery's deck (NIB)."""
     L = layout()
     x0, z0, x1, z1 = S.PIER_ENVELOPE
     out = {}
@@ -198,11 +229,27 @@ def stair_guards():
         for c in near:
             if c in L.envelope or c == BRIDGE:
                 continue
-            if c in L.gallery_edge:                     # standing on the gallery's edge, up to the step
+            if c in L.gallery_edge or c == NIB:         # standing on the gallery's edge, up to the step
                 out[c] = (S.STAND, max(out.get(c, (0, 0))[1], y + 1))
             elif c in L.walk:                           # over a deck: hung from the ceiling, clear of heads
                 out[c] = (min(out.get(c, (y + 1, 0))[0], y + 1), CEIL_Y - 1)
     return out
+
+
+@contextlib.contextmanager
+def hall_open():
+    """Build the main line inside this block to get the hall as it stands once the facade's
+    stand-in behind the entrance is gone (facade.SCREEN: a pale wall across the hall at x 11, kept
+    until the hall is fitted out and lit). The shell lays over what it shares with the stand-in
+    and leaves the rest; test scenes that show the hall, and the self-check, build without it."""
+    was = getattr(facade, "SCREEN", None)
+    if was is not None:
+        facade.SCREEN = False
+    try:
+        yield
+    finally:
+        if was is not None:
+            facade.SCREEN = was
 
 
 # --- the package ------------------------------------------------------------------------------------
@@ -285,12 +332,19 @@ def build(canvas, origin=(0, 0, 0)):
     for c in L.cap:
         put(c, ROOF_Y, B.ASHLAR_FINE.block)
 
-    # the ring stair and the bars on its outer side
+    # the ring stair: the steps, the bars on its outer side, the panels on its inner edge (none where
+    # the pier's corbel or cap stands beside the step)
     for x, z, y, half, _top in ring_stair():
         put((x, z), y, f"{TREAD.slab}[type={half}]")
+    put(NIB, DECK_Y, DECK)
     for c, (y0, y1) in stair_guards().items():
         for y in range(y0, y1 + 1):
             put(c, y, RAIL)
+    for (x, y, z), side in stair_panels().items():
+        dx, dz = SIDE[side]
+        if not canvas.has(ox + x + dx, oy + y, oz + z + dz):
+            put((x, z), y, panel(side))
+    put(LAST_GUARD, S.ROOF_STAND, panel("north"))
     return 0
 
 
@@ -395,11 +449,11 @@ def check():
     """What can be told without a picture; returns the findings as lines (none is good)."""
     out = []
     L = layout()
-    f = facade.shell()
     walls = Canvas()
-    facade.build(walls)
     c = Canvas()
-    facade.build(c)
+    with hall_open():
+        facade.build(walls)
+        facade.build(c)
     build(c)
     solid = lambda x, y, z: c.has(x, y, z)
 
@@ -422,12 +476,21 @@ def check():
     for (x, z, y, _half, top), nxt in zip(stair, stair[1:] + [None]):
         feet = top if nxt is None else nxt[4]
         for yy in range(y + 1, int(feet + 2.3) + 1):
-            if solid(x, yy, z):
+            if solid(x, yy, z) and c.name(x, yy, z) != PANEL:
                 out.append(f"ring stair: no head room over ({x}, {z}) at y {yy}")
     if not solid(BRIDGE[0], DECK_Y, BRIDGE[1]) or solid(BRIDGE[0], S.STAND, BRIDGE[1]):
         out.append("ring stair: the bridge is not an open deck")
     if c.name(EXIT[0], ROOF_Y, EXIT[1]) != ROOM_FLOOR or solid(EXIT[0], S.ROOF_STAND, EXIT[1]):
         out.append("ring stair: no floor to step onto at the top")
+    #    and nobody walks off it: beside every step stands the next step, a railing, a panel or a wall
+    cells = [(x, z) for x, z, _y, _half, _top in stair]
+    for i, (x, z, y, _half, _top) in enumerate(stair):
+        for side, (dx, dz) in SIDE.items():
+            n = (x + dx, z + dz)
+            if n in cells[max(i - 1, 0):i + 2] or (i == 0 and n == BRIDGE) or (i == len(stair) - 1 and n == EXIT):
+                continue
+            if not solid(n[0], y + 1, n[1]) and c.get(x, y + 1, z) != panel(side):
+                out.append(f"ring stair: step ({x}, {z}) is open to the {side}")
     # 4. the grand stair: three blocks of air over every step
     for cells in L.flights.values():
         for x, y, z in cells:
@@ -474,7 +537,6 @@ def check():
     for x, z in L.track:
         if solid(x, ROOF_Y, z) and (x, z, ROOF_Y) not in {(sx, sz, sy) for sx, sz, sy, _h, _t in stair}:
             out.append(f"dome room: the envelope is not open at ({x}, {z})")
-    _ = f
     return out
 
 
