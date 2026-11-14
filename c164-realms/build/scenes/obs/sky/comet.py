@@ -63,9 +63,12 @@ DEFAULT_STYLE = "a"          # the version pack() paints for the map; the review
 # brightness and length of the comet in each light version: deep is the brightest and longest, glow
 # the faintest and shortest, so that the three are told apart at the size of a stamp
 STRENGTH = {"blue": 1.0, "deep": 1.45, "glow": 0.6}
-TAIL = {"blue": 1.0, "deep": 1.25, "glow": 0.72}
+TAIL = {"blue": 1.0, "deep": 1.15, "glow": 0.72}
 
 LIT_WINDOW = 0.79            # the lit windows on the brightness ladder (grey 0..1, look blue)
+WASHED = 0.31                # the washed walls on the same ladder: what counts as the comet's bright part
+SEEN = 0.03                  # the least added light the eye makes out against the sky
+SHARE = 0.005                # of a picture at fov 70 the comet's bright part may take (the card)
 CEILING = 0.70               # the most light anything outside the nucleus adds
 KNEE = 0.45                  # light above this is eased towards the ceiling
 END = 0.50                   # a tail dims evenly along its length and melts away over this last share
@@ -99,6 +102,7 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #   lean, curve the tail's centre line north of the head: lean * up + curve * up^2
 #   edge        2 a Gaussian across the tail; more: a flatter middle and a firmer outline
 #   skew        0 the same on both sides; more: the north side wider and softer, the south side tighter
+#   spine       share of the dust's light gathered in a narrow bright core along its centre line
 #   dust_fall   how fast it dims along its length           cool       how late it cools (1 evenly)
 #   ion_*       the same for the straight ion tail; ion_lean negative: it parts to the south
 #   nucleus     big pixels (rows up, columns north, brightness); 0.9 and more take the hottest step.
@@ -108,18 +112,18 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #               level shows, and how far towards the cool end each level of the dust tail stands
 _SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
-    "a": dict(coma=0.60, coma_amp=0.30, dust_len=13.0, dust_w=(0.34, 1.65), flare=1.0, lean=0.13,
-              curve=0.013, edge=2.0, skew=0.25, dust_fall=1.5, dust_amp=0.34, cool=1.2,
-              ion_len=13.5, ion_w=(0.14, 0.34), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.17,
+    "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
+              curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
+              ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
               nucleus=_SQUARE),
-    "b": dict(coma=0.62, coma_amp=0.36, dust_len=12.5, dust_w=(0.36, 1.30), flare=1.0, lean=0.13,
-              curve=0.014, edge=2.4, skew=0.2, dust_fall=1.0, dust_amp=0.36, cool=1.0,
-              ion_len=12.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
+    "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.36, 1.25), flare=1.0, lean=0.12,
+              curve=0.013, edge=2.4, skew=0.2, spine=0.0, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=11.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
               nucleus=_SQUARE,
-              steps=(0.07, 0.15, 0.27), tones=(0.13, 0.22, 0.36), cooling=(0.85, 0.45, 0.0)),
-    "c": dict(coma=0.80, coma_amp=0.32, dust_len=9.5, dust_w=(0.55, 2.60), flare=0.8, lean=0.20,
-              curve=0.012, edge=3.0, skew=0.45, dust_fall=1.3, dust_amp=0.32, cool=1.0,
-              ion_len=9.5, ion_w=(0.18, 0.40), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.16,
+              steps=(0.07, 0.12, 0.20), tones=(0.14, 0.24, 0.38), cooling=(0.9, 0.5, 0.1)),
+    "c": dict(coma=0.80, coma_amp=0.34, dust_len=11.0, dust_w=(0.55, 2.35), flare=0.8, lean=0.20,
+              curve=0.012, edge=4.5, skew=0.45, spine=0.15, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=11.0, ion_w=(0.16, 0.36), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.15,
               nucleus=_SQUARE),
 }
 
@@ -175,7 +179,9 @@ def _fields(p, tail, m):
     w0, w1 = p["dust_w"]
     rise = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)             # the tail opens upwards only
     width = (w0 + (w1 - w0) * rise ** p["flare"]) * np.where(off > 0.0, 1.0 + p["skew"], 1.0 - 0.5 * p["skew"])
-    dust = np.exp(-0.5 * np.abs(off / width) ** p["edge"]) * np.exp(-p["dust_fall"] * t)
+    across = np.abs(off / width)
+    dust = (1.0 - p["spine"]) * np.exp(-0.5 * across ** p["edge"]) + p["spine"] * np.exp(-0.5 * (across / 0.4) ** 2)
+    dust *= np.exp(-p["dust_fall"] * t)
     dust *= _ramp(1.0 - t, 0.0, END) * _ramp(y, -0.35, 0.35)
 
     s = np.clip(far / (p["ion_len"] * tail), 0.0, 1.0)
@@ -291,40 +297,43 @@ def report(style):
 
     peak        the most grey added outside the nucleus      on_sky   that plus the sky behind it
     tip         elevation where the tails end                 margin   degrees left to the top edge
-    area, bright   square degrees adding 0.03 and more, 0.20 and more
-    frame       the bright part as a share of a 16:9 picture at fov 70 when the comet is in its
-                middle (the card allows 0.5 percent)
+    area        square degrees adding SEEN and more: all of the comet that the eye makes out
+    bright      square degrees that stand on the sky as bright as a washed wall (WASHED) or brighter
+    frame, whole   bright and area as shares of a 16:9 picture at fov 70 with the comet in its
+                middle. The card allows the bright part 0.5 percent; the whole comet is held under
+                it as well, so that the rule is kept however the bright part is counted.
     border      True when the outer 3 percent of the square is black
+    ok          all of it holds
     """
     cell = SIZE // GRID
+    deg2 = (SPAN / SIZE) ** 2
+    frame = 4.0 * math.tan(math.radians(35.0)) ** 2 * 16.0 / 9.0 * math.degrees(1.0) ** 2
+    rim = int(SIZE * 0.03)
+    inner = np.zeros((SIZE, SIZE), dtype=bool)
+    inner[rim:-rim, rim:-rim] = True
     out = []
     for look in mood.LOOKS:
-        px = comet(style, STRENGTH[look], TAIL[look])
-        grey = luma(px)
+        grey = luma(comet(style, STRENGTH[look], TAIL[look]))
         body = grey.copy()
         for row, col, _ in _nucleus_cells(STYLES[style]):
             body[row * cell:(row + 1) * cell, col * cell:(col + 1) * cell] = 0.0
-        lit = np.nonzero((grey > 0.02).any(axis=1))[0]
-        top = _above_centre(float(lit[0]))
-        deg2 = (SPAN / SIZE) ** 2
-        rim = int(SIZE * 0.03)
-        inner = np.zeros_like(grey, dtype=bool)
-        inner[rim:-rim, rim:-rim] = True
-        frame = 4.0 * math.tan(math.radians(35.0)) ** 2 * 16.0 / 9.0 * math.degrees(1.0) ** 2
-        out.append(dict(
-            look=look, peak=float(body.max()), on_sky=float(body.max()) + sky_behind(look),
-            tip=90.0 - mood.MOON_ANGLE + top, margin=SPAN * 0.5 - top,
-            area=float((grey >= 0.03).sum() * deg2), bright=float((grey >= 0.20).sum() * deg2),
-            frame=float((grey >= 0.20).sum() * deg2 / frame), border=bool(grey[~inner].max() < 1.0 / 255.0)))
+        top = _above_centre(float(np.nonzero((grey >= SEEN).any(axis=1))[0][0]))
+        sky = sky_behind(look)
+        r = dict(look=look, peak=float(body.max()), on_sky=float(body.max()) + sky,
+                 tip=90.0 - mood.MOON_ANGLE + top, margin=SPAN * 0.5 - top,
+                 area=float((grey >= SEEN).sum() * deg2), bright=float((grey + sky >= WASHED).sum() * deg2),
+                 border=bool(grey[~inner].max() < 1.0 / 255.0))
+        r["frame"], r["whole"] = r["bright"] / frame, r["area"] / frame
+        r["ok"] = r["on_sky"] < LIT_WINDOW and r["border"] and r["frame"] < SHARE and r["whole"] < SHARE
+        out.append(r)
     return out
 
 
 if __name__ == "__main__":
-    print(f"head {HEAD_ELEVATION:.2f} degrees up, due west; lit windows {LIT_WINDOW}")
+    print(f"head {HEAD_ELEVATION:.2f} degrees up, due west; lit windows {LIT_WINDOW}, washed walls {WASHED}")
     for name in STYLES:
         for r in report(name):
-            ok = r["on_sky"] < LIT_WINDOW and r["border"] and r["frame"] < 0.005
             print(f"{name} {r['look']:5s} peak {r['peak']:.2f} on sky {r['on_sky']:.2f}  tip {r['tip']:.1f} "
-                  f"(margin {r['margin']:.1f})  area {r['area']:5.1f} bright {r['bright']:4.1f} deg2 "
-                  f"= {100 * r['frame']:.3f}% of the frame  border {'black' if r['border'] else 'LIT'}"
-                  f"  {'ok' if ok else 'FAIL'}")
+                  f"(margin {r['margin']:4.1f})  bright {r['bright']:4.1f} deg2 = {100 * r['frame']:.3f}%, whole comet "
+                  f"{r['area']:4.1f} deg2 = {100 * r['whole']:.3f}% of the frame  border "
+                  f"{'black' if r['border'] else 'LIT'}  {'ok' if r['ok'] else 'FAIL'}")
