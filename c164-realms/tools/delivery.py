@@ -310,20 +310,25 @@ def main():
             without.append(scene)
             continue
         shown += len(kept & set(names))
-        missing, left = [n for n in names if n not in kept], sorted(kept - set(names))
+        missing = [n for n in names if n not in kept]
         if missing:
             notes.append(f"{scene}: no picture of {', '.join(missing)}")
-        if left:
-            notes.append(f"{scene}: pictures left over, the list has no such shot: {', '.join(left)}")
         note = blob(merged, folder + "shots.txt")
         if note is None:
             notes.append(f"{scene}: no shots.txt, so which commit the pictures show is not noted")
             continue
-        drawn = {}
+        drawn, noted = {}, set()
         for line in note.decode("utf-8", "replace").splitlines():
             parts = line.split("\t")
             if len(parts) == 3 and not line.startswith("#"):
-                drawn.setdefault(parts[2], []).append(parts[0])
+                noted.add(parts[0])
+                if parts[0] in names:
+                    drawn.setdefault(parts[2], []).append(parts[0])
+        left = sorted((kept & noted) - set(names))
+        if left:
+            notes.append(f"{scene}: pictures left over, the list has no such shot any more: {', '.join(left)}")
+        if not noted:
+            notes.append(f"{scene}: shots.txt names no commit (not written by tools/selfshots.py)")
         for commit, of in sorted(drawn.items()):
             if commit.endswith("+"):
                 notes.append(f"{scene}: {len(of)} pictures were drawn from uncommitted code ({commit})")
