@@ -10,11 +10,11 @@ Axes (plan 0.3): x east, z south, y up. y = 0 is the first layer of air above th
 paving; the paving block is at y = -1. Scene coordinates are canvas coordinates: the master scene
 builds every line at ORIGIN = (0, 0, 0).
 
-Numbers marked LOCKED come from A0's first review (R1 0.3) and do not move without A0. Numbers
-marked PROVISIONAL are the plan's section-4 figures for masses the review did not pin down yet.
-Numbers marked PROPOSED are the site lead's, from plan/parts/A4-site.md section 2. The other
-lines build on them; A0 may still move them on the pictures (the depth of the front court above
-all). Numbers marked UNDER REVIEW are being recalculated by A0 and are not to be built on yet.
+Numbers marked LOCKED come from A0 (the first review, R1 0.3, or the group message named beside
+them) and do not move without A0. Numbers marked PROVISIONAL are the plan's section-4 figures for
+masses the review did not pin down yet. Numbers marked PROPOSED are the site lead's, from
+plan/parts/A4-site.md section 2. The other lines build on them; A0 may still move them on the
+pictures.
 
 Cells and points. A number that names a block (a wall face x, a pilaster z, a floor y) is a CELL:
 the block column or layer with that integer coordinate, which fills the span k .. k + 1. A display
@@ -34,7 +34,9 @@ def mid(a, b=None):
 # --- ground plane -------------------------------------------------------------------------------
 GROUND = 0          # LOCKED. y of the first air above the upper-terrace paving
 PAVING_Y = -1       # the paving block sits here
-LOWER_DROP = 9      # UNDER REVIEW (see the site masses). the lower platform is this many blocks below GROUND
+LOWER_DROP = 6      # LOCKED (A0 #171, 11-14; it was 9). the lower platform is this many blocks below GROUND
+LOWER_GROUND = GROUND - LOWER_DROP      # -6, where feet stand on the lower platform
+LOWER_PAVING_Y = PAVING_Y - LOWER_DROP  # -7, its paving block
 
 # --- the bay grid of the main-building family (main building, clock tower, small dome, meridian hut) -
 BAY = 4             # LOCKED. one bay = pilaster (1) + window (3)
@@ -156,20 +158,61 @@ SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
 SMALL_DOME_APEX = 25
 
-# --- site masses, PROPOSED by A4 (plan/parts/A4-site.md 2; A0 may move them on the pictures) -------
+# --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
-FRONT_COURT = (WALL_E + 1, -30, WALL_E + 45, 30)     # x 16..60 east of the main building (the plan says ~30 deep)
+# PROPOSED by A4 (plan/parts/A4-site.md 2; A0 may move them on the pictures):
 SUNSET_PLATFORM = dict(centre=(WALL_W - 9, 0), radius=20)   # west half-circle off the rotunda
 RADIO_MAST = dict(foot=(WALL_E + 8, -40), height=62)   # (23, -40), north-east stone pad
-# UNDER REVIEW (A0, 2026-11-14): seen from the lower platform, the edge of the upper terrace hides
-# the front below y 15..30, so the first view loses its row of windows. The grand stair, the lower
-# platform and what stands on it wait for A0's figures; LOWER_DROP with them.
-# The plan says the stair is 16 wide; an even width cannot sit on an axis that runs through the
-# middle of a row, so it is 17 here (z -8..8) for A0 to confirm with the rest.
-GRAND_STAIR = dict(x=WALL_E + 45, z0=-8, z1=8, width=17, drop=LOWER_DROP)
-LOWER_PLATFORM = (WALL_E + 46, -42, WALL_E + 76, 43)  # x 61..91, LOWER_DROP below GROUND
-CABLE_STATION = (WALL_E + 50, -40, WALL_E + 66, -26)  # x 65..81, lower platform, north half; the spawn
-POWER_HOUSE = dict(box=(WALL_E + 52, 20, WALL_E + 74, 42), wall_h=10, chimney_h=30)   # x 67..89
+
+# The east side, LOCKED by A0 (#171, 11-14) from the sight line of the arrival view. With the eye h
+# below the upper terrace and a blocks east of its edge, the edge hides h x 44.5 / a of the front
+# (44.5 is the court's depth). The first figures (a drop of 9, the station 12.5 from the edge) hid the
+# front up to y 26, the whole row of lit windows; these hide it up to y 4.
+FRONT_COURT = (WALL_E + 1, -30, WALL_E + 45, 30)     # x 16..60 east of the main building, 45 deep: the
+#                                                       axial view needs the depth (the plan's 30 is void)
+EAST_EDGE_X = FRONT_COURT[2]    # 60, the last column of the upper terrace
+# Nothing solid may stand along the east edge: every block of solid height there hides about three
+# more blocks of the front. An open iron railing only, with stone posts one block wide and at least
+# EAST_POST_SPACING apart, centre to centre; a continuous coping line may run in the paving course
+# only, with nothing of it above y = GROUND.
+EAST_POST_SPACING = BAY         # 4: the posts stand on the pilaster lines or wider
+# The grand stair runs east from the terrace edge and does not cut into the court. It is 17 wide
+# (z -8..8; an even width cannot sit on an axis that runs through the middle of a row), so its cheek
+# walls stand outside the 17, in rows z -9 and z 9, in line with the newel posts of the court's
+# railing. Slope 1 in 2: half-block steps of one block going, twelve of them over x 61..72 for the
+# six blocks of LOWER_DROP (stair_top below). A pair of lamp bases at the head and at the foot.
+GRAND_STAIR = dict(x0=EAST_EDGE_X + 1, x1=EAST_EDGE_X + 2 * LOWER_DROP, z0=-8, z1=8, width=17,
+                   run=2 * LOWER_DROP, drop=LOWER_DROP, rise=0.5)       # x 61..72
+LOWER_PLATFORM = (WALL_E + 46, -42, WALL_E + 76, 43)  # x 61..91; feet at LOWER_GROUND, paving at LOWER_PAVING_Y
+# The cable station fills the north-east corner of the lower platform. Its platform is STATION_RAISE
+# above the lower platform, and the spawn is on it. The canopy faces west and is open to the west and
+# the south-west on thin columns; its underside is at least CANOPY_CLEAR above the station platform.
+CABLE_STATION = (WALL_E + 60, -40, WALL_E + 76, -26)  # x 75..91, z -40..-26
+STATION_RAISE = 2
+STATION_GROUND = LOWER_GROUND + STATION_RAISE         # -4, where feet stand on the station platform
+CANOPY_CLEAR = 5                                      # so the canopy's underside is at y 1 or higher
+# The power house stands on the lower platform: walls y -6..3, the chimney top at y 23.
+POWER_HOUSE = dict(box=(WALL_E + 52, 20, WALL_E + 74, 42), base_y=LOWER_GROUND,
+                   wall_h=10, chimney_h=30)           # x 67..89, z 20..42
+
+
+def stair_top(x):
+    """y of the top surface of the grand stair in column x (a point coordinate, in half blocks): 0 on
+    the terrace (x <= 60), then half a block down with every column, -0.5 at x 61 .. -6 at x 72, where
+    the last tread is level with the lower platform, and -6 east of it."""
+    steps = min(max(int(x) - EAST_EDGE_X, 0), GRAND_STAIR["run"])
+    return GROUND - steps * GRAND_STAIR["rise"]
+
+
+# --- fixed camera positions, LOCKED by A0 (#171, 11-14). Points. -----------------------------------
+EYE = 1.62          # the eye of a standing person, above where the feet stand
+# V1, the arrival view: a person on the station platform looks west-south-west and up at the whole
+# observatory in three-quarter view, the clock tower on the right and the great dome in the middle.
+# Everything of the front from about y 4 up is in sight: the string course, the great windows, the
+# cornice, the dome, the tower. Walking to the stair on the lower platform the front sinks behind the
+# terrace edge and rises again on the stair; that is wanted.
+V1 = dict(pos=(88.5, STATION_GROUND + EYE, -32.5), look_at=(8, 14, 0.5))    # the eye at y -2.38
+
 # PROPOSED by A4 again:
 MERIDIAN_X = WALL_E + 20        # 35. the brass meridian runs north-south through the court in this column
 MERIDIAN_Z = (-30, 30)          # from the hut's middle to the court's south edge; the top of the inlay is y 0
