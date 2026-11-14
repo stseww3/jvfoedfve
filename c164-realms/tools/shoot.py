@@ -7,7 +7,8 @@
 shots.json is a list of shots:
     {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera (eye) aimed at a point
     {"name": "front", "pos": [x, y, z], "yaw": 180, "pitch": 10}      explicit angles
-Optional per shot: "time" (e.g. "noon", "midnight" or a tick number), "settle" (seconds to wait).
+Optional per shot: "time" (e.g. "noon", "midnight" or a tick number; without it the shot is taken
+at 14000, look A, as build/render.py does), "settle" (seconds to wait).
 
 The camera player must already be online (see run_client.sh). It is put into spectator mode so that
 no hand, hotbar or body shows up.
@@ -26,6 +27,9 @@ from rcon import Rcon  # noqa: E402
 
 
 EYE = 1.62  # "pos" is where the camera's eye goes; /tp moves the feet
+# A shot that names no time is taken in look A, the blue hour (plan/roles/INTERFACE.md 3); the same
+# number as build/render.py's DEFAULT_TIME, so a shot list means the same picture in both.
+DEFAULT_TIME = 14000
 
 
 def angles(pos, target):
@@ -114,7 +118,7 @@ def main():
             yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
         else:
             yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
-        when = shot.get("time", "noon")
+        when = shot.get("time", DEFAULT_TIME)
         if when != last_time:
             rc.command(f"time set {when}")
             last_time = when
