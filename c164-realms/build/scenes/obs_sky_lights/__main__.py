@@ -8,13 +8,13 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.sky import _lightkit as L
 from scenes.obs.sky import lights
 
-from . import BOARD, BOARD_LEVELS, STATIONS, TABLE, build, shots
+from . import BOARD, BOARD_LEVELS, STATIONS, TABLE, WING_X, build, shots
 
 
-def surround(canvas, o, bay):
+def surround(canvas, o, bay, flat=False):
     """The block light on the stone round a bay's great window: the highest level and the level in
     the middle rows, for each kind of face. A face shows the light of the cell in front of it."""
-    wall, zc = S.east_wall_x(bay), S.bay_center_z(bay)
+    wall, zc = (WING_X if flat else S.east_wall_x(bay)), S.bay_center_z(bay)
     y0, y1 = S.WINDOW
     lo = (o[0] + wall - 3, o[1] + S.PANEL - 2, o[2] + zc - 4)
     hi = (o[0] + wall + 4, o[1] + S.CORNICE + 1, o[2] + zc + 4)
@@ -55,7 +55,8 @@ def main():
         print(L.chart(tiers))
     print("\nblock light on the stone round a great window (highest of its rows, and the least):")
     for bay, level in BOARD_LEVELS.items():
-        print(f"  {level} behind the glass: " + "; ".join(f"{k} {v}" for k, v in surround(canvas, BOARD, bay).items()))
+        print(f"  {level} behind the glass: "
+              + "; ".join(f"{k} {v}" for k, v in surround(canvas, BOARD, bay, flat=True).items()))
     o = STATIONS["blue"]
     print("  blue, over the door:   " + "; ".join(f"{k} {v}" for k, v in surround(canvas, o, 9).items()))
     wall = S.east_wall_x(9)
@@ -65,6 +66,14 @@ def main():
           + " ".join(str(v) for v in row))
     row = [lv.get((o[0] + wall + 1, o[1] + y, o[2] + 1), 0) for y in range(0, 7)]
     print("blue, on the door's jamb at the pilaster plane, y 0..6: " + " ".join(str(v) for v in row))
+    bay = lights.WASH_BAYS[0]
+    wall, zc = S.east_wall_x(bay), S.bay_center_z(bay)
+    lv = L.levels(canvas, (o[0] + wall - 2, o[1] - 1, o[2] + zc - 6), (o[0] + wall + 6, o[1] + 9, o[2] + zc + 6))
+    print(f"blue, the wall wash of bay {bay}, block light before the wall (x {wall + 1}), rows y 7..0, z {zc - 2}..{zc + 2} "
+          f"(the pilasters' rows show the light before their fronts, x {wall + 2}):")
+    for y in range(7, -1, -1):
+        cells = [(wall + (2 if abs(dz) == 2 else 1), y, zc + dz) for dz in range(-2, 3)]
+        print("   " + " ".join(f"{lv.get((o[0] + x, o[1] + yy, o[2] + z), 0):>2}" for x, yy, z in cells))
 
 
 if __name__ == "__main__":
