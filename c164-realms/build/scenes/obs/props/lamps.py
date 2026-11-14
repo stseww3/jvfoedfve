@@ -20,6 +20,7 @@ For the other lines:
 Both return the number of display entities they placed.
 """
 import functools
+import importlib
 import math
 
 from artkit import models as M
@@ -97,6 +98,20 @@ def _street():
     _opal_globe(m, (0, 35.0, 0), 3.5, sides=12, fine=True)
     m.tube("y", (0, 0), 38.25, 39.0, 1.5, IRON_D)
     m.box((-0.5, 39.0, -0.5), (0.5, 40.5, 0.5), BRASS)                  # finial
+    return m
+
+
+def _post():
+    """The low lamp of a parapet pier: the street lamp's head without its shaft, ten pixels in all,
+    so that it stays under the eye of whoever looks out over the rail. Anchor: centre of the foot,
+    on the pier's cap."""
+    m = M.Model(PREFIX + "post")
+    m.tube("y", (0, 0), 0.0, 1.0, 3.0, IRON_D)                          # foot plate
+    m.taper("y", (0, 0), 1.0, 3.0, 2.0, 1.0, IRON, steps=2)             # neck
+    m.tube("y", (0, 0), 3.0, 3.75, 2.25, BRASS)                         # gallery
+    _opal_globe(m, (0, 6.25, 0), 2.5)
+    m.tube("y", (0, 0), 8.75, 9.25, 1.25, IRON_D)
+    m.box((-0.5, 9.25, -0.5), (0.5, 10.0, 0.5), BRASS)                  # finial
     return m
 
 
@@ -282,6 +297,8 @@ def _hanger():
 # the light level A2 asked for (None: throws no light)
 SPEC = {
     "street": dict(build=_street, mount="floor", scale=2.0, light=(0.0, 4.375, 0.0), level=14),
+    # the pier's cap is a slab, so the source goes into the cell over it
+    "post": dict(build=_post, mount="floor", light=(0.0, 0.55, 0.0), level=10),
     "bracket_a": dict(build=_bracket_a, mount="wall", light=(0.0, 0.47, 0.69), level=12),
     "bracket_b": dict(build=_bracket_b, mount="wall", light=(0.0, -0.45, 0.67), level=12),
     "cage_a": dict(build=_cage_a, mount="wall", light=(0.0, 0.0, 0.3), level=7),
@@ -316,7 +333,8 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), version=None, lig
           yaw=None, **opts):
     """Put one lamp into the scene; returns the number of display entities (1).
 
-    kind     "street", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off", "uplight".
+    kind     "street", "post", "bracket", "cage", "pendant", "desk_green", "signal", "signal_off",
+             "uplight".
              "bracket", "cage" and "pendant" come in two versions: `version` "a" or "b" picks one,
              left out it is VERSION.
     pos      scene coordinates. A wall lamp: the point on the wall face where it is fixed, `facing`
@@ -390,10 +408,137 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
     return ENTRANCE_BAY - 1, ENTRANCE_BAY
 
 
+# ---- the lamps of the site -------------------------------------------------------------------------
+# Who lights what outside the buildings (A0 #22559 three, #23748 four). The points are the site
+# packages': each names them next to the stone its lamps stand on. Which lamp stands there and how
+# bright it is, is set here.
+#
+#   way     the way in, street lamps in pairs a double beat apart: beside the walk from the cable
+#           station, where that walk comes into the stair's forecourt, on the four pedestals of the
+#           grand stair, along the court's two strips. No pole for 18 cells where the meridian
+#           crosses the axis.
+#   lip     the east lip of the upper terrace: a low lamp on the cap of every other pier, a rank
+#           under the street lamps.
+#   feet    four dim ground lamps at the feet of the armillary, looking up at its rings.
+#   doors   everything else is dark, but for one caged lamp at the door of a small building.
+#
+# The doorway is the brightest thing on the site (14, sky/lights); the street lamps lead to it a
+# step under.
+DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
+                        # a test scene asks for the site's lamps with dress(canvas)
+STREET_LEVEL = 13
+AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
+
+# What the packages reported in the group (g2 #283 to #295), for a tree in which a package is not
+# merged yet. Once it is, its own table or function is read instead: _told().
+_REPORTED = {
+    ("site.lowerplatform", "LAMP_POINTS"): [(79.5, -6, -9.5), (79.5, -6, 10.5), (87.5, -6, -9.5), (87.5, -6, 10.5),
+                                            (80.5, -6, -17.5), (86.5, -6, -17.5)],
+    ("site.stair", "LAMP_POINTS"): [(61.5, 0.5, -8.5), (61.5, 0.5, 9.5), (73.0, -3.5, -9.0), (73.0, -3.5, 10.0)],
+    ("site.court", "path_lamps"): [(52, -6), (52, 6), (44, -6), (44, 6), (26, -6), (26, 6)],
+    ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
+    ("site._kit", "PIER_TOP"): 1.5,
+    ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
+    # c246 has not named the four yet: the cells two out from the armillary's on both diagonals
+    ("machines.armillary", "LAMP_POINTS"): [(S.ARMILLARY[0] + 0.5 + dx, S.GROUND, S.ARMILLARY[1] + 0.5 + dz)
+                                            for dx in (-2, 2) for dz in (-2, 2)],
+}
+
+
+def _told(module, name):
+    """What a package says about its lamps (a table, a number or a function), or the numbers it
+    reported while it is not in the tree."""
+    try:
+        value = getattr(importlib.import_module(f"..{module}", __package__), name)
+    except (ImportError, AttributeError):
+        return _REPORTED[module, name]
+    return value() if callable(value) else value
+
+
+def site_lamps():
+    """The lamps of the site as (group, kind, point, level, aim). point: where the lamp is fixed, in
+    scene coordinates before the origin (the middle of a standing lamp's foot, a wall lamp's point
+    on the wall face). level: None is the lamp's own. aim: the point a ground lamp looks at."""
+    out = []
+    for p in list(_told("site.lowerplatform", "LAMP_POINTS")) + list(_told("site.stair", "LAMP_POINTS")):
+        out.append(("way", "street", tuple(p), STREET_LEVEL, None))
+    for x, z in _told("site.court", "path_lamps"):
+        out.append(("way", "street", (x + 0.5, S.GROUND, z + 0.5), STREET_LEVEL, None))
+    top = S.GROUND + _told("site._kit", "PIER_TOP")
+    for x, z in _told("site.court", "lip_lamps"):
+        out.append(("lip", "post", (x + 0.5, top, z + 0.5), None, None))
+    middle = (S.ARMILLARY[0] + 0.5, S.GROUND + AIM_UP, S.ARMILLARY[1] + 0.5)
+    for p in _told("machines.armillary", "LAMP_POINTS"):
+        out.append(("feet", "uplight", tuple(p), None, middle))
+    for p in _told("site.outbuildings", "LAMP_POINTS").values():
+        out.append(("doors", "cage", tuple(p), None, None))
+    return out
+
+
+def _stands(canvas, p, origin=(0, 0, 0)):
+    """True when a standing lamp with its foot at p has something under it on the canvas and room
+    over it: the cell under the foot (for a foot at half height, the slab it stands on) is taken
+    and the next one up is free."""
+    x, y, z = (p[i] + origin[i] for i in range(3))
+    cx, cz, under = math.floor(x), math.floor(z), math.ceil(y) - 1
+    return canvas.has(cx, under, cz) and not canvas.has(cx, under + 1, cz)
+
+
+def _wall_facing(canvas, p, origin=(0, 0, 0)):
+    """The way the wall face looks that the point p lies on, read off the canvas: the wall is the
+    taken cell on one side of the point and the lamp hangs in the free cell on the other. None
+    when no such wall stands there."""
+    x, y, z = (p[i] + origin[i] for i in range(3))
+    cy = math.floor(y)
+    sides = []
+    if abs(z - round(z)) < 1e-6:
+        cx, k = math.floor(x), int(round(z))
+        sides = [("south", (cx, cy, k - 1), (cx, cy, k)), ("north", (cx, cy, k), (cx, cy, k - 1))]
+    elif abs(x - round(x)) < 1e-6:
+        cz, k = math.floor(z), int(round(x))
+        sides = [("east", (k - 1, cy, cz), (k, cy, cz)), ("west", (k, cy, cz), (k - 1, cy, cz))]
+    for facing, wall, air in sides:
+        if canvas.has(*wall) and not canvas.has(*air):
+            return facing
+    return None
+
+
+def dress(canvas, on=True):
+    """Ask for the lamps of the site on this canvas while the switch DRESS is off (a test scene)."""
+    canvas.lamp_dress = bool(on)
+
+
+def site(canvas, origin=(0, 0, 0), groups=None, version=None):
+    """Place the lamps of the site (site_lamps()), or of the groups named ("way", "lip", "feet",
+    "doors"). A lamp is only placed where it has something to stand on or to hang from on the canvas
+    as it is, so a tree without one of the site's packages has fewer lamps and no floating ones;
+    what was left out is kept in canvas.lamps_left_out as (group, kind, point). Returns the number
+    of display entities."""
+    n, left = 0, []
+    for group, kind, p, level, aim in site_lamps():
+        if groups is not None and group not in groups:
+            continue
+        name = f"{kind}_{version or VERSION}" if kind in VERSIONED else kind
+        if SPEC[name]["mount"] == "wall":
+            facing = _wall_facing(canvas, p, origin)
+            if facing is None:
+                left.append((group, kind, p))
+                continue
+            n += place(canvas, kind, p, facing=facing, origin=origin, version=version, level=level)
+        elif not _stands(canvas, p, origin):
+            left.append((group, kind, p))
+        else:
+            yaw = None if aim is None else math.degrees(math.atan2(-(aim[0] - p[0]), aim[2] - p[2]))
+            n += place(canvas, kind, p, origin=origin, level=level, yaw=yaw)
+    canvas.lamps_left_out = list(getattr(canvas, "lamps_left_out", [])) + left
+    return n
+
+
 def build(canvas, origin=(0, 0, 0), version=VERSION):
     """What this package places in the master scene itself: the pair of bracket lamps that frames
-    the entrance, on whatever front the main line has built there, and two street lamps on the
-    court. Lamps elsewhere are placed by the line that builds the wall or the room, with place()."""
+    the entrance, on whatever front the main line has built there, and the lamps of the site
+    (site(); while the switch DRESS is off only the pair of street lamps nearest the door). Lamps
+    on a building or in a room are placed by the line that builds it, with place()."""
     n = 0
     front = S.east_wall_x(ENTRANCE_BAY)
     for k in entrance_pilasters(canvas, origin):
@@ -401,6 +546,8 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
         x = K.east_face(canvas, 4, z, S.WALL_E, front + S.DEPTH_CORNICE, origin)
         if x is not None:
             n += place(canvas, "bracket", (x, 4.0, z + 0.5), facing="east", origin=origin, version=version)
+    if getattr(canvas, "lamp_dress", DRESS):
+        return n + site(canvas, origin, version=version)
     for z in (-5.5, 6.5):                               # either side of the axis, clear of the front
         n += place(canvas, "street", (front + 1 + STREET_CLEARANCE + 0.5, S.GROUND, z), origin=origin)
     return n
