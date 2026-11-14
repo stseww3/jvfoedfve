@@ -40,7 +40,9 @@ COPE = B.ASHLAR_PANEL.slab              # a grey-white slab: the cap of a pedest
 PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, the steps' landings
 POST = B.SLATE_BRICK.wall               # a slate post
 ROOF_SLAB = B.SLATE_TILE.slab           # dark slate roof
-BRASS = B.BRASS_INLAY                   # the brass meridian line
+# the meridian in the floor: the thin inlaid line of the court once the occupancy table has it
+# (BRASS_LINE, A0 #255 / c194 #273), the whole-cell inlay until then
+BRASS = (B.BRASS_LINE + "[shape=north_south]") if hasattr(B, "BRASS_LINE") else B.BRASS_INLAY
 IRON = B.IRON_RIVETED.block             # riveted plate: legs, bands, decks
 IRON_SLAB = B.IRON_RIVETED.slab
 IRON_STAIR = B.IRON_RIVETED.stairs
@@ -60,6 +62,14 @@ STEP = B.SLATE_BRICK.stairs             # the steps down to the shelves: the ter
 LOOKOUT_WAY = (44, 46)      # x, through the terrace's south edge, on the lookout's middle line
 WEATHER_WAY = (2, 4)        # x, through the north edge
 TOWER_WAY = (-33, -31)      # z, through the west edge
+
+# Where a lamp may hang, one to a building and no more (A0 #22568: the small buildings on the hill
+# keep dark but for one lamp at the door). Points on a wall face, for the lights card to dress; the
+# lookout has none on purpose: V11 is taken from it and wants a dark foreground.
+LAMP_POINTS = {
+    "hut_door": (37.5, 2.5, -25.0),         # the south gable, east of the slot, facing south
+    "tower_foot": (-14.5, 0.5, -32.0),      # the north-east leg's south face, by the ladder
+}
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -263,14 +273,15 @@ def _weather_station(c, o):
         _put(c, o, sx - 1, y, sz, HATCH + "[facing=west,half=bottom,open=true]")
         _put(c, o, sx + 2, y, sz, HATCH + "[facing=east,half=bottom,open=true]")
 
-    # the wind mast: a riveted foot, a thin rod eight blocks up and a cross-arm near its head for the
-    # anemometer and the vane (A5)
+    # the wind mast: a riveted foot, a thin rod eight blocks up, and at its very head one arm to
+    # the west for the anemometer and the vane (A5). One-sided on purpose: an upright with an arm
+    # across it reads as a cross from afar, which the project does not allow.
     wx, wz = x1 - 2, z0 + 2                             # (6, -47)
     _put(c, o, wx, foot, wz, IRON)
     for y in range(foot + 1, foot + 9):
         _put(c, o, wx, y, wz, ROD + "[facing=up]")
-    _put(c, o, wx - 1, foot + 7, wz, ROD + "[facing=west]")
-    _put(c, o, wx + 1, foot + 7, wz, ROD + "[facing=east]")
+    _put(c, o, wx - 1, foot + 8, wz, ROD + "[facing=west]")
+    _put(c, o, wx - 2, foot + 8, wz, ROD + "[facing=west]")
 
     # the rain gauge: a short plate drum under a lid; and a free stone pedestal (sunshine recorder: A6)
     gx, gz = x1 - 2, z1 - 2                             # (6, -45)
@@ -300,8 +311,10 @@ def _south_lookout(c, o):
         _put(c, o, x, pave, z, K.STRIP if walk or stand else FOOTING)
         for d in (1, 2, 3):
             _put(c, o, x, pave - d, z, PLINTH, keep=True)
-    for ddx, ddz in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-        _put(c, o, tx + ddx, pave, tz + ddz, IRON)
+    for ddx in (-1, 0, 1):                              # a square ring of eight, the socket in its middle
+        for ddz in (-1, 0, 1):
+            if (ddx, ddz) != (0, 0):
+                _put(c, o, tx + ddx, pave, tz + ddz, IRON)
 
     # the site's rail round the whole edge (the neck that leads here is three wide, so the north
     # edge hangs free too), open where the steps arrive. Piers only at the four knuckles of the prow:
