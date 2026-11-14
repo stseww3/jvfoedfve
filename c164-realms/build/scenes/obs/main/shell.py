@@ -18,7 +18,8 @@ the wall or its inner leaf):
     open ring in the ceiling and in the dome-room floor;
   * the ring stair (A0 #20004; the steps are c206's count, #20483): 22 half-block steps on the
     outermost ring of the envelope, clockwise from the south gallery (a bridge at (7, 4)) to the
-    east side of the cap, where one steps off onto the dome-room floor at (8, 0);
+    east side of the cap, where one steps off onto the dome-room floor at (8, 0); a balustrade of
+    iron panels on both sides, the inner one in the steps' own cells so the ring stays empty;
   * the wing rooms of the main floor (time-service room north, star-chart room south): floor,
     ceiling, the wall towards the rotunda, the wall towards the end pavilion;
   * the dome-room floor, with the envelope left open and a railing round it.
@@ -64,9 +65,7 @@ ROOM_DOOR_X = (7, 8)                            # gallery -> wing room, through 
 ROOM_DOOR_Y = (S.STAND, S.STAND + 2)
 GALLERY_X = (S.ROOM_X[0], S.ROOM_X[1])          # 2..13: the side galleries
 BRIDGE = (7, HALL_Z - 1)                        # (7, 4): the gap in the south railing where the ring stair starts
-NIB = (BRIDGE[0] + 1, BRIDGE[1] - 1)            # (8, 3): a block of deck east of the first step, for its railing
 EXIT = (S.PIER_ENVELOPE[2] + 1, CZ)             # (8, 0): the dome-room floor one steps onto
-LAST_GUARD = (EXIT[0] - 1, CZ + 1)              # (7, 1): the unused cell of the ring south of the last step
 
 FLOOR = B.ASHLAR_FINE.block                     # the hall's ground floor, until the star hall lays its own
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
@@ -76,7 +75,6 @@ RAIL = B.IRON_BARS
 GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
 PANEL = B.IRON_HATCH                            # an iron hatch on edge: the thin balustrade panel
-PANEL_FACING = {"north": "south", "south": "north", "west": "east", "east": "west"}   # it stands on the side it turns its back to
 TRIM = B.IRON_RIVETED.block                     # the iron curb round the stair's opening, ceiling to floor
 
 ROOMS = {
@@ -185,54 +183,42 @@ def layout():
 
 
 SIDE = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
+OPPOSITE = {"north": "south", "south": "north", "west": "east", "east": "west"}
 
 
 def panel(side):
     """An iron hatch standing on edge on that side of its cell."""
-    return f"{PANEL}[facing={PANEL_FACING[side]},half=bottom,open=true]"
+    return f"{PANEL}[facing={OPPOSITE[side]},half=bottom,open=true]"      # it stands on the side it turns its back to
 
 
 def stair_panels():
-    """The ring stair's inner balustrade: {(x, y, z): the side of the cell it stands on}.
+    """The ring stair's balustrades: [((x, y, z), side, inner)] -- an iron hatch on edge (3 pixels
+    thick) in that cell, standing on that side of it, in the row over the step's slab.
 
-    A block in the open ring would touch the pier, so the guard stands in the stair's own cells: an
-    iron hatch on edge (3 pixels thick) on the inner edge of each step, in the row over its slab.
-    Where the stair turns the two neighbours' panels meet at the corner. The first step has one
-    towards the unused part of the ring, the last two fence off the pier's cap."""
+    Inner side: a block in the open ring would touch the pier, so the panel stands in the step's own
+    cell, on its inner edge; where the stair turns, the two neighbours' panels meet at the corner.
+    Outer side: in the cell beside the step, against it. build() leaves a panel out where the
+    building already stands beside the step (the gallery's deck at the bridge, the ceiling, the
+    curb, the dome-room floor and its railing, the pier's corbel and cap). The first step has an
+    end panel two rows high on the east and one towards the unused part of the ring; a panel in
+    that part closes the south side of the last step."""
     x0, z0, x1, z1 = S.PIER_ENVELOPE
-    out = {}
-    for x, z, y, _half, _top in ring_stair():
-        if (x, z) == (x1, z1):
-            out[(x, y + 1, z)] = "north"                # the first step: nothing stands north of it
-        elif (x in (x0, x1)) == (z in (z0, z1)):
-            continue                                    # a corner
-        else:
-            out[(x, y + 1, z)] = "north" if z == z1 else "south" if z == z0 else "east" if x == x0 else "west"
-    return out
-
-
-def stair_guards():
-    """Bars beside the ring stair, on its outer side: {(x, z): (first y, last y)}.
-
-    Along the south gallery they stand on the gallery's edge and rise with the steps; over the cross
-    gallery they hang from the ceiling down to the steps. From the ceiling up the stair runs inside
-    the curb. East of the first step they stand on a nib of the gallery's deck (NIB)."""
-    L = layout()
-    x0, z0, x1, z1 = S.PIER_ENVELOPE
-    out = {}
-    for x, z, y, _half, _top in ring_stair():
-        if y + 1 >= CEIL_Y:
-            continue                                    # the ceiling and the curb stand beside the step
-        near = [O.step((x, z), d) for d in O.SIDES]
-        if x in (x0, x1) and z in (z0, z1):             # where the stair turns, the corner block too
-            near.append((x + (1 if x == x1 else -1), z + (1 if z == z1 else -1)))
-        for c in near:
-            if c in L.envelope or c == BRIDGE:
+    stair = ring_stair()
+    cells = [(x, z) for x, z, _y, _half, _top in stair]
+    out = []
+    for i, (x, z, y, _half, _top) in enumerate(stair):
+        for side, (dx, dz) in SIDE.items():
+            n = (x + dx, z + dz)
+            if n in cells[max(i - 1, 0):i + 2] or n == (BRIDGE if i == 0 else EXIT if i == len(stair) - 1 else None):
                 continue
-            if c in L.gallery_edge or c == NIB:         # standing on the gallery's edge, up to the step
-                out[c] = (S.STAND, max(out.get(c, (0, 0))[1], y + 1))
-            elif c in L.walk:                           # over a deck: hung from the ceiling, clear of heads
-                out[c] = (min(out.get(c, (y + 1, 0))[0], y + 1), CEIL_Y - 1)
+            if x0 <= n[0] <= x1 and z0 <= n[1] <= z1:               # towards the pier, or along the ring
+                out.append(((x, y + 1, z), side, True))
+            else:
+                out.append(((n[0], y + 1, n[1]), OPPOSITE[side], False))
+    (x, z, y, _half, _top), last = stair[0], stair[-1]
+    out.append(((x + 1, y, z), "west", False))                      # the foot's end panel, down to the deck
+    out = [p for p in out if p[0] != (last[0], last[2] + 1, last[1]) or p[1] != "south"]
+    out.append(((last[0], last[2] + 1, last[1] + 1), "north", False))
     return out
 
 
@@ -332,19 +318,14 @@ def build(canvas, origin=(0, 0, 0)):
     for c in L.cap:
         put(c, ROOF_Y, B.ASHLAR_FINE.block)
 
-    # the ring stair: the steps, the bars on its outer side, the panels on its inner edge (none where
-    # the pier's corbel or cap stands beside the step)
+    # the ring stair: the steps and the panels on both sides of them
     for x, z, y, half, _top in ring_stair():
         put((x, z), y, f"{TREAD.slab}[type={half}]")
-    put(NIB, DECK_Y, DECK)
-    for c, (y0, y1) in stair_guards().items():
-        for y in range(y0, y1 + 1):
-            put(c, y, RAIL)
-    for (x, y, z), side in stair_panels().items():
+    for (x, y, z), side, inner in stair_panels():
         dx, dz = SIDE[side]
-        if not canvas.has(ox + x + dx, oy + y, oz + z + dz):
-            put((x, z), y, panel(side))
-    put(LAST_GUARD, S.ROOF_STAND, panel("north"))
+        if canvas.has(ox + x, oy + y, oz + z) or (inner and canvas.has(ox + x + dx, oy + y, oz + z + dz)):
+            continue
+        put((x, z), y, panel(side))
     return 0
 
 
