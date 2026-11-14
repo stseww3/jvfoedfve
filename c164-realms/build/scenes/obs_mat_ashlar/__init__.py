@@ -44,21 +44,21 @@ def walls(c, x, z):
 
 
 def coursed(c, x, z):
-    """A facade band (ART-PLAN 5.1): a slate plinth, two courses of rough stone projecting one in
-    front, a string course of fine stone over them, then the dressed storey set back with sunk
-    panels under the windows and emblem lintels over. Rough and fine must read as one stone."""
+    """A facade band (ART-PLAN 5.1): a slate plinth, two courses of rusticated stone, a projecting
+    string course of fine stone, then the dressed storey with sunk panels under the windows and
+    emblem lintels over. Rough and fine stand in the one plane under the one light, so the band is a
+    fair test that the two finishes read as one stone (c190 #2); only the course steps out."""
     w = 7
-    front, back = z, z - 1
-    c.box(x, 0, front, x + w - 1, 0, front, B.SLATE_BRICK.block)         # plinth
-    c.box(x, 1, front, x + w - 1, 4, front, B.ASHLAR_ROUGH.block)        # rusticated base, proud
-    for dx in range(w):                                                   # the string course, projecting
-        c.set(x + dx, 5, front, st(B.ASHLAR_FINE.stairs, facing="south", half="top"))
-    c.box(x, 5, back, x + w - 1, 12, back, B.ASHLAR_FINE.block)          # dressed storey, set back
+    c.box(x, 0, z, x + w - 1, 0, z, B.SLATE_BRICK.block)                 # plinth
+    c.box(x, 1, z, x + w - 1, 4, z, B.ASHLAR_ROUGH.block)                # rusticated base storey
+    for dx in range(w):                                                   # the string course, a projecting band
+        c.set(x + dx, 5, z, st(B.ASHLAR_FINE.stairs, facing="south", half="top"))
+    c.box(x, 6, z, x + w - 1, 12, z, B.ASHLAR_FINE.block)                # dressed storey, the one plane
     for dx in (1, 2, 4, 5):                                              # sunk panels under the windows
-        c.set(x + dx, 7, back, B.ASHLAR_PANEL.block)
+        c.set(x + dx, 8, z, B.ASHLAR_PANEL.block)
     for dx in (0, 3, 6):                                                 # emblem lintels over
-        c.set(x + dx, 12, back, B.ASHLAR_EMBLEM)
-    _board.stage(c, x, x + w - 1, front, height=14)
+        c.set(x + dx, 12, z, B.ASHLAR_EMBLEM)
+    _board.stage(c, x, x + w - 1, z, height=14)
     return x + w + 2
 
 
@@ -133,7 +133,7 @@ def shots():
     xc0, xc1 = spans["coursed"]
     xc1 -= 2
     xm = (xc0 + xc1) / 2.0
-    out.append({"name": "coursed", "pos": [xm, 6.5, Z + 12.0], "look_at": [xm, 6.0, Z - 1], "time": TIME})
+    out.append({"name": "coursed", "pos": [xm, 6.5, Z + 12.0], "look_at": [xm, 6.0, Z], "time": TIME})
     out.append({"name": "coursed_course", "pos": [xm, 5.6, Z + 6.0], "look_at": [xm, 5.0, Z], "time": TIME})
 
     xf = spans["flight"][0]
