@@ -398,7 +398,7 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
             xs = [c[0] for c in w["cells"]]
             zs = [c[1] for c in w["cells"]]
             y0 = w["y"][0]
-            cz = (min(zs) + max(zs)) / 2.0
+            cz = S.mid(min(zs), max(zs))        # the centre point of the glass columns (cells -> point)
             # the frame sits on the wall face, one block out from the recessed glass column
             wall_x = (max(xs) + 1) if w["front"] == "east" else (min(xs) - 1)
             pos = (wall_x, float(y0), cz)
@@ -409,17 +409,19 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
         return n
     # fall back to the locked skeleton: only where A3's east front already stands
     for bay in range(1, S.N_BAYS + 1):
-        cz = S.bay_center_z(bay)
+        cz = S.bay_center_z(bay)            # the bay's middle column (a cell, to probe the built wall)
+        zc = S.mid(cz)                      # its centre point, where a centred prop is placed
         x = K.east_face(canvas, S.WINDOW[0], cz, S.WALL_E - 1, S.east_wall_x(bay) + 1, origin)
         if x is not None and bay != 9:
-            n += place(canvas, "window_arch", (x, float(S.WINDOW[0]), cz), facing="east",
+            n += place(canvas, "window_arch", (x, float(S.WINDOW[0]), zc), facing="east",
                        origin=origin, version=version)
         x = K.east_face(canvas, S.BASE[0] + 1, cz, S.WALL_E - 1, S.east_wall_x(bay) + 1, origin)
         if x is not None:
-            n += place(canvas, "window_grille", (x, float(S.BASE[0] + 1), cz), facing="east",
+            n += place(canvas, "window_grille", (x, float(S.BASE[0] + 1), zc), facing="east",
                        origin=origin)
-    x = K.east_face(canvas, S.GROUND, S.bay_center_z(9), S.WALL_E - 1, S.east_wall_x(9) + 1, origin)
+    cz = S.bay_center_z(9)
+    x = K.east_face(canvas, S.GROUND, cz, S.WALL_E - 1, S.east_wall_x(9) + 1, origin)
     if x is not None:
-        n += entrance(canvas, (x, float(S.GROUND), S.bay_center_z(9)), facing="east",
+        n += entrance(canvas, (x, float(S.GROUND), S.mid(cz)), facing="east",
                       origin=origin, version=version)
     return n
