@@ -556,6 +556,9 @@ rep(
   `  // If all squad bots are dead or match is over, leave lingering finished games to main menu!`,
   `  if (globalThis.__wasSquadInGame) {
     globalThis.__wasSquadInGame = false;
+    globalThis.__holdUntagUntil = 0;
+    globalThis.__chosenBigRoomId = 0;
+    globalThis.__lastChosenCard = null;
     rotateClanTag('match-finished');
     for (const c of clients) {
       if (c.isHeadless) {
@@ -567,6 +570,64 @@ rep(
   }
 
   // If all squad bots are dead or match is over, leave lingering finished games to main menu!`
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-room-pick-cache',
+  `  let chosenCard = anyBigCardNow || null;
+  if (!chosenCard && bigTeamCards.length > 0) {
+    const scoreCard = (r) => {
+      let sc = 0;
+      if (r.nS >= 60 || r.nS === 0) sc += 500;
+      if (r.vz === 1 || r.vz === 2) sc += 340;      // Sweet spot: 3 Teams or 4 Teams big room!
+      else if (r.vz === 3) sc += 230;               // 5 Teams
+      else if (r.vz === 0) sc += 170;               // 2 Teams big room (50+ players, 25v25+)
+      else if (r.vz >= 4 && r.vz <= 6) sc += 90;    // 6..8 Teams chaotic fallback
+      sc += Math.min(140, r.h2 * 3);
+      if (r.wK >= 5 && r.wK <= 45) sc += 100;
+      else sc -= Math.min(90, Math.floor(r.wK / 2));
+      return sc;
+    };
+    chosenCard = bigTeamCards.slice().sort((a, b) => scoreCard(b) - scoreCard(a))[0];
+    globalThis.__chosenBigRoomId = chosenCard ? chosenCard.id : 0;
+    if (chosenCard) {
+      console.log(\`[ROOM-PICK] Selected BIG Team Room id=\${chosenCard.id} (\${chosenCard.vz + 2} Teams, players=\${chosenCard.h2}/\${chosenCard.nS}, startsIn=\${chosenCard.wK}s, map=\${chosenCard.fF})\`);
+    }
+  } else if (!chosenCard) {
+    globalThis.__chosenBigRoomId = 0;
+  }`,
+  `  let chosenCard = anyBigCardNow || null;
+  if (chosenCard) {
+    globalThis.__lastChosenCard = chosenCard;
+    globalThis.__lastChosenCardAt = now;
+  } else if (sampleCards.length === 0 && globalThis.__lastChosenCard && now - (globalThis.__lastChosenCardAt || 0) < 9000) {
+    chosenCard = globalThis.__lastChosenCard;
+  } else if (bigTeamCards.length > 0) {
+    const scoreCard = (r) => {
+      let sc = 0;
+      if (r.nS >= 60 || r.nS === 0) sc += 500;
+      if (r.vz === 1 || r.vz === 2) sc += 340;
+      else if (r.vz === 3) sc += 230;
+      else if (r.vz === 0) sc += 170;
+      else if (r.vz >= 4 && r.vz <= 6) sc += 90;
+      sc += Math.min(140, r.h2 * 3);
+      if (r.wK >= 5 && r.wK <= 45) sc += 100;
+      else sc -= Math.min(90, Math.floor(r.wK / 2));
+      return sc;
+    };
+    chosenCard = bigTeamCards.slice().sort((a, b) => scoreCard(b) - scoreCard(a))[0];
+    globalThis.__chosenBigRoomId = chosenCard ? chosenCard.id : 0;
+    if (chosenCard) {
+      globalThis.__lastChosenCard = chosenCard;
+      globalThis.__lastChosenCardAt = now;
+      console.log(\`[ROOM-PICK] Selected BIG Team Room id=\${chosenCard.id} (\${chosenCard.vz + 2} Teams, players=\${chosenCard.h2}/\${chosenCard.nS}, startsIn=\${chosenCard.wK}s, map=\${chosenCard.fF})\`);
+    }
+  } else if (sampleCards.length > 0) {
+    globalThis.__chosenBigRoomId = 0;
+    globalThis.__lastChosenCard = null;
+  }`
 );
 
 rep(
@@ -724,9 +785,9 @@ rep(
   const roomTeamsT = chosenCard ? Math.max(2, (chosenCard.vz | 0) + 2) : 3;
   const roomCapNs = chosenCard && chosenCard.nS > 0 ? chosenCard.nS : 512;
 
-  // Hold selection until final 17s window (allowing ~1s for stealth tag-on reconnect inside 60-min pass)
+  // Hold selection until final 20s window (allowing ~1s for stealth tag-on reconnect inside 60-min pass)
   const alreadyCommitted = ourAlreadySelectedOnTarget > 0;
-  const inCommitWindow = alreadyCommitted || (minStartsIn >= 4 && minStartsIn <= 17);
+  const inCommitWindow = alreadyCommitted || (minStartsIn >= 5 && minStartsIn <= 20);
 
   let desiredK = 0;
   if (targetRoomId > 0 && inCommitWindow && verifiedApexIndices.length >= 10) {
@@ -778,11 +839,12 @@ rep(
       const hasRightTag = curLobbyUser.startsWith(\`[\${activeClanTag}]\`);
       let triggerRetag = false;
       if (states[idx]?.lobby?.inLobby && states[idx]?.lobby?.room === 0 && now > (c.retaggingUntil || 0)) {
+        if (wantTag) globalThis.__holdUntagUntil = now + 8000;
         if (wantTag && !hasRightTag) {
           triggerRetag = true;
           c.retaggingUntil = now + 4500;
           c.retagTargetRoomId = targetRoomId;
-        } else if (!wantTag && hasAnyTag) {
+        } else if (!wantTag && hasAnyTag && now > (globalThis.__holdUntagUntil || 0)) {
           triggerRetag = true;
           c.retaggingUntil = now + 4500;
           c.retagTargetRoomId = 0;
