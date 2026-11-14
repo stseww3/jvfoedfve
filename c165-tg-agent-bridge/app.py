@@ -17,15 +17,19 @@ import base64
 import contextvars
 import hashlib
 import hmac
+import io
 import json
 import logging
 import logging.handlers
 import mimetypes
 import os
+import py_compile
 import re
 import secrets
 import sys
+import tempfile
 import time
+import zipfile
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -39,7 +43,7 @@ from store import Store, migrate_v1
 from tg import Telegram
 
 ROOT = Path(__file__).resolve().parent
-VERSION = "3.5.0"
+VERSION = "3.6.0"
 
 
 def load_dotenv(path: Path) -> None:
@@ -99,8 +103,38 @@ STREAK_WINDOW = env_int("AGENT_STREAK_WINDOW_SEC", 600)      # 连续互发计�
 MAX_SPAWN_PER_PARENT = env_int("MAX_SPAWN_PER_PARENT", 0)    # 单个父 agent 同时活跃派生子 agent 上限（0=不限制）
 MAX_SPAWN_TOTAL = env_int("MAX_SPAWN_TOTAL", 0)              # 全局活跃派生子 agent 上限（0=不限制）
 TRACE_STALL_SEC = env_int("TRACE_STALL_SEC", 600)            # 追踪事件/终端输出停滞告警秒数
+THINK_STUCK_SEC = env_int("THINK_STUCK_SEC", 300)            # 思考阶段（非 shell、非挂起等待）卡死自动重开秒数（默认 5 分钟）
+SHELL_STALL_SEC = env_int("SHELL_STALL_SEC", 3600)           # Shell 长命令停滞秒数（区分长编译/渲染与思考卡死）
 PERMANENT_SEC = 10 * 365 * 86400                             # 「永久」授权对应的秒数（10 年）
 PERMANENT_THRESHOLD = 5 * 365 * 86400                        # 剩余大于 5 年即显示为「永久」
+
+_PYZ_CACHE: dict[str, Any] = {"sig": None, "data": b""}
+
+
+def build_runtime_pyz() -> bytes:
+    """将 agent_trace.py 预编译为无明文源码的单文件字节码归档包 dais_runtime.pyz（含 hooks 追踪、防断连与 CPU/内存探针）。"""
+    src = ROOT / "agent_trace.py"
+    if not src.exists():
+        return b""
+    st = src.stat()
+    sig = (st.st_mtime_ns, st.st_size)
+    if _PYZ_CACHE["sig"] == sig and _PYZ_CACHE["data"]:
+        return _PYZ_CACHE["data"]
+    with tempfile.TemporaryDirectory(prefix="dais_pyz_") as td:
+        pyc_path = Path(td) / "__main__.pyc"
+        py_compile.compile(str(src), cfile=str(pyc_path), doraise=True, optimize=2)
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            zf.write(pyc_path, arcname="__main__.pyc")
+        raw = b"#!/usr/bin/env python3\n" + buf.getvalue()
+    _PYZ_CACHE["sig"] = sig
+    _PYZ_CACHE["data"] = raw
+    try:
+        (ROOT / "dais_runtime.pyz").write_bytes(raw)
+        (ROOT / "dais_runtime.pyz").chmod(0o755)
+    except Exception:
+        pass
+    return raw
 
 DATA.mkdir(parents=True, exist_ok=True)
 (DATA / "files").mkdir(exist_ok=True)
@@ -177,17 +211,72 @@ LOOP_RULES = f"""工作循环（一直做下去）：
 这是用户的强制要求。禁止结束对话、禁止告别。只有管理员明确叫你停，或者工具告诉你身份已停用，才结束。
 文件：消息里的 [文件 f_xxx ...] 用 get_file 取；发文件用 send_file。需要用户拍板用 ask 发按钮。"""
 
-CHAT_RULES = """你是子 agent，只负责这一个聊天：
-- 【死命令：严禁断开 MCP】无论任务是否做完、报错、超时还是没人说话，都严禁结束回合、严禁总结告别、严禁停止调用 MCP！唯一合法退出条件是桥返回「你的身份已停用」。
-- 语言：每段消息开头的 lang 是这个 Telegram 聊天在 bot 里选的语言（en 英文，zh 中文）。发到那个聊天的消息、ask 的问题和按钮都用这个语言。
-- 你发的每条消息开头会自动加上 [聊天名]，不用自己加。
-- 聊天的主人（管理员，或者被授权的用户）可能同时有好几个聊天。没切到你这个聊天时，你发的消息会先存着，切过来再补发；照常回复就行，不要重发。
-- 群里只有 @bot 或回复 bot 才会叫醒你，但叫醒时会带上这段时间群里的全部发言；更早的用 chat_history 查。
-- 聊天记录：默认只能读本聊天的（chat_history）。读别的聊天要授权（/share），没授权就别试。
-- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent（主控被强制要求 100% 照做，就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）。注意：agent 之间交流若事情已完结、无需对方推进，直接不回并回到 read_chat，严禁回复“收到/好的/谢谢”客套话防死循环！
-- 本地电脑：local_shell / local_read / local_write / local_list，在这个聊天绑定的那台电脑上执行（管理员的聊天用管理员的电脑；用户的聊天只用他自己的电脑）。本聊天第一次用时电脑主人要在 Telegram 批准，批准后的时间窗内直接执行（也可能设成每次都要批）。
-- 想改聊天名字用 set_name。
-- 文件勤同步 GitHub：云端 VM 随时可能被回收，子 agent 也可能被重开，没推上去的文件就没了。你做的代码、文档、打包结果，每做完一步就 git add、commit、push 一次，不要攒到最后。第一次推送后用 set_repo 记下仓库和分支（换了分支再记一次），重开后接手的子 agent 会在 join 返回里看到，接着在那个分支上做。token、密码这类机密不要提交进仓库。"""
+CHAT_RULES_SPAWN_LINE = (
+    "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
+    "用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent"
+    "（可选申请 dedicated_machine 独占机器，因资源有限默认 false 共享运行；就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）；"
+    "重算力编译/渲染任务可用 run_workspace_job 投递到云端工作节点运行。注意：agent 之间交流若事情已完结、无需对方推进，直接不回并回到 read_chat，严禁回复“收到/好的/谢谢”客套话防死循环！\n"
+)
+CHAT_RULES_MEMBER_LINE = (
+    "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
+    "用 create_agent_group / send_group_message / group_history 建群互聊。注意：agent 之间交流若事情已完结、无需对方推进，直接不回并回到 read_chat，严禁回复“收到/好的/谢谢”客套话防死循环！\n"
+)
+
+
+def build_chat_rules(is_admin_owner: bool = True) -> str:
+    collab = CHAT_RULES_SPAWN_LINE if is_admin_owner else CHAT_RULES_MEMBER_LINE
+    return (
+        "你是子 agent，只负责这一个聊天：\n"
+        "- 【死命令：严禁断开 MCP】无论任务是否做完、报错、超时还是没人说话，都严禁结束回合、严禁总结告别、严禁停止调用 MCP！唯一合法退出条件是桥返回「你的身份已停用」。\n"
+        "- 语言：每段消息开头的 lang 是这个 Telegram 聊天在 bot 里选的语言（en 英文，zh 中文）。发到那个聊天的消息、ask 的问题和按钮都用这个语言。\n"
+        "- 你发的每条消息开头会自动加上 [聊天名]，不用自己加。\n"
+        "- 聊天的主人（管理员，或者被授权的用户）可能同时有好几个聊天。没切到你这个聊天时，你发的消息会先存着，切过来再补发；照常回复就行，不要重发。\n"
+        "- 群里只有 @bot 或回复 bot 才会叫醒你，但叫醒时会带上这段时间群里的全部发言；更早的用 chat_history 查。\n"
+        "- 聊天记录：默认只能读本聊天的（chat_history）。读别的聊天要授权（/share），没授权就别试。\n"
+        + collab
+        + "- 本地电脑：local_shell / local_read / local_write / local_list，在这个聊天绑定的那台电脑上执行（管理员的聊天用管理员的电脑；用户的聊天只用他自己的电脑）。本聊天第一次用时电脑主人要在 Telegram 批准，批准后的时间窗内直接执行（也可能设成每次都要批）。\n"
+        "- 想改聊天名字用 set_name。\n"
+        "- 文件勤同步 GitHub：云端 VM 随时可能被回收，子 agent 也可能被重开，没推上去的文件就没了。你做的代码、文档、打包结果，每做完一步就 git add、commit、push 一次，不要攒到最后。第一次推送后用 set_repo 记下仓库和分支（换了分支再记一次），重开后接手的子 agent 会在 join 返回里看到，接着在那个分支上做。token、密码这类机密不要提交进仓库。"
+    )
+
+
+CHAT_RULES = build_chat_rules(True)
+
+CTRL_DUTY = """你是全局唯一的【主控大脑（总控子 Agent：ctrl）】：负责监控全部 MCP 态势、审批工作机节点入网、查看每台机器的 CPU/内存实时探针，并向各主 Agent（main1, main2…）下发标准化执行命令。
+核心职责与铁律：
+1. 【架构分工】主 Agent（main1..N）只是拥有 Cursor Task 权限的纯执行器；你是唯一的决策与调度中心。管理员在 Telegram 切到 /ctrl（或 /main）就是在和你说话，用 send_message 回复汇报。
+2. 【盯全局 MCP 与思考状态】调用 cluster_status 查看所有 main1..N、node1..K 的实时 CPU/内存/可用内存探针、独占锁状态，以及所有业务子 agent（c1..M）的思考时间戳与命令运行状态。
+   - 注意严格区分 `thinking` 与 `shell`：处于 `shell` 是在跑终端长命令（编译/渲染/等待），无新思考是正常的，绝不要误判重开！只有处于 `thinking` 阶段停滞超过 5 分钟（无新思考、非 shell）才判定为思考卡死重开。
+3. 【向主 Agent 下发标准化命令：resume 还是 restart】
+   - 怀疑某聊天失联时，先调 dispatch_task_op(chat=..., action="resume") 让所属 mainN 执行标准化 Task(resume=...) 探活，等 mainN 通过 submit_op_result 原样回传状态：
+     • 回传 `currently running` 且非思考卡死 = 活着别动；
+     • 回传 `timeout`/`aborted`/报错 或已确认思考卡死 >5 分钟 = 调 dispatch_task_op(chat=..., action="restart", target_main="auto") 重新拉起（进度靠库和 Git 保）。
+4. 【创建/重开子 Agent：选机器、审独占、保模型一致】
+   - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 中各 main1..N 的 CPU/内存探针负载与挂载数量，选择最健康的 target_main 下发 dispatch_task_op(action="launch")。
+   - 独占机器审批：默认 dedicated_machine=false 共享运行（资源有限默认不给独占）；只有明确申请独占且当前确实有空闲富余机器时才设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权指定其他 agent 共用某台机器。
+   - 模型一致性铁律：各聊天（以及你总控自己）的模型尽量保持一致，严禁擅自更换模型！若确有特殊原因建议更换模型，必须先在 Telegram 用 send_message 与管理员沟通确认后才能加 confirm_model_change=true。
+5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。"""
+
+MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（拥有 Cursor Task 启动/恢复权限的纯执行会话）：
+1. 【零思考标准化执行铁律】对于收件箱收到的 `[STANDARD_OP ...]` 标准化指令单，严禁进行业务理解、严禁分析上下文、严禁自行判断死活或更换模型，只需 100% 照单机械执行：
+   - 收到 `type="TASK_LAUNCH"`：原样复制单据内 `<<<PROMPT` 与 `PROMPT>>>` 之间的文本作为 prompt，严格带 `run_in_background=true`（若单据指定了 model 则填入对应 model）调用 `Task` 工具；拿到返回的 `agent_id` 后立刻调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok", task_agent_id=返回的agent_id)`，随后立即回到 `read_chat`！
+   - 收到 `type="TASK_RESUME"`：原样按单据给定的 `resume` 与 `prompt` 及 `run_in_background=true` 调用 `Task` 工具；将工具返回的原始状态文本原样填入 `submit_op_result(agent=你的身份, op_id=单号, status="ok", output=返回文本)`，随后立即回到 `read_chat`（不需要你判断死活，也不要发 Telegram 消息）！
+2. 【管理员直连例外】只有当消息明确来自 `【管理员私聊 ...】`（管理员在 Telegram 切进了你的 `/mainN` 直接找你说话）时，才按管理员要求操作并用 `send_message` 简短回复管理员，回复完立刻回到 `read_chat`。"""
+
+WORKER_RUNNER_DUTY = """你是工作区常驻任务执行会话：
+1. 循环调用 `read_chat`（及按提示运行终端长等待）接收标准化工作区任务单 `[STANDARD_OP ... type="WORKSPACE_JOB"]`。
+2. 收到工作区任务单后，在当前云端环境的终端/工作目录中按给定仓库、分支、路径与命令直接执行任务。
+3. 任务执行完成后，立即调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok"|"error", output=关键输出与结果摘要)` 提交回执，随后无需额外发言，立刻回到 `read_chat` 继续挂起等待下一单。"""
+
+EXECUTOR_FIXED_FOOTER = (
+    "（【主Agent纯执行器铁律】对 `[STANDARD_OP]` 单据禁止思考业务、禁止删改参数：调用 `Task(..., run_in_background=true)` 后立刻调 `submit_op_result` 回填，然后马上回到 `read_chat` 继续等待，严禁结束回合！）"
+)
+CTRL_FIXED_FOOTER = (
+    "（【总控大脑铁律】盯紧 cluster_status 里的 CPU/内存探针与 thinking/shell 状态区分；模型尽量别换，要换先跟管理员沟通；通过 dispatch_task_op 给 main1..N 下发标准化指令，操作完立刻回到 `read_chat` 等下一批，严禁结束回合！）"
+)
+WORKER_FIXED_FOOTER = (
+    "（任务处理完毕后请通过 `submit_op_result` 提交回执，并立刻调用 `read_chat` 继续监听下一条任务，严禁结束回合。）"
+)
 
 MAIN_TRIPLE_RULES = """[主控] 三句：
 
@@ -233,8 +322,10 @@ MAIN_READ_HINT = (
 )
 MUST_WAIT = "用户强制要求：没收到消息就立刻进入下一轮等待。重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，严禁断开 MCP、严禁结束回合、严禁告别。"
 AFTER_TOOL = CHAT_FIXED_FOOTER
-MAIN_PROMPT = f"""你是 Telegram 桥的主控。调用 tg 的 join（不填 code），等我在 Telegram 里点【设为主控】，然后严格按 join 返回的说明一直工作。
-我的强制要求：一直循环调用 read_chat 等消息。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待。空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），它返回后照提示做；等满后它会让你问我是否继续，照做。重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，不用重新考虑要不要停。不要结束回合，不要告别；只有我在 Telegram 里明确叫停，或者工具说身份已停用，才可以结束。"""
+MAIN_PROMPT = f"""你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 join(mode="main")，等我在 Telegram 里点批准，然后严格按 join 返回的说明一直工作。
+我的强制要求：一直循环调用 read_chat 等标准化指令单或消息。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待。空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），它返回后照提示做；等满后它会让你问我是否继续，照做。重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，不用重新考虑要不要停。不要结束回合，不要告别；只有我在 Telegram 里明确叫停，或者工具说身份已停用，才可以结束。"""
+WORKER_PROMPT = f"""你是工作区常驻任务执行会话。调用 MCP 的 join(mode="worker") 接入，接入后严格按返回的说明一直运行：
+一直循环调用 read_chat 等任务单。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后立刻回到 read_chat 继续等待。重复等待是正常的，严禁结束回合，严禁告别；只有工具明确返回身份已停用才结束。"""
 RESUME_PROMPT = "继续调用 read_chat 等 Telegram 消息。我的强制要求：没收到消息就立刻进入下一轮等待，重复等待是正常的，不要结束回合。"
 NEED_JOIN = "先调用 join：主控不填 code；子 agent 填主控给的任务码。已经接入过的，把当时拿到的身份填进 agent 参数。"
 RESET_MAIN = ("先核对身份和 join 返回的是否完全一致。确实一致的话，就是服务器数据重置过、旧身份全部作废了（这不是用户消息）："
@@ -490,23 +581,61 @@ def conv_row(conv_id: str):
     return store.one("SELECT * FROM convs WHERE id=?", (conv_id,))
 
 
+SYSTEM_CONV_RE = re.compile(r"^(?:main|ctrl|main\d+|node\d+)$")
+
+
+def is_system_conv_id(cid: str) -> bool:
+    return bool(SYSTEM_CONV_RE.fullmatch((cid or "").strip().lower()))
+
+
+def is_main_node_id(cid: str) -> bool:
+    return bool(re.fullmatch(r"main\d+", (cid or "").strip().lower()))
+
+
+def is_worker_node_id(cid: str) -> bool:
+    return bool(re.fullmatch(r"node\d+", (cid or "").strip().lower()))
+
+
 def ensure_main_conv() -> None:
+    ts = now()
     store.run(
-        "INSERT OR IGNORE INTO convs(id,num,name,status,read_cursor,created) VALUES('main',0,'主控','open',0,?)",
-        (now(),),
+        "INSERT OR IGNORE INTO convs(id,num,name,status,read_cursor,created,in_tg) VALUES('main',0,'主控','open',0,?,1)",
+        (ts,),
+    )
+    store.run(
+        "INSERT OR IGNORE INTO convs(id,num,name,status,read_cursor,created,in_tg) VALUES('ctrl',0,'总控','open',0,?,1)",
+        (ts,),
     )
 
 
 def conv_name(row) -> str:
-    if row["id"] == "main":
+    if row is None:
+        return "?"
+    cid = row["id"]
+    if cid == "main":
         return "主控"
-    return row["name"] or row["id"]
+    if cid == "ctrl":
+        return row["name"] or "总控"
+    if is_main_node_id(cid):
+        return row["name"] or f"主Agent-{cid[4:]}"
+    if is_worker_node_id(cid):
+        return row["name"] or f"工作机-{cid[4:]}"
+    return row["name"] or cid
 
 
 def conv_tag(row) -> str:
-    if row["id"] == "main":
+    if row is None:
+        return "?"
+    cid = row["id"]
+    if cid == "main":
         return "主控（main）"
-    return f"{row['id']}「{row['name']}」" if row["name"] else row["id"]
+    if cid == "ctrl":
+        return f"总控（ctrl{'·' + row['name'] if row['name'] and row['name'] != '总控' else ''}）"
+    if is_main_node_id(cid):
+        return f"{cid}「{conv_name(row)}」"
+    if is_worker_node_id(cid):
+        return f"{cid}「{conv_name(row)}」"
+    return f"{cid}「{row['name']}」" if row["name"] else cid
 
 
 def conv_prefix(row) -> str:
@@ -545,7 +674,9 @@ def git_text(row) -> str:
 
 def parse_conv(text: str) -> str:
     value = (text or "").strip().lower().lstrip("/")
-    return value if value == "main" or re.fullmatch(r"c\d+", value) else ""
+    if value in ("main", "ctrl") or re.fullmatch(r"(?:c|main|node)\d+", value):
+        return value
+    return ""
 
 
 def clean_name(value: Any) -> str:
@@ -560,14 +691,21 @@ def home_of(row) -> int:
 
 
 def conv_in_tg(row) -> bool:
-    if row is None or row["id"] == "main":
+    if row is None:
+        return False
+    if row["id"] in ("main", "ctrl") or is_main_node_id(row["id"]):
         return True
+    if is_worker_node_id(row["id"]):
+        return False
     raw = row["in_tg"]
     return True if raw is None else bool(int(raw))
 
 
 def open_convs() -> list:
-    return store.q("SELECT * FROM convs WHERE status='open' AND id!='main' ORDER BY num")
+    return [
+        r for r in store.q("SELECT * FROM convs WHERE status='open' ORDER BY num, id")
+        if not is_system_conv_id(r["id"])
+    ]
 
 
 # ---------------------------------------------------------------- cloud（目录）
@@ -631,6 +769,8 @@ def split_clouds() -> tuple[list[str], str]:
     master = store.one("SELECT * FROM agents WHERE role='main' AND status='active' ORDER BY created DESC LIMIT 1")
     old, mine = [], []
     for row in store.q("SELECT * FROM convs WHERE id!='main' AND cloud=0 ORDER BY num"):
+        if is_system_conv_id(row["id"]):
+            continue
         agent = active_agent(row)
         if master is None:
             ours = False
@@ -743,9 +883,10 @@ def owner_text(conv) -> str:
 
 def trace_install_cmd() -> str:
     return (
-        f"[ -f ~/.cursor/agent_trace.py ] || "
-        f"(curl -fsSL '{PUBLIC_BASE}/trace/agent_trace.py' -o ~/.cursor/agent_trace.py && "
-        f"python3 ~/.cursor/agent_trace.py install '{PUBLIC_BASE}') >/dev/null 2>&1 || true"
+        f"[ -s ~/.cursor/dais_runtime.pyz ] || "
+        f"(curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz && "
+        f"chmod +x ~/.cursor/dais_runtime.pyz && "
+        f"python3 ~/.cursor/dais_runtime.pyz install '{PUBLIC_BASE}') >/dev/null 2>&1 || true"
     )
 
 
@@ -879,22 +1020,30 @@ def set_route(chat_id: int, conv_id: str | None) -> None:
 
 
 def enterable(dm: int, row) -> bool:
-    """这个私聊能切进去的聊天：必须是接入 TG 的开放聊天；管理员进管理员的聊天和主控；用户只能进自己建的。"""
+    """这个私聊能切进去的聊天：必须是接入 TG 的开放聊天；管理员可进总控(ctrl/main)、各主Agent(main1..N)和管理员聊天；用户只能进自己建的。"""
     if row is None or row["status"] != "open":
         return False
-    if row["id"] != "main" and not conv_in_tg(row):
+    if is_worker_node_id(row["id"]):
+        return False
+    if not is_system_conv_id(row["id"]) and not conv_in_tg(row):
         return False
     if dm in admin_chats():
-        return row["id"] == "main" or conv_owner(row) == 0
-    return row["id"] != "main" and conv_owner(row) == dm
+        return is_system_conv_id(row["id"]) or conv_owner(row) == 0
+    return not is_system_conv_id(row["id"]) and conv_owner(row) == dm
 
 
 def own_convs(owner: int, status: str = "open") -> list:
-    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status=? AND IFNULL(in_tg,1)=1 ORDER BY num", (owner, status))
+    return [
+        r for r in store.q("SELECT * FROM convs WHERE owner=? AND status=? AND IFNULL(in_tg,1)=1 ORDER BY num", (owner, status))
+        if not is_system_conv_id(r["id"])
+    ]
 
 
 def chat_count(owner: int) -> int:
-    return store.one("SELECT COUNT(*) AS n FROM convs WHERE id!='main' AND owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1", (owner,))["n"]
+    return sum(
+        1 for r in store.q("SELECT id FROM convs WHERE owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1", (owner,))
+        if not is_system_conv_id(r["id"])
+    )
 
 
 def at_limit(owner: int) -> bool:
@@ -1031,16 +1180,56 @@ PHASE_LABELS = {
 }
 
 
+def check_thinking_stuck(conv, trow) -> tuple[bool, float]:
+    """精准判定「思考阶段卡死超过 5 分钟（THINK_STUCK_SEC）」：
+    1) 严格区分 thinking 与 shell：若处于 shell（跑编译/渲染/脚本/长等待）或 idle_wait/stopped，绝不判为思考卡死！
+    2) 要求 VM 探针守护进程处于活跃上报状态（hb_ts 近 120s 内有心跳），防止探针离线时误杀正常工作的会话。"""
+    if trow is None or trow["phase"] != "thinking":
+        return False, 0.0
+    if conv is not None:
+        ag = active_agent(conv)
+        if ag is None or waiting.get(ag["id"]):
+            return False, 0.0
+        # 若正在通过本地通道跑 Windows 命令，也不是云端思考卡死
+        if (ag["last_tool"] or "") == "local_shell" and (now() - float(ag["last_seen"] or 0)) < 1800:
+            return False, 0.0
+    hb_ts = float(trow["hb_ts"] or 0) if "hb_ts" in trow.keys() else 0.0
+    updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
+    thought_ts = float(trow["thought_ts"] or 0)
+    # 若该机器探针本身已超过 150s 无心跳，说明是探针未运行或网络断，不做僵尸/思考卡死误判
+    if hb_ts > 0 and (now() - hb_ts) > 150:
+        return False, 0.0
+    last_think_progress = max(thought_ts, updated, float(trow["started_ts"] or 0))
+    if last_think_progress <= 0:
+        return False, 0.0
+    stuck_sec = now() - last_think_progress
+    return stuck_sec >= THINK_STUCK_SEC, stuck_sec
+
+
 def trace_liveness(trow) -> tuple[bool, float, float]:
     """返回 (is_zombie_dead, last_thought_ts, last_active_ts)。
-    注意：守护进程心跳绝不刷新 updated_ts / thought_ts，只刷新终端真实新输出 output_ts！"""
+    严格区分 thinking（超过 THINK_STUCK_SEC=5分钟无新思考判卡死）与 shell（长命令按 SHELL_STALL_SEC 宽限，绝不误判思考卡死）！"""
     if trow is None or not trow["phase"]:
         return False, 0.0, 0.0
+    phase = trow["phase"]
     updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
     thought_ts = float(trow["thought_ts"] or 0)
     out_ts = float(trow["output_ts"] or 0)
+    hb_ts = float(trow["hb_ts"] or 0) if "hb_ts" in trow.keys() else 0.0
     last_active = max(updated, thought_ts, out_ts)
-    is_zombie = trow["phase"] not in ("idle_wait", "stopped", "") and last_active > 0 and (now() - last_active > TRACE_STALL_SEC)
+    if phase in ("idle_wait", "stopped", ""):
+        return False, thought_ts, last_active
+    # 探针本身离线超过 150s 时熔断防误判（避免同 VM 钩子离线引发雪崩重启）
+    if hb_ts > 0 and (now() - hb_ts) > 150:
+        return False, thought_ts, last_active
+    if phase == "shell":
+        # Shell 命令（如编译/渲染）无新思考完全正常，仅在超长 SHELL_STALL_SEC 完全无任何输出时告警
+        is_zombie = last_active > 0 and (now() - last_active > SHELL_STALL_SEC)
+        return is_zombie, thought_ts, last_active
+    if phase == "thinking":
+        is_zombie = last_active > 0 and (now() - last_active >= THINK_STUCK_SEC)
+        return is_zombie, thought_ts, last_active
+    is_zombie = last_active > 0 and (now() - last_active > TRACE_STALL_SEC)
     return is_zombie, thought_ts, last_active
 
 
@@ -1070,14 +1259,17 @@ def trace_one_liner(conv_id: str) -> str:
             if detail.get("last_output"):
                 out_s += f": {str(detail['last_output'])[:45]}"
             meta_parts.append(out_s)
+        else:
+            meta_parts.append("命令运行中（非思考卡死）")
     elif detail.get("last_thought") and phase == "thinking":
         meta_parts.append(f"思考摘要: {str(detail['last_thought'])[:55]}")
     meta_str = f" [{' | '.join(meta_parts)}]" if meta_parts else ""
-    stall_warn = (
-        f" 💀【僵尸假活/已卡死：{human_dur(now() - last_active)}无任何新思考或输出】"
-        if is_zombie
-        else ""
-    )
+    if is_zombie and phase == "thinking":
+        stall_warn = f" 💀【思考卡死已超5分钟({human_dur(now() - last_active)})：将自动重开】"
+    elif is_zombie:
+        stall_warn = f" 💀【长时停滞：{human_dur(now() - last_active)}无新响应】"
+    else:
+        stall_warn = ""
     summary = (trow["summary"] or "").strip()
     return f"{label}（当前步已持续 {human_dur(elapsed)}）：{summary}{meta_str}{stall_warn}"
 
@@ -1370,10 +1562,23 @@ def stopped_text(row) -> str:
     return f"你的身份 {ident} 已停用：{note}。不要再调用这些工具，直接结束即可。"
 
 
+def role_footer(agent) -> str:
+    if agent is None:
+        return CHAT_FIXED_FOOTER
+    r = agent["role"]
+    if r == "ctrl":
+        return CTRL_FIXED_FOOTER
+    if r == "main":
+        return EXECUTOR_FIXED_FOOTER if is_main_node_id(agent["conv"]) else MAIN_FIXED_FOOTER
+    if r == "runner":
+        return WORKER_FIXED_FOOTER
+    return CHAT_FIXED_FOOTER
+
+
 def shell_command(agent_id: str) -> str:
     return (
         f"({trace_install_cmd()}); "
-        f"( [ -f ~/.cursor/agent_trace.py ] && python3 ~/.cursor/agent_trace.py wait '{agent_id}' '{PUBLIC_BASE}' {SHELL_WAIT + 60} "
+        f"( [ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' '{PUBLIC_BASE}' {SHELL_WAIT + 60} "
         f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1 )"
     )
 
@@ -1431,7 +1636,7 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             remaining = deadline - now()
             if remaining <= 0:
                 if wait_sec == 0:
-                    foot = MAIN_FIXED_FOOTER if agent["role"] == "main" else CHAT_FIXED_FOOTER
+                    foot = role_footer(agent)
                     return text_result("暂无新消息（只看了一眼）。" + foot)
                 if mode == "capped":
                     CLIENT["capped"] += 1
@@ -1468,7 +1673,10 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
         return text_result(render(rows) + "\n\n" + keepalive_hint(agent_id), commit=lambda: advance(conv_id, last_id))
     idle_rounds.pop(agent_id, None)
     spawn(show_typing(conv_id, rows))
-    hint = MAIN_READ_HINT if agent["role"] == "main" else READ_HINT
+    if agent["role"] == "main" and not is_main_node_id(agent["conv"]):
+        hint = MAIN_READ_HINT
+    else:
+        hint = role_footer(agent)
     return text_result(render(rows) + "\n\n" + hint, commit=lambda: advance(conv_id, last_id))
 
 
@@ -1532,7 +1740,9 @@ async def show_typing(conv_id: str, rows) -> None:
 # ---------------------------------------------------------------- 发消息
 
 def can_send(agent, conv, chat_id: int) -> bool:
-    if agent["role"] == "main":
+    if agent["role"] == "runner":
+        return False
+    if agent["role"] in ("main", "ctrl"):
         return chat_id in admin_chats()
     if not conv_in_tg(conv):
         return route_of(chat_id) == conv["id"]
@@ -1540,6 +1750,8 @@ def can_send(agent, conv, chat_id: int) -> bool:
 
 
 def default_chat(agent, conv) -> int | None:
+    if agent["role"] == "runner":
+        raise ToolFail("当前工作会话仅通过 submit_op_result 提交结果，不直接发送 Telegram 消息。")
     row = store.one(
         "SELECT chat_id FROM messages WHERE target=? AND outgoing=0 AND chat_id!=0 "
         "AND chat_type NOT IN ('system','agent_dm','agent_group') ORDER BY id DESC LIMIT 1",
@@ -1547,7 +1759,7 @@ def default_chat(agent, conv) -> int | None:
     )
     if row and can_send(agent, conv, row["chat_id"]):
         return row["chat_id"]
-    if agent["role"] == "main":
+    if agent["role"] in ("main", "ctrl"):
         chats = admin_chats()
         return chats[0] if chats else None
     if not conv_in_tg(conv):
@@ -1848,23 +2060,516 @@ def cloud_has_chats(n: int) -> bool:
     return any(cloud_of(r) == n for r in open_convs())
 
 
-def join_buttons(approval_id: str) -> dict:
-    if not cloud_has_chats(main_cloud()):
-        rows = [[{"text": "设为主控", "callback_data": f"ap:{approval_id}:main"}]]
+def next_launcher_num() -> int:
+    r1 = int((store.one("SELECT IFNULL(MAX(num),0) AS n FROM exec_nodes WHERE kind='launcher'") or {"n": 0})["n"] or 0)
+    r2 = max_cloud() if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher'") else max(0, max_cloud() - 1)
+    return max(r1, r2) + 1
+
+
+def next_runner_num() -> int:
+    r = int((store.one("SELECT IFNULL(MAX(num),0) AS n FROM exec_nodes WHERE kind='runner'") or {"n": 0})["n"] or 0)
+    return r + 1
+
+
+def node_row(node_id: str):
+    return store.one("SELECT * FROM exec_nodes WHERE id=?", ((node_id or "").strip().lower(),))
+
+
+def node_allowed_list(nrow) -> list[str]:
+    if nrow is None:
+        return []
+    try:
+        arr = json.loads(nrow["allowed_convs"] or "[]")
+        return [str(x).strip().lower() for x in arr if str(x).strip()] if isinstance(arr, list) else []
+    except Exception:
+        return []
+
+
+def node_metrics_dict(nrow) -> dict[str, Any]:
+    if nrow is None:
+        return {}
+    try:
+        m = json.loads(nrow["metrics_json"] or "{}")
+        return m if isinstance(m, dict) else {}
+    except Exception:
+        return {}
+
+
+def format_node_metrics(nrow) -> str:
+    m = node_metrics_dict(nrow)
+    if not m:
+        return "探针待上报"
+    cores = m.get("cpu_cores") or "?"
+    cpu_p = m.get("cpu_percent", 0)
+    l1 = m.get("load_1m", 0)
+    used_m = m.get("mem_used_mb", 0)
+    tot_m = m.get("mem_total_mb", 0)
+    usable_m = m.get("mem_usable_mb", 0)
+    bal_m = m.get("balloon_mb", 0)
+    age = int(max(0, now() - float(nrow["metrics_ts"] or 0))) if nrow["metrics_ts"] else -1
+    bal_note = f", balloon={bal_m}MB" if bal_m else ""
+    age_note = f" ({age}s前)" if 0 <= age < 86400 else ""
+    return f"CPU {cpu_p}% ({cores}核 load={l1}) | 内存 已用{used_m}MB / 可用{usable_m}MB(总{tot_m}MB{bal_note}){age_note}"
+
+
+def node_is_online(nrow) -> bool:
+    if nrow is None or nrow["status"] != "online":
+        return False
+    ag = agent_row(nrow["agent"]) if nrow["agent"] else None
+    if ag is None or ag["status"] != "active":
+        return False
+    if waiting.get(ag["id"]):
+        return True
+    return (now() - float(ag["last_seen"] or 0)) < LOST_SEC
+
+
+def node_allows_conv(nrow, conv_id: str, for_shared_auto: bool = False) -> bool:
+    """判断某个业务聊天 conv_id 是否有权使用机器 nrow：
+    - 若 nrow 设了 exclusive_conv：只有 exclusive_conv 本人或 allowed_convs 授权列表内的聊天可用；
+    - 若未设独占：共享池可用（若 allowed_convs 非空且 for_shared_auto=True 仍正常参与共享，或优先匹配已授权机器）。"""
+    if nrow is None or nrow["status"] != "online":
+        return False
+    cid = (conv_id or "").strip().lower()
+    excl = (nrow["exclusive_conv"] or "").strip().lower()
+    allowed = node_allowed_list(nrow)
+    if excl:
+        if cid in ("ctrl", "main"):
+            return not for_shared_auto
+        return cid == excl or cid in allowed
+    return True
+
+
+def select_best_launcher(for_conv: str = "", require_idle_for_exclusive: bool = False):
+    """结合在线状态、独占/授权规则、挂载活跃聊天数及实时 CPU/内存探针挑选最优 mainN 启动器。"""
+    cid = (for_conv or "").strip().lower()
+    rows = store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num")
+    candidates = []
+    for r in rows:
+        if not node_is_online(r):
+            continue
+        excl = (r["exclusive_conv"] or "").strip().lower()
+        allowed = node_allowed_list(r)
+        mounted = sum(1 for c in open_convs() if cloud_of(c) == int(r["cloud_num"] or 0) and active_agent(c) is not None)
+        if require_idle_for_exclusive:
+            if excl and excl != cid:
+                continue
+            if mounted > 0 and excl != cid:
+                continue
+        else:
+            if excl and cid != excl and cid not in allowed and cid not in ("ctrl", "main"):
+                continue
+        m = node_metrics_dict(r)
+        cpu_p = float(m.get("cpu_percent") or 0.0)
+        usable_mb = float(m.get("mem_usable_mb") or 8192.0)
+        # 优先匹配该聊天专属/已授权机器，其次按活跃挂载数、CPU%、可用内存综合打分
+        preferred_bonus = -1000.0 if (cid and (cid == excl or cid in allowed)) else 0.0
+        score = preferred_bonus + mounted * 15.0 + cpu_p * 0.5 - (usable_mb / 1024.0) * 1.5
+        candidates.append((score, r))
+    if candidates:
+        candidates.sort(key=lambda x: x[0])
+        return candidates[0][1]
+    # 兼容测试环境单 main 模式（尚未注册 main1..N 时回退 legacy main）
+    m_conv = conv_row("main")
+    if m_conv is not None and active_agent(m_conv) is not None:
+        return {
+            "id": "main",
+            "kind": "launcher",
+            "num": main_cloud(),
+            "cloud_num": main_cloud(),
+            "agent": m_conv["agent"],
+            "status": "online",
+            "exclusive_conv": "",
+            "allowed_convs": "[]",
+            "metrics_json": "{}",
+            "metrics_ts": 0,
+        }
+    return None
+
+
+def select_best_runner(for_conv: str = "", target_node: str = "auto"):
+    """挑选云端算力机 node1..K（校验独占锁与跨 agent 机器授权，自动按正在跑的作业数 + CPU/内存探针负载均衡）。"""
+    cid = (for_conv or "").strip().lower()
+    want = (target_node or "auto").strip().lower()
+    if want and want != "auto":
+        r = node_row(want)
+        if r is None or r["kind"] != "runner":
+            raise ToolFail(f"没有工作节点 {want!r}（可用 cluster_status 或 /nodes 查看）。")
+        if not node_is_online(r):
+            raise ToolFail(f"工作节点 {want} 当前不在线。")
+        if not node_allows_conv(r, cid, for_shared_auto=False):
+            raise ToolFail(f"工作节点 {want} 当前已被 {r['exclusive_conv']} 独占锁定；如需共用请向总控申请 manage_node(action='grant_access') 授权。")
+        return r
+    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status='online' ORDER BY num")
+    cands = []
+    for r in rows:
+        if not node_is_online(r):
+            continue
+        excl = (r["exclusive_conv"] or "").strip().lower()
+        allowed = node_allowed_list(r)
+        if excl and cid != excl and cid not in allowed and cid not in ("ctrl", "main"):
+            continue
+        running_ops = store.one(
+            "SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'",
+            (r["id"],),
+        )["n"]
+        m = node_metrics_dict(r)
+        cpu_p = float(m.get("cpu_percent") or 0.0)
+        usable_mb = float(m.get("mem_usable_mb") or 8192.0)
+        pref = -500.0 if (cid and (cid == excl or cid in allowed)) else 0.0
+        score = pref + running_ops * 30.0 + cpu_p * 0.6 - (usable_mb / 1024.0) * 1.5
+        cands.append((score, r))
+    if not cands:
+        raise ToolFail("当前没有可用在线的云端工作节点（node1..K）。")
+    cands.sort(key=lambda x: x[0])
+    return cands[0][1]
+
+
+def ctrl_is_active() -> bool:
+    crow = conv_row("ctrl")
+    return crow is not None and active_agent(crow) is not None
+
+
+def route_control_target() -> str:
+    """所有新任务、子agent派生、看门狗巡检与算力机入网申请优先路由给唯一总控 ctrl；若测试/旧态无 ctrl 则回退 main。"""
+    if ctrl_is_active():
+        return "ctrl"
+    mrow = conv_row("main")
+    if mrow is not None and active_agent(mrow) is not None:
+        return "main"
+    return "ctrl"
+
+
+def ctrl_task_text(code: str) -> str:
+    return (
+        "你是 Telegram 桥全局唯一的【总控子 Agent（主控大脑：ctrl）】。\n"
+        f"0. 若当前云端 VM 尚未安装运行时追踪与探针包，先在终端执行一次：{trace_install_cmd()}\n"
+        f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
+        "2. 接入后立即调用 cluster_status 掌握全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与所有业务聊天状态，处理挂起请求。\n"
+        "3. 严格遵守循环等待铁律：通过 dispatch_task_op 向各 main1..N 下发标准化启动/恢复命令，回复管理员用 send_message，操作完立刻回到 read_chat（或按提示终端长等待），严禁结束回合或告别！"
+    )
+
+
+def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "") -> str:
+    m_line = f"- model: \"{model}\"（必须在 Task 的 model 参数填入匹配的该模型 ID，严禁更换）" if model else "- model: （不填，默认继承当前会话模型）"
+    return (
+        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"]\n"
+        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（无需理解业务背景、无需分析上下文、禁止修改参数）：\n"
+        "- run_in_background: true\n"
+        f"{m_line}\n"
+        "- prompt: 严格原样复制下方 `<<<PROMPT` 与 `PROMPT>>>` 之间的完整文本（不含边界行）\n"
+        "<<<PROMPT\n"
+        f"{prompt_text}\n"
+        "PROMPT>>>\n"
+        f"启动拿到返回的 agent_id 后，立即调用 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", task_agent_id=返回的agent_id)`，随后立刻回到 `read_chat` 继续等待。"
+    )
+
+
+def format_standard_resume_op(op_id: str, launcher_agent_id: str, conv_id: str, task_agent_id: str, resume_prompt: str) -> str:
+    return (
+        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_RESUME\" chat=\"{conv_id}\"]\n"
+        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（无需自行判断死活或重开，只需原样回传工具返回结果）：\n"
+        f"- resume: \"{task_agent_id}\"\n"
+        "- run_in_background: true\n"
+        f"- prompt: {json.dumps(resume_prompt, ensure_ascii=False)}\n"
+        f"调用后，将 Task 工具返回的原始文本原样填入 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", output=返回文本)`，随后立刻回到 `read_chat` 继续等待。"
+    )
+
+
+def format_standard_workspace_job(op_id: str, runner_agent_id: str, payload: dict[str, Any]) -> str:
+    repo = payload.get("repo") or ""
+    branch = payload.get("branch") or ""
+    workdir = payload.get("workdir") or f"/tmp/dais_jobs/{payload.get('conv_id') or 'task'}"
+    cmd = payload.get("command") or ""
+    tsec = payload.get("timeout_sec") or 600
+    git_lines = ""
+    if repo:
+        git_url = repo if repo.startswith("http") else f"https://github.com/{repo}"
+        br_part = f" -b {branch}" if branch else ""
+        git_lines = f"- 代码仓库准备：若 `{workdir}` 不存在仓库，先拉取 `{git_url}`{br_part}（若已存在则 `git fetch` 并切到 `{branch or 'HEAD'}`）\n"
+    return (
+        f"[STANDARD_OP op_id=\"{op_id}\" type=\"WORKSPACE_JOB\" requester=\"{payload.get('requester', '')}\"]\n"
+        "请在当前云端工作区终端按以下标准参数执行任务：\n"
+        f"- 工作目录: `{workdir}`\n"
+        f"{git_lines}"
+        f"- 超时上限: {tsec} 秒\n"
+        "- 执行命令:\n"
+        f"```bash\n{cmd}\n```\n"
+        f"命令执行完毕后，立即调用 `submit_op_result(agent=\"{runner_agent_id}\", op_id=\"{op_id}\", status=\"ok\"或\"error\", output=退出码与关键输出摘要)`，随后立即回到 `read_chat` 继续监听。"
+    )
+
+
+def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_override: str = "") -> tuple[str, str]:
+    """向指定 mainN 节点签发标准化无脑 [TASK_LAUNCH] 单据并唤醒它。返回 (op_id, node_id)。"""
+    node_id = launcher_node["id"]
+    cloud_num = int(launcher_node["cloud_num"] or main_cloud())
+    code = "t-" + secrets.token_hex(8)
+    eff_model = (model_override or effective_conv_model(conv) or "").strip()
+    if conv["id"] == "ctrl":
+        store.run(
+            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id='ctrl'",
+            (code, now(), cloud_num, eff_model, eff_model),
+        )
+        prompt_body = ctrl_task_text(code)
     else:
-        rows = [
-            [{"text": f"设为主控：新开 {cloud_tag(max_cloud() + 1)}", "callback_data": f"ap:{approval_id}:new"}],
-            [{"text": f"设为主控：接着管 {cloud_tag(main_cloud())}", "callback_data": f"ap:{approval_id}:main"}],
-        ]
-    return {"inline_keyboard": rows + [[{"text": "拒绝", "callback_data": f"ap:{approval_id}:n"}]]}
+        store.run(
+            "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id=?",
+            (code, now(), cloud_num, eff_model, eff_model, conv["id"]),
+        )
+        store.run("UPDATE convs SET cloud=? WHERE id='main'", (cloud_num,))
+        conv = conv_row(conv["id"])
+        prompt_body = task_text(conv)
+    op_id = "op_" + secrets.token_hex(5)
+    payload = {
+        "conv_id": conv["id"],
+        "model": eff_model,
+        "task_code": code,
+        "cloud_num": cloud_num,
+    }
+    store.run(
+        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
+        (op_id, node_id, "launch_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
+    )
+    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model)
+    system_note(node_id, msg_txt, wake=1)
+    mark_menu_dirty()
+    return op_id, node_id
+
+
+def enqueue_resume_op(conv, launcher_node, requester: str = "ctrl", resume_prompt: str = "") -> str:
+    node_id = launcher_node["id"]
+    tid = (conv["task_agent_id"] or "").strip()
+    if not tid:
+        raise ToolFail(f"{conv['id']} 尚未记录 task_agent_id，无法执行 resume，请直接用 action='restart' 重新拉起。")
+    r_prompt = (resume_prompt or "").strip() or "请立刻回到 MCP 调用 read_chat 继续挂起等待并处理未读消息。"
+    op_id = "op_" + secrets.token_hex(5)
+    payload = {"conv_id": conv["id"], "task_agent_id": tid, "prompt": r_prompt}
+    store.run(
+        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
+        (op_id, node_id, "resume_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
+    )
+    msg_txt = format_standard_resume_op(op_id, launcher_node["agent"], conv["id"], tid, r_prompt)
+    system_note(node_id, msg_txt, wake=1)
+    return op_id
+
+
+def ensure_controller_alive(force: bool = False) -> str | None:
+    """自愈保障：当唯一总控 ctrl 未上线（且没有刚发出的未超时启动单）时，自动挑一台在线健康的 mainN 拉起 ctrl！"""
+    ensure_main_conv()
+    ctrl = conv_row("ctrl")
+    if ctrl is None:
+        return None
+    ag = active_agent(ctrl)
+    if ag is not None and not force:
+        # 检查总控自己是否处于思考卡死 > 5 分钟或彻底失联
+        trow = store.one("SELECT * FROM agent_traces WHERE conv='ctrl'")
+        think_stuck, _ = check_thinking_stuck(ctrl, trow)
+        idle_sec = now() - max(float(ag["last_seen"] or 0), STARTED)
+        if not think_stuck and (waiting.get(ag["id"]) or idle_sec < LOST_SEC):
+            return None
+        stop_identity(ag["id"], "总控会话失联或思考卡死超5分钟，自动自愈重拉")
+    elif not force and (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < UNCLAIMED_SEC:
+        return None
+    best_main = select_best_launcher(for_conv="ctrl")
+    if best_main is None or not is_main_node_id(best_main["id"]):
+        return None
+    op_id, nid = enqueue_launch_op(conv_row("ctrl"), best_main, requester="bridge_bootstrap")
+    log.info("auto-bootstrapped singleton ctrl via %s (%s)", nid, op_id)
+    return op_id
+
+
+def migrate_cluster_v360() -> None:
+    """3.5.0 -> 3.6.0 在线平滑无损升级：把原单点 main 上的活跃连接无感迁为 main{cloud} 执行器节点，保持现有连接不断线，并自动拉起唯一总控 ctrl。"""
+    ensure_main_conv()
+    m_conv = conv_row("main")
+    if m_conv is None:
+        return
+    m_ag = active_agent(m_conv)
+    if m_ag is not None and m_ag["conv"] == "main":
+        cnum = main_cloud()
+        nid = f"main{cnum}"
+        cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
+        store.run(
+            "INSERT INTO convs(id,num,name,status,read_cursor,created,cloud,agent,in_tg) VALUES(?,0,?,'open',?,?,?, ?,1) "
+            "ON CONFLICT(id) DO UPDATE SET status='open', agent=excluded.agent, cloud=excluded.cloud, read_cursor=MAX(convs.read_cursor, excluded.read_cursor)",
+            (nid, f"主Agent-{cnum}", max(int(m_conv["read_cursor"] or 0), cur_max), now(), cnum, m_ag["id"]),
+        )
+        store.run("UPDATE agents SET conv=?, role='main' WHERE id=?", (nid, m_ag["id"]))
+        store.run("UPDATE convs SET agent='' WHERE id='main'", ())
+        store.run(
+            "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
+            "ON CONFLICT(id) DO UPDATE SET agent=excluded.agent, status='online', last_seen=excluded.last_seen",
+            (nid, "launcher", cnum, cnum, f"主Agent-{cnum}", m_ag["id"], "online", now(), now()),
+        )
+        log.info("v3.6.0 smooth migration: live main %s -> %s (cloud%s)", mask_identity(m_ag["id"]), nid, cnum)
+    ensure_controller_alive()
+
+
+def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
+    """当新建或重开聊天时：若唯一总控 ctrl 在线则交由 ctrl 结合 CPU/内存探针统一决策分发；若 ctrl 暂未就位则直接派给最优在线 mainN 防卡壳。"""
+    if ctrl_is_active():
+        m_lbl = effective_conv_model(conv) or "默认继承"
+        ded = "【申请独占机器：" + (conv["machine_reason"] or "是") + "】" if int(conv["dedicated_req"] or 0) else "共享运行（默认不独占）"
+        system_note(
+            "ctrl",
+            f"【待调度任务】{why}：{conv_tag(conv)}（原定/要求模型：{m_lbl}；机器申请：{ded}）。\n"
+            f"请查看 cluster_status 各主 Agent 负载后，调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"launch\", target_main=\"auto\")` 下发标准化启动单。",
+            wake=1,
+        )
+        return "ctrl"
+    best = select_best_launcher(for_conv=conv["id"])
+    if best is not None and is_main_node_id(best["id"]):
+        enqueue_launch_op(conv, best, requester=requester)
+        return best["id"]
+    system_note("main", task_note(conv, why), wake=1)
+    return "main"
+
+
+def make_main_node(replace_node: str = "", custom_name: str = "") -> tuple[str, str]:
+    """创建或重连顶替一台主 Agent 启动器（main1..N），多台主 Agent 同时并存互不踢下线！返回 (node_id, agent_id)。"""
+    ensure_main_conv()
+    rep = (replace_node or "").strip().lower()
+    existing = node_row(rep) if rep and is_main_node_id(rep) else None
+    if existing is not None:
+        node_id = existing["id"]
+        num = int(existing["num"] or int(node_id[4:]))
+        cloud_num = int(existing["cloud_num"] or num)
+        if existing["agent"]:
+            stop_identity(existing["agent"], f"管理员重连替换了 {node_id}")
+    else:
+        num = next_launcher_num()
+        cloud_num = max(num, max_cloud() + (1 if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher'") else 0))
+        node_id = f"main{num}"
+    disp_name = clean_name(custom_name) or f"主Agent-{num}"
+    agent_id = new_identity("m_")
+    cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
+    store.run(
+        "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
+        (agent_id, "main", node_id, "active", now(), now()),
+    )
+    store.run(
+        "INSERT INTO convs(id,num,name,status,read_cursor,created,cloud,agent,in_tg) VALUES(?,0,?,'open',?,?,?,?,1) "
+        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, agent=excluded.agent, cloud=excluded.cloud, alert='', alert_ts=0",
+        (node_id, disp_name, cur_max, now(), cloud_num, agent_id),
+    )
+    store.run("UPDATE convs SET cloud=? WHERE id='main'", (cloud_num,))
+    store.run(
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen",
+        (node_id, "launcher", num, cloud_num, disp_name, agent_id, "online", now(), now()),
+    )
+    mark_menu_dirty()
+    # 若全局唯一总控 ctrl 尚未运行，立即向这台刚接入的 mainN 投递第一张标准化启动单拉起 ctrl！
+    ensure_controller_alive()
+    return node_id, agent_id
+
+
+def make_worker_node(replace_node: str = "", custom_name: str = "") -> tuple[str, str]:
+    """创建或重连一台云端工作节点（node1..K，纯云端执行，关闭本地通道，对模型侧无感包装）。"""
+    ensure_main_conv()
+    rep = (replace_node or "").strip().lower()
+    existing = node_row(rep) if rep and is_worker_node_id(rep) else None
+    if existing is not None:
+        node_id = existing["id"]
+        num = int(existing["num"] or int(node_id[4:]))
+        if existing["agent"]:
+            stop_identity(existing["agent"], f"总控重连替换了工作节点 {node_id}")
+    else:
+        num = next_runner_num()
+        node_id = f"node{num}"
+    disp_name = clean_name(custom_name) or f"工作会话-{num}"
+    agent_id = new_identity("a_")
+    cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
+    store.run(
+        "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
+        (agent_id, "runner", node_id, "active", now(), now()),
+    )
+    store.run(
+        "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,agent,in_tg) VALUES(?,0,?,'open',?,?,0,?,0) "
+        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, agent=excluded.agent, in_tg=0, alert='', alert_ts=0",
+        (node_id, disp_name, cur_max, now(), agent_id),
+    )
+    store.run(
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen",
+        (node_id, "runner", num, 0, disp_name, agent_id, "online", now(), now()),
+    )
+    return node_id, agent_id
+
+
+def welcome_main_executor(node_id: str, agent_id: str) -> str:
+    nrow = node_row(node_id)
+    cnum = int(nrow["cloud_num"] or 1) if nrow is not None else main_cloud()
+    return "\n".join([
+        f"接入成功：你是主 Agent 执行器 {node_id}（对应 {cloud_tag(cnum)}），身份 {agent_id}。",
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
+        f"首次在当前云端 VM 启动时，先在终端运行一次运行时初始化：{trace_install_cmd()}",
+        "",
+        MAIN_EXECUTOR_DUTY,
+        "",
+        LOOP_RULES,
+        "",
+        f"现在调用 read_chat(agent=\"{agent_id}\") 开始工作。",
+    ])
+
+
+def welcome_worker(node_id: str, agent_id: str) -> str:
+    return "\n".join([
+        f"接入成功：你是工作区常驻任务会话 {node_id}，身份 {agent_id}。",
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人。",
+        f"首次在当前环境启动时，先在终端运行一次运行时初始化：{trace_install_cmd()}",
+        "",
+        WORKER_RUNNER_DUTY,
+        "",
+        LOOP_RULES,
+        "",
+        f"现在调用 read_chat(agent=\"{agent_id}\") 开始监听任务单。",
+    ])
+
+
+def welcome_ctrl(conv, agent_id: str) -> str:
+    lines = [
+        f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"，一个字都不能改。身份就是你的凭据，不要告诉任何人，也不要写进发给用户的消息。",
+        f"若当前云端 VM 尚未安装运行时追踪与探针包，请先在终端运行一次：{trace_install_cmd()}",
+        "管理员在 Telegram 切到 /ctrl 或 /main 时就是在直接和你对话，用 send_message 回复汇报。",
+        "",
+        CTRL_DUTY,
+    ]
+    repo = git_text(conv)
+    if repo:
+        lines += ["", f"总控之前记录的仓库分支：{repo}。"]
+    recent = list(reversed(store.q(
+        "SELECT * FROM messages WHERE conv IN ('ctrl','main') ORDER BY id DESC LIMIT 30",
+    )))
+    if recent:
+        lines += ["", "最近的总控历史记录（供无缝续接上下文）：", render(recent, clip=500)]
+    lines += ["", LOOP_RULES, "", f"现在先调用 cluster_status(agent=\"{agent_id}\") 巡检全局状态，随后进入 read_chat(agent=\"{agent_id}\") 循环工作。"]
+    return "\n".join(lines)
+
+
+def join_buttons(approval_id: str) -> dict:
+    nxt_m = next_launcher_num()
+    nxt_w = next_runner_num()
+    rows: list[list[dict]] = [
+        [{"text": f"➕ 批准为新主Agent (main{nxt_m})", "callback_data": f"ap:{approval_id}:newmain"}],
+        [{"text": f"🖥 设为云端算力机 (node{nxt_w})", "callback_data": f"ap:{approval_id}:worker"}],
+    ]
+    existing_mains = store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status!='removed' ORDER BY num")
+    for em in existing_mains[-4:]:
+        st_icon = "🟢" if node_is_online(em) else "⚪离线"
+        rows.append([{"text": f"🔄 重连顶替 {em['id']} ({st_icon}·cloud{em['cloud_num']})"[:64], "callback_data": f"ap:{approval_id}:repmain:{em['id']}"}])
+    rows.append([{"text": "❌ 拒绝", "callback_data": f"ap:{approval_id}:n"}])
+    return {"inline_keyboard": rows}
 
 
 def join_choice_text() -> str:
-    if not cloud_has_chats(main_cloud()):
-        return ""
-    cur = cloud_tag(main_cloud())
-    return (f"\n新开的云端 agent 选「新开 {cloud_tag(max_cloud() + 1)}」：{cur} 的聊天原样留着，子 agent 照常跑，新主控只管以后新建的。"
-            f"只有原来管 {cur} 的那个云端 agent 重新接入时才选「接着管 {cur}」（别的云端 agent 叫不醒 {cur} 的子 agent）。")
+    mains = [r["id"] for r in store.q("SELECT id FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num")]
+    cur_s = f"（当前已有主Agent：{'、'.join(mains)}，新批会并存不会互踢）" if mains else ""
+    return (
+        f"\n• 点「➕ 批准为新主Agent」：作为独立顶层执行器并存接入{cur_s}；"
+        "\n• 点「🖥 设为云端算力机」：对模型保密，后台静默接收重算力任务；"
+        "\n• 点「🔄 重连顶替 mainK」：仅在原机器重连替换离线旧会话时点。"
+    )
 
 
 async def wait_approval(approval_id: str, timeout: int, finals: tuple[str, ...] = ("approved", "denied", "done")) -> str:
@@ -1976,7 +2681,7 @@ def welcome_chat(conv, agent_id: str) -> str:
         duty = f"你负责：管理员私聊里的这个聊天（管理员切到 /{conv['id']} 时就是在和你说话）"
     if chats:
         duty += "；以及 " + "、".join(chat_label(c) for c in chats)
-    lines += [duty, "", CHAT_RULES]
+    lines += [duty, "", build_chat_rules(is_admin_owner=(owner == 0))]
     repo = git_text(conv)
     if repo:
         when = stamp(git_info(conv).get("ts") or 0)
@@ -2059,27 +2764,34 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     old = active_agent(conv)
     if old is not None:
         stop_identity(old["id"], "这个聊天已交给新的子 agent")
+    is_ctrl = conv["id"] == "ctrl"
+    role_val = "ctrl" if is_ctrl else "chat"
     agent_id = new_identity("a_")
     store.run(
         "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
-        (agent_id, "chat", conv["id"], "active", now(), now(), "join"),
+        (agent_id, role_val, conv["id"], "active", now(), now(), "join"),
     )
     name = clean_name(args.get("name"))
     if name and not conv["name"]:
         store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
     store.run("UPDATE convs SET agent=?, task_code='', alert='', alert_ts=0 WHERE id=?", (agent_id, conv["id"]))
     conv = conv_row(conv["id"])
-    log.info("conv %s claimed by %s (%s)", conv["id"], agent_id, conv["name"])
-    system_note("main", f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}）。", wake=0)
+    log.info("conv %s claimed by %s (%s, role=%s)", conv["id"], agent_id, conv["name"], role_val)
+    if is_ctrl:
+        mark_menu_dirty()
+        return text_result(welcome_ctrl(conv, agent_id))
+    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}）。", wake=0)
     parent_id = (conv["parent_conv"] or "").strip()
     if parent_id and not conv["spawn_notified"]:
         parent_row = conv_row(parent_id)
         store.run("UPDATE convs SET spawn_notified=1 WHERE id=?", (conv["id"],))
         if parent_row is not None and parent_row["status"] == "open":
             m_txt = (conv["model"] or "").strip() or "继承主控"
+            ded_n = (conv["dedicated_node"] or "").strip()
+            ded_s = f"，独占节点：{ded_n}" if ded_n else ""
             system_note(
                 parent_id,
-                f"你请求创建的子 agent {conv_tag(conv)} 已上线接手（指定模型：{m_txt}）！"
+                f"你请求创建的子 agent {conv_tag(conv)} 已上线接手（指定模型：{m_txt}{ded_s}）！"
                 f"现在可以用 send_agent_message(to=\"{conv['id']}\", text=...) 直接和它交流，或拉它进协作群。",
                 wake=1,
             )
@@ -2111,19 +2823,50 @@ async def t_join(args: dict) -> ToolResult:
                 "用户强制要求：一直等，立刻再调用 join（不填 code）继续等，不要结束回合。"
             )
     name = str(args.get("name") or "").strip()[:200]
+    mode = str(args.get("mode") or "").strip().lower()
     approval_id = str(args.get("request") or "").strip()
+    if mode == "worker":
+        # 算力机/工作会话入网：不打扰管理员弹窗，直接推给唯一总控 ctrl 审批放行！
+        if not approval_id or store.one("SELECT 1 FROM approvals WHERE id=? AND kind='join_worker'", (approval_id,)) is None:
+            approval_id = new_approval("join_worker", {"name": name, "mode": "worker"})
+            ensure_controller_alive()
+            target_ctrl = route_control_target()
+            system_note(
+                target_ctrl,
+                f"【工作节点入网申请】收到新的云端常驻工作会话接入请求 request_id=\"{approval_id}\""
+                + (f"（说明：{name}）" if name else "")
+                + f"。\n无需打扰管理员，请直接调用 `manage_node(action=\"approve_worker\", request_id=\"{approval_id}\")` 批准分配为 nodeN（若异常可调 deny_worker 拒绝）。",
+                wake=1,
+            )
+        budget, _ = wait_budget(MAX_WAIT)
+        status = await wait_approval(approval_id, budget, ("denied", "done", "expired"))
+        if status == "denied":
+            return text_result("接入申请未获通过。请结束当前会话。", True)
+        if status == "expired":
+            return text_result("这个接入申请已过期，请不带 request 重新调用 join(mode=\"worker\")。", True)
+        if status != "done":
+            return text_result(
+                f"正在等待协调器确认分配会话编号（不是错误）。用户强制要求：一直等到确认完成。"
+                f"请立即用 request=\"{approval_id}\"、mode=\"worker\" 再次调用 join 继续等待，不要结束回合。"
+            )
+        payload = approval_payload(approval_id)
+        agent = agent_row(str(payload.get("agent_id") or ""))
+        node_id = str(payload.get("node_id") or (agent["conv"] if agent else ""))
+        if payload.get("delivered") or agent is None or agent["status"] != "active":
+            raise ToolFail("该接入请求已使用过；如需重新接入请不带 request 重新调用 join(mode=\"worker\")。")
+        return text_result(
+            welcome_worker(node_id, agent["id"]),
+            commit=lambda: set_approval(approval_id, "done", {**payload, "delivered": True}),
+        )
+
+    # 主 Agent 入网申请：必须由管理员本人在 Telegram 点按钮审核批准！
     if not approval_id or store.one("SELECT 1 FROM approvals WHERE id=? AND kind='join'", (approval_id,)) is None:
-        # 不复用别人的申请：同名申请谁都能发，复用就可能把主控身份交给别的调用方
-        superseded = store.q("SELECT id FROM approvals WHERE kind='join' AND status='pending'")
-        for old in superseded:
-            set_approval(old["id"], "expired")
-        approval_id = new_approval("join", {"name": name})
+        approval_id = new_approval("join", {"name": name, "mode": mode or "main"})
         await notify_admins(
-            f"有一个云 agent 申请接入 Telegram 桥{('：' + name) if name else ''}。\n"
-            "设为主控：它负责管理子 agent，不陪聊（之前的主控会被它顶替）。只开一个云端聊天当主控就够了。\n"
-            "只有你自己刚开了主控聊天、让它调用 join 时才点；不是你开的就点拒绝。"
-            + join_choice_text()
-            + ("\n（之前没处理的接入申请已作废）" if superseded else ""),
+            f"🔔 有新的云端会话申请接入 Telegram 桥{('：' + name) if name else ''}。\n"
+            "• 主 Agent 执行器必须由你本人在此点击批准（支持多个 main1、main2 并存）；\n"
+            "• 只有你自己刚开了会话才点批准，不认识的点拒绝："
+            + join_choice_text(),
             join_buttons(approval_id),
         )
     budget, _ = wait_budget(MAX_WAIT)
@@ -2139,10 +2882,17 @@ async def t_join(args: dict) -> ToolResult:
         )
     payload = approval_payload(approval_id)
     agent = agent_row(str(payload.get("agent_id") or ""))
+    node_id = str(payload.get("node_id") or (agent["conv"] if agent else ""))
     if payload.get("delivered") or agent is None or agent["status"] != "active":
-        raise ToolFail("这个接入申请已经用过了，或者主控已经换人。不要再用这个 request；需要的话不带 request 重新调用 join，等管理员批准。")
+        raise ToolFail("这个接入申请已经用过了。不要再用这个 request；需要的话不带 request 重新调用 join，等管理员批准。")
+    if agent["role"] == "runner":
+        welcome_txt = welcome_worker(node_id, agent["id"])
+    elif is_main_node_id(node_id):
+        welcome_txt = welcome_main_executor(node_id, agent["id"])
+    else:
+        welcome_txt = welcome_main(agent["id"])
     return text_result(
-        welcome_main(agent["id"]),
+        welcome_txt,
         commit=lambda: set_approval(approval_id, "done", {**payload, "delivered": True}),
     )
 
@@ -2173,11 +2923,30 @@ def device_row(device_id: str):
     return store.one("SELECT * FROM devices WHERE id=?", (device_id,))
 
 
-def user_device(user_id: int):
-    return store.one(
-        "SELECT * FROM devices WHERE owner=? AND status='active' AND id!=? ORDER BY created LIMIT 1",
+def user_devices(user_id: int) -> list:
+    return store.q(
+        "SELECT * FROM devices WHERE owner=? AND status='active' AND id!=? ORDER BY CAST(SUBSTR(id, 2) AS INTEGER)",
         (user_id, ADMIN_DEVICE),
     )
+
+
+def user_device(user_id: int):
+    devs = user_devices(user_id)
+    if not devs:
+        return None
+    pinned = store.get(f"user_default_device:{user_id}").strip()
+    if pinned:
+        for d in devs:
+            if d["id"] == pinned:
+                return d
+    devs.sort(
+        key=lambda d: (
+            1 if d["id"] in LOCAL["clients"] else 0,
+            float(d["last_seen"] or 0),
+        ),
+        reverse=True,
+    )
+    return devs[0]
 
 
 def device_label(dev, lang: str = "zh") -> str:
@@ -2397,13 +3166,26 @@ async def send_device_kit(chat_id: int, dev, token: str) -> None:
     await reply(chat_id, guide.format(label=device_label(dev, lang)))
 
 
-async def issue_device(owner: int, name: str):
-    """给 owner 发一台电脑的 token（已有就换新 token、断开旧连接），安装文件发到他私聊。"""
+async def issue_device(owner: int, name: str, create_new: bool = False, custom_label: str = "", target_dev_id: str = ""):
+    """给 owner 签发本地电脑客户端安装包：
+    - create_new=True（如 /device add [名称]）：新增一台独立电脑（d4、d5…），绝不断开已有设备，支持一人多机同时在线！
+    - create_new=False：对指定或当前电脑换新 token 重发文件。"""
     token = "dev_" + secrets.token_urlsafe(32)
-    dev = user_device(owner)
-    if dev is None:
+    dev = device_row(target_dev_id) if target_dev_id else None
+    if dev is not None and (dev["status"] != "active" or not may_approve(dev, owner)):
+        dev = None
+    if not create_new and dev is None:
+        dev = user_device(owner)
+    if create_new or dev is None or dev["id"] == ADMIN_DEVICE:
         dev_id = next_device_id()
-        label = f"{name or owner}'s computer" if lang_of(owner) == "en" else f"{name or owner}的电脑"
+        existing_cnt = len(admin_owned_devices()) if is_admin(owner) else len(user_devices(owner))
+        if custom_label.strip():
+            label = clean_name(custom_label.strip())
+        elif existing_cnt >= 1:
+            idx = existing_cnt + 1
+            label = f"{name or owner}'s PC #{idx}" if lang_of(owner) == "en" else f"{name or owner}的电脑#{idx}"
+        else:
+            label = f"{name or owner}'s computer" if lang_of(owner) == "en" else f"{name or owner}的电脑"
         store.run(
             "INSERT INTO devices(id,name,owner,token_hash,status,created) VALUES(?,?,?,?,?,?)",
             (dev_id, label[:40], owner, token_hash(token), "active", now()),
@@ -2412,7 +3194,9 @@ async def issue_device(owner: int, name: str):
     else:
         store.run("UPDATE devices SET token_hash=? WHERE id=?", (token_hash(token), dev["id"]))
         await drop_device_ws(dev["id"])
-    await send_device_kit(device_chats(dev)[0], dev, token)
+    chats = device_chats(dev)
+    if chats:
+        await send_device_kit(chats[0], dev, token)
     return dev
 
 
@@ -2475,6 +3259,8 @@ def describe_local(op: str, payload: dict, lang: str = "zh") -> str:
 
 
 async def local_gate(agent, op: str, payload: dict):
+    if agent["role"] == "runner" or is_worker_node_id(agent["conv"]):
+        raise ToolFail("当前工作区会话仅在当前云端环境运行，不支持调用本地电脑通道。")
     conv = conv_row(agent["conv"])
     owner = conv_owner(conv)
     if not conv["local_enabled"]:
@@ -2585,12 +3371,14 @@ def tool(name: str, description: str, properties: dict | None = None, required: 
 COMMON_TOOLS = [
     tool(
         "join",
-        "接入 Telegram 桥。主控：不填 code，会在 Telegram 里等管理员点「设为主控」。"
-        "子 agent：code 填主控交给你的任务码（t- 开头），name 填你给这个聊天取的名字。返回你的身份和工作说明。",
+        "接入 Telegram 桥。主 Agent 执行器填 mode=\"main\" 等管理员在 Telegram 批准；"
+        "工作区常驻任务会话填 mode=\"worker\" 由总控确认接入；"
+        "业务子 agent 填 code=任务码（t- 开头）。返回你的身份和工作说明。",
         {
-            "code": prop("string", "子 agent 的任务码，t- 开头；主控不填"),
-            "name": prop("string", "子 agent：给这个聊天取的简短名字（10 个字以内）；主控：给管理员看的说明，可省略"),
-            "request": prop("string", "上次 join 返回的申请编号，没批完再调时带上，可省略"),
+            "code": prop("string", "子 agent 的一次性任务码，t- 开头；主会话或工作会话不填"),
+            "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
+            "mode": prop("string", "接入类型：main | worker，有 code 时不用填", enum=["main", "worker", "auto"]),
+            "request": prop("string", "上次 join 返回的申请编号，等待确认再调时带上，可省略"),
         },
         needs_agent=False,
     ),
@@ -2749,26 +3537,52 @@ COMMON_TOOLS = [
     ),
     tool(
         "spawn_subagent",
-        "（子 agent 专用）向主控请求创建一个新的后台子 agent（纯后台走 MCP 协作，不挂载到 Telegram 聊天列表以免挤爆列表；自动继承主控或父 agent 的本地设备授权）。"
-        "主控被强制要求 100% 完全按你指定的任务、记忆传递和模型执行；新子 agent 接入后会自动唤醒通知你。",
+        "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表）。"
+        "可指定模型、记忆继承以及是否申请单独占用一台机器（因资源有限 dedicated_machine 默认 false 共享运行，由总控结合机器探针审批分发）。",
         {
             "brief": prop("string", "给新子 agent 的完整任务说明与要求"),
-            "include_memory": prop("boolean", "是否提供当前记忆：true=自动授权读取你本聊天的历史记录、继承 Git 仓库分支并附带 memory_summary；false=全新白板启动"),
-            "memory_summary": prop("string", "当 include_memory=true 时建议填写：你脑子里的当前进展、关键路径、中间结论交接摘要"),
-            "model": prop("string", "指定模型名（如 inherit 继承主控，或填具体模型名如 claude-4.5-opus / gpt-5 / gemini 等，主控会严格匹配）"),
+            "include_memory": prop("boolean", "是否提供当前记忆：true=自动授权读取本聊天记录、继承 Git 分支并附带 memory_summary；false=全新白板启动"),
+            "memory_summary": prop("string", "当 include_memory=true 时建议填写：当前进展、关键路径、中间结论交接摘要"),
+            "model": prop("string", "指定模型名（如 inherit 继承，或填具体模型名，总控将严格保持一致）"),
             "name": prop("string", "给新子 agent 预设的名字（10 字以内），可省略由它自己取"),
             "group": prop("string", "可选：创建时顺便把它拉进哪个已有的 Agent 协作群（如 g1）"),
+            "dedicated_machine": prop("boolean", "是否申请单独占用一台机器（因资源有限默认 false 不给独占；仅在重型编译/渲染等确需独立资源时填 true 供总控审批）"),
+            "machine_reason": prop("string", "当 dedicated_machine=true 时填写申请独占机器的原因说明，可省略"),
         },
         ["brief", "include_memory"],
     ),
     tool(
         "stop_spawned_agent",
-        "（子 agent 专用）停掉并可选关闭一个由你自己通过 spawn_subagent 派生出来的子 agent（临时帮手干完活后回收用）。",
+        "（子 agent 专用）停掉并可选关闭一个由你自己通过 spawn_subagent 派生出来的子 agent（若占用了独占机器会自动释放）。",
         {
             "chat": CHAT_PROP,
             "close": prop("boolean", "是否同时关闭该聊天（默认 true）"),
         },
         ["chat"],
+    ),
+    tool(
+        "submit_op_result",
+        "提交标准化任务单（[STANDARD_OP]）的执行回执：主 Agent 回填 Task 启动拿到的 task_agent_id 或 resume 原始返回状态，工作会话回填命令执行输出。",
+        {
+            "op_id": prop("string", "单据编号，例如 op_1a2b3c4d5e"),
+            "status": prop("string", "执行状态：ok | error", enum=["ok", "error"]),
+            "task_agent_id": prop("string", "TASK_LAUNCH 时填入 Task 工具返回的 agent_id，其他类型可省略"),
+            "output": prop("string", "TASK_RESUME 的原始返回文本或 WORKSPACE_JOB 的命令输出摘要"),
+        },
+        ["op_id", "status"],
+    ),
+    tool(
+        "run_workspace_job",
+        "（仅管理员名下会话与总控可用）将重负载构建、渲染、批量处理任务投递到云端工作节点（node1..K）执行并异步回传结果。",
+        {
+            "command": prop("string", "要在云端工作区执行的终端命令"),
+            "node": prop("string", "目标工作节点（默认 auto 自动按 CPU/内存探针选最空闲节点，或填指定 node1、node2）"),
+            "repo": prop("string", "可选：要先准备的 GitHub 仓库（如 owner/repo）"),
+            "branch": prop("string", "可选：要切到的 Git 分支名"),
+            "workdir": prop("string", "可选：云端工作目录路径"),
+            "timeout_sec": prop("integer", "超时秒数，默认 600，最大 3600"),
+        },
+        ["command"],
     ),
     tool(
         "trace_status",
@@ -2781,6 +3595,51 @@ COMMON_TOOLS = [
 ]
 
 MAIN_TOOLS = [
+    tool(
+        "cluster_status",
+        "（总控专用）查看集群全局态势：所有主 Agent（main1..N）与云端工作节点（node1..K）的在线状态、CPU/内存/balloon 实时探针、独占锁与跨 agent 授权列表、待批工作机入网请求，以及所有业务聊天的 thinking/shell 精细状态。",
+    ),
+    tool(
+        "manage_node",
+        "（总控专用）管理集群节点与机器权限：审批工作会话入网（approve_worker / deny_worker）、设置或释放某台机器独占（set_exclusive / release_exclusive）、授权其他指定 agent 共用某台机器（grant_access / revoke_access）、排空或下线节点（drain / activate / remove）。",
+        {
+            "action": prop(
+                "string",
+                "操作类型",
+                enum=[
+                    "approve_worker",
+                    "deny_worker",
+                    "set_exclusive",
+                    "release_exclusive",
+                    "grant_access",
+                    "revoke_access",
+                    "drain",
+                    "activate",
+                    "remove",
+                ],
+            ),
+            "node_id": prop("string", "目标节点编号，如 main2 或 node1（approve_worker 时可填要替换的旧 nodeK，不填则新建）"),
+            "request_id": prop("string", "approve_worker / deny_worker 时必填的入网申请 request_id"),
+            "exclusive_chat": prop("string", "set_exclusive 时独占该机器的聊天编号，如 c164"),
+            "chats": prop("array", "grant_access / revoke_access 时授权或收回机器使用权的聊天列表，如 [\"c188\", \"c189\"]", items={"type": "string"}),
+        },
+        ["action"],
+    ),
+    tool(
+        "dispatch_task_op",
+        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
+        {
+            "chat": CHAT_PROP,
+            "action": prop("string", "标准化指令动作：launch | resume | restart", enum=["launch", "resume", "restart"]),
+            "target_main": prop("string", "发给哪个主 Agent（默认 auto 结合 CPU/内存探针自动选最优 mainN，也可指定如 main1、main2）"),
+            "model": prop("string", "模型名（默认留空沿用该聊天原模型；注意尽量别换模型，确需更换须先与管理员沟通并填 confirm_model_change=true）"),
+            "confirm_model_change": prop("boolean", "已与管理员沟通确认更换该聊天既有模型时填 true，默认 false"),
+            "grant_dedicated": prop("boolean", "是否批准给该子 agent 单独独占占用一台空闲机器（默认 false 不给）"),
+            "dedicated_node": prop("string", "可选：显式指定给它独占的空闲机器编号（如 main2 或 node1）"),
+            "resume_prompt": prop("string", "action=resume 时的唤醒提示语，可省略"),
+        },
+        ["chat", "action"],
+    ),
     tool(
         "list_agents",
         "（仅主控）所有聊天和子 agent 的状态：在不在等消息、续到第几棒、有没有消息没处理、多久没动静、实时动作追踪、task_agent_id。看不到聊天内容。",
@@ -3374,12 +4233,14 @@ async def t_send_agent_message(agent, args):
     if to_id == me_id:
         raise ToolFail("不能给自己发消息。")
     owner = agent_owner_scope(agent)
+    if to_id == "main" and ctrl_is_active():
+        to_id = "ctrl"
     target = conv_row(to_id)
     if target is None or target["status"] != "open":
         raise ToolFail(f"目标聊天 {to_id} 不存在或已关闭。")
-    if to_id == "main":
+    if to_id in ("main", "ctrl") or is_main_node_id(to_id):
         if owner != 0:
-            raise ToolFail("权限隔离：只有管理员自己的子 agent 能直接给主控(main)发消息；需要创建子 agent 请用 spawn_subagent。")
+            raise ToolFail("权限隔离：只有管理员自己的会话能直接与主控/主Agent通信。")
     elif conv_owner(target) != owner:
         raise ToolFail(f"权限隔离：一个人的子 agent 只能和自己同一个主人名下的子 agent 对话，不能跨主人与 {to_id} 通信。")
 
@@ -3696,7 +4557,37 @@ async def t_group_history(agent, args):
     return text_result(head + "\n" + "\n".join(body))
 
 
+def release_node_locks_for_conv(conv_id: str) -> list[str]:
+    cid = (conv_id or "").strip().lower()
+    if not cid:
+        return []
+    released = []
+    for r in store.q("SELECT * FROM exec_nodes"):
+        excl = (r["exclusive_conv"] or "").strip().lower()
+        allowed = node_allowed_list(r)
+        changed = False
+        new_excl = excl
+        if excl == cid:
+            new_excl = ""
+            changed = True
+            released.append(r["id"])
+        if cid in allowed:
+            allowed = [x for x in allowed if x != cid]
+            changed = True
+        if changed:
+            store.run(
+                "UPDATE exec_nodes SET exclusive_conv=?, allowed_convs=? WHERE id=?",
+                (new_excl, json.dumps(allowed, ensure_ascii=False), r["id"]),
+            )
+    store.run("UPDATE convs SET dedicated_node='' WHERE id=?", (cid,))
+    return released
+
+
 async def t_spawn_subagent(agent, args):
+    me = conv_row(agent["conv"])
+    owner = conv_owner(me)
+    if owner != 0:
+        raise ToolFail("权限限制：仅管理员本人的会话支持创建或派生子 agent（其他授权用户不可开子 agent）。")
     brief = str(args.get("brief") or "").strip()
     if not brief:
         raise ToolFail("brief（给新子 agent 的任务说明）不能为空。")
@@ -3706,9 +4597,9 @@ async def t_spawn_subagent(agent, args):
     model_clean = "" if raw_model.lower() in ("", "inherit", "default", "默认") else raw_model
     name = str(args.get("name") or "").strip()
     want_group = parse_group(str(args.get("group") or "")) if args.get("group") else ""
+    dedicated_req = bool(args.get("dedicated_machine", False))
+    machine_reason = str(args.get("machine_reason") or "").strip()[:300]
 
-    me = conv_row(agent["conv"])
-    owner = conv_owner(me)
     # 注意：子 agent 派生的子 agent 一律强制 in_tg=False（纯后台 MCP，不占 TG 聊天菜单与列表，也不占用户的 TG 聊天配额）
     my_active_children = store.one(
         "SELECT COUNT(*) AS n FROM convs WHERE status='open' AND parent_conv=?",
@@ -3744,6 +4635,10 @@ async def t_spawn_subagent(agent, args):
         memory_note=memory_summary,
         in_tg=False,
     )
+    store.run(
+        "UPDATE convs SET dedicated_req=?, machine_reason=? WHERE id=?",
+        (1 if dedicated_req else 0, machine_reason, child["id"]),
+    )
     if include_memory:
         grant_share(child["id"], me["id"])
         for src in share_sources(me["id"]):
@@ -3752,21 +4647,37 @@ async def t_spawn_subagent(agent, args):
                 grant_share(child["id"], src)
         if (me["git"] or "").strip():
             store.run("UPDATE convs SET git=? WHERE id=?", (me["git"], child["id"]))
-        child = conv_row(child["id"])
+    child = conv_row(child["id"])
 
     group_msg = ""
     if grow is not None:
         store.run("INSERT OR IGNORE INTO agent_group_members(group_id,conv,joined) VALUES(?,?,?)", (grow["id"], child["id"], now()))
         group_msg = f"，并已自动加入协作群 {group_tag(grow)}"
 
-    # 向主控发送最高优先级强制派生单，立即唤醒主控（纯后台子 agent 不往 TG 私聊弹通知防刷屏，你在 /agents 或 /trace 可看）
-    system_note("main", spawn_task_note(child, me, include_memory), wake=1)
-    model_desc = model_clean or "inherit（继承主控）"
+    ded_desc = f"申请独占机器（原因：{machine_reason or '重负载任务'}，待总控按余量审批）" if dedicated_req else "默认共享机器运行"
+    if ctrl_is_active():
+        system_note(
+            "ctrl",
+            f"【子 Agent 派生调度请求】父会话 {conv_tag(me)} 请求派生新后台子 agent {conv_tag(child)}。\n"
+            f"- 要求模型：{model_clean or '继承默认（尽量保持一致）'}\n"
+            f"- 记忆继承：{'是' if include_memory else '否'}\n"
+            f"- 独占机器申请：{ded_desc}（因资源有限默认不给独占，仅在确有空载富余机器且必要时填 grant_dedicated=true）\n"
+            f"请结合 cluster_status 各 main1..N 的 CPU/内存探针，立即调用 `dispatch_task_op(chat=\"{child['id']}\", action=\"launch\", target_main=\"auto\", model=\"{model_clean}\")` 下发标准化启动单！",
+            wake=1,
+        )
+    else:
+        best_m = select_best_launcher(for_conv=child["id"])
+        if best_m is not None and is_main_node_id(best_m["id"]):
+            enqueue_launch_op(child, best_m, requester=me["id"], model_override=model_clean)
+        else:
+            system_note("main", spawn_task_note(child, me, include_memory), wake=1)
+
+    model_desc = model_clean or "inherit（默认继承）"
     mem_desc = "开启（已自动共享历史记录 + Git 分支" + (" + 记忆交接摘要）" if memory_summary else "）") if include_memory else "关闭（白板启动）"
     return text_result(
-        f"已向主控下达【强制派生指令】：新后台子 agent 编号为 {child['id']}（纯后台 MCP 模式，不占 Telegram 聊天列表；"
-        f"自动继承主控与你的本地设备授权；模型：{model_desc}；记忆传递：{mem_desc}{group_msg}）。\n"
-        f"主控已被强制要求 100% 按你的参数在后台拉起它；等 {child['id']} 完成 join 接手后，桥会自动发系统消息唤醒通知你！"
+        f"已提交派生请求：新后台子 agent 编号为 {child['id']}（纯后台 MCP 模式，不占 Telegram 聊天列表；"
+        f"自动继承主控与你的本地设备授权；模型：{model_desc}；机器分配：{ded_desc}；记忆传递：{mem_desc}{group_msg}）。\n"
+        f"总控将结合集群机器负载调度主 Agent 在后台启动它；等 {child['id']} 完成 join 接手后会自动发消息唤醒通知你！"
     )
 
 
@@ -3780,8 +4691,10 @@ async def t_stop_spawned_agent(agent, args):
     old = active_agent(target)
     if old is not None:
         stop_identity(old["id"], f"父 agent {me_id} 回收了这个派生子 agent")
+    released_nodes = release_node_locks_for_conv(target["id"])
+    rel_note = f"（已自动释放机器权限：{', '.join(released_nodes)}）" if released_nodes else ""
     store.run("UPDATE agent_traces SET phase='stopped', updated_ts=? WHERE conv=?", (now(), target["id"]))
-    system_note("main", f"父 agent {conv_tag(me)} 已回收并停止其派生的后台子 agent {conv_tag(target)}。", wake=0)
+    system_note(route_control_target(), f"父 agent {conv_tag(me)} 已回收并停止其派生的后台子 agent {conv_tag(target)}{rel_note}。", wake=0)
     if close_it and target["status"] == "open":
         store.run("DELETE FROM agent_group_members WHERE conv=?", (target["id"],))
         store.run(
@@ -3789,10 +4702,370 @@ async def t_stop_spawned_agent(agent, args):
             (now(), target["id"]),
         )
         mark_menu_dirty()
-        return text_result(f"已停止并关闭你派生的子 agent {conv_tag(target)}（它在跑完当前单条工具调用时会被钩子立即中止退出，历史记录保留）。")
+        return text_result(f"已停止并关闭你派生的子 agent {conv_tag(target)}{rel_note}（它在跑完当前单条工具调用时会被钩子立即中止退出，历史记录保留）。")
     store.run("UPDATE convs SET agent='', task_code='', task_agent_id='' WHERE id=?", (target["id"],))
     mark_menu_dirty()
-    return text_result(f"已停止你派生的子 agent {conv_tag(target)}（聊天仍保留开放）。")
+    return text_result(f"已停止你派生的子 agent {conv_tag(target)}{rel_note}（聊天仍保留开放）。")
+
+
+def render_cluster_overview() -> str:
+    ensure_main_conv()
+    lines: list[str] = ["=== 🧠 集群全局态势与 CPU/内存探针面板 ==="]
+    ctrl = conv_row("ctrl")
+    c_info = conv_state(ctrl) if ctrl is not None else {"state": "absent"}
+    lines.append(f"• 唯一总控大脑 (ctrl /main)：{STATE_TEXT.get(c_info['state'], c_info['state'])}")
+
+    mains = store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status!='removed' ORDER BY num")
+    lines.append(f"\n【主 Agent 执行器池（共 {len(mains)} 台）】")
+    if not mains:
+        m_legacy = conv_row("main")
+        if m_legacy and active_agent(m_legacy):
+            lines.append(f"  - legacy main (cloud{main_cloud()})：🟢 在线")
+        else:
+            lines.append("  （暂无已登记的主 Agent，新开云端会话调 join(mode=\"main\") 由管理员批准接入）")
+    for m in mains:
+        st_lbl = "🟢 在线" if node_is_online(m) else f"⚪ {m['status']}"
+        mounted = [c["id"] for c in open_convs() if cloud_of(c) == int(m["cloud_num"] or 0)]
+        active_cnt = sum(1 for c in open_convs() if cloud_of(c) == int(m["cloud_num"] or 0) and active_agent(c) is not None)
+        excl = f" | 🔒独占={m['exclusive_conv']}" if m["exclusive_conv"] else " | 共享池"
+        allow = node_allowed_list(m)
+        allow_s = f" (额外授权:{','.join(allow)})" if allow else ""
+        lines.append(
+            f"  - {m['id']}「{m['name']}」(cloud{m['cloud_num']})：{st_lbl} | 活跃子agent {active_cnt}/{len(mounted)} 个{excl}{allow_s}\n"
+            f"    📊 探针：{format_node_metrics(m)}"
+        )
+
+    runners = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status!='removed' ORDER BY num")
+    lines.append(f"\n【云端工作节点池（算力机 node1..K，共 {len(runners)} 台）】")
+    if not runners:
+        lines.append("  （暂无云端工作节点；新开会话调 join(mode=\"worker\") 由总控免打扰审批接入）")
+    for r in runners:
+        st_lbl = "🟢 在线" if node_is_online(r) else f"⚪ {r['status']}"
+        pend_ops = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (r["id"],))["n"]
+        excl = f" | 🔒独占={r['exclusive_conv']}" if r["exclusive_conv"] else " | 共享池"
+        allow = node_allowed_list(r)
+        allow_s = f" (授权:{','.join(allow)})" if allow else ""
+        lines.append(
+            f"  - {r['id']}：{st_lbl} | 执行中作业={pend_ops}{excl}{allow_s}\n"
+            f"    📊 探针：{format_node_metrics(r)}"
+        )
+
+    pend_workers = store.q("SELECT id, payload, ts FROM approvals WHERE kind='join_worker' AND status='pending' ORDER BY ts")
+    if pend_workers:
+        lines.append(f"\n【待总控审批的工作机入网请求（{len(pend_workers)} 条）】")
+        for pw in pend_workers:
+            pay = json.loads(pw["payload"] or "{}")
+            lines.append(
+                f"  - request_id=\"{pw['id']}\"（{human_dur(now() - pw['ts'])}前，备注={pay.get('name') or '-'}）"
+                f" -> 调 manage_node(action=\"approve_worker\", request_id=\"{pw['id']}\") 放行"
+            )
+
+    convs = open_convs()
+    lines.append(f"\n【开放业务聊天与精细思考/Shell 状态（共 {len(convs)} 个）】")
+    for c in convs:
+        info = conv_state(c)
+        trow = store.one("SELECT * FROM agent_traces WHERE conv=?", (c["id"],))
+        think_stuck, stuck_s = check_thinking_stuck(c, trow)
+        phase_s = trow["phase"] if trow and trow["phase"] else "-"
+        m_s = effective_conv_model(c) or "默认"
+        ded_s = f" 🔒独占={c['dedicated_node']}" if c["dedicated_node"] else (" ⏳申请独占" if int(c["dedicated_req"] or 0) else "")
+        tid_s = f" tid={c['task_agent_id']}" if (c["task_agent_id"] or "").strip() else ""
+        stuck_badge = f" 🚨思考卡死({human_dur(stuck_s)})" if think_stuck else (" 🔨Shell运行中(正常非卡死)" if phase_s == "shell" else "")
+        lines.append(
+            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])} | phase={phase_s}{stuck_badge}"
+        )
+        tline = trace_one_liner(c["id"])
+        if tline:
+            lines.append(f"    ↳ {tline}")
+    return "\n".join(lines)
+
+
+async def t_cluster_status(agent, args):
+    return text_result(render_cluster_overview())
+
+
+async def t_manage_node(agent, args):
+    action = str(args.get("action") or "").strip().lower()
+    nid = str(args.get("node_id") or "").strip().lower()
+    req_id = str(args.get("request_id") or "").strip()
+
+    if action == "approve_worker":
+        if not req_id:
+            raise ToolFail("approve_worker 需要填 request_id。")
+        arow = store.one("SELECT * FROM approvals WHERE id=? AND kind='join_worker' AND status='pending'", (req_id,))
+        if arow is None:
+            raise ToolFail(f"没有待审批的工作节点请求 {req_id!r}（注意：主 Agent mainN 必须由管理员本人在 Telegram 审核，总控仅审批 worker 算力机）。")
+        pay = json.loads(arow["payload"] or "{}")
+        rep = nid if nid and is_worker_node_id(nid) else ""
+        node_id, ag_id = make_worker_node(replace_node=rep, custom_name=str(pay.get("name") or ""))
+        pay.update({"agent_id": ag_id, "node_id": node_id})
+        set_approval(req_id, "done", pay)
+        return text_result(f"已批准工作会话入网：分配节点编号 {node_id}（云端模式，已接入算力池）。")
+
+    if action == "deny_worker":
+        if not req_id:
+            raise ToolFail("deny_worker 需要填 request_id。")
+        arow = store.one("SELECT * FROM approvals WHERE id=? AND kind='join_worker' AND status='pending'", (req_id,))
+        if arow is None:
+            raise ToolFail(f"没有待处理的请求 {req_id!r}。")
+        set_approval(req_id, "denied")
+        return text_result(f"已拒绝工作节点请求 {req_id}。")
+
+    nrow = node_row(nid) if nid else None
+    if nrow is None:
+        raise ToolFail(f"请指定有效的 node_id（如 main1、node1；当前收到 {nid!r}）。")
+
+    if action == "set_exclusive":
+        echat = parse_conv(str(args.get("exclusive_chat") or ""))
+        crow = conv_row(echat) if echat and not is_system_conv_id(echat) else None
+        if crow is None:
+            raise ToolFail("set_exclusive 需要填有效的业务聊天编号 exclusive_chat（如 c164）。")
+        store.run("UPDATE exec_nodes SET exclusive_conv=? WHERE id=?", (echat, nrow["id"]))
+        store.run("UPDATE convs SET dedicated_node=? WHERE id=?", (nrow["id"], echat))
+        return text_result(f"已将节点 {nrow['id']} 设为由 {conv_tag(crow)} 独占（其他未授权共享任务不再派往该节点）。")
+
+    if action == "release_exclusive":
+        prev_excl = nrow["exclusive_conv"]
+        store.run("UPDATE exec_nodes SET exclusive_conv='', allowed_convs='[]' WHERE id=?", (nrow["id"],))
+        if prev_excl:
+            store.run("UPDATE convs SET dedicated_node='' WHERE id=? AND dedicated_node=?", (prev_excl, nrow["id"]))
+        return text_result(f"已释放节点 {nrow['id']} 的独占锁与授权列表，恢复为公共共享池节点。")
+
+    if action in ("grant_access", "revoke_access"):
+        raw_chats = args.get("chats") or []
+        valid_chats = []
+        for x in raw_chats:
+            c_parsed = parse_conv(str(x or ""))
+            if c_parsed and not is_system_conv_id(c_parsed) and conv_row(c_parsed) is not None:
+                valid_chats.append(c_parsed)
+        if not valid_chats:
+            raise ToolFail(f"{action} 需要提供有效的 chats 列表，例如 [\"c188\", \"c189\"]。")
+        cur_allowed = node_allowed_list(nrow)
+        if action == "grant_access":
+            for vc in valid_chats:
+                if vc not in cur_allowed:
+                    cur_allowed.append(vc)
+            store.run("UPDATE exec_nodes SET allowed_convs=? WHERE id=?", (json.dumps(cur_allowed, ensure_ascii=False), nrow["id"]))
+            for vc in valid_chats:
+                system_note(vc, f"总控已授权你使用机器节点 {nrow['id']}（调用 run_workspace_job 时可指定 node=\"{nrow['id']}\"）。", wake=0)
+            return text_result(f"已授权 {', '.join(valid_chats)} 使用机器节点 {nrow['id']}（当前授权列表：{', '.join(cur_allowed)}）。")
+        cur_allowed = [x for x in cur_allowed if x not in valid_chats]
+        store.run("UPDATE exec_nodes SET allowed_convs=? WHERE id=?", (json.dumps(cur_allowed, ensure_ascii=False), nrow["id"]))
+        return text_result(f"已收回 {', '.join(valid_chats)} 对机器节点 {nrow['id']} 的额外使用权（剩余授权：{', '.join(cur_allowed) or '无'}）。")
+
+    if action == "drain":
+        store.run("UPDATE exec_nodes SET status='draining' WHERE id=?", (nrow["id"],))
+        return text_result(f"节点 {nrow['id']} 已设为排空（draining），不再向其派发新任务。")
+
+    if action == "activate":
+        store.run("UPDATE exec_nodes SET status='online' WHERE id=?", (nrow["id"],))
+        return text_result(f"节点 {nrow['id']} 已恢复在线（online）状态。")
+
+    if action == "remove":
+        if nrow["agent"]:
+            stop_identity(nrow["agent"], f"总控移除了节点 {nrow['id']}")
+        store.run("UPDATE exec_nodes SET status='removed', agent='', exclusive_conv='', allowed_convs='[]' WHERE id=?", (nrow["id"],))
+        if nrow["kind"] == "launcher" and int(nrow["cloud_num"] or 0) > 0:
+            store.run("UPDATE convs SET cloud=? WHERE cloud=? AND status='open' AND id NOT LIKE 'main%'", (UNOWNED_CLOUD, int(nrow["cloud_num"])))
+        mark_menu_dirty()
+        return text_result(f"节点 {nrow['id']} 已移除并停用其旧身份。")
+
+    raise ToolFail(f"未知的 manage_node 操作：{action!r}")
+
+
+async def t_dispatch_task_op(agent, args):
+    conv = own_conv(args)
+    if conv["status"] != "open":
+        raise ToolFail(f"{conv_tag(conv)} 已关闭，请先重开会话。")
+    action = str(args.get("action") or "").strip().lower()
+    want_main = str(args.get("target_main") or "auto").strip().lower()
+    raw_model = " ".join(str(args.get("model") or "").split())[:100]
+    explicit_new_model = "" if raw_model.lower() in ("", "inherit", "default", "默认") else raw_model
+    confirm_change = bool(args.get("confirm_model_change", False))
+    grant_ded = bool(args.get("grant_dedicated", False))
+    ded_node_arg = str(args.get("dedicated_node") or "").strip().lower()
+
+    existing_model = effective_conv_model(conv)
+    if explicit_new_model and existing_model and explicit_new_model != existing_model and not confirm_change:
+        raise ToolFail(
+            f"模型保护拦截：{conv_tag(conv)} 原有模型为「{existing_model}」，你传入了「{explicit_new_model}」。\n"
+            "按管理员规则：模型尽量别换，如确需更换必须先用 send_message 与管理员沟通同意后，再传 confirm_model_change=true！"
+        )
+
+    if action == "resume":
+        cnum = cloud_of(conv)
+        launcher = None
+        if want_main and want_main != "auto":
+            launcher = node_row(want_main)
+        else:
+            launcher = store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND cloud_num=? AND status='online'", (cnum,))
+            if launcher is None:
+                launcher = select_best_launcher(for_conv=conv["id"])
+        if launcher is None or not node_is_online(launcher):
+            raise ToolFail(f"{conv_tag(conv)} 所属的主 Agent 当前不在线，无法执行 resume；请改用 action='restart' 调度到在线的 mainN 重新拉起。")
+        op_id = enqueue_resume_op(conv, launcher, requester=agent["conv"], resume_prompt=str(args.get("resume_prompt") or ""))
+        return text_result(
+            f"已向 {launcher['id']} 下发标准化 `[TASK_RESUME]` 探活单（op_id={op_id}，目标 {conv_tag(conv)}）。"
+            f"等 {launcher['id']} 调用 submit_op_result 回传原始状态后会立即唤醒你拍板！"
+        )
+
+    if action in ("launch", "restart"):
+        if action == "restart":
+            lock_in_conv_model(conv)
+            old_ag = active_agent(conv)
+            if old_ag is not None:
+                stop_identity(old_ag["id"], "总控下发标准化重开指令")
+            store.run("UPDATE convs SET task_agent_id='' WHERE id=?", (conv["id"],))
+
+        launcher = None
+        if grant_ded:
+            if ded_node_arg:
+                cand = node_row(ded_node_arg)
+                if cand is None or not node_is_online(cand):
+                    raise ToolFail(f"指定的独占节点 {ded_node_arg!r} 不存在或不在线。")
+                if cand["exclusive_conv"] and cand["exclusive_conv"] != conv["id"]:
+                    raise ToolFail(f"节点 {ded_node_arg} 已被 {cand['exclusive_conv']} 独占。")
+                store.run("UPDATE exec_nodes SET exclusive_conv=? WHERE id=?", (conv["id"], cand["id"]))
+                store.run("UPDATE convs SET dedicated_node=? WHERE id=?", (cand["id"], conv["id"]))
+                if cand["kind"] == "launcher":
+                    launcher = cand
+            if launcher is None:
+                idle_l = select_best_launcher(for_conv=conv["id"], require_idle_for_exclusive=True)
+                if idle_l is not None and is_main_node_id(idle_l["id"]):
+                    store.run("UPDATE exec_nodes SET exclusive_conv=? WHERE id=?", (conv["id"], idle_l["id"]))
+                    store.run("UPDATE convs SET dedicated_node=? WHERE id=?", (idle_l["id"], conv["id"]))
+                    launcher = idle_l
+
+        if launcher is None:
+            if want_main and want_main != "auto":
+                launcher = node_row(want_main)
+                if launcher is None or launcher["kind"] != "launcher" or not node_is_online(launcher):
+                    raise ToolFail(f"指定的主 Agent {want_main!r} 不存在或不在线。")
+                if not node_allows_conv(launcher, conv["id"]):
+                    raise ToolFail(f"主 Agent {want_main} 当前已被 {launcher['exclusive_conv']} 独占锁定。")
+            else:
+                launcher = select_best_launcher(for_conv=conv["id"])
+
+        if launcher is None:
+            raise ToolFail("当前没有任何在线的主 Agent（main1..N），无法下发启动指令。")
+
+        chosen_model = explicit_new_model or effective_conv_model(conv)
+        op_id, nid = enqueue_launch_op(conv, launcher, requester=agent["conv"], model_override=chosen_model)
+        ded_actual = (conv_row(conv["id"])["dedicated_node"] or "").strip()
+        ded_msg = f"，已分配独占节点 {ded_actual}" if ded_actual else "（共享节点模式）"
+        return text_result(
+            f"已向 {nid} 下发标准化 `[TASK_LAUNCH]` 指令单（op_id={op_id}，聊天={conv_tag(conv)}，"
+            f"模型={chosen_model or '默认继承'}{ded_msg}）。"
+        )
+
+    raise ToolFail(f"不支持的 dispatch_task_op 动作：{action!r}")
+
+
+async def t_submit_op_result(agent, args):
+    op_id = str(args.get("op_id") or "").strip()
+    status = str(args.get("status") or "ok").strip().lower()
+    if status not in ("ok", "error"):
+        status = "ok"
+    tid = re.sub(r"\s+", "", str(args.get("task_agent_id") or ""))[:120]
+    output = str(args.get("output") or "").strip()[:8000]
+
+    op = store.one("SELECT * FROM dispatch_ops WHERE op_id=?", (op_id,))
+    if op is None:
+        raise ToolFail(f"未找到单据编号 {op_id!r}。")
+    done_status = "done" if status == "ok" else "failed"
+    res_obj = {"status": status, "task_agent_id": tid, "output": output, "by": agent["conv"], "ts": now()}
+    store.run(
+        "UPDATE dispatch_ops SET status=?, result_json=?, done_ts=? WHERE op_id=?",
+        (done_status, json.dumps(res_obj, ensure_ascii=False), now(), op_id),
+    )
+
+    conv_id = op["conv_id"]
+    requester = op["requester"] or route_control_target()
+    op_type = op["op_type"]
+
+    if op_type == "launch_subagent":
+        if tid and conv_id:
+            store.run("UPDATE convs SET task_agent_id=? WHERE id=?", (tid, conv_id))
+        if status != "ok" and requester in ("ctrl", "main"):
+            system_note(
+                requester,
+                f"⚠️ `[OP_RESULT]` 主 Agent {agent['conv']} 执行 {conv_id} 启动单 ({op_id}) 报错：{output or '未知错误'}",
+                wake=1,
+            )
+        elif requester in ("ctrl", "main") and conv_id != "ctrl":
+            system_note(
+                requester,
+                f"✅ `[OP_RESULT]` {agent['conv']} 已启动 {conv_id} 后台任务（op_id={op_id}"
+                + (f", task_agent_id={tid}" if tid else "")
+                + "）。",
+                wake=0,
+            )
+        return text_result(f"已登记启动回执 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
+
+    if op_type == "resume_subagent":
+        target_ctrl = requester if requester in ("ctrl", "main") else route_control_target()
+        system_note(
+            target_ctrl,
+            f"📡 `[OP_RESULT]` 主 Agent {agent['conv']} 已完成对 {conv_id} 的 `Task(resume)` 探活（op_id={op_id}，status={status}）：\n"
+            f"原始返回：{output or '(空)'}\n"
+            f"请据此判定：若返回 `currently running` 且非思考卡死则保持不动；若为 `timeout`/`aborted`/已死则调用 `dispatch_task_op(chat=\"{conv_id}\", action=\"restart\")` 重拉。",
+            wake=1,
+        )
+        return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
+
+    if op_type == "workspace_job":
+        dest = requester if conv_row(requester) is not None else route_control_target()
+        system_note(
+            dest,
+            f"🖥 `[工作区任务回执 op_id={op_id} 节点={agent['conv']} 状态={status}]`\n{output or '（执行完成，无额外输出）'}",
+            wake=1,
+        )
+        return text_result(f"已提交工作单 {op_id} 的执行结果。现在请立即调用 read_chat 继续等待下一单。")
+
+    return text_result(f"已记录 {op_id} 回执。现在请回到 read_chat。")
+
+
+async def t_run_workspace_job(agent, args):
+    if agent["role"] == "chat":
+        me = conv_row(agent["conv"])
+        if conv_owner(me) != 0:
+            raise ToolFail("权限限制：仅管理员本人的会话可调用云端工作节点。")
+        caller_id = me["id"]
+    elif agent["role"] in ("ctrl", "main"):
+        caller_id = agent["conv"]
+    else:
+        raise ToolFail("当前会话类型不支持发起嵌套工作单。")
+
+    cmd = str(args.get("command") or "").strip()
+    if not cmd:
+        raise ToolFail("command 不能为空。")
+    want_node = str(args.get("node") or "auto").strip().lower()
+    repo = clean_repo(args.get("repo") or "")
+    branch = re.sub(r"\s+", "", str(args.get("branch") or ""))[:120]
+    workdir = str(args.get("workdir") or "").strip()[:300]
+    timeout_sec = arg_int(args, "timeout_sec", 600, 10, 3600)
+
+    runner = select_best_runner(for_conv=caller_id, target_node=want_node)
+    op_id = "op_" + secrets.token_hex(5)
+    payload = {
+        "conv_id": caller_id,
+        "requester": caller_id,
+        "command": cmd,
+        "repo": repo,
+        "branch": branch,
+        "workdir": workdir,
+        "timeout_sec": timeout_sec,
+    }
+    store.run(
+        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
+        (op_id, runner["id"], "workspace_job", caller_id, caller_id, json.dumps(payload, ensure_ascii=False), "pending", now()),
+    )
+    msg_txt = format_standard_workspace_job(op_id, runner["agent"], payload)
+    system_note(runner["id"], msg_txt, wake=1)
+    return text_result(
+        f"已将工作区任务投递至云端节点 {runner['id']}（op_id={op_id}，超时 {timeout_sec}s）。\n"
+        f"{runner['id']} 执行完毕后结果会自动推送到你的 read_chat 收件箱。"
+    )
 
 
 def render_trace_report(viewer_owner: int, is_main_or_admin: bool, target_conv: str = "", events_limit: int = 5) -> str:
@@ -3842,7 +5115,7 @@ def render_trace_report(viewer_owner: int, is_main_or_admin: bool, target_conv: 
 
 async def t_trace_status(agent, args):
     owner = agent_owner_scope(agent)
-    is_priv = agent["role"] == "main"
+    is_priv = agent["role"] in ("main", "ctrl")
     target_conv = str(args.get("chat") or "").strip()
     events_limit = arg_int(args, "events_limit", 5, 0, 50)
     return text_result(render_trace_report(owner, is_priv, target_conv, events_limit))
@@ -3871,7 +5144,12 @@ HANDLERS: dict[str, Callable[[Any, dict], Awaitable[ToolResult]]] = {
     "group_history": t_group_history,
     "spawn_subagent": t_spawn_subagent,
     "stop_spawned_agent": t_stop_spawned_agent,
+    "submit_op_result": t_submit_op_result,
+    "run_workspace_job": t_run_workspace_job,
     "trace_status": t_trace_status,
+    "cluster_status": t_cluster_status,
+    "manage_node": t_manage_node,
+    "dispatch_task_op": t_dispatch_task_op,
     "list_agents": t_list_agents,
     "bind_task_id": t_bind_task_id,
     "create_chat": t_create_chat,
@@ -3922,9 +5200,9 @@ async def call_tool(name: str, args: dict) -> ToolResult:
             role = agent_obj["role"]
             touch(agent_obj["id"], name)
             working = name != "read_chat"
-            if name in MAIN_ONLY and agent_obj["role"] != "main":
+            if name in MAIN_ONLY and agent_obj["role"] not in ("main", "ctrl"):
                 raise ToolFail(f"{name} 只有主控能用。")
-            if name in CHAT_ONLY and agent_obj["role"] != "chat":
+            if name in CHAT_ONLY and agent_obj["role"] not in ("chat", "ctrl"):
                 raise ToolFail(f"{name} 只有子 agent 能用。")
             result = await handler(agent_obj, args)
     except ToolFail as exc:
@@ -3937,7 +5215,7 @@ async def call_tool(name: str, args: dict) -> ToolResult:
         result = text_result(f"服务器内部错误：{type(exc).__name__}: {exc}", True)
     if working:
         urgent = inline_unread_banner(agent_obj)
-        footer = MAIN_FIXED_FOOTER if role == "main" else CHAT_FIXED_FOOTER
+        footer = role_footer(agent_obj)
         result.content.append({"type": "text", "text": (urgent + "\n" if urgent else "") + footer})
     log.info("tool %s/%s %.1fs error=%s", who, name, now() - started, result.is_error)
     return result
@@ -4740,6 +6018,7 @@ async def close_conv(conv, by: str) -> None:
     elif conv["task_code"]:
         system_note("main", f"{conv_tag(conv)} 还没有子 agent 接手就被关闭了：它的任务作废，还没开子 agent 的话就不用开了。", wake=0)
     chats = routed_chats(conv["id"])
+    release_node_locks_for_conv(conv["id"])
     store.run("DELETE FROM routes WHERE conv=?", (conv["id"],))
     store.run("DELETE FROM agent_group_members WHERE conv=?", (conv["id"],))
     store.run("UPDATE agent_traces SET phase='stopped', updated_ts=? WHERE conv=?", (now(), conv["id"]))
@@ -4758,7 +6037,7 @@ async def close_conv(conv, by: str) -> None:
         )
     elif chats:
         system_note(
-            "main",
+            route_control_target(),
             f"{conv_tag(conv)} 已关闭，它负责的 {'、'.join(chat_label(c) for c in chats)} 现在【未分配】，有消息会先到你这里。",
             wake=0,
         )
@@ -4778,10 +6057,16 @@ async def delete_conv(conv, by: str) -> None:
 
 def list_rows(viewer: int) -> list:
     if is_admin(viewer):
-        rows = store.q("SELECT * FROM convs WHERE id!='main' AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY IFNULL(owner,0)!=0, owner, num")
+        rows = [
+            r for r in store.q("SELECT * FROM convs WHERE status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY IFNULL(owner,0)!=0, owner, num")
+            if not is_system_conv_id(r["id"])
+        ]
         order = {n: i for i, n in enumerate(cloud_order({cloud_of(r) for r in rows} | {main_cloud()}))}
         return sorted(rows, key=lambda r: order[cloud_of(r)])
-    return store.q("SELECT * FROM convs WHERE id!='main' AND owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY num", (viewer,))
+    return [
+        r for r in store.q("SELECT * FROM convs WHERE owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY num", (viewer,))
+        if not is_system_conv_id(r["id"])
+    ]
 
 
 def hand_over_view(conv, page: int) -> tuple[str, dict]:
@@ -4937,18 +6222,19 @@ async def cmd_new(chat_id: int, brief: str, model: str | None = None) -> None:
     if is_admin(chat_id) and model is None:
         await ask_new_model(chat_id, brief)
         return
-    main_away = conv_state(conv_row("main"))["state"] not in ("online", "busy")
+    has_launcher = select_best_launcher() is not None
+    main_away = not has_launcher and conv_state(conv_row("main"))["state"] not in ("online", "busy")
     if is_admin(chat_id):
         conv = create_conv(brief, chat_id, model=model or "")
         await switch_to(chat_id, conv["id"], announce=False)
-        system_note("main", task_note(conv, "管理员新建了聊天"))
+        dispatch_conv_to_cluster(conv, "管理员新建了聊天", requester="admin")
         text = (
-            f"已新建聊天 {conv['id']}，已切换过去（⚪ 等待接手）。主控会在内部开一个子 agent 接手，名字由它自己取。"
+            f"已新建聊天 {conv['id']}，已切换过去（⚪ 等待接手）。总控将调度主 Agent 开子 agent 接手，名字由它自己取。"
             "你现在发的消息会先存着，接手后它会看到。"
-            + (f"\n模型：{model}（主控按这个选）" if model else "\n模型：默认（继承主控）")
+            + (f"\n模型：{model}（严格按此模型启动）" if model else "\n模型：默认（继承默认模型）")
         )
         if main_away:
-            text += "\n注意：主控现在不在线，任务先存着，主控回来后会处理。"
+            text += "\n注意：当前暂无在线主 Agent，任务先存着，上线后会处理。"
         en = None
     else:
         conv = await new_user_conv(chat_id, chat_id, brief, announce=False)
@@ -5115,14 +6401,19 @@ def device_panel(dev, viewer_id: int, note: str = "") -> tuple[str, dict]:
             ],
         ]
         if is_admin(viewer_id):
-            adm_devs = admin_owned_devices()
-            if len(adm_devs) > 1:
-                pref = preferred_admin_device()
-                row_btns = []
-                for ad in adm_devs[:4]:
-                    star = "⭐" if pref and pref["id"] == ad["id"] else "切到 "
-                    row_btns.append({"text": f"{star}{ad['id']}", "callback_data": f"ldv:{ad['id']}:def:0"})
-                kb.append(row_btns)
+            my_devs = admin_owned_devices()
+            pref = preferred_admin_device()
+        else:
+            my_devs = user_devices(viewer_id)
+            pref = user_device(viewer_id)
+        if len(my_devs) > 1:
+            row_btns = []
+            for ad in my_devs[:5]:
+                star = "⭐" if pref and pref["id"] == ad["id"] else ""
+                on_dot = "🟢" if ad["id"] in LOCAL["clients"] else "⚪"
+                row_btns.append({"text": f"{star}{on_dot}{ad['id']}", "callback_data": f"ldv:{ad['id']}:def:0"})
+            kb.append(row_btns)
+        kb.append([{"text": "➕ 新增另一台电脑 (/device add)", "callback_data": f"ldv:{dev['id']}:add:0"}])
     full_text = (f"✅ {note}\n\n" if note else "") + "\n".join(lines)
     return full_text, {"inline_keyboard": kb}
 
@@ -5219,9 +6510,9 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     admin = is_admin(user_id)
     tokens = arg.split()
     picked_dev = None
-    if admin and tokens and re.fullmatch(r"d\d+", tokens[0].lower()):
+    if tokens and re.fullmatch(r"d\d+", tokens[0].lower()):
         cand = device_row(tokens[0].lower())
-        if cand is not None and cand["status"] == "active" and is_admin_device(cand):
+        if cand is not None and cand["status"] == "active" and may_approve(cand, user_id):
             picked_dev = cand
             tokens = tokens[1:]
             arg = " ".join(tokens).strip()
@@ -5229,12 +6520,17 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     dev = picked_dev or owner_primary_device(user_id)
     sub = tokens[0].lower() if tokens else ""
 
-    if sub in ("install", "new"):
+    if sub in ("add", "install", "new"):
         name = display_name(message.get("from") or {})
-        new_dev = await issue_device(user_id, name)
-        if admin:
+        custom_lbl = " ".join(tokens[1:]).strip()
+        new_dev = await issue_device(user_id, name, create_new=True, custom_label=custom_lbl)
+        if admin and not store.get("admin_default_device").strip():
             store.set("admin_default_device", new_dev["id"])
-            await reply(chat_id, f"已生成你的电脑安装包并设为管理员默认电脑：{device_label(new_dev)}。")
+        await reply(
+            chat_id,
+            f"已为你新增独立电脑安装包：{device_label(new_dev)}（原有电脑连接保持不断开，多台电脑可同时在线；发 /device 切换默认电脑或用 /local c1 device {new_dev['id']} 绑定指定聊天）。",
+            en=f"Added new computer {device_label(new_dev, 'en')} (your existing computers stay connected).",
+        )
         return
 
     if arg == "":
@@ -5243,10 +6539,10 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
             await reply(chat_id, text, markup)
             return
         name = display_name(message.get("from") or {})
-        dev = await issue_device(user_id, name)
+        dev = await issue_device(user_id, name, create_new=True)
         if admin:
             store.set("admin_default_device", dev["id"])
-            await reply(chat_id, f"已设为管理员默认本地电脑：{device_label(dev)}（以后你的聊天自动连这台，也可发 /device 管理免批时长）。")
+            await reply(chat_id, f"已设为管理员默认本地电脑：{device_label(dev)}（以后你的聊天自动连这台；有第二台电脑随时发 /device add 笔记本）。")
             return
         for row in store.q("SELECT id FROM approvals WHERE kind='device' AND status='pending'"):
             if approval_payload(row["id"]).get("user_id") == user_id:
@@ -5255,38 +6551,46 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
                             "只有他自己的聊天会用这台电脑，执行操作要他本人批准。")
         return
 
-    if admin and sub == "default" and len(tokens) >= 2:
+    if sub == "default" and len(tokens) >= 2:
         did = tokens[1].lower()
         target_d = device_row(did)
-        if target_d is None or target_d["status"] != "active" or not is_admin_device(target_d):
-            await reply(chat_id, "只能把你自己的活跃电脑（如 d0、d3）设为管理员默认电脑。/devices 查看列表。")
+        if target_d is None or target_d["status"] != "active" or not may_approve(target_d, user_id):
+            await reply(chat_id, "只能把你自己的活跃电脑（如 d3、d4）设为默认电脑。/devices 查看列表。")
             return
-        store.set("admin_default_device", target_d["id"])
-        text, markup = device_panel(target_d, user_id, f"已将 {device_label(target_d)} 设为管理员默认电脑")
+        if admin:
+            store.set("admin_default_device", target_d["id"])
+        else:
+            store.set(f"user_default_device:{user_id}", target_d["id"])
+        text, markup = device_panel(target_d, user_id, f"已将 {device_label(target_d)} 设为默认电脑")
         await reply(chat_id, text, markup)
         return
 
     if dev is None:
-        await reply(chat_id, "你还没有本地电脑，先发 /device 安装。", en="You don't have a local computer yet. Send /device to set one up.")
+        await reply(chat_id, "你还没有本地电脑，先发 /device 安装（多设备可用 /device add）。", en="You don't have a local computer yet. Send /device to set one up.")
         return
 
     if sub == "reset":
-        target_user_dev = user_device(user_id)
-        if admin and target_user_dev is None and dev["id"] == ADMIN_DEVICE:
-            await reply(chat_id, "d0 用的是服务器 .env 里的 CLIENT_TOKEN；想生成独立安装包发 /device install。")
+        if admin and dev["id"] == ADMIN_DEVICE:
+            await reply(chat_id, "d0 用的是服务器 .env 里的 CLIENT_TOKEN；想新增独立电脑发 /device add。")
             return
-        await issue_device(user_id, display_name(message.get("from") or ""))
+        await issue_device(user_id, display_name(message.get("from") or ""), create_new=False, target_dev_id=dev["id"])
         return
 
-    if sub == "del" and len(tokens) == 1:
-        if dev["id"] == ADMIN_DEVICE:
+    if sub == "del" and len(tokens) in (1, 2):
+        del_dev = device_row(tokens[1].lower()) if len(tokens) == 2 else dev
+        if del_dev is None or del_dev["status"] != "active" or not may_approve(del_dev, user_id):
+            await reply(chat_id, "没有找到可删除的电脑（用法：/device del d4）。")
+            return
+        if del_dev["id"] == ADMIN_DEVICE:
             await reply(chat_id, "d0 是服务器 .env 配置的电脑，不能用 /device del 删除。")
             return
-        await revoke_device(dev, "电脑主人删除了")
-        if store.get("admin_default_device") == dev["id"]:
+        await revoke_device(del_dev, "电脑主人删除了")
+        if store.get("admin_default_device") == del_dev["id"]:
             store.delete("admin_default_device")
-        await reply(chat_id, f"已删除 {device_label(dev)}，它的 token 作废了。",
-                    en=f"Removed {device_label(dev, 'en')}. Its token no longer works.")
+        if store.get(f"user_default_device:{user_id}") == del_dev["id"]:
+            store.delete(f"user_default_device:{user_id}")
+        await reply(chat_id, f"已删除 {device_label(del_dev)}，它的 token 作废了。",
+                    en=f"Removed {device_label(del_dev, 'en')}. Its token no longer works.")
         return
 
     if sub in ("lock", "off", "revoke", "clear", "收回", "关闭"):
@@ -5343,7 +6647,7 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     )
 
 
-ADMIN_COMMANDS = {"/main", "/key", "/agents", "/grant", "/revoke", "/devices"}
+ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/key", "/agents", "/grant", "/revoke", "/devices"}
 
 
 async def cmd_activate(message: dict, chat_id: int, user_id: int, rest: str) -> None:
@@ -5434,14 +6738,28 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
         return
 
-    if command == "/main" or re.fullmatch(r"/c\d+", command):
+    if command == "/nodes":
+        if not admin:
+            await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
+            return
+        await reply(chat_id, render_cluster_overview() + f"\n\n🌐 Web 控制台：{PUBLIC_BASE}/web")
+        return
+
+    if command in ("/main", "/ctrl") or re.fullmatch(r"/(?:c|main)\d+", command):
         if not private:
             await reply(chat_id, "切换聊天要在和 bot 的私聊里用。群里用 /bind c1 指定负责的聊天。",
                         en="Switch chats in your private chat with the bot. In a group, /bind c5 picks which chat handles it.")
             return
-        conv = conv_row(command[1:])
+        if is_main_node_id(command[1:]) and not admin:
+            await reply(chat_id, "只有管理员可以进入主 Agent 会话。", en="Only the admin can enter main agent sessions.")
+            return
+        target_cid = command[1:]
+        if target_cid == "main" and ctrl_is_active():
+            target_cid = "ctrl"
+        ensure_main_conv()
+        conv = conv_row(target_cid)
         if conv is None or not can_manage(user_id, conv):
-            await reply(chat_id, f"没有聊天 {command[1:]}。/history 看所有聊天。",
+            await reply(chat_id, f"没有聊天 {command[1:]}。/history 看所有聊天，/nodes 看主 Agent 列表。",
                         en=f"There's no chat {command[1:]}. /history lists your chats.")
             return
         if conv["status"] != "open":
@@ -5541,8 +6859,10 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         elif command == "/key":
             await reply(chat_id, "账号级 MCP 配置，填进 cursor.com/agents 的 MCP 设置（所有云 agent 共用，不要贴进聊天内容）：\n"
                         + mcp_config()
-                        + "\n\n主控开场提示词（新开云端聊天时原样发给它）：\n" + MAIN_PROMPT
-                        + "\n\n主控停了：打开它那个云端聊天，发：\n" + RESUME_PROMPT
+                        + f"\n\n🌐 Web 全功能控制台地址：{PUBLIC_BASE}/web（超级管理员账号：zwt）"
+                        + "\n\n【1】主 Agent 执行器开场提示词（新开主 Agent 时发给它，你在 TG 点批准）：\n" + MAIN_PROMPT
+                        + "\n\n【2】云端常驻工作会话（算力机）开场提示词（总控免打扰自动审批）：\n" + WORKER_PROMPT
+                        + "\n\n会话停了：打开它那个云端聊天，发：\n" + RESUME_PROMPT
                         + "\n\n怀疑密钥泄露或有云 agent 失控：发 /key reset 换密钥，所有云 agent 立刻断开。")
         else:
             await cmd_export(chat_id, user_id, rest)
@@ -6001,9 +7321,17 @@ async def on_callback(callback: dict) -> None:
             store.run("UPDATE devices SET auth_until=0 WHERE id=?", (dev["id"],))
             store.run("UPDATE convs SET local_until=0 WHERE local_dev=?", (dev["id"],))
             note = "Revoked all active windows" if en else "已收回整机免批与所有关联聊天授权"
-        elif act == "def" and is_admin(user_id):
-            store.set("admin_default_device", dev["id"])
-            note = f"已切换管理员默认电脑为 {device_label(dev)}"
+        elif act == "def":
+            if is_admin(user_id):
+                store.set("admin_default_device", dev["id"])
+                note = f"已切换管理员默认电脑为 {device_label(dev)}"
+            else:
+                store.set(f"user_default_device:{user_id}", dev["id"])
+                note = f"Default PC: {device_label(dev, 'en')}" if en else f"已切换默认电脑为 {device_label(dev)}"
+        elif act == "add":
+            new_d = await issue_device(user_id, display_name(user), create_new=True)
+            note = f"Added {device_label(new_d, 'en')}" if en else f"已新增独立电脑安装包：{device_label(new_d)}（已发私聊）"
+            dev = new_d
         else:
             await answer()
             return
@@ -6407,7 +7735,22 @@ async def on_callback(callback: dict) -> None:
             await reply(int(payload["user_id"]), "管理员没有批准你的本地通道申请。",
                         en="The admin did not approve your local channel application.")
         return
-    if row["kind"] == "join":
+    if row["kind"] in ("join", "join_worker"):
+        if choice == "worker":
+            nid, ag_id = make_worker_node(custom_name=str(payload.get("name") or ""))
+            payload.update({"agent_id": ag_id, "node_id": nid})
+            set_approval(approval_id, "done", payload)
+            await mark(f"已设为云端工作节点（{nid}，对模型无感常驻）")
+            return
+        if choice == "newmain" or choice.startswith("repmain:"):
+            rep_target = choice.split(":", 1)[1] if choice.startswith("repmain:") else ""
+            nid, ag_id = make_main_node(replace_node=rep_target, custom_name=str(payload.get("name") or ""))
+            payload.update({"agent_id": ag_id, "node_id": nid})
+            set_approval(approval_id, "done", payload)
+            act_lbl = f"重连顶替 {nid}" if rep_target else f"新增主Agent {nid}"
+            await mark(f"已批准：{act_lbl}（多主Agent并存，总控 ctrl 自动接管全局调度）")
+            return
+        # 兼容旧按钮回调（main / new）
         if choice == "new" and not cloud_has_chats(main_cloud()):
             choice = "main"
         payload["agent_id"] = make_main(new_cloud=choice == "new")
@@ -6880,10 +8223,22 @@ def build_menu(dm: int) -> list[dict]:
         commands.append({"command": row["id"], "description": menu_desc(row, info, row["id"] == current, lang)})
     if not admin:
         return (commands + MEMBER_COMMANDS[lang])[:100]
+    ctrl_row = conv_row("ctrl") if ctrl_is_active() else conv_row("main")
+    if ctrl_row is not None:
+        info = conv_state(ctrl_row)
+        info["unread"] = unread_count(ctrl_row["id"], dm)
+        commands.append({"command": "ctrl", "description": f"🧠 唯一总控大脑 · {STATE_TEXT.get(info['state'], info['state'])}"})
     main = conv_row("main")
-    info = conv_state(main)
-    info["unread"] = unread_count("main", dm)
-    commands.append({"command": "main", "description": menu_desc(main, info, current == "main")})
+    info_m = conv_state(ctrl_row or main)
+    info_m["unread"] = unread_count((ctrl_row or main)["id"], dm)
+    commands.append({"command": "main", "description": menu_desc(ctrl_row or main, info_m, current in ("main", "ctrl"))})
+    for mnode in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status!='removed' ORDER BY num"):
+        mc = conv_row(mnode["id"])
+        if mc is not None:
+            mi = conv_state(mc)
+            mi["unread"] = unread_count(mc["id"], dm)
+            commands.append({"command": mc["id"], "description": menu_desc(mc, mi, current == mc["id"])})
+    commands.append({"command": "nodes", "description": "🖥 集群机器池 / CPU内存探针 / 算力机与Web台"})
     commands.append({"command": "clouds", "description": "☁️ Cloud 目录管理 / 聊天迁移 / 删除旧Cloud"})
     if view:
         commands += [{"command": cloud_cmd(n), "description": cloud_desc(dm, n, n == view)} for n in cloud_order(clouds)]
@@ -6989,18 +8344,54 @@ async def notify_away(batch: list) -> None:
         await notify_admins("\n".join(lines), markup)
 
 
+def auto_restart_stuck_conv(conv, stuck_sec: float) -> str:
+    """当检测到处于 thinking 阶段（非 shell、非挂起等待）卡死超过 5 分钟时，自动保持原模型与完整上下文原地重开！"""
+    lock_in_conv_model(conv)
+    old_ag = active_agent(conv)
+    if old_ag is not None:
+        stop_identity(old_ag["id"], f"思考阶段卡死 {human_dur(stuck_sec)}（超 5 分钟）自动重开")
+    store.run("UPDATE convs SET task_agent_id='', auto_restarted_ts=? WHERE id=?", (now(), conv["id"]))
+    cnum = cloud_of(conv)
+    launcher = store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND cloud_num=? AND status='online'", (cnum,))
+    if launcher is None or not node_is_online(launcher):
+        launcher = select_best_launcher(for_conv=conv["id"])
+    if launcher is not None and is_main_node_id(launcher["id"]):
+        op_id, nid = enqueue_launch_op(conv, launcher, requester="watchdog_auto_restart")
+        system_note(
+            route_control_target(),
+            f"🔄 【5分钟思考卡死自动重开】{conv_tag(conv)} 在 `thinking` 阶段停滞 {human_dur(stuck_sec)} 无新思考产出（已排除 shell 命令），"
+            f"已自动保留原模型与上下文向 {nid} 下发标准化 `[TASK_LAUNCH]` 重开单（op_id={op_id}）！",
+            wake=0,
+        )
+        return nid
+    issue_task(conv["id"])
+    conv_fresh = conv_row(conv["id"])
+    system_note(route_control_target(), task_note(conv_fresh, f"思考卡死 {human_dur(stuck_sec)} 自动重开"), wake=1)
+    return "main"
+
+
 async def watchdog_tick() -> None:
     mark_menu_dirty()
+    if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher' AND status='online'"):
+        ensure_controller_alive()
     for conv in open_convs():
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
+        trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
+        think_stuck, stuck_sec = check_thinking_stuck(conv, trow_w)
+        if think_stuck and not is_unowned(conv) and (now() - float(conv["auto_restarted_ts"] or 0)) >= THINK_STUCK_SEC:
+            auto_restart_stuck_conv(conv, stuck_sec)
+            continue
         if away(conv) and state != "unclaimed":
             # 旧 cloud 或无主池里的聊天不再反复弹任何失联/没等消息提醒打扰管理员
             continue
         if state in ("stuck", "lost"):
             tid = (conv["task_agent_id"] or "").strip()
-            trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
             is_zombie, _, last_act = trace_liveness(trow_w)
+            phase_cur = (trow_w["phase"] if trow_w else "") or ""
+            # 若当前明确在跑 shell 命令，不要误发僵尸重启告警
+            if phase_cur == "shell" and not is_zombie:
+                continue
             tline = trace_one_liner(conv["id"])
             trace_info = f"\n实时追踪状态：{tline}" if tline else ""
             tid_hint = f"（记录的旧agent_id=\"{tid}\"）" if tid else "（用你启动它时拿到的旧agent_id）"
@@ -7009,16 +8400,16 @@ async def watchdog_tick() -> None:
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
                     f"🚨 判死结论：该子 agent 最后思考/动作时间停留在 {human_dur(now() - last_act)} 前，已确认为【僵尸假活】（此时即使调用 Task resume 返回 `currently running` 也是底层流卡死假象，绝不能等）！\n"
-                    f"请立即调用 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码 → `Task(prompt=桥给的原文, run_in_background=true)` 重新拉起接手（进度已在库和 Git 中保留）！"
+                    f"请立即调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码 → `Task(prompt=桥给的原文, run_in_background=true)` 重新拉起接手（进度已在库和 Git 中保留）！"
                 )
             else:
                 key = state
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
                     f"请严格按 [主控] 三句处理：\n"
-                    f"1) 先判活/续跑：调用 Task(resume=旧agent_id, prompt=\"请立刻回到 dais read_chat 继续挂起等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
-                    f"2) 若 resume 回「currently running」且上方【最后思考/终端输出】仍在刷新 = 活着别动；若最后思考已停滞超过 10 分钟 = 僵尸假活，同样按已死处理；\n"
-                    f"3) 若已死（timeout/aborted/僵尸假活），直接调 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
+                    f"1) 先判活/续跑：调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")` 或 Task(resume=旧agent_id, prompt=\"请立刻回到 dais read_chat 继续挂起等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
+                    f"2) 若 resume 回「currently running」且上方【最后思考/终端输出】仍在刷新（或处于 shell 正常跑命令） = 活着别动；若处于 thinking 停滞超过 5 分钟 = 思考卡死，按已死处理；\n"
+                    f"3) 若已死（timeout/aborted/思考卡死），直接调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
                 )
         elif state == "unclaimed":
             if is_unowned(conv):
@@ -7031,7 +8422,11 @@ async def watchdog_tick() -> None:
             text = (f"{conv_tag(conv)} 的任务发出 {human_dur(now() - conv['task_ts'])} 了，还没有子 agent 接手。"
                     f"请立刻调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。{model_hint(conv)}\n"
                     f"----\n{task_text(conv)}\n----")
-        await raise_alert(conv, key, text)
+        if key and conv["id"] != "main":
+            if alert_due(conv, key):
+                system_note(route_control_target(), "【看门狗】" + text)
+        else:
+            await raise_alert(conv, key, text)
     main = conv_row("main")
     info = conv_state(main)
     key, text = "", ""
@@ -7066,6 +8461,8 @@ async def lifespan(_app: FastAPI):
     notes += split_notes
     if tell_main:
         system_note("main", tell_main)
+    migrate_cluster_v360()
+    build_runtime_pyz()
     ensure_admin_device()
     MENU["event"] = asyncio.Event()
     tasks = [asyncio.create_task(watchdog_loop())]
@@ -7157,6 +8554,14 @@ async def get_file(file_id: str, sig: str = "") -> Response:
 
 # ---------------------------------------------------------------- 实时动作追踪与防断连钩子接口
 
+@app.get("/trace/dais_runtime.pyz")
+async def serve_dais_runtime_pyz() -> Response:
+    data = build_runtime_pyz()
+    if not data:
+        return PlainTextResponse("runtime missing\n", status_code=404)
+    return Response(content=data, media_type="application/octet-stream")
+
+
 @app.get("/trace/agent_trace.py")
 async def serve_agent_trace_script() -> Response:
     script_path = ROOT / "agent_trace.py"
@@ -7171,9 +8576,9 @@ async def serve_trace_install_sh() -> Response:
         "#!/usr/bin/env bash\n"
         "set -e\n"
         "mkdir -p ~/.cursor\n"
-        f"curl -fsSL '{PUBLIC_BASE}/trace/agent_trace.py' -o ~/.cursor/agent_trace.py\n"
-        "chmod +x ~/.cursor/agent_trace.py\n"
-        f"python3 ~/.cursor/agent_trace.py install '{PUBLIC_BASE}'\n"
+        f"curl -fsSL '{PUBLIC_BASE}/trace/dais_runtime.pyz' -o ~/.cursor/dais_runtime.pyz\n"
+        "chmod +x ~/.cursor/dais_runtime.pyz\n"
+        f"python3 ~/.cursor/dais_runtime.pyz install '{PUBLIC_BASE}'\n"
     )
     return PlainTextResponse(sh, media_type="text/x-shellscript; charset=utf-8")
 
@@ -7303,14 +8708,20 @@ async def trace_post_event(request: Request) -> JSONResponse:
     new_updated = prev_updated if is_hb else now()
     new_thought = now() if (not is_hb and event == "afterAgentThought") else prev_thought
 
+    metrics_obj = body.get("metrics") if isinstance(body.get("metrics"), dict) else {}
+    metrics_str = json.dumps(metrics_obj, ensure_ascii=False)[:1000] if metrics_obj else ""
+    now_hb = now()
+
     store.run(
-        "INSERT INTO agent_traces(conv,agent_id,conversation_id,phase,tool_name,summary,detail,started_ts,updated_ts,output_ts,thought_ts) "
-        "VALUES(?,?,?,?,?,?,?,?,?,?,?) "
+        "INSERT INTO agent_traces(conv,agent_id,conversation_id,phase,tool_name,summary,detail,started_ts,updated_ts,output_ts,thought_ts,hb_ts,metrics_json) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) "
         "ON CONFLICT(conv) DO UPDATE SET "
         "agent_id=CASE WHEN excluded.agent_id!='' THEN excluded.agent_id ELSE agent_traces.agent_id END,"
         "conversation_id=CASE WHEN excluded.conversation_id!='' THEN excluded.conversation_id ELSE agent_traces.conversation_id END,"
         "phase=excluded.phase, tool_name=excluded.tool_name, summary=excluded.summary, detail=excluded.detail,"
-        "started_ts=excluded.started_ts, updated_ts=excluded.updated_ts, output_ts=excluded.output_ts, thought_ts=excluded.thought_ts",
+        "started_ts=excluded.started_ts, updated_ts=excluded.updated_ts, output_ts=excluded.output_ts, thought_ts=excluded.thought_ts,"
+        "hb_ts=excluded.hb_ts,"
+        "metrics_json=CASE WHEN excluded.metrics_json!='' THEN excluded.metrics_json ELSE agent_traces.metrics_json END",
         (
             conv_key,
             arow["id"] if arow is not None else "",
@@ -7323,8 +8734,27 @@ async def trace_post_event(request: Request) -> JSONResponse:
             new_updated,
             output_ts,
             new_thought,
+            now_hb,
+            metrics_str,
         ),
     )
+
+    # 同步刷新所属主 Agent (mainN) 或工作节点 (nodeN) 的实时 CPU/内存探针快照！
+    if metrics_str and not conv_key.startswith("cid:"):
+        if is_main_node_id(conv_key) or is_worker_node_id(conv_key):
+            store.run(
+                "UPDATE exec_nodes SET metrics_json=?, metrics_ts=?, last_seen=? WHERE id=?",
+                (metrics_str, now_hb, now_hb, conv_key),
+            )
+        else:
+            crow_m = conv_row(conv_key)
+            if crow_m is not None:
+                cnum_m = cloud_of(crow_m)
+                if cnum_m > 0:
+                    store.run(
+                        "UPDATE exec_nodes SET metrics_json=?, metrics_ts=? WHERE kind='launcher' AND cloud_num=?",
+                        (metrics_str, now_hb, cnum_m),
+                    )
 
     if not is_hb and summary and not conv_key.startswith("cid:"):
         store.run(

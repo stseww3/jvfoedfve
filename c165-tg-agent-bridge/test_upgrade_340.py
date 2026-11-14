@@ -400,7 +400,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         )
         with urllib.request.urlopen(req_admin_sub, timeout=3) as resp:
             tdata = json.loads(resp.read().decode("utf-8"))
-        assert tdata["ok"] and tdata["version"] == "3.5.0"
+        assert tdata["ok"] and tdata["version"] == bridge.VERSION
         assert len(tdata["traces"]) == 1
         c1_trace = tdata["traces"][0]
         assert c1_trace["chat"] == "c1"
@@ -467,7 +467,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
 
         with urllib.request.urlopen("http://127.0.0.1:18787/trace/install.sh", timeout=3) as resp:
             install_sh = resp.read().decode("utf-8")
-        assert "agent_trace.py install" in install_sh
+        assert "dais_runtime.pyz install" in install_sh or "agent_trace.py install" in install_sh
 
     finally:
         server.should_exit = True

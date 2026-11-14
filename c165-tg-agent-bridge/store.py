@@ -246,6 +246,27 @@ CREATE TABLE IF NOT EXISTS dispatch_ops(
     created_ts REAL DEFAULT 0,
     done_ts REAL DEFAULT 0
 );
+
+-- Web 控制台用户表（zwt 为唯一超级管理员，首次访问自设密码，PBKDF2 加盐哈希存储）
+CREATE TABLE IF NOT EXISTS web_users(
+    username TEXT PRIMARY KEY,
+    password_hash TEXT DEFAULT '',
+    role TEXT NOT NULL DEFAULT 'user', -- superadmin (仅 zwt) | user
+    tg_owner INTEGER DEFAULT 0,        -- 0=zwt管理员全局视图；非0=对应授权用户私聊隔离空间
+    display_name TEXT DEFAULT '',
+    disabled INTEGER DEFAULT 0,
+    created REAL DEFAULT 0,
+    last_login REAL DEFAULT 0
+);
+
+-- Web 登录会话表（仅存随机 session token 的 SHA-256 哈希）
+CREATE TABLE IF NOT EXISTS web_sessions(
+    token_hash TEXT PRIMARY KEY,
+    username TEXT NOT NULL,
+    created REAL DEFAULT 0,
+    expires REAL DEFAULT 0,
+    ua TEXT DEFAULT ''
+);
 """
 
 COLUMNS = (
