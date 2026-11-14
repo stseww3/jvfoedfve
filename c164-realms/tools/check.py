@@ -36,6 +36,11 @@ Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
              16 pixels to the block; a piece drawn out along one axis has an even picture along it
   views      display entities inside each shot's view, against the per-view budget; how many the
              game draws whatever the view; how many stand too far from the camera to be sent
+  sight      nothing stands between the arrival view (skeleton.V1) and what its picture has to
+             show: the skyline (domes, clock tower, time-ball mast), the comet's head, the front
+             from y 4 up; the station's canopy keeps to the top eighth of the picture. Worked out
+             from the blocks and the display entities, without drawing (tools/sightline.py). For
+             the master scene, and for a test scene with a shot at V1
 
 What a script cannot judge (doors a player fits through, storey heights, the wording of signs,
 whether a repainted block is used for what it was repainted as) is read off the pictures and the
@@ -62,7 +67,9 @@ import numpy as np  # noqa: E402
 from PIL import Image  # noqa: E402
 
 import makepack  # noqa: E402
+import sightline as SL  # noqa: E402
 from artkit import export as X  # noqa: E402
+from artkit.gameassets import Assets  # noqa: E402
 from artkit import models as M  # noqa: E402
 from artkit import mood as MOOD  # noqa: E402
 from scenes.obs.common import blocks as B  # noqa: E402
@@ -834,6 +841,269 @@ def views(rep, got, shots_path):
     rep.add("views", status, summary, clip(fails) + clip(over) + clip(far), data={"shots": rows})
 
 
+# ---- sight -------------------------------------------------------------------------------------
+# The arrival view (skeleton.V1) is the first picture of the map. A0 fixed what it has to show
+# (#171, #19629): everything of the front from about y 4 up, the domes, the clock tower and the
+# time-ball mast with the comet over it; the canopy of the cable station may come into the top of
+# the picture as a frame, by no more than skeleton.V1_FRAME of its height.
+#
+# A sight line is followed from the eye up to SIGHT_FRONT. From there west it is on the main
+# building's own ground (pilasters, cornice, porch, what hangs on the front): that is the picture
+# itself, not something in front of it.
+SIGHT_FRONT = S.east_wall_x(S.CENTRE_BAYS[0]) + S.DEPTH_CORNICE + 4     # the plane x = 23
+SIGHT_PICTURE = (192, 108)      # the rays of the frame test, 16:9
+STATION_REACH = 6               # eaves, brackets and steps of the station stay within this of its box
+# How much of the front may be out of sight. Posts one block wide stand on the east edge by the
+# skeleton's rule, four apart, and each takes a strip of the base storey: a third of it in all, seen
+# at V1's slant. More than BASE_HIDDEN of it means a wall along the edge. In front of a great window
+# (and of the cornice over it) nothing wider than a lamp post belongs: more than WINDOW_HIDDEN of one
+# bay is named, more than WINDOW_LOST fails.
+BASE_HIDDEN = 0.5
+WINDOW_HIDDEN = 0.25
+WINDOW_LOST = 0.5
+SKYLINE = ("the time-ball mast", "the clock tower", "the great dome", "the small dome")
+FRONT = ("the base storey", "the great windows", "the cornice")
+
+
+def _two(a, b):
+    """Two samples to the block over the cells a .. b."""
+    return np.arange(a + 0.25, b + 1.0, 0.5)
+
+
+def _sight_parts(eye):
+    """What the arrival view has to show, as points: {part: [(x, y, z)]}. The front is sampled on
+    the plane of its wing walls; the masses above the roof as they face the eye."""
+    def facing(axis, rows):
+        ax, az = axis
+        v = np.array([ax - eye[0], az - eye[2]])
+        v = v / np.linalg.norm(v)
+        px, pz = -v[1], v[0]                # level and square to the sight line
+        return [(ax + w * px, y, az + w * pz) for y, r in rows
+                for w in (np.arange(-r + 0.25, r, 0.5) if r > 0.25 else (0.0,))]
+
+    x = S.WALL_E + 1.0
+    zs = _two(S.Z_NORTH, S.Z_SOUTH)
+    small_axis = (S.mid(*S.SMALL_DOME_X), S.mid(*S.SMALL_DOME_Z))
+    small_spring = S.SMALL_DOME_APEX + 1 - S.SMALL_DOME_R
+    return {
+        "the base storey": [(x, y, z) for y in _two(4, S.PANEL) for z in zs],
+        "the great windows": [(x, y, z) for y in _two(*S.WINDOW) for z in zs],
+        "the cornice": [(x, y, z) for y in _two(S.FRIEZE, S.PARAPET[1]) for z in zs],
+        "the clock tower": [(S.CLOCK_SHAFT_X[1] + 1.0, y, z) for y in _two(S.ROOF_STAND, S.CLOCK_TOP)
+                            for z in _two(*S.CLOCK_SHAFT_Z)],
+        "the time-ball mast": [(S.mid(*S.CLOCK_SHAFT_X), y, S.mid(*S.CLOCK_SHAFT_Z))
+                               for y in _two(S.CLOCK_TOP + 1, S.CLOCK_BALL_MAST)],
+        "the great dome": facing(S.DOME_AXIS, [(y, S.DOME_R if y < S.DOME_SPRING else S.dome_profile(y))
+                                               for y in _two(S.DRUM[0], S.DOME_APEX)]),
+        "the small dome": facing(small_axis, [
+            (y, S.SMALL_DOME_R if y < small_spring else
+             math.sqrt(max(S.SMALL_DOME_R ** 2 - (y - small_spring) ** 2, 0.0)))
+            for y in _two(S.SMALL_DRUM_BASE, S.SMALL_DOME_APEX)]),
+    }
+
+
+def _comet_head():
+    """The direction of the comet's head (a unit vector) and its elevation in degrees, or None when
+    the sky line does not say. The comet stands in the moon's slot: due west of the viewer."""
+    try:
+        from scenes.obs.sky import comet, mood
+        up = 90.0 - float(mood.MOON_ANGLE) - float(comet.HEAD_BELOW)
+    except Exception:
+        return None
+    return np.array([-math.cos(math.radians(up)), math.sin(math.radians(up)), 0.0]), up
+
+
+def _where(cells):
+    out = []
+    for axis, vals in zip("xyz", zip(*cells)):
+        lo, hi = min(vals), max(vals)
+        out.append(f"{axis} {lo}" if lo == hi else f"{axis} {lo}..{hi}")
+    return ", ".join(out)
+
+
+def _who(labels, what, cell, pick, most=3):
+    """Who stands in the picked sight lines: "sandstone at x 60, y 0..1, z -9; ...", most first."""
+    groups = {}
+    for w, c in zip(what[pick], cell[pick]):
+        groups.setdefault(labels[int(w)], set()).add(tuple(int(v) for v in c))
+    rows = sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+    words = [f"{label} at {_where(cells)}" for label, cells in rows[:most]]
+    if len(rows) > most:
+        words.append(f"{len(rows) - most} more kinds")
+    return "; ".join(words)
+
+
+def sight(rep, got, jar, shots_path):
+    scene = got["scene"]
+    eye = np.array(S.V1["pos"], dtype=float)
+    if not is_master(scene):
+        shots = []
+        if shots_path and os.path.exists(shots_path):
+            with open(shots_path, encoding="utf-8") as fh:
+                shots = json.load(fh)
+        if not any(np.allclose(np.array(shot.get("pos", (0, 0, 0)), dtype=float), eye, atol=0.01) for shot in shots):
+            rep.add("sight", "SKIP", "no shot of this scene stands at V1 (skeleton.V1), so it is not held to "
+                    "the arrival view")
+            return
+    if not (jar and os.path.exists(jar)):
+        rep.add("sight", "SKIP", "no game jar, so the shapes of the blocks cannot be read")
+        return
+    t0 = time.time()
+    canvas = got["canvas"]
+    cam = SL.frame(eye, S.V1["look_at"])
+    parts = _sight_parts(eye)
+    names = list(parts)
+    pts = np.array([p for name in names for p in parts[name]], dtype=float)
+    part_of = np.array([i for i, name in enumerate(names) for _ in parts[name]])
+    station = S.CABLE_STATION
+    zone_lo = np.array([station[0] - STATION_REACH, S.STATION_GROUND - 1, station[1] - STATION_REACH], dtype=float)
+    zone_hi = np.array([station[2] + STATION_REACH + 1, S.STATION_GROUND + 40, station[3] + STATION_REACH + 1],
+                       dtype=float)
+    v = pts - eye
+    dist = np.linalg.norm(v, axis=1)
+    dirs = v / dist[:, None]
+    reach = dist * (eye[0] - SIGHT_FRONT) / (eye[0] - pts[:, 0])
+    ends = eye + dirs * reach[:, None]
+    lo = np.floor(np.minimum(np.minimum(ends.min(axis=0), eye), zone_lo)).astype(int) - 1
+    hi = np.ceil(np.maximum(np.maximum(ends.max(axis=0), eye), zone_hi)).astype(int) + 1
+    lo[0] = max(lo[0], SIGHT_FRONT)
+    shapes = SL.Shapes(Assets(jar, packs=(got["pack"],)))
+    bl = SL.Blockers(canvas.b, canvas.entities, shapes, lo, hi)
+    fails, warns, notes, data = [], [], [], {}
+
+    # ---- what the picture has to show
+    out = bl.cast(eye, dirs, reach)
+    hidden, veiled = np.isfinite(out["t"]), out["thru"] >= 0
+    for i, name in enumerate(names):
+        pick = part_of == i
+        n, h, th = int(pick.sum()), int((pick & hidden).sum()), int((pick & veiled & ~hidden).sum())
+        data[name] = {"lines": n, "hidden": h, "seen_through": th}
+        if name in SKYLINE:
+            if h:
+                fails.append(f"{name}: {h} of {n} sight lines are hidden by "
+                             f"{_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
+            if th:
+                fails.append(f"{name}: {th} of {n} sight lines pass through "
+                             f"{_who(bl.labels, out['thru'], out['thru_cell'], pick & veiled & ~hidden)}")
+        elif name == "the base storey":
+            if h > BASE_HIDDEN * n:
+                fails.append(f"{name} (y 4..{S.PANEL}): {100.0 * h / n:.0f}% is hidden; the posts of the east edge "
+                             f"alone take a third, more than {100 * BASE_HIDDEN:.0f}% reads as a wall: "
+                             f"{_who(bl.labels, out['what'], out['cell'], pick & hidden)}")
+        elif h:
+            # bay by bay, over the three columns between the pilasters; the bays that the same kinds
+            # of thing hide are named together
+            z = pts[:, 2]
+            groups = {}
+            for bay in range(1, S.N_BAYS + 1):
+                inbay = pick & (z >= S.bay_center_z(bay) - 1) & (z < S.bay_center_z(bay) + 2)
+                gone = (inbay & hidden).sum() / float(inbay.sum())
+                if gone > WINDOW_HIDDEN:
+                    kinds = frozenset(bl.labels[int(w)] for w in out["what"][inbay & hidden])
+                    groups.setdefault((kinds, bool(gone > WINDOW_LOST)), []).append((bay, gone, inbay & hidden))
+            for (_, lost), found in groups.items():
+                lines = np.any([f[2] for f in found], axis=0)
+                lo_s, hi_s = min(f[1] for f in found), max(f[1] for f in found)
+                amount = f"{100 * lo_s:.0f}%" if hi_s - lo_s < 0.005 else f"{100 * lo_s:.0f} to {100 * hi_s:.0f}%"
+                line = (f"{name}, bay{'s' if len(found) > 1 else ''} {', '.join(str(f[0]) for f in found)}: "
+                        f"{amount} hidden (y {float(pts[lines, 1].min()) - 0.25:g} to "
+                        f"{float(pts[lines, 1].max()) + 0.25:g}) by {_who(bl.labels, out['what'], out['cell'], lines)}")
+                if lost:
+                    fails.append(line + f"; more than {100 * WINDOW_LOST:.0f}% of a bay is a post or a wall in front of it")
+                else:
+                    warns.append(line + f"; a lamp post takes less than {100 * WINDOW_HIDDEN:.0f}% of a bay")
+    front = np.isin(part_of, [names.index(k) for k in FRONT])
+    share = {k: 100.0 * data[k]["hidden"] / data[k]["lines"] for k in FRONT}
+    words = [f"the front from y 4 up {100.0 * (front & hidden).sum() / front.sum():.1f}% hidden (base storey "
+             f"{share['the base storey']:.0f}%, great windows {share['the great windows']:.1f}%)"]
+    sky_lines = sum(data[k]["lines"] for k in SKYLINE)
+    sky_lost = sum(data[k]["hidden"] + data[k]["seen_through"] for k in SKYLINE)
+    words.append(f"skyline {'clear' if not sky_lost else f'{sky_lost} of {sky_lines} sight lines lost'}")
+
+    # ---- the comet's head
+    head = _comet_head()
+    if head is None:
+        notes.append("the sky line does not say where the comet stands (sky/mood.MOON_ANGLE, "
+                     "sky/comet.HEAD_BELOW), so its head is not tested")
+    else:
+        direction, up = head
+        at = SL.in_picture(cam, FOV, ASPECT, direction)
+        data["comet"] = {"elevation": up, "across": None if at is None else round(at[0], 4),
+                         "down": None if at is None else round(at[1], 4)}
+        if at is None or not (0.0 <= at[0] <= 1.0 and 0.0 <= at[1] <= 1.0):
+            warns.append(f"the comet's head ({up:g} degrees up, due west) is outside the picture of V1")
+        else:
+            ring = [direction]
+            for da, de in ((1.0, 0.0), (-1.0, 0.0), (0.0, 1.0), (0.0, -1.0)):
+                e, a = math.radians(up + de), math.radians(da)
+                ring.append(np.array([-math.cos(e) * math.cos(a), math.sin(e), math.cos(e) * math.sin(a)]))
+            ring = np.array(ring)
+            got_c = bl.cast(eye, ring, (eye[0] - SIGHT_FRONT) / -ring[:, 0])
+            lost = np.isfinite(got_c["t"]) | (got_c["thru"] >= 0)
+            data["comet"]["lost"] = int(lost.sum())
+            if lost.any():
+                both_w = np.where(np.isfinite(got_c["t"]), got_c["what"], got_c["thru"])
+                both_c = np.where(np.isfinite(got_c["t"])[:, None], got_c["cell"], got_c["thru_cell"])
+                fails.append(f"the comet's head ({up:g} degrees up, due west, {100 * at[1]:.0f}% below the "
+                             f"picture's top edge) is covered by {_who(bl.labels, both_w, both_c, lost)}")
+            words.append(f"comet's head {100 * at[1]:.0f}% below the top edge" + ("" if lost.any() else ", clear"))
+            if at[1] < S.V1_FRAME:
+                notes.append(f"the comet's head lies {100 * at[1]:.1f}% below the top edge, inside the top "
+                             f"{100 * S.V1_FRAME:g}% a canopy may take: over the head (about "
+                             f"{100 * at[0]:.0f}% across the picture) the canopy has to stay out")
+
+    # ---- the canopy as a frame: what of the station hangs into the picture from above
+    width, height = SIGHT_PICTURE
+    rays = SL.picture_rays(cam, FOV, ASPECT, width, height).reshape(-1, 3)
+    safe = np.where(np.abs(rays) < 1e-12, 1e-12, rays)
+    leave = np.maximum((zone_lo - eye) / safe, (zone_hi - eye) / safe).min(axis=1)
+    got_p = bl.cast(eye, rays, leave)
+    solid = got_p["t"] <= got_p["thru_t"]
+    seen = np.isfinite(np.minimum(got_p["t"], got_p["thru_t"]))
+    what = np.where(solid, got_p["what"], got_p["thru"])
+    cell = np.where(solid[:, None], got_p["cell"], got_p["thru_cell"])
+    box = np.where(solid, got_p["box"], got_p["thru_box"])
+    # What stands on the platform (a post, a wall, a lamp standard) is not the canopy: a block with
+    # blocks under it all the way down to head height, a model that reaches down to there.
+    head = S.STATION_GROUND + 2
+    stands = {}
+
+    def standing(i):
+        if box[i] >= 0:
+            return bl.boxes[int(box[i])]["bottom"] < head
+        key = tuple(int(q) for q in cell[i])
+        if key not in stands:
+            x, y, z = key
+            stands[key] = all((x, below, z) in canvas.b for below in range(head, y))
+        return stands[key]
+
+    hangs = np.array([bool(seen[i]) and not standing(i) for i in range(len(rays))]).reshape(height, width)
+    stood = seen.reshape(height, width) & ~hangs
+    rows = np.nonzero(hangs.any(axis=1))[0]
+    depth = (int(rows[-1]) + 1) / float(height) if len(rows) else 0.0
+    uprights = float(stood[:height // 2].any(axis=0).mean())
+    data["canopy"] = {"depth": round(depth, 4), "allowed": S.V1_FRAME, "uprights": round(uprights, 4)}
+    if not len(rows):
+        words.append("no canopy in the picture")
+    else:
+        row = int(rows[-1])
+        col = int(np.nonzero(hangs[row])[0][0])
+        i = row * width + col
+        words.append(f"canopy down to {100 * depth:.1f}% of the picture's height (allowed {100 * S.V1_FRAME:g}%)")
+        if depth > S.V1_FRAME + 0.5 / height:
+            fails.append(f"the station's canopy hangs down to {100 * depth:.1f}% of the picture's height, "
+                         f"{100 * (col + 0.5) / width:.0f}% across; it may take the top {100 * S.V1_FRAME:g}%: "
+                         f"{bl.labels[int(what[i])]} at {_where([tuple(int(q) for q in cell[i])])}")
+    if uprights:
+        notes.append(f"posts and walls of the station cross {100 * uprights:.0f}% of the picture's width in its "
+                     f"upper half; they are held to the sight lines, not to the canopy's {100 * S.V1_FRAME:g}%")
+
+    status = "FAIL" if fails else "WARN" if warns else "PASS"
+    summary = (f"V1 at ({eye[0]:g}, {eye[1]:g}, {eye[2]:g}): " + "; ".join(words)
+               + f" ({len(pts) + len(rays)} sight lines, {time.time() - t0:.1f} s)")
+    rep.add("sight", status, summary, clip(fails) + clip(warns) + clip(notes), data=data)
+
+
 def commit():
     """Short hash of the checked code, read from .git without running git."""
     try:
@@ -913,6 +1183,8 @@ def main():
                            lambda: flatwall(rep, got),
                            lambda: entities(rep, got),
                            lambda: views(rep, got, args.shots or os.path.join(
+                               BUILD, "scenes", args.scene, "shots.json")),
+                           lambda: sight(rep, got, args.jar, args.shots or os.path.join(
                                BUILD, "scenes", args.scene, "shots.json"))]
             for check in checks:
                 try:
