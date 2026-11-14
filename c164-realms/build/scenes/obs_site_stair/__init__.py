@@ -10,9 +10,13 @@ The views: V1 as the skeleton fixes it (the arrival view the package is judged o
 band under the building, the stair comes down on the left), the stair on its axis from the yard,
 the look back down it from the terrace, the wall and a cheek from near, and two from above.
 """
+import math
+
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
+from scenes.obs.props import lamps
+from scenes.obs.site import stair
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 100
@@ -20,9 +24,21 @@ BIOME_MARGIN_Y = 150
 LINES = (site, main, props, sky)
 
 
+def _stair_lamps(c):
+    """A street lamp on each of the stair's four pedestals. The package sets the pedestals and names
+    their tops (stair.LAMP_POINTS); the lamps are the props line's to place. Until its table has
+    them they are stood here, so that the pictures show the stair as it is meant to be lit. A
+    pedestal that already carries a lamp is left alone."""
+    for p in stair.LAMP_POINTS:
+        if not any(math.dist(p, e[:3]) < 0.5 for e in c.entities):
+            lamps.place(c, "street", p)
+
+
 def build():
     c = Canvas()
     for line in LINES:
+        if line is sky:
+            _stair_lamps(c)         # before the sky line turns the offered lights into light
         line.build(c, (0, 0, 0))
     return c
 

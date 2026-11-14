@@ -20,8 +20,10 @@ on that edge hides about three of the front (A0 #171; site/_kit; c235 #21906).
   cheeks     A wall on each side, outside the 17 (rows z -9 and 9, in line with the end piers of
              the terrace railing): slate brick like the retaining wall it grows out of, and on it
              an ashlar parapet that rakes with the stair, one block above the treads.
-  pedestals  Where a cheek ends, at the head (x 61) and at the foot (x 72): plinth, panelled die,
-             cap. They are the lamp bases: LAMP_POINTS names the top of each for the props line
+  pedestals  Where a cheek ends: plinth, panelled die, cap. At the head (x 61) one block square, the
+             cheek's own top end. At the foot two blocks square, beyond the last riser (x 72..73)
+             and standing out from the cheek away from the stair, so the 17 stay clear. They are
+             the lamp bases: LAMP_POINTS names the middle of the top of each for the props line
              (the lamp) and the sky line (its light). No block is set above them.
 
 Blocks only, no display entities.
@@ -63,8 +65,32 @@ DRAIN_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) 
 
 HEAD_TOP = S.GROUND + 0.5           # the cap of a head pedestal: its slab alone stands above the terrace floor
 FOOT_TOP = FEET + 2.5               # the cap of a foot pedestal: a block above the cheek's low end
-LAMP_POINTS = [(x + 0.5, top, z + 0.5)
-               for x, top in ((HEAD_X, HEAD_TOP), (FOOT_X, FOOT_TOP)) for z in CHEEK_Z]
+FOOT_SIZE = 2                       # a foot pedestal is this many blocks square
+
+
+def _away(z):
+    """The step from a cheek's row away from the stair."""
+    return -1 if z < G["z0"] else 1
+
+
+def _pedestal_cells(x, z, size):
+    """The cells of the pedestal that ends the cheek in row z: from column x eastwards, from the
+    cheek's row away from the stair."""
+    return [(x + i, z + _away(z) * j) for i in range(size) for j in range(size)]
+
+
+def _middle(cells):
+    xs, zs = [x for x, _ in cells], [z for _, z in cells]
+    return (min(xs) + max(xs) + 1) / 2.0, (min(zs) + max(zs) + 1) / 2.0
+
+
+HEAD_PEDESTALS = [_pedestal_cells(HEAD_X, z, 1) for z in CHEEK_Z]
+FOOT_PEDESTALS = [_pedestal_cells(FOOT_X, z, FOOT_SIZE) for z in CHEEK_Z]
+LAMP_POINTS = [(_middle(cells)[0], top, _middle(cells)[1])
+               for group, top in ((HEAD_PEDESTALS, HEAD_TOP), (FOOT_PEDESTALS, FOOT_TOP)) for cells in group]
+# The paving under the stair's foot is one apron (site/lowerplatform): as wide as the foot pedestals stand.
+APRON_Z = (CHEEK_Z[0] - (FOOT_SIZE - 1), CHEEK_Z[1] + (FOOT_SIZE - 1))
+APRON_X = FOOT_X + FOOT_SIZE        # 74: one column beyond the pedestals
 
 
 def _put(c, o, x, y, z, state):
@@ -122,14 +148,16 @@ def _cheek(c, o, x, z):
         _put(c, o, x, k, z, ASHLAR_SLAB)
 
 
-def _pedestal(c, o, x, z, top):
-    """Plinth, die and cap, the cap's top at `top`; slate brick under the plinth down to the paving."""
+def _pedestal(c, o, cells, top):
+    """Plinth, die and cap over `cells`, the cap's top at `top`; slate brick under the plinth down
+    to the paving."""
     cap = int(math.floor(top))
-    for y in range(FEET, cap - 2):
-        _put(c, o, x, y, z, BRICK)
-    _put(c, o, x, cap - 2, z, ASHLAR)
-    _put(c, o, x, cap - 1, z, DIE)
-    _put(c, o, x, cap, z, ASHLAR_SLAB)
+    for x, z in cells:
+        for y in range(FEET, cap - 2):
+            _put(c, o, x, y, z, BRICK)
+        _put(c, o, x, cap - 2, z, ASHLAR)
+        _put(c, o, x, cap - 1, z, DIE)
+        _put(c, o, x, cap, z, ASHLAR_SLAB)
 
 
 def build(canvas, origin=(0, 0, 0)):
@@ -144,7 +172,8 @@ def build(canvas, origin=(0, 0, 0)):
             _tread(c, o, x, z)
         for z in CHEEK_Z:
             _cheek(c, o, x, z)
-    for z in CHEEK_Z:
-        _pedestal(c, o, HEAD_X, z, HEAD_TOP)
-        _pedestal(c, o, FOOT_X, z, FOOT_TOP)
+    for cells in HEAD_PEDESTALS:
+        _pedestal(c, o, cells, HEAD_TOP)
+    for cells in FOOT_PEDESTALS:
+        _pedestal(c, o, cells, FOOT_TOP)
     return 0

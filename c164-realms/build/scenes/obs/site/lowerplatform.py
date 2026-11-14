@@ -9,8 +9,8 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
   floor   One stone laid whole and bands of a second (FLOORS, below). The bands draw the building's
           grid on the yard: a band on every pilaster line that carries a buttress of the retaining
           wall; a course along the foot of that wall and one inside the kerb; an apron at the
-          stair's foot as wide as the stair and its cheeks, and from it a walk on the main axis to
-          the east edge. Under the cable station and the power house the field is left plain: they
+          stair's foot as wide as its two foot pedestals stand, and from it a walk on the main axis
+          to the east edge. Under the cable station and the power house the field is left plain: they
           build on it.
   edge    North, east and south the platform ends over the mountain. The edge is finished as every
           terrace edge is (site/_kit.rail): kerb, piers, bars. On the east edge the piers stand on
@@ -25,15 +25,13 @@ its numbers.
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
-from .stair import BUTTRESS_Z
+from .stair import APRON_X, APRON_Z, BUTTRESS_Z
 
 ORDER = 20      # after the terrain (10); before the stair (25), the court (60) and what stands on the platform
 
 X0, Z0, X1, Z1 = S.LOWER_PLATFORM       # x 61..91, z -42..43
 PY = S.LOWER_PAVING_Y                   # -7
 FEET = S.LOWER_GROUND                   # -6
-G = S.GRAND_STAIR
-APRON = 2                               # the apron reaches this far east of the stair's foot
 WALK = 1                                # the axis walk: this many rows either side of row z 0
 
 # The floor: (field, band). The yard is the foreground of the arrival view, with the top of every
@@ -69,7 +67,7 @@ def _stone(x, z):
         return band                     # along the retaining wall's foot, and inside the kerb
     if z in BUTTRESS_Z:
         return band
-    if G["z0"] - 1 <= z <= G["z1"] + 1 and x <= G["x1"] + APRON:
+    if APRON_Z[0] <= z <= APRON_Z[1] and x <= APRON_X:
         return band                     # the apron (west of the foot it lies under the stair)
     if abs(z) <= WALK:
         return band
