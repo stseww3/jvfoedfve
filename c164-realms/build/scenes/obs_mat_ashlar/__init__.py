@@ -19,8 +19,10 @@ things the card and c190's pre-review call for:
                building will show it, cold under the night sky and warm where a lamp and a lit
                window reach it (c219's pre-review point 4). No stage lamp stands near it.
 
-This scene renders version a (the drawn ashlar). obs_mat_ashlar_b and obs_mat_ashlar_c render the
-other two versions over the same board and the same shots (the three-way compare the card asks for).
+This scene renders version a: the rough stone jointed all round, a stone to a block, kept for the
+side-by-side. obs_mat_ashlar_b renders version b, the default (the rough stone banded), and
+obs_mat_ashlar_c the vanilla sandstone, over the same board and the same shots (the three-way
+compare the card asks for). The fine stone, the panel and the emblem are the same in a and b.
 
     python -m scenes.obs_mat_ashlar      writes shots.json from the layout below
 """
@@ -39,7 +41,7 @@ CATEGORY = "materials"
 Z = 0
 TIME = 14000        # the default light version (sky line)
 DUSK = 12900        # light version C, the lightest of the three: the lit bays once more, the stone easier to read
-VERSION = "a"       # the drawn ashlar; obs_mat_ashlar_b / _c compare b and c
+VERSION = "a"       # the rough stone jointed all round; obs_mat_ashlar_b is the default, _c the vanilla stone
 
 
 WALLS = (("rough", B.ASHLAR_ROUGH), ("fine", B.ASHLAR_FINE), ("panel", B.ASHLAR_PANEL), ("emblem", B.ASHLAR_EMBLEM))
@@ -64,10 +66,10 @@ def coursed(c, x, z):
     dressed storey with sunk panels under the windows and emblem blocks at the top.
 
     The course is an upside-down fine stair -- a shelf over a half-deep fascia -- set exactly on the
-    change from rough to fine, so it takes the jump from the two-pixel joint to the one-pixel joint
-    and the two finishes read as one stone, split on purpose (c190 #2). The stage's lamps light the
-    foot of the band, so the base storey and the first courses of the dressed one stand in the one
-    light; higher up the stone is seen as the night sky lights it."""
+    change from rough to fine, so it takes the jump from the deep joint of the rough stone to the
+    light joint of the fine and the two finishes read as one stone, split on purpose (c190 #2).
+    The stage's lamps light the foot of the band, so the base storey and the first courses of the
+    dressed one stand in the one light; higher up the stone is seen as the night sky lights it."""
     w, top = 7, 12
     c.box(x, 0, z, x + w - 1, 0, z, B.SLATE_BRICK.block)                 # plinth
     c.box(x, 1, z, x + w - 1, 4, z, B.ASHLAR_ROUGH.block)                # rusticated base storey
