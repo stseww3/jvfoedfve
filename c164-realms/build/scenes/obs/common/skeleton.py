@@ -123,11 +123,20 @@ DOME_ROOM_DIAM = 22     # the great dome-room interior diameter
 SLIT_W = 5              # observing slit width, facing west, open from the drum top through the apex +2
 SLIT_FACING = "west"
 DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: what the dome turns about
-# the telescope pier is an independent column on the dome centre, from the ground to the dome room
+# The telescope pier is an independent column on the dome centre, from the ground to the dome room.
+# LOCKED by A0 (#20004, 11-14). The shaft is thin, 3 x 3, and runs straight up from y 0; its cap
+# widens to 5 x 5 in the course of the dome-room floor to carry the equatorial foot (PIER_TOP_Y is
+# the cap's top). The ring stair winds round the shaft inside the envelope, clockwise, from the
+# gallery level (STAND, reached by a small bridge) up through the star-hall ceiling to the dome room,
+# and comes out east or south of the cap, never under the tube, which points west. The ground floor
+# of the star hall (y 0..6) carries no stair at all: it is kept for the orrery, the meridian and the
+# mother clock. The dome-room floor leaves the envelope open for the stair and the pier.
 PIER_CENTRE = DOME_CENTRE
-PIER_R = 3              # PROVISIONAL: the pier + ring-stair envelope. A0 #86.6: the shaft through the
-#                        star hall is thin (c178's 3x3 shaft with a ring stair round it); the drum-room
-#                        pier cap (PIER_TOP_Y) widens to carry the equatorial foot. c178 pins it, reports back
+PIER_SHAFT = (DOME_CENTRE[0] - 1, DOME_CENTRE[1] - 1, DOME_CENTRE[0] + 1, DOME_CENTRE[1] + 1)   # x 3..5, z -1..1
+PIER_CAP = (DOME_CENTRE[0] - 2, DOME_CENTRE[1] - 2, DOME_CENTRE[0] + 2, DOME_CENTRE[1] + 2)     # x 2..6, z -2..2
+PIER_R = 3              # the pier and ring-stair envelope: x 1..7, z -3..3
+PIER_ENVELOPE = (DOME_CENTRE[0] - PIER_R, DOME_CENTRE[1] - PIER_R,
+                 DOME_CENTRE[0] + PIER_R, DOME_CENTRE[1] + PIER_R)
 
 
 def dome_profile(y):
@@ -162,7 +171,18 @@ SMALL_DOME_APEX = 25
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
 # PROPOSED by A4 (plan/parts/A4-site.md 2; A0 may move them on the pictures):
 SUNSET_PLATFORM = dict(centre=(WALL_W - 9, 0), radius=20)   # west half-circle off the rotunda
-RADIO_MAST = dict(foot=(WALL_E + 8, -40), height=62)   # (23, -40), north-east stone pad
+RADIO_MAST = dict(foot=(WALL_E + 8, -40), height=62)   # (23, -40), on MAST_PAD
+
+# The upper terrace and the four shelves cut into the mountain round it. A4's figures (c221 #19040),
+# approved by A0 (#19260.6). The terrain gives each shelf its flat rock and the ridge that leads to
+# it; what stands on a shelf, the steps down to it and its railing are the shelf's own package.
+# feet is where a person stands (the first air); the rock or paving block is one below.
+UPPER_TERRACE = (WALL_W - 10, Z_NORTH - 4, WALL_E + 45, Z_SOUTH + 4)    # x -10..60, z -38..38; feet at GROUND
+MAST_PAD = dict(box=(17, -46, 29, -39), feet=GROUND)            # north, level with the terrace
+WEATHER_STATION = dict(box=(-2, -49, 8, -43), feet=-4)          # north slope, a flight of four down
+WATER_TOWER = dict(box=(-21, -35, -13, -27), feet=-2)           # north-west shoulder; the tank top stays
+#                                                                 below the cornice (CORNICE, y 15)
+SOUTH_LOOKOUT = dict(box=(40, 48, 50, 56), feet=-5)             # on the south ridge; V11 stands here
 
 # The east side, LOCKED by A0 (#171, 11-14) from the sight line of the arrival view. With the eye h
 # below the upper terrace and a blocks east of its edge, the edge hides h x 44.5 / a of the front
@@ -212,6 +232,13 @@ EYE = 1.62          # the eye of a standing person, above where the feet stand
 # cornice, the dome, the tower. Walking to the stair on the lower platform the front sinks behind the
 # terrace edge and rises again on the stair; that is wanted.
 V1 = dict(pos=(88.5, STATION_GROUND + EYE, -32.5), look_at=(8, 14, 0.5))    # the eye at y -2.38
+# What V1 has to show (A0 #19629): the canopy of the cable station may come into the top of the
+# picture as a frame, by no more than V1_FRAME of its height, and must not cut the top of the
+# time-ball mast: the comet stands over it. tools/check.py tests the sight lines.
+V1_FRAME = 1 / 8.0
+# V11, the look back from the south lookout (A4's, approved by A0 #19260.6): the main building in
+# three-quarter view fills the middle third, the afterglow is on the left.
+V11 = dict(pos=(45.5, SOUTH_LOOKOUT["feet"] + EYE, 52.5), look_at=(6, 14, 0.5))     # the eye at y -3.38
 
 # PROPOSED by A4 again:
 MERIDIAN_X = WALL_E + 20        # 35. the brass meridian runs north-south through the court in this column
@@ -235,8 +262,10 @@ ORRERY_BODY_Y = (8.0, ORRERY_HANG_Y)    # the machine fills this height; the gro
 # Telescope: the equatorial foot (diameter <= 5) sits on the pier cap, centred on DOME_AXIS (4.5, 0.5).
 PIER_TOP_Y = float(ROOF_STAND)          # 18.0, the pier cap top; the foot stands on the cap, clear of the
 #                                         joint between the pier and the dome-room floor
-# Mother clock: wall-mounted on the pier's east face, on the axis (c193 #95, A0 #86.7): a box about
-# 1.5 wide x 0.75 thick x 4 high, y 1..5, facing east. Its x follows c178's pier east face; not pinned here.
+RING_STAIR = dict(y0=STAND, y1=ROOF_STAND, turn="clockwise")   # feet at 7 on the bridge, at 18 in the dome room
+# Mother clock: wall-mounted on the pier's east face, on the axis (c193 #95, A0 #86.7, #20004): a box
+# about 1.5 wide x 0.75 thick x 4 high, facing east. Its back is the east face of the shaft.
+MOTHER_CLOCK = dict(back_x=float(PIER_SHAFT[2] + 1), z=AXIS_Z, y=(1.0, 5.0), facing="east")   # x 6.0, z 0.5
 
 SITE_SPAN = 110                 # the hilltop is about 110 x 110 blocks (plan 4)
 
@@ -258,8 +287,9 @@ SAMPLE_BAY_BUDGET = 120         # the M2 sample段 (5 bays), ~20 per bay
 def mass_bounds():
     """A coarse (x0, y0, z0, x1, y1, z1) box around everything, for sanity and camera framing.
     Not authoritative geometry -- the masses above are."""
-    x0 = int(SUNSET_PLATFORM["centre"][0] - SUNSET_PLATFORM["radius"])
+    shelves = [m["box"] for m in (MAST_PAD, WEATHER_STATION, WATER_TOWER, SOUTH_LOOKOUT)]
+    x0 = min([int(SUNSET_PLATFORM["centre"][0] - SUNSET_PLATFORM["radius"])] + [b[0] for b in shelves])
     x1 = LOWER_PLATFORM[2]
-    z0 = min(Z_NORTH, LOWER_PLATFORM[1], RADIO_MAST["foot"][1])
-    z1 = max(Z_SOUTH, LOWER_PLATFORM[3])
+    z0 = min([Z_NORTH, LOWER_PLATFORM[1], RADIO_MAST["foot"][1]] + [b[1] for b in shelves])
+    z1 = max([Z_SOUTH, LOWER_PLATFORM[3]] + [b[3] for b in shelves])
     return (x0, PAVING_Y - LOWER_DROP, z0, x1, CLOCK_BALL_MAST, z1)
