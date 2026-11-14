@@ -54,7 +54,8 @@ DEFAULT = "b"
 VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
 GROOVES = (3, 6, 9, 12)     # the rows of the rough stone's tool marks: a groove, its lit lip the row above
-STAR = (13, 2)      # the middle of the emblem's star
+RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
+STAR = (10, 5)      # the middle of the emblem's star: inside the ring, 0.4 of its radius right of and above its middle
 
 
 def _a(n):
@@ -76,13 +77,21 @@ def _cells(inside):
 
 
 def _emblem_figure():
-    """The station emblem as the plan words it: a one-pixel ring, the meridian down it, a star off
-    its upper-right shoulder. Returns (ring+meridian cells, star cells).
+    """The station's emblem, one figure for this block, the paving of the court and the models (the
+    director's ruling of 2026-11-14 in g2, on #286/#288): a star about to cross the meridian in the
+    eyepiece of a transit instrument -- the trade of an observatory that keeps the time. A
+    one-pixel ring; the meridian down through it and out of it at both ends; a star inside the
+    ring, right of its middle and above it by 0.4 of the radius each way, touching neither the ring
+    nor the line. Returns (ring+meridian cells, star cells).
 
-    The star stands a pixel clear of the ring. On the shoulder itself two of its five pixels were
-    pixels of the ring, and what was left read as a burr on it (c219's pre-review)."""
-    ring = _cells(lambda dx, dy: 4.2 <= math.hypot(dx, dy) <= 4.9)
-    meridian = [(7, y) for y in range(3, 13)]
+    On sixteen pixels the ring is the circle fourteen across (6.5 from the middle of the tile to
+    the middle of its pixels): a smaller one leaves no room inside it for a star of five pixels
+    that stands clear. So the meridian runs the height of the tile, a pixel out of the ring at
+    either end. The first drawings had a ring ten across with the star outside it, on its shoulder
+    and then off it."""
+    lo, hi = RING
+    ring = _cells(lambda dx, dy: lo <= math.hypot(dx, dy) <= hi)
+    meridian = [(7, y) for y in range(TILE)]
     x, y = STAR
     star = [(x, y), (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
     return ring + meridian, star
@@ -255,7 +264,7 @@ def _emblem(seed):
     body, star = _emblem_figure()
     figure = set(body) | set(star)
     lip = {(x + 1, y + 1) for x, y in figure if x + 1 < TILE and y + 1 < TILE} - figure
-    for x, y in figure | lip | set(_cells(lambda dx, dy: math.hypot(dx, dy) < 4.2)):
+    for x, y in figure | lip | set(_cells(lambda dx, dy: math.hypot(dx, dy) < RING[0])):
         px[max(y - 1, 0):y + 2, max(x - 1, 0):x + 2, :3] = _a(3)
     for x, y in lip:
         px[y, x, :3] = _a(5)
@@ -315,6 +324,20 @@ def _groups(cells):
     return out
 
 
+def _outside(cut):
+    """The cells (x, y) that are reached from the edge of the tile without crossing a cell of
+    `cut`, going along rows and columns only: what a closed ring keeps out of itself."""
+    todo = [(x, y) for x in range(TILE) for y in range(TILE) if x in (0, TILE - 1) or y in (0, TILE - 1)]
+    seen = set()
+    while todo:
+        x, y = todo.pop()
+        if (x, y) in seen or (x, y) in cut or not (0 <= x < TILE and 0 <= y < TILE):
+            continue
+        seen.add((x, y))
+        todo += [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+    return seen
+
+
 def faults(pictures, version=DEFAULT):
     """What is wrong with a version's pictures as masonry: a list of lines, empty when nothing is.
     These are the rules of the card, of materials.md section 3 and of the rulings on the first
@@ -334,7 +357,8 @@ def faults(pictures, version=DEFAULT):
                      fine end is no more than a tenth of it;
       - the panel    one size of sunk field: were it given variants, their bevels and the walls of
                      the field would stand at the same pixels;
-      - the emblem   the star is five pixels of its own, clear of the ring.
+      - the emblem   the star is five pixels of its own, clear of the ring and of the meridian, and
+                     inside the ring; the meridian runs out of the ring at both ends.
 
     The steps of the ramp up to JOINT are the joint tones of the fine side: the face of a fine
     stone never takes them. On the ends A0 and A1 are."""
@@ -408,8 +432,15 @@ def faults(pictures, version=DEFAULT):
     for i, s in enumerate(many("ashlar_emblem")):
         cut = _groups((int(x), int(y)) for y, x in np.argwhere(s == 1))
         if sorted(len(g) for g in cut)[:1] != [5] or len(cut) != 2:
-            out.append(f"ashlar_emblem{i}: the star is not five pixels of its own, clear of the ring "
-                       f"(the cut is in groups of {sorted(len(g) for g in cut)})")
+            out.append(f"ashlar_emblem{i}: the star is not five pixels of its own, clear of the ring and of the "
+                       f"meridian (the cut is in groups of {sorted(len(g) for g in cut)})")
+            continue
+        star, rest = sorted(cut, key=len)
+        outside = _outside(rest)
+        if any((x + dx, y + dy) in outside for x, y in star for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            out.append(f"ashlar_emblem{i}: the star is not inside the ring")
+        if not ((s[0] == 1).any() and (s[-1] == 1).any()):
+            out.append(f"ashlar_emblem{i}: the meridian does not run out of the ring at both ends")
     return out
 
 
