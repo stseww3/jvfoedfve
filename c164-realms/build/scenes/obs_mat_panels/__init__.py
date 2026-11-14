@@ -44,7 +44,8 @@ BAY = [row.split() for row in (
 WIDE, HIGH = len(BAY[0]), len(BAY)
 ROOM = (16, 12, 7)                  # the timing room: along the wall, deep, high (interiors, timeroom)
 DESK_LAMP = 12                      # a second-rank light, three blocks from the wall
-FACINGS = ("south", "east", "north", "west")
+# the posts from west to east: a camera off either end of the row has the two that face it nearest
+FACINGS = ("north", "west", "east", "south")
 ANIMATED = ("tubes", "scope", "counter", "pilot_lamps")
 
 
@@ -81,8 +82,9 @@ def room(c, x, z):
 
 def turn(c, x, z):
     """Four posts three apart, one for each facing; no backdrop, so that they are seen from both
-    sides, and lamps on both sides."""
-    c.box(x - 1, -1, z - 5, x + 11, -1, z + 5, _board.FLOOR)
+    sides, and lamps on both sides. From the north-west the first two show their instruments and
+    the other two their casing, from the south-east the other way round."""
+    c.box(x - 2, -1, z - 5, x + 12, -1, z + 5, _board.FLOOR)
     for i, facing in enumerate(FACINGS):
         px = x + 1 + 3 * i
         c.set(px, 0, z, _board.BASE)
@@ -130,15 +132,17 @@ def write_pack(pack_dir):
 def shots():
     """Camera positions from the layout. The bay: whole, its two halves close enough to read every
     face (between them they hold all sixteen kinds), from twenty blocks, and from above its east
-    end for the casing on its side and top. The room: the whole wall from the back of the room, and
-    along the wall from near. The posts from the south-east and from the north-west. The four that
-    move, close."""
+    end for the casing on its side and top (the camera keeps west of the room's wall). The room:
+    the whole wall from two thirds back in the room, and along the wall from near. The posts from
+    off the south-east end of their row and from off the north-west end: each time the two nearest
+    posts face the camera, one nearly head-on and one at an angle, and the two behind them show
+    their casing. The four that move, close."""
     spans = layout()
     out = []
 
     def shot(name, pos, look_at):
-        out.append({"name": name, "pos": [round(v, 1) for v in pos], "look_at": [round(v, 1) for v in look_at],
-                    "time": TIME})
+        out.append({"name": name, "pos": [round(float(v), 1) for v in pos],
+                    "look_at": [round(float(v), 1) for v in look_at], "time": TIME})
 
     x = spans["wall"][0]
     mid, eye = x + WIDE / 2.0, HIGH / 2.0
@@ -146,18 +150,17 @@ def shots():
     shot("wall_left", (x + WIDE / 4.0, eye + 0.2, Z + 4.2), (x + WIDE / 4.0, eye, Z))
     shot("wall_right", (x + 3 * WIDE / 4.0, eye + 0.2, Z + 4.2), (x + 3 * WIDE / 4.0, eye, Z))
     shot("wall_far", (mid, eye + 1.0, Z + 21.0), (mid, eye, Z))
-    shot("wall_side", (x + WIDE + 3.0, HIGH + 1.5, Z + 3.5), (x + WIDE - 2.0, eye + 0.5, Z + 0.5))
+    shot("wall_side", (x + WIDE + 1.6, HIGH + 2.2, Z + 3.4), (x + WIDE - 2.0, eye + 0.6, Z + 0.4))
 
     x = spans["room"][0]
     long, deep, high = ROOM
     mid = x + long / 2.0
-    shot("room", (mid, 3.2, Z + deep + 0.4), (mid, 2.8, Z))
+    shot("room", (mid, 3.2, Z + 9.0), (mid, 2.8, Z))
     shot("room_near", (x + 2.5, 2.4, Z + 5.0), (x + 9.5, 2.8, Z))
 
     x = spans["turn"][0]
-    mid = x + 6.0
-    shot("turn_se", (x + 12.5, 3.8, Z + 4.6), (mid, 1.6, Z + 0.5))
-    shot("turn_nw", (x - 0.5, 3.8, Z - 3.6), (mid, 1.6, Z + 0.5))
+    shot("turn_se", (x + 12.0, 2.6, Z + 4.0), (x + 9.2, 1.9, Z + 0.8))
+    shot("turn_nw", (x, 2.6, Z - 3.0), (x + 2.8, 1.9, Z + 0.2))
 
     x = spans["animated"][0]
     mid = x + len(ANIMATED) / 2.0
