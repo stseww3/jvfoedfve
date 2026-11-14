@@ -21,6 +21,8 @@ const els = {
   count: document.getElementById("count"),
   empty: document.getElementById("empty"),
   error: document.getElementById("error"),
+  loading: document.getElementById("loading"),
+  themeToggle: document.getElementById("theme-toggle"),
 };
 
 function escapeHtml(str) {
@@ -41,12 +43,7 @@ function highlight(text, query) {
 function matches(term, query) {
   if (!query) return true;
   const q = query.toLowerCase();
-  const haystack = [
-    term.term,
-    term.full,
-    term.definition,
-    ...(term.aliases || []),
-  ]
+  const haystack = [term.term, term.full, term.definition, ...(term.aliases || [])]
     .join(" ")
     .toLowerCase();
   return haystack.includes(q);
@@ -59,7 +56,8 @@ function renderFilters() {
   els.filters.innerHTML = categories
     .map((cat) => {
       const active = cat === state.category ? " active" : "";
-      return `<button type="button" class="chip${active}" data-category="${cat}">${CATEGORY_LABELS[cat]}</button>`;
+      const pressed = cat === state.category ? "true" : "false";
+      return `<button type="button" class="chip${active}" data-category="${cat}" aria-pressed="${pressed}">${CATEGORY_LABELS[cat]}</button>`;
     })
     .join("");
 }
@@ -76,9 +74,7 @@ function cardHtml(term) {
         <span class="badge">${escapeHtml(CATEGORY_LABELS[term.category] || term.category)}</span>
       </div>
       <p class="card-full">${highlight(term.full, state.query)}</p>
-      <ul class="dash-list">
-        <li>${highlight(term.definition, state.query)}</li>
-      </ul>
+      <p class="card-def">${highlight(term.definition, state.query)}</p>
       ${aliases ? `<ul class="aliases">${aliases}</ul>` : ""}
     </article>
   `;
@@ -103,6 +99,14 @@ function bindEvents() {
     render();
   });
 
+  els.search.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && els.search.value) {
+      els.search.value = "";
+      state.query = "";
+      render();
+    }
+  });
+
   els.filters.addEventListener("click", (e) => {
     const btn = e.target.closest(".chip");
     if (!btn) return;
@@ -110,9 +114,41 @@ function bindEvents() {
     renderFilters();
     render();
   });
+
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target.tagName || "").toLowerCase();
+    if (e.key === "/" && tag !== "input" && tag !== "textarea") {
+      e.preventDefault();
+      els.search.focus();
+    }
+  });
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const isLight = theme === "light";
+  els.themeToggle.setAttribute("aria-pressed", String(isLight));
+  els.themeToggle.setAttribute(
+    "aria-label",
+    isLight ? "Switch to dark theme" : "Switch to light theme"
+  );
+}
+
+function initTheme() {
+  const current = document.documentElement.getAttribute("data-theme") || "dark";
+  applyTheme(current);
+  els.themeToggle.addEventListener("click", () => {
+    const next =
+      document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
+    applyTheme(next);
+  });
 }
 
 async function init() {
+  initTheme();
   try {
     const res = await fetch("terms.json");
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -120,11 +156,13 @@ async function init() {
     state.terms.sort((a, b) =>
       a.term.localeCompare(b.term, undefined, { sensitivity: "base" })
     );
+    els.loading.hidden = true;
     renderFilters();
     bindEvents();
     render();
   } catch (err) {
     console.error(err);
+    els.loading.hidden = true;
     els.error.hidden = false;
     els.count.hidden = true;
   }

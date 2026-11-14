@@ -1,49 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>minecraft.abbreviations | og account trading dictionary</title>
-  <meta name="description" content="A dictionary of abbreviations used in the OG Minecraft account trading community." />
-  <meta name="theme-color" content="#000000" />
+  <title>minecraft.abbreviations | OG account trading dictionary</title>
+  <meta name="description" content="A dictionary of abbreviations used in the OG Minecraft account trading community: OG, NFA, FA, MSA, MM and more, each explained in plain English." />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="minecraft.abbreviations" />
+  <meta property="og:title" content="minecraft.abbreviations" />
+  <meta property="og:description" content="The OG Minecraft account trading dictionary: every abbreviation (OG, NFA, FA, MSA, MM...) explained in plain English." />
+  <meta property="og:url" content="https://iraqies.github.io/dictionary/" />
+  <meta property="og:image" content="https://iraqies.github.io/dictionary/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="minecraft.abbreviations, the OG account trading dictionary, with example terms OG, NFA, FA and MM." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="minecraft.abbreviations" />
+  <meta name="twitter:description" content="The OG Minecraft account trading dictionary, every abbreviation explained in plain English." />
+  <meta name="twitter:image" content="https://iraqies.github.io/dictionary/og.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var theme = saved || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="preload">
-  <a class="github" href="https://github.com/iraqies/dictionary" target="_blank" rel="nofollow" title="GitHub Repository">
-    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
-    </svg>
-  </a>
+  <header class="site-head">
+    <nav class="utility" aria-label="Site controls">
+      <button type="button" id="theme-toggle" class="icon-btn" aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+      <a class="icon-btn" href="https://github.com/iraqies/dictionary" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub">
+        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+        </svg>
+      </a>
+    </nav>
 
-  <div class="container">
-    <h1><a href="./">minecraft</a><i>.abbreviations</i></h1>
-    <h3>the og account trading dictionary</h3>
+    <div class="hero">
+      <h1><a href="./">minecraft<span class="dot">.</span><span class="sub">abbreviations</span></a></h1>
+      <p class="tagline">the OG account trading dictionary</p>
+    </div>
+  </header>
 
-    <input
-      type="search"
-      id="search"
-      placeholder="search a term..."
-      autocomplete="off"
-      aria-label="Search terms"
-    />
+  <main class="container">
+    <div class="search">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="m20 20-3.2-3.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <input type="search" id="search" placeholder="search a term..." autocomplete="off" aria-label="Search terms" />
+    </div>
 
     <div class="filters" id="filters" role="group" aria-label="Filter by category"></div>
 
     <p class="count" id="count" aria-live="polite"></p>
 
-    <section class="grid" id="grid"></section>
+    <p class="status loading" id="loading" role="status">Loading terms<span class="dots" aria-hidden="true"></span></p>
 
-    <p class="empty" id="empty" hidden>no terms match your search</p>
+    <section class="grid" id="grid" aria-label="Terms"></section>
 
-    <p class="error" id="error" hidden>
-      could not load terms.json — run a local server (python -m http.server 8000)
+    <p class="status" id="empty" hidden>No terms match your search.</p>
+
+    <p class="status" id="error" hidden>
+      Could not load <code>terms.json</code>. Run a local server (for example: <code>python -m http.server 8000</code>).
     </p>
-  </div>
+  </main>
+
+  <footer class="site-foot">
+    <p>An open reference for the OG Minecraft account trading community. Source on <a href="https://github.com/iraqies/dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+  </footer>
 
   <script>window.addEventListener("load", () => document.body.classList.remove("preload"));</script>
   <script src="app.js"></script>
