@@ -35,7 +35,13 @@ FIELD = K.FIELD                 # the ground, one stone
 EDGE = K.EDGE                   # a course of small stones along a strip and round the seat
 STRIP = K.STRIP                 # the middle tone: the strips, the walk, the meridian's two flanks
 SEAT = B.SLATE_TILE.block       # the darkest: under the emblem, where brass and armillary have to stand out
-BRASS = B.BRASS_INLAY           # a carpet lying on the paving
+BRASS = B.BRASS_INLAY           # a carpet lying on the paving: brass a whole cell wide
+# The brass let into the floor as a thin dark line (A0 #21990; materials #22787: a rail's flat
+# model repainted, so the stone under it shows either side). Used as soon as the occupancy table
+# has the three roles; until then the lines are the whole-cell brass.
+LINE = getattr(B, "BRASS_LINE", None)           # [shape=north_south | east_west | south_east | ...]
+CROSS = getattr(B, "BRASS_CROSS", None)         # where the meridian crosses the ring
+STAR_MARK = getattr(B, "BRASS_STAR", None)      # the star, one cell
 MARK = B.ASHLAR_EMBLEM
 MARK_CAP = B.ASHLAR_PANEL.slab
 
@@ -51,10 +57,17 @@ RING_R = 7                      # the smallest ring that leaves a clear cell bet
 STAR = (3, -3)                  # from the emblem's middle; the upper right when north is up
 SEAT_HALF = RING_R + 2          # the seat is 19 x 19: its border, a clear cell, the ring
 FOOT_X = K.FOOT_STRIP_X         # the strip along the foot of the front
+LAMP_STEP = 2 * K.BEAT          # lamps stand a double beat apart: 8
 
 
 def _put(c, o, x, y, z, state):
     c.set(o[0] + x, o[1] + y, o[2] + z, state)
+
+
+def _line(shape):
+    """The brass of a line in the floor, joining two sides of its cell: the thin line where the
+    occupancy table has it, the whole-cell brass until then."""
+    return f"{LINE}[shape={shape}]" if LINE else BRASS
 
 
 def pavilion_lines():
@@ -116,7 +129,21 @@ def _meridian(c, o):
     for z in range(MZ0, MZ1 + 1):
         for x in (MX - 1, MX, MX + 1):
             _put(c, o, x, FLOOR, z, STRIP)
-        _put(c, o, MX, ON, z, BRASS)
+        _put(c, o, MX, ON, z, _line("north_south"))
+
+
+def emblem_ring():
+    """{(x, z): shape} of the emblem's ring: the cells round a disc of radius RING_R, in one closed
+    line, each with the two sides of the cell the line joins (a rail's shape names: north is -z)."""
+    disc = {(AX + dx, AZ + dz) for dx in range(-RING_R - 1, RING_R + 2) for dz in range(-RING_R - 1, RING_R + 2)
+            if math.hypot(dx, dz) < RING_R + 0.5}
+    ring = set(K.outline(disc))
+    sides = (("north", 0, -1), ("south", 0, 1), ("east", 1, 0), ("west", -1, 0))
+    out = {}
+    for x, z in ring:
+        joins = [name for name, dx, dz in sides if (x + dx, z + dz) in ring]
+        out[(x, z)] = "_".join(joins)           # north_south, east_west, or a corner such as south_east
+    return out
 
 
 def _emblem(c, o):
@@ -129,8 +156,14 @@ def _emblem(c, o):
             c.clear(o[0] + x, o[1] + ON, o[2] + z)
     for z in range(AZ - SEAT_HALF, AZ + SEAT_HALF + 1):
         if z != AZ and MZ0 <= z <= MZ1:
-            _put(c, o, MX, ON, z, BRASS)
-    r = RING_R
+            _put(c, o, MX, ON, z, _line("north_south"))
+    if LINE:
+        whole = lambda role: role if "[" in role else role + "[shape=north_south]"     # noqa: E731
+        for (x, z), shape in emblem_ring().items():
+            _put(c, o, x, ON, z, whole(CROSS) if x == MX else _line(shape))
+        _put(c, o, AX + STAR[0], ON, AZ + STAR[1], whole(STAR_MARK))
+        return
+    r = RING_R                                  # whole-cell brass: a ring one cell thick, a star of five cells
     for dx in range(-r, r + 1):
         for dz in range(-r, r + 1):
             if r - 0.5 <= math.hypot(dx, dz) < r + 0.5:
@@ -153,6 +186,28 @@ def lip_piers():
     g0, g1 = S.GRAND_STAIR["z0"], S.GRAND_STAIR["z1"]
     newels = [g0 - 1, g1 + 1]
     return sorted(newels + [z for z in K.beat(tz0, tz1) if z <= newels[0] - K.BEAT or z >= newels[1] + K.BEAT])
+
+
+def path_lamps():
+    """Cells (x, z) where the lamps of the way in stand on the court (A0 #22560; props/lamps places
+    them, feet on S.GROUND): in pairs on the two strips that run to the outer pilasters of the
+    porch, a double beat apart from the stair head -- one pair midway to the seat, one where the
+    strips stop at the seat, one at the seat's other edge. None beside the emblem, where the
+    meridian crosses; the porch's own lamps are the next pair."""
+    near = min(abs(z - AZ) for z in pavilion_lines())
+    east = AX + SEAT_HALF
+    return [(x, AZ + side * near) for x in (east + LAMP_STEP, east, AX - SEAT_HALF) for side in (-1, 1)]
+
+
+def lip_lamps():
+    """Cells (x, z) of the piers on the east lip that carry a low lamp on the cap (A0 #22560; the
+    cap's top is K.PIER_TOP above S.GROUND): every other pier counted from the stair head, whose
+    own pair of lamps (site/stair) stands beside the first, so the whole lip is one string a double
+    beat apart. The corners stay dark."""
+    piers = lip_piers()
+    north = sorted((z for z in piers if z < AZ), reverse=True)
+    south = sorted(z for z in piers if z > AZ)
+    return [(X1, z) for side in (north, south) for z in side[2:-1:2]]
 
 
 def _railing(c, o):

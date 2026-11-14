@@ -121,7 +121,7 @@ SHELF = (0.13, 0.12, 0.10, 0.50)        # the share of a band's height that the 
 # --- rock, in beds -----------------------------------------------------------------------------------
 DEEP, COBBLED, TUFF = B.ROCK_DEEPSLATE, B.ROCK_COBBLED.block, B.TUFF.block
 STONE, ANDESITE = B.ROCK_STONE.block, B.ROCK_ANDESITE.block
-SNOW = B.SNOW
+SNOW = B.SNOW_LAYER
 # (rock, thickness), from the top down, repeated. No bed is thicker than three, and no two
 # neighbours are the same, so no cliff shows a flat face of one block. Dark on the whole: deepslate
 # a little over half, stone and andesite only as thin light seams.
@@ -134,8 +134,9 @@ LIGHT = (TUFF, STONE, ANDESITE)     # the beds that read as light lines on a cli
 SEAM = COBBLED                  # what stands in a light bed's place where the bed has thinned out
 LENS_OUT = -0.02                # ... which is where the bed's own slow noise is below this: a little under half of it
 SNOW_BELOW = -5                 # no snow on the rock just under the terraces
-SNOW_IN = 0.8                   # snow lies on the inner part of a shelf; its outer edge stays dark
+SNOW_IN = 0.9                   # snow lies on a shelf from the cliff's foot outwards; the very edge stays dark
 SNOW_DRIFT = -0.12              # ... in drifts: where a slow noise is above this, about two thirds of the shelves
+SNOW_DEPTH = ((0.25, 4), (0.6, 3), (1.0, 2))    # (how far out on the shelf, layers): it lies on the rock, it is not a block of it
 
 # --- what is built on the rim -------------------------------------------------------------------------
 RIM = B.SLATE_BRICK.block       # the terrace's rim wall under the kerb
@@ -365,18 +366,25 @@ def _snowy(m):
     In wide drifts with bare rock between them, not a line along the foot of every cliff; and never
     a single block of it standing proud of the ground."""
     H, valid = m["H"], m["valid"]
-    near = _neighbours(H)
     level = np.ones(H.shape, dtype=bool)
-    for n in near:
+    for n in _neighbours(H):
         level &= np.abs(n - H) <= 1
-    bump = sum((n >= H).astype(int) for n in near) < 2          # higher than three of its neighbours
     X, Z = np.meshgrid(m["xs"].astype(float), m["zs"].astype(float), indexing="ij")
     drift = N.fbm2(X * 0.035, Z * 0.035, SEED + 61, octaves=3)
-    snow = (valid & level & ~bump & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= SNOW_IN)
+    snow = (valid & level & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= SNOW_IN)
             & (H <= SNOW_BELOW) & (drift > SNOW_DRIFT))
     for _ in range(2):                                          # no specks: a cell needs two snowy neighbours
         snow &= sum(n.astype(int) for n in _neighbours(snow)) >= 2
     return snow
+
+
+def _snow_depth(where):
+    """How many layers of snow (eighths of a block) lie on a cell that far out on its shelf: a
+    drift against the foot of the cliff, thinning towards the shelf's edge."""
+    for limit, layers in SNOW_DEPTH:
+        if where <= limit:
+            return layers
+    return SNOW_DEPTH[-1][1]
 
 
 def _lay_mountain(c, o, m):
@@ -401,7 +409,7 @@ def _lay_mountain(c, o, m):
         for y in range(y1, y0 - 1, -1):
             c.set(ox + x, oy + y, oz + z, _rock(x, y, z, dp, la, lb))
         if snowy[i, k]:
-            c.set(ox + x, oy + y1, oz + z, SNOW)
+            c.set(ox + x, oy + y1 + 1, oz + z, f"{SNOW}[layers={_snow_depth(float(m['shelf'][i, k]))}]")
 
 
 # ---- the upper terrace: floor, rim, railing -------------------------------------------------------------
