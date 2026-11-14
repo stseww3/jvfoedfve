@@ -306,7 +306,7 @@ rep(
       } catch {}
     }
     donor._mintFailCount = (donor._mintFailCount || 0) + 1;
-    if (mintErrNote === '300010' || mintErrNote === 'interactive-timeout') {
+    if (mintErrNote === '300010' || mintErrNote === '300030' || mintErrNote === 'interactive-timeout') {
       try {
         await callBidi('browsingContext.reload', { context: ctx, wait: 'interactive' });
       } catch {}
@@ -870,7 +870,12 @@ rep(
   sq,
   report.squadSteps,
   'sq-skip-retagging-in-readyToEnter',
-  `  const readyToEnter = clients.filter(
+  `  const allSquadTokensReady = !anyStillInGame && (
+    readyOrInLobbyCount === activePool.length ||
+    (readyOrInLobbyCount >= Math.min(activePool.length, 28) && now - globalThis.__squadIdleSince > 18000) ||
+    (readyOrInLobbyCount >= 12 && now - globalThis.__squadIdleSince > 32000)
+  );
+  const readyToEnter = clients.filter(
     (c, i) =>
       (headlessOnly ? c.isHeadless : (!c.isHeadless || wantTenForCurrentLobby)) &&
       !states[i]?.inGame &&
@@ -878,7 +883,10 @@ rep(
       c.freshToken &&
       now - c.enteredLobbyAt > 15000
   );`,
-  `  const readyToEnter = clients.filter(
+  `  // Option A: bots enter Room 0 with ordinary names immediately once minted so sendTokenToLobby
+  // locks in the 60-min pass before the 300s Turnstile token expires; DYNAMIC-POOL holds selection.
+  const allSquadTokensReady = !anyStillInGame;
+  const readyToEnter = clients.filter(
     (c, i) =>
       (headlessOnly ? c.isHeadless : (!c.isHeadless || wantTenForCurrentLobby)) &&
       !states[i]?.inGame &&
