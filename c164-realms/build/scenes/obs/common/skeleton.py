@@ -117,11 +117,17 @@ STAR_HALL_CEIL = 14
 DOME_CENTRE = (4, 0)    # (x, z)
 DOME_R = 13             # outer radius
 DRUM = (18, 23)         # the stone drum, with small round windows
+DRUM_BASE = 16          # A0 #20299: the rotunda carries no parapet; the elevation ends with its cornice
+#                         (y 15) and the drum's stone starts on it, two courses below the roof terraces
 DOME_SPRING = 24        # the verdigris dome springs here
 DOME_APEX = 37          # its top
 DOME_ROOM_DIAM = 22     # the great dome-room interior diameter
 SLIT_W = 5              # observing slit width, facing west, open from the drum top through the apex +2
 SLIT_FACING = "west"
+# the two doors of the dome room (A0 #20299, c206's figures): in the straight runs of the drum that
+# face the corner terraces between the drum and the east parapet, two high so the small windows over
+# them stay. A person steps out onto (12, +-11). The drum opens them, the roofs hang the leaves.
+DOME_ROOM_DOORS = dict(cells=((12, 10), (12, -10)), y=(18, 19))
 DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: what the dome turns about
 # The telescope pier is an independent column on the dome centre, from the ground to the dome room.
 # LOCKED by A0 (#20004, 11-14). The shaft is thin, 3 x 3, and runs straight up from y 0; its cap
