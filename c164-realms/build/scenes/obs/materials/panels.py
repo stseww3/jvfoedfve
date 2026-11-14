@@ -18,11 +18,12 @@ pre-review of the designs, point 5), so they are built as one set and sorted int
     labels, the emblem);
   - light (three): the dial and the gauges in porcelain, the recorder's paper;
   - lit (three): the valves, the oscilloscope's tube, the pilot lamps. Only the pixels that glow
-    (GLOW) are drawn at full brightness: the front is cut along their outline into parts, and the
-    glowing parts alone are lit (see _mount). Everything else on a lit face, down to the black
-    floor the lamps sit in, takes the light of the room like the faces beside it, so in a dim room
-    there are filaments, lamps and a round green tube on a dark wall, and no glowing rectangles.
-    Green and red are single lamps.
+    (GLOW) are drawn at full brightness: a second front lies over the first and shows those
+    pixels alone (see glow and _mount), the way the game lays the coloured fringe over the side of
+    its grass block. Everything else on a lit face, down to the black floor the lamps sit in,
+    takes the light of the room like the faces beside it, so in a dim room there are filaments,
+    lamps and a round green tube on a dark wall, and no glowing rectangles. Green and red are
+    single lamps.
 
 Four faces are animated, slowly, and on one beat, the second of the master clock (FRAMETIME): the
 units wheel of the register steps once a second, the pilot lamps take turns every two, the trace
@@ -480,50 +481,43 @@ def picture(name):
     return np.concatenate(frames(name), axis=0), {"animation": animation}
 
 
-def grid(cells):
-    """The lines a face is cut along so that every part is all glowing or all not: (xs, ys), each
-    from 0 to 16. A line runs across the whole face wherever, somewhere along it, a glowing pixel
-    meets one that does not glow, so the parts form one grid and share their corners: no part ends
-    in the middle of another's edge, which is where a renderer may leave a hairline open."""
-    lit = set(cells)
-
-    def lines(across):
-        out = [0]
-        for a in range(1, TILE):
-            pairs = [((a, b), (a - 1, b)) if across else ((b, a), (b, a - 1)) for b in range(TILE)]
-            if any((here in lit) != (before in lit) for here, before in pairs):
-                out.append(a)
-        return out + [TILE]
-
-    return lines(True), lines(False)
+def glow(name):
+    """What glows on a lit face as a picture of its own: (pixels, meta). It is the face's picture,
+    frame for frame and on the same beat, and empty (alpha 0) wherever the face does not glow. The
+    colours stay under the empty pixels, so whatever the game mixes into the rim of a lamp where
+    it samples between two pixels is the plate beside the lamp and never black."""
+    pixels, meta = picture(name)
+    pixels = pixels.copy()
+    lit = np.zeros((TILE, TILE), dtype=bool)
+    for x, y in GLOW[name]:
+        lit[y, x] = True
+    pixels[..., 3] = np.where(np.tile(lit, (len(pixels) // TILE, 1)), 255, 0)
+    return pixels, meta
 
 
-def _mount(cells=()):
+def _mount(lamps=None):
     """What redirect does to the game's model before it maps the pictures (its `edit`): the turn the
-    game gives each face of glazed terracotta goes, so the instrument stands upright; and where
-    `cells` of the picture glow, the front is cut into the parts of grid(), each keeping its place
-    in the picture, and the glowing ones are drawn at full brightness and without the shading by
-    direction (a lamp is as bright on a wall to the east as on one to the south)."""
-    lit = set(cells)
+    game gives each face of glazed terracotta goes, so the instrument stands upright; and a face
+    that glows gets a second front, in the same place and of the same size as the first, that shows
+    the picture `lamps` (see glow) at full brightness and without the shading by direction: a lamp
+    is as bright on a wall to the east as on one to the south.
 
+    The game does not draw the empty part of a picture, so the first front shows through everywhere
+    but on the glowing pixels; its own models do the same (the fringe on the side of the grass
+    block, block/cross_emissive). The two fronts have the same four corners, like the two on each
+    side of the grass block: they lie at exactly the same depth, where the game shows the one it
+    draws later, the one with the holes. No seam is cut into the face or left against the blocks
+    beside it."""
     def edit(ref, flat):
         boxes = flat["elements"] or []
         for box in boxes:
             for face in box["faces"].values():
                 face.pop("rotation", None)
-        if lit:
+        if lamps:
             (cube,) = boxes
-            front = cube["faces"].pop("south")
-            xs, ys = grid(lit)
-            for v0, v1 in zip(ys, ys[1:]):
-                for u0, u1 in zip(xs, xs[1:]):
-                    # the picture's rows run downwards, the model's y upwards
-                    part = {"from": [u0, TILE - v1, 0], "to": [u1, TILE - v0, TILE],
-                            "faces": {"south": dict(front, uv=[u0, v0, u1, v1])}}
-                    if (u0, v0) in lit:
-                        part["light_emission"] = LIT
-                        part["shade_direction_override"] = "up"
-                    boxes.append(part)
+            front = dict(cube["faces"]["south"], texture=f"{K.NS}:block/{lamps}")
+            boxes.append({"from": list(cube["from"]), "to": list(cube["to"]), "faces": {"south": front},
+                          "light_emission": LIT, "shade_direction_override": "up"})
         return flat
     return edit
 
@@ -534,8 +528,12 @@ def pack(pack_dir):
     for name in FACES:
         pixels, meta = picture(name)
         K.paint(pack_dir, f"panel_{name}", pixels, meta=meta)
+    for name in GLOW:
+        pixels, meta = glow(name)
+        K.paint(pack_dir, f"panel_{name}_glow", pixels, meta=meta)
     for name, block in B.PANELS.items():
         textures = {ref: {"south": f"panel_{name}", "*": "panel_case"}
                     for ref in respack.block_pictures(K.game(), block)}
-        out.append(K.redirect(pack_dir, block, textures, edit=_mount(GLOW.get(name, ()))))
+        lamps = f"panel_{name}_glow" if name in GLOW else None
+        out.append(K.redirect(pack_dir, block, textures, edit=_mount(lamps)))
     return out
