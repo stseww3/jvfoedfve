@@ -72,20 +72,23 @@ SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
 PIPE_INLET = (P.east_face(S.Z_SOUTH - 1) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH - 1)
 
 # --- which windows are lit, until the light line says ----------------------------------------------------
-# The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, e76c3721,
-# the blue look) asked for every window of table(). L the brightest glass (the window over the
-# entrance, the only one), O lit, K a lamp behind a curtain, D dark, B a lowered blind; "." where a
-# front has no window. They stand in only while sky/_lightkit.py is not in the tree.
+# The rows are the light line's own answer, written down: sky/_lightkit.window_lit (c220, afa1114c,
+# the blue look, after the director's rulings: the base storey a dark band, one or two lit windows
+# to a wing, the middle three bays the brightest group) asked for every window of table(). L the
+# brightest glass (the window over the entrance, the only one), O lit, K a lamp behind a curtain,
+# D dark, B a lowered blind; "." where a front has no window. They stand in only while
+# sky/_lightkit.py is not in the tree. (East base, bays 8 and 10: windows in versions A and C of
+# the entrance only; in B they are arches.)
 GLASS = {"L": B.WINDOW_LIT, "K": B.WINDOW_CURTAIN, "O": B.WINDOW_FROSTED, "D": B.WINDOW_DARK, "B": B.WINDOW_BLIND}
 ROWS = {
-    ("east", "main"): "ODOBKODKLKODDOKKO",      # bays 1..17 from the north
-    ("east", "base"): "KOBODKDO.OKDKODOD",
-    ("west", "main"): "OKODD.......OKOBK",
-    ("west", "base"): "ODOKO.......DODOD",
-    ("north", "main"): "KO", ("north", "base"): "OB",
-    ("south", "main"): "BKDO", ("south", "base"): "DOKO",
+    ("east", "main"): "ODODKODKLKDODOKDO",      # bays 1..17 from the north
+    ("east", "base"): "DODKDDDO.ODDKDBOD",
+    ("west", "main"): "KDODO.......ODODK",
+    ("west", "base"): "BDKKD.......DKDDO",
+    ("north", "main"): "BO", ("north", "base"): "DK",
+    ("south", "main"): "OKBO", ("south", "base"): "DKDO",
     ("apse", "main"): "KOK",                    # bays -1, 0, 1
-    ("drum", "drum"): "ODOKKKBKODOBKODDOKBD",   # gores 0..19, 0 looks east
+    ("drum", "drum"): "KDKDKDKDKDDKDKBKDDDD",   # gores 0..19, 0 looks east
 }
 FIRST_BAY = {"apse": -1, "drum": 0}     # every other front counts its bays from 1
 
