@@ -24,9 +24,11 @@ pre-review of the designs, point 5), so they are built as one set and sorted int
     there are filaments, lamps and a round green tube on a dark wall, and no glowing rectangles.
     Green and red are single lamps.
 
-Four faces are animated, slowly: the filaments breathe, the trace runs, the units wheel of the
-register steps once a second, the pilot lamps take turns. The beat is this package's guess until
-motion (A8) sets one: FRAMETIME.
+Four faces are animated, slowly, and on one beat, the second of the master clock (FRAMETIME): the
+units wheel of the register steps once a second, the pilot lamps take turns every two, the trace
+runs through a wave in two, the filaments breathe once in four. The game starts every animated
+picture together, so what steps, steps on the same tick. The numbers are this package's until
+motion (A8) sets a beat.
 """
 import math
 
@@ -43,7 +45,7 @@ TILE = K.TILE
 # the blocks this package paints; nobody else may
 BLOCKS = K.blocks(*B.PANELS.values())
 
-FRAMETIME = {"tubes": 12, "scope": 5, "counter": 20, "pilot_lamps": 15}     # ticks a frame stays
+FRAMETIME = {"tubes": 20, "scope": 5, "counter": 20, "pilot_lamps": 20}     # ticks a frame stays; 20 = one second
 SMOOTH = ("tubes",)             # frames the game blends into one another: a glow that swells, no steps
 LIT = 15                        # light_emission of what glows: its picture's own colours in any light
 # the three ranks of the card: mostly dark, a few light, at most four lit
