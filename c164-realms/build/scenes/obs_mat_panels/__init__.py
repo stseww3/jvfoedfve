@@ -123,10 +123,6 @@ def build():
     return c
 
 
-def build_models():
-    return {}           # blocks only
-
-
 def write_pack(pack_dir):
     return materials.pack(pack_dir)
 
