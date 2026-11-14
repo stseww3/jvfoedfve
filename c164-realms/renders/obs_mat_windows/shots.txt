@@ -1,28 +1,23 @@
-scene:   obs_mat_windows  (materials/windows, version a -- the master default)
-command: build/render.py obs_mat_windows --shots build/scenes/obs_mat_windows/shots.json --out <dir> --size 1280x720
-code at: b651bfb7  (c195's windows db18a103 merged with assembly b3430bd4; textures unchanged since)
-by:      c205 (materials/windows), v4 cloud offline self-check
-
-22 shots (tick per plan/packages/materials/windows.md shots.json):
-  front          14000  entrance front, bright/dark read (16 lit of 20, no two dark adjacent)
-  front_b        18000  the same front at light B
-  front_c        12900  the same front at light C
-  far            14000  the front from the forecourt (46 blocks): bright/dark at a distance
-  slant          14000  the front along its face, east: lit windows keep their colour, no face shadow
-  near_main      14000  a tall window close: the glazing net, lit-dark-lit
-  near_base      14000  a small window close: curtain-dark-lit
-  walls_lit      14000  the three lit windows as glass-block walls (frosted centred)
-  walls_dark     14000  the three dark windows (blind centred): hold the sky; skylight sees through
-  close_lit      14000  WINDOW_LIT, whole window ~0.65, glass #ffc65a
-  close_frosted  14000  WINDOW_FROSTED ~0.54
-  close_curtain  14000  WINDOW_CURTAIN ~0.40
-  close_dark     14000  WINDOW_DARK, holds the sky, opaque, unlit
-  close_blind    14000  WINDOW_BLIND, the darkest, a lowered blind
-  close_skylight 14000  SKYLIGHT, the one seen through (half opaque), a lamp room behind
-  panes          14000  a window of panes for each of the six + a free frosted screen turning a corner
-  pane_edges     14000  the iron came on the edge of a pane
-  roof           14000  the roof light lying flat over a lamp room
-  face_east      14000  the lantern from the east: lit windows show their picture colour whichever way they face
-  face_west      14000  the lantern from the west
-  face_south     14000  the lantern from the south
-  face_north     14000  the lantern from the north
+# shot, tick, commit of the code the picture shows (tools/selfshots.py; drawn offline, 1280x720)
+front	14000	11a86a18
+front_b	18000	11a86a18
+front_c	12900	11a86a18
+far	14000	11a86a18
+slant	14000	11a86a18
+near_main	14000	11a86a18
+near_base	14000	11a86a18
+walls_lit	14000	11a86a18
+walls_dark	14000	11a86a18
+close_lit	14000	11a86a18
+close_frosted	14000	11a86a18
+close_curtain	14000	11a86a18
+close_dark	14000	11a86a18
+close_blind	14000	11a86a18
+close_skylight	14000	11a86a18
+panes	14000	11a86a18
+pane_edges	14000	11a86a18
+roof	14000	11a86a18
+face_east	14000	11a86a18
+face_west	14000	11a86a18
+face_south	14000	11a86a18
+face_north	14000	11a86a18
