@@ -31,7 +31,6 @@ ORDER = 70      # after the terrain (10) and the court paving (60); the shells g
 STONE = B.ASHLAR_FINE.block             # dressed grey-white walls, like the main building family
 QUOIN = B.ASHLAR_ROUGH.block            # rusticated corners
 EMBLEM = B.ASHLAR_EMBLEM                 # lintels and heads
-COPE = B.ASHLAR_PANEL.slab              # grey-white coping / sill slab
 PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, retaining
 ROOF = B.SLATE_TILE.block               # dark slate roofs
 ROOF_SLAB = B.SLATE_TILE.slab
@@ -47,6 +46,13 @@ ROD = B.IRON_ROD                        # thin rod: finials, the wind-pole head
 
 # a dark broken mix for footings so no retaining face reads flat (plan 6 flatwall)
 FOOTING = Mix({B.SLATE_BRICK.block: 10, B.SLATE_TILE.block: 3, B.SLATE_SMOOTH.block: 3}, seed=2292)
+STEP = B.SLATE_BRICK.stairs             # the steps down to the shelves: the terrace's small dark stone
+
+# The ways down from the upper terrace, agreed with the terrain card (c221 #21052): the terrain
+# leaves its railing open in these cells and stands a gate pier either side; the steps are here.
+LOOKOUT_WAY = (44, 46)      # x, through the terrace's south edge, on the lookout's middle line
+WEATHER_WAY = (2, 4)        # x, through the north edge
+TOWER_WAY = (-33, -31)      # z, through the west edge
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -99,6 +105,38 @@ def _brace(c, o, ax, az, bx, bz, y0, y1, axis):
         else:
             facing = "south" if bz > az else "north"
             _put(c, o, ax, y, az + (1 if bz > az else -1) * i, IRON_STAIR + f"[facing={facing},half=bottom]")
+
+
+def _flight(c, o, rows, drop, facing):
+    """A way down over `rows` (each the cells across the way, the first row next to the terrace):
+    `drop` stair blocks spread evenly along it, level steps between them. The first stair lies in
+    the terrace's paving course. Every step brings two blocks of footing (into air only) and clears
+    its own headroom, so the way holds whatever the slope under it is."""
+    n = len(rows)
+    at = {int(round(i * (n - 1) / float(max(1, drop - 1)))) for i in range(drop)}
+    y = S.PAVING_Y
+    for i, row in enumerate(rows):
+        for x, z in row:
+            _put(c, o, x, y, z, STEP + f"[facing={facing},half=bottom]" if i in at else PLINTH)
+            for d in (1, 2):
+                c.set(o[0] + x, o[1] + y - d, o[2] + z, PLINTH, keep=True)
+            for d in (1, 2, 3):
+                c.clear(o[0] + x, o[1] + y + d, o[2] + z)
+        if i in at:
+            y -= 1
+
+
+def _ways_down(c, o):
+    tx0, tz0, tx1, tz1 = S.UPPER_TERRACE
+    lz0 = S.SOUTH_LOOKOUT["box"][1]
+    rows = [[(x, z) for x in range(LOOKOUT_WAY[0], LOOKOUT_WAY[1] + 1)] for z in range(tz1 + 1, lz0)]
+    _flight(c, o, rows, S.GROUND - S.SOUTH_LOOKOUT["feet"], "north")      # a step, a landing, five times
+    wz1 = S.WEATHER_STATION["box"][3]
+    rows = [[(x, z) for x in range(WEATHER_WAY[0], WEATHER_WAY[1] + 1)] for z in range(tz0 - 1, wz1, -1)]
+    _flight(c, o, rows, S.GROUND - S.WEATHER_STATION["feet"], "south")    # a straight flight of four
+    wx1 = S.WATER_TOWER["box"][2]
+    rows = [[(x, z) for z in range(TOWER_WAY[0], TOWER_WAY[1] + 1)] for x in range(tx0 - 1, wx1, -1)]
+    _flight(c, o, rows, S.GROUND - S.WATER_TOWER["feet"], "east")         # two steps
 
 
 # --- the meridian hut (skeleton MERIDIAN_HUT) -----------------------------------------------------
@@ -160,6 +198,14 @@ def _water_tower(c, o):
     deck_y = foot + 10                        # 8, the maintenance deck under the tank
     tank_lo, tank_hi = deck_y + 1, deck_y + 5  # 9..13 (the tank top stays below the cornice, 15)
 
+    # until the terrain card's shelf is merged the shelf is a flat slab laid only where there is
+    # nothing yet; the site's rail on the three sides over the drop, the uphill (east) side open
+    _fill(c, o, x0, foot - 1, z0, x1, foot - 1, z1, FOOTING, keep=True)
+    _fill(c, o, x0, foot - 2, z0, x1, foot - 3, z1, PLINTH, keep=True)
+    edge = [(x, z) for x, z in _ring(x0, z0, x1, z1) if not (x == x1 and z0 < z < z1)]
+    piers = {(x, bz) for bz in (z0, z1) for x in K.spaced([x0, x1])} | {(x0, z) for z in K.spaced([z0, z1])}
+    K.rail(c, o, edge, piers, y=foot, kerb=True)
+
     # four riveted legs on stone footings, carried a little into the slope so they do not float
     for lx in legs_x:
         for lz in legs_z:
@@ -206,15 +252,13 @@ def _weather_station(c, o):
     foot = S.WEATHER_STATION["feet"]           # -4
     pave = foot - 1                            # -5, the paving block; feet stand at foot
 
-    # a small dressed platform with a grey-white coping edge, footed a little into the slope
+    # a small dressed platform footed a little into the slope; the site's rail on the three sides
+    # over the drop (a fenced instrument enclosure), the uphill (south) side open to the steps
     _fill(c, o, x0, pave, z0, x1, pave, z1, FOOTING)
     _fill(c, o, x0, pave - 1, z0, x1, pave - 3, z1, PLINTH, keep=True)
-    for x, z in _ring(x0, z0, x1, z1):
-        _put(c, o, x, foot, z, COPE + "[type=bottom]")
-    # the site rail along the open (north) edge, over the drop; the other edges meet the slope
-    north = [(x, z0) for x in range(x0, x1 + 1)]
-    _weather_piers = {(x, z0) for x in range(x0, x1 + 1) if (x - x0) % K.BEAT == 0} | {(x1, z0)}
-    K.rail(c, o, north, _weather_piers, y=foot, kerb=True)
+    edge = [(x, z) for x, z in _ring(x0, z0, x1, z1) if not (z == z1 and x0 < x < x1)]
+    piers = {(x, z0) for x in K.spaced([x0, x1])} | {(bx, z) for bx in (x0, x1) for z in K.spaced([z0, z1])}
+    K.rail(c, o, edge, piers, y=foot, kerb=True)
 
     # the louvred instrument shelter (a Stevenson screen): an iron box on short legs, a louvre on each
     # face, open inside for the instrument (A5/A6); a plate roof with a small eave
@@ -262,22 +306,21 @@ def _south_lookout(c, o):
         for bx in (x0, x1):
             _put(c, o, bx, pave - 1, z, IRON_STAIR + ("[facing=east,half=top]" if bx == x0 else "[facing=west,half=top]"))
 
-    # the site-wide edge treatment (c221's _kit) round the three cloud-facing sides; north stays open
-    south = [(x, z1) for x in range(x0, x1 + 1)]
-    west = [(x0, z) for z in range(z0, z1)]
-    east = [(x1, z) for z in range(z0, z1)]
-    piers = {(x0, z1), (x1, z1)}
-    piers |= {(x, z1) for x in range(x0, x1 + 1) if (x - x0) % K.BEAT == 0}
-    piers |= {(bx, z) for bx in (x0, x1) for z in range(z0, z1) if (z - z0) % K.BEAT == 0}
-    K.rail(c, o, west + south + east, piers, y=foot, kerb=True)
+    # the site's rail round the whole edge (the ridge that leads here is three wide, so the north
+    # edge hangs free too); the way in is left open, a gate pier either side of it in line with the
+    # terrain's gate posts on the upper terrace. The north corners turn in bars, not piers, so no
+    # two piers stand closer than the beat.
+    wx0, wx1 = LOOKOUT_WAY
+    edge = [(x, z) for x, z in _ring(x0, z0, x1, z1) if not (z == z0 and wx0 <= x <= wx1)]
+    piers = {(wx0 - 1, z0), (wx1 + 1, z0)}
+    piers |= {(x, z1) for x in K.spaced([x0, x1])}
+    piers |= {(bx, z) for bx in (x0, x1) for z in K.spaced([z0, z1])[1:]}
+    K.rail(c, o, edge, piers, y=foot, kerb=True)
 
     # the tripod telescope spot (A5/A6): a mounting ring on the south edge, the socket left open
-    tx, tz = (x0 + x1) // 2, z1 - 1
+    tx, tz = (x0 + x1) // 2, z1 - 2
     for dx, dz in ((-1, 0), (1, 0), (0, -1), (0, 1)):
         _put(c, o, tx + dx, pave, tz + dz, IRON)
-    # a low sitting ledge along the north edge (benches: A6)
-    for x in range(x0 + 1, x1):
-        _put(c, o, x, foot, z0, COPE + "[type=bottom]")
 
 
 def build(canvas, origin=(0, 0, 0)):
@@ -285,4 +328,5 @@ def build(canvas, origin=(0, 0, 0)):
     _water_tower(canvas, origin)
     _weather_station(canvas, origin)
     _south_lookout(canvas, origin)
+    _ways_down(canvas, origin)
     return 0
