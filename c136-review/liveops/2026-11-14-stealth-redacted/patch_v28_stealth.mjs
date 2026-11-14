@@ -284,6 +284,50 @@ rep(
 rep(
   sq,
   report.squadSteps,
+  'sq-mihomo-9228-portmap',
+  '  const portToSocks = { 9228: 10821, 9229: 10824, 9230: 10827, 9231: 10830 };',
+  '  const portToSocks = { 9228: 7890, 9229: 10824, 9230: 10827, 9231: 10830 };'
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-mihomo-9228-subcap',
+  `function usableMintDonors() {
+  const now = Date.now();
+  return MINT_DONOR_PORTS.filter((p) => !(donorMintInflight.get(p) > 0) && now >= (donorCooldownUntil.get(p) || 0));
+}`,
+  `const mihomoMintStamps = [];
+function mihomoMintsLastHour() {
+  const cut = Date.now() - 3600000;
+  while (mihomoMintStamps.length && mihomoMintStamps[0] < cut) mihomoMintStamps.shift();
+  return mihomoMintStamps.length;
+}
+function usableMintDonors() {
+  const now = Date.now();
+  return MINT_DONOR_PORTS.filter((p) => {
+    if (donorMintInflight.get(p) > 0) return false;
+    if (now < (donorCooldownUntil.get(p) || 0)) return false;
+    if (p === 9228 && mihomoMintsLastHour() >= 40) return false;
+    return true;
+  });
+}`
+);
+
+rep(
+  sq,
+  report.squadSteps,
+  'sq-mihomo-9228-stamp-push',
+  `  mintStamps.push(Date.now());
+  try { fs.writeFileSync(mintStampFile, JSON.stringify(mintStamps)); } catch {}`,
+  `  mintStamps.push(Date.now());
+  if (donorPort === 9228) mihomoMintStamps.push(Date.now());
+  try { fs.writeFileSync(mintStampFile, JSON.stringify(mintStamps)); } catch {}`
+);
+
+rep(
+  sq,
+  report.squadSteps,
   'sq-fast-proxy-rotate-on-fail',
   `    console.log(\`[FIREFOX-DONOR] mint gave no token on :\${donor.port} after \${Math.round((Date.now() - stepStartedAt) / 1000)}s (clicks=\${mintClicks}\${mintErrNote ? ', cf_error=' + mintErrNote : ', no answer from the widget'})\`);
     donor._mintFailCount = (donor._mintFailCount || 0) + 1;
@@ -297,17 +341,22 @@ rep(
       killFirefoxOnPort(donor.port);
     }`,
   `    console.log(\`[FIREFOX-DONOR] mint gave no token on :\${donor.port} after \${Math.round((Date.now() - stepStartedAt) / 1000)}s (clicks=\${mintClicks}\${mintErrNote ? ', cf_error=' + mintErrNote : ', no answer from the widget'})\`);
-    const spMap = { 9228: 10821, 9229: 10824, 9230: 10827, 9231: 10830 };
+    const spMap = { 9229: 10824, 9230: 10827, 9231: 10830 };
     const isDirectDonor = fs.existsSync(path.join(__dirname, 'tsb-donor-direct.flag'));
     if (!isDirectDonor && spMap[donor.port]) {
       try {
         await rotateSocksSession(spMap[donor.port]);
-        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]}) & recycling Firefox to drop stale H2 pool\`);
+        console.log(\`[FIREFOX-DONOR] Rotated proxy on :\${donor.port} (:\${spMap[donor.port]})\`);
       } catch {}
     }
-    try { donor.ws.close(); } catch {}
-    firefoxDonors.delete(donor.port);
-    killFirefoxOnPort(donor.port);`
+    donor._mintFailCount = (donor._mintFailCount || 0) + 1;
+    if (donor._mintFailCount >= 4) {
+      donor._mintFailCount = 0;
+      console.warn(\`[FIREFOX-DONOR] 4 consecutive mint failures on :\${donor.port} -> recycling Firefox donor!\`);
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      killFirefoxOnPort(donor.port);
+    }`
 );
 
 rep(
