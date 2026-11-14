@@ -8,16 +8,17 @@ building (a bar, a dome, a tower) so the silhouette over the sea can be judged. 
 answer the card's questions: from V1, V11, V12, the sunset rail and close to the cloud face, is an
 edge of the sea seen anywhere, and does the rock rise out of cloud rather than sit on a plate?
 
-The three ways to make the sea are chosen by the environment variable CLOUDSEA_VERSION (a vanilla
-layer only, b blocks only, c both). It defaults to "b": the offline renderer draws the fog but not
-the vanilla layer, the afterglow or the warm fog towards the west, so what it can show is the block
-sea in fog. On the real client S1 renders each version, every camera with the cloud setting on
-fancy, fast and off.
+The three ways to make the sea are three scenes with the same hilltop and the same shots, compared
+picture by picture: this one is version "c" (block sea and vanilla layer, what the master scene
+builds), obs_sky_cloudsea_a is "a" (vanilla layer only), obs_sky_cloudsea_b is "b" (blocks only).
+The offline renderer draws the fog but not the vanilla layer, the afterglow or the warm fog towards
+the west, so offline "c" and "b" are one picture -- the block sea in fog -- and "a" is the bare
+hilltop. On the real client S1 renders each version, every camera with the cloud setting on fancy,
+fast and off.
 
     python -m scenes.obs_sky_cloudsea     # rewrites shots.json
 """
 import math
-import os
 
 import numpy as np
 
@@ -32,7 +33,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
 BIOME_MARGIN_Y = 160
 
-VERSION = os.environ.get("CLOUDSEA_VERSION", "b")
+VERSION = "c"
 
 # --- the placeholder mountain ------------------------------------------------------------------------
 SLOPE = 1.25                # blocks of fall per block out from a flat
@@ -140,19 +141,19 @@ def _massing(c):
         c.set(cx, y, cz, B.IRON_ROD)
 
 
-def build():
+def build(version=VERSION):
     c = Canvas()
     _mountain(c)
     _paving(c)
     _massing(c)
-    cloudsea.build(c, (0, 0, 0), version=VERSION)
+    cloudsea.build(c, (0, 0, 0), version=version)
     return c
 
 
-def write_pack(pack_dir):
+def write_pack(pack_dir, version=VERSION):
     out = list(materials.pack(pack_dir) or [])
     out += list(comet.pack(pack_dir) or [])                       # the sun painted out, the comet
-    out += list(cloudsea.pack(pack_dir, version=VERSION) or [])
+    out += list(cloudsea.pack(pack_dir, version=version) or [])
     return out
 
 
