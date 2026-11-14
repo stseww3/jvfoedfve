@@ -91,16 +91,23 @@ def main():
     if os.path.exists(state_file):
         with open(state_file) as fh:
             prev = json.load(fh)
-    biome = args.biome or getattr(scene, "BIOME", None)
+    try:
+        look = importlib.import_module(f"scenes.{args.scene}.mood")
+    except ModuleNotFoundError as e:
+        if e.name != f"scenes.{args.scene}.mood":
+            raise               # the look is there and fails to import something: that is not "no look"
+        look = None
+    own = getattr(scene, "BIOME", None)
+    if own and ":" not in own and not args.biome and own not in getattr(look, "BIOMES", {}):
+        # the fill would only say "unknown biome" for every box, after the scene is placed
+        raise SystemExit(f"BIOME {own!r} of scene {args.scene} is not one of its look's biomes "
+                         f"({', '.join(sorted(getattr(look, 'BIOMES', {}))) or 'the scene has no mood.py'})")
+    biome = args.biome or own
     if biome and ":" not in biome:
         biome = f"c164art:{biome}"
     margin = getattr(scene, "BIOME_MARGIN", 4)
     margin_y = getattr(scene, "BIOME_MARGIN_Y", margin)
 
-    try:
-        look = importlib.import_module(f"scenes.{args.scene}.mood")
-    except ModuleNotFoundError:
-        look = None
     if look is not None:
         changed = MOOD.write(pack, "c164art", look.BIOMES, getattr(look, "TIMELINES", None))
         if changed:
