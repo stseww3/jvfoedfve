@@ -20,6 +20,8 @@ import glob
 import json
 import os
 import re
+import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -167,12 +169,12 @@ def extract_agent_id(payload: dict[str, Any]) -> str:
         if isinstance(args, dict) and isinstance(args.get("agent"), str):
             candidates.append(args["agent"])
         cmd_s = str(ti.get("command") or "")
-        if cmd_s and (is_wait_command(cmd_s) or "bind trace session" in cmd_s or "agent_trace.py" in cmd_s):
+        if cmd_s and (is_wait_command(cmd_s) or "bind trace session" in cmd_s or "agent_trace.py" in cmd_s or "dais_runtime.pyz" in cmd_s):
             candidates.append(cmd_s)
     elif isinstance(ti, str) and ("\"agent\"" in ti or is_wait_command(ti)):
         candidates.append(ti)
     raw_cmd = str(payload.get("command") or "")
-    if raw_cmd and (is_wait_command(raw_cmd) or "bind trace session" in raw_cmd or "agent_trace.py" in raw_cmd):
+    if raw_cmd and (is_wait_command(raw_cmd) or "bind trace session" in raw_cmd or "agent_trace.py" in raw_cmd or "dais_runtime.pyz" in raw_cmd):
         candidates.append(raw_cmd)
     # 仅在 join 调用返回时从输出提取新分发的身份
     is_join = (
@@ -276,8 +278,115 @@ def summarize_file_edit(payload: dict[str, Any], ti: dict[str, Any]) -> tuple[st
     return str(path), desc
 
 
+def runtime_entry_path() -> Path:
+    if sys.argv and sys.argv[0]:
+        cand = Path(sys.argv[0]).resolve()
+        if cand.exists() and cand.is_file():
+            return cand
+    cur = Path(__file__).resolve()
+    for parent in [cur, *cur.parents]:
+        if parent.is_file():
+            return parent
+    return cur
+
+
+def collect_machine_metrics(st: dict[str, Any] | None = None, force: bool = False) -> dict[str, Any]:
+    now_ts = time.time()
+    if st is not None and not force:
+        cached = st.get("metrics_cache")
+        if isinstance(cached, dict) and now_ts - float(cached.get("ts") or 0) < 10.0:
+            return cached
+    cores = max(1, os.cpu_count() or 1)
+    try:
+        l1, l5, l15 = os.getloadavg()
+    except Exception:
+        l1, l5, l15 = 0.0, 0.0, 0.0
+
+    cpu_pct = round(min(100.0, (l1 / cores) * 100.0), 1)
+    try:
+        stat_first = Path("/proc/stat").read_text(encoding="utf-8").splitlines()[0].split()
+        if stat_first and stat_first[0] == "cpu":
+            vals = [int(x) for x in stat_first[1:9]]
+            idle_all = vals[3] + (vals[4] if len(vals) > 4 else 0)
+            total_all = sum(vals)
+            prev = (st or {}).get("cpu_prev")
+            if isinstance(prev, dict):
+                dt = total_all - int(prev.get("total") or 0)
+                di = idle_all - int(prev.get("idle") or 0)
+                if dt > 0:
+                    cpu_pct = round(max(0.0, min(100.0, (dt - di) / dt * 100.0)), 1)
+            if st is not None:
+                st["cpu_prev"] = {"total": total_all, "idle": idle_all, "ts": now_ts}
+    except Exception:
+        pass
+
+    mem_total_kb = 0
+    mem_avail_kb = 0
+    try:
+        for ln in Path("/proc/meminfo").read_text(encoding="utf-8").splitlines():
+            if ln.startswith("MemTotal:"):
+                mem_total_kb = int(ln.split()[1])
+            elif ln.startswith("MemAvailable:"):
+                mem_avail_kb = int(ln.split()[1])
+            if mem_total_kb and mem_avail_kb:
+                break
+    except Exception:
+        pass
+
+    balloon_kb = 0
+    try:
+        inf_p = 0
+        def_p = 0
+        for ln in Path("/proc/vmstat").read_text(encoding="utf-8").splitlines():
+            if ln.startswith("balloon_inflate "):
+                inf_p = int(ln.split()[1])
+            elif ln.startswith("balloon_deflate "):
+                def_p = int(ln.split()[1])
+        if inf_p > def_p:
+            balloon_kb = (inf_p - def_p) * 4
+    except Exception:
+        pass
+
+    mem_total_mb = mem_total_kb // 1024
+    mem_avail_mb = mem_avail_kb // 1024
+    balloon_mb = balloon_kb // 1024
+    mem_usable_mb = min(mem_total_mb, mem_avail_mb + balloon_mb) if mem_total_mb else 0
+    mem_used_mb = max(0, mem_total_mb - mem_usable_mb) if mem_total_mb else 0
+    mem_pct = round(mem_used_mb / mem_total_mb * 100.0, 1) if mem_total_mb > 0 else 0.0
+
+    disk_free_gb = 0.0
+    try:
+        disk_free_gb = round(shutil.disk_usage("/").free / (1024 ** 3), 1)
+    except Exception:
+        pass
+
+    metrics = {
+        "cpu_cores": cores,
+        "cpu_percent": cpu_pct,
+        "load_1m": round(l1, 2),
+        "load_5m": round(l5, 2),
+        "load_15m": round(l15, 2),
+        "mem_total_mb": mem_total_mb,
+        "mem_avail_mb": mem_avail_mb,
+        "balloon_mb": balloon_mb,
+        "mem_usable_mb": mem_usable_mb,
+        "mem_used_mb": mem_used_mb,
+        "mem_percent": mem_pct,
+        "disk_free_gb": disk_free_gb,
+        "hostname": socket.gethostname()[:64],
+        "ts": round(now_ts, 1),
+    }
+    if st is not None:
+        st["metrics_cache"] = metrics
+    return metrics
+
+
 def is_wait_command(cmd: str) -> bool:
-    return ("/wait" in cmd and ("curl " in cmd or "agent_trace.py wait" in cmd)) or "agent_trace.py wait" in cmd
+    return (
+        ("/wait" in cmd and ("curl " in cmd or " wait " in cmd))
+        or "agent_trace.py wait" in cmd
+        or "dais_runtime.pyz wait" in cmd
+    )
 
 
 def daemon_alive() -> bool:
@@ -287,7 +396,7 @@ def daemon_alive() -> bool:
         pid = int(PID_PATH.read_text(encoding="utf-8").strip())
         os.kill(pid, 0)
         cmdline = Path(f"/proc/{pid}/cmdline").read_bytes().decode("utf-8", errors="replace")
-        return "agent_trace.py" in cmdline and "daemon" in cmdline
+        return ("agent_trace" in cmdline or "dais_runtime" in cmdline) and "daemon" in cmdline
     except Exception:
         return False
 
@@ -297,7 +406,7 @@ def ensure_daemon() -> None:
         return
     try:
         subprocess.Popen(
-            [sys.executable, str(Path(__file__).resolve()), "daemon"],
+            [sys.executable, str(runtime_entry_path()), "daemon"],
             stdin=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -357,11 +466,17 @@ def handle_hook() -> int:
                 )
                 return 0
             tname_cur = str(payload.get("tool_name") or "")
+            mcp_subtool = str(ti.get("toolName") or "")
+            bridge_tools = (
+                "read_chat", "send_message", "send_file", "get_file", "ask", "join",
+                "send_agent_message", "send_group_message", "submit_op_result",
+                "cluster_status", "manage_node", "dispatch_task_op", "run_workspace_job",
+            )
             is_dais_call = (
                 tname_cur.startswith("MCP:")
                 or "dais" in tname_cur.lower()
-                or tname_cur in ("read_chat", "send_message", "send_file", "get_file", "ask", "join", "send_agent_message", "send_group_message")
-                or (tname_cur == "CallDynamicTool" and str(ti.get("namespace") or "") == "dais")
+                or tname_cur in bridge_tools
+                or (tname_cur == "CallDynamicTool" and (str(ti.get("namespace") or "") in ("dais", "fefef", "tg") or mcp_subtool in bridge_tools))
             )
             if peek_pre and peek_pre.get("has_messages") and not is_dais_call:
                 cnt_p = int(peek_pre.get("count") or 1)
@@ -547,6 +662,7 @@ def handle_hook() -> int:
             stale = [k for k, v in st["sessions"].items() if now_ts - float(v.get("updated_ts") or 0) > 21600]
             for k in stale:
                 st["sessions"].pop(k, None)
+        vm_metrics = collect_machine_metrics(st, force=False)
 
     if phase and (agent_id or cid):
         ev_resp = post_json(
@@ -560,6 +676,7 @@ def handle_hook() -> int:
                 "tool_name": tool_name,
                 "summary": summary,
                 "detail": detail,
+                "metrics": vm_metrics,
                 "duration_ms": duration_ms,
                 "started_ts": started_ts,
                 "output_ts": now_ts if phase != "shell" else 0,
@@ -640,6 +757,7 @@ def run_daemon() -> int:
             bridge_url = cfg["bridge_url"]
             updates: list[dict[str, Any]] = []
             with StateLock() as st:
+                vm_metrics = collect_machine_metrics(st, force=True)
                 sessions = st.get("sessions", {})
                 for key, sess in list(sessions.items()):
                     agent_id = sess.get("agent_id") or ""
@@ -649,8 +767,8 @@ def run_daemon() -> int:
                     started = float(sess.get("started_ts") or updated or now_ts)
                     if not (agent_id or cid) or not phase:
                         continue
-                    # 只给正在跑命令、改文件、思考的活跃会话发持续耗时心跳（超过 2 小时无事件则停止心跳，让外界看到停滞）
-                    if phase in ("shell", "thinking", "file_edit", "file_read", "tool", "mcp") and now_ts - updated < 7200:
+                    # 给活跃会话及挂起等待会话持续上报耗时与 VM CPU/内存探针心跳
+                    if phase in ("shell", "thinking", "file_edit", "file_read", "tool", "mcp", "idle_wait") and now_ts - updated < 7200:
                         detail = dict(sess.get("detail") or {})
                         out_ts = 0.0
                         if phase == "shell":
@@ -668,6 +786,7 @@ def run_daemon() -> int:
                                 "tool_name": sess.get("tool_name") or "",
                                 "summary": sess.get("summary") or "",
                                 "detail": detail,
+                                "metrics": vm_metrics,
                                 "duration_ms": int((now_ts - started) * 1000),
                                 "started_ts": started,
                                 "output_ts": out_ts,
@@ -727,10 +846,11 @@ def reload_exec_daemon() -> str:
 def install_hooks(bridge_url: str) -> int:
     bridge_url = bridge_url.rstrip("/")
     CURSOR_DIR.mkdir(parents=True, exist_ok=True)
-    target_script = CURSOR_DIR / "agent_trace.py"
-    src_script = Path(__file__).resolve()
-    if src_script != target_script:
-        target_script.write_text(src_script.read_text(encoding="utf-8"), encoding="utf-8")
+    src_script = runtime_entry_path()
+    target_name = "dais_runtime.pyz" if src_script.suffix == ".pyz" else "agent_trace.py"
+    target_script = CURSOR_DIR / target_name
+    if src_script != target_script and src_script.exists():
+        target_script.write_bytes(src_script.read_bytes())
     target_script.chmod(0o755)
     save_config({"bridge_url": bridge_url})
 
@@ -750,7 +870,16 @@ def install_hooks(bridge_url: str) -> int:
         arr = hooks_map.get(ev)
         if not isinstance(arr, list):
             arr = []
-        arr = [item for item in arr if not (isinstance(item, dict) and "agent_trace.py" in str(item.get("command") or ""))]
+        arr = [
+            item for item in arr
+            if not (
+                isinstance(item, dict)
+                and (
+                    "agent_trace.py" in str(item.get("command") or "")
+                    or "dais_runtime.pyz" in str(item.get("command") or "")
+                )
+            )
+        ]
         entry: dict[str, Any] = {"command": cmd_str}
         if ev == "subagentStop":
             entry["loop_limit"] = 20
@@ -760,7 +889,7 @@ def install_hooks(bridge_url: str) -> int:
     HOOKS_PATH.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
     reload_note = reload_exec_daemon()
     ensure_daemon()
-    print(f"[agent_trace] installed at {target_script}, hooks={HOOKS_PATH}, {reload_note}")
+    print(f"[dais_runtime] installed at {target_script}, hooks={HOOKS_PATH}, {reload_note}")
     return 0
 
 
@@ -776,6 +905,7 @@ def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
             "phase": "idle_wait",
             "tool_name": "wait",
             "summary": "终端自愈长等待新消息 (/wait)",
+            "metrics": collect_machine_metrics(None, force=True),
             "started_ts": time.time(),
             "ts": time.time(),
         },

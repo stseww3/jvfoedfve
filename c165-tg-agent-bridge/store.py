@@ -214,6 +214,38 @@ CREATE TABLE IF NOT EXISTS agent_trace_events(
     duration_ms INTEGER DEFAULT 0,
     ts REAL
 );
+
+-- 多主 Agent 启动器池（main1..N）与云端工作机池（node1..K）及 CPU/内存探针与独占/共享权限表
+CREATE TABLE IF NOT EXISTS exec_nodes(
+    id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,            -- launcher (mainN) | runner (nodeN)
+    num INTEGER DEFAULT 0,
+    cloud_num INTEGER DEFAULT 0,
+    name TEXT DEFAULT '',
+    agent TEXT DEFAULT '',
+    status TEXT DEFAULT 'online',  -- online | offline | draining | removed
+    exclusive_conv TEXT DEFAULT '',-- ''=共享池；cXXX=独占分配给该聊天
+    allowed_convs TEXT DEFAULT '[]',-- JSON 数组：总控授权允许借用该机器的聊天列表
+    metrics_json TEXT DEFAULT '{}',-- CPU/负载/内存/balloon探针快照
+    metrics_ts REAL DEFAULT 0,
+    last_seen REAL DEFAULT 0,
+    created REAL DEFAULT 0,
+    note TEXT DEFAULT ''
+);
+
+-- 标准化无脑执行指令单与回执队列表
+CREATE TABLE IF NOT EXISTS dispatch_ops(
+    op_id TEXT PRIMARY KEY,
+    target_node TEXT NOT NULL,
+    op_type TEXT NOT NULL,         -- launch_subagent | resume_subagent | workspace_job
+    conv_id TEXT DEFAULT '',
+    requester TEXT DEFAULT '',
+    payload_json TEXT DEFAULT '{}',
+    status TEXT DEFAULT 'pending', -- pending | done | failed | cancelled
+    result_json TEXT DEFAULT '{}',
+    created_ts REAL DEFAULT 0,
+    done_ts REAL DEFAULT 0
+);
 """
 
 COLUMNS = (
@@ -237,6 +269,12 @@ COLUMNS = (
     ("devices", "auth_until", "REAL DEFAULT 0"),      # 整机免批截止时间戳；>now() 时该电脑主人名下所有开启本地通道的聊天直接放行
     ("convs", "in_tg", "INTEGER DEFAULT 1"),          # 1=接入Telegram聊天列表；0=纯后台MCP子agent（不进TG菜单/列表，不向TG发消息）
     ("agent_traces", "thought_ts", "REAL DEFAULT 0"), # 最后一次 afterAgentThought 真实思考完成时间戳（判死核心指标）
+    ("agent_traces", "hb_ts", "REAL DEFAULT 0"),      # 最近一次 VM 探针心跳时间戳（区分单 agent 思考卡死 vs 整机探针离线）
+    ("agent_traces", "metrics_json", "TEXT DEFAULT '{}'"),  # VM 实时 CPU / 内存探针快照
+    ("convs", "dedicated_req", "INTEGER DEFAULT 0"),  # 创建时是否申请独占机器（默认 0 不独占）
+    ("convs", "dedicated_node", "TEXT DEFAULT ''"),   # 总控实际批准绑定的独占机器（如 main2 / node1）
+    ("convs", "machine_reason", "TEXT DEFAULT ''"),   # 申请独占机器的原因说明
+    ("convs", "auto_restarted_ts", "REAL DEFAULT 0"), # 最近一次因 5 分钟思考卡死自动重开的时间戳（防抖保护）
 )
 
 INDEXES = """
@@ -248,6 +286,8 @@ CREATE INDEX IF NOT EXISTS idx_people_username ON people(username COLLATE NOCASE
 CREATE INDEX IF NOT EXISTS idx_agent_group_msgs ON agent_group_messages(group_id, id);
 CREATE INDEX IF NOT EXISTS idx_agent_group_members_conv ON agent_group_members(conv);
 CREATE INDEX IF NOT EXISTS idx_agent_trace_events_conv ON agent_trace_events(conv, id);
+CREATE INDEX IF NOT EXISTS idx_dispatch_ops_node ON dispatch_ops(target_node, status, created_ts);
+CREATE INDEX IF NOT EXISTS idx_dispatch_ops_conv ON dispatch_ops(conv_id, created_ts);
 """
 
 
