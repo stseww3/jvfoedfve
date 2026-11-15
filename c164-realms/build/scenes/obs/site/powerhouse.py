@@ -101,7 +101,8 @@ FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
 SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
 
 # the pipe bridge
-PIPE_Z = Z0 + CORNER + 3 * BAY - 1                  # 33, the third pier of the west front
+PIPE_Z = Z0 + CORNER + 3 * BAY - 1                  # 33, the third pier of the west front. props/lamps reads
+#                                                     it: no lamp on the lip's piers next to this row
 PIPE_Y = EAVES - 1                                  # 2, the main; the girder is one below, the cable one above
 PIPE_OUT = (X0, PIPE_Y, PIPE_Z)                     # the pier cell the main leaves the house through
 PIPE_IN = (X0 + CORNER, PIPE_Y, PIPE_Z)             # the first cell of the room behind the sleeve: the main starts here
