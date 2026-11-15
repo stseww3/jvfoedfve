@@ -5,8 +5,8 @@ terrace paving with two benches, one seen from the front and one end-on, so the 
 end frame are both judged. The rest is a room floor with the pieces set as a room uses them: a study
 corner (coat stand, writing desk with a desk lamp, swivel chair, two card cabinets side by side and
 an instrument cabinet), a trunk and crates, the drafting table with its stool, a bookcase with the
-library ladder on its rail, and a display case. Bracket lamps on the wall light the stage as lamps
-light a room.
+library ladder on its rail, a display case and a display table. Bracket lamps on the wall light the
+stage as lamps light a room.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_furniture
 """
@@ -24,7 +24,7 @@ STONE, PAVING, FLOOR, SHELF = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_
 WALL_Z = -1
 FACE = WALL_Z + 1               # the air cell in front of the wall; a wall prop's anchor sits on the face
 WALL_H = 6
-WEST, ROOM, EAST = -3, 11, 38   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
+WEST, ROOM, EAST = -3, 11, 40   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
 DEPTH = 12
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
@@ -42,7 +42,8 @@ STOOL = (27.2, 0.0, 3.5)
 CASE_X = (30, 33)               # the bookcase: these cells along x, three high, one deep
 LADDER_X = 31.5
 CASE = (35.5, 0.0, 2.0)
-LAMPS = (6.0, 13.5, 20.8, 28.6, 34.5)
+TABLE = (38.2, 0.0, 0.5)        # against the wall, as in the star hall
+LAMPS = (6.0, 13.5, 20.8, 28.6, 34.3, 38.2)
 
 
 def build():
@@ -70,6 +71,7 @@ def build():
     n += place(c, "library_ladder", (LADDER_X, 0.0, shelf_front))
     n += furniture.rail(c, (CASE_X[0] + 0.5, 0.0, shelf_front), CASE_X[1] - CASE_X[0] + 1)
     n += place(c, "display_case", CASE)
+    n += place(c, "display_table", TABLE)
     for x in LAMPS:
         n += lamps.place(c, "bracket", (x, 3.5, float(FACE)))
     sky.build(c, (0, 0, 0))             # A2's light sources go in last, when every piece is in place
@@ -113,4 +115,5 @@ def shots():
     near("stool", STOOL, 0.4, back=2.2, side=-1.4, up=0.9)
     near("library_ladder", (LADDER_X, 0.0, 1.5), 1.5, back=4.2, side=1.8, up=0.3)
     near("display_case", CASE, 0.9, back=3.0, side=1.4, up=0.8)
+    near("display_table", TABLE, 0.6, back=2.8, side=-1.2, up=1.3)
     return out
