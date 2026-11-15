@@ -40,8 +40,10 @@ def write_pack(pack_dir):
 
 def shots():
     """V11 from the south lookout (the distance view), V1 and V2 (the two views whose skyline the
-    dome ends on the south), the dome from the court, from the roofs and from above; the way over the roofs as one walks it from the dome room's south door to the small
-    dome; both wings' roofs from above, and the north one from the height of the tower's lookout."""
+    dome ends on the south), the dome from the court, from the roofs and from above; the way over
+    the roofs as one walks it from the dome room's south door to the small dome; both wings' roofs
+    from above, the north one from the height of the tower's lookout as well; and the whole site from
+    above, the one view of the board that sees the roofs."""
     cx = (S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0 + 0.5        # the dome's axis, a point
     cz = (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) / 2.0 + 0.5
     spring = S.SMALL_DRUM_BASE + 3.0
@@ -68,7 +70,7 @@ def shots():
     shot("door", (door_x + 1.5, eye, gable + 0.5), (door_x + 0.5, S.ROOF_STAND + 1.0, door_z + 0.5))
     shot("treads", (S.WALL_E - 2.0, eye + 0.6, gable + 4.0), (ridge + 2.0, S.ROOF_STAND + 1.0, gable + 1.5))
     shot("walk", (ridge, P.ROOF_RIDGE_TOP + S.EYE, gable + 2.5), (cx - 2.0, spring - 0.5, cz))
-    shot("terrace", (S.WALL_W + 2.5, eye, end_gable + 1.5), (cx - 3.0, S.ROOF_STAND + 2.6, cz))
+    shot("terrace", (S.WALL_W + 2.5, eye, end_gable + 3.5), (cx - 3.0, S.ROOF_STAND + 2.6, cz))
     shot("roofs", (cx + 6.0, spring + 22.0, cz + 26.0), (ridge, S.ROOF_STAND, 14.0))
     # the north wing: from the west, where the tower does not stand in the way (the end terrace, the
     # treads down the west slope, the tower's door); then from the height of the tower's lookout, the
@@ -81,4 +83,9 @@ def shots():
     shot("lookout", (tower_x, lookout, S.CLOCK_SHAFT_Z[1] + 1.1), (ridge, S.ROOF_STAND + 1.0, mirror - 12.0))
     shot("lookout_west", (S.CLOCK_SHAFT_X[0] - 0.4, lookout, tower_z), (S.WALL_W + 4.5, S.ROOF_STAND - 0.5, tower_z + 1.0))
     shot("aerial", (cx + 14.0, spring + 24.0, cz + 18.0), (cx, spring - 2.0, cz))
+    # V12, the board's view of the whole site from above: the skeleton does not lock it yet, so the
+    # numbers are the proposal of tools/boardshots.py, written out the same way
+    v12 = getattr(S, "V12", None) or dict(pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
+                                          look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5))
+    shot("v12", v12["pos"], v12["look_at"])
     return out
