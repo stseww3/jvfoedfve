@@ -15,36 +15,36 @@
     {"at": [7.5, 0, -3.5]},
     {"at": [14.5, 0, -4.5], "node": "the hall's north-east corner"},
     {"at": [2.5, 0, -4.5], "node": "the hall's north-west corner, before the north flight"},
-    {"at": [2.5, 0, 4.5], "node": "the hall's south-west corner, before the south flight"},
-    {"at": [14.5, 0, 4.5], "node": "the hall's south-east corner"}
+    {"at": [2.5, 0, 5.5], "node": "the hall's south-west corner, before the south flight"},
+    {"at": [14.5, 0, 5.5], "node": "the hall's south-east corner"}
   ]},
   {"id": "C", "name": "the way to the west door", "points": [
-    {"at": [2.5, 0, 0.5], "node": "before the middle arch of the west arcade"},
+    {"at": [2.5, 0, 0.5], "node": "before the middle arch of the west arcade", "hop": true},
     {"at": [0.5, 0, 0.5], "node": "under the middle arch of the west arcade"},
     {"at": [-5.5, 0, 0.5]},
     {"at": [-7.5, 0, 0.5], "node": "inside the west door"},
     {"at": [-10.5, 0, 0.5], "node": "outside the west door"}
   ]},
   {"id": "D", "name": "the grand stair, both flights", "points": [
-    {"at": [2.5, 0, -3.5], "node": "the foot of the north flight"},
+    {"at": [2.5, 0, -3.5], "node": "the foot of the north flight", "hop": true},
     {"at": [-5.5, 7, -3.5], "node": "the north landing"},
     {"at": [-5.5, 7, 0.5], "node": "the mezzanine"},
     {"at": [-5.5, 7, 4.5], "node": "the south landing"},
     {"at": [2.5, 0, 4.5], "node": "the foot of the south flight"}
   ]},
   {"id": "E", "name": "the galleries of the main floor", "points": [
-    {"at": [-3.5, 7, 0.5]},
+    {"at": [-3.5, 7, 0.5], "hop": true},
     {"at": [0.5, 7, 0.5], "node": "the cross gallery on the axis, before the pier"},
-    {"at": [0.5, 7, 4.5], "node": "the galleries' south-west corner"},
-    {"at": [8.0, 7, 4.5], "node": "before the chart room's door"},
-    {"at": [14.5, 7, 4.5], "node": "the south gallery's east end"},
+    {"at": [0.5, 7, 5.5], "node": "the galleries' south-west corner"},
+    {"at": [8.0, 7, 5.5], "node": "before the chart room's door"},
+    {"at": [14.5, 7, 5.5], "node": "the south gallery's east end"},
     {"at": [0.5, 7, -4.5], "node": "the galleries' north-west corner", "hop": true},
     {"at": [4.5, 7, -4.5], "node": "the north gallery at the bridge onto the ring stair"},
     {"at": [8.0, 7, -4.5], "node": "before the time room's door"},
     {"at": [14.5, 7, -4.5], "node": "the north gallery's east end"}
   ]},
   {"id": "F", "name": "the time room (north wing)", "points": [
-    {"at": [8.0, 7, -5.5], "node": "in the time room's door"},
+    {"at": [8.0, 7, -5.5], "node": "in the time room's door", "hop": true},
     {"at": [8.0, 7, -8.5], "node": "inside the time room's door"},
     {"at": [3.5, 7, -8.5], "node": "the time room's south-west corner"},
     {"at": [3.5, 7, -23.5], "node": "the time room's north-west corner"},
@@ -54,7 +54,7 @@
     {"at": [8.0, 7, -20.5]}
   ]},
   {"id": "G", "name": "the chart room (south wing)", "points": [
-    {"at": [8.0, 7, 6.5], "node": "in the chart room's door"},
+    {"at": [8.0, 7, 6.5], "node": "in the chart room's door", "hop": true},
     {"at": [8.0, 7, 9.5], "node": "inside the chart room's door"},
     {"at": [3.5, 7, 9.5], "node": "the chart room's north-west corner"},
     {"at": [3.5, 7, 24.5], "node": "the chart room's south-west corner"},
@@ -64,7 +64,7 @@
     {"at": [8.0, 7, 21.5]}
   ]},
   {"id": "H", "name": "the ring stair", "points": [
-    {"at": [4.5, 7, -3.5], "node": "the bridge onto the ring stair"},
+    {"at": [4.5, 7, -3.5], "node": "the bridge onto the ring stair", "hop": true},
     {"at": [4.5, 7.5, -2.5]},
     {"at": [1.5, 8.5, -2.5], "node": "the ring stair's north-west landing"},
     {"at": [1.5, 11.5, 3.5], "node": "the ring stair's south-west corner"},
@@ -84,7 +84,7 @@
     {"at": [-1.2, 18, -5.2]}
   ]},
   {"id": "J", "name": "the south roofs: corner terrace, ridge walk, the small dome's terrace", "points": [
-    {"at": [10.5, 18, 8.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5]},
+    {"at": [10.5, 18, 8.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5], "hop": true},
     {"at": [12.5, 18, 10.5], "node": "in the dome room's south door"},
     {"at": [13.5, 18, 12.5], "node": "the south corner terrace"},
     {"at": [13.5, 18, 15.5], "node": "where the south way climbs to the ridge"},
@@ -96,7 +96,7 @@
     {"at": [8.0, 18, 30.5], "node": "before the small dome's door"}
   ]},
   {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the clock tower's foot", "points": [
-    {"at": [10.5, 18, -7.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5]},
+    {"at": [10.5, 18, -7.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5], "hop": true},
     {"at": [12.5, 18, -9.5], "node": "in the dome room's north door"},
     {"at": [13.5, 18, -11.5], "node": "the north corner terrace"},
     {"at": [13.5, 18, -14.5], "node": "where the north way climbs to the ridge"},

@@ -20,10 +20,13 @@ sure that every round looks from the same places.
     walk.py sheets   <stations.json> --pictures <prefix> --out <folder>
         contact sheets of pictures drawn as <prefix>-<shot name>.png
     walk.py round    <route.json> --round <the assembly commit, 7 digits> [--stations <stations.json>]
+                     [--only A,B] [--no-pictures]
         all of it, on a worker node: build the scene once, take the station table (the one given,
-        or a new one of the route), draw every shot, lay out the sheets. What is kept goes to
-        plan/reviews/walk/<round>/: <prefix>-stations.json and <prefix>-sheet-<stretch>-<n>.jpg.
-        The single pictures stay in the work folder (--work, default /tmp/c164_walk) and are not kept.
+        or a new one of the route), ask the blocks how each station is reached, draw every shot,
+        lay out the sheets. What is kept goes to plan/reviews/walk/<round>/: <prefix>-stations.json,
+        <prefix>-reach.json and <prefix>-sheet-<stretch>-<n>.jpg. The single pictures stay in the
+        work folder (--work, default /tmp/c164_walk) and are not kept. --only draws the stretches
+        named and no others (a round in several jobs); --no-pictures stops before the drawing.
 
         bash c164-realms/tools/nodejob.sh --keep c164-realms/plan/reviews/walk \\
             python tools/walk.py round plan/reviews/walk/in-route.json --round db1ec43
@@ -48,7 +51,8 @@ The route file (JSON) -- one for each of the two walks, in-route.json and out-ro
     views   other views than those, as letters of "flrbud".
     look    [x, y, z]: the view ahead looks at this point instead of along the way.
     hop     true: the way does not run here from the point before (a room entered elsewhere, a
-            place only the camera gets to). No stations between the two.
+            place only the camera gets to). No stations between the two. The first point of a
+            stretch is taken to follow the last one of the stretch before it, unless it says hop.
     note    anything; not read.
 
 Stations: every point is one, and between two points the leg is divided evenly into steps of four
@@ -58,7 +62,26 @@ round before (--stations), and only a changed route makes a new one. The feet of
 on the floor nearest to the level the route gives (tools/walkreach.py's feet() when that module is
 there, a plain reading of the column otherwise); a station that finds no floor within a block and a
 quarter keeps the route's level and is marked "floor": false -- the route says a floor is there,
-so that is a finding, or the room has not moved in yet.
+so that is a finding, or the room has not moved in yet. A table walked again keeps its stations
+where they are; "floor" then says what the floor has become (false: gone; a number: its new level).
+
+Ways (tools/walkreach.py, when it is in the tree): what a person can walk is worked out from the
+blocks' collision boxes, once from the route's first station, and every round anew. Each station
+gets
+
+    reach   how one gets there from the first station: "walk" (on foot), "hop" (it takes a jump),
+            "fall" (only by dropping, and there is a way back), "trap" (no way back) or "no".
+            A station without a floor has none: nobody stands there.
+    from, how   for a station nobody gets to from the first one: the station a search of its own
+            was started at (at most five of them: the roofs while the stair is not built, a room
+            behind a shut door), and how one gets here from that one
+    leg     the way from the station before it, where it is not a plain walk: "hop", "fall", "no"
+    round   that way's length in blocks, when it is much longer than the straight line: something
+            stands on the line
+
+and <prefix>-reach.json keeps what walkreach found on the ground looked at (twelve blocks round
+the route): pits without a way out, places reached by a jump only, low head room, gaps that only
+head room closes. A model door, a model railing have no collision box: they are air to this.
 
 Pictures: 640x360, the eye 1.62 above the feet, 77 degrees high, tick 14000, the whole scene `obs`
 as the checkout builds it (every package's DRESS as it stands there). The view ahead looks the way
@@ -71,6 +94,7 @@ feet, the yaw and how light the picture is on the average (Rec. 709 luma of the 
 1): a row of stations near 0 is a way without light.
 """
 import argparse
+import gc
 import importlib
 import json
 import math
@@ -79,6 +103,7 @@ import pickle
 import re
 import subprocess
 import sys
+from collections import deque
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
@@ -97,6 +122,10 @@ COLS, ROWS = 4, 3           # pictures on a sheet
 LABEL = 22                  # the strip over a picture
 HEADER = 32                 # the strip over a sheet
 DARK = 0.02                 # a view ahead darker than this on the average is listed in the round's report
+STARTS = 5                  # the searches for ways: the route's first station, and so many less one of those nobody gets to
+NEAR = 0.6                  # a station and a place reached are the same place within this much of height
+MARGIN = 12                 # ways are looked for this far round the route
+ROUND = (1.5, 2.0)          # a leg's way is "round" when longer than the straight line times this, and this more
 NAME_OK = re.compile(r"[A-Za-z0-9]+\Z")
 POINT_KEYS = {"at", "node", "views", "look", "hop", "note"}
 
@@ -290,25 +319,24 @@ def floor_plans(cells, box, levels=(), top=None):
     return out
 
 
-def feet_finder(cells):
-    """(feet, where it comes from): feet(x, z, near_y) -> level or None. tools/walkreach.py's when
-    that module is in the tree, the plain reading of the column otherwise."""
-    def plain(x, z, near_y):
-        return plain_feet(cells, x, z, near_y)
-
+def _walkreach():
+    """tools/walkreach.py as a module; None while it is not in the tree."""
     try:
         if HERE not in sys.path:
             sys.path.insert(0, HERE)
         import walkreach  # noqa: PLC0415
     except ImportError:
-        return plain, "the plain reading of the column"
-    if not hasattr(walkreach, "feet"):
-        return plain, "the plain reading of the column"
+        return None
+    return walkreach if hasattr(walkreach, "feet") and hasattr(walkreach, "reach_of") else None
 
-    def reach(x, z, near_y):
-        return walkreach.feet(cells, x, z, near_y)
 
-    return reach, "tools/walkreach.py"
+def feet_finder(cells):
+    """(feet, where it comes from): feet(x, z, near_y) -> level or None. tools/walkreach.py's when
+    that module is in the tree, the plain reading of the column otherwise."""
+    walkreach = _walkreach()
+    if walkreach is None:
+        return (lambda x, z, near_y: plain_feet(cells, x, z, near_y)), "the plain reading of the column"
+    return (lambda x, z, near_y: walkreach.feet(cells, x, z, near_y, REACH)), "tools/walkreach.py"
 
 
 def room_finder():
@@ -374,7 +402,7 @@ def stations_of(route, feet, where=None, step=STEP):
     for stretch in route["stretches"]:
         points = stretch["points"]
         count = 0
-        for run in _runs(points):
+        for nth, run in enumerate(_runs(points)):
             path = [tuple(float(v) for v in points[k]["at"]) for k in run]
             marks = [0.0]                                    # the ground distance of every point from the run's start
             for a, b in zip(path, path[1:]):
@@ -411,6 +439,8 @@ def stations_of(route, feet, where=None, step=STEP):
                                views=point.get("views") or (VIEWS if point.get("node") else "f"))
                 if point.get("node"):
                     station["node"] = point["node"]
+                if k == run[0] and (nth or point.get("hop")):
+                    station["hop"] = True                    # the way does not come here from the station before
                 if not floor:
                     station["floor"] = False
                 room = where(x, level, z)
@@ -515,12 +545,22 @@ def sheets_of(table, pictures, out, cols=COLS, rows=ROWS, quality=88):
                     light[shot] = None
                     draw.rectangle((left, top + LABEL, left + width - 1, top + LABEL + height - 1), fill=(60, 60, 66))
                     draw.text((left + 12, top + LABEL + 12), "no picture", fill=(220, 220, 220), font=big)
+                marks = []
                 if s.get("floor") is False:
-                    label += "   NO FLOOR"
+                    marks.append("NO FLOOR")
+                elif s.get("floor") is not None:
+                    marks.append(f"FLOOR NOW {s['floor']:g}")
+                elif s.get("reach", "walk") != "walk":
+                    marks.append(f"REACH {s['reach']}" + (f" ({s['how']} from {s['from'].partition('-')[2]})" if s.get("from") else ""))
+                if s.get("leg"):
+                    marks.append(f"LEG {s['leg']}")
+                if s.get("round"):
+                    marks.append(f"ROUND {s['round']:g}")
+                label += "".join("   " + m for m in marks)
                 if s.get("node") and shot.endswith("-f"):
                     label += f"   [{s['node']}]"
                 draw.text((left + 4, top + 3), label[:int(width / 7.6)], font=font,
-                          fill=(255, 214, 120) if s.get("node") else (210, 210, 210))
+                          fill=(255, 140, 120) if marks else (255, 214, 120) if s.get("node") else (210, 210, 210))
             path = os.path.join(out, f"{prefix}-sheet-{sid}-{page + 1}.jpg")
             sheet.save(path, quality=quality)
             written.append(path)
@@ -549,6 +589,155 @@ def make_table(route, cells, **facts):
     return table_of(route, stations_of(route, feet, room_finder()), floor_from=source, **facts)
 
 
+# ---- what the blocks say of the stations ----------------------------------------------------------------
+SURVEYED = ("floor", "reach", "from", "how", "leg", "round")
+ROWS_KEPT = 60              # of each list in walkreach's report (they are sorted, the worst first)
+
+
+def _node(reach, q, x, y, z):
+    """The node of a Reach at a station: the place reached at the lattice point nearest to it, or at
+    one beside that, whose feet are within NEAR of the station's. None: nobody gets there."""
+    world = reach.world
+    i0, j0 = world.lattice(x, z)
+    best = None
+    for i in range(i0 - 1, i0 + 2):
+        for j in range(j0 - 1, j0 + 2):
+            for top, _ in world.stand(i, j):
+                node = (i, j, int(round(top * q)))
+                if node in reach.kind and abs(top - y) <= NEAR + 1e-6:
+                    off = (max(abs(i - i0), abs(j - j0)), abs(top - y))
+                    if best is None or off < best[0]:
+                        best = (off, node)
+    return best[1] if best else None
+
+
+def _leg(reach, a, b, most, jump):
+    """The easiest way from node a to node b of a Reach within `most` lattice steps: (kind, steps).
+    "walk"; "hop" with jumps and drops of a jump's height; "fall" with any drop; ("no", None)."""
+    tries = (("walk", lambda kind, rise: kind == "walk"),
+             ("hop", lambda kind, rise: kind in ("walk", "jump") or -rise <= jump + 1e-6),
+             ("fall", lambda kind, rise: True))
+    for name, allow in tries:
+        seen, todo = {a: 0}, deque([a])
+        while todo:
+            node = todo.popleft()
+            if node == b:
+                return name, seen[node]
+            if seen[node] >= most:
+                continue
+            for nxt, kind, rise in reach.out.get(node) or ():
+                if nxt not in seen and allow(kind, rise):
+                    seen[nxt] = seen[node] + 1
+                    todo.append(nxt)
+    return "no", None
+
+
+def _short(report):
+    """walkreach's report with its long lists cut to ROWS_KEPT rows (how many there were is noted)."""
+    out = {}
+    for key, value in report.items():
+        if isinstance(value, list) and len(value) > ROWS_KEPT:
+            out[key] = value[:ROWS_KEPT]
+            out[f"{key}: rows in all"] = len(value)
+        else:
+            out[key] = value
+    return out
+
+
+def survey(table, cells, say=print):
+    """What the built scene says of every station of a table: the floor under it and, with
+    tools/walkreach.py in the tree, how it is reached (the docstring's "Ways"). Sets floor, reach,
+    from, how, leg and round of every station anew; returns what <prefix>-reach.json keeps, None
+    without walkreach."""
+    feet, source = feet_finder(cells)
+    table["floor_from"] = source
+    stations = table["stations"]
+    for s in stations:
+        for key in SURVEYED:
+            s.pop(key, None)
+        x, y, z = s["feet"]
+        level = feet(x, z, y)
+        if level is None:
+            s["floor"] = False
+        elif abs(level - y) > 0.01:
+            s["floor"] = round(level, 3)
+    walkreach = _walkreach()
+    if walkreach is None or not stations:
+        return None
+    q, grid = walkreach.Q, walkreach.GRID
+    xs, zs = [s["feet"][0] for s in stations], [s["feet"][2] for s in stations]
+    bounds = (math.floor(min(xs)) - MARGIN, math.floor(min(zs)) - MARGIN,
+              math.floor(max(xs)) + MARGIN, math.floor(max(zs)) + MARGIN)
+    starts, nodes = [], {}                  # [(station, Reach)]; {station: (which start, node)}
+    place = {}                              # {station: where its feet stand now}; none without a floor
+    for s in stations:
+        if s.get("floor") is False:
+            continue
+        x, y, z = place[s["id"]] = (s["feet"][0], s.get("floor", s["feet"][1]), s["feet"][2])
+        for n, (_, reach) in enumerate(starts):
+            node = _node(reach, q, x, y, z)
+            if node is not None:
+                nodes[s["id"]] = (n, node)
+                break
+        else:
+            if "floor" in s or len(starts) >= STARTS:
+                continue
+            try:
+                reach = walkreach.reach_of(cells, (x, y, z), bounds)
+            except ValueError:              # nobody can stand there after all
+                continue
+            node = _node(reach, q, x, y, z)
+            if node is None:
+                continue
+            starts.append((s["id"], reach))
+            nodes[s["id"]] = (len(starts) - 1, node)
+            say(f"walk: ways from {s['id']} ({x:g}, {y:g}, {z:g}): {len(reach.kind)} places reached"
+                + ("; CUT SHORT" if reach.cut else ""), flush=True)
+    table["reach_from"] = starts[0][0] if starts else None
+    table["reach_bounds"] = list(bounds)
+    before = None
+    for s in stations:
+        hit = nodes.get(s["id"])
+        if s["id"] not in place:
+            pass                            # no floor: nobody stands there, and that is said already
+        elif hit is None:
+            s["reach"] = "no"
+        elif hit[0] == 0:
+            s["reach"] = starts[0][1].kind[hit[1]]
+        else:
+            s["reach"] = "no"
+            s["from"], s["how"] = starts[hit[0]][0], starts[hit[0]][1].kind[hit[1]]
+        gone = nodes.get(before["id"]) if before is not None and not s.get("hop") else None
+        if gone is not None and s["id"] in place:
+            reach = starts[gone[0]][1]      # the ways that lead on from the station before
+            here = hit[1] if hit is not None and hit[0] == gone[0] else _node(reach, q, *place[s["id"]])
+            straight = math.dist(before["feet"][::2], s["feet"][::2])
+            kind, steps = ("no", None) if here is None else \
+                _leg(reach, gone[1], here, int(6 * straight / grid) + 24, walkreach.JUMP)
+            if kind != "walk":
+                s["leg"] = kind
+            if steps is not None and steps * grid > ROUND[0] * straight + ROUND[1]:
+                s["round"] = round(steps * grid, 1)
+        before = s
+    try:
+        if BUILD not in sys.path:
+            sys.path.insert(0, BUILD)
+        line = float(importlib.import_module("scenes.obs.site.terrain").CLOUD_TOP + 1)
+    except Exception:  # noqa: BLE001  no such module, no such sheet: nobody is sent home
+        line = None
+    found = dict(round=table.get("round"), scene=table.get("scene"), bounds=list(bounds), line=line, starts=[])
+    for n, (sid, reach) in enumerate(starts):
+        mine = [k for k, hit in nodes.items() if hit[0] == n]
+        found["starts"].append(dict(station=sid, stations=len(mine), report=_short(reach.report(None, line=line))))
+    return found
+
+
+def write_found(path, found):
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(found, fh, ensure_ascii=False, indent=1)
+        fh.write("\n")
+
+
 def report(table, light=None):
     """A few lines for the job's receipt: how many stations and pictures each stretch has, which
     stations found no floor, which pictures are missing or dark."""
@@ -560,6 +749,21 @@ def report(table, light=None):
         line = f"stretch {sid} ({name}): {len(mine)} stations, {len(shots)} pictures"
         if floating:
             line += f"; no floor at {len(floating)}: {', '.join(floating[:12])}{' ...' if len(floating) > 12 else ''}"
+        moved = [f"{s['id']} ({s['floor']:g})" for s in mine if s.get("floor") not in (None, False)]
+        if moved:
+            line += f"; the floor has moved at {len(moved)}: {', '.join(moved[:12])}{' ...' if len(moved) > 12 else ''}"
+        if any("reach" in s for s in mine):
+            for kind in ("hop", "fall", "trap", "no"):
+                rows = [s["id"] + (f" ({s['how']} from {s['from']})" if s.get("from") else "")
+                        for s in mine if s.get("reach") == kind and s.get("floor") is not False]
+                if rows:
+                    line += f"; reached '{kind}' {len(rows)}: {', '.join(rows[:12])}{' ...' if len(rows) > 12 else ''}"
+            legs = [f"{s['id']} ({s['leg']})" for s in mine if s.get("leg")]
+            if legs:
+                line += f"; the leg to it is no plain walk at {len(legs)}: {', '.join(legs[:12])}{' ...' if len(legs) > 12 else ''}"
+            far = [f"{s['id']} ({s['round']:g})" for s in mine if s.get("round")]
+            if far:
+                line += f"; a long way round to {len(far)}: {', '.join(far[:12])}{' ...' if len(far) > 12 else ''}"
         if light is not None:
             missing = [n for n in shots if light.get(n) is None]
             dark = [n for n in shots if n.endswith("-f") and light.get(n) is not None and light[n] < DARK]
@@ -607,6 +811,7 @@ def main():
     p.add_argument("--work", default="/tmp/c164_walk", help="where the scene's pickle and the single pictures go")
     p.add_argument("--out", help="default plan/reviews/walk/<round>/")
     p.add_argument("--only", help="comma separated stretch ids: draw these stretches only")
+    p.add_argument("--no-pictures", action="store_true", help="the station table and the ways only: nothing is drawn")
     args = ap.parse_args()
 
     if args.cmd == "check":
@@ -636,9 +841,12 @@ def main():
 
     if args.cmd == "stations":
         route = load_route(args.route)
-        table = make_table(route, scene_cells(args.scene, args.canvas), scene=args.scene, round=args.round,
-                           route_file=os.path.basename(args.route))
+        cells = scene_cells(args.scene, args.canvas)
+        table = make_table(route, cells, scene=args.scene, round=args.round, route_file=os.path.basename(args.route))
+        found = survey(table, cells)
         write_table(args.out, table)
+        if found is not None:
+            write_found(os.path.join(os.path.dirname(os.path.abspath(args.out)), f"{route['prefix']}-reach.json"), found)
         print("\n".join(report(table)))
         return 0
 
@@ -663,14 +871,26 @@ def main():
     work = os.path.join(args.work, f"{prefix}-{args.round}")
     os.makedirs(work, exist_ok=True)
     canvas = os.path.join(args.work, f"{args.scene}-{args.round}.pkl")
+    cells = scene_cells(args.scene, canvas)
     if args.stations:
         table = load_table(args.stations)
         table["round"] = args.round
     else:
-        table = make_table(route, scene_cells(args.scene, canvas), scene=args.scene, round=args.round,
-                           route_file=os.path.basename(args.route))
+        table = make_table(route, cells, scene=args.scene, round=args.round, route_file=os.path.basename(args.route))
+    found = survey(table, cells)
     kept = os.path.join(out, f"{prefix}-stations.json")
     write_table(kept, table)
+    if found is not None:
+        write_found(os.path.join(out, f"{prefix}-reach.json"), found)
+    del cells, found                        # the drawing reads the scene again, in a process of its own
+    walkreach = _walkreach()
+    if walkreach is not None:
+        walkreach._WORLDS.clear()
+    gc.collect()
+    if args.no_pictures:
+        print("\n".join(report(table)))
+        print(f"walk: {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}; nothing drawn")
+        return 0
     if args.only:
         wanted = args.only.split(",")
         table["stretches"] = {k: v for k, v in table["stretches"].items() if k in wanted}
