@@ -2,9 +2,10 @@
 
 The dome room in a box: the drum and the dome (main/dome once it is in the tree, until then the
 massing of main/_dome), and stand-ins for what other packages bring -- the floor, the opening
-round the pier and its railing (main/shell, c231), the two doorways to the roof terraces
-(main/dome, c222), the telescope (machines/refractor, c237). The stand-ins use the skeleton's
-numbers and are dropped one by one as those packages are merged.
+round the pier and its railing (main/shell), the two doorways to the roof terraces (main/dome),
+the telescope (machines/scope: the real one as soon as its module is in the tree, with its red
+lamp). The stand-ins use the skeleton's numbers and are dropped one by one as those packages are
+merged.
 
     python -m scenes.obs_int_domeroom      the room as text (three sections, seven plans) and its checks
 """
@@ -28,9 +29,9 @@ FLOOR_Y = S.ROOF_FLOOR
 UNDER_Y = S.DRUM_BASE - 4       # the box's bottom: the pier's opening looks down on it
 # where the ring stair comes out, until main/shell is in the tree (c231, g2 #32860)
 EXIT = domeroom.stair_exit() or (S.DOME_CENTRE[0], S.PIER_ENVELOPE[1] - 1)
-# the stand-in tube (c237, g2 #33181): its elevation, and how far the eyepiece end and the objective
-# are from where the axes cross
-TUBE_ELEVATION, TUBE_BACK, TUBE_FRONT = 41.05, 5.5, 9.5
+# the stand-in tube (machines/scope, version a): its elevation, and how far the eyepiece end and the
+# objective are from where the tube turns
+TUBE_ELEVATION, TUBE_BACK, TUBE_FRONT = 41.05, 6.4, 8.6
 
 
 def _shell_standin(c):
@@ -67,8 +68,12 @@ def _doors_standin(c):
             cell = O.step(cell, inward)
 
 
-def _scope_standin(c):
-    """A line of iron plate where the tube is, a column of it for the mount on the pier."""
+def _scope(c):
+    """The telescope: machines/scope once it is in the tree, else a line of iron plate where the
+    tube is and a column of it for the mount on the pier. Returns the display entities placed."""
+    scope = domeroom._other("machines", "scope")
+    if scope is not None:
+        return scope.build(c)
     ex, ey, ez = domeroom.eyepiece()
     elev = math.radians(TUBE_ELEVATION)
     cross = (ex - TUBE_BACK * math.cos(elev), ey + TUBE_BACK * math.sin(elev), ez)
@@ -77,10 +82,15 @@ def _scope_standin(c):
     def cell(p):
         return (int(math.floor(p[0])), int(math.floor(p[1])), int(math.floor(p[2])))
 
-    c.line(cell((ex, ey, ez)), cell(front), B.IRON_PLATE)
+    # the line starts above the head of the one who stands at the eyepiece: blocks would stand in
+    # the observer's own column, which the real tube (display models) leaves free
+    rise = (S.ROOF_STAND + 2 - ey) / math.sin(elev)
+    low = (ex - rise * math.cos(elev), ey + rise * math.sin(elev) + 0.01, ez)
+    c.line(cell(low), cell(front), B.IRON_PLATE)
     mx, my, mz = cell(cross)
     for y in range(int(S.PIER_TOP_Y), my + 1):
         c.set(mx, y, mz, B.IRON_PLATE)
+    return 0
 
 
 def _rotunda(c):
@@ -99,7 +109,7 @@ def shell():
     _rotunda(c)
     _shell_standin(c)
     _doors_standin(c)
-    _scope_standin(c)
+    c.machines = _scope(c)
     return c
 
 
@@ -113,7 +123,7 @@ def dressed():
 def build():
     c, n = dressed()
     sky.build(c, (0, 0, 0))         # the light line's sources go in last, when every piece is in place
-    c.entity_counts = {"interiors": n}
+    c.entity_counts = {"interiors": n, "machines": c.machines}
     return c
 
 
@@ -124,6 +134,9 @@ def build_models():
         module = domeroom._other("props", name)
         if module is not None:
             out.update(module.models())
+    scope = domeroom._other("machines", "scope")
+    if scope is not None:
+        out.update(scope.models())
     return out
 
 
