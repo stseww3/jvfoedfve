@@ -1,0 +1,28 @@
+gate site/mastbase 69b57fe8: the merged tree 064dbc57, the assembly as it was 8e55cfe1
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    33 of 34 files are the card's own
+                    not this card's file: A build/scenes/obs/site/outbuildings.py
+check.py: 38 scenes in 24 s: 38 pass (31 with warnings)
+pictures: obs_site_mastbase: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_mastbase at 064dbc57: 0 of 6 kept pictures are what the code draws, 6 not
+    base_near: 52454 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    base_tower: 132721 of 921600 pixels are not what the code draws (off by up to 143 of 255)
+    base_court: 150284 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    base_top: 60711 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    v1_arrival: 133027 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    aerial: 113894 of 921600 pixels are not what the code draws (off by up to 237 of 255)
+pictures: obs_site_outbuildings: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_outbuildings at 064dbc57: 0 of 14 kept pictures are what the code draws, 14 not
+    v1_arrival: 132894 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    v11_lookback: 54919 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    hut_near: 76440 of 921600 pixels are not what the code draws (off by up to 238 of 255)
+    hut_mid: 166009 of 921600 pixels are not what the code draws (off by up to 238 of 255)
+    hut_slit: 70588 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    hut_inside: 77442 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    lookout_near: 18526 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    lookout_mid: 37212 of 921600 pixels are not what the code draws (off by up to 130 of 255)
+    tower_near: 23186 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    tower_mid: 50081 of 921600 pixels are not what the code draws (off by up to 67 of 255)
+    weather_near: 40516 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    weather_mid: 56886 of 921600 pixels are not what the code draws (off by up to 136 of 255)
+result: PASS
