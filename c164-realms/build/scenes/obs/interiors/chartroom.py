@@ -61,6 +61,9 @@ CEIL_Y = S.STAR_HALL_CEIL           # 14: the ceiling block
 TOP = CEIL_Y - 1                    # 13: the highest clear row
 DOOR_X = MP.ROOM_DOOR_X             # (7, 8): the door in the cross wall on z 6
 PIER_Z = tuple(z for z in range(Z0, Z1 + 1) if MP.on_pilaster(z))                   # 10, 14, 18, 22
+# The ceiling's beams across the room: the bays run twelve cells east to west, so two more beams on
+# the four-cell beat divide it into spans of five at most (L7 section 1: no sheet over 5x5).
+BEAM_X = (X0 + 4, X0 + 8)                                                           # 6, 10
 EAST_BAYS = tuple(b for b in range(1, S.N_BAYS + 1)
                   if set(MP.window_rows(b)) <= set(range(Z0, Z1 + 1)))                # 11..15
 WEST_BAYS = tuple(b for b in EAST_BAYS
@@ -81,10 +84,13 @@ CABINET_Z = tuple(range(Z0 + 1, Z0 + 4))        # 8..10: the row of card cabinet
 CABINET_H = 30.0 / 16.0                         # how tall a cabinet of props/furniture is (c179)
 LAMP_PIERS = {"east": (14, 18), "west": (18, 22)}    # the piers that carry a caged lamp, beside the lit windows
 
-# the lamps: (level, rank) asked of the light line
+# the lamps: (level, rank) asked of the light line. A pendant is a rank-2 lamp and a caged lamp a
+# rank-3 one (_lightkit.KIND_RANK), so the asks stay inside their ranks; the time room, the room this
+# one mirrors, keeps the same two ranks (c288, cr3-I1: a south wing a rank under the north one reads
+# as the lesser room).
 ASK_TABLE = (11, 2)         # the light table: the room's main light
-ASK_SHELF = (9, 3)          # two pendants before the bookcase
-ASK_PIER = (7, 3)           # caged lamps on the piers
+ASK_SHELF = (10, 2)         # two pendants before the bookcase
+ASK_PIER = (8, 3)           # caged lamps on the piers
 ASK_DESK = (6, 3)           # the green desk lamp
 
 # ---- materials ----------------------------------------------------------------------------------
@@ -466,9 +472,15 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
         if not DOOR_X[0] <= x <= DOOR_X[1]:
             put(x, FEET, Z0, panel("north"), keep=True)
 
-    # the ceiling: riveted iron beams on the lines of the pilasters, under the boards
+    # the ceiling: riveted iron beams on the lines of the pilasters, under the boards, and two
+    # running the other way on the four-cell beat of the front (c288, cr3-I1: twelve cells one way
+    # and three the other left the whole room one bay, against L7 section 1's rule of no sheet over
+    # 5x5)
     for z in PIER_Z:
         for x in range(X0, X1 + 1):
+            put(x, TOP, z, st(roles.IRON_RIVETED.slab, type="top"))
+    for x in BEAM_X:
+        for z in range(Z0, Z1 + 1):
             put(x, TOP, z, st(roles.IRON_RIVETED.slab, type="top"))
 
     # the bookcase wall, and the ladder on its rail
