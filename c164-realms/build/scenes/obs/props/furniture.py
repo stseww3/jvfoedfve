@@ -41,6 +41,7 @@ The look is judged in the test scene build/scenes/obs_props_furniture.
 """
 import functools
 import importlib
+import importlib.util
 import math
 
 from artkit import models as M
@@ -599,19 +600,21 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #   station   two benches against the waiting room of the cable station, one under its lit gable
 #             window and one at the foot of its front, and somebody's luggage set down by its door:
 #             a trunk along the wall and a crate on the trunk.
-#   sunset    four benches on the sunset terrace, their backs to the building, looking west over the
-#             rail at the afterglow: a pair either side of the walk from the west door, on the band
-#             of small stones between the walk and the strips, and a pair further out and three
-#             blocks further back, so that the row follows the curve of the rail. The rail stands
-#             on the whole outline of the terrace, the cells inside its corners as well (c221, g2
-#             #37541): the benches are set so far back that in front of every row of a bench two
-#             whole blocks are free to walk in.
+#   sunset    four benches at the prow of the sunset terrace, their backs to the building, looking
+#             west over the rail at the afterglow: a pair either side of the walk from the west
+#             door, on the band of small stones between the walk and the strips, and a pair beyond
+#             the strips, a block and a half further back, so that the row follows the curve of
+#             the rail. The rail's piers stand on the axis and five and nine cells either side of
+#             it (site/terrain: one every 15 degrees of the arc): every bench looks out through a
+#             bay, a pier beyond each of its ends and none before it. In front of every row of a
+#             bench more than two whole blocks are free to walk in, and the walk and the two strips
+#             stay clear.
 #   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
 #             the observatory on the right. The view back (S.V11) is taken from the walk in the
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
 DRESS = False           # off in the master scene until the family has passed review; a test scene asks
                         # for the site's furniture with dress(canvas), or calls site() for its group
-SUNSET_BENCHES = ((14.5, 4.0), (11.5, 10.0))    # (west of the terrace's middle, off the axis): a pair each
+SUNSET_BENCHES = ((14.5, 3.5), (13.0, 7.5))     # (west of the terrace's middle, off the axis): a pair each
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle
 # the luggage: (kind, the offset from the point the station gives, yaw). The trunk stands along the
@@ -619,6 +622,10 @@ LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from
 # strap, a little askew (the big one is deeper than the lid and taller than the trunk)
 LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate_small", (0.5, TOP["trunk"] + STRAP, -0.05), 6.0))
 BENCH_ENDS = 0.8                # how far from its middle the floor under a bench is looked for
+# The package of the site that lays the floor a group stands on; the sunset terrace is site/terrain's.
+# Level ground is kept for a package before it is merged (the mountain's shelves): a bench is not
+# set down on the bare rock of a shelf.
+FLOORS = {"station": "site.cablecar", "lookout": "site.outbuildings"}
 
 # What the packages of the site reported in the group, for a tree in which a package is not merged
 # yet. Once it is, its own table is read instead: _told().
@@ -637,6 +644,14 @@ def _told(module, name):
         return getattr(importlib.import_module(f"..{module}", __package__), name)
     except (ImportError, AttributeError):
         return _REPORTED[module, name]
+
+
+def floor_in_tree(group):
+    """True when the package that lays the floor of a group's furniture is in this tree."""
+    module = FLOORS.get(group)
+    if module is None:
+        return True
+    return importlib.util.find_spec(f"{__package__.rpartition('.')[0]}.{module}") is not None
 
 
 def luggage(point):
@@ -689,11 +704,12 @@ def dress(canvas, on=True):
 
 def site(canvas, origin=(0, 0, 0), groups=None):
     """Place the furniture of the site (site_pieces()), or of the groups named ("station", "sunset",
-    "lookout"). A piece is only placed where its floor is on the canvas as it is, so a tree without
-    one of the site's packages has fewer pieces and none that floats; what was left out is kept in
-    canvas.furniture_left_out as (group, kind, point). A piece is placed once: a second call, for
-    the same groups or for more of them, adds what does not stand yet. Returns the number of
-    display entities placed by this call."""
+    "lookout"). A piece is only placed where the package that lays its floor is in the tree
+    (floor_in_tree) and that floor is on the canvas as it is, so a tree without one of the site's
+    packages has fewer pieces and none that floats or stands on bare rock; what was left out is
+    kept in canvas.furniture_left_out as (group, kind, point). A piece is placed once: a second
+    call, for the same groups or for more of them, adds what does not stand yet. Returns the number
+    of display entities placed by this call."""
     origin = tuple(origin)
     placed = getattr(canvas, "furniture_placed", None)
     if placed is None:
@@ -702,7 +718,7 @@ def site(canvas, origin=(0, 0, 0), groups=None):
     for group, kind, p, yaw, foot in site_pieces():
         if (groups is not None and group not in groups) or (kind, p, origin) in placed:
             continue
-        if _stands(canvas, kind, foot, yaw, origin):
+        if floor_in_tree(group) and _stands(canvas, kind, foot, yaw, origin):
             n += place(canvas, kind, p, yaw=yaw, origin=origin)
             placed.add((kind, p, origin))
         elif (group, kind, p) not in left:
