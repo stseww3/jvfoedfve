@@ -41,6 +41,7 @@ Sizes inside the models are in sixteenths of a block (px) whatever scale a model
 import functools
 import importlib
 import math
+import os
 
 from artkit import models as M
 
@@ -61,6 +62,9 @@ BRASS_D = P.mat("brass_dark")
 # cannot: by hand, in the sky light that falls through the slit, two neighbours differ by a fifth
 # at most. Should the joints show all the same, this gives all twenty one light, (sky, block)
 RING_LIGHT = None
+# a trial, to be taken out again: one light for every piece, "sky,block" in the environment
+_TRIAL = os.environ.get("C164_GEAR_LIGHT", "")
+TRIAL_LIGHT = tuple(int(v) for v in _TRIAL.split(",")) if _TRIAL else None
 
 PX = 16.0                   # px to a block
 LINK = 4.0                  # px: a chain link; links are 3 x 2 px, every other one turned a quarter
@@ -518,7 +522,7 @@ def place(canvas, origin=(0, 0, 0), version=None):
     n = 0
     for name, (x, y, z), yaw, turns in layout(version):
         d = _drawn()[name]
-        light = RING_LIGHT if name == "seg" else None
+        light = TRIAL_LIGHT if TRIAL_LIGHT is not None else RING_LIGHT if name == "seg" else None
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
                           M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=light))
         n += 1
