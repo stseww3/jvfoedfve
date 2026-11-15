@@ -4,7 +4,7 @@ Card plan/packages/sky/ridges.md; plan/parts/sky.md section 5, sky-notes.md sect
 
 The cloud sea needs an end. Blocks cannot give it one: the game draws none beyond the view
 distance (192 blocks at the 12 chunks the map is shown at). So the far shore is painted: four
-upright sheets, each the cut-out picture of a jagged ridge, standing 380 to 470 blocks out in the
+upright sheets, each the cut-out picture of a jagged ridge, standing 360 to 446 blocks out in the
 west half of the horizon. Two ranges, one to the north and one to the south of due west; due west
 stays open, a notch between two capes where the afterglow is strongest and over which the comet
 hangs.
@@ -64,7 +64,7 @@ WIDTH, HEIGHT = 384, 72     # a sheet's picture in pixels, which is its size out
 SEA = float(mood.CLOUD_TOP)                 # the face of the cloud layer: where a ridge meets the sea
 EYE_Y = 1.62                # the eye the elevations are given for: a person on the upper terrace
 HIGHEST = 4.0               # no ridge line stands higher than this, in degrees for that eye
-SHORE = -4.5                # where the sea's face lies out there for that eye, in degrees
+SHORE = -5.0                # just under where the sea's face lies out there for that eye, in degrees
 TONE = P.colour("night_glass", 0)
 
 # The two ranges as the site sees them: the ridge line as points (degrees north of due west, degrees
@@ -89,13 +89,14 @@ JAG = ((5.5, 0.30), (2.3, 0.27), (0.9, 0.16))
 
 # The sheets: the range each shows, which way from CENTRE its middle lies (degrees north of due
 # west) and how far out. A sheet spans atan(WIDTH / 2 / distance) to either side of its bearing.
-# Two sheets to a range, the outer one further out; where they overlap they show the same line
-# to an eye at CENTRE.
+# Two sheets to a range, the outer one further out, so far that it lies behind the inner one
+# wherever the two overlap; there they show the same line to an eye at CENTRE. The card wants
+# the picture 300 to 450 blocks out: the nearest point is 360, the furthest corner 446.
 SHEETS = {
-    "north": dict(range="north", bearing=34.0, distance=380.0),
-    "north_far": dict(range="north", bearing=72.0, distance=430.0),
-    "south": dict(range="south", bearing=-34.0, distance=380.0),
-    "south_far": dict(range="south", bearing=-72.0, distance=430.0),
+    "north": dict(range="north", bearing=34.0, distance=360.0),
+    "north_far": dict(range="north", bearing=72.0, distance=402.0),
+    "south": dict(range="south", bearing=-34.0, distance=360.0),
+    "south_far": dict(range="south", bearing=-72.0, distance=402.0),
 }
 # how many blocks under the sea's face a range's sheets go down
 BELOW = {"north": float(mood.CLOUD_THICKNESS), "south": 0.0}

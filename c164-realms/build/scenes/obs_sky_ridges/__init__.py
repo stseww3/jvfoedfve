@@ -7,7 +7,7 @@ A stand-in for the site in plain vanilla blocks, enough to stand on and to hide 
 hides: the upper terrace with the half-round sunset platform at its west end, the main building
 as a plain block, the lower platform and the south lookout. The ridges themselves are the four
 display entities of scenes.obs.sky.ridges, which stand in the middle of the terrace and are drawn
-380 to 470 blocks out.
+360 to 446 blocks out.
 
 The offline pictures cannot show the ridges: the offline renderer follows a ray as far as the game
 draws blocks (192 blocks at 12 chunks) and it has no afterglow. They show where the cameras
