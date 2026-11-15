@@ -167,9 +167,11 @@ def _bracket_b():
 
 
 def _cage_a():
-    """Version A caged wall lamp: a round glass on a round base behind two upright hoops side by
-    side. Nothing crosses them and nothing stands before the middle of the glass. Anchor: on the
-    wall, centre of the base."""
+    """Version A caged wall lamp: a round glass on a round base between two upright hoops. Nothing
+    crosses them, and they stand at the rim of the glass, so its bright middle is clear: seen from
+    the front the lamp is a lit lozenge in an iron frame (side by side on the glass, a pixel
+    either side of the middle, two bars on a disc were the sign for a pause). Anchor: on the wall,
+    centre of the base."""
     m = M.Model(PREFIX + "cage_a")
     m.tube("z", (0, 0), 0.0, 1.5, 5.0, IRON)                            # base
     m.tube("z", (0, 0), 1.5, 2.5, 4.0, IRON_D)                          # glass seat
@@ -178,7 +180,7 @@ def _cage_a():
     with m.turned(("x", 90), about=(0, 0, 2.5)):                        # the dome looks out of the wall
         K.glass_ball(m, (0, 0, 2.5), 3.5,
                      [(0.0, 0.4, 1, GLOW[1]), (0.4, 0.75, 1, GLOW[2]), (0.75, 1.0, 1, GLOW[3])])
-    for x in (-1.5, 1.5):                                               # each runs on round into the base
+    for x in (-2.5, 2.5):                                               # each runs on round into the base
         m.ring("x", (x, 0, 2.5), 4.0, 1.0, 1.0, IRON, sides=16, arc=(-22.5, 202.5))
     return m
 
@@ -456,6 +458,10 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 # step under.
 DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
                         # a test scene asks for the site's lamps with dress(canvas)
+NEAR_PAIR = True        # the pair of the way midway between the stair head and the armillary's seat. It
+                        # stands six cells before the eye of S.V2, half-way out to either edge of that
+                        # picture, its globes before the small dome and the foot of the clock tower. With
+                        # and without it: obs_props_lamps_site and obs_props_lamps_site_nopair (A0 picks)
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
@@ -493,12 +499,16 @@ def _told(module, name):
     return value() if callable(value) else value
 
 
-def site_lamps():
+def site_lamps(near_pair=None):
     """The lamps of the site as (group, kind, point, level, aim). point: where the lamp is fixed, in
     scene coordinates before the origin (the middle of a standing lamp's foot, a wall lamp's point
     on the wall face). level: None is the lamp's own. aim: a point the lamp faces, level with its
-    foot or not: what a ground lamp looks at, where a street lamp shows the whole of its yoke."""
+    foot or not: what a ground lamp looks at, where a street lamp shows the whole of its yoke.
+    near_pair: with or without the court's pair nearest the stair head; left out, as NEAR_PAIR says."""
     out, poles = [], []
+    court = list(_told("site.court", "path_lamps"))
+    if court and not (NEAR_PAIR if near_pair is None else near_pair):
+        court = [(x, z) for x, z in court if x != max(c[0] for c in court)]
     for p in list(_told("site.lowerplatform", "LAMP_POINTS")) + list(_told("site.stair", "LAMP_POINTS")):
         if p[1] > S.GROUND:
             # a pedestal on the terrace's edge (the two at the stair's head): a pole there stands
@@ -507,7 +517,7 @@ def site_lamps():
             out.append(("way", "post", tuple(p), None, None))
         else:
             poles.append(tuple(float(v) for v in p))
-    for x, z in _told("site.court", "path_lamps"):
+    for x, z in court:
         poles.append((x + 0.5, float(S.GROUND), z + 0.5))
     across = 2.0 * S.AXIS_Z                             # z and across - z lie either side of the axis
     for p in poles:
@@ -566,9 +576,12 @@ def _wall_facing(canvas, p, origin=(0, 0, 0)):
     return None
 
 
-def dress(canvas, on=True):
-    """Ask for the lamps of the site on this canvas while the switch DRESS is off (a test scene)."""
+def dress(canvas, on=True, near_pair=None):
+    """Ask for the lamps of the site on this canvas while the switch DRESS is off (a test scene).
+    near_pair: True or False puts this canvas above the switch NEAR_PAIR as well."""
     canvas.lamp_dress = bool(on)
+    if near_pair is not None:
+        canvas.lamp_near_pair = bool(near_pair)
 
 
 def site(canvas, origin=(0, 0, 0), groups=None, version=None):
@@ -585,7 +598,7 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
     placed = getattr(canvas, "lamps_placed", None)
     if placed is None:
         placed = canvas.lamps_placed = set()
-    for group, kind, p, level, aim in site_lamps():
+    for group, kind, p, level, aim in site_lamps(getattr(canvas, "lamp_near_pair", None)):
         if (groups is not None and group not in groups) or (kind, tuple(p), origin) in placed:
             continue
         before = n
