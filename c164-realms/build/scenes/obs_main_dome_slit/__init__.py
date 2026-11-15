@@ -4,13 +4,13 @@
 Six rotundas stand in a row from north to south, each from the rotunda's cornice up (the drum's
 first course on the paving) and with its slit to the west, where the cameras stand: version a
 shut, half open and open, then version b the same. In the master scene and in obs_main_dome and
-obs_main_dome_b the slit is open.
+obs_main_dome_a the slit is open.
 
 The shots are written by python -m scenes.obs_main_dome.
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import _dome as D
@@ -44,8 +44,9 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted blocks the shell stands in, as the materials line has them today."""
-    return materials.pack(pack_dir)
+    """The repainted blocks the shell stands in, as the materials line has them today, under the
+    sky line's sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():

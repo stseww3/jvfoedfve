@@ -4,10 +4,11 @@ The rotunda where it stands in the master scene: the site under it, the whole ma
 props line's lamps and the sky line's light sources last. The lines are built whole, in the master
 scene's order, so the pictures keep up with them as their packages are merged.
 
-The dome is version a here (twenty flush seams, two leaves that part sideways), its slit open as in
-the master scene. obs_main_dome_b is this scene with version b; every shot has its twin of the same
-name there. obs_main_dome_slit stands both versions side by side with the slit shut, half open and
-open.
+The dome is the version the map is built with (dome.VERSION: b, eight main ribs and a slatted
+curtain), its slit open as in the master scene. obs_main_dome_a is this scene with version a (twenty
+flush seams, two leaves that part sideways), kept for the comparison; every shot has its twin of the
+same name there. obs_main_dome_slit stands both versions side by side with the slit shut, half open
+and open.
 
 What the shots are for: v1 and v2_axis are the two main views (the dome is a stamp in the first and
 the top of the picture in the second: its outline has to be a clean round, the drum has to show its
@@ -29,7 +30,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
 LINES = (site, main, props, sky)
-VERSION = "a"
+VERSION = None                  # None: the package's default
 SLIT = "open"
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 # The two main views are the skeleton's. The director raised both (group #304: V1 looks at
@@ -53,7 +54,7 @@ def _dome(version, slit):
 
 def build(version=None, slit=None):
     c = Canvas()
-    with _dome(version or VERSION, slit or SLIT):
+    with _dome(version or VERSION or dome.VERSION, slit or SLIT):
         for line in LINES:
             line.build(c, (0, 0, 0))
     return c
@@ -68,8 +69,9 @@ def build_models():
 
 def write_pack(pack_dir):
     """The shell paints nothing itself: it stands in the repainted blocks as the materials line
-    has them today (ashlar, the two verdigris sheets, riveted and cast iron, the window family)."""
-    return materials.pack(pack_dir)
+    has them today (ashlar, the two verdigris sheets, riveted and cast iron, the window family),
+    under the sky line's sky (without its pictures the game's own sun lies on the western horizon)."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
