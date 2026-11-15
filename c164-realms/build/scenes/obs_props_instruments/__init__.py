@@ -92,8 +92,9 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone the instruments are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone the instruments are judged against, and the map's sky: the terrace looks
+    west, where the comet stands that one telescope is trained on, and the game's own sun must not."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
