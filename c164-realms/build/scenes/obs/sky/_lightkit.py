@@ -185,6 +185,12 @@ THROUGH = 2
 # stands round the corner of the same room), which a dark room does not give, and keeps what the
 # front gives it.
 LENDS = (BRIGHT,)
+# The wall wash: the level of the source where a projector's beam lands, before the foot of a
+# pilaster's shaft. It is the top of rank 3, and at that the foot is a step lighter than an unlit
+# one and no more (0.28 against 0.22 in a picture, hardly read from the court). A rank higher is
+# for the director to allow: the test scene of the card shows the building at 10 and at 12 beside
+# this one (review cr2-#3, item 3).
+WASH = 8
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
@@ -226,13 +232,14 @@ def under(look):
         _UNDER.pop()
 
 
-_TRIED = ("BEHIND", "THROUGH", "LENDS")     # the numbers of the sources; which windows are lit is not tried here
+_TRIED = ("BEHIND", "THROUGH", "LENDS", "WASH")     # the numbers of the sources; which windows are lit is not tried here
 
 
 @contextlib.contextmanager
 def trying(**numbers):
     """Place the sources of what sky/lights.build() lights inside the block by other numbers than
-    this module has: trying(LENDS=()), trying(BEHIND={...}). They are put back when the block closes.
+    this module has: trying(LENDS=()), trying(BEHIND={...}), trying(WASH=10). They are put back
+    when the block closes.
     For a test scene that shows a variant beside the building as it is; the master scene never does."""
     unknown = sorted(set(numbers) - set(_TRIED))
     if unknown:

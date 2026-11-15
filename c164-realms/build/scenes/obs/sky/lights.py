@@ -25,12 +25,12 @@ the canvas by then and places, in this order:
   wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
             a bracket lamp): at the foot of each a small projector two cells before the plinth
             (props' model, lamps "uplight", with the source of level 8 it brings), and where its
-            beam lands, up the shaft: sources of level 8 before the shaft at its foot and two rows
-            higher, and one of 7 before the string course that runs round it. So a wing shows
-            three upright warm bands that lead to the entrance (review cr2-#3: the wash has to
-            have a shape). The wall between two pilasters gets what spreads from them, 6 next to
-            a shaft and 5 in the middle of the bay, and the recess of a dark great window over
-            it 1; nothing is placed before the wall.
+            beam lands, before the foot of the shaft, one source (_lightkit.WASH, 8). From there
+            the light falls by one a row and is spent under the string course, as a beam from
+            below is: a wing shows three upright bands, brightest at the foot, that lead to the
+            entrance (review cr2-#3: the wash has to have a shape). The wall between two
+            pilasters gets what spreads from them, 6 next to the foot of a shaft and 5 in the
+            middle of the bay; nothing is placed before the wall.
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
             when its cell is free and something that glows is within two cells of it.
 
@@ -66,10 +66,7 @@ HALL_Y = 2                              # the row of those sources: the middle o
 HALL_DEPTH = 8                          # a wall this close behind the glass plane is the back of a vestibule
 WASH_PILASTERS = (5, 6, 11, 12)         # the skeleton's numbers: the two of either wing next to the entrance's corner
 WASH_OUT = 2                            # cells between the plinth and the projector's cell, counting it
-WASH_LEVEL = 8                          # the top of rank 3
-# Where the beam lands on a pilaster, (row, level): the foot of the shaft, two rows up, and the
-# string course that runs round it, a level lower
-WASH_BEAM = ((S.BASE[0], WASH_LEVEL), (S.BASE[0] + 2, WASH_LEVEL), (S.STRING, WASH_LEVEL - 1))
+WASH_ROW = S.BASE[0]                    # where the beam lands: the foot of the shaft, the row over the plinth
 DOOR_WHY, HALL_WHY = "sky/lights:door", "sky/lights:hall"
 WASH_WHY, WINDOW_WHY = "sky/lights:wash", "sky/lights:window"
 GLOWING = tuple(B.PANELS[k] for k in ("tubes", "scope", "pilot_lamps"))     # glow without giving light
@@ -408,11 +405,11 @@ def _entrance(canvas, r, origin):
 # ---- the wall wash -----------------------------------------------------------------------------------
 def _wash(canvas, r, origin):
     """A projector at the foot of each wash pilaster, two cells before the plinth, where the front
-    stands and the ground before it is free; and the sources where its beam lands, up the shaft:
-    in each row of WASH_BEAM the first free cell before what stands in the pilaster's line there
-    (the shaft; the string course, which runs round it a cell further out), no further out than
-    the projector itself. Nothing is placed before the wall between two pilasters: the wash is a
-    row of upright bands, not a lighter storey.
+    stands and the ground before it is free; and the source where its beam lands: in the row over
+    the plinth, the first free cell before what stands in the pilaster's line there (its shaft), no
+    further out than the projector itself. One source and no more: the light falls by one a row up
+    the shaft, which is the shape of a beam from below. Nothing is placed before the wall between
+    two pilasters: the wash is a row of upright bands, not a lighter storey.
     The lamp brings a source of its own for the ground around it, settled with the other offers.
     Returns the number of display entities placed."""
     try:
@@ -433,23 +430,18 @@ def _wash(canvas, r, origin):
         cell = (x + ox, oy, z + oz)
         if cell in r["wash"]:
             continue
-        landing = []
-        for y, level in WASH_BEAM:
-            line = [(sx + ox, y + oy, z + oz) for sx in range(x, front - 2, -1)]       # from over the projector inwards
-            shaft = next((i for i, spot in enumerate(line) if canvas.has(*spot) and spot not in r["placed"]), None)
-            if shaft and y - S.GROUND <= L.REACH_UP:
-                landing.append((line[shaft - 1], level))
+        line = [(sx + ox, WASH_ROW + oy, z + oz) for sx in range(x, front - 2, -1)]     # from over the projector inwards
+        shaft = next((i for i, spot in enumerate(line) if canvas.has(*spot) and spot not in r["placed"]), None)
         free = all(not canvas.has(cx + ox, cy + oy, z + oz) for cx, cy in ((x - 1, 0), (x, 0), (x, 1)))
         if not free or not canvas.has(x + ox, S.PAVING_Y + oy, z + oz):
             r["notes"].append(f"no wall wash at pilaster {k}: the cell {cell} is taken or has no ground")
             continue
-        if not landing:
-            r["notes"].append(f"no wall wash at pilaster {k}: no free cell before its shaft")
+        if not shaft:
+            r["notes"].append(f"no wall wash at pilaster {k}: no free cell before the foot of its shaft")
             continue
         n += lamps.place(canvas, "uplight", (x + 0.5, float(S.GROUND), z + 0.5), facing="west", origin=origin)
         r["wash"].append(cell)
-        for spot, level in landing:
-            _put(canvas, r, spot, level, WASH_WHY)
+        _put(canvas, r, line[shaft - 1], L.WASH, WASH_WHY)
     return n
 
 

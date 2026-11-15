@@ -13,10 +13,14 @@ other, 200 blocks apart, each hidden by the one before it:
     levels  x -600    a flat run of eleven bays of plain blocks at the skeleton's numbers, every
                       second one lit: frosted glass with 9, 10 and 12 behind it, the amber glass with
                       10, the curtain with 8. What is judged there is the level and nothing else.
-    blue12  x -800    the blue building once more, its lit opal windows with 12 behind the glass
-                      instead of 10 and the entrance as it is: the director chooses between the two
-                      on real pictures of the pairs blue_axis, blue12_axis and blue_v3, blue12_v3
-                      (#55086; cr2-#3 item 2)
+    wash10  x -800    the blue building twice more, the wall wash landing on the feet of the
+    wash12  x -1000   pilasters with 10 and with 12 instead of 8 (_lightkit.WASH), which is a rank
+                      higher than the wash has: the three steps side by side in the views front,
+                      v3 and wash are for the director, the wash at 8 hardly reading (cr2-#3 item
+                      3, and the reviewer's look at the drafts, #57742)
+
+A building that tries other numbers stands here until the director has chosen (VARIANTS). The one
+with 12 behind the lit windows of the wings has gone: that is the building now (#58003).
 
 Nothing here places a light source: the lamps of props offer theirs, the windows of the board are
 registered with _lightkit.glazed(), and sky.build() (sky/lights.py) places all of them, the sources
@@ -67,9 +71,11 @@ LOWER_X = S.EAST_EDGE_X + 39                # the lower platform reaches this fa
 WALK_Z = (S.pilaster_z(8), S.pilaster_z(9))                 # the walk to the door: the middle bay and its pilasters
 
 BOARD = (-SPACING * len(STATIONS), 0, 0)
-# name: (the look it is glazed for, where it stands, the numbers of _lightkit it is lit by)
-VARIANTS = {"blue12": ("blue", (-SPACING * (len(STATIONS) + 1), 0, 0),
-                       dict(BEHIND={**L.BEHIND, L.LIT: (12, L.BEHIND[L.LIT][1])}))}
+# name: (the look it is glazed for, where it stands, the numbers of _lightkit it is lit by, the views it is shown in)
+VARIANTS = {
+    "wash10": ("blue", (-SPACING * (len(STATIONS) + 1), 0, 0), dict(WASH=10), ("front", "v3", "wash")),
+    "wash12": ("blue", (-SPACING * (len(STATIONS) + 2), 0, 0), dict(WASH=12), ("front", "v3", "wash")),
+}
 BOARD_BAYS = range(1, 12)                   # eleven bays of the wing's kind
 BOARD_GLASS = {                             # bay -> (its glass, the level behind it); the bays between are dark
     2: (B.WINDOW_FROSTED, 9), 4: (B.WINDOW_FROSTED, 10), 6: (B.WINDOW_FROSTED, 12),
@@ -173,7 +179,7 @@ def build(only=None, lends=True):
         _board(c, BOARD)
     counts = {"props": 0, "sky": 0}
     stations = [(name, name, o, {}) for name, o in STATIONS.items()]
-    stations += [(name, glazed, o, dict(numbers)) for name, (glazed, o, numbers) in VARIANTS.items()]
+    stations += [(name, glazed, o, dict(numbers)) for name, (glazed, o, numbers, _) in VARIANTS.items()]
     for name, glazed, o, numbers in stations:
         if only is not None and name not in only:
             continue
@@ -231,7 +237,6 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
 SOME_LOOKS = {"blue": ("v3", "door", "wash", "west"), "deep": ("door", "wash")}
-VARIANT_VIEWS = ("axis", "v3")                              # the two the director compares a variant by
 NOLEND_LOOKS = ("blue",)                                    # what obs_sky_lights_nolend puts up and shows
 NOLEND_SHOTS = ("blue_front", "blue_axis", "blue_door")
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
@@ -248,8 +253,8 @@ def shots():
     for name, o in STATIONS.items():
         for view in EVERY_LOOK + SOME_LOOKS.get(name, ()):
             add(f"{name}_{view}", VIEWS[view], o, look.tick(name))
-    for name, (glazed, o, _) in VARIANTS.items():
-        for view in VARIANT_VIEWS:
+    for name, (glazed, o, _, views) in VARIANTS.items():
+        for view in views:
             add(f"{name}_{view}", VIEWS[view], o, look.tick(glazed))
     board = ((WING_X + 20.5, EYE, BOARD_MID), (WING_X + 0.0, 8.0, BOARD_MID))
     add("levels_front", board, BOARD, look.tick("blue"))

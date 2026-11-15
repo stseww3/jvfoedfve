@@ -1,8 +1,8 @@
 """python -m scenes.obs_sky_lights (in build/): writes this scene's shots.json and that of its twin
 obs_sky_lights_nolend, then prints what the lights came to: the report of sky/lights, the lighting
 map of each look, and the block light that reaches the stone round the windows of the levels board,
-round a lit window of a wing (with 10 and with 12 behind the glass), round the entrance (with and
-without what the brightest window lends) and on the washed pilasters."""
+round a lit window of a wing, round the entrance (with and without what the brightest window lends)
+and on the washed pilasters (of the building, and of the buildings that try another level)."""
 import json
 import os
 
@@ -65,7 +65,7 @@ def main():
         print(f"  {level} behind the glass: "
               + "; ".join(f"{k} {v}" for k, v in surround(canvas, BOARD, WING_X, bay).items()))
     o = STATIONS["blue"]
-    stood = [("blue", o)] + [(name, at) for name, (_, at, _) in VARIANTS.items()]
+    stood = [("blue", o)] + [(name, at) for name, (_, at, numbers, _) in VARIANTS.items() if "BEHIND" in numbers]
     for name, at in stood:
         print(f"  {name + ', bay ' + str(SURROUND_BAY) + ':':<22} "
               + "; ".join(f"{k} {v}" for k, v in surround(canvas, at, S.east_wall_x(SURROUND_BAY), SURROUND_BAY).items()))
@@ -87,18 +87,23 @@ def main():
     north = [S.pilaster_z(k) for k in lights.WASH_PILASTERS if k < lights.DOOR_BAY]
     z0, z1 = min(north) - 2, S.pilaster_z(lights.DOOR_BAY - 2)      # from the bay beyond the wash to the entrance's corner
     wall, top = S.east_wall_x(lights.WASH_PILASTERS[0]), S.WINDOW[0] + 3
-    lv = L.levels(canvas, (o[0] + wall - 2, o[1] - 1, o[2] + z0 - 6), (o[0] + wall + 8, o[1] + top + 4, o[2] + z1 + 6))
-    print(f"blue, the wall wash of the north wing: the block light on the front's faces (the cell before the "
-          f"outermost block of each line: stone, the bars of a small window, the glass of a great one), "
-          f"rows y {top}..0, z {z0}..{z1}; pilasters at z "
-          f"{', '.join(str(z) for z in range(z0, z1 + 1) if (z - S.PIL_Z0) % S.BAY == 0)}:")
-    for y in range(top, -1, -1):
-        row = []
-        for z in range(z0, z1 + 1):
-            line = [(o[0] + x, o[1] + y, o[2] + z) for x in range(wall + 6, wall - 3, -1)]
-            face = next((i for i, cell in enumerate(line) if canvas.has(*cell) and canvas.name(*cell) != B.LIGHT), None)
-            row.append(" ." if not face else f"{lv.get(line[face - 1], 0):>2}")
-        print(f"   y {y:>2}  " + " ".join(row))
+    washed = [("blue", o, L.WASH)]
+    washed += [(name, at, numbers["WASH"]) for name, (_, at, numbers, _) in VARIANTS.items() if "WASH" in numbers]
+    for name, at, level in washed:
+        lv = L.levels(canvas, (at[0] + wall - 2, at[1] - 1, at[2] + z0 - 6),
+                      (at[0] + wall + 8, at[1] + top + 4, at[2] + z1 + 6))
+        print(f"{name}, the wall wash of the north wing at {level}: the block light on the front's faces (the cell "
+              f"before the outermost block of each line: stone, the bars of a small window, the glass of a great "
+              f"one), rows y {top}..0, z {z0}..{z1}; pilasters at z "
+              f"{', '.join(str(z) for z in range(z0, z1 + 1) if (z - S.PIL_Z0) % S.BAY == 0)}:")
+        for y in range(top, -1, -1):
+            row = []
+            for z in range(z0, z1 + 1):
+                line = [(at[0] + x, at[1] + y, at[2] + z) for x in range(wall + 6, wall - 3, -1)]
+                face = next((i for i, cell in enumerate(line)
+                             if canvas.has(*cell) and canvas.name(*cell) != B.LIGHT), None)
+                row.append(" ." if not face else f"{lv.get(line[face - 1], 0):>2}")
+            print(f"   y {y:>2}  " + " ".join(row))
 
 
 if __name__ == "__main__":
