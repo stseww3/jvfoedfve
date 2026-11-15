@@ -269,9 +269,12 @@ class World:
         merged, lowest first."""
         key = (i, j)
         hit = self._solid.get(key)
-        if hit is not None:
-            return hit
-        px, pz = i * GRID, j * GRID
+        if hit is None:
+            hit = self._solid[key] = self.spans(i * GRID, j * GRID)
+        return hit
+
+    def spans(self, px, pz):
+        """The same for a person whose middle is at any point (px, pz)."""
         x0, x1, z0, z1 = px - HALF, px + HALF, pz - HALF, pz + HALF
         spans = []
         for cx in range(int(math.floor(x0 + EPS)), int(math.floor(x1 - EPS)) + 1):
@@ -288,7 +291,6 @@ class World:
                     out[-1] = (out[-1][0], y1)
             else:
                 out.append((y0, y1))
-        self._solid[key] = out
         return out
 
     def stand(self, i, j):
@@ -296,14 +298,18 @@ class World:
         how much is free over his feet there (inf under the sky), lowest first."""
         key = (i, j)
         hit = self._stand.get(key)
-        if hit is not None:
-            return hit
-        spans, out = self.solid(i, j), []
+        if hit is None:
+            hit = self._stand[key] = self.places(self.solid(i, j))
+        return hit
+
+    @staticmethod
+    def places(spans):
+        """[(feet, room)] of the spans of one point: every top with a person's height free over it."""
+        out = []
         for n, (_, top) in enumerate(spans):
             room = spans[n + 1][0] - top if n + 1 < len(spans) else math.inf
             if room >= HEIGHT - EPS:
                 out.append((top, room))
-        self._stand[key] = out
         return out
 
     @staticmethod
@@ -346,15 +352,17 @@ class World:
     def lattice(x, z):
         return int(round(x / GRID)), int(round(z / GRID))
 
-    def feet(self, x, z, near_y=None):
-        """Where a person's feet stand whose middle is at the point (x, z), snapped to the lattice:
-        the standing height nearest to near_y (the highest one without it). None: nowhere."""
-        places = self.stand(*self.lattice(x, z))
+    def feet(self, x, z, near_y=None, reach=None):
+        """Where a person's feet stand whose middle is at the point (x, z), just there (not on the
+        lattice): the standing height nearest to near_y, and None if that is further than `reach`
+        from it; without near_y the highest one. None: he cannot stand there."""
+        places = self.places(self.spans(x, z))
         if not places:
             return None
         if near_y is None:
             return places[-1][0]
-        return min(places, key=lambda p: abs(p[0] - near_y))[0]
+        best = min(places, key=lambda p: abs(p[0] - near_y))[0]
+        return None if reach is not None and abs(best - near_y) > reach + EPS else best
 
     def node(self, x, z, near_y=None, reach=1):
         """The lattice node (i, j, feet in 32nds) at or next to the point (x, z); None: none within
@@ -395,9 +403,11 @@ def world_of(cells, bounds=None):
     return _WORLDS[key]
 
 
-def feet(cells, x, z, near_y=None):
-    """Where the feet stand at the point (x, z) of a scene whose blocks are `cells`; None: nowhere."""
-    return world_of(cells).feet(x, z, near_y)
+def feet(cells, x, z, near_y=None, reach=1.25):
+    """Where the feet of a person stand whose middle is at the point (x, z) of a scene whose blocks
+    are `cells`: the floor nearest to near_y, if it is within `reach` of it (the highest floor
+    without near_y). None: nowhere there, a wall for one."""
+    return world_of(cells).feet(x, z, near_y, reach)
 
 
 def reach_of(cells, start, bounds=None):
@@ -1121,7 +1131,10 @@ def selftest():
     check("feet over nothing", world.feet(20.5, 0.5), None)
     way = world.reach((0.5, 0.0, 0.5)).path((8.5, 0.0, 0.5), kinds=("walk",))
     check("way", (way[0], way[-1], len(way)), ((0.5, 0.0, 0.5), (8.5, 0.0, 0.5), 17))
+    check("feet off the lattice", world.feet(3.75, 0.5, 0.0), 0.5)         # 3.45 .. 4.05 touches the slab
+    check("feet off the lattice, clear of it", world.feet(3.65, 0.5, 0.0), 0.0)
     check("feet()", feet(cells, 4.5, 0.5), 0.5)
+    check("feet(), too far from the level asked for", feet(cells, 2.5, 0.5, 3.0), None)
     check("reach()", reach_of(cells, (0.5, 0.0, 0.5)).kind_at(8.5, 0.5, 0.0), "walk")
     for line in bad:
         print("FAIL " + line)
