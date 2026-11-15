@@ -17,10 +17,10 @@ from scenes.obs.sky import mood as look
 
 # name: (the numbers of sky/lights it is lit by, sources laid by hand on top: ((x, y, z), level))
 TRIES = {
-    "k1": (dict(OPEN_DOOR_LEVEL=14), ()),                                   # 14 in the doorway as well (as it was)
-    "k2": (dict(), ()),                                                     # as sky/lights has it: nothing in the doorway
-    "k3": (dict(PIER_Y=5, FLIGHT_LEVEL=8), ()),                             # the pier lit two rows higher; the flights at 8
-    "k4": (dict(), (((10, 3, -4), 10), ((10, 3, 4), 10))),                  # k2 and a source under either gallery
+    "k1": (dict(PIER_Y=5), ()),                                             # the pier lit two rows higher, the flights at 11
+    "k2": (dict(PIER_Y=4), ()),                                             # one row higher
+    "k3": (dict(PIER_Y=5), (((6, 9, 0), 14),)),                             # k1 and a second source four rows up
+    "k4": (dict(PIER_Y=5, FLIGHT_LEVEL=9), ()),                             # k1 with the flights at 9
 }
 VIEWS = ("axis", "door", "v7", "front")
 
