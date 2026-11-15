@@ -184,21 +184,24 @@ def _lume(rows):
     return ["".join(ch if ch == "g" else "." for ch in row) for row in rows]
 
 
-GLINT = P.RAMPS["porcelain"][4]
-# two strokes like those of furniture._pane (c179, g2 #33282), one column further left: the clock's
-# door is seven pixels wide and its middle column is the pendulum rod's, which a glint would cut
-STROKES = ((2, 1), (1, 2), (0, 3), (2, 3), (1, 4))
+GLINT = P.RAMPS["porcelain"][4]         # the glint of a lens or of a glass ball: one pixel
+# Clear glass as the furniture draws it (_kit.sheen_texels): the glass is left out and its reflection
+# says it is there, a glancing stroke two pixels wide that climbs to the right and a shorter one
+# under it, in the tone the roof lights hold the sky in; a white one was the brightest thing on the
+# wall and read as paper. One column further left than the kit puts it: the clock's door is seven
+# pixels wide and its middle column is the pendulum rod's, which a stroke would cut in two.
+SHEEN = getattr(K, "SHEEN", P.RAMPS["night_glass"][4])
+STROKES = ((1, 1), (2, 1), (0, 2), (1, 2), (1, 5), (2, 5))
 
 
 def _pane(m, lo, hi):
-    """A pane of glass that looks +z, drawn the way the furniture draws its glass: the glass is
-    left out and its glint says it is there, two short white strokes in the upper left corner."""
+    """A pane of clear glass that looks +z: nothing but its reflection in the upper left corner."""
     w, h = int(round(hi[0] - lo[0])), int(round(hi[1] - lo[1]))
     rows = [["."] * w for _ in range(h)]
     for i, j in STROKES:
         if i < w and j < h:
             rows[j][i] = "g"
-    m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"glint_{w}x{h}", ["".join(row) for row in rows], g=GLINT)})
+    m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"sheen_{w}x{h}", ["".join(row) for row in rows], g=SHEEN)})
 
 
 def _ball(m, name, centre, radius, mat, sides, bands, paint, swing=0.0, crown=False, depth=1.5):
