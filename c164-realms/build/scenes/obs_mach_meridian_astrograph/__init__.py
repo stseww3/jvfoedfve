@@ -180,7 +180,8 @@ def shots():
       hut_east      from the south-east corner: the tube, the east circle and its pier
       hut_west      from the south-west corner: the lantern on the west pier
       hut_north     from the north-west corner, back at the object glass
-      hut_circle    close: the east circle's band, the microscopes on their arm, the bearing
+      hut_circle    close, over the east pier's shoulder: the east circle's divided limb and the two
+                    microscopes that read it
       hut_eye       close: the eye end, the micrometer and the two finding circles
       hut_sight     from outside, down the tube's own line through the slot into the object glass
       hut_court     from the court, due south of the door: the hut and what shows in its slot
@@ -221,7 +222,8 @@ def shots():
     shot("hut_east", (east - 0.35, S.GROUND + eye, hi - 0.35), off(a, dx=-0.2, dy=-0.1))
     shot("hut_west", (west + 0.35, S.GROUND + eye, hi - 0.35), off(a, dx=0.2, dy=-0.1))
     shot("hut_north", (west + 0.4, S.GROUND + 2.3, lo + 0.4), off(a, dy=0.3, dz=-0.4))
-    shot("hut_circle", (a[0] + 0.45, S.GROUND + 1.25, a[2] + 2.3), (east_pier[0] - 0.6, a[1] + 0.75, a[2] - 0.1))
+    limb = a[0] + meridian.CIRCLE_OFF / 16.0
+    shot("hut_circle", (east_pier[0] + 1.05, S.GROUND + 2.75, a[2] + 1.3), (limb + 0.1, a[1] + 0.9, a[2] + 0.2))
     e = meridian.eyepiece()
     shot("hut_eye", (e[0] + 1.15, e[1] + 0.45, e[2] + 1.25), off(e, dy=0.25, dz=-0.35))
     o = meridian.objective()

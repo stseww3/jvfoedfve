@@ -12,8 +12,12 @@ middle of the hut (site/outbuildings), under the slot in the roof:
   the tube     a cast cube in the middle; two cones of riveted plate bolted to it, the object glass
                in a brass cell at one end and the micrometer eyepiece at the other; the two halves
                of the axis bolted to its sides, cast cones that end in steel pivots.
-  the circles  one either side of the tube, two and three quarter blocks across, as large as the
-               hut's low roof lets them turn: a graduated brass band on six spokes.
+  the circles  one at each end of the axis, close against its pier, with the cast cone of the axis
+               bare between it and the tube. Two and three quarter blocks across, as large as the
+               hut's low roof lets them turn: a slender brass ring on six spokes, the divisions on
+               a silvered limb let into the face that looks at the pier, where the microscopes
+               read it. (Close beside the tube, broad and divided round their edges, they read as
+               the wheels of a gun carriage: cr3 #63499.)
   the lamp     a small brass lantern on the west pier, level with the axis: it shines through the
                hollow pivot onto the wires. The one light in the hut.
 
@@ -132,6 +136,7 @@ PLATE_STUD = painted(Riveted, PLATE, "stud")
 PLATE_SEAM = painted(Riveted, PLATE, "seam", pitch=4)
 BRASS_STUD = painted(Riveted, BRASS_D, "stud")
 BRASS_TICK = painted(Graduated, P.mat("brass", bevel=0), "tick")
+LIMB = painted(Graduated, P.mat("cream", base=2, bevel=0), "limb")     # the silvered band a circle is divided on
 IRON_TOOTH = painted(Graduated, P.mat("iron_dark", bevel=0), "tooth", long=0)
 GLASS, GLASS_D = flat("night_glass", 2), flat("night_glass", 0)
 HOOD = flat("iron", 0)
@@ -214,17 +219,29 @@ def spokes(d, axis, centre, r0, r1, n, mat, wide=2.0, thick=1.0, start=0.0):
         d.box(lo, hi, mat, rot=(axis, start + 360.0 * i / n, tuple(centre)), grain=M.AXES[o1])
 
 
-def circle(d, axis, centre, radius, band=3.0, width=1.5, hub=3.0, n=6, sides=16, start=30.0, rim=0.0):
-    """A divided circle about `axis` through `centre`: a graduated brass band of outer radius
-    `radius` on n spokes and a hub. rim is the size of a plain stiffening ring inside the band."""
-    d.ring(axis, centre, radius - band / 2.0, band, width, BRASS_TICK, sides=sides)
+def circle(d, axis, centre, radius, band=3.0, width=1.5, hub=3.0, n=6, sides=16, start=30.0, rim=0.0,
+           limb=None, wide=None):
+    """A divided circle about `axis` through `centre`: a brass band of outer radius `radius` on n
+    spokes and a hub. rim is the size of a plain stiffening ring inside the band.
+
+    limb=None divides the band itself, all round its edge and faces (a small circle, read from any
+    side). limb=(inset, size) leaves the band plain and lays the divisions on a silvered band let
+    into the face that looks along +axis, `inset` texels in from the edge and `size` wide: a great
+    circle is read on its face, by microscopes."""
+    k = M.AXES.index(axis)
+    d.ring(axis, centre, radius - band / 2.0, band, width, BRASS if limb else BRASS_TICK, sides=sides)
+    if limb:
+        inset, size = limb
+        at = list(centre)
+        at[k] += width / 2.0
+        d.ring(axis, tuple(at), radius - inset - size / 2.0, size, 0.5, BRASS_D, sides=sides,
+               faces={M.SIDE[k][1]: LIMB})
     inner = radius - band
     if rim:
         d.ring(axis, centre, inner - rim / 2.0 + 0.25, rim, width + 1.0, BRASS_D, sides=sides)
         inner -= rim - 0.25
-    spokes(d, axis, centre, hub - 0.5, inner + 0.5, n, BRASS_D, wide=max(1.5, radius / 10.0),
+    spokes(d, axis, centre, hub - 0.5, inner + 0.5, n, BRASS_D, wide=wide or max(1.5, radius / 10.0),
            thick=width * 0.7, start=start)
-    k = M.AXES.index(axis)
     c = [v for i, v in enumerate(centre) if i != k]
     d.tube(axis, c, centre[k] - width, centre[k] + width, hub, BRASS_D, sides=8 if hub < 4.0 else 12)
 
@@ -307,8 +324,9 @@ def size_findings(models, scales):
 # ---- where it stands (blocks, scene coordinates) ----------------------------------------------------
 AXIS_Y = 32.0                   # texels: the axis over the floor (two blocks, site/outbuildings HUT_AXIS)
 PIER_OFF = 32.0                 # the piers' middles from the meridian (HUT_PIERS)
-CIRCLE_OFF = 14.5               # the circles' planes from the meridian
+CIRCLE_OFF = 21.0               # the circles' planes from the meridian: out against the piers
 CIRCLE_R = 22.0                 # two and three quarter blocks across: two texels under the hut's roof
+LIMB_AT = (0.5, 1.75)           # the divided band on a circle's outer face: in from the edge, wide
 HALF = 30.0                     # the tube from the axis to either end: it passes the floor
 ALTITUDE = S.LATITUDE           # the pole star: due north, as high as the latitude
 TUBE_SCALE = CIRCLE_SCALE = PIER_SCALE = 2.0
@@ -320,6 +338,8 @@ _A = math.radians(ALTITUDE)
 SIGHT = (0.0, math.sin(_A), -math.cos(_A))              # the way the tube looks: north and up
 OVER = (0.0, math.cos(_A), math.sin(_A))                # square to it in the meridian, upwards
 TUBE_FRAME = (EAST, OVER, tuple(-v for v in SIGHT))     # x the axis, z down the tube to the eyepiece
+TURNED_FRAME = (tuple(-v for v in EAST), OVER, SIGHT)   # the same turned half round: the west circle,
+#                                                         whose divided face looks at the west pier
 WEST_FRAME = WORLD                                      # the piers are drawn with their x towards the tube
 EAST_FRAME = ((-1.0, 0.0, 0.0), UP, (0.0, 0.0, -1.0))
 
@@ -366,52 +386,71 @@ def lamp_cell(origin=(0, 0, 0)):
 
 # ---- the tube -----------------------------------------------------------------------------------------
 CUBE = 6.5                      # half the cast cube in the middle
-CONE = (8.0, 24.0, 6.0, 4.75)   # each half of the tube: from, to (texels from the axis), radius at both
-PIVOT = (21.0, 31.0, 1.5)       # each steel pivot: from, to (texels from the meridian), radius
+CONE = (8.0, 24.0, 6.5, 4.0)    # each half of the tube: from, to (texels from the axis), radius at both
+CONE_STEPS = 6                  # the lengths a cone is turned in
+HOOP = (14.5, 17.5)             # the riveted hoop over each cone's lap: from, to (texels from the axis)
+AXLE = (8.0, 17.5, 5.0, 2.75)   # each half of the axis, a cast cone: from, to (texels from the meridian), radius at both
+SEAT = 2.25                     # the radius of the axis where a circle sits on it
+SLEEVE = (2.25, 2.75)           # the sleeve of a circle's hub: half its length along the axis, radius
+PIVOT = (24.0, 31.0, 1.5)       # each steel pivot: from, to (texels from the meridian), radius
+FINDER_AT = 20.0                # the two finding circles: texels from the axis, towards the eye end
+
+
+def _cone_r(z):
+    """The radius of the tube's skin `z` texels from the axis, as it is turned: in CONE_STEPS lengths."""
+    c0, c1, r0, r1 = CONE
+    step = min(CONE_STEPS - 1, max(0, int((abs(z) - c0) / (c1 - c0) * CONE_STEPS)))
+    return r0 + (r1 - r0) * (step + 0.5) / CONE_STEPS
 
 
 def _tube():
     d = Draw(PREFIX + "tube", TUBE_SCALE)
     c0, c1, r0, r1 = CONE
+    a0, a1, ar0, ar1 = AXLE
     d.box((-CUBE, -CUBE, -CUBE), (CUBE, CUBE, CUBE), IRON_D)
     for sgn in (-1.0, 1.0):
         # a brass cover on the cube's two free faces (the lamp's mirror is behind one)
         d.tube("y", (0.0, 0.0), sgn * CUBE, sgn * (CUBE + 0.75), 4.0, BRASS, sides=8)
         d.tube("y", (0.0, 0.0), sgn * (CUBE + 0.75), sgn * (CUBE + 1.5), 1.5, BRASS_D, sides=8)
-        # half of the axis: a bolted flange, a cast cone, a brass collar, the steel pivot
-        d.tube("x", (0.0, 0.0), sgn * CUBE, sgn * c0, 6.25, IRON_D_STUD, sides=12, seed=HOOP_SEED + 1)
-        d.taper("x", (0.0, 0.0), sgn * c0, sgn * PIVOT[0], 5.0, 3.0, IRON, sides=12, steps=4)
-        d.tube("x", (0.0, 0.0), sgn * (PIVOT[0] - 0.5), sgn * (PIVOT[0] + 1.0), 3.5, BRASS_D, sides=8)
-        d.tube("x", (0.0, 0.0), sgn * (PIVOT[0] + 1.0), sgn * PIVOT[1], PIVOT[2], STEEL, sides=8)
+        # half of the axis: a bolted flange, a cast cone, the seat of the circle, the steel pivot
+        d.tube("x", (0.0, 0.0), sgn * CUBE, sgn * a0, 6.25, IRON_D_STUD, sides=12, seed=HOOP_SEED + 1)
+        d.taper("x", (0.0, 0.0), sgn * a0, sgn * a1, ar0, ar1, IRON, sides=12, steps=5)
+        d.tube("x", (0.0, 0.0), sgn * a1, sgn * PIVOT[0], SEAT, IRON, sides=8)
+        d.tube("x", (0.0, 0.0), sgn * PIVOT[0], sgn * PIVOT[1], PIVOT[2], STEEL, sides=8)
         # half of the tube: a bolted flange, a cone of plate, one riveted hoop over its lap
         d.tube("z", (0.0, 0.0), sgn * CUBE, sgn * c0, 7.25, IRON_D_STUD, sides=12, seed=HOOP_SEED + 1)
-        d.taper("z", (0.0, 0.0), sgn * c0, sgn * c1, r0, r1, PLATE, sides=12, steps=4)
-        d.tube("z", (0.0, 0.0), sgn * 14.5, sgn * 17.5, 6.25, PLATE_STUD, sides=12, seed=HOOP_SEED)
+        d.taper("z", (0.0, 0.0), sgn * c0, sgn * c1, r0, r1, PLATE, sides=12, steps=CONE_STEPS)
+        d.tube("z", (0.0, 0.0), sgn * HOOP[0], sgn * HOOP[1], _cone_r(HOOP[0]) + 0.5, PLATE_STUD, sides=12,
+               seed=HOOP_SEED)
     # the object glass: a brass cell with a ring of screws, the dark glass inside its lip
-    d.tube("z", (0.0, 0.0), -c1 - 5.0, -c1, 5.5, BRASS, sides=12)
-    d.tube("z", (0.0, 0.0), -c1 - 3.5, -c1 - 1.5, 5.75, BRASS_STUD, sides=12, seed=HOOP_SEED + 2)
-    d.tube("z", (0.0, 0.0), -c1 - 5.5, -c1 - 5.0, 4.5, GLASS, sides=12, cap=GLASS)
-    d.tube("z", (0.0, 0.0), -c1 - 5.6, -c1 - 5.5, 2.0, GLASS_D, sides=8, cap=GLASS_D)
-    d.ring("z", (0.0, 0.0, -c1 - 5.5), 5.0, 1.5, 1.0, BRASS_D, sides=16)
+    d.tube("z", (0.0, 0.0), -c1 - 5.0, -c1, r1 + 0.75, BRASS, sides=12)
+    d.tube("z", (0.0, 0.0), -c1 - 3.5, -c1 - 1.5, r1 + 1.0, BRASS_STUD, sides=12, seed=HOOP_SEED + 2)
+    d.tube("z", (0.0, 0.0), -c1 - 5.5, -c1 - 5.0, r1 - 0.25, GLASS, sides=12, cap=GLASS)
+    d.tube("z", (0.0, 0.0), -c1 - 5.6, -c1 - 5.5, 1.75, GLASS_D, sides=8, cap=GLASS_D)
+    d.ring("z", (0.0, 0.0, -c1 - 5.5), r1 + 0.25, 1.5, 1.0, BRASS_D, sides=16)
     # the eye end: a tail plate, the micrometer box with a divided head either side, the eyepiece
-    d.tube("z", (0.0, 0.0), c1, c1 + 1.5, 5.5, IRON_D_STUD, sides=12, seed=HOOP_SEED + 2)
-    d.box((-4.5, -3.5, c1 + 1.5), (4.5, 3.5, c1 + 4.0), BRASS_D)
-    d.tube("x", (0.0, c1 + 2.75), -6.5, 6.5, 0.75, STEEL, sides=4)
+    d.tube("z", (0.0, 0.0), c1, c1 + 1.5, r1 + 0.75, IRON_D_STUD, sides=12, seed=HOOP_SEED + 2)
+    d.box((-4.0, -3.0, c1 + 1.5), (4.0, 3.0, c1 + 4.0), BRASS_D)
+    d.tube("x", (0.0, c1 + 2.75), -6.0, 6.0, 0.75, STEEL, sides=4)
     for sgn in (-1.0, 1.0):
-        d.tube("x", (0.0, c1 + 2.75), sgn * 6.0, sgn * 8.0, 2.0, BRASS_TICK, sides=8)
+        d.tube("x", (0.0, c1 + 2.75), sgn * 5.5, sgn * 7.5, 2.0, BRASS_TICK, sides=8)
     d.tube("z", (0.0, 0.0), c1 + 4.0, c1 + 5.5, 1.75, BRASS, sides=8)
     d.tube("z", (0.0, 0.0), c1 + 5.5, HALF, 2.25, BRASS_D, sides=8, cap=GLASS_D)
     # the two finding circles on the eye end, by which the tube is set to a star's height
+    skin = _cone_r(FINDER_AT) + 0.25
     for sgn in (-1.0, 1.0):
-        d.tube("x", (0.0, 20.0), sgn * 4.75, sgn * 5.75, 3.5, BRASS_TICK, sides=8)
-        d.tube("x", (0.0, 20.0), sgn * 5.75, sgn * 6.5, 1.25, BRASS_D, sides=8)
+        d.tube("x", (0.0, FINDER_AT), sgn * skin, sgn * (skin + 1.0), 3.5, BRASS_TICK, sides=8)
+        d.tube("x", (0.0, FINDER_AT), sgn * (skin + 1.0), sgn * (skin + 1.75), 1.25, BRASS_D, sides=8)
     return d.model
 
 
 def _circle():
+    """One of the two great circles: a slender brass ring on six spokes, the silvered limb let into
+    the face that looks at its pier (the model's +x), where the microscopes read it."""
     d = Draw(PREFIX + "circle", CIRCLE_SCALE)
-    circle(d, "x", (0.0, 0.0, 0.0), CIRCLE_R, band=3.5, width=1.5, hub=4.75, n=6, sides=24, start=0.0, rim=1.5)
-    d.tube("x", (0.0, 0.0), -2.5, 2.5, 3.5, BRASS, sides=8)
+    circle(d, "x", (0.0, 0.0, 0.0), CIRCLE_R, band=2.5, width=1.5, hub=3.75, n=6, sides=24, start=0.0,
+           limb=LIMB_AT, wide=1.5)
+    d.tube("x", (0.0, 0.0), -SLEEVE[0], SLEEVE[0], SLEEVE[1], BRASS, sides=8)
     return d.model
 
 
@@ -422,18 +461,21 @@ PIER = [                        # the casing's sections: y0, y1, half size (texe
     (22.5, 27.0, 6.0),
 ]
 PIER_CAP = (27.0, 28.5, 7.0)
-SCOPE_AT = 20.0                 # the reading microscopes look at the band this far from the axis
+SCOPE_AT = 20.5                 # the reading microscopes look at the limb this far from the axis
 SCOPE_ANGLE = 45.0              # ... and this many degrees either side of straight up
-ARM_X = 5.0                     # the plane of the forked arm, texels from the pier's middle towards the tube
+ARM_X = 3.5                     # the plane of the forked arm, texels from the pier's middle towards the tube
+SCOPE_ENDS = (-1.5, 9.0)        # a microscope from its eye end to its glass, texels from the pier's middle:
+#                                 the eye end over the pier, the glass a texel short of the limb
 
 
 def _microscope(d, y, z):
-    """A reading microscope along x at (y, z): the eye end at the pier, the glass at the circle."""
-    d.tube("x", (y, z), ARM_X - 2.0, ARM_X + 8.5, 1.25, BRASS, sides=8)
-    d.tube("x", (y, z), ARM_X + 8.5, ARM_X + 10.0, 0.9, BRASS_D, sides=8, cap=GLASS_D)
-    d.tube("x", (y, z), ARM_X - 3.5, ARM_X - 2.0, 0.9, BRASS_D, sides=8, cap=GLASS_D)
-    d.box((ARM_X + 2.0, y - 1.75, z - 1.75), (ARM_X + 4.5, y + 1.75, z + 1.75), BRASS_D)
-    d.tube("y", (ARM_X + 3.25, z), y + 1.75, y + 3.25, 1.0, BRASS_TICK, sides=8)
+    """A reading microscope along x at (y, z): the eye end over the pier, the glass at the limb."""
+    eye, glass = SCOPE_ENDS
+    d.tube("x", (y, z), eye + 1.5, glass - 1.5, 1.25, BRASS, sides=8)
+    d.tube("x", (y, z), glass - 1.5, glass, 0.9, BRASS_D, sides=8, cap=GLASS_D)
+    d.tube("x", (y, z), eye, eye + 1.5, 0.9, BRASS_D, sides=8, cap=GLASS_D)
+    d.box((ARM_X - 1.25, y - 1.75, z - 1.75), (ARM_X + 1.25, y + 1.75, z + 1.75), BRASS_D)
+    d.tube("y", (ARM_X, z), y + 1.75, y + 3.25, 1.0, BRASS_TICK, sides=8)
 
 
 def _pier():
@@ -509,7 +551,8 @@ def placed():
     west, east = piers()
     out = [("pier", west, WEST_FRAME, PIER_SCALE), ("pier", east, EAST_FRAME, PIER_SCALE),
            ("tube", a, TUBE_FRAME, TUBE_SCALE)]
-    out += [("circle", _add(a, (sgn * CIRCLE_OFF / 16.0, 0.0, 0.0)), TUBE_FRAME, CIRCLE_SCALE) for sgn in (-1.0, 1.0)]
+    out += [("circle", _add(a, (-CIRCLE_OFF / 16.0, 0.0, 0.0)), TURNED_FRAME, CIRCLE_SCALE),
+            ("circle", _add(a, (CIRCLE_OFF / 16.0, 0.0, 0.0)), TUBE_FRAME, CIRCLE_SCALE)]
     out.append(("lamp", west if LAMP_PIER < 0 else east, WEST_FRAME if LAMP_PIER < 0 else EAST_FRAME, LAMP_SCALE))
     return [(PREFIX + name, at, frame, scale) for name, at, frame, scale in out]
 
@@ -562,18 +605,27 @@ def check():
         out.append(f"tube: {HALF:g} texels from the axis to its end, the axis is {AXIS_Y:g} over the floor")
     if CIRCLE_R >= AXIS_Y:
         out.append(f"circle: radius {CIRCLE_R:g} texels, the axis is {AXIS_Y:g} over the floor")
-    inner = PIER_OFF - 8.0
-    if CIRCLE_OFF + 1.5 >= inner or CIRCLE_OFF - 1.5 <= CONE[2] + 1.25:
+    # 2b. each circle sits on its seat of the axis, between the cone and the pivot, and turns a
+    #     texel or more clear of its pier (the foot is the widest of it) and of the tube
+    face = CIRCLE_OFF + 1.0                             # the limb's face, the outermost of the ring
+    if not (AXLE[1] <= CIRCLE_OFF - SLEEVE[0] and CIRCLE_OFF + SLEEVE[0] <= PIVOT[0]):
+        out.append(f"circle: its sleeve, {CIRCLE_OFF - SLEEVE[0]:g} to {CIRCLE_OFF + SLEEVE[0]:g} texels from the "
+                   f"meridian, is not on the seat between the cone ({AXLE[1]:g}) and the pivot ({PIVOT[0]:g})")
+    if face + 1.0 > PIER_OFF - 8.0 or CIRCLE_OFF - 0.75 < 7.25 + 1.0:
         out.append("circle: it does not turn freely between the tube and the pier")
+    if SLEEVE[1] <= SEAT or PIER_OFF - 7.0 < CIRCLE_OFF + SLEEVE[0]:
+        out.append("circle: the sleeve of its hub is thinner than the seat, or runs into the bearing")
     if not PIER_OFF - 7.0 < PIVOT[1] < PIER_OFF:
         out.append(f"pivot: it ends {PIVOT[1]:g} texels from the meridian, the bearing is from "
                    f"{PIER_OFF - 7.0:g} to {PIER_OFF - 0.5:g}")
-    # 3. the microscopes look at the graduated band, and stop short of it
-    if not CIRCLE_R - 3.5 <= SCOPE_AT <= CIRCLE_R:
-        out.append(f"microscopes: they look {SCOPE_AT:g} texels from the axis, the band is from "
-                   f"{CIRCLE_R - 3.5:g} to {CIRCLE_R:g}")
-    if PIER_OFF - (ARM_X + 10.0) <= CIRCLE_OFF + 1.25:
-        out.append("microscopes: they reach into the circle")
+    # 3. the microscopes look at the divided limb, and stop short of it
+    limb = (CIRCLE_R - LIMB_AT[0] - LIMB_AT[1], CIRCLE_R - LIMB_AT[0])
+    if not limb[0] + 0.5 <= SCOPE_AT <= limb[1] - 0.5:
+        out.append(f"microscopes: they look {SCOPE_AT:g} texels from the axis, the limb is from "
+                   f"{limb[0]:g} to {limb[1]:g}")
+    gap = (PIER_OFF - SCOPE_ENDS[1]) - face
+    if not 0.5 <= gap <= 2.0:
+        out.append(f"microscopes: their glass stands {gap:g} texels from the limb (half a texel to two is right)")
     # 4. the tube looks out through the slot: the sight line leaves the hut over the meridian's column
     cx, _ = S.MERIDIAN_HUT["centre"]
     p = objective()
