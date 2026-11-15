@@ -103,7 +103,7 @@ def shots():
     eye     beside the observer, looking up the tube
     south   the whole instrument side on, from the south wall; north the same from the north
     east    from the east wall, the tube coming at the camera
-    mount   the mount from the south-east, close; mount_north from the north-east
+    mount   the mount from the south, close; mount_north from the north
     tail    the tailpiece, the finder and the red lamp, close
     circle  the setting circles and the driving clock, close
     top     from under the dome's crown, down on the instrument
@@ -121,15 +121,13 @@ def shots():
         mid = tuple((eyepiece[i] + objective[i]) / 2.0 for i in range(3))
         shot("v8", *scope.v8("b"))
         shot("v8_north", *scope.v8("a"))
-        side = -1.0 if v == "a" else 1.0
-        shot("v8_back", (14.5, eye_y, scope.pivot(v)[2] + side * 2.0), (0.0, 25.2, 0.9))
         shot("eye", (eyepiece[0] + 0.55, eye_y, eyepiece[2] + 1.5),
              (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.2))
         shot("south", (5.5, eye_y + 1.0, 11.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("north", (5.5, eye_y + 1.0, -10.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("east", (13.6, eye_y, -1.2), (2.0, cross[1] + 1.5, 0.8))
-        shot("mount", (9.6, eye_y + 1.2, 5.6), (4.5, cross[1] - 1.2, 0.9))
-        shot("mount_north", (9.6, eye_y + 1.2, -4.6), (4.5, cross[1] - 1.2, 0.1))
+        shot("mount", (7.6, eye_y + 0.8, 7.2), (4.5, cross[1] - 1.0, 0.7))
+        shot("mount_north", (7.6, eye_y + 0.8, -6.2), (4.5, cross[1] - 1.0, 0.3))
         shot("tail", (eyepiece[0] + 1.3, eyepiece[1] + 0.25, eyepiece[2] + 2.3),
              (eyepiece[0] - 1.1, eyepiece[1] + 0.75, eyepiece[2] + 0.1))
         shot("circle", (7.4, eye_y + 2.6, 4.4), (4.5, cross[1] - 0.6, 1.2))
