@@ -2,13 +2,15 @@
 
 The room stands in a stand-in of its shell (box.py) on the skeleton's coordinates; the dressing is
 scenes.obs.interiors.timeroom, the same call the master scene will make once the room moves in.
-The resource pack is the materials line's: the room repaints nothing and has no model of its own.
+The resource pack is the materials line's; the only models are the lamps of props/lamps.
 
-    python -m scenes.obs_int_timeroom        prints the instrument wall and the plan of the room
+The light: the room offers its lamps to the light line; the sources behind the lit windows are the
+light line's own. While sky/lights is not in the tree both are put down here, so the box is lit
+the way the room will be.
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.interiors import timeroom
 
 from . import box
@@ -19,9 +21,10 @@ CATEGORY = "interiors"
 
 def build():
     c = Canvas()
-    box.build(c)
-    got = timeroom.build_timeroom(c)
-    box.light(c, got["lights"])
+    sources = box.build(c)
+    timeroom.build_timeroom(c)
+    box.light(c, sources)
+    sky.build(c)
     return c
 
 
