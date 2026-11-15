@@ -1,0 +1,24 @@
+{
+  "about": "Real-machine render plots for the c164 test world (a flat void server, 127.0.0.1:25599). Each test scene / work package is placed on its own plot so scenes never touch; the master (integration) scene sits on plot 0. A plot's origin is base + index*spacing on +X, and is passed unchanged to both place.py --at and shoot.py --origin, so shot lists written in scene coordinates line up. The render station (S1) owns this file. A scene that is shot before it is in this table gets the next free index from the shuttle, which notes it in the test world (datapacks/c164art/plots.local.json) and says so; it is then added here with that index. Indices are never reused or reshuffled, so a package keeps its plot across runs.",
+  "spacing": 1000,
+  "base": [0, 200, 0],
+  "plots": {
+    "obs": 0,
+    "skyobs": 1,
+    "kitcheck": 2,
+    "obs_mat_redirect": 3,
+    "obs_props_lamps": 4,
+    "obs_mat_ashlar": 5,
+    "obs_mat_ashlar_b": 6,
+    "obs_mat_ashlar_c": 7,
+    "obs_mat_board": 8,
+    "obs_mat_iron": 9,
+    "obs_mat_panels": 10,
+    "obs_mat_windows": 11,
+    "obs_mat_windows_b": 12,
+    "obs_props_ironwork": 13,
+    "obs_site_court": 14,
+    "obs_site_terrain": 15,
+    "obs_sky_look": 16
+  }
+}
