@@ -300,11 +300,17 @@ _UPRIGHTS = (2, 7, 12)      # where the game's bars stand: its post and its end 
 
 def _bars():
     """IRON_BARS: a railing -- three thin uprights (I3 on the lit side, I2 on the other) under one
-    handrail along the top, its upper edge catching the light (I5); half way down each upright a
-    collar, a lit pixel over a shadowed one. The uprights stand where the game's own do, so the
-    post, the caps and the two half panes of its model still find them. The rail runs the full
-    width: a run of railing carries one unbroken handrail into its end posts, and bars set two
-    high in a window opening get a middle bar and a top bar.
+    handrail along the top, its upper edge catching the light (I5), and nothing else across them.
+    The uprights stand where the game's own do, so the post, the caps and the two half panes of
+    its model still find them. The rail runs the full width: a run of railing carries one unbroken
+    handrail into its end posts, and bars set two high in a window opening get a middle bar and a
+    top bar.
+
+    Nothing crosses the uprights lower down, not even a collar on each: seen from far below (the
+    arrival view looks up through the railing of the upper terrace at the entrance) whatever lies
+    across a railing at half its height draws a line over what stands behind it, where the
+    handrail at the top comes to lie along the building's string course (the second reviewer's
+    reckoning, g2 11-15 18:50).
 
     Its tones average the plates' (2.8 against 2.9): the game's picture, taken over step for step,
     stood a whole step lighter than the plate beside it (the cross-reading of the placeholders)."""
@@ -313,10 +319,6 @@ def _bars():
         for y in range(TILE):
             _put(px, x, y, _i(3))
             _put(px, x + 1, y, _i(2))
-        _put(px, x, 8, _i(5))                               # the collar
-        _put(px, x + 1, 8, _i(3))
-        _put(px, x, 9, _i(2))
-        _put(px, x + 1, 9, _i(1))
     for x in range(TILE):
         _put(px, x, 0, _i(5))
         _put(px, x, 1, _i(2))
