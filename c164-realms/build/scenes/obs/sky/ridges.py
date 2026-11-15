@@ -47,7 +47,10 @@ NS = "c164"
 # afterglow (the card). Bearings are measured from north, clockwise: NW is 315, SW is 225.
 NW, SW = 315.0, 225.0
 GROUPS = ((NW, -4.0), (NW, 4.0), (SW, -4.0), (SW, 4.0))     # (bearing, an offset along the plane's own x)
-DISTANCE = 380.0                  # blocks out: inside the card's 300..450
+DISTANCE = 380.0                  # how far away the ridges LOOK (the card's 300..450)
+SEND_RANGE = 140.0                # how far from the station the entities really stand: the server only
+#                                   sends entities within 160 blocks of a player, so at 380 they would
+#                                   never be sent at all -- the look of distance comes from the scale
 TOP_ANGLE = 6.0                   # degrees above the horizon, the card's ceiling
 
 RIDGE_W = 900.0                   # how wide one plane is, in blocks at its own distance
@@ -59,72 +62,53 @@ PIX = 48                          # the model may span 48 units, so the picture 
 PIX_H = 6                         # 48/8: the same proportion as RIDGE_W/RIDGE_H (900/120)
 
 # --- materials ------------------------------------------------------------------------------------
-# The card: the darkest step of night_glass, and the picture is see-through everywhere above the ridge
-RIDGE = P.mat("night_glass", kind="flat", base=0, bevel=0)
-CLEAR = (0, 0, 0, 0)
+# The card: the darkest step of night_glass, and the picture is see-through everywhere above the ridge.
+# A Sprite draws that: rows of characters, '.' transparent, and the plane's own face paints itself from
+# it. (Writing the picture with respack.texture() instead would leave it named by no model -- the
+# checker calls that out, and rightly.)
+RIDGE_COLOUR = P.RAMPS["night_glass"][0]      # the hex string Sprite wants
+SPRITE_ROWS = 6                   # the plane's face is 48 x 6 units: one character is one unit
 
 
-def _outline(seed, width=PIX, height=PIX_H):
-    """The ridge's skyline as a boolean row of heights: a jagged line made of a few long slopes with
-    small teeth on them, so it reads as distant land and not as a saw blade."""
+def _rows(seed, width=PIX, height=SPRITE_ROWS):
+    """One ridge's skyline as Sprite rows: '#' solid, '.' clear. A few long slopes with small teeth
+    on them, so it reads as distant land and not as a saw blade."""
     rng = np.random.default_rng(seed)
     xs = np.arange(width)
-    ground = height * 0.55
-    prof = np.full(width, ground)
-    # three or four hills of different widths, so the skyline has a big shape as well as teeth
+    prof = np.full(width, height * 0.55)
     for _ in range(3 + seed % 2):
         c = rng.uniform(0.1, 0.9) * width
         w = rng.uniform(0.10, 0.26) * width
         h = rng.uniform(0.18, 0.40) * height
         prof -= h * np.exp(-((xs - c) / w) ** 2)
-    # small teeth: a high-frequency wobble, a block or two tall
-    prof += rng.normal(0.0, 0.45, width)
+    prof += rng.normal(0.0, 0.30, width)
     prof = np.clip(prof, 1.0, height - 1.0)
-    return prof
+    out = []
+    for row in range(height):
+        # row 0 is the top of the sprite
+        top = height - prof
+        out.append("".join("#" if row >= top[x] - 0.5 else "." for x in range(width)))
+    return out
 
 
-def _picture(seed):
-    """One ridge's picture: opaque below its skyline, clear above it."""
-    width, height = PIX, PIX_H
-    prof = _outline(seed, width, height)
-    px = np.zeros((height, width, 4), dtype=np.uint8)
-    colour = np.array([*P.colour("night_glass", 0), 255], dtype=np.uint8)
-    for x in range(width):
-        top = int(round(prof[x]))
-        px[height - top:, x] = colour
-    return px
+def _sprite(i):
+    from artkit import pixelart as A
+    return A.Sprite(f"{PREFIX}{i}", _rows(i), {"#": RIDGE_COLOUR})
 
 
 def _models():
-    """One model per ridge, each a flat plane carrying its own skyline."""
+    """One model per ridge: a flat plane whose face is its own silhouette."""
     out = {}
     for i in range(len(GROUPS)):
         name = f"{PREFIX}{i}"
         m = M.Model(name, px=1.0, anchor=(0.0, 0.0, 0.0))
-        # a plane in the model's x-y, one unit thick along z; the picture is applied by the pack
-        # the plane: 256 x 34 units, so the picture below is applied one pixel to one unit. It stands
-        # in the model's x-y and is one unit thick along z.
-        m.box((-PIX / 2.0, 0.0, 0.0), (PIX / 2.0, PIX_H, 1.0), RIDGE, skip="d", shade=False)
+        m.box((-PIX / 2.0, 0.0, 0.0), (PIX / 2.0, PIX_H, 1.0), _sprite(i), skip="dNSEW", shade=False)
         out[name] = m
     return out
 
 
 def models():
     return dict(_models())
-
-
-def pictures():
-    """{model name: the RGBA silhouette}."""
-    return {f"{PREFIX}{i}": _picture(i) for i in range(len(GROUPS))}
-
-
-def pack(pack_dir):
-    """Write the ridge pictures (the models' own pictures, one per plane)."""
-    out = []
-    for name, px in pictures().items():
-        respack.texture(pack_dir, "block/" + name, px, NS)
-        out.append(f"{name}: {px.shape[1]}x{px.shape[0]} silhouette")
-    return out
 
 
 def _bearing_to_vec(bearing_deg):
@@ -141,15 +125,15 @@ def build(canvas, origin=(0, 0, 0)):
         # stand the plane at DISTANCE along its bearing from the station, offset sideways by `along`
         sx, sz = _bearing_to_vec(bearing)
         side = (-sz, sx)                            # perpendicular, to spread the group
-        x = sx * DISTANCE + side[0] * along
-        z = sz * DISTANCE + side[1] * along
+        x = sx * SEND_RANGE + side[0] * along
+        z = sz * SEND_RANGE + side[1] * along
         # the plane faces the station: its own +z looks back at us
         yaw = math.degrees(math.atan2(-sx, -sz))
         # height: the top of the plane must stay under TOP_ANGLE, and its foot below the horizon
-        height = 2.0 * DISTANCE * math.tan(math.radians(TOP_ANGLE))
+        height = 2.0 * DISTANCE * math.tan(math.radians(TOP_ANGLE))   # the look's height, at DISTANCE
         canvas.add_entity(x + origin[0], -height * 0.35 + origin[1], z + origin[2],
                           M.display(built[f"{PREFIX}{i}"], yaw=yaw,
-                                    scale=(RIDGE_W / PIX, height / PIX_H, 1.0), view=512.0))
+                                    scale=(RIDGE_W / PIX, height / PIX_H, 1.0), view=256.0))
         n += 1
     return n
 

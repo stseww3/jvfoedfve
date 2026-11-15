@@ -59,9 +59,9 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    out = materials.pack(pack_dir)
-    out += ridges.pack(pack_dir)
-    return out
+    """The stone of the shelf only: the ridge pictures are the models' own faces (a Sprite each), so
+    the model export writes them."""
+    return materials.pack(pack_dir)
 
 
 def shots():
