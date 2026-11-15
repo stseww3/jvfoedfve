@@ -8,7 +8,7 @@ middle of the hut (site/outbuildings), under the slot in the roof:
 
   the piers    two stone piers cased in riveted iron plate, either side of the meridian, a brass
                bearing on each head. From each head a forked arm carries two reading microscopes
-               to the rim of the circle beside it.
+               to the rim of the circle beside it; a thermometer hangs on the casing.
   the tube     a cast cube in the middle; two cones of riveted plate bolted to it, the object glass
                in a brass cell at one end and the micrometer eyepiece at the other; the two halves
                of the axis bolted to its sides, cast cones that end in steel pivots.
@@ -442,6 +442,12 @@ def _pier():
     d.box((-8.0, 0.0, -8.0), (8.0, 3.0, 8.0), IRON_D_STUD)
     for y0, y1, half in PIER:
         upright(d, y0, y1, half)
+    # a thermometer on the casing (the air's warmth goes down beside every reading): a brass
+    # plate, the dark tube up its middle, the bulb at the foot
+    y0, y1, half = PIER[1]
+    d.box((-1.5, y0 + 1.0, half), (1.5, y1 - 2.0, half + 0.5), BRASS, grain="y")
+    d.box((-0.5, y0 + 2.5, half + 0.5), (0.5, y1 - 2.5, half + 0.75), GLASS_D)
+    d.box((-1.0, y0 + 1.5, half + 0.5), (1.0, y0 + 3.0, half + 1.0), STEEL)
     y0, y1, half = PIER_CAP
     d.box((-half, y0, -half), (half, y1, half), IRON_D)
     # the bearing on the side of the tube: a brass block with two cheeks, the pivot lies between them
