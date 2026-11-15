@@ -114,15 +114,15 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone, iron, glass and brass the orrery is judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone, iron, glass and brass the orrery is judged against, and the sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
     """The cameras, the same five for each version: V7, from outside the front door, as the skeleton
     locks it (A0 #365), the entrance as its frame; straight below, looking up; from the side
-    gallery, the eye a block above the ring; from the ring stair's first flight; and close, about
-    three blocks from the planets."""
+    gallery, the eye a block above the ring; from the ring stair's first flight; and close, three
+    and a half blocks from the axis, between two of the hangers of version a."""
     out = []
 
     def shot(name, pos, look_at):
@@ -136,5 +136,5 @@ def shots():
         shot(f"under_{v}", (CX, S.EYE, z), (CX, RING_Y, z))
         shot(f"gallery_{v}", (CX, S.STAND + S.EYE, z + 5.0), (CX, RING_Y + 0.2, z))
         shot(f"stair_{v}", (5.5, 8.5 + S.EYE, z + 3.0), (CX, RING_Y + 0.4, z))
-        shot(f"near_{v}", (CX + 1.9, RING_Y + 0.5, z + 3.1), (CX + 0.4, RING_Y + 0.1, z + 0.5))
+        shot(f"near_{v}", (CX - 0.6, RING_Y + 0.6, z + 3.6), (CX, RING_Y + 0.25, z))
     return out

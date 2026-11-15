@@ -26,7 +26,9 @@ How it is built, top to bottom (the same in both versions):
              five other sleeves. An outer sleeve is a shorter one: Saturn's arm is the highest and
              its wheel the lowest, so a longer arm always passes over the shorter ones
     arms     flat brass bars in a stack; each planet hangs from the end of its arm on a rod
-    sun      an opal lamp globe on the stay rod, the lowest and brightest thing of the machine
+    sun      an opal lamp globe on the stay rod, the lowest and brightest thing of the machine;
+             its glass, and the undersides of the planets, are drawn so that the engine lights them
+             in full from below as well (see "faces lit as if they looked up")
 
 Two versions stand side by side until the review picks one (card; A0 #30150):
 
@@ -35,9 +37,9 @@ Two versions stand side by side until the review picks one (card; A0 #30150):
               Saturn hang just under the plane, Venus and Mars ride just over it; the Earth and
               Jupiter each carry the hoop of their orbit. The works are open: two stepped cones
               of wheels between brass plates
-  b  tiered   the planets climb outward from the sun into a bowl; a cradle of three brass ribs
-              holds an equator ring and a tilted ecliptic band round them (armillary); the works
-              are shut in a brass drum
+  b  tiered   the planets climb outward from the sun into a bowl; a cradle of three thin iron
+              stays holds an equator ring and a tilted ecliptic band round them (armillary); the
+              works are shut in a brass drum
 
 WHY THE PLANETS STAND WHERE THEY STAND. They turn at six rates, so sooner or later every planet
 passes every other at every angle: what one sweeps as it goes round must stay clear of what the
@@ -199,14 +201,193 @@ def _tone(mat, normal, toward):
     return mat.variant(1 if d > 0.3 else -1 if d < -0.4 else 0, 0)
 
 
+# --- faces lit as if they looked up -----------------------------------------------------------------
+# The engine shades every face of an item display by the axis of the model the face looks along
+# most nearly, carried through the display's matrix (26.3: BakedQuad.direction, and
+# PoseStack.Pose.transformNormal in VertexConsumer.putBakedQuad): in full under an axis that ends up
+# looking up, at 0.5 to 0.74 under one that looks sideways, at 0.4 under one that looks down. An
+# element's light emission and its shade direction do not change that for an item. The door looks
+# up at this machine at 36 degrees, so more than half of what it sees of a ball is the ball's
+# underside: the opal sun came out at four tenths of its tone, duller than the windows behind it.
+#
+# Which axis a face is filed under is the model's affair; where that axis ends up is the display's.
+# So a face can stand where it belongs and be lit as if it looked up: it is drawn in a model that
+# is turned or leant over, as the top of a thin box that has no other face, and the display's
+# matrix sets it back in its place.
+#
+#   _corner()   a model stood on one corner: its three axes come out 35 degrees over the level, a
+#               third of a turn apart. An upright face that looks within 30 degrees of one of them
+#               is filed under it and lit at 0.96; two such frames, a sixth of a turn apart, take
+#               every upright face there is. Plain turns: nothing is stretched.
+#   _leant()    a model leant over: a level plane of the scene is a tipped plane of the model,
+#               unstretched (a texel stays a texel), and the model's y axis comes out 42 degrees
+#               over the level. A face that looks straight down is filed under it and lit in full,
+#               and stays so while the display turns about the vertical: the planets' undersides
+#               go round lit. The price is a matrix that is no turn (tools/check.py reads its scale
+#               as a stretch; no face is stretched).
+LAMPS = tuple(np.array(v) / np.linalg.norm(v) for v in ((0.2, 1.0, -0.7), (-0.2, 1.0, 0.7)))   # the engine's two
+FILED = np.array([(0, -1, 0), (0, 1, 0), (0, 0, -1), (0, 0, 1), (-1, 0, 0), (1, 0, 0)], dtype=float)   # its order
+LIT = 0.95                               # the share of its tone a face drawn this way must keep
+SURE = 0.1                               # by this much the axis a face is filed under must win
+LAP = PX / 50.0                          # faces run this far past their edges, so no seam opens
+SKIN = PX / 10.0                         # how thick the boxes behind them are
+
+
+def _corner(azimuth):
+    """The frame of a model stood on a corner: its x axis comes out at `azimuth` (from east towards
+    south), y and z a third of a turn on either side of it, all three 35.26 degrees over the level."""
+    c, s = math.sqrt(2.0 / 3.0), math.sqrt(1.0 / 3.0)
+    g = np.array([(c * math.cos(math.radians(azimuth + k)), s, c * math.sin(math.radians(azimuth + k)))
+                  for k in (0.0, 120.0, 240.0)]).T
+    return g if np.linalg.det(g) > 0.0 else g[:, [0, 2, 1]]
+
+
+def _leant(tip=40.0, rise=42.0):
+    """The frame of a model leant over, for faces that look straight down. The plane of the model
+    that is tipped `tip` degrees about x goes to the level plane of the scene as it is; the model's
+    y axis, under which those faces are filed, is lit like a face that looks `rise` degrees over
+    the level (in full from 38.2 degrees on, whichever way the display is turned about the
+    vertical). Of all matrices that do this it is the least lopsided one."""
+    b, e = math.radians(tip), math.radians(rise)
+    sink = math.cos(e) / math.sin(b)
+    lean = sink * math.tan(e) + 1.0 / math.tan(b)
+    model = np.array([(1.0, 0.0, 0.0), (0.0, math.cos(b), math.sin(b)), (0.0, -math.sin(b), math.cos(b))])
+    scene = np.array([(1.0, 0.0, 0.0), (0.0, -sink, lean), (0.0, 0.0, -1.0)])
+    return scene.T @ model               # each row of `model` goes to the same row of `scene`
+
+
+def _filed(g, normal):
+    """The axis of the model that the engine files a face under which looks along `normal` in the
+    scene, the model being shown through g; and by how much that axis wins over the next."""
+    v = g.T @ np.asarray(normal, dtype=float)
+    along = FILED @ (v / np.linalg.norm(v))
+    k = int(np.argmax(along))            # the first of equals, as in the engine
+    return FILED[k], float(along[k] - np.sort(along)[-2])
+
+
+def brightness(g, normal, spins=False):
+    """The share of its tone the engine leaves a face that looks along `normal` in the scene, in a
+    model shown through g; for a display that spins about the vertical, the least of a whole turn."""
+    axis, _sure = _filed(g, normal)
+    s = np.linalg.solve(g.T, axis)
+    s = s / np.linalg.norm(s)
+    least = 1.0
+    for turn in (range(0, 360, 5) if spins else (0,)):
+        a = math.radians(turn)
+        t = np.array([s[0] * math.cos(a) - s[2] * math.sin(a), s[1], s[0] * math.sin(a) + s[2] * math.cos(a)])
+        least = min(least, 0.4 + 0.6 * sum(max(0.0, float(t @ lamp)) for lamp in LAMPS))
+    return least
+
+
+def _quat_of(r):
+    """The quaternion (x, y, z, w) of a turn given as a matrix."""
+    t = r[0, 0] + r[1, 1] + r[2, 2]
+    if t > 0.0:
+        s = 2.0 * math.sqrt(t + 1.0)
+        q = ((r[2, 1] - r[1, 2]) / s, (r[0, 2] - r[2, 0]) / s, (r[1, 0] - r[0, 1]) / s, s / 4.0)
+    elif r[0, 0] > r[1, 1] and r[0, 0] > r[2, 2]:
+        s = 2.0 * math.sqrt(1.0 + r[0, 0] - r[1, 1] - r[2, 2])
+        q = (s / 4.0, (r[0, 1] + r[1, 0]) / s, (r[0, 2] + r[2, 0]) / s, (r[2, 1] - r[1, 2]) / s)
+    elif r[1, 1] > r[2, 2]:
+        s = 2.0 * math.sqrt(1.0 + r[1, 1] - r[0, 0] - r[2, 2])
+        q = ((r[0, 1] + r[1, 0]) / s, s / 4.0, (r[1, 2] + r[2, 1]) / s, (r[0, 2] - r[2, 0]) / s)
+    else:
+        s = 2.0 * math.sqrt(1.0 + r[2, 2] - r[0, 0] - r[1, 1])
+        q = ((r[0, 2] + r[2, 0]) / s, (r[1, 2] + r[2, 1]) / s, s / 4.0, (r[1, 0] - r[0, 1]) / s)
+    return tuple(float(v) for v in q)
+
+
+HALF_TURN = np.diag([-1.0, 1.0, -1.0])   # the item renderer shows a model turned half a turn about y
+
+
+def _display(model, g, scale, yaw=0.0):
+    """The item display that shows `model` through the frame g at `scale`, its anchor on the entity
+    and the whole turned by `yaw`: what artkit.models.display gives for a plain turn, for any
+    matrix. The matrix is taken apart into a turn, a scale along three axes and a second turn, as
+    the engine takes one apart; a plain turn stays one turn and one scale."""
+    nbt = M.display(model, yaw=yaw, scale=scale)
+    a = np.asarray(g, dtype=float) * (scale / 16.0)                 # the model's units to blocks
+    u, s, vt = np.linalg.svd(HALF_TURN @ (a * 16.0) @ HALF_TURN)
+    if s[0] - s[2] < 1e-9:
+        u, vt = u @ vt, np.eye(3)
+    elif np.linalg.det(u) < 0.0:
+        u[:, 2], vt[2, :] = -u[:, 2], -vt[2, :]
+    off = np.array(model.anchor) + np.array(model.shift()) - 8.0
+    t = HALF_TURN @ (a @ off)
+    tr = nbt["transformation"]
+    kind = type(tr["scale"][0])
+    tr["left_rotation"] = [kind(v) for v in _quat_of(u)]
+    tr["right_rotation"] = [kind(v) for v in _quat_of(vt)]
+    tr["scale"] = [kind(v) for v in s]
+    tr["translation"] = [kind(-v) for v in t]
+    return nbt
+
+
+def _shown(nbt):
+    """A display's NBT read back the way the engine reads it (DisplayRenderer and the item renderer;
+    artkit.gamescene does the same): the matrix that takes the coordinates of the exported model to
+    blocks in the scene, and where the exported model's origin lands, from the entity."""
+    tr = nbt["transformation"]
+    yaw = math.radians(float(nbt["Rotation"][0]))
+    turn = np.array([[math.cos(yaw), 0.0, -math.sin(yaw)], [0.0, 1.0, 0.0], [math.sin(yaw), 0.0, math.cos(yaw)]])
+    a = turn @ _matrix(tr["left_rotation"]) @ np.diag([float(v) for v in tr["scale"]]) \
+        @ _matrix(tr["right_rotation"]) @ HALF_TURN / 16.0
+    return a, turn @ np.array([float(v) for v in tr["translation"]]) - a @ np.full(3, 8.0)
+
+
 class _Draw:
     """A model drawn in blocks. artkit's unit is 1/16 block of a model shown at scale 1; a model
-    shown at scale s is drawn s times smaller with s texels to the unit, 16 px to the block."""
+    shown at scale s is drawn s times smaller with s texels to the unit, 16 px to the block.
 
-    def __init__(self, name, scale=1.0):
+    With a `frame` the model is one of those that are shown turned or leant over: it is made of
+    face() calls alone, and `lit` keeps the share of its tone each face is left with."""
+
+    def __init__(self, name, scale=1.0, frame=None, spins=False):
         self.scale = float(scale)
         self.u = 16.0 / self.scale
         self.m = M.Model(PREFIX + name, px=self.scale)
+        self.g = None if frame is None else np.asarray(frame, dtype=float)
+        self.spins = spins
+        self.lit = []
+
+    def display(self, yaw=0.0):
+        if self.g is None:
+            return M.display(self.m, yaw=yaw, scale=self.scale)
+        return _display(self.m, self.g, self.scale, yaw)
+
+    def points(self, step):
+        """Points over the model's faces, `step` apart, in blocks from the anchor along the axes of
+        a plain model of the same part (the display's yaw is still to come)."""
+        if self.g is None:
+            return _surface(self.m, self.scale, step)
+        stretch = float(np.linalg.svd(self.g, compute_uv=False)[0])
+        return _surface(self.m, self.scale, step / stretch) @ self.g.T
+
+    def face(self, centre, normal, across, w, h, mat, lap=LAP, **kw):
+        """One face and nothing behind it: a rectangle `w` along `across` and `h` the other way,
+        its middle at `centre`, looking along `normal`; all as it is to stand in the scene, in
+        blocks from the anchor. In a frame it is drawn where the frame's display takes it from."""
+        g = np.eye(3) if self.g is None else self.g
+        n = np.asarray(normal, dtype=float)
+        ax = np.asarray(across, dtype=float)
+        n, ax = n / np.linalg.norm(n), ax / np.linalg.norm(ax)
+        au, av = np.linalg.solve(g, ax), np.linalg.solve(g, np.cross(n, ax))
+        lu, lv = float(np.linalg.norm(au)), float(np.linalg.norm(av))
+        if abs(float(au @ av)) > 1e-9 * lu * lv:
+            raise ValueError(f"{self.m.name}: this frame skews a face that looks along {tuple(normal)}")
+        y = g.T @ n
+        y = y / np.linalg.norm(y)
+        x = au / lu
+        r = np.column_stack([x, y, np.cross(x, y)])                 # the box's own axes in the model
+        if abs(r[2, 0]) > 1.0 - 1e-9:
+            turn = (math.atan2(-r[1, 2], r[1, 1]), -math.copysign(math.pi / 2.0, r[2, 0]), 0.0)
+        else:
+            turn = (math.atan2(r[2, 1], r[2, 2]), -math.asin(r[2, 0]), math.atan2(r[1, 0], r[0, 0]))
+        c = np.linalg.solve(g, np.asarray(centre, dtype=float)) * self.u
+        half = np.array([(w / 2.0 + lap) * lu, 0.0, (h / 2.0 + lap) * lv]) * self.u
+        self.m.box(tuple(c - half - (0.0, SKIN * self.u, 0.0)), tuple(c + half), mat,
+                   rot=("xyz", tuple(math.degrees(v) for v in turn), tuple(c)), skip="nsewd", **kw)
+        self.lit.append((brightness(g, n, self.spins), _filed(g, n)[1]))
 
     def _v(self, p):
         return tuple(v * self.u for v in p)
@@ -248,11 +429,13 @@ class _Draw:
             kw["bore"] *= self.u
         return gear(self.m, (c[0] * self.u, c[1] * self.u), y0 * self.u, y1 * self.u, teeth, body, unit=self.u, **kw)
 
-    def orb(self, centre, radius, bands, sides=10, toward=None):
+    def orb(self, centre, radius, bands, sides=10, toward=None, under=None):
         """A ball in bands of flat tone, bands = [(from, to, layers, material)] as in Model.ball. It
         is lit by the sun and by nothing else: the half that looks at `toward` (left out, the
         model's origin, where the sun is) is a step lighter, the half that looks away a step darker.
-        A planet on the far side of the sun shows the door its day, one on the near side its night."""
+        A planet on the far side of the sun shows the door its day, one on the near side its night.
+        With `under`, a model in the frame _leant(), the ledges that look down are drawn there, and
+        the ledges no eye can reach are left out."""
         c = self._v(centre)
         r = radius * self.u
         toward = toward or tuple(-v for v in centre)
@@ -271,13 +454,22 @@ class _Draw:
                     continue
                 lo = (c[0] - r * slope * hw, c[1] + r * a0, c[2] - r * slope)
                 hi = (c[0] + r * slope * hw, c[1] + r * a1, c[2] + r * slope)
+                # the ball widens towards its middle: below it a layer's underside shows and its top
+                # is inside the next layer, above it the other way round
+                skip = "ew" if under is None else "ewd" if tm < 1e-9 else "ew"
+                if under is not None and abs(tm) > 1e-9:
+                    skip += "u" if tm < 0.0 else "d"
                 for s in range(sides // 2):
                     ang = math.radians(360.0 * s / sides)
                     faces = {"u": _tone(mat, (0.0, 1.0, 0.0), toward), "d": _tone(mat, (0.0, -1.0, 0.0), toward)}
                     for letter, nz in (("n", -slope), ("s", slope)):
                         faces[letter] = _tone(mat, (nz * math.sin(ang), tm, nz * math.cos(ang)), toward)
-                    self.m.box(lo, hi, mat, rot=("y", math.degrees(ang), c) if s else None, skip="ew",
+                    self.m.box(lo, hi, mat, rot=("y", math.degrees(ang), c) if s else None, skip=skip,
                                faces=faces, seed=seed, grain="x")
+                    if under is not None and tm < 1e-9:
+                        under.face((centre[0], centre[1] + radius * a0, centre[2]), (0.0, -1.0, 0.0),
+                                   (math.cos(ang), 0.0, -math.sin(ang)), 2.0 * radius * slope * hw,
+                                   2.0 * radius * slope, faces["d"], seed=1, grain="x")
 
 
 # --- the combined pieces (gear, graduated circle): written here, imported by other machines -------
@@ -395,23 +587,49 @@ def _column():
     return d
 
 
+SUN_SIDES = 12
+# the globe's layers from the lowest up, as steps of the glow ramp: the hot belt lies low, where the
+# door looks at the globe from 36 degrees under it, the foot and the shoulders are amber, the crown
+# goes dim into its holder
+SUN_TONES = (2, 3, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 0)
+
+
 def _sun():
-    """The sun: an opal lamp globe hung on the stay rod. Only the glass glows (emit, no face
-    shading: its light and dark are painted as bands, the hot belt low on the globe, where the door
-    and the floor look at it, the crown dim); the light it casts is the source build() offers. A
-    brass holder grips its crown, a small finial closes it below. Anchor: the centre of the globe.
-    Shown at scale 1."""
+    """The sun: an opal lamp globe hung on the stay rod. Only the glass glows, and it glows the
+    same from every side and from below: its sides are drawn in two models stood on a corner, its
+    ledges that look down in a model leant over, so the engine leaves each face its whole tone, and
+    the light and dark of the globe is what is painted, in bands. The light it casts is the source
+    build() offers. A brass holder grips its crown, a small finial closes it below. Anchor: the
+    centre of the globe. Shown at scale 1. Returns the four models: the fittings with the ledges
+    that look up, the two of the sides, the one of the underside."""
     d = _Draw("sun", 1.0)
-    r = SUN_R
-    bands = [(-1.0, -0.8, 1, GLOW[2]), (-0.8, -0.2, 3, GLOW[3]), (-0.2, 0.4, 3, GLOW[2]),
-             (0.4, 0.8, 2, GLOW[1]), (0.8, 1.0, 1, GLOW[0])]
-    K.glass_ball(d.m, (0.0, 0.0, 0.0), r * d.u, bands, sides=12)
+    sides = [_Draw(f"sun_side{i}", 1.0, frame=_corner(15.0 + 60.0 * i)) for i in (0, 1)]
+    under = _Draw("sun_under", 1.0, frame=_leant())
+    r, n = SUN_R, len(SUN_TONES)
+    hw = math.tan(math.pi / SUN_SIDES)
+    for i, tone in enumerate(SUN_TONES):
+        t0, t1 = -1.0 + 2.0 * i / n, -1.0 + 2.0 * (i + 1) / n
+        rr = r * math.sqrt(1.0 - ((t0 + t1) / 2.0) ** 2)
+        look = dict(emit=15, seed=1, grain="x")
+        for k in range(SUN_SIDES):
+            a = math.radians(360.0 * k / SUN_SIDES)
+            out = (math.cos(a), 0.0, math.sin(a))
+            best = max(sides, key=lambda f: brightness(f.g, out))
+            best.face((rr * out[0], r * (t0 + t1) / 2.0, rr * out[2]), out, (-out[2], 0.0, out[0]),
+                      2.0 * rr * hw, r * (t1 - t0), GLOW[tone], **look)
+        for k in range(SUN_SIDES // 2):                 # the ledge to the next layer: strips that cross
+            a = math.radians(360.0 * k / SUN_SIDES)
+            across = (math.cos(a), 0.0, math.sin(a))
+            if t0 + t1 < 0.0:
+                under.face((0.0, r * t0, 0.0), (0.0, -1.0, 0.0), across, 2.0 * rr * hw, 2.0 * rr, GLOW[tone], **look)
+            else:
+                d.face((0.0, r * t1, 0.0), (0.0, 1.0, 0.0), across, 2.0 * rr * hw, 2.0 * rr, GLOW[tone], **look)
     d.tube("y", (0, 0), 0.70 * r, 0.70 * r + 0.08, 0.74 * r, BRASS_D, sides=12)        # the holder's rim
     d.taper("y", (0, 0), 0.70 * r + 0.08, r + 0.10, 0.62 * r, 0.13, BRASS, sides=12, steps=3)
     d.tube("y", (0, 0), r + 0.10, ARM["mercury"], 0.09, BRASS_D, sides=8)              # up to Mercury's collet
     d.tube("y", (0, 0), -r - 0.07, -r + 0.02, 0.10, BRASS_D, sides=8)                  # the finial
     d.tube("y", (0, 0), -r - 0.14, -r - 0.07, 0.0625, BRASS, sides=6)
-    return d
+    return [d] + sides + [under]
 
 
 # --- the arms (both versions) ---------------------------------------------------------------------
@@ -419,54 +637,72 @@ def _flat(name, step):
     return K.flat(name, step)
 
 
-def _planet(d, key, at):
-    """The ball of one planet at `at`, and what marks it out."""
+def _planet(d, key, at, under):
+    """The ball of one planet at `at`, and what marks it out; its underside goes to `under`."""
     r = BALL[key]
     if key == "mercury":
-        d.orb(at, r, [(-1.0, 1.0, 3, _flat("iron", 5))])
+        d.orb(at, r, [(-1.0, 1.0, 3, _flat("iron", 6))], under=under)
     elif key == "venus":
-        d.orb(at, r, [(-1.0, 1.0, 4, _flat("porcelain", 3))])
+        d.orb(at, r, [(-1.0, 1.0, 4, _flat("porcelain", 3))], under=under)
     elif key == "earth":
         d.orb(at, r, [(-1.0, -0.7, 1, _flat("porcelain", 3)), (-0.7, 0.7, 4, _flat("verdigris", 2)),
-                      (0.7, 1.0, 1, _flat("porcelain", 3))], sides=10)
+                      (0.7, 1.0, 1, _flat("porcelain", 3))], sides=10, under=under)
     elif key == "mars":
-        d.orb(at, r, [(-1.0, 0.5, 3, _flat("old_copper", 2)), (0.5, 1.0, 1, _flat("porcelain", 3))])
+        d.orb(at, r, [(-1.0, 0.5, 3, _flat("old_copper", 2)), (0.5, 1.0, 1, _flat("porcelain", 3))], under=under)
     elif key == "jupiter":
         belt, zone = _flat("old_copper", 1), _flat("brass", 4)
         d.orb(at, r, [(-1.0, -0.75, 1, belt), (-0.75, -0.5, 1, _flat("brass", 3)), (-0.5, -0.25, 1, belt),
                       (-0.25, 0.25, 2, zone), (0.25, 0.5, 1, belt), (0.5, 0.75, 1, _flat("brass", 3)),
-                      (0.75, 1.0, 1, belt)], sides=12)
+                      (0.75, 1.0, 1, belt)], sides=12, under=under)
     elif key == "saturn":
         d.orb(at, r, [(-1.0, -0.2, 2, _flat("cream", 2)), (-0.2, 0.2, 1, _flat("cream", 1)),
-                      (0.2, 1.0, 2, _flat("cream", 2))], sides=10)
+                      (0.2, 1.0, 2, _flat("cream", 2))], sides=10, under=under)
         r0, r1 = SATURN_RING
         with d.turned(("x", 22.0), ("z", 6.0), about=at):                      # the ring, tilted
             d.ring("y", at, (r0 + r1) / 2.0, r1 - r0, PX, BRASS_L, sides=18)
 
 
-def _moon(d, version, r, level):
+def _moon(d, version, r, level, under):
     """The Earth's moon. Where the Earth carries its hoop the moon hangs from the hoop a little way
     on; where it does not, on a wire from the Earth's seat."""
     earth = BALL["earth"]
     if version == "a":
         a = math.radians(16.0)
         x, z = r * math.cos(a), r * math.sin(a)
-        d.orb((x, HANG - MOON, z), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-x, 0.25, -z))
+        d.orb((x, HANG - MOON, z), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-x, 0.25, -z), under=under)
         d.tube("y", (x, z), HANG - 0.01, -HOOP / 2.0, PX / 2.0, BRASS_D, sides=4)
     else:
         off, y = 0.30, level + 0.05
         top = level + earth + 0.04
-        d.orb((r, y, off), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-r, -level, 0.0))
+        d.orb((r, y, off), MOON, [(-1.0, 1.0, 2, _flat("porcelain", 2))], sides=6, toward=(-r, -level, 0.0), under=under)
         d.box((r - PX / 2, top, 0.0), (r + PX / 2, top + PX, off + PX / 2), BRASS_D)
         d.box((r - PX / 2, y + MOON - 0.01, off - PX / 2), (r + PX / 2, top + PX, off + PX / 2), BRASS_D)
+
+
+def _level_ring(d, under, radius, thick, width, mat, sides, y=0.0):
+    """A level ring about the model's axis, as d.ring draws it, with its underside in `under`."""
+    first = len(d.m.parts)
+    d.ring("y", (0.0, y, 0.0), radius, thick, width, mat, sides=sides)
+    for part in d.m.parts[first:]:
+        part["skip"].add("d")
+    tone = M._shade(mat, (0.0, -1.0, 0.0), "along")
+    half = (radius + thick / 2.0) * math.tan(math.pi / sides)
+    for s in range(sides):
+        a = math.radians(360.0 * s / sides)
+        out = (math.cos(a), 0.0, -math.sin(a))
+        under.face((radius * out[0], y - width / 2.0, radius * out[2]), (0.0, -1.0, 0.0), out, thick, 2.0 * half,
+                   tone, seed=2, grain="z")
 
 
 def _arm(version, key):
     """One planet and all that turns with it, as one model: the sleeve with its wheel (version a;
     in b the wheel is inside the drum), the arm at the sleeve's lower end, the rod the planet hangs
     on, the planet, and in version a the hoop of its orbit if it carries one. The anchor is the
-    centre, in the ring plane; the arm runs out along +x. Shown at scale 2."""
+    centre, in the ring plane; the arm runs out along +x. Shown at scale 2. With it comes a second
+    model that stands on the same spot and turns with it: the undersides of the planet and of the
+    hoop, leant over so that they are lit (see _leant)."""
     d = _Draw(f"{version}_arm_{key}", 2.0)
+    under = _Draw(f"{version}_under_{key}", 2.0, frame=_leant(), spins=True)
     r, level, ya, rs, ball = ORBIT[version][key], LEVEL[version][key], ARM[key], SLEEVE[key], BALL[key]
     collet = rs + 1.5 * PX
     top = level + ball
@@ -493,15 +729,15 @@ def _arm(version, key):
     # the rod and the planet's seat
     d.tube("y", (r, 0), top - 0.02, ya - PX, ROD, BRASS, sides=8)
     d.tube("y", (r, 0), top - 0.03, top + 0.035, min(0.09, ball * 0.72), BRASS_D, sides=8)
-    _planet(d, key, (r, level, 0.0))
+    _planet(d, key, (r, level, 0.0), under)
     if key == "earth":
-        _moon(d, version, r, level)
+        _moon(d, version, r, level, under)
 
     # the hoop of its orbit, in the ring plane, clamped to the rod
     if version == "a" and key in HOOPS:
-        d.ring("y", (0.0, 0.0, 0.0), r, HOOP, HOOP, COPPER, sides=2 * int(round(math.pi * r / 0.2)))
+        _level_ring(d, under, r, HOOP, HOOP, COPPER, 2 * int(round(math.pi * r / 0.2)))
         d.box((r - 1.25 * PX, -1.5 * PX, -1.5 * PX), (r + 1.25 * PX, 1.5 * PX, 1.5 * PX), BRASS_D)
-    return d
+    return [d, under]
 
 
 # --- version a: planar, the works open ------------------------------------------------------------
@@ -579,24 +815,27 @@ def _lay_a():
 
 
 # --- version b: tiered, armillary, the works shut ----------------------------------------------------
-RIB_R = 2.40                             # the ribs of the cradle meet the equator ring here
+RIB_R = 2.40                             # the stays of the cradle meet the equator ring here
 
 
 def _rib(rho):
-    """The height of a rib of the cradle at radius rho, from the boss under the sun out to the ring."""
+    """The height of a stay of the cradle at radius rho, from the boss under the sun out to the ring."""
     return -(SUN_R + 0.24) + (SUN_R + 0.14) * (rho / RIB_R) ** 2
 
 
 def _rings_b():
     """The cradle and its two rings: a boss under the sun (on the stay rod, which goes on through
-    the globe), three brass ribs that rise outward from it like the ribs of a shallow bowl, the
-    level equator ring they carry, graduated, and the broad ecliptic band with its twelve signs,
-    tilted twenty degrees and pinned to the equator at the two nodes. Anchor: the centre, in the
-    ring plane. Shown at scale 2."""
+    the globe), three thin iron stays that rise outward from it like the ribs of a shallow bowl
+    (dark and thin: from below they are not to be the first thing read, cr3 #63115), the level
+    equator ring they carry, its scale a row of short marks between two lips, and the broad
+    ecliptic band with its twelve signs, tilted twenty degrees and pinned to the equator at the two
+    nodes. Anchor: the centre, in the ring plane. Shown at scale 2."""
     d = _Draw("b_rings", 2.0)
     e0, e1 = EQUATOR
     d.ring("y", (0, 0, 0), e0 + PX / 2.0, PX, 3 * PX, BRASS_L, sides=72)
-    grad_circle(d.m, "y", (0, 0, 0), (e1 - PX / 2.0) * d.u, PX * d.u, 3 * PX * d.u, BRASS, marks=60)
+    for y in (-PX, PX):
+        d.ring("y", (0, y, 0), e1 - PX / 2.0, PX, PX, BRASS, sides=72)
+    grad_circle(d.m, "y", (0, 0, 0), (e1 - PX / 2.0) * d.u, PX * d.u, PX * d.u, BRASS, marks=60)
     ec = ECLIPTIC
     with d.turned(("x", ec["tilt"]), about=(0, 0, 0)):                          # the north side up
         d.ring("y", (0, 0, 0), ec["radius"], ec["thick"], ec["width"], BRASS, sides=72)
@@ -612,11 +851,14 @@ def _rings_b():
     d.tube("y", (0, 0), y0 - 0.20, y0 - 0.14, 0.10, BRASS, sides=8)
     d.tube("y", (0, 0), y0 - 0.26, y0 - 0.20, 0.0625, BRASS_L, sides=6)
     n = 9
+    stay = IRON_D.variant(0, "along")                                           # one tone from end to end
+    d.m._n += 1
+    seed = d.m._n
     for a in STAYS:
         dx, dz = math.cos(math.radians(a)), math.sin(math.radians(a))
         for i in range(n):
             p0, p1 = 0.10 + (RIB_R - 0.10) * i / n, 0.10 + (RIB_R - 0.10) * (i + 1) / n
-            d.beam((p0 * dx, _rib(p0), p0 * dz), (p1 * dx, _rib(p1), p1 * dz), 2 * PX, 3 * PX, BRASS)
+            d.beam((p0 * dx, _rib(p0), p0 * dz), (p1 * dx, _rib(p1), p1 * dz), 2 * PX, 2 * PX, stay, seed=seed)
         d.tube("y", (RIB_R * dx, RIB_R * dz), _rib(RIB_R) - 2 * PX, 1.5 * PX, 0.09, BRASS_D, sides=8)
     return d
 
@@ -644,8 +886,11 @@ def _drum_b():
 def _drawn():
     out = {}
     with _lit_from_below():
-        for d in [_hub(), _column(), _sun(), _band_a(), _cage_a(), _lay_a(), _rings_b(), _drum_b()] \
-                + [_arm(v, key) for v in ("a", "b") for key in PLANETS]:
+        made = [_hub(), _column(), *_sun(), _band_a(), _cage_a(), _lay_a(), _rings_b(), _drum_b()]
+        for v in ("a", "b"):
+            for key in PLANETS:
+                made += _arm(v, key)
+        for d in made:
             out[d.m.name] = d
     return out
 
@@ -667,15 +912,18 @@ def _lay_at():
 
 def placing(version=VERSION):
     """Where every model of one version stands: [(model name, (x, y, z), yaw)], scene coordinates
-    without an origin. The first three are the same in both versions."""
+    without an origin. The first six are the same in both versions: the hub, the column and the
+    four models of the sun. Each arm is followed by the model of its undersides, on the same spot."""
     v, at = version, (CX, RING_Y, CZ)
     out = [("hub", (CX, HANG_Y - K.NUDGE, CZ), 0.0),             # in the air cell under the ceiling
-           ("column", (CX, COLUMN_AT, CZ), 0.0), ("sun", at, 0.0)]
+           ("column", (CX, COLUMN_AT, CZ), 0.0)]
+    out += [(name, at, 0.0) for name in ("sun", "sun_side0", "sun_side1", "sun_under")]
     if v == "a":
         out += [("a_band", at, 0.0), ("a_cage", at, LAY_YAW), ("a_lay", _lay_at(), 0.0)]
     else:
         out += [("b_rings", at, 0.0), ("b_drum", at, 0.0)]
-    out += [(f"{v}_arm_{key}", at, POSE[key]) for key in PLANETS]
+    for key in PLANETS:
+        out += [(f"{v}_arm_{key}", at, POSE[key]), (f"{v}_under_{key}", at, POSE[key])]
     return [(PREFIX + name, pos, yaw) for name, pos, yaw in out]
 
 
@@ -683,9 +931,11 @@ def moving(version=VERSION):
     """What turns, for the motion line: [dict(model, at, period, sense)]. `at` is the entity's place
     (scene coordinates without an origin), which is on the part's vertical axis; period is the ticks
     for one turn; sense is +1 for the way the planets go round (seen from above against the clock:
-    the yaw of the display falls) and -1 for the lay shaft, which the wheels turn the other way."""
+    the yaw of the display falls) and -1 for the lay shaft, which the wheels turn the other way.
+    An arm and the model of its undersides are two entities on one spot that turn as one."""
     at = (CX, RING_Y, CZ)
-    out = [dict(model=PREFIX + f"{version}_arm_{key}", at=at, period=PERIOD[key], sense=1) for key in PLANETS]
+    out = [dict(model=PREFIX + f"{version}_{part}_{key}", at=at, period=PERIOD[key], sense=1)
+           for key in PLANETS for part in ("arm", "under")]
     if version == "a":
         out.append(dict(model=PREFIX + "a_lay", at=_lay_at(), period=LAY_TURN, sense=-1))
     return out
@@ -698,7 +948,7 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
     n = 0
     for name, pos, yaw in placing(version):
         x, y, z = (pos[i] + origin[i] for i in range(3))
-        canvas.add_entity(x, y, z, M.display(drawn[name].m, yaw=yaw, scale=drawn[name].scale))
+        canvas.add_entity(x, y, z, drawn[name].display(yaw))
         n += 1
     cell = (int(CX + origin[0]), int(RING_Y + origin[1]), int(CZ + origin[2]))
     K.offer_lights(canvas, [(cell, SUN_LIGHT)], f"machines/orrery:{version}")
@@ -749,8 +999,7 @@ def sweep(name, pos, moves):
     """What a model standing at `pos` sweeps as it turns about the machine's axis, below the works:
     a grid of cells (rho from the axis, y from 1.2 under the ring plane), true where it touches.
     For a part that turns only what lies outside the nest of sleeves is kept."""
-    d = _drawn()[name]
-    pts = _surface(d.m, d.scale)
+    pts = _drawn()[name].points(CELL)
     rho = np.hypot(pts[:, 0] + pos[0] - CX, pts[:, 2] + pos[2] - CZ)
     y = pts[:, 1] + pos[1] - RING_Y
     keep = (y < MOVE_Y0) & (y > -1.2) & (rho < R + 0.3)
@@ -780,15 +1029,17 @@ def clearances(version=VERSION):
     """The least distance in blocks between what one turning part sweeps and what every other part
     sweeps or stands in, below the works and outside the nest of sleeves: [(gap, part, other)],
     the tightest first, gaps measured up to REACH cells. Two parts that turn at different rates
-    meet sooner or later at every angle, so a gap of nothing here is a planet going through a rod."""
-    grids, near = {}, {}
+    meet sooner or later at every angle, so a gap of nothing here is a planet going through a rod.
+    The models of the sun count as one part, and so do an arm and the model of its undersides."""
+    grids = {}
     for name, pos, _yaw in placing(version):
         short = name[len(PREFIX):]
         if short in ("hub", "column", "a_cage", "a_lay", "b_drum"):
             continue
-        grids[short] = sweep(name, pos, "arm_" in short)
-        if "arm_" in short:
-            near[short] = _near(grids[short])
+        whole = "sun" if short.startswith("sun_") else short.replace("_under_", "_arm_")
+        grid = sweep(name, pos, "arm_" in whole)
+        grids[whole] = grids[whole] | grid if whole in grids else grid
+    near = {short: _near(grid) for short, grid in grids.items() if "arm_" in short}
     out = []
     names = sorted(grids)
     for a in sorted(near):
@@ -804,8 +1055,7 @@ def lowest(version=VERSION):
     """The lowest point of a version, as a height in the scene."""
     low = 1e9
     for name, pos, _yaw in placing(version):
-        d = _drawn()[name]
-        low = min(low, float(_surface(d.m, d.scale, PX)[:, 1].min()) + pos[1])
+        low = min(low, float(_drawn()[name].points(PX)[:, 1].min()) + pos[1])
     return low
 
 
@@ -813,8 +1063,7 @@ def widest(version=VERSION):
     """The farthest any part of a version reaches from the axis, in blocks."""
     far = 0.0
     for name, pos, yaw in placing(version):
-        d = _drawn()[name]
-        pts = _surface(d.m, d.scale, PX)
+        pts = _drawn()[name].points(PX)
         off = K.turn(yaw, (1.0, 0.0, 0.0))
         x = pts[:, 0] * off[0] - pts[:, 2] * off[2] + pos[0] - CX
         z = pts[:, 0] * off[2] + pts[:, 2] * off[0] + pos[2] - CZ
@@ -822,8 +1071,29 @@ def widest(version=VERSION):
     return far
 
 
+def _display_error(d, yaw):
+    """How far a model's display is from what it is meant to show, in blocks: its matrix, read back
+    as the engine reads it, against the frame (over a block of the model), and where the anchor
+    lands against the entity."""
+    a, off = _shown(d.display(yaw))
+    r = math.radians(yaw)
+    turn = np.array([[math.cos(r), 0.0, -math.sin(r)], [0.0, 1.0, 0.0], [math.sin(r), 0.0, math.cos(r)]])
+    want = turn @ (np.eye(3) if d.g is None else d.g) * (d.scale / 16.0)
+    anchor = off + a @ (np.array(d.m.anchor) + np.array(d.m.shift()))
+    return max(float(np.abs(a - want).max()) * 16.0 / d.scale, float(np.abs(anchor).max()))
+
+
 def _report():
     ok = True
+    drawn = _drawn()
+    framed = [d for d in drawn.values() if d.lit]
+    dull = min(b for d in framed for b, _sure in d.lit)
+    sure = min(s for d in framed for _b, s in d.lit)
+    off = max(_display_error(drawn[name], yaw) for v in ("a", "b") for name, _pos, yaw in placing(v))
+    ok = dull >= LIT and sure >= SURE and off < 1e-6
+    print(f"faces lit as if they looked up: {sum(len(d.lit) for d in framed)} in {len(framed)} models; the dullest keeps "
+          f"{dull:.3f} of its tone (limit {LIT}), the axis a face is filed under wins by {sure:.2f} at least "
+          f"(limit {SURE}); the displays are off by {off:.1e} blocks at most")
     for v in ("a", "b"):
         gaps = clearances(v)
         low, far = lowest(v), widest(v)
