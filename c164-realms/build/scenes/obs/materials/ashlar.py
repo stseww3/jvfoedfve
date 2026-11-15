@@ -55,6 +55,9 @@ VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
 STONE = 3           # the tone of a stone of the fine face, every one of them; its arris is a step lighter
 GROOVES = (2, 5, 8, 11)     # the rows of the rough stone's tool marks: a groove, its lit lip the row below
+ENDS = 3            # the variants of a stone's end; the game mixes them by position
+FLECKS = (8, 20)    # the flecks on an end: so many of the rarer tone, so many of the commoner
+CHOICE = 4          # the places drawn for a fleck; it takes the freest of them
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
 STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
 
@@ -208,19 +211,71 @@ def _rough_band(variant):
     return px
 
 
-def _rough_top(seed):
-    """ASHLAR_ROUGH end: the bed of the rough stone, a weak horizontal layering over base A2, with
-    no hard joint ring so that a run of them does not grid."""
+def _touching(a, b=None, dx=0, dy=0):
+    """Does a fleck of the end `a` touch one of `b`, corners counted? `a` and `b` are the flecks of
+    two ends, True where one is; `b` lies dx blocks to the right of `a` and dy below it (1 or 0).
+    With no `b`: do two flecks of `a` itself touch?"""
+    if b is None:
+        return bool((a[:, :-1] & a[:, 1:]).any() or (a[:-1] & a[1:]).any()
+                    or (a[:-1, :-1] & a[1:, 1:]).any() or (a[:-1, 1:] & a[1:, :-1]).any())
+    ya, xa = np.nonzero(a)
+    yb, xb = np.nonzero(b)
+    xb, yb = xb + dx * TILE, yb + dy * TILE
+    return bool(((abs(xa[:, None] - xb[None, :]) <= 1) & (abs(ya[:, None] - yb[None, :]) <= 1)).any())
+
+
+def _ends(seed, base, most):
+    """The ENDS variants of the end of a stone -- its bed and its top: a tread, a coping, a kerb, a
+    flag of a terrace, a soffit. Flat, the tone `base`, with single pixels a step from it: twenty of
+    the tone `most` to a block and eight of the tone on the other side of the base. No joint at all.
+
+    No fleck touches another, corners counted -- in a block, or across its edge or its corner into
+    the next, whichever variants meet there: two that touch are a blot from close by, and a row of
+    them is a seam. Each goes to the freest of a few places drawn by chance, so they spread over
+    the block without standing in rows; and an end has variants, as a side has, so that the same
+    few flecks do not come round at every block of a terrace.
+
+    The first drawing gave either stone one picture. Laid as a field (the board's paved station;
+    the site paves its terrace and lines its kerbs with these blocks), the fine end showed its one
+    streak of flecks at every block, a lattice from above; the rough end, a third of it fleck with
+    two broken bedding seams, read as stained, and its seams came round as a weave."""
     rng = np.random.default_rng(seed)
-    px = _fill(2)
-    m = rng.random((TILE, TILE))
-    px[m < 0.14, :3] = _a(1)
-    px[m > 0.86, :3] = _a(3)
-    for y in (5, 11):                             # two broken bedding seams
-        for x in range(TILE):
-            if rng.random() < 0.55:
-                px[y, x, :3] = _a(1)
-    return px
+    rim = np.zeros((TILE, TILE), dtype=bool)      # the flecks of all the variants that lie on an edge
+    at = np.arange(TILE)
+
+    def far(flecks, x, y):
+        """The square of the distance from (x, y) to the nearest fleck, round the block's edges."""
+        ys, xs = np.nonzero(flecks)
+        if not len(xs):
+            return 4 * TILE * TILE
+        dx, dy = abs(xs - x), abs(ys - y)
+        return int((np.minimum(dx, TILE - dx) ** 2 + np.minimum(dy, TILE - dy) ** 2).min())
+
+    def clear(flecks, x, y):
+        """No fleck at (x, y) or beside it, round the block's edges."""
+        return not flecks[np.ix_(at[[y - 1, y, (y + 1) % TILE]], at[[x - 1, x, (x + 1) % TILE]])].any()
+
+    out = []
+    for _ in range(ENDS):
+        px, own = _fill(base), np.zeros((TILE, TILE), dtype=bool)
+        for tone, count in zip((2 * base - most, most), FLECKS):
+            for _ in range(count):
+                found = []
+                for _ in range(TILE ** 3):
+                    x, y = (int(v) for v in rng.integers(0, TILE, 2))
+                    edge = x in (0, TILE - 1) or y in (0, TILE - 1)
+                    if clear(own, x, y) and (not edge or clear(rim, x, y)):
+                        found.append((far(own, x, y), x, y))
+                        if len(found) == CHOICE:
+                            break
+                if not found:
+                    raise AssertionError("no room left on an end for a fleck that touches no other")
+                _, x, y = max(found)
+                own[y, x] = True
+                rim[y, x] = x in (0, TILE - 1) or y in (0, TILE - 1)
+                px[y, x, :3] = _a(tone)
+        out.append(px)
+    return out
 
 
 # ============================================================ the fine stone and its ends ===
@@ -282,23 +337,26 @@ def _fine(variant):
     return px
 
 
-def _fine_top(seed):
+def _fine_top():
     """ASHLAR_FINE end (and the panel/emblem ends): flat dressed stone, base A3 with a faint fleck
-    of tooling and no joint at all -- a tread, a coping or a soffit carries no seam. About one
-    pixel in sixteen is a step lighter and one in twenty-five a step darker: with a fifth of it
-    lighter a coping read as pitted from close by (c219's pre-review).
+    of tooling and no joint at all -- a tread, a coping or a soffit carries no seam. Twenty pixels
+    of a block are a step lighter and eight a step darker: with a fifth of it lighter a coping read
+    as pitted from close by (c219's pre-review).
 
     materials.md section 3 first worded this picture "flat, base A3, a shallow joint". The joint
     is left out on purpose: the card and c190's point 1 forbid a joint on a tread, and stairs keep
     the attitude of their pictures when they are turned (uvlock), so a joint drawn along one edge
     of this picture would lie along the nosing of a flight that climbs north and across the tread
     of one that climbs east."""
-    rng = np.random.default_rng(seed)
-    px = _fill(3)
-    m = rng.random((TILE, TILE))
-    px[m < 0.04, :3] = _a(2)
-    px[m > 0.94, :3] = _a(4)
-    return px
+    return _ends(30, 3, 4)
+
+
+def _rough_top():
+    """ASHLAR_ROUGH end: the bed of the rough stone, the same stone a step darker, base A2, and
+    the fine end's fleck the other way round: twenty pixels of a block a step darker, pits, and
+    eight a step lighter. The top of a kerb or a pier, the tread of a stair cheek, the soffit of
+    an arch stone."""
+    return _ends(10, 2, 1)
 
 
 def _panel():
@@ -351,9 +409,9 @@ def textures(version=DEFAULT):
     rough = _rough_ring if version == "a" else _rough_band
     return {
         "ashlar_rough": [rough(v) for v in range(len(_BARE))],
-        "ashlar_rough_top": _rough_top(10),
+        "ashlar_rough_top": _rough_top(),
         "ashlar_fine": [_fine(v) for v in range(len(_FINE))],
-        "ashlar_fine_top": _fine_top(30),
+        "ashlar_fine_top": _fine_top(),
         "ashlar_panel": _panel(),
         "ashlar_emblem": _emblem(),
     }
@@ -451,7 +509,10 @@ def faults(pictures, version=DEFAULT):
                      tone can only be a short one, and those are dots on a wall;
       - the ends     no joint on the fine end, and no joint from side to side of the rough one: a
                      tread, a coping, a soffit carry none (c190's point 1); the lighter fleck of the
-                     fine end is no more than a tenth of it;
+                     fine end is no more than a tenth of it; either end is its base tone with single
+                     pixels a step from it, an eighth of it at the most, and no two of them touch --
+                     in a block, or across its edge or its corner, whichever variants meet there;
+                     and an end has variants, or a field of it shows the same flecks at every block;
       - the panel    one size of sunk field: were it given variants, their bevels and the walls of
                      the field would stand at the same pixels;
       - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), inside
@@ -582,6 +643,21 @@ def faults(pictures, version=DEFAULT):
     for i, s in enumerate(many("ashlar_rough_top")):
         if (s <= 1).all(axis=1).any() or (s <= 1).all(axis=0).any():
             out.append(f"ashlar_rough_top{i}: a joint from side to side on the end of the rough stone")
+    for name, base in (("ashlar_fine_top", 3), ("ashlar_rough_top", 2)):
+        ends = many(name)
+        flecks = [s != base for s in ends]
+        if len(ends) < 2:
+            out.append(f"{name}: one picture; laid as a field its flecks come round at every block")
+        for i, (s, f) in enumerate(zip(ends, flecks)):
+            if (abs(s - base) > 1).any():
+                out.append(f"{name}{i}: a tone more than a step from A{base}")
+            if f.mean() > 0.125:
+                out.append(f"{name}{i}: more than an eighth of the end is fleck ({f.sum()} pixels)")
+            if _touching(f):
+                out.append(f"{name}{i}: two flecks touch: a blot from close by")
+            for j, g in enumerate(flecks):
+                if any(_touching(f, g, dx, dy) for dx, dy in ((1, 0), (0, 1), (1, 1), (1, -1))):
+                    out.append(f"{name}{i} and {name}{j} laid together: two flecks touch across the block's edge")
 
     panels = many("ashlar_panel")
     for i, s in enumerate(panels[1:], 1):
