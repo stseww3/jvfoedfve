@@ -47,7 +47,7 @@
 | car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
 | mast | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
 | arm | — | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
-| pipes | — | c241 | props/pipes | `cursor/c164-pipes-9deb` |
+| pipes | c263（m1 兼） | c241 | props/pipes | `cursor/c164-pipes-9deb` |
 | elec | — | c242 | props/electrics-signs | `cursor/c164-elec-7be8` |
 | instr | — | c199 | props/instruments | `cursor/c164-instr-f5da` |
 | a6 | c287 | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` |
