@@ -1,0 +1,22 @@
+a0job 1115-222716-snow-paper-f3-17de-10311: cursor/c164-snow-paper-f3-17de @ 3cb04190 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.81 1.87 1.85, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_paper --only star_charts,star_chart_near,sky_maps,wall_wood --out renders/_wip/p2 ---- exit 0, 15 s, last 20 lines of 12:
+  obs_props_paper: 873 blocks, 27 entities (0 s)
+  obs_props_paper: resource pack written to /tmp/c164pack-094bvh1f (1 s)
+  obs_props_paper: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_paper: grid 42 x 9 x 13, 873 blocks, 468 entity boxes (1 s)
+  obs_props_paper: 5 states -> 11 looks, 9 boxes, 26 pictures (1 s)
+  obs_props_paper: light done (1 s)
+  obs_props_paper: wall_wood (tick 14000, 4 s)
+  obs_props_paper: star_charts (tick 14000, 2 s)
+  obs_props_paper: star_chart_near (tick 14000, 2 s)
+  obs_props_paper: sky_maps (tick 14000, 4 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/p2/obs_props_paper-*: 4 pictures of 3cb04190 drawn, 0.5 MB
+                for a look only: nothing went into renders/obs_props_paper/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=20 host=cursor cores=4 head=3cb04190 commit=a30f50d9 pushed=yes branch=cursor/c164-snow-paper-f3-17de-wip files=5
+a0job: exit=0 secs=20
