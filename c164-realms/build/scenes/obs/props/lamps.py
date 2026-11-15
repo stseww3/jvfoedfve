@@ -414,9 +414,10 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 # bright it is, is set here.
 #
 #   way     the way in, street lamps in pairs a double beat apart: beside the walk from the cable
-#           station, where that walk comes into the stair's forecourt, on the four pedestals of the
-#           grand stair, along the court's two strips. No pole for 18 cells where the meridian
-#           crosses the axis.
+#           station, where that walk comes into the stair's forecourt, on the two pedestals at the
+#           grand stair's foot, along the court's two strips. No pole for 18 cells where the
+#           meridian crosses the axis. The two pedestals at the stair's head stand on the lip and
+#           carry its low lamp: a pole there would cross the front in the arrival view.
 #   lip     the east lip of the upper terrace: a low lamp on the cap of every other pier, a rank
 #           under the street lamps.
 #   feet    four dim ground lamps at the feet of the armillary, looking up at its rings.
@@ -461,7 +462,13 @@ def site_lamps():
     on the wall face). level: None is the lamp's own. aim: the point a ground lamp looks at."""
     out = []
     for p in list(_told("site.lowerplatform", "LAMP_POINTS")) + list(_told("site.stair", "LAMP_POINTS")):
-        out.append(("way", "street", tuple(p), STREET_LEVEL, None))
+        if p[1] > S.GROUND:
+            # a pedestal on the terrace's edge (the two at the stair's head): a pole there stands
+            # before the front for everybody below, in S.V1 across a whole bay up to the cornice.
+            # It carries the lip's low lamp at the lip's level
+            out.append(("way", "post", tuple(p), None, None))
+        else:
+            out.append(("way", "street", tuple(p), STREET_LEVEL, None))
     for x, z in _told("site.court", "path_lamps"):
         out.append(("way", "street", (x + 0.5, S.GROUND, z + 0.5), STREET_LEVEL, None))
     top = S.GROUND + _told("site._kit", "PIER_TOP")
