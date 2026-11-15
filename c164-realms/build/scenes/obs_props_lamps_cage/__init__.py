@@ -1,16 +1,13 @@
-"""The hoops of the caged wall lamp, three ways, for the review to pick from: the card keeps three
-fallbacks and the choice is a6's model, not this line's (A0 #549 left it open, c219 group #33010).
+"""The hoops of the caged wall lamp, three ways side by side. The review chose "wide" (c261, #45055)
+and that is what cage A now ships; this scene keeps all three on one wall under identical cameras so
+the choice can be seen, and so a later change can be measured against it.
 
-Nothing here is in the master scene or in any delivery: the delivery's cage A is unchanged, and so
-are obs_props_lamps and obs_props_lamps_site. This scene exists to put the three on one wall under
-one camera, so the "pause sign" question is settled from pictures instead of prose.
+  as now   the two hoops out at the glass's edge (x +-2.25) -- what cage A ships now
+  narrow   the same two either side of the glass's middle, close in (the pair as first approved)
+  three    three hoops a third of the way round
 
     python -m scenes.obs_props_lamps_cage          writes shots.json, prints the models
     tools/selfshots.py obs_props_lamps_cage --out /tmp/c164_lamps/cage
-
-  as now   the two hoops either side of the glass's middle, close in (the delivered cage_a)
-  wide     the same two moved out to the glass's edge (x +-2.25, the card's second fallback)
-  three    three hoops a third of the way round (the card's first fallback)
 """
 from artkit.canvas import Canvas
 
@@ -25,12 +22,12 @@ BIOME_MARGIN_Y = 32
 STONE, PLATE = B.ASHLAR_FINE.block, B.IRON_PLATE
 WALL_H = 8
 BAY = 6                                                  # how far apart the three hang
-CHOICES = (("as_now", "two"), ("wide", "two_wide"), ("three", "three"))
+CHOICES = (("as_now", "two_wide"), ("narrow", "two"), ("three", "three"))
 TIME = 14000
 
 
 def _models():
-    """The delivered family plus the two fallbacks, under their own names."""
+    """The delivered family plus the two variants that are not shipped, under their own names."""
     out = dict(lamps.models())
     for name, choice in CHOICES[1:]:
         out[f"{lamps.PREFIX}cage_a_{name}"] = lamps._cage_a(lamps.cage_hoops(choice),
