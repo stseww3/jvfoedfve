@@ -5,8 +5,10 @@ a blue-black ramp (I0..I6), rivets hugging the edges so neighbouring plates read
 a cast emblem, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
 The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards them).
 
-The painted faces are designed here; the thin and shaped pieces (bars, chain, rod, grating, bulb,
-lantern) keep the game model's own cut-out and are repainted over it, so their UVs still line up.
+Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
+grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
+is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
+taken over step for step into the iron ramp, their filament and slits into the glow ramp.
 """
 import math
 
@@ -235,7 +237,7 @@ def _door_bottom():
     return px
 
 
-# ---- the shaped and thin pieces (the game's cut-out, repainted) --------------------------------------
+# ---- the thin pieces (drawn onto the pixels the game's models read) and the two lamps ----------------
 def _recolour(ref, lamp=False):
     """A game picture in cast iron: each opaque pixel to the iron step nearest its brightness, its
     cut-out kept. lamp=True sends the warm, bright pixels (a filament, a flame) to the glow ramp."""
