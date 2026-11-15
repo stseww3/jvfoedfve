@@ -41,11 +41,12 @@ PREFIX = "sky_ridge_"
 BEARINGS = {"nw": 305.0, "sw": 233.0}
 DISTANCE = 360.0                            # how far out the panels read, in blocks
 WIDTH = 300.0                               # how much sky one panel covers, across, in blocks
-TALLEST = 46.0                              # the tallest peak, blocks above the terrace floor
+TALL = 5.0                                  # the picture's height in the model's own units;
+                                            # times SCALE that is the tallest peak, about 47 blocks
 MAX_ANGLE = 6.0                             # the tallest peak's elevation, degrees (the card's ceiling)
 
 # The model's own units. Its picture is WIDE units across and TALL units high, its foot at y 0.
-WIDE, TALL = 32.0, 5.0
+WIDE = 32.0
 PUSH = WIDE * DISTANCE / WIDTH               # 38.4: the ratio is fixed by distance and width above
 SCALE = WIDTH / WIDE                         # 9.375: one number scales the picture and the push
 
@@ -150,9 +151,11 @@ def build(canvas, origin=(0, 0, 0)):
 
 
 def peaks():
-    """For the checks: (silhouette, bearing, the tallest peak in blocks, its elevation in degrees)."""
+    """For the checks: (silhouette, bearing, the tallest peak in world blocks, its elevation in
+    degrees). The entity's scale is uniform, so a model unit is SCALE * share blocks tall, the
+    same number that carries the push out to DISTANCE."""
     out = []
     for key, bearing, share in PANELS:
-        tall = max(v for _, v in SKYLINES[key]) * TALLEST * share
+        tall = max(v for _, v in SKYLINES[key]) * TALL * SCALE * share
         out.append((key, BEARINGS[bearing], tall, math.degrees(math.atan(tall / DISTANCE))))
     return out
