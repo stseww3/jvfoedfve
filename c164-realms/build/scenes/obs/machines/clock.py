@@ -200,11 +200,12 @@ INK = P.colour("iron", 1)
 INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
 # The paint of the ball: the model's name, the ramp and its steps for the five zones from the far
-# side to the highlight. Dark red stays in the three dark steps of its ramp: the fourth is the pink
-# of a lamp.
+# side to the highlight. The middle zone is the paint as it is (the step its material starts
+# from), shade below it and light above. Dark red stays in the three dark steps of its ramp: the
+# fourth is the pink of a lamp.
 BALL_TONES = {
     "copper": ("ball", ("old_copper", (0, 1, 2, 3, 4))),
-    "red": ("ball_red", ("signal", (0, 0, 1, 1, 2))),
+    "red": ("ball_red", ("signal", (0, 0, 1, 2, 2))),
 }
 # What the game draws the faces of the turned ball at: its sides, and the ledges between the layers
 # that look up and down. A ledge is painted in the step that comes out nearest to the side next to it.
