@@ -180,10 +180,10 @@ def surround_bay():
 
 SURROUND_BAY = surround_bay()
 # The two main views are the skeleton's (director, g2 #304: both look up about 22 degrees, the
-# building in the lower half of the picture and the comet whole in the upper; V2 goes into the
-# skeleton). A skeleton without V2 is older than that ruling: its numbers stand in until then.
-V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
-V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+# building in the lower half of the picture and the comet whole in the upper; V2 is in the skeleton
+# now, so the numbers that stood in for it are gone).
+V1 = S.V1
+V2 = S.V2
 VIEWS = {   # name: (eye, looks at), from a building's origin
     "front": ((FRONT_X + 20.5, EYE, AXIS), (FRONT_X - 1.0, 8.5, AXIS)),            # 20 blocks, head on
     "axis": (V2["pos"], V2["look_at"]),                                            # the court's V2
