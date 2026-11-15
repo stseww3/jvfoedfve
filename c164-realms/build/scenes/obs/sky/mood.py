@@ -63,8 +63,9 @@ WATER = "#1f3a6e"
 # fog by elevation. With the sky's fog ending at 96 and the afterglow at 0.45 the west stood
 # purple up to 40 degrees (#332942 at 30) where the plan wants blue-violet. Ending at 128 the
 # share of the fog at 30 degrees falls from 0.45 to 0.33, and with the afterglow at 0.35 the sky
-# is blue-violet from 30 degrees up (#26233e) and keeps its rose band along the horizon; zenith
-# and horizon are solved for again, so away from the west nothing changed.
+# is blue-violet from 30 degrees up (#26233e) and keeps its rose band along the horizon. Zenith
+# and horizon are solved for again: away from the west the two ends are what they were, and the
+# gradient between them is steeper (the sky is darker at middle heights on every side).
 #
 # stars: the game adds the square of star_brightness to the sky behind a star (colour and opacity
 # are both the brightness). 0.60 adds 0.36; 0.15 adds 0.02, which no one sees: the comet stands
