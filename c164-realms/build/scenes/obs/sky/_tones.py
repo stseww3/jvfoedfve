@@ -22,7 +22,9 @@ Per picture, printed and, with --out, drawn onto one sheet (<name>-tones.jpg):
   differs  with --diff <picture>, a second picture of the same view (a switch on and off, two
            versions): the pixels whose brightness is further apart than 0.02 (--diff-over) are
            the footprint of what changed; their share, and what they hold in this picture and in
-           the other. Each probe also says what changed within it
+           the other. Each probe also says what changed within it. One line more answers "is
+           anything changed at all": how many pixels hold another value in red, green or blue,
+           without any threshold (0: the two pictures are the same, pixel for pixel)
   stamps   the picture, grey and levels at 96 pixels wide
 
 Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives). Where dark
@@ -203,9 +205,13 @@ def measure(rgb, split, probes=None, other=None, differ=DIFFER):
         gap = y - luma(other)
         changed = np.abs(gap) > differ
         count, largest = patches(changed)
+        # apart from the footprint: is any value of any pixel another one at all (red, green and
+        # blue each on its own, no threshold), and by how much at the most
+        apart = np.abs(rgb - other).max(axis=2)
         out["diff"] = dict(over=differ, share=float(changed.mean()), more=float((gap > differ).mean()),
                            less=float((gap < -differ).mean()), patches=count, largest=largest,
-                           here=stats(rgb[changed]), there=stats(other[changed]))
+                           here=stats(rgb[changed]), there=stats(other[changed]),
+                           touched=int((apart > 0.0).sum()), most=float(apart.max()))
         for name, (mask, _) in regions.items():
             both = mask & changed
             out["probes"][name]["changed"] = dict(here=stats(rgb[both]), there=stats(other[both]))
@@ -331,6 +337,8 @@ def lines(name, n):
                    f"(brighter here {_pc(d['more']).strip()}, darker here {_pc(d['less']).strip()})   {patched(d['patches'], d['largest'], d['share'])}")
         out.append(f"          here   {held(d['here'])}")
         out.append(f"          there  {held(d['there'])}")
+        out.append(f"          pixel for pixel: {d['touched']} px hold another value, the furthest apart by {int(round(d['most'] * 255.0))} of 255"
+                   if d["touched"] else "          pixel for pixel: the two pictures are the same, not one value differs")
     if n["probes"]:
         ordered = sorted(((label, p) for label, p in n["probes"].items() if p["pixels"]), key=lambda item: item[1]["mean"])
         width = max(len(label) for label in n["probes"])
