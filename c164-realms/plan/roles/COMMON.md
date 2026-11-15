@@ -160,7 +160,7 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 3. 没有暴力和宗教内容，没有真实的品牌、机构、人名。地图里的文字只用数字、符号和少量英文。
 4. 只用色板里的颜色；16 像素一格，方块和模型一致；占用表之外的方块不重画，被占用的方块不按原意使用。
 5. 成品只靠原版、数据包、资源包。版本锁定 26.3（数据包格式 121，资源包格式 97）。
-   - **数据包里不许带注册表文件**（11-16 07:55 起）。Realms 不收「实验性设置」的存档，内容库的图也一样；游戏把任何不是原版包带来的注册表文件都算实验性。不许有的文件夹（维基 Data pack 条目里带星号的）：`worldgen/`（`biome` 在里面）、`dimension/`、`dimension_type/`、`timeline/`、`world_clock/`、`damage_type/`、`chat_type/`、`dialog/`、`enchantment/`、`enchantment_provider/`、`painting_variant/`、`banner_pattern/`、`instrument/`、`jukebox_song/`、`trim_material/`、`trim_pattern/`、`trial_spawner/`、`villager_trade/`、`trade_set/`、各种 `*_variant/`。数据包里能放的只有：函数、标签、结构、进度、战利品表、谓词、配方、物品修饰器。眼下唯一的例外是天的两个文件（`obs_blue`、`obs_looks`），a2 正在把它们挪进资源包的着色器，挪完就没有例外。
+   - **数据包里不许带注册表文件**（11-16 07:53 起，公告 #1196）。Realms 不收「实验性设置」的存档，内容库的图也一样；游戏把任何不是原版包带来的注册表文件都算实验性。不许有的文件夹（维基 Data pack 条目里带星号的）：`worldgen/`（`biome` 在里面）、`dimension/`、`dimension_type/`、`timeline/`、`world_clock/`、`damage_type/`、`chat_type/`、`dialog/`、`enchantment/`、`enchantment_provider/`、`painting_variant/`、`banner_pattern/`、`instrument/`、`jukebox_song/`、`trim_material/`、`trim_pattern/`、`trial_spawner/`、`villager_trade/`、`trade_set/`、各种 `*_variant/`。数据包里能放的只有：函数、标签、结构、进度、战利品表、谓词、配方、物品修饰器。眼下唯一的例外是天的两个文件（`obs_blue`、`obs_looks`），a2 正在把它们挪进资源包的着色器，挪完就没有例外。
    - 资源包里的核心着色器（`assets/minecraft/shaders/`）只有 a2 牵头的那一套，别人不加、不改；要它多管一件事，私信 a2。
 6. 不碰别的聊天、别的项目的任何东西：文件、进程、tmux 会话、仓库、分支，云端和管理员电脑都一样。
 
