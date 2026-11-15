@@ -1,9 +1,9 @@
 """Test scene of the work package machines/refractor (plan/packages/machines/refractor.md).
 
 The two mounts side by side, each in a dome room of its own, STAGE blocks apart from north to
-south: version a under the northern dome, version b under the southern one. Every camera stands
-the same way in both rooms and its two pictures carry the same name with the version behind it,
-so the two can be looked at blind.
+south: version a (the director's pick, what machines/scope brings to the map) under the northern
+dome, version b under the southern one. Every camera stands the same way in both rooms and its
+two pictures carry the same name with the version behind it, so the two can be looked at blind.
 
 What other packages bring is stood in for with the skeleton's numbers: the drum and the dome
 (main/dome once it is in the tree, until then the massing of main/_dome), the floor of boards, the
@@ -84,7 +84,7 @@ def build():
 
 
 def build_models():
-    return scope.models()
+    return {name: model for version in STAGE for name, model in scope.models(version).items()}
 
 
 def write_pack(pack_dir):
@@ -97,9 +97,9 @@ def shots():
     """The cameras, each once for either version. All but the last two stand inside the room, at
     the height of a standing eye where the floor allows it.
 
-    v8      the billboard's view: a standing eye at the east edge of the observing floor, south
-            of the dome's axis, up along the tube at the slit (scope.V8 of version b)
-    v8_north  the same from north of the axis (scope.V8 of version a)
+    v8      the billboard's view, scope.v8(): a standing eye at the east edge of the observing
+            floor, north of the tube of version a, up along it at the slit
+    v8_south  the same from south of the dome's axis, where version b shows best (scope.V8["b"])
     eye     beside the observer, looking up the tube
     south   the whole instrument side on, from the south wall; north the same from the north
     east    from the east wall, the tube coming at the camera
@@ -121,8 +121,8 @@ def shots():
 
         cross, eyepiece, objective = scope.crossing(v), scope.eyepiece(v), scope.objective(v)
         mid = tuple((eyepiece[i] + objective[i]) / 2.0 for i in range(3))
-        shot("v8", *scope.v8("b"))
-        shot("v8_north", *scope.v8("a"))
+        shot("v8", *scope.v8("a"))
+        shot("v8_south", *scope.v8("b"))
         shot("eye", (eyepiece[0] + 1.0, eye_y, eyepiece[2] + 1.8),
              (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.1))
         shot("south", (5.5, eye_y + 1.0, 11.3), (mid[0], cross[1] + 0.3, 0.5))

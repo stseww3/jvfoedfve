@@ -3,7 +3,8 @@ plan/packages/machines/refractor.md). The star of view V8.
 
 A riveted iron tube fifteen blocks long on an equatorial mount, standing on the cap of the pier
 under the middle of the great dome and looking due west through the slit at the head of the comet.
-Two mounts are kept side by side until the review picks one:
+Two mounts were drawn. The director picked a (11-16): build() and models() bring a alone; b
+stays in this file and in the test scene, to be looked at beside it:
 
   a  German equatorial   one cast-iron pier in bolted sections; the polar axis lies in a sleeve
                          on its head, the declination axis crosses its upper end; the tube rides
@@ -26,7 +27,7 @@ What the other lines read (scene coordinates; give the origin to have it added):
     scope.ELEVATION     degrees the tube looks up, due west: the comet's head (sky/comet)
     scope.BRIGHTNESS    the light every piece is shown in, whatever cell it hangs in
 
-Every function takes version= ("a" or "b"; VERSION when left out).
+Every function takes version= ("a" or "b"; VERSION, the one that was picked, when left out).
 
 The pieces that move are models of their own, each anchored on the axis it turns about, so the
 motion line can swing them (plan 7.1): the tube about the declination axis, the axis piece (a) or
@@ -34,7 +35,8 @@ the yoke (b) about the polar axis, the governor about its spindle. Here they sta
 
 Light: the room is kept dark for observing. The one lamp is the small red one beside the
 eyepiece, hooded, its glass turned west on the tailpiece and away from the floor; the light it
-throws is offered to the sky line at LAMP_LEVEL. It is the only signal red in the room.
+throws is offered to the sky line at LAMP_LEVEL. In the hood's back, towards the floor and the
+camera of V8, is a ruby peep-hole: a point of red, no light. It is the only signal red in the room.
 
     python -m scenes.obs.machines.scope      the numbers above and the rules they are held to
 """
@@ -51,7 +53,7 @@ from ..common import palette as P
 from ..common import skeleton as S
 
 PREFIX = "mach_scope_"
-VERSION = "b"                   # the version build() places until the review picks one
+VERSION = "a"                   # the version build() places: the director's pick (11-16)
 VERSIONS = ("a", "b")
 BRIGHTNESS = (10, 7)            # (sky, block): agreed with the light line for the dark dome room
 LAMP_LEVEL = 4                  # the red lamp's light source (A0: not over 4)
@@ -782,6 +784,10 @@ def _governor():
 
 
 LAMP_OFF = (-0.25, 0.32, 0.62)          # the lamp's glass from the eyepiece: blocks east, up, to the side shown
+PEEP = 0.25                             # the peep-hole in the hood's back, texels across (A0: a point in V8)
+PEEP_AT = (2.0, -0.5, 0.0)              # its middle, texels from the lamp's: on the east facet of the hood
+POINT = 3.0                             # screen pixels a point may be across, on a picture 720 high
+GAME_FOV = 70.0                         # degrees, top to bottom: the game's own; the offline pictures are drawn wider
 
 
 def _lamp_at(version):
@@ -810,6 +816,10 @@ def _lamp(version):
         d.box((-4.0, -2.25, a), (-1.5, 1.25, b), HOOD)
     d.box((-2.25, -1.75, -1.25), (-1.9, 0.75, 1.25), RED_LENS, emit=15, shade=False)
     d.box((-2.3, -1.0, -0.5), (-2.25, 0.0, 0.5), RED_HOT, emit=15, shade=False)
+    # the peep-hole in the back: the floor sees that the lamp burns
+    x, y, z = PEEP_AT
+    d.box((x, y - PEEP / 2.0, z - PEEP / 2.0), (x + 0.05, y + PEEP / 2.0, z + PEEP / 2.0), RED_LENS,
+          emit=15, shade=False)
     # the arm: up from the hood's cap and over to its clamp on the tail plate
     knee = (0.0, 6.0, 0.0)
     d.rod((0.0, 4.0, 0.0), knee, 0.5, BRASS_D, sides=4)
@@ -827,8 +837,18 @@ def _built():
     return out, stands
 
 
-def models():
-    return dict(_built()[0])
+def models(version=None):
+    """The models of one version: what build() places."""
+    built = _built()[0]
+    return {name: built[name] for name, _at, _frame, _scale in placed(version)}
+
+
+def peep(version=None):
+    """How many screen pixels across the peep-hole of the red lamp is from the camera of V8, on a
+    picture 720 high at the game's field of view."""
+    hole = _add(_lamp_at(version)[0], _mul(PEEP_AT, 1.0 / 16.0))
+    far = math.dist(hole, v8(version)[0])
+    return PEEP / 16.0 / far * 360.0 / math.tan(math.radians(GAME_FOV) / 2.0)
 
 
 # ---- placing ---------------------------------------------------------------------------------------------
@@ -1003,8 +1023,9 @@ def report(version=None):
         f"polar axis, looking {ELEVATION:.2f} degrees up due west",
         f"  eyepiece {EYEPIECE[version]}  objective {OBJECTIVE[version]}  observer {OBSERVER[version]}",
         f"  sweep: centre {SWEEP[version][0]}, radius {radius}; V8 from {V8[version][0]} at {V8[version][1]}",
-        f"  lamp at {_rounded(_lamp_at(version)[0])}, light source of level {LAMP_LEVEL}; "
-        f"{len(points)} display entities, {sum(len(built[n].parts) for n in points)} boxes",
+        f"  lamp at {_rounded(_lamp_at(version)[0])}, light source of level {LAMP_LEVEL}, its peep-hole "
+        f"{peep(version):.1f} screen pixels across in V8 (720 high)",
+        f"  {len(points)} display entities, {sum(len(built[n].parts) for n in points)} boxes",
     ]
     problems = []
     if abs(ELEVATION - 41.0) > 0.5:
@@ -1015,6 +1036,8 @@ def report(version=None):
         problems.append(f"a: the tube is {spec['off']:.3f} off the polar axis, over 1.5")
     if LAMP_LEVEL > 4:
         problems.append(f"the lamp's light source is of level {LAMP_LEVEL}, over 4")
+    if peep(version) > POINT:
+        problems.append(f"the lamp's peep-hole is {peep(version):.1f} screen pixels across in V8, a patch: over {POINT}")
     far = max(math.dist(p, centre) for p in everything)
     lines.append(f"  furthest corner {far:.2f} from the crossing")
     if far > radius + 0.05:
@@ -1076,5 +1099,5 @@ if __name__ == "__main__":
         for w in wrong:
             print(f"  BROKEN: {w}")
         bad += len(wrong)
-    print(f"default version: {VERSION}; brightness (sky, block) {BRIGHTNESS}")
+    print(f"the version placed: {VERSION}; brightness (sky, block) {BRIGHTNESS}")
     raise SystemExit(1 if bad else 0)
