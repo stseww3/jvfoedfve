@@ -18,10 +18,12 @@ the canvas by then and places, in this order:
             window lends each of its sources to the recesses of the two windows beside it, where
             those are lit themselves, three levels lower: the entrance's three windows stand in
             one light (_lightkit.LENDS).
-  entrance  one source of level 14 in the main doorway, when it stands open; and, as long as the
-            hall behind it is an empty room with a wall close behind the doorway, a source of 12
-            against that wall, so that the doorway reads as a warm bright face and not as a hole
-            (10 behind the arches beside the doorway, where the entrance is an arcade).
+  entrance  as long as the star hall has not moved in (main/facade.furnished()): one source of
+            level 14 in the main doorway, when it stands open; and, where a wall stands close
+            behind the doorway, a source of 12 against that wall, so that the doorway reads as a
+            warm bright face and not as a hole (10 behind the arches beside the doorway, where
+            the entrance is an arcade). They stand in for the hall's lamps and go when it moves
+            in, the one in the doorway too (the director, #58129).
   wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
             a bracket lamp): at the foot of each a small projector two cells before the plinth
             (props' model, lamps "uplight", with the source of level 8 it brings), and where its
@@ -365,15 +367,18 @@ def _furnished():
 
 
 def _entrance(canvas, r, origin):
-    """The light of the entrance. One source in the open main doorway, where a doorway stands: open
-    from the glass plane to the pilaster plane, a jamb on either side, something over it, ground
-    under it. And the vestibule behind it, which nobody has furnished yet: where a wall closes the
-    view through the doorway within HALL_DEPTH cells of the glass plane, a source stands against
-    it; the same, two steps lower, behind the arches beside the doorway when the entrance is an
-    arcade. When the hall is built its walls stand further back, and its own lamps take over: once
-    the star hall has moved in, nothing is placed behind the arches, whatever stands there."""
+    """The light of the entrance, which stands in for the lamps of a hall nobody has furnished yet.
+    One source in the open main doorway, where a doorway stands: open from the glass plane to the
+    pilaster plane, a jamb on either side, something over it, ground under it. And the vestibule
+    behind it: where a wall closes the view through the doorway within HALL_DEPTH cells of the
+    glass plane, a source stands against it; the same, two steps lower, behind the arches beside
+    the doorway when the entrance is an arcade.
+    Once the star hall has moved in, nothing of this is placed: the hall's own lamps light what
+    the arches show, and the source in the doorway, which made the door's frame the brightest thing
+    seen from inside the hall, goes with the hall's moving in (the director, #58129)."""
     ox, oy, oz = origin
-    furnished = _furnished()
+    if _furnished():
+        return
     for bay in ENTRANCE_BAYS:
         wall = S.east_wall_x(bay) + ox
         z = S.bay_center_z(bay) + oz
@@ -392,8 +397,6 @@ def _entrance(canvas, r, origin):
             r["doors"].append(cell)
         elif _stops(canvas, wall, DOOR_Y + oy, z):
             continue                                    # a bay with a wall in it: no arch
-        if furnished:
-            continue                                    # a case or a pillar of the hall is no back wall
         back = next((x for x in range(glass - 1, glass - 1 - HALL_DEPTH, -1) if _stops(canvas, x, HALL_Y + oy, z)), None)
         if back is None or back + 1 >= glass:
             continue
