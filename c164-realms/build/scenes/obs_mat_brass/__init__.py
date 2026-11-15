@@ -24,8 +24,10 @@ What it is for:
 How a line is laid (line() and ring() below can be copied): a cell of BRASS_LINE joins two of its
 sides and its shape names them -- north_south, east_west, or one of the four corners. A corner is
 drawn as a diagonal from the middle of one side to the middle of the next, so a path that steps
-sideways every cell, as a circle of blocks does, is one straight slant. Where two lines cross lies
-a BRASS_CROSS, and the star is one cell of BRASS_STAR. In the game they are rails, so (S2, 11-14):
+sideways and onwards by turns is one straight slant, and a path that steps unevenly has a kink at
+every uneven step: ring() lays a ring as an octagon, not as a circle of blocks. Where two lines
+cross lies a BRASS_CROSS, and the star is one cell of BRASS_STAR. In the game they are rails, so
+(S2, 11-14):
   - the cell under a line is a whole solid block: a rail drops off a slab or a stair;
   - a cell of line has line in exactly the two neighbours its shape names. The game turns a rail
     towards the rails beside it when it is put down: two lines never lie in cells side by side,
@@ -94,19 +96,26 @@ def line(cells, closed=False):
 
 
 def ring(r):
-    """A circle of radius r about (0, 0) as a closed path of cells that touch by their sides: where
-    the circle of blocks steps diagonally, the path goes round by the outer of the two cells."""
+    """A ring of radius r about (0, 0) as a closed path of cells that touch by their sides: an
+    octagon. Across each axis lies a straight run, and between two runs the path steps sideways and
+    onwards by turns, which the corners of the line draw as one slant. (A circle of blocks steps
+    unevenly at most radii -- 5, 8 and every one above -- and each uneven step is a kink in the
+    line.) The run is as long as brings the eight sides nearest to equal; at radius 7, the court's,
+    the path is the circle of blocks itself."""
+    h = max(0, round(r * math.tan(math.pi / 8) - 0.5))      # the straight run: cells -h..h
+    quarter = [(r, z) for z in range(h + 2)]                # the east side, from the axis to its corner cell
+    x, z = r, h + 1
+    while (x, z) != (h + 1, r):
+        x -= 1
+        quarter.append((x, z))
+        z += 1
+        quarter.append((x, z))
+    quarter += [(x, r) for x in range(h, 0, -1)]            # the south side, back to the axis
     cells = []
-    count = 16 * r
-    for k in range(count + 1):
-        a = 2 * math.pi * k / count
-        cell = (round(r * math.cos(a)), round(r * math.sin(a)))
-        if cells and cell == cells[-1]:
-            continue
-        if cells and abs(cell[0] - cells[-1][0]) + abs(cell[1] - cells[-1][1]) == 2:
-            cells.append(max((cell[0], cells[-1][1]), (cells[-1][0], cell[1]), key=lambda at: math.hypot(*at)))
-        cells.append(cell)
-    return cells[:-1]               # the last is the first again
+    for _ in range(4):
+        cells += quarter
+        quarter = [(-z, x) for x, z in quarter]             # a quarter turn on
+    return cells
 
 
 def emblem_lines(c, mx, az, r, star, z0, z1):
