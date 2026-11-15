@@ -144,15 +144,21 @@ def _drum():
     m.tube("x", (0.0, ay), -half_chart - 0.9, -half_chart + 0.2, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), half_chart - 0.2, half_chart + 0.9, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), -half_chart + 0.1, half_chart - 0.1, DRUM_R, CREAM_F, sides=14)
-    # the pen's trace: a one-pixel dark line round the paper with a few rises and falls, so the chart
-    # reads as a record being written (cr3-M4 -- without it the drum is a drum with paper on it)
+    # the pen's trace: the drum turns, so the trace runs AROUND the paper, not across its top. It is
+    # drawn as a helix: a ring of small marks at every step along the drum's axis, the whole line
+    # drifting a little so it reads as a record being written rather than a hoop (cr3-M4 again: the
+    # first go put the line on the top of the cylinder, where only a camera overhead could see it).
     trace = P.mat("iron", base=1, kind="flat", bevel=0)
-    seg = (CHART_W / 2.0 - 0.6) / 6.0
-    for i in range(6):
-        x0 = -half_chart + 0.6 + i * seg
-        hi = 0.9 if i % 2 else 0.2            # the wave: up on one segment, flat on the next
-        m.box((x0, DRUM_R + hi - 0.35, -DRUM_R - 0.16),
-              (x0 + seg, DRUM_R + hi + 0.35, DRUM_R + 0.16), trace, skip="d")
+    steps = 11                              # marks round the circumference
+    turns = 5                               # how many times the line goes round the drum
+    for t in range(turns * 3):              # one pass round per third of the turn, drifting in x
+        x = -half_chart + 0.9 + (CHART_W - 1.8) * t / float(turns * 3 - 1)
+        for i in range(steps):
+            a = 2.0 * math.pi * (i / float(steps) + t / float(turns * 3))   # the drift: a slow helix
+            rr = DRUM_R + 0.12
+            cy, cz = math.sin(a) * rr, math.cos(a) * rr
+            # a one-pixel mark, standing a hair proud of the paper
+            m.box((x, cy - 0.30, cz - 0.30), (x + 0.30, cy + 0.30, cz + 0.30), trace, skip="d")
 
     # the pen carriage: the slide bar over the drum, its arm, the nib riding on the paper
     m.box((-hw * 0.88, DRUM_R + 1.4, -hd * 0.50), (hw * 0.88, DRUM_R + 2.3, -hd * 0.50 + 1.1),
