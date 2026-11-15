@@ -42,10 +42,14 @@ The pieces (16 texels to the block, px = scale; a wall piece is hung by the midd
                     them to the light line.
     plate_<label>   enamel plates: white figures on blue (numbers, arrows, N and S), black on white
                     with a red flash (voltage). Digits, signs and a letter or two, nothing else.
+    station_board   the name board of the cable station, a block high and two and a half long, in
+                    the plates' enamel: the emblem, which is the name, and the height of the place
+                    in metres (HEIGHT), as the boards of mountain railways have it.
     flag, pole_*    the station's flag (blue, the emblem in cream) on a pole with a ball on top.
 
 The great piece is hung by build() when DRESS is on, on the seat main/facade.emblem() gives,
-version VERSION of it. For the other lines:
+version VERSION of it, and the name board on the seat site/cablecar keeps for it (SIGN). For the
+other lines:
 
     from scenes.obs.props import signs
     n += signs.great(canvas, seat, "emblem", origin)        # or "clock"; a seat as facade.emblem()'s
@@ -387,6 +391,7 @@ _FONT = {
     "8": ["111", "101", "111", "101", "111"], "9": ["111", "101", "111", "001", "111"],
     "V": ["101", "101", "101", "101", "010"], "A": ["010", "101", "111", "101", "101"],
     "N": ["1001", "1101", "1011", "1001", "1001"], "S": ["011", "100", "010", "001", "110"],
+    "M": ["10001", "11011", "10101", "10001", "10001"],
     ">": ["0000100", "0000010", "1111111", "0000010", "0000100"],
     "<": ["0010000", "0100000", "1111111", "0100000", "0010000"],
     "!": ["0011", "0110", "1111", "0110", "1100"],     # the flash of a voltage plate
@@ -450,6 +455,78 @@ def _plate(label):
     side = K.flat("enamel", 0) if style == "blue" else K.flat("cream", 1)
     m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 0.5), side,
           faces={"s": _picture(plate_name(label) + "_face", grid)}, skip="n")
+    return m
+
+
+# ---- the station's name board ---------------------------------------------------------------------------
+# What the board of a mountain railway's station says: the name of the place and how high it lies.
+# The name of this place is the emblem; the height is the skeleton's once it says one, in metres
+# above the sea. One board, for the cable station (site/cablecar's SIGN).
+HEIGHT = int(getattr(S, "ALTITUDE", 2610))
+BOARD_H = 16                    # a block high: the framed emblem from edge to edge
+BOARD_GAP = 3                   # clear pixels between the emblem's ring and the figures
+
+
+def board_text():
+    """What stands after the emblem: the height and the letter of its measure."""
+    return f"{HEIGHT}M"
+
+
+def board_size():
+    """(width, height) of the station's board in blocks."""
+    text = board_text()
+    figures = sum(len(_FONT[ch][0]) for ch in text) + len(text)     # a pixel between two, two before the M
+    return (14 + BOARD_GAP + figures + 2) / 16.0, BOARD_H / 16.0
+
+
+def _board_face():
+    """The face of the station's board, in the enamel of the plates: their edge line with the
+    corners knocked off, their gloss and their shaded foot. At its head the emblem in its framed
+    form (the board has an edge of its own: the ring twelve across, a clear pixel off the edge, the
+    meridian from edge to edge), then the height in the plates' figures, on the lower five of the
+    ring's middle rows so that they sit rather than hang."""
+    text = board_text()
+    w, h = int(round(board_size()[0] * 16)), BOARD_H
+    edge, corner, field, shade, gloss, ink = CR[2], EN[0], EN[2], EN[1], EN[3], CR[3]
+    grid = [[field] * w for _ in range(h)]
+    for x in range(w):
+        grid[0][x] = grid[h - 1][x] = edge
+    for y in range(h):
+        grid[y][0] = grid[y][w - 1] = edge
+    for x, y in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)):
+        grid[y][x] = corner
+    for x in range(1, w - 1):
+        grid[h - 2][x] = shade
+        if x <= w // 4:
+            grid[1][x] = gloss
+    fig = emblem_cells(16, framed=True)
+    for key in ("ring", "meridian", "star"):
+        for x, y in fig[key]:
+            grid[y][x] = ink
+    x, top = 14 + BOARD_GAP, (h - 5) // 2 + 1
+    for ch in text:
+        if ch == "M":
+            x += 1
+        for j, row in enumerate(_FONT[ch]):
+            for i, bit in enumerate(row):
+                if bit == "1":
+                    grid[top + j][x + i] = ink
+        x += len(_FONT[ch][0]) + 1
+    return grid
+
+
+def _station_board():
+    """The name board of the cable station: the emblem and the height of the place on a sheet of
+    enamelled steel a block high, a pixel proud of the wall, a brass screw in each corner. Anchor:
+    the middle of its back, on the wall."""
+    grid = _board_face()
+    w, h = len(grid[0]), len(grid)
+    m = M.Model(PREFIX + "station_board", px=1.0)
+    m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 1.0), K.flat("enamel", 0),
+          faces={"s": _picture("station_board_face", grid)}, skip="n")
+    for x in (-w / 2.0 + 2.5, w / 2.0 - 2.5):
+        for y in (-h / 2.0 + 2.5, h / 2.0 - 2.5):
+            K.rivet(m, (x, y, 1.0), out="z", mat=K.flat("brass", 4))
     return m
 
 
@@ -559,6 +636,7 @@ SPEC = {
                          light=(0.0, -1.0, 0.3), level=8),
     "great_clock": dict(build=_great_clock, mount="wall", scale=3.0, shown=GREAT_SHOWN,
                         light=(0.0, -1.0, 0.3), level=8),
+    "station_board": dict(build=_station_board, mount="wall", scale=1.0),
     "flag": dict(build=_flag, mount="floor", scale=1.0),
     "pole_foot": dict(build=_pole_foot, mount="floor", scale=1.0),
     "pole": dict(build=_pole, mount="floor", scale=1.0),
@@ -666,20 +744,47 @@ def _seat():
     return give() if give is not None else None
 
 
-def build(canvas, origin=(0, 0, 0), version=None):
-    """What signs place in the master scene: nothing while DRESS is off (A0 #211: what is hung over
-    the whole building stays off until it has passed on the real wall), and then the facade's table
-    is not read at all. On: the great piece on its seat over the entrance, version `version` of it
-    (VERSION when not given) -- the main line owns the seat and places no models, so the piece is
-    hung from here (c206, g2 11-15). Nothing is hung where the seat's stone does not stand."""
-    if not DRESS:
-        return 0
-    seat = _seat()
+def _station_seat():
+    """Where the cable station wants its name board: site/cablecar's SIGN, dict(point, facing,
+    width) -- a point of the wall's face, the middle of the board's back -- or None while that
+    package is not in the tree."""
+    try:
+        from ..site import cablecar
+    except ImportError:
+        return None
+    return getattr(cablecar, "SIGN", None)
+
+
+def station(canvas, seat=None, origin=(0, 0, 0)):
+    """Hang the station's name board on its seat (site/cablecar.SIGN when none is given). Nothing
+    is hung where the wall behind the seat does not stand on the canvas or the cell before it is
+    taken by anything but a light source. Returns the number of display entities."""
+    seat = _station_seat() if seat is None else seat
     if seat is None:
         return 0
-    if not all(canvas.has(x + origin[0], y + origin[1], z + origin[2]) for x, y, z in seat["cells"]):
+    out = K.turn(K.FACING[seat["facing"]], (0.0, 0.0, 1.0))
+    wall, air = (tuple(math.floor(seat["point"][i] + origin[i] + side * out[i] + 1e-6) for i in range(3))
+                 for side in (-0.5, 0.5))
+    if not canvas.has(*wall) or canvas.name(*air) not in (None, "light"):
         return 0
-    return great(canvas, seat, VERSIONS[VERSION if version is None else version], origin)
+    return place(canvas, "station_board", seat["point"], facing=seat["facing"], origin=origin)
+
+
+def build(canvas, origin=(0, 0, 0), version=None):
+    """What signs place in the master scene: nothing while DRESS is off (A0 #211: what is hung over
+    the whole building stays off until it has passed on the real wall), and then no other package's
+    table is read at all. On: the great piece on its seat over the entrance, version `version` of
+    it (VERSION when not given) -- the main line owns the seat and places no models, so the piece
+    is hung from here (c206, g2 11-15) -- and the name board on the cable station, which keeps a
+    seat for it and has no models of its own either. Nothing is hung where the seat's stone does
+    not stand."""
+    if not DRESS:
+        return 0
+    n = 0
+    seat = _seat()
+    if seat is not None and all(canvas.has(x + origin[0], y + origin[1], z + origin[2]) for x, y, z in seat["cells"]):
+        n += great(canvas, seat, VERSIONS[VERSION if version is None else version], origin)
+    return n + station(canvas, origin=origin)
 
 
 if __name__ == "__main__":
