@@ -66,8 +66,10 @@ scenes have in common side by side, one column a scene: renders/real/_beside/<na
                              seconds at most (300)
     --no-place               the scenes stand from an earlier trip of the same code
     --budget <seconds>       the trip stops what it is doing after this long, takes what there is
-                             and closes down (2700: a job's hour less the node's own start and
-                             the push)
+                             and closes down (1500: nodejob.sh stops a command at 1700 s, and
+                             the game must be closed by the trip itself before that, not left
+                             running on the node). A longer trip says so in both places:
+                             nodejob.sh --limit 3400 ... nodetrip.py --budget 3200, timeout_sec=3600
 
 Exit code 0: every scene's pictures were all taken and are kept.
 """
@@ -302,7 +304,7 @@ def main():
     ap.add_argument("--sheet", metavar="NAME")
     ap.add_argument("--across", type=int, default=2)
     ap.add_argument("--no-place", action="store_true")
-    ap.add_argument("--budget", type=float, default=2700.0)
+    ap.add_argument("--budget", type=float, default=1500.0)
     args = ap.parse_args()
     import boardrender
     import realshots
