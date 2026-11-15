@@ -89,12 +89,11 @@ def shots():
     out = []
 
     def shot(name, pos, look_at, time=TIME, dz=0):
-        out.append({"name": name, "pos": [round(v, 2) for v in pos],
-                    "look_at": [round(v, 2) for v in look_at], "time": time})
-        if dz:
-            out.append({"name": name + "_b", "pos": [round(v, 2) for v in pos],
-                        "look_at": [round(v, 2) for v in (look_at[0], look_at[1], look_at[2] + dz)],
-                        "time": time})
+        """One camera, and with `dz` the same camera 400 south: both the stand and the aim move, so
+        the pair are photographed from the same place in their own room."""
+        out.append({"name": name, "pos": [round(v, 2) for v in (pos[0], pos[1], pos[2] + dz)],
+                    "look_at": [round(v, 2) for v in (look_at[0], look_at[1], look_at[2] + dz)],
+                    "time": time})
 
     eye_a, eye_b = scope.eyepiece("a"), scope.eyepiece("b")
     obj_a, obj_b = scope.objective("a"), scope.objective("b")
