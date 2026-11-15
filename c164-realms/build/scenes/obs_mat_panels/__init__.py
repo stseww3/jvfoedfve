@@ -97,7 +97,9 @@ assert not faults(), "the bay breaks its own rules:\n  " + "\n  ".join(faults())
 
 
 def bay(c, x, y, z, mirrored=False):
-    """One bay with its foot at y, facing south."""
+    """One bay with its foot at y, facing south. The material board (obs_mat_board) builds its
+    cabinet wall with this, WIDE and HIGH: the three names and these arguments stay, and a bay
+    stays eight wide and no more than six rows high."""
     for j, row in enumerate(BAY):
         for i, name in enumerate(row[::-1] if mirrored else row):
             c.set(x + i, y + HIGH - 1 - j, z, st(B.PANELS[name], facing="south"))
