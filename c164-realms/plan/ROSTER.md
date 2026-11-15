@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 02:34。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 02:39。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -12,7 +12,7 @@
 
 | 代号 | 聊天号 | 节点 | 接手 | 岗位 | 旧分支 @ 有效头 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
-| s2 | c318 | node33 | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` @ `8f626b20` | — |
+| s2 | c318 | node33 | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` @ `8f626b20` | `cursor/c164-s2-fable-89df` |
 | s1 | c319 | node34 | c189 | 出图（拿出图钥匙）：整座的看板图、真机图；`common/plots-shuttle`、`common/offline-sky` | `cursor/c164-s1-render-9df7` @ `9cbe672b` | `cursor/c164-s1-render-f3-fd9c` |
 | review | c332 | node46 | c219 | 评审：materials、main、props | `cursor/c164-review-0eb8` @ `ef09c638` | `cursor/c164-review-f3-3c69` |
 | cr2 | c333 | node47 | c235 | 评审：site、sky、motion | `cursor/c164-cr2-582e` @ `47be4fe6` | `cursor/c164-cr2-f3-ccff` |
@@ -26,8 +26,8 @@
 | 代号 | 聊天号 | 节点 | 接手 | 卡 | 旧分支 @ 有效头 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
 | a1 | c324 | node38 | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` @ `db5682e9` | `cursor/c164-a1-board-f3-09d2` |
-| m1 | c335 | node49 | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮；然后 props/instruments（接 c199） | `cursor/c164-m1-brass-fa68` @ `a2370b00`、`cursor/c164-m1-panels-polish-bc45` @ `baccd973`；`cursor/c164-instr-f5da` @ `97398871` | `cursor/c164-m1-brass-f3-c367` |
-| snow | c336 | node50 | c194 | materials/snow；然后 props/paper（接 c197） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | — |
+| m1 | c335 | node49 | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮；然后 props/instruments（接 c199） | `cursor/c164-m1-brass-fa68` @ `a2370b00`、`cursor/c164-m1-panels-polish-bc45` @ `baccd973`；`cursor/c164-instr-f5da` @ `97398871` | `cursor/c164-m1-brass-f3-c367`、`cursor/c164-m1-panels-f3-c367` |
+| snow | c336 | node50 | c194 | materials/snow；然后 props/paper（接 c197） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | `cursor/c164-snow-f3-17de` |
 | m5 | — | — | c198 | materials/iron 二次交付；然后 machines/domegear（接 c196） | `cursor/c164-m5-iron-8757` @ `3c2120de`；`cursor/c164-gear-6260` @ `c7045d80` | — |
 | ashlar | — | — | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石）；然后 machines/armillary（接 c246） | `cursor/c164-ashlar-2cc1` @ `f57e5576`；`cursor/c164-arm-7c2a` @ `724d26be` | — |
 | facade | c321 | node35 | c206 | main/facade；main 牵头 | `cursor/c164-facade-229b` @ `2c482b37` | `cursor/c164-facade-facade-f3-81a0` |
@@ -40,17 +40,17 @@
 | comet | c330 | node44 | c230 | sky/comet | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d` |
 | cloud | c329 | node43 | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e` |
 | a4 | c323 | node37 | c221 | site/terrain、site/court 打磨；site 牵头 | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824` |
-| stair | c337 | node51 | c225 | site/stair | `cursor/c164-stair-4aad` @ `36220ac4` | — |
-| cable | c338 | node52 | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | — |
-| power | c339 | node53 | c228 | site/powerhouse | `cursor/c164-power-f182` @ `5ae1738e` | — |
-| outb | c340 | node54 | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` @ `6d320dd0` | — |
+| stair | c337 | node51 | c225 | site/stair | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
+| cable | c338 | node52 | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7` |
+| power | c339 | node53 | c228 | site/powerhouse | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a` |
+| outb | c340 | node54 | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8` |
 | a6 | c334 | node48 | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1` |
-| lamps | — | — | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | — |
-| m3 | — | — | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | — |
-| orrery | — | — | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | — |
-| scope | — | — | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | — |
-| clocks | — | — | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | — |
-| mast | — | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | — |
+| lamps | c341 | node55 | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | — |
+| m3 | c342 | node56 | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | — |
+| orrery | c343 | node57 | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | — |
+| scope | c344 | node58 | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | — |
+| clocks | c345 | node59 | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | — |
+| mast | c346 | node60 | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | — |
 | hall | — | — | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | — |
 | a3 | — | — | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` @ `95106dce` | — |
 | chart | — | — | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c` @ `fb9b2ecb`、`cursor/c164-m2-windows-7bb5` @ `bfb5420e` | — |

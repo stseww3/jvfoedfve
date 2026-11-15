@@ -85,7 +85,8 @@ if [ "$others" = 1 ]; then
   (cd "$proj" && "$py" tools/delivery.py "$card" "$full" --base "$base") >"$out/delivery.txt" 2>&1 || code=$?
   if grep -q '^result: ' "$out/delivery.txt"; then
     say "delivery.py: $(grep '^result: ' "$out/delivery.txt" | tail -n 1 | cut -c9-)"
-    grep -A3 -E '^\[(FAIL|WARN)\]' "$out/delivery.txt" | grep -v '^--$' | cut -c1-230 | sed 's/^/    /' >>"$sum"
+    awk '/^\[(FAIL|WARN)\]/ { on = 1; n = 0; print; next } /^[^ ]/ { on = 0 } on && n < 6 { n++; print }' \
+      "$out/delivery.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
   else
     say "delivery.py: ended with $code and no result"
     tail -n 5 "$out/delivery.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
@@ -96,7 +97,8 @@ if [ "$others" = 1 ]; then
   code=0
   (cd "$proj" && "$py" tools/checkall.py --out "$out/check") >"$out/checkall.txt" 2>&1 || code=$?
   say "check.py: $(tail -n 1 "$out/checkall.txt" | cut -c1-230)"
-  grep -A4 -E '^FAIL ' "$out/checkall.txt" | grep -v '^--$' | cut -c1-230 | sed 's/^/    /' >>"$sum"
+  awk '/^FAIL / { on = 1; n = 0; print; next } /^[^ ]/ { on = 0 } on && n < 8 { n++; print }' \
+    "$out/checkall.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
   [ "$code" = 0 ] || bad=1
 fi
 
