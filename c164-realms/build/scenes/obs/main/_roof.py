@@ -2,35 +2,45 @@
 gutters, the two roof lights, the leaves of the dome room's doors, and an iron walkway on each
 wing's ridge, so that one walks from the dome room to the small dome and to the clock tower.
 
+DRAFT: written while the machine was closed to Python, not run yet. The underscore keeps the module
+out of the category's auto-discovery; it becomes main/roof.py when its self-check has passed.
+
 Card: plan/packages/main/smalldome.md (the same card as main/smalldome.py). Design: plan/ART-PLAN.md
-section 4 ("the roofs can be walked") and 5.1; the director's ruling on the walkways is in
-plan/STATUS.md (A0 #20299).
+section 4 ("the roofs can be walked") and 5.1; the director's ruling on the doors and the walkways
+is in plan/STATUS.md (A0 #20299).
 
 main/facade.py closes the top of the shell: slates over the wings, and on the three flat roofs a
 plain deck at y 17 whose columns it hands out as terraces(). This package runs after the shell,
 the tower and the domes, and lays over that deck:
 
   the corner terraces   the two pockets between the great drum, a wing's gable and the east
-                        parapet. The dome room's doors open onto them; the leaves hang here, set
-                        back in the wall.
+                        parapet: flats of sheet copper, as a roof too small and too crooked for
+                        slates is covered. The dome room's doors open onto them; the leaves hang
+                        here, set back in the wall.
   the end terraces      the flat roofs of the two end pavilions, west of the clock tower and of
-                        the small dome. Each has a roof light on the axis of what stands beside
-                        it: nine blocks of glass level with the paving, an iron kerb round them, a
-                        dark ceiling light one block under the glass.
-  on all three          dark slate flags; a copper channel half a block down along every parapet;
-                        one flush course of copper at the foot of whatever rises from the terrace
-                        (the great drum, the small drum, the tower).
+                        the small dome: dark slate flags in a frame of copper, one flush course at
+                        the foot of whatever rises from the terrace (the gable, the small drum, the
+                        tower). Each has a roof light on the axis of what stands beside it: nine
+                        blocks of glass level with the flags, an iron kerb round them, a ceiling
+                        light one block under the glass.
+  on all three          a copper channel half a block down along every parapet.
   the walkways          one to each wing, the two alike. From the corner terrace the way crosses
                         the inner gable where its top is level with the terrace (x 13), climbs the
                         slates beside the gable on iron treads, and turns onto the ridge under the
                         edge of the dome's gallery. On the ridge it is a grating two blocks wide
                         between two low guards of iron panels, whose tops are level with the
-                        gables. One step takes it onto the end gable, a flight of three down to the
-                        end terrace, where the small dome's door (south) and the tower's door
-                        (north) are two blocks to the east.
+                        gables; under the grating a caged lamp every third block, so that the way
+                        is lit from below and nothing shines into an observer's eyes. One step
+                        takes it onto the end gable, a flight of three down to the end terrace,
+                        where the small dome's door (south) and the tower's door (north) are two
+                        blocks to the east.
 
-Nothing here stands higher than the gables (y 21) except the guard at the head of each flight, and
+Nothing here stands higher than the gables (y 21) except the guards at the head of each flight, and
 nothing stands on a parapet: the outline of the fronts stays the facade's.
+
+Light: the caged lamps are blocks of this package (their own light is 4); over each the light kit
+is asked for a walkway's level (sky.md 6), where the kit is in the tree. The ceiling lights under
+the two roof lights are dark glass until the lights line says otherwise.
 
 No display entities. Vent cowls, ladders and railing panels are the props line's (props/ironwork).
 
@@ -54,6 +64,7 @@ ORDER = 70                      # after the shell (20), the tower and the small 
 DECK_Y = S.ROOF_FLOOR                                   # 17: the block of every flat roof
 STAND = S.ROOF_STAND                                    # 18: where feet stand on it
 WINGS = {"north": -1, "south": 1}                       # a wing and its end pavilion: the sign of their z
+CORNER = "middle"                                       # main/facade.py's name for the two corner terraces
 GABLE_IN, GABLE_OUT = P.GABLE_Z                         # |z| 14 and 26: the gables at a wing's two ends
 ROOF_IN, ROOF_OUT = P.ROOF_Z                            # |z| 15..25: the slates between them
 RIDGE = tuple(x for x in range(S.WALL_W + 1, S.WALL_E)
@@ -62,11 +73,16 @@ RIDGE_TOP = int(P.ROOF_RIDGE_TOP)                       # 20: the ridge's top fa
 APEX_TOP = STAND + (P.ROOF_RIDGE_STEPS - 1) // 2        # 21: the top face of a gable on the ridge columns
 
 # the walkway
-CROSS_X = 13                                            # where it crosses the inner gable (see _gable_top)
+CROSS_X = 13                                            # where it crosses the inner gable: the gable's top is
+#                                                         level with the terrace there, and the dome's gallery
+#                                                         hangs over the gable from x 11 westwards
 DECK_Z = (ROOF_IN, ROOF_OUT - 1)                        # |z| 15..24: the grating on the ridge
 STEP_Z = ROOF_OUT                                       # |z| 25: the step up onto the end gable
 FLIGHT_X = RIDGE[0]                                     # 7: the flight down; the small dome's corbel hangs over 8
 FLIGHT = APEX_TOP - STAND                               # 3 steps
+LAMP_X = RIDGE[1]                                       # the lamps stand in one file under the east half
+LAMP_EVERY = 3                                          # |z| 15, 18, 21, 24
+LAMP_LEVEL = 6                                          # asked of the light kit over each lamp (walkways 5-7)
 
 # the roof light of an end terrace: its glass, as columns of the south one; the kerb is the ring round it
 LIGHT_X = (S.WALL_W + 3, FLIGHT_X - 2)                  # 3..5
@@ -74,9 +90,10 @@ LIGHT_Z = (smalldome.CZ - 1, smalldome.CZ + 1)          # |z| 29..31: on the axi
 
 PAVING = B.SLATE_SMOOTH.block
 GUTTER = f"{B.OLD_COPPER_CUT.slab}[type=bottom]"        # the channel along a parapet, half a block down
-FLASHING = B.OLD_COPPER_CUT.block                       # the course at the foot of what rises from a terrace
+FLASHING = B.OLD_COPPER_CUT.block                       # sheet copper: the corner flats, the course at a wall's foot
 GRATING = B.IRON_GRATE
 BED = B.SLATE_TILE.block                                # the ridge under the grating
+LAMP = f"{B.IRON_BULB}[lit=true,powered=false]"
 TREAD = B.IRON_RIVETED
 PANEL = B.IRON_HATCH                                    # an iron hatch on edge: the guard beside the way
 GLASS = B.SKYLIGHT.block
@@ -88,9 +105,9 @@ SHAFT = frozenset(O.box(S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[
 
 
 # --- the plan -----------------------------------------------------------------------------------------
-def _gable_top(x):
-    """The top face of a gable wall on column x: main/facade.py lays it in the steps of the roof."""
-    return STAND + (min(x - S.WALL_W, S.WALL_E - x, P.ROOF_RIDGE_STEPS) - 1) // 2
+def _on_gable(x, z):
+    """A column of a gable wall, as main/facade.py builds them between the slates and the flat roofs."""
+    return abs(z) in P.GABLE_Z and S.WALL_W < x < S.WALL_E
 
 
 def _slate(x, z):
@@ -104,7 +121,7 @@ def terraces():
     the columns the clock tower and the small drum stand on."""
     t = facade.terraces()
     return {"north": frozenset(t["north"]) - SHAFT, "south": frozenset(t["south"]) - smalldome.BODY,
-            "middle": frozenset(t["middle"])}
+            CORNER: frozenset(t[CORNER])}
 
 
 def bodies():
@@ -126,12 +143,22 @@ def _panel(edge):
     return f"{PANEL}[facing={O.NAME[(-edge[0], -edge[1])]},half=bottom,open=true]"
 
 
+def lamps(s):
+    """The cells of one walkway's lamps, under the grating; s as in walkway()."""
+    return [(LAMP_X, RIDGE_TOP - 2, s * az) for az in range(DECK_Z[0], DECK_Z[1] + 1, LAMP_EVERY)]
+
+
 def walkway(s):
     """One wing's walkway as ({cell: state} that takes the place of the roof, {cell: state} of the
     guards, which give way to whatever stands in their cell); s is -1 for the north wing, 1 for
-    the south one."""
+    the south one.
+
+    A guard is a panel in the cell beside what one walks on, on the edge towards it: the cells one
+    walks through stay empty (a light source can stand in them), and the guards of the ridge and of
+    the flight are one plane."""
     laid, guards = {}, {}
     out, back = O.NAME[(0, s)], O.NAME[(0, -s)]         # towards the end pavilion, towards the dome
+    west, east = RIDGE[0] - 1, RIDGE[1] + 1             # the columns beside the ridge
     # the treads beside the inner gable, from the crossing up to the ridge: the roof's own steps in
     # iron, the first one raised to the level of the terrace
     z = s * ROOF_IN
@@ -139,23 +166,34 @@ def walkway(s):
     for x in range(CROSS_X - 1, RIDGE[1], -1):
         y, half = _slate(x, z)
         laid[(x, y, z)] = f"{TREAD.slab}[type={half}]"
-    # the grating on the ridge, on a bed of slate, a guard on either edge; the first row is open to
-    # the east, where the treads come in
+    # the grating on the ridge, on a bed of slate with the lamps in it
     for az in range(DECK_Z[0], DECK_Z[1] + 1):
         for x in RIDGE:
             laid[(x, RIDGE_TOP - 1, s * az)] = GRATING
             laid[(x, RIDGE_TOP - 2, s * az)] = BED
-        guards[(RIDGE[0], RIDGE_TOP, s * az)] = _panel(O.WEST)
-        if az > DECK_Z[0]:
-            guards[(RIDGE[1], RIDGE_TOP, s * az)] = _panel(O.EAST)
-    # one step up onto the end gable; a guard on its far edge beside the head of the flight
+    for cell in lamps(s):
+        laid[cell] = LAMP
+    # one step up onto the end gable
     for x in RIDGE:
         laid[(x, RIDGE_TOP, s * STEP_Z)] = f"{TREAD.stairs}[facing={out},half=bottom]"
+    # the guards of the ridge; the first row is open to the east, where the treads come in
+    for az in range(DECK_Z[0], STEP_Z + 1):
+        guards[(west, RIDGE_TOP, s * az)] = _panel(O.EAST)
+        if az > DECK_Z[0]:
+            guards[(east, RIDGE_TOP, s * az)] = _panel(O.WEST)
+    # the head of the flight on the end gable: guards on both sides, and on the far edge of the
+    # half the flight does not leave by (that one stands in the gable's own cell: the cell beyond
+    # holds the flight's guard)
+    guards[(west, APEX_TOP, s * GABLE_OUT)] = _panel(O.EAST)
+    guards[(east, APEX_TOP, s * GABLE_OUT)] = _panel(O.WEST)
     guards[(RIDGE[1], APEX_TOP, s * GABLE_OUT)] = _panel((0, s))
-    # the flight down to the end terrace, a guard beside every step
+    # the flight down to the end terrace: under every step but the last a tread turned over, so the
+    # flight is one slab of iron from the gable to the flags; a guard beside every step
     for i in range(FLIGHT):
         y, z = APEX_TOP - 1 - i, s * (GABLE_OUT + 1 + i)
         laid[(FLIGHT_X, y, z)] = f"{TREAD.stairs}[facing={back},half=bottom]"
+        if y - 1 >= STAND:
+            laid[(FLIGHT_X, y - 1, z)] = f"{TREAD.stairs}[facing={out},half=top]"
         guards[(FLIGHT_X - 1, y + 1, z)] = _panel(O.EAST)
         guards[(FLIGHT_X + 1, y + 1, z)] = _panel(O.WEST)
     return laid, guards
@@ -164,7 +202,7 @@ def walkway(s):
 def doors():
     """[(x, y, z, state)] of the leaves in the dome room's two doors (skeleton DOME_ROOM_DOORS; the
     drum opens them, main/dome.py). A leaf stands on the inner edge of the outer wall's block, so
-    the doorway shows its depth from the terrace."""
+    the doorway shows its depth from the terrace; both are hinged on the east jamb."""
     y0, y1 = S.DOME_ROOM_DOORS["y"]
     out = []
     for x, z in S.DOME_ROOM_DOORS["cells"]:
@@ -198,6 +236,15 @@ def route(s):
 
 
 # --- the package --------------------------------------------------------------------------------------
+def _ask_light(canvas, cell, level, why):
+    """Register a light source with the light kit (sky/_lightkit), where the kit is in the tree."""
+    try:
+        from ..sky import _lightkit
+    except ImportError:
+        return
+    _lightkit.suggest(canvas, cell, level, why, rank=3)
+
+
 def build(canvas, origin=(0, 0, 0)):
     """Lay the terraces, the roof lights, the walkways and the door leaves over what stands there.
     No display entities."""
@@ -210,14 +257,19 @@ def build(canvas, origin=(0, 0, 0)):
         return canvas.has(ox + x, oy + y, oz + z)
 
     wall = facade.shell().wall
+    rises = bodies()
     lights = roof_lights()
     for name, cells in terraces().items():
         stands = {c for c in cells if has(c[0], STAND, c[1])}       # a pilaster of the drum keeps its foot
-        rises = bodies() | stands
         for c in cells - stands:
             near = [O.step(c, d) for d in O.SIDES]
-            put(c[0], DECK_Y, c[1], GUTTER if any(n in wall for n in near)
-                else FLASHING if any(n in rises for n in near) else PAVING)
+            if any(n in wall for n in near):
+                state = GUTTER
+            elif name == CORNER or any(n in rises or n in stands or _on_gable(*n) for n in near):
+                state = FLASHING
+            else:
+                state = PAVING
+            put(c[0], DECK_Y, c[1], state)
         glass, kerb = lights.get(name, ((), ()))
         for x, z in glass:
             put(x, DECK_Y, z, GLASS)
@@ -231,6 +283,8 @@ def build(canvas, origin=(0, 0, 0)):
         for (x, y, z), state in guards.items():
             if not has(x, y, z):
                 put(x, y, z, state)
+        for x, y, z in lamps(s):
+            _ask_light(canvas, (ox + x, oy + RIDGE_TOP, oz + z), LAMP_LEVEL, "main/roof:walkway")
     for x, y, z, state in doors():
         put(x, y, z, state)
     return 0
@@ -247,9 +301,9 @@ def _scene():
 
 def _span(state, y):
     """(bottom, top) of what a block fills of its cell, or None where one walks past it: a guard on
-    the cell's edge, a door leaf."""
+    the cell's edge, a door leaf, a light source."""
     name = state.partition("[")[0]
-    if name in (PANEL, LEAF):
+    if name in (PANEL, LEAF, B.LIGHT):
         return None
     if "type=bottom" in state:
         return (y, y + 0.5)
@@ -262,7 +316,9 @@ def check(c=None):
     """What can be told without a picture; returns the findings as lines (none is good)."""
     c = c or _scene()
     out = []
-    name = lambda x, y, z: (c.get(x, y, z) or "air").partition("[")[0]
+
+    def name(x, y, z):
+        return (c.get(x, y, z) or "air").partition("[")[0]
 
     # 1. every open column of a terrace is closed at the deck, by one of the terrace's own blocks
     floor = {b.partition("[")[0] for b in (PAVING, GUTTER, FLASHING, GLASS)}
@@ -285,33 +341,35 @@ def check(c=None):
             if name(x, STAND, z) != B.IRON_RIVETED.slab or name(x, DECK_Y, z) != PAVING:
                 out.append(f"{where} roof light: the kerb at ({x}, {z}) is not as laid")
     # 4. the way can be walked, both wings: every step half a block at most, the surface under the
-    #    feet where the route says, two blocks of air over it
+    #    feet where the route says, a body's height of air over it
     for where, s in WINGS.items():
         way = route(s)
         for (x0, z0, f0), (x1, z1, f1) in zip(way, way[1:]):
             if abs(x1 - x0) + abs(z1 - z0) > 1 or abs(f1 - f0) > 0.5:
                 out.append(f"{where} walkway: no step from ({x0}, {z0}) at {f0} to ({x1}, {z1}) at {f1}")
         for x, z, feet in way:
-            under = c.get(x, math.ceil(feet) - 1, z)
-            span = _span(under, math.ceil(feet) - 1) if under else None
+            row = math.ceil(feet) - 1                       # the row of the block the feet stand on
+            under = c.get(x, row, z)
+            span = _span(under, row) if under else None
             stair = bool(under) and under.partition("[")[0] == TREAD.stairs
             if span is None or (span[1] != feet and not (stair and span[1] - 0.5 == feet)):
                 out.append(f"{where} walkway: nothing to stand on at ({x}, {z}) at {feet} ({under})")
             for y in range(math.floor(feet), math.floor(feet + 1.79) + 1):
                 over = c.get(x, y, z)
                 span = _span(over, y) if over else None
-                if span and span[1] > feet + (0.5 if stair and y == math.ceil(feet) - 1 else 0.0) and span[0] < feet + 1.8:
+                clear = feet + (0.5 if stair and y == row else 0.0)     # the tall half of the stair one stands on
+                if span and span[1] > clear and span[0] < feet + 1.8:
                     out.append(f"{where} walkway: no headroom at ({x}, {z}) at {feet}: {over} at y {y}")
     # 5. the two walkways are one design, mirrored
-    north, south = (dict(laid, **guards) for laid, guards in (walkway(-1), walkway(1)))
-    flip = {"north": "south", "south": "north"}
+    north, south = ({**laid, **guards} for laid, guards in (walkway(-1), walkway(1)))
+    if len(north) != len(south):
+        out.append(f"walkways: {len(north)} blocks to the north, {len(south)} to the south")
     for (x, y, z), state in south.items():
-        other = north.get((x, y, -z), "")
-        for a, b in flip.items():
-            state = state.replace(f"facing={a}", f"facing=#{b}")
-        if other != state.replace("#", ""):
+        mirrored = state.replace("facing=north", "facing=#").replace("facing=south", "facing=north")
+        if north.get((x, y, -z)) != mirrored.replace("facing=#", "facing=south"):
             out.append(f"walkways: ({x}, {y}, {z}) is not the mirror of the north wing's")
-    # 6. the walkway's blocks lie as laid, and no guard stands in what is another package's block
+    # 6. the walkway's blocks lie as laid; of the guards one at the most gave way (to the small
+    #    dome's corbel beside the south flight)
     for where, s in WINGS.items():
         laid, guards = walkway(s)
         for cell, state in laid.items():
@@ -329,16 +387,16 @@ def check(c=None):
             out.append(f"door: the leaf at ({x}, {z}) stands on nothing")
     # 8. nothing of this package stands on a parapet or outside the walls
     plan = facade.shell()
+    inside = plan.leaf | plan.core
     scratch = Canvas()
     build(scratch)
-    inside = plan.leaf | plan.core
-    for (x, y, z) in scratch.b:
+    for x, y, z in sorted(scratch.b):
         if (x, z) not in inside:
             out.append(f"outline: ({x}, {y}, {z}) lies outside the parapets")
     return out
 
 
-_MARKS = {PANEL: "|", LEAF: "J", B.VERDIGRIS_CAST: "A", B.IRON_CAST: "K"}
+_MARKS = {PANEL: "|", LEAF: "J", B.IRON_BULB: "@", B.VERDIGRIS_CAST: "A", B.IRON_CAST: "K"}
 
 
 def _top_plan(c, zs, y_hi=22, y_lo=16):
@@ -371,9 +429,9 @@ def _drawings(c):
     print(O.section(c, "z", ROOF_IN, (S.WALL_W - 2, S.WALL_E + 3), ys))
     print(f"\nSECTION through the south terrace on its axis, z = {smalldome.CZ} (west on the left):\n")
     print(O.section(c, "z", smalldome.CZ, (S.WALL_W - 2, S.WALL_E + 3), (DECK_Y - 2, STAND + 4)))
-    print("\nLetters: M slate flags, C copper course, c copper channel, Y roof light, D its ceiling light,")
-    print("i iron kerb and treads, I iron block, % grating, | guard panel, J door leaf, T t slates,")
-    print("F stone. Small letters are slabs and stairs.")
+    print("\nLetters: M slate flags, C sheet copper, c copper channel, Y roof light, D its ceiling light,")
+    print("i iron kerb, treads and steps, I iron block, % grating, @ caged lamp, | guard panel, J door")
+    print("leaf, T t slates, F stone. Small letters are slabs and stairs.")
     for where, s in WINGS.items():
         way = route(s)
         print(f"\nthe way, {where} wing: {len(way)} steps from the dome room's door {way[0][:2]} to "
