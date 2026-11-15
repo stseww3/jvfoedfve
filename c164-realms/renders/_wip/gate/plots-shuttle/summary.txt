@@ -1,0 +1,12 @@
+gate common/plots-shuttle ecf454dd: the merged tree 78d0e548, the assembly as it was a1229589
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    0 of 18 files are the card's own
+                    common file (merge-key holder's; agreed beforehand?): A tools/boardshots.py
+                    common file (merge-key holder's; agreed beforehand?): A tools/realshots.py
+                    common file (merge-key holder's; agreed beforehand?): M tools/shoot.py
+                    common file (merge-key holder's; agreed beforehand?): A tools/win/CamHelper.java
+                    common file (merge-key holder's; agreed beforehand?): A tools/win/build_helper.py
+                    common file (merge-key holder's; agreed beforehand?): A tools/win/deskstate.py
+check.py: 17 scenes in 7 s: 17 pass (6 with warnings)
+pictures: nothing to verify (no test scene of the delivery keeps pictures)
+result: PASS

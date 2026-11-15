@@ -1,0 +1,27 @@
+delivery common/plots-shuttle: ecf454d against a122958 (forked at 142f307), 23 commits, 18 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    0 of 18 files are the card's own
+                common file (merge-key holder's; agreed beforehand?): A tools/boardshots.py
+                common file (merge-key holder's; agreed beforehand?): A tools/realshots.py
+                common file (merge-key holder's; agreed beforehand?): M tools/shoot.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/CamHelper.java
+                common file (merge-key holder's; agreed beforehand?): A tools/win/build_helper.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/deskstate.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/grabcheck.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/helper/CamHelper.class
+                common file (merge-key holder's; agreed beforehand?): A tools/win/helper/CamHelper.sha1
+                common file (merge-key holder's; agreed beforehand?): M tools/win/job.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/plots.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/probe.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shots/obs-board.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shots/obs-overview.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shuttle.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/trip.py
+                ... and 2 more
+[PASS] files    nothing that should not be in the repository; 1 built classes are byte for byte what their source builds here
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures no test scene with a shot list is touched
+[PASS] merge    merges cleanly; 75 commits behind the base
+result: PASS (0 failed, 1 to look at)
