@@ -262,6 +262,21 @@ def window_wall(c, role, x, y, z, frame, n=8):
         c.set(x + 4, y + dy, z + 2, st(role.pane, west="true"))
 
 
+def furnace_wall(c, x, y, z, frame, n=8):
+    """A boiler bay of the power house, as materials/windows builds it: six by six of glass in the
+    stone frame, the three lowest rows the furnace's glasses (bottom row first), dark glass above.
+    The furnace glass has no pane, so at the foot stands a row of each of its three glasses instead
+    of a screen of panes, to be read one by one as they cannot be in the sheet."""
+    c.box(x, y, z, x + n - 1, y + n - 1, z, frame)
+    rows = [fam.block for fam in B.WINDOW_FURNACE]
+    rows += [B.WINDOW_DARK.block] * (n - 2 - len(rows))
+    for r, block in enumerate(rows):
+        c.box(x + 1, y + 1 + r, z, x + n - 2, y + 1 + r, z, block)
+    for r, fam in enumerate(B.WINDOW_FURNACE):
+        c.set(x + 3, y + r, z + 2, fam.block)
+        c.set(x + 4, y + r, z + 2, fam.block)
+
+
 def hung(c, x, y, z):
     """The two signs that hang from a bracket on the side of a post: brass on its left, enamel on
     its right. Three cells wide."""

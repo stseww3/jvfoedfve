@@ -211,6 +211,7 @@ TIERS = [
     ("glass", [("window_lit", _window(B.WINDOW_LIT), False), ("window_curtain", _window(B.WINDOW_CURTAIN), False),
                ("window_frosted", _window(B.WINDOW_FROSTED), False), ("window_dark", _window(B.WINDOW_DARK), False),
                ("window_blind", _window(B.WINDOW_BLIND), False), ("skylight", _window(B.SKYLIGHT), False),
+               ("window_furnace", lambda c, x, y, z: _board.furnace_wall(c, x, y, z, B.ASHLAR_FINE.block), False),
                ("instruments", instruments, True), ("woods", woods, True)]),
 ]
 ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out by a function of their own
