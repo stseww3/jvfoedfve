@@ -103,7 +103,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 - `IRON_RIVETED`(oxidized_cut_copper+stairs/slab)：铆接板，边框 I4/I1，铆钉 1px I6 高光+下 1px I1 阴影，固定 8 点（四角+四边中），贴边使相邻块连成行。3 变体（仅刷纹变化、铆钉固定）。变体覆盖楼梯台阶。大面积平铺要在 8×8 墙上查：不起贯穿的条纹，明暗够（S3 预评第 3 条）。
 - `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心凸花（小台徽/菱形），I5/I1。2 变体。
 - `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格条 I3、交点 I5，网孔 alpha=0。2 变体。
-- `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，下半舷窗（`brass` 圈 + `glow` 中心，发光 M2 定）；上半气窗。
+- `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，上半舷窗（`brass` 圈 + `glow` 中心，圆心在上半张图正中略偏上，对玩家眼高 1.62；发光 M2 定）；下半百叶气窗。（原来写的是下半舷窗、上半气窗，实机舷窗在膝盖高，总监 #116 裁定对调。）
 - `IRON_HATCH`(oxidized_copper_trapdoor)：铆接盖 / 横百叶，2 变体。
 - `IRON_BARS`(oxidized_copper_bars，multipart)：细竖铁条 I2–I3、高光 I5 + 一道横档。
 - `IRON_PIPE`(oxidized_copper_chain，axis)：细管/绞合电缆，中列 I4、两侧 I1–I2、每 4px 法兰环 I5。

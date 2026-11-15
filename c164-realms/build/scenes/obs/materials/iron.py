@@ -187,31 +187,46 @@ def _hatch_louvre(seed):
     return px
 
 
-def _door_bottom():
-    """IRON_DOOR lower half: a riveted leaf with a brass porthole (its glow is M2's to light)."""
-    px = _plate(5, base=3, noise=0.10)
-    _panel_frame(px)
-    _rivets(px, [(1, 1), (14, 1), (1, 7), (14, 7), (1, 14), (14, 14)])
-    cx = cy = 7.5
-    _disc(px, cx, cy, 3.4, _glow(3), _glow(1))              # the lit glass seen through the port
-    _ring(px, cx, cy, 4.3, _brass(4), _brass(1), width=1.6)  # the brass rim
-    for a in range(0, 360, 90):                             # four bolts around the rim
-        _put(px, int(round(cx + 4.3 * math.cos(math.radians(a + 45)))),
-             int(round(cy + 4.3 * math.sin(math.radians(a + 45)))), _i(6))
-    return px
+# the door's two plates carry the same six rivets, so down each side they pair up across the seam
+_DOOR_RIVETS = [(1, 1), (14, 1), (1, 7), (14, 7), (1, 14), (14, 14)]
 
 
 def _door_top():
-    """IRON_DOOR upper half: a riveted leaf with a louvred transom."""
-    px = _plate(6, base=3, noise=0.10)
+    """IRON_DOOR upper half: a riveted plate with a brass porthole at eye height (its glow is M2's
+    to light) and a brass lever under it on the latch side.
+
+    The porthole's centre sits one pixel above the middle of the picture: a player's eye (1.62
+    blocks up) is 62 % of the way up the upper block, a pixel higher still, well inside the glass.
+    The game hinges the leaf on the picture's column 0, so the lever goes to the right. The plate
+    under so much fitting is left unbrushed (a seed whose streaks all fall under the porthole)."""
+    px = _plate(11, base=3, noise=0.10)
     _panel_frame(px)
-    _rivets(px, [(1, 1), (14, 1), (1, 9), (14, 9), (1, 14), (14, 14)])
-    for y in range(3, 9):                                   # the transom vent
-        colour = _i(4) if (y - 3) % 2 == 0 else _i(1)
-        for x in range(3, 13):
-            _put(px, x, y, colour)
-    for x in (3, 12):                                       # its side stiles
-        for y in range(3, 9):
+    _rivets(px, _DOOR_RIVETS)
+    cx, cy = 7.5, 6.5
+    _disc(px, cx, cy, 3.4, _glow(3), _glow(1))              # the lit glass seen through the port
+    _ring(px, cx, cy, 4.3, _brass(4), _brass(1), width=1.6)  # the brass rim
+    for a in range(45, 360, 90):                            # four bolts around the rim
+        _put(px, int(round(cx + 4.3 * math.cos(math.radians(a)))),
+             int(round(cy + 4.3 * math.sin(math.radians(a)))), _i(6))
+    for x, tone in ((10, 4), (11, 4), (12, 5)):             # the lever, its boss toward the latch edge
+        _put(px, x, 13, _brass(tone))
+        _put(px, x, 14, _i(1))
+    return px
+
+
+def _door_bottom():
+    """IRON_DOOR lower half: the lower plate with a louvred vent (three slats, like the hatch's)
+    between two stiles, and a kick strip under it. The brushing's seed is one whose only streak
+    left in sight is a dark scuff along the kick strip: a streak beside the vent would run on
+    from a slat's lip and read as a slat reaching the door's edge."""
+    px = _plate(3, base=3, noise=0.10)
+    _panel_frame(px)
+    _rivets(px, _DOOR_RIVETS)
+    for y in range(3, 12):
+        tone = (4, 2, 1)[(y - 3) % 3]                       # each slat: a lit lip, its face, the gap
+        for x in range(4, 12):
+            _put(px, x, y, _i(tone))
+        for x in (3, 12):                                   # the side stiles
             _put(px, x, y, _i(5))
     return px
 
