@@ -376,6 +376,20 @@ def main():
     print(f"result: {'FAIL' if failed else 'PASS'} ({failed} failed, {warned} to look at)")
     sys.exit(1 if failed else 0)
 
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so
+# that a dozen pictures drawn at once cannot bury the machine. Neither is an error if it
+# cannot be done.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+try:
+    import _slots
+    _slots.take()
+except Exception:
+    pass
+
 
 if __name__ == "__main__":
     main()
