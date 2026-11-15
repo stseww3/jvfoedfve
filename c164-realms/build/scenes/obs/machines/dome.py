@@ -59,8 +59,14 @@ BRASS_D = P.mat("brass_dark")
 # Every piece takes the light of the cell its entity stands in, like the blocks round it, and
 # pieces that touch stand in one cell or in two next to each other. The ring's twenty segments
 # cannot: by hand, in the sky light that falls through the slit, two neighbours differ by a fifth
-# at most. Should the joints show all the same, this gives all twenty one light, (sky, block)
-RING_LIGHT = None
+# at most. Should the joints show all the same, this gives all twenty one light, (sky, block).
+# Set at cr3's pre-review of 11-16 (cr3-M2 1 and 2): in V8 the toothed ring and the trucks measured
+# 2.5 to 3 times darker than the drum wall under them (mean 0.072/0.046 against 0.135/0.133), so
+# the one thing that says the dome turns was the darkest patch in the picture, and at 3.9 px the
+# teeth could not be read against their own backing. Sky 15 keeps the ring in the slit's light,
+# block 6 lifts it off the shaded room; the teeth and the backing are lit together, so their
+# contrast is unchanged -- RING_LIGHT is what separates both from the wall.
+RING_LIGHT = (15, 6)
 
 PX = 16.0                   # px to a block
 LINK = 4.0                  # px: a chain link; links are 3 x 2 px, every other one turned a quarter
