@@ -28,9 +28,10 @@ place() returns the number of display entities it placed. Nothing here is spread
 the rooms and the outbuildings place what they need. build() places one piece, the telescope of the
 sunset terrace, and that only once the switch DRESS is on (see site()).
 
-No brass bar crosses another at right angles in any of these (RUBRIC red line 8): the globe's
-horizon ring is wood seen from the side, its meridian stands off the main axes, the barometer's dial
-is at the foot of its board.
+No bar crosses another at right angles in any of these (RUBRIC red line 8): the celestial globe
+has only the lower half of its meridian, a cradle that ends under the horizon ring, so that from
+no side an upright bar stands across the level ring; the table globe's half meridian leans with its
+axis; the barometer's dial is at the foot of its board.
 
 The look is judged in the test scene build/scenes/obs_props_instruments.
 """
@@ -67,49 +68,34 @@ LUME = P.RAMPS["phosphor"][2]
 
 # ---- painted surfaces ----------------------------------------------------------------------------
 class _Scale(pixelart.Mat):
-    """A graduated limb: an engraved line across the grain every `pitch` pixels along it, `reach`
-    pixels long from one edge of the picture (edge: "first" or "last" row or column)."""
-    pitch, phase, reach, edge, ink = 2, 1, 2, "last", 0
+    """A graduated limb seen face on. Lines are engraved across the grain every `pitch` pixels along
+    it, `reach` pixels long from one edge of the picture (edge: "first" or "last" row or column), and
+    where `long` = (pitch, phase) is given those lines are one pixel longer. The lines start from the
+    limb's inner edge; the row along the other edge, its outline, is left whole and with `rim` it is
+    the lit edge, one step up. A line that stood on the outline would be a notch in it against a dark
+    sky, and the limb a cog."""
+    pitch, phase, reach, edge, ink, rim, long = 2, 1, 1, "first", 1, True, None
 
     def paint(self, w, h, grain="u", seed=0):
         out = super().paint(w, h, grain, seed)
         jj, ii = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
         along, across, size = (ii, jj, h) if grain == "u" else (jj, ii, w)
-        near = across < self.reach if self.edge == "first" else across >= size - self.reach
-        out[near & (along % self.pitch == self.phase), :3] = self.ramp[self.ink]
+        depth = across if self.edge == "first" else size - 1 - across     # 0 on the edge the lines start from
+        if self.rim and size >= 2:
+            out[depth == size - 1, :3] = self.ramp[min(len(self.ramp) - 1, self.base + 1)]
+        mark = (along % self.pitch == self.phase) & (depth < self.reach)
+        if self.long:
+            mark |= (along % self.long[0] == self.long[1]) & (depth < self.reach + 1)
+        out[mark, :3] = self.ramp[self.ink]
         return out
 
 
-def _scale(edge, pitch, phase, reach, ramp="brass", base=3, ink=0):
-    s = _Scale(f"{ramp}_scale_{edge}_{pitch}_{phase}_{reach}", P.RAMPS[ramp], kind="flat", bevel=0, base=base)
-    s.edge, s.pitch, s.phase, s.reach, s.ink = edge, pitch, phase, reach, ink
+def _scale(edge, pitch, phase, reach, ramp="brass", base=3, ink=1, rim=True, long=None):
+    name = f"{ramp}_scale_{edge}_{pitch}_{phase}_{reach}_{ink}" + ("_rim" if rim else "") + \
+        (f"_long_{long[0]}_{long[1]}" if long else "")
+    s = _Scale(name, P.RAMPS[ramp], kind="flat", bevel=0, base=base)
+    s.edge, s.pitch, s.phase, s.reach, s.ink, s.rim, s.long = edge, pitch, phase, reach, ink, rim, long
     return s
-
-
-class _Stars(pixelart.Mat):
-    """The painted sky of a celestial globe: enamel blue with single-pixel stars, one pixel in
-    `rare`: most a dim cream, some the brightest cream, a few pale gold."""
-    rare = 15
-
-    def paint(self, w, h, grain="u", seed=0):
-        out = super().paint(w, h, grain, seed)
-        jj, ii = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
-        r = pixelart._hash(ii * 3 + 1, jj * 5 + 2, seed * 13 + 7) * self.rare
-        out[r < 1.0, :3] = P.colour("cream", 1)
-        out[r < 0.45, :3] = P.colour("cream", 3)
-        out[r < 0.15, :3] = P.colour("brass", 5)
-        return out
-
-
-class _Lands(pixelart.Mat):
-    """The map of a small globe: the metal of the seas with lighter lands in blocks of two pixels."""
-
-    def paint(self, w, h, grain="u", seed=0):
-        out = super().paint(w, h, grain, seed)
-        jj, ii = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
-        land = pixelart._hash((ii + seed) // 2, (jj + seed * 3) // 2, seed * 7 + 3) < 0.38
-        out[land, :3] = self.ramp[min(len(self.ramp) - 1, self.base + 2)]
-        return out
 
 
 class _Slats(pixelart.Mat):
@@ -133,8 +119,8 @@ class _Ribs(pixelart.Mat):
         return out
 
 
-SKY = _Stars("enamel_stars", P.RAMPS["enamel"], kind="plain", noise=0.0, bevel=0, base=1)
-LANDS = _Lands("verdigris_lands", P.RAMPS["verdigris"], kind="plain", noise=0.0, bevel=0, base=1)
+SKY = P.mat("enamel", kind="flat", bevel=0, base=1)          # the ground of the celestial globe
+SEA = P.mat("verdigris", kind="flat", bevel=0, base=1)       # and of the table globe
 SLATS = _Slats("cream_slats", P.RAMPS["cream"], kind="flat", bevel=0, base=3)
 DRUM = _Ribs("iron_slots", P.RAMPS["iron"], kind="flat", bevel=0, base=3)
 
@@ -144,30 +130,32 @@ def _sprite(name, rows, **colours):
 
 
 FACE, FACE_D = P.RAMPS["porcelain"][3], P.RAMPS["porcelain"][2]
-DIAL_COLOURS = dict(c=FACE, d=FACE_D, k=INK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3], g=LUME)
-# the barometer: a scale over the upper arc, three luminous marks, the hand at "fair"
+MARK = P.RAMPS["iron"][5]       # what is printed on a dial; only what points is as dark as ink
+DIAL_COLOURS = dict(c=FACE, d=FACE_D, k=INK, m=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3], g=LUME)
+# the barometer: a scale over the upper arc, three luminous marks; the hand is one straight line
+# through the middle and points at "fair"
 BARO_DIAL = [
-    "..ckgkc..",
-    ".kcccchk.",
-    "ccccchccc",
-    "kcccchcck",
+    "..mcgcm..",
+    ".mccccch.",
+    "cccccchcc",
+    "mcccchccm",
     "gcccbcccg",
-    "kcchcccck",
+    "mcchccccm",
     "ccccccccc",
     ".dcccccd.",
     "..ddddd..",
 ]
 # the clock: twelve marks, the quarters luminous; the hands are drawn in by _hands()
 CLOCK_DIAL = [
-    "..kcgck..",
+    "..mcgcm..",
     ".ccccccc.",
-    "kccccccck",
+    "mcccccccm",
     "ccccccccc",
     "gcccbcccg",
     "ccccccccc",
-    "kccccccck",
+    "mcccccccm",
     ".dcccccd.",
-    "..kdgdk..",
+    "..mdgdm..",
 ]
 # every clock on the hill is stopped at one time, five minutes before the time ball drops (director,
 # g2 #34140): the skeleton's CLOCK once it has it
@@ -196,7 +184,9 @@ def _lume(rows):
 
 
 GLINT = P.RAMPS["porcelain"][4]
-STROKES = ((3, 1), (2, 2), (1, 3), (4, 3), (3, 4))      # the same two strokes as furniture._pane (c179, g2 #33282)
+# two strokes like those of furniture._pane (c179, g2 #33282), one column further left: the clock's
+# door is seven pixels wide and its middle column is the pendulum rod's, which a glint would cut
+STROKES = ((2, 1), (1, 2), (0, 3), (2, 3), (1, 4))
 
 
 def _pane(m, lo, hi):
@@ -210,12 +200,163 @@ def _pane(m, lo, hi):
     m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"glint_{w}x{h}", ["".join(row) for row in rows], g=GLINT)})
 
 
-def _sphere(m, centre, radius, mat, sides, layers):
-    """A ball with a pattern on it, every face its own piece of the picture. m.ball() alone gives
-    the layers of one girth the same pictures: each painted star would stand over its twin."""
+def _ball(m, name, centre, radius, mat, sides, layers, paint):
+    """A ball with a picture on it: the stack of prisms of Model.ball, standing level whichever way
+    the globe's axis leans, every upright face with its own sprite. paint(points) is given the unit
+    vectors from the centre to every pixel of those faces (the model's frame, an array n x 3) and
+    returns for each None (the ground, mat's own tone), a number (so many steps of mat's ramp above
+    the ground) or a colour.
+
+    The ground is one tone all over, and no lighter or darker patches are painted where the faces
+    look towards the light or away from it as Model.ball does: they would be taken for the picture.
+    The game shades the faces by the way they look. The level faces between the layers carry
+    nothing: the six slabs of a layer lie over one another there, and what one had painted and the
+    next had not would flicker."""
+    k = math.tan(math.pi / sides)
+    faces, points = [], []
     for i in range(layers):
-        m.ball(centre, radius, mat, sides=sides, layers=1, patchy=True,
-               part=(2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0))
+        t0, t1 = 2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0
+        tm = (t0 + t1) / 2.0
+        r = radius * math.sqrt(max(0.0, 1.0 - tm * tm))
+        w, h = max(1, int(round(2.0 * r * k))), max(1, int(round(radius * (t1 - t0))))
+        for s in range(sides // 2):
+            turn = math.radians(360.0 * s / sides)
+            sin, cos = math.sin(turn), math.cos(turn)
+            for letter, sign in (("s", 1.0), ("n", -1.0)):          # the pictures run left to right as seen
+                faces.append((i, s, letter, w, h))
+                for row in range(h):
+                    y = radius * (t1 - (row + 0.5) / h * (t1 - t0))
+                    for col in range(w):
+                        x, z = sign * r * k * ((2.0 * col + 1.0) / w - 1.0), sign * r
+                        p = (x * cos + z * sin, y, z * cos - x * sin)
+                        size = math.sqrt(sum(v * v for v in p))
+                        points.append(tuple(v / size for v in p))
+    marks = iter(paint(np.array(points)))
+    sprites = {}
+    for i, s, letter, w, h in faces:
+        rows, chars = [], {}
+        for _ in range(h):
+            row = ""
+            for _ in range(w):
+                mark = next(marks)
+                if not isinstance(mark, str):
+                    mark = mat.ramp[int(min(len(mat.ramp) - 1, max(0, mat.base + (mark or 0))))]
+                    mark = "#%02x%02x%02x" % tuple(int(v) for v in mark)
+                row += chars.setdefault(mark, chr(ord("a") + len(chars)))
+            rows.append(row)
+        sprites[i, s, letter] = Sprite(f"{PREFIX}{name}_{i}_{s}{letter}", rows, {ch: c for c, ch in chars.items()})
+    for i in range(layers):
+        t0, t1 = 2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0
+        r = radius * math.sqrt(max(0.0, 1.0 - ((t0 + t1) / 2.0) ** 2))
+        lo = (centre[0] - r * k, centre[1] + radius * t0, centre[2] - r)
+        hi = (centre[0] + r * k, centre[1] + radius * t1, centre[2] + r)
+        for s in range(sides // 2):
+            angle = 360.0 * s / sides
+            m.box(lo, hi, mat, rot=("y", angle, tuple(centre)) if angle else None, skip="ew", grain="x",
+                  faces={"s": sprites[i, s, "s"], "n": sprites[i, s, "n"]})
+
+
+def _leaned(tilt, yaw=0.0):
+    """The turn that leans a globe's polar axis `tilt` degrees from the vertical towards +x, then
+    swings it `yaw` degrees about the vertical: what the pins and the rings are drawn in."""
+    return M._qmul(M.quat("y", yaw), M.quat("z", -tilt))
+
+
+# The brighter stars of the sky: (right ascension in hours, declination in degrees, class, warm).
+# Class 1 is the dozen everybody knows, 2 the rest of the first magnitude, 3 the second-magnitude
+# stars that make the figures; warm are the orange and red ones. A pixel of this globe is nearly six
+# degrees, so a figure is a handful of pixels at most and no line is drawn between them.
+STARS = (
+    (6.75, -16.7, 1, 0), (6.40, -52.7, 1, 0), (14.66, -60.8, 1, 0), (14.26, 19.2, 1, 1), (18.62, 38.8, 1, 0),
+    (5.28, 46.0, 1, 0), (5.24, -8.2, 1, 0), (7.65, 5.2, 1, 0), (1.63, -57.2, 1, 0), (5.92, 7.4, 1, 1),
+    (14.06, -60.4, 1, 0), (19.85, 8.9, 1, 0), (12.44, -63.1, 1, 0),
+    (4.60, 16.5, 2, 1), (16.49, -26.4, 2, 1), (13.42, -11.2, 2, 0), (7.76, 28.0, 2, 1), (22.96, -29.6, 2, 0),
+    (20.69, 45.3, 2, 0), (12.80, -59.7, 2, 0), (10.14, 12.0, 2, 0), (6.98, -29.0, 2, 0), (7.58, 31.9, 2, 0),
+    (12.52, -57.1, 2, 1), (17.56, -37.1, 2, 0), (5.42, 6.3, 2, 0), (5.44, 28.6, 2, 0), (9.22, -69.7, 2, 0),
+    (5.60, -1.2, 2, 0),
+    # the hunter and the dogs, the twins, the charioteer, the bull
+    (5.68, -1.9, 3, 0), (5.53, -0.3, 3, 0), (5.80, -9.7, 3, 0), (6.38, -18.0, 3, 0), (7.14, -26.4, 3, 0),
+    (6.63, 16.4, 3, 0), (5.99, 44.9, 3, 0), (3.79, 24.1, 3, 0), (5.13, -5.1, 3, 0), (5.55, -17.8, 3, 0),
+    # the bears, the dragon, the queen, the king
+    (11.06, 61.8, 3, 1), (11.03, 56.4, 3, 0), (11.90, 53.7, 3, 0), (12.26, 57.0, 3, 0), (12.90, 56.0, 3, 0),
+    (13.40, 54.9, 3, 0), (13.79, 49.3, 3, 0), (2.53, 89.3, 3, 0), (14.85, 74.2, 3, 1), (17.94, 51.5, 3, 1),
+    (0.15, 59.2, 3, 0), (0.68, 56.5, 3, 1), (0.95, 60.7, 3, 0), (1.43, 60.2, 3, 0), (21.31, 62.6, 3, 0),
+    # the hero, the chained lady, the winged horse, the ram, the whale
+    (3.41, 49.9, 3, 0), (3.14, 41.0, 3, 0), (2.06, 42.3, 3, 1), (1.16, 35.6, 3, 1), (0.14, 29.1, 3, 0),
+    (23.06, 28.1, 3, 1), (23.08, 15.2, 3, 0), (0.22, 15.2, 3, 0), (21.74, 9.9, 3, 1), (2.12, 23.5, 3, 1),
+    (0.73, -18.0, 3, 1), (3.04, 4.1, 3, 1),
+    # the lion, the water snake, the maiden, the crow, the herdsman, the crown
+    (10.33, 19.8, 3, 1), (11.82, 14.6, 3, 0), (11.24, 20.5, 3, 0), (9.46, -8.7, 3, 1), (12.69, -1.4, 3, 0),
+    (13.04, 11.0, 3, 0), (12.26, -17.5, 3, 0), (15.58, 26.7, 3, 0), (14.75, 27.1, 3, 1),
+    # the scorpion, the archer, the serpent bearer, the strong man, the scales
+    (16.01, -22.6, 3, 0), (17.62, -43.0, 3, 0), (16.84, -34.3, 3, 1), (18.40, -34.4, 3, 0), (18.92, -26.3, 3, 0),
+    (17.58, 12.6, 3, 0), (17.17, -15.7, 3, 0), (16.50, 21.5, 3, 0), (17.24, 14.4, 3, 1), (15.28, -9.4, 3, 0),
+    # the swan, the lyre's neighbours, the eagle, the water bearer, the sea goat
+    (20.37, 40.3, 3, 0), (19.51, 28.0, 3, 1), (19.77, 10.6, 3, 1), (22.10, -0.3, 3, 0), (21.53, -5.6, 3, 0),
+    (21.78, -16.1, 3, 0),
+    # the far south: the ship, the centaur, the crane, the peacock, the phoenix
+    (8.38, -59.5, 3, 1), (9.13, -43.4, 3, 1), (8.16, -47.3, 3, 0), (8.06, -40.0, 3, 0), (8.75, -54.7, 3, 0),
+    (14.11, -36.4, 3, 1), (13.66, -53.5, 3, 0), (16.81, -69.0, 3, 1), (22.14, -47.0, 3, 0), (20.43, -56.7, 3, 0),
+    (0.44, -42.3, 3, 1), (5.66, -34.1, 3, 0),
+)
+STAR_TONES = {(1, 0): P.RAMPS["cream"][3], (1, 1): P.RAMPS["brass"][5], (2, 0): P.RAMPS["cream"][1],
+              (2, 1): P.RAMPS["brass"][4], (3, 0): P.RAMPS["night_glass"][4], (3, 1): P.RAMPS["night_glass"][4]}
+MILKY_WAY = (12.857, 27.13, 6.0)        # the pole of the band of the Milky Way, and half its width in degrees
+GLOBE_HOUR = 9.0                        # the right ascension, in hours, that stands in front (+z) on the horizon ring:
+                                        # the hunter and his dogs are up on the front of the globe, left of the pole
+
+
+def _sky_point(hours, degrees, lean):
+    """Where a point of the sky lies on the celestial globe, as a unit vector in the model's frame.
+    The sky is seen from outside, so right ascension runs to the right for whoever faces the globe."""
+    a, d = math.radians(15.0 * (hours - GLOBE_HOUR)), math.radians(degrees)
+    return M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a)))
+
+
+def _stars(lean):
+    """paint() for _ball: the sky of the celestial globe. Each star of STARS is one pixel, the pixel
+    that lies nearest to it; where two would stand side by side the fainter one is left out, so the
+    figures stay figures of single points. The Milky Way is the ground one step lighter."""
+    def paint(points):
+        marks = [None] * len(points)
+        north = np.array(_sky_point(MILKY_WAY[0], MILKY_WAY[1], lean))
+        for n in np.nonzero(np.abs(points @ north) < math.sin(math.radians(MILKY_WAY[2])))[0]:
+            marks[n] = 1
+        taken = []
+        for hours, degrees, rank, warm in sorted(STARS, key=lambda star: star[2]):
+            at = np.array(_sky_point(hours, degrees, lean))
+            n = int(np.argmax(points @ at))
+            if float(points[n] @ at) < math.cos(math.radians(9.0)):
+                continue                # it lies on a level face, the flat of the crown or of the foot
+            # a pixel is a little under 6 degrees: nearer than 1.3 pixels is side by side
+            if all(float(points[n] @ points[other]) < math.cos(math.radians(7.4)) for other in taken):
+                taken.append(n)
+                marks[n] = STAR_TONES[rank, warm]
+        return marks
+    return paint
+
+
+# The lands of the table globe: round patches (longitude, latitude, radius in degrees) that run into
+# one another. It is the map of no country: three masses and two islands, so that every side of the
+# ball shows a coast.
+LANDS = (
+    (20.0, 38.0, 30.0), (52.0, 24.0, 22.0), (74.0, 44.0, 20.0), (28.0, 2.0, 16.0), (34.0, -22.0, 13.0),
+    (150.0, -20.0, 22.0), (172.0, 6.0, 15.0), (132.0, -42.0, 12.0),
+    (265.0, 30.0, 24.0), (286.0, 4.0, 17.0), (292.0, -26.0, 14.0), (240.0, 52.0, 14.0),
+    (110.0, 62.0, 9.0), (215.0, -8.0, 7.0),
+)
+
+
+def _lands(lean):
+    """paint() for _ball: the map of the table globe, the lands two steps lighter than the seas."""
+    def paint(points):
+        land = np.zeros(len(points), dtype=bool)
+        for lon, lat, radius in LANDS:
+            a, d = math.radians(lon), math.radians(lat)
+            at = np.array(M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a))))
+            land |= points @ at > math.cos(math.radians(radius))
+        return [2 if on else None for on in land]
+    return paint
 
 
 def _dial(m, name, rows, centre, z):
@@ -271,7 +412,7 @@ def _scope(name, tilt, diagonal=False):
     for x in (-4.0, 3.0):
         m.box((x, foot + 1.0, -1.5), (x + 1.0, SCOPE_PIVOT + 1.5, 1.5), IRON, grain="y")
     m.tube("x", (SCOPE_PIVOT, 0), -5.5, -4.0, 1.5, BRASS_D, cap=KNOB)                   # clamp knob, on the left
-    limb = _scale("first", 3, 1, 1)
+    limb = _scale("last", 3, 1, 1)
     with m.turned(("x", -tilt), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
         side, ends = 4.5, (101.25, 258.75)                                              # on the right the altitude
@@ -311,16 +452,23 @@ def _tripod_scope_comet():
     return _scope("tripod_scope_comet", comet_tilt(), diagonal=True)
 
 
+LATITUDE = getattr(S, "LATITUDE", 45.0)         # how high the pole of the sky stands (the skeleton's, once it has it)
 GLOBE_R = 10.0          # the sphere: 20 px across
 GLOBE_Y = 19.0          # height of its centre and of the horizon ring
-GLOBE_TILT = 38.0       # the polar axis leans this far from the vertical
-GLOBE_YAW = 25.0        # the meridian ring stands this far off the model's x axis: never edge-on from the front
+GLOBE_TILT = 90.0 - LATITUDE    # the polar axis leans this far from the vertical: the globe is set for the hill
+GLOBE_YAW = 0.0         # the plane of the meridian: the model's x-y plane, the pole leaning towards +x; its
+                        # two ends meet the horizon ring as far from the one front leg as from the other
 
 
 def _celestial_globe():
     """A star globe in a floor stand: three legs carry a wooden horizon ring with a brass scale let
-    into its top, a graduated brass meridian ring stands in it and holds the sphere by its poles.
-    28 px across the horizon ring, 31.5 px tall. Anchor: the floor under its middle."""
+    into its top; a graduated brass half meridian hangs in it, rests in a cradle on the stretchers
+    and carries the sphere by its south pole. On the north pole sits the hour circle. Nothing of
+    brass stands above the horizon ring but that: a whole meridian ring, seen in its own plane, is
+    an upright bar across the level ring (red line 8). 28 px across the horizon ring, 29 px tall.
+    The sky is the real one (STARS), seen from outside as on every star globe, and the globe is set
+    for the hill's latitude: who stands in front of it (+z) has the pole up on his right, the
+    model's +x. Anchor: the floor under its middle."""
     m = M.Model(PREFIX + "celestial_globe")
     cy, r = GLOBE_Y, GLOBE_R
     for turn in (60.0, 180.0, 300.0):                   # two legs in front, one behind
@@ -334,19 +482,20 @@ def _celestial_globe():
             m.box((-1.25, 16.0, z - 1.25), (1.25, cy - 1.0, z + 1.25), WOOD_D)
             m.box((-1.0, 5.0, 2.0), (1.0, 6.5, z - 1.25), WOOD, grain="z")              # stretcher
     m.tube("y", (0, 0), 4.5, 6.5, 2.75, WOOD_D)                                         # hub of the stretchers
-    m.ring("y", (0, cy, 0), 12.5, 3.0, 2.0, WOOD, sides=24, faces={"u": _scale("last", 2, 1, 2)})   # horizon ring
+    m.ring("y", (0, cy, 0), 12.5, 3.0, 2.0, WOOD, sides=24,
+           faces={"u": _scale("first", 2, 1, 1, long=(4, 1))})                          # horizon ring
+    lean = _leaned(GLOBE_TILT, GLOBE_YAW)
+    _ball(m, "sky", (0, cy, 0), r, SKY, 12, 10, _stars(lean))
     with m.turned(("y", GLOBE_YAW)):
         for z in (-1.75, 0.75):                                                         # the cradle under the meridian
             m.box((-1.5, 6.5, z), (1.5, 8.75, z + 1.0), BRASS_D)
-        m.ring("z", (0, cy, 0), r + 1.5, 2.0, 1.5, BRASS, sides=24,
-               faces={"s": _scale("last", 3, 1, 1), "n": _scale("first", 3, 1, 1)})     # meridian ring
+        m.ring("z", (0, cy, 0), r + 1.5, 2.0, 1.5, BRASS, sides=24, arc=(180.0, 360.0),
+               faces={"s": _scale("first", 3, 1, 1), "n": _scale("last", 3, 1, 1)})     # half meridian, under the ring
     with m.turned(("z", -GLOBE_TILT), ("y", GLOBE_YAW), about=(0, cy, 0)):
-        _sphere(m, (0, cy, 0), r, SKY, sides=12, layers=10)
-        m.tube("y", (0, 0), cy + r + 0.1, cy + r + 0.6, 2.5, BRASS_D)                   # hour circle
-        for a0, a1 in ((cy - r - 3.25, cy - r), (cy + r, cy + r + 3.25)):               # the pins at the poles
-            m.tube("y", (0, 0), a0, a1, 0.75, BRASS)
-        for a0, a1 in ((cy - r - 3.5, cy - r - 2.5), (cy + r + 2.5, cy + r + 3.5)):     # and their nuts
-            m.tube("y", (0, 0), a0, a1, 1.25, BRASS_D, cap=KNOB)
+        m.tube("y", (0, 0), cy + r - 1.0, cy + r + 0.5, 2.5, BRASS_D, cap=K.flat("brass", 3))   # hour circle
+        m.tube("y", (0, 0), cy + r + 0.5, cy + r + 1.5, 1.0, BRASS_D, cap=KNOB)         # and its pointer's knob
+        m.tube("y", (0, 0), cy - r - 3.25, cy - r + 1.0, 0.75, BRASS)                   # the pin at the south pole
+        m.tube("y", (0, 0), cy - r - 3.5, cy - r - 2.5, 1.25, BRASS_D, cap=KNOB)        # and its nut
     return m
 
 
@@ -361,10 +510,10 @@ def _globe():
     m.tube("y", (0, 0), 3.75, 5.0, 1.75, BRASS_D)                                       # the socket of the meridian
     north = 90.0 - tilt
     m.ring("z", (0, cy, 0), r + 1.25, 1.5, 1.25, BRASS, sides=24, arc=(north - 187.5, north + 7.5),
-           faces={"s": _scale("last", 2, 0, 1), "n": _scale("first", 2, 0, 1)})         # half meridian
+           faces={"s": _scale("first", 2, 0, 1), "n": _scale("last", 2, 0, 1)})         # half meridian
+    _ball(m, "earth", (0, cy, 0), r, SEA, 12, 5, _lands(_leaned(tilt)))
     with m.turned(("z", -tilt), about=(0, cy, 0)):
-        _sphere(m, (0, cy, 0), r, LANDS, sides=12, layers=5)
-        for a0, a1 in ((cy - r - 2.25, cy - r), (cy + r, cy + r + 2.25)):
+        for a0, a1 in ((cy - r - 2.25, cy - r + 1.0), (cy + r - 1.0, cy + r + 2.25)):
             m.tube("y", (0, 0), a0, a1, 0.75, BRASS_D, cap=KNOB)
     return m
 
@@ -385,7 +534,7 @@ def _sextant():
     for x in (-5.5, 3.5):
         m.box((x, 2.0, -1.5), (x + 2.0, 4.0, 1.5), WOOD)
     m.ring("z", top, reach, 2.0, 1.5, BRASS, sides=36, arc=(240.0, 300.0),
-           faces={"s": _scale("last", 2, 0, 1), "n": _scale("first", 2, 0, 1)})         # the limb
+           faces={"s": _scale("first", 2, 0, 1), "n": _scale("last", 2, 0, 1)})         # the limb
     for deg in (240.0, 300.0):                                                          # the frame: no cross brace
         m.beam(top, at(deg, reach - 0.5), 1.25, 1.5, BRASS_D)
     m.tube("z", (top[0], top[1]), -0.75, 2.25, 1.5, BRASS, cap=KNOB)                    # pivot
@@ -423,8 +572,8 @@ def _barometer():
     m.tube("z", (0, y - 5.0), 3.0, 3.5, 0.75, BRASS_D, cap=KNOB)                        # set-hand knob, on the bezel
     m.box((-2.5, y + 5.0, 0.0), (2.5, 29.0, 1.0), WOOD, grain="y")                      # neck
     m.box((-1.5, 15.0, 1.0), (1.5, 27.0, 1.25), K.flat("porcelain", 3), skip="nudew",
-          faces={"s": _sprite("baro_thermo", ["ctc", "ktc"] * 4 + ["cmc", "kmc"] * 2, c=FACE, k=INK,
-                              t=P.RAMPS["porcelain"][4], m=P.RAMPS["iron"][5])})        # thermometer
+          faces={"s": _sprite("baro_thermo", ["ctc", "mtc"] * 4 + ["cqc", "mqc"] * 2, c=FACE, m=MARK,
+                              t=P.RAMPS["porcelain"][4], q=P.RAMPS["iron"][2])})        # thermometer
     for ty in (14.0, 27.0):
         m.box((-1.5, ty, 1.0), (1.5, ty + 1.0, 2.0), BRASS_D)                           # its clips
     m.box((-3.5, 29.0, 0.0), (3.5, 30.0, 2.0), WOOD_D)                                  # cap
@@ -460,7 +609,7 @@ def _regulator_clock():
         m.box((-3.5, y, 4.0), (3.5, y + 1.0, 5.0), WOOD_L, grain="x")
     _pane(m, (-3.5, 3.0, 4.65), (3.5, 18.0, 4.75))                                      # the door's glass
     m.box((-2.5, 3.0, 1.0), (2.5, 4.0, 1.25), K.flat("porcelain", 3), skip="nudew",
-          faces={"s": _sprite("clock_beat", ["kckck"], c=FACE, k=INK)})                 # beat scale
+          faces={"s": _sprite("clock_beat", ["mcmcm"], c=FACE, m=MARK)})                # beat scale
     m.tube("z", (4.0, 11.0), 5.0, 6.0, 0.75, BRASS_D, cap=KNOB)                         # door knob
     return m
 
@@ -516,7 +665,7 @@ def _calc_machine():
     m.box((-6.5, 0.0, -5.0), (6.5, 1.0, 6.0), WOOD_D)                                   # board
     m.box((-5.5, 1.0, 2.0), (5.5, 4.0, 5.0), IRON_D)                                    # carriage
     m.box((-4.5, 2.0, 5.0), (4.5, 3.0, 5.1), K.flat("porcelain", 3), skip="nudew",
-          faces={"s": _sprite("calc_register", ["ckckckckc"], c=FACE, k=INK)})          # result windows
+          faces={"s": _sprite("calc_register", ["cbcbcbcbc"], c=FACE, b=P.RAMPS["brass"][2])})   # result windows in a brass strip
     m.box((-5.5, 1.0, -4.0), (5.5, 3.0, 2.0), IRON)                                     # body
     for x in (-5.5, 4.5):
         m.box((x, 3.0, -4.0), (x + 1.0, 8.0, 2.0), IRON, grain="y")                     # side plates
@@ -530,9 +679,6 @@ def _calc_machine():
     m.tube("x", (8.0, 1.0), 6.5, 9.0, 0.75, WOOD_D, cap=K.flat("dark_wood", 3))
     m.tube("x", (2.5, 3.5), -6.5, -5.5, 1.0, BRASS_D, cap=KNOB)                         # clearing knob on the carriage
     return m
-
-
-LATITUDE = getattr(S, "LATITUDE", 45.0)         # how high the polar axis stands (the skeleton's, once it has it)
 
 
 def _sunshine_recorder():
@@ -550,8 +696,13 @@ def _sunshine_recorder():
     m.box((-1.0, 2.0, -3.0), (1.0, 3.0, -0.5), BRASS_D)                                 # the arm that carries the bowl
     with m.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):                              # y is the polar axis in here
         m.ring("y", (0.0, cy, 0.0), r + 1.5, 1.0, 3.0, BRASS, sides=16, arc=(0.0, 180.0),
-               faces={"w": _scale("last", 2, 0, 2, ramp="cream")})                      # the bowl and the card in it
-    m.ball((0.0, cy, 0.0), r, LENS, sides=12, layers=6)                                 # the glass ball
+               faces={"w": _scale("last", 2, 0, 2, ramp="cream", ink=0, rim=False)})    # the bowl and the card in it
+    # the glass ball, in bands of tone like the lamps' glass (_kit.glass_ball) but unlit: the sky on
+    # its crown, the light it gathers low down, dark where one looks through it and where it rests
+    for i, step in enumerate((1, 3, 2, 2, 3, 4)):
+        glass = K.flat("night_glass", step)
+        m.ball((0.0, cy, 0.0), r, glass, sides=12, layers=1, part=(i / 3.0 - 1.0, (i + 1) / 3.0 - 1.0),
+               faces={"n": glass, "s": glass, "u": glass, "d": glass}, shade=False)
     # its glint: one white pixel on the facet that looks up and to the left of the front (the second
     # layer from the top, the facet 30 degrees round from +z towards -x), a hair proud of the glass
     girth = r * math.sqrt(1.0 - 0.5 * 0.5)

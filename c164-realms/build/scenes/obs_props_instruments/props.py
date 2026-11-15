@@ -32,8 +32,8 @@ def _wall(name, foot, more=()):
 
 
 def _edge_on(name, away):
-    """The celestial globe turned so that the camera stands in the plane of its meridian ring: the
-    ring is one upright line, the horizon ring one level band (red line 8, near and far)."""
+    """The celestial globe turned so that the camera stands in the plane of its half meridian: one
+    upright line under the level band of the horizon ring, none above it (red line 8, near and far)."""
     turned = {"yaw": instruments.GLOBE_YAW - 90.0}
     return (name, [(P + "celestial_globe", None, turned)], (0.0, 1.62, away), (0.0, 1.1, 0.0))
 
