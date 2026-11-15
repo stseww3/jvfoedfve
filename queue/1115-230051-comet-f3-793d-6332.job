@@ -1,0 +1,3 @@
+branch=cursor/c164-comet-f3-793d
+head=a5ddf7bd885e15751c7a294fe640faca5c3b8e60
+args=--wip --always --tail 80 --limit 1800 bash tools/gate.sh sky/comet a5ddf7bd --base b309f709 
