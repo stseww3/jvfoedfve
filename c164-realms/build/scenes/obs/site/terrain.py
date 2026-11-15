@@ -209,7 +209,8 @@ ARC_STEP = 15                   # degrees between the piers on the sunset terrac
 # --- the first draft's ring of cloud (a stand-in; sky/cloudsea takes over) ---------------------------
 CLOUD_TOP = -26                 # the top face of the block cloud sheet
 CLOUD_BOTTOM = -28              # three courses of cloud; the mountain plunges past it
-CLOUD_MARGIN = 11               # how far the ring reaches beyond the mountain's foot
+CLOUD_MARGIN = 28               # how far the ring reaches beyond the mountain's foot: past the far end of the cable
+#                                 track, which goes under the cloud 116 blocks from the ring's middle (site/cablecar)
 CLOUD = B.CLOUD
 
 
