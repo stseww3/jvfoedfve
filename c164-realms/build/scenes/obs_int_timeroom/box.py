@@ -21,6 +21,11 @@ main/shell of c231's branch 4b9d320b, built and read cell by cell). Whose every 
                        really has. Until it is in the tree the box glazes the lit windows with the
                        dark glass, which is what the room sees; nobody looks at the box from
                        outside
+
+Beyond the door the box has a piece of the hall's side gallery, shut in by a floor, a lid and three
+walls with one lamp of the hall on the cross wall beside the door: the gallery is indoors, and
+what the room sees through its doorway is a dim hall. Left open, the doorway showed the sky, and
+that was the lightest thing in every picture that looks back at the door.
 """
 from artkit.blocks import st
 
@@ -29,6 +34,7 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import timeroom as T
 from scenes.obs.main import _plan as MP
 from scenes.obs.materials import windows
+from scenes.obs.props import lamps
 
 LIT = {"east": (3, 6), "west": (3, 5)}      # the lit windows of the room under the blue look (sky/lights)
 OUTSIDE = 8                                 # the level of the sources of a lit opal window, in its opening
@@ -36,6 +42,8 @@ LINE = getattr(windows, "line", None)       # the lining of a lit window, once m
 ROOM_SIDE = B.WINDOW_FROSTED if LINE else B.WINDOW_DARK     # the glass of a lit window: the real one when it can be lined
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z1 + 2, T.Z1 + 3)            # -5..-4: the deck of the hall's side gallery, the rail on its edge
+HALL_Z = T.Z1 + 5                           # -2: the wall that stands in for the hall beyond the gallery
+HALL_LAMP = (T.DOOR_X[1] + 2.5, T.FEET + 3.5, 10)   # a lamp of the hall on the cross wall east of the door: x, y, its level
 CORNICE_Y = S.CORNICE                       # 15: the course over the windows; it reaches two blocks out
 REACH = 2
 
@@ -106,14 +114,22 @@ def build(c, origin=(0, 0, 0)):
                 if LINE:
                     LINE(c, panes, inward, glass, origin=origin)
 
-    # the door, and a piece of the gallery beyond it
+    # the door, and a piece of the gallery beyond it: indoors, so a floor, a lid and three walls stand
+    # in for the hall, and one of the hall's lamps hangs on the cross wall beside the door
     for x in range(T.DOOR_X[0], T.DOOR_X[1] + 1):
         for y in range(DOOR_Y[0], DOOR_Y[1] + 1):
             cut(x, y, zs)
-    for x in range(T.X0, T.X1 + 1):
-        for z in range(GALLERY_Z[0], GALLERY_Z[1] + 1):
+    for z in range(GALLERY_Z[0], HALL_Z + 1):
+        for x in range(gw, ge + 1):
             put(x, T.FLOOR_Y, z, B.ASHLAR_FINE.block)
+            put(x, T.CEIL_Y, z, B.ASHLAR_FINE.block)
+            if z == HALL_Z or x in (gw, ge):
+                for y in range(T.FEET, T.TOP + 1):
+                    put(x, y, z, wall_block(y))
+    for x in range(gw + 1, ge):
         put(x, T.FEET, GALLERY_Z[1], B.IRON_BARS)
+    lamps.place(c, "bracket", (HALL_LAMP[0], HALL_LAMP[1], zs + 1.0), facing="south", origin=origin,
+                version="b", level=HALL_LAMP[2])
     return [((ox + x, oy + y, oz + z), level) for (x, y, z), level in sources]
 
 
