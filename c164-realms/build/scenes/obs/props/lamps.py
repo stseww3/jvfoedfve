@@ -81,20 +81,29 @@ def _rose(m):
 
 
 # ---- the models --------------------------------------------------------------------------------------
+YOKE = 2.0              # the struts of the street lamp's yoke, square: nothing thinner stands free on it
+
+
 def _street():
-    """Cast-iron street lamp with an opal globe, five blocks tall. It is shown at scale 2, so the
-    units here are eighths of a block and px=2 keeps 16 texels to the block. Anchor: foot centre."""
+    """Cast-iron street lamp with an opal globe, five blocks tall: a shaft with two bands, and from
+    the upper band a yoke of two struts that carries the brass gallery, which is as wide as the
+    globe. The shaft ends at that band, so the sky shows between the struts and the outline is a Y
+    that holds the globe; no bar sticks out level anywhere (A0, group #33831 two). The yoke spreads
+    along x, across the way the lamp faces: seen along z it is the whole Y, from the side one
+    upright, from below one bar under the gallery. It is shown at scale 2, so the units here are
+    eighths of a block and px=2 keeps 16 texels to the block. Anchor: foot centre."""
     m = M.Model(PREFIX + "street", px=2.0)
     m.tube("y", (0, 0), 0.0, 1.5, 3.0, IRON_D)                          # plinth
     m.taper("y", (0, 0), 1.5, 6.0, 2.5, 1.25, IRON, steps=3)            # swelling foot
     m.tube("y", (0, 0), 6.0, 7.0, 1.75, IRON_D)
-    m.tube("y", (0, 0), 7.0, 29.0, 0.75, IRON)                          # shaft
+    m.tube("y", (0, 0), 7.0, 24.0, 0.75, IRON)                          # shaft
     m.tube("y", (0, 0), 17.0, 18.0, 1.25, IRON_D)
-    m.box((-3.5, 26.5, -0.25), (3.5, 27.0, 0.25), IRON, grain="x")      # the ladder bar
-    for x in (-3.5, 3.5):
-        m.box((x - 0.5, 26.25, -0.5), (x + 0.5, 27.25, 0.5), IRON_D)
-    m.taper("y", (0, 0), 29.0, 31.0, 1.0, 2.0, IRON, steps=2)           # capital
-    m.tube("y", (0, 0), 31.0, 31.75, 2.5, BRASS)                        # gallery
+    m.tube("y", (0, 0), 24.0, 25.0, 1.25, IRON_D)                       # the band the yoke springs from
+    for side in (-1.0, 1.0):                                            # both ends are sunk in band and gallery
+        m.beam((side * 0.25, 24.5, 0.0), (side * 2.5325, 31.4, 0.0), YOKE, YOKE, IRON)
+    half = YOKE / 2.0 + 0.05                                            # the crotch: one face over where the
+    m.box((-0.65, 25.0, -half), (0.65, 27.0, half), IRON)               # two struts lie in each other
+    m.tube("y", (0, 0), 31.0, 31.75, 3.5, BRASS)                        # gallery: the yoke ends under its rim
     _opal_globe(m, (0, 35.0, 0), 3.5, sides=12, fine=True)
     m.tube("y", (0, 0), 38.25, 39.0, 1.5, IRON_D)
     m.box((-0.5, 39.0, -0.5), (0.5, 40.5, 0.5), BRASS)                  # finial
@@ -150,8 +159,9 @@ def _bracket_b():
 
 
 def _cage_a():
-    """Version A caged wall lamp: a round glass on a round base under two crossed hoops. Anchor: on
-    the wall, centre of the base."""
+    """Version A caged wall lamp: a round glass on a round base behind two upright hoops side by
+    side. Nothing crosses them and nothing stands before the middle of the glass. Anchor: on the
+    wall, centre of the base."""
     m = M.Model(PREFIX + "cage_a")
     m.tube("z", (0, 0), 0.0, 1.5, 5.0, IRON)                            # base
     m.tube("z", (0, 0), 1.5, 2.5, 4.0, IRON_D)                          # glass seat
@@ -160,9 +170,8 @@ def _cage_a():
     with m.turned(("x", 90), about=(0, 0, 2.5)):                        # the dome looks out of the wall
         K.glass_ball(m, (0, 0, 2.5), 3.5,
                      [(0.0, 0.4, 1, GLOW[1]), (0.4, 0.75, 1, GLOW[2]), (0.75, 1.0, 1, GLOW[3])])
-    m.ring("x", (0, 0, 2.5), 4.25, 1.0, 1.0, IRON, sides=16, arc=(0, 180))
-    m.ring("y", (0, 0, 2.5), 4.25, 1.0, 1.0, IRON, sides=16, arc=(180, 360))
-    m.box((-1, -1, 6.5), (1, 1, 7.5), IRON_D)                           # where the hoops cross
+    for x in (-1.5, 1.5):                                               # each runs on round into the base
+        m.ring("x", (x, 0, 2.5), 4.0, 1.0, 1.0, IRON, sides=16, arc=(-22.5, 202.5))
     return m
 
 
@@ -417,10 +426,14 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #           station, where that walk comes into the stair's forecourt, on the two pedestals at the
 #           grand stair's foot, along the court's two strips. No pole for 18 cells where the
 #           meridian crosses the axis. The two pedestals at the stair's head stand on the lip and
-#           carry its low lamp: a pole there would cross the front in the arrival view.
+#           carry its low lamp: a pole there would cross the front in the arrival view. A street
+#           lamp's yoke stands across the way it lights: a pair either side of the axis faces
+#           east, and shows its Y to who comes up the axis; the other pairs stand either side of
+#           a walk that runs north and south, and face north.
 #   lip     the east lip of the upper terrace: a low lamp on the cap of every other pier, a rank
 #           under the street lamps.
-#   feet    four dim ground lamps at the feet of the armillary, looking up at its rings.
+#   feet    four dim ground lamps at the feet of the armillary, looking up at its rings, and what
+#           they throw on the brass: one source under the cell the rings take their light from.
 #   doors   everything else is dark, but for one caged lamp at the door of a small building.
 #
 # The doorway is the brightest thing on the site (14, sky/lights); the street lamps lead to it a
@@ -429,6 +442,9 @@ DRESS = False           # off in the master scene until the director has seen ob
                         # a test scene asks for the site's lamps with dress(canvas)
 STREET_LEVEL = 13
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
+FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
+                        # paving beside a ground lamp gets. Under every lit window, so that the rings stay
+                        # an outline before the doorway (A0 #33831 six); 5 to 8 after the pictures
 
 # What the packages reported in the group (g2 #283 to #295), for a tree in which a package is not
 # merged yet. Once it is, its own table or function is read instead: _told().
@@ -440,9 +456,10 @@ _REPORTED = {
     ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
     ("site._kit", "PIER_TOP"): 1.5,
     ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
-    # c246 has not named the four yet: the cells two out from the armillary's on both diagonals
-    ("machines.armillary", "LAMP_POINTS"): [(S.ARMILLARY[0] + 0.5 + dx, S.GROUND, S.ARMILLARY[1] + 0.5 + dz)
-                                            for dx in (-2, 2) for dz in (-2, 2)],
+    # c246, g2 #33389: the cells off the corners of the armillary's base, and the cell its brass is lit by
+    ("machines.armillary", "LAMP_CELLS"): [(S.ARMILLARY[0] + dx, S.ARMILLARY[1] + dz)
+                                           for dx in (-2, 2) for dz in (-2, 2)],
+    ("machines.armillary", "LIGHT_CELL"): (S.ARMILLARY[0], S.GROUND + 4, S.ARMILLARY[1]),
 }
 
 
@@ -459,8 +476,9 @@ def _told(module, name):
 def site_lamps():
     """The lamps of the site as (group, kind, point, level, aim). point: where the lamp is fixed, in
     scene coordinates before the origin (the middle of a standing lamp's foot, a wall lamp's point
-    on the wall face). level: None is the lamp's own. aim: the point a ground lamp looks at."""
-    out = []
+    on the wall face). level: None is the lamp's own. aim: a point the lamp faces, level with its
+    foot or not: what a ground lamp looks at, where a street lamp shows the whole of its yoke."""
+    out, poles = [], []
     for p in list(_told("site.lowerplatform", "LAMP_POINTS")) + list(_told("site.stair", "LAMP_POINTS")):
         if p[1] > S.GROUND:
             # a pedestal on the terrace's edge (the two at the stair's head): a pole there stands
@@ -468,15 +486,20 @@ def site_lamps():
             # It carries the lip's low lamp at the lip's level
             out.append(("way", "post", tuple(p), None, None))
         else:
-            out.append(("way", "street", tuple(p), STREET_LEVEL, None))
+            poles.append(tuple(float(v) for v in p))
     for x, z in _told("site.court", "path_lamps"):
-        out.append(("way", "street", (x + 0.5, S.GROUND, z + 0.5), STREET_LEVEL, None))
+        poles.append((x + 0.5, float(S.GROUND), z + 0.5))
+    across = 2.0 * S.AXIS_Z                             # z and across - z lie either side of the axis
+    for p in poles:
+        mate = any(q[0] == p[0] and q[1] == p[1] and abs(q[2] - (across - p[2])) < 1e-6 for q in poles)
+        ahead = (p[0] + 1.0, p[1], p[2]) if mate else (p[0], p[1], p[2] - 1.0)
+        out.append(("way", "street", p, STREET_LEVEL, ahead))
     top = S.GROUND + _told("site._kit", "PIER_TOP")
     for x, z in _told("site.court", "lip_lamps"):
         out.append(("lip", "post", (x + 0.5, top, z + 0.5), None, None))
-    middle = (S.ARMILLARY[0] + 0.5, S.GROUND + AIM_UP, S.ARMILLARY[1] + 0.5)
-    for p in _told("machines.armillary", "LAMP_POINTS"):
-        out.append(("feet", "uplight", tuple(p), None, middle))
+    middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
+    for x, z in _told("machines.armillary", "LAMP_CELLS"):
+        out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
     for p in _told("site.outbuildings", "LAMP_POINTS").values():
         out.append(("doors", "cage", tuple(p), None, None))
     return out
@@ -519,9 +542,10 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
     """Place the lamps of the site (site_lamps()), or of the groups named ("way", "lip", "feet",
     "doors"). A lamp is only placed where it has something to stand on or to hang from on the canvas
     as it is, so a tree without one of the site's packages has fewer lamps and no floating ones;
-    what was left out is kept in canvas.lamps_left_out as (group, kind, point). Returns the number
-    of display entities."""
-    n, left = 0, []
+    what was left out is kept in canvas.lamps_left_out as (group, kind, point). With the lamps at
+    the armillary's feet goes the light they throw on its rings (_feet_glow). Returns the number of
+    display entities."""
+    n, left, feet = 0, [], 0
     for group, kind, p, level, aim in site_lamps():
         if groups is not None and group not in groups:
             continue
@@ -537,8 +561,21 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
         else:
             yaw = None if aim is None else math.degrees(math.atan2(-(aim[0] - p[0]), aim[2] - p[2]))
             n += place(canvas, kind, p, origin=origin, level=level, yaw=yaw)
+            feet += group == "feet"
+    if feet:
+        _feet_glow(canvas, origin)
     canvas.lamps_left_out = list(getattr(canvas, "lamps_left_out", [])) + left
     return n
+
+
+def _feet_glow(canvas, origin=(0, 0, 0)):
+    """What the ground lamps at the armillary's feet throw on its brass. The rings are display
+    entities and all take the light of one cell, eight cells from every lamp: the lamps' own
+    sources light the base and leave the brass to the sky. So, when the rings stand there, one
+    source in the cell under that one."""
+    x, y, z = (c + o for c, o in zip(_told("machines.armillary", "LIGHT_CELL"), origin))
+    if any((math.floor(ex), math.floor(ey), math.floor(ez)) == (x, y, z) for ex, ey, ez, _ in canvas.entities):
+        K.offer_lights(canvas, [((x, y - 1, z), FEET_GLOW)], "props/lamps:uplight")
 
 
 def build(canvas, origin=(0, 0, 0), version=VERSION):
@@ -556,5 +593,5 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
     if getattr(canvas, "lamp_dress", DRESS):
         return n + site(canvas, origin, version=version)
     for z in (-5.5, 6.5):                               # either side of the axis, clear of the front
-        n += place(canvas, "street", (front + 1 + STREET_CLEARANCE + 0.5, S.GROUND, z), origin=origin)
+        n += place(canvas, "street", (front + 1 + STREET_CLEARANCE + 0.5, S.GROUND, z), facing="east", origin=origin)
     return n
