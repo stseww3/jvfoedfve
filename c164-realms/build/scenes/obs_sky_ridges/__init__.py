@@ -5,7 +5,8 @@
 
 A stand-in for the site in plain vanilla blocks, enough to stand on and to hide what the real site
 hides: the upper terrace with the half-round sunset platform at its west end, the main building
-as a plain block, the lower platform and the south lookout. The ridges themselves are the four
+as a plain block, the lower platform and the south lookout, each with walls that go down under
+the cloud layer, since the real site is a mountain. The ridges themselves are the four
 display entities of scenes.obs.sky.ridges, which stand in the middle of the terrace and are drawn
 360 to 446 blocks out.
 
@@ -48,6 +49,8 @@ BIOME_MARGIN_Y = 150
 STONE = B.TUFF_SMOOTH.block          # the stand-in's walls
 DARK = B.SLATE_SMOOTH.block          # its ground
 
+SKIRT_Y = int(mood.CLOUD_TOP) - int(mood.CLOUD_THICKNESS) - 2       # how far down the stand-in's walls go
+
 FOV = 77.0                  # what the pictures are taken at (render.py, tools/shoot.py)
 ASPECT = 16.0 / 9.0
 
@@ -85,16 +88,30 @@ def shots():
             for name, (pos, at, look) in CAMERAS.items()]
 
 
+def _skirt(c, cells, top):
+    """Walls under the rim of a paving (a set of (x, z)), from under it down to SKIRT_Y: what the
+    mountain under a terrace hides stays hidden."""
+    for x, z in cells:
+        if all((x + dx, z + dz) in cells for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+            continue
+        for y in range(SKIRT_Y, top):
+            c.set(x, y, z, STONE)
+
+
+def _rect(x0, z0, x1, z1):
+    return {(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)}
+
+
 def build():
     c = Canvas()
     x0, z0, x1, z1 = S.UPPER_TERRACE
-    c.box(x0, S.PAVING_Y, z0, x1, S.PAVING_Y, z1, DARK)
+    upper = _rect(x0, z0, x1, z1)
     cx, cz = S.SUNSET_PLATFORM["centre"]
     r = S.SUNSET_PLATFORM["radius"]
-    for x in range(cx - r, x0):
-        for z in range(cz - r, cz + r + 1):
-            if math.hypot(x + 0.5 - cx - 0.5, z - cz) <= r:
-                c.set(x, S.PAVING_Y, z, DARK)
+    upper |= {(x, z) for x in range(cx - r, x0) for z in range(cz - r, cz + r + 1) if math.hypot(x - cx, z - cz) <= r}
+    for x, z in upper:
+        c.set(x, S.PAVING_Y, z, DARK)
+    _skirt(c, upper, S.PAVING_Y)
     # the main building: a plain block as high as the cornice, hollow
     for y in range(S.GROUND, S.CORNICE + 1):
         for x in range(S.WALL_W, S.WALL_E + 1):
@@ -103,8 +120,10 @@ def build():
                     c.set(x, y, z, STONE)
     x0, z0, x1, z1 = S.LOWER_PLATFORM
     c.box(x0, S.LOWER_PAVING_Y, z0, x1, S.LOWER_PAVING_Y, z1, DARK)
+    _skirt(c, _rect(x0, z0, x1, z1), S.LOWER_PAVING_Y)
     x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]
     c.box(x0, S.SOUTH_LOOKOUT["feet"] - 1, z0, x1, S.SOUTH_LOOKOUT["feet"] - 1, z1, DARK)
+    _skirt(c, _rect(x0, z0, x1, z1), S.SOUTH_LOOKOUT["feet"] - 1)
     ridges.build(c)
     return c
 
