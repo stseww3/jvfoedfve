@@ -569,6 +569,22 @@ def run_web_console_tests() -> None:
             al_boot = alice_client.get("/web/api/bootstrap").json()
             assert al_boot["convs"] == [] and al_boot["nodes"] == []
 
+            # 8. Grant alice shared access to c1 + create shared group g2 (alice + zwt + c1)
+            g_create = client.post(
+                "/web/api/groups",
+                json={"name": "Alice·zwt·c1", "members": ["c1"], "web_users": ["alice"], "topic": "共享协作"},
+            ).json()
+            assert g_create["ok"] and g_create["group_id"] == "g2" and "alice" in g_create["web_users"]
+            up_u = client.post("/web/api/users", json={"username": "alice", "display_name": "Alice", "allowed_convs": ["c1"], "allowed_groups": ["g2"]}).json()
+            assert up_u["ok"]
+            al_boot2 = alice_client.get("/web/api/bootstrap").json()
+            assert any(c["id"] == "c1" for c in al_boot2["convs"])
+            assert any(g["id"] == "g2" for g in al_boot2["groups"])
+            assert alice_client.get("/web/api/convs/ctrl/messages").status_code == 403
+            assert alice_client.get("/web/api/convs/c1/messages").status_code == 200
+            al_gpost = alice_client.post("/web/api/groups/g2/messages", json={"text": "我是Alice，在共享群发言", "mentions": ["c1"]}).json()
+            assert al_gpost["ok"] and al_gpost["woke"] == ["c1"]
+
         if log_file.exists():
             log_txt = log_file.read_text(encoding="utf-8", errors="replace")
             assert secret_pw not in log_txt and sub_pw not in log_txt

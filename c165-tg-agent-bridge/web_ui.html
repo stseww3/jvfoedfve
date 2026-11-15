@@ -597,11 +597,13 @@ button, input, textarea, select {
       <button class="btn" onclick="closeModal('usersModal')">关闭</button>
     </div>
     <div style="background:var(--bg-app);padding:14px;border-radius:12px;border:1px solid var(--border);margin-bottom:14px">
-      <div style="font-weight:600;font-size:13.5px;margin-bottom:10px">新增或更新子账号（子账号拥有独立会话空间，禁止派生子 agent）</div>
+      <div style="font-weight:600;font-size:13.5px;margin-bottom:10px">新增或更新子账号（可按需授权指定会话如 c160、协作群如 g5）</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px">
-        <input class="input" id="umUser" placeholder="用户名 (如 alice)" />
+        <input class="input" id="umUser" placeholder="用户名 (如 wu)" />
         <input class="input" id="umDisp" placeholder="显示名称" />
-        <input class="input" id="umPass" type="password" placeholder="登录密码 (>=6位)" />
+        <input class="input" id="umPass" type="password" placeholder="密码 (留空不改)" />
+        <input class="input" id="umConvs" placeholder="授权会话 (如 c160)" />
+        <input class="input" id="umGroups" placeholder="授权群组 (如 g5)" />
       </div>
       <div style="display:flex;justify-content:flex-end;margin-top:10px">
         <button class="btn btn-primary" id="umSaveBtn">保存 / 创建账号</button>
@@ -855,10 +857,11 @@ function renderSidebar() {
     html += `<div class="sb-sec-title"><span>👥 Agent 协作群</span><span>${grps.length}</span></div>`;
     for (const g of grps) {
       const act = state.activeType === 'group' && state.activeId === g.id ? 'active' : '';
+      const totalMem = (g.members?.length || 0) + (g.web_members?.length || 0);
       html += `<div class="sb-item ${act}" onclick="selectTarget('group','${esc(g.id)}')">
         <span class="status-dot online"></span>
         <div class="sb-item-body">
-          <div class="sb-item-title"># ${esc(g.name)} <span class="pill accent">${g.members.length}人</span></div>
+          <div class="sb-item-title"># ${esc(g.name)} <span class="pill accent">${totalMem}成员</span></div>
           <div class="sb-item-sub">${esc(g.last_sender ? g.last_sender + ': ' + g.last_text : (g.topic || g.id))}</div>
         </div>
       </div>`;
@@ -918,8 +921,11 @@ async function loadActiveThread(scrollToBottom = false) {
     state.groupInfo = data.group;
     state.messages = data.messages || [];
     const g = data.group;
-    document.getElementById('headTitle').innerHTML = `👥 ${esc(g.name)} <span class="pill accent">${esc(g.id)} · ${g.members.length} 成员</span>`;
-    document.getElementById('headTrace').textContent = g.topic || ('当前群成员：' + g.members.map(m => `${m.id}(${m.name})`).join('、'));
+    const humanList = (g.web_members || ['zwt']).map(u => `👤${u}`);
+    const aiList = (g.members || []).map(m => `✦${m.id}(${m.name})`);
+    const allMems = [...humanList, ...aiList];
+    document.getElementById('headTitle').innerHTML = `👥 ${esc(g.name)} <span class="pill accent">${esc(g.id)} · ${allMems.length} 成员</span>`;
+    document.getElementById('headTrace').textContent = '成员：' + allMems.join('、') + (g.topic ? ' · ' + g.topic : '');
     document.getElementById('restartBtn').style.display = 'none';
     renderGroupWakeBar(g);
     renderGroupMessages();
@@ -1014,8 +1020,9 @@ function renderGroupMessages() {
     return;
   }
   box.innerHTML = state.messages.map(m => {
-    const isAdmin = m.sender_conv === 'admin';
-    const mnt = (m.mentions && m.mentions.length) ? `<span class="pill">唤醒: ${esc(m.mentions.join(','))}</span>` : '';
+    const isSelf = (state.user?.is_zwt && m.sender_conv === 'admin') || m.sender_conv === ('web:' + (state.user?.username || ''));
+    const canManageMsg = state.user?.is_zwt || m.sender_conv === ('web:' + (state.user?.username || ''));
+    const mnt = (m.mentions && m.mentions.length) ? `<span class="pill">唤醒: ${esc(m.mentions.join(','))}</span>` : '<span class="pill">仅群聊</span>';
     if (state.editingId === m.id) {
       return `<div class="msg-row group-item">
         <div class="edit-box">
@@ -1027,11 +1034,11 @@ function renderGroupMessages() {
         </div>
       </div>`;
     }
-    const acts = state.user?.is_zwt ? `<div class="msg-actions">
+    const acts = canManageMsg ? `<div class="msg-actions">
       <button class="act-chip" onclick="startEdit(${m.id})">✏️ 编辑</button>
       <button class="act-chip del" onclick="removeMsg(${m.id}, true)">🗑 删除</button>
     </div>` : '';
-    return `<div class="msg-row group-item ${isAdmin ? 'user' : 'ai'}">
+    return `<div class="msg-row group-item ${isSelf ? 'user' : 'ai'}">
       <div class="msg-meta"><span>#${m.id} · <b>${esc(m.sender_name)}</b></span> ${mnt} <span>${fmtTime(m.ts)}</span></div>
       <div class="msg-bubble">
         <div class="msg-content">${renderMarkdown(m.text)}</div>
@@ -1281,17 +1288,30 @@ async function refreshUsersList() {
   if (!data.ok) return alert(data.error || '加载用户失败');
   const box = document.getElementById('usersListBody');
   box.innerHTML = (data.users || []).map(u => {
-    const delBtn = u.username === 'zwt' ? '<span class="pill accent">超级管理员</span>' :
-      `<button class="btn btn-danger" style="padding:4px 10px;min-height:30px" onclick="delWebUser('${esc(u.username)}')">删除</button>`;
+    const ac = (u.allowed_convs || []).join(',');
+    const ag = (u.allowed_groups || []).join(',');
+    const permNote = (ac || ag) ? ` · 授权会话:[${esc(ac || '-')}] · 授权群:[${esc(ag || '-')}]` : '';
+    const actBtns = u.username === 'zwt' ? '<span class="pill accent">超级管理员</span>' :
+      `<div style="display:flex;gap:6px">
+        <button class="btn" style="padding:4px 10px;min-height:30px" onclick="fillEditWebUser('${esc(u.username)}','${esc(u.display_name)}','${esc(ac)}','${esc(ag)}')">编辑权限</button>
+        <button class="btn btn-danger" style="padding:4px 10px;min-height:30px" onclick="delWebUser('${esc(u.username)}')">删除</button>
+      </div>`;
     return `<div class="node-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px">
       <div>
         <div><b>${esc(u.username)}</b> (${esc(u.display_name)}) ${u.disabled ? '<span class="pill">已禁用</span>' : ''}</div>
-        <div style="font-size:12px;color:var(--text-muted)">角色: ${esc(u.role)} · 会话数: ${u.chat_count}${u.username==='zwt' ? ' (不限)' : '/' + data.chat_limit}</div>
+        <div style="font-size:12px;color:var(--text-muted)">角色: ${esc(u.role)} · 会话数: ${u.chat_count}${u.username==='zwt' ? ' (不限)' : '/' + data.chat_limit}${permNote}</div>
       </div>
-      <div>${delBtn}</div>
+      <div>${actBtns}</div>
     </div>`;
   }).join('');
 }
+window.fillEditWebUser = function(u, disp, ac, ag) {
+  document.getElementById('umUser').value = u;
+  document.getElementById('umDisp').value = disp;
+  document.getElementById('umPass').value = '';
+  document.getElementById('umConvs').value = ac;
+  document.getElementById('umGroups').value = ag;
+};
 document.getElementById('usersMgrBtn').onclick = async () => {
   await refreshUsersList();
   document.getElementById('usersModal').classList.add('open');
@@ -1300,11 +1320,16 @@ document.getElementById('umSaveBtn').onclick = async () => {
   const username = document.getElementById('umUser').value.trim();
   const display_name = document.getElementById('umDisp').value.trim();
   const password = document.getElementById('umPass').value;
-  const { data } = await api('/web/api/users', { method: 'POST', json: { username, display_name, password } });
+  const allowed_convs = document.getElementById('umConvs').value.trim();
+  const allowed_groups = document.getElementById('umGroups').value.trim();
+  const payload = { username, display_name, password, allowed_convs, allowed_groups };
+  const { data } = await api('/web/api/users', { method: 'POST', json: payload });
   if (!data.ok) return alert(data.error || '保存失败');
   document.getElementById('umUser').value = '';
   document.getElementById('umDisp').value = '';
   document.getElementById('umPass').value = '';
+  document.getElementById('umConvs').value = '';
+  document.getElementById('umGroups').value = '';
   await refreshUsersList();
 };
 window.delWebUser = async function(uname) {

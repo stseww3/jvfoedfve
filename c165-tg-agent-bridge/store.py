@@ -255,6 +255,8 @@ CREATE TABLE IF NOT EXISTS web_users(
     tg_owner INTEGER DEFAULT 0,        -- 0=zwt管理员全局视图；非0=对应授权用户私聊隔离空间
     display_name TEXT DEFAULT '',
     disabled INTEGER DEFAULT 0,
+    allowed_convs TEXT DEFAULT '[]',   -- zwt 授权访问的会话列表 JSON
+    allowed_groups TEXT DEFAULT '[]',  -- zwt 授权参与的协作群列表 JSON
     created REAL DEFAULT 0,
     last_login REAL DEFAULT 0
 );
@@ -298,6 +300,8 @@ COLUMNS = (
     ("convs", "auto_restarted_ts", "REAL DEFAULT 0"), # 最近一次因 5 分钟思考卡死自动重开的时间戳（防抖保护）
     ("convs", "actual_model", "TEXT DEFAULT ''"),     # 子 agent join 时自检申报的真实模型名与档位
     ("convs", "model_check", "TEXT DEFAULT ''"),      # '' / 'ok' / 'mismatch_hold' / 'approved'
+    ("web_users", "allowed_convs", "TEXT DEFAULT '[]'"),
+    ("web_users", "allowed_groups", "TEXT DEFAULT '[]'"),
 )
 
 INDEXES = """

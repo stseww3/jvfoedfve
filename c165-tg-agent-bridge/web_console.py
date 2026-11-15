@@ -153,6 +153,41 @@ def _next_virtual_owner(store) -> int:
     return (cur_min - 1) if cur_min < 0 else -100001
 
 
+def _parse_id_list(raw: Any) -> list[str]:
+    if isinstance(raw, list):
+        items = raw
+    elif isinstance(raw, str):
+        s = raw.strip()
+        if s.startswith("["):
+            try:
+                arr = json.loads(s)
+                items = arr if isinstance(arr, list) else []
+            except Exception:
+                items = []
+        else:
+            items = re.split(r"[,，\s]+", s)
+    else:
+        items = []
+    seen: list[str] = []
+    for x in items:
+        v = str(x or "").strip().lower().lstrip("/")
+        if v and v not in seen:
+            seen.append(v)
+    return seen
+
+
+def _user_allowed_convs(user) -> set[str]:
+    if user is None or "allowed_convs" not in user.keys():
+        return set()
+    return set(_parse_id_list(user["allowed_convs"] or "[]"))
+
+
+def _user_allowed_groups(user) -> set[str]:
+    if user is None or "allowed_groups" not in user.keys():
+        return set()
+    return set(_parse_id_list(user["allowed_groups"] or "[]"))
+
+
 def _can_access_conv(bridge, user, conv) -> bool:
     if conv is None or conv["status"] == "deleted":
         return False
@@ -160,8 +195,34 @@ def _can_access_conv(bridge, user, conv) -> bool:
         return True
     if bridge.is_system_conv_id(conv["id"]):
         return False
+    if (conv["id"] or "").lower() in _user_allowed_convs(user):
+        return True
     owner = int(user["tg_owner"] or 0)
     return owner != 0 and bridge.conv_owner(conv) == owner
+
+
+def _can_access_group(user, grow) -> bool:
+    if grow is None:
+        return False
+    if _is_zwt(user):
+        return True
+    if grow["status"] != "open":
+        return False
+    if (grow["id"] or "").lower() in _user_allowed_groups(user):
+        return True
+    owner = int(user["tg_owner"] or 0)
+    return owner != 0 and int(grow["owner"] or 0) == owner
+
+
+def _group_web_members(store, group_id: str) -> list[str]:
+    gid = (group_id or "").lower()
+    names = ["zwt"]
+    for u in store.q("SELECT username, display_name, allowed_groups, disabled FROM web_users WHERE username!=? ORDER BY created", (SUPERADMIN_USER,)):
+        if int(u["disabled"] or 0):
+            continue
+        if gid in _parse_id_list(u["allowed_groups"] or "[]"):
+            names.append(u["display_name"] or u["username"])
+    return names
 
 
 def _serialize_file(store, file_id: str) -> dict[str, Any] | None:
@@ -486,17 +547,21 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         user = _current_web_user(store, request)
         if not _is_zwt(user):
             return JSONResponse({"ok": False, "error": "仅超级管理员 zwt 有权管理用户"}, status_code=403)
-        rows = store.q("SELECT username, role, tg_owner, display_name, disabled, created, last_login, password_hash FROM web_users ORDER BY username='zwt' DESC, created")
+        rows = store.q("SELECT username, role, tg_owner, display_name, disabled, allowed_convs, allowed_groups, created, last_login, password_hash FROM web_users ORDER BY username='zwt' DESC, created")
         items = []
         for r in rows:
             owner_id = int(r["tg_owner"] or 0)
-            chat_cnt = bridge.chat_count(owner_id) if owner_id != 0 else len(bridge.open_convs())
+            a_convs = _parse_id_list(r["allowed_convs"] or "[]")
+            a_grps = _parse_id_list(r["allowed_groups"] or "[]")
+            chat_cnt = (bridge.chat_count(owner_id) + len(a_convs)) if owner_id != 0 else len(bridge.open_convs())
             items.append({
                 "username": r["username"],
                 "display_name": r["display_name"] or r["username"],
                 "role": r["role"],
                 "tg_owner": owner_id,
                 "disabled": bool(int(r["disabled"] or 0)),
+                "allowed_convs": a_convs,
+                "allowed_groups": a_grps,
                 "has_password": bool((r["password_hash"] or "").strip()),
                 "chat_count": chat_cnt,
                 "created": float(r["created"] or 0),
@@ -520,6 +585,10 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         pwd = str((body or {}).get("password") or "")
         disabled = 1 if (body or {}).get("disabled") else 0
         raw_tg_owner = (body or {}).get("tg_owner")
+        has_ac = "allowed_convs" in (body or {})
+        has_ag = "allowed_groups" in (body or {})
+        ac_list = [bridge.parse_conv(x) for x in _parse_id_list((body or {}).get("allowed_convs")) if bridge.parse_conv(x) and not bridge.is_system_conv_id(bridge.parse_conv(x))]
+        ag_list = [bridge.parse_group(x) for x in _parse_id_list((body or {}).get("allowed_groups")) if bridge.parse_group(x)]
 
         existing = store.one("SELECT * FROM web_users WHERE username=?", (uname,))
         if uname == SUPERADMIN_USER:
@@ -536,23 +605,25 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 return JSONResponse({"ok": False, "error": "新建用户密码至少 6 位"}, status_code=400)
             tg_owner = int(raw_tg_owner) if str(raw_tg_owner or "").lstrip("-").isdigit() and int(raw_tg_owner) != 0 else _next_virtual_owner(store)
             store.run(
-                "INSERT INTO web_users(username,password_hash,role,tg_owner,display_name,disabled,created) VALUES(?,?,?,?,?,?,?)",
-                (uname, hash_password(pwd), "user", tg_owner, disp, disabled, _now()),
+                "INSERT INTO web_users(username,password_hash,role,tg_owner,display_name,disabled,allowed_convs,allowed_groups,created) VALUES(?,?,?,?,?,?,?,?,?)",
+                (uname, hash_password(pwd), "user", tg_owner, disp, disabled, json.dumps(ac_list), json.dumps(ag_list), _now()),
             )
-            log.info("web user created by zwt: %s (owner=%s)", uname, tg_owner)
+            log.info("web user created by zwt: %s (owner=%s, convs=%s, groups=%s)", uname, tg_owner, ac_list, ag_list)
         else:
             tg_owner = int(raw_tg_owner) if str(raw_tg_owner or "").lstrip("-").isdigit() and int(raw_tg_owner) != 0 else int(existing["tg_owner"] or _next_virtual_owner(store))
+            final_ac = json.dumps(ac_list) if has_ac else (existing["allowed_convs"] or "[]")
+            final_ag = json.dumps(ag_list) if has_ag else (existing["allowed_groups"] or "[]")
             if pwd:
                 if len(pwd) < 6:
                     return JSONResponse({"ok": False, "error": "重置密码至少 6 位"}, status_code=400)
                 store.run(
-                    "UPDATE web_users SET password_hash=?, display_name=?, tg_owner=?, disabled=? WHERE username=?",
-                    (hash_password(pwd), disp, tg_owner, disabled, uname),
+                    "UPDATE web_users SET password_hash=?, display_name=?, tg_owner=?, disabled=?, allowed_convs=?, allowed_groups=? WHERE username=?",
+                    (hash_password(pwd), disp, tg_owner, disabled, final_ac, final_ag, uname),
                 )
             else:
                 store.run(
-                    "UPDATE web_users SET display_name=?, tg_owner=?, disabled=? WHERE username=?",
-                    (disp, tg_owner, disabled, uname),
+                    "UPDATE web_users SET display_name=?, tg_owner=?, disabled=?, allowed_convs=?, allowed_groups=? WHERE username=?",
+                    (disp, tg_owner, disabled, final_ac, final_ag, uname),
                 )
             if disabled:
                 store.run("DELETE FROM web_sessions WHERE username=?", (uname,))
@@ -598,22 +669,29 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 convs_out.append(_serialize_conv(bridge, r))
         else:
             owner_id = int(user["tg_owner"] or 0)
+            allowed_c = _user_allowed_convs(user)
+            seen_cids: set[str] = set()
+            for cid_allow in sorted(allowed_c):
+                rc = bridge.conv_row(cid_allow)
+                if rc is not None and rc["status"] != "deleted" and not bridge.is_system_conv_id(rc["id"]):
+                    convs_out.append(_serialize_conv(bridge, rc))
+                    seen_cids.add(rc["id"])
             my_rows = [
                 r for r in store.q(
                     "SELECT * FROM convs WHERE owner=? AND status!='deleted' AND IFNULL(in_tg,1)=1 ORDER BY status!='open', num DESC",
                     (owner_id,),
                 )
-                if not bridge.is_system_conv_id(r["id"])
+                if not bridge.is_system_conv_id(r["id"]) and r["id"] not in seen_cids
             ]
             for r in my_rows:
                 convs_out.append(_serialize_conv(bridge, r))
 
         groups_out = []
-        g_owner = 0 if is_super else int(user["tg_owner"] or 0)
-        g_sql = "SELECT * FROM agent_groups WHERE status!='closed' ORDER BY num DESC" if is_super else "SELECT * FROM agent_groups WHERE status='open' AND owner=? ORDER BY num DESC"
-        g_args = () if is_super else (g_owner,)
-        for g in store.q(g_sql, g_args):
+        for g in store.q("SELECT * FROM agent_groups WHERE status!='closed' ORDER BY num DESC"):
+            if not _can_access_group(user, g):
+                continue
             mems = bridge.group_members(g["id"])
+            web_mems = _group_web_members(store, g["id"])
             last_gm = store.one("SELECT text, sender_name, ts FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT 1", (g["id"],))
             msg_cnt = store.one("SELECT COUNT(*) AS n FROM agent_group_messages WHERE group_id=?", (g["id"],))["n"]
             groups_out.append({
@@ -622,6 +700,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 "topic": g["topic"] or "",
                 "status": g["status"],
                 "members": mems,
+                "web_members": web_mems,
                 "message_count": msg_cnt,
                 "last_text": (last_gm["text"][:80] if last_gm and last_gm["text"] else ""),
                 "last_sender": (last_gm["sender_name"] if last_gm else ""),
@@ -1038,6 +1117,67 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
 
     # ---------------------------------------------------------------- Agent 协作群直看、插话发言、编辑与删除
 
+    @app.post("/web/api/groups")
+    async def web_create_group(request: Request) -> JSONResponse:
+        user = _current_web_user(store, request)
+        if not _is_zwt(user):
+            return JSONResponse({"ok": False, "error": "仅超级管理员 zwt 可新建协作群"}, status_code=403)
+        try:
+            body = await request.json()
+        except Exception:
+            return JSONResponse({"ok": False, "error": "请求格式错误"}, status_code=400)
+        gname = bridge.clean_name((body or {}).get("name"), limit=20) or "协作群"
+        topic = str((body or {}).get("topic") or "").strip()[:500]
+        welcome = str((body or {}).get("welcome") or "").strip()[:1000]
+        conv_members = [bridge.parse_conv(x) for x in _parse_id_list((body or {}).get("members")) if bridge.parse_conv(x)]
+        web_users_list = [u for u in _parse_id_list((body or {}).get("web_users")) if u and u != SUPERADMIN_USER]
+
+        gnum = bridge.next_group_num()
+        gid = f"g{gnum}"
+        store.run(
+            "INSERT INTO agent_groups(id,num,name,topic,creator,owner,status,created) VALUES(?,?,?,?,?,'0','open',?)",
+            (gid, gnum, gname, topic, "zwt", _now()),
+        )
+        valid_convs = []
+        for cid_m in conv_members:
+            crow = bridge.conv_row(cid_m)
+            if crow is not None and crow["status"] != "deleted":
+                store.run("INSERT OR IGNORE INTO agent_group_members(group_id,conv,joined) VALUES(?,?,?)", (gid, cid_m, _now()))
+                valid_convs.append(cid_m)
+        granted_web = []
+        for wu_name in web_users_list:
+            urow = store.one("SELECT * FROM web_users WHERE username=?", (wu_name,))
+            if urow is not None:
+                cur_g = _parse_id_list(urow["allowed_groups"] or "[]")
+                if gid not in cur_g:
+                    cur_g.append(gid)
+                store.run("UPDATE web_users SET allowed_groups=? WHERE username=?", (json.dumps(cur_g), wu_name))
+                granted_web.append(wu_name)
+        if welcome:
+            sender_lbl = "👑 zwt (管理员)"
+            store.run(
+                "INSERT INTO agent_group_messages(group_id,sender_conv,sender_name,text,mentions,ts) VALUES(?,?,?,?,?,?)",
+                (gid, "admin", sender_lbl, welcome, json.dumps(valid_convs), _now()),
+            )
+            header_title = f"{gid}「{gname}」 成员:{','.join(['zwt', *granted_web, *valid_convs])}"
+            for m_cid in valid_convs:
+                bridge.post(
+                    m_cid,
+                    conv=m_cid,
+                    chat_id=0,
+                    chat_type="agent_group",
+                    chat_title=header_title,
+                    user_id=0,
+                    user_name=sender_lbl,
+                    text=welcome,
+                    mention=1,
+                    outgoing=0,
+                    delivered=1,
+                    sender="web_admin",
+                    wake=1,
+                )
+        return JSONResponse({"ok": True, "group_id": gid, "members": valid_convs, "web_users": granted_web})
+
     @app.get("/web/api/groups/{group_id}/messages")
     async def web_get_group_messages(group_id: str, request: Request, limit: int = 150) -> JSONResponse:
         user = _current_web_user(store, request)
@@ -1047,12 +1187,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         grow = bridge.group_row(gid) if gid else None
         if grow is None:
             return JSONResponse({"ok": False, "error": "协作群不存在"}, status_code=404)
-        if not _is_zwt(user) and int(grow["owner"] or 0) != int(user["tg_owner"] or 0):
+        if not _can_access_group(user, grow):
             return JSONResponse({"ok": False, "error": "无权查看该协作群"}, status_code=403)
 
         lim = max(1, min(int(limit), 300))
         rows = list(reversed(store.q("SELECT * FROM agent_group_messages WHERE group_id=? ORDER BY id DESC LIMIT ?", (gid, lim))))
         mems = bridge.group_members(gid)
+        web_mems = _group_web_members(store, gid)
         member_details = []
         for m in mems:
             mc = bridge.conv_row(m)
@@ -1093,13 +1234,14 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 "topic": grow["topic"] or "",
                 "status": grow["status"],
                 "members": member_details,
+                "web_members": web_mems,
             },
             "messages": msgs,
         })
 
     @app.post("/web/api/groups/{group_id}/messages")
     async def web_send_group_message(group_id: str, request: Request) -> JSONResponse:
-        """管理员直接在 Agent 协作群发言（支持附带图片/文件，支持唤醒全群或指定成员）。"""
+        """管理员或授权 Web 用户直接在协作群发言（支持附带图片/文件，支持唤醒全群、指定 Agent 或静默群聊）。"""
         user = _current_web_user(store, request)
         if user is None:
             return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
@@ -1107,7 +1249,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         grow = bridge.group_row(gid) if gid else None
         if grow is None or grow["status"] != "open":
             return JSONResponse({"ok": False, "error": "协作群不存在或已关闭"}, status_code=404)
-        if not _is_zwt(user) and int(grow["owner"] or 0) != int(user["tg_owner"] or 0):
+        if not _can_access_group(user, grow):
             return JSONResponse({"ok": False, "error": "无权在该协作群发言"}, status_code=403)
 
         try:
@@ -1122,7 +1264,6 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         for fid in file_ids:
             frow = store.one("SELECT id FROM files WHERE id=?", (fid,))
             if frow is not None:
-                # 管理员在群里发的文件设为公共可读（conv=''） zodat 群内所有子 agent 都能调 get_file 读取！
                 store.run("UPDATE files SET conv='' WHERE id=?", (fid,))
                 file_notes.append(bridge.file_note(fid))
         full_text = "\n".join(p for p in [text, *file_notes] if p).strip()
@@ -1130,6 +1271,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             return JSONResponse({"ok": False, "error": "发言内容不能为空"}, status_code=400)
 
         mems = bridge.group_members(gid)
+        web_mems = _group_web_members(store, gid)
         if raw_mentions is None or "all" in [str(x).lower() for x in raw_mentions]:
             wake_set = set(mems)
             mention_record = ["all"]
@@ -1137,14 +1279,14 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             wake_set = {str(x).strip().lower() for x in raw_mentions if str(x).strip().lower() in mems}
             mention_record = sorted(wake_set)
 
-        # 管理员亲自发言自动清零群防死循环计数，恢复流水线活力
         store.run("UPDATE agent_groups SET streak=0, streak_ts=? WHERE id=?", (_now(), gid))
-        sender_label = f"👑 {user['display_name'] or user['username']} (管理员)" if _is_zwt(user) else f"{user['username']} (Web)"
+        sender_conv_val = "admin" if _is_zwt(user) else f"web:{user['username']}"
+        sender_label = f"👑 {user['display_name'] or user['username']} (管理员)" if _is_zwt(user) else f"👤 {user['display_name'] or user['username']} (Web)"
         gm_id = store.run(
             "INSERT INTO agent_group_messages(group_id,sender_conv,sender_name,text,mentions,ts) VALUES(?,?,?,?,?,?)",
-            (gid, "admin", sender_label, full_text, json.dumps(mention_record, ensure_ascii=False), _now()),
+            (gid, sender_conv_val, sender_label, full_text, json.dumps(mention_record, ensure_ascii=False), _now()),
         )
-        header_title = f"{bridge.group_tag(grow)} 成员:{','.join(mems)}"
+        header_title = f"{bridge.group_tag(grow)} 成员:{','.join([*web_mems, *mems])}（在本群回复请调用 send_group_message(group=\"{gid}\", text=...)）"
         for m_cid in mems:
             if file_ids:
                 for idx, fid in enumerate(file_ids):
@@ -1162,7 +1304,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                         mention=int(m_cid in wake_set),
                         outgoing=0,
                         delivered=1,
-                        sender="web_admin",
+                        sender=sender_conv_val,
                         wake=(1 if m_cid in wake_set else 0) if is_last else 0,
                     )
             else:
@@ -1178,7 +1320,7 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                     mention=int(m_cid in wake_set),
                     outgoing=0,
                     delivered=1,
-                    sender="web_admin",
+                    sender=sender_conv_val,
                     wake=1 if m_cid in wake_set else 0,
                 )
         return JSONResponse({"ok": True, "id": gm_id, "woke": sorted(wake_set)})
@@ -1186,8 +1328,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
     @app.patch("/web/api/group-messages/{gm_id}")
     async def web_edit_group_message(gm_id: int, request: Request) -> JSONResponse:
         user = _current_web_user(store, request)
-        if not _is_zwt(user):
-            return JSONResponse({"ok": False, "error": "无权编辑群记录"}, status_code=403)
+        if user is None:
+            return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
+        gmrow = store.one("SELECT * FROM agent_group_messages WHERE id=?", (gm_id,))
+        if gmrow is None:
+            return JSONResponse({"ok": False, "error": "消息不存在"}, status_code=404)
+        if not _is_zwt(user) and gmrow["sender_conv"] != f"web:{user['username']}":
+            return JSONResponse({"ok": False, "error": "无权编辑他人群记录"}, status_code=403)
         try:
             body = await request.json()
         except Exception:
@@ -1199,8 +1346,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
     @app.delete("/web/api/group-messages/{gm_id}")
     async def web_delete_group_message(gm_id: int, request: Request) -> JSONResponse:
         user = _current_web_user(store, request)
-        if not _is_zwt(user):
-            return JSONResponse({"ok": False, "error": "无权删除群记录"}, status_code=403)
+        if user is None:
+            return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
+        gmrow = store.one("SELECT * FROM agent_group_messages WHERE id=?", (gm_id,))
+        if gmrow is None:
+            return JSONResponse({"ok": False, "error": "消息不存在"}, status_code=404)
+        if not _is_zwt(user) and gmrow["sender_conv"] != f"web:{user['username']}":
+            return JSONResponse({"ok": False, "error": "无权删除他人群记录"}, status_code=403)
         store.run("DELETE FROM agent_group_messages WHERE id=?", (gm_id,))
         return JSONResponse({"ok": True, "id": gm_id})
 
@@ -1241,9 +1393,11 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         if frow is None or not Path(frow["path"]).exists():
             return PlainTextResponse("not found", status_code=404)
         if not _is_zwt(user):
-            fc = bridge.conv_row(frow["conv"] or "") if frow["conv"] else None
-            if fc is None or not _can_access_conv(bridge, user, fc):
-                return PlainTextResponse("forbidden", status_code=403)
+            fconv = (frow["conv"] or "").strip()
+            if fconv:
+                fc = bridge.conv_row(fconv)
+                if fc is None or not _can_access_conv(bridge, user, fc):
+                    return PlainTextResponse("forbidden", status_code=403)
         mime = frow["mime"] or "application/octet-stream"
         disp = "inline" if mime.startswith(("image/", "text/", "application/pdf")) else "attachment"
         return FileResponse(
