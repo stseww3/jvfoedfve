@@ -16,9 +16,11 @@ main/shell of c231's branch 4b9d320b, built and read cell by cell). Whose every 
                        above the sill and one row below the head (c220, g2 #33335); the first cell
                        of the room behind the glass gets 6 of it
   materials/windows    a lit window is lined on the room side and is unlit glass from inside (A0,
-    (c205)             g2 #32711). Until that lining is in the tree the box glazes the lit windows
-                       with the dark glass, which is what the room sees; nobody looks at the box
-                       from outside
+    (c205)             g2 #32711). The lining is windows.line(), one call for each lit window
+                       (g2 #34907); with it the box glazes a lit window with the opal glass it
+                       really has. Until it is in the tree the box glazes the lit windows with the
+                       dark glass, which is what the room sees; nobody looks at the box from
+                       outside
 """
 from artkit.blocks import st
 
@@ -26,10 +28,12 @@ from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import timeroom as T
 from scenes.obs.main import _plan as MP
+from scenes.obs.materials import windows
 
 LIT = {"east": (3, 6), "west": (3, 5)}      # the lit windows of the room under the blue look (sky/lights)
 OUTSIDE = 8                                 # the level of the sources of a lit opal window, in its opening
-ROOM_SIDE = B.WINDOW_DARK                   # what a lit window is from the room, until its lining is in the tree
+LINE = getattr(windows, "line", None)       # the lining of a lit window, once materials/windows has it
+ROOM_SIDE = B.WINDOW_FROSTED if LINE else B.WINDOW_DARK     # the glass of a lit window: the real one when it can be lined
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z1 + 2, T.Z1 + 3)            # -5..-4: the deck of the hall's side gallery, the rail on its edge
 CORNICE_Y = S.CORNICE                       # 15: the course over the windows; it reaches two blocks out
@@ -87,18 +91,20 @@ def build(c, origin=(0, 0, 0)):
                 put(x, y, z, wall_block(y) if shell else B.ASHLAR_FINE.block)
 
     # the windows: glass in the inner leaf, the stone leaf open in front of it; the sources of a lit
-    # one stand in that opening
-    for front, bays, glass_x, face_x in (("east", T.EAST_BAYS, ge, xe), ("west", T.WEST_BAYS, gw, xw)):
+    # one stand in that opening, its lining lies on the room side of its glass
+    for front, bays, glass_x, face_x, inward in (("east", T.EAST_BAYS, ge, xe, (-1, 0)), ("west", T.WEST_BAYS, gw, xw, (1, 0))):
         for bay in bays:
             rows = MP.window_rows(bay)
             glass = (ROOM_SIDE if lit(front, bay) else B.WINDOW_DARK).block
-            for z in rows:
-                for y in range(S.WINDOW[0], S.WINDOW[1] + 1):
-                    put(glass_x, y, z, glass)
-                    cut(face_x, y, z)
+            panes = [(glass_x, y, z) for z in rows for y in range(S.WINDOW[0], S.WINDOW[1] + 1)]
+            for x, y, z in panes:
+                put(x, y, z, glass)
+                cut(face_x, y, z)
             if lit(front, bay):
                 middle = rows[len(rows) // 2]
                 sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
+                if LINE:
+                    LINE(c, panes, inward, glass, origin=origin)
 
     # the door, and a piece of the gallery beyond it
     for x in range(T.DOOR_X[0], T.DOOR_X[1] + 1):

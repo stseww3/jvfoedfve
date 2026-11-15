@@ -2,7 +2,8 @@
 
 The room stands in a stand-in of its shell (box.py) on the skeleton's coordinates; the dressing is
 scenes.obs.interiors.timeroom, the same call the master scene will make once the room moves in.
-The resource pack is the materials line's; the only models are the lamps of props/lamps.
+The resource pack is the materials line's; the models are listed in props.py (the lamps, the
+room's world clocks, and what the other packages bring once they are in the tree).
 
 The light: the room offers its lamps to the light line; the sources behind the lit windows are the
 light line's own. While sky/lights is not in the tree both are put down here, so the box is lit
