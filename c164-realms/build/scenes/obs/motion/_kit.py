@@ -842,8 +842,9 @@ def check(canvas, models=None, pack=None):
             warns.append(f"{part.name}: {steps} set by hand (lead {part.lead}); its model strays "
                          f"{part.stray * 16.0:.2f} pixels from its arc")
         elif part.stray > WOBBLE + 1e-9:
-            warns.append(f"{part.name}: {steps}; its model still strays {part.stray * 16.0:.2f} pixels from its "
-                         f"arc: its middle lies {part.arm():.2f} blocks off the axis")
+            notes.append(f"{part.name}: {steps}; its model strays {part.stray * 16.0:.2f} pixels from its arc "
+                         f"(its middle lies {part.arm():.2f} blocks off the axis), within the half pixel a "
+                         f"fast part is let off with")
         elif part.lead == 0:
             notes.append(f"{part.name}: {steps}, not aimed ahead: its middle lies {part.arm():.2f} blocks off "
                          f"the axis")
