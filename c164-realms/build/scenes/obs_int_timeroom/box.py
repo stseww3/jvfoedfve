@@ -43,7 +43,8 @@ ROOM_SIDE = B.WINDOW_FROSTED if LINE else B.WINDOW_DARK     # the glass of a lit
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z1 + 2, T.Z1 + 3)            # -5..-4: the deck of the hall's side gallery, the rail on its edge
 HALL_Z = T.Z1 + 5                           # -2: the wall that stands in for the hall beyond the gallery
-HALL_LAMP = (T.DOOR_X[1] + 2.5, T.FEET + 3.5, 10)   # a lamp of the hall on the cross wall east of the door: x, y, its level
+HALL_LAMP = (T.DOOR_X[1] + 2.5, T.FEET + 3.5, 8)    # a lamp of the hall on the cross wall east of the door: x, y, its level
+#                                                     (a dim one: it leaves the floor inside the room's door in the dark)
 CORNICE_Y = S.CORNICE                       # 15: the course over the windows; it reaches two blocks out
 REACH = 2
 
