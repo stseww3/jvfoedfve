@@ -13,7 +13,7 @@ What it builds:
   * the roofs that close it: plain decks over the three pavilions (stand-ins: terraces() names
     them for the package that finishes them), slate between gable walls over the wings;
   * the drum and the dome above (_dome.py), as massing, until main/dome.py is in the tree;
-  * a pale wall behind the entrance, a stand-in until the interiors are in.
+  * a pale wall behind the entrance, a stand-in until the star hall has moved in (furnished()).
 
 Every number comes from the skeleton; which column is a pier and which a window comes from
 _plan.py (c178's block-by-block plan). The glass stands one block behind the wall face as whole
@@ -75,7 +75,8 @@ EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
 CROWN = True
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
 # looks through the doorway at the sky behind the building, and the doorway is not a black hole:
-# its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
+# its light falls on a pale wall). A stand-in for a hall that is fitted out and lit: it is built
+# until the star hall has moved into the shell (furnished() below), and not after that.
 SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
 # The stand-in is lit, the same in all three versions (A0, 11-14): it stands for a hall with its
@@ -397,6 +398,18 @@ def lit():
     return importlib.util.find_spec(__package__.rpartition(".")[0] + ".sky.lights") is not None
 
 
+def furnished():
+    """True when the star hall has moved into the shell (interiors/starhall.MOVED_IN, that
+    package's own switch: main/shell is in the master scene, the hall is fitted out and its lamps
+    are placed). What one sees through the arches is the hall itself then, and the stand-in would
+    stand across it."""
+    try:
+        from ..interiors import starhall
+    except ImportError:
+        return False
+    return bool(getattr(starhall, "MOVED_IN", False))
+
+
 def _screen_lights(canvas, entrance, origin):
     """The light of the stand-in (see DOOR_LIGHT): one source in the open doorway, one before the
     back wall behind it, a dimmer one behind each arch that has a gate."""
@@ -418,7 +431,9 @@ def crowned():
 
 
 # --- the package --------------------------------------------------------------------------------------
-def build(canvas, origin=(0, 0, 0), entrance=None):
+def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
+    """screen: whether the stand-in behind the entrance is built; left out, SCREEN says, until the
+    star hall has moved in (furnished())."""
     entrance = entrance or ENTRANCE
     plan = shell(entrance)
     O.build(canvas, plan, order(), origin, glass=glass)
@@ -429,7 +444,7 @@ def build(canvas, origin=(0, 0, 0), entrance=None):
     x, y, z = PIPE_INLET
     canvas.set(origin[0] + x, origin[1] + y, origin[2] + z, B.IRON_GRATE)
     _roofs(canvas, plan, origin)
-    if SCREEN:
+    if (SCREEN and not furnished()) if screen is None else screen:
         _screen(canvas, origin)
         if not lit():
             _screen_lights(canvas, entrance, origin)
@@ -468,7 +483,7 @@ def check(entrance=None):
     out = []
     entrance = entrance or ENTRANCE
     c = Canvas()
-    build(c, entrance=entrance)
+    build(c, entrance=entrance, screen=SCREEN)      # the package on its own: with its stand-in, whoever has moved in
     name = lambda x, y, z: (c.get(x, y, z) or "air").partition("[")[0]
     glassy = {f.block for f in B.LIT_WINDOWS + B.DARK_WINDOWS}
     doorways = {d["bay"] for d in doors(entrance) if d["front"] == "east"}
