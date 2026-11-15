@@ -252,7 +252,7 @@ def _belt():
     a hand wide. The card has the belt's movement as an animated picture (A1); this round it is the
     still band that carries the eye from the flywheel to the dynamo's pulley."""
     m = M.Model(PREFIX + "belt", px=1.0, anchor=(0.0, 0.0, 0.0))
-    band = P.mat("dark_wood", base=1, kind="flat", bevel=0)
+    band = P.mat("dark_wood", base=3, kind="flat", bevel=0)   # cr3-M3: brighter than the bed plate
     m.box((-1.2, 0.0, -2.4), (1.2, 48.0, 2.4), band, skip="d")
     return m
 
