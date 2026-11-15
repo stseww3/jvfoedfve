@@ -103,8 +103,10 @@ FRAME = B.IRON_RIVETED.block                # its frame, and the posts of its ra
 
 # ---- the walkway -----------------------------------------------------------------------------
 # From the door in along the north side, then south to the machine's front: a grating run two cells
-# wide, one course over the floor. It ends at the machine's own cells, which it does not enter.
-WALK_Y = FEET                               # the grating's own row: feet stand on the boards below
+# wide, laid one course OVER the feet's own row, never in it. The machines' bed plate, the boiler's
+# drum and the switchboard's base all stand on the feet's row (c264, g2 #46872 asked exactly this):
+# a grating there would leave them standing over a hole.
+WALK_Y = FEET + 1                            # -5: the grating's row; FEET stays solid floor
 WALK_Z = (IN_Z[0] + 1, IN_Z[0] + 2)         # 23, 24: the run in from the door
 WALK_X = (DOOR_X[0], 80)                    # 74..80: the run east past the machine's west end
 WALK_END_Z = min(z for _x, z in ENGINE_CELLS) - 1        # 26: one short of the machine's own cells
@@ -192,9 +194,11 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, *, version="a"):
 
     cells = floor_cells()
 
-    # the floor, and the stone course the wainscot stands on
+    # the floor: boards at the feet's own row (every machine stands on this one, so it is solid
+    # everywhere, the grating included), and a course of stone under it
     for x, z in cells:
         put(x, FLOOR_Y, z, FLOOR)
+        put(x, FEET, z, FLOOR)
     for x, z in wall_cells():
         put(x, FLOOR_Y, z, FLOOR_EDGE)
 
