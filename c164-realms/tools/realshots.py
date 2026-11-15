@@ -3,6 +3,7 @@
 
     realshots.py --take <tag> [<scene> ...] [--from <folder>] [--into <folder>]
     realshots.py --list [<scene> ...] [--into <folder>]
+    realshots.py --sheet <name> [--across <n>] [--title <text>] <scene>:<shot> ... [--into <folder>]
 
 A trip of the render station (tools/nodetrip.py on a worker node, bin/trip.py on the admin's
 computer; both run tools/win/shuttle.py) leaves for every scene <scene>-<tag>-<shot>.jpg, the game's
@@ -24,6 +25,10 @@ only some of a scene's shots replaces those and leaves the others, each with its
 note. Then commit and push: that is the render station's to do.
 
 --list says what is kept: for every scene the shots and the commits they show.
+
+--sheet puts kept pictures picked by hand on one sheet, in the order given and <n> across (2):
+renders/real/_sheets/<name>.jpg, every picture under its scene, shot, tick and commit. For a
+question that is answered by a few pictures side by side.
 
 --into names another folder of this checkout than renders/real: pictures drawn at another view
 distance than the board's 12 chunks are kept apart (renders/real-view32/<scene>/), so that they
@@ -154,20 +159,48 @@ def listing(scenes, kept_in=None):
             print(f"    {commit}, taken {taken}, {view}: {', '.join(shots)}")
 
 
+def sheet(name, picked, across, title, kept_in=None):
+    """renders/real/_sheets/<name>.jpg of the kept pictures picked as <scene>:<shot>."""
+    import boardrender
+    where = kept_in or KEPT
+    pictures, commits = [], []
+    for pick in picked:
+        scene, _, shot = pick.partition(":")
+        row = read_kept(os.path.join(where, scene, NOTE)).get(shot)
+        path = os.path.join(where, scene, shot + ".jpg")
+        if not row or not os.path.exists(path):
+            raise SystemExit(f"{pick}: no such picture is kept in {os.path.relpath(os.path.join(where, scene), PROJECT)}/")
+        pictures.append((f"{scene}  {shot}  {row[0]}  {row[1]}", path))
+        commits += [row[1]] if row[1] not in commits else []
+    out = os.path.join(where, "_sheets", name + ".jpg")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    boardrender.cells(pictures, title or f"c164 real-machine pictures (the game 26.3), the code of {', '.join(commits)}",
+                      out, across)
+    print(f"{os.path.relpath(out, PROJECT)}: {len(pictures)} pictures, {across} across")
+
+
 def main():
     ap = argparse.ArgumentParser(description="real-machine pictures into renders/real/")
     ap.add_argument("scenes", nargs="*")
     ap.add_argument("--take", metavar="TAG")
     ap.add_argument("--from", dest="source", default=os.path.join(ROOT, "inbox"), metavar="FOLDER")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--sheet", metavar="NAME")
+    ap.add_argument("--across", type=int, default=2)
+    ap.add_argument("--title")
     ap.add_argument("--into", metavar="FOLDER", help="keep them in this folder of the checkout instead of renders/real")
     args = ap.parse_args()
     kept_in = os.path.join(PROJECT, args.into) if args.into else None
     if args.list:
         listing(args.scenes, kept_in)
         return 0
+    if args.sheet:
+        if not NAME_OK.match(args.sheet) or not args.scenes or args.across < 1:
+            ap.error("--sheet <name> <scene>:<shot> ...: a name of letters, digits, - and _, and the pictures")
+        sheet(args.sheet, args.scenes, args.across, args.title, kept_in)
+        return 0
     if not args.take:
-        ap.error("--take <tag> or --list")
+        ap.error("--take <tag>, --list or --sheet <name>")
     scenes = args.scenes
     if not scenes:
         tail = f"-{args.take}-real.txt"

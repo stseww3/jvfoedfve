@@ -183,6 +183,19 @@ def side_by_side(left, right, names, title, out, exts=(".png", ".jpg"), labels=(
     img.save(out, "JPEG", quality=88)
 
 
+def cells(pictures, title, out, across=2, size=(960, 540)):
+    """Pictures picked by hand on one sheet, in the order given: `pictures` is [(label, file)]."""
+    font = _font()
+    band = 34
+    rows = -(-len(pictures) // across)
+    img = Image.new("RGB", (size[0] * across, band + size[1] * rows), (16, 16, 20))
+    pen = ImageDraw.Draw(img)
+    pen.text((8, 5), title, fill=(230, 230, 230), font=font)
+    for i, (label, path) in enumerate(pictures):
+        _cell(img, pen, font, (i % across * size[0], band + i // across * size[1]), path, label, size)
+    img.save(out, "JPEG", quality=88)
+
+
 def in_columns(columns, names, title, out, ext=".jpg", size=(960, 540)):
     """One row a view, one column a folder: `columns` is [(label, folder)]. The same views under
     several light versions, to be told apart at a glance."""
