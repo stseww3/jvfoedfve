@@ -172,7 +172,7 @@
 
 ## 分支
 
-**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。这张表记到的最新一批：m5 = c277（`cursor/c164-m5-iron-8757`，11-16 00:08 领卡时自报 c277；ROSTER 那一栏还是“—”，请总监助理补上）。
+**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。这张表记到的最新一批：m5 = c277（11-16 00:08 领卡时自报）、m3 = c282（00:20 领卡时自报）；ROSTER 那两栏还是“—”，请总监助理补上。
 
 | agent | 代号 | 分支 |
 | --- | --- | --- |
@@ -196,7 +196,7 @@
 | c204 | ashlar | `cursor/c164-ashlar-2cc1` |
 | c205 | chart | `cursor/c164-chart-5a4c`（interiors/chartroom）、`cursor/c164-m2-windows-7bb5`（windows，已合并；内衬和炉火窗也写在这条上） |
 | c265（原 c206） | facade | `cursor/c164-facade-229b` |
-| c218 | m3 | `cursor/c164-m3-ironwork-e6ba`（接 c196 的分支） |
+| c282（原 c218） | m3 | `cursor/c164-m3-ironwork-e6ba`（接 c196 的分支；11-16 00:20 领卡自报 c282） |
 | c261（原 c219） | cr（评审） | `cursor/c164-review-0eb8` |
 | c267（原 c220） | lights | `cursor/c164-lights-007c`（sky/lights）、`cursor/c164-lights-wash-0fe3`（洗墙灯） |
 | c269（原 c220） | lamps | `cursor/c164-lamps-007c`（props/lamps 的位置表和场地灯链） |
