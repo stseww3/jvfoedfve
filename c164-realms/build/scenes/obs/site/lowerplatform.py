@@ -18,9 +18,14 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
           apron at the stair's foot. Where the axis begins, on the east edge, the walk ends in a
           block like that apron (A0 #28839), from one pier of the railing to another: a place to
           stand on the axis and look up the stair at the front. Nothing stands on it.
+          The way to the works: a walk like the one from the station, from the forecourt's south
+          band to the power house's door and in between its piers; the wicket's own cell is its
+          threshold. The door is the house's number (site/powerhouse.DOOR_AT), so the walk is laid
+          when the house is in the tree.
           The building's grid: a band on every pilaster line that carries a buttress of the
           retaining wall, a course along the foot of that wall and one inside the kerb.
           Under the cable station and the power house the field is left plain: they build on it.
+          (The house writes nothing in the paving course: the floor of its doorway is laid here.)
   lamps   LAMP_POINTS names where the lamps of the way in stand on the paving, in pairs: either
           side of the walk from the station, and where that walk comes into the forecourt. The
           lamps are the props line's to place; here each only has its pad of polished tuff.
@@ -37,6 +42,9 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
 The platform's air is cut clear first: the terrain's east lip stood in it before the platform had
 its numbers.
 """
+import functools
+import importlib
+
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
@@ -73,6 +81,29 @@ LAMP_CELLS = ([(x, z) for x in _GATE_X for z in COURT_Z]
               + [(x, COURT_Z[0] - LAMP_STEP) for x in _LINK_LAMP_X])
 LAMP_POINTS = [(x + 0.5, FEET, z + 0.5) for x, z in LAMP_CELLS]     # the middle of a lamp's foot, on the paving
 
+# --- the way to the works ---------------------------------------------------------------------------
+# The power house's door is its own number, site/powerhouse.DOOR_AT: the front it is in and the cell
+# of the wicket, which stands in the plane of the glass, a cell behind the piers. The walk lies on
+# the wicket's line and is as wide as the walk from the station, which is the doorway's width. It
+# runs from the forecourt's south band into the doorway and ends in the wicket's cell.
+@functools.lru_cache(maxsize=None)
+def door_walk():
+    """The cells (x, z) of the walk to the power house's door. There are none while site/powerhouse
+    is not in the tree, or has its door in another front than the one that looks at the yard."""
+    name = f"{__package__}.powerhouse"
+    try:
+        door = getattr(importlib.import_module(name), "DOOR_AT", None)
+    except ModuleNotFoundError as e:
+        if e.name != name:
+            raise               # the house is there and cannot import something of its own: say so
+        door = None
+    if not door or door["front"] != "north" or door["cell"][1] <= COURT_Z[1]:
+        return frozenset()
+    x, z = door["cell"]
+    return frozenset({(i, k) for i in range(x - LINK, x + LINK + 1) for k in range(COURT_Z[1] + 1, z)}
+                     | {(x, z)})
+
+
 # --- the edge -------------------------------------------------------------------------------------
 # The cells of the south edge that get no railing: the power house's wall stands against them (c228
 # #35515). The cells past its two corners (HX0 and HX1) keep a bar, which joins the corner pier's
@@ -87,6 +118,8 @@ def _in(x, z, box):
 
 def _stone(x, z):
     """The stone of the paving course at (x, z)."""
+    if (x, z) in door_walk():
+        return BAND                     # the walk to the power house's door, into its doorway
     if _in(x, z, S.CABLE_STATION) or _in(x, z, S.POWER_HOUSE["box"]):
         return FIELD
     if x == X0 or x == X1 - 1 or z == Z0 + 1 or z == Z1 - 1:
