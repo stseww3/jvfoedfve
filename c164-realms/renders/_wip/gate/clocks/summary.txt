@@ -1,0 +1,20 @@
+gate machines/clocks b026dd95: the merged tree 803b70c4, the assembly as it was b31bcf73
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    25 of 26 files are the card's own
+                    not this card's file: M build/scenes/obs/machines/clock.py
+check.py: 50 scenes in 33 s: 50 pass (33 with warnings)
+pictures: obs_mach_clocks: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_clocks at 803b70c4: 9 of 15 kept pictures are what the code draws, 6 not
+    master_door: 48 of 921600 pixels are not what the code draws (off by up to 3 of 255)
+    v1_tower: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    tower_far: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    v5_up: 3767 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    tower_foot: 102 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+    dial_close: 6949 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+pictures: obs_mach_clocks_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_clocks_b at 803b70c4: 1 of 5 kept pictures are what the code draws, 4 not
+    v1_tower: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    tower_far: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    v5_up: 3767 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    tower_foot: 102 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+result: PASS
