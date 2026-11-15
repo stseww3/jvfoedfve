@@ -163,7 +163,7 @@ PEDESTAL_TOP = (_SPOTS["pedestal"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.5,
                 _SPOTS["pedestal"][1] + 0.5)                                    # (3.5, -2.5, -46.5)
 SCOPE_STAND = (_scope_cell()[0] + 0.5, float(S.SOUTH_LOOKOUT["feet"]),
                _scope_cell()[1] + 0.5)                                          # (45.5, -5.0, 54.5)
-MAST_RODS = 8                           # the wind mast: eight rods on a riveted foot
+MAST_RODS = 8                           # the wind mast: eight rods on a slate post
 MAST_HEAD = (_SPOTS["mast"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.0 + MAST_RODS,
              _SPOTS["mast"][1] + 0.5)                                           # (6.5, 5.0, -46.5)
 GAUGE = (_SPOTS["gauge"][0] + 0.5, float(S.WEATHER_STATION["feet"]),
@@ -377,8 +377,8 @@ def _water_tower(c, o):
     foot = S.WATER_TOWER["feet"]                        # -2, where the legs stand
     cx, cz = (x0 + x1) // 2, (z0 + z1) // 2             # -17, -31
     legs = [(cx + sx * 2, cz + sz * 2) for sx in (-1, 1) for sz in (-1, 1)]
-    deck_y = foot + 9                                   # 7
-    tank_lo, tank_hi = deck_y + 1, deck_y + 3           # 8..10; the cone ends at 13, the rod at 14
+    deck_y = foot + 8                                   # 6
+    tank_lo, tank_hi = deck_y + 1, deck_y + 4           # 7..10; the cone ends at 13, the rod at 14
 
     # until the terrain card's shelf is merged the shelf is a flat slab laid only where there is
     # nothing yet; the site's rail on the three sides over the drop, the uphill (east) side open
@@ -402,17 +402,19 @@ def _water_tower(c, o):
         if (x, z) not in legs:
             _put(c, o, x, foot + 4, z, IRON_SLAB + "[type=top]")
 
-    # the deck: a riveted floor on the legs' heads, and round it a thin gallery with an iron rail
+    # the deck: a riveted floor on the legs' heads, and round it a thin gallery with an iron rail,
+    # its four corners cut off like the tank's
     for x in range(cx - 3, cx + 4):
         for z in range(cz - 3, cz + 4):
-            if max(abs(x - cx), abs(z - cz)) == 3:
+            if max(abs(x - cx), abs(z - cz)) < 3:
+                _put(c, o, x, deck_y, z, IRON)
+            elif abs(x - cx) != abs(z - cz):
                 _put(c, o, x, deck_y, z, IRON_SLAB + "[type=top]")
                 _put(c, o, x, deck_y + 1, z, BARS)
-            else:
-                _put(c, o, x, deck_y, z, IRON)
 
-    # The tank: a round riveted drum five across, a riveted band at its foot and at its head, plain
-    # plate between. Its cap is a cone of old copper, two rings of steps and a rod on the point.
+    # The tank: a round riveted drum five across and four high, a riveted band at its foot and at
+    # its head, plain plate between. Its cap is a cone of old copper, two rings of steps and a rod
+    # on the point.
     for y in range(tank_lo, tank_hi + 1):
         for x, z in _round(cx, cz, 2):
             _put(c, o, x, y, z, IRON if y in (tank_lo, tank_hi) else PLATE)
@@ -467,11 +469,11 @@ def _weather_station(c, o):
             _put(c, o, x, foot + 1, sz, BOARD)
             _put(c, o, x, foot + 2, sz, BOARD_SLAB + "[type=bottom]")
 
-    # the wind mast: a riveted foot and a thin rod eight blocks up; its head, the vane and the cup
-    # wheel are this card's models (see _models). The one arm is to the west and under the top: an
-    # upright with an arm across it reads as a cross from afar, which the project does not allow.
+    # the wind mast: a thin rod eight blocks up, stepped in a slate post; its head, the vane and the
+    # cup wheel are this card's models (see _models). The one arm is to the west and under the top:
+    # an upright with an arm across it reads as a cross from afar, which the project does not allow.
     wx, wz = _SPOTS["mast"]                             # (6, -47)
-    _put(c, o, wx, foot, wz, IRON)
+    _put(c, o, wx, foot, wz, POST)
     for y in range(foot + 1, foot + 1 + MAST_RODS):
         _put(c, o, wx, y, wz, ROD + "[facing=up]")
     kit = _models()
