@@ -21,21 +21,23 @@
 | 两个版本并排 | 「甲乙并排」 | 两个场景同名的机位排成一张，一列一个场景 |
 | 挑几张拼一张 | 「这四张拼一张，两个一行」 | `renders/real/_sheets/<名字>.jpg` |
 | 拍完在服务端跑一段脚本 | 给脚本在你 `build/` 下的路径 | 脚本打印的东西存成 `after.txt`（见第 5 节） |
+| 几套图同一批机位并排 | 「这几个机位，甲那套和乙那套并排」 | `renders/real/_sheets/<名字>.jpg`，一行一个机位、一列一套（哪个提交、哪个视距写在每格的标题里） |
 
 图回到 s1 的分支 `cursor/c164-s1-render-f3-fd9c`，回话里有提交号和路径。图不进总装，要进由拿合并钥匙的人定。
 
 | 拍的是什么 | 路径（都在 `c164-realms/` 下） |
 | --- | --- |
-| 总装的整座，12 个看板机位 | `renders/real/obs/`，另有 `sheet.jpg`（12 张一页）和 `compare.jpg`（离线和真机左右并排） |
+| 总装的整座，12 个看板机位 | `renders/real/obs/`，另有 `sheet.jpg`（12 张一页）和 `compare.jpg`（离线和真机左右并排，两套是同一个提交才有） |
 | 测试场景 | `renders/real/<场景>/` |
 | 某条分支上的整座 | `renders/real-branch/<提交前七位>/obs/`（不顶替看板的图） |
 | 光照版本 | 总装的在 `renders/real-looks/<提交>/<版本>/<场景>/`，分支的在 `renders/real-branch/<提交>/looks/<版本>/<场景>/`，拼图 `<场景>-looks.jpg` 在版本文件夹旁边 |
-| 视距不是 12 的 | `renders/real-view<n>/<场景>/`（只用来查放远了坏不坏，不当看板图） |
+| 客户端视距不是 12 的 | `renders/real-view<n>/<场景>/`（只用来查放远了坏不坏，不当看板图） |
+| 服务端视距不是 10 的 | `renders/real-server<n>/<场景>/`（两样都不是标准的是 `renders/real-view<n>-server<m>/`） |
 | 并排、拼图 | `renders/real/_beside/<名字>.jpg`、`renders/real/_sheets/<名字>.jpg` |
 | 每一趟的日志 | `renders/real/_trips/<时间>-<提交>.log` |
 | 离线看板 | `renders/board/<总装提交前七位>/`：12 张 png、`board.json`、`shots.txt`、`sheet.jpg` |
 
-每个场景文件夹里的 `real.txt` 一行一张图：机位、tick、图里的代码是哪个提交、图文件 SHA-256 的前 16 位、拍的时间、视距和云的范围（`view12,clouds128`；按光照版本摆的再加 `windows-<版本>`，开了建筑自己的灯的加 `dressed`）。一个文件夹里的图可以来自不同的提交，以这一行为准，不以文件夹为准。
+每个场景文件夹里的 `real.txt` 一行一张图：机位、tick、图里的代码是哪个提交、图文件 SHA-256 的前 16 位、拍的时间、客户端视距、服务端视距和云的范围（`view12,server10,clouds128`；按光照版本摆的再加 `windows-<版本>`，开了建筑自己的灯的加 `dressed`）。11-16 07:20 以前的行没有 `server<n>`，那时服务端和客户端一样是 12。一个文件夹里的图可以来自不同的提交，以这一行为准，不以文件夹为准。
 
 图是游戏自己的截图（1280×720），存成 JPEG 90。画面是 Mesa 在处理器上画的，和显卡画的是同一个画面，只是慢。
 
@@ -48,7 +50,8 @@
 - 系统包（`sudo apt-get install`）：`xvfb`、`libvulkan1`、`mesa-vulkan-drivers`、`vulkan-tools`，和 SDL 开窗要的几个 X 库（`libx11-6`、`libxext6`、`libxcursor1`、`libxi6`、`libxrandr2`、`libxfixes3`、`libxss1`、`libxkbcommon0`）。前三个缺了就出不了图，装不上这一趟就停。
 - Java 25：节点上没有就从 Adoptium 取 Temurin 的 JRE，核过 SHA-256，放 `$MC_ROOT/jdk/`。
 - 游戏文件：`tools/fetch_client.py` 只从 Mojang 的官方地址取，逐个核 SHA-1。客户端在 `$MC_ROOT/client26/`，服务端在 `$MC_ROOT/server26/`。
-- 设置：服务端只监听 127.0.0.1，离线模式，虚空平地，RCON 密码随机生成放 `server26/.rcon_pw`（只在节点上，不进仓库、不进消息、日志里遮成 `***`）；客户端离线启动，只连这台服务端。视距 12、云的范围 128 每一趟都重新写一遍。
+- 设置：服务端只监听 127.0.0.1，离线模式，虚空平地，RCON 密码随机生成放 `server26/.rcon_pw`（只在节点上，不进仓库、不进消息、日志里遮成 `***`）；客户端离线启动，只连这台服务端。客户端视距 12、服务端视距 10、云的范围 128 每一趟都重新写一遍。
+- 视距为什么是两个数：Realms 的服务端视距是 10，改不了（官方的 Realms 地图准则），玩家自己的客户端可以开到 12 以上。所以测试服 `view-distance=10`、客户端 `renderDistance=12`，和 Realms 上一样。服务端 10 意味着：离玩家 10 个区块以外的方块不发给客户端，展示实体离玩家超过 160 格也不发。站位离建筑远的机位（V11、V12）要特别看这一条。
 
 `$MC_ROOT` 就是各岗位 `cloud_setup.sh` 用的 `/agent/realms-study`。
 
@@ -77,11 +80,17 @@ bash c164-realms/tools/nodejob.sh --always --tail 40 python tools/nodetrip.py --
 
 # 几个光照版本
 bash c164-realms/tools/nodejob.sh --always --tail 40 python tools/nodetrip.py --at <总装提交> --looks blue,deep,glow --only obs=v01_arrival,v02_axis
+
+# 服务端视距 12（老标准）下的三张，放 renders/real-server12/obs/，不顶替看板的图
+bash c164-realms/tools/nodejob.sh --always --tail 40 python tools/nodetrip.py --at <总装提交> obs --server-view 12 --only obs=v01_arrival,v11_lookout,v12_aerial
+
+# 几套图同一批机位并排（不开游戏，总监机上跑；文件夹从 renders/ 算起，离线看板的 png 也行）
+bash c164-realms/tools/a0job.sh python tools/realshots.py --columns <名字> --shots v01_arrival,v11_lookout server12=real-server12/obs server10=real/obs
 ```
 
 `--at <总装提交>` 是图的名字：总装头上常常压着只改名单、不改 `build/` 的提交，图要用「`build/` 和现在的总装头一样的最早那个提交」来叫，也就是合并岗在【合并】里报的那个。s1 的分支先合进总装头，自己的 `build/` 和它逐文件一样才画；不一样工具会停下说明。
 
-其余选项在 `tools/nodetrip.py` 和 `tools/win/shuttle.py` 开头：`--again`、`--step`、`--after`、`--apart`、`--beside`、`--sheet`、`--across`、`--view`、`--clouds`、`--no-place`、`--budget`。
+其余选项在 `tools/nodetrip.py` 和 `tools/win/shuttle.py` 开头：`--again`、`--step`、`--after`、`--apart`、`--beside`、`--sheet`、`--across`、`--view`、`--server-view`、`--clouds`、`--no-place`、`--budget`。
 
 一趟里的场景合用一个资源包、一种光照。两个场景要在包里同一个名字下放不同的文件（同一样东西的两个版本），用 `--apart`，一个场景跑一遍班车。光照文件（生物群系、时间线）变了，班车自己重启服务端。
 
@@ -117,6 +126,8 @@ python <脚本> --pw-file <文件> --port <端口> --origin X Y Z
 
 ## 6. 测到的数字（node34，4 核，11-16）
 
+node12（11-16 06:20 起）上的数和 node34 差不多：看板 12 张一单 245 到 252 秒；blue、deep 两个版本各 4 个机位一单 253 秒；桅杆 7 张 196 秒；24 张带脚本 300 秒。服务端起来 6 秒，游戏进服约 23 秒，一张 13 到 18 秒。
+
 - 新节点装一遍（node34 上 Xvfb 和 X 库本来就有，只缺 Mesa 的 Vulkan 驱动和 `vulkan-tools`）：系统包 5 秒，Java 2 秒，游戏文件 5124 个 14 秒。
 - 服务端起来 10 秒，游戏起来、相机进服再 10 秒；一趟从开始到能拍约 25 秒。
 - 整座（约 10 万方块）摆一次 6 秒。
@@ -127,7 +138,7 @@ python <脚本> --pw-file <文件> --port <端口> --origin X Y Z
 
 ## 7. 规矩
 
-- 看板的真机图一律视距 12、云的范围 128。别的视距的图另放，不混。
+- 看板的真机图一律客户端视距 12、服务端视距 10、云的范围 128（总监 11-16 07:20；以前服务端也是 12）。别的视距的图另放，不混。
 - 游戏只开在节点上，合用机上不开。服务端只监听本机，客户端离线、只连它。
 - 游戏文件只从 Mojang 的官方地址取。
 - 一台节点一次一单，上一单的回执没到不投下一单。真机的单占满 4 核，合用节点时同时不能有别人的单。
@@ -140,6 +151,8 @@ python <脚本> --pw-file <文件> --port <端口> --origin X Y Z
 - `v06_power` 等五个机位（V1、V2、V6、V7、V11）是骨架锁定的，`tools/boardshots.py` 只是照抄；另外七个是出图站的提案。骨架改了机位，`boardshots.py --check` 会说存的清单和骨架对不上。
 - 测试场景常常把整条 main 线摆出来（大穹顶的场景和整座差不多大），摆和拍的时间按整座算。
 - 回执是桥转述的，数字以 `renders/real/_trips/` 里的日志为准。
+- `compare.jpg` 由离线看板和真机看板里后到的那一套来画，两套的提交一样才画。真机先到、离线还没出的时候，文件夹里上一批的 `compare.jpg` 会被这一趟删掉，等离线那套出来再画（`boardrender.py` 末尾）。
+- `--no-place`（不重摆，接着上一趟摆好的拍）有三件事要知道。一，班车每一趟摆场景之前都 `forceload remove all`，所以上一个场景自己加的强制加载到下一趟已经没了。二，会动的场景靠计分板的 `#run` 认「现在跑的是谁的循环」，一次只有一个场景的循环在跑：摆整座（`obs`）会把 `#run` 拿走，夹在中间拍过整座，前面那个场景的循环就停了。三，场景的函数各在测试世界数据包里自己的文件夹下，不重摆也找得到。所以要查「停服再起以后循环接不接得上」，中间不能夹别的场景的摆放。
 - 节点会停。投了单、回执过了 `timeout_sec` 十分钟不到，就不再往那台投，报总控和总监助理。新节点的第一单会自己把第 2 节那些装上，不用另外准备。
 
 ## 9. 记录
@@ -147,3 +160,4 @@ python <脚本> --pw-file <文件> --port <端口> --origin X Y Z
 - 11-15（第 1 班 c189）：地块表、班车 `shuttle.py`、`trip.py`、`realshots.py`、看板机位 `boardshots.py`，在管理员的电脑上跑通。交付 ecf454dd，合并 78d0e548。
 - 11-16（第 3 班 c319）：从有效头 9cbe672b 重开。`boardrender.py`（离线看板）、`nodeprobe.sh`、`nodemc.py`（节点上的服务端和游戏）、`nodetrip.py`（一单一趟）、`placelook.py`（按光照版本摆）；`shoot.py` 认助手截图和 `--still`；班车加了 `--look`、`--dress`、`--again`、`--step`、`--after`；`realshots.py` 记视距、`--into`、`--sheet`。看板在 42d7ef6、c992a3a、8b7735e、ec9ac97 四个总装提交上各出了离线和真机一套。
 - 11-16 04:57 起一批节点同时停了，node34 在内（那一单大穹顶甲乙并排没有回来）。真机改排 node12，由总监助理发牌，一单不超过 12 分钟；离线看板走总监机（`tools/a0job.sh`）。为此：`nodetrip.py` 的默认时限改成 1500 秒，配合 `nodejob.sh` 新加的 1700 秒；班车被叫停时把拍完的图带回来；`shoot.py` 的图拍完才得名；`nodemc.py down` 没人听也做完。这几样只在合用机上用假的班车和假的相机试过，节点上的第一趟是 node12 上那几单。
+- 11-16 07:20：总监定测试服视距 10、客户端 12（Realms 的服务端视距是 10）。`nodemc.py` 认 `MC_SERVER_VIEW`，`nodetrip.py --server-view`，`real.txt` 记 `view12,server10,clouds128`，别的服务端视距的图放 `renders/real-server<n>/`；`realshots.py --columns` 把几套图同一批机位排成几列；`compare.jpg` 改成后到的那套来画（3a3c6ef、2a26eea 两批真机先到，文件夹里留着 ec9ac97 的旧 `compare.jpg`）。地块表补到 53 号。
