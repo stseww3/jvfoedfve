@@ -14,10 +14,13 @@ do not shake, which is why the regulator is fixed to it. Behind the glazed door 
 the brass plate and the two wheels of the movement, two copper coils on an iron yoke with the
 armature on the pendulum rod between them (the clock is driven and read electrically), the
 pendulum, and the beat scale under its pointer. Nothing glows. The dial is a piece of its own with
-a fixed light (MASTER_DIAL_LIGHT), a little above what the hall gives the case, so that it is the
-light spot of the clock; case and pendulum take the light of the cell they stand in, the one in
-front of the trunk. The light source that goes with the clock is one hidden light in front of the
-dial (MASTER_LAMP); it is handed to sky/_lightkit, which places it.
+a fixed light (MASTER_DIAL_LIGHT), a step above what the case gets, so that it is the light spot
+of the clock; case and pendulum take the light of the cell they stand in, at the height of the
+trunk's top. The light source that goes with the clock is one hidden light in front of the trunk
+(MASTER_LAMP), handed to sky/_lightkit, which places it. It is a strong one, of the second rank:
+looking in from the court along the axis, what is lit at the far end of the hall is the master
+clock on its pier, with no lamp to be seen (A0, 11-15); the orrery's sun stays the brightest thing
+in the hall.
 
 The tower clock (time tower). Four equal dials, one in the middle of each face of the shaft, centre
 at y 27.5, 2.75 blocks across: white enamel, a thin brass rim, a mark at every hour (no numerals:
@@ -99,9 +102,13 @@ MASTER_FACING = S.MOTHER_CLOCK["facing"]                                        
 MASTER_HOLD = 40.0
 MASTER_PIVOT = (0.0, 37.0, 6.25)     # the pendulum's pivot
 MASTER_DIAL = (0.0, 51.0, 10.5)      # the middle of the dial's back, on the front of the hood
-MASTER_DIAL_LIGHT = (0, 9)           # (sky, block) for the dial and its hands (cr2 and lights, 11-15)
-# the hidden light in front of the dial: the cell and the level (lights, 11-15: (7, 3, 0), level 8)
-MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 8)
+# (sky, block) for the dial and its hands. A0, 11-15: 11 with the lamp below; back to (0, 9), the lamp
+# unchanged, if in V7 the dial comes near the orrery's sun.
+MASTER_DIAL_LIGHT = (0, 11)
+# the hidden light in front of the trunk: the cell, the level and the rank (A0, 11-15: (7, 3, 0), 11,
+# second rank; the case, in the cell behind it, gets 10)
+MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 11)
+MASTER_LAMP_RANK = 2
 PENDULUM_SWING = 5.0                 # degrees each way (A8)
 PENDULUM_POSE = 0.0                  # the still pose is where the loop starts: plumb (motion, 11-15)
 
@@ -454,7 +461,7 @@ def _lamp(canvas, origin):
     except ImportError:
         suggest = None
     if suggest is not None:
-        suggest(canvas, cell, level, "machines/clock:master", rank=3)
+        suggest(canvas, cell, level, "machines/clock:master", rank=MASTER_LAMP_RANK)
     else:
         canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={level}]", keep=True)
 
