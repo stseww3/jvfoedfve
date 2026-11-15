@@ -1,0 +1,11 @@
+delivery sky/lights: 8972aa8 against 4d46fd5 (forked at 142f307), 21 commits, 8 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    8 of 8 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 1 test scene, 0 shots with a picture kept
+                obs_sky_lights: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_sky_lights --out, then --take here and commit renders/obs_sky_lights/)
+[PASS] merge    merges cleanly; 50 commits behind the base
+result: PASS (0 failed, 1 to look at)
