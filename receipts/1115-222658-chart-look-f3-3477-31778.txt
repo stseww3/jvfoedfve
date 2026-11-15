@@ -1,0 +1,22 @@
+a0job 1115-222658-chart-look-f3-3477-31778: cursor/c164-chart-look-f3-3477 @ 56c1ac85 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.01 1.74 1.80, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_int_chartroom --only v9,int_shelf,int_easel,int_desk --out renders/_wip ---- exit 0, 27 s, last 30 lines of 12:
+  obs_int_chartroom: 1592 blocks, 59 entities (0 s)
+  obs_int_chartroom: resource pack written to /tmp/c164pack-k0tir_rj (1 s)
+  obs_int_chartroom: water: 0 sources, 0 cells of running water (1 s)
+  obs_int_chartroom: grid 22 x 12 x 25, 1592 blocks, 1574 entity boxes (2 s)
+  obs_int_chartroom: 17 states -> 30 looks, 48 boxes, 51 pictures (2 s)
+  obs_int_chartroom: light done (2 s)
+  obs_int_chartroom: v9 (tick 14000, 3 s)
+  obs_int_chartroom: int_easel (tick 14000, 5 s)
+  obs_int_chartroom: int_desk (tick 14000, 10 s)
+  obs_int_chartroom: int_shelf (tick 14000, 5 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_int_chartroom-*: 4 pictures of 56c1ac85 drawn, 0.7 MB
+                for a look only: nothing went into renders/obs_int_chartroom/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=30 host=cursor cores=4 head=56c1ac85 commit=9d5ed27f pushed=yes branch=cursor/c164-chart-look-f3-3477-wip files=5
+a0job: exit=0 secs=31
