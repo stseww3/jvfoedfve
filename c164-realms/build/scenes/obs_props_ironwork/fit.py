@@ -289,9 +289,13 @@ def judge(view, kind, reach):
         found.append(f"the transom closes rows {_spans(shut)}, not {_spans(want)}")
     text.append(f"iron from stone to stone in rows {_spans(v for v in shut if v < SPRING + ON_GLASS)}")
 
-    # the round the jambs ask for: it carries on their inner edges
-    between = [u for u in range(view.w) if (u, under) in view.open and (u, under) not in view.member]
-    mid, r = (between[0] + between[-1] + 1) / 2.0, (between[-1] + 1 - between[0]) / 2.0
+    # the round the jambs ask for: it carries on their inner edges. They are read off the straight
+    # part, row by row, not the row under the transom alone: on a gate that row is a leaf's ledge,
+    # iron from stone to stone, and its jambs stand out on the rows above and below it.
+    lit = [(u, v) for v in range(SPRING - ON_GLASS) for u in range(view.w)
+           if (u, v) in view.open and (u, v) not in view.member]
+    mid, r = (min(u for u, _ in lit) + max(u for u, _ in lit) + 1) / 2.0, \
+             (max(u for u, _ in lit) + 1 - min(u for u, _ in lit)) / 2.0
     leak = inside = seen = round_ = 0
     for u, v in view.open:
         if v < SPRING + ON_GLASS:
