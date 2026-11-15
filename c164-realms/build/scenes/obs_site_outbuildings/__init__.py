@@ -121,11 +121,11 @@ def shots():
     shot("tower_mid", (cx - 21.0, feet + 7.0, cz - 25.0), (cx + 9.0, feet + 9.0, cz + 7.0))
 
     wx, wz = _middle(S.WEATHER_STATION["box"])          # (3, -46)
-    # on the terrace, two blocks back from the gap in its railing: down the steps between the gate piers
-    shot("weather_near", (wx, eye + 0.2, north + 2.4), (wx + 1.0, S.GROUND - 0.1, wz - 0.5))
+    # on the terrace, in the gap of its railing, at the head of the steps
+    shot("weather_near", (wx + 0.5, eye + 0.2, north + 1.4), (wx + 0.8, S.GROUND, wz - 0.6))
     shot("weather_mid", (wx - 9.0, 0.0, wz - 22.0), (wx + 3.0, 6.0, wz + 12.0))
-    ax, ay, az = outbuildings.MAST_HEAD                 # the head of the wind mast, from four blocks off
-    shot("weather_head", (ax + 2.0, ay - 0.4, az + 4.0), (ax - 0.2, ay + 0.3, az))
+    ax, ay, az = outbuildings.MAST_HEAD                 # the head of the wind mast, from three blocks off
+    shot("weather_head", (ax + 1.3, ay + 0.1, az + 2.7), (ax - 0.25, ay + 0.35, az))
 
     shot("aerial", (70.0, 60.0, -70.0), (15.0, 0.0, -10.0))
     return out
