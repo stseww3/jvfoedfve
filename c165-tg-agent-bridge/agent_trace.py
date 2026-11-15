@@ -834,6 +834,10 @@ def run_daemon() -> int:
 
 
 def reload_exec_daemon() -> str:
+    # 测试 / CI 下设 DAIS_SKIP_RELOAD=1 可跳过对真实 exec-daemon 的热重载调用，
+    # 避免安装自检时去碰这台机器上真正在跑的 Cursor 进程。
+    if os.environ.get("DAIS_SKIP_RELOAD") == "1":
+        return "hooks.json configured (reload skipped)"
     for cmdline_file in glob.glob("/proc/[0-9]*/cmdline"):
         try:
             raw = Path(cmdline_file).read_bytes().decode("utf-8", errors="replace")
