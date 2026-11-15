@@ -2,11 +2,15 @@
 """The twelve board views (plan/ART-PLAN.md 4) as a shot list for the master scene.
 
     boardshots.py             say where the landmarks of the site fall in every view; nothing is written
-    boardshots.py --write     write tools/win/shots/obs-board.json, the list the render station shoots
+    boardshots.py --write     write tools/win/shots/obs-board.json, the list kept in the repository
     boardshots.py --check     end with 1 when that file is not what the skeleton gives now
+    boardshots.py --out <f>   write the list to another file (the shuttle does, for every trip)
 
 Every position is worked out from build/scenes/obs/common/skeleton.py, so the list moves with the
-skeleton: after a change there, --write and commit. Only arithmetic; no scene is built.
+skeleton: after a change there, --write and commit. Only arithmetic; no scene is built. The
+skeleton is the one of this checkout, or of the build/ folder named in the environment variable
+C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
+the board of a checkout is worked out from that checkout's skeleton.
 
 V1, V2 and V11 are the skeleton's own, LOCKED by A0. The other nine have no place in the skeleton
 yet: what stands here for them is the render station's proposal (PROPOSED below), for A0 to move
@@ -23,7 +27,7 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "build")))
+sys.path.insert(0, os.environ.get("C164_BUILD") or os.path.normpath(os.path.join(HERE, "..", "build")))
 
 from scenes.obs.common import skeleton as S  # noqa: E402
 
@@ -225,12 +229,14 @@ def main():
     ap = argparse.ArgumentParser(description="the twelve board views, from the skeleton")
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--out")
     args = ap.parse_args()
-    if args.write:
-        os.makedirs(os.path.dirname(FILE), exist_ok=True)
-        with open(FILE, "w", encoding="utf-8", newline="\n") as fh:
+    if args.write or args.out:
+        path = os.path.abspath(args.out or FILE)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
             fh.write(text())
-        print(f"written: {os.path.relpath(FILE, os.path.dirname(HERE))} ({len(VIEWS)} views)")
+        print(f"written: {path} ({len(VIEWS)} views; skeleton: {os.path.dirname(os.path.abspath(S.__file__))})")
         return 0
     if args.check:
         try:
