@@ -47,6 +47,8 @@ import re
 import shutil
 import zlib
 
+from ..common import skeleton as S
+
 NS = "c164"                     # the namespace of the models and of our sound events
 OBJECTIVE = "c164m"             # the one scoreboard objective: whose loop runs, each scene's heartbeat
 RUN = "#run"                    # its holder of the running scene's number
@@ -70,9 +72,9 @@ ANEMOMETER_REV = 24             # the wind cups
 
 # ---- the wind -----------------------------------------------------------------------------------
 # One wind for the whole place, from the north (the director, group message 39156): vanes point
-# their tails south, flags fly south, smoke and steam lean south. The skeleton is to get a constant
-# for where the wind comes from; WIND_TO will read it once it has a name.
-WIND_TO = (0.0, 0.0, 1.0)       # the way the wind blows, level and of length 1: south
+# their tails south, flags fly south, smoke and steam lean south. The skeleton's WIND is one block
+# of its way; a tree whose skeleton does not have it yet gets the same wind.
+WIND = tuple(float(v) for v in getattr(S, "WIND", (0, 0, 1)))
 WIND_LEAN = 10.0                # degrees a puff that rises leans with it
 
 # ---- limits -------------------------------------------------------------------------------------
@@ -585,8 +587,9 @@ def downwind(lean=WIND_LEAN, rise=1.0):
     spread= of a puff of count 0, whose speed= is then how fast it rises (blocks a tick)."""
     if not 0.0 <= lean < 90.0:
         raise ValueError(f"a lean of {lean} degrees")
-    over = math.tan(math.radians(lean)) * rise
-    return (WIND_TO[0] * over, float(rise), WIND_TO[2] * over)
+    level = math.hypot(WIND[0], WIND[2])
+    over = math.tan(math.radians(lean)) * rise / level if level > 1e-9 else 0.0
+    return (WIND[0] * over, float(rise), WIND[2] * over)
 
 
 def puff(canvas, pos, particle, cycle, at=(0,), *, count=1, spread=(0.0, 0.0, 0.0), speed=0.0, far=False,
