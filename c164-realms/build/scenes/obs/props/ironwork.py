@@ -270,9 +270,12 @@ def _door_leaf():
 
 def _gate(width=3):
     """A side arch of the entrance, closed: the door's frame, an open iron fan in the head and a pair
-    of barred leaves that repeat the door's kick plate and ledges, at scale 2 (anchor as door_frame)."""
+    of barred leaves that repeat the door's kick plate and ledges, at scale 2 (anchor as door_frame).
+    The fan has an even number of rays, none on the middle: the upright line of the two meeting
+    stiles ends at the transom and does not run on to the crown, where transom and upright would
+    stand against the light as a cross (c219, pre-review P9)."""
     m = M.Model(PREFIX + "gate", px=2.0)
-    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=7, wide=1.0, glass=False)
+    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=8, wide=1.0, glass=False)
     hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H      # no slit of light under the transom
     for sx in (-1.0, 1.0):
         def span(x0, x1, y0, y1, mat, zz=z, **kw):
@@ -396,8 +399,8 @@ def _canopy_lamp():
     bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
              (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
     K.glass_ball(m, (0.0, -21.0, 0.0), 5.0, bands, sides=12, squash=1.0)
-    for angle in (0.0, 90.0, 180.0, 270.0):                                               # the cage
-        m.box((5.5, -26.0, -0.5), (6.5, -16.0, 0.5), IRON, rot=("y", angle, (0.0, 0.0, 0.0)) if angle else None, grain="y")
+    for angle in (45.0, 135.0, 225.0, 315.0):           # the cage: no bar before the middle of the globe,
+        m.box((5.5, -26.0, -0.5), (6.5, -16.0, 0.5), IRON, rot=("y", angle, (0.0, 0.0, 0.0)), grain="y")   # front or side
     m.ring("y", (0.0, -26.5, 0.0), 5.75, 1.0, 1.0, IRON_D, sides=8)
     m.tube("y", (0.0, 0.0), -28.5, -25.5, 1.0, IRON, sides=4)
     return m
