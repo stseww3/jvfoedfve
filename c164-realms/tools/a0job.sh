@@ -23,6 +23,8 @@
 #   --receipt <id>   print the receipt of a job sent earlier, if it has come (exit 75: not yet)
 #   --queue          the jobs that are waiting, the first of them running
 #
+# Short jobs go first: a gate (gate.sh, gatestack.sh, checkall.py) lets the looks waiting behind
+# it pass until it has waited ten minutes itself.
 # Push first: the machine sees GitHub, not your disk. A job gets 15 minutes there unless it says
 # `--limit <seconds>` (a nodejob.sh option), and 30 minutes at the very most: split what is longer.
 # The real game is not on that machine: real pictures stay with the picture-key holder.
@@ -30,7 +32,7 @@
 set -uo pipefail
 
 Q="cursor/c164-jobs-a9f5"
-usage() { sed -n '2,29p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,31p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
 wait_s=1500 mode="send" want=""
 while [ $# -gt 0 ]; do
