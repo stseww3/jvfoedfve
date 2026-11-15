@@ -6,8 +6,10 @@ DRAFT: written while the machine was closed to Python, not run yet. The undersco
 out of the category's auto-discovery; it becomes main/roof.py when its self-check has passed.
 
 Card: plan/packages/main/smalldome.md (the same card as main/smalldome.py). Design: plan/ART-PLAN.md
-section 4 ("the roofs can be walked") and 5.1; the director's ruling on the doors and the walkways
-is in plan/STATUS.md (A0 #20299).
+section 4 ("the roofs can be walked") and 5.1. The director's rulings: the doors and the walkways,
+plan/STATUS.md (A0 #20299); no railing on the parapets, no guard on the walkways, no cowls or flues
+in this version, and whoever falls off a roof lands unhurt in the court -- the finished map switches
+fall damage off (A0 #34510, in the card).
 
 main/facade.py closes the top of the shell: slates over the wings, and on the three flat roofs a
 deck of dark slate flags at y 17 whose columns it hands out as terraces(). This package runs after
@@ -35,15 +37,17 @@ the shell, the tower and the domes. The flags stay as the facade lays them; what
                         grating two blocks wide, with a caged lamp under it at either end and in
                         the middle, so that the way is lit from below and nothing shines into an
                         observer's eyes; comes down the west slope beside the end gable, crosses
-                        that at its west end and reaches the end terrace in its north-west corner.
-                        From there the door (the small dome's to the south, the tower's to the
-                        north) is straight ahead on the terrace's axis. No step is higher than
-                        half a block, and to either side of the grating the slates are half a
-                        block down: the way needs no guard.
+                        that at its west end and reaches the end terrace in the corner by the
+                        west parapet. From there the door (the small dome's to the south, the
+                        tower's to the north) is straight ahead on the terrace's axis. No step is
+                        higher than half a block, and to either side of the grating the slates
+                        are half a block down: the way needs no guard.
 
 Light: the caged lamps are blocks of this package (their own light is 4); over each the light kit
-is asked for a walkway's level (sky.md 6), where the kit is in the tree. The ceiling lights under
-the two roof lights are dark glass until the lights line says otherwise.
+is asked for a walkway's level (sky.md 6; agreed with the lights line, c220 #34654), where the kit
+is in the tree. The ceiling lights under the two roof lights are dark glass until the lights line
+says otherwise. None of this may show in V1, V2 or V11: scenes/obs_main_smalldome/hidden.py casts
+the sight lines.
 
 No display entities. Vent cowls, ladders and railing panels are the props line's (props/ironwork).
 
@@ -62,7 +66,8 @@ from . import _plan as P
 from . import facade
 from . import smalldome
 
-ORDER = 70                      # after the shell (20), the tower and the small dome (50), the great dome (60)
+ORDER = 70                      # after the walls and slates (facade, 20), the tower and the small dome (50), the
+#                                 great dome and the floors (60); before the rooms that move in (80)
 
 DECK_Y = S.ROOF_FLOOR                                   # 17: the block of every flat roof
 STAND = S.ROOF_STAND                                    # 18: where feet stand on it
@@ -246,7 +251,7 @@ def build(canvas, origin=(0, 0, 0)):
         for (x, y, z), state in walkway(s).items():
             put(x, y, z, state)
         for x, y, z in lamps(s):
-            _ask_light(canvas, (ox + x, oy + RIDGE_TOP, oz + z), LAMP_LEVEL, "main/roof:walkway")
+            _ask_light(canvas, (ox + x, oy + RIDGE_TOP, oz + z), LAMP_LEVEL, "main/roof:walk")
     for x, y, z, state in doors():
         put(x, y, z, state)
     return 0
