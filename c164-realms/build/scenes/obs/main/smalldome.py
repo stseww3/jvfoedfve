@@ -59,13 +59,13 @@ RISE = APEX + 0.8 - SKIRT_Y                              # the skirt's foot, thi
 #                                                          apex block alone reaches the top of row 25
 SLIT_X = (S.SMALL_DOME_X[0], CX - 1)                     # the slit: the west axis row, up to the apex block
 LEAF_Z = CZ + 1                                          # the shutter leaf lies south of the slit
-LEAF_PROUD = 0.5                                         # and this far over the plates
+LEAF_PROUD = 0.0                                         # TRIAL: flush with the plates
 RUNS = ((CX + 4, CZ + 1), (CX - 1, CZ + 4), (CX + 3, CZ - 3))   # the darker plates, in the row over the skirt
 
 PLATE, RUN, CAST = B.VERDIGRIS_CUT, B.VERDIGRIS_STREAK, B.VERDIGRIS_CAST
 STONE, PANEL = B.ASHLAR_FINE, B.ASHLAR_PANEL
 IRON = B.IRON_RIVETED
-LEAF = RUN                                               # TRIAL (pictures decide): the shutter leaf in the darker copper
+LEAF = IRON                                              # TRIAL (pictures decide): the shutter leaf in riveted iron
 SKIRT = IRON.block
 GLASS = B.WINDOW_DARK.pane                               # a pane: the glass stands back in a wall one block thick
 FRONT = "sdome"                                          # the front's name in windows()
