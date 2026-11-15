@@ -33,9 +33,9 @@ hall shows its glass to the door.
             along the gallery walls, at the two stair feet and on the mezzanine.
 
 Two versions to choose between; the plan is locked, so they differ in dress:
-  a  "academy"   a nave of polished slate between two pale aisles, stone pilasters, a dark
-                 wainscot, a wooden boss ringed in brass, blue panels with brass stars in the
-                 boards, benches and display tables.
+  a  "academy"   a nave of polished slate, the black and white chequer under the galleries,
+                 stone pilasters, a dark wainscot, a wooden boss ringed in brass, blue panels
+                 with brass stars in the boards, benches and display tables.
   b  "workshop"  polished tuff down the nave, an iron duct cover under each gallery's edge, a
                  grating inside the door, riveted stanchions, an iron boss, riveted plates in the
                  boards, drafting table, desk, cabinets and cases.
@@ -233,10 +233,12 @@ def star_at():
 
 # ---- the floor --------------------------------------------------------------------------------------------
 def _lay_a(x, z):
-    """a: the nave polished slate from the door to the clock and from gallery to gallery, the
-    aisles under the galleries pale. The dark nave is the axis marked in stone; it is as wide as
-    the ring, which lies on it like a seal on a ribbon."""
-    if abs(z - CZ) <= ROUNDEL_R:
+    """a: the nave polished slate from the door to the clock and from gallery to gallery: the axis
+    marked in stone, as wide as the ring, which lies on it like a seal on a ribbon. Under the
+    galleries the plan's black and white chequer, a block to a square, mirrored about the meridian
+    and about the axis, and dark where the meridian's brass crosses it."""
+    across = abs(z - CZ)
+    if across <= ROUNDEL_R or (abs(x - CX) + across) % 2 == 0:
         return B.SLATE_SMOOTH.block, None
     return B.ASHLAR_FINE.block, None
 
