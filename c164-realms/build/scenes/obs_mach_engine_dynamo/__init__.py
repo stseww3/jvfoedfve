@@ -5,7 +5,7 @@ power house as site/powerhouse builds it.
 Round the shell there is a slab of the lower platform and nothing else. The room is empty but for
 the set: the boilers, the switchboard, the gratings and rails round the pit, the pipes and the
 lamps are other packages'. The floor is a stand-in for the room's (interiors/powerhouse), and the
-light is a stand-in as well: rows of invisible sources three blocks over the floor on either side
+light is a stand-in as well: rows of invisible sources four blocks over the floor on either side
 of the engine, so that the models can be judged; the room's own lamps and the boilers' fire come
 with the interior and the sky line.
 
@@ -34,9 +34,9 @@ SLAB = (X0 - 6, Z0 - 6, X1 + 3, Z1 + 3)         # the piece of the lower platfor
 PAVING_Y = S.LOWER_PAVING_Y                     # -7
 FLOOR = B.TUFF_SMOOTH.block                     # stands in for the room's floor and the yard's paving
 ROCK = B.TUFF.block                             # under it: what the pit is dug into
-LIGHT_Y = int(engine.FLOOR) + 3
+LIGHT_Y = int(engine.FLOOR) + 4                 # over the dynamo's terminals and clear of the flywheel's cell
 LIGHTS = ([(x, 32) for x in (71, 74, 77, 80, 83, 86)]
-          + [(x, 38) for x in (71, 74, 80, 83, 86)])
+          + [(x, 39) for x in (71, 74, 77, 80, 83, 86)])
 LIGHT_LEVEL = 15
 TIME = 14000                                    # light version A, the default
 
@@ -77,7 +77,7 @@ def shots():
     fy = engine.FLOOR
     sx, lz, wz = engine.SHAFT_X, engine.LINE_Z, engine.WHEEL_Z
     h = fy + engine.H
-    dx = sx + engine.DYN_X
+    dx, dz = sx + engine.DYN_X, lz + engine.DYN_Z
     out = []
 
     def shot(name, pos, look_at):
@@ -89,9 +89,11 @@ def shots():
     shot("flywheel", (sx + 3.6, fy + EYE, lz - 3.6), (sx + 0.3, h, lz + 0.6))
     shot("rods", (sx + 6.6, fy + 2.3, lz - 2.6), (sx + 2.6, h, lz))
     shot("cylinder", (sx + 9.6, fy + EYE, lz - 3.2), (sx + 6.6, h, lz - 0.3))
-    shot("dynamo", (dx + 1.9, fy + EYE, lz - 3.2), (dx, fy + engine.DYN_H, lz + engine.DYN_Z))
-    shot("belt", (dx - 1.9, fy + EYE, wz + 2.6), (sx - 1.5, h + 0.4, wz))
-    shot("south", (sx + 2.4, fy + EYE, wz + 3.9), (sx, h, wz))
+    shot("dynamo", (dx + 2.2, fy + EYE, wz - 3.4), (dx, fy + engine.DYN_H + 0.5, dz - 0.4))
+    shot("belt", (dx - 1.6, fy + EYE, wz - 2.2), (sx - 1.2, h + 0.3, wz))   # along the belt, from the pulley's end
+    shot("south", (sx + 2.4, fy + EYE, wz + 3.9), (sx, h, wz))              # the wheel's far side, the outboard bearing
+    shot("valve", (sx + 5.4, fy + EYE + 0.4, lz + 4.8), (sx + 6.4, h + 0.4, lz + 0.9))      # chest, governor, eccentric rod
+    shot("brushes", (dx + 2.0, fy + EYE, dz + 2.6), (dx, fy + engine.DYN_H + 0.4, dz + 0.4))        # the commutator's end
     shot("above", (sx - 1.0, fy + 7.5, lz - 5.0), (sx - 0.5, fy, lz + 0.8))
     shot("wicket", (74.3, fy + EYE, 17.5), (75.6, h, wz))                   # from the yard, through the open wicket
     return out
