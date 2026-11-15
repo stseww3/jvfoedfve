@@ -186,13 +186,15 @@ def shots():
       hut_court     from the court, due south of the door: the hut and what shows in its slot
 
     The dome:
-      dome_door     a step inside the west door (its leaf is shut): the column and its clock, the tube overhead
+      dome_door     a step inside the west door (its leaf is shut): the column and its clock, the polar
+                    axis and its circles, the counterweights, the tube overhead
       dome_south    from the south wall: the tube side on, the mount behind it
-      dome_north    from the north wall: the mount, the counterweights, the circles
+      dome_north    from the north wall: the head, the declination circle, the counterweights
       dome_plate    close, by the east wall: the camera back and the plate holder
-      dome_up       from beside the plate holder up the tube at the slit
+      dome_up       from the south-east of the room, up along the tube to the slit
       slit          from outside, beside the tube's line: the object glass in the slit
       terrace       from the terrace west of the dome, as one walks up to its door
+      west_high     from the west and above, as from the tower: the slit and the glass in it
 
     The bench, at noon:
       bench_meridian, bench_meridian_side   the transit circle from the south-west; along its axis
@@ -231,16 +233,18 @@ def shots():
     p = astro.pivot()
     floor = astro.FLOOR
     door = smalldome.door_cells()[0]
-    shot("dome_door", (door[0] + 1.3, floor + eye, door[2] + 0.5), off(astro.head(), dx=0.3, dy=0.25))
+    h, f = astro.head(), astro.foot()
+    shot("dome_door", (door[0] + 1.3, floor + eye, door[2] + 1.2), (f[0], floor + 1.2, f[2] - 0.2))
     shot("dome_south", (p[0] + 0.3, floor + eye, p[2] + 2.2), off(p, dx=-0.4, dy=0.2))
-    shot("dome_north", (p[0] - 0.2, floor + eye, p[2] - 2.2), off(p, dx=-0.5, dy=-0.2))
+    shot("dome_north", (p[0] + 0.7, floor + eye, p[2] - 2.1), off(h, dx=-0.2, dy=-0.2))
     back = astro.plate()
     shot("dome_plate", (back[0] + 0.55, back[1] + 0.55, back[2] - 1.35), off(back, dx=-0.3, dy=0.1))
-    shot("dome_up", (back[0] - 0.1, floor + 0.9, back[2] + 1.1), astro.objective())
     g = astro.objective()
-    out_there = tuple(g[i] + astro.SIGHT[i] * 6.0 for i in range(3))
-    shot("slit", (out_there[0], out_there[1] + 0.6, out_there[2] + 1.6), g)
-    shot("terrace", (DECK[0] + 3.5, DECK_Y + 1 + eye, p[2] + 1.5), (g[0], g[1] - 0.6, g[2]))
+    shot("dome_up", (p[0] + 1.8, floor + eye, p[2] + 1.4), (g[0] + 1.0, g[1] - 0.8, g[2]))
+    out_there = tuple(g[i] + astro.SIGHT[i] * 4.5 for i in range(3))
+    shot("slit", (out_there[0], out_there[1] + 0.5, out_there[2] + 1.2), g)
+    shot("terrace", (DECK[0] + 2.5, DECK_Y + 1 + eye, p[2] + 1.2), (g[0], g[1] - 0.6, g[2]))
+    shot("west_high", (DECK[0] - 2.5, g[1] + 4.5, p[2] + 3.0), (g[0], g[1] - 0.5, g[2]))
 
     # the bench
     om, oa = bench_origins()

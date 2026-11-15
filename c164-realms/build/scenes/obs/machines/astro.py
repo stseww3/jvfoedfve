@@ -21,9 +21,11 @@ great refractor: tonight it takes the comet's plate.
               holder in its frame, the dark slide half drawn.
 
 The room decides its size (the card asks for a tube six blocks long): the drum is five blocks
-across inside and seven under the dome, so the tube is 5.8 blocks from the dew cap to the plate
-holder and 1.1 across. The object glass stands just inside the slit, where it shows from the
-terrace; the plate holder is at the height of the observer's chest in the east half of the room.
+across inside and seven under the dome, so the tube is 6.2 blocks from the dew cap to the plate
+holder and 1.1 across. It is wider than the slit, so the dew cap stops between the plates that
+flank the slit, two texels short of them: as far out as it can go, where the object glass shows
+whole from the far end of the terrace and from the tower. The plate holder is at the height of
+the observer's chest in the east half of the room.
 The tube is on the east side of the pier and the counterweights hang to the west and north, the
 way an equatorial of this kind stands when it looks west.
 
@@ -112,7 +114,7 @@ DOME_AXIS = ((S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0 + 0.5,
              (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) / 2.0 + 0.5)       # (12.5, 30.5), a point
 RISE = 40.0                     # texels: the tube's pivot over the floor
 OFF = 18.0                      # from the polar axis to the tube's axis, along the declination axis
-FRONT, TAIL, BACK = 60.0, 26.0, 33.5    # from the pivot: to the dew cap's lip, the tail flange, the plate holder's back
+FRONT, TAIL, BACK = 66.0, 26.0, 33.5    # from the pivot: to the dew cap's lip, the tail flange, the plate holder's back
 HOLD = 8.0                      # from the head down the polar axis to the bolt the cheeks hold the sleeve by
 TUBE_SCALE, MOUNT_SCALE, AXIS_SCALE, BACK_SCALE = 2.0, 1.0, 1.0, 1.0
 
@@ -149,11 +151,11 @@ def sweep(origin=(0, 0, 0)):
 
 # ---- the tube -----------------------------------------------------------------------------------------
 BODY_R, HOOP_R, CELL_R = 9.0, 10.0, 10.0
-BODY = (-47.0, 16.0)            # the rings of plate: from, to (texels from the pivot; the plate is at +)
-HOOPS = (-31.0, -15.0, 16.0)    # the hoops' middles; the last, where the tail cone starts, is brass
+BODY = (-53.0, 16.0)            # the rings of plate: from, to (texels from the pivot; the plate is at +)
+HOOPS = (-35.0, -17.0, 16.0)    # the hoops' middles; the last, where the tail cone starts, is brass
 STRAPS = (-7.5, 7.5)            # the saddle's two straps
 GUIDE_OFF, GUIDE_R = 13.25, 2.75
-GUIDE = (-44.0, 24.0)           # the guiding telescope's tube: from, to
+GUIDE = (-50.0, 21.5)           # the guiding telescope's tube: from, to
 SEAMS = (215.0, 245.0)          # where the seams of rivets run: degrees round the tube (0 north, 90 over)
 ROD = (175.0, 2.0, 22.0)        # the slow-motion rod: degrees round the tube, from, to
 
@@ -252,11 +254,11 @@ def _back():
 
 
 # ---- the axis piece -----------------------------------------------------------------------------------------
-SLEEVE = (-3.0, 7.5, 3.75)      # the declination sleeve: from, to (texels from the head, towards the weights), radius
-DEC_CIRCLE = (9.75, 7.5)        # the declination circle: where on the shaft, radius
-WEIGHTS = ((12.5, 16.5), (17.0, 21.0))
-WEIGHT_R = 5.5
-SHAFT_END = 23.0
+SLEEVE = (-3.0, 5.5, 4.25)      # the declination sleeve: from, to (texels from the head, towards the weights), radius
+DEC_CIRCLE = (7.5, 7.5)         # the declination circle: where on the shaft, radius
+WEIGHTS = ((10.0, 14.0), (14.5, 18.5))  # as far out as the room's north-west corner lets them hang
+WEIGHT_R = 5.25
+SHAFT_END = 20.5
 POLAR_TOP = -5.0                # where the polar sleeve ends under the head, texels along the polar axis
 
 
@@ -282,19 +284,19 @@ def _axis():
 
 
 # ---- the mount ------------------------------------------------------------------------------------------------
-FOOT = (7.5, 2.0)               # the cast foot: half size, height (texels)
+FOOT = (9.0, 2.0)               # the cast foot: half size, height (texels)
 COLUMN = [                      # the column's sections: y0, y1, half size, the depth of the flange at the head
-    (2.0, 8.0, 5.5, 1.5),
-    (8.0, 12.0, 4.25, 0.0),
+    (2.0, 6.5, 7.0, 1.5),
+    (6.5, 12.0, 5.5, 0.0),
 ]
-HEAD_BLOCK = (7.25, 12.0, 13.5, -5.0, 3.25)     # the block the cheeks stand on: half size along x, y0, y1, z0, z1
+HEAD_BLOCK = (7.25, 12.0, 13.5, -4.5, 4.5)      # the block the cheeks stand on: half size along x, y0, y1, z0, z1
 CHEEK = (5.25, 6.75)            # the cheek plates: from, to along x, either side
-CHEEK_TOP = 3.25                # ... and how far they rise over the bolt
-POLAR = (-21.5, POLAR_TOP, 4.0)  # the polar sleeve: from, to (texels from the head along the axis), radius
-HOUR_CIRCLE = (-23.75, 6.5)     # the hour circle: where on the axis, radius
-WORM_WHEEL = (-25.5, 4.25)      # the worm wheel: where on the axis, radius to the middle of its teeth
-POLAR_END = -27.5
-CLOCK = (3.5, 6.0, 6.0)         # the driving clock on the column's west face: deep, high, wide
+CHEEK_HEAD = 4.0                # the round head of a cheek about its bolt: radius
+POLAR = (-22.5, POLAR_TOP, 4.0)  # the polar sleeve: from, to (texels from the head along the axis), radius
+HOUR_CIRCLE = (-24.75, 6.5)     # the hour circle: where on the axis, radius
+WORM_WHEEL = (-26.5, 4.25)      # the worm wheel: where on the axis, radius to the middle of its teeth
+POLAR_END = -28.5
+CLOCK = (3.5, 4.25, 6.0)        # the driving clock on the column's west face: deep, high, wide
 
 
 def _on_pole(k, x=0.0):
@@ -313,27 +315,30 @@ def _mount():
     for y0, y1, h, band in COLUMN:
         K.upright(d, y0, y1, h, band=band)
     bx, by0, by1, bz0, bz1 = HEAD_BLOCK
-    d.box((-bx, by0, bz0), (bx, by1, bz1), K.IRON_D_STUD)
-    # the two cheeks; the bolt they hold the polar sleeve by, the screw that clamps it at the latitude
+    d.box((-bx, by0, bz0), (bx, by1, bz1), K.IRON_STUD)
+    # the two cheeks: each a plate that narrows to a round head about the bolt they hold the polar
+    # sleeve by; under the bolt the screw that clamps the sleeve at the latitude
     x0, x1 = CHEEK
     hold = _on_pole(-HOLD)
-    top = hold[1] + CHEEK_TOP
-    mid = (by1 + top) / 2.0
+    waist = (by1 + hold[1]) / 2.0
     for sgn in (-1.0, 1.0):
         a, b = sorted((sgn * x0, sgn * x1))
-        d.box((a, by1, bz0), (b, mid, bz1), K.IRON_D_STUD, grain="y")
-        d.box((a, mid, bz0 + 1.5), (b, top, bz1), K.IRON_D_STUD, grain="y")
-        a, b = sorted((sgn * x1, sgn * (x1 + 1.25)))
+        d.box((a, by1, bz0), (b, waist, bz1), K.IRON_STUD, grain="y")
+        d.box((a, waist, hold[2] - CHEEK_HEAD + 0.75), (b, hold[1], hold[2] + CHEEK_HEAD - 0.75), IRON, grain="y")
+        a, b = sorted((sgn * (x0 - 0.125), sgn * (x1 + 0.25)))         # the head stands a little proud of the plate
+        d.tube("x", (hold[1], hold[2]), a, b, CHEEK_HEAD, IRON, sides=12)
+        a, b = sorted((sgn * (x1 + 0.25), sgn * (x1 + 1.5)))
         d.tube("x", (hold[1], hold[2]), a, b, 2.75, BRASS_D, sides=8)
-        d.tube("x", (by1 + 3.0, bz0 + 2.5), a, b - 0.5, 1.25, BRASS, sides=8)
-    d.tube("x", (hold[1], hold[2]), -x1 - 2.0, x1 + 2.0, 1.25, STEEL, sides=8)
+        a, b = sorted((sgn * x1, sgn * (x1 + 0.75)))
+        d.tube("x", (by1 + 3.0, bz0 + 2.5), a, b, 1.25, BRASS, sides=8)
+    d.tube("x", (hold[1], hold[2]), -x1 - 2.25, x1 + 2.25, 1.25, STEEL, sides=8)
     # the polar sleeve between them, a bolted flange on either end; below it the steel axis with
     # the hour circle and the worm wheel
     p0, p1, r = POLAR
     with d.along(_on_pole(p0), _on_pole(p1)) as length:
         d.tube("y", (0.0, 0.0), 0.0, length, r, IRON, sides=12)
         for a, b in ((0.0, 1.5), (length - 1.5, length)):
-            d.tube("y", (0.0, 0.0), a, b, r + 1.0, K.IRON_D_STUD, sides=12, seed=K.HOOP_SEED + 2)
+            d.tube("y", (0.0, 0.0), a, b, r + 0.75, K.IRON_D_STUD, sides=12, seed=K.HOOP_SEED + 2)
         d.tube("y", (0.0, 0.0), POLAR_END - p0, 0.0, 1.75, STEEL, sides=8)
         K.circle(d, "y", (0.0, HOUR_CIRCLE[0] - p0, 0.0), HOUR_CIRCLE[1], band=2.5, width=1.25, hub=2.75, n=6,
                  sides=16)
