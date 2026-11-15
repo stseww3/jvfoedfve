@@ -72,3 +72,10 @@
   5. 图上看住的一处：甲版铁笼灯正对着看，两道竖箍挨得近，读成「一个圆按钮上两道杠」（暂停键），c219 早先提过这个可能。现在的箍在 x ±1.5（罩半径 3.5）。**模型是 a6 的，怎么改我这一轮不动**，卡片写明退路是「改三道」或「两道往外挪到 x ±2.25」，这一条请评审 c261 看了图定，定了我再挪。
   6. 灯位表归我、光归 lights（c267）。`lamps.site()` 用 `_kit.offer_lights` 交出去，`sky/_lightkit.take` 在树里就走它、不在就自己放 light 方块；现在总装里还没有 `_lightkit.py`，所以测试场景里的光暂时是我自己落的。`lights` 那条分支进总装以后，这里不用改。
   7. `DRESS` 仍然默认关，等总监看 V1、V2、V12 的图。
+- 2026-11-16 凌晨 交付（lamps）。提交 **8e93bb90**，分支 `cursor/c164-lamps-007c`，合总装 4f2a3376（0 落后，可快进）。上一版的 4916d24d 作废（那是合总装 84ed2d1f 时的头）：
+  1. 技检：`delivery.py props/lamps 8e93bb9 --base origin/cursor/c164-realms-map-b59c` 七项全 PASS（72 个文件全在本卡范围、无密钥、提交说明合式、3 个场景 56 个机位全有图且和 shots.txt 的 SHA-256 一致、干净合入、0 落后）。`selfshots.py --verify` 三个场景 26/26、15/15、15/15 全过。
+  2. check.py：`obs_props_lamps` PASS 0 失 0 黄；`obs_props_lamps_site` 和 `obs_props_lamps_site_off` 各 PASS 0 失 1 黄（同一条：V1 里 16 跨大窗被 x 60 前庭石墩挡 32%，不是灯）。
+  3. 图重出：合新总装以后灯开那套 15 张里 13 张、灯关那套 15 张里 12 张变了——新合进来的 shell、facade、sky/lights、brass 都在这个场景的画面里（和 s2 说的 lights 那 20 张一个道理）。旧图是 84ed2d1f 上出的。`obs_props_lamps` 那 26 张逐像素没变（它是自立样板墙，不摆主楼）。
+  4. 灯的格子和 A2 的光工具接通了：`obs_props_lamps_site` 的 `light_report` 里，我这边的光源全进了 `_lightkit.take`——12 盏路灯 13 级、4 盏边沿矮灯 10 级、浑仪脚下 4 盏 8 级、入口两盏壁灯 12 级；rejected 0、isolated 0、merged 2、无 15 级。`sky/_lightkit.py` 已经进总装，`_kit.offer_lights` 走它，不再自己落 light 方块。
+  5. 表里 28 盏，立起来 20 盏，`lamps_left_out` 记着 8 盏没立：大台阶头两个灯座、台阶脚两盏路灯、边沿 (60,−34) 那根墩（这三处要 site/stair）；小屋门和水塔脚（要 site/outbuildings）；车站车门上方那盏（要 site/cablecar）。**这几个包一合，这边自动就立起来，不改代码**——它们在 `site()` 里按画布上有没有墩帽/墙实时判。所以这一版合进总装不影响别的包，场地灯链暂时少 8 盏。
+  6. 铁笼灯那道暂停键：已私信评审（c261）用 `cage_a_near` 和 `hut_door` 定哪条退路（改三道 / 两道挪到 x ±2.25）。模型是 a6 的，这一轮没动几何。
