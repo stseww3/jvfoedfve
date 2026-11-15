@@ -44,10 +44,11 @@ The pieces (16 texels to the block, px = scale; a wall piece is hung by the midd
                     with a red flash (voltage). Digits, signs and a letter or two, nothing else.
     flag, pole_*    the station's flag (blue, the emblem in cream) on a pole with a ball on top.
 
-For the other lines:
+The great piece is hung by build() when DRESS is on, on the seat main/facade.emblem() gives,
+version VERSION of it. For the other lines:
 
     from scenes.obs.props import signs
-    n += signs.great(canvas, facade.emblem(), "emblem", origin)         # or "clock"
+    n += signs.great(canvas, seat, "emblem", origin)        # or "clock"; a seat as facade.emblem()'s
     n += signs.place(canvas, "emblem", (x, y, z), facing="east", origin=origin)
     n += signs.plate(canvas, "220V", (x, y, z), facing="east", origin=origin)
     n += signs.flagpole(canvas, (x, y, z), height=7, facing="east", origin=origin)
@@ -66,6 +67,8 @@ from . import _kit as K
 
 PREFIX = "prop_sign_"
 DRESS = False                   # build() dresses the master scene only when on (A0 #211)
+VERSION = "a"                   # the great piece over the entrance; the director chooses on V2
+VERSIONS = {"a": "emblem", "b": "clock"}
 
 BR = P.RAMPS["brass"]
 CR = P.RAMPS["cream"]
@@ -623,13 +626,31 @@ def flagpole(canvas, foot, height=7.0, facing="south", origin=(0, 0, 0), flag=Tr
     return n
 
 
-def build(canvas, origin=(0, 0, 0)):
+def _seat():
+    """The seat of the great piece as main/facade gives it, or None while the front in the tree
+    has none (props dress a wall that already stands)."""
+    try:
+        from ..main import facade
+    except ImportError:
+        return None
+    give = getattr(facade, "emblem", None)
+    return give() if give is not None else None
+
+
+def build(canvas, origin=(0, 0, 0), version=None):
     """What signs place in the master scene: nothing while DRESS is off (A0 #211: what is hung over
-    the whole building stays off until it has passed on the real wall). The great piece over the
-    entrance is hung by main/facade, which owns its seat: signs.great(canvas, facade.emblem())."""
+    the whole building stays off until it has passed on the real wall), and then the facade's table
+    is not read at all. On: the great piece on its seat over the entrance, version `version` of it
+    (VERSION when not given) -- the main line owns the seat and places no models, so the piece is
+    hung from here (c206, g2 11-15). Nothing is hung where the seat's stone does not stand."""
     if not DRESS:
         return 0
-    return 0
+    seat = _seat()
+    if seat is None:
+        return 0
+    if not all(canvas.has(x + origin[0], y + origin[1], z + origin[2]) for x, y, z in seat["cells"]):
+        return 0
+    return great(canvas, seat, VERSIONS[VERSION if version is None else version], origin)
 
 
 if __name__ == "__main__":
