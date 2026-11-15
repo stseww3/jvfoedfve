@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 06:07。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 06:12。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -52,7 +52,7 @@
 | orrery | c343 | node57（冻住） | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7` |
 | scope | c344 | node58（冻住） | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` |
 | clocks | c345 | node59（冻住） | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6` |
-| mast | c346 | node60（冻住；共享池 node5 他空着时借给排队的人） | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` |
+| mast | c346 | node60（冻住；共享池 node5 他空着时借给排队的人） | c239 | machines/radiomast；然后 machines/switchboard-boiler（P2，11-16 06:08 派，没有前任，从总装开；radiomast 被退回或来图时它优先） | `cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` |
 | hall | c348 | 合用 node12 | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | `cursor/c164-hall-starhall-f3-2c05` |
 | a3 | c349 | 合用 node12 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` @ `95106dce` | `cursor/c164-a3-domeroom-f3-f4f6` |
 | chart | c350 | 合用 node46（冻住） | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c` @ `fb9b2ecb`、`cursor/c164-m2-windows-7bb5` @ `bfb5420e` | `cursor/c164-chart-windows-f3-3477`、`cursor/c164-chart-chartroom-f3-3477` |
@@ -62,7 +62,7 @@
 
 谁手上的卡都交付了，私信总监助理领。总监 11-16 05:24 定了次序（细则在 `roles/A0-director.md` 第 4 节最后一条），照这个发：
 
-1. 第一批剩下的两张：`machines/switchboard-boiler`、`machines/recorders`，留给下一个交了卡的机器岗（总监 05:29）。`sky/ridges` 已派给 comet。
+1. 第一批剩下的一张：`machines/recorders`，留给下一个交了卡的机器岗（总监 05:29）。`machines/switchboard-boiler` 已派给 mast，`sky/ridges` 已派给 comet。
 2. 第二批的 P1（卡在 `plan/packages/common/`）都派完了：`common/export` 给 outb；`common/walk` 两张：总监定的交叉着发，找毛病的人不是改的人，`walk-out`（室外）给 facade，`walk-in`（室内和屋顶）给 a4。
 3. 上面都发完了、手上又空的人：照自己那一包的评审意见和真机看板打磨。
 4. 第二批的四间新房，P3：`interiors/platevault`（南翼底层底片库和暗房）、`interiors/clockroom`（报时塔钟室）、`interiors/astroroom`（小穹顶室，已留给 sdome）。`interiors/batteryroom`（北翼底层蓄电池室）已派给 stair。每间先交一页草图给总监看过再铺开，不许拖第一批。
