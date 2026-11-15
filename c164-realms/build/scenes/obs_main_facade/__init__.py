@@ -12,6 +12,7 @@ were (facade.CROWN off); every shot of theirs has its twin of the same name here
     python -m scenes.obs_main_facade        writes shots.json of the four scenes
 """
 import contextlib
+import os
 
 from artkit.canvas import Canvas
 
@@ -50,11 +51,29 @@ def _version(entrance, crown):
         facade.ENTRANCE, facade.CROWN = was
 
 
+# TRIAL ONLY (never merged): what the arches show once main/shell is in the tree.
+#   C164_TRIAL unset     the stand-in wall as the package builds it
+#   C164_TRIAL=open      the stand-in left out, the light line as it is
+#   C164_TRIAL=openlit   the stand-in left out, the six sources of the shell's test scene in the hall
+#   C164_TRIAL=openpier  the stand-in left out, two sources before the pier's east face
+TRIAL = os.environ.get("C164_TRIAL", "")
+TRIAL_LIGHTS = {
+    "openlit": [((9, 4, -3), 14), ((9, 4, 3), 14), ((13, 4, 0), 14), ((10, 11, 0), 14), ((13, 10, -3), 14), ((13, 10, 3), 14)],
+    "openpier": [((8, 3, -2), 12), ((8, 3, 2), 12)],
+}
+
+
 def build(entrance=None, crown=None):
+    from scenes.obs.common import blocks as B
+    from scenes.obs.main import shell
     c = Canvas()
     with _version(entrance or ENTRANCE, crown):
-        for line in LINES:
-            line.build(c, (0, 0, 0))
+        with (shell.hall_open() if TRIAL.startswith("open") else contextlib.nullcontext()):
+            for line in LINES:
+                if line is sky:
+                    for (x, y, z), level in TRIAL_LIGHTS.get(TRIAL, []):
+                        c.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
+                line.build(c, (0, 0, 0))
     return c
 
 
@@ -89,6 +108,7 @@ def shots(only=None):
         dict(name="arcade", pos=[face + 10.5, 1.7, 11.5], look_at=[face + 0.5, 4.5, axis - 0.5], time=TIME),
         # V3: two bays of the south wing, close, with the corner of the middle pavilion
         dict(name="v3_near", pos=[wing + 10.5, 2.2, z3 + 3.0], look_at=[wing + 1.0, 6.5, z3 - 1.5], time=TIME),
+        dict(name="v7", pos=[float(n) for n in S.V7["pos"]], look_at=[float(n) for n in S.V7["look_at"]], time=TIME),
         dict(name="oblique", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=TIME),
         # V11: looking back from the south lookout -- the south end wall and the east front in three-quarter view
         dict(name="v11_south", pos=[float(n) for n in S.V11["pos"]], look_at=[float(n) for n in S.V11["look_at"]], time=TIME),
