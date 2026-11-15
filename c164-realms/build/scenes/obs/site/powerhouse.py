@@ -85,6 +85,7 @@ FLUE_DEPTH = 6                                      # the courses the flue is op
 SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)
          if (x in (TX0 + 1, TX1 - 1)) + (z in (TZ0 + 1, TZ1 - 1)) < 2]         # a round of four: 12 cells
 FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
+SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
 
 # the pipe bridge
 PIPE_Z = Z0 + CORNER + 3 * BAY - 1                  # 33, the third pier of the west front
