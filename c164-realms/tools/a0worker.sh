@@ -26,15 +26,20 @@ mkdir -p "$STATE/done" /tmp/dais_jobs
 log() { echo "$(TZ=Asia/Shanghai date '+%m-%d %H:%M:%S') $*" >>"$STATE/log"; }
 g() { git -C "$JOB" "$@"; }
 
+# The remote's address is kept without an access token. Git's own configuration on this machine
+# puts the current token in at each use; a token copied into the job folder goes stale within the
+# hour, and then every push from the folder is refused (11-16 06:33: four jobs' pictures lost).
+plain="$(git -C "$SRC" config --get remote.origin.url | sed -E 's#//[^@/]*@#//#')"
+if [ -z "$plain" ]; then echo "a0worker: $SRC has no remote" >&2; exit 1; fi
 if [ ! -d "$JOB/.git" ]; then
-  url="$(git -C "$SRC" remote get-url origin)" || exit 1
   ref="$(git -C "$SRC" rev-parse --path-format=absolute --git-common-dir)" || exit 1
-  git clone -q --no-checkout --reference "$ref" --dissociate "$url" "$JOB" >/dev/null 2>&1 \
+  git clone -q --no-checkout --reference "$ref" --dissociate "$plain" "$JOB" >/dev/null 2>&1 \
     || { echo "a0worker: the clone failed" >&2; exit 1; }
   g config user.name "c164-node"
   g config user.email "c164-node@users.noreply.github.com"
   log "cloned the job folder"
 fi
+g remote set-url origin "$plain"
 
 # put <path> <file> <message>: one more file on the queue branch; never forced, tried again when
 # the branch moved meanwhile
