@@ -30,6 +30,7 @@ from artkit.blocks import st
 from artkit.canvas import Canvas
 
 from scenes.obs import materials  # noqa: F401  (kept so the scene reads like its siblings)
+from scenes.obs import sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.materials import _board
@@ -192,6 +193,9 @@ def layout(c=None):
 def build():
     c = Canvas()
     layout(c)
+    # the bracket lamp only offers its light source; sky/lights places what the lines offered, last
+    # of all. Nothing of main's stands on this board, so it finds no window and no doorway of its own.
+    sky.build(c, (0, 0, 0))
     return c
 
 
