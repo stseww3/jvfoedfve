@@ -30,6 +30,8 @@
   - 盘面不沉到窝底：离墙面不超过 4 像素，直径 2.75 格，坐在从窝底鼓出来的短筒上，暗的一圈留在盘外。
   - 挡盘紧贴球底，半径是球的七成（上限八成）；套箍在球的上下两极。挡盘跟着球走，杆上不单独留一块横的东西（十字是红线 8）。
   - 母钟站上石台，总高 4 格，去掉尖顶；钟面单独一件；玻璃门正中不压黄铜条；摆锤整个在门洞里；机芯的两只齿轮在玻璃门上沿里面；钟面只有十二个点。
+- 总监 #36375（motion 四件的第 1 条）：针不走，球不落，没有整点钟声；会动的只有钟摆。针和球照样是单独的件。静止的姿态就是循环的起点（c177 #36234）：钟摆摆在正中。
+- 盘面亮度的表 cr2 认了（c235 #36551）：要的是图上的数，盘面中位亮度 0.30 到 0.40；四面一样亮比各面同一级光要紧。出图以后量三样，都只调 `DIAL_LIGHT`：v1_tower、tower_far 上盘面在石墙和乳白窗之间；v5_up、dial_south 上两个面的盘相差不过 0.03；v1_tower、top_close 上球比背后的天亮 0.05 以上（手算旧铜球东面 0.16，暗红球 0.09，比天暗）。
 - 光（c220 #34665 第 4 条）：钟面不发光，塔钟不带光源。母钟只有一处光源，交给 sky/_lightkit：`L.suggest(canvas, (7, 3, 0), 8, "machines/clock:master", rank=3)`；工具箱不在树里时自己放一格 light（keep=True，不盖别人的块）。
 - 球杆、风向标和杆上别的东西归 main/tower（c223），本包只做穿在杆上的球。组合件写在自己的模块里，不建 `machines/_kit.py`。
 - 母钟脚下的石台 (6, 0, −1..1) 是星厅的（c243），钟站在上面，背贴石墩东面。
@@ -57,12 +59,12 @@
 
 ### 给 A8 的动件
 
-这一轮只摆静止的姿态。每个动件是单独的实体，带 tag：
+这一版地图里会动的只有钟摆（总监 #36375）；针和球不动，但照样是单独的实体。摆下去的姿态是循环的起点。每个件带 tag（motion/loop 进总装以后改成它的登记行）：
 
 | tag | 件 | 怎么动 |
 |---|---|---|
 | `c164_clock_hand_h`、`c164_clock_hand_m` | 五根时针、五根分针 | 绕模型的 z 轴（钟面法线）过锚点转，看钟面时顺时针。角度 `clock.hand_angles(时, 分)`；整段 transformation 用 `clock.transformation("hand_m", -角度)`，母钟的是 `"master_hand_m"` |
-| `c164_clock_pendulum` | 钟摆 | 绕模型的 z 轴过锚点（支点）左右各 5°（`PENDULUM_SWING`）：`clock.transformation("pendulum", 角度)` |
+| `c164_clock_pendulum` | 钟摆 | 绕模型的 z 轴过锚点（支点）左右各 5°（`PENDULUM_SWING`），一个来回 2 秒：`clock.transformation("pendulum", 角度)` |
 | `c164_clock_ball` | 报时球 | 只沿杆上下：`BALL_HALF_Y`、`BALL_UP_Y`、`BALL_REST_Y` |
 
 锚点不在模型正中，转的时候平移也跟着变，所以要用 `transformation()` 给的整段，不能只改旋转。
@@ -76,4 +78,5 @@
 ### 测试场景
 
 - `obs_mach_clocks`：星厅的盒子（石墩、石台、墩脚的格栅圈、两侧回廊、行星仪包络的占位和它的光）加母钟；一段从地面起的塔身占位（四面暗窝，东面一扇照立面做法的乳白亮窗当亮度的尺子，钟室，屋顶，下粗上细的杆）加塔钟和旧铜球；厅的西边并排立着两种颜色的球。15 个机位：master_close（3 格）、master_dial、master_trunk、v7、master_door（正门外 30 格）、master_gallery、v1_tower（S.V1）、tower_far、v5_up、tower_foot（仰角 50°）、dial_close、dial_front、dial_south、top_close、balls_pair。
+- 桅杆的红灯（cr2 #36102、总监 #34161 第 3 条：球的颜色要和红灯在同一张 V1 上挑）：树里有 `machines/mast`（c239）时，两个场景都把桅杆搭在塔北边它自己的位置上，脚下是占位的座（树里有 `site/mastbase` 就用真的）。桅杆进总装、我并了总装以后 v1_tower 上才有红灯；在那之前图上没有。
 - `obs_mach_clocks_b`：同一个场景，塔上换成暗红球；5 个同名机位（v1_tower、tower_far、v5_up、tower_foot、top_close），和第一个场景一张对一张地比。
