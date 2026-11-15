@@ -1,0 +1,7 @@
+gate props/instruments 94b79e2c: the merged tree cbd57b04, the assembly as it was 22c9d4c3
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 50 scenes in 32 s: 50 pass (33 with warnings)
+pictures: obs_props_instruments: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_instruments at cbd57b04: 24 of 25 kept pictures are what the code draws, 1 not
+    scope_comet_aim: 6901 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+result: PASS

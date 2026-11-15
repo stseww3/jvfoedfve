@@ -1,0 +1,10 @@
+gate site/powerhouse b8156301: the merged tree 22c9d4c3, the assembly as it was 6030c3e6
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 29 s: 49 pass (33 with warnings)
+pictures: obs_site_powerhouse: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_powerhouse at 22c9d4c3: 13 of 14 kept pictures are what the code draws, 1 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+pictures: obs_site_powerhouse_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_powerhouse_b at 22c9d4c3: 13 of 14 kept pictures are what the code draws, 1 not
+    v1: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+result: PASS
