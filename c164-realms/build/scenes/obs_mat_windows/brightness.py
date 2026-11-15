@@ -173,7 +173,8 @@ def main():
     lined, bad_lined = linings()
     for v, kind, whole, colours, flag in lined:
         print(f"{v:3} {kind:8} {whole:12.3f} {colours:12d}  {flag}")
-    print(f"\n{'ver':3} {'furnace':8} {'sill':>6} {'second':>6} {'third':>6} {'whole':>6} {'median':>6} {'head':>6}  flag")
+    print(f"\n{'ver':3} {'furnace':8} " + " ".join(f"{word:>6}" for word in
+                                                 ("sill", "second", "third", "whole", "median", "head")) + "  flag")
     fired, bad_fired = furnace()
     for v, k, blocks, whole, median, head, flag in fired:
         print(f"{v:3} {'stack ' + str(k):8} " + " ".join(f"{b:6.3f}" for b in blocks)

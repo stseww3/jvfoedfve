@@ -20,7 +20,9 @@ this scene built without the linings. Its out_* pictures have to be the same as 
 pixel (sky/_tones.py --diff); its in_* pictures show what the linings are for. obs_mat_windows_in_b
 is the same room with version b of the windows.
 
-    python -m scenes.obs_mat_windows_in        writes shots.json from the layout below
+    python -m scenes.obs_mat_windows_in              writes shots.json from the layout below
+    python -m scenes.obs_mat_windows_in.placement    holds windows.line() to covering the glass and to
+                                                     one light for a window, without a picture
 """
 from artkit.blocks import st
 from artkit.canvas import Canvas

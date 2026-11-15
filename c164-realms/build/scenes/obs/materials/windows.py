@@ -61,7 +61,9 @@ from outside. Its room side is therefore covered by a thin model that gives no l
 Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
 the dome room; main/shell.py's room_at() says which. The blocks of a window are not touched, so a
 front shows what it showed without the linings; LINING switches them off, to prove that with two
-pictures.
+pictures. A lining is lit by the room, and a window's lining as one sheet: all its pieces take the
+light of the room's cell before the middle of the window (scenes/obs_mat_windows_in/placement.py
+holds line() to that, and to covering the glass).
 
     build(canvas, origin)                         the master scene: the lit windows of the main
                                                   building that have a room behind them
@@ -70,6 +72,7 @@ pictures.
     models()                                      the lining models, names "mat_window_lining_..."
 """
 import contextlib
+import copy
 import functools
 import importlib
 
@@ -583,6 +586,44 @@ def _first(n):
 _YAW = {(0, 1): 0.0, (-1, 0): 90.0, (0, -1): 180.0, (1, 0): -90.0}
 
 
+def _windows(cells):
+    """The cells of a call split into windows: those of one plane that touch along an edge. Each
+    is sorted, and they come in order, so that a build is the same every time."""
+    left, out = set(cells), []
+    while left:
+        start = min(left)
+        left.discard(start)
+        window, edge = [start], [start]
+        while edge:
+            p, a, y = edge.pop()
+            for near in ((p, a - 1, y), (p, a + 1, y), (p, a, y - 1), (p, a, y + 1)):
+                if near in left:
+                    left.discard(near)
+                    window.append(near)
+                    edge.append(near)
+        out.append(sorted(window))
+    return out
+
+
+def _lamp_cell(window):
+    """The cell of a window before which its lining takes its light: the one nearest to the middle
+    of the window; of two that are as near the upper one, then the one further along the wall. A
+    great window of 3 by 6 takes the fourth row of its middle column."""
+    cols, rows = [a for _, a, _ in window], [y for _, _, y in window]
+    ma, my = min(cols) + max(cols), min(rows) + max(rows)       # the middle, twice
+    return min(window, key=lambda c: (abs(2 * c[1] - ma) + abs(2 * c[2] - my), -c[2], -c[1]))
+
+
+def _held_at(model, anchor):
+    """`model` held at another point of itself: M.display() puts a model's anchor on its entity, and
+    reads the anchor, the name and the extent of the model, which a copy shares."""
+    if tuple(anchor) == tuple(model.anchor):
+        return model
+    held = copy.copy(model)
+    held.anchor = tuple(anchor)
+    return held
+
+
 def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
     """Line the room side of one window. Returns the number of display entities placed: 0 for a
     window that is not lit, and for every window while LINING is off.
@@ -593,6 +634,12 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
              as main/facade.py's windows() gives it
 
     The window is cut into pieces of at most 3 by 3 blocks; a great window of 3 by 6 takes two.
+    A display entity is lit by the cell it stands in, as a whole. So all the pieces of a window
+    stand at one point, in the room's cell before the middle of the window, and each is held out
+    from there to its place: the lining of a window is lit as one sheet, with no step of light
+    where two pieces meet (c219's reading, g2 #38437). Cells that do not touch are windows of
+    their own, each with its own light.
+
     The models are those of models(): a scene that calls this adds them to its build_models(). The
     master scene needs no call, build() lines the main building there.
     """
@@ -611,28 +658,36 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
     for p, a, y in todo:
         a0, y0 = low.get(p, (a, y))
         low[p] = (min(a0, a), min(y0, y))
+    # A model's +x is the right hand of whoever looks at the lining from the room: up the wall's
+    # axis where the room lies south or west of the glass, down it where it lies north or east.
+    right = dz - dx
     pieces = _linings(_version(None))
     n = 0
-    while todo:
-        p, a0, y0 = min(todo, key=lambda c: (c[0], c[2], c[1]))    # the lowest row first, along it
-        run = 1
-        while (p, a0 + run, y0) in todo:
-            run += 1
-        w = _first(run)
-        rise = 1
-        while all((p, a0 + i, y0 + rise) in todo for i in range(w)):
-            rise += 1
-        h = _first(rise)
-        todo -= {(p, a0 + i, y0 + j) for i in range(w) for j in range(h)}
-        # which piece this is, counted along the wall and upwards: neighbours take different
-        # arrangements of the pictures, like the squares of a chess board
-        across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
-        model = pieces[lining_name(kind, w, h, (across + up) % VARIANTS[kind])]
+    for window in _windows(todo):
+        p, lamp_a, lamp_y = _lamp_cell(window)
         face = p + (1 if dx + dz > 0 else 0) + NUDGE * (dx + dz)    # the inner face of the glass
-        along = a0 + w / 2.0
+        along, height = lamp_a + 0.5, lamp_y + 0.5                  # the middle of that cell
         x, z = (face, along) if dx else (along, face)
-        canvas.add_entity(ox + x, oy + y0, oz + z, M.display(model, yaw=_YAW[step]))
-        n += 1
+        left = set(window)
+        while left:
+            _, a0, y0 = min(left, key=lambda c: (c[2], c[1]))       # the lowest row first, along it
+            run = 1
+            while (p, a0 + run, y0) in left:
+                run += 1
+            w = _first(run)
+            rise = 1
+            while all((p, a0 + i, y0 + rise) in left for i in range(w)):
+                rise += 1
+            h = _first(rise)
+            left -= {(p, a0 + i, y0 + j) for i in range(w) for j in range(h)}
+            # which piece this is, counted along the wall and upwards: neighbours take different
+            # arrangements of the pictures, like the squares of a chess board
+            across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
+            model = pieces[lining_name(kind, w, h, (across + up) % VARIANTS[kind])]
+            # where the entity stands, in the piece's own measures: from the middle of its foot
+            held = (right * (along - (a0 + w / 2.0)) * TILE, (height - y0) * TILE, 0.0)
+            canvas.add_entity(ox + x, oy + height, oz + z, M.display(_held_at(model, held), yaw=_YAW[step]))
+            n += 1
     return n
 
 
