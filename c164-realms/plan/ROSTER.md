@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 02:37。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 02:39。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -48,9 +48,9 @@
 | lamps | c341 | node55 | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | — |
 | m3 | c342 | node56 | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | — |
 | orrery | c343 | node57 | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | — |
-| scope | — | — | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | — |
-| clocks | — | — | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | — |
-| mast | — | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | — |
+| scope | c344 | node58 | c237 | machines/refractor | `cursor/c164-scope-6e0f` @ `5c674377` | — |
+| clocks | c345 | node59 | c238 | machines/clocks | `cursor/c164-clocks-e99f` @ `abfd8079` | — |
+| mast | c346 | node60 | c239 | machines/radiomast | `cursor/c164-mast-5dcd` @ `ffcb474c` | — |
 | hall | — | — | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | — |
 | a3 | — | — | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` @ `95106dce` | — |
 | chart | — | — | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c` @ `fb9b2ecb`、`cursor/c164-m2-windows-7bb5` @ `bfb5420e` | — |
