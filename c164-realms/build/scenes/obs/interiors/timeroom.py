@@ -37,7 +37,9 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     and the operator's mug stands by the key (the room's own models).
   message desk      under bay 6 of the east wall, a drop light on a long cord over the writer's
                     left hand; the telephone on the pier north of it, the pneumatic tube on the
-                    pier south of it
+                    pier south of it. The log lies under the lamp; on the right half of the top
+                    the pad of message forms with a message begun, a written form waiting for
+                    the tube, the spike with the day's slips (the room's own model).
   rating bench      under bay 5 of the west wall, a drop light over the left hand again, which is
                     where two box chronometers stand open, sent in to be rated against the
                     standard clocks (the room's own model); the log lies on the right, the
@@ -259,6 +261,17 @@ BOARD_TOP = 1.0                                     # blocks above the floor: th
 # ---- the operator's mug on the console, east of the key: the hand that does not key reaches it
 MUG = (S.mid(KEY_X) + 0.72, CONSOLE_Z + 0.66, 35.0) # x, z, degrees its handle is turned off the east
 
+# ---- the paper of the message desk, on the right half of its top (the log book lies on the left, under the lamp);
+# px from the middle of the desk top: to the sitter's right, towards the sitter
+FORM = (4.0, 6.0)                                   # a message form, across and from its head to its foot
+PAD = (4.5, 2.5, 6.0)                               # the pad of forms before the writing hand, and the degrees it is turned
+SHEET = (9.8, 3.2, -14.0)                           # the form that is written and waits for the tube
+SPIKE = (13.2, -1.5)                                # the spike the day's slips are on, before the desk's right stationery drawer
+SLIPS = (10.0, -35.0, 50.0, -10.0, 25.0)            # degrees each slip on the spike is turned, the lowest first
+INKWELL = (5.0, -4.5)                               # at the back, between the two stationery drawers
+PAPER_COLOURS = dict(p=P.RAMPS["cream"][3], e=P.RAMPS["enamel"][1], i=P.RAMPS["cream"][0])  # props/paper's page: the printed
+#                                                     heading in chart blue, what is written a soft line
+
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps models
 LAMPS = "b"                 # every lamp of the room is the shaded one (props/lamps' version B, the enamel cone), whatever the
 #                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
@@ -477,6 +490,41 @@ def _mug():
     return m
 
 
+def _forms():
+    """What lies on the message desk besides the log: a pad of message forms with the pencil across
+    it (a message begun), a written form beside it, the spike with the day's slips, an inkwell. The
+    forms are props/paper's page, cream with a heading in chart blue. They are the light things
+    under the desk's lamp: the lamp is seen to light something. Anchor: the middle of the desk top;
+    +x is the sitter's right, +z towards the sitter."""
+    name = PREFIX + "forms"
+    wide, deep = FORM[0] / 2.0, FORM[1] / 2.0
+    edge, top = K.CREAM, K.flat("cream", 3)
+
+    def face(tag, rows):
+        return Sprite(f"{name}_{tag}", rows, PAPER_COLOURS)
+
+    m = M.Model(name)
+    x, z, turn = PAD
+    m.box((x - wide, 0.0, z - deep), (x + wide, 1.0, z + deep), edge, rot=("y", turn, (x, 0.0, z)), skip="d",
+          faces={"u": face("pad", ["eeee", "pppp", "iiip", "pppp", "iipp", "pppp"])})
+    m.beam((x - 1.6, 1.25, z + 2.2), (x + 2.6, 1.25, z - 1.2), 0.5, 0.5, K.flat("brass", 3))        # the pencil
+    x, z, turn = SHEET
+    m.box((x - wide, 0.0, z - deep), (x + wide, 0.15, z + deep), top, rot=("y", turn, (x, 0.0, z)), skip="d",
+          faces={"u": face("sheet", ["eeee", "pppp", "iiii", "iiip", "pppp", "ppii"])})
+    x, z = SPIKE
+    m.tube("y", (x, z), 0.0, 0.5, 1.25, K.IRON_D, sides=8)
+    m.tube("y", (x, z), 0.5, 7.0, 0.25, K.IRON, sides=4)
+    for i, turn in enumerate(SLIPS):
+        y = 0.6 + 0.45 * i
+        last = i == len(SLIPS) - 1
+        m.box((x - 1.5, y, z - 1.0), (x + 1.5, y + 0.2, z + 1.0), K.flat("cream", 3 if i % 2 == 0 else 2),
+              rot=("y", turn, (x, y, z)), faces={"u": face("slip", ["eee", "iip"])} if last else None)
+    x, z = INKWELL
+    m.box((x - 1.0, 0.0, z - 1.0), (x + 1.0, 1.5, z + 1.0), K.flat("enamel", 0), skip="d")
+    m.tube("y", (x, z), 1.5, 2.0, 0.5, K.BRASS, sides=4)
+    return m
+
+
 def back_name(i):
     return f"{PREFIX}back_{i}"
 
@@ -506,14 +554,15 @@ def _models():
     out.update({back_name(i): _back(i) for i in range(len(BACK))})
     out[PREFIX + "chronometer"] = _chronometer()
     out[PREFIX + "mug"] = _mug()
+    out[PREFIX + "forms"] = _forms()
     return out
 
 
 def models():
     """The room's own models: the five world clocks, the patch cords of the two jack fields, the
-    boards at the backs of the two recesses, the chronometer of the rating bench and the mug on
-    the console. Its lamps are props/lamps', its machines machines/recorders', the rest the
-    packages' named in PIECES."""
+    boards at the backs of the two recesses, the chronometer of the rating bench, the mug on the
+    console and the paper of the message desk. Its lamps are props/lamps', its machines
+    machines/recorders', the rest the packages' named in PIECES."""
     return dict(_models())
 
 
@@ -654,12 +703,14 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     n += drop(DESK_X, DESK_Z - LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "message desk", DESK_LIGHT)
     n += drop(BENCH_X, BENCH_Z + LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "rating bench", BENCH_LIGHT)
 
-    # ---- the chronometers on the rating bench, or on the board that stands in for it
+    # ---- what lies on the two desks, or on the boards that stand in for them: the chronometers on the
+    # rating bench, the paper on the message desk
     bench_yaw = K.FACING["east"]
-    bench_top = FEET + (BOARD_TOP if theirs("furniture") is None else theirs("furniture").TOP["writing_desk"])
+    desk_top = FEET + (BOARD_TOP if theirs("furniture") is None else theirs("furniture").TOP["writing_desk"])
     for along, out, twist in CHRONOMETERS:
         dx, _, dz = K.turn(bench_yaw, (along * PX, 0.0, out * PX))
-        n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, bench_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
+        n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, desk_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
+    n += K.put(c, own[PREFIX + "forms"], (DESK_X, desk_top, DESK_Z), facing="west", origin=origin)
 
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
