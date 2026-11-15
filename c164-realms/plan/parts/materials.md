@@ -131,7 +131,13 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 
 **旧铜（第二批）** `OLD_COPPER`=`waxed_exposed_copper`、`OLD_COPPER_CUT`=`waxed_exposed_cut_copper`(+stairs/slab)：`mat("old_copper")` 重画（檐沟/泛水，和模型旧铜色阶接得上）。**注意**：这是显式重画 `waxed_exposed_*`；不碰 `waxed_oxidized_*`/`waxed_weathered_*`。重画前檐沟用原版色占位（R1）。
 
-**小件**：`WAINSCOT`=dark_oak_trapdoor（护墙板，`dark_wood`，R1 定专用，A7 不当活板门）、`BRASS_INLAY`=yellow_carpet（地面黄铜子午嵌线）、`ENAMEL_SIGN`=oak_sign 族（搪瓷铭牌，`enamel`+`cream`，文字只数字/符号/少量英文）。
+**小件**：`WAINSCOT`=dark_oak_trapdoor（护墙板，`dark_wood`，R1 定专用，A7 不当活板门）、`BRASS_INLAY`=yellow_carpet（整格的地面铜板）、`ENAMEL_SIGN`=oak_sign 族（搪瓷铭牌，`enamel`+`cream`，文字只数字/符号/少量英文）。
+
+**地面细铜线**（总监 11-14：整格黄地毯铺成线读成马路标线，改细线）：`BRASS_LINE`=rail（直段和四个拐角，`shape` 说它连哪两边）、`BRASS_CROSS`=activator_rail（两线相交处）、`BRASS_STAR`=detector_rail（台徽的星，一格）。画成两像素踩旧的暗铜夹在两道发丝缝之间，线两边露出底下的石头。它们在游戏里是铁轨，摆法有规矩（c194 写在 `obs_mat_brass` 开头，`materials/_board.py` 的 `line()`、`ring()`、`emblem()` 照着做）：线下面是整块；一格线只和它形状指的两个邻格相连，两条线不并排，星离任何线空一格；圆环按八边形摆。直的铜线全场只走南北，就是子午线；东西向的轴用石头标，不用铜，地上不出十字（总监 11-15）。
+
+**雪**（总监 11-15 定为重画，卡 `snow`）：`SNOW`=snow_block、`SNOW_LAYER`=snow。原版白雪是夜里全场最亮的面，比立面还亮；重画进色阶 `snow`（蓝调时分背阴的雪，五级），只吃天光时比立面的石头暗一点，山上最冷最亮的面还是雪，画面里最亮的还是楼。一片安静的面，不起颗粒。
+
+**台徽**（全场一个画法，标准图归 props 的 c242，`props/signs.py` 的 `emblem_cells(16)` / `emblem_cells(48)`）：环、子午线、星三样。环的半径是图样边长的 6.5/16；子午线竖直穿过环心，画到图样上下边；星在环内右上，小图是 2×2 的点，大图是八角尖星，任何尺寸都不画横竖两条等长的杠（红线 8）。只有 16 像素和 48 像素两个尺寸，不各自缩放。本类别里有台徽的三处都照它：`ASHLAR_EMBLEM`（刻）、`IRON_CAST`（铸）、`BRASS_STAR` 和地面的环（嵌）。
 
 ---
 
@@ -158,7 +164,11 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 | `windows` | 亮窗暗窗六种（块+板，窗棂，发光 vs 映天色） | P1 | 亮窗 2 | respack-redirect, C |
 | `iron` | 铸铁十二种（重定向 + 灯件发光） | P2（样板段要用，偏高） | 1 | respack-redirect |
 | `panels` | 仪表面板十六种（重定向，facing 正面，4 带动画） | P2 | 1 | respack-redirect, D |
-| `brass-oldcopper-small` | 黄铜族 + 旧铜 + 小件 + 脚步声（第二批） | P2 | 1 | respack-redirect, E |
+| `brass-oldcopper-small` | 黄铜族 + 旧铜 + 小件 + 地面细铜线三件 + 脚步声（第二批） | P2 | 1 | respack-redirect, E |
+| `snow` | 雪两种（整块和薄层），色阶 `snow` | P2 | 1 | respack-redirect, 色板 snow |
+| `board` | 材质板（方案 6.4，M1 给管理员的第一张图）：占用表里每个方块都在板上，五层；石材、亮窗的比选场景 | P1 | 1（板上的比选另算） | 各材质包；sky/look |
+
+谁在做、到哪一步以 `plan/STATUS.md` 为准，这里不记。
 
 ---
 
@@ -176,5 +186,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 - [x] 交细化稿（本文件）
 - [x] 切卡并发【立项】；领 `respack-redirect` 开工
 - [x] `redirect_block` + 材质共用工具 + 占位 + 对比样板（公共工具单独提交请 c188 优先合并）
-- [ ] `windows`（c195 在做，亮窗 2 版）、`iron`（c198 在做）、`ashlar`（3 版）出 M1 材质板
-- [ ] `panels`、`brass-oldcopper-small`
+- [x] `ashlar`（c204，默认 b 版）、`windows`（c205，默认甲版）、`iron`（c198）、`panels`（c194）已进总装
+- [x] `board` 第一版（占位色）已进总装
+- [ ] `iron` 第二轮（栏杆、格栅、管、门、铸花板的台徽）、`ashlar` 新台徽、`brass-oldcopper-small`（已交付，图待补）、`snow`
+- [ ] `board` 第二轮：五层、占用表全上板、三个比选场景；真材质的图等管理员电脑上线后出，M1 材质板给管理员
