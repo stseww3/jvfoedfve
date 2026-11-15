@@ -66,9 +66,11 @@ the hall moves in). Until then the hall is seen in its test scene, build/scenes/
 import importlib
 import math
 
+from artkit import models as M
 from artkit.blocks import st
 
 from ..common import blocks as B
+from ..common import palette as P
 from ..common import skeleton as S
 from ..main import shell
 from ..props import _kit as K
@@ -76,6 +78,7 @@ from ..props import lamps
 from . import _stubs as T
 
 NAME = "interiors/starhall"
+PREFIX = "int_starhall_"
 MOVED_IN = False            # the director's switch: set once a version is chosen and the pictures have passed
 VERSION = "a"               # the version build() places
 VERSIONS = ("a", "b")
@@ -117,6 +120,27 @@ BOARD = {
           ("pilot_lamps", "dial", "relays", "tubes")),
 }
 BOARD_END = PILASTER_X[0] - 2                   # 6: its east end; the cell between it and the pilaster is that one's lamp's
+BRASS = P.mat("brass")                          # the ceiling's rose and the hearts' studs
+BRASS_D = P.mat("brass_dark")
+ENAMEL = P.mat("enamel")                        # the hearts' faces: the palette's enamel blue, nowhere else
+
+# --- the ceiling --------------------------------------------------------------------------------------------
+# The shell lays it (c231, A0 #491): iron beams north-south only, on x 8, 11 and 14 east of the stair's
+# opening, the boards between them lying half a block higher (their lower face 14.5). The hall adds two
+# things, both in the cells the shell left empty:
+#   the rose   a flat brass drum of radius 1.5 about the hanging point, its side running up to the
+#              boards' face at 14.5 and its own face at 13.96: the orrery's seat rests on it, and the
+#              0.45 of the seat that reaches past the beam has something behind it (c231 #517, #531).
+#              A model, not blocks: four cells are not a round.
+#   the hearts  enamel-blue plates let into the boards between the beams, in the two bands (x 9..10 and
+#              12..13) and their north and south crossings; the middle crossing is the rose's (c243 #531)
+ROSE_R = 1.5                                    # blocks: the drum's radius
+ROSE_FACE = 13.96                              # the face the orrery's seat rests on
+BOARD_Y = shell.CEIL_Y + 0.5                    # 14.5: the boards' lower face, where the drum's side ends
+BOARD_X = ((9, 10), (12, 13))                   # the two bands of boards between the beams
+BOARD_Z = ((-5, -3), (-1, 1), (3, 5))           # their three crossings; the middle one is the rose's
+HEART_Z = (BOARD_Z[0], BOARD_Z[2])              # the north and south crossings: the four hearts
+HEART_WIDE, HEART_HIGH = 2.0, 3.0               # a heart covers its whole crossing: two by three blocks
 
 # --- the pieces (points) -----------------------------------------------------------------------------------
 BAY_X = (S.mid(CX) - 1.5, S.mid(CX) + 1.5)      # 10.0, 13.0: two pieces two blocks wide, either side of the meridian
@@ -258,6 +282,63 @@ def _marks(canvas, origin):
     cell = (ox + S.east_wall_x(S.CENTRE_BAYS[1]) + S.DEPTH_GLASS, oy + S.STRING, oz + CZ)
     if canvas.has(*cell) and canvas.name(*cell) != B.LIGHT:
         canvas.set(cell[0], cell[1], cell[2], B.ASHLAR_EMBLEM)
+
+
+# --- the ceiling ----------------------------------------------------------------------------------------------
+def _rose_model():
+    """The rose at the hanging point (A0 #491, c243 #531): a flat brass drum of radius ROSE_R whose
+    side runs up from ROSE_FACE to the boards' face, so nothing hangs in the air; its own face is a
+    ring of moulding round a plain field, with a rivet head on every other side of the ring.
+    Anchor: the middle of its face, where the orrery's seat rests. Units are texels (16 to the block),
+    and the model is drawn downwards from the anchor, as a thing fixed under a ceiling."""
+    m = M.Model(PREFIX + "rose")
+    r = ROSE_R * 16.0                               # 24 texels: radius 1.5 blocks
+    rise = (BOARD_Y - ROSE_FACE) * 16.0             # 8.6 texels: up to the boards' face
+    m.tube("y", (0.0, 0.0), 0.0, rise, r - 3.0, BRASS_D, sides=16)          # the drum, to the boards
+    m.tube("y", (0.0, 0.0), -2.6, 0.0, r, BRASS_D, sides=16)                # the ring, proud of the field
+    m.tube("y", (0.0, 0.0), -2.2, -2.6, r - 2.0, BRASS, sides=16)           # the field, sunk behind it
+    for i in range(8):                              # a rivet head, one every 45 degrees
+        a = math.radians(22.5 + 45.0 * i)
+        x, z = math.cos(a) * (r - 4.2), math.sin(a) * (r - 4.2)
+        m.box((x - 0.9, -3.4, z - 0.9), (x + 0.9, -2.6, z + 0.9), BRASS)
+    return m
+
+
+def _heart_model():
+    """One of the enamel-blue hearts let into the boards between the beams (c243 #493, #531): a plate
+    exactly the size of its crossing, a moulding round its edge, a brass stud at each corner. Anchor:
+    its middle, on the boards' face. Units are texels (16 to the block); the model is 2 by 3 blocks,
+    which is the limit of 48 units a model may have in any direction, so the moulding turns in."""
+    m = M.Model(PREFIX + "heart")
+    w, h = HEART_WIDE * 8.0, HEART_HIGH * 8.0       # 16.0, 24.0: half the plate's width and depth
+    m.box((-w, -1.0, -h), (w, 0.0, h), BRASS_D)                             # the moulding, the whole crossing
+    m.box((-w + 1.5, -1.5, -h + 1.5), (w - 1.5, -1.0, h - 1.5), ENAMEL)     # the plate in it, proud
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            m.box((sx * (w - 2.4), -1.7, sz * (h - 2.4)),
+                  (sx * (w - 0.4), -1.0, sz * (h - 0.4)), BRASS)
+    return m
+
+
+def _ceiling(canvas, origin, asked):
+    """The hall's half of the ceiling: the rose at the hanging point, and the four enamel-blue hearts
+    in the boards between the beams. The beams and the boards are the shell's (A0 #491); the hall
+    lays nothing in a beam's cell, so both are read off shell.layout().beams before they go in."""
+    ox, oy, oz = origin
+    cx, cz = S.ORRERY_CENTRE
+    L = shell.layout()
+    n = 0
+    if (int(math.floor(cx)), int(math.floor(cz))) not in L.beams:
+        n += K.put(canvas, _rose_model(), (cx, ROSE_FACE, cz), mount="ceiling", origin=origin)
+    heart = _heart_model()
+    for xa, xb in BOARD_X:
+        for za, zb in HEART_Z:
+            cells = {(x, z) for x in range(xa, xb + 1) for z in range(za, zb + 1)}
+            if cells & L.beams or cells & L.envelope:
+                continue                            # the shell has a beam there: no board to fix to
+            n += K.put(canvas, heart, (S.mid(xa, xb), BOARD_Y, S.mid(za, zb)), mount="ceiling",
+                       origin=origin)
+    return n
 
 
 def _switchboard(canvas, origin, version, asked):
@@ -497,9 +578,15 @@ def dress(canvas, origin=(0, 0, 0), version=None, standins=False):
     if version == "a":
         _wainscot(canvas, origin)
     _marks(canvas, origin)
+    n += _ceiling(canvas, origin, asked)
     n += _lamps(canvas, origin, version, L, asked)
     _machines(canvas, origin, asked)
     return dict(entities=n, lights=asked, missing=missing)
+
+
+def models():
+    """The hall's own models: the ceiling's rose and its hearts."""
+    return {m.name: m for m in (_rose_model(), _heart_model())}
 
 
 def build(canvas, origin=(0, 0, 0)):
