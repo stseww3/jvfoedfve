@@ -1,0 +1,27 @@
+a0job 1115-233232-facade-walkout-f3-81a0-7337: cursor/c164-facade-walkout-f3-81a0 @ 70a690f0 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.90 2.17 1.65, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- export PYTHONPATH=$PWD/build; python tools/walk.py round plan/reviews/walk/out-route.json --round 5959264 ---- exit 0, 130 s, last 60 lines of 17:
+walk: 240 stations, 522 shots; drawing
+/tmp/c164_walk/out-5959264/p-out-I19-d.png (tick 14000, 0 s)
+/tmp/c164_walk/out-5959264/p-out-I20-f.png (tick 14000, 0 s)
+/tmp/c164_walk/out-5959264/p-out-I21-f.png (tick 14000, 0 s)
+/tmp/c164_walk/out-5959264/p-out-I22-f.png (tick 14000, 0 s)
+/tmp/c164_walk/out-5959264/p-out-I23-f.png (tick 14000, 0 s)
+/tmp/c164_walk/out-5959264/p-out-I23-b.png (tick 14000, 0 s)
+stretch A (arrival: the station platform, the walk to the axis): 15 stations, 40 pictures; no floor at 5: out-A01, out-A02, out-A03, out-A04, out-A05
+stretch B (the axis and the grand stair): 8 stations, 21 pictures
+stretch C (the front court: axis, meridian, the foot of the front): 50 stations, 90 pictures
+stretch D (the north side: the mast pad, the weather station): 30 stations, 73 pictures
+stretch E (the west side: the water tower, the sunset terrace): 40 stations, 92 pictures
+stretch F (the south side: the south lookout): 26 stations, 54 pictures
+stretch G (the terrace's east lip, over the lower platform): 15 stations, 36 pictures
+stretch H (the lower platform, south: the way to the works, round the power house): 33 stations, 69 pictures
+stretch I (the lower platform, north: its edges, the wall's foot, back to the station): 23 stations, 47 pictures; no floor at 4: out-I20, out-I21, out-I22, out-I23
+walk: 47 sheets and out-stations.json -> plan/reviews/walk/5959264
+==== NODEJOB RESULT ====
+exit=0 secs=135 host=cursor cores=4 head=70a690f0 commit=f6f6744b pushed=yes branch=cursor/c164-facade-walkout-f3-81a0 files=48
+a0job: exit=0 secs=135
