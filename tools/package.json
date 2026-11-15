@@ -1,0 +1,13 @@
+{
+  "name": "dictionary-tools",
+  "private": true,
+  "type": "module",
+  "description": "Local verification and demo-recording tools for the dictionary site. Not part of the deployed site.",
+  "scripts": {
+    "check": "node check.mjs",
+    "record": "node record.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "24.15.0"
+  }
+}
