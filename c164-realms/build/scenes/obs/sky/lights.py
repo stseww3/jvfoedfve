@@ -33,12 +33,12 @@ the canvas by then and places, in this order:
   wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
             a bracket lamp): at the foot of each a small projector two cells before the plinth
             (props' model, lamps "uplight", with the source of level 8 it brings), and where its
-            beam lands, before the foot of the shaft, one source (_lightkit.WASH, 8). From there
-            the light falls by one a row and is spent under the string course, as a beam from
-            below is: a wing shows three upright bands, brightest at the foot, that lead to the
-            entrance (review cr2-#3: the wash has to have a shape). The wall between two
-            pilasters gets what spreads from them, 6 next to the foot of a shaft and 5 in the
-            middle of the bay; nothing is placed before the wall.
+            beam lands, before the foot of the shaft, one source (_lightkit.WASH, 10; the
+            director, #62755: no higher). From there the light falls by one a row and is spent
+            under the string course, as a beam from below is: a wing shows three upright bands,
+            brightest at the foot, that lead to the entrance (review cr2-#3: the wash has to
+            have a shape). The wall between two pilasters gets what spreads from them, 8 next to
+            the foot of a shaft and 7 in the middle of the bay; nothing is placed before the wall.
   offers    what the other lines registered with _lightkit.suggest() and take(): a source is placed
             when its cell is free and something that glows is within two cells of it.
 

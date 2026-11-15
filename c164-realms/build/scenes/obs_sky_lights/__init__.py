@@ -13,14 +13,11 @@ other, 200 blocks apart, each hidden by the one before it:
     levels  x -600    a flat run of eleven bays of plain blocks at the skeleton's numbers, every
                       second one lit: frosted glass with 9, 10 and 12 behind it, the amber glass with
                       10, the curtain with 8. What is judged there is the level and nothing else.
-    wash10  x -800    the blue building twice more, the wall wash landing on the feet of the
-    wash12  x -1000   pilasters with 10 and with 12 instead of 8 (_lightkit.WASH), which is a rank
-                      higher than the wash has: the three steps side by side in the views front,
-                      v3 and wash are for the director, the wash at 8 hardly reading (cr2-#3 item
-                      3, and the reviewer's look at the drafts, #57742)
 
-A building that tries other numbers stands here until the director has chosen (VARIANTS). The one
-with 12 behind the lit windows of the wings has gone: that is the building now (#58003).
+A building that tries other numbers stands here until the director has chosen (VARIANTS), beyond
+the board, 200 apart. None stands now: the one with 12 behind the lit windows of the wings has
+gone, that is the building (#58003), and so have the two that showed the wall wash at other
+levels than the building's (8, 10 and 12 side by side; the director chose 10, #62755).
 
 Nothing here places a light source: the lamps of props offer theirs, the windows of the board are
 registered with _lightkit.glazed(), and sky.build() (sky/lights.py) places all of them, the sources
@@ -72,10 +69,7 @@ WALK_Z = (S.pilaster_z(8), S.pilaster_z(9))                 # the walk to the do
 
 BOARD = (-SPACING * len(STATIONS), 0, 0)
 # name: (the look it is glazed for, where it stands, the numbers of _lightkit it is lit by, the views it is shown in)
-VARIANTS = {
-    "wash10": ("blue", (-SPACING * (len(STATIONS) + 1), 0, 0), dict(WASH=10), ("front", "v3", "wash")),
-    "wash12": ("blue", (-SPACING * (len(STATIONS) + 2), 0, 0), dict(WASH=12), ("front", "v3", "wash")),
-}
+VARIANTS = {}
 BOARD_BAYS = range(1, 12)                   # eleven bays of the wing's kind
 BOARD_GLASS = {                             # bay -> (its glass, the level behind it); the bays between are dark
     2: (B.WINDOW_FROSTED, 9), 4: (B.WINDOW_FROSTED, 10), 6: (B.WINDOW_FROSTED, 12),

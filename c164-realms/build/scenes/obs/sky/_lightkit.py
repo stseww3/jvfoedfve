@@ -20,8 +20,9 @@ is half white already.
 
     1   13-14   the open main door 14, canopy bulbs 13, street and stair lamps 14, the platform 13
     2    9-12   behind a lit great window 12 (the wings' as the one over the main door; the director,
-                #58003), behind a lit small one 9, the bracket lamps beside a door 12
-    3    5-8    wall wash 8, walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
+                #58003), behind a lit small one 9, the bracket lamps beside a door 12, the wall wash 10
+                (the director, #62755: no higher)
+    3    5-8    walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
 
 Light falls by one a cell, and a face is lit by the cell in front of it. A source of level n in the
 first cell behind the glass leaves n-3 on the jambs, n-2 to n-3 on the sill, n-4 on the sides of the
@@ -186,11 +187,15 @@ THROUGH = 2
 # front gives it.
 LENDS = (BRIGHT,)
 # The wall wash: the level of the source where a projector's beam lands, before the foot of a
-# pilaster's shaft. It is the top of rank 3, and at that the foot is a step lighter than an unlit
-# one and no more (0.28 against 0.22 in a picture, hardly read from the court). A rank higher is
-# for the director to allow: the test scene of the card shows the building at 10 and at 12 beside
-# this one (review cr2-#3, item 3).
-WASH = 8
+# pilaster's shaft. In a picture the foot of a washed pilaster stands at 0.28 with 8 there, 0.31
+# with 10 and 0.34 with 12, an unlit one at 0.22 and the corner pilaster that carries a bracket
+# lamp at 0.38. At 8 the wash is hardly read from the court and the stone stays cold. At 10 the
+# foot turns warm and stands a step under the corner pilaster. At 12 the wall between the
+# pilasters turns warm as well and the feet come within 0.04 of the corner pilaster. The director
+# on the reviewer's measurements of the three (#62755): 10 and no higher; the three steps of the
+# front are 14, 12 and 10. Up the shaft the light falls by a level a row, 0.02 to 0.03 from the
+# foot to the string course: a steeper fall is not to be had from a block light.
+WASH = 10
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
@@ -238,7 +243,7 @@ _TRIED = ("BEHIND", "THROUGH", "LENDS", "WASH")     # the numbers of the sources
 @contextlib.contextmanager
 def trying(**numbers):
     """Place the sources of what sky/lights.build() lights inside the block by other numbers than
-    this module has: trying(LENDS=()), trying(BEHIND={...}), trying(WASH=10). They are put back
+    this module has: trying(LENDS=()), trying(BEHIND={...}), trying(WASH=12). They are put back
     when the block closes.
     For a test scene that shows a variant beside the building as it is; the master scene never does."""
     unknown = sorted(set(numbers) - set(_TRIED))
