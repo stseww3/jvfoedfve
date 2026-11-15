@@ -1,9 +1,24 @@
 # 派单稿：ROSTER 里「新聊天号」是「—」的 26 个工人（aide 存）
 
-状态：11-16 00:10 写；总监 00:05 让「先别开人」，等通知。开一个人记一个人，开完把聊天号填回 `plan/ROSTER.md`。
+状态：11-16 00:16 更新。总监 00:12 改口：接着开，五个一批，每批等他们发【领卡】再开下一批。开一个人记一个人，开完把聊天号填回 `plan/ROSTER.md`。
 `spawn_subagent` 固定参数：`include_memory=false`、`model="inherit"`、`group="g2"`、`name="c164-<代号>"`。
-已开：m5 = c277（00:07 上线，已【领卡】）。
-未开 25 个：ashlar、m3、a1、dome、tower、sdome、power、outb、cloud、orrery、scope、clocks、gear、car、mast、arm、pipes、elec、instr、a6、m4、hall、a3、chart、m2。
+已开：
+- 第 0 批：m5 = c277（00:07 上线，已【领卡】）
+- 第 1 批（00:13 发）：tower = c278、dome = c279、sdome = c280、a1 = c281、m3 = c282
+- isolated_vm=true 无效：返回仍是「默认共享机器」，全队在一台 4 核共享 VM。
+
+批次（总监 00:12 定）：
+1. tower、dome、sdome、a1、m3 —— 已发
+2. ashlar、outb、power、cloud、a6
+3. hall、a3、chart、m2、instr
+4. orrery、scope、clocks、gear、mast
+5. car、arm、pipes、elec、m4
+
+开每批之前看 uptime：5 分钟负载超过 8，或 available 低于 1 GB，就停下报总监。
+
+派单开头的机器段（统一用这段，替换「你有自己的一台云端机器」）：
+机器：你和全队四十来人合用一台 4 核的云端机器：只动自己的工作目录 `/agent/repos/c164-<代号>` 和 `/tmp/c164_<代号>/`，命令的等待时间给够（出图给 180 秒），不要同时起两个出图命令。
+
 
 ---
 
