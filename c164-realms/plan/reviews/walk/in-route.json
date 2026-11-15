@@ -115,9 +115,8 @@
     {"at": [2.5, 18, -24.5], "node": "the foot of the north way down"},
     {"at": [2.5, 18, -26.5], "node": "the north end terrace's near corner"},
     {"at": [2.5, 18, -31.5], "node": "the north end terrace's far corner"},
-    {"at": [9.5, 18, -29.5], "node": "before the clock tower's door", "look": [10.5, 19, -29.5]},
-    {"at": [11.5, 18, -29.5], "node": "inside the clock tower's door"},
-    {"at": [13.5, 18, -29.5], "node": "the clock tower's floor, the middle"}
+    {"at": [9.5, 18, -29.5], "node": "at the clock tower's foot", "look": [10.5, 19.5, -29.5],
+     "note": "the card's way ends here. The tower is a block of massing still (main/tower is not in the assembly): its west wall is whole on this level, the 5 x 5 hollow behind it is shut"}
   ]},
   {"id": "L", "name": "the power house, inside", "points": [
     {"at": [74.5, -6, 17.5], "node": "the yard before the power house's wicket", "look": [74.5, -4.5, 21.5], "hop": true},
@@ -127,6 +126,7 @@
     {"at": [70.5, -6, 38.5], "node": "the engine hall's south-west corner"},
     {"at": [86.5, -6, 38.5], "node": "the engine hall's south-east corner"},
     {"at": [86.5, -6, 27.5], "node": "the engine hall's east side, before the chimney's foot"},
+    {"at": [82.5, -6, 27.5]},
     {"at": [82.5, -6, 23.5], "node": "the engine hall's north-east corner, beside the chimney's foot"},
     {"at": [78.5, -6, 31.5], "node": "the middle of the engine hall", "hop": true}
   ]},
