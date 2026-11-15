@@ -15,10 +15,10 @@
   - `glass`（最后最高，亮窗在板顶上一眼看见），九面：最左是炉火窗（发电房锅炉那一跨缩成一面平墙：凝灰岩砖、磨光凝灰岩的窗台、发光的三排自下而上各用一块 `WINDOW_FURNACE`、上面三排暗窗；它没有玻璃板）；六种窗肩并肩排成一面细琢石的立面（每扇 6×6 的玻璃，框贴着框，两扇之间是两格宽的窗间墙，脚下一小片玻璃板）；仪表墙（铆接板勒脚，上面是 materials/panels 测试场景里的那一跨 `BAY`，再上面素铁板；十六种都在这一跨里，怎么排归那个包，板不另排一套）、三种木头加护墙板。
 - 光：sky 的光（`obs_blue`），默认时刻 14000；整板另拍 18000、12900 两个时刻。每面墙脚下两盏 13 级的隐形光源，墙从下到上由灯光过渡到天光；窗前不放灯。`ground` 一层只有两盏：岩层墙最左的脚下一盏，台徽的标石前、子午线上一盏（12 级）。雪和云只吃天光（它们在山上就是这样）：灯光到雪和云的任何一面最多剩 1 级，图上量不出来，`lamplight()` 数、`plan` 报。台徽靠里的一段在灯下，靠外的一半只吃天光，细铜线在灯下和在夜里各是什么样一张图里都有。小件那一层的一排灯离墙 3 格（别的层 4 格）：再靠前一格，灯光落到下面雪墙的顶上是 2 级。
 - 细铜线的摆法照 c194 写在 `obs_mat_brass` 里的规矩：线下面是整块；一格线只和它形状指的两个邻格相连；两条线不并排，星离任何线空一格；圆环按八边形摆。台徽照 c242 的标准（环、过环心的子午线、环内右上的星），北朝上；板上子午线穿过环心不断（前庭那一格空着是留给浑天仪的，板上没有东西要站在那里）。
-- 比选：同一个方块同时只能有一个样子，各版不能摆在一张图里。每组比选一个小场景 `obs_mat_board_<标签>`（同一块板，`write_pack` 里 `K.pack_with(pack_dir, ashlar="a")` 这样选版），只拍整板三个时刻和被比的那一层，机位和主板同名，一张对一张看。
+- 比选：同一个方块同时只能有一个样子，各版不能摆在一张图里。每组比选一个小场景 `obs_mat_board_<标签>`（同一块板，`write_pack` 里 `pack(pack_dir, ashlar="a")` 这样选版），只拍整板三个时刻和被比的那一层，机位和主板同名，一张对一张看。
 
 ## 交付物
-- `build/scenes/obs_mat_board/`：`__init__.py`（布局表 `TIERS`、`build()`、`write_pack()`、`shots()`、`PLACES` 给不按整跨排的层定每面墙的 x、`whole()` 算整板机位、`compare()` 给比选场景挑机位、`lacking()` 查占用表里还有谁不在板上、`lamplight()` 数灯光最多有几级落到雪和云上、`plan()` 把 `ground` 一层从上往下打成字符图）、`__main__.py`（按布局写 `shots.json`；带 `plan` 参数时只打印字符图、缺的方块、雪和云上的灯光）、`mood.py`、`shots.json`。
+- `build/scenes/obs_mat_board/`：`__init__.py`（布局表 `TIERS`、`build()`、`write_pack()`、`pack()` 是各材质包选好版的图加上天空的包（板用地图的时刻，不带天空的包天上就有游戏自带的太阳）、`shots()`、`PLACES` 给不按整跨排的层定每面墙的 x、`whole()` 算整板机位、`compare()` 给比选场景挑机位、`lacking()` 查占用表里还有谁不在板上、`lamplight()` 数灯光最多有几级落到雪和云上、`plan()` 把 `ground` 一层从上往下打成字符图）、`__main__.py`（按布局写 `shots.json`；带 `plan` 参数时只打印字符图、缺的方块、雪和云上的灯光）、`mood.py`、`shots.json`。
 - 机位 35 个：整板三个时刻 `all`/`all_b`/`all_c`（俯 27°，五层正好装满画面，最远的窗墙 50 像素宽）；每层左右两半 `<层>_left`/`<层>_right`，离墙面 15 格半，墙脚下往前站两格的矮墙也在画面里（小件一层近一格；玻璃层的窗框贴着框，没有空隙可切，两半各拍五面墙，暗窗两半里都有，画面的边落在窗间墙上、不切进玻璃：左半是炉火窗和四扇窗，右半是三扇暗的窗、仪表墙、木头；`ground_left` 是山体连它的岩面，俯 39°，上一层只露一道边；`ground_right` 是整个座子和整个云堤）；墙两面两面近看 `<层>_<左边那面墙>`，离墙面 8 格（石材 4 张、金属 4 张；玻璃层 5 张：`glass_furnace`、`glass_window_lit`、`glass_window_frosted`、`glass_window_blind`、`glass_instruments`）；小件四张 `pieces_iron`（门到铁链）、`pieces_iron_2`（栏杆到吊灯）、`pieces_brass`、`pieces_signs`，都离小件 7 格，一组整个在画面里、旁边那组不进来（只有黄铜活板门和挂牌的那面墙只隔一格，两张图各带对方一条边）；`ground` 一层另有 `ground_rock`（岩层墙和崖）、`ground_snow`（雪墙、雪坡、它尽头的裸岩和最浅的两阶云）、`ground_inlay`（台徽，俯 75°，圆环是圆的，一边带到雪坡的边、一边带到云堤的脚）、`ground_inlay_walk`（人眼高度）、`ground_cloud`。地面一层的机位都用投影算过，要拍的东西的角都在画面里。
 - `build/scenes/obs/materials/_board.py`：`wall()`、`steps()`、`window_wall()`、`hung()`；山体的 `strata()`、`rock()`、`ledges()`、`snow()`、云堤 `bank()`；细铜线的 `line()`、`ring()`（c194 的写法）、`emblem()`。别的材质包的测试场景可以直接用。
 - `build/scenes/obs/materials/_kit.py`：`pack_with(pack_dir, **版本)`，给比选场景用。
@@ -28,13 +28,13 @@
 - `tools/check.py --scene obs_mat_board` 全过，`blocks` 一项没有警告（板上没有占用表外的方块）；三个比选场景同样全过。
 - 占用表里每一个方块都在板上：`python -m scenes.obs_mat_board plan` 的“not on the board”两行都是 none；最后一行，雪和云上的灯光，不超过 1。
 - 评审看：`all`（整板）、五层的 `_left`/`_right`，再看两面两面的近图。20 格外认得出材质，平铺不起条纹，相邻材质不打架。
-- 给管理员的图由 S1 出真机图。板上还是占位色的方块（现在是雪两种、云五种、炉火窗三种）只看布局和光，不打分；别的都是真材质，离线图看墙面的光和质感作数。
+- 给管理员的图由 S1 出真机图。板上还是占位色的方块（现在是云五种、炉火窗三种）只看布局和光，不打分；别的都是真材质，离线图看墙面的光和质感作数。
 
 ## 版本
 1 版（板本身）。板上材质的比选见“约束”。
 
 ## 依赖
-- 依赖：respack-redirect（已合并）。真图依赖 ashlar、windows、iron、panels、brass-oldcopper-small（都已合并）、snow（制作中）、windows 的炉火窗（chart c350 在补）、sky/cloudsea 画的云（没开工）；光依赖 sky/look。哪个包进了总装，板就重出一遍。
+- 依赖：respack-redirect（已合并）。真图依赖 ashlar、windows、iron、panels、brass-oldcopper-small、snow（都已合并）、windows 的炉火窗（chart c350 在补）、sky/cloudsea 画的云（没开工）；光依赖 sky/look。哪个包进了总装，板就重出一遍。
 - 被依赖：M1 基调板；评审看“相邻材质”的地方。
 
 ## 记录
