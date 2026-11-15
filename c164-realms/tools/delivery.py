@@ -5,8 +5,9 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
     delivery.py <category>/<package> <commit> [--base <commit>]      base: HEAD (the assembly copy)
 
   scope     the files changed, sorted into: the card's own (its module, the category's _helpers,
-            its test scenes, its card, the parts files), common files (only the merge-key holder
-            changes those: agreed beforehand or not?), other cards' files, the director's files
+            its test scenes and their kept pictures, its card, the parts files), common files (only
+            the merge-key holder changes those: agreed beforehand or not?), other cards' files,
+            the director's files
   files     no archives, programs, fonts, sounds or world files; nothing binary but pictures and
             the built helper classes (tools/win/helper/*.class: rebuilt here from the source beside
             them and compared byte for byte); pictures in the code tree named; nothing large
@@ -14,12 +15,19 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
             (the finding is shown shortened, never whole)
   origin    added lines that speak of a copyright, a licence or a site that hands out assets
   commits   commit messages start with "c164-<code>: "
+  pictures  every test scene the delivery touches keeps a picture of each of its shots in
+            renders/<scene>/ and a note of the commit they show (tools/selfshots.py); each kept
+            picture is the very file the note describes (its SHA-256), the commit is in the
+            branch, and the card's code has not changed since
   merge     the branch merges into the base without conflicts; how far it is behind
 
-The technical checks of what the code generates are tools/check.py's.
+The technical checks of what the code generates are tools/check.py's (needs a checkout). Whether
+the kept pictures are what the delivered code draws is tools/selfshots.py --verify's, which draws
+and so runs on the admin's computer only.
 """
 import argparse
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -155,7 +163,7 @@ def main():
     fork = git("merge-base", base, head).stdout.strip()
     module = pkg.replace("-", "_")
     own = (f"build/scenes/obs/{cat}/{module}.py", f"build/scenes/obs/{cat}/_",
-           f"build/scenes/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
+           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
 
     # What the merge would change in the base: the base against the merged tree. (The branch against
     # the fork point would also show what the branch took over from the assembly branch on the way.)
@@ -277,6 +285,84 @@ def main():
     results.append(say("WARN" if odd else "PASS", "commits",
                        f"{len(odd)} commit messages do not start with \"c164-<code>: \"" if odd
                        else "commit messages are in form", odd))
+
+    # ---- pictures: the package's test scenes and those the delivery touches, as they stand after the merge ----
+    stem = f"obs_{ABBR[cat]}_{module}"
+    scenes = {os.path.basename(p) for p in
+              git("ls-tree", "--name-only", merged, f"{ROOT}build/scenes/", check=False).stdout.splitlines()
+              if os.path.basename(p) == stem or os.path.basename(p).startswith(stem + "_")} if pairs else set()
+    scenes = sorted(scenes | {m.group(1) for _, path in pairs for m in
+                              [re.match(re.escape(ROOT) + r"(?:build/scenes|renders)/(obs_[a-z]+_[^/]+)/", path)] if m})
+    code = [f"{ROOT}build/scenes/obs/{cat}/{module}.py", f":(glob){ROOT}build/scenes/obs/{cat}/_*"]
+    notes, without, altered, shown = [], [], [], 0
+    for scene in scenes:
+        shots = blob(merged, f"{ROOT}build/scenes/{scene}/shots.json")
+        if shots is None:
+            if blob(merged, f"{ROOT}build/scenes/{scene}/__init__.py") is None:
+                notes.append(f"renders/{scene}/: pictures of a scene that is not there")
+            continue
+        try:
+            names = [s["name"] for s in json.loads(shots.decode("utf-8"))]
+        except (ValueError, KeyError, TypeError):
+            notes.append(f"{scene}: its shots.json cannot be read")
+            continue
+        folder = f"{ROOT}renders/{scene}/"
+        kept = {os.path.basename(p)[:-4] for p in
+                git("ls-tree", "--name-only", merged, folder, check=False).stdout.splitlines() if p.endswith(".png")}
+        if not kept:
+            without.append(scene)
+            continue
+        shown += len(kept & set(names))
+        missing = [n for n in names if n not in kept]
+        if missing:
+            notes.append(f"{scene}: no picture of {', '.join(missing)}")
+        note = blob(merged, folder + "shots.txt")
+        if note is None:
+            notes.append(f"{scene}: no shots.txt, so which commit the pictures show is not noted")
+            continue
+        drawn, noted, plain = {}, set(), []
+        for line in note.decode("utf-8", "replace").splitlines():
+            parts = line.split("\t")
+            if len(parts) in (3, 4) and not line.startswith("#"):
+                noted.add(parts[0])
+                if parts[0] not in names:
+                    continue
+                drawn.setdefault(parts[2], []).append(parts[0])
+                if parts[0] not in kept:
+                    continue
+                if len(parts) == 3:
+                    plain.append(parts[0])
+                elif hashlib.sha256(blob(merged, f"{folder}{parts[0]}.png") or b"").hexdigest()[:16] != parts[3]:
+                    altered.append(f"{scene}: {parts[0]}.png is not the file its note describes: changed or "
+                                   f"replaced after it was drawn")
+        left = sorted((kept & noted) - set(names))
+        if left:
+            notes.append(f"{scene}: pictures left over, the list has no such shot any more: {', '.join(left)}")
+        if not noted:
+            notes.append(f"{scene}: shots.txt names no commit (not written by tools/selfshots.py)")
+        if plain:
+            notes.append(f"{scene}: {len(plain)} pictures have no SHA-256 in the note (drawn before the note "
+                         f"kept one): nothing says they are the files that were drawn")
+        for commit, of in sorted(drawn.items()):
+            if commit.endswith("+"):
+                notes.append(f"{scene}: {len(of)} pictures were drawn from uncommitted code ({commit})")
+            elif git("merge-base", "--is-ancestor", commit, head, check=False).returncode != 0:
+                notes.append(f"{scene}: {len(of)} pictures are noted as showing {commit}, which is not in the "
+                             f"branch's history")
+            else:
+                since = git("diff", "--name-only", commit, head, "--", f"{ROOT}build/scenes/{scene}/", *code,
+                            check=False).stdout.split()
+                if since:
+                    notes.append(f"{scene}: {len(of)} pictures show {commit}; the card's code has changed since "
+                                 f"({', '.join(os.path.basename(p) for p in since[:4])}"
+                                 f"{' ...' if len(since) > 4 else ''}): draw them again")
+    notes = [f"{s}: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py {s} --out, "
+             f"then --take here and commit renders/{s}/)" for s in without] + notes
+    results.append(say("FAIL" if altered else "WARN" if notes else "PASS", "pictures",
+                       "no test scene with a shot list is touched" if not scenes
+                       else f"{len(scenes)} test scene{'s' if len(scenes) != 1 else ''}, {shown} shots with a picture kept"
+                       + ("" if notes or altered else "; every shot has one, each the file its note describes"),
+                       altered + notes))
 
     # ---- merge ----
     behind = len(git("rev-list", f"{head}..{base}").stdout.split())

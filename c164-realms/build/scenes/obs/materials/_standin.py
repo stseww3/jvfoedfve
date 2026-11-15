@@ -62,6 +62,7 @@ _ROLES = [
     ((B.BRASS_PLATE, B.BRASS_PATTERN, B.BRASS_COLUMN, B.BRASS_RAIL, B.BRASS_GATE, B.BRASS_DOOR, B.BRASS_HATCH,
       B.BRASS_BUTTON, B.BRASS_SHELF, B.BRASS_INLAY, B.BRASS_SIGN), "brass", {}),
     ((B.OLD_COPPER, B.OLD_COPPER_CUT), "old_copper", {}),
+    ((B.BRASS_LINE, B.BRASS_CROSS, B.BRASS_STAR), "old_copper", {}),
     ((B.WAINSCOT,), "dark_wood", {}),
     ((B.ENAMEL_SIGN,), "enamel", {}),
 ] + [((block,), "cloud", dict(FLAT, picture=(f"cloud_{i}", _flat("cloud", i))))      # dark to light

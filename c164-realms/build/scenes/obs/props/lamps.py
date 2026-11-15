@@ -372,13 +372,31 @@ def festoon(canvas, a, b, spacing=1.0, origin=(0, 0, 0), light=True, level=None,
     return n
 
 
+ENTRANCE_BAY = 9        # the middle bay of the east front: the doorway, or the middle arch of three
+
+
+def entrance_pilasters(canvas, origin=(0, 0, 0)):
+    """The two pilasters (their numbers, north and south) that frame the entrance as it stands on
+    the canvas: those beside the middle bay's doorway, or, where the bays either side of it are open
+    to the ground as well (main/facade's arcade of three arches), the outer two, so that the pair
+    of lamps frames the whole porch (director, 11-14)."""
+    ox, oy, oz = origin
+
+    def open_to_the_ground(bay):
+        return not canvas.has(S.east_wall_x(bay) + ox, S.GROUND + 1 + oy, S.bay_center_z(bay) + oz)
+
+    if open_to_the_ground(ENTRANCE_BAY - 1) and open_to_the_ground(ENTRANCE_BAY + 1):
+        return ENTRANCE_BAY - 2, ENTRANCE_BAY + 1
+    return ENTRANCE_BAY - 1, ENTRANCE_BAY
+
+
 def build(canvas, origin=(0, 0, 0), version=VERSION):
-    """What this package places in the master scene itself: the pair of bracket lamps beside the
-    entrance, on whatever front the main line has built there, and two street lamps on the court.
-    Lamps elsewhere are placed by the line that builds the wall or the room, with place()."""
+    """What this package places in the master scene itself: the pair of bracket lamps that frames
+    the entrance, on whatever front the main line has built there, and two street lamps on the
+    court. Lamps elsewhere are placed by the line that builds the wall or the room, with place()."""
     n = 0
-    front = S.east_wall_x(9)
-    for k in (8, 9):                                    # the pilasters either side of the door
+    front = S.east_wall_x(ENTRANCE_BAY)
+    for k in entrance_pilasters(canvas, origin):
         z = S.pilaster_z(k)
         x = K.east_face(canvas, 4, z, S.WALL_E, front + S.DEPTH_CORNICE, origin)
         if x is not None:
