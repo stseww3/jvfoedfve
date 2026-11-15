@@ -188,23 +188,27 @@ def _small_dome(c):
 
 
 def _radio_mast(c):
-    """The radio mast (machines/mast) as its four legs with a belt every six blocks, the needle and
-    the beacon, on its pad: from V1 it stands a little north of due west and reaches as high as the
-    comet's head, so it is the comet's neighbour in that picture. The real legs are thinner (bars)
-    and the lattice between them is open; whatever these blocks leave free, the real mast does too."""
+    """The radio mast (machines/radiomast) as its four legs with a belt every six blocks, the needle
+    and the beacon, on the two steps of its stone foot (site/mastbase: centred on the skeleton's
+    foot cell, the legs on the corners of the upper step, from y 2). From V1 it stands a little
+    north of due west and reaches as high as the comet's head, so it is the comet's neighbour in
+    that picture. The real legs are thinner and the lattice between them is open; whatever these
+    blocks leave free, the real mast does too."""
     x0, z0, x1, z1 = S.MAST_PAD["box"]
     feet = S.MAST_PAD["feet"]
     c.box(x0, S.LOWER_GROUND - 1, z0, x1, feet - 1, z1, DARK)
     fx, fz = S.RADIO_MAST["foot"]
-    top = feet + S.RADIO_MAST["height"]
-    for y in range(feet, top - 2):
-        for x in (fx - 1, fx + 1):                 # the legs stand in cells x 22/24, z -42/-40
-            for z in (fz - 2, fz):
+    c.box(fx - 2, feet, fz - 2, fx + 2, feet, fz + 2, DARK)
+    c.box(fx - 1, feet + 1, fz - 1, fx + 1, feet + 1, fz + 1, DARK)
+    foot, top = feet + 2, feet + S.RADIO_MAST["height"]
+    for y in range(foot, top - 2):
+        for x in (fx - 1, fx + 1):
+            for z in (fz - 1, fz + 1):
                 c.set(x, y, z, DARK)
-        if (y - feet) % 6 == 0 and y > feet:
-            c.box(fx - 1, y, fz - 2, fx + 1, y, fz, DARK)
-    c.set(fx, top - 2, fz - 1, DARK)               # the needle
-    c.set(fx, top - 1, fz - 1, COPPER)             # the beacon
+        if (y - foot) % 6 == 0 and y > foot:
+            c.box(fx - 1, y, fz - 1, fx + 1, y, fz + 1, DARK)
+    c.set(fx, top - 2, fz, DARK)                   # the needle
+    c.set(fx, top - 1, fz, COPPER)                 # the beacon
 
 
 def build(slit_head=None):
@@ -324,7 +328,7 @@ def _tops():
     fx, fz = S.RADIO_MAST["foot"]
     (x0, x1), (z0, z1) = S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z
     return {
-        "radio mast, beacon": (fx + 0.5, S.MAST_PAD["feet"] + S.RADIO_MAST["height"] - 0.5, fz - 0.5),
+        "radio mast, beacon": (fx + 0.5, S.MAST_PAD["feet"] + S.RADIO_MAST["height"] - 0.5, fz + 0.5),
         "time-ball mast": ((x0 + x1) // 2 + 0.5, S.CLOCK_BALL_MAST + 1.0, (z0 + z1) // 2 + 0.5),
         "great dome, apex": (S.DOME_AXIS[0], S.DOME_APEX + 1.0, S.DOME_AXIS[1]),
     }
