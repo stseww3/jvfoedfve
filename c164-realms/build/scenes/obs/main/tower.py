@@ -13,23 +13,31 @@ heights CLOCK_SHAFT_TOP, CLOCK_TOP and CLOCK_BALL_MAST:
                recess of a clock dial (y 26..28), backed with dark iron plate. A frieze of
                panels under the cornice; an iron door in the west face opens on the roof walk.
     y 31       the shaft's one cornice: the main order's moulding, in stone
-    y 32..36   the lookout, as wide as the shaft and open on all four sides
-    y 37..41   the verdigris top, the building's third green top beside the two domes
+    y 32..35   the lookout, as wide as the shaft and open on all four sides; its ceiling is y 36
+    y 35..41   the verdigris top, the building's third green top beside the two domes. Copper
+               begins with the eaves and nowhere below them: the eaves are the roof's own
+               moulding and gutter, and from below it is their soffit that is seen
     y 42..53   the mast of the time ball, the cup anemometer and the wind vane at its head
 
-The lookout and the top come in two versions (VERSION, or build(version=...)):
+The lookout and the top come in two versions (VERSION, or build(version=...)); what they compare
+is the shape of the top, pointed against round:
 
     a   pointed: four arches of three columns between corner piers, a round head to each,
-        under a four-sided copper helm that stands on the wall line behind the stone eaves,
-        steep in two tiers and closed at 45 degrees to the finial;
+        under a four-sided roof whose faces rise in an arc: eaves hung in the row of the arch
+        heads, a kick on them, an upright foot on the wall line, a shoulder, and 45 degrees
+        to the finial;
     b   round: an octagonal kiosk of eight colonnettes on a plinth inside the square of the
-        shaft, a pinnacle on each of the shaft's corners, under an octagonal copper dome that
-        starts upright and flattens to its crown.
+        shaft, a short pinnacle on each of the shaft's corners, under an octagonal dome with
+        eaves of its own: an upright foot, two slopes, a flat crown.
+
+Neither has a cross anywhere: the plans are a square and an octagon, and the mast carries a
+pennant at its tip and the cup wheel lower down on the other side.
 
 Not here: the dials, their hands and the time ball are machines/clock, which finds the recesses and
-the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the antenna and its insulators
-are machines/radiomast (ANTENNA_ANCHOR is the end of the bracket it hangs on); the light of the lit
-slits and of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()).
+the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the light of the lit slits and
+of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()). The radio mast
+hangs no wire to the tower (the director, 11-16: the mast itself is the aerial), so the shaft
+carries no bracket or hook for one: its four faces are flush alike.
 
 The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
 that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
@@ -48,6 +56,7 @@ from artkit.canvas import Canvas
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _order as O
 
 # --- the footprint (skeleton, LOCKED): 7 x 7, the east face flush with the pavilion's wall ----------
@@ -71,15 +80,14 @@ FIELD_Y = (SLIT_Y[0] - 1, SLIT_Y[1])            # 21 .. 23: the sunk field a sli
 DIAL_Y = (26, 28)                   # the dial recesses
 SHAFT_TOP = S.CLOCK_SHAFT_TOP       # 31: the cornice row, and the floor of the lookout
 FRIEZE_Y = SHAFT_TOP - 1            # 30: the frieze under the cornice
-LOOKOUT = (32, 35)                  # its open rows
-HEAD = 36                           # its ceiling
-ROOF = (37, S.CLOCK_TOP)            # 37 .. 41 (version a starts its copper one row lower, behind the eaves)
+LOOKOUT = (32, 35)                  # its open rows; version a's eaves hang in the last of them
+HEAD = 36                           # its ceiling; version b's eaves, and the foot of version a's roof
+ROOF = (37, S.CLOCK_TOP)            # 37 .. 41: copper and nothing else
 APEX = S.CLOCK_TOP                  # 41: the finial block
 
 # --- the mast (points, in blocks) ---------------------------------------------------------------------
 MAST_MODEL = "bld_tower_mast"       # machines/clock looks for a display of this model: the mast stands
-CUPS_MODEL = "bld_tower_cups"
-CUPS_TAG = "c164_tower_cups"        # the cup wheel's own tag, for the motion line
+CUPS_MODEL = "bld_tower_cups"       # the cup wheel: the motion line turns it (its tag is the kit's, m.<model>)
 MAST_FOOT = APEX + 1.0              # 42.0: the top of the finial
 MAST_STOP = S.CLOCK_BALL_MAST - 1.0  # 51.0: up to here the pole is plain and the ball's to travel on
 MAST_TOP = S.CLOCK_BALL_MAST + 1.0  # 53.0: the tip, the top of the skeleton's last row
@@ -93,11 +101,6 @@ VANE_LONG = 2.0                     # the pennant of the wind vane: from the axi
 VANE_TAIL = 0.75                    # how long the tails are,
 VANE_HIGH = 0.75                    # and how high it is; its upper edge is the tip of the mast
 FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
-
-# --- the antenna's bracket ----------------------------------------------------------------------------
-HOOK_Y = SHAFT_TOP - 1              # 30: under the cornice
-HOOK_REACH = 2                      # blocks of rod north of the north face, out of the north-east quoin
-ANTENNA_ANCHOR = (X1 + 0.5, HOOK_Y + 0.5, float(Z0 - HOOK_REACH))       # (16.5, 30.5, -35.0): its end
 
 # --- light --------------------------------------------------------------------------------------------
 FRONT, STOREY = "tower", "shaft"    # the slits' keys for the light line; the bay is the face's number
@@ -113,7 +116,7 @@ PANEL = B.ASHLAR_PANEL              # the field of the slits, the frieze
 PLATE = B.IRON_PLATE                # the back of the dial recesses
 BARS = B.IRON_BARS                  # the railing in the arches of version a
 CEILING = B.ASHLAR_PANEL            # pale, so that the lookout holds the glow of its lamp
-DOOR, ROD, BULB = B.IRON_DOOR, B.IRON_ROD, B.IRON_BULB
+DOOR, BULB = B.IRON_DOOR, B.IRON_BULB
 COPPER = B.VERDIGRIS_CUT
 FINIAL = B.VERDIGRIS_CAST
 
@@ -172,7 +175,6 @@ OCT = _cut_square(3, 4)             # 37 columns: the kiosk, inside the square o
 OCT_IN = _cut_square(2, 3)          # 21: its floor
 OCT_WALL = OCT - OCT_IN             # 16: three to a side on the axes, one on each diagonal
 OCT_PIERS = {(x, z) for x, z in OCT_WALL if sorted((abs(x - CX), abs(z - CZ))) == [1, 3]}       # 8
-OCT_DIAG = {(x, z) for x, z in OCT_WALL if abs(x - CX) == abs(z - CZ)}                          # 4
 CROWN = O.box(CX - 1, CZ - 1, CX + 1, CZ + 1)                                                   # 3 x 3
 
 
@@ -226,7 +228,7 @@ def _stone(i, y):
 
 def _shaft(c, o, s):
     """Base, quoins and wall; in every face the slit in its field and the dial's recess; the
-    frieze and the cornice; the door to the roof walk and the antenna's bracket."""
+    frieze and the cornice; the door to the roof walk."""
     for face in FACES:
         for i, (x, z) in enumerate(face.cells):
             for y in range(FOOT, SHAFT_TOP):
@@ -254,45 +256,27 @@ def _shaft(c, o, s):
     x, z = FACE["west"].cell(MID)
     for y, half in ((FOOT, "lower"), (FOOT + 1, "upper")):
         _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="false"))
-    # the bracket of the antenna: an iron rod out of the north-east quoin, under the cornice
-    north = FACE["north"]
-    for n in range(1, HOOK_REACH + 1):
-        x, z = north.cell(len(north.cells) - 1, -n)
-        _set(c, o, x, HOOK_Y, z, st(ROD, facing="north"))
 
 
 # --- the lookout and the top: version a ---------------------------------------------------------------------
-# The roof, ring by ring: (row, how far the ring stands from the middle column, what it is made of).
-# Half-widths by the half row from y 36: 4.5 4.0 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 1.0 | 0.5 -- a kick
-# on the eaves, an upright foot on the wall line, a shoulder, and 45 degrees to the finial
+# The roof above its eaves, ring by ring: (row, how far the ring stands from the middle column, what
+# it is made of). Half-widths by the half row from y 36: 4.5 4.0 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 |
+# 1.5 1.0 | 0.5 -- a kick on the eaves, an upright foot on the wall line, a shoulder, and 45 degrees
+# to the finial: the four faces rise in an arc and close in a point
 HELM = ((HEAD, 4, "stairs"), (HEAD + 1, 3, "block"), (HEAD + 2, 3, "stairs"), (HEAD + 3, 2, "stairs"),
         (HEAD + 4, 1, "stairs"))
+
 
 def _square(reach):
     """The columns no further than `reach` from the middle column: a square of 2 * reach + 1."""
     return O.box(CX - reach, CZ - reach, CX + reach, CZ + reach)
 
 
-def _helm(c, o, s, rings, skirt=None):
-    """The copper of version a: `rings` as HELM; `skirt` is a family whose slabs lie on the eaves
-    round the helm's foot."""
-    if skirt:
-        _fill(c, o, O.ring(BODY), HEAD, st(skirt.slab, type="bottom"))
-    for y, reach, kind in rings:
-        inner = _square(reach - 1)
-        _fill(c, o, inner - INSIDE if y == HEAD else inner, y, COPPER.block)
-        if kind == "block":
-            _fill(c, o, _square(reach) - inner, y, COPPER.block)
-        else:
-            s.mould(inner, y, COPPER.stairs, "bottom")
-    _set(c, o, CX, APEX, CZ, FINIAL)
-
-
-def _top_a(c, o, s, skirt=None, helm=None, eaves=None):
+def _top_a(c, o, s):
     """Square: corner piers two columns wide (the quoin and one of dressed stone) and between them
-    an arch of three with a railing in its foot. The eaves hang in the row of the arch heads. The
-    copper helm stands on the wall line behind them: two steep tiers, then 45 degrees to the
-    finial. `skirt` is a family whose slabs lie on the eaves round its foot."""
+    an arch of three with a railing in its foot. The roof begins with its eaves, a copper moulding
+    hung in the row of the arch heads: from the court and from the station it is the soffit that
+    shows, so the green top starts where the stone ends. Returns the row of the ceiling."""
     y0, y1 = LOOKOUT
     for face in FACES:
         for i, (x, z) in enumerate(face.cells):
@@ -314,13 +298,20 @@ def _top_a(c, o, s, skirt=None, helm=None, eaves=None):
             _set(c, o, x, y1, z, head)
     # the eaves: the order's moulding over the piers, a thin shelf over the arches, so that the
     # hung stairs do not stand in front of the arch heads
-    eaves = eaves or WALL
-    s.mould(BODY, y1, eaves.stairs, "top")
+    s.mould(BODY, y1, COPPER.stairs, "top")
     for face in FACES:
         for i in ARCH:
-            s.put(face.cell(i, -1), y1, st(eaves.slab, type="top"))
+            s.put(face.cell(i, -1), y1, st(COPPER.slab, type="top"))
     _fill(c, o, INSIDE, HEAD, CEILING.block)
-    _helm(c, o, s, helm or HELM, skirt)
+    for y, reach, kind in HELM:
+        inner = _square(reach - 1)
+        _fill(c, o, inner - INSIDE if y == HEAD else inner, y, COPPER.block)
+        if kind == "block":
+            _fill(c, o, _square(reach) - inner, y, COPPER.block)
+        else:
+            s.mould(inner, y, COPPER.stairs, "bottom")
+    _set(c, o, CX, APEX, CZ, FINIAL)
+    return HEAD
 
 
 # --- the lookout and the top: version b ---------------------------------------------------------------------
@@ -339,12 +330,24 @@ def _slope(c, o, cells, y):
         _set(c, o, x, y, z, state)
 
 
-def _dome(c, o, s):
-    """The kiosk's entablature and the dome on it. Half-widths on the axes by the half row from
-    y 37: 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 0.5 | 0.5 -- upright, 45 degrees, flat."""
+def _top_b(c, o, s):
+    """Octagonal: a plinth one row high inside the square of the shaft, on it eight colonnettes
+    at the corners of the octagon (the sky shows between them all round) under a stone architrave;
+    on each corner of the shaft a pedestal with a short pinnacle. The dome begins with its eaves,
+    a copper moulding round the architrave, and stands on the kiosk's wall line: an upright foot,
+    two slopes of 45 degrees and a flat crown under the finial. Half-widths on the axes by the
+    half row from y 36: 4.0 4.5 | 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 0.5 | 0.5. Returns the row of
+    the ceiling."""
+    y0, y1 = LOOKOUT
+    _fill(c, o, OCT_WALL, y0, WALL.block)
+    for y in range(y0 + 1, y1 + 1):
+        _fill(c, o, OCT_PIERS, y, QUOIN.wall)
+    for x, z in CORNERS:
+        _set(c, o, x, y0, z, QUOIN.block)
+        _set(c, o, x, y0 + 1, z, QUOIN.wall)
     _fill(c, o, OCT_WALL, HEAD, WALL.block)
     _fill(c, o, OCT_IN, HEAD, CEILING.block)
-    s.mould(OCT, HEAD, WALL.stairs, "top")
+    s.mould(OCT, HEAD, COPPER.stairs, "top")
     y = ROOF[0]
     _fill(c, o, OCT, y, COPPER.block)                   # 37: the upright foot
     _fill(c, o, OCT_IN, y + 1, COPPER.block)            # 38: the first slope, on the kiosk's wall line
@@ -354,60 +357,22 @@ def _dome(c, o, s):
     _fill(c, o, CROWN, y + 3, st(COPPER.slab, type="bottom"))      # 40: the dome flattens
     _set(c, o, CX, y + 3, CZ, COPPER.block)
     _set(c, o, CX, APEX, CZ, FINIAL)
+    return HEAD
 
 
-def _pinnacles(c, o):
-    """On each corner of the shaft a pedestal and a pinnacle, one row short of the kiosk's eaves."""
-    y0 = LOOKOUT[0]
-    for x, z in CORNERS:
-        _set(c, o, x, y0, z, QUOIN.block)
-        for y in range(y0 + 1, y0 + 3):
-            _set(c, o, x, y, z, QUOIN.wall)
-
-
-def _top_b(c, o, s):
-    """Octagonal: a plinth one row high, on it eight colonnettes at the corners of the octagon (the
-    sky shows between them all round), on each corner of the shaft a pedestal with a pinnacle. The
-    eaves follow the octagon; the dome stands on the kiosk's wall line behind them."""
-    y0, y1 = LOOKOUT
-    _fill(c, o, OCT_WALL, y0, WALL.block)
-    for y in range(y0 + 1, y1 + 1):
-        _fill(c, o, OCT_PIERS, y, QUOIN.wall)
-    _pinnacles(c, o)
-    _dome(c, o, s)
-
-
-def _top_b2(c, o, s):
-    """Trial: four piers on the diagonals, an arch of three on each axis."""
-    y0, y1 = LOOKOUT
-    for y in range(y0, y1 + 1):
-        _fill(c, o, OCT_DIAG, y, WALL.block)
-    for x, z in OCT_WALL - OCT_DIAG:
-        dx, dz = x - CX, z - CZ
-        along, names = (dz, ("north", "south")) if abs(dx) == 3 else (dx, ("west", "east"))
-        _set(c, o, x, y0, z, BARS)
-        if along:
-            head = st(WALL.stairs, facing=names[0] if along < 0 else names[1], half="top")
-        else:
-            head = st(WALL.slab, type="top")
-        _set(c, o, x, y1, z, head)
-    _pinnacles(c, o)
-    _dome(c, o, s)
-
-
-TOPS = {"a": _top_a, "b": _top_b,
-        "a2": functools.partial(_top_a, eaves=COPPER), "b2": _top_b2}
+TOPS = {"a": _top_a, "b": _top_b}
 VERSION = "a"                       # what the master scene shows until the director has picked one
 
 
 # --- the lamp and the light -------------------------------------------------------------------------------
-def _lamp(c, o):
-    """A caged lamp let into the middle of the lookout's ceiling. The light it throws is the sky
-    line's to place: asked for through the kit, a stand-in source while the kit is not in the tree."""
+def _lamp(c, o, head):
+    """A caged lamp let into the middle of the lookout's ceiling, which lies in row `head`. The
+    light it throws is the sky line's to place: asked for through the kit, a stand-in source while
+    the kit is not in the tree."""
     if not LAMP:
         return
-    _set(c, o, CX, HEAD, CZ, st(BULB, lit="true"))
-    below = (o[0] + CX, o[1] + HEAD - 1, o[2] + CZ)
+    _set(c, o, CX, head, CZ, st(BULB, lit="true"))
+    below = (o[0] + CX, o[1] + head - 1, o[2] + CZ)
     suggest = getattr(_kit(), "suggest", None)
     if suggest is not None:
         suggest(c, below, LAMP_LEVEL, "main/tower:cage", rank=3)
@@ -496,13 +461,13 @@ def models():
 
 
 def _mast(c, o):
-    """Stand the mast on the finial and the cup wheel on its spindle. Returns the entities placed."""
+    """Stand the mast on the finial and the cup wheel on its spindle, and register the wheel with the
+    motion line: it turns about its spindle. Returns the entities placed."""
     kit = _models()
     c.add_entity(o[0] + AXIS[0], o[1] + MAST_FOOT + MAST_HOLD, o[2] + AXIS[1],
                  M.display(kit[MAST_MODEL], scale=MAST_SCALE, view=FAR))
-    cups = M.display(kit[CUPS_MODEL], view=FAR)
-    cups["Tags"].append(CUPS_TAG)
-    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], cups)
+    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], M.display(kit[CUPS_MODEL], view=FAR))
+    MK.spin(c, "y", MK.ANEMOMETER_REV)
     return 2
 
 
@@ -513,8 +478,8 @@ def build(canvas, origin=(0, 0, 0), version=None):
     the shaft and the mast are the same for both. Returns the display entities placed: 2."""
     s = O.Laying(canvas, O.Plan(BODY), origin, None)
     _shaft(canvas, origin, s)
-    TOPS[version or VERSION](canvas, origin, s)
-    _lamp(canvas, origin)
+    head = TOPS[version or VERSION](canvas, origin, s)
+    _lamp(canvas, origin, head)
     _slit_lights(canvas, origin)
     return _mast(canvas, origin)
 
@@ -537,7 +502,7 @@ def _drawings():
         print(O.elevation(c, "east", (Z0 - 2, Z1 + 2), (FOOT, APEX), X1 + 4, X0 - 1))
         print(f"\nSECTION through the middle (z = {CZ}; west on the left):\n")
         print(O.section(c, "z", CZ, (X0 - 2, X1 + 2), (FOOT, APEX)))
-        for y in (LOOKOUT[0], LOOKOUT[0] + 1, HEAD, ROOF[0], ROOF[0] + 1, ROOF[0] + 2, ROOF[0] + 3):
+        for y in (LOOKOUT[0], LOOKOUT[0] + 1, LOOKOUT[1], HEAD, *range(ROOF[0], APEX)):
             print(f"\nPLAN of row y = {y} (north up):\n")
             print(_plan_row(c, y))
 
