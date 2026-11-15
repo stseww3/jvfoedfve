@@ -62,9 +62,13 @@ Models; px equals the scale each is shown at, so every texture is 16 pixels to t
 Moving pieces, for motion (A8). Only the pendulum moves in this version of the map (A0, 11-15: the
 sky is locked at eight in the evening, so the hands stand at 7:55 and the ball waits at half mast; a
 clock that ran would part from the sky). The hands and the ball are entities of their own all the
-same. The pose placed here is where a loop starts: the pendulum hangs plumb. Each piece has a tag:
-  c164_clock_pendulum   swings about the model's z axis through its anchor, PENDULUM_SWING degrees
-        each way, there and back in two seconds: transformation("pendulum", degrees).
+same. The pose placed here is where a loop starts: the pendulum hangs plumb.
+  the pendulum   is registered with the motion line where it is placed (master(), one line:
+        MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM); plan/parts/motion.md 4). It swings about
+        the model's z axis through its anchor, PENDULUM_SWING degrees each way, there and back in
+        two seconds; motion/_kit tags it (m.mach_clock_pendulum) and writes the functions.
+        transformation("pendulum", degrees) is the same pose, for whoever wants one by hand.
+The pieces that stand still in this version keep a tag of their own, for the day they move:
   c164_clock_hand_h, c164_clock_hand_m   all five hour hands and all five minute hands. A hand
         turns about the model's z axis through its anchor, clockwise as the dial is looked at:
         transformation(name, -degrees) with degrees from hand_angles(hour, minute).
@@ -96,7 +100,7 @@ PREFIX = "mach_clock_"
 TIME = tuple(S.CLOCK)
 
 TAG_HOUR, TAG_MINUTE = "c164_clock_hand_h", "c164_clock_hand_m"
-TAG_PENDULUM, TAG_BALL = "c164_clock_pendulum", "c164_clock_ball"
+TAG_BALL = "c164_clock_ball"
 
 # --- the master clock ---------------------------------------------------------------------------
 # Its pieces are measured in pixels (16 to the block) from the middle of the case's foot on the
@@ -343,10 +347,12 @@ def _master():
     # a coil is wound wire: rings of two tones between two iron cheeks (the upper cheek is the yoke)
     wire = Sprite("clock_coil", ["aa", "bb", "aa", "bb"], {"a": P.RAMPS["old_copper"][3], "b": P.RAMPS["old_copper"][1]},
                   back=COPPER)
+    # They stand clear of everything that swings (PENDULUM_SWING to either side): the bob passes
+    # under the lower cheeks, the armature between the coils, the rod in front of the yoke.
     for x in (-4.5, 4.5):
-        tube("y", (x, 4.0), 24, 28, 2.0, wire, sides=8, cap=K.flat("iron", 1))
-        tube("y", (x, 4.0), 23, 24, 2.5, IRON_DARK, sides=8)
-    box((-6.5, 28, 1.5), (6.5, 29, 6.5), IRON_DARK, grain="x")
+        tube("y", (x, 4.0), 25, 29, 2.0, wire, sides=8, cap=K.flat("iron", 1))
+        tube("y", (x, 4.0), 24, 25, 2.5, IRON_DARK, sides=8)
+    box((-6.5, 29, 1.5), (6.5, 30, 5.5), IRON_DARK, grain="x")
     box((-5, 30, 2), (5, 36, 3), BRASS_DARK, skip="n", grain="x")
     # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it
     tube("z", (-1.5, 33.0), 3, 3.5, 2.0, BRASS, sides=12)
@@ -393,7 +399,7 @@ def _pendulum():
     m = M.Model(PREFIX + "pendulum", px=1.0)
     m.box((-1.5, -1.0, -1.0), (1.5, 1.0, 1.0), IRON_DARK)
     m.box((-1.0, -13.5, -0.5), (1.0, -1.0, 0.5), STEEL, grain="y")
-    m.box((-1.5, -12.0, -1.0), (1.5, -10.0, 1.0), IRON_DARK)
+    m.box((-1.5, -11.0, -1.0), (1.5, -9.0, 1.0), IRON_DARK)
     m.tube("z", (0.0, -17.0), -1.0, 0.75, 4.0, BRASS_LIGHT, sides=12)
     tones = {str(i): c for i, c in enumerate(P.RAMPS["brass"])}
     bob = Sprite("clock_bob", ["..4443..", ".455443.", "45544432", "45444332", "44443332", "34433322",
@@ -589,13 +595,27 @@ def _lamp(canvas, origin):
         canvas.set(cell[0], cell[1], cell[2], f"{B.LIGHT}[level={level}]", keep=True)
 
 
+def _swing(canvas):
+    """Register the pendulum, the piece placed last, with the motion line (plan/parts/motion.md 4):
+    it swings about its model's z axis through its anchor, the pivot, PENDULUM_SWING degrees to
+    either side of where it hangs, there and back in the beat of every pendulum on the hill. The
+    loop's functions are motion/_kit's to write; while that is not in the tree the pendulum hangs
+    still, as it does in every offline picture."""
+    try:
+        from ..motion import _kit as MK
+    except ImportError:
+        return
+    MK.swing(canvas, "z", PENDULUM_SWING, MK.PENDULUM)
+
+
 def master(canvas, origin=(0, 0, 0), time=None):
     """The master clock on the pier: case, dial, two hands and pendulum; returns the entity count."""
     hour, minute = hand_angles(*(time or TIME))
     face = MASTER_FACING
     n = _put(canvas, "master", _out(MASTER_AT, face, (0.0, MASTER_HOLD, 0.0)), origin, face)
-    n += _put(canvas, "pendulum", _out(MASTER_AT, face, MASTER_PIVOT), origin, face, tag=TAG_PENDULUM,
+    n += _put(canvas, "pendulum", _out(MASTER_AT, face, MASTER_PIVOT), origin, face,
               turns=(("z", PENDULUM_POSE),))
+    _swing(canvas)
     centre = _out(MASTER_AT, face, MASTER_DIAL)
     lit = dict(brightness=MASTER_DIAL_LIGHT)
     n += _put(canvas, "master_dial", centre, origin, face, **lit)
