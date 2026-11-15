@@ -1,0 +1,17 @@
+a0job 1115-220313-lamps-chain-f3-0dde-18702: cursor/c164-lamps-chain-f3-0dde @ 066ecfab on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.07 2.00 1.31, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh props/lamps 066ecfab --base 116c2e49 ---- exit 0, 105 s, last 80 lines of 7:
+gate props/lamps 066ecfab: the merged tree 066ecfab, the assembly as it was 116c2e49
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 36 scenes in 25 s: 36 pass (29 with warnings)
+pictures: [PASS] selfshots obs_props_lamps at 066ecfab: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site at 066ecfab: 16 of 16 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site_nearpair at 066ecfab: 6 of 6 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=110 host=cursor cores=4 head=066ecfab commit=934e2680 pushed=yes branch=cursor/c164-lamps-chain-f3-wip-0dde files=79
+a0job: exit=0 secs=111
