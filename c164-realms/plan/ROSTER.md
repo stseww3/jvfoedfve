@@ -44,14 +44,14 @@
 | scope | c294 | c237 | machines/refractor；machines 牵头 | `cursor/c164-scope-6e0f` |
 | clocks | c296 | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
 | gear | c266（shell 兼） | c196 | machines/domegear（壳优先） | `cursor/c164-gear-6260` |
-| car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
+| car | c271（a4 兼） | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
 | mast | c297 | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
 | arm | c263（m1 兼） | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
 | pipes | c263（m1 兼） | c241 | props/pipes | `cursor/c164-pipes-9deb` |
 | elec | c268（comet 兼） | c242 | props/electrics-signs | `cursor/c164-elec-7be8` |
 | instr | — | c199 | props/instruments | `cursor/c164-instr-f5da` |
 | a6 | c287 | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` |
-| m4 | — | c197 | props/paper | `cursor/c164-m4-paper-7345` |
+| m4 | c269（lamps 兼） | c197 | props/paper | `cursor/c164-m4-paper-7345` |
 | hall | c289 | c243 | interiors/starhall；interiors 牵头 | `cursor/c164-hall-ddbd` |
 | a3 | c290 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
 | chart | c291 | c205 | interiors/chartroom、materials/windows 的内衬和炉火窗 | `cursor/c164-chart-5a4c`、`cursor/c164-m2-windows-7bb5` |
@@ -79,3 +79,22 @@ cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c && 
 
 要点：<两三句>
 ```
+
+
+## 兼卡（一个人接多张，不再新开人）
+
+11-16 01:30 起，总监定的做法：**谁交付完、手上没有被退回的卡，就从没开的名单里挑一张和他做过的东西挨着的派给他**，那个代号不再新开人。
+
+| 人 | 兼的卡 | 分支 |
+| --- | --- | --- |
+| c263（m1） | materials/brass、panels、props/pipes、machines/armillary | `cursor/c164-arm-7c2a` |
+| c264（snow） | materials/snow、recorders、engine-dynamo、switchboard-boiler、meridian-astrograph、motion/sound、motion/smoke | `cursor/c164-snow-*` |
+| c266（shell） | main/shell、machines/domegear、interiors/powerhouse | `cursor/c164-shell-power-aide` |
+| c268（comet） | sky/comet、props/electrics-signs | `cursor/c164-elec-7be8` |
+| c269（lamps） | props/lamps、props/paper | `cursor/c164-m4-paper-7345` |
+| c271（a4） | site/terrain、site/court、machines/cablecar-winch | `cursor/c164-car-w3k9` |
+| c267（lights） | sky/lights、sky/ridges | `cursor/c164-ridges-lights` |
+
+## 还没人领的卡（11-16 01:30）
+
+`common/offline-sky`（P3）、`motion/smoke`（c264 接完 sound 就接）。其余全部有人。
