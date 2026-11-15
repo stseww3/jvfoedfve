@@ -1,0 +1,59 @@
+a0job 1115-230343-cable-cablecar-f3-9cf7-10153: cursor/c164-cable-cablecar-f3-9cf7 @ cd4cce76 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.99 1.43 0.66, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- set -o pipefail; python tools/selfshots.py obs_site_cablecar && python tools/check.py --scene obs_site_cablecar --shots build/scenes/obs_site_cablecar/shots.json | tail -9 && cd build && python -m scenes.obs_site_cablecar.clear --scene
+  obs_site_cablecar: 147302 blocks, 70 entities (1 s)
+  obs_site_cablecar: resource pack written to /tmp/c164pack-kokxij90 (2 s)
+  obs_site_cablecar: water: 0 sources, 0 cells of running water (2 s)
+  obs_site_cablecar: grid 272 x 93 x 229, 147302 blocks, 3494 entity boxes (3 s)
+  obs_site_cablecar: 223 states -> 435 looks, 918 boxes, 116 pictures (3 s)
+  obs_site_cablecar: light done (3 s)
+  obs_site_cablecar: v1 (tick 14000, 2 s)
+  obs_site_cablecar: platform (tick 14000, 1 s)
+  obs_site_cablecar: axis (tick 14000, 1 s)
+  obs_site_cablecar: lower (tick 14000, 1 s)
+  obs_site_cablecar: stair_head (tick 14000, 1 s)
+  obs_site_cablecar: canopy (tick 14000, 1 s)
+  obs_site_cablecar: girder (tick 14000, 1 s)
+  obs_site_cablecar: trestle (tick 14000, 1 s)
+  obs_site_cablecar: trestle_side (tick 14000, 1 s)
+  obs_site_cablecar: east (tick 14000, 1 s)
+  obs_site_cablecar: aerial (tick 14000, 1 s)
+  obs_site_cablecar: aerial_west (tick 14000, 1 s)
+renders/obs_site_cablecar/: 12 pictures of cd4cce76 drawn, 3.8 MB
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  70 display entities, 5 drawn out along one axis, 23 models never placed
+[PASS] views     12 shots, most display entities in view: 69 (east), limit 600; counted without what walls hide; the game draws up to 70 (v1): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the 
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+result: PASS (0 failed, 1 with warnings)
+V1's eye (88.5, -2.38, -32.5); the test scene, within 6 cells of the station's box: 1155 cells, 1 display entities; 2712 boxes
+  A  between the two ends of the main building: 1.24 N to 44.16 S of west, from the eye's level to 61 degrees up
+  B  where the comet hangs: 15.00 N to 1.24 N of west, 35 to 61 degrees up
+  chimney         4 boxes; 0 in A; 0 in B; beside A 48.53 degrees north of it (tuff_bricks (83, 0, -40)); beside B 34.76 degrees north of it (tuff_bricks (83, 0, -40))
+  columns         10 boxes; 0 in A; 0 in B; beside A 58.83 degrees south of it (polished_deepslate_wall (89, -3, -30)); beside B 104.23 degrees south of it (polished_deepslate_wall (89, -3, -30))
+  glass roof      45 boxes; 0 in A; 0 in B; in A's bearings from 82.62 degrees up (oxidized_cut_copper_slab (88, 3, -33), at (88.0, 3.0, -32.014)); beside A 0.84 degrees south of it (oxidized_cut_copper_stairs (88, 2, -32)); in B's bearings
+  other packages  72 boxes; 0 in A; 0 in B; beside A 115.10 degrees south of it (model c164:prop_lamp_pendant_a (89, 2, -33)); beside B 140.33 degrees north of it (model c164:prop_lamp_pendant_a (89, 2, -33))
+  platform        549 boxes; 0 in A; 0 in B
+  rails, buffers  110 boxes; 0 in A; 0 in B
+  trestle         1569 boxes; 0 in A; 0 in B
+  waiting room    151 boxes; 0 in A; 0 in B; beside A 21.14 degrees north of it (polished_tuff (80, -3, -37)); beside B 7.38 degrees north of it (polished_tuff (80, -3, -37))
+  winch house     202 boxes; 0 in A; 0 in B; beside A 43.76 degrees north of it (polished_tuff (86, -3, -36)); beside B 30.00 degrees north of it (polished_tuff (86, -3, -36))
+V1's picture: 16.9% of it is what was measured
+  waiting room     9.44%  across 82..100%, down 16..100%; block light 0: 19%, 1: 42%, 2: 28%, 3: 10%, 4: 0%
+  platform         7.47%  across 19..96%, down 86..100%; block light 0: 78%, 1: 10%, 2: 9%, 3: 3%, 4: 0%
+  the light is that of 8 sources round the station: 13 at (80, -2, -18), 9 at (81, -3, -39), 13 at (86, -2, -18), 12 at (89, 1, -33), 10 at (90, -2, -39), 10 at (90, -2, -37), 10 at (90, -1, -39), 10 at (90, -1, -37)
+frame light: within 4 (at most 4 on what V1 sees of the waiting room)
+V1's right edge in v1.png (1280 x 720), the picture's brightness 0 .. 1, medians: wall 0.151 (16956 sight lines), shut windows 0.078 (581 sight lines), roof 0.083 (4282 sight lines), the sky beside it 0.135 (4256 sight lines)
+frame tones: within (the wall against the sky +0.016, 0.05 either way; the wall at most 0.19; the shut windows at least 0.03)
+the station's cells in the scene: 1142 of 1142 as its package sets them
+result: CLEAR (0 boxes in the view the station keeps clear)
+==== NODEJOB RESULT ====
+exit=0 secs=35 host=cursor cores=4 head=cd4cce76 commit=9413d946 pushed=yes branch=cursor/c164-cable-cablecar-f3-9cf7 files=13
+a0job: exit=0 secs=35
