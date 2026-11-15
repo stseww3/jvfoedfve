@@ -182,9 +182,14 @@ SNOW_DRIFT = -0.15              # it lies in drifts: where a slow noise is above
 SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
 SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
 SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
-SNOW_RUN = 4                    # no edge of it runs straight for more blocks than this (not under 4: see _notches)
-SNOW_PASSES = 6                 # how often the straight edges are looked for again after breaking them
+SNOW_RUN = 2                    # no edge of it runs straight for more blocks than this (review cr2-#5: at 4 a drift
+#                                 still read as a sheet laid on the rock)
+SNOW_NOTCH = 0.35               # the share of the notches cut into a straight edge that go two blocks deep
+SNOW_PASSES = 12                # how often the straight edges are looked for again after breaking them
 SNOW_PATCH = 12                 # no patch of fewer blocks than this
+SNOW_OPEN = 40                  # a patch of this many blocks or more has rock showing through it in two places,
+SNOW_OPEN_MORE = 70             # ... of this many in three,
+SNOW_OPEN_APART = 4             # ... no nearer to each other than this
 SNOW_DEEP = 4                   # layers (eighths of a block) at the most; one layer at an edge
 
 # --- what is built on the rim -------------------------------------------------------------------------
@@ -589,7 +594,9 @@ def _snow(m):
         if not cut.any():
             break
         snow = _tidy(snow & ~cut)
-    return _layers(_patches(snow), hi)
+    snow = _patches(snow)
+    snow &= ~_showing(snow, _layers(snow, hi), N.fbm2(X * 0.23, Z * 0.23, SEED + 66, octaves=2))
+    return _layers(snow, hi)
 
 
 def _whole(snow):
@@ -607,16 +614,18 @@ def _tidy(snow):
 
 def _notches(n, a, b, side):
     """Which cells of a straight edge n long are taken out, counted from its start: after every two
-    or three that stay, one or two -- by the cell, not in a rhythm -- and so that at least two stay
-    at the end. What is left of the edge are teeth two to four long (SNOW_RUN is not under 4, or
-    the last tooth could be a single cell, which _tidy takes off: the edge would only move back)."""
+    that stay (or three, where SNOW_RUN allows it), one or two -- by the cell, not in a rhythm. A
+    tooth is never a single cell, which _tidy would take off and the edge would only move back; so
+    a notch that would leave one cell at the end takes that too."""
     out = []
     i = 0
-    while n - i > max(SNOW_RUN, 4):
+    while n - i > SNOW_RUN:
         left = n - i
-        stay = 3 if left >= 6 and hash3(a, b + i, side, SEED + 64) < 0.5 else 2
+        stay = 3 if SNOW_RUN >= 3 and left >= 6 and hash3(a, b + i, side, SEED + 64) < 0.5 else 2
         take = 2 if left - stay >= 4 and hash3(a, b + i, side, SEED + 65) < 0.4 else 1
-        out += range(i + stay, i + stay + take)
+        if left - stay - take == 1:
+            take += 1
+        out += range(i + stay, min(i + stay + take, n))
         i += stay + take
     return out
 
@@ -635,11 +644,11 @@ def _straight(snow, hi):
             for first, last in zip(np.concatenate(([0], ends + 1)), np.concatenate((ends, [len(on) - 1]))):
                 b = int(on[first])
                 for j in _notches(int(last - first + 1), int(a), b, side):
-                    if axis == 0:
-                        cut[a, b + j] = True
-                    else:
-                        cut[b + j, a] = True
-    return cut
+                    i, k = (int(a), b + j) if axis == 0 else (b + j, int(a))
+                    cut[i, k] = True
+                    if hash3(int(a), b + j, side, SEED + 67) < SNOW_NOTCH:      # ... and the cell behind it
+                        cut[(i + step, k) if axis == 0 else (i, k + step)] = True
+    return cut & snow
 
 
 def _patches(snow):
@@ -661,6 +670,44 @@ def _patches(snow):
         if len(patch) < SNOW_PATCH:
             for a, b in patch:
                 out[a, b] = False
+    return out
+
+
+def _showing(snow, deep, noise):
+    """Rock showing through the big patches: the cells to take out of the snow. In a patch of
+    SNOW_OPEN blocks or more two places, in one of SNOW_OPEN_MORE three, each one or two blocks,
+    well inside it (snow on all four sides, and the patch's edge not next to them) and apart from
+    each other; where, a fine noise says. The snow thins to one layer round them (_layers)."""
+    out = np.zeros(snow.shape, dtype=bool)
+    inside = snow & (deep >= 2)
+    for n in _neighbours(snow & (deep >= 2)):
+        inside &= n
+    seen = np.zeros(snow.shape, dtype=bool)
+    for i, k in zip(*np.nonzero(snow)):
+        if seen[i, k]:
+            continue
+        seen[i, k] = True
+        patch, todo = [], [(int(i), int(k))]
+        while todo:
+            a, b = todo.pop()
+            patch.append((a, b))
+            for p, q in ((a + 1, b), (a - 1, b), (a, b + 1), (a, b - 1)):
+                if 0 <= p < snow.shape[0] and 0 <= q < snow.shape[1] and snow[p, q] and not seen[p, q]:
+                    seen[p, q] = True
+                    todo.append((p, q))
+        if len(patch) < SNOW_OPEN:
+            continue
+        want = 3 if len(patch) >= SNOW_OPEN_MORE else 2
+        places = []
+        for a, b in sorted((p for p in patch if inside[p]), key=lambda p: -noise[p]):
+            if all(max(abs(a - p), abs(b - q)) >= SNOW_OPEN_APART for p, q in places):
+                places.append((a, b))
+                out[a, b] = True
+                beside = [(p, q) for p, q in ((a + 1, b), (a - 1, b), (a, b + 1), (a, b - 1)) if inside[p, q]]
+                if beside and hash3(a, 0, b, SEED + 68) < 0.5:
+                    out[max(beside, key=lambda p: noise[p])] = True
+            if len(places) == want:
+                break
     return out
 
 
