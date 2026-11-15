@@ -1,0 +1,24 @@
+check obs_site_court at 4655652
+[PASS] regen     109031 blocks, 30 entities, 28 models, 742 resource-pack files, 57 data-pack files, look: 1 biomes, 1 timelines (1.3 s)
+[PASS] conflicts the scene writes 741 files, no file written twice, the folders and the prefix of site are kept (1 package run alone)
+[PASS] strays    152 pictures, every colour in the palette
+[PASS] refs      580 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    71 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  30 display entities, 20 models never placed
+[WARN] views     9 shots, most display entities in view: 30 (aerial), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+result: PASS (0 failed, 2 with warnings)

@@ -1,0 +1,11 @@
+delivery main/smalldome: 4655652 against 636ad21 (forked at 636ad21), 8 commits, 23 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    23 of 23 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[WARN] commits  1 commit messages do not start with "c164-<code>: "
+                af905be8 Revert "c164-sdome: the small dome's crown falls away from the apex block by half a block to a ring (26.5, 26, 25.5; it was a flat cap five across) -- a trial, to be judged in pictures"
+[PASS] pictures 1 test scene, 18 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 0 commits behind the base
+result: PASS (0 failed, 1 to look at)
