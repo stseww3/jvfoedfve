@@ -212,7 +212,7 @@ def _telegraph():
     for zz in (-2.0, 2.0):
         m.box((-4.8, base_h + 2.4, zz - 0.5), (4.8, top - 0.4, zz + 0.5), BRASS, skip="d")
     for sx in (-1, 1):
-        m.box((sx * 5.0 - 0.5, base_h + 2.6, -0.5), (sx * 5.0 + 0.5, top + 1.6, 0.5), BRASS_D, skip="d")
+        m.box((sx * 3.4 - 0.45, base_h + 2.6, -0.45), (sx * 3.4 + 0.45, top + 1.6, 0.45), BRASS_D, skip="d")
 
     # the armature: the brass bar across the posts, the stop above it, the adjusting screw between
     m.box((-6.0, top + 0.2, -0.8), (6.0, top + 1.1, 0.8), BRASS, skip="d")
@@ -288,6 +288,20 @@ def _pipe():
     return m
 
 
+def _collar():
+    """The brass collar where the pipe meets the ceiling: a flange wide enough to read as a fitting,
+    with four bolt heads, so the run ends in something rather than in air."""
+    m = M.Model(PREFIX + "collar", px=1.0, anchor=(0.0, 0.0, 0.0))
+    m.tube("y", (0.0, 0.0), 0.0, 1.4, TUBE_R * 1.45, BRASS_D, sides=12,
+           cap=P.mat("brass", kind="flat", base=2, bevel=0))
+    for i in range(4):
+        a = 2.0 * math.pi * i / 4.0
+        m.box((math.cos(a) * TUBE_R * 1.15 - 0.35, 1.0, math.sin(a) * TUBE_R * 1.15 - 0.35),
+              (math.cos(a) * TUBE_R * 1.15 + 0.35, 1.7, math.sin(a) * TUBE_R * 1.15 + 0.35),
+              BRASS, skip="d")
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     return {
@@ -295,6 +309,7 @@ def _models():
         PREFIX + "telegraph": _telegraph(),
         PREFIX + "tube": _tube(),
         PREFIX + "pipe": _pipe(),
+        PREFIX + "collar": _collar(),
     }
 
 
@@ -359,10 +374,10 @@ def telegraph(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
 
 
 def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None):
-    """Place the pneumatic tube terminal. `pos` is the sill point on the pier, as the room's table
-    gives it; the body's centre sits TUBE_LIFT above that, and the pipe is stretched from a hand
-    under the body up to `top` (the ceiling's y; TUBE_TOP + the sill by default). Returns the count
-    of display entities: the terminal and the pipe, 2."""
+    """Place the pneumatic tube terminal. `pos` is the SILL point on the pier, as the room's table
+    gives it (time room: y 8); the body's centre sits TUBE_LIFT above that, and the pipe runs from a
+    hand under the body up to `top`, the ceiling's absolute y (default: pos[1] + TUBE_TOP). Pass
+    `top` when the room's ceiling is not that far above its sill. Returns the display-entity count."""
     yaw = FACING[facing] if yaw is None else yaw
     ox, oy, oz = origin
     foot = pos[1] + TUBE_FOOT
@@ -380,6 +395,10 @@ def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None):
         n += 1
         y += span
         i += 1
+    # the collar where the run meets the ceiling: a pipe that ends in air is a cut pipe (cr3-M4)
+    canvas.add_entity(pos[0] + ox, ceil + oy - 0.02, pos[2] + oz,
+                      M.display(_models()[PREFIX + "collar"], scale=1.0, view=5.0))
+    n += 1
     return n
 
 
