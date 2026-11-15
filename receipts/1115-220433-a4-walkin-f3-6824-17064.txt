@@ -1,0 +1,23 @@
+a0job 1115-220433-a4-walkin-f3-6824-17064: cursor/c164-a4-walkin-f3-6824 @ fbfb898f on the director's machine
+(the branch moved after the job was sent: it ran on fbfb898f, not on eb5823e3)
+  [cloud_setup    0s] machine: 4 cores, load 2.80 2.42 1.72, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- mkdir -p renders/_wip/walk && python tools/walk.py floors --canvas /tmp/c164_walk/obs-116c2e4.pkl --box=-12,-40,20,40 --levels=0,7,18 --top=14,45 --out renders/_wip/walk/floors-main.txt && python tools/walk.py floors --canvas /tmp/c164
+walk: 336 lines -> renders/_wip/walk/floors-main.txt
+Traceback (most recent call last):
+  File "/tmp/dais_jobs/c164a0/c164-realms/tools/walk.py", line 695, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/tools/walk.py", line 625, in main
+    lines = floor_plans(scene_cells(args.scene, args.canvas), box,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/dais_jobs/c164a0/c164-realms/tools/walk.py", line 536, in scene_cells
+    return pickle.load(fh)["b"]
+           ^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'artkit'
+==== NODEJOB RESULT ====
+exit=1 secs=3 host=cursor cores=4 head=fbfb898f commit=d2af0457 pushed=yes branch=cursor/c164-a4-walkin-f3-wip-6824 files=1
+a0job: exit=1 secs=3
