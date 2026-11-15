@@ -21,8 +21,8 @@ How it is made, from the seat up:
           crossed diagonals with a plate at every joint and where the diagonals cross: y 8.5 to
           56.5. Four pieces of 12 blocks, shown four times their size (px = 4 keeps 16 texels to
           the block): 12 blocks are the 48 units a model may span.
-  head    the legs gather to a pole that carries the lamp; an arm on the corner that looks at the
-          clock tower holds the aerial. No yard and no gallery: nothing crosses the upright.
+  head    the legs gather to a pole that carries the lamp. No yard, no gallery, no arm: nothing
+          crosses the upright.
   lamp    one small red lantern, lit steadily (A0 #36376: it does not blink, the comet is the one
           thing in the sky that may draw the eye). Its brightest tone is the signal ramp's second
           lightest, level with the orange windows: a warning lamp, not one more star. Its entity is
@@ -36,15 +36,16 @@ How it is made, from the seat up:
           degrees of its leg and read from far as the mast seen double, so they stop low, where
           the four of them make a tent that stands clear of the shaft. At the anchor a clamp on
           the eye bolt, a bottle screw and an egg; at the leg a clamp on the corner of the joint;
-          one more egg a third of the way down from there; the cable between is drawn out. All of
-          it keeps north of z -35: nothing crosses the court or the sight lines of V1 and V2 to
-          the main building.
-  aerial  one wire from the arm at the head to an iron rod on the clock tower (main/tower), a
-          string of three porcelain discs at each end. The wire and the guys are two texels
-          thick and of dark iron, so that they hold as lines against the sky; the discs
-          aloft are grey porcelain: white ones would be brighter than the night sky and read as
-          stars beside the comet. White porcelain is kept for the foot and the guys, low down:
-          the highest white piece is the guys' upper egg, at y 16.6.
+          one more egg a third of the way down from there; the cable between is drawn out, two
+          texels thick and of dark iron, so that it holds as a line against the sky. All of it
+          keeps north of z -35: nothing crosses the court or the sight lines of V1 and V2 to the
+          main building. White porcelain is kept for the foot and the guys, low down: the highest
+          white piece is the guys' upper egg, at y 16.6. Aloft it would be brighter than the
+          night sky and read as a star beside the comet.
+  aerial  the mast itself. It hangs no wire: one from its head down to the clock tower was drawn
+          and dropped. The board's wide views tilt the mast, and a thin line that hangs straight
+          down from the tip of a tilted lattice is the hoist rope of a crane's jib; a cage of
+          thin wires in its place breaks up into dashes at those distances.
 
 All pieces are given one brightness, the open sky's: each would otherwise take the light of the
 cell its anchor is in, and a lamp near the foot would show as a step where two pieces meet.
@@ -64,14 +65,13 @@ test scenes obs_mach_radiomast and obs_mach_radiomast_b show them from the same 
 a is the default: legs, belts and diagonals are drawn one way and take the same light, and from V1
 a leg of 5 texels is about two pixels wide in a 720p picture, the pipe block little more than one.
 
-What this module reads from its neighbours, each with the same numbers as a fallback while the
-neighbour is not in the tree: site.mastbase.TOP, GUY_ANCHORS and ANTENNA_HOOK; main.tower.
-ANTENNA_ANCHOR, the point where the aerial's lower string hooks on. What the clocks' test scenes
-read from this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, TOWER_HOOK.
+What this module reads from its neighbour site.mastbase, with the same numbers as a fallback while
+it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK. What the clocks' test scenes read from
+this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, and TOWER_HOOK, which is kept for them
+alone (see there).
 """
 import functools
 import math
-import os
 
 from artkit import models as M
 from artkit.blocks import st
@@ -84,10 +84,6 @@ try:
     from ..site import mastbase as _base        # the stone foot, the guy anchors, the lead-in post
 except ImportError:
     _base = None
-try:
-    from ..main import tower as _tower          # the rod on the clock tower that the aerial hooks on to
-except ImportError:
-    _tower = None
 
 PREFIX = "mach_mast_"
 VERSIONS = ("a", "b")
@@ -103,13 +99,10 @@ BASE_Y = float(getattr(_base, "TOP", G + 2.0))  # 2.0: the top face of the seat
 GUY_ANCHORS = [tuple(float(v) for v in p) for p in getattr(
     _base, "GUY_ANCHORS", [(FX + sx * 4 + 0.5, G + 2.0, FZ + sz * 4 + 0.5) for sx in (-1, 1) for sz in (-1, 1)])]
 LEAD_POST = tuple(float(v) for v in getattr(_base, "ANTENNA_HOOK", (FX - 1.5, G + 4.0, FZ + 2.5)))
-# Where the aerial's lower string hooks on to the tower. The wire comes down steeply, 76 degrees from
-# the level, so the point has to stand clear of the tower's cornices: a third of a block or more
-# outside their outer edge. The fallback is main/tower's own number (#37220): the end of an iron rod that
-# sticks two blocks north out of the tower's north-east corner, in the course under the cornice at
-# y 31.
-TOWER_HOOK = tuple(float(v) for v in getattr(
-    _tower, "ANTENNA_ANCHOR", (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)))      # (16.5, 30.5, -35.0)
+# Where the wire to the clock tower hooked on to it, two blocks north of the tower's north-east
+# corner under the cornice at y 31. The mast hangs no wire any more and does not use the point; the
+# name stays until the clocks' test scene has stopped reading it.
+TOWER_HOOK = (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)         # (16.5, 30.5, -35.0)
 
 # ---- the lattice -----------------------------------------------------------------------------------
 SCALE = 4                       # the lattice pieces are shown this large; px = SCALE keeps 16 texels to the block
@@ -145,7 +138,6 @@ FOOT_POT = (0.5, 2.5, 3.0, 4.5)         # under each leg, in units over the seat
 FOOT_LUG = (5.0, 3.5)           # the terminal of the feed lead on a shoe: distance from the axis in x and z, height
 GAP_OUT, GAP_Y = 1.5, 2.0       # the spark gap: this far outside its leg's axis in x and z, its middle this high
 GAP_BALL, GAP_AIR = 0.5, 0.5    # its two balls are 4 texels across and stand 2 texels apart
-HEAD_EYE = (5.5, 2.5)           # the end of the aerial's arm: distance from the axis in x and z, height
 LAMP_H = 10                     # texels: the lamp from the foot of its holder on the pole to its top
 LAMP_Y = TIP_Y - LAMP_H / 16.0  # 61.375
 LAMP_HOLDER = 1.5               # texels of that which are the iron holder: a neck and a plate
@@ -154,23 +146,12 @@ GLASS_Y = LAMP_Y + LAMP_HOLDER / 16.0   # 61.46875: the foot of the glass
 LEG_CELLS = [(FX + sx, FZ + sz) for sx in (-1, 1) for sz in (-1, 1)]
 BELT_CELLS = [(FX, FZ - 1, "x"), (FX, FZ + 1, "x"), (FX - 1, FZ, "z"), (FX + 1, FZ, "z")]
 
-# ---- guys and aerial -------------------------------------------------------------------------------
+# ---- guys ------------------------------------------------------------------------------------------
 STAY_CABLE = 13.0               # texels from the eye bolt to where the cable leaves the bottle screw's jaw
 STAY_EGG = 19.0                 # ... and to the guy's lower egg
 EGG_LEN = 7.0
 EGG_DROP = 7.0                  # blocks from the leg down the guy to its upper egg: well clear of the shaft
 GUY_CLAMP = 0.5                 # units of the guy's model, which is drawn out seven times: 3.5 texels of clamp
-STRING_LEN = 20.0               # texels from the hook of a disc string to where the wire leaves its clamp
-# Drafts of the aerial, to be chosen from on pictures (C164_MAST_AERIAL picks one): "line" is one
-# wire; "cage" is three thin wires round small hoops, gathered into the disc strings at both ends;
-# "none" hangs nothing: the mast, insulated at the foot and fed there, is the aerial.
-AERIALS = ("line", "cage", "none")
-AERIAL = os.environ.get("C164_MAST_AERIAL", "line")
-CAGE_R = 2.0                    # texels from the cage's axis to the middle of each wire: the cage is 5 across
-CAGE_WIRES = (90.0, 210.0, 330.0)       # where the wires run round it, degrees from the model's x to its y:
-#                                         the same seen from either end, so one end piece serves both ends
-CAGE_CONE = 12.0                # texels over which the wires spread from a disc string's clamp to the first hoop
-CAGE_BAYS = 6                   # hoops: one at each end of the straight part and CAGE_BAYS - 1 between
 
 # ---- the lamp --------------------------------------------------------------------------------------
 # How the game lights a face of an item model: by the one of the six axes its normal lies nearest to
@@ -203,7 +184,6 @@ IRON = P.mat("iron")                            # fittings
 IRON_D = P.mat("iron_dark")                     # the lattice: legs, belts, plates
 IRON_F = P.mat("iron_flat")                     # the diagonals: the lattice's tone without speckle or edge
 PORCELAIN = P.mat("porcelain")                  # white: the four insulators the legs stand on, the guys' eggs
-GREY = P.mat("porcelain", base=0, noise=0.0)    # the ramp's two darkest steps: the discs aloft
 BRASS = P.mat("brass")
 
 
@@ -212,13 +192,11 @@ def _flat(name, step):
     return P.mat(name, kind="flat", base=step, bevel=0)
 
 
-# the lines are the iron ramp's second step: on a face that looks down or away from the game's two
-# lamps the darkest step comes out all but black
-CABLE = _flat("iron", 1)                        # the guys
-WIRE = _flat("iron", 1)                         # the aerial
+CABLE = _flat("iron", 1)                        # the guys: the iron ramp's second step. On a face that looks
+#                                                 down or away from the game's two lamps the darkest step
+#                                                 comes out all but black
 LEAD = _flat("old_copper", 2)                   # the feed lead at the foot, seen from near only: a darker
 #                                                 step reads as a strip of wood at night
-CAGE = _flat("iron", 0)                         # the wires and hoops of the cage aerial: the darkest iron
 STUD = _flat("iron", 4)                         # rivet heads
 RED = [_flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
 
@@ -232,8 +210,8 @@ def _corner(p):
     return (1 if p[0] >= AX else -1), (1 if p[2] >= AZ else -1)
 
 
-# The foot and the head are drawn with their one-sided part (the terminal, the aerial's arm) on the
-# corner -x, +z; this turns that corner to another.
+# The foot is drawn with its one-sided parts (the terminal, the spark gap) for the corner -x, +z;
+# this turns that corner to another.
 _CORNER_YAW = {(-1, 1): 0.0, (-1, -1): 90.0, (1, -1): 180.0, (1, 1): 270.0}
 
 
@@ -249,18 +227,6 @@ def guy_end(anchor):
     joint, and the cable comes down outside the leg, not through it."""
     sx, sz = _corner(anchor)
     return AX + sx * (LEG + GUY_OUT), KNEE_Y + GUY_BELT * BAY, AZ + sz * (LEG + GUY_OUT)
-
-
-def aerial_eye():
-    """The end of the arm at the head, where the aerial's upper string hooks on."""
-    sx, sz = _corner(TOWER_HOOK)
-    return AX + sx * HEAD_EYE[0] * U, HEAD_Y + HEAD_EYE[1] * U, AZ + sz * HEAD_EYE[0] * U
-
-
-def cage_ends():
-    """The two ends of the cage's straight part, where its first and its last hoop sit."""
-    eye, reach = aerial_eye(), (STRING_LEN + CAGE_CONE) / 16.0
-    return _along(eye, TOWER_HOOK, reach), _along(TOWER_HOOK, eye, reach)
 
 
 def lead_lug():
@@ -415,11 +381,10 @@ def _foot(name, legs, belts, reach):
     return m
 
 
-def _head(name, arm=True):
+def _head():
     """The head, from the top belt to the foot of the lamp. Anchor: on the axis, NODE under the top
-    belt's middle, where the uppermost piece of the shaft ends. arm: with the arm that holds the
-    aerial."""
-    m = M.Model(name, px=float(SCALE))
+    belt's middle, where the uppermost piece of the shaft ends."""
+    m = M.Model(PREFIX + "head", px=float(SCALE))
     _belts(m, NODE)
     _plates(m, NODE, PLATE_REACH["a"], 0.0, None)
     _collars(m, -1.75, 1.5)
@@ -436,10 +401,6 @@ def _head(name, arm=True):
     # in patches
     m.tube("y", (0.0, 0.0), top, top + 0.25, 0.625, IRON_D)
     m.tube("y", (0.0, 0.0), top + 0.25, top + LAMP_HOLDER / SCALE, 1.125, IRON)
-    if arm:
-        # the arm of the aerial, on the corner -x, +z: out and a little up from the collar
-        ex, ey = HEAD_EYE
-        m.beam((-LEG_U, 1.0, LEG_U), (-ex, ey, ex), 0.75, 0.75, IRON_D)
     return m
 
 
@@ -523,50 +484,6 @@ def _stay():
     return m
 
 
-def _hoop(m, z, depth):
-    """A hoop of the cage at z along the model's z axis: six sides, a wire through the middle of
-    every other one; one texel thick in the round and `depth` along z."""
-    r0, r1 = CAGE_R - 0.5, CAGE_R + 0.5
-    half = r1 * math.tan(math.pi / 6.0)
-    for deg in range(30, 390, 60):
-        m.box((r0, -half, z - depth / 2.0), (r1, half, z + depth / 2.0), CAGE, rot=("z", float(deg), (0.0, 0.0, z)))
-
-
-def _cage():
-    """The straight part of the cage aerial: its wires along +z from the anchor, 48 units long, and
-    the hoops between its two ends. It is drawn out like a cable (M.between), so a hoop is made as
-    much thinner along z as the cage is drawn out, and comes out one texel thick."""
-    m = M.Model(PREFIX + "cage")
-    a, b = cage_ends()
-    drawn = math.dist(a, b) * 16.0 / 48.0
-    for deg in CAGE_WIRES:
-        m.box((CAGE_R - 0.5, -0.5, 0.0), (CAGE_R + 0.5, 0.5, 48.0), CAGE, rot=("z", deg, (0.0, 0.0, 0.0)), grain="z")
-    for i in range(1, CAGE_BAYS):
-        _hoop(m, 48.0 * i / CAGE_BAYS, 1.0 / drawn)
-    return m
-
-
-def _string(name, cage=False):
-    """The string of three porcelain discs at each end of the aerial. Anchor: its hook, a shackle
-    that takes in the end of the arm or of the tower's rod; +z runs along the wire, which leaves the
-    clamp at STRING_LEN. Grey porcelain: the upper string hangs against the sky, beside the comet;
-    the lower one, by the tower's wall, is the same model. cage: with the end of the cage aerial,
-    its wires spreading from the clamp to the first hoop, CAGE_CONE on."""
-    m = M.Model(name)
-    m.box((-2.5, -2.5, -1.5), (2.5, 2.5, 1.5), IRON_D)
-    m.tube("z", (0.0, 0.0), 1.5, STRING_LEN - 2.0, 0.75, IRON_D, sides=4)
-    for z in (6.0, 11.0, 16.0):                 # the first one far enough down to hang clear of the arm
-        m.tube("z", (0.0, 0.0), z - 1.0, z + 1.0, 3.5, GREY)
-        m.tube("z", (0.0, 0.0), z + 1.0, z + 2.0, 1.75, GREY)
-    m.box((-1.5, -1.5, STRING_LEN - 2.0), (1.5, 1.5, STRING_LEN + 1.0), IRON_D)
-    if cage:
-        for deg in CAGE_WIRES:
-            x, y = CAGE_R * math.cos(math.radians(deg)), CAGE_R * math.sin(math.radians(deg))
-            m.beam((0.0, 0.0, STRING_LEN), (x, y, STRING_LEN + CAGE_CONE), 1.0, 1.0, CAGE)
-        _hoop(m, STRING_LEN + CAGE_CONE, 1.0)
-    return m
-
-
 @functools.lru_cache(maxsize=None)
 def _models():
     built = [
@@ -574,18 +491,13 @@ def _models():
         _lattice(PREFIX + "web", False, False, PLATE_REACH["b"]),
         _foot(PREFIX + "foot", True, True, PLATE_REACH["a"]),
         _foot(PREFIX + "foot_web", False, False, PLATE_REACH["b"]),
-        _head(PREFIX + "head"),
-        _head(PREFIX + "head_bare", arm=False),
+        _head(),
         _light(PREFIX + "light", True),
         _light(PREFIX + "light_off", False),
         _cable(PREFIX + "guy", CABLE, clamp=GUY_CLAMP),
-        _cable(PREFIX + "antenna", WIRE),
         _cable(PREFIX + "lead", LEAD),
         _insulator(),
         _stay(),
-        _string(PREFIX + "string"),
-        _string(PREFIX + "cage_end", cage=True),
-        _cage(),
     ]
     return {m.name: m for m in built}
 
@@ -666,34 +578,15 @@ def _guys(canvas, origin):
     return n
 
 
-def _aerial(canvas, origin):
-    """The wire, or the cage, from the arm at the head to the tower's rod, a disc string at each end."""
-    if AERIAL == "none":
-        return 0
-    eye = aerial_eye()
-    end = "cage_end" if AERIAL == "cage" else "string"
-    n = _lay(canvas, end, eye, TOWER_HOOK, origin)
-    n += _lay(canvas, end, TOWER_HOOK, eye, origin)
-    if AERIAL == "cage":
-        a, b = cage_ends()
-        return n + _stretch(canvas, "cage", a, b, origin)
-    return n + _stretch(canvas, "antenna", _along(eye, TOWER_HOOK, STRING_LEN / 16.0),
-                        _along(TOWER_HOOK, eye, STRING_LEN / 16.0), origin)
-
-
 def build(canvas, origin=(0, 0, 0), version=None):
-    """Place the radio mast; returns the number of display entities (23). version "a" or "b" picks
+    """Place the radio mast; returns the number of display entities (20). version "a" or "b" picks
     how the shaft is made (see the top of the module); left out it is DEFAULT."""
     version = version or DEFAULT
     if version not in VERSIONS:
         raise ValueError(f"machines/mast has versions {', '.join(VERSIONS)}, not {version!r}")
-    if AERIAL not in AERIALS:
-        raise ValueError(f"machines/mast has the aerials {', '.join(AERIALS)}, not {AERIAL!r}")
     n = _shaft(canvas, origin, version)
-    n += _place(canvas, "head" if AERIAL != "none" else "head_bare", (AX, HEAD_Y, AZ), origin, scale=float(SCALE),
-                yaw=_CORNER_YAW[_corner(TOWER_HOOK)])
+    n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE))
     n += _lamp(canvas, origin)
     n += _guys(canvas, origin)
-    n += _aerial(canvas, origin)
     n += _stretch(canvas, "lead", lead_lug(), LEAD_POST, origin)        # the feed lead from the shoe to the post
     return n
