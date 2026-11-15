@@ -1,0 +1,15 @@
+NUM.update(
+    pictures="14547326",
+    row_dial="v1_tower 0.337，tower_far 0.323，dial_south 南面 0.360",
+    row_between="v1_tower：石 0.218 < 盘 0.337 < 窗 0.542；tower_far：0.218 < 0.323 < 0.538",
+    row_pair="dial_south：东 0.356、南 0.360，差 0.004",
+    row_ball="旧铜：v1_tower 0.223 对 0.119（+0.103），tower_far 0.226 对 0.119（+0.107），top_close 0.311 对 0.234（+0.076）。天比第一次交付时暗了一点（sky 的蓝调进了总装），球没变",
+    row_red="v1_tower 0.152 对 0.119（+0.033），tower_far +0.031，top_close 0.237 对 0.234（+0.003）：比天亮不出来，靠色相分",
+    row_under="dial_close 0.124，v5_up 0.123",
+    row_master="v7：白瓷 0.455，整只盘连刻度和针 0.372；master_close、master_door 上白瓷也是 0.455。日球的占位 0.795，只记数",
+    row_plinth="v7：线 0.198，木头 0.092，石台 0.074，差 0.106",
+    row_case="master_close 最暗百分之一 0.040",
+    row_floor="v7：石台前一格 0.397，四格外同一种石头 0.369，差 0.028，看不出一摊",
+    row_plinth_text="V7 里黄铜线 0.198，线间的木头 0.092，石台 0.074：底座的上沿和下沿是这两道线画出来的，两侧收在线的端头上。",
+    row_master_text="图上白瓷 0.455，整只盘 0.372。",
+)
