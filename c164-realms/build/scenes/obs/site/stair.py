@@ -70,8 +70,8 @@ BAND_TREAD = DRESSING.block
 BAND_SLAB = DRESSING.slab + "[type=bottom]"
 COPING = DRESSING.block
 COPING_SLAB = DRESSING.slab + "[type=bottom]"
-DIE = DRESSING.block
-CAP = B.ASHLAR_ROUGH.slab + "[type=bottom]"         # the stone of the railings' pier caps (site/_kit)
+CAP_SLAB = DRESSING.slab + "[type=bottom]"
+CAP_STAIRS = DRESSING.stairs
 GRATE = B.IRON_GRATE
 
 # The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
@@ -86,7 +86,7 @@ BUTTRESS_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) >= _CLEAR and (abs(z) - _CLE
 DRAIN_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == K.BEAT]
 
 HEAD_TOP = S.GROUND + 0.5           # the cap of a head pedestal: its slab alone stands above the terrace floor
-FOOT_TOP = FEET + 2.5               # the cap of a foot pedestal: a block above the cheek's low end
+FOOT_TOP = FEET + 3.0               # the socle on a foot pedestal's cap: a block and a half above the cheek's low end
 FOOT_SIZE = 2                       # a foot pedestal is this many blocks square
 
 
@@ -163,24 +163,33 @@ def _tread(c, o, x, z, walk):
 
 
 def _cheek(c, o, x, z):
-    """Slate brick under one course of coping: the top whole block, or the slab alone where the
-    rake ends in a half."""
+    """The wall's plinth course and slate brick under one course of coping: the top whole block, or
+    the slab alone where the rake ends in a half."""
     k, half = _levels(S.stair_top(x) + PARAPET)
     for y in range(FEET, k):
-        _put(c, o, x, y, z, BRICK if half or y < k - 1 else COPING)
+        _put(c, o, x, y, z, COPING if not half and y == k - 1 else SMOOTH if y == FEET else BRICK)
     if half:
         _put(c, o, x, k, z, COPING_SLAB)
 
 
-def _pedestal(c, o, cells, top, cap_stone=None):
-    """Die and cap over `cells`, the cap's top at `top`; slate brick under the die down to the
-    paving."""
-    cap = int(math.floor(top))
+def _hip(cells):
+    """{cell: facing} for four stair blocks over a square of four cells, laid as a pinwheel: each
+    has the next one before it, so the game gives every one of them its outer corner, the high
+    quarter at the square's middle. Together: a slab the size of the square under a socle one
+    block square."""
+    x, z = min(x for x, _ in cells), min(z for _, z in cells)
+    return {(x, z): "east", (x + 1, z): "south", (x + 1, z + 1): "west", (x, z + 1): "north"}
+
+
+def _pedestal(c, o, cells, top, die=BRICK):
+    """The wall's plinth course, the die and the cap over `cells`, the cap's top at `top`. One cell
+    is capped with a slab; four with a hip of stair blocks, whose socle carries the lamp."""
+    cap = int(math.ceil(top)) - 1
+    hip = _hip(cells) if len(cells) == 4 else None
     for x, z in cells:
-        for y in range(FEET, cap - 1):
-            _put(c, o, x, y, z, BRICK)
-        _put(c, o, x, cap - 1, z, DIE)
-        _put(c, o, x, cap, z, cap_stone or CAP)
+        for y in range(FEET, cap):
+            _put(c, o, x, y, z, SMOOTH if y == FEET else die if y == cap - 1 else BRICK)
+        _put(c, o, x, cap, z, f"{CAP_STAIRS}[facing={hip[x, z]},half=bottom]" if hip else CAP_SLAB)
 
 
 def build(canvas, origin=(0, 0, 0), band=None):
@@ -197,11 +206,11 @@ def build(canvas, origin=(0, 0, 0), band=None):
             _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
         for z in CHEEK_Z:
             _cheek(c, o, x, z)
-    # TRIAL, for one look on the node and no more: the cap in the die's stone on the north pair,
-    # in polished slate on the south pair. One of the two stays; the next commit takes this out.
-    trial = (COPING_SLAB, TREAD_SLAB)
-    for cells, cap_stone in zip(HEAD_PEDESTALS, trial):
-        _pedestal(c, o, cells, HEAD_TOP, cap_stone)
-    for cells, cap_stone in zip(FOOT_PEDESTALS, trial):
-        _pedestal(c, o, cells, FOOT_TOP, cap_stone)
+    # TRIAL, for one look on the node and no more: the die of slate brick on the north pair, of
+    # polished tuff on the south pair. One of the two stays; the next commit takes this out.
+    trial = (BRICK, DRESSING.block)
+    for cells, die in zip(HEAD_PEDESTALS, trial):
+        _pedestal(c, o, cells, HEAD_TOP, die)
+    for cells, die in zip(FOOT_PEDESTALS, trial):
+        _pedestal(c, o, cells, FOOT_TOP, die)
     return 0
