@@ -11,8 +11,6 @@ their iron backs and the mast stands bare until the clock is in the assembly.
 
 The shots are written from the skeleton's numbers:  python -m scenes.obs_main_tower
 """
-import os
-
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
@@ -23,7 +21,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 160
 LINES = (site, main, props, sky)
-TOP = os.environ.get("C164_TOWER_TOP", "a")      # trial tops, while the versions are being settled
+TOP = "a"
 TIME = 14000                    # the blue hour, the default look
 
 
