@@ -9,14 +9,22 @@ The mountain is an outline and a base, never a subject: nothing of it rises abov
     undulate and dip a little; the hard beds stand as cliffs four to eight blocks high, the shelves
     at their feet are a few blocks wide where the mountain is steep and wide on the ridges. Six
     ridges run out from the terraces and six gullies cut in between them, so no two sides have the
-    same outline: sheer on the west under the sunset terrace, long spurs to the north and south,
-    the lower platform cut into the east side with one ridge beyond it for the cable track.
+    same outline: long spurs to the north and south, the lower platform cut into the east side
+    with one ridge beyond it for the cable track, and on the west, under the sunset terrace, a
+    prow with benches of its own (review cr2-#2): no two of them run round it together. A wide
+    bench close under the wall on the south-west, a sheer face down to a wide bench on the
+    north-west, a keel running out west by north.
   - rock. Natural faces only (deepslate, cobbled deepslate, tuff, a little stone and andesite), laid
     in the same beds that make the cliffs, one to three blocks thick, so no face is flat and the
     lines of the beds follow the shelves. What is built -- the terrace's rim wall, its buttresses --
-    is slate brick, and the eye can tell it from the mountain.
-  - snow. Lies on the shelves, in from their outer edge: the only cold light thing on the mountain
-    at night, and it draws the shelves.
+    is slate brick, and the eye can tell it from the mountain. The wall stands on the rock: along
+    each bay between two buttresses the rock at its foot is level, and from bay to bay it steps,
+    so the wall is two courses high where a ridge leaves the terrace and five at the head of a
+    gully.
+  - snow. Lies on about a third of the shelves, in ragged drifts against the feet of the cliffs:
+    one layer thin at its edge, thicker towards the cliff, none on the brink of a drop or on a
+    knob of rock. It draws the shelves; it must not outshine the building (its colour is
+    materials/snow's). SNOW_ON switches it off for the pictures without it.
 
 The upper terrace outside the front court is paved here with the court's own three stones (the
 court, ORDER 60, lays its pattern over its part): the field, a kerb on the whole outline, a course
@@ -95,13 +103,15 @@ RIDGES = (
     dict(start=(45, 56), heading=(0.30, 1), y0=-6.5, a=0.42, b=0.014, side=1.6),        # south, beyond the lookout
     dict(start=(80, 43), heading=(0.35, 1), y0=-8.0, a=0.65, b=0.020, side=1.9),        # south-east, below the power house
     dict(start=(91, 13), heading=(1, 0.30), y0=-8.5, a=0.55, b=0.016, side=1.8),        # east, below the lower platform
-    dict(start=(-29, 5), heading=(-1, 0.55), y0=-4.5, a=0.85, b=0.020, side=2.2),       # west, the keel under the sunset terrace
+    dict(start=(-29, -4), heading=(-1, -0.20), y0=-6.5, a=0.85, b=0.020, side=2.2),     # west by north, the keel of the prow under the sunset terrace
 )
 # A gully: where it starts under the terrace's edge, its heading, how deep it cuts, its half-width
 # at the start and how fast it widens.
-GULLIES = (
+WEST_GULLIES = (
     dict(start=(-12, -23), heading=(-1, -0.25), depth=7.0, width=3.0, grow=0.10),       # either side of the sunset
     dict(start=(-12, 23), heading=(-1, 0.45), depth=5.0, width=2.5, grow=0.07),         # terrace: it stands on a prow
+)
+GULLIES = WEST_GULLIES + (
     dict(start=(11, -40), heading=(0.10, -1), depth=5.0, width=2.5, grow=0.07),         # between weather station and mast pad
     dict(start=(44, -40), heading=(0.45, -1), depth=5.0, width=3.0, grow=0.08),         # north-east
     dict(start=(12, 40), heading=(-0.15, 1), depth=6.0, width=3.0, grow=0.08),          # south
@@ -118,6 +128,31 @@ BANDS = (TOP, -8.0, -15.5, -23.5, -33.0)
 CLIFF = (0.24, 0.20, 0.20, 0.35)        # the share of a band's run that is cliff
 SHELF = (0.13, 0.12, 0.10, 0.50)        # the share of a band's height that the shelf keeps; the last band is under the cloud
 
+# --- the prow under the sunset terrace ----------------------------------------------------------------
+# Between the two west gullies the rock does not follow the bands above. It has three benches of
+# its own, and the level and the width of each change with the bearing from the terrace's middle
+# (degrees: 0 due west, + to the south), so the benches do not run round the prow as three rings:
+# where one is wide the next is a ledge, and the cliffs between them are four blocks high here,
+# eight and more there. Levels are in the mountain's own heights, as BANDS (on the west the rock
+# itself stands about 1.7 lower); widths are in blocks.
+PROW_DEG = (-90, -60, -30, 0, 15, 30, 45, 60, 75, 90)
+PROW_BENCHES = (
+    # close under the wall and on the south-west only: four blocks below the wall's foot
+    dict(level=(-5.5, -5.5, -5.5, -5.5, -6.0, -6.7, -7.0, -7.0, -7.0, -7.0),
+         width=(0.0, 0.0, 0.0, 0.0, 1.2, 3.5, 6.5, 6.0, 3.5, 1.5)),
+    # the middle one: wide on the north-west, at the foot of a sheer face; a ledge on the south-west
+    dict(level=(-12.5, -13.0, -13.8, -14.5, -15.2, -16.0, -16.5, -16.5, -16.5, -16.5),
+         width=(3.0, 5.5, 5.0, 3.0, 2.2, 1.6, 1.5, 1.5, 2.0, 2.5)),
+    # the lowest, just above the cloud: widest on the south-west
+    dict(level=(-22.0, -22.0, -22.5, -22.5, -22.5, -23.0, -23.0, -23.0, -23.0, -23.0),
+         width=(1.2, 1.5, 2.0, 2.5, 3.0, 3.5, 3.5, 3.0, 2.5, 2.0)),
+)
+PROW_CLIFF = 0.8                # the run of the cliff above a bench, in blocks: all but sheer
+PROW_SHELF = (0.13, 0.10, 0.10) # the share of its band's height that each bench keeps, as SHELF
+PROW_START = 0.9                # the first cliff starts this far out from the terrace
+PROW_PLUNGE = 3.0               # below the lowest bench the rock is down at BANDS[-1] within this many blocks
+PROW_FADE = 6.0                 # coming up to a gully's line the prow gives way to the bands over this distance
+
 # --- rock, in beds -----------------------------------------------------------------------------------
 DEEP, COBBLED, TUFF = B.ROCK_DEEPSLATE, B.ROCK_COBBLED.block, B.TUFF.block
 STONE, ANDESITE = B.ROCK_STONE.block, B.ROCK_ANDESITE.block
@@ -133,19 +168,38 @@ FLECKS = {DEEP: (COBBLED, 0.10), COBBLED: (DEEP, 0.15), TUFF: (COBBLED, 0.08), S
 LIGHT = (TUFF, STONE, ANDESITE)     # the beds that read as light lines on a cliff
 SEAM = COBBLED                  # what stands in a light bed's place where the bed has thinned out
 LENS_OUT = -0.02                # ... which is where the bed's own slow noise is below this: a little under half of it
-SNOW_BELOW = -5                 # no snow on the rock just under the terraces
-SNOW_IN = 0.9                   # snow lies on a shelf from the cliff's foot outwards; the very edge stays dark
-SNOW_DRIFT = -0.12              # ... in drifts: where a slow noise is above this, about two thirds of the shelves
-SNOW_DEPTH = ((0.25, 4), (0.6, 3), (1.0, 2))    # (how far out on the shelf, layers): it lies on the rock, it is not a block of it
+
+# --- snow ---------------------------------------------------------------------------------------------
+# Review cr2-#2 and A0 #330: about a third of the shelves, ragged edges, one layer at the edge and
+# thicker towards the cliff, none on a knob of rock. How light it is belongs to materials/snow.
+SNOW_ON = True                  # False: no snow at all (the pictures taken with and without it)
+SNOW_BELOW = -7                 # none on the rock just under the terraces: it starts below the rim wall's foot
+SNOW_ABOVE = -24                # ... and none within two blocks of the cloud (CLOUD_TOP): the sea's edge is the cloud's own light line
+SNOW_DRIFT = 0.10               # it lies in drifts: where a slow noise is above this, about a third of the mountain
+SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
+SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
+SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
+SNOW_RUN = 4                    # no edge of it runs straight for more blocks than this (not under 4: see _notches)
+SNOW_PASSES = 6                 # how often the straight edges are looked for again after breaking them
+SNOW_PATCH = 12                 # no patch of fewer blocks than this
+SNOW_DEEP = 4                   # layers (eighths of a block) at the most; one layer at an edge
 
 # --- what is built on the rim -------------------------------------------------------------------------
-RIM = B.SLATE_BRICK.block       # the terrace's rim wall under the kerb
-RIM_DEPTH = 3                   # courses of it; the cliff shows below
-RIM_SHOWS = 2                   # at least this many of them stand clear of the rock, everywhere
-RIM_CLEAR = 1.5                 # ... within this distance of the terrace
-BASTION_DEPTH = 5               # under the sunset terrace
+RIM = B.SLATE_BRICK.block       # the terrace's rim wall under the kerb, down to the rock
+RIM_LOW, RIM_HIGH = -7, -4      # the rock at its foot lies between these: five courses of the wall show, or two
+RIM_BASE = -5.0                 # ... about here on the straight edges,
+RIM_NOISE = 2.0                 # higher and lower by a slow noise of this weight,
+RIM_GULLY = 2.6                 # lower by this where a gully heads under the wall
+RIM_GULLY_NEAR = 6.0            # (within about this distance of where it starts)
+RIM_RIDGE = 1.4                 # and higher by this where a ridge leaves it
+RIM_RIDGE_NEAR = 5.0
+# round the sunset terrace by the bearing, as PROW_DEG: the wall is tallest on the nose and at the two
+# gullies, lowest over the wide bench on the south-west
+RIM_ARC_DEG = (-90, -70, -45, -20, 0, 15, 35, 55, 72, 90)
+RIM_ARC = (-7.0, -6.0, -5.0, -6.0, -7.0, -6.4, -5.0, -4.0, -5.0, -7.0)
+RIM_RISE = 1.5                  # going out from the wall's foot the rock rises no faster than this per block
+RIM_REACH = 5                   # ... which matters no further out than this
 BUTTRESS = B.SLATE_BRICK        # one under every pier, a block proud of the wall, weathered at the top
-BUTTRESS_DEPTH = 6
 WALK_HALF = 2                   # the walk from the west door is the door bay with its two pilasters: 5 across
 ARC_STEP = 15                   # degrees between the piers on the sunset terrace's arc: about five blocks
 
@@ -184,29 +238,77 @@ def _along(X, Z, start, heading):
     return t, lat
 
 
-def _beds(y):
+def _beds(y, levels=BANDS, cliff=CLIFF, shelf=SHELF):
     """What the beds make of a smooth height (the mountain's own heights, an array): the height
     itself above the first band and below the last; inside a band a cliff, then a shelf. Returns
     the new height and, for a cell on a shelf, how far out on it the cell lies (0 at the cliff's
-    foot .. 1 at the shelf's edge; -1 elsewhere)."""
+    foot .. 1 at the shelf's edge; -1 elsewhere). The three tables may hold arrays in y's shape
+    instead of numbers: every cell then has its own bands (the prow under the sunset terrace)."""
     out = y.copy()
     where = np.full(y.shape, -1.0)
-    for k in range(len(BANDS) - 1):
-        top, bot = BANDS[k], BANDS[k + 1]
+    for k in range(len(levels) - 1):
+        top, bot = levels[k], levels[k + 1]
         height = top - bot
-        cliff, shelf = CLIFF[k], SHELF[k]
+        steep, flat = cliff[k], shelf[k]
         m = (y <= top) & (y > bot)
-        u = (top - y[m]) / height
-        on_cliff = u < cliff
-        fall = np.where(on_cliff, u / cliff * (1 - shelf), (1 - shelf) + (u - cliff) / (1 - cliff) * shelf)
-        out[m] = top - fall * height
-        where[m] = np.where(on_cliff, -1.0, (u - cliff) / (1 - cliff))
+        u = (top - y) / height
+        on_cliff = u < steep
+        along = (u - steep) / np.maximum(1 - steep, 1e-6)       # 0..1 across the shelf
+        fall = np.where(on_cliff, u / np.maximum(steep, 1e-6) * (1 - flat), (1 - flat) + along * flat)
+        out = np.where(m, top - fall * height, out)
+        where = np.where(m, np.where(on_cliff, -1.0, along), where)
     return out, where
 
 
+def _bearing(X, Z):
+    """Degrees round the middle of the sunset terrace: 0 due west, + to the south."""
+    return np.degrees(np.arctan2(Z - SUN_CZ, -(X - SUN_CX)))
+
+
+def _by_bearing(deg, table, values):
+    """`values` (given at the bearings in `table`) at every bearing of the array `deg`."""
+    return np.interp(deg.ravel(), table, values).reshape(deg.shape)
+
+
+def _prow(X, Z, s_up):
+    """The rock under the sunset terrace, between the two west gullies (PROW_BENCHES). Returns how
+    far each cell belongs to it (0..1), its smooth height there in the mountain's own heights, and
+    the three tables _beds wants for it: the levels (the terrace, the three benches, BANDS'
+    floor), the cliff's share of each band's run, the share of its height that each bench keeps."""
+    inside = (X < TX0).astype(float)
+    mx, mz = SUN_CX - SUN_R - 5.0, float(SUN_CZ)        # a point on the prow, between the gullies
+    for g in WEST_GULLIES:
+        _, lat = _along(X, Z, g["start"], g["heading"])
+        _, mid = _along(mx, mz, g["start"], g["heading"])
+        inside = inside * N.smoothstep(0.0, PROW_FADE, lat if mid > 0 else -lat)
+    deg = _bearing(X, Z)
+    s = np.maximum(s_up - PROW_START, 0.0)
+    base = np.full(X.shape, float(TOP))
+    at = np.zeros(X.shape)                              # how far out the band begins
+    levels, cliff, keep = [np.full(X.shape, float(TOP))], [], []
+    for bench, share in zip(PROW_BENCHES, PROW_SHELF):
+        level = _by_bearing(deg, PROW_DEG, bench["level"])
+        width = _by_bearing(deg, PROW_DEG, bench["width"])
+        there = np.clip(width, 0.0, 1.0)                # under a block wide a bench fades out: all cliff
+        run_cliff = PROW_CLIFF * (0.5 + 0.5 * there)
+        run = run_cliff + width
+        base = base - (levels[-1] - level) * np.clip((s - at) / run, 0.0, 1.0)
+        at = at + run
+        levels.append(level)
+        cliff.append(run_cliff / run)
+        keep.append(share * there)
+    floor = float(BANDS[-1])
+    base = base - (levels[-1] - floor) * np.maximum(s - at, 0.0) / PROW_PLUNGE
+    levels.append(np.full(X.shape, floor))
+    cliff.append(np.ones(X.shape))
+    keep.append(np.zeros(X.shape))
+    return inside, base, levels, cliff, keep
+
+
 def _mountain():
-    """Every column of the mountain: dict(xs, zs, H, valid, upper, kept, shelf, dip), arrays over
-    the worked area. H is the y of the topmost block, valid says where there is rock at all."""
+    """Every column of the mountain: dict(xs, zs, H, valid, upper, kept, shelf, dip, foot), arrays
+    over the worked area. H is the y of the topmost block, valid says where there is rock at all;
+    foot is the level given to the rock at the rim wall's foot (inf where it has none)."""
     xs = np.arange(GX0, GX1 + 1)
     zs = np.arange(GZ0, GZ1 + 1)
     X, Z = np.meshgrid(xs.astype(float), zs.astype(float), indexing="ij")
@@ -228,6 +330,11 @@ def _mountain():
     steep = 1.15 + (0.85 + 0.9 * uneven) * west ** 2 + 0.10 * south ** 2 + 0.15 * slow
     s_up = np.maximum(d_up * (1 + 0.22 * slow) + np.clip(d_up / 4.0, 0, 1) * 3.2 * wander, 0.45 * d_up)
     smooth = TOP - steep * s_up
+    # the beds undulate and dip to the west; cliffs and shelves follow them
+    dip = 2.3 * N.fbm2(X * 0.016, Z * 0.016, SEED + 31, octaves=3) + 0.03 * (X - 25.0) - 0.012 * Z
+    # under the sunset terrace the prow's own slope takes the place of the even one
+    prow, base, levels, cliff, keep = _prow(X, Z, s_up)
+    smooth = smooth + prow * (base + dip - smooth)
     wander2 = N.fbm2(X * 0.05, Z * 0.05, SEED + 13, octaves=3)
     s_low = np.maximum(d_low * (1 + 0.22 * slow) + np.clip(d_low / 4.0, 0, 1) * 2.6 * wander2, 0.45 * d_low)
     smooth = np.maximum(smooth, LOWER - (1.45 + 0.2 * slow) * s_low)
@@ -242,9 +349,11 @@ def _mountain():
         w = g["width"] + g["grow"] * np.maximum(t, 0.0)
         smooth = smooth - g["depth"] * np.exp(-(lat / w) ** 2) * N.smoothstep(0.0, 6.0, t)
 
-    # the beds: they undulate and dip to the west; cliffs and shelves follow them
-    dip = 2.3 * N.fbm2(X * 0.016, Z * 0.016, SEED + 31, octaves=3) + 0.03 * (X - 25.0) - 0.012 * Z
-    h, shelf = _beds(smooth - dip)
+    # the beds: everywhere BANDS, on the prow its own benches, one going over into the other
+    levels = [BANDS[k] + prow * (levels[k] - BANDS[k]) for k in range(len(BANDS))]
+    cliff = [CLIFF[k] + prow * (cliff[k] - CLIFF[k]) for k in range(len(CLIFF))]
+    keep = [SHELF[k] + prow * (keep[k] - SHELF[k]) for k in range(len(SHELF))]
+    h, shelf = _beds(smooth - dip, levels, cliff, keep)
     h = h + dip
 
     # what is not left to the beds: the necks to the shelves, the ridge of the cable track
@@ -284,7 +393,25 @@ def _mountain():
 
     rough = 0.45 * N.fbm2(X * 0.31, Z * 0.31, SEED + 41, octaves=2)
     h = np.where(kept, h, h + np.where(shelf >= 0, 0.35, 1.0) * rough)     # the shelves are smoother than the cliffs
-    h = np.where(d_up <= RIM_CLEAR, np.minimum(h, TOP - RIM_SHOWS - 1), h)     # the rim wall is never buried
+
+    # the rock at the rim wall's foot: level along each bay of the wall, stepping from bay to bay;
+    # going out from there it may rise again, but not as a second wall in front of the first
+    cells = {(int(xs[i]), int(zs[k])) for i, k in zip(*np.nonzero(upper))}
+    steps = neck_steps()
+    foot = np.full(h.shape, np.inf)
+    for (x, z), y in _footing(cells, N.fbm2(X * 0.06, Z * 0.06, SEED + 81, octaves=2)).items():
+        if not kept[x - GX0, z - GZ0] and (x, z) not in steps:
+            foot[x - GX0, z - GZ0] = y
+    at_foot = np.isfinite(foot)
+    cap = np.full(h.shape, np.inf)
+    for dx in range(-RIM_REACH, RIM_REACH + 1):
+        for dz in range(-RIM_REACH, RIM_REACH + 1):
+            rise = RIM_RISE * max(math.hypot(dx, dz) - 0.5, 0.0)
+            cap = np.minimum(cap, np.roll(foot, (dx, dz), axis=(0, 1)) + rise)
+    capped = ~kept & ~at_foot & (cap < h)
+    h = np.where(capped, cap, h)
+    h = np.where(at_foot, foot, h)
+    shelf = np.where(capped | at_foot, -1.0, shelf)
     h = np.where(upper, float(TOP), np.minimum(h, TOP))
     H = np.rint(h).astype(int)
     for x in range(cx0, cx1 + 1):       # the bed of the cable track: exact, three cells wide
@@ -297,7 +424,73 @@ def _mountain():
         H[x - GX0, z - GZ0] = y
         kept[x - GX0, z - GZ0] = True
     valid = H >= FLOOR
-    return dict(xs=xs, zs=zs, H=H, valid=valid, upper=upper, kept=kept, shelf=shelf, dip=np.rint(dip).astype(int))
+    return dict(xs=xs, zs=zs, H=H, valid=valid, upper=upper, kept=kept, shelf=shelf, dip=np.rint(dip).astype(int),
+                foot=foot)
+
+
+def _rim_want(x, z, noise):
+    """The level the rock would have at the wall's foot beside the outline cell (x, z), before it
+    is made level along a bay. `noise` is a slow noise over the worked area."""
+    if x < TX0:                                         # round the sunset terrace: by the bearing
+        deg = math.degrees(math.atan2(z - SUN_CZ, -(x - SUN_CX)))
+        return float(np.interp(deg, RIM_ARC_DEG, RIM_ARC))
+    y = RIM_BASE + RIM_NOISE * float(noise[x - GX0, z - GZ0])
+    for g in GULLIES:
+        y -= RIM_GULLY * math.exp(-(math.dist((x, z), g["start"]) / RIM_GULLY_NEAR) ** 2)
+    for rg in RIDGES:
+        y += RIM_RIDGE * math.exp(-(math.dist((x, z), rg["start"]) / RIM_RIDGE_NEAR) ** 2)
+    return y
+
+
+def _rim_level(y):
+    return int(min(max(math.floor(y + 0.5), RIM_LOW), RIM_HIGH))
+
+
+def _footing(cells, noise):
+    """{(x, z): y}: the level of the rock in every cell outside the upper level (`cells`) that
+    touches its rim wall, corners included.
+
+    The wall is cut into bays by the piers, and a buttress stands under each pier. Along a bay the
+    rock at the wall's foot is level; from bay to bay it steps, and the step is at the buttress,
+    which stands on the lower of the two. So the wall reads as built on the mountain (review
+    cr2-#2): short where the rock is high, tall where a gully heads under it. Not under the east
+    lip (site/stair's wall goes down to the lower platform) nor where a path leaves the terrace."""
+    ring = set(K.outline(cells))
+    piers = rail_piers(ring)
+    gaps = {p for run in GAPS.values() for p in run}
+    walled = {p for p in ring if not (p[0] == TX1 and TZ0 < p[1] < TZ1)} - gaps
+    level = {}
+    left = walled - piers
+    while left:                                         # the bays: the runs of the wall between two piers
+        bay, todo = [], [left.pop()]
+        while todo:
+            x, z = todo.pop()
+            bay.append((x, z))
+            for q in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)):
+                if q in left:
+                    left.discard(q)
+                    todo.append(q)
+        y = _rim_level(sum(_rim_want(x, z, noise) for x, z in bay) / len(bay))
+        level.update((p, y) for p in bay)
+    for x, z in sorted(walled & piers):                 # a pier: the lower of the bays it stands between
+        beside = [level[q] for q in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)) if q in level and q not in piers]
+        level[(x, z)] = min(beside) if beside else _rim_level(_rim_want(x, z, noise))
+    foot = {}
+    for x, z in level:
+        for ox in (x - 1, x, x + 1):
+            for oz in (z - 1, z, z + 1):
+                if (ox, oz) in cells or (ox, oz) in foot:
+                    continue
+                square = [q for q in ((ox + 1, oz), (ox - 1, oz), (ox, oz + 1), (ox, oz - 1)) if q in level]
+                wall = [level[q] for q in square if q not in piers]
+                if wall:                                # beside a bay (two, in an inner corner: the lower)
+                    foot[(ox, oz)] = min(wall)
+                elif square:                            # beside a pier only: where its buttress stands
+                    foot[(ox, oz)] = min(level[q] for q in square)
+                else:                                   # off an outer corner
+                    foot[(ox, oz)] = min(level[q] for q in ((ox + 1, oz + 1), (ox + 1, oz - 1),
+                                                            (ox - 1, oz + 1), (ox - 1, oz - 1)) if q in level)
+    return foot
 
 
 def neck_steps():
@@ -361,30 +554,125 @@ def _neighbours(a):
     return [np.roll(a, step, axis=axis) for axis, step in ((0, 1), (0, -1), (1, 1), (1, -1))]
 
 
-def _snowy(m):
-    """Where snow lies: on the shelves, in from their outer edge, where the ground is nearly level.
-    In wide drifts with bare rock between them, not a line along the foot of every cliff; and never
-    a single block of it standing proud of the ground."""
+def _snow(m):
+    """How many layers of snow lie on every column (eighths of a block; 0 where there is none).
+
+    It lies on the shelves, from the foot of the cliff outwards, in drifts with bare rock between
+    them. Not on the brink of a drop, not on a knob or a point of rock that stands proud of the
+    ground round it, not as specks or lines. Its outline is ragged: no edge of it runs straight
+    for more than SNOW_RUN blocks. And it is thin where it ends: one layer at an edge, a layer more
+    with every block in from there, so that it reads as lying on the rock and not as a slab."""
     H, valid = m["H"], m["valid"]
-    level = np.ones(H.shape, dtype=bool)
-    for n in _neighbours(H):
-        level &= np.abs(n - H) <= 1
+    hi = np.where(valid, H, FLOOR - 1)
+    brink = np.zeros(H.shape, dtype=bool)               # a drop of two or more beside it
+    lower = np.zeros(H.shape, dtype=int)                # how many of the four neighbours lie lower
+    for n in _neighbours(hi):
+        brink |= (hi - n) >= 2
+        lower += (n < hi)
+    around = lower.copy()                               # ... and of all eight
+    for step in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+        around += (np.roll(hi, step, axis=(0, 1)) < hi)
+    proud = (lower >= 3) | (around >= 5)
     X, Z = np.meshgrid(m["xs"].astype(float), m["zs"].astype(float), indexing="ij")
-    drift = N.fbm2(X * 0.035, Z * 0.035, SEED + 61, octaves=3)
-    snow = (valid & level & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= SNOW_IN)
-            & (H <= SNOW_BELOW) & (drift > SNOW_DRIFT))
-    for _ in range(2):                                          # no specks: a cell needs two snowy neighbours
-        snow &= sum(n.astype(int) for n in _neighbours(snow)) >= 2
+    drift = (N.fbm2(X * 0.035, Z * 0.035, SEED + 61, octaves=3)
+             + SNOW_FRAY * N.fbm2(X * 0.19, Z * 0.19, SEED + 62, octaves=2))
+    reach = np.clip(SNOW_REACH + SNOW_SWING * N.fbm2(X * 0.07, Z * 0.07, SEED + 63, octaves=2), 0.3, 0.95)
+    snow = (valid & ~m["kept"] & (m["shelf"] >= 0) & (m["shelf"] <= reach)
+            & (H <= SNOW_BELOW) & (H >= SNOW_ABOVE) & ~brink & ~proud & (drift > SNOW_DRIFT))
+    snow = _whole(snow)
+    for _ in range(SNOW_PASSES):
+        cut = _straight(snow, hi)
+        if not cut.any():
+            break
+        snow = _tidy(snow & ~cut)
+    return _layers(_patches(snow), hi)
+
+
+def _whole(snow):
+    """The cells of it that lie in a square of four: no specks, no lines one block wide."""
+    square = snow & np.roll(snow, -1, axis=0) & np.roll(snow, -1, axis=1) & np.roll(snow, (-1, -1), axis=(0, 1))
+    return square | np.roll(square, 1, axis=0) | np.roll(square, 1, axis=1) | np.roll(square, (1, 1), axis=(0, 1))
+
+
+def _tidy(snow):
+    """Without the cells that hang on to it by one side only (twice: a spike two long goes too)."""
+    for _ in range(2):
+        snow = snow & (sum(n.astype(int) for n in _neighbours(snow)) >= 2)
     return snow
 
 
-def _snow_depth(where):
-    """How many layers of snow (eighths of a block) lie on a cell that far out on its shelf: a
-    drift against the foot of the cliff, thinning towards the shelf's edge."""
-    for limit, layers in SNOW_DEPTH:
-        if where <= limit:
-            return layers
-    return SNOW_DEPTH[-1][1]
+def _notches(n, a, b, side):
+    """Which cells of a straight edge n long are taken out, counted from its start: after every two
+    or three that stay, one or two -- by the cell, not in a rhythm -- and so that at least two stay
+    at the end. What is left of the edge are teeth two to four long (SNOW_RUN is not under 4, or
+    the last tooth could be a single cell, which _tidy takes off: the edge would only move back)."""
+    out = []
+    i = 0
+    while n - i > max(SNOW_RUN, 4):
+        left = n - i
+        stay = 3 if left >= 6 and hash3(a, b + i, side, SEED + 64) < 0.5 else 2
+        take = 2 if left - stay >= 4 and hash3(a, b + i, side, SEED + 65) < 0.4 else 1
+        out += range(i + stay, i + stay + take)
+        i += stay + take
+    return out
+
+
+def _straight(snow, hi):
+    """The cells to take out of the snow so that none of its edges runs straight for more than
+    SNOW_RUN blocks. An edge is where bare rock no higher than the snow lies beside it; against
+    the foot of a cliff the snow may run as straight as the cliff does."""
+    cut = np.zeros(snow.shape, dtype=bool)
+    for side, (axis, step) in enumerate(((0, 1), (0, -1), (1, 1), (1, -1))):
+        edge = snow & ~np.roll(snow, step, axis=axis) & (np.roll(hi, step, axis=axis) <= hi)
+        rows = edge if axis == 0 else edge.T            # an edge that faces along x runs along z, and the other way round
+        for a in np.flatnonzero(rows.any(axis=1)):
+            on = np.flatnonzero(rows[a])
+            ends = np.flatnonzero(np.diff(on) > 1)      # the last cell of every run but the last run
+            for first, last in zip(np.concatenate(([0], ends + 1)), np.concatenate((ends, [len(on) - 1]))):
+                b = int(on[first])
+                for j in _notches(int(last - first + 1), int(a), b, side):
+                    if axis == 0:
+                        cut[a, b + j] = True
+                    else:
+                        cut[b + j, a] = True
+    return cut
+
+
+def _patches(snow):
+    """Without the patches of fewer than SNOW_PATCH blocks (blocks that touch face to face)."""
+    out = snow.copy()
+    seen = np.zeros(snow.shape, dtype=bool)
+    for i, k in zip(*np.nonzero(snow)):
+        if seen[i, k]:
+            continue
+        seen[i, k] = True
+        patch, todo = [], [(int(i), int(k))]
+        while todo:
+            a, b = todo.pop()
+            patch.append((a, b))
+            for p, q in ((a + 1, b), (a - 1, b), (a, b + 1), (a, b - 1)):
+                if 0 <= p < snow.shape[0] and 0 <= q < snow.shape[1] and snow[p, q] and not seen[p, q]:
+                    seen[p, q] = True
+                    todo.append((p, q))
+        if len(patch) < SNOW_PATCH:
+            for a, b in patch:
+                out[a, b] = False
+    return out
+
+
+def _layers(snow, hi):
+    """How deep the snow lies, in layers: one where it ends -- beside bare rock on its own level, or
+    at a step down -- and a layer more with every block in from there, SNOW_DEEP at the most."""
+    thin = np.zeros(snow.shape, dtype=bool)
+    for n_hi, n_snow in zip(_neighbours(hi), _neighbours(snow)):
+        thin |= (n_hi < hi) | ((n_hi == hi) & ~n_snow)
+    deep = np.where(snow, np.where(thin, 1, SNOW_DEEP), 0)
+    for _ in range(SNOW_DEEP - 1):
+        near = deep.copy()
+        for n_deep, n_snow in zip(_neighbours(deep), _neighbours(snow)):
+            near = np.minimum(near, np.where(n_snow, n_deep + 1, SNOW_DEEP))
+        deep = np.where(snow, near, 0)
+    return deep
 
 
 def _lay_mountain(c, o, m):
@@ -392,7 +680,7 @@ def _lay_mountain(c, o, m):
     columns at the foot down to the floor. Hollow inside; it is never seen."""
     ox, oy, oz = o
     H, valid, dip = m["H"], m["valid"], m["dip"]
-    snowy = _snowy(m)
+    snow = _snow(m) if SNOW_ON else np.zeros(H.shape, dtype=int)
     low = H.copy()
     for axis, step in ((0, 1), (0, -1), (1, 1), (1, -1)):
         n = np.where(np.roll(valid, step, axis=axis), np.roll(H, step, axis=axis), FLOOR)
@@ -408,8 +696,8 @@ def _lay_mountain(c, o, m):
         la, lb = float(lens_a[i, k]), float(lens_b[i, k])
         for y in range(y1, y0 - 1, -1):
             c.set(ox + x, oy + y, oz + z, _rock(x, y, z, dp, la, lb))
-        if snowy[i, k]:
-            c.set(ox + x, oy + y1 + 1, oz + z, f"{SNOW}[layers={_snow_depth(float(m['shelf'][i, k]))}]")
+        if snow[i, k]:
+            c.set(ox + x, oy + y1 + 1, oz + z, f"{SNOW}[layers={int(snow[i, k])}]")
 
 
 # ---- the upper terrace: floor, rim, railing -------------------------------------------------------------
@@ -479,24 +767,30 @@ def _lay_terrace(c, o, m):
             walk = abs(z) <= WALK_HALF or abs(z) == near
             c.set(ox + x, oy + TOP, oz + z, K.STRIP if walk else K.EDGE)
 
-    # the rim wall under the kerb, with a buttress under every pier; not on the east lip (site/stair's wall)
+    # the rim wall under the kerb, from the kerb down to the rock at its foot (_footing), with a
+    # buttress under every pier; not on the east lip (site/stair's wall)
     H, valid = m["H"], m["valid"]
     piers = rail_piers(ring)
+
+    def rock(x, z):
+        return int(H[x - GX0, z - GZ0]) if valid[x - GX0, z - GZ0] else FLOOR
+
     for x, z in ring:
         if x == TX1 and TZ0 < z < TZ1:
             continue
-        depth = BASTION_DEPTH if x < TX0 else RIM_DEPTH
-        for y in range(TOP - 1, TOP - depth - 1, -1):
-            if c.has(ox + x, oy + y, oz + z):
-                c.set(ox + x, oy + y, oz + z, RIM)
+        sides = _outward((x, z), cells)
+        if not sides:
+            continue
+        foot = min(rock(x + dx, z + dz) for dx, dz in sides)
+        for y in range(TOP - 1, max(foot, RIM_LOW), -1):
+            c.set(ox + x, oy + y, oz + z, RIM)
         if (x, z) not in piers or x == TX1:
             continue
-        for out in _outward((x, z), cells):
+        for out in sides:
             bx, bz = x + out[0], z + out[1]
-            i, k = bx - GX0, bz - GZ0
-            foot = int(H[i, k]) if valid[i, k] else FLOOR
+            foot = rock(bx, bz)
             facing = {(1, 0): "west", (-1, 0): "east", (0, 1): "north", (0, -1): "south"}[out]
-            for y in range(TOP - 2, max(foot, TOP - BUTTRESS_DEPTH) - 1, -1):
+            for y in range(TOP - 2, max(foot, RIM_LOW) - 1, -1):
                 c.set(ox + bx, oy + y, oz + bz, BUTTRESS.block)
             if foot < TOP - 1:
                 c.set(ox + bx, oy + TOP - 1, oz + bz, f"{BUTTRESS.stairs}[facing={facing},half=bottom]")
