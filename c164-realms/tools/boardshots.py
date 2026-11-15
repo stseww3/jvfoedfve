@@ -12,11 +12,13 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2, V7 and V11 are A0's: read from the skeleton where it has them, and until then taken from
-his rulings (RULED below). The other eight have no place in the skeleton yet: what stands here for
-them is the render station's proposal (PROPOSED below), which A0 lets stand until he has seen the
-pictures (11-15). A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=) and
-is read from there; what stands here for it then no longer counts.
+V1, V2, V6, V7 and V11 are the skeleton's own, LOCKED by A0, and are read from there. The other
+seven have no place in the skeleton yet: what stands here for them is the render station's proposal
+(PROPOSED below), for A0 to move on the pictures. A view that gets fixed goes into the skeleton as
+V<n> = dict(pos=, look_at=) and is read from there; what stands here for it then no longer counts
+(V6 and V7 have such an entry each). It is still what a checkout with an older skeleton is shot
+with: A0's ruling where there was one before the skeleton had the view (RULED below), else the
+station's proposal as it stood last.
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
 camera player flies, which widens the game's 70), as build/render.py and tools/check.py take it.
@@ -75,16 +77,18 @@ VIEWS = [
     ("v05_tower", "up the clock tower: the dials, the time ball, the aerial", "V5", dict(
         pos=(TOWER[0] + 15.0, S.GROUND + EYE, TOWER[1] + 15.0),
         look_at=(TOWER[0], S.CLOCK_SHAFT_TOP - 3.0, TOWER[1]))),
-    # PROPOSED. On the lower platform, east of the stair's foot: the north front of the power house,
-    # the chimney over it, the pipe bridge going off to the terrace on the right. Tilted so that the
-    # chimney's crown (rim y 23, site/powerhouse) has sky over it and the wall's foot is still in:
-    # looking a block below the eaves cut the crown off (c228, 11-15).
+    # No longer counts: A0 fixed V6 on the grand stair's south half (#55097), it is in the skeleton.
+    # The proposal was: on the lower platform, east of the stair's foot, the north front of the power
+    # house, the chimney over it; the pipe bridge is not in that picture. Tilted so that the chimney's
+    # crown (rim y 23, site/powerhouse) has sky over it and the wall's foot is still in: looking a
+    # block below the eaves cut the crown off (c228, 11-15).
     ("v06_power", "the power house: chimney, pipe bridge, the glowing windows", "V6", dict(
         pos=(S.GRAND_STAIR["x1"] + 2.5, S.LOWER_GROUND + EYE, S.GRAND_STAIR["z1"] - 5.5),
         look_at=(S.mid(HOUSE[0], HOUSE[2]), S.POWER_HOUSE["base_y"] + S.POWER_HOUSE["wall_h"] + 2.0,
                  S.mid(HOUSE[1], HOUSE[3])))),
-    # A0, 11-15 (#365): from outside the door, on the axis, in through the open middle arch at the
-    # orrery. (The station's first proposal stood on the south gallery inside the hall.)
+    # No longer counts: V7 is in the skeleton. For a skeleton older than that, A0's ruling of 11-15
+    # (#365): from outside the door, on the axis, in through the open middle arch at the orrery.
+    # (The station's own proposal stood on the south gallery, level with the ring of planets.)
     ("v07_hall", "the star hall and the orrery, in through the entrance", "V7", dict(
         pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5))),
     # PROPOSED. On the dome-room floor east of the pier, inside the slit's width and beside the tube,
