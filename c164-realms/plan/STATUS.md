@@ -52,6 +52,8 @@
 - `main/dome` 重出：c279 报的 `97241b20` **远端不存在**（未推）；他分支远端头仍是 `2570dca3`。
 - `machines/refractor`：代码能生成且全绿（`check.py --scene obs_mach_refractor` PASS），**25 张离线图未出**、未交付。
 
+**冻结后 S2 在自己分支上又修了一处（未进总装，接手人可直接用）**：`selfshots.py --take` 不再排队。根因两处——venv hook 按脚本名把整个 `selfshots.py` 当重活，工具内部自己也调 `_slots.take()`；`--take` 只拷文件、算 SHA-256、一张不画。两处都改后实测：唯一名额被占时 `--take` **0.11 秒**（改前 5.1 秒，c273 实遇到卡 15 分钟），而 `--verify` 仍正常排队 7.2 秒。见 `cursor/c164-s2-integrator-927e` @ `475377bf`。
+
 **还没真机验的三件**：`WASH_BAYS`/`WASH_LEVEL` 的基座暗带（离线定的）、motion/smoke 的烟与汽、sky/ridges 在余晖里显不显。
 
 ---
