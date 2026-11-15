@@ -1,0 +1,40 @@
+a0job 1115-230252-a1-board-f3-09d2-12412: cursor/c164-a1-board-f3-09d2 @ d1360cad on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.98 1.15 0.49, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- for s in obs_mat_board obs_mat_board_ashlar_a obs_mat_board_ashlar_c obs_mat_board_windows_b; do python tools/selfshots.py $s || exit 1; done; for s in obs_mat_board obs_mat_board_ashlar_a obs_mat_board_ashlar_c obs_mat_board_windows_b
+  obs_mat_board_ashlar_c: all_b (tick 18000, 0 s)
+  obs_mat_board_ashlar_c: all_c (tick 12900, 0 s)
+  obs_mat_board_ashlar_c: stone_left (tick 14000, 1 s)
+  obs_mat_board_ashlar_c: stone_right (tick 14000, 1 s)
+  obs_mat_board_ashlar_c: stone_slate_brick (tick 14000, 1 s)
+  obs_mat_board_ashlar_c: stone_fine (tick 14000, 1 s)
+  obs_mat_board_ashlar_c: stone_panel (tick 14000, 1 s)
+  obs_mat_board_ashlar_c: stone_slate_tile (tick 14000, 1 s)
+renders/obs_mat_board_ashlar_c/: 9 pictures of d1360cad drawn, 3.8 MB
+  obs_mat_board_windows_b: 11825 blocks, 0 entities (0 s)
+  obs_mat_board_windows_b: resource pack written to /tmp/c164pack-zretyt9n (1 s)
+  obs_mat_board_windows_b: water: 0 sources, 0 cells of running water (1 s)
+  obs_mat_board_windows_b: grid 82 x 52 x 72, 11825 blocks, 0 entity boxes (1 s)
+  obs_mat_board_windows_b: 194 states -> 285 looks, 531 boxes, 145 pictures (1 s)
+  obs_mat_board_windows_b: light done (1 s)
+  obs_mat_board_windows_b: all (tick 14000, 1 s)
+  obs_mat_board_windows_b: all_b (tick 18000, 1 s)
+  obs_mat_board_windows_b: all_c (tick 12900, 1 s)
+  obs_mat_board_windows_b: glass_left (tick 14000, 1 s)
+  obs_mat_board_windows_b: glass_right (tick 14000, 1 s)
+  obs_mat_board_windows_b: glass_furnace (tick 14000, 0 s)
+  obs_mat_board_windows_b: glass_window_lit (tick 14000, 1 s)
+  obs_mat_board_windows_b: glass_window_frosted (tick 14000, 1 s)
+  obs_mat_board_windows_b: glass_window_blind (tick 14000, 1 s)
+  obs_mat_board_windows_b: glass_instruments (tick 14000, 1 s)
+renders/obs_mat_board_windows_b/: 10 pictures of d1360cad drawn, 2.6 MB
+result: PASS (0 failed, 0 with warnings)
+result: PASS (0 failed, 0 with warnings)
+result: PASS (0 failed, 0 with warnings)
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=87 host=cursor cores=4 head=d1360cad commit=ca2fc1e3 pushed=yes branch=cursor/c164-a1-board-f3-09d2 files=63
+a0job: exit=0 secs=87
