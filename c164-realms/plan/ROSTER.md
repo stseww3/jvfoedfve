@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 06:30。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 07:00。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -37,7 +37,7 @@
 | dome | c326 | node40（冻住） | c222 | main/dome；然后 machines/engine-dynamo（11-16 04:50 派，没有前任，从总装开；dome 被退回时它优先） | `cursor/c164-dome-0dab` @ `ecda0e1e` | `cursor/c164-dome-f3-a244`、`cursor/c164-dome-engine-f3-a244` |
 | tower | c327 | node41（冻住） | c223 | main/tower | `cursor/c164-tower-21fb` @ `951a1877` | `cursor/c164-tower-f3-c402` |
 | sdome | c328 | node42（冻住） | c224 | main/smalldome（含屋面）；然后 machines/meridian-astrograph（11-16 03:55 派，没有前任，从总装开；smalldome 被退回时它优先）；再 interiors/astroroom（P3，05:30 他要了，留给他：照相仪交付以后开，先交一页草图给总监） | `cursor/c164-sdome-8013` @ `98d469e8` | `cursor/c164-sdome-f3-1fe7`、`cursor/c164-sdome-astro-f3-1fe7` |
-| a2 | c322 | node36（冻住，04:58 起没有回执） | c177 | sky/tones、motion/loop；sky 和 motion 牵头；然后 motion/smoke、再 motion/sound（11-16 04:12 派，没有前任；tones、loop 被退回或来图时它们优先） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d`、`cursor/c164-a2-loop-f3-695d` |
+| a2 | c322 | node36（冻住，04:58 起没有回执） | c177 | sky/tones、motion/loop；sky 和 motion 牵头；然后 motion/smoke、再 motion/sound（11-16 04:12 派，没有前任；tones、loop 被退回或来图时它们优先）；**sky/safe-look**（总监 11-16 06:54 加：不带注册表文件的备用天，先交一页方案；头号风险，在他手上排最前，要节点和真机先给他） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d`、`cursor/c164-a2-loop-f3-695d` |
 | lights | c331 | node45（冻住） | c220 | sky/lights（含洗墙轮） | `cursor/c164-lights-007c` @ `8972aa88`、`cursor/c164-lights-wash-0fe3` @ `632a2c09` | `cursor/c164-lights-f3-9479`、`cursor/c164-lights-wash-f3-9479` |
 | comet | c330 | node44（冻住） | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d` |
 | cloud | c329 | node43（冻住） | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e` |
@@ -45,8 +45,8 @@
 | stair | c337 | node51（冻住；共享池 node4 他空着时借给排队的人） | c225 | site/stair；然后 interiors/batteryroom（P3，11-16 06:03 派，没有前任，从总装开；先交一页草图给总监；site/stair 被退回时它优先） | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330`、`cursor/c164-stair-batteryroom-f3-b330` |
 | cable | c338 | node52（冻住） | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7` |
 | power | c339 | node53（冻住） | c228 | site/powerhouse；然后 interiors/powerhouse（11-16 04:14 派，没有前任；外壳被退回时它优先） | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a`、`cursor/c164-power-interior-f3-2e4a` |
-| outb | c340 | node54（06:00 不在线） | c229 | site/outbuildings、site/mastbase；然后 common/export（成品地图导出，现在空跑，P1，11-16 05:46 派，没有前任，从总装开；两张卡被退回时它们优先） | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8`、`cursor/c164-outb-export-f3-f4b8` |
-| a6 | c334 | node48（冻住） | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1` |
+| outb | c340 | node54（06:00 不在线） | c229 | site/outbuildings、site/mastbase；然后 common/export（成品地图导出，现在空跑，P1，11-16 05:46 派，没有前任，从总装开；两张卡被退回时它们优先；**两个试传存档排最前**：蓝调的天用的注册表文件会让存档带「实验性」标记、Realms 不支持，总监 06:54 定为头号风险，要节点和真机先给他） | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8`、`cursor/c164-outb-export-f3-f4b8` |
+| a6 | c334 | node48（冻住） | c179 | props/furniture、灯的模型；props 牵头；然后入口两盏壁灯的球罩试验（评审 #20，总监 11-16 06:54 加，排在 furniture 交付之后） | `cursor/c164-a6-props-7fb0` @ `8026cccb` | `cursor/c164-a6-furniture-f3-4ad1` |
 | lamps | c341 | node55（冻住，04:58 起没有回执） | c220 | props/lamps 的位置表和场地灯链；然后 props/electrics-signs（接 c242） | `cursor/c164-lamps-007c` @ `7c270e4c`；`cursor/c164-elec-7be8` @ `5ff667a1` | `cursor/c164-lamps-chain-f3-0dde`、`cursor/c164-lamps-elecsign-f3-0dde` |
 | m3 | c342 | node56（冻住；共享池 node6 他空着时借给排队的人） | c218 | props/ironwork 打磨轮（退回过）；然后 props/pipes（接 c241） | `cursor/c164-m3-ironwork-e6ba` @ `6f9eed36`；`cursor/c164-pipes-9deb` @ `c2bb7183` | `cursor/c164-m3-ironwork-f3-8e52` |
 | orrery | c343 | node57（冻住） | c236 | machines/orrery | `cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7` |
