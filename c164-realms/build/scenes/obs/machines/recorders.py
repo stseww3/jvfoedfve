@@ -144,9 +144,26 @@ def _drum():
     m.tube("x", (0.0, ay), -half_chart - 0.9, -half_chart + 0.2, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), half_chart - 0.2, half_chart + 0.9, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), -half_chart + 0.1, half_chart - 0.1, DRUM_R, CREAM_F, sides=14)
-    # the pen's trace: one raised line right round the paper, a step darker (a pixel proud)
-    m.box((-half_chart + 0.3, DRUM_R - 0.4, -DRUM_R - 0.14),
-          (half_chart - 0.3, DRUM_R + 0.6, DRUM_R + 0.14), CREAM_D, skip="d")
+    # the pen's trace: the drum turns, so the trace runs AROUND the paper, not across its top. It is
+    # drawn as a helix: a ring of small marks at every step along the drum's axis, the whole line
+    # drifting a little so it reads as a record being written rather than a hoop (cr3-M4 again: the
+    # first go put the line on the top of the cylinder, where only a camera overhead could see it).
+    # A recorder's chart carries ONE line, not a pattern of pins: one turn of the drum, one line of
+    # the pen. So the trace is a single ring round the paper at the pen's own height, one pixel
+    # wide, and a second, shorter one below it, so the paper reads as written on.
+    trace = P.mat("iron", base=1, kind="flat", bevel=0)
+    for row, (frac, span) in enumerate(((0.52, 0.92), (0.30, 0.55))):
+        steps = 72
+        for i in range(steps):
+            a = 2.0 * math.pi * i / steps
+            x0 = -half_chart * span
+            x1 = half_chart * span
+            # the line sits at the pen's height, a hair proud of the paper
+            rr = DRUM_R + 0.10
+            cy, cz = math.sin(a + frac * math.pi) * rr, math.cos(a + frac * math.pi) * rr
+            seg = (x1 - x0) / steps
+            m.box((x0 + seg * i, cy - 0.22, cz - 0.22), (x0 + seg * (i + 1), cy + 0.22, cz + 0.22),
+                  trace, skip="d")
 
     # the pen carriage: the slide bar over the drum, its arm, the nib riding on the paper
     m.box((-hw * 0.88, DRUM_R + 1.4, -hd * 0.50), (hw * 0.88, DRUM_R + 2.3, -hd * 0.50 + 1.1),
@@ -195,7 +212,7 @@ def _telegraph():
     for zz in (-2.0, 2.0):
         m.box((-4.8, base_h + 2.4, zz - 0.5), (4.8, top - 0.4, zz + 0.5), BRASS, skip="d")
     for sx in (-1, 1):
-        m.box((sx * 5.0 - 0.5, base_h + 2.6, -0.5), (sx * 5.0 + 0.5, top + 1.6, 0.5), BRASS_D, skip="d")
+        m.box((sx * 3.4 - 0.45, base_h + 2.6, -0.45), (sx * 3.4 + 0.45, top + 1.6, 0.45), BRASS_D, skip="d")
 
     # the armature: the brass bar across the posts, the stop above it, the adjusting screw between
     m.box((-6.0, top + 0.2, -0.8), (6.0, top + 1.1, 0.8), BRASS, skip="d")
@@ -271,6 +288,20 @@ def _pipe():
     return m
 
 
+def _collar():
+    """The brass collar where the pipe meets the ceiling: a flange wide enough to read as a fitting,
+    with four bolt heads, so the run ends in something rather than in air."""
+    m = M.Model(PREFIX + "collar", px=1.0, anchor=(0.0, 0.0, 0.0))
+    m.tube("y", (0.0, 0.0), 0.0, 1.4, TUBE_R * 1.45, BRASS_D, sides=12,
+           cap=P.mat("brass", kind="flat", base=2, bevel=0))
+    for i in range(4):
+        a = 2.0 * math.pi * i / 4.0
+        m.box((math.cos(a) * TUBE_R * 1.15 - 0.35, 1.0, math.sin(a) * TUBE_R * 1.15 - 0.35),
+              (math.cos(a) * TUBE_R * 1.15 + 0.35, 1.7, math.sin(a) * TUBE_R * 1.15 + 0.35),
+              BRASS, skip="d")
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     return {
@@ -278,6 +309,7 @@ def _models():
         PREFIX + "telegraph": _telegraph(),
         PREFIX + "tube": _tube(),
         PREFIX + "pipe": _pipe(),
+        PREFIX + "collar": _collar(),
     }
 
 
@@ -342,10 +374,10 @@ def telegraph(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
 
 
 def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None):
-    """Place the pneumatic tube terminal. `pos` is the sill point on the pier, as the room's table
-    gives it; the body's centre sits TUBE_LIFT above that, and the pipe is stretched from a hand
-    under the body up to `top` (the ceiling's y; TUBE_TOP + the sill by default). Returns the count
-    of display entities: the terminal and the pipe, 2."""
+    """Place the pneumatic tube terminal. `pos` is the SILL point on the pier, as the room's table
+    gives it (time room: y 8); the body's centre sits TUBE_LIFT above that, and the pipe runs from a
+    hand under the body up to `top`, the ceiling's absolute y (default: pos[1] + TUBE_TOP). Pass
+    `top` when the room's ceiling is not that far above its sill. Returns the display-entity count."""
     yaw = FACING[facing] if yaw is None else yaw
     ox, oy, oz = origin
     foot = pos[1] + TUBE_FOOT
@@ -363,6 +395,10 @@ def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None):
         n += 1
         y += span
         i += 1
+    # the collar where the run meets the ceiling: a pipe that ends in air is a cut pipe (cr3-M4)
+    canvas.add_entity(pos[0] + ox, ceil + oy - 0.02, pos[2] + oz,
+                      M.display(_models()[PREFIX + "collar"], scale=1.0, view=5.0))
+    n += 1
     return n
 
 
