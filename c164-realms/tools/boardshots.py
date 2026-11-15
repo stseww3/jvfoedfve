@@ -12,10 +12,10 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2 and V11 are the skeleton's own, LOCKED by A0. The other nine have no place in the skeleton
-yet: what stands here for them is the render station's proposal (PROPOSED below), for A0 to move
-on the pictures. A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=) and
-is read from there; the proposal here then no longer counts.
+V1, V2, V6, V7 and V11 are the skeleton's own, LOCKED by A0. The other seven have no place in the
+skeleton yet: what stands here for them is the render station's proposal (PROPOSED below), for A0
+to move on the pictures. A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=)
+and is read from there; the proposal here then no longer counts (V6 and V7 have one each).
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
 camera player flies, which widens the game's 70), as build/render.py and tools/check.py take it.
@@ -72,14 +72,15 @@ VIEWS = [
     ("v05_tower", "up the clock tower: the dials, the time ball, the aerial", "V5", dict(
         pos=(TOWER[0] + 15.0, S.GROUND + EYE, TOWER[1] + 15.0),
         look_at=(TOWER[0], S.CLOCK_SHAFT_TOP - 3.0, TOWER[1]))),
-    # PROPOSED. On the lower platform, east of the stair's foot: the north front of the power house,
-    # the chimney over it, the pipe bridge going off to the terrace on the right.
+    # No longer counts: A0 fixed V6 on the grand stair's south half (#55097), it is in the skeleton.
+    # The proposal was: on the lower platform, east of the stair's foot, the north front of the power
+    # house, the chimney over it; the pipe bridge is not in that picture.
     ("v06_power", "the power house: chimney, pipe bridge, the glowing windows", "V6", dict(
         pos=(S.GRAND_STAIR["x1"] + 2.5, S.LOWER_GROUND + EYE, S.GRAND_STAIR["z1"] - 5.5),
         look_at=(S.mid(HOUSE[0], HOUSE[2]), S.POWER_HOUSE["base_y"] + S.POWER_HOUSE["wall_h"] - 1.0,
                  S.mid(HOUSE[1], HOUSE[3])))),
-    # PROPOSED. On the south gallery, level with the ring of planets: the orrery in the well, the
-    # pier and the mother clock behind it, the floor below.
+    # No longer counts: V7 is in the skeleton. The proposal was: on the south gallery, level with the
+    # ring of planets, the orrery in the well, the pier and the mother clock behind it, the floor below.
     ("v07_hall", "the star hall and the orrery", "V7", dict(
         pos=(S.east_wall_x(9) - 3.5, MAIN_EYE, S.STAR_HALL_Z[1] - 0.5),
         look_at=(S.PIER_SHAFT[2] + 1.0, S.STAND - 1.0, S.STAR_HALL_Z[0] + 3.0))),
