@@ -103,8 +103,7 @@ SLAT_DEG = 5.0                          # a slat of the curtain, in degrees alon
 # Version a: the courses, from the foot, that the run of the darker copper under seam k stains, by
 # k % 5 -- beside an axis, a main seam (where version b has a rib), a diagonal, a main seam, beside
 # an axis.
-RUNS = {"a": (1, 3, 2, 3, 1), "b": None}
-HEM = 0                                 # rows of the darker copper all round the foot, over the ring beam
+RUNS = {"a": (1, 2, 1, 2, 1), "b": None}
 POSTS = 0                               # the gallery's posts (2 * GORES: over every seam and between)
 
 
@@ -390,7 +389,7 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
             elif lined:
                 state = _state(RIB if _stained(x, z, version) else SEAM[version], slab)
             else:
-                state = _state(RIB if y <= SKIRT_Y + HEM else PLATE, slab)
+                state = _state(PLATE, slab)
             canvas.set(ox + x, oy + y, oz + z, state)
 
 
