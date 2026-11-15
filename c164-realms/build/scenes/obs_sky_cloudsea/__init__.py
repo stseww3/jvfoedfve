@@ -30,7 +30,9 @@ from artkit.canvas import Canvas, Mix
 from scenes.obs import materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.sky import cloudsea, comet, mood
+from scenes.obs.sky import cloudsea, comet
+
+from . import mood
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
@@ -192,10 +194,17 @@ def write_pack(pack_dir, version=VERSION):
 
 # scene coordinates: the eye, what it looks at, the time (14000 blue, 12900 glow)
 RAIL_X = SUN_C[0] - SUN_R + 2                                     # two inside the west rim
+# V12 is not in the skeleton yet: this is the render station's proposal for the board (its
+# tools/boardshots.py, worked out from the skeleton as here), which the director lets stand until
+# he has seen the pictures. Once the skeleton holds V12 it is read from there.
+V12 = getattr(S, "V12", None)
+V12 = ((V12["pos"], V12["look_at"]) if V12 else
+       ((S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0), (S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5)))
 VIEWS = {
     "v1": (S.V1["pos"], S.V1["look_at"], 14000),                  # the arrival view (A0 #171)
     "v11": (S.V11["pos"], S.V11["look_at"], 12900),               # the south lookout, afterglow on the left
-    "v12": ((66, 72, 58), (8, -2, 0), 14000),                     # the plateau from above: the plate test
+    "v12": (V12[0], V12[1], 14000),                               # the whole site from above (the board's)
+    "plate": ((66, 72, 58), (8, -2, 0), 14000),                   # nearer and lower: the plate test
     "sunset_west": ((RAIL_X, S.GROUND + S.EYE, 0.5), (RAIL_X - 100, -14, 0.5), 12900),
     "sunset_sw_down": ((RAIL_X + 3, S.GROUND + S.EYE, 9.5), (RAIL_X - 42, -26, 52), 12900),
     "east": ((-92, -14, 0.5), (10, 10, 0.5), 14000),              # from over the sea, the rock rising
@@ -208,19 +217,13 @@ VIEWS = {
                   (3.5, -26, -174), 14000),                                       # from the weather station
 }
 
-# The sky's trial moments (sky/mood.TRIALS: the blue hour with one value changed, held for 200 ticks
-# in the morning) on the two cameras that show where the block sea ends and the vanilla layer goes
-# on. They are for the real client and kept apart in trials.json: the offline renderer does not
-# draw the vanilla layer, and a scene keeps an offline picture of every shot in shots.json.
-#   mist, veil, fogged   the vanilla layer's colour drawn to the fog's in three steps. The layer
-#                        takes no fog, so where the fog ends it stands a tone and a half lighter
-#                        than the block sea beside it and draws the sea's outline.
-#   near, far            the fog ending at 144 and at 256 instead of 192: how much of the sea's end
-#                        it hides.
-# The ticks are sky/mood's; the numbers here stand in for a trial that is not in the tree yet (the
-# picture is then the plain blue hour).
-TRIALS = {"mist": 8100, "veil": 9100, "fogged": 10100, "near": 5100, "far": 7100}
-TRIAL_VIEWS = ("v12", "station_east")
+# The fog laws under trial (mood.LAWS: the blue hour with the block fog and the layer's fading set
+# to one law, each held for 200 ticks in the morning) on the four cameras the director judges the
+# seam on: the whole site from above, the sunset rail towards the west, down the trestle towards
+# the east, down from the roof terrace. They are for the real client, at view distance 12, and kept
+# apart in trials.json: the offline renderer does not draw the vanilla layer, and a scene keeps an
+# offline picture of every shot in shots.json. preview.py draws them beforehand.
+LAW_VIEWS = ("v12", "sunset_west", "station_east", "roof_down")
 
 
 def _shot(name, eye, at, t):
@@ -232,5 +235,4 @@ def shots():
 
 
 def trial_shots():
-    return [_shot(f"{view}_{name}", *VIEWS[view][:2], mood.tick(name) if name in mood.TRIALS else t)
-            for view in TRIAL_VIEWS for name, t in TRIALS.items()]
+    return [_shot(f"{view}_{law}", *VIEWS[view][:2], mood.tick(law)) for law in mood.LAWS for view in LAW_VIEWS]
