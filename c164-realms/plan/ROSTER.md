@@ -56,6 +56,7 @@
 | a3 | c290 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
 | chart | c291 | c205 | interiors/chartroom、materials/windows 的内衬和炉火窗 | `cursor/c164-chart-5a4c`、`cursor/c164-m2-windows-7bb5` |
 | m2 | c292 | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` |
+| rec | c264（snow 兼） | — | machines/recorders | `cursor/c164-snow-rec-aide` |
 
 ## 还没人领的卡
 
