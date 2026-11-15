@@ -61,9 +61,12 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     one the panel of the south wall stands edge on to the glass.
   cable ducts       in the floor: a grating along the foot of the rack from wall to wall, and a
                     line of riveted cover plates from under each end of the console down the
-                    room, turning off to its desk, a grating where it turns. They are the two
-                    lines the floor has, they run to the console, and where a line turns a desk
-                    stands: nowhere do two of them cross.
+                    room, turning off to its desk. They are the two lines the floor has, they
+                    run to the console, and where a line turns a desk stands: nowhere do two of
+                    them cross. Under the grating lies an iron bed, one row down (y 5): the
+                    cable trough the battery room below has under its ceiling along its north
+                    wall, where its two risers come up at x 6 and x 9 (interiors/batteryroom,
+                    c337); nothing else of the room reaches below its floor.
   ceiling           riveted beams across the room on the pilaster rows; each end sits in an iron
                     shoe at the head of its pier, the capital of the panelled pilaster
 
@@ -217,14 +220,13 @@ BENCH_Z = S.mid(MP.window_rows(BENCH_BAY)[0], MP.window_rows(BENCH_BAY)[-1])    
 SEAT = 1.075                                        # from the middle of a desk to the middle of its chair
 CABINET_Z = SOUTH - 0.6                             # -6.6: where a cabinet stands with its back to the south wall
 DUCT_X = (CONSOLE_X[0], CONSOLE_X[1])               # 6 and 9: the two lines of the floor, under the two ends of the console and in line with the two piers
-DUCTS = (                                           # runs of grating in the floor, cell to cell
+DUCTS = (                                           # runs of duct in the floor, cell to cell; the two lines turn off to their desks at (6, -16) and (9, -12)
     ((X0, CONSOLE_Z), (X1, CONSOLE_Z)),                                         # along the foot of the rack, wall to wall
     ((DUCT_X[0], CONSOLE_Z), (DUCT_X[0], MP.window_rows(BENCH_BAY)[1])),        # from the west end of the console down the room
     ((DUCT_X[0], MP.window_rows(BENCH_BAY)[1]), (X0, MP.window_rows(BENCH_BAY)[1])),    # ... and west to under the rating bench
     ((DUCT_X[1], CONSOLE_Z), (DUCT_X[1], MP.window_rows(DESK_BAY)[1])),         # from the east end of the console down the room
     ((DUCT_X[1], MP.window_rows(DESK_BAY)[1]), (X1, MP.window_rows(DESK_BAY)[1])),      # ... and east to under the message desk
 )
-BENDS = (DUCTS[1][1], DUCTS[3][1])                  # (6, -16) and (9, -12): where the two lines turn off to their desks
 
 # ---- the world clocks: a row of slave dials on one board, on the blind stretch of the west wall, one to a cell
 CLOCK = getattr(S, "CLOCK", (7, 55))                # the time every clock of the map is stopped at (A0, g2 #34136)
@@ -626,8 +628,10 @@ def duct_cells():
 
 def grated(cell):
     """Is a cell of the ducts an open grating? The run at the foot of the rack is, where the cables
-    come up into it, and the two bends; the rest lies under riveted cover plates."""
-    return cell[1] == CONSOLE_Z or cell in BENDS
+    come up into it; the rest lies under riveted cover plates. (The two bends were gratings too,
+    each with a block of iron bed under it: two lone blocks under the ceiling of the battery room,
+    over its racks, which read as nothing from below -- c337, 11-16.)"""
+    return cell[1] == CONSOLE_Z
 
 
 def clear_cells():
