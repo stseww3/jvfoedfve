@@ -85,7 +85,15 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 #         the way from the horizon colour to the look's cloud colour, veil the middle tone of the
 #         block clouds, fogged the horizon colour itself (the end of the scale: what is left of
 #         the rim then is not a matter of colour)
+#   thin, thin_soft  the west of the blue hour. Facing west the game draws the whole fog colour
+#         towards the afterglow, and the sky takes that fog by elevation: with the fog of the sky
+#         ending at 96 it is 0.45 of the colour 30 degrees up, and the real machine showed purple
+#         there (#342840) where the plan wants blue-violet above 30 degrees. thin ends the sky's
+#         fog at 128 (0.33 at 30 degrees); zenith and horizon are solved for again, so away from
+#         the west nothing changes. thin_soft takes the afterglow down to 0.35 as well
 TRIALS = {
+    "thin": dict(of="blue", tick=1100, sky_fog_end=128.0),
+    "thin_soft": dict(of="blue", tick=2100, sky_fog_end=128.0, glow_alpha=0.35),
     "card": dict(of="blue", tick=3100, moon_phase="new_moon"),
     "pink": dict(of="blue", tick=4100, glow="#e9706a"),
     "near": dict(of="blue", tick=5100, fog_end=144.0),
