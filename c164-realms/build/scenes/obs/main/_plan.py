@@ -281,7 +281,7 @@ def windows():
 
     front and bay name the window: "east" and "west" count the skeleton's bays 1..17 from the
     north; "north" and "south" count the end walls' bays 1..4 from the west; "apse" has -1, 0, 1
-    (north-west, west, south-west); "drum" has the sixteen small windows of the dome's drum, 0
+    (north-west, west, south-west); "drum" has the twenty small windows of the dome's drum, 0
     looking east and counting round by the south. storey is "base", "main" or "drum". cells are
     the glass columns (x, z); inward is the step from the glass into the building; y is the
     glass's (bottom, top).
@@ -291,6 +291,20 @@ def windows():
     a window is on the canvas (facade.windows() lists it)."""
     from . import facade
     return facade.table()
+
+
+def doors():
+    """Every doorway of the shell, for whoever hangs leaves, gates and canopies in them:
+    [dict(front, bay, cells, inward, y, arch, kind)].
+
+    front and bay as in windows(). cells are the columns of the wall line the doorway goes through
+    (x, z); inward is the step into the building, so the glass plane, where a leaf hangs, is cells
+    plus inward; y is the doorway's (bottom, top); arch says whether its two top corners are
+    rounded like a great window's; kind is "door" where people walk through and "gate" where an
+    iron gate closes the arch. These are the doorways main/facade.py cuts, in the version of the
+    entrance that is built (facade.doors(version) gives the others)."""
+    from . import facade
+    return facade.doors()
 
 
 def plan_windows():
