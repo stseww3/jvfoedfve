@@ -49,6 +49,7 @@ VERSION = "a"       # the rough stone jointed all round; obs_mat_ashlar_b is the
 
 WALLS = (("rough", B.ASHLAR_ROUGH), ("fine", B.ASHLAR_FINE), ("panel", B.ASHLAR_PANEL), ("emblem", B.ASHLAR_EMBLEM))
 WALL, PITCH = 8, 10     # a wall is WALL by WALL; x from one wall to the next
+FLIGHT = 5              # the steps of the flight, and the length of the coping run beside it
 
 
 def walls(c, x, z):
@@ -88,19 +89,24 @@ def coursed(c, x, z):
 
 
 def flight(c, x, z):
-    """A flight of fine stairs climbing north and a coping run beside it, to be read from straight
-    above: the treads (fine) and the copings (fine, and a rough one to compare) carry no bed joint."""
-    for i in range(5):                                  # the flight, each step up and one north
-        zz = z - i
+    """A flight of fine stairs climbing north and a coping run beside it. Read from straight above,
+    the treads (fine) and the copings (fine, and a rough one to compare) carry no bed joint; from
+    the foot they are seen as someone about to climb them sees them.
+
+    The stage is laid first and the flight over it, in front of the backdrop. The first board ran
+    the flight north from z and laid the stage after it: the backdrop, two behind, stood across
+    the third step, and of five steps two were to be seen."""
+    _board.stage(c, x, x + 5, z, height=7)
+    for i in range(FLIGHT):                             # the flight, each step up and one north
+        zz = z + FLIGHT - 1 - i
         for dx in (0, 1):
-            c.set(x + dx, i, zz, st(B.ASHLAR_FINE.stairs, facing="south"))
+            c.set(x + dx, i, zz, st(B.ASHLAR_FINE.stairs, facing="north"))
         if i:
             c.box(x, 0, zz, x + 1, i - 1, zz, B.ASHLAR_FINE.block)
-    c.box(x + 3, 0, z - 4, x + 4, 1, z, B.ASHLAR_FINE.block)             # a low wall to cap
-    for dz in range(5):                                                  # the copings
-        c.set(x + 3, 2, z - dz, st(B.ASHLAR_FINE.slab, type="bottom"))
-        c.set(x + 4, 2, z - dz, st(B.ASHLAR_ROUGH.slab, type="bottom"))
-    _board.stage(c, x, x + 5, z, height=7)
+    c.box(x + 3, 0, z, x + 4, 1, z + FLIGHT - 1, B.ASHLAR_FINE.block)    # a low wall to cap
+    for dz in range(FLIGHT):                                             # the copings
+        c.set(x + 3, 2, z + dz, st(B.ASHLAR_FINE.slab, type="bottom"))
+        c.set(x + 4, 2, z + dz, st(B.ASHLAR_ROUGH.slab, type="bottom"))
     return x + 7
 
 
@@ -268,9 +274,11 @@ def shots():
                 "time": TIME})
 
     xf = spans["flight"][0]
-    out.append({"name": "flight_treads", "pos": [xf + 1.0, 7.5, Z + 3.0], "look_at": [xf + 1.0, 1.0, Z - 3.0],
+    # the treads and the copings from straight above, where a joint on an end would show; and the
+    # flight from its foot at eye height: treads, risers and the coping run in the one view
+    out.append({"name": "flight_treads", "pos": [xf + 2.5, 9.0, Z + 2.9], "look_at": [xf + 2.5, 0.0, Z + 2.5],
                 "time": TIME})
-    out.append({"name": "flight_copings", "pos": [xf + 3.5, 6.5, Z + 2.5], "look_at": [xf + 3.5, 1.5, Z - 2.0],
+    out.append({"name": "flight_foot", "pos": [xf + 2.4, 1.6, Z + 8.2], "look_at": [xf + 2.2, 2.2, Z + 2.0],
                 "time": TIME})
 
     xp = spans["paved"][0] + WALL + 1.0                         # between the two paved fields
