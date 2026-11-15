@@ -480,7 +480,7 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
         for x in range(X0, X1 + 1):
             put(x, TOP, z, st(roles.IRON_RIVETED.slab, type="top"))
     for x in BEAM_X:
-        for z in range(Z0, Z1 + 1):
+        for z in range(Z0, Z1):          # the last row is the bookcase's: it stands from z 25.625 on
             put(x, TOP, z, st(roles.IRON_RIVETED.slab, type="top"))
 
     # the bookcase wall, and the ladder on its rail
