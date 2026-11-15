@@ -763,7 +763,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
     # ---------------------------------------------------------------- 消息读取、发送、在线编辑与删除
 
     @app.get("/web/api/convs/{conv_id}/messages")
-    async def web_get_messages(conv_id: str, request: Request, limit: int = 120, before_id: int = 0) -> JSONResponse:
+    async def web_get_messages(
+        conv_id: str,
+        request: Request,
+        limit: int = 120,
+        before_id: int = 0,
+        channel: str = "all",
+    ) -> JSONResponse:
         user = _current_web_user(store, request)
         if user is None:
             return JSONResponse({"ok": False, "error": "未登录"}, status_code=401)
@@ -773,37 +779,138 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             return JSONResponse({"ok": False, "error": "无权查看该会话"}, status_code=403)
 
         lim = max(1, min(int(limit), 300))
-        if cid in ("ctrl", "main") and _is_zwt(user):
-            if before_id > 0:
-                rows = list(reversed(store.q("SELECT * FROM messages WHERE conv IN ('ctrl','main') AND id<? ORDER BY id DESC LIMIT ?", (before_id, lim))))
-            else:
-                rows = list(reversed(store.q("SELECT * FROM messages WHERE conv IN ('ctrl','main') ORDER BY id DESC LIMIT ?", (lim,))))
-        else:
-            if before_id > 0:
-                rows = list(reversed(store.q("SELECT * FROM messages WHERE conv=? AND id<? ORDER BY id DESC LIMIT ?", (cid, before_id, lim))))
-            else:
-                rows = list(reversed(store.q("SELECT * FROM messages WHERE conv=? ORDER BY id DESC LIMIT ?", (cid, lim))))
+        ka_mark = getattr(bridge, "KEEPALIVE_MARK", '{"keepalive": true}')
 
+        # 避免把旧版 main 的历史孤儿告警混进独立总控 ctrl；仅当 ctrl 尚无任何记录时才回退兼容
+        if cid == "ctrl" and _is_zwt(user):
+            has_ctrl_own = store.one(
+                "SELECT 1 AS ok FROM messages WHERE conv='ctrl' AND IFNULL(extra,'') != ? LIMIT 1",
+                (ka_mark,),
+            )
+            if has_ctrl_own is None:
+                conv_clause = "conv IN ('ctrl','main')"
+                conv_params: tuple[Any, ...] = ()
+            else:
+                conv_clause = "conv=?"
+                conv_params = ("ctrl",)
+        else:
+            conv_clause = "conv=?"
+            conv_params = (cid,)
+
+        counts = {"human": 0, "agent_dm": 0, "agent_group": 0, "system": 0, "collab": 0, "all": 0}
+        for cr in store.q(
+            f"SELECT IFNULL(chat_type,'private') AS ct, COUNT(*) AS n FROM messages "
+            f"WHERE {conv_clause} AND IFNULL(extra,'') != ? GROUP BY ct",
+            (*conv_params, ka_mark),
+        ):
+            ct = cr["ct"] or "private"
+            cnt = int(cr["n"] or 0)
+            if ct in ("private", "group", "supergroup", "channel"):
+                counts["human"] += cnt
+            elif ct == "agent_dm":
+                counts["agent_dm"] += cnt
+            elif ct == "agent_group":
+                counts["agent_group"] += cnt
+            else:
+                counts["system"] += cnt
+        counts["collab"] = counts["agent_dm"] + counts["agent_group"]
+        counts["all"] = counts["human"] + counts["collab"] + counts["system"]
+
+        ch = (channel or "all").strip().lower()
+        if ch == "human":
+            ch_sql = "AND IFNULL(chat_type,'private') IN ('private','group','supergroup','channel')"
+        elif ch == "collab":
+            ch_sql = "AND chat_type IN ('agent_dm','agent_group')"
+        elif ch == "agent_dm":
+            ch_sql = "AND chat_type='agent_dm'"
+        elif ch == "agent_group":
+            ch_sql = "AND chat_type='agent_group'"
+        elif ch == "system":
+            ch_sql = "AND IFNULL(chat_type,'private') NOT IN ('private','group','supergroup','channel','agent_dm','agent_group')"
+        else:
+            ch = "all"
+            ch_sql = ""
+
+        if before_id > 0:
+            raw_rows = store.q(
+                f"SELECT * FROM messages WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} AND id<? "
+                f"ORDER BY id DESC LIMIT ?",
+                (*conv_params, ka_mark, int(before_id), lim + 1),
+            )
+        else:
+            raw_rows = store.q(
+                f"SELECT * FROM messages WHERE {conv_clause} AND IFNULL(extra,'') != ? {ch_sql} "
+                f"ORDER BY id DESC LIMIT ?",
+                (*conv_params, ka_mark, lim + 1),
+            )
+        has_more = len(raw_rows) > lim
+        rows = list(reversed(raw_rows[:lim]))
+
+        conv_disp_name = bridge.conv_name(conv)
         msgs = []
         for r in rows:
             if bridge.is_keepalive(r):
                 continue
-            f_meta = _serialize_file(store, r["file_id"] or "") or _extract_outbox_file(r["text"] or "", r["extra"] or "")
+            raw_txt = r["text"] or ""
+            files_list: list[dict[str, Any]] = []
+            seen_fids: set[str] = set()
+            primary_f = _serialize_file(store, r["file_id"] or "") or _extract_outbox_file(raw_txt, r["extra"] or "")
+            if primary_f:
+                files_list.append(primary_f)
+                seen_fids.add(primary_f["file_id"])
+            if raw_txt:
+                for m_fid in re.findall(r"\b(f_[0-9a-f]{8,16})\b", raw_txt):
+                    if m_fid not in seen_fids:
+                        extra_f = _serialize_file(store, m_fid)
+                        if extra_f:
+                            files_list.append(extra_f)
+                            seen_fids.add(m_fid)
+            f_meta = files_list[0] if files_list else None
+
+            ctype = r["chat_type"] or "private"
+            ctitle = r["chat_title"] or ""
+            uname = r["user_name"] or ""
+            is_out = bool(int(r["outgoing"] or 0))
+            if ctype in ("private", "group", "supergroup", "channel"):
+                msg_channel = "human"
+                peer_label = ctitle if ctype in ("group", "supergroup") and ctitle else ("Web" if ctitle == "Web控制台" else "Telegram")
+                sender_display = (uname or conv_disp_name) if is_out else (uname or "用户")
+            elif ctype == "agent_dm":
+                msg_channel = "agent_dm"
+                peer_label = (ctitle or "其他Agent") if is_out else (uname or ctitle.removeprefix("来自 ").strip() or "Agent")
+                sender_display = f"我 → {peer_label}" if is_out else f"{peer_label} → 我"
+            elif ctype == "agent_group":
+                msg_channel = "agent_group"
+                peer_label = ctitle.split(" 成员:")[0].strip() if ctitle else "协作群"
+                sender_display = f"{uname or conv_disp_name}" if is_out else (uname or "群成员")
+            else:
+                msg_channel = "system"
+                peer_label = "标准单据" if "[STANDARD_OP" in raw_txt else ("重开档案" if "全量上下文档案" in raw_txt else "系统通知")
+                sender_display = uname or "系统"
+
             msgs.append({
                 "id": r["id"],
                 "ts": float(r["ts"] or 0),
                 "chat_id": int(r["chat_id"] or 0),
-                "chat_type": r["chat_type"] or "private",
-                "user_name": r["user_name"] or "",
-                "text": r["text"] or "",
-                "outgoing": bool(int(r["outgoing"] or 0)),
+                "chat_type": ctype,
+                "chat_title": ctitle,
+                "channel": msg_channel,
+                "peer_label": peer_label,
+                "sender_display": sender_display,
+                "user_name": uname,
+                "text": raw_txt,
+                "outgoing": is_out,
                 "delivered": bool(int(r["delivered"] if r["delivered"] is not None else 1)),
                 "tg_msg_id": int(r["tg_msg_id"] or 0),
                 "file": f_meta,
+                "files": files_list,
             })
         return JSONResponse({
             "ok": True,
             "conv": _serialize_conv(bridge, conv),
+            "channel": ch,
+            "channel_counts": counts,
+            "has_more": has_more,
             "messages": msgs,
         })
 
@@ -958,17 +1065,25 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                 mnt = json.loads(r["mentions"] or "[]")
             except Exception:
                 mnt = []
-            # 解析是否附带 [文件 f_xxx ...]
-            f_hit = re.search(r"\b(f_[0-9a-f]{8,16})\b", r["text"] or "")
-            f_meta = _serialize_file(store, f_hit.group(1)) if f_hit else None
+            raw_gtxt = r["text"] or ""
+            g_files: list[dict[str, Any]] = []
+            seen_gf: set[str] = set()
+            for m_fid in re.findall(r"\b(f_[0-9a-f]{8,16})\b", raw_gtxt):
+                if m_fid not in seen_gf:
+                    gf = _serialize_file(store, m_fid)
+                    if gf:
+                        g_files.append(gf)
+                        seen_gf.add(m_fid)
+            f_meta = g_files[0] if g_files else None
             msgs.append({
                 "id": r["id"],
                 "sender_conv": r["sender_conv"] or "",
                 "sender_name": r["sender_name"] or r["sender_conv"] or "",
-                "text": r["text"] or "",
+                "text": raw_gtxt,
                 "mentions": mnt if isinstance(mnt, list) else [],
                 "ts": float(r["ts"] or 0),
                 "file": f_meta,
+                "files": g_files,
             })
         return JSONResponse({
             "ok": True,
@@ -1031,8 +1146,26 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
         )
         header_title = f"{bridge.group_tag(grow)} 成员:{','.join(mems)}"
         for m_cid in mems:
-            # 若带了文件，给群内成员自动共享读取或已设 conv=''
-            for fid in file_ids:
+            if file_ids:
+                for idx, fid in enumerate(file_ids):
+                    is_last = idx == len(file_ids) - 1
+                    bridge.post(
+                        m_cid,
+                        conv=m_cid,
+                        chat_id=0,
+                        chat_type="agent_group",
+                        chat_title=header_title,
+                        user_id=0,
+                        user_name=sender_label,
+                        text=full_text if is_last else "",
+                        file_id=fid,
+                        mention=int(m_cid in wake_set),
+                        outgoing=0,
+                        delivered=1,
+                        sender="web_admin",
+                        wake=(1 if m_cid in wake_set else 0) if is_last else 0,
+                    )
+            else:
                 bridge.post(
                     m_cid,
                     conv=m_cid,
@@ -1041,29 +1174,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
                     chat_title=header_title,
                     user_id=0,
                     user_name=sender_label,
-                    text="",
-                    file_id=fid,
+                    text=full_text,
                     mention=int(m_cid in wake_set),
                     outgoing=0,
                     delivered=1,
                     sender="web_admin",
-                    wake=0,
+                    wake=1 if m_cid in wake_set else 0,
                 )
-            bridge.post(
-                m_cid,
-                conv=m_cid,
-                chat_id=0,
-                chat_type="agent_group",
-                chat_title=header_title,
-                user_id=0,
-                user_name=sender_label,
-                text=full_text,
-                mention=int(m_cid in wake_set),
-                outgoing=0,
-                delivered=1,
-                sender="web_admin",
-                wake=1 if m_cid in wake_set else 0,
-            )
         return JSONResponse({"ok": True, "id": gm_id, "woke": sorted(wake_set)})
 
     @app.patch("/web/api/group-messages/{gm_id}")

@@ -74,7 +74,7 @@ async def run_core_tests() -> dict[str, str]:
     res_list = await bridge.call_tool("list_agents", {"agent": main_id})
     txt_list = text_of(res_list)
     assert "[主控] 三句：" in txt_list, f"Missing [主控] 三句 in main footer: {txt_list}"
-    assert "run_in_background=true 是唯一防卡死关键" in txt_list
+    assert "记得带 run_in_background=true 防阻塞" in txt_list
 
     # 2. Create c1 & c2 for admin, and c3 for external user (owner isolation test)
     res_c1 = await bridge.call_tool("create_chat", {"agent": main_id, "brief": "负责网关重构", "name": "网关组"})
@@ -172,10 +172,10 @@ async def run_core_tests() -> dict[str, str]:
     assert not spawn_res.is_error, text_of(spawn_res)
     assert "c4" in text_of(spawn_res)
 
-    # Verify Main received strict 100%-obey instruction + [主控] 三句 in read_chat!
+    # Verify Main received calm spawn instruction + admin-override clause + [主控] 三句 in read_chat!
     main_inbox = text_of(await bridge.call_tool("read_chat", {"agent": main_id, "wait_sec": 0}))
-    assert "【强制派生指令】" in main_inbox
-    assert "主控必须 100% 完全按照该子 agent 的要求执行" in main_inbox
+    assert "【派生请求】" in main_inbox
+    assert "以管理员指令为准" in main_inbox
     assert "claude-4.5-opus" in main_inbox
     assert "已完成网关鉴权改造" in main_inbox
     assert "[主控] 三句：" in main_inbox
@@ -443,7 +443,7 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         ))
         # (a) When c2 calls ANY non-read_chat MCP tool (e.g. local_status / local_read), bridge directly injects urgent unread banner!
         mcp_any_out = text_of(asyncio.run(bridge.call_tool("local_status", {"agent": ids["a2"]})))
-        assert "🚨【最高优先级实时消息插播" in mcp_any_out and "紧急通知：迁移前请先备份 users 表！" in mcp_any_out
+        assert "📬【收件箱提醒" in mcp_any_out and "紧急通知：迁移前请先备份 users 表！" in mcp_any_out
         # (b) And when c2 runs local VM Shell, both preToolUse and postToolUse inject metadata-only hook context!
         shell_pre = fire_hook({
             "hook_event_name": "preToolUse",

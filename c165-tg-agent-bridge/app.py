@@ -71,7 +71,7 @@ def env_int(name: str, default: int) -> int:
 TG_TOKEN = os.environ.get("TG_TOKEN", "").strip()
 TG_API_BASE = os.environ.get("TG_API_BASE", "https://api.telegram.org").rstrip("/")
 PUBLIC_BASE = os.environ.get("PUBLIC_BASE", "http://127.0.0.1:8787").rstrip("/")
-DEFAULT_CURSOR_ENV_ID = os.environ.get("CURSOR_ENVIRONMENT_ID", "835bda67-e0d7-11f1-8120-06b44be262b7").strip()
+DEFAULT_CURSOR_ENV_ID = (os.environ.get("CURSOR_ENVIRONMENT_ID") or "835bda67-e0d7-11f1-8120-06b44be262b7").strip()
 CLIENT_TOKEN = os.environ.get("CLIENT_TOKEN", "")
 ADMIN_CODE = os.environ.get("ADMIN_CODE", "")
 DATA = (ROOT / os.environ.get("DATA_DIR", "data")).resolve()
@@ -2377,10 +2377,9 @@ def ctrl_task_text(code: str) -> str:
 
 
 def cursor_env_id() -> str:
-    raw = store.get("cursor_environment_id")
-    if raw is not None:
-        val = raw.strip()
-        return "" if val.lower() in ("", "off", "none", "false", "shared") else val
+    raw = (store.get("cursor_environment_id") or "").strip()
+    if raw:
+        return "" if raw.lower() in ("off", "none", "false", "shared") else raw
     return DEFAULT_CURSOR_ENV_ID
 
 

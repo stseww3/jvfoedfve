@@ -91,17 +91,33 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert bad_join2.is_error and "缺少有效的任务码 code" in text_of(bad_join2)
     assert ADMIN_NOTICES == [], f"False admin popup leaked on empty join: {ADMIN_NOTICES}"
 
-    # 2. Verify dais_runtime.pyz compiled bytecode bundle works without .py source!
+    # 2. Verify dais_runtime.pyz compiled bytecode bundle works without .py source, has no plaintext IP, and self-heals hooks.json!
+    pyz_ext = bridge.build_runtime_pyz("http://198.51.100.42:8787")
+    assert b"198.51.100.42" not in pyz_ext, "Plaintext IP leaked in compressed dais_runtime.pyz!"
     pyz_bytes = bridge.build_runtime_pyz()
     assert len(pyz_bytes) > 500 and pyz_bytes.startswith(b"#!/usr/bin/env python3\nPK")
     pyz_file = TMP_ROOT / "dais_runtime.pyz"
     pyz_file.write_bytes(pyz_bytes)
     pyz_file.chmod(0o755)
-    env = dict(os.environ, HOME=str(HOME_DIR))
+    env = dict(os.environ, HOME=str(HOME_DIR), DAIS_SKIP_RELOAD="1")
     inst = subprocess.run([sys.executable, str(pyz_file), "install", "http://127.0.0.1:18797"], env=env, capture_output=True, text=True, check=True)
     assert "dais_runtime.pyz" in inst.stdout
-    hooks_cfg = json.loads((HOME_DIR / ".cursor" / "hooks.json").read_text(encoding="utf-8"))
+    assert not (HOME_DIR / ".cursor" / "agent_trace_config.json").exists()
+    hooks_path = HOME_DIR / ".cursor" / "hooks.json"
+    hooks_cfg = json.loads(hooks_path.read_text(encoding="utf-8"))
     assert "subagentStop" in hooks_cfg["hooks"] and "preToolUse" in hooks_cfg["hooks"]
+    # Simulate accidental wipe of hooks.json and verify self-healing via subagentStart hook
+    hooks_path.write_text("{}", encoding="utf-8")
+    subprocess.run(
+        [sys.executable, str(HOME_DIR / ".cursor" / "dais_runtime.pyz"), "hook"],
+        input=json.dumps({"hook_event_name": "subagentStart", "conversation_id": "cid-heal-1"}),
+        env=env,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    healed_cfg = json.loads(hooks_path.read_text(encoding="utf-8"))
+    assert "subagentStop" in healed_cfg["hooks"] and "preToolUse" in healed_cfg["hooks"]
     pid_f = HOME_DIR / ".cursor" / "agent_trace_daemon.pid"
     if pid_f.exists():
         try:
@@ -387,6 +403,22 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     )
     assert not grp_res.is_error
 
+    # Verify cross-VM file transfer between c1 and c3 / g1 + default isolated VM param + ctrl default model
+    assert bridge.conv_row("ctrl")["model"] == "deepseek max"
+    assert '"environment_id"' in bridge.task_machine_param_line(True)
+    sf_dm = await bridge.call_tool(
+        "send_file",
+        {"agent": a1_new, "filename": "mesh.obj", "text": "v 0 0 0\nv 1 0 0\n", "to_agent": "c3", "caption": "网格产物"},
+    )
+    assert not sf_dm.is_error and "f_" in text_of(sf_dm)
+    c3_ag_curr = bridge.conv_row("c3")["agent"]
+    c3_inbox = text_of(await bridge.call_tool("read_chat", {"agent": c3_ag_curr, "wait_sec": 0}))
+    assert "mesh.obj" in c3_inbox and "网格产物" in c3_inbox
+    import re as _re360
+    fid_hit = _re360.search(r"(f_[0-9a-f]+)", c3_inbox).group(1)
+    gf_inline = await bridge.call_tool("get_file", {"agent": c3_ag_curr, "file_id": fid_hit, "inline": True})
+    assert not gf_inline.is_error and "v 0 0 0" in text_of(gf_inline)
+
     return {"ctrl": ctrl_ag, "c1": "c1", "c3": "c3"}
 
 
@@ -474,6 +506,12 @@ def run_web_console_tests() -> None:
         assert g1_post["ok"] and g1_post["woke"] == ["c3"]
         g1_view = client.get("/web/api/groups/g1/messages").json()
         assert any("请 c3 重点核对高光反射" in m["text"] for m in g1_view["messages"])
+
+        # Verify channel filtering & channel_counts on /web/api/convs/c1/messages
+        c1_all = client.get("/web/api/convs/c1/messages?channel=all").json()
+        assert c1_all["ok"] and "channel_counts" in c1_all and c1_all["channel_counts"]["human"] >= 1
+        c1_human = client.get("/web/api/convs/c1/messages?channel=human").json()
+        assert c1_human["ok"] and all(m["channel"] == "human" for m in c1_human["messages"])
 
         # 7. Strict zwt-only User Management verification!
         sub_pw = "AlicePass_123"
