@@ -57,12 +57,15 @@ CANVAS = P.mat("cream_cloth", base=1)
 SEAM = K.flat("cream", 0)
 PAPER = K.flat("cream", 2)                        # a clean sheet: no speckle to be taken for pencil
 PENCIL, INK, LABEL = P.RAMPS["cream"][0], P.RAMPS["iron"][2], P.RAMPS["cream"][1]
-GLINT = P.RAMPS["porcelain"][4]
 
 LEAN = 10.0                     # degrees a bench's back leans
 TILT = 40.0                     # degrees the drafting board is tilted
 RAIL_Y = 44.5 / 16.0            # the ladder rail's height above the floor the ladder stands on
 RAIL_OUT = 1.0 / 16.0           # and how far its centre is off the bookcase front
+# The bookcase a ladder leans on is the room's own (interiors/chartroom has one). What it keeps to,
+# so that ladder, rail and cabinets fit it: this deep off the wall, the top of its plinth 4 texels
+# up like the cabinets', a rail board from 43 to 46 for the rail to be fixed to, a cornice above.
+SHELF_DEPTH = 6.0 / 16.0
 
 # what is pinned to the drafting board: a chart of a hemisphere, begun (pencil circle, inked stars,
 # a few ruled ticks beside it; no writing). The last row lies under the straightedge.
@@ -168,25 +171,6 @@ def _feet(m, x, z, height=2.0):
     return m
 
 
-PANE = {"u": (0, 2), "n": (0, 1), "s": (0, 1), "e": (2, 1), "w": (2, 1)}     # the axes across and down a face
-STROKES = ((3, 1), (2, 2), (1, 3), (4, 3), (3, 4))                           # two short strokes, never crossing
-
-
-def _pane(m, lo, hi, face):
-    """A pane of glass on the face `face` of the thin box lo..hi. The glass itself is left out: what
-    says it is there is its glint, two short strokes of white in the pane's upper corner (the far
-    left corner of a pane that lies flat)."""
-    across, down = PANE[face]
-    w, h = int(round(hi[across] - lo[across])), int(round(hi[down] - lo[down]))
-    rows = [["."] * w for _ in range(h)]
-    for i, j in STROKES:
-        if i < w and j < h:
-            rows[j][i] = "g"
-    glint = Sprite(f"furn_glint_{w}x{h}", ["".join(row) for row in rows], {"g": GLINT})
-    m.box(lo, hi, BRASS, skip="".join(f for f in "nsewud" if f != face), faces={face: glint})
-    return m
-
-
 # ---- the pieces -------------------------------------------------------------------------------------
 def _bench():
     m = M.Model(PREFIX + "bench")
@@ -251,7 +235,7 @@ def _display_table():
     for x0 in bars:
         m.box((x0, 15.0, -6.0), (x0 + 1.0, 16.0, 6.0), BRASS, grain="z")
     for x0, x1 in ((-14.0, -5.0), (-4.0, 4.0), (5.0, 14.0)):
-        _pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u")
+        K.pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u")
     return m
 
 
@@ -353,7 +337,7 @@ def _instrument_cabinet():
     m.box((-6.0, 27.0, 5.0), (6.0, 28.0, 6.0), WOOD_D, grain="x")
     _pull(m, 0.0, 20.5, 6.0)
     for x0 in (-6.0, 1.0):
-        _pane(m, (x0, 13.0, 5.5), (x0 + 5.0, 27.0, 5.75), "s")
+        K.pane(m, (x0, 13.0, 5.5), (x0 + 5.0, 27.0, 5.75), "s")
     _boarded(m, (-7.5, 28.0, -6.5), (7.5, 30.0, 6.5), WOOD_D)
     # on the shelves: eyepieces in brass, a cased lens, a porcelain jar
     for x, top in ((-4.5, 16.0), (-2.5, 15.0)):
@@ -465,11 +449,11 @@ def _display_case():
         m.box((x0, 20.0, -6.0), (x0 + 1.0, 21.0, 6.0), BRASS, grain="z")
     for z0 in (-7.0, 6.0):
         m.box((-6.0, 20.0, z0), (6.0, 21.0, z0 + 1.0), BRASS, grain="x")
-    _pane(m, (-6.0, 11.0, 6.5), (6.0, 20.0, 6.75), "s")
-    _pane(m, (-6.0, 11.0, -6.75), (6.0, 20.0, -6.5), "n")
-    _pane(m, (6.5, 11.0, -6.0), (6.75, 20.0, 6.0), "e")
-    _pane(m, (-6.75, 11.0, -6.0), (-6.5, 20.0, 6.0), "w")
-    _pane(m, (-6.0, 20.5, -6.0), (6.0, 20.75, 6.0), "u")
+    K.pane(m, (-6.0, 11.0, 6.5), (6.0, 20.0, 6.75), "s")
+    K.pane(m, (-6.0, 11.0, -6.75), (6.0, 20.0, -6.5), "n")
+    K.pane(m, (6.5, 11.0, -6.0), (6.75, 20.0, 6.0), "e")
+    K.pane(m, (-6.75, 11.0, -6.0), (-6.5, 20.0, 6.0), "w")
+    K.pane(m, (-6.0, 20.5, -6.0), (6.0, 20.75, 6.0), "u")
     return m
 
 

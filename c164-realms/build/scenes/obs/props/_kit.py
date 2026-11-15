@@ -18,6 +18,7 @@ the blocks down itself so that a test scene is lit.
 import math
 
 from artkit import models as M
+from artkit.pixelart import Sprite
 
 from ..common import blocks as B
 from ..common import palette as P
@@ -115,6 +116,29 @@ def rivet(m, p, out="z", mat=RIVET):
     lo, hi = [v - 0.5 for v in p], [v + 0.5 for v in p]
     lo[k], hi[k] = sorted((p[k], p[k] + (-0.5 if out.startswith("-") else 0.5)))
     m.box(tuple(lo), tuple(hi), mat)
+    return m
+
+
+GLINT = P.RAMPS["porcelain"][4]
+_PANE_AXES = {"u": (0, 2), "n": (0, 1), "s": (0, 1), "e": (2, 1), "w": (2, 1)}   # across and down a face
+_GLINT_STROKES = ((3, 1), (2, 2), (1, 3), (4, 3), (3, 4))                        # two short strokes that never cross
+
+
+def pane(m, lo, hi, face):
+    """A pane of clear glass on the face `face` ("n", "s", "e", "w" or "u") of the thin box lo..hi.
+
+    The glass itself is left out. What says it is there is its glint: two short strokes of white in
+    the pane's upper corner as one looks at it (the far left corner of a pane that lies flat), cut
+    out of nothing, so whatever is behind the pane shows. Every family draws clear glass this way.
+    The pane is at least five texels each way, and sits a quarter of a texel behind its frame."""
+    across, down = _PANE_AXES[face]
+    w, h = (max(1, int(round(abs(hi[i] - lo[i]) * m.px))) for i in (across, down))   # as Model.faces() sizes it
+    rows = [["."] * w for _ in range(h)]
+    for i, j in _GLINT_STROKES:
+        if i < w and j < h:
+            rows[j][i] = "g"
+    glint = Sprite(f"prop_glint_{w}x{h}", ["".join(row) for row in rows], {"g": GLINT})
+    m.box(lo, hi, BRASS, skip="".join(f for f in "nsewud" if f != face), faces={face: glint})
     return m
 
 
