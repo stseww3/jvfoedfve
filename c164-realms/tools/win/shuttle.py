@@ -3,8 +3,10 @@
 
     python bin/job.py s1 --heavy -- ../tools/win/shuttle.py --tag <commit> --out @out/real <scene> [<scene> ...]
 
-Use bin/trip.py: it runs this together with what has to happen before and after (bringing the code
-up to date, making sure the game is closed, sending the pictures back). A trip takes minutes.
+Use bin/trip.py on the admin's computer, tools/nodetrip.py on a worker node: they run this together
+with what has to happen before and after (bringing the code up to date, making sure the game is
+closed, bringing the pictures home). A trip takes minutes. The server and the game are driven
+through winmc.py on Windows and through nodemc.py elsewhere; both take the same commands.
 
 For the scenes named the trip
   1. writes the look (biomes, timelines) the scenes share into the test world and restarts the
@@ -19,11 +21,14 @@ For the scenes named the trip
   5. leaves the pictures in <out>/<tag>/<scene>/<shot>.png and, ready to be sent, in
      <out>/<tag>/send/ as <scene>-<tag>-<shot>.jpg beside a note <scene>-<tag>-real.txt that says
      for every shot its tick, the commit of the code it shows and the first 16 digits of the
-     picture file's SHA-256 (tools/realshots.py reads it on the cloud machine).
+     picture file's SHA-256, and in its heading the distances the game drew at (the client's
+     render distance, the server's view distance, the cloud range). tools/realshots.py reads it.
 
     --project <dir>          the c164-realms whose scenes are shot (default: the one this file is in).
                              The station's own tools stay the ones beside this file, so a branch
                              that carries older tools, or none, can be shot all the same
+    --commit <commit>        the commit the note names as the code the pictures show (default: the
+                             one the project's checkout stands on)
     --shots <scene>=<file>   another shot list for a scene (default: scenes/<scene>/shots.json; a
                              relative path is taken from the project's build/). The word "board" is
                              the twelve board views, worked out from the project's skeleton by
@@ -37,6 +42,8 @@ For the scenes named the trip
     --no-shoot               everything but the game: place and write the pack
     --keep-client            leave the game running at the end (only with the owner's consent)
     --settle, --first-settle seconds to wait before a picture, and before a scene's first one
+    --still <seconds>        after that wait every picture is taken again until two in a row are
+                             alike, this long at most (shoot.py; for a machine that draws slowly)
 
 Exit code: 0 all pictures taken; 3 not enough free video memory, nothing was started; 1 otherwise.
 """
@@ -47,6 +54,7 @@ import hashlib
 import importlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -96,7 +104,8 @@ def run(script, *args, check=True, env=None):
 
 
 def winmc(command, check=True):
-    return run(os.path.join(TOOLS, "winmc.py"), command, check=check)
+    """A command to the station's server and game: winmc.py on Windows, nodemc.py on a worker node."""
+    return run(os.path.join(TOOLS, "winmc.py" if os.name == "nt" else "nodemc.py"), command, check=check)
 
 
 def world():
@@ -282,7 +291,35 @@ def gallery(scene, at, work):
     return path, bays
 
 
-def to_send(scene, tag, commit, at, shots, target, send, some):
+def distances():
+    """The distances the game draws at, as its own files give them: "render distance 12, server
+    view distance 12, cloud range 128"; "?" where a file does not say."""
+    def find(path, pattern):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                m = re.search(pattern, fh.read(), re.M)
+        except OSError:
+            return "?"
+        return m.group(1) if m else "?"
+    options = os.path.join(GAME, "options.txt")
+    client = find(options, r"^renderDistance:(\d+)")
+    server = find(os.path.join(SERVER, "server.properties"), r"^view-distance=(\d+)")
+    clouds = find(options, r"^cloudRange:(\d+)")
+    return f"render distance {client}, server view distance {server}, cloud range {clouds}"
+
+
+def how_made(*said):
+    """How the pictures were made, from what shoot.py said of them (its closing line)."""
+    game = off = 0
+    for text in said:
+        for a, b in re.findall(r"^pictures: (\d+) saved by the game itself, (\d+) taken off the display\s*$", text, re.M):
+            game, off = game + int(a), off + int(b)
+    if off and game:
+        return f"{game} of the game's own screenshots and {off} pictures taken off the client's display"
+    return "pictures taken off the client's display" if off else "the game's own screenshots"
+
+
+def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's own screenshots"):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
     some of the scene's shots were taken, what an earlier trip under this tag left stays."""
@@ -319,7 +356,8 @@ def to_send(scene, tag, commit, at, shots, target, send, some):
     head = ["# real-machine pictures (tools/win/shuttle.py): shot, tick, commit of the code the picture shows, "
             "first 16 of the picture file's sha256",
             f"# scene {scene}, tag {tag}, plot {at[0]} {at[1]} {at[2]}, taken "
-            f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}, the game's own screenshots as JPEG {JPEG_QUALITY}"]
+            f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}, {how} as JPEG {JPEG_QUALITY}",
+            f"# distances: {distances()}"]
     with open(note, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(head + list(rows.values())) + "\n")
     return len(rows)
@@ -347,6 +385,7 @@ def main():
     ap.add_argument("--tag", required=True, help="names the pictures: the commit they show, seven digits")
     ap.add_argument("--out", required=True)
     ap.add_argument("--project", default=os.path.dirname(TOOLS), help="the c164-realms whose scenes are shot")
+    ap.add_argument("--commit", help="the commit the note names (default: the project's checkout's)")
     ap.add_argument("--shots", action="append", default=[], metavar="SCENE=FILE")
     ap.add_argument("--only", action="append", default=[], metavar="SCENE=A,B")
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
@@ -356,6 +395,7 @@ def main():
     ap.add_argument("--keep-client", action="store_true")
     ap.add_argument("--settle", type=float, default=4.0)
     ap.add_argument("--first-settle", type=float, default=12.0)
+    ap.add_argument("--still", type=float, default=0.0)
     args = ap.parse_args()
 
     project = os.path.abspath(args.project)
@@ -376,7 +416,7 @@ def main():
     # a scene that is only a set of models (no shot list, a gallery asked for) is not placed
     models_only = {scene for scene in args.gallery if scene not in lists and scene != MASTER
                    and not os.path.exists(os.path.join(BUILD, "scenes", scene, "shots.json"))}
-    commit = commit_of(os.path.dirname(project))
+    commit = args.commit or commit_of(os.path.dirname(project))
     out = os.path.join(os.path.abspath(args.out), args.tag)
     send = os.path.join(out, "send")
     work = os.path.join(os.path.abspath(args.out), "_trip")
@@ -462,20 +502,21 @@ def main():
             target = os.path.join(out, scene)
             if scene not in only:
                 shutil.rmtree(target, ignore_errors=True)
-            code = 0
+            code, said, said_too = 0, "", ""
             if shots_file:
                 say(f"shooting {scene}: {len(shots)} shots of {shown(shots_file)}")
-                code, _ = run(os.path.join(TOOLS, "shoot.py"), shots_file,
+                code, said = run(os.path.join(TOOLS, "shoot.py"), shots_file,
                               "--pw-file", os.path.join(SERVER, ".rcon_pw"),
                               "--out", target, "--origin", *at, "--settle", args.settle,
-                              "--first-settle", args.first_settle,
+                              "--first-settle", args.first_settle, "--still", args.still,
                               *(["--only", ",".join(only[scene])] if scene in only else []), check=False)
             if scene in args.gallery:
                 bays_file, bays = gallery(scene, at, work)
                 say(f"shooting {scene}'s gallery: {len(bays)} bays")
-                again, _ = run(os.path.join(TOOLS, "shoot.py"), bays_file,
+                again, said_too = run(os.path.join(TOOLS, "shoot.py"), bays_file,
                                "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--out", target,
-                               "--settle", args.settle, "--first-settle", args.first_settle, check=False)
+                               "--settle", args.settle, "--first-settle", args.first_settle,
+                               "--still", args.still, check=False)
                 code, shots = code or again, shots + bays
             got = len([s for s in shots if os.path.exists(os.path.join(target, s["name"] + ".png"))])
             taken[scene] = (got, len(shots))
@@ -483,7 +524,7 @@ def main():
                 failed.append(f"{scene}: {got} of {len(shots)} pictures")
             # ---- 5. ready to be sent ----
             if got:
-                to_send(scene, args.tag, commit, at, shots, target, send, scene in only)
+                to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too))
     except Stop as stop:
         say(f"stopped: {stop}")
         failed.append(str(stop))
