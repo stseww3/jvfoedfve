@@ -7,7 +7,8 @@ in a hopper, a sleeve, a plate on a wall or a grating, a bend or a fitting, neve
 
 Two materials, both the palette's:
 
-    old copper   rainwater: the downpipe (3 px), its hopper head, clips and sleeves.
+    old copper   rainwater: the downpipe (3 px), its hopper head, clips and sleeves, a step down
+                 the ramp as the copper blocks out of doors are (COPPER_D).
                  The small pipe (2 px) of instrument and air lines, with a brass union
     iron         steam and heating: the main in two bores, "l" (6 px) and "m" (4 px), with plates,
                  flanges, bends, tees, expansion bends and stop valves; a valve's handwheel is the
@@ -71,14 +72,23 @@ GAP = 1.0               # a downpipe stands this far clear of the wall, and of t
 CLIP_EVERY = 3.0        # a downpipe is clipped about this often, in blocks
 
 
-def _tones(name):
-    """The dark, the middle and the light tone of a material, flat, around the step it is painted at."""
-    base = P.mat(name).base
+def _tones(name, base=None):
+    """The dark, the middle and the light tone of a material, flat, around the step it is painted at
+    (or around `base`)."""
+    if base is None:
+        base = P.mat(name).base
     return tuple(K.flat(name, base + d) for d in (-1, 0, 1))
 
 
+# Rainwater copper stands out of doors beside the copper blocks of the gutters, and those went down
+# a step: their plate is the ramp's step 1, its light edge 2, its dark edge and pits 0 (A0, 11-16
+# 03:15, on review 8 of materials/brass). The downpipe, its hopper, sockets and sleeves are painted
+# the same; the small pipe of instrument lines, an indoor thing, keeps the palette's own step.
+# K.COPPER_D once the kit of the assembly has it (a6: the same request of the palette).
+COPPER_D = getattr(K, "COPPER_D", P.mat("old_copper", base=1))
 IRON3 = _tones("iron")
 COPPER3 = _tones("old_copper")
+RAIN3 = _tones("old_copper", COPPER_D.base)
 RED = P.mat("signal")
 MOUTH = K.flat("old_copper", 0)         # the dark inside of a hopper
 DIAL = K.flat("cream", 3)
@@ -230,15 +240,15 @@ def _hopper(name, side):
         """r is counted from the return wall's face."""
         return side * (a - r)
 
-    light, dark = K.COPPER.variant(1), K.COPPER.variant(-1)
+    light, dark = COPPER_D.variant(1), COPPER_D.variant(-1)
     outlet = (x(4.5), 3.5)
     m.tube("y", outlet, 7.0, 8.0, 2.5, dark)
-    _even(m, "y", outlet, 4.0, 7.0, DOWN_R, COPPER3, light=(-0.6 * side, 0.0, 0.8))
+    _even(m, "y", outlet, 4.0, 7.0, DOWN_R, RAIN3, light=(-0.6 * side, 0.0, 0.8))
     m.box((x(0.0), 3.0, 0.0), (x(9.0), 5.0, 7.0), light, faces={"u": MOUTH})
-    m.box((x(0.5), -2.0, 0.0), (x(8.5), 3.0, 6.5), K.COPPER)
+    m.box((x(0.5), -2.0, 0.0), (x(8.5), 3.0, 6.5), COPPER_D)
     m.box((x(3.5), -0.5, 6.5), (x(5.5), 1.5, 7.0), light, rot=("z", 45.0, (x(4.5), 0.5, 6.75)))
     m.box((x(0.5), -4.0, 0.0), (x(6.5), -2.0, 5.0), dark)
-    m.box((x(0.5), -6.5, 0.5), (x(4.5), -4.0, 4.5), K.COPPER)
+    m.box((x(0.5), -6.5, 0.5), (x(4.5), -4.0, 4.5), COPPER_D)
     return m
 
 
@@ -504,11 +514,11 @@ def _clip(name, size):
 STANDOFF = {"l": 5.0, "m": 4.0}         # a main along a wall: its axis this far off the face, in texels
 
 SPEC = {
-    "down": dict(build=lambda: _down("down", COPPER3)),
+    "down": dict(build=lambda: _down("down", RAIN3)),
     "down_hopper_left": dict(build=lambda: _hopper("down_hopper_left", -1.0)),
     "down_hopper_right": dict(build=lambda: _hopper("down_hopper_right", 1.0)),
-    "down_clip": dict(build=lambda: _down_clip("down_clip", K.COPPER.variant(1))),
-    "down_sleeve": dict(build=lambda: _down_sleeve("down_sleeve", K.COPPER.variant(-1))),
+    "down_clip": dict(build=lambda: _down_clip("down_clip", COPPER_D.variant(1))),
+    "down_sleeve": dict(build=lambda: _down_sleeve("down_sleeve", COPPER_D.variant(-1))),
     "drain": dict(build=lambda: _down("drain", IRON3)),
     "drain_head": dict(build=_drain_head),
     "drain_clip": dict(build=lambda: _down_clip("drain_clip", K.IRON)),
@@ -727,11 +737,21 @@ def corners():
     return out
 
 
+def _inlet_cell():
+    """The grating main/facade sets where the main enters the building (facade.PIPE_INLET), or the
+    same cell off the skeleton while that package is not in the tree."""
+    try:
+        from ..main import facade
+        return tuple(facade.PIPE_INLET)
+    except (ImportError, AttributeError):
+        return (S.east_wall_x(S.N_BAYS) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH - 1)
+
+
 # Where the power house's main enters the building: the grating main/facade sets into the foot of the
-# south end pavilion's corner pier (c206: facade.PIPE_INLET, the same numbers; A0, 11-14: the pipe
-# goes into the plinth there and no riser climbs the east front). The main comes under the paving
-# from the pipe bridge (c228: nothing of site/powerhouse stands in the two cells east of the grating).
-INLET = (S.east_wall_x(S.N_BAYS) + S.DEPTH_PILASTER, S.GROUND, S.Z_SOUTH - 1)
+# south end pavilion's corner pier (A0, 11-14: the pipe goes into the plinth there and no riser climbs
+# the east front). The main comes under the paving from the pipe bridge (site/powerhouse: nothing of
+# it stands in the two cells east of the grating).
+INLET = _inlet_cell()
 INLET_GAUGE = 5.0       # along the main from the grating's face, in texels: the gauge's tapping,
 INLET_VALVE = 15.0      # and the corner of the angle valve the main comes up into
 
