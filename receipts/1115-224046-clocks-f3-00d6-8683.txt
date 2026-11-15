@@ -1,0 +1,40 @@
+a0job 1115-224046-clocks-f3-00d6-8683: cursor/c164-clocks-f3-00d6 @ 4c9f4b4f on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.85 1.79 1.63, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_clocks --only balls_pair,tower_foot,v5_up,dial_close --out renders/_wip/w9 && python tools/selfshots.py obs_mach_clocks --only master_close,v7,master_trunk,top_close --out renders/_wip/w9 && python to
+  obs_mach_clocks: light done (1 s)
+  obs_mach_clocks: v5_up (tick 14000, 1 s)
+  obs_mach_clocks: tower_foot (tick 14000, 0 s)
+  obs_mach_clocks: dial_close (tick 14000, 1 s)
+  obs_mach_clocks: balls_pair (tick 14000, 3 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/w9/obs_mach_clocks-*: 4 pictures of 4c9f4b4f drawn, 0.6 MB
+                for a look only: nothing went into renders/obs_mach_clocks/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+  obs_mach_clocks: 5185 blocks, 20 entities (0 s)
+  obs_mach_clocks: resource pack written to /tmp/c164pack-39i1wehv (1 s)
+  obs_mach_clocks: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_clocks: grid 61 x 56 x 51, 5185 blocks, 883 entity boxes (1 s)
+  obs_mach_clocks: 21 states -> 44 looks, 57 boxes, 53 pictures (1 s)
+  obs_mach_clocks: light done (1 s)
+  obs_mach_clocks: master_close (tick 14000, 2 s)
+  obs_mach_clocks: master_trunk (tick 14000, 3 s)
+  obs_mach_clocks: v7 (tick 14000, 1 s)
+  obs_mach_clocks: top_close (tick 14000, 0 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/w9/obs_mach_clocks-*: 4 pictures of 4c9f4b4f drawn, 0.6 MB
+                for a look only: nothing went into renders/obs_mach_clocks/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+  obs_mach_clocks_b: 5185 blocks, 20 entities (0 s)
+  obs_mach_clocks_b: resource pack written to /tmp/c164pack-x2y7ihfd (1 s)
+  obs_mach_clocks_b: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_clocks_b: grid 61 x 56 x 51, 5185 blocks, 883 entity boxes (1 s)
+  obs_mach_clocks_b: 21 states -> 44 looks, 57 boxes, 53 pictures (1 s)
+  obs_mach_clocks_b: light done (1 s)
+  obs_mach_clocks_b: v5_up (tick 14000, 1 s)
+  obs_mach_clocks_b: tower_foot (tick 14000, 0 s)
+  obs_mach_clocks_b: top_close (tick 14000, 0 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/w9/obs_mach_clocks_b-*: 3 pictures of 4c9f4b4f drawn, 0.4 MB
+                for a look only: nothing went into renders/obs_mach_clocks_b/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=27 host=cursor cores=4 head=4c9f4b4f commit=394f7e7d pushed=yes branch=cursor/c164-clocks-f3-00d6-wip files=13
+a0job: exit=0 secs=27
