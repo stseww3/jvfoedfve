@@ -251,3 +251,34 @@ git push -u origin cursor/c164-s1-<要合的东西>-9df7
 ```
 
 这样 S2 一看 diff 就一个文件，不用把整条分支翻一遍。合工具、脚本、公共文件时都这么做。
+
+## 16. 交接到 fable 5.2 max 的进程（11-16 01:47，总监令）
+
+管理员决定换模型，全组停手。s1（DeepSeek V4.1 Flash）交出的状态：
+
+**已经做完、在 GitHub 上的**（分支 `cursor/c164-s1-render-9df7` @ `23bd2dcf`，工作树干净、无未推提交、无 stash）：
+
+| 目录 | 是什么 |
+| --- | --- |
+| `renders/board/f1ee15b/`、`d57adf2/`、`0165a42/`、`4ef326f/`、`4974144/`、`0c2ee36/` | 六个总装头的 12 张看板离线图（各带 shots.txt）。后三个另有 `-real/` 目录：同机位真机图 + `-side.png` 左离线右真机 |
+| `renders/board/pv-de00c0e/` | 总监预览分支 `obs_pv_all` 的 17 个机位 |
+| `renders/board/comet-4ef326f/` | 彗星甲乙丙三版各 V1/V2，带 `-abc.png` 竖叠对比 |
+| `renders/board/run2-9cdada0/` | 一个游戏趟次三件事：云海接缝三版本、彗星甲对甲加（`comet-a/`、`comet-ap/`）、灯链 v1/v2（`lamps-site/`） |
+| `renders/board/cloudsea-cs1/` | 云海六组（现状 / D384 / D768 / D1536 / 着色器 / fast / false），**视距 32** |
+| `renders/board/cloudsea-cs2/` | 云海三组，**视距 12**（玩家默认，总监定的以后一律用这个） |
+| `renders/board/motion-661f42e/` | motion/loop 12 对 + load 2 对，成对拍摄、9 秒间隔 |
+| `tools/cloud_game.sh` | 一条命令把空机器装到能开游戏（**已进总装 e488d9d5**） |
+
+**这台机器上已经装好、可以直接用的**：Java 25、Mesa llvmpipe Vulkan、ImageMagick、`/agent/realms-study/.venv`、`client26`（含资源包和 `options.txt`）、`server26`（`server.properties`、`eula.txt`、`.rcon_pw`）。游戏和服务端**都是关的**，没有遗留进程。
+
+**开工前先做**：`bash tools/cloud_game.sh --check-only` 应该报 `ready`。报缺就照第 2、3 节重装。
+
+**接手时最该知道的三条**（都在这份文档里，这里再点一遍）：
+1. **视距 12、cloudRange 128**（第 13 节）。这两个数决定图能说明什么，写错了图就白拍。
+2. **摆场景要摆两次**（第 6 节）。第一次 biome 报 `0 cells set` 是正常的，重启服务端再摆一遍。
+3. **换资源包用 F3+T**，不用重启客户端（第 12 节），一次省 40 秒以上。
+
+**没做完、留给接手的**：
+- 云海 D 的最终结论：cs1（视距 32）和 cs2（视距 12）各有一组数，但总监还没在视距 12 那组上拍板。c270 量过“三个 D 在整楼机位上几乎不改接缝，主因是方块云自己的亮度 0.21 对雾的 0.30”，这条也还在总监那里。
+- 甲乙比选的彗星：总监已定甲，甲加已拍（run2-9cdada0），但没最后确认要不要换成甲加。
+- 每次【合并】对新总装头重出看板图这条常规循环，下一位接着跑。
