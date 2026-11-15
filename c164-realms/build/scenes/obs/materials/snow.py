@@ -41,6 +41,8 @@ What was tried and dropped, on flat sheets of ten by ten tiles (the card has it)
 than a mark. A soft drift to a tile reads as a grid of glyphs, thin wisps on one diagonal as rain,
 swells with hollows beside them as hammered metal.
 """
+import os
+
 import numpy as np
 
 from ..common import blocks as B
@@ -63,6 +65,14 @@ FOOT = 2            # the lowest rows of the side: what one layer shows
 CLEAN = 4           # rows of the side above the foot that carry no mark: the edge of thin snow is plain
 FOOT_RIM = 11       # pixels of the lowest row that take the darkest step, in runs
 FOOT_FIELD = 5      # pixels of the row above it that stay the field's step, in runs
+
+
+# TRIAL (not for delivery): C164_SNOW_TRY picks how the sides are lit, so that one commit draws every candidate.
+#   ""  1 to 4 layers lit like the top, 5 to 7 like a north face (what the last commit has)
+#   n   every side lit like a north face
+#   r   the foot (the lowest two pixels) lit like a north face, the side above it like the top
+#   p   as r, and the side above the foot painted a step darker than the top
+_TRY = os.environ.get("C164_SNOW_TRY", "")
 
 
 def _wrapped(d):
@@ -122,6 +132,9 @@ def _side(rng):
     lv = np.full((TILE, TILE), FIELD, dtype=np.int32)
     marked = TILE - FOOT - CLEAN
     lv[:marked] = _field(rng, marked, SIDE_MARKS)
+    if _TRY == "p":     # TRIAL: the side painted a step darker than the top
+        above = lv[:TILE - FOOT]
+        lv[:TILE - FOOT] = np.where(above == SWELL, FIELD, HOLLOW)
     lv[TILE - FOOT:] = HOLLOW
     lv[TILE - 1, _runs(rng, FOOT_RIM)] = RIM
     lv[TILE - 2, _runs(rng, FOOT_FIELD)] = FIELD
@@ -194,7 +207,17 @@ def _layer_sides(ref, model):
         rest = {name: face for name, face in el["faces"].items() if name not in SIDES}
         if rest:
             boxes.append(dict(el, faces=rest))
-        boxes.append(dict(el, faces=sides, shade_direction_override=SIDE_LIT[layers <= SHEET]))
+        if _TRY in ("r", "p"):
+            (x0, y0, z0), (x1, y1, z1) = el["from"], el["to"]
+            foot = {name: dict(face, uv=[0, TILE - FOOT, TILE, TILE]) for name, face in sides.items()}
+            boxes.append(dict(el, to=[x1, FOOT, z1], faces=foot, shade_direction_override="north"))
+            if y1 > FOOT:
+                above = {name: dict(face, uv=[0, TILE - y1, TILE, TILE - FOOT]) for name, face in sides.items()}
+                boxes.append(dict(el, **{"from": [x0, FOOT, z0]}, faces=above, shade_direction_override="up"))
+        elif _TRY == "n":
+            boxes.append(dict(el, faces=sides, shade_direction_override="north"))
+        else:
+            boxes.append(dict(el, faces=sides, shade_direction_override=SIDE_LIT[layers <= SHEET]))
     model["elements"] = boxes
     if layers < 8:
         model["ambientocclusion"] = False
@@ -203,7 +226,7 @@ def _layer_sides(ref, model):
 
 def pack(pack_dir):
     drawn = levels()
-    wrong = faults(drawn)
+    wrong = [] if _TRY else faults(drawn)
     if wrong:
         raise AssertionError("snow breaks its own rules:\n  " + "\n  ".join(wrong))
     for name, versions in drawn.items():
