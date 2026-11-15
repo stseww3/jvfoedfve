@@ -2954,17 +2954,30 @@ def select_best_worker_spawner(allow_main_fallback: bool = False):
     return None
 
 
+def worker_pool_model() -> str:
+    return (store.get("worker_pool_model") or "").strip()
+
+
+def set_worker_pool_model(val: str) -> str:
+    clean = " ".join(str(val or "").split())[:100]
+    if clean.lower() in ("default", "inherit", "reset", "clear"):
+        clean = ""
+    store.set("worker_pool_model", clean)
+    return clean
+
+
 def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: bool = False) -> tuple[str, str, str] | None:
     host = select_best_worker_spawner(allow_main_fallback=allow_main_fallback)
     if host is None:
         return None
     env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    w_model = worker_pool_model()
     node_id, w_code = precreate_auto_worker_slot()
     op_id = "op_" + secrets.token_hex(5)
     prompt_body = worker_spawn_task_text(w_code)
     payload = {
         "conv_id": node_id,
-        "model": "",
+        "model": w_model,
         "task_code": w_code,
         "isolated_vm": True,
         "environment_id": env_id,
@@ -2978,7 +2991,7 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
         host["agent"],
         node_id,
         prompt_body,
-        "",
+        w_model,
         isolated_vm=True,
         requester=requester,
         auto_discover_env=is_worker_host_id(host["id"]),
@@ -2989,12 +3002,14 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
 
 
 def active_or_starting_runner_count() -> int:
-    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','starting')")
+    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','starting','offline')")
     cnt = 0
     for r in rows:
         if node_is_online(r):
             cnt += 1
         elif r["status"] == "starting" and (now() - float(r["created"] or 0)) < 300:
+            cnt += 1
+        elif r["id"] in _runner_heal_probes:
             cnt += 1
     return cnt
 
@@ -3051,9 +3066,10 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
     op_id = "op_" + secrets.token_hex(5)
     prompt_body = worker_spawn_task_text(w_code)
     env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    w_model = worker_pool_model()
     payload = {
         "conv_id": node_id,
-        "model": "",
+        "model": w_model,
         "task_code": w_code,
         "isolated_vm": True,
         "environment_id": env_id,
@@ -3067,7 +3083,7 @@ def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失
         host["agent"],
         node_id,
         prompt_body,
-        "",
+        w_model,
         isolated_vm=True,
         requester="auto_heal_runner",
         auto_discover_env=is_worker_host_id(host["id"]),
@@ -5825,6 +5841,11 @@ _RESUME_DEAD_MARKERS = (
 )
 
 
+def is_quota_exceeded_output(output: str) -> bool:
+    low = (output or "").lower()
+    return "exceeded" in low and ("available usage" in low or "usage limit" in low or "quota" in low)
+
+
 def is_resume_dead_output(status: str, output: str) -> bool:
     if (status or "").lower() != "ok":
         return True
@@ -5879,7 +5900,10 @@ async def t_submit_op_result(agent, args):
 
     if op_type == "resume_subagent":
         if requester == "watchdog_runner_resume":
-            if is_resume_dead_output(status, output):
+            if is_quota_exceeded_output(output):
+                if worker_pool_model():
+                    relaunch_dead_runner_slot(conv_id, reason="原节点模型额度超限，按新指定模型重拉")
+            elif is_resume_dead_output(status, output):
                 relaunch_dead_runner_slot(conv_id, reason=f"工作节点 resume 返回已终止（{output[:60] or status}），自动重拉")
             return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
         if requester == "watchdog_auto_resume":
@@ -7708,6 +7732,10 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                 + (f"，新补齐 {len(sp)} 台" if sp else "")
                 + "。",
             )
+            return
+        if len(sub) >= 2 and sub[0].lower() == "model":
+            new_wm = set_worker_pool_model(" ".join(sub[1:]))
+            await reply(chat_id, f"✅ 已将自动工作节点默认启动模型设为：`{new_wm or '继承宿主默认'}`（可发 `/nodes heal` 按新模型批量重拉离线节点）。")
             return
         if len(sub) >= 2 and sub[0].lower() == "scale" and sub[1].lstrip("-").isdigit():
             new_t = set_worker_pool_target(int(sub[1]))
