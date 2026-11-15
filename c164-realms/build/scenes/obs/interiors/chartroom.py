@@ -168,12 +168,13 @@ class _Spines:
             ramp, steps = rnd.choice(self.TONES)
             step = rnd.choice(steps)
             top = rnd.choice((0, 0, 1, 1, 2)) if h > 5 else 0
-            out[top:, x:x + width, :3] = P.colour(ramp, step)
-            if width >= 2:
-                out[top:, x + width - 1, :3] = P.colour(ramp, max(0, step - 1))
+            end = min(x + width, w)
+            out[top:, x:end, :3] = P.colour(ramp, step)
+            if end - x >= 2:
+                out[top:, end - 1, :3] = P.colour(ramp, max(0, step - 1))
             if h - top >= 7 and rnd.random() < 0.45:
                 band = P.colour("iron", 2) if ramp == "cream" else P.colour("brass", 3)
-                out[top + 2, x:x + width, :3] = band
+                out[top + 2, x:end, :3] = band
             x += width
         return out
 
