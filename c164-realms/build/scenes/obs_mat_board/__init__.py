@@ -1,8 +1,12 @@
-"""The material board (ART-PLAN 6.4, milestone M1): every material of the map as a wall of eight by
-eight with its stairs, slabs and low walls at the foot, under the light of the sky line.
+"""The material board (ART-PLAN 6.4, milestone M1): every block of the occupancy table on one board,
+each material as a wall of eight by eight with its stairs, slabs and low walls at the foot, under
+the light of the sky line.
 
-Four tiers, each stepped back and up so that one picture holds them all; from the front:
+Five tiers, each stepped back and up so that one picture holds them all; from the front:
 
+    ground    what the observatory stands on: the mountain's rock, snow lying on it, the paving
+              with the emblem let into it in thin brass line, the tones of the cloud sea. The one
+              tier whose floor is part of the show, so it is the lowest: the camera looks down on it
     pieces    doors, hatches, bars, pipes, lamps, the brass pieces, signs: against fine stone, as
               they stand on the building
     stone     the four grey-white stones, the stones used as the game draws them, and one wall that
@@ -13,66 +17,90 @@ Four tiers, each stepped back and up so that one picture holds them all; from th
 
 Repainted blocks show whatever the material packages paint today (stand-ins until a family is
 painted); the other blocks are the game's. A lamp row stands at the foot of every tier except in
-front of the windows, so each wall runs from lamp light at its base to sky light at its top.
+front of the windows, so each wall runs from lamp light at its base to sky light at its top. On
+the ground tier only the bare rock and the far half of the emblem have lamps: snow and cloud are
+seen under the sky alone, as they lie on the mountain.
 
     python -m scenes.obs_mat_board        writes shots.json from the layout below
+    python -m scenes.obs_mat_board plan   prints the ground tier from above and what the board lacks
 
-Versions are compared by scenes of their own (obs_mat_board_<tag>): the same board and shots, with
-write_pack() calling materials._kit.pack_with() for the versions wanted.
+Versions are compared by scenes of their own (obs_mat_board_<tag>): the same board, the shots of
+compare(), with write_pack() calling materials._kit.pack_with() for the versions wanted.
 """
+import math
+
 from artkit.blocks import st
 from artkit.canvas import Canvas
 
+from scenes import obs_mat_panels as panels_scene
 from scenes.obs.common import blocks as B
 from scenes.obs.materials import _board
 from scenes.obs.materials import _kit as K
 
 BIOME = "obs_blue"
 TIME = 14000                    # the default light version; 18000 and 12900 are the other two
+FOV, ASPECT = 77.0, 16.0 / 9.0  # a shot's angle of view (vertical) and shape, as build/render.py takes it
+DOWN = 27.0                     # the picture of the whole board looks this far down: at this angle the
+#                                 board fills the picture both ways and the far walls are largest
 N = 8                           # a wall is N by N
 PITCH = N + 2                   # x from one wall to the next
 RISE, BACK = 10, 12             # each tier stands this much higher and further back
+FRONT = 20                      # the ground tier's floor comes this far forward of its walls
 FLOOR = B.SLATE_SMOOTH.block    # dark and plain: floors and the risers behind the walls
 LAMP = 13
 VERSIONS = {}                   # material package -> version; the default of every package when empty
 
+# the ground tier: x of each thing
+ROCK_AT, LEDGES_AT, SNOW_AT, INLAY_AT, CLOUD_AT = 0, PITCH, 2 * PITCH, 3 * PITCH, 5 * PITCH
+STRIP = B.TUFF_SMOOTH.block     # the paving's light stone: the meridian's flanks, the seat's border
+SEAT = B.SLATE_TILE.block       # its darkest: under the emblem
+EMBLEM_R = 5                    # the smallest ring that keeps a clear cell between ring, meridian and star
+EMBLEM_STAR = (2, -2)           # east and south of the middle: inside the ring, to the upper right
+RUN = 3                         # the meridian runs this far out of the seat, between its two flanks
+
+
+PILASTERS = (2, 5)              # the two pilaster lines of the wall that puts the stones together
+
 
 def together(c, x, y, z):
-    """The stones as a facade stacks them: slate plinth, two courses of rough stone, a projecting
-    string course, fine stone above with sunk panels and two emblem blocks."""
+    """The stones in the order the main front stacks them (main/facade), flat and small: slate
+    plinth, two courses of rough stone, the string course standing forward, fine stone above. On a
+    pilaster line the fine stone runs up to an emblem block, the only place the front has one;
+    between the lines a sunk panel under where a window stands, and the frieze of sunk panels."""
     c.box(x, y, z, x + N - 1, y, z, B.SLATE_BRICK.block)
     c.box(x, y + 1, z, x + N - 1, y + 2, z, B.ASHLAR_ROUGH.block)
-    c.box(x, y + 3, z, x + N - 1, y + 7, z, B.ASHLAR_FINE.block)
+    c.box(x, y + 3, z, x + N - 1, y + N - 1, z, B.ASHLAR_FINE.block)
     c.box(x, y + 3, z + 1, x + N - 1, y + 3, z + 1, st(B.ASHLAR_FINE.slab, type="top"))
-    for dx in (1, 2, 5, 6):
-        c.set(x + dx, y + 5, z, B.ASHLAR_PANEL.block)
-    for dx in (3, 4):
-        c.set(x + dx, y + 7, z, B.ASHLAR_EMBLEM)
+    for dx in range(N):
+        if dx in PILASTERS:
+            c.set(x + dx, y + N - 1, z, B.ASHLAR_EMBLEM)
+        else:
+            c.set(x + dx, y + 4, z, B.ASHLAR_PANEL.block)
+            c.set(x + dx, y + N - 1, z, B.ASHLAR_PANEL.block)
 
 
 def instruments(c, x, y, z):
-    """The sixteen panels twice over, as a cabinet wall: a riveted base, four rows of instruments,
-    plain plate above."""
-    names = list(B.PANELS)
+    """The sixteen panels as a cabinet wall: a riveted plinth, the bay that materials/panels sets
+    out in its test scene (every kind is in it; the rules it is set out by are in that scene's
+    note), plain plate above."""
+    assert panels_scene.WIDE == N and panels_scene.HIGH < N - 1
     c.box(x, y, z, x + N - 1, y, z, B.IRON_RIVETED.block)
-    c.box(x, y + 5, z, x + N - 1, y + N - 1, z, B.IRON_PLATE)
-    for i in range(4 * N):
-        name = names[(i * 5 + 3 * (i // 16)) % 16]        # each kind once in a pair of rows, shuffled
-        c.set(x + i % N, y + 1 + i // N, z, st(B.PANELS[name], facing="south"))
+    c.box(x, y + 1 + panels_scene.HIGH, z, x + N - 1, y + N - 1, z, B.IRON_PLATE)
+    panels_scene.bay(c, x, y + 1, z)
 
 
 def woods(c, x, y, z):
-    """The three woods side by side, and the panelling in front of the dark one."""
-    c.box(x, y, z, x + 2, y + N - 1, z, B.DARK_WOOD.block)
-    c.box(x + 3, y, z, x + 5, y + N - 1, z, B.FLOOR_WOOD.block)
+    """The three woods side by side, the dark one widest: it carries the panelling. At the foot of
+    each its stair and its slab."""
+    c.box(x, y, z, x + 3, y + N - 1, z, B.DARK_WOOD.block)
+    c.box(x + 4, y, z, x + 5, y + N - 1, z, B.FLOOR_WOOD.block)
     c.box(x + 6, y, z, x + N - 1, y + N - 1, z, B.PALE_WOOD.block)
-    for dx in range(3):
+    for dx in range(2):
         for dy in range(2):
             c.set(x + dx, y + dy, z + 1, st(B.WAINSCOT, facing="south", open="true"))
-    c.set(x + 3, y, z + 1, st(B.FLOOR_WOOD.stairs, facing="north"))
-    c.set(x + 4, y, z + 1, st(B.FLOOR_WOOD.slab, type="bottom"))
-    c.set(x + 6, y, z + 1, st(B.PALE_WOOD.stairs, facing="north"))
-    c.set(x + 7, y, z + 1, st(B.PALE_WOOD.slab, type="bottom"))
+    for dx, wood in ((2, B.DARK_WOOD), (4, B.FLOOR_WOOD), (6, B.PALE_WOOD)):
+        c.set(x + dx, y, z + 1, st(wood.stairs, facing="north"))
+        c.set(x + dx + 1, y, z + 1, st(wood.slab, type="bottom"))
 
 
 def copper(c, x, y, z):
@@ -82,11 +110,53 @@ def copper(c, x, y, z):
 
 
 def verdigris(c, x, y, z):
-    """Verdigris as the game draws it: cut plates, a darker streak, the plain and the cast block."""
+    """Verdigris as the game draws it: cut plates, a darker streak, the plain and the cast block; at
+    the foot the steps of the cut plate and, last, a stair and a slab of the streak."""
     _board.wall(c, B.VERDIGRIS_CUT, x, y, z)
     c.box(x, y + 4, z, x + N - 1, y + 5, z, B.VERDIGRIS_STREAK.block)
     c.box(x, y + N - 2, z, x + 3, y + N - 1, z, B.VERDIGRIS)
     c.box(x + 4, y + N - 2, z, x + N - 1, y + N - 1, z, B.VERDIGRIS_CAST)
+    c.set(x + 6, y, z + 1, st(B.VERDIGRIS_STREAK.stairs, facing="north"))
+    c.set(x + 7, y, z + 1, st(B.VERDIGRIS_STREAK.slab, type="bottom"))
+
+
+def inlay(c, x, y, z):
+    """The paving and the thin brass line in it: the emblem (ring, meridian, star) on a seat of the
+    darkest slate bordered with the light stone, the meridian running on out of the seat between two
+    flanks of the light stone, as the front court lays it. Where the line ends at the back stands
+    the court's marker stone; beside it the paving stone's own stairs, slabs and low walls. Two
+    lamps at the back: the far half of the emblem is lamp-lit, the near half lies under the sky.
+    Three whole cells of brass plate beside the seat, to compare. Two walls wide."""
+    half = EMBLEM_R + 2                         # the ring, a clear cell, the border
+    mx, az = x + half + 1, z + half + 1
+    c.box(mx - half, y - 1, az - half, mx + half, y - 1, az + half, STRIP)
+    c.box(mx - half + 1, y - 1, az - half + 1, mx + half - 1, y - 1, az + half - 1, SEAT)
+    c.box(mx - 1, y - 1, az + half + 1, mx + 1, y - 1, az + half + RUN, STRIP)
+    _board.emblem(c, mx, y, az, EMBLEM_R, EMBLEM_STAR, az - half, az + half + RUN)
+    c.set(mx, y, z, B.ASHLAR_EMBLEM)
+    c.set(mx, y + 1, z, st(B.ASHLAR_PANEL.slab, type="bottom"))
+    c.box(mx + half + 1, y, az - 1, mx + half + 1, y, az + 1, B.BRASS_INLAY)
+    for dx in (-5, -4):
+        c.set(mx + dx, y, z, st(B.SLATE_SMOOTH.stairs, facing="north"))
+    for dx in (-2, 2):
+        c.set(mx + dx, y, z, st(B.SLATE_SMOOTH.slab, type="bottom"))
+    c.set(mx + 4, y, z, st(B.SLATE_SMOOTH.wall, east="low", up="true"))
+    c.set(mx + 5, y, z, st(B.SLATE_SMOOTH.wall, west="low", up="true"))
+    for dx in (-3, 3):
+        c.set(mx + dx, y + 1, z + 2, st(B.LIGHT, level=LAMP))
+
+
+def ground(c, x, y, z):
+    """The mountain (rock, a cliff with snow on its ledges, snow), the paving, the cloud sea. The
+    mountain stands on its own rock, not on the board's floor."""
+    c.box(x - 1, y - 1, z, x + SNOW_AT + N, y - 1, z + FRONT, B.ROCK_COBBLED.block)
+    _board.rock(c, x + ROCK_AT, y, z)
+    _board.ledges(c, x + LEDGES_AT, y, z)
+    _board.snow(c, x + SNOW_AT, y, z, N)
+    inlay(c, x + INLAY_AT, y, z)
+    _board.bank(c, x + CLOUD_AT, y, z, 3 * PITCH - 2, 10)
+    for dx in (1, 5):
+        c.set(x + ROCK_AT + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
 
 
 def pieces(c, x, y, z):
@@ -100,6 +170,9 @@ def pieces(c, x, y, z):
             (_board.lantern, B.IRON_LANTERN), (_board.run, B.VANILLA_BARS), (_board.pipe, B.VANILLA_CHAIN)]):
         put(lifted, block, x + 2 + 4 * i, z)
     _board.brass(lifted, x + BRASS_AT, z, staged=False)
+    _board.hung(c, x + HUNG_AT, y, z)
+    for lx in range(x + 1, x + width(), 4):
+        c.set(lx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
 
 
 class _Lifted:
@@ -125,6 +198,7 @@ def _window(role):
 
 # name -> the walls of the tier, left to right: (short name, how to put it, lamp in front?)
 TIERS = [
+    ("ground", []),             # no walls of eight by eight in a row: see ground()
     ("pieces", []),             # no walls: one row of small things, see pieces()
     ("stone", [("slate_brick", _block(B.SLATE_BRICK), True), ("rough", _block(B.ASHLAR_ROUGH), True),
                ("fine", _block(B.ASHLAR_FINE), True), ("together", together, True),
@@ -137,14 +211,18 @@ TIERS = [
     ("glass", [("window_lit", _window(B.WINDOW_LIT), False), ("window_curtain", _window(B.WINDOW_CURTAIN), False),
                ("window_frosted", _window(B.WINDOW_FROSTED), False), ("window_dark", _window(B.WINDOW_DARK), False),
                ("window_blind", _window(B.WINDOW_BLIND), False), ("skylight", _window(B.SKYLIGHT), False),
+               ("window_furnace", lambda c, x, y, z: _board.furnace_wall(c, x, y, z, B.ASHLAR_FINE.block), False),
                ("instruments", instruments, True), ("woods", woods, True)]),
 ]
+ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out by a function of their own
 BRASS_AT = 40                   # x where the brass pieces start in the row of small things
+HUNG_AT = BRASS_AT + 31         # ... and the two signs on a bracket, after them
 
 
 def at(tier):
-    """(y of its floor's top, z of its walls) for a tier."""
-    return RISE * tier, -BACK * tier
+    """(y of its floor's top, z of its walls) for a tier, by number or by name."""
+    k = tier if isinstance(tier, int) else [name for name, _ in TIERS].index(tier)
+    return RISE * k, -BACK * k
 
 
 def width():
@@ -154,16 +232,12 @@ def width():
 def build():
     c = Canvas()
     w = width()
-    for k in range(len(TIERS)):
-        y, z = at(k)
-        c.box(-1, y - 1, z - 1, w, y - 1, z + BACK - 2, FLOOR)             # the floor, up to the tier below
-        c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                 # the riser behind the walls
     for k, (name, walls) in enumerate(TIERS):
         y, z = at(k)
-        if name == "pieces":
-            pieces(c, 0, y, z)
-            for x in range(1, w, 4):
-                c.set(x, y + 1, z + 4, st(B.LIGHT, level=LAMP))
+        c.box(-1, y - 1, z - 1, w, y - 1, z + (FRONT if k == 0 else BACK - 2), FLOOR)   # the floor, up to the tier below
+        c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                              # the riser behind the walls
+        if name in ROWS:
+            ROWS[name](c, 0, y, z)
         for i, (_, put, lamp) in enumerate(walls):
             put(c, i * PITCH, y, z)
             if lamp:
@@ -180,23 +254,107 @@ def write_pack(pack_dir):
     return K.pack_with(pack_dir, **VERSIONS)
 
 
+def lacking(c=None):
+    """(repainted, vanilla): the blocks of the occupancy table that are not on the board. The card
+    wants the first list empty; the second is kept empty too, so the board is the whole table."""
+    placed = {state.partition("[")[0] for state in (c or build()).b.values()}
+    return ([b for b in B.ids(B.REPAINTED) if b not in placed],
+            [b for b in B.ids(B.VANILLA) if b not in placed])
+
+
 def shots():
     """The whole board in the three light versions; each tier in two halves from where a material
-    has to be told at a glance; the walls two by two from near."""
+    has to be told at a glance; the walls two by two from near; the ground tier's things one by one,
+    the emblem from above and from a walker's height; the small pieces close."""
     out, w = [], width()
-    mid = w / 2.0
-    top = at(len(TIERS) - 1)[0] + N
+
+    def shot(name, pos, look_at, time=TIME):
+        out.append({"name": name, "pos": [round(v, 1) for v in pos], "look_at": [round(v, 1) for v in look_at],
+                    "time": time})
+
     for name, time in (("all", TIME), ("all_b", 18000), ("all_c", 12900)):
-        out.append({"name": name, "pos": [mid, top / 2.0 + 4, 46.0], "look_at": [mid, top / 2.0 - 3, -BACK * 1.5], "time": time})
+        shot(name, *whole(DOWN), time)
     for k, (tier, walls) in enumerate(TIERS):
         y, z = at(k)
+        if tier == "ground":
+            x = (SNOW_AT + N) / 2.0                                         # the mountain: rock, ledges, snow
+            shot("ground_left", (x, y + 7.0, z + 16.5), (x, y + 2.5, z))
+            x = (INLAY_AT + w) / 2.0                                        # the paving and the cloud
+            shot("ground_right", (x, y + 11.0, z + 24.0), (x, y + 1.0, z + 5.0))
+            # far and high enough to have the snow at the cliff's foot in the picture, and the wall's top
+            shot("ground_rock", (LEDGES_AT - 1.0, y + 5.5, z + 10.5), (LEDGES_AT - 1.0, y + 3.0, z))
+            # from above: the drift down to its last thin layer on the rock, and the wall behind it
+            shot("ground_snow", (SNOW_AT + N / 2.0, y + 8.5, z + N + 3.0), (SNOW_AT + N / 2.0, y + 1.0, z + 2.0))
+            mx, az = INLAY_AT + EMBLEM_R + 3.5, z + EMBLEM_R + 3.5
+            shot("ground_inlay", (mx, y + 11.0, az + 12.0), (mx, y, az + 1.0))
+            shot("ground_inlay_walk", (mx + 3.0, y + 1.7, az + EMBLEM_R + 3.5), (mx - 0.5, y, az))
+            x = CLOUD_AT + (w - CLOUD_AT) / 2.0
+            shot("ground_cloud", (x, y + 8.0, z + 18.0), (x, y + 1.5, z + 3.0))
+            continue
         for half, x in (("left", w / 4.0 - 0.5), ("right", 3 * w / 4.0 + 0.5)):
-            out.append({"name": f"{tier}_{half}", "pos": [x, y + 5.0, z + 15.5], "look_at": [x, y + 4.0, z], "time": TIME})
+            shot(f"{tier}_{half}", (x, y + 5.0, z + 15.5), (x, y + 4.0, z))
         for i in range(0, len(walls), 2):
             x = i * PITCH + PITCH - 1.0                                    # between the two walls
-            out.append({"name": f"{tier}_{walls[i][0]}", "pos": [x, y + 4.5, z + 8.5], "look_at": [x, y + 4.0, z], "time": TIME})
-    y, z = at(0)
+            shot(f"{tier}_{walls[i][0]}", (x, y + 4.5, z + 8.5), (x, y + 4.0, z))
+    y, z = at("pieces")
     for name, x in (("pieces_iron", 10.0), ("pieces_iron_2", 28.0), ("pieces_brass", BRASS_AT + 8.0),
-                    ("pieces_signs", BRASS_AT + 23.0)):
-        out.append({"name": name, "pos": [x, y + 2.6, z + 7.5], "look_at": [x, y + 1.5, z], "time": TIME})
+                    ("pieces_signs", BRASS_AT + 25.0)):
+        shot(name, (x, y + 2.6, z + 7.5), (x, y + 1.5, z))
     return out
+
+
+def whole(down, margin=0.06):
+    """(pos, look_at) of the nearest stand on the board's middle line from which a picture looking
+    `down` degrees below the level holds the whole board, every corner keeping `margin` of the half
+    picture clear of the edge. Worked in the plane of the board's side view, where the camera's up
+    and forward are two axes: a corner at (u, f) is in the picture of a camera at (cu, cf) when
+    |u - cu| <= t (f - cf), t the tangent of half the angle of view less the margin."""
+    p = math.radians(down)
+    up, fwd = (math.cos(p), -math.sin(p)), (-math.sin(p), -math.cos(p))         # as (y, z)
+    t = (1.0 - margin) * math.tan(math.radians(FOV) / 2.0)
+    outline = [(0.0, FRONT + 1.0)]                                              # the side view: (y, z)
+    for k in range(len(TIERS)):
+        y, z = at(k)
+        outline += [(float(y), float(z)), (y + RISE - 1.0, z - 1.0)]            # a tier's foot, its riser's top
+    pts = [(y * up[0] + z * up[1], y * fwd[0] + z * fwd[1]) for y, z in outline]
+    cf = (min(u + t * f for u, f in pts) - max(u - t * f for u, f in pts)) / (2.0 * t)
+    cf = min(cf, min(f for _, f in pts) - (width() / 2.0 + 1.0) / (t * ASPECT))    # ... and wide enough
+    cu = (max(u - t * (f - cf) for u, f in pts) + min(u + t * (f - cf) for u, f in pts)) / 2.0
+    mid, cy, cz = width() / 2.0, cu * up[0] + cf * fwd[0], cu * up[1] + cf * fwd[1]
+    return (mid, cy, cz), (mid, cy + 60.0 * fwd[0], cz + 60.0 * fwd[1])
+
+
+def compare(*tiers):
+    """The shots a scene that compares versions takes: the whole board in its three lights and the
+    shots of the named tiers, each the twin of the master board's shot of the same name."""
+    return [s for s in shots() if s["name"].split("_")[0] in ("all",) + tiers]
+
+
+def plan(c=None, y=0):
+    """The cells at height y from above, one letter a cell (north at the top), for reading a layout
+    without a picture: # rock, s snow, c cloud, = brass line, + crossing, * star, o brass plate,
+    t light stone, d dark stone, p the paving stone's shaped blocks, m marker, L lamp (one above),
+    . the board's floor."""
+    c = c or build()
+    w = width()
+    letters = {B.BRASS_LINE: "=", B.BRASS_CROSS: "+", B.BRASS_STAR: "*", B.BRASS_INLAY: "o", B.SNOW: "s",
+               B.SNOW_LAYER: "s", B.ASHLAR_EMBLEM: "m", STRIP: "t", SEAT: "d", FLOOR: "."}
+    letters.update({block: "c" for block in B.CLOUD})
+    letters.update({block: "#" for block in B.ids(_board.SHAPED_ROCKS) + [B.ROCK_DEEPSLATE]})
+    letters.update({block: "p" for block in B.SLATE_SMOOTH.all()[1:]})
+    rows = []
+    for z in range(-1, FRONT + 1):
+        row = ""
+        for x in range(-1, w + 1):
+            if c.name(x, y + 1, z) == B.LIGHT:
+                row += "L"
+                continue
+            for dy in (0, -1):
+                name = c.name(x, y + dy, z)
+                if name:
+                    row += letters.get(name, "?")
+                    break
+            else:
+                row += " "
+        rows.append(row)
+    return "\n".join(rows)

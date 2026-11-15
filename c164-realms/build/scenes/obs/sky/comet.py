@@ -62,7 +62,8 @@ SIZE = 256
 GRID = 64                    # the big pixels: the nucleus in every version, all of version b
 SPAN = 22.62                 # degrees across the moon's square (half-size 20 at distance 100)
 HEAD_BELOW = 7.0             # the head sits this far below the centre of the square; tails go up
-DEFAULT_STYLE = "a"          # the version pack() paints for the map; the review settles it
+DEFAULT_STYLE = "ap"         # the version pack() paints for the map: a-plus, settled by the director
+                            # (A0, 11-16); "a" stays beside it as the one it grew from
 
 # brightness and length of the comet in each light version: deep is the brightest and longest, glow
 # the faintest and shortest, so that the three are told apart at the size of a stamp
@@ -117,19 +118,27 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #   end, taper, snap        optional. end: the share of a tail's length over which it melts away,
 #               instead of END (b dims by its fall alone and stops short, so that its three levels
 #               end at a third, two thirds and the tip and not all near the tip); taper: the last
-#               share of the dust tail over which its outline closes to a point; snap: the ion
-#               tail's centre line is held on whole pixels of the grid
+#               share of the dust tail over which its outline closes to a point (b has none: a
+#               pointed outline reads as a flame, see the card); snap: the ion tail's centre line
+#               is held on whole pixels of the grid
 _SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
     "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
               curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
               ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
               nucleus=_SQUARE),
+    # a-plus: version a grown as far as the moon's square allows (A0, 11-16). The dust tail runs to
+    # the last row the square leaves unblackened and opens wider; its back half is faint, so the
+    # bright part stays about a's size. The head does not move: same nucleus, same place.
+    "ap": dict(coma=0.62, coma_amp=0.33, dust_len=18.5, dust_w=(0.30, 1.70), flare=1.0, lean=0.12,
+               curve=0.018, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.40, dust_amp=0.46, cool=1.2,
+               ion_len=17.4, ion_w=(0.12, 0.32), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
+               nucleus=_SQUARE, end=0.75),
     "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.36, 1.25), flare=1.0, lean=0.15,
-              curve=0.013, edge=2.4, skew=0.2, spine=0.0, dust_fall=1.7, dust_amp=0.36, cool=1.0,
+              curve=0.013, edge=3.2, skew=0.2, spine=0.0, dust_fall=1.7, dust_amp=0.36, cool=1.0,
               ion_len=13.0, ion_w=(0.15, 0.17), ion_lean=-0.07, ion_fall=0.8, ion_amp=0.22,
-              nucleus=_SQUARE, end=0.12, taper=0.30, snap=True,
-              steps=(0.07, 0.12, 0.20), tones=(0.13, 0.26, 0.46), cooling=(1.0, 0.6, 0.15)),
+              nucleus=_SQUARE, end=0.10, snap=True,
+              steps=(0.07, 0.12, 0.20), tones=(0.11, 0.21, 0.36), cooling=(1.0, 0.6, 0.15)),
     "c": dict(coma=0.80, coma_amp=0.34, dust_len=11.0, dust_w=(0.55, 2.35), flare=0.8, lean=0.20,
               curve=0.012, edge=4.5, skew=0.45, spine=0.15, dust_fall=1.0, dust_amp=0.36, cool=1.0,
               ion_len=11.0, ion_w=(0.16, 0.36), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.15,

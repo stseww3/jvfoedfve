@@ -53,6 +53,7 @@ def _steps(ramp):
 
 R = _steps("brass")             # R0..R5
 C = _steps("old_copper")        # C0..C4
+V = _steps("verdigris")         # V0, V1: the green that goes on old copper, see _patina
 W = _steps("dark_wood")         # W0..W4
 E = _steps("enamel")            # E0..E3
 M = _steps("cream")             # M0..M3
@@ -165,13 +166,21 @@ def _tone(src, ramp, base, spread=3.0):
 
 # ---- brass: the flat faces (designed) ----------------------------------------------------------------
 def _plate(seed):
-    """BRASS_PLATE: a polished sheet screwed on at its corners, with the shallow raised edge of the
-    iron plates, so a wall of them reads as butted sheets. The face is one even tone: marks drawn
-    on it (streaks, reflections) repeat on every plate of a wall and read as slots. What differs
-    from version to version (three) is a few pixels of wear."""
+    """BRASS_PLATE: a polished sheet screwed on at its corners, so a wall of them reads as butted
+    sheets. The face is one even tone: marks drawn on it (streaks, reflections) repeat on every
+    plate of a wall and read as slots. What differs from version to version (three) is a few pixels
+    of wear.
+
+    The frame is all four edges a step under the face, not a light top and a dark bottom: a raised
+    edge lights only two sides of a sheet, and in a wall of them the lit side of one plate meets the
+    shadowed side of the next, which at twenty blocks averages out into one even field of yellow
+    (cr, review #8: the 8x8 wall measured a light-to-dark ratio of 2.03, flatter than cast iron).
+    A seam all the way round gives every plate an edge of its own that survives the distance, and
+    the screws in its corners at the top of the ramp give it the rivets. The face itself is left
+    as it was."""
     px = _worn(R, 3, seed, pits=0.02, light=0.012)
-    _raised(px, 0, 0, TILE, TILE, R[4], R[1])
-    _put(px, 1, 1, R[5])                                                # the glint in the lit corner
+    _ring(px, 0, 0, TILE, TILE, R[2])
+    _put(px, 1, 1, R[4])                                                # the glint in the lit corner
     _screws(px, [(2, 2), (TILE - 3, 2), (2, TILE - 4), (TILE - 3, TILE - 4)], R[5], R[1])
     return px
 
@@ -348,12 +357,42 @@ def _plaque(w, h):
 
 
 # ---- old copper ----------------------------------------------------------------------------------------
+PATINA = 0.04       # the share of a sheet's cells that goes green (review #8 asked for 3% to 5%)
+
+
+def _patina(px, x0, y0, x1, y1, seed, share=PATINA):
+    """Copper going green: the two darkest steps of the verdigris ramp (#2f6f5c, #3d8a70) on a share
+    `share` of the sheet x0..x1-1, y0..y1-1, kept to its raised rim and laid in runs of two or three
+    cells rather than as single dots. Water stands along a seam and runs down from it, so a rim is
+    where copper goes green first and where the green reads at a distance as a stain creeping in
+    from the joint; single cells spread over the face would read as speckle, and a whole rim in
+    green as a green joint.
+
+    The copper of this package is sheet metal with no screws in it (the screws are brass's), so the
+    rim is the whole of it: the review's "along the edges and round the screws" reduces here to the
+    edges."""
+    rim = ([(x, y0) for x in range(x0, x1)] + [(x1 - 1, y) for y in range(y0 + 1, y1)]
+           + [(x, y1 - 1) for x in range(x1 - 2, x0 - 1, -1)] + [(x0, y) for y in range(y1 - 2, y0, -1)])
+    want = max(1, round(share * (x1 - x0) * (y1 - y0)))
+    put, start = 0, int(_dice(x0, y0, seed + 77) * len(rim))
+    while put < want:
+        run = min(want - put, 2 + (put // 3) % 2)                    # runs of two and of three
+        step = int(_dice(start, put, seed) * 5) + 2                  # leave a gap between runs
+        for i in range(run):
+            x, y = rim[(start + i) % len(rim)]
+            _put(px, x, y, V[i % 2])
+        put += run
+        start = (start + run + step) % len(rim)
+
+
 def _copper(seed):
     """OLD_COPPER: one dull brown sheet with a shallow raised edge: copper that has stood outdoors,
     not polished. The face is one even tone with a few pits and rubbed spots; patches of stain
-    read as fired clay, not as metal. Three versions."""
+    read as fired clay, not as metal, so the only thing on the face is the green of it oxidizing.
+    Three versions."""
     px = _worn(C, 2, seed, pits=0.04, light=0.015)
     _raised(px, 0, 0, TILE, TILE, C[3], C[1])
+    _patina(px, 0, 0, TILE, TILE, seed)
     return px
 
 
@@ -363,11 +402,12 @@ def _copper_cut(seed):
     a ring round a drum or a roof of it is one even grid whichever way it runs, and half a block
     (a slab) is a row of whole sheets. Every sheet is the same tone: a sheet weathered darker than
     its neighbours reads as a patch on a roof and as a flaw in a gutter one sheet wide. The three
-    versions differ by their pits."""
+    versions differ by their pits, and each sheet has its own few cells of green on its rim."""
     px = np.zeros((TILE, TILE, 4), np.uint8)
     for n, (x, y) in enumerate(((0, 0), (8, 0), (0, 8), (8, 8))):
         px[y:y + 8, x:x + 8] = _worn(C, 2, seed * 4 + n, 8, 8, pits=0.03, light=0.01)
         _raised(px, x, y, x + 8, y + 8, C[3], C[1])
+        _patina(px, x, y, x + 8, y + 8, seed * 4 + n)
     return px
 
 
@@ -439,19 +479,27 @@ def _line_cross():
 
 
 def _line_star():
-    """BRASS_STAR: the emblem's star in one cell, solid metal: eight points round a full middle. The
-    four upright points are four pixels wide at the root and two at the tip, the four between them
-    a pixel wide, and all eight reach as far, so that near or far it is a star and never two bars
-    crossing (c219, 11-14)."""
+    """BRASS_STAR: the emblem's star in one cell: eight points a pixel wide round a centre dot that
+    stands clear of them. The star spans nine pixels, its arms each one pixel, and one clear ring
+    of pixels separates the middle from the arms, so it is a star and not a disc (cr, review #8:
+    the first one filled 55% of its cell, its eight points reached the cell's corners and it read
+    as a bright blob inside the ring; the line it stands in is four pixels wide, and the star has
+    to be of that same weight). The joint round it is the paving's shadow, as it is round the line.
+    All eight points reach as far, so near or far it is a star and never two bars crossing."""
     def body(x, y):
-        dx, dy = abs(2 * x - 15), abs(2 * y - 15)                   # twice the distance from the middle
-        lo, hi = min(dx, dy), max(dx, dy)
-        upright = (lo <= 1 and hi <= 13) or (lo <= 3 and hi <= 7)
-        slanted = dx == dy and dx <= 9
-        return upright or slanted or dx + dy <= 6
+        dx, dy = x - 7, y - 7
+        if dx == 0 and dy == 0:
+            return True                                             # the centre's one pixel
+        far = max(abs(dx), abs(dy))
+        if far < 2 or far > 4:
+            return False                                            # a clear ring, then the points
+        return dx == 0 or dy == 0 or abs(dx) == abs(dy)
 
     def joint(x, y):
-        return any(body(x + i, y + j) for i, j in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+        """The shadow is one pixel to the lower right of each pixel of the star, the way the light
+        falls on every other inlaid line; a drop shadow round all of it would be more pixels than
+        the star itself."""
+        return body(x - 1, y - 1)
     return _inlaid(9, body, joint)
 
 
