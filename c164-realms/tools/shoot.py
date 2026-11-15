@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Take in-game pictures: move the camera player with /tp over RCON, then save what the client shows
-(its X display on Linux; on Windows the game's own screenshot, or its window, see camera()).
+(the game's own screenshot, or its window or X display, see camera()).
 
     shoot.py --pw-file <server>/.rcon_pw --out <dir> shots.json
 
@@ -10,14 +10,23 @@ shots.json is a list of shots:
 Optional per shot: "time" (e.g. "noon", "midnight" or a tick number; without it the shot is taken
 at 14000, look A, as build/render.py does), "settle" (seconds to wait).
 
-The camera player must already be online (see run_client.sh). It is put into spectator mode so that
-no hand, hotbar or body shows up.
+How long the game needs after a move depends on the machine: a graphics card has the new view in
+a second or two, a software renderer on a worker node may need many. --still <seconds> therefore
+takes the picture again and again after the settling time, every few seconds, until two in a row
+are alike -- chunks that are still arriving change whole pieces of a picture, stars, clouds and
+smoke only a little -- or the seconds given are over; the last one is kept, and the line printed
+for it says how long that took and whether it stood still.
+
+The camera player must already be online (nodemc.py on a worker node, winmc.py on the admin's
+computer). It is put into spectator mode so that no hand, hotbar or body shows up.
 """
 import argparse
+import collections
 import itertools
 import json
 import math
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -59,70 +68,172 @@ def why_empty():
     return ""
 
 
-def camera(args):
-    """A function that saves what the client shows right now as a picture file.
+def game_camera(game, asks):
+    """The game saves its own screenshot, the picture F2 would save, asked through the helper the
+    client was started with (win/CamHelper.java). Works whatever the desktop or the display does."""
+    from PIL import Image
+    numbers = itertools.count(1)
 
-    On Linux the client has an X display of its own and the whole display is grabbed. On Windows
-    it is a window on a desktop in use, behind the other windows and without the keyboard, and
-    there are two ways (--capture; "auto" takes the first when the client runs with the helper):
+    def take(path):
+        ask = f"{os.getpid()}-{next(numbers)}"
+        name = f"c164-{ask}.png"
+        with open(os.path.join(asks, ask + ".tmp"), "w", encoding="utf-8") as fh:
+            fh.write("shot " + name)
+        os.replace(os.path.join(asks, ask + ".tmp"), os.path.join(asks, ask + ".req"))
+        done, fail = os.path.join(asks, ask + ".done"), os.path.join(asks, ask + ".fail")
+        end = time.monotonic() + 120
+        while not os.path.exists(done):
+            if os.path.exists(fail):
+                with open(fail, encoding="utf-8") as fh:
+                    raise SystemExit("the game could not take the picture: " + fh.read().strip())
+            if time.monotonic() > end:
+                raise SystemExit("the game did not answer the request for a picture")
+            time.sleep(0.05)
+        saved = os.path.join(game, "screenshots", name)
+        try:
+            with Image.open(saved) as shot:
+                picture = shot.convert("RGB")
+        except OSError as exc:
+            raise SystemExit(f"the picture the game saved cannot be read ({exc})")
+        if empty(picture):
+            raise SystemExit("the game saved an empty picture")
+        picture.save(path)
+        os.remove(saved)
+        os.remove(done)
+    return take
+
+
+def display_camera(display):
+    """The whole X display of the client is grabbed: with ImageMagick's import where it is
+    installed, else by Pillow."""
+    if shutil.which("import"):
+        def take(path):
+            subprocess.run(["import", "-display", f":{display}", "-window", "root", path], check=True)
+        return take
+
+    from PIL import ImageGrab
+
+    def take(path):
+        try:
+            picture = ImageGrab.grab(xdisplay=f":{display}").convert("RGB")
+        except OSError as exc:
+            raise SystemExit(f"the X display :{display} gave no picture ({exc})")
+        if empty(picture):
+            raise SystemExit("the X display gave an empty picture")
+        picture.save(path)
+    return take
+
+
+class Camera:
+    """Saves what the client shows as a picture file, by the first way that works: when the game
+    cannot save its own screenshot, the pictures are taken off the display from then on. `last`
+    is the way the last picture was made ("game", "display" or "window")."""
+
+    def __init__(self, ways):
+        self.ways = list(ways)                  # [(name, take)]
+        self.last = None
+
+    def __call__(self, path):
+        while True:
+            name, take = self.ways[0]
+            try:
+                take(path)
+            except SystemExit as why:
+                if len(self.ways) == 1:
+                    raise
+                print(f"{why}: the pictures are taken off the {self.ways[1][0]} instead", flush=True)
+                del self.ways[0]
+                continue
+            self.last = name
+            return
+
+
+def summary(made):
+    """One line the shuttle reads: how many pictures the game saved and how many came off the display."""
+    off = sum(n for name, n in made.items() if name != "game")
+    return f"pictures: {made.get('game', 0)} saved by the game itself, {off} taken off the display"
+
+
+def moved(a, b, level=24):
+    """The share of two pictures' pixels that differ by more than `level` in some channel."""
+    from PIL import Image, ImageChops
+    with Image.open(a) as one, Image.open(b) as other:
+        if one.size != other.size:
+            return 1.0
+        red, green, blue = ImageChops.difference(one.convert("RGB"), other.convert("RGB")).split()
+    most = ImageChops.lighter(ImageChops.lighter(red, green), blue)
+    return sum(most.histogram()[level + 1:]) / float(most.size[0] * most.size[1])
+
+
+def until_still(take, path, patience, gap=3.0, share=0.01):
+    """Take the picture at `path` again every `gap` seconds until two in a row are alike (no more
+    than `share` of their pixels differ) or `patience` seconds have passed; the last one stays.
+    Returns (seconds it took, the share that differed between the last two, did it stand still)."""
+    earlier = path + ".earlier.png"
+    t0 = time.monotonic()
+    try:
+        while True:
+            os.replace(path, earlier)
+            time.sleep(gap)
+            take(path)
+            differ = moved(earlier, path)
+            if differ <= share or time.monotonic() - t0 >= patience:
+                return time.monotonic() - t0, differ, differ <= share
+    finally:
+        if os.path.exists(earlier):
+            os.remove(earlier)
+
+
+def helper_listens(root):
+    """(process id of the client, was it started through the picture helper and is that listening)"""
+    def number(path):
+        try:
+            with open(path) as fh:
+                return int(fh.read().strip())
+        except (OSError, ValueError):
+            return None
+    pid = number(os.path.join(root, "client26", "client.pid"))
+    return pid, pid is not None and number(os.path.join(root, "client26", "game", "c164cam", "ready")) == pid
+
+
+def camera(args):
+    """A Camera: called with a path, it saves what the client shows right now as a picture file.
+
+    There are two ways (--capture; "auto" takes the first when the client runs with the helper):
       game    the game saves its own screenshot, the picture F2 would save, asked through the
               helper it was started with (win/CamHelper.java). Works whatever the desktop does.
-      window  the desktop hands out the window's picture (winctl.grab). Works behind other
-              windows, but not while the window is minimised or the display is asleep.
+      window  on Linux the client has an X display of its own and the whole display is grabbed;
+              "auto" falls back to this when the game cannot save its own picture.
+              On Windows it is a window on a desktop in use, behind the other windows and without
+              the keyboard, and the desktop hands out the window's picture (winctl.grab): that
+              works behind other windows, but not while the window is minimised or the display
+              is asleep.
     """
+    game = os.path.join(args.root, "client26", "game")
+    asks = os.path.join(game, "c164cam")
+    pid, helped = helper_listens(args.root)
+    if args.capture == "game" and not helped:
+        raise SystemExit("the client was not started through the picture helper (see nodemc.py, winmc.py)")
+
     if os.name != "nt":
-        def take(path):
-            subprocess.run(["import", "-display", f":{args.display}", "-window", "root", path], check=True)
-        return take
+        ways = [("display", display_camera(args.display))]
+        if helped and args.capture != "window":
+            ways.insert(0, ("game", game_camera(game, asks)))
+        return Camera(ways[:1] if args.capture == "game" else ways)
 
     import winctl
     from PIL import Image
 
-    game = os.path.join(args.root, "client26", "game")
-    with open(os.path.join(args.root, "client26", "client.pid")) as fh:
-        pid = int(fh.read().strip())
+    if pid is None:
+        raise SystemExit("no client26/client.pid: the client was not started by winmc.py")
     windows = winctl.game_windows(pid)
     if not windows:
         raise SystemExit("the client has no window")
 
     winctl.settle(windows[0])
 
-    asks = os.path.join(game, "c164cam")
-    try:
-        with open(os.path.join(asks, "ready")) as fh:
-            helped = int(fh.read().strip()) == pid
-    except (OSError, ValueError):
-        helped = False
-    if args.capture == "game" and not helped:
-        raise SystemExit("the client was not started through the picture helper (see winmc.py)")
-
     if helped and args.capture != "window":
-        numbers = itertools.count(1)
-
-        def take(path):
-            ask = f"{os.getpid()}-{next(numbers)}"
-            name = f"c164-{ask}.png"
-            with open(os.path.join(asks, ask + ".tmp"), "w", encoding="utf-8") as fh:
-                fh.write("shot " + name)
-            os.replace(os.path.join(asks, ask + ".tmp"), os.path.join(asks, ask + ".req"))
-            done, fail = os.path.join(asks, ask + ".done"), os.path.join(asks, ask + ".fail")
-            end = time.monotonic() + 60
-            while not os.path.exists(done):
-                if os.path.exists(fail):
-                    with open(fail, encoding="utf-8") as fh:
-                        raise SystemExit("the game could not take the picture: " + fh.read().strip())
-                if time.monotonic() > end:
-                    raise SystemExit("the game did not answer the request for a picture")
-                time.sleep(0.05)
-            saved = os.path.join(game, "screenshots", name)
-            with Image.open(saved) as shot:
-                picture = shot.convert("RGB")
-            if empty(picture):
-                raise SystemExit("the game saved an empty picture")
-            picture.save(path)
-            os.remove(saved)
-            os.remove(done)
-        return take
+        return Camera([("game", game_camera(game, asks))])
 
     def take(path):
         got = winctl.grab(windows[0])
@@ -133,7 +244,7 @@ def camera(args):
         if empty(picture):
             raise SystemExit("the window gave an empty picture" + why_empty())
         picture.save(path)
-    return take
+    return Camera([("window", take)])
 
 
 def main():
@@ -144,12 +255,14 @@ def main():
     ap.add_argument("--player", default="C164Cam")
     ap.add_argument("--display", default="164", help="X display number of the client (Linux)")
     ap.add_argument("--root", default=os.environ.get("MC_ROOT", os.getcwd()),
-                    help="folder that holds client26/ (Windows, see winmc.py)")
+                    help="folder that holds client26/ (see nodemc.py, winmc.py)")
     ap.add_argument("--capture", choices=("auto", "game", "window"), default="auto",
-                    help="Windows: who makes the picture, the game itself or the desktop from the window")
+                    help="who makes the picture: the game itself, or the desktop from the window or the X display")
     ap.add_argument("--out", required=True)
     ap.add_argument("--settle", type=float, default=6.0, help="seconds to wait after each move")
     ap.add_argument("--first-settle", type=float, default=15.0, help="wait for the first shot (chunks have to load)")
+    ap.add_argument("--still", type=float, default=0.0, metavar="SECONDS",
+                    help="after settling, take each picture again until two in a row are alike, this long at most")
     ap.add_argument("--only", help="comma separated shot names")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
@@ -175,21 +288,31 @@ def main():
         print(f"could not stop the clock: {answer.strip()}", file=sys.stderr)
 
     last_time = None
-    for i, shot in enumerate(shots):
-        pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
-        if "look_at" in shot:
-            yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
-        else:
-            yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
-        when = shot.get("time", DEFAULT_TIME)
-        if when != last_time:
-            rc.command(f"time set {when}")
-            last_time = when
-        rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
-        time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
-        path = os.path.join(args.out, shot["name"] + ".png")
-        take(path)
-        print(path, flush=True)
+    made = collections.Counter()
+    try:
+        for i, shot in enumerate(shots):
+            pos = [shot["pos"][k] + args.origin[k] for k in range(3)]
+            if "look_at" in shot:
+                yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
+            else:
+                yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
+            when = shot.get("time", DEFAULT_TIME)
+            if when != last_time:
+                rc.command(f"time set {when}")
+                last_time = when
+            rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
+            time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
+            path = os.path.join(args.out, shot["name"] + ".png")
+            take(path)
+            if args.still > 0:
+                took, differ, stood = until_still(take, path, args.still)
+                print(f"{path} ({'still' if stood else 'STILL CHANGING'} after {took:.0f} s more, "
+                      f"{differ:.2%} of it moved between the last two)", flush=True)
+            else:
+                print(path, flush=True)
+            made[take.last] += 1
+    finally:
+        print(summary(made), flush=True)        # also when a shot failed: the note says how the others were made
     rc.close()
 
 
