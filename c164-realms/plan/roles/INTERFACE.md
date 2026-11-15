@@ -33,6 +33,10 @@ entities、views 多报几样（第 6 节）。
 两块都算。骨架多两个数：纬度 `S.LATITUDE = 45`（大望远镜、子午仪、浑天仪的极轴读它），全场的钟点 `S.CLOCK = (7, 55)`
 （塔钟、母钟读它，世界时钟从它推时差；报时球在半杆）。环梯从帽的北面出来、逆时针转：`S.RING_STAIR` 里的 `turn`、`exit`。
 
+11-15 第三次补充（总监 20:47 拍板）：全场一个风向，北风，从北往南吹。骨架里三个名字：`S.WIND_FROM = "north"`（风从哪边来）、
+`S.WIND_TO = "south"`（往哪边吹，和 `facing` 用的是同一套词）、`S.WIND = (0, 0, 1)`（顺风走一格的 (dx, dy, dz)）。
+风向标的尾朝 `WIND_TO`，旗和风向袋往 `WIND_TO` 飘，烟和汽往 `WIND_TO` 偏一点；风杯怎么转不管风向。各包读这三个名字，不自己写方向。
+
 ---
 
 ## 1. 目录和类别
@@ -75,7 +79,7 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 - 类别的公用底座（名字以 `_` 开头，归类别牵头人管，缺什么找他加，别在自己分支上改）：
   - `materials/_kit.py`：`K.paint(pack_dir, 图名, 图)` 写方块图（自动查尺寸和色板外颜色），`K.redirect(pack_dir, 方块, {原版图: 图名})` 让一个方块换图而不动和它共用文件的方块；模块顶上 `BLOCKS = K.blocks(B.<角色>)` 写明自己画了哪些方块，占位就自动让开。要读游戏的 jar（`MC_JAR` 或 `MC_ROOT`，管理员电脑上 `job.py` 已带）。用法见文件头和 c176 的公告。
   - `props/_kit.py`：三种挂法（floor / wall / ceiling）、`K.put()` 摆放、道具用的几档材质、铆钉、玻璃、`K.offer_lights()` 把光源交给 sky。每个道具包对外给 `place(canvas, kind, pos, facing=, origin=)`。
-- 数据包里的函数（`motion` 的循环）怎么交：等 `motion` 的细化稿出来再定，先别自己往数据包里写文件。
+- 数据包里的函数（`motion` 的循环）只由 `motion/_kit.py` 写，各包不自己往数据包里写文件（细化稿 `plan/parts/motion.md`，c177，11-15）。会动的件由做件的人在 `build()` 里登记，一个件一行，紧跟在摆它的那一行后面：`MK.spin`、`MK.swing`、`MK.crank`、`MK.slide`、`MK.blink`，周期取 `MK` 里的节拍表（细化稿第 4、6 节）。现在就能照着做的：会动的部分单拆一个模型、一个实体；锚点取在转轴上；摆下去的姿态就是静止姿态，离线图和循环没开时看到的都是它。`motion/loop` 这张卡进总装以前 `_kit.py` 不在树里，登记那一行等它进了再加（c177 到时逐个包发）。驱动脚本（`build/place.py`、`tools/check.py`）调 `_kit.write()`、加 `motion` 一项检查，归 S2，和 `motion/loop` 的交付一起进。
 
 ## 3. 怎么注册一个新包（不改共享列表，两个人各加一个包不冲突）
 
