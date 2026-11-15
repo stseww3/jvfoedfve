@@ -46,9 +46,12 @@ DISTANCE = 360.0                            # how far out the panels read, in bl
 WIDTH = 300.0                               # how much sky one panel covers, across, in blocks
 MAX_ANGLE = 6.0                             # the tallest peak's elevation, degrees (the card's ceiling)
 
-# The model's own units: its picture WIDE units across, TALL units high, its foot at y 0.
-WIDE, TALL = 32.0, 5.0
-SCALE = WIDTH / WIDE                        # 9.375 blocks a model unit: the panel's width
+# The model's own units: the exporter writes a model unit as 1/32 of a block (a 16-pixel element
+# comes out 0.5 blocks wide), so the model's picture is WIDE units = WIDE/32 blocks across before
+# the entity's scale. WIDE is chosen so the unscaled picture is exactly one block: then the
+# entity's scale IS the panel's width in blocks.
+WIDE, TALL = 32.0, 5.0                      # model units: 1.0 block across, 0.156 blocks high
+SCALE = WIDTH / (WIDE / 32.0)               # 300: the width in blocks over the model's own width
 
 # The silhouettes: (share of the width, share of the height) turning points of the skyline, left to
 # right. Drawn as stepped shoulders, not straight lines, so the outline reads as rock.
@@ -138,13 +141,15 @@ def _place(canvas, key, bearing, share, origin=(0, 0, 0)):
     k = SCALE * share
     yaw = (BEARINGS[bearing] + 180.0) % 360.0          # the face looks back at the terrace
     nbt = M.display(m, yaw=yaw, scale=k)
-    # the world offset we want, and its expression in the model's own frame. The game puts the
-    # picture's centre at  centre = anchor + rot_y(-Rotation) @ translation,  so
-    #   translation = rot_y(+Rotation) @ offset      (Rotation is the NBT's own number, 180 + yaw)
+    # the world offset we want, and its expression in the model's own frame. The renderer and the
+    # game put the picture's centre at  centre = anchor + turn @ translation  with
+    # turn = rot_y(-R), R being the NBT Rotation (180 + the yaw the face looks). A rotation's
+    # transpose is its inverse, so translation = turn^T @ offset.
     d = math.radians(BEARINGS[bearing])
     off_x, off_z = math.sin(d) * DISTANCE, math.cos(d) * DISTANCE
     R = (180.0 + yaw) % 360.0
     r = math.radians(R)
+    # turn = rot_y(-R) = [[c, 0, -s], [0, 1, 0], [s, 0, c]]; its transpose is [[c, 0, s], [0, 1, 0], [-s, 0, c]]
     tx = math.cos(r) * off_x + math.sin(r) * off_z
     tz = -math.sin(r) * off_x + math.cos(r) * off_z
     nbt["transformation"]["translation"] = [M.Float(tx), M.Float(0.0), M.Float(tz)]
@@ -165,9 +170,9 @@ def build(canvas, origin=(0, 0, 0)):
 
 def peaks():
     """For the checks: (silhouette, bearing, the tallest peak in world blocks, its elevation in
-    degrees). The entity's scale is uniform, so a model unit is SCALE * share blocks tall."""
+    degrees). A model unit is 1/32 of a block, so the height in blocks is TALL/32 * SCALE * share."""
     out = []
     for key, bearing, share in PANELS:
-        tall = max(v for _, v in SKYLINES[key]) * TALL * SCALE * share
+        tall = max(v for _, v in SKYLINES[key]) * (TALL / 32.0) * SCALE * share
         out.append((key, BEARINGS[bearing], tall, math.degrees(math.atan(tall / DISTANCE))))
     return out

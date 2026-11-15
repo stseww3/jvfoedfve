@@ -22,7 +22,8 @@ CENTRE = (S.WALL_E + 0.0, S.AXIS_Z)
 
 
 def _landing(canvas):
-    """(silhouette, bearing it lands on, how far out) for every entity, the way the game reads it."""
+    """(silhouette, bearing it lands on, how far out) for every entity, the way the game reads it:
+    the picture stands at anchor + rot_y(-Rotation) @ translation."""
     out = []
     for x, y, z, nbt in canvas.entities:
         R = float(nbt["Rotation"][0])
@@ -33,6 +34,30 @@ def _landing(canvas):
                     math.hypot(centre[0] - CENTRE[0], centre[2] - CENTRE[1])))
     return out
 
+
+def _render_extents(assets, cells, entities):
+    """The renderer's own world bounds of each entity: [(centre x, centre z)], so the check reads the
+    picture the way it will actually be drawn rather than trusting the arithmetic twice."""
+    out = []
+    seen = []
+    original = GS.Scene._entity
+
+    def collect(self, x, y, z, nbt):
+        boxes = original(self, x, y, z, nbt)
+        if boxes:
+            lo = np.array([b["lo_w"] for b in boxes])
+            hi = np.array([b["hi_w"] for b in boxes])
+            seen.append(((lo[:, 0].min() + hi[:, 0].max()) / 2.0,
+                         (lo[:, 2].min() + hi[:, 2].max()) / 2.0))
+        return boxes
+
+    GS.Scene._entity = collect
+    try:
+        for ent in entities:
+            GS.Scene(assets, dict(cells), [ent], {}, place=(0, 200, 0))
+    finally:
+        GS.Scene._entity = original
+    return seen
 
 def main():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "shots.json")
