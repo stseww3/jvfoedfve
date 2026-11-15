@@ -289,14 +289,17 @@ def _blueprint_face():
 
 def _board_face():
     """The blackboard, 28 x 20: tonight's orbit in chalk. The comet's long ellipse with the Sun in
-    one focus, the line of apsides ruled faint, the comet on its way out with its tail away from
-    the Sun and the radius drawn to it; beside the figure the reckoning in short lines, the result
-    underlined; a heading above, and a wiped patch in the corner where an older figure stood."""
+    one focus, the comet on its way out with its tail away from the Sun and the radius drawn out to
+    it; beside the figure the reckoning in short lines, the result underlined; a heading above, and
+    a wiped patch in the corner where an older figure stood.
+
+    No line of apsides: ruled across the ellipse it crossed the radius vector, and two lines
+    crossing inside a closed figure is the cross the family may not draw (card, the six rules). The
+    radius alone still says which way the comet is bound, and the Sun in the focus does the rest."""
     g = _Grid(28, 20)
     centre, a, c = (10.0, 9.5), 8.0, 5.5
     for x, y in ((1, 16), (2, 16), (3, 16), (2, 17), (3, 17), (4, 17), (5, 17), (4, 18), (5, 18), (6, 18)):
         g.put(x, y, "u")                                                        # where it was wiped
-    g.line((7, 10), (17, 10), "u", dash=(1, 1))                                 # line of apsides
     g.line((6, 9), (14, 6), "d")                                                # the radius vector
     orbit = _ellipse(centre[0], centre[1], a, math.sqrt(a * a - c * c))
     g.dots([p for p in orbit if p not in ((14, 4), (17, 7))], "c")              # room round the comet
