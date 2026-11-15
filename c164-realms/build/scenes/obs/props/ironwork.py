@@ -861,7 +861,7 @@ LEAF_OFF = 0.14         # an open leaf lies this far off the reveal, its middle 
 LEAF_OUT = 7.0 / 16.0   # the hinge line of the entrance leaves: just in front of the frame's 6 px
 WEST_OUT = 0.30         # the hinge line of the west door's leaves, which have no frame: this far into the reveal
 WALK = 2                # the rows of a doorway a player fills: what stands in them stops him or lets him by
-BARRIER = getattr(B, "BARRIER", "barrier")      # the collision of a shut gate, which a model has not: doors()
+BARRIER = B.BARRIER     # the collision of a shut gate, which a model has not: doors()
 CANOPY_LAMP = 1.5       # the lamp hangs this far in front of the pilasters, under the middle glazing bar
 
 
