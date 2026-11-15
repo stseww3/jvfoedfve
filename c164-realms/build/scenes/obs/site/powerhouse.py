@@ -17,12 +17,15 @@ between polished courses.
             glow in their lower three rows (the curtain glass, the dimmest of the lit ones); the
             sky line gives them their light (sky/_lightkit.glazed), in the recess before the glass,
             which therefore stays empty.
-  door      The second bay of the north front, from the yard: a riveted gate with a wicket.
+  door      The second bay of the north front, from the yard: a riveted gate with a wicket. The
+            wicket is the way into the house and stands open (A0, g2 #37124: a door that is to be
+            walked through is not left for the visitor to open).
   chimney   In the north-east corner, wholly inside the box and outside the arrival view. Its foot
             is a tower six cells square, the corner pier, a bay and the next pier built solid, with
             a blind arch on each outer face; three courses above the eaves it steps in under a
-            weathering to a round shaft four cells across, hooped with iron every fourth course,
-            and ends in a corbelled crown six across with an iron rim at y 23 (S.POWER_HOUSE).
+            weathering to a round shaft four cells across, hooped with iron every fourth course.
+            The head is a corbel course and a polished band, six across; over them the mouth is
+            as narrow as the shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
   roof      Two versions (VERSION), and they differ in nothing else.
             "a"  Five saw teeth, one to the bay of the long sides: a light of two rows of glass
                  that looks north over an iron girder, a slate slope of 45 degrees behind it. The
@@ -160,6 +163,8 @@ FILL = {
     "south": {1: WINDOW, 2: WINDOW, 3: WINDOW, 4: WINDOW, 5: WINDOW},
     "west": {1: WINDOW, 2: WINDOW, 3: WINDOW, 4: WINDOW, 5: WINDOW},
 }
+# The wicket: the cell of its leaf and the rows of the opening. It stands open; the way in is
+# through this cell, so the room's cell behind it is to stay clear.
 DOOR_AT = dict(front="north", bay=2, cell=FRONTS["north"].at(CORNER + BAY + 1, 1), y=(FEET, FEET + 1))
 
 
@@ -256,10 +261,11 @@ def _recess(p, front, x, z, first, last, plinth=True):
 
 def _gate(p, front, x, z, middle):
     """One column of the door bay in the plane of the glass: a riveted gate with a wicket in its
-    middle column, a lintel beam, glass over it. The leaf stands on the outer side of its cell."""
+    middle column, a lintel beam, glass over it. The wicket stands open: its leaf has swung into
+    the house and stands across its cell, against the gate on the left of whoever goes in."""
     if middle:
-        p.put(x, FEET, z, f"{B.IRON_DOOR}[facing={front.inward},half=lower]")
-        p.put(x, FEET + 1, z, f"{B.IRON_DOOR}[facing={front.inward},half=upper]")
+        for y, half in ((FEET, "lower"), (FEET + 1, "upper")):
+            p.put(x, y, z, f"{B.IRON_DOOR}[facing={front.inward},half={half},hinge=left,open=true]")
         for y in range(FEET + 2, FEET + GATE_ROWS):
             p.put(x, y, z, PLATE)
     else:
@@ -348,19 +354,18 @@ def _tower(p):
             if y > TOP - FLUE_DEPTH and (x, z) in FLUE:
                 continue
             p.put(x, y, z, IRON if hoop else BODY)
-    # the crown: a corbel course, a polished band, an iron rim; six across with the corners left out
-    for y, block in ((TOP - 2, None), (TOP - 1, COURSE), (TOP, IRON)):
-        for x in range(TX0, TX1 + 1):
-            for z in range(TZ0, TZ1 + 1):
-                if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
-                    continue
-                facing = _ring_facing(x, z)
-                if block is not None:
-                    p.put(x, y, z, block)
-                elif facing is None:
-                    p.put(x, y, z, BODY)
-                else:
-                    p.put(x, y, z, f"{BRICK_STAIRS}[facing={facing},half=top]")
+    # the head: a corbel course and a polished band, six across with the corners left out, and
+    # over them the iron rim on the mouth of the shaft alone. As wide as the foot for three courses
+    # it made the chimney a dumbbell (cr2, g2 #36637); now its widest is a course and a half.
+    for x in range(TX0, TX1 + 1):
+        for z in range(TZ0, TZ1 + 1):
+            if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
+                continue
+            facing = _ring_facing(x, z)
+            p.put(x, TOP - 2, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=top]")
+            p.put(x, TOP - 1, z, COURSE)
+            if (x, z) in SHAFT:
+                p.put(x, TOP, z, IRON)
 
 
 # --- the roofs ----------------------------------------------------------------------------------------
