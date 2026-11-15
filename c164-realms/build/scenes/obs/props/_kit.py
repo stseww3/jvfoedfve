@@ -14,6 +14,15 @@ the surface: the anchor is then in the air cell and not in the wall.
 Light: a lamp model only glows itself. The light it throws is an invisible light block, and those
 are A2's (sky/_lightkit). `offer_lights()` hands them over; until that tool is in the tree it puts
 the blocks down itself so that a test scene is lit.
+
+A face that glows is still lit by the way it looks. The game lights every face of an item by two
+lamps fixed in the world, whatever the face emits (the item shader's minecraft_mix_light; the
+offline renderer draws the same): a face that looks up shows its tone as painted, one that looks
+north or south 0.74 of it, east or west 0.50, down 0.40. shade=False is read for blocks only. A
+face is lit as if it looked along the axis of its model nearest to its normal, and that axis turns
+with the display: so a glowing piece that must show its tones to one side is drawn in a frame
+tilted towards that side and turned back by its display (c342 read it off the 26.3 client and
+wrote the frame: ironwork.TILT; between 38.2 and 45 degrees the face that looks out is lit 1.00).
 """
 import math
 
@@ -191,10 +200,10 @@ def switch_key(m, at, side=1.0):
 
 def glass_ball(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
     """A glass ball drawn as bands of flat tone: bands = [(from, to, layers, material)] with from/to
-    as in Model.ball (-1 the bottom, 1 the top). Every face of a band has the one tone, so the ball
-    looks the same from all sides. Lit (the default) it is full bright with no face shading: the
-    light and dark of it is what is painted (A2: emission 15, shading in the texture). emit=0 is
-    the same glass switched off."""
+    as in Model.ball (-1 the bottom, 1 the top). Every face of a band has the one tone. Lit (the
+    default) every face emits (A2: emission 15, the light and dark painted as bands), so the cell's
+    own light does not count; the way a face looks still does (the note at the head of this file):
+    the faces that look east or west show half their tone. emit=0 is the same glass switched off."""
     for t0, t1, layers, mat in bands:
         m.ball(centre, radius, mat, sides=sides, layers=layers, squash=squash, part=(t0, t1),
                faces={"n": mat, "s": mat, "u": mat, "d": mat}, emit=emit, shade=not emit)
@@ -202,7 +211,8 @@ def glass_ball(m, centre, radius, bands, sides=8, squash=1.0, emit=15):
 
 
 def glass_prism(m, axis, c, a0, a1, radius, mat, sides=8, cap=None, emit=15):
-    """A glass prism along `axis` in one flat tone (Model.tube would shade its sides)."""
+    """A glass prism along `axis` in one flat tone (Model.tube would shade its sides in the picture;
+    the game still lights each side by the way it looks, see the note at the head of this file)."""
     k = M.AXES.index(axis)
     o1, o2 = [i for i in range(3) if i != k]
     origin = [0.0, 0.0, 0.0]

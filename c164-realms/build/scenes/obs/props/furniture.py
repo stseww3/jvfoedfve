@@ -22,7 +22,7 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
     library_ladder   three blocks tall, leans on a bookcase; its rollers ride on ladder_rail
     ladder_rail      one block of that brass rail (rail() lays a run of it)
     coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
-    trunk            a canvas travelling trunk with leather straps and brass corners
+    trunk            a travelling trunk in brown hide with darker straps and brass corners
     crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
                      every corner, a line of stencilled marks
     crate_small      the same, small enough to stand on the trunk's lid
@@ -41,6 +41,7 @@ The look is judged in the test scene build/scenes/obs_props_furniture.
 """
 import functools
 import importlib
+import importlib.util
 import math
 
 from artkit import models as M
@@ -63,13 +64,14 @@ IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
 BOLT = K.flat("iron", 4)                          # a bolt head in wood: a cool dot, no lighter than the wood
-# A travelling trunk is covered in brown canvas: the old-coin brown of the copper plates (the ramp's
-# second step, as materials has it since A0's ruling), painted as cloth: no streaks, a worn edge. The
-# woven cream the card named (cream_cloth) came out the whitest thing on the stage after the lamps,
-# and mottled; the darkest plain cream still read as a box painted white, and the ramp's middle step
-# of old copper as a pink one under a lamp.
-CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=1)
-SEAM = K.flat("old_copper", 0)                    # the binding of the trunk's lid: a step under its canvas
+# A travelling trunk is covered in brown hide: the brown of the lightest wood, laid on flat, with no
+# grain and a worn edge, so that it is leather beside the boards of a packing case. What else was
+# tried: the woven cream the card named (cream_cloth) came out the whitest thing on the stage after
+# the lamps, and mottled; the darkest plain cream still read as a box painted white; old copper as a
+# pink box under a lamp on the ramp's middle step and as a lilac one under the sky a step lower;
+# enamel blue with tan straps as the loudest thing in the room.
+HIDE = P.mat("dark_wood", kind="plain", noise=0.06, bevel=1, base=4)
+SEAM = K.flat("dark_wood", 2)                     # the edge of the trunk's lid: two steps under its hide
 # The bed of a display case is blue velvet: one flat tone of the night glass, the house's blue under
 # its brass. Brass and paper laid on it are both far lighter than the bed (the darkest cream was as
 # light as a wall of stone, and a sheet of paper on it was lost); not a speck on it that could be
@@ -424,8 +426,8 @@ def _trunk():
     straps = (-7.0, 5.0)
     for x0 in straps:                                                # runners
         m.box((x0, 0.0, -5.0), (x0 + 2.0, 1.0, 5.0), WOOD_D, grain="z")
-    m.box((-11.0, 1.0, -5.0), (11.0, 11.0, 5.0), CANVAS, grain="x")
-    # the edge of the lid: a line of darker canvas and no more, so the straps cross nothing dark
+    m.box((-11.0, 1.0, -5.0), (11.0, 11.0, 5.0), HIDE, grain="x")
+    # the edge of the lid: a darker line and no more, so the straps cross nothing dark
     m.box((-11.25, 7.0, -5.25), (11.25, 8.0, 5.25), SEAM, grain="x", skip="ud")
     for x0 in straps:                                                # two straps and their buckles
         m.box((x0, 1.0, -5.5), (x0 + 2.0, 11.5, 5.5), LEATHER, grain="y")
@@ -599,19 +601,21 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #   station   two benches against the waiting room of the cable station, one under its lit gable
 #             window and one at the foot of its front, and somebody's luggage set down by its door:
 #             a trunk along the wall and a crate on the trunk.
-#   sunset    four benches on the sunset terrace, their backs to the building, looking west over the
-#             rail at the afterglow: a pair either side of the walk from the west door, on the band
-#             of small stones between the walk and the strips, and a pair further out and three
-#             blocks further back, so that the row follows the curve of the rail. The rail stands
-#             on the whole outline of the terrace, the cells inside its corners as well (c221, g2
-#             #37541): the benches are set so far back that in front of every row of a bench two
-#             whole blocks are free to walk in.
+#   sunset    four benches at the prow of the sunset terrace, their backs to the building, looking
+#             west over the rail at the afterglow: a pair either side of the walk from the west
+#             door, on the band of small stones between the walk and the strips, and a pair beyond
+#             the strips, a block and a half further back, so that the row follows the curve of
+#             the rail. The rail's piers stand on the axis and five and nine cells either side of
+#             it (site/terrain: one every 15 degrees of the arc): every bench looks out through a
+#             bay, a pier beyond each of its ends and none before it. In front of every row of a
+#             bench more than two whole blocks are free to walk in, and the walk and the two strips
+#             stay clear.
 #   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
 #             the observatory on the right. The view back (S.V11) is taken from the walk in the
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
 DRESS = False           # off in the master scene until the family has passed review; a test scene asks
                         # for the site's furniture with dress(canvas), or calls site() for its group
-SUNSET_BENCHES = ((14.5, 4.0), (11.5, 10.0))    # (west of the terrace's middle, off the axis): a pair each
+SUNSET_BENCHES = ((14.5, 3.5), (13.0, 7.5))     # (west of the terrace's middle, off the axis): a pair each
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle
 # the luggage: (kind, the offset from the point the station gives, yaw). The trunk stands along the
@@ -619,6 +623,10 @@ LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from
 # strap, a little askew (the big one is deeper than the lid and taller than the trunk)
 LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate_small", (0.5, TOP["trunk"] + STRAP, -0.05), 6.0))
 BENCH_ENDS = 0.8                # how far from its middle the floor under a bench is looked for
+# The package of the site that lays the floor a group stands on; the sunset terrace is site/terrain's.
+# Level ground is kept for a package before it is merged (the mountain's shelves): a bench is not
+# set down on the bare rock of a shelf.
+FLOORS = {"station": "site.cablecar", "lookout": "site.outbuildings"}
 
 # What the packages of the site reported in the group, for a tree in which a package is not merged
 # yet. Once it is, its own table is read instead: _told().
@@ -637,6 +645,14 @@ def _told(module, name):
         return getattr(importlib.import_module(f"..{module}", __package__), name)
     except (ImportError, AttributeError):
         return _REPORTED[module, name]
+
+
+def floor_in_tree(group):
+    """True when the package that lays the floor of a group's furniture is in this tree."""
+    module = FLOORS.get(group)
+    if module is None:
+        return True
+    return importlib.util.find_spec(f"{__package__.rpartition('.')[0]}.{module}") is not None
 
 
 def luggage(point):
@@ -689,11 +705,12 @@ def dress(canvas, on=True):
 
 def site(canvas, origin=(0, 0, 0), groups=None):
     """Place the furniture of the site (site_pieces()), or of the groups named ("station", "sunset",
-    "lookout"). A piece is only placed where its floor is on the canvas as it is, so a tree without
-    one of the site's packages has fewer pieces and none that floats; what was left out is kept in
-    canvas.furniture_left_out as (group, kind, point). A piece is placed once: a second call, for
-    the same groups or for more of them, adds what does not stand yet. Returns the number of
-    display entities placed by this call."""
+    "lookout"). A piece is only placed where the package that lays its floor is in the tree
+    (floor_in_tree) and that floor is on the canvas as it is, so a tree without one of the site's
+    packages has fewer pieces and none that floats or stands on bare rock; what was left out is
+    kept in canvas.furniture_left_out as (group, kind, point). A piece is placed once: a second
+    call, for the same groups or for more of them, adds what does not stand yet. Returns the number
+    of display entities placed by this call."""
     origin = tuple(origin)
     placed = getattr(canvas, "furniture_placed", None)
     if placed is None:
@@ -702,7 +719,7 @@ def site(canvas, origin=(0, 0, 0), groups=None):
     for group, kind, p, yaw, foot in site_pieces():
         if (groups is not None and group not in groups) or (kind, p, origin) in placed:
             continue
-        if _stands(canvas, kind, foot, yaw, origin):
+        if floor_in_tree(group) and _stands(canvas, kind, foot, yaw, origin):
             n += place(canvas, kind, p, yaw=yaw, origin=origin)
             placed.add((kind, p, origin))
         elif (group, kind, p) not in left:

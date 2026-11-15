@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print(f"{len(shots())} shots -> {path}")
     for group, module in FLOORS.items():
         if not in_tree(group):
-            print(f"  no cameras for the group {group}: site/{module} is not in this tree")
+            print(f"  no cameras for the group {group}: {module.replace('.', '/')} is not in this tree")
     if "--report" in sys.argv[1:]:
         c = build()
         left = {(group, kind, tuple(p)) for group, kind, p in getattr(c, "furniture_left_out", [])}

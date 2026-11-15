@@ -4,8 +4,8 @@ furniture of the site switched on (furniture.dress), whatever the switch furnitu
 Every line is built whole, in the master scene's order, so the pictures keep up with the site as
 its packages are merged. A piece is only placed where its floor stands (furniture.site): in a tree
 without site/cablecar the station has no bench and no luggage, without site/outbuildings the
-lookout has no bench, and the cameras of a group are only written while its package is in the tree
-(shots.json is written again when one of them is merged). What was left out is listed by
+lookout has no bench (furniture.floor_in_tree), and the cameras of a group are only written while
+its package is in the tree (shots.json is written again when one of them is merged). What was left out is listed by
 python -m scenes.obs_props_furniture_site --report  (a node's job: it builds the master scene).
 Where the lamps of the site and the building's own lights can be asked for they are, so that the
 benches are judged in the light they will stand in.
@@ -20,7 +20,6 @@ What the pictures are for:
 The luggage itself is judged near by on the stage of obs_props_furniture.
 """
 import importlib
-import importlib.util
 
 from artkit.canvas import Canvas
 
@@ -40,14 +39,8 @@ BIOME_MARGIN_Y = obs.BIOME_MARGIN_Y
 build_models = obs.build_models
 write_pack = obs.write_pack
 
-# the package of the site that lays the floor of a group; the sunset terrace is site/terrain's
-FLOORS = {"station": "cablecar", "lookout": "outbuildings"}
-
-
-def in_tree(group):
-    """True when the floor of a group's furniture is laid in this tree."""
-    module = FLOORS.get(group)
-    return module is None or importlib.util.find_spec(f"scenes.obs.site.{module}") is not None
+FLOORS = furniture.FLOORS
+in_tree = furniture.floor_in_tree       # is the package that lays a group's floor in this tree?
 
 
 def build():
