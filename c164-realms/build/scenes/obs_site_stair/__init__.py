@@ -118,5 +118,7 @@ def build_models():
 
 def write_pack(pack_dir):
     """The stair paints nothing itself; it stands on the repainted blocks as the materials line has
-    them today (ashlar, cast iron)."""
-    return materials.pack(pack_dir)
+    them today (ashlar, cast iron). The sky's pack goes with them: the scene stands in the map's
+    hour, and it is the sky's pack that puts the comet in the moon's place and blanks the game's own
+    sun, which that hour leaves as a bright square on the open western horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
