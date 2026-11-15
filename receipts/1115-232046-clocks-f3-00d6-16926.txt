@@ -1,0 +1,18 @@
+a0job 1115-232046-clocks-f3-00d6-16926: cursor/c164-clocks-f3-00d6 @ b026dd95 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.55 2.10 1.55, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh machines/clocks b026dd9513b855b03be3279120f27bb1babed1cf --base 636ad212 ---- exit 0, 62 s, last 80 lines of 8:
+gate machines/clocks b026dd95: the merged tree b026dd95, the assembly as it was 636ad212
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    25 of 26 files are the card's own
+                    not this card's file: M build/scenes/obs/machines/clock.py
+check.py: 49 scenes in 31 s: 49 pass (33 with warnings)
+pictures: [PASS] selfshots obs_mach_clocks at b026dd95: 15 of 15 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mach_clocks_b at b026dd95: 5 of 5 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=67 host=cursor cores=4 head=b026dd95 commit=dbe1d068 pushed=yes branch=cursor/c164-clocks-f3-00d6-wip files=104
+a0job: exit=0 secs=68
