@@ -61,10 +61,11 @@ VIEWS = [
     # two columns from the bay
     ("canopy", (86.5, S.STATION_GROUND + EYE, -30.5), (90.0, 1.8, -33.0)),
     ("girder", (88.5, S.STATION_GROUND + EYE, -27.5), (89.5, 1.5, -33.0)),
-    # the trestle: from the east edge of the lower platform, from the side over the cloud, and back
-    # up it from the second tower. The first stands at the platform's railing in the bay next to the
-    # station's foot: from any bay further south the next pier of the railing hides the track.
-    ("trestle", (91.1, S.LOWER_GROUND + EYE, -23.5), (112.0, -12.5, -39.7)),
+    # the trestle: from the look-out, the flat the station keeps at its south-east corner for watching
+    # the car come up (the lower platform's own east edge has its railing now, and a pier of it or
+    # the station's foot stands before the track from every bay); from the side over the cloud; and
+    # back up it from the second tower
+    ("trestle", (90.4, S.STATION_GROUND + EYE, -26.6), (117.0, -10.0, -40.0)),
     ("trestle_side", (112.0, -6.0, -14.0), (112.0, -16.0, -40.0)),
     ("east", (104.5, -8.5 + EYE, -36.5), (91.0, -1.0, -34.0)),
     # from above: over the cloud to the south-east, and over the lower platform to the west
