@@ -40,9 +40,9 @@
 | power | c285 | c228 | site/powerhouse | `cursor/c164-power-f182` |
 | outb | c284 | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` |
 | cloud | c286 | c227 | sky/cloudsea | `cursor/c164-cloud-7d36`、`cursor/c164-cloud-wip-99a5` |
-| orrery | — | c236 | machines/orrery | `cursor/c164-orrery-6491` |
-| scope | — | c237 | machines/refractor | `cursor/c164-scope-6e0f` |
-| clocks | — | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
+| orrery | c295 | c236 | machines/orrery | `cursor/c164-orrery-6491` |
+| scope | c294 | c237 | machines/refractor；machines 牵头 | `cursor/c164-scope-6e0f` |
+| clocks | c296 | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
 | gear | c266（shell 兼） | c196 | machines/domegear（壳优先） | `cursor/c164-gear-6260` |
 | car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
 | mast | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
