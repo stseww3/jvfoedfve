@@ -1,0 +1,32 @@
+gate site/powerhouse a863dc2e: the merged tree 4b538dbe, the assembly as it was 8fcb3c0e
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 36 scenes in 19 s: 36 pass (19 with warnings)
+pictures: obs_site_powerhouse: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_powerhouse at 4b538dbe: 0 of 13 kept pictures are what the code draws, 13 not
+    door_axis: 245001 of 921600 pixels are not what the code draws (off by up to 219 of 255)
+    yard_west: 201436 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    stair_south: 168987 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    stair_axis: 140387 of 921600 pixels are not what the code draws (off by up to 214 of 255)
+    v1: 121088 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    court_back: 178714 of 921600 pixels are not what the code draws (off by up to 183 of 255)
+    lip_south: 316556 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    chimney_up: 130102 of 921600 pixels are not what the code draws (off by up to 227 of 255)
+    bridge_near: 331354 of 921600 pixels are not what the code draws (off by up to 165 of 255)
+    bridge_head: 43526 of 921600 pixels are not what the code draws (off by up to 183 of 255)
+    lookout_east: 10101 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    aerial: 100424 of 921600 pixels are not what the code draws (off by up to 237 of 255)
+pictures: obs_site_powerhouse_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_powerhouse_b at 4b538dbe: 0 of 13 kept pictures are what the code draws, 13 not
+    door_axis: 245001 of 921600 pixels are not what the code draws (off by up to 219 of 255)
+    yard_west: 201436 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    stair_south: 168991 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    stair_axis: 140387 of 921600 pixels are not what the code draws (off by up to 214 of 255)
+    v1: 121064 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    court_back: 178508 of 921600 pixels are not what the code draws (off by up to 183 of 255)
+    lip_south: 315922 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    chimney_up: 130102 of 921600 pixels are not what the code draws (off by up to 227 of 255)
+    bridge_near: 331354 of 921600 pixels are not what the code draws (off by up to 165 of 255)
+    bridge_head: 42573 of 921600 pixels are not what the code draws (off by up to 183 of 255)
+    lookout_east: 10102 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    aerial: 97303 of 921600 pixels are not what the code draws (off by up to 237 of 255)
+result: PASS
