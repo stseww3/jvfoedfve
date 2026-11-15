@@ -94,6 +94,8 @@ def _tower(c):
                 c.set(x, CORNICE_Y, z, CORNICE)
     cx, cz = (x0 + x1) // 2, (z0 + z1) // 2
     c.box(cx, S.CLOCK_TOP + 1, cz, cx, S.CLOCK_BALL_MAST - 1, cz, BOLT)
+    if mast.AERIAL == "none":           # the draft without an aerial: the tower would not carry the rod
+        return
     hx, hy, hz = mast.TOWER_HOOK
     for z in range(int(round(hz)), z0):
         c.set(int(math.floor(hx)), int(math.floor(hy)), z, st(B.IRON_ROD, facing="north"))
