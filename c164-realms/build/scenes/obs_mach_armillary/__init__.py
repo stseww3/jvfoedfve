@@ -8,10 +8,10 @@ placed. Version b stands on the same spot, so it has a scene of its own with the
 obs_mach_armillary_b: the two are compared picture by picture. obs_mach_armillary_ah is version a
 with the horizon ring it has lost, on five of these shots, until the director has ruled on it.
 
-What lights the brass is the props line's (props/lamps, group "feet" of the site's lamps): four
+What lights the brass is the props line's (props/lamps, the group "feet" of the site's lamps): four
 ground lamps on armillary.LAMP_CELLS and a hidden light in the cell under armillary.LIGHT_CELL.
-props.build() places them with the rest of the site's lamps while lamps.DRESS is on; the scene asks
-for that one group besides, so that the brass is lit the same should the switch go off.
+props.build() places them with the rest of the site's lamps. The brass has to stand on the canvas
+before that: the props line gives the hidden light only where the rings are.
 
     python -m scenes.obs_mach_armillary      writes shots.json
 """
@@ -20,7 +20,6 @@ from artkit.canvas import Canvas
 from scenes.obs import main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.machines import armillary
-from scenes.obs.props import lamps
 
 VERSION = "a"
 BIOME = "obs_blue"
@@ -31,20 +30,12 @@ TIME = 14000
 V1, V2 = S.V1, S.V2
 
 
-def _feet_lamps(c):
-    """The four ground lamps and the light under the sphere. The brass has to stand on the canvas
-    already: the props line gives that light only where the rings are. A lamp is placed once: what
-    props.build() has placed is not placed again."""
-    lamps.site(c, (0, 0, 0), groups=("feet",))
-
-
 def scene(version):
     c = Canvas()
     site.build(c, (0, 0, 0))
     main.build(c, (0, 0, 0))
     armillary.build(c, (0, 0, 0), version=version)
     props.build(c, (0, 0, 0))
-    _feet_lamps(c)
     sky.build(c, (0, 0, 0))
     return c
 
