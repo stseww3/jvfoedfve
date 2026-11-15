@@ -65,6 +65,13 @@ DOOR_TOP = S.STRING - 1                 # 5: the arches of B, the door of C
 # not stone: emblem() says where props/signs hangs it.
 EMBLEM = True
 EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
+# The heads of the great windows and of the entrance's arches: False, a stair hung in each top
+# corner and the middle column open to the lintel (three wide, two, one: read from afar the head
+# is pointed, and a round iron frame set into it leaves a slot over its crown); True, a slab hung
+# between the two stairs as well (three wide, two, shut: the half blocks of the half round the
+# iron frames of props/ironwork draw, radius 1.5, crown half a block under the lintel). Off until
+# the director has seen the two side by side (obs_main_facade_crown is this scene with it on).
+CROWN = False
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
 # looks through the doorway at the sky behind the building, and the doorway is not a black hole:
 # its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
@@ -186,16 +193,17 @@ def _portal(s, op, y):
 
 
 @functools.lru_cache(maxsize=None)
-def _shell(entrance):
+def _shell(entrance, crown):
     body = footprint()
     front = O.ring(body)
     pilasters = [c for c in P.apse_pilasters() if c in front]
     plan = O.Plan(body, _classify(), pilasters=pilasters)
     if entrance == "A":
-        plan.door("east", P.AISLE_BAY, S.GROUND, S.STRING, arch=B.ASHLAR_FINE)
+        plan.door("east", P.AISLE_BAY, S.GROUND, S.STRING, arch=B.ASHLAR_FINE, crown=crown)
     elif entrance == "B":
         for bay in ARCADE:
-            plan.door("east", bay, S.GROUND, DOOR_TOP, arch=B.ASHLAR_ROUGH, leaf=None if bay == P.AISLE_BAY else _gate)
+            plan.door("east", bay, S.GROUND, DOOR_TOP, arch=B.ASHLAR_ROUGH, crown=crown,
+                      leaf=None if bay == P.AISLE_BAY else _gate)
     elif entrance == "C":
         plan.door("east", P.AISLE_BAY, S.GROUND, S.PANEL, leaf=_portal)
     else:
@@ -207,7 +215,7 @@ def _shell(entrance):
 def shell(entrance=None):
     """The plan of the walls: O.Plan with the entrance (the default version, or the one named) and
     the west door cut."""
-    return _shell(entrance or ENTRANCE)
+    return _shell(entrance or ENTRANCE, CROWN)
 
 
 def doors(entrance=None):
@@ -216,13 +224,15 @@ def doors(entrance=None):
 
     cells are the columns of the wall line the doorway goes through (x, z), inward the step into
     the building, y its (bottom, top) rows. arch is True where the two top corners are rounded
-    like a great window's (a stair hung in each, in the wall plane), False for a flat head. kind
-    is "door" where people walk through, "gate" where an iron gate closes the arch. The glass
-    plane, where a leaf hangs, is one step inward of cells; a gate's arch has a stand-in of bars
-    there, which whoever hangs the real gate clears first."""
+    like a great window's (a stair hung in each, in the wall plane), False for a flat head; crown
+    is True where a slab between the two stairs shuts the head half a block under the lintel
+    (CROWN). kind is "door" where people walk through, "gate" where an iron gate closes the arch.
+    The glass plane, where a leaf hangs, is one step inward of cells; a gate's arch has a stand-in
+    of bars there, which whoever hangs the real gate clears first."""
     return [dict(front=op.front, bay=op.bay, cells=list(op.cells), inward=op.inward,
                  y=(op.door[0], DOOR_TOP if op.door[3] is _portal else op.door[1]),
-                 arch=op.door[2] is not None, kind="gate" if op.door[3] is _gate else "door")
+                 arch=op.door[2] is not None, crown=op.door[2] is not None and op.crown,
+                 kind="gate" if op.door[3] is _gate else "door")
             for op in shell(entrance).openings if op.door]
 
 
@@ -264,7 +274,7 @@ def order(site=True):
         O.Storey(S.BASE, "base", wall=rough, pier=rough, window=O.Window(P.BASE_WINDOW, grille=B.IRON_BARS)),
         O.Course(S.STRING, fine),
         O.Storey((S.PANEL, S.WINDOW[1]), "main", wall=fine, pier=fine, capital=True,
-                 window=O.Window(S.WINDOW, head="arch", apron=panel, blind=panel)),
+                 window=O.Window(S.WINDOW, head="round" if CROWN else "arch", apron=panel, blind=panel)),
         O.Frieze(S.FRIEZE, panel, fine, crest=B.ASHLAR_EMBLEM, key=fine, keys=_key),
         O.Cornice(S.CORNICE, fine, gutter=B.OLD_COPPER_CUT),
         parapet,
