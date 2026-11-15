@@ -5,8 +5,8 @@ card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
     9x9). The meridian cuts it in two: an open slot one block wide runs through the south gable (the
     door), along the ridge and through the north gable, so the transit instrument (A5) sweeps the sky
     from horizon to horizon and the brass line runs out of the door into the court. Two low slopes of
-    slate rise to the slot from an old-copper gutter on each long wall; the two iron shutters lie open
-    on the ridge either side of the slot. It stands on the V1 sight line to the foot of the clock
+    old copper rise from the long walls to the slot; the two iron shutters lie open on the ridge
+    either side of it. It stands on the V1 sight line to the foot of the clock
     tower, so it is kept low: the ridge is at y 5, which hides the front only up to the string course
     and none of the great windows.
   - the water tower: four riveted legs on slate pads with one girt and knee braces, a thin gallery
@@ -23,7 +23,7 @@ card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
 One family with the main building and plainer than it: its slate plinth, its banded ashlar and its
 riveted iron, the site's rail on every edge, one lamp at a door and no more, and to each of the three
 that has a roof or a vessel one piece of the old copper of the main cornice's gutter: the hut's
-gutters, the tank's cap, the rain gauge.
+roof, the tank's cone, the rain gauge.
 
 The instruments themselves -- the meridian circle, the thermometer screen, the tripod telescope and
 the benches -- belong to the machines and props lines; this card leaves the shells, the sockets and
@@ -75,9 +75,8 @@ EMBLEM = B.ASHLAR_EMBLEM                # the emblem block at the head of each j
 COPE = B.ASHLAR_PANEL.slab              # a grey-white slab: the cap of a pedestal
 PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, the steps' landings
 POST = B.SLATE_BRICK.wall               # a slate post
-ROOF_SLAB = B.SLATE_TILE.slab           # dark slate roof
 COPPER = B.OLD_COPPER_CUT.block         # old copper in sheets, as in the gutter of the main cornice
-COPPER_SLAB = B.OLD_COPPER_CUT.slab     # the hut's gutters
+COPPER_SLAB = B.OLD_COPPER_CUT.slab     # the hut's roof
 COPPER_STAIR = B.OLD_COPPER_CUT.stairs  # the cone over the tank
 BOARD = B.PALE_WOOD.block               # pale boards: the stand-in thermometer screen
 BOARD_SLAB = B.PALE_WOOD.slab
@@ -342,12 +341,13 @@ def _meridian_hut(c, o):
         for wz in (cz - 2, cz + 2):
             _put(c, o, wx, on + 2, wz, B.WINDOW_DARK.pane)
 
-    # The roof: two slopes that rise half a block a column from the eaves to the slot. The course on
-    # each long wall is the gutter, of old copper; then slate; the last column either side of the
-    # slot is an iron shutter, slid open and lying level with the ridge. The gables are of stone to
-    # the roof's own line, their raking stones flush with the slate; the slot's jambs are dressed and
-    # carry the emblem at their heads. The ridge is at y 5.0 and the eaves at 3.5: from V1 the hut
-    # hides the front up to y 7.9 at the most, below the sills of the great windows (y 8).
+    # The roof: two slopes of old copper in sheets that rise half a block a column from the eaves to
+    # the slot (slate was a black bar before the lit front in V1; the copper is the main cornice's
+    # gutter come down to a small roof). The last column either side of the slot is an iron shutter,
+    # slid open and lying level with the ridge. The gables are of stone to the roof's own line,
+    # their raking stones flush with the copper; the slot's jambs are dressed and carry the emblem
+    # at their heads. The ridge is at y 5.0 and the eaves at 3.5: from V1 the hut hides the front
+    # up to y 7.9 at the most, below the sills of the great windows (y 8).
     for z in range(z0, z1 + 1):
         gable = z in (z0, z1)
         for x in range(x0, x1 + 1):
@@ -368,7 +368,7 @@ def _meridian_hut(c, o):
             elif d == 1:
                 _put(c, o, x, y, z, HATCH + f"[facing={'east' if x < mx else 'west'},half=top,open=false]")
             else:
-                _put(c, o, x, y, z, (COPPER_SLAB if k == 0 else ROOF_SLAB) + f"[type={half}]")
+                _put(c, o, x, y, z, COPPER_SLAB + f"[type={half}]")
 
 
 # --- the water tower (S.WATER_TOWER, north-west shoulder) -----------------------------------------

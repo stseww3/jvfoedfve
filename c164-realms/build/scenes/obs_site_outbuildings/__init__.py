@@ -109,7 +109,8 @@ def shots():
 
     x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]             # 40,48,50,56
     mx = _middle(S.SOUTH_LOOKOUT["box"])[0] + 0.5
-    shot("lookout_near", (mx, eye, south - 1.5), (mx, S.SOUTH_LOOKOUT["feet"], z1 - 3.0))
+    # a person half-way down the steps, on the east side of the walk
+    shot("lookout_near", (mx + 0.8, S.SOUTH_LOOKOUT["feet"] + 4.4, z0 - 5.0), (mx, S.SOUTH_LOOKOUT["feet"], z1 - 2.5))
     shot("lookout_mid", (x1 + 13.0, 0.0, z1 + 14.0), (x0 - 10.0, 3.0, z0 - 20.0))
 
     cx, cz = _middle(S.WATER_TOWER["box"])              # (-17, -31)
