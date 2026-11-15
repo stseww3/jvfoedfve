@@ -7,9 +7,21 @@
 ## 0. 一句话流程
 
 ```
-cloud_setup.sh  →  Java 25  →  Mesa Vulkan + ImageMagick  →  fetch_client.py  →  server-up
-→  place.py  →  makepack.py  →  client-up  →  shoot.py  →  client-down / server-down
+cloud_setup.sh  →  cloud_game.sh（以下第 1 到 4 节都是它做的）
+→  server-up  →  place.py（摆两次）  →  makepack.py  →  client-up  →  shoot.py  →  down
 ```
+
+**`tools/cloud_game.sh` 一条命令把这台机器装到能开游戏**，跟 `cloud_setup.sh` 一个写法，重跑无害：
+
+```
+cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c \
+  && git show FETCH_HEAD:c164-realms/tools/cloud_game.sh | bash -s --
+```
+
+它装第 2 节那四个系统包、做 JRE 软链、取客户端和服务端、写服务端的几个文件，最后用
+`--check-only` 自查一遍。**`bash tools/cloud_game.sh --check-only` 可以单独跑**：不装东西，只说
+什么不在，缺东西时退出码 1。下面第 1 到 4 节还是留着——它是这个脚本在做的事，手工重装或者
+它坏了的时候照着做。
 
 ## 1. 基础（cloud_setup.sh 做的）
 
@@ -36,6 +48,8 @@ sudo apt-get install -y openjdk-25-jdk-headless mesa-vulkan-drivers mesa-utils v
 | `mesa-vulkan-drivers` | Xvfb 下 OpenGL 后端失败（`Couldn't find matching GLX visual`），游戏要退到 Vulkan；没有 `lvp_icd.json` 就是 `Installed Vulkan doesn't implement the VK_KHR_surface extension`，两个后端都失败，客户端直接崩 |
 | `mesa-utils` / `vulkan-tools` | 只用于自查（`glxinfo -B`、`vulkaninfo --summary`），可以不要，装了几秒钟 |
 | `imagemagick` | `tools/shoot.py` 在 Linux 上用 `import -display :164 -window root` 抓屏，没有这个命令就 `FileNotFoundError: 'import'` |
+
+四个都由 `tools/cloud_game.sh` 装。
 
 Java 25 装完是 `/usr/lib/jvm/java-25-openjdk-amd64`。仓库脚本默认找 `/agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java`（Windows 路径的写法），做一个软链即可，不用改脚本：
 
@@ -163,7 +177,27 @@ MC_SERVER_HEAP=2G bash tools/mc.sh down
 
 所以**评审判发光、天空、云、玻璃反光、模型远看，要看真机图**，离线图判不了。
 
-## 12. 踩过的坑
+## 12. 省时间：换资源包不用重启客户端
+
+改了资源包（换彗星版本、改贴图）以后，给游戏窗口发 **F3+T** 重载资源，约 25 到 32 秒，客户端不用重开：
+
+```
+export DISPLAY=:164
+WID=$(xdotool search --class "minecraft" | tail -1)
+xdotool key --clearmodifiers keydown F3 key t keyup F3
+```
+
+重载完等 30 秒再拍。实测：换彗星三版（甲、乙、丙）都用这个，一次都没重启客户端。
+
+**换彗星版本的做法**（总监 11-16 要的三版比选）：
+1. 改 `build/scenes/obs/sky/comet.py` 的 `DEFAULT_STYLE`：`"a"` 甲 柔光长尾、`"b"` 乙 硬像素、`"c"` 丙 宽扇尾。
+2. `cd build && python makepack.py obs --out /agent/realms-study/client26/game/resourcepacks/c164art`（约 0.8 秒，输出里会写 `comet (b) -> ...`，看这个字确认切对了）。
+3. F3+T，等 30 秒，`shoot.py`。
+4. **改完把文件恢复原样**（`git status` 要干净），别把切版留在分支上。
+
+三版在同一座整楼、同一对机位下拍的，差别主要在彗星本身和它投的光：V1 里甲和乙有 1.47% 的像素不同、甲和丙 1.43%，差异散布在整幅画面上（彗星的亮部也在动），不只是彗星那一小块。
+
+## 13. 踩过的坑
 
 1. `tools/winmc.py` 不能在这台机器上 `import`：`tools/win/deskstate.py` 第 18 行 `ctypes.WinDLL` 只有 Windows 有。Linux 上照第 4 节手写配置，不要绕着改它。
 2. `place.py` 第一次跑一定 biome 失败，要重启服务端再摆一遍（第 6 节）。
