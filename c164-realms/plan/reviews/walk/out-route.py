@@ -7,10 +7,11 @@ east lip, round the power house and under the pipe bridge, back to the station.
 
     python plan/reviews/walk/out-route.py          (from c164-realms/; then tools/walk.py check)
 
-The numbers are the skeleton's and the site packages' own (site/terrain: the gaps in the rail and
-the necks; site/stair, site/lowerplatform, site/cablecar, site/outbuildings as they stand on their
-branches), so the way lies where a visitor is meant to walk whether a package has landed or not:
-a station that finds no floor says the package is not there yet, or that the floor moved.
+The numbers are the skeleton's and the site packages' own (site/terrain: the gaps in the rail;
+site/stair, site/lowerplatform, site/outbuildings, site/mastbase as built in the assembly at round
+5959264, read off that round's reach plan; site/cablecar as it stands on its branch), so the way
+lies where a visitor is meant to walk whether a package has landed or not: a station that finds
+no floor says the package is not there yet, or that the floor moved.
 
 Three kinds of point:
     pt(...)                a point of the way; with node="..." a junction, a doorway, a corner: six views
@@ -107,6 +108,7 @@ pt(MX + 3, UP, AXIS, node="before the armillary, on the axis")
 pt(MX + 3, UP, -6.5)
 pt(MX, UP, -10.5)
 pt(MX, UP, S.MERIDIAN_HUT["door"][1] + 1.5, node="before the meridian hut's door")
+pt(MX - 7, UP, S.MERIDIAN_HUT["door"][1] + 1.5)                     # clear of the hut's corner
 pt(FOOT_X, UP, -28.5, node="the north-west corner of the court, at the foot of the front")
 pt(FOOT_X, UP, -7.5)
 pt(FOOT_X + 1, UP, AXIS, node="before the main door")
@@ -125,25 +127,43 @@ pt(IN_E, UP, IN_N, node="the north-east corner of the terrace")
 edge(50.5, UP, IN_N, N)
 edge(42.5, UP, IN_N, N)
 edge(34.5, UP, IN_N, N)
-pt(PAD[2] - 1.5, UP, IN_N)
-pt(PAD[2] - 1.5, UP, PAD[1] + 1.5, node="the mast pad, its north-east corner")
-pt(PAD[0] + 3.5, UP, PAD[1] + 1.5, node="the mast pad, its north-west corner")
-pt(PAD[0] + 3.5, UP, IN_N)
+# the pad: the mast's base stands in its middle (x 21..25, z -42..-38), a walk three wide round it
+PAD_E, PAD_W, PAD_N = PAD[2] - 2.5, PAD[0] + 2.5, PAD[1] + 1.5      # 26.5, 19.5, -44.5
+pt(PAD_E, UP, IN_N)
+pt(PAD_E, UP, -40.5, node="on the mast pad, beside the mast's base")
+pt(PAD_E, UP, PAD_N, node="the mast pad, its north-east corner", look=(PAD_E, UP + EYE, PAD_N - FAR))
+pt(PAD_W, UP, PAD_N, node="the mast pad, its north-west corner", look=(PAD_W - FAR, UP + EYE, PAD_N))
+pt(PAD_W, UP, IN_N)
 edge(12.5, UP, IN_N, N)
+# the neck to the weather station: level through the gap, then a block down every row
 pt(3.5, UP, IN_N, node="the gap in the rail: the way down to the weather station")
+pt(3.5, UP, -38.5)
+pt(3.5, -2, -40.5)
 pt(3.5, WS["feet"], WS["box"][3] + 0.5)
-pt(3.5, WS["feet"], -45.5, node="the weather station's shelf")
-edge(3.5, WS["feet"], WS["box"][1] + 1.5, N)
+pt(4.5, WS["feet"], -45.5, node="the weather station's shelf")
+edge(4.5, WS["feet"], WS["box"][1] + 1.5, N)
+edge(WS["box"][0] + 1.5, WS["feet"], -44.5, W, hop=True)
+edge(WS["box"][2] - 1.5, WS["feet"], -44.5, E, hop=True)
 edge(-2.5, UP, IN_N, N, hop=True)
 pt(IN_W, UP, IN_N, node="the north-west corner of the terrace")
 
 # ---- E: the west side -----------------------------------------------------------------------------------
 WT = S.WATER_TOWER                                                  # box -21, -35, -13, -27; feet -2
 stretch("E", "the west side: the water tower, the sunset terrace")
+# the neck to the water tower: two blocks down in two columns; the tower stands on four legs in
+# the shelf's middle (x -19..-15, z -33..-29), a walk round it
+WT_E, WT_W, WT_N, WT_S = WT["box"][2] + 0.5, WT["box"][0] + 1.5, WT["box"][1] + 1.5, WT["box"][3] - 0.5
 pt(IN_W, UP, -31.5, node="the gap in the rail: the way down to the water tower")
-pt(TX0 - 2.5, WT["feet"], -31.5)
-pt(-16.5, WT["feet"], -31.5, node="the water tower's shelf")
-edge(WT["box"][0] + 1.5, WT["feet"], -31.5, W)
+pt(TX0 - 0.5, UP, -31.5)
+pt(WT_E, WT["feet"], -31.5)                                         # -12.5: the shelf's east walk
+pt(WT_E, WT["feet"], WT_N)
+pt(WT_W, WT["feet"], WT_N, node="the water tower's shelf, its north-west corner",
+   look=(WT_W - FAR, WT["feet"] + EYE, WT_N))
+pt(WT_W, WT["feet"], WT_S, node="the water tower's shelf, its south-west corner",
+   look=(WT_W - FAR, WT["feet"] + EYE, WT_S + FAR))
+pt(WT_E, WT["feet"], WT_S)
+pt(WT_E, WT["feet"], -31.5)
+pt(-16.5, WT["feet"], -31.5, node="under the water tower")
 edge(IN_W, UP, -26.5, W, hop=True)
 pt(IN_W, UP, -17.5, node="the north end of the sunset terrace's arc")
 for deg in (25, 50, 75):
@@ -165,13 +185,17 @@ SL = S.SOUTH_LOOKOUT                                                # box 40, 48
 stretch("F", "the south side: the south lookout")
 for x in (-2.5, 5.5, 13.5, 21.5, 29.5, 37.5):
     edge(x, UP, IN_S, SO)
+# the neck to the lookout: level through the gap, then a block down every two rows
 pt(45.5, UP, IN_S, node="the gap in the rail: the way down to the south lookout")
-pt(45.5, SL["feet"], SL["box"][1] - 0.5)
+pt(45.5, UP, 39.5)
+pt(45.5, -2, 43.5)
+pt(45.5, -4, 47.5)
+pt(45.5, SL["feet"], SL["box"][1] + 0.5)
 pt(S.V11["pos"][0], SL["feet"], S.V11["pos"][2], node="the south lookout (the place of V11)")
-edge(SL["box"][2] - 1.5, SL["feet"], 52.5, E)
-pt(45.5, SL["feet"], SL["box"][3] - 1.5, node="the lookout's prow",
+edge(SL["box"][2] - 1.5, SL["feet"], 51.5, E)
+pt(45.5, SL["feet"], SL["box"][3] - 0.5, node="the lookout's prow",
    look=(45.5, SL["feet"] + EYE, SL["box"][3] + FAR), views="flrbd")
-edge(SL["box"][0] + 1.5, SL["feet"], 52.5, W)
+edge(SL["box"][0] + 2.5, SL["feet"], 51.5, W)
 edge(52.5, UP, IN_S, SO, hop=True)
 pt(IN_E, UP, IN_S, node="the south-east corner of the terrace")
 
@@ -193,10 +217,17 @@ pt(74.5, LOW, HZ0 - 1.5, node="before the power house's door")
 pt(ALLEY + 1, LOW, HZ0 - 1.5)
 pt(ALLEY, LOW, 26.5)
 pt(ALLEY, LOW, 31.5, node="in the alley, under the pipe bridge")
-pt(ALLEY, LOW, LZ1 + 0.5, node="the south-west corner of the lower platform")
-for x in (71.5, 79.5, 87.5):
+pt(ALLEY, LOW, 37.5)
+pt(LX0 + 1.5, LOW, LZ1 - 1.5, node="the south-west corner of the lower platform",
+   look=(LX0 + 1.5 - FAR, LOW + EYE, LZ1 - 1.5 + FAR))
+# behind the house there is the kerb alone, a row wide: the house's south wall on one side, the
+# fall on the other (site/lowerplatform: no ground to rail off)
+pt(HX0 + 1.5, LOW, LZ1 + 0.5, node="the kerb behind the power house, its west end", hop=True,
+   look=(HX0 + 1.5 + FAR, LOW + EYE, LZ1 + 0.5))
+for x in (74.5, 80.5, 86.5):
     edge(x, LOW, LZ1 + 0.5, SO)
-pt(LX1 - 0.5, LOW, LZ1 + 0.5, node="the south-east corner of the lower platform")
+pt(LX1 - 0.5, LOW, LZ1 - 1.5, node="the south-east corner of the lower platform", hop=True,
+   look=(LX1 - 0.5 + FAR, LOW + EYE, LZ1 - 1.5 + FAR))
 for z in (35.5, 27.5):
     edge(LX1 - 0.5, LOW, z, E)
 pt(LX1 - 0.5, LOW, HZ0 - 1.5, node="the north-east corner of the power house")
@@ -208,10 +239,12 @@ edge(LX1 - 0.5, LOW, -7.5, E)
 edge(LX1 - 0.5, LOW, -15.5, E)
 pt(LX1 - 0.5, LOW, CZ1 + 2.5, node="under the station's bay, on the east edge")
 edge(CX0 - 2.5, LOW, LZ0 + 1.5, N, hop=True)
-pt(LX0 + 1.5, LOW, LZ0 + 1.5, node="the north-west corner of the lower platform")
-pt(LX0 + 1.5, LOW, -30.5)
-pt(LX0 + 1.5, LOW, -20.5)
-pt(LX0 + 1.5, LOW, G["z0"] - 3.5, node="the foot of the retaining wall, north of the stair")
+pt(LX0 + 1.5, LOW, LZ0 + 1.5, node="the north-west corner of the lower platform",
+   look=(LX0 + 1.5 - FAR, LOW + EYE, LZ0 + 1.5 - FAR))
+# along the retaining wall, a column clear of its buttresses (x 61..62)
+pt(LX0 + 2.5, LOW, -36.5)
+pt(LX0 + 2.5, LOW, -20.5)
+pt(LX0 + 2.5, LOW, G["z0"] - 3.5, node="the foot of the retaining wall, north of the stair")
 pt(CX0 - 1.5, LOW, S.V1["pos"][2], node="the foot of the station's west steps", hop=True)
 pt(CX0 + 2.5, STATION, S.V1["pos"][2])
 pt(S.V1["pos"][0], STATION, S.V1["pos"][2], node="back at the spawn", views="fb")
