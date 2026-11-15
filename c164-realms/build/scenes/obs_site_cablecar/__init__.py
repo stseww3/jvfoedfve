@@ -5,8 +5,8 @@ The hill as it stands in the master scene: the site line whole, the main buildin
 machines (the car and the winch in the station are theirs), the props line and the sky line's light
 last. The lines are built whole, in the master scene's order, so the pictures keep up with them as
 their packages are merged. The station's lamp and its furniture belong to the props line. The
-lamp hangs in the master scene (props/lamps.DRESS); what the line keeps switched off there is
-asked for here (_dress), and what stands already is not set out twice.
+lamp hangs in the master scene, with the other lamps of the site; the furniture, which the line
+keeps switched off there for now, is asked for here (_dress).
 
 One stand-in, in this scene only, for what is still on another branch: the sea of cloud beyond the
 ring that site/terrain lays round the mountain's foot (sky/cloudsea takes both over). The ring ends
@@ -107,15 +107,14 @@ def _prop(name):
 
 
 def _dress(c):
-    """What the props line sets out on the station, both under the group "station": the pendant
-    under the glass roof (props/lamps, on site/cablecar.LAMP_POINTS), the two benches and the
-    luggage against the waiting room (props/furniture, on BENCHES and LUGGAGE). Called after the
-    props line and before the sky line, which lays the lamps' light. A tree whose props line does
-    not set them out yet has none."""
-    for name in ("lamps", "furniture"):
-        set_out = getattr(_prop(name), "site", None)
-        if set_out is not None:
-            set_out(c, (0, 0, 0), groups=("station",))
+    """What the props line sets out on the station and keeps switched off in the master scene: the
+    two benches and the luggage against the waiting room (props/furniture, its group "station", on
+    BENCHES and LUGGAGE). Asked for here, after the props line; a piece that stands already is not
+    set out twice, and a tree without the furniture has none. The pendant under the glass roof
+    (props/lamps, on LAMP_POINTS) is one of the site's lamps: the props line hangs it itself."""
+    set_out = getattr(_prop("furniture"), "site", None)
+    if set_out is not None:
+        set_out(c, (0, 0, 0), groups=("station",))
 
 
 def build():
