@@ -86,7 +86,7 @@ def check():
             # 2. the top: one cast block on the axis, the only thing as high
             high = sorted(col for col, (rows, face) in cols.items() if face is not None and face > D.CROWN + 0.5)
             if high != [(D.CX, D.CZ)] or name(D.CX, TOP_ROW, D.CZ) != D.CAST:
-                out.append(f"{tag} apex: the columns higher than the crown's plates are {high}, not the cast block alone")
+                out.append(f"{tag} apex: higher than the crown's plates are {high}, not the cast block alone")
             # 3. the outline: nothing stands more than half a block over the plates (the boss a whole one)
             for col, (rows, face) in sorted(cols.items()):
                 over = 1.0 if col == (D.CX, D.CZ) else 0.5
@@ -147,8 +147,10 @@ def check():
                 out.append(f"{tag} drum: {len(sunk)} niches, not one under every window but the doors'")
             for front, back in sunk:
                 for y in O.rows(D.NICHE_Y):
-                    if c.has(front[0], y, front[1]) or name(back[0], y, back[1]) != B.ASHLAR_PANEL.block:
-                        out.append(f"{tag} drum: the niche at {front}, y {y} is not a recess backed with panel stone")
+                    panel = back if D.NICHE_SUNK else front
+                    open_front = not c.has(front[0], y, front[1])
+                    if name(panel[0], y, panel[1]) != B.ASHLAR_PANEL.block or open_front != D.NICHE_SUNK:
+                        out.append(f"{tag} drum: the panel under the window at {front}, y {y} is not where it belongs")
             for run in D.doors(p):
                 step = (run[1][0] - run[0][0], run[1][1] - run[0][1])
                 way = [O.step(run[0], step, -1)] + run + [O.step(run[-1], step)]
@@ -163,6 +165,13 @@ def check():
             for x, z in p.core:
                 if any(c.has(x, y, z) for y in range(D.ATTIC, D.SKIRT_Y + 1)):
                     out.append(f"{tag} room: something stands inside the inner leaf at ({x}, {z})")
+            # 9. the seams: version a draws them with the uncut sheet and has none of the darker
+            #    copper, version b the other way round
+            names = set(c.count())
+            if version == "a" and (D.SHEET not in names or names & set(D.RIB.all())):
+                out.append(f"{tag} seams: version a does not draw them with the uncut sheet alone")
+            if version == "b" and (D.RIB.block not in names or D.SHEET in names):
+                out.append(f"{tag} seams: version b does not draw its ribs with the darker copper alone")
     return out
 
 
@@ -233,7 +242,8 @@ def _drawings(version, state):
     print("\nWEST ELEVATION, the slit (north on the left):\n")
     print(O.elevation(c, "west", zs, ys, xs[0], xs[1]))
     print("\nLetters: F dressed ashlar, P sunk panel, D dark window, C copper gutter, H iron plate (the track),")
-    print("I riveted iron, W cast iron (an axle box), ! post, V verdigris plate, X the darker copper, A the cast boss.")
+    print("I riveted iron, W cast iron (an axle box), ! post, V verdigris plate, G the uncut sheet (version a's")
+    print("seams), X the darker copper (version b's ribs and slats), A the cast boss.")
     print("Small letters are the same family's stairs and slabs.")
 
 
@@ -244,6 +254,6 @@ if __name__ == "__main__":
         print()
     found = check()
     print("\n".join(found) if found else
-          "self-check: extent, apex, outline, slit, shell, ring beam, gallery, drum and doors -- all good, "
+          "self-check: extent, apex, outline, slit, shell, ring beam, gallery, drum, doors and seams -- all good, "
           "versions a and b, the slit open, half open and closed")
     sys.exit(1 if found else 0)

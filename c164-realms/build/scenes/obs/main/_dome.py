@@ -26,8 +26,10 @@ Rows, from the main cornice (y 15) up:
              sunk half a block, and outside that an iron cove whose top is the walkway; a post
              stands on it every nine degrees (y 24), no mesh between them
     24       the ring beam of the dome, riveted iron, an axle box under every seam
-    25       the first row of plates, whole all the way round: the sill of the slit
-    26..37   the plates: a half-ellipse rounded to the nearer half block, whole blocks and slabs;
+    25..27   the dome's foot: three rows of plates upright over the ring beam all the way round,
+             so its edge is a level line at y 28 (sixteen columns, where the raster circle steps,
+             stand half a block or one higher); the first row is the sill of the slit
+    28..37   the plates: a half-ellipse rounded to the nearer half block, whole blocks and slabs;
              the slit, 5 wide, looks west and is open from the sill to the crown
     38       the crown: eight plates half a block over the top round one cast block on the axis,
              the only highest point of the dome (the slit stops west of it)
@@ -36,14 +38,16 @@ Nothing on the dome stands a whole block proud of the plates (A0, group #294; th
 ribs made a saw-tooth of the outline). Two versions, one idea each for how close the seams stand
 and how the slit is shut:
 
-    a   twenty fine seams, one between every two gores, flush with the plates: a line of the
-        darker copper, no relief. They die into a flush collar. The slit is shut by two leaves
-        that part sideways, an iron stile and two columns of plate each, lying half a block over
-        the plates; open they lie on the dome beside the slit.
-    b   eight main ribs, the pair beside each of the four axes, half a block over the plates;
-        the twelve seams between them are not drawn. They die into a collar of the same height.
-        The slit is shut by a curtain of copper slats drawn up from its foot between two flush
-        iron rails; its last slat is the iron bar the chains pull.
+    a   twenty fine seams, one between every two gores, flush with the plates and of the same
+        copper: a strip of the uncut sheet between the plates' joints, to be seen from close by
+        and one colour with the dome from afar (twenty lines of the darker copper would read as
+        stripes: the pre-review of the second cut). They die into a flush collar. The slit is
+        shut by two leaves that part sideways, an iron stile and two columns of plate each, lying
+        half a block over the plates; open they lie on the dome beside the slit.
+    b   eight main ribs, the pair beside each of the four axes, of the darker copper and half a
+        block over the plates; the twelve seams between them are not drawn. They die into a
+        collar of the same height. The slit is shut by a curtain of copper slats drawn up from
+        its foot between two flush iron rails; its last slat is the iron bar the chains pull.
 """
 import math
 
@@ -59,9 +63,11 @@ ATTIC = S.PARAPET[0]                    # 16: the first row above the main corni
 DRUM_TOP = S.DRUM[1]                    # 23: the gallery's row
 WINDOW_Y = (S.DRUM[0] + S.DRUM[1]) // 2                     # 20
 NICHE_Y = (WINDOW_Y - 2, WINDOW_Y - 1)  # 18..19: the sunk panel under a window
+NICHE_SUNK = True                       # False: the panel stands in the wall face, only the window is a recess
 CORBEL_Y = DRUM_TOP - 1                 # 22
 SKIRT_Y = S.DOME_SPRING                 # 24: the ring beam
 SILL_Y = SKIRT_Y + 1                    # 25: the slit opens above this row
+FOOT_ROWS = 3                           # rows of plates upright over the ring beam: y 25..27 (1: the bare ellipse)
 CROWN = S.DOME_APEX + 1.0               # 38.0: the plates' top face round the axis
 FOOT_R = R + 0.5                        # 13.5: the plates' face at the foot (ring 13's outer face)
 PILASTER_OFF = 4.5                      # a pilaster stands at most this many degrees off its seam
@@ -71,7 +77,9 @@ DOORS = getattr(S, "DOME_ROOM_DOORS", dict(cells=((12, 10), (12, -10)), y=(18, 1
 CAP = frozenset(O.box(CX - 1, CZ - 1, CX + 1, CZ + 1))      # the crown's nine columns
 
 PLATE = B.VERDIGRIS_CUT                 # the dome's plates
-SEAM = B.VERDIGRIS_STREAK               # seams, ribs, the collar and every third slat: the darker copper
+SHEET = B.VERDIGRIS                     # the same copper in one sheet, no joints: one block, no shapes
+RIB = B.VERDIGRIS_STREAK                # the darker copper
+SEAM = {"a": SHEET, "b": RIB}           # what a version draws its seams and their collar with
 CAST = B.VERDIGRIS_CAST                 # the boss on the axis
 SKIRT = B.IRON_RIVETED.block
 AXLE_BOX = B.IRON_CAST
@@ -85,7 +93,8 @@ VERSIONS = ("a", "b")
 STATES = ("open", "half", "closed")
 MAIN_RIBS = tuple(k for k in range(GORES) if k % 5 in (1, 3))       # version b: 27, 63, 117, 153 ... degrees
 COLLAR = {"a": 6, "b": 5}               # the ring the seams run into: its radius in blocks
-RELIEF = {"a": 0.0, "b": 0.5}           # how far the seams and their collar stand over the plates
+RELIEF = {"a": 0.0, "b": 0.5}           # how far the seams stand over the plates
+COLLAR_RELIEF = {"a": 0.0, "b": 0.5}    # how far their collar does
 PROUD = 0.5                             # how far a leaf lies over the plates
 LEAF_W = SLIT_HALF + 1                  # 3: a leaf is its stile and two columns of plate
 PARTED = {"closed": 0, "half": 2, "open": SLIT_HALF + 1}            # version a: how far each leaf has slid
@@ -199,8 +208,11 @@ def drum(canvas, origin=(0, 0, 0), glass=None):
     s = O.Laying(canvas, p, origin, glass)
     for front, back in niches(p):
         for y in O.rows(NICHE_Y):
-            s.clear(front, y)
-            s.put(back, y, B.ASHLAR_PANEL.block)
+            if NICHE_SUNK:
+                s.clear(front, y)
+                s.put(back, y, B.ASHLAR_PANEL.block)
+            else:
+                s.put(front, y, B.ASHLAR_PANEL.block)
     for run in doors(p):
         for y in O.rows(tuple(DOORS["y"])):
             for c in run:
@@ -221,13 +233,16 @@ def _half(h):
 
 def plates():
     """{column: top face} of the dome's plates, the slit's columns included: a half-ellipse FOOT_R
-    wide at the ring beam's foot and CROWN high on the axis, rounded to the nearer half block; one
-    whole row of plates stands over the ring beam everywhere."""
+    wide at the ring beam's foot and CROWN high on the axis, rounded to the nearer half block, and
+    nowhere lower than FOOT_ROWS rows of plates over the ring beam. The ellipse is all but upright
+    at its foot (at y 28 it has come in by half a block), so the bare ellipse leaves the columns of
+    the dome's edge anything from one row to four high, the last column of every straight run of
+    the raster circle the lowest: a ragged foot. Upright for three rows, the edge is level."""
     out = {}
     for x, z in O.disc(CX, CZ, R):
         d = math.hypot(x - CX, z - CZ)
         h = SKIRT_Y + (CROWN - SKIRT_Y) * math.sqrt(max(0.0, 1.0 - (d / FOOT_R) ** 2))
-        out[(x, z)] = max(_half(h), SILL_Y + 1.0)
+        out[(x, z)] = max(_half(h), SKIRT_Y + 1.0 + FOOT_ROWS)
     return out
 
 
@@ -259,13 +274,20 @@ def _lined(x, z, version):
     return ring == COLLAR[version] or (ring > COLLAR[version] and _on(x, z, ribs(version)))
 
 
+def _relief(x, z, version):
+    """How far the column stands over the plates: a rib's or the collar's relief, else nothing."""
+    if not _lined(x, z, version):
+        return 0.0
+    ring = int(math.hypot(x - CX, z - CZ) + 0.5)
+    return (COLLAR_RELIEF if ring == COLLAR[version] else RELIEF)[version]
+
+
 def surface(version="a"):
     """{column: top face} of the dome as a version builds it, the slit's columns as if it were shut
-    flush: the plates, the ribs and their collar RELIEF over them, the crown."""
+    flush: the plates, the ribs and their collar standing over them by their relief, the crown."""
     tops = plates()
     for (x, z) in tops:
-        if _lined(x, z, version):
-            tops[(x, z)] += RELIEF[version]
+        tops[(x, z)] += _relief(x, z, version)
     for c in CAP:
         tops[c] = CROWN + 0.5
     tops[(CX, CZ)] = CROWN + 1.0
@@ -291,8 +313,12 @@ def _cells(tops, c, lowest=SKIRT_Y):
     return [(y, y == ytop and top != ytop + 1) for y in range(foot, ytop + 1)]
 
 
-def _state(family, slab):
-    return f"{family.slab}[type=bottom]" if slab else family.block
+def _state(role, slab):
+    """The block of a cell of the shell: the role's whole block, or its lower slab where the cell
+    is a half one. The uncut sheet is one block without shapes: its half cells are plates."""
+    if not isinstance(role, B.Family):
+        return f"{PLATE.slab}[type=bottom]" if slab else role
+    return f"{role.slab}[type=bottom]" if slab else role.block
 
 
 def _elevation(x, y):
@@ -329,7 +355,7 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
             elif rail and y > SILL_Y:
                 state = _state(LEAF, slab)
             else:
-                state = _state(SEAM if lined else PLATE, slab)
+                state = _state(SEAM[version] if lined else PLATE, slab)
             canvas.set(ox + x, oy + y, oz + z, state)
 
 
@@ -372,7 +398,7 @@ def _curtain(canvas, origin, state):
                 cells.append((x, y, z, slab, slat))
     bar = max((cell[4] for cell in cells), default=None)
     for x, y, z, slab, slat in cells:
-        family = LEAF if slat == bar else SEAM if slat % 3 == 2 else PLATE
+        family = LEAF if slat == bar else RIB if slat % 3 == 2 else PLATE
         canvas.set(ox + x, oy + y, oz + z, _state(family, slab))
 
 
