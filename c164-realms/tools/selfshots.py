@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """A scene's own pictures, drawn offline and kept in the repository (plan/roles/INTERFACE.md 5, 6).
 
-Pictures are drawn on the admin's computer, through bin\\job.py, and never on the cloud machine
-(the admin's ruling, 2026-11-14). A round goes:
+Pictures are drawn on your own cloud machine, in your own checkout (COMMON.md section 0 item 2,
+from the night of 11-15; the admin's computer is the render-key holder's and takes real-game
+pictures only). A round goes:
 
-  on the computer   selfshots.py <scene> [--only a,b] --out @out/shots
+  selfshots.py <scene> [--only a,b] --out /tmp/c164_<code>/shots
                         draws the shots of build/scenes/<scene>/shots.json with build/render.py
                         (1280x720, every shot at its own time) into that folder, as
-                        <scene>-<shot>.png beside a note <scene>-shots.txt; bin\\send.py sends them
-  on the cloud      selfshots.py <scene> --take [<folder>] [--prefix m2-]
-                        puts the pictures that came back (default folder: the inbox) into
-                        renders/<scene>/ of this checkout, each checked against the note; commit
-                        and push them. Pictures drawn with plain build/render.py (no note; sent
-                        as <code>-<commit>-<shot>.png) are taken with --prefix <code>-<commit>-
-  on the computer   selfshots.py <scene> [<scene> ...] --verify [--only a,b]
+                        <scene>-<shot>.png beside a note <scene>-shots.txt
+  selfshots.py <scene> --take /tmp/c164_<code>/shots  [--prefix m2-]
+                        puts those pictures into renders/<scene>/ of this checkout, each checked
+                        against the note; commit and push them. Pictures drawn with plain
+                        build/render.py (no note; sent as <code>-<commit>-<shot>.png) are taken
+                        with --prefix <code>-<commit>-
+  selfshots.py <scene> [<scene> ...] --verify [--only a,b]
                         draws again and compares pixel by pixel: are the kept pictures what the
-                        code draws? The merge-key holder runs it on the delivered commit.
+                        code draws? The merge-key holder runs it on the merged tree.
 
 Without --out the pictures go straight into renders/<scene>/ of the checkout the tool runs in.
 
@@ -54,7 +55,7 @@ _GIT = []
 
 
 def git_program():
-    """git on the path, or the portable one of the shared workspace on the admin's computer."""
+    """git on the path, or a portable git beside the checkout (the Windows workspace carries one)."""
     if not _GIT:
         found = shutil.which("git")
         if not found:
@@ -321,7 +322,7 @@ def arrivals(project, scene, source, prefix, names):
 
 
 def take(project, scene, source, prefix):
-    """Pictures drawn on the admin's computer, as they arrived in the folder `source`, into this
+    """Pictures drawn with --out on one's own machine, as they arrived in the folder `source`, into this
     checkout's renders/<scene>/. Nothing is copied unless every picture named is there, whole, and
     (drawn with --out) the very file its note describes."""
     _, names = shot_list(project, scene)
