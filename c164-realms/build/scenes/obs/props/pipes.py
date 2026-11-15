@@ -29,7 +29,9 @@ How a line is put together:
 
     downpipe(canvas, corner, top, bottom, facing, side)   a whole rainwater pipe in a re-entrant corner
     inlet(canvas)                       where the power house's main enters the building
-    dress(canvas)                       what the family puts on the main building: both of the above
+    fittings(canvas)                    the valve head and the straps site/powerhouse asks for on its
+                                        pipe bridge, whose main is laid in whole blocks
+    dress(canvas)                       what the family puts into the master scene: all of the above
 
 Directions are names: "east", "west", "south", "north", "up", "down". All functions take scene
 coordinates plus `origin` and return the number of display entities they placed.
@@ -607,14 +609,43 @@ def inlet(canvas, origin=(0, 0, 0)):
     return n
 
 
+def _backed(canvas, pos, out, up, origin):
+    """Whether a piece on a surface has its block behind it: the cells half a block in from `pos`,
+    a quarter of a block to either side along `up` (a band sits on the joint of two blocks)."""
+    n, u = DIRS[out], DIRS[up]
+    for s in (-0.25, 0.25):
+        cell = [int(math.floor(pos[i] - n[i] * 0.5 + u[i] * s + origin[i])) for i in range(3)]
+        if not _stone(canvas, *cell):
+            return False
+    return True
+
+
+def fittings(canvas, origin=(0, 0, 0)):
+    """What site/powerhouse asks for on the main of its pipe bridge, which is laid in whole blocks:
+    its table FITTINGS, in mount()'s own terms (c228, 11-15: the valve head with the bridge's one
+    red handwheel where the main turns down at the bridge head, a strap over the joint in each
+    plain length). A piece is left out where the main is not on the canvas behind it; nothing is
+    placed while that package is not in the tree. Returns the number of display entities."""
+    try:
+        from ..site import powerhouse
+    except ImportError:
+        return 0
+    n = 0
+    for kind, pos, how in getattr(powerhouse, "FITTINGS", ()):
+        if PREFIX + kind in _models() and _backed(canvas, pos, how.get("out", "east"), how.get("up", "up"), origin):
+            n += mount(canvas, kind, pos, origin=origin, **how)
+    return n
+
+
 def dress(canvas, origin=(0, 0, 0)):
-    """The family on the main building, on whatever the main line has built there: a downpipe in
-    each of the four re-entrant corners of the east front, and the main's inlet at the south end.
-    Returns the number of display entities."""
+    """The family in the master scene, on whatever the other lines have built there: a downpipe in
+    each of the four re-entrant corners of the main building's east front, the main's inlet at its
+    south end, and the fittings on the power house's pipe bridge. Returns the number of display
+    entities."""
     n = 0
     for corner, side in corners():
         n += downpipe(canvas, corner, S.CORNICE, S.PLINTH[1] + 1, facing="east", side=side, origin=origin)
-    return n + inlet(canvas, origin)
+    return n + inlet(canvas, origin) + fittings(canvas, origin)
 
 
 def build(canvas, origin=(0, 0, 0)):
