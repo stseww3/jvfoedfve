@@ -11,7 +11,7 @@ How the floor is meant to read (the reviews of the first and second drafts, plan
     the centre pavilion and of the end pavilions) and one along the foot of the front, with large
     panels between; on the east the kerb closes them;
   - the cross -- the walk to the door and the meridian -- stays in the middle tone and leads to the
-    lit entrance; the only bright thing on the floor is the brass, one block wide;
+    lit entrance; the brass is a thin dark line let into it, north-south only (A0 #255, #365);
   - before the centre pavilion the floor has three lanes, one to each arch of the porch (A0 #19278):
     the walk to the middle arch, a shoulder of brick to each side arch, a strip on the line of each
     outer pilaster; a landing of the middle tone joins them at the foot of the porch;
@@ -35,13 +35,12 @@ FIELD = K.FIELD                 # the ground, one stone
 EDGE = K.EDGE                   # a course of small stones along a strip and round the seat
 STRIP = K.STRIP                 # the middle tone: the strips, the walk, the meridian's two flanks
 SEAT = B.SLATE_TILE.block       # the darkest: under the emblem, where brass and armillary have to stand out
-BRASS = B.BRASS_INLAY           # a carpet lying on the paving: brass a whole cell wide
-# The brass let into the floor as a thin dark line (A0 #21990; materials #22787: a rail's flat
-# model repainted, so the stone under it shows either side). Used as soon as the occupancy table
-# has the three roles; until then the lines are the whole-cell brass.
-LINE = getattr(B, "BRASS_LINE", None)           # [shape=north_south | east_west | south_east | ...]
-CROSS = getattr(B, "BRASS_CROSS", None)         # where the meridian crosses the ring
-STAR_MARK = getattr(B, "BRASS_STAR", None)      # the star, one cell
+# The brass is let into the floor as a thin dark line (A0 #21990, #255; materials/brass-oldcopper-small:
+# a rail's flat model repainted, so the stone under it shows either side). It lies in the cell above
+# the paving; every cell is given the shape that joins its two neighbours (common/blocks.py).
+LINE = B.BRASS_LINE             # [shape=north_south | east_west | south_east | ...]
+CROSS = B.BRASS_CROSS           # where the meridian crosses the ring
+STAR_MARK = B.BRASS_STAR        # the star, one cell
 MARK = B.ASHLAR_EMBLEM
 MARK_CAP = B.ASHLAR_PANEL.slab
 
@@ -65,9 +64,13 @@ def _put(c, o, x, y, z, state):
 
 
 def _line(shape):
-    """The brass of a line in the floor, joining two sides of its cell: the thin line where the
-    occupancy table has it, the whole-cell brass until then."""
-    return f"{LINE}[shape={shape}]" if LINE else BRASS
+    """The brass of a line in the floor, joining two sides of its cell."""
+    return f"{LINE}[shape={shape}]"
+
+
+def _whole(role):
+    """A one-cell piece of brass (the crossing, the star) as a block state."""
+    return role if "[" in role else role + "[shape=north_south]"
 
 
 def pavilion_lines():
@@ -157,19 +160,9 @@ def _emblem(c, o):
     for z in range(AZ - SEAT_HALF, AZ + SEAT_HALF + 1):
         if z != AZ and MZ0 <= z <= MZ1:
             _put(c, o, MX, ON, z, _line("north_south"))
-    if LINE:
-        whole = lambda role: role if "[" in role else role + "[shape=north_south]"     # noqa: E731
-        for (x, z), shape in emblem_ring().items():
-            _put(c, o, x, ON, z, whole(CROSS) if x == MX else _line(shape))
-        _put(c, o, AX + STAR[0], ON, AZ + STAR[1], whole(STAR_MARK))
-        return
-    r = RING_R                                  # whole-cell brass: a ring one cell thick, a star of five cells
-    for dx in range(-r, r + 1):
-        for dz in range(-r, r + 1):
-            if r - 0.5 <= math.hypot(dx, dz) < r + 0.5:
-                _put(c, o, AX + dx, ON, AZ + dz, BRASS)
-    for dx, dz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
-        _put(c, o, AX + STAR[0] + dx, ON, AZ + STAR[1] + dz, BRASS)
+    for (x, z), shape in emblem_ring().items():
+        _put(c, o, x, ON, z, _whole(CROSS) if x == MX else _line(shape))
+    _put(c, o, AX + STAR[0], ON, AZ + STAR[1], _whole(STAR_MARK))
 
 
 def _mark(c, o):
