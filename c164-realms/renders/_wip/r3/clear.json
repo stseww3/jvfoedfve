@@ -1,0 +1,350 @@
+{
+ "eye": [
+  88.5,
+  -2.38,
+  -32.5
+ ],
+ "what": "the test scene, within 6 cells of the station's box: 1155 cells, 1 display entities",
+ "result": "CLEAR",
+ "boxes": 2712,
+ "in": [],
+ "parts": {
+  "other packages": {
+   "boxes": 72,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": [
+    115.09847505150594,
+    "south",
+    "model c164:prop_lamp_pendant_a",
+    [
+     89,
+     2,
+     -33
+    ]
+   ],
+   "b_low": null,
+   "b_side": [
+    140.32846942001956,
+    "north",
+    "model c164:prop_lamp_pendant_a",
+    [
+     89,
+     2,
+     -33
+    ]
+   ]
+  },
+  "platform": {
+   "boxes": 549,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": null,
+   "b_low": null,
+   "b_side": null
+  },
+  "rails, buffers": {
+   "boxes": 110,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": null,
+   "b_low": null,
+   "b_side": null
+  },
+  "waiting room": {
+   "boxes": 151,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": [
+    21.14372744910344,
+    "north",
+    "polished_tuff",
+    [
+     80,
+     -3,
+     -37
+    ]
+   ],
+   "b_low": null,
+   "b_side": [
+    7.380135051959584,
+    "north",
+    "polished_tuff",
+    [
+     80,
+     -3,
+     -37
+    ]
+   ]
+  },
+  "chimney": {
+   "boxes": 4,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": [
+    48.52723408787004,
+    "north",
+    "tuff_bricks",
+    [
+     83,
+     0,
+     -40
+    ]
+   ],
+   "b_low": null,
+   "b_side": [
+    34.76364169072618,
+    "north",
+    "tuff_bricks",
+    [
+     83,
+     0,
+     -40
+    ]
+   ]
+  },
+  "winch house": {
+   "boxes": 202,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": [
+    43.763592397143846,
+    "north",
+    "polished_tuff",
+    [
+     86,
+     -3,
+     -36
+    ]
+   ],
+   "b_low": null,
+   "b_side": [
+    29.999999999999986,
+    "north",
+    "polished_tuff",
+    [
+     86,
+     -3,
+     -36
+    ]
+   ]
+  },
+  "glass roof": {
+   "boxes": 45,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": [
+    82.61815230774691,
+    "oxidized_cut_copper_slab",
+    [
+     88,
+     3,
+     -33
+    ],
+    [
+     88.0,
+     3.0,
+     -32.014
+    ]
+   ],
+   "a_side": [
+    0.8363753254224093,
+    "south",
+    "oxidized_cut_copper_stairs",
+    [
+     88,
+     2,
+     -32
+    ]
+   ],
+   "b_low": [
+    23.50418903461447,
+    "over",
+    "oxidized_cut_copper_slab",
+    [
+     88,
+     3,
+     -33
+    ]
+   ],
+   "b_side": [
+    30.0,
+    "north",
+    "oxidized_cut_copper_stairs",
+    [
+     88,
+     2,
+     -34
+    ]
+   ]
+  },
+  "columns": {
+   "boxes": 10,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": [
+    58.830992117338894,
+    "south",
+    "polished_deepslate_wall",
+    [
+     89,
+     -3,
+     -30
+    ]
+   ],
+   "b_low": null,
+   "b_side": [
+    104.23102439477263,
+    "south",
+    "polished_deepslate_wall",
+    [
+     89,
+     -3,
+     -30
+    ]
+   ]
+  },
+  "trestle": {
+   "boxes": 1569,
+   "in_a": 0,
+   "in_b": 0,
+   "a_low": null,
+   "a_side": null,
+   "b_low": null,
+   "b_side": null
+  }
+ },
+ "picture": {
+  "share": 0.16902006172839507,
+  "parts": {
+   "waiting room": {
+    "left": 0.8208333333333333,
+    "right": 1.0,
+    "top": 0.15555555555555556,
+    "bottom": 1.0,
+    "light": {
+     "0": 0.1883892068683565,
+     "1": 0.41798855273916596,
+     "2": 0.2847097301717089,
+     "3": 0.10449713818479149,
+     "4": 0.004415372035977106
+    },
+    "share": 0.09436728395061729
+   },
+   "platform": {
+    "left": 0.18958333333333333,
+    "right": 0.9625,
+    "top": 0.8555555555555555,
+    "bottom": 1.0,
+    "light": {
+     "0": 0.777467700258398,
+     "1": 0.09757105943152455,
+     "2": 0.08578811369509044,
+     "3": 0.03441860465116279,
+     "4": 0.00475452196382429
+    },
+    "share": 0.07465277777777778
+   }
+  }
+ },
+ "frame_light": 4,
+ "tones": {
+  "picture": "v1.png",
+  "size": [
+   1280,
+   720
+  ],
+  "within": true,
+  "wall": {
+   "median": 0.15107686274509807,
+   "lines": 16956
+  },
+  "blind": {
+   "median": 0.07801725490196078,
+   "lines": 581
+  },
+  "roof": {
+   "median": 0.08296627450980391,
+   "lines": 4282
+  },
+  "sky": {
+   "median": 0.15422117647058825,
+   "lines": 4256
+  }
+ },
+ "unread": [],
+ "altered": [],
+ "sources": [
+  {
+   "cell": [
+    80,
+    -2,
+    -18
+   ],
+   "level": 13
+  },
+  {
+   "cell": [
+    81,
+    -3,
+    -39
+   ],
+   "level": 9
+  },
+  {
+   "cell": [
+    86,
+    -2,
+    -18
+   ],
+   "level": 13
+  },
+  {
+   "cell": [
+    89,
+    1,
+    -33
+   ],
+   "level": 12
+  },
+  {
+   "cell": [
+    90,
+    -2,
+    -39
+   ],
+   "level": 10
+  },
+  {
+   "cell": [
+    90,
+    -2,
+    -37
+   ],
+   "level": 10
+  },
+  {
+   "cell": [
+    90,
+    -1,
+    -39
+   ],
+   "level": 10
+  },
+  {
+   "cell": [
+    90,
+    -1,
+    -37
+   ],
+   "level": 10
+  }
+ ]
+}
