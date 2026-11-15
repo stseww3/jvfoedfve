@@ -75,8 +75,9 @@ def build_models():
 
 def write_pack(pack_dir):
     """The armillary paints no block; it stands on the repainted blocks as the materials line has
-    them today."""
-    return materials.pack(pack_dir)
+    them today, under the map's sky: V2 looks west, and without the sky's pack the game's own sun
+    would stand over the dome."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
