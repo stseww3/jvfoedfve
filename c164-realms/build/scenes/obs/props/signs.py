@@ -63,11 +63,13 @@ from artkit import models as M
 from artkit.pixelart import Sprite
 
 from ..common import palette as P
+from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_sign_"
 DRESS = False                   # build() dresses the master scene only when on (A0 #211)
-VERSION = "a"                   # the great piece over the entrance; the director chooses on V2
+VERSION = "a"                   # the great piece over the entrance: the cast emblem (A0, g2 11-15, on the
+                                # pictures of V2). The clock stays in the module as version b.
 VERSIONS = {"a": "emblem", "b": "clock"}
 
 BR = P.RAMPS["brass"]
@@ -301,7 +303,9 @@ def _great_emblem():
 
 
 # ---- the clock: version B of the great piece -----------------------------------------------------------
-CLOCK_TIME = (10, 10)           # what every clock of the hill shows (machines/clock: the master clock's time)
+# Every clock of the map is stopped at one time (A0, g2 11-15): the skeleton's CLOCK, 7:55 while the
+# skeleton in the tree does not have it yet.
+CLOCK_TIME = tuple(getattr(S, "CLOCK", (7, 55)))
 _ROMAN = {"I": ["1", "1", "1", "1", "1"], "V": ["101", "101", "101", "101", "010"],
           "X": ["101", "101", "010", "101", "101"]}
 DIAL_R = 19.0                   # the dial's radius in pixels of the 48
@@ -355,7 +359,7 @@ def _great_clock():
     """Version B of the great piece over the entrance (A0 #186): a clock, three blocks across, of
     one family with the tower's dials (A0 #265, machines/clock): a white enamel dial, black hands,
     a thin brass rim, and round them a case of dark iron that does for the entrance what the dark
-    recess does for a dial in the tower. Nothing glows; it shows the master clock's time. Drawn in
+    recess does for a dial in the tower. Nothing glows; it shows CLOCK_TIME, as they do. Drawn in
     sixteen units, shown at scale 3. Anchor: the middle of its back, on the wall."""
     m = M.Model(PREFIX + "great_clock", px=3.0)
     m.tube("z", (0.0, 0.0), 0.0, 1.0, 7.9, IRON_D, sides=24)                    # the case
