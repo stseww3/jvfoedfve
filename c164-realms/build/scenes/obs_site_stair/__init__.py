@@ -19,8 +19,11 @@ band under the building, the stair comes down on the left); the stair on its axi
 where the axis begins on the yard's east edge (from there the yard's lamps stand whole in the
 picture, two pairs before the stair, and the terrace's lip hides least of the front); the look
 back down it from its head; the stair from its foot; the wall, a cheek and a foot pedestal from
-near, and the wall's length from the yard's north end; and three from above, one of them on the
-axis, the way a car of the cableway comes in: the line from the yard's edge to the door.
+near, and the wall's length from the yard's north end; the board's view of the power house (V6),
+which stands on the stair's south half since A0's ruling of 11-16: the south cheek and its foot
+pedestal are that picture's foreground and the yard its floor, and the house is in it once its
+package is merged; and three from above, one of them on the axis, the way a car of the cableway
+comes in: the line from the yard's edge to the door.
 
 Two more scenes show the same hill with one thing left out, on the views that are judged
 (JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chose on the
@@ -47,6 +50,9 @@ STREET_LEVEL = 13       # the lamps of the way are a step under the doorway (pro
 # The arrival view is the skeleton's. A0 #304 aims it higher, at the comet over the dome; until the
 # skeleton has that aim (it comes together with S.V2) it is put here.
 V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+# The board's view of the power house stands on the tread of column x 66, three rows inside the south
+# cheek (A0, 11-16; site/powerhouse's scene calls it stair_south). The skeleton's once it is there.
+V6 = getattr(S, "V6", dict(pos=(66.5, S.stair_top(66) + S.EYE, 6.5), look_at=(76.5, 8.0, 32.5)))
 LOW = S.LOWER_GROUND + S.EYE        # -4.38: the eye of a person on the lower platform
 HIGH = S.GROUND + S.EYE             # 1.62: on the upper terrace
 VIEWS = [
@@ -58,6 +64,7 @@ VIEWS = [
     ("cheek_side", (75.5, LOW, -19.5), (65, -3, -8.5)),
     ("pedestal", (76.5, LOW, -12.5), (72.8, -3.6, -8.8)),
     ("yard_south", (72.5, LOW, -40.5), (62, -3.5, -4)),
+    ("v6", V6["pos"], V6["look_at"]),
     ("aerial", (108, 34, 34), (66, -6, 0.5)),
     ("axis_high", (110, 16, 0.5), (40, -4, 0.5)),
     ("v12_aerial", (66, 72, 58), (8, -2, 0)),
