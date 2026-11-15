@@ -9,16 +9,19 @@ closes the room in the south.
     north   the door from the gallery (x 7..8); the pair of great sky maps beside it
     middle  the light table across the axis, its viewing frame towards the door
     south   the whole wall is bookcase, floor to ceiling, with the library ladder on its rail
-    west    the blind stretch behind the rotunda (z 7..13): the card cabinets in one row, the
-            blackboard and the moon map over them; then a globe and the drafting table at the windows
+    west    the blind stretch behind the rotunda (z 7..13): three card cabinets in a row, the moon
+            map over them, beside them the blackboard at the height one writes at; then the
+            celestial globe and the drafting table at the windows
     east    five great windows; the writing desk under the fourth, on it the green lamp and the
             hand calculator
 
-What is whose. The room's own models (names "int_chart_..."): the light table, the bookcases, the
-calculator. Everything else comes from the props line and is placed through its place() functions:
-lamps (props/lamps), furniture (props/furniture, c179), paper (props/paper, c197), instruments
-(props/instruments, c199). A module that is not in the tree yet is left out, or stood in for with
-plain blocks where something has to carry a lamp; what was left out is in the returned record.
+What is whose. The room's own models (names "int_chart_..."): the light table and the bookcases.
+Everything else comes from the props line and is placed through its place() functions: lamps
+(props/lamps), furniture (props/furniture, c179), paper (props/paper, c197), instruments (props/
+instruments, c199; the hand calculator is its calc_machine). A module that is not in the tree yet
+is left out, or stood in for: plain blocks where something has to carry a lamp, and two models of
+this package, the loose plates on the light table and a calculator, which go when props/paper and
+props/instruments are in the tree. What was left out or stood in for is in the returned record.
 
 The light. A lit window does not light the room (A0 #32717: its inner face is lined, materials/
 windows); the room is lit by its lamps. They are offered to the light line (sky/_lightkit.suggest);
@@ -74,7 +77,8 @@ SKIRT = 3.0 / 16.0                              # the wainscot's thickness: furn
 TABLE_AT = (AXIS_X, float(FEET), MID_Z)         # the light table: the middle of its foot
 TABLE_FACING = "north"                          # its viewing frame looks at the door
 DESK_BAY = 14                                   # the writing desk stands under this window of the east wall
-CABINET_Z = tuple(range(Z0 + 1, Z0 + 6))        # 8..12: the row of card cabinets on the west wall
+CABINET_Z = tuple(range(Z0 + 1, Z0 + 4))        # 8..10: the row of card cabinets on the west wall
+CABINET_H = 30.0 / 16.0                         # how tall a cabinet of props/furniture is (c179)
 LAMP_PIERS = {"east": (14, 18), "west": (18, 22)}    # the piers that carry a caged lamp, beside the lit windows
 
 # the lamps: (level, rank) asked of the light line
@@ -175,27 +179,50 @@ class _Spines:
 
 
 # ---- the room's own models ----------------------------------------------------------------------
-SHELF_W, SHELF_H, SHELF_D = 48.0, 48.0, 6.0     # one bay of bookcase: three blocks wide and high
-SHELF_TOP_H = 16.0                              # the top tier under the ceiling: one block
-BOARDS = (13.0, 24.0, 35.0)                     # the undersides of the three loose shelves
+# The bookcase wall is three tiers of bays three blocks wide: a tier on the floor and one on top of
+# it, each three blocks high, and a tier of one block under the ceiling. Its lines are those of the
+# cabinets of props/furniture (c179 #34734), so that the wall and the card cabinets are one family:
+# the plinth ends at y 4, the first tier ends in a cornice of two texels (y 46..48) over the board
+# that carries the ladder rail (the rail's middle is 44.5 above the floor, one texel off the front),
+# the case is six texels deep, the wood is dark_wood 1, 2 and 3.
+SHELF_W, SHELF_H, SHELF_D = 48.0, 48.0, 6.0     # one bay: three blocks wide and high, six texels deep
+SHELF_TOP_H = 16.0                              # the tier under the ceiling: one block
+PLINTH = 4.0                                    # the top of the plinth
+CORNICE = 2.0                                   # a cornice, one texel proud of the front
+RAIL_BOARD = 3.0                                # the board under the first tier's cornice
 
 
-def _carcass(m, height, boards):
-    """The case of a bookcase bay: a back, two cheeks, an upright in the middle, a plinth, a top and
-    the shelves. Returns the compartments [(x0, x1, y0, y1)], bottom row first."""
+def _carcass(m, height, foot, head, boards, crown=0.0):
+    """The case of a bookcase bay: a back, two cheeks, an upright in the middle, a foot (a plinth or
+    a bottom board, `foot` high), the shelves (`boards`: their undersides) and whatever closes the
+    top (`head` high; the caller draws it, and what spans the whole bay, `crown` high). Returns the
+    compartments [(x0, x1, y0, y1)], bottom row first."""
     half = SHELF_W / 2.0
-    m.box((-half, 0, 0), (half, height, 1), SHADOW, skip="n", grain="y")
+    m.box((-half, 0, 0), (half, height - crown, 1), SHADOW, skip="n", grain="y")
     for x in (-half, half - 1.0):
-        m.box((x, 0, 1), (x + 1.0, height, SHELF_D), WOOD, grain="y")
-    m.box((-1, 2, 1), (1, height - 1, SHELF_D - 0.5), WOOD, grain="y")
-    m.box((-half + 1, 0, 1), (half - 1, 2, SHELF_D), WOOD_D, grain="x")
-    m.box((-half + 1, height - 1, 1), (half - 1, height, SHELF_D), WOOD_D, grain="x")
+        m.box((x, 0, 1), (x + 1.0, height - crown, SHELF_D), WOOD, grain="y")
+    m.box((-1, foot, 1), (1, height - head, SHELF_D - 0.5), WOOD, grain="y")
+    m.box((-half + 1, 0, 1), (half - 1, foot, SHELF_D), WOOD_D, grain="x")
     for y in boards:
-        m.box((-half + 1, y, 1), (-1, y + 1, SHELF_D - 0.5), WOOD_L, grain="x")
-        m.box((1, y, 1), (half - 1, y + 1, SHELF_D - 0.5), WOOD_L, grain="x")
-    floors = (2.0,) + tuple(y + 1 for y in boards)
-    ceilings = tuple(boards) + (height - 1,)
+        m.box((-half + 1, y, 1), (-1, y + 1, SHELF_D - 0.5), WOOD, grain="x")
+        m.box((1, y, 1), (half - 1, y + 1, SHELF_D - 0.5), WOOD, grain="x")
+    floors = (foot,) + tuple(y + 1 for y in boards)
+    ceilings = tuple(boards) + (height - head,)
     return [(x0, x1, y0, y1) for y0, y1 in zip(floors, ceilings) for x0, x1 in ((-half + 1, -1.0), (1.0, half - 1))]
+
+
+def _stock(m, name, seed, cells, plan):
+    """Fill the compartments: `plan` says what each holds, bottom row first: b books, x plate
+    boxes, r rolled charts, . nothing."""
+    spines = _Spines(f"chart_spines_{name}")
+    rnd = random.Random(seed)
+    for i, (cell, what) in enumerate(zip(cells, plan)):
+        if what == "b":
+            _books(m, spines, cell, rnd, 1000 + i)
+        elif what == "x":
+            _boxes(m, cell, rnd)
+        elif what == "r":
+            _rolls(m, cell, rnd)
 
 
 def _books(m, spines, cell, rnd, seed):
@@ -235,38 +262,37 @@ def _rolls(m, cell, rnd):
 
 
 def _shelf(name, seed, plan):
-    """One bay of the bookcase wall, three blocks wide and three high. `plan` says what each of its
-    eight compartments holds, bottom row first: b books, x plate boxes, r rolled charts, . nothing.
-    Anchor: on the wall, the middle of its foot."""
+    """A bay of the first tier, on the floor: a plinth, four rows of compartments, the board that
+    carries the ladder rail and a cornice. Anchor: on the wall, the middle of its foot."""
     m = M.Model(PREFIX + name)
-    spines = _Spines(f"chart_spines_{name}")
-    rnd = random.Random(seed)
-    for i, (cell, what) in enumerate(zip(_carcass(m, SHELF_H, BOARDS), plan)):
-        if what == "b":
-            _books(m, spines, cell, rnd, 1000 + i)
-        elif what == "x":
-            _boxes(m, cell, rnd)
-        elif what == "r":
-            _rolls(m, cell, rnd)
+    half, top = SHELF_W / 2.0, SHELF_H - CORNICE
+    cells = _carcass(m, SHELF_H, PLINTH, CORNICE + RAIL_BOARD, (13.0, 23.0, 33.0), crown=CORNICE)
+    _stock(m, name, seed, cells, plan)
+    m.box((-half + 1, top - RAIL_BOARD, 1), (half - 1, top, SHELF_D), WOOD, grain="x")
+    m.box((-half, top, 0), (half, SHELF_H, SHELF_D + 1), WOOD_D, skip="n", grain="x")
+    return m
+
+
+def _shelf_up(name, seed, plan):
+    """A bay of the second tier, standing on the cornice of the first: a bottom board, four rows of
+    compartments, a top board. Anchor: on the wall, the middle of its foot."""
+    m = M.Model(PREFIX + name)
+    half = SHELF_W / 2.0
+    cells = _carcass(m, SHELF_H, 1.0, 1.0, (12.0, 24.0, 36.0))
+    _stock(m, name, seed, cells, plan)
+    m.box((-half + 1, SHELF_H - 1, 1), (half - 1, SHELF_H, SHELF_D), WOOD_D, grain="x")
     return m
 
 
 def _shelf_top(name, seed, plan):
-    """The top tier of a bay, one block high: one row of compartments under the cornice that meets
-    the ceiling. Anchor: on the wall, the middle of its foot."""
+    """A bay of the tier under the ceiling, one block high: one row of compartments, a frieze board
+    and the cornice that meets the ceiling. Anchor: on the wall, the middle of its foot."""
     m = M.Model(PREFIX + name)
-    spines = _Spines(f"chart_spines_{name}")
-    rnd = random.Random(seed)
-    half = SHELF_W / 2.0
-    for i, (cell, what) in enumerate(zip(_carcass(m, SHELF_TOP_H - 3.0, ()), plan)):
-        if what == "b":
-            _books(m, spines, cell, rnd, 1000 + i)
-        elif what == "x":
-            _boxes(m, cell, rnd)
-        elif what == "r":
-            _rolls(m, cell, rnd)
-    m.box((-half, SHELF_TOP_H - 3, 0), (half, SHELF_TOP_H - 2, SHELF_D + 1), WOOD_L, skip="n", grain="x")
-    m.box((-half, SHELF_TOP_H - 2, 0), (half, SHELF_TOP_H, SHELF_D + 2), WOOD_D, skip="nu", grain="x")
+    half, top = SHELF_W / 2.0, SHELF_TOP_H - CORNICE
+    cells = _carcass(m, SHELF_TOP_H, 1.0, CORNICE + 2.0, (), crown=CORNICE)
+    _stock(m, name, seed, cells, plan)
+    m.box((-half + 1, top - 2.0, 1), (half - 1, top, SHELF_D), WOOD, grain="x")
+    m.box((-half, top, 0), (half, SHELF_TOP_H, SHELF_D + 1), WOOD_D, skip="nu", grain="x")
     return m
 
 
@@ -330,7 +356,8 @@ def _plates():
 
 def _calculator():
     """The hand calculator: a pinwheel machine, black with brass setting levers, a carriage with
-    the result windows in front and the crank on its right. Anchor: the middle of its foot; the
+    the result windows in front and the crank on its right. The stand-in for the calc_machine of
+    props/instruments (c199) while that is not in the tree. Anchor: the middle of its foot; the
     front (+z) is the side one sits at."""
     m = M.Model(PREFIX + "calculator")
     m.box((-5, 0, -3), (5, 1, 3), IRON_D, grain="x")
@@ -346,27 +373,24 @@ def _calculator():
     return m
 
 
-# name -> what its compartments hold (bottom row first, west to east as one looks at the wall is
-# right to left: the wall looks north)
+# name -> (how it is built, the seed of its books, what its compartments hold: bottom row first, in
+# a row the left one first as one looks at the wall)
 SHELVES = {
-    "shelf_a": (11, "bbbbbbbb"),
-    "shelf_b": (23, "xbbbbbrb"),
-    "shelf_c": (37, "bxbbbbbb"),
-    "shelf_d": (41, "bbbxbbb."),
+    "shelf_a": (_shelf, 11, "xbbbbbbb"),
+    "shelf_b": (_shelf, 23, "bbbbbbrb"),
+    "shelf_up_a": (_shelf_up, 37, "bbbbbbb."),
+    "shelf_up_b": (_shelf_up, 41, "bbbxbbbb"),
+    "shelf_top_a": (_shelf_top, 53, "rb"),
+    "shelf_top_b": (_shelf_top, 67, "xr"),
 }
-SHELF_TOPS = {
-    "shelf_top_a": (53, "rb"),
-    "shelf_top_b": (67, "xr"),
-}
-# the wall, bay by bay from the west: (lower tier, upper tier, top tier)
-SHELF_WALL = (("shelf_b", "shelf_a", "shelf_top_a"), ("shelf_a", "shelf_d", "shelf_top_b"),
-              ("shelf_c", "shelf_a", "shelf_top_a"), ("shelf_a", "shelf_b", "shelf_top_b"))
+# the wall, bay by bay from the west: (first tier, second tier, the tier under the ceiling)
+SHELF_WALL = (("shelf_b", "shelf_up_a", "shelf_top_a"), ("shelf_a", "shelf_up_b", "shelf_top_b"),
+              ("shelf_b", "shelf_up_b", "shelf_top_a"), ("shelf_a", "shelf_up_a", "shelf_top_b"))
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {PREFIX + name: _shelf(name, seed, plan) for name, (seed, plan) in SHELVES.items()}
-    out.update({PREFIX + name: _shelf_top(name, seed, plan) for name, (seed, plan) in SHELF_TOPS.items()})
+    out = {PREFIX + name: make(name, seed, plan) for name, (make, seed, plan) in SHELVES.items()}
     for m in (_light_table(), _plates(), _calculator()):
         out[m.name] = m
     return out
@@ -419,12 +443,15 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
 
     def lamp(kind, pos, ask, why, **how):
         name = f"{kind}_{lamps.VERSION}" if kind in lamps.VERSIONED else kind
-        cell = K.light_cell(pos, K.FACING[how.get("facing", "south")], lamps.SPEC[name]["light"], origin)
-        offer(cell, ask, why)
+        yaw = how["yaw"] if how.get("yaw") is not None else K.FACING[how.get("facing", "south")]
+        offer(K.light_cell(pos, yaw, lamps.SPEC[name]["light"], origin), ask, why)
         return lamps.place(c, kind, pos, origin=origin, light=False, **how)
 
+    def has(module, kind):
+        return module is not None and kind in getattr(module, "SPEC", (kind,))
+
     def piece(module, label, kind, pos, **how):
-        if module is None:
+        if not has(module, kind):
             missing.append(f"{label}:{kind}")
             return 0
         return module.place(c, kind, pos, origin=origin, **how)
@@ -458,7 +485,7 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
     # the light table
     yaw = K.FACING[TABLE_FACING]
     n += K.put(c, own[PREFIX + "light_table"], TABLE_AT, yaw=yaw, origin=origin)
-    if paper is not None:
+    if all(has(paper, kind) for kind, _, _ in PLATES):
         for kind, (x, z), turn in PLATES:
             dx, _, dz = K.turn(yaw, (x / 16.0, 0.0, z / 16.0))
             n += paper.place(c, kind, (TABLE_AT[0] + dx, TABLE_AT[1] + TABLE_TOP, TABLE_AT[2] + dz),
@@ -468,16 +495,20 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
         n += K.put(c, own[PREFIX + "plates"], TABLE_AT, yaw=yaw, origin=origin)
     offer(K.light_cell(TABLE_AT, yaw, (0.0, TABLE_TOP + 0.5, 0.0), origin), ASK_TABLE, "the light table")
 
-    # the west wall: card cabinets in a row, the blackboard and the moon map over them
+    # the west wall: three card cabinets in a row, a small globe on the first, the moon map over
+    # them; beside them the blackboard, hung where one writes on it (c197 #35045: its middle 1.75
+    # above the floor, the chalk tray at 1.0)
     cabinet_x = WEST + SKIRT + 6.5 / 16.0
     for z in CABINET_Z:
         if furniture is None:
             for y in (FEET, FEET + 1):
                 put(X0, y, z, roles.DARK_WOOD.block)
         n += piece(furniture, "furniture", "card_cabinet", (cabinet_x, FEET, z + 0.5), facing="east")
-    n += piece(paper, "paper", "blackboard", (WEST, FEET + 3.5, CABINET_Z[0] + 1.75), facing="east")
-    n += piece(paper, "paper", "moon_map", (WEST, FEET + 3.5, CABINET_Z[-1] + 0.25), facing="east")
-    # further on, at the windows: a globe and the drafting table
+    cabinet_top = FEET + (CABINET_H if furniture is not None else 2.0)
+    n += piece(instruments, "instruments", "globe", (cabinet_x, cabinet_top, CABINET_Z[0] + 0.5), facing="east")
+    n += piece(paper, "paper", "moon_map", (WEST, FEET + 3.5, CABINET_Z[0] + 1.75), facing="east")
+    n += piece(paper, "paper", "blackboard", (WEST, FEET + 1.75, CABINET_Z[-1] + 2.25), facing="east")
+    # further on, at the windows: the celestial globe and the drafting table
     n += piece(instruments, "instruments", "celestial_globe", (WEST + 1.6, FEET, PIER_Z[2] + 0.5), facing="east")
     n += piece(furniture, "furniture", "drafting_table", (WEST + SKIRT + 0.6, FEET, PIER_Z[3] + 1.0), facing="east")
     n += piece(furniture, "furniture", "stool", (WEST + SKIRT + 1.6, FEET, PIER_Z[3] + 1.0), facing="west")
@@ -486,22 +517,34 @@ def build_chartroom(c, origin=(0, 0, 0), roles=B, *, version="a"):
     n += piece(paper, "paper", "sky_map", (DOOR_X[0] - 2.5, FEET + 3.5, NORTH), facing="south")
     n += piece(paper, "paper", "sky_map_b", (DOOR_X[1] + 3.5, FEET + 3.5, NORTH), facing="south")
 
-    # the writing desk under a window of the east wall: the green lamp, the calculator, the log
+    # The writing desk under a window of the east wall. The desk of props/furniture is 30 by 14, its
+    # front the side one sits at; at its back an upstand between two stationery drawers leaves 18
+    # clear. The calculator stands in the middle against the upstand, the green lamp on the left
+    # corner, turned a little towards the sitter, the closed log on the right.
     rows = desk_rows()
-    desk_x, desk_z = EAST - SKIRT - 7.0 / 16.0, S.mid(rows[0], rows[-1])
+    desk = (EAST - SKIRT - 7.0 / 16.0, float(FEET), S.mid(rows[0], rows[-1]))
+    desk_yaw = K.FACING["west"]
     if furniture is None:
         desk_top = 1.0
         for z in rows:
             put(X1, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
     else:
         desk_top = furniture.TOP["writing_desk"]
-    n += piece(furniture, "furniture", "writing_desk", (desk_x, FEET, desk_z), facing="west")
-    n += piece(furniture, "furniture", "swivel_chair", (desk_x - 1.0, FEET, desk_z + 0.1), facing="east")
-    n += lamp("desk_green", (desk_x + 0.125, FEET + desk_top, desk_z - 0.55), ASK_DESK, "the green desk lamp",
-              facing="west")
-    n += K.put(c, own[PREFIX + "calculator"], (desk_x - 0.06, FEET + desk_top, desk_z + 0.5),
-               yaw=K.FACING["west"], origin=origin)
-    n += piece(paper, "paper", "logbook", (desk_x - 0.125, FEET + desk_top, desk_z - 0.05), yaw=K.FACING["west"])
+
+    def on_desk(x, z):
+        """A point on the desk top: texels from the desk's middle, in the desk's own frame."""
+        dx, _, dz = K.turn(desk_yaw, (x / 16.0, 0.0, z / 16.0))
+        return (desk[0] + dx, desk[1] + desk_top, desk[2] + dz)
+
+    n += piece(furniture, "furniture", "writing_desk", desk, facing="west")
+    n += piece(furniture, "furniture", "swivel_chair", (desk[0] - 1.0, FEET, desk[2] + 0.1), facing="east")
+    n += lamp("desk_green", on_desk(-12.0, 3.5), ASK_DESK, "the green desk lamp", yaw=desk_yaw + 40.0)
+    if has(instruments, "calc_machine"):
+        n += instruments.place(c, "calc_machine", on_desk(0.0, -0.75), facing="west", origin=origin)
+    else:
+        missing.append("instruments:calc_machine")
+        n += K.put(c, own[PREFIX + "calculator"], on_desk(0.0, -0.75), yaw=desk_yaw, origin=origin)
+    n += piece(paper, "paper", "logbook_shut", on_desk(12.0, 3.0), yaw=desk_yaw + 12.0)
 
     # caged lamps on the piers beside the lit windows
     for z in LAMP_PIERS["east"]:
