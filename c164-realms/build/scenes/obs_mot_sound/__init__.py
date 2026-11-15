@@ -26,7 +26,7 @@ CATEGORY = "motion"
 TIME = 14000
 
 ROW_Z = 0
-SPACING = 30                       # blocks: more than any reach in the package
+SPACING = 24                       # blocks: more than twice the largest reach used here (10)
 PLINTH_TOP = 1                     # the plinth is one block; its cap sits on top
 WALL = B.TUFF_BRICK.block
 CAP = B.BRASS_PLATE.block if hasattr(B, "BRASS_PLATE") else B.IRON_PLATE.block
@@ -35,21 +35,29 @@ CAP = B.BRASS_PLATE.block if hasattr(B, "BRASS_PLATE") else B.IRON_PLATE.block
 CANDIDATES = [(event, i) for event in sound.VOICES for i in range(len(sound.VOICES[event]))]
 
 
+ROWS = 2                           # two rows, so the whole set is a short walk and one wide picture
+
+
+def _spot(k):
+    """Plinth k's (x, z): eleven in the first row, the rest in a second row behind it."""
+    per = (len(CANDIDATES) + ROWS - 1) // ROWS
+    return (k % per) * SPACING, ROW_Z - (k // per) * SPACING * 2
+
+
 def layout(c=None):
     c = c or Canvas()
-    x = 0
-    for event, i in CANDIDATES:
-        c.set(x, 0, ROW_Z, WALL)
-        c.set(x, PLINTH_TOP, ROW_Z, CAP)
-        x += SPACING
+    for k in range(len(CANDIDATES)):
+        px, pz = _spot(k)
+        c.set(px, 0, pz, WALL)
+        c.set(px, PLINTH_TOP, pz, CAP)
     n = 0
     # every candidate at its own plinth, each on its own period so no two plinths speak at once: the
     # row is meant to be walked and one voice heard at a time
     for k, (event, i) in enumerate(CANDIDATES):
-        px = k * SPACING
+        px, pz = _spot(k)
         _name, volume, pitch = sound.VOICES[event][i]
         cycle = 23 + 7 * k                       # a different period per plinth
-        sound.MK.sound(c, (px + 0.5, PLINTH_TOP + 1, ROW_Z + 0.5), event, cycle,
+        sound.MK.sound(c, (px + 0.5, PLINTH_TOP + 1, pz + 0.5), event, cycle,
                        at=(0,), volume=volume, pitch=pitch, reach=10.0)
     return c, n
 
@@ -71,6 +79,8 @@ def write_pack(pack_dir):
 
 def shots():
     """One wide view of the row. Sound is not in a picture; this only shows where the plinths are."""
-    span = (len(CANDIDATES) - 1) * SPACING
-    return [{"name": "row", "pos": [span / 2.0, 26.0, 44.0], "look_at": [span / 2.0, 1.0, ROW_Z],
-             "time": TIME}]
+    per = (len(CANDIDATES) + ROWS - 1) // ROWS
+    span = (per - 1) * SPACING
+    mid_z = ROW_Z - SPACING
+    return [{"name": "row", "pos": [span / 2.0, 22.0, mid_z + 38.0],
+             "look_at": [span / 2.0, 1.0, mid_z], "time": TIME}]
