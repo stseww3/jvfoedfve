@@ -1,0 +1,27 @@
+delivery sky/tones: a7493ed against 8b7735e (forked at be2e2b1), 30 commits, 90 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    44 of 90 files are the card's own
+                not this card's file: A build/scenes/obs/motion/_kit.py
+                not this card's file: A build/scenes/obs/motion/_kit_test.py
+                not this card's file: M build/scenes/obs/sky/mood.py
+                not this card's file: A build/scenes/obs_mot_load/__init__.py
+                not this card's file: A build/scenes/obs_mot_load/__main__.py
+                not this card's file: A build/scenes/obs_mot_load/mood.py
+                not this card's file: A build/scenes/obs_mot_load/props.py
+                not this card's file: A build/scenes/obs_mot_load/shots.json
+                not this card's file: A build/scenes/obs_mot_loop/__init__.py
+                not this card's file: A build/scenes/obs_mot_loop/__main__.py
+                not this card's file: A build/scenes/obs_mot_loop/mood.py
+                not this card's file: A build/scenes/obs_mot_loop/props.py
+                not this card's file: A build/scenes/obs_mot_loop/shots.json
+                not this card's file: A plan/packages/motion/loop-drivers.patch
+                not this card's file: M plan/packages/motion/loop.md
+                not this card's file: M plan/packages/motion/smoke.md
+                ... and 30 more
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 3 test scenes, 59 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 75 commits behind the base
+result: PASS (0 failed, 1 to look at)

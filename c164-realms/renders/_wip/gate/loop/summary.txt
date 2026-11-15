@@ -1,0 +1,14 @@
+gate motion/loop a7493ed5: the merged tree fc997791, the assembly as it was 8b7735eb
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    54 of 90 files are the card's own
+                    not this card's file: A build/scenes/obs/sky/_tones.py
+                    not this card's file: M build/scenes/obs/sky/mood.py
+                    not this card's file: M plan/packages/sky/look.md
+                    not this card's file: M plan/packages/sky/tones.md
+                    not this card's file: A renders/obs_sky_look/blue_cards.png
+                    not this card's file: A renders/obs_sky_look/blue_comet.png
+check.py: 28 scenes in 13 s: 28 pass (14 with warnings)
+pictures: [PASS] selfshots obs_mot_load at fc997791: 4 of 4 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mot_loop at fc997791: 24 of 24 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_sky_look at fc997791: 31 of 31 kept pictures are what the code draws
+result: PASS
