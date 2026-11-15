@@ -196,7 +196,7 @@ SMALL_DOME_X = (8, 16)
 SMALL_DOME_Z = (26, 34)
 SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
-SMALL_DOME_APEX = 25
+SMALL_DOME_APEX = 26
 
 # --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
