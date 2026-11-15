@@ -80,4 +80,7 @@
     - 图上看：`heating_pier` 里 x 14 那道槽填平了，中间那对法兰的下缘和压顶顶面之间不再有那道暗缝（同一列 `x 700..760` 的行亮度，y 428–442 由 14.6 变成 19.0 上下，压顶在法兰底下是连着的一片）；`heating_front` 缩到 160×90 上还是一道深线加几个结。备选的改法（把管子贴到墙上）不用做。
   - 图：这一轮重出了 20 张（`--out` 再 `--take`，画的是 `f8021932`），变了 9 张——`front`、`front_foot`、`hopper_up`、`hopper_near`、`corner_far`、`heating_oblique`、`heating_along`、`heating_valve`、`heating_bend`，全是压顶那几块台阶换朝向以后连带重新打光的结果（差 0.1%–6.6% 的像素）；`heating_front`、`heating_pier` 和其它 18 张里没碰到的机位逐像素没变。`--verify` **20/20 过**，`check.py --scene obs_props_pipes` 仍 PASS 0 失败 0 黄。
   - 一行代码没改（这一轮只重出图、补记录）。分支直接快进到总装头 `f8021932`。
+  - **11-16 01:10 再重出一遍**（合并提交 `5b21967b`，总装 `9cdada09`）：`--verify` 抽查 front / heating_pier / inlet 三张报 3/3 都已过期——图上的天是 `(23,31,55)`，现在的天是 `(12,16,31)`，地面和管件一格没动。原因是这之间 sky/comet 的新色调和 materials/iron 第二轮进了总装。**本包的代码仍然是 `b0ed77ae` 那一版，一行没改**。
+    - 20 张全重出（`--out` 再 `--take`，画的是 `5b21967b`）：18 张变（全是天的那一块），`oblique`、`clip_near` 逐像素没变。`--verify` **20/20 过**；`check.py --scene obs_props_pipes` PASS 0 失败 0 黄。
+    - 教训记一笔：总装里别人的包一动天/灯的色阶，全套图就过期，抽查三张就能看出来；所以每次交付前先合总装再 `--verify --only` 抽三张。
   - 没动的：模型、摆法、`DRESS` 开关、实体数（样板场景 24 个）。这一轮只补图和记录，一行代码没改。
