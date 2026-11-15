@@ -7,10 +7,11 @@ in a hopper, a sleeve, a plate on a wall or a grating, a bend or a fitting, neve
 
 Two materials, both the palette's:
 
-    old copper   rainwater: the downpipe (3 px), its hopper head, clips and sleeves
+    old copper   rainwater: the downpipe (3 px), its hopper head, clips and sleeves.
+                 The small pipe (2 px) of instrument and air lines, with a brass union
     iron         steam and heating: the main in two bores, "l" (6 px) and "m" (4 px), with plates,
-                 flanges, bends and stop valves; a valve's handwheel is the one red thing (signal),
-                 the gauge is brass with a cream dial and three phosphor marks.
+                 flanges, bends, tees, expansion bends and stop valves; a valve's handwheel is the
+                 one red thing (signal), the gauge is brass with a cream dial and three phosphor marks.
                  Rainwater on a works building, whose gutter is iron: the drain (3 px), its head,
                  clips and collar
 
@@ -65,7 +66,8 @@ BORE = {"l": 3.0, "m": 2.0}             # the iron main's radius: 6 px and 4 px 
 BEND = {"l": 5.0, "m": 4.0}             # a bend's radius on the axis
 BOLTS = {"l": (8, 22.5), "m": (6, 30.0)}                # bolts round a flange, and where the first one sits
 DOWN_R = 1.5            # the copper downpipe: 3 px across
-GAP = 1.0               # it stands this far clear of the wall, and of the return wall beside it
+FINE_R = 1.0            # the small copper pipe: 2 px across
+GAP = 1.0               # a downpipe stands this far clear of the wall, and of the return wall beside it
 CLIP_EVERY = 3.0        # a downpipe is clipped about this often, in blocks
 
 
@@ -204,10 +206,11 @@ WORKS = 7.75            # a valve's works are this long, from the foot of the ne
 
 
 # ---- rainwater: old copper, and iron on a works building ------------------------------------------
-def _down(name, tones):
-    """A rainwater pipe: along +z from the anchor, RUN long, to be drawn out between two points."""
+def _down(name, tones, r=DOWN_R):
+    """A rainwater pipe, or the small copper pipe: along +z from the anchor, RUN long, to be drawn
+    out between two points."""
     m = M.Model(PREFIX + name)
-    _even(m, "z", (0, 0), 0.0, RUN, DOWN_R, tones)
+    _even(m, "z", (0, 0), 0.0, RUN, r, tones)
     return m
 
 
@@ -286,6 +289,16 @@ def _drain_head():
 DRAIN_SOCKET = (-2.5, 0.0)      # the socket's underside and top, in texels from the drain head's anchor
 
 
+def _union():
+    """A union on the small copper pipe: a brass nut of six flats between two collars. The anchor
+    is its middle on the axis z; the pipe goes right through."""
+    m = M.Model(PREFIX + "union")
+    m.tube("z", (0, 0), -1.5, 1.5, FINE_R + 1.0, K.BRASS, sides=6)
+    for z in (-2.5, 1.5):
+        m.tube("z", (0, 0), z, z + 1.0, FINE_R + 0.5, K.BRASS_D)
+    return m
+
+
 # ---- steam and heating: iron ----------------------------------------------------------------------
 def _main(name, r):
     """A length of the iron main: along +z from the anchor, RUN long, to be drawn out."""
@@ -333,6 +346,55 @@ def _elbow(name, size):
 
 
 ELBOW = {size: BEND[size] + 2.0 for size in BEND}       # from a bend's corner to the end of its flanges
+
+
+def _tee(name, size):
+    """A tee in a straight run. The anchor is where the three axes meet: the run goes through along
+    z, the branch leaves along +y, and each of the three ports ends in a pair of flanges TEE[size]
+    from the anchor: a run stops inside it. The branch's neck is a hair thinner than the barrel, so
+    that no two faces of them lie in one plane."""
+    m = M.Model(PREFIX + name)
+    r, neck = BORE[size], TEE[size] - 2.0
+    m.tube("z", (0, 0), -neck, neck, r + 0.75, K.IRON_D)
+    m.tube("y", (0, 0), 0.0, neck, r + 0.5, K.IRON_D)
+    _pair(m, size, neck)
+    with m.turned(("y", 180.0)):
+        _pair(m, size, neck)
+    with m.turned(("x", -90.0)):
+        _pair(m, size, neck)
+    return m
+
+
+TEE = {size: BORE[size] + 5.0 for size in BORE}         # from a tee's middle to the end of each port
+
+
+def _expansion(name, size):
+    """An expansion bend in a straight run: the pipe leaves its line, goes round a loop and comes
+    back to it, so that a long run can grow with the heat. The anchor is the middle of the piece on
+    the run's axis z; the loop stands out along +y, its top LOOP[size] off the axis; either end is
+    a pair of flanges EXPANSION[size] from the anchor: a run stops inside it."""
+    m = M.Model(PREFIX + name)
+    r, rho = BORE[size], BEND[size]
+    top, end = LOOP[size], EXPANSION[size] - 2.0
+    flat = LOOP_FLAT / 2.0                              # half the level length at the top
+    leg, foot = flat + rho, flat + 2.0 * rho            # z of an upright leg; where the pipe leaves its line
+    thirds = [math.radians(t) for t in (30.0, 60.0, 90.0)]
+    half = [(top, flat)]                                # (y, z) from the middle of the top to the end at +z
+    half += [(top - rho + rho * math.cos(t), flat + rho * math.sin(t)) for t in thirds]
+    half += [(rho, leg)]
+    half += [(rho - rho * math.sin(t), foot - rho * math.cos(t)) for t in thirds]
+    half += [(0.0, end)]
+    m.hose([(0.0, y, -z) for y, z in reversed(half)] + [(0.0, y, z) for y, z in half], r, K.IRON)
+    _pair(m, size, end)
+    with m.turned(("y", 180.0)):
+        _pair(m, size, end)
+    return m
+
+
+LOOP_FLAT = 4.0                                         # the level length at the top of an expansion bend
+LOOP_LEG = 2.0                                          # the straight length of each of its upright legs
+LOOP = {size: 2.0 * BEND[size] + LOOP_LEG for size in BEND}                     # its top, off the run's axis
+EXPANSION = {size: LOOP_FLAT / 2.0 + 2.0 * BEND[size] + 3.0 for size in BEND}  # half its length
 
 
 def _valve(name, size):
@@ -451,6 +513,8 @@ SPEC = {
     "drain_head": dict(build=_drain_head),
     "drain_clip": dict(build=lambda: _down_clip("drain_clip", K.IRON)),
     "drain_sleeve": dict(build=lambda: _down_sleeve("drain_sleeve", K.IRON_D)),
+    "fine": dict(build=lambda: _down("fine", COPPER3, FINE_R)),
+    "union": dict(build=_union),
     "main_l": dict(build=lambda: _main("main_l", BORE["l"])),
     "main_m": dict(build=lambda: _main("main_m", BORE["m"])),
     "flange_l": dict(build=lambda: _flange("flange_l", "l")),
@@ -459,6 +523,10 @@ SPEC = {
     "plate_m": dict(build=lambda: _plate("plate_m", "m")),
     "elbow_l": dict(build=lambda: _elbow("elbow_l", "l")),
     "elbow_m": dict(build=lambda: _elbow("elbow_m", "m")),
+    "tee_l": dict(build=lambda: _tee("tee_l", "l")),
+    "tee_m": dict(build=lambda: _tee("tee_m", "m")),
+    "expansion_l": dict(build=lambda: _expansion("expansion_l", "l")),
+    "expansion_m": dict(build=lambda: _expansion("expansion_m", "m")),
     "valve_l": dict(build=lambda: _valve("valve_l", "l")),
     "valve_m": dict(build=lambda: _valve("valve_m", "m")),
     "valve_angle_l": dict(build=lambda: _valve_angle("valve_angle_l", "l")),
@@ -488,6 +556,9 @@ def place(canvas, kind, pos, along="south", out="up", origin=(0, 0, 0), **opts):
     the way its +y points:
 
         flange_*        along: the pipe; out: any direction across it
+        union           along: the small pipe; out: any direction across it
+        tee_*           along: the run that goes through; out: the branch
+        expansion_*     along: the run; out: the side the loop stands out to
         valve_*         along: the pipe; out: the stem and the wheel
         valve_angle_*   along: the level port, and the pipe that leaves by it; out: "up" (the other
                         port goes down, the wheel looks back against `along`)
@@ -509,8 +580,8 @@ def mount(canvas, kind, pos, out="east", up="up", origin=(0, 0, 0), **opts):
 
 def run(canvas, a, b, kind="main_l", lit=None, origin=(0, 0, 0)):
     """One straight length of pipe from a to b, two points of its axis; returns 1. kind is "main_l",
-    "main_m", "down" or "drain". The entity stands at a, which must be in the air (it is lit from
-    there); b may lie inside a fitting or a stone.
+    "main_m", "down", "drain" or "fine". The entity stands at a, which must be in the air (it is
+    lit from there, the whole length of it); b may lie inside a fitting or a stone.
 
     lit    the side the pipe's light tone looks to. Left out: up for a level run, north for an
            upright one. Only runs along an axis can say; a slanted run is lit from above."""

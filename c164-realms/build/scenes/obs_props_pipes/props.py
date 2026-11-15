@@ -45,11 +45,14 @@ def _drain():
 
 
 def _mains():
-    """The two bores side by side along the floor, each with a pair of flanges half way."""
+    """The two bores side by side along the floor, each with a pair of flanges half way, and beside
+    them the small copper pipe with its union."""
     parts = []
     for size, x in (("l", -0.5), ("m", 0.5)):
         y = (pipes.BORE[size] + 2.0) / 16.0             # the flanges stand on the floor
         parts += [(P + "main_" + size, (x, y, -LONG / 2.0), {}), (P + "flange_" + size, (x, y, 0.0), {})]
+    y = (pipes.FINE_R + 1.0) / 16.0                     # and so does the union's nut
+    parts += [(P + "fine", (1.2, y, -LONG / 2.0), {}), (P + "union", (1.2, y, 0.0), {})]
     return ("mains", parts, (2.4, 1.5, 1.6), (0.0, 0.2, 0.0))
 
 
@@ -66,6 +69,18 @@ def _elbows():
     """The two bends, each with one leg up and one to the camera."""
     return ("elbows", [(P + "elbow_l", (-0.6, 0.8, 0.0), {}), (P + "elbow_m", (0.6, 0.8, 0.0), {})],
             (1.2, 1.5, 2.2), (0.0, 1.0, 0.2))
+
+
+def _tees():
+    """The two tees, the run from west to east, the branch up."""
+    return ("tees", [(P + "tee_l", (-0.7, 0.8, 0.0), EAST), (P + "tee_m", (0.7, 0.8, 0.0), EAST)],
+            (0.6, 1.4, 2.2), (0.0, 0.9, 0.0))
+
+
+def _expansions():
+    """The two expansion bends, the run from west to east, the loop up."""
+    return ("expansions", [(P + "expansion_l", (0.0, 1.7, 0.0), EAST), (P + "expansion_m", (0.0, 0.5, 0.0), EAST)],
+            (0.8, 1.6, 3.4), (0.0, 1.4, 0.0))
 
 
 def _valves():
@@ -120,6 +135,8 @@ GALLERY = [
     _wall("plates", [("plate_l", -0.6, 1.5), ("plate_m", 0.6, 1.5)]),
     _clips(),
     _elbows(),
+    _tees(),
+    _expansions(),
     _valves(),
     _angles(),
     _inlet(),
