@@ -30,7 +30,10 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
      nowhere else): a gate stops him -- the bottom two rows of the plane behind its leaves are
      barriers, as wide as the leaves, and the scene holds no other barrier; a doorway lets him
      by -- nothing stands in its bottom two rows, in the wall line or behind it, and its leaves
-     lie along the reveals, not across the opening
+     lie along the reveals, not across the opening. And he does not look into the iron: a
+     model has no collision, his eye keeps 0.3 block from what stops him and the game draws
+     nothing nearer to the eye than 0.05, so a gate's leaves stand 4 px out of the barriers at
+     most and the plate of an open leaf 0.25 block off the reveal (ironwork.EYE, NEAR)
 
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
@@ -361,6 +364,13 @@ def judge(view, kind, reach):
 
         text.append(f"{share(range(view.h)):.0%} of the opening stays open: {share(range(leaf)):.0%} under the "
                     f"transom, {share(range(SPRING + ON_GLASS, view.h)):.0%} over it")
+        # who walks into the gate stands against the barriers behind the leaves, his eye EYE out of the glass face
+        out = max((view.iron[(u, v)][1] for u in range(between[0], between[-1] + 1) for v in range(leaf)
+                   if (u, v) in view.iron), default=0.0)
+        if out > ironwork.GATE_REACH * TILE + 1e-6:
+            found.append(f"the leaves stand {out:g} px out of the glass face: more than {ironwork.GATE_REACH * TILE:g}, "
+                         f"and an eye against the barriers ({ironwork.EYE * TILE:g} px out) looks into them")
+        text.append(f"the leaves stand {out:g} px out of the glass face at most, an eye against them {ironwork.EYE * TILE:g}")
         fan = view.holes(range(SPRING + ON_GLASS, view.h))
         slits = [piece for piece in fan if _square(piece) < SLIT]
         if slits:
@@ -463,6 +473,7 @@ def passage(canvas, doors, found):
     leaves = [(x, z, K.turn(float(nbt["Rotation"][0]) - 180.0, (1.0, 0.0, 0.0)))
               for x, _, z, nbt in canvas.entities
               if nbt.get("item", {}).get("components", {}).get("minecraft:item_model", "").endswith("_leaf")]
+    plate = ironwork.LEAF_T / 2.0 * ironwork.SPEC["door_leaf"]["scale"] / TILE      # half a leaf's plate, in blocks
     barriers = 0
     for d in doors:
         name = f"{d['kind']}way, {d['front']} front, bay {d['bay']}"
@@ -482,13 +493,21 @@ def passage(canvas, doors, found):
         if wrong:
             found.append(f"{name}: something stands in the way of who walks through: {wrong}")
         xs, zs = [x for x, z in d["cells"]], [z for x, z in d["cells"]]
-        mine = [way for x, z, way in leaves
+        mine = [(x, z, way) for x, z, way in leaves
                 if min(xs) - 2.0 <= x <= max(xs) + 3.0 and min(zs) - 2.0 <= z <= max(zs) + 3.0]
-        across = sum(1 for way in mine if abs(way[0] * inward[0] + way[2] * inward[1]) < math.sqrt(0.5))
+        across = sum(1 for x, z, way in mine if abs(way[0] * inward[0] + way[2] * inward[1]) < math.sqrt(0.5))
         if across:
             found.append(f"{name}: {across} of its {len(mine)} leaves lie across the opening")
+        # how far the room face of an open leaf's plate stands off its reveal: the eye of who walks
+        # along the reveal is EYE off it, and the game cuts what is nearer to the eye than NEAR
+        mid = (sum(xs) / len(xs) + 0.5, sum(zs) / len(zs) + 0.5)
+        off = max((len(d["cells"]) / 2.0 - abs((x - mid[0]) * inward[1] - (z - mid[1]) * inward[0]) + plate
+                   for x, z, way in mine), default=0.0)
+        if off > ironwork.EYE - ironwork.NEAR + 1e-6:
+            found.append(f"{name}: the plate of an open leaf stands {off:.3f} off the reveal: more than "
+                         f"{ironwork.EYE - ironwork.NEAR:g}, and who walks along the reveal looks into it")
         print(f"{name}: open to who walks, nothing in rows {_spans(rows)}; "
-              f"{len(mine) - across} of its {len(mine)} leaves lie along the reveals")
+              f"{len(mine) - across} of its {len(mine)} leaves lie along the reveals, the plate {off:.3f} off them at most")
     placed = sum(n for state, n in canvas.count().items() if state.partition("[")[0].split(":")[-1] == ironwork.BARRIER)
     if placed != barriers:
         found.append(f"the scene holds {placed} barriers, the gates ask for {barriers}")

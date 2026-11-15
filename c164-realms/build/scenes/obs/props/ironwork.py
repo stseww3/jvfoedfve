@@ -354,10 +354,13 @@ def _gate(width=3):
     stiles ends at the transom and does not run on to the crown, where transom and upright would
     stand against the light as a cross (c219, pre-review P9). Six rays from a hub 9 px in radius:
     no opening between them is narrower than 2 px (eight from the fanlight's small hub left slits
-    of half a pixel round it, a smear in the pictures)."""
+    of half a pixel round it, a smear in the pictures).
+    The leaves hang at the back of the frame and nothing on them stands more than 3.5 px out of
+    the glass face: who walks into the gate is stopped by the barriers behind it (doors()) with
+    his eye 4.8 px out, and the game draws nothing nearer to the eye than 0.8 px (GATE_REACH)."""
     m = M.Model(PREFIX + "gate", px=2.0)
     _fan(m, _frame(m, width, foot=False, jambs=DOOR_JAMBS), rays=6, wide=1.0, hub=4.5, arc=7.5)
-    hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H      # no slit of light under the transom
+    hw, z, zr, top = width * 4.0, (0.0, 1.0), (0.25, 0.75), LEAF_H      # no slit of light under the transom
     for sx in (-1.0, 1.0):
         def span(x0, x1, y0, y1, mat, zz=z, **kw):
             a, b = sorted((sx * x0, sx * x1))
@@ -375,7 +378,7 @@ def _gate(width=3):
             K.rivet(m, (sx * x, 9.5, z[1]))
             K.rivet(m, (sx * x, 15.5, z[1]))
     m.box((-1.5, 8.0, z[1]), (1.5, 11.0, z[1] + 0.5), IRON_D)                             # the lock case
-    m.tube("z", (0.0, 9.5), z[1] + 0.5, z[1] + 1.25, 0.75, BRASS, sides=8)
+    m.tube("z", (0.0, 9.5), z[1] + 0.5, z[1] + 0.75, 0.75, BRASS, sides=8)                # and its brass boss
     return m
 
 
@@ -728,8 +731,14 @@ def windows(canvas, table, origin=(0, 0, 0), grilles=None):
     return n
 
 
-LEAF_OFF = 0.30         # an open leaf stands this far off the reveal: its ledges and its pull are between
+EYE, NEAR = 0.3, 0.05   # a player's eye keeps half his width from a wall or a barrier; the game draws nothing
+                        # that is nearer to the eye than NEAR. A model has no collision of its own, so a
+                        # piece he can walk up to lies within EYE - NEAR of what stops him, or he looks into it
+GATE_REACH = EYE - NEAR             # a shut gate's leaves, from the barriers behind them (the glass face)
+LEAF_OFF = 0.14         # an open leaf lies this far off the reveal, its middle plane: the face of its plate is
+                        # 0.234 off, within EYE - NEAR; what is fixed on the face it turns to the stone goes in
 LEAF_OUT = 7.0 / 16.0   # the hinge line of the entrance leaves: just in front of the frame's 6 px
+WEST_OUT = 0.30         # the hinge line of the west door's leaves, which have no frame: this far into the reveal
 WALK = 2                # the rows of a doorway a player fills: what stands in them stops him or lets him by
 BARRIER = getattr(B, "BARRIER", "barrier")      # the collision of a shut gate, which a model has not: doors()
 CANOPY_LAMP = 1.5       # the lamp hangs this far in front of the pilasters, under the middle glazing bar
@@ -797,7 +806,7 @@ def doors(canvas, table, origin=(0, 0, 0), west_swing=90.0):
             n += leaves(canvas, "door_leaf", pos, facing=facing, origin=origin)
             n += canopy(canvas, pos, y1 + 2.0, facing=facing, origin=origin)
         elif not d.get("arch") and y1 - y0 == 3:
-            n += leaves(canvas, "glazed_leaf", pos, facing=facing, origin=origin, swing=west_swing, out=LEAF_OFF)
+            n += leaves(canvas, "glazed_leaf", pos, facing=facing, origin=origin, swing=west_swing, out=WEST_OUT)
     return n
 
 
