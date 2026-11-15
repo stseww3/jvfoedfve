@@ -12,7 +12,7 @@ The first look (S.V7, from outside the door through the middle arch): the orrery
 mother clock on the pier straight ahead, the floor underfoot. The hall keeps that picture clear,
 and in the order the director set (A0, 11-16): the clock's dial and the pier's east face first,
 the orrery's sun the warmest point, the floor third. Nothing of the hall's own stands on the
-axis; the nave's floor is dark stone, since a floor is drawn at full light and a wall that looks
+axis; no stone of the floor is pale, since a floor is drawn at full light and a wall that looks
 east at six tenths, and a pale one under the same lamp outshines the pier; and no lamp of the
 hall shows its glass to the door.
 
@@ -21,11 +21,12 @@ hall shows its glass to the door.
             octagonal ring seven across, the meridian through it from wall to wall (x 11, north
             to south), the star inside the ring on its upper right. Brass runs north-south only
             and the nave is one stone from the door to the clock, so the floor shows no cross.
+            The line is dark brass, a tone with slate: what it lies on is tuff.
   ceiling   Nothing is added to the beams, which run north-south only. Where the orrery hangs, a
             flat round boss packs the gap between the boards and the beam's lower face. Panels in
             the boards of every bay, so that the dark boards are not one black field.
   walls     A pilaster under every beam along both aisles, a dado between them (a), the
-            switchboard in the north aisle, charts and a globe in the south one.
+            switchboard in the north aisle, charts and a globe across from it in the south one.
   emblem    Twice and no more: in the floor, and one carved block over the doorway on the inside.
   light     Every source is offered to the light line (sky/_lightkit); no light block is set here.
             The sun and the clock offer their own (machines). Lamps of the third rank: a shaded
@@ -33,12 +34,14 @@ hall shows its glass to the door.
             along the gallery walls, at the two stair feet and on the mezzanine.
 
 Two versions to choose between; the plan is locked, so they differ in dress:
-  a  "academy"   a nave of polished slate, the black and white chequer under the galleries,
-                 stone pilasters, a dark wainscot, a wooden boss ringed in brass, blue panels
-                 with brass stars in the boards, benches and display tables.
-  b  "workshop"  polished tuff down the nave, an iron duct cover under each gallery's edge, a
-                 grating inside the door, riveted stanchions, an iron boss, riveted plates in the
-                 boards, drafting table, desk, cabinets and cases.
+  a  "academy"   a nave of polished slate with the roundel a grey disc on it, the plan's chequer
+                 under the galleries in slate and tuff, stone pilasters, a dark wainscot, a wooden
+                 boss ringed in brass, blue panels with brass stars in the boards, benches and
+                 display tables.
+  b  "workshop"  polished tuff down the nave with the roundel's ring a dark band on it, an iron
+                 duct cover under each gallery's edge, a grating inside the door, riveted
+                 stanchions, an iron boss, riveted plates in the boards, drafting table, desk,
+                 cabinets and cases.
 
 build() is what the master scene calls. MOVED_IN tells main/facade that the hall is fitted out:
 its stand-in wall behind the entrance and that wall's lights go (facade.furnished()).
@@ -90,7 +93,8 @@ AISLE_LEVELS = (7, 8, 7, 8)     # the four lamps of an aisle wall, from the pier
 #                                 arch is to stand at 7 or more, and the lamps for it are the hall's (A0 #526)
 AISLE_LAMP_Y = 3.25             # where the bracket is fixed: its shade clears a cabinet two blocks tall, and its
 #                                 source is in the third cell over the floor, one nearer the dado than before
-BOARD_LAMP_Y = 4.5              # the same over the switchboard, whose top is at three and a half
+BOARD_LAMP_Y = 4.5              # the same over the switchboard, whose top is at three and a half, and across
+#                                 from it over the charts: the first look sees these two, and sees them as a pair
 BOARD_GLOW = 6                  # what the board's own dials and pilot lamps throw before it. The bracket over its
 #                                 top leaves the lower panels at 1 to 3, dark iron in dead black
 GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
@@ -107,18 +111,21 @@ ACROSS = {"north": "south", "south": "north", "west": "east", "east": "west"}
 SHAPES = {frozenset(pair): "_".join(pair) for pair in (("north", "south"), ("east", "west"), ("south", "east"),
                                                          ("south", "west"), ("north", "west"), ("north", "east"))}
 
-# the switchboard, bottom row first. No nameplate: it carries the emblem, and the hall shows that twice
+# the switchboard, bottom row first. No nameplate: it carries the emblem, and the hall shows that twice.
 BOARD_A = (("fuses", "louvre", "fuses"),
            ("knife_switch", "dial", "knife_switch"),
            ("gauges", "pilot_lamps", "gauges"))
 BOARD_B = (("fuses", "louvre", "drawers", "louvre", "fuses"),
            ("knife_switch", "relays", "bus_switch", "relays", "knife_switch"),
-           ("gauges", "pilot_lamps", "counter", "pilot_lamps", "gauges"))
-BOARD_MID_X = 5             # the board is centred on this column of the north aisle; its lamp stands before it
+           ("gauges", "dial", "pilot_lamps", "dial", "gauges"))
+# One face of pilot lamps to a board: they glow at full strength, brighter in the picture than the
+# orrery's sun, and from the door a handful of them is a sparkle and two faces a second light (cr3, #63239)
+BOARD_MID_X = 4             # the board is centred on this column of the north aisle, between the stair hall's
+#                             arcade and the battery room's door (x 7, interiors/batteryroom's to set)
 
 STYLE = {
     "a": dict(
-        band=B.SLATE_TILE.block, field=B.SLATE_SMOOTH.block,
+        band=B.TUFF_BRICK.block, field=B.TUFF_SMOOTH.block,
         base=B.SLATE_BRICK.block, shaft=B.ASHLAR_FINE.block, capital=B.ASHLAR_PANEL.block,
         corbel=B.ASHLAR_FINE.stairs, dado=True, panel="sky", board=BOARD_A,
         # a bench's back is 7.25 px behind its middle and the wainscot 3 px thick: 5.35 clears it by a hair
@@ -239,12 +246,13 @@ def star_at():
 def _lay_a(x, z):
     """a: the nave polished slate from the door to the clock and from gallery to gallery: the axis
     marked in stone, as wide as the ring, which lies on it like a seal on a ribbon. Under the
-    galleries the plan's black and white chequer, a block to a square, mirrored about the meridian
-    and about the axis, and dark where the meridian's brass crosses it."""
+    galleries the plan's chequer, a block to a square, mirrored about the meridian and about the
+    axis, and light where the meridian's brass crosses it. Its light stone is polished tuff: white
+    ashlar under the aisles' lamps was brighter in the first look than the pier's face."""
     across = abs(z - CZ)
-    if across <= ROUNDEL_R or (abs(x - CX) + across) % 2 == 0:
+    if across <= ROUNDEL_R or (abs(x - CX) + across) % 2 == 1:
         return B.SLATE_SMOOTH.block, None
-    return B.ASHLAR_FINE.block, None
+    return B.TUFF_SMOOTH.block, None
 
 
 def _lay_b(x, z):
@@ -349,13 +357,28 @@ def _corbels(canvas, origin, style):
                 canvas.set(ox + x, oy + CEIL - 1, oz + z, st(style["corbel"], facing=wall, half="top"))
 
 
+def aisle_doors():
+    """Doors other rooms open in the aisle walls on the ground floor: {(x, z of the aisle's row
+    before it)}. The battery room's, in the north wall beside the switchboard, is that room's to
+    set (interiors/batteryroom.HALL_DOOR, the wall's cell); the hall keeps the cell before it free."""
+    out = set()
+    room = _optional("interiors.batteryroom")
+    door = getattr(room, "HALL_DOOR", None)
+    if door is not None:
+        x, z = door
+        out.add((x, Z0 if z < Z0 else Z1))
+    return out
+
+
 def _dado(canvas, origin):
-    """a: dark panelling two blocks high along both aisle walls, wherever nothing stands."""
+    """a: dark panelling two blocks high along both aisle walls, wherever nothing stands and no
+    door opens."""
     ox, oy, oz = origin
+    doors = aisle_doors()
     for z, wall in ((Z0, "north"), (Z1, "south")):
         for x in range(X0, X1 + 1):
             for y in (FEET, FEET + 1):
-                if not canvas.has(ox + x, oy + y, oz + z):
+                if (x, z) not in doors and not canvas.has(ox + x, oy + y, oz + z):
                     canvas.set(ox + x, oy + y, oz + z, st(B.WAINSCOT, facing=ACROSS[wall], half="bottom", open="true"))
 
 
@@ -494,16 +517,16 @@ def gallery_lamp_xs():
 
 def _lamps(canvas, origin, version):
     """A shaded bracket in every bay of both aisles, on the wall over what stands in the bay, and
-    three caged lamps along each gallery wall. Over the switchboard the bracket is fixed higher.
+    three caged lamps along each gallery wall. The westernmost pair is fixed higher, over the
+    switchboard's top and between the heads of the two charts.
     The westernmost of a gallery is a level over the others: it shows the far end of the gallery,
     which from the door is the top of the picture."""
     ox, oy, oz = origin
     kind, model = AISLE_LAMP
     n = 0
-    for x, level in zip(aisle_lamp_xs(), AISLE_LEVELS):
-        for face, row, facing in ((Z0, Z0, "south"), (Z1 + 1, Z1, "north")):
-            board = canvas.has(ox + int(x), oy + int(AISLE_LAMP_Y), oz + row)
-            n += lamps.place(canvas, kind, (x, BOARD_LAMP_Y if board else AISLE_LAMP_Y, float(face)), facing=facing,
+    for i, (x, level) in enumerate(zip(aisle_lamp_xs(), AISLE_LEVELS)):
+        for face, facing in ((Z0, "south"), (Z1 + 1, "north")):
+            n += lamps.place(canvas, kind, (x, AISLE_LAMP_Y if i else BOARD_LAMP_Y, float(face)), facing=facing,
                              origin=origin, version=model, level=level)
     for x, level in zip(gallery_lamp_xs(), GALLERY_LEVELS):
         n += lamps.place(canvas, "cage", (x, GALLERY_LAMP_Y, Z0), facing="south", origin=origin, version=version,
