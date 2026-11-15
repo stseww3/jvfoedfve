@@ -3,8 +3,8 @@
 The cameras stand south and look north. From west to east:
 
     the terrace (open paving west of the wall, one street lamp, the sky behind)
-        the tripod telescope side-on, looking west, the louvre box, and on a stone pedestal the
-        sunshine recorder
+        the tripod telescope side-on, looking west (placed by instruments.site(), as the one on
+        the sunset terrace is), the louvre box, and on a stone pedestal the sunshine recorder
     the hall (a wall of dressed stone that looks south, a wooden floor, bracket lamps)
         the celestial globe; on the wall the barometer, the regulator clock and, beside it, its
         pendulum once more by itself and swung out, to show the part that moves and its pivot; on
@@ -65,7 +65,10 @@ def build():
     n = lamps.place(c, "street", STREET)
     for x in HALL_LAMPS:
         n += lamps.place(c, "bracket", (x, LAMP_Y, 0.0))
-    n += instruments.place(c, "tripod_scope", SCOPE, facing="west")
+    # the telescope is placed the way the master scene places the one of the sunset terrace, through
+    # site(): the stage's paving lies where that terrace's would if the scene's origin were moved
+    point = next(p for group, _, p, _ in instruments.site_pieces() if group == "sunset")
+    n += instruments.site(c, origin=tuple(a - b for a, b in zip(SCOPE, point)), groups=("sunset",))
     n += instruments.place(c, "louvre_box", LOUVRE)
     n += instruments.place(c, "sunshine_recorder", SUNSHINE)
     n += instruments.place(c, "celestial_globe", GLOBE)

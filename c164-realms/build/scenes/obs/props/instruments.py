@@ -23,7 +23,8 @@ lines:
     n += instruments.place(canvas, "tripod_scope", (x, y, z), facing="west", origin=origin)
 
 place() returns the number of display entities it placed. Nothing here is spread over the building:
-the terraces and the rooms place what they need, build() places nothing.
+the rooms and the outbuildings place what they need. build() places one piece, the telescope of the
+sunset terrace, and that only once the switch DRESS is on (see site()).
 
 No brass bar crosses another at right angles in any of these (RUBRIC red line 8): the globe's
 horizon ring is wood seen from the side, its meridian stands off the main axes, the barometer's dial
@@ -40,6 +41,7 @@ from artkit import models as M
 from artkit import pixelart
 from artkit.pixelart import Sprite
 
+from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from . import _kit as K
@@ -579,7 +581,69 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts)
     return n
 
 
+# ---- the site --------------------------------------------------------------------------------------------
+# The rooms and the outbuildings place their instruments themselves, with place(). One piece is left
+# to this package, because site/terrain is blocks only: the telescope of the sunset terrace (plan
+# ART-PLAN 4). It stands on the axis at the west end of the walk from the west door, in line with the
+# inner pair of benches that props/furniture sets either side of the walk, and looks west over the
+# rail at the afterglow: who comes out of the west door walks straight up to its eyepiece. The two
+# blocks between it and the rail stay free to walk in. The switch, dress() and site() work like
+# those of props/furniture.
+DRESS = False           # off in the master scene until the family has passed review; a test scene asks
+                        # for the site's instruments with dress(canvas), or calls site()
+SUNSET_SCOPE = 16.0     # blocks west of the middle of the terrace's half-circle, on the axis
+
+
+def site_pieces():
+    """The instruments of the site as (group, kind, point, yaw). point is the middle of the piece's
+    foot in scene coordinates before the origin."""
+    cx, cz = S.SUNSET_PLATFORM["centre"]
+    return [("sunset", "tripod_scope", (S.mid(cx) - SUNSET_SCOPE, float(S.GROUND), S.mid(cz)), K.FACING["west"])]
+
+
+def _stands(canvas, foot, origin=(0, 0, 0)):
+    """True when the piece has a floor under the middle of its foot on the canvas as it is, and room
+    to stand in: the cell below is taken and the cell above that is free (a light source in it
+    does not count)."""
+    x, z = math.floor(foot[0] + origin[0]), math.floor(foot[2] + origin[2])
+    y = math.ceil(foot[1] + origin[1])
+    return canvas.has(x, y - 1, z) and canvas.name(x, y, z) in (None, B.LIGHT)
+
+
+def dress(canvas, on=True):
+    """Ask for the instruments of the site on this canvas while the switch DRESS is off (a test
+    scene). Call it before the lines are built."""
+    canvas.instruments_dress = bool(on)
+
+
+def site(canvas, origin=(0, 0, 0), groups=None):
+    """Place the instruments of the site (site_pieces()), or of the groups named ("sunset"). A piece
+    is only placed where its floor is on the canvas as it is, so a tree without the terrace has no
+    telescope floating in the air; what was left out is kept in canvas.instruments_left_out as
+    (group, kind, point). A piece is placed once: a second call adds what does not stand yet.
+    Returns the number of display entities placed by this call."""
+    origin = tuple(origin)
+    placed = getattr(canvas, "instruments_placed", None)
+    if placed is None:
+        placed = canvas.instruments_placed = set()
+    n, left = 0, list(getattr(canvas, "instruments_left_out", []))
+    for group, kind, p, yaw in site_pieces():
+        if (groups is not None and group not in groups) or (kind, p, origin) in placed:
+            continue
+        if _stands(canvas, p, origin):
+            n += place(canvas, kind, p, yaw=yaw, origin=origin)
+            placed.add((kind, p, origin))
+        elif (group, kind, p) not in left:
+            left.append((group, kind, p))
+    canvas.instruments_left_out = [e for e in left if (e[1], e[2], origin) not in placed]
+    return n
+
+
 def build(canvas, origin=(0, 0, 0)):
-    """Nothing of its own in the master scene: the lines that build the terraces and the rooms place
-    their instruments with place()."""
+    """What this package places in the master scene itself: the instruments of the site (site()),
+    once the switch DRESS is on or a test scene has asked for it (dress()). Everything else is
+    placed by the lines that build the rooms and the outbuildings, each piece where it is used,
+    with place()."""
+    if getattr(canvas, "instruments_dress", DRESS):
+        return site(canvas, origin)
     return 0
