@@ -63,14 +63,18 @@ IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
 BOLT = K.flat("iron", 4)                          # a bolt head in wood: a cool dot, no lighter than the wood
-# A travelling trunk is covered in tan canvas: the dull brown of old copper, painted as cloth (no
-# streaks, a worn edge). The woven cream the card named (cream_cloth) came out the whitest thing on
-# the stage after the lamps, and mottled; the darkest plain cream still read as a box painted white.
-CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=2)
-SEAM = K.flat("old_copper", 1)                    # the binding of the trunk's lid: a step under its canvas
-# the bed of a display case: one flat tone, the darkest cream, so that paper laid on it is lighter
-# than the bed and brass is not lost in it; not a speck on it that could be taken for an exhibit
-LINING = K.flat("cream", 0)
+# A travelling trunk is covered in brown canvas: the old-coin brown of the copper plates (the ramp's
+# second step, as materials has it since A0's ruling), painted as cloth: no streaks, a worn edge. The
+# woven cream the card named (cream_cloth) came out the whitest thing on the stage after the lamps,
+# and mottled; the darkest plain cream still read as a box painted white, and the ramp's middle step
+# of old copper as a pink one under a lamp.
+CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=1)
+SEAM = K.flat("old_copper", 0)                    # the binding of the trunk's lid: a step under its canvas
+# The bed of a display case is blue velvet: one flat tone of the night glass, the house's blue under
+# its brass. Brass and paper laid on it are both far lighter than the bed (the darkest cream was as
+# light as a wall of stone, and a sheet of paper on it was lost); not a speck on it that could be
+# taken for an exhibit.
+LINING = K.flat("night_glass", 2)
 PAPER = K.flat("cream", 2)                        # a clean sheet: no speckle to be taken for pencil
 PENCIL, INK, LABEL = P.RAMPS["cream"][0], P.RAMPS["iron"][2], P.RAMPS["cream"][1]
 
@@ -437,8 +441,10 @@ def _trunk():
 
 
 CASE_DARK = K.flat("dark_wood", 0)              # what shows between two boards of a packing case
-NAIL = P.RAMPS["dark_wood"][0]                  # a nail head in raw wood: iron came out a blue stud
-STENCIL = P.RAMPS["dark_wood"][1]               # marks stencilled on a board
+# a nail head in raw wood: iron came out a blue stud, and the darkest wood as dark as the gaps, so
+# that two nails over a gap were two eyes over a mouth
+NAIL = P.RAMPS["dark_wood"][1]
+STENCIL = P.RAMPS["dark_wood"][2]               # marks stencilled on a board: faded paint, not slots
 BOARD = 3.0                                     # texels a board of a packing case is high; one texel between two
 
 
