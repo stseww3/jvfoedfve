@@ -22,8 +22,8 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
   merge     the branch merges into the base without conflicts; how far it is behind
 
 The technical checks of what the code generates are tools/check.py's (needs a checkout). Whether
-the kept pictures are what the delivered code draws is tools/selfshots.py --verify's, which draws
-and so runs on the admin's computer only.
+the kept pictures are what the delivered code draws is tools/selfshots.py --verify's; it draws, and
+runs on the merge-key holder's own cloud machine (COMMON.md section 0 item 2, from 11-15).
 """
 import argparse
 import hashlib
@@ -356,7 +356,7 @@ def main():
                     notes.append(f"{scene}: {len(of)} pictures show {commit}; the card's code has changed since "
                                  f"({', '.join(os.path.basename(p) for p in since[:4])}"
                                  f"{' ...' if len(since) > 4 else ''}): draw them again")
-    notes = [f"{s}: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py {s} --out, "
+    notes = [f"{s}: no pictures kept (draw them on your own machine, INTERFACE 5: tools/selfshots.py {s} --out, "
              f"then --take here and commit renders/{s}/)" for s in without] + notes
     results.append(say("FAIL" if altered else "WARN" if notes else "PASS", "pictures",
                        "no test scene with a shot list is touched" if not scenes
