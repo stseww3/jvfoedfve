@@ -70,9 +70,9 @@ build() 返回 2。
 ## 交付物
 
 - 代码：`build/scenes/obs/main/tower.py`：`build(canvas, origin=(0, 0, 0), version=None)`、`models()`、`windows()`。`python -m scenes.obs.main.tower` 打印两版的文字立面、剖面和望台、塔顶各行的平面。
-- 测试场景：`obs_main_tower`（甲）和 `obs_main_tower_b`（乙），同名机位逐张对比，各 10 个机位：v5_up、v5_far（前庭仰视，近和远）、v1_stamp、v2_axis（骨架的 V1、V2，眼位和方向照骨架读）、dial_close、top_close、top_level（和望台平视）、junction、west_door（站在屋面走道上看门）、north_west。`python -m scenes.obs_main_tower` 重写两份 shots.json。
+- 测试场景：`obs_main_tower`（甲）和 `obs_main_tower_b`（乙），同名机位逐张对比，各 10 个机位：v5_up、v5_far（前庭仰视，近和远）、v1_stamp、v2_axis（骨架的 V1、V2，眼位和方向照骨架读）、dial_close、top_close、top_level（和望台平视）、junction、west_door（站在屋面走道上看门）、north_west。`python -m scenes.obs_main_tower` 重写两份 shots.json。场景用地图的时刻，`write_pack` 带着天空的包（INTERFACE 11-16 第三次补充）：天上是彗星，没有游戏自带的太阳和月亮。
 - 自查图：`renders/obs_main_tower/`、`renders/obs_main_tower_b/`，各 10 张，节点 node41 出的，旁边的 `check.txt` 是同一次的 `check.py` 原话（两个场景都是 0 FAIL、0 WARN）。
-- 测试场景里没有钟盘、球和天线（machines 线不在场景的 LINES 里，那两个包也还没进总装）：钟窝露着铁板底，杆是光的，托架是空的。clocks 进总装以后，场景的 LINES 加上 machines、图重出一遍（【交付·补图】）。
+- 测试场景里没有钟盘和球（machines 线不在场景的 LINES 里，clocks 也还没进总装）：钟窝露着铁板底，杆是光的。clocks 进总装以后，场景的 LINES 加上 machines、图重出一遍（【交付·补图】）。
 - `main/massing.py` 里塔的白模撤了；和总装里 sdome 撤的那一段合起来是空的 `build()`（STATUS「排队」里总监试合过的那一条）。这个文件不是本卡的，`delivery.py` 的 scope 一项会点它。
 
 ## 验收（评审类型：建筑外壳；V5 为主）

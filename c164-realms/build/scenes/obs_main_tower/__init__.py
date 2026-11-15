@@ -60,10 +60,17 @@ def shots():
     def shot(name, pos, look_at):
         return {"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at], "time": TIME}
 
+    # V5 is not in the skeleton yet: until it is, the station the picture board proposes for it
+    # (tools/boardshots.py: fifteen blocks east and south of the axis, looking up the corner)
+    board = getattr(S, "V5", dict(pos=(cx + 15.0, S.GROUND + S.EYE, cz + 15.0), look_at=(cx, S.CLOCK_SHAFT_TOP - 3.0, cz)))
     return [
-        # V5, the up-view from the court: dial, lookout, top, ball and mast in one line
+        # V5, the up-views from the court: dial, lookout, top, ball and mast in one line. v5_up and
+        # v5_far see the east face nearly square on, from farther back than the board's station.
+        # The comet is due west of every eye: v5_far stands south of the tower's own latitude, so
+        # that the comet hangs clear of the top and not behind it
+        shot("v5_board", board["pos"], board["look_at"]),
         shot("v5_up", (44.5, 1.7, -22.5), (cx, 33.0, cz)),
-        shot("v5_far", (58.5, 1.7, -30.5), (cx, 30.0, cz)),
+        shot("v5_far", (58.5, 1.7, -16.5), (cx, 30.0, cz)),
         # V1, the arrival view from the station platform, and V2, the court's axis: eye and look-at
         # are the skeleton's. The tower is the right-hand high point of both skylines
         shot("v1_stamp", S.V1["pos"], S.V1["look_at"]),
