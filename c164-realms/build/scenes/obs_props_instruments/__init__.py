@@ -2,17 +2,23 @@
 
 The cameras stand south and look north. From west to east:
 
-    the terrace (open paving west of the wall, one street lamp, the sky behind)
-        the tripod telescope side-on, looking west, the louvre box, and on a stone pedestal the
-        sunshine recorder; behind them, nearer the terrace's west edge, the telescope that is
-        trained on the comet (placed by instruments.site(), as the one on the sunset terrace is)
-    the hall (a wall of dressed stone that looks south, a wooden floor, bracket lamps)
+    the terrace (open paving west of the wall, lit by the sky alone, the sky behind)
+        a row of four, seven blocks from piece to piece: the telescope that is trained on the
+        comet (placed by instruments.site(), as the one on the sunset terrace is), open sky to its
+        west; the tripod telescope side-on, looking west; the louvre box; on a stone pedestal the
+        sunshine recorder
+    the hall (a wall of dressed stone that looks south, a wooden floor, bracket lamps high up)
         the celestial globe; on the wall the barometer, the regulator clock and, beside it, its
-        pendulum once more by itself and swung out, to show the part that moves and its pivot; on
-        a counter the table globe, the sextant and the calculating machine
+        pendulum once more by itself and swung out, to show the part that moves and its pivot; at
+        the far end, on a counter, the table globe, the sextant and the calculating machine
+
+A shot holds a piece whole or not at all: the pieces stand so far apart, and the cameras look so
+squarely at the wall, that no neighbour and no lamp is cut off by the frame's edge (the game's
+picture is 109 degrees wide). What a close view cuts is its own piece, and the stage's stone.
 
 When props/furniture is in the tree a writing desk and a chair stand beside the celestial globe, so
-the instruments are seen at the scale of the rooms; until then the wooden counter of blocks does.
+the instruments are seen at the scale of the rooms, and the shot globe_desk is taken; until then
+the wooden counter of blocks is the only table.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_instruments
 """
@@ -34,37 +40,37 @@ BIOME_MARGIN = 32
 BIOME_MARGIN_Y = 32
 
 STONE, PAVING, FLOOR, WOOD = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_WOOD.block, B.DARK_WOOD.block
-WALL_H = 6
-WALL_X0, WALL_X1 = -1, 17                       # the wall's first and last column
-TERRACE_X0 = -17                                # the paving runs west to here
-SCOPE = (-12.5, 0.0, 4.5)
-SCOPE_COMET = (-14.5, 0.0, 1.5)                 # open sky to its west and north, a clear row to its east
-STREET = (-10.5, 0.0, 4.5)                      # 8.5 blocks clear of the wall's end (lamps.STREET_CLEARANCE)
-LOUVRE = (-8.5, 0.0, 4.5)
-PEDESTAL = (-6, 4)                              # the cell of a one-block stone pedestal
+WALL_H = 7
+WALL_X0, WALL_X1 = -8, 36                       # the wall's first and last column
+TERRACE_X0, TERRACE_Z1 = -44, 16                # the paving runs west and south to here
+ROW_Z = 4.5                                     # the terrace's row, seven blocks from piece to piece
+SCOPE_COMET = (-39.5, 0.0, ROW_Z)               # open sky to its west, a clear walk of five blocks to its east
+SCOPE = (-32.5, 0.0, ROW_Z)
+LOUVRE = (-25.5, 0.0, ROW_Z)
+PEDESTAL = (-19, 4)                             # the cell of a one-block stone pedestal
 SUNSHINE = (PEDESTAL[0] + 0.5, 1.0, PEDESTAL[1] + 0.5)
-GLOBE = (2.5, 0.0, 2.0)
-DESK = (5.0, 0.0, 2.2)                          # the writing desk beside the globe, when there is one
-BAROMETER = (7.0, 1.0, 0.0)                     # wall pieces: the point on the wall behind their foot
-CLOCK = (9.0, 0.5, 0.0)
-PENDULUM = (11.0, 2.25, 0.0)                    # the spare pendulum: its pivot
+GLOBE = (0.0, 0.0, 2.0)
+DESK = (2.5, 0.0, 2.2)                          # the writing desk beside the globe, when there is one
+BAROMETER = (9.0, 1.0, 0.0)                     # wall pieces: the point on the wall behind their foot
+CLOCK = (13.5, 0.5, 0.0)
+PENDULUM = (15.75, 2.25, 0.0)                   # the spare pendulum: its pivot
 PENDULUM_SWING = 12.0
-COUNTER_X = 12                                  # a counter of four blocks, its top at y 1
-TABLE = {"globe": COUNTER_X + 0.6, "sextant": COUNTER_X + 2.0, "calc_machine": COUNTER_X + 3.3}
+COUNTER = (21, 28)                              # a counter of blocks, first and last column, its top at y 1
+TABLE = {"globe": 22.0, "sextant": 25.0, "calc_machine": 28.0}
 TABLE_Z = 1.5
-HALL_LAMPS = (2.5, 6.0, 8.0, 10.0, 14.0)
-LAMP_Y = 3.0
+HALL_LAMPS = tuple(-2.25 + 4.5 * i for i in range(8))   # the globe between the first two, the clock between two
+LAMP_Y = 5.25                                   # over the frame of every close view
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
 
 def build():
     c = Canvas()
-    c.box(TERRACE_X0, -1, -1, WALL_X1 + 2, -1, 16, PAVING)
+    c.box(TERRACE_X0, -1, -1, WALL_X1 + 2, -1, TERRACE_Z1, PAVING)
     c.box(WALL_X0 + 1, -1, 0, WALL_X1 - 1, -1, 6, FLOOR)
     c.box(WALL_X0, 0, -1, WALL_X1, WALL_H - 1, -1, STONE)
-    c.box(COUNTER_X, 0, 1, COUNTER_X + 3, 0, 1, WOOD)
+    c.box(COUNTER[0], 0, 1, COUNTER[1], 0, 1, WOOD)
     c.box(PEDESTAL[0], 0, PEDESTAL[1], PEDESTAL[0], 0, PEDESTAL[1], STONE)
-    n = lamps.place(c, "street", STREET)
+    n = 0
     for x in HALL_LAMPS:
         n += lamps.place(c, "bracket", (x, LAMP_Y, 0.0))
     n += instruments.place(c, "tripod_scope", SCOPE, facing="west")
@@ -89,14 +95,15 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone the instruments are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone the instruments are judged against, and the map's sky: the terrace looks
+    west, where the comet stands that one telescope is trained on, and the game's own sun must not."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
-    """The cameras: each half of the stage, then every piece from about three blocks and from close
-    by; the celestial globe also from the side (its rings from another angle) and from above (the
-    scale on the horizon ring)."""
+    """The cameras: each half of the stage, then every piece square on from about three blocks and
+    from close by; the celestial globe also from the side (its rings from another angle), from above
+    (the scale on the horizon ring) and in the plane of its half meridian."""
     out = []
 
     def shot(name, pos, look_at):
@@ -105,46 +112,52 @@ def shots():
 
     sx, _, sz = SCOPE
     lx, _, lz = LOUVRE
-    shot("terrace", ((sx + lx) / 2.0, 1.9, sz + 7.0), ((sx + lx) / 2.0, 1.6, sz))
-    shot("scope", (sx, 1.62, sz + 3.5), (sx, 1.3, sz))
-    shot("scope_near", (sx - 1.4, 1.9, sz + 1.6), (sx - 0.2, 1.6, sz))
-    shot("scope_behind", (sx + 2.4, 1.8, sz + 0.9), (sx - 0.4, 1.6, sz))
-    # the comet's telescope: side-on, its eyepiece end, and from five blocks behind it as one comes up
-    # the walk, looking west and a little up: the tube is seen along its length there and has to run
-    # into the comet's head (and a tube standing over a fork must not read as a cross: red line 8)
     kx, _, kz = SCOPE_COMET
-    shot("scope_comet", (kx, 1.62, kz + 3.2), (kx, 1.5, kz))
-    shot("scope_comet_near", (kx + 1.5, 1.9, kz + 1.4), (kx + 0.3, 1.45, kz))
-    up = math.radians(12.0)
-    shot("scope_comet_aim", (kx + 5.0, 1.62, kz), (kx + 5.0 - 10.0 * math.cos(up), 1.62 + 10.0 * math.sin(up), kz))
-    shot("louvre", (lx + 0.9, 1.62, lz + 3.2), (lx, 1.2, lz))
-    shot("louvre_near", (lx + 1.3, 1.8, lz + 1.5), (lx, 1.35, lz))
     px, py, pz = SUNSHINE
-    shot("sunshine", (px + 0.6, py + 0.9, pz + 2.2), (px, py + 0.35, pz))
-    shot("sunshine_near", (px - 0.7, py + 0.75, pz + 1.0), (px, py + 0.4, pz))
-    mid = (WALL_X0 + WALL_X1 + 1) / 2.0
-    shot("hall", (mid, 2.2, 11.0), (mid, 1.4, 0.5))
+    mid = (kx - 1.0 + px + 0.4) / 2.0
+    shot("terrace", (mid, 2.3, ROW_Z + 9.5), (mid, 1.3, ROW_Z))
+    shot("scope", (sx, 1.62, sz + 3.2), (sx, 1.25, sz))
+    shot("scope_near", (sx + 0.4, 1.75, sz + 1.5), (sx + 0.1, 1.45, sz))
+    # from where the observer comes up to the eyepiece, between the two rear legs
+    shot("scope_behind", (sx + 1.3, 1.85, sz + 1.9), (sx - 0.1, 1.5, sz))
+    # the comet's telescope: side-on, its eyepiece end, and from five blocks behind it as one comes up
+    # the walk, looking west and up: the tube is seen along its length there and has to run into the
+    # comet's head, which stands in the upper third of the picture (and a tube standing over a fork
+    # must not read as a cross: red line 8)
+    shot("scope_comet", (kx + 0.4, 1.62, kz + 3.4), (kx, 1.45, kz))
+    shot("scope_comet_near", (kx + 1.3, 1.8, kz + 1.2), (kx, 1.5, kz))
+    up = math.radians(16.0)
+    shot("scope_comet_aim", (kx + 5.0, 1.62, kz), (kx + 5.0 - 10.0 * math.cos(up), 1.62 + 10.0 * math.sin(up), kz))
+    shot("louvre", (lx - 0.4, 1.62, lz + 3.0), (lx, 1.1, lz))
+    shot("louvre_near", (lx - 0.5, 1.75, lz + 1.6), (lx, 1.35, lz))
+    shot("sunshine", (px + 0.2, py + 0.75, pz + 1.9), (px, py + 0.3, pz))
+    shot("sunshine_near", (px + 0.15, py + 0.7, pz + 1.0), (px, py + 0.35, pz))
+    mid = (GLOBE[0] - 0.9 + TABLE["calc_machine"] + 0.6) / 2.0
+    shot("hall", (mid, 2.3, 14.0), (mid, 1.4, 0.5))
     gx, _, gz = GLOBE
-    shot("globe", (gx, 1.62, gz + 3.5), (gx, 1.1, gz))
-    shot("globe_near", (gx + 1.3, 1.9, gz + 1.7), (gx, 1.2, gz))
-    shot("globe_side", (gx - 2.6, 1.62, gz + 0.3), (gx, 1.1, gz))
+    shot("globe", (gx, 1.62, gz + 3.0), (gx, 1.05, gz))
+    shot("globe_near", (gx + 0.8, 1.8, gz + 1.9), (gx, 1.15, gz))
     shot("globe_top", (gx + 0.5, 3.4, gz + 1.1), (gx, 1.2, gz))
-    # in the plane of the meridian ring, from the east, the evening sky behind: the ring is one upright
-    # line there and the horizon ring one level band (red line 8: a globe in its stand, or a cross?);
-    # the same view against a plain backdrop, near and far, is in the gallery (props.GALLERY)
+    # in the plane of the half meridian, from the west (the desk, when there is one, stands east of
+    # the globe): the meridian is one upright line there, under the level band of the horizon ring
+    # and not above it (red line 8: no bar across a bar); the same view against a plain backdrop,
+    # near and far, is in the gallery (props.GALLERY)
     a = math.radians(instruments.GLOBE_YAW)
-    shot("globe_edge", (gx + 3.0 * math.cos(a), 1.62, gz - 3.0 * math.sin(a)), (gx, 1.1, gz))
-    shot("globe_desk", (gx + 1.4, 1.62, gz + 4.2), (gx + 1.3, 0.9, gz))
+    shot("globe_edge", (gx - 3.0 * math.cos(a), 1.62, gz + 3.0 * math.sin(a)), (gx, 1.0, gz))
+    if furniture is not None:
+        shot("globe_desk", (gx + 1.4, 1.62, gz + 4.2), (gx + 1.3, 0.9, gz))
     bx, by, _ = BAROMETER
-    shot("barometer", (bx + 0.5, by + 1.0, 2.6), (bx, by + 1.0, 0.0))
-    shot("barometer_dial", (bx + 0.3, by + 0.6, 1.1), (bx, by + 0.45, 0.0))
+    shot("barometer", (bx + 0.3, by + 1.0, 2.2), (bx, by + 1.0, 0.0))
+    shot("barometer_dial", (bx + 0.25, by + 0.6, 1.1), (bx, by + 0.45, 0.0))
     cx, cy, _ = CLOCK
-    shot("clock", (cx - 0.5, cy + 1.1, 2.7), (cx, cy + 1.0, 0.0))
-    shot("clock_dial", (cx + 0.35, cy + 1.75, 1.2), (cx, cy + 1.6, 0.2))
-    shot("pendulum", (cx + 1.0, cy + 1.0, 2.6), ((cx + PENDULUM[0]) / 2.0, cy + 0.9, 0.1))
+    shot("clock", (cx - 0.3, cy + 1.1, 2.4), (cx, cy + 1.0, 0.0))
+    shot("clock_dial", (cx + 0.25, cy + 1.7, 1.25), (cx, cy + 1.6, 0.2))
+    between = (cx + PENDULUM[0]) / 2.0
+    shot("pendulum", (between, cy + 1.0, 2.0), (between, cy + 0.9, 0.1))
+    # the counter: looked down on, as one stands at a table, and square on
     tx = TABLE["sextant"]
-    shot("table", (tx, 2.0, TABLE_Z + 3.0), (tx, 1.4, TABLE_Z))
-    shot("table_globe_near", (TABLE["globe"] + 0.6, 1.9, TABLE_Z + 1.3), (TABLE["globe"], 1.55, TABLE_Z))
-    shot("sextant_near", (tx + 0.5, 1.8, TABLE_Z + 1.3), (tx, 1.5, TABLE_Z))
-    shot("calc_near", (TABLE["calc_machine"] + 0.5, 1.9, TABLE_Z + 1.3), (TABLE["calc_machine"], 1.3, TABLE_Z))
+    shot("table", (tx, 2.3, TABLE_Z + 3.3), (tx, 1.35, TABLE_Z))
+    shot("table_globe_near", (TABLE["globe"] + 0.1, 2.05, TABLE_Z + 1.2), (TABLE["globe"], 1.5, TABLE_Z))
+    shot("sextant_near", (tx, 2.0, TABLE_Z + 1.2), (tx, 1.45, TABLE_Z))
+    shot("calc_near", (TABLE["calc_machine"] - 0.1, 2.0, TABLE_Z + 1.25), (TABLE["calc_machine"] + 0.05, 1.3, TABLE_Z))
     return out
