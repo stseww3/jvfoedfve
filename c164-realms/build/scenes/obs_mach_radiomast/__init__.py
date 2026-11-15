@@ -163,9 +163,9 @@ def shots():
     shot("near", (ax + 6.0, 21.5, az + 2.5), (ax, 22.0, az))
     shot("below", (ax + 3.3, mast.G + S.EYE, az + 0.4), (ax, 14.0, az))        # from the apron, 75 degrees up
     shot("foot", (ax + 0.8, 3.4, az + 5.4), (ax, 4.6, az))                      # from between the two south anchors
-    # the foot as the clock tower's top sees it, down the diagonal of the seat (an eye leaning out over
-    # the tower's north-east corner): what is pale on the seat must not make a sign from here
-    shot("seat", (S.CLOCK_SHAFT_X[1] + 1.3, S.CLOCK_TOP + 1.0 + S.EYE, S.CLOCK_SHAFT_Z[0] - 0.3), (ax, mast.BASE_Y, az))
+    # the seat from above, down its diagonal and 45 degrees steep, as a window high in the clock tower
+    # has it from the other side: what is pale on the seat must not make a sign from there
+    shot("seat", (ax + 12.0, mast.BASE_Y + 17.0, az + 12.0), (ax, mast.BASE_Y + 0.5, az))
     sx, sy, sz = max(mast.GUY_ANCHORS, key=lambda p: (p[0], p[2]))              # the south-east anchor,
     shot("stay", (sx + 1.9, sy + 0.8, sz - 1.9), (sx - 0.1, sy + 1.0, sz - 0.1))        # its guy seen from the side
     hx, hy, hz = mast.TOWER_HOOK
