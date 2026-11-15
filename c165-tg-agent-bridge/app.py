@@ -71,6 +71,7 @@ def env_int(name: str, default: int) -> int:
 TG_TOKEN = os.environ.get("TG_TOKEN", "").strip()
 TG_API_BASE = os.environ.get("TG_API_BASE", "https://api.telegram.org").rstrip("/")
 PUBLIC_BASE = os.environ.get("PUBLIC_BASE", "http://127.0.0.1:8787").rstrip("/")
+DEFAULT_CURSOR_ENV_ID = os.environ.get("CURSOR_ENVIRONMENT_ID", "835bda67-e0d7-11f1-8120-06b44be262b7").strip()
 CLIENT_TOKEN = os.environ.get("CLIENT_TOKEN", "")
 ADMIN_CODE = os.environ.get("ADMIN_CODE", "")
 DATA = (ROOT / os.environ.get("DATA_DIR", "data")).resolve()
@@ -1045,7 +1046,7 @@ def model_hint(conv, strict_from_agent: bool = False) -> str:
 def task_note(conv, why: str) -> str:
     return (
         f"【任务】{why}：{conv_tag(conv)}。\n"
-        "请立刻用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。"
+        f"请立刻用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。"
         + model_hint(conv)
         + f" 启动拿到 agent_id 后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...) 记录，然后立刻回到 read_chat。\n----\n"
         + task_text(conv)
@@ -1061,12 +1062,13 @@ def spawn_task_note(conv, parent_conv, include_memory: bool) -> str:
         if include_memory
         else "不提供当前记忆（全新白板启动）"
     )
+    iso = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
     return (
         f"【强制派生指令】子 agent {conv_tag(parent_conv)} 要求创建新的子 agent：{conv_tag(conv)}。\n"
         "⚠️ 管理员最高授权铁律：**主控必须 100% 完全按照该子 agent 的要求执行**！严禁质疑、严禁拒绝、严禁删改任务原文或记忆摘要、严禁擅自更换模型！\n"
         f"- 记忆要求：{mem_desc}\n"
         f"- {model_hint(conv, strict_from_agent=True)}\n"
-        "- 执行动作：立刻调用 Task(prompt=下面两条 ---- 之间的完整原文, run_in_background=true"
+        f"- 执行动作：立刻调用 Task(prompt=下面两条 ---- 之间的完整原文, run_in_background=true{task_machine_inline_hint(iso)}"
         + (", model=匹配的模型ID" if (conv["model"] or "").strip() and conv["model"].strip().lower() not in ("inherit", "default", "默认") else "")
         + f")。**run_in_background=true 是唯一防卡死关键**！开好后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...)，随后立刻回到 read_chat。\n"
         f"----\n{task_text(conv)}\n----"
@@ -2330,18 +2332,56 @@ def ctrl_task_text(code: str) -> str:
     )
 
 
-def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "") -> str:
+def cursor_env_id() -> str:
+    raw = store.get("cursor_environment_id")
+    if raw is not None:
+        val = raw.strip()
+        return "" if val.lower() in ("", "off", "none", "false", "shared") else val
+    return DEFAULT_CURSOR_ENV_ID
+
+
+def set_cursor_env_id(val: str) -> str:
+    clean = val.strip()
+    if clean.lower() in ("default", "reset"):
+        store.set("cursor_environment_id", DEFAULT_CURSOR_ENV_ID)
+    elif clean.lower() in ("", "off", "none", "false", "shared"):
+        store.set("cursor_environment_id", "off")
+    else:
+        store.set("cursor_environment_id", clean)
+    return cursor_env_id()
+
+
+def task_machine_param_line(isolated_vm: bool = True) -> str:
+    env_id = cursor_env_id()
+    if not isolated_vm or not env_id:
+        return ""
+    return (
+        f"- machine: {{\"environment_id\": \"{env_id}\"}}"
+        "（默认单独开新云机器：若你当前会话的 Task 工具参数支持 machine 则填入；若当前客户端无 machine 参数则省略该项回退后台运行）\n"
+    )
+
+
+def task_machine_inline_hint(isolated_vm: bool = True) -> str:
+    env_id = cursor_env_id()
+    if not isolated_vm or not env_id:
+        return ""
+    return f", machine={{\"environment_id\": \"{env_id}\"}}"
+
+
+def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True) -> str:
     m_line = f"- model: \"{model}\"（必须在 Task 的 model 参数填入匹配的该模型 ID，严禁更换）" if model else "- model: （不填，默认继承当前会话模型）"
+    mach_line = task_machine_param_line(isolated_vm=isolated_vm)
     return (
         f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"]\n"
-        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（无需理解业务背景、无需分析上下文、禁止修改参数）：\n"
+        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（若与管理员在聊天里的直接指令冲突，以管理员指令为准，可先暂缓并询问管理员）：\n"
         "- run_in_background: true\n"
+        f"{mach_line}"
         f"{m_line}\n"
         "- prompt: 严格原样复制下方 `<<<PROMPT` 与 `PROMPT>>>` 之间的完整文本（不含边界行）\n"
         "<<<PROMPT\n"
         f"{prompt_text}\n"
         "PROMPT>>>\n"
-        f"启动拿到返回的 agent_id 后，立即调用 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", task_agent_id=返回的agent_id)`，随后立刻回到 `read_chat` 继续等待。"
+        f"启动拿到返回的 agent_id（或 cloudAgentBcId）后，立即调用 `submit_op_result(agent=\"{launcher_agent_id}\", op_id=\"{op_id}\", status=\"ok\", task_agent_id=返回的agent_id)`，随后立刻回到 `read_chat` 继续等待。"
     )
 
 
@@ -2379,12 +2419,16 @@ def format_standard_workspace_job(op_id: str, runner_agent_id: str, payload: dic
     )
 
 
-def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_override: str = "") -> tuple[str, str]:
-    """向指定 mainN 节点签发标准化无脑 [TASK_LAUNCH] 单据并唤醒它。返回 (op_id, node_id)。"""
+def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_override: str = "", isolated_vm: bool | None = None) -> tuple[str, str]:
+    """向指定 mainN 节点签发标准化 [TASK_LAUNCH] 单据并唤醒它。返回 (op_id, node_id)。"""
     node_id = launcher_node["id"]
     cloud_num = int(launcher_node["cloud_num"] or main_cloud())
     code = "t-" + secrets.token_hex(8)
     eff_model = (model_override or effective_conv_model(conv) or "").strip()
+    if isolated_vm is None:
+        # 默认开启独立新云机；仅当显式标记 dedicated_req == -1（共享模式）时关闭
+        isolated_vm = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
+    env_id = cursor_env_id() if isolated_vm else ""
     if conv["id"] == "ctrl":
         store.run(
             "UPDATE convs SET task_code=?, task_ts=?, alert='', alert_ts=0, cloud=?, model=CASE WHEN ?!='' THEN ? ELSE model END WHERE id='ctrl'",
@@ -2405,12 +2449,14 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
         "model": eff_model,
         "task_code": code,
         "cloud_num": cloud_num,
+        "isolated_vm": bool(env_id),
+        "environment_id": env_id,
     }
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, node_id, "launch_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model)
+    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model, isolated_vm=bool(env_id))
     system_note(node_id, msg_txt, wake=1)
     mark_menu_dirty()
     return op_id, node_id
@@ -3670,8 +3716,8 @@ COMMON_TOOLS = [
     ),
     tool(
         "spawn_subagent",
-        "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表）。"
-        "可指定模型、记忆继承以及是否申请单独占用一台机器（因资源有限 dedicated_machine 默认 false 共享运行，由总控结合机器探针审批分发）。",
+        "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表，默认自动分配独立新云机）。"
+        "可指定模型、记忆继承以及是否额外锁定算力机节点。",
         {
             "brief": prop("string", "给新子 agent 的完整任务说明与要求"),
             "include_memory": prop("boolean", "是否提供当前记忆：true=自动授权读取本聊天记录、继承 Git 分支并附带 memory_summary；false=全新白板启动"),
@@ -3679,8 +3725,9 @@ COMMON_TOOLS = [
             "model": prop("string", "指定模型名（如 inherit 继承，或填具体模型名，总控将严格保持一致）"),
             "name": prop("string", "给新子 agent 预设的名字（10 字以内），可省略由它自己取"),
             "group": prop("string", "可选：创建时顺便把它拉进哪个已有的 Agent 协作群（如 g1）"),
-            "dedicated_machine": prop("boolean", "是否申请单独占用一台机器（因资源有限默认 false 不给独占；仅在重型编译/渲染等确需独立资源时填 true 供总控审批）"),
-            "machine_reason": prop("string", "当 dedicated_machine=true 时填写申请独占机器的原因说明，可省略"),
+            "isolated_vm": prop("boolean", "是否使用原生独立新云机启动（默认 true 独立云机器；填 false 则与主 Agent 共享当前机器）"),
+            "dedicated_machine": prop("boolean", "可选：是否额外申请独占锁定一台常驻算力节点"),
+            "machine_reason": prop("string", "申请特殊机器资源时的原因说明，可省略"),
         },
         ["brief", "include_memory"],
     ),
@@ -3749,25 +3796,28 @@ MAIN_TOOLS = [
                     "drain",
                     "activate",
                     "remove",
+                    "set_environment",
                 ],
             ),
             "node_id": prop("string", "目标节点编号，如 main2 或 node1（approve_worker 时可填要替换的旧 nodeK，不填则新建）"),
             "request_id": prop("string", "approve_worker / deny_worker 时必填的入网申请 request_id"),
             "exclusive_chat": prop("string", "set_exclusive 时独占该机器的聊天编号，如 c164"),
             "chats": prop("array", "grant_access / revoke_access 时授权或收回机器使用权的聊天列表，如 [\"c188\", \"c189\"]", items={"type": "string"}),
+            "environment_id": prop("string", "set_environment 时填入的 Cursor 云端环境 ID（填 off 切回共享机模式，填 default 恢复默认环境）"),
         },
         ["action"],
     ),
     tool(
         "dispatch_task_op",
-        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
+        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的执行命令（launch 新启动 / resume 探活续跑 / restart 重开），默认自动带独立云环境参数启动新云机。",
         {
             "chat": CHAT_PROP,
             "action": prop("string", "标准化指令动作：launch | resume | restart", enum=["launch", "resume", "restart", "approve_model"]),
             "target_main": prop("string", "发给哪个主 Agent（默认 auto 结合 CPU/内存探针自动选最优 mainN，也可指定如 main1、main2）"),
             "model": prop("string", "模型名（默认留空沿用该聊天原模型；注意尽量别换模型，确需更换须先与管理员沟通并填 confirm_model_change=true）"),
             "confirm_model_change": prop("boolean", "已与管理员沟通确认更换该聊天既有模型时填 true，默认 false"),
-            "grant_dedicated": prop("boolean", "是否批准给该子 agent 单独独占占用一台空闲机器（默认 false 不给）"),
+            "isolated_vm": prop("boolean", "是否单独启动新云机器（默认 true 使用独立云机器，填 false 则在 target_main 本机共享启动）"),
+            "grant_dedicated": prop("boolean", "是否批准给该子 agent 单独独占占用一台空闲常驻节点（默认 false 不给）"),
             "dedicated_node": prop("string", "可选：显式指定给它独占的空闲机器编号（如 main2 或 node1）"),
             "resume_prompt": prop("string", "action=resume 时的唤醒提示语，可省略"),
         },
@@ -4187,7 +4237,7 @@ async def t_create_chat(agent, args):
         await notify_admins(f"主控新建了聊天 {conv_tag(conv)}。{extra}".strip(), conv_id=conv["id"])
     return text_result(
         f"已新建聊天 {conv_tag(conv)}。{extra}\n"
-        f"现在必须用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）：{model_hint(conv)}\n"
+        f"现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）：{model_hint(conv)}\n"
         f"----\n{task_text(conv)}\n----"
     )
 
@@ -4266,8 +4316,8 @@ async def t_restart_agent(agent, args):
     restart_conv(conv, "主控重开了这个聊天的子 agent")
     conv = conv_row(conv["id"])
     return text_result(
-        f"{conv_tag(conv)} 的旧身份已作废。现在必须用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动新的子 agent"
-        f"（**run_in_background=true 是唯一防卡死关键**，聊天记录都在，接手后能看到）。{model_hint(conv)}\n----\n{task_text(conv)}\n----"
+        f"{conv_tag(conv)} 的旧身份已作废。现在请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动新的子 agent"
+        f"（记得带 run_in_background=true 防阻塞，聊天记录都在，接手后能看到）。{model_hint(conv)}\n----\n{task_text(conv)}\n----"
     )
 
 
@@ -4730,6 +4780,7 @@ async def t_spawn_subagent(agent, args):
     model_clean = "" if raw_model.lower() in ("", "inherit", "default", "默认") else raw_model
     name = str(args.get("name") or "").strip()
     want_group = parse_group(str(args.get("group") or "")) if args.get("group") else ""
+    isolated_vm = bool(args.get("isolated_vm", True))
     dedicated_req = bool(args.get("dedicated_machine", False))
     machine_reason = str(args.get("machine_reason") or "").strip()[:300]
 
@@ -4768,9 +4819,10 @@ async def t_spawn_subagent(agent, args):
         memory_note=memory_summary,
         in_tg=False,
     )
+    ded_flag = 1 if dedicated_req else (-1 if not isolated_vm else 0)
     store.run(
         "UPDATE convs SET dedicated_req=?, machine_reason=? WHERE id=?",
-        (1 if dedicated_req else 0, machine_reason, child["id"]),
+        (ded_flag, machine_reason, child["id"]),
     )
     if include_memory:
         grant_share(child["id"], me["id"])
@@ -4935,6 +4987,15 @@ async def t_manage_node(agent, args):
         set_approval(req_id, "done", pay)
         return text_result(f"已批准工作会话入网：分配节点编号 {node_id}（云端模式，已接入算力池）。")
 
+    if action == "set_environment":
+        raw_env = str(args.get("environment_id") or "").strip()
+        if not raw_env:
+            raise ToolFail("set_environment 需要填 environment_id（云环境 ID、default 或 off）。")
+        new_env = set_cursor_env_id(raw_env)
+        if new_env:
+            return text_result(f"已开启子 agent 默认独立新云机模式，Cursor 环境 ID 设为：{new_env}")
+        return text_result("已切换为共享机器模式（Task 启动子 agent 时不再默认附加 machine.environment_id）。")
+
     if action == "deny_worker":
         if not req_id:
             raise ToolFail("deny_worker 需要填 request_id。")
@@ -5089,9 +5150,14 @@ async def t_dispatch_task_op(agent, args):
             raise ToolFail("当前没有任何在线的主 Agent（main1..N），无法下发启动指令。")
 
         chosen_model = explicit_new_model or effective_conv_model(conv)
-        op_id, nid = enqueue_launch_op(conv, launcher, requester=agent["conv"], model_override=chosen_model)
+        iso_override = args.get("isolated_vm") if "isolated_vm" in args and args.get("isolated_vm") is not None else None
+        if iso_override is not None:
+            iso_override = bool(iso_override)
+        op_id, nid = enqueue_launch_op(conv, launcher, requester=agent["conv"], model_override=chosen_model, isolated_vm=iso_override)
         ded_actual = (conv_row(conv["id"])["dedicated_node"] or "").strip()
-        ded_msg = f"，已分配独占节点 {ded_actual}" if ded_actual else "（共享节点模式）"
+        cur_env = cursor_env_id()
+        vm_mode_msg = f"，独立新云机 env={cur_env[:8]}…" if (cur_env and (iso_override if iso_override is not None else int(conv["dedicated_req"] or 0) != -1)) else "（共享节点模式）"
+        ded_msg = f"，已分配独占节点 {ded_actual}" if ded_actual else vm_mode_msg
         return text_result(
             f"已向 {nid} 下发标准化 `[TASK_LAUNCH]` 指令单（op_id={op_id}，聊天={conv_tag(conv)}，"
             f"模型={chosen_model or '默认继承'}{ded_msg}）。"
@@ -6786,7 +6852,7 @@ async def cmd_device(message: dict, chat_id: int, user_id: int, arg: str) -> Non
     )
 
 
-ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/web", "/key", "/agents", "/grant", "/revoke", "/devices"}
+ADMIN_COMMANDS = {"/main", "/ctrl", "/nodes", "/env", "/web", "/key", "/agents", "/grant", "/revoke", "/devices"}
 
 
 async def cmd_activate(message: dict, chat_id: int, user_id: int, rest: str) -> None:
@@ -6884,6 +6950,29 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             "• 超级管理员账号：`zwt`（首次访问输入 zwt 直接设定你的专属加密密码，全程零日志记录）\n"
             "• 支持查看/修改/删除对话记录、一键带全量上下文通知总控重开、实时查看并在 Agent 协作群插话、拖拽/粘贴发图发文件、多端手机自适应与用户管理。",
         )
+        return
+
+    if command == "/env":
+        if not admin:
+            await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
+            return
+        if not rest.strip():
+            cur_env = cursor_env_id()
+            mode_txt = f"开启（默认每个子 agent 单独开独立云机，环境 ID：`{cur_env}`）" if cur_env else "关闭（子 agent 与主 Agent 共享机器）"
+            await reply(
+                chat_id,
+                f"🖥 子 agent 独立云机模式：{mode_txt}\n\n"
+                "用法：\n"
+                "• `/env <环境ID>` — 设置子 agent 启动使用的 Cursor 环境 ID\n"
+                "• `/env default` — 恢复默认环境 ID\n"
+                "• `/env off` — 关闭独立新机，切回共享机器模式",
+            )
+            return
+        new_env = set_cursor_env_id(rest.strip())
+        if new_env:
+            await reply(chat_id, f"已开启子 agent 默认独立新云机模式，环境 ID：`{new_env}`。")
+        else:
+            await reply(chat_id, "已切换回共享机器模式（子 agent 不再默认单独开新云机）。")
         return
 
     if command == "/nodes":
@@ -8573,7 +8662,7 @@ async def watchdog_tick() -> None:
                 conv = conv_row(conv["id"])
             key = "unclaimed"
             text = (f"{conv_tag(conv)} 的任务发出 {human_dur(now() - conv['task_ts'])} 了，还没有子 agent 接手。"
-                    f"请立刻调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。{model_hint(conv)}\n"
+                    f"请调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）。{model_hint(conv)}\n"
                     f"----\n{task_text(conv)}\n----")
         if key and conv["id"] != "main":
             if alert_due(conv, key):
