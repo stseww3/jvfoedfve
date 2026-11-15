@@ -104,7 +104,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 - `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心菱形凸花，I5/I1，一张图。（原来写的是“小台徽/菱形，2 变体”，两张按位置混排；整块方块没有状态可分，穹顶的二十只轴箱会有一半带台徽。台徽只出现在有意放的地方，从这个方块上撤了；铁件上要台徽，挂道具的黄铜圆徽 `props/signs` 的 `emblem`。）
 - `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格条 I3、交点 I5，网孔 alpha=0。2 变体。
 - `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，上半舷窗（`brass` 圈 + `glow` 中心，圆心在上半张图正中略偏上，对玩家眼高 1.62；发光 M2 定）；下半百叶气窗。（原来写的是下半舷窗、上半气窗，实机舷窗在膝盖高，总监 #116 裁定对调。）
-- `IRON_HATCH`(oxidized_copper_trapdoor)：带中肋的铆接盖板，一张图，立着（栏板）、平躺（盖板、轨枕、百叶的叶片）都是它；游戏把活板门的图上下颠倒着贴，模型副本里翻正。（原来写的是“铆接盖 / 横百叶，2 变体”，两张按位置混排，一圈栏板会一半盖板一半百叶；百叶撤了，墙上的百叶用面板的 `louvre` 或门的下半。）
+- `IRON_HATCH`(oxidized_copper_trapdoor)：带中肋的铆接盖板，一张图，立着（栏板）、平躺（盖板、轨枕、百叶的叶片）都是它；铜活板门挂的是 `template_trapdoor_*`，立着的大面和平躺的顶面本来就正着贴图，模型不用动。（原来写的是“铆接盖 / 横百叶，2 变体”，两张按位置混排，一圈栏板会一半盖板一半百叶；百叶撤了，墙上的百叶用面板的 `louvre` 或门的下半。早先这里还写过“游戏的图上下颠倒、模型副本里翻正”，那是照木活板门的 `template_orientable_trapdoor_*` 记的，铜的这一族不是那样，写的那段翻转代码已经删掉。）
 - `IRON_BARS`(oxidized_copper_bars，multipart)：细竖铁条 I2–I3、高光 I5 + 一道横档。
 - `IRON_PIPE`(oxidized_copper_chain，axis)：细管/绞合电缆，中列 I4、两侧 I1–I2、每 4px 法兰环 I5。
 - `IRON_ROD`(oxidized_lightning_rod，facing)：细金属杆，中亮 I5、边 I1。
