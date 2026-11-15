@@ -19,6 +19,12 @@ its own +z out of the wall, +x to the right of whoever looks at it):
     elbow          a short conduit that turns into the wall: the end of a line with no box.
     clip           the collar that holds a conduit to the wall.
     bell           an electric bell: two coils, the armature and its hammer, a brass gong.
+    wall_phone     a wall telephone in dark wood, a block wide and a block and a half tall: the
+                   gong, the box with the mouthpiece, the receiver on its hook, the crank, a
+                   writing shelf. Hung by the point of the wall behind the middle of its FOOT (as
+                   props/instruments hangs its clocks), not by its middle.
+    telegraph_key  a telegraph key for a table top; it stands (mount "floor": the anchor is the
+                   middle of its foot) and its knob looks the way `facing` says, to the operator.
     cable, conduit drawn out between two points (models.between): the wire, the pipe.
 
 For the other lines:
@@ -27,6 +33,8 @@ For the other lines:
     n += E.run(canvas, [(x, y, z0), (x, y, z1), (x, y, z2)], facing="east", origin=origin,
                ends=(("box", 3.75), ("feed", 4.4)))
     n += E.place(canvas, "bell", (x, y, z), facing="east", origin=origin)
+    n += E.place(canvas, "wall_phone", (x, y_foot, z), facing="west", origin=origin)
+    n += E.place(canvas, "telegraph_key", (x, y_table_top, z), facing="south", origin=origin)
 
 run() strings one line: a lead-in at the first and the last point, an insulator at each point
 between them, the wire from one to the next, and at each end what the wire comes from or goes to.
@@ -56,6 +64,10 @@ PORC_D = P.mat("porcelain", base=2)
 COIL = P.mat("old_copper", base=1)
 CABLE = K.flat("old_copper", 1)         # the wire: the tone of props/lamps' festoon cable
 CONDUIT = K.flat("iron", 2)             # a conduit that is drawn out: one tone, nothing to smear
+WOOD = P.mat("dark_wood")               # the telephone's boxes, the key's base: the three boards of
+WOOD_L = P.mat("dark_wood", base=3)     # props/furniture and props/instruments
+WOOD_D = P.mat("dark_wood", base=1)
+SCREW = K.flat("brass", 4)              # a brass screw head in wood
 
 # The line's measures, in blocks. Whoever hangs something on a line reads them from here.
 WIRE_OUT = 4.0 / 16.0           # the wire runs this far off the face its supports are fixed to
@@ -177,6 +189,74 @@ def _bell():
     return m
 
 
+def _wall_phone():
+    """A wall telephone of the magneto kind: on a dark back board the bell's gong at the top with
+    its hammer beside it, the box with the mouthpiece on its door, and under it the battery box
+    whose lid is a writing shelf. The receiver hangs by its neck in the hook at the left, the
+    crank of the generator hangs at the right, lower than the hook: the two are not a pair of
+    arms. The cord runs from the receiver's tail into the side of the battery box, so nothing of
+    it ends in the air. One gong and not the two side by side such telephones often have: two
+    discs over the mouthpiece would be a face.
+    Anchor: on the wall, behind the middle of the FOOT. 15.5 px wide (8 to the left of the anchor
+    for whoever looks at it, 7.5 to the right), 23.5 px tall, 9 px off the wall."""
+    m = M.Model(PREFIX + "wall_phone", px=1.0)
+    m.box((-5.0, 0.0, 0.0), (5.0, 22.5, 1.0), WOOD_D, grain="y")            # the back board
+    m.box((-3.0, 22.5, 0.0), (3.0, 23.5, 1.0), WOOD_D, grain="x")           # its crest
+    for x in (-4.0, 4.0):
+        for y in (1.0, 21.5):
+            K.rivet(m, (x, y, 1.0), mat=SCREW)
+    m.box((-4.5, 2.0, 1.0), (4.5, 5.5, 4.0), WOOD, grain="x")               # the battery box
+    m.box((-5.0, 5.5, 1.0), (5.0, 6.25, 5.0), WOOD_L, grain="x")            # its lid: the writing shelf
+    m.box((-4.0, 8.0, 1.0), (4.0, 16.0, 5.0), WOOD, grain="y")              # the box
+    m.box((-3.0, 9.0, 5.0), (3.0, 15.0, 5.25), WOOD_L, grain="y")           # its door
+    c = (0.0, 12.0)                                                         # the mouthpiece, on the door:
+    m.tube("z", c, 5.25, 5.75, 2.25, BRASS)                                 # a brass rose,
+    m.tube("z", c, 5.75, 6.75, 0.75, BRASS_D)                               # the neck,
+    m.tube("z", c, 6.75, 7.75, 1.75, IRON_D)                                # the transmitter
+    m.taper("z", c, 7.75, 9.0, 1.0, 1.5, IRON, steps=2)                     # and the horn one speaks into
+    g = (0.0, 19.5, 1.0)
+    with m.turned(("x", 90.0), about=g):                                    # the gong bulges out of the board
+        m.ball(g, 2.5, BRASS, sides=12, layers=3, squash=0.6, part=(0.0, 1.0))
+    m.tube("z", (0.0, 19.5), 2.4, 3.0, 0.6, BRASS_D)                        # the nut that holds it
+    m.box((2.25, 16.0, 1.5), (2.75, 17.25, 2.0), IRON_D)                    # the hammer's stem, out of the box
+    m.tube("z", (2.5, 17.6), 1.25, 2.25, 0.6, IRON)                         # the hammer, at the gong's rim
+    r = (-6.0, 3.0)                                                         # the receiver's axis: x, z
+    m.box((-5.5, 12.0, 2.5), (-4.0, 12.5, 3.5), BRASS_D, grain="x")         # the hook, out of the box's side
+    m.tube("y", r, 12.75, 14.25, 1.75, IRON_D)                              # the receiver: the ear cap over the hook,
+    m.tube("y", r, 12.0, 12.75, 0.75, IRON)                                 # the neck in it,
+    m.taper("y", r, 8.0, 12.0, 0.9, 1.25, IRON_D, steps=2)                  # the handle hanging under it
+    cord = [(-6.0, 8.0, 3.0), (-6.0, 4.75, 3.0), (-5.25, 3.75, 3.0), (-4.5, 3.75, 3.0)]
+    m.hose(cord, 0.5, CABLE, sides=4)                                       # from its tail into the battery box
+    m.tube("x", (11.0, 3.0), 4.0, 5.5, 0.5, BRASS_D)                        # the crank: its shaft,
+    m.box((5.5, 8.5, 2.5), (6.25, 11.5, 3.5), BRASS, grain="y")             # the arm, hanging,
+    m.tube("x", (9.0, 3.0), 6.25, 7.5, 0.75, WOOD_D)                        # and the wooden grip
+    return m
+
+
+def _telegraph_key():
+    """A telegraph key for a table top: a wooden base, the brass lever between the two cheeks of
+    its bearing, the knob at the end that looks to the operator, an anvil under that end and a
+    stop under the other, and at the back two terminals whose leads go straight down into the
+    table. The cheeks run along the lever, so that seen from above the key is three strokes side
+    by side and never a bar across a bar; nothing stands through the lever either (plan red line
+    8). Anchor: the middle of the foot; +z, the way `facing` says, is the operator's side. 6 px
+    wide, 4.5 px to the front of the anchor and 4.75 px to the back, 4.25 px tall."""
+    m = M.Model(PREFIX + "telegraph_key", px=1.0)
+    m.box((-3.0, 0.0, -4.0), (3.0, 1.0, 4.0), WOOD, grain="z")              # the base
+    for x in (-2.0, 1.0):
+        m.box((x, 1.0, -2.0), (x + 1.0, 3.25, 1.0), BRASS, grain="z")       # the cheeks of the bearing
+    m.box((-0.5, 2.25, -3.5), (0.5, 3.0, 3.75), BRASS, grain="z")           # the lever
+    m.box((-0.5, 1.0, 1.5), (0.5, 2.25, 2.5), BRASS_D)                      # the anvil, under the knob's end
+    m.box((-0.5, 1.0, -3.5), (0.5, 2.25, -2.5), BRASS_D)                    # the stop, under the other
+    m.tube("y", (0.0, 3.0), 3.0, 3.5, 0.5, BRASS_D)                         # the knob's stem
+    m.tube("y", (0.0, 3.0), 3.5, 4.25, 1.5, IRON_D)                         # the knob
+    for x in (-2.0, 2.0):
+        m.tube("y", (x, -3.25), 1.0, 2.0, 0.6, BRASS)                       # a terminal
+        m.box((x - 0.25, 1.25, -4.75), (x + 0.25, 1.75, -3.25), CABLE)      # its lead: back off the base
+        m.box((x - 0.25, 0.0, -4.75), (x + 0.25, 1.25, -4.25), CABLE)       # and down into the table
+    return m
+
+
 def _cable():
     """The wire: runs along +z from the anchor, 48 long, and is drawn out between two points. One
     flat tone, so drawing it out smears nothing."""
@@ -201,6 +281,8 @@ SPEC = {
     "elbow": dict(build=_elbow, mount="wall"),
     "clip": dict(build=_clip, mount="wall"),
     "bell": dict(build=_bell, mount="wall"),
+    "wall_phone": dict(build=_wall_phone, mount="wall"),
+    "telegraph_key": dict(build=_telegraph_key, mount="floor"),
     "cable": dict(build=_cable, mount="floor"),
     "conduit": dict(build=_conduit, mount="floor"),
 }
@@ -219,8 +301,10 @@ def models():
 
 
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, **opts):
-    """Hang one fitting on a wall: pos is the point of the wall's face its anchor goes to (scene
-    coordinates), `facing` the way that face looks. Returns the number of display entities (1)."""
+    """Put one fitting in its place; pos is where its anchor goes (scene coordinates). For a piece
+    that hangs (all but the telegraph key) that is a point of the wall's face and `facing` the way
+    the face looks; for the key, which stands, the middle of its foot on the table top and
+    `facing` the way its knob looks. Returns the number of display entities (1)."""
     if kind in DRAWN:
         raise KeyError(f"a {kind} is drawn out between two points: electrics.run() strings it")
     spec = SPEC[kind]
