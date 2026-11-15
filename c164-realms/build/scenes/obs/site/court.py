@@ -125,7 +125,9 @@ def _paving(c, o):
 
 
 def _meridian(c, o):
-    """The brass line with a flank of the middle tone either side, the whole length of the court."""
+    """The brass line with a flank of the middle tone either side, the whole length of the court.
+    Through the emblem's seat the seat itself takes the place of the flank (the seat is laid whole
+    over it), so there the brass is the only thing on the dark ground."""
     for z in range(MZ0, MZ1 + 1):
         for x in (MX - 1, MX, MX + 1):
             _put(c, o, x, FLOOR, z, STRIP)
@@ -160,7 +162,11 @@ def _emblem(c, o):
     if LINE:
         whole = lambda role: role if "[" in role else role + "[shape=north_south]"     # noqa: E731
         for (x, z), shape in emblem_ring().items():
-            _put(c, o, x, ON, z, whole(CROSS) if x == MX else _line(shape))
+            # At the two cells where the meridian meets the ring the ring keeps its own line (it
+            # runs east and west there) and the meridian stops at its edge: a rail's cross model is
+            # a cross in the floor, which A0 #365 rules out (brass runs north and south only, and
+            # no cross on any floor). Set in a ring, a line that stops at it is what a meridian does.
+            _put(c, o, x, ON, z, _line(shape))
         _put(c, o, AX + STAR[0], ON, AZ + STAR[1], whole(STAR_MARK))
         return
     r = RING_R                                  # whole-cell brass: a ring one cell thick, a star of five cells
@@ -203,11 +209,18 @@ def lip_lamps():
     """Cells (x, z) of the piers on the east lip that carry a low lamp on the cap (A0 #22560; the
     cap's top is K.PIER_TOP above S.GROUND): every other pier counted from the stair head, whose
     own pair of lamps (site/stair) stands beside the first, so the whole lip is one string a double
-    beat apart. The corners stay dark."""
+    beat apart. The corners stay dark.
+
+    The piers that frame the central bays read as one pair of gate lamps (cr2-#4, the review's
+    fourth point on the east lip): z -22 and z -18 are lit together, and their opposites +18 and +22
+    with them. One of the two alone put a low light over the south arch's window foot in V1 with
+    nothing beside it, which the review read as half a pair."""
     piers = lip_piers()
     north = sorted((z for z in piers if z < AZ), reverse=True)
     south = sorted(z for z in piers if z > AZ)
-    return [(X1, z) for side in (north, south) for z in side[2:-1:2]]
+    lit = [(X1, z) for side in (north, south) for z in side[2:-1:2]]
+    gate = {z for z in piers if abs(z) in (abs(north[2]), abs(north[2]) + K.BEAT)}
+    return sorted(set(lit) | {(X1, z) for z in gate})
 
 
 def _railing(c, o):

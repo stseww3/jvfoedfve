@@ -2,11 +2,15 @@
 
 Every oxidized_* copper block without a waxed_ twin is redirected away from verdigris to cast iron:
 a blue-black ramp (I0..I6), rivets hugging the edges so neighbouring plates read as one bolted run,
-a cast emblem, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
+a cast lozenge, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
 The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards them).
 
-The painted faces are designed here; the thin and shaped pieces (bars, chain, rod, grating, bulb,
-lantern) keep the game model's own cut-out and are repainted over it, so their UVs still line up.
+Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
+grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
+is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
+taken over step for step into the iron ramp, their filament and slits into the glow ramp. No model
+is touched: the copper trapdoor takes the game's copper template, which shows the picture the right
+way up on every face that matters.
 """
 import math
 
@@ -140,83 +144,99 @@ def _riveted(seed):
     return px
 
 
-def _cast(seed, motif):
-    """IRON_CAST: a riveted plate with a raised cast motif -- the station emblem, or a lozenge. Its
-    field is smooth (a casting, not a rolled plate), so no brushing streak cuts across the motif."""
-    px = _plate(seed, base=2, noise=0.0)
+def _cast():
+    """IRON_CAST: a riveted plate with a raised cast lozenge (one pixel thick, ten across) round a
+    domed boss, the one picture of the block. Its field is smooth (a casting, not a rolled plate),
+    so no brushing streak cuts across the motif.
+
+    The block used to have a second picture, the station's emblem, mixed in by position: half the
+    axle boxes round a dome came out with the emblem on them. A whole block has no state to tell
+    two pictures apart, and the emblem stands only where someone puts it on purpose: on iron that
+    is the props' brass roundel, hung where it is wanted (props/signs, which also keeps the framed
+    sixteen-pixel figure that was drawn here)."""
+    px = _plate(2, base=2, noise=0.0)
     _panel_frame(px)
     _rivets(px, _CORNERS)
-    if motif == "emblem":
-        # the station emblem as the plan words it: a ring, the meridian down it, a star at upper right.
-        # The ring is the plain ten-pixel circle, one pixel thick all round; the star sits on its
-        # shoulder, so the circle runs into the star's arms instead of crowding the corner rivet.
-        ring = _cells(lambda dx, dy: 4.2 <= math.hypot(dx, dy) <= 4.9)
-        meridian = [(7, y) for y in range(3, 13)]
-        star = [(11, 4), (10, 4), (12, 4), (11, 3), (11, 5)]
-        _relief(px, ring + meridian, bright=star)
-    else:
-        # a raised lozenge (one pixel thick, ten across) round a domed boss
-        edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
-        boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
-        lee = [(x, y) for x, y in boss if x + y >= TILE - 1]        # the half of the dome turned away
-        _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
+    edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
+    boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
+    lee = [(x, y) for x, y in boss if x + y >= TILE - 1]            # the half of the dome turned away
+    _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
     return px
 
 
-def _hatch_lid(seed):
-    """IRON_HATCH variant 0: a riveted lid with a raised centre seam."""
-    px = _plate(seed, base=3, noise=0.11)
+def _hatch():
+    """IRON_HATCH: a riveted lid with a raised rib down its middle, the one picture of the block.
+
+    On edge it is a balustrade panel, lying it is a lid, a tie between rails, the blade of a
+    louvre, and a run of them has to be one thing. The block used to have a second picture, a
+    louvre, mixed in by position: half the panels of a balustrade came out louvred. It cannot go to
+    the lying states either: the game does not turn a lying trapdoor with its facing, so the slats
+    would run east-west on every wall of a belfry, along two of them and into the other two. A
+    louvre on a wall is the panels' (B.PANELS["louvre"]) or the lower half of the door."""
+    px = _plate(1, base=3, noise=0.11)
     _panel_frame(px)
     _rivets(px, _CORNERS + [(8, 1), (8, 14)])
-    for y in range(3, 13):                                  # a central lifting rib
+    for y in range(3, 13):                                  # the rib
         _put(px, 7, y, _i(5))
         _put(px, 8, y, _i(1))
     return px
 
 
-def _hatch_louvre(seed):
-    """IRON_HATCH variant 1: horizontal louvre slats in a riveted frame."""
-    px = _plate(seed, base=2, noise=0.08)
+# The hatch needs no model of its own. The copper trapdoor is not drawn like the wooden ones: it
+# takes minecraft:block/template_trapdoor_bottom/_top/_open, whose every face shows the picture the
+# right way up (uv 0,0,16,16 on both sides of a standing panel and on the top of a lying one), and
+# whose thin edges read the picture's bottom three rows. The wooden trapdoors take the orientable
+# template instead, which turns the picture over on exactly those faces; an earlier draft of this
+# module copied that flip from the wooden template's numbers and had the hatch's models undone, and
+# it never ran. The picture is drawn to the copper template: lit from the top and the left, as the
+# plate beside a standing panel is, with nothing turned.
+
+
+# the door's two plates carry the same six rivets, so down each side they pair up across the seam
+_DOOR_RIVETS = [(1, 1), (14, 1), (1, 7), (14, 7), (1, 14), (14, 14)]
+
+
+def _door_top():
+    """IRON_DOOR upper half: a riveted plate with a brass porthole at eye height (its glow is M2's
+    to light) and a brass lever under it on the latch side.
+
+    The porthole's centre sits one pixel above the middle of the picture: a player's eye (1.62
+    blocks up) is 62 % of the way up the upper block, a pixel higher still, well inside the glass.
+    The game hinges the leaf on the picture's column 0, so the lever goes to the right. The plate
+    under so much fitting is left unbrushed (a seed whose streaks all fall under the porthole)."""
+    px = _plate(11, base=3, noise=0.10)
     _panel_frame(px)
-    _rivets(px, _CORNERS)
-    for y in range(2, 14):
-        band = (y - 2) % 3
-        colour = _i(4) if band == 0 else _i(2) if band == 1 else _i(1)
-        for x in range(2, 14):
-            _put(px, x, y, colour)
+    _rivets(px, _DOOR_RIVETS)
+    cx, cy = 7.5, 6.5
+    _disc(px, cx, cy, 3.4, _glow(3), _glow(1))              # the lit glass seen through the port
+    _ring(px, cx, cy, 4.3, _brass(4), _brass(1), width=1.6)  # the brass rim
+    for a in range(45, 360, 90):                            # four bolts around the rim
+        _put(px, int(round(cx + 4.3 * math.cos(math.radians(a)))),
+             int(round(cy + 4.3 * math.sin(math.radians(a)))), _i(6))
+    for x, tone in ((10, 4), (11, 4), (12, 5)):             # the lever, its boss toward the latch edge
+        _put(px, x, 13, _brass(tone))
+        _put(px, x, 14, _i(1))
     return px
 
 
 def _door_bottom():
-    """IRON_DOOR lower half: a riveted leaf with a brass porthole (its glow is M2's to light)."""
-    px = _plate(5, base=3, noise=0.10)
+    """IRON_DOOR lower half: the lower plate with a louvred vent (three slats) between two stiles,
+    and a kick strip under it. The brushing's seed is one whose only streak
+    left in sight is a dark scuff along the kick strip: a streak beside the vent would run on
+    from a slat's lip and read as a slat reaching the door's edge."""
+    px = _plate(3, base=3, noise=0.10)
     _panel_frame(px)
-    _rivets(px, [(1, 1), (14, 1), (1, 7), (14, 7), (1, 14), (14, 14)])
-    cx = cy = 7.5
-    _disc(px, cx, cy, 3.4, _glow(3), _glow(1))              # the lit glass seen through the port
-    _ring(px, cx, cy, 4.3, _brass(4), _brass(1), width=1.6)  # the brass rim
-    for a in range(0, 360, 90):                             # four bolts around the rim
-        _put(px, int(round(cx + 4.3 * math.cos(math.radians(a + 45)))),
-             int(round(cy + 4.3 * math.sin(math.radians(a + 45)))), _i(6))
-    return px
-
-
-def _door_top():
-    """IRON_DOOR upper half: a riveted leaf with a louvred transom."""
-    px = _plate(6, base=3, noise=0.10)
-    _panel_frame(px)
-    _rivets(px, [(1, 1), (14, 1), (1, 9), (14, 9), (1, 14), (14, 14)])
-    for y in range(3, 9):                                   # the transom vent
-        colour = _i(4) if (y - 3) % 2 == 0 else _i(1)
-        for x in range(3, 13):
-            _put(px, x, y, colour)
-    for x in (3, 12):                                       # its side stiles
-        for y in range(3, 9):
+    _rivets(px, _DOOR_RIVETS)
+    for y in range(3, 12):
+        tone = (4, 2, 1)[(y - 3) % 3]                       # each slat: a lit lip, its face, the gap
+        for x in range(4, 12):
+            _put(px, x, y, _i(tone))
+        for x in (3, 12):                                   # the side stiles
             _put(px, x, y, _i(5))
     return px
 
 
-# ---- the shaped and thin pieces (the game's cut-out, repainted) --------------------------------------
+# ---- the thin pieces (drawn onto the pixels the game's models read) and the two lamps ----------------
 def _recolour(ref, lamp=False):
     """A game picture in cast iron: each opaque pixel to the iron step nearest its brightness, its
     cut-out kept. lamp=True sends the warm, bright pixels (a filament, a flame) to the glow ramp."""
@@ -242,47 +262,102 @@ def _recolour(ref, lamp=False):
     return out, meta
 
 
-def _grate(seed):
-    """IRON_GRATE: the game's grating, its bars in iron and its crossings caught by the light."""
-    px, _ = _recolour("block/oxidized_copper_grate")
-    seen = px[..., 3] > 0
-    r = P.mat("iron", base=3, noise=0.0)                    # a steady base so the mesh does not shimmer
-    flat = r.paint(TILE, TILE, seed=seed)
+_MESH = 4                                   # the grating's pitch: a two-pixel bar, a two-pixel hole
+_WORN = [(7, 3), (15, 7), (3, 11), (11, 15)]    # the crossings whose glint the second variant has lost
+
+
+def _grate(variant):
+    """IRON_GRATE: an open grating -- a square mesh on a four-pixel pitch, bars two pixels thick (I3
+    on the side that takes the light, I2 on the other), the lit corner of every crossing I5, the
+    holes clear. The plan's "4px mesh" is read as the pitch: the bars sit astride the tile's edges
+    (one pixel on each tile) and its middle lines, so a floor of gratings is one unbroken mesh,
+    a single grating set in a wall is closed all round by a one-pixel bar, and the holes are placed
+    alike seen from either side, so the eye goes straight through. Variant 1 has lost the glint on
+    four of its crossings, which keeps a floor of them from being one even field of dots."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
         for x in range(TILE):
-            if seen[y, x]:
-                cross = seen[max(0, y - 1), x] and seen[min(TILE - 1, y + 1), x] \
-                    and seen[y, max(0, x - 1)] and seen[y, min(TILE - 1, x + 1)]
-                px[y, x, :3] = _i(5) if cross else flat[y, x, :3]
+            u, v = x % _MESH, y % _MESH
+            across, down = v in (0, 3), u in (0, 3)         # on a bar running across, on one running down
+            if across and down:
+                tone = 5 if (u, v) == (3, 3) else 2 if (u, v) == (0, 0) else 3
+            elif across:
+                tone = 3 if v == 3 else 2
+            elif down:
+                tone = 3 if u == 3 else 2
+            else:
+                continue                                    # the hole
+            _put(px, x, y, _i(tone))
+    if variant:
+        for x, y in _WORN:
+            _put(px, x, y, _i(4))
     return px
+
+
+_UPRIGHTS = (2, 7, 12)      # where the game's bars stand: its post and its end caps read columns 7 and 8
 
 
 def _bars():
-    """IRON_BARS: the game's bars in iron with one lit rail across them."""
-    px, _ = _recolour("block/oxidized_copper_bars")
-    seen = px[..., 3] > 0
-    for y in (7, 8):                                        # the horizontal rail
-        for x in range(TILE):
-            if seen[y, x]:
-                px[y, x, :3] = _i(4)
+    """IRON_BARS: a railing -- three thin uprights (I3 on the lit side, I2 on the other) under one
+    handrail along the top, its upper edge catching the light (I5), and nothing else across them.
+    The uprights stand where the game's own do, so the post, the caps and the two half panes of
+    its model still find them. The rail runs the full width: a run of railing carries one unbroken
+    handrail into its end posts, and bars set two high in a window opening get a middle bar and a
+    top bar.
+
+    Nothing crosses the uprights lower down, not even a collar on each: seen from far below (the
+    arrival view looks up through the railing of the upper terrace at the entrance) whatever lies
+    across a railing at half its height draws a line over what stands behind it, where the
+    handrail at the top comes to lie along the building's string course (the second reviewer's
+    reckoning, g2 11-15 18:50).
+
+    Its tones average the plates' (2.8 against 2.9): the game's picture, taken over step for step,
+    stood a whole step lighter than the plate beside it (the cross-reading of the placeholders)."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
+    for x in _UPRIGHTS:
+        for y in range(TILE):
+            _put(px, x, y, _i(3))
+            _put(px, x + 1, y, _i(2))
+    for x in range(TILE):
+        _put(px, x, 0, _i(5))
+        _put(px, x, 1, _i(2))
     return px
 
 
+_FLANGE = 4     # a flange ring every four pixels down the thin pipe
+
+
 def _chain():
-    """IRON_PIPE (the chain block): a thin cable with a flange ring every few pixels."""
-    px, _ = _recolour("block/oxidized_copper_chain")
-    seen = px[..., 3] > 0
+    """IRON_PIPE (the chain block): a thin pipe, no links -- I4 down its middle, I2 on the side that
+    takes the light and I1 on the other, a flange ring of I5 across it every four pixels, so the
+    rings carry on evenly from one block into the next. The game's chain is two crossed strips,
+    each three pixels wide and the full height (columns 0 to 2 for one, 3 to 5 for the other);
+    both get the same solid strip, so the pipe is the same from every side."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
-        if y % 4 == 0:                                      # the flange rings
-            for x in range(TILE):
-                if seen[y, x]:
-                    px[y, x, :3] = _i(5)
+        tones = (5, 5, 5) if y % _FLANGE == 0 else (2, 4, 1)
+        for strip in (0, 3):
+            for k, tone in enumerate(tones):
+                _put(px, strip + k, y, _i(tone))
     return px
 
 
 def _rod():
-    """IRON_ROD: the lightning-rod shape as a plain iron rod, bright down its centre."""
-    px, _ = _recolour("block/oxidized_lightning_rod")
+    """IRON_ROD (the lightning rod's shape): a plain rod, lit down one side (I5) and dark down the
+    other (I1) -- its shaft is two pixels thick, so "bright down the middle, dark at the edge"
+    comes to those two columns -- under a small square cap with a lit corner. The game's model
+    reads the cap from the top-left four by four and the shaft from columns 0 and 1 below it."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
+    cap = ((4, 4, 4, 2),
+           (4, 5, 4, 2),
+           (4, 4, 3, 2),
+           (2, 2, 2, 1))
+    for y, row in enumerate(cap):
+        for x, tone in enumerate(row):
+            _put(px, x, y, _i(tone))
+    for y in range(len(cap), TILE):
+        _put(px, 0, y, _i(5))
+        _put(px, 1, y, _i(1))
     return px
 
 
@@ -308,9 +383,9 @@ def pack(pack_dir):
     out = []
     K.paint(pack_dir, "iron_plate", [_plain(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
-    K.paint(pack_dir, "iron_cast", [_cast(1, "emblem"), _cast(2, "lozenge")])
-    K.paint(pack_dir, "iron_grate", [_grate(1), _grate(2)])
-    K.paint(pack_dir, "iron_hatch", [_hatch_lid(1), _hatch_louvre(2)])
+    K.paint(pack_dir, "iron_cast", _cast())
+    K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
+    K.paint(pack_dir, "iron_hatch", _hatch())
     K.paint(pack_dir, "iron_door_bottom", _door_bottom())
     K.paint(pack_dir, "iron_door_top", _door_top())
     K.paint(pack_dir, "iron_bars", _bars())
@@ -323,10 +398,11 @@ def pack(pack_dir):
 
     for role, name in ((B.IRON_PLATE, "iron_plate"), (B.IRON_RIVETED, "iron_riveted"),
                        (B.IRON_CAST, "iron_cast"), (B.IRON_GRATE, "iron_grate"),
-                       (B.IRON_HATCH, "iron_hatch"), (B.IRON_BARS, "iron_bars"),
-                       (B.IRON_PIPE, "iron_chain"), (B.IRON_ROD, "iron_rod")):
+                       (B.IRON_BARS, "iron_bars"), (B.IRON_PIPE, "iron_chain"), (B.IRON_ROD, "iron_rod")):
         for block in K.blocks(role):
             out.append(K.redirect(pack_dir, block, _map(block, name)))
+    for block in K.blocks(B.IRON_HATCH):
+        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch")))
     for block in K.blocks(B.IRON_DOOR):
         out.append(K.redirect(pack_dir, block, {ref: ("iron_door_top" if ref.endswith("_top") else "iron_door_bottom")
                                                  for ref in respack.block_pictures(K.game(), block)}))

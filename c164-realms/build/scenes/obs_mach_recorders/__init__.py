@@ -70,7 +70,10 @@ def _room(c):
     # the work light of the test scene: one invisible source over the console, at the level the
     # room's own console pendant will be. A test scene must see what it judges (main/shell does the
     # same); the room itself is lit by sky/_lightkit when it is in the tree.
+    # a work light over the console and a second over the east pier the tube hangs on: one lamp left
+    # the tube's end of the room dark (cr3-M4)
     c.set(8, CEIL - 1, CONSOLE_Z + 1, f"{B.LIGHT}[level={WORK_LIGHT}]")
+    c.set(X1 - 2, CEIL - 1, int(SLOTS["tube"]["pos"][2]) + 1, f"{B.LIGHT}[level={WORK_LIGHT}]")
     return c
 
 
@@ -126,9 +129,10 @@ def shots():
     shot("telegraph", (6.5, FEET + 2.40, -21.7), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
     shot("telegraph_down", (6.5, FEET + 3.60, -22.1), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
     shot("telegraph_side", (4.2, FEET + 2.35, -22.6), (6.5, FEET + 1.92, CONSOLE_Z + 0.5))
-    # the pneumatic tube on the east wall's pier: from the room, and from below up the pipe
-    shot("tube", (10.6, FEET + 2.05, -16.5), (X1 + 0.4, FEET + 2.00, -16.5))
-    shot("tube_up", (11.6, FEET + 1.35, -16.5), (X1 + 0.4, FEET + 3.60, -16.5))
+    # the pneumatic tube on the east wall's pier (m2 puts it at z -9.5): the terminal from the room,
+    # and the whole run up to the ceiling from a couple of steps back
+    shot("tube", (10.4, FEET + 2.30, -9.5), (X1 + 0.4, FEET + 2.90, -9.5))
+    shot("tube_up", (10.0, FEET + 1.30, -9.5), (X1 + 0.4, FEET + 4.60, -9.5))
     # the whole console run from the south-west, so the pieces read as one room
     shot("all", (3.6, FEET + 2.55, -12.6), (10.0, FEET + 2.05, CONSOLE_Z + 0.6))
     return out

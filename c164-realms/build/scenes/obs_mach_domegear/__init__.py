@@ -260,4 +260,8 @@ def shots():
     shot("mesh", (AX - 2.5, STAND + 6.6, AZ - 5.5), (gx, dome.RING_Y - 0.15, gz), GLOW)
     shot("slit_foot", (AX - 6.0, STAND + 7.3, AZ + 2.5), foot, GLOW)
     shot("weight_near", (AX - 7.0, STAND + 8.0, AZ + 6.0), (AX - 9.75, dome.RING_Y + 0.9, AZ + 3.5), GLOW)
+    # cr3's pre-review 3: in v8 the tube stands in the middle and cuts the rack at a third, so the
+    # rack -- what this package is -- is never the subject. From the east side, on a ladder's height,
+    # the rack runs across the frame with its trucks and the pinion where the hand gear meets it.
+    shot("rack_across", (AX + 7.0, STAND + 6.5, AZ + 2.0), (AX - 8.0, dome.RING_Y + 0.2, AZ - 1.0), GLOW)
     return out

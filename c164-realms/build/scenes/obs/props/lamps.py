@@ -42,6 +42,16 @@ CABLE = K.flat("old_copper", 1)
 GREEN = P.mat("phosphor", kind="plain", noise=0.10, bevel=1, base=1)     # cased green glass
 GREEN_LIT = K.flat("phosphor", 3)
 
+# The glass of every opal globe (street, post, bracket A, pendant A). Cream, not opal: the opal ramp
+# ends in a near-white (#fffbee, 0.98 of full), and one near-white globe read brighter than anything
+# else in the arrival view and than the lit windows on the axis, so the eye went to the lamps instead
+# of to the doorway (review cr2-#9; the director's ruling, group #45165 one: the globes change to the
+# middle step of cream and no pure white stays, the whole site's globes together, and the light level
+# of the lamps does not move -- a globe is an emissive face and does not answer to a light level at
+# all). The middle step is CREAM_MID; the bands either side of it are two steps down and one up.
+GLOBE = [K.flat("cream", i) for i in range(len(P.RAMPS["cream"]))]
+CREAM_MID = 1           # cream: 0 #a59f92, 1 #c6c0af, 2 #dfd7c5, 3 #f2ead6
+
 # the glass of the box lamp, seen from the front: the bulb behind it is the bright spot
 _g = P.RAMPS["glow"]
 BULB_FACE = Sprite("lamp_bulb_face",
@@ -50,17 +60,18 @@ BULB_FACE = Sprite("lamp_bulb_face",
 
 
 def _opal_globe(m, centre, radius, sides=8, squash=1.0, fine=False):
-    """An opal glass globe lit from within. The hot belt round the middle is under a third of what
-    is seen of it; towards the poles the glass goes darker step by step, the lower half a step
-    more than the upper."""
+    """A pale glass globe lit from within: the middle of the cream ramp about the equator, the glass
+    below and above it a step darker, the poles darker again. No pure white anywhere on it (the
+    director's ruling, group #45165 one). The band round the middle is under a third of what is seen
+    of it; the lower half is a step darker than the upper, as lit from above."""
     if fine:
-        bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
+        bands = [(-1.0, -0.75, 1, GLOBE[0]), (-0.75, -0.5, 1, GLOBE[0]), (-0.5, -0.25, 1, GLOBE[1]),
+                 (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
+                 (0.25, 0.5, 1, GLOBE[CREAM_MID]), (0.5, 0.75, 1, GLOBE[1]), (0.75, 1.0, 1, GLOBE[0])]
     else:
-        bands = [(-1.0, -0.65, 1, OPAL[0]), (-0.65, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.65, 1, OPAL[3]), (0.65, 1.0, 1, OPAL[1])]
+        bands = [(-1.0, -0.65, 1, GLOBE[0]), (-0.65, -0.25, 1, GLOBE[1]),
+                 (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
+                 (0.25, 0.65, 1, GLOBE[CREAM_MID]), (0.65, 1.0, 1, GLOBE[1])]
     return K.glass_ball(m, centre, radius, bands, sides=sides, squash=squash)
 
 
