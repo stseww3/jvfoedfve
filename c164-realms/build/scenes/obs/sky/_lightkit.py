@@ -160,17 +160,19 @@ TALL = 4                    # a window of this many rows or more is a tall one
 # gets what the source behind the glass gave it, level for level, and the room behind the window
 # four levels less: a lit window is no lamp of the room it belongs to (cr2, group #32778; A0 #32721).
 # Outside nothing gets more than before. Less gets only what the old source reached by a shorter
-# way through the room: the recess of another window of the same room, which is dark glass or has
-# a source of its own.
+# way through the room: the recess of another window of the same room and the cells before it,
+# where that window is dark glass (a lit one has a source of its own, and its recess is as it was).
 THROUGH = 2
 # That way through the room is kept for the brightest window. Behind the glass its sources lit the
 # recesses of the two windows beside it as if no pier stood between: the stone round the curtained
 # windows of the entrance stands in the gold one's light (6 to 7 on their inner jambs; 4 to 5 from
 # their own source), and that is the entrance as the director has seen it. So each source of such a
-# window lends one to the window on either side: in the column nearest to it, in its own row, as
-# many levels lower as the two columns are cells apart. The other tiers lend nothing. Beside a lit
-# window of a wing stands a dark one; it had up to 5 in its recess from the room behind it, which
-# a dark room does not give, and keeps what the front gives it.
+# window lends one to the window on either side, where that one is lit itself: in the column
+# nearest to it, in its own row, as many levels lower as the two columns are cells apart. The other
+# tiers lend nothing, and a dark window is lent nothing. Beside a lit window of a wing stands a
+# dark one; it had up to 5 in its recess from the room behind it (as much as 8 where the lit window
+# stands round the corner of the same room), which a dark room does not give, and keeps what the
+# front gives it.
 LENDS = (BRIGHT,)
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once

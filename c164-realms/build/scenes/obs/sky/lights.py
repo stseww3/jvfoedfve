@@ -15,8 +15,9 @@ the canvas by then and places, in this order:
             cell is taken (the bars of a base window) the source stands behind the glass, at
             the full level; so it does for a window registered as "inside". A tall
             lit window has two, one row above the sill and one row below the head. The brightest
-            window lends each of its sources to the recesses of the two windows beside it, three
-            levels lower: the entrance's three windows stand in one light (_lightkit.LENDS).
+            window lends each of its sources to the recesses of the two windows beside it, where
+            those are lit themselves, three levels lower: the entrance's three windows stand in
+            one light (_lightkit.LENDS).
   entrance  one source of level 14 in the main doorway, when it stands open; and, as long as the
             hall behind it is an empty room with a wall close behind the doorway, a source of 12
             against that wall, so that the doorway reads as a warm bright face and not as a hole
@@ -284,8 +285,9 @@ def _behind(canvas, r, w, tier):
 def _lend(canvas, r, glazed):
     """What the brightest window lends to the windows next to it (L.LENDS). For each of its sources
     before the glass one more in the recess of the window on either side: in the column nearest
-    to the source and in its row, as many levels lower as the two cells are apart. Only along one
-    wall plane: a neighbour round a corner, or in a wall that is set back, gets nothing.
+    to the source and in its row, as many levels lower as the two cells are apart. Only to a
+    window that is lit itself (a dark one stays dark), and only along one wall plane: a neighbour
+    round a corner, or in a wall that is set back, gets nothing.
     glazed: {(group, origin, front, storey, bay): (record, tier, the sources _behind() placed)}."""
     for (group, origin, front, storey, bay), (w, tier, sources) in glazed.items():
         if tier not in L.LENDS:
@@ -293,8 +295,8 @@ def _lend(canvas, r, glazed):
         ox, oy, oz = origin
         dx, dz = w["inward"]
         for step in (-1, 1):
-            v = glazed.get((group, origin, front, storey, bay + step), (None,))[0]
-            if v is None or tuple(v["inward"]) != (dx, dz):
+            v, lit = glazed.get((group, origin, front, storey, bay + step), (None, L.DARK))[:2]
+            if v is None or lit == L.DARK or tuple(v["inward"]) != (dx, dz):
                 continue
             why = f"{WINDOW_WHY} {group + ' ' if group else ''}{front} {bay} {storey}, lent to bay {bay + step}"
             for (x, y, z), level, before in sources:
