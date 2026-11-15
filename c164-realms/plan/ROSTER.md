@@ -43,7 +43,7 @@
 | orrery | — | c236 | machines/orrery | `cursor/c164-orrery-6491` |
 | scope | — | c237 | machines/refractor | `cursor/c164-scope-6e0f` |
 | clocks | — | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
-| gear | — | c196 | machines/domegear | `cursor/c164-gear-6260` |
+| gear | c266（shell 兼） | c196 | machines/domegear（壳优先） | `cursor/c164-gear-6260` |
 | car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
 | mast | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
 | arm | — | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
