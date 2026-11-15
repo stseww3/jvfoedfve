@@ -42,6 +42,16 @@ CABLE = K.flat("old_copper", 1)
 GREEN = P.mat("phosphor", kind="plain", noise=0.10, bevel=1, base=1)     # cased green glass
 GREEN_LIT = K.flat("phosphor", 3)
 
+# The glass of every opal globe (street, post, bracket A, pendant A). Cream, not opal: the opal ramp
+# ends in a near-white (#fffbee, 0.98 of full), and one near-white globe read brighter than anything
+# else in the arrival view and than the lit windows on the axis, so the eye went to the lamps instead
+# of to the doorway (review cr2-#9; the director's ruling, group #45165 one: the globes change to the
+# middle step of cream and no pure white stays, the whole site's globes together, and the light level
+# of the lamps does not move -- a globe is an emissive face and does not answer to a light level at
+# all). The middle step is CREAM_MID; the bands either side of it are two steps down and one up.
+GLOBE = [K.flat("cream", i) for i in range(len(P.RAMPS["cream"]))]
+CREAM_MID = 1           # cream: 0 #a59f92, 1 #c6c0af, 2 #dfd7c5, 3 #f2ead6
+
 # the glass of the box lamp, seen from the front: the bulb behind it is the bright spot
 _g = P.RAMPS["glow"]
 BULB_FACE = Sprite("lamp_bulb_face",
@@ -50,17 +60,18 @@ BULB_FACE = Sprite("lamp_bulb_face",
 
 
 def _opal_globe(m, centre, radius, sides=8, squash=1.0, fine=False):
-    """An opal glass globe lit from within. The hot belt round the middle is under a third of what
-    is seen of it; towards the poles the glass goes darker step by step, the lower half a step
-    more than the upper."""
+    """A pale glass globe lit from within: the middle of the cream ramp about the equator, the glass
+    below and above it a step darker, the poles darker again. No pure white anywhere on it (the
+    director's ruling, group #45165 one). The band round the middle is under a third of what is seen
+    of it; the lower half is a step darker than the upper, as lit from above."""
     if fine:
-        bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
+        bands = [(-1.0, -0.75, 1, GLOBE[0]), (-0.75, -0.5, 1, GLOBE[0]), (-0.5, -0.25, 1, GLOBE[1]),
+                 (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
+                 (0.25, 0.5, 1, GLOBE[CREAM_MID + 1]), (0.5, 0.75, 1, GLOBE[1]), (0.75, 1.0, 1, GLOBE[0])]
     else:
-        bands = [(-1.0, -0.65, 1, OPAL[0]), (-0.65, -0.25, 1, OPAL[2]),
-                 (-0.25, 0.25, 1, OPAL[4]),
-                 (0.25, 0.65, 1, OPAL[3]), (0.65, 1.0, 1, OPAL[1])]
+        bands = [(-1.0, -0.65, 1, GLOBE[0]), (-0.65, -0.25, 1, GLOBE[1]),
+                 (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
+                 (0.25, 0.65, 1, GLOBE[CREAM_MID + 1]), (0.65, 1.0, 1, GLOBE[1])]
     return K.glass_ball(m, centre, radius, bands, sides=sides, squash=squash)
 
 
@@ -166,18 +177,22 @@ def _bracket_b():
     return m
 
 
-CAGE_HOOPS = (-1.5, 1.5)    # where the two upright hoops of cage A stand, in the model's units: either
-                            # side of the glass's middle, close in. Dead on, the two of them over the
-                            # round lit glass read as one round button with two bars on it, the pause
-                            # sign (c219, group #33010; the card keeps the fallbacks). The alternatives
-                            # are three hoops a third of the way round, or the two of them out at the
-                            # glass's edge; _cage_a takes either, and obs_props_lamps_cage puts all
-                            # three side by side for the review to pick from.
+CAGE_HOOPS = (-2.25, 2.25)  # where the two upright hoops of cage A stand, in the model's units. Out at
+                            # the glass's edge, not either side of its middle: dead on, two hoops close in
+                            # over the round lit glass read as one round button with two bars on it, the
+                            # pause sign (c219, group #33010). The review measured the row across the lit
+                            # glass on the three dead-on pictures and chose this (c261, #45055): as it was
+                            # the glow came in three pieces 10/16/10 pixels wide, here the middle 28 of 56
+                            # pixels run on whole, and at 14 pixels the middle is still one block of 8. As
+                            # approved the hoops stood at (-1.5, 1.5); "three" cuts the glow into 11/11 with
+                            # a bar on the axis and reads as 川. If the cage is ever wanted more solid,
+                            # the review asks for an uneven pair (-2.25, 1.5) rather than the old pair.
 
 
-def cage_hoops(choice="two"):
-    """The hoops of cage A: "two" (as approved), "three", or "two_wide" (the two out at the edge)."""
-    return {"two": (-1.5, 1.5), "two_wide": (-2.25, 2.25), "three": (-2.4, 0.0, 2.4)}[choice]
+def cage_hoops(choice="two_wide"):
+    """The hoops of cage A: "two_wide" (as chosen), "two" (the pair either side of the middle, as first
+    approved), or "three"."""
+    return {"two_wide": (-2.25, 2.25), "two": (-1.5, 1.5), "three": (-2.4, 0.0, 2.4)}[choice]
 
 
 def _cage_a(hoops=None, name=None):
