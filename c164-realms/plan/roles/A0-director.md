@@ -109,13 +109,13 @@
   - 依据：一，维基 Realms 条目（Java 版的限制）：「Worlds on Realms cannot use experimental settings. This applies to all user-uploaded worlds, as well as maps published through the Java Realms Content Creator Program.」`timeline`、`worldgen`（`biome` 在里面）都在带星号的文件夹里。二，我们自己的调研 `study/raw/survey_*.txt`：已上线的四张图三张带核心着色器，The Masquerade（2026-10-30 上线，26.3）的资源包有 `core/lightmap.fsh`、`include/fog.glsl`、`core/item.vsh`、`core/entity.fsh`、`core/entity.vsh`、`core/text.vsh`；Mossholder 有 `core/gui.vsh` 和一个后期滤镜；Spelling Bee 有 `core/rendertype_text.vsh`。The Masquerade 公开版的数据包里有 `chat_type`（带星号），它的更新记录里写着 Realms 上把聊天功能关了，和「不许带」对得上。
   - 我读了 26.3 jar 里的着色器（`assets/minecraft/shaders/`）：`lightmap.fsh` 用的就是 `SkyLightColor`、`SkyFactor`、`AmbientColor`、`BlockLightTint`，可以写死成我们的数；`include/fog.glsl` 管雾的起止和雾色；`sky.vsh` 有 `Position`，传给 `sky.fsh` 就是视线方向，天顶到地平的渐变和西边的余晖可以按方向画，天盘的边往下折还能画地平线以下；`item.vsh` 里 `vertexColor = minecraft_mix_light(...)` 就是展示实体按朝向打暗的那一行，`UV2` 是光照图坐标（块光写满是 240）。都没在游戏里试过。
   - 做法：`mood.py` 的 `LOOKS` 仍是唯一的数，由它生成资源包里的着色器；成品的数据包不带任何注册表文件（原版生物群系，时间、天气锁住）。离线图照 `LOOKS` 算，不受影响。
-  - 派给 a2（c322，#07:19 的私信）：第一步是最小的证明，不带注册表文件的世界加资源包，只做 lightmap、fog、sky 的渐变和余晖、item 满亮不打暗，s1 拍真机 V1、V2、V4、V12 和现在的并排给我；第二步（星、彗星、云色、地平线以下）看了第一步再定。人手 a2 定（comet、cloud、lights 都在这条线上），节点和真机 aide 给他排最前。
+  - 派给 a2（c322，07:19 前后的私信）：第一步是最小的证明，不带注册表文件的世界加资源包，只做 lightmap、fog、sky 的渐变和余晖、item 满亮不打暗，s1 拍真机 V1、V2、V4、V12 和现在的并排给我；第二步（星、彗星、云色、地平线以下）看了第一步再定。人手 a2 定（comet、cloud、lights 都在这条线上），节点和真机 aide 给他排最前。
   - 风险：核心着色器 Mojang 不保证跨版本，Realms 永远跑最新正式版，游戏一更新这几个文件可能要跟着改（已上线的图也是这样过的）。写进导出说明。
 - 07:20 **服务端视距按 10 算**（取代上面「视距按 12 算」里 192 格那个数）。官方 Atlas 的 Realms Map Guidelines（2026-11-03 更新）：「View distance is set to 10. This cannot be altered.」客户端取自己的设置和服务端的小的那个，所以 Realms 上人周围 160 格以外没有方块，视距雾从 144 到 160。outb 在 26.3 客户端里看到 Realm 配置界面有视距上限的滑条（自己的 Realm 可以调），但内容库的图按准则的 10 设计：**160 格以内画面要完整，雾的终点收到 150 上下**，视距更大的人看到的是同一幅画。
   - s1（c319）：下一套看板起测试服 `view-distance` 设 10、客户端照旧 12，`real.txt` 里记；先补现在这棵总装的 V1、V11、V12 三张，和 2a26eeaa 的并排，看少了什么（远处的方块，桅杆、灯这些展示实体）。
   - cloud（c329）：云海方块的边和雾的终点收进 150 以内；雾律 D（384–768）在这个视距下盖不住盘边，那组试验停。盘外（地平线以下）将来由天的着色器画。和 a2 对接，两人定不下来的回我。
 - 07:20 **新总装看板的真机 V12**（s1 2a26eeaa）：云海是一张边很硬的蓝紫圆盘，盘外一片粉（清屏色，朝西被余晖染的雾色），粉上有星星（地平线以下的星），原版云层的板子一块块浮在上面。这是看板里最弱的一张，归 cloud 和 a2，随上面两条一起治。V1、V2 是到现在最好的两张：彗星在大穹顶上方，金窗、乳白窗、路灯框住入口；钟塔顶还是占位的黑方块（tower 的甲乙没交）。
-- 07:25 **向管理员报了一次里程碑**（存着没读）：Realms 的甲乙先不用选（改走着色器，成了给他看图，不成再请他选）；视距 10；第一套比较完整的真机图，附 V2、V1 两张（JPEG，108 KB、90 KB）；说了方案五间之外我多派了四间。**不要重发。**
+- 07:21 **向管理员报了一次里程碑**（存着没读）：Realms 的甲乙先不用选（改走着色器，成了给他看图，不成再请他选）；视距 10；第一套比较完整的真机图，附 V2、V1 两张（JPEG，108 KB、90 KB）；说了方案五间之外我多派了四间。**不要重发。**
 
 **不存在了的：**第 2 班的排队钩子（合用机公共 Python 环境里的 `c164_slots_hook.py`，s2 清掉）、公告 #665 的省着出图规矩（节点来了，不需要了）、第 2 班的 `STATUS.md`、看板图、评审记录。
 
@@ -128,7 +128,7 @@
    - 第二个不知道：自己上传的存档，资源包（`resources.zip`）Realms 发不发给进来的人。不发的话整套贴图和模型都没有，比天空的事更大。outb 的 `plan/reviews/export/realms-rules.md`（`cursor/c164-outb-export-f3-f4b8` @ 1a2185f）有查到的规矩。
    - 在做的三件：一，outb 做两个最小的试传存档（T1 带 `obs_blue` 和 `obs_looks`，T2 一个注册表文件都不带；两个都带 `resources.zip`、进服就说一句话的函数、冒险加和平、一小块朝西的平台）和一页中文步骤，放 `cursor/c164-dist-<后缀>`，做好告诉我，**我转给管理员请他各传一次**，回三句话：传上去了没有、天和彗星是不是设计的样子、贴图换了没有。二，导出工具留一个开关，可以不带这两个文件出包。三，a2（c322）备一套「Realms 能用」的天（卡 `sky/safe-look`）：不带任何注册表文件，原版生物群系（`fillbiome`）、锁住的原版时间和天气、资源包、块光；先交一页方案（彗星在正西 41° 要锁在哪一刻，原版里大约是 20800，深夜；两三个候选各要 s1 的真机 V1、V2；丢了什么、拿什么补；核心着色器能不能用，只查不做）。
    - 07:20 起 a2 的这张卡不再是「备用的天」，是正路：同一个样子，载体换成资源包着色器。outb 的试传存档照做（要回答的只剩「自己上传的存档 Realms 发不发资源包」和「带注册表文件是不是真被拒」），导出工具默认不带注册表文件。
-   - 管理员：06:45 前后问过他甲乙（甲 成品上 Realms、天用备用的一套；乙 保住设计的天、成品是可下载的存档），07:25 又告诉他先不用选（两条都存着没读）。**a2 的第一步真机对比过了，这个问题就不存在了；不过，再请他选。**
+   - 管理员：06:45 前后问过他甲乙（甲 成品上 Realms、天用备用的一套；乙 保住设计的天、成品是可下载的存档），07:21 又告诉他先不用选（两条都存着没读）。**a2 的第一步真机对比过了，这个问题就不存在了；不过，再请他选。**
 1. **s2 的排队**（`STATUS.md`「排队」）：公共文件（色板的雪、占用表、骨架新数、`check.py`）先跑先进总装，全队都等它；然后 brass、facade、shell、lights、plots-shuttle、comet 六个已交付的。11-16 02:45：公共文件、brass、lights、plots-shuttle 已进总装（brass 和 lights 合并后的自查图也进了），还排着 facade、shell、comet。
 2. **主楼**：facade、shell、dome、tower、sdome。V1、V2、V5 的画面都靠它们。
 3. **云海和天空**：cloud、a2、comet、lights。V12 要云海铺到天边，看不出一圈边。
