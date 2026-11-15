@@ -114,7 +114,8 @@ class Opening:
     def __init__(self, front, bay, out, blind, only):
         self.front, self.bay, self.out, self.blind, self.only = front, bay, out, blind, only
         self.cells = []
-        self.door = None        # (y0, y1, stone for the arched head or None) once Plan.door() is called
+        self.door = None        # (y0, y1, stone of the arched head, leaf function) once Plan.door() is called
+        self.crown = False      # the doorway's arched head is shut over the crown (Plan.door)
 
     @property
     def inward(self):
@@ -198,10 +199,16 @@ class Plan:
     def openings(self):
         return [self.bays[k] for k in sorted(self.bays, key=lambda k: (str(k[0]), k[1]))]
 
-    def door(self, front, bay, y0, y1, arch=None):
+    def door(self, front, bay, y0, y1, arch=None, leaf=None, crown=False):
         """Turn a bay into a doorway from row y0 to y1, through both leaves; `arch` (a stone family)
-        rounds the two top corners like a window head. The storeys leave their windows out of it."""
-        self.bays[(front, bay)].door = (y0, y1, arch)
+        rounds the two top corners like a window head, and with `crown` the head is shut over the
+        crown as well (see arch()). The storeys leave their windows out of it.
+
+        leaf    leaf(laying, opening, y) says what stands in the glass plane of row y: the bars of a
+                gate, the glass of a fanlight, a transom (a block state), or None for nothing. Left
+                out, the doorway is open from top to bottom."""
+        op = self.bays[(front, bay)]
+        op.door, op.crown = (y0, y1, arch, leaf), crown
 
     def pier_fronts(self):
         """The columns where a pilaster's own mouldings stand: next to a pilaster and clear of the
@@ -266,6 +273,9 @@ class Laying:
         """A moulding round `body`: stairs on the columns that touch it, each turned towards it, so
         the profile widens upwards (half "top") or spreads at the foot ("bottom"). A column that
         touches the body by a corner only is turned so that the game makes it the outer corner.
+        A column that touches it on two sides, the wall behind it and a pilaster beside it, is
+        turned towards the wall (the plan's own body before what stands in front of it): the run
+        along a front ends against the pilaster the same way on all four sides of a building.
 
         only    keep the moulding to these columns. Where it then runs along both sides of a
                 corner of the body, the corner column is added, so the moulding turns the corner
@@ -273,11 +283,12 @@ class Laying:
         Returns the columns it stands on."""
         around = ring(body)
         cells = around if only is None else around & set(only)
+        wall = body if self.plan is None else self.plan.body
         facing = {}
         for c in cells:
             near = [d for d in SIDES if step(c, d) in body]
             if near:
-                facing[c] = near[0]
+                facing[c] = min(near, key=lambda d: step(c, d) not in wall)
         corners = cells - set(facing)
         if only is not None:
             for c in around - cells:
@@ -346,7 +357,9 @@ class Window:
 
     y        rows of the opening
     head     "flat", or "arch": the two top corners are stairs hung from the lintel, so the head
-             steps in by half a block twice (the glass behind stays whole)
+             steps in by half a block twice (the glass behind stays whole), or "round": the same
+             and a slab hung between the two stairs, so the head steps in once and is shut half
+             a block under the lintel (see arch())
     apron    a family for the row under the opening (the sunk panel under a great window)
     sill     a family: a slab in front of the apron, its top level with the foot of the glass
     grille   a block that stands in the opening, in the wall plane (iron bars)
@@ -378,21 +391,32 @@ class Window:
                 s.put(c, y0 - 1, self.apron.block)
             if self.sill:
                 s.put(step(c, op.out), y0 - 1, f"{self.sill.slab}[type=top]")
-        if self.head == "arch" and self.recess:
-            arch(s, op, y1, storey.wall)
+        if self.head in ("arch", "round") and self.recess:
+            arch(s, op, y1, storey.wall, crown=self.head == "round")
         s.windows.append(dict(front=op.front, bay=op.bay, storey=storey.name, cells=panes,
                               inward=op.inward, y=(y0, y1), blind=op.blind, glass=glass))
 
 
-def arch(s, op, y, stone):
+def arch(s, op, y, stone, crown=False):
     """Round the two top corners of an opening: a stair hung from the row above in the first and
-    in the last column, its solid quarter towards the jamb."""
+    in the last column, its solid quarter towards the jamb. An opening of three then narrows to
+    two and to one, half a block each: a head that reads as pointed.
+
+    crown   hang a slab from the row above in the columns between the two stairs as well. The
+            head narrows once and is shut half a block under the lintel: for an opening of three
+            that is, half block by half block, a half round of radius 1.5 that springs one block
+            under the foot of row y -- three wide, three wide, two wide, shut at the crown -- and
+            no slot is left over the crown of a round frame set into it. An opening of two has no
+            column between its stairs and stays as it is."""
     cells = op.cells
     if len(cells) < 2:
         return
     for c, nxt in ((cells[0], cells[1]), (cells[-1], cells[-2])):
         d = (c[0] - nxt[0], c[1] - nxt[1])
         s.put(c, y, f"{stone.stairs}[facing={NAME[d]},half=top]")
+    if crown:
+        for c in cells[1:-1]:
+            s.put(c, y, f"{stone.slab}[type=top]")
 
 
 class Storey(Band):
@@ -533,14 +557,23 @@ class Parapet(Band):
 
 
 def doorway(s, op):
-    """Cut a doorway through both leaves and everything that stands in front of them."""
-    y0, y1, stone = op.door
+    """Cut a doorway through both leaves and everything that stands in front of them, then set
+    what the door's leaf function puts back into the glass plane. Where the front steps beside
+    the doorway the inner leaf stands several blocks deep behind its last column (the lining of
+    the return wall): the cut goes through all of it, so the doorway is as wide inside as outside."""
+    y0, y1, stone, leaf = op.door
     for c in op.cells:
-        for n in (-1, 0, 1, 2):
-            for y in range(y0, y1 + 1):
+        deep = -1
+        while step(c, op.out, deep - 1) in s.plan.leaf:
+            deep -= 1
+        for y in range(y0, y1 + 1):
+            for n in range(deep, 3):
                 s.clear(step(c, op.out, n), y)
+            state = leaf(s, op, y) if leaf else None
+            if state:
+                s.put(step(c, op.out, -1), y, state)
     if stone is not None:
-        arch(s, op, y1, stone)
+        arch(s, op, y1, stone, crown=op.crown)
 
 
 def build(canvas, plan, order, origin=(0, 0, 0), glass=None):
