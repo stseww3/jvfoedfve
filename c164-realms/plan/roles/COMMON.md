@@ -11,13 +11,17 @@
 5. `plan/roles/INTERFACE.md`：各包怎么接进总场景和总资源包（拿合并钥匙的人写；没出来之前按现有测试场景 `build/scenes/kitcheck`、`skyobs` 的写法做）。
 6. `plan/aesthetics/RUBRIC.md`：评分标准。做东西之前先看一遍，知道会被怎么打分。
 
-## 0. 现在的做法（11-14 起）
+## 0. 现在的做法（11-14 起；第 2、3 条 11-15 夜改过）
 
 这一节和下面各节、和别的文档冲突时，以这一节为准。
 
 1. **先出东西。** 领卡后 20 分钟内要有第一个提交（粗模就行：体量、轮廓、主要洞口），提交完马上 push。卡片和文档放到交付前再补。接口没对完的地方按自己的默认做，默认写在提交说明里，不等回复；别人反对了再改。
-2. **出图只在管理员电脑上**（管理员定的）。云端不出图，不跑 `--verify`，不生成整座 `obs`。云端只跑 `git`、`check.py`（只查自己的测试场景）、`delivery.py`、`selfshots.py --take`。要进仓库的图按 `INTERFACE.md` 第 5 节的四步走。第一个提交 push 之后就出两三张图，在群里说图在收图夹的哪个前缀下。
-3. **桥上的本机命令**：`timeout_sec` 设到 900。桥等 60 秒没等到结果会报 `Request timed out`，这不是失败，电脑上的命令还在跑。不要重跑；过一会儿去看 `agents\<代号>\logs` 和 `out` 里有没有结果，或者直接跑下一步。`timeout_sec` 设小了，命令到点会被掐掉。
+2. **每人一台云端机器，离线图在自己机器上出**（11-15 夜起）。上线先跑一遍第 2 节的安装命令。自己的机器上什么都可以跑：`check.py`、`delivery.py`、`render.py`、`selfshots.py`（出图和 `--verify`）、整座 `obs`。之前的停机令只针对那台几十人共用的旧机器，现在不适用。云端出的离线图和管理员电脑上出的逐像素一样（总监验过：`obs_mat_ashlar` 存着的 17 张，`--verify` 全过），所以：
+   - 要进仓库的图，在自己 worktree 的 `c164-realms/` 下两条命令（代码先提交）：`tools/selfshots.py <场景> --out /tmp/c164_<代号>/shots` 出图，`tools/selfshots.py <场景> --take /tmp/c164_<代号>/shots` 核对后落进 `renders/<场景>/`。和已存的图逐像素一样的不换文件。发【交付】前提交一次，别每改一版都提交。
+   - 改到一半想看一眼：出图那条加 `--dirty`，用读文件的工具看 `/tmp` 里的图，不进 git。第一个提交 push 之后就出两三张图自己看。
+   - 要看别人的图：`fetch` 他的分支，在自己机器上照样出；评审和技检都这么做，不用等谁传图。
+   - `INTERFACE.md` 第 5 节的四步（同步到电脑、排队出图、传回收图夹）作废，别的文档里“云端不出图”的话也作废。
+3. **管理员电脑只有拿出图钥匙的人用，只为真机图。** 别人不再往那边发任何命令；第 3 节只对他有效。他在桥上发本机命令时 `timeout_sec` 设到 900：桥等 60 秒没等到结果会报 `Request timed out`，这不是失败，电脑上的命令还在跑，不要重跑，过一会儿去看日志和结果。
 4. **总监的拍板在群里**，开头是【总监·拍板】，比卡片和细化稿新；拿合并钥匙的人把它们记在 `plan/STATUS.md` 的「总监定过的」一节。坐标一律读骨架 `build/scenes/obs/common/skeleton.py`，卡片里和它不一样的数作废。
 5. **往整座楼、整个场地上铺的东西带 `DRESS` 开关，默认关**，评审通过才打开。关着的时候总场景里不放它；测试场景里开着出图。
 6. **评审两个人**：一个管 materials、main、props，一个管 site、sky、machines、interiors。离线图判不了的（发光、天空、云、玻璃反光、模型远看）评审标「待真机」，不卡合并。
@@ -30,45 +34,36 @@
 - 全员一个群 g2。发消息必须用 mentions 点名要处理这条消息的人；只做记录的消息 mentions 填 `[]`。不发客套话，不回“收到”。
 - 消息开头用 `PIPELINE.md` 第 4.3 节的固定词。【公告】只有总监发。
 
-## 2. 云端机器上的路径
+## 2. 云端机器：每人一台，上线先装
 
-- 仓库的主目录：`/agent/repos/jvfoedfve`。它是别的项目在用的检出，**不许在里面改文件、切分支、提交**，只用它来 `fetch` 和建你自己的工作目录。总装分支是 `cursor/c164-realms-map-b59c`，项目在分支里的 `c164-realms/`。
-- 你自己的工作目录，第一次这样建（`<代号>` 是派你来的说明里给的）：
+11-15 夜起每个 agent 有自己的一台云端机器（4 核）。机器是新的：仓库在 `/agent/repos/jvfoedfve`（停在 `main` 上），别的什么都没有；机器换了，仓库以外的东西全没。所以**上线第一件事是跑安装脚本**，一条命令，约 15 秒，重跑无害：
 
 ```
-git -C /agent/repos/jvfoedfve fetch -q origin cursor/c164-realms-map-b59c
-git -C /agent/repos/jvfoedfve worktree add -b <你的分支> /agent/repos/c164-<代号> origin/cursor/c164-realms-map-b59c
+cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c && git show FETCH_HEAD:c164-realms/tools/cloud_setup.sh | bash -s -- <代号> <你的分支>
 ```
 
-  分支名按你自己的命名规则起，中间带 `c164-<代号>`。之后只在 `/agent/repos/c164-<代号>` 里干活。
+（总装里还没有这个脚本的时候，把命令里的分支名换成总监的分支 `cursor/c164-a0-pipeline-v4-7d36`。）
+
+`<代号>`、`<你的分支>` 在派你来的说明里。脚本做这几件事，最后一行是 `ready` 才算装好；报 `FAILED` 就把那几行原样发到群里点名总监：
+
+- Python：`/agent/realms-study/.venv/bin/python`，带 numpy、Pillow、nbtlib、numba。不许往里装别的包：代码要在每个人的机器上都能跑，缺什么在群里向总监提。
+- 游戏文件：`/agent/realms-study/client26/versions/26.3/26.3.jar`（从 Mojang 取，核对 SHA-1；只读）。
+- 你的工作目录：`/agent/repos/c164-<代号>`，在你的分支上。远程有这个分支就接着它（接手别人的活就是这种情况），没有就从总装的头上新开；新开的分支第一次推用 `git push -u origin <你的分支>`。之后只在这个目录里干活，`/agent/repos/jvfoedfve` 里不改文件、不切分支。
+- 冒烟检查：在总装的头上跑一遍 `check.py --scene obs`，验的是机器，不是你的代码。
+
+其余：
+
+- 总装分支是 `cursor/c164-realms-map-b59c`，项目在分支里的 `c164-realms/`；脚本在 `c164-realms/build/` 或 `c164-realms/` 下运行，看各脚本的说明。
 - 跟上总装：每领一张新卡之前，`git fetch origin cursor/c164-realms-map-b59c`，再 `git merge origin/cursor/c164-realms-map-b59c`。
-- Python：`/agent/realms-study/.venv/bin/python`（共用，只读，不许往里装东西）。脚本在 `c164-realms/build/` 下运行。
-- 游戏文件：`/agent/realms-study/client26/versions/26.3/26.3.jar`（只读）。
-- 回传的图：`/agent/realms-study/inbox/`（只读，用读文件的工具直接看图）。
-- **realms-study 不在仓库里，VM 重启后整个会没掉，由总监重建**（workers 等总监恢复，别自己装）。步骤：
-
-```
-# 1) venv（check.py / 离线渲染要 numpy+Pillow+nbtlib）
-sudo mkdir -p /agent/realms-study/inbox && sudo chown -R "$USER" /agent/realms-study
-sudo apt-get install -y python3.12-venv            # 若报 ensurepip 不可用
-python3 -m venv /agent/realms-study/.venv
-/agent/realms-study/.venv/bin/pip install "nbtlib==2.0.4" "numpy>=2.0" Pillow
-# 2) 只读 jar：从 Mojang 版本清单取 26.3 的 client jar（sha1 校验）下到
-#    /agent/realms-study/client26/versions/26.3/26.3.jar。云端只要这一个 jar，不用整份 client
-#    （库和 assets 是管理员电脑跑游戏才要，那边用 tools/fetch_client.py）
-# 3) 回传通道（tmux 常驻）：
-python3 c164-realms/tools/inbox.py /agent/realms-study/inbox --port 8765    # 只听 127.0.0.1
-#    再起隧道把 127.0.0.1:8765 暴露成公网 URL（如 cloudflared quick tunnel），把
-#    <公网URL>/<inbox/.token 里的 token> 写进管理员电脑 dl/inbox.url（机密：别进群、别进仓库）
-# 4) 冒烟：check.py --scene obs 应全 PASS
-/agent/realms-study/.venv/bin/python c164-realms/tools/check.py --scene obs
-```
+- 要读别人的分支：`git fetch origin <分支>`，再 `git show`、`git diff`，或者 `git worktree add /tmp/c164_<代号>/<名字> origin/<分支>` 检出来跑。
 - 临时文件放 `/tmp/c164_<代号>/`。
 - 不许打印 git 的远程地址（里面有凭据）。
-
-**云端机器只有 4 核，几十个 agent 共用，还有别的项目在上面。** 在它上面只做轻的事：改代码、`git`、语法检查、几秒钟的小脚本，命令前面加 `nice`。不许在它上面出图、生成大场景、跑循环、开服务。这些一律去管理员电脑。
+- 机器之间不共用文件夹。东西给别人，一律走 git（推到自己的分支，告诉对方提交号）；一两张图要马上给人看，可以用桥的 `send_file` 发给那个人或发进群。
+- 收图夹 `/agent/realms-study/inbox/` 只有拿出图钥匙的人用（真机图从管理员电脑传回他的机器，由他提交进 git）。
 
 ## 3. 管理员电脑上怎么跑
+
+**11-15 夜起，这一节只对拿出图钥匙的人有效**：离线图各人在自己的云端机器上出（第 0 节第 2 条），别人不再往管理员电脑发任何命令。
 
 管理员电脑是他自己在用的桌面机，他同时在上面跑自己的活。我们只在一个文件夹里活动：`workspaces\c164`（共用工作区）。你的本机命令默认落在你自己聊天的工作区里，所以**每条命令都这样开头**，先进到共用工作区：
 
