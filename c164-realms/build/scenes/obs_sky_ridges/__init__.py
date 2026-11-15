@@ -29,6 +29,10 @@ The shots (the card's list):
                                left edge, and the strip of horizon it has left of the terrace is the
                                gap between the two ranges, moved north by the 52 blocks the lookout
                                lies south of the axis; no ridge shows there, and none should
+  v1, v2                       the skeleton's arrival view and axis view, the two pictures the map is
+                               known by: in V1 the north range stands in the strip of sky at the right
+                               edge, north of the terrace; in V2 the outer peaks of both ranges stand
+                               low at the picture's edges, on either side of the main building
 """
 import json
 import math
@@ -75,6 +79,8 @@ CAMERAS = {
     "east": ((S.MERIDIAN_X + 0.5, S.GROUND + S.EYE, S.AXIS_Z), _towards((S.MERIDIAN_X + 0.5, S.GROUND + S.EYE, S.AXIS_Z), 180.0, 6.0), "blue"),
     "back_west": (BACK, _towards(BACK, 0.0, 6.0), "blue"),
     "v11": (S.V11["pos"], S.V11["look_at"], "blue"),
+    "v1": (S.V1["pos"], S.V1["look_at"], "blue"),
+    "v2": (S.V2["pos"], S.V2["look_at"], "blue"),
 }
 
 
