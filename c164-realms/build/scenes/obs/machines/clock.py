@@ -490,6 +490,20 @@ def _ball_zone(normal):
     return sum(1 for edge in BALL_ZONES if light >= edge)
 
 
+def _ball_tone(zone, column, row):
+    """The zone a pixel of the ball is painted in. zone(dx, dy) is the zone of the place dx pixels
+    to the right of it and dy pixels up. Where two tones meet, the first row of the lighter one
+    takes the darker tone on every other pixel, so that they part in a row of checks: a hard line
+    between two tones reads as a stripe from close by (cr3, 11-16). The checks are counted along
+    the line: by the column where the darker tone lies above or below, else by the row."""
+    here = zone(0, 0)
+    if zone(0, 1) < here or zone(0, -1) < here:
+        return here - 1 if column % 2 else here
+    if zone(1, 0) < here or zone(-1, 0) < here:
+        return here - 1 if row % 2 else here
+    return here
+
+
 def _ball_side(label, colours, r, y0, y1, turn, back):
     """One side of a layer, painted pixel by pixel: each pixel takes the tone of the place on the
     ball it covers, so the tones meet along curves a pixel fine and not along the edges of the
@@ -497,16 +511,21 @@ def _ball_side(label, colours, r, y0, y1, turn, back):
     mast; `back` is its far side (the box's north face), which is seen from the other way."""
     width = 2.0 * r * math.tan(math.pi / BALL_SIDES)
     w, h = max(1, int(round(width))), max(1, int(round(y1 - y0)))
+    first = int(round((turn + (180.0 if back else 0.0)) / 360.0 * BALL_SIDES)) * w     # columns count on round the layer
     px = np.zeros((h, w, 4), dtype=np.uint8)
-    for j in range(h):
+
+    def zone(i, j):
         y = y1 - (j + 0.5) * (y1 - y0) / h
         up = max(-1.0, min(1.0, y / BALL_R))
         flat = math.sqrt(1.0 - up * up)
+        across = ((i + 0.5) / w - 0.5) * width
+        x, z = (-across, -r) if back else (across, r)
+        at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+        return _ball_zone((flat * math.sin(at), up, flat * math.cos(at)))
+
+    for j in range(h):
         for i in range(w):
-            across = ((i + 0.5) / w - 0.5) * width
-            x, z = (-across, -r) if back else (across, r)
-            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
-            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, :3] = colours[_ball_tone(lambda dx, dy: zone(i + dx, j - dy), first + i, int(y1) - j)]
             px[j, i, 3] = 255
     return _Picture(label, px)
 
@@ -525,12 +544,16 @@ def _ball_ledge(label, colours, r, y, turn, letter):
     up = max(-1.0, min(1.0, y / BALL_R))
     flat = math.sqrt(1.0 - up * up)
     px = np.zeros((h, w, 4), dtype=np.uint8)
-    for j in range(h):
+
+    def zone(i, j):
         z = ((j + 0.5) / h - 0.5) * 2.0 * r * (1.0 if letter == "u" else -1.0)
+        x = ((i + 0.5) / w - 0.5) * width
+        at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+        return _ball_zone((flat * math.sin(at), up, flat * math.cos(at)))
+
+    for j in range(h):
         for i in range(w):
-            x = ((i + 0.5) / w - 0.5) * width
-            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
-            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, :3] = colours[_ball_tone(lambda dx, dy: zone(i + dx, j - dy), i, j)]
             px[j, i, 3] = 255
     return _Picture(label, px)
 
