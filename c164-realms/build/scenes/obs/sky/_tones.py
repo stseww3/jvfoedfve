@@ -487,15 +487,30 @@ def _times(shots):
 
 
 def look_of(path, times=None):
-    """The light version a picture was taken in: from the shots.txt beside a kept picture, or from
-    the times of a shots.json when the picture's name ends in a shot's name."""
+    """The light version a picture was taken in: from the note beside the picture, or from the times
+    of a shots.json when the picture's name ends in a shot's name.
+
+    tools/selfshots.py writes two notes with the same rows: a kept folder has <scene>/shots.txt with
+    bare shot names, the folder --out makes has <scene>-shots.txt beside pictures still named
+    <scene>-<shot>.png, which is the folder a maker reads before taking pictures in. Both are read;
+    the shot name is the rest after the scene's name, and a note named after a scene in the same
+    folder is read even when the picture sits beside it under another name.
+    """
     stem = Path(path).stem
-    listing = Path(path).with_name("shots.txt")
-    if listing.is_file():
+    folder = Path(path).parent
+    for name in ("shots.txt",) + tuple(sorted(p.name for p in folder.glob("*-shots.txt")) if folder.is_dir() else ()):
+        listing = folder / name
+        if not listing.is_file():
+            continue
+        scene = name[:-len("-shots.txt")] if name.endswith("-shots.txt") else ""
         for row in listing.read_text().splitlines():
             cells = row.split("\t")
-            if len(cells) >= 2 and cells[0] == stem and cells[1].isdigit():
-                return look_at(int(cells[1]))
+            if len(cells) < 2 or not cells[1].isdigit():
+                continue
+            shot = cells[0]
+            for candidate in (shot, f"{scene}-{shot}"):
+                if stem == candidate or stem.endswith("-" + candidate):
+                    return look_at(int(cells[1]))
     for name in sorted(times or {}, key=len, reverse=True):
         if stem == name or stem.endswith("-" + name):
             return look_at(times[name])
