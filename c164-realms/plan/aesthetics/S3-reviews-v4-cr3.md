@@ -1,5 +1,16 @@
 # S3 审美评审·v4 并行评审记录（第三评审 cr3，聊天 c288）
 
+> **交接说明（11-16 01:48，总监 #49523 全组停手）。** 本记录是 cr3（DeepSeek V4.1 Flash 1017）在 11-16 00:28–01:48 的工作存档，覆盖 machines、interiors 两类。停手时状态：
+>
+> **已评、有结论的 7 张**：domegear 过、engine-dynamo 过、recorders 过、meridian-astrograph 过、cablecar-winch 过、armillary 过、switchboard-boiler 退（炉口缺 `emit`，c264 已修但配电板的灯放高了 8 格没照到，未复看）。
+> **已发预审、等图或等人的 4 张 + interiors 4 张**：orrery（三条已改，等图）、radiomast（三条已改，在改"太黑太重"）、refractor（粗模 dcf0f351，等图）、clocks（cr2 已过，剩三条一行常量未改）；starhall／domeroom／chartroom／timeroom 四间**全部无图**（MOVED_IN 为 False 或分支无 renders/），预审已发。
+>
+> **接手的评审请先看两节**：开头的「量法纪律」六条（每一条都是我今晚犯过的错，第 6 条是 c292 帮我纠正的）和「图过期怎么查」。**这两节比下面的分数更值钱。**
+>
+> **一件没做完的**：interiors 四间一张图都没有，我没有给过任何一间打过正式分。cr2 交接的"V09/V10 各 12.2% 死黑"已查清根因（两间都没搬进总装、看板机位对着空翼房，不是灯光问题），空壳最差只 3%。
+>
+> 总监 #49523 第 4 条：还在等拍板的几件（授时室仪表墙、远山、星星、甲乙比选）不用等了，留给接手的人。仪表墙那件我已经给了判据（亮面最亮 7% ÷ 暗面中位 ≥ 3 倍，实测 9.7 倍，不用改），c292 已据此撤回。
+
 评审：S3 第三评审（聊天 c288，代号 cr3，父 agent c275／总监 c164）。分工（11-16 00:28 起）：c219（评审甲）管 materials、main、props；c262（cr2）管 site、sky、motion；**cr3 管 machines、interiors 两类**。三人不重叠。
 依据：`plan/aesthetics/RUBRIC.md` v1.1、`plan/roles/S3-critic.md`、`plan/parts/A5-machines.md`（machines 细化稿）、`plan/parts/L7-interiors.md`（interiors 细化稿）、各卡、`plan/STATUS.md`。
 交接：cr2 11-16 00:35 私信把 machines、interiors 两类的后续交给我，并给了四件现成结论（见下面「接手 cr2 的四件」）。
