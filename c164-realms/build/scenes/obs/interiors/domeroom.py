@@ -72,10 +72,13 @@ COLLAR = (5.0, 6.0)                             # the ring the ribs run into
 POSTS = (27.0, 63.0, 99.0, 135.0)               # the ribs that come down on a wall post (every second
 #                                                 one), and their mirror images in the axis; the others
 #                                                 get a console
-# what is kept clear for machines/domegear (c196). The hand gear that turns the dome (g2 #31714,
-# #34943): the column of the wall its upright shaft stands in, from the floor to the ledge with its
-# bearing in the row of the ring beam, and the floor in front of its hand wheel
-GEAR_SHAFT = ((-1, -9),)
+# what is kept clear for machines/domegear (c196, c266). The hand gear that turns the dome (g2
+# #31714, #34943): the column of the wall its upright shaft stands in, from the floor to the ledge
+# with its bearing in the row of the ring beam, and the floor in front of its hand wheel. The hand
+# wheel is 0.91 blocks across, so its rim reaches 0.03 blocks into the cell north of the shaft
+# (c266, 11-16); that cell is drum stone from the floor to the ring beam, so nothing of the room's
+# stands in it either way -- it is named here so the clearance is written down
+GEAR_SHAFT = ((-1, -9), (-1, -10))
 GEAR_STAND = ((0, -9), (1, -9))                 # the hand wheel and the one who turns it: nothing here
 # the gear of the slit's two leaves (g2 #38152; laid out for main/dome's version a with the slit
 # open), as (x, (first row, last row), (z, ...)). In the room's columns the base ring's row is his
@@ -83,10 +86,14 @@ GEAR_SLIT = (
     (-6, (25, 25), (-3, -2, -1, 0, 1, 2, 3)),   # the chain round the slit's foot, its wheels and sprocket
     (-7, (25, 25), (0,)),                       # their bracket, out of the east face of the base ring
     (-6, (19, 24), (0,)),                       # the hand chain that shuts the leaves
-    (-6, (25, 27), (-3, 3)),                    # the two counterweight rails: hung under the beams beside
-    (-5, (25, 29), (-3, 3)),                    # the slit, along the line of their stepped undersides
-    (-4, (28, 31), (-3, 3)),                    # (-6, 28), (-5, 30), (-4, 32)
-    (-3, (30, 32), (-3, 3)),
+    # the two counterweight rails, hung under the beams beside the slit. Each column's range is
+    # the union of the line the beams' stepped undersides draw and what the gear reaches as built
+    # (machines/domegear, c266, 11-16: (-6, 25..27), (-5, 26..29), (-4, 27..31), (-3, 29..32));
+    # everything in it is clear in this room, so the gear keeps its own slope
+    (-6, (25, 27), (-3, 3)),
+    (-5, (25, 29), (-3, 3)),
+    (-4, (27, 31), (-3, 3)),
+    (-3, (29, 32), (-3, 3)),
 )
 JAMB_DEPTH = 2                                  # rows the beams beside the slit hang below the skin
 HEAD_DEPTH = 1                                  # the beam across its head: no lower, the comet's tail
