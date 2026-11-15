@@ -54,7 +54,9 @@ def _room(c):
             c.set(X1, y, z, WALL)
     dx = int(engine.CX)
     c.carve(dx - 1, FEET, Z1, dx + 1, FEET + DOOR_H - 1, Z1)
-    c.set(dx, CEIL - 1, int(engine.CZ), f"{B.LIGHT}[level={WORK_LIGHT}]")
+    # a work light over each end: the machine is 12 blocks long and one lamp left the dynamo end dark
+    for lx in (int(engine.CX + engine.CYL_X), int(engine.CX + engine.DYNAMO_X)):
+        c.set(lx, CEIL - 1, int(engine.CZ), f"{B.LIGHT}[level={WORK_LIGHT}]")
     return c
 
 
@@ -93,13 +95,13 @@ def shots():
     # side view looks along the room's long axis at the rim
     shot("flywheel", (cx + engine.WHEEL_X - 2.2, FEET + 3.0, cz + 5.6),
          (cx + engine.WHEEL_X, FEET + 2.5, cz))
-    shot("flywheel_side", (X1 - 2.0, FEET + 2.6, cz - 3.4),
-         (cx + engine.WHEEL_X, FEET + 2.5, cz))
+    shot("flywheel_side", (cx + engine.WHEEL_X + 0.4, FEET + 2.5, cz - 4.6),
+         (cx + engine.WHEEL_X, FEET + 2.4, cz))
     shot("cylinder", (cx + engine.CYL_X + 1.2, FEET + 2.3, cz + 3.8),
          (cx + engine.CYL_X, FEET + 1.6, cz))
-    shot("governor", (cx + engine.GOV_X - 0.6, FEET + 1.70, cz + 3.2),
-         (cx + engine.GOV_X, FEET + 1.6, cz + 0.95))
-    shot("dynamo", (cx + engine.DYNAMO_X - 1.6, FEET + 2.1, cz + 3.8),
+    shot("governor", (cx + engine.GOV_X - 0.6, FEET + 1.20, cz + 2.6),
+         (cx + engine.GOV_X, FEET + 1.95, cz + 0.95))
+    shot("dynamo", (cx + engine.DYNAMO_X + 0.6, FEET + 2.0, cz + 3.6),
          (cx + engine.DYNAMO_X, FEET + 1.7, cz))
     shot("belt", (cx + engine.DYNAMO_X - 3.0, FEET + 2.7, cz + 4.6),
          (cx + engine.WHEEL_X + 0.5, FEET + 2.6, cz))

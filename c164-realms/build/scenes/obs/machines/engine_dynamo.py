@@ -217,7 +217,14 @@ def _armature():
     for zz in (-5.4, 5.4):
         m.ring("z", (0.0, 0.0, zz), 3.4, 2.4, 1.6, COPPER, sides=12)              # the coil ends
     m.tube("z", (0.0, 0.0), -9.0, -7.2, 4.2, IRON_D, sides=10)                # the pulley
-    m.tube("z", (0.0, 0.0), 7.6, 9.0, 2.4, BRASS_D, sides=10)                 # the commutator
+    # the commutator: its segments with a one-pixel gap between them, so it reads as segments and
+    # not as one dark drum (cr3-M3)
+    m.tube("z", (0.0, 0.0), 7.6, 9.0, 2.2, COPPER, sides=10)
+    seg = P.mat("iron", kind="flat", base=5, bevel=0)
+    for i in range(8):
+        a = 2.0 * math.pi * i / 8.0
+        m.box((math.cos(a) * 2.0 - 0.28, math.sin(a) * 2.0 - 0.28, 7.55),
+              (math.cos(a) * 2.0 + 0.28, math.sin(a) * 2.0 + 0.28, 8.35), seg, skip="d")
     return m
 
 
@@ -252,7 +259,7 @@ def _belt():
     a hand wide. The card has the belt's movement as an animated picture (A1); this round it is the
     still band that carries the eye from the flywheel to the dynamo's pulley."""
     m = M.Model(PREFIX + "belt", px=1.0, anchor=(0.0, 0.0, 0.0))
-    band = P.mat("dark_wood", base=1, kind="flat", bevel=0)
+    band = P.mat("dark_wood", base=3, kind="flat", bevel=0)   # cr3-M3: brighter than the bed plate
     m.box((-1.2, 0.0, -2.4), (1.2, 48.0, 2.4), band, skip="d")
     return m
 
