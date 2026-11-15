@@ -8,7 +8,7 @@ card sky/cloudsea for trying fog laws and shapes between two trips to the real c
 
 build/render.py draws the blocks in fog but not the vanilla cloud layer, and this card is about
 the line where the two meet. Here the layer is laid into the ray tracer's picture by the game's
-own arithmetic (26.3; clouds.vsh, clouds.fsh, CloudRenderer, AtmosphericFogEnvironment):
+own arithmetic (26.3; clouds.vsh, clouds.fsh, CloudRenderer, AtmosphericFogEnvironment, SkyRenderer):
 
   - fancy: every cloud cell is a box 12 x 4 x 12 whose underside is at cloud_height; a camera above
     the layer is shown the top faces. fast: one flat face per cell at cloud_height, in the top's
@@ -17,12 +17,25 @@ own arithmetic (26.3; clouds.vsh, clouds.fsh, CloudRenderer, AtmosphericFogEnvir
   - the colour is cloud_color as it stands (no fog colour, no light map); the opacity is
     cloud_color's alpha times 1 - distance / min(cloudRange * 16, cloud_fog_end_distance), the
     distance measured from the eye. The layer is blended over what is drawn behind it: blocks below
-    its top, or the fog colour and the stars where nothing is.
+    its top, or the fog colour, the afterglow and the stars where nothing is.
+  - the fog colour is one colour for the whole frame: the attribute, drawn towards the afterglow's
+    colour as far as the camera faces it (the x of its forward vector times the colour's alpha),
+    then towards the sky colour. So a camera that looks west has warm fog, and the blocks in the
+    wall of fog and the emptiness under the horizon take that.
+  - the afterglow is a shallow cone of sixteen triangles round the camera: its tip on the horizon
+    where the sun set, with the colour's full alpha, its rim 120 out with none, lifted over the
+    horizon on the tip's side and sunk under it on the far side. Under the horizon the cone lies
+    below the camera, so whoever looks down sees the afterglow over the emptiness: a good half of
+    its alpha straight down, all of it at the western horizon.
   - blocks: the ray tracer with the view distance set to 12 chunks (the board's; render.py takes
     14), so the wall of fog between 172.8 and 192 blocks is where the real client has it, and only
     the chunks the game would have loaded round the camera are drawn (ChunkTrackingView).
 
-Not drawn, as in render.py: the afterglow and the fog's warm tint towards the west. The pictures
+render.py draws neither the afterglow nor the fog's warm tint; both are laid in here, so a west
+facing picture is not the one render.py gives. The two formulas were checked against S1's real V12
+of the master scene (his looks/blue and looks/thin_soft at f824e60): at four points of the
+emptiness under the horizon they give the picture's colour within two levels a channel (#7f5462
+for #7f5364 top left, #624968 for #624968 top right). The pictures
 are named <out>-<shot>-<law>[-fast|-off].png; with --sheet N they are laid side by side, N to a
 row and half the size, in one picture <out>-sheet.png instead. --plan adds <out>-plan.png: the
 sea from straight above without fog, the sheet's face and what stands out of it on the left, the
@@ -136,11 +149,53 @@ def _first_solid(grid, flags, px, py, pz, dx, dy, dz, reach):
     return R.BIG
 
 
+def frame_fog(look, forward, chunks):
+    """The fog colour of a frame whose camera looks along ``forward`` (a unit vector), and the
+    afterglow as (r, g, b, alpha, the x of the side it lies on); AtmosphericFogEnvironment.getBaseColor."""
+    a = look.attrs
+    fog = np.array(a["fog_color"][:3], dtype=np.float64)
+    side = -1.0 if math.sin(math.radians(look.sun_angle)) > 0.0 else 1.0
+    glow = np.zeros(5)
+    glow[4] = side
+    if look.sunset is not None:
+        glow[:4] = look.sunset
+        facing = float(forward[0]) * side
+        if facing > 0.0 and chunks >= 4:
+            fog = fog + (glow[:3] - fog) * facing * glow[3]
+    e = min(float(a["sky_fog_end_distance"]) / 16.0, float(chunks))
+    mix = 1.0 - (0.25 + 0.75 * min(1.0, max(0.0, e / 32.0))) ** 0.25
+    return fog + (np.array(a["sky_color"][:3], dtype=np.float64) - fog) * mix, glow
+
+
+@njit(cache=True)
+def _afterglow(dx, dy, dz, alpha, side):
+    """The share of the afterglow's alpha that lies over the sky in a direction (SkyRenderer's fan:
+    the tip at (100 side, 0, 0), the rim at (120 side cos, 40 alpha cos, 120 sin))."""
+    cx = 100.0 * side
+    best = 0.0
+    for i in range(16):
+        t0, t1 = i * math.pi / 8.0, (i + 1) * math.pi / 8.0
+        ax, ay, az = 120.0 * side * math.cos(t0) - cx, 40.0 * alpha * math.cos(t0), 120.0 * math.sin(t0)
+        bx, by, bz = 120.0 * side * math.cos(t1) - cx, 40.0 * alpha * math.cos(t1), 120.0 * math.sin(t1)
+        px, py, pz = dy * bz - dz * by, dz * bx - dx * bz, dx * by - dy * bx
+        det = ax * px + ay * py + az * pz
+        if abs(det) < 1e-9:
+            continue
+        u = (-cx * px) / det                        # the ray starts at the camera: minus the tip
+        qx, qy, qz = 0.0, -(-cx) * az, (-cx) * ay   # (-cx, 0, 0) x (ax, ay, az)
+        v = (dx * qx + dy * qy + dz * qz) / det
+        t = (bx * qx + by * qy + bz * qz) / det
+        if u >= 0.0 and v >= 0.0 and u + v <= 1.0 and t > 0.0:
+            best = max(best, 1.0 - u - v)
+    return best
+
+
 @njit(cache=True, parallel=True)
-def _draw(w, above, cam, width, height, sheet, out):
-    """The ray tracer's picture with the cloud layer laid in. ``above`` is the same world without
-    the cells below the layer's top; sheet = (the top's height in grid coordinates, r, g, b, alpha,
-    the distance at which the layer has faded away, how far the layer is built; alpha 0: no layer)."""
+def _draw(w, above, cam, width, height, sheet, glow, out):
+    """The ray tracer's picture with the afterglow and the cloud layer laid in. ``above`` is the same
+    world without the cells below the layer's top; sheet = (the top's height in grid coordinates,
+    r, g, b, alpha, the distance at which the layer has faded away, how far the layer is built;
+    alpha 0: no layer); glow = (r, g, b, alpha, side) of the afterglow."""
     half = cam[12]
     aspect = width / height
     plane, alpha, fade, built = sheet[0], sheet[4], sheet[5], sheet[6]
@@ -154,6 +209,11 @@ def _draw(w, above, cam, width, height, sheet, out):
             n = math.sqrt(dx * dx + dy * dy + dz * dz)
             dx, dy, dz = dx / n, dy / n, dz / n
             r, g, b = R.trace(w, cam[0], cam[1], cam[2], dx, dy, dz)
+            sr, sg, sb = R.sky_colour(w, dx, dy, dz)
+            r0, g0, b0 = r, g, b
+            if glow[3] > 0.0 and r == sr and g == sg and b == sb:
+                f = glow[3] * _afterglow(dx, dy, dz, glow[3], glow[4])
+                r, g, b = r + (glow[0] - r) * f, g + (glow[1] - g) * f, b + (glow[2] - b) * f
             if alpha > 0.0 and dy < -1e-9 and cam[1] > plane:
                 t = (cam[1] - plane) / -dy
                 a = alpha * (1.0 - min(1.0, t / fade))
@@ -162,8 +222,7 @@ def _draw(w, above, cam, width, height, sheet, out):
                     # and through whatever is drawn above it leaves open (bars, a rail, a pane)
                     if _first_solid(w.grid, w.pal_flags, cam[0], cam[1], cam[2], dx, dy, dz, t) >= t:
                         ar, ag, ab = R.trace(above, cam[0], cam[1], cam[2], dx, dy, dz)
-                        sr, sg, sb = R.sky_colour(w, dx, dy, dz)
-                        if (ar != r or ag != g or ab != b) or (ar == sr and ag == sg and ab == sb):
+                        if (ar != r0 or ag != g0 or ab != b0) or (ar == sr and ag == sg and ab == sb):
                             r = a * sheet[1] + (1.0 - a) * r
                             g = a * sheet[2] + (1.0 - a) * g
                             b = a * sheet[3] + (1.0 - a) * b
@@ -288,6 +347,8 @@ def main():
         for law in args.laws.split(","):
             tick = laws.tick(law)
             look = look_at(tick)
+            forward = np.array(shot["look_at"], dtype=np.float64) - np.array(shot["pos"], dtype=np.float64)
+            look.fog, glow = frame_fog(look, forward / np.linalg.norm(forward), args.chunks)
             w = world.world(look, pixel)
             near = w.grid.copy()
             near[~there[:, None, :] & np.ones((1, near.shape[1], 1), dtype=bool)] = 0
@@ -302,7 +363,7 @@ def main():
                 sheet = np.array([top, colour[0], colour[1], colour[2], 0.0 if clouds == "off" else colour[3],
                                   min(CLOUD_RANGE * 16.0, got["cloud_fog_end_distance"]), CLOUD_RANGE * 16.0])
                 out = np.zeros((size[1], size[0], 3))
-                _draw(w, w._replace(grid=grid), cam, size[0], size[1], sheet, out)
+                _draw(w, w._replace(grid=grid), cam, size[0], size[1], sheet, glow, out)
                 label = f"{name}-{law}" + ("" if clouds == "fancy" else f"-{clouds}")
                 picture = Image.fromarray((np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8))
                 if args.sheet:
