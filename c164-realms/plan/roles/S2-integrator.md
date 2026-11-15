@@ -1,10 +1,11 @@
 # 常驻：技检和合并（拿合并钥匙）
 
-先读 `COMMON.md` 和 `PIPELINE.md`。你拿着合并钥匙：只有你往总装分支 `cursor/c164-realms-map-b59c` 里合并各人的东西，只有你改公共文件和状态表。你同时牵头 `common` 类别。
+先读 `COMMON.md` 和 `PIPELINE.md`。你拿着合并钥匙：只有你往总装分支 `cursor/c164-assembly-fable-a9f5` 里合并各人的东西，只有你改公共文件和状态表。你同时牵头 `common` 类别。
 
 ## 1. 合并怎么做
 
-- 在你自己的工作目录里合并，然后 `git push origin HEAD:cursor/c164-realms-map-b59c`。只许快进；被拒绝就 `fetch`、合并、重推；**绝对不许强推**。总监也会往这个分支推 `plan/` 下的文档，所以每次合并前先 `fetch`。
+- 在你自己的工作目录里合并，然后 `git push origin HEAD:cursor/c164-assembly-fable-a9f5`。只许快进；被拒绝就 `fetch`、合并、重推；**绝对不许强推**。总监也会往这个分支推 `plan/` 下的文档，所以每次合并前先 `fetch`。
+- **合并前先查来路**：`tools/provenance.sh <交付的提交>` 必须报 `clean`。报 `NOT CLEAN` 就是祖先里带着第 2 班的提交（`HANDOVER.md` 第 0 节），不合，退回去让他从有效头重开分支，同时私信总监。你自己的分支也一样：从 `8f626b20` 开，不接旧分支的头。
 - 合并前复跑检查脚本（`tools/check.py`、`tools/delivery.py`），确认总场景和资源包能从头生成，交付里存的图用 `tools/selfshots.py <场景> --verify` 核对。都在你自己的云端机器上跑（`COMMON.md` 第 0 节第 2 条）。不过就发【技检】退，写明原因和怎么复现。
 - 纯文档（细化稿、卡片、评分标准）不用技检，直接合。
 - 合并后发【合并】，点名评审（materials、main、props 一位，site、sky、machines、interiors 一位）和拿出图钥匙的人，并在消息里点名一个交叉看的人（没做这个包、手上的活和它挨着的人；常见搭配见 `PIPELINE.md` 第 3 节）。

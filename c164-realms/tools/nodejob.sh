@@ -132,7 +132,7 @@ if [ "$push" = 1 ] && { [ "$code" = 0 ] || [ "$always" = 1 ]; }; then
       how=()
       if [ "$wip" = 1 ]; then how=(-s ours); fi
       if git -C "$repo" fetch -q origin "$to" >/dev/null 2>&1; then
-        git -C "$repo" "${ident[@]}" merge -q --no-edit "${how[@]}" FETCH_HEAD >/dev/null 2>&1 \
+        git -C "$repo" "${ident[@]}" merge -q "${how[@]}" -m "c164-node: take in $to, which moved while the job ran" FETCH_HEAD >/dev/null 2>&1 \
           || { git -C "$repo" merge --abort >/dev/null 2>&1; note="${note:+$note; }the branch moved and does not merge cleanly"; break; }
         commit="$(git -C "$repo" rev-parse --short=8 HEAD)"
       fi
