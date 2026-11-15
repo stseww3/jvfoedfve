@@ -74,10 +74,17 @@ COLUMNS = 64                                # how finely the skyline is cut, acr
 
 
 def _mat():
-    """The one colour the ridges are painted in: the darkest step of the dark glass ramp, which is
-    the darkest thing the palette owns. Everything that far out is fog colour anyway; this only
-    decides how dark the hill reads where the afterglow is behind it."""
-    return P.mat("night_glass", kind="plain", noise=0.06, bevel=0, base=0)
+    """The one colour the ridges are painted in.
+
+    Painted for where they stand: the fog law the sky lead (a2) set has the ground fog end at 768,
+    so a panel at 360 carries 360/768 = 47% fog. Mixing the palette's darkest step with the look's
+    fog colour by that share comes out (43, 47, 93), which is `night_glass` 2 -- (39, 51, 95) --
+    to within a few parts of a level. So the palette already owns the colour this needs: the
+    palette's own step is used, and nothing new is defined (COMMON 4: no colours of one's own).
+    The hill then reads as a darker shape where the afterglow is behind it and fades into the fog
+    where there is none -- which is the design on the card.
+    """
+    return P.mat("night_glass", kind="plain", noise=0.06, bevel=0, base=2)
 
 
 def _skyline(key, columns):
