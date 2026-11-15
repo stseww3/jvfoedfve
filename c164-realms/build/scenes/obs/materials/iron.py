@@ -2,7 +2,7 @@
 
 Every oxidized_* copper block without a waxed_ twin is redirected away from verdigris to cast iron:
 a blue-black ramp (I0..I6), rivets hugging the edges so neighbouring plates read as one bolted run,
-a cast lozenge, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
+a cast diamond point, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
 The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards them).
 
 Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
@@ -12,8 +12,6 @@ taken over step for step into the iron ramp, their filament and slits into the g
 is touched: the thin edges of the game's trapdoor read the bottom rows of its picture upside down,
 and the hatch's copies of its models show the picture's lit top rows there instead (_lips).
 """
-import math
-
 import numpy as np
 
 from artkit import respack
@@ -89,42 +87,10 @@ def _rivets(px, points=_RIVETS):
         _put(px, x, y + 1, _i(1))       # a one-pixel shadow under it
 
 
-def _ring(px, cx, cy, r, hi, lo, width=1.0):
-    for y in range(TILE):
-        for x in range(TILE):
-            if abs(math.hypot(x - cx, y - cy) - r) <= width / 2 + 0.25:
-                _put(px, x, y, hi if (x - cx) + (y - cy) < 0 else lo)
-
-
 def _cells(inside):
     """The pixels of the tile for which inside(dx, dy) holds, dx and dy measured from the tile centre."""
     c = (TILE - 1) / 2
     return [(x, y) for y in range(TILE) for x in range(TILE) if inside(x - c, y - c)]
-
-
-def _relief(px, cells, shade=(), bright=()):
-    """A cast figure standing proud of the plate: I5 all the way round, so a ring stays a closed ring
-    instead of losing its far half in the plate and reading as a letter; I4 on the few cells turned
-    from the light, I6 on the bright points, and a one-pixel I1 shadow thrown down and right of it."""
-    figure = set(cells) | set(shade) | set(bright)
-    for x, y in cells:
-        _put(px, x, y, _i(5))
-    for x, y in shade:
-        _put(px, x, y, _i(4))
-    for x, y in bright:
-        _put(px, x, y, _i(6))
-    for x, y in figure:
-        if (x + 1, y + 1) not in figure:
-            _put(px, x + 1, y + 1, _i(1))
-
-
-def _disc(px, cx, cy, r, inner, edge):
-    """A filled round boss: bright core, darker toward the rim."""
-    for y in range(TILE):
-        for x in range(TILE):
-            d = math.hypot(x - cx, y - cy)
-            if d <= r:
-                _put(px, x, y, inner if d <= r - 1.3 else edge)
 
 
 # ---- the flat plates (designed) ----------------------------------------------------------------------
@@ -144,10 +110,21 @@ def _riveted(seed):
     return px
 
 
+_POINT = 5.0        # half the diagonal of the cast plate's diamond point: ten pixels from tip to tip
+# its four facets by (in the lower half, in the right half), lit from the top left
+_FACETS = {(False, False): 5, (False, True): 4, (True, False): 3, (True, True): 1}
+
+
 def _cast():
-    """IRON_CAST: a riveted plate with a raised cast lozenge (one pixel thick, ten across) round a
-    domed boss, the one picture of the block. Its field is smooth (a casting, not a rolled plate),
-    so no brushing streak cuts across the motif.
+    """IRON_CAST: a riveted plate with a diamond point cast on it -- a low four-sided pyramid on a
+    lozenge ten pixels across, each facet one flat tone (I5 on the one that faces the light, I4 and
+    I3 on the two beside it, I1 on the one turned away), its shadow one pixel down and right of it;
+    the one picture of the block. The field is smooth (a casting, not a rolled plate) and a step
+    darker than the plates', so the whole picture stays under theirs.
+
+    The lozenge used to be a thin ring round a domed boss with a glint on it, and a row of them over
+    a door was a row of eyes (the pictures of 11-15). A solid point has neither ring nor pupil, and
+    its four facets say where the light comes from for as far as the block can be told apart.
 
     The block used to have a second picture, the station's emblem, mixed in by position: half the
     axle boxes round a dome came out with the emblem on them. A whole block has no state to tell
@@ -157,10 +134,10 @@ def _cast():
     px = _plate(2, base=2, noise=0.0)
     _panel_frame(px)
     _rivets(px, _CORNERS)
-    edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
-    boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
-    lee = [(x, y) for x, y in boss if x + y >= TILE - 1]            # the half of the dome turned away
-    _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
+    for x, y in _cells(lambda dx, dy: abs(dx) + abs(dy) <= _POINT):
+        _put(px, x, y, _i(_FACETS[(y > TILE // 2 - 1, x > TILE // 2 - 1)]))
+    for x, y in _cells(lambda dx, dy: dx > 0 and dy > 0 and dx + dy == _POINT + 1):
+        _put(px, x, y, _i(1))
     return px
 
 
@@ -172,8 +149,11 @@ def _hatch():
     louvre, mixed in by position: half the panels of a balustrade came out louvred. It cannot go to
     the lying states either: the game does not turn a lying trapdoor with its facing, so the slats
     would run east-west on every wall of a belfry, along two of them and into the other two. A
-    louvre on a wall is the panels' (B.PANELS["louvre"]) or the lower half of the door."""
-    px = _plate(1, base=3, noise=0.11)
+    louvre on a wall is the panels' (B.PANELS["louvre"]) or the lower half of the door.
+
+    The plate is left unbrushed: a balustrade shows the one picture panel after panel, and a streak
+    that comes back at the same place on every panel reads as a slot cut in each."""
+    px = _plate(1, base=3, noise=0.0)
     _panel_frame(px)
     _rivets(px, _CORNERS + [(8, 1), (8, 14)])
     for y in range(3, 13):                                  # the rib
@@ -209,32 +189,79 @@ def _lips(ref, flat):
 _DOOR_RIVETS = [(1, 1), (14, 1), (1, 7), (14, 7), (1, 14), (14, 14)]
 
 
+# the porthole as it sits in the door's upper picture: R its brass rim, B a bolt on the rim, r the
+# reveal inside the rim, g the glass. Ten pixels across, drawn cell by cell: a ring this small comes
+# out lopsided when it is taken from a radius
+_PORT = ("...RRRR...",
+         ".BRrrrrRB.",
+         ".RrggggrR.",
+         "RrggggggrR",
+         "RrggggggrR",
+         "RrggggggrR",
+         "RrggggggrR",
+         ".RrggggrR.",
+         ".BRrrrrRB.",
+         "...RRRR...")
+_PORT_AT = (3, 2)       # its top left corner; the centre comes to (7.5, 6.5)
+
+
+def _hinge(px, y):
+    """A strap hinge on the door's hinge edge (the picture's column 0): three pixels of strap, the
+    bolt at its inner end, a one-pixel shadow under it."""
+    for x, tone in ((0, 5), (1, 5), (2, 6)):
+        _put(px, x, y, _i(tone))
+        _put(px, x, y + 1, _i(1))
+
+
 def _door_top():
     """IRON_DOOR upper half: a riveted plate with a brass porthole at eye height (its glow is M2's
-    to light) and a brass lever under it on the latch side.
+    to light), a brass lever under it on the latch side and a strap hinge on the other.
 
     The porthole's centre sits one pixel above the middle of the picture: a player's eye (1.62
     blocks up) is 62 % of the way up the upper block, a pixel higher still, well inside the glass.
     The game hinges the leaf on the picture's column 0, so the lever goes to the right. The plate
-    under so much fitting is left unbrushed (a seed whose streaks all fall under the porthole)."""
+    under so much fitting is left unbrushed (a seed whose streaks all fall under the porthole).
+
+    The porthole is a window, not a lamp: a one-pixel rim of aged brass (lit above and to the left,
+    dark below and to the right, a bolt at each quarter), inside it the rim's reveal lit the other
+    way round, and glass that lies in the rim's shadow along its top and left and lightens toward
+    the lower right. It carries no highlight and no figure; the first one had a pale core on a
+    thick uneven ring, which read as a badge."""
     px = _plate(11, base=3, noise=0.10)
     _panel_frame(px)
     _rivets(px, _DOOR_RIVETS)
-    cx, cy = 7.5, 6.5
-    _disc(px, cx, cy, 3.4, _glow(3), _glow(1))              # the lit glass seen through the port
-    _ring(px, cx, cy, 4.3, _brass(4), _brass(1), width=1.6)  # the brass rim
-    for a in range(45, 360, 90):                            # four bolts around the rim
-        _put(px, int(round(cx + 4.3 * math.cos(math.radians(a)))),
-             int(round(cy + 4.3 * math.sin(math.radians(a)))), _i(6))
+    x0, y0 = _PORT_AT
+    cells = {(x0 + x, y0 + y): mark for y, row in enumerate(_PORT) for x, mark in enumerate(row) if mark != "."}
+    glass = {cell for cell, mark in cells.items() if mark == "g"}
+
+    def depth(x, y, dx, dy):                                # the glass between a pixel and the rim that way
+        n = 0
+        while (x + (n + 1) * dx, y + (n + 1) * dy) in glass:
+            n += 1
+        return n
+
+    for (x, y), mark in cells.items():
+        lit = x + y < x0 + y0 + len(_PORT) - 1              # up and left of the diagonal through the centre
+        if mark == "g":
+            rgb = _glow(min(2, depth(x, y, 0, -1), depth(x, y, -1, 0)))
+        elif mark == "r":
+            rgb = _brass(0 if lit else 2)
+        elif mark == "B":
+            rgb = _brass(4)
+        else:
+            rgb = _brass(3 if lit else 1)
+        _put(px, x, y, rgb)
     for x, tone in ((10, 4), (11, 4), (12, 5)):             # the lever, its boss toward the latch edge
         _put(px, x, 13, _brass(tone))
         _put(px, x, 14, _i(1))
+    _hinge(px, 3)
     return px
 
 
 def _door_bottom():
     """IRON_DOOR lower half: the lower plate with a louvred vent (three slats) between two stiles,
-    and a kick strip under it. The brushing's seed is one whose only streak
+    a kick strip under it and the second strap hinge, as far from the door's foot as the upper one
+    is from its head. The brushing's seed is one whose only streak
     left in sight is a dark scuff along the kick strip: a streak beside the vent would run on
     from a slat's lip and read as a slat reaching the door's edge."""
     px = _plate(3, base=3, noise=0.10)
@@ -246,6 +273,7 @@ def _door_bottom():
             _put(px, x, y, _i(tone))
         for x in (3, 12):                                   # the side stiles
             _put(px, x, y, _i(5))
+    _hinge(px, TILE - 4)
     return px
 
 
@@ -281,19 +309,22 @@ _WORN = [(7, 3), (15, 7), (3, 11), (11, 15)]    # the crossings whose glint the 
 
 def _grate(variant):
     """IRON_GRATE: an open grating -- a square mesh on a four-pixel pitch, bars two pixels thick (I3
-    on the side that takes the light, I2 on the other), the lit corner of every crossing I5, the
+    on the side that takes the light, I2 on the other), the lit corner of every crossing I4, the
     holes clear. The plan's "4px mesh" is read as the pitch: the bars sit astride the tile's edges
     (one pixel on each tile) and its middle lines, so a floor of gratings is one unbroken mesh,
     a single grating set in a wall is closed all round by a one-pixel bar, and the holes are placed
     alike seen from either side, so the eye goes straight through. Variant 1 has lost the glint on
-    four of its crossings, which keeps a floor of them from being one even field of dots."""
+    four of its crossings, which keeps a floor of them from being one even field of dots.
+
+    The glint was I5, two steps over the bar: the edge of a gallery floor, sixteen crossings to the
+    block seen level, came out as a band of light dots (the pictures of 11-15, gallery_front)."""
     px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
         for x in range(TILE):
             u, v = x % _MESH, y % _MESH
             across, down = v in (0, 3), u in (0, 3)         # on a bar running across, on one running down
             if across and down:
-                tone = 5 if (u, v) == (3, 3) else 2 if (u, v) == (0, 0) else 3
+                tone = 4 if (u, v) == (3, 3) else 2 if (u, v) == (0, 0) else 3
             elif across:
                 tone = 3 if v == 3 else 2
             elif down:
@@ -303,7 +334,7 @@ def _grate(variant):
             _put(px, x, y, _i(tone))
     if variant:
         for x, y in _WORN:
-            _put(px, x, y, _i(4))
+            _put(px, x, y, _i(3))
     return px
 
 
@@ -337,20 +368,26 @@ def _bars():
     return px
 
 
-_FLANGE = 4     # a flange ring every four pixels down the thin pipe
+# the thin pipe across its three pixels: the shaft, and the two flanges of a joint (the one at the foot
+# of a length, the one at the head of the next)
+_SHAFT = (2, 4, 1)
+_FLANGES = {TILE - 1: (5, 5, 5), 0: (4, 5, 2)}
 
 
 def _chain():
     """IRON_PIPE (the chain block): a thin pipe, no links -- I4 down its middle, I2 on the side that
-    takes the light and I1 on the other, a flange ring of I5 across it every four pixels, so the
-    rings carry on evenly from one block into the next. The game's chain is two crossed strips,
-    each three pixels wide and the full height (columns 0 to 2 for one, 3 to 5 for the other);
-    both get the same solid strip, so the pipe is the same from every side."""
+    takes the light and I1 on the other -- in lengths of one block, flanged at both ends: where two
+    blocks meet, the last row of one and the first of the next make a joint two pixels deep, the
+    upper flange I5 across, the lower one shaded like the shaft, only lighter. Nothing else crosses
+    the pipe. It used to carry a ring every four pixels: four light bars to the block made a
+    ladder of it close to and a dotted light line from the courtyard, lighter than the plates it
+    ran along (3.0 against 2.9; now 2.6). The game's chain is two crossed strips, each three pixels
+    wide and the full height (columns 0 to 2 for one, 3 to 5 for the other); both get the same
+    solid strip, so the pipe is the same from every side."""
     px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
-        tones = (5, 5, 5) if y % _FLANGE == 0 else (2, 4, 1)
         for strip in (0, 3):
-            for k, tone in enumerate(tones):
+            for k, tone in enumerate(_FLANGES.get(y, _SHAFT)):
                 _put(px, strip + k, y, _i(tone))
     return px
 
