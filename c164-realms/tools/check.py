@@ -242,7 +242,7 @@ def regen(rep, name, work):
         words.append(f"look: {len(look.BIOMES)} biomes, {len(getattr(look, 'TIMELINES', None) or {})} timelines")
     rep.add("regen", "PASS", ", ".join(words) + f" ({time.time() - t0:.1f} s)")
     return {"scene": scene, "name": name, "category": category_of(scene, name), "builder": builder,
-            "canvas": canvas, "models": models, "pack": pack}
+            "canvas": canvas, "models": models, "pack": pack, "look": look}
 
 
 # ---- conflicts ---------------------------------------------------------------------------------
@@ -806,6 +806,28 @@ def _frame(shot):
     return pos, f, r, np.cross(r, f)
 
 
+SUN = "assets/minecraft/textures/environment/celestial/sun.png"
+
+
+def _own_sun(got):
+    """The line for a scene that takes the map's hour and not the map's sky. The map's hour is after
+    sunset, with the sun's place on the open western horizon; the sky's pack blanks the sun's picture
+    there (sky/comet.py). A test scene whose pack leaves the game's own picture in shows a white and
+    yellow square wherever a shot looks west over an open horizon (c341 #56843)."""
+    look = got.get("look")
+    if look is None or os.path.exists(os.path.join(got["pack"], SUN)):
+        return []
+    try:
+        from scenes.obs.sky import mood
+    except ImportError:
+        return []
+    if getattr(look, "TIMELINES", None) is not mood.TIMELINES:
+        return []
+    return ["the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, "
+            "a white and yellow square on an open western horizon: write_pack adds the sky's pack, "
+            "list(materials.pack(d) or []) + list(sky.pack(d) or [])"]
+
+
 def views(rep, got, shots_path):
     if not shots_path or not os.path.exists(shots_path):
         rep.add("views", "SKIP", "no shot list, so no per-view counts")
@@ -853,6 +875,7 @@ def views(rep, got, shots_path):
                        f"camera, measured level; the server sends those to no player there")
     if far:
         far.append("(the tracking range is read off the game's code, not yet seen on the real machine)")
+    stale += _own_sun(got)
     most = max(rows, key=lambda row: row["in_view"]) if rows else {"name": "-", "in_view": 0}
     summary = (f"{len(shots)} shots, most display entities in view: {most['in_view']} ({most['name']}), "
                f"limit {S.ENTITY_PER_VIEW}; counted without what walls hide")
