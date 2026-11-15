@@ -151,11 +151,19 @@ def main():
         Image.fromarray(img).save(path)
         print(f"{path} (tick {tick}, {time.time() - t1:.0f} s)")
 
-# The machine is shared with other projects (COMMON.md section 2): run at a lower priority so they
-# go first. Linux and the other Unix-likes only; a refusal is not an error.
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so that a
+# dozen pictures drawn at once cannot bury the machine. Neither is an error if it cannot be done.
 try:
     os.nice(10)
 except (AttributeError, OSError):
+    pass
+try:
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    "tools"))
+    import _slots
+    _slots.take()
+except Exception:
     pass
 
 
