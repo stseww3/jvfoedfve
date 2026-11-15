@@ -284,19 +284,24 @@ class Laying:
         around = ring(body)
         cells = around if only is None else around & set(only)
         wall = body if self.plan is None else self.plan.body
-        facing = {}
+        facing, touchy = {}, {}
         for c in cells:
             near = [d for d in SIDES if step(c, d) in body]
             if near:
                 facing[c] = min(near, key=lambda d: step(c, d) not in wall)
+                touchy[c] = near[0]
         corners = cells - set(facing)
         if only is not None:
+            # A corner of the run where the moulding turns: both arms reach it, so both columns
+            # beside it stand in `cells` and are turned along the run -- as the moulding lies
+            # before the rule above turns it to the wall. Tested on `touchy`, not on `facing`:
+            # which way a stair is turned must not decide whether the corner exists.
             for c in around - cells:
                 if any(step(c, d) in body for d in SIDES):
                     continue
                 for dx, dz in DIAGONALS:
-                    if ((c[0] + dx, c[1] + dz) in body and facing.get((c[0] + dx, c[1])) == (0, dz)
-                            and facing.get((c[0], c[1] + dz)) == (dx, 0)):
+                    if ((c[0] + dx, c[1] + dz) in body and touchy.get((c[0] + dx, c[1])) == (0, dz)
+                            and touchy.get((c[0], c[1] + dz)) == (dx, 0)):
                         corners.add(c)
         for c in corners:
             cands = [d for dx, dz in DIAGONALS if (c[0] + dx, c[1] + dz) in body for d in ((dx, 0), (0, dz))]
