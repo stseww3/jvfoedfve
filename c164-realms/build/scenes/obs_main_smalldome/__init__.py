@@ -67,6 +67,9 @@ def shots():
     shot("treads", (S.WALL_E - 1.5, eye, gable + 1.5), (ridge, P.ROOF_RIDGE_TOP + 0.3, gable + 2.0))
     shot("walk", (ridge, P.ROOF_RIDGE_TOP + S.EYE, gable + 2.5), (cx - 2.0, spring - 0.5, cz))
     shot("terrace", (S.WALL_W + 2.5, eye, end_gable + 1.5), (cx - 3.0, S.ROOF_STAND + 1.0, cz))
+    # the same on the north end terrace, where the way ends at the clock tower's door (c223's
+    # interface: the leaves in the west face at (10, 18..19, -30), the plate before them)
+    shot("terrace_north", (S.WALL_W + 2.5, eye, -end_gable - 1.5), (cx - 3.0, S.ROOF_STAND + 1.0, -cz))
     shot("roofs", (cx + 6.0, spring + 22.0, cz + 26.0), (ridge, S.ROOF_STAND, 14.0))
     mirror = 2 * S.AXIS_Z                                           # the same over the north wing
     shot("roofs_north", (cx + 6.0, spring + 22.0, mirror - (cz + 26.0)), (ridge, S.ROOF_STAND, mirror - 14.0))
