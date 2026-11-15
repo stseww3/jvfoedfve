@@ -398,8 +398,22 @@ def _wall(c, origin, put, shell):
     lay.mould(shell.ledge, WALL_TOP, IRON.stairs, "top", only=shell.edge - set(GEAR_SHAFT))
     lay.mould(shell.ledge, WALL_TOP - 1, IRON.stairs, "top", only=shell.consoles())
     for x, z in shell.posts():
-        for y in range(FEET, WALL_TOP):
+        out = O.NAME[_outward((x, z))]
+        put(x, FEET, z, f"{IRON.slab}[type=bottom]")                                # its cast foot
+        for y in range(FEET + 1, WALL_TOP - 1):
             put(x, y, z, IRON.block)
+        put(x, WALL_TOP - 1, z, f"{IRON.stairs}[facing={out},half=top]")            # and its capital,
+        #                                                                           spread under the beam
+
+
+def _outward(col):
+    """The side of the drum a column of its wall faces: away from the room's centre, along whichever
+    axis it stands further out on (a column in the corner of the round wall faces one of the two)."""
+    x, z = col
+    dx, dz = x - CX, z - CZ
+    if abs(dx) >= abs(dz):
+        return (1 if dx > 0 else -1), 0
+    return 0, (1 if dz > 0 else -1)
 
 
 def _floor(put, shell):
