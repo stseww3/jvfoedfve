@@ -170,6 +170,10 @@ PALE_WOOD = _family("pale_oak_planks", "stairs slab", stem="pale_oak")          
 VANILLA_BARS = "iron_bars"
 VANILLA_CHAIN = "iron_chain"
 LIGHT = "light"                                                 # the invisible light source: light[level=N]
+# the collision of a closed door or gate that is made of models, and of nothing else (A0, 11-16 05:07,
+# under #457's fourth): in the plane of the leaf, two high, no wider than the leaf. Anywhere else a
+# barrier is the wall nobody sees, which the map does not have; tools/check.py, blocks, holds it to this
+BARRIER = "barrier"
 
 REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE, IRON_RIVETED, IRON_CAST,
              IRON_GRATE, IRON_DOOR, IRON_HATCH, IRON_BARS, IRON_PIPE, IRON_ROD, IRON_BULB, IRON_LANTERN,
@@ -179,7 +183,7 @@ REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE,
              BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, SNOW, SNOW_LAYER, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
            TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED,
-           DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
+           DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT, BARRIER]
 
 
 def ids(entries):
