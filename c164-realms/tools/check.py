@@ -600,11 +600,67 @@ def blocks(rep, got):
     words = f"{len(used)} kinds of block placed"
     if shown:
         words += f", {len(shown)} kinds shown by block displays"
-    if outside:
-        rep.add("blocks", "WARN", f"{words}, {len(outside)} not in the occupancy table "
-                f"(add them to the table through S2, or use a block of the table)", clip(outside))
+    at, tall, alone = _barriers(canvas)
+    if at:
+        words += f", {len(at)} barrier cells ({_span(at)})"
+    more = []
+    if tall:
+        more.append(f"{len(tall)} barrier cells stand more than {BARRIER_HIGH} high ({_span(tall)}): a barrier is "
+                    f"the collision of a closed door or gate made of models, in the plane of its leaf, two high "
+                    f"and no wider than the leaf (A0, 11-16 05:07)")
+    if alone:
+        more.append(f"{len(alone)} barrier cells have no model within {BARRIER_NEAR:g} blocks ({_span(alone)}): "
+                    f"not the leaf of a door or gate; a barrier anywhere else is the wall nobody sees "
+                    f"(A0 #457, 4)")
+    lines = clip(outside) + more
+    if tall:
+        rep.add("blocks", "FAIL", f"{words}: barriers more than {BARRIER_HIGH} high", lines)
+    elif outside or alone:
+        told = []
+        if outside:
+            told.append(f"{len(outside)} not in the occupancy table (add them to the table through S2, or use "
+                        f"a block of the table)")
+        if alone:
+            told.append("barriers away from any model")
+        rep.add("blocks", "WARN", f"{words}, {'; '.join(told)}", lines)
     else:
         rep.add("blocks", "PASS", f"{words}, all in the occupancy table")
+
+
+BARRIER_HIGH = 2            # blocks: the collision of a door leaf is two high
+BARRIER_NEAR = 3.0          # blocks: a leaf three wide, its model set at one jamb, has its far cell 2.5 away
+
+
+def _span(cells):
+    """Where a set of cells lies: x 16, y 0..1, z -5..5."""
+    out = []
+    for name, k in (("x", 0), ("y", 1), ("z", 2)):
+        lo, hi = min(c[k] for c in cells), max(c[k] for c in cells)
+        out.append(f"{name} {lo}" if lo == hi else f"{name} {lo}..{hi}")
+    return ", ".join(out)
+
+
+def _barriers(canvas):
+    """The barrier cells of a scene, those of them in a run more than two high, and those with no
+    model near them. A barrier is the collision of a closed door or gate that is made of models, in
+    the plane of the leaf, two high, no wider than the leaf (A0, 11-16 05:07). The width of the leaf
+    is not known here: what is told apart is a barrier beside a model from one that stands alone."""
+    at = {p for p, s in canvas.b.items() if s.partition("[")[0].split(":", 1)[-1] == B.BARRIER}
+    tall = set()
+    for x, y, z in at:
+        if (x, y - 1, z) in at:
+            continue
+        run = 1
+        while (x, y + run, z) in at:
+            run += 1
+        if run > BARRIER_HIGH:
+            tall |= {(x, y + k, z) for k in range(run)}
+    models = [(mx, my, mz) for mx, my, mz, nbt in canvas.entities
+              if str(nbt.get("id", "")).split(":", 1)[-1] in ("item_display", "block_display")]
+    alone = {(x, y, z) for x, y, z in at
+             if not any(abs(mx - x - 0.5) <= BARRIER_NEAR and abs(my - y - 0.5) <= BARRIER_NEAR
+                        and abs(mz - z - 0.5) <= BARRIER_NEAR for mx, my, mz in models)}
+    return at, tall, alone
 
 
 # ---- flatwall ----------------------------------------------------------------------------------
