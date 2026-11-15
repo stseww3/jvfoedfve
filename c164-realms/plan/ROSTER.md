@@ -46,7 +46,7 @@
 | gear | c266（shell 兼） | c196 | machines/domegear（壳优先） | `cursor/c164-gear-6260` |
 | car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
 | mast | c297 | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
-| arm | — | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
+| arm | c263（m1 兼） | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
 | pipes | c263（m1 兼） | c241 | props/pipes | `cursor/c164-pipes-9deb` |
 | elec | — | c242 | props/electrics-signs | `cursor/c164-elec-7be8` |
 | instr | — | c199 | props/instruments | `cursor/c164-instr-f5da` |
@@ -56,7 +56,7 @@
 | a3 | c290 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
 | chart | c291 | c205 | interiors/chartroom、materials/windows 的内衬和炉火窗 | `cursor/c164-chart-5a4c`、`cursor/c164-m2-windows-7bb5` |
 | m2 | c292 | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` |
-| rec | c264（snow 兼） | — | machines/recorders | `cursor/c164-snow-rec-aide` |
+| rec | c264（snow 兼） | — | machines/recorders、engine-dynamo、switchboard-boiler、meridian-astrograph | `cursor/c164-snow-rec-aide`、`cursor/c164-snow-dynamo-b9be`、`cursor/c164-snow-board-b9be`、`cursor/c164-snow-meridian-b9be` |
 
 ## 还没人领的卡
 
