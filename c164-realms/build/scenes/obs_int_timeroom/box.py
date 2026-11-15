@@ -10,9 +10,15 @@ main/shell of c231's branch 4b9d320b, built and read cell by cell). Whose every 
   main/facade (c206)   the two long walls: glass in the inner leaf (x 14, x 1), the stone leaf
                        outside it (x 15, x 0) with the cornice over it; bays 3..7 are windows on the
                        east, 3..5 on the west
-  sky/lights (c220)    which windows are lit and the two sources behind each lit one: under the blue
-                       look bays 3 and 6 of the east front and 3 and 5 of the west one, opal glass,
-                       level 10 one row above the sill and one row below the head
+  sky/lights (c220)    which windows are lit and the two sources of each lit one: under the blue
+                       look bays 3 and 6 of the east front and 3 and 5 of the west one, opal glass.
+                       The sources stand outside the glass, in the window opening, level 8, one row
+                       above the sill and one row below the head (c220, g2 #33335); the first cell
+                       of the room behind the glass gets 6 of it
+  materials/windows    a lit window is lined on the room side and is unlit glass from inside (A0,
+    (c205)             g2 #32711). Until that lining is in the tree the box glazes the lit windows
+                       with the dark glass, which is what the room sees; nobody looks at the box
+                       from outside
 """
 from artkit.blocks import st
 
@@ -22,7 +28,8 @@ from scenes.obs.interiors import timeroom as T
 from scenes.obs.main import _plan as MP
 
 LIT = {"east": (3, 6), "west": (3, 5)}      # the lit windows of the room under the blue look (sky/lights)
-BEHIND = 10                                 # the level of the sources behind a lit great window
+OUTSIDE = 8                                 # the level of the sources of a lit opal window, in its opening
+ROOM_SIDE = B.WINDOW_DARK                   # what a lit window is from the room, until its lining is in the tree
 DOOR_Y = (T.FEET, T.FEET + 2)
 GALLERY_Z = (T.Z1 + 2, T.Z1 + 3)            # -5..-4: the deck of the hall's side gallery, the rail on its edge
 CORNICE_Y = S.CORNICE                       # 15: the course over the windows; it reaches two blocks out
@@ -44,8 +51,8 @@ def lit(front, bay):
 
 
 def build(c, origin=(0, 0, 0)):
-    """The shell; returns the light sources behind the lit windows, [((x, y, z), level)], which the
-    scene puts down while the light line is not in the tree."""
+    """The shell; returns the light sources of the lit windows, [((x, y, z), level)], which the
+    scene puts down itself: the light line reads the real fronts, and the box has none."""
     ox, oy, oz = origin
     sources = []
 
@@ -79,18 +86,19 @@ def build(c, origin=(0, 0, 0)):
                 shell = x == gw and z >= T.PIER_Z[-1]       # the shell's own stretch of the west wall
                 put(x, y, z, wall_block(y) if shell else B.ASHLAR_FINE.block)
 
-    # the windows: glass in the inner leaf, the stone leaf open in front of it
-    for front, bays, glass_x, face_x, inward in (("east", T.EAST_BAYS, ge, xe, -1), ("west", T.WEST_BAYS, gw, xw, 1)):
+    # the windows: glass in the inner leaf, the stone leaf open in front of it; the sources of a lit
+    # one stand in that opening
+    for front, bays, glass_x, face_x in (("east", T.EAST_BAYS, ge, xe), ("west", T.WEST_BAYS, gw, xw)):
         for bay in bays:
             rows = MP.window_rows(bay)
-            glass = (B.WINDOW_FROSTED if lit(front, bay) else B.WINDOW_DARK).block
+            glass = (ROOM_SIDE if lit(front, bay) else B.WINDOW_DARK).block
             for z in rows:
                 for y in range(S.WINDOW[0], S.WINDOW[1] + 1):
                     put(glass_x, y, z, glass)
                     cut(face_x, y, z)
             if lit(front, bay):
                 middle = rows[len(rows) // 2]
-                sources += [((glass_x + inward, y, middle), BEHIND) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
+                sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
 
     # the door, and a piece of the gallery beyond it
     for x in range(T.DOOR_X[0], T.DOOR_X[1] + 1):
@@ -104,6 +112,6 @@ def build(c, origin=(0, 0, 0)):
 
 
 def light(c, sources):
-    """Put down the sources behind the lit windows, never over a block that is there."""
+    """Put down the sources of the lit windows, never over a block that is there."""
     for (x, y, z), level in sources:
         c.set(x, y, z, st(B.LIGHT, level=level), keep=True)

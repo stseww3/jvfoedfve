@@ -1,8 +1,8 @@
-"""The models the test scene of the time room shows: the lamps of props/lamps."""
+"""The models the time room's test scene packs: the lamps, and the pieces of the other packages
+the room places, as far as those packages are in the tree."""
+from scenes.obs.interiors import timeroom
 from scenes.obs.props import lamps
-
-SCALE = lamps.SCALE
 
 
 def build_models():
-    return lamps.models()
+    return {**lamps.models(), **timeroom.their_models()}
