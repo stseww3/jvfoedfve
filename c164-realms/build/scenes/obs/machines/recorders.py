@@ -75,9 +75,9 @@ DEFAULT_SLOTS = {
 
 # --- sizes in model units (16 to the block); the card's block sizes are in the comments
 DRUM_W, DRUM_D, DRUM_H = 24.0, 16.0, 24.0      # the recorder's case: 1.5 x 1.0 x 1.5 blocks
-DRUM_R = 5.2                                   # the drum: 0.33 blocks through
-CHART_W = 9.0                                  # the drum's width along its axis: 0.56 blocks
-DRUM_AXIS = 17.0                               # the drum's axis height above the case's foot
+DRUM_R = 8.0                                   # the drum: 1.0 blocks through -- the machine itself
+CHART_W = 19.0                                 # the drum's width along its axis: 1.19 blocks
+DRUM_AXIS = 15.2                               # the drum's axis height above the foot: 0.95 blocks
 TELE_W, TELE_D, TELE_H = 16.0, 13.0, 12.0      # the register: 1.0 x 0.8 x 0.75 blocks
 TUBE_R = 2.6                                   # the pneumatic pipe: 0.16 blocks through
 TUBE_LIFT = 1.6                                # blocks from the sill to the tube body's centre
@@ -96,7 +96,7 @@ WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)
 WOOD_L = P.mat("dark_wood", base=3)
 CREAM = P.mat("cream")
-CREAM_F = P.mat("cream", kind="flat", bevel=0)
+CREAM_F = P.mat("cream", kind="flat", base=1, bevel=0)
 CREAM_D = P.mat("cream", base=1, kind="flat", bevel=0)
 PORCELAIN = P.mat("porcelain")
 
@@ -114,7 +114,7 @@ def _drum():
     m = M.Model(PREFIX + "drum", px=1.0, anchor=(0.0, DRUM_AXIS, 0.0))
     hw, hd = DRUM_W / 2, DRUM_D / 2             # 12, 8
     ay = 0.0                                    # the model's own frame puts the axis at y 0
-    case_top = -7.5                             # the case stops well below the drum's axis
+    case_top = -8.2                             # a low base: 0.44 blocks, so the drum dominates
     half_chart = CHART_W / 2                    # 6
 
     # the case: a plinth on four feet, the body, a moulded top edge; the drawer face and its pull
