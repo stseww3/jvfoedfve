@@ -13,7 +13,8 @@ things the card and c190's pre-review call for:
                blocks -- the rough below and the fine above must read as one stone across the course
                (c190 #2);
   - flight     a flight of fine stairs and a coping run, to be read from straight above: a tread and
-               a coping carry no bed joint (c190 #1);
+               a coping carry no bed joint (c190 #1); and from its foot, as someone about to climb
+               it sees the treads and the risers;
   - paved      a field of the fine stone and one of the rough let into the floor: the ends of the
                stones as a terrace and its kerbs show them, where an end that repeats would show;
   - lit        seven bays of the front, cut as the skeleton cuts it and built of the four stones,
@@ -234,9 +235,9 @@ def shots():
     eight-by-eight wall close, the four from twenty blocks and from thirty-six, the distance of the
     forecourt view (stripes, the lightness of the whole), and along their faces at a grazing angle
     (where joints run into streaks); the coursed band face-on (rough and fine as one stone) and its
-    string course from the ground; the fine treads and the copings from above; the paved fields from
-    eye height and from above (an end that repeats); the lit bays from the forecourt as someone
-    walking up to them sees them, face-on, and close to the lamp."""
+    string course from the ground; the fine treads and the copings from above and the flight from
+    its foot; the paved fields from eye height and from above (an end that repeats); the lit bays
+    from the forecourt as someone walking up to them sees them, face-on, and close to the lamp."""
     spans = layout()
     out = []
 
