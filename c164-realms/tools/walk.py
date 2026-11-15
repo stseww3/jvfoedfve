@@ -571,11 +571,11 @@ def sheets_of(table, pictures, out, cols=COLS, rows=ROWS, quality=88):
 def scene_cells(scene, canvas):
     """The built scene's cells: read from the pickle build/render.py --canvas keeps, or built and
     kept there."""
+    if BUILD not in sys.path:               # the pickle holds the scene's entities too: artkit's classes
+        sys.path.insert(0, BUILD)
     if canvas and os.path.exists(canvas):
         with open(canvas, "rb") as fh:
             return pickle.load(fh)["b"]
-    if BUILD not in sys.path:
-        sys.path.insert(0, BUILD)
     built = importlib.import_module(f"scenes.{scene}").build()
     if canvas:
         os.makedirs(os.path.dirname(os.path.abspath(canvas)), exist_ok=True)
