@@ -1,0 +1,215 @@
+{
+ "scene": "obs_mot_loop",
+ "commit": "a7493ed",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "2663 blocks, 16 entities, 13 models, 616 resource-pack files, 12 data-pack files, look: 1 biomes, 1 timelines (0.4 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 615 files, no file written twice, the packages of motion write nothing into the pack",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "121 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "485 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "4 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of motion: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "16 display entities, 1 drawn out along one axis, 1 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 16,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wheels",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_pin",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse",
+      "in_view": 6,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_pin",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulums",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_pins",
+      "in_view": 4,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slider",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bar",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far_again",
+      "in_view": 16,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wheels_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_again",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_pin_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_again",
+      "in_view": 6,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arm_coarse_pin_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "pendulums_again",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_again",
+      "in_view": 5,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "crank_pins_again",
+      "in_view": 4,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "slider_again",
+      "in_view": 3,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lamp_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "bar_again",
+      "in_view": 2,
+      "drawn": 16,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  }
+ ]
+}
