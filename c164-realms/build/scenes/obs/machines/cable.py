@@ -1,305 +1,596 @@
-"""machines/cable: the cable car and winch at the cable station (plan ART-PLAN 7.2, 5.3;
-parts/A5-machines.md 2.7; card packages/machines/cablecar-winch.md).
+"""machines/cable: the cable car, its winch and the haul rope at the cable station (plan ART-PLAN
+7.2, 5.3; parts/A5-machines.md 2.7; card packages/machines/cablecar-winch.md).
 
-The station is the spawn and the arrival view V1 (skeleton S.V1). Four pieces, all east or north of
-the V1 eye so none crosses its sight line to the building (S.V1 looks west-south-west and up):
+The station is the spawn and the arrival view (skeleton S.V1): the player comes into the map at
+the head of the track, looking away from all of this at the building. Nothing here stands in that
+picture (A0 #304: no rope and no wheel between the eye and the building): every piece is east of
+the spawn cell or in the winch house north of it. It is what the player finds on turning round:
+the car at his back, its door towards him, and the winch in its house on his right.
 
-  mach_cable_car     the car: a dark-wood body in an iron frame, lit windows, a door to the platform;
-                     parked at the head of the track, hard against the station's east edge, so a
-                     player who spawns on the platform turns round to "the thing I came up on".
-  mach_cable_drum    the winch: a wide iron drum with a cable groove between two spoked wheels
-                     (diameter 3), in the machine house behind the car, its big wheel seen from the
-                     platform. Movable (A8): it turns about its own axis -- marked DRUM_AXIS below.
-  mach_cable_sheave  a grooved guide wheel that turns the haul rope. Two of them: one leads the rope
-                     from the drum down to the car, one at the track head turns it onto the descent.
-                     Movable (A8): turns about its own axis (local z).
-  mach_cable_rope    the steel haul rope: a thin flat-tone bar stretched with M.between, from the
-                     drum over the car and down the trestle (site _kit K.cable_ridge) into the cloud.
+How it works, so that it can be read off the pieces:
 
-Scale (A5 1.2, px = scale keeps 16 texels to the block): car 2, drum 2, sheave 1, rope stretched.
-Budget (card): about 40 display entities; build() returns how many it placed.
+  motor -> belt -> drum   An electric motor on the threshold of the winch house drives the west
+                          wheel of the drum by a flat belt. The drum is a wide barrel between two
+                          spoked wheels three blocks across, the rope wound on it turn beside turn.
+  drum -> lead sheave     The rope leaves the top of the barrel, comes forward and down over a
+                          sheave one block across that stands on the threshold, and goes into
+                          the floor through a collar.
+  under the paving        Cover plates in the paving show the way of the duct to the track. It
+                          crosses below the north rail and ends under the cast cover between the
+                          rails at the head of the track, which is also the step to the car's door.
+  along the track         Out of that cover the rope runs just above the grating, under the car
+                          (the car's grip is closed on it), off the platform, round a level roller
+                          on the first tie on to the line of the trestle, over a roller at the brow
+                          and down the trestle from roller to roller into the cloud.
+
+The models (all "mach_cable_"):
+
+  car      the car: dark-wood boards in a riveted iron frame on four wheels, lit windows, a
+           clerestory roof with a lamp at each end. One piece; it stands still.
+  drum     MOVES. Barrel, rope and the two wheels: turns about its own x axis through the anchor.
+  frame    the two bearing pedestals of the drum, and the belt where it lies on the west wheel.
+  motor    the motor on its bed, its belt pulley with the belt on it, its conduit into the floor.
+  belt     one straight run of the belt, drawn out between the two wheels (M.between).
+  sheave   MOVES. The lead sheave's wheel: turns about its own x axis through the anchor.
+  stand    the lead sheave's stand, with the rope where it lies in the groove and goes down.
+  duct     the cover plates of the rope duct, one cell of them.
+  hood     the cast cover at the head of the track, the step to the car.
+  turn     the level roller that turns the rope on to the trestle's line.
+  roller   a track roller on its tie, that carries the rope: at the brow and down the slope.
+  rope     the haul rope, drawn out between two points (M.between).
+
+For the motion line (MOVING below): the drum and the sheave are models of their own, anchored on
+their axes, and their entities carry a tag. Turning them the positive way about x pays the rope
+out (the car goes down). The small rollers are plain cylinders, a turn would not show, so they
+are not split.
+
+Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
+car is under three blocks every way, so it is drawn texel for texel. 26 display entities, one of
+them the lamp family's wall lamp in the winch house (WORK_LAMP).
 """
 import functools
 import math
 
-from artkit import models as M
+import numpy as np
 
-from ..common import blocks as B
+from artkit import models as M
+from artkit.pixelart import Mat, Sprite
+
 from ..common import palette as P
 from ..common import skeleton as S
-from ..site import _kit as SK        # read only: the ridge the trestle (and so the rope) runs down
+from ..props import _kit as PK          # read only: flat tones, rivets, the hand-over of light sources
+from ..props import lamps               # the lamp in the winch house is one of the lamp family
+from ..site import _kit as SK           # read only: the line of the ridge under the trestle
+
+try:                                    # the station's shell, once site/cablecar is in the tree
+    from ..site import cablecar as SHELL
+except ImportError:                     # until then its numbers as the group has them (c226, 275660c7)
+    SHELL = None
 
 PREFIX = "mach_cable_"
+PX = 1.0 / 16.0                         # one texel, in blocks
 
 # --- materials (palette only) ---------------------------------------------------------------------
-IRON = P.mat("iron")
-IRON_D = P.mat("iron_dark")
-IRON_F = P.mat("iron_flat")
+IRON, IRON_D, BRASS, BRASS_D = PK.IRON, PK.IRON_D, PK.BRASS, PK.BRASS_D
 WOOD = P.mat("dark_wood")
-BRASS = P.mat("brass")
+WOOD_D = P.mat("dark_wood", base=1)                     # the sunk panel of the door
+GLOW = [PK.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]
+ROPE, ROPE_TOP, ROPE_UNDER = PK.flat("iron", 4), PK.flat("iron", 5), PK.flat("iron", 2)
+BELT, BELT_EDGE = PK.flat("old_copper", 1), PK.flat("old_copper", 0)        # a leather belt
 
 
-def _flat(name, step):
-    """One flat tone of a ramp (glass and smooth faces, shaded in the texture not by the engine)."""
-    return P.mat(name, kind="flat", base=step, bevel=0)
+class _Wound(Mat):
+    """Rope wound on a barrel, turn beside turn: a light and a dark texel by turns along the
+    barrel, so that every turn is two texels wide like the rope itself."""
+
+    def levels(self, w, h, grain, seed):
+        jj, ii = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
+        if grain == "cap":
+            return np.full((h, w), self.base, dtype=np.int32)
+        return self.base - ((ii if grain == "u" else jj) % 2)
 
 
-GLOW_WIN = _flat("glow", 1)         # the warm amber of a lit window, kept dim so the lit area is small
-GLOW_HOT = _flat("glow", 2)         # the one hotter tone, only the small panes behind the door
+COIL = _Wound(PREFIX + "coil", P.RAMPS["iron"], kind="flat", bevel=0, base=5)
 
-# --- where it all stands (from the skeleton and the site ridge; nothing written down twice) --------
-# CABLE_STATION = (75, -40, 91, -26); its platform feet at STATION_GROUND; the track axis leaves the
-# east edge in row z = -33 (A4-site 7, site/_kit K.cable_ridge, c221 group #198).
-STATION = S.CABLE_STATION
-DECK = float(S.STATION_GROUND)              # -4.0, where feet (and the car floor) stand on the platform
-EAST = float(STATION[2])                    # 91.0, the east edge column
-TRACK_Z = float(SK.CABLE_RIDGE_Z)           # -33.0, the track axis at the station
-
-# The car at the head of the track, body x 89..91 so its west face is east of the V1 eye (x 88.5): it
-# frames nothing of the forward view and is seen on turning round. Door and lit windows face the
-# platform (west and south). Coordinate with c226 on the exact cell (group #247).
-CAR = (90.0, DECK, TRACK_Z)                 # anchor: floor centre
-GRIP_Y = DECK + 0.7                         # the haul rope grips the truck at axle height
-CAR_GRIP_W = (CAR[0] - 1.0, GRIP_Y, TRACK_Z)   # west grip, up to the winch
-CAR_GRIP_E = (CAR[0] + 1.0, GRIP_Y, TRACK_Z)   # east grip, down the trestle
-
-# The winch in the machine house behind the car (north-east corner), its wheel seen from the platform.
-DRUM = (85.5, -2.0, -37.0)                  # anchor: the axle centre
-DRUM_AXIS = "z"                             # it turns about its own local z (A8)
-DRUM_OFFTAKE = (86.9, -2.6, -36.4)          # where the rope leaves the barrel towards the car
-
-SHEAVE_UP = (88.0, -3.1, -35.0)             # leads the rope from the drum down to the car
-SHEAVE_HEAD = (EAST + 0.9, -3.9, TRACK_Z)   # at the track head, turns the rope onto the descent
-SHEAVE_AXIS = "z"
-
-# The descent down the trestle: points on the ridge raised to the track deck, into the cloud.
-DECK_ABOVE_RIDGE = 2.5                      # the trestle deck runs about this far above the rock
-CLOUD_TOP = -26                            # sky/terrain: the rope is lost in the cloud below this
+_G = P.RAMPS["glow"]
+_LIT = {"0": _G[0], "1": _G[1], "2": _G[2]}
+# A lit window of the car, seen from outside: the lamp under the roof is the bright spot at the
+# top, the light falls off towards the seats. The fourth row lies behind the glazing bar.
+WIN6 = Sprite(PREFIX + "win6", ["112211", "122221", "112211", "000000", "111111", "011110", "011110", "001100",
+                                "001100", "000000", "000000"], _LIT)
+WIN5 = Sprite(PREFIX + "win5", ["12221", "12221", "11211", "00000", "11111", "01110", "01110", "00100",
+                                "00100", "00000", "00000"], _LIT)
+_I = P.RAMPS["iron"]
+# One chequer plate of the duct's cover: a rim, raised lozenges, a slot to lift it by.
+PLATE = Sprite(PREFIX + "plate", ["22222222", "24334332", "23343342", "23433432", "24334332", "23343342",
+                                  "23300332", "22222222"], {"0": _I[0], "2": _I[2], "3": _I[3], "4": _I[4]})
 
 
-def _ridge_point(x):
-    """A rope point above the ridge in column x, or None past the end of the ridge."""
-    zy = SK.cable_ridge(x)
-    if zy is None:
-        return None
-    z, y = zy
-    return (float(x) + 0.5, float(y) + DECK_ABOVE_RIDGE, float(z) + 0.5)
+# --- where it stands ------------------------------------------------------------------------------
+# Everything hangs on the station's shell (site/cablecar): the car's cells, the winch room, the
+# rule of the track. Points are in blocks, x east, y up, z south.
+def _shell(name, default):
+    return getattr(SHELL, name, default)
 
 
-# three spans down the trestle; the last ends in the cloud (K.cable_ridge reaches the cloud top ~x120)
-DESCENT = [p for p in (_ridge_point(100), _ridge_point(110), _ridge_point(120)) if p is not None]
+X0, Z0, X1, Z1 = S.CABLE_STATION                        # x 75..91, z -40..-26
+FEET = float(S.STATION_GROUND)                          # -4: the platform's floor, and the rails' top in it
+AXIS = _shell("AXIS", SK.CABLE_RIDGE_Z)                 # -33: the row of the track's axis
+TRACK_Z = AXIS + 0.5                                    # the track's centre line in the station
+CAR_BOX = _shell("CAR", {"box": (int(S.V1["pos"][0]) + 1, AXIS - 1, X1, AXIS + 1)})["box"]     # x 89..91, z -34..-32
+ROOM = _shell("WINCH_ROOM", {"box": (X1 - 5, Z0 + 1, X1 - 1, Z0 + 3)})["box"]                  # x 86..90, z -39..-37
+LEVEL = _shell("LEVEL", 4)                              # cells of level track east of the platform
+GRADE = _shell("GRADE", 0.5)                            # then the rails fall this much with every cell
 
-ROPE_LEN = 48.0                            # the rope model is this long, along +z (M.between stretches it)
-ROPE_THICK = 1.1
+
+def track_axis(x):
+    """The row of the track's axis in column x: the station's row, then the ridge's own line."""
+    if SHELL is not None:
+        return SHELL.track_axis(x)
+    return AXIS if x <= X1 else int(round(AXIS - (x - SK.CABLE_RIDGE_X[0]) / 3.0))
 
 
-# --- the models -----------------------------------------------------------------------------------
+def rail_top(x):
+    """y of the upper face of the rails in column x."""
+    if SHELL is not None:
+        return SHELL.rail_top(x)
+    return FEET - GRADE * max(0, x - X1 - LEVEL)
+
+
+TRACK_END = _shell("END", next(x for x in range(X1 + 1, X1 + 200) if rail_top(x) <= SK.ROCK_FLOOR + 2))  # 141
+
+# The car: its body is two blocks square on the three cells the shell keeps for it, its west end
+# (the door) half a block east of the spawn cell. Anchor: the middle of its foot on the rails.
+CAR = (S.mid(CAR_BOX[0], CAR_BOX[2]), FEET, TRACK_Z)
+CAR_LIGHT = (int(math.floor(CAR[0])), int(FEET) + 1, AXIS)      # a cell: the light of its windows
+CAR_LIGHT_LEVEL = 9                                     # a lit window is a second-rank light (A5 1.3)
+
+# The cast cover at the head of the track fills the west half of the car's first cell between the
+# rails, right under the door. The rope's duct lies in that same strip of x all the way north.
+X_ROPE = CAR_BOX[0] + 0.25
+HOOD = (X_ROPE, FEET, TRACK_Z)
+DUCT_ROWS = list(range(ROOM[3] + 2, AXIS - 1))          # the paving between the house and the north rail: z -35
+
+# The winch fills the room: the drum's axle runs east-west through the middle of it, the wheels
+# two texels clear of the floor and of the north wall. The threshold is the row of the south wall,
+# which is one opening: the motor and the lead sheave stand in it.
+WHEEL_R = 1.5                                           # the big wheels: three blocks across
+AXLE = (S.mid(ROOM[0], ROOM[2]), FEET + WHEEL_R + 2 * PX, ROOM[1] + WHEEL_R + 2 * PX)
+THRESHOLD_Z = ROOM[3] + 1.5
+DRUM_ROPE_R = 1.0                                       # from the axle to the middle of the rope on the barrel
+SHEAVE = (X_ROPE, FEET + 9 * PX, THRESHOLD_Z - 2 * PX)  # the lead sheave: one block across, a texel off the floor
+SHEAVE_ROPE_R = 7 * PX
+WHEEL_X = 10.25                                         # the wheels' middle planes, in the drum's units from its middle
+BELT_X = AXLE[0] - WHEEL_X * 2 * PX                     # the west wheel's, in blocks
+PULLEY = (BELT_X, FEET + 8 * PX, THRESHOLD_Z)           # the motor's belt pulley
+WHEEL_BELT_R, PULLEY_BELT_R = WHEEL_R + 0.5 * PX, 4.5 * PX      # to the middle of the belt's thickness
+LAMP = (AXLE[0], FEET + 3.5, float(ROOM[1]))            # on the north wall between its windows, over the barrel
+WORK_LAMP = True                                        # False once the site's lamps light the winch room
+
+
+def _runs(c1, r1, c2, r2):
+    """The two straight runs of a rope or belt that goes round two wheels the same way, in the
+    wheels' plane. Centres are (z, y). Each run is given by its unit normal n, also (z, y): the
+    run touches the wheels at c1 + r1 * n and c2 + r2 * n. The upper run comes first."""
+    dz, dy = c2[0] - c1[0], c2[1] - c1[1]
+    dist = math.hypot(dz, dy)
+    u = (dz / dist, dy / dist)
+    v = (-u[1], u[0])
+    s = (r1 - r2) / dist
+    c = math.sqrt(1.0 - s * s)
+    out = [(s * u[0] + k * c * v[0], s * u[1] + k * c * v[1]) for k in (1.0, -1.0)]
+    return sorted(out, key=lambda n: -n[1])
+
+
+def _angle(n):
+    """Where a normal (z, y) points, as M.Model.ring counts angles about x: 0 up, 90 south."""
+    return math.degrees(math.atan2(n[0], n[1])) % 360.0
+
+
+def _on(centre, r, n, x):
+    """The point where a run with normal n touches the wheel about `centre`, in the plane x."""
+    return (x, centre[1] + r * n[1], centre[2] + r * n[0])
+
+
+def _sides(span, about):
+    """How many sides to give a ring of which `span` degrees are wanted: M.Model.ring draws whole
+    sides only, and a belt has to end where its straight run begins. The count near `about` whose
+    sides fit the span best."""
+    def miss(n):
+        return abs(round(span * n / 360.0) * 360.0 / n - span)
+    return min(range(about - about // 4, about + about // 2 + 1), key=lambda n: (round(miss(n), 2), abs(n - about)))
+
+
+_LEAD = _runs((AXLE[2], AXLE[1]), DRUM_ROPE_R, (SHEAVE[2], SHEAVE[1]), SHEAVE_ROPE_R)[0]
+LEAD_WRAP = _angle(_LEAD)                               # from here to 90 the rope lies on the sheave
+_BELT = _runs((AXLE[2], AXLE[1]), WHEEL_BELT_R, (PULLEY[2], PULLEY[1]), PULLEY_BELT_R)
+BELT_UP, BELT_LOW = _angle(_BELT[0]), _angle(_BELT[1])  # the belt is on the pulley between these two
+
+# The rope along the track. In the station it runs level, three texels over the rails. East of
+# the platform it follows the middle line of the trestle (a third of a block north for every block
+# east): it climbs a little to the roller at the brow and then lies on the rollers of the slope,
+# which stand on the middle of every sixth tie, RISE above the line of the steps' noses.
+X_TURN = SK.CABLE_RIDGE_X[0] + 0.5                      # 92.5: where the centre line turns on to the ridge's
+X_GRADE = X1 + LEVEL + 1.0                              # 96: the nose of the last level cell
+_HX, _HZ = 3.0 / math.sqrt(10.0), -1.0 / math.sqrt(10.0)        # level and along the trestle
+BEND = math.atan2(-_HZ, _HX)                            # the turn at X_TURN, 18 degrees to the north
+THETA = math.atan(GRADE * _HX)                          # how steep the rope lies on the slope
+TRACK_YAW = math.degrees(math.atan2(-_HX, _HZ))         # turns a model's +z down the trestle
+TURN_R = 4 * PX                                         # from the level roller's axis to the middle of the rope
+ROLL_R = 3 * PX                                         # the same for a track roller
+ROLL_UP = 5 * PX                                        # a track roller's axis above its tie
+RISE = ROLL_UP - GRADE / 2.0 + ROLL_R / math.cos(THETA)
+BROW_TIE = X1 + LEVEL                                   # 95: the last level column
+ROLLER_TIES = [t for t in range(BROW_TIE, TRACK_END - 6, 6) if rail_top(t) == int(rail_top(t))]   # 95, 101 .. 131
+
+
+def _line_z(x):
+    return TRACK_Z - max(0.0, x - X_TURN) / 3.0
+
+
+def _slope(x):
+    """The point of the rope at x, on the slope."""
+    return (x, FEET - GRADE * (x - X_GRADE) + RISE, _line_z(x))
+
+
+def _roller_at(tie):
+    """The centre of the roller on the tie of column `tie`."""
+    return (tie + 0.5, rail_top(tie) + ROLL_UP, _line_z(tie + 0.5))
+
+
+TURN = (X_TURN - TURN_R * math.tan(BEND / 2.0), FEET + 4 * PX, TRACK_Z - TURN_R)
+_Y_BROW = rail_top(BROW_TIE) + ROLL_UP + ROLL_R         # the rope on top of the brow roller
+_X_BROW = X_GRADE - (_Y_BROW - FEET - RISE) / GRADE     # where the slope's line comes up to that
+ROPE_LINE = ([(CAR_BOX[0] + 0.5 - 2 * PX, FEET + 3 * PX, TRACK_Z),     # two texels inside the hood
+              (X_TURN, TURN[1], TRACK_Z),
+              (_X_BROW, _Y_BROW, _line_z(_X_BROW))]
+             + [_slope(t + 0.5) for t in ROLLER_TIES[2::2]]             # a new piece at every other roller
+             + [_slope(TRACK_END + 1.0)])                               # the end of the track, under the cloud
+
+_WHEEL, _POST, _SPOKE, _LEG = 700, 710, 720, 730        # pieces that share one picture
+
+
+# --- the car --------------------------------------------------------------------------------------
 def _car():
-    """The cable car. Shown at scale 2 (units are eighths of a block, px = 2 keeps 16 texels to the
-    block). Anchor: the floor centre. It is parked, so it carries no axis (A8 drives nothing)."""
-    m = M.Model(PREFIX + "car", px=2.0)
-    HX = HZ = 8.0                            # half footprint, 2 x 2 blocks
-    EAVE = 16.0                              # the body is two blocks of wall
-    ROOF = 20.0                              # and a roof, 2.5 blocks over all
+    """The car, drawn texel for texel (scale 1). x is the way of the track, the door at -x (west).
+    Anchor: the middle of its foot, on the top of the rails.
 
-    # truck under the body: an iron frame on two axles, the rope gripped at both ends
-    m.box((-HX, -2.5, -HZ), (HX, 0.0, HZ), IRON, skip="u", grain="x")
-    for ax in (-4.5, 4.5):
-        m.tube("z", (ax, -1.6), -HZ + 0.6, HZ - 0.6, 0.7, IRON_D)
-        for zz in (-HZ + 1.2, HZ - 1.2):
-            m.tube("z", (ax, -1.6), zz - 0.8, zz + 0.8, 2.0, IRON)      # wheel
+    From the rails up: wheels 8 across under an iron frame (y 6..9), the floor at 9, boards to
+    the waist rail (22..24), windows 24..35, the letter board to the eaves at 38, then the roof
+    with its clerestory to 45. The walls lie in three planes: the iron frame, the boards one
+    texel behind it, the glass one behind that."""
+    m = M.Model(PREFIX + "car")
+    FLOOR, WAIST, SILL, HEAD, EAVE = 9, 22, 24, 35, 38
+    BAR = 31                                            # the glazing bar, before the windows' fourth row
+    piers = ((-14, -12), (-6, -3), (3, 6), (12, 14))    # between three windows six wide
+    lights = (-12, -3, 6)
+
+    # the underframe and the running gear
+    for s in (-1.0, 1.0):
+        m.box((-14, 6, 14 * s), (14, FLOOR, 16 * s), IRON, grain="x")              # sole bar
+        m.box((14 * s, 6, -16), (16 * s, FLOOR, 16), IRON, grain="z")              # head stock
+        for t in (-10.5, -3.5, 3.5, 10.5):
+            PK.rivet(m, (t, 7.5, 16 * s), "z" if s > 0 else "-z")
+            PK.rivet(m, (16 * s, 7.5, t), "x" if s > 0 else "-x")
+    m.box((-14, 8, -14), (14, FLOOR, 14), IRON_D)                                  # the floor, seen from below
+    for wx in (-10.0, 10.0):
+        m.tube("z", (wx, 4.0), -12.0, 12.0, 1.0, IRON_D)                           # axle
+        for s in (-1.0, 1.0):
+            m.ring("z", (wx, 4.0, 12.5 * s), 3.5, 1.0, 3.0, IRON, sides=8, seed=_WHEEL)        # tyre
+            a, b = sorted((12.0 * s, 13.0 * s))
+            m.tube("z", (wx, 4.0), a, b, 3.0, IRON_D, seed=_WHEEL + 1)                         # web
+            a, b = sorted((13.0 * s, 15.0 * s))
+            m.box((wx - 1, 3, a), (wx + 1, 5, b), BRASS_D, seed=_WHEEL + 2)                    # hub cap
+    m.box((-2, 5, -1), (2, 8, 1), IRON_D)                                          # the grip's shank
+    m.box((-3, 2, -2), (3, 5, 2), IRON_D, grain="x")                               # its jaws, closed on the rope
+
+    # the body: four iron corner posts
     for sx in (-1.0, 1.0):
-        m.box((sx * HX, -2.1, -1.4), (sx * (HX + 2.0), -1.1, 1.4), IRON_D, grain="x")   # draw-gear
-        m.tube("x", (-1.6, 0.0), sx * HX, sx * (HX + 2.4), 0.9, IRON)                   # rope socket
+        for sz in (-1.0, 1.0):
+            m.box((14 * sx, FLOOR, 14 * sz), (16 * sx, EAVE, 16 * sz), IRON, grain="y", seed=_POST)
+            for y in (12.5, 19.5, 27.5, 33.5):
+                PK.rivet(m, (14.5 * sx, y, 16 * sz), "z" if sz > 0 else "-z")
+                PK.rivet(m, (16 * sx, y, 14.5 * sz), "x" if sx > 0 else "-x")
 
-    # corner posts (iron), the dark-wood walls set back between them
-    for cx in (-HX, HX):
-        for cz in (-HZ, HZ):
-            x0, x1 = (cx - 1.4, cx) if cx > 0 else (cx, cx + 1.4)
-            z0, z1 = (cz - 1.4, cz) if cz > 0 else (cz, cz + 1.4)
-            m.box((x0, 0.0, z0), (x1, EAVE, z1), IRON, grain="y")
-    m.box((-HX, 0.0, -HZ + 1.3), (HX, 2.0, HZ - 1.3), IRON, grain="y")      # east/west sill
-    m.box((-HX + 1.3, 0.0, -HZ), (HX - 1.3, 2.0, HZ), IRON, grain="y")      # north/south sill
-    for cz in (-HZ, HZ):                                                    # south, north walls
-        z0, z1 = (cz - 1.0, cz) if cz > 0 else (cz, cz + 1.0)
-        m.box((-HX + 1.3, 1.5, z0), (HX - 1.3, EAVE, z1), WOOD, grain="y")
-    for cx in (-HX, HX):                                                    # east, west walls
-        x0, x1 = (cx - 1.0, cx) if cx > 0 else (cx, cx + 1.0)
-        m.box((x0, 1.5, -HZ + 1.3), (x1, EAVE, HZ - 1.3), WOOD, grain="y")
+    # the two long sides
+    for s in (-1.0, 1.0):
+        out = "s" if s > 0 else "n"
+        m.box((-14, FLOOR, 14 * s), (14, WAIST, 15 * s), WOOD, grain="y")          # boards
+        m.box((-14, WAIST, 14 * s), (14, SILL, 16 * s), IRON, grain="x")           # waist rail
+        for a, b in piers:
+            m.box((a, SILL, 14 * s), (b, HEAD, 15 * s), WOOD, grain="y")
+        m.box((-14, HEAD, 14 * s), (14, EAVE, 15 * s), WOOD, grain="x")            # letter board
+        for a in lights:
+            m.box((a, SILL, 13 * s), (a + 6, HEAD, 14 * s), GLOW[0], faces={out: WIN6}, emit=15, shade=False)
+            m.box((a, BAR, 14 * s), (a + 6, BAR + 1, 15 * s), IRON_D, grain="x")   # glazing bar
+        m.box((-3, 13, 15 * s), (3, 17, 15.5 * s), BRASS, grain="x")               # the maker's plate
 
-    _band_z(m, HZ, 1.0, (-6.3, 6.3), (8.0, 13.0))       # lit windows, south (to the platform)
-    _band_x(m, HX, 1.0, (-6.3, 6.3), (8.0, 13.0))       # and east (seen down the descent)
-    _band_z(m, -HZ, -1.0, (-6.3, 6.3), (9.5, 13.0))     # a smaller one north (the machine-house side)
-    _door(m, -HX, -1.0)                                 # the door, west, to the platform
+    # the east end, towards the valley: three windows like the sides
+    m.box((14, FLOOR, -14), (15, WAIST, 14), WOOD, grain="y")
+    m.box((14, WAIST, -14), (16, SILL, 14), IRON, grain="z")
+    for a, b in piers:
+        m.box((14, SILL, a), (15, HEAD, b), WOOD, grain="y")
+    m.box((14, HEAD, -14), (15, EAVE, 14), WOOD, grain="z")
+    for a in lights:
+        m.box((13, SILL, a), (14, HEAD, a + 6), GLOW[0], faces={"e": WIN6}, emit=15, shade=False)
+        m.box((14, BAR, a), (15, BAR + 1, a + 6), IRON_D, grain="z")
 
-    # roof: an iron deck with a small overhang and a ridge cap along the way of travel
-    m.box((-HX - 1.2, EAVE, -HZ - 1.2), (HX + 1.2, EAVE + 1.5, HZ + 1.2), IRON, grain="x")
-    m.box((-HX - 1.5, EAVE + 1.5, -1.3), (HX + 1.5, ROOF, 1.3), IRON_D, grain="x")
-    for sx in (-1, 1):                                   # two roof ribs
-        m.box((sx * (HX - 3.5) - 0.3, EAVE + 1.5, -HZ - 1.2), (sx * (HX - 3.5) + 0.3, EAVE + 2.6, HZ + 1.2),
-              IRON_D, grain="z")
+    # the west end, towards the platform: the door between two narrow windows
+    for s in (-1.0, 1.0):
+        a, b = sorted((6 * s, 14 * s))
+        m.box((-15, FLOOR, a), (-14, WAIST, b), WOOD, grain="y")
+        m.box((-16, WAIST, a), (-14, SILL, b), IRON, grain="z")
+        m.box((-15, HEAD, a), (-14, EAVE, b), WOOD, grain="z")
+        for a, b in ((6, 7), (12, 14)):
+            a, b = sorted((a * s, b * s))
+            m.box((-15, SILL, a), (-14, HEAD, b), WOOD, grain="y")
+        a, b = sorted((7 * s, 12 * s))
+        m.box((-14, SILL, a), (-13, HEAD, b), GLOW[0], faces={"w": WIN5}, emit=15, shade=False)
+        m.box((-15, BAR, a), (-14, BAR + 1, b), IRON_D, grain="z")
+        a, b = sorted((5 * s, 6 * s))
+        m.box((-16, FLOOR, a), (-14, EAVE, b), IRON, grain="y")                    # door jamb
+        m.box((-18, 15, a), (-17, 31, b), BRASS, grain="y")                        # grab rail, a texel off the jamb
+        for y in (15, 30):
+            m.box((-17, y, a), (-16, y + 1, b), BRASS)
+        a, b = sorted((3 * s, 5 * s))
+        m.box((-15, FLOOR, a), (-13, 37, b), WOOD, grain="y")                      # the door's stiles
+    m.box((-16, 37, -5), (-14, EAVE, 5), IRON, grain="z")                          # door head
+    for a, b in ((FLOOR, 12), (WAIST, SILL), (HEAD, 37)):
+        m.box((-15, a, -3), (-13, b, 3), WOOD, grain="z")                          # bottom, lock and top rail
+    m.box((-14, 12, -3), (-13, WAIST, 3), WOOD_D, grain="y")                       # the sunk panel
+    m.box((-14, SILL, -3), (-13, HEAD, 3), GLOW[0], faces={"w": WIN6}, emit=15, shade=False)
+    m.box((-15, BAR, -3), (-14, BAR + 1, 3), IRON_D, grain="z")
+    m.box((-16, 19, 3), (-15, 21, 5), BRASS)                                       # the handle
+
+    # the roof: eaves board, deck, a clerestory with a row of small lights, a lamp at each end
+    m.box((-18, EAVE, -18), (18, EAVE + 1, 18), IRON, grain="x")
+    m.box((-17, 39, -17), (17, 41, 17), IRON_D, grain="x")
+    m.box((-13, 41, -7), (13, 44, 7), IRON_D, grain="x")
+    for s in (-1.0, 1.0):
+        m.box((-13, 41, 7 * s), (13, 42, 8 * s), IRON, grain="x")                  # the lights' sill
+        for a in (-13, -8, -3, 2, 7, 12):
+            m.box((a, 42, 7 * s), (a + 1, 44, 8 * s), IRON, seed=_POST + 1)        # the bars between them
+        for a in (-12, -7, -2, 3, 8):
+            m.box((a, 42, 7 * s), (a + 4, 44, 8 * s), GLOW[1], emit=15, shade=False, seed=_POST + 2)
+        a, b = sorted((13 * s, 16 * s))                                            # s is the end from here on
+        m.box((a, 41, -2), (b, 44, 2), BRASS_D)                                    # lamp housing
+        a, b = sorted((16 * s, 17 * s))
+        m.box((a, 42, -1), (b, 43, 1), GLOW[2], emit=15, shade=False)              # its lens
+    m.box((-14, 44, -9), (14, 45, 9), IRON, grain="x")
     return m
 
 
-def _band_z(m, zface, sgn, span, height):
-    """A row of lit panes in a wall whose outer face looks along +z (sgn +1) or -z (sgn -1), set in
-    the outer skin with iron muntins and a sill and lintel a little proud."""
-    x0, x1 = span
-    y0, y1 = height
-    g0, g1 = (zface - 0.4, zface) if sgn > 0 else (zface, zface + 0.4)
-    o0, o1 = (zface, zface + 0.4) if sgn > 0 else (zface - 0.4, zface)
-    m.box((x0, y0, g0), (x1, y1, g1), GLOW_WIN, emit=15, shade=False)
-    m.box((x0 - 0.7, y0 - 1.0, o0), (x1 + 0.7, y0, o1), IRON_D, grain="x")          # sill
-    m.box((x0 - 0.7, y1, o0), (x1 + 0.7, y1 + 1.0, o1), IRON_D, grain="x")          # lintel
-    for mx in ((x0 + x1) / 2.0 - 2.1, (x0 + x1) / 2.0 + 2.1):
-        m.box((mx - 0.25, y0, o0), (mx + 0.25, y1, o1), IRON_D, grain="y")          # muntins
-
-
-def _band_x(m, xface, sgn, span, height):
-    """As _band_z, for a wall whose outer face looks along x."""
-    z0, z1 = span
-    y0, y1 = height
-    g0, g1 = (xface - 0.4, xface) if sgn > 0 else (xface, xface + 0.4)
-    o0, o1 = (xface, xface + 0.4) if sgn > 0 else (xface - 0.4, xface)
-    m.box((g0, y0, z0), (g1, y1, z1), GLOW_WIN, emit=15, shade=False)
-    m.box((o0, y0 - 1.0, z0 - 0.7), (o1, y0, z1 + 0.7), IRON_D, grain="z")
-    m.box((o0, y1, z0 - 0.7), (o1, y1 + 1.0, z1 + 0.7), IRON_D, grain="z")
-    for mz in ((z0 + z1) / 2.0 - 2.1, (z0 + z1) / 2.0 + 2.1):
-        m.box((o0, y0, mz - 0.25), (o1, y1, mz + 0.25), IRON_D, grain="y")
-
-
-def _door(m, xface, sgn):
-    """The door to the platform, on the west wall: an iron frame round a warm, dim opening (the car
-    is lit within); the lit area is small, two narrow panes above a solid lower leaf."""
-    o0, o1 = (xface, xface + 0.6) if sgn > 0 else (xface - 0.6, xface)
-    g0, g1 = (xface - 0.3, xface) if sgn > 0 else (xface, xface + 0.3)
-    m.box((o0, 1.5, -3.6), (o1, 13.0, -3.0), IRON_D, grain="y")                     # frame jambs
-    m.box((o0, 1.5, 3.0), (o1, 13.0, 3.6), IRON_D, grain="y")
-    m.box((o0, 12.4, -3.6), (o1, 13.0, 3.6), IRON_D, grain="z")                     # frame head
-    m.box((g0, 7.5, -2.8), (g1, 12.2, 2.8), GLOW_HOT, emit=15, shade=False)         # lit upper lights
-    m.box((xface - 0.2 if sgn > 0 else xface, 2.0, -0.2),
-          (xface + 0.2 if sgn > 0 else xface + 0.4, 12.0, 0.2), IRON_D, grain="y")  # meeting stile
-    m.box((g0, 2.0, -2.8), (g1, 7.5, 2.8), WOOD, grain="y")                         # lower leaf (solid)
-
-
+# --- the winch ------------------------------------------------------------------------------------
 def _drum():
-    """The winch drum: a wide iron barrel with a helical cable groove between two spoked wheels
-    (diameter 3), on bearing pedestals that stand on the platform. Shown at scale 2. Anchor: the
-    axle centre. Movable (A8): it turns about its local z axis (DRUM_AXIS)."""
-    m = M.Model(PREFIX + "drum", px=2.0)
-    HW = 8.0                                 # half the barrel width (2 blocks between the wheels)
-    R = 12.0                                 # the wheel radius (diameter 3)
-    RB = 8.5                                 # the barrel radius
+    """The winch drum: a wide barrel with the rope wound on it between two spoked wheels three
+    blocks across. Shown at scale 2: a unit is two texels. Anchor: the middle of the axle, which
+    is the model's x axis. MOVES: the whole model turns about that axis.
 
-    m.tube("z", (0, 0), -HW - 4, HW + 4, 1.6, IRON_D)                       # axle
-    m.tube("z", (0, 0), -HW, HW, RB, IRON, sides=12)                        # barrel
-    for zz in (4.5, 1.5, -1.5):                                             # cable grooves (open half)
-        m.ring("z", (0, 0, zz), RB + 0.3, 1.0, 1.1, IRON_D, sides=12)
-    for zz in (-6.6, -5.6, -4.6):                                           # a few turns of wound rope
-        m.ring("z", (0, 0, zz), RB + 0.9, 1.1, 0.9, IRON_F, sides=12)
-    for zz in (-HW, HW):                                                    # the two wheels
-        m.ring("z", (0, 0, zz), R - 1.2, 2.4, 1.6, IRON, sides=16)         # rim
-        m.tube("z", (0, 0), zz - 1.0, zz + 1.0, 3.0, IRON_D)              # hub
-        for a in range(0, 360, 60):
-            ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
-            m.beam((2.6 * ca, 2.6 * sa, zz), ((R - 2.2) * ca, (R - 2.2) * sa, zz), 1.4, 1.0, IRON_D)
-    for zz in (-HW - 2.5, HW + 2.5):                                        # bearing pedestals, to the deck
-        m.box((-3.4, -16.0, zz - 2.3), (3.4, -14.0, zz + 2.3), IRON_D, grain="x")   # base plate
-        m.box((-2.4, -16.0, zz - 1.6), (2.4, -2.8, zz + 1.6), IRON, grain="y")
-        m.tube("z", (0, 0), zz - 1.2, zz + 1.2, 2.6, IRON_D)                        # bearing cap
+    The rope leaves the barrel in the plane of X_ROPE; the wound turns end there."""
+    m = M.Model(PREFIX + "drum", px=2.0)
+    live = (X_ROPE - AXLE[0]) * 8.0
+    barrel = DRUM_ROPE_R * 8.0 - 0.5
+    m.tube("x", (0, 0), -17.0, 17.0, 1.0, IRON_D)                                  # the shaft, out through both bearings
+    m.tube("x", (0, 0), -9.0, 9.0, barrel, IRON, sides=16)
+    m.tube("x", (0, 0), -8.0, live + 0.5, barrel + 1.0, COIL, sides=16)            # the rope on it
+    for s in (-1.0, 1.0):
+        x = WHEEL_X * s
+        m.ring("x", (x, 0, 0), WHEEL_R * 8.0 - 1.0, 2.0, 2.5, IRON, sides=24)      # rim
+        for a in range(0, 360, 45):
+            m.box((x - 0.5, 2.0, -0.75), (x + 0.5, 10.25, 0.75), IRON_D,
+                  rot=("x", a + (22.5 if s > 0 else 0.0), (x, 0, 0)), grain="y", seed=_SPOKE)
+        m.tube("x", (0, 0), x - 1.25, x + 1.25, 2.5, IRON_D)                       # hub
+    return m
+
+
+def _frame():
+    """What carries the drum: a bearing pedestal outside each wheel, bolted to the floor, and
+    the belt where it lies on the west wheel. Scale 2. Anchor: the middle of the drum's axle,
+    so that drum and frame stand on one point and take the same light."""
+    m = M.Model(PREFIX + "frame", px=2.0)
+    floor = (FEET - AXLE[1]) * 8.0
+    for s in (-1.0, 1.0):
+        a, b = sorted((12.5 * s, 15.5 * s))
+        x = (a + b) / 2.0
+        m.box((a - 0.5, floor, -8.0), (b + 0.5, floor + 1.0, 8.0), IRON_D, grain="z")          # foot plate
+        for t in (-1.0, 1.0):
+            m.box((x - 0.5, floor + 1.0, 7.0 * t - 0.5), (x + 0.5, floor + 1.5, 7.0 * t + 0.5), PK.RIVET,
+                  seed=_LEG + 1)                                                               # holding-down bolt
+            m.beam((x, floor + 1.0, 5.5 * t), (x, -2.0, 1.5 * t), 2.0, 2.0, IRON, seed=_LEG)   # leg
+        m.box((a, -2.5, -2.5), (b, 2.0, 2.5), IRON, grain="z")                     # bearing
+        m.box((a, 2.0, -1.5), (b, 3.0, 1.5), IRON_D, grain="z")                    # its cap
+        m.box((x - 0.5, 3.0, -0.5), (x + 0.5, 4.0, 0.5), BRASS)                    # oil cup
+    span = BELT_UP + 360.0 - BELT_LOW
+    m.ring("x", (-WHEEL_X, 0, 0), WHEEL_BELT_R * 8.0, 0.5, 1.5, BELT, sides=_sides(span, 32),
+           arc=(BELT_LOW, BELT_LOW + span))
+    return m
+
+
+def _motor():
+    """The electric motor that drives the drum: a ribbed round body on a bed, the belt pulley on
+    its west end, a terminal box with the maker's plate, the conduit down into the floor.
+    Anchor: the middle of the pulley; the shaft is the model's x axis, the body at +x."""
+    m = M.Model(PREFIX + "motor")
+    m.tube("x", (0, 0), -2.5, 2.5, 4.0, IRON, sides=12)                            # belt pulley
+    m.tube("x", (0, 0), -3.0, 4.0, 1.0, IRON_D)                                    # shaft
+    m.tube("x", (0, 0), 4.0, 6.0, 5.0, IRON_D, sides=12)                           # end bell
+    m.tube("x", (0, 0), 6.0, 20.0, 6.0, IRON, sides=12)                            # body
+    for x in (8.0, 11.0, 14.0, 17.0):
+        m.tube("x", (0, 0), x, x + 1.0, 7.0, IRON_D, sides=12, seed=_SPOKE + 1)    # cooling ribs
+    m.tube("x", (0, 0), 20.0, 22.0, 5.0, IRON_D, sides=12)
+    m.box((5.0, -8.0, -7.0), (21.0, -6.0, 7.0), IRON_D, grain="x")                 # bed
+    m.box((9.0, 5.0, -3.0), (17.0, 9.0, 3.0), IRON_D, grain="x")                   # terminal box
+    m.box((11.0, 6.0, 3.0), (15.0, 8.0, 3.5), BRASS, grain="x")                    # maker's plate, to the platform
+    m.hose([(16.0, 8.0, 0.0), (24.0, 8.0, 0.0), (24.0, -8.0, 0.0)], 0.75, IRON_D)  # conduit
+    m.tube("y", (24.0, 0.0), -8.0, -7.0, 2.0, IRON)                                # where it goes into the floor
+    span = BELT_LOW - BELT_UP
+    m.ring("x", (0, 0, 0), PULLEY_BELT_R * 16.0, 1.0, 3.0, BELT, sides=_sides(span, 12), arc=(BELT_UP, BELT_LOW))
+    return m
+
+
+def _belt():
+    """A straight run of the belt: three texels wide, one thick, along +z from the anchor, 48
+    long. Flat tones only, so M.between can draw it out."""
+    m = M.Model(PREFIX + "belt")
+    m.box((-1.5, -0.5, 0), (1.5, 0.5, 48), BELT, grain="z", faces={"e": BELT_EDGE, "w": BELT_EDGE})
     return m
 
 
 def _sheave():
-    """A grooved guide wheel on a yoke, turning the haul rope (diameter about 1, scale 1). Anchor:
-    the wheel centre. Movable (A8): it turns about its local z axis (SHEAVE_AXIS)."""
-    m = M.Model(PREFIX + "sheave", px=1.0)
-    R = 7.0
-    m.tube("z", (0, 0), -2.2, 2.2, 1.1, IRON_D)                            # axle
-    for zz in (-1.4, 1.4):                                                 # two rims, a groove between
-        m.ring("z", (0, 0, zz), R - 1.0, 1.8, 1.4, IRON, sides=16)
-    m.tube("z", (0, 0), -1.4, 1.4, R - 1.8, IRON_D)                        # groove bottom
-    m.tube("z", (0, 0), -1.6, 1.6, 2.6, IRON)                             # hub
-    for a in range(0, 360, 90):
-        ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
-        m.rod((2.4 * ca, 2.4 * sa, 0), ((R - 1.9) * ca, (R - 1.9) * sa, 0), 0.7, IRON_D)
-    m.box((-1.0, -R - 3.5, -2.4), (1.0, -R + 1.0, 2.4), IRON, grain="y")   # yoke arm
-    m.box((-2.2, -R - 4.5, -3.0), (2.2, -R - 3.5, 3.0), IRON_D, grain="x") # foot
+    """The lead sheave's wheel, one block across: two flanges with the groove between them, six
+    spokes, a hub. Anchor: its middle; the axle is the model's x axis. MOVES: turns about it."""
+    m = M.Model(PREFIX + "sheave")
+    for x in (-1.5, 1.5):
+        m.ring("x", (x, 0, 0), 6.5, 3.0, 1.0, IRON, sides=12, seed=_SPOKE + 2)     # flanges
+    m.ring("x", (0, 0, 0), 5.5, 1.0, 2.0, IRON_D, sides=12)                        # the groove's bottom
+    for a in range(0, 360, 60):
+        m.box((-0.5, 2.0, -1.0), (0.5, 5.25, 1.0), IRON_D, rot=("x", a, (0, 0, 0)), grain="y", seed=_SPOKE + 3)
+    m.tube("x", (0, 0), -2.0, 2.0, 2.5, IRON)                                      # hub
+    return m
+
+
+def _stand():
+    """The lead sheave's stand on the threshold: a bed plate, an A-frame either side of the
+    wheel, the pin, and the rope where it lies in the groove and drops through a collar into
+    the floor. Anchor: the middle of the wheel; the floor is 9 below it."""
+    m = M.Model(PREFIX + "stand")
+    r = SHEAVE_ROPE_R * 16.0
+    south = (THRESHOLD_Z + 0.5 - SHEAVE[2]) * 16.0                                 # the threshold's south edge
+    m.box((-5, -9, -8), (5, -8, south), IRON_D, grain="z")                         # bed plate
+    for s in (-1.0, 1.0):
+        for t in (-1.0, 1.0):
+            m.beam((3.5 * s, -8.0, 6.0 * t), (3.5 * s, 0.0, 1.0 * t), 1.0, 2.0, IRON, seed=_LEG + 2)
+        a, b = sorted((3.0 * s, 5.0 * s))
+        m.tube("x", (0, 0), a, b, 1.5, IRON_D)                                     # axle boss
+    m.tube("x", (0, 0), -3.0, 3.0, 1.0, IRON_D)                                    # the pin the wheel turns on
+    span = 90.0 - LEAD_WRAP
+    m.ring("x", (0, 0, 0), r, 2.0, 2.0, ROPE, sides=_sides(span, 16), arc=(LEAD_WRAP, 90.0))   # the rope in the groove
+    m.box((-1, -8, r - 1), (1, 0, r + 1), ROPE, grain="y")                         # and down
+    m.box((-2, -8, r - 2), (2, -7, r + 2), IRON, grain="x")                        # the collar it goes through
+    return m
+
+
+# --- along the track ------------------------------------------------------------------------------
+def _duct():
+    """Two chequer plates over the rope duct, a texel proud of the paving, half a block wide and
+    a block long, along z. Anchor: the middle of the foot."""
+    m = M.Model(PREFIX + "duct")
+    for z in (-8, 0):
+        m.box((-4, 0, z), (4, 1, z + 8), IRON_D, faces={"u": PLATE})
+    return m
+
+
+def _hood():
+    """The cast cover over the rope's way up at the head of the track, between the rails: five
+    texels high, with a lower toe to the west, so that it is the step to the car's door. The rope
+    comes out of its east face, under the car. Anchor: the middle of the foot."""
+    m = M.Model(PREFIX + "hood")
+    m.box((-4, 0, -8), (-2, 3, 8), IRON_D, grain="z")                              # the toe
+    m.box((-2, 0, -8), (4, 5, 8), IRON, grain="z")                                 # the tread
+    for x in (-0.5, 2.5):
+        for z in (-6.5, 6.5):
+            PK.rivet(m, (x, 5, z), "y")
+    return m
+
+
+def _turn():
+    """The level roller on the first tie, that turns the rope on to the trestle's line: a
+    grooved wheel ten across on an upright spindle. Anchor: the middle of the groove, on the
+    spindle's axis; the tie's top is 4 below."""
+    m = M.Model(PREFIX + "turn")
+    m.tube("y", (0, 0), -4.0, -3.0, 3.0, IRON_D)                                   # foot
+    m.tube("y", (0, 0), -3.0, 3.0, 1.0, IRON_D)                                    # spindle
+    m.tube("y", (0, 0), -2.0, -1.0, 5.0, IRON, sides=12)                           # lower flange
+    m.tube("y", (0, 0), -1.0, 1.0, TURN_R * 16.0 - 1.0, IRON_D, sides=12)          # the groove's bottom
+    m.tube("y", (0, 0), 1.0, 2.0, 5.0, IRON, sides=12)                             # upper flange
+    m.tube("y", (0, 0), 3.0, 4.0, 1.5, BRASS_D)                                    # grease cap
+    return m
+
+
+def _roller():
+    """A track roller: a plain roller between two flanges, in two bearing blocks that stand on
+    a tie. The axle is the model's x axis, the rope runs over it along z. Anchor: the middle of
+    the roller; the tie's top is 5 below."""
+    m = M.Model(PREFIX + "roller")
+    foot = -ROLL_UP * 16.0
+    m.tube("x", (0, 0), -3.0, 3.0, ROLL_R * 16.0 - 1.0, IRON)
+    for s in (-1.0, 1.0):
+        a, b = sorted((3.0 * s, 4.0 * s))
+        m.tube("x", (0, 0), a, b, 3.0, IRON_D, seed=_SPOKE + 4)                    # flange
+        a, b = sorted((4.0 * s, 6.0 * s))
+        m.box((a, foot, -2.0), (b, 1.0, 2.0), IRON_D, grain="y", seed=_SPOKE + 5)  # bearing block
     return m
 
 
 def _rope():
-    """The steel haul rope: a thin bar in one flat tone (so stretching smears nothing), along +z
-    from the anchor, ROPE_LEN long; M.between stretches it between two points."""
-    m = M.Model(PREFIX + "rope", px=1.0)
-    m.box((-1.0, -1.0, 0.0), (1.0, 1.0, ROPE_LEN), IRON_F, grain="z")
+    """The haul rope: a bar two texels square along +z from the anchor, 48 long, lighter on top
+    and dark below. Flat tones only, so M.between can draw it out."""
+    m = M.Model(PREFIX + "rope")
+    m.box((-1, -1, 0), (1, 1, 48), ROPE, grain="z", faces={"u": ROPE_TOP, "d": ROPE_UNDER})
     return m
+
+
+BUILDERS = {"car": _car, "drum": _drum, "frame": _frame, "motor": _motor, "belt": _belt, "sheave": _sheave,
+            "stand": _stand, "duct": _duct, "hood": _hood, "turn": _turn, "roller": _roller, "rope": _rope}
+SCALE = {PREFIX + name: 2.0 if name in ("drum", "frame") else 1.0 for name in BUILDERS}
+# For the motion line: what turns, about which axis of its own model (through the anchor), the tag
+# its entities carry, and how fast against the drum (the rope runs as fast on both). Positive pays out.
+MOVING = {
+    PREFIX + "drum": dict(tag="c164_cable_drum", axis="x", ratio=1.0),
+    PREFIX + "sheave": dict(tag="c164_cable_sheave", axis="x", ratio=DRUM_ROPE_R / SHEAVE_ROPE_R),
+}
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {m.name: m for m in (_car(), _drum(), _sheave(), _rope())}
+    return {PREFIX + name: make() for name, make in BUILDERS.items()}
 
 
 def models():
     return dict(_models())
 
 
-SCALE = {PREFIX + "car": 2.0, PREFIX + "drum": 2.0, PREFIX + "sheave": 1.0, PREFIX + "rope": 1.0}
-
-
 # --- placing --------------------------------------------------------------------------------------
-def _offer_lights(canvas, origin, lights):
-    """Hand the car's warm window light to A2 (sky/_lightkit.take); until that tool is in the tree,
-    put the invisible light blocks down here so a test scene is lit (never over a block already set)."""
-    ox, oy, oz = origin
-    cells = [((int(math.floor(x + ox)), int(math.floor(y + oy)), int(math.floor(z + oz))), int(level))
-             for (x, y, z), level in lights]
-    try:
-        from ..sky import _lightkit
-        take = getattr(_lightkit, "take", None)
-    except ImportError:
-        take = None
-    if take is not None:
-        take(canvas, cells, "machines/cable")
-        return
-    for (x, y, z), level in cells:
-        canvas.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
-
-
 def build(canvas, origin=(0, 0, 0)):
-    """Place the cable car, the winch and the haul rope at the station. Returns the entity count."""
+    """Place the car, the winch and the rope at the station. Returns the display entities placed."""
     built = _models()
     ox, oy, oz = origin
-    n = 0
 
-    def place(name, pos, yaw=0.0, **kw):
-        nonlocal n
-        canvas.add_entity(pos[0] + ox, pos[1] + oy, pos[2] + oz,
-                          M.display(built[PREFIX + name], yaw=yaw, scale=SCALE[PREFIX + name], **kw))
-        n += 1
+    def put(name, p, yaw=0.0):
+        name = PREFIX + name
+        nbt = M.display(built[name], yaw=yaw, scale=SCALE[name])
+        if name in MOVING:
+            nbt["Tags"].append(MOVING[name]["tag"])
+        canvas.add_entity(p[0] + ox, p[1] + oy, p[2] + oz, nbt)
+        return 1
 
-    def rope(a, b, thick=ROPE_THICK):
-        nonlocal n
-        A = (a[0] + ox, a[1] + oy, a[2] + oz)
-        Bp = (b[0] + ox, b[1] + oy, b[2] + oz)
-        canvas.add_entity(A[0], A[1], A[2], M.between(built[PREFIX + "rope"], A, Bp, thick=thick))
-        n += 1
+    def run(name, a, b):
+        a = (a[0] + ox, a[1] + oy, a[2] + oz)
+        b = (b[0] + ox, b[1] + oy, b[2] + oz)
+        canvas.add_entity(a[0], a[1], a[2], M.between(built[PREFIX + name], a, b))
+        return 1
 
-    place("car", CAR)
-    place("drum", DRUM)
-    place("sheave", SHEAVE_UP)
-    place("sheave", SHEAVE_HEAD)
+    n = put("car", CAR) + put("hood", HOOD)
+    for row in DUCT_ROWS:
+        n += put("duct", (X_ROPE, FEET, row + 0.5))
 
-    rope(DRUM_OFFTAKE, SHEAVE_UP)
-    rope(SHEAVE_UP, CAR_GRIP_W)
-    rope(CAR_GRIP_E, SHEAVE_HEAD)
-    prev = SHEAVE_HEAD
-    for pt in DESCENT:
-        rope(prev, pt)
-        prev = pt
+    # A display entity takes the light of the cell it stands in. The belt's runs start at the
+    # pulley and the rope's at the sheave, so each is lit like the piece it runs from.
+    n += put("drum", AXLE) + put("frame", AXLE) + put("motor", PULLEY)
+    for normal in _BELT:
+        n += run("belt", _on(PULLEY, PULLEY_BELT_R, normal, BELT_X), _on(AXLE, WHEEL_BELT_R, normal, BELT_X))
+    n += put("sheave", SHEAVE) + put("stand", SHEAVE)
+    n += run("rope", _on(SHEAVE, SHEAVE_ROPE_R, _LEAD, X_ROPE), _on(AXLE, DRUM_ROPE_R, _LEAD, X_ROPE))
 
-    # the car is lit within: a second-rank warm light (A5 1.3) inside it and a spill at the door
-    _offer_lights(canvas, origin, [((CAR[0], DECK + 2.0, TRACK_Z), 9),
-                                   ((CAR[0] - 1.5, DECK + 1.0, TRACK_Z), 8)])
+    n += put("turn", TURN)
+    for tie in ROLLER_TIES:
+        n += put("roller", _roller_at(tie), yaw=TRACK_YAW)
+    for a, b in zip(ROPE_LINE, ROPE_LINE[1:]):
+        n += run("rope", a, b)
+
+    # the car is lit within: its light, where A2's tool wants it; and the winch room's working lamp
+    x, y, z = CAR_LIGHT
+    PK.offer_lights(canvas, [((x + ox, y + oy, z + oz), CAR_LIGHT_LEVEL)], "machines/cable: the car's windows")
+    if WORK_LAMP:
+        n += lamps.place(canvas, "bracket", LAMP, facing="south", origin=origin)
     return n
