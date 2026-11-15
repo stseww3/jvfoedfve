@@ -1,0 +1,27 @@
+16 shots -> /tmp/dais_jobs/c330/c164-realms/build/scenes/obs_sky_comet/shots.json
+version a; head 41.05 degrees up, due west; pictures at fov 77
+camera   light  head: from left, from top    sky above the head   light: seen / hidden / cut off   bright part, whole comet (share of the picture)
+v1       blue    61%   26%                    18.2 deg        100% /   0% /   0%        0.067%, 0.335%
+v1       deep    61%   26%                    18.2 deg        100% /   0% /   0%        0.083%, 0.461%
+v1       glow    61%   26%                    18.2 deg        100% /   0% /   0%        0.048%, 0.178%
+v2       blue    50%   29%                    20.1 deg        100% /   0% /   0%        0.056%, 0.278%
+v2       deep    50%   29%                    20.1 deg        100% /   0% /   0%        0.069%, 0.380%
+v2       glow    50%   29%                    20.1 deg        100% /   0% /   0%        0.040%, 0.149%
+axislow  blue    50%   24%                    16.2 deg        100% /   0% /   0%        0.061%, 0.307%
+axislow  deep    50%   24%                    16.2 deg        100% /   0% /   0%        0.076%, 0.422%
+axislow  glow    50%   24%                    16.2 deg        100% /   0% /   0%        0.044%, 0.163%
+slit     blue    50%   32%                    22.5 deg        100% /   0% /   0%        0.054%, 0.264%
+slit     deep    50%   32%                    22.5 deg        100% /   0% /   0%        0.066%, 0.360%
+slit     glow    50%   32%                    22.5 deg        100% /   0% /   0%        0.039%, 0.142%
+sky      blue    50%   57%                    30.0 deg        100% /   0% /   0%        0.046%, 0.214%
+sky      deep    50%   57%                    30.0 deg        100% /   0% /   0%        0.055%, 0.286%
+sky      glow    50%   57%                    30.0 deg        100% /   0% /   0%        0.033%, 0.120%
+the comet's neighbours   north of due west, up   from the head   from the comet's light (look deep)
+v1       radio mast, beacon      6.1   44.3 deg       5.6 deg         1.8 deg
+v1       time-ball mast         -2.3   36.4 deg       5.0 deg         3.9 deg
+v1       under the head, due west, blocks reach up to 31.8 deg: the head stands 9.3 above them, the comet's light begins 8.1 above
+v2       under the head, due west, blocks reach up to 36.6 deg: the head stands 4.5 above them, the comet's light begins 3.3 above
+through the slit, the eye at x 11.8 (axis z 0.5; look deep): z of the eye, share of the comet's light seen
+   -1.5:  62%   -1.0:  86%   -0.5:  98%   +0.2: 100%   +0.5: 100%   +1.5: 100%   +2.2: 100%   +2.5: 100%   +3.0:  92% head hidden
+the sky in the slit (open as far as x 2), due west, from the axis: the highest elevation seen (the tails end at blue 51.9, deep 54.4, glow 48.0)
+   eye at x 8.5: 73.6 deg   eye at x 10.5: 68.1 deg   eye at x 12.5: 62.8 deg   eye at x 14.5: 58.1 deg
