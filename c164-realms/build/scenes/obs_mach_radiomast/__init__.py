@@ -50,11 +50,17 @@ HUT_WALL = B.ASHLAR_ROUGH.block
 HUT_ROOF = st(B.SLATE_TILE.slab, type="bottom")
 HUT_EAVES = 3                   # c229's hut: three courses of wall, the roof on them
 
-# the cameras of the board that have the mast in them; the skeleton's own where it has them
+# the cameras of the board that have the mast in them; the skeleton's own where it has them. V5 and
+# V12 are not in the skeleton yet: until they are, the render station's proposals stand here, worked
+# out from the skeleton the way tools/boardshots.py does
 V1 = S.V1
 V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
 V11 = S.V11
-V12 = getattr(S, "V12", dict(pos=(80, 90, 80), look_at=(35, 0, -5)))
+_TOWER = (S.mid(*S.CLOCK_SHAFT_X), S.mid(*S.CLOCK_SHAFT_Z))
+V5 = getattr(S, "V5", dict(pos=(_TOWER[0] + 15.0, S.GROUND + S.EYE, _TOWER[1] + 15.0),
+                           look_at=(_TOWER[0], S.CLOCK_SHAFT_TOP - 3.0, _TOWER[1])))
+V12 = getattr(S, "V12", dict(pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
+                             look_at=(S.MERIDIAN_X, S.GROUND, S.AXIS_Z - 5.5)))
 
 
 def _foot(c):
@@ -128,15 +134,16 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    """The repainted iron and stone the mast is judged against."""
-    return materials.pack(pack_dir)
+    """The sky's pictures, for the comet the lamp is seen beside, and the repainted iron and stone the
+    mast is judged against."""
+    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
 
 
 def shots():
-    """The cameras. From far: the board's V1, V2, V11 (skyline) and V12 (aerial) as the skeleton has
-    them, and the whole mast from 70 blocks under the three lights. From near: the lattice where the
-    guys meet it, the look up from the pad, the foot on its insulator, one anchor with its guy, the
-    aerial's end at the tower, the head and its lamp."""
+    """The cameras. From far: the board's V1, V2, V5, V11 (skyline) and V12 (aerial), and the whole
+    mast from 70 blocks under the three lights. From near: the lattice where the guys meet it, the
+    look up from the pad, the foot on the seat, the same from the clock tower's top, one anchor with
+    its guy, the aerial's end at the tower, the head and its lamp."""
     out = []
 
     def shot(name, pos, look_at, time=TIME):
@@ -146,6 +153,7 @@ def shots():
     ax, az = mast.AX, mast.AZ
     shot("v1", V1["pos"], V1["look_at"])
     shot("v2", V2["pos"], V2["look_at"])
+    shot("v5", V5["pos"], V5["look_at"])
     shot("skyline", V11["pos"], V11["look_at"])
     shot("aerial", V12["pos"], V12["look_at"])
     far = (ax + 21.6, mast.G + S.EYE, az + 66.6)                # 70 blocks from the axis, a standing eye, 18 degrees
@@ -155,6 +163,9 @@ def shots():
     shot("near", (ax + 6.0, 21.5, az + 2.5), (ax, 22.0, az))
     shot("below", (ax + 3.3, mast.G + S.EYE, az + 0.4), (ax, 14.0, az))        # from the apron, 75 degrees up
     shot("foot", (ax + 0.8, 3.4, az + 5.4), (ax, 4.6, az))                      # from between the two south anchors
+    # the foot as the clock tower's top sees it, down the diagonal of the seat (an eye leaning out over
+    # the tower's north-east corner): what is pale on the seat must not make a sign from here
+    shot("seat", (S.CLOCK_SHAFT_X[1] + 1.3, S.CLOCK_TOP + 1.0 + S.EYE, S.CLOCK_SHAFT_Z[0] - 0.3), (ax, mast.BASE_Y, az))
     sx, sy, sz = max(mast.GUY_ANCHORS, key=lambda p: (p[0], p[2]))              # the south-east anchor,
     shot("stay", (sx + 1.9, sy + 0.8, sz - 1.9), (sx - 0.1, sy + 1.0, sz - 0.1))        # its guy seen from the side
     hx, hy, hz = mast.TOWER_HOOK

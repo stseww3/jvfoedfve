@@ -64,6 +64,7 @@ ANTENNA_ANCHOR, the point where the aerial's lower string hooks on. What the clo
 """
 import functools
 import math
+import os
 
 from artkit import models as M
 from artkit.blocks import st
@@ -130,13 +131,21 @@ LEG_U, BAY_U = LEG / U, BAY / U         # 4 and 12 units
 NODE = BELT / 2.0               # a piece starts this far under its lowest belt's middle: the belt lies wholly in it
 SEG_Y = KNEE_Y - NODE * U       # 8.40625: the bottom of the lowest piece
 HEAD_Y = SEG_Y + BAYS * BAY     # 56.40625: where the head takes over
-FOOT_TOE = 0.75                 # the legs meet the shoe this far from the axis ...
+FOOT = os.environ.get("C164_MAST_FOOT") or "legs"       # how the mast stands on the seat: FOOT_KINDS
+FOOT_KINDS = ("point", "squat", "legs")
+FOOT_TOE = 0.75                 # point, squat: the legs meet the shoe this far from the axis ...
 FOOT_TOE_Y = 8.75               # ... and this high over the seat (units of the foot model)
-FOOT_RING_Y = 17.5              # the one belt of the tapered foot
-FOOT_LUG = (1.75, 8.75)         # the terminal on the shoe's corner: distance from the axis in x and z, height
+FOOT_RING_Y = 17.5              # point: the one belt of the tapered foot
+FOOT_BAY_Y = (KNEE_Y - BAY - BASE_Y) / U        # squat, legs: the belt one bay under the knee, 14 units up (y 5.5)
+FOOT_BASE_Y = 4.0               # legs: the belt that ties the four shoes, a block over the seat (y 3.0)
+FOOT_POT = (0.5, 2.5, 3.0, 4.5)         # legs: under each leg a base plate up to here, porcelain, an iron cap, the shoe
+FOOT_LUG = {"point": (1.75, 8.75), "squat": (1.75, 8.75), "legs": (5.0, 3.5)}[FOOT]
+#                                 the terminal of the feed lead: distance from the axis in x and z, height
 HEAD_EYE = (5.5, 2.5)           # the end of the aerial's arm: distance from the axis in x and z, height
-LAMP_H = 10                     # texels: the lamp from its foot on the pole to its top
+LAMP_H = 10                     # texels: the lamp from the foot of its holder on the pole to its top
 LAMP_Y = TIP_Y - LAMP_H / 16.0  # 61.375
+LAMP_HOLDER = 1.5               # texels of that which are the iron holder: a neck and a plate
+GLASS_Y = LAMP_Y + LAMP_HOLDER / 16.0   # 61.46875: the foot of the glass
 
 LEG_CELLS = [(FX + sx, FZ + sz) for sx in (-1, 1) for sz in (-1, 1)]
 BELT_CELLS = [(FX, FZ - 1, "x"), (FX, FZ + 1, "x"), (FX - 1, FZ, "z"), (FX + 1, FZ, "z")]
@@ -149,6 +158,29 @@ EGG_DROP = 7.0                  # blocks from the leg down the guy to its upper 
 GUY_CLAMP = 0.5                 # units of the guy's model, which is drawn out seven times: 3.5 texels of clamp
 STRING_LEN = 20.0               # texels from the hook of a disc string to where the wire leaves its clamp
 
+# ---- the lamp --------------------------------------------------------------------------------------
+# How the game lights a face of an item model: by the one of the six axes its normal lies nearest to
+# (in the model, each box turned as it is drawn), that axis turned with the display entity, under two
+# fixed lamps that stand high in the north-east and in the south-west. A face filed under "up" is
+# full bright, north and south 0.74, east and west 0.5, down 0.4. light_emission raises the light a
+# face takes to full, and this shading still goes over it (VertexConsumer.putBakedQuad of 26.3 takes
+# BakedQuad.direction(); the model's shade_direction_override is read for blocks only). A lit globe
+# drawn upright therefore shows V1, which looks at it from due east and 44 degrees below, the faces
+# filed under east and down: half its red and less.
+#
+# So the glass is drawn in a frame that stands on its corner. The entity is turned (LAMP_FRAME) until
+# the model's +x, +y and +z all point 55 degrees off the zenith, 120 degrees apart, at the bearings
+# LAMP_BEARINGS, where each takes 0.96 of full light; the glass is drawn turned back, so it stands
+# upright; and it has no face that would be filed under one of the three axes that point down: only
+# faces that look up, and upright walls within LAMP_SPLAY of one of the three bearings. Two walls to
+# a bearing make an all but regular hexagon. The lamp is then one red from every side and from below.
+LAMP_FRAME = (("z", 45.0), ("x", -math.degrees(math.atan(math.sqrt(0.5)))))
+LAMP_UPRIGHT = tuple((axis, -deg) for axis, deg in reversed(LAMP_FRAME))        # the frame's turn undone
+LAMP_BEARINGS = (60.0, 180.0, 300.0)    # where +x, +z and +y point then, degrees from north by east
+LAMP_SPLAY = 27.0               # at 30 a wall would lie as near to an axis that points down as to its own
+# the glass in courses, foot to top: (from, to, how far its walls stand from the axis), in texels
+LAMP_COURSES = ((0.0, 1.0, 4.0), (1.0, 5.5, 4.0), (5.5, 7.0, 3.0), (7.0, LAMP_H - LAMP_HOLDER, 1.75))
+
 VIEW = 8.0                      # view range: 512 blocks at the client's normal setting, 256 at its lowest;
 #                                 past the 160 the server sends, so the client never drops a piece first
 BRIGHT = (15, 0)                # (sky, block): what a piece takes under the open sky with no lamp near
@@ -158,6 +190,7 @@ IRON_D = P.mat("iron_dark")                     # the lattice: legs, belts, plat
 IRON_F = P.mat("iron_flat")                     # the diagonals: the lattice's tone without speckle or edge
 PORCELAIN = P.mat("porcelain")                  # white: the foot, the guys
 GREY = P.mat("porcelain", base=0, noise=0.0)    # the ramp's two darkest steps: the discs aloft
+POT = PORCELAIN                                 # the four insulators the legs stand on
 BRASS = P.mat("brass")
 
 
@@ -302,15 +335,8 @@ def _lattice(name, legs, belts, reach):
     return m
 
 
-def _foot():
-    """The tapered foot, from the seat to the lowest belt. Anchor: the middle of the seat's top."""
-    m = M.Model(PREFIX + "foot", px=float(SCALE))
-    knee = (KNEE_Y - BASE_Y) / U                                    # 26 units up: the lowest belt's middle
-
-    def out(y):
-        """How far a leg's axis stands from the mast's at height y."""
-        return FOOT_TOE + (LEG_U - FOOT_TOE) * (y - FOOT_TOE_Y) / (knee - FOOT_TOE_Y)
-
+def _pivot(m):
+    """point, squat: what the four legs run together over, in the middle of the seat."""
     # the bed plate on the seat and the pedestal
     m.box((-2.5, 0.0, -2.5), (2.5, 0.5, 2.5), IRON_D)
     m.tube("y", (0.0, 0.0), 0.5, 1.5, 1.5, IRON)
@@ -322,15 +348,6 @@ def _foot():
     m.tube("y", (0.0, 0.0), 6.75, 7.5, 1.25, IRON)
     m.tube("y", (0.0, 0.0), 7.5, 8.0, 0.5, IRON_D)
     m.box((-1.5, 8.0, -1.5), (1.5, 9.5, 1.5), IRON_D)
-    for sx in (-1, 1):
-        for sz in (-1, 1):
-            m.rod((sx * FOOT_TOE, FOOT_TOE_Y, sz * FOOT_TOE), (sx * LEG_U, knee, sz * LEG_U), LEG_W / 2.0, IRON_D,
-                  sides=4, seed=LEG_SEED)
-    # one belt half way up, crossed diagonals from it to the knees
-    _belts(m, FOOT_RING_Y, out(FOOT_RING_Y))
-    _braces(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
-    _knots(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
-    _collars(m, knee - 2.25, knee + 0.5)
     # the terminal of the lead to the lead-in post, on the shoe's corner -x, +z
     lx, ly = FOOT_LUG
     m.box((-lx - 0.5, ly - 0.5, lx - 0.5), (-lx + 0.5, ly + 0.5, lx + 0.5), BRASS)
@@ -340,6 +357,85 @@ def _foot():
     m.rod((2.0, 0.5, 2.0), (2.75, 4.0, 2.75), 0.25, IRON_D, sides=4)
     m.box((2.25, 5.5, 2.25), (3.25, 6.5, 3.25), BRASS)
     m.box((2.25, 3.75, 2.25), (3.25, 4.75, 3.25), BRASS)
+
+
+def _carry_down(m, leg0, belts, knee):
+    """squat, legs: the shaft carried on below its lowest piece. Legs from leg0 up to that piece; at
+    each height of `belts` a belt and the plates of its joints; crossed diagonals with their knots
+    from each belt to the next and from the uppermost to the knee; and the lower part of the knee's
+    plates, which the piece above cuts off."""
+    top = knee - NODE
+    _legs(m, leg0, top)
+    nodes = list(belts) + [knee]
+    for i, y in enumerate(belts):
+        _belts(m, y)
+        _plates(m, y, PLATE_REACH["a"])
+        _braces(m, y, nodes[i + 1], flip=-1 if (len(belts) - i) % 2 else 1)
+        _knots(m, y, nodes[i + 1])
+    _plates(m, knee, PLATE_REACH["a"], None, top)
+
+
+def _foot_point(m, knee):
+    """The four legs run together over the lowest six blocks and stand on one base insulator."""
+    def out(y):
+        """How far a leg's axis stands from the mast's at height y."""
+        return FOOT_TOE + (LEG_U - FOOT_TOE) * (y - FOOT_TOE_Y) / (knee - FOOT_TOE_Y)
+
+    _pivot(m)
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            m.rod((sx * FOOT_TOE, FOOT_TOE_Y, sz * FOOT_TOE), (sx * LEG_U, knee, sz * LEG_U), LEG_W / 2.0, IRON_D,
+                  sides=4, seed=LEG_SEED)
+    # one belt half way up, crossed diagonals from it to the knees
+    _belts(m, FOOT_RING_Y, out(FOOT_RING_Y))
+    _braces(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
+    _knots(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
+    _collars(m, knee - 2.25, knee + 0.5)
+
+
+def _foot_squat(m, knee):
+    """The shaft comes down square to the belt at y 5.5; under it four short struts run together and
+    stand on one base insulator."""
+    _pivot(m)
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            m.rod((sx * FOOT_TOE, FOOT_TOE_Y, sz * FOOT_TOE), (sx * LEG_U, FOOT_BAY_Y, sz * LEG_U), LEG_W / 2.0,
+                  IRON_D, sides=4, seed=STRUT_SEED)
+    _carry_down(m, FOOT_BAY_Y - NODE, [FOOT_BAY_Y], knee)
+    _collars(m, FOOT_BAY_Y - 1.5, FOOT_BAY_Y - NODE)
+
+
+def _foot_legs(m, knee):
+    """The four legs come straight down to the seat's four corners. Each stands on its own insulator:
+    a base plate, a porcelain pot with two sheds, an iron cap and the shoe that takes the leg. A
+    belt ties the four shoes."""
+    plate, pot, cap, shoe = FOOT_POT
+    for sx in (-1, 1):
+        for sz in (-1, 1):
+            x, z = sx * LEG_U, sz * LEG_U
+            m.box((x - 1.25, 0.0, z - 1.25), (x + 1.25, plate, z + 1.25), IRON_D)
+            m.tube("y", (x, z), plate, pot, 0.75, POT)
+            for y in (plate + 0.25, plate + 1.25):
+                m.tube("y", (x, z), y, y + 0.5, 1.25, POT)
+            m.tube("y", (x, z), pot, cap, 1.0, IRON)
+            m.box((x - COLLAR, cap, z - COLLAR), (x + COLLAR, shoe, z + COLLAR), IRON_D)
+    _carry_down(m, FOOT_BASE_Y, [FOOT_BASE_Y, FOOT_BAY_Y], knee)
+    # the terminal of the lead to the lead-in post, on the outer corner of the shoe -x, +z
+    lx, ly = FOOT_LUG
+    m.box((-lx - 0.5, ly - 0.5, lx - 0.5), (-lx + 0.5, ly + 0.5, lx + 0.5), BRASS)
+    # the spark gap across the insulator of the next leg (+x, +z; both corners look at the court): a
+    # horn down from the shoe, a stub up from the seat, a brass ball on each, three texels of air between
+    m.rod((LEG_U + 0.7, cap + 0.4, LEG_U + 0.7), (LEG_U + 1.475, pot + 0.1, LEG_U + 1.475), 0.25, IRON_D, sides=4)
+    m.box((LEG_U + 1.1, 1.9, LEG_U + 1.1), (LEG_U + 1.85, 2.65, LEG_U + 1.85), BRASS)
+    m.box((LEG_U + 1.1, 0.4, LEG_U + 1.1), (LEG_U + 1.85, 1.15, LEG_U + 1.85), BRASS)
+    m.box((LEG_U + 1.225, 0.0, LEG_U + 1.225), (LEG_U + 1.725, 0.5, LEG_U + 1.725), IRON_D)
+
+
+def _foot():
+    """The foot, from the seat to the lowest piece of the shaft. Anchor: the middle of the seat's top."""
+    m = M.Model(PREFIX + "foot", px=float(SCALE))
+    knee = (KNEE_Y - BASE_Y) / U                                    # 26 units up: the lowest belt's middle
+    {"point": _foot_point, "squat": _foot_squat, "legs": _foot_legs}[FOOT](m, knee)
     return m
 
 
@@ -356,33 +452,51 @@ def _head():
         for sz in (-1, 1):
             m.rod((sx * LEG_U, 1.0, sz * LEG_U), (sx * 0.5, apex, sz * 0.5), 0.5, IRON_D, sides=4, seed=STRUT_SEED)
     m.box((-1.25, apex - 1.0, -1.25), (1.25, apex + 0.5, 1.25), IRON_D)
-    m.tube("y", (0.0, 0.0), apex + 0.5, (LAMP_Y - HEAD_Y) / U, 0.5, IRON_D)
+    top = (LAMP_Y - HEAD_Y) / U
+    m.tube("y", (0.0, 0.0), apex + 0.5, top, 0.5, IRON_D)
+    # the lamp's holder on the pole's top: a neck and the plate the glass stands on. It is drawn here
+    # and not with the glass, which lies in a frame of its own (LAMP_FRAME) that would light the iron
+    # in patches
+    m.tube("y", (0.0, 0.0), top, top + 0.25, 0.625, IRON_D)
+    m.tube("y", (0.0, 0.0), top + 0.25, top + LAMP_HOLDER / SCALE, 1.125, IRON)
     # the arm of the aerial, on the corner -x, +z: out and a little up from the collar
     ex, ey = HEAD_EYE
     m.beam((-LEG_U, 1.0, LEG_U), (-ex, ey, ex), 0.75, 0.75, IRON_D)
     return m
 
 
-def _glass_ball(m, centre, radius, bands, emit):
-    """A glass ball in bands of flat tone, [(from, to, material)] with -1 the bottom and 1 the top:
-    every face of a band has the one tone, so the ball looks the same from all sides. Lit, it is
-    full bright with no face shading: its light and dark is what is painted."""
-    for t0, t1, mat in bands:
-        m.ball(centre, radius, mat, sides=8, layers=1, part=(t0, t1),
-               faces={"n": mat, "s": mat, "u": mat, "d": mat}, emit=emit, shade=not emit)
+def _glass(m, y0, y1, r, mat, emit, inner=None):
+    """One course of the lamp's glass, from y0 to y1: six upright walls r from the axis, two to each
+    bearing of the lamp's frame, each as far to its two sides as where it meets its neighbours. With
+    `inner`, the course is closed on top from its walls in to that distance from the axis (0 closes
+    it wholly; the course that stands on it covers the rest)."""
+    near = r * math.tan(math.radians(LAMP_SPLAY))
+    far = r * math.tan(math.radians(60.0 - LAMP_SPLAY))
+    depth = r if inner is None else r - inner
+    for bearing in LAMP_BEARINGS:
+        for side in (-1, 1):
+            # drawn as the wall that looks north, then swung round: a turn about y takes north to the west
+            a, b = (-far, near) if side < 0 else (-near, far)
+            with m.turned(("y", -(bearing + side * LAMP_SPLAY))):
+                m.box((a, y0, -r), (b, y1, depth - r), mat, skip="sewd" if inner is not None else "sewud", emit=emit)
 
 
 def _light(name, lit):
-    """The lamp: a red globe half a block across in an iron holder. Anchor: its foot, on the pole's
-    top. Lit, its belly is the signal ramp's second lightest tone and its two ends the third; the
-    lightest, an orange pink as bright as a golden window, is not used."""
+    """The lamp's glass: a red lantern half a block across with a stepped crown, six sides, all but
+    regular. Anchor: the middle of its foot, on the holder's plate; it is to be shown turned by
+    LAMP_FRAME. Lit, its body is the signal ramp's second lightest tone, its foot and its crown the
+    third; the lightest, an orange pink as bright as a golden window, is not used."""
     m = M.Model(name)
-    m.tube("y", (0.0, 0.0), 0.0, 1.5, 2.5, IRON_D)
-    m.tube("y", (0.0, 0.0), 1.5, 2.5, 1.5, IRON)
     end, belly = (RED[1], RED[2]) if lit else (RED[0], RED[1])
-    _glass_ball(m, (0.0, 6.0, 0.0), 4.0,
-                [(-1.0, -0.45, end), (-0.45, 0.1, belly), (0.1, 0.4, belly), (0.4, 0.75, belly), (0.75, 1.0, end)],
-                emit=15 if lit else 0)
+    emit = 15 if lit else 0
+    last = len(LAMP_COURSES) - 1
+    with m.turned(*LAMP_UPRIGHT):
+        for i, (y0, y1, r) in enumerate(LAMP_COURSES):
+            above = LAMP_COURSES[i + 1][2] if i < last else 0.0
+            # a course under one of its own width needs no top; the others are closed a texel in under
+            # the course above, the crown wholly
+            inner = None if above >= r else max(0.0, above - 1.0)
+            _glass(m, y0, y1, r, end if i in (0, last) else belly, emit, inner)
     return m
 
 
@@ -474,10 +588,11 @@ def _world(p, origin):
     return tuple(p[i] + origin[i] for i in range(3))
 
 
-def _place(canvas, name, pos, origin, scale=1.0, yaw=0.0):
-    """One model upright with its anchor on pos."""
+def _place(canvas, name, pos, origin, scale=1.0, yaw=0.0, turns=()):
+    """One model with its anchor on pos: upright, or turned by `turns` first."""
     x, y, z = _world(pos, origin)
-    canvas.add_entity(x, y, z, M.display(_models()[PREFIX + name], yaw=yaw, scale=scale, brightness=BRIGHT, view=VIEW))
+    canvas.add_entity(x, y, z, M.display(_models()[PREFIX + name], yaw=yaw, scale=scale, turns=turns,
+                                         brightness=BRIGHT, view=VIEW))
     return 1
 
 
@@ -501,12 +616,14 @@ def _pipes(canvas, origin, belts):
     and for version b a belt of them in the cells between the legs at every joint but the top one,
     which the head carries."""
     ox, oy, oz = (int(round(v)) for v in origin)
-    rows = range(int(math.floor(KNEE_Y)), int(math.floor(TOP_Y)))
+    knee, top = int(math.floor(KNEE_Y)), int(math.floor(TOP_Y))
+    # where the foot carries the shaft's legs on downwards, the columns go down inside them as well
+    low = {"point": knee, "squat": int(math.ceil(BASE_Y + FOOT_BAY_Y * U)), "legs": int(math.ceil(BASE_Y + FOOT_BASE_Y * U))}[FOOT]
     for x, z in LEG_CELLS:
-        for y in rows:
+        for y in range(low, top):
             canvas.set(ox + x, oy + y, oz + z, st(B.IRON_PIPE, axis="y"))
     if belts:
-        for y in rows[::int(BAY)]:
+        for y in range(knee, top, int(BAY)):
             for x, z, axis in BELT_CELLS:
                 canvas.set(ox + x, oy + y, oz + z, st(B.IRON_PIPE, axis=axis))
 
@@ -521,7 +638,7 @@ def _shaft(canvas, origin, version):
 
 
 def _lamp(canvas, origin):
-    n = _place(canvas, "light", (AX, LAMP_Y, AZ), origin)
+    n = _place(canvas, "light", (AX, GLASS_Y, AZ), origin, turns=LAMP_FRAME)
     canvas.entities[-1][3]["Tags"].append("c164_signal")
     return n
 
