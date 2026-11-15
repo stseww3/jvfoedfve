@@ -8,40 +8,35 @@ V2: from the head of the grand stair the lit entrance and the great dome are see
     stone base       blocks, x 34..36, z -1..1, y 0..1: a square of deepslate stairs (two half-block
                      steps) round a core, and one block of wall stone on it; 3 wide, 2 high
     sphere           its middle at y 4.75; the bore of the meridian ring is 4.5 blocks
-    top              y 7.25 (version a), y 7.44 (version b): the crown of the meridian ring, a plain
-                     arc. Nothing stands on it; the polar axis ends in a ball, below the crown.
+    top              y 7.25: the crown of the meridian ring, a plain arc. Nothing stands on it; the
+                     polar axis ends in a ball, below the crown.
 
 The brass work is display entities, one model to the ring. Every model has its anchor in the middle
 of the sphere and every entity stands on that one point, so they all take their light from the
 same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring. The cell under it,
-(35, 3, 0), stays empty: A2 (sky/lights) puts a hidden light there, with the four ground lamps.
+(35, 3, 0), stays empty: the props line (props/lamps) puts a hidden light there, with the four
+ground lamps.
 
-Two versions stand for the review (the base is the same):
-  a  classic     many thin rings: meridian, equator, the two tropics, one colure, the ecliptic band
-                 with its scale, the polar axis and a small earth. 8 entities.
-  b  heavy       one great graduated meridian ring and a broad ecliptic band on a slim colure, the
-                 axis and a larger earth. 5 entities.
+One version stands, a, the classic one: many thin rings -- meridian, equator, the two tropics, one
+colure, the ecliptic band with its scale, the polar axis and a small earth. 8 entities. From every
+side it is a ball of rings, and the gold windows and the gates show through it (director, 11-16).
 
-The view from due east decides between them (V2). There the meridian ring is a full circle; the
-polar axis and the equator are the two diagonals in it, one rising to the right and one to the
-left; behind the circle are the lit entrance and the gold window over it.
+From due east (V2) the meridian ring is a full circle; the polar axis and the equator are the two
+diagonals in it, one rising to the right and one to the left; behind the circle are the lit
+entrance and the gold window over it. From due north or south, along the brass meridian that leads
+people that way, the meridian ring stands on edge: an upright through the ball of rings.
 
-From due north or south, along the brass meridian that leads people that way, the meridian ring
-stands on edge. Version a had a horizon ring as well, level across it: an upright and a level bar
-of one length, a cross (red line; director, 11-15). Made as thin as the other thin rings it was
-still that on the first pictures (11-16): from the edges of the court the ring is seen on edge, a
-level bar that sticks out of the round cage on both sides, and the meridian ring an upright one
-through it, a ringed cross. So version a stands without it, as the director ruled beforehand.
-WITH_HORIZON ("ah") is version a with the ring, kept for the pictures he rules on (the test scene
-obs_mach_armillary_ah: the two views of V2 and the three along the meridian) and no longer than
-that.
+Two things the director ruled out on the pictures (11-16; the code is in the branch's history, the
+card names the commit):
+  a horizon ring   level across the meridian ring. Along the meridian it is seen on edge, a level
+                   bar through the upright one: a cross in a circle (red line).
+  version b        one great graduated meridian ring and a broad ecliptic band. Along the meridian
+                   it is a thick hoop, and from the front it hides more of the windows: a porthole.
 
 What does not turn (the frame), drawn the way it stands; +x east, +y up, +z south:
   stand      the iron saddle on the base that clamps the foot of the meridian ring
   meridian   upright, north-south, over the brass line in the paving; it carries the two bearings
              of the polar axis and the ball that ends it
-  horizon    level, at the middle of the sphere, held on the meridian ring north and south (only
-             in WITH_HORIZON)
 
 What turns (the sphere proper), every piece ABOUT THE POLAR AXIS THROUGH THE ANCHOR. The axis lies
 in the meridian plane and rises LATITUDE degrees above the northern horizon; as a unit vector
@@ -51,27 +46,27 @@ sphere's own frame, with +y along the polar axis, and each is placed with the tw
 axis onto the pole. To move one, change `hour` only; pieces() gives the turns for any hour (the
 southern tropic has a half turn about z in front). The sky's daily motion is the negative sense.
   axis       the rod and the earth on it
-  equator    square to the axis (a)
-  tropic     the same model twice, OBLIQUITY degrees north and south of the equator (a)
+  equator    square to the axis
+  tropic     the same model twice, OBLIQUITY degrees north and south of the equator
   ecliptic   the band, OBLIQUITY degrees off the equator, a mark every 10 degrees and a long one
              every 30 (the twelve signs)
   colure     the one ring through both poles that carries the others (the solstitial colure), with
              a bolt head where each of them crosses it. Only one: two would cross at the pole.
-This round places a still pose, HOUR; the motion is A8's. Only the axis, the ecliptic and the colure
-show that they turn: the equator and the tropics are plain rings about the axis. The pose is chosen
-on the pictures: at -35 the colure stands open beside the band from due east and from the entrance,
-two ovals in the ring, and along the meridian the band is close to a whole circle. At -15 the band
-opens a little more towards V2, but the colure closes onto the axis, and from the entrance all that
-is left in the ring is bars across the axis.
+This round places a still pose, HOUR; the motion is the motion line's. Only the axis, the ecliptic
+and the colure show that they turn: the equator and the tropics are plain rings about the axis.
+The pose is chosen on the pictures: at -35 the colure stands open beside the band from due east and
+from the entrance, two ovals in the ring, and along the meridian the band is close to a whole
+circle. At -15 the band opens a little more towards V2, but the colure closes onto the axis, and
+from the entrance all that is left in the ring is bars across the axis.
 
 Brass: old and dark (the palette's brass_dark), one step lighter where a face looks up; only the
 scale marks, the bolt heads and the ball on the axis go brighter. Nothing glows. At night the four
-small ground lamps at the corners of the base light it; lamps and light sources are A2's
-(sky/lights), which reads LAMP_CELLS and LIGHT_CELL from here; lamp_feet() gives the same four
-places as points, with the yaw towards the sphere.
+small ground lamps at the corners of the base light it; lamps and light sources are the props
+line's (props/lamps), which reads LAMP_CELLS and LIGHT_CELL from here; lamp_feet() gives the same
+four places as points, with the yaw towards the sphere.
 
     from scenes.obs.machines import armillary
-    n = armillary.build(canvas, origin, version="a")      # base and brass; returns the entity count
+    n = armillary.build(canvas, origin)      # base and brass; returns the entity count
 """
 import functools
 import math
@@ -84,8 +79,8 @@ from ..common import palette as P
 from ..common import skeleton as S
 
 PREFIX = "mach_armillary_"
-VERSION = "a"                       # the version build() places until the review picks one
-VERSIONS = ("a", "b")
+VERSION = "a"                       # the one version (director, 11-16); the models keep its letter
+VERSIONS = ("a",)
 
 # --- where it stands (the skeleton's numbers) -----------------------------------------------------
 CX, CZ = S.ARMILLARY                # the cell (35, 0)
@@ -96,19 +91,19 @@ LIGHT_CELL = (CX, int(math.floor(CENTRE_Y)), CZ)    # the cell every brass piece
 LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
 
 # --- the instrument's own numbers -----------------------------------------------------------------
-# the pole's height over the northern horizon: the skeleton's once it has it (director, 11-15: the
-# telescope, the transit instrument and this sphere read one number), until then the same 45
-LATITUDE = float(getattr(S, "LATITUDE", 45.0))
+# the pole's height over the northern horizon: the skeleton's (director, 11-15: the telescope, the
+# transit instrument and this sphere read one number)
+LATITUDE = float(S.LATITUDE)
 OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
 HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
 POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
-BRIGHTNESS = None                   # None: the light of LIGHT_CELL (A2 lights that cell). Else (sky, block)
+BRIGHTNESS = None                   # None: the light of LIGHT_CELL (the props line lights it). Else (sky, block)
 
 # The models are drawn 2 px to the unit and shown at twice their size: 16 px to the block, and a ring
 # 5 blocks across stays inside the 48 units a model may span. So below 1 unit = 2 px = 1/8 block.
 PX = 2.0
 FOOT = (CENTRE_Y - BASE_TOP) * 16.0 / PX        # 22: the top of the base, in units below the anchor
-R_BORE = 18.0                       # the bore of the meridian ring (and of the horizon ring)
+R_BORE = 18.0                       # the bore of the meridian ring
 R_CAGE = 17.5                       # what turns keeps inside this radius
 # A ring is (outer radius, radial size, width along its own axis); the tropic has the radius of the
 # sphere it lies on in the first place. studs: where on the colure the other rings cross it, in
@@ -116,8 +111,7 @@ R_CAGE = 17.5                       # what turns keeps inside this radius
 SPEC = {
     "a": dict(
         parts=("stand", "meridian", "axis", "equator", "tropic", "ecliptic", "colure"),
-        meridian=(20.0, 2.0, 2.0), meridian_scale=False,
-        horizon=(19.5, 1.5, 1.5),
+        meridian=(20.0, 2.0, 2.0),
         equator=(16.75, 1.5, 2.0),
         tropic=(16.75, 1.5, 1.5),
         ecliptic=(17.0, 1.0, 3.0),
@@ -125,19 +119,7 @@ SPEC = {
         studs=(0.0, OBLIQUITY, 180.0 - OBLIQUITY, 180.0, 180.0 + OBLIQUITY, -OBLIQUITY),
         rod=0.75, earth=2.5, boss=1.5, knob=1.75,
     ),
-    "b": dict(
-        parts=("stand", "meridian", "axis", "ecliptic", "colure"),
-        meridian=(21.5, 3.5, 2.5), meridian_scale=True,
-        ecliptic=(17.0, 1.5, 5.0),
-        colure=(16.5, 1.5, 2.0),
-        studs=(OBLIQUITY, 180.0 + OBLIQUITY),
-        rod=1.0, earth=3.5, boss=1.75, knob=2.0,
-    ),
 }
-# Version a with its horizon ring, for the director's ruling on the cross: a's own models and the
-# ring's, which is why `of` names the version whose models it places.
-WITH_HORIZON = "ah"
-SPEC[WITH_HORIZON] = dict(SPEC["a"], of="a", parts=("stand", "meridian", "horizon") + SPEC["a"]["parts"][2:])
 POLAR = ("axis", "equator", "tropic", "ecliptic", "colure")     # the pieces that turn about the pole
 
 # --- materials (palette only) ---------------------------------------------------------------------
@@ -166,10 +148,10 @@ def _mark(body, w, h, upright, long):
                   back=body)
 
 
-def _hoop(m, axis, r_out, thick, width, body, sides, scale=None, every=3, seed=1):
-    """Model.ring() about the model's origin, with a scale if wanted: scale = "flat" draws the marks
-    on the two flat faces, "rim" on the outer face. One mark to the division (360 / sides degrees),
-    a long one every `every`-th; division 0 lies on the first of the two other axes."""
+def _hoop(m, axis, r_out, thick, width, body, sides, scale=False, every=3, seed=1):
+    """Model.ring() about the model's origin, with a scale on its outer face if wanted: one mark to
+    the division (360 / sides degrees), across the rim, a long one every `every`-th; division 0 lies
+    on the first of the two other axes."""
     k = M.AXES.index(axis)
     o1, o2 = [i for i in range(3) if i != k]
     half = r_out * math.tan(math.pi / sides)
@@ -179,16 +161,14 @@ def _hoop(m, axis, r_out, thick, width, body, sides, scale=None, every=3, seed=1
     lo[o2], hi[o2] = -half, half
     outer, inner, flats = M.SIDE[o1][1], M.SIDE[o1][0], M.SIDE[k]
     lit = {outer: "along", inner: "inner", flats[0]: "along", flats[1]: "along"}
-    letters, marks = (), None
+    marks = None
     if scale:
-        letters = flats if scale == "flat" else (outer,)
-        run = o1 if scale == "flat" else k              # the axis a mark runs along
-        _, ua, va = M.FACE_AXES[letters[0]]
+        _, ua, va = M.FACE_AXES[outer]
         w, h = (max(1, int(round((hi[a] - lo[a]) * PX))) for a in (ua, va))
         back = body.variant(0, "along")
-        marks = [_mark(back, w, h, va == run, long) for long in (False, True)]
+        marks = [_mark(back, w, h, va == k, long) for long in (False, True)]
     for i in range(sides):
-        faces = dict.fromkeys(letters, marks[i % every == 0]) if marks else {}
+        faces = {outer: marks[i % every == 0]} if marks else {}
         theta = 360.0 * i / sides
         m.box(tuple(lo), tuple(hi), body, rot=(axis, theta, (0.0, 0.0, 0.0)) if theta else None,
               skip="".join(M.SIDE[o2]), grain=M.AXES[o2], seed=seed, faces=faces, lit=lit)
@@ -197,8 +177,7 @@ def _hoop(m, axis, r_out, thick, width, body, sides, scale=None, every=3, seed=1
 
 # --- the models -----------------------------------------------------------------------------------
 def _name(version, part):
-    """The model a version places for a part: its own, or that of the version it borrows from."""
-    return f"{PREFIX}{SPEC[version].get('of', version)}_{part}"
+    return f"{PREFIX}{version}_{part}"
 
 
 def _new(version, part):
@@ -229,26 +208,12 @@ def _meridian(version):
     s = SPEC[version]
     r_out, thick, w = s["meridian"]
     m = _new(version, "meridian")
-    _hoop(m, "x", r_out, thick, w, BRASS, 36, scale="flat" if s["meridian_scale"] else None)
+    _hoop(m, "x", r_out, thick, w, BRASS, 36)
     with m.turned(("x", LATITUDE - 90.0)):              # +y now points at the pole
         for end in (-1.0, 1.0):
             m.tube("y", (0.0, 0.0), end * (R_BORE - 0.5), end * (r_out + 1.0), s["boss"], BRASS, sides=8)
         m.ball((0.0, r_out + 1.0 + s["knob"] * 0.75, 0.0), s["knob"], WORN, sides=8, layers=4)
         m.tube("y", (0.0, 0.0), -(r_out + 1.75), -(r_out + 1.0), s["boss"] + 0.5, WORN, sides=8)
-    return m
-
-
-def _horizon(version):
-    """The horizon ring: level, as thin as the other thin rings, held on the meridian ring by a
-    knuckle north and south."""
-    s = SPEC[version]
-    r_out, thick, w = s["horizon"]
-    mr_out, _, mw = s["meridian"]
-    m = _new(version, "horizon")
-    m.ring("y", (0.0, 0.0, 0.0), r_out - thick / 2.0, thick, w, BRASS, sides=32)
-    for end in (-1.0, 1.0):
-        m.box((-(mw / 2.0 + 0.75), -(w / 2.0 + 0.5), end * (R_BORE - 0.5)),
-              (mw / 2.0 + 0.75, w / 2.0 + 0.5, end * (mr_out + 0.5)), BRASS)
     return m
 
 
@@ -288,7 +253,7 @@ def _ecliptic(version):
     r_out, thick, w = SPEC[version]["ecliptic"]
     m = _new(version, "ecliptic")
     with m.turned(("z", OBLIQUITY)):
-        _hoop(m, "y", r_out, thick, w, BRASS, 36, scale="rim")
+        _hoop(m, "y", r_out, thick, w, BRASS, 36, scale=True)
     return m
 
 
@@ -308,26 +273,17 @@ def _colure(version):
     return m
 
 
-BUILDERS = {"stand": _stand, "meridian": _meridian, "horizon": _horizon, "axis": _axis, "equator": _equator,
-            "tropic": _tropic, "ecliptic": _ecliptic, "colure": _colure}
+BUILDERS = {"stand": _stand, "meridian": _meridian, "axis": _axis, "equator": _equator, "tropic": _tropic,
+            "ecliptic": _ecliptic, "colure": _colure}
 
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    out = {}
-    for version in SPEC:
-        for part in SPEC[version]["parts"]:
-            if _name(version, part) not in out:
-                out[_name(version, part)] = BUILDERS[part](version)
-    return out
+    return {_name(version, part): BUILDERS[part](version) for version in SPEC for part in SPEC[version]["parts"]}
 
 
-def models(version=None):
-    """The models of every version, or those one version places."""
-    built = _models()
-    if version is None:
-        return dict(built)
-    return {name: built[name] for name in (_name(version, part) for part in SPEC[version]["parts"])}
+def models():
+    return dict(_models())
 
 
 # --- placing --------------------------------------------------------------------------------------
