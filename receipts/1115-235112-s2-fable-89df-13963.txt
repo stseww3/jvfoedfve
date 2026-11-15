@@ -1,0 +1,24 @@
+a0job 1115-235112-s2-fable-89df-13963: cursor/c164-s2-fable-89df @ 95714f60 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.69 1.68 1.81, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- mkdir -p renders/_wip/s2 && python tools/check.py --scene obs_site_stair --json renders/_wip/s2/stair.json > renders/_wip/s2/stair.txt 2>&1; echo stair-exit=$?; python tools/check.py --scene obs --json renders/_wip/s2/obs.json > render
+stair-exit=0
+obs-exit=0
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in th
+[PASS] motion    1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+result: PASS (0 failed, 1 with warnings)
+--
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 43.8% by blocks and 2.4% more by models, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in th
+[PASS] motion    2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)
+                 chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
+                 chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
+                 site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis
+result: PASS (0 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=14 host=cursor cores=4 head=95714f60 commit=1baefe0b pushed=yes branch=cursor/c164-s2-wip-89df files=4
+a0job: exit=0 secs=15
