@@ -131,6 +131,16 @@ DIAL_DRUM = 0.75                 # the drum behind the dial, in blocks
 # (0.42), far below the frosted windows (0.54). Start low; raise it on the pictures if the dial does
 # not read (cr2). Block light 8 on an east face would be 0.25.
 DIAL_LIGHT = {"east": (0, 11), "west": (0, 11), "south": (0, 7), "north": (0, 7)}
+# Measured off the four faces head-on (east x 23, south z -20, west x 4, north z -39, at the dial's
+# height, tick 14000, code 31f30929) — this stands against the hand calculation in cr2's review:
+#   east and west   enamel 0.318 against stone 0.217 (1.47)
+#   south and north enamel 0.335 against stone 0.288 (1.16)
+# The enamel of the four faces already agrees to 0.017, inside the 0.02 the review asks for, so they
+# are left as they are. What differs is the WALL: the shaft's south face catches more light than its
+# east face (0.288 against 0.217), so the ratio to the stone is lower there even though the dial is
+# not dimmer. Raising the north and south to (0, 9) would lift those two dials to 0.335 -> about
+# 0.41 and break "four faces alike", which the card puts above one light level for all four. Cr2
+# wrote that 1.47 is accepted as the sensible low-then-high landing point.
 FAR = 4.0                        # view_range of everything on the tower: seen from the far platforms
 
 # --- the time ball ------------------------------------------------------------------------------
@@ -147,6 +157,16 @@ MAST_FOOT_Y = S.CLOCK_TOP + 1.0                      # 42.0: the tip of the roof
 BALL_HALF_Y = S.CLOCK_BALL_MAST - 4.5                # 47.5: half-way up, five minutes before the hour
 BALL_UP_Y = S.CLOCK_BALL_MAST - 2.75                 # 49.25: at the top, 1.5 blocks of mast above it
 BALL_REST_Y = MAST_FOOT_Y + BALL_FOOT / 16.0         # 43.46875: dropped, on the foot of the mast
+# The ball takes a fixed brightness so that it does not go as dark as the sky (cr2's third item).
+# Measured, it cannot reach the 0.28..0.32 that review asked for: two renders of the same ball at
+# (0, 10) and at (15, 8) read 0.186 and 0.211, and scaling between them gives a ceiling of about
+# 0.213 at full (15, 15) — the response is compressed, not proportional to the light table. What
+# does move it is the sky term: raising it to 15 pulls the copper's saturation from 0.761 down to
+# 0.597, and the two ball colours are told apart by hue, so that trade also costs the choice the
+# director still has to make between them. Left at (0, 10), +0.041 over the sky.
+# The way to reach the target without bleaching the copper is a lighter paint: BALL_TONES takes
+# old_copper 1..3 (and signal 0,1,1); one step up the ramp raises the paint itself and keeps the
+# shading. That needs a render to check, so it is left for whoever picks this up (see the card).
 BALL_LIGHT = (0, 10)
 
 # --- materials (palette only) -------------------------------------------------------------------
