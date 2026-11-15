@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Where a visitor gets to on foot, worked out from the blocks (plan/packages/common/walk.md, "卡").
 
-    walkreach.py <scene> [--canvas <pickle>] [--out <folder>] [--start x,y,z] [--points <file>]
+    walkreach.py <scene> [--canvas <pickle>] [--out <folder>] [--start x,y,z | <landmark>] [--points <file>]
+                 [--name reach] [--line y | none] [--bounds x0,z0,x1,z1] [--scale n]
         builds the scene (or reads the pickle build/render.py --canvas wrote; a whole `obs` is built
         on a worker node, never on the shared machine), works out where a person can stand and how
         he gets from one place to the next, and writes <folder>/reach.json (what was found),
@@ -1146,8 +1147,10 @@ def main():
     ap = argparse.ArgumentParser(description="where a visitor gets to on foot, from the scene's blocks")
     ap.add_argument("scene", nargs="?", default="obs")
     ap.add_argument("--canvas", help="pickle of the built scene (build/render.py --canvas): read if there, else written")
-    ap.add_argument("--out", help="folder for reach.json and reach.png")
-    ap.add_argument("--start", help="x,y,z of the feet (default: the spawn, V1's place on the station platform)")
+    ap.add_argument("--out", help="folder for reach.json, reach.txt and reach.png")
+    ap.add_argument("--name", default="reach", help="the files' name instead of `reach` (a second start: --name reach-court)")
+    ap.add_argument("--start", help="x,y,z of the feet, or the name of a landmark (default: the spawn, V1's place on "
+                                    "the station platform)")
     ap.add_argument("--points", help="JSON file {name: [x, y, z]} of points to look up besides the route's landmarks")
     ap.add_argument("--bounds", help="x0,z0,x1,z1 of the ground looked at (default: the skeleton's masses and 40 more)")
     ap.add_argument("--scale", type=int, default=4, help="pixels a lattice point on the map")
@@ -1162,7 +1165,12 @@ def main():
     if args.points:
         with open(args.points, encoding="utf-8") as fh:
             points.update({k: tuple(v) for k, v in json.load(fh).items()})
-    start = tuple(float(v) for v in args.start.split(",")) if args.start else points["spawn"]
+    if not args.start:
+        start = points["spawn"]
+    elif args.start in points:
+        start = points[args.start]
+    else:
+        start = tuple(float(v) for v in args.start.split(","))
     if args.bounds:
         bounds = tuple(int(v) for v in args.bounds.split(","))
     else:
@@ -1183,13 +1191,14 @@ def main():
     print(say(report))
     if args.out:
         os.makedirs(args.out, exist_ok=True)
-        with open(os.path.join(args.out, "reach.json"), "w", encoding="utf-8", newline="\n") as fh:
+        stem = os.path.join(args.out, args.name)
+        with open(stem + ".json", "w", encoding="utf-8", newline="\n") as fh:
             json.dump(report, fh, ensure_ascii=False, indent=1)
             fh.write("\n")
-        with open(os.path.join(args.out, "reach.txt"), "w", encoding="utf-8", newline="\n") as fh:
+        with open(stem + ".txt", "w", encoding="utf-8", newline="\n") as fh:
             fh.write("\n".join(reach.plan()) + "\n")
-        size = draw(reach, os.path.join(args.out, "reach.png"), args.scale, line=line)
-        print(f"written: {args.out}/reach.json, reach.txt, reach.png ({size[0]}x{size[1]})")
+        size = draw(reach, stem + ".png", args.scale, line=line)
+        print(f"written: {stem}.json, .txt, .png ({size[0]}x{size[1]})")
     return 0
 
 
