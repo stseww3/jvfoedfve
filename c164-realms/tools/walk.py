@@ -12,6 +12,8 @@ sure that every round looks from the same places.
     walk.py floors   --canvas <pickle> --box=x0,z0,x1,z1 [--levels=0,7,18] [--top=y0,y1] [--out <file>]
         for writing a route: plans in characters of where feet find a floor in the built scene,
         one for each level named, and with --top the highest floor of every column between two levels
+    walk.py cells    --canvas <pickle> --box=x0,y0,z0,x1,y1,z1
+        the blocks in a box, one a line: what a door, a gate, a railing is made of
     walk.py stations <route.json> --canvas <pickle> --out <stations.json>
         the station table of a route, the feet of every station put on the floor of the built scene
     walk.py shots    <stations.json> --out <shots.json> [--stations in-A01,in-B03] [--views f,l]
@@ -73,8 +75,8 @@ gets
             "fall" (only by dropping, and there is a way back), "trap" (no way back) or "no".
             A station without a floor has none: nobody stands there.
     from, how   for a station nobody gets to from the first one: the station a search of its own
-            was started at (at most five of them: the roofs while the stair is not built, a room
-            behind a shut door), and how one gets here from that one
+            was started at (the roofs while the stair is not built, a room behind a shut door;
+            no more than a dozen searches in all), and how one gets here from that one
     leg     the way from the station before it, where it is not a plain walk: "hop", "fall", "no"
     round   that way's length in blocks, when it is much longer than the straight line: something
             stands on the line
@@ -122,7 +124,7 @@ COLS, ROWS = 4, 3           # pictures on a sheet
 LABEL = 22                  # the strip over a picture
 HEADER = 32                 # the strip over a sheet
 DARK = 0.02                 # a view ahead darker than this on the average is listed in the round's report
-STARTS = 5                  # the searches for ways: the route's first station, and so many less one of those nobody gets to
+STARTS = 12                 # the searches for ways: the route's first station, and so many less one of those nobody gets to
 NEAR = 0.6                  # a station and a place reached are the same place within this much of height
 MARGIN = 12                 # ways are looked for this far round the route
 ROUND = (1.5, 2.0)          # a leg's way is "round" when longer than the straight line times this, and this more
@@ -695,6 +697,9 @@ def survey(table, cells, say=print):
                 + ("; CUT SHORT" if reach.cut else ""), flush=True)
     table["reach_from"] = starts[0][0] if starts else None
     table["reach_bounds"] = list(bounds)
+    table["reach_searches"] = [sid for sid, _ in starts]
+    if len(starts) >= STARTS:
+        say(f"walk: {STARTS} searches made and no more: a station marked 'no' after {starts[-1][0]} may only lack a search")
     before = None
     for s in stations:
         hit = nodes.get(s["id"])
@@ -788,6 +793,10 @@ def main():
     p.add_argument("--levels", default="", help="comma separated levels: a plan of the floors near each")
     p.add_argument("--top", help="y0,y1: a plan of the highest floor of every column between the two")
     p.add_argument("--out", help="write the plans to this file instead of printing them")
+    p = sub.add_parser("cells")
+    p.add_argument("--scene", default="obs")
+    p.add_argument("--canvas", help="the pickle build/render.py --canvas keeps; built and kept there if it is not")
+    p.add_argument("--box", required=True, action="append", help="x0,y0,z0,x1,y1,z1 (--box=...); may be given more than once")
     p = sub.add_parser("stations")
     p.add_argument("route")
     p.add_argument("--scene", default="obs")
@@ -837,6 +846,19 @@ def main():
             print(f"walk: {len(lines)} lines -> {args.out}")
         else:
             print("\n".join(lines))
+        return 0
+
+    if args.cmd == "cells":
+        cells = scene_cells(args.scene, args.canvas)
+        for text in args.box:
+            x0, y0, z0, x1, y1, z1 = (int(v) for v in text.split(","))
+            print(f"== blocks in x {x0}..{x1}, y {y0}..{y1}, z {z0}..{z1}")
+            rows = [(y, z, x, cells[(x, y, z)]) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)
+                    for z in range(z0, z1 + 1) if (x, y, z) in cells]
+            for y, z, x, state in sorted(rows)[:400]:
+                print(f"  {x:4d} {y:4d} {z:4d}  {state}")
+            if len(rows) > 400:
+                print(f"  ... and {len(rows) - 400} more")
         return 0
 
     if args.cmd == "stations":
