@@ -16,8 +16,11 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     its own order: the piers are the wall's symmetry, the bays are not mirror
                     images. The middle bay holds what there is one of (the nameplate and the
                     bell, the gauges and the register, the oscilloscope and the recorder). A
-                    frieze of louvres runs under the cornice and a course of drawers along the
-                    floor. rack_faults() says which rules the wall is laid by.
+                    frieze of louvres runs under the cornice, and along the floor the bays stand
+                    on louvres too: the drawers, with their brass pulls and labels, are the feet
+                    of the piers only (a course of them from wall to wall was as busy with amber
+                    as the instruments above it; review cr3-P4). rack_faults() says which rules
+                    the wall is laid by.
   standard clocks   the rack stops one cell short of each long wall, which leaves a recess one cell
                     wide and one deep at each of its ends (x 2 and x 13). The back of each is
                     lined with a board of dark wood from the floor to the head course (the room's
@@ -64,7 +67,7 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
   ceiling           riveted beams across the room on the pilaster rows; each end sits in an iron
                     shoe at the head of its pier, the capital of the panelled pilaster
 
-The sill line (y 8) is the line the room hangs on: the rack's course of drawers runs under it, the
+The sill line (y 8) is the line the room hangs on: the rack's foot course runs under it, the
 console top, the top of the world clocks' cabinet and the feet of the two regulators are on it,
 the desks stay below it.
 
@@ -75,11 +78,14 @@ only then lit: that is what the panelling and the boards in the recesses are for
 shaded one (LAMPS) and hangs low over what it is for. A shade throws its light down, so the source
 of a lamp is not offered at its bulb but under it, at the height of what it lights: over the shelf
 of the console, in the cell a desk stands in, at the dial of a clock. The light lies in pools on
-the floor and on the lower half of the walls; the ceiling, the heads of the windows and the linings
-of the lit ones stay out of it. The rack gets the most (12 on the faces at the height of the hand,
-9 on its frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is
-hardly darker than one at 10), so the pools are kept small and far apart: the floor rises from
-nothing at the door to 3 between the desks and to 9 before the console, and leads to the rack.
+the floor and on the lower half of the walls; the heads of the windows and the linings of the lit
+ones stay out of it. The rack gets the most (12 on the faces at the height of the hand, 9 on its
+frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is hardly
+darker than one at 10), so the pools are kept small and far apart: the floor rises from nothing at
+the door to 3 between the desks and to 9 before the console, and leads to the rack. And the floor
+is relaid in dark boards: in the shell's pale ones it was the lightest large thing of the room,
+lit or not. The ceiling gets what the pools throw back and no more (BOUNCE): 2 to 5 along the
+room, enough for its beams and boards to be seen and not to be a black lid.
 A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
 east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
 unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
@@ -90,8 +96,8 @@ behind the glass of a window (clear_cells()): the lining of a lit one lies on th
 two recesses are such cells; what hangs in them is display entities. The one block that does is
 the last panel of the south wall (CORNER), edge on to the glass of east bay 7, which no look lights.
 
-The room dresses the shell main/shell.py (c231) leaves and lays no wall, floor slab or ceiling
-slab. What other packages make is placed through them when they are in the tree (PIECES: the
+The room dresses the shell main/shell.py (c231) leaves: it lays no wall and no ceiling, and of the
+floor only the boards anew, in the shell's own row. What other packages make is placed through them when they are in the tree (PIECES: the
 furniture, the regulators and the barometer, the key and the telephone, the books and the drawing)
 and is left out, or stood in for by a block, until then. SLOTS says where the machines of
 machines/recorders go.
@@ -152,7 +158,7 @@ FLANK_W = (                                         # the west flank bay: its ou
     ("bus_switch", "knife_switch"),
     ("pilot_lamps", "relays"),
     ("fuses", "patch_panel"),
-    ("drawers", "drawers"),
+    ("louvre", "louvre"),
 )
 FLANK_E = (                                         # the east flank bay: its inner column, its outer one
     ("louvre", "louvre"),
@@ -160,7 +166,7 @@ FLANK_E = (                                         # the east flank bay: its in
     ("relays", "knife_switch"),
     ("fuses", "dial"),
     ("patch_panel", "relays"),
-    ("drawers", "drawers"),
+    ("louvre", "louvre"),
 )
 MIDDLE = (                                          # the middle bay: what there is one of
     ("louvre", "louvre"),
@@ -168,7 +174,7 @@ MIDDLE = (                                          # the middle bay: what there
     ("gauges", "counter"),
     ("scope", "recorder"),
     ("louvre", "louvre"),
-    ("drawers", "drawers"),
+    ("louvre", "louvre"),
 )
 # pier, west flank bay, pier, middle bay, pier, east flank bay, pier
 RACK = [(p,) + w + (p,) + m + (p,) + e + (p,) for p, w, m, e in zip(PIER, FLANK_W, MIDDLE, FLANK_E)]
@@ -298,6 +304,17 @@ BENCH_LIGHT = (int(math.floor(BENCH_X)), FEET, int(math.floor(BENCH_Z)))        
 #                                                                                     (while a board stands in for a desk that cell is
 #                                                                                     taken, and the light line puts the source at the chair)
 CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z))))   # (3, 9, -10): before the middle dial (a panel stands in the dial's own cell)
+# What a lit desk and a lit clock board throw back at the ceiling: a weak source in the row under the ceiling, two
+# cells out from the wall the lamp is at. With every source low the boards and the beams over the middle of the
+# room were dead black (under 0.03 on four tenths of the ceiling of V10; review cr3-P4); these leave the ceiling
+# dark and its beams to be seen, 2 to 5 along the room's axis. Each is 3 cells or more from the lining of a lit
+# window, which they leave at what its own sources give it.
+BOUNCE = (8, 3)             # over the message desk and over the rating bench
+CLOCK_BOUNCE = (7, 3)       # over the world clocks
+DESK_BOUNCE = (X1 - 2, TOP, int(math.floor(DESK_Z)) - 1)                            # (11, 13, -13): a row towards the rack from the desk's middle
+BENCH_BOUNCE = (X0 + 2, TOP, int(math.floor(BENCH_Z)) - 1)                          # (4, 13, -17)
+CLOCKS_BOUNCE = (X0 + 2, TOP, int(math.floor(S.mid(*CLOCK_Z))) + 1)                 # (4, 13, -9)
+assert not {cell[2] for cell in (DESK_BOUNCE, BENCH_BOUNCE, CLOCKS_BOUNCE)} & set(PIER_Z), "a beam lies in a pier's row"
 
 
 def rack_faults(rows=None):
@@ -647,6 +664,20 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         c.add_entity(*a, M.between(lamps.models()[CORD], a, b))
         return 1 + lamp("pendant", (x, hang, z), ask, why, at)
 
+    def bounce(at, ask, why):
+        """What a lamp's pool throws back at the ceiling: a source and no lamp."""
+        level, rank = ask
+        cell = (ox + at[0], oy + at[1], oz + at[2])
+        lights.append((cell, level, f"{NAME}:{why}"))
+        _offer(c, cell, level, f"{NAME}:{why}", rank)
+
+    # ---- the floor: dark boards over the pale ones of the shell. The floor is a quarter of what one
+    # sees from the door; in the shell's boards it was the lightest large thing of the room, lighter
+    # than the rack, lit or not (review cr3-P4)
+    for x in range(X0, X1 + 1):
+        for z in range(Z0, Z1 + 1):
+            put(x, FLOOR_Y, z, roles.DARK_WOOD.block)
+
     # ---- the instrument wall: six rows of panels, the cornice, the hood over the faces
     for j, row in enumerate(RACK[::-1]):
         for i, name in enumerate(row):
@@ -702,6 +733,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
                 put(x, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
     n += drop(DESK_X, DESK_Z - LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "message desk", DESK_LIGHT)
     n += drop(BENCH_X, BENCH_Z + LEFT, CEIL_Y, DESK_HANG, DESK_LAMP, "rating bench", BENCH_LIGHT)
+    bounce(DESK_BOUNCE, BOUNCE, "ceiling over the message desk")
+    bounce(BENCH_BOUNCE, BOUNCE, "ceiling over the rating bench")
 
     # ---- what lies on the two desks, or on the boards that stand in for them: the chronometers on the
     # rating bench, the paper on the message desk
@@ -717,6 +750,7 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
         n += K.put(c, own[clock_name(offset)], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
     n += lamp("bracket", (PANEL_W, DIAL_Y + BOARD[1] * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", CLOCK_LIGHT, facing="east")
+    bounce(CLOCKS_BOUNCE, CLOCK_BOUNCE, "ceiling over the world clocks")
 
     # ---- the panelling: every solid stretch of wall where no block of the room stands, from the floor
     # to the ceiling; before a window only the course under its sill
