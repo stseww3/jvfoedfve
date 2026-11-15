@@ -19,8 +19,10 @@ from scenes.obs.sky import _lightkit as L
 
 PREFIX = "int_starhall_standin_"
 SUN_LEVEL, CLOCK_LEVEL = 12, 11
-CLOCK_DIAL = (0, 13)      # (sky, block) the dial is shown at. A0, 11-16: in V7 the dial reads 0.35 or more and
-#                           is the first thing seen; at 11, machines/clock's number so far, it read under 0.3
+CLOCK_DIAL = (0, 14)      # (sky, block) the dial is shown at. A0, 11-16: in V7 the dial reads 0.35 or more and
+#                           is the first thing seen. A display entity's face that looks east is drawn at under
+#                           half: at 11, machines/clock's number so far, the plate read 0.29, at 13 0.37 and
+#                           0.34 with its hands
 DIAL_Y = 25.5             # eighths of a block over the case's foot: where machines/clock has its dial
 SUN_R = 2.75              # eighths of a block: the size of the sun machines/orrery is making
 WOOD_D = P.mat("dark_wood", base=1)

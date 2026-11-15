@@ -71,15 +71,16 @@ ROUNDEL_R = 3               # the ring is seven across (A0 #369)
 BOSS_R = 1.5                # blocks
 BOSS_DROP = 0.04            # the boss's face lies this far under the beam's, so the beam does not cut it in two
 BOARDS_UP = 0.5             # the boards' lower face above the beams'
-CEILING_LIGHT = 9           # the level the panels in the boards are shown at: the sun's light thins to
-#                             nothing on the way up, and a face that looks down is drawn at half
-
-# light: the hierarchy the director set (sun 12 and clock 11 are offered by the machines)
-AISLE_LEVELS = (7, 8, 7)    # the three pilaster lamps of an aisle, from the pier to the door
+PANEL = 1.75                # blocks: the side of a panel between two beams; over a gallery's end it is a strip
+STRIP = 0.75                # that wide, as long as a panel
+PANEL_GAP = 0.25            # between two panels of a row
+PANEL_LIGHTS = (9, 8, 7)    # the level a panel is shown at: beside the boss, at the end of its row, over a
+#                             gallery's end. No source reaches the boards, a face that looks down is drawn at
+#                             half, and dark boards with nothing on them come out dead black from the door
+AISLE_LEVELS = (7, 7, 8, 7)  # the four lamps of an aisle wall, from the pier to the door
 AISLE_LAMP_Y = 3.5
 GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
 GALLERY_LAMP_Y = 10.5
-BOARD_LEVEL = 5
 SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
 #                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
 #                             floor's middle is darker than the mother clock's dial, which with 10 it was not
@@ -105,7 +106,7 @@ STYLE = {
     "a": dict(
         band=B.SLATE_SMOOTH.block, field=B.ASHLAR_FINE.block,
         base=B.SLATE_BRICK.block, shaft=B.ASHLAR_FINE.block, capital=B.ASHLAR_PANEL.block,
-        corbel=B.ASHLAR_FINE.stairs, dado=True, coffers=True, board=BOARD_A,
+        corbel=B.ASHLAR_FINE.stairs, dado=True, panel="sky", board=BOARD_A,
         furniture=(("bench", (10.0, 5.45), "north"), ("bench", (13.0, 5.45), "north"),
                    ("display_table", (10.0, -4.36), "south"), ("display_table", (13.0, -4.36), "south"),
                    ("coat_stand", (15.5, 5.3), "north")),
@@ -113,7 +114,7 @@ STYLE = {
     "b": dict(
         band=B.SLATE_SMOOTH.block, field=B.TUFF_SMOOTH.block,
         base=B.IRON_RIVETED.block, shaft=B.IRON_RIVETED.block, capital=B.IRON_RIVETED.block,
-        corbel=B.IRON_RIVETED.stairs, dado=False, coffers=False, board=BOARD_B,
+        corbel=B.IRON_RIVETED.stairs, dado=False, panel="plate", board=BOARD_B,
         furniture=(("drafting_table", (10.0, 5.45), "north"), ("stool", (10.0, 4.3), "south"),
                    ("writing_desk", (13.0, 5.53), "north"), ("swivel_chair", (13.0, 4.5), "south"),
                    ("card_cabinet", (9.5, -4.57), "south"), ("instrument_cabinet", (10.5, -4.57), "south"),
@@ -355,8 +356,8 @@ def _door_emblem(canvas, origin):
 
 
 def _switchboard(canvas, origin, style):
-    """The hall's switchboard against the north wall: instrument panels under an iron top. Its lamp
-    is a source before its pilot lamps, no model."""
+    """The hall's switchboard against the north wall: instrument panels under an iron top. The
+    aisle's westernmost lamp hangs over its middle."""
     ox, oy, oz = origin
     rows = style["board"]
     x0 = BOARD_MID_X - len(rows[0]) // 2
@@ -365,22 +366,41 @@ def _switchboard(canvas, origin, style):
             canvas.set(ox + x0 + dx, oy + FEET + dy, oz + Z0, st(B.PANELS[name], facing="south"))
     for dx in range(len(rows[0])):
         canvas.set(ox + x0 + dx, oy + FEET + len(rows), oz + Z0, st(B.IRON_RIVETED.slab, type="bottom"))
-    L.suggest(canvas, (ox + BOARD_MID_X, oy + FEET + 2, oz + Z0 + 1), BOARD_LEVEL, f"{WHY}:switchboard", rank=3)
 
 
 # ---- the ceiling --------------------------------------------------------------------------------------------
+def ceiling_panels():
+    """Where the panels in the boards go: [(model, (x, z) of its middle, quarter turns, level)].
+    Between two beams a row of squares from wall to wall, two on either side of the boss, which
+    keeps the middle of the row. Over each gallery's west end, between the wall and the girder
+    of the stair's well, where the beams stop, a row of strips. No panel crosses a beam."""
+    out = []
+    beams = beam_xs()
+    step = PANEL + PANEL_GAP
+    near, far, end = PANEL_LIGHTS
+    for a, b in zip(beams, beams[1:]):
+        x = (a + 1 + b) / 2.0
+        for side in (-1, 1):
+            edge = CZ + 0.5 + side * (BOSS_R + PANEL_GAP / 2.0)
+            for k, level in ((0, near), (1, far)):
+                out.append(("panel", (x, edge + side * (PANEL / 2.0 + k * step)), len(out) % 4, level))
+    for z in (Z0 + 0.5, Z1 + 0.5):
+        x = beams[0] - PANEL_GAP / 2.0 - PANEL / 2.0
+        while x - PANEL / 2.0 >= X0:
+            out.append(("strip", (x, z), 2 * (len(out) % 2), end))
+            x -= step
+    return out
+
+
 def _ceiling(canvas, origin, version, style):
-    """The boss the orrery hangs from, and in a the four blue panels in the boards round it. The
-    beams are the shell's and nothing is laid across them."""
+    """The boss the orrery hangs from, and the panels in the boards (a: blue enamel with brass
+    stars, b: riveted plate). The beams are the shell's and nothing is laid across them."""
     models = _models()
     n = K.put(canvas, models[PREFIX + "boss_" + version], (CX + 0.5, CEIL - BOSS_DROP, CZ + 0.5), scale=2.0,
               origin=origin)
-    if style["coffers"]:
-        beams = beam_xs()
-        for a, b in zip(beams, beams[1:]):
-            for z, yaw in ((CZ - 3 + 0.5, 0.0), (CZ + 3 + 0.5, 180.0)):
-                n += K.put(canvas, models[PREFIX + "coffer"], ((a + 1 + b) / 2.0, CEIL + BOARDS_UP, z),
-                           mount="ceiling", yaw=yaw, scale=2.0, origin=origin, brightness=(0, CEILING_LIGHT))
+    for kind, (x, z), quarter, level in ceiling_panels():
+        n += K.put(canvas, models[f"{PREFIX}{style['panel']}_{kind}"], (x, CEIL + BOARDS_UP, z), mount="ceiling",
+                   yaw=90.0 * quarter, scale=2.0, origin=origin, brightness=(0, level))
     return n
 
 
@@ -418,18 +438,28 @@ def _furnish(canvas, origin, style):
 
 
 def _charts(canvas, origin):
-    """The south aisle's west bay: two star charts on the wall and a celestial globe before them.
-    Stand-ins of this package until props/paper and props/instruments bring theirs."""
+    """The south aisle's west bay: two star charts on the wall either side of the aisle's
+    westernmost lamp, and a celestial globe before them under it. Stand-ins of this package until
+    props/paper and props/instruments bring theirs."""
     models = _models()
+    lamp = aisle_lamp_xs()[0]
     n = 0
-    for x in (3.5, 6.0):
+    for x in (lamp - 1.5, lamp + 1.5):
         n += K.put(canvas, models[PREFIX + "chart"], (x, FEET + 3.0, Z1 + 1.0), mount="wall", facing="north",
                    origin=origin)
-    n += K.put(canvas, models[PREFIX + "globe"], (4.75, FEET, Z1 - 0.2), origin=origin)
+    n += K.put(canvas, models[PREFIX + "globe"], (lamp, FEET, Z1 - 0.2), origin=origin)
     return n
 
 
 # ---- the lamps ------------------------------------------------------------------------------------------------
+def aisle_lamp_xs():
+    """Where the lamps of an aisle wall hang: on every pilaster, and as far west of the first as
+    the pilasters stand apart, on the wall itself: over the switchboard on the north side, between
+    the two charts on the south. West to east."""
+    xs = [x + 0.5 for x in beam_xs()]
+    return [2.0 * xs[0] - xs[1]] + xs
+
+
 def gallery_lamp_xs():
     """Where the lamps of a gallery wall hang: over the wing door, on the meridian, and as far west
     of the door as the meridian is east of it, which is over the head of the bridge to the ring
@@ -441,15 +471,21 @@ def gallery_lamp_xs():
 
 
 def _lamps(canvas, origin, version):
-    """Caged lamps on the aisle face of every pilaster, under the gallery, and three along each
-    gallery wall. The westernmost is a level over the others: it shows the boards over the far end
-    of the gallery, which from the door are the top of the picture."""
+    """Caged lamps under the gallery, four along each aisle wall, and three along each gallery
+    wall. The westernmost of an aisle hangs on the wall itself, and over the switchboard higher
+    than the others. The westernmost of a gallery is a level over the others: it shows the far
+    end of the gallery, which from the door is the top of the picture."""
+    ox, oy, oz = origin
     n = 0
-    for x, level in zip(beam_xs(), AISLE_LEVELS):
-        n += lamps.place(canvas, "cage", (x + 0.5, AISLE_LAMP_Y, Z0 + 1.0), facing="south", origin=origin,
-                         version=version, level=level)
-        n += lamps.place(canvas, "cage", (x + 0.5, AISLE_LAMP_Y, Z1), facing="north", origin=origin,
-                         version=version, level=level)
+    pilasters = beam_xs()
+    for x, level in zip(aisle_lamp_xs(), AISLE_LEVELS):
+        for face, row, facing, out in ((Z0, Z0, "south", 1.0), (Z1 + 1, Z1, "north", -1.0)):
+            y, z = AISLE_LAMP_Y, float(face)
+            if int(x) in pilasters:
+                z += out                                # on the pilaster's face, a block before the wall
+            elif canvas.has(ox + int(x), oy + int(y), oz + row):
+                y = int(y) + 1.25                       # over what stands against the wall: the switchboard's top
+            n += lamps.place(canvas, "cage", (x, y, z), facing=facing, origin=origin, version=version, level=level)
     for x, level in zip(gallery_lamp_xs(), GALLERY_LEVELS):
         n += lamps.place(canvas, "cage", (x, GALLERY_LAMP_Y, Z0), facing="south", origin=origin, version=version,
                          level=level)
@@ -518,18 +554,35 @@ def _boss(version):
     return m
 
 
-def _coffer():
-    """A blue enamel panel let into the boards between two beams, with a few brass stars: a piece
-    of sky over the orrery. Shown at scale 2. Anchor: the middle of its upper face, on the boards."""
-    m = M.Model(PREFIX + "coffer", px=2.0)
-    w, d = 7.0, 10.0
-    m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="z", shade=False)
-    for s in (-1.0, 1.0):
-        m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z", shade=False)
-        m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x", shade=False)
-    for x, z, size in ((-3.5, -6.5, 1.0), (2.0, -4.0, 0.5), (4.5, -7.5, 0.5), (-1.0, -0.5, 0.5), (3.5, 2.5, 1.0),
-                       (-4.5, 4.0, 0.5), (0.5, 6.5, 0.5), (-2.5, 8.0, 0.5)):
-        m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS, shade=False)
+SKY_STARS = ((-4.5, -4.0, 1.0), (2.0, -5.0, 0.5), (4.5, -1.5, 0.5), (-1.0, -0.5, 0.5), (3.5, 3.5, 1.0),
+             (-4.0, 3.0, 0.5), (0.5, 5.0, 0.5), (-2.5, -2.5, 0.5))     # x, z, size, in eighths of a block
+
+
+def _panel(name, kind):
+    """A panel let into the boards, shown at scale 2 (units are eighths of a block); `kind` is
+    "panel", square, or "strip", as long and STRIP wide, its length along x. Anchor: the middle
+    of its upper face, on the boards. No face of it is shaded: it looks down, and is shown at a
+    level of its own.
+    sky    blue enamel in a brass bead with a few brass stars: a piece of the sky over the orrery
+    plate  an iron plate riveted to the boards, a row of rivets along each edge"""
+    m = M.Model(f"{PREFIX}{name}_{kind}", px=2.0)
+    w, d = PANEL * 4.0, (PANEL if kind == "panel" else STRIP) * 4.0
+    flat = dict(shade=False)
+    if name == "sky":
+        m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="x", **flat)
+        for s in (-1.0, 1.0):
+            m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z", **flat)
+            m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x", **flat)
+        for x, z, size in SKY_STARS:
+            if abs(z) + size / 2.0 < d - 0.5:
+                m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS, **flat)
+    else:
+        m.box((-w, -0.5, -d), (w, 0.0, d), K.IRON, grain="x", **flat)
+        for s in (-1.0, 1.0):
+            m.box((s * w - 0.5, -0.75, -d), (s * w + 0.5, -0.5, d), K.IRON_D, grain="z", **flat)
+            for k in range(-3, 4):
+                m.box((2.0 * k - 0.25, -0.75, s * (d - 0.75) - 0.25), (2.0 * k + 0.25, -0.5, s * (d - 0.75) + 0.25),
+                      K.RIVET, **flat)
     return m
 
 
@@ -565,7 +618,8 @@ def _globe():
 
 @functools.lru_cache(maxsize=None)
 def _models():
-    made = [_star(), _boss("a"), _boss("b"), _coffer(), _chart(), _globe()]
+    made = [_star(), _boss("a"), _boss("b"), _chart(), _globe()]
+    made += [_panel(name, kind) for name in ("sky", "plate") for kind in ("panel", "strip")]
     return {m.name: m for m in made}
 
 
