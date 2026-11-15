@@ -117,6 +117,9 @@ LAMP_DROP = 2                               # a lamp's second source this far un
 #                                             the block light does not carry ten courses, and with
 #                                             one source a lamp at the beam row still left the
 #                                             upper third of a stand under 0.03 (RUBRIC red line 6)
+CEILING_LAMPS = 6                           # a dim source one row under the boards, so the ceiling
+#                                             is a dark grey plane and not a black one (the room's
+#                                             own ceiling is boards on iron beams, and both read)
 
 # ---- the light ------------------------------------------------------------------------------
 LIGHT = B.LIGHT                             # the invisible source a lamp offers
@@ -207,6 +210,13 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, *, version="a"):
             for dy in (0, -LAMP_DROP):
                 put(x, y + dy, z, f"{LIGHT}[level={LAMP_LEVEL}]")
                 lights.append(((x, y + dy, z), LAMP_LEVEL))
+    # and a dim one under every second bay of boards: a ceiling is a surface, not a void
+    for x, z in sorted(cells):
+        if (x, z) in beams:
+            continue
+        if (x - IN_X[0]) % (TRUSS_STEP * 2) == 0 and (z - IN_Z[0]) % TRUSS_STEP == 0:
+            put(x, CEIL_Y - 1, z, f"{LIGHT}[level={CEILING_LAMPS}]")
+            lights.append(((x, CEIL_Y - 1, z), CEILING_LAMPS))
 
     n = 0
     return {"entities": n, "lights": lights, "reserved": sorted(RESERVED)}
