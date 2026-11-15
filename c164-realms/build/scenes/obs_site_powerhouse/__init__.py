@@ -15,8 +15,10 @@ stand on the same walls in the same place, so they are shown from the same camer
 
 so the same pair of pictures also shows the terrace with and without the run.
 
-Both show the bridge with the props line's fittings on it (powerhouse.FITTINGS), once props/pipes is
-in the tree.
+Both show what the finished site has round the house and the props line still keeps behind its
+switches: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, DRAINS), the
+street lamps of the way in and the low lamps on the terrace's lip. Each appears once its package
+is in the tree.
 """
 import contextlib
 
@@ -46,25 +48,43 @@ def _as(version, run):
 
 
 def _fit(c):
-    """The fittings of the pipe bridge (powerhouse.FITTINGS: a valve head, three straps). They are
-    the props line's, which places nothing of its own accord until its review is passed; the bridge
-    is shown with them here. Nothing while props/pipes is not in the tree."""
+    """What the props line hangs on the shell (powerhouse.FITTINGS, DRAINS). props/pipes reads the
+    tables itself (pipes.fittings) and places nothing of its own accord while its switch is off;
+    here the house is shown with them. Nothing while that function is not in the tree, and
+    nothing once the switch is on: the props line has placed them already."""
     try:
         from scenes.obs.props import pipes
     except ImportError:
         return 0
-    mount = getattr(pipes, "mount", None)
-    if mount is None:
+    fittings = getattr(pipes, "fittings", None)
+    if fittings is None or getattr(pipes, "DRESS", False):
         return 0
-    return sum(int(mount(c, kind, pos, origin=(0, 0, 0), **how) or 0) for kind, pos, how in powerhouse.FITTINGS)
+    return int(fittings(c, (0, 0, 0)) or 0)
+
+
+def _lamps(c):
+    """The lamps the finished site has in these pictures: the street lamps of the way in, one of
+    which stands in the yard before the chimney's foot, and the low lamps on the lip of the terrace,
+    two of which flank the bridge head. The view of the works is to be chosen with them in it (cr2
+    and c220, g2 #36637, #37080). props/lamps places a lamp once, so its own switch may be on or
+    off; nothing while it has no site()."""
+    try:
+        from scenes.obs.props import lamps
+    except ImportError:
+        return 0
+    site_lamps = getattr(lamps, "site", None)
+    if site_lamps is None:
+        return 0
+    return int(site_lamps(c, (0, 0, 0), groups=("way", "lip")) or 0)
 
 
 def build(version=None, run=None):
     c = Canvas()
     with _as(version or VERSION, RUN if run is None else run):
         for line in LINES:
-            if line is sky:
-                _fit(c)             # before the light sources, which go last
+            if line is sky:         # after the props line; before the light sources, which go last
+                _fit(c)
+                _lamps(c)
             line.build(c, (0, 0, 0))
     return c
 
@@ -73,6 +93,12 @@ def build_models():
     out = {}
     for line in LINES:
         out.update(line.models() or {})
+    try:
+        from scenes.obs.materials import windows
+    except ImportError:
+        windows = None
+    if getattr(windows, "line", None) is not None:
+        out.update(windows.models())        # the linings of the fire windows (powerhouse._lining)
     return out
 
 
