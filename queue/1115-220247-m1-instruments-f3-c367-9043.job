@@ -1,0 +1,3 @@
+branch=cursor/c164-m1-instruments-f3-c367
+head=b2f03667a1f6189619253a49496af9d72b76ce1a
+args=--wip --tail 30 python\ tools/check.py\ --scene\ obs_props_instruments\ \&\&\ python\ tools/selfshots.py\ obs_props_instruments\ --only\ globe_near\,globe_top\,table\,sunshine_near\ --out\ renders/_wip 
