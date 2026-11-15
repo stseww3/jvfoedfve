@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:50。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:52。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -17,8 +17,8 @@
 | s2 | c318 | node33（冻住） | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` @ `8f626b20` | `cursor/c164-s2-fable-89df` |
 | s1 | c319 | node34（冻住） | c189 | 出图（拿出图钥匙）：整座的看板图、真机图；`common/plots-shuttle`、`common/offline-sky` | `cursor/c164-s1-render-9df7` @ `9cbe672b` | `cursor/c164-s1-render-f3-fd9c` |
 | review | c332 | node46（冻住） | c219 | 评审：materials、main、props | `cursor/c164-review-0eb8` @ `ef09c638` | `cursor/c164-review-f3-3c69` |
-| cr2 | c333 | node47 | c235 | 评审：site、sky、motion | `cursor/c164-cr2-582e` @ `47be4fe6` | `cursor/c164-cr2-f3-ccff` |
-| cr3 | c347 | 合用 node47 | （新岗位） | 评审：machines、interiors | 从总装开 | `cursor/c164-cr3-f3-998d` |
+| cr2 | c333 | node47（冻住，05:20 前后起没有回执） | c235 | 评审：site、sky、motion | `cursor/c164-cr2-582e` @ `47be4fe6` | `cursor/c164-cr2-f3-ccff` |
+| cr3 | c347 | 合用 node47（冻住） | （新岗位） | 评审：machines、interiors | 从总装开 | `cursor/c164-cr3-f3-998d` |
 | aide | c320 | 不用节点 | （新岗位） | 总监助理：名单、谁闲了给谁派下一张卡、每小时一份进度 | 从总装开 | `cursor/c164-aide-f3-b9ab` |
 
 ## 工人
@@ -56,7 +56,7 @@
 | hall | c348 | 合用 node12 | c243 | interiors/starhall | `cursor/c164-hall-ddbd` @ `8f93cbdb` | `cursor/c164-hall-starhall-f3-2c05` |
 | a3 | c349 | 合用 node12 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` @ `95106dce` | `cursor/c164-a3-domeroom-f3-f4f6` |
 | chart | c350 | 合用 node46（冻住） | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c` @ `fb9b2ecb`、`cursor/c164-m2-windows-7bb5` @ `bfb5420e` | `cursor/c164-chart-windows-f3-3477` |
-| m2 | c351 | 合用 node47 | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` @ `6275b60b` | `cursor/c164-m2-timeroom-f3-364e` |
+| m2 | c351 | 合用 node47（冻住） | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` @ `6275b60b` | `cursor/c164-m2-timeroom-f3-364e` |
 
 ## 还没人领的卡
 
