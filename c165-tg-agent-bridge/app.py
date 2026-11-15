@@ -636,6 +636,9 @@ def is_worker_node_id(cid: str) -> bool:
     return bool(re.fullmatch(r"node\d+", (cid or "").strip().lower()))
 
 
+DEFAULT_CTRL_MODEL = os.environ.get("CTRL_MODEL", "deepseek max").strip()
+
+
 def ensure_main_conv() -> None:
     ts = now()
     store.run(
@@ -643,9 +646,30 @@ def ensure_main_conv() -> None:
         (ts,),
     )
     store.run(
-        "INSERT OR IGNORE INTO convs(id,num,name,status,read_cursor,created,in_tg) VALUES('ctrl',0,'总控','open',0,?,1)",
-        (ts,),
+        "INSERT OR IGNORE INTO convs(id,num,name,status,read_cursor,created,model,in_tg) VALUES('ctrl',0,'总控','open',0,?,?,1)",
+        (ts, DEFAULT_CTRL_MODEL),
     )
+
+
+def update_conv_model(conv_id: str, new_model: str) -> str:
+    """更新聊天记录的模型名称，并同步清理追踪快照里的旧模型提示，确保下次重开或迁移时使用最新指定的模型。"""
+    clean = " ".join(str(new_model or "").split())[:100]
+    if clean.lower() in ("inherit", "default", "默认", "clear", "reset"):
+        clean = ""
+    store.run("UPDATE convs SET model=? WHERE id=?", (clean, conv_id))
+    trow = store.one("SELECT detail FROM agent_traces WHERE conv=?", (conv_id,))
+    if trow and trow["detail"]:
+        try:
+            det = json.loads(trow["detail"])
+            if isinstance(det, dict) and "model" in det:
+                if clean:
+                    det["model"] = clean
+                else:
+                    det.pop("model", None)
+                store.run("UPDATE agent_traces SET detail=? WHERE conv=?", (json.dumps(det, ensure_ascii=False)[:2000], conv_id))
+        except Exception:
+            pass
+    return clean
 
 
 def conv_name(row) -> str:
@@ -2200,7 +2224,31 @@ def node_is_online(nrow) -> bool:
         return False
     if waiting.get(ag["id"]):
         return True
-    return (now() - float(ag["last_seen"] or 0)) < LOST_SEC
+    last_act = max(float(ag["last_seen"] or 0), float(nrow["last_seen"] or 0), STARTED)
+    return (now() - last_act) < LOST_SEC
+
+
+def reap_offline_exec_nodes() -> list[str]:
+    """将已停用或长时间失联的 mainN / nodeN 自动标记为 offline，并取消指向离线节点的积压启动单，避免僵尸节点残留。"""
+    reaped: list[str] = []
+    for r in store.q("SELECT * FROM exec_nodes WHERE status='online'"):
+        ag = agent_row(r["agent"]) if r["agent"] else None
+        if ag is None or ag["status"] != "active":
+            store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
+            store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+            reaped.append(r["id"])
+            continue
+        if waiting.get(ag["id"]):
+            continue
+        last_act = max(float(ag["last_seen"] or 0), float(r["last_seen"] or 0), STARTED)
+        if (now() - last_act) >= LOST_SEC:
+            store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
+            store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+            reaped.append(r["id"])
+    if reaped:
+        log.info("marked offline stale exec_nodes: %s", reaped)
+        mark_menu_dirty()
+    return reaped
 
 
 def node_allows_conv(nrow, conv_id: str, for_shared_auto: bool = False) -> bool:
@@ -2476,26 +2524,42 @@ def enqueue_resume_op(conv, launcher_node, requester: str = "ctrl", resume_promp
 
 
 def ensure_controller_alive(force: bool = False) -> str | None:
-    """自愈保障：当唯一总控 ctrl 未上线（且没有刚发出的未超时启动单）时，自动挑一台在线健康的 mainN 拉起 ctrl！"""
+    """自愈保障：当唯一总控 ctrl 未上线（且没有在线节点上未超时的待执行启动单）时，挑一台健康 mainN 拉起 ctrl，避免重复派单。"""
     ensure_main_conv()
     ctrl = conv_row("ctrl")
     if ctrl is None:
         return None
+    # 确保 ctrl 默认模型未缺失，且自动修正历史误记的 grok-4.7
+    cur_ctrl_m = (ctrl["model"] or "").strip()
+    if not cur_ctrl_m or cur_ctrl_m.lower() == "grok-4.7":
+        update_conv_model("ctrl", DEFAULT_CTRL_MODEL)
+        ctrl = conv_row("ctrl")
     ag = active_agent(ctrl)
     if ag is not None and not force:
-        # 检查总控自己是否处于思考卡死 > 5 分钟或彻底失联
         trow = store.one("SELECT * FROM agent_traces WHERE conv='ctrl'")
         think_stuck, _ = check_thinking_stuck(ctrl, trow)
         idle_sec = now() - max(float(ag["last_seen"] or 0), STARTED)
         if not think_stuck and (waiting.get(ag["id"]) or idle_sec < LOST_SEC):
             return None
         stop_identity(ag["id"], "总控会话失联或思考卡死超5分钟，自动自愈重拉")
-    elif not force and (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < UNCLAIMED_SEC:
-        return None
+    elif not force:
+        if (ctrl["task_code"] or "") and (now() - float(ctrl["task_ts"] or 0)) < LOST_SEC:
+            pending_ctrl = store.one(
+                "SELECT op_id, target_node, created_ts FROM dispatch_ops "
+                "WHERE conv_id='ctrl' AND op_type='launch_subagent' AND status='pending' ORDER BY created_ts DESC LIMIT 1"
+            )
+            if pending_ctrl is not None:
+                tnode = node_row(pending_ctrl["target_node"])
+                if tnode is not None and node_is_online(tnode):
+                    return None
+                store.run("UPDATE dispatch_ops SET status='cancelled' WHERE op_id=?", (pending_ctrl["op_id"],))
+            elif (now() - float(ctrl["task_ts"] or 0)) < UNCLAIMED_SEC:
+                return None
     best_main = select_best_launcher(for_conv="ctrl")
     if best_main is None or not is_main_node_id(best_main["id"]):
         return None
-    op_id, nid = enqueue_launch_op(conv_row("ctrl"), best_main, requester="bridge_bootstrap")
+    store.run("UPDATE dispatch_ops SET status='superseded' WHERE conv_id='ctrl' AND op_type='launch_subagent' AND status='pending'")
+    op_id, nid = enqueue_launch_op(conv_row("ctrl"), best_main, requester="bridge_bootstrap", model_override=effective_conv_model(conv_row("ctrl")) or DEFAULT_CTRL_MODEL)
     log.info("auto-bootstrapped singleton ctrl via %s (%s)", nid, op_id)
     return op_id
 
@@ -3865,8 +3929,11 @@ MAIN_TOOLS = [
     ),
     tool(
         "restart_agent",
-        "（仅主控）重开某个聊天的子 agent：旧身份作废，返回新的任务原文。拿到后必须用 Task(prompt=原文, run_in_background=true) 开新的子 agent 接手，聊天记录不丢。",
-        {"chat": CHAT_PROP},
+        "（仅主控）重开某个聊天的子 agent：旧身份作废，返回新的任务原文。可选填 model 同步更新该聊天的模型记录。拿到后用 Task(prompt=原文, run_in_background=true) 启动新的子 agent 接手。",
+        {
+            "chat": CHAT_PROP,
+            "model": prop("string", "可选：切换为新模型名（填入后会同步更新该聊天的模型记录，下次启动自动沿用）"),
+        },
         ["chat"],
     ),
     tool(
@@ -4402,6 +4469,10 @@ async def t_restart_agent(agent, args):
     conv = own_conv(args)
     if conv["status"] != "open":
         raise ToolFail(f"{conv_tag(conv)} 已关闭，要聊天主人或管理员 /reopen {conv['id']} 才能重开。")
+    raw_new_m = " ".join(str(args.get("model") or "").split())[:100]
+    if raw_new_m:
+        update_conv_model(conv["id"], raw_new_m)
+        conv = conv_row(conv["id"])
     restart_conv(conv, "主控重开了这个聊天的子 agent")
     conv = conv_row(conv["id"])
     return text_result(
@@ -5203,6 +5274,9 @@ async def t_dispatch_task_op(agent, args):
         )
 
     if action in ("launch", "restart"):
+        if explicit_new_model:
+            update_conv_model(conv["id"], explicit_new_model)
+            conv = conv_row(conv["id"])
         if action == "restart":
             lock_in_conv_model(conv)
             old_ag = active_agent(conv)
@@ -7256,6 +7330,30 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
                         en=f"{conv_tag(reader_row)} can no longer read {conv_tag(src_row)}'s history.")
         return
 
+    if command == "/model":
+        first, _, tail = rest.strip().partition(" ")
+        parsed_c = parse_conv(first)
+        if parsed_c and conv_row(parsed_c) is not None and parsed_c != "main":
+            conv = conv_row(parsed_c)
+            new_m_arg = tail.strip()
+        else:
+            cur_sel = selected(chat_id) if private else route_of(chat_id)
+            conv = conv_row(cur_sel) if cur_sel and cur_sel != "main" else None
+            new_m_arg = rest.strip()
+        if conv is None or not can_manage(user_id, conv):
+            await reply(chat_id, "用法：`/model c1 新模型名`（或在某个聊天里直接发 `/model 新模型名`；查看当前模型发 `/model c1`）。")
+            return
+        if not new_m_arg:
+            rec_m = (conv["model"] or "").strip() or "未指定（继承默认）"
+            act_m = (conv["actual_model"] or "").strip() or trace_recorded_model(conv["id"]) or "暂无上报"
+            await reply(chat_id, f"{conv_tag(conv)} 当前记录模型：`{rec_m}`\n最近实跑模型：`{act_m}`\n修改：`/model {conv['id']} 新模型名`（或 `/restart {conv['id']} 新模型名` 直接换模型重开）")
+            return
+        saved_m = update_conv_model(conv["id"], new_m_arg)
+        mark_menu_dirty()
+        disp = f"`{saved_m}`" if saved_m else "默认继承"
+        await reply(chat_id, f"已更新 {conv_tag(conv)} 的模型记录为：{disp}（下次启动或 `/restart {conv['id']}` 时生效）。")
+        return
+
     if command in ("/close", "/reopen", "/restart", "/stop", "/rename"):
         target, _, extra = rest.partition(" ")
         conv_id = parse_conv(target)
@@ -7298,10 +7396,12 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             if owner and not is_granted(owner):
                 await reply(chat_id, f"{conv_tag(conv)} 的主人 {person_label(owner)} 已经没有使用资格了，先 /grant {owner} 再重开。")
                 return
+            if extra.strip():
+                update_conv_model(conv["id"], extra.strip())
             store.run("UPDATE convs SET status='open', closed=0 WHERE id=?", (conv["id"],))
             issue_task(conv["id"])
             conv = conv_row(conv["id"])
-            system_note("main", task_note(conv, f"{who}重开了聊天（之前的记录都在）"))
+            dispatch_conv_to_cluster(conv, f"{who}重开了聊天（之前的记录都在）", requester="tg_reopen")
             hint = f"/{conv['id']} 切过去。" if enterable(chat_id, conv) else ""
             await reply(chat_id, f"已重开 {conv_tag(conv)}，主控会开一个子 agent 接手。{hint}",
                         en=f"Reopened {conv_tag(conv)}; a new AI will pick it up. /{conv['id']} switches to it.")
@@ -7312,11 +7412,16 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             return
         if command == "/restart":
             moved = cloud_of(conv) if away(conv) else 0
+            model_changed_note = ""
+            if extra.strip():
+                saved_m = update_conv_model(conv["id"], extra.strip())
+                conv = conv_row(conv["id"])
+                model_changed_note = f"（模型已更新为 `{saved_m or '默认继承'}`）"
             restart_conv(conv, f"{by}让主控重开一个子 agent 接手")
             conv = conv_row(conv["id"])
-            system_note("main", task_note(conv, f"{who}要求重开这个聊天的子 agent（记录都在，新子 agent 接手后能看到）"))
+            dispatch_conv_to_cluster(conv, f"{who}要求重开这个聊天的子 agent{model_changed_note}（记录都在，新子 agent 接手后能看到）", requester="tg_restart")
             note = f"（从 {cloud_tag(moved)} 挪进了 {cloud_tag(main_cloud())}）" if moved and admin else ""
-            await reply(chat_id, f"已让主控重开 {conv_tag(conv)} 的子 agent，旧的那个已作废。{note}",
+            await reply(chat_id, f"已让主控重开 {conv_tag(conv)} 的子 agent，旧的那个已作废。{model_changed_note}{note}",
                         en=f"A new AI will take over {conv_tag(conv)}; the old one has been stopped.")
             return
         old = active_agent(conv)
@@ -8703,8 +8808,13 @@ def auto_restart_stuck_conv(conv, stuck_sec: float) -> str:
 
 async def watchdog_tick() -> None:
     mark_menu_dirty()
-    if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher' AND status='online'"):
+    reap_offline_exec_nodes()
+    has_online_launchers = any(
+        node_is_online(r) for r in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online'")
+    )
+    if has_online_launchers:
         ensure_controller_alive()
+    unclaimed_due: list[tuple[Any, str]] = []
     for conv in open_convs():
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
@@ -8733,17 +8843,17 @@ async def watchdog_tick() -> None:
                 key = "zombie"
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
-                    f"🚨 判死结论：该子 agent 最后思考/动作时间停留在 {human_dur(now() - last_act)} 前，已确认为【僵尸假活】（此时即使调用 Task resume 返回 `currently running` 也是底层流卡死假象，绝不能等）！\n"
-                    f"请立即调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码 → `Task(prompt=桥给的原文, run_in_background=true)` 重新拉起接手（进度已在库和 Git 中保留）！"
+                    f"判活结论：该子 agent 最后思考/动作停留在 {human_dur(now() - last_act)} 前，疑似已停止响应。\n"
+                    f"请调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码后台重新拉起（进度已在库和 Git 中保留）。"
                 )
             else:
                 key = state
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
-                    f"请严格按 [主控] 三句处理：\n"
-                    f"1) 先判活/续跑：调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")` 或 Task(resume=旧agent_id, prompt=\"请立刻回到 dais read_chat 继续挂起等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
-                    f"2) 若 resume 回「currently running」且上方【最后思考/终端输出】仍在刷新（或处于 shell 正常跑命令） = 活着别动；若处于 thinking 停滞超过 5 分钟 = 思考卡死，按已死处理；\n"
-                    f"3) 若已死（timeout/aborted/思考卡死），直接调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 restart_agent(chat=\"{conv['id']}\") 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（**run_in_background=true 是唯一防卡死关键**，进度靠 git 保）。"
+                    f"请按 [主控] 三句处理：\n"
+                    f"1) 先判活/续跑：调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")` 或 Task(resume=旧agent_id, prompt=\"请回到 read_chat 继续等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
+                    f"2) 若 resume 回「currently running」且动作/终端输出仍在刷新（或处于 shell 正常跑命令） = 活着别动；若处于 thinking 停滞超过 5 分钟 = 按停滞处理；\n"
+                    f"3) 若已停止（timeout/aborted/思考停滞），调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 restart_agent(chat=\"{conv['id']}\") 重新拉起。"
                 )
         elif state == "unclaimed":
             if is_unowned(conv):
@@ -8756,24 +8866,39 @@ async def watchdog_tick() -> None:
             text = (f"{conv_tag(conv)} 的任务发出 {human_dur(now() - conv['task_ts'])} 了，还没有子 agent 接手。"
                     f"请调用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞）。{model_hint(conv)}\n"
                     f"----\n{task_text(conv)}\n----")
+            if conv["id"] != "main" and alert_due(conv, key):
+                unclaimed_due.append((conv, text))
+            continue
         if key and conv["id"] != "main":
             if alert_due(conv, key):
                 system_note(route_control_target(), "【看门狗】" + text)
         else:
             await raise_alert(conv, key, text)
-    main = conv_row("main")
-    info = conv_state(main)
-    key, text = "", ""
-    if info["state"] == "stuck":
-        key = "stuck"
-        text = f"主控卡住了：{info['pending']} 条消息没人接（最早 {human_dur(now() - info['oldest'])} 前），主控没在等消息。"
-    elif info["state"] == "lost":
-        key = "lost"
-        text = f"主控 {human_dur(info['idle'])} 没有动静，也没在等消息，可能停了。"
-    if key:
-        text += ("去 cursor.com/agents 打开主控那个云端聊天，发：\n" + RESUME_PROMPT
-                 + "\n或者新开一个云端聊天，用 /key 里的开场提示词重新接入。")
-    await raise_alert(main, key, text)
+    if unclaimed_due:
+        if len(unclaimed_due) <= 2:
+            for _, utxt in unclaimed_due:
+                system_note(route_control_target(), "【看门狗】" + utxt)
+        else:
+            tags = "、".join(conv_tag(c) for c, _ in unclaimed_due[:20])
+            more = f" 等共 {len(unclaimed_due)} 个" if len(unclaimed_due) > 20 else f"（共 {len(unclaimed_due)} 个）"
+            system_note(
+                route_control_target(),
+                f"【看门狗汇总】当前有待接手聊天：{tags}{more}。可按需用 `dispatch_task_op(chat=\"...\", action=\"launch\")` 或 `restart_agent` 分批拉起，无需一次性全开。",
+            )
+    if not has_online_launchers and not ctrl_is_active():
+        main = conv_row("main")
+        info = conv_state(main)
+        key, text = "", ""
+        if info["state"] == "stuck":
+            key = "stuck"
+            text = f"主控卡住了：{info['pending']} 条消息没人接（最早 {human_dur(now() - info['oldest'])} 前），主控没在等消息。"
+        elif info["state"] == "lost":
+            key = "lost"
+            text = f"主控 {human_dur(info['idle'])} 没有动静，也没在等消息，可能停了。"
+        if key:
+            text += ("去 cursor.com/agents 打开主控那个云端聊天，发：\n" + RESUME_PROMPT
+                     + "\n或者新开一个云端聊天，用 /key 里的开场提示词重新接入。")
+        await raise_alert(main, key, text)
 
 
 async def watchdog_loop() -> None:
@@ -8832,12 +8957,25 @@ register_web_console(app, sys.modules[__name__])
 @app.get("/healthz")
 async def healthz() -> JSONResponse:
     main = conv_row("main")
+    online_launchers = [
+        r["id"] for r in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num")
+        if node_is_online(r)
+    ]
+    ctrl_row = conv_row("ctrl")
+    ctrl_state = conv_state(ctrl_row)["state"] if ctrl_row and active_agent(ctrl_row) else "absent"
+    if online_launchers:
+        main_state = "online"
+    else:
+        main_state = conv_state(main)["state"] if main else "absent"
     return JSONResponse({
         "ok": True,
         "version": VERSION,
         "telegram": bool(TG_TOKEN),
         "bot": BOT["username"],
-        "main": conv_state(main)["state"] if main else "absent",
+        "main": main_state,
+        "ctrl": ctrl_state,
+        "launchers_online": online_launchers,
+        "environment_id": cursor_env_id(),
         "cloud": main_cloud(),
         "chats_open": len(open_convs()),
         "waiting": len(waiting),
@@ -9127,6 +9265,19 @@ async def trace_post_event(request: Request) -> JSONResponse:
             metrics_str,
         ),
     )
+
+    # 探针上报了 Cursor 底层实际运行的模型时，同步记录 actual_model；若原先未指定模型或手动切换了不同模型家族，同步更新 model 记录避免下次重开漂回旧值
+    reported_m = str(detail_obj.get("model") or "").strip()[:100]
+    if reported_m and arow is not None and not conv_key.startswith("cid:"):
+        crow_cur = conv_row(conv_key)
+        if crow_cur is not None:
+            cur_rec_m = (crow_cur["model"] or "").strip()
+            if (crow_cur["actual_model"] or "") != reported_m:
+                store.run("UPDATE convs SET actual_model=? WHERE id=?", (reported_m, conv_key))
+            if not cur_rec_m or cur_rec_m.lower() in ("inherit", "default", "默认") or (
+                conv_key != "ctrl" and has_obvious_model_family_conflict(cur_rec_m, reported_m)
+            ):
+                store.run("UPDATE convs SET model=? WHERE id=?", (reported_m, conv_key))
 
     # 同步刷新所属主 Agent (mainN) 或工作节点 (nodeN) 的实时 CPU/内存探针快照！
     if metrics_str and not conv_key.startswith("cid:"):

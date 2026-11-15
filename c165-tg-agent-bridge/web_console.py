@@ -703,10 +703,13 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             body = {}
         operator_note = str((body or {}).get("note") or "").strip()[:500]
         target_main = str((body or {}).get("target_main") or "auto").strip().lower()
+        new_model_req = " ".join(str((body or {}).get("model") or "").split())[:100]
 
         if cid == "ctrl":
             if not _is_zwt(user):
                 return JSONResponse({"ok": False, "error": "仅 zwt 可重开总控"}, status_code=403)
+            if new_model_req:
+                bridge.update_conv_model("ctrl", new_model_req)
             op_id = bridge.ensure_controller_alive(force=True)
             return JSONResponse({"ok": True, "routed_to": "bootstrap", "op_id": op_id or ""})
 
@@ -714,8 +717,12 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             store.run("UPDATE convs SET status='open', closed=0 WHERE id=?", (cid,))
             conv = bridge.conv_row(cid)
 
-        bridge.lock_in_conv_model(conv)
-        conv = bridge.conv_row(cid)
+        if new_model_req:
+            bridge.update_conv_model(cid, new_model_req)
+            conv = bridge.conv_row(cid)
+        else:
+            bridge.lock_in_conv_model(conv)
+            conv = bridge.conv_row(cid)
         dossier = _build_full_restart_dossier(bridge, conv, operator_note=operator_note)
 
         # 同步 read_cursor 到当前最后一条历史消息（确保重开接手时把编辑/删减后的完整最近记录一次性看全，不重复当未读刷屏）
