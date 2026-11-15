@@ -139,6 +139,9 @@ BALL_AXIS = (S.mid(*S.CLOCK_SHAFT_X), S.mid(*S.CLOCK_SHAFT_Z))     # (13.5, -29.
 MAST_MODEL = "bld_tower_mast"    # the model main/tower's mast is shown with: a rod 7 pixels thick, y 42.6..51
 BALL_R = 20.0                    # pixels: 2.5 blocks across (A0, 11-14)
 BALL_PLATE = 14.0                # the catch plate's radius: under eight tenths of the ball's (cr2)
+# The seam of dark brass round the waist. Off, if in the close pictures it makes a cross with the
+# mast (cr2, 11-15); from the platforms it is under a pixel and not seen either way.
+BALL_SEAM = True
 BALL_FOOT = BALL_R + 3.5         # from the ball's centre down to the foot of its lower sleeve
 MAST_FOOT_Y = S.CLOCK_TOP + 1.0                      # 42.0: the tip of the roof, where the mast starts
 BALL_HALF_Y = S.CLOCK_BALL_MAST - 4.5                # 47.5: half-way up, five minutes before the hour
@@ -393,7 +396,8 @@ def _ball(name, tones):
                                 (0.4, 0.8, 2, high), (0.8, 1.0, 2, high)):
         m.ball((0.0, 0.0, 0.0), BALL_R, mat, sides=16, layers=layers, part=(t0, t1),
                faces={"n": mat, "s": mat, "u": mat, "d": mat})
-    m.tube("y", (0.0, 0.0), -1.0, 1.0, BALL_R + 0.4, BRASS_DARK, sides=16)
+    if BALL_SEAM:
+        m.tube("y", (0.0, 0.0), -1.0, 1.0, BALL_R + 0.4, BRASS_DARK, sides=16)
     m.tube("y", (0.0, 0.0), BALL_R - 1.5, BALL_R + 2.5, 6.0, IRON_DARK, sides=12)
     m.tube("y", (0.0, 0.0), -BALL_R - 1.5, -BALL_R, BALL_PLATE, IRON_DARK, sides=16)
     m.tube("y", (0.0, 0.0), -BALL_FOOT, -BALL_R - 1.5, 6.0, IRON_DARK, sides=12)
