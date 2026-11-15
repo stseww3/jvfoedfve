@@ -812,3 +812,127 @@ cr2 三条的定位：
 顺带记一条通用的：**"一圈一张纸上的笔迹"和"螺旋 5 圈"的区别，是"读成一圈线"和"读成钉子阵"的区别**——同一个几何，密度差三倍就换了一种东西。以后凡是做「纸带/鼓面/记录纸」的贴花，先按"一圈一条"试，不要按覆盖率去凑。
 
 ---
+## 预审 cr3-I2：interiors/starhall 星厅（c289 接 c243）——2 版比选
+
+- 分支：`cursor/c164-hall-ddbd` @ `c68977a3`（"the star hall's fitting-out rewritten against the real shell (c231)"）。**这一版和 cr2 预审读的 `a085fcd0` 不是一回事**——整份重写过，我按新版重读。
+- **分支上这张卡没有图。** `renders/obs_int_starhall/` 不存在。纯按代码。
+- 包类型：室内。适用项：第一眼●　轮廓构图○　明暗光色●　质感像素○　风格逻辑●。
+- 两版（甲 academy / 乙 workshop）**只差装修**，平面按 A0 #207 锁死。这一条我核过：`PILASTER`、`BOARD`、`PALE/DARK/BAND/WALK` 按 version 分，`_floor`/`_ceiling`/`_walls` 里只有料在变。
+
+### 三处
+
+**1. 甲乙的差别比"甲学院 / 乙工坊"这个说法小得多——图上可能分不出。**
+
+两版的差别只有四样：
+
+```
+             甲（a）                      乙（b）
+地           黑白格 (x+z)%2                 深浅横带 (x//2)%2
+中轴         —                            铁格栅走道
+壁柱         ashlar_fine 柱身               iron_riveted 柱身
+顶棚         dark_wood 格心 + brass 铜星    iron_plate 格心，无铜星
+配电板       3 宽 × 2 行                    4 宽 × 2 行
+```
+
+`_ceiling` 第 184 行：`beam = x in PIL_X or z in (H.Z0, H.Z1) or z == MERIDIAN_Z or x == H.EAST_GLASS - 1`。**两版的梁位置完全一样**——也就是说顶棚的骨架不变，变的只是梁之间的格心用什么料。`_walls` 的壁柱位置也一样（`PIL_X`）。
+
+**结论：甲乙的差别是"材质包"，不是"设计"。** 总监 #207 把平面锁死之后这不可避免，但**比选时请把两张同机位图并排看"邮票大小能不能分出甲乙"**。如果分不出，我的建议是**不要为了比选而比选**——直接选甲（黑白格 + 铜星是唯一能让 V7 一眼认成"天文台中厅"的一组），乙留作对照。这一条要总监定。
+
+**2. `PILASTER_X` 和 `PIL_X` 是两套不同的量，容易看错。**
+
+第 122 行 `BAY_X = (S.mid(CX) - 1.5, S.mid(CX) + 1.5)`，第 118 行起 `PILASTER`（料表）；而 `_walls` 里的壁柱在 `PILASTER_X`（列号），`_ceiling` 的梁在 `PIL_X`。**c231 的壳给的 `shell.layout().beams` 才是梁的真源**（docstring 第 4 行写了"pilasters under the beams shell.layout() gives"），但 `_ceiling` 里仍然是 `x in PIL_X` 这套本地常量。
+
+**这两套如果和壳对不上，梁和壁柱会错开半格到一格。** 请核一次：`PIL_X` 和 `shell.layout().beams` 的 x 列表是不是同一个。**这一条是"搬进真壳"的前提**，出图前必须对。
+
+**3. 灯的 rank 表我逐个查过，都对，但有两处写法值得改。**
+
+```
+ASK_SUN       (12, 2)   rank 2 的 9..12 → 刚好上限，ok
+ASK_CLOCK     (11, 2)   ok
+ASK_AISLE     (8, 7)    不是 rank，是"东侧 8 级、西侧 7 级"两盏灯的两个级别（第 346 行 east, west = ASK_AISLE）
+ASK_DOOR      6         单个级别，rank 靠 KIND_RANK["cage"] = 3 → 上限 8，6 在里，ok
+ASK_BOARD     (5, 3)    ok
+ASK_STAIR     8         单个级别，cage → rank 3，8 刚好上限，ok
+ASK_MEZZANINE 7          同上，ok
+```
+
+**我第一次读 `ASK_AISLE = (8, 7)` 时以为它是 (level, rank)、rank 7 非法会让 `RANKS[7]` 抛 KeyError。查了第 346 行 `east, west = ASK_AISLE` 才发现它是两个级别。** 记这一笔是因为 `ASK_SUN`/`ASK_CLOCK`/`ASK_BOARD` 都是 `(level, rank)` 两元组，同一个文件里 `ASK_AISLE` 却是 `(east, west)`——**同一个形状两种意思，下一个人还会读错。** 建议改成 `ASK_AISLE = dict(east=8, west=7)`，或者加一句注释（现有注释 "on a pilaster: the lamp that looks east, a lamp that looks west" 已经说了，但形状还是容易混）。
+
+**真正值得改的一处**：`ASK_STAIR = 8` 和 `ASK_MEZZANINE = 7` 是裸整数，靠 `KIND_RANK["cage"]` 兜底判 rank。**如果哪天 cage 的 KIND_RANK 改了，这两盏会静默跟着变 rank。** 建议也写成显式二元组 `(8, 3)` / `(7, 3)`，和 `ASK_BOARD` 一致。
+
+### 另记
+
+- **地面让开墩包络那 30 格**（`_floor` 里 `if (x, z) in pier: continue`），石台站 (6, 0, −1..1)——和 c231 #517、c243 #531 对得上。✓
+- **顶棚正中一个铜花块 + 四根铜臂撤掉了**（`83d6b642` 那一笔，理由是四根臂成十字，红线 8）。`_ceiling` 现在只 `put(ORRERY[0], H.CEIL, ORRERY[1], B.BRASS_PATTERN.block)` 一块。✓ **这一笔改对了。**
+- **子午线走南北**（第 216、219 行 `st(B.BRASS_LINE, shape="north_south")`），东西向中轴用石头标——A0 #365 的规矩。✓ 我之前读的是旧 worktree，误以为它还是东西向，已在 c291 那次更正里一并核过。
+- **台徽在厅里只出现两次**（地上一个、门洞内侧上方一个），`BOARD` 里注释写明"no nameplate: it carries the emblem, and the hall has its two"。✓ 这是 A0 #365 那条的落实。
+- **灯位表**（docstring 第 44–56 行）把日球 12、母钟 11、侧廊 8/7、门 6、配电 5、楼梯脚 8、夹层 7 全写出来了，而且注明"两盏机器的灯只在那两件没报的时候才由本包报"（`_machines`）——**这是本组里灯位交代得最完整的一份**。请保持这张表在 docstring 里。
+
+### 图出来先看的三处
+
+1. `v7`（门外机位，`S.V7`）·三样同不同框：行星仪在头顶、墩上母钟在正前、地上铜线在脚下。这是 cr2 预审 I1 定的口径，现在要看落地。
+2. 甲乙同机位并排缩到邮票·分不分得出（见上面第 1 条）。
+3. `gallery`·从回廊俯看，地面有没有出十字（铜线南北 + 东西中轴若也用铜就成了十字，现在中轴用石头）。
+
+### 待搬入
+
+`MOVED_IN` 现在是什么值要 c289 确认。如果还是 False，`build()` 返回 0，整座厅不会出现在总装里。
+
+---
+
+## 预审 cr3-I3：interiors/domeroom 大圆顶室（c290 接 c178）
+
+- 分支：`cursor/c164-a3-mainbuilding-da56` @ `9e7e674b`（最新那一笔是给 domegear 让格：`GEAR_SHAFT` 加 (-1,-10)、`GEAR_SLIT` 两条配重轨取并集）。
+- **分支上这张卡没有图。** `renders/obs_int_domeroom/` 不存在。纯按代码。
+- 包类型：室内。适用项：第一眼●　轮廓构图○　明暗光色●　质感像素○　风格逻辑●。
+
+### 三处
+
+**1. 全室只有两个光源，而且都在第三档——这间屋子会比星厅暗一个数量级。**
+
+`lights()` 返回两个：
+
+```
+PILOT_LAMPS = (5, 3)     rank 3，上限 8 → 5 级
+CLOCK_DIAL  = (4, 3)     rank 3 → 4 级
+```
+
+而 `starhall` 那边是日球 12（rank 2）、母钟 11（rank 2）、侧廊 8/7、楼梯脚 8、夹层 7——**星厅有九处光源，圆顶室两处，且两处都是最低档。**
+
+这一间是 V8，是除 V7 之外第二重要的室内视角，主角是大折射望远镜和缝外的彗星。**A0 #388 定的是"全室一盏小红灯（目镜旁，不过 4 级）+ 桌上不放灯"，这条没错**；但**"不过 4 级"说的是那盏红灯，不是整间屋子的总光量**。现在 `CLOCK_DIAL = (4, 3)` 那盏 4 级就是全室唯一能照明的（`PILOT_LAMPS` 5 级在配电板前面，只照板面）。
+
+**这一条我要请 c290 和总监确认**：V8 里除了缝外的冷天光，屋里有没有第二处光源（比如环廊下的地脚灯、或者记录桌上方的检修灯）。**如果没有，按 RUBRIC 红线 6 的风险很高**——我在 `obs_main_shell` 的 `dome_room` 那张量到 mean 0.215 / 死黑 0%，那是**空壳**（壳自己有 `STAR_HALL_CEIL` 一带的反射光）；一旦铺上深色木地板和铁肋，光会更少。**这是本卡最要紧的一条，也是最需要图的一条。**
+
+**2. `shell.soffit` 逐列向下找"穹顶的皮"，而 `SKIN` 那个集合包含 `IRON_RIVETED`——望远镜的镜筒如果用了铆接铁，soffit 会算错。**
+
+第 96–101 行：
+
+```python
+SKIN = frozenset([B.VERDIGRIS, B.VERDIGRIS_CAST, *B.VERDIGRIS_CUT.all(), *B.VERDIGRIS_STREAK.all(),
+                  B.OLD_COPPER, *B.OLD_COPPER_CUT.all(), *B.IRON_RIVETED.all()])
+```
+
+`Shell.__init__` 从 `S.DOME_APEX + 3` 往下、遇到 `SKIN` 里的方块就当成皮、再往下穿到它的底面。**而机器是在房间之前放到画布上的**（docstring 第 99 行自己写了："the machines are on the canvas before the room ... and are not the dome"）——但 `IRON_RIVETED` 在 `SKIN` 里，**所以任何用铆接铁做的机器件，只要在穹顶上方那一列里，都会被当成皮。**
+
+`domegear` 的齿圈和滚轮（`IRON` / `IRON_D`）**不在** `SKIN` 里，安全。但 `machines/refractor` 的镜筒——如果 c294 按 A5 细化稿 §2.1 用"`iron` 铆接铁筒"并且实际用了 `IRON_RIVETED` 这个**方块角色**（不是 `P.mat("iron")` 材质）——就会进 `SKIN`，把 soffit 算低。**已经在 cr3-M7 里给 c294 写了"镜筒、叉架、配重都不要碰 IRON_RIVETED"**，这里给 c290 补一句：**这个耦合是真的，请在你的卡里也记一笔**，免得以后有人为了质感去改。
+
+**3. `_chair()` 是这一包唯一自己的模型，而它占 13 个实体里的大部分——椅子做得比屋子细。**
+
+`_chair()` 有 20 多行：侧框、爬梯、三级踏板、座面、布垫、扶手、四只轮子、两根黄铜端头。**做得很好**（这是"室内也要有一件自己的模型"的正确做法）。但 `dress()` 返回的实体数里，椅子占了大头，而屋子本身（肋、环梁、墙柱、龛、地板）全是方块。**比例是对的**（L7 细化稿第 1 节：墙／地／顶是方块，家具是模型）。
+
+我要说的是另一件事：**椅子的朝向**。`CHAIR_YAW = 180.0`，注释是 "the side one climbs looks north, at the slit's foot"。第 13 个机位 `stair_exit` 是从环梯出口往下看——**从那个位置看，椅子是正面还是背面？** 这一条图上才判得出，先记着。
+
+### 另记
+
+- **和 domegear 的净空对上了**：`GEAR_SHAFT` 两格、`GEAR_SLIT` 两条配重轨取并集，c266 报"净空两处已按默认改完、机构一行未动"。✓
+- **`OBSERVING = (x 8..12, z −1..3)`** 那块观测地板，第 405 行 `cells = observing_floor() - envelope()` 排除了墩包络——和 A0 #388 定的"墩东侧、轴线上那一块归目镜和观测位"一致。✓
+- **`_fittings()` 的配电板用 `B.PANELS` 的 `BOARD` 两行**，和 `starhall` 的 `BOARD` 是同一套面板名，但宽度不同（这边是圆墙东龛的列数）。**两处的配电板应该看起来是一族**——这一点出图后要并排看（V7 的板 vs V8 的板）。
+- **`_clock()`**：`props/instruments` 在树里就用真的调节钟，不在就用一块 `PANELS["dial"]` 顶着。**这个 fallback 写得对**，但顶着的那个是"一块面板贴在墙上"，不是"一只钟"——**如果 instruments 还没进总装，V8 里那个南龛会读成墙上多了一块表盘**。出图前请确认 instruments 在不在树里。
+
+### 图出来先看的三处
+
+1. `v8`·**全室有没有第二处光**（见第 1 条），以及南半边是不是死黑（c178 自己留的退路：钟面那格从 4 提到 6，不加灯）。
+2. `v8` / `ribs_up`·十八根肋近顶那两圈读成"收拢的肋"还是"连成一片铁"（c178 自己最没把握的第一处，退路：肋只做到半径 7、顶环加宽到两格）。
+3. `int_slit`·镜筒 + 缝外彗星；以及 `stair_exit` 里椅子的正背面。
+
+---
