@@ -243,13 +243,15 @@ def _solid(c):
     return lo, grid
 
 
-def _hidden(solid, eye, d, step=0.2):
-    """True where a block stands on the way from the eye along the directions d (..., 3)."""
+def _hidden(solid, eye, d, step=0.2, reach=None):
+    """True where a block stands on the way from the eye along the directions d (..., 3), as far as
+    reach (everything the scene holds when it is not given)."""
     lo, grid = solid
     shape = np.array(grid.shape)
     d = d / np.linalg.norm(d, axis=-1, keepdims=True)
     hit = np.zeros(d.shape[:-1], dtype=bool)
-    reach = float(np.linalg.norm(shape)) + float(np.linalg.norm(np.maximum(lo - eye, 0.0))) + 8.0
+    if reach is None:
+        reach = float(np.linalg.norm(shape)) + float(np.linalg.norm(np.maximum(lo - eye, 0.0))) + 8.0
     for t in np.arange(0.5, reach, step):
         cell = np.floor(eye + d * t).astype(int) - lo
         inside = ((cell >= 0) & (cell < shape)).all(axis=-1)
@@ -328,6 +330,29 @@ def around(style=None, cameras=("v1", "v2")):
     return out
 
 
+SLIT_EYES = (-1.5, -1.0, -0.5, 0.0, 0.5, 1.5, 2.5, 3.0)       # z of an eye in the dome room, across the slit
+
+
+def through_slit(style=None, canvas=None):
+    """How much of the comet's light at its longest (look deep) an eye in the dome room sees through
+    the slit, standing at the height and x of the camera 'slit' but off the axis: [(z, share seen,
+    head seen)]. The slit is SLIT_W wide; the dust tail leans north, so the room is on the south."""
+    style = style or STYLE
+    solid = _solid(canvas or build())
+    grey = comet.luma(comet.comet(style, comet.STRENGTH["deep"], comet.TAIL["deep"]))[::2, ::2]
+    lit = grey >= comet.SEEN
+    d, grey = _square(comet.SIZE)[::2, ::2][lit], grey[lit]
+    head = _west(np.array(comet.HEAD_ELEVATION))[None]
+    x, y, _ = CAMERAS["slit"][0]
+    out = []
+    for z in SLIT_EYES:
+        eye = np.array([x, y, z])
+        hidden = _hidden(solid, eye, d, reach=2.0 * S.DOME_R + 8.0)
+        out.append((z, float(grey[~hidden].sum() / grey.sum()),
+                    not bool(_hidden(solid, eye, head, reach=2.0 * S.DOME_R + 8.0)[0])))
+    return out
+
+
 def tell(style, folder):
     """What python -m <scene> does: write the scene's shots.json and print where the comet stands."""
     path = os.path.join(folder, "shots.json")
@@ -346,3 +371,5 @@ def tell(style, folder):
     print("the comet's neighbours   north of due west, up   from the head   from the comet's light (look deep)")
     for r in around(style):
         print(f"{r['camera']:8s} {r['name']:20s} {r['north']:6.1f}  {r['up']:5.1f} deg     {r['head']:5.1f} deg       {r['light']:5.1f} deg")
+    print("through the slit, the eye off the axis (axis z 0.5; look deep): z of the eye, share of the comet's light seen")
+    print("   " + "   ".join(f"{z:+.1f}: {100 * seen:3.0f}%" + ("" if head else " head hidden") for z, seen, head in through_slit(style)))
