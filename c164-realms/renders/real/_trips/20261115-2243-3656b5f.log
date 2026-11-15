@@ -1,0 +1,159 @@
+[trip 22:43:27 +0s] trip of obs_mot_load: the code of 3656b5f6 (tag 3656b5f) of cursor/c164-a2-loop-f3-695d, checked out at /tmp/c164_s1/shot/3656b5f6, view distance 12, cloud range 128; 4 cores, 650 s at most
+[trip 22:43:27 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 22:43:27 +0s] clean: exit 0, 0 s
+[trip 22:43:27 +0s] setup: nodemc.py setup  (up to 350 s)
+    [nodemc 22:43:27] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 22:43:27] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 22:43:27] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 22:43:27] settings written: nothing, all there; view distance 12, cloud range 128
+[trip 22:43:27 +0s] setup: exit 0, 0 s
+[trip 22:43:27 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 12, cloudRange 128
+    machine: 4 cores, load 0.91, 8989 MB of memory available, 239 GB of disk free under /agent/realms-study
+[trip 22:43:27 +0s] station: exit 0, 0 s
+[trip 22:43:27 +0s] shuttle, obs_mot_load: shuttle.py --tag 3656b5f --commit 3656b5f6 --settle 10.0 --first-settle 60.0 --still 0.0 --after-budget 300.0 --project /tmp/c164_s1/shot/3656b5f6/c164-realms --out /tmp/c164_s1/real --only obs_mot_load=far,near --again obs_mot_load=far:3.5,near:3.5 --after obs_mot_load=scenes/obs_mot_load/onreal.py obs_mot_load  (up to 530 s)
+    [shuttle 22:43:27] the code that is shot: /tmp/c164_s1/shot/3656b5f6/c164-realms at 3656b5f6; tag 3656b5f
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 0.91, 8971 MB of memory available, 239 GB of disk free under /agent/realms-study
+        [nodemc 22:43:33] server is up (6 s)
+    [shuttle 22:43:33] placing obs_mot_load at 23000 200 0
+        built 672 blocks, 200 entities in 0.0s
+        exported 1 tiles (672 + 0 blocks) in 0.0s
+        motion: 200 parts and 0 points registered, the loop is started once the scene stands
+        Reloading!
+        placed in 0.1s, 0 failed
+        biome c164art:obs_blue: 9660 cells set in 1 boxes, x 22965..23054 y 167..242 z -33..46
+        function c164art:obs_mot_load-motion/start -> Running function c164art:obs_mot_load-motion/start
+        mot_load_cog         9 elements,  10 texture patches, sheet 32px
+        sandstone: 1 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_stairs: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_slab: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_wall: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        smooth_sandstone: 1 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_stairs: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_slab: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        cut_sandstone: 1 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        cut_sandstone_slab: 3 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        chiseled_sandstone: 1 models x 3 -> ashlar_emblem, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        bamboo_planks: 1 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_stairs: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_slab: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_mosaic: 1 models x 1 -> brass_tread
+        bamboo_mosaic_stairs: 3 models x 1 -> brass_tread
+        bamboo_mosaic_slab: 3 models x 1 -> brass_tread
+        bamboo_block: 3 models x 1 -> brass_pipe, brass_pipe_end
+        bamboo_fence: 5 models x 1 -> brass_plate0, brass_rail
+        bamboo_fence_gate: 4 models x 1 -> brass_gate, brass_plate0
+        bamboo_door: 8 models x 1 -> brass_door_bottom, brass_door_top
+        bamboo_trapdoor: 3 models x 1 -> brass_hatch
+        bamboo_button: 2 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_sign: 4 models x 1 -> brass_plate0, brass_sign
+        bamboo_wall_sign: 1 models x 1 -> brass_plate0, brass_sign
+        bamboo_hanging_sign: 8 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_wall_hanging_sign: 1 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_shelf: 6 models x 1 -> brass_plate0, brass_shelf
+        waxed_exposed_copper: 1 models x 3 -> old_copper0, old_copper1, old_copper2
+        waxed_exposed_cut_copper: 1 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_stairs: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_slab: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        dark_oak_trapdoor: 3 models x 1 -> wainscot
+        yellow_carpet: 1 models x 3 -> brass_inlay0, brass_inlay1, brass_inlay2
+        rail: 4 models x 3 -> brass_line0, brass_line1, brass_line2, brass_line_corner0, brass_line_corner1, brass_line_corner2
+        activator_rail: 6 models x 1 -> brass_line_cross
+        detector_rail: 6 models x 1 -> brass_line_star
+        oak_sign: 4 models x 1 -> enamel_plate, enamel_sign
+        oak_wall_sign: 1 models x 1 -> enamel_plate, enamel_sign
+        oak_hanging_sign: 8 models x 1 -> enamel_hanging_sign, enamel_plate
+        oak_wall_hanging_sign: 1 models x 1 -> enamel_hanging_sign, enamel_plate
+        sounds.json: 20 events redirected
+        oxidized_copper: 1 models x 6 -> iron_plate0, iron_plate1, iron_plate2, iron_plate3, iron_plate4, iron_plate5
+        oxidized_cut_copper: 1 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_stairs: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_slab: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_chiseled_copper: 1 models x 1 -> iron_cast
+        oxidized_copper_grate: 1 models x 2 -> iron_grate0, iron_grate1
+        oxidized_copper_bars: 6 models x 1 -> iron_bars
+        oxidized_copper_chain: 1 models x 1 -> iron_chain
+        oxidized_lightning_rod: 2 models x 1 -> iron_rod
+        oxidized_copper_trapdoor: 3 models x 1 -> iron_hatch
+        oxidized_copper_door: 8 models x 1 -> iron_door_bottom, iron_door_top
+        oxidized_copper_bulb: 4 models x 1 -> iron_bulb, iron_bulb_lit
+        oxidized_copper_lantern: 2 models x 1 -> iron_lantern
+        white_glazed_terracotta: 1 models x 2 -> panel_case, panel_dial0, panel_dial1
+        orange_glazed_terracotta: 1 models x 1 -> panel_case, panel_knife_switch
+        magenta_glazed_terracotta: 1 models x 1 -> panel_case, panel_tubes, panel_tubes_glow
+        light_blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_scope, panel_scope_glow
+        yellow_glazed_terracotta: 1 models x 1 -> panel_case, panel_counter
+        lime_glazed_terracotta: 1 models x 1 -> panel_case, panel_patch_panel
+        pink_glazed_terracotta: 1 models x 1 -> panel_case, panel_fuses
+        gray_glazed_terracotta: 1 models x 1 -> panel_bell, panel_case
+        light_gray_glazed_terracotta: 1 models x 1 -> panel_case, panel_pilot_lamps, panel_pilot_lamps_glow
+        cyan_glazed_terracotta: 1 models x 1 -> panel_case, panel_louvre
+        purple_glazed_terracotta: 1 models x 1 -> panel_case, panel_drawers
+        blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_nameplate
+        brown_glazed_terracotta: 1 models x 1 -> panel_case, panel_relays
+        green_glazed_terracotta: 1 models x 1 -> panel_bus_switch, panel_case
+        red_glazed_terracotta: 1 models x 1 -> panel_case, panel_gauges
+        black_glazed_terracotta: 1 models x 1 -> panel_case, panel_recorder
+        snow_block: 1 models x 3 -> snow0, snow1, snow2
+        snow: 8 models x 3 -> snow0, snow1, snow2, snow_side0, snow_side1, snow_side2
+        windows: version a
+        yellow_stained_glass: 1 models x 1 -> window_lit
+        yellow_stained_glass_pane: 5 models x 1 -> window_came, window_lit
+        white_stained_glass: 1 models x 1 -> window_frosted
+        white_stained_glass_pane: 5 models x 1 -> window_came, window_frosted
+        orange_stained_glass: 1 models x 1 -> window_curtain
+        orange_stained_glass_pane: 5 models x 1 -> window_came, window_curtain
+        gray_stained_glass: 1 models x 4 -> window_dark0, window_dark1, window_dark2, window_dark3
+        gray_stained_glass_pane: 5 models x 4 -> window_came, window_dark0, window_dark1, window_dark2, window_dark3
+        black_stained_glass: 1 models x 1 -> window_blind
+        black_stained_glass_pane: 5 models x 1 -> window_blind, window_came
+        light_gray_stained_glass: 1 models x 4 -> window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        light_gray_stained_glass_pane: 5 models x 4 -> window_came, window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        stand-in cloud: 5 blocks (dead_horn_coral_block, dead_fire_coral_block, dead_bubble_coral_block, dead_brain_coral_block, dead_tube_coral_block)
+        stand-in glow: 1 blocks (red_stained_glass)
+        stand-in dark_wood: 2 blocks (brown_stained_glass, purple_stained_glass)
+        materials audit: 91 block states, 412 models, 121 pictures, nothing wrong
+    [shuttle 22:43:37] resource pack: 637 files written to client26/game/resourcepacks/c164art
+        [nodemc 22:43:47] C164Cam is online (10 s)
+        [nodemc 22:43:47] game: [22:43:42] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 22:43:47] game: [22:43:42] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 22:43:47] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 22:43:47] game: [22:43:42] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 22:43:47] game: [22:43:42] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 22:43:47] pictures: saved by the game itself (helper)
+    [shuttle 22:43:47] shooting obs_mot_load: 4 shots of shots-obs_mot_load.json
+        /tmp/c164_s1/real/3656b5f/obs_mot_load/far.png
+        /tmp/c164_s1/real/3656b5f/obs_mot_load/far_again.png
+        /tmp/c164_s1/real/3656b5f/obs_mot_load/near.png
+        /tmp/c164_s1/real/3656b5f/obs_mot_load/near_again.png
+        pictures: 4 saved by the game itself, 0 taken off the display
+    [shuttle 22:45:05] obs_mot_load: the scene's own script scenes/obs_mot_load/onreal.py, 300 s at most
+        obs_mot_load on the real machine, plot 23000 200 0: 200 parts and 0 points on 1 chains (c24 sets off 1 after start), 30 functions, the loop's number 27004793
+        game time 20699; the game is running, 1.0 ms a tick on average; players: C164Cam
+        ready     PASS     all 200 parts are found, #run is this scene's number
+        ended     PASS     the loop of obs_mot_loop, which ran in this world before this scene was started: its heartbeat does not beat, none of its 96 chain functions is queued (#run is 27004793, this scene's is 27004793)
+        alive     PASS     the heartbeat came back after 17 ticks; 864 readings of 12 parts in 72 ticks: every one a pose of the plan and in step with its chain; every part moved. Clocks, ticks wide: c24 1
+        cost      PASS     200 parts, 34.4 commands a tick on average, 36 in the busiest. Sprints of 2505 ticks, milliseconds a tick: loop running 0.798, 0.695, 0.627; stopped 0.106, 0.042, 0.042. The loop costs 0.653 ms a tick: 19.0 microseconds a command
+                           at that price the map's limits come to: 10 commands a tick on average 0.190 ms, 40 in the busiest tick 0.759 ms (a tick has 50 ms); this scene's own limits are 40 and 60
+                           at the game's normal pace, loop running: 1.0 ms a tick on average, P50 0.8, P95 3.2, P99 5.3 (running)
+                           at the game's normal pace, loop stopped: 0.2 ms a tick on average, P50 0.2, P95 0.3, P99 0.3 (running)
+        result: PASS; 4 checks passed; 2513 commands in 25 s
+    [shuttle 22:45:31] obs_mot_load: onreal.py ended with 0 after 25 s
+        [nodemc 22:45:31] client stopped
+    [shuttle 22:45:31] obs_mot_load: 4 of 4 pictures in /tmp/c164_s1/real/3656b5f/obs_mot_load
+    [shuttle 22:45:31] trip done (124 s, the game was opened once and is closed again)
+[trip 22:45:31 +124s] shuttle, obs_mot_load: exit 0, 124 s
+[trip 22:45:31 +124s] obs_mot_load: what its script said is in renders/real/obs_mot_load/after.txt
+[trip 22:45:31 +124s] obs_mot_load: 4 pictures of 3656b5f6 in renders/real/obs_mot_load/
+[trip 22:45:31 +125s] obs_mot_load: sheet.jpg in renders/real/obs_mot_load/
+[trip 22:45:31 +125s] close: nodemc.py down  (up to 180 s)
+    [nodemc 22:45:32] server stopped
+[trip 22:45:33 +126s] close: exit 0, 2 s
+[trip 22:45:33 +126s] trip done; pictures kept: renders/real/obs_mot_load/; log renders/real/_trips/20261115-2243-3656b5f.log
