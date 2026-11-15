@@ -55,7 +55,7 @@ scenes have in common side by side, one column a scene: renders/real/_beside/<na
     --beside <name>          the scenes' pictures of this trip side by side on one sheet
     --view <n> --clouds <n>  render distance and cloud range in chunks (12 and 128)
     --settle, --first-settle, --still   seconds, passed to the shuttle (10, 60, 60)
-    --only, --shots, --gallery, --plot, --again   passed to the shuttle as they are
+    --only, --shots, --gallery, --plot, --again, --step   passed to the shuttle as they are
     --no-place               the scenes stand from an earlier trip of the same code
     --budget <seconds>       the trip stops what it is doing after this long, takes what there is
                              and closes down (2700: a job's hour less the node's own start and
@@ -284,6 +284,7 @@ def main():
     ap.add_argument("--gallery", action="append", default=[], metavar="SCENE")
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
     ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
+    ap.add_argument("--step", action="append", default=[], metavar="SCENE=SHOT[:BLOCKS]")
     ap.add_argument("--looks", metavar="LOOK[+dress],...")
     ap.add_argument("--apart", action="store_true")
     ap.add_argument("--beside", metavar="NAME")
@@ -295,7 +296,7 @@ def main():
     if args.tag and (args.at or args.branch):
         sys.exit("--tag names this checkout as it is; --at and --branch name a commit: one or the other")
     per_scene = (("--only", args.only), ("--shots", args.shots), ("--gallery", args.gallery),
-                 ("--plot", args.plot), ("--again", args.again))
+                 ("--plot", args.plot), ("--again", args.again), ("--step", args.step))
     for name, values in per_scene:
         for value in values:
             if value.split("=", 1)[0] not in args.scenes:
