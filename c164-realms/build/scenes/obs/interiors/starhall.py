@@ -119,7 +119,8 @@ STYLE = {
         band=B.SLATE_TILE.block, field=B.SLATE_SMOOTH.block,
         base=B.SLATE_BRICK.block, shaft=B.ASHLAR_FINE.block, capital=B.ASHLAR_PANEL.block,
         corbel=B.ASHLAR_FINE.stairs, dado=True, panel="sky", board=BOARD_A,
-        furniture=(("bench", (10.0, 5.45), "north"), ("bench", (13.0, 5.45), "north"),
+        # a bench's back is 7.25 px behind its middle and the wainscot 3 px thick: 5.35 clears it by a hair
+        furniture=(("bench", (10.0, 5.35), "north"), ("bench", (13.0, 5.35), "north"),
                    ("display_table", (10.0, -4.36), "south"), ("display_table", (13.0, -4.36), "south"),
                    ("coat_stand", (15.5, 5.3), "north")),
     ),
@@ -130,7 +131,7 @@ STYLE = {
         furniture=(("drafting_table", (10.0, 5.45), "north"), ("stool", (10.0, 4.3), "south"),
                    ("writing_desk", (13.0, 5.53), "north"), ("swivel_chair", (13.0, 4.5), "south"),
                    ("card_cabinet", (9.5, -4.57), "south"), ("instrument_cabinet", (10.5, -4.57), "south"),
-                   ("crate", (12.6, -4.5), "south"), ("trunk", (15.3, -4.6), "east"),
+                   ("crate", (12.6, -4.5), "south"), ("trunk", (15.36, -4.25), "east"),
                    ("coat_stand", (15.5, 5.3), "north")),
     ),
 }
