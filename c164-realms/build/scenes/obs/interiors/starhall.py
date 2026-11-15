@@ -1,252 +1,505 @@
-"""Work package interiors/starhall: the entrance hall ("star hall"), plan ART-PLAN 8.
+"""Work package interiors/starhall: the fitting-out of the star hall (plan ART-PLAN 8; card
+plan/packages/interiors/starhall.md).
 
-The star piece is the great orrery hung in the full-height central well. Round it: the stone floor
-with its brass meridian and the roundel under the orrery, the mother clock on the telescope pier,
-the switchboard, star charts, the gallery with its iron rail, a coffered ceiling. The hall is written
-in the skeleton's scene coordinates (A0 g2 #207, #220): it dresses whatever shell stands there, laying
-the floor and ceiling finish and filling the wall faces, and never builds the shell, the pier, the
-gallery deck, the stairs or the machines (those are c231, c236, c238).
+The star hall is the first room a visitor sees: the orrery overhead, the mother clock on the pier
+straight ahead, the station's emblem underfoot. The room itself is main/shell's (c231: walls, floor
+slab, galleries, stairs, ceiling beams, the pier), the orrery machines/orrery's (c236), the clock
+machines/clock's (c238). This package fits the room out and builds none of it:
 
-Two versions for the director to choose between (card packages/interiors/starhall.md, as A0 re-set it
-in g2 #207 -- the layout is now locked, so the two differ in dress, not in plan):
-  a  "academic"  symmetric and formal: a black-and-white chequer floor, ashlar pilasters on the bay
-                 beat, a coffered dark-wood ceiling with a ring of brass stars.
-  b  "workshop"  a working hall: cast iron and wood, a warm/cool two-tone stone floor with an iron
-                 walk on the meridian, iron pilasters and an iron-panelled ceiling, tools on the wall.
+  floor     the emblem let into the stone under the orrery (A0 #30488, #30667): an eight-sided ring
+            of thin brass seven across, the meridian through it from the north wall to the south
+            wall, a brass stud for the star, turned as in the court (the star's place is read from
+            site/court). Brass runs north-south only; the axis is marked in stone. The ring lies on a
+            band of dark slate, the field inside it is pale;
+  walls     a pilaster on each cross wall under the ceiling beams on x 8 and 14 (none on x 11: there
+            the meridian meets the wall, under a brass plate), an iron bracket from its head to the
+            gallery's girder; the emblem a second and last time, small, over the doorway inside;
+  step      the mother clock's: one course of the pier's own stone on the three cells before the
+            pier's east face (DAIS; A0 #30667);
+  pieces    few, each with its use, all against the cross walls. North: the switchboard by the pier
+            (the hall's lamps and the orrery's motor are switched here), the display table (what the
+            station keeps to show) and the visitors' desk with its book. South: the star chart, two
+            benches. On the gallery, over the meridian: the two great maps of the sky, the winter
+            half on the north wall and the summer half on the south. The furniture is
+            props/furniture's (c179), charts and books props/paper's (c197): they are placed from
+            here, each where its package is in the tree, and left out where it is not;
+  lamps     caged lamps (props/lamps, the third rank): three under each gallery, one over each door
+            of the gallery, and the four of the stair hall (A0 #37954: the apse beyond the west
+            arcade is lit from here, it has no other fitting-out), a pair under the crowns of the
+            arcade's side arches and a pair either side of the west window.
 
-Light (plan 3.2; the hall is warm and dark, a notch under the entrance): the orrery's sun is the
-focus, the main light falls over the mother clock and from the gallery brackets, every other lamp is a
-caged bulb. The placing offers these to A2/A8 (c220/c177) as (cell, level); in the box it drops the
-light blocks itself so the scene renders.
+Two versions for the director to choose between (the plan is fixed; they differ in dress):
+  a  "academic"  black and white squares of two by two in the aisles, stone pilasters, a dark wood
+                 wainscot, a short switchboard, two benches, lamps with round glasses;
+  b  "workshop"  bands of tuff along the axis, riveted iron pilasters, bare walls, a longer
+                 switchboard with a row of valves, one bench and a trunk come up with the last car,
+                 a blueprint beside the chart, lamps behind flat bars.
 
-Stand-ins until the deliveries arrive (see _stubs): the orrery and the clock (c236/c238), the
-switchboard, benches, charts, globes, lamps (A5/c179/c220). The room places no display entity yet, so
-it returns 0 against the indoor budget.
+Sight lines (c220 #38744). Seen from the court, the two side arches of the entrance look down the
+aisles (rows z -5, -4 and 4, 5) through the west arcade onto the first steps of the grand stair.
+So nothing stands in the inner row of an aisle, and what stands in the row along the wall is no
+higher than a block, the switchboard alone excepted. Seen through the middle arch (V7), the walls
+show only west of x 7: the switchboard on the right, the star chart on the left.
 
-build() is what the master scene calls; it places nothing until MOVED_IN is set (c231's shell in the
-master scene and a version chosen). Until then the hall lives in its box test scene
-(build/scenes/obs_int_starhall), which calls build_box().
+Light (A0 #30667, c220 #30403 and #38744; cells in the room's coordinates). The orrery's sun is the
+hall's one warm core; everything of this package keeps to the third rank:
+    sun          (11, 7, 0)                      12   machines/orrery offers it
+    clock        (7, 3, 0)                       11   machines/clock offers it
+    aisles       (9, 3, -5), (9, 3, 5)            8   on the first pilaster, looking east
+                 (7, 3, -5), (7, 3, 5)            7   on the same, looking west
+                 (13, 3, -5), (13, 3, 5)          7   on the corner pilaster, looking west
+    doors        (8, 10, -5), (8, 10, 5)          6   over the doors of the wing rooms
+    switchboard  (5, 2, -4)                       5   before the pilot lamps
+    stair foot   (1, 4, -4), (1, 4, 4)            8   under the crowns of the arcade's side arches
+    mezzanine    (-6, 9, -2), (-6, 9, 2)          7   either side of the west window
+The sources go to the light line (sky/_lightkit; the lamps hand theirs over themselves). The two of
+the machines are offered from here only where nobody has put or offered one, so the hall is not
+left dark in a tree without them.
+
+    from scenes.obs.interiors import starhall
+    got = starhall.dress(canvas, origin, version="a")   # dict(entities, lights, missing)
+
+build() is what the master scene calls. It places nothing until MOVED_IN is set; main/facade and
+sky/lights read the same switch (the stand-in wall behind the entrance and its three sources go when
+the hall moves in). Until then the hall is seen in its test scene, build/scenes/obs_int_starhall.
 """
+import importlib
 import math
+
+from artkit.blocks import st
 
 from ..common import blocks as B
 from ..common import skeleton as S
-from . import _shell as H
+from ..main import shell
+from ..props import _kit as K
+from ..props import lamps
 from . import _stubs as T
 
-MOVED_IN = False            # set once c231's shell is in the master scene and a version is chosen
-VERSION = "a"
+NAME = "interiors/starhall"
+MOVED_IN = False            # the director's switch: set once a version is chosen and the pictures have passed
+VERSION = "a"               # the version build() places
+VERSIONS = ("a", "b")
+DAIS = True                 # the step under the mother clock (A0 #30667: a switch)
 
-# --- where the dress gathers (cells / courses) --------------------------------------------------
-ORRERY = (int(S.ORRERY_CENTRE[0] - 0.5), int(S.ORRERY_CENTRE[1] - 0.5))   # (11, 0), the cell under it
-ORRERY_RING_Y = int(S.ORRERY_RING_Y)            # 8, the orbit course the stand-in orrery sits on
-ROUNDEL_R = S.ORRERY_R                           # 2.5, the brass roundel in the floor matches the orbit
-MERIDIAN_Z = int(S.AXIS_Z - 0.5)                # 0, the central cell the brass meridian runs along
-CLOCK_X = int(S.MOTHER_CLOCK["back_x"])         # 6, the pier's east face: the clock and the west end
-#                                                 of the meridian
-CLOCK_Y = (int(S.MOTHER_CLOCK["y"][0]), int(S.MOTHER_CLOCK["y"][1]))      # 1..5
+# --- where things are (cells unless said otherwise; the room's coordinates are the skeleton's) ------------
+ROOM = shell.ROOMS["star hall"]
+X0, Z0, X1, Z1 = ROOM["box"]                    # 2, -5, 15, 5: the clear inside
+FEET = ROOM["feet"]                             # 0
+FLOOR = FEET - 1                                # -1: the floor block
+CX, CZ = (int(math.floor(v)) for v in S.ORRERY_CENTRE)      # (11, 0): the cell under the orrery
+RING_R = 3                                      # the emblem's ring is seven across
+BEAM_X = tuple(range(S.PIER_ENVELOPE[2] + 1, X1 + 1, shell.BEAM_STEP))      # 8, 11, 14: the ceiling's beams
+PILASTER_X = tuple(x for x in BEAM_X if x != CX)                             # 8, 14: a pilaster under each but the middle one
+WALL_Z = {"north": Z0, "south": Z1}             # the row of cells along each cross wall
+FACE_Z = {"north": float(Z0), "south": float(Z1 + 1)}       # points: the faces of the cross walls, -5.0 and 6.0
+LOOKS = {"north": "south", "south": "north"}    # the way each of those faces looks
+SIDES = (("north", -1), ("south", 1))           # a cross wall, and the step from the axis towards it
+PX = 1.0 / 16.0
+SKIRT = 3.0 * PX                                # the wainscot's thickness: what stands against it stands off the wall by it
 
-BAY = S.BAY                                      # 4: the pilasters fall on this beat in x, as in z
-PIL_X = tuple(range(H.X0, H.X1 + 1, BAY))        # 2, 6, 10: the depth bays of the hall
-PIL_Z = (H.Z0, H.Z1)                            # the pilasters also stand on the north and south walls
-CORNICE_Y = S.FRIEZE - 2                         # 12, a string course high on the wall breaks the ashlar
-FRIEZE_Y = S.STRING                              # 6, the gallery course doubles as the low string course
-
-# --- light (cell, level); the hall is a notch under the entrance's 13..14 (plan 3.2) -------------
-SUN = 12                    # the orrery's sun, the one focus
-CLOCK_GLOW = 10            # the pool over the mother clock, the main light of the west end
-BRACKET = 7               # the gallery and wall brackets, third rank
-DIAL = 6                  # the switchboard's pilot lamps and the clock dial
-
-# bottom course first; the switchboard's instrument panels (c164 blocks.PANELS)
-BOARD_A = (("knife_switch", "dial", "gauges", "dial", "knife_switch"),
-           ("pilot_lamps", "relays", "nameplate", "relays", "pilot_lamps"))
-BOARD_B = (("knife_switch", "fuses", "bus_switch", "fuses", "gauges", "knife_switch"),
-           ("dial", "gauges", "patch_panel", "counter", "dial", "pilot_lamps"),
-           ("pilot_lamps", "relays", "nameplate", "relays", "pilot_lamps", "bell"))
-
-STYLE = {
-    "a": dict(
-        pale=B.ASHLAR_FINE.block, dark=B.SLATE_SMOOTH.block, chequer=True, walk=None,
-        pilaster=B.ASHLAR_FINE.block, capital=B.ASHLAR_EMBLEM, base=B.ASHLAR_PANEL.block,
-        cornice=B.ASHLAR_FINE.slab, coffer=B.DARK_WOOD.block, beam=B.IRON_RIVETED.block,
-        star=B.BRASS_PLATE.block,
-        board=dict(x=(6, 10), rows=BOARD_A),
-        benches=[("north", range(8, 12)), ("south", range(8, 12))],
-        charts=[("north", (7, 9, 11), 9), ("south", (7, 9, 11), 9)],
-        cases=[(9, H.Z0 + 2, B.VERDIGRIS), (9, H.Z1 - 2, B.IRON_CAST)],
-        brackets=[("north", 6), ("north", 10), ("south", 6), ("south", 10)],
-    ),
-    "b": dict(
-        pale=B.TUFF_BRICK.block, dark=B.SLATE_SMOOTH.block, chequer=False, walk=B.IRON_GRATE,
-        pilaster=B.IRON_RIVETED.block, capital=B.IRON_PLATE, base=B.IRON_PLATE,
-        cornice=B.IRON_RIVETED.slab, coffer=B.IRON_PLATE, beam=B.IRON_RIVETED.block, star=None,
-        board=dict(x=(3, 8), rows=BOARD_B),
-        benches=[("south", range(8, 13))],
-        charts=[("north", (10, 11, 12), 9), ("north", (10, 11, 12), 11), ("south", (8, 10), 9)],
-        cases=[(10, H.Z1 - 2, B.VERDIGRIS)],
-        brackets=[("north", 4), ("north", 8), ("north", 12), ("south", 8), ("south", 12)],
-    ),
+# --- stone and iron ------------------------------------------------------------------------------------
+PALE, DARK = shell.FLOOR, shell.FLOOR_DARK      # the shell's white square and its black one
+SEAT = B.SLATE_TILE.block                       # the darkest, under the brass: as under the court's emblem
+BAND = B.TUFF_BRICK.block                       # version b: the bands along the axis
+WALK = B.IRON_GRATE                             # version b: the iron walk on the axis
+PILASTER = {                                    # foot (the plinth's two rows), shaft, head (the row under the gallery)
+    "a": dict(foot=B.SLATE_BRICK.block, shaft=B.ASHLAR_FINE.block, head=B.ASHLAR_PANEL.block),
+    "b": dict(foot=B.IRON_PLATE, shaft=B.IRON_RIVETED.block, head=B.IRON_PLATE),
 }
+# The switchboard: an iron base, the courses of instrument panels from the bottom, an iron cap. By
+# materials/panels' rules for a wall of instruments: no kind beside or over itself, no lit panel
+# beside a lit one, no pale one beside a pale one. No nameplate: it carries the emblem, and the
+# hall has its two.
+BOARD = {
+    "a": (("knife_switch", "fuses", "knife_switch"),
+          ("pilot_lamps", "dial", "pilot_lamps")),
+    "b": (("knife_switch", "fuses", "bus_switch", "knife_switch"),
+          ("pilot_lamps", "dial", "relays", "tubes")),
+}
+BOARD_END = PILASTER_X[0] - 2                   # 6: its east end; the cell between it and the pilaster is that one's lamp's
+
+# --- the pieces (points) -----------------------------------------------------------------------------------
+BAY_X = (S.mid(CX) - 1.5, S.mid(CX) + 1.5)      # 10.0, 13.0: two pieces two blocks wide, either side of the meridian
+CHART_X = (X0 + PILASTER_X[0] - 0.5) / 2.0      # 4.75: the middle of the wall between the arcade and the first lamp
+CHART_Y = FEET + 3.5                            # the middle of a chart, level with the lamps
+MAP_Y = S.STAND + 3.5                           # 10.5: the middle of a great map, clear of the gallery's railing from below
+# texels from the middle of a piece's foot to its back (props/furniture's models; the bench's leaning back)
+BACK = {"display_table": 7.0, "writing_desk": 7.0, "bench": 7.25, "trunk": 6.5}
+# how high a piece carries what lies on it, where props/furniture does not say (its TOP)
+TOP = {"display_table": 11.25 * PX, "writing_desk": 12.0 * PX, "trunk": 11.0 * PX}
+
+# --- light: the level asked for, and the rank where the name of the source does not tell it ------------------
+ASK_SUN = (12, 2)           # the orrery's sun (c220 #38744)
+ASK_CLOCK = (11, 2)         # before the mother clock's dial (A0 #37312)
+ASK_AISLE = (8, 7)          # on a pilaster: the lamp that looks east, a lamp that looks west
+ASK_DOOR = 6                # over a door of the gallery
+ASK_BOARD = (5, 3)          # the switchboard's pilot lamps
+ASK_STAIR = 8               # under a side arch of the west arcade: 7 does not show the steps (c220 #38744)
+ASK_MEZZANINE = 7           # beside the west window
+SUN_CELL = (CX, int(math.floor(S.ORRERY_RING_Y)), CZ)                                       # (11, 7, 0)
+CLOCK_CELL = (int(S.MOTHER_CLOCK["back_x"]) + 1, int(S.MOTHER_CLOCK["y"][0]) + 2, CZ)       # (7, 3, 0)
+LAMP_Y = FEET + 3.5         # the middle of a lamp on a pilaster
 
 
-def dress(c, origin=(0, 0, 0), version="a", standin=False):
-    """Dress the hall standing at `origin`. standin: let the wall brackets sit in the stand-in walls,
-    which is right only in the box; in the real shell they are lamp models and a light beside each.
-    Returns dict(entities=<display entities placed>, lights=[(x, y, z, level), ...])."""
-    st = STYLE[version]
+# --- the emblem ----------------------------------------------------------------------------------------------
+def emblem():
+    """The station's emblem in the floor, in cells of the room: dict(disc, ring, star, line).
+
+    disc   every cell the emblem covers: seven by seven without its four corners;
+    ring   {cell: shape}: the disc's rim, one closed line, each cell with the two sides it joins (a
+           rail's shape names, north is -z);
+    star   the star's cell: up and to the right when north is up, as in the court (site/court's
+           STAR, brought down from its ring to this one);
+    line   the meridian's cells from wall to wall, without the two where it crosses the ring."""
+    disc = {(CX + dx, CZ + dz) for dx in range(-RING_R, RING_R + 1) for dz in range(-RING_R, RING_R + 1)
+            if abs(dx) + abs(dz) < 2 * RING_R}
+    around = [(dx, dz) for dx in (-1, 0, 1) for dz in (-1, 0, 1) if (dx, dz) != (0, 0)]
+    rim = {c for c in disc if any((c[0] + dx, c[1] + dz) not in disc for dx, dz in around)}
+    sides = (("north", 0, -1), ("south", 0, 1), ("east", 1, 0), ("west", -1, 0))
+    ring = {(x, z): "_".join(name for name, dx, dz in sides if (x + dx, z + dz) in rim) for x, z in rim}
+    try:
+        from ..site import court
+        reach, star = court.RING_R, court.STAR
+    except (ImportError, AttributeError):
+        reach, star = 7, (3, -3)
+    star = (CX + int(round(star[0] * RING_R / reach)), CZ + int(round(star[1] * RING_R / reach)))
+    line = [(CX, z) for z in range(Z0, Z1 + 1) if (CX, z) not in ring]
+    return dict(disc=disc, ring=ring, star=star, line=line)
+
+
+def _stone(version, x, z):
+    """The stone of the floor in a cell outside the emblem, or None where the shell's own stays."""
+    d = abs(z - CZ)
+    if version == "a":
+        # The shell has laid the axis: a pale band three wide, a line of slate either side. The
+        # squares beyond are laid again, counted from the meridian instead of from the entrance
+        # wall, so that the brass runs on pale stone to both walls and the squares mirror about it.
+        if d <= shell.CHEEK_Z:
+            return None
+        k = abs(x - CX)
+        if k == 0:
+            return PALE
+        band = 0 if d > shell.CHEEK_Z + 1 else 1
+        return DARK if ((k - 1) // 2 + band) % 2 else PALE
+    if d == 0:
+        return WALK
+    if d < shell.CHEEK_Z:
+        return DARK
+    return BAND if d <= shell.CHEEK_Z + 1 else PALE
+
+
+def _floor(canvas, origin, version, L, mark):
+    """The floor of the hall east of the arcade, without the pier's footing and the joint round it."""
     ox, oy, oz = origin
-    pier = H.pier_cells()
-    deck, rail = H.gallery_cells(), H.rail_cells()
-    lights = []
+    for x in range(X0, X1 + 1):
+        for z in range(Z0, Z1 + 1):
+            cell = (x, z)
+            if cell not in L.hall or cell in L.shaft or cell in L.seat or cell in L.joint:
+                continue
+            if cell in mark["ring"] or cell == mark["star"]:
+                stone = SEAT
+            elif cell in mark["disc"]:
+                stone = PALE
+            else:
+                stone = _stone(version, x, z)
+            if stone is None:
+                continue
+            canvas.set(ox + x, oy + FLOOR, oz + z, stone)
+            if stone == WALK:                   # a grating shows what is under it
+                canvas.set(ox + x, oy + FLOOR - 1, oz + z, DARK, keep=True)
+
+
+def _emblem(canvas, origin, mark):
+    """The brass, in the cells over the floor: the ring, the meridian, the star."""
+    ox, oy, oz = origin
+    for (x, z), shape in mark["ring"].items():
+        line = st(B.BRASS_CROSS, shape="north_south") if x == CX else st(B.BRASS_LINE, shape=shape)
+        canvas.set(ox + x, oy + FEET, oz + z, line)
+    for x, z in mark["line"]:
+        canvas.set(ox + x, oy + FEET, oz + z, st(B.BRASS_LINE, shape="north_south"))
+    x, z = mark["star"]
+    canvas.set(ox + x, oy + FEET, oz + z, st(B.BRASS_BUTTON, face="floor", facing="north"))
+
+
+# --- walls -----------------------------------------------------------------------------------------------------
+def _pilasters(canvas, origin, version):
+    """A pilaster one block proud of each cross wall under the beams that have one, from the floor
+    to the gallery's deck, and an iron bracket from its head to the girder the railing stands on."""
+    ox, oy, oz = origin
+    made = PILASTER[version]
+    head = shell.DECK_Y - 1
+    for x in PILASTER_X:
+        for wall, s in SIDES:
+            z = WALL_Z[wall]
+            for y in range(FEET, head + 1):
+                block = made["foot"] if y <= S.PLINTH[1] else made["head"] if y == head else made["shaft"]
+                canvas.set(ox + x, oy + y, oz + z, block)
+            canvas.set(ox + x, oy + head, oz + z - s, st(B.IRON_RIVETED.stairs, facing=wall, half="top"), keep=True)
+
+
+def _wainscot(canvas, origin):
+    """Dark panelling over the plinth's two rows of both cross walls, from the arcade to the corner
+    pilaster, wherever nothing stands in the cell. It stops for the pilasters and for the meridian."""
+    ox, oy, oz = origin
+    for wall, _s in SIDES:
+        for x in range(X0, PILASTER_X[-1]):
+            if x in PILASTER_X or x == CX:
+                continue
+            for y in range(FEET, S.PLINTH[1] + 1):
+                canvas.set(ox + x, oy + y, oz + WALL_Z[wall], T.panel(B.WAINSCOT, wall), keep=True)
+
+
+def _marks(canvas, origin):
+    """Where the meridian meets a wall: a brass plate over its end. And the emblem's second place in
+    the hall (A0 #30488), small: the stone of the wall's inner leaf over the middle of the doorway."""
+    ox, oy, oz = origin
+    for wall, _s in SIDES:
+        canvas.set(ox + CX, oy + FEET + 1, oz + WALL_Z[wall], T.panel(B.BRASS_HATCH, wall))
+    cell = (ox + S.east_wall_x(S.CENTRE_BAYS[1]) + S.DEPTH_GLASS, oy + S.STRING, oz + CZ)
+    if canvas.has(*cell) and canvas.name(*cell) != B.LIGHT:
+        canvas.set(cell[0], cell[1], cell[2], B.ASHLAR_EMBLEM)
+
+
+def _switchboard(canvas, origin, version, asked):
+    """The switchboard against the north wall, west of the first pilaster, and the glow of its pilot
+    lamps."""
+    ox, oy, oz = origin
+    rows = BOARD[version]
+    wide = len(rows[0])
+    x0, z = BOARD_END - wide + 1, WALL_Z["north"]
+    for i in range(wide):
+        canvas.set(ox + x0 + i, oy + FEET, oz + z, B.IRON_PLATE)
+        for j, row in enumerate(rows):
+            canvas.set(ox + x0 + i, oy + FEET + 1 + j, oz + z, st(B.PANELS[row[i]], facing=LOOKS["north"]))
+        canvas.set(ox + x0 + i, oy + FEET + 1 + len(rows), oz + z, st(B.IRON_RIVETED.slab, type="bottom"))
+    level, rank = ASK_BOARD
+    cell = (ox + x0 + wide // 2, oy + FEET + len(rows), oz + z + 1)
+    _offer(canvas, cell, level, f"{NAME}:switchboard", rank)
+    asked.append((cell, level, "switchboard"))
+
+
+# --- light -------------------------------------------------------------------------------------------------------
+def _offer(canvas, cell, level, why, rank):
+    """Hand one source to the light line (sky/_lightkit.suggest: it is placed with the rest, when
+    everything stands). While that tool is not in the tree the block is put down here, never over
+    another."""
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
+    if suggest is not None:
+        suggest(canvas, cell, level, why, rank=rank)
+    else:
+        canvas.set(cell[0], cell[1], cell[2], st(B.LIGHT, level=level), keep=True)
+
+
+def _lit(canvas, cell):
+    """Has somebody put or offered a source in this cell, or in the one under it (where a stand-in
+    for a machine puts its own)?"""
+    x, y, z = cell
+    cells = ((x, y, z), (x, y - 1, z))
+    if any(canvas.name(*c) == B.LIGHT for c in cells):
+        return True
+    return any(tuple(offer[0]) in cells for offer in getattr(canvas, "light_offers", ()))
+
+
+def _wall_lamp(canvas, origin, version, pos, facing, level, asked, what):
+    """One caged lamp on a wall face (a point; `facing` the way the face looks). props/lamps hands
+    its source over."""
+    out = lamps.SPEC[f"cage_{version}"]["light"]
+    asked.append((K.light_cell(pos, K.FACING[facing], out, origin), level, what))
+    return lamps.place(canvas, "cage", pos, facing=facing, origin=origin, version=version, level=level)
+
+
+def _soffit_lamp(canvas, origin, version, pos, yaw, level, asked, what):
+    """The same lamp turned face down under a soffit (pos: the point of the soffit it is fixed to):
+    its conduit, which on a wall runs up, runs level along the soffit the way `yaw` says (0 south,
+    180 north) and enters the stone there. The source goes into the first free cell under the lamp:
+    under an arch's crown the lamp's own cell is the crown's slab."""
+    ox, oy, oz = origin
+    name = f"cage_{version}"
+    n = K.put(canvas, lamps.models()[lamps.PREFIX + name], pos, mount="ceiling", yaw=yaw, origin=origin,
+              turns=(("x", 90.0),))
+    out = lamps.SPEC[name]["light"][2]
+    x, y, z = (int(math.floor(v)) for v in (pos[0] + ox, pos[1] - out + oy, pos[2] + oz))
+    while canvas.has(x, y, z) and canvas.name(x, y, z) != B.LIGHT:
+        y -= 1
+    K.offer_lights(canvas, [((x, y, z), level)], f"props/lamps:{name}")
+    asked.append(((x, y, z), level, what))
+    return n
+
+
+def _soffit(canvas, origin, x, z):
+    """The height of the soffit over the cell (x, z) of the west arcade: the lower face of the
+    crown's slab where the arches' heads are shut (facade.CROWN), else that of the cross gallery's
+    deck."""
+    state = canvas.get(origin[0] + x, origin[1] + shell.ARCH_Y, origin[2] + z)
+    if state is not None and state.partition("[")[0] != B.LIGHT:
+        return shell.ARCH_Y + 0.5
+    return float(shell.DECK_Y)
+
+
+def _lamps(canvas, origin, version, L, asked):
+    """The lamps of the hall and of the stair hall; returns the number of display entities."""
+    n = 0
+    east, west = ASK_AISLE
+    for wall, _s in SIDES:                      # under the galleries: on the pilasters' sides
+        z = S.mid(WALL_Z[wall])
+        for x, facing, level in ((PILASTER_X[0] + 1.0, "east", east), (float(PILASTER_X[0]), "west", west),
+                                 (float(PILASTER_X[-1]), "west", west)):
+            n += _wall_lamp(canvas, origin, version, (x, LAMP_Y, z), facing, level, asked, "aisle")
+    for door in shell.doors():                  # on the galleries: over the doors of the wing rooms
+        xs = [x for x, _z in door["cells"]]
+        row, north = door["cells"][0][1], door["inward"][1] < 0
+        pos = (S.mid(min(xs), max(xs)), door["y"][1] + 1.5, float(row + 1 if north else row))
+        n += _wall_lamp(canvas, origin, version, pos, "south" if north else "north", ASK_DOOR, asked, "door")
+    # the stair hall. At the foot of each flight: under the crown of the arcade's side arch, in its
+    # middle, the conduit running away from the axis (c231 #38506: from the door the lamp hangs on
+    # the opening's centre line, and the steps are lit evenly)
+    x = S.mid(*shell.ARCADE_X)
+    for z0, z1 in L.arches:
+        if z0 <= shell.CZ <= z1:
+            continue                            # the middle arch is the way to the west door: no lamp
+        z = S.mid(z0, z1)
+        under = _soffit(canvas, origin, int(math.floor(x)), int(math.floor(z)))
+        yaw = K.FACING["north" if z1 < shell.CZ else "south"]
+        n += _soffit_lamp(canvas, origin, version, (x, under, z), yaw, ASK_STAIR, asked, "stair foot")
+    # on the mezzanine: on the two piers of wall that flank the recess of the west window
+    face = min(x for x, _z in L.mezzanine) + 1.0
+    for _wall, s in SIDES:
+        pos = (face, S.STAND + 2.5, S.mid(s * shell.CHEEK_Z))
+        n += _wall_lamp(canvas, origin, version, pos, "east", ASK_MEZZANINE, asked, "mezzanine")
+    return n
+
+
+def _machines(canvas, origin, asked):
+    """The two sources of the machines, where nobody has put or offered one."""
+    ox, oy, oz = origin
+    for (x, y, z), (level, rank), what in ((SUN_CELL, ASK_SUN, "sun"), (CLOCK_CELL, ASK_CLOCK, "clock")):
+        cell = (ox + x, oy + y, oz + z)
+        if not _lit(canvas, cell):
+            _offer(canvas, cell, level, f"{NAME}:{what}", rank)
+            asked.append((cell, level, what))
+
+
+# --- the pieces --------------------------------------------------------------------------------------------------
+def _peer(name):
+    """A module of the props line, or None while it is not in the tree."""
+    full = f"{K.__package__}.{name}"
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if e.name != full:
+            raise
+        return None
+
+
+def _furnish(canvas, origin, version, missing, standins):
+    """What stands and hangs in the hall; returns the number of display entities. A piece whose
+    package is not in the tree, or does not have it, is named in `missing` and left out (standins:
+    blocks stand in for it, for the test scene)."""
+    ox, oy, oz = origin
+    skirt = SKIRT if version == "a" else 0.0
+    top = dict(TOP, **getattr(_peer("furniture"), "TOP", {}))
+    west, east = BAY_X
 
     def put(x, y, z, state):
-        c.set(ox + x, oy + y, oz + z, state)
+        canvas.set(ox + x, oy + y, oz + z, state)
 
-    def free(x, y, z):
-        return not c.has(ox + x, oy + y, oz + z)
+    def stand(wall, kind):
+        """z of the middle of a piece that stands with its back to a cross wall: a texel off the wainscot."""
+        d = skirt + (BACK[kind] + 1.0) * PX
+        return FACE_Z[wall] + d if wall == "north" else FACE_Z[wall] - d
 
-    def light(x, y, z, level):
-        lights.append((x, y, z, level))
-        if free(x, y, z):
-            put(x, y, z, f"{B.LIGHT}[level={level}]")
+    def cells(x, wall):
+        """The two cells along the wall that a piece two blocks wide stands in, its middle at x."""
+        x0 = int(math.floor(x - 1.0))
+        return [(x0, WALL_Z[wall]), (x0 + 1, WALL_Z[wall])]
 
-    _floor(put, st)
-    _ceiling(put, st, pier)
-    _walls(put, free, st, pier, deck)
-    _gallery(put, deck, rail)
+    def piece(family, kind, pos, stub=None, **how):
+        peer = _peer(family)
+        if peer is not None and kind in getattr(peer, "SPEC", ()):
+            return peer.place(canvas, kind, pos, origin=origin, **how)
+        missing.append(f"{family}:{kind}")
+        if standins and stub is not None:
+            stub()
+        return 0
 
-    # the star piece and the clock, both stand-ins until c236/c238 arrive
-    T.orrery(put, ORRERY[0], ORRERY[1], ORRERY_RING_Y, H.CEIL)
-    T.mother_clock(put, CLOCK_X, MERIDIAN_Z, CLOCK_Y[0], CLOCK_Y[1])
+    def hang(kind, x, y, wall, wide, high):
+        return piece("paper", kind, (x, y, FACE_Z[wall]), facing=LOOKS[wall],
+                     stub=lambda: T.plate(put, x, y, wide, high, wall, WALL_Z[wall]))
 
-    # the three layers of small pieces: wall (switchboard, charts), surface (benches, cases), floor
-    bx0, bx1 = st["board"]["x"]
-    T.switchboard(put, [(x, H.Z0) for x in range(bx0, bx1 + 1)], S.GROUND, "south", st["board"]["rows"])
-    for wall, xs in st["benches"]:
-        T.bench(put, [(x, H.Z0 if wall == "north" else H.Z1) for x in xs], wall)
-    for wall, xs, y in st["charts"]:
-        T.charts(put, [(x, H.Z0 if wall == "north" else H.Z1) for x in xs], y, wall)
-    for x, z, block in st["cases"]:
-        T.case(put, x, z, "north" if z < 0 else "south")
-        T.globe(put, x + 1, z, block)
-
-    # light: the sun is the focus, the clock pool the main light, a bracket on the gallery beats
-    light(ORRERY[0], ORRERY_RING_Y - 1, ORRERY[1], SUN)
-    light(CLOCK_X + 1, CLOCK_Y[1] + 1, MERIDIAN_Z, CLOCK_GLOW)
-    light((bx0 + bx1) // 2, S.GROUND + 2, H.Z0 + 1, DIAL)
-    for wall, x in st["brackets"]:
-        wz = (H.Z0, 1) if wall == "north" else (H.Z1, -1)
-        if standin:
-            T.wall_lamp(put, x, S.STAND + 1, wz[0])
-        light(x, S.STAND + 1, wz[0] + wz[1], BRACKET)
-    return {"entities": 0, "lights": lights}
-
-
-def _floor(put, st):
-    """The stone floor: a chequer or a two-tone band, the brass meridian down the axis from the door
-    to the pier, and the brass roundel under the orrery."""
-    pier = H.pier_cells()
-    for x in range(H.X0, H.X1 + 1):
-        for z in range(H.Z0, H.Z1 + 1):
-            if (x, z) in pier:
-                continue
-            if st["chequer"]:
-                pale = (x + z) % 2 == 0
-            else:
-                pale = (x // 2) % 2 == 0                 # broad bands, so iron walks read against them
-            put(x, H.FLOOR, z, st["pale"] if pale else st["dark"])
-    # the brass roundel under the orrery (a star-map disc with a bright rim), matching the orbit
-    for dx in range(-3, 4):
-        for dz in range(-3, 4):
-            r = round(math.hypot(dx, dz))
-            x, z = ORRERY[0] + dx, ORRERY[1] + dz
-            if r <= 2 and (x, z) not in pier and H.X0 <= x <= H.X1 and H.Z0 <= z <= H.Z1:
-                put(x, H.FLOOR, z, B.BRASS_PLATE.block if r == 2 else B.BRASS_PATTERN.block)
-    # the brass meridian, a carpet on the floor from the pier's east foot to the east threshold
-    for x in range(CLOCK_X, H.EAST_FACE + 1):
-        if (x, MERIDIAN_Z) not in pier:
-            put(x, S.GROUND, MERIDIAN_Z, B.BRASS_INLAY)
-    # an iron walk laid on the meridian in the workshop version
-    if st["walk"]:
-        for x in range(CLOCK_X + 1, H.X1 + 1):
-            if (x, MERIDIAN_Z) not in pier:
-                put(x, H.FLOOR, MERIDIAN_Z, st["walk"])
+    n = 0
+    # north, between the pilasters: the display table and what lies in it; the visitors' desk and its book
+    at = (west, float(FEET), stand("north", "display_table"))
+    got = piece("furniture", "display_table", at, facing="south",
+                stub=lambda: T.table(put, cells(west, "north"), FEET))
+    n += got
+    if got:
+        n += piece("paper", "logbook_shut", (at[0], FEET + top["display_table"], at[2]), yaw=12.0)
+    at = (east, float(FEET), stand("north", "writing_desk"))
+    got = piece("furniture", "writing_desk", at, facing="south",
+                stub=lambda: T.table(put, cells(east, "north"), FEET))
+    n += got
+    if got:
+        n += piece("paper", "logbook", (at[0], FEET + top["writing_desk"], at[2] + PX), yaw=-6.0)
+    # south, between the pilasters: where one sits and looks up at the orrery
+    z = stand("south", "bench")
+    n += piece("furniture", "bench", (west, float(FEET), z), facing="north",
+               stub=lambda: T.bench(put, cells(west, "south"), FEET, "south"))
+    if version == "a":
+        n += piece("furniture", "bench", (east, float(FEET), z), facing="north",
+                   stub=lambda: T.bench(put, cells(east, "south"), FEET, "south"))
+    else:                                       # a trunk along the wall, a crate on the east end of its lid
+        at = (east, float(FEET), stand("south", "trunk"))
+        got = piece("furniture", "trunk", at, yaw=K.FACING["north"] - 5.0,
+                    stub=lambda: T.box(put, cells(east, "south"), FEET))
+        n += got
+        if got:
+            n += piece("furniture", "crate", (at[0] + 0.25, FEET + top["trunk"], at[2]), yaw=K.FACING["north"] + 6.0)
+    # south, west of the first pilaster: the star chart, at the height of the eye and of the lamp beside it
+    if version == "a":
+        n += hang("star_chart", CHART_X, CHART_Y, "south", 2.0, 1.0)
+    else:
+        n += hang("star_chart", CHART_X - 1.0, CHART_Y, "south", 2.0, 1.0)
+        n += hang("blueprint", CHART_X + 1.25, CHART_Y, "south", 1.5, 1.0)
+    # on the galleries, over the meridian: the two halves of the sky
+    n += hang("sky_map", S.mid(CX), MAP_Y, "north", 3.0, 2.0)
+    n += hang("sky_map_b", S.mid(CX), MAP_Y, "south", 3.0, 2.0)
+    return n
 
 
-def _ceiling(put, st, pier):
-    """A beamed and coffered ceiling: cast-iron beams on the bay beat, coffers of dark wood (academic)
-    or iron (workshop), a brass boss where the orrery hangs, and a few brass stars (academic)."""
-    for x in range(H.X0, H.X1 + 1):
-        for z in range(H.Z0, H.Z1 + 1):
-            if (x, z) in pier:
-                continue
-            beam = x in PIL_X or z in (H.Z0, H.Z1) or z == MERIDIAN_Z or x == H.EAST_GLASS - 1
-            put(x, H.CEIL, z, st["beam"] if beam else st["coffer"])
-    # the boss the orrery hangs from: one block, no arms round it (four made a cross: red line 8)
-    put(ORRERY[0], H.CEIL, ORRERY[1], B.BRASS_PATTERN.block)
-    if st["star"]:
-        for x in range(H.X0 + 1, H.X1, 2):
-            for z in (H.Z0 + 2, H.Z1 - 2):
-                if (x, z) not in pier and (x, z) != ORRERY:
-                    put(x, H.CEIL, z, st["star"])
+# --- the package -------------------------------------------------------------------------------------------------
+def dress(canvas, origin=(0, 0, 0), version=None, standins=False):
+    """Fit out the hall that stands at `origin` (main/shell, and what the machines line has hung in
+    it by then). Returns dict(entities, lights, missing): the number of display entities placed, the
+    sources asked for as [((x, y, z), level, what)] in scene coordinates, and the pieces left out
+    because their package is not in the tree, as "family:kind".
 
-
-def _walls(put, free, st, pier, deck):
-    """A dark dado round the hall, pilasters on the bay beat with a capital and a base, and a high
-    string course, so no ashlar face runs flat over 5x5."""
-    def dado(x, z, wall, y0):
-        for y in (y0, y0 + 1):
-            if (x, z) not in pier and free(x, y, z):
-                put(x, y, z, T.panel(B.WAINSCOT, wall))
-
-    # the dado at the ground and again at the gallery, on the north, south and west faces
-    for base in (S.GROUND, S.STAND):
-        for x in range(H.X0, H.X1 + 1):
-            dado(x, H.Z0, "north", base)
-            dado(x, H.Z1, "south", base)
-        for z in range(H.Z0, H.Z1 + 1):
-            dado(H.X0, z, "west", base)
-
-    # pilasters on the north and south walls, on the depth beat; a capital and a base
-    for x in PIL_X:
-        for z in PIL_Z:
-            for y in range(S.GROUND, CORNICE_Y):
-                if (x, z) not in pier:
-                    put(x, y, z, st["pilaster"])
-            put(x, S.GROUND, z, st["base"])
-            put(x, CORNICE_Y, z, st["capital"])
-
-    # a string course high on each wall, and one at the gallery, to break the flat ashlar
-    for y in (FRIEZE_Y, CORNICE_Y):
-        for x in range(H.X0, H.X1 + 1):
-            for z in (H.Z0, H.Z1):
-                if (x, z) not in pier and x not in PIL_X:
-                    put(x, y, z, st["capital"] if y == CORNICE_Y else B.ASHLAR_FINE.slab + "[type=top]")
-
-    # a crown cornice just under the ceiling, framing the coffers on the north, south and west faces
-    crown = st["cornice"] + "[type=top]"
-    for x in range(H.X0, H.X1 + 1):
-        for z in (H.Z0, H.Z1):
-            if (x, z) not in pier:
-                put(x, H.Y1, z, crown)
-    for z in range(H.Z0, H.Z1 + 1):
-        if (H.X0, z) not in pier:
-            put(H.X0, H.Y1, z, crown)
-
-
-def _gallery(put, deck, rail):
-    """Dress the gallery the shell deck carries: a brass top rail over the iron bars and an iron
-    corbel under each rail cell, so the balcony reads from the floor."""
-    for x, z in rail:
-        put(x, S.STAND, z, B.IRON_BARS)
-        put(x, H.DECK - 1, z, B.IRON_RIVETED.slab + "[type=top]")        # the corbel under the deck
-
-
-def build_box(c, origin=(0, 0, 0), version="a"):
-    """The box test scene's room: the stand-in shell, dressed."""
-    H.star_hall(c, origin)
-    return dress(c, origin, version, standin=True)
+    standins   blocks stand in for the pieces that are left out: for the test scene only."""
+    version = version or VERSION
+    if version not in VERSIONS:
+        raise ValueError(f"{NAME}: no version {version!r} (there are {', '.join(VERSIONS)})")
+    origin = tuple(int(v) for v in origin)
+    ox, oy, oz = origin
+    L = shell.layout()
+    mark = emblem()
+    asked, missing = [], []
+    _floor(canvas, origin, version, L, mark)
+    _emblem(canvas, origin, mark)
+    if DAIS:
+        for x, z in L.seat:
+            canvas.set(ox + x, oy + FEET, oz + z, shell.pier_block(FEET))
+    _pilasters(canvas, origin, version)
+    _switchboard(canvas, origin, version, asked)
+    n = _furnish(canvas, origin, version, missing, standins)
+    if version == "a":
+        _wainscot(canvas, origin)
+    _marks(canvas, origin)
+    n += _lamps(canvas, origin, version, L, asked)
+    _machines(canvas, origin, asked)
+    return dict(entities=n, lights=asked, missing=missing)
 
 
 def build(canvas, origin=(0, 0, 0)):
