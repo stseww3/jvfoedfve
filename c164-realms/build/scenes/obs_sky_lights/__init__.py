@@ -179,10 +179,15 @@ def surround_bay():
 
 
 SURROUND_BAY = surround_bay()
+# The two main views are the skeleton's (director, g2 #304: both look up about 22 degrees, the
+# building in the lower half of the picture and the comet whole in the upper; V2 goes into the
+# skeleton). A skeleton without V2 is older than that ruling: its numbers stand in until then.
+V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
 VIEWS = {   # name: (eye, looks at), from a building's origin
     "front": ((FRONT_X + 20.5, EYE, AXIS), (FRONT_X - 1.0, 8.5, AXIS)),            # 20 blocks, head on
-    "axis": ((FRONT_X + 40.5, EYE, AXIS), (FRONT_X - 1.0, 13.0, AXIS)),            # the court's V2
-    "v1": (S.V1["pos"], S.V1["look_at"]),                                          # the arrival view, 80 blocks
+    "axis": (V2["pos"], V2["look_at"]),                                            # the court's V2
+    "v1": (V1["pos"], V1["look_at"]),                                              # the arrival view, 80 blocks
     "slant": ((S.WALL_E + 13.5, EYE, -10.5), (S.WALL_E + 1.0, 8.5, -23.0)),        # 45 degrees, 12 blocks off
     "surround": near(S.east_wall_x(SURROUND_BAY), SURROUND_BAY),
     "door": ((FRONT_X + 9.5, EYE, AXIS + 4.0), (FRONT_X - 1.0, 4.5, AXIS)),
