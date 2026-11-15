@@ -2,7 +2,7 @@
 
 Every oxidized_* copper block without a waxed_ twin is redirected away from verdigris to cast iron:
 a blue-black ramp (I0..I6), rivets hugging the edges so neighbouring plates read as one bolted run,
-a cast emblem, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
+a cast lozenge, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
 The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards them).
 
 Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
@@ -144,30 +144,23 @@ def _riveted(seed):
     return px
 
 
-def _cast(seed, motif):
-    """IRON_CAST: a riveted plate with a raised cast motif -- the station emblem, or a lozenge. Its
-    field is smooth (a casting, not a rolled plate), so no brushing streak cuts across the motif."""
-    px = _plate(seed, base=2, noise=0.0)
+def _cast():
+    """IRON_CAST: a riveted plate with a raised cast lozenge (one pixel thick, ten across) round a
+    domed boss, the one picture of the block. Its field is smooth (a casting, not a rolled plate),
+    so no brushing streak cuts across the motif.
+
+    The block used to have a second picture, the station's emblem, mixed in by position: half the
+    axle boxes round a dome came out with the emblem on them. A whole block has no state to tell
+    two pictures apart, and the emblem stands only where someone puts it on purpose: on iron that
+    is the props' brass roundel, hung where it is wanted (props/signs, which also keeps the framed
+    sixteen-pixel figure that was drawn here)."""
+    px = _plate(2, base=2, noise=0.0)
     _panel_frame(px)
     _rivets(px, _CORNERS)
-    if motif == "emblem":
-        # the station emblem as the director ruled it (g2 #294 item 3): a ring, the meridian through
-        # it and out of it at both ends, the star inside the ring on the upper right, as far right of
-        # the middle as above it, touching neither. It is the standard sixteen-pixel figure
-        # (props/signs emblem_cells) with the ring drawn twelve across instead of fourteen, so it
-        # stands inside the riveted frame: the meridian is the same column 7, here from frame to
-        # frame, and the star the same four pixels, a dot and not a cross (the reviewer's rule for
-        # small figures), a clear pixel off the ring and off the line.
-        ring = _cells(lambda dx, dy: 5.1 <= math.hypot(dx, dy) <= 5.9)
-        meridian = [(7, y) for y in range(1, TILE - 1)]
-        star = [(x, y) for y in (5, 6) for x in (9, 10)]
-        _relief(px, ring + meridian, bright=star)
-    else:
-        # a raised lozenge (one pixel thick, ten across) round a domed boss
-        edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
-        boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
-        lee = [(x, y) for x, y in boss if x + y >= TILE - 1]        # the half of the dome turned away
-        _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
+    edge = _cells(lambda dx, dy: abs(dx) + abs(dy) == 5.0)
+    boss = _cells(lambda dx, dy: abs(dx) + abs(dy) <= 2.0)
+    lee = [(x, y) for x, y in boss if x + y >= TILE - 1]            # the half of the dome turned away
+    _relief(px, edge + [cell for cell in boss if cell not in lee], shade=lee, bright=[(7, 7)])
     return px
 
 
@@ -401,7 +394,7 @@ def pack(pack_dir):
     out = []
     K.paint(pack_dir, "iron_plate", [_plain(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
-    K.paint(pack_dir, "iron_cast", [_cast(1, "emblem"), _cast(2, "lozenge")])
+    K.paint(pack_dir, "iron_cast", _cast())
     K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
     K.paint(pack_dir, "iron_hatch", _hatch())
     K.paint(pack_dir, "iron_door_bottom", _door_bottom())
