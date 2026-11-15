@@ -21,12 +21,26 @@ The lightest step of the ramp is kept back (A0): it comes in only if the picture
 dull. Each picture has three versions, and every version has the same number of pixels of each
 step, so a field of them has no lighter and no darker cells.
 
+How a layer is lit. The game lights the side of a layer as it lights the side of any block: 0.8 of
+the top to north and south, 0.6 to east and west, and darker again towards the foot, where the corner
+against the ground is darkened. A drift that rises a layer a block then shows a step two pixels high
+at every block, half as bright as the snow around it: a pile of blue slabs with dark joints, and at a
+distance, where a step is thinner than a pixel of the screen, a flicker. Snow in the shade has no
+such steps -- light from the whole sky, thrown back by the snow all round, leaves a drift one
+surface. So:
+
+    1 to 4 layers   the sheet: the sides are lit like the top and no corner is darkened. A drift is
+                    one surface; what shows of its depth is its outline and the rim the side picture
+                    paints along its foot. (The mountain lays 1 to 4 layers: site/terrain.)
+    5 to 7 layers   a body: the sides are lit like a north face on all four sides (0.8), so that a
+                    deep pile that stands free still shows which face is its top. No corner darkened.
+    8 layers, and   as the game lights a block.
+    the whole block
+
 What was tried and dropped, on flat sheets of ten by ten tiles (the card has it): anything larger
 than a mark. A soft drift to a tile reads as a grid of glyphs, thin wisps on one diagonal as rain,
 swells with hollows beside them as hammered metal.
 """
-import os
-
 import numpy as np
 
 from ..common import blocks as B
@@ -151,34 +165,39 @@ def faults(drawn):
     return wrong
 
 
-# TRIAL (not for delivery): how the sides of the layers are lit, picked by the environment so that one
-# commit draws every candidate.  "" as the game does; a: sides lit like the top, corners darkened;
-# b1: sides lit like the top, no darkening of corners; b3: sides lit like a north face, no darkening
-_TRY = os.environ.get("C164_SNOW_TRY", "")
-SIDE_SHADE = {"a": "up", "b1": "up", "b3": "north"}.get(_TRY)
-CORNERS = False if _TRY in ("b1", "b3") else None
 SIDES = ("north", "south", "east", "west")
+SHEET = 4           # layers up to which the snow is one sheet: its sides are lit like its top
+SIDE_LIT = {True: "up", False: "north"}     # how the sides are lit: of the sheet, of a deeper pile
+
+
+def _layers(ref):
+    """How many layers a model of the game shows ("minecraft:block/snow_height6" -> 3); 8 for the
+    whole block, which is what the game shows for eight layers."""
+    _, found, height = ref.rpartition("snow_height")
+    return int(height) // 2 if found else 8
 
 
 def _layer_sides(ref, model):
-    """The sides of the models of the layers show snow_side, whatever the game's model shows there,
-    and stand in a box of their own, so that they can be lit otherwise than the game lights a side."""
+    """The sides of the models of the layers show snow_side, whatever the game's model shows there.
+    Below eight layers they stand in a box of their own, which is lit as SIDE_LIT says, and no corner
+    of the model is darkened. The game's own second box (the underside, seen from within) is left
+    as it is."""
+    layers = _layers(ref)
     boxes = []
     for el in model["elements"] or []:
         sides = {name: face for name, face in el["faces"].items() if name in SIDES}
-        if not sides:
-            boxes.append(el)
-            continue
         for face in sides.values():
             face["texture"] = f"{K.NS}:block/snow_side"
+        if not sides or layers == 8:
+            boxes.append(el)
+            continue
         rest = {name: face for name, face in el["faces"].items() if name not in SIDES}
         if rest:
             boxes.append(dict(el, faces=rest))
-        side = dict(el, faces=sides)
-        if SIDE_SHADE:
-            side["shade_direction_override"] = SIDE_SHADE
-        boxes.append(side)
+        boxes.append(dict(el, faces=sides, shade_direction_override=SIDE_LIT[layers <= SHEET]))
     model["elements"] = boxes
+    if layers < 8:
+        model["ambientocclusion"] = False
     return model
 
 
@@ -189,5 +208,5 @@ def pack(pack_dir):
         raise AssertionError("snow breaks its own rules:\n  " + "\n  ".join(wrong))
     for name, versions in drawn.items():
         K.paint(pack_dir, name, [_picture(lv) for lv in versions])
-    return [K.redirect(pack_dir, B.SNOW, {"block/snow": "snow"}, ao=CORNERS),
-            K.redirect(pack_dir, B.SNOW_LAYER, {"block/snow": "snow"}, edit=_layer_sides, ao=CORNERS)]
+    return [K.redirect(pack_dir, B.SNOW, {"block/snow": "snow"}),
+            K.redirect(pack_dir, B.SNOW_LAYER, {"block/snow": "snow"}, edit=_layer_sides)]
