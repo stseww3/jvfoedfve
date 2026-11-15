@@ -37,9 +37,9 @@ Two versions stand side by side until the review picks one (card; A0 #30150):
               Saturn hang just under the plane, Venus and Mars ride just over it; the Earth and
               Jupiter each carry the hoop of their orbit. The works are open: two stepped cones
               of wheels between brass plates
-  b  tiered   the planets climb outward from the sun into a bowl; a cradle of three thin iron
-              stays holds an equator ring and a tilted ecliptic band round them (armillary); the
-              works are shut in a brass drum
+  b  tiered   the planets climb outward from the sun into a bowl; an equator ring and a tilted
+              ecliptic band hang round them (armillary) from the same spider, on three straps;
+              the works are shut in a brass drum
 
 WHY THE PLANETS STAND WHERE THEY STAND. They turn at six rates, so sooner or later every planet
 passes every other at every angle: what one sweeps as it goes round must stay clear of what the
@@ -74,6 +74,7 @@ from artkit import models as M
 
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from ..props import _kit as K
 
 PREFIX = "mach_orrery_"
@@ -112,7 +113,7 @@ PLANETS = ("mercury", "venus", "earth", "mars", "jupiter", "saturn")          # 
 # radius of the ball. Six worlds told apart by size and by stuff (cr2-M1, A0 #30150): steel grey,
 # porcelain white, verdigris with white caps and a moon, old copper, belted brass, cream in rings
 BALL = dict(mercury=0.11, venus=0.14, earth=0.18, mars=0.13, jupiter=0.27, saturn=0.18)
-SATURN_RING = (0.22, 0.29)               # inner and outer edge
+SATURN_RING = (0.21, 0.27)               # inner and outer edge
 MOON = 0.06                              # radius of the Earth's moon
 
 # --- the works --------------------------------------------------------------------------------------
@@ -143,7 +144,7 @@ ARM = {k: 0.625 + 3 * PX * i for i, k in enumerate(PLANETS)}         # the under
 # clears the ball outside it, and what the balls still overlap is made up in height
 ORBIT = {
     "a": dict(mercury=0.555, venus=0.7975, earth=1.04, mars=1.285, jupiter=1.53, saturn=2.13),
-    "b": dict(mercury=0.59, venus=0.845, earth=1.14, mars=1.385, jupiter=1.77, saturn=2.17),
+    "b": dict(mercury=0.59, venus=0.845, earth=1.14, mars=1.385, jupiter=1.77, saturn=2.14),
 }
 HANG, RIDE = -0.14, 0.14                 # version a: the top of a ball that hangs under the plane, the
 #                                          underside of one that rides over it
@@ -158,7 +159,7 @@ HOOPS = ("earth", "jupiter")             # version a: the planets that carry the
 HOOP = 2 * PX                            # the section of a hoop, 2 px square
 BAND = (2.245, 2.495)                    # version a: the zodiac band, inner and outer radius (the
 #                                          corners of its 72 sides come to ORRERY_R)
-STAYS = (60.0, 180.0, 300.0)             # the three hangers of a, the three ribs of b: never four
+STAYS = (60.0, 180.0, 300.0)             # the three hangers of either version: never four
 STAY_R = 2.37                            # version a: the hangers stand on the middle of the band
 SPIDER_Y = 1.875                         # version a: underside of the iron spider the band hangs from
 MOVE_Y0 = 2.0                            # underside of the works
@@ -645,8 +646,8 @@ def _planet(d, key, at, under):
     elif key == "venus":
         d.orb(at, r, [(-1.0, 1.0, 4, _flat("porcelain", 3))], under=under)
     elif key == "earth":
-        d.orb(at, r, [(-1.0, -0.7, 1, _flat("porcelain", 3)), (-0.7, 0.7, 4, _flat("verdigris", 2)),
-                      (0.7, 1.0, 1, _flat("porcelain", 3))], sides=10, under=under)
+        d.orb(at, r, [(-1.0, -0.84, 1, _flat("porcelain", 3)), (-0.84, 0.84, 4, _flat("verdigris", 2)),
+                      (0.84, 1.0, 1, _flat("porcelain", 3))], sides=10, under=under)
     elif key == "mars":
         d.orb(at, r, [(-1.0, 0.5, 3, _flat("old_copper", 2)), (0.5, 1.0, 1, _flat("porcelain", 3))], under=under)
     elif key == "jupiter":
@@ -740,6 +741,25 @@ def _arm(version, key):
     return [d, under]
 
 
+# --- what the fixed ring of either version hangs from ------------------------------------------------
+def _hangers(d, radius, flat=False):
+    """An iron spider under the works, over everything that turns, and three hangers down from the
+    ends of its arms to a ring at `radius` (three, never four). Round rods with a brass foot on the
+    ring; `flat` makes them straps, thin across and two texels wide along the ring, for a ring that
+    has a planet passing close inside it."""
+    d.tube("y", (0, 0), SPIDER_Y, MOVE_Y0, 0.30, IRON, sides=12)               # the spider's middle
+    for a in STAYS:
+        x, z = radius * math.cos(math.radians(a)), radius * math.sin(math.radians(a))
+        if flat:
+            d.spoke(a, 0.24, radius + STRAP / 2.0, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
+            d.spoke(a, radius - STRAP / 2.0, radius + STRAP / 2.0, 1.5 * PX, SPIDER_Y, 2 * PX, IRON, grain="y")
+            continue
+        d.spoke(a, 0.24, radius + 0.07, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
+        d.tube("y", (x, z), 1.5 * PX, MOVE_Y0 + PX, ROD, IRON, sides=6)
+        d.tube("y", (x, z), 1.5 * PX, 3.5 * PX, 0.10, BRASS_D, sides=8)        # the foot on the band
+        d.tube("y", (x, z), SPIDER_Y - PX, SPIDER_Y, 0.10, IRON_D, sides=8)
+
+
 # --- version a: planar, the works open ------------------------------------------------------------
 def _band_a():
     """The zodiac band: a channel of brass in the ring plane with a silvered scale between its two
@@ -752,13 +772,7 @@ def _band_a():
     d.ring("y", (0, 0, 0), r1 - PX / 2.0, PX, 3 * PX, BRASS, sides=72)
     grad_circle(d.m, "y", (0, 0, 0), (r0 + r1) / 2.0 * d.u, (r1 - r0 - 2 * PX) * d.u, 2 * PX * d.u, BRASS,
                 marks=36, signs=12, proud=0.75 * PX * d.u)
-    d.tube("y", (0, 0), SPIDER_Y, MOVE_Y0, 0.30, IRON, sides=12)               # the spider's middle
-    for a in STAYS:
-        x, z = STAY_R * math.cos(math.radians(a)), STAY_R * math.sin(math.radians(a))
-        d.spoke(a, 0.24, STAY_R + 0.07, SPIDER_Y, MOVE_Y0, 2.5 * PX, IRON)
-        d.tube("y", (x, z), 1.5 * PX, MOVE_Y0 + PX, ROD, IRON, sides=6)
-        d.tube("y", (x, z), 1.5 * PX, 3.5 * PX, 0.10, BRASS_D, sides=8)        # the foot on the band
-        d.tube("y", (x, z), SPIDER_Y - PX, SPIDER_Y, 0.10, IRON_D, sides=8)
+    _hangers(d, STAY_R)
     return d
 
 
@@ -815,21 +829,17 @@ def _lay_a():
 
 
 # --- version b: tiered, armillary, the works shut ----------------------------------------------------
-RIB_R = 2.40                             # the stays of the cradle meet the equator ring here
-
-
-def _rib(rho):
-    """The height of a stay of the cradle at radius rho, from the boss under the sun out to the ring."""
-    return -(SUN_R + 0.24) + (SUN_R + 0.14) * (rho / RIB_R) ** 2
+STRAP = 0.8 * PX                         # the hangers of version b are straps this thin
+STRAP_R = R - STRAP / 2.0 - 0.004        # and stand on the outer lip of the equator ring, inside ORRERY_R
 
 
 def _rings_b():
-    """The cradle and its two rings: a boss under the sun (on the stay rod, which goes on through
-    the globe), three thin iron stays that rise outward from it like the ribs of a shallow bowl
-    (dark and thin: from below they are not to be the first thing read, cr3 #63115), the level
-    equator ring they carry, its scale a row of short marks between two lips, and the broad
-    ecliptic band with its twelve signs, tilted twenty degrees and pinned to the equator at the two
-    nodes. Anchor: the centre, in the ring plane. Shown at scale 2."""
+    """The two rings of the armillary and what they hang from: the level equator ring, its scale
+    a row of short marks between two lips, the broad ecliptic band with its twelve signs, tilted
+    twenty degrees and pinned to the equator at the two nodes, and the spider and three straps of
+    _hangers(). Nothing stands under the sun or the planets: three stays from a boss under the sun,
+    brass or iron, read from below as a three-pointed star in a ring (cr3 #63115). Anchor: the
+    centre, in the ring plane. Shown at scale 2."""
     d = _Draw("b_rings", 2.0)
     e0, e1 = EQUATOR
     d.ring("y", (0, 0, 0), e0 + PX / 2.0, PX, 3 * PX, BRASS_L, sides=72)
@@ -846,20 +856,7 @@ def _rings_b():
             d.ring("y", (0, y, 0), ec["radius"], ec["thick"] + 0.5 * PX, PX / 2.0, BRASS_L, sides=72)
     for s in (-1.0, 1.0):                                                       # the pins at the nodes
         d.tube("x", (0.0, 0.0), *sorted((s * (ec["radius"] - 0.10), s * e1)), 0.09, BRASS_D, sides=8)
-    y0 = -SUN_R - 0.14                                                          # the foot of the sun's finial
-    d.tube("y", (0, 0), y0 - 0.14, y0, 0.15, BRASS_D, sides=10)                 # the boss
-    d.tube("y", (0, 0), y0 - 0.20, y0 - 0.14, 0.10, BRASS, sides=8)
-    d.tube("y", (0, 0), y0 - 0.26, y0 - 0.20, 0.0625, BRASS_L, sides=6)
-    n = 9
-    stay = IRON_D.variant(0, "along")                                           # one tone from end to end
-    d.m._n += 1
-    seed = d.m._n
-    for a in STAYS:
-        dx, dz = math.cos(math.radians(a)), math.sin(math.radians(a))
-        for i in range(n):
-            p0, p1 = 0.10 + (RIB_R - 0.10) * i / n, 0.10 + (RIB_R - 0.10) * (i + 1) / n
-            d.beam((p0 * dx, _rib(p0), p0 * dz), (p1 * dx, _rib(p1), p1 * dz), 2 * PX, 2 * PX, stay, seed=seed)
-        d.tube("y", (RIB_R * dx, RIB_R * dz), _rib(RIB_R) - 2 * PX, 1.5 * PX, 0.09, BRASS_D, sides=8)
+    _hangers(d, STRAP_R, flat=True)
     return d
 
 
@@ -945,10 +942,13 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
     """Hang one orrery in the star hall and return the number of display entities. version "a" is
     planar, "b" the armillary bowl; the test scene builds both side by side, the review picks one."""
     drawn = _drawn()
+    turns = {t["model"]: t["sense"] * t["period"] for t in moving(version)}
     n = 0
     for name, pos, yaw in placing(version):
         x, y, z = (pos[i] + origin[i] for i in range(3))
         canvas.add_entity(x, y, z, drawn[name].display(yaw))
+        if name in turns:
+            MK.spin(canvas, (0.0, 1.0, 0.0), turns[name])       # about the vertical, whatever the model's frame
         n += 1
     cell = (int(CX + origin[0]), int(RING_Y + origin[1]), int(CZ + origin[2]))
     K.offer_lights(canvas, [(cell, SUN_LIGHT)], f"machines/orrery:{version}")
