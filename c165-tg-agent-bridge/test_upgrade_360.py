@@ -321,11 +321,34 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     put_trace("c1", a1, "thinking", 360, 5)
     bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 60, a1))
     assert not stuck("c1")
-    # B2: genuinely stuck.
+    # B2: genuinely stuck >= 5m AND has task_agent_id -> Step 1 MUST send TASK_RESUME first (NOT kill immediately!).
     bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 400, a1))
     assert stuck("c1")
     await bridge.watchdog_tick()
-    assert bridge.agent_row(a1)["status"] == "stopped", "5-minute thinking-stuck agent was NOT auto-restarted!"
+    assert bridge.agent_row(a1)["status"] == "active", "Watchdog killed agent immediately instead of probing via TASK_RESUME first!"
+    w_res_op = bridge.store.one(
+        "SELECT * FROM dispatch_ops WHERE conv_id='c1' AND op_type='resume_subagent' AND requester='watchdog_auto_resume' ORDER BY created_ts DESC LIMIT 1"
+    )
+    assert w_res_op is not None, "Watchdog did not enqueue TASK_RESUME probe!"
+    w_res_payload = json.loads(w_res_op["payload_json"])
+    assert "挂起等待" not in w_res_payload["prompt"] and "立刻回到" not in w_res_payload["prompt"]
+    m2_inbox_res = text_of(await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0}))
+    assert 'source="watchdog_auto_resume"' in m2_inbox_res
+
+    # B2a: Launcher reports "Subagent is running in the background" -> agent stays ALIVE during grace window!
+    await bridge.call_tool(
+        "submit_op_result",
+        {"agent": m2, "op_id": w_res_op["op_id"], "status": "ok", "output": "Subagent is running in the background."},
+    )
+    assert bridge.agent_row(a1)["status"] == "active", "Running subagent was killed after healthy TASK_RESUME!"
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(a1)["status"] == "active", "Running subagent was killed inside post-resume grace window!"
+
+    # B2b: Still zero new progress after full post-resume grace window -> Step 2 escalates to auto-restart!
+    bridge._watchdog_resume_probes[a1]["sent_ts"] = bridge.now() - 400
+    bridge._watchdog_resume_probes[a1]["ack_ts"] = bridge.now() - 350
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(a1)["status"] == "stopped", "Unresponsive agent was NOT restarted after post-resume grace window!"
 
     # Case C: the replacement agent must not inherit the stopped agent's trace (the 2026-11-15 false-stop storm:
     # 43 freshly joined agents were stopped as "thinking-stuck for 20-40 hours" at the first watchdog tick after join).

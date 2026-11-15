@@ -1276,13 +1276,25 @@ PHASE_LABELS = {
 }
 
 
+def thinking_progress_ts(conv, trow) -> float:
+    if trow is None:
+        return 0.0
+    agent_floor = 0.0
+    if conv is not None:
+        ag = active_agent(conv)
+        if ag is not None:
+            agent_floor = max(float(ag["created"] or 0), float(ag["last_seen"] or 0))
+    updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
+    thought_ts = float(trow["thought_ts"] or 0)
+    return max(thought_ts, updated, float(trow["started_ts"] or 0), agent_floor)
+
+
 def check_thinking_stuck(conv, trow) -> tuple[bool, float]:
     """精准判定「思考阶段卡死超过 5 分钟（THINK_STUCK_SEC）」：
     1) 严格区分 thinking 与 shell：若处于 shell（跑编译/渲染/脚本/长等待）或 idle_wait/stopped，绝不判为思考卡死！
     2) 要求 VM 探针守护进程处于活跃上报状态（hb_ts 近 120s 内有心跳），防止探针离线时误杀正常工作的会话。"""
     if trow is None or trow["phase"] != "thinking":
         return False, 0.0
-    agent_floor = 0.0
     if conv is not None:
         ag = active_agent(conv)
         if ag is None or waiting.get(ag["id"]):
@@ -1293,15 +1305,11 @@ def check_thinking_stuck(conv, trow) -> tuple[bool, float]:
         # 只认当前这个 agent 自己上报的记录：上一个 agent 留下的旧记录（或别的会话写进来的）不能拿来判它卡死
         if (trow["agent_id"] or "") != ag["id"]:
             return False, 0.0
-        # 新 agent 从接入那一刻起算，最近一次调桥的工具也算有进展
-        agent_floor = max(float(ag["created"] or 0), float(ag["last_seen"] or 0))
     hb_ts = float(trow["hb_ts"] or 0) if "hb_ts" in trow.keys() else 0.0
-    updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
-    thought_ts = float(trow["thought_ts"] or 0)
     # 探针没有心跳（从没上报过，或已超过 150s 没上报）说明探针未运行或网络断，不做僵尸/思考卡死误判
     if hb_ts <= 0 or (now() - hb_ts) > 150:
         return False, 0.0
-    last_think_progress = max(thought_ts, updated, float(trow["started_ts"] or 0), agent_floor)
+    last_think_progress = thinking_progress_ts(conv, trow)
     if last_think_progress <= 0:
         return False, 0.0
     stuck_sec = now() - last_think_progress
@@ -2411,11 +2419,29 @@ def task_machine_inline_hint(isolated_vm: bool = True) -> str:
     return f", machine={{\"environment_id\": \"{env_id}\"}}"
 
 
-def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True) -> str:
+def default_resume_prompt(conv) -> str:
+    pend = store.one(
+        "SELECT COUNT(*) AS n FROM messages WHERE target=? AND id>? AND outgoing=0 AND wake=1",
+        (conv["id"], conv["read_cursor"]),
+    )
+    n_pend = int(pend["n"] or 0) if pend else 0
+    if n_pend > 0:
+        return (
+            f"聊天 {conv['id']} 当前有 {n_pend} 条待处理的新消息。"
+            "若你正在执行步骤请先完成当前动作，随后调用 read_chat(wait_sec=0) 查看并回复（若与管理员直接指令冲突以管理员为准）。"
+        )
+    return (
+        f"请继续推进 {conv['id']} 当前手头的任务步骤；"
+        "若当前事项已处理完，请调用 read_chat 检查收件箱状态（若与管理员直接指令冲突以管理员为准）。"
+    )
+
+
+def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True, requester: str = "ctrl") -> str:
     m_line = f"- model: \"{model}\"（请在 Task 的 model 参数填入匹配的该模型 ID，保持一致）" if model else "- model: （不填，默认继承当前会话模型）"
     mach_line = task_machine_param_line(isolated_vm=isolated_vm)
+    src_attr = f" source=\"{requester}\"" if requester else ""
     return (
-        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"]\n"
+        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"{src_attr}]\n"
         "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（若与管理员在聊天里的直接指令冲突，以管理员指令为准，可先暂缓并询问管理员）：\n"
         "- run_in_background: true\n"
         f"{mach_line}"
@@ -2428,10 +2454,11 @@ def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, 
     )
 
 
-def format_standard_resume_op(op_id: str, launcher_agent_id: str, conv_id: str, task_agent_id: str, resume_prompt: str) -> str:
+def format_standard_resume_op(op_id: str, launcher_agent_id: str, conv_id: str, task_agent_id: str, resume_prompt: str, requester: str = "ctrl") -> str:
+    src_attr = f" source=\"{requester}\"" if requester else ""
     return (
-        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_RESUME\" chat=\"{conv_id}\"]\n"
-        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（无需自行判断死活或重开，只需原样回传工具返回结果）：\n"
+        f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_RESUME\" chat=\"{conv_id}\"{src_attr}]\n"
+        "请直接按以下给定参数原样调用 Cursor 的 `Task` 工具（无需自行判断死活或重开，只需原样回传工具返回结果；若与管理员直接指令冲突以管理员为准）：\n"
         f"- resume: \"{task_agent_id}\"\n"
         "- run_in_background: true\n"
         f"- prompt: {json.dumps(resume_prompt, ensure_ascii=False)}\n"
@@ -2499,7 +2526,7 @@ def enqueue_launch_op(conv, launcher_node, requester: str = "ctrl", model_overri
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, node_id, "launch_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model, isolated_vm=bool(env_id))
+    msg_txt = format_standard_launch_op(op_id, launcher_node["agent"], conv["id"], prompt_body, eff_model, isolated_vm=bool(env_id), requester=requester)
     system_note(node_id, msg_txt, wake=1)
     mark_menu_dirty()
     return op_id, node_id
@@ -2510,14 +2537,14 @@ def enqueue_resume_op(conv, launcher_node, requester: str = "ctrl", resume_promp
     tid = (conv["task_agent_id"] or "").strip()
     if not tid:
         raise ToolFail(f"{conv['id']} 尚未记录 task_agent_id，无法执行 resume，请直接用 action='restart' 重新拉起。")
-    r_prompt = (resume_prompt or "").strip() or "请立刻回到 MCP 调用 read_chat 继续挂起等待并处理未读消息。"
+    r_prompt = (resume_prompt or "").strip() or default_resume_prompt(conv)
     op_id = "op_" + secrets.token_hex(5)
     payload = {"conv_id": conv["id"], "task_agent_id": tid, "prompt": r_prompt}
     store.run(
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, node_id, "resume_subagent", conv["id"], requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_resume_op(op_id, launcher_node["agent"], conv["id"], tid, r_prompt)
+    msg_txt = format_standard_resume_op(op_id, launcher_node["agent"], conv["id"], tid, r_prompt, requester=requester)
     system_note(node_id, msg_txt, wake=1)
     return op_id
 
@@ -5332,6 +5359,34 @@ async def t_dispatch_task_op(agent, args):
     raise ToolFail(f"不支持的 dispatch_task_op 动作：{action!r}")
 
 
+_watchdog_resume_probes: dict[str, dict[str, Any]] = {}
+
+_RESUME_DEAD_MARKERS = (
+    "not found",
+    "does not exist",
+    "no subagent",
+    "subagent aborted",
+    "aborted",
+    "terminated",
+    "invalid",
+    "failed to resume",
+    "cannot resume",
+    "expired",
+    "subagent failed",
+)
+
+
+def is_resume_dead_output(status: str, output: str) -> bool:
+    if (status or "").lower() != "ok":
+        return True
+    low = (output or "").strip().lower()
+    if not low:
+        return False
+    if "currently running" in low or "running in the background" in low or "already running" in low:
+        return False
+    return any(m in low for m in _RESUME_DEAD_MARKERS)
+
+
 async def t_submit_op_result(agent, args):
     op_id = str(args.get("op_id") or "").strip()
     status = str(args.get("status") or "ok").strip().lower()
@@ -5374,12 +5429,34 @@ async def t_submit_op_result(agent, args):
         return text_result(f"已登记启动回执 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
 
     if op_type == "resume_subagent":
+        if requester == "watchdog_auto_resume":
+            conv_cur = conv_row(conv_id) if conv_id else None
+            ag_cur = active_agent(conv_cur) if conv_cur is not None else None
+            if is_resume_dead_output(status, output):
+                if ag_cur is not None:
+                    _watchdog_resume_probes.pop(ag_cur["id"], None)
+                if conv_cur is not None and ag_cur is not None and not is_unowned(conv_cur):
+                    auto_restart_stuck_conv(
+                        conv_cur,
+                        THINK_STUCK_SEC,
+                        reason=f"思考超时先发 resume 探活确认原会话已失效（{output[:80] or status}），自动重开",
+                    )
+            else:
+                if ag_cur is not None and ag_cur["id"] in _watchdog_resume_probes:
+                    _watchdog_resume_probes[ag_cur["id"]]["ack_ts"] = now()
+                system_note(
+                    route_control_target(),
+                    f"✅ `[OP_RESULT]` 看门狗对 {conv_id} 的自动 `Task(resume)` 探活正常在线（op_id={op_id}）：{output[:160] or 'ok'}，保持原会话继续运行。",
+                    wake=0,
+                )
+            return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
+
         target_ctrl = requester if requester in ("ctrl", "main") else route_control_target()
         system_note(
             target_ctrl,
             f"📡 `[OP_RESULT]` 主 Agent {agent['conv']} 已完成对 {conv_id} 的 `Task(resume)` 探活（op_id={op_id}，status={status}）：\n"
             f"原始返回：{output or '(空)'}\n"
-            f"请据此判定：若返回 `currently running` 且非思考卡死则保持不动；若为 `timeout`/`aborted`/已死则调用 `dispatch_task_op(chat=\"{conv_id}\", action=\"restart\")` 重拉。",
+            f"请据此判定：若返回 `currently running` / `running in the background` 则保持不动；若为 `timeout`/`aborted`/已死则调用 `dispatch_task_op(chat=\"{conv_id}\", action=\"restart\")` 重拉。",
             wake=1,
         )
         return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
@@ -8779,30 +8856,81 @@ async def notify_away(batch: list) -> None:
         await notify_admins("\n".join(lines), markup)
 
 
-def auto_restart_stuck_conv(conv, stuck_sec: float) -> str:
-    """当检测到处于 thinking 阶段（非 shell、非挂起等待）卡死超过 5 分钟时，自动保持原模型与完整上下文原地重开！"""
-    lock_in_conv_model(conv)
-    old_ag = active_agent(conv)
-    if old_ag is not None:
-        stop_identity(old_ag["id"], f"思考阶段卡死 {human_dur(stuck_sec)}（超 5 分钟）自动重开")
-    store.run("UPDATE convs SET task_agent_id='', auto_restarted_ts=? WHERE id=?", (now(), conv["id"]))
+def _find_conv_launcher(conv):
     cnum = cloud_of(conv)
     launcher = store.one("SELECT * FROM exec_nodes WHERE kind='launcher' AND cloud_num=? AND status='online'", (cnum,))
     if launcher is None or not node_is_online(launcher):
         launcher = select_best_launcher(for_conv=conv["id"])
+    return launcher
+
+
+def auto_restart_stuck_conv(conv, stuck_sec: float, reason: str = "") -> str:
+    """确认原会话无法通过 resume 恢复（或无 task_agent_id）时，保持原模型与完整上下文自动重开。"""
+    lock_in_conv_model(conv)
+    old_ag = active_agent(conv)
+    stop_note = reason or f"思考阶段卡死 {human_dur(stuck_sec)}（超 5 分钟）自动重开"
+    if old_ag is not None:
+        _watchdog_resume_probes.pop(old_ag["id"], None)
+        stop_identity(old_ag["id"], stop_note)
+    store.run("UPDATE convs SET task_agent_id='', auto_restarted_ts=? WHERE id=?", (now(), conv["id"]))
+    launcher = _find_conv_launcher(conv)
     if launcher is not None and is_main_node_id(launcher["id"]):
         op_id, nid = enqueue_launch_op(conv, launcher, requester="watchdog_auto_restart")
         system_note(
             route_control_target(),
-            f"🔄 【5分钟思考卡死自动重开】{conv_tag(conv)} 在 `thinking` 阶段停滞 {human_dur(stuck_sec)} 无新思考产出（已排除 shell 命令），"
-            f"已自动保留原模型与上下文向 {nid} 下发标准化 `[TASK_LAUNCH]` 重开单（op_id={op_id}）！",
+            f"🔄 【看门狗自动重开】{conv_tag(conv)}：{stop_note}，"
+            f"已保留原模型与上下文向 {nid} 下发标准化 `[TASK_LAUNCH]` 重开单（op_id={op_id}）。",
             wake=0,
         )
         return nid
     issue_task(conv["id"])
     conv_fresh = conv_row(conv["id"])
-    system_note(route_control_target(), task_note(conv_fresh, f"思考卡死 {human_dur(stuck_sec)} 自动重开"), wake=1)
+    system_note(route_control_target(), task_note(conv_fresh, stop_note), wake=1)
     return "main"
+
+
+def handle_thinking_stuck_conv(conv, trow, stuck_sec: float) -> str:
+    """思考超时常规两步处理：
+    1) 若有 task_agent_id 且本轮停滞尚未发过 resume，先发 [TASK_RESUME] 温和探活（若正在写大文件/正常思考则不会误杀）；
+    2) 仅当无 task_agent_id，或先发 resume 后再过一轮 THINK_STUCK_SEC 仍无任何新进展时，才重开。"""
+    ag = active_agent(conv)
+    if ag is None:
+        return ""
+    prog_ts = thinking_progress_ts(conv, trow)
+    probe = _watchdog_resume_probes.get(ag["id"])
+    if probe is not None and prog_ts > float(probe.get("progress_ts") or 0) + 1.0:
+        _watchdog_resume_probes.pop(ag["id"], None)
+        probe = None
+
+    tid = (conv["task_agent_id"] or "").strip()
+    launcher = _find_conv_launcher(conv)
+    if tid and launcher is not None and is_main_node_id(launcher["id"]):
+        if probe is None:
+            op_id = enqueue_resume_op(conv, launcher, requester="watchdog_auto_resume")
+            _watchdog_resume_probes[ag["id"]] = {
+                "op_id": op_id,
+                "sent_ts": now(),
+                "ack_ts": 0.0,
+                "progress_ts": prog_ts,
+            }
+            system_note(
+                route_control_target(),
+                f"📡 【思考超时先 resume 探活】{conv_tag(conv)} 在 `thinking` 阶段已持续 {human_dur(stuck_sec)} 无新事件，"
+                f"已先向 {launcher['id']} 下发 `[TASK_RESUME]` 探活续跑单（op_id={op_id}），暂不重开。",
+                wake=0,
+            )
+            return "resumed"
+        ref_ts = max(float(probe.get("sent_ts") or 0), float(probe.get("ack_ts") or 0))
+        if (now() - ref_ts) < THINK_STUCK_SEC:
+            return "waiting_resume"
+        _watchdog_resume_probes.pop(ag["id"], None)
+        return auto_restart_stuck_conv(
+            conv,
+            stuck_sec,
+            reason=f"思考阶段停滞 {human_dur(stuck_sec)}（已先发 resume 探活仍无响应）自动重开",
+        )
+
+    return auto_restart_stuck_conv(conv, stuck_sec)
 
 
 async def watchdog_tick() -> None:
@@ -8822,8 +8950,10 @@ async def watchdog_tick() -> None:
             # 追踪记录是上一个 agent 留下的，不代表现在这个 agent 的状态
             trow_w = None
         think_stuck, stuck_sec = check_thinking_stuck(conv, trow_w)
+        if not think_stuck and info["agent"] is not None:
+            _watchdog_resume_probes.pop(info["agent"]["id"], None)
         if think_stuck and not is_unowned(conv) and (now() - float(conv["auto_restarted_ts"] or 0)) >= THINK_STUCK_SEC:
-            auto_restart_stuck_conv(conv, stuck_sec)
+            handle_thinking_stuck_conv(conv, trow_w, stuck_sec)
             continue
         if away(conv) and state != "unclaimed":
             # 旧 cloud 或无主池里的聊天不再反复弹任何失联/没等消息提醒打扰管理员
@@ -8843,16 +8973,16 @@ async def watchdog_tick() -> None:
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
                     f"判活结论：该子 agent 最后思考/动作停留在 {human_dur(now() - last_act)} 前，疑似已停止响应。\n"
-                    f"请调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 `restart_agent(chat=\"{conv['id']}\")` 拿新任务码后台重新拉起（进度已在库和 Git 中保留）。"
+                    f"请先调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")` 探活{tid_hint}；确认已失效后再调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 重新拉起（进度已在库和 Git 中保留）。"
                 )
             else:
                 key = state
                 text = (
                     f"{conv_tag(conv)} {describe(info)}。{trace_info}\n"
                     f"请按 [主控] 三句处理：\n"
-                    f"1) 先判活/续跑：调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")` 或 Task(resume=旧agent_id, prompt=\"请回到 read_chat 继续等待并处理未读消息\", run_in_background=true){tid_hint}；\n"
-                    f"2) 若 resume 回「currently running」且动作/终端输出仍在刷新（或处于 shell 正常跑命令） = 活着别动；若处于 thinking 停滞超过 5 分钟 = 按停滞处理；\n"
-                    f"3) 若已停止（timeout/aborted/思考停滞），调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 restart_agent(chat=\"{conv['id']}\") 重新拉起。"
+                    f"1) 先判活/续跑：调用 `dispatch_task_op(chat=\"{conv['id']}\", action=\"resume\")`{tid_hint}；\n"
+                    f"2) 若 resume 回「currently running」/「running in the background」且动作仍在推进 = 活着别动；\n"
+                    f"3) 若确认已终止（aborted/not found/探活后仍无响应），调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\")` 或 restart_agent(chat=\"{conv['id']}\") 重新拉起。"
                 )
         elif state == "unclaimed":
             if is_unowned(conv):
