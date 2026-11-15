@@ -155,15 +155,26 @@ def _is_leaf(x, z):
     return z == LEAF_Z and SLIT_X[0] <= x <= SLIT_X[1]
 
 
+def _ring(x, z):
+    """The ring of the raster circle a column lies in: its distance from the axis column, rounded.
+    The great dome counts its rings the same way (main/_dome.py); ring 4 is this dome's edge."""
+    return int(math.hypot(x - CX, z - CZ) + 0.5)
+
+
+def course(ring):
+    """The top face of the plates of a ring, in half blocks: a half-ellipse FOOT wide at the
+    skirt's foot and RISE high, taken where the ring's middle is and rounded to the nearer half."""
+    top = SKIRT_Y + RISE * math.sqrt(max(0.0, 1.0 - (ring / FOOT) ** 2))
+    return max(math.floor(2.0 * top + 0.5) / 2.0, SKIRT_Y + 1.5)
+
+
 def _skin():
-    """{column: top face} of the dome in half blocks: a half-ellipse FOOT wide at the skirt's foot
-    and RISE high, rounded to the nearer half. The shutter leaf lies in this face too."""
-    out = {}
-    for x, z in DOME:
-        d = math.hypot(x - CX, z - CZ)
-        top = round(2 * (SKIRT_Y + RISE * math.sqrt(1.0 - (d / FOOT) ** 2))) / 2.0
-        out[(x, z)] = max(top, SKIRT_Y + 1.5)
-    return out
+    """{column: top face} of the dome. The plates lie in courses, one to a ring and level all the
+    way round, the way the great dome's do, so the two read as one make: every course ends in one
+    clean line and the dome's foot is a level one. (Taken column by column from its own distance,
+    as it was until the two domes were looked at side by side, the edge ring had four different
+    heights: a bundle of pipes from the roofs.) The shutter leaf lies in this face too."""
+    return {(x, z): course(_ring(x, z)) for x, z in DOME}
 
 
 def _foot(skin, col):
