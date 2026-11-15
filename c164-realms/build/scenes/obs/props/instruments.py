@@ -121,7 +121,7 @@ class _Ribs(pixelart.Mat):
 
 SKY = P.mat("enamel", kind="flat", bevel=0, base=1)          # the ground of the celestial globe
 SEA = P.mat("verdigris", kind="flat", bevel=0, base=1)       # and of the table globe
-GLASS = P.mat("night_glass", kind="flat", bevel=0, base=2)   # a glass ball that is not lit from inside
+GLASS = P.mat("night_glass", kind="flat", bevel=0, base=3)   # a glass ball that is not lit from inside
 SLATS = _Slats("cream_slats", P.RAMPS["cream"], kind="flat", bevel=0, base=3)
 DRUM = _Ribs("iron_slots", P.RAMPS["iron"], kind="flat", bevel=0, base=3)
 
@@ -394,14 +394,15 @@ LANDS = (
 
 
 def _lands(lean):
-    """paint() for _ball: the map of the table globe, the lands two steps lighter than the seas."""
+    """paint() for _ball: the map of the table globe, the lands three steps lighter than the seas (two
+    are lost in the shade of the ball's own sides)."""
     def paint(points, clear):
         land = np.zeros(len(points), dtype=bool)
         for lon, lat, radius in LANDS:
             a, d = math.radians(lon), math.radians(lat)
             at = np.array(M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a))))
             land |= points @ at > math.cos(math.radians(radius))
-        return [2 if on else None for on in land]
+        return [3 if on else None for on in land]
     return paint
 
 
@@ -764,7 +765,7 @@ def _sunshine_recorder():
     # rests, the light it gathers low down, dark where one looks through it, and the sky on its
     # crown; the game lights the crown and shades the foot besides. Its glint is one white pixel up
     # and to the left of the front
-    _ball(m, "glass", (0.0, cy, 0.0), r + 0.15, GLASS, 10, 5, _glass((-1, 2, -1, 0, 1), (-0.5, 0.62, 0.6)))
+    _ball(m, "glass", (0.0, cy, 0.0), r + 0.15, GLASS, 10, 5, _glass((-1, 1, -1, 0, 0), (-0.5, 0.62, 0.6)))
     return m
 
 
