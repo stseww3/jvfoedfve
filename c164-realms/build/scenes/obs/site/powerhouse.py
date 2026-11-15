@@ -229,6 +229,8 @@ class _Pen:
 
 # --- the walls ----------------------------------------------------------------------------------------
 def _pier(p, x0, z0, x1, z1):
+    # The plinth of a pier is a whole block. The lower platform's railing counts on it: it ends
+    # against the two south corners, at (X0, FEET, Z1) and (X1, FEET, Z1) (site/lowerplatform).
     p.put(x0, PLINTH_Y, z0, COURSE)
     for y in range(TABLE_Y, EAVES):
         p.put(x0, y, z0, BODY)
