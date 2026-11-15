@@ -32,6 +32,10 @@
 7. `sky/comet`（c230，7b7e168；comet（c268）报了新提交就合新的，分支头 b3950eb4）。
 
 - 11-15 19:50 只用 git 试过（`git merge-tree`，不跑 Python）：这六条交付照上面的顺序一条条叠到 S2 的分支上，文字上没有一处冲突；每条改的文件都在自己那张卡的范围里（shell 带着 facade 的 9ad51d24，所以排在它后面）；提交说明的前缀都对。生成出来对不对要等能跑。
+- 11-16 00:20 S2 在自己的机器上把几条“等【交付】”的分支提前跑了一遍（只跑 check.py，不改别人的代码），结果照实记：
+  - 能生成、**只等做包的人发【交付】**：`props/ironwork`（6f9eed36，check PASS 0 失 0 黄）、`materials/ashlar` 打磨（f57e5576，PASS 0 失 0 黄）、`main/dome` 第二稿（ecda0e1e，PASS 0 失 2 黄）、`main/smalldome`（98d469e8，PASS 0 失 1 黄）、`motion/loop`（9ad40087 的 `_kit_test` 9 项全过、`check.py --scene obs_mot_loop` PASS 0 失 0 黄、`obs_mot_load` 也在）、`site/powerhouse` 甲乙（5ae1738e，各 1 黄）、`site/outbuildings`（6d320dd0，2 黄）、`sky/cloudsea`（a18c8d13，0 黄）、`machines/orrery`（f3a7e462，0 黄）、`machines/clocks`（abfd8079，0 黄）、`machines/radiomast`（ffcb474c，0 黄）、`machines/armillary`（724d26be，2 黄）、`machines/domegear`（c7045d80，0 黄）。
+  - **那条分支上的旧骨架导致误判，不是代码坏**：`machines/cablecar-winch`（5a6186cc）现在 `check.py --scene obs_mach_cablecar_winch` 在 sight 上 FAIL，报“车站的棚占画面 20.4%”——它分支上的 `skeleton.py` 还没有 `V1_CLEAR`（车站让出 61° 那一版），量的是 A0 #442 以前的老规矩。合了总装就按新的量，c240 恢复后先 merge 总装再跑。
+  - **生成不出来，已发【问题】点名**：`materials/snow`（51f2fd69，`snow_block` 不在占用表里——分支没合 2d48f8ee 的公共文件，c264 先 merge 总装）；`materials/iron` 二次交付（dac8a20f，`_upright` 在 26.3 的 oxidized_copper_trapdoor 模型上找不到原来那个倒贴的面，c277 定位）。这两条都不挡总装。
 - 等【交付】再合：`sky/tones`（c177）、`materials/ashlar` 新台徽和细琢面的长短石（c204）、`materials/panels` 打磨轮（c194）、`materials/board`（c176）、`props/ironwork` 打磨轮（c218）、`props/lamps` 场地灯链（c220）、`sky/lights` 窗后光源挪到玻璃外侧（c220，总监同意现在并）、`materials/iron` 二次交付（c198）、`materials/snow`（c194）、`site/stair`（c225）、`site/terrain` 三稿（c221：交付前别拿它试合）、`site/cablecar`（c226）。
 - `motion/loop` 交付的时候 S2 一起改三处（c177 #502 第三段，细化稿 `plan/parts/motion.md` 第 5 节）：`build/place.py` 导出以后调 `_kit.write()`、摆完跑它返回的命令；`tools/check.py` 的 regen 里同样调一次，加 `motion` 一项；INTERFACE 第 2 节那一条（已经先改了，在 S2 分支上）。
 - 不合：`machines/scope` 的旧草稿（生成不出来，c237 在重写）。
@@ -77,7 +81,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | look | P1 | 已合并 | c270（原 c177） | ec29851a | — | 一个生物群系 obs_blue 加一条时间线，三版用时间选（A 14000／B 18000／C 12900）；`sky/mood.py`、场景 `obs_sky_look`（31 机位）。真机图由 c189 出、c178 交叉看 |
 | lights | P1 | 已出图 | c267（原 c220） | 8972aa8（总装 22f6e4fb） | `renders/obs_sky_lights/`（25 张，离线图，0809d575；交付提交上 `--verify` 25/25 对，合进总装后 20 张变样是壳和立面进来改了画面） | 分支 `cursor/c164-lights-007c`，场景 `obs_sky_lights`。交付 #343：`sky/_lightkit.py`、`lights.py`；三版的亮窗表（东立面主层 blue 20200201310202002、glow 20000201310002002、deep 20000001310002002，基座只亮塔脚一扇）；橙色只留给入口（A0 #255）；窗后大窗 10、入口正中 12、帘子后 8 和 7，洗墙 8，门洞 14。`DRESS` 默认关：总场景里只有入口灯和各线报来的光源。自报 check.py 过、delivery.py 一条黄（没有图）。预审 c219 P3、c235 cr2-K1。星厅回廊层金窗后的两盏 12 和日球同级，出图时量（A0 #414 第 6 条；c235 #32761 有一个不动外立面的改法）。另有分支 `cursor/c164-lights-wash-0fe3` @ 11df5231，没交付，没跑过（fe2d3afc 以后又加了一条：用玻璃板的窗，光源留在玻璃后面，不往外挪；候车室山墙那样的窗在窗表里标 inside，免得光漏到 V1 看得到的那一面）：洗墙灯，和“亮窗的光源挪到玻璃外侧、降两级”（A0 #442 第四条同意现在并，条件是 `L.levels` 前后逐格相同）；炉火窗的三块玻璃在光工具里按名字单独认、算最暗的亮档（#560：占用表里没有这个名字时什么都不变，所以和 S2、c205 的先后没关系；发电房两跨窗洞中列那一格还是 5 级）；星厅搬进去以后，原来放在拱后面的三格（12、10、10）不再放，读 `facade.furnished()`，门洞那格 14 还在 (16, 1, 0)（#559）。c220 手算报了（#521）：“逐格相同”只对单扇窗成立，原来屋里的光还从同一间屋的别的窗漏出去；外面没有一格变亮，变暗的有两处。入口三联他补回去：金窗的每个光源在左右橙窗的窗洞里各借一格，(17, 9, ±3)、(17, 12, ±3) 四格 7 级，开关 `_lightkit.LENDS`，留不留出图以后总监定；两翼乳白窗旁边的暗窗不补（暗窗后面是暗的屋子）。恢复后他在真立面上用 `L.levels` 把玻璃面以外的格子前后对一遍，除了暗窗的窗洞还有别的不同就不并。星厅搬进去以后三个拱里会暗（#525），总监定甲（#526）：母钟前那一格 (7, 3, 0) 抬到 11、rank 2，钟面到 (0, 11)，不加灯具；两侧拱穿过去看到的第一排面到 7 以上，灯归 c243（灯位 #531）；图出来看 `v02_axis` 里三个拱读不读成黑洞、V7 里日球明显亮过钟面，钟面抢了就退回 (0, 9)。11-15 晚上 c220 认下的数（#461，手算）：浑天仪脚下 (35, 3, 0) 一格 8 级，读 `armillary.LAMP_CELLS`、`LIGHT_CELL`；台徽素板脚下 (19, 14, 0) 8 级；屋脊格栅底下 6 只 6 级，V1、V2、V11 里看不到要在恢复后用 sight 证（A0 #457）；两个采光窗这一轮不亮；大圆顶室小红灯 4 级 |
-| comet | P2 | 已交付 | c268（原 c230） | 7b7e168 | 图待补（三个场景 46 个机位） | 分支 `cursor/c164-comet-986f`，3 版比选（甲 柔光长尾，默认／乙 硬像素／丙 宽扇尾），场景 `obs_sky_comet`、`obs_sky_comet_b`、`obs_sky_comet_c`。交付 #386：`sky/comet.py` 写八张月相图和涂黑的太阳，只做天空贴图这一种做法（理由在卡里）；自报 check.py 三个场景过、delivery.py 一条黄（没有图）。分支头 219e7556 比交付的多出白模里桅杆占位挪一格、卡片，和三个给别人读的函数 `comet.directions(n)`、`comet.light(style, look)`、`comet.reach(style, look)`（#441），都没跑过；c230 恢复后补跑再报，没再报就合 7b7e168。分支头现在是 b3950eb4（#496，没跑过）：更正以前报的“V2 里穹顶尖 33.9°、彗头高出 7.1°”——从 V2 看到的顶线是穹顶近侧的肩，在 36.1° 上下，彗头只高出 4.9°（画面里隔 6% 画高），`moon_angle` 不改；测试场景的 slit 机位换成 c178 的 v8（(11.8, 19.62, 2.2) 朝正西抬 25°）；白模的大穹顶照 c222 的数重搭。彗星永远在正西，彗头仰角 41.05°；c230 手算（#441）它的光从正西偏南 2° 到偏北 9.5°、仰角 39.5° 到 55.2°，都在车站让出的两块视野里（A0 #442），恢复后 `sight` 照 `comet.seen()` 再核。预审 c235 cr2-K3 和续（#399：乙像火苗，是形状的毛病，c230 改成平顶截面）。三版选哪个靠真机图（【实机】#387 点了 c189） |
+| comet | P2 | 已出图 | c268（原 c230） | f8b2f132（总装 91d58314） | `renders/obs_sky_comet/`、`_b/`、`_c/`（16+15+15 张，离线图；`--verify` 46/46 对） | 分支 `cursor/c164-comet-986f`，3 版比选（甲 柔光长尾，默认／乙 硬像素／丙 宽扇尾），场景 `obs_sky_comet`、`obs_sky_comet_b`、`obs_sky_comet_c`。交付 #386：`sky/comet.py` 写八张月相图和涂黑的太阳，只做天空贴图这一种做法（理由在卡里）；自报 check.py 三个场景过、delivery.py 一条黄（没有图）。分支头 219e7556 比交付的多出白模里桅杆占位挪一格、卡片，和三个给别人读的函数 `comet.directions(n)`、`comet.light(style, look)`、`comet.reach(style, look)`（#441），都没跑过；c230 恢复后补跑再报，没再报就合 7b7e168。分支头现在是 b3950eb4（#496，没跑过）：更正以前报的“V2 里穹顶尖 33.9°、彗头高出 7.1°”——从 V2 看到的顶线是穹顶近侧的肩，在 36.1° 上下，彗头只高出 4.9°（画面里隔 6% 画高），`moon_angle` 不改；测试场景的 slit 机位换成 c178 的 v8（(11.8, 19.62, 2.2) 朝正西抬 25°）；白模的大穹顶照 c222 的数重搭。彗星永远在正西，彗头仰角 41.05°；c230 手算（#441）它的光从正西偏南 2° 到偏北 9.5°、仰角 39.5° 到 55.2°，都在车站让出的两块视野里（A0 #442），恢复后 `sight` 照 `comet.seen()` 再核。预审 c235 cr2-K3 和续（#399：乙像火苗，是形状的毛病，c230 改成平顶截面）。三版选哪个靠真机图（【实机】#387 点了 c189） |
 | cloudsea | P2 | 制作中 | c227 | a18c8d13 | — | 分支 `cursor/c164-cloud-7d36`，3 种做法（甲 只原版云层／乙 方块云加雾／丙 两层），总场景默认丙；场景 `obs_sky_cloudsea`。预审 c235 cr2-K2。`site/terrain.py` 里那圈云是占位，这张卡合并、c221 交叉看过交线后撤。新做法写在 `cursor/c164-cloud-wip-99a5` @ 7de45492（停机期间写的，没跑过，跑过再并进交付分支；#465）：云贴着搭出来的东西铺、不留空，只有名字以 `_wall`、`_fence` 结尾的方块旁边空 1 格；薄雪算山；云线附近（y −28 到 −18）加减方块，云只在那一处变。原版云层的颜色有三个试验时刻（c177 的 8100、9100、10100）。靠真机图 |
 | tones | P2 | 制作中 | c270（原 c177） | 90cd8757 | `plan/parts/figs/tones/`（4 张对照图，在分支上） | 分支 `cursor/c164-a2-light-29fe`（分支头 90cd8757；tones 自己的最后一个提交是 dceeda8a，往后是 sky 交付前要收的尾 44689bea 和 motion 的文档、工具）。工具卡：`sky/_tones.py` 对一张现成的图量暗中亮三级、死黑、亮区、冷暖，`--probe` 量矩形或多边形，`--diff` 两张图相减；评审和各线共用这一把尺（Rec.601 灰度）。11-15 18:30 交付过 542294e（#375），之后加的都是停机期间写的，没跑过：c235 试用后要的三样（89a0e247）；`--diff` 另报两张图是不是逐像素逐通道一样（dceeda8a，给 `windows.LINING` 自证用）；同一条分支上还有 sky/look 给云海的三个试验时刻（0f80421e）。c177 说 542294e 不用单独合，等他恢复后重新【交付】 |
 | ridges | P3 | 待领 | — | — | — | 远山剪影 |
@@ -160,7 +164,7 @@
 
 ## 分支
 
-**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。
+**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。这张表记到的最新一批：m5 = c277（`cursor/c164-m5-iron-8757`，11-16 00:08 领卡时自报 c277；ROSTER 那一栏还是“—”，请总监助理补上）。
 
 | agent | 代号 | 分支 |
 | --- | --- | --- |
@@ -179,7 +183,7 @@
 | c195 | m2 | `cursor/c164-m2-timeroom-80c9`（interiors/timeroom） |
 | c196 | gear | `cursor/c164-gear-6260`（machines/domegear；代号 m3 留给 c218） |
 | c197 | m4 | `cursor/c164-m4-paper-7345`（props/paper） |
-| c198 | m5 | `cursor/c164-m5-iron-8757` |
+| c277（原 c198） | m5 | `cursor/c164-m5-iron-8757` |
 | c199 | instr | `cursor/c164-instr-f5da`（props/instruments；旧的评审分支 `cursor/c164-cr2-review-ec4d` 不用了） |
 | c204 | ashlar | `cursor/c164-ashlar-2cc1` |
 | c205 | chart | `cursor/c164-chart-5a4c`（interiors/chartroom）、`cursor/c164-m2-windows-7bb5`（windows，已合并；内衬和炉火窗也写在这条上） |
