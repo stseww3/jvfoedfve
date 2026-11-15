@@ -170,20 +170,24 @@ def _port(m, size, start, end):
     return _pair(m, size, end - 2.0)
 
 
-def _works(m, size, y0):
+def _works(m, size, y0, top=90.0):
     """A valve's works, out along +y from y0 on the axis y: the neck, the bonnet's flange, the gland,
-    the brass stem and the red handwheel. The wheel has three spokes and is 2 r + 4 across; the
-    stem ends WORKS above y0."""
+    the brass stem and the red handwheel; the stem ends WORKS above y0.
+
+    The wheel is 2 r + 4 across and has five spokes: three in a round rim read as a car's badge,
+    four as a cross. One spoke stands at the angle `top`, counted as Model.ring counts (from +x,
+    right-handed about +y): the caller says which way is up once the works are turned into place."""
     r = BORE[size]
     m.tube("y", (0, 0), y0, y0 + 2.0, r - 0.5, K.IRON_D)
     m.tube("y", (0, 0), y0 + 2.0, y0 + 3.0, r + 0.5, K.IRON)
     m.tube("y", (0, 0), y0 + 3.0, y0 + 5.0, 1.5, K.IRON_D)
     m.tube("y", (0, 0), y0 + 5.0, y0 + WORKS, 0.75, K.BRASS)
     wheel, rim = y0 + WORKS - 1.5, r + 1.5
-    m.ring("y", (0.0, wheel, 0.0), rim, 1.0, 1.0, RED, sides=12)
-    for i in range(3):          # each spoke ends on the middle of one of the rim's twelve flats
-        m.box((-0.5, wheel - 0.5, 0.75), (0.5, wheel + 0.5, rim - 0.5), RED,
-              rot=("y", 120.0 * i, (0.0, wheel, 0.0)))
+    first = top % 36.0          # the rim has ten flats; every spoke ends on the middle of one
+    m.ring("y", (0.0, wheel, 0.0), rim, 1.0, 1.0, RED, sides=10, arc=(first, first + 360.0))
+    for i in range(5):
+        m.box((0.75, wheel - 0.5, -0.5), (rim - 0.5, wheel + 0.5, 0.5), RED,
+              rot=("y", (top + 72.0 * i) % 360.0, (0.0, wheel, 0.0)))
     m.tube("y", (0, 0), wheel - 0.75, wheel + 0.75, 1.25, RED)
     m.tube("y", (0, 0), wheel + 0.75, wheel + 1.25, 1.0, K.BRASS_D)
     return m
@@ -322,8 +326,8 @@ def _valve_angle(name, size):
     """The angle stop valve, where a main turns as it comes up out of a floor: a globe at the
     corner (the anchor, where the two axes meet), one flanged port out along +z and one down along
     -y, each ending ANGLE from the corner, and the works out along -z, in line with the first port:
-    the handwheel looks back along the pipe. With the axis ANGLE above a floor the lower flanges
-    stand on it."""
+    the handwheel looks back along the pipe, one spoke upright. With the axis ANGLE above a floor
+    the lower flanges stand on it."""
     m = M.Model(PREFIX + name)
     g = BORE[size] + 1.5
     m.ball((0.0, 0.0, 0.0), g, K.IRON_D, sides=8, layers=3)
@@ -331,7 +335,7 @@ def _valve_angle(name, size):
     with m.turned(("x", 90.0)):
         _port(m, size, g - 1.0, ANGLE)
     with m.turned(("x", -90.0)):
-        _works(m, size, g - 1.0)
+        _works(m, size, g - 1.0, top=270.0)
     return m
 
 
@@ -341,14 +345,15 @@ ANGLE = 8.0             # from an angle valve's corner to the end of either port
 def _bonnet():
     """The works of a stop valve that is let into a lagged main (site/powerhouse lays its steam main
     in whole blocks): only the works show. Mounted on a face of the main, the anchor on that face,
-    everything out along +z: a plate with four bolts, then the works of the big valve."""
+    everything out along +z: a plate with four bolts, then the works of the big valve, one spoke
+    of the wheel along +y."""
     m = M.Model(PREFIX + "bonnet")
     m.box((-4.0, -4.0, 0.0), (4.0, 4.0, 1.0), K.IRON_D)
     for x in (-3.0, 3.0):
         for y in (-3.0, 3.0):
             K.rivet(m, (x, y, 1.0))
     with m.turned(("x", 90.0)):
-        _works(m, "l", 0.0)
+        _works(m, "l", 0.0, top=90.0)
     return m
 
 
