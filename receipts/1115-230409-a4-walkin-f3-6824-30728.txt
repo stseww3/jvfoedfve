@@ -1,0 +1,38 @@
+a0job 1115-230409-a4-walkin-f3-6824-30728: cursor/c164-a4-walkin-f3-6824 @ 86a71a91 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.08 1.68 0.93, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- P=/tmp/c164_walk/obs-116c2e4.pkl; python tools/walk.py cells --canvas $P --box=11,17,9,13,20,11 --box=11,17,-11,13,20,-9 --box=8,17,29,10,21,31 --box=9,17,-31,11,21,-29 --box=-9,-1,-1,-6,4,1 --box=16,0,-5,16,3,5 --box=73,-7,20,75,-3,22
+bash: line 1: renders/_wip/walk/cells-doors.txt: No such file or directory
+wc: renders/_wip/walk/cells-doors.txt: No such file or directory
+walk: ways from in-A01 (26.5, 0, 0.5): 43207 places reached
+walk: ways from in-E07 (11.25, 7, 5.5): 43318 places reached
+walk: ways from in-E08 (14.5, 7, 5.5): 43215 places reached
+walk: ways from in-E13 (14.5, 7, -4.5): 43215 places reached
+walk: ways from in-H10 (4.5, 18, -2.5): 1429 places reached
+walk: ways from in-J03 (12.5, 18, 10.5): 46079 places reached
+walk: ways from in-J19 (10.5, 18, 30.5): 95 places reached
+walk: ways from in-K03 (12.5, 18, -9.5): 46051 places reached
+walk: ways from in-K19 (11.5, 18, -29.5): 81 places reached
+stretch A (the entrance from the court): 7 stations, 32 pictures
+stretch B (the star hall, ground floor): 16 stations, 51 pictures; no floor at 1: in-B06; the leg to it is no plain walk at 3: in-B03 (no), in-B08 (no), in-B16 (no)
+stretch C (the way to the west door): 6 stations, 31 pictures
+stretch D (the grand stair, both flights): 7 stations, 32 pictures; no floor at 5: in-D02, in-D03, in-D04, in-D05, in-D06
+stretch E (the galleries of the main floor): 13 stations, 53 pictures; no floor at 9: in-E01, in-E02, in-E03, in-E04, in-E05, in-E06, in-E09, in-E10, in-E11; reached 'no' 4: in-E07 (walk from in-E07), in-E08 (walk from in-E08), in-E12 (walk
+stretch F (the time room (north wing)): 18 stations, 48 pictures; no floor at 18: in-F01, in-F02, in-F03, in-F04, in-F05, in-F06, in-F07, in-F08, in-F09, in-F10, in-F11, in-F12 ...
+stretch G (the chart room (south wing)): 18 stations, 48 pictures; no floor at 18: in-G01, in-G02, in-G03, in-G04, in-G05, in-G06, in-G07, in-G08, in-G09, in-G10, in-G11, in-G12 ...
+stretch H (the ring stair): 11 stations, 41 pictures; no floor at 9: in-H01, in-H02, in-H03, in-H04, in-H05, in-H06, in-H07, in-H08, in-H09; reached 'no' 2: in-H10 (walk from in-H10), in-H11 (walk from in-H10)
+stretch I (the dome room): 15 stations, 35 pictures; reached 'no' 15: in-I01 (walk from in-H10), in-I02 (walk from in-H10), in-I03 (walk from in-H10), in-I04 (walk from in-H10), in-I05 (walk from in-H10), in-I06 (walk from in-H10), in-I07 (
+stretch J (the south roofs: corner terrace, ridge walk, the end terrace, the small dome): 20 stations, 80 pictures; reached 'no' 20: in-J01 (walk from in-H10), in-J02 (walk from in-H10), in-J03 (walk from in-J03), in-J04 (walk from in-J03),
+stretch K (the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot): 20 stations, 80 pictures; reached 'no' 20: in-K01 (walk from in-H10), in-K02 (walk from in-H10), in-K03 (walk from in-K03), in-K04 (walk from 
+stretch L (the power house, inside): 19 stations, 64 pictures; no floor at 1: in-L17; reached 'hop' 18: in-L01, in-L02, in-L03, in-L04, in-L05, in-L06, in-L07, in-L08, in-L09, in-L10, in-L11, in-L12 ...
+walk: in-stations.json -> renders/_wip/walk/r1; nothing drawn
+
+real	1m11.229s
+user	1m11.157s
+sys	0m0.400s
+==== NODEJOB RESULT ====
+exit=0 secs=76 host=cursor cores=4 head=86a71a91 commit=d9f2a348 pushed=yes branch=cursor/c164-a4-walkin-f3-wip-6824 files=2
+a0job: exit=0 secs=76
