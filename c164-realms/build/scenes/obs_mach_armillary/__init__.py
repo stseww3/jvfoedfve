@@ -102,7 +102,9 @@ def shots():
         shot("meridian", (cx, 1.7, cz + 12), (cx, cy - 0.3, cz)),
         shot("south_edge", (cx, 1.7, 29.5), (cx, cy - 0.3, cz)),
         shot("north_edge", (cx, 1.7, -28.5), (cx, cy - 0.3, cz)),
-        shot("rings", (cx + 3.1, cy + 0.2, cz + 2.9), (cx, cy - 0.1, cz)),      # the scales and the joints
+        # the scales and the joints, from the north-east and a little below: there the ecliptic turns
+        # the rim with its scale to the camera in both versions (from the south-east it showed none)
+        shot("rings", (cx + 3.5, cy - 1.15, cz - 2.7), (cx, cy, cz)),
         # stepping out of the entrance: against the sky. One step east of the skeleton's V7
         shot("door", (20.5, 1.62, cz), (cx, cy - 0.7, cz)),
     ]
