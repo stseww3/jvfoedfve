@@ -576,15 +576,21 @@ class Scene:
         env[R.FAR_START], env[R.FAR_END], env[R.SKY_END] = look.far_start, look.far_end, look.sky_end
         env[R.STARS], env[R.PIXEL] = look.stars, pixel
         bodies, pixels, at = [], [], 0
-        for angle, ref, size in ((look.sun_angle, "environment/celestial/sun", 30.0),
-                                 (look.moon_angle, f"environment/celestial/moon/{look.moon_phase}", 20.0)):
+        # Both bodies stand at height 100 under rotateY(-90) rotateX(angle) (26.3 SkyRenderer), which
+        # carries the quad's +x to the south and its +z towards the horizon. The sun's quad
+        # (buildCelestialQuad) gives x = -1 the sprite's U0 and z = -1 its V0: the file's columns run
+        # to the south, its rows towards the horizon. The moon's quad (buildMoonPhases) gives
+        # x = -1 U1 and z = -1 V1: both the other way round (turn = -1), so that a moon picture
+        # shows upside down and not mirrored to a viewer who faces it.
+        for angle, ref, size, turn in ((look.sun_angle, "environment/celestial/sun", 30.0, 1.0),
+                                       (look.moon_angle, f"environment/celestial/moon/{look.moon_phase}", 20.0, -1.0)):
             img = self.assets.texture(ref)
             n = min(img.shape[0], img.shape[1])
             img = img[:n, :n]
             if (img[..., :3] * (img[..., 3:] > 0)).max() == 0:
                 continue                      # painted out
             r = math.radians(angle)
-            bodies.append([-math.sin(r), math.cos(r), 0.0, 0.0, 0.0, 1.0, -math.cos(r), -math.sin(r), 0.0,
+            bodies.append([-math.sin(r), math.cos(r), 0.0, 0.0, 0.0, turn, -turn * math.cos(r), -turn * math.sin(r), 0.0,
                            size / 100.0, at, n, 1.0])
             pixels.append(img.reshape(-1, 4))
             at += n * n
