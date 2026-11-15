@@ -241,17 +241,24 @@ def write_pack(pack_dir):
 def shots():
     """V8 as the card asks (the gear in one picture with the tube), its twin north of the tube and
     V8 in the afterglow; then what a visitor sees from the floor (the room, the ring across it, the
-    slit's foot from the hand chain, the weights, the hand gear); and four close views from a
-    ladder's height (the ring, the pinion in the toothed ring from below, the slit's foot, a
-    weight), in the afterglow, the most light the room gets: these are for judging the parts."""
+    slit's foot from the hand chain, the weights, the hand gear); and close views from a ladder's
+    height (the ring, the pinion in the toothed ring from below, the slit's foot, a weight), in
+    the afterglow, the most light the room gets: these are for judging the parts. With main/dome's
+    version b the slit's gear runs up the rails, and four more follow it: the chains from the
+    floor, the curtain on its roller, the sheaves at the slit's head, the slit's foot from outside."""
     out = []
 
     def shot(name, pos, look_at, time=TIME):
         out.append({"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at],
                     "time": time})
 
+    def spot(at, z=0.0):
+        return (AX + at[0], at[1], AZ + z)
+
     eye = STAND + S.EYE
-    foot = (AX + dome.F0[0], dome.F0[1], AZ + dome.F0[2])           # the middle of the slit's foot gear
+    b = dome.shell_version() == "b"
+    foot = spot(dome.winch_at()) if b else spot(dome.F0)            # the middle of the slit's foot gear
+    weight = spot(dome.on_run(dome.WEIGHT_S1 if b else dome.WEIGHT_S0, dome.DOWN_D), dome.RUN_Z)   # the south weight
     gx, gz = AX + dome.riser_at()[0], AZ + dome.riser_at()[1]       # the hand gear's upright shaft
     # the room's V8: interiors/domeroom's stand and aim until the skeleton has the view, so that the
     # pictures of the two packages can be laid side by side
@@ -262,11 +269,17 @@ def shots():
     shot("room", (AX + 6.0, eye, AZ - 7.0), (AX - 6.0, STAND + 5.0, AZ + 3.0))
     shot("ring_far", (AX + 8.0, eye, AZ + 3.0), (AX - 8.0, STAND + 6.5, AZ + 8.0))
     shot("slit_foot_up", (AX - 6.5, eye, AZ + 1.5), foot)
-    shot("weights", (AX - 3.0, eye, AZ + 6.5), (AX - 9.0, STAND + 10.5, AZ + 3.0))
+    shot("weights", (AX - 3.0, eye, AZ + 6.5), (weight[0], weight[1], AZ + 1.5) if b else (AX - 9.0, STAND + 10.5, AZ + 3.0))
     shot("hand_gear", (gx + 1.9, eye, gz + 2.1), (gx + 0.2, STAND + 1.3, gz))
     shot("hand_gear_up", (AX - 3.0, eye, AZ - 6.5), (gx, STAND + 4.5, gz))
     shot("ring_near", (AX - 4.0, STAND + 7.0, AZ + 6.0), (AX - 7.95, STAND + 6.4, AZ + 7.95), GLOW)
     shot("mesh", (gx + 2.2, dome.RING_Y - 2.4, gz + 2.6), (gx - 0.2, dome.RING_Y - 0.2, gz - 0.3), GLOW)
     shot("slit_foot", (AX - 6.0, STAND + 7.3, AZ + 2.5), foot, GLOW)
-    shot("weight_near", (AX - 6.0, STAND + 8.5, AZ), (AX - 9.5, STAND + 10.0, AZ + 3.0), GLOW)
+    shot("weight_near", (AX - 6.0, STAND + 8.5, AZ), weight if b else (AX - 9.5, STAND + 10.0, AZ + 3.0), GLOW)
+    if b:
+        north = -dome.HAUL_Z / dome.PX
+        shot("chains", (AX + 3.0, eye, AZ + 4.0), spot(dome.on_curve(45.0), north))
+        shot("curtain", (AX - 8.5, STAND + 10.0, AZ + 1.0), spot(dome.roll_at()), GLOW)
+        shot("slit_head", (AX - 4.0, STAND + 16.0, AZ), spot(dome.on_curve(dome.HEAD_DEG, dome.GAP / 2.0), north), GLOW)
+        shot("foot_outside", (AX - 18.0, STAND + 15.0, AZ + 5.0), spot(dome.roll_at()), GLOW)
     return out
