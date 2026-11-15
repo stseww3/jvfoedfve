@@ -1,0 +1,18 @@
+gate materials/iron 99dc8afa: the merged tree 200e405b, the assembly as it was 8956db05
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 34 s: 49 pass (33 with warnings)
+pictures: obs_mat_iron: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_iron at 200e405b: 1 of 14 kept pictures are what the code draws, 13 not
+    plates_a: 143688 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    plates_b: 147668 of 921600 pixels are not what the code draws (off by up to 103 of 255)
+    shapes_a: 163007 of 921600 pixels are not what the code draws (off by up to 103 of 255)
+    shapes_b: 154032 of 921600 pixels are not what the code draws (off by up to 103 of 255)
+    shapes_lamps: 47922 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    wall_riveted: 195194 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    wall_plate: 168491 of 921600 pixels are not what the code draws (off by up to 102 of 255)
+    wall_treads: 55 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    walls_far: 319389 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    gallery_front: 261082 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    gallery_floor: 38 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    gallery_far: 326308 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+result: PASS

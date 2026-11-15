@@ -1,0 +1,40 @@
+gate props/lamps 066ecfab: the merged tree 8956db05, the assembly as it was f005ba2d
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 31 s: 49 pass (33 with warnings)
+pictures: obs_props_lamps: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_lamps at 8956db05: 1 of 26 kept pictures are what the code draws, 25 not
+    far: 291955 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    row_a: 247401 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    set_a: 49561 of 921600 pixels are not what the code draws (off by up to 98 of 255)
+    bracket_a_near: 86139 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    cage_a_near: 32818 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    pendant_a_near: 168280 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    under_a: 419090 of 921600 pixels are not what the code draws (off by up to 98 of 255)
+    row_b: 247214 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    set_b: 49561 of 921600 pixels are not what the code draws (off by up to 98 of 255)
+    bracket_b_near: 13692 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    cage_b_near: 30897 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    pendant_b_near: 189747 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+pictures: obs_props_lamps_site: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_lamps_site at 8956db05: 0 of 16 kept pictures are what the code draws, 16 not
+    v1: 771585 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    v2: 492783 of 921600 pixels are not what the code draws (off by up to 184 of 255)
+    v12: 170539 of 921600 pixels are not what the code draws (off by up to 177 of 255)
+    v1_deep: 222547 of 921600 pixels are not what the code draws (off by up to 250 of 255)
+    v2_deep: 48842 of 921600 pixels are not what the code draws (off by up to 250 of 255)
+    v12_deep: 80053 of 921600 pixels are not what the code draws (off by up to 230 of 255)
+    way_link: 725448 of 921600 pixels are not what the code draws (off by up to 161 of 255)
+    way_axis: 779848 of 921600 pixels are not what the code draws (off by up to 156 of 255)
+    east_high: 575544 of 921600 pixels are not what the code draws (off by up to 199 of 255)
+    court_side: 386384 of 921600 pixels are not what the code draws (off by up to 171 of 255)
+    lip: 325507 of 921600 pixels are not what the code draws (off by up to 170 of 255)
+    post_near: 388381 of 921600 pixels are not what the code draws (off by up to 182 of 255)
+pictures: obs_props_lamps_site_nearpair: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_props_lamps_site_nearpair at 8956db05: 0 of 6 kept pictures are what the code draws, 6 not
+    v1: 771543 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    v2: 473881 of 921600 pixels are not what the code draws (off by up to 184 of 255)
+    v12: 169862 of 921600 pixels are not what the code draws (off by up to 177 of 255)
+    v1_deep: 222540 of 921600 pixels are not what the code draws (off by up to 250 of 255)
+    v2_deep: 45716 of 921600 pixels are not what the code draws (off by up to 250 of 255)
+    v12_deep: 79118 of 921600 pixels are not what the code draws (off by up to 230 of 255)
+result: PASS
