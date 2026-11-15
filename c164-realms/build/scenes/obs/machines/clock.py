@@ -207,7 +207,9 @@ BALL_IRON = P.mat("iron", base=4)
 BALL_IRON_UNDER = K.flat("iron", 5)
 
 INK = P.colour("iron", 1)
-INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
+# the hands of the small dial: blued steel in one tone, two steps lighter than the ink of the marks,
+# so that the tip of the minute hand and the mark it points at stay two things (cr3, 11-16)
+HAND_FLAT = K.flat("iron", 3)
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
 # The paint of the ball: the model's name, the ramp and its steps for the five zones from the far
 # side to the highlight. The middle zone is the paint as it is (the step its material starts
@@ -386,13 +388,13 @@ def _master_hand(kind):
     m = M.Model(PREFIX + "master_hand_" + kind, px=1.0)
     if kind == "h":
         # a spear: three wide at the boss, two, and a point of one
-        m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), INK_FLAT)
-        m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), INK_FLAT, skip="d")
-        m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), INK_FLAT, skip="d")
+        m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), HAND_FLAT)
+        m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), HAND_FLAT, skip="d")
+        m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), HAND_FLAT, skip="d")
     else:
         # two wide as far as the hour hand reaches, one from there to the marks
-        m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), INK_FLAT)
-        m.box((-0.5, 4.5, 1.5), (0.5, 7.5, 2.0), INK_FLAT, skip="d")
+        m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), HAND_FLAT)
+        m.box((-0.5, 4.5, 1.5), (0.5, 7.5, 2.0), HAND_FLAT, skip="d")
         m.tube("z", (0.0, 0.0), 1.5, 2.5, 1.25, BRASS_LIGHT, sides=8)
     return m
 
