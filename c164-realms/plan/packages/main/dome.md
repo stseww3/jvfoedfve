@@ -5,7 +5,7 @@
 - 分工（总监 #186）：本包管 `main/_dome.py`（从 fce2fbb0 起）和 `main/dome.py`，从圆厅檐口上面一行（y 16）起。室内归 interiors/domeroom（c178），轨道、滚轮、缝链归 machines/domegear（c196），小圆窗的窗框和门扇归 props，鼓脚的泛水和门扇归屋面那张卡（c224），镜筒归 machines/scope（c237）。
 - 约束：
   - 数读骨架：圆心格 (4, 0)，外半径 13，鼓座 y 18..23（石头从 y 16 起），穹顶 y 24 起拱、顶点 y 37，缝宽 5 朝西，圆顶室两扇门 (12, ±10) y 18..19。壳一格厚，室内直径 22 不占。
-  - 总监 #294 第 5 条、c219 预审（#283）：肋不许整格凸出；顶点只有一处、在轴线上；环廊栏杆换稀的；鼓座不做素墙，竖线对着缝线接到檐口。
+  - 总监 #294 第 5 条、c219 预审（#283）：肋不许整格凸出；顶点只有一处、在轴线上；环廊栏杆换稀的（11-16 作废，总监 #56253：环廊上不立东西）；鼓座不做素墙，竖线对着缝线接到檐口。
   - 角色：鼓座 `ASHLAR_FINE`，凹板 `ASHLAR_PANEL`，铜皮 `VERDIGRIS_CUT`，甲的缝线 `VERDIGRIS`，乙的主肋 `VERDIGRIS_STREAK`，顶心 `VERDIGRIS_CAST`，铜沟 `OLD_COPPER_CUT`，环梁、环廊、门梃 `IRON_RIVETED`，轴箱 `IRON_CAST`，轨道层 `IRON_PLATE`，立柱 `IRON_ROD`（第 3 班起环廊上不立东西，`POSTS = 0`）。甲缝脚的水痕也用 `VERDIGRIS_STREAK`。和小穹顶（c224）同一套：铜皮只用 `VERDIGRIS_CUT` 的整块和下半砖，顶心一块铸铜，铁裙、石托檐。
   - 鼓座的窗全暗（c220 的表，键 `("drum", 瓣号 0..19, "drum")`，0 号朝东，往南数）。展示实体 0。
   - 对外不变的：`_dome.build(canvas, origin, glass, version, slit)`、`_dome.drum(canvas, origin, glass)`（立面读窗表）；内叶顶面 y 24.0、y 24 环梁和二十只轴箱、缝线角度 (k+0.5)×18°、缝 z −2..2、窗台 y 25（c196、c178 在用）。
