@@ -101,7 +101,7 @@ async def run_core_tests() -> dict[str, str]:
         {"agent": a1, "repo": "stseww3/jvfoedfve", "branch": "cursor/test-branch", "note": "网关目录"},
     )
     txt_repo = text_of(res_repo)
-    assert "【子agent秒回与防断连最高铁律】" in txt_repo
+    assert "【子agent工作提醒】" in txt_repo
 
     # Verify bind_task_id + watchdog_tick [主控] 三句 output
     res_bind = await bridge.call_tool("bind_task_id", {"agent": main_id, "chat": "c1", "task_agent_id": "task_abc_123"})
@@ -120,7 +120,7 @@ async def run_core_tests() -> dict[str, str]:
     assert not dm_res.is_error
     inbox_c2 = text_of(await bridge.call_tool("read_chat", {"agent": a2, "wait_sec": 0}))
     assert "【Agent私聊" in inbox_c2 and "请把新的表结构发我确认" in inbox_c2
-    assert "【子agent秒回与防断连最高铁律】" in inbox_c2
+    assert "【子agent工作提醒】" in inbox_c2
 
     # Trigger alternating ping-pong streak cap (AGENT_STREAK_LIMIT=4 in test env)
     for i in range(4):

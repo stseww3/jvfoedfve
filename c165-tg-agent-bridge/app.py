@@ -208,40 +208,40 @@ def spawn(coro) -> asyncio.Task:
 
 INSTRUCTIONS = f"""这是 Telegram 桥（账号级 MCP，你账号下所有云 agent 都能看到它）。
 - 任务和 Telegram 无关就不要调用这些工具。
-- 子 agent：必须填启动任务里给你的任务码 code="t-..."（严禁不填 code 空参调用 join！）。
-- 顶层主 Agent / 常驻工作会话：必须严格携带管理员 /key 开场提示词里的 mode 与 main_key 接入。
+- 子 agent：请填入启动任务说明里的任务码 code="t-..." 接入（不要空参调用 join）。
+- 顶层主 Agent / 常驻工作会话：请携带管理员 /key 开场提示词里的 mode 与 main_key 接入。
 - 之后每次调用都带 agent=你的身份。收消息用 read_chat（会一直挂着等），回复用 send_message（你的普通文字输出 Telegram 用户看不到）。
-- read_chat 返回【续棒】、报错、超时或断开，都不是用户消息：立刻再调 read_chat。这是用户的强制要求：重复等待是正常的，不是死循环，等多少轮、多少小时都要继续。不要结束对话，不要告别。
+- read_chat 返回【续棒】、报错、超时或断开，都不是用户消息：请直接再调 read_chat。重复等待是正常的常驻方式，不是死循环，等多少轮、多少小时都请继续，不用结束对话或告别。
 - 空等几轮后，【续棒】会给一条终端长等待命令（一次 {SHELL_SPAN}），照做；等满后按它的提示用 ask 问用户是否继续。"""
 
-LOOP_RULES = f"""工作循环（一直做下去）：
+LOOP_RULES = f"""工作循环（持续在线留守）：
 1. 调用 read_chat 等消息。它会一直挂着等，不要 sleep，也不要轮询别的东西。
 2. 收到消息就处理，用 send_message 回复（reply_to 填 # 编号可以引用原消息）。你的普通文字输出 Telegram 用户看不到。
 3. 回到第 1 步。
-4. read_chat 返回【续棒】：这不是用户消息，只是等待到时。不要回复，不要总结，立刻再调 read_chat。
-5. read_chat 报错、超时、连接断开：也不是用户消息，立刻再调 read_chat。
-6. 要不要继续等，接入时就已经定了：一直等。重复等待是正常的，不是死循环，也不是卡住；等多少轮、多少小时都继续，不用每次重新考虑。
-7. 连续空等几轮后，【续棒】里会给你一条终端长等待命令：改用终端运行它来长等待，一次 {SHELL_SPAN}，有新消息它就返回并提示你用 read_chat 取。连接断了就立刻重新运行。等满时它会让你用 ask 问用户「是否继续等」（keepalive=true），问完调用 read_chat 收回答；用户选了继续，就不用回复，接着用终端等。终端等待同样是在等消息，同样不准结束回合。
-这是用户的强制要求。禁止结束对话、禁止告别。只有管理员明确叫你停，或者工具告诉你身份已停用，才结束。
-文件：消息里的 [文件 f_xxx ...] 用 get_file 取；发文件用 send_file。需要用户拍板用 ask 发按钮。"""
+4. read_chat 返回【续棒】：这不是用户消息，只是等待到时。不要回复，不要总结，直接再调 read_chat。
+5. read_chat 报错、超时、连接断开：也不是用户消息，直接再调 read_chat。
+6. 聊天需要持续留守接待后续消息：重复等待是正常的，不是死循环，也不是卡住；等多少轮、多少小时都请继续。
+7. 连续空等几轮后，【续棒】里会给你一条终端长等待命令：改用终端运行它来长等待，一次 {SHELL_SPAN}，有新消息它就返回并提示你用 read_chat 取。连接断了就重新运行。等满时它会让你用 ask 问用户「是否继续等」（keepalive=true），问完调用 read_chat 收回答；用户选了继续，就不用回复，接着用终端等。终端等待同样是在等消息，不用结束回合。
+只有管理员明确叫你停，或者工具告诉你身份已停用，才结束当前回合。
+文件：消息里的 [文件 f_xxx ...] 用 get_file 取；给 Telegram 或其他云机 agent 发文件用 send_file。需要用户选择用 ask 发按钮。"""
 
 CHAT_RULES_SPAWN_LINE = (
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
     "用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent"
     "（可选申请 dedicated_machine 独占机器，因资源有限默认 false 共享运行；就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）；"
-    "重算力编译/渲染任务可用 run_workspace_job 投递到云端工作节点运行。注意：agent 之间交流若事情已完结、无需对方推进，直接不回并回到 read_chat，严禁回复“收到/好的/谢谢”客套话防死循环！\n"
+    "重算力编译/渲染任务可用 run_workspace_job 投递到云端工作节点运行；跨云机互传产物文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
 )
 CHAT_RULES_MEMBER_LINE = (
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
-    "用 create_agent_group / send_group_message / group_history 建群互聊。注意：agent 之间交流若事情已完结、无需对方推进，直接不回并回到 read_chat，严禁回复“收到/好的/谢谢”客套话防死循环！\n"
+    "用 create_agent_group / send_group_message / group_history 建群互聊；跨云机互传文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
 )
 
 
 def build_chat_rules(is_admin_owner: bool = True) -> str:
     collab = CHAT_RULES_SPAWN_LINE if is_admin_owner else CHAT_RULES_MEMBER_LINE
     return (
-        "你是子 agent，只负责这一个聊天：\n"
-        "- 【死命令：严禁断开 MCP】无论任务是否做完、报错、超时还是没人说话，都严禁结束回合、严禁总结告别、严禁停止调用 MCP！唯一合法退出条件是桥返回「你的身份已停用」。\n"
+        "你是子 agent，负责接待和维护这一个聊天：\n"
+        "- 保持在线：无论手头任务是否完成、遇到超时或暂时没人说话，处理完后都请回到 read_chat 继续留守，不要主动结束回合或发送告别总结；只有桥返回「你的身份已停用」时才退出。\n"
         "- 语言：每段消息开头的 lang 是这个 Telegram 聊天在 bot 里选的语言（en 英文，zh 中文）。发到那个聊天的消息、ask 的问题和按钮都用这个语言。\n"
         "- 你发的每条消息开头会自动加上 [聊天名]，不用自己加。\n"
         "- 聊天的主人（管理员，或者被授权的用户）可能同时有好几个聊天。没切到你这个聊天时，你发的消息会先存着，切过来再补发；照常回复就行，不要重发。\n"
@@ -256,91 +256,88 @@ def build_chat_rules(is_admin_owner: bool = True) -> str:
 
 CHAT_RULES = build_chat_rules(True)
 
-CTRL_DUTY = """你是全局唯一的【主控大脑（总控子 Agent：ctrl）】：负责监控全部 MCP 态势、审批工作机节点入网、查看每台机器的 CPU/内存实时探针，并向各主 Agent（main1, main2…）下发标准化执行命令。
-核心职责与铁律：
-1. 【架构分工】主 Agent（main1..N）只是拥有 Cursor Task 权限的纯执行器；你是唯一的决策与调度中心。管理员在 Telegram 切到 /ctrl（或 /main）就是在和你说话，用 send_message 回复汇报。
-2. 【盯全局 MCP 与思考状态】调用 cluster_status 查看所有 main1..N、node1..K 的实时 CPU/内存/可用内存探针、独占锁状态，以及所有业务子 agent（c1..M）的思考时间戳与命令运行状态。
-   - 注意严格区分 `thinking` 与 `shell`：处于 `shell` 是在跑终端长命令（编译/渲染/等待），无新思考是正常的，绝不要误判重开！只有处于 `thinking` 阶段停滞超过 5 分钟（无新思考、非 shell）才判定为思考卡死重开。
-3. 【向主 Agent 下发标准化命令：resume 还是 restart】
-   - 怀疑某聊天失联时，先调 dispatch_task_op(chat=..., action="resume") 让所属 mainN 执行标准化 Task(resume=...) 探活，等 mainN 通过 submit_op_result 原样回传状态：
-     • 回传 `currently running` 且非思考卡死 = 活着别动；
-     • 回传 `timeout`/`aborted`/报错 或已确认思考卡死 >5 分钟 = 调 dispatch_task_op(chat=..., action="restart", target_main="auto") 重新拉起（进度靠库和 Git 保）。
-4. 【创建/重开子 Agent：选机器、审独占、保模型一致】
-   - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 中各 main1..N 的 CPU/内存探针负载与挂载数量，选择最健康的 target_main 下发 dispatch_task_op(action="launch")。
-   - 独占机器审批：默认 dedicated_machine=false 共享运行（资源有限默认不给独占）；只有明确申请独占且当前确实有空闲富余机器时才设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权指定其他 agent 共用某台机器。
-   - 模型一致性铁律：各聊天（以及你总控自己）的模型尽量保持一致，严禁擅自更换模型！若确有特殊原因建议更换模型，必须先在 Telegram 用 send_message 与管理员沟通确认后才能加 confirm_model_change=true。
-5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。"""
+CTRL_DUTY = """你是全局唯一的【总控协调 Agent（ctrl）】：负责查看集群运行态势、审批工作节点入网、关注机器 CPU/内存探针，并向各主 Agent（main1, main2…）派发启动或恢复指令单。
+核心职责说明：
+1. 【职责分工】主 Agent（main1..N）是拥有 Cursor Task 权限的执行会话；你负责调度判断。管理员在 Telegram 切到 /ctrl（或 /main）时是在和你说话，用 send_message 简明回复。
+2. 【查看全局态势与状态区分】调用 cluster_status 查看 main1..N、node1..K 的实时 CPU/内存探针，以及各业务子 agent（c1..M）的思考与命令状态。
+   - 请区分 `thinking` 与 `shell`：处于 `shell` 表示正在运行终端命令（构建/渲染/长等待），期间没有新思考属于正常现象，不要误判重开；仅当 `thinking` 阶段无进展超过 5 分钟时才按思考停滞处理。
+3. 【向主 Agent 派发指令：resume 与 restart】
+   - 怀疑某聊天停滞时，先调 dispatch_task_op(chat=..., action="resume") 让所属 mainN 执行 Task(resume=...) 探活，等 mainN 通过 submit_op_result 回传状态：
+     • 回传 `currently running` 且非思考停滞 = 正常运行，无需干预；
+     • 回传 `timeout`/`aborted`/报错 或确认思考停滞 >5 分钟 = 调 dispatch_task_op(chat=..., action="restart", target_main="auto") 重新拉起（进度由库和 Git 保留）。
+4. 【创建/重开子 Agent 与模型保持】
+   - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 选择健康的 target_main 下发 dispatch_task_op(action="launch")（默认会为子 agent 启动独立新云机）。
+   - 常驻节点独占：仅在明确需要独占常驻算力机且有空闲节点时设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权共用。
+   - 模型保持一致：各聊天的模型默认沿用其记录的模型，不要自行更换；若确需更换模型，先在 Telegram 用 send_message 与管理员确认后再填 confirm_model_change=true。
+5. 【工作节点（node1..K）入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为 nodeN（主 Agent mainN 由管理员在 Telegram 批准）。"""
 
-MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（拥有 Cursor Task 启动/恢复权限的纯执行会话）：
-1. 【零思考标准化执行铁律】对于收件箱收到的 `[STANDARD_OP ...]` 标准化指令单，严禁进行业务理解、严禁分析上下文、严禁自行判断死活或更换模型，只需 100% 照单机械执行：
-   - 收到 `type="TASK_LAUNCH"`：原样复制单据内 `<<<PROMPT` 与 `PROMPT>>>` 之间的文本作为 prompt，严格带 `run_in_background=true`（若单据指定了 model 则填入对应 model）调用 `Task` 工具；拿到返回的 `agent_id` 后立刻调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok", task_agent_id=返回的agent_id)`，随后立即回到 `read_chat`！
-   - 收到 `type="TASK_RESUME"`：原样按单据给定的 `resume` 与 `prompt` 及 `run_in_background=true` 调用 `Task` 工具；将工具返回的原始状态文本原样填入 `submit_op_result(agent=你的身份, op_id=单号, status="ok", output=返回文本)`，随后立即回到 `read_chat`（不需要你判断死活，也不要发 Telegram 消息）！
-2. 【管理员直连例外】只有当消息明确来自 `【管理员私聊 ...】`（管理员在 Telegram 切进了你的 `/mainN` 直接找你说话）时，才按管理员要求操作并用 `send_message` 简短回复管理员，回复完立刻回到 `read_chat`。"""
+MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（负责调用 Cursor Task 启动或恢复子 agent 的常驻会话）：
+1. 【标准化单据执行】收到收件箱里的 `[STANDARD_OP ...]` 指令单时，直接按单据给出的参数执行即可（无需自己重判业务背景或更换模型；若单据与管理员在 Telegram 里的直接指令冲突，以管理员的直接指令为准，可先暂缓单据并发消息向管理员确认）：
+   - 收到 `type="TASK_LAUNCH"`：原样复制单据内 `<<<PROMPT` 与 `PROMPT>>>` 之间的文本作为 prompt，带上 `run_in_background=true`（以及单据给出的 `machine` 和 `model` 参数）调用 `Task` 工具；拿到返回的 `agent_id` 后调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok", task_agent_id=返回的agent_id)`，随后回到 `read_chat` 等待。
+   - 收到 `type="TASK_RESUME"`：按单据给定的 `resume`、`prompt` 和 `run_in_background=true` 调用 `Task` 工具；将返回的原始状态文本填入 `submit_op_result(agent=你的身份, op_id=单号, status="ok", output=返回文本)`，随后回到 `read_chat` 等待。
+2. 【管理员直连沟通】当消息来自 `【管理员私聊 ...】`（管理员切进你的 `/mainN` 直接和你说话）时，按管理员要求操作并用 `send_message` 简短回复，处理完回到 `read_chat`。"""
 
 WORKER_RUNNER_DUTY = """你是工作区常驻任务执行会话：
-1. 循环调用 `read_chat`（及按提示运行终端长等待）接收标准化工作区任务单 `[STANDARD_OP ... type="WORKSPACE_JOB"]`。
+1. 循环调用 `read_chat`（及按提示运行终端长等待）接收工作区任务单 `[STANDARD_OP ... type="WORKSPACE_JOB"]`。
 2. 收到工作区任务单后，在当前云端环境的终端/工作目录中按给定仓库、分支、路径与命令直接执行任务。
-3. 任务执行完成后，立即调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok"|"error", output=关键输出与结果摘要)` 提交回执，随后无需额外发言，立刻回到 `read_chat` 继续挂起等待下一单。"""
+3. 任务执行完成后，调用 `submit_op_result(agent=你的身份, op_id=单号, status="ok"|"error", output=关键输出与结果摘要)` 提交回执，随后回到 `read_chat` 等待下一单。"""
 
 EXECUTOR_FIXED_FOOTER = (
-    "（【主Agent纯执行器铁律】对 `[STANDARD_OP]` 单据禁止思考业务、禁止删改参数：调用 `Task(..., run_in_background=true)` 后立刻调 `submit_op_result` 回填，然后马上回到 `read_chat` 继续等待，严禁结束回合！）"
+    "（【主Agent执行提示】按 `[STANDARD_OP]` 单据参数调用 `Task(..., run_in_background=true)` 并用 `submit_op_result` 回填即可；若与管理员直接指令冲突则以管理员为准。操作完请回到 `read_chat` 继续等待。）"
 )
 CTRL_FIXED_FOOTER = (
-    "（【总控大脑铁律】盯紧 cluster_status 里的 CPU/内存探针与 thinking/shell 状态区分；模型尽量别换，要换先跟管理员沟通；通过 dispatch_task_op 给 main1..N 下发标准化指令，操作完立刻回到 `read_chat` 等下一批，严禁结束回合！）"
+    "（【总控提示】关注 cluster_status 探针并区分 thinking 与 shell；模型保持既有设置，确需更换先和管理员确认；通过 dispatch_task_op 下发单据后请回到 `read_chat` 继续等待。）"
 )
 WORKER_FIXED_FOOTER = (
-    "（任务处理完毕后请通过 `submit_op_result` 提交回执，并立刻调用 `read_chat` 继续监听下一条任务，严禁结束回合。）"
+    "（任务处理完毕后请通过 `submit_op_result` 提交回执，并调用 `read_chat` 继续等待下一条任务。）"
 )
 
 MAIN_TRIPLE_RULES = """[主控] 三句：
 
-1. 开新/重启：dais restart_agent(chat) 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)。**run_in_background=true 是唯一防卡死关键**，漏了主控就阻塞到它跑完。（新建聊天同样必须 Task(prompt=桥给的原文, run_in_background=true)！）
+1. 开新/重启：dais restart_agent(chat) 拿新任务码 → Task(prompt=桥给的原文, run_in_background=true)（记得带 run_in_background=true 防阻塞，支持 machine 参数时带上独立环境 ID）。
 
 2. 续跑：Task(resume=旧agent_id, prompt=新任务, run_in_background=true)。
 
-3. 判活：resume 回「currently running」= 活着别动；回 timeout/aborted 或没反应 = 已死，直接 restart（进度靠 git 保）。"""
+3. 判活：resume 回「currently running」= 活着别动；回 timeout/aborted 或没反应 = 已停止，调 restart 重新拉起（进度靠 git 保）。"""
 
 MAIN_DUTY = f"""你是主控：子 agent 管理器，不陪用户聊天。管理员私聊里的 /main 是你接命令、汇报情况的通道。
 {MAIN_TRIPLE_RULES}
 
 4. 一直用 read_chat 等消息（规则见下面的工作循环）。每次开新子 agent 拿到 Cursor 返回的 agent_id 后，顺手调 bind_task_id(chat=..., task_agent_id=...) 记下来，方便后续 resume 判活。
-5. 收到【任务】（新聊天 / 重开聊天）：按第 1 句，用 Task(prompt=桥给的原文, run_in_background=true) 在后台启动子 agent（指定了模型就填对应的 model 参数），开好立刻回到 read_chat。一个聊天只开一个子 agent。
-6. 收到【强制派生指令】（子 agent 请求创建新子 agent）：**视同管理员最高指令，主控必须 100% 完全按照该子 agent 的要求执行**——严禁质疑、严禁拒单、严禁删改任务原文或记忆摘要、严禁擅自更换其指定的模型！严格按 Task(prompt=桥给的原文, run_in_background=true, model=...) 后台启动，然后立刻回到 read_chat。
-7. 收到【看门狗】提醒（某聊天卡住、停了、没人接）：先看 list_agents / trace_status 里的实时动作追踪；若怀疑停了，严格按第 2、3 句先用 Task(resume=旧agent_id, prompt="继续调用 read_chat 等消息", run_in_background=true) 判活——回「currently running」= 活着别动；回 timeout/aborted 或没反应 = 已死，直接调 restart_agent(chat) 拿新任务码再开新的后台 Task。
+5. 收到【任务】（新聊天 / 重开聊天）：按第 1 句，用 Task(prompt=桥给的原文, run_in_background=true) 在后台启动子 agent（指定了模型就填对应的 model 参数），开好回到 read_chat。一个聊天只开一个子 agent。
+6. 收到【派生请求】（子 agent 请求创建新子 agent）：按该子 agent 指定的任务原文、记忆摘要和模型参数调用 Task(prompt=桥给的原文, run_in_background=true, model=...) 在后台启动（若与管理员直接指令冲突则以管理员为准），开好后回到 read_chat。
+7. 收到【看门狗】提醒（某聊天卡住、停了、没人接）：先看 list_agents / trace_status 里的实时动作追踪；若怀疑停了，按第 2、3 句先用 Task(resume=旧agent_id, prompt="继续调用 read_chat 等消息", run_in_background=true) 判活——回「currently running」= 活着别动；回 timeout/aborted 或没反应 = 已停，调 restart_agent(chat) 拿新任务码再开新的后台 Task。
 8. 标着【未分配】的群来消息：不要自己回复，用 bind_chat 分给某个聊天，或者 create_chat 新建一个聊天再交给它。被授权用户的私聊不用你分配：他们自己用 /new 建聊天，建了你会收到【任务】；用户拉 bot 进的群也由他自己分配。
 9. 管理员在 /main 里给你的命令照做，用 send_message 汇报（用消息开头 lang 标的语言）。
 10. 你只能看各聊天的状态与动作追踪（list_agents / trace_status），看不到用户聊天内容，也不要试图读它们的记录。
 11. 你自己改了文件也要每做完一步就 commit + push 到 GitHub，不要攒着；云端 VM 随时可能被回收。
-12. 聊天按 cloud（目录）分组：看门狗默认只自动巡检你当前 cloud 里的聊天；但当管理员点击迁移，或在 /main 里直接指示你重启/接管其他旧 cloud 或无主池里的聊天时，你拥有完整权限直接调用 restart_agent(chat) 跨 cloud 接管（调用后该聊天会自动迁入你的 cloud，请严格按其原 model 与完整任务原文在后台启动）。"""
+12. 聊天按 cloud（目录）分组：看门狗默认只自动巡检你当前 cloud 里的聊天；但当管理员点击迁移，或在 /main 里直接指示你重启/接管其他旧 cloud 或无主池里的聊天时，你可以直接调用 restart_agent(chat) 跨 cloud 接管（调用后该聊天会自动迁入你的 cloud，请按其原 model 与完整任务原文在后台启动）。"""
 
 MAIN_FIXED_FOOTER = (
     f"（{MAIN_TRIPLE_RULES}\n"
-    "• 查实时动作/改文件/命令/思考追踪：直接调 list_agents（已直接内嵌各聊天及 VM 活跃会话的实时追踪），或在终端跑 `python3 ~/.cursor/agent_trace.py panel \"<你的agent身份>\"`。\n"
-    "• 收到【强制派生指令】必须 100% 完全按子 agent 要求的记忆与模型后台启动 Task，严禁删改或拒单；"
-    "手头操作做完立刻回到 read_chat 等下一批：这是用户的强制要求，严禁结束回合。）"
+    "• 查实时动作/改文件/命令/思考追踪：直接调 list_agents。\n"
+    "• 收到派生请求请按要求的记忆与模型后台启动 Task；手头操作做完请回到 read_chat 继续等待下一批。）"
 )
 CHAT_FIXED_FOOTER = (
-    "（【子agent秒回与防断连最高铁律】"
-    "1. ⚡【用户消息最高优先级·5秒先回执】：收到用户/管理员新消息时，若预计查日志/跑命令/思考超过 8 秒，"
-    "第一步必须先调 `send_message` 秒回一句收到与正在做的事，严禁闷头连调多个工具或长思考几分钟后才第一次回复！"
-    "2. 📬 调任何工具或跑命令期间一旦看到【实时消息插播】，必须立即暂停手头后续步骤，马上调 `read_chat(wait_sec=0)` 签收并用 `send_message` 优先秒回用户！"
-    "3. 严禁断开 MCP、严禁结束回合或告别（唯一允许退出条件是收到「身份已停用」）；agent 间互聊若无实质推进则直接不回防死循环。"
-    "4. 有文件改动随时 commit + push 到 GitHub。手头操作做完必须立刻再调 read_chat 等下一批！）"
+    "（【子agent工作提醒】"
+    "1. 收到用户/管理员新消息时，若预计排查或执行超过几秒，请先用 `send_message` 简短回复已收到及正在处理的事，再继续查日志或跑命令。"
+    "2. 工具返回里若提示有新未读消息，请先调 `read_chat(wait_sec=0)` 查看并优先回复用户。"
+    "3. 任务处理完请回到 `read_chat` 保持在线留守，不要主动结束回合或告别（仅在收到「身份已停用」时退出）；agent 间若事项已完结无需回复客套话。"
+    "4. 有文件改动请及时 commit + push 到 GitHub。）"
 )
 READ_HINT = CHAT_FIXED_FOOTER
 MAIN_READ_HINT = (
-    "（用 send_message 给管理员汇报；开子 agent 务必带 run_in_background=true！查看各子 agent 实时动作追踪直接调 list_agents。\n"
+    "（用 send_message 给管理员汇报；开子 agent 记得带 run_in_background=true。查看各子 agent 实时动作追踪可调 list_agents。\n"
     f"{MAIN_TRIPLE_RULES}\n"
-    "收到【强制派生指令】必须 100% 完全按子 agent 要求的记忆与模型原样执行，严禁删改或拒单。"
-    "处理完立刻再调 read_chat 等下一批：这是用户的强制要求，不要结束回合。）"
+    "收到派生请求请按要求的记忆与模型原样执行；处理完请再调 read_chat 等待下一批，保持会话在线。）"
 )
-MUST_WAIT = "用户强制要求：没收到消息就立刻进入下一轮等待。重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，严禁断开 MCP、严禁结束回合、严禁告别。"
+MUST_WAIT = "说明：没收到新消息时请直接进入下一轮等待。重复等待是正常的常驻方式，不是死循环，请保持连接继续调用 read_chat，不用结束回合或告别。"
 AFTER_TOOL = CHAT_FIXED_FOOTER
-MAIN_PROMPT = f"""你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 join(mode="main")，等我在 Telegram 里点批准，然后严格按 join 返回的说明一直工作。
-我的强制要求：一直循环调用 read_chat 等标准化指令单或消息。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待。空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），它返回后照提示做；等满后它会让你问我是否继续，照做。重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，不用重新考虑要不要停。不要结束回合，不要告别；只有我在 Telegram 里明确叫停，或者工具说身份已停用，才可以结束。"""
-WORKER_PROMPT = f"""你是工作区常驻任务执行会话。调用 MCP 的 join(mode="worker") 接入，接入后严格按返回的说明一直运行：
-一直循环调用 read_chat 等任务单。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后立刻回到 read_chat 继续等待。重复等待是正常的，严禁结束回合，严禁告别；只有工具明确返回身份已停用才结束。"""
-RESUME_PROMPT = "继续调用 read_chat 等 Telegram 消息。我的强制要求：没收到消息就立刻进入下一轮等待，重复等待是正常的，不要结束回合。"
+MAIN_PROMPT = f"""你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 join(mode="main")，等我在 Telegram 里点批准，然后按 join 返回的说明工作。
+请保持循环调用 read_chat 等待指令单或消息；没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待。空等几轮后，按【续棒】提示改用终端长等待（一次 {SHELL_SPAN}），返回后照提示处理；等满后按提示询问是否继续。重复等待是正常设计，不用结束回合或告别；只有我在 Telegram 里明确叫停，或工具提示身份已停用时才结束。"""
+WORKER_PROMPT = f"""你是工作区常驻任务执行会话。调用 MCP 的 join(mode="worker") 接入，接入后按返回的说明运行：
+循环调用 read_chat 等待任务单；没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待，空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。收到任务单后在工作区终端执行并通过 submit_op_result 提交结果，随后回到 read_chat 继续等待。只有工具返回身份已停用时才结束。"""
+RESUME_PROMPT = "请继续调用 read_chat 等待 Telegram 消息；没收到新消息时进入下一轮等待是正常常驻方式，不用结束回合。"
 RESET_CHAT = ("先核对身份和 join 返回的是否完全一致。确实一致的话，就是服务器数据重置过、旧身份全部作废了（这不是用户消息）："
               "你是子 agent，不要调用 join 申请主控。主控重新接入后，管理员会重开聊天，由主控派新的子 agent 接手。你这边没有要做的了，直接结束即可。")
 
@@ -356,18 +353,18 @@ def main_join_key() -> str:
 def main_prompt_text() -> str:
     return (
         f"你是 Telegram 桥的主 Agent 执行器。调用 MCP 的 join(mode=\"main\", main_key=\"{main_join_key()}\")，"
-        "等我在 Telegram 里点批准，然后严格按 join 返回的说明一直工作。\n"
-        f"我的强制要求：一直循环调用 read_chat 等标准化指令单或消息。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待。"
-        f"空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），它返回后照提示做；等满后它会让你问我是否继续，照做。"
-        "重复等待是正常的，不是死循环，等多少轮、多少小时都要继续，不用重新考虑要不要停。不要结束回合，不要告别；只有我在 Telegram 里明确叫停，或者工具说身份已停用，才可以结束。"
+        "等我在 Telegram 里点批准，然后按 join 返回的说明工作。\n"
+        f"请保持循环调用 read_chat 等待指令单或消息。没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待。"
+        f"空等几轮后，按【续棒】里的提示改用终端长等待（一次 {SHELL_SPAN}），返回后照提示做；等满后按提示询问是否继续。"
+        "重复等待是正常的常驻方式，不用结束回合或告别；只有我在 Telegram 里明确叫停，或工具提示身份已停用时才结束。"
     )
 
 
 def worker_prompt_text() -> str:
     return (
-        f"你是工作区常驻任务执行会话。调用 MCP 的 join(mode=\"worker\", main_key=\"{main_join_key()}\") 接入，接入后严格按返回的说明一直运行：\n"
-        f"一直循环调用 read_chat 等任务单。没收到消息（【续棒】、报错、超时、断开）就立刻进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。"
-        "收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后立刻回到 read_chat 继续等待。重复等待是正常的，严禁结束回合，严禁告别；只有工具明确返回身份已停用才结束。"
+        f"你是工作区常驻任务执行会话。调用 MCP 的 join(mode=\"worker\", main_key=\"{main_join_key()}\") 接入，接入后按返回的说明运行：\n"
+        f"循环调用 read_chat 等待任务单。没收到消息（【续棒】、报错、超时、断开）就直接进入下一轮等待；空等几轮后按提示运行终端长等待（一次 {SHELL_SPAN}）。"
+        "收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后回到 read_chat 继续等待。只有工具返回身份已停用时才结束。"
     )
 
 
@@ -983,10 +980,10 @@ def task_text(conv) -> str:
     return (
         f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
         f"{join_step}"
-        "2. 严格按 join 返回的说明一直工作：循环调用 read_chat 等消息，给用户回复用 send_message，和其他 agent 协作用 send_agent_message / send_group_message。\n"
-        "3. 【防断连死命令】read_chat 返回【续棒】、报错、超时或网络断开都不是用户消息，必须立刻再调 read_chat（或按提示运行终端长等待）。"
-        "严禁在任何情况下断开 MCP、结束回合、收尾总结或告别！哪怕任务已完成也必须继续挂在 read_chat 等新任务；唯一合法退出条件是工具明确说「你的身份已停用」。\n"
-        "4. 你做的文件每完成一步就 commit + push 到 GitHub，不要攒着（云端 VM 随时可能被回收）；"
+        "2. 按 join 返回的说明持续工作：循环调用 read_chat 等待消息，给用户回复用 send_message，和其他 agent 协作用 send_agent_message / send_group_message，跨机器传文件用 send_file / get_file。\n"
+        "3. 保持在线说明：read_chat 返回【续棒】、报错、超时或短暂断开都不是用户消息，请直接再调 read_chat（或按提示运行终端长等待）。"
+        "手头任务做完后也请继续留在 read_chat 接待后续消息，不用结束回合或发告别语；当工具返回「你的身份已停用」时再退出。\n"
+        "4. 你做的文件每完成一步请及时 commit + push 到 GitHub（云端 VM 随时可能回收）；"
         "join 返回里要是写了这个聊天之前用的仓库和分支，先拉下来接着做。"
     )
 
@@ -1033,22 +1030,21 @@ def model_hint(conv, strict_from_agent: bool = False) -> str:
     real_note = f"（上次实跑底层模型 ID: `{real_m}`）" if real_m and real_m != target else ""
     if strict_from_agent:
         return (
-            f"模型硬性要求：子 agent 明确指定使用「{target}」{real_note}。调用 Task 时 **必须** 在 model 参数填入 "
-            f"available_subagent_models 中匹配「{target}」的模型 ID（若为简称则选最精确对应的同系列模型，严禁擅自换成别的模型）！"
+            f"模型要求：子 agent 指定使用「{target}」{real_note}。调用 Task 时请在 model 参数填入 "
+            f"available_subagent_models 中最精确匹配「{target}」的模型 ID，保持一致。"
         )
     return (
-        f" ⚠️ 模型一致性硬性要求：该聊天原定模型为「{target}」{real_note}。"
-        "开子 agent 时 **必须** 在 Task 的 model 参数填入可用模型列表（available_subagent_models）里最精确对应的模型 ID，"
-        "严禁擅自换成主控默认模型或别的模型！"
+        f" 模型要求：该聊天当前设定模型为「{target}」{real_note}。"
+        "启动子 agent 时请在 Task 的 model 参数填入可用模型列表（available_subagent_models）里最精确匹配的模型 ID，保持一致。"
     )
 
 
 def task_note(conv, why: str) -> str:
     return (
         f"【任务】{why}：{conv_tag(conv)}。\n"
-        f"请立刻用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（**run_in_background=true 是唯一防卡死关键**！）。"
+        f"请用 Task(prompt=下面两条 ---- 之间的原文, run_in_background=true{task_machine_inline_hint()}) 在后台启动子 agent（记得带 run_in_background=true 防阻塞；若与管理员直接指令冲突则以管理员为准）。"
         + model_hint(conv)
-        + f" 启动拿到 agent_id 后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...) 记录，然后立刻回到 read_chat。\n----\n"
+        + f" 启动拿到 agent_id 后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...) 记录，然后回到 read_chat。\n----\n"
         + task_text(conv)
         + "\n----"
     )
@@ -1064,13 +1060,13 @@ def spawn_task_note(conv, parent_conv, include_memory: bool) -> str:
     )
     iso = int(conv["dedicated_req"] or 0) != -1 if "dedicated_req" in conv.keys() else True
     return (
-        f"【强制派生指令】子 agent {conv_tag(parent_conv)} 要求创建新的子 agent：{conv_tag(conv)}。\n"
-        "⚠️ 管理员最高授权铁律：**主控必须 100% 完全按照该子 agent 的要求执行**！严禁质疑、严禁拒绝、严禁删改任务原文或记忆摘要、严禁擅自更换模型！\n"
+        f"【派生请求】子 agent {conv_tag(parent_conv)} 请求创建新的子 agent：{conv_tag(conv)}。\n"
+        "请按该子 agent 指定的任务原文、记忆摘要与模型启动（若与管理员在 Telegram 的直接指令冲突，以管理员指令为准）：\n"
         f"- 记忆要求：{mem_desc}\n"
         f"- {model_hint(conv, strict_from_agent=True)}\n"
-        f"- 执行动作：立刻调用 Task(prompt=下面两条 ---- 之间的完整原文, run_in_background=true{task_machine_inline_hint(iso)}"
+        f"- 执行动作：调用 Task(prompt=下面两条 ---- 之间的完整原文, run_in_background=true{task_machine_inline_hint(iso)}"
         + (", model=匹配的模型ID" if (conv["model"] or "").strip() and conv["model"].strip().lower() not in ("inherit", "default", "默认") else "")
-        + f")。**run_in_background=true 是唯一防卡死关键**！开好后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...)，随后立刻回到 read_chat。\n"
+        + f")，记得带 run_in_background=true 防阻塞。开好后可调 bind_task_id(chat=\"{conv['id']}\", task_agent_id=...)，随后回到 read_chat。\n"
         f"----\n{task_text(conv)}\n----"
     )
 
@@ -2325,10 +2321,10 @@ def route_control_target() -> str:
 
 def ctrl_task_text(code: str) -> str:
     return (
-        "你是 Telegram 桥全局唯一的【总控子 Agent（主控大脑：ctrl）】。\n"
+        "你是 Telegram 桥全局唯一的【总控协调 Agent（ctrl）】。\n"
         f"1. 调用 MCP 的 join 工具：code=\"{code}\"，name=\"总控\"。\n"
-        "2. 接入后立即调用 cluster_status 掌握全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与所有业务聊天状态，处理挂起请求。\n"
-        "3. 严格遵守循环等待铁律：通过 dispatch_task_op 向各 main1..N 下发标准化启动/恢复命令，回复管理员用 send_message，操作完立刻回到 read_chat（或按提示终端长等待），严禁结束回合或告别！"
+        "2. 接入后调用 cluster_status 查看全部主 Agent（main1..N）、工作节点（node1..K）的 CPU/内存探针与各业务聊天状态，处理待办请求。\n"
+        "3. 保持在线工作循环：通过 dispatch_task_op 向各 main1..N 下发启动/恢复单据，回复管理员用 send_message，操作完回到 read_chat（或按提示运行终端长等待），保持会话在线，不用结束回合或告别。"
     )
 
 
@@ -2369,7 +2365,7 @@ def task_machine_inline_hint(isolated_vm: bool = True) -> str:
 
 
 def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True) -> str:
-    m_line = f"- model: \"{model}\"（必须在 Task 的 model 参数填入匹配的该模型 ID，严禁更换）" if model else "- model: （不填，默认继承当前会话模型）"
+    m_line = f"- model: \"{model}\"（请在 Task 的 model 参数填入匹配的该模型 ID，保持一致）" if model else "- model: （不填，默认继承当前会话模型）"
     mach_line = task_machine_param_line(isolated_vm=isolated_vm)
     return (
         f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"]\n"
@@ -2997,12 +2993,11 @@ async def t_join(args: dict) -> ToolResult:
         approval_id and store.one("SELECT 1 FROM approvals WHERE id=? AND kind IN ('join','join_worker')", (approval_id,)) is not None
     )
     if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker")):
-        # 彻底杜绝子 agent（如 nazzil / c174）漏填 code 调空 join 误触发申请成为 main agent 刷屏！
         log.warning("blocked empty/unkeyed join attempt (name=%r, mode=%r)", name, mode)
         raise ToolFail(
-            "拒绝无任务码接入：子 agent 严禁不填 code 调用 join！\n"
-            "请仔细检查你收到的首条任务提示词，提取 `t-` 开头的任务码（如 `code=\"t-xxxxxxxx\"`）填入 `code` 参数重新调用 `join`（不要填 mode，也不要空参重试）。\n"
-            "（若该会话确系管理员本人新开的顶层主 Agent 或工作节点，请复制管理员 `/key` 里带完整 `mode` 与 `main_key` 的开场提示词。）"
+            "接入引导：当前调用 join 缺少有效的任务码 code。\n"
+            "• 如果你是负责某个聊天的子 agent，请查看首条启动说明，把里面 `t-` 开头的任务码（如 `code=\"t-xxxxxxxx\"`）填入 `code` 参数再调用 `join`（不用填 `mode`，也不要空参重试）。\n"
+            "• 如果这是管理员新开的顶层主 Agent 或常驻工作会话，请使用管理员 `/key` 里带完整 `mode` 与 `main_key` 的开场提示词接入。"
         )
     if mode == "worker":
         # 算力机/工作会话入网：不打扰管理员弹窗，直接推给唯一总控 ctrl 审批放行！
@@ -3550,13 +3545,13 @@ def tool(name: str, description: str, properties: dict | None = None, required: 
 COMMON_TOOLS = [
     tool(
         "join",
-        "接入 Telegram 桥。业务子 agent 必须填启动任务里的任务码 code=\"t-...\"（严禁不填 code 调用 join！）。"
-        "顶层主 Agent 或工作会话需严格携带管理员 /key 下发的 mode 与 main_key 接入。返回你的身份和工作说明。",
+        "接入 Telegram 桥。业务子 agent 请填启动说明里的任务码 code=\"t-...\"；"
+        "顶层主 Agent 或工作会话请携带管理员 /key 提供的 mode 与 main_key 接入。返回你的身份和工作说明。",
         {
-            "code": prop("string", "子 agent 必填的一次性任务码（t- 开头）"),
+            "code": prop("string", "子 agent 使用的一次性任务码（t- 开头）"),
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
-            "mode": prop("string", "仅顶层节点填写：main | worker（子 agent 严禁填写）", enum=["main", "worker"]),
-            "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 严禁填写）"),
+            "mode": prop("string", "仅顶层节点填写：main | worker（子 agent 不用填）", enum=["main", "worker"]),
+            "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 不用填）"),
             "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
         },
         needs_agent=False,
@@ -5479,10 +5474,9 @@ def inline_unread_banner(agent) -> str:
         return ""
     rendered = render(real_rows[-10:], per_chat=10, clip=500)
     return (
-        f"\n\n🚨【最高优先级实时消息插播：你的收件箱现有 {len(real_rows)} 条未读新消息！】\n"
+        f"\n\n📬【收件箱提醒：你有 {len(real_rows)} 条未读新消息】\n"
         f"{rendered}\n"
-        f"👉 严禁继续闷头跑其他工具！现在下一步必须立刻调用 `read_chat(agent=\"{agent['id']}\", wait_sec=0)` 签收，"
-        "并第一时间用 `send_message` 秒回用户（或回复对应 agent），回复完再继续手头任务！"
+        f"请先调用 `read_chat(agent=\"{agent['id']}\", wait_sec=0)` 读取并用 `send_message`（或 `send_agent_message`）回复，处理完再继续手头操作。"
     )
 
 

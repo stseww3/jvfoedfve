@@ -86,9 +86,9 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     # 1. Verify empty / unkeyed join (nazzil / c174 misfire case) is immediately blocked with ZERO Telegram popups!
     ADMIN_NOTICES.clear()
     bad_join1 = await bridge.call_tool("join", {"name": "nazzil"})
-    assert bad_join1.is_error and "严禁不填 code 调用 join" in text_of(bad_join1)
+    assert bad_join1.is_error and "缺少有效的任务码 code" in text_of(bad_join1)
     bad_join2 = await bridge.call_tool("join", {"mode": "main", "name": "nazzil"})
-    assert bad_join2.is_error and "严禁不填 code 调用 join" in text_of(bad_join2)
+    assert bad_join2.is_error and "缺少有效的任务码 code" in text_of(bad_join2)
     assert ADMIN_NOTICES == [], f"False admin popup leaked on empty join: {ADMIN_NOTICES}"
 
     # 2. Verify dais_runtime.pyz compiled bytecode bundle works without .py source!

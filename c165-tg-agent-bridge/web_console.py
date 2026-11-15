@@ -307,7 +307,7 @@ def _build_full_restart_dossier(bridge, conv, operator_note: str = "") -> str:
         f"【Web 控制台管理员手动重开指令 · 全量上下文档案】\n"
         f"管理员在 Web 面板点击了重开聊天：{bridge.conv_tag(conv)}（编号 `{cid}`）。\n"
         f"{op_note_line}"
-        f"请严格依据以下【完整无损档案】执行标准化重开，严禁遗漏任何参数或擅自更换模型：\n"
+        f"请依据以下【完整上下文档案】执行标准化重开，保持原有参数与模型设置：\n"
         f"- 原定模型（必须保持一致）：`{eff_model}`\n"
         f"- 原始职责说明（brief）：{conv['brief'] or '无'}\n"
         f"- 历史所属目录/主Agent：`cloud{cnum}` | 机器占用策略：{ded_info}\n"
