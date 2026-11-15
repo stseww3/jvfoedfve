@@ -445,18 +445,19 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #   feet    four dim ground lamps at the feet of the armillary, looking up at its rings, and what
 #           they throw on the brass: one source under the cell the rings take their light from.
 #   doors   everything else is dark, but for one caged lamp at the door of a small building.
-#   station where the way begins: a pendant under the ridge of the glass roof over the car and one
-#           under the winch house's ridge, on site/cablecar's hanging points. Both hang behind
-#           the arrival view, and the paving that is in it keeps to level 1 (c226, g2 #36405).
-#           No pole at the foot of the station's steps: one there stands in the arrival view,
-#           and the first pair of the way is eight cells on.
+#   station where the way begins: a pendant under the ridge of the glass roof, over the car's door,
+#           on site/cablecar's hanging point. It hangs behind the arrival view, and the paving
+#           that is in it keeps to level 1 (c226, g2 #36405). The winch house has no lamp of the
+#           site's: the winch brings its own wall lamp (machines/cable, c240). No pole at the foot
+#           of the station's steps: one there stands in the arrival view, and the first pair of
+#           the way is eight cells on.
 #
 # The doorway is the brightest thing on the site (14, sky/lights); the street lamps lead to it a
 # step under.
 DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
                         # a test scene asks for the site's lamps with dress(canvas)
 STREET_LEVEL = 13
-STATION_LEVEL = 12      # the pendants of the cable station: the top of a pendant's rank
+STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
 FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
                         # paving beside a ground lamp gets. Under every lit window, so that the rings stay
@@ -473,8 +474,8 @@ _REPORTED = {
     ("site.powerhouse", "PIPE_Z"): 33,      # c228: the row of the steam main, where its bridge crosses the lip
     ("site._kit", "PIER_TOP"): 1.5,
     ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
-    # c226, g2 #36405: the hanging points under the two ridges of the cable station
-    ("site.cablecar", "LAMP_POINTS"): {"car": (89.5, 3.0, -32.5), "winch": (88.5, 5.0, -37.5)},
+    # c226 (37fc9574): the hanging point under the ridge of the cable station's glass roof
+    ("site.cablecar", "LAMP_POINTS"): {"car": (89.5, 3.0, -32.5)},
     # c246, g2 #33389: the cells off the corners of the armillary's base, and the cell its brass is lit by
     ("machines.armillary", "LAMP_CELLS"): [(S.ARMILLARY[0] + dx, S.ARMILLARY[1] + dz)
                                            for dx in (-2, 2) for dz in (-2, 2)],
