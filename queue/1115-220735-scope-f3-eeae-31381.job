@@ -1,0 +1,3 @@
+branch=cursor/c164-scope-f3-eeae
+head=52886d23fe8b195b1e8d615f1fb3213b7866edbc
+args=--wip --always --tail 12 python tools/selfshots.py obs_mach_refractor --only v8_a\,v8_b\,v8_south_b\,tail_a --out renders/_wip 
