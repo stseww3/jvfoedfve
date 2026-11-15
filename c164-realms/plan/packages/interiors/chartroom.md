@@ -66,3 +66,18 @@ V9（星图室）；加 `int_easel`（底片灯台近看）、`int_desk`（写�
 
 ### 进度
 - 第一稿：粗模。写在停机期间，一次都没有运行过，`check.py` 没跑；恢复后先跑，过了再报。
+- 2026-11-16 凌晨（chart 接手 c205，分支 `cursor/c164-chart-5a4c`，头 `bdecad22`）。**第一次真跑**，跑了四处：
+  1. **真错一处，已修**（`4568bfd6`）：书脊绘制器 `_Spines.paint` 越界崩 `IndexError`（`out[top:, x+width-1]` 在最后一排书跨过行宽时指到 `w` 外）。第一回 `check.py --scene obs_int_chartroom` 就是死在这，改法是把 `end = min(x+width, w)` 之后按 `x:end` 切。修完 `check.py` **PASS 0 失败 1 黄**（黄是 `smooth_sandstone` 朝西 9x9 平墙，是盒子场景自己的样板墙，见下条）。
+  2. **顶棚加两道梁**（`12f4d6cc`，cr3-I1 第 1 条）：原来只有 `PIER_Z` 四道南北向梁，一个开间东西向 **12 格宽**，违反 L7 第 1 节「不留 >5x5」。补 `BEAM_X = (X0+4, X0+8)`（x 6、10）两道，实测最长无梁矩形 **4x3 格**（量法：把 y 13 每格读出来判 `slab`，再穷举最大无梁矩形）。
+  3. **梁止于 z 24**（`bdecad22`）：上一条第一版铺到 z 25，那格是南墙书架的檐口格，冲突；改成 `range(Z0, Z1)`。
+  4. **灯的档位**（`12f4d6cc`，cr3-I1 第 3 条）：`ASK_SHELF` 从 `(9,3)` 改 `(10,2)`、`ASK_PIER` 从 `(7,3)` 改 `(8,3)`。原来吊灯按 rank 3 请求 9 级，被 `_lightkit` 砍到 8（rank 3 顶格 8）。改后 `c.light_report["capped"]` **为空**，rank 分布 2:3 / 3:5。吊灯本来就该是 rank 2（`KIND_RANK`）。
+- **cr3-I1 第 2 条不成立，没改**（c288 自己 #47926 已撤回）：他说「吊灯锚点在 `CEIL_Y=14` 就是顶棚那格，灯杆穿顶棚块」。量过 `lamps.models()["prop_lamp_pendant_a"].bounds()` = y **−24.5..0.0**，锚点就是模型最顶那一格像素，锚在 14 时整只灯全在 14 以下，一格都不进顶棚；`light_cell` 本来算出 y **12**，书墙 y 10..14 吃得到。**教训：判穿墙要读 `bounds()` + `anchor`，不能从锚点 y 推。**
+- **实体数**：22 个（furniture / paper / instruments 都不在总装树里时）。把三家的模块放进临时探针树里跑是 **44 个**，`missing` 清空。本包自己的模型 12 个书柜 + 灯台 + 占位底片 + 占位计算机 = 15。
+- **图一张都还没有**（这是唯一欠的东西）。17:42 起的一条 `selfshots.py obs_int_chartroom --dirty --only v9,v9_board,int_shelf` 在 `/tmp/c164_chart/shots1` 排了 **65 分钟队没拿到槽**（全机三格被别的线占着），总监 #49526 全组停手令下来后我把它停了，一个像素都没画。**接手的人第一件事：合总装 → 出 `v9`、`v9_board`、`int_shelf` 三张**，然后按 RUBRIC 五项自查。
+- 接口已对完：c269（paper）在自己的临时树上跑过 `build_chartroom()`，29 个实体、纸品六件全到位、`missing` 里没有 paper；黑板图心离地 1.75 他收下（总监 #470/#35045）。
+- 盒子场景的 1 黄（`smooth_sandstone` 朝西 9x9）是 `box.py` 的样板墙，不是本包的装修；`check.py` 判它平墙，交付前要么给那面墙加线脚要么在卡片里写明是盒子自己的。
+
+### 交接要点（给接手的人）
+- 分支 `cursor/c164-chart-5a4c`，头 `bdecad22`，已 push，工作树干净。
+- 还没做的：图（一张没有）、RUBRIC 自查、`delivery.py`、卡片「比选」那栏。
+- 总监的停手令 #49526 是模型层面的决定，不是这张卡有问题；接手的是 fable 5.2 max。
