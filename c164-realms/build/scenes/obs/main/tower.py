@@ -405,6 +405,15 @@ def models():
     return dict(_models())
 
 
+def _motion():
+    """The motion line's kit, or None while it is not in the tree."""
+    try:
+        from ..motion import _kit as MK
+    except ImportError:
+        return None
+    return MK
+
+
 def _mast(c, o):
     """Stand the mast on the finial and the cup wheel on its spindle. Returns the entities placed."""
     kit = _models()
@@ -413,6 +422,12 @@ def _mast(c, o):
     cups = M.display(kit[CUPS_MODEL], view=FAR)
     cups["Tags"].append(CUPS_TAG)
     c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], cups)
+    # the cup wheel turns about the model's y, the spindle through its hub: one turn in
+    # ANEMOMETER_REV ticks (1.2 s). Registered while the motion line's kit is in the tree; the
+    # scene keeps the tag either way, so a scene built before the kit still finds the part
+    mk = _motion()
+    if mk is not None:
+        mk.spin(c, "y", mk.ANEMOMETER_REV, model=CUPS_MODEL)
     return 2
 
 
