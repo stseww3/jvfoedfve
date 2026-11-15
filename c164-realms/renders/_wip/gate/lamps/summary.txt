@@ -1,0 +1,11 @@
+gate props/lamps 34ec825f: the merged tree 34ec825f, the assembly as it was 5c1dde0b
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 3 test scenes, 47 shots with a picture kept
+                    obs_props_lamps: 26 pictures show c392ddfe; the card's code has changed since (lamps.py): draw them again
+                    obs_props_lamps_site: 15 pictures show 56e934ef; the card's code has changed since (lamps.py): draw them again
+                    obs_props_lamps_site_nearpair: 6 pictures show 56e934ef; the card's code has changed since (lamps.py): draw them again
+check.py: 28 scenes in 14 s: 28 pass (13 with warnings)
+pictures: [PASS] selfshots obs_props_lamps at 34ec825f: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site at 34ec825f: 15 of 15 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_props_lamps_site_nearpair at 34ec825f: 6 of 6 kept pictures are what the code draws
+result: PASS
