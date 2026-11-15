@@ -1,0 +1,7 @@
+gate materials/iron 8567371a: the merged tree c992a3ae, the assembly as it was 8b23990d
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 24 scenes in 12 s: 24 pass (10 with warnings)
+pictures: obs_mat_iron: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_iron at c992a3ae: 13 of 14 kept pictures are what the code draws, 1 not
+    plates_b: 57024 of 921600 pixels are not what the code draws (off by up to 53 of 255)
+result: PASS
