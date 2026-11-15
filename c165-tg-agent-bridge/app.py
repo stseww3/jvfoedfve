@@ -256,8 +256,7 @@ CTRL_DUTY = """你是全局唯一的【主控大脑（总控子 Agent：ctrl）�
    - 收到新建聊天或子 agent 派生请求（spawn_subagent）时，结合 cluster_status 中各 main1..N 的 CPU/内存探针负载与挂载数量，选择最健康的 target_main 下发 dispatch_task_op(action="launch")。
    - 独占机器审批：默认 dedicated_machine=false 共享运行（资源有限默认不给独占）；只有明确申请独占且当前确实有空闲富余机器时才设 grant_dedicated=true，也可按需用 manage_node(action="grant_access") 授权指定其他 agent 共用某台机器。
    - 模型一致性铁律：各聊天（以及你总控自己）的模型尽量保持一致，严禁擅自更换模型！若确有特殊原因建议更换模型，必须先在 Telegram 用 send_message 与管理员沟通确认后才能加 confirm_model_change=true。
-5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。
-6. 【子 Agent 入网模型校验裁决】当子 agent 入网申报的模型与要求模型不符时，桥会自动挂起它并向你报警：请立即判断——若属开错模型，调 `dispatch_task_op(chat=..., action="restart", model=要求模型)` 重拉正确模型；若确认实报模型即目标模型的同款内部名（或已与管理员沟通允许使用），调 `dispatch_task_op(chat=..., action="approve_model")` 放行其开始工作。"""
+5. 【工作节点（node1..K）免打扰入网审批】收到【工作节点入网申请】时，无需打扰管理员，直接调用 manage_node(action="approve_worker", request_id=...) 批准分配为云端工作节点 nodeN（主 Agent mainN 则由管理员本人在 Telegram 审核）。"""
 
 MAIN_EXECUTOR_DUTY = """你是主 Agent 执行器（拥有 Cursor Task 启动/恢复权限的纯执行会话）：
 1. 【零思考标准化执行铁律】对于收件箱收到的 `[STANDARD_OP ...]` 标准化指令单，严禁进行业务理解、严禁分析上下文、严禁自行判断死活或更换模型，只需 100% 照单机械执行：
@@ -957,16 +956,7 @@ def task_text(conv) -> str:
     mem_block = ""
     if (conv["memory_note"] or "").strip():
         mem_block = f"\n\n【父 agent 交接的当前记忆与上下文摘要】\n{conv['memory_note']}\n"
-    req_model = effective_conv_model(conv)
-    if req_model:
-        join_step = (
-            f"1. 【入网与模型强校验】本聊天指定要求模型为：「{req_model}」。\n"
-            f"   调用 MCP 的 join 工具时必须核对你自己当前的真实模型与档位，如实填写：code=\"{conv['task_code']}\"，{naming}，"
-            "actual_model=\"你的真实模型名与档位\"，model_match=true或false（若你的真实模型确实符合要求模型填 true 才能继续工作；"
-            "若不是要求模型必须如实填 false，严禁谎报，桥会自动上报主控判断）。\n"
-        )
-    else:
-        join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}，actual_model=\"你的真实模型名与档位\"。\n"
+    join_step = f"1. 调用 MCP 的 join 工具：code=\"{conv['task_code']}\"，{naming}。\n"
     return (
         f"你是 Telegram 桥里聊天 {conv['id']} 的子 agent{brief}。{mem_block}\n"
         f"{join_step}"
@@ -1694,17 +1684,12 @@ async def read_inbox(agent, wait_sec: int) -> ToolResult:
             if current is None or current["status"] != "active":
                 return text_result(stopped_text(current))
             conv = conv_row(conv_id)
-            if agent["role"] == "chat" and conv is not None and (conv["model_check"] or "") == "mismatch_hold":
-                rows = []
-            else:
-                rows = pending_rows(conv_id, conv["read_cursor"])
+            rows = pending_rows(conv_id, conv["read_cursor"])
             if rows and (wait_sec == 0 or any(r["wake"] for r in rows)):
                 break
             remaining = deadline - now()
             if remaining <= 0:
                 if wait_sec == 0:
-                    if agent["role"] == "chat" and conv is not None and (conv["model_check"] or "") == "mismatch_hold":
-                        return text_result(f"⏸ 仍在等待主控裁决你的模型是否放行。请不填 wait_sec 直接调用 read_chat(agent=\"{agent_id}\") 挂起等待。")
                     foot = role_footer(agent)
                     return text_result("暂无新消息（只看了一眼）。" + foot)
                 if mode == "capped":
@@ -2472,6 +2457,32 @@ def migrate_cluster_v360() -> None:
     ensure_controller_alive()
 
 
+def release_model_holds() -> int:
+    """接入时的模型核对已取消：把旧版留下的「模型不符挂起」全部解除，挂着等裁决的子 agent 直接拿到完整工作说明开始干活。"""
+    held = store.q("SELECT * FROM convs WHERE model_check!=''")
+    released = 0
+    for conv in held:
+        was_hold = (conv["model_check"] or "") == "mismatch_hold"
+        store.run(
+            "UPDATE convs SET model_check='', alert=CASE WHEN ? THEN '' ELSE alert END, alert_ts=CASE WHEN ? THEN 0 ELSE alert_ts END WHERE id=?",
+            (int(was_hold), int(was_hold), conv["id"]),
+        )
+        if not was_hold or conv["status"] != "open":
+            continue
+        ag = active_agent(conv)
+        if ag is None:
+            continue
+        system_note(
+            conv["id"],
+            "接入时的模型核对已经取消，你不用再等总控判断，可以正常开始工作了。下面是你的完整工作说明和上下文：\n\n"
+            + welcome_chat(conv_row(conv["id"]), ag["id"]),
+            wake=1,
+        )
+        released += 1
+        log.info("released model hold on %s (agent %s)", conv["id"], mask_identity(ag["id"]))
+    return released
+
+
 def dispatch_conv_to_cluster(conv, why: str, requester: str = "system") -> str:
     """当新建或重开聊天时：若唯一总控 ctrl 在线则交由 ctrl 结合 CPU/内存探针统一决策分发；若 ctrl 暂未就位则直接派给最优在线 mainN 防卡壳。"""
     if ctrl_is_active():
@@ -2829,7 +2840,7 @@ async def _notify_conv_claimed(conv) -> None:
         parent_row = conv_row(parent_id)
         store.run("UPDATE convs SET spawn_notified=1 WHERE id=?", (conv["id"],))
         if parent_row is not None and parent_row["status"] == "open":
-            m_txt = (conv["actual_model"] or conv["model"] or "").strip() or "继承主控"
+            m_txt = (conv["model"] or "").strip() or "继承主控"
             ded_n = (conv["dedicated_node"] or "").strip()
             ded_s = f"，独占节点：{ded_n}" if ded_n else ""
             system_note(
@@ -2852,23 +2863,9 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     if conv is None:
         raise ToolFail("任务码不对、已经用过或已作废。不要不填 code 重试；请主控用 restart_agent 拿新的任务原文。")
     is_ctrl = conv["id"] == "ctrl"
-    req_model = "" if is_ctrl else effective_conv_model(conv)
+    # 接入时不核对模型。actual_model / model_match 是旧版启动提示词里的参数：还在用旧提示词的子 agent 填了也照常接入，
+    # actual_model 只当它自己的说法留作备注，不参与任何判断。
     actual_model = " ".join(str(args.get("actual_model") or "").split())[:120]
-    raw_match = args.get("model_match")
-
-    # 子 agent 入网模型强校验：若该聊天指定了要求模型，子 agent 必须申报真实模型并明确回答是不是要求的模型！
-    if req_model and (not actual_model or not isinstance(raw_match, bool)):
-        name_hint = f", name=\"{clean_name(args.get('name'))}\"" if args.get("name") else ""
-        raise ToolFail(
-            f"【子 Agent 入网模型校验】本聊天 {conv_tag(conv)} 指定要求的模型为：「{req_model}」。\n"
-            "请核对你自己当前运行的真实模型名称与档位（不要消耗或丢弃 code），立即重新调用 join 如实回答：\n"
-            f"join(code=\"{code}\"{name_hint}, actual_model=\"你的真实模型名与档位\", model_match=true或false)\n"
-            "• 是要求的模型填 model_match=true 才能继续工作；\n"
-            "• 不是要求的模型必须如实填 model_match=false（严禁谎报），桥会自动告知主控去判断！"
-        )
-
-    family_conflict = bool(req_model and actual_model and has_obvious_model_family_conflict(req_model, actual_model))
-    is_matched = (not req_model) or ((raw_match is True) and (not family_conflict))
 
     old = active_agent(conv)
     if old is not None:
@@ -2883,53 +2880,16 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     if name and not conv["name"]:
         store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
 
-    if not is_matched:
-        reason_note = "模型家族明显冲突" if (raw_match is True and family_conflict) else "子 agent 自检回答：不是要求模型"
-        alert_txt = f"模型不符待主控判断（要求 {req_model} / 实报 {actual_model}）"
-        store.run(
-            "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='mismatch_hold', alert=?, alert_ts=? WHERE id=?",
-            (agent_id, actual_model, alert_txt, now(), conv["id"]),
-        )
-        conv = conv_row(conv["id"])
-        log.warning("conv %s model mismatch hold: required=%r actual=%r match=%r", conv["id"], req_model, actual_model, raw_match)
-        ensure_controller_alive()
-        ctrl_dest = route_control_target()
-        system_note(
-            ctrl_dest,
-            f"⚠️【子 Agent 模型校验不匹配·请主控判断】\n"
-            f"聊天 {conv_tag(conv)} 新接入的子 agent 未通过模型校验（{reason_note}），桥已将它挂起暂停执行任务，等你判断：\n"
-            f"- 要求模型：「{req_model}」\n"
-            f"- 实报模型：「{actual_model}」（model_match={raw_match}）\n"
-            f"- 所属节点：cloud{cloud_of(conv)}\n"
-            f"👉 请主控立即判断并二选一处理：\n"
-            f"1. 【换回要求模型重开】调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"restart\", model=\"{req_model}\")`（或旧模式 `restart_agent(chat=\"{conv['id']}\")`）停掉它并用正确模型重拉；\n"
-            f"2. 【放行当前模型继续】若核实「{actual_model}」其实就是「{req_model}」同款别名，或经确认允许使用当前模型，调 `dispatch_task_op(chat=\"{conv['id']}\", action=\"approve_model\")` 立即放行它开始干活！",
-            wake=1,
-        )
-        mark_menu_dirty()
-        return text_result(
-            f"⏸【模型校验未通过·已上报主控判断】\n"
-            f"你是聊天 {conv['id']}「{conv_name(conv)}」的子 agent，身份 {agent_id}。\n"
-            f"- 本聊天要求模型：「{req_model}」\n"
-            f"- 你申报的实际模型：「{actual_model}」（判定：不匹配，{reason_note}）\n\n"
-            "桥已自动通知主控（ctrl/main）进行判断：\n"
-            "1. 在主控作出裁决前，**严禁执行任何业务任务、严禁改文件、严禁调用 send_message / local_shell 等工具**！\n"
-            f"2. 现在请只调用 `read_chat(agent=\"{agent_id}\")` 挂起等待主控判断结果：\n"
-            "   • 若主控决定按要求模型重开，你会收到「你的身份已停用」，直接退出即可；\n"
-            "   • 若主控批准你以当前模型继续，完整任务说明会推送到你的 `read_chat`，收到后再开始工作！"
-        )
-
     store.run(
-        "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='ok', alert='', alert_ts=0 WHERE id=?",
+        "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='', alert='', alert_ts=0 WHERE id=?",
         (agent_id, actual_model, conv["id"]),
     )
     conv = conv_row(conv["id"])
-    log.info("conv %s claimed by %s (%s, role=%s, actual_model=%s)", conv["id"], agent_id, conv["name"], role_val, actual_model or "-")
+    log.info("conv %s claimed by %s (%s, role=%s)", conv["id"], agent_id, conv["name"], role_val)
     if is_ctrl:
         mark_menu_dirty()
         return text_result(welcome_ctrl(conv, agent_id))
-    m_note = f"，核验模型：{actual_model}" if actual_model else ""
-    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}{m_note}）。", wake=0)
+    system_note(route_control_target(), f"{conv_tag(conv)} 已有子 agent 接手（身份 {mask_identity(agent_id)}）。", wake=0)
     await _notify_conv_claimed(conv)
     mark_menu_dirty()
     return text_result(welcome_chat(conv, agent_id))
@@ -3517,8 +3477,6 @@ COMMON_TOOLS = [
         {
             "code": prop("string", "子 agent 必填的一次性任务码（t- 开头）"),
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
-            "actual_model": prop("string", "子 agent 填写自己当前真实运行的模型名称与档位（如 Gemini 4 Carbon High / Claude 4.5 Opus / GPT-5 等）"),
-            "model_match": prop("boolean", "当聊天有要求模型时子 agent 必填：回答自己是不是要求的模型（是填 true 才能继续；不是填 false 交由主控判断）"),
             "mode": prop("string", "仅顶层节点填写：main | worker（子 agent 严禁填写）", enum=["main", "worker"]),
             "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 严禁填写）"),
             "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
@@ -3770,10 +3728,10 @@ MAIN_TOOLS = [
     ),
     tool(
         "dispatch_task_op",
-        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开 / approve_model 放行模型不符挂起中的子agent），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
+        "（总控专用）向指定或自动优选的主 Agent（main1..N）下发标准化的无脑执行命令（launch 新启动 / resume 探活续跑 / restart 重开），统一由总控决定发给哪个 mainN、选什么模型、给不给独占机器。",
         {
             "chat": CHAT_PROP,
-            "action": prop("string", "标准化指令动作：launch | resume | restart | approve_model", enum=["launch", "resume", "restart", "approve_model"]),
+            "action": prop("string", "标准化指令动作：launch | resume | restart", enum=["launch", "resume", "restart", "approve_model"]),
             "target_main": prop("string", "发给哪个主 Agent（默认 auto 结合 CPU/内存探针自动选最优 mainN，也可指定如 main1、main2）"),
             "model": prop("string", "模型名（默认留空沿用该聊天原模型；注意尽量别换模型，确需更换须先与管理员沟通并填 confirm_model_change=true）"),
             "confirm_model_change": prop("boolean", "已与管理员沟通确认更换该聊天既有模型时填 true，默认 false"),
@@ -4911,15 +4869,11 @@ def render_cluster_overview() -> str:
         think_stuck, stuck_s = check_thinking_stuck(c, trow)
         phase_s = trow["phase"] if trow and trow["phase"] else "-"
         m_s = effective_conv_model(c) or "默认"
-        act_m = (c["actual_model"] or "").strip()
-        if act_m and act_m != m_s:
-            m_s = f"{m_s}(实报:{act_m})"
-        mc_badge = " ⏸【模型不符待裁决】" if (c["model_check"] or "") == "mismatch_hold" else ""
         ded_s = f" 🔒独占={c['dedicated_node']}" if c["dedicated_node"] else (" ⏳申请独占" if int(c["dedicated_req"] or 0) else "")
         tid_s = f" tid={c['task_agent_id']}" if (c["task_agent_id"] or "").strip() else ""
         stuck_badge = f" 🚨思考卡死({human_dur(stuck_s)})" if think_stuck else (" 🔨Shell运行中(正常非卡死)" if phase_s == "shell" else "")
         lines.append(
-            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])}{mc_badge} | phase={phase_s}{stuck_badge}"
+            f"  - {conv_tag(c)} [cloud{cloud_of(c)} | 模型={m_s}{ded_s}{tid_s}]：{STATE_TEXT.get(info['state'], info['state'])} | phase={phase_s}{stuck_badge}"
         )
         tline = trace_one_liner(c["id"])
         if tline:
@@ -5034,21 +4988,9 @@ async def t_dispatch_task_op(agent, args):
 
     existing_model = effective_conv_model(conv)
     if action == "approve_model":
-        ag = active_agent(conv)
-        if ag is None:
-            raise ToolFail(f"{conv_tag(conv)} 当前没有挂起中的子 agent，请直接用 action='restart' 启动。")
-        store.run("UPDATE convs SET model_check='approved', alert='', alert_ts=0 WHERE id=?", (conv["id"],))
-        conv = conv_row(conv["id"])
-        system_note(
-            conv["id"],
-            "✅【主控模型裁决放行】主控已核实并批准你以当前模型继续负责本聊天！以下是你的完整工作说明与上下文，请立即开始工作：\n\n"
-            + welcome_chat(conv, ag["id"]),
-            wake=1,
-        )
-        await _notify_conv_claimed(conv)
-        mark_menu_dirty()
+        # 旧版的「模型不符挂起 → 总控放行」已取消；这个动作名留着，是为了还记着旧说明的总控调用时不报错。
         return text_result(
-            f"已批准 {conv_tag(conv)} 的当前子 agent（实报模型：{conv['actual_model'] or '-'}）放行继续工作，并已唤醒它下发完整上下文。"
+            f"现在子 agent 接入时不再核对模型，{conv_tag(conv)} 不会因为模型被挂起，不需要放行。"
         )
 
     if explicit_new_model and existing_model and explicit_new_model != existing_model and not confirm_change:
@@ -5331,7 +5273,7 @@ def inline_unread_banner(agent) -> str:
     if agent is None:
         return ""
     conv = conv_row(agent["conv"])
-    if conv is None or conv["status"] != "open" or (conv["model_check"] or "") == "mismatch_hold":
+    if conv is None or conv["status"] != "open":
         return ""
     rows = pending_rows(conv["id"], conv["read_cursor"])
     if not rows or not any(r["wake"] for r in rows):
@@ -5369,14 +5311,6 @@ async def call_tool(name: str, args: dict) -> ToolResult:
                 raise ToolFail(f"{name} 只有主控能用。")
             if name in CHAT_ONLY and agent_obj["role"] not in ("chat", "ctrl"):
                 raise ToolFail(f"{name} 只有子 agent 能用。")
-            if agent_obj["role"] == "chat" and name != "read_chat" and not (name == "ask" and args.get("keepalive")):
-                c_hold = conv_row(agent_obj["conv"])
-                if c_hold is not None and (c_hold["model_check"] or "") == "mismatch_hold":
-                    raise ToolFail(
-                        f"⏸ 当前处于【模型校验未通过·等待主控判断】挂起状态（要求模型：{effective_conv_model(c_hold)}，"
-                        f"实报模型：{c_hold['actual_model'] or '-'}）。主控裁决放行前严禁调用 {name}！"
-                        f"请立即调用 read_chat(agent=\"{agent_obj['id']}\") 等待主控放行或换模型重开。"
-                    )
             result = await handler(agent_obj, args)
     except ToolFail as exc:
         result = text_result(str(exc), True)
@@ -8559,8 +8493,6 @@ async def watchdog_tick() -> None:
     if store.one("SELECT 1 FROM exec_nodes WHERE kind='launcher' AND status='online'"):
         ensure_controller_alive()
     for conv in open_convs():
-        if (conv["model_check"] or "") == "mismatch_hold":
-            continue
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
         trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
@@ -8647,6 +8579,7 @@ async def lifespan(_app: FastAPI):
     notes += split_notes
     if tell_main:
         system_note("main", tell_main)
+    release_model_holds()
     migrate_cluster_v360()
     build_runtime_pyz()
     ensure_admin_device()

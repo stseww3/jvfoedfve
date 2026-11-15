@@ -176,55 +176,56 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert not sub_res.is_error
     assert bridge.conv_row("c1")["task_agent_id"] == "bc_task_c1_99"
 
-    # Verify subagent model verification:
-    # (a) Joining c1 (required model="claude-fable-5-2-max") WITHOUT answering actual_model/model_match is blocked WITHOUT burning task_code!
+    # Join no longer verifies the model:
+    # (a) Joining c1 (record model="claude-fable-5-2-max") with only the task code succeeds right away and consumes the code.
     c1_code = bridge.conv_row("c1")["task_code"]
-    no_mod_ans = await bridge.call_tool("join", {"code": c1_code})
-    assert no_mod_ans.is_error and "子 Agent 入网模型校验" in text_of(no_mod_ans)
-    assert bridge.conv_row("c1")["task_code"] == c1_code
+    bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="接入后就该看到的任务", wake=1)
+    plain_join = await bridge.call_tool("join", {"code": c1_code})
+    plain_txt = text_of(plain_join)
+    assert not plain_join.is_error and "接手成功" in plain_txt, plain_txt[:300]
+    assert "模型校验" not in plain_txt and "actual_model" not in plain_txt
+    first_ag = bridge.conv_row("c1")["agent"]
+    assert bridge.conv_row("c1")["task_code"] == "" and bridge.conv_row("c1")["model_check"] == ""
+    # Business tools work immediately and the unread user message is delivered as usual.
+    assert not (await bridge.call_tool("send_message", {"agent": first_ag, "text": "我来了"})).is_error
+    assert "接入后就该看到的任务" in text_of(await bridge.call_tool("read_chat", {"agent": first_ag, "wait_sec": 0}))
+    # The launch prompt no longer asks the sub-agent to report or prove its model.
+    launch_txt = bridge.task_text(bridge.conv_row("c1"))
+    assert "actual_model" not in launch_txt and "model_match" not in launch_txt and "校验" not in launch_txt
 
-    # (b) Joining c1 with mismatched model (model_match=False) puts subagent in mismatch_hold, blocks business tools, preserves unread msgs, and alerts ctrl!
-    bridge.post("c1", chat_id=7001, chat_type="private", user_id=7001, user_name="Alpine", text="等正确模型来处理的任务", wake=1)
-    wrong_join = await bridge.call_tool("join", {"code": c1_code, "actual_model": "GPT-5 Mini", "model_match": False})
-    assert not wrong_join.is_error and "模型校验未通过·已上报主控判断" in text_of(wrong_join)
-    wrong_ag = bridge.conv_row("c1")["agent"]
-    assert bridge.conv_row("c1")["model_check"] == "mismatch_hold"
-    # Business tools MUST be blocked while held!
-    blocked_send = await bridge.call_tool("send_message", {"agent": wrong_ag, "text": "我不该能说话"})
-    assert blocked_send.is_error and "等待主控判断" in text_of(blocked_send)
-    # read_chat while held MUST NOT consume user's unread message!
-    held_read = await bridge.call_tool("read_chat", {"agent": wrong_ag, "wait_sec": 0})
-    assert "等待主控裁决" in text_of(held_read)
-    # Ctrl received mismatch alert!
-    ctrl_alert = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
-    assert "子 Agent 模型校验不匹配" in ctrl_alert and "GPT-5 Mini" in ctrl_alert and "claude-fable-5-2-max" in ctrl_alert
-
-    # (c) Test ctrl judging "restart" -> kills wrong_ag, issues new task_code; then test lying conflict (actual="Gemini 4 Carbon", model_match=True) -> ALSO held; then test ctrl "approve_model" -> unblocks!
-    rs_fix = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "restart", "model": "claude-fable-5-2-max"})
-    assert not rs_fix.is_error
-    assert bridge.agent_row(wrong_ag)["status"] == "stopped"
-    # Drain main2's launch op
-    await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0})
-    # Subagent claims model_match=True with obvious cross-family conflict -> still caught and held!
-    lie_join = await bridge.call_tool("join", {"code": bridge.conv_row("c1")["task_code"], "actual_model": "Gemini 4 Carbon High", "model_match": True})
-    assert "模型家族明显冲突" in text_of(lie_join) and bridge.conv_row("c1")["model_check"] == "mismatch_hold"
-    held_ag2 = bridge.conv_row("c1")["agent"]
-    # Drain ctrl alert and test ctrl judging `approve_model` -> unblocks held_ag2 and delivers unread message!
+    # (b) A sub-agent still holding an OLD launch prompt passes actual_model / model_match (even "false", even another
+    #     model family): it joins normally, is not held, and ctrl gets no verification alert.
     await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0})
-    app_mod = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "approve_model"})
-    assert not app_mod.is_error and bridge.conv_row("c1")["model_check"] == "approved"
-    unblocked_inbox = text_of(await bridge.call_tool("read_chat", {"agent": held_ag2, "wait_sec": 0}))
-    assert "主控模型裁决放行" in unblocked_inbox and "等正确模型来处理的任务" in unblocked_inbox
+    rs_old = await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "restart"})
+    assert not rs_old.is_error and bridge.agent_row(first_ag)["status"] == "stopped"
+    await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0})
+    legacy_join = await bridge.call_tool(
+        "join", {"code": bridge.conv_row("c1")["task_code"], "actual_model": "Gemini 4 Carbon High", "model_match": False}
+    )
+    assert not legacy_join.is_error and "接手成功" in text_of(legacy_join)
+    legacy_ag = bridge.conv_row("c1")["agent"]
+    assert bridge.conv_row("c1")["model_check"] == ""
+    assert bridge.conv_row("c1")["model"] == "claude-fable-5-2-max", "a self-reported model must never rewrite the record"
+    assert not (await bridge.call_tool("send_message", {"agent": legacy_ag, "text": "旧提示词也能干活"})).is_error
+    ctrl_after = text_of(await bridge.call_tool("read_chat", {"agent": ctrl_ag, "wait_sec": 0}))
+    assert "模型校验" not in ctrl_after and "请主控判断" not in ctrl_after
 
-    # Restart c1 cleanly with matching Claude Opus model for remaining tests
+    # (c) A chat left in the old "mismatch hold" by 3.6.0 is released at boot and its waiting agent gets the full briefing.
+    bridge.store.run("UPDATE convs SET model_check='mismatch_hold', alert='模型不符待主控判断', alert_ts=? WHERE id='c1'", (bridge.now(),))
+    assert bridge.release_model_holds() == 1
+    assert bridge.conv_row("c1")["model_check"] == "" and bridge.conv_row("c1")["alert"] == ""
+    released_inbox = text_of(await bridge.call_tool("read_chat", {"agent": legacy_ag, "wait_sec": 0}))
+    assert "模型核对已经取消" in released_inbox and "read_chat" in released_inbox
+    assert bridge.release_model_holds() == 0
+
+    # Restart c1 cleanly for the remaining tests
     await bridge.call_tool("dispatch_task_op", {"agent": ctrl_ag, "chat": "c1", "action": "restart", "model": "claude-fable-5-2-max"})
     await bridge.call_tool("read_chat", {"agent": m2, "wait_sec": 0})
     op_c1_final = bridge.store.one("SELECT op_id FROM dispatch_ops WHERE conv_id='c1' ORDER BY created_ts DESC LIMIT 1")["op_id"]
     await bridge.call_tool("submit_op_result", {"agent": m2, "op_id": op_c1_final, "status": "ok", "task_agent_id": "bc_task_c1_final"})
-    ok_mod_join = await bridge.call_tool("join", {"code": bridge.conv_row("c1")["task_code"], "actual_model": "Claude 4.5 Opus (claude-fable-5-2-max)", "model_match": True})
+    ok_mod_join = await bridge.call_tool("join", {"code": bridge.conv_row("c1")["task_code"]})
     assert not ok_mod_join.is_error and "接手成功" in text_of(ok_mod_join)
     a1 = bridge.conv_row("c1")["agent"]
-    assert bridge.conv_row("c1")["model_check"] == "ok"
 
     # Member user chat c2 -> cannot call spawn_subagent or run_workspace_job!
     c2_mem = bridge.create_conv("外部用户聊天", 8002, name="会员聊天", owner=8002)
