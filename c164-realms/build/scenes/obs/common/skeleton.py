@@ -304,6 +304,9 @@ V2 = dict(pos=(58.5, 1.7, AXIS_Z), look_at=(17, 19, AXIS_Z))
 # platform at (79.5, 10.5) stood half in the left edge, the largest bright thing in the picture. Now
 # its globe and gallery are outside; the chimney is whole, its east face a ninth of the picture's
 # width inside the left edge, and the lamp on the lip's pedestal at (60, 18) is in the right half.
+# The lamp on the stair's south pedestal at (73, 10) is a second one and stays, whole, in the left
+# third before the chimney's foot. No further: at six degrees it touches the left edge and its
+# pedestal is mostly outside (cr2 #64341; it would leave only past sixteen, the chimney cut at twelve).
 V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(74.4, 8.0, 33.2))   # the eye at y -1.38
 # V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
 # orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
