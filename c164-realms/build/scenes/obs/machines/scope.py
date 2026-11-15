@@ -36,7 +36,8 @@ the yoke (b) about the polar axis, the governor about its spindle. Here they sta
 Light: the room is kept dark for observing. The one lamp is the small red one beside the
 eyepiece, hooded, its glass turned west on the tailpiece and away from the floor; the light it
 throws is offered to the sky line at LAMP_LEVEL. In the hood's back, towards the floor and the
-camera of V8, is a ruby peep-hole: a point of red, no light. It is the only signal red in the room.
+camera of V8, is a ruby peep-hole: a point of red, no light. The lamp is the only red in the room
+(A0): the governor's collar, which the card would have signal red, is old copper.
 
     python -m scenes.obs.machines.scope      the numbers above and the rules they are held to
 """
@@ -278,8 +279,7 @@ BRASS_TICK = _as(Ticked, P.mat("brass", bevel=0), "tick")
 IRON_TOOTH = _as(Ticked, P.mat("iron_dark", bevel=0), "tooth", long=0)
 GLASS = _flat("night_glass", 2)
 GLASS_D = _flat("night_glass", 0)
-RED = _flat("signal", 1)                                # red paint: the governor's collar
-RED_LENS = _flat("signal_glow", 2)
+RED_LENS = _flat("signal_glow", 2)                      # the lamp alone is red (A0): its glass and its peep-hole
 RED_HOT = _flat("signal_glow", 3)
 HOOD = _flat("iron", 0)
 DIAL = _flat("cream", 2)
@@ -774,7 +774,7 @@ def _governor():
     d = _Px(PREFIX + "governor", 1.0)
     d.tube("y", (0.0, 0.0), 0.0, 1.0, 1.5, BRASS_D, sides=8)
     d.tube("y", (0.0, 0.0), 1.0, 8.0, 0.5, STEEL, sides=4)
-    d.tube("y", (0.0, 0.0), 3.0, 4.0, 1.0, RED, sides=8)
+    d.tube("y", (0.0, 0.0), 3.0, 4.0, 1.0, COPPER, sides=8)
     d.tube("y", (0.0, 0.0), 7.5, 8.5, 1.0, BRASS_D, sides=8)
     for side in (-1.0, 1.0):
         d.rod((0.0, 7.75, 0.0), (side * 3.0, 4.5, 0.0), 0.3, BRASS_D, sides=4)
@@ -784,10 +784,19 @@ def _governor():
 
 
 LAMP_OFF = (-0.25, 0.32, 0.62)          # the lamp's glass from the eyepiece: blocks east, up, to the side shown
-PEEP = 0.25                             # the peep-hole in the hood's back, texels across (A0: a point in V8)
-PEEP_AT = (2.0, -0.5, 0.0)              # its middle, texels from the lamp's: on the east facet of the hood
-POINT = 3.0                             # screen pixels a point may be across, on a picture 720 high
-GAME_FOV = 70.0                         # degrees, top to bottom: the game's own; the offline pictures are drawn wider
+# The peep-hole in the hood's back (A0: a point in V8, not a patch) is a ruby set in the hood's
+# east facet, cut with one facet that leans out and down. The game lights a piece of a model by
+# the way it is filed as looking: up in full, north or south by three quarters, east or west by
+# half, and a face that glows is lit no other way. A ruby upright in the hood's back would be a
+# dull point; the facet is filed as looking up (it is nearer that than any other way) and is the
+# full signal red, here and in the game.
+PEEP = (0.2, 0.32)                      # the facet: texels across, and down its slope
+PEEP_AT = (2.0, -0.5, 0.0)              # the middle of its upper edge, texels from the lamp's: on the hood's east facet
+PEEP_LEAN = (45.0, 30.0)                # degrees it looks down from straight up, and round from the east to the side
+#                                         shown: at the camera of V8
+POINT = 3.0                             # screen pixels a point stays under, across and down, on a picture 720 high
+GAME_FOV = 70.0                         # degrees, top to bottom: a visitor's on foot. The pictures are taken a
+#                                         tenth wider (a flying camera's), the point is smaller in them
 
 
 def _lamp_at(version):
@@ -801,9 +810,11 @@ def _lamp_at(version):
 
 def _lamp(version):
     """The red lamp: a blackened hood on an arm from the tail plate, the ruby glass sunk in its
-    west face under a shade. Anchor: the middle of the lamp's body; the model is level."""
+    west face under a shade. Anchor: the middle of the lamp's body; the model is level. The
+    drawer comes back with .peep, the number of the box whose top is the ruby's facet."""
     d = _Px(f"{PREFIX}lamp_{version}", 1.0)
     at, rim = _lamp_at(version)
+    shown = _SPEC[version]["show"]
     arm = tuple((rim[i] - at[i]) * 16.0 for i in range(3))
     d.tube("y", (0.0, 0.0), -3.0, 2.0, 2.0, HOOD, sides=8)
     d.tube("y", (0.0, 0.0), 2.0, 3.0, 2.5, IRON_D, sides=8)
@@ -816,39 +827,36 @@ def _lamp(version):
         d.box((-4.0, -2.25, a), (-1.5, 1.25, b), HOOD)
     d.box((-2.25, -1.75, -1.25), (-1.9, 0.75, 1.25), RED_LENS, emit=15, shade=False)
     d.box((-2.3, -1.0, -0.5), (-2.25, 0.0, 0.5), RED_HOT, emit=15, shade=False)
-    # the peep-hole in the back: the floor sees that the lamp burns
+    # the peep-hole in the back: the floor sees that the lamp burns. Only the facet is drawn
     x, y, z = PEEP_AT
-    d.box((x, y - PEEP / 2.0, z - PEEP / 2.0), (x + 0.05, y + PEEP / 2.0, z + PEEP / 2.0), RED_LENS,
-          emit=15, shade=False)
+    across, down = PEEP
+    lean, turn = PEEP_LEAN
+    with d.turned(("z", -lean), ("y", -shown * turn), about=PEEP_AT):
+        d.box((x, y - 0.05, z - across / 2.0), (x + down, y, z + across / 2.0), RED_LENS,
+              skip="dnsew", emit=15, shade=False)
+    d.peep = len(d.m.parts) - 1
     # the arm: up from the hood's cap and over to its clamp on the tail plate
     knee = (0.0, 6.0, 0.0)
     d.rod((0.0, 4.0, 0.0), knee, 0.5, BRASS_D, sides=4)
     d.rod(knee, arm, 0.5, BRASS_D, sides=4)
     d.ball(knee, 0.9, BRASS, sides=8, layers=3)
-    return d.m
+    return d
 
 
 @functools.lru_cache(maxsize=None)
 def _built():
     pier_a, piers_b = _pier_a(), _piers_b()
+    lamps = {v: _lamp(v) for v in VERSIONS}
     out = {m.name: m for m in (
-        _tube("a"), _tube("b"), pier_a.m, _axis_a(), piers_b.m, _yoke_b(), _governor(), _lamp("a"), _lamp("b"))}
+        _tube("a"), _tube("b"), pier_a.m, _axis_a(), piers_b.m, _yoke_b(), _governor(), lamps["a"].m, lamps["b"].m)}
     stands = {"a": tuple(v / 16.0 for v in pier_a.governor), "b": tuple(v / 16.0 for v in piers_b.governor)}
-    return out, stands
+    return out, stands, {v: lamps[v].peep for v in VERSIONS}
 
 
 def models(version=None):
     """The models of one version: what build() places."""
     built = _built()[0]
     return {name: built[name] for name, _at, _frame, _scale in placed(version)}
-
-
-def peep(version=None):
-    """How many screen pixels across the peep-hole of the red lamp is from the camera of V8, on a
-    picture 720 high at the game's field of view."""
-    hole = _add(_lamp_at(version)[0], _mul(PEEP_AT, 1.0 / 16.0))
-    far = math.dist(hole, v8(version)[0])
-    return PEEP / 16.0 / far * 360.0 / math.tan(math.radians(GAME_FOV) / 2.0)
 
 
 # ---- placing ---------------------------------------------------------------------------------------------
@@ -909,21 +917,83 @@ def build(canvas, origin=(0, 0, 0), version=None, lamp=True):
 
 
 # ---- the rules the numbers are held to -------------------------------------------------------------------
+def _spot(model, part, where, at, frame, scale):
+    """A point of one box of a placed model, in scene coordinates. `where` runs from -1 to 1
+    across the box along each of its own axes."""
+    k = scale / 16.0
+    c = [(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)]
+    h = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
+    v = M._qrot(part["rot"][0] if part["rot"] else M.IDENT, tuple(where[i] * h[i] for i in range(3)))
+    p = at
+    for i in range(3):
+        p = _add(p, _mul(frame[i], (c[i] + v[i] - model.anchor[i]) * k))
+    return p
+
+
 def _corners(model, at, frame, scale):
     """The corners of every box of a placed model, in scene coordinates."""
-    k = scale / 16.0
     for part in model.parts:
-        c = [(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)]
-        h = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
-        q = part["rot"][0] if part["rot"] else M.IDENT
         for sx in (-1, 1):
             for sy in (-1, 1):
                 for sz in (-1, 1):
-                    v = M._qrot(q, (sx * h[0], sy * h[1], sz * h[2]))
-                    p = at
-                    for i in range(3):
-                        p = _add(p, _mul(frame[i], (c[i] + v[i] - model.anchor[i]) * k))
-                    yield p
+                    yield _spot(model, part, (sx, sy, sz), at, frame, scale)
+
+
+def _first(version, eye, target):
+    """What a look from `eye` at `target` meets first of the version's pieces: (model name,
+    number of the box, how far along the way to the target: 1 is the target itself)."""
+    built = _built()[0]
+    best = (None, None, math.inf)
+    for name, at, frame, scale in placed(version):
+        model = built[name]
+        k, f = scale / 16.0, np.array(frame, dtype=float)
+        anchor = np.array(model.anchor, dtype=float)
+        a = ((np.array(eye, dtype=float) - np.array(at)) @ f.T) / k + anchor
+        b = ((np.array(target, dtype=float) - np.array(at)) @ f.T) / k + anchor
+        for n, part in enumerate(model.parts):
+            c = np.array([(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)])
+            h = np.array([(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)])
+            q = part["rot"][0] if part["rot"] else M.IDENT
+            turn = np.array([M._qrot(q, e) for e in ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0))])
+            o, way = (a - c) @ turn.T, (b - a) @ turn.T
+            t0, t1 = 0.0, best[2]
+            for i in range(3):
+                if abs(way[i]) < 1e-12:
+                    if abs(o[i]) > h[i]:
+                        t1 = -1.0
+                    continue
+                near, far = sorted(((-h[i] - o[i]) / way[i], (h[i] - o[i]) / way[i]))
+                t0, t1 = max(t0, near), min(t1, far)
+            if t0 < t1:
+                best = (name, n, t0)
+    return best
+
+
+def _facet(version):
+    """The facet of the lamp's ruby as it is placed: (its four corners, its middle, the way it
+    looks), in scene coordinates."""
+    version = _version(version)
+    models_, _stands, peeps = _built()
+    model = models_[f"{PREFIX}lamp_{version}"]
+    part, at = model.parts[peeps[version]], _lamp_at(version)[0]
+    corners = [_spot(model, part, (sx, 1, sz), at, WORLD, 1.0) for sx, sz in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+    middle = _spot(model, part, (0, 1, 0), at, WORLD, 1.0)
+    return corners, middle, _unit(_cross(_sub(corners[3], corners[0]), _sub(corners[1], corners[0])))
+
+
+def peep(version=None):
+    """(across, down): the screen pixels the ruby's facet takes up from the camera of V8, on a
+    picture 720 high at a visitor's field of view."""
+    eye, look = v8(version)
+    ahead = _unit(_sub(look, eye))
+    right = _unit(_cross(ahead, UP))
+    over = _cross(right, ahead)
+    focal = 360.0 / math.tan(math.radians(GAME_FOV) / 2.0)
+    seen = []
+    for corner in _facet(version)[0]:
+        way = _sub(corner, eye)
+        seen.append((focal * _dot(way, right) / _dot(way, ahead), focal * _dot(way, over) / _dot(way, ahead)))
+    return tuple(max(p[i] for p in seen) - min(p[i] for p in seen) for i in range(2))
 
 
 def _surface(model, at, frame, scale, step=0.5):
@@ -1024,7 +1094,7 @@ def report(version=None):
         f"  eyepiece {EYEPIECE[version]}  objective {OBJECTIVE[version]}  observer {OBSERVER[version]}",
         f"  sweep: centre {SWEEP[version][0]}, radius {radius}; V8 from {V8[version][0]} at {V8[version][1]}",
         f"  lamp at {_rounded(_lamp_at(version)[0])}, light source of level {LAMP_LEVEL}, its peep-hole "
-        f"{peep(version):.1f} screen pixels across in V8 (720 high)",
+        f"{peep(version)[0]:.1f} by {peep(version)[1]:.1f} screen pixels in V8 (720 high)",
         f"  {len(points)} display entities, {sum(len(built[n].parts) for n in points)} boxes",
     ]
     problems = []
@@ -1036,8 +1106,18 @@ def report(version=None):
         problems.append(f"a: the tube is {spec['off']:.3f} off the polar axis, over 1.5")
     if LAMP_LEVEL > 4:
         problems.append(f"the lamp's light source is of level {LAMP_LEVEL}, over 4")
-    if peep(version) > POINT:
-        problems.append(f"the lamp's peep-hole is {peep(version):.1f} screen pixels across in V8, a patch: over {POINT}")
+    if max(peep(version)) >= POINT:
+        problems.append(f"the lamp's peep-hole is {peep(version)[0]:.1f} by {peep(version)[1]:.1f} screen pixels "
+                        f"in V8, a patch: a point stays under {POINT}")
+    _four, middle, looks = _facet(version)
+    if looks[1] < max(abs(looks[0]), abs(looks[2])) + 0.05:
+        problems.append("the peep-hole's facet does not look up more than any other way: the game lights it "
+                        "by half or three quarters, a dull point")
+    if _dot(looks, _unit(_sub(V8[version][0], middle))) < 0.3:
+        problems.append("the peep-hole's facet looks away from the camera of V8")
+    name, box, _far = _first(version, v8(version)[0], middle)
+    if (name, box) != (f"{PREFIX}lamp_{version}", _built()[2][version]):
+        problems.append(f"the peep-hole is hidden from the camera of V8 behind box {box} of {name}")
     far = max(math.dist(p, centre) for p in everything)
     lines.append(f"  furthest corner {far:.2f} from the crossing")
     if far > radius + 0.05:
