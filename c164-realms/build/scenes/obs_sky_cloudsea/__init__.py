@@ -16,9 +16,10 @@ builds), obs_sky_cloudsea_a is "a" (vanilla layer only), obs_sky_cloudsea_b is "
 The offline renderer draws the fog but not the vanilla layer, the afterglow or the warm fog towards
 the west, so offline "c" and "b" are one picture -- the block sea in fog -- and "a" is the bare
 hilltop. On the real client S1 renders each version, every camera with the cloud setting on fancy,
-fast and off.
+fast and off, and this scene's trials.json besides: two of the cameras under the sky's trial
+moments (the vanilla layer in three colours, the fog ending sooner and later).
 
-    python -m scenes.obs_sky_cloudsea     # rewrites shots.json
+    python -m scenes.obs_sky_cloudsea     # rewrites shots.json and trials.json
 """
 import math
 
@@ -29,7 +30,7 @@ from artkit.canvas import Canvas, Mix
 from scenes.obs import materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.sky import cloudsea, comet
+from scenes.obs.sky import cloudsea, comet, mood
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 240          # the look and the sea reach far past the hilltop
@@ -207,7 +208,29 @@ VIEWS = {
                   (3.5, -26, -174), 14000),                                       # from the weather station
 }
 
+# The sky's trial moments (sky/mood.TRIALS: the blue hour with one value changed, held for 200 ticks
+# in the morning) on the two cameras that show where the block sea ends and the vanilla layer goes
+# on. They are for the real client and kept apart in trials.json: the offline renderer does not
+# draw the vanilla layer, and a scene keeps an offline picture of every shot in shots.json.
+#   mist, veil, fogged   the vanilla layer's colour drawn to the fog's in three steps. The layer
+#                        takes no fog, so where the fog ends it stands a tone and a half lighter
+#                        than the block sea beside it and draws the sea's outline.
+#   near, far            the fog ending at 144 and at 256 instead of 192: how much of the sea's end
+#                        it hides.
+# The ticks are sky/mood's; the numbers here stand in for a trial that is not in the tree yet (the
+# picture is then the plain blue hour).
+TRIALS = {"mist": 8100, "veil": 9100, "fogged": 10100, "near": 5100, "far": 7100}
+TRIAL_VIEWS = ("v12", "station_east")
+
+
+def _shot(name, eye, at, t):
+    return {"name": name, "pos": [round(float(v), 2) for v in eye], "look_at": [float(v) for v in at], "time": t}
+
 
 def shots():
-    return [{"name": name, "pos": [round(float(v), 2) for v in eye], "look_at": [float(v) for v in at],
-             "time": t} for name, (eye, at, t) in VIEWS.items()]
+    return [_shot(name, *view) for name, view in VIEWS.items()]
+
+
+def trial_shots():
+    return [_shot(f"{view}_{name}", *VIEWS[view][:2], mood.tick(name) if name in mood.TRIALS else t)
+            for view in TRIAL_VIEWS for name, t in TRIALS.items()]

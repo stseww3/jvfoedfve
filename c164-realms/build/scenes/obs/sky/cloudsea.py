@@ -270,25 +270,27 @@ def _field(seed, land):
     def cell_of(px, pz):
         return min(nx - 1, max(0, int(px))), min(nz - 1, max(0, int(pz)))
 
-    def dome(px, pz, rad, rise, bulge=None):
+    def dome(g, px, pz, rad, rise, bulge=None):
         ix, iz = cell_of(px, pz)                    # rooted a little under the sea where it stands
-        _stamp(top, px, pz, level[ix, iz] - 0.25, rise + 0.25, rad, rng.uniform(0.5, 0.8) if bulge is None else bulge)
+        _stamp(top, px, pz, level[ix, iz] - 0.25, rise + 0.25, rad, g.uniform(0.5, 0.8) if bulge is None else bulge)
 
-    def head(px, pz, rad, rise):
-        """A head of cloud. A small one is one dome; a middling one carries smaller domes on its
-        flanks; a big one is a low cushion with a crowd of domes on it, so no top is a table."""
+    def head(g, px, pz, rad, rise):
+        """A head of cloud, shaped by the random numbers of ``g``. A small one is one dome; a
+        middling one carries smaller domes on its flanks; a big one is a low cushion with a crowd
+        of domes on it, so no top is a table."""
         if rad < 4.5:
-            kids, spread, size, high = int(rng.integers(0, 2)), (0.6, 1.0), (0.5, 0.75), (0.55, 0.9)
+            kids, spread, size, high = int(g.integers(0, 2)), (0.6, 1.0), (0.5, 0.75), (0.55, 0.9)
         elif rad < 6.5:
-            kids, spread, size, high = int(rng.integers(1, 4)), (0.5, 1.0), (0.45, 0.75), (0.6, 1.0)
+            kids, spread, size, high = int(g.integers(1, 4)), (0.5, 1.0), (0.45, 0.75), (0.6, 1.0)
         else:
-            kids, spread, size, high = int(rng.integers(5, 9)), (0.1, 0.9), (0.3, 0.5), (0.8, 1.0)
-        dome(px, pz, rad, rise if rad < 6.5 else 0.66 * rise)
+            kids, spread, size, high = int(g.integers(5, 9)), (0.1, 0.9), (0.3, 0.5), (0.8, 1.0)
+        dome(g, px, pz, rad, rise if rad < 6.5 else 0.66 * rise)
         for _ in range(kids):
-            a, s = rng.uniform(0.0, 2.0 * np.pi), rng.uniform(*spread)
-            dome(px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, rad * rng.uniform(*size), rise * rng.uniform(*high))
+            a, s = g.uniform(0.0, 2.0 * np.pi), g.uniform(*spread)
+            dome(g, px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, rad * g.uniform(*size), rise * g.uniform(*high))
 
-    # the heads: packed side by side in the ranges, a few standing alone in the lanes of calm sea
+    # the heads: packed side by side in the ranges, a few standing alone in the lanes of calm sea.
+    # They do not look at the land, so they stand where they stand whatever is built.
     cell = 8
     for gx in range(0, nx, cell):
         for gz in range(0, nz, cell):
@@ -302,28 +304,33 @@ def _field(seed, land):
             if c > 0.8 and t > 0.9:
                 rad = 7.0 + 25.0 * (t - 0.9)        # the broad cushions in the heart of a range
             high = HEAP * (0.5 + 0.5 * vigour[ix, iz]) * (0.7 + 0.3 * w)
-            head(px, pz, rad, min(high, rad * (0.5 + 0.3 * w)))
+            head(rng, px, pz, rad, min(high, rad * (0.5 + 0.3 * w)))
+
+    # What follows looks at the land. Every pile has random numbers of its own (by its place in the
+    # list of sites tried) and so has every head of the surf (by its cell), so when somebody builds
+    # or digs at the shore the sea changes there and stays as it was everywhere else.
 
     # the few big piles, well apart, in the ranges, away from the mountain: broad shoulders, a
     # narrower tower standing out of them, smaller domes on its flanks
     far = ~_grow(land, 28)
+    sites = np.random.default_rng((seed, 1)).uniform(size=(4000, 2)) * (nx, nz)
     piles = []
-    for _ in range(4000):
+    for i, (px, pz) in enumerate(sites.tolist()):
         if len(piles) == PILES:
             break
-        px, pz = rng.uniform(0, nx), rng.uniform(0, nz)
         ix, iz = cell_of(px, pz)
         if density[ix, iz] < 0.85 or core[ix, iz] < 0.6 or not far[ix, iz]:
             continue
         if any(np.hypot(px - qx, pz - qz) < 60.0 for qx, qz in piles):
             continue
         piles.append((px, pz))
+        g = np.random.default_rng((seed, 1, i))
         for n, away, rad, rise, bulge in ((4, (2.0, 6.0), (6.0, 8.5), (3.2, 4.4), 0.6),
                                           (2, (0.0, 2.5), (4.0, 5.5), (0.86 * PILE, PILE), 0.75),
                                           (4, (2.5, 5.5), (2.4, 3.6), (4.0, 5.2), 0.7)):
             for _ in range(n):
-                a, s = rng.uniform(0.0, 2.0 * np.pi), rng.uniform(*away)
-                dome(px + np.cos(a) * s, pz + np.sin(a) * s, rng.uniform(*rad), rng.uniform(*rise), bulge)
+                a, s = g.uniform(0.0, 2.0 * np.pi), g.uniform(*away)
+                dome(g, px + np.cos(a) * s, pz + np.sin(a) * s, g.uniform(*rad), g.uniform(*rise), bulge)
 
     # the surf: cloud heaped against whatever stands in it, high where the land folds round it
     if land.any():
@@ -331,10 +338,12 @@ def _field(seed, land):
         fold = _blur(land.astype(np.float32), 6)    # over a half in a gully, a tenth off a cape
         surf = N.fbm2(X / 23.0, Z / 23.0, seed + 9, octaves=2)
         step = 6
-        for gx in range(0, nx, step):
-            for gz in range(0, nz, step):
-                px, pz = gx + rng.uniform(0, step), gz + rng.uniform(0, step)
-                u, v, w = rng.uniform(size=3)
+        gxs, gzs = range(0, nx, step), range(0, nz, step)
+        draws = np.random.default_rng((seed, 2)).uniform(size=(len(gxs), len(gzs), 5)).tolist()
+        for i, gx in enumerate(gxs):
+            for j, gz in enumerate(gzs):
+                fx, fz, u, v, w = draws[i][j]
+                px, pz = gx + fx * step, gz + fz * step
                 ix, iz = cell_of(px, pz)
                 if not zone[ix, iz]:
                     continue
@@ -344,7 +353,7 @@ def _field(seed, land):
                 rise = 1.3 + (HEAP - 1.3) * a * (0.75 + 0.25 * w)
                 if a > 0.8 and w > 0.35:
                     rise += 1.9 * w * (a - 0.8) / 0.2                   # the highest, to about y -21
-                head(px, pz, min(6.4, 3.3 + 2.8 * v + 1.2 * a), rise)
+                head(np.random.default_rng((seed, 2, i, j)), px, pz, min(6.4, 3.3 + 2.8 * v + 1.2 * a), rise)
 
     deck = density > 0.7
     top = np.where(deck, np.maximum(top, level), top)                  # closed between the heads
