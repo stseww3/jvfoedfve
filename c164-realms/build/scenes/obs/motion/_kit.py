@@ -463,7 +463,7 @@ def swing(canvas, axis, degrees, period, *, keys=8, entity=None, model=None, nam
 
 
 def crank(canvas, axis, along, radius, length, period, *, turn=True, keys=12, entity=None, model=None,
-          name=None, phase=0, lead=None):
+          name=None, phase=0, lead=None, start=0.0):
     """The part is the connecting rod of a crank, or what the rod pushes.
 
     axis     the shaft, as in spin(); the crank itself is registered with spin() about the same
@@ -476,8 +476,15 @@ def crank(canvas, axis, along, radius, length, period, *, turn=True, keys=12, en
              and tilts to keep its other end on the crank pin. False: the crosshead, the piston
              rod, the piston: they only slide.
 
-    The rest pose is the dead centre with the crank pin towards the cylinder: crank, rod and piston
-    rod in one line, the crosshead as far from the shaft as it goes.
+    start    degrees: where the crank pin stands while the part is at rest, measured from `along`
+             about the shaft, right-handed (the way spin() turns for a positive period, whatever
+             the sign of this period). An eccentric that is a quarter turn ahead of a main crank
+             turning with a positive period: start=90. The part is placed as it stands at that
+             angle: a rod leaning, its anchor where the crosshead pin is then. `along` named as
+             the model's own axis is then the rod's own line, and the lean is taken out of it.
+
+    The rest pose with start=0 is the dead centre with the crank pin towards the cylinder: crank,
+    rod and piston rod in one line, the crosshead as far from the shaft as it goes.
     """
     radius, length = float(radius), float(length)
     if not length > radius > 0.0:
@@ -486,19 +493,27 @@ def crank(canvas, axis, along, radius, length, period, *, turn=True, keys=12, en
     if period == 0:
         raise ValueError("a period of 0 ticks")
     cycle = abs(period)
+
+    def at(a):
+        """(degrees the rod leans, blocks from the shaft to the crosshead pin) with the crank pin at a."""
+        reach = radius * math.cos(a) + math.sqrt(length * length - (radius * math.sin(a)) ** 2)
+        return (-math.degrees(math.asin(radius * math.sin(a) / length)) if turn else 0.0), reach
+
+    a0 = math.radians(float(start))
+    lean, far = at(a0) if a0 else (0.0, radius + length)
     part = _register(canvas, "crank", cycle, entity, model, name, phase)
     part.axis = part.local(axis)
     part.way = part.local(along)
+    if isinstance(along, str) and lean:
+        part.way = _unit(_qrot(_about(part.axis, -lean), part.way))
     if abs(sum(part.axis[i] * part.way[i] for i in range(3))) > 1e-3:
         raise ValueError(f"{part.name}: the line of the stroke is not square to the shaft")
     n = max(int(keys), -(-cycle // MAX_STEP))
     sign = 1.0 if period > 0 else -1.0
     track = []
     for t in _ticks(cycle, n):
-        a = sign * 2.0 * math.pi * t / cycle
-        reach = radius * math.cos(a) + math.sqrt(length * length - (radius * math.sin(a)) ** 2)
-        tilt = -math.degrees(math.asin(radius * math.sin(a) / length)) if turn else 0.0
-        track.append((t, tilt, reach - (radius + length)))
+        tilt, reach = at(a0 + sign * 2.0 * math.pi * t / cycle)
+        track.append((t, tilt - lean, reach - far))
     _settle(part, track, lead, False)
     return _enrol(canvas, part)
 

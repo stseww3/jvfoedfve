@@ -39,6 +39,7 @@
 | 母钟钟摆；精密钟的钟摆 | machines/clocks；props/instruments | swing | 顶部的水平轴（钟面法线） | `PENDULUM`，一秒摆一下 | 各 4 |
 | 蒸汽机大飞轮、曲柄 | machines/engine-dynamo | spin | 主轴 | `ENGINE_REV`，2.4 秒一圈 | 各 1.7 |
 | 连杆、十字头 | machines/engine-dynamo | crank | 随曲柄 | `ENGINE_REV` | 各 5 |
+| 配汽的偏心杆、阀杆（dome #60293：偏心半径 0.19 格、杆 4.9 格，比主曲柄超前约 90°） | machines/engine-dynamo | crank，`start=90` | 随主轴 | `ENGINE_REV` | 各 5 |
 | 蒸汽机调速飞球；转仪钟飞球 | machines/engine-dynamo；machines/refractor | spin | 立轴 | `GOVERNOR_REV`；`SCOPE_GOVERNOR_REV` | 3.3；2.5 |
 | 发电机电枢 | machines/engine-dynamo | spin | 主轴 | `DYNAMO_REV`（飞轮的三倍） | 5 |
 | 记录转鼓；记录笔 | machines/recorders | spin；slide | 鼓的水平轴；沿鼓横移 | `DRUM_REV`，两分钟一圈 | 0.1；0.1 |
@@ -144,6 +145,8 @@ MK.crank(canvas, (0, 0, 1), (1, 0, 0), 1.0, 4.0, MK.ENGINE_REV)
                                                    # 连杆：主轴朝南，从轴心到汽缸朝东，曲柄半径 1 格，杆长 4 格；
                                                    # 锚点在十字头的销子上；周期的正负和曲柄那一行一样
 MK.crank(canvas, (0, 0, 1), (1, 0, 0), 1.0, 4.0, MK.ENGINE_REV, turn=False)   # 十字头和活塞杆：只滑不转
+MK.crank(canvas, (0, 0, 1), (1, 0, 0), 0.19, 4.9, MK.ENGINE_REV, start=90)    # 偏心杆：静止时偏心轮心在 90 度上，
+                                                   # 杆照那个角的样子摆（斜着，销孔套在偏心轮心上）；阀杆再加 turn=False
 MK.slide(canvas, "x", [(0, 0.5, 1200), (1200, 0.0, 1200)], MK.DRUM_REV)
                                                    # 沿模型的 x 轴滑：(哪一刻出发, 滑到离静止位置多少格, 走几刻)
 MK.blink(canvas, "mot_lamp_dark", *MK.BLINK)       # 和另一个模型来回换：亮 30 刻，暗 30 刻（这一版没有件用）
@@ -153,6 +156,7 @@ MK.blink(canvas, "mot_lamp_dark", *MK.BLINK)       # 和另一个模型来回换
 - 这些函数只做三件事：给实体加一个标签（`m.<名字>`，默认用模型名，`name=` 可以另起），把这条登记记在 canvas 上，返回 0。不放实体、不改姿态；实体数照旧由摆的那一行算。登记不成（工具报错）时什么都不留下。
 - `spin` 的 `keys=` 和 `spin`、`swing`、`crank` 的 `lead=` 是给测试场景用的（故意把步子切粗、把多给的 2 刻去掉给人看），正式的件不写；写了 `check.py` 会提醒。`swing`、`crank` 的 `keys=` 是一个来回、一圈里的姿态数，默认 8 和 12，可以改。
 - 同一条链上想错开的（两只钟的钟摆不要齐步摆）写 `phase=<刻>`。`slide` 里走得久的一段（超过 200 刻）工具自己切成几步。`phase` 是给钟摆用的（第二只写半个周期，回放里从第一刻起就是第一只的镜像）。`start` 把每个件都放回摆下去的姿态，带 `phase` 的件要过不到一圈才对上自己的步子，轮子头一步还可能倒着转一下；只转不摆的件想错开角度，摆的时候转个角度摆，不要写 `phase`。
+- `crank` 的静止姿态默认是死点（曲柄销朝汽缸）。静止时不在死点的件（配汽的偏心杆比主曲柄超前一个角）写 `start=<度>`：静止时曲柄销（偏心轮心）所在的角，从 `along` 量起，绕 `axis` 右手为正（和 `spin` 周期为正时转的方向一样；这个件自己的周期是正是负都这么量）。件就照那个角的样子摆：连杆斜着，锚点在那时十字头销所在的地方。`along` 写成模型自己的轴（`"x"`）时指杆身的方向，工具自己把斜的那个角去掉；写成世界方向就是行程线。主曲柄和偏心轮是同一根轴上的东西（`spin`），偏心轮心在模型里就做在超前的那个角上，两边不用 `phase`
 - 测试场景不用多写任何东西：登记跟着 canvas 走，驱动脚本看到 canvas 上有登记就写函数。离线图里件是静止姿态。
 - 周期一律从 `MK` 里取（第 6 节）。试的时候可以先写数字；交付前换成表里的名字，表里没有的在群里点我加一行。
 - 已经在用的土办法（`canvas.entities[-1][3]["Tags"].append("c164_signal")`、`PENDULUM["tag"]`、模块里的 `SPIN`、`DRUM_AXIS`）在 `motion/loop` 合并以后换成上面的一行，标签不用自己加了；`motion/loop` 没进你的树之前照旧，不用等。每个件该写哪一行，`motion/loop` 交付时我在群里逐个包发。
@@ -168,7 +172,7 @@ MK.blink(canvas, "mot_lamp_dark", *MK.BLINK)       # 和另一个模型来回换
 | `props/electrics-signs`（c242，0322421b） | `flagpole()` 里摆旗的那一句后面 | `MK.swing(canvas, "y", 6.0, MK.FLAG_SWAY)` | 绕旗杆左右各 6 度，6 秒一个来回：旗在顺风的方向两边晃，旗梢左右各走两个半像素。幅度是第一猜，真机上看了调 |
 | `main/tower`（c223，951a1877） | `_mast()` 里摆风杯的那一句后面 | `MK.spin(c, "y", MK.ANEMOMETER_REV)` | 反着转把周期写成负的（杯的圆背朝前走）。6 步、每步 4 刻、不多给 2 刻。`CUPS_TAG` 那时可以不加 |
 
-还没人领的 `machines/engine-dynamo`、`machines/recorders`、`machines/switchboard-boiler` 和正在重写的 `machines/refractor`（转仪钟飞球）照上面的例子写；飞轮、电枢、飞球、转鼓的模型做成对轴心对称的。
+`machines/engine-dynamo`（dome c326，11-16 领的，`cursor/c164-dome-engine-f3-a244` @ 204551b5）已经登记了五件：飞轮 `spin(ENGINE_REV)`，连杆、十字头 `crank(半径 1、杆 4)`，调速器 `spin(GOVERNOR_REV)`，电枢 `spin(DYNAMO_REV)`；他的 `check.py` 报平均每刻 1.9 条、最挤的一刻 5 条，正是第 7 节给发电房估的每秒 38 条。配汽的偏心杆、阀杆用 `start=90` 加上以后到每刻 2.4 条上下，照给。还没人领的 `machines/recorders`、`machines/switchboard-boiler` 和正在重写的 `machines/refractor`（转仪钟飞球）照上面的例子写；飞轮、电枢、飞球、转鼓的模型做成对轴心对称的。
 
 ## 5. 数据包里写什么；要 S2 改的两处
 

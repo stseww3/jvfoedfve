@@ -162,6 +162,76 @@ def test_rod_on_pin():
     assert all(s[2] == 0.0 for s in head.steps) and abs(min(s[3] for s in head.steps) + 2.0) < 1e-9
 
 
+def test_rod_off_centre():
+    """A crank that rests off its dead centre (start=): an eccentric's rod, placed as it stands a
+    quarter turn on. At every pose its eye is on the eccentric's middle and its other pin on the
+    line; start=0 is the crank as it was."""
+    r, l = 0.25, 4.0
+    lean = -math.degrees(math.asin(r / l))                  # how the rod leans with the pin at 90 degrees
+    far = math.sqrt(l * l - r * r)                          # the shaft to the crosshead pin, then
+    for along, period in (((1, 0, 0), MK.ENGINE_REV), ("x", MK.ENGINE_REV), ((1, 0, 0), -MK.ENGINE_REV)):
+        c = _Canvas()
+        c.add_entity(0.5, 64.0, 0.5, _display("mot_rod", turn=((0, 0, 1), lean), anchor=(l / 2.0, 0.0, 0.0)))
+        MK.crank(c, (0, 0, 1), along, r, l, period, lead=0, start=90.0)
+        part = _last(c)
+        assert len(part.steps) == 12
+        for tick, ticks, tilt, slide in [(0, 0, 0.0, 0.0)] + part.steps:
+            a = math.pi / 2.0 + 2.0 * math.pi * (tick + ticks) / period
+            left, shift = part.pose(tilt, slide)
+            eye = _world(part, left, shift, (-l / 2.0, 0.0, 0.0))
+            assert _close(eye, (-far + r * math.cos(a), r * math.sin(a), 0.0)), (along, period, tick, eye)
+            pin = _world(part, left, shift, (l / 2.0, 0.0, 0.0))
+            assert abs(pin[1]) < 1e-9 and abs(pin[2]) < 1e-9, (along, period, tick, pin)
+            assert abs(pin[0] - (r * math.cos(a) + math.sqrt(l * l - (r * math.sin(a)) ** 2) - far)) < 1e-9
+        c.add_entity(0.5, 64.0, 0.5, _display("mot_valve"))
+        MK.crank(c, (0, 0, 1), along, r, l, period, turn=False, lead=0, start=90.0)
+        valve = _last(c)
+        assert [round(v[3], 9) for v in valve.steps] == [round(v[3], 9) for v in part.steps]
+        assert all(v[2] == 0.0 for v in valve.steps)
+        slides = [v[3] for v in valve.steps]
+        assert abs(max(slides) - (l + r - far)) < 1e-9 and abs(min(slides) - (l - r - far)) < 1e-9
+    plain, zero = _Canvas(), _Canvas()
+    for c, more in ((plain, {}), (zero, {"start": 0})):
+        c.add_entity(0.5, 64.0, 0.5, _display("mot_rod", anchor=(2.0, 0.0, 0.0)))
+        MK.crank(c, (0, 0, 1), (1, 0, 0), 1.0, 4.0, MK.ENGINE_REV, **more)
+    assert _last(plain).steps == _last(zero).steps and _last(plain).way == _last(zero).way
+
+
+def test_play_eccentric():
+    """A disc, the rod of an eccentric a quarter turn ahead on it and the valve rod it pushes,
+    each moved by its own steps from a rest pose that is no dead centre: the rod's eye stays on
+    the eccentric's middle and its other end on the valve rod's pin."""
+    r, l = 0.25, 4.0
+    lean, far = -math.degrees(math.asin(r / l)), math.sqrt(l * l - r * r)
+    c = _Canvas()
+    south, east = (0, 0, 1), (1, 0, 0)
+    x, y, z = SHAFT
+    c.add_entity(x, y, z, _display("mot_disc"))
+    MK.spin(c, south, MK.ENGINE_REV)
+    c.add_entity(x + far, y, z, _display("mot_valve"))
+    MK.crank(c, south, east, r, l, MK.ENGINE_REV, turn=False, start=90)
+    c.add_entity(x + far, y, z, _display("mot_rod", turn=((0, 0, 1), lean), anchor=(l / 2.0, 0.0, 0.0)))
+    MK.crank(c, south, "x", r, l, MK.ENGINE_REV, start=90)
+    game, shown, parts, tmp = _played(canvas=(c, dict(zip(("disc", "valve", "rod"), c.motion.parts))))
+    try:
+        disc, rod, valve = shown["disc"], shown["rod"], shown["valve"]
+        # at rest the rod lies on the eccentric already
+        assert math.dist(rod.point(0, (-l / 2.0, 0.0, 0.0)), disc.point(0, (0.0, r, 0.0))) < 1e-6
+        game.call("c164art:t-motion/start")
+        game.run(4 * MK.ENGINE_REV)
+        t0 = _first(game, MK.ENGINE_REV)
+        eye = pin = reach = 0.0
+        for t in _spans(t0, 3 * MK.ENGINE_REV):
+            eye = max(eye, math.dist(rod.point(t, (-l / 2.0, 0.0, 0.0)), disc.point(t, (0.0, r, 0.0))))
+            pin = max(pin, math.dist(rod.point(t, (l / 2.0, 0.0, 0.0)), valve.point(t)))
+            reach = max(reach, abs(valve.point(t)[1] - valve.pos[1]))
+        assert eye < 0.5 / 16.0 and pin < 0.25 / 16.0 and reach < 1e-6, (eye * 16.0, pin * 16.0, reach)
+        xs = [valve.point(t)[0] - valve.pos[0] for t in _spans(t0, MK.ENGINE_REV)]
+        assert abs(max(xs) - (l + r - far)) < 2e-3 and abs(min(xs) - (l - r - far)) < 2e-3, (max(xs), min(xs))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def test_slide():
     c = _Canvas()
     c.add_entity(0.5, 64.0, 0.5, _display("mot_pen"))
