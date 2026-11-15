@@ -1363,6 +1363,13 @@ def main():
                       indent=1, ensure_ascii=False)
     sys.exit(1 if failed else 0)
 
+# The machine is shared with other projects (COMMON.md section 2): run at a lower priority so they
+# go first. Linux and the other Unix-likes only; a refusal is not an error.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+
 
 if __name__ == "__main__":
     main()
