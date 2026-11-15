@@ -74,4 +74,4 @@
   1. v1、v2、v11·小穹顶本身：缝朝西，这三个机位看到的是它的背面，一个冷的圆，没有自己的暖点；它脚下那扇亮窗是立面第 17 跨的（lights 定成塔的对应物）。东面那扇小窗要不要亮归 lights，这一版照卡片留暗。
   2. lookout·塔上往下看：画面大半是大穹顶（现在还是白模），北翼屋面按总监定的不放通风帽和烟道，看点只有格栅走道和底下的暖光。dome、tower 进总装以后重出这两张，再看北端露台要不要加东西（先报总监）。
   3. terrace、slit·西面近看：缝里看到的是对面铜皮的里面，和外面一个色，不够深；照相仪（machines）进来以后缝里是镜筒。圆顶里面衬不衬深色这一版不动。
-- 图：`renders/obs_main_smalldome/`，18 张，node42 出，出图的提交记在同一文件夹的 `shots.txt` 里。场景里的大穹顶和报时塔还是白模，两家交付以后带它们的图（v1、v2、v11、v12、roofs、roofs_north、lookout、aerial 等）要重出。
+- 图：`renders/obs_main_smalldome/`，18 张，node42 出，出图的提交记在同一文件夹的 `shots.txt` 里；旁边的 `check.txt`、`hidden.txt` 是同一次跑的 check.py 和 hidden.py 的原话。头一套是 e6be562d（关口过）；紧接着 materials/iron 的二次交付进了总装（格栅换成方网、门的舷窗翻到上半扇、铸铁板只剩一颗四棱尖），走道、四扇门、轴箱的图都跟着变，照新总装重出了整套。场景里的大穹顶和报时塔还是白模，两家交付以后带它们的图（v1、v2、v11、v12、roofs、roofs_north、lookout、aerial 等）要重出。
