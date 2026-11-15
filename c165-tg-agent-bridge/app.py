@@ -2513,9 +2513,15 @@ def default_resume_prompt(conv) -> str:
     )
 
 
-def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True, requester: str = "ctrl") -> str:
+def format_standard_launch_op(op_id: str, launcher_agent_id: str, conv_id: str, prompt_text: str, model: str = "", isolated_vm: bool = True, requester: str = "ctrl", auto_discover_env: bool = False) -> str:
     m_line = f"- model: \"{model}\"（请在 Task 的 model 参数填入匹配的该模型 ID，保持一致）" if model else "- model: （不填，默认继承当前会话模型）"
-    mach_line = task_machine_param_line(isolated_vm=isolated_vm)
+    if auto_discover_env:
+        mach_line = (
+            "- machine / repo_url: 请优先选用你当前账号自身有权限的默认云环境（例如当前会话所在仓库/环境对应的 `machine={\"environment_id\": ...}` 或 `repo_url`），"
+            "使每个后台子会话在独立的云工作区中启动（不要填入当前账号无权限的其他环境 ID）\n"
+        )
+    else:
+        mach_line = task_machine_param_line(isolated_vm=isolated_vm)
     src_attr = f" source=\"{requester}\"" if requester else ""
     return (
         f"[STANDARD_OP op_id=\"{op_id}\" type=\"TASK_LAUNCH\" chat=\"{conv_id}\"{src_attr}]\n"
@@ -2957,7 +2963,16 @@ def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: 
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, host["id"], "launch_subagent", node_id, requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_launch_op(op_id, host["agent"], node_id, prompt_body, "", isolated_vm=True, requester=requester)
+    msg_txt = format_standard_launch_op(
+        op_id,
+        host["agent"],
+        node_id,
+        prompt_body,
+        "",
+        isolated_vm=True,
+        requester=requester,
+        auto_discover_env=is_worker_host_id(host["id"]),
+    )
     system_note(host["id"], msg_txt, wake=1)
     log.info("auto-spawned worker VM %s via %s (op_id=%s)", node_id, host["id"], op_id)
     return node_id, host["id"], op_id

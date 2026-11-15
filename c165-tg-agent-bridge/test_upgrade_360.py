@@ -426,7 +426,7 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     wh_ag = bridge.node_row("whost1")["agent"]
     # node1 was already online, so pool_size=3 must auto-enqueue node2 and node3 onto whost1!
     wh_inbox = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))
-    assert "node2" in wh_inbox and "node3" in wh_inbox and 'machine: {"environment_id":' in wh_inbox
+    assert "node2" in wh_inbox and "node3" in wh_inbox and "独立的云工作区" in wh_inbox
     w2_code = bridge.conv_row("node2")["task_code"]
     assert w2_code.startswith("w-")
     # Newly booted VM joins with `code=w2_code` in 0ms without approval!
