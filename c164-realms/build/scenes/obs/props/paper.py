@@ -130,120 +130,124 @@ def _dashed(points, dash):
 
 # ---- the faces ----------------------------------------------------------------------------------------
 def _chart_face():
-    """The enamel star chart, 30 x 14: three figures of the northern sky drawn star to star, a small
-    cluster, loose stars of three magnitudes, and a graduated edge below and on the left. A bright
-    star is a block of four texels and a faint one a grey dot; none is drawn as a cross."""
+    """The enamel star chart, 30 x 14: a graduated border as on a map, and inside it four figures
+    of the northern sky drawn star to star, a small cluster and loose stars of three magnitudes.
+    A bright star is a block of four texels and a faint one a grey dot; none is drawn as a cross,
+    and no two lines cross."""
     g = _Grid(30, 14, "e")
-    for x in range(2, 30, 3):
-        g.put(x, 13, "g")
-    for y in range(1, 13, 3):
-        g.put(0, y, "g")
-    dipper = [(2, 3), (5, 2), (8, 3), (10, 5), (14, 5), (13, 8), (10, 8)]
-    zigzag = [(17, 3), (19, 5), (22, 3), (24, 6), (27, 4)]
-    kite = [(17, 9), (20, 8), (22, 10), (19, 12)]
-    for figure, closes in ((dipper, 3), (zigzag, None), (kite, 0)):
+    for x in range(30):
+        for y in (0, 13):
+            g.put(x, y, "g" if (x // 2) % 2 else "e")
+    for y in range(14):
+        for x in (0, 29):
+            g.put(x, y, "g" if (y // 2) % 2 else "e")
+    dipper = [(2, 4), (5, 3), (8, 3), (10, 5), (14, 4), (14, 7), (11, 8), (10, 5)]
+    zigzag = [(17, 2), (19, 5), (22, 3), (25, 6), (28, 3)]
+    triangle = [(16, 9), (21, 8), (19, 12), (16, 9)]
+    crown = [(2, 8), (3, 10), (5, 11), (7, 10), (8, 8)]
+    for figure in (dipper, zigzag, triangle, crown):
         for a, b in zip(figure, figure[1:]):
             g.line(a, b, "l")
-        if closes is not None:
-            g.line(figure[-1], figure[closes], "l")
-    g.dots(dipper + zigzag + kite, "s")
-    g.dots([(25, 10), (26, 9), (27, 11), (28, 10), (26, 11)], "s")              # the cluster
-    g.dots([(5, 10), (15, 1), (1, 7), (11, 11), (28, 1), (23, 12), (7, 6)], "s")
-    g.dots([(3, 12), (8, 0), (12, 2), (16, 6), (21, 1), (25, 2), (15, 11), (1, 1), (29, 7), (6, 12)], "f")
-    for x, y in ((14, 5), (19, 12), (6, 9)):                                    # first magnitude
+    g.dots(dipper + zigzag + triangle + crown, "s")
+    g.dots([(24, 10), (25, 9), (26, 10), (27, 9), (26, 12), (28, 11)], "s")     # the cluster
+    g.dots([(15, 1), (5, 6), (23, 12), (28, 7)], "s")
+    g.dots([(8, 1), (11, 1), (25, 1), (16, 6), (22, 7), (1, 12), (14, 10), (7, 12), (20, 1)], "f")
+    for x, y in ((14, 4), (22, 2), (11, 11)):                                   # first magnitude
         g.fill(x, y, x + 1, y + 1, "s")
     return g.sprite("paper_chart_face", {"e": EN[1], "g": EN[3], "l": EN[3], "s": CR[3], "f": CR[0]})
 
 
 def _blueprint_face():
-    """The blueprint, 24 x 14 above the rolled foot: the great dome in elevation with its centre
-    line and a height, the refractor on its pier beside it, and the title block."""
-    g = _Grid(24, 14, "b")
-    g.line((1, 13), (1, 1), "m")
-    g.line((1, 1), (22, 1), "m")
-    g.line((22, 1), (22, 13), "m")
-    # the dome on its drum
-    g.line((4, 11), (14, 11), "w")
-    g.line((5, 8), (5, 10), "w")
-    g.line((13, 8), (13, 10), "w")
-    g.ring(9, 8, 4, "w", arc=(0.0, 180.0))
-    g.line((9, 2), (9, 12), "m", dash=(2, 1))                                   # centre line
-    g.line((3, 4), (3, 10), "m")                                                # the height
-    g.dots([(2, 4), (4, 4), (2, 10)], "m")
-    # the refractor
-    g.line((16, 11), (21, 11), "w")
-    g.frame(18, 8, 19, 10, "w")
-    g.line((16, 8), (20, 4), "w")
-    g.dots([(21, 3), (21, 4), (20, 3)], "w")
-    g.put(15, 9, "w")
-    # the title block
-    g.frame(15, 12, 22, 13, "m")
-    return g.sprite("paper_blueprint_face", {"b": EN[2], "m": CR[1], "w": CR[3]})
+    """The blueprint, 24 x 14 above the rolled foot: the great dome cut through, the refractor on
+    its pier under it and the observing floor; the same dome in plan with the pier in the middle;
+    the title block in the corner."""
+    rows = ["bbbbbbbbbbbbbbbbbbbbbbbb",
+            "bbbbbbbbbbbbbbbbbwwwbbbb",
+            "bbbbbwwwwwbbbbbbwbbbwbbb",
+            "bbbwwbbbbbwwbbbwbbbbbwbb",
+            "bbbwbbbbwbbwbbbwbbwbbwbb",
+            "bbwbbbbwbbbbwbbwbbbbbwbb",
+            "bbwbbbwmbbbbwbbbwbbbwbbb",
+            "bbwbbwbmbbbbwbbbbwwwbbbb",
+            "bbwmmmmmmmmmwbbbbbbbbbbb",
+            "bbwbbbbmbbbbwbbmmmmmmmmb",
+            "bbwbbbbmbbbbwbbmbwwwbbmb",
+            "bwwwwwwwwwwwwwbmbbbbbbmb",
+            "bbbbbbbbbbbbbbbmmmmmmmmb",
+            "bbbbbbbbbbbbbbbbbbbbbbbb"]
+    return Sprite("paper_blueprint_face", rows, {"b": EN[2], "m": CR[0], "w": CR[3]})
 
 
-def _orbit(focus, q, e, turn, span=150.0):
-    """Texels of a conic about `focus`: perihelion distance q, eccentricity e, the perihelion
-    `turn` degrees round from the +x axis (counter-clockwise as seen)."""
+def _ellipse(cx, cy, a, b):
+    """The texels of an ellipse, one texel thick and alike in its four quarters. The centre lies
+    on a texel or between two (cx, cy whole or half numbers)."""
+    quarter, n = [], 64 * int(a + b)
+    for k in range(n + 1):
+        t = 0.5 * math.pi * k / n
+        p = (int(math.floor(cx + a * math.cos(t) + 0.5)), int(math.floor(cy - b * math.sin(t) + 0.5)))
+        if p not in quarter:
+            quarter.append(p)
+    mx, my = int(round(2 * cx)), int(round(2 * cy))
     out = []
-    for i in range(-300, 301):
-        v = math.radians(span * i / 300.0)
-        r = q * (1.0 + e) / (1.0 + e * math.cos(v))
-        t = v + math.radians(turn)
-        p = (int(math.floor(focus[0] + r * math.cos(t) + 0.5)), int(math.floor(focus[1] - r * math.sin(t) + 0.5)))
-        if p not in out:
-            out.append(p)
-    return _thin(out)
+    for x, y in _thin(quarter):
+        for q in ((x, y), (mx - x, y), (x, my - y), (mx - x, my - y)):
+            if q not in out:
+                out.append(q)
+    return out
 
 
 def _board_face():
-    """The blackboard, 28 x 20: tonight's orbit in chalk. The Sun with the Earth's circle round it,
-    the comet's long ellipse swinging close past the Sun, the comet marked at three dates with its
-    tail away from the Sun, and the reckoning in the corner, boxed where it comes out."""
+    """The blackboard, 28 x 20: tonight's orbit in chalk. The comet's long ellipse with the Sun in
+    one focus, the line of apsides ruled faint, the comet on its way out with its tail away from
+    the Sun and the radius drawn to it; beside the figure the reckoning in short lines, the result
+    underlined; a heading above, and a wiped patch in the corner where an older figure stood."""
     g = _Grid(28, 20)
-    sun = (9, 12)
-    for x, y in ((3, 2), (4, 2), (5, 3), (6, 3), (7, 3), (4, 4), (5, 4), (6, 5), (7, 5), (3, 3), (8, 4)):
+    centre, a, c = (10.0, 9.5), 8.0, 5.5
+    for x, y in ((1, 16), (2, 16), (3, 16), (2, 17), (3, 17), (4, 17), (5, 17), (4, 18), (5, 18), (6, 18)):
         g.put(x, y, "u")                                                        # where it was wiped
-    g.ring(sun[0], sun[1], 6, "d", dash=(2, 1))
-    path = [p for p in _orbit(sun, 1.6, 0.86, 215.0) if 0 <= p[0] < 28 and 0 <= p[1] < 20]
-    g.dots(path, "c")
-    g.ring(sun[0], sun[1], 1.5, "c")
-    g.put(sun[0], sun[1], "c")
-    g.dots([(3, 12), (2, 12)], "c")                                             # the Earth and its mark
-    for x, y in ((16, 3), (21, 5), (13, 15)):                                   # the comet at three dates
-        d = math.hypot(x - sun[0], y - sun[1])
-        ux, uy = (x - sun[0]) / d, (y - sun[1]) / d
-        g.line((x, y), (round(x + 2.4 * ux), round(y + 2.4 * uy)), "c")
-    for y, x1 in ((14, 24), (16, 26), (18, 22)):                                # the reckoning
-        g.line((19, y), (x1, y), "d", dash=(3, 1))
-    g.frame(22, 9, 26, 11, "c")
-    g.put(24, 10, "d")
-    return g.sprite("paper_board_face", {"u": SL[4], "d": CR[0], "c": CR[3]}, back=SLATE)
+    g.line((7, 10), (17, 10), "u", dash=(1, 1))                                 # line of apsides
+    g.line((6, 9), (14, 6), "d")                                                # the radius vector
+    orbit = _ellipse(centre[0], centre[1], a, math.sqrt(a * a - c * c))
+    g.dots([p for p in orbit if p not in ((14, 4), (17, 7))], "c")              # room round the comet
+    g.fill(4, 9, 5, 10, "c")                                                    # the Sun
+    g.fill(15, 5, 16, 6, "c")                                                   # the comet
+    g.dots([(17, 5), (18, 4), (19, 4)], "d")                                    # and its tail
+    g.dots([(2, 1), (3, 1), (4, 1), (6, 1), (7, 1)], "d")                       # the heading
+    for y, runs in ((7, ((21, 23), (25, 26))), (9, ((21, 22), (24, 26))), (11, ((21, 24), (26, 26)))):
+        for x0, x1 in runs:                                                     # the reckoning
+            g.line((x0, y), (x1, y), "d")
+    g.line((21, 13), (26, 13), "d")
+    g.line((21, 14), (26, 14), "c")                                             # the result, underlined
+    return g.sprite("paper_board_face", {"u": SL[5], "d": CR[0], "c": CR[3]}, back=SLATE)
 
 
-MARIA = ((-0.30, -0.42, 0.30, 0.24), (0.22, -0.34, 0.17, 0.17), (0.40, -0.04, 0.20, 0.16),
-         (0.70, -0.24, 0.10, 0.13), (0.62, 0.18, 0.11, 0.15), (-0.62, -0.06, 0.20, 0.36),
-         (-0.22, 0.36, 0.20, 0.14), (-0.52, 0.40, 0.10, 0.10))
+MOON = [".....hhhhhh.....",
+        "...hhhsshhhhh...",
+        "..hhsskkshsshh..",
+        ".hhskkkksskkshh.",
+        ".hskkkkkskkkshh.",
+        "hhskkkkshskkhskh",
+        "hskksksshhsskkkh",
+        "hskkthsshhskkkhh",
+        "hskkshhhhhhskkhh",
+        "hhskshhhhhhhkkhh",
+        "hhsskkshhhhkshhh",
+        ".hhkkkshhhhhhhh.",
+        ".hhhsshhhhhhhhh.",
+        "..hhhhhtthhhhh..",
+        "...hhhhtthhhh...",
+        ".....hhhhhh....."]
 
 
 def _moon_face():
-    """The Moon, 22 x 22: a print of the full Moon on a night-blue field inside a cream mount, the
-    seas in two greys, the bright southern crater with its rays, a rim light on the upper left."""
+    """The Moon, 22 x 22: a print of the full Moon on a night-blue field inside a cream mount: the
+    seas in two greys, the bright crater in the south."""
     g = _Grid(22, 22, "p")
     g.fill(2, 2, 19, 19, "n")
-    c, r = 10.5, 8.0
-    for y in range(22):
-        for x in range(22):
-            dx, dy = (x - c) / r, (y - c) / r
-            if math.hypot(dx, dy) > 1.0:
-                continue
-            depth = min(math.hypot((dx - mx) / rx, (dy - my) / ry) for mx, my, rx, ry in MARIA)
-            ch = "k" if depth < 0.62 else "s" if depth < 1.0 else "h"
-            if ch == "h" and math.hypot(dx, dy) > 0.86 and dx + dy < -0.55:
-                ch = "t"                                                        # the lit rim
-            g.put(x, y, ch)
-    g.dots([(9, 16), (8, 17), (10, 18), (11, 15), (7, 15)], "t")                # the rayed crater
-    g.put(9, 17, "s")
-    g.dots([(7, 9), (13, 13)], "t")
+    for j, row in enumerate(MOON):
+        for i, ch in enumerate(row):
+            if ch != ".":
+                g.put(3 + i, 3 + j, ch)
     return g.sprite("paper_moon_face", {"p": CR[3], "n": EN[0], "h": CR[2], "t": CR[3], "s": CR[1], "k": CR[0]})
 
 
