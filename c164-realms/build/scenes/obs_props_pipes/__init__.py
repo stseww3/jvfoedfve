@@ -158,8 +158,9 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone, copper and glass the pipes are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone, copper and glass the pipes are judged against, and the map's sky: the
+    scene stands in the map's hour, and without the sky's pack the game's own sun stands in it."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
