@@ -1,0 +1,340 @@
+"""The great armillary sphere of the front court (card plan/packages/machines/armillary.md).
+
+It stands where the brass meridian of the court (x = 35) crosses the entrance axis (z = 0), in the
+middle of the emblem roundel that site/court lays there, and it is the foreground of the axis view
+V2: from the head of the grand stair the lit entrance and the great dome are seen through its rings.
+
+    centre cell      skeleton.ARMILLARY = (35, 0); the centre line of the sphere is (35.5, 0.5)
+    stone base       blocks, x 34..36, z -1..1, y 0..1: a ring of deepslate stairs (two half-block
+                     steps) round a core, and one block of wall stone on it; 3 wide, 2 high
+    sphere           its middle at y 4.75; the bore of the meridian ring is 4.5 blocks
+    top              y 7.25 (version a), y 7.44 (version b): the crown of the meridian ring, a plain
+                     arc. Nothing stands on it; the polar axis ends in a ball, below the crown.
+
+The brass work is display entities, one model to the ring. Every model has its anchor in the middle
+of the sphere and every entity stands on that one point, so they all take their light from the
+same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring.
+
+Two versions stand for the review (the base is the same):
+  a  classic     many thin rings: horizon, meridian, equator, the two tropics, one colure, the
+                 ecliptic band with its scale, the polar axis and a small earth. 9 entities.
+  b  heavy       one great graduated meridian ring and a broad ecliptic band on a slim colure, the
+                 axis and a larger earth. 5 entities. No level ring: from due north or south version
+                 a shows an upright bar (the meridian ring on edge) crossed by a level one (the
+                 horizon ring), version b only the upright one.
+
+What does not turn (the frame), drawn the way it stands; +x east, +y up, +z south:
+  stand      the iron saddle on the base that clamps the foot of the meridian ring
+  meridian   upright, north-south, over the brass line in the paving; it carries the two bearings
+             of the polar axis and the ball that ends it
+  horizon    level, at the middle of the sphere, held on the meridian ring north and south (a)
+
+What turns (the sphere proper), every piece ABOUT THE POLAR AXIS THROUGH THE ANCHOR. The axis lies
+in the meridian plane and rises LATITUDE degrees above the northern horizon; as a unit vector
+(east, up, south) it is POLE = (0, sin LATITUDE, -cos LATITUDE). These models are drawn in the
+sphere's own frame, with +y along the polar axis, and each is placed with the two turns
+(("y", hour), ("x", LATITUDE - 90)): the first spins it about its own axis, the second tips that
+axis onto the pole. To move one, change `hour` only (pieces() gives the turns for any hour; the
+southern tropic has a half turn about z in front). The sky's daily motion is the negative sense.
+  axis       the rod and the earth on it
+  equator    square to the axis (a)
+  tropic     the same model twice, north and south of the equator (a)
+  ecliptic   the band, OBLIQUITY degrees off the equator, a mark every 10 degrees and a long one
+             every 30 (the twelve signs)
+  colure     the one ring through both poles that carries the others (the solstitial colure). Only
+             one: two would cross at the pole.
+This round places a still pose, HOUR; the motion is A8's.
+
+Brass: old and dark (the palette's brass_dark), one step lighter where a face looks up, and only
+the scale marks, the bolts and the ball on the axis go brighter. Nothing glows. At night the four
+small ground lamps at the corners of the base light it; lamps and light sources are A2's
+(sky/lights), this module only says where they go: LAMP_CELLS, lamp_feet().
+
+    from scenes.obs.machines import armillary
+    n = armillary.build(canvas, origin, version="a")      # base and brass; returns the entity count
+"""
+import functools
+import math
+
+from artkit import models as M
+from artkit.pixelart import Sprite
+
+from ..common import blocks as B
+from ..common import palette as P
+from ..common import skeleton as S
+
+PREFIX = "mach_armillary_"
+VERSION = "a"                       # the version build() places until the review picks one
+VERSIONS = ("a", "b")
+
+# --- where it stands (the skeleton's numbers) -----------------------------------------------------
+CX, CZ = S.ARMILLARY                # the cell (35, 0)
+BASE_TOP = S.GROUND + 2             # the top of the stone base
+CENTRE_Y = S.GROUND + 4.75          # the middle of the sphere
+LIGHT_CELL = (CX, int(math.floor(CENTRE_Y)), CZ)    # the cell every brass piece takes its light from
+# the four ground lamps: the cells diagonally off the corners of the base, on the court
+LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
+
+# --- the instrument's own numbers -----------------------------------------------------------------
+LATITUDE = 45.0                     # the pole's height over the northern horizon (no skeleton number yet)
+OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
+HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
+POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
+BRIGHTNESS = None                   # None: the light of LIGHT_CELL. (sky, block) fixes it, if A2 asks
+
+# The models are drawn 2 px to the unit and shown at twice their size: 16 px to the block, and a ring
+# 5 blocks across stays inside the 48 units a model may span. So below 1 unit = 2 px = 1/8 block.
+PX = 2.0
+FOOT = (CENTRE_Y - BASE_TOP) * 16.0 / PX        # 22: the top of the base, in units below the anchor
+R_BORE = 18.0                       # the bore of the meridian ring (and of the horizon ring)
+# A ring is (outer radius, radial size, width along its own axis). What turns keeps inside 17.25.
+SPEC = {
+    "a": dict(
+        parts=("stand", "meridian", "horizon", "axis", "equator", "tropic", "ecliptic", "colure"),
+        meridian=(20.0, 2.0, 2.0), meridian_scale=False,
+        horizon=(21.5, 3.5, 1.5),
+        equator=(16.75, 1.5, 2.0),
+        tropic=(16.75, 1.5, 1.5),               # (radius of the sphere it lies on, radial size, width)
+        ecliptic=(17.0, 1.0, 3.0),
+        colure=(16.5, 1.5, 1.5),
+        rod=0.75, earth=2.5, boss=1.5, knob=1.75,
+    ),
+    "b": dict(
+        parts=("stand", "meridian", "axis", "ecliptic", "colure"),
+        meridian=(21.5, 3.5, 2.5), meridian_scale=True,
+        ecliptic=(17.0, 1.5, 5.0),
+        colure=(16.5, 1.5, 2.0),
+        rod=1.0, earth=3.5, boss=1.75, knob=2.0,
+    ),
+}
+POLAR = ("axis", "equator", "tropic", "ecliptic", "colure")     # the pieces that turn about the pole
+
+# --- materials (palette only) ---------------------------------------------------------------------
+BRASS = P.mat("brass_dark")                 # the body of every ring
+WORN = P.mat("brass", base=2)               # one step up: bolt heads, collars, the ball on the axis
+IRON = P.mat("iron")
+EARTH = P.mat("verdigris")                  # the small globe in the middle: the dome's copper green
+MARK = P.RAMPS["brass"][3]                  # the scale marks: two steps over the body, no brighter
+
+STEP = B.SLATE_BRICK                        # the main building's plinth stone
+DIE = B.ASHLAR_PANEL.block                  # wall stone with a sunk panel on each face
+
+
+# --- rings ----------------------------------------------------------------------------------------
+def _mark(body, w, h, upright, long):
+    """The picture of one division of a scale: the body's own with a mark across its middle.
+
+    w, h: the face in pixels; upright: the mark runs down the picture (else across it). The mark is
+    centred both ways, so it reads the same whichever way round a face shows its picture."""
+    across, along = (w, h) if upright else (h, w)
+    n = 2 if across % 2 == 0 else 1
+    length = along - 2 if long else max(2, (along - 2) // 2)
+    rows = ["t" * n] * length if upright else ["t" * length] * n
+    return Sprite(f"{PREFIX}mark_{body.name}_{w}x{h}_{'v' if upright else 'h'}{length}", rows, {"t": MARK},
+                  back=body)
+
+
+def _hoop(m, axis, r_out, thick, width, body, sides, scale=None, every=3, seed=1):
+    """Model.ring() about the model's origin, with a scale if wanted: scale = "flat" draws the marks
+    on the two flat faces, "rim" on the outer face. One mark to the division (360 / sides degrees),
+    a long one every `every`-th; division 0 lies on the first of the two other axes."""
+    k = M.AXES.index(axis)
+    o1, o2 = [i for i in range(3) if i != k]
+    half = r_out * math.tan(math.pi / sides)
+    lo, hi = [0.0] * 3, [0.0] * 3
+    lo[k], hi[k] = -width / 2.0, width / 2.0
+    lo[o1], hi[o1] = r_out - thick, r_out
+    lo[o2], hi[o2] = -half, half
+    outer, inner, flats = M.SIDE[o1][1], M.SIDE[o1][0], M.SIDE[k]
+    lit = {outer: "along", inner: "inner", flats[0]: "along", flats[1]: "along"}
+    letters, marks = (), None
+    if scale:
+        letters = flats if scale == "flat" else (outer,)
+        run = o1 if scale == "flat" else k              # the axis a mark runs along
+        _, ua, va = M.FACE_AXES[letters[0]]
+        w, h = (max(1, int(round((hi[a] - lo[a]) * PX))) for a in (ua, va))
+        back = body.variant(0, "along")
+        marks = [_mark(back, w, h, va == run, long) for long in (False, True)]
+    for i in range(sides):
+        faces = dict.fromkeys(letters, marks[i % every == 0]) if marks else {}
+        theta = 360.0 * i / sides
+        m.box(tuple(lo), tuple(hi), body, rot=(axis, theta, (0.0, 0.0, 0.0)) if theta else None,
+              skip="".join(M.SIDE[o2]), grain=M.AXES[o2], seed=seed, faces=faces, lit=lit)
+    return m
+
+
+# --- the models -----------------------------------------------------------------------------------
+def _new(version, part):
+    return M.Model(f"{PREFIX}{version}_{part}", px=PX)
+
+
+def _stand(version):
+    """The saddle: an iron foot on the stone and two cheeks that clamp the lowest eighth of the
+    meridian ring between them, bolted through. It lies in the meridian plane, so that from above
+    nothing shows across the meridian line."""
+    r_out, _, w = SPEC[version]["meridian"]
+    m = _new(version, "stand")
+    m.box((-3.0, -FOOT, -4.0), (3.0, -FOOT + 2.0, 4.0), IRON)
+    cheek = r_out + 0.5
+    for side in (-1.0, 1.0):
+        m.ring("x", (side * (w / 2.0 + 0.5), 0.0, 0.0), (R_BORE + cheek) / 2.0, cheek - R_BORE, 1.0, IRON,
+               sides=32, arc=(157.5, 202.5))
+    for a in (-15.0, 15.0):
+        with m.turned(("x", a)):
+            m.tube("x", (-(R_BORE + cheek) / 2.0, 0.0), -(w / 2.0 + 1.5), w / 2.0 + 1.5, 0.5, WORN, sides=4)
+    return m
+
+
+def _meridian(version):
+    """The meridian ring, upright in the north-south plane, with the two bearings of the polar axis.
+    The northern one (the upper) ends in a ball; the crown of the ring stays the highest point."""
+    s = SPEC[version]
+    r_out, thick, w = s["meridian"]
+    m = _new(version, "meridian")
+    _hoop(m, "x", r_out, thick, w, BRASS, 36, scale="flat" if s["meridian_scale"] else None)
+    with m.turned(("x", LATITUDE - 90.0)):              # +y now points at the pole
+        for end in (-1.0, 1.0):
+            m.tube("y", (0.0, 0.0), end * (R_BORE - 0.5), end * (r_out + 1.0), s["boss"], BRASS, sides=8)
+        m.ball((0.0, r_out + 1.0 + s["knob"] * 0.75, 0.0), s["knob"], WORN, sides=8, layers=4)
+        m.tube("y", (0.0, 0.0), -(r_out + 1.75), -(r_out + 1.0), s["boss"] + 0.5, WORN, sides=8)
+    return m
+
+
+def _horizon(version):
+    """The horizon ring: a flat level band with the azimuth scale on both faces (it is seen from
+    below), held on the meridian ring by a knuckle north and south."""
+    s = SPEC[version]
+    r_out, thick, w = s["horizon"]
+    mr_out, _, mw = s["meridian"]
+    m = _new(version, "horizon")
+    _hoop(m, "y", r_out, thick, w, BRASS, 36, scale="flat")
+    for end in (-1.0, 1.0):
+        m.box((-(mw / 2.0 + 0.75), -(w / 2.0 + 0.5), end * (R_BORE - 0.5)),
+              (mw / 2.0 + 0.75, w / 2.0 + 0.5, end * (mr_out + 0.5)), BRASS)
+    return m
+
+
+def _axis(version):
+    """The polar axis (along the model's y) with the earth on it. The rod ends inside the bearings
+    of the meridian ring."""
+    s = SPEC[version]
+    m = _new(version, "axis")
+    reach = R_BORE + 0.5
+    m.tube("y", (0.0, 0.0), -reach, reach, s["rod"], BRASS, sides=8)
+    m.ball((0.0, 0.0, 0.0), s["earth"], EARTH, sides=10, layers=5)
+    for end in (-1.0, 1.0):
+        m.tube("y", (0.0, 0.0), end * (s["earth"] - 0.25), end * (s["earth"] + 0.75), s["rod"] + 0.5, WORN, sides=8)
+    return m
+
+
+def _equator(version):
+    r_out, thick, w = SPEC[version]["equator"]
+    m = _new(version, "equator")
+    m.ring("y", (0.0, 0.0, 0.0), r_out - thick / 2.0, thick, w, BRASS, sides=32)
+    return m
+
+
+def _tropic(version):
+    """One tropic: the circle OBLIQUITY degrees north of the equator. Turned upside down it is the
+    southern one."""
+    r, thick, w = SPEC[version]["tropic"]
+    e = math.radians(OBLIQUITY)
+    m = _new(version, "tropic")
+    m.ring("y", (0.0, r * math.sin(e), 0.0), r * math.cos(e) - thick / 2.0, thick, w, BRASS, sides=32)
+    return m
+
+
+def _ecliptic(version):
+    """The ecliptic band: tipped OBLIQUITY degrees about the model's z, so its highest point lies
+    over +x, where the colure and the northern tropic meet it. The scale is on its outer face."""
+    r_out, thick, w = SPEC[version]["ecliptic"]
+    m = _new(version, "ecliptic")
+    with m.turned(("z", OBLIQUITY)):
+        _hoop(m, "y", r_out, thick, w, BRASS, 36, scale="rim")
+    return m
+
+
+def _colure(version):
+    """The colure: the ring through both poles and the two highest points of the ecliptic (the
+    model's x-y plane), with a hub at each pole where it turns on the rod."""
+    s = SPEC[version]
+    r_out, thick, w = s["colure"]
+    m = _new(version, "colure")
+    m.ring("z", (0.0, 0.0, 0.0), r_out - thick / 2.0, thick, w, BRASS, sides=32)
+    for end in (-1.0, 1.0):
+        m.tube("y", (0.0, 0.0), end * (r_out - thick - 0.5), end * (r_out + 0.5), s["rod"] + 0.75, BRASS, sides=8)
+    return m
+
+
+BUILDERS = {"stand": _stand, "meridian": _meridian, "horizon": _horizon, "axis": _axis, "equator": _equator,
+            "tropic": _tropic, "ecliptic": _ecliptic, "colure": _colure}
+
+
+@functools.lru_cache(maxsize=None)
+def _models():
+    out = {}
+    for version in VERSIONS:
+        for part in SPEC[version]["parts"]:
+            model = BUILDERS[part](version)
+            out[model.name] = model
+    return out
+
+
+def models(version=None):
+    """The models of both versions, or of one."""
+    built = _models()
+    return {k: v for k, v in built.items() if version is None or k.startswith(f"{PREFIX}{version}_")}
+
+
+# --- placing --------------------------------------------------------------------------------------
+def pieces(version=VERSION, hour=HOUR):
+    """[(part, turns)]: the entities of a version and the turns that set each one, for the sphere
+    turned `hour` degrees about the polar axis. The frame takes no turns."""
+    spin, tilt = ("y", float(hour)), ("x", LATITUDE - 90.0)
+    out = []
+    for part in SPEC[version]["parts"]:
+        if part not in POLAR:
+            out.append((part, ()))
+            continue
+        out.append((part, (spin, tilt)))
+        if part == "tropic":
+            out.append((part, (("z", 180.0), spin, tilt)))
+    return out
+
+
+def lamp_feet(origin=(0, 0, 0)):
+    """[((x, y, z), yaw)]: where the four small ground lamps stand (the middle of each of LAMP_CELLS,
+    on the court) and the yaw that turns a model's +z towards the axis of the sphere."""
+    ox, oy, oz = origin
+    return [((ox + S.mid(x), oy + S.GROUND, oz + S.mid(z)), math.degrees(math.atan2(x - CX, CZ - z)))
+            for x, z in LAMP_CELLS]
+
+
+def _base(canvas, origin):
+    """The stone base: a square of deepslate stairs rising to the middle from all four sides (the
+    game turns the corner ones), a core, and the die of wall stone on top."""
+    x0, y0, z0 = origin[0] + CX, origin[1] + S.GROUND, origin[2] + CZ
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            if dx == 0 and dz == 0:
+                canvas.set(x0, y0, z0, STEP.block)
+                continue
+            # a stair faces the way it rises: towards the middle
+            facing = ("west" if dx > 0 else "east") if dx else ("north" if dz > 0 else "south")
+            canvas.set(x0 + dx, y0, z0 + dz, f"{STEP.stairs}[half=bottom,facing={facing}]")
+    canvas.set(x0, y0 + 1, z0, DIE)
+
+
+def build(canvas, origin=(0, 0, 0), version=VERSION):
+    """Place the base and the brass of one version; returns the number of display entities."""
+    _base(canvas, origin)
+    built = _models()
+    at = (origin[0] + S.mid(CX), origin[1] + CENTRE_Y, origin[2] + S.mid(CZ))
+    opts = {} if BRIGHTNESS is None else {"brightness": BRIGHTNESS}
+    n = 0
+    for part, turns in pieces(version):
+        nbt = M.display(built[f"{PREFIX}{version}_{part}"], scale=PX, turns=turns, **opts)
+        nbt["Tags"] += ["c164_armillary", f"c164_armillary_{part}"]
+        canvas.add_entity(at[0], at[1], at[2], nbt)
+        n += 1
+    return n
