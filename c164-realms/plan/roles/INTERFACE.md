@@ -47,6 +47,20 @@ entities、views 多报几样（第 6 节）。
 它登记的循环（`scenes/obs/motion/_kit.py`）。没登记会动的东西的场景这一项报 nothing moves，别的不变，已交付的包不用改。
 S2 一次合几个交付的时候用 `tools/gatestack.sh`：每个交付还是在它自己合进去的那棵树上过关口，后合的包让先合的图变样不算先合的账。
 
+11-16 第三次补充（公共文件的四处改动）：
+- 骨架多了锁定机位 `S.V6`（总监 #55097：大台阶南半边看发电房，`site/powerhouse` 场景里的 `stair_south`）。看板的清单
+  `tools/win/shots/obs-board.json` 跟着重出了，`v06_power`、`v07_hall` 两条现在都是骨架的数（`v07_hall` 以前还留着出图岗的提案）。
+- 骨架 `SMALL_DOME_APEX` 从 25 改成 **26**（总监 #57140：25 读成扣在铁箍上的一顶扁盖，26 读成半球）。`main/smalldome.py`
+  照骨架算，不用改；`check.py` 的天际线、彗星场景里的替身跟着变。拍到小穹顶的图都要重画。
+- **测试场景用地图的时刻（`mood.py` 那一行）的，`write_pack` 要把天空的包也带上**：
+  `return list(materials.pack(d) or []) + list(sky.pack(d) or [])`。只带 `materials.pack` 的，游戏自带的太阳没被涂黑，
+  朝西、地平线敞开的图里天上有一块白心黄边的方块（lamps c341 #56843 查的，总装里 9 个场景的 14 张图有）。
+  `check.py` 的 `views` 一项对这样的场景给 WARN；下一次交付时改这一行、重画。
+- **离线图的星星调暗了，和游戏一样**（comet c330 #56134 查的）：游戏画星星是颜色 (b, b, b)、透明度 b，加到天上的是 b 的平方；
+  `artkit/gamescene.py` 原来加的是 b。真机图量的也是平方：blue（b 0.60）星比天亮 92/255，原来的离线图是 153；glow（b 0.15）
+  真机看不见星，原来的离线图亮 38；deep（b 1.0）不变。**这之前出的带星的离线图，blue 的星亮了约 1.7 倍，glow 的亮了约 6.7 倍**，
+  看图定星星、彗星、天色的时候要算上这一条。留档图不追着重画：各包下一次交付时合了总装重画，急用的走【交付·补图】（第 6 节）。
+
 ---
 
 ## 1. 目录和类别
@@ -127,7 +141,8 @@ def pack(pack_dir) -> list:      # 一行行的说明文字
 ```
 build/scenes/obs_<缩写>_<包名>/
   __init__.py     def build(): 建 Canvas，调本包的 build(c,(0,0,0))（比选就并排调各版本），返回 c；BIOME = "obs_blue"
-                  def write_pack(pack_dir): 调本包的 pack()；要用重画的方块就再调 scenes.obs.materials.pack(pack_dir)
+                  def write_pack(pack_dir): 调本包的 pack()；要用重画的方块就再调 scenes.obs.materials.pack(pack_dir)；
+                                            用地图的时刻（下面的 mood.py）就再调 scenes.obs.sky.pack(pack_dir)，不然天上有游戏自带的太阳
   props.py        def build_models(): return <本包>.models()        # 有模型才写；场景里用到别的包的模型也并进来
   mood.py         from scenes.obs.sky.mood import BIOMES, TIMELINES    # 一行，复用总装的光
   shots.json      [{"name":.., "pos":[x,y,z], "look_at":[x,y,z], "time": 可省}]  视角至少含一远、一近、一和相邻东西同框
@@ -135,7 +150,7 @@ build/scenes/obs_<缩写>_<包名>/
 
 - 场景属于哪个类别，`check.py` 从名字里的缩写读；名字不按这个格式的测试场景在 `__init__.py` 里写一行 `CATEGORY = "props"`。没有模型的场景不用写 `props.py`，`makepack.py`、`render.py`、`check.py` 都当它没有模型。
 - 机位正对着头顶或脚下（`look_at` 和 `pos` 只差 y）可以写：朝下拍时画面上边朝南。要别的朝向改用 `yaw`、`pitch` 写（`pitch` 90 朝下；`yaw` 180 时画面上边朝北、右边朝东）。`pos` 和 `look_at` 是同一点不行，`check.py` 判不过。
-- 骨架锁定的机位（`common/skeleton.py` 里的 `V1`、`V2`、`V7`、`V11`）：测试场景拍这几个机位时，`pos` 和 `look_at` 照骨架现在的数写，不抄旧图、旧场景上的数（A0 #304）。同一个站位换时刻可以写几个机位（`v1_blue`、`v1_deep`）。站在锁定机位上、方向却不是骨架的，`check.py` 给 WARN。星厅门洞里那个副机位叫 `v7_in`（A0 #365）。
+- 骨架锁定的机位（`common/skeleton.py` 里的 `V1`、`V2`、`V6`、`V7`、`V11`）：测试场景拍这几个机位时，`pos` 和 `look_at` 照骨架现在的数写，不抄旧图、旧场景上的数（A0 #304）。同一个站位换时刻可以写几个机位（`v1_blue`、`v1_deep`）。站在锁定机位上、方向却不是骨架的，`check.py` 给 WARN。星厅门洞里那个副机位叫 `v7_in`（A0 #365）。
 - 只想陈列模型、不摆场景：不写 `build()`，在 `props.py` 里再加 `GALLERY`（照 `scenes/skyobs/props.py`）；真机上的陈列由 S1 用 `gallery.py` 摆。`check.py` 对这种场景只查模型和资源包。
 - **自查图在你自己的节点上出，跟着分支进 git**（`COMMON.md` 第 0 节第 2 条、第 2.2 节）。合用机上不出图；管理员的电脑不再用。
   代码先提交、push，然后往自己的节点投（`run_workspace_job`，命令照在 `c164-realms/` 下手敲的样子写）：
