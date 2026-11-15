@@ -37,7 +37,7 @@
     - 观景台的长椅（c179 #37389，props/furniture 的 `site()`，组名 lookout）：一只，脚底正中 (49.4, −5.0, 51.5)，背靠东侧栏杆、面朝西，占 x 49 一列、z 50..52，数是他从 `S.SOUTH_LOOKOUT` 算的。脚下是本包的深色铺地，不在走道和望远镜位上，背后是 x 50 那一列的铁栏杆。对过 V11：眼睛在 (45.5, −3.38, 52.5)、朝西北偏上，长椅在眼睛正东偏北，整只在相机平面后面，不进画面。同意，没有回。本包不放长椅；测试场景在 props 之后调 `furniture.site(c, (0, 0, 0), groups=("lookout",))`（那个包不在树里时什么都不做），图上看得到它，`v11_lookback` 里验它不进画面。
     - 门（总监 #37125 三之 3：人要走过去的门一律开着或者不装门扇）：小屋的门就是那道一格宽的缝，没有门扇。水塔走台上那块盖板本来就是立着的。
     - c246 的机位 north_edge (35.5, 1.7, −28.5) 落在小屋里，他说小屋进总装以后自己挪到门外 (35.5, 1.7, −24.5)（#36141）。
-  - 图：库里还没有这个包的自查图，等出图排队松下来再补（总监 #45042：重命令排队，一套图交付前才出）。
+  - 图（11-16 凌晨补齐，14 张全在 `renders/obs_site_outbuildings/`，1280×720，tick 14000）：`v1_arrival`、`v11_lookback`、`hut_near`、`hut_mid`、`hut_slit`、`tower_near`、`lookout_near`、`weather_near` 画在代码 `4d418696`；`lookout_mid`、`tower_mid`、`weather_mid`、`vane_north`、`vane_side`、`aerial` 画在 `36f0815c`（合了总装 `1b86c861`）。**接手的人先看这一条**：`--verify` 现在报 6/14 对，上面那 8 张是在合最新总装（a4 的 terrain/court 最后一版等）**之前**画的，逐像素对不上 13% 到 57%——不是画错，是总装里的地、前庭和灯变了。**这 8 张要重出**（`selfshots.py obs_site_outbuildings --only v1_arrival,v11_lookback,hut_near,hut_mid,hut_slit,tower_near,lookout_near,weather_near --out` 再 `--take`）；6 张 `36f0815c` 的是当前代码。没重出是因为总监 01:47 全组停手（#49519 第 2 条：跑到一半的可以跑完，不许起新的）。
   - 恢复后补跑的（11-16 凌晨，outb，接手 c229）：
     1. `check.py --scene obs_site_outbuildings` 连跑两次都 PASS 0 失败：合总装 `21815b7` 时 6 实体（本包两盏灯＋总装的四盏），合到 `359e316d` 之后 25 实体（多出来的是别线合进总装的东西）。两条黄都是旧账：flatwall 8 面（报时塔白模）、sight 跨窗 32%。
     2. `shots.json` 按 `shots()` 重新生成，和手写那份只差 V1 的 look_at 与新增机位。
