@@ -10,7 +10,13 @@ The orrery and the mother clock are the real ones as soon as machines/orrery and
 are in the tree; until then standins.py shows their envelope and offers their two lights.
 
 shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
+
+For one question put to the light line (what the doorway's own source does to V7), the scene can
+be built with that source at another level:  C164_HALL_DOOR=<level> (0: none). Unset, which is how
+the kept pictures are drawn, the doorway is lit as the master scene lights it.
 """
+import os
+
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, sky
@@ -19,6 +25,8 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import starhall
 from scenes.obs.main import shell
 from scenes.obs.props import lamps
+from scenes.obs.sky import _lightkit as L
+from scenes.obs.sky import lights
 
 from . import standins
 
@@ -28,6 +36,7 @@ VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # paving under and before the building
 ORIGIN = (0, 0, 0)
 OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture")    # packages whose models the hall shows
+DOOR_ENV = "C164_HALL_DOOR"
 
 
 def _machines(c, version):
@@ -40,16 +49,28 @@ def _machines(c, version):
     return n
 
 
+def _door(c):
+    """The comparison of the docstring: the doorway's source at the level the environment names."""
+    level = os.environ.get(DOOR_ENV)
+    if level is None:
+        return
+    for cell in lights.report(c)["doors"]:
+        if int(level) > 0:
+            c.set(*cell, L.light(int(level)))
+        else:
+            c.clear(*cell)
+
+
 def build(version=VERSION):
     c = Canvas()
     x0, z0, x1, z1 = GROUND
     c.box(x0, S.PAVING_Y, z0, x1, S.PAVING_Y, z1, B.SLATE_SMOOTH.block)
     counts = {"materials": materials.build(c, ORIGIN)}
-    with shell.hall_open():
-        counts["main"] = main.build(c, ORIGIN)
+    counts["main"] = main.build(c, ORIGIN)       # the hall has moved in (starhall.MOVED_IN): no stand-in wall
     counts["machines"] = _machines(c, version)
     counts["interiors"] = starhall.dress(c, ORIGIN, version)
     counts["sky"] = sky.build(c, ORIGIN)
+    _door(c)
     c.entity_counts = {k: int(v or 0) for k, v in counts.items()}
     return c
 
@@ -79,8 +100,12 @@ def shots():
     cx, cz = S.ORRERY_CENTRE
     out = []
 
-    def shot(name, pos, look_at):
-        out.append({"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at]})
+    def shot(name, pos, look_at=None, **turn):
+        entry = {"name": name, "pos": [round(v, 2) for v in pos]}
+        if look_at is not None:
+            entry["look_at"] = [round(v, 2) for v in look_at]
+        entry.update(turn)
+        out.append(entry)
 
     shot("v7", S.V7["pos"], S.V7["look_at"])
     shot("v7_in", (16.5, eye, cz), (8.0, 5.0, cz))
@@ -88,12 +113,13 @@ def shots():
     shot("clock", (9.6, eye, cz + 0.9), (6.2, 2.9, cz))
     shot("orrery", (14.2, eye, cz + 2.2), (cx, 9.0, cz))                # from the floor up into it, the boss over it
     shot("ceiling", (cx + 0.1, eye, cz + 3.4), (cx, 14.0, cz - 0.6))
-    shot("emblem", (cx, 3.4, cz - 4.6), (cx, 0.0, cz + 0.6))            # the ring, the meridian and the star
-    shot("gallery", (12.6, gallery, 5.4), (10.4, 4.2, -1.2))            # from the south gallery down across the orrery
+    shot("floor", (cx, shell.DECK_Y + 0.4, cz), yaw=90.0, pitch=90.0)   # the plan of the floor, west at the top
+    shot("gallery", (15.3, gallery, 5.4), (3.0, 7.2, -1.6))             # along the hall from the south gallery's east end
+    shot("rail", (cx, gallery, 4.9), (cx, 0.0, -1.2))                   # over the south railing: the orrery over its roundel
     shot("gallery_w", (2.6, gallery, -4.6), (13.0, 6.5, 2.5))           # from the gallery's west end to the entrance wall
     shot("door", (8.4, eye, cz), (16.0, 4.6, cz))                       # back to the doorway: the second emblem
     shot("aisle_n", (14.6, eye, -2.4), (4.0, 2.2, -4.4))
     shot("aisle_s", (14.6, eye, 3.4), (4.0, 2.2, 5.4))
     shot("stair_n", (6.6, eye, -3.4), (-3.5, 3.2, -3.6))                # through the side arch to the stair foot
-    shot("mezzanine", (1.4, gallery, cz), (-7.0, 9.6, cz))              # the two lamps beside the great west window
+    shot("mezzanine", (0.5, gallery, cz + 2.2), (-7.0, 9.4, cz))        # the two lamps beside the great west window
     return out

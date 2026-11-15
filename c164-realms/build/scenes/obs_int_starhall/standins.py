@@ -17,6 +17,7 @@ from scenes.obs.sky import _lightkit as L
 
 PREFIX = "int_starhall_standin_"
 SUN_LEVEL, CLOCK_LEVEL = 12, 11
+SUN_R = 2.75              # eighths of a block: the size of the sun machines/orrery is making
 WOOD_D = P.mat("dark_wood", base=1)
 # orbit radius (eighths of a block), where the planet stands on it (degrees), its radius, its material
 PLANETS = ((5.0, 40.0, 0.6, K.IRON), (8.0, 200.0, 0.9, K.CREAM), (11.0, 110.0, 1.0, K.ENAMEL),
@@ -27,14 +28,14 @@ SHAFT_TOP = 28.0            # the model's shaft ends here; iron pipe carries on 
 def _orrery():
     """Shown at scale 2 (units are eighths of a block). Anchor: the middle of the sun."""
     m = M.Model(PREFIX + "orrery", px=2.0)
-    K.glass_ball(m, (0, 0, 0), 3.5, [(-1.0, -0.6, 1, K.GLOW_DIM), (-0.6, -0.2, 1, K.GLOW_MID),
+    K.glass_ball(m, (0, 0, 0), SUN_R, [(-1.0, -0.6, 1, K.GLOW_DIM), (-0.6, -0.2, 1, K.GLOW_MID),
                                      (-0.2, 0.6, 2, K.GLOW_HOT), (0.6, 1.0, 1, K.GLOW_MID)], sides=12)
-    m.tube("y", (0, 0), 3.0, SHAFT_TOP, 0.6, K.BRASS_D)
+    m.tube("y", (0, 0), SUN_R - 0.5, SHAFT_TOP, 0.6, K.BRASS_D)
     for r, deg, size, mat in PLANETS:
         a = math.radians(deg)
         x, z = r * math.cos(a), r * math.sin(a)
         m.ring("y", (0, 0, 0), r, 0.5, 0.5, K.BRASS_D, sides=24)
-        m.beam((3.5 * math.cos(a), 0, 3.5 * math.sin(a)), (x, 0, z), 0.5, 0.5, K.BRASS)
+        m.beam((SUN_R * math.cos(a), 0, SUN_R * math.sin(a)), (x, 0, z), 0.5, 0.5, K.BRASS)
         m.ball((x, 0, z), size, mat, sides=8, layers=4)
     return m
 
