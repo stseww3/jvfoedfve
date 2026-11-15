@@ -13,7 +13,19 @@ Two trains, each to be read from the hand to the load.
   pinion is a block and a half across: from the floor, seven blocks below, that is the part of
   the train that must be read.
 
-  Opening the slit (main/dome version a: two leaves that part sideways). Each leaf has an arm at
+  Opening the slit (main/dome version b, the one the map is built with: a curtain of slats
+  between two rails, drawn up from the slit's foot). With the slit open the curtain lies wound on
+  a roller across the slit's foot, its iron bar just above the roll. From either end of the bar a
+  chain runs up the rail, over a sheave at the slit's head and back down under the rail, on
+  rollers hung from it, then straight down to a drum of the winch: a shaft across the slit's foot,
+  in front of the ring girder. Hauling the hand chain on the winch's wheel winds both chains and
+  draws the bar up the rails; a pawl holds it. Two weights balance the curtain: each hangs on a
+  wire rope from an end of the winch's shaft, over a sheave at the top of a rail under the arch
+  girder beside the slit, and runs down that rail as the curtain goes up. Let go, the curtain
+  comes down by its own weight and the roller takes it up again, turned by two small weights on
+  cords round its shaft ends, in the wells beside the slit's foot.
+
+  Version a of the shell (two leaves that part sideways) keeps its gear. Each leaf has an arm at
   its foot, bent over the sill into the room. An endless chain runs across the slit's foot over
   two corner wheels; the north arm holds its upper strand, the south arm its lower one, so the
   leaves can only move together and opposite ways. Each arm also hangs on a chain that turns
@@ -24,19 +36,26 @@ Two trains, each to be read from the hand to the load.
 
 What is fixed to the building stays below the underside of the dome's ring girder (y 25); what is
 above it rides round with the dome (the hand chain is hitched up before the dome is turned). The
-shell is main's; the ring beam on the wall, the ring girder, the arch girders beside the slit and
-the room's lining are interiors'; this package places display entities and nothing else.
+shell and the curtain's rails are main's; the ring beam on the wall, the ring girder, the arch
+girders beside the slit and the room's lining are interiors'; this package places display entities
+and nothing else.
 
 Moving pieces are models of their own, for the motion category (plan 7.1):
   seg          all twenty turn about TURN_AXIS with the dome, and so does every piece of the slit gear
   riser        turns about the vertical through riser_at()
   handwheel    turns about the line along x through its entity, HAND_GEAR turns to one of the riser
+  version b:
+  winch        turns about the line along z through its entity, WINCH_TURNS turns from open to shut
+  roll         turns about the line along z through its entity
+  bar          runs up the curtain's path (on_curve) from BAR_DEG to SHUT_DEG, HAUL blocks, the slats after it
+  weight       runs down its rail, WEIGHT_RUN blocks at RUN_DEG from the level, as the curtain goes up
+  version a:
   drive        turns about the line along x through its entity
   arm_n, arm_s slide along z towards the dome's meridian, TRAVEL blocks, as the leaves shut
   weight       runs up its rail, TRAVEL blocks at RUN_DEG from the level, as the leaves shut
-Tonight the slit is open: the arms stand in its two lower corners and the weights at the foot of
-their rails. Version b of the shell (a curtain drawn up from the slit's foot) gets its own gear
-once the shell's version is chosen; until then nothing is placed at the slit for it.
+Tonight the slit is open. Version b: the curtain is on its roll, the bar at the rails' foot, the
+weights at the top of their rails. Version a: the arms stand in the slit's two lower corners and
+the weights at the foot of their rails.
 
 Sizes inside the models are in sixteenths of a block (px) whatever scale a model is shown at.
 """
@@ -58,6 +77,8 @@ IRON_B = P.mat("iron", base=4)          # bright: where iron runs on iron (a tre
 TOOTH_IRON = P.mat("iron", base=4, bevel="ends")    # a tooth of the ring or its pinion: a bar with a lit top, no frame
 ROOT_IRON = P.mat("iron_dark", base=1)              # what the teeth stand on: the gaps between them are to read as gaps
 COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the old-copper blocks' faces
+SLAT = P.mat("verdigris", bevel="along")             # a slat of the curtain: the dome's plates, its long edges drawn
+SLAT_D = P.mat("verdigris", base=1, bevel="along")   # every third one, the darker copper
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
@@ -165,6 +186,47 @@ W_WHEEL = 5.0                           # its wheels, either way from its middle
 W_WHEEL_R = 1.5
 WEIGHT_S0 = STOP + W_WHEEL_R + W_WHEEL  # the weight's middle with the slit open: its lower wheels on the stop
 
+# ---- opening the slit (version b): in the dome's frame -------------------------------------------------
+# main/dome draws the slit's meridian as half an ellipse, SHELL_A wide at the ring beam's foot and
+# SHELL_B high on the axis, and its shell is one block thick under that line; the curtain's slats
+# are cells of the shell between the two rails. The gear lays the curtain's path in the middle of
+# the shell's thickness. A point of the path is named by the angle main/dome counts its slats in
+# (_elevation, DRAWN): 0 at the foot, 90 over the axis
+SHELL_A = S.DOME_R + 0.5                # 13.5
+SHELL_B = S.DOME_APEX + 1.0 - LEDGE_Y   # 14.0
+MID = 8.0                               # px from the plates' face in to the curtain's path
+HEAD_X = -1.5                           # the slit's head: the west face of the crown's nine columns
+LATHS = 18                              # the roll's girth in slats
+LATH = 4.0                              # px: a slat's width
+LATH_T = 1.5                            # px: its thickness
+ROLL_R = LATH / (2.0 * math.tan(math.pi / LATHS)) - LATH_T / 2.0       # 10.6 px: the middle of the roll's outermost slats
+ROLL_HALF = JAMB - 2.5                  # px: half the curtain's width, a little play between the rails
+ROD = 3.0                               # px: the curtain's bar is square
+BAR_DEG = 16.5                          # where the bar rests with the slit open
+TAIL = 2                                # slats between the bar and the roll
+HAUL_Z = JAMB - 3.5                     # px: the plane of a hauling chain, just inside the rail's face
+GAP = 7.0                               # px: a hauling chain's way back lies this far inside its way up
+HANGERS = (22.0, 31.0, 40.0, 49.0, 58.0, 67.0, 76.0)       # where a rail carries rollers for its chain
+LEAVE_DEG = HANGERS[1]                  # down to here the way back keeps to the rail; from here it drops to the winch
+DRUM_R = 6.25                           # px: the chain on a drum of the winch
+WHEEL_RB = 5.5                          # px: the hand chain on the winch's wheel
+SHAFT = 1.25                            # px: the winch's shaft
+ROPE = 0.5                              # px: half a weight's wire rope
+ROPE_R = 1.125                          # px: the rope on the shaft's end, which is turned down to carry it
+WINCH_X = FACE_X + 0.53                 # the winch's shaft: its drums turn a pixel off the ring girder's face, and its
+                                        # hand chain hangs in the first column of the room
+WINCH_D = UP_D - ROPE_R                 # px below a run's line: the rope leaves the shaft's far side straight up the
+                                        # run, so that hauling the curtain up pays it out and lets the weight down
+WINCH_HALF = RUN + 2.0                  # px: half the shaft
+# a weight's run in version b: the rail ends where interiors/domeroom's arch truss lets it (x -3.6
+# in the scene); the sheave at its top is as far below the rail's end as in version a
+RAIL_B = (RAIL[0], 50.0)
+FLANGE_B = (FLANGE[0], 32.0)
+KNEE_SB = 41.0
+RUN_HANG_B = RUN_HANG[:2]
+WEIGHT_S1 = FLANGE_B[1] - 3.0 - W_WHEEL_R - W_WHEEL    # the weight's middle with the slit open: its upper wheels under the stop
+CORD_R = 0.875                          # px: the cord of a take-up weight on the roller's shaft end
+
 
 def neighbour(line, name):
     """Another package's module when it is in the tree, else None: the gear is built and judged
@@ -214,6 +276,113 @@ def _eye():
     (_ux, uy), (_nx, ny) = _run_units()
     s = ((F0[1] + LUG / PX - RUN_C1[1]) * PX - UP_D * ny) / uy
     return s, (on_run(s, UP_D)[0] - F0[0]) * PX
+
+
+def _axes(inside=0.0):
+    return SHELL_A - (MID + inside) / PX, SHELL_B - (MID + inside) / PX
+
+
+def on_curve(deg, inside=0.0):
+    """(x, y) in the dome's frame of the point of the curtain's path `deg` degrees up the slit's
+    meridian, or of the line `inside` px further into the room."""
+    a, b = _axes(inside)
+    r = math.radians(deg)
+    return -a * math.cos(r), LEDGE_Y + b * math.sin(r)
+
+
+def slope(deg, inside=0.0):
+    """Which way the path runs there, going up: degrees from east towards the zenith."""
+    a, b = _axes(inside)
+    r = math.radians(deg)
+    return math.degrees(math.atan2(b * math.cos(r), a * math.sin(r)))
+
+
+def _lengths(deg0, deg1, inside, steps=2000):
+    """[(degrees, blocks from deg0 along the path)] in small steps."""
+    out, far, last = [], 0.0, None
+    for i in range(steps + 1):
+        deg = deg0 + (deg1 - deg0) * i / steps
+        at = on_curve(deg, inside)
+        if last is not None:
+            far += math.hypot(at[0] - last[0], at[1] - last[1])
+        out.append((deg, far))
+        last = at
+    return out
+
+
+def along(deg0, deg1, inside=0.0):
+    """Blocks along the path between two angles."""
+    return _lengths(deg0, deg1, inside)[-1][1]
+
+
+def _stations(deg0, deg1, inside=0.0, pitch=LINK):
+    """[(x, y, slope)] of the middles of the links of a chain that lies on the path from deg0 to
+    deg1: a whole number of them fills it. Returns them with the length of one, in px."""
+    table = _lengths(deg0, deg1, inside)
+    n = max(1, int(round(table[-1][1] * PX / pitch)))
+    step, out, j = table[-1][1] / n, [], 0
+    for k in range(n):
+        want = (k + 0.5) * step
+        while table[j + 1][1] < want:
+            j += 1
+        (d0, f0), (d1, f1) = table[j], table[j + 1]
+        deg = d0 + (d1 - d0) * (want - f0) / (f1 - f0)
+        out.append(on_curve(deg, inside) + (slope(deg, inside) + (0.0 if deg1 > deg0 else 180.0),))
+    return out, step * PX
+
+
+def _unit(deg):
+    r = math.radians(deg)
+    return math.cos(r), math.sin(r)
+
+
+def roll_at():
+    """(x, y) of the roller's axis in the dome's frame: the curtain comes down from the bar, TAIL
+    slats straight on, and lies on the roll's west side."""
+    (bx, by), (tx, ty) = on_curve(BAR_DEG), _unit(slope(BAR_DEG))
+    down = (ROD / 2.0 + TAIL * LATH) / PX
+    return bx - down * tx + ROLL_R / PX * ty, by - down * ty - ROLL_R / PX * tx
+
+
+def winch_at():
+    """(x, y) of the winch's shaft in the dome's frame: at WINCH_X, where a weight's rope leaves
+    it straight up its run."""
+    (ux, uy), (nx, ny) = _run_units()
+    s = ((WINCH_X - RUN_C1[0]) * PX - WINCH_D * nx) / ux
+    return on_run(s, WINCH_D)
+
+
+WINCH_S = ((WINCH_X - RUN_C1[0]) * PX - WINCH_D * _run_units()[1][0]) / _run_units()[0][0]      # px up a run's line: where the rope starts
+
+
+def _head_deg():
+    """Where a hauling chain turns back at the slit's head: its sheave lies between the chain's
+    two ways, and the chain round it stops a pixel short of the head."""
+    lo, hi = 60.0, 90.0
+    for _ in range(40):
+        mid = (lo + hi) / 2.0
+        if on_curve(mid, GAP / 2.0)[0] + (GAP / 2.0 + 1.0) / PX < HEAD_X - 1.0 / PX:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+HEAD_DEG = _head_deg()                  # 81.7
+SHUT_DEG = HEAD_DEG - 3.0               # the bar with the slit shut, under the head sheaves
+HAUL = along(BAR_DEG, SHUT_DEG)         # 14.4 blocks: how far the bar is drawn
+WINCH_TURNS = HAUL * PX / (2.0 * math.pi * DRUM_R)      # 5.9
+WEIGHT_RUN = WINCH_TURNS * 2.0 * math.pi * ROPE_R / PX  # 2.6 blocks: to just over the lower stop
+
+
+def _drop():
+    """A hauling chain between the last roller of its way back and its drum: (the point it leaves
+    the rail's line at, the point it meets the drum at), both (x, y) in the dome's frame. It comes
+    down on the drum's west side."""
+    (lx, ly), (wx, wy) = on_curve(LEAVE_DEG, GAP), winch_at()
+    reach = math.hypot(lx - wx, ly - wy)
+    turn = math.atan2(ly - wy, lx - wx) + math.acos(DRUM_R / PX / reach)
+    return (lx, ly), (wx + DRUM_R / PX * math.cos(turn), wy + DRUM_R / PX * math.sin(turn))
 
 
 # ---- drawing ------------------------------------------------------------------------------------------
@@ -441,42 +610,52 @@ def _arm(side):
 
 
 # ---- the weights' runs --------------------------------------------------------------------------------
-def _run(side):
+def _run(side, version="a"):
     """The run of one weight (side 1: south, -1: north), hung under the curb beside the slit: the
-    rail, its three hangers and its foot on the ring girder, the sheave at the foot that turns the
-    chain out of the slit's foot, the sheave at the top, the chain. The origin is the line's first
-    corner (RUN_C1) in the run's plane; the axes are the dome's."""
-    d = _Draw("run_s" if side > 0 else "run_n", 3,
+    rail, its hangers and its foot on the ring girder, the sheave at the top and what the weight
+    hangs on. Version a: a chain from the leaf's arm, turned out of the slit's foot by a sheave
+    there. Version b: a wire rope from the end of the winch's shaft. The origin is the line's
+    first corner (RUN_C1) in the run's plane; the axes are the dome's."""
+    b = version == "b"
+    d = _Draw(("runb_" if b else "run_") + ("s" if side > 0 else "n"), 3,
               anchor=((RUN_ANCHOR[0] - RUN_C1[0]) * PX, (RUN_ANCHOR[1] - RUN_C1[1]) * PX, 0.0))
-    foot_s = _eye()[0] + FOOT_R
+    rail, flange, knee_s, hangs = (RAIL_B, FLANGE_B, KNEE_SB, RUN_HANG_B) if b else (RAIL, FLANGE, KNEE_S, RUN_HANG)
+    foot_s = WINCH_S if b else _eye()[0] + FOOT_R
     knee_d, knee_r = (UP_D + DOWN_D) / 2.0, (DOWN_D - UP_D) / 2.0
-    zs = -side * FOOT_R                             # the sheave at the foot stands on the slit's side of the run
+    zs = -side * FOOT_R                             # version a: the sheave at the foot stands on the slit's side of the run
     with d.turned(("z", RUN_DEG)):                  # x up the run, y towards the vault
-        d.box((RAIL[0], -WEB_D, -1.0), (RAIL[1], 0.0, 1.0), IRON_D, grain="x")
-        d.box((FLANGE[0], -FLANGE_D[1], -3.0), (FLANGE[1], -FLANGE_D[0], 3.0), IRON, grain="x")
-        for s0 in (STOP - 3.0, FLANGE[1] - 3.0):                                # a stop at either end, on both sides of the web
+        d.box((rail[0], -WEB_D, -1.0), (rail[1], 0.0, 1.0), IRON_D, grain="x")
+        d.box((flange[0], -FLANGE_D[1], -3.0), (flange[1], -FLANGE_D[0], 3.0), IRON, grain="x")
+        for s0 in (STOP - 3.0, flange[1] - 3.0):                                # a stop at either end, on both sides of the web
             for z0 in (-3.0, 1.0):
                 d.box((s0, -FLANGE_D[0], z0), (s0 + 3.0, 2.0 - FLANGE_D[0], z0 + 2.0), IRON_D, seed=201)
-        d.tube("y", (foot_s, zs), -UP_D - 0.75, -UP_D + 0.75, FOOT_R - 0.5, IRON_B, sides=12)
-        d.tube("y", (foot_s, zs), -UP_D - 1.5, -1.0, PIN, IRON_D, sides=8)      # its pin, up into the foot
-        d.ring("y", (foot_s, -UP_D, zs), FOOT_R, BAND, WRAP, IRON_D, sides=8,
-               arc=(180.0, 270.0) if side > 0 else (90.0, 180.0), seed=202)
-        _chain(d, "x", (-UP_D, 0.0), foot_s, KNEE_S, 210)
-        d.box((KNEE_S - 4.0, -WEB_D - 0.5, -3.25), (KNEE_S + 4.0, -1.0, 3.25), IRON)    # the hanger of the top sheave, clamped on the web
+        if b:
+            d.box((foot_s, -UP_D - ROPE, -ROPE), (knee_s, -UP_D + ROPE, ROPE), IRON_B, grain="x", seed=210)
+            d.box((WEIGHT_S1 + W_HALF + 2.0, -DOWN_D - ROPE, -ROPE), (knee_s, -DOWN_D + ROPE, ROPE), IRON_B, grain="x", seed=212)
+        else:
+            d.tube("y", (foot_s, zs), -UP_D - 0.75, -UP_D + 0.75, FOOT_R - 0.5, IRON_B, sides=12)
+            d.tube("y", (foot_s, zs), -UP_D - 1.5, -1.0, PIN, IRON_D, sides=8)      # its pin, up into the foot
+            d.ring("y", (foot_s, -UP_D, zs), FOOT_R, BAND, WRAP, IRON_D, sides=8,
+                   arc=(180.0, 270.0) if side > 0 else (90.0, 180.0), seed=202)
+            _chain(d, "x", (-UP_D, 0.0), foot_s, knee_s, 210)
+            _chain(d, "x", (-DOWN_D, 0.0), WEIGHT_S0 + W_HALF + 2.0, knee_s, 212)
+        d.box((knee_s - 4.0, -WEB_D - 0.5, -3.25), (knee_s + 4.0, -1.0, 3.25), IRON)    # the hanger of the top sheave, clamped on the web
         for z0 in (-3.25, 1.75):
-            d.box((KNEE_S - 3.0, -knee_d - 4.0, z0), (KNEE_S + 3.0, -WEB_D - 0.5, z0 + 1.5), IRON_D, seed=203)
-        d.tube("z", (KNEE_S, -knee_d), -0.75, 0.75, knee_r - 0.5, IRON_B, sides=12)
-        d.tube("z", (KNEE_S, -knee_d), -3.75, 3.75, PIN, IRON_D, sides=8)
-        d.ring("z", (KNEE_S, -knee_d, 0.0), knee_r, BAND, WRAP, IRON_D, sides=12, arc=(-90.0, 90.0), seed=204)
-        _chain(d, "x", (-DOWN_D, 0.0), WEIGHT_S0 + W_HALF + 2.0, KNEE_S, 212)
-    for i, hang in enumerate(RUN_HANG):             # a hanger at each of the line's three corners: a strap that
+            d.box((knee_s - 3.0, -knee_d - 4.0, z0), (knee_s + 3.0, -WEB_D - 0.5, z0 + 1.5), IRON_D, seed=203)
+        d.tube("z", (knee_s, -knee_d), -0.75, 0.75, knee_r - 0.5, IRON_B, sides=12)
+        d.tube("z", (knee_s, -knee_d), -3.75, 3.75, PIN, IRON_D, sides=8)
+        if b:
+            d.ring("z", (knee_s, -knee_d, 0.0), knee_r, 2.0 * ROPE, 2.0 * ROPE, IRON_B, sides=12, arc=(-90.0, 90.0), seed=204)
+        else:
+            d.ring("z", (knee_s, -knee_d, 0.0), knee_r, BAND, WRAP, IRON_D, sides=12, arc=(-90.0, 90.0), seed=204)
+    for i, hang in enumerate(hangs):                # a hanger at the line's corners: a strap that
         cx, cy = i * RUN_STEP[0] * PX, i * RUN_STEP[1] * PX         # clasps the web, up to a plate under the curb
         top = cy + hang * PX
         d.box((cx - 3.0, cy - 7.0, -2.0), (cx - 1.0, top - 1.0, 2.0), IRON_D, grain="y", seed=205)
         d.box((cx - 5.0, top - 1.0, -3.0), (cx, top, 3.0), IRON, seed=206)
     fx, fy = -RUN_STEP[0] * PX, -RUN_STEP[1] * PX   # where the line starts: the ring girder's corner under the jamb
     z0, z1 = sorted((-side * 4.5, side * 2.0))
-    d.box((fx, fy + 1.0, z0), (fx + 4.5, fy + 7.0, z1), IRON)                   # the foot: holds the web's end and the sheave's pin
+    d.box((fx, fy + 1.0, z0), (fx + 4.5, fy + 7.0, z1), IRON)                   # the foot: holds the web's end (and, in a, the sheave's pin)
     return d
 
 
@@ -502,15 +681,204 @@ def _weight():
     return d
 
 
+# ---- the curtain's roller (version b): these pieces share the origin roll_at() on the dome's meridian ----
+def _roll():
+    """The curtain on its roller: LATHS slats to a turn, every third of the darker copper, between
+    two iron cheeks on a shaft that runs on into the pockets behind the rails' feet. Turns about
+    its shaft, which runs along z."""
+    d = _Draw("roll", 3)
+    leaves = slope(BAR_DEG) + 90.0                  # where the curtain leaves the roll, from its axis
+    out = ROLL_R + LATH_T / 2.0
+    for k in range(LATHS):
+        d.box((out - LATH_T, -LATH / 2.0, -ROLL_HALF), (out, LATH / 2.0, ROLL_HALF), SLAT_D if k % 3 == 2 else SLAT,
+              rot=("z", leaves + (k + 0.5) * 360.0 / LATHS, (0.0, 0.0, 0.0)), grain="z", seed=601 + k % 3)
+    for side in (-1, 1):
+        z0, z1 = sorted((side * ROLL_HALF, side * (ROLL_HALF + 1.5)))
+        d.tube("z", (0.0, 0.0), z0, z1, out + 1.0, IRON_D, sides=LATHS, seed=604)       # a cheek
+    d.tube("z", (0.0, 0.0), -RUN - 2.0, RUN + 2.0, 1.5, IRON, sides=8)
+    for side in (-1, 1):                            # the ends, turned down: a take-up weight's cord lies on each
+        z0, z1 = sorted((side * (RUN + 2.0), side * (RUN + 6.0)))
+        d.tube("z", (0.0, 0.0), z0, z1, CORD_R - 0.375, IRON_D, sides=8, seed=605)
+    return d
+
+
+def _rollseat():
+    """What carries the roller: at either end a bearing on a bracket from the rail's foot, and
+    under it the small weight that keeps the roll wound, on a cord round the shaft's end. The cord
+    leaves the shaft on the curtain's side: drawing the curtain winds it up."""
+    d = _Draw("rollseat", 3)
+    cx, cy = roll_at()
+    face = (-(SHELL_A - 1.0) - cx) * PX             # the rail's face towards the room: the plates are one block thick
+    low = (RING_Y - cy) * PX + 1.0                  # the weight hangs in the ring girder's row and no lower: it rides round with the dome
+    for side in (-1, 1):
+        def box(x0, y0, z0, x1, y1, z1, mat, **kw):
+            d.box((x0, y0, side * z0), (x1, y1, side * z1), mat, **kw)
+
+        box(face, -6.0, RUN - 5.0, face + 1.0, 6.0, RUN + 2.0, IRON_D, seed=611)        # the plate on the rail
+        box(face + 1.0, -2.0, RUN - 3.0, -2.5, 2.0, RUN + 1.0, IRON_D, grain="x", seed=612)
+        box(-3.0, -3.0, RUN - 3.5, 3.0, 3.0, RUN + 1.5, IRON, seed=613)                 # the bearing
+        box(-CORD_R - 0.5, low + 7.0, RUN + 3.5, -CORD_R + 0.5, 0.0, RUN + 4.5, IRON_B, grain="y", seed=614)    # the cord
+        box(-3.5, low, RUN + 1.75, 2.0, low + 7.0, RUN + 6.25, IRON, seed=615)          # its weight
+    return d
+
+
+def _bar():
+    """The curtain's bar with the slats between it and the roll, and an eye for a hauling chain at
+    either end. The origin is the bar's middle (on_curve(BAR_DEG)) on the dome's meridian; the
+    piece lies along the curtain's path there, and runs up it."""
+    d = _Draw("bar", 3)
+    with d.turned(("z", slope(BAR_DEG))):           # x up the path, y out through the dome's skin
+        d.box((-ROD / 2.0, -ROD / 2.0, -ROLL_HALF - 1.5), (ROD / 2.0, ROD / 2.0, ROLL_HALF + 1.5), IRON, grain="z")
+        for i in range(TAIL):
+            x1 = -ROD / 2.0 - i * LATH
+            d.box((x1 - LATH, -LATH_T / 2.0, -ROLL_HALF), (x1, LATH_T / 2.0, ROLL_HALF), SLAT_D if i % 3 == 1 else SLAT,
+                  grain="z", seed=621 + i % 3)
+        for side in (-1, 1):
+            z0, z1 = sorted((side * (HAUL_Z - 1.0), side * (HAUL_Z + 1.0)))
+            d.box((ROD / 2.0, -1.5, z0), (ROD / 2.0 + 2.0, 1.5, z1), IRON_D, seed=624)
+    return d
+
+
+# ---- the winch (version b): these pieces share the origin winch_at() on the dome's meridian ----------------
+def _winch():
+    """The winch: a shaft across the slit's foot with the hand-chain wheel in its middle, a ratchet
+    wheel beside that, a drum for each hauling chain and, on its turned-down ends, the weights'
+    ropes. Turns about the shaft, which runs along z."""
+    d = _Draw("winch", 3)
+    d.tube("z", (0.0, 0.0), -RUN + 3.0, RUN - 3.0, SHAFT, IRON_D, sides=8)
+    d.ring("z", (0.0, 0.0, 0.0), WHEEL_RB - 1.25, 2.0, 2.0, IRON_B, sides=16)           # the wheel's rim, under the hand chain
+    for i in range(3):                                                          # three bars: six spokes
+        d.box((-WHEEL_RB + 2.0, -1.0, -0.5), (WHEEL_RB - 2.0, 1.0, 0.5), IRON_D, rot=("z", 30.0 + 60.0 * i, (0.0, 0.0, 0.0)),
+              grain="x", seed=631)
+    d.tube("z", (0.0, 0.0), -1.5, 1.5, 2.0, IRON_D, sides=8)
+    d.tube("z", (0.0, 0.0), 9.5, 11.5, 3.0, IRON, sides=8)                      # the ratchet wheel, south of the wheel's bearing
+    for i in range(8):
+        d.box((2.5, -0.75, 9.5), (4.5, 0.75, 11.5), IRON_B, rot=("z", 45.0 * i + 22.5, (0.0, 0.0, 10.5)), seed=632)
+    for side in (-1, 1):
+        z0, z1 = sorted((side * (HAUL_Z - 3.0), side * (HAUL_Z + 3.0)))
+        d.tube("z", (0.0, 0.0), z0, z1, DRUM_R - 1.0, IRON, sides=12, seed=633)         # a drum's barrel,
+        for z in (HAUL_Z - 3.5, HAUL_Z + 3.0):
+            f0, f1 = sorted((side * z, side * (z + 0.5)))
+            d.tube("z", (0.0, 0.0), f0, f1, DRUM_R + 1.25, IRON_D, sides=12, seed=634)  # its flanges
+        for z in (HAUL_Z - 1.5, HAUL_Z + 1.5):                                  # and two turns of chain on it
+            d.ring("z", (0.0, 0.0, side * z), DRUM_R, BAND, WRAP, IRON_B, sides=12, seed=635)
+        e0, e1 = sorted((side * (RUN - 3.0), side * (RUN + 2.0)))
+        d.tube("z", (0.0, 0.0), e0, e1, ROPE_R - ROPE, IRON_D, sides=8, seed=636)       # the end, turned down
+        d.ring("z", (0.0, 0.0, side * RUN), ROPE_R, 2.0 * ROPE, 3.0, IRON_B, sides=8, seed=637)        # the rope on it
+    return d
+
+
+def _winchseat():
+    """What carries the winch: a forked bracket out from the ring girder on the dome's meridian,
+    a bearing either side of the hand-chain wheel; a bracket with a bearing from the foot of the
+    arch girder beside the slit, outside either drum; the pawl on the fork, in the ratchet wheel."""
+    d = _Draw("winchseat", 3)
+    wx, wy = winch_at()
+    back = (FACE_X - 1.0 - wx) * PX                 # the ring girder's face on the meridian,
+    face = (FACE_X - wx) * PX                       # and beside the slit
+    low, high = (RING_Y - wy) * PX + 0.5, (SILL_Y - wy) * PX - 0.5
+    d.box((back, low, -8.0), (back + 1.0, high, 8.0), IRON_D)                           # the plate on the ring girder
+    for z in (-6.0, 6.0):
+        d.box((back + 1.0, -4.5, z - 1.0), (7.5 if z > 0 else 2.5, -2.5, z + 1.0), IRON_D, grain="x", seed=641)    # an arm of the fork
+        d.box((-2.5, -2.5, z - 1.5), (2.5, 2.5, z + 1.5), IRON, seed=642)                # its bearing
+    d.box((back + 1.0, -4.5, -5.0), (back + 3.0, -2.5, 5.0), IRON_D, grain="z", seed=643)       # the fork's root
+    # the pawl: on a post at the south arm's end, its nose in the ratchet wheel from the room's
+    # side, so that the wheel cannot run back (the chains come down on the drums' far side)
+    d.box((5.5, -2.5, 5.0), (7.5, 6.0, 7.0), IRON_D, grain="y", seed=644)
+    d.tube("z", (6.5, 5.0), 7.0, 11.5, 0.75, IRON_D, sides=8, seed=645)
+    d.box((2.5, 4.4, 9.9), (7.0, 5.6, 11.1), IRON_B, rot=("z", 26.0, (6.5, 5.0, 10.5)), grain="x", seed=646)
+    for side in (-1, 1):
+        z0, z1 = sorted((side * (HAUL_Z + 4.75), side * (HAUL_Z + 7.25)))
+        d.box((face, -4.5, z0 - 1.0), (face + 1.0, 4.5, z1 + 1.0), IRON_D, seed=647)     # the plate on the arch girder's foot
+        d.box((face + 1.0, -2.5, z0), (2.5, 2.5, z1), IRON, grain="x", seed=648)         # the bracket and its bearing
+    return d
+
+
+def _pull():
+    """The winch's hand chain: an endless loop over its wheel, down to where a hand reaches it."""
+    d = _Draw("pull", 3)
+    low = (HANDCHAIN_Y - winch_at()[1]) * PX
+    d.ring("z", (0.0, 0.0, 0.0), WHEEL_RB, BAND, WRAP, IRON_D, sides=12, arc=(0.0, 180.0), seed=651)
+    d.ring("z", (0.0, low, 0.0), WHEEL_RB, BAND, WRAP, IRON_D, sides=12, arc=(180.0, 360.0), seed=651)
+    for x in (-WHEEL_RB, WHEEL_RB):
+        _chain(d, "y", (x, 0.0), low, 0.0, 652)
+    return d
+
+
+# ---- the hauling chains (version b) ---------------------------------------------------------------------------
+def _links(d, stations, length, z, seed):
+    """Chain links, seen from the side, with their middles at stations [(x, y, slope)] (px)."""
+    for i, (x, y, way) in enumerate(stations):
+        across, wide = (1.5, 1.0) if i % 2 == 0 else (1.0, 1.5)
+        d.box((x - length / 2.0, y - across, z - wide), (x + length / 2.0, y + across, z + wide),
+              IRON_B if i % 2 == 0 else IRON, rot=("z", way, (x, y, z)), grain="x", seed=seed + i % 2)
+
+
+def _haul(side):
+    """One hauling chain (side 1: south, -1: north) and what the rail carries for it: up the
+    curtain's path from the bar to the sheave at the slit's head, back under it to LEAVE_DEG and
+    straight down to its drum on the winch; at every one of HANGERS a plate on the rail's face
+    with a roller under each way of the chain (the curtain's edge runs on the upper ones). The
+    origin is the bar's end of the chain; x and y are the dome's, px from its axis and the ledge."""
+    bx, by = on_curve(BAR_DEG)
+    z = side * HAUL_Z
+
+    def px(at):
+        return at[0] * PX, (at[1] - LEDGE_Y) * PX
+
+    d = _Draw("haul_s" if side > 0 else "haul_n", 4, anchor=px((bx, by)) + (z,))
+    eye = BAR_DEG + (ROD / 2.0 + 2.0) / PX / along(BAR_DEG, BAR_DEG + 1.0)     # the chain starts at the bar's eye
+    up, length = _stations(eye, HEAD_DEG)
+    _links(d, [px(at) + (at[2],) for at in up], length, z, 661)
+    back, length = _stations(HEAD_DEG, LEAVE_DEG, GAP)
+    _links(d, [px(at) + (at[2],) for at in back], length, z, 663)
+    (lx, ly), (tx, ty) = (px(at) for at in _drop())
+    fall = math.hypot(tx - lx, ty - ly)
+    n = max(1, int(round(fall / LINK)))
+    way = math.degrees(math.atan2(ty - ly, tx - lx))
+    _links(d, [(lx + (tx - lx) * (k + 0.5) / n, ly + (ty - ly) * (k + 0.5) / n, way) for k in range(n)], fall / n, z, 665)
+
+    hx, hy = px(on_curve(HEAD_DEG, GAP / 2.0))      # the sheave at the head, on a pin from the rail
+    turn = slope(HEAD_DEG, GAP / 2.0)
+    z0, z1 = sorted((side * (HAUL_Z - 2.5), side * (JAMB - 1.0)))
+    d.tube("z", (hx, hy), z - 0.75, z + 0.75, GAP / 2.0 - 0.5, IRON_B, sides=12)
+    d.tube("z", (hx, hy), z0, z1, PIN, IRON_D, sides=8)
+    d.ring("z", (hx, hy, z), GAP / 2.0, BAND, WRAP, IRON, sides=12, arc=(turn - 90.0, turn + 90.0), seed=667)
+    with d.turned(("z", turn), about=(hx, hy, 0.0)):
+        d.box((hx - 4.0, hy - 5.0, side * (JAMB - 1.0)), (hx + 4.0, hy + 4.0, side * JAMB), IRON_D, seed=668)
+    for deg in HANGERS:
+        x, y = px(on_curve(deg))
+        both = deg >= LEAVE_DEG
+        with d.turned(("z", slope(deg)), about=(x, y, 0.0)):        # x up the path, y out through the skin
+            d.box((x - 2.0, y - (GAP + 5.0 if both else 5.0), side * (JAMB - 1.0)), (x + 2.0, y + 1.5, side * JAMB), IRON_D,
+                  grain="y", seed=669)
+            for inside in ((0.0, GAP) if both else (0.0,)):
+                d.tube("z", (x, y - inside - 2.5), z0, z1, 1.0, IRON_B, sides=8, seed=670)
+    return d
+
+
+_PIECES = {
+    "seg": _segment, "riser": _riser, "pedestal": _pedestal, "handwheel": _handwheel, "brackets": _brackets,
+    "foot": _foot, "drive": _drive, "handchain": _handchain, "weight": _weight,
+    "arm_n": lambda: _arm(-1), "arm_s": lambda: _arm(1), "run_n": lambda: _run(-1), "run_s": lambda: _run(1),
+    "roll": _roll, "rollseat": _rollseat, "bar": _bar, "winch": _winch, "winchseat": _winchseat, "pull": _pull,
+    "haul_n": lambda: _haul(-1), "haul_s": lambda: _haul(1),
+    "runb_n": lambda: _run(-1, "b"), "runb_s": lambda: _run(1, "b"),
+}
+
+
 @functools.lru_cache(maxsize=None)
-def _drawn():
-    pieces = (_segment(), _riser(), _pedestal(), _handwheel(), _brackets(), _foot(), _drive(), _handchain(),
-              _arm(-1), _arm(1), _run(-1), _run(1), _weight())
-    return {d.m.name[len(PREFIX):]: d for d in pieces}
+def _piece(name):
+    d = _PIECES[name]()
+    if d.m.name != PREFIX + name:
+        raise ValueError(f"the piece {name} draws the model {d.m.name}")
+    return d
 
 
-def models():
-    return {d.m.name: d.m for d in _drawn().values()}
+def models(version=None):
+    """The models of the pieces that stand: of the version of main/dome that is in the tree, or of
+    the one named."""
+    return {_piece(name).m.name: _piece(name).m for name in sorted({item[0] for item in layout(version)})}
 
 
 # ---- placing ----------------------------------------------------------------------------------------------
@@ -532,6 +900,17 @@ def layout(version=None):
         for side, name in ((-1, "run_n"), (1, "run_s")):
             out.append((name, (RUN_ANCHOR[0], RUN_ANCHOR[1], side * RUN_Z), 0.0, ()))
             out.append(("weight", (wx, wy, side * RUN_Z), 0.0, (("z", RUN_DEG),)))
+    elif version == "b":
+        for name in ("roll", "rollseat"):
+            out.append((name, roll_at() + (0.0,), 0.0, ()))
+        out.append(("bar", on_curve(BAR_DEG) + (0.0,), 0.0, ()))
+        for name in ("winch", "winchseat", "pull"):
+            out.append((name, winch_at() + (0.0,), 0.0, ()))
+        wx, wy = on_run(WEIGHT_S1)
+        for side, tag in ((-1, "n"), (1, "s")):
+            out.append(("haul_" + tag, on_curve(BAR_DEG) + (side * HAUL_Z / PX,), 0.0, ()))
+            out.append(("runb_" + tag, (RUN_ANCHOR[0], RUN_ANCHOR[1], side * RUN_Z), 0.0, ()))
+            out.append(("weight", (wx, wy, side * RUN_Z), 0.0, (("z", RUN_DEG),)))
     return out
 
 
@@ -540,7 +919,7 @@ def place(canvas, origin=(0, 0, 0), version=None):
     ox, oy, oz = origin
     n = 0
     for name, (x, y, z), yaw, turns in layout(version):
-        d = _drawn()[name]
+        d = _piece(name)
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
                           M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=LIGHT))
         n += 1
@@ -581,7 +960,7 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
     for name, (x, y, z), yaw, turns in layout(version):
         at = (ox + AX + x, oy + y, oz + AZ + z)
         seen = set()
-        for p in _spots(_drawn()[name], yaw, turns):
+        for p in _spots(_piece(name), yaw, turns):
             cell = tuple(int(math.floor(at[i] + p[i])) for i in range(3))
             if cell in seen:
                 continue
@@ -609,6 +988,20 @@ def _held(version):
                     ("arm: the leaf's stile", (STILE_X, SILL_Y + 0.5, z)),
                     ("run: the ring girder at its foot", (FACE_X - 0.5, SILL_Y + 0.5, z))]
             for i, hang in enumerate(RUN_HANG):
+                out.append(("run: the curb over a hanger", (RUN_C1[0] + i * RUN_STEP[0] - 0.125, RUN_C1[1] + i * RUN_STEP[1] + hang + 0.5, z)))
+    elif version == "b":
+        out.append(("winchseat: the ring girder on the meridian", (FACE_X - 1.5, RING_Y + 0.5, 0.0)))
+        hx, hy = on_curve(HEAD_DEG, GAP / 2.0)
+        for side in (-1, 1):
+            z = side * RUN_Z
+            rail = side * (JAMB + 4.0) / PX
+            out += [("rollseat: the rail's foot beside the roller", (-(SHELL_A - 0.5), roll_at()[1], rail)),
+                    ("winchseat: the arch girder's foot beside a drum", (FACE_X - 0.5, winch_at()[1], side * (HAUL_Z + 6.0) / PX)),
+                    ("haul: the rail beside the head sheave", (hx, hy, rail)),
+                    ("run: the ring girder at its foot", (FACE_X - 0.5, SILL_Y + 0.5, z))]
+            for deg in HANGERS:
+                out.append((f"haul: the rail behind the rollers at {deg:g}", on_curve(deg) + (rail,)))
+            for i, hang in enumerate(RUN_HANG_B):
                 out.append(("run: the curb over a hanger", (RUN_C1[0] + i * RUN_STEP[0] - 0.125, RUN_C1[1] + i * RUN_STEP[1] + hang + 0.5, z)))
     return out
 
