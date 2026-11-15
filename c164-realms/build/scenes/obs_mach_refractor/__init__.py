@@ -97,12 +97,13 @@ def shots():
     """The cameras, each once for either version. All but the last two stand inside the room, at
     the height of a standing eye where the floor allows it.
 
-    v8      the billboard's view as the dome room's card has it: from the east edge of the
-            observing floor, up along the tube at the slit
+    v8      the billboard's view: a standing eye at the east edge of the observing floor, south
+            of the dome's axis, up along the tube at the slit (scope.V8 of version b)
+    v8_north  the same from north of the axis (scope.V8 of version a)
     eye     beside the observer, looking up the tube
     south   the whole instrument side on, from the south wall; north the same from the north
     east    from the east wall, the tube coming at the camera
-    mount   the mount from the south-east, close
+    mount   the mount from the south-east, close; mount_north from the north-east
     tail    the tailpiece, the finder and the red lamp, close
     circle  the setting circles and the driving clock, close
     top     from under the dome's crown, down on the instrument
@@ -118,13 +119,15 @@ def shots():
 
         cross, eyepiece, objective = scope.crossing(v), scope.eyepiece(v), scope.objective(v)
         mid = tuple((eyepiece[i] + objective[i]) / 2.0 for i in range(3))
-        shot("v8", (11.8, eye_y, 2.2), (0.0, 25.2, 0.9))
+        shot("v8", *scope.v8("b"))
+        shot("v8_north", *scope.v8("a"))
         shot("eye", (eyepiece[0] + 0.55, eye_y, eyepiece[2] + 1.5),
              (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.2))
         shot("south", (5.5, eye_y + 1.0, 11.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("north", (5.5, eye_y + 1.0, -10.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("east", (13.6, eye_y, -1.2), (2.0, cross[1] + 1.5, 0.8))
         shot("mount", (9.6, eye_y + 1.2, 5.6), (4.5, cross[1] - 1.2, 0.9))
+        shot("mount_north", (9.6, eye_y + 1.2, -4.6), (4.5, cross[1] - 1.2, 0.1))
         shot("tail", (eyepiece[0] + 1.3, eyepiece[1] + 0.25, eyepiece[2] + 2.3),
              (eyepiece[0] - 1.1, eyepiece[1] + 0.75, eyepiece[2] + 0.1))
         shot("circle", (7.4, eye_y + 2.6, 4.4), (4.5, cross[1] - 0.6, 1.2))

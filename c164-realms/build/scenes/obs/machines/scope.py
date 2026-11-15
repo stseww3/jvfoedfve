@@ -20,6 +20,9 @@ What the other lines read (scene coordinates; give the origin to have it added):
     scope.sweep()       (centre, radius) of the ball no part of the instrument leaves, however
                         it is pointed: the dome's gear, its lamps and the room keep out of it
     scope.EYEPIECE, OBJECTIVE, OBSERVER, SWEEP      the same numbers by version, {"a": ..., "b": ...}
+    scope.v8()          (position, look_at) of the camera of view V8: a standing eye at the east
+                        edge of the observing floor, on the side the mount shows best from
+    scope.V8            the same by version
     scope.ELEVATION     degrees the tube looks up, due west: the comet's head (sky/comet)
     scope.BRIGHTNESS    the light every piece is shown in, whatever cell it hangs in
 
@@ -113,10 +116,17 @@ TUBE_R = 0.75                   # the body; the objective's cell is CELL_R
 CELL_R = 15.0 / 16.0
 # rise: the height of the axes' crossing over the cap. off: how far the tube's axis is from the
 # crossing, along the declination axis. back: from the declination axis to the eyepiece's end.
+# finder, rods: where the finder and the two clamp rods ride, in degrees round the tube from the
+# upper end of the declination axis. seam: where the seam of rivets runs, degrees round the tube
+# from north over the top. show: the side the version shows the camera of V8, 1 the south, -1 the
+# north: the mount of a is north of its tube (which is off the axis, in the plane z = 1.40), the
+# pedestal of b south of its tube. The seam, the finder and the red lamp are on that side.
 _SPEC = {
-    "a": dict(rise=5.0, off=0.9 / DEC[2], back=6.39),   # the tube in the plane z = 1.40
-    "b": dict(rise=5.4, off=0.0, back=5.5),
+    "a": dict(rise=5.0, off=0.9 / DEC[2], back=6.39, finder=-90.0, seam=0.0, rods=(158.0, 202.0), show=-1.0),
+    "b": dict(rise=5.4, off=0.0, back=5.5, finder=90.0, seam=180.0, rods=(-22.0, 22.0), show=1.0),
 }
+V8_STAND = (11.8, 1.7)          # the camera of V8: x, and how far it stands from the tube's plane, to the side shown
+V8_LOOK = (0.0, 25.2, 0.9)      # what it looks at: up the slit, under the comet's head
 
 
 def _version(version):
@@ -161,6 +171,13 @@ def sweep(version=None, origin=(0, 0, 0)):
     return crossing(version, origin), math.ceil(far * 10.0) / 10.0
 
 
+def v8(version=None, origin=(0, 0, 0)):
+    """(position, look_at) of the camera of view V8."""
+    spec = _SPEC[_version(version)]
+    at = (V8_STAND[0], FLOOR_Y + S.EYE, pivot(version)[2] + spec["show"] * V8_STAND[1])
+    return _add(at, origin), _add(V8_LOOK, origin)
+
+
 def _rounded(p):
     return tuple(round(v, 3) for v in p)
 
@@ -169,6 +186,7 @@ EYEPIECE = {v: _rounded(eyepiece(v)) for v in VERSIONS}
 OBJECTIVE = {v: _rounded(objective(v)) for v in VERSIONS}
 OBSERVER = {v: _rounded(observer(v)) for v in VERSIONS}
 SWEEP = {v: (_rounded(sweep(v)[0]), sweep(v)[1]) for v in VERSIONS}
+V8 = {v: tuple(_rounded(p) for p in v8(v)) for v in VERSIONS}
 
 # the frames the moving pieces are drawn in: the world's directions of a model's x, y and z. Each
 # is chosen so that the light painted into round shapes (artkit.models.LIGHT) falls from above.
@@ -239,12 +257,14 @@ IRON, IRON_D = P.mat("iron"), P.mat("iron_dark")
 BRASS, BRASS_D = P.mat("brass"), P.mat("brass_dark")
 COPPER = P.mat("old_copper")
 STEEL = P.mat("iron", base=4)                           # bright shafts and journals
+WOOD = P.mat("dark_wood")                               # grips
 IRON_STUD = _as(Studded, IRON, "stud")
 IRON_D_STUD = _as(Studded, IRON_D, "stud")
 IRON_SEAM = _as(Studded, IRON, "seam", pitch=4)
 BRASS_STUD = _as(Studded, BRASS_D, "stud")
 BRASS_TICK = _as(Ticked, P.mat("brass", bevel=0), "tick")
 IRON_TOOTH = _as(Ticked, P.mat("iron_dark", bevel=0), "tooth", long=0)
+STEEL_RACK = _as(Ticked, P.mat("iron", base=4, bevel=0), "rack", long=0)
 GLASS = _flat("night_glass", 2)
 GLASS_D = _flat("night_glass", 0)
 RED = _flat("signal", 1)                                # red paint: the governor's collar
@@ -346,30 +366,37 @@ def _tube(version):
     def seg(s0, s1, radius, mat, sides=12, **kw):
         d.tube("z", (0.0, 0.0), z(s1), z(s0), radius, mat, sides=sides, **kw)
 
-    # the tail: eyepiece, draw tube, focusing tube with its two wheels, the plate they are bolted to
-    seg(0, 4, 2.0, BRASS_D, sides=8)
-    seg(4, 10, 3.0, BRASS, sides=8)
-    seg(10, 20, 4.5, BRASS_D, sides=8)
-    seg(11, 12.5, 5.25, BRASS, sides=8)
-    seg(18.5, 20, 5.5, BRASS, sides=8)
-    d.tube("x", (0.0, z(15.0)), -8.0, 8.0, 0.75, STEEL, sides=4)
-    for side in (-1.0, 1.0):
-        d.tube("x", (0.0, z(15.0)), side * 6.5, side * 8.5, 2.5, BRASS, sides=8)
+    def side(angle):
+        """A frame whose y points out of the tube at `angle` degrees round it (0 north, 90 over)."""
+        return d.turned(("z", angle - 90.0))
+
+    # the tail: eyepiece, draw tube, the position circle, the focusing tube with its rack and wheels
+    seg(0.25, 3, 2.0, BRASS_D, sides=8)
+    seg(0, 0.25, 1.25, GLASS_D, sides=8, cap=GLASS_D)
+    seg(3, 8, 2.75, BRASS, sides=8)
+    _circle(d, "z", (0.0, 0.0, z(8.75)), 7.0, n=6, band=2.0, thick=1.0, hub=3.25)
+    seg(9.5, 19, 4.25, BRASS_D, sides=8)
+    seg(10.5, 12, 5.0, BRASS, sides=8)
+    seg(19, 20.5, 5.5, BRASS, sides=8)
+    d.box((-0.75, 3.75, z(19.0)), (0.75, 5.25, z(12.0)), STEEL_RACK, grain="z")
+    d.tube("x", (4.5, z(15.5)), -7.5, 7.5, 0.75, STEEL, sides=4)
+    for sgn in (-1.0, 1.0):
+        d.tube("x", (4.5, z(15.5)), sgn * 6.0, sgn * 8.0, 2.5, BRASS, sides=8)
     s0, s1, plate_r = TAIL_PLATE
     seg(s0, s1, plate_r, IRON_D)
     seg(s0 + 1.0, s1 - 1.0, plate_r + 0.75, IRON_D_STUD)
-    # the wheel the observer turns the tailpiece by
+    # the ring of grips the observer swings the tube by
     d.ring("z", (0.0, 0.0, z(17.0)), 10.5, 1.5, 1.5, BRASS, sides=16)
-    _spokes(d, "z", (0.0, 0.0, z(17.0)), 5.0, 10.0, 4, BRASS_D, wide=1.5, thick=1.0, start=45.0)
-    for i in range(8):
-        with d.turned(("z", 45.0 * i + 22.5)):
-            d.box((-0.75, 11.0, z(17.75)), (0.75, 13.5, z(16.25)), BRASS_D)
-    # cone and body: nine riveted hoops, one seam of rivets down the south side
+    _spokes(d, "z", (0.0, 0.0, z(17.0)), 5.0, 10.0, 6, BRASS_D, wide=1.5, thick=1.0, start=30.0)
+    for i in range(6):
+        with side(60.0 * i + 30.0):
+            d.box((-0.75, 11.0, z(17.75)), (0.75, 14.0, z(16.25)), WOOD)
+    # cone and body: nine riveted hoops, one seam of rivets down the side the room sees
     d.taper("z", (0.0, 0.0), z(s1), z(40.0), plate_r - 0.5, BODY_R, IRON, sides=12, steps=4)
     seg(40, 228, BODY_R, IRON)
     for s in HOOPS:
         seg(s - 1.5, s + 1.5, HOOP_R, IRON_STUD, seed=HOOP_SEED)
-    with d.turned(("z", 90.0)):
+    with side(spec["seam"]):
         d.box((-1.5, BODY_R - 1.0, z(226.0)), (1.5, BODY_R + 0.5, z(43.0)), IRON_SEAM, grain="z")
     # the objective: an iron flange, the brass cell, the dark glass inside the lip of the dew cap
     seg(227, 230, 13.75, IRON_D_STUD)
@@ -379,9 +406,8 @@ def _tube(version):
     d.tube("z", (0.0, 0.0), z(238.9), z(238.75), 6.0, GLASS_D, sides=8, cap=GLASS_D)
     d.ring("z", (0.0, 0.0, z(239.0)), 14.0, 2.0, 2.0, BRASS_D, sides=16)
 
-    # the finder, square to the declination axis on the south and lower side, where the yoke and
-    # the saddle never come
-    with d.turned(("z", phi)):
+    # the finder, square to the declination axis, where the yoke and the saddle never come
+    with side(phi + spec["finder"]):
         c = (0.0, FINDER_OFF)
         d.tube("z", c, z(80.0), z(16.0), FINDER_R, BRASS, sides=8)
         d.tube("z", c, z(82.0), z(77.0), FINDER_R + 0.75, BRASS_D, sides=8)
@@ -392,7 +418,7 @@ def _tube(version):
             d.tube("z", c, z(s + 1.5), z(s - 1.5), FINDER_R + 1.25, IRON_D, sides=8)
             d.box((-2.0, 10.0, z(s + 1.5)), (2.0, FINDER_OFF - FINDER_R, z(s - 1.5)), IRON_D)
     # two sliding weights on a rod, opposite the finder: they balance it
-    with d.turned(("z", phi + 180.0)):
+    with side(phi + spec["finder"] + 180.0):
         d.tube("z", (0.0, 16.0), z(64.0), z(27.0), 0.75, STEEL, sides=4)
         for s in (30.0, 61.0):
             d.box((-1.0, 10.0, z(s + 1.0)), (1.0, 16.5, z(s - 1.0)), IRON_D)
@@ -401,10 +427,10 @@ def _tube(version):
 
     # the clamp and slow-motion rods run from the declination axis down to the observer's hand
     reach = 104.0 if version == "a" else 78.0
-    for swing in ((158.0, 202.0) if version == "a" else (-22.0, 22.0)):
-        with d.turned(("z", phi - 90.0 + swing)):
+    for swing in spec["rods"]:
+        with side(phi + swing):
             d.tube("z", (0.0, 15.5), z(reach), z(21.0), 0.6, BRASS, sides=4)
-            d.tube("z", (0.0, 15.5), z(21.0), z(17.5), 1.5, BRASS_D, sides=8)
+            d.tube("z", (0.0, 15.5), z(21.0), z(17.5), 1.5, WOOD, sides=8)
             for s in (30.0, 58.0, reach - 2.0):
                 d.box((-0.75, 9.5 if s < 40 else 11.5, z(s + 0.75)), (0.75, 16.5, z(s - 0.75)), IRON_D)
 
@@ -413,130 +439,181 @@ def _tube(version):
         seg(back - 7.0, back + 7.0, 13.5, IRON_D)
         for s in (back - 7.5, back + 7.5):
             seg(s - 1.0, s + 1.0, 14.25, IRON_STUD, seed=HOOP_SEED + 2)
-        with d.turned(("z", phi - 90.0)):
-            for side in (-1.0, 1.0):
-                d.tube("y", (0.0, 0.0), side * 12.5, side * 16.5, 5.5, IRON_D, sides=8)
+        with side(phi):
+            for sgn in (-1.0, 1.0):
+                d.tube("y", (0.0, 0.0), sgn * 12.5, sgn * 16.5, 5.5, IRON_D, sides=8)
                 for zz in (-4.0, 4.0):
-                    d.box((-1.0, side * 12.0, zz - 0.75), (1.0, side * 15.0, zz + 0.75), IRON_STUD)
+                    d.box((-1.0, sgn * 12.0, zz - 0.75), (1.0, sgn * 15.0, zz + 0.75), IRON_STUD)
     else:
         # the saddle on the end of the declination axis and the two straps that hold the tube in it
-        with d.turned(("z", phi - 90.0)):
+        with side(phi):
             d.box((-9.0, -16.0, -21.0), (9.0, -11.0, 21.0), IRON_D)
             d.box((-11.0, -14.5, -19.0), (11.0, -9.5, -11.0), IRON_D)
             d.box((-11.0, -14.5, 11.0), (11.0, -9.5, 19.0), IRON_D)
             d.box((-10.0, -16.75, -22.0), (10.0, -15.5, 22.0), IRON_D_STUD)
             for zz in (-15.0, 15.0):
                 d.tube("z", (0.0, 0.0), zz - 2.0, zz + 2.0, 13.4, IRON_STUD, seed=HOOP_SEED + 2)
-                for side in (-1.0, 1.0):
-                    d.box((side * 12.5, -9.0, zz - 1.5), (side * 15.5, -6.0, zz + 1.5), IRON_D)
-                    d.tube("y", (side * 14.0, zz), -10.5, -4.5, 0.75, BRASS, sides=4)
+                for sgn in (-1.0, 1.0):
+                    d.box((sgn * 12.5, -9.0, zz - 1.5), (sgn * 15.5, -6.0, zz + 1.5), IRON_D)
+                    d.tube("y", (sgn * 14.0, zz), -10.5, -4.5, 0.75, BRASS, sides=4)
     return d.m
 
 
-# ---- a: the German mount ---------------------------------------------------------------------------
-A_SLEEVE = (-38.0, -10.5, 8.0)          # the polar sleeve: from, to (texels along the axis from the crossing), radius
-A_COLUMN = [                            # the pier's sections: y0, y1, half size along x and along z (texels)
-    (6.0, 20.0, 17.0, 21.0),
-    (22.0, 34.0, 15.0, 19.0),
-    (36.0, 43.0, 13.5, 17.0),
-]
-A_WEIGHTS = (25.0, 38.0, 9.0)           # the counterweights: from, to (texels from the crossing), radius
-A_CLOCK = (15.0, 23.0, -4.0)            # the driving clock's case on the pier's east face: x, y, z of its low north corner
-
-
-def _corner_irons(d, x, z, y0, y1, mat=None):
-    """Angle irons riveted up the four corners of a box column of half sizes x and z."""
+# ---- what both mounts are made of --------------------------------------------------------------------
+def _corner_irons(d, x, z, y0, y1, mat=None, about=(0.0, 0.0)):
+    """Angle irons riveted up the four corners of a box column of half sizes x and z that stands
+    on the point `about` = (x, z)."""
     mat = mat or IRON_STUD
+    ox, oz = about
     for sx in (-1.0, 1.0):
         for sz in (-1.0, 1.0):
-            a, b = sorted((sx * x, sx * (x + 0.5)))
-            c, e = sorted((sz * (z - 2.5), sz * (z + 0.5)))
+            a, b = sorted((ox + sx * x, ox + sx * (x + 0.5)))
+            c, e = sorted((oz + sz * (z - 2.5), oz + sz * (z + 0.5)))
             d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED)
-            a, b = sorted((sx * (x - 2.5), sx * (x + 0.5)))
-            c, e = sorted((sz * z, sz * (z + 0.5)))
+            a, b = sorted((ox + sx * (x - 2.5), ox + sx * (x + 0.5)))
+            c, e = sorted((oz + sz * z, oz + sz * (z + 0.5)))
             d.box((a, y0, c), (b, y1, e), mat, grain="y", seed=STRAP_SEED)
 
 
-def _clock(d, x, y, z):
-    """The driving clock: a brass case on a bracket, a dial behind glass, the winding square. Its
-    low north-west corner is at (x, y, z); it looks east. Returns where the governor stands."""
-    d.box((x, y - 2.0, z + 1.0), (x + 5.0, y, z + 9.0), IRON_D)                      # bracket
-    d.box((x, y, z), (x + 6.0, y + 13.0, z + 10.0), BRASS)
-    d.box((x - 0.5, y + 12.0, z - 0.5), (x + 6.5, y + 13.5, z + 10.5), BRASS_D)
-    d.box((x + 6.0, y + 2.0, z + 1.5), (x + 6.5, y + 11.0, z + 8.5), GLASS_D)
-    d.tube("x", (y + 7.5, z + 5.0), x + 6.5, x + 6.9, 2.5, DIAL, sides=8, cap=DIAL)
-    d.box((x + 6.9, y + 7.0, z + 4.5), (x + 7.2, y + 9.5, z + 5.5), HOOD)             # the hand
-    d.tube("x", (y + 3.5, z + 5.0), x + 6.5, x + 7.5, 0.75, BRASS_D, sides=4)
-    return (x + 3.0, y + 13.5, z + 2.5)
+def _section(d, y0, y1, hx, hz, about=(0.0, 0.0), flange=1.5, mat=None):
+    """One cast section of a box column: the shaft with its corner irons, a bolted flange on top."""
+    ox, oz = about
+    d.box((ox - hx, y0, oz - hz), (ox + hx, y1, oz + hz), mat or IRON, grain="y")
+    _corner_irons(d, hx, hz, y0, y1, about=about)
+    if flange:
+        d.box((ox - hx - flange, y1, oz - hz - flange), (ox + hx + flange, y1 + 2.0, oz + hz + flange), IRON_D_STUD)
+
+
+def _clock(d, at, facing="east"):
+    """The driving clock: a brass case on a bracket, a dial behind glass, the winding square.
+    `at` is the middle of the foot of its back, on the face it hangs on; `facing` is the way that
+    face looks. Returns two points on its top, the first to the left of someone who reads the
+    dial: where the governor stands and where the shaft to the worm leaves the case."""
+    x, y, z = at
+
+    def out(lx, ly, lz):
+        return (x + lx, y + ly, z + lz) if facing == "east" else (x - lz, y + ly, z + lx)
+
+    with d.turned(("y", {"east": 0.0, "south": -90.0}[facing]), about=at):
+        d.box((x, y - 2.0, z - 4.0), (x + 5.0, y, z + 4.0), IRON_D)
+        d.box((x, y, z - 5.0), (x + 6.0, y + 13.0, z + 5.0), BRASS)
+        d.box((x, y + 12.0, z - 5.5), (x + 6.5, y + 13.5, z + 5.5), BRASS_D)
+        d.box((x, y, z - 5.5), (x + 6.5, y + 1.0, z + 5.5), BRASS_D)
+        d.box((x + 6.0, y + 2.0, z - 3.5), (x + 6.5, y + 11.0, z + 3.5), GLASS_D)
+        d.tube("x", (y + 7.5, z), x + 6.5, x + 6.9, 2.5, DIAL, sides=8, cap=DIAL)
+        d.box((x + 6.9, y + 7.0, z - 0.5), (x + 7.2, y + 9.5, z + 0.5), HOOD)
+        d.tube("x", (y + 3.5, z), x + 6.5, x + 7.5, 0.75, BRASS_D, sides=4)
+    return out(3.0, 13.5, -2.5), out(3.0, 13.5, 2.5)
+
+
+def _bearing(d, at, half=4.0, wide=7.5, low=-10.0):
+    """A plummer block cast to the latitude about the point `at` of the polar axis."""
+    x, y, z = at
+    with d.turned(("x", -LATITUDE), about=at):
+        d.box((x - wide, y - half, z + low), (x + wide, y + half, z + 4.0), IRON_D)
+        d.box((x - wide, y - half + 1.0, z + 4.0), (x + wide, y + half - 1.0, z + 6.0), IRON)
+        for sgn in (-1.0, 1.0):
+            d.tube("z", (x + sgn * (wide - 2.0), y), z + 5.5, z + 7.5, 1.0, STEEL, sides=4)
+        d.tube("y", (x, z), y - half - 0.75, y + half + 0.75, 4.75, BRASS_D, sides=8)
+
+
+def _shaft(d, a, b):
+    """The clock's shaft: a thin brass rod with a coupling at either end."""
+    d.rod(a, b, 0.6, BRASS, sides=4)
+    for p, q in ((a, b), (b, a)):
+        n = math.dist(p, q)
+        if n > 3.0:
+            e = tuple(p[i] + (q[i] - p[i]) * 1.5 / n for i in range(3))
+            d.rod(p, e, 1.25, BRASS_D, sides=8)
+
+
+# ---- a: the German mount ---------------------------------------------------------------------------
+A_SLEEVE = (-38.0, -10.5, 9.0)          # the polar sleeve: from, to (texels along the axis from the crossing), radius
+A_COLUMN = [                            # the pier's sections: y0, y1, half size along x and along z (texels)
+    (6.0, 21.0, 21.0, 25.0),
+    (23.0, 35.0, 18.5, 22.0),
+    (37.0, 43.0, 16.0, 17.0),
+]
+A_WEIGHTS = (25.0, 38.0, 9.0)           # the counterweights: from, to (texels from the crossing), radius
+A_CLOCK = (18.5, 23.0, 15.25)           # the driving clock on the pier's east face
 
 
 def _pier_a():
     d = _Px(PREFIX + "pier_a", MOUNT_SCALE)
     # the foot: a bed plate bolted to the cap, stepped up to the column
-    d.box((-28.0, 0.0, -32.0), (28.0, 2.0, 32.0), IRON_D)
-    d.box((-24.0, 2.0, -28.0), (24.0, 4.0, 28.0), IRON)
-    d.box((-20.0, 4.0, -24.0), (20.0, 6.0, 24.0), IRON_D)
-    for x in (-26.0, 0.0, 26.0):
-        for zz in (-30.0, 0.0, 30.0):
-            if x or zz:
+    d.box((-34.0, 0.0, -38.0), (34.0, 2.0, 38.0), IRON_D)
+    d.box((-30.0, 2.0, -34.0), (30.0, 4.0, 34.0), IRON)
+    d.box((-25.0, 4.0, -29.0), (25.0, 6.0, 29.0), IRON_D)
+    for x in (-32.0, -11.0, 11.0, 32.0):
+        for zz in (-36.0, -12.0, 12.0, 36.0):
+            if abs(x) > 30.0 or abs(zz) > 34.0:
                 d.box((x - 1.0, 2.0, zz - 1.0), (x + 1.0, 3.5, zz + 1.0), STEEL)
     # the column: three cast sections bolted flange to flange, angle irons up the corners
     for i, (y0, y1, hx, hz) in enumerate(A_COLUMN):
-        d.box((-hx, y0, -hz), (hx, y1, hz), IRON, grain="y")
-        _corner_irons(d, hx, hz, y0, y1)
-        d.box((-hx - 1.5, y1, -hz - 1.5), (hx + 1.5, y1 + 2.0, hz + 1.5), IRON_D_STUD)
+        _section(d, y0, y1, hx, hz, flange=1.5)
     y_top = A_COLUMN[-1][1] + 2.0
-    # the door of the clock's weight, and a plate where a maker would sign
-    d.box((17.0, 8.0, -7.0), (17.75, 19.0, 7.0), IRON_D)
-    d.box((17.75, 8.5, -6.5), (18.0, 18.5, -5.5), IRON_STUD)
-    d.box((17.75, 13.0, 4.5), (18.75, 14.5, 5.5), BRASS)
-    d.box((-4.0, 26.0, 19.0), (4.0, 30.0, 19.5), BRASS_D)
+    hx, hz = A_COLUMN[0][2], A_COLUMN[0][3]
+    # the door to the clock's weight in the lowest section, and a plate where a maker would sign
+    d.box((hx, 8.0, -8.0), (hx + 0.75, 19.5, 2.0), IRON_D)
+    d.box((hx + 0.75, 8.5, -7.5), (hx + 1.0, 19.0, -6.5), IRON_STUD)
+    d.box((hx + 0.75, 13.0, 0.0), (hx + 1.75, 14.5, 1.0), BRASS)
+    d.box((-5.0, 11.0, hz), (5.0, 16.0, hz + 0.5), BRASS_D)
+    d.box((-4.0, 12.0, hz + 0.5), (4.0, 15.0, hz + 0.75), BRASS_STUD)
 
     # the head: two cheeks and a web, cast to the angle of the latitude, cradle the polar sleeve
     cy = _SPEC["a"]["rise"] * 16.0
     s0, s1, r = A_SLEEVE
-    d.box((-11.0, y_top, -13.0), (11.0, y_top + 6.0, -5.0), IRON_D)
+    d.box((-12.5, y_top, -13.0), (12.5, y_top + 6.0, -5.0), IRON_D)
     with d.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):
-        for side in (-1.0, 1.0):
-            a, b = sorted((side * r, side * (r + 3.0)))
-            d.box((a, cy + s0 + 2.0, -30.0), (b, cy - 14.0, 2.0), IRON_D)
-            a, b = sorted((side * (r + 3.0), side * (r + 3.75)))
-            d.box((a, cy + s0 + 3.0, -1.0), (b, cy - 15.0, 1.5), IRON_STUD, grain="y", seed=STRAP_SEED + 1)
+        for sgn in (-1.0, 1.0):
+            a, b = sorted((sgn * r, sgn * (r + 3.5)))
+            d.box((a, cy + s0 + 2.0, -30.0), (b, cy - 14.0, 2.5), IRON_D)
+            a, b = sorted((sgn * (r + 3.5), sgn * (r + 4.25)))
+            d.box((a, cy + s0 + 3.0, -1.0), (b, cy - 15.0, 2.0), IRON_STUD, grain="y", seed=STRAP_SEED + 1)
+            d.box((a, cy + s0 + 3.0, -29.0), (b, cy + s0 + 6.0, -2.0), IRON_STUD, grain="z", seed=STRAP_SEED + 2)
         d.box((-r, cy + s0 + 4.0, -28.0), (r, cy - 14.0, -5.0), IRON)
         d.tube("y", (0.0, 0.0), cy + s0, cy + s1, r, IRON)
         for s in (s0 + 1.5, s1 - 1.5):
-            d.tube("y", (0.0, 0.0), cy + s - 1.5, cy + s + 1.5, r + 1.0, IRON_STUD, seed=HOOP_SEED)
+            d.tube("y", (0.0, 0.0), cy + s - 1.5, cy + s + 1.5, r + 1.25, IRON_STUD, seed=HOOP_SEED)
         # the hour circle and the worm wheel on the lower end of the polar axis
         d.tube("y", (0.0, 0.0), cy + s0 - 6.0, cy + s0, 3.0, STEEL, sides=8)
-        d.tube("y", (0.0, 0.0), cy + s0 - 2.0, cy + s0 - 0.5, 10.5, IRON_TOOTH)
-        _circle(d, "y", (0.0, cy + s0 - 3.5, 0.0), 13.0)
+        d.tube("y", (0.0, 0.0), cy + s0 - 2.0, cy + s0 - 0.5, 11.5, IRON_TOOTH)
+        _circle(d, "y", (0.0, cy + s0 - 3.5, 0.0), 14.0, n=6)
         d.tube("y", (0.0, 0.0), cy + s0 - 7.0, cy + s0 - 6.0, 4.0, BRASS, sides=8)
-        # the worm in its box on the east side, driven from the clock below
-        d.box((10.0, cy + s0 - 3.5, -5.0), (15.0, cy + s0 + 1.0, 1.0), BRASS_D)
-    sq = math.sqrt(0.5)
-    worm = (12.5, cy + (s0 - 1.25) * sq - 2.0 * sq, -(s0 - 1.25) * sq - 2.0 * sq)
-    cx, cyy, cz = A_CLOCK
-    top = _clock(d, cx, cyy, cz)
-    d.rod((cx + 3.0, cyy + 13.5, cz + 7.5), worm, 0.6, BRASS, sides=4)
-    d.tube("y", (cx + 3.0, cz + 7.5), cyy + 13.5, cyy + 15.0, 1.25, BRASS_D, sides=8)
-    d.governor = top
+    # the drive: the clock on the east face, a shaft up to the mitre box on the corner of the head,
+    # a shaft along the edge to the worm under the wheel
+    governor, leaves = _clock(d, A_CLOCK)
+    worm_y, worm_z = y_top + 1.25, A_COLUMN[-1][3] + 1.25
+    d.box((-5.0, y_top - 2.0, worm_z - 2.25), (5.0, y_top + 2.0, worm_z + 1.75), BRASS_D)
+    d.box((-3.0, y_top + 2.0, worm_z - 1.25), (3.0, y_top + 2.75, worm_z + 0.75), BRASS)
+    box = (leaves[0], worm_y, worm_z)
+    d.box((box[0] - 2.25, worm_y - 2.5, worm_z - 2.5), (box[0] + 2.25, worm_y + 2.0, worm_z + 2.5), BRASS_D)
+    d.box((box[0] - 4.25, worm_y - 3.25, worm_z - 2.0), (box[0] - 2.25, worm_y - 1.5, worm_z + 2.0), IRON_D)
+    _shaft(d, (5.0, worm_y, worm_z), (box[0] - 2.25, worm_y, worm_z))
+    _shaft(d, leaves, (box[0], worm_y - 2.5, leaves[2]))
+    d.governor = governor
     return d
 
 
 def _axis_a():
     d = _Px(PREFIX + "axis_a", MOUNT_SCALE)
     # the head of the polar axis and the declination housing cast across it
-    d.tube("y", (0.0, 0.0), -9.0, 9.0, 9.0, IRON)
-    d.tube("y", (0.0, 0.0), -10.25, -9.0, 5.0, STEEL, sides=8)
-    d.tube("y", (0.0, 0.0), 9.0, 10.5, 7.0, IRON_D)
-    d.tube("y", (0.0, 0.0), 10.5, 12.0, 2.5, BRASS_D, sides=8)
-    d.tube("z", (0.0, 0.0), -7.9, -5.5, 10.0, IRON_D_STUD)
-    d.tube("z", (0.0, 0.0), -5.5, 15.0, 7.5, IRON)
-    d.tube("z", (0.0, 0.0), 13.0, 15.0, 9.0, IRON_STUD, seed=HOOP_SEED)
+    d.tube("y", (0.0, 0.0), -9.5, 9.5, 9.5, IRON)
+    d.tube("y", (0.0, 0.0), -10.25, -9.5, 5.0, STEEL, sides=8)
+    d.tube("y", (0.0, 0.0), 9.5, 11.0, 7.5, IRON_D)
+    d.tube("y", (0.0, 0.0), 11.0, 12.5, 2.5, BRASS_D, sides=8)
+    d.tube("z", (0.0, 0.0), -7.9, -5.5, 10.5, IRON_D_STUD)
+    d.tube("z", (0.0, 0.0), -5.5, 15.0, 8.0, IRON)
+    d.tube("z", (0.0, 0.0), 13.0, 15.0, 9.5, IRON_STUD, seed=HOOP_SEED)
     # the declination circle, read from the floor on the counterweight's side
     d.tube("z", (0.0, 0.0), 15.0, 16.0, 10.0, IRON_TOOTH)
-    _circle(d, "z", (0.0, 0.0, 17.5), 13.0)
+    _circle(d, "z", (0.0, 0.0, 17.5), 13.0, n=6)
     d.box((-1.0, 11.0, 15.5), (1.0, 15.5, 19.0), BRASS_D)                            # the reader's index
+    d.tube("x", (9.0, 14.0), -1.5, 1.5, 1.25, BRASS, sides=8)                        # and its lens
+    # the clamp: a lever with a wooden grip on the housing's upper side
+    d.box((-1.0, 7.5, 3.0), (1.0, 10.5, 5.0), IRON_D)
+    d.rod((0.0, 10.0, 4.0), (0.0, 15.0, 9.0), 0.6, STEEL, sides=4)
+    d.rod((0.0, 14.0, 8.0), (0.0, 16.5, 10.5), 1.1, WOOD, sides=8)
     # the counterweight: two iron cheeses on a steel shaft, a copper washer between, a brass nut
     w0, w1, wr = A_WEIGHTS
     mid = (w0 + w1) / 2.0
@@ -552,11 +629,15 @@ def _axis_a():
 
 
 # ---- b: the English yoke -------------------------------------------------------------------------------
-B_SOUTH, B_NORTH = -47.5, 42.0          # the two bearings, texels along the polar axis from the crossing
-B_GIRDER = (16.0, 21.0, 15.2, 5.0)      # the frame's long sides: inner and outer face (from the axis), half length, half depth
-B_HUB = dict(south=(-40.0, -36.0), north=(33.0, 37.0))     # the end blocks, along the axis
-B_TRESTLE_Z = -36.0                     # the plane of the north trestle, texels south of the cap's middle
-B_CLOCK = (11.0, 6.0, 26.0)
+B_SOUTH, B_NORTH = -44.0, 42.0          # the two bearings, texels along the polar axis from the crossing
+B_GIRDER = (16.0, 21.0, 15.2, 6.0)      # the frame's long sides: inner and outer face (from the axis), half length, half depth
+B_HUB = dict(south=(-36.0, -32.0), north=(33.0, 37.0))     # the end blocks, along the axis
+B_TRESTLE_Z = -35.5                     # the plane of the north trestle, texels south of the cap's middle
+B_PEDESTAL = [                          # the south pedestal's sections: y0, y1, half size along x, z from, z to
+    (3.0, 22.0, 13.0, 20.5, 38.5),
+    (24.0, 48.0, 10.5, 22.0, 37.5),
+]
+B_CLOCK = (10.5, 26.0, 27.0)            # the driving clock on the pedestal's east face
 
 
 def _yoke_b():
@@ -564,27 +645,24 @@ def _yoke_b():
     inner, outer, half, deep = B_GIRDER
     mid = (inner + outer) / 2.0
     ends = {"south": -B_HUB["south"][1], "north": -B_HUB["north"][0]}      # model z of each hub's inner face
-    for side in (-1.0, 1.0):
-        a, b = sorted((side * inner, side * outer))
-        d.box((-deep, a, -half), (deep, b, half), IRON, grain="z")
+    for sgn in (-1.0, 1.0):
+        a, b = sorted((sgn * inner, sgn * outer))
+        d.box((-deep, a, -half), (deep, b, half), IRON_SEAM, grain="z")
         # riveted flanges along both edges of the outer face, stiffeners between
-        o0, o1 = sorted((side * outer, side * (outer + 0.5)))
+        o0, o1 = sorted((sgn * outer, sgn * (outer + 0.5)))
         for x in (-deep, deep - 2.0):
             d.box((x, o0, -half), (x + 2.0, o1, half), IRON_SEAM, grain="z", seed=STRAP_SEED)
-        for zz in (-10.0, 10.0):
+        for zz in (-10.5, 10.5):
             d.box((-deep + 2.0, o0, zz - 1.0), (deep - 2.0, o1, zz + 1.0), IRON_D)
         # the bearing of the tube's trunnion
-        t0, t1 = sorted((side * outer, side * (outer + 3.0)))
-        d.tube("y", (0.0, 0.0), t0, t1, 6.5, IRON_D, sides=8)
-        t0, t1 = sorted((side * (outer + 3.0), side * (outer + 4.5)))
+        t0, t1 = sorted((sgn * outer, sgn * (outer + 3.0)))
+        d.tube("y", (0.0, 0.0), t0, t1, 7.0, IRON_D, sides=8)
+        t0, t1 = sorted((sgn * (outer + 3.0), sgn * (outer + 4.5)))
         d.tube("y", (0.0, 0.0), t0, t1, 3.0, BRASS_D, sides=8)
         # the arms that run in to the pivots
         for zz in ends.values():
             near = math.copysign(half - 1.0, zz)
-            d.beam((0.0, side * mid, near), (0.0, side * 5.5, zz), 2.0 * deep, outer - inner, IRON)
-            d.beam((deep - 1.0, side * (mid + 2.6), near), (deep - 1.0, side * 8.1, zz), 2.0, 0.5, IRON_SEAM,
-                   seed=STRAP_SEED + 1)
-            d.beam((-deep + 1.0, side * (mid + 2.6), near), (-deep + 1.0, side * 8.1, zz), 2.0, 0.5, IRON_SEAM,
+            d.beam((0.0, sgn * mid, near), (0.0, sgn * 5.5, zz), 2.0 * deep, outer - inner, IRON_SEAM,
                    seed=STRAP_SEED + 1)
     for name, (s0, s1) in B_HUB.items():
         z0, z1 = sorted((-s0, -s1))
@@ -599,20 +677,9 @@ def _yoke_b():
     d.tube("z", (0.0, 0.0), north, -B_NORTH - 4.5, 3.5, STEEL, sides=8)
     d.tube("z", (0.0, 0.0), north - 1.0, north, 6.0, IRON_D, sides=8)
     # the declination circle on the upper side of the frame, where the floor sees it
-    _circle(d, "y", (0.0, outer + 3.75, 0.0), 13.0)
+    _circle(d, "y", (0.0, outer + 3.75, 0.0), 13.0, n=6)
     d.box((-1.0, outer + 0.5, 11.0), (1.0, outer + 5.0, 15.5), BRASS_D)
     return d.m
-
-
-def _bearing(d, at, half=4.0, wide=7.5, low=-10.0):
-    """A plummer block cast to the latitude about the point `at` of the polar axis."""
-    x, y, z = at
-    with d.turned(("x", -LATITUDE), about=at):
-        d.box((x - wide, y - half, z + low), (x + wide, y + half, z + 4.0), IRON_D)
-        d.box((x - wide, y - half + 1.0, z + 4.0), (x + wide, y + half - 1.0, z + 6.0), IRON)
-        for side in (-1.0, 1.0):
-            d.tube("z", (x + side * (wide - 2.0), y), z + 5.5, z + 7.5, 1.0, STEEL, sides=4)
-        d.tube("y", (x, z), y - half - 0.75, y + half + 0.75, 4.75, BRASS_D, sides=8)
 
 
 def _piers_b():
@@ -621,55 +688,52 @@ def _piers_b():
     sq = math.sqrt(0.5)
     south = (0.0, cy + B_SOUTH * sq, -B_SOUTH * sq)
     north = (0.0, cy + B_NORTH * sq, -B_NORTH * sq)
-    # the bed: two riveted girders from the trestle's feet to the pedestal, sleepers across
-    for x in (-18.0, 14.0):
-        d.box((x, 0.0, -40.0), (x + 4.0, 3.0, 24.0), IRON_D, grain="z")
-        d.box((x - 0.5, 3.0, -40.0), (x + 4.5, 3.75, 24.0), IRON_SEAM, grain="z", seed=STRAP_SEED)
-    for zz in (-38.5, -16.0, 6.0):
-        d.box((-24.0, 0.0, zz), (24.0, 2.5, zz + 5.0), IRON_D, grain="x")
-    # the south pedestal: two cast sections, the thrust bearing on its head
-    d.box((-15.0, 0.0, 20.0), (15.0, 3.0, 40.0), IRON_D)
-    d.box((-11.0, 3.0, 23.0), (11.0, 22.0, 39.0), IRON, grain="y")
-    d.box((-12.5, 22.0, 21.5), (12.5, 24.0, 40.0), IRON_D_STUD)
-    d.box((-9.0, 24.0, 25.0), (9.0, 44.0, 38.5), IRON, grain="y")
-    for x in (-11.0, 9.0):
-        d.box((x, 3.0, 23.0 - 0.5), (x + 2.0, 22.0, 23.0), IRON_STUD, grain="y", seed=STRAP_SEED + 2)
-        d.box((x, 3.0, 39.0), (x + 2.0, 22.0, 39.5), IRON_STUD, grain="y", seed=STRAP_SEED + 2)
-    _bearing(d, south)
-    with d.turned(("x", -LATITUDE), about=south):
-        d.box((-6.0, south[1] - 6.5, south[2] - 6.0), (6.0, south[1] - 4.0, south[2] + 6.0), IRON)
-    # the north trestle: an A of two legs on the cap's north edge, tied twice, braced to the bed
     tz = B_TRESTLE_Z
-    foot, head = (22.0, 3.0), (5.0, 110.0)
+    foot, head = (27.0, 3.0), (5.5, 110.0)
 
     def leg_x(y):
         return foot[0] + (head[0] - foot[0]) * (y - foot[1]) / (head[1] - foot[1])
 
-    for side in (-1.0, 1.0):
-        d.box((side * foot[0] - 5.0, 0.0, tz - 4.0), (side * foot[0] + 5.0, 3.0, tz + 4.0), IRON_D)
-        d.bar((side * foot[0], foot[1], tz), (side * head[0], head[1], tz), 5.0, 6.0, IRON)
-        d.bar((side * (foot[0] + 2.75), foot[1], tz), (side * (head[0] + 2.75), head[1], tz), 0.5, 2.0, IRON_SEAM,
-              seed=STRAP_SEED + 3)
-        d.bar((side * leg_x(52.0), 52.0, tz + 2.0), (side * leg_x(52.0), 3.0, tz + 22.0), 4.0, 4.0, IRON_D)
-        d.box((side * leg_x(52.0) - 4.0, 0.0, tz + 19.0), (side * leg_x(52.0) + 4.0, 3.0, tz + 26.0), IRON_D)
-    for y in (38.0, 80.0):
+    # the bed: two riveted girders from the trestle's feet to the pedestal, sleepers across
+    for x in (-20.0, 16.0):
+        d.box((x, 0.0, -40.0), (x + 4.0, 3.0, 22.0), IRON_D, grain="z")
+        d.box((x - 0.5, 3.0, -40.0), (x + 4.5, 3.75, 22.0), IRON_SEAM, grain="z", seed=STRAP_SEED)
+    for zz in (-18.0, 4.0):
+        d.box((-26.0, 0.0, zz), (26.0, 2.5, zz + 5.0), IRON_D, grain="x")
+    # the south pedestal: two cast sections, the thrust bearing on its head
+    d.box((-17.0, 0.0, 18.0), (17.0, 3.0, 40.0), IRON_D)
+    for y0, y1, hx, z0, z1 in B_PEDESTAL:
+        _section(d, y0, y1, hx, (z1 - z0) / 2.0, about=(0.0, (z0 + z1) / 2.0), flange=1.5 if y1 < 40.0 else 0.0)
+    _bearing(d, south)
+    with d.turned(("x", -LATITUDE), about=south):
+        d.box((-6.0, south[1] - 6.5, south[2] - 6.0), (6.0, south[1] - 4.0, south[2] + 6.0), IRON)
+    # the north trestle: an A of two legs on the cap's north edge, tied twice, braced to the bed
+    for sgn in (-1.0, 1.0):
+        d.box((sgn * foot[0] - 6.0, 0.0, tz - 4.0), (sgn * foot[0] + 6.0, 3.0, tz + 4.0), IRON_D)
+        d.bar((sgn * foot[0], foot[1], tz), (sgn * head[0], head[1], tz), 7.0, 7.0, IRON_SEAM, seed=STRAP_SEED + 3)
+        x = leg_x(54.0)
+        d.bar((sgn * x, 54.0, tz + 2.0), (sgn * x, 3.0, tz + 24.0), 4.0, 5.0, IRON_D)
+        d.box((sgn * x - 4.0, 0.0, tz + 20.0), (sgn * x + 4.0, 3.0, tz + 28.0), IRON_D)
+    for y in (36.0, 78.0):
         x = leg_x(y) + 1.0
-        d.box((-x, y - 2.0, tz - 2.5), (x, y + 2.0, tz + 2.5), IRON_D, grain="x")
-        d.box((-x, y - 0.5, tz + 2.5), (x, y + 0.5, tz + 3.0), IRON_SEAM, grain="x", seed=STRAP_SEED + 4)
-    d.box((-8.0, 106.0, tz - 3.5), (8.0, 121.0, tz + 3.5), IRON_D)
-    d.box((-9.0, 108.0, tz - 4.0), (9.0, 110.0, tz + 4.0), IRON_D_STUD)
-    d.box((-5.0, 121.0, tz - 2.5), (5.0, 123.0, tz + 2.5), IRON)
+        d.box((-x, y - 2.5, tz - 3.0), (x, y + 2.5, tz + 3.0), IRON_SEAM, grain="x", seed=STRAP_SEED + 4)
+        for sgn in (-1.0, 1.0):
+            a, b = sorted((sgn * (x - 5.0), sgn * (x + 2.5)))
+            d.box((a, y - 4.0, tz - 3.75), (b, y + 4.0, tz + 3.75), IRON_D_STUD)
+    d.box((-9.0, 104.0, tz - 4.0), (9.0, 121.0, tz + 4.0), IRON_D)
+    d.box((-10.0, 106.0, tz - 4.5), (10.0, 108.0, tz + 4.5), IRON_D_STUD)
+    d.box((-6.0, 121.0, tz - 3.0), (6.0, 123.0, tz + 3.0), IRON)
     _bearing(d, north, low=-7.0, wide=7.0)
-    # the driving clock on the pedestal's east face, its shaft up to the worm under the hour circle
-    cx, cyy, cz = B_CLOCK
-    top = _clock(d, cx, cyy, cz)
-    circle = -B_HUB["south"][0] + 2.0           # along the axis, towards the south from the crossing
-    worm = (13.0, cy - circle * sq - 2.5, circle * sq - 2.5)
-    d.box((worm[0] - 2.5, worm[1] - 2.5, worm[2] - 3.0), (worm[0] + 2.5, worm[1] + 2.5, worm[2] + 3.0), BRASS_D)
-    d.bar((10.5, 40.0, worm[2]), (worm[0], worm[1] - 2.0, worm[2]), 2.0, 3.0, IRON_D)
-    d.rod((cx + 3.0, cyy + 13.5, cz + 7.5), (worm[0], worm[1] - 2.5, worm[2]), 0.6, BRASS, sides=4)
-    d.tube("y", (cx + 3.0, cz + 7.5), cyy + 13.5, cyy + 15.0, 1.25, BRASS_D, sides=8)
-    d.governor = top
+    # the drive: the clock on the pedestal's east face, a shaft straight up to the worm on the wheel's rim
+    leaves, governor = _clock(d, B_CLOCK)
+    wheel = B_HUB["south"][0] - 1.5             # along the axis from the crossing
+    with d.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):
+        d.box((11.0, cy + wheel - 1.0, -3.0), (15.5, cy + wheel + 2.5, 3.0), BRASS_D)
+        d.box((9.0, cy + wheel + 2.5, -2.0), (15.5, cy + wheel + 4.0, 2.0), IRON_D)
+    worm = (13.25, cy + (wheel + 0.75) * sq - 3.0 * sq, -(wheel + 0.75) * sq - 3.0 * sq)
+    _shaft(d, leaves, worm)
+    d.bar((10.5, 46.0, worm[2] + 3.0), (11.5, worm[1] + 1.0, worm[2] + 3.0), 2.0, 3.0, IRON_D)
+    d.governor = governor
     return d
 
 
@@ -688,15 +752,16 @@ def _governor():
     return d.m
 
 
-LAMP_OFF = (-0.25, 0.32, 0.62)          # the lamp's glass from the eyepiece: blocks east, up, south
+LAMP_OFF = (-0.25, 0.32, 0.62)          # the lamp's glass from the eyepiece: blocks east, up, to the side shown
 
 
 def _lamp_at(version):
     """Where the red lamp hangs, and where its arm is clamped on the rim of the tail plate."""
     e = eyepiece(version)
+    side = _SPEC[_version(version)]["show"]
     s0, s1, r = TAIL_PLATE
-    rim = _add(_add(e, _mul(SIGHT, (s0 + s1) / 32.0)), (0.0, 0.0, r / 16.0))
-    return _add(e, LAMP_OFF), rim
+    rim = _add(_add(e, _mul(SIGHT, (s0 + s1) / 32.0)), (0.0, 0.0, side * r / 16.0))
+    return _add(e, (LAMP_OFF[0], LAMP_OFF[1], side * LAMP_OFF[2])), rim
 
 
 def _lamp(version):
@@ -792,3 +857,101 @@ def build(canvas, origin=(0, 0, 0), version=None, lamp=True):
             cell = _add(_lamp_at(version)[0], origin)
             L.suggest(canvas, cell, LAMP_LEVEL, "machines/scope:lamp", rank=3)
     return n
+
+
+# ---- the rules the numbers are held to -------------------------------------------------------------------
+def _corners(model, at, frame, scale):
+    """The corners of every box of a placed model, in scene coordinates."""
+    k = scale / 16.0
+    for part in model.parts:
+        c = [(part["lo"][i] + part["hi"][i]) / 2.0 for i in range(3)]
+        h = [(part["hi"][i] - part["lo"][i]) / 2.0 for i in range(3)]
+        q = part["rot"][0] if part["rot"] else M.IDENT
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                for sz in (-1, 1):
+                    v = M._qrot(q, (sx * h[0], sy * h[1], sz * h[2]))
+                    p = at
+                    for i in range(3):
+                        p = _add(p, _mul(frame[i], (c[i] + v[i] - model.anchor[i]) * k))
+                    yield p
+
+
+def report(version=None):
+    """(lines, problems): the numbers of one version and the rules it breaks (A0's rulings in
+    plan/STATUS.md, the neighbours' in g2). Corners of boxes are measured, so a round part counts
+    a little larger than it is."""
+    version = _version(version)
+    built = _built()[0]
+    spec = _SPEC[version]
+    points = {name: list(_corners(built[name], at, frame, scale)) for name, at, frame, scale in placed(version)}
+    everything = [p for ps in points.values() for p in ps]
+    centre, radius = sweep(version)
+    lines = [
+        f"version {version}: the axes cross at {_rounded(crossing(version))}, the tube {spec['off']:.3f} off the "
+        f"polar axis, looking {ELEVATION:.2f} degrees up due west",
+        f"  eyepiece {EYEPIECE[version]}  objective {OBJECTIVE[version]}  observer {OBSERVER[version]}",
+        f"  sweep: centre {SWEEP[version][0]}, radius {radius}; V8 from {V8[version][0]} at {V8[version][1]}",
+        f"  lamp at {_rounded(_lamp_at(version)[0])}, light source of level {LAMP_LEVEL}; "
+        f"{len(points)} display entities, {sum(len(built[n].parts) for n in points)} boxes",
+    ]
+    problems = []
+    if abs(ELEVATION - 41.0) > 0.5:
+        problems.append(f"the tube looks {ELEVATION:.2f} degrees up, the comet's head is 41 up")
+    if version == "b" and abs(spec["off"]) > 1e-9:
+        problems.append("b: the tube is not on the dome's axis")
+    if version == "a" and spec["off"] > 1.5:
+        problems.append(f"a: the tube is {spec['off']:.3f} off the polar axis, over 1.5")
+    if LAMP_LEVEL > 4:
+        problems.append(f"the lamp's light source is of level {LAMP_LEVEL}, over 4")
+    far = max(math.dist(p, centre) for p in everything)
+    lines.append(f"  furthest corner {far:.2f} from the crossing")
+    if far > radius + 0.05:
+        problems.append(f"a corner is {far:.2f} from the crossing, outside the sweep of {radius}")
+    low = min(p[1] for p in everything)
+    if low < CAP_Y - 1e-6:
+        problems.append(f"a corner is at y {low:.2f}, below the cap")
+    x0, z0, x1, z1 = S.PIER_CAP
+    for name in ("pier_a", "piers_b"):
+        ps = points.get(PREFIX + name)
+        if ps:
+            lo = [min(p[i] for p in ps) for i in range(3)]
+            hi = [max(p[i] for p in ps) for i in range(3)]
+            lines.append(f"  {name}: x {lo[0]:.2f}..{hi[0]:.2f}, y {lo[1]:.2f}..{hi[1]:.2f}, z {lo[2]:.2f}..{hi[2]:.2f}")
+            if lo[0] < x0 - 1e-6 or hi[0] > x1 + 1 + 1e-6 or lo[2] < z0 - 1e-6 or hi[2] > z1 + 1 + 1e-6:
+                problems.append(f"{name} stands over the edge of the cap (x {x0}..{x1 + 1}, z {z0}..{z1 + 1})")
+    if version == "a":
+        ps = [p for p in points[PREFIX + "axis_a"] if _dot(_sub(p, crossing("a")), DEC) < -A_WEIGHTS[0] / 16.0 + 0.01]
+        lo = [min(p[i] for p in ps) for i in range(3)]
+        hi = [max(p[i] for p in ps) for i in range(3)]
+        lines.append(f"  counterweight: x {lo[0]:.2f}..{hi[0]:.2f}, y from {lo[1]:.2f}, z {lo[2]:.2f}..{hi[2]:.2f}")
+        if lo[1] < 21.0:
+            problems.append(f"a: the counterweight comes down to y {lo[1]:.2f}, below 21")
+    # where people stand: east of the railing on the observing floor, and the ring stair's exit
+    rail = S.PIER_ENVELOPE[2] + 1.5
+    over = [p for p in everything if p[0] > rail]
+    if over:
+        low = min(p[1] for p in over)
+        lines.append(f"  lowest corner east of the railing: y {low:.2f} (a standing eye is at {FLOOR_Y + S.EYE:.2f})")
+        if low < FLOOR_Y + S.EYE - 0.15:
+            problems.append(f"a corner over the observing floor is at y {low:.2f}, in a standing person's face")
+    ex, ez = S.DOME_CENTRE[0], S.PIER_ENVELOPE[1] - 1
+    if any(ex <= p[0] <= ex + 1 and ez <= p[2] <= ez + 1 and p[1] < FLOOR_Y + 3 for p in everything):
+        problems.append("a corner is in the three cells over the ring stair's exit")
+    half = S.SLIT_W / 2.0
+    wide = [p for p in points[f"{PREFIX}tube_{version}"] if abs(p[2] - AXIS[1]) > half]
+    if wide:
+        problems.append(f"the tube is wider than the slit: z {max(abs(p[2] - AXIS[1]) for p in wide):.2f} from the axis")
+    return lines, problems
+
+
+if __name__ == "__main__":
+    bad = 0
+    for v in VERSIONS:
+        text, wrong = report(v)
+        print("\n".join(text))
+        for w in wrong:
+            print(f"  BROKEN: {w}")
+        bad += len(wrong)
+    print(f"default version: {VERSION}; brightness (sky, block) {BRIGHTNESS}")
+    raise SystemExit(1 if bad else 0)
