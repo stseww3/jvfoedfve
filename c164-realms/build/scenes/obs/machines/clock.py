@@ -14,13 +14,14 @@ do not shake, which is why the regulator is fixed to it. Behind the glazed door 
 the brass plate and the two wheels of the movement, two copper coils on an iron yoke with the
 armature on the pendulum rod between them (the clock is driven and read electrically), the
 pendulum, and the beat scale under its pointer. Nothing glows. The dial is a piece of its own with
-a fixed light (MASTER_DIAL_LIGHT), a step above what the case gets, so that it is the light spot
-of the clock; case and pendulum take the light of the cell they stand in, at the height of the
-trunk's top. The light source that goes with the clock is one hidden light in front of the trunk
-(MASTER_LAMP), handed to sky/_lightkit, which places it. It is a strong one, of the second rank:
-looking in from the court along the axis, what is lit at the far end of the hall is the master
-clock on its pier, with no lamp to be seen (A0, 11-15); the orrery's sun stays the brightest thing
-in the hall.
+a fixed light (MASTER_DIAL_LIGHT), the top of the light table and well above what the case gets:
+it is the white spot of the clock and of the hall. Looking in from the court along the axis (V7),
+the dial and the east face of the pier are what is seen first, the orrery's sun is the warmest
+point and the floor comes third (A0, 11-16). Case and pendulum take the light of the cell they
+stand in, at the height of the trunk's top. The light source that goes with the clock is one
+hidden light in front of the trunk (MASTER_LAMP), handed to sky/_lightkit, which places it. It is
+a strong one, of the second rank: what is lit at the far end of the hall is the master clock on
+its pier, with no lamp to be seen (A0, 11-15).
 
 The tower clock (time tower). Four equal dials, one in the middle of each face of the shaft, centre
 at y 27.5, 2.75 blocks across: white enamel, a thin brass rim, a mark at every hour (no numerals:
@@ -113,9 +114,12 @@ MASTER_FACING = S.MOTHER_CLOCK["facing"]                                        
 MASTER_HOLD = 40.0
 MASTER_PIVOT = (0.0, 37.0, 6.25)     # the pendulum's pivot
 MASTER_DIAL = (0.0, 51.0, 10.5)      # the middle of the dial's back, on the front of the hood
-# (sky, block) for the dial and its hands. A0, 11-15: 11 with the lamp below; back to (0, 9), the lamp
-# unchanged, if in V7 the dial comes near the orrery's sun.
-MASTER_DIAL_LIGHT = (0, 11)
+# (sky, block) for the dial and its hands. A0, 11-16: in V7 the dial comes first and reads 0.35 or
+# more. A face that looks east is drawn at half the light it is given, so the white enamel read
+# 0.32 at (0, 11) and would read 0.40 at 13, the whole dial with its marks and hands a sixth less.
+# 14 is the top of the light table, white light: the enamel reads 0.46 and its warmth is its own.
+# The lamp in front of the trunk stays at 11. scenes/obs_mach_clocks/measure.py reads the dial.
+MASTER_DIAL_LIGHT = (0, 14)
 # the hidden light in front of the trunk: the cell, the level and the rank (A0, 11-15: (7, 3, 0), 11,
 # second rank; the case, in the cell behind it, gets 10)
 MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 11)
