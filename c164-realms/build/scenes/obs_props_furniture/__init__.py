@@ -3,9 +3,10 @@
 A wall of dressed stone looks south and the cameras stand south of it. The west end is a piece of
 terrace paving with two benches, one seen from the front and one end-on, so the slats and the cast
 end frame are both judged. The rest is a room floor with the pieces set as a room uses them: a study
-corner (coat stand, writing desk with a desk lamp, swivel chair, two card cabinets side by side), a
-trunk and crates, the drafting table with its stool, a bookcase with the library ladder on its rail,
-and a display case. Bracket lamps on the wall light the stage as lamps light a room.
+corner (coat stand, writing desk with a desk lamp, swivel chair, two card cabinets side by side and
+an instrument cabinet), a trunk and crates, the drafting table with its stool, a bookcase with the
+library ladder on its rail, and a display case. Bracket lamps on the wall light the stage as lamps
+light a room.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_furniture
 """
@@ -23,7 +24,7 @@ STONE, PAVING, FLOOR, SHELF = B.ASHLAR_FINE.block, B.TUFF_SMOOTH.block, B.FLOOR_
 WALL_Z = -1
 FACE = WALL_Z + 1               # the air cell in front of the wall; a wall prop's anchor sits on the face
 WALL_H = 6
-WEST, ROOM, EAST = -3, 11, 37   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
+WEST, ROOM, EAST = -3, 11, 38   # the terrace runs from WEST to ROOM, the room floor from ROOM to EAST
 DEPTH = 12
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
@@ -32,15 +33,16 @@ BENCH_END = (8.0, 0.0, 3.0)     # turned end-on to the cameras
 COAT = (12.7, 0.0, 0.8)
 DESK = (15.0, 0.0, 1.5)
 CHAIR = (15.2, 0.0, 3.3)
-CABINETS = ((17.5, 0.0, 0.5), (18.5, 0.0, 0.5))
-TRUNK = (20.6, 0.0, 1.0)
-CRATES = ((22.5, 0.0, 0.8), (23.4, 0.0, 2.2), (22.6, furniture.TOP["crate"], 0.9))
-DRAFT = (26.0, 0.0, 1.8)
-STOOL = (26.0, 0.0, 3.5)
-CASE_X = (29, 32)               # the bookcase: these cells along x, three high, one deep
-LADDER_X = 30.5
-CASE = (34.5, 0.0, 2.0)
-LAMPS = (6.0, 13.5, 20.0, 27.5, 33.5)
+CABINETS = ((17.6, 0.0, 0.5), (18.6, 0.0, 0.5))
+INSTRUMENTS = (19.8, 0.0, 0.45)
+TRUNK = (21.9, 0.0, 1.0)
+CRATES = ((23.7, 0.0, 0.8), (24.5, 0.0, 2.2), (23.8, furniture.TOP["crate"], 0.9))
+DRAFT = (27.2, 0.0, 1.8)
+STOOL = (27.2, 0.0, 3.5)
+CASE_X = (30, 33)               # the bookcase: these cells along x, three high, one deep
+LADDER_X = 31.5
+CASE = (35.5, 0.0, 2.0)
+LAMPS = (6.0, 13.5, 20.8, 28.6, 34.5)
 
 
 def build():
@@ -54,10 +56,11 @@ def build():
     n += place(c, "bench", BENCH_END, facing="west")
     n += place(c, "coat_stand", COAT)
     n += place(c, "writing_desk", DESK)
-    n += lamps.place(c, "desk_green", (DESK[0] - 0.75, furniture.TOP["writing_desk"], DESK[2] - 0.1))
+    n += lamps.place(c, "desk_green", (DESK[0] - 0.6, furniture.TOP["writing_desk"], DESK[2] + 0.1))
     n += place(c, "swivel_chair", CHAIR, yaw=155.0)
     for pos in CABINETS:
         n += place(c, "card_cabinet", pos)
+    n += place(c, "instrument_cabinet", INSTRUMENTS)
     n += place(c, "trunk", TRUNK, yaw=-12.0)
     for i, pos in enumerate(CRATES):
         n += place(c, "crate", pos, yaw=(0.0, 30.0, 8.0)[i])
@@ -95,14 +98,16 @@ def shots():
     shot("far", (mid, 5.0, 26.0), (mid, 1.5, 0.0))
     shot("terrace", (5.5, 2.2, 8.5), (5.5, 0.8, 2.0))
     shot("study", (16.0, 2.4, 7.5), (16.0, 1.0, 1.0))
-    shot("workroom", (27.0, 2.6, 8.5), (27.5, 1.2, 1.0))
+    shot("stores", (22.0, 2.4, 7.5), (22.0, 1.0, 1.0))
+    shot("workroom", (29.0, 2.6, 8.5), (29.5, 1.2, 1.0))
     near("bench", BENCH, 0.5)
     near("bench_end", BENCH_END, 0.5, back=2.6, side=0.4)
     near("coat_stand", COAT, 1.2, back=3.2, side=-0.8, up=0.5)
     near("writing_desk", DESK, 0.7, back=3.4, side=1.6, up=1.2)
     near("swivel_chair", CHAIR, 0.5, back=2.4, side=1.8, up=0.9)
     near("card_cabinet", CABINETS[0], 1.0, back=3.2, side=1.6, up=0.6)
-    near("trunk_crates", (21.8, 0.0, 1.2), 0.5, back=3.4, side=0.6, up=1.2)
+    near("instrument_cabinet", INSTRUMENTS, 1.0, back=3.2, side=1.4, up=0.6)
+    near("trunk_crates", (23.2, 0.0, 1.2), 0.5, back=3.4, side=0.6, up=1.2)
     near("drafting_table", DRAFT, 1.0, back=3.4, side=1.8, up=0.9)
     near("drafting_side", DRAFT, 0.9, back=1.2, side=3.2, up=0.4)
     near("stool", STOOL, 0.4, back=2.2, side=-1.4, up=0.9)

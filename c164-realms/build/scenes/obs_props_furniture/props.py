@@ -23,7 +23,7 @@ def _wall(name, y):
 # camera, look-at; the backdrop wall is 7.5 blocks north of the bay's centre
 GALLERY = [
     _floor("bench"), _floor("writing_desk"), _floor("drafting_table", 1.5), _floor("swivel_chair"),
-    _floor("stool"), _floor("card_cabinet", 2.0), _wall("library_ladder", 0.0),
+    _floor("stool"), _floor("card_cabinet", 2.0), _floor("instrument_cabinet", 2.0), _wall("library_ladder", 0.0),
     _wall("ladder_rail", furniture.RAIL_Y), _floor("coat_stand", 2.0), _floor("trunk"), _floor("crate"),
     _floor("display_case", 1.4),
 ]

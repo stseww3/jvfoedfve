@@ -13,6 +13,7 @@ of a bench, of a desk, or one claw of a column foot. Brass is small: pulls, bolt
     swivel_chair     a wooden seat and bow back on a screw column and five claws
     stool            a tall round stool on three legs with a brass foot ring
     card_cabinet     two blocks tall: eighteen card drawers, each with its label and brass pull
+    instrument_cabinet  two blocks tall: a cupboard under glazed shelves of eyepieces (the dome room)
     library_ladder   three blocks tall, leans on a bookcase; its rollers ride on ladder_rail
     ladder_rail      one block of that brass rail (rail() lays a run of it)
     coat_stand       two blocks tall: a turned post on three claws, brass hooks
@@ -54,20 +55,21 @@ TILT = 40.0                     # degrees the drafting board is tilted
 RAIL_Y = 44.5 / 16.0            # the ladder rail's height above the floor the ladder stands on
 RAIL_OUT = 1.0 / 16.0           # and how far its centre is off the bookcase front
 
-# what is pinned to the drafting board: a chart of a hemisphere, begun
+# what is pinned to the drafting board: a chart of a hemisphere, begun (pencil circle, inked stars,
+# a few ruled ticks beside it; no writing)
 SHEET = Sprite("furn_draft_sheet", [
     "..................",
-    "......ppppppp.....",
-    "....pp...i...pp...",
-    "...p...........p..",
-    "..p....i....i...p.",
-    "..p.............p.",
-    "..p..i......i...p.",
-    "...p...........p..",
-    "....pp...i...pp...",
-    "......ppppppp.....",
+    ".....ppppp........",
+    "...pp.....pp......",
+    "..p....i....p..ll.",
+    "..p.i.......p.....",
+    "..p......i..p..ll.",
+    "..p..i......p.....",
+    "..p.......i.p..ll.",
+    "...pp.....pp......",
+    ".....ppppp........",
     "..................",
-], {"p": PENCIL, "i": INK}, back=PAPER)
+], {"p": PENCIL, "l": PENCIL, "i": INK}, back=PAPER)
 
 
 # ---- the casting ---------------------------------------------------------------------------------
@@ -274,6 +276,39 @@ def _card_cabinet():
     return m
 
 
+def _instrument_cabinet():
+    """A cupboard below, open shelves behind a glazed front above: the glass is not drawn, the
+    frame and what stands on the shelves say it."""
+    m = M.Model(PREFIX + "instrument_cabinet")
+    _feet(m, 6.0, 4.0)
+    m.box((-7.5, 2.0, -5.5), (7.5, 3.5, 5.5), WOOD_D, grain="x")
+    m.box((-7.0, 3.5, -5.0), (7.0, 12.0, 5.0), WOOD, grain="y")     # the cupboard and its two doors
+    for x0 in (-6.5, 0.5):
+        m.box((x0, 4.0, 5.0), (x0 + 6.0, 11.5, 5.25), WOOD_L, grain="y")
+    for x in (-1.5, 1.5):
+        _pull(m, x, 8.0, 5.25, 1.0)
+    m.box((-7.5, 12.0, -5.5), (7.5, 13.0, 5.5), WOOD_D, grain="x")
+    m.box((-7.0, 13.0, -5.0), (7.0, 28.5, -4.0), WOOD_D, grain="y")  # the back of the shelves
+    for x0 in (-7.0, 6.0):
+        m.box((x0, 13.0, -4.0), (x0 + 1.0, 28.5, 5.0), WOOD, grain="y")
+    for y in (18.0, 23.0):
+        m.box((-6.0, y, -4.0), (6.0, y + 1.0, 4.0), WOOD, grain="x")
+    m.box((-0.5, 13.0, 4.0), (0.5, 27.5, 5.0), WOOD_D, grain="y")    # where the two glazed doors meet
+    m.box((-6.0, 27.5, 4.0), (6.0, 28.5, 5.0), WOOD_D, grain="x")
+    _pull(m, 0.0, 20.5, 5.0, 1.0)
+    m.box((-7.5, 28.5, -5.5), (7.5, 30.0, 5.5), WOOD_D, grain="x")
+    # on the shelves: eyepieces in brass, a porcelain jar, a cased lens
+    porcelain = P.mat("porcelain")
+    for x, top in ((-4.5, 16.0), (-2.5, 15.0)):
+        m.tube("y", (x, 0.0), 13.0, top, 0.75, BRASS)
+    m.box((2.0, 13.0, -1.5), (5.0, 15.0, 1.5), WOOD_L, grain="x")
+    for x, top in ((-4.0, 21.0), (2.5, 22.0)):
+        m.tube("y", (x, 0.5), 19.0, top, 1.0, porcelain if x < 0 else BRASS_D)
+    m.tube("x", (25.0, 0.0), -4.5, -0.5, 1.0, BRASS)
+    m.tube("x", (24.75, 0.0), 1.5, 4.5, 0.75, BRASS_D)
+    return m
+
+
 def _library_ladder():
     """Wall mount: z = 0 is the bookcase front, the anchor is at floor level."""
     m = M.Model(PREFIX + "library_ladder")
@@ -383,6 +418,7 @@ SPEC = {
     "swivel_chair": dict(build=_swivel_chair, mount="floor"),
     "stool": dict(build=_stool, mount="floor"),
     "card_cabinet": dict(build=_card_cabinet, mount="floor"),
+    "instrument_cabinet": dict(build=_instrument_cabinet, mount="floor"),
     "library_ladder": dict(build=_library_ladder, mount="wall"),
     "ladder_rail": dict(build=_ladder_rail, mount="wall"),
     "coat_stand": dict(build=_coat_stand, mount="floor"),
