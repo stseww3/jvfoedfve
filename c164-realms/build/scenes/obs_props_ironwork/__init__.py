@@ -24,7 +24,8 @@ Seen from the court, left to right (south to north):
 South of the building a plain yard wall carries what has no place on the front: the west door's
 glazed leaves in a flat-headed doorway (a stand-in lamp in the doorway, or the shut leaves are
 black on black) and the inspection ladder; on the paving stand a run of balustrade panels, the
-vent cowl and the floor grating.
+vent cowl and the floor grating, each by a stand-in for a lamp of the terrace (dark iron on dark
+paving at night is a silhouette and no more).
 
 The shots are written from the numbers below:  python -m scenes.obs_props_ironwork
 """
@@ -72,6 +73,9 @@ FLOOR_X = WALL + 12             # the cowl and the grating stand out here, clear
 COWL_Z, GRATE_Z = YARD[0] + 6, YARD[0] + 2
 RAIL_Z = YARD[1] + 3            # the balustrade run, looking south
 RAIL_X = (WALL + 5, WALL + 7, WALL + 9)
+FLOOR_LAMP = 12                 # stand-ins for the lamps of a terrace, by the pieces that stand on the paving:
+FLOOR_LAMPS = ((RAIL_X[0] + 1, 1, RAIL_Z + 1), (RAIL_X[1] + 1, 1, RAIL_Z + 1),     # three cells from each
+               (FLOOR_X + 1, 1, COWL_Z + 1), (FLOOR_X + 1, 1, GRATE_Z + 1))        # piece: the iron stands in 9
 
 
 def bay_z(bay):
@@ -154,6 +158,8 @@ def _yard(c):
         n += ironwork.place(c, "railing_panel", (float(x), float(S.GROUND), RAIL_Z + 0.5), facing="south")
     n += ironwork.place(c, "vent_cowl", (FLOOR_X + 0.5, float(S.GROUND), COWL_Z + 0.5), facing="east")
     n += ironwork.place(c, "grate_hatch", (FLOOR_X + 0.5, float(S.GROUND), GRATE_Z + 0.5))
+    for x, y, z in FLOOR_LAMPS:
+        c.set(x, S.GROUND + y, z, st(B.LIGHT, level=FLOOR_LAMP))
     return n
 
 
