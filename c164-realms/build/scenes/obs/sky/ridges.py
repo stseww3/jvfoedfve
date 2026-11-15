@@ -76,15 +76,21 @@ COLUMNS = 64                                # how finely the skyline is cut, acr
 def _mat():
     """The one colour the ridges are painted in.
 
-    Painted for where they stand: the fog law the sky lead (a2) set has the ground fog end at 768,
-    so a panel at 360 carries 360/768 = 47% fog. Mixing the palette's darkest step with the look's
-    fog colour by that share comes out (43, 47, 93), which is `night_glass` 2 -- (39, 51, 95) --
-    to within a few parts of a level. So the palette already owns the colour this needs: the
-    palette's own step is used, and nothing new is defined (COMMON 4: no colours of one's own).
-    The hill then reads as a darker shape where the afterglow is behind it and fades into the fog
-    where there is none -- which is the design on the card.
+    Painted for where they stand. Under the fog law the sky lead (a2) set -- start 0, end 768 -- a
+    panel at 360 carries 360/768 = 47% fog, and mixing the palette's darkest step with the look's
+    `fog_color` by that share comes to (43, 47, 93), luminance 0.200.
+
+    But an item display is shaded on its vertical faces (the renderer's factor is about a half), so
+    the picture comes out at roughly half whatever the palette step says: painted `night_glass` 2
+    (0.206) the panels rendered at 0.09-0.10 -- a black cut-out, not a hill. The step that lands at
+    about 0.2 once shaded is `night_glass` 4 (0.434). That is the palette's own colour nearest the
+    fogged value after the shading, so nothing new is defined (COMMON 4).
+
+    The hill then reads as a body darker than the cloud sea (0.313) and close to the fogged sky, so
+    it stands out as a shape where the afterglow is behind it and fades away where there is none --
+    which is the design on the card.
     """
-    return P.mat("night_glass", kind="plain", noise=0.06, bevel=0, base=2)
+    return P.mat("night_glass", kind="plain", noise=0.06, bevel=0, base=4)
 
 
 def _skyline(key, columns):
