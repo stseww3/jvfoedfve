@@ -1,0 +1,52 @@
+gate materials/board 07bf4808: the merged tree f005ba2d, the assembly as it was 5959264e
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 29 s: 49 pass (33 with warnings)
+pictures: obs_mat_board: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_board at f005ba2d: 4 of 35 kept pictures are what the code draws, 31 not
+    all: 38287 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    all_b: 1021 of 921600 pixels are not what the code draws (off by up to 235 of 255)
+    all_c: 1016 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    ground_left: 361 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    ground_right: 776 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    ground_rock: 36641 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    ground_inlay: 447 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    ground_inlay_walk: 54526 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    ground_cloud: 21922 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    pieces_left: 86992 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    pieces_right: 87012 of 921600 pixels are not what the code draws (off by up to 100 of 255)
+    stone_left: 121140 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+pictures: obs_mat_board_ashlar_a: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_board_ashlar_a at f005ba2d: 0 of 9 kept pictures are what the code draws, 9 not
+    all: 38282 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    all_b: 1021 of 921600 pixels are not what the code draws (off by up to 235 of 255)
+    all_c: 1016 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    stone_left: 121140 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    stone_right: 121124 of 921600 pixels are not what the code draws (off by up to 102 of 255)
+    stone_slate_brick: 52324 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    stone_fine: 422 of 921600 pixels are not what the code draws (off by up to 89 of 255)
+    stone_panel: 422 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    stone_slate_tile: 52397 of 921600 pixels are not what the code draws (off by up to 100 of 255)
+pictures: obs_mat_board_ashlar_c: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_board_ashlar_c at f005ba2d: 0 of 9 kept pictures are what the code draws, 9 not
+    all: 38490 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    all_b: 1021 of 921600 pixels are not what the code draws (off by up to 235 of 255)
+    all_c: 1016 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    stone_left: 121140 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    stone_right: 121124 of 921600 pixels are not what the code draws (off by up to 102 of 255)
+    stone_slate_brick: 52324 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    stone_fine: 422 of 921600 pixels are not what the code draws (off by up to 89 of 255)
+    stone_panel: 422 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    stone_slate_tile: 52397 of 921600 pixels are not what the code draws (off by up to 100 of 255)
+pictures: obs_mat_board_windows_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mat_board_windows_b at f005ba2d: 0 of 10 kept pictures are what the code draws, 10 not
+    all: 38251 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    all_b: 1021 of 921600 pixels are not what the code draws (off by up to 235 of 255)
+    all_c: 1016 of 921600 pixels are not what the code draws (off by up to 6 of 255)
+    glass_left: 286926 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    glass_right: 294114 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    glass_furnace: 145154 of 921600 pixels are not what the code draws (off by up to 109 of 255)
+    glass_window_lit: 129280 of 921600 pixels are not what the code draws (off by up to 101 of 255)
+    glass_window_frosted: 129280 of 921600 pixels are not what the code draws (off by up to 101 of 255)
+    glass_window_blind: 129280 of 921600 pixels are not what the code draws (off by up to 101 of 255)
+    glass_instruments: 145227 of 921600 pixels are not what the code draws (off by up to 101 of 255)
+result: PASS
