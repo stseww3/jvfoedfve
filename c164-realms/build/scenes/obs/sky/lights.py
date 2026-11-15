@@ -319,7 +319,9 @@ def _entrance(canvas, r, origin):
 def _wash(canvas, r, origin):
     """A projector two cells before the plinth of each wash bay, where the front stands and the
     ground before it is free, and the sources where its beam lands: in the row over the plinth, the
-    first free cell before the wall or the pilaster, as far along the front as WASH_SPREAD says.
+    first free cell before the wall or the pilaster, as far along the front as WASH_SPREAD says
+    and within reach of the projector. It stands before the middle of the bay, or a row beside the
+    middle where the plinth has a vent there.
     The lamp brings a source of its own for the ground around it, settled with the other offers.
     Returns the number of display entities placed."""
     try:
@@ -337,7 +339,12 @@ def _wash(canvas, r, origin):
         if foot is None:
             continue                                                               # no front stands here
         x = foot + WASH_OUT
-        cell = (x + ox, oy, z + oz)
+        row = z
+        if canvas.name(foot + ox, oy, z + oz) == B.IRON_GRATE:
+            # main/facade's vent under the middle of the bay: the projector stands a row beside
+            # it, on the side away from the door, clear of the grating from the axis as well
+            row += 1 if bay > DOOR_BAY else -1
+        cell = (x + ox, oy, row + oz)
         if cell in r["wash"]:
             continue
         landing = []
@@ -345,17 +352,17 @@ def _wash(canvas, r, origin):
             wall = next((wx for wx in range(foot, front - 2, -1)
                          if _stops(canvas, wx + ox, WASH_ROW + oy, z + dz + oz)), None)
             if wall is not None and not canvas.has(wall + 1 + ox, WASH_ROW + oy, z + dz + oz) \
-                    and x - (wall + 1) <= L.REACH:
+                    and x - (wall + 1) <= L.REACH and abs(z + dz - row) <= L.REACH:
                 landing.append((wall + 1 + ox, WASH_ROW + oy, z + dz + oz))
-        free = all(not canvas.has(cx + ox, cy + oy, z + oz) for cx, cy in ((x - 1, 0), (x, 0), (x, 1)))
-        if not free or not canvas.has(x + ox, S.PAVING_Y + oy, z + oz):
+        free = all(not canvas.has(cx + ox, cy + oy, row + oz) for cx, cy in ((x - 1, 0), (x, 0), (x, 1)))
+        if not free or not canvas.has(x + ox, S.PAVING_Y + oy, row + oz):
             r["notes"].append(f"no wall wash before bay {bay}: the cell {cell} is taken or has no ground")
             continue
         if not landing:
             r["notes"].append(f"no wall wash before bay {bay}: no free cell at the foot of the wall within "
                               f"{L.REACH} cells of the projector")
             continue
-        n += lamps.place(canvas, "uplight", (x + 0.5, float(S.GROUND), z + 0.5), facing="west", origin=origin)
+        n += lamps.place(canvas, "uplight", (x + 0.5, float(S.GROUND), row + 0.5), facing="west", origin=origin)
         r["wash"].append(cell)
         for spot in landing:
             _put(canvas, r, spot, WASH_LEVEL, WASH_WHY)
