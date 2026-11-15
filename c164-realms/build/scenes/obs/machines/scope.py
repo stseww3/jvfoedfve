@@ -365,40 +365,46 @@ def _cw():
 
 
 def _drive():
-    """The driving clock (转仪钟): a brass case with its winding arbor, and the weight drum hanging
-    on its barrel below. The governor is a model of its own. Anchor at the top centre; the drum
-    hangs down. It hangs close against the pedestal's south face (cr2-M2 2)."""
+    """The driving clock (转仪钟): a brass case a block over, with its winding arbor, and the weight
+    drum hanging one block below it on its barrel. The governor is a model of its own. Anchor at the
+    top centre; the drum hangs down. It hangs close against the pedestal's south face (cr2-M2 2).
+
+    One block is 16 units here, so the case is 16 wide and 13 deep and the drum hangs 16 below it:
+    at ten blocks out (V8) both read as a machine, not as a speck (the pre-review's second point)."""
     m = M.Model(PREFIX + "drive", px=FIN_SCALE)
-    m.box((-2.6, -1.7, -1.8), (2.6, 1.7, 1.8), BRASS)                   # the case, about 1 block
-    m.box((-2.8, 1.1, -2.0), (2.8, 1.7, 2.0), BRASS_D)                  # its lid
-    m.box((-0.5, -1.7, 1.8), (0.5, -0.2, 2.6), BRASS_D)                 # the winding arbor
-    m.tube("y", (0.0, 0.0), -12.0, -1.7, 1.5, COPPER, sides=12)         # the weight drum
-    m.tube("y", (0.0, 0.0), -12.0, -11.0, 1.9, COPPER, sides=12, cap=COPPER)
-    m.tube("y", (0.0, 0.0), -1.7, -1.0, 0.6, IRON_D, sides=8)           # its chain
+    m.box((-8.0, -6.5, -6.5), (8.0, 6.5, 4.0), BRASS)                   # the case, a block over
+    m.box((-8.6, 4.0, -7.0), (8.6, 6.5, 4.5), BRASS_D)                  # its lid
+    m.box((-1.6, -6.5, 4.0), (1.6, -1.0, 8.0), BRASS_D)                 # the winding arbor
+    m.box((-2.0, 4.5, -7.4), (2.0, 7.2, -6.2), BRASS_D)                 # its small dial
+    m.tube("y", (0.0, 0.0), -23.0, -6.5, 4.4, COPPER, sides=12)         # the weight drum
+    m.tube("y", (0.0, 0.0), -23.0, -21.4, 5.4, COPPER, sides=12, cap=COPPER)
+    m.tube("y", (0.0, 0.0), -6.5, -4.4, 1.4, IRON_D, sides=8)           # its chain
     return m
 
 
 def _gov():
     """The governor as its own model, so its spin axis is the vertical line through its entity: the
-    spindle, two arms with a flyball each, the warning-red collar. Anchor at the spindle's top."""
+    spindle, two arms with a flyball each, the warning-red collar. Anchor at the spindle's top. The
+    flyballs are about five pixels across, so the arms read as arms at ten blocks (cr2-M2 2)."""
     m = M.Model(PREFIX + "governor", px=FIN_SCALE)
-    m.tube("y", (0.0, 0.0), -7.0, 0.0, 0.45, BRASS, sides=8)
-    m.tube("y", (0.0, 0.0), -7.0, -6.5, 0.85, RED, sides=8)
+    m.tube("y", (0.0, 0.0), -14.0, 0.0, 1.0, BRASS, sides=8)
+    m.tube("y", (0.0, 0.0), -14.0, -12.6, 2.0, RED, sides=8)            # the red collar, 2 px high
     for s in (-1, 1):
-        m.rod((0.0, -0.3, 0.0), (s * 2.6, -6.0, 0.0), 0.3, BRASS_D, sides=6)
-        m.ball((s * 2.6, -6.0, 0.0), 1.3, COPPER, sides=8, layers=5)
+        m.rod((0.0, -0.8, 0.0), (s * 5.6, -12.0, 0.0), 0.7, BRASS_D, sides=6)
+        m.ball((s * 5.6, -12.0, 0.0), 2.4, COPPER, sides=8, layers=5)   # a flyball, 5 px across
     return m
 
 
 def _lamp():
     """The room's one lamp, at the eyepiece (director #442.3): an iron housing under a deep shade,
     its red lens turned west onto the focuser and the setting circles, its back to the observer's
-    floor. Anchor at the fixing point; build() gives it the turn that points the lens west."""
+    floor. Anchor at the fixing point; build() gives it the turn that points the lens west. The lens
+    is 2x2 pixels of red, the only lit face, and no bigger than the comet's nucleus (the card)."""
     m = M.Model(PREFIX + "lamp", px=FIN_SCALE)
-    m.box((-1.4, -1.4, -1.4), (1.4, 1.4, 0.2), IRON_D)                  # the housing
-    m.tube("z", (0.0, 0.0), -0.8, 0.5, 1.7, IRON, sides=8)              # its bezel
-    m.box((-1.1, 1.0, -1.2), (1.1, 1.6, 1.9), IRON_D)                   # the shade over the lens
-    m.box((-0.9, -0.9, 0.5), (0.9, 0.9, 0.8), RED_GLASS, emit=15, shade=False)   # the lens, west
+    m.box((-3.0, -3.0, -3.0), (3.0, 3.0, 0.4), IRON_D)                  # the housing
+    m.tube("z", (0.0, 0.0), -1.6, 1.0, 3.4, IRON, sides=8)              # its bezel
+    m.box((-2.2, 2.2, -2.6), (2.2, 3.2, 3.6), IRON_D)                   # the shade over the lens
+    m.box((-1.0, -1.0, 1.0), (1.0, 1.0, 1.0), RED_GLASS, emit=15, shade=False)   # the lens, west
     return m
 
 
@@ -505,10 +511,11 @@ def build(canvas, origin=(0, 0, 0), version=VERSION, light=True):
         drop = min(2.6, (root[1] - CW_FLOOR) / max(0.1, -far[1]))
         end = tuple(root[i] + drop * far[i] for i in range(3))
         n += _aim(canvas, mdl[PREFIX + "cw"], root, end)
-    # the driving clock and its governor on the pedestal's south face, above the cap
-    drive = (pv[0], oy + CAP_Y + 1.35, pv[2] + 1.05)
+    # the driving clock and its governor on the pedestal's south face, its drum hanging clear of the
+    # floor: the case sits a block and a half above the cap, the drum ends about a block above it
+    drive = (pv[0], oy + CAP_Y + 2.3, pv[2] + 1.15)
     n += _put(canvas, mdl[PREFIX + "drive"], drive)
-    n += _put(canvas, mdl[PREFIX + "governor"], (drive[0], drive[1] + 1.75, drive[2]))
+    n += _put(canvas, mdl[PREFIX + "governor"], (drive[0], drive[1] + 0.5, drive[2]))
     # the one lamp, its red lens turned west onto the focuser (director #442.3)
     lamp = (eye[0] + 0.7, eye[1] - 1.0, eye[2] + 0.15)
     n += _put(canvas, mdl[PREFIX + "lamp"], lamp, yaw=-90.0)
