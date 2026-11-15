@@ -58,9 +58,12 @@ DOOR_Y = 1                              # the source's row: the threshold gets 1
 HALL_LEVEL, SIDE_LEVEL = 12, 10         # against the back of the vestibule: behind the doorway, behind an arch
 HALL_Y = 2                              # the row of those sources: the middle of what a doorway shows of the wall
 HALL_DEPTH = 8                          # a wall this close behind the glass plane is the back of a vestibule
-WASH_BAYS = (6, 7, 11, 12)              # two bays either side of the entrance three
+WASH_BAYS = (6, 12)                     # the bay either side of the entrance three (cr2 #43575: bays 7
+                                        # and 11 hold no lit window, and their wash only whitened the dark
+                                        # band of the base storey)
 WASH_OUT = 2                            # cells between the plinth and the projector's cell, counting it
-WASH_LEVEL = 8                          # the top of rank 3
+WASH_LEVEL = 7                          # one under the top of rank 3, so the base storey stays a dark
+                                        # band under the string course (cr2 #43575; 8 read level with it)
 WASH_ROW = S.PLINTH[1] + 1              # where the beam lands: the first row over the plinth
 WASH_SPREAD = (-2, -1, 1, 2)            # ... beside the projector's row: the wall of the bay and its pilasters
 DOOR_WHY, HALL_WHY = "sky/lights:door", "sky/lights:hall"
