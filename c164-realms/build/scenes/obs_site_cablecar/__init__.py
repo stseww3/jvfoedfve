@@ -15,9 +15,10 @@ go when the real ones are merged.
 
 The views (shots(); python -m scenes.obs_site_cablecar writes them to shots.json): V1 as the
 skeleton fixes it (the station keeps the building's part of it and the comet's clear, and only the
-waiting room stands in it, as its right edge), the platform from its south-west corner, the station
-from the lower platform and from the head of the grand stair, the glass roof from below, the
-trestle from the bay, from the side and looking back up it, and two from above.
+waiting room stands in it, as its right edge), the platform from its south-west corner and back
+along the axis line, the station from the lower platform and from the head of the grand stair, the
+glass roof's truss and its girder from below, the trestle from the lower platform's edge, from the
+side and looking back up it, and two from above.
 """
 import importlib
 
@@ -47,17 +48,21 @@ EYE = S.EYE
 STAIR_X = S.GRAND_STAIR["x0"]   # 61: the grand stair's top step
 VIEWS = [
     ("v1", V1["pos"], V1["look_at"]),
-    # the whole station from the corner where its two flights of steps meet
+    # the whole station from the corner where its two flights of steps meet, and back along the
+    # axis line from the head of the west steps: who walks back to the car
     ("platform", (77.5, S.STATION_GROUND + EYE, -28.5), (88.5, -0.5, -35.5)),
+    ("axis", (80.5, S.STATION_GROUND + EYE, -32.5), (92.0, 0.0, -33.5)),
     # from the lower platform, and from the head of the grand stair on the upper terrace: its top
     # step on the axis, clear of the newel posts on the stair's cheeks
     ("lower", (70.5, S.LOWER_GROUND + EYE, -20.5), (86.0, -1.0, -35.0)),
     ("stair_head", (STAIR_X + 0.5, S.stair_top(STAIR_X) + EYE, 0.5), (86.0, -2.0, -33.0)),
-    # up into the glass roof from the bay: the girder's end, a column, the west frame, the car's place
-    ("canopy", (87.5, S.STATION_GROUND + EYE, -29.5), (90.0, 1.2, -33.0)),
-    # the trestle: down it leaning on the bay's east rail, from the side, and back up it from the
-    # second tower
-    ("trestle", (91.1, S.STATION_GROUND + EYE, -26.6), (112.0, -11.0, -40.0)),
+    # up into the glass roof: the west truss from the open platform, and the south girder on its
+    # two columns from the bay
+    ("canopy", (86.5, S.STATION_GROUND + EYE, -30.5), (90.0, 1.8, -33.0)),
+    ("girder", (88.5, S.STATION_GROUND + EYE, -27.5), (89.5, 1.5, -33.0)),
+    # the trestle: from the east edge of the lower platform, from the side over the cloud, and back
+    # up it from the second tower
+    ("trestle", (90.5, S.LOWER_GROUND + EYE, -14.5), (112.0, -13.0, -38.0)),
     ("trestle_side", (112.0, -6.0, -14.0), (112.0, -16.0, -40.0)),
     ("east", (104.5, -8.5 + EYE, -36.5), (91.0, -1.0, -34.0)),
     # from above: over the cloud to the south-east, and over the lower platform to the west
