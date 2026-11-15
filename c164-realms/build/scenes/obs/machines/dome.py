@@ -5,7 +5,7 @@ dome room (view V8, in one picture with the great refractor).
 Two trains, each to be read from the hand to the load.
 
   Turning the dome. A rail lies on the ledge of the drum. Under every seam of the dome's twenty
-  gores a truck with one flanged wheel carries the dome's base ring over it, and the trucks hold
+  gores a truck with one flanged wheel carries the dome's ring girder over it, and the trucks hold
   a toothed ring, teeth inwards. In the north-west corner of the room a hand wheel turns a short
   shaft; its pinion drives a crown wheel on an upright shaft, which climbs the wall through two
   bearings to a pinion in the toothed ring: 140 teeth to 8, seventeen and a half turns of the
@@ -17,15 +17,15 @@ Two trains, each to be read from the hand to the load.
   its foot, bent over the sill into the room. An endless chain runs across the slit's foot over
   two corner wheels; the north arm holds its upper strand, the south arm its lower one, so the
   leaves can only move together and opposite ways. Each arm also hangs on a chain that turns
-  round a sheave and runs up a rail under the beam beside the slit, over a second sheave and back
-  down to a weight on wheels: the weights run down their rails and draw the leaves apart.
+  round a sheave and runs up a rail hung under the arch girder beside the slit, over a second
+  sheave and back down to a weight on wheels: the weights run down their rails and draw the leaves apart.
   Hauling the hand chain turns the sprocket in the middle of the endless chain, draws the leaves
   together and lifts the weights again.
 
-What is fixed to the building stays below the underside of the dome's base ring (y 25); what is
+What is fixed to the building stays below the underside of the dome's ring girder (y 25); what is
 above it rides round with the dome (the hand chain is hitched up before the dome is turned). The
-shell, its ribs, the base ring and the beams beside the slit are main's and interiors'; this
-package places display entities and nothing else.
+shell is main's; the ring beam on the wall, the ring girder, the arch girders beside the slit and
+the room's lining are interiors'; this package places display entities and nothing else.
 
 Moving pieces are models of their own, for the motion category (plan 7.1):
   seg          all twenty turn about TURN_AXIS with the dome, and so does every piece of the slit gear
@@ -78,7 +78,7 @@ AX, AZ = S.DOME_AXIS                    # the point the dome turns about
 TURN_AXIS = (AX, AZ)                    # vertical, through this point
 FLOOR_Y = float(S.ROOF_STAND)           # 18.0: feet on the dome-room floor
 LEDGE_Y = float(S.DOME_SPRING)          # 24.0: the top of the drum's last course; the rail lies on it
-RING_Y = LEDGE_Y + 1.0                  # 25.0: the underside of the dome's base ring (interiors/domeroom)
+RING_Y = LEDGE_Y + 1.0                  # 25.0: the underside of the dome's ring girder (interiors/domeroom)
 GORES = 20                              # main/dome: a truck under every seam between two gores
 SEG_DEG = 360.0 / GORES
 SEG_SCALE = 2
@@ -87,7 +87,7 @@ RAIL_R = S.DOME_ROOM_DIAM / 2.0 + 0.25  # 11.25: the rail's centre line; a circl
 CHEEK_IN = 5.0                          # px from the rail's centre line to the inner faces of a truck's cheeks
 RACK_TEETH = 7 * GORES                  # 140: seven teeth to a segment
 RACK_BACK = 2.0                         # px: the ring the teeth stand on, against the trucks' inner cheeks
-RACK_Y = (10.0, 16.0)                   # px over the ledge: the toothed ring, up to the base ring's underside
+RACK_Y = (10.0, 16.0)                   # px over the ledge: the toothed ring, up to the ring girder's underside
 TOOTH = (4.0, 3.0)                      # px: how wide a tooth of the ring is, and one of its pinion
 ADDENDUM, DEDENDUM = 1.75, 2.25         # px: a tooth stands this far past the pitch circle and is rooted this far behind it
 # 10.67: the toothed ring's pitch circle; a tooth and a gap are 7.66 px
@@ -109,27 +109,31 @@ HAND_GEAR = CROWN_PEGS / HAND_TEETH     # turns of the hand wheel to one of the 
 
 # ---- opening the slit (version a): in the dome's frame, x and z from its axis ------------------------
 JAMB_Z = S.SLIT_W / 2.0                 # 2.5: the slit's two edges
-RUN_Z = JAMB_Z + 0.5                    # 3.0: the plane of a weight's run, the middle of the beam beside the slit
-SILL_Y = RING_Y + 1.0                   # 26.0: the top of the sill, which is the base ring's top
-# the base ring's face towards the room beside the slit (columns z 2 and 3 on either side; on the
+RUN_Z = JAMB_Z + 0.5                    # 3.0: the plane of a weight's run, the middle of the arch girder beside the slit
+SILL_Y = RING_Y + 1.0                   # 26.0: the top of the sill: under the slit the ring girder is one row high
+# the ring girder's face towards the room beside the slit (columns z 2 and 3 on either side; on the
 # meridian the raster circle lies a block further out)
 FACE_X = -(S.DOME_ROOM_DIAM / 2.0 - 0.5)
 LOOP_X = FACE_X + 0.25                  # the endless chain's plane
 F0 = (LOOP_X, RING_Y + 0.5, 0.0)        # the middle of the foot gear: the drive's axis on the dome's meridian
 STILE_X = FACE_X - 2.5                  # where an arm takes hold of its leaf: the stile over the sill's outer column
 TRAVEL = JAMB_Z - 2.0 / PX              # 2.375 blocks: the leaves meet arm to arm on the meridian
-# a weight's run. interiors/domeroom hangs the beam beside the slit two rows under the skin, and
-# under main/dome's plates its underside steps one column in and two rows up three times running:
-# the corners (-9.5, 28), (-8.5, 30), (-7.5, 32) lie on one line with the base ring's corner
+# a weight's run: a line from the ring girder's face beside the slit, one column in and two rows up
+# three times running, through (-9.5, 28), (-8.5, 30) and (-7.5, 32). These are the lower corners of
+# the vault's lining in the next column (interiors/domeroom: boards under every plate), so the rail
+# runs along the lining's edge. What carries it is the iron curb interiors/domeroom lays under the
+# skin beside the slit, the flange of an arch girder: under main/dome's open leaf, whose stile lies
+# half a block over the plates, the curb is higher than the lining, and the rail hangs from it
 RUN_FOOT = (FACE_X, SILL_Y)
 RUN_STEP = (1.0, 2.0)
 RUN_C1 = (RUN_FOOT[0] + RUN_STEP[0], RUN_FOOT[1] + RUN_STEP[1])
+RUN_HANG = (2.0, 2.0, 1.0)              # blocks from the line's three corners up to the curb, just west of each
 RUN_DEG = math.degrees(math.atan2(RUN_STEP[1], RUN_STEP[0]))        # 63.43
 RUN_ANCHOR = (FACE_X + 0.5, SILL_Y + 0.5)       # the cell a run takes its light from
 HANDCHAIN_Y = FLOOR_Y + 1.75            # the middle of the hand chain's bight: its lowest link hangs 1.3 over the floor
 
 # px from F0
-FACE = (FACE_X - F0[0]) * PX            # -4: the base ring's face beside the slit
+FACE = (FACE_X - F0[0]) * PX            # -4: the ring girder's face beside the slit
 BACK = FACE - PX                        # -20: its face on the meridian
 SILL = (SILL_Y - F0[1]) * PX            # 8
 UNDER = (RING_Y - F0[1]) * PX           # -8
@@ -145,7 +149,7 @@ CLAMP = (2.5, 4.5)                      # where it grips its strand: behind the 
 LUG = 5.5                               # where the weight's chain leaves it: over the upper strand, under the sill
 
 # px along a run from its first corner (s) and below the line of the corners (d)
-RAIL = (-32.0, 71.0)                    # the rail's web: from over the base ring to the third corner
+RAIL = (-32.0, 71.0)                    # the rail's web: from over the sill's level to the third corner
 FLANGE = (-30.0, 53.0)                  # its foot, which the wheels run on
 WEB_D = 6.0
 FLANGE_D = (5.0, 7.0)
@@ -196,8 +200,8 @@ def _run_units():
 
 
 def on_run(s, d=0.0):
-    """(x, y) in the dome's frame of the point s px up the line under the beam's corners and d px
-    below it, away from the beam."""
+    """(x, y) in the dome's frame of the point s px up a run's line (RUN_FOOT, RUN_STEP) and d px
+    below it, away from the vault."""
     (ux, uy), (nx, ny) = _run_units()
     return RUN_C1[0] + (s * ux + d * nx) / PX, RUN_C1[1] + (s * uy + d * ny) / PX
 
@@ -282,7 +286,7 @@ def _segment():
         d.tube("x", (hub, 0.0), x0, x0 + 0.5, 1.5, IRON, sides=8, seed=104)     # its nuts
     for x0 in (-CHEEK_IN, 2.25):
         d.box((x0, 6.5, -2.0), (x0 + 2.0, 14.0, 2.0), IRON_D, seed=105)        # the truck's two cheeks
-    d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)             # its saddle, under the base ring
+    d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)             # its saddle, under the ring girder
 
     pitch = RACK_R * PX
     y0, y1 = RACK_Y
@@ -368,10 +372,10 @@ def _brackets():
 
 # ---- the slit's foot: these pieces share the origin F0 and the dome's axes --------------------------------
 def _foot():
-    """What is fixed to the dome at the slit's foot: the bracket out from the base ring with the
+    """What is fixed to the dome at the slit's foot: the bracket out from the ring girder with the
     drive's bearing, the two corner wheels on their studs, the endless chain."""
     d = _Draw("foot", 3)
-    d.box((BACK, UNDER + 0.5, -3.0), (BACK + 1.0, 0.0, 3.0), IRON_D)                    # the plate on the base ring
+    d.box((BACK, UNDER + 0.5, -3.0), (BACK + 1.0, 0.0, 3.0), IRON_D)                    # the plate on the ring girder
     d.box((BACK + 1.0, UNDER + 1.0, -1.5), (5.0, UNDER + 3.0, 1.5), IRON_D, grain="x")  # the bracket
     d.box((2.0, UNDER + 3.0, -1.5), (5.0, 1.5, 1.5), IRON)                              # the bearing, between sprocket and hand-chain wheel
     for side in (-1, 1):
@@ -413,7 +417,7 @@ def _handchain():
 
 def _arm(side):
     """The arm of one leaf (side 1: south, -1: north): a flat bar on the leaf's meeting face, along
-    the sill's top into the room, down the base ring's face to the strand it holds, and the lug
+    the sill's top into the room, down the ring girder's face to the strand it holds, and the lug
     its weight's chain is made fast to. Slides along z."""
     d = _Draw("arm_s" if side > 0 else "arm_n", 2)
     grip = -STRAND if side > 0 else STRAND          # the south arm holds the lower strand, the north arm the upper
@@ -425,7 +429,7 @@ def _arm(side):
     stile = (STILE_X - F0[0]) * PX
     box(stile, SILL + 2.0, 0.0, stile + 8.0, SILL + 8.0, BAR, IRON_D)                   # the plate on the leaf's stile
     box(stile, SILL, 0.0, FACE, SILL + 2.0, BAR, IRON, grain="x")                       # along the sill
-    box(FACE, grip - 1.0, 0.0, FACE + 2.0, SILL + 2.0, BAR, IRON)                       # down the base ring's face
+    box(FACE, grip - 1.0, 0.0, FACE + 2.0, SILL + 2.0, BAR, IRON)                       # down the ring girder's face
     box(FACE, grip - 1.0, -CLAMP[1], FACE + 2.0, grip + 1.0, 0.0, IRON)                 # back under the jamb
     box(FACE + 2.0, grip - 1.75, -CLAMP[1], 1.75, grip + 1.75, -CLAMP[0], IRON_D)       # the clamp on the strand
     box(FACE + 2.0, LUG - 1.0, 0.0, eye_x + 1.5, LUG + 1.0, BAR, IRON, grain="x")       # the lug for the weight's chain
@@ -435,16 +439,16 @@ def _arm(side):
 
 # ---- the weights' runs --------------------------------------------------------------------------------
 def _run(side):
-    """The run of one weight (side 1: south, -1: north), fixed under the beam beside the slit: the
-    rail, its cleats on the beam's corners and its foot on the jamb, the sheave at the foot that
-    turns the chain out of the slit's foot, the sheave at the top, the chain. The origin is the
-    beam's first corner (RUN_C1) in the run's plane; the axes are the dome's."""
+    """The run of one weight (side 1: south, -1: north), hung under the curb beside the slit: the
+    rail, its three hangers and its foot on the ring girder, the sheave at the foot that turns the
+    chain out of the slit's foot, the sheave at the top, the chain. The origin is the line's first
+    corner (RUN_C1) in the run's plane; the axes are the dome's."""
     d = _Draw("run_s" if side > 0 else "run_n", 3,
               anchor=((RUN_ANCHOR[0] - RUN_C1[0]) * PX, (RUN_ANCHOR[1] - RUN_C1[1]) * PX, 0.0))
     foot_s = _eye()[0] + FOOT_R
     knee_d, knee_r = (UP_D + DOWN_D) / 2.0, (DOWN_D - UP_D) / 2.0
     zs = -side * FOOT_R                             # the sheave at the foot stands on the slit's side of the run
-    with d.turned(("z", RUN_DEG)):                  # x up the run, y towards the beam
+    with d.turned(("z", RUN_DEG)):                  # x up the run, y towards the vault
         d.box((RAIL[0], -WEB_D, -1.0), (RAIL[1], 0.0, 1.0), IRON_D, grain="x")
         d.box((FLANGE[0], -FLANGE_D[1], -3.0), (FLANGE[1], -FLANGE_D[0], 3.0), IRON, grain="x")
         for s0 in (STOP - 3.0, FLANGE[1] - 3.0):                                # a stop at either end, on both sides of the web
@@ -462,11 +466,12 @@ def _run(side):
         d.tube("z", (KNEE_S, -knee_d), -3.75, 3.75, PIN, IRON_D, sides=8)
         d.ring("z", (KNEE_S, -knee_d, 0.0), knee_r, BAND, WRAP, IRON_D, sides=12, arc=(-90.0, 90.0), seed=204)
         _chain(d, "x", (-DOWN_D, 0.0), WEIGHT_S0 + W_HALF + 2.0, KNEE_S, 212)
-    for i in range(3):                              # a cleat round each of the beam's three corners
-        cx, cy = i * RUN_STEP[0] * PX, i * RUN_STEP[1] * PX
-        d.box((cx - 4.0, cy - 1.0, -2.0), (cx, cy, 2.0), IRON, seed=205)
-        d.box((cx, cy - 1.0, -2.0), (cx + 1.0, cy + 4.0, 2.0), IRON, seed=206)
-    fx, fy = -RUN_STEP[0] * PX, -RUN_STEP[1] * PX   # where the line starts: the base ring's corner under the jamb
+    for i, hang in enumerate(RUN_HANG):             # a hanger at each of the line's three corners: a strap that
+        cx, cy = i * RUN_STEP[0] * PX, i * RUN_STEP[1] * PX         # clasps the web, up to a plate under the curb
+        top = cy + hang * PX
+        d.box((cx - 3.0, cy - 7.0, -2.0), (cx - 1.0, top - 1.0, 2.0), IRON_D, grain="y", seed=205)
+        d.box((cx - 5.0, top - 1.0, -3.0), (cx, top, 3.0), IRON, seed=206)
+    fx, fy = -RUN_STEP[0] * PX, -RUN_STEP[1] * PX   # where the line starts: the ring girder's corner under the jamb
     z0, z1 = sorted((-side * 4.5, side * 2.0))
     d.box((fx, fy + 1.0, z0), (fx + 4.5, fy + 7.0, z1), IRON)                   # the foot: holds the web's end and the sheave's pin
     return d
@@ -474,9 +479,8 @@ def _run(side):
 
 def _weight():
     """A weight on its carriage: four wheels on the rail's flange, two hangers, old-copper slabs
-    between iron end plates. The model lies along its rail (x up the run, y towards the beam) and
-    is shown turned RUN_DEG about z; its origin is the carriage's middle on the line of the beam's
-    corners."""
+    between iron end plates. The model lies along its rail (x up the run, y towards the vault) and
+    is shown turned RUN_DEG about z; its origin is the carriage's middle on the run's line."""
     d = _Draw("weight", 1)
     axle = W_WHEEL_R - FLANGE_D[0]
     for x in (-W_WHEEL, W_WHEEL):
@@ -582,6 +586,40 @@ def clash(canvas, origin=(0, 0, 0), version=None, ignore=("light",)):
             block = canvas.get(*cell)
             if block is not None and block.partition("[")[0].rpartition(":")[2] not in ignore:
                 out.append((name, cell, block))
+    return out
+
+
+def _held(version):
+    """[(piece, (x, y, z) from the dome's axis)]: a point in every cell the gear is fixed to."""
+    out = []
+    for deg in seam_angles():
+        x, z = RAIL_R * math.cos(math.radians(deg)), RAIL_R * math.sin(math.radians(deg))
+        out += [("seg: the ledge under the rail", (x, LEDGE_Y - 0.5, z)), ("seg: the ring girder on the truck", (x, RING_Y + 0.5, z))]
+    rx, rz = riser_at()
+    cx, cz = RISER_CELL[0] - AX, RISER_CELL[1] - AZ
+    out += [("pedestal: the floor", (rx, FLOOR_Y - 0.5, rz)), ("brackets: the wall west of the shaft", (cx - 0.5, FLOOR_Y + 3.5, cz + 0.5))]
+    if version == "a":
+        out.append(("foot: the ring girder on the meridian", (F0[0] + (BACK - 8.0) / PX, F0[1], 0.0)))
+        for side in (-1, 1):
+            z = side * RUN_Z
+            out += [("foot: the ring girder behind a corner wheel", (FACE_X - 0.5, F0[1], side * IDLER_Z / PX)),
+                    ("arm: the leaf's stile", (STILE_X, SILL_Y + 0.5, z)),
+                    ("run: the ring girder at its foot", (FACE_X - 0.5, SILL_Y + 0.5, z))]
+            for i, hang in enumerate(RUN_HANG):
+                out.append(("run: the curb over a hanger", (RUN_C1[0] + i * RUN_STEP[0] - 0.125, RUN_C1[1] + i * RUN_STEP[1] + hang + 0.5, z)))
+    return out
+
+
+def unheld(canvas, origin=(0, 0, 0), version=None):
+    """What the gear would hang on and finds empty: [(what, cell)]. With clash(), for the test
+    scene: both lists are empty when the gear fits the shell and the room that stand on the canvas."""
+    version = shell_version() if version is None else version
+    ox, oy, oz = origin
+    out = []
+    for what, (x, y, z) in _held(version):
+        cell = (int(math.floor(ox + AX + x)), int(math.floor(oy + y)), int(math.floor(oz + AZ + z)))
+        if canvas.get(*cell) is None:
+            out.append((what, cell))
     return out
 
 

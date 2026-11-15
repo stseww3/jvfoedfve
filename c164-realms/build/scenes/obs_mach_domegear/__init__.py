@@ -6,9 +6,11 @@ The gear hangs on three other packages, and each is taken from the tree once it 
   main/dome            the drum and the dome's skin. Until its geometry is in main/_dome the drum is
                        the assembly's and the skin a stand-in laid by that package's own rule
                        (version a, the slit open): plates, ring beam and the two leaves, no seams
-  interiors/domeroom   the room's ironwork. Until then a stand-in by that package's rule: the fixed
-                       ring beam under the ledge, the dome's base ring over it, the beams round the
-                       slit and the two wall posts under them; no ribs, no furniture
+  interiors/domeroom   the room's lining and ironwork. Until then a stand-in by that package's rule
+                       (its fifth draft): dark boards in front of the drum's stone with the fixed
+                       ring beam on top of them, the dome's ring girder over the ledge, boards
+                       under every plate, an iron curb round the slit carried on along the two
+                       arch lines and down to the ring girder; no furniture
   machines/scope       the great refractor. Until then a bar of iron where its tube lies
 
 The floor and the pier's cap are always this scene's own. It adds no light: the room is dark (its
@@ -52,10 +54,10 @@ CROWN = S.DOME_APEX + 1.0       # 38.0: the plates' top face round the axis
 SLIT_HALF = S.SLIT_W // 2       # 2: the slit is z -2..2
 SLIT_HEAD = CX - 2              # its last column
 PROUD = 0.5                     # how far a leaf lies over the plates
-# the stand-in ironwork: interiors/domeroom's numbers (c178, cursor/c164-a3-mainbuilding-da56)
+# the stand-in room: interiors/domeroom's numbers (a3, cursor/c164-a3-domeroom-f3-f4f6)
 SKIN_FROM = SKIRT_Y + 2         # 26: a block from here up is the dome's skin
-JAMB_DEPTH = 2                  # rows the beams beside the slit hang below the skin
-HEAD_DEPTH = 1                  # and the beam across its head
+GIRDER = (SKIRT_Y + 1, SKIRT_Y + 2)     # 25..26: the dome's ring girder, over the inner leaf
+AROUND = ((1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1))
 SKIN = frozenset([B.VERDIGRIS, B.VERDIGRIS_CAST, *B.VERDIGRIS_CUT.all(), *B.VERDIGRIS_STREAK.all(),
                   *B.IRON_RIVETED.all()])
 
@@ -158,12 +160,12 @@ def _telescope(c):
 
 
 def _ironwork(c):
-    """The stand-in ironwork of the room. Where the skin is and where it is open is read off the
-    canvas, from above, as interiors/domeroom reads it."""
+    """The stand-in room. Where the skin is and where it is open is read off the canvas, from above
+    and before anything is added, as interiors/domeroom reads it."""
     _wall, leaf, room = rings()
-    edge = room - O.shrink(room)
+    lined = {col for col in room if any(O.step(col, d) in leaf for d in O.SIDES)}
     reach = room | leaf
-    iron = B.IRON_RIVETED
+    iron, wood = B.IRON_RIVETED, B.DARK_WOOD
 
     def skin(x, y, z):
         name = c.name(x, y, z)
@@ -180,30 +182,37 @@ def _ironwork(c):
                 break
     gap = {col for col, y in soffit.items() if y is None}
     frame = (O.ring(gap) & reach) - gap
-    for x, z in leaf:                                   # the dome's base ring
-        c.set(x, SILL_Y, z, iron.block)
-    for col in frame:                                   # the beams round the slit
-        top = soffit[col]
-        beside = any(O.step(col, d) in gap for d in (O.NORTH, O.SOUTH))
-        at_head = any(O.step(col, d) in gap for d in (O.EAST, O.WEST))
-        if at_head and not beside:
-            low = top - HEAD_DEPTH + 1
-        elif col in leaf:
-            low = SKIN_FROM                             # at the wall the beam stands on the base ring
+    lines = {col[1] for col in frame if any(O.step(col, d) in gap for d in (O.NORTH, O.SOUTH))}
+    girders = frame | {col for col in reach - gap if col[1] in lines}       # the curb round the slit, the two arch lines
+    cells = {}
+    for x, z in leaf:                                   # the dome's ring girder: one row under the open slit
+        for y in GIRDER if soffit[(x, z)] is not None else GIRDER[:1]:
+            cells[(x, y, z)] = iron.block
+    for x, z in reach - gap:                            # the vault: what touches the skin from inside, and over
+        top = soffit[(x, z)]                            # the inner leaf everything up to it
+        if (x, z) in leaf:
+            rows = range(GIRDER[1] + 1, top + 1)
         else:
-            low = min([top - JAMB_DEPTH + 1] + [soffit[n] for n in (O.step(col, d) for d in O.SIDES) if n in frame])
-        for y in range(max(low, SKIN_FROM), top + 1):
-            c.set(col[0], y, col[1], iron.block)
-    # the fixed ring beam, but for the column the hand gear's upright shaft climbs
-    O.Laying(c, None, (0, 0, 0), None).mould(leaf, WALL_TOP, iron.stairs, "top", only=edge - {dome.RISER_CELL})
-    for col in frame & edge:                            # a wall post where a beam beside the slit comes down
-        if any(O.step(col, d) in leaf for d in O.SIDES):
-            for y in range(STAND, WALL_TOP):
-                c.set(col[0], y, col[1], iron.block)
+            rows = [y for y in range(SKIN_FROM, top + 1) if any(skin(x + i, y + j, z + k) for i, j, k in AROUND)]
+        for y in rows:
+            cells[(x, y, z)] = iron.block if (x, z) in girders else wood.block
+    for (x, y, z), state in cells.items():
+        if c.name(x, y, z) is None:
+            c.set(x, y, z, state)
+    # the drum's lining and the fixed ring beam on top of it, but for the column the hand gear's
+    # upright shaft climbs; no boards in front of a door or a window
+    cols = lined - {dome.RISER_CELL}
+    O.Laying(c, None, (0, 0, 0), None).mould(leaf, WALL_TOP, iron.stairs, "top", only=cols)
+    for x, z in cols:
+        behind = [n for n in (O.step((x, z), d) for d in O.SIDES) if n in leaf]
+        for y in range(STAND, WALL_TOP):
+            names = [c.name(bx, y, bz) for bx, bz in behind]
+            if all(name is not None and "glass" not in name for name in names):
+                c.set(x, y, z, wood.block)
 
 
 def _room(c):
-    """The room's ironwork; returns the number of display entities."""
+    """The room's lining and ironwork; returns the number of display entities."""
     room = dome.neighbour("interiors", "domeroom")
     if room is not None:
         return room.dress(c)
