@@ -13,10 +13,11 @@ mother clock on the pier straight ahead, the floor underfoot. The hall keeps tha
 nothing of its own stands on the axis, its lamps are small and stay under the galleries, and the
 only warm core is the orrery's sun.
 
-  floor     The station's emblem under the orrery, in thin brass line: an octagonal ring seven
-            across, the meridian through it from pilaster to pilaster (x 11, north to south), the
-            star inside the ring on its upper right. Brass runs north-south only; the east-west
-            axis is marked in stone (a) or iron (b), so the floor shows no cross.
+  floor     The hall lays its own from wall to wall round the pier's foot (the shell's shows in
+            the stair hall only). The station's emblem under the orrery, in thin brass line: an
+            octagonal ring seven across on a dark band, the meridian through it from pilaster to
+            pilaster (x 11, north to south), the star inside the ring on its upper right. Brass
+            runs north-south only and the nave is one stone, so the floor shows no cross.
   ceiling   Nothing is added to the beams, which run north-south only. Where the orrery hangs, a
             flat round boss packs the gap between the boards and the beam's lower face.
   walls     A pilaster under every beam along both aisles, a dado between them (a), the
@@ -27,11 +28,12 @@ only warm core is the orrery's sun.
             pilasters, over the two wing doors, at the two stair feet and on the mezzanine.
 
 Two versions to choose between; the plan is locked, so they differ in dress:
-  a  "academy"   the shell's pale axis band between slate lines and its chequer, stone pilasters,
-                 a dark wainscot, a wooden boss ringed in brass, blue panels with brass stars in
-                 the boards round it, benches and display tables.
-  b  "workshop"  an iron grating down the axis over a copper main, brick-laid tuff in bands along
-                 it, riveted stanchions, an iron boss, drafting table, desk, cabinets and cases.
+  a  "academy"   a pale stone nave, the chequer withdrawn under the galleries and mirrored about
+                 the meridian, stone pilasters, a dark wainscot, a wooden boss ringed in brass,
+                 blue panels with brass stars in the boards round it, benches and display tables.
+  b  "workshop"  polished tuff down the nave, an iron duct cover under each gallery's edge, a
+                 grating inside the door, riveted stanchions, an iron boss, drafting table, desk,
+                 cabinets and cases.
 
 build() is what the master scene calls. MOVED_IN tells main/facade that the hall is fitted out:
 its stand-in wall behind the entrance and that wall's lights go (facade.furnished()).
@@ -69,7 +71,8 @@ ROUNDEL_R = 3               # the ring is seven across (A0 #369)
 BOSS_R = 1.5                # blocks
 BOSS_DROP = 0.04            # the boss's face lies this far under the beam's, so the beam does not cut it in two
 BOARDS_UP = 0.5             # the boards' lower face above the beams'
-CEILING_LIGHT = 5           # the level the pieces under the boards are shown at: no source reaches them
+CEILING_LIGHT = 9           # the level the panels in the boards are shown at: the sun's light thins to
+#                             nothing on the way up, and a face that looks down is drawn at half
 
 # light: the hierarchy the director set (sun 12 and clock 11 are offered by the machines)
 AISLE_LEVELS = (7, 8, 7)    # the three pilaster lamps of an aisle, from the pier to the door
@@ -77,6 +80,8 @@ AISLE_LAMP_Y = 3.5
 GALLERY_LEVEL = 6
 GALLERY_LAMP_Y = 10.5
 BOARD_LEVEL = 5
+SUN_POOL = None             # asked of A0: a source of this level a cell over the roundel's middle, where the
+#                             sun's light lands (the game's light thins by the cell and the sun hangs seven up)
 STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
@@ -97,7 +102,7 @@ BOARD_MID_X = 5             # the board is centred on this column of the north a
 
 STYLE = {
     "a": dict(
-        band=B.SLATE_SMOOTH.block, field=B.ASHLAR_FINE.block, relay=False,
+        band=B.SLATE_SMOOTH.block, field=B.ASHLAR_FINE.block,
         base=B.SLATE_BRICK.block, shaft=B.ASHLAR_FINE.block, capital=B.ASHLAR_PANEL.block,
         corbel=B.ASHLAR_FINE.stairs, dado=True, coffers=True, board=BOARD_A,
         furniture=(("bench", (10.0, 5.45), "north"), ("bench", (13.0, 5.45), "north"),
@@ -105,7 +110,7 @@ STYLE = {
                    ("coat_stand", (15.5, 5.3), "north")),
     ),
     "b": dict(
-        band=B.SLATE_SMOOTH.block, field=B.TUFF_SMOOTH.block, relay=True,
+        band=B.SLATE_SMOOTH.block, field=B.TUFF_SMOOTH.block,
         base=B.IRON_RIVETED.block, shaft=B.IRON_RIVETED.block, capital=B.IRON_RIVETED.block,
         corbel=B.IRON_RIVETED.stairs, dado=False, coffers=False, board=BOARD_B,
         furniture=(("drafting_table", (10.0, 5.45), "north"), ("stool", (10.0, 4.3), "south"),
@@ -213,39 +218,65 @@ def star_at():
 
 
 # ---- the floor --------------------------------------------------------------------------------------------
-def _floor(canvas, origin, style):
+def _dark_square(x):
+    """The aisles' chequer, squares two by two, mirrored about the meridian: under it a pale panel
+    three wide, then dark and pale by turns. True where the square is dark. The pilasters beside
+    the meridian's (x 8 and 14) stand on dark squares, which meet the ring at its four slants."""
+    k = abs(x - CX)
+    return k > 1 and ((k - 2) // 2) % 2 == 0
+
+
+def _lay_a(x, z):
+    """a: the nave one pale stone from gallery to gallery, the chequer under the galleries."""
+    if abs(z - CZ) <= ROUNDEL_R or not _dark_square(x):
+        return B.ASHLAR_FINE.block, None
+    return B.SLATE_SMOOTH.block, None
+
+
+def _lay_b(x, z):
+    """b: everything runs along the axis. Polished tuff down the nave, an iron duct cover under the
+    edge of each gallery, brick-laid tuff under the galleries; inside the door a grating three wide
+    over the copper main, the only stretch of the axis the roundel does not lie on."""
+    d = abs(z - CZ)
+    if d <= 1 and x > CX + ROUNDEL_R:
+        return B.IRON_GRATE, B.OLD_COPPER
+    if d <= ROUNDEL_R:
+        return B.TUFF_SMOOTH.block, None
+    if d == ROUNDEL_R + 1:
+        return B.IRON_RIVETED.block, None
+    return B.TUFF_BRICK.block, None
+
+
+LAY = {"a": _lay_a, "b": _lay_b}
+
+
+def _floor(canvas, origin, version, style):
+    """The hall's own floor over the shell's, from wall to wall round the pier's foot: the version's
+    stones, the roundel (a dark band under the ring, the field inside it plain), and the brass."""
     ox, oy, oz = origin
     put = lambda x, y, z, state: canvas.set(ox + x, oy + y, oz + z, state)
-    beams = beam_xs()
-    if style["relay"]:
-        # b: bands along the axis, and the axis itself an iron grating over a copper main. A plate
-        # under each beam carries the brass where it crosses.
-        for x, z in floor_cells():
-            d = abs(z - CZ)
-            if d == 0:
-                solid = x in beams
-                put(x, FLOOR_Y, z, B.IRON_RIVETED.block if solid else B.IRON_GRATE)
-                put(x, FLOOR_Y - 1, z, B.SLATE_BRICK.block if solid else B.OLD_COPPER)
-            elif d == 1:
-                put(x, FLOOR_Y, z, B.TUFF_SMOOTH.block)
-            elif d in (2, 5):
-                put(x, FLOOR_Y, z, B.SLATE_SMOOTH.block)
-            else:
-                put(x, FLOOR_Y, z, B.TUFF_BRICK.block)
     path, inside = roundel()
-    keep = {(x, CZ) for x in range(X0, X1 + 1)} if style["relay"] else set()
-    for x, z in inside - keep:
-        put(x, FLOOR_Y, z, style["field"])
-    for x, z in set(path) - keep:
-        put(x, FLOOR_Y, z, style["band"])
+    ring = set(path)
+    for x, z in floor_cells():
+        state, under = LAY[version](x, z)
+        if (x, z) in ring:
+            state, under = style["band"], None
+        elif (x, z) in inside:
+            state, under = style["field"], None
+        put(x, FLOOR_Y, z, state)
+        if under is not None:
+            put(x, FLOOR_Y - 1, z, under)
     # the line lies on whole blocks only: the ring, the meridian through it, a crossing where they meet
     for (x, z), state in _line(path, closed=True).items():
         put(x, FEET, z, st(B.BRASS_CROSS, shape="north_south") if x == CX else state)
     for z in range(Z0 + 1, Z1):
-        if (CX, z) not in set(path):
+        if (CX, z) not in ring:
             put(CX, FEET, z, st(B.BRASS_LINE, shape="north_south"))
     sx, sz = star_at()
-    return K.put(canvas, _models()[PREFIX + "star"], (sx + 0.5, FEET + 0.005, sz + 0.5), origin=origin)
+    n = K.put(canvas, _models()[PREFIX + "star"], (sx + 0.5, FEET + 0.005, sz + 0.5), origin=origin)
+    if SUN_POOL:
+        L.suggest(canvas, (ox + CX, oy + FEET + 1, oz + CZ), SUN_POOL, f"{WHY}:the sun's pool", rank=L.rank(SUN_POOL))
+    return n
 
 
 def _plinth(canvas, origin):
@@ -480,13 +511,13 @@ def _coffer():
     of sky over the orrery. Shown at scale 2. Anchor: the middle of its upper face, on the boards."""
     m = M.Model(PREFIX + "coffer", px=2.0)
     w, d = 7.0, 10.0
-    m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="z")
+    m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="z", shade=False)
     for s in (-1.0, 1.0):
-        m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z")
-        m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x")
+        m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z", shade=False)
+        m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x", shade=False)
     for x, z, size in ((-3.5, -6.5, 1.0), (2.0, -4.0, 0.5), (4.5, -7.5, 0.5), (-1.0, -0.5, 0.5), (3.5, 2.5, 1.0),
                        (-4.5, 4.0, 0.5), (0.5, 6.5, 0.5), (-2.5, 8.0, 0.5)):
-        m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS)
+        m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS, shade=False)
     return m
 
 
@@ -535,7 +566,7 @@ def dress(canvas, origin=(0, 0, 0), version=None):
     """Fit the hall out in the shell that stands at `origin`; returns the display entities placed."""
     version = version or VERSION
     style = STYLE[version]
-    n = _floor(canvas, origin, style)
+    n = _floor(canvas, origin, version, style)
     _plinth(canvas, origin)
     _cove(canvas, origin)
     _pilasters(canvas, origin, style)

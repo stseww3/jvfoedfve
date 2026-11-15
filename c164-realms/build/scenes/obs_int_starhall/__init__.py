@@ -11,9 +11,10 @@ are in the tree; until then standins.py shows their envelope and offers their tw
 
 shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
 
-For one question put to the light line (what the doorway's own source does to V7), the scene can
-be built with that source at another level:  C164_HALL_DOOR=<level> (0: none). Unset, which is how
-the kept pictures are drawn, the doorway is lit as the master scene lights it.
+For the two questions about V7's light put to the director, the scene can be built otherwise;
+unset, which is how the kept pictures are drawn, it is lit as the master scene lights it:
+  C164_HALL_DOOR=<level>   the doorway's own source (sky/lights) at this level; 0: none
+  C164_HALL_POOL=<level>   starhall.SUN_POOL, the source where the sun's light lands on the roundel
 """
 import os
 
@@ -36,7 +37,7 @@ VERSION = "a"
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # paving under and before the building
 ORIGIN = (0, 0, 0)
 OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture")    # packages whose models the hall shows
-DOOR_ENV = "C164_HALL_DOOR"
+DOOR_ENV, POOL_ENV = "C164_HALL_DOOR", "C164_HALL_POOL"
 
 
 def _machines(c, version):
@@ -68,7 +69,13 @@ def build(version=VERSION):
     counts = {"materials": materials.build(c, ORIGIN)}
     counts["main"] = main.build(c, ORIGIN)       # the hall has moved in (starhall.MOVED_IN): no stand-in wall
     counts["machines"] = _machines(c, version)
-    counts["interiors"] = starhall.dress(c, ORIGIN, version)
+    pool = starhall.SUN_POOL
+    if os.environ.get(POOL_ENV) is not None:
+        starhall.SUN_POOL = int(os.environ[POOL_ENV]) or None
+    try:
+        counts["interiors"] = starhall.dress(c, ORIGIN, version)
+    finally:
+        starhall.SUN_POOL = pool
     counts["sky"] = sky.build(c, ORIGIN)
     _door(c)
     c.entity_counts = {k: int(v or 0) for k, v in counts.items()}
