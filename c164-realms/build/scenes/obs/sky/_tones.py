@@ -563,9 +563,15 @@ def main(argv=None):
             raise SystemExit(f"--diff: {args.diff} is {other.shape[1]}x{other.shape[0]} and {path} is {rgb.shape[1]}x{rgb.shape[0]}; "
                              "the two have to be the same size")
         n = measure(rgb, split, _probes(args, stem), other, args.diff_over)
+        shown = name
         if other is not None:
-            n["diff"]["against"] = Path(args.diff).stem
-        title = f"{name} [{LETTER[look]} {look}]"
+            against = Path(args.diff)
+            n["diff"]["against"] = against.stem
+            if against.stem == stem:
+                # two versions of one view are two folders with the same file name in each
+                n["diff"]["against"] = f"{against.resolve().parent.name}/{against.stem}"
+                shown = f"{Path(path).resolve().parent.name}/{stem}"
+        title = f"{shown} [{LETTER[look]} {look}]"
         print("\n".join(lines(title, n)))
         rows.append((title, n))
         everything[name] = dict(n, look=look, picture=str(path))
