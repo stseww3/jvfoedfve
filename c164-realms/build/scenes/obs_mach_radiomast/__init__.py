@@ -1,16 +1,25 @@
-"""Test scene of the work package machines/mast: the radio mast, both ways, side by side.
+"""Test scene of the work package machines/mast (card machines/radiomast): the radio mast where it
+stands in the map, with stand-ins for what it stands on and ties to.
 
-Version a (all display models) stands on the real pad at the skeleton foot; version b (iron-block
-legs plus models) stands 30 blocks east of it, each on its own placeholder pad with a placeholder
-clock-tower stub so the antenna has something to meet. The two are framed alike -- full height, the
-lattice close, from below, the tower join -- so the pictures can be compared blind, near and at 70
-blocks, with a skyline angle like V1 and a bird's eye like V12. The pad, the guy-anchor piers and
-the tower are c229's and c223's; here they are only stand-ins so the mast reads in context.
+This scene shows version a, the default: the whole shaft is display models. Its twin
+obs_mach_radiomast_b shows version b (legs and belts of the thin iron pipe block, the models carry
+the diagonals) from the same cameras, so the two sets of pictures can be laid side by side shot by
+shot; the pair that decides is far70, and v1.
+
+Stand-ins, each only as far as the mast needs it:
+  - the stone foot, the four guy anchors and the lead-in post are c229's (site/mastbase). When that
+    module is in the tree it is built as it is; until then the same blocks are put down here from
+    the numbers the mast reads;
+  - the pad and a strip of the terrace south of it, one flat course;
+  - the clock tower (c223's) as a banded shaft on the skeleton's footprint, with the belfry's
+    cornice, a rod for the time-ball mast and the bracket the aerial hooks on to: c223's three
+    blocks and one more cell east, which carries the hook clear of the cornice.
 
 The shots are written from the numbers below:  python -m scenes.obs_mach_radiomast
 """
 import math
 
+from artkit.blocks import st
 from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
@@ -18,42 +27,98 @@ from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.machines import mast
 
+try:
+    from scenes.obs.site import mastbase
+except ImportError:
+    mastbase = None
+
 BIOME = "obs_blue"
-BIOME_MARGIN = 80
-BIOME_MARGIN_Y = 96
+BIOME_MARGIN = 120              # the look has to reach the far cameras: V1 stands 60 east of the blocks,
+BIOME_MARGIN_Y = 96             # V12 over 100 south of them and 50 above
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
+VERSION = "a"
 
-GAP = 30                        # version b stands this far east of version a
 PAVING = B.SLATE_SMOOTH.block
-ANCHOR = B.SLATE_BRICK.block
-TOWER = (B.SLATE_BRICK.block, B.ASHLAR_ROUGH.block)     # banded, so no stub face reads flat 5x5
-BRACKET = B.IRON_BARS
-MAST_CX, MAST_CZ = int(math.floor(mast.CX)), int(math.floor(mast.CZ))
+PLINTH = B.SLATE_BRICK.block
+COPE = st(B.ASHLAR_PANEL.slab, type="bottom")
+SEAT = B.IRON_RIVETED.block
+BOLT = st(B.IRON_ROD, facing="up")
+TOWER = (B.ASHLAR_FINE.block, B.ASHLAR_ROUGH.block)     # in bands three courses high: no face is flat over 5 x 5
+CORNICE = st(B.ASHLAR_FINE.slab, type="top")
+GUTTER = st(B.OLD_COPPER_CUT.slab, type="bottom")
+BELFRY_TOP = 37                 # c223's belfry cornice: a moulding at y 37 one cell out all round, its gutter on it
+
+# the cameras of the board that have the mast in them; the skeleton's own where it has them
+V1 = S.V1
+V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+V12 = getattr(S, "V12", dict(pos=(80, 90, 80), look_at=(35, 0, -5)))
 
 
-def _context(c, ox):
-    """The stand-ins one mast stands in: the stone pad, small anchor piers under the guys, and a
-    banded clock-tower stub with an iron bracket on its north-east face at y 38."""
+def _foot(c):
+    """c229's foot of the mast from the numbers the mast reads: the step and its coping, the iron
+    seat, the four anchors with their eye bolts, the lead-in post."""
+    fx, fz, g = mast.FX, mast.FZ, int(mast.G)
+    for dx in range(-2, 3):
+        for dz in range(-2, 3):
+            c.set(fx + dx, g, fz + dz, PLINTH)
+            c.set(fx + dx, g + 1, fz + dz, COPE if max(abs(dx), abs(dz)) > 1 else SEAT)
+    for ax, _, az in mast.GUY_ANCHORS:
+        x, z = int(math.floor(ax)), int(math.floor(az))
+        c.set(x, g, z, SEAT)
+        c.set(x, g + 1, z, BOLT)
+    px, _, pz = (int(math.floor(v)) for v in mast.LEAD_POST)
+    c.set(px, g + 1, pz, SEAT)
+    c.set(px, g + 2, pz, BOLT)
+    c.set(px, g + 3, pz, BOLT)
+
+
+def _tower(c):
+    """The clock tower as far as the aerial needs it: the shaft, the belfry's cornice, the time-ball
+    mast, the bracket."""
+    x0, x1 = S.CLOCK_SHAFT_X
+    z0, z1 = S.CLOCK_SHAFT_Z
+    for y in range(0, S.CLOCK_TOP + 1):
+        c.box(x0, y, z0, x1, y, z1, TOWER[(y // 3) % 2])
+    for x in range(x0 - 1, x1 + 2):
+        for z in range(z0 - 1, z1 + 2):
+            if not (x0 <= x <= x1 and z0 <= z <= z1):
+                c.set(x, BELFRY_TOP, z, CORNICE)
+                c.set(x, BELFRY_TOP + 1, z, GUTTER)
+    cx, cz = (x0 + x1) // 2, (z0 + z1) // 2
+    c.box(cx, S.CLOCK_TOP + 1, cz, cx, S.CLOCK_BALL_MAST - 1, cz, BOLT)
+    # the bracket on the north-east corner, under the cornice (main/tower._antenna_anchor) ...
+    y = BELFRY_TOP - 2
+    c.set(x1 + 1, y, z0, BOLT)
+    c.set(x1, y + 1, z0 - 1, B.IRON_BARS)
+    c.set(x1 + 1, y + 1, z0 - 1, B.IRON_BARS)
+    # ... and the cell under the hook, if the bracket does not reach it yet
+    hx, hy, hz = (int(math.floor(v)) for v in mast.TOWER_HOOK)
+    if not c.has(hx, hy - 1, hz):
+        c.set(hx, hy - 1, hz, B.IRON_BARS)
+
+
+def stage(version):
+    """The scene with the mast built in the given version."""
+    c = Canvas()
     x0, z0, x1, z1 = S.MAST_PAD["box"]
-    c.box(ox + x0, -1, z0, ox + x1, -1, z1, PAVING)
-    for ax, _ay, az in mast.GUY_ANCHORS:
-        c.set(ox + int(math.floor(ax)), 0, int(math.floor(az)), ANCHOR)
-    tx0, tx1 = S.CLOCK_SHAFT_X
-    tz0, tz1 = S.CLOCK_SHAFT_Z
-    for y in range(30, 42):
-        c.box(ox + tx0, y, tz0, ox + tx1, y, tz1, TOWER[y % 2])
-    c.set(ox + tx1, 38, tz0, BRACKET)
+    c.box(S.CLOCK_SHAFT_X[0] - 2, -1, z0, x1 + 2, -1, S.CLOCK_SHAFT_Z[1] + 2, PAVING)
+    if mastbase is not None:
+        mastbase.build(c, (0, 0, 0))
+    else:
+        _foot(c)
+    _tower(c)
+    n = mast.build(c, (0, 0, 0), version=version)
+    sky.build(c, (0, 0, 0))             # A2's light sources go in last, when everything stands
+    c.entity_counts = {"machines": n}
+    return c
 
 
 def build():
-    c = Canvas()
-    n = 0
-    for v, ox in (("a", 0), ("b", GAP)):
-        _context(c, ox)
-        n += mast.build(c, (ox, 0, 0), version=v)
-    sky.build(c, (0, 0, 0))             # A2's light sources go in last, when the mast is in place
-    c.entity_counts = {"machines": n}
-    return c
+    return stage(VERSION)
+
+
+def build_models():
+    return mast.models()
 
 
 def write_pack(pack_dir):
@@ -62,27 +127,30 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras: each version full height near and at 70 blocks, its lattice close, from below
-    and at the tower join -- framed alike for a blind read -- plus both together, a V1-like skyline
-    and a V12-like bird's eye."""
+    """The cameras. From far: the board's V1, V2 and V12 as the skeleton has them, and the whole
+    mast from 70 blocks under the three lights. From near: the lattice at mid-height, the look up
+    from the pad, the foot on its insulator, one anchor with its two guys, the aerial at the tower,
+    the head and its lamp."""
     out = []
 
-    def shot(name, pos, look_at):
-        out.append({"name": name, "pos": [round(v, 2) for v in pos],
-                    "look_at": [round(v, 2) for v in look_at], "time": TIME})
+    def shot(name, pos, look_at, time=TIME):
+        out.append({"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at],
+                    "time": time})
 
-    cz = mast.CZ
-    for v, ox in (("a", 0), ("b", GAP)):
-        mx = mast.CX + ox
-        tx = S.CLOCK_SHAFT_X[1] + ox + 0.8
-        tz = S.CLOCK_SHAFT_Z[0] - 0.3
-        shot(f"full_{v}", (mx + 24, 32, cz + 32), (mx, 31, cz))                 # whole mast, ~45 blocks
-        shot(f"far70_{v}", (mx + 36, 34, cz + 60), (mx, 31, cz))                # whole mast at ~70 blocks
-        shot(f"lattice_{v}", (mx + 4.5, 22, cz + 4.5), (mx, 22, cz))            # the lattice close, mid-height
-        shot(f"below_{v}", (mx + 0.6, 1.6, cz + 0.6), (mx, 55, cz))             # from the foot, looking up
-        shot(f"tower_{v}", (tx + 7, 42, tz + 8), (tx, 38, tz))                  # the antenna meeting the tower
-    midx = mast.CX + GAP / 2.0
-    shot("both", (midx, 34, cz + 66), (midx, 31, cz))                          # a and b in one frame
-    shot("skyline", (mast.CX + 58, 8, cz + 40), (mast.CX, 34, cz))             # a V1-like three-quarter
-    shot("aerial", (mast.CX + 44, 92, cz + 44), (mast.CX, 28, cz))            # a V12-like bird's eye
+    ax, az = mast.AX, mast.AZ
+    shot("v1", V1["pos"], V1["look_at"])
+    shot("v2", V2["pos"], V2["look_at"])
+    shot("v12", V12["pos"], V12["look_at"])
+    far = (ax + 62.0, mast.G + S.EYE, az + 32.0)                # 70 blocks from the axis, a standing eye
+    shot("far70", far, (ax, 30.0, az))
+    shot("far70_deep", far, (ax, 30.0, az), 18000)
+    shot("far70_glow", far, (ax, 30.0, az), 12900)
+    shot("near", (ax + 6.0, 21.5, az + 2.5), (ax, 22.0, az))
+    shot("below", (ax + 3.3, mast.G + S.EYE, az + 0.4), (ax, 14.0, az))        # from the apron, 75 degrees up
+    shot("foot", (ax + 0.8, 3.4, az + 5.4), (ax, 4.6, az))                      # from between the two south anchors
+    sx, sy, sz = max(mast.GUY_ANCHORS, key=lambda p: (p[0], p[2]))              # the south-east anchor,
+    shot("stay", (sx + 1.9, sy + 0.8, sz - 1.9), (sx - 0.1, sy + 1.3, sz - 0.1))        # square on to its plate
+    hx, hy, hz = mast.TOWER_HOOK
+    shot("tower", (hx + 4.0, hy + 1.5, hz - 3.5), (hx - 0.2, hy + 0.6, hz - 0.1))
+    shot("head", (ax + 4.5, mast.TOP_Y + 4.0, az + 5.5), (ax - 0.3, mast.TOP_Y + 2.1, az + 0.2))
     return out
