@@ -359,7 +359,9 @@ def shots():
             # rock it ends on, the cloud's two lightest tones before it and the rock again
             shot("ground_snow", (SNOW_AT + N / 2.0, y + 6.0, z + SHELF + 4.0), (SNOW_AT + N / 2.0, y + 0.5, z + 5.5))
             mx, az = INLAY_AT + EMBLEM_R + 3.5, z + EMBLEM_R + 3.5
-            shot("ground_inlay", (mx, y + 9.0, z + FRONT + 2.0), (mx, y, z + FRONT - 6.0))     # seat and tongue, from above
+            # the emblem nearly in plan, the ring a ring: the seat from the marker to the end of the run,
+            # the drift's edge on one side of it and the bank's foot on the other
+            shot("ground_inlay", (mx, y + 13.5, az + 5.0), (mx, y, az + 1.5))
             shot("ground_inlay_walk", (mx + 3.0, y + 1.7, az + EMBLEM_R + 3.5), (mx - 0.5, y, az))
             x = CLOUD_AT + (w - CLOUD_AT) / 2.0
             shot("ground_cloud", (x, y + 8.0, z + SHELF + 7.0), (x, y + 1.5, z + 4.0))
