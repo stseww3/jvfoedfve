@@ -434,8 +434,10 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #
 #   way     the way in, street lamps in pairs a double beat apart: beside the walk from the cable
 #           station, where that walk comes into the stair's forecourt, on the two pedestals at the
-#           grand stair's foot, along the court's two strips. No pole for 18 cells where the
-#           meridian crosses the axis. The two pedestals at the stair's head stand on the lip and
+#           grand stair's foot, along the court's two strips at either edge of the armillary's
+#           seat (not at the third point site/court names, midway to the stair head: NEAR_PAIR).
+#           No pole for 18 cells where the meridian crosses the axis, nor for 17 from the stair
+#           head to the seat. The two pedestals at the stair's head stand on the lip and
 #           carry its low lamp: a pole there would cross the front in the arrival view. A street
 #           lamp's yoke stands across the way it lights: a pair either side of the axis faces
 #           east, and shows its Y to who comes up the axis; the other pairs stand either side of
@@ -458,10 +460,11 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 # step under.
 DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
                         # a test scene asks for the site's lamps with dress(canvas)
-NEAR_PAIR = True        # the pair of the way midway between the stair head and the armillary's seat. It
-                        # stands six cells before the eye of S.V2, half-way out to either edge of that
-                        # picture, its globes before the small dome and the foot of the clock tower. With
-                        # and without it: obs_props_lamps_site and obs_props_lamps_site_nopair (A0 picks)
+NEAR_PAIR = False       # the court's pair midway between the stair head and the armillary's seat is left
+                        # out (A0, #54472): it stood six cells before the eye of S.V2, half-way out to
+                        # either edge of that picture, its globes on the small dome and on the foot of the
+                        # clock tower, the largest bright things in the view. The four low lamps either
+                        # side of the stair head light that end. obs_props_lamps_site_nearpair keeps it
 STREET_LEVEL = 13
 STATION_LEVEL = 12      # the pendant of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground

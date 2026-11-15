@@ -34,8 +34,8 @@ write_pack = obs.write_pack
 
 
 def build(near_pair=None):
-    """near_pair: False leaves out the court's pair of street lamps nearest the stair head, True
-    keeps it, None follows lamps.NEAR_PAIR (obs_props_lamps_site_nopair is this scene without it)."""
+    """near_pair: True keeps the court's pair of street lamps nearest the stair head, False leaves
+    it out, None follows lamps.NEAR_PAIR (obs_props_lamps_site_nearpair is this scene with it)."""
     c = Canvas()
     lamps.dress(c, near_pair=near_pair)
     if L is not None:

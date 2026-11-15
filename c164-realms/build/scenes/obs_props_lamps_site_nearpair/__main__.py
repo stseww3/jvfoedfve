@@ -1,4 +1,4 @@
-"""Writes shots.json of this test scene:  python -m scenes.obs_props_lamps_site_nopair"""
+"""Writes shots.json of this test scene:  python -m scenes.obs_props_lamps_site_nearpair"""
 import json
 import os
 
