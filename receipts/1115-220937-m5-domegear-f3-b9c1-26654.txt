@@ -1,0 +1,17 @@
+a0job 1115-220937-m5-domegear-f3-b9c1-26654: cursor/c164-m5-domegear-f3-b9c1 @ 60074660 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.47 1.99 1.70, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh machines/domegear 60074660 --base a758fa9f ---- exit 0, 65 s, last 80 lines of 7:
+gate machines/domegear 60074660: the merged tree 60074660, the assembly as it was a758fa9f
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    20 of 21 files are the card's own
+                    not this card's file: A build/scenes/obs/machines/dome.py
+check.py: 37 scenes in 26 s: 37 pass (29 with warnings)
+pictures: [PASS] selfshots obs_mach_domegear at 60074660: 13 of 13 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=70 host=cursor cores=4 head=60074660 commit=b7e1459e pushed=yes branch=cursor/c164-m5-domegear-f3-b9c1-wip files=79
+a0job: exit=0 secs=70
