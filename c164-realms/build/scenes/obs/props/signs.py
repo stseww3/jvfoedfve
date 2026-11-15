@@ -8,8 +8,10 @@ has to read as one mark in all of them. This module holds the standard figure an
 that draws it on a model:
 
     emblem_cells(16)    the figure on one block: materials/ashlar's emblem block draws these pixels
+    emblem_cells(16, framed=True)   the same on a tile that has a border of its own (the cast
+                        panel of materials/iron, the nameplate of materials/panels)
     emblem_cells(48)    the figure on three blocks: the great piece over the entrance
-    python -m scenes.obs.props.signs        prints both
+    python -m scenes.obs.props.signs        prints them
 
   ring       its radius R is 6.5 sixteenths of the figure, measured to the middle of its line; the
              line is R / 6.5 thick (one pixel on 16, three on 48).
@@ -27,10 +29,13 @@ The pieces (16 texels to the block, px = scale; a wall piece is hung by the midd
     emblem          the brass roundel, 1 x 1: lintels, gates, the cable car, indoors.
     great_emblem    the one great piece over the entrance, 3 x 3 (A0 #186), version A: the emblem
                     cast in brass, low relief, old brass, painted as the entrance lamps light it
-                    from below; a light is offered at its foot.
+                    from below.
     great_clock     the same seat, version B: a clock of the tower dials' family (machines/clock):
                     white enamel dial, black hands, a thin brass rim in a dark iron case; not lit
                     from inside.
+                    Both are shown in the light of the entrance's lamps (SPEC, "shown"), which
+                    the game does not carry that far up, and offer a wash for the stone round
+                    them to the light line.
     plate_<label>   enamel plates: white figures on blue (numbers, arrows, N and S), black on white
                     with a red flash (voltage). Digits, signs and a letter or two, nothing else.
     flag, pole_*    the station's flag (blue, the emblem in cream) on a pole with a ball on top.
@@ -75,7 +80,7 @@ EMBLEM_STAR = 0.4               # the star's middle: this share of R right of th
 EMBLEM_SIZES = (16, 48)
 
 
-def emblem_cells(n=16):
+def emblem_cells(n=16, framed=False):
     """The standard figure on n x n pixels, n 16 or 48, as dict(ring, meridian, star) of pixels
     (x, y), y running down as in a picture.
 
@@ -83,18 +88,30 @@ def emblem_cells(n=16):
         tile), the meridian the column x = 7 over the whole height, the star the four pixels
         x 9..10, y 5..6: the one place where a dot of 2 x 2 stands as far to the right of the
         ring's middle as above it and a clear pixel off both the ring and the line.
+    16, framed: for a tile that has a frame of its own, a border of one pixel with a rivet or a
+        screw in each corner (materials/iron's cast panel, materials/panels' nameplate): the ring
+        a pixel smaller all round, twelve across (5.1 to 5.9 from the middle), the meridian from
+        frame to frame (rows 1 to 14), a pixel out of the ring at each end, the star the same four
+        pixels.
     48: the same three times over: the ring three pixels thick (18 to 21 from the middle), the
         meridian the two middle columns x 23..24 (a line of three cannot stand in the middle of an
         even tile), the star of eight points nine across about the pixel (31, 16), which is
         (10, 5) of the small figure; two clear pixels to the ring and to the line."""
     if n not in EMBLEM_SIZES:
         raise ValueError(f"the emblem is drawn on {EMBLEM_SIZES} pixels, not on {n}")
+    if framed and n != 16:
+        raise ValueError("only the figure of 16 pixels has a framed form")
     k = n // 16
     c = (n - 1) / 2.0
-    lo, hi = (5.9, 6.8) if k == 1 else ((EMBLEM_R - 0.5) * k, (EMBLEM_R + 0.5) * k - 1e-9)
+    if framed:
+        lo, hi = 5.1, 5.9
+    elif k == 1:
+        lo, hi = 5.9, 6.8
+    else:
+        lo, hi = (EMBLEM_R - 0.5) * k, (EMBLEM_R + 0.5) * k - 1e-9
     ring = [(x, y) for y in range(n) for x in range(n) if lo <= math.hypot(x - c, y - c) <= hi]
     if k == 1:
-        meridian = [(7, y) for y in range(n)]
+        meridian = [(7, y) for y in (range(1, n - 1) if framed else range(n))]
         star = [(x, y) for y in (5, 6) for x in (9, 10)]
     else:
         meridian = [(x, y) for y in range(n) for x in (n // 2 - 1, n // 2)]
@@ -105,9 +122,9 @@ def emblem_cells(n=16):
     return {"ring": ring, "meridian": meridian, "star": star}
 
 
-def emblem_rows(n=16):
+def emblem_rows(n=16, framed=False):
     """The standard figure as lines of text: o the ring, | the meridian, * the star."""
-    fig = emblem_cells(n)
+    fig = emblem_cells(n, framed)
     grid = [["."] * n for _ in range(n)]
     for key, mark in (("ring", "o"), ("meridian", "|"), ("star", "*")):
         for x, y in fig[key]:
@@ -115,28 +132,34 @@ def emblem_rows(n=16):
     return ["".join(row) for row in grid]
 
 
-def emblem_faults(n=16):
+def emblem_faults(n=16, framed=False, cells=None):
     """What is wrong with the figure as a drawing: a list of sentences, empty when it keeps the
-    rules above. Run by the test scene, so a change to the figure that breaks them is noticed."""
-    fig = emblem_cells(n)
+    rules above. Run by the test scene, so a change to the figure that breaks them is noticed.
+    cells: another drawing of the figure on n pixels to be held against the same rules, as
+    dict(ring, meridian, star)."""
+    fig = emblem_cells(n, framed) if cells is None else cells
+    name = f"emblem {n}" + (" framed" if framed else "")
     out = []
     ring, line, star = set(fig["ring"]), set(fig["meridian"]), set(fig["star"])
     c = (n - 1) / 2.0
     k = n // 16
     if star & (ring | line):
-        out.append(f"emblem {n}: the star lies on the ring or on the meridian")
+        out.append(f"{name}: the star lies on the ring or on the meridian")
     gap = min(max(abs(a - x), abs(b - y)) for a, b in star for x, y in ring | line) - 1
     need = 1 if k == 1 else 2
     if gap < need:
-        out.append(f"emblem {n}: the star stands {gap} clear pixels off the ring or the line, less than {need}")
-    if not all(math.hypot(x - c, y - c) < (EMBLEM_R - 0.5) * k for x, y in star):
-        out.append(f"emblem {n}: the star is not inside the ring")
+        out.append(f"{name}: the star stands {gap} clear pixels off the ring or the line, less than {need}")
+    if not all(math.hypot(x - c, y - c) < min(math.hypot(a - c, b - c) for a, b in ring) for x, y in star):
+        out.append(f"{name}: the star is not inside the ring")
     mx = sum(x for x, _ in star) / len(star) - c
     my = c - sum(y for _, y in star) / len(star)
     if mx <= 0 or my <= 0 or abs(mx - my) > 0.01:
-        out.append(f"emblem {n}: the star is not as far right of the middle as above it ({mx:g}, {my:g})")
-    if not {y for _, y in line} == set(range(n)):
-        out.append(f"emblem {n}: the meridian does not run out of the ring at both ends")
+        out.append(f"{name}: the star is not as far right of the middle as above it ({mx:g}, {my:g})")
+    top, foot = min(y for _, y in ring), max(y for _, y in ring)
+    if not {y for _, y in line} >= set(range(top - 1, foot + 2)):
+        out.append(f"{name}: the meridian does not run out of the ring at both ends")
+    if any(abs(x - c) > k for x, _ in line):
+        out.append(f"{name}: the meridian does not run through the ring's middle")
     return out
 
 
@@ -227,14 +250,14 @@ def _roundel_great():
                 ground[y][x] = BR[0] if roll < 0.04 else BR[2] if roll > 0.98 else BR[1]
             if (x, y) in star:
                 sx, sy = 31, 16
-                figure[y][x] = BR[5] if max(abs(x - sx), abs(y - sy)) <= 1 else BR[4]
+                figure[y][x] = BR[5] if max(abs(x - sx), abs(y - sy)) <= 2 else BR[4]
             elif (x, y) in body:
                 if (x, y + 1) not in body:
                     figure[y][x] = BR[5]
                 elif (x, y - 1) not in body:
-                    figure[y][x] = BR[2]
+                    figure[y][x] = BR[3]
                 else:
-                    figure[y][x] = BR[4] if roll > 0.93 else BR[3]
+                    figure[y][x] = BR[3] if roll > 0.93 else BR[4]
     return ground, figure
 
 
@@ -280,9 +303,10 @@ def _glyphs(text, font):
 
 
 def _dial():
-    """The dial on 48 pixels: white enamel with a grey edge under the rim, the four quarters in
-    Roman figures and a square dot at each of the other hours, as the small dials of
-    machines/clock have them. The hands are not painted: they are the model's."""
+    """The dial on 48 pixels, laid out as the small dials of machines/clock are: white enamel, a
+    chapter ring a tone down, in it a square dot at each hour that has no figure, inside it the
+    four quarters in Roman figures; a grey edge where the rim throws its shadow. The hands are not
+    painted: they are the model's."""
     n = 48
     c = (n - 1) / 2.0
     inside = _disc(n, DIAL_R - 0.01)
@@ -290,8 +314,11 @@ def _dial():
     for y in range(n):
         for x in range(n):
             if inside(x, y):
-                edge = math.hypot(x - c, y - c) >= DIAL_R - 1.0
-                grid[y][x] = (CR[1] if y > c + 9 else CR[2]) if edge else CR[3]
+                d = math.hypot(x - c, y - c)
+                if d >= DIAL_R - 1.0:
+                    grid[y][x] = CR[1] if y > c + 9 else CR[2]
+                else:
+                    grid[y][x] = CR[2] if 0.80 * DIAL_R <= d <= 0.90 * DIAL_R else CR[3]
 
     def stamp(rows, x0, y0):
         for j, row in enumerate(rows):
@@ -299,11 +326,14 @@ def _dial():
                 if bit == "1":
                     grid[y0 + j][x0 + i] = IR[0]
 
-    for text, at in (("XII", (20, 7)), ("III", (36, 21)), ("VI", (21, 36)), ("IX", (7, 21))):
+    # the figures stand 12.5 pixels from the middle, the dots in the middle of the chapter ring
+    for text, at in (("XII", (20, 9)), ("III", (34, 21)), ("VI", (21, 34)), ("IX", (9, 21))):
         stamp(_glyphs(text, _ROMAN), *at)
-    for hour in (1, 2, 4, 5, 7, 8, 10, 11):
+    mark = 0.85 * DIAL_R
+    for hour in range(1, 12):
         a = math.radians(30.0 * hour)
-        stamp(["11", "11"], int(round(c + 15.5 * math.sin(a) - 0.5)), int(round(c - 15.5 * math.cos(a) - 0.5)))
+        if hour % 3:
+            stamp(["11", "11"], int(round(c + mark * math.sin(a) - 0.5)), int(round(c - mark * math.cos(a) - 0.5)))
     return grid
 
 
@@ -318,8 +348,10 @@ def _great_clock():
     _sheets(m, _picture("clock_dial", _dial()), 8.0, 1.1, 1.1, 1)
     m.ring("z", (0.0, 0.0, 1.25), 20.0 / 3.0, 2.0 / 3.0, 0.5, BRASS, sides=32)  # the rim, two pixels of brass
     hour, minute = CLOCK_TIME
-    for angle, length, tail, wide, z in (((hour % 12 + minute / 60.0) * 30.0, 9.0, 2.5, 2.0, 1.2),
-                                         (minute * 6.0, 13.0, 3.0, 1.0, 1.32)):
+    # the hands in pixels of the 48: (how far round, length, tail, width, how far off the wall).
+    # Three pixels and two wide: from the court a pixel of the dial is less than one on the screen
+    for angle, length, tail, wide, z in (((hour % 12 + minute / 60.0) * 30.0, 9.0, 2.5, 3.0, 1.2),
+                                         (minute * 6.0, 14.0, 3.0, 2.0, 1.32)):
         m.box((-wide / 6.0, -tail / 3.0, z), (wide / 6.0, length / 3.0, z + 0.12), BLACK,
               rot=("z", -angle, (0.0, 0.0, z)))
     m.tube("z", (0.0, 0.0), 1.2, 1.6, 0.6, BRASS_D, sides=8)                    # the boss of the hands
@@ -487,13 +519,21 @@ def _pole_head():
 
 
 # ---- models and placing ---------------------------------------------------------------------------------
-# kind -> how it is mounted, its scale, and for the great pieces the light offered with them: where
-# (blocks, in the model's frame: at the foot of the piece, in the air before the wall) and how bright
-# (the light line's third rank, a wall wash).
+# kind -> how it is mounted and its scale. The great pieces hang ten blocks over the entrance's
+# lamps, further than the game carries their light, so they say themselves how they are lit:
+#   shown   the light the piece is shown in, (sky, block): that of the bracket lamps beside the
+#           door (the light line's second rank, 12). A front that looks east shows at half of it,
+#           so the dial stays under the frosted windows and the brass under the curtained ones.
+#   light   a source offered to the light line for the stone round the piece: where (blocks, in
+#           the model's frame: at the foot of the piece, in the air before the wall) and how
+#           bright (the third rank, a wall wash). The light line may leave it out.
+GREAT_SHOWN = (15, 12)
 SPEC = {
     "emblem": dict(build=_emblem, mount="wall", scale=1.0),
-    "great_emblem": dict(build=_great_emblem, mount="wall", scale=3.0, light=(0.0, -1.0, 0.3), level=8),
-    "great_clock": dict(build=_great_clock, mount="wall", scale=3.0, light=(0.0, -1.0, 0.3), level=8),
+    "great_emblem": dict(build=_great_emblem, mount="wall", scale=3.0, shown=GREAT_SHOWN,
+                         light=(0.0, -1.0, 0.3), level=8),
+    "great_clock": dict(build=_great_clock, mount="wall", scale=3.0, shown=GREAT_SHOWN,
+                        light=(0.0, -1.0, 0.3), level=8),
     "flag": dict(build=_flag, mount="floor", scale=1.0),
     "pole_foot": dict(build=_pole_foot, mount="floor", scale=1.0),
     "pole": dict(build=_pole, mount="floor", scale=1.0),
@@ -516,10 +556,14 @@ def models():
 
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), light=True, yaw=None, **opts):
     """Place one piece: a wall piece by the middle of its back at pos (a point of the wall's face),
-    `facing` the way that face looks; a floor piece by the middle of its foot. A great piece offers
-    its light to the light line unless light=False. Returns the number of display entities."""
+    `facing` the way that face looks; a floor piece by the middle of its foot. A great piece is
+    shown in the light of the entrance (brightness=None leaves it to the cell it hangs in) and
+    offers a wash for the stone round it to the light line unless light=False. Returns the number
+    of display entities."""
     spec = SPEC[kind]
     yaw = K.FACING[facing] if yaw is None else yaw
+    if spec.get("shown") is not None:
+        opts.setdefault("brightness", spec["shown"])
     n = K.put(canvas, _models()[PREFIX + kind], pos, mount=spec["mount"], yaw=yaw, scale=spec["scale"],
               origin=origin, **opts)
     if light and spec.get("light") is not None:
@@ -535,16 +579,19 @@ def plate(canvas, label, pos, facing="south", origin=(0, 0, 0), **opts):
     return place(canvas, plate_name(label), pos, facing=facing, origin=origin, **opts)
 
 
-def great(canvas, seat, kind="emblem", origin=(0, 0, 0), light=True):
+def great(canvas, seat, kind="emblem", origin=(0, 0, 0), light=True, **opts):
     """Hang the great piece on its seat over the entrance. seat is what main/facade.emblem() gives:
     dict(cells, out, face_x) -- the nine blocks of the tablet, the way it looks, the plane of its
-    face. kind is "emblem" (version A) or "clock" (version B)."""
+    face. kind is "emblem" (version A) or "clock" (version B). The seat looks east or west; opts
+    as for place()."""
     if kind not in GREAT:
         raise KeyError(f"the great piece is one of {GREAT}, not {kind!r}")
+    if seat["out"] not in ("east", "west"):
+        raise ValueError(f"the seat of the great piece looks east or west, not {seat['out']!r}")
     ys = [y for _, y, _ in seat["cells"]]
     zs = [z for _, _, z in seat["cells"]]
     pos = (seat["face_x"], (min(ys) + max(ys) + 1) / 2.0, (min(zs) + max(zs) + 1) / 2.0)
-    return place(canvas, "great_" + kind, pos, facing=seat["out"], origin=origin, light=light)
+    return place(canvas, "great_" + kind, pos, facing=seat["out"], origin=origin, light=light, **opts)
 
 
 def flagpole(canvas, foot, height=7.0, facing="south", origin=(0, 0, 0), flag=True):
@@ -576,9 +623,10 @@ def build(canvas, origin=(0, 0, 0)):
 
 
 if __name__ == "__main__":
-    for size in EMBLEM_SIZES:
-        print(f"the station emblem on {size} pixels (o ring, | meridian, * star)")
-        print("\n".join(emblem_rows(size)))
-        for fault in emblem_faults(size):
+    for size, framed in ((16, False), (16, True), (48, False)):
+        print(f"the station emblem on {size} pixels{', for a tile with a frame' if framed else ''} "
+              "(o ring, | meridian, * star)")
+        print("\n".join(emblem_rows(size, framed)))
+        for fault in emblem_faults(size, framed):
             print("  FAULT:", fault)
         print()
