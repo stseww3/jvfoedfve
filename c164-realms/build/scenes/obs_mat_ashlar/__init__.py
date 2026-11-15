@@ -14,6 +14,8 @@ things the card and c190's pre-review call for:
                (c190 #2);
   - flight     a flight of fine stairs and a coping run, to be read from straight above: a tread and
                a coping carry no bed joint (c190 #1);
+  - paved      a field of the fine stone and one of the rough let into the floor: the ends of the
+               stones as a terrace and its kerbs show them, where an end that repeats would show;
   - lit        seven bays of the front, cut as the skeleton cuts it and built of the four stones,
                with the merged windows in them and one bracket lamp on a pilaster: the stone as the
                building will show it, cold under the night sky and warm where a lamp and a lit
@@ -102,6 +104,19 @@ def flight(c, x, z):
     return x + 7
 
 
+def paved(c, x, z):
+    """Two fields of paving let into the floor, eight by eight like the walls, one of the fine stone
+    and one of the rough: the ends of the stones as a terrace, a kerb line or a run of copings shows
+    them, the variants lying together every way they can. A wall is where a side that repeats or
+    stripes would show; this is that for the ends, from eye height and from above."""
+    last = x + 2 * WALL + 1
+    _board.stage(c, x, last, z, height=3)
+    for i, family in enumerate((B.ASHLAR_FINE, B.ASHLAR_ROUGH)):
+        x0 = x + i * (WALL + 2)
+        c.box(x0, -1, z - 1, x0 + WALL - 1, -1, z + WALL - 2, family.block)
+    return last + 2
+
+
 # ---- the lit bays: the stone with windows in it and a lamp on it -----------------------------------------
 BAYS = 7                        # bays of the front; a bay is a pilaster and a window of three (S.BAY)
 KIND = {"L": B.WINDOW_LIT, "F": B.WINDOW_FROSTED, "C": B.WINDOW_CURTAIN, "D": B.WINDOW_DARK}
@@ -175,7 +190,7 @@ def lamp_at(x, z):
 # name, how to build it, the free x before it. The lit bays stand sixteen blocks clear of the last
 # station, whose stage lamps reach fourteen: nothing but their own lamp and windows lights them.
 STATIONS = [("stones", _board.stone, 0), ("walls", walls, 2), ("coursed", coursed, 2), ("flight", flight, 2),
-            ("lit", lit, 16)]
+            ("paved", paved, 2), ("lit", lit, 16)]
 
 
 def layout(c=None):
@@ -213,8 +228,9 @@ def shots():
     eight-by-eight wall close, the four from twenty blocks and from thirty-six, the distance of the
     forecourt view (stripes, the lightness of the whole), and along their faces at a grazing angle
     (where joints run into streaks); the coursed band face-on (rough and fine as one stone) and its
-    string course from the ground; the fine treads and the copings from above; the lit bays from the
-    forecourt as someone walking up to them sees them, face-on, and close to the lamp."""
+    string course from the ground; the fine treads and the copings from above; the paved fields from
+    eye height and from above (an end that repeats); the lit bays from the forecourt as someone
+    walking up to them sees them, face-on, and close to the lamp."""
     spans = layout()
     out = []
 
@@ -256,6 +272,12 @@ def shots():
                 "time": TIME})
     out.append({"name": "flight_copings", "pos": [xf + 3.5, 6.5, Z + 2.5], "look_at": [xf + 3.5, 1.5, Z - 2.0],
                 "time": TIME})
+
+    xp = spans["paved"][0] + WALL + 1.0                         # between the two paved fields
+    # someone standing at the edge of a terrace, and the same paving from a roof: a repeat shows as
+    # a figure that comes round every block, close by, and as a lattice from above
+    out.append({"name": "paved", "pos": [xp, 1.6, Z + 11.0], "look_at": [xp, 0.0, Z + 4.0], "time": TIME})
+    out.append({"name": "paved_above", "pos": [xp, 11.0, Z + 3.6], "look_at": [xp, 0.0, Z + 3.0], "time": TIME})
 
     xl = spans["lit"][0]
     lx, ly, lz = lamp_at(xl, Z)
