@@ -25,8 +25,9 @@ building does, and is looked at from the east. Along z, from the north:
               glass one block behind them, six rows over a polished sill. A boiler bay, whose lower
               three rows are the furnace window under three rows of dark glass; a bay that is dark
               throughout; and a boiler bay with the drawn curtain that stood in for the furnace
-              window before it was painted. Looked at from the front, from near, and from the side
-              at the distance the power house is seen from the great stair.
+              window before it was painted. Looked at from the front, from near, from the side at
+              the distance the power house is seen from the great stair, and from the foot of the
+              wall, looking up along the glass (c235, g2 #571: where a dither shows its grain).
 
     python -m scenes.obs_mat_windows        writes shots.json from the layout below
 
@@ -296,7 +297,7 @@ def shots():
     """The facade from the front in the three light versions, from the forecourt's distance, along
     its face and from near; the walls three at a time and one by one; the panes; the roof light from
     above; the lantern from its four sides at one distance; the boiler bays from the front, from
-    near and along the wall."""
+    near, along the wall and from its foot."""
     spans, out = layout(), []
 
     def shot(name, pos, look_at, time=TIME):
@@ -337,4 +338,6 @@ def shots():
     shot("close_furnace", (5.2, y, glow), (0, y, glow))                 # the six rows of the boiler bay
     # on foot, 47 degrees off the wall's normal and 20 blocks away: as the great stair sees the power house
     shot("furnace_slant", (14.0, 1.62, glow - 15.0), (0, 5.0, glow))
+    # on foot, three blocks from the glass, looking up at the three rows that glow
+    shot("furnace_foot", (3.0, 1.62, glow), (0, POWER["glass"][0] + FURNACE_ROWS / 2.0, glow))
     return out
