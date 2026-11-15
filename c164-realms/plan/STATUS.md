@@ -2,109 +2,127 @@
 
 只有拿合并钥匙的人（S2，c188）改。依据是群 g2 里的固定格式消息（【立项】【领卡】【放回】【交付】【技检】【合并】【真机】【评审】），每处理一批更新一次。发现和事实不符，群里发【问题】点名 c188。
 
-**汇总（c188/S2 更新，11-14 12:32；已并 props/ironwork（退回打磨，开关关着）、windows 打磨轮、main/facade 白模版；骨架按 A0 #171 等改了三次；出图在管理员电脑上，关口在电脑上逐像素核）：共 54 张卡 —— 待领 22，制作中 16，已交付 0，已合并 9，已出图 1，暂过 0，已过审 4，退回 2。**
+**汇总（c188/S2 更新，11-15 19:10）：共 56 张卡 —— 待领 7，制作中 28，已交付 5，已合并 8，已出图 1，暂过 0，已过审 5，退回 2。**
 
-- P1 待领（先领这些）：`machines/refractor`。
+- 总装 `cursor/c164-realms-map-b59c` 还停在 `142f3079`（11-14 13:24）。11-15 17:32 云端 VM 重建（A0 #318）；18:38 起管理员让云端停跑 Python、node、java（A0 #382），到这次更新还没恢复。停机期间没有技检、没有合并，交付在排队；各线只写不跑，分支上标着“没跑过”的提交，恢复后先补跑 check.py 再报。
+- 管理员电脑不在线，谁也不发本机命令；出图钥匙在 c189（S1）。收图夹在重启时清空了，没进 git 的图都没了。
+- 待领：`common/offline-sky`（P3）、`sky/ridges`（P3）、`machines/engine-dynamo`、`machines/switchboard-boiler`、`machines/meridian-astrograph`、`machines/recorders`、`interiors/powerhouse`。
 - 还没切卡：`motion`（后期）。
+- 这一版把各行的旧过程记录压短了；11-14 中午以前的细节在本文件的上一版（提交 `d7b3f33d`）。
 
 状态：待领 → 制作中 → 已交付 → 已合并 → 已出图 → 已过审；旁路：退回（回到制作中）、暂过（交叉看过了、评审还没评）。
-“提交”一栏：制作中写做包的人分支上最新的提交，合并以后写总装分支上的合并提交。“图”一栏：自查图（离线图）在仓库 `renders/<场景名>/`，跟分支进 git。出图在管理员电脑上（管理员 11-14 11:26 定：云端不出图、不复核出图、不生成大场景；电脑上那条出图线怎么走等 A0 公告，之前可以先交付、图一栏写“图待补”）。已经进 git 的图照用。11-14 前回传到 `/agent/realms-study/inbox/` 的图在 VM 重启时清掉了，表里的文件名留作记录。
+“提交”一栏：制作中写分支头（11-15 19:00 按 git 查的），已交付写交付的提交，合并以后写总装分支上的合并提交。“图”一栏：自查图（离线图）在仓库 `renders/<场景名>/`，跟分支进 git；出图只在管理员电脑上，电脑上线之前交付的，图一栏写“图待补”。群里的消息号有两种写法：三位数的是群里的顺序号（`group_history` 里看到的），五位数的是桥上的总号；本表照原话引。
+
+## 排队（恢复以后 S2 照这个顺序做）
+
+1. 公共文件，在 S2 的分支 `cursor/c164-s2-integrator-927e` 上，都没跑过：色板 `snow`（合总监的 ea2604c0）；占用表 SNOW、SNOW_LAYER 进重画，占位表加一行（53260223）；骨架和 check.py（8652ebd0、ec33a908）；INTERFACE（0dd67cb9）。先跑 `check.py --scene obs`、`obs_site_terrain` 和带 V1 机位的场景，过了推总装。等它的：c194（snow）、c221、c226、c240、c236、c243、c189、c230。
+2. `materials/brass-oldcopper-small`（c194，a2370b0）。
+3. `main/facade` 入口轮（c206，9ad51d24）。
+4. `sky/lights`（c220，8972aa8），交叉看 c206。
+5. `common/plots-shuttle`（c189，ecf454d）。
+6. `sky/comet`（c230，7b7e168；他恢复后报了新提交就合新的）。
+
+- 等【交付】再合：`sky/tones`（c177）、`materials/ashlar` 新台徽（c204）、`props/ironwork` 打磨轮（c218）、`props/lamps` 场地灯链（c220）、`materials/iron` 二次交付（c198）、`materials/snow`（c194）、`site/stair`（c225）、`site/terrain` 二稿（c221）。
+- 不合：`machines/scope` 的旧草稿（生成不出来，c237 在重写）。
+- 已知的冲突（A0 #359 第四条，总监试合过）：`site/ground.py` c221 删了、c225 改了，留删除；`main/massing.py` sdome 和 tower 各删一段，合起来是空的 `build()`。
 
 ## common（牵头 c188）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| interface（接口说明 + 总场景框架） | P1 | 已合并 | c188 | 68d6797c | — | `plan/roles/INTERFACE.md`；不另设技检，由第一批用它建包的人验证，撞到不对发【问题】点 c188 和 c164。11-14 第四次补充（A0 #18142、#18472、#18530）：出图只在管理员电脑上；第 5 节是图进 git 的四步（`sync.py` → `job.py … ..\tools\selfshots.py <场景> --out '@out/shots'` → `send.py` → 云端 `selfshots.py <场景> --take`），第 6 节是关口怎么验（云端 `delivery.py`、`check.py`；逐像素核对在电脑上 `selfshots.py --verify`）。c218、c205 已各走通一次。待加：往整座楼上铺东西的包带 `DRESS` 开关（A0 #20144） |
-| skeleton（骨架） | P1 | 已合并 | c188 | 29e3ad25 | — | `build/scenes/obs/common/skeleton.py`，R1 0.3；“格和点”约定（对称轴 z=0.5）；机械锚点（c193 #95、A0 #97）：ORRERY_CENTRE(11.5,0.5)、ORRERY_R2.5、ORRERY_HANG_Y14、ORRERY_RING_Y8.5、PIER_TOP_Y18。11-14 中午三次（62640ed3、b57442db、29e3ad25）：东侧标高按 A0 #171（LOWER_DROP 6、LOWER_GROUND −6、大台阶 x 61..72 宽 17 坡 1:2、`stair_top(x)`、CABLE_STATION x 75..91 站台 y −4、POWER_HOUSE base_y −6、东缘不许实心女儿墙 EAST_EDGE_X/EAST_POST_SPACING、固定机位 V1）；A4 的上平台和四块台地、V11（A0 #19260.6）；雨棚规矩 V1_FRAME（#19629）；墩定稿 PIER_SHAFT 3×3、PIER_CAP 5×5（y=17 一层）、PIER_R 3、PIER_ENVELOPE、RING_STAIR y 7→18、MOTHER_CLOCK 贴墩身东面（#20004、#20490）；DRUM_BASE 16、DOME_ROOM_DOORS (12,±10) y 18..19（#20299）。占用表同批加山石和雪：ROCK_STONE、ROCK_ANDESITE、ROCK_DEEPSLATE、ROCK_COBBLED、SNOW、SNOW_LAYER（照原版画，只给山体） |
-| check（检查脚本） | P1 | 已合并 | c188 | 3fa6101d | — | `tools/check.py`（9 项：regen、conflicts、strays、refs、repaint、blocks、flatwall、entities、views）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过（#16486）。11-14 按它的清单补完：会漏判的 4 处和小项都改了，PIPELINE 第 6 节剩的两项（5×5 平墙、拉长件贴图均匀）已加；新加的 refs 查“点到的模型、贴图在不在”。两条标“待证实”等 c189 真机补测：展示实体水平 160 格外服务器不发；没设宽高的展示实体画面外也照画。出图工具同一批改：没写时间的机位按 14000（f431e4d5）。自查图（10267be1、ff72fb30）：`tools/selfshots.py` 出自查图存进 `renders/<场景名>/`、`--verify` 逐像素核对存的图是不是代码出的；`delivery.py` 加 `pictures` 一项，认 `renders/obs_<缩写>_*/` 是本卡的文件。管理员定云端不出图以后（76231b48、3fa6101d）：`selfshots.py` 在电脑上出图（`--out` 出到 out 夹，文件名带场景名，`shots.txt` 记提交号和每张图的 SHA-256），云端 `--take` 核对后落位（一张不对就都不动；和已存的图逐像素一样的不换文件；`render.py` 出的旧图用 `--take --prefix <代号>-<提交前七位>-`）；`delivery.py` 的 `pictures` 加查“存的图是不是 shots.txt 记的那个文件”；关口的逐像素核对在电脑上跑（`job.py s2 --heavy -- ..\tools\selfshots.py <场景…> --verify`）。待加：V1 视线一项（A0 #19629 拿它当缆车站雨棚的验收）、obs 里哪些包的 DRESS 关着 |
+| interface（接口说明 + 总场景框架） | P1 | 已合并 | c188 | 68d6797c | — | `plan/roles/INTERFACE.md`。出图只在管理员电脑上：第 5 节是图进 git 的四步，第 6 节是关口怎么验。11-15 的补充在 S2 分支上（0dd67cb9，还没进总装）：机位读骨架、V1 抬头、V2 和 V7、V1 的净空块、行星仪高度、雪进重画、`sight` 一项的三部分。`DRESS` 开关的规矩在 COMMON 第 0 节（总装 61ea68f1） |
+| skeleton（骨架） | P1 | 已合并 | c188 | 29e3ad25 | — | `build/scenes/obs/common/skeleton.py`。总装里是 11-14 中午那一版（东侧标高、四块台地、V11、墩和环梯、鼓座和大圆顶室的门）。11-15 的改动在 S2 分支上（8652ebd0、ec33a908，没跑过，还没进总装）：`V1` 的 look_at 改成 (8, 34, 0.5)；新增 `V2`（站位 (58.5, 1.7, 0.5)，看 (17, 19, 0.5)）和 `V7`（站位 (19.5, 1.62, 0.5)，看 (10, 5.5, 0.5)）；`V1_FRAME` 作废，换成 `V1_CLEAR = 55` 和 `v1_bearing()`、`v1_clear_span()`、`in_v1_clear()`；`ORRERY_RING_Y` 7.5、`ORRERY_BODY_Y` 下限 6.5；`RING_STAIR` 出口北侧、逆时针 |
+| check（检查脚本） | P1 | 已合并 | c188 | d7bbdbd5 | — | `tools/check.py` 十项（regen、conflicts、strays、refs、repaint、blocks、flatwall、entities、views、sight）和合并前看交付分支的 `tools/delivery.py`；技检 c189 过。`sight`（V1 到天际线、彗头、立面之间站着什么）11-14 合并。11-15 的改动在 S2 分支上（8652ebd0，没跑过）：`views` 加查“站在骨架锁定的机位上却看别处”的机位；`sight` 里雨棚占八分之一那一段换成 V1 的净空块（主楼南北两端之间、眼高到 55° 之间有缆车站的东西就判不过），另加整颗彗星被缆车站挡多少（只给警告）。两条“待证实”（展示实体 160 格外不发、没设宽高的展示实体画面外照画）等真机 |
 | status（状态表） | P1 | 已合并 | c188 | — | — | 本文件 |
-| rubric（评分标准） | P1 | 已合并 | c190 | a9e21f5 | — | `plan/aesthetics/`；v1.1 总监已批，是现行标准（加了离线图和真机图各怎么评）；c199 是第二评审，他的校准和速查也在这个文件夹 |
-| plots-shuttle（地块表和班车脚本） | P1 | 制作中 | c189 | 1c3260a0 | — | 分支 `cursor/c164-s1-render-9df7`；游戏自己存截图的助手（`tools/win/CamHelper.java`）总监已批，显示器休眠时也能出真机图；等【交付】 |
-| offline-sky（离线渲染补天空） | P3 | 待领 | — | b58b9f5 | — | 卡 `plan/packages/common/offline-sky.md`（c177 提的；做不做待定）。其中月亮位贴图朝向那一处 c177 已给改法（`plan/packages/sky/look.md` 记录），S2 等 obs_sky_look 的真机箭头图（`card_comet`）核对朝向后改 |
+| rubric（评分标准） | P1 | 已合并 | c190 | a9e21f5 | — | `plan/aesthetics/`，v1.1 现行。评审两人：c219 管 materials、main、props（记录在 `cursor/c164-review-0eb8` 的 `plan/aesthetics/S3-reviews-v4.md`），c235（cr2）管 site、sky、machines、interiors（`cursor/c164-cr2-582e` 的 `S3-reviews-v4-cr2.md`）。不设第三评审（A0 #338） |
+| plots-shuttle（地块表和班车脚本） | P1 | 已交付 | c189 | ecf454d | 工具卡，没有测试场景 | 分支 `cursor/c164-s1-render-9df7`。交付 #372：看板 12 个机位的表（`tools/boardshots.py`，全从骨架算）、地块表 `tools/win/plots.json`、班车 `shuttle.py`、一条命令走完的 `trip.py`、云端收真机图的 `tools/realshots.py`；`CamHelper.class` 在新的 javac 下重编过。自报 delivery.py 过、scope 一条黄（18 个文件都在 `tools/` 下）。分支头 ed7daf0e 比交付多了三个彗星场景的地块（18..20）。真机图收进他分支的 `renders/real/`，不进总装（A0 #378） |
+| offline-sky（离线渲染补天空） | P3 | 待领 | — | b58b9f5 | — | 卡 `plan/packages/common/offline-sky.md`（做不做待定）。其中月亮位贴图方向那一处已经改了（c230 e3511e63，总装 142f3079），真机拍箭头测试卡核对 |
 
 ## materials（牵头 c176；细化稿 `plan/parts/materials.md`）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| respack-redirect | P1 | 已过审 | c176 | 873f40f | `s1-d423f44-obs_mat_redirect-*.jpg`（16 张，真机） | 交付 7cdbe26；83 个重画方块全部重定向，没人画的先占位（图名 `ph_`）；真机 c189 #92 三件都对（原版方块没变、亮窗朝西朝南同亮、无紫黑格）；交叉看 c179 过（#99）；机制卡，不设审美正评：真机三件对、交叉看过，就记已过审（c219 提 #18396，A0 批 #18472）；板上的真材质在各自的卡上评 |
-| board | P1 | 已合并 | c176 | c3b75f9a | `a1-board-d666c10-*.jpg`（27 张，离线图） | 方案 6.4 的材质板（每种材质一面 8×8 的墙加楼梯、台阶），给管理员的第一张图；场景 `obs_mat_board`；现全占位色，材质包合并后重出图换真材质 |
-| ashlar | P1 | 制作中 | c204 | — | — | 3 版比选，含原版砂岩对照；第一张材质板的主角；原由 c176 领，11-14 A0 改派 c204（墙优先批，#124），分支 `cursor/c164-ashlar-2cc1`。c219 预审 #167（没看图）：第 1、2 条（16×8 条石、色阶按石头给）已改（c13d1ebc）。三版 3×17 张 12:22 在电脑上出了（代码 34a328d9，还没进 git，在收图夹 `ashlar-obs_mat_ashlar*-*.png`），含 A0 要的 `coursed_lit`（七跨真墙＋窗＋壁灯）。A0 #20299：细琢面定乙（长短石、轻缝、上沿亮一阶），甲不要了；粗琢面照 c204 的改法（凿痕错位成行、毛面改成几块大的受光面）改完出一轮就交付；丙留作对照不再投入；评审时量一下只有天光的墙面发不发粉 |
-| windows | P1 | 已过审 | c205 | 39bcd249 | `renders/obs_mat_windows/`（甲，22 张）、`renders/obs_mat_windows_b/`（乙，22 张），离线图 | 交付 91c372c5（c195 起头，c205 接）合并 e09d6a7a；打磨轮 306d9dc7＋b6c90e10（纯文档）合并 39bcd249。六窗贴图、方块和玻璃板两种形状重定向；亮窗发光 15、不带面阴影、不透明，暗窗不透明不发光，SKYLIGHT 半透；亮窗两版（甲 小方灯匀玻璃，乙 高窗棂），默认甲；三档亮度在档内（LIT 甲 0.635／乙 0.642，`python -m scenes.obs_mat_windows.brightness`）。打磨轮：甲 LIT 每格底沿压一阶；SKYLIGHT 改成和另五种窗同一套细网（粗铁框由屋面铁件做，细化稿第 5 节已照改，A0 #19260.7）；暗窗映天待真机。技检：delivery.py 七项、check.py 全过；图是电脑上出的（代码 dcf301da），关口在电脑上逐像素核：两个场景 22/22，之前过期的 `walls_dark`、`close_skylight` 也清了。评审 c219 过（#18110），打磨轮复看维持过（#19082）；交叉看 c206 过（#18315）、c220 过（#168：光源位、档位和玻璃对得上）。荐甲，待 A0 终选；A0：这张卡收口 |
-| iron | P2 | 已合并 | c198 | 9f09b11 | `m5-b8436a3b-*.jpg`（9 张，离线图） | 铸铁 11 角色/13 方块：非蜡 oxidized_* 改铸铁、waxed_* 留铜绿；IRON_PLATE 浅 bevel、IRON_CAST 凸花整圈；场景 `obs_mat_iron`。c198 二次交付在路上（栅杆降一级、格栅/细管按 §4 重画、门舷窗移上半格，A0 #116 裁定）：真机先不拍，二次合并后一轮；台徽对 c197 回来定 |
-| panels | P2 | 已过审 | c194 | 09b1a6ef | `renders/obs_mat_panels/`（10 张，离线图） | 交付 de6c0fb；16 块带釉陶瓦各自重定向：正面仪表、其余五面机壳、不转拼花；20 张图，动画 7 张；发光用叠层（正面画两遍，第二遍只留发光像素、发光 15），依据是 26.3 按每个面贴图的透明度分层，真机待看；场景 `obs_mat_panels`（十机位）。技检：delivery.py 七项、check.py 全过，10 张图关口逐像素验过。留给评审和真机的四条在 `plan/packages/materials/panels.md` 末尾（机壳用的 iron_dark 而卡片写 mat("iron")；动画节拍；真机四处；gauges 夜光）。合并后别的场景里的面板从占位变成真面板：obs_mat_board 6 张、obs_mat_redirect 3 张、obs_mat_windows(_b) 各 2 张图变了。评审 c219 过（#18339，材质层面；离线图评，叠层发光和动画待真机）：三条打磨等出图线恢复后一轮做（dial 表盘刻度贴外圈、针做成过轴心的线；patch_panel 没插线的孔压暗、线和铜分开；BAY 排法插安静格、同种白表不并排、站徽牌一柜一块；另 counter 字轮分隔做出来），复看 wall_left、room、wall_far；机壳用 iron_dark 审美上同意保留，改不改卡归 A0；第 4 个发光名额不加。交叉看 c218 过（#19665：铁色差一阶是对的、铆钉和边框同一画法；图里没有 props 的铁件，ironwork 打磨轮的样板里放两块面板同框再看）。11-14 关口在电脑上补验 10/10 |
-| brass-oldcopper-small | P1 | 制作中 | c194 | — | — | 领卡 #177（A0 #18789 指派），分支 `cursor/c164-m1-brass-fa68`。① BRASS_INLAY 和黄铜做成“月光下的暗金属”（前庭子午线、台徽现在是饱和黄占位，c219 court 评审点过）；② 旧铜 OLD_COPPER/OLD_COPPER_CUT 重画成色板 old_copper 的暗棕色阶（铜绿四个角色照原版，不碰）；③ 黄铜全套、WAINSCOT、ENAMEL_SIGN、脚步金属声。场景 `obs_mat_brass`。公共文件不用改 |
+| respack-redirect | P1 | 已过审 | c176 | 873f40f | `s1-d423f44-obs_mat_redirect-*.jpg`（16 张，真机；文件已随收图夹清掉，名字留作记录） | 重画方块全部重定向，没人画的先占位（图名 `ph_`）。机制卡，不设审美正评：真机三件对（c189 #92）、交叉看 c179 过（#99）。雪的两个方块进重画以后，占位由 `_standin._ROLES` 新加的一行带上（在 S2 分支上） |
+| board | P1 | 已合并 | c176 | c3b75f9a | `a1-board-d666c10-*.jpg`（27 张，离线图，旧，文件已清） | 材质板场景 `obs_mat_board`；材质包合并后重出图换真材质 |
+| ashlar | P1 | 已过审 | c204 | 3380299e | `renders/obs_mat_ashlar/`（a）、`obs_mat_ashlar_b/`（b，默认）、`obs_mat_ashlar_c/`（c），各 17 张，离线图 | 分支 `cursor/c164-ashlar-2cc1`。交付 08f986c0 合并 3380299e。三版：a 粗琢面四边缝（对照）、b 粗琢面只留通长横槽（默认，A0 #231）、c 原版砂岩（对照）；细琢面都用乙。评审 c219 #6 过（#310，b > a > c）；打磨三条：台徽的星改成 2×2 的点、粗琢面的凿痕别成一张网、细琢面加块边不断缝的变体。交叉看 c206 过（#367）。新台徽（A0 #294 第三条；c219 复看 #313：星改成点就过）c204 在做，分支头 8d18150d，等【交付】 |
+| windows | P1 | 已过审 | c205 | 39bcd249 | `renders/obs_mat_windows/`（甲）、`obs_mat_windows_b/`（乙），各 22 张，离线图；灰白石合并后过期，电脑上线 c205 重出 | 六种窗，亮窗两版，默认甲；评审 c219 过，交叉看 c206、c220 过；11-14 收口。11-15 加一件（A0 #414）：亮窗朝屋里的一面加不发光的内衬（金窗是夜色玻璃加窗格网，橙窗是拉上的帘子，乳白窗是没照亮的乳白玻璃），只衬人进得去的房间，开关 `windows.LINING` 默认开；硬条件是外立面一个像素不变，用 sky/tones 的 `--diff` 自证。c205 做。暗窗映天待真机 |
+| iron | P2 | 已合并 | c198 | 9f09b11 | `m5-b8436a3b-*.jpg`（9 张，离线图，旧，文件已清） | 铸铁 11 角色 13 方块，场景 `obs_mat_iron`。二次交付 c198 在做（#333：上一任的补交没 push 过，从头做），分支 `cursor/c164-m5-iron-8757` @ dd2404c1：栅杆降一级、格栅和细管按细化稿第 4 节重画、方块门的舷窗挪到上半格、铸花板上的台徽照标准图重画、栅杆去掉半高的箍（停机后改的，没跑过）。等【交付】，图待补。东缘用的稀栅杆角色，总监点了才画 |
+| panels | P2 | 已过审 | c194 | 09b1a6ef | `renders/obs_mat_panels/`（10 张，离线图） | 16 块面板；评审 c219 过（#18339，材质层面），交叉看 c218 过。打磨一轮还没做：表盘、接线板、字轮、BAY 排法，加上铭牌上的台徽改成带框的标准图（c194 #402、c242 #33039）；恢复出图后带图报。叠层发光和动画待真机 |
+| brass-oldcopper-small | P1 | 已交付 | c194 | a2370b0 | 图待补（25 个机位） | 分支 `cursor/c164-m1-brass-fa68`，场景 `obs_mat_brass`。交付 #344：黄铜一套、旧铜、护墙板、搪瓷牌、地面细铜线（`BRASS_LINE`、`BRASS_CROSS`、`BRASS_STAR`；占用表三行 11-14 已进总装 1cddd064）、脚步和开关声改指原版金属声。自报 check.py、delivery.py 对 142f3079 过。合进总装以后 site/court 的细铜线才是真贴图。铁轨落地会不会自己转向，待实机 |
+| snow | — | 制作中 | c194 | 51f2fd69 | — | A0 #330（11-15）新开，派单没写优先级：山上的雪重画成蓝调时分背阴的雪，色板新色阶 `snow` 五级。分支 `cursor/c164-m1-snow-bc45`，模块 `materials/snow.py`，场景 `obs_mat_snow`（13 个机位），卡 `plan/packages/materials/snow.md` 在分支上。要等公共文件进总装（色阶、SNOW 和 SNOW_LAYER 进重画），再并、再跑、再交付。验收归 c235 量（#409）：雪最亮的 1% 不高过立面石头和边石线，次序是岩石最暗、雪居中、建筑浅石最亮 |
 
 ## sky（牵头 c177；细化稿 `plan/parts/sky.md`、`sky-notes.md`）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| look | P1 | 已合并 | c177 | ec29851a | — | 交付 693701b；一个生物群系 obs_blue + 一条时间线，三版用时间选（A14000/B18000/C12900）；sky/mood.py、sky/comet.py（占位）、场景 obs_sky_look（31 机位）。合并后 check obs + obs_sky_look 全过。所有真机图都要它；新光第一次进测试服要重启一次；真机 obs_sky_look 由 c189 出、c178 交叉看 |
-| lights | P1 | 制作中 | c220 | — | — | c220 接 c177（#17910），分支 `cursor/c164-lights-007c`，从卡重做（c177 的分支上没有 lights 的提交）；光源摆放工具和分级、亮暗窗规则；接口照卡和 c177 #67：`sky/_lightkit.py` 的 window_lit、suggest、take，`lights.build` 遍历 `main._plan.windows()` 放窗后光源；入口样板段要它。分支头 e76c3721 起有 `_lightkit.py`、`lights.py`（还没交付）。c220 #168：窗后光源位、档位↔玻璃↔等级（3 档 LIT 12 只给入口门上那扇，2 档 FROSTED 10/9，1 档 CURTAIN 8/7，0 档 DARK/BLIND 不放）、灯具分级上限、`L.glazed(...)` 给别的楼登记窗表、sky 排最后。c219 预审 #175；A0 #19260.4：基座层是暗带（固定只亮入口两侧 8、10 和塔脚 2，blue 每翼最多再亮一扇，glow/deep 不加，基座亮窗不多过主层，比例按层可调），南端亭主层窗进 FIXED（塔脚—入口—小穹顶脚三处有灯）。和 `main/_plan.windows()` 的递归 c206 已断开，立面进总装后 c220 复核 |
-| comet | P2 | 制作中 | c230 | — | — | 领卡 #19338，分支 `cursor/c164-comet-986f`；3 版比选（甲 柔光长尾／乙 硬像素五级／丙 宽扇尾），贴图是加色的月亮位；场景 `obs_sky_comet`（V1、V2、观测缝三个机位）。A0 #19524 定甲方位：V1 不动，彗星在报时塔和报时球桅上方；“彗星在穹顶正上方”由 V2 给（彗头离穹顶尖 6–10°）。这张卡靠真机图定 |
-| cloudsea | P2 | 制作中 | c227 | — | — | 就位 #19595（A0 #171 新开，接 c177 的 sky 线），分支 `cursor/c164-cloud-7d36`；3 种做法（甲 只原版云层／乙 方块云＋雾／丙 两层），总场景默认丙；方块云以 (30,0) 为心近密远稀、顶面起伏 1–3 格、只填空格、离方块 ≥2 格，散到 215 落在雾里；`B.CLOUD` 五块由这张卡画（图名 `sky_`）。site/terrain.py 里那圈云是占位，这张卡合并、c221 交叉看过交线后撤。场景 `obs_sky_cloudsea`。离线图判不了，靠真机图 |
-| tones | P2 | 待领 | — | — | — | 明暗检查脚本，评审和看板回看用 |
+| look | P1 | 已合并 | c177 | ec29851a | — | 一个生物群系 obs_blue 加一条时间线，三版用时间选（A 14000／B 18000／C 12900）；`sky/mood.py`、场景 `obs_sky_look`（31 机位）。真机图由 c189 出、c178 交叉看 |
+| lights | P1 | 已交付 | c220 | 8972aa8 | 图待补（25 个机位） | 分支 `cursor/c164-lights-007c`，场景 `obs_sky_lights`。交付 #343：`sky/_lightkit.py`、`lights.py`；三版的亮窗表（东立面主层 blue 20200201310202002、glow 20000201310002002、deep 20000001310002002，基座只亮塔脚一扇）；橙色只留给入口（A0 #255）；窗后大窗 10、入口正中 12、帘子后 8 和 7，洗墙 8，门洞 14。`DRESS` 默认关：总场景里只有入口灯和各线报来的光源。自报 check.py 过、delivery.py 一条黄（没有图）。预审 c219 P3、c235 cr2-K1。星厅回廊层金窗后的两盏 12 和日球同级，出图时量（A0 #414 第 6 条；c235 #32761 有一个不动外立面的改法）。另有洗墙灯的分支 `cursor/c164-lights-wash-0fe3`，没交付 |
+| comet | P2 | 已交付 | c230 | 7b7e168 | 图待补（三个场景 46 个机位） | 分支 `cursor/c164-comet-986f`，3 版比选（甲 柔光长尾，默认／乙 硬像素／丙 宽扇尾），场景 `obs_sky_comet`、`obs_sky_comet_b`、`obs_sky_comet_c`。交付 #386：`sky/comet.py` 写八张月相图和涂黑的太阳，只做天空贴图这一种做法（理由在卡里）；自报 check.py 三个场景过、delivery.py 一条黄（没有图）。分支头 e1062421 比交付的多出白模里桅杆占位挪一格和卡片，没跑过；c230 恢复后补跑再报，没再报就合 7b7e168。彗星永远在正西，彗头仰角 41.05°。预审 c235 cr2-K3 和续（#399：乙像火苗，是形状的毛病，c230 改成平顶截面）。三版选哪个靠真机图（【实机】#387 点了 c189） |
+| cloudsea | P2 | 制作中 | c227 | a18c8d13 | — | 分支 `cursor/c164-cloud-7d36`，3 种做法（甲 只原版云层／乙 方块云加雾／丙 两层），总场景默认丙；场景 `obs_sky_cloudsea`。预审 c235 cr2-K2。`site/terrain.py` 里那圈云是占位，这张卡合并、c221 交叉看过交线后撤。靠真机图 |
+| tones | P2 | 制作中 | c177 | 89a0e247 | `plan/parts/figs/tones/`（4 张对照图，在分支上） | 分支 `cursor/c164-a2-light-29fe`。工具卡：`sky/_tones.py` 对一张现成的图量暗中亮三级、死黑、亮区、冷暖，`--probe` 量矩形或多边形，`--diff` 两张图相减；评审和各线共用这一把尺（Rec.601 灰度）。11-15 18:30 交付过 542294e（#375），c235 试用后加了三样（89a0e247，停机期间写的，没跑过）；c177 说 542294e 不用单独合，等他恢复后重新【交付】 |
 | ridges | P3 | 待领 | — | — | — | 远山剪影 |
 
-## main（牵头 c206；细化稿 `plan/parts/main.md`；A0 #19260.2：五个人，下层的人留占位、上层的人用更大的 ORDER 盖，上层合进总装后下层删占位）
+## main（牵头 c206；细化稿 `plan/parts/main.md`；五个人，下层的人留占位、上层的人用更大的 ORDER 盖，上层合进总装后下层删占位）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| facade | P1 | 已合并 | c206 | 9ae476f1 | 图待补 | 领卡 #132（A0 指派，墙优先批），分支 `cursor/c164-facade-229b`。白模版交付 6ebfccc7 合并 9ae476f1（A0 #19260.3：不等入口改完先交，新来的人从总装起步）：`main/_order.py`（立面语法引擎）、`main/facade.py`（四面墙到女儿墙、两翼坡屋顶、山墙、避雷针、y17 占位平屋面；`facade.table()/windows()/terraces()`）、`main/_plan.py`（墙和窗表归 c206，窗表只给几何、不问灯）、`main/_dome.py`（二十瓣穹顶和鼓座白模，从这里起归 c222）；`massing.py` 只剩报时塔和小穹顶的白模（c223、c224 交付时各删自己那段）。技检：delivery.py 六项过一条黄（massing.py）、合起来的 check.py 全过，obs 平墙 24→8。没有入库的图（A0 的预览在收图夹 `a0pv-aab91ee-*.png`，代码 2d0571c7）。接下来：入口三版可切换、默认 B 三连拱（A0 #19260.1），正中饰带放独一份的大台徽或钟面，门洞后放深色挡板占位，场景 `obs_main_facade`、卡片。c219 预审 #172。交叉看派 c221（#209） |
-| dome | P1 | 制作中 | c222 | — | — | 领卡 #19448：圆厅鼓座＋大穹顶外壳＋观测缝，2 版比选；`main/dome.py`（合并后 facade 自动不再盖白模穹顶）。鼓座石从 y16 起（S.DRUM_BASE），大圆顶室的门两处 (12,±10) y 18..19（S.DOME_ROOM_DOORS，c222 开洞、c224 放门扇）；楼板在墩周围留 7×7 的洞归 c231 |
-| tower | P1 | 制作中 | c223 | — | — | 领卡 #19487，分支 `cursor/c164-tower-21fb`，卡 `plan/packages/main/tower.md`（在分支上）：报时塔＋北端亭屋面以上（y18 起），塔顶 2 版比选，报时球和球杆（球归 machines）；南面 y18 留一扇小门接屋脊走道。彗星就在塔顶上方（A0 #19524），塔顶和球桅轮廓要干净 |
-| smalldome | P1 | 制作中 | c224 | — | — | 领卡 #19132，分支 `cursor/c164-sdome-8013`：小穹顶＋南端亭屋面以上＋三个端亭的平屋面（y≥17 女儿墙以内：铺装、天窗、通风帽、烟道、门扇）；两翼屋脊铁走道各一条（A0 #20299：从角露台翻山墙沿屋脊 x 7..8 到端亭） |
-| shell | P1 | 制作中 | c231 | — | — | 领卡 #19822，分支 `cursor/c164-shell-f063`：平面、楼板、楼梯、室内空壳，另开 `main/shell.py`（`_plan.py` 整个归 c206）。A0 #20004：墩 3×3、星厅一层不放楼梯、y0→7 用西侧大楼梯、y7→18 绕墩环梯、西面不封死（墩挡中轴）；门厅对着三连拱 |
+| facade | P1 | 已交付 | c206 | 9ad51d24 | `renders/obs_main_facade/`（B，8 张）、`obs_main_facade_a/`（4 张）、`obs_main_facade_c/`（4 张），离线图，画的是代码 af97672c，在分支上 | 分支 `cursor/c164-facade-229b`。白模版 6ebfccc7 已合并 9ae476f1（11-14）。入口轮交付 #348：入口三版可切换（`facade.ENTRANCE`，默认 B）、正中 3×3 台徽座、门后占位亮墙、`doors()`、`sample()`、`emblem()`、`PIPE_INLET`；自报 check.py 三个场景 0 失败、delivery.py 七项过。评审 c219 #7 过（#379，只评 B）；A0 #376 终选 B 三连拱，A、C 留在分支里。B 还差三处，都等别的包：拱头等 ironwork 的拱框，两侧铁栅门换成 ironwork 的门扇，门洞的亮面等 lights 进总装换成真的光。分支头 a393459f 比交付多五个提交（台徽座改素面；拱头封口的开关 `facade.CROWN`，默认关；停机期间写的，没跑过）；要合的还是 9ad51d24（#33228） |
+| dome | P1 | 制作中 | c222 | c40fb503 | — | 分支 `cursor/c164-dome-0dab`：圆厅鼓座、大穹顶外壳、观测缝，2 版比选（甲 二十条缝线平贴，乙 八条主肋）。A0 #294 第五条：肋不要整格凸出，顶点只有一处、在轴线上，环廊栏杆换稀的。这一轮定下的数在 #33083（缝占 z −2..2、x ≤ 2；顶冠 x 3..5、z −1..1；门洞 (12, ±8..±10) 开通）；代码停机期间写，还没推 |
+| tower | P1 | 制作中 | c223 | 37d85093 | — | 分支 `cursor/c164-tower-21fb`，卡在分支上。预审 c219 P6。A0 #265 定四条：塔顶不许有十字形（红线；报时球做成球、归 c238，杆顶放不对称的风向标和风杯）；钟层和塔身一样宽，上面一层透空的望台，铜绿塔顶四面起弧收到尖（顶尖 y 41，球杆到 y 52），两版改成比塔顶的形（甲 四坡弧顶，乙 八角穹顶小亭）；钟面不发亮（c238 的模型）；横线脚用石头 |
+| smalldome | P1 | 制作中 | c224 | c7e830a0 | — | 分支 `cursor/c164-sdome-8013`：小穹顶、南端亭屋面以上、三个端亭的平屋面、两翼屋脊铁走道（屋面在 `main/_roof.py`）。预审 c219 P7 |
+| shell | P1 | 制作中 | c231 | 70a1966a | — | 分支 `cursor/c164-shell-f063`：平面、楼板、楼梯、室内空壳（`main/shell.py`，`shell.ROOMS` 给各间的净空）。A0 #207：墩 3×3、星厅一层不放楼梯、y 0→7 用西侧大楼梯、y 7→18 绕墩环梯、西面不封死。A0 #388（11-15）：环梯出口改到墩帽北侧；c231 #32862：逆时针绕一整圈、22 级，上桥的格和出口的格同在 (4, −4) 这一列（`shell.BRIDGE`、`shell.EXIT`），停机期间写，没跑过。星厅、授时室、星图室、大圆顶室都读它的壳 |
 
 ## site（牵头 c221 接 c192，代号 a4；细化稿 `plan/parts/A4-site.md`）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| court | P1 | 已过审 | c221 | 793d9f1e | `renders/obs_site_court/`（9 张，离线图） | 交付 8aded039（c192 起头，c221 接）合并 793d9f1e；模块 `site/court.py`（ORDER 60），场景 `obs_site_court`；全方块。技检：delivery.py、check.py 全过。评审 c219 过（#161）：三条打磨——台徽加 17×17 到 19×19 的方形徽座、场地用一种整铺、栏杆柱收细分底座/柱身/压顶；c221 已认，并进同一轮。交叉看 c206（#20456）：地面和分带对得上；入口改三连拱后中路贴墙那几格放宽到 z −5..5，勒脚前两格别放高出地面的东西（洗墙灯）。A0 #171：东缘栏杆只许通透铁栅、石柱 1 宽中到中 4、连续压顶只在铺地层。图：关口 11-14 12:00 在电脑上补验 9/9（76231b48）；之后骨架落差改 6、立面进总装，9 张里 8 张过期，c221 打磨轮在立面合并之后重出 |
-| terrain | P2 | 退回 | c221 | 793d9f1e | `renders/obs_site_terrain/`（8 张，离线图） | 交付 8aded039 合并 793d9f1e（代码留在总装）；模块 `site/terrain.py`（ORDER 10），场景 `obs_site_terrain`。评审 c219 不过，退回打磨（#163）：① 云海是一圈有硬边的平板（云海改归 `sky/cloudsea`，terrain.py 里的云圈留作占位）；② 山体读成匀坡梯田＋碎砖瓦——只用天然面（B.ROCK_*、B.TUFF、B.SNOW*，已进占用表）、做几道陡崖带加缓台、缓台压雪；③ 落日平台铺地改成和前庭同一套深板岩（A0 #171 同意）。交叉看 c206（#20456）：落日平台的栏杆压在圆厅西侧壁柱线上、挡在西门前，起点退到离墙面 3 格以外，西门前 z −2..2 留空。c221 在重写山体（第 7 节是给各包的接口：下平台范围给 y=−7 的平石面，四块台地给平石面和山脊，缆车栈桥的山脊 `K.cable_ridge(x)`），公用栏杆和边石在 `site/_kit.py`。图：11-14 12:00 补验 8/8；之后 5 张过期，随打磨轮重出 |
-| stair | P2 | 制作中 | c225 | — | — | 领卡 #19737，分支 `cursor/c164-stair-4aad`：大台阶（x 61..72、z −8..8、坡 1:2，垂带墙在 z=−9、9）、x=60 东面的挡土墙（y −2..−7）、下平台铺地（y −7 整片，含车站脚印）、下平台外缘边石和通透铁栏；ORDER 下平台 20、台阶 25；交付时删框架演示 `ground.py`。场景 `obs_site_stair`（含 V1）。四个灯座石墩留顶面，灯归 props/lamps |
-| powerhouse | P2 | 待领 | — | — | — | 发电房外壳、烟囱、管桥；2 版比选（室内归 `interiors/powerhouse`）。A0 #19260.8 派 c228，等【领卡】；位置不变，墙高 10 从 y=−6 起算（S.POWER_HOUSE） |
-| cablecar | P2 | 制作中 | c226 | — | — | 领卡 #19298，分支 `cursor/c164-cable-a47d`：站台（脚印 x 75..91、z −40..−26 里往上加 y −6、−5 两层，脚踩 y=−4）、下到下平台的踏步、雨棚、候车室、卷扬机房外壳、铁栈桥和轨道（落在 c221 给的山脊上，进云为止）；出生点在站台上。雨棚的验收（A0 #19629）：从 V1 看棚沿最多占画面顶部八分之一、不许切到报时球杆顶，以 check.py 的 V1 视线项通过为准。场景含 V1 |
-| outbuildings | P2 | 待领 | — | — | — | 子午仪小屋、水塔、气象站、观景台的外壳和平台。A0 #19260.8 派 c229（连同 mastbase），等【领卡】；台地的数在骨架（S.WEATHER_STATION、S.WATER_TOWER、S.SOUTH_LOOKOUT、S.MERIDIAN_HUT） |
-| mastbase | P3 | 待领 | — | — | — | 无线电桅杆的石台基座和拉索锚（桅杆铁构归 machines）。A0 #19260.8 派 c229，等【领卡】；S.MAST_PAD (17,−46,29,−39)，桅杆脚 (23,−40) |
+| court | P1 | 已过审 | c221 | 793d9f1e | `renders/obs_site_court/`（9 张，离线图，8 张过期） | 模块 `site/court.py`，场景 `obs_site_court`。评审 c219 过（#161），打磨三条 c221 认了，还没交。之后定的：地面的铜嵌线压暗、改细（A0 #255，等 brass 的细铜线进总装后换）；台徽的星在环内右上，前庭的不动（A0 #294）；黄铜线只走南北（A0 #365）。场景里的 `v2_axis` 还看着旧的 (17, 11, 0.5)，骨架进总装后改成读 `S.V2` |
+| terrain | P2 | 退回 | c221 | 793d9f1e | `renders/obs_site_terrain/`（8 张，离线图，是一稿的） | 一稿在总装里（c219 #163 退回）。二稿在分支 `cursor/c164-a4-site-2af2`（评的是 5c734b67，分支头 15382edc），c235 评审 cr2-#2 不过（#323）：只差雪（比立面亮、直边、一样厚），另两条是打磨（落日平台下面像蛋糕、挡墙脚一条水平线）。A0 #330：雪留着重画（materials/snow），几何照 c221 的默认（面积三分之一上下、碎边、外沿一层往崖脚渐厚），`SNOW_ON` 默认开，亮度记“等 materials/snow”，不卡这一轮代码交付。公用栏杆和边石 `site/_kit.py` 已在总装（cd9628ba）。场景里的 `v1_arrival` 还是旧机位，骨架进总装后改成读 `S.V1`。东缘栏杆这一轮不动（A0 #405） |
+| stair | P2 | 制作中 | c225 | 12f3b08e | — | 分支 `cursor/c164-stair-4aad`，场景 `obs_site_stair`。评审 c235 cr2-#1 过（#321，评的是 40612989；图在收图夹里没进 git，已清）。最弱三处：垂带压顶和梯脚灯座比立面亮（照改，不等图）、正轴的浅线到台阶断了、下平台走道东头没有收头。A0 #324：踏面 z −2..2 做一条和走道同料的浅带（开关，默认开，带和不带各出一张再定）；走道东端放一块收头的铺块，不放灯。A0 #268：下平台铺地用 a（深板岩砖整铺、凝灰岩分带）。四个灯座的灯归 c220。交付时删框架演示 `site/ground.py`。等【交付】 |
+| powerhouse | P2 | 制作中 | c228 | — | — | 领卡 #232，分支 `cursor/c164-power-3232`（远端上还没有他自己的提交）。A0 #235：管桥走 z 33 一条直线、上平台贴地、`RUN` 默认关，南观景台口子上盖铁盖板；管到主楼这头在墩脚进勒脚的铁格栅口；烟囱放东北角，两版只比屋面（锯齿天窗对筒拱）。预审 c235 cr2-S4。桥的数在 #33139 |
+| cablecar | P2 | 制作中 | c226 | 275660c7 | — | 分支 `cursor/c164-cable-a47d`。预审 c235 cr2-S3。验收换了（A0 #304 第 2 条）：从 V1 的眼睛往主楼看，主楼南北两端之间、仰角 55° 以下不许有缆车站的任何构件；棚只盖车厢停靠的东头，西沿不过 x 84、棚底不低于 y 4，以西的站台露天。分支上的雨棚还是这条拍板以前的（x 85..91、棚底 y 3）：(85, 3, −31)、(85, 3, −30) 两格在净空块里（S2 #411，手算）。总监的试合里 check.py 只挂这一项 |
+| outbuildings | P2 | 制作中 | c229 | 18adaad8 | — | 分支 `cursor/c164-outb-0198`（连同 mastbase）：子午仪小屋、水塔、气象站、观景台的外壳和平台。预审 c235 cr2-S5。灯位表 `site.outbuildings.LAMP_POINTS` 给 c220 读（水塔脚那一点要改，#400） |
+| mastbase | P3 | 制作中 | c229 | 18adaad8 | — | 和上一行同一条分支：桅杆石座和四个对角的拉线锚墩；桅杆立在石座正中 (23.5, −39.5)，从 y 2 起（c239 读它） |
 
-## machines（牵头 c193，代号 a5；细化稿 `plan/parts/A5-machines.md`）
+## machines（原牵头 c193 不在岗；细化稿 `plan/parts/A5-machines.md`）
 
 实体预算 machines ≤ 400，各卡的份额在细化稿第 2 节。
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| orrery | P1 | 制作中 | c193 | — | — | 大行星仪，星厅主角（V7）；2 版比选；测试场景 `obs_mach_orrery`；锚点已进骨架（ORRERY_CENTRE/R/HANG_Y/RING_Y），可改读骨架 |
-| refractor | P1 | 待领 | — | — | — | 大折射望远镜，大圆顶室主角（V8）；2 版比选；锚点 DOME_AXIS + PIER_TOP_Y 已在骨架 |
-| clocks | P2 | 待领 | — | — | — | 母钟、塔钟、报时球 |
-| domegear | P2 | 待领 | — | — | — | 穹顶机构：轨道和滚轮、开缝链条和配重、手摇绞盘 |
+| orrery | P1 | 制作中 | c236 | f3a7e462 | — | c236 接 c193（#238），分支 `cursor/c164-orrery-6491`，2 版比选（甲 六臂共面，乙 分层碗状），场景 `obs_mach_orrery`。预审 c235 cr2-M1。A0 #357：环面降到 y 7.5、机器下限 6.5（骨架进总装之前模块里先写这两个数）；甲保持六臂共面；日球只留一盏灯，在 (11, 7, 0)，12 级 |
+| refractor | P1 | 制作中 | c237 | de4ef23a | — | 领卡 #248，分支 `cursor/c164-scope-6e0f`，2 版比选（甲 德式，乙 英式轭架），场景 `obs_mach_refractor`。库里的 `machines/scope.py` 是旧草稿，生成不出来，这一轮整份重写，写完之前不合。预审 c235 cr2-M2。A0 #341、#388：仰角对彗头 41°；乙的筒在轴线上，甲的筒离轴线不过 1.5 格、配重最低不低于 y 21；目镜端给成能读的常量（`scope.eyepiece()` 等，数在 #33183） |
+| clocks | P2 | 制作中 | c238 | a651402e | — | 领卡 #260，分支 `cursor/c164-clocks-e99f`，`machines/clock.py`，场景 `obs_mach_clocks`：母钟（星厅，墩东面）、塔钟四面的钟面和针、报时球。A0 #265：报时球做成球，不成十字；钟面是白搪瓷盘黑针，亮度不超过立面的乳白亮窗。母钟的光 8 级，放钟面前（A0 #369） |
+| domegear | P2 | 制作中 | c196 | 30d769b5 | — | 领卡 #345（11-15，c196 改领，代号 gear），分支 `cursor/c164-gear-6260`，`machines/dome.py`，场景 `obs_mach_domegear`：环形轨道和滚轮、缝的链条和配重、手摇绞盘、肋脚托轮。分界：固定在墙上的环梁、穹顶内肋、缝边梁归 interiors/domeroom |
 | engine-dynamo | P2 | 待领 | — | — | — | 蒸汽机和发电机（发电房） |
 | switchboard-boiler | P2 | 待领 | — | — | — | 配电板和锅炉（发电房） |
-| cablecar-winch | P2 | 待领 | — | — | — | 缆车和卷扬机（缆车站） |
-| radiomast | P2 | 待领 | — | — | — | 无线电桅杆 |
+| cablecar-winch | P2 | 制作中 | c240 | f1bfccc6 | — | 领卡 #247，分支 `cursor/c164-car-w3k9`，`machines/cable.py`，场景 `obs_mach_cablecar_winch`。库里只有草稿（没过 check.py）。只读 c226 的常量，不动他的方块。A0 #304 第 2 条：钢缆和导轮也不许进 V1 的净空块，缆从站的东面出去 |
+| radiomast | P2 | 制作中 | c239 | 90666e9c | — | 领卡 #245，分支 `cursor/c164-mast-5dcd`，`machines/mast.py`，场景 `obs_mach_radiomast`；甲（全模型分节）、乙（腿和横撑用方块）做进一个 version 参数。桅杆中心 (23.5, −39.5)，顶到 y 62；拉索四向，落在 c229 的锚墩上；顶上不做横担，一点红灯常亮（标签 `c164_signal`）。红灯离彗尾很近（c230 #32950 手算：V1 里离尾巴的光 0.8 到 2.3 度），等真图 |
 | meridian-astrograph | P2 | 待领 | — | — | — | 子午环（子午仪小屋）和天体照相仪（小穹顶） |
-| recorders | P2 | 待领 | — | — | — | 记录仪器（授时室） |
+| recorders | P2 | 待领 | — | — | — | 记录仪器（授时室）；c195 的授时室先用盒子占位 |
+| armillary | — | 制作中 | c246 | — | — | A0 第四批新开，派单没写优先级，领卡 #353：前庭正中 (35, 0) 的大浑天仪，V2 的前景，2 版比选（甲 环多而细，乙 大子午环加黄道带），底座两版相同（高不过 2、宽不过 3），总高 7 到 8，实体 30 以内，顶上不出十字。分支 `cursor/c164-arm-7c2a`（远端还没有）。底座四角四盏暗地灯，c246 留位、c220 摆（A0 #294 第四条） |
 
 ## props（牵头 c179；细化稿 `plan/parts/A6-props.md`）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| lamps | P1 | 已出图 | c179 | 4e28997 | `s1-d423f44-obs_props_lamps-*.jpg`（21 张，真机） | 交付 9bd3edb；14 个模型，母题 2 版比选（甲 乳白球罩+卷涡铸铁托架，乙 搪瓷伞罩裸灯泡），默认甲；带 props 公用底座 `props/_kit.py`；真机 c189 #93 三件都对；交叉看 c176 过（甲>乙，#98）；两版盲比正评归 c219：原来那 21 张是占位光下拍的，等 `sky/lights` 的新光合并后在电脑上重拍进 `renders/obs_props_lamps/` 再评（A0 #18472） |
-| pipes | P1 | 制作中 | c179 | — | — | 三档管径的直管（拉伸件）、弯头、三通、法兰、阀、压力表、水斗、檐沟；两头不留断头；测试场景 `obs_props_pipes` |
-| ironwork | P1 | 退回 | c218 | 0eaa777a | `renders/obs_props_ironwork/`（14 张，离线图） | c218 接 c196，分支 `cursor/c164-m3-ironwork-e6ba`。交付 7194169f 合并 39bcd249；开关 210a2a28（`DRESS = False`）合并 0eaa777a：退回的旧件不上整座楼，复评过了由 c218 打开（A0 #20144）。九件十个模型（拱窗框甲/乙、小窗铁栅、扇形亮窗、带舷窗的门扇、雨棚、栏板、检修梯、通风帽、检修盖），场景 `obs_props_ironwork`（14 机位）。技检：delivery.py 七项、check.py 全过；图是电脑上出的（代码 1b8c7466），在 c218 自己的提交上 14/14；合进总装后 10 张过期（同批的 windows 打磨改了亮窗贴图）。评审 c219 #5 不过，退回打磨；A0 #19260.5 定：拱窗框用甲的形、并进乙的铆钉重边和 6px 边梴、拱圈外三角封铁板；样板改成真墙的一跨（从总装读 c206 的 `_order`）；门扇开 90° 靠门洞侧壁、两扇露同一面；雨棚只罩正中一拱（宽 5、四分之一圆弧斜撑加小卷涡）；端亭 2 宽的窗做 2 宽的框；小窗铁栅减到 5–7 根，和墙面那层铁栏方块只留一层。交叉看 c205 过（#20543：没有双网格；中档留在整格线上（4.0 格）；压在玻璃上的那一截不超过 2 像素或盖满一整格灯，底档现在剩 3 像素像漏光；铁栅取 5 根、根根骑在竖棂上；铁色是一家） |
-| electrics-signs | P1 | 制作中 | c197 | — | — | 样板段和星厅要的四件先做：铭牌、台徽、接线箱、瓷瓶；其余随后 |
-| instruments | P2 | 待领 | — | — | — | |
-| furniture | P2 | 待领 | — | — | — | `furn_bench` 先做 |
-| paper | P2 | 待领 | — | — | — | `paper_star_chart` 先做 |
+| lamps | P1 | 已出图 | c179（模型）、c220（位置表） | eba8e5cc | `s1-d423f44-obs_props_lamps-*.jpg`（21 张，真机，占位光下拍的，旧，文件已清） | 14 个模型，母题 2 版比选（甲 乳白球罩加卷涡铸铁托架，乙 搪瓷伞罩裸灯泡），默认甲；两版盲比的正评归 c219，等 sky/lights 的新光合并后重拍再评。位置表 11-14 起归 c220（A0 #243）：入口壁灯挪到外侧两根壁柱（z ±6）已合并 eba8e5cc，交叉看 c206 过（#367）。场地灯链（A0 #268 第三条）在分支 `cursor/c164-lamps-007c` @ f45c752c，没交付；大台阶头上两个灯座改放柱头灯（A0 #405 第 4 条同意）。预审 c219 P8（#32994）：路灯的梯档和甲版铁笼灯的十字箍有红线 8 的风险，算不算红线等总监定；V2 里 x 52 那一对路灯太近 |
+| pipes | P1 | 制作中 | c241 | — | — | c241 接（#249、#319），分支 `cursor/c164-pipes-9deb`（远端还没有；旧名 7f1d、b094 作废）：旧铜雨水管和雨水斗、勒脚边的暖气干管加红手轮阀和压力表、管卡和法兰；样板 `obs_props_pipes` 用 `_order` 立真墙；整栋布置带 `DRESS`，默认关。和 c206（雨水管的位置、进楼的格栅口 `PIPE_INLET`）、c228（z 33 的干管）对过接口 |
+| ironwork | P1 | 退回 | c218 | 0eaa777a | `renders/obs_props_ironwork/`（14 张，离线图，10 张过期） | c218 接 c196，分支 `cursor/c164-m3-ironwork-e6ba` @ 591f7297。总装里是退回的旧件，开关 `DRESS = False`。评审 c219 #5 不过，退回打磨；改法总监定过（拱窗框用甲的形并进乙的重边、样板改真墙、雨棚只罩正中一拱、小窗铁栅 5 根骑在竖棂上、玻璃上只压 2 像素、底档做成 8 像素高的铆接板）。打磨轮进度 #404：拱头绕窗棂网的中线转，两侧拱的栅门关着，自查脚本 `obs_props_ironwork/fit.py` 查的六条都没有问题，和 c206 的 9ad51d2 试合没有冲突（45 个实体）。入口（A0 #243、#268 第四条）：正中一拱雨棚下一盏吊灯，随雨棚做；最亮的扇形窗只给正中；两侧铁栅门下三分之一实板。最后几个提交是停机后写的，没跑过。等【交付】，图待补 |
+| electrics-signs | P1 | 制作中 | c242 | 50ce6ee2 | — | c242 领（#246、#322），分支 `cursor/c164-elec-7be8`（表里原来 c197 那一行和 `cursor/c164-m4-electrics-signs-abe1` 作废）：台徽、搪瓷铭牌、接线箱、瓷瓶和沿墙电缆、电铃、旗，入口大件两方案（甲 铸铜大台徽／乙 钟面），场景 `obs_props_elecsign`。台徽标准图定了（#385、#33039）：环、子午线、星三样，星在环内右上，小图画 2×2 的点，任何尺寸都不画横竖等长的两条杠；只有三张：16 像素、16 像素带框（环 12）、48 像素；别的尺寸找 c242 加，不要自己缩放。入口大件由 `signs.build()` 自己挂（读 `facade.emblem()`，#33228） |
+| instruments | P2 | 制作中 | c199 | 7c373968 | — | 领卡 #340（11-15，c199 不再做评审，代号 instr），分支 `cursor/c164-instr-f5da`，`props/instruments.py`，场景 `obs_props_instruments`，`instruments.place(canvas, kind, pos, facing=, origin=)`，总场景里 `build()` 先一件不摆。先做三脚架望远镜（落日平台）和天球仪（星厅）。整族的代码是停机期间写的，没跑过 |
+| furniture | P2 | 制作中 | c179 | a83c38f4 | — | 领卡 #331（11-15），分支 `cursor/c164-a6-props-7fb0`，`furniture.place(...)`，尺寸读 `furniture.TOP`；`props/_kit.py` 归 c179，别人只读。和星厅、授时室、大圆顶室对过摆法（#391、#33271）。停机期间写的，没跑过 |
+| paper | P2 | 制作中 | c197 | 0512abe5 | — | 领卡 #335（11-15），分支 `cursor/c164-m4-paper-7345`，`props/paper.py`，场景 `obs_props_paper`，`paper.place(...)`；先做星厅要的 `paper_star_chart`，再做蓝图、黑板、月面图、记录本、照相底片。纸品上不画台徽 |
 
-## interiors（牵头 c191；细化稿 `plan/parts/L7-interiors.md`）
+## interiors（原牵头 c191 不在岗；细化稿 `plan/parts/L7-interiors.md`）
 
 | 包 | 优先级 | 状态 | 谁 | 提交 | 图 | 备注 |
 | --- | --- | --- | --- | --- | --- | --- |
-| starhall | P2 | 制作中 | c191 | ed35f57 | — | 2 版比选；盒子场景 `obs_int_starhall`；接口要对齐（见群里 S2 的说明）；井 z−3..3 留空给行星仪（中心 11.5,0.5、⌀5） |
-| domeroom | P2 | 待领 | — | — | — | |
-| chartroom | P2 | 待领 | — | — | — | |
-| timeroom | P2 | 待领 | — | — | — | |
-| powerhouse | P2 | 待领 | — | — | — | 发电房内；外壳归 site |
+| starhall | P2 | 制作中 | c243 | 074c9ea1 | — | c243 接 c191（#250、#361），分支 `cursor/c164-hall-ddbd`，2 版比选（甲 学院，乙 工坊），场景 `obs_int_starhall` 立 c231 的真壳。预审 c235 cr2-I1。A0 #365、#369：V7 用门外的机位（`S.V7`），门洞里那个改名 `v7_in`；地上的铜线改南北向（x 11，穿过行星仪正下方的铜圆盘），东西向的中轴用石头标，地上不许出十字；台徽在厅里只出现两次；顶棚那个五块拼的加号是红线，最先改；日球是全厅唯一的暖核（日球 12、母钟 8、壁灯 6 到 7）。东墙回廊层的亮窗从屋里看是暗的（A0 #414） |
+| domeroom | P2 | 制作中 | c178 | d3503777 | — | 领卡 #339（11-15），分支 `cursor/c164-a3-mainbuilding-da56`，`interiors/domeroom.py`，场景 `obs_int_domeroom`：鼓座内壁、穹顶内面的铁肋和环梁、缝边梁、地板分区、小红灯和绿台灯的光位。A0 #388：墩东侧、轴线上那一块归目镜和观测位，观测地板在 x 8..12、z −1..3；环梯出口那一格和它上方 3 格谁的东西都不许进；V8 相机的位置读 c237 的常量。第二轮是停机期间写的，没跑过 |
+| chartroom | P2 | 制作中 | c205 | — | — | 领卡 #408（11-15，A0 #414 第 7 条同意；代号 chart），分支 `cursor/c164-chart-5a4c`（远端还没有），`interiors/chartroom.py`，场景 `obs_int_chartroom`：净空读 `shell.ROOMS["chart room"]`（x 2..13、z 7..25，脚踩 y 7）；V9 站在门里朝南看，门、底片灯台、南墙整面书架在一条线上 |
+| timeroom | P2 | 制作中 | c195 | dce030a6 | — | 领卡 #349（11-15），分支 `cursor/c164-m2-timeroom-80c9`，`interiors/timeroom.py`，场景 `obs_int_timeroom`（壳进总装前自己立占位盒子）：净空 x 2..13、z −25..−7，脚踩 y 7；仪表墙放北端墙，V10 从门口沿长轴正对它。窗不再是屋里的光源（A0 #414 第 5 条），光靠台灯和壁灯。记录仪、电报机先用盒子占位 |
+| powerhouse | P2 | 待领 | — | — | — | 发电房内；外壳归 site（c228） |
 
 ## motion（后期；c177 牵头）
 
@@ -114,88 +132,135 @@
 
 | agent | 代号 | 分支 |
 | --- | --- | --- |
+| c164 | a0（总监） | `cursor/c164-a0-pipeline-v4-7d36`（文档和色板）、`cursor/c164-a0-preview-f427`（试合的预览，不进总装）、`cursor/c164-a0-reports-7d36`（给管理员的图） |
 | c176 | a1 | `cursor/c164-a1-materials-3930` |
-| c177 | a2 | `cursor/c164-a2-light-29fe` |
-| c178 | a3 | `cursor/c164-a3-mainbuilding-da56` |
-| c179 | a6 | `cursor/c164-a6-props-7fb0` |
-| c191 | interiors | `cursor/c164-interiors-1d4a` |
-| c192 | a4 | `cursor/c164-a4-site-2af2` |
-| c193 | a5 | `cursor/c164-a5-machines-a70c` |
-| c194 | m1 | `cursor/c164-m1-panels-8c47`（panels）、`cursor/c164-m1-brass-fa68`（brass-oldcopper-small） |
-| c195 → c205 | m2 | `cursor/c164-m2-windows-7bb5`（c205 接手） |
-| c196 | m3 | `cursor/c164-m3-ironwork-e6ba` |
-| c197 | m4 | `cursor/c164-m4-electrics-signs-abe1` |
-| c198 | m5 | `cursor/c164-m5-iron-8757` |
-| c199 | cr2 | `cursor/c164-cr2-review-ec4d` |
-| c188 | s2 | `cursor/c164-s2-integrator-8e9b`（总装：`cursor/c164-realms-map-b59c`） |
+| c177 | a2 | `cursor/c164-a2-light-29fe`（sky/tones） |
+| c178 | a3 | `cursor/c164-a3-mainbuilding-da56`（interiors/domeroom） |
+| c179 | a6 | `cursor/c164-a6-props-7fb0`（props/furniture） |
+| c188 | s2 | `cursor/c164-s2-integrator-927e`（总装：`cursor/c164-realms-map-b59c`；旧的 `cursor/c164-s2-integrator-8e9b` 不用了） |
 | c189 | s1 | `cursor/c164-s1-render-9df7` |
-| c190 | s3 | `cursor/c164-s3-rubric-859e` |
+| c190 | s3 | `cursor/c164-s3-rubric-859e`（评分标准，已合并） |
+| c191 | interiors | `cursor/c164-interiors-1d4a`（不在岗，星厅由 c243 接） |
+| c193 | a5 | `cursor/c164-a5-machines-a70c`（不在岗，机械各卡分给 c236 到 c240、c246、c196） |
+| c194 | m1 | `cursor/c164-m1-brass-fa68`（brass-oldcopper-small）、`cursor/c164-m1-snow-bc45`（snow）、`cursor/c164-m1-panels-8c47`（panels，已合并） |
+| c195 | m2 | `cursor/c164-m2-timeroom-80c9`（interiors/timeroom） |
+| c196 | gear | `cursor/c164-gear-6260`（machines/domegear；代号 m3 留给 c218） |
+| c197 | m4 | `cursor/c164-m4-paper-7345`（props/paper） |
+| c198 | m5 | `cursor/c164-m5-iron-8757` |
+| c199 | instr | `cursor/c164-instr-f5da`（props/instruments；旧的评审分支 `cursor/c164-cr2-review-ec4d` 不用了） |
 | c204 | ashlar | `cursor/c164-ashlar-2cc1` |
+| c205 | chart | `cursor/c164-chart-5a4c`（interiors/chartroom，还没 push）、`cursor/c164-m2-windows-7bb5`（windows，已合并） |
 | c206 | facade | `cursor/c164-facade-229b` |
-| c218 | m3（ironwork） | `cursor/c164-m3-ironwork-e6ba`（接 c196 的分支） |
-| c219 | S3（评审） | `cursor/c164-review-0eb8` |
-| c220 | lights | `cursor/c164-lights-007c` |
+| c218 | m3 | `cursor/c164-m3-ironwork-e6ba`（接 c196 的分支） |
+| c219 | cr（评审） | `cursor/c164-review-0eb8` |
+| c220 | lights | `cursor/c164-lights-007c`（sky/lights）、`cursor/c164-lamps-007c`（props/lamps 的位置表）、`cursor/c164-lights-wash-0fe3`（洗墙灯） |
 | c221 | a4（site） | `cursor/c164-a4-site-2af2`（接 c192 的分支） |
-| c222 | dome | （待报） |
+| c222 | dome | `cursor/c164-dome-0dab` |
 | c223 | tower | `cursor/c164-tower-21fb` |
 | c224 | sdome | `cursor/c164-sdome-8013` |
 | c225 | stair | `cursor/c164-stair-4aad` |
 | c226 | cable | `cursor/c164-cable-a47d` |
 | c227 | cloud | `cursor/c164-cloud-7d36` |
-| c228 | 发电所（待领卡） | （待报） |
-| c229 | 附属小屋和天线基座（待领卡） | （待报） |
+| c228 | power | `cursor/c164-power-3232` |
+| c229 | outb | `cursor/c164-outb-0198` |
 | c230 | comet | `cursor/c164-comet-986f` |
 | c231 | shell | `cursor/c164-shell-f063` |
-| c234 | s1（真机位，A0 #20490 重派） | （待报） |
+| c235 | cr2（评审） | `cursor/c164-cr2-582e` |
+| c236 | orrery | `cursor/c164-orrery-6491` |
+| c237 | scope | `cursor/c164-scope-6e0f` |
+| c238 | clocks | `cursor/c164-clocks-e99f` |
+| c239 | mast | `cursor/c164-mast-5dcd` |
+| c240 | car | `cursor/c164-car-w3k9` |
+| c241 | pipes | `cursor/c164-pipes-9deb`（还没 push） |
+| c242 | elec | `cursor/c164-elec-7be8` |
+| c243 | hall | `cursor/c164-hall-ddbd` |
+| c246 | arm | `cursor/c164-arm-7c2a`（还没 push） |
 
-## 总监定过的（11-14）
+真机位先后派过的 c232、c234、c244、c245 都作废了（A0 #294），现在是 c189。
 
-- 评分标准 v1：批了，现行。
-- `check.py` 由 c189 技检；接口、框架、骨架不另设关口，由第一批用它们建包的人验证。
-- 占用表的 `CLOUD` 和色板的 `cloud` 色阶：批了，标“暂定”，随 `sky/cloudsea` 的比选在真机图上定稿。
-- 天空贴图（`assets/minecraft/textures/environment/`）不查色板外颜色，结果里写明跳过几张。
-- 真机图由游戏自己存截图（c189 的助手），显示器休眠时也能出；交付包的评审优先用真机图，真机排不上队时或各人自查用离线图，标“离线图”。
-- 仓库里唯一允许的非图片二进制文件是 `tools/win/helper/*.class`：源码并排、带源码指纹、能从源码重编出一样的文件。`tools/delivery.py` 合并前会重编一遍逐字节比；别的二进制一律拦。
-- 云的五个方块（`B.CLOUD`）的贴图由 sky 写，是“只有 materials 写方块贴图”的唯一例外；走 materials 的 `_kit.paint`、`_kit.redirect`，图名以 `sky_` 开头。
-- 评分的“第一眼”只量一眼的可读性和吸引力，不判概念对错（已写进 RUBRIC 第 1 节）。
-- 西门：批。圆厅正西底层开门通落日平台，在轴上；是次门，不做雨棚和扇形亮窗，门洞不高过底层，最多一盏三级小壁灯。
-- 方块门（`IRON_DOOR`）的舷窗放上半格、对着眼高（1.62），下半格是百叶气窗。细化稿原来写的是“下半舷窗、上半气窗”，离线图上舷窗落在膝盖高，读成炉门观察孔。随 materials/iron 的补交改图，`materials.md` §4 那一行一并改（g2 #116）。
-- 行星仪/望远镜锚点进骨架（c193 #95、A0 #97）：ORRERY_CENTRE(11.5,0.5)、ORRERY_R2.5、ORRERY_HANG_Y14、ORRERY_RING_Y8.5（行星/太阳灯那圈降到回廊眼高）、PIER_TOP_Y18；总装 3f5b683c。
-- 合并关口：c188（S2）11-14 回岗，合并钥匙从 A0 接回（sky/look 起）；各线【交付】重新点 @c188。A0 兜底期间已代合 materials/iron（9f09b11）。
-- v4（管理员批，A0 #124、#127）：状态全放 git、并行、墙优先。自查图放 `renders/<场景名>/<机位>.png` 跟分支进 git，重出覆盖同名，发【交付】前提交一次，`shots.txt` 记提交号。合并钥匙留 c188，不分片；【交付】点 @c188，【合并】点 @c164。评审（c219）并行：卡一有离线自查图就评。墙优先批：c204 ashlar、c205 windows、c206 main/facade，配套 c218 props/ironwork、c220 sky/lights、c221 site。
-- 出图线恢复（A0 #18472，11-14 11:42）：管理员电脑可以出图了，走 COMMON 第 3 节（先在云端 push，`bin\sync.py`，再 `bin\job.py <代号> --heavy`；重任务排队，一次一个）。云端一律不出图：`render.py`、`selfshots.py`（含 `--verify`）、任何会出图的步骤都不在云端跑。图怎么从电脑回到各人分支的 `renders/<场景名>/`、关口在电脑上怎么逐像素核对，由 S2 定做法写进 INTERFACE 第 5、6 节；图回云端的通道（收图夹）A0 在重建。
-- 出图在哪跑（管理员 11-14 11:26 定，A0 #18142）：回到管理员电脑。云端不出图、不 `--verify`、不生成大场景（COMMON 第 2 节原规矩照旧；v4 里“云端出自查图”作废）。原因：云端 4 核是和别的项目共用的，11:14 实测负载 6.3，占 CPU 最多的是 c164 的出图和复核。电脑上那条出图线等 A0 发“可以出图”的公告，之前谁都不要自己去连；这期间代码齐、check.py 过就可以【交付】，图一栏写“图待补（等电脑出图线）”。已进 git 的云端图留着用。
-- 东侧标高（A0 #171，按 V1 的视线算）：落差 6（下平台脚踩 y=−6）；前庭不动（x 16..60，深 45，方案里的 30 作废）；大台阶宽 17、从东缘向东伸出、坡 1:2、x 61..72，垂带墙在 17 宽之外；下平台范围不变；缆车站挪到东北角 x 75..91、z −40..−26，站台高 2，出生点在站台上；V1 固定机位 pos (88.5, −2.38, −32.5)、look_at (8, 14, 0.5)；上平台东缘不许实心女儿墙（通透铁栅，石柱 1 宽、中到中 4，连续压顶只在铺地层）；发电房位置不变，墙高 10 从 y=−6 起算。都在骨架里（总装 9f1beec1 起）。
-- 缆车站雨棚（A0 #19629）：“棚底不低于站台 5 格”不够；从 V1 看棚沿可以进画面顶部当边框（不超过画面高的八分之一），不许切到报时球杆顶（y 52）。以 check.py 的 V1 视线项通过为准。
-- 山体和台地（A0 #171、#19260.6）：占用表加天然山石和雪；落日平台铺地改成和前庭同一套深板岩；云海不归 site，开 `sky/cloudsea`；上平台范围、四块台地（桅杆石台、气象站、水塔、南观景台）、V11 机位照 c221 的数进骨架。
-- 主楼分工（A0 #19260.2、#20299）：c206 立面和 `_plan.py`；c222 鼓座和大穹顶；c223 报时塔；c224 小穹顶、端亭平屋面、屋脊铁走道；c231 平面、楼板、楼梯、室内空壳（另开 `main/shell.py`）。立面和鼓座的分界是 y=16。重叠处下层留占位、上层用更大的 ORDER 盖，上层合进总装后下层删占位。
-- 入口（A0 #19260.1）：可切换的三版，默认 B 三连拱门廊（8、9、10 三跨基座层都开拱门，正中通星厅，两侧铁栅门）；A 现状单门留作对照；C 正中门洞加高和大拱窗连成通高的拱。正中一跨饰带放独一份的大台徽或钟面。
-- 墩和楼梯（A0 #20004、#20490）：墩 3×3 从 y0 直上，墩帽 5×5 在 y=17 这一层（顶面 18.0）；星厅一层不放楼梯；y0→7 用西侧大楼梯；y7→18 绕墩环梯（包络 x 1..7、z −3..3），出口在墩帽东侧或南侧；apse 的螺旋梯取消；西面不封死，墩挡住中轴。
-- 大圆顶室的门和屋面的路（A0 #20299）：门两处 (12, ±10)、y 18..19，出门踩角露台；两翼屋脊各一条铁走道，南通小穹顶露台、北通报时塔南面 y18 的小门。
-- 彗星方位（A0 #19524）：V1 不动，彗星在报时塔和报时球桅上方；“彗星在穹顶正上方”由 V2 给。
-- 灯（A0 #19260.4）：基座层是暗带，固定只亮三扇（入口两侧 8、10，塔脚 2），任何一版基座亮窗不多过主层；南端亭主层窗进固定亮窗。
-- 铁件（A0 #19260.5）和开关（A0 #20144）：拱窗框定甲的形；往整座楼上铺的东西（铁件、管线、灯、标识）都带一个 `DRESS` 开关，评审过了才打开。
-- 墙石（A0 #20299）：细琢面定乙；丙（原版砂岩）留作对照不再投入。
-- 出图线的做法（c188 #176，INTERFACE 第 5、6 节）：要进 git 的图在电脑上用 `selfshots.py --out` 出、`send.py` 原样传回、云端 `selfshots.py --take` 落位；关口的逐像素核对在电脑上跑。电脑和云端出的是同一份像素（A0 #162、c188 核过），已在 git 的图不用为换机器重出。
+## 总监定过的
 
-## 图的现状（关口在电脑上逐像素核；最近一次 11-14 12:19，总装 0dadfb56）
+### 11-15
 
-| 场景 | 存的图 | 是代码出的 | 过期的 | 谁重出 |
-| --- | --- | --- | --- | --- |
-| `obs_mat_windows` | 22 | 22 | — | — |
-| `obs_mat_windows_b` | 22 | 22 | — | — |
-| `obs_mat_panels` | 10 | 10 | — | — |
-| `obs_props_ironwork` | 14 | 4 | `far`、`arch_a`、`arch_a_head`、`arch_b`、`arch_b_head`、`grille`、`entrance`、`door_near`、`railing`、`vent`（同批的 windows 打磨改了亮窗贴图；在 c218 自己的提交上 14/14） | c218，随打磨轮 |
-| `obs_site_court` | 9 | 1 | `v2_axis`、`v2_high`、`court_oblique`、`meridian_north`、`meridian_near`、`emblem_top`、`lamp_pool`、`aerial`（骨架落差 9→6、铁件上过白模主楼、亮窗贴图） | c221，随打磨轮，在立面合并之后 |
-| `obs_site_terrain` | 8 | 3 | `v1_arrival`、`v1_stamp`、`v12_aerial`、`north_flank`、`south_flank`（同上） | c221，随打磨轮 |
+- 云端停跑（管理员的指令，A0 #382，18:38）：这台云端机器 4 核打满。停掉并且不再起 Python、node、java（check.py、delivery.py、试合、批量脚本都算）；只用 git，读、写代码和文档（不运行），群里对接口。恢复由总监发公告，之前谁也不自己恢复。
+- 云端重建（A0 #318）：`/agent/realms-study` 重建好了（venv 和 26.3 的 jar）；check.py、delivery.py 命令前加 nice，只查自己的测试场景；管理员电脑不在线，在线之前谁都不发本机命令；出图钥匙回到 c189，电脑上的测试服、游戏、`bin\` 和队列只由他动，要实机图发【实机】点 c189。
+- 图进 git（A0 #378）：谁出的图谁当场提交 push，不许只留在收图夹里；真机图收进 c189 分支的 `renders/real/`，不进总装。
+- 主机位抬头（A0 #304，11-14 定，11-15 写进骨架）：V1、V2 俯仰 22° 上下。V1 站位不变，look_at (8, 34, 0.5)；V2 站位 (58.5, 1.7, 0.5)，look_at (17, 19, 0.5)。V2 里彗星挂在大穹顶尖的正上方，是这张地图的招牌画面。各包测试场景的 v1、v2 一律读骨架，不手抄。
+- V1 的净空（A0 #304 第 2 条，取代“棚可以占画面上面八分之一”）：从 V1 的眼睛往主楼看，主楼南北两端之间、仰角 55° 以下，不许有缆车站的任何构件（棚、梁、柱、缆都算）。棚只盖东头，西沿不过 x 84、棚底不低于 y 4。
+- 山上的雪（A0 #330）：留着，重画成蓝调时分背阴的雪；色阶 `snow` 五级由总监定，各家不自己调；c194 画贴图，c221 做几何，c235 量。
+- 行星仪的高度（A0 #357）：环面 y 7.5，机器下限 6.5（原来“放在回廊眼高 8.5”作废）；甲保持六臂共面；日球只留一盏灯，在 (11, 7, 0)。
+- 星厅（A0 #365、#369）：V7 用门外的机位（站位 (19.5, 1.62, 0.5)，看 (10, 5.5, 0.5)），门洞里那个叫 `v7_in`。全场的规矩：黄铜线只走南北，东西向的中轴用石头标，地上不许出十字。台徽在星厅只出现两次。日球是全厅唯一的暖核。
+- 入口终选 B 三连拱（A0 #376）：A、C 留在分支里，`facade.ENTRANCE` 默认 B；管理员挑了别的再换。粗琢面和细琢面的明度差先不动。
+- 大台阶（A0 #324）：踏面 z −2..2 一条浅带（开关，默认开，看图定留不留）；下平台走道东端放收头的铺块，不放灯；V1 里前景比立面暗的规矩不变。
+- 大圆顶室（A0 #388）：墩东侧、轴线上归目镜和观测位；环梯出口改到北侧（退路南侧，东侧不许）；德式那一版的配重最低不低于 y 21；北侧出口那一格和它上方 3 格谁的东西都不许进。
+- 亮窗朝屋里的一面（A0 #414）：加不发光的内衬，只衬人进得去的房间，外立面一个像素不变；有装修的房间里，窗不是屋里的光源。
+- V1 里楼脚被东缘栏杆罩住（A0 #405）：现在不改，栏杆、平台标高、缆车站标高都不动；等预览图（`v01_arrival`、`v01_eye_up2`、`v01_eye_up4`）出来，在三样里选：不动、栏杆改疏、车站抬高。
+- 评审（A0 #338）：不设第三个评审；c199 改做 props/instruments。
+- 总监的试合（A0 #359 第四条，预览分支，不进总装）：28 条分支只有两处冲突，全场 17.7 万方块，check.py 只挂 sight 一项（缆车站的屋顶挡 V1）。
 
-0dadfb56 之后合进来的：立面白模（9ae476f1）、铁件开关（0eaa777a）、骨架第二批。有主楼入画的图（site 的两个场景）现在画的都是旧白模，没再核一遍；别的场景不含主楼，不受影响。
+### 11-14 下午
+
+- 节奏（A0 #241，写进 COMMON 第 0 节）：领卡后 20 分钟内要有第一个提交并 push；卡和文档放到交付前再补；接口没对完的按自己的默认做，默认写在提交说明里；总监按 git 看进度。
+- 云端不许跑 `render.py`，再小的图也不行（A0 #271）。
+- 墙石粗琢面（A0 #231）：默认只留通长横槽（去掉竖缝），基座读成一道压得住的横带；凹板定甲的下沉。
+- 发电房（A0 #235）：管桥走 z 33 一条直线、上平台贴地、`RUN` 默认关；管在墩脚进勒脚的铁格栅口，东立面不走立管；烟囱放东北角，两版只比屋面。
+- 入口 B 的灯（A0 #243）：壁灯在外侧两根壁柱（z ±6）；正中一拱雨棚下一盏吊灯，是入口最亮的一点（灯底不低于 y 4.5），随雨棚归 c218；雨棚底 y 7.0。
+- 亮窗的颜色和前庭的铜（A0 #255）：橙色只留给入口（主层 8、10 两跨和基座那几扇固定亮窗），两翼的弱光窗改成暗窗；地面的铜嵌条是踩旧的暗铜，明度不高过旁边最浅的铺地石，线要细。
+- 报时塔（A0 #265）：塔顶不许有十字形，这是红线，别的包同样（桅杆、避雷针、旗杆顶）；钟层和塔身一样宽，上面一层透空的望台，铜绿塔顶收到尖；钟面不发亮；横线脚用石头。
+- 场地的灯（A0 #268、#294 第四条）：到达的路是一条灯链（缆车站出口、下平台正轴、大台阶四个灯座、前庭正轴两侧、入口），间距 8 格上下、成对；上平台东缘的栏杆柱隔一根放一盏矮的柱头灯；其余留暗；浑天仪脚下四盏暗地灯，正轴中间 18 格不立杆；c220 牵头。入口三连拱：门后的屏风换浅石、门厅里放光源；正中的拱比两边重。
+- 台徽（A0 #294 第三条）：星在环内右上，意思是子午仪目镜里一颗星正要过子午线；子午线上下都出环；星心在环心右上，横竖各偏 0.4 个半径。标准图由 c242 出。
+- 大穹顶和小穹顶（A0 #294 第五条）：大穹顶的肋不要整格凸出；顶点只有一处、在轴线上；环廊栏杆换稀的。
+
+### 更早（还有效的；细节见上一版）
+
+- 评分标准 v1.1 现行；`check.py` 由 c189 技检过；接口、框架、骨架不另设关口，由用它们建包的人验证。
+- 占用表的 `CLOUD` 和色板的 `cloud` 色阶标“暂定”，随 `sky/cloudsea` 的比选在真机图上定稿；云的五个方块的贴图由 sky 写（图名以 `sky_` 开头），是“只有 materials 写方块贴图”的唯一例外。
+- 天空贴图（`assets/minecraft/textures/environment/`）不查色板外颜色。
+- 仓库里唯一允许的非图片二进制文件是 `tools/win/helper/*.class`：源码并排，能从源码重编出一样的文件，`tools/delivery.py` 合并前重编一遍逐字节比。
+- 西门：圆厅正西底层开门通落日平台，是次门。
+- 方块门（`IRON_DOOR`）的舷窗放上半格、对着眼高，下半格是百叶气窗（随 materials/iron 的二次交付改图）。
+- v4（A0 #124、#127）：状态全放 git、并行、墙优先；自查图放 `renders/<场景名>/<机位>.png` 跟分支进 git；合并钥匙在 c188，【交付】点 c188，【合并】点 c164。
+- 出图只在管理员电脑上（管理员 11-14 11:26 定）：云端不出图、不 `--verify`、不生成大场景；做法在 INTERFACE 第 5、6 节。
+- 东侧标高（A0 #171）：落差 6；前庭 x 16..60；大台阶宽 17、x 61..72、坡 1:2，垂带墙在 17 宽之外；缆车站 x 75..91、z −40..−26，站台高 2，出生点在站台上；上平台东缘不许实心女儿墙（通透铁栅，石柱 1 宽、中到中 4）；发电房墙高 10 从 y −6 起算。
+- 山体和台地（A0 #171、#19260.6）：天然山石进占用表；落日平台铺地和前庭同一套深板岩；云海归 `sky/cloudsea`；四块台地和 V11 在骨架里。
+- 主楼分工（A0 #19260.2、#20299）：c206 立面和 `_plan.py`；c222 鼓座和大穹顶；c223 报时塔；c224 小穹顶、端亭平屋面、屋脊铁走道；c231 平面、楼板、楼梯、室内空壳。立面和鼓座的分界是 y 16。
+- 墩和楼梯（A0 #20004、#20490）：墩 3×3 从 y 0 直上，墩帽 5×5 在 y 17 这一层（顶面 18.0）；星厅一层不放楼梯；y 0→7 用西侧大楼梯；y 7→18 绕墩环梯（出口见上面 11-15 那一条）；西面不封死，墩挡住中轴。
+- 大圆顶室的门和屋面的路（A0 #20299）：门两处 (12, ±10)、y 18..19，出门踩角露台；两翼屋脊各一条铁走道。
+- 彗星方位（A0 #19524）：V1 里彗星在报时塔和报时球桅上方；“彗星在穹顶正上方”由 V2 给。
+- 基座层是暗带（A0 #19260.4）：任何一版基座亮窗不多过主层。
+- `DRESS` 开关（A0 #20144）：往整座楼上铺的东西（铁件、管线、灯、标识）都带一个开关，评审过了才打开。
+- 细琢面定乙；丙（原版砂岩）留作对照，不再投入。
+
+## 图的现状
+
+关口上一次在电脑上逐像素核是 11-14 12:19（总装 0dadfb56）。之后电脑不在线、云端停跑，没有再核；下表“现状”一栏是各线自己报的。
+
+| 场景 | 存的图 | 在哪 | 现状 |
+| --- | --- | --- | --- |
+| `obs_mat_windows`、`obs_mat_windows_b` | 22、22 | 总装 | 11-14 核过；灰白石换成真贴图（3380299e）以后过期，c205 重出 |
+| `obs_mat_panels` | 10 | 总装 | 11-14 核过；打磨轮以后重出 |
+| `obs_mat_ashlar`、`obs_mat_ashlar_b`、`obs_mat_ashlar_c` | 17、17、17 | 总装 | 电脑上出的（代码 1ded37af）；新台徽交付时带台徽的几张重出 |
+| `obs_props_ironwork` | 14 | 总装 | 10 张过期，画的是退回的旧件；c218 随打磨轮重出 |
+| `obs_site_court` | 9 | 总装 | 8 张过期；c221 随打磨轮重出，`v2_axis` 换成新机位 |
+| `obs_site_terrain` | 8 | 总装 | 都是一稿的；二稿的图在收图夹里没进 git，已清，c221 重出 |
+| `obs_main_facade`、`obs_main_facade_a`、`obs_main_facade_c` | 8、4、4 | c206 的分支（随 9ad51d24 进总装） | 电脑上出的（代码 af97672c），V1、V2 是抬头以后的机位 |
+
+- 图待补（电脑上线以后出）：`obs_mat_brass`（25）、`obs_sky_lights`（25）、彗星三个场景（46）、`obs_site_stair`、`obs_mat_iron`、`obs_mat_snow`，以及各机械、道具、室内的测试场景。
+- 月亮位贴图方向改过以后（142f3079），之前有彗星入画的离线图都过期。
+- 骨架的新机位进总装以后，所有带 v1、v2 的图都要重出。
 
 ## 等总监定的
 
-- V2 的固定机位：A0 #19524 说了大概（中轴上朝西看，前庭 x≈58、z=0.5），还没给定数；给了进骨架。
+- S2 #411 的两条，默认已写明，没回就照默认：① V1 的净空照字面的 55° 判（留半度余量，量到 54.5°）。总监举的例子（西沿 x 84、棚底 y 4）往正西是 54.8°，往西南方向降到 48° 上下，照字面判，棚的西南角要切掉或者抬高。② 净空块的北界在正西偏北 1.2°，彗星的尘尾偏北，大半在块外；默认北界不动，整颗彗星另量，只给警告。
+- props/lamps 路灯的梯档和甲版铁笼灯的十字箍算不算红线（c219 #32994）。
+- 大圆顶室的小红灯留哪一盏（c237 #33183 第 4 条）。
+- 拱头封口 `facade.CROWN` 开不开（c206 #33228，看图定）。
+- 东缘要不要单开稀栅杆的角色（c198 #32615），连同 V1 里楼脚的三样选法（A0 #405），等比较图。
+- 有装修的房间里窗后的光降不降级（A0 #414 第 6 条，出图时量）。
+- sky/comet 三版选哪个、sky/cloudsea 三种做法选哪个：等真机图。
 
 ## 等各线报的
 
-- c228（发电所）、c229（附属小屋和天线基座）的【领卡】和分支名，c222（大穹顶）的分支名；第四批的人（机械、管线、电气标识、星厅、第二评审，A0 #20490 在派）。
-- 两条“待证实”（展示实体 160 格外不发、没设宽高的展示实体画面外照画）和月亮位贴图朝向：等真机位 c234。
+- 远端还没有分支的：c241 `cursor/c164-pipes-9deb`、c246 `cursor/c164-arm-7c2a`、c205 `cursor/c164-chart-5a4c`；c228 的 `cursor/c164-power-3232` 上还没有他自己的提交。
+- 停机期间写的、恢复后先补跑再报提交号的：c198 iron、c218 ironwork、c220 lamps、c206 facade、c230 comet、c177 tones、c231 shell、c242 signs、c179 furniture、c199 instruments、c178 domeroom、c222 dome、c237 scope、c228 powerhouse。
+- 两条“待证实”、铁轨落地自己转向、月亮位贴图方向：等真机（c189）。
