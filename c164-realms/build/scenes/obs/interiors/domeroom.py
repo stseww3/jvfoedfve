@@ -16,7 +16,8 @@ seen through the slit: sky/comet, c230), and the record desk stands there.
 What the room adds, from the floor up (rows; radii from the centre of column (4, 0)):
 
     17       the floor's finish: a dark border along the wall; the observing floor east of the pier,
-             level with the boards: dark boards, an iron plate at each corner
+             level with the boards: dark boards from the iron curb of the pier's opening on, an
+             iron plate at each corner
     18..22   an iron wall post under every second rib and under the two beams of the slit; an iron
              console under the ring beam where the other ribs come down
     23       the ring beam: iron corbelled out from the wall's top, fixed to the stone (10.5..11.5)
@@ -380,10 +381,11 @@ def _wall(c, origin, put, shell):
 
 
 def _floor(put, shell):
-    """The floor's finish, in the row of the boards main/shell lays."""
+    """The floor's finish, in the row of the boards main/shell lays. The iron curb round the pier's
+    opening is main/shell's and stays whole: the observing floor's own boards start east of it."""
     for x, z in shell.edge:
         put(x, FLOOR_Y, z, WOOD.block)
-    cells = observing_floor()
+    cells = observing_floor() - envelope()
     for x, z in cells:
         open_sides = [d for d in O.SIDES if O.step((x, z), d) not in cells]
         corner = len(open_sides) == 2 and open_sides[0][0] != open_sides[1][0] and open_sides[0][1] != open_sides[1][1]

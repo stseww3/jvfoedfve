@@ -60,9 +60,8 @@ check("row %d is left to the track and the rollers (machines/domegear)" % D.LEDG
       [k for k in solid if k[1] == D.LEDGE_Y])
 check("row %d holds the base ring over the inner leaf and nothing in the room's columns" % D.BASE_RING_Y,
       [k for k in solid if k[1] == D.BASE_RING_Y and (k[0], k[2]) not in leaf])
-check("the opening round the pier and its curb: only the observing floor's boards, in the floor's row",
-      [k for k in solid if (k[0], k[2]) in D.envelope() and k[1] <= D.WALL_TOP
-       and not (k[1] == D.FLOOR_Y and (k[0], k[2]) in floor)])
+check("the opening round the pier, its curb and its railing are left as main/shell lays them",
+      [k for k in solid if (k[0], k[2]) in D.envelope() and k[1] <= D.WALL_TOP])
 check("the two doorways and the cells round them are free to walk through",
       solid & cells({n for door in D.doorways() for n in O.grow({door})}, head))
 check("the stair's exit, the three cells above it and the cells round it are free",

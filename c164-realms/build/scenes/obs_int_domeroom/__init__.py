@@ -1,10 +1,10 @@
 """Test scene of the work package interiors/domeroom (plan/packages/interiors/domeroom.md).
 
-The dome room in a box: the drum and the dome as the assembly has them today (main/_dome), and
-stand-ins for what other packages bring -- the floor, the opening round the pier and its railing
-(main/shell, c231), the two doors to the roof terraces (main/dome, c222), the telescope
-(machines/refractor, c237). The stand-ins use the skeleton's numbers and are dropped one by one as
-those packages are merged.
+The dome room in a box: the drum and the dome (main/dome once it is in the tree, until then the
+massing of main/_dome), and stand-ins for what other packages bring -- the floor, the opening
+round the pier and its railing (main/shell, c231), the two doorways to the roof terraces
+(main/dome, c222), the telescope (machines/refractor, c237). The stand-ins use the skeleton's
+numbers and are dropped one by one as those packages are merged.
 
     python -m scenes.obs_int_domeroom      the room as text (three sections, seven plans) and its checks
 """
@@ -34,16 +34,18 @@ TUBE_ELEVATION, TUBE_BACK, TUBE_FRONT = 41.05, 5.5, 9.5
 
 
 def _shell_standin(c):
-    """What main/shell lays in the dome room: the floor, the pier's cap, the railing round the
-    opening with a gap at the stair's exit. Under it the box is closed off in dark stone."""
+    """What main/shell lays in the dome room (c231, cursor/c164-shell-f063): the floor of boards,
+    the iron curb round the pier's opening, the railing on it with a gap at the stair's exit, the
+    pier's cap. Under it the box is closed off in dark stone."""
     inside = domeroom.room()
     hole = O.box(*S.PIER_ENVELOPE)
+    curb = O.ring(hole)
     for x, z in inside - hole:
-        c.set(x, FLOOR_Y, z, B.FLOOR_WOOD.block)
+        c.set(x, FLOOR_Y, z, B.IRON_RIVETED.block if (x, z) in curb else B.FLOOR_WOOD.block)
     for x, z in O.box(*S.PIER_CAP):
         for y in range(UNDER_Y + 1, FLOOR_Y + 1):
             c.set(x, y, z, B.ASHLAR_FINE.block)
-    for x, z in O.ring(hole) - {EXIT}:
+    for x, z in curb - {EXIT}:
         c.set(x, FLOOR_Y + 1, z, B.IRON_BARS)
     whole = O.disc(S.DOME_CENTRE[0], S.DOME_CENTRE[1], S.DOME_R)
     for x, z in whole:
