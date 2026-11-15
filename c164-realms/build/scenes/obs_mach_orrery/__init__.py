@@ -47,7 +47,7 @@ WINDOW_LIGHT = 9                           # behind each great window; the sun o
 TIME = 14000                               # light version A, the default
 
 CX, CZ = orrery.CX, orrery.CZ              # the hung centre (11.5, 0.5)
-RING_Y = orrery.RING_Y                     # 8.5
+RING_Y = orrery.RING_Y                     # 7.5
 
 
 def _wall(a, y):
@@ -119,9 +119,10 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras, the same five for each version: through the front door looking up at the sun;
-    straight below, looking up; level from the side gallery; from the ring stair's first flight, a
-    little above the ring; and close, about three blocks from the planets."""
+    """The cameras, the same five for each version: V7, from outside the front door, as the skeleton
+    locks it (A0 #365), the entrance as its frame; straight below, looking up; from the side
+    gallery, the eye a block above the ring; from the ring stair's first flight; and close, about
+    three blocks from the planets."""
     out = []
 
     def shot(name, pos, look_at):
@@ -130,7 +131,8 @@ def shots():
 
     for v, dz in VERSIONS.items():
         z = CZ + dz
-        shot(f"door_{v}", (WX[1] + 3.5, S.EYE, z), (CX, RING_Y, z))
+        (vx, vy, vz), (lx, ly, lz) = S.V7["pos"], S.V7["look_at"]
+        shot(f"v7_{v}", (vx, vy, vz + dz), (lx, ly, lz + dz))
         shot(f"under_{v}", (CX, S.EYE, z), (CX, RING_Y, z))
         shot(f"gallery_{v}", (CX, S.STAND + S.EYE, z + 5.0), (CX, RING_Y + 0.2, z))
         shot(f"stair_{v}", (5.5, 8.5 + S.EYE, z + 3.0), (CX, RING_Y + 0.4, z))

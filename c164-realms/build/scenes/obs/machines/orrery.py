@@ -11,8 +11,9 @@ Coordinates are the skeleton's (the card's old centre (7.5,0) and diameter 7 are
     ORRERY_CENTRE = (11.5, 0.5)   the hung centre (x, z)
     ORRERY_R      = 2.5           outer radius; the ring of planets keeps inside it
     ORRERY_HANG_Y = 14.0          the ceiling's lower face: the hub seats on interiors' hang point
-    ORRERY_RING_Y = 8.5           the plane of the arms and the sun, at gallery eye height
-    ORRERY_BODY_Y = (8.0, 14.0)   the machine fills this; the floor below (y 0..8) stays walkable
+    ORRERY_RING_Y = 7.5           the plane of the arms and the sun (A0 #357): a block below the eye of
+                                  a person on the gallery, who looks down on the orbits
+    ORRERY_BODY_Y = (6.5, 14.0)   the machine fills this; the floor below (y 0..6.5) stays walkable
 
 Two versions stand side by side until the review picks one (card: both six planets, both turn slow):
   a  planar      the six arms share one plane, the gear train is open above them
@@ -56,14 +57,16 @@ SUN = [P.mat("glow", kind="flat", base=i, bevel=0) for i in range(len(P.RAMPS["g
 CX, CZ = S.ORRERY_CENTRE                 # (11.5, 0.5)
 R = S.ORRERY_R                           # 2.5
 HANG_Y = S.ORRERY_HANG_Y                 # 14.0
-RING_Y = S.ORRERY_RING_Y                 # 8.5
-FLOOR_Y = S.ORRERY_BODY_Y[0]             # 8.0: nothing the machine draws goes below this
+RING_Y = S.ORRERY_RING_Y                 # 7.5
+FLOOR_Y = S.ORRERY_BODY_Y[0]             # 6.5: nothing the machine draws goes below this
 
 HUB_DROP = 0.95                          # the hub hangs this far below the ceiling
 STEM_TOP = HANG_Y - HUB_DROP - RING_Y    # blocks from the ring plane up to where the stem meets the hub
 
 SUN_R = 0.34                             # the sun's radius (a small warm core, not a dazzling globe)
-SUN_LIGHT = 10                           # the one warm source build() offers A2 (kept low; A2 aligns)
+SUN_LIGHT = 12                           # the one warm source build() offers A2, in the sun's cell
+#                                          (11, 7, 0). A0's figure: the sun is the hall's brightest point,
+#                                          the cell before the mother clock is set one below it, at 11
 
 # planets, inner to outer: (name, orbit radius, planet radius, material, banded, ringed). The colours
 # set them apart with the palette's cast iron / brass / verdigris / old copper, and the sizes grow
