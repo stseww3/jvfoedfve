@@ -85,6 +85,14 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 #         the way from the horizon colour to the look's cloud colour, veil the middle tone of the
 #         block clouds, fogged the horizon colour itself (the end of the scale: what is left of
 #         the rim then is not a matter of colour)
+#   glowed  the same end, but at the colour the void actually shows in the game: the fog colour with
+#         the afterglow fan laid over it. The fan stains the fog west of the mountain, so what the
+#         block clouds have to reach at 192 blocks is not #383a74 but the stained colour. Measured
+#         off the real-game picture 4ef326f (s1's v12_aerial, 1280x720): sky 0.36 #725067, the void
+#         outside the disc 0.37 #755064 (99% warm), the block clouds inside it 0.21 #31314d (100%
+#         cool) -- 0.16 of brightness and a whole warm-to-cool turn apart, which reads as a dark
+#         blue disc holding the mountain up. fogged's #383a74 lands on 0.22 and cannot close it;
+#         glowed's #755064 is the number to reach.
 TRIALS = {
     "card": dict(of="blue", tick=3100, moon_phase="new_moon"),
     "pink": dict(of="blue", tick=4100, glow="#e9706a"),
@@ -93,6 +101,7 @@ TRIALS = {
     "mist": dict(of="blue", tick=8100, cloud="#42457c"),
     "veil": dict(of="blue", tick=9100, cloud="#474c7a"),
     "fogged": dict(of="blue", tick=10100, cloud="#383a74"),
+    "glowed": dict(of="blue", tick=11100, cloud="#755064"),
 }
 TRIAL_HOLD, TRIAL_RAMP = 100, 50     # held from tick - 100 to tick + 100, blended over 50 ticks each side
 
