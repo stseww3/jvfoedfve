@@ -70,6 +70,12 @@ def _coord(v):
     return f"{float(v):.4f}"
 
 
+def _span(a, b):
+    """So many ticks, as far as it is known."""
+    a, b = max(0, a), max(0, b)
+    return f"{a} tick{'' if a == 1 else 's'}" if a == b else f"{a} to {b} ticks"
+
+
 class Server:
     """The server's console over RCON, and the few things the checks read from it."""
 
@@ -315,7 +321,7 @@ class Bench:
         self.clocks = {chain.cycle: Clock(chain) for chain in self.plan.chains}
         self.base, self.number, self.holder = self.plan.base, self.plan.number, f"#{scene}"
         self.quick = self.plan.chains[0].cycle          # the chain that carries the heartbeat
-        self.patience, self.retyped = RELOAD, False
+        self.patience, self.retyped, self.held = RELOAD, False, 0.0
         self.functions = [f"{self.base}/c{chain.cycle}/{k}" for chain in self.plan.chains
                           for k in range(len(chain.files))]
         self.until = server.now() + seconds
@@ -523,15 +529,18 @@ class Bench:
                 + ("; after the sprints every chain is where its clock had it" if seen.clean() else ""))
         self.note("steps", "PASS" if not missing and seen.clean() else "FAIL", text, missing[:6] + seen.faults())
 
-    def _when(self, value, limit):
-        """Wait until the heartbeat's holder reads `value`. Returns the earliest and the latest
-        game time at which it can have been set so, or None when `limit` ticks went by without."""
+    def _when(self, value, limit, since):
+        """Wait until the heartbeat's holder reads `value`; `since` is a game time at which it read
+        something else. Returns the earliest and the latest game time at which the change can have
+        shown from here (what is done in a tick shows when the tick is over), or None when `limit`
+        ticks went by without it."""
         s = self.server
-        start = last = s.time()         # the latest game time at which the holder still read something else
+        start, last = None, since       # last: the latest game time at which the holder still read something else
         while True:
             g0 = s.time()
             got = s.score(self.holder)
             g1 = s.time()
+            start = g0 if start is None else start
             if got == value:
                 return min(last + 1, g1), g1
             if g1 > start + limit:
@@ -539,28 +548,50 @@ class Bench:
             last = g0
             s.sleep(0.02)
 
-    def _reloaded(self):
-        """Type /reload and wait for the scene's load function, which sets the heartbeat's holder
-        to 0. Returns (the game time of the command, the earliest and latest game time at which
-        load can have run); the last is None when it was not seen to run.
-
-        With the loop alive the holder reads 0 only until the next beat, and not at all when load
-        runs on the very tick of a beat (one chance in the quickest cycle; load runs before the
-        queue in a tick). The holder then reads 1 when the wait is over, and the command is typed a
-        second time, half a beat off: self.retyped says so."""
+    def _after_beat(self):
+        """Wait for a tick just after a beat of the quickest chain, by its clock: the next beat is
+        then most of a cycle away. False when the clock is not known well enough."""
+        ticks = self.clocks[self.quick].ticks
+        if not ticks or len(ticks) > self.quick // 4:
+            return False
         s = self.server
-        self.retyped = False
+        g = start = s.time()
+        while g <= start + self.quick + 2:
+            if all(1 <= (g - tick) % self.quick <= self.quick // 3 for tick in ticks):
+                return True
+            s.sleep(0.01)
+            g = s.time()
+        return False
+
+    def _reload(self):
+        s = self.server
         s.put(self.holder, 5)
         start = s.time()
+        t0 = s.now()
         s.ask("reload")
-        when = self._when(0, self.patience)
+        self.held = s.now() - t0
+        return start, self._when(0, self.patience, start)
+
+    def _reloaded(self, alive=False):
+        """Type /reload and wait for the scene's load function, which sets the heartbeat's holder
+        to 0. Returns (the game time of the command, the earliest and latest game time at which
+        load can have shown); the last is None when it was not seen to run. self.held: the seconds
+        the command held the server (the game answers when the reload is through; load runs at the
+        beginning of the next tick, and the ticks that are due by then follow one upon the other).
+
+        With the loop alive the holder reads 0 only until the next beat, and not at all when load
+        runs on the very tick of a beat (load runs before the queue in a tick). So the command is
+        typed just after a beat, by the quickest chain's clock; and when load was not seen though
+        the loop beats, the command is typed a second time, half a beat off: self.retyped says so."""
+        s = self.server
+        self.retyped = False
+        if alive:
+            self._after_beat()
+        start, when = self._reload()
         if when is None and s.score(self.holder) == 1:
             self.retyped = True
-            s.put(self.holder, 5)
             s.wait((self.quick // 2 - (s.time() - start)) % self.quick)
-            start = s.time()
-            s.ask("reload")
-            when = self._when(0, self.patience)
+            start, when = self._reload()
         if when is not None:        # the next /reload is given up sooner: this is how long one takes here
             self.patience = min(self.patience, 4 * (when[1] - start) + 60)
         return start, when
@@ -569,22 +600,23 @@ class Bench:
         """/reload with the loop alive: the load function runs, finds the loop alive after its
         watch and leaves it alone; the parts go on from where they are."""
         patience = self.patience
-        typed, load = self._reloaded()
+        typed, load = self._reloaded(alive=True)
         twice = ("a first /reload did not show load running (it can run on the very tick of a heartbeat, which "
-                 "hides it from here), so the command was typed again half a beat off: " if self.retyped else "")
+                 "hides it from here), so the command was typed again half a beat off. " if self.retyped else "")
         if load is None:
             self.note("reload", "FAIL", f"{twice}{patience} ticks after /reload the heartbeat's holder had not read "
                       f"0: the scene's load function was not seen to run (is it in #minecraft:load?)")
             return
-        beat = self._when(1, self.quick + 3)
+        ran = f"/reload held the server for {self.held:.1f} s; load had run {_span(load[0] - typed, load[1] - typed)} later"
+        beat = self._when(1, self.quick + 3, load[0])
         if beat is None:
-            self.note("reload", "FAIL", f"{twice}load ran {load[1] - typed} ticks after /reload, but the heartbeat "
-                      f"did not come back within a cycle: the chains did not live through the reload")
+            self.note("reload", "FAIL", f"{twice}{ran}, but the heartbeat did not come back within a cycle: the "
+                      f"chains did not live through the reload")
             return
         seen = self.watch(max(20, self.plan.watch + 25 - (self.server.time() - load[1])))
-        text = (f"{twice}load ran {load[1] - typed} ticks after /reload (the heartbeat's holder read 0), the heartbeat "
-                f"was back {beat[1] - load[1]} ticks later; {self.server.time() - load[1]} ticks on, past the watch of "
-                f"{self.plan.watch}, "
+        text = (f"{twice}{ran} (the heartbeat's holder read 0), the heartbeat was back "
+                f"{_span(beat[0] - load[1], beat[1] - load[0])} after that; {self.server.time() - load[1]} ticks on, "
+                f"past the watch of {self.plan.watch}, "
                 + ("every part is where its chain's clock had it before the reload: nothing set off anew"
                    if seen.clean() else "the parts are not where their clocks had them: the loop set off anew"))
         self.note("reload", "PASS" if seen.clean() else "FAIL", text, seen.faults())
@@ -617,12 +649,12 @@ class Bench:
             self.note("broken", "FAIL", f"{patience} ticks after /reload the scene's load function was not seen to "
                       f"run. Started by hand, to go on with the checks")
             return
-        again = self._when(1, self.plan.watch + 2 * self.quick)
+        ran = f"/reload held the server for {self.held:.1f} s; load had run {_span(load[0] - typed, load[1] - typed)} later"
+        again = self._when(1, self.plan.watch + 2 * self.quick, load[0])
         if again is None:
             self.start()
-            self.note("broken", "FAIL", f"load ran {load[1] - typed} ticks after /reload, but "
-                      f"{self.plan.watch + 2 * self.quick} ticks later the loop had not started again. Started by "
-                      f"hand, to go on with the checks")
+            self.note("broken", "FAIL", f"{ran}, but {self.plan.watch + 2 * self.quick} ticks on the loop had not "
+                      f"started again. Started by hand, to go on with the checks")
             return
         for clock in self.clocks.values():
             clock.started(*again)
@@ -630,9 +662,8 @@ class Bench:
         early, late = again[0] - load[1], again[1] - load[0]
         # load runs before its tick's game time is counted up: its 60 ticks read as 59 from here
         timely = early - 2 <= self.plan.watch <= late + 2
-        text = (f"halt: nothing moved for {self.quick + 5} ticks and the heartbeat stayed away. /reload: load ran "
-                f"{load[1] - typed} ticks after the command, and {early if early == late else f'{early} to {late}'} "
-                f"ticks later the loop was started again (the watch is {self.plan.watch}); "
+        text = (f"halt: nothing moved for {self.quick + 5} ticks and the heartbeat stayed away. {ran}, and "
+                f"{_span(early, late)} after that the loop was started again (the watch is {self.plan.watch}); "
                 + ("all chains set off from that one start and every part is where the plan has it since"
                    if seen.clean() else "but the parts are not where a start at that tick has them"))
         self.note("broken", "PASS" if seen.clean() and timely else "FAIL", text, seen.faults())
@@ -693,6 +724,11 @@ class Bench:
         mine = [(x, z) for x, z in s.forced() if abs(x - cx) <= NEARBY and abs(z - cz) <= NEARBY]
         spots = {name: self._spot(name) for name in s.players()}
         spots = {name: spot for name, spot in spots.items() if spot is not None}
+        walkers = [name for name in spots if (s.data(name, "playerGameType") or "").strip() != "3"]
+        if walkers:
+            self.note("unload", "not done", f"{', '.join(walkers)} is online and not a spectator: sent away over "
+                      f"the void he would fall, and while he stays the chunks stay. Nothing was changed")
+            return
 
         def back():
             for name, spot in spots.items():
@@ -783,7 +819,8 @@ class Bench:
                 + ("every part is back as it was placed (pose, scale and right rotation; the lamp its own model)"
                    if not wrong else f"{len(wrong)} parts are not as they were placed: {', '.join(wrong[:6])}")
                 + (", nothing of the scene is queued" if not left else f", {left} chain functions were still queued")
-                + (f". /reload (load ran after {load[1] - typed} ticks) and {self.plan.watch + 10} ticks more: "
+                + (f". /reload (load had run {_span(load[0] - typed, load[1] - typed)} later) and "
+                   f"{self.plan.watch + 10} ticks more: "
                    if load is not None else ". /reload: the scene's load function was not seen to run, so this "
                                             "says nothing about a reload; ")
                 + ("still stopped, every part as placed" if not again and s.score(MK.RUN) == 0

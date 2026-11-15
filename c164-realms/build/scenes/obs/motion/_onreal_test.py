@@ -68,15 +68,18 @@ class _World(T._Game):
     TICK = 0.05                 # seconds a tick at the game's normal pace
     TYPING = 0.0004             # seconds a command takes to come and be answered
     BASE, EACH = 0.4, 0.02      # milliseconds a tick costs, and each command run in it
+    RELOADS = 1.3               # seconds a /reload holds the server: no tick, and no answer, until it is through
 
     def __init__(self, pack, breaks=()):
         super().__init__(pack)
         self.pack, self.breaks = pack, set(breaks)
         self.clock = 0.0            # seconds since this world's script began
         self.next = self.TICK       # when the next tick comes
+        self.due = self.TICK        # when it was due: a game that is behind runs its ticks one upon the other
         self.sprint = 0             # ticks left of a sprint
-        self.reloading = None       # the tick on which a /reload is through
+        self.reloading = None       # the tick before which the load functions run
         self.players = {"C164Cam": [0.0, 0.0, 0.0, 0.0, 0.0]}
+        self.modes = {}             # a player's game mode when he is not a spectator
         self.forced = set()
         self.home = None            # the chunks the placed entities stand in
         self.held = []              # the entities, while their chunks are let go
@@ -96,8 +99,10 @@ class _World(T._Game):
             if self.sprint:
                 self.sprint -= 1
                 self.next += cost
+                self.due = self.next
             else:
-                self.next = max(self.next + cost, math.floor(self.next / self.TICK + 1.0 + 1e-9) * self.TICK)
+                self.due += self.TICK
+                self.next = max(self.next + cost, self.due)
 
     def now(self):
         return self.clock
@@ -108,7 +113,7 @@ class _World(T._Game):
     def down(self, seconds):
         """The server is down for so long: no tick, the world as it was saved."""
         self.clock += seconds
-        self.next = self.clock + self.TICK
+        self.next = self.due = self.clock + self.TICK
 
     def _tick(self):
         if self.reloading is not None and self.tick + 1 >= self.reloading:
@@ -189,8 +194,10 @@ class _World(T._Game):
             return f"The game time is {self.tick} tick(s)"
         if text == "list":
             return f"There are {len(self.players)} of a max of 20 players online: {', '.join(self.players)}"
-        if text == "reload":
-            self.reloading = self.tick + 5
+        if text == "reload":            # the server thread waits for the reload: the answer comes when it is through
+            self.clock += self.RELOADS
+            self.next = max(self.next, self.clock)
+            self.reloading = self.tick + 1
             return "Reloading!"
         if words[:2] == ["tick", "query"]:
             mean = sum(self.costs) / max(1, len(self.costs))
@@ -266,6 +273,8 @@ class _World(T._Game):
                 return f"{target} has the following entity data: [" + ", ".join(f"{v!r}d" for v in spot[:3]) + "]"
             if path == "Rotation":
                 return f"{target} has the following entity data: {_floats(spot[3:])}"
+            if path == "playerGameType":
+                return f"{target} has the following entity data: {self.modes.get(target, 3)}"
             raise AssertionError(f"a path of a player this test's console does not know: {path}")
         m = _SELECTOR.match(target)
         assert m, f"a selector this test's console does not know: {target}"
@@ -432,6 +441,43 @@ def test_real_reload_on_a_beat():
     code, status, said = _fails(["load is not run"], (["reload", "broken", "stop"], "FAIL"))
     assert code == 1 and [c for c, s in status.items() if s == "FAIL"] == ["reload", "broken", "stop"], status
     assert "typed again" in "\n".join(said)
+
+
+def test_real_reload_after_a_beat():
+    """With the quickest chain's clock known, /reload is typed just after a beat: load is seen at
+    the first go whenever the check begins, and most of a cycle before the next beat."""
+    from scenes.obs_mot_loop import build
+    for shift in (0, 7, 13, 21, 29, 36, 39):        # the beat board's quickest chain beats every 40 ticks
+        bench, world, said, tmp = _bench(canvas=(build(), None), name="obs_mot_loop")
+        try:
+            bench.ready()
+            bench.alive(100)
+            assert len(bench.clocks[40].ticks) == 1, bench.clock_widths()
+            world.sleep(shift * world.TICK)
+            bench.reload_alive()
+            text = "\n".join(said)
+            assert _status(bench)["reload"] == "PASS" and not bench.retyped, (shift, text)
+            assert world.typed.count("reload") == 1 and abs(bench.held - world.RELOADS) < 0.01
+            m = re.search(r"the heartbeat was back (\d+) to (\d+) ticks after that", text)
+            assert m and int(m.group(1)) >= 20, (shift, text)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_real_nobody_falls():
+    """A player who is not a spectator is not sent out over the void: the unloading is left
+    undone and nothing is changed."""
+    bench, world, said, tmp = _bench()
+    try:
+        bench.ready()
+        world.modes["C164Cam"] = 1
+        before, forced, spot = len(world.typed), set(world.forced), list(world.players["C164Cam"])
+        bench.unloaded()
+        assert _status(bench)["unload"] == "not done" and "not a spectator" in "\n".join(said)
+        assert not any(t.startswith(("tp ", "forceload add", "forceload remove")) for t in world.typed[before:])
+        assert world.forced == forced and world.players["C164Cam"] == spot and not bench.undo
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def _fails(breaks, wanted, checks=None):
