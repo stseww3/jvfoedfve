@@ -893,7 +893,17 @@ def active_agent(conv):
 
 
 def touch(agent_id: str, tool_name: str) -> None:
-    store.run("UPDATE agents SET last_seen=?, last_tool=? WHERE id=?", (now(), tool_name, agent_id))
+    ts = now()
+    store.run("UPDATE agents SET last_seen=?, last_tool=? WHERE id=?", (ts, tool_name, agent_id))
+    arow = agent_row(agent_id)
+    if arow is not None and arow["status"] == "active":
+        cid = (arow["conv"] or "").strip()
+        if is_main_node_id(cid) or is_worker_node_id(cid) or is_worker_host_id(cid):
+            store.run(
+                "UPDATE exec_nodes SET last_seen=?, status=CASE WHEN status='offline' THEN 'online' ELSE status END "
+                "WHERE id=? AND agent=?",
+                (ts, cid, agent_id),
+            )
 
 
 def stop_identity(agent_id: str, note: str) -> None:
@@ -3002,6 +3012,155 @@ def reconcile_worker_pool(min_target: int | None = None, requester: str = "auto_
     return spawned
 
 
+_runner_heal_probes: dict[str, dict[str, Any]] = {}
+RUNNER_IDLE_RESUME_SEC = env_int("RUNNER_IDLE_RESUME_SEC", 420)  # 7 分钟未挂起等待则先自动 resume 唤醒
+
+
+def find_runner_parent_host(node_id: str):
+    op = store.one(
+        "SELECT target_node FROM dispatch_ops WHERE conv_id=? AND op_type='launch_subagent' ORDER BY created_ts DESC LIMIT 1",
+        (node_id,),
+    )
+    if op is not None and op["target_node"]:
+        h = node_row(op["target_node"])
+        if h is not None and node_is_online(h):
+            return h
+    return select_best_worker_spawner(allow_main_fallback=False)
+
+
+def relaunch_dead_runner_slot(node_id: str, reason: str = "工作节点会话失效自动重拉") -> tuple[str, str] | None:
+    nrow = node_row(node_id)
+    crow = conv_row(node_id)
+    if nrow is None or crow is None or nrow["kind"] != "runner":
+        return None
+    host = find_runner_parent_host(node_id)
+    if host is None:
+        return None
+    if nrow["agent"]:
+        stop_identity(nrow["agent"], reason)
+    w_code = "w-" + secrets.token_hex(8)
+    store.run(
+        "UPDATE convs SET status='open', agent='', task_code=?, task_ts=?, task_agent_id='' WHERE id=?",
+        (w_code, now(), node_id),
+    )
+    store.run(
+        "UPDATE exec_nodes SET agent='', status='starting', created=?, last_seen=? WHERE id=?",
+        (now(), now(), node_id),
+    )
+    _runner_heal_probes.pop(node_id, None)
+    op_id = "op_" + secrets.token_hex(5)
+    prompt_body = worker_spawn_task_text(w_code)
+    env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    payload = {
+        "conv_id": node_id,
+        "model": "",
+        "task_code": w_code,
+        "isolated_vm": True,
+        "environment_id": env_id,
+    }
+    store.run(
+        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
+        (op_id, host["id"], "launch_subagent", node_id, "auto_heal_runner", json.dumps(payload, ensure_ascii=False), "pending", now()),
+    )
+    msg_txt = format_standard_launch_op(
+        op_id,
+        host["agent"],
+        node_id,
+        prompt_body,
+        "",
+        isolated_vm=True,
+        requester="auto_heal_runner",
+        auto_discover_env=is_worker_host_id(host["id"]),
+    )
+    system_note(host["id"], msg_txt, wake=1)
+    log.info("auto-relaunched dead runner slot %s via %s (op_id=%s)", node_id, host["id"], op_id)
+    return host["id"], op_id
+
+
+def heal_runner_nodes(max_batch: int = 18) -> dict[str, list[str]]:
+    """自愈巡检所有 runner 节点（node1..K）：
+    1) 若节点已正常挂起等待（read_chat / shell_wait），清除探活记录并确保标为 online；
+    2) 若节点超过 RUNNER_IDLE_RESUME_SEC 未在等待（或已掉为 offline）且记录有 task_agent_id：
+       - 第 1 步：由所属母机 whostN 下发温和 [TASK_RESUME] 原地秒唤醒（保住原 VM 目录与缓存）；
+       - 第 2 步：若 resume 后超过 300s 仍未恢复（或回执报会话已销毁），原地复用该 nodeK 编号自动重拉新 VM！"""
+    resumed: list[str] = []
+    relaunched: list[str] = []
+    dispatched = 0
+    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','offline') ORDER BY num")
+    for r in rows:
+        nid = r["id"]
+        ag = agent_row(r["agent"]) if r["agent"] else None
+        if ag is not None and ag["status"] == "active" and waiting.get(ag["id"]):
+            _runner_heal_probes.pop(nid, None)
+            if r["status"] == "offline":
+                store.run("UPDATE exec_nodes SET status='online', last_seen=? WHERE id=?", (now(), nid))
+            continue
+
+        if dispatched >= max_batch:
+            continue
+
+        last_act = max(
+            float(ag["last_seen"] or 0) if ag else 0.0,
+            float(r["last_seen"] or 0),
+            STARTED if r["status"] == "online" else 0.0,
+        )
+        idle_sec = now() - last_act
+        if r["status"] == "online" and idle_sec < RUNNER_IDLE_RESUME_SEC:
+            continue
+
+        # 若该节点当前有正在执行且未超时的 workspace_job（例如跑 15 分钟求解器），不要在正常执行窗口内误重拉，只可温和发一次 resume 催收
+        pend_job = store.one(
+            "SELECT created_ts, payload_json FROM dispatch_ops WHERE target_node=? AND op_type='workspace_job' AND status='pending' ORDER BY created_ts DESC LIMIT 1",
+            (nid,),
+        )
+        in_active_job = False
+        if pend_job is not None:
+            try:
+                tsec = int(json.loads(pend_job["payload_json"] or "{}").get("timeout_sec") or 600)
+            except Exception:
+                tsec = 600
+            if (now() - float(pend_job["created_ts"] or 0)) < (tsec + 120):
+                in_active_job = True
+
+        crow = conv_row(nid)
+        tid = (crow["task_agent_id"] or "").strip() if crow is not None else ""
+        host = find_runner_parent_host(nid)
+        if host is None:
+            continue
+
+        probe = _runner_heal_probes.get(nid)
+        if ag is not None and ag["status"] == "active" and tid:
+            # 若自上次发 resume 后该节点已有新工具调用，说明已醒过一次，重置计数
+            if probe is not None and float(ag["last_seen"] or 0) > float(probe.get("ag_seen") or 0) + 1.0:
+                _runner_heal_probes.pop(nid, None)
+                probe = None
+            if probe is None:
+                r_prompt = (
+                    f"工作区会话 {nid} 队列巡检：若当前命令仍在执行请完成后通过 submit_op_result 提交结果；"
+                    f"若当前空闲，请调用 read_chat(agent=\"{ag['id']}\") 继续监听后续工作单。"
+                )
+                op_id = enqueue_resume_op(crow, host, requester="watchdog_runner_resume", resume_prompt=r_prompt)
+                _runner_heal_probes[nid] = {
+                    "op_id": op_id,
+                    "sent_ts": now(),
+                    "ag_seen": float(ag["last_seen"] or 0),
+                }
+                resumed.append(nid)
+                dispatched += 1
+                continue
+            if in_active_job or (now() - float(probe.get("sent_ts") or 0)) < 300:
+                continue
+
+        # 无有效 task_agent_id 或 resume 超 5 分钟仍失联：原地重拉该 nodeK 槽位！
+        if not in_active_job:
+            rel = relaunch_dead_runner_slot(nid, reason=f"工作节点 {nid} 失联且 resume 未恢复，自动重拉")
+            if rel is not None:
+                relaunched.append(nid)
+                dispatched += 1
+
+    return {"resumed": resumed, "relaunched": relaunched}
+
+
 def welcome_ctrl(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
@@ -4151,6 +4310,7 @@ MAIN_TOOLS = [
                     "remove",
                     "set_environment",
                     "scale_workers",
+                    "heal_workers",
                 ],
             ),
             "node_id": prop("string", "目标节点编号，如 main2 或 node1（approve_worker 时可填要替换的旧 nodeK，不填则新建）"),
@@ -5447,6 +5607,15 @@ async def t_manage_node(agent, args):
         set_approval(req_id, "done", pay)
         return text_result(f"已批准工作会话入网：分配节点编号 {node_id}（云端模式，已接入算力池）。")
 
+    if action == "heal_workers":
+        res_h = heal_runner_nodes(max_batch=60)
+        sp = reconcile_worker_pool(requester=agent["conv"], allow_main_fallback=False)
+        return text_result(
+            f"已执行工作节点池自愈：原地 resume 唤醒 {len(res_h['resumed'])} 台（{', '.join(res_h['resumed'][:20])}），"
+            f"重拉失效槽位 {len(res_h['relaunched'])} 台（{', '.join(res_h['relaunched'][:20])}），"
+            f"新扩容 {len(sp)} 台。"
+        )
+
     if action == "scale_workers":
         cnt = arg_int(args, "count", worker_pool_target(), 0, 60)
         new_target = set_worker_pool_target(cnt)
@@ -5709,6 +5878,10 @@ async def t_submit_op_result(agent, args):
         return text_result(f"已登记启动回执 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
 
     if op_type == "resume_subagent":
+        if requester == "watchdog_runner_resume":
+            if is_resume_dead_output(status, output):
+                relaunch_dead_runner_slot(conv_id, reason=f"工作节点 resume 返回已终止（{output[:60] or status}），自动重拉")
+            return text_result(f"已回传探活结果 {op_id}。现在请立即调用 read_chat 继续等待下一条指令。")
         if requester == "watchdog_auto_resume":
             conv_cur = conv_row(conv_id) if conv_id else None
             ag_cur = active_agent(conv_cur) if conv_cur is not None else None
@@ -7526,6 +7699,16 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
             await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
             return
         sub = rest.strip().split()
+        if sub and sub[0].lower() == "heal":
+            res_h = heal_runner_nodes(max_batch=60)
+            sp = reconcile_worker_pool(requester="admin_heal", allow_main_fallback=False)
+            await reply(
+                chat_id,
+                f"🔄 已触发工作节点池全量自愈：原地 resume 唤醒 {len(res_h['resumed'])} 台，重拉失效槽位 {len(res_h['relaunched'])} 台"
+                + (f"，新补齐 {len(sp)} 台" if sp else "")
+                + "。",
+            )
+            return
         if len(sub) >= 2 and sub[0].lower() == "scale" and sub[1].lstrip("-").isdigit():
             new_t = set_worker_pool_target(int(sub[1]))
             sp = reconcile_worker_pool(min_target=new_t, requester="admin_tg", allow_main_fallback=True)
@@ -9251,6 +9434,8 @@ def handle_thinking_stuck_conv(conv, trow, stuck_sec: float) -> str:
 async def watchdog_tick() -> None:
     mark_menu_dirty()
     reap_offline_exec_nodes()
+    heal_runner_nodes(max_batch=15)
+    reconcile_worker_pool(requester="watchdog_pool", allow_main_fallback=False)
     has_online_launchers = any(
         node_is_online(r) for r in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online'")
     )
