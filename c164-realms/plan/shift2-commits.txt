@@ -1,0 +1,21 @@
+# Commits of the second shift that the time window does not catch.
+#
+# tools/provenance.sh and tools/cloud_setup.sh refuse a commit when its history
+# holds a commit made between 2026-11-15 13:40 and 17:58 UTC (the second
+# shift's hours; nobody else committed then), or a commit listed here.  Listed
+# here: what the second shift pushed after 17:58 UTC, while the third shift was
+# already at work.  One full hash per line, a comment after it; lines that
+# begin with # are skipped.
+#
+# How the list was made (11-15 18:50 UTC, every second-shift chat stopped at
+# 18:26): every commit later than 17:58:00 UTC reachable from the tip of an old
+# branch (a cursor/c164-* branch that is not the new assembly, not a -f3 branch
+# or its -wip, not one of the merge post's -89df branches), less the commits of
+# the new assembly itself, which the last three below had merged in.  If an old
+# branch moves again, add what it gained.
+
+a72f435af7c82e7fcfeff736d76a6c7c5cd8db98  # 17:58:26  cursor/c164-scope-6e0f      c164-scope: the test scene's second camera
+822e9c5d87aace7db795da74d9d275046cf3daa3  # 17:58:41  cursor/c164-scope-6e0f      c164-scope: the card says what the branch holds
+1c3d09ce9b67a625396c4f8d827ea80ef032bed3  # 18:24:49  cursor/c164-ridges-lights   merge of the new assembly into the old sky/ridges branch
+5b7e248b366f83c672b4db632c383f0116d0e914  # 18:24:58  cursor/c164-lights-007c     merge of the new assembly into the old sky/lights branch
+2d675caabf4e91b94afeb81b8d8d49a3f4b8c4a5  # 18:25:16  cursor/c164-lights-007c     sky/lights drops the stand-in for V2

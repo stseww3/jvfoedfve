@@ -29,6 +29,7 @@ PIER = B.ASHLAR_ROUGH.wall      # between two runs of bars and under its cap the
 PIER_CAP = B.ASHLAR_ROUGH.slab  # slab of stone six pixels thick; the cap oversails it by five each side
 BARS = B.IRON_BARS
 BEAT = S.EAST_POST_SPACING      # 4: the piers stand on the building's pilaster lines, or wider
+PIER_TOP = 1.5                  # the top of a pier's cap above the ground the rail stands on: where a pier lamp sits
 
 
 def beat(a, b, anchor=S.Z_NORTH):

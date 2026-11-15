@@ -48,6 +48,16 @@ def _flat(name, step):
     return lambda: P.mat(name, base=step).paint(K.TILE, K.TILE)
 
 
+def _tone(name, step):
+    """One step of a ramp and nothing else, whatever way the material is usually painted."""
+    return lambda: P.mat(name, kind="flat", bevel=0, base=step).paint(K.TILE, K.TILE)
+
+
+# The boiler bays' glow, from the sill upwards: the darkest amber, then two browns down to near the
+# dark of the window above (the whole window stays below the drawn curtain's 0.40).
+_FURNACE = (("glow", 0), ("dark_wood", 4), ("dark_wood", 1))
+
+
 # roles of the occupancy table -> the ramp their stand-in is toned into, and what else it needs
 _ROLES = [
     ((B.ASHLAR_ROUGH, B.ASHLAR_FINE, B.ASHLAR_PANEL, B.ASHLAR_EMBLEM), "ashlar", {}),
@@ -63,10 +73,13 @@ _ROLES = [
       B.BRASS_BUTTON, B.BRASS_SHELF, B.BRASS_INLAY, B.BRASS_SIGN), "brass", {}),
     ((B.OLD_COPPER, B.OLD_COPPER_CUT), "old_copper", {}),
     ((B.BRASS_LINE, B.BRASS_CROSS, B.BRASS_STAR), "old_copper", {}),
+    ((B.SNOW, B.SNOW_LAYER), "snow", {}),
     ((B.WAINSCOT,), "dark_wood", {}),
     ((B.ENAMEL_SIGN,), "enamel", {}),
 ] + [((block,), "cloud", dict(FLAT, picture=(f"cloud_{i}", _flat("cloud", i))))      # dark to light
-     for i, block in enumerate(getattr(B, "CLOUD", ()))]
+     for i, block in enumerate(getattr(B, "CLOUD", ()))
+] + [((glass,), ramp, dict(LIT, picture=(f"window_furnace_{row}", _tone(ramp, step))))    # sill to top
+     for row, (glass, (ramp, step)) in enumerate(zip(B.WINDOW_FURNACE, _FURNACE))]
 _PANELS = list(B.PANELS.values())
 
 

@@ -10,6 +10,7 @@ sides can then work without waiting for each other.
     B.ASHLAR_FINE.stairs     "smooth_sandstone_stairs"   (None where the family has no such shape)
     B.IRON_RIVETED.slab      "oxidized_cut_copper_slab"
     B.WINDOW_LIT.pane        "yellow_stained_glass_pane"
+    B.WINDOW_FURNACE[0].block  "red_stained_glass"       (the bottom row of the three that glow)
     B.PANELS["dial"]         "white_glazed_terracotta"
     B.CLOUD[2]               "dead_bubble_coral_block"   (the middle one of the five cloud tones)
 
@@ -74,6 +75,12 @@ WINDOW_BLIND = Family("black_stained_glass", pane="black_stained_glass_pane")   
 SKYLIGHT = Family("light_gray_stained_glass", pane="light_gray_stained_glass_pane")      # iron-framed roof light
 LIT_WINDOWS = (WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED)
 DARK_WINDOWS = (WINDOW_DARK, WINDOW_BLIND)
+# The glow of a boiler's fire behind dirty glass and iron glazing bars (A0, 11-15, g2 #522): for the
+# two boiler bays of the power house and nowhere else. A bay glows over three rows as one sheet,
+# brightest at the sill and close to a dark window at the top, so the role is three glasses, one for
+# each row, the bottom row first: B.WINDOW_FURNACE[row - bottom_row].block. Whole blocks only, there
+# is no pane. It is not one of the three levels of light of LIT_WINDOWS.
+WINDOW_FURNACE = (Family("red_stained_glass"), Family("brown_stained_glass"), Family("purple_stained_glass"))
 
 # --- repainted: instrument panels (glazed terracotta; the panel shows on the side named by facing) --
 PANELS = {
@@ -127,6 +134,13 @@ BRASS_CROSS = "activator_rail"  # [shape=north_south] where two lines cross (the
 BRASS_STAR = "detector_rail"    # [shape=north_south] the emblem's star, one cell
 ENAMEL_SIGN = ("oak_sign", "oak_wall_sign", "oak_hanging_sign", "oak_wall_hanging_sign")
 
+# --- repainted: the snow on the mountain's shelves (A0, 11-15; from 11-14 it was drawn as the game draws it) --
+# The game's white snow was the brightest surface of the night, brighter than the lit front. It is
+# painted as snow lying in the shade of the blue hour, in the palette's ramp "snow". For the mountain
+# only, like the rock below.
+SNOW = "snow_block"
+SNOW_LAYER = "snow"                                             # snow[layers=1..8], an eighth of a block each
+
 # --- repainted: the cloud sea built of blocks (five flat tones, dark to light like RAMPS["cloud"]) ----
 # Provisional (A0, 2026-11-14): the family is settled on the real-game pictures of the cloudsea card.
 CLOUD = ("dead_horn_coral_block", "dead_fire_coral_block", "dead_bubble_coral_block",
@@ -143,31 +157,33 @@ SLATE_SMOOTH = _family("polished_deepslate", "stairs slab wall")
 TUFF_BRICK = _family("tuff_bricks", "stairs slab wall", stem="tuff_brick")              # lower terrace, power house
 TUFF_SMOOTH = _family("polished_tuff", "stairs slab wall")
 TUFF = _family("tuff", "stairs slab wall")
-# natural rock and snow (A0 #171, 11-14): the mountain, its cliffs and what lies on them, with TUFF
-# above as the fifth rock. Not for walls, plinths or paving: what is built is ashlar, slate or tuff
-# brick, so the eye can tell the mountain from the masonry that stands on it
+# natural rock (A0 #171, 11-14): the mountain and its cliffs, with TUFF above as the fifth rock. Not
+# for walls, plinths or paving: what is built is ashlar, slate or tuff brick, so the eye can tell the
+# mountain from the masonry that stands on it
 ROCK_STONE = _family("stone", "stairs slab")
 ROCK_ANDESITE = _family("andesite", "stairs slab wall")
 ROCK_DEEPSLATE = "deepslate"                                    # (axis: the bedding runs across it)
 ROCK_COBBLED = _family("cobbled_deepslate", "stairs slab wall")
-SNOW = "snow_block"
-SNOW_LAYER = "snow"                                             # snow[layers=1..8], an eighth of a block each
 DARK_WOOD = _family("dark_oak_planks", "stairs slab", stem="dark_oak")                  # indoors: panelling, furniture
 FLOOR_WOOD = _family("spruce_planks", "stairs slab", stem="spruce")                     # indoor floors
 PALE_WOOD = _family("pale_oak_planks", "stairs slab", stem="pale_oak")                  # light wood where one is needed
 VANILLA_BARS = "iron_bars"
 VANILLA_CHAIN = "iron_chain"
 LIGHT = "light"                                                 # the invisible light source: light[level=N]
+# the collision of a closed door or gate that is made of models, and of nothing else (A0, 11-16 05:07,
+# under #457's fourth): in the plane of the leaf, two high, no wider than the leaf. Anywhere else a
+# barrier is the wall nobody sees, which the map does not have; tools/check.py, blocks, holds it to this
+BARRIER = "barrier"
 
 REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE, IRON_RIVETED, IRON_CAST,
              IRON_GRATE, IRON_DOOR, IRON_HATCH, IRON_BARS, IRON_PIPE, IRON_ROD, IRON_BULB, IRON_LANTERN,
-             WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT,
+             WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT, *WINDOW_FURNACE,
              *PANELS.values(), BRASS_PLATE, BRASS_PATTERN, BRASS_COLUMN, BRASS_RAIL, BRASS_GATE, BRASS_DOOR,
              BRASS_HATCH, BRASS_BUTTON, *BRASS_SIGN, BRASS_SHELF, OLD_COPPER, OLD_COPPER_CUT, WAINSCOT,
-             BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, *CLOUD]
+             BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, SNOW, SNOW_LAYER, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
-           TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED, SNOW,
-           SNOW_LAYER, DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
+           TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED,
+           DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT, BARRIER]
 
 
 def ids(entries):

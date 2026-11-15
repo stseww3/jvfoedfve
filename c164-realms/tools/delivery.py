@@ -4,6 +4,9 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
 
     delivery.py <category>/<package> <commit> [--base <commit>]      base: HEAD (the assembly copy)
 
+  shift     no commit of the second shift in the delivered commit's history. The rule is
+            tools/provenance.sh's (plan/roles/HANDOVER.md, section 0), asked here so that no
+            delivery is looked at without it: a delivery that fails it is not merged
   scope     the files changed, sorted into: the card's own (its module, the category's _helpers,
             its test scenes and their kept pictures, its card, the parts files), common files (only
             the merge-key holder changes those: agreed beforehand or not?), other cards' files,
@@ -35,6 +38,7 @@ import subprocess
 import sys
 import tempfile
 
+HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = "c164-realms/"
 ABBR = {"materials": "mat", "sky": "sky", "main": "main", "site": "site", "machines": "mach",
         "props": "props", "interiors": "int", "motion": "mot", "common": "common"}
@@ -49,7 +53,10 @@ MAGIC = {".png": (b"\x89PNG\r\n\x1a\n",), ".jpg": (b"\xff\xd8\xff",), ".jpeg": (
 SOUNDS = (".ogg", ".wav", ".mp3", ".flac")
 # The one kind of binary that is not a picture (A0, 2026-11-14): a class of our own that the Windows
 # workspace cannot build (its Java has no compiler), kept beside its source tools/win/<Name>.java and
-# a note of that source's SHA-1, tools/win/helper/<Name>.sha1.
+# a note of that source's SHA-1, tools/win/helper/<Name>.sha1. The same source gives the same bytes
+# only under the same javac: CamHelper.class is what javac 25.0.5 builds (Temurin jdk-25.0.5+8; commit
+# ecf454dd), javac 21 lays the same 8072 bytes out otherwise. Where the javac on the path is another,
+# name that one in the environment: JAVAC=<MC_ROOT>/jdk/jdk-25.0.5+8/bin/javac (node33 has it there).
 BUILT = re.compile(r"tools/win/helper/([A-Za-z0-9_]+)(\$[A-Za-z0-9_$]+)?\.class")
 JAVAC = ("--release", "21", "-encoding", "UTF-8")      # as tools/win/build_helper.py builds it
 LARGE, HUGE = 1 << 20, 5 << 20
@@ -130,7 +137,9 @@ def built_class(tree, rel, data, cache):
         return [f"{rel}: the source does not build here ({version}): {last[0][:120]}"], []
     if made.get(os.path.basename(rel)) != data:
         return [f"{rel}: not what the source builds here ({version}, javac {' '.join(JAVAC)}); "
-                f"rebuilt {len(made.get(os.path.basename(rel), b''))} bytes, kept {len(data)}"], []
+                f"rebuilt {len(made.get(os.path.basename(rel), b''))} bytes, kept {len(data)}. Another version "
+                f"of javac than the one that built the kept class gives other bytes: try again with JAVAC set "
+                f"to that one before sending it back"], []
     return [], []
 
 
@@ -185,6 +194,19 @@ def main():
     print(f"delivery {args.card}: {head[:7]} against {base[:7]} (forked at {fork[:7]}), "
           f"{len(commits)} commits, {len(pairs)} files")
     results = []
+
+    # ---- shift: the rule lives in tools/provenance.sh alone ----
+    asked = subprocess.run(("bash", os.path.join(HERE, "provenance.sh"), head), capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
+    said = (asked.stdout + asked.stderr).strip().splitlines()
+    if asked.returncode == 0:
+        results.append(say("PASS", "shift", "no commit of the second shift in its history (tools/provenance.sh)"))
+    elif asked.returncode == 1:
+        results.append(say("FAIL", "shift", "commits of the second shift in its history: not merged, not "
+                           "cherry-picked, not copied from (plan/roles/HANDOVER.md, section 0). The work is done "
+                           "again on a branch cut from the first shift's head (plan/ROSTER.md)", said))
+    else:
+        results.append(say("FAIL", "shift", "tools/provenance.sh could not test the commit", said))
 
     # ---- scope ----
     mine, common, director, others, outside = [], [], [], [], []
