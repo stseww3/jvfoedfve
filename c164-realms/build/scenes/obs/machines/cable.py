@@ -83,7 +83,12 @@ WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)                     # the sunk panel of the door
 GLOW = [PK.flat("glow", i) for i in range(len(P.RAMPS["glow"]))]
 ROPE, ROPE_TOP, ROPE_UNDER = PK.flat("iron", 4), PK.flat("iron", 5), PK.flat("iron", 2)
-BELT, BELT_EDGE = PK.flat("old_copper", 1), PK.flat("old_copper", 0)        # a leather belt
+BELT, BELT_EDGE = PK.flat("old_copper", 0), PK.flat("old_copper", 1)
+# A flat belt of hide: the darkest step of the old-copper ramp (0.20 down to 0.14 in the shade),
+# a step darker than any board of the car's dark wood, so that at nine levels in the winch house a
+# belt reads as a belt and not as a plank of wood (cr3's finding on `motor`, cr3-M7 item 2: the
+# belt was old_copper 1 against dark_wood 1 to 3, the same tone). The edge is a step lighter, so the
+# two sides of a run can be told apart where it turns on a wheel.
 
 
 class _Wound(Mat):

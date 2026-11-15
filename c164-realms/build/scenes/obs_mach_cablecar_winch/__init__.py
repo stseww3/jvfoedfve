@@ -69,9 +69,11 @@ VIEWS = [
     ("car", (87.4, STAND, -29.4), (90.4, -2.7, -32.4)),
     ("car_side", (90.6, -2.3, -28.4), (90.5, -2.6, -32.5)),
     ("car_end", (94.6, -2.0, -31.2), (91.5, -2.7, -32.5)),
-    # the winch: the whole opening under its girder from the bay's west end; the drum from the
-    # kerb north of the car; along the drum from the opening's east corner
-    ("winch", (87.0, STAND, -30.0), (89.0, -1.9, -37.4)),
+    # the winch: the whole opening under its girder from the bay's south end, the drum read along
+    # its length between the two wheels rather than end on (cr3-M7 item 1: from the bay's west end
+    # the drum, its wheels and the lever piled into one dark mass); the drum from the kerb north of
+    # the car; along the drum from the opening's east corner
+    ("winch", (88.5, STAND, -30.0), (89.0, -1.9, -37.4)),
     ("winch_near", (89.9, STAND, -34.5), (88.8, -2.6, -37.4)),
     ("drum_east", (90.9, -2.3, -34.4), (88.9, -2.5, -37.2)),
     ("motor", (87.1, -2.9, -34.5), (88.0, -3.3, -36.0)),
