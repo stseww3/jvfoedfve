@@ -66,11 +66,9 @@ CROWN_Y = S.DOME_APEX + 1
 CROWN_COVER = B.VERDIGRIS_CUT.slab + "[type=bottom]"
 
 # The two hero views look up by about 22 degrees, so that the whole comet is in the picture and the
-# building takes the lower half (A0 #24227, 11-14): V1 keeps its place and looks at (8, 34, 0.5), V2
-# stands at (58.5, 1.7, 0.5) and looks at (17, 19, 0.5). The skeleton is being changed to say so
-# (S2); it is read here as soon as it does, until then the ruled numbers stand below.
-V1 = S.V1 if S.V1["look_at"][1] >= 30 else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
-V2 = getattr(S, "V2", None) or dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5))
+# building takes the lower half (A0 #24227, 11-14). They are the skeleton's locked cameras, read
+# from it: tools/check.py names a shot that stands at one of them and looks elsewhere.
+V1, V2 = S.V1, S.V2
 
 # V8 looks out of the dome room through the slit. Its camera stands at the back of the observing
 # floor beside the tube and looks due west, 25 degrees up (interiors/domeroom, c178, group 11-15):
