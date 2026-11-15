@@ -33,14 +33,15 @@ def shots():
     # the machine broadside, the belt and the dynamo
     shot("machine", (E.CX - 1.0, EYE, E.CZ + 6.5), (DYNAMO[0], DYNAMO[1], DYNAMO[2]))
     shot("flywheel", (E.CX + 1.0, EYE, E.CZ + 5.0), (WHEEL[0], WHEEL[1], WHEEL[2]))
-    # in through the wicket
+    # in through the wicket. The first stand was a cell inside the shell's own gate bars, and the
+    # bars filled the frame; it steps in past them and looks back at the machine
     shot("door_in", (DOOR_X, EYE, Z0 - 4.0), (WHEEL[0], WHEEL[1] - 0.5, WHEEL[2]))
-    shot("door_step", (DOOR_X, EYE, Z0 + 3.0), (E.CX, FEET + 1.2, E.CZ))
-    # the walkway, both ways. The one looking back at the door was a dark corner and the grating's
-    # own shadow filled a sixth of the frame; it looks along the run instead, the grating underfoot
-    # and the machine at its end.
-    shot("walkway", (PH.WALK_X[0] + 1, EYE + 0.4, PH.WALK_Z[0]), (PH.WALK_X[1], FEET + 1.0, PH.WALK_END_Z))
-    shot("walkway_in", (PH.DOOR_X[0], EYE + 0.6, PH.WALK_Z[0]), (PH.WALK_X[1], FEET + 1.0, PH.WALK_END_Z))
+    shot("door_step", (DOOR_X, EYE, Z0 + 5.0), (E.CX, FEET + 1.2, E.CZ))
+    # the walkway, along the run: the grating underfoot and the machine at its end. The two stands
+    # that looked back at the door were inside the run's own shadow and the frame's bars; these
+    # stand at the run's west end looking the way a person walks it.
+    shot("walkway", (PH.WALK_X[0] + 1, EYE + 0.5, PH.WALK_Z[1]), (PH.WALK_X[1], FEET + 1.5, PH.WALK_END_Z))
+    shot("walkway_in", (PH.WALK_X[0] + 2, EYE + 0.5, PH.WALK_Z[1]), (int(E.CX) - 4, FEET + 3.0, E.CZ - 2))
     # the room itself: the walls, the trusses, the ceiling
     shot("room", (X1 - 2.5, EYE, Z1 - 2.5), (X0 + 3.0, FEET + 3.0, Z0 + 3.0))
     shot("ceiling", (X0 + 9.0, FEET + 1.0, Z0 + 16.0), (X0 + 9.0, FEET + 9.0, Z0 + 8.0))
