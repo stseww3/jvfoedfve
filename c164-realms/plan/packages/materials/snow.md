@@ -35,3 +35,9 @@
 - **亮度**（贴图平均，Rec.601）：snow 0.532，snow_side 0.525。原版岩石：deepslate 0.32，cobbled_deepslate 0.31，tuff 0.42，stone 0.49，andesite 0.53。ashlar_fine 0.74。注意 andesite 和雪一样亮（只是不偏蓝），stone 只差一档：山上的浅色夹层要是紧挨着雪，雪的边会读不清。这归 site/terrain 看图定，这里只记数。
 - **占用表**（S2 做）：只把 SNOW、SNOW_LAYER 挪进 REPAINTED，所有场景都生成不出来（`materials/_standin.py` 的 `left()` 报错）；同一个提交里要给 `_ROLES` 加一行 `((B.SNOW, B.SNOW_LAYER), "snow", {})`。本卡合进去以后这两个方块自动从替身里退出。这一条进总装之前，本分支自己也生成不出来（`K.redirect` 不放行），所以先不交付。
 - 图在管理员电脑上出，收图夹前缀 `m1-obs_mat_snow-`；交付的图在 `renders/obs_mat_snow/`。
+  （11-15 夜起作废：管理员电脑不再用，图在自己的云端机器上用 `tools/selfshots.py` 出，见 `COMMON.md` 第 0 节第 2 条。）
+- **接手 snow（11-15 夜）**：公共文件进总装 2d48f8ee（色板 `snow` 色阶、占用表 `SNOW`/`SNOW_LAYER` 进重画、`_standin._ROLES` 加一行）以后，本分支并总装 d07d5cc1 再跑：
+  - `check.py --scene obs_mat_snow` PASS，0 失败 0 黄（13 机位、8 种方块、114 图全在色板内、91 个方块状态全在占用表内、603 个包文件无重名）。前任停机期间写的代码头一回跑通，没改一行。
+  - 13 张离线图在 `renders/obs_mat_snow/`（`obs_mat_snow-<机位>.png`，提交 3293fcde）。
+  - **次序**（自测，逐面取样渲染后的像素，不是贴图平均）：`order` rock top 0.150 < snow top 0.212 < ashlar wall 0.272（kerb top 0.362）；`order_dusk` 0.189 < 0.267 < 0.354（0.459）；`order_down` 0.149 < 0.241 < 0.278（0.362）。三次都是岩石最暗、雪居中、建筑浅石最亮，雪最亮的 1%（p99 0.261）不高过立面石头（p50 0.290）和边石线（0.362）。雪朝天的面比朝人的面亮（0.212 对 0.145），因为天光只从上下来。
+  - 雪最亮的 1% 与立面石头的 p50 差一档多一点，不是紧贴在一起：色阶本身是这么定的（雪 0.531 对 ashlar_fine 0.74 的贴图平均），不自己调。
