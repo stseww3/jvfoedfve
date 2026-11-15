@@ -1,0 +1,3 @@
+branch=cursor/c164-a4-walkin-f3-6824
+head=86a71a91e47f131e8e1427f20f1e3051a11beec5
+args=--wip --to cursor/c164-a4-walkin-f3-wip-6824 --always --limit 600 --tail 150 P=/tmp/c164_walk/obs-116c2e4.pkl\;\ python\ tools/walk.py\ cells\ --canvas\ \$P\ --box=11\,17\,9\,13\,20\,11\ --box=11\,17\,-11\,13\,20\,-9\ --box=8\,17\,29\,10\,21\,31\ --box=9\,17\,-31\,11\,21\,-29\ --box=-9\,-1\,-1\,-6\,4\,1\ --box=16\,0\,-5\,16\,3\,5\ --box=73\,-7\,20\,75\,-3\,22\ \>\ renders/_wip/walk/cells-doors.txt\;\ wc\ -l\ renders/_wip/walk/cells-doors.txt\;\ time\ python\ tools/walk.py\ round\ plan/reviews/walk/in-route.json\ --round\ 116c2e4\ --no-pictures\ --out\ renders/_wip/walk/r1 
