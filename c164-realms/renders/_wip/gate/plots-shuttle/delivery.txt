@@ -1,0 +1,28 @@
+delivery common/plots-shuttle: ecf454d against a122958 (forked at 142f307), 23 commits, 18 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    0 of 18 files are the card's own
+                common file (merge-key holder's; agreed beforehand?): A tools/boardshots.py
+                common file (merge-key holder's; agreed beforehand?): A tools/realshots.py
+                common file (merge-key holder's; agreed beforehand?): M tools/shoot.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/CamHelper.java
+                common file (merge-key holder's; agreed beforehand?): A tools/win/build_helper.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/deskstate.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/grabcheck.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/helper/CamHelper.class
+                common file (merge-key holder's; agreed beforehand?): A tools/win/helper/CamHelper.sha1
+                common file (merge-key holder's; agreed beforehand?): M tools/win/job.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/plots.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/probe.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shots/obs-board.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shots/obs-overview.json
+                common file (merge-key holder's; agreed beforehand?): A tools/win/shuttle.py
+                common file (merge-key holder's; agreed beforehand?): A tools/win/trip.py
+                ... and 2 more
+[FAIL] files    1 not allowed, 0 to look at
+                tools/win/helper/CamHelper.class: not what the source builds here (javac 21.0.13.0.3, javac --release 21 -encoding UTF-8); rebuilt 8072 bytes, kept 8072
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures no test scene with a shot list is touched
+[PASS] merge    merges cleanly; 75 commits behind the base
+result: FAIL (1 failed, 1 to look at)
