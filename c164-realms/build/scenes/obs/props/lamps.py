@@ -166,18 +166,22 @@ def _bracket_b():
     return m
 
 
-CAGE_HOOPS = (-1.5, 1.5)    # where the two upright hoops of cage A stand, in the model's units: either
-                            # side of the glass's middle, close in. Dead on, the two of them over the
-                            # round lit glass read as one round button with two bars on it, the pause
-                            # sign (c219, group #33010; the card keeps the fallbacks). The alternatives
-                            # are three hoops a third of the way round, or the two of them out at the
-                            # glass's edge; _cage_a takes either, and obs_props_lamps_cage puts all
-                            # three side by side for the review to pick from.
+CAGE_HOOPS = (-2.25, 2.25)  # where the two upright hoops of cage A stand, in the model's units. Out at
+                            # the glass's edge, not either side of its middle: dead on, two hoops close in
+                            # over the round lit glass read as one round button with two bars on it, the
+                            # pause sign (c219, group #33010). The review measured the row across the lit
+                            # glass on the three dead-on pictures and chose this (c261, #45055): as it was
+                            # the glow came in three pieces 10/16/10 pixels wide, here the middle 28 of 56
+                            # pixels run on whole, and at 14 pixels the middle is still one block of 8. As
+                            # approved the hoops stood at (-1.5, 1.5); "three" cuts the glow into 11/11 with
+                            # a bar on the axis and reads as 川. If the cage is ever wanted more solid,
+                            # the review asks for an uneven pair (-2.25, 1.5) rather than the old pair.
 
 
-def cage_hoops(choice="two"):
-    """The hoops of cage A: "two" (as approved), "three", or "two_wide" (the two out at the edge)."""
-    return {"two": (-1.5, 1.5), "two_wide": (-2.25, 2.25), "three": (-2.4, 0.0, 2.4)}[choice]
+def cage_hoops(choice="two_wide"):
+    """The hoops of cage A: "two_wide" (as chosen), "two" (the pair either side of the middle, as first
+    approved), or "three"."""
+    return {"two_wide": (-2.25, 2.25), "two": (-1.5, 1.5), "three": (-2.4, 0.0, 2.4)}[choice]
 
 
 def _cage_a(hoops=None, name=None):
