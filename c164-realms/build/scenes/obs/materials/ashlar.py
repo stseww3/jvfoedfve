@@ -55,7 +55,7 @@ VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
 GROOVES = (2, 5, 8, 11)     # the rows of the rough stone's tool marks: a groove, its lit lip the row below
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
-STAR = (9, 5)       # the emblem's star, a dot of two pixels by two: its upper left pixel
+STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
 
 
 def _a(n):
@@ -92,15 +92,17 @@ def _emblem_figure():
     The star is a dot of two pixels by two. A star with arms is, on this grid, a cross of five
     pixels, and from close by that read as a plus sign or a small cross and not as a star (c219's
     second look, g2 #313); from twenty blocks either is a dot. The ruling puts the star 0.4 of the
-    radius right of the ring's middle and as far above it. On sixteen pixels the dot that is as
-    far right as up and a pixel clear of both the ring and the line is the one two pixels each
-    way, 0.31 of the radius: the next one out stands with a corner on the ring. These are the
-    pixels of the station's standard drawing (props/signs, c242's notice of 2026-11-15 in g2),
-    which the cast iron plate and the paper take as well.
+    radius right of the ring's middle and as far above it. Of the dots about that place the nearest
+    stands with a corner on the ring and the one left of it against the lit lip of the meridian, a
+    flag on a staff; this one, a row lower, has a plain pixel between it and both: 0.46 of the
+    radius right of the middle and 0.31 above.
 
-    Cut into stone, the pixel between the line and the star is the lit lip of the line: the star
-    stands against that lip, and still apart from the line. A column further right it would have
-    a plain pixel there, and would not be the figure the rest of the station carries."""
+    The station's standard drawing (props/signs, c242) has the star a column to the left, at x
+    9..10: flat figures -- enamel, cast iron -- have no lip, and there that is the dot a pixel
+    clear of the ring and of the line. The rule is one, a pixel of the ground between the star
+    and the ring and the line; cut into stone the lit lip is as plain to see as the cut and
+    counts as line, so the stone's star stands a column further right (c242's ruling of
+    2026-11-15 in g2, on the two drawings)."""
     lo, hi = RING
     ring = _cells(lambda dx, dy: lo <= math.hypot(dx, dy) <= hi)
     meridian = [(7, y) for y in range(TILE)]
@@ -445,11 +447,9 @@ def faults(pictures, version=DEFAULT):
                      fine end is no more than a tenth of it;
       - the panel    one size of sunk field: were it given variants, their bevels and the walls of
                      the field would stand at the same pixels;
-      - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), a
-                     pixel or more from the ring and from the meridian, inside the ring, as far
-                     right of its middle as above it -- on sixteen pixels that leaves the one
-                     place of the station's standard drawing; the meridian runs out of the ring at
-                     both ends.
+      - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), inside
+                     the ring, with a plain pixel between it and the ring, the meridian and the lit
+                     lip of either; the meridian runs out of the ring at both ends.
 
     The steps of the ramp up to JOINT are the joint tones of the fine side: the face of a fine
     stone never takes them. On the ends A0 and A1 are."""
@@ -591,10 +591,11 @@ def faults(pictures, version=DEFAULT):
         outside = _outside(max(cut, key=len))
         if any((x + dx, y + dy) in outside for x, y in star for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
             out.append(f"ashlar_emblem{i}: the star is not inside the ring")
-        right, up = x0 + 0.5 - (TILE - 1) / 2, (TILE - 1) / 2 - (y0 + 0.5)
-        if not right == up > 0:
-            out.append(f"ashlar_emblem{i}: the star is {right:g} pixels right of the ring's middle and {up:g} above "
-                       "it; the station's standard drawing has it as far right as up")
+        own_lip = {(x + 1, y + 1) for x, y in star}
+        about = {(x + dx, y + dy) for x, y in star for dx in (-1, 0, 1) for dy in (-1, 0, 1)} - star - own_lip
+        if any(s[y, x] != 3 for x, y in about if 0 <= x < TILE and 0 <= y < TILE):
+            out.append(f"ashlar_emblem{i}: the star stands against the ring, the meridian or the lit lip of one of "
+                       "them; a plain pixel lies between")
         if not ((s[0] == 1).any() and (s[-1] == 1).any()):
             out.append(f"ashlar_emblem{i}: the meridian does not run out of the ring at both ends")
     return out
