@@ -14,6 +14,9 @@ stand on the same walls in the same place, so they are shown from the same camer
                             as the master scene has it (RUN off)
 
 so the same pair of pictures also shows the terrace with and without the run.
+
+Both show the bridge with the props line's fittings on it (powerhouse.FITTINGS), once props/pipes is
+in the tree.
 """
 import contextlib
 
@@ -42,10 +45,26 @@ def _as(version, run):
         powerhouse.VERSION, powerhouse.RUN = was
 
 
+def _fit(c):
+    """The fittings of the pipe bridge (powerhouse.FITTINGS: a valve head, three straps). They are
+    the props line's, which places nothing of its own accord until its review is passed; the bridge
+    is shown with them here. Nothing while props/pipes is not in the tree."""
+    try:
+        from scenes.obs.props import pipes
+    except ImportError:
+        return 0
+    mount = getattr(pipes, "mount", None)
+    if mount is None:
+        return 0
+    return sum(int(mount(c, kind, pos, origin=(0, 0, 0), **how) or 0) for kind, pos, how in powerhouse.FITTINGS)
+
+
 def build(version=None, run=None):
     c = Canvas()
     with _as(version or VERSION, RUN if run is None else run):
         for line in LINES:
+            if line is sky:
+                _fit(c)             # before the light sources, which go last
             line.build(c, (0, 0, 0))
     return c
 

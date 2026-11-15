@@ -97,6 +97,14 @@ JOINT_STEP = 3                                      # a riveted band on the main
 RUN_X = (K.FOOT_STRIP_X + 2, HEAD_X - 1)            # x 22..57, the main on the terrace's ground when RUN is on
 CROSSING = (43, 47)                                 # there the path to the south lookout crosses it (the site
 #                                                     lead's figures): the main dips under five cover plates
+# What the props line hangs on the main, as props/pipes.mount() takes it: (kind, point, keywords).
+# The shell places none of it (it has no display entity); props/pipes reads the table when it
+# dresses the site, and this package's test scenes mount it themselves. A valve head with the
+# bridge's one red handwheel on the west face of the down pipe, towards the court; a strap over
+# the joint in the middle of each plain length of the main, between two riveted collars.
+FITTINGS = ([("bonnet", (float(HEAD_X), S.GROUND + 1.5, PIPE_Z + 0.5), dict(out="west"))]
+            + [("band", (float(x), PIPE_Y + 1.0, PIPE_Z + 0.5), dict(out="up", up="east"))
+               for x in range(HEAD_X + 2, X0, JOINT_STEP)])
 
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
