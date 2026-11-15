@@ -113,12 +113,13 @@ BENCHES = {
 }
 # luggage set down by the door, on its east side (out of the arrival view)
 LUGGAGE = dict(point=(WAIT[2] - 0.5, float(FEET), WAIT[3] + 1.5))
-# Where a lamp may hang (the hanging point, on the underside of a ridge): over the west end of the
-# car, and over the winch. Neither is in the arrival view, and neither brings the paving that is in
-# it above level 1.
+# Where a lamp hangs (the hanging point, on the underside of the glass roof's ridge): over the west
+# end of the car, its door. props/lamps hangs a pendant there (its group "station"); the two cells
+# under the point are kept empty for it. It is not in the arrival view, and at level 12 it leaves
+# the paving that is in it at 0 and the waiting room's front at 1. The winch house has no point:
+# the winch brings its own wall lamp (machines/cable), on the north wall between the windows.
 LAMP_POINTS = {
     "car": (CANOPY[0] + 1.5, float(EAVES + 2), AXIS + 0.5),
-    "winch": (HEAD + 0.5, float(WINCH_TOP + 3), (WINCH[1] + WINCH[3]) // 2 + 0.5),
 }
 # the two flights down to the lower platform: the cells of their treads (both rows of each)
 STEPS = dict(west=dict(x=(X0, X0 + 1), z=(Z0, Z1)), south=dict(x=(X0 + 1, BAY - 1), z=(Z1 - 1, Z1)))
@@ -261,9 +262,10 @@ def _winch_house(p):
         p.set(x, oy1 + 1, z1, IRON)
     p.set(ox0, oy1, z1, CORBEL + "[half=top,facing=west]")
     p.set(ox1, oy1, z1, CORBEL + "[half=top,facing=east]")
-    # two tall lit lights in the east wall, over the cliff; a dark window in the north wall
+    # two tall lit lights in the east wall, over the cliff; two dark ones in the north wall, either
+    # side of the two columns of brick the winch's wall lamp hangs on (machines/cable)
     _window(p, [(x1, z0 + 1), (x1, z1 - 1)], FEET + 1, FEET + 4, LIT)
-    _window(p, [(x0 + 2, z0), (x1 - 2, z0)], FEET + 2, FEET + 4, DARK)
+    _window(p, [(x0 + 1, z0), (x1 - 1, z0)], FEET + 2, FEET + 4, DARK)
     _gable_roof(p, WINCH, WINCH_TOP + 1)
     # the west gable shows over the waiting room's roof: a lit light in it, an apex stone and a rod
     _window(p, [(x0, mid)], WINCH_TOP + 1, WINCH_TOP + 1, WARM)

@@ -2,8 +2,10 @@
 on the lower platform and the trestle that takes its track down into the cloud.
 
 The hill as it stands in the master scene: the site line whole, the main building above it, the
-props line and the sky line's light last. The lines are built whole, in the master scene's order,
-so the pictures keep up with them as their packages are merged.
+machines (the car and the winch in the station are theirs), the props line and the sky line's light
+last. The lines are built whole, in the master scene's order, so the pictures keep up with them as
+their packages are merged. The lamp under the glass roof is one of the site's lamps, which the
+props line keeps switched off in the master scene for now; here it is asked for.
 
 Two stand-ins, in this scene only, for what is still on other branches: the east flank of the
 mountain with the ridge the trestle stands on (site/terrain's second draft; the ridge by the figures
@@ -18,15 +20,16 @@ trestle from the bay, from the side and looking back up it, and two from above.
 """
 from artkit.canvas import Canvas, Mix
 
-from scenes.obs import main, materials, props, site, sky
+from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
+from scenes.obs.props import lamps
 from scenes.obs.site import _kit as K
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 100
 BIOME_MARGIN_Y = 150
-LINES = (site, main, props, sky)
+LINES = (site, main, machines, props, sky)
 
 ROCK = Mix({B.TUFF.block: 5, B.ROCK_ANDESITE.block: 3, B.ROCK_COBBLED.block: 2, B.ROCK_DEEPSLATE: 3}, seed=226)
 CLOUD = Mix({B.CLOUD[1]: 2, B.CLOUD[2]: 3, B.CLOUD[3]: 2}, seed=227)
@@ -93,12 +96,22 @@ def _standins(c):
                 c.set(x, y, z, CLOUD, keep=True)
 
 
+def _station_lamps(c):
+    """The lamp under the glass roof: props/lamps hangs it from site/cablecar.LAMP_POINTS (its group
+    "station"). A tree whose props/lamps does not place the site's lamps yet has none."""
+    hang = getattr(lamps, "site", None)
+    if hang is not None:
+        hang(c, (0, 0, 0), groups=("station",))
+
+
 def build():
     c = Canvas()
     for line in LINES:
         line.build(c, (0, 0, 0))
         if line is site:
             _standins(c)
+        if line is props:
+            _station_lamps(c)
     return c
 
 
