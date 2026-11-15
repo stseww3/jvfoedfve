@@ -1,0 +1,394 @@
+block light, cell by cell: 1b50356d -> c2ab54ab
+before: sources placed: 144 (rank 1: 9, rank 2: 76, rank 3: 59); levels 14x9, 12x15, 10x58, 9x3, 8x56, 7x3
+after:  sources placed: 158 (rank 1: 9, rank 2: 90, rank 3: 59); levels 14x9, 12x6, 10x9, 8x108, 7x18, 6x8
+sources of sky/lights: 144 -> 158; 60 stand as they stood, 84 went, 98 came (a source whose level changed is counted in both)
+  props/lamps:uplight: went 8x6; came 8x6
+  sky/lights:window: went 12x9, 10x58, 9x3, 8x8; came 10x9, 8x60, 7x3, 6x8
+  sky/lights:window, lent: went none; came 7x12
+
+blue (origin (0, 0, 0); cells are given from it): 21280 cells get light, 10812 the same as before, 10468 not
+  before the glass, brighter: 84 cells, by up to 1; the brightest of them 7 before and 8 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 21 cells further out: 7>8 x1, 6>7 x4, 5>6 x3, 4>5 x3, 3>4 x3, 2>3 x3, 1>2 x3, 0>1 x1
+      east 13 base (dark): 18 cells further out: 5>6 x1, 4>5 x2, 3>4 x3, 2>3 x4, 1>2 x4, 0>1 x4
+      east 14 base (dark): 3 cells further out: 1>2 x1, 0>1 x2; at (18, 0, 19) (18, 0, 20) (19, 0, 19)
+      east 4 base (dark): 6 cells further out: 2>3 x1, 1>2 x2, 0>1 x3; at (18, 0, -20) (18, 0, -19) (18, 0, -18) (19, 0, -19) (19, 0, -18) (20, 0, -18)
+      east 5 base (dark): 22 cells further out: 6>7 x1, 5>6 x2, 4>5 x3, 3>4 x4, 2>3 x4, 1>2 x4, 0>1 x4
+      east 6 base (dark): 14 cells further out: 7>8 x1, 6>7 x3, 5>6 x2, 4>5 x2, 3>4 x2, 2>3 x2, 1>2 x2
+  before the glass, darker: 68 cells, by up to 1; the brightest of them 8 before and 7 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 34 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x7, 2>1 x1
+      east 6 base (dark): 34 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x7, 2>1 x1
+  before the glass, darker: 2 cells, by up to 1; the brightest of them 3 before and 2 after; within reach of what changed: props/lamps:uplight, sky/lights:window
+      east 12 base (dark): 1 cells further out: 3>2 x1; at (18, 5, 12)
+      east 6 base (dark): 1 cells further out: 3>2 x1; at (18, 5, -12)
+  before the glass, darker: 914 cells, by up to 4; the brightest of them 7 before and 3 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      apse 0 main (lit): 4 cells further out: 2>0 x1, 1>0 x3; at (-9, 2, 0) (-9, 3, -1) (-9, 3, 0) (-9, 3, 1)
+      apse 1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      drum 14 drum (dark): 2 cells further out: 1>0 x2; at (0, 19, -16) (1, 20, -16)
+      drum 15 drum (dark): 19 cells further out: 2>0 x7, 1>0 x12
+      drum 16 drum (dark): 4 cells further out: 2>0 x1, 1>0 x3; at (7, 15, -12) (8, 15, -13) (8, 15, -12) (9, 16, -13)
+      drum 4 drum (dark): 4 cells further out: 2>0 x1, 1>0 x3; at (7, 15, 12) (8, 15, 12) (8, 15, 13) (9, 16, 13)
+      drum 5 drum (dark): 19 cells further out: 2>0 x7, 1>0 x12
+      drum 6 drum (dark): 2 cells further out: 1>0 x2; at (0, 19, 16) (1, 20, 16)
+      east 1 base (dark): 2 cells in its recess: 3>1 x1, 2>0 x1; at (16, 4, -32) (16, 4, -31)
+      east 11 main (dark): 16 cells in its recess: 5>1 x2, 4>1 x1, 4>0 x5, 3>0 x4, 2>1 x1, 2>0 x3; 12 cells further out: 4>2 x2, 3>2 x1, 3>1 x3, 2>1 x1, 2>0 x4, 1>0 x1
+      east 13 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 17)
+      east 13 main (dark): 18 cells in its recess: 5>1 x4, 4>0 x10, 3>0 x4; 24 cells further out: 4>2 x4, 3>1 x10, 2>1 x1, 2>0 x7, 1>0 x2
+      east 14 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (15, 3, 19) (15, 3, 20) (15, 3, 21) (15, 4, 19) (15, 4, 20) (15, 4, 21)
+      east 14 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (15, 18, 19) (15, 18, 20) (15, 18, 21) (15, 19, 20) (16, 18, 20)
+      east 15 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 23)
+      east 15 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 16 base (dark): 1 cells further out: 1>0 x1; at (17, 6, 29)
+      east 16 main (dark): 12 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x4; 16 cells further out: 4>2 x2, 3>1 x6, 2>0 x6, 1>0 x2
+      east 17 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; at (16, 3, 31) (16, 3, 32) (16, 4, 31) (16, 4, 32)
+      east 2 base (dim): 1 cells further out: 2>0 x1; at (17, 6, -29)
+      east 2 main (dark): 12 cells in its recess: 6>2 x2, 5>1 x6, 4>0 x4; 16 cells further out: 5>3 x2, 4>2 x6, 3>1 x6, 2>0 x2
+      east 3 base (dark): 5 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x1; at (15, 3, -24) (15, 3, -23) (15, 4, -25) (15, 4, -24) (15, 4, -23)
+      east 3 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (15, 18, -25) (15, 18, -24) (15, 18, -23) (15, 19, -24) (16, 18, -24)
+      east 4 base (dark): 1 cells further out: 1>0 x1; at (16, 6, -21)
+      east 4 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 5 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>1 x1, 2>0 x7, 1>0 x6
+      east 7 main (dark): 16 cells in its recess: 5>1 x2, 4>1 x1, 4>0 x5, 3>0 x4, 2>1 x1, 2>0 x3; 12 cells further out: 4>2 x2, 3>2 x1, 3>1 x3, 2>1 x1, 2>0 x4, 1>0 x1
+      north 1 base (dark): 1 cells further out: 1>0 x1; at (3, 6, -35)
+      north 1 main (dark): 12 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x4; 16 cells further out: 4>2 x2, 3>1 x6, 2>0 x6, 1>0 x2
+      north 2 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (5, 3, -34) (5, 4, -34) (6, 3, -34) (6, 4, -34) (7, 3, -34) (7, 4, -34)
+      south 1 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; at (2, 3, 34) (2, 4, 34) (3, 3, 34) (3, 4, 34)
+      south 1 main (lit): 24 cells further out: 3>0 x2, 2>0 x8, 1>0 x14
+      south 2 base (dark): 1 cells in its recess: 1>0 x1; 3 cells further out: 2>0 x1, 1>0 x2; at (5, 4, 34) (5, 5, 35) (5, 6, 35) (6, 6, 35)
+      south 2 main (dark): 18 cells in its recess: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4; 24 cells further out: 5>3 x2, 4>2 x6, 3>1 x8, 2>0 x6, 1>0 x2
+      south 3 base (dark): 1 cells further out: 1>0 x1; at (11, 6, 35)
+      south 3 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      south 4 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; at (13, 3, 34) (13, 4, 34) (14, 3, 34) (14, 4, 34)
+      west 1 main (dark): 12 cells in its recess: 4>0 x2, 3>0 x6, 2>0 x4; 24 cells further out: 3>0 x2, 2>0 x8, 1>0 x14
+      west 13 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, 15) (0, 3, 16) (0, 3, 17) (0, 4, 15) (0, 4, 16) (0, 4, 17)
+      west 13 main (lit): 12 cells further out: 2>0 x3, 1>0 x9; at (-1, 18, 16) (0, 8, 10) (0, 9, 9) (0, 9, 10) (0, 10, 10) (0, 11, 10) (0, 12, 9) (0, 12, 10) (0, 13, 10) (0, 18, 15) (0, 18, 16) (0, 18, 17)
+      west 14 base (dark): 2 cells further out: 1>0 x2; at (-1, 6, 19) (-1, 6, 21)
+      west 14 main (dark): 18 cells in its recess: 5>1 x4, 4>0 x10, 3>0 x4; 24 cells further out: 4>2 x4, 3>1 x10, 2>0 x8, 1>0 x2
+      west 15 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, 23) (0, 3, 24) (0, 3, 25) (0, 4, 23) (0, 4, 24) (0, 4, 25)
+      west 15 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (-1, 18, 24) (0, 18, 23) (0, 18, 24) (0, 18, 25) (0, 19, 24)
+      west 16 main (dark): 12 cells in its recess: 4>0 x4, 3>0 x8; 40 cells further out: 3>1 x2, 3>0 x4, 2>1 x2, 2>0 x14, 1>0 x18
+      west 17 base (dark): 3 cells in its recess: 2>0 x1, 1>0 x2; 9 cells further out: 3>0 x1, 2>0 x3, 1>0 x5; at (-3, 6, 32) (-2, 5, 32) (-2, 6, 31) (-2, 6, 32) (-1, 4, 32) (-1, 5, 31) (-1, 5, 32) (-1, 6, 31) (-1, 6, 32) (0, 3, 32) (0, 4, 31) (0, 4, 32)
+      west 17 main (dark): 12 cells in its recess: 7>3 x2, 6>2 x6, 5>1 x4; 76 cells further out: 6>2 x2, 5>1 x8, 4>0 x14, 3>0 x16, 2>0 x17, 1>0 x19
+      west 2 main (dark): 12 cells in its recess: 4>0 x2, 3>0 x6, 2>0 x4; 14 cells further out: 3>1 x2, 2>0 x6, 1>0 x6
+      west 3 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, -25) (0, 3, -24) (0, 3, -23) (0, 4, -25) (0, 4, -24) (0, 4, -23)
+      west 3 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (-1, 18, -24) (0, 18, -25) (0, 18, -24) (0, 18, -23) (0, 19, -24)
+      west 4 base (dark): 2 cells further out: 1>0 x2; at (-1, 6, -21) (-1, 6, -19)
+      west 4 main (dark): 18 cells in its recess: 5>1 x4, 4>0 x10, 3>0 x4; 24 cells further out: 4>2 x4, 3>1 x10, 2>0 x8, 1>0 x2
+      west 5 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, -17) (0, 3, -16) (0, 3, -15) (0, 4, -17) (0, 4, -16) (0, 4, -15)
+      west 5 main (lit): 12 cells further out: 2>0 x3, 1>0 x9; at (-1, 18, -16) (0, 8, -10) (0, 9, -10) (0, 9, -9) (0, 10, -10) (0, 11, -10) (0, 12, -10) (0, 12, -9) (0, 13, -10) (0, 18, -17) (0, 18, -16) (0, 18, -15)
+  before the glass, darker: 13 cells, by up to 3; the brightest of them 3 before and 1 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 11 main (dark): 2 cells in its recess: 3>0 x2; 2 cells further out: 3>1 x2; at (15, 9, 7) (15, 12, 7) (16, 9, 8) (16, 12, 8)
+      east 7 main (dark): 2 cells in its recess: 3>0 x2; 7 cells further out: 3>1 x2, 2>1 x1, 2>0 x1, 1>0 x3; at (15, 9, -7) (15, 12, -7) (16, 9, -8) (16, 9, -7) (16, 10, -7) (16, 11, -7) (16, 12, -8) (16, 12, -7) (16, 13, -7)
+  in the glass column, darker: 801 cells, by up to 4; the brightest of them 9 before and 7 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      apse 0 main (lit): 25 cells: 9>7 x2, 8>6 x8, 7>5 x8, 3>0 x1, 2>0 x3, 1>0 x3
+      apse 1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      drum 15 drum (dark): 5 cells: 2>0 x2, 1>0 x3
+      drum 16 drum (dark): 4 cells: 2>0 x2, 1>0 x2
+      drum 4 drum (dark): 4 cells: 2>0 x2, 1>0 x2
+      drum 5 drum (dark): 5 cells: 2>0 x2, 1>0 x3
+      east 1 base (dark): 2 cells: 4>2 x1, 3>1 x1
+      east 1 main (lit): 12 cells: 9>7 x2, 8>6 x6, 7>5 x4
+      east 11 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      east 12 base (dark): 1 cells: 4>3 x1
+      east 12 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      east 13 base (dark): 1 cells: 1>0 x1
+      east 13 main (dark): 26 cells: 6>2 x4, 5>1 x10, 4>0 x4, 3>0 x1, 2>0 x3, 1>0 x4
+      east 14 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      east 14 main (lit): 34 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x4
+      east 15 base (dark): 1 cells: 1>0 x1
+      east 15 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 16 base (dark): 1 cells: 1>0 x1
+      east 16 main (dark): 12 cells: 6>2 x2, 5>1 x6, 4>0 x4
+      east 17 base (dark): 4 cells: 4>0 x1, 3>0 x2, 2>0 x1
+      east 17 main (lit): 12 cells: 9>7 x2, 8>6 x6, 7>5 x4
+      east 2 main (dark): 12 cells: 7>3 x2, 6>2 x6, 5>1 x4
+      east 3 base (dark): 5 cells: 4>0 x1, 3>1 x2, 3>0 x1, 2>0 x1
+      east 3 main (lit): 35 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x5
+      east 4 base (dark): 1 cells: 1>0 x1
+      east 4 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 5 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 6 base (dark): 1 cells: 4>3 x1
+      east 6 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      east 7 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      north 1 base (dark): 1 cells: 1>0 x1
+      north 1 main (dark): 14 cells: 6>2 x2, 5>1 x6, 4>0 x4, 1>0 x2
+      north 2 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      north 2 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      south 1 base (dark): 5 cells: 4>0 x1, 3>0 x2, 2>0 x1, 1>0 x1
+      south 1 main (lit): 37 cells: 9>7 x2, 8>6 x6, 7>5 x4, 4>0 x2, 3>0 x6, 2>0 x8, 1>0 x9
+      south 2 base (dark): 3 cells: 2>0 x1, 1>0 x2
+      south 2 main (dark): 18 cells: 7>3 x2, 6>2 x6, 5>1 x6, 4>0 x4
+      south 3 base (dark): 1 cells: 1>0 x1
+      south 3 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      south 4 base (dark): 4 cells: 4>0 x1, 3>0 x2, 2>0 x1
+      south 4 main (lit): 12 cells: 9>7 x2, 8>6 x6, 7>5 x4
+      west 1 main (dark): 12 cells: 5>1 x2, 4>0 x6, 3>0 x4
+      west 13 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 13 main (lit): 50 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x6, 2>0 x10, 1>0 x12
+      west 14 base (dark): 2 cells: 1>0 x2
+      west 14 main (dark): 26 cells: 6>2 x4, 5>1 x10, 4>0 x4, 3>0 x1, 2>0 x3, 1>0 x4
+      west 15 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 15 main (lit): 32 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x3, 2>0 x3, 1>0 x4
+      west 16 main (dark): 12 cells: 5>1 x4, 4>0 x8
+      west 17 base (dark): 4 cells: 3>0 x1, 2>0 x2, 1>0 x1
+      west 17 main (dark): 12 cells: 8>4 x2, 7>3 x6, 6>2 x4
+      west 2 main (dark): 12 cells: 5>1 x2, 4>0 x6, 3>0 x4
+      west 3 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 3 main (lit): 35 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x5
+      west 4 base (dark): 2 cells: 1>0 x2
+      west 4 main (dark): 26 cells: 6>2 x4, 5>1 x10, 4>0 x4, 3>0 x1, 2>0 x3, 1>0 x4
+      west 5 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 5 main (lit): 47 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x5, 2>0 x9, 1>0 x11
+  in the glass column, darker: 59 cells, by up to 2; the brightest of them 11 before and 9 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 10 main (dim): 23 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3, 2>1 x1, 2>0 x1, 1>0 x3
+      east 8 main (dim): 18 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3
+      east 9 main (bright): 18 cells: 11>9 x2, 10>8 x8, 9>7 x8
+  behind the glass, darker: 8 cells, by up to 1; the brightest of them 3 before and 2 after; within reach of what changed: props/lamps:uplight, sky/lights:window
+      the brightest now: (13, 2, -12) 3>2, behind east 6 base (dark)
+  behind the glass, darker: 8299 cells, by up to 4; the brightest of them 10 before and 8 after; within reach of what changed: sky/lights:window
+      the brightest now: (15, 6, 0) 9>8, behind east 9 main (bright)
+  behind the glass, darker: 220 cells, by up to 4; the brightest of them 12 before and 8 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      the brightest now: (15, 9, 0) 12>8, behind east 9 main (bright)
+  the recesses of the lit windows: every cell as before
+
+deep (origin (-200, 0, 0); cells are given from it): 14002 cells get light, 8563 the same as before, 5439 not
+  before the glass, brighter: 84 cells, by up to 1; the brightest of them 7 before and 8 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 21 cells further out: 7>8 x1, 6>7 x4, 5>6 x3, 4>5 x3, 3>4 x3, 2>3 x3, 1>2 x3, 0>1 x1
+      east 13 base (dark): 18 cells further out: 5>6 x1, 4>5 x2, 3>4 x3, 2>3 x4, 1>2 x4, 0>1 x4
+      east 14 base (dark): 3 cells further out: 1>2 x1, 0>1 x2; at (18, 0, 19) (18, 0, 20) (19, 0, 19)
+      east 4 base (dark): 6 cells further out: 2>3 x1, 1>2 x2, 0>1 x3; at (18, 0, -20) (18, 0, -19) (18, 0, -18) (19, 0, -19) (19, 0, -18) (20, 0, -18)
+      east 5 base (dark): 22 cells further out: 6>7 x1, 5>6 x2, 4>5 x3, 3>4 x4, 2>3 x4, 1>2 x4, 0>1 x4
+      east 6 base (dark): 14 cells further out: 7>8 x1, 6>7 x3, 5>6 x2, 4>5 x2, 3>4 x2, 2>3 x2, 1>2 x2
+  before the glass, darker: 76 cells, by up to 1; the brightest of them 8 before and 7 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 37 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x8, 2>1 x2, 1>0 x1
+      east 12 main (dark): 1 cells further out: 1>0 x1; at (18, 7, 12)
+      east 6 base (dark): 37 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x8, 2>1 x2, 1>0 x1
+      east 6 main (dark): 1 cells further out: 1>0 x1; at (18, 7, -12)
+  before the glass, darker: 556 cells, by up to 4; the brightest of them 8 before and 4 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      apse 0 main (lit): 4 cells further out: 2>0 x1, 1>0 x3; at (-9, 2, 0) (-9, 3, -1) (-9, 3, 0) (-9, 3, 1)
+      apse 1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      drum 5 drum (dark): 19 cells further out: 2>0 x7, 1>0 x12
+      drum 6 drum (dark): 2 cells further out: 1>0 x2; at (0, 19, 16) (1, 20, 16)
+      east 1 base (dark): 2 cells in its recess: 3>1 x1, 2>0 x1; at (16, 4, -32) (16, 4, -31)
+      east 11 main (dark): 1 cells in its recess: 1>0 x1; at (15, 10, 7)
+      east 12 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, 13) (15, 12, 13)
+      east 13 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 17)
+      east 13 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 14 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (15, 3, 19) (15, 3, 20) (15, 3, 21) (15, 4, 19) (15, 4, 20) (15, 4, 21)
+      east 14 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (15, 18, 19) (15, 18, 20) (15, 18, 21) (15, 19, 20) (16, 18, 20)
+      east 15 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 23)
+      east 15 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 16 base (dark): 1 cells further out: 1>0 x1; at (17, 6, 29)
+      east 16 main (dark): 12 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x4; 16 cells further out: 4>2 x2, 3>1 x6, 2>0 x6, 1>0 x2
+      east 17 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; 1 cells further out: 1>0 x1; at (16, 3, 31) (16, 3, 32) (16, 4, 31) (16, 4, 32) (16, 6, 36)
+      east 17 main (lit): 41 cells further out: 4>0 x2, 3>1 x2, 3>0 x6, 2>0 x14, 1>0 x17
+      east 2 base (dim): 1 cells further out: 2>0 x1; at (17, 6, -29)
+      east 2 main (dark): 12 cells in its recess: 6>2 x2, 5>1 x6, 4>0 x4; 16 cells further out: 5>3 x2, 4>2 x6, 3>1 x6, 2>0 x2
+      east 3 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, -25) (15, 12, -25)
+      east 7 main (dark): 1 cells in its recess: 1>0 x1; at (15, 10, -7)
+      south 2 main (dark): 2 cells in its recess: 1>0 x2; at (7, 9, 34) (7, 12, 34)
+      south 3 base (dark): 2 cells further out: 1>0 x2; at (11, 6, 35) (12, 6, 36)
+      south 3 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 73 cells further out: 4>0 x4, 3>0 x14, 2>0 x24, 1>0 x31
+      south 4 base (dark): 4 cells in its recess: 3>0 x1, 2>0 x2, 1>0 x1; 16 cells further out: 4>0 x1, 3>0 x3, 2>0 x5, 1>0 x7
+      south 4 main (dark): 12 cells in its recess: 8>4 x2, 7>3 x6, 6>2 x4; 98 cells further out: 7>3 x2, 6>2 x8, 5>1 x14, 4>0 x16, 3>0 x17, 2>0 x19, 1>0 x22
+      west 13 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, 15) (0, 3, 16) (0, 3, 17) (0, 4, 15) (0, 4, 16) (0, 4, 17)
+      west 13 main (lit): 12 cells further out: 2>0 x3, 1>0 x9; at (-1, 18, 16) (0, 8, 10) (0, 9, 9) (0, 9, 10) (0, 10, 10) (0, 11, 10) (0, 12, 9) (0, 12, 10) (0, 13, 10) (0, 18, 15) (0, 18, 16) (0, 18, 17)
+      west 14 base (dark): 1 cells further out: 1>0 x1; at (-1, 6, 19)
+      west 14 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      west 15 main (dark): 2 cells in its recess: 1>0 x2; at (0, 9, 23) (0, 12, 23)
+  before the glass, darker: 4 cells, by up to 1; the brightest of them 1 before and 0 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 11 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, 7) (15, 12, 7)
+      east 7 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, -7) (15, 12, -7)
+  in the glass column, darker: 398 cells, by up to 4; the brightest of them 9 before and 7 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      apse 0 main (lit): 25 cells: 9>7 x2, 8>6 x8, 7>5 x8, 3>0 x1, 2>0 x3, 1>0 x3
+      apse 1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      drum 5 drum (dark): 4 cells: 2>0 x2, 1>0 x2
+      east 1 base (dark): 2 cells: 4>2 x1, 3>1 x1
+      east 1 main (lit): 12 cells: 9>7 x2, 8>6 x6, 7>5 x4
+      east 11 main (dark): 9 cells: 2>0 x3, 1>0 x6
+      east 12 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      east 13 base (dark): 1 cells: 1>0 x1
+      east 13 main (dark): 24 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x5, 2>0 x2, 1>0 x3
+      east 14 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      east 14 main (lit): 34 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x4
+      east 15 base (dark): 1 cells: 1>0 x1
+      east 15 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 16 base (dark): 1 cells: 1>0 x1
+      east 16 main (dark): 12 cells: 6>2 x2, 5>1 x6, 4>0 x4
+      east 17 base (dark): 7 cells: 4>0 x1, 3>0 x2, 2>0 x2, 1>0 x2
+      east 17 main (lit): 47 cells: 9>7 x2, 8>6 x6, 7>5 x4, 5>1 x2, 4>0 x6, 3>0 x8, 2>0 x9, 1>0 x10
+      east 2 main (dark): 12 cells: 7>3 x2, 6>2 x6, 5>1 x4
+      east 3 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      east 7 main (dark): 9 cells: 2>0 x3, 1>0 x6
+      north 2 main (dark): 2 cells: 1>0 x2
+      south 2 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      south 3 base (dark): 1 cells: 1>0 x1
+      south 3 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      south 4 base (dark): 4 cells: 4>0 x1, 3>0 x2, 2>0 x1
+      south 4 main (dark): 12 cells: 9>5 x2, 8>4 x6, 7>3 x4
+      west 13 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 13 main (lit): 50 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x6, 2>0 x10, 1>0 x12
+      west 14 base (dark): 1 cells: 1>0 x1
+      west 14 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      west 15 main (dark): 8 cells: 2>0 x2, 1>0 x6
+  in the glass column, darker: 54 cells, by up to 2; the brightest of them 11 before and 9 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 10 main (dim): 18 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3
+      east 8 main (dim): 18 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3
+      east 9 main (bright): 18 cells: 11>9 x2, 10>8 x8, 9>7 x8
+  behind the glass, darker: 4047 cells, by up to 4; the brightest of them 10 before and 8 after; within reach of what changed: sky/lights:window
+      the brightest now: (15, 6, 0) 9>8, behind east 9 main (bright)
+  behind the glass, darker: 220 cells, by up to 4; the brightest of them 12 before and 8 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      the brightest now: (15, 9, 0) 12>8, behind east 9 main (bright)
+  the recesses of the lit windows: every cell as before
+
+glow (origin (-400, 0, 0); cells are given from it): 17513 cells get light, 9307 the same as before, 8206 not
+  before the glass, brighter: 84 cells, by up to 1; the brightest of them 7 before and 8 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 21 cells further out: 7>8 x1, 6>7 x4, 5>6 x3, 4>5 x3, 3>4 x3, 2>3 x3, 1>2 x3, 0>1 x1
+      east 13 base (dark): 18 cells further out: 5>6 x1, 4>5 x2, 3>4 x3, 2>3 x4, 1>2 x4, 0>1 x4
+      east 14 base (dark): 3 cells further out: 1>2 x1, 0>1 x2; at (18, 0, 19) (18, 0, 20) (19, 0, 19)
+      east 4 base (dark): 6 cells further out: 2>3 x1, 1>2 x2, 0>1 x3; at (18, 0, -20) (18, 0, -19) (18, 0, -18) (19, 0, -19) (19, 0, -18) (20, 0, -18)
+      east 5 base (dark): 22 cells further out: 6>7 x1, 5>6 x2, 4>5 x3, 3>4 x4, 2>3 x4, 1>2 x4, 0>1 x4
+      east 6 base (dark): 14 cells further out: 7>8 x1, 6>7 x3, 5>6 x2, 4>5 x2, 3>4 x2, 2>3 x2, 1>2 x2
+  before the glass, darker: 72 cells, by up to 1; the brightest of them 8 before and 7 after; within reach of what changed: props/lamps:uplight
+      east 12 base (dark): 37 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x8, 2>1 x2, 1>0 x1
+      east 12 main (dark): 1 cells further out: 1>0 x1; at (18, 7, 12)
+      east 6 base (dark): 34 cells further out: 8>7 x1, 7>6 x4, 6>5 x8, 5>4 x6, 4>3 x7, 3>2 x7, 2>1 x1
+  before the glass, darker: 1 cells, by up to 1; the brightest of them 3 before and 2 after; within reach of what changed: props/lamps:uplight, sky/lights:window
+      east 6 base (dark): 1 cells further out: 3>2 x1; at (18, 5, -12)
+  before the glass, darker: 935 cells, by up to 4; the brightest of them 8 before and 4 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      apse 0 main (lit): 4 cells further out: 2>0 x1, 1>0 x3; at (-9, 2, 0) (-9, 3, -1) (-9, 3, 0) (-9, 3, 1)
+      apse 1 main (dark): 12 cells in its recess: 3>0 x2, 2>0 x6, 1>0 x4; 8 cells further out: 2>0 x2, 1>0 x6
+      drum 16 drum (dark): 4 cells further out: 2>0 x1, 1>0 x3; at (7, 15, -12) (8, 15, -13) (8, 15, -12) (9, 16, -13)
+      drum 5 drum (dark): 19 cells further out: 2>0 x7, 1>0 x12
+      drum 6 drum (dark): 2 cells further out: 1>0 x2; at (0, 19, 16) (1, 20, 16)
+      east 1 base (dark): 2 cells in its recess: 3>1 x1, 2>0 x1; at (16, 4, -32) (16, 4, -31)
+      east 11 main (dark): 1 cells in its recess: 1>0 x1; at (15, 10, 7)
+      east 12 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, 13) (15, 12, 13)
+      east 13 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 17)
+      east 13 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 14 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (15, 3, 19) (15, 3, 20) (15, 3, 21) (15, 4, 19) (15, 4, 20) (15, 4, 21)
+      east 14 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (15, 18, 19) (15, 18, 20) (15, 18, 21) (15, 19, 20) (16, 18, 20)
+      east 15 base (dark): 1 cells further out: 1>0 x1; at (16, 6, 23)
+      east 15 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      east 16 base (dark): 1 cells further out: 1>0 x1; at (17, 6, 29)
+      east 16 main (dark): 12 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x4; 16 cells further out: 4>2 x2, 3>1 x6, 2>0 x6, 1>0 x2
+      east 17 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; 1 cells further out: 1>0 x1; at (16, 3, 31) (16, 3, 32) (16, 4, 31) (16, 4, 32) (16, 6, 36)
+      east 17 main (lit): 41 cells further out: 4>0 x2, 3>1 x2, 3>0 x6, 2>0 x14, 1>0 x17
+      east 2 base (dim): 1 cells further out: 2>0 x1; at (17, 6, -29)
+      east 2 main (dark): 12 cells in its recess: 6>2 x2, 5>1 x6, 4>0 x4; 16 cells further out: 5>3 x2, 4>2 x6, 3>1 x6, 2>0 x2
+      east 3 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, -25) (15, 12, -25)
+      east 4 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, -19) (15, 12, -19)
+      east 5 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>1 x1, 2>0 x7, 1>0 x6
+      east 7 main (dark): 16 cells in its recess: 5>1 x2, 4>1 x1, 4>0 x5, 3>0 x4, 2>1 x1, 2>0 x3; 12 cells further out: 4>2 x2, 3>2 x1, 3>1 x3, 2>1 x1, 2>0 x4, 1>0 x1
+      south 1 base (dark): 4 cells in its recess: 3>1 x1, 2>0 x2, 1>0 x1; at (2, 3, 34) (2, 4, 34) (3, 3, 34) (3, 4, 34)
+      south 1 main (lit): 24 cells further out: 3>0 x2, 2>0 x8, 1>0 x14
+      south 2 base (dark): 1 cells in its recess: 1>0 x1; 3 cells further out: 2>0 x1, 1>0 x2; at (5, 4, 34) (5, 5, 35) (5, 6, 35) (6, 6, 35)
+      south 2 main (dark): 18 cells in its recess: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4; 24 cells further out: 5>3 x2, 4>2 x6, 3>1 x8, 2>0 x6, 1>0 x2
+      south 3 base (dark): 2 cells further out: 1>0 x2; at (11, 6, 35) (12, 6, 36)
+      south 3 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 73 cells further out: 4>0 x4, 3>0 x14, 2>0 x24, 1>0 x31
+      south 4 base (dark): 4 cells in its recess: 3>0 x1, 2>0 x2, 1>0 x1; 16 cells further out: 4>0 x1, 3>0 x3, 2>0 x5, 1>0 x7
+      south 4 main (dark): 12 cells in its recess: 8>4 x2, 7>3 x6, 6>2 x4; 98 cells further out: 7>3 x2, 6>2 x8, 5>1 x14, 4>0 x16, 3>0 x17, 2>0 x19, 1>0 x22
+      west 1 main (dark): 2 cells in its recess: 1>0 x2; at (0, 9, -31) (0, 12, -31)
+      west 13 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, 15) (0, 3, 16) (0, 3, 17) (0, 4, 15) (0, 4, 16) (0, 4, 17)
+      west 13 main (lit): 12 cells further out: 2>0 x3, 1>0 x9; at (-1, 18, 16) (0, 8, 10) (0, 9, 9) (0, 9, 10) (0, 10, 10) (0, 11, 10) (0, 12, 9) (0, 12, 10) (0, 13, 10) (0, 18, 15) (0, 18, 16) (0, 18, 17)
+      west 14 base (dark): 1 cells further out: 1>0 x1; at (-1, 6, 19)
+      west 14 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      west 15 main (dark): 2 cells in its recess: 1>0 x2; at (0, 9, 23) (0, 12, 23)
+      west 16 main (dark): 12 cells in its recess: 4>0 x2, 3>0 x6, 2>0 x4; 40 cells further out: 3>0 x4, 2>0 x14, 1>0 x22
+      west 17 base (dark): 3 cells in its recess: 2>0 x1, 1>0 x2; 9 cells further out: 3>0 x1, 2>0 x3, 1>0 x5; at (-3, 6, 32) (-2, 5, 32) (-2, 6, 31) (-2, 6, 32) (-1, 4, 32) (-1, 5, 31) (-1, 5, 32) (-1, 6, 31) (-1, 6, 32) (0, 3, 32) (0, 4, 31) (0, 4, 32)
+      west 17 main (dark): 12 cells in its recess: 7>3 x2, 6>2 x6, 5>1 x4; 76 cells further out: 6>2 x2, 5>1 x8, 4>0 x14, 3>0 x16, 2>0 x17, 1>0 x19
+      west 2 main (dark): 12 cells in its recess: 4>0 x2, 3>0 x6, 2>0 x4; 14 cells further out: 3>1 x2, 2>0 x6, 1>0 x6
+      west 3 base (dark): 6 cells in its recess: 3>1 x1, 2>0 x3, 1>0 x2; at (0, 3, -25) (0, 3, -24) (0, 3, -23) (0, 4, -25) (0, 4, -24) (0, 4, -23)
+      west 3 main (lit): 5 cells further out: 2>0 x1, 1>0 x4; at (-1, 18, -24) (0, 18, -25) (0, 18, -24) (0, 18, -23) (0, 19, -24)
+      west 4 base (dark): 1 cells further out: 1>0 x1; at (-1, 6, -21)
+      west 4 main (dark): 18 cells in its recess: 5>1 x2, 4>0 x6, 3>0 x6, 2>0 x4; 22 cells further out: 4>2 x2, 3>1 x6, 2>0 x8, 1>0 x6
+      west 5 main (dark): 2 cells in its recess: 1>0 x2; at (0, 9, -17) (0, 12, -17)
+  before the glass, darker: 11 cells, by up to 3; the brightest of them 3 before and 1 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 11 main (dark): 2 cells in its recess: 1>0 x2; at (15, 9, 7) (15, 12, 7)
+      east 7 main (dark): 2 cells in its recess: 3>0 x2; 7 cells further out: 3>1 x2, 2>1 x1, 2>0 x1, 1>0 x3; at (15, 9, -7) (15, 12, -7) (16, 9, -8) (16, 9, -7) (16, 10, -7) (16, 11, -7) (16, 12, -8) (16, 12, -7) (16, 13, -7)
+  in the glass column, darker: 638 cells, by up to 4; the brightest of them 9 before and 7 after; within reach of what changed: sky/lights:window
+      apse -1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      apse 0 main (lit): 25 cells: 9>7 x2, 8>6 x8, 7>5 x8, 3>0 x1, 2>0 x3, 1>0 x3
+      apse 1 main (dark): 12 cells: 4>0 x2, 3>0 x6, 2>0 x4
+      drum 15 drum (dark): 1 cells: 1>0 x1
+      drum 16 drum (dark): 4 cells: 2>0 x2, 1>0 x2
+      drum 5 drum (dark): 4 cells: 2>0 x2, 1>0 x2
+      east 1 base (dark): 2 cells: 4>2 x1, 3>1 x1
+      east 1 main (lit): 12 cells: 9>7 x2, 8>6 x6, 7>5 x4
+      east 11 main (dark): 9 cells: 2>0 x3, 1>0 x6
+      east 12 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      east 13 base (dark): 1 cells: 1>0 x1
+      east 13 main (dark): 24 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x5, 2>0 x2, 1>0 x3
+      east 14 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      east 14 main (lit): 34 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x4
+      east 15 base (dark): 1 cells: 1>0 x1
+      east 15 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 16 base (dark): 1 cells: 1>0 x1
+      east 16 main (dark): 12 cells: 6>2 x2, 5>1 x6, 4>0 x4
+      east 17 base (dark): 7 cells: 4>0 x1, 3>0 x2, 2>0 x2, 1>0 x2
+      east 17 main (lit): 47 cells: 9>7 x2, 8>6 x6, 7>5 x4, 5>1 x2, 4>0 x6, 3>0 x8, 2>0 x9, 1>0 x10
+      east 2 main (dark): 12 cells: 7>3 x2, 6>2 x6, 5>1 x4
+      east 3 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      east 4 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      east 5 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      east 6 base (dark): 1 cells: 4>3 x1
+      east 6 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      east 7 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      north 1 main (dark): 2 cells: 1>0 x2
+      north 2 main (dark): 2 cells: 1>0 x2
+      south 1 base (dark): 5 cells: 4>0 x1, 3>0 x2, 2>0 x1, 1>0 x1
+      south 1 main (lit): 37 cells: 9>7 x2, 8>6 x6, 7>5 x4, 4>0 x2, 3>0 x6, 2>0 x8, 1>0 x9
+      south 2 base (dark): 3 cells: 2>0 x1, 1>0 x2
+      south 2 main (dark): 18 cells: 7>3 x2, 6>2 x6, 5>1 x6, 4>0 x4
+      south 3 base (dark): 1 cells: 1>0 x1
+      south 3 main (dark): 18 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4
+      south 4 base (dark): 4 cells: 4>0 x1, 3>0 x2, 2>0 x1
+      south 4 main (dark): 12 cells: 9>5 x2, 8>4 x6, 7>3 x4
+      west 1 main (dark): 8 cells: 2>0 x2, 1>0 x6
+      west 13 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 13 main (lit): 50 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x6, 2>0 x10, 1>0 x12
+      west 14 base (dark): 1 cells: 1>0 x1
+      west 14 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      west 15 main (dark): 10 cells: 2>0 x2, 1>0 x8
+      west 16 main (dark): 12 cells: 5>1 x2, 4>0 x6, 3>0 x4
+      west 17 base (dark): 4 cells: 3>0 x1, 2>0 x2, 1>0 x1
+      west 17 main (dark): 12 cells: 8>4 x2, 7>3 x6, 6>2 x4
+      west 2 main (dark): 12 cells: 5>1 x2, 4>0 x6, 3>0 x4
+      west 3 base (dark): 6 cells: 4>0 x1, 3>0 x3, 2>0 x2
+      west 3 main (lit): 35 cells: 9>7 x2, 8>6 x8, 7>5 x8, 5>1 x1, 4>0 x3, 3>0 x4, 2>0 x4, 1>0 x5
+      west 4 base (dark): 1 cells: 1>0 x1
+      west 4 main (dark): 21 cells: 6>2 x2, 5>1 x6, 4>0 x6, 3>0 x4, 2>0 x1, 1>0 x2
+      west 5 main (dark): 8 cells: 2>0 x2, 1>0 x6
+  in the glass column, darker: 54 cells, by up to 2; the brightest of them 11 before and 9 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      east 10 main (dim): 18 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3
+      east 8 main (dim): 18 cells: 8>6 x2, 7>5 x7, 6>4 x6, 5>3 x3
+      east 9 main (bright): 18 cells: 11>9 x2, 10>8 x8, 9>7 x8
+  behind the glass, darker: 4 cells, by up to 1; the brightest of them 3 before and 2 after; within reach of what changed: props/lamps:uplight, sky/lights:window
+      the brightest now: (13, 2, -12) 3>2, behind east 6 base (dark)
+  behind the glass, darker: 6187 cells, by up to 4; the brightest of them 10 before and 8 after; within reach of what changed: sky/lights:window
+      the brightest now: (15, 6, 0) 9>8, behind east 9 main (bright)
+  behind the glass, darker: 220 cells, by up to 4; the brightest of them 12 before and 8 after; within reach of what changed: sky/lights:window, sky/lights:window, lent
+      the brightest now: (15, 9, 0) 12>8, behind east 9 main (bright)
+  the recesses of the lit windows: every cell as before
+
+levels (origin (-600, 0, 0); cells are given from it): 2298 cells get light, 2058 the same as before, 240 not
+  in the glass column, darker: 120 cells, by up to 2; the brightest of them 11 before and 9 after; within reach of what changed: sky/lights:window
+      east 10 base (dim): 6 cells: 7>5 x1, 6>4 x3, 5>3 x2
+      east 10 main (dim): 18 cells: 7>5 x1, 6>4 x4, 5>3 x6, 4>2 x5, 3>1 x2
+      east 2 base (lit): 6 cells: 8>6 x1, 7>5 x3, 6>4 x2
+      east 2 main (lit): 18 cells: 8>6 x2, 7>5 x8, 6>4 x8
+      east 4 base (lit): 6 cells: 9>7 x1, 8>6 x3, 7>5 x2
+      east 4 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      east 6 base (lit): 6 cells: 11>9 x1, 10>8 x3, 9>7 x2
+      east 6 main (lit): 18 cells: 11>9 x2, 10>8 x8, 9>7 x8
+      east 8 base (bright): 6 cells: 9>7 x1, 8>6 x3, 7>5 x2
+      east 8 main (bright): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+  behind the glass, darker: 120 cells, by up to 4; the brightest of them 12 before and 8 after; within reach of what changed: sky/lights:window
+      the brightest now: (13, 3, -12) 12>8, behind east 6 base (lit)
+  the recesses of the lit windows: every cell as before
+
+all stations: brighter before the glass: 252 cells; darker before the glass: 2652 cells; in the recess of a lit window: 0 cells
