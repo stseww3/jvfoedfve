@@ -81,8 +81,8 @@ only then lit: that is what the panelling and the boards in the recesses are for
 shaded one (LAMPS) and hangs low over what it is for. A shade throws its light down, so the source
 of a lamp is not offered at its bulb but under it, at the height of what it lights: over the shelf
 of the console, in the cell a desk stands in, at the dial of a clock. The light lies in pools on
-the floor and on the lower half of the walls; the heads of the windows and the linings of the lit
-ones stay out of it. The rack gets the most (12 on the faces at the height of the hand, 9 on its
+the floor and on the lower half of the walls; the heads of the windows stay out of it, and the
+linings of the lit ones have what their own sources give them. The rack gets the most (12 on the faces at the height of the hand, 9 on its
 frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is hardly
 darker than one at 10), so the pools are kept small and far apart: the floor rises from nothing at
 the door to 3 between the desks and to 9 before the console, and leads to the rack. And the floor
@@ -92,9 +92,12 @@ middle of the room, less towards the door and before the rack's own light, enoug
 and boards to be seen and not to be a black lid.
 A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
 east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
-unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
-is a lamp seen from outside: the lamps over the two regulators for the end windows, the drop
-lights over the two desks for the others. Every source is offered to the light line
+unlit glass from inside. The light line's sources of a lit window stand outside its glass, in the
+opening of the stone leaf (10 there; c331): what comes through is 8 in the first cell behind the
+glass and 3 on the room's long axis, no more than the lamp of the room that stands at that window
+gives. For each of them has a lamp of the room within two cells, so that a lit window is a lamp
+seen from outside: the lamps over the two regulators for the end windows, the drop lights over the
+two desks for the others. Every source is offered to the light line
 (sky/_lightkit); nothing is placed for good here. No block of the room stands in the first cell
 behind the glass of a window (clear_cells()): the lining of a lit one lies on the glass there. The
 two recesses are such cells; what hangs in them is display entities. The one block that does is

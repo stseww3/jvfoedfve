@@ -10,11 +10,13 @@ main/shell of c231's branch 4b9d320b, built and read cell by cell). Whose every 
   main/facade (c206)   the two long walls: glass in the inner leaf (x 14, x 1), the stone leaf
                        outside it (x 15, x 0) with the cornice over it; bays 3..7 are windows on the
                        east, 3..5 on the west
-  sky/lights (c220)    which windows are lit and the two sources of each lit one: under the blue
+  sky/lights (c331)    which windows are lit and the two sources of each lit one: under the blue
                        look bays 3 and 6 of the east front and 3 and 5 of the west one, opal glass.
-                       The sources stand outside the glass, in the window opening, level 8, one row
-                       above the sill and one row below the head (c220, g2 #33335); the first cell
-                       of the room behind the glass gets 6 of it
+                       The sources stand outside the glass, in the window opening, one row above
+                       the sill and one row below the head, at level 10: the 12 the director set
+                       for the light behind a wing's lit window, less the light line's THROUGH of
+                       2 (c331, 11-16 07:13, as his wash round places them). The glass gets 9, the
+                       first cell of the room behind it 8, the room's long axis 3
   materials/windows    a lit window is lined on the room side and is unlit glass from inside (A0,
     (c205)             g2 #32711). The lining is windows.line(), one call for each lit window
                        (g2 #34907); with it the box glazes a lit window with the opal glass it
@@ -37,7 +39,7 @@ from scenes.obs.materials import windows
 from scenes.obs.props import lamps
 
 LIT = {"east": (3, 6), "west": (3, 5)}      # the lit windows of the room under the blue look (sky/lights)
-OUTSIDE = 8                                 # the level of the sources of a lit opal window, in its opening
+OUTSIDE = 10                                # the level of the sources of a lit opal window, in its opening
 LINE = getattr(windows, "line", None)       # the lining of a lit window, once materials/windows has it
 ROOM_SIDE = B.WINDOW_FROSTED if LINE else B.WINDOW_DARK     # the glass of a lit window: the real one when it can be lined
 DOOR_Y = (T.FEET, T.FEET + 2)
