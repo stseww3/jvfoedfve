@@ -267,10 +267,6 @@ def _shaft(c, o, s):
 # on the eaves, an upright foot on the wall line, a shoulder, and 45 degrees to the finial
 HELM = ((HEAD, 4, "stairs"), (HEAD + 1, 3, "block"), (HEAD + 2, 3, "stairs"), (HEAD + 3, 2, "stairs"),
         (HEAD + 4, 1, "stairs"))
-# trial: the same without the kick, upright from the wall line, a brim of slabs on the eaves
-HELM_UPRIGHT = ((HEAD, 3, "block"), (HEAD + 1, 3, "block"), (HEAD + 2, 3, "stairs"), (HEAD + 3, 2, "stairs"),
-                (HEAD + 4, 1, "stairs"))
-
 
 def _square(reach):
     """The columns no further than `reach` from the middle column: a square of 2 * reach + 1."""
@@ -292,7 +288,7 @@ def _helm(c, o, s, rings, skirt=None):
     _set(c, o, CX, APEX, CZ, FINIAL)
 
 
-def _top_a(c, o, s, skirt=None, helm=None):
+def _top_a(c, o, s, skirt=None, helm=None, eaves=None):
     """Square: corner piers two columns wide (the quoin and one of dressed stone) and between them
     an arch of three with a railing in its foot. The eaves hang in the row of the arch heads. The
     copper helm stands on the wall line behind them: two steep tiers, then 45 degrees to the
@@ -318,10 +314,11 @@ def _top_a(c, o, s, skirt=None, helm=None):
             _set(c, o, x, y1, z, head)
     # the eaves: the order's moulding over the piers, a thin shelf over the arches, so that the
     # hung stairs do not stand in front of the arch heads
-    s.mould(BODY, y1, WALL.stairs, "top")
+    eaves = eaves or WALL
+    s.mould(BODY, y1, eaves.stairs, "top")
     for face in FACES:
         for i in ARCH:
-            s.put(face.cell(i, -1), y1, st(WALL.slab, type="top"))
+            s.put(face.cell(i, -1), y1, st(eaves.slab, type="top"))
     _fill(c, o, INSIDE, HEAD, CEILING.block)
     _helm(c, o, s, helm or HELM, skirt)
 
@@ -399,7 +396,7 @@ def _top_b2(c, o, s):
 
 
 TOPS = {"a": _top_a, "b": _top_b,
-        "a2": functools.partial(_top_a, skirt=COPPER, helm=HELM_UPRIGHT), "b2": _top_b2}
+        "a2": functools.partial(_top_a, eaves=COPPER), "b2": _top_b2}
 VERSION = "a"                       # what the master scene shows until the director has picked one
 
 
