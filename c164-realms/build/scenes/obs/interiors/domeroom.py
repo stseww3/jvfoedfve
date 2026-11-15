@@ -136,6 +136,10 @@ CLOCK_LIFT = 0.5                                # the regulator clock (props/ins
 # --- light: (level, rank); sky/lights decides where the invisible blocks really go -----------------
 PILOT_LAMPS = (5, 3)
 CLOCK_DIAL = (4, 3)
+# the sky's light the skeleton's iron is shown in: (far from the slit, beside it). No lamp is added:
+# the pieces are told how much of the night falls on them (_night). The floor keeps the iron out of
+# dead black in the half of the room the slit does not light; the cap keeps it under the sky
+IRON_LIGHT = (10, 13)
 
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
@@ -344,28 +348,38 @@ def ceilings(shell):
 
 
 def _faces(shell):
-    """How far from the axis the ribs come up against the inner leaf (the ring girder's face over
-    it), and how far along their planes the arch girders do: the least of each."""
+    """How far from the axis the ring girder's web has its front, and how far along their planes
+    the arch girders come up against their piers. The web is round and the inner leaf is not: it
+    stands against the block of the leaf that comes nearest to the axis and clear of all others."""
     ax, az = S.DOME_AXIS
 
-    def out_to_leaf(dx, dz, z0):
+    def out_to_leaf(dx, z0):
         d = 0.0
-        while (int(math.floor(ax + d * dx)), int(math.floor(az + z0 + d * dz))) not in shell.ledge:
+        while (int(math.floor(ax + d * dx)), int(math.floor(az + z0))) not in shell.ledge:
             d += 0.03125
             if d > 2.0 * S.DOME_R:
                 raise ValueError("no inner leaf on the way out from the dome's axis")
         return d
 
-    ribs = min(out_to_leaf(math.cos(math.radians(a)), math.sin(math.radians(a)), 0.0) for a in rib_angles())
-    sides = _sides(shell)
-    arches = min(out_to_leaf(dx, 0.0, side) for dx in (1.0, -1.0) for side in sides)
-    return ribs, arches
+    nearest = min(math.hypot(max(x - ax, ax - (x + 1), 0.0), max(z - az, az - (z + 1), 0.0)) for x, z in shell.ledge)
+    arches = min(out_to_leaf(dx, side) for dx in (1.0, -1.0) for side in _sides(shell))
+    return nearest - F.WEB, arches
 
 
 def _sides(shell):
     """Where the two arch planes stand, as z counted from the dome's axis: through the middle of
     the columns beside the slit."""
     return sorted({z + 0.5 - S.DOME_AXIS[1] for _x, z in shell.jambs})
+
+
+def _sill(shell):
+    """Where the ring girder stops for the slit's foot: (the side of the axis the slit comes down
+    to the inner leaf on, -1 west or 1 east; how far the outer faces of the two piers beside it
+    stand from the axis). None where the slit ends above the leaf."""
+    foot = [x + 0.5 - S.DOME_AXIS[0] for x, _z in shell.gap & shell.ledge]
+    if not foot:
+        return None
+    return math.copysign(1.0, sum(foot)), max(abs(side) for side in _sides(shell)) + 0.5
 
 
 @functools.lru_cache(maxsize=1)
@@ -397,7 +411,7 @@ def frame(shell=None):
     key = hash(frozenset(ceiling.items()))
     if key not in _FRAMES:
         _FRAMES[key] = F.Frame(PREFIX, ceiling, S.DOME_AXIS, _sides(shell), shell.arches & shell.inside,
-                               _faces(shell), BASE_RING[1], rib_angles())
+                               _faces(shell), (BASE_RING[0], BASE_RING[1] + 1), rib_angles(), _sill(shell))
     _FRAMES["last"] = _FRAMES[key]
     return _FRAMES[key]
 
@@ -436,12 +450,23 @@ def _vault(put, shell):
             put(col[0], y, col[1], IRON.block if col in iron else DEAL.block)
 
 
+def _night(shell, pos):
+    """The sky's light a piece of the skeleton is shown in. A display entity takes the light of the
+    one cell its origin is in, and a rib is ten blocks long: its origin may sit in the full light
+    under the slit or in the dark behind a girder. So every piece is given its light: what comes
+    down through the slit, one level less for every column away from it, within IRON_LIGHT."""
+    x, z = int(math.floor(pos[0])), int(math.floor(pos[2]))
+    away = min((abs(x - gx) + abs(z - gz) for gx, gz in shell.gap), default=15)
+    return max(IRON_LIGHT[0], min(IRON_LIGHT[1], 15 - away))
+
+
 def _skeleton(c, origin, shell):
     """The iron skeleton under the boards; returns the number of display entities."""
     skeleton = frame(shell)
     if skeleton is None:
         return 0
-    return sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin)
+    return sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin,
+                     brightness=(_night(shell, pos), 0))
                for name, pos, yaw in skeleton.placed)
 
 

@@ -1,23 +1,35 @@
 """The iron skeleton of the great dome, as display models (a helper of interiors/domeroom; the
 auto-discovery skips modules that start with "_").
 
-What turns with the dome and carries its boards and plates, from the ring girder up:
+What turns with the dome and carries its boards and plates, from the trucks up:
 
-    two arch girders   lattice girders in the two upright planes beside the slit, from the ring
-                       girder over the crown to the ring girder on the far side: the slit is cut
-                       between them, and the leaves of the slit run on them
+    the ring girder    a plate girder bent round the room, on the dome's trucks: a web two rows high
+                       in front of the blocks over the ledge, an angle along its top and one along
+                       its bottom, a stiffener every six degrees. It stops at the two piers beside
+                       the slit's foot: between them is the sill and the gear that parts the leaves
+                       (machines/domegear)
+    two arch girders   lattice girders in the two upright planes beside the slit, from the pier at
+                       the slit's foot over the crown to the pier on the far side: the slit is cut
+                       between them. Where they spring they are straight, and their underside there
+                       is the line the weights' rails of machines/domegear hang on
     the ribs           lattice ribs on the dome's seams, each from the ring girder up to the arch
-                       girder it meets; they all have the one curve of the dome's meridian
+                       girder it meets, all with the one curve of the dome's meridian. At its foot a
+                       rib's two chords take hold of the ring girder's two angles
+    the purlins        rings of bar from rib to rib; each ends on the arch girders, the upper ones
+                       where a rib does
+    the cross members  between the two arch girders where the slit is not: the girder across the
+                       slit's head, and the purlins carried across
 
 Nothing here is measured by hand: the frame is drawn under the ceiling it is given (the underside
 of the boards over every column, read off the canvas by interiors/domeroom), so it follows the dome
-when its courses change. A curve that stays under every corner of the stepped boards is found once
+when its courses change. A line that stays under every corner of the stepped boards is found once
 for the ribs (round the axis) and once for the arch girders (along their planes).
 
 Frames of reference. A piece is drawn in its own upright plane: z along the plane and away from
 the dome's axis, y up, x across; lengths in blocks until they are handed to the model. A rib's
-plane goes through the axis; an arch girder is drawn as a half, from the crown to its foot, and
-set down four times.
+plane goes through the axis; an arch girder is drawn as a half, from its foot to the crown, and
+set down four times. Shown with yaw = azimuth - 90, a piece's z points outwards at that azimuth
+and its x the way the azimuth falls.
 """
 import math
 
@@ -26,32 +38,36 @@ import numpy as np
 from artkit import models as M
 
 from ..common import palette as P
-from ..props import _kit as K
 
 SCALE = 4                       # blocks to 16 model units: a model reaches 12 blocks, 16 texels to the block
 UNIT = 16.0 / SCALE
 TEXEL = 0.0625
 MARGIN = TEXEL                  # between a chord's back and the lowest corner of the boards
-SOLE = 0.125                    # the plate a foot stands on, on the bottom of the ring girder's upper row
 
 # the sections, in blocks: (across the plane, in the plane)
 RIB_CHORD = (0.25, 0.125)
-RIB_DEPTH = 0.5                 # between the middles of a rib's two chords
+RIB_DEEP = 0.625                # from a rib's back to its belly
 RIB_PANEL = 0.75
-RIB_LACE = (TEXEL, 0.125)
 ARCH_CHORD = (0.3125, 0.1875)
-ARCH_DEPTH = 0.875
+ARCH_DEEP = (0.75, 1.0)         # an arch girder's depth lies within these; the run under it says what it is
 ARCH_PANEL = 1.0
-ARCH_LACE = (TEXEL, 0.125)
+LACE = (TEXEL, 0.125)           # the flat bars of a lattice
+PURLIN = (0.125, 0.1875)        # (level, upright)
+RUN_ROWS = 2.0                  # from the corners of the boards down to the line the weights' rails hang
+#                                 on (machines/domegear: the lower corners of the lining one column on)
+WEB = TEXEL                     # the ring girder's web plate
+FLANGE = 0.25                   # how far its two angles stand out from the web, and how far they lap it
+FACET = 6.0                     # degrees to one flat of the ring girder: three to a gore
+PULL = 0.5                      # a length of the ring girder is shown from this far in front of its web
 
-CHORD = P.mat("iron", base=4, bevel="along")    # the chord one sees from below
-BACK = P.mat("iron", bevel="along")
-LACE = P.mat("iron", bevel=0)
-PLATE = P.mat("iron")
-RIVET = K.RIVET
+# the skeleton is the lightest iron in the room: what is left of the night's light falls on it
+CHORD = P.mat("iron", base=5, bevel="along")
+BAR = P.mat("iron", base=4, bevel=0)
+PLATE = P.mat("iron", base=4)
+RIVET = P.mat("iron", kind="flat", base=6, bevel=0)
 
 
-# --- the curve under the boards -------------------------------------------------------------------
+# --- the line under the boards --------------------------------------------------------------------
 def tips(ceiling, reach):
     """The corners a line has to pass under, from the outside in: [(distance, height)].
 
@@ -71,12 +87,23 @@ def tips(ceiling, reach):
     return out
 
 
-def concave(points, step=TEXEL / 2.0, most=2.0):
+def straight(points):
+    """How many of the first points stand on one straight line (two at least, if there are two)."""
+    n = min(2, len(points))
+    while n < len(points):
+        (x0, y0), (x1, y1), (x2, y2) = points[0], points[1], points[n]
+        if abs((x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0)) > 1e-6:
+            break
+        n += 1
+    return n
+
+
+def concave(points, hold=0, step=TEXEL / 2.0, most=4.0):
     """The chain through points = [(x, y)], x rising, let down where it has to be so that it bends
-    one way only (never upwards) and passes on or under every point; the first point keeps its
-    height. Every point may be let down by a whole number of steps; of all the chains that bend
-    the right way the one is kept whose gaps, squared, add up to the least: a few small gaps
-    rather than one large one."""
+    one way only (never upwards) and passes on or under every point. The first point keeps its
+    height, and so do the `hold` after it; every other may be let down by a whole number of steps.
+    Of all the chains that bend the right way the one is kept whose gaps, squared, add up to the
+    least: a few small gaps rather than one large one."""
     xs = np.array([p[0] for p in points], dtype=float)
     ys = np.array([p[1] for p in points], dtype=float)
     n = len(points)
@@ -85,8 +112,12 @@ def concave(points, step=TEXEL / 2.0, most=2.0):
     drop = np.arange(int(round(most / step)) + 1) * step
     k = len(drop)
     huge = 1e18
+
+    def price(i):
+        return np.where(drop > 0.0, huge, 0.0) if i <= hold else drop ** 2
+
     cost = np.full((k, k), huge)            # [how far point i - 1 is let down, how far point i]
-    cost[0, :] = drop ** 2
+    cost[0, :] = price(1)
     came = []
     for i in range(1, n - 1):
         before = ((ys[i] - drop)[None, :] - (ys[i - 1] - drop)[:, None]) / (xs[i] - xs[i - 1])
@@ -94,7 +125,7 @@ def concave(points, step=TEXEL / 2.0, most=2.0):
         allowed = before[:, :, None] >= after[None, :, :] - 1e-9
         via = np.where(allowed, cost[:, :, None], huge)
         came.append(via.argmin(axis=0))
-        cost = via.min(axis=0) + (drop ** 2)[None, :]
+        cost = via.min(axis=0) + price(i + 1)[None, :]
     if cost.min() >= huge:
         raise ValueError("no chain that bends one way passes under these corners")
     b, c = np.unravel_index(cost.argmin(), cost.shape)
@@ -108,20 +139,27 @@ def concave(points, step=TEXEL / 2.0, most=2.0):
 
 def rounded(points, rounds=3):
     """The chain with its corners cut (each round takes every corner off at a quarter of its two
-    sides): it stays on the hollow side of the chain and keeps its ends."""
+    sides): it stays on the hollow side of the chain and keeps its first point. The chain is one
+    half of a chain that is the same on both sides of x = 0, so the corner in the middle is cut
+    like every other; what comes back ends on the middle."""
+    whole = list(points) + [(-x, y) for x, y in reversed(points) if x < -1e-9]
     for _ in range(rounds):
-        out = [points[0]]
-        for a, b in zip(points, points[1:]):
+        out = [whole[0]]
+        for a, b in zip(whole, whole[1:]):
             out.append((a[0] + (b[0] - a[0]) * 0.25, a[1] + (b[1] - a[1]) * 0.25))
             out.append((a[0] + (b[0] - a[0]) * 0.75, a[1] + (b[1] - a[1]) * 0.75))
-        out.append(points[-1])
-        points = out
-    return points
+        out.append(whole[-1])
+        whole = out
+    half = [p for p in whole if p[0] < -1e-9]
+    a, b = half[-1], whole[len(half)]
+    t = (0.0 - a[0]) / (b[0] - a[0]) if b[0] - a[0] > 1e-12 else 0.0
+    return half + [(0.0, a[1] + (b[1] - a[1]) * t)]
 
 
 class Curve:
-    """A line in an upright plane, as (z, y) points from its foot at the ring girder inwards and
-    up; lengths along it are counted from the foot."""
+    """A line in an upright plane, as (z, y) points from its foot inwards and up; lengths along it
+    are counted from the foot, and below nought the first stretch is carried on straight, into
+    what the foot stands against."""
 
     def __init__(self, points):
         self.p = [(float(z), float(y)) for z, y in points]
@@ -130,17 +168,18 @@ class Curve:
             self.s.append(self.s[-1] + math.hypot(b[0] - a[0], b[1] - a[1]))
         self.length = self.s[-1]
 
-    def at(self, s, inside=0.0):
-        """The point at length s, moved `inside` towards the hollow of the curve."""
-        s = min(max(s, 0.0), self.length)
+    def _stretch(self, s):
         i = 0
         while i < len(self.s) - 2 and self.s[i + 1] < s:
             i += 1
         a, b = self.p[i], self.p[i + 1]
         span = self.s[i + 1] - self.s[i]
-        t = (s - self.s[i]) / span
-        tz, ty = (b[0] - a[0]) / span, (b[1] - a[1]) / span
-        return (a[0] + (b[0] - a[0]) * t - ty * inside, a[1] + (b[1] - a[1]) * t + tz * inside)
+        return a, ((b[0] - a[0]) / span, (b[1] - a[1]) / span), s - self.s[i]
+
+    def at(self, s, inside=0.0):
+        """The point at length s, moved `inside` towards the hollow of the curve."""
+        a, (tz, ty), along = self._stretch(min(s, self.length))
+        return (a[0] + tz * along - ty * inside, a[1] + ty * along + tz * inside)
 
     def where(self, z):
         """The length at which the curve is at distance z from the axis (it only goes inwards)."""
@@ -149,146 +188,271 @@ class Curve:
                 return self.s[i] + (self.s[i + 1] - self.s[i]) * (a[0] - z) / (a[0] - b[0])
         return self.length if z <= self.p[-1][0] else 0.0
 
+    def down(self, inside):
+        """The length, below nought, at which the line `inside` the curve comes down on the upright
+        face the curve starts from."""
+        _a, (tz, ty), _along = self._stretch(0.0)
+        return inside * ty / tz
 
-def under(ceiling, reach, foot):
-    """The line of a chord's back: from `foot` (distance, height) inwards, MARGIN under every
-    corner of the boards."""
-    chain = [(-foot[0], foot[1])] + [(-d, y - MARGIN) for d, y in tips(ceiling, reach) if d < foot[0] - 0.05]
-    chain = [p for i, p in enumerate(chain) if i == 0 or p[0] > chain[i - 1][0] + 1e-6]
-    return Curve([(-x, y) for x, y in rounded(concave(chain))])
+    def slope(self):
+        """How steeply the curve leaves its foot: rise over run."""
+        _a, (tz, ty), _along = self._stretch(0.0)
+        return ty / -tz
+
+    def springing(self):
+        """How far from its foot the curve runs straight."""
+        (z0, y0), (z1, y1) = self.p[0], self.p[1]
+        n = 1
+        while n + 1 < len(self.p) and abs((z1 - z0) * (self.p[n + 1][1] - y0) - (y1 - y0) * (self.p[n + 1][0] - z0)) < 1e-9:
+            n += 1
+        return self.s[n]
+
+    def level(self, inside, step=TEXEL):
+        """The line `inside` the curve, from the face its foot stands against to its end:
+        [(z, y)], z falling."""
+        out, s = [], self.down(inside)
+        while s < self.length:
+            out.append(self.at(s, inside))
+            s += step
+        return out + [self.at(self.length, inside)]
+
+
+def under(ceiling, reach, face, height=None):
+    """The line of a chord's back: from the upright face at distance `face` inwards, MARGIN under
+    every corner of the boards. It starts at `height`. Without one it springs straight: the line
+    of the first corners, as many as stand on one line, is carried on down to the face."""
+    corners = [(d, y - MARGIN) for d, y in tips(ceiling, reach) if d < face - 0.05]
+    hold = 0
+    if height is None:
+        hold = straight(corners)
+        (d0, y0), (d1, y1) = corners[0], corners[1]
+        height = y0 - (y1 - y0) / (d0 - d1) * (face - d0)
+    chain = [(-face, height)] + [(-d, y) for d, y in corners]
+    return Curve([(-x, y) for x, y in rounded(concave(chain, hold=hold))])
+
+
+def height_at(line, z):
+    """The height of a line [(z, y)] (z falling) at distance z, None beyond its ends."""
+    for a, b in zip(line, line[1:]):
+        if b[0] - 1e-9 <= z <= a[0] + 1e-9 and a[0] - b[0] > 1e-12:
+            return a[1] + (b[1] - a[1]) * (a[0] - z) / (a[0] - b[0])
+    return None
 
 
 # --- pieces ---------------------------------------------------------------------------------------
 class Piece:
-    """One model drawn in an upright plane, lengths in blocks: bars from point to point (z, y), with
-    x across the plane. `lines` keeps what was drawn, for the checks: (a, b, half thickness)."""
+    """One model drawn in an upright plane, lengths in blocks: points are (z, y) in the plane with
+    an x across it. `lines` keeps the bars that were drawn, for the checks: ((x, z, y), (x, z, y),
+    half thickness)."""
 
     def __init__(self, name, anchor):
-        self.name, self.anchor = name, anchor               # the anchor: (z, y) in the plane
+        self.name, self.anchor = name, anchor               # the anchor: (z, y) in the plane, at x = 0
         self.m = M.Model(name, px=SCALE)
         self.lines = []
+        self.soffit = []                                    # the line of its underside, where it has one to tell
 
     def _u(self, x, p):
         return (x * UNIT, (p[1] - self.anchor[1]) * UNIT, (p[0] - self.anchor[0]) * UNIT)
 
+    def rod(self, xa, a, xb, b, section, mat, seed=None):
+        """A bar from (xa, a) to (xb, b); section: (its size sideways, its size in the upright plane
+        through it). An upright bar has its first size across the piece's plane. A bar square to
+        the frame is a plain box: it needs no turn, and a long one keeps the model's box small."""
+        p, q = self._u(xa, a), self._u(xb, b)
+        w, h = section[0] * UNIT, section[1] * UNIT
+        runs = [abs(q[i] - p[i]) > 1e-6 for i in range(3)]
+        if sum(runs) == 1:
+            k = runs.index(True)
+            half = ((0.0, h / 2.0, w / 2.0), (w / 2.0, 0.0, h / 2.0), (w / 2.0, h / 2.0, 0.0))[k]
+            self.m.box([min(p[i], q[i]) - half[i] for i in range(3)], [max(p[i], q[i]) + half[i] for i in range(3)],
+                       mat, grain="xyz"[k], seed=seed)
+        else:
+            self.m.beam(p, q, w, h, mat, seed=seed)
+        self.lines.append(((xa, a[0], a[1]), (xb, b[0], b[1]), max(section) / 2.0))
+
     def bar(self, a, b, section, mat, x=0.0, seed=None):
-        across, deep = section
-        self.m.beam(self._u(x, a), self._u(x, b), across * UNIT, deep * UNIT, mat, seed=seed)
-        self.lines.append((a, b, deep / 2.0))
+        self.rod(x, a, x, b, section, mat, seed=seed)
 
     def chain(self, points, section, mat, seed=None):
         for a, b in zip(points, points[1:]):
             if math.hypot(b[0] - a[0], b[1] - a[1]) > 1e-6:
                 self.bar(a, b, section, mat, seed=seed)
 
-    def box(self, lo, hi, across, mat, x=0.0, **kw):
-        """A plate square to the frame: from (z, y) to (z, y), `across` wide about x."""
-        a = self._u(x - across / 2.0, (min(lo[0], hi[0]), min(lo[1], hi[1])))
-        b = self._u(x + across / 2.0, (max(lo[0], hi[0]), max(lo[1], hi[1])))
-        self.m.box(a, b, mat, **kw)
-        self.lines.append(((lo[0], lo[1]), (hi[0], hi[1]), 0.0))
+    def box(self, lo, hi, x0, x1, mat, **kw):
+        """A plate square to the frame: from (z, y) to (z, y), from x0 to x1 across."""
+        self.m.box(self._u(min(x0, x1), (min(lo[0], hi[0]), min(lo[1], hi[1]))),
+                   self._u(max(x0, x1), (max(lo[0], hi[0]), max(lo[1], hi[1]))), mat, **kw)
 
-    def rivet(self, p, x, towards):
-        """A rivet head on a face square to the plane's z: one texel, half a texel proud."""
-        z0, z1 = sorted((p[0], p[0] + towards * TEXEL / 2.0))
-        self.m.box(self._u(x - TEXEL / 2.0, (z0, p[1] - TEXEL / 2.0)), self._u(x + TEXEL / 2.0, (z1, p[1] + TEXEL / 2.0)),
-                   RIVET, seed=99)
-
-
-def _stations(first, step, last):
-    out, s = [], first
-    while s < last - 1e-9:
-        out.append(s)
-        s += step
-    return out
+    def rivet(self, x, p, out):
+        """A rivet head on a face that looks along `out` ("x", "-x", "z" or "-z" of the piece): one
+        texel across, half a texel proud. (x, p) is the middle of its foot."""
+        h, proud = TEXEL / 2.0, (-1.0 if out.startswith("-") else 1.0) * TEXEL / 2.0
+        if out.endswith("z"):
+            self.box((p[0], p[1] - h), (p[0] + proud, p[1] + h), x - h, x + h, RIVET, seed=99)
+        else:
+            self.box((p[0] - h, p[1] - h), (p[0] + h, p[1] + h), x, x + proud, RIVET, seed=99)
 
 
-def _on_sole(curve, inside):
-    """The length at which the line `inside` the curve has climbed onto the sole."""
-    s = 0.0
-    while curve.at(s, inside)[1] < curve.p[0][1] + TEXEL / 2.0 and s < curve.length:
-        s += TEXEL / 2.0
-    return s
+def _between(fixed, panel):
+    """Stations from the first of `fixed` to the last, through every one of them, the stretches
+    between them divided evenly into lengths of about `panel`."""
+    out = []
+    for a, b in zip(fixed, fixed[1:]):
+        n = max(1, int(round((b - a) / panel)))
+        out += [a + (b - a) * i / n for i in range(n)]
+    return out + [fixed[-1]]
 
 
-def _shoe(piece, curve, belly, chord, wide):
-    """The foot of a rib or of an arch girder on the ring girder: a plate against the girder's
-    face with its rivets, and the sole both chords stand on."""
-    z0, y0 = curve.p[0]
-    base = y0 - SOLE
-    piece.box((z0, base), (z0 + TEXEL, base + 0.875), wide, PLATE, seed=41)
-    inner = curve.at(_on_sole(curve, belly), belly)[0] - chord[1]
-    piece.box((inner, base), (z0, y0), wide, PLATE, seed=42)
-    for x in (-wide / 2.0 + TEXEL * 1.5, wide / 2.0 - TEXEL * 1.5):
-        for y in (0.3125, 0.6875):
-            piece.rivet((z0, base + y), x, -1.0)
+def _gusset(piece, face, y0, y1, half, rows):
+    """A plate on the upright face a piece's foot stands against, with two rows of rivets."""
+    piece.box((face - TEXEL, y0), (face, y1), -half, half, PLATE, seed=41)
+    for x in (-half + TEXEL * 1.5, half - TEXEL * 1.5):
+        for i in range(rows):
+            piece.rivet(x, (face - TEXEL, y0 + (y1 - y0) * (i + 0.5) / rows), "-z")
 
 
-def rib(name, curve, end):
-    """A lattice rib from the ring girder up to distance `end` from the axis, where it meets an
-    arch girder: two chords, a zigzag of flat bars between them, a post where it ends."""
+def rib(name, curve, end, purlins, rows):
+    """A lattice rib from the ring girder's web (its front is where the curve starts, its angles
+    are at the heights `rows`) up to distance `end` from the axis, where it meets an arch girder:
+    two chords, a zigzag of flat bars between them, a plate where it ends, a gusset on the web
+    between the girder's two angles. The back chord leaves the web under the top angle, the belly
+    chord stands on the bottom one: the rib is as deep as the girder where it starts.
+
+    purlins: [(length along the curve, [(x, z) where a bar from that point of the rib ends, ...])];
+    every such point is a point of the lattice."""
     across, deep = RIB_CHORD
-    back, belly = deep / 2.0, deep / 2.0 + RIB_DEPTH
+    back, belly = deep / 2.0, RIB_DEEP - deep / 2.0
     last = curve.where(end)
-    piece = Piece(name, curve.at(last * 0.55, belly + 0.4))
-    tops = _stations(0.375, RIB_PANEL, last - 0.3)
-    start = _on_sole(curve, belly)
-    lows = [s + RIB_PANEL / 2.0 for s in tops if s + RIB_PANEL / 2.0 < last - 0.15]
-    piece.chain([curve.at(s, back) for s in [0.0] + tops + [last]], RIB_CHORD, BACK, seed=11)
-    piece.chain([curve.at(s, belly) for s in [start] + [s for s in lows if s > start + 0.1] + [last]],
-                RIB_CHORD, CHORD, seed=12)
-    for i, s in enumerate(tops):
-        for low in (s - RIB_PANEL / 2.0, s + RIB_PANEL / 2.0):
-            if start < low < last - 0.15:
-                piece.bar(curve.at(s, back), curve.at(low, belly), RIB_LACE, LACE, seed=13 + i % 2)
-    piece.bar(curve.at(last, 0.0), curve.at(last, belly + deep / 2.0), (across, 0.125), PLATE, seed=15)
-    _shoe(piece, curve, belly, RIB_CHORD, 0.5)
+    piece = Piece(name, curve.at(last * 0.5, RIB_DEEP + 0.75))
+    tops = _between([0.0] + sorted(s for s, _ends in purlins if 0.3 < s < last - 0.3) + [last], RIB_PANEL)
+    lows = [(a + b) / 2.0 for a, b in zip(tops, tops[1:])]
+    face = curve.p[0][0]
+
+    def into(a, b, by=0.1):                             # a chord's first point, carried on into the web
+        k = by / math.hypot(a[0] - b[0], a[1] - b[1])
+        return (a[0] + (a[0] - b[0]) * k, a[1] + (a[1] - b[1]) * k)
+
+    line = [curve.at(s, back) for s in [curve.down(back)] + tops[1:]]
+    piece.chain([into(line[0], line[1])] + line, RIB_CHORD, CHORD, seed=11)
+    line = [(face, rows[0] + FLANGE)] + [curve.at(s, belly) for s in lows + [last]]
+    piece.chain([into(line[0], line[1])] + line, RIB_CHORD, CHORD, seed=12)
+    for i, s in enumerate(tops[1:-1]):
+        piece.bar(curve.at(s, back), curve.at(lows[i], belly), LACE, BAR, seed=13)
+        piece.bar(curve.at(s, back), curve.at(lows[i + 1], belly), LACE, BAR, seed=14)
+    piece.bar(curve.at(last, 0.0), curve.at(last, RIB_DEEP), (across, 0.125), PLATE, seed=15)
+    for s, ends in purlins:
+        z, y = curve.at(s)
+        for x1, z1 in ends:
+            piece.rod(0.0, (z, y - PURLIN[1] / 2.0), x1, (z1, y - PURLIN[1] / 2.0), PURLIN, BAR, seed=16)
+    _gusset(piece, face, rows[0] + FLANGE, rows[1] - FLANGE, 0.25, 4)
+    piece.soffit = [(face, float(rows[0]))] + [curve.at(s, RIB_DEEP) for s in lows + [last]]
     return piece
 
 
-def arch(name, curve, posts):
-    """Half an arch girder, from its foot on the ring girder to the crown: two chords, a lattice
-    of crossing flat bars between them, an upright plate at the crown and wherever a rib comes in
-    (posts: distances from the crown)."""
+def arch(name, curve, deep_all, posts):
+    """Half an arch girder, from the pier at its foot to the crown: two chords, a lattice of
+    crossing flat bars between them, an upright plate at the crown and wherever something comes in
+    from the side (posts: (distance from the crown, how far the plate stands over the girder's
+    back)), a gusset on the pier. Where its straight springing ends is a point of the lattice, so
+    the underside keeps to its line as far as the back does."""
     across, deep = ARCH_CHORD
-    back, belly = deep / 2.0, deep / 2.0 + ARCH_DEPTH
+    back, belly = deep / 2.0, deep_all - deep / 2.0
     last = curve.length
-    piece = Piece(name, curve.at(last * 0.5, belly + 0.5))
-    count = max(1, int(round((last - 0.5) / ARCH_PANEL)))
-    step = (last - 0.5) / count
-    marks = [0.5 + i * step for i in range(count + 1)]
-    start = _on_sole(curve, belly)
-    piece.chain([curve.at(s, back) for s in [0.0] + marks], ARCH_CHORD, BACK, seed=21)
-    piece.chain([curve.at(s, belly) for s in [start] + [s for s in marks if s > start + 0.1]], ARCH_CHORD, CHORD, seed=22)
+    piece = Piece(name, curve.at(last * 0.5, deep_all + 0.75))
+    stops = sorted((curve.where(d), over) for d, over in posts)
+    fixed = sorted({0.0, last, curve.springing()} | {s for s, _over in stops})
+    fixed = [s for i, s in enumerate(fixed) if i == 0 or s == last or (s - fixed[0] > 0.4 and last - s > 0.4)]
+    marks = _between(fixed, ARCH_PANEL)
+    into = 0.1
+    piece.chain([curve.at(s, back) for s in [curve.down(back) - into] + marks[1:]], ARCH_CHORD, CHORD, seed=21)
+    piece.chain([curve.at(s, belly) for s in [curve.down(belly) - into] + marks], ARCH_CHORD, CHORD, seed=22)
     for a, b in zip(marks, marks[1:]):
-        if a > start:
-            piece.bar(curve.at(a, belly), curve.at(b, back), ARCH_LACE, LACE, x=-0.046875, seed=24)
-        piece.bar(curve.at(a, back), curve.at(b, belly), ARCH_LACE, LACE, x=0.046875, seed=23)
-    for d in list(posts) + [TEXEL]:
-        s = curve.where(d)
-        piece.bar(curve.at(s, 0.0), curve.at(s, belly + deep / 2.0), (across, 0.125), PLATE, seed=25)
-    _shoe(piece, curve, belly, ARCH_CHORD, 0.5625)
+        piece.bar(curve.at(a, belly), curve.at(b, back), LACE, BAR, x=-0.046875, seed=24)
+        piece.bar(curve.at(a, back), curve.at(b, belly), LACE, BAR, x=0.046875, seed=23)
+    for s, over in stops + [(last - TEXEL, 0.0)]:
+        piece.bar(curve.at(s, -over), curve.at(s, deep_all), (across, 0.125), PLATE, seed=25)
+    face = curve.p[0][0]
+    _gusset(piece, face, curve.at(curve.down(deep_all), deep_all)[1] + TEXEL, curve.p[0][1] + 0.1875, 0.28125, 4)
+    piece.soffit = [curve.at(s, deep_all) for s in [curve.down(deep_all)] + marks]
     return piece
+
+
+def cross(name, anchor, girder, ties, reach):
+    """What goes across between the two arch girders, drawn in the upright plane along the slit:
+    the girder across the slit's head (girder: (z, the height of its top, of its underside)), a
+    lattice of the arch girders' make, and the purlins carried across (ties: [(z, top)])."""
+    piece = Piece(name, anchor)
+    z, top, low = girder
+    across, deep = ARCH_CHORD
+    hi, lo = top - deep / 2.0, low + deep / 2.0
+    for y in (hi, lo):
+        piece.rod(-reach, (z, y), reach, (z, y), (across, deep), CHORD, seed=51)
+    count = max(2, 2 * int(round(reach / ARCH_PANEL)))
+    marks = [-reach + 2.0 * reach * i / count for i in range(count + 1)]
+    for a, b in zip(marks, marks[1:]):
+        piece.rod(a, (z - 0.046875, lo), b, (z - 0.046875, hi), LACE, BAR, seed=52)
+        piece.rod(a, (z + 0.046875, hi), b, (z + 0.046875, lo), LACE, BAR, seed=53)
+    for x in (marks[0] + 0.0625, 0.0, marks[-1] - 0.0625):
+        piece.rod(x, (z, low), x, (z, top), (0.125, across), PLATE, seed=54)
+    for z1, top1 in ties:
+        piece.rod(-reach, (z1, top1 - PURLIN[1] / 2.0), reach, (z1, top1 - PURLIN[1] / 2.0), PURLIN, BAR, seed=55)
+    return piece
+
+
+def ring(name, radius, rows, arc, closed=False):
+    """A length of the ring girder, `arc` degrees of it about the dome's axis in flats of about
+    FACET degrees: each a web plate from rows[0] to rows[1] with its front `radius` from the axis,
+    an angle along its top and one along its bottom; a stiffener on every joint between two flats.
+    The model's origin is PULL in front of the web's middle, half way up. closed: a plate at either
+    end, back to the blocks."""
+    m = M.Model(name, px=SCALE)
+    facets = max(1, int(round(arc / FACET)))
+    each = arc / facets
+    mid = (rows[0] + rows[1]) / 2.0
+    y0, y1 = (rows[0] - mid) * UNIT, (rows[1] - mid) * UNIT
+    t, f = TEXEL * UNIT, FLANGE * UNIT
+    front = PULL * UNIT                                 # the web's front, from the model's origin
+    axis = (0.0, 0.0, front - radius * UNIT)
+    half = radius * math.tan(math.radians(each / 2.0)) * UNIT
+    for i in range(facets):
+        with m.turned(("y", (i - (facets - 1) / 2.0) * each), about=axis):
+            m.box((-half, y0, front), (half, y1, front + WEB * UNIT), PLATE, grain="x", seed=61)
+            for leg, lap in (((y1 - t, y1), (y1 - f, y1 - t)), ((y0, y0 + t), (y0 + t, y0 + f))):
+                m.box((-half, leg[0], front - f), (half, leg[1], front), CHORD, grain="x", seed=62)
+                m.box((-half, lap[0], front - t), (half, lap[1], front), CHORD, grain="x", seed=63)
+                for k in range(4):
+                    x, y = (k - 1.5) * half / 2.0, (lap[0] + lap[1]) / 2.0
+                    m.box((x - t / 2.0, y - t / 2.0, front - 1.5 * t), (x + t / 2.0, y + t / 2.0, front - t), RIVET, seed=99)
+    for i in range(facets + 1):
+        with m.turned(("y", (i - facets / 2.0) * each), about=axis):
+            if 0 < i < facets:
+                m.box((-t / 2.0, y0 + f, front - 0.1875 * UNIT), (t / 2.0, y1 - f, front), BAR, seed=64)
+            elif closed:
+                m.box((-t / 2.0, y0, front - f), (t / 2.0, y1, front + 0.75 * UNIT), PLATE, seed=65)
+    return m
 
 
 # --- the frame ------------------------------------------------------------------------------------
 class Frame:
-    """The skeleton under one dome: its two curves, its models, and where every piece goes.
+    """The skeleton under one dome: its lines, its models, and where every piece goes.
 
     ceiling   {column: the height of the underside over it, None under the open slit}
     axis      (x, z) of the dome's upright axis
     sides     where the two arch planes stand, as z counted from the axis
     arches    the columns the arch girders run under
-    faces     (how far from the axis the ribs meet the ring girder's face, how far along their
-              planes the arch girders do)
-    base      the height of the bottom of the ring girder's upper row: the feet stand on it
+    faces     (how far from the axis the ring girder's web has its front, how far along their
+              planes the arch girders come up against their piers)
+    rows      the heights of the ring girder's underside and of its top
     angles    the dome's seams, in degrees round the axis (0 = east, 90 = south)
+    sill      where the ring girder stops for the slit's foot: (-1 or 1: the side of the axis along
+              the slit, how far the piers' outer faces stand from the axis across it), or None
+
+    placed    [(model, the position of its origin, yaw)] for every piece
     """
 
-    def __init__(self, prefix, ceiling, axis, sides, arches, faces, base, angles):
-        self.axis, self.sides = axis, tuple(sorted(sides))
+    def __init__(self, prefix, ceiling, axis, sides, arches, faces, rows, angles, sill=None):
+        self.axis, self.sides, self.rows, self.faces = axis, tuple(sorted(sides)), rows, faces
         ax, az = axis
-        foot_y = base + SOLE
 
         def round_axis(col):
             dx = max(col[0] - ax, ax - (col[0] + 1), 0.0)
@@ -298,43 +462,145 @@ class Frame:
         def along(col):
             return max(col[0] - ax, ax - (col[0] + 1), 0.0) if col in arches else None
 
-        self.meridian = under(ceiling, round_axis, (faces[0] - TEXEL, foot_y))
-        self.arch_line = under(ceiling, along, (faces[1] - TEXEL, foot_y))
-        reach = min(abs(s) for s in self.sides) - ARCH_CHORD[0] / 2.0
+        self.meridian = under(ceiling, round_axis, faces[0], rows[1])
+        self.arch_line = under(ceiling, along, faces[1])
+        tilt = math.atan(self.arch_line.slope())
+        self.arch_deep = min(max((RUN_ROWS - MARGIN) * math.cos(tilt), ARCH_DEEP[0]), ARCH_DEEP[1])
+        self.reach = reach = min(abs(s) for s in self.sides) - ARCH_CHORD[0] / 2.0
         self.models, self.pieces, self.placed = {}, {}, []
-        posts = set()
+
+        # the ribs: every seam that is not between the two arch girders, up to the girder it meets
+        def seam(deg):
+            return round(deg % 360.0, 3) % 360.0
+
+        ends = {}
         for deg in angles:
+            lateral = abs(math.sin(math.radians(deg)))
+            if lateral * faces[0] > reach + 0.5:
+                ends[seam(deg)] = reach / lateral
+        # the purlins: a ring through the top of every rib that ends low enough to leave a bay worth
+        # spanning, and one half way up the lowest stretch
+        tops = sorted({round(e, 3) for e in ends.values() if e > 3.5}, reverse=True)
+        first = [self.meridian.at(self.meridian.where(tops[0]) / 2.0)[0]] if tops else []
+        self.rings = [(d, self.meridian.at(self.meridian.where(d))[1]) for d in first + tops]
+        step = 360.0 / len(angles)
+        half_bay = math.radians(step) / 2.0
+        junctions = {}
+        for deg, end in sorted(ends.items()):
             a = math.radians(deg)
-            if abs(math.sin(a)) * self.meridian.p[0][0] <= reach + 0.5:
-                continue                                    # a seam between the two arch girders
-            end = reach / abs(math.sin(a))
-            name = f"{prefix}rib_{int(round(end * 100)):04d}"
+            from_slit = math.degrees(math.asin(abs(math.sin(a))))
+            towards = 1.0 if math.sin(a) * math.cos(a) > 0.0 else -1.0     # the side of the rib the slit's axis is on
+            purlins = []
+            for d, _y in self.rings:
+                if d < end - 2e-3:
+                    continue
+                bars = []
+                for side in (1.0, -1.0):
+                    other = ends.get(seam(deg - side * step))
+                    if other is not None and other <= d + 2e-3:         # half way to the next rib
+                        bars.append((side * d * math.sin(half_bay) * math.cos(half_bay), d * math.cos(half_bay) ** 2))
+                    elif d - end > 2e-3 and side == towards:            # on to the arch girder
+                        gap = math.radians(from_slit - math.degrees(math.asin(reach / d)))
+                        bars.append((side * d * math.sin(gap), d * math.cos(gap)))
+                        junctions.setdefault(round(math.sqrt(d * d - reach * reach), 3), 0.0)
+                purlins.append((self.meridian.where(d), bars))
+            lopsided = any(len(bars) != 2 or abs(bars[0][0] + bars[1][0]) > 1e-6 for _s, bars in purlins)
+            name = f"{prefix}rib_{int(round(end * 100)):04d}" + (("p" if towards > 0.0 else "m") if lopsided else "")
             if name not in self.pieces:
-                self.pieces[name] = rib(name, self.meridian, end)
+                self.pieces[name] = rib(name, self.meridian, end, purlins, rows)
             z, y = self.pieces[name].anchor
             self.placed.append((name, (ax + z * math.cos(a), y, az + z * math.sin(a)), deg - 90.0))
-            posts.add(round(abs(end * math.cos(a)), 3))
+            # the rib comes in over the arch girder's back by what the two lines differ there
+            where = round(abs(end * math.cos(a)), 3)
+            rib_top = self.meridian.at(self.meridian.where(end))[1]
+            arch_top = self.arch_line.at(self.arch_line.where(where))[1]
+            junctions[where] = max(junctions.get(where, 0.0), rib_top - arch_top, 0.0)
+
         name = prefix + "arch"
-        self.pieces[name] = arch(name, self.arch_line, sorted(posts))
+        self.pieces[name] = arch(name, self.arch_line, self.arch_deep, sorted(junctions.items()))
         z, y = self.pieces[name].anchor
         for side in self.sides:
             self.placed.append((name, (ax + z, y, az + side), -90.0))
             self.placed.append((name, (ax - z, y, az + side), 90.0))
-        self.models = {name: piece.m for name, piece in self.pieces.items()}
 
-    def underside(self, along):
+        # between the arch girders: across the slit's head, in the first column that has boards, and
+        # from there on away from the slit. Drawn with z along the slit and away from its foot
+        self.head = None
+        if sill is not None:
+            row = int(math.floor(az))
+            opens = [(col[0] + 0.5 - ax) * -sill[0] for col in arches if ceiling.get((col[0], row), 0) is None]
+            if opens:
+                at = max(opens) + 1.0
+                s = self.arch_line.where(abs(at))
+                top, low = self.arch_line.at(s)[1], self.arch_line.at(s, self.arch_deep)[1]
+                ties = [(z, y) for z, y in ((math.sqrt(d * d - reach * reach), y) for d, y in self.rings if d > reach)
+                        if z > at + 1.0]
+                span = max([z for z, _y in ties] + [at])
+                name = prefix + "cross"
+                anchor = ((span + at) / 2.0, low - 1.0)
+                self.pieces[name] = cross(name, anchor, (at, top, low), ties, reach)
+                self.placed.append((name, (ax - sill[0] * anchor[0], anchor[1], az + sum(self.sides) / 2.0),
+                                    -90.0 if sill[0] < 0.0 else 90.0))
+                self.head = (-sill[0] * at, top, low)
+
+        # the ring girder: one length to a gore, left out where the sill and its two piers are
+        mid = (rows[0] + rows[1]) / 2.0
+        name = prefix + "ring"
+        if sill is not None:
+            cut = math.degrees(math.asin(sill[1] / faces[0]))
+            middle = 180.0 if sill[0] < 0.0 else 0.0
+        gores = sorted(a % 360.0 for a in angles)
+        for a0, a1 in zip(gores, gores[1:] + [gores[0] + 360.0]):
+            length, at, arc = name, (a0 + a1) / 2.0, a1 - a0
+            if sill is not None:
+                off = (at - middle + 180.0) % 360.0 - 180.0         # the gore's middle, from the sill's
+                lo, hi = abs(off) - arc / 2.0, abs(off) + arc / 2.0
+                if hi <= cut + 1e-6:
+                    continue
+                if lo < cut:
+                    length, arc = name + "_end", hi - cut
+                    at = middle + math.copysign((cut + hi) / 2.0, off)
+            if length not in self.models:
+                self.models[length] = ring(length, faces[0], rows, arc, closed=length != name)
+            r = math.radians(at)
+            self.placed.append((length, (ax + (faces[0] - PULL) * math.cos(r), mid, az + (faces[0] - PULL) * math.sin(r)),
+                                at - 90.0))
+        self.models.update({name: piece.m for name, piece in self.pieces.items()})
+
+    def run(self):
+        """The straight line the arch girders' underside keeps to where they spring: ((distance
+        from the axis along the slit, height) at the pier, (the same where the girder leaves the
+        line and bends in under it)). The weights' rails of machines/domegear hang on it."""
+        line = next(piece.soffit for name, piece in self.pieces.items() if name.endswith("arch"))
+        (z0, y0), slope = line[0], self.arch_line.slope()
+        last = line[0]
+        for z, y in line[1:]:
+            if abs((y0 + (z0 - z) * slope) - y) > 1e-6:
+                break
+            last = (z, y)
+        return line[0], last
+
+    def soffit(self, along):
         """The height of the arch girders' underside at a distance from the axis along the slit."""
-        s = self.arch_line.where(abs(along))
-        return self.arch_line.at(s, ARCH_CHORD[1] + ARCH_DEPTH)[1]
+        line = next(piece.soffit for name, piece in self.pieces.items() if name.endswith("arch"))
+        return height_at(line, abs(along))
+
+    def belly(self, distance):
+        """The height of a rib's underside at a distance from the axis (None where no rib is)."""
+        lines = [piece.soffit for name, piece in self.pieces.items() if "rib_" in name]
+        return min((y for y in (height_at(line, distance) for line in lines) if y is not None), default=None)
 
     def lines(self):
-        """Every bar of the frame in the scene's coordinates, as (a, b, half thickness)."""
+        """Every bar of the pieces in the scene's coordinates, as (a, b, half thickness)."""
         out = []
         for name, (x, y, z), yaw in self.placed:
-            piece = self.pieces[name]
-            az, ay = piece.anchor
+            piece = self.pieces.get(name)
+            if piece is None:
+                continue
+            fz, fy = piece.anchor
             r = math.radians(yaw)
-            dx, dz = -math.sin(r), math.cos(r)              # where the plane's z points
+            (zx, zz), (xx, xz) = (-math.sin(r), math.cos(r)), (math.cos(r), math.sin(r))
             for a, b, half in piece.lines:
-                out.append(tuple((x + (p[0] - az) * dx, y + p[1] - ay, z + (p[0] - az) * dz) for p in (a, b)) + (half,))
+                out.append(tuple((x + p[0] * xx + (p[1] - fz) * zx, y + p[2] - fy, z + p[0] * xz + (p[1] - fz) * zz)
+                                 for p in (a, b)) + (half,))
         return out
