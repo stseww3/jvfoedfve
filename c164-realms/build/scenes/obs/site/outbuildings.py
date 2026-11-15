@@ -1,29 +1,40 @@
 """site/outbuildings: the four small ancillary buildings on the hilltop (plan/ART-PLAN.md 4, 5.3,
-card plan/packages/site/outbuildings.md). Shells and platforms only, all of blocks:
+card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
 
   - the meridian hut: a low stone hut over the brass meridian (skeleton MERIDIAN_HUT, centre (35,-30),
     9x9). The meridian cuts it in two: an open slot one block wide runs through the south gable (the
-    door), along the roof and through the north gable, so the transit instrument (A5) sweeps the sky
-    from horizon to horizon and the brass line runs out of the door into the court. It stands on the
-    V1 sight line to the foot of the clock tower, so it is kept low: its top is at y 4.2, which hides
-    the front only up to the string course and none of the great windows.
-  - the water tower: four riveted legs with girts and knee braces, a walk with an iron rail, a round
-    riveted tank under a low conical cap, a riser pipe and a ladder; north-west shoulder
-    (S.WATER_TOWER). Its top stays a block under the cornice.
+    door), along the ridge and through the north gable, so the transit instrument (A5) sweeps the sky
+    from horizon to horizon and the brass line runs out of the door into the court. Two low slopes of
+    slate rise to the slot from an old-copper gutter along each eave; the two iron shutters lie open
+    on the ridge either side of the slot. It stands on the V1 sight line to the foot of the clock
+    tower, so it is kept low: the ridge is at y 5, which hides the front only up to the string course
+    and none of the great windows.
+  - the water tower: four riveted legs on slate pads with one girt and knee braces, a round riveted
+    tank wider than the frame under a low cone of old copper, a riser pipe with its valve and gauges
+    and a ladder; north-west shoulder (S.WATER_TOWER). Its top stays two blocks under the cornice.
   - the weather station: a fenced instrument enclosure on the north slope (S.WEATHER_STATION) with a
     louvred shelter (a Stevenson screen), a wind mast, a rain gauge and a free pedestal.
   - the south lookout: a stone terrace with a prow toward the cloud sea (S.SOUTH_LOOKOUT), the site's
-    rail round it and a stand left for a tripod telescope; V11 (the look back) is taken from here, so
-    nothing on it stands in that picture's middle.
+    rail round it and a brass ring in the floor where a tripod telescope stands; V11 (the look back)
+    is taken from here, so nothing on it stands in that picture's middle.
   - the three ways down from the upper terrace to the shelves.
 
-The instruments themselves -- the meridian circle, the anemometer and vane, the thermometer screen,
-the tripod telescope and the benches -- belong to the machines and props lines; this card leaves the
-shells, the sockets and the clear spots for them. Three of them are set on their spots from here, as
-the props line asks of whoever builds a terrace (props/instruments places nothing itself): the tripod
-telescope on the lookout's stand, the thermometer screen and the sunshine recorder on the weather
-platform. While that package is not in the tree the stand and the pedestal are empty, a shelter
-of iron hatches stands in for the screen and this card has no display entity at all.
+One family with the main building and plainer than it: its slate plinth, its banded ashlar and its
+riveted iron, the site's rail on every edge, one lamp at a door and no more, and to each of the three
+that has a roof or a vessel one piece of the old copper of the main cornice's gutter: the hut's
+gutters, the tank's cap, the rain gauge.
+
+The instruments themselves -- the meridian circle, the thermometer screen, the tripod telescope and
+the benches -- belong to the machines and props lines; this card leaves the shells, the sockets and
+the clear spots for them. Three of them are set on their spots from here, as the props line asks of
+whoever builds a terrace (props/instruments places nothing itself): the tripod telescope on the
+lookout's stand, the thermometer screen and the sunshine recorder on the weather platform. While
+that package is not in the tree the stand and the pedestal are empty and a shelter of pale boards
+stands in for the screen.
+
+Three small things of the weather station are this card's own display models (models(), 16 pixels to
+the block): the head of the wind mast with its vane, the cup wheel beside it and the rain gauge. The
+vane's tail points where the skeleton's wind blows to (S.WIND, A0 #569: one wind for the whole site).
 
 What the other cards read from this module (points are (x, y, z) in scene coordinates):
   LAMP_POINTS   where a lamp may hang, one to a building (props/lamps)
@@ -32,18 +43,24 @@ What the other cards read from this module (points are (x, y, z) in scene coordi
   SCREEN        where the thermometer screen stands on the weather platform, the middle of its foot
   PEDESTAL_TOP  the top of the pedestal on the weather platform, where the sunshine recorder stands
   SCOPE_STAND   where the tripod telescope stands on the lookout, the middle of its foot
+  MAST_HEAD     the top of the wind mast's pole, where the vane's spindle stands
+  CUPS_TAG      the tag of the cup wheel's entity, for the motion line (it turns about its own y)
 
 The terrain card lays each shelf's flat rock and the neck that leads to it; these shells stand on the
 foot levels it gives (S.*["feet"], the stone block one below) and bring a short footing of their own,
 laid into air only, so nothing floats before the terrain is merged. Terrace edges use the site's one
 rail (site/_kit.rail).
 """
+import functools
 import importlib.util
+import math
 
+from artkit import models as M
 from artkit.canvas import Mix
 
 from . import _kit as K
 from ..common import blocks as B
+from ..common import palette as P
 from ..common import skeleton as S
 
 ORDER = 70      # after the terrain (10) and the court paving (60); the shells go on the finished ground
@@ -51,12 +68,19 @@ INSTRUMENTS = True      # stand the props line's instruments on their spots (see
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
 WALL = B.ASHLAR_ROUGH.block             # the darker, banded ashlar of the base storey: the hut's walls
+RAKE = B.ASHLAR_ROUGH.slab              # the raking stones of the hut's gables
 JAMB = B.ASHLAR_FINE.block              # dressed stone, only for the jambs of the meridian slot
 EMBLEM = B.ASHLAR_EMBLEM                # the emblem block at the head of each jamb
 COPE = B.ASHLAR_PANEL.slab              # a grey-white slab: the cap of a pedestal
 PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, the steps' landings
 POST = B.SLATE_BRICK.wall               # a slate post
 ROOF_SLAB = B.SLATE_TILE.slab           # dark slate roof
+COPPER = B.OLD_COPPER_CUT.block         # old copper in sheets, as in the gutter of the main cornice
+COPPER_SLAB = B.OLD_COPPER_CUT.slab     # the hut's gutters, the cap of the tank
+BOARD = B.PALE_WOOD.block               # pale boards: the stand-in thermometer screen
+BOARD_SLAB = B.PALE_WOOD.slab
+GAUGES = B.PANELS["gauges"]             # a pair of pressure gauges on a casing: the riser's valve box
+BRASS_RING = getattr(B, "BRASS_LINE", None)     # the thin inlaid brass line of the court, any shape
 # the meridian in the floor: the thin inlaid line of the court once the occupancy table has it
 # (BRASS_LINE, A0 #255 / c194 #273), the whole-cell inlay until then
 BRASS = (B.BRASS_LINE + "[shape=north_south]") if hasattr(B, "BRASS_LINE") else B.BRASS_INLAY
@@ -64,11 +88,10 @@ IRON = B.IRON_RIVETED.block             # riveted plate: legs, bands, decks
 IRON_SLAB = B.IRON_RIVETED.slab
 IRON_STAIR = B.IRON_RIVETED.stairs
 PLATE = B.IRON_PLATE                    # plain plate: the tank
-GRATE = B.IRON_GRATE                    # open grating: the walk round the tank
-BARS = B.IRON_BARS                      # iron rail and ladders on iron structures (stone edges: K.rail)
-HATCH = B.IRON_HATCH                    # hatch, shutter: a riveted lid, standing or lying (c198 #36725)
+BARS = B.IRON_BARS                      # ladders and trestles of iron (stone edges: K.rail)
+HATCH = B.IRON_HATCH                    # hatch, shutter: the riveted leaves on the hut's ridge (c198 #36725)
 ROD = B.IRON_ROD                        # thin rod: finials, the wind mast
-PIPE = B.IRON_PIPE                      # thin pipe: the riser
+PIPE = B.IRON_PIPE                      # thin pipe: the riser, the hut's downpipes
 
 # a dark broken mix for the shelves' own floors so none reads as one flat sheet
 FOOTING = Mix({B.SLATE_BRICK.block: 10, B.SLATE_TILE.block: 3, B.SLATE_SMOOTH.block: 3}, seed=2292)
@@ -93,7 +116,7 @@ def _lamp_points():
     return {
         # the south gable, east of the slot, facing south: (37.5, 2.5, -25.0)
         "hut_door": (door_x + 2.5, S.GROUND + 2.5, door_z + 1.0),
-        # the north-east leg's south face, over the lower girt, by the ladder: (-14.5, 1.5, -32.0)
+        # the north-east leg's south face, under the girt, by the ladder: (-14.5, 1.5, -32.0)
         "tower_foot": (cx + 2.5, S.WATER_TOWER["feet"] + 3.5, cz - 1.0),
     }
 
@@ -101,14 +124,16 @@ def _lamp_points():
 # Where a lamp may hang, one to a building and no more (A0 #22568: the small buildings on the hill
 # keep dark but for one lamp at the door). Points on a wall face, for the lamps card to dress
 # (props/lamps reads this table). A wall lamp hangs in the cell in front of its point, so that cell
-# is kept free: the tower's lamp is a block over the lower girt, not on it (c220 #32102). The
-# lookout has none on purpose: V11 is taken from it and wants a dark foreground.
+# is kept free: the tower's lamp hangs under the girt, in the cell below it (c220 #32102). The
+# lookout has none on purpose: V11 is taken from it and wants a dark foreground; the weather station
+# has none either, its instruments are read by the moon.
 LAMP_POINTS = _lamp_points()
 
 # For the transit circle (machines/meridian-astrograph): the middle of the hut at the height of the
 # instrument's east-west axis, and the two floor cells either side of the meridian for its piers.
-# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the slate, 4 under the
-# shutters, open to the sky over the meridian's own column. The slot is one block wide.
+# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the slate at the walls,
+# 4 a block further in, 4.8 under the shutters, open to the sky over the meridian's own column. The
+# slot is one block wide.
 _HUT_X, _HUT_Z = S.MERIDIAN_HUT["centre"]
 HUT_AXIS = (_HUT_X + 0.5, S.GROUND + 2.0, _HUT_Z + 0.5)                         # (35.5, 2.0, -29.5)
 HUT_PIERS = [(_HUT_X - 2, S.GROUND, _HUT_Z), (_HUT_X + 2, S.GROUND, _HUT_Z)]    # (33, 0, -30), (37, 0, -30)
@@ -136,6 +161,71 @@ PEDESTAL_TOP = (_SPOTS["pedestal"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.5,
                 _SPOTS["pedestal"][1] + 0.5)                                    # (3.5, -2.5, -46.5)
 SCOPE_STAND = (_scope_cell()[0] + 0.5, float(S.SOUTH_LOOKOUT["feet"]),
                _scope_cell()[1] + 0.5)                                          # (45.5, -5.0, 54.5)
+MAST_RODS = 8                           # the wind mast: eight rods on a riveted foot
+MAST_HEAD = (_SPOTS["mast"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.0 + MAST_RODS,
+             _SPOTS["mast"][1] + 0.5)                                           # (6.5, 5.0, -46.5)
+GAUGE = (_SPOTS["gauge"][0] + 0.5, float(S.WEATHER_STATION["feet"]),
+         _SPOTS["gauge"][1] + 0.5)                                              # (6.5, -4.0, -44.5)
+
+
+# --- the weather station's own display models (16 pixels to the block) ----------------------------
+MODEL_HEAD = "site_weather_head"        # the head of the wind mast: collar, cup arm, spindle and vane
+MODEL_CUPS = "site_weather_cups"        # the cup wheel, a piece of its own so that it can turn
+MODEL_GAUGE = "site_weather_gauge"      # the rain gauge
+CUPS_TAG = "c164_weather_cups"
+CUPS_ARM = 10.0                         # pixels west of the pole's axis: where the cup wheel's spindle stands
+CUPS_UP = 2.5                           # pixels over the top of the pole: the middle of the wheel's hub
+CUPS_AT = (MAST_HEAD[0] - CUPS_ARM / 16.0, MAST_HEAD[1] + CUPS_UP / 16.0, MAST_HEAD[2])     # (5.875, 5.156, -46.5)
+
+
+@functools.lru_cache(maxsize=None)
+def _models():
+    dark, iron = P.mat("iron_dark"), P.mat("iron")
+    copper, brass = P.mat("old_copper"), P.mat("brass")
+    on = (0.0, 0.0)
+
+    # The head of the wind mast, in pixels from the top of the pole (the rod's knob is the 4 px under
+    # it). One arm, to the west and under the top, carries the cup wheel; the vane turns on a spindle
+    # over the top. Seen from the east or the west the vane lies on top of the pole like the bar of a
+    # T with unequal ends and nothing stands over it; seen along the wind the arm is one-sided: from
+    # no side is it a cross.
+    m = M.Model(MODEL_HEAD)
+    m.tube("y", on, -4.5, 0.5, 2.75, iron)                              # a collar over the pole's knob
+    m.box((-CUPS_ARM - 0.5, -2.75, -0.5), (-2.0, -1.25, 0.5), dark, grain="x")      # the arm, west
+    m.tube("y", (-CUPS_ARM, 0.0), -3.25, CUPS_UP - 1.0, 0.5, dark, sides=4)         # the cups' spindle
+    m.tube("y", on, 0.5, 13.0, 0.5, dark, sides=4)                      # the vane's spindle
+    m.ball((0.0, 13.75, 0.0), 1.25, brass, sides=8, layers=4)           # and the ball that keeps it on
+    m.tube("y", on, 8.0, 11.0, 1.25, iron)                              # the vane's sleeve
+    # the vane itself lies along the wind: the arrow's point into it, the copper tail down it
+    wx, wz = float(S.WIND[0]), float(S.WIND[2])
+    with m.aimed((0.0, 9.5, 0.0), (wx, 9.5, wz), "z"):
+        m.box((-0.5, -0.5, -7.0), (0.5, 0.5, 6.0), dark, grain="z")                 # the shaft
+        m.taper("z", on, -7.0, -10.5, 1.5, 0.25, brass, sides=4, steps=3)           # the point
+        m.box((-0.25, -2.5, 5.0), (0.25, 2.5, 8.5), copper, grain="z")              # the tail: a swallow's,
+        m.box((-0.25, 0.75, 8.5), (0.25, 2.5, 12.5), copper, grain="z")             # two tongues
+        m.box((-0.25, -2.5, 8.5), (0.25, -0.75, 12.5), copper, grain="z")
+
+    # The cup wheel, in pixels about its hub: three arms, never four. It turns about y through the
+    # anchor.
+    w = M.Model(MODEL_CUPS)
+    w.tube("y", on, -1.0, 1.0, 1.0, dark)
+    for k in range(3):
+        a = math.radians(90.0 + 120.0 * k)
+        ux, uz = math.cos(a), -math.sin(a)
+        w.beam((ux, 0.0, uz), (4.0 * ux, 0.0, 4.0 * uz), 0.75, 0.75, dark)
+        w.tube("y", (5.0 * ux, 5.0 * uz), -1.5, 1.5, 1.75, copper, sides=6)
+
+    # The rain gauge, in pixels from the floor: a copper can on an iron foot, a brass rim round its
+    # dark mouth.
+    g = M.Model(MODEL_GAUGE)
+    g.tube("y", on, 0.0, 1.0, 3.25, dark)
+    g.tube("y", on, 1.0, 9.0, 2.5, copper)
+    g.tube("y", on, 9.0, 10.0, 3.0, brass, cap=dark)
+    return {m.name: m, w.name: w, g.name: g}
+
+
+def models():
+    return dict(_models())
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -178,6 +268,13 @@ def _ring(x0, z0, x1, z1):
         if x1 != x0:
             cells.append((x1, z))
     return cells
+
+
+def _round(cx, cz, r):
+    """The cells of a round plan 2r + 1 across: a square with its corners cut off (r 3: an octagon
+    with sides of three cells; r 0: the one cell in the middle)."""
+    return [(x, z) for x in range(cx - r, cx + r + 1) for z in range(cz - r, cz + r + 1)
+            if abs(x - cx) + abs(z - cz) <= r + 1]
 
 
 def _flight(c, o, rows, drop, facing):
@@ -239,29 +336,44 @@ def _meridian_hut(c, o):
         if x != mx:
             _put(c, o, x, on + 1, z, WALL)
             _put(c, o, x, on + 2, z, WALL)
-    for z in (z0, z1):                                  # the gables rise one course more, to the roof's top
-        for x in range(x0 + 1, x1):
-            if abs(x - mx) == 1:                        # dressed jambs with the emblem at their heads
-                _put(c, o, x, on + 1, z, JAMB)
-                _put(c, o, x, on + 2, z, JAMB)
-                _put(c, o, x, eave, z, EMBLEM)
-            elif x != mx:
-                _put(c, o, x, eave, z, WALL)
     for wx in (x0, x1):                                 # two small dark windows in each long wall
         for wz in (cz - 2, cz + 2):
             _put(c, o, wx, on + 2, wz, B.WINDOW_DARK.pane)
 
-    # the roof: slate in two halves that rise half a block from the eaves, and along the slot the two
-    # iron shutters, slid open and lying on the roof either side of it
+    # The roof: from an old-copper gutter along each eave two slopes of slate rise half a block a
+    # column to the slot; the last column either side of it is an iron shutter, slid open and lying
+    # level with the ridge. The gables are of stone to the roof's own line, their raking stones flush
+    # with the slate; the slot's jambs are dressed and carry the emblem at their heads. The ridge is
+    # at y 5.0 and the eaves at 3.5: from V1 the hut hides the front up to y 7.9 at the most, below
+    # the sills of the great windows (y 8).
     for z in range(z0, z1 + 1):
+        gable = z in (z0, z1)
+        for x in (x0 - 1, x1 + 1):
+            _put(c, o, x, eave, z, COPPER_SLAB + "[type=bottom]")
         for x in range(x0, x1 + 1):
             d = abs(x - mx)
-            if d == 1:
-                _put(c, o, x, eave + 1, z, HATCH + f"[facing={'east' if x < mx else 'west'},half=bottom,open=false]")
-            elif d == h:
-                _put(c, o, x, eave, z, ROOF_SLAB + "[type=bottom]")
-            elif d > 1 and z0 < z < z1:
-                _put(c, o, x, eave, z, ROOF_SLAB + "[type=top]")
+            if d == 0:
+                continue
+            k = h - d                                   # 0 on the wall, 3 at the slot
+            y, half = eave + k // 2, "bottom" if k % 2 == 0 else "top"
+            if gable:
+                for yy in range(eave, y):
+                    _put(c, o, x, yy, z, JAMB if d == 1 else WALL)
+                if d == 1:                              # dressed jambs with the emblem at their heads
+                    _put(c, o, x, on + 1, z, JAMB)
+                    _put(c, o, x, on + 2, z, JAMB)
+                    _put(c, o, x, y, z, EMBLEM)
+                else:
+                    _put(c, o, x, y, z, RAKE + "[type=bottom]" if half == "bottom" else WALL)
+            elif d == 1:
+                _put(c, o, x, y, z, HATCH + f"[facing={'east' if x < mx else 'west'},half=top,open=false]")
+            else:
+                _put(c, o, x, y, z, ROOF_SLAB + f"[type={half}]")
+
+    # a downpipe from the north end of each gutter into the ground
+    for x in (x0 - 1, x1 + 1):
+        for y in range(on, eave):
+            _put(c, o, x, y, z0, PIPE + "[axis=y]")
 
 
 # --- the water tower (S.WATER_TOWER, north-west shoulder) -----------------------------------------
@@ -270,8 +382,7 @@ def _water_tower(c, o):
     foot = S.WATER_TOWER["feet"]                        # -2, where the legs stand
     cx, cz = (x0 + x1) // 2, (z0 + z1) // 2             # -17, -31
     legs = [(cx + sx * 2, cz + sz * 2) for sx in (-1, 1) for sz in (-1, 1)]
-    deck_y = foot + 9                                   # 7
-    tank_lo, tank_hi = deck_y + 1, deck_y + 4           # 8..11; the cap ends at 13.5, the vent at 14
+    tank_lo, tank_hi = foot + 9, foot + 11              # 7..9; the cap ends at 12, the rod at 13
 
     # until the terrain card's shelf is merged the shelf is a flat slab laid only where there is
     # nothing yet; the site's rail on the three sides over the drop, the uphill (east) side open
@@ -281,49 +392,44 @@ def _water_tower(c, o):
     piers = {(x, bz) for bz in (z0, z1) for x in K.spaced([x0, x1])} | {(x0, z) for z in K.spaced([z0, z1])}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
 
-    # four riveted legs on slate footings; thin girts at two levels; a knee brace under the deck
+    # four riveted legs, each on a slate pad; one thin girt half-way up; a knee brace under the tank
     # either side of every leg
     for lx, lz in legs:
         _put(c, o, lx, foot - 1, lz, PLINTH)
         _put(c, o, lx, foot - 2, lz, PLINTH, keep=True)
-        _fill(c, o, lx, foot, lz, lx, deck_y - 1, lz, IRON)
+        _put(c, o, lx, foot, lz, PLINTH)
+        _fill(c, o, lx, foot + 1, lz, lx, tank_lo - 1, lz, IRON)
         tx, tz = (1 if lx < cx else -1), (1 if lz < cz else -1)
-        _put(c, o, lx + tx, deck_y - 1, lz, IRON_STAIR + f"[facing={'west' if tx > 0 else 'east'},half=top]")
-        _put(c, o, lx, deck_y - 1, lz + tz, IRON_STAIR + f"[facing={'north' if tz > 0 else 'south'},half=top]")
-    for gy in (foot + 2, foot + 5):
-        for x, z in _ring(cx - 2, cz - 2, cx + 2, cz + 2):
-            if (x, z) not in legs:
-                _put(c, o, x, gy, z, IRON_SLAB + "[type=top]")
+        _put(c, o, lx + tx, tank_lo - 1, lz, IRON_STAIR + f"[facing={'west' if tx > 0 else 'east'},half=top]")
+        _put(c, o, lx, tank_lo - 1, lz + tz, IRON_STAIR + f"[facing={'north' if tz > 0 else 'south'},half=top]")
+    for x, z in _ring(cx - 2, cz - 2, cx + 2, cz + 2):
+        if (x, z) not in legs:
+            _put(c, o, x, foot + 4, z, IRON_SLAB + "[type=top]")
 
-    # the deck: a riveted floor under the tank, an open grating walk round it with an iron rail
-    for x in range(cx - 3, cx + 4):
-        for z in range(cz - 3, cz + 4):
-            walk = max(abs(x - cx), abs(z - cz)) == 3
-            _put(c, o, x, deck_y, z, GRATE if walk else IRON)
-            if walk:
-                _put(c, o, x, deck_y + 1, z, BARS)
-
-    # the tank: a round riveted drum (five across, the corners off), a band top and bottom, a low
-    # conical cap and a vent
-    tank = [(x, z) for x in range(cx - 2, cx + 3) for z in range(cz - 2, cz + 3) if abs(x - cx) + abs(z - cz) < 4]
-    for x, z in tank:
-        for y in range(tank_lo, tank_hi + 1):
+    # The tank: a round riveted drum seven across, a block wider than the frame all round, so that
+    # the legs stand under its four slanting sides; a riveted band at its foot and at its head, plain
+    # plate between. Its cap is a low cone of old copper in four rings, half a block each, and a rod
+    # on the point.
+    for y in range(tank_lo, tank_hi + 1):
+        for x, z in _round(cx, cz, 3):
             _put(c, o, x, y, z, IRON if y in (tank_lo, tank_hi) else PLATE)
-        rim = max(abs(x - cx), abs(z - cz)) == 2
-        _put(c, o, x, tank_hi + 1, z, IRON_SLAB + "[type=bottom]" if rim else IRON)
-        if not rim and (x, z) != (cx, cz):
-            _put(c, o, x, tank_hi + 2, z, IRON_SLAB + "[type=bottom]")
-    _put(c, o, cx, tank_hi + 2, cz, ROD + "[facing=up]")
+    for i in range(4):
+        inner = set(_round(cx, cz, 2 - i)) if i < 3 else set()
+        for x, z in _round(cx, cz, 3 - i):
+            if (x, z) not in inner:
+                _put(c, o, x, tank_hi + 1 + i // 2, z,
+                     COPPER if i == 3 else COPPER_SLAB + f"[type={'bottom' if i % 2 == 0 else 'top'}]")
+    _put(c, o, cx, tank_hi + 3, cz, ROD + "[facing=up]")
 
-    # the riser from a valve box on the ground up into the tank, and a ladder up the north-east leg,
-    # where the way down from the terrace arrives, to a hatch in the walk
-    _put(c, o, cx, foot, cz, PLATE)
-    for y in range(foot + 1, deck_y):
+    # the riser from its valve box on the ground (a pair of gauges on the side the steps arrive at)
+    # up into the tank, and a ladder up the north-east leg, where the way down from the terrace
+    # arrives, and on up the tank in the corner between two of its sides
+    _put(c, o, cx, foot, cz, GAUGES + "[facing=east]")
+    for y in range(foot + 1, tank_lo):
         _put(c, o, cx, y, cz, PIPE + "[axis=y]")
     lx, lz = cx + 2, cz - 2
-    for y in range(foot, deck_y):
+    for y in range(foot, tank_hi + 1):
         _put(c, o, lx + 1, y, lz, BARS)
-    _put(c, o, lx + 1, deck_y, lz, HATCH + "[facing=west,half=top,open=true]")
 
 
 # --- the weather station (S.WEATHER_STATION, north slope) -----------------------------------------
@@ -344,35 +450,33 @@ def _weather_station(c, o):
 
     # the thermometer screen (a Stevenson screen): the props line's white louvred box on its four
     # legs, the door to the north, as a screen's door is hung. Until that piece is in the tree a
-    # shelter of blocks stands in for it on the same spot: a box of iron hatches two cells long
-    # and two high on two iron posts, under a thin cap
+    # shelter of blocks stands in for it on the same spot: a box of pale boards two cells long on
+    # an iron trestle, under a lid of the same boards
     n = _place(c, o, "louvre_box", SCREEN, "north")
     if not n:
         sx, sz = _SPOTS["screen"]                       # (0, -46) and the cell east of it
         for x in (sx, sx + 1):
             _put(c, o, x, foot, sz, BARS)
-            _put(c, o, x, foot + 3, sz, IRON_SLAB + "[type=bottom]")
-            for y in (foot + 1, foot + 2):
-                _put(c, o, x, y, sz - 1, HATCH + "[facing=north,half=bottom,open=true]")
-                _put(c, o, x, y, sz + 1, HATCH + "[facing=south,half=bottom,open=true]")
-        for y in (foot + 1, foot + 2):
-            _put(c, o, sx - 1, y, sz, HATCH + "[facing=west,half=bottom,open=true]")
-            _put(c, o, sx + 2, y, sz, HATCH + "[facing=east,half=bottom,open=true]")
+            _put(c, o, x, foot + 1, sz, BOARD)
+            _put(c, o, x, foot + 2, sz, BOARD_SLAB + "[type=bottom]")
 
-    # the wind mast: a riveted foot, a thin rod eight blocks up, and at its very head one arm to
-    # the west for the anemometer and the vane (A5). One-sided on purpose: an upright with an arm
-    # across it reads as a cross from afar, which the project does not allow.
+    # the wind mast: a riveted foot and a thin rod eight blocks up; its head, the vane and the cup
+    # wheel are this card's models (see _models). The one arm is to the west and under the top: an
+    # upright with an arm across it reads as a cross from afar, which the project does not allow.
     wx, wz = _SPOTS["mast"]                             # (6, -47)
     _put(c, o, wx, foot, wz, IRON)
-    for y in range(foot + 1, foot + 9):
+    for y in range(foot + 1, foot + 1 + MAST_RODS):
         _put(c, o, wx, y, wz, ROD + "[facing=up]")
-    _put(c, o, wx - 1, foot + 8, wz, ROD + "[facing=west]")
-    _put(c, o, wx - 2, foot + 8, wz, ROD + "[facing=west]")
+    kit = _models()
+    c.add_entity(o[0] + MAST_HEAD[0], o[1] + MAST_HEAD[1], o[2] + MAST_HEAD[2], M.display(kit[MODEL_HEAD]))
+    cups = M.display(kit[MODEL_CUPS])
+    cups["Tags"].append(CUPS_TAG)
+    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], cups)
 
-    # the rain gauge: a short plate drum under a lid; and a stone pedestal for the sunshine recorder
-    gx, gz = _SPOTS["gauge"]                            # (6, -45)
-    _put(c, o, gx, foot, gz, PLATE)
-    _put(c, o, gx, foot + 1, gz, HATCH + "[facing=north,half=bottom,open=false]")
+    # the rain gauge, a copper can on the floor (this card's model too), and a stone pedestal for
+    # the sunshine recorder
+    c.add_entity(o[0] + GAUGE[0], o[1] + GAUGE[1], o[2] + GAUGE[2], M.display(kit[MODEL_GAUGE]))
+    n += 3
     px, pz = _SPOTS["pedestal"]                         # (3, -47)
     _put(c, o, px, foot, pz, POST)
     _put(c, o, px, foot + 1, pz, COPE + "[type=bottom]")
@@ -393,17 +497,22 @@ def _south_lookout(c, o):
     tx, tz = _scope_cell()                              # (45, 54): the telescope stand, in the prow
 
     # the floor: dark slate, a walk in the middle stone from the steps to a round stand in the prow,
-    # where a riveted ring is let in for the tripod telescope; a footing into the slope
+    # where a ring of the court's thin brass line is let in round the tripod telescope's place: two
+    # blocks across, through the middles of the eight cells about it; a footing into the slope
     for x, z in cells:
         walk = wx0 <= x <= wx1 and z < tz
         stand = abs(x - tx) + abs(z - tz) <= 2
         _put(c, o, x, pave, z, K.STRIP if walk or stand else FOOTING)
         for d in (1, 2, 3):
             _put(c, o, x, pave - d, z, PLINTH, keep=True)
-    for ddx in (-1, 0, 1):                              # a square ring of eight, the socket in its middle
-        for ddz in (-1, 0, 1):
-            if (ddx, ddz) != (0, 0):
-                _put(c, o, tx + ddx, pave, tz + ddz, IRON)
+    if BRASS_RING:
+        # every cell takes the shape that joins its two neighbours in the ring (see B.BRASS_LINE)
+        turn = {(-1, -1): "south_east", (1, -1): "south_west", (-1, 1): "north_east", (1, 1): "north_west"}
+        for ddx in (-1, 0, 1):
+            for ddz in (-1, 0, 1):
+                if (ddx, ddz) != (0, 0):
+                    shape = turn.get((ddx, ddz), "east_west" if ddx == 0 else "north_south")
+                    _put(c, o, tx + ddx, foot, tz + ddz, BRASS_RING + f"[shape={shape}]")
 
     # the site's rail round the whole edge (the neck that leads here is three wide, so the north
     # edge hangs free too), open where the steps arrive. Piers only at the four knuckles of the prow:
@@ -418,8 +527,9 @@ def _south_lookout(c, o):
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """Places the four shells and the ways down; returns the number of display entities, which are
-    the props line's three instruments when that package is in the tree and none otherwise."""
+    """Places the four shells and the ways down; returns the number of display entities: this
+    card's three on the weather platform (mast head, cup wheel, rain gauge) and the props line's
+    three instruments when that package is in the tree."""
     _meridian_hut(canvas, origin)
     _water_tower(canvas, origin)
     n = _weather_station(canvas, origin)
