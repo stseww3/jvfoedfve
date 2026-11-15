@@ -5,7 +5,9 @@
 
 The moon's slot holds one picture per light, so the three versions cannot hang in one sky. They are
 compared picture by picture: this scene shows version a, obs_sky_comet_b and obs_sky_comet_c show
-the other two over the same blocks with the same shots, each under all three lights.
+the other two over the same blocks with the same shots, each under all three lights. This scene
+takes one shot more, sky_card: the test card in the moon's slot, to see which way up the game
+draws the picture.
 
 White models in plain vanilla blocks of the occupancy table, enough to judge where the comet stands
 and what hides it: the two terraces and the station platform (so that the eye stands somewhere),
@@ -78,9 +80,16 @@ def write_pack(pack_dir):
     return comet.pack(pack_dir, STYLE)
 
 
-def shots():
-    return [dict(name=f"{name}_{look}", pos=list(pos), look_at=list(at), time=mood.tick(look))
-            for name, (pos, at) in CAMERAS.items() for look in mood.LOOKS]
+def shots(card=True):
+    """Every camera under every light. With card, the west close-up once more at the tick of the test
+    card (mood.TRIALS): which way up the game draws the moon's picture is read off it. The card is
+    the same in the three versions, so only this scene takes it."""
+    out = [dict(name=f"{name}_{look}", pos=list(pos), look_at=list(at), time=mood.tick(look))
+           for name, (pos, at) in CAMERAS.items() for look in mood.LOOKS]
+    if card:
+        pos, at = CAMERAS["sky"]
+        out.append(dict(name="sky_card", pos=list(pos), look_at=list(at), time=mood.TRIALS["card"]["tick"]))
+    return out
 
 
 def _walls(c, x0, z0, x1, z1, y0, y1, block):
@@ -388,7 +397,7 @@ def sky_in_slit(heads=SLIT_HEADS, eyes=ROOM_EYES):
     return out
 
 
-def tell(style, folder):
+def tell(style, folder, shots=shots):
     """What python -m <scene> does: write the scene's shots.json and print where the comet stands."""
     path = os.path.join(folder, "shots.json")
     with open(path, "w") as fh:
