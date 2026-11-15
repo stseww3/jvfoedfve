@@ -1,0 +1,3 @@
+branch=cursor/c164-sdome-f3-1fe7
+head=933c174951ab2b60b1fc49695bfb9cfed04ed311
+args=--wip --always --tail 8 python tools/selfshots.py obs_main_smalldome --only corner\,walk\,aerial\,v11_dome --out renders/_wip 
