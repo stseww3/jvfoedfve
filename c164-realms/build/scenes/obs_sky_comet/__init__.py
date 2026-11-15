@@ -53,8 +53,8 @@ ASPECT = 16.0 / 9.0         # the camera player is flying (render.py, tools/shoo
 
 # The observing slit as main/_dome builds it: its sill is the row y 25, it is open from the row
 # above, and its last column eastwards is two past the apex. The head is being moved west of the
-# apex (main/dome, A0's ruling that the dome keeps one apex on the axis); through_slit_head() says
-# what each column costs the comet.
+# apex (main/dome, A0's ruling that the dome keeps one apex on the axis); sky_in_slit() says what
+# each column costs the comet.
 SLIT_SILL = S.DOME_SPRING + 1
 SLIT_HEAD = S.DOME_CENTRE[0] + 2
 
