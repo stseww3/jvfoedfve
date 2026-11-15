@@ -486,6 +486,12 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
     windows   records as in main's table: front, bay, storey, cells (the glass columns (x, z)),
               inward (the step from the glass into the building), y (the glass's bottom and top
               row). A record marked blind is left out; "level" asks for another level behind it.
+              "inside" keeps the sources behind the glass, at the full level. That is for a
+              window of panes: a pane shows the light of its own cell, not that of the cell
+              before it as a block of glass does on its face, and with the source before it, it
+              is no brighter than the wall beside it. The room behind it gets the full level
+              then: only where nobody looks into it, and where its light gets out by no other
+              window or door onto a face that has to stay dark.
     origin    what is added to the cells and rows
     group     a name for the building, to keep its fronts apart from another's in the report
     look      the look the front was glazed for, when it is not the one build() is called with
@@ -498,7 +504,7 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
         canvas.light_windows.append(dict(
             group=str(group), origin=tuple(int(v) for v in origin), front=w["front"], bay=w["bay"],
             storey=w["storey"], cells=[tuple(c) for c in w["cells"]], inward=tuple(w["inward"]),
-            y=tuple(w["y"]), level=w.get("level"), look=look))
+            y=tuple(w["y"]), level=w.get("level"), inside=bool(w.get("inside")), look=look))
 
 
 def dress(canvas, on=True):
