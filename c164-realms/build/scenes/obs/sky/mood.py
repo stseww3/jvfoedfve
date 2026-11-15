@@ -78,11 +78,21 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 #         which way up the game draws the picture is read off it
 #   pink  the afterglow in the plan's second colour
 #   near, far  the fog ending sooner and later, to read off the row of posts on the light board
+#   mist, veil, fogged  the colour of the vanilla cloud layer drawn towards the horizon colour. The
+#         layer takes no fog, it only fades with distance, while the block clouds of sky/cloudsea
+#         end in pure fog colour at 192 blocks; there the layer stands a tone and a half lighter
+#         (#4d5285 on #383a74) and the join shows as a rim round the mountain. mist is a third of
+#         the way from the horizon colour to the look's cloud colour, veil the middle tone of the
+#         block clouds, fogged the horizon colour itself (the end of the scale: what is left of
+#         the rim then is not a matter of colour)
 TRIALS = {
     "card": dict(of="blue", tick=3100, moon_phase="new_moon"),
     "pink": dict(of="blue", tick=4100, glow="#e9706a"),
     "near": dict(of="blue", tick=5100, fog_end=144.0),
     "far": dict(of="blue", tick=7100, fog_end=256.0),
+    "mist": dict(of="blue", tick=8100, cloud="#42457c"),
+    "veil": dict(of="blue", tick=9100, cloud="#474c7a"),
+    "fogged": dict(of="blue", tick=10100, cloud="#383a74"),
 }
 TRIAL_HOLD, TRIAL_RAMP = 100, 50     # held from tick - 100 to tick + 100, blended over 50 ticks each side
 
