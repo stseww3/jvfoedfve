@@ -1,0 +1,3 @@
+branch=cursor/c164-hall-starhall-f3-2c05
+head=c8c0a9e3f93739befe8e4ef1e693cb1fa48e1826
+args=--wip bash -c python\ tools/selfshots.py\ obs_int_starhall\ --only\ v7\,v7_in\,floor\ --out\ renders/_wip/r8\ \&\&\ python\ tools/selfshots.py\ obs_int_starhall_b\ --only\ v7\ --out\ renders/_wip/r8 
