@@ -276,7 +276,7 @@ def shots():
     xp = spans["paved"][0] + WALL + 1.0                         # between the two paved fields
     # someone standing at the edge of a terrace, and the same paving from a roof: a repeat shows as
     # a figure that comes round every block, close by, and as a lattice from above
-    out.append({"name": "paved", "pos": [xp, 1.6, Z + 11.0], "look_at": [xp, 0.0, Z + 4.0], "time": TIME})
+    out.append({"name": "paved", "pos": [xp, 1.6, Z + 8.5], "look_at": [xp, 0.0, Z + 3.5], "time": TIME})
     out.append({"name": "paved_above", "pos": [xp, 11.0, Z + 3.6], "look_at": [xp, 0.0, Z + 3.0], "time": TIME})
 
     xl = spans["lit"][0]
