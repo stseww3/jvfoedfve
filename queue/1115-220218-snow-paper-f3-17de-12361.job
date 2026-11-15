@@ -1,0 +1,3 @@
+branch=cursor/c164-snow-paper-f3-17de
+head=b2f12ec7d29d32c7e3d65734876d3462365a3017
+args=--wip --tail 20 python tools/selfshots.py obs_props_paper --only wall_stone\,star_charts\,blueprints\,light_table --out renders/_wip/p1 
