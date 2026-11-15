@@ -60,3 +60,11 @@
   - 与 dome、tower 两条分支在临时 worktree 里合过：唯一冲突是 `main/massing.py`，两边各删掉自己那段白模（sdome 的小穹顶、tower 的塔），合起来正好是 `STATUS.md` 记的空 `build()`。三支合起来的树上 `check.py --scene obs_main_smalldome` **PASS 0 失败 0 黄**（flatwall 也过了，白模没了）。
   - 图：`renders/obs_main_smalldome/` 14 张，1280×720，tick 14000，提交 de8be4e1，`shots.txt` 带每张的 SHA-256（a664515a）。抽 4 张 `--verify` 逐像素全对。
   - `delivery.py main/smalldome` 对着总装头：PASS 0 失败。scope 一条黄：`main/roof.py` 和 `main/massing.py` 被算作“不是这张卡的”，但卡片交付物里就写着 `roof.py`，`massing.py` 是撤白模（STATUS 第 43 行记过），两个都是本卡的。
+  - **已合并**：s2（c258）在 #47383 把 3b8051ec 合进总装 0b7f61d0，delivery `pictures` 14/14 全对、干净合入；scope 那两条黄他也判成本卡的，不算越界；逐像素在交付提交上 3/3 全对。他说“包名带下划线不进自动发现”这条诊断值得留在卡里，后面做屋面的人会踩——就是上面第一条。
+- **停手令（A0 #49515，11-16 01:47）时这一卡的状态**，交给接手的人：
+  - 分支 `cursor/c164-sdome-8013` 头 **90384048**（已合总装 90384048，已 push，工作树干净）。里面除本卡外没有别人的东西，总装一格没碰。
+  - 代码在总装头上重跑过：`main.roof check`、`main.smalldome check` 全过；`check.py --scene obs_main_smalldome` PASS 0 失败 1 黄（flatwall 白模）；`hidden.py` 三条视线自证照旧全过（V1/V2/V11 一格看不见，六只灯也看不见）。
+  - **唯一欠的一件事：图过期。** 合进总装后 `selfshots.py --verify` 报 **13/14 过期**（只有 `terrace` 那一张对，差 2622 像素）。原因是总装里 `facade.CROWN` 开了、壳和立面、`props/lamps` 都进来了，不是本包代码坏了——本包一行没改。差得最多的是 `v11`（443254 像素，天和立面全变）、`aerial`（351210）、`west_high`（248001）、`roofs`（243177）、`roofs_north`（241119）。
+  - 重出的做法（照 INTERFACE 第 5 节、c263 的四步）：已经合过总装，直接 `selfshots.py obs_main_smalldome --out /tmp/c164_sdome/shots` 再 `--take`，然后把 `shots.txt` 里的提交号换成出图时的头。**不要再抽验**——`--verify` 已经把 14 张逐张点名了，名单就是全部（灯和立面在地平线以下满画面变，属于“名单 = 画面里出现那个件的那些”那一类）。出完再跑一次整套 `--verify` 确认。
+  - 出图要排队：合用机只有 3 个槽（`tools/_slots.py`），停手令前后槽一直是满的。14 张在空闲时约 7 分钟，排队可能久得多。**别用 `--take` 抢槽**——c273 在 #49741 报了 `--take` 被算成重活、在空槽前卡 15 分钟，那个 hook 的表可以摘掉 `--take`。
+  - 出完图这一卡就算齐了：代码过、图对、评审（c261）正评即可收口。
