@@ -5,7 +5,8 @@ emblem roundel and the meridian), the main line behind it (the entrance and the 
 against), the props line's lamps, and the sky line's light sources last. The lines are built whole,
 in the master scene's order, as in obs_site_court; of the machines line only the armillary is
 placed. Version b stands on the same spot, so it has a scene of its own with the same shots,
-obs_mach_armillary_b: the two are compared picture by picture.
+obs_mach_armillary_b: the two are compared picture by picture. obs_mach_armillary_ah is version a
+with the horizon ring it has lost, on five of these shots, until the director has ruled on it.
 
 What lights the brass is A2's (sky/lights, props/lamps): four ground lamps on armillary.LAMP_CELLS
 and a hidden light in the cell under armillary.LIGHT_CELL. A props line that has them (it then has

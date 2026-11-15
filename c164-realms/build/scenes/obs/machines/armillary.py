@@ -17,28 +17,31 @@ same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring. The
 (35, 3, 0), stays empty: A2 (sky/lights) puts a hidden light there, with the four ground lamps.
 
 Two versions stand for the review (the base is the same):
-  a  classic     many thin rings: horizon, meridian, equator, the two tropics, one colure, the
-                 ecliptic band with its scale, the polar axis and a small earth. 9 entities.
+  a  classic     many thin rings: meridian, equator, the two tropics, one colure, the ecliptic band
+                 with its scale, the polar axis and a small earth. 8 entities.
   b  heavy       one great graduated meridian ring and a broad ecliptic band on a slim colure, the
                  axis and a larger earth. 5 entities.
 
 The view from due east decides between them (V2). There the meridian ring is a full circle; the
 polar axis and the equator are the two diagonals in it, one rising to the right and one to the
-left; the horizon ring is a level line; behind the circle are the lit entrance and the gold window
-over it.
+left; behind the circle are the lit entrance and the gold window over it.
 
 From due north or south, along the brass meridian that leads people that way, the meridian ring
-stands on edge, and in version a the horizon ring lies across it: an upright and a level bar of one
-length, a cross (red line). So the horizon ring is as thin as the other thin rings: a circle of
-wire, not a bar (director, 11-15). The test scene looks along the meridian from both edges of the
-court; if it still reads as a cross there, version a loses the ring: take "horizon" out of
-SPEC["a"]["parts"].
+stands on edge. Version a had a horizon ring as well, level across it: an upright and a level bar
+of one length, a cross (red line; director, 11-15). Made as thin as the other thin rings it was
+still that on the first pictures (11-16): from the edges of the court the ring is seen on edge, a
+level bar that sticks out of the round cage on both sides, and the meridian ring an upright one
+through it, a ringed cross. So version a stands without it, as the director ruled beforehand.
+WITH_HORIZON ("ah") is version a with the ring, kept for the pictures he rules on (the test scene
+obs_mach_armillary_ah: the two views of V2 and the three along the meridian) and no longer than
+that.
 
 What does not turn (the frame), drawn the way it stands; +x east, +y up, +z south:
   stand      the iron saddle on the base that clamps the foot of the meridian ring
   meridian   upright, north-south, over the brass line in the paving; it carries the two bearings
              of the polar axis and the ball that ends it
-  horizon    level, at the middle of the sphere, held on the meridian ring north and south (a)
+  horizon    level, at the middle of the sphere, held on the meridian ring north and south (only
+             in WITH_HORIZON)
 
 What turns (the sphere proper), every piece ABOUT THE POLAR AXIS THROUGH THE ANCHOR. The axis lies
 in the meridian plane and rises LATITUDE degrees above the northern horizon; as a unit vector
@@ -108,7 +111,7 @@ R_CAGE = 17.5                       # what turns keeps inside this radius
 # degrees from the equator (the model's +x) towards the north pole (+y).
 SPEC = {
     "a": dict(
-        parts=("stand", "meridian", "horizon", "axis", "equator", "tropic", "ecliptic", "colure"),
+        parts=("stand", "meridian", "axis", "equator", "tropic", "ecliptic", "colure"),
         meridian=(20.0, 2.0, 2.0), meridian_scale=False,
         horizon=(19.5, 1.5, 1.5),
         equator=(16.75, 1.5, 2.0),
@@ -127,6 +130,10 @@ SPEC = {
         rod=1.0, earth=3.5, boss=1.75, knob=2.0,
     ),
 }
+# Version a with its horizon ring, for the director's ruling on the cross: a's own models and the
+# ring's, which is why `of` names the version whose models it places.
+WITH_HORIZON = "ah"
+SPEC[WITH_HORIZON] = dict(SPEC["a"], of="a", parts=("stand", "meridian", "horizon") + SPEC["a"]["parts"][2:])
 POLAR = ("axis", "equator", "tropic", "ecliptic", "colure")     # the pieces that turn about the pole
 
 # --- materials (palette only) ---------------------------------------------------------------------
@@ -185,8 +192,13 @@ def _hoop(m, axis, r_out, thick, width, body, sides, scale=None, every=3, seed=1
 
 
 # --- the models -----------------------------------------------------------------------------------
+def _name(version, part):
+    """The model a version places for a part: its own, or that of the version it borrows from."""
+    return f"{PREFIX}{SPEC[version].get('of', version)}_{part}"
+
+
 def _new(version, part):
-    return M.Model(f"{PREFIX}{version}_{part}", px=PX)
+    return M.Model(_name(version, part), px=PX)
 
 
 def _stand(version):
@@ -299,17 +311,19 @@ BUILDERS = {"stand": _stand, "meridian": _meridian, "horizon": _horizon, "axis":
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {}
-    for version in VERSIONS:
+    for version in SPEC:
         for part in SPEC[version]["parts"]:
-            model = BUILDERS[part](version)
-            out[model.name] = model
+            if _name(version, part) not in out:
+                out[_name(version, part)] = BUILDERS[part](version)
     return out
 
 
 def models(version=None):
-    """The models of both versions, or of one."""
+    """The models of every version, or those one version places."""
     built = _models()
-    return {k: v for k, v in built.items() if version is None or k.startswith(f"{PREFIX}{version}_")}
+    if version is None:
+        return dict(built)
+    return {name: built[name] for name in (_name(version, part) for part in SPEC[version]["parts"])}
 
 
 # --- placing --------------------------------------------------------------------------------------
@@ -359,7 +373,7 @@ def build(canvas, origin=(0, 0, 0), version=VERSION):
     opts = {} if BRIGHTNESS is None else {"brightness": BRIGHTNESS}
     n = 0
     for part, turns in pieces(version):
-        nbt = M.display(built[f"{PREFIX}{version}_{part}"], scale=PX, turns=turns, **opts)
+        nbt = M.display(built[_name(version, part)], scale=PX, turns=turns, **opts)
         nbt["Tags"] += ["c164_armillary", f"c164_armillary_{part}"]
         canvas.add_entity(at[0], at[1], at[2], nbt)
         n += 1
