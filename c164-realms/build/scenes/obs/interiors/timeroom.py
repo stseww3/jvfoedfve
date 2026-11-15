@@ -135,6 +135,19 @@ CONSOLE_Z = RACK_Z + 1                              # -24
 KEY_X = CONSOLE_X[0] + 1                            # 7: the telegraph key's cell; the operator sits in front of it
 DRUM_X = CONSOLE_X[1]                               # 9: the drum recorder's
 
+# ---- the piers and bays of the rack
+# Ten columns of the same dark face under one cornice read as a flat grille at the seventeen blocks
+# V10 stands off, however well the panels are laid (c288's preview read the wall that way). What
+# separates them is an architrave round each bay: a moulded iron edge standing a pixel and a half
+# off the panels, so the wall reads as four uprights carrying three framed openings, and the eye
+# has an edge to follow up to the valves at the head of each pier.
+BAYS = tuple((RACK_X[0] + i, RACK_X[0] + i + len(FLANK[0]) - 1)         # (4, 5), (7, 8), (10, 11): a bay's two columns
+             for i in (1, 4, 7))
+BAY_EDGE = 2.5 * PX                                 # the architrave's width, seen face on
+BAY_STAND = 1.5 * PX                                # how far it stands off the panels
+BAY_OVER = 0.5 * PX                                 # how far it runs over the panel beside it
+BAY_RISE = CORNICE_Y - RACK_Y                       # 6: the rows a bay is high
+
 # ---- the standard clocks, in the recesses the rack leaves at its two ends
 REGULATOR_X = (S.mid(X0), S.mid(X1))                # 2.5 and 13.5
 REGULATOR_FOOT = float(SILL)                        # 8.0; the clock is two blocks tall
@@ -201,8 +214,11 @@ CONSOLE_LAMP = (11, 2)      # the pendant over the console: the main light, on t
 DESK_LAMP = (10, 2)         # the bracket lamps on the piers beside the message desk and the rating bench
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
 CLOCK_LAMP = (7, 3)         # the bracket lamp over the world clocks
+DOOR_LAMP = (10, 2)         # the bracket lamp by the door, on the south wall: the way in is not a hole
 LAMP_Y = 10.5               # where a bracket is fixed on a pier
 OVER = 12 * PX              # a bracket's arm above the top of what it hangs over: 11 px of wall plate, one of air
+DOOR_LAMP_X = (X0 + X1) / 2.0                   # 7.5: the middle of the door, in the wall on z -6
+DOOR_LAMP_Y = SILL + 2.0                        # 10.0: above the door head, at the height of the other brackets' lamps
 
 
 def rack_faults(rows=None):
@@ -340,6 +356,32 @@ def cords_name(side):
     return PREFIX + "cords_" + side
 
 
+def architrave_name(x0, x1):
+    return PREFIX + f"bay_{x0}_{x1}"
+
+
+def _architrave(x0, x1):
+    """The moulded frame round one bay of the rack, for the face of its panels: two uprights and a
+    head, standing proud of the panels so the piers between the bays read as uprights and the bays
+    as openings. The iron of the frame is two steps lighter than the face of a quiet panel: a frame
+    of the same tone as what it frames is no frame at all (it was tried at iron 4 and measured 0.46
+    per cent of the picture changed, none of it readable). Its outer edge is sunk and its inner one
+    left bright, the bead the wainscot and the console are trimmed with. Anchor: the middle of the
+    bay's foot."""
+    wide = x1 - x0 + 1
+    half = wide / 2.0
+    tall = BAY_RISE
+    m = M.Model(architrave_name(x0, x1))
+    edge, sink = P.mat("iron", base=5), P.mat("iron", base=2)
+    outer = half + BAY_OVER
+    for side in (-1.0, 1.0):                                     # an upright at each side of the bay
+        m.box((side * outer - BAY_EDGE, 0.0, 0.0), (side * outer - BAY_EDGE / 2.0, tall, BAY_STAND), sink)
+        m.box((side * outer - BAY_EDGE / 2.0, 0.0, 0.0), (side * outer, tall, BAY_STAND), edge)
+    m.box((-outer, tall - BAY_EDGE, 0.0), (outer, tall, BAY_STAND), edge)                        # the head
+    m.box((-outer, tall - BAY_EDGE, 0.0), (outer, tall - BAY_EDGE + 0.5, BAY_STAND + 0.5), sink)  # its shadow line
+    return m
+
+
 def _cords(side):
     """The patch cords of one jack field, for the face of its panel: in the field's lowest row a
     cord looped from one jack to the next, and a cord hanging from the third jack with its free
@@ -382,14 +424,15 @@ def _chronometer():
 def _models():
     out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
     out.update({cords_name(side): _cords(side) for side in CORDS})
+    out.update({architrave_name(x0, x1): _architrave(x0, x1) for x0, x1 in BAYS})
     out[PREFIX + "chronometer"] = _chronometer()
     return out
 
 
 def models():
-    """The room's own models: the five world clocks, the patch cords of the two jack fields and
-    the chronometer of the rating bench. Its lamps are props/lamps', its machines
-    machines/recorders', the rest the packages' named in PIECES."""
+    """The room's own models: the five world clocks, the architraves of the three bays, the patch
+    cords of the two jack fields and the chronometer of the rating bench. Its lamps are
+    props/lamps', its machines machines/recorders', the rest the packages' named in PIECES."""
     return dict(_models())
 
 
@@ -468,6 +511,12 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         put(x, CORNICE_Y, RACK_Z, roles.IRON_RIVETED.block)
         put(x, CORNICE_Y, CONSOLE_Z, st(roles.IRON_RIVETED.slab, type="top"))
 
+    # ---- the architraves: a frame round each of the three bays, so the piers read as uprights
+    own = _models()
+    for x0, x1 in BAYS:
+        n += K.put(c, own[architrave_name(x0, x1)], (S.mid(x0, x1), float(RACK_Y), RACK_Z + 1.0),
+                   mount="wall", facing="south", origin=origin)
+
     # ---- the console, and what stands on it until machines/recorders and props/electrics bring the real things
     for x in range(CONSOLE_X[0], CONSOLE_X[1] + 1):
         put(x, FEET, CONSOLE_Z, st(roles.DARK_WOOD.slab, type="top"))
@@ -477,7 +526,6 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     n += lamp("pendant", (AXIS_X, CORNICE_Y + 0.5, S.mid(CONSOLE_Z)), CONSOLE_LAMP, "console")
 
     # ---- the patch cords, on the faces of the two jack fields
-    own = _models()
     for x, y in JACK_FIELDS:
         side = "w" if x < AXIS_X else "e"
         n += K.put(c, own[cords_name(side)], (S.mid(x), y + 0.5, RACK_Z + 1.0), mount="wall", facing="south", origin=origin)
@@ -504,6 +552,10 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
                 put(x, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
     n += lamp("bracket", (EAST, LAMP_Y, pier(DESK_BAY, -1)), DESK_LAMP, "message desk", facing="west")
     n += lamp("bracket", (WEST, LAMP_Y, pier(BENCH_BAY, -1)), DESK_LAMP, "rating bench", facing="east")
+
+    # ---- the way in: one bracket over the door, so the door end of the room is not a hole (c288's
+    # preview: every lamp stood north of z -10, and whoever walked in came into the dark)
+    n += lamp("bracket", (DOOR_LAMP_X, SILL + 2.5, SOUTH), DOOR_LAMP, "by the door", facing="north")
 
     # ---- the chronometers on the rating bench, or on the board that stands in for it
     bench_yaw = K.FACING["east"]
