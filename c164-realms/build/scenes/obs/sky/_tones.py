@@ -19,12 +19,11 @@ Per picture, printed and, with --out, drawn onto one sheet (<name>-tones.jpg):
            colour; listed from dark to bright, so "sky < wall < window" is read off one line
   stamps   the picture, grey and levels at 96 pixels wide
 
-Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives; the tone
-ladder in plan/parts/sky-notes.md 7 is in the same unit). Where dark ends and the middle begins
-depends on the light version (SPLIT): it is taken from --look, else from the shots.txt beside a
-kept picture or from --shots, else it is the blue hour's. Rectangles are x0,y0,x1,y1 in pixels, or
-in fractions of the picture when no number is above 1; the sheet's first panel has a tick at every
-tenth to read them from.
+Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives). Where dark
+ends and the middle begins depends on the light version (SPLIT; A blue, B deep, C glow): it is
+taken from --look, else from the shots.txt beside a kept picture or from --shots, else it is A's.
+Rectangles are x0,y0,x1,y1 in pixels, or in fractions of the picture when no number is above 1;
+the sheet's first panel has a tick at every tenth to read them from.
 
 Needs numpy and Pillow only and takes about a second a picture. The leading underscore keeps the
 module out of the scene's packages. --ladder also prints what the plan expects of the light
@@ -48,6 +47,7 @@ WARMTH = 0.03          # red above blue by this much is warm, blue above red by 
 # wall the sky alone lights (sky/look's record: blue 0.13 and 0.24, deep 0.05 and 0.17, glow 0.20
 # and 0.29).
 SPLIT = {"blue": 0.18, "deep": 0.12, "glow": 0.25}
+LETTER = {"blue": "A", "deep": "B", "glow": "C"}      # what the plan calls the three
 GRID = 320             # patches are counted on a grid about this many cells wide
 
 TONES = (38, 128, 235)                 # the three flat tones of the levels picture
@@ -238,7 +238,7 @@ def lines(name, n):
     def tone(v):
         return "  -  " if v is None else f"{v:.2f}"
 
-    def patched(n, what):
+    def patched(what):
         count, largest = n[f"{what}_patches"], n[f"{what}_largest"]
         if not count:
             cell = max(1, round(n["width"] / GRID))
@@ -256,21 +256,22 @@ def lines(name, n):
         cx, cy = n["bright_centre"]
         x0, y0, x1, y1 = n["bright_box"]
         out.append(f"  bright  centre x {cx:.2f} y {cy:.2f} (0 0 = top left)   nine tenths of it within x {x0:.2f}..{x1:.2f}, y {y0:.2f}..{y1:.2f}")
-        out.append(f"          {patched(n, 'bright')}")
+        out.append(f"          {patched('bright')}")
     else:
         out.append("  bright  none")
-    out.append(f"  white   above {WHITE:.2f}: {_pc(n['white'])}   {patched(n, 'white')}")
-    out.append(f"  dead    below {DEAD:.2f}: {_pc(n['dead'])}   {patched(n, 'dead')}")
+    out.append(f"  white   above {WHITE:.2f}: {_pc(n['white'])}   {patched('white')}")
+    out.append(f"  dead    below {DEAD:.2f}: {_pc(n['dead'])}   {patched('dead')}")
     t = n["table"]
     out.append(f"  warmth  warm {_pc(n['warm'])}   cool {_pc(n['cool'])}   neutral {_pc(1.0 - n['warm'] - n['cool'])}")
     for level in LEVELS:
         out.append(f"          {level:<7} warm {_pc(t[level]['warm'])}   cool {_pc(t[level]['cool'])}   neutral {_pc(t[level]['neutral'])}")
     if n["probes"]:
-        width = max(len(name) for name in n["probes"])
-        for name, p in sorted(n["probes"].items(), key=lambda item: item[1]["mean"]):
-            out.append(f"  probe   {name:<{width}}  mean {p['mean']:.2f}  median {p['median']:.2f}  brightest 1% {p['top']:.2f}  darkest 1% {p['low']:.2f}  "
+        ordered = sorted(n["probes"].items(), key=lambda item: item[1]["mean"])
+        width = max(len(label) for label in n["probes"])
+        for label, p in ordered:
+            out.append(f"  probe   {label:<{width}}  mean {p['mean']:.2f}  median {p['median']:.2f}  brightest 1% {p['top']:.2f}  darkest 1% {p['low']:.2f}  "
                        f"{p['colour']}  warm {_pc(p['warm']).strip()}  cool {_pc(p['cool']).strip()}")
-        out.append("  order   " + " < ".join(f"{name} {p['mean']:.2f}" for name, p in sorted(n["probes"].items(), key=lambda item: item[1]["mean"])))
+        out.append("  order   " + " < ".join(f"{label} {p['mean']:.2f}" for label, p in ordered))
     return out
 
 
@@ -397,6 +398,13 @@ def look_of(path, times=None):
     return None
 
 
+def _look(text):
+    names = {**{letter.lower(): name for name, letter in LETTER.items()}, **{name: name for name in SPLIT}}
+    if text.lower() not in names:
+        raise argparse.ArgumentTypeError(f"{text!r} is none of A, B, C, blue, deep, glow")
+    return names[text.lower()]
+
+
 def _probes(args, stem):
     """The rectangles asked for one picture: --probe for every picture, --probes by picture."""
     out = {}
@@ -418,7 +426,8 @@ def main(argv=None):
     ap.add_argument("pictures", nargs="+")
     ap.add_argument("--out", help="folder for the sheets, <name>-tones.jpg (without it: numbers only)")
     ap.add_argument("--parts", action="store_true", help="with --out: also the grey, levels and warmth pictures on their own, full size")
-    ap.add_argument("--look", choices=sorted(SPLIT), help="light version of the pictures (default: read from shots.txt or --shots, else blue)")
+    ap.add_argument("--look", type=_look, metavar="A|B|C", help="light version of the pictures: A blue, B deep, C glow "
+                                                                  "(default: read from shots.txt or --shots, else A)")
     ap.add_argument("--shots", help="the scene's shots.json: a picture whose name ends in a shot's name takes its time, so its light version")
     ap.add_argument("--split", type=float, help="where dark ends and the middle begins (default: by light version)")
     ap.add_argument("--probe", action="append", metavar="NAME=X0,Y0,X1,Y1", help="measure a rectangle (pixels, or fractions when no number is above 1); may be given several times")
@@ -440,13 +449,13 @@ def main(argv=None):
         split = args.split if args.split is not None else SPLIT[look]
         rgb = load(path, args.crop)
         n = measure(rgb, split, _probes(args, stem))
-        title = f"{name} [{look}]"
+        title = f"{name} [{LETTER[look]} {look}]"
         print("\n".join(lines(title, n)))
         rows.append((title, n))
         everything[name] = dict(n, look=look, picture=str(path))
         if out:
             target = out / f"{name}-tones.jpg"
-            sheet(title, rgb, n).save(target, quality=90)
+            sheet(title, rgb, n).save(target, quality=85)
             print(f"  sheet   {target}")
             if args.parts:
                 grey_picture(rgb).save(out / f"{name}-grey.png")
@@ -456,7 +465,7 @@ def main(argv=None):
         print("\n" + "\n".join(summary(rows)))
     if args.ladder:
         for look in sorted({n["look"] for n in everything.values()}):
-            print(f"\nexpected in {look} (brightness setting 50%):")
+            print(f"\nexpected in {LETTER[look]} {look} (brightness setting 50%):")
             for name, colour, tone in ladder(look):
                 print(f"  {tone:.2f}  {colour}  {name}")
     if args.json:
