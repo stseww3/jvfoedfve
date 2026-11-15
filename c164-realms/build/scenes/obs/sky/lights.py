@@ -12,7 +12,9 @@ the canvas by then and places, in this order:
             source stands in the cell before the glass of the middle column (the window's
             recess), two levels under the level the window has behind its glass: outside that is
             the same light, and the room behind the window keeps to its own lamps. Where that
-            cell is taken (the bars of a base window) the source stands behind the glass. A tall
+            cell is taken (the bars of a base window) the source stands behind the glass, at
+            the full level; so it does behind a window of panes, which show the light of their
+            own cell. A tall
             lit window has two, one row above the sill and one row below the head. The brightest
             window lends each of its sources to the recesses of the two windows beside it, three
             levels lower: the entrance's three windows stand in one light (_lightkit.LENDS).
@@ -241,12 +243,16 @@ def _glass(canvas, w):
 def _behind(canvas, r, w, tier):
     """Place the sources of a lit window: in the cell before the glass, L.THROUGH under the level
     the window has behind it, or, where no column has that cell free, behind the glass at that
-    level. Returns them as [(cell, level, is it before the glass)], or None when the scene has
-    put a source of its own next to this glass."""
+    level. A window of panes keeps them behind the glass: a pane shows the light of its own
+    cell, not that of the cell before it as a block of glass does on its face, and with the source
+    before it, it would be no brighter than the wall beside it. Returns them as [(cell, level, is
+    it before the glass)], or None when the scene has put a source of its own next to this glass."""
     ox, oy, oz = w["origin"]
     y0, y1 = w["y"]
     rows = y1 - y0 + 1
     tall = rows >= L.TALL
+    panes = any(str(canvas.name(x + ox, y + oy, z + oz)).endswith("_pane")
+                for x, z in w["cells"] for y in range(y0, y1 + 1))
     level = w["level"] or L.BEHIND[tier][0 if tall else 1]
     ys = (y0 + 1, y1 - 1) if tall and tier >= L.LIT else (y0 + (rows - 1) // 2,)
     dx, dz = w["inward"]
@@ -260,7 +266,7 @@ def _behind(canvas, r, w, tier):
     out = []
     for y in ys:
         spots = []
-        if level > L.THROUGH:
+        if level > L.THROUGH and not panes:
             spots += [((x + ox - dx, y + oy, z + oz - dz), level - L.THROUGH, True)
                       for x, z in (w["cells"][i] for i in columns)]
         spots += [((x + ox + dx, y + oy, z + oz + dz), level, False)
