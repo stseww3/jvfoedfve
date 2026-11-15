@@ -22,8 +22,8 @@ the tripod telescope and the benches -- belong to the machines and props lines; 
 shells, the sockets and the clear spots for them. Three of them are set on their spots from here, as
 the props line asks of whoever builds a terrace (props/instruments places nothing itself): the tripod
 telescope on the lookout's stand, the thermometer screen and the sunshine recorder on the weather
-platform. While that package is not in the tree the stand and the pedestal are empty, a louvred
-shelter of blocks stands in for the screen and this card has no display entity at all.
+platform. While that package is not in the tree the stand and the pedestal are empty, a shelter
+of iron hatches stands in for the screen and this card has no display entity at all.
 
 What the other cards read from this module (points are (x, y, z) in scene coordinates):
   LAMP_POINTS   where a lamp may hang, one to a building (props/lamps)
@@ -66,7 +66,7 @@ IRON_STAIR = B.IRON_RIVETED.stairs
 PLATE = B.IRON_PLATE                    # plain plate: the tank
 GRATE = B.IRON_GRATE                    # open grating: the walk round the tank
 BARS = B.IRON_BARS                      # iron rail and ladders on iron structures (stone edges: K.rail)
-HATCH = B.IRON_HATCH                    # hatch, shutter, louvre
+HATCH = B.IRON_HATCH                    # hatch, shutter: a riveted lid, standing or lying (c198 #36725)
 ROD = B.IRON_ROD                        # thin rod: finials, the wind mast
 PIPE = B.IRON_PIPE                      # thin pipe: the riser
 
@@ -344,8 +344,8 @@ def _weather_station(c, o):
 
     # the thermometer screen (a Stevenson screen): the props line's white louvred box on its four
     # legs, the door to the north, as a screen's door is hung. Until that piece is in the tree a
-    # shelter of blocks stands in for it on the same spot: a louvred box two cells long and two
-    # high on two iron posts, under a thin cap
+    # shelter of blocks stands in for it on the same spot: a box of iron hatches two cells long
+    # and two high on two iron posts, under a thin cap
     n = _place(c, o, "louvre_box", SCREEN, "north")
     if not n:
         sx, sz = _SPOTS["screen"]                       # (0, -46) and the cell east of it

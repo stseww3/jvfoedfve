@@ -10,8 +10,13 @@ tower's foot). The package names the points; the props line hangs the lamps with
 lamps. Where props/lamps has that table the scene asks for it (lamps.dress); what that leaves out
 the scene hangs itself, so the pictures show the hut and the tower as they will stand at night.
 
+The bench on the south lookout is the props line's too (props/furniture, its group "lookout", c179
+#37389). The scene asks for that one group once that package is in the tree, so the lookout's
+pictures show it and the look back (V11) shows that it keeps out of that picture.
+
 shots.json is written from shots():  python -m scenes.obs_site_outbuildings  (in build/).
 """
+import importlib.util
 import math
 
 from artkit.canvas import Canvas
@@ -37,6 +42,18 @@ def _door_lamps(c):
         lamps.place(c, "cage", p, facing="south")
 
 
+def _lookout_bench(c):
+    """Ask props/furniture for the lookout's bench (see the module's text). Nothing while that
+    package, or its table of the site's furniture, is not in the tree; a piece it has placed
+    already (its own switch on) is not placed twice."""
+    name = props.__name__ + ".furniture"
+    if importlib.util.find_spec(name) is None:
+        return
+    furniture = importlib.import_module(name)
+    if hasattr(furniture, "site"):
+        furniture.site(c, (0, 0, 0), groups=("lookout",))
+
+
 def build():
     c = Canvas()
     if hasattr(lamps, "dress"):
@@ -45,6 +62,8 @@ def build():
         if line is sky:
             _door_lamps(c)          # before the sky line turns the offered lights into light
         line.build(c, (0, 0, 0))
+        if line is props:
+            _lookout_bench(c)       # on the lookout's floor, which the site line has laid by now
     return c
 
 
