@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:38。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:40。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -14,7 +14,7 @@
 | 代号 | 聊天号 | 节点 | 接手 | 岗位 | 旧分支 @ 有效头 | 新分支 |
 | --- | --- | --- | --- | --- | --- | --- |
 | s2 | c318 | node33（11-16 05:36 失联，总控让先投 node39，独占仍是 shell 的） | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` @ `8f626b20` | `cursor/c164-s2-fable-89df` |
-| s1 | c319 | node34 | c189 | 出图（拿出图钥匙）：整座的看板图、真机图；`common/plots-shuttle`、`common/offline-sky` | `cursor/c164-s1-render-9df7` @ `9cbe672b` | `cursor/c164-s1-render-f3-fd9c` |
+| s1 | c319 | node34（11-16 05:40 失联，总控让先投 node53，独占仍是 power 的） | c189 | 出图（拿出图钥匙）：整座的看板图、真机图；`common/plots-shuttle`、`common/offline-sky` | `cursor/c164-s1-render-9df7` @ `9cbe672b` | `cursor/c164-s1-render-f3-fd9c` |
 | review | c332 | node46 | c219 | 评审：materials、main、props | `cursor/c164-review-0eb8` @ `ef09c638` | `cursor/c164-review-f3-3c69` |
 | cr2 | c333 | node47 | c235 | 评审：site、sky、motion | `cursor/c164-cr2-582e` @ `47be4fe6` | `cursor/c164-cr2-f3-ccff` |
 | cr3 | c347 | 合用 node47 | （新岗位） | 评审：machines、interiors | 从总装开 | `cursor/c164-cr3-f3-998d` |
