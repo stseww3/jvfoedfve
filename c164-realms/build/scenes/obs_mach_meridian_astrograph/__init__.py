@@ -112,12 +112,12 @@ def shots():
 
     mx, mz = MA.HUT_CX, MA.HUT_CZ
     eye = MA.HUT_FEET + 1.62
-    shot("meridian_hut", (mx, eye, mz + 3.6), (mx, MA.HUT_FEET + 1.5, mz - 0.5))
-    shot("meridian_tube", (mx - 1.6, MA.HUT_FEET + 2.1, mz + 2.6), (mx + 0.3, MA.HUT_FEET + 1.6, mz))
-    shot("slit", (mx, MA.HUT_FEET + 1.3, mz + 2.2), (mx, MA.HUT_FEET + 5.0, mz - 1.0))
+    shot("meridian_hut", (mx - 0.5, eye, mz + 3.2), (mx + 0.3, MA.HUT_FEET + 1.5, mz - 0.3))
+    shot("meridian_tube", (mx - 2.2, MA.HUT_FEET + 1.75, mz + 2.6), (mx + 0.6, MA.HUT_FEET + 1.55, mz))
+    shot("slit", (mx, MA.HUT_FEET + 1.35, mz + 2.8), (mx, MA.HUT_FEET + 5.4, mz - 1.6))
     ax, az = MA.DOME_CX, MA.DOME_CZ
     aeye = MA.DOME_FLOOR + 1.62
-    shot("astro", (ax - 2.4, aeye, az + 3.4), (ax, MA.DOME_FLOOR + 2.4, az))
-    shot("astro_up", (ax - 1.2, MA.DOME_FLOOR + 1.2, az + 2.4), (ax, MA.DOME_FLOOR + 5.0, az - 0.5))
+    shot("astro", (ax - 2.0, aeye, az + 2.6), (ax, MA.DOME_FLOOR + 2.4, az))
+    shot("astro_up", (ax - 1.0, MA.DOME_FLOOR + 1.15, az + 2.2), (ax, MA.DOME_FLOOR + 5.2, az - 0.8))
     shot("both", (mx - 8.0, MA.HUT_FEET + 8.0, mz + 12.0), (mx + 2.0, MA.HUT_FEET + 1.0, mz - 4.0))
     return out
