@@ -61,7 +61,8 @@ def _net():
 def _stone(state, right):
     """Which texels of a wall-plane cell are stone, seen from outside: f(from the left, from the
     bottom). A stair hung in the corner of an arched head is solid in its upper half and, below,
-    on the side it faces. A light source is nothing."""
+    on the side it faces; a half slab is solid in its own half (the one A3 may hang between the two
+    stairs to close the crown, facade.CROWN). A light source is nothing."""
     name, _, props = (state or "").partition("[")
     if not name or name.split(":")[-1] == B.LIGHT:
         return lambda j, i: False
@@ -71,6 +72,9 @@ def _stone(state, right):
         side = way[0] * right[0] + way[1] * right[1]
         if side:
             return lambda j, i: i >= TILE // 2 or (j >= TILE // 2) == (side > 0)
+    if name.endswith("_slab") and props.get("type", "bottom") != "double":
+        upper = props.get("type") == "top"
+        return lambda j, i: (i >= TILE // 2) == upper
     return lambda j, i: True
 
 
