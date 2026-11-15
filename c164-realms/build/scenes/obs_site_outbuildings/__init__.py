@@ -120,12 +120,11 @@ def shots():
     wx, wz = _middle(S.WEATHER_STATION["box"])          # (3, -46)
     shot("weather_near", (wx + 8.5, eye, north + 0.5), (wx, S.WEATHER_STATION["feet"] + 1.0, wz))
     shot("weather_mid", (wx - 9.0, 0.0, wz - 22.0), (wx + 3.0, 6.0, wz + 12.0))
-    # the vane at the mast's head, from three sides: the tail is to be read south and the arrow
-    # north (A0 #569), so one camera looks up the meridian of the wind and the other across it
+    # the vane at the mast's head, from two sides: along the wind (what a crossbar across the mast
+    # would show here) and across it, where the point north and the swallow tail south are read
     vx, vz = outbuildings.WEATHER_MAST                 # (6.5, -46.5)
     vy = S.WEATHER_STATION["feet"] + 9.0               # 5: the vane's own height
     shot("vane_north", (vx, vy + 1.5, vz - 7.0), (vx, vy, vz))
-    shot("vane_south", (vx, vy + 1.5, vz + 7.0), (vx, vy, vz))
     shot("vane_side", (vx + 7.0, vy + 1.5, vz), (vx, vy, vz))
 
     shot("aerial", (70.0, 60.0, -70.0), (15.0, 0.0, -10.0))
