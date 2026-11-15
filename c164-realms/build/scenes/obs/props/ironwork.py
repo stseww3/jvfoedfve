@@ -65,10 +65,11 @@ def _muntins(hw):
     return [-hw + 4.0 * k for k in range(1, int(hw) // 2)]
 
 
-def _sheet(m, hw, r_out, r_in, top, mat=PLATE):
+def _sheet(m, hw, cx, r_out, r_in, top, mat=PLATE):
     """Riveted sheet over all that lies outside the arch ring, up to `top`: rows of boxes whose inner
     ends lie under the ring, so no light is left between the iron and the stone above the springing
-    and the glass keeps the clean half round. r_in is the widest the ring's soffit gets."""
+    and the glass keeps the clean half round. The ring turns about x = cx; r_in is the widest its
+    soffit gets."""
     m._n += 1
     seed, gap, y = m._n, r_out * r_out - r_in * r_in, 0.0
     while y < r_in:
@@ -76,9 +77,8 @@ def _sheet(m, hw, r_out, r_in, top, mat=PLATE):
         while (y + h + 0.5) ** 2 - y * y <= gap and y + h < r_in:
             h += 0.5
         inner = (math.sqrt(max(0.0, r_in * r_in - y * y)) + math.sqrt(max(0.0, r_out * r_out - (y + h) ** 2))) / 2.0
-        if hw - inner >= 0.5:
-            for sx in (-1.0, 1.0):
-                a, b = sorted((sx * inner, sx * hw))
+        for a, b in ((-hw, cx - inner), (cx + inner, hw)):
+            if b - a >= 0.5:
                 m.box((a, SPRING + y, 0.0), (b, SPRING + y + h, SHEET), mat, seed=seed, grain="x")
         y += h
     m.box((-hw, SPRING + y, 0.0), (hw, top, SHEET), mat, seed=seed, grain="x")
@@ -92,16 +92,22 @@ SHEET_RIVETS = {
 }
 
 
-def _head(m, width, top=48.0):
-    """The round head the windows and the doorways share: a half ring that springs from the 4.0 line,
-    2 px on the glass and 6 px deep, and riveted sheet in the spandrels. Returns the soffit radius."""
+def _head(m, width, jambs, top=48.0):
+    """The round head the windows and the doorways share: a half ring, 6 px deep, that springs from
+    the 4.0 line and carries on the inner edges of the two jambs, and riveted sheet in the spandrels.
+    So the round of glass is centred on what the jambs leave: with a window's unequal jambs that is
+    the middle of the pane's net, half a pixel beside the middle of the stone, and the lights the
+    ring cuts come out the same left and right. The ring is as wide as the wider jamb; beside the
+    narrower one the rest of it runs into the stone of the reveal. Returns the soffit radius."""
     hw = width * 4.0
+    left, right = jambs
+    cx, r, wide = (left - right) / 2.0, hw - (left + right) / 2.0, max(left, right)
     sides = 32 if width >= 3 else 24
-    m.ring("z", (0.0, SPRING, DEEP / 2.0), hw - 0.5, 1.0, DEEP, IRON, sides=sides, arc=(0.0, 180.0))
-    _sheet(m, hw, hw, (hw - 1.0) / math.cos(math.pi / sides), top)
+    m.ring("z", (cx, SPRING, DEEP / 2.0), r + wide / 2.0, wide, DEEP, IRON, sides=sides, arc=(0.0, 180.0))
+    _sheet(m, hw, cx, r + wide, r / math.cos(math.pi / sides), top)
     for x, y in SHEET_RIVETS[width]:
         K.rivet(m, (x, y, SHEET))
-    return hw - 1.0
+    return r
 
 
 def _frame(m, width, foot=True, jambs=JAMBS):
@@ -121,7 +127,7 @@ def _frame(m, width, foot=True, jambs=JAMBS):
     for y in (7.5, 15.5, 23.5):                              # the reveal faces of the jambs, on the block lines
         K.rivet(m, (-hw + left, y, DEEP / 2.0), out="x")
         K.rivet(m, (hw - right, y, DEEP / 2.0), out="-x")
-    return _head(m, width)
+    return _head(m, width, jambs)
 
 
 def _window_arch(width=3):
