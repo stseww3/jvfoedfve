@@ -166,11 +166,25 @@ def _bracket_b():
     return m
 
 
-def _cage_a():
-    """Version A caged wall lamp: a round glass on a round base behind two upright hoops side by
-    side. Nothing crosses them and nothing stands before the middle of the glass. Anchor: on the
-    wall, centre of the base."""
-    m = M.Model(PREFIX + "cage_a")
+CAGE_HOOPS = (-1.5, 1.5)    # where the two upright hoops of cage A stand, in the model's units: either
+                            # side of the glass's middle, close in. Dead on, the two of them over the
+                            # round lit glass read as one round button with two bars on it, the pause
+                            # sign (c219, group #33010; the card keeps the fallbacks). The alternatives
+                            # are three hoops a third of the way round, or the two of them out at the
+                            # glass's edge; _cage_a takes either, and obs_props_lamps_cage puts all
+                            # three side by side for the review to pick from.
+
+
+def cage_hoops(choice="two"):
+    """The hoops of cage A: "two" (as approved), "three", or "two_wide" (the two out at the edge)."""
+    return {"two": (-1.5, 1.5), "two_wide": (-2.25, 2.25), "three": (-2.4, 0.0, 2.4)}[choice]
+
+
+def _cage_a(hoops=None, name=None):
+    """Version A caged wall lamp: a round glass on a round base behind upright hoops side by side.
+    Nothing crosses them and nothing stands before the middle of the glass. Anchor: on the wall,
+    centre of the base."""
+    m = M.Model(name or PREFIX + "cage_a")
     m.tube("z", (0, 0), 0.0, 1.5, 5.0, IRON)                            # base
     m.tube("z", (0, 0), 1.5, 2.5, 4.0, IRON_D)                          # glass seat
     m.tube("y", (0, 1.0), 4.5, 9.5, 0.75, IRON_D)                       # conduit, up and into the wall
@@ -178,7 +192,7 @@ def _cage_a():
     with m.turned(("x", 90), about=(0, 0, 2.5)):                        # the dome looks out of the wall
         K.glass_ball(m, (0, 0, 2.5), 3.5,
                      [(0.0, 0.4, 1, GLOW[1]), (0.4, 0.75, 1, GLOW[2]), (0.75, 1.0, 1, GLOW[3])])
-    for x in (-1.5, 1.5):                                               # each runs on round into the base
+    for x in (CAGE_HOOPS if hoops is None else hoops):                  # each runs on round into the base
         m.ring("x", (x, 0, 2.5), 4.0, 1.0, 1.0, IRON, sides=16, arc=(-22.5, 202.5))
     return m
 
