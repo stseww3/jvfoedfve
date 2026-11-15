@@ -4,9 +4,9 @@ What lies on the desks and hangs on the walls of a working observatory: star cha
 a blackboard with tonight's orbit on it, a map of the Moon, log books, glass negatives. One
 vocabulary for all of them: cream paper; the chart blue of the enamel signs with the drawing left
 in cream; brass for whatever holds a sheet (a bead round it, a screw, a pin); an edge that curls
-where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue
-with its stars. The drawings are figures, lines and dots; nothing is written out, and no figure
-is a cross.
+where a sheet hangs free; and one heading wherever a sheet has one, a strip of the chart blue,
+graduated like the edge of a chart where it is two texels high. The drawings are figures, lines
+and dots; nothing is written out, and no figure is a cross.
 
 Every face is drawn here, texel by texel, on the common palette, 16 texels to the block.
 
@@ -30,7 +30,8 @@ from . import _kit as K
 
 PREFIX = "prop_paper_"
 
-EN, CR, BR, IR, SL, GL = (P.RAMPS[k] for k in ("enamel", "cream", "brass", "iron", "slate", "glow"))
+EN, CR, BR, IR, SL, OP = (P.RAMPS[k] for k in ("enamel", "cream", "brass", "iron", "slate", "opal"))
+NG, AS = P.RAMPS["night_glass"], P.RAMPS["ashlar"]
 
 BRASS = K.BRASS
 SCREW = K.flat("brass", 5)                                      # screw heads and pins catch the light
@@ -41,12 +42,15 @@ LEATHER = P.mat("dark_wood", kind="plain", noise=0.12, base=1)  # bindings (R1: 
 SLATE = P.mat("slate", noise=0.16, bevel=0)
 CHALK = K.flat("cream", 3)
 FELT = K.flat("cream", 1)
-GLASS = K.flat("glow", 1)                                       # the edge of a glass negative
+GLASS = K.flat("opal", 0)                                       # the edge of a glass negative
 PENCIL = K.flat("brass", 3)
 RIBBON = K.flat("enamel", 2)                                    # a book's marker
 
-# the colours of a star chart: ground, Milky Way, graduation, figure lines, ecliptic, stars, faint stars
-SKY = {"e": EN[1], "m": EN[2], "g": EN[3], "l": EN[3], "c": BR[3], "s": CR[3], "f": CR[0]}
+# the colours of a star chart: ground, the Milky Way and its core, graduation, figure lines, ecliptic,
+# stars, faint stars, the pole star. The figure lines are the one blue lighter than the enamel's own:
+# under a lamp the top of the enamel ramp stands 15 levels off the ground and the figures were lost
+SKY = {"e": EN[1], "m": EN[2], "k": EN[3], "g": EN[3], "l": NG[4], "c": BR[3], "s": CR[3], "f": CR[0],
+       "p": BR[4]}
 
 
 # ---- drawing a face -----------------------------------------------------------------------------------
@@ -150,46 +154,32 @@ def _blocks(corners):
 
 
 # ---- the faces ----------------------------------------------------------------------------------------
-def _chart_face():
-    """The enamel star chart, 30 x 14: a graduated edge as on a map, and inside it four figures of
-    the northern sky drawn star to star (the Dipper, the W, the Crown, the Arrow), a small cluster
-    and loose stars of three magnitudes. A bright star is a block of four texels and a faint one a
-    grey dot; none is drawn as a cross, no two lines cross, and a clear texel runs inside the
-    edge."""
-    g = _Grid(30, 14, "e")
-    dipper = [(2, 5), (5, 4), (8, 4), (10, 6), (14, 5), (14, 8), (11, 9), (10, 6)]
-    zigzag = [(17, 3), (19, 6), (22, 4), (25, 7), (27, 4)]
-    crown = [(2, 8), (3, 10), (5, 11), (7, 10), (8, 8)]
-    arrow = [(16, 10), (20, 9), (22, 8)]
-    barb = [(20, 9), (22, 11)]
-    for figure in (dipper, zigzag, crown, arrow, barb):
-        for a, b in zip(figure, figure[1:]):
-            g.line(a, b, "l")
-    g.dots([(8, 2), (12, 2), (20, 2), (25, 2), (17, 7), (9, 11)], "f")
-    g.dots(dipper + zigzag + crown + arrow + barb, "s")
-    g.dots([(24, 10), (25, 9), (26, 10), (27, 9), (26, 11)], "s")               # the cluster
-    g.dots([(15, 2), (5, 7), (13, 11)], "s")
-    g.dots(_blocks([(14, 5), (22, 3)]), "s")                                    # first magnitude
-    _graduate(g)
-    return g.sprite("paper_chart_face", SKY)
-
-
-def _sky_face(name, band, arch, figures, bright, stars, faint):
-    """One half of the sky on an enamelled plate, 46 x 30, drawn like the small chart and with two
-    things more: the Milky Way as a lighter stream (band: its first and last texel in each row from
-    row 1 down), and the ecliptic as a dashed line of brass (arch: its row for a column). The
-    ecliptic stops short of every star and figure it meets, as on an engraved chart, so nothing on
-    the plate crosses anything."""
-    g = _Grid(46, 30, "e")
+def _sky_face(name, band, figures, bright, stars, faint, arch=None, leads=(), pole=None, size=(46, 30)):
+    """A piece of the sky on an enamelled plate, a great chart 46 x 30 or a small one 30 x 14: a
+    graduated edge as on a map; the Milky Way as a lighter stream with a ragged core one step
+    lighter still (band: its first and last texel in each row from row 1 down); the figures drawn
+    star to star; stars of three magnitudes, a bright one a block of four texels and a faint one
+    a grey dot. A great chart has the ecliptic
+    as well, a dashed line of brass (arch: its row for a column) that stops short of every star
+    and figure it meets, as on an engraved chart. leads are dotted from one star towards another,
+    and pole is the one star marked in brass. No star is drawn as a cross, nothing on the plate
+    crosses anything, and a clear texel runs inside the edge."""
+    g = _Grid(size[0], size[1], "e")
     for y, (x0, x1) in enumerate(band, 1):
         g.fill(x0, y, x1, y, "m")
+        g.fill(x0 + 1 + (y % 3 == 0), y, x1 - 1 - (y % 4 == 1), y, "k")
     ground = [row[:] for row in g.rows]
-    g.dots(_dashed([(x, int(math.floor(arch(x) + 0.5))) for x in range(1, 45)], (2, 1)), "c")
+    if arch is not None:
+        g.dots(_dashed([(x, int(math.floor(arch(x) + 0.5))) for x in range(1, g.w - 1)], (2, 1)), "c")
     lines = [p for figure in figures for a, b in zip(figure, figure[1:]) for p in _line(a, b)]
     marks = list(stars) + _blocks(bright)
+    for a, b in leads:
+        g.dots(_dashed(_line(a, b), (1, 1)), "l")
     g.dots(lines, "l")
     g.dots(faint, "f")
     g.dots(marks, "s")
+    if pole is not None:
+        g.put(pole[0], pole[1], "p")
     for x, y in lines + marks + list(faint):
         for i in (x - 1, x, x + 1):
             for j in (y - 1, y, y + 1):
@@ -204,6 +194,44 @@ def _sky_face(name, band, arch, figures, bright, stars, faint):
     _graduate(g)
     return g.sprite(name, SKY)
 
+
+# The sky round the pole, on the small plate: the Dipper along the foot of it, the two stars at the
+# end of its bowl leading the eye up to the pole star, the one mark of brass; the Little Dipper
+# hanging from the pole; the Milky Way coming down on the right with one great star in it.
+NORTH = dict(
+    size=(30, 14),
+    band=[(19, 23), (20, 24), (20, 24), (21, 25), (22, 26), (22, 27), (23, 27), (23, 28), (24, 28), (25, 28),
+          (25, 28), (26, 28)],
+    figures=[
+        [(3, 10), (6, 9), (8, 9), (10, 9), (14, 8), (15, 10), (12, 11), (10, 9)],       # the Dipper
+        [(11, 2), (9, 3), (8, 5), (6, 4), (5, 6), (7, 7), (8, 5)],                      # the Little Dipper
+    ],
+    leads=[((14, 8), (11, 2))],
+    pole=(11, 2),
+    bright=[(24, 6)],
+    stars=[(3, 10), (6, 9), (8, 9), (10, 9), (14, 8), (15, 10), (12, 11), (5, 6), (7, 7),
+           (18, 9), (21, 3), (23, 10), (26, 3), (18, 5), (3, 3)],
+    faint=[(9, 3), (8, 5), (6, 4), (5, 2), (16, 3), (2, 7), (17, 11), (26, 9), (21, 11), (22, 5), (7, 11)],
+)
+
+# The Hunter's part of the winter sky, on the companion plate: his shoulders, his belt of three
+# with the sword under it and his knees; the belt points down to the Dog Star at the edge of the
+# Milky Way and up to the Bull's eye and the Seven Sisters beyond.
+HUNTER = dict(
+    size=(30, 14),
+    band=[(5, 9), (4, 9), (4, 8), (3, 8), (3, 7), (2, 7), (2, 7), (2, 6), (1, 6), (1, 6), (1, 5), (1, 5)],
+    figures=[
+        [(11, 4), (12, 8), (11, 11)], [(17, 3), (16, 6), (17, 10)],                     # the Hunter
+        [(21, 6), (24, 7), (23, 4)],                                                    # the Bull
+    ],
+    bright=[(10, 3), (17, 10), (5, 10)],
+    stars=[(17, 3), (12, 8), (14, 7), (16, 6), (11, 11),
+           (21, 6), (24, 7), (23, 4),
+           (25, 2), (26, 3), (27, 2), (27, 4),                                          # the Seven Sisters
+           (2, 3), (9, 6), (21, 10), (25, 10), (20, 2)],
+    faint=[(14, 2), (14, 9), (14, 10), (8, 9), (23, 9), (27, 8), (19, 8), (27, 10), (6, 3), (9, 2),
+           (22, 11), (3, 6)],
+)
 
 # The winter half of the sky, east on the left as on any chart: the Hunter in the middle with his
 # belt of three, the Twins, the Charioteer, the Bull with the horn that reaches up to him and the
@@ -265,11 +293,39 @@ SUMMER = dict(
 )
 
 
+BLUE = {"b": EN[2], "l": EN[3], "m": CR[0], "w": CR[3]}        # a blueprint: ground, faint rule, grey, line
+
+
 def _blueprint_face():
-    """The blueprint, 24 x 14 above the rolled foot: the great dome cut through with its slit
-    open, the refractor on its pier looking out of it (the pier a solid mass standing on the
-    ground: no floor is drawn across it, a line through a post is a cross); the same dome in plan
-    with the pier in the middle; the title block in the corner."""
+    """The blueprint, 24 x 14 above the rolled foot: the east front of the observatory itself. The
+    long main building on its ground line, its piers standing between eaves and ground and the
+    door in the middle; the great dome on its drum over the door; the small dome on the south
+    corner, to the left; the time tower with its clock at the north end, to the right. Under the
+    ground line a scale and the title block. What stands on the roof rises behind the front, so
+    no wall of a dome or of the tower comes down on a pier: a line that ran on through the eaves
+    would be a cross."""
+    rows = ["bbbbbbbbbbbbbbbbbbbbbbbb",
+            "bbbbbbbbbbwwwwbbbbbbwbbb",
+            "bbbbbbbbbwbbbbwbbbbwwwbb",
+            "bbbwbbbbwbbbbbbwbbbwbwbb",
+            "bbwbwbbbwwwwwwwwbbbwmwbb",
+            "bbwbwbbbwbbbbbbwbbbwbwbb",
+            "bbwwwwwwwwwwwwwwwwwwwwbb",
+            "bbwbbwbwbwbmmbwbwbwbbwbb",
+            "bbwbbwbwbwbmmbwbwbwbbwbb",
+            "bwwwwwwwwwwwwwwwwwwwwwwb",
+            "bbbbbbbbbbbbbbbbbbbbbbbb",
+            "bbwwllwwllwwbbbmmwwwmmmb",
+            "bbbbbbbbbbbbbbbmmmmmmmmb",
+            "bbbbbbbbbbbbbbbbbbbbbbbb"]
+    return Sprite("paper_blueprint_face", rows, BLUE)
+
+
+def _blueprint_b_face():
+    """The second blueprint, 24 x 14: the great dome cut through with its slit open, the refractor
+    on its pier looking out of it (the pier a solid mass standing on the ground: no floor is drawn
+    across it, a line through a post is a cross); the same dome in plan with the pier in the
+    middle; the title block in the corner."""
     rows = ["bbbbbbbbbbbbbbbbbbbbbbbb",
             "bbbbbbbbbbbbbbbbbwwwbbbb",
             "bbbbbwwwwbbbbbbbwbbbwbbb",
@@ -284,7 +340,7 @@ def _blueprint_face():
             "bwwwwwwwwwwwwwbmbbbbbbmb",
             "bbbbbbbbbbbbbbbmmmmmmmmb",
             "bbbbbbbbbbbbbbbbbbbbbbbb"]
-    return Sprite("paper_blueprint_face", rows, {"b": EN[2], "m": CR[0], "w": CR[3]})
+    return Sprite("paper_blueprint_b_face", rows, BLUE)
 
 
 def _board_face():
@@ -329,17 +385,20 @@ MOON = [".....hhhhhh.....",
         "..hhhhhtthhhhh..",
         "...hhhhtthhhh...",
         ".....hhhhhh....."]
-MOON_INK = {"p": CR[3], "e": EN[1], "w": CR[3], "o": CR[0], "i": CR[0],
-            "h": CR[2], "t": CR[3], "s": CR[1], "k": CR[0]}
+# The printer's ink is the warm grey one step under the cream ramp: on the cream ramp alone the
+# seas stood some 25 levels off the disc under a lamp and the Moon was a smudge.
+MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": AS[0], "i": AS[0],
+            "h": CR[2], "t": CR[3], "s": CR[0], "k": AS[0]}
 
 
 def _moon_sheet():
-    """The map of the Moon as it is printed, 24 x 24, as rows of characters: the heading (a strip
-    of chart blue with its stars) across the head of the sheet, the disc engraved in greys inside
-    its outline, a line of caption under it."""
+    """The map of the Moon as it is printed, 24 x 24, as rows of characters: the heading across
+    the head of the sheet, a strip of the chart blue graduated along its foot the way the edge of
+    a chart is (stars drawn in so narrow a strip sit on its edge and read as notches torn out of
+    the sheet); the disc engraved in greys inside its outline; a line of caption under it."""
     g = _Grid(24, 24, "p")
     g.fill(0, 0, 23, 1, "e")
-    g.dots([(4, 1), (6, 0), (10, 1), (13, 0), (20, 1)] + _blocks([(16, 0)]), "w")
+    g.dots([(x, 1) for x in range(1, 23) if (x // 2) % 2], "g")
     inside = {(x, y) for x in range(18) for y in range(18) if (x - 8.5) ** 2 + (y - 8.5) ** 2 <= 81.0}
     for x, y in inside:
         if any(q not in inside for q in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))):
@@ -377,32 +436,41 @@ def _cover_face():
 
 
 def _plate_face(name, w, d, draw):
-    """A glass negative on the light table, seen from above: what the sky left dark is clear and
-    shows the lamp's amber, the stars are black specks. One texel of denser glass round the edge."""
+    """A glass negative on the light table, seen from above. The light comes up through it, so it
+    is drawn on the ramp of the lit opal pane, a step denser than the pane where the sky was dark
+    and black where a star was; its edge is the edge of a sheet of glass, light on the two sides
+    towards the light of the picture and dark on the other two, as every bevel here is."""
     g = _Grid(w, d, "c")
-    g.frame(0, 0, w - 1, d - 1, "r")
+    g.line((0, d - 1), (w - 1, d - 1), "d")
+    g.line((w - 1, 0), (w - 1, d - 1), "d")
+    g.line((0, 0), (w - 2, 0), "t")
+    g.line((0, 0), (0, d - 2), "t")
     draw(g)
-    return g.sprite(name, {"c": GL[3], "r": GL[1], "1": IR[1], "2": IR[3], "3": IR[5], "4": GL[2]})
+    return g.sprite(name, {"c": OP[1], "t": OP[2], "d": OP[0], "1": IR[1], "2": IR[3], "3": IR[5], "4": CR[0]})
 
 
 def _comet_plate(g):
+    """The comet: its head, the tail thinning out up and away from it, three field stars."""
     g.fill(2, 4, 3, 5, "1")
     g.dots([(4, 3)], "2")
     g.dots([(5, 2)], "3")
     g.dots([(6, 1)], "4")
-    g.dots([(1, 2), (5, 5), (3, 1), (6, 6)], "2")
+    g.dots([(1, 2), (5, 5)], "2")
+    g.dots([(6, 6), (3, 1)], "3")
 
 
 def _cluster_plate(g):
-    g.fill(3, 3, 4, 4, "1")
-    g.dots([(5, 2), (2, 5), (5, 5)], "2")
-    g.dots([(1, 2), (6, 3), (3, 6), (2, 1)], "3")
+    """A star field: one great star, a lesser one, the rest in two fainter grades."""
+    g.fill(4, 2, 5, 3, "1")
+    g.dots([(2, 5)], "1")
+    g.dots([(1, 1), (6, 4)], "2")
+    g.dots([(6, 1), (2, 3), (4, 6)], "3")
 
 
 def _spectrum_plate(g):
-    g.fill(1, 1, 6, 2, "2")
-    g.dots([(2, 1), (2, 2), (5, 1), (5, 2)], "c")
-    g.dots([(3, 1), (3, 2)], "1")
+    """A spectrum: the band densest in its middle, one dark line of the star left clear in it."""
+    for x, ch in ((1, "3"), (2, "2"), (3, "1"), (5, "1"), (6, "2")):
+        g.fill(x, 1, x, 2, ch)
 
 
 # ---- the models ---------------------------------------------------------------------------------------
@@ -418,11 +486,11 @@ def _bead_frame(m, hw, hh, depth, wide=1.0):
             K.rivet(m, (x, y, depth), mat=SCREW)
 
 
-def _star_chart():
-    """The enamel star chart, two blocks by one: the plate screwed to the wall in a brass bead.
+def _star_chart(name, sky):
+    """An enamel star chart, two blocks by one: the plate screwed to the wall in a brass bead.
     Anchor: on the wall, the middle of the plate."""
-    m = M.Model(PREFIX + "star_chart")
-    m.box((-15, -7, 0), (15, 7, 1), PLATE, faces={"s": _chart_face()}, skip="n")
+    m = M.Model(PREFIX + name)
+    m.box((-15, -7, 0), (15, 7, 1), PLATE, faces={"s": _sky_face("paper_" + name + "_face", **sky)}, skip="n")
     _bead_frame(m, 16, 8, 1.5)
     return m
 
@@ -436,12 +504,12 @@ def _sky_map(name, sky):
     return m
 
 
-def _blueprint():
+def _blueprint(name, face):
     """A blueprint, a block and a half by one: pinned by its upper corners, its foot rolled up the
     way it came off the roll, the cream back of the sheet outside. Anchor: on the wall, the middle
     of the sheet."""
-    m = M.Model(PREFIX + "blueprint")
-    m.box((-12, -6, 0), (12, 8, 0.5), PAPER, faces={"s": _blueprint_face()}, skip="n")
+    m = M.Model(PREFIX + name)
+    m.box((-12, -6, 0), (12, 8, 0.5), PAPER, faces={"s": face()}, skip="n")
     m.tube("x", (-7.0, 1.0), -12.0, 12.0, 1.0, PAPER)
     for x in (-10.5, 10.5):
         K.rivet(m, (x, 6.5, 0.5), mat=SCREW)
@@ -521,10 +589,12 @@ def _photo_plate(name, w, d, draw):
 
 # name -> how it is made and how it is mounted
 SPEC = {
-    "star_chart": dict(build=_star_chart, mount="wall"),
+    "star_chart": dict(build=lambda: _star_chart("star_chart", NORTH), mount="wall"),
+    "star_chart_b": dict(build=lambda: _star_chart("star_chart_b", HUNTER), mount="wall"),
     "sky_map": dict(build=lambda: _sky_map("sky_map", WINTER), mount="wall"),
     "sky_map_b": dict(build=lambda: _sky_map("sky_map_b", SUMMER), mount="wall"),
-    "blueprint": dict(build=_blueprint, mount="wall"),
+    "blueprint": dict(build=lambda: _blueprint("blueprint", _blueprint_face), mount="wall"),
+    "blueprint_b": dict(build=lambda: _blueprint("blueprint_b", _blueprint_b_face), mount="wall"),
     "blackboard": dict(build=_blackboard, mount="wall"),
     "moon_map": dict(build=_moon_map, mount="wall"),
     "logbook": dict(build=_logbook, mount="floor"),
@@ -551,17 +621,23 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, lie=Fal
     """Put one piece into the scene; returns the number of display entities (1).
 
     kind     one of KINDS.
-    pos      scene coordinates. A wall piece (star_chart, sky_map, sky_map_b, blueprint, blackboard,
+    pos      scene coordinates. A wall piece (star_chart*, sky_map*, blueprint*, blackboard,
              moon_map): the point on the wall face where its middle goes, `facing` the way that
              face looks; put it on a sixteenth of a block and its texels lie on the wall's. A desk
              piece (logbook, logbook_shut, photo_plate*): the middle of its underside on the desk
-             top; `yaw` turns it.
-    lie      lay a wall piece flat instead, face up, its head to the north (then turned by `yaw`):
-             pos is the middle of its back on the desk top.
+             top; `facing` is the side its reader stands on (south: the head of the page to the
+             north), and `yaw` turns it freely instead.
+    lie      lay a wall piece flat instead, face up, its foot towards `facing` like a desk piece
+             (or turned by `yaw`): pos is the middle of its back on the desk top.
     opts     go to artkit.models.display (brightness, view).
 
-    Sizes in texels, wide by high (by proud of the wall): star_chart 32 x 16 (2), sky_map and
-    sky_map_b 48 x 32 (2.5), blueprint 24 x 16 (2), blackboard 32 x 24 (4.5), moon_map 24 x 24 (2);
+    The pairs: star_chart is the sky round the pole and star_chart_b the Hunter's part of the
+    winter sky; sky_map is the winter half of the sky and sky_map_b the summer half; blueprint is
+    the east front of the observatory and blueprint_b the great dome cut through. The plates are
+    the comet, a star field and a spectrum.
+
+    Sizes in texels, wide by high (by proud of the wall): the star charts 32 x 16 (2), the sky maps
+    48 x 32 (2.5), the blueprints 24 x 16 (2), blackboard 32 x 24 (4.5), moon_map 24 x 24 (2);
     logbook 10 x 7 on the desk, logbook_shut 6 x 8, the plates 8 x 8, 8 x 8 and 8 x 4.
     """
     spec = SPEC[kind]
@@ -570,7 +646,7 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), yaw=None, lie=Fal
         mount = "floor"
         opts["turns"] = (("x", -90.0),) + tuple(opts.get("turns", ()))
     if yaw is None:
-        yaw = K.FACING[facing] if mount == "wall" else 0.0
+        yaw = K.FACING[facing]
     return K.put(canvas, _models()[PREFIX + kind], pos, mount=mount, yaw=yaw, origin=origin, **opts)
 
 
