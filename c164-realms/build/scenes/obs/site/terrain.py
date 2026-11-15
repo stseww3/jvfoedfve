@@ -128,6 +128,18 @@ BANDS = (TOP, -8.0, -15.5, -23.5, -33.0)
 CLIFF = (0.24, 0.20, 0.20, 0.35)        # the share of a band's run that is cliff
 SHELF = (0.13, 0.12, 0.10, 0.50)        # the share of a band's height that the shelf keeps; the last band is under the cloud
 
+# --- the foot of the mountain, at the cloud ------------------------------------------------------------
+# The beds dip to the west and south, and there the lowest shelf of BANDS would lie within two blocks
+# of the cloud: a ledge a block or three wide running round the foot like the rim of a tray (review
+# cr2-#5). So a shelf that would lie that low does not stay where the beds put it. Along half of the
+# foot it is sunk under the cloud, and the cliff above it falls straight into the sea; along the
+# other half it is lifted clear and stands as a bench of its own. Which, a slow noise says.
+FOOT_NEAR = (-22.5, -23.5)      # the lowest shelf is left alone above the first of these, wholly treated below the second
+FOOT_CLEAR = (-20.5, -22.5)     # lifted, it lies between these levels (by a second slow noise)
+FOOT_SUNK = -31.0               # sunk, here: under the cloud's lowest course
+FOOT_SCALE = 0.03               # the scale of the noise: benches and plunges fifteen to thirty blocks long
+FOOT_SHARE = 0.0                # the noise is above this where the bench stands: on about half of the foot
+
 # --- the prow under the sunset terrace ----------------------------------------------------------------
 # Between the two west gullies the rock does not follow the bands above. It has three benches of
 # its own, and the level and the width of each change with the bearing from the terrace's middle
@@ -143,10 +155,15 @@ PROW_BENCHES = (
     # the middle one: wide on the north-west, at the foot of a sheer face; a ledge on the south-west
     dict(level=(-12.5, -13.0, -13.8, -14.5, -15.2, -16.0, -16.5, -16.5, -16.5, -16.5),
          width=(3.0, 5.5, 5.0, 3.0, 2.2, 1.6, 1.5, 1.5, 2.0, 2.5)),
-    # the lowest, just above the cloud: widest on the south-west
-    dict(level=(-22.0, -22.0, -22.5, -22.5, -22.5, -23.0, -23.0, -23.0, -23.0, -23.0),
-         width=(1.2, 1.5, 2.0, 2.5, 3.0, 3.5, 3.5, 3.0, 2.5, 2.0)),
+    # the lowest: not a ledge round the whole foot, just above the cloud, like the rim of a tray
+    # (review cr2-#5), but one bench on the west, where the two above it are narrow, four blocks
+    # clear of the cloud; everywhere else the cliff falls straight into the sea
+    dict(deg=(-90, -12, -4, 20, 28, 90),
+         level=(-22.0, -22.0, -21.0, -21.0, -22.0, -22.0),
+         width=(0.0, 0.0, 4.5, 4.5, 0.0, 0.0)),
 )
+PROW_JOG = 1.6                  # each bench's cliff steps a block in or out every five or six along it (a noise of this
+PROW_JOG_SCALE = 0.09           # weight and this scale, its own for each bench): no cliff runs on as a ruled line
 PROW_CLIFF = 0.8                # the run of the cliff above a bench, in blocks: all but sheer
 PROW_SHELF = (0.13, 0.10, 0.10) # the share of its band's height that each bench keeps, as SHELF
 PROW_START = 0.9                # the first cliff starts this far out from the terrace
@@ -247,12 +264,16 @@ def _along(X, Z, start, heading):
     return t, lat
 
 
-def _beds(y, levels=BANDS, cliff=CLIFF, shelf=SHELF):
+def _beds(y, levels=BANDS, cliff=CLIFF, shelf=SHELF, lie=None):
     """What the beds make of a smooth height (the mountain's own heights, an array): the height
     itself above the first band and below the last; inside a band a cliff, then a shelf. Returns
     the new height and, for a cell on a shelf, how far out on it the cell lies (0 at the cliff's
     foot .. 1 at the shelf's edge; -1 elsewhere). The three tables may hold arrays in y's shape
-    instead of numbers: every cell then has its own bands (the prow under the sunset terrace)."""
+    instead of numbers: every cell then has its own bands (the prow under the sunset terrace).
+    `lie`: the levels the bands come to lie at, where that is not `levels` themselves -- a band
+    still takes the ground between its two levels, but its cliff falls and its shelf lies between
+    the two of `lie` (the foot of the mountain: FOOT_*). The first and the last are the same in both."""
+    lie = levels if lie is None else lie
     out = y.copy()
     where = np.full(y.shape, -1.0)
     for k in range(len(levels) - 1):
@@ -264,9 +285,22 @@ def _beds(y, levels=BANDS, cliff=CLIFF, shelf=SHELF):
         on_cliff = u < steep
         along = (u - steep) / np.maximum(1 - steep, 1e-6)       # 0..1 across the shelf
         fall = np.where(on_cliff, u / np.maximum(steep, 1e-6) * (1 - flat), (1 - flat) + along * flat)
-        out = np.where(m, top - fall * height, out)
+        out = np.where(m, lie[k] - fall * (lie[k] - lie[k + 1]), out)
         where = np.where(m, np.where(on_cliff, -1.0, along), where)
     return out, where
+
+
+def _foot(X, Z, dip):
+    """The level the lowest shelf of BANDS comes to lie at, in the mountain's own heights, for every
+    cell (FOOT_*): BANDS' own where that is clear of the cloud, and where it is not, either lifted
+    clear or sunk under the cloud."""
+    own = float(BANDS[3])
+    near = N.smoothstep(FOOT_NEAR[0], FOOT_NEAR[1], own + dip)
+    stands = N.smoothstep(FOOT_SHARE - 0.03, FOOT_SHARE + 0.03, N.fbm2(X * FOOT_SCALE, Z * FOOT_SCALE, SEED + 91, octaves=2))
+    high = np.clip(0.5 + N.fbm2(X * 0.05, Z * 0.05, SEED + 92, octaves=2), 0.0, 1.0)
+    clear = FOOT_CLEAR[0] + (FOOT_CLEAR[1] - FOOT_CLEAR[0]) * high
+    level = stands * clear + (1 - stands) * FOOT_SUNK
+    return own + near * (level - dip - own)
 
 
 def _bearing(X, Z):
@@ -295,13 +329,15 @@ def _prow(X, Z, s_up):
     base = np.full(X.shape, float(TOP))
     at = np.zeros(X.shape)                              # how far out the band begins
     levels, cliff, keep = [np.full(X.shape, float(TOP))], [], []
-    for bench, share in zip(PROW_BENCHES, PROW_SHELF):
-        level = _by_bearing(deg, PROW_DEG, bench["level"])
-        width = _by_bearing(deg, PROW_DEG, bench["width"])
+    for k, (bench, share) in enumerate(zip(PROW_BENCHES, PROW_SHELF)):
+        table = bench.get("deg", PROW_DEG)
+        level = _by_bearing(deg, table, bench["level"])
+        width = _by_bearing(deg, table, bench["width"])
         there = np.clip(width, 0.0, 1.0)                # under a block wide a bench fades out: all cliff
         run_cliff = PROW_CLIFF * (0.5 + 0.5 * there)
         run = run_cliff + width
-        base = base - (levels[-1] - level) * np.clip((s - at) / run, 0.0, 1.0)
+        jog = PROW_JOG * N.perlin2(X * PROW_JOG_SCALE + 31.7 * k, Z * PROW_JOG_SCALE, SEED + 93 + k) * np.clip(s / 3.0, 0.0, 1.0)
+        base = base - (levels[-1] - level) * np.clip((s + jog - at) / run, 0.0, 1.0)
         at = at + run
         levels.append(level)
         cliff.append(run_cliff / run)
@@ -358,11 +394,15 @@ def _mountain():
         w = g["width"] + g["grow"] * np.maximum(t, 0.0)
         smooth = smooth - g["depth"] * np.exp(-(lat / w) ** 2) * N.smoothstep(0.0, 6.0, t)
 
-    # the beds: everywhere BANDS, on the prow its own benches, one going over into the other
+    # the beds: everywhere BANDS, on the prow its own benches, one going over into the other; and
+    # the lowest shelf of BANDS, where it would lie at the cloud, lifted or sunk (_foot)
+    lie = [float(b) for b in BANDS]
+    lie[3] = _foot(X, Z, dip)
+    lie = [lie[k] + prow * (levels[k] - lie[k]) for k in range(len(BANDS))]
     levels = [BANDS[k] + prow * (levels[k] - BANDS[k]) for k in range(len(BANDS))]
     cliff = [CLIFF[k] + prow * (cliff[k] - CLIFF[k]) for k in range(len(CLIFF))]
     keep = [SHELF[k] + prow * (keep[k] - SHELF[k]) for k in range(len(SHELF))]
-    h, shelf = _beds(smooth - dip, levels, cliff, keep)
+    h, shelf = _beds(smooth - dip, levels, cliff, keep, lie)
     h = h + dip
 
     # what is not left to the beds: the necks to the shelves, the ridge of the cable track
