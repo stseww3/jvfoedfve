@@ -81,7 +81,9 @@ def _rose(m):
 
 
 # ---- the models --------------------------------------------------------------------------------------
-YOKE = 2.0              # the struts of the street lamp's yoke, square: nothing thinner stands free on it
+YOKE = 1.5              # the struts of the street lamp's yoke, square: as thick as the shaft, which is the
+                        # thinnest thing that stands free on it (A0, group #38259: thicker than the shaft
+                        # that carries them, they closed the fork and the Y read as a funnel)
 
 
 def _street():
@@ -99,10 +101,16 @@ def _street():
     m.tube("y", (0, 0), 7.0, 24.0, 0.75, IRON)                          # shaft
     m.tube("y", (0, 0), 17.0, 18.0, 1.25, IRON_D)
     m.tube("y", (0, 0), 24.0, 25.0, 1.25, IRON_D)                       # the band the yoke springs from
+    foot, head = (0.25, 24.5), (2.5325, 31.4)                           # a strut's axis, from the band to the rim
     for side in (-1.0, 1.0):                                            # both ends are sunk in band and gallery
-        m.beam((side * 0.25, 24.5, 0.0), (side * 2.5325, 31.4, 0.0), YOKE, YOKE, IRON)
-    half = YOKE / 2.0 + 0.05                                            # the crotch: one face over where the
-    m.box((-0.65, 25.0, -half), (0.65, 27.0, half), IRON)               # two struts lie in each other
+        m.beam((side * foot[0], foot[1], 0.0), (side * head[0], head[1], 0.0), YOKE, YOKE, IRON)
+    lean = (head[0] - foot[0]) / (head[1] - foot[1])                    # how far a strut goes out for one up
+    level = YOKE / 2.0 * math.hypot(1.0, lean)                          # half a strut's width, measured level
+    part = foot[1] + (level - foot[0]) / lean                           # the height at which the two part
+    wide = level - foot[0] - (25.0 - foot[1]) * lean                    # half of what they share over the band
+    if wide > 0.0:                                                      # the crotch: one face over where the
+        half = YOKE / 2.0 + 0.05                                        # two struts lie in each other
+        m.box((-wide, 25.0, -half), (wide, part, half), IRON)
     m.tube("y", (0, 0), 31.0, 31.75, 3.5, BRASS)                        # gallery: the yoke ends under its rim
     _opal_globe(m, (0, 35.0, 0), 3.5, sides=12, fine=True)
     m.tube("y", (0, 0), 38.25, 39.0, 1.5, IRON_D)
@@ -431,7 +439,9 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #           east, and shows its Y to who comes up the axis; the other pairs stand either side of
 #           a walk that runs north and south, and face north.
 #   lip     the east lip of the upper terrace: a low lamp on the cap of every other pier, a rank
-#           under the street lamps.
+#           under the street lamps. None on the pier next to the row in which the power house's
+#           pipe bridge crosses the lip: the steam main passes a third of a cell from where the
+#           globe would be (c228, g2 #37847).
 #   feet    four dim ground lamps at the feet of the armillary, looking up at its rings, and what
 #           they throw on the brass: one source under the cell the rings take their light from.
 #   doors   everything else is dark, but for one caged lamp at the door of a small building.
@@ -460,6 +470,7 @@ _REPORTED = {
     ("site.stair", "LAMP_POINTS"): [(61.5, 0.5, -8.5), (61.5, 0.5, 9.5), (73.0, -3.5, -9.0), (73.0, -3.5, 10.0)],
     ("site.court", "path_lamps"): [(52, -6), (52, 6), (44, -6), (44, 6), (26, -6), (26, 6)],
     ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
+    ("site.powerhouse", "PIPE_Z"): 33,      # c228: the row of the steam main, where its bridge crosses the lip
     ("site._kit", "PIER_TOP"): 1.5,
     ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
     # c226, g2 #36405: the hanging points under the two ridges of the cable station
@@ -503,8 +514,10 @@ def site_lamps():
         ahead = (p[0] + 1.0, p[1], p[2]) if mate else (p[0], p[1], p[2] - 1.0)
         out.append(("way", "street", p, STREET_LEVEL, ahead))
     top = S.GROUND + _told("site._kit", "PIER_TOP")
+    bridge = _told("site.powerhouse", "PIPE_Z")
     for x, z in _told("site.court", "lip_lamps"):
-        out.append(("lip", "post", (x + 0.5, top, z + 0.5), None, None))
+        if abs(z - bridge) > 1:                         # not on the pier the pipe bridge passes
+            out.append(("lip", "post", (x + 0.5, top, z + 0.5), None, None))
     middle = (S.mid(S.ARMILLARY[0]), S.GROUND + AIM_UP, S.mid(S.ARMILLARY[1]))
     for x, z in _told("machines.armillary", "LAMP_CELLS"):
         out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
