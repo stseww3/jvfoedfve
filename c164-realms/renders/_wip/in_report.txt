@@ -1,0 +1,119 @@
+the box against the real building, x 0..15, y 4..15, z -26..-6:
+   160  real sandstone                                    box None                                         e.g. [(0, 4, -26), (0, 4, -22), (0, 4, -18), (0, 4, -14), (0, 4, -13)]
+    50  real cut_sandstone                                box smooth_sandstone                             e.g. [(0, 7, -25), (0, 7, -24), (0, 7, -23), (0, 7, -21), (0, 7, -20)]
+    40  real None                                         box smooth_sandstone                             e.g. [(0, 6, -10), (0, 6, -9), (0, 6, -8), (0, 6, -7), (0, 7, -10)]
+    24  real oxidized_copper_bars                         box None                                         e.g. [(0, 4, -25), (0, 4, -24), (0, 4, -23), (0, 4, -21), (0, 4, -20)]
+    24  real gray_stained_glass                           box None                                         e.g. [(1, 4, -25), (1, 4, -24), (1, 4, -23), (1, 4, -21), (1, 4, -20)]
+    24  real smooth_sandstone                             box None                                         e.g. [(2, 15, -26), (2, 15, -6), (3, 15, -26), (3, 15, -6), (4, 15, -26)]
+     8  real smooth_sandstone_stairs[facing=north,half=top] box None                                         e.g. [(0, 13, -25), (0, 13, -21), (0, 13, -17), (15, 13, -25), (15, 13, -21)]
+     8  real smooth_sandstone_slab[type=top]              box None                                         e.g. [(0, 13, -24), (0, 13, -20), (0, 13, -16), (15, 13, -24), (15, 13, -20)]
+     8  real smooth_sandstone_stairs[facing=south,half=top] box None                                         e.g. [(0, 13, -23), (0, 13, -19), (0, 13, -15), (15, 13, -23), (15, 13, -19)]
+the real building under the room, y 5, rows z -25, -24, -16, -12 (x 2..13):
+  z-25 None | None | None | None
+  z-24 None | None | None | None
+  z-16 None | None | None | None
+  z-12 None | None | None | None
+... and y 4:
+  z-25 None | None | None | None
+  z-24 None | None | None | None
+sources placed in and round the room:
+   (0, 9, -24) (10, 'sky/lights:window west 3 main')
+   (0, 9, -16) (10, 'sky/lights:window west 5 main')
+   (0, 12, -24) (10, 'sky/lights:window west 3 main')
+   (0, 12, -16) (10, 'sky/lights:window west 5 main')
+   (2, 8, -25) (9, 'interiors/timeroom:clock west')
+   (3, 7, -16) (8, 'interiors/timeroom:rating bench')
+   (3, 9, -10) (9, 'interiors/timeroom:world clocks')
+   (4, 13, -15) (8, 'interiors/timeroom:ceiling over the rating bench')
+   (4, 13, -9) (7, 'interiors/timeroom:ceiling over the world clocks')
+   (6, 9, -24) (12, 'interiors/timeroom:console west')
+   (9, 9, -24) (12, 'interiors/timeroom:console east')
+   (11, 13, -13) (8, 'interiors/timeroom:ceiling over the message desk')
+   (12, 7, -12) (8, 'interiors/timeroom:message desk')
+   (13, 8, -25) (9, 'interiors/timeroom:clock east')
+   (15, 9, -24) (10, 'sky/lights:window east 3 main')
+   (15, 9, -12) (10, 'sky/lights:window east 6 main')
+   (15, 12, -24) (10, 'sky/lights:window east 3 main')
+   (15, 12, -12) (10, 'sky/lights:window east 6 main')
+moved: [((13, 7, -12), (12, 7, -12), 'interiors/timeroom:message desk'), ((2, 7, -16), (3, 7, -16), 'interiors/timeroom:rating bench')]
+plan at y 7, z from -25 (top) to -7, x 2..13:
+  z-25 8 0 0 0 0 0 0 0 0 0 0 8
+  z-24 7 7 8 9 a 9 9 a 9 8 7 7
+  z-23 6 6 7 8 9 8 8 9 8 7 6 6
+  z-22 5 5 6 7 8 7 7 8 7 6 5 5
+  z-21 4 4 5 6 7 6 6 7 6 5 4 4
+  z-20 3 4 4 5 6 5 5 6 5 4 3 3
+  z-19 4 5 4 4 5 4 4 5 4 3 2 2
+  z-18 5 6 5 4 4 3 3 4 3 2 2 1
+  z-17 6 7 6 5 4 3 2 3 2 2 3 2
+  z-16 7 8 7 6 5 4 3 2 2 3 4 3
+  z-15 6 7 6 5 4 3 2 2 3 4 5 4
+  z-14 5 6 5 4 3 2 2 3 4 5 6 5
+  z-13 4 5 4 3 2 2 3 4 5 6 7 6
+  z-12 0 5 4 3 2 3 4 5 6 7 8 7
+  z-11 0 6 5 4 3 2 3 4 5 6 7 6
+  z-10 0 7 6 5 4 3 2 3 4 5 6 5
+  z -9 0 6 5 4 3 2 1 2 3 4 5 4
+  z -8 0 5 4 3 2 1 0 1 2 3 4 3
+  z -7 0 4 3 2 1 0 0 0 1 2 3 2
+plan at y 9, z from -25 (top) to -7, x 2..13:
+  z-25 8 0 0 0 0 0 0 0 0 0 0 8
+  z-24 8 9 a b c b b c b a 9 8
+  z-23 7 8 9 a b a a b a 9 8 7
+  z-22 6 7 8 9 a 9 9 a 9 8 7 6
+  z-21 5 6 7 8 9 8 8 9 8 7 6 5
+  z-20 4 5 6 7 8 7 7 8 7 6 5 4
+  z-19 5 4 5 6 7 6 6 7 6 5 4 3
+  z-18 6 5 4 5 6 5 5 6 5 4 3 2
+  z-17 7 6 5 4 5 4 4 5 4 3 2 3
+  z-16 8 7 6 5 4 3 3 4 3 2 3 4
+  z-15 7 6 5 4 3 2 2 3 2 3 4 5
+  z-14 6 5 4 3 2 1 1 2 3 4 5 6
+  z-13 5 6 5 4 3 2 2 3 4 5 6 7
+  z-12 6 7 6 5 4 3 3 4 5 6 7 8
+  z-11 7 8 7 6 5 4 3 3 4 5 6 7
+  z-10 8 9 8 7 6 5 4 3 3 4 5 6
+  z -9 7 8 7 6 5 4 3 2 2 3 4 5
+  z -8 6 7 6 5 4 3 2 1 1 2 3 4
+  z -7 0 6 5 4 3 2 1 0 0 1 2 3
+plan at y 11, z from -25 (top) to -7, x 2..13:
+  z-25 6 0 0 0 0 0 0 0 0 0 0 6
+  z-24 7 7 8 9 a 9 9 a 9 8 7 7
+  z-23 6 6 7 8 9 8 8 9 8 7 6 6
+  z-22 5 5 6 7 8 7 7 8 7 6 5 5
+  z-21 4 4 5 6 7 6 6 7 6 5 4 4
+  z-20 3 3 4 5 6 5 5 6 5 4 3 3
+  z-19 4 3 3 4 5 4 4 5 4 3 2 2
+  z-18 5 4 3 3 4 3 3 4 3 2 1 1
+  z-17 6 5 4 3 3 2 2 3 2 2 1 2
+  z-16 7 6 5 4 3 2 1 2 2 3 2 3
+  z-15 6 5 6 5 4 3 2 2 3 4 3 4
+  z-14 5 4 5 4 3 2 2 3 4 5 4 5
+  z-13 4 4 4 3 2 2 3 4 5 6 5 6
+  z-12 4 5 4 3 2 1 2 3 4 5 6 7
+  z-11 5 6 5 4 3 2 1 2 3 4 5 6
+  z-10 6 7 6 5 4 3 2 1 2 3 4 5
+  z -9 5 6 5 4 3 2 1 0 1 2 3 4
+  z -8 4 5 4 3 2 1 0 0 0 1 2 3
+  z -7 0 4 3 2 1 0 0 0 0 0 1 2
+plan at y 13, z from -25 (top) to -7, x 2..13:
+  z-25 6 0 0 0 0 0 0 0 0 0 0 6
+  z-24 7 6 6 7 8 7 7 8 7 6 6 7
+  z-23 6 5 5 6 7 6 6 7 6 5 5 6
+  z-22 5 4 4 5 6 5 5 6 5 4 4 5
+  z-21 4 3 3 4 5 4 4 5 4 3 3 4
+  z-20 3 2 3 3 4 3 3 4 3 2 2 3
+  z-19 4 3 4 3 3 2 2 3 2 2 1 2
+  z-18 5 4 5 4 3 2 1 2 2 3 2 1
+  z-17 6 5 6 5 4 3 2 2 3 4 3 2
+  z-16 7 6 7 6 5 4 3 3 4 5 4 3
+  z-15 6 7 8 7 6 5 4 4 5 6 5 4
+  z-14 5 6 7 6 5 4 4 5 6 7 6 5
+  z-13 4 5 6 5 4 4 5 6 7 8 7 6
+  z-12 3 4 5 4 3 3 4 5 6 7 6 7
+  z-11 3 4 5 4 3 2 3 4 5 6 5 6
+  z-10 4 5 6 5 4 3 2 3 4 5 4 5
+  z -9 5 6 7 6 5 4 3 2 3 4 3 4
+  z -8 4 5 6 5 4 3 2 1 2 3 2 3
+  z -7 0 4 5 4 3 2 1 0 1 2 1 2
+entities: 68 blocks: 16744
