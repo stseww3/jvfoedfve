@@ -67,7 +67,7 @@ SECRETS = [
 ORIGIN = re.compile(r"(?i)copyright|all rights reserved|licen[cs]ed under|creative ?commons|\bCC[- ]BY\b|"
                     r"planetminecraft|curseforge|modrinth|textures\.com|freesound|opengameart|sketchfab|"
                     r"vanillatweaks|faithful|optifine")
-MESSAGE = re.compile(r"^c164(-[a-z0-9]+)?: ")
+MESSAGE = re.compile(r"^c164(-[a-z0-9]+)*: ")
 
 
 def git(*args, check=True):
