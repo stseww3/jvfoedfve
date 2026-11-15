@@ -26,10 +26,10 @@ def shots():
             d["time"] = time
         out.append(d)
 
-    # V6: the heart of the room, the flywheel with the furnace bays behind it
+    # v6 and its twin; the third is the same look from a standing height, not from under the floor
     shot("v6", (X0 + 3.5, EYE, Z0 + 19.0), (WHEEL[0], WHEEL[1], WHEEL[2] - 1.0))
     shot("v6_north", (X0 + 3.5, EYE, Z0 + 3.0), (WHEEL[0], WHEEL[1], WHEEL[2] - 1.0))
-    shot("v6_up", (X0 + 6.0, FEET + 1.0, Z0 + 18.0), (WHEEL[0], WHEEL[1] + 1.0, WHEEL[2]))
+    shot("v6_up", (X0 + 6.0, EYE, Z0 + 17.0), (WHEEL[0], WHEEL[1] + 2.0, WHEEL[2]))
     # the machine broadside, the belt and the dynamo
     shot("machine", (E.CX - 1.0, EYE, E.CZ + 6.5), (DYNAMO[0], DYNAMO[1], DYNAMO[2]))
     shot("flywheel", (E.CX + 1.0, EYE, E.CZ + 5.0), (WHEEL[0], WHEEL[1], WHEEL[2]))
@@ -40,8 +40,8 @@ def shots():
     # the walkway, along the run: the grating underfoot and the machine at its end. The two stands
     # that looked back at the door were inside the run's own shadow and the frame's bars; these
     # stand at the run's west end looking the way a person walks it.
-    shot("walkway", (PH.WALK_X[0] + 1, EYE + 0.5, PH.WALK_Z[1]), (PH.WALK_X[1], FEET + 1.5, PH.WALK_END_Z))
-    shot("walkway_in", (PH.WALK_X[0] + 2, EYE + 0.5, PH.WALK_Z[1]), (int(E.CX) - 4, FEET + 3.0, E.CZ - 2))
+    shot("walkway", (PH.WALK_X[0] + 1, EYE, PH.WALK_Z[1]), (PH.WALK_X[1], FEET + 1.5, PH.WALK_END_Z))
+    shot("walkway_in", (PH.WALK_X[0] + 4, EYE, PH.WALK_Z[1]), (int(E.CX) - 2, FEET + 3.5, E.CZ - 1))
     # the room itself: the walls, the trusses, the ceiling
     shot("room", (X1 - 2.5, EYE, Z1 - 2.5), (X0 + 3.0, FEET + 3.0, Z0 + 3.0))
     shot("ceiling", (X0 + 9.0, FEET + 1.0, Z0 + 16.0), (X0 + 9.0, FEET + 9.0, Z0 + 8.0))
