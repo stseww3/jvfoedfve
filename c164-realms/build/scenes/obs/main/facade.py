@@ -46,7 +46,7 @@ DECK_Y = S.ROOF_FLOOR
 DECK = B.SLATE_SMOOTH.block             # the terraces and the dome-room floor, until they are finished
 ROOF = B.SLATE_TILE
 
-# --- the entrance (A0, 11-14: three versions, chosen on the pictures; B until then) --------------------
+# --- the entrance (A0, 11-14: three versions; 11-15, on the pictures: B, the other two stay behind the switch) ---
 #   A   one doorway in the middle bay, 3 wide, up through the string course
 #   B   an arcade: the three bays of the middle pavilion open as arches from the ground to under
 #       the string course; the middle one leads into the star hall, an iron gate stands in the
@@ -70,7 +70,8 @@ EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
 # is pointed, and a round iron frame set into it leaves a slot over its crown); True, a slab hung
 # between the two stairs as well (three wide, two, shut: the half blocks of the half round the
 # iron frames of props/ironwork draw, radius 1.5, crown half a block under the lintel). Off until
-# the director has seen the two side by side (obs_main_facade_crown is this scene with it on).
+# the director has seen the two side by side (the test scene obs_main_facade_crown builds with it
+# on; every shot of it has its twin in obs_main_facade).
 CROWN = False
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
 # looks through the doorway at the sky behind the building, and the doorway is not a black hole:
