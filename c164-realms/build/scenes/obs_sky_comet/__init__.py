@@ -3,9 +3,10 @@
     python -m scenes.obs_sky_comet      writes shots.json and prints where the comet stands in
                                         every picture (the same for the scenes of versions b and c)
 
-The moon's slot holds one picture per light, so the three versions cannot hang in one sky. They are
-compared picture by picture: this scene shows version a, obs_sky_comet_b and obs_sky_comet_c show
-the other two over the same blocks with the same shots, each under all three lights. This scene
+The moon's slot holds one picture per light, so the versions cannot hang in one sky. They are
+compared picture by picture: this scene shows the version the map paints (comet.DEFAULT_STYLE,
+a-plus since the director settled it on 11-16), obs_sky_comet_b and obs_sky_comet_c show two others
+over the same blocks with the same shots, each under all three lights. This scene
 takes one shot more, sky_card: the test card in the moon's slot, to see which way up the game
 draws the picture.
 
@@ -45,7 +46,9 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 120          # the look has to reach the far cameras, not only the blocks
 BIOME_MARGIN_Y = 150
 
-STYLE = "a"                 # the version this scene shows; the _b and _c scenes set their own
+STYLE = comet.DEFAULT_STYLE   # the version this scene shows: whatever the map itself paints, so that a
+                              # picture of the scene and the map never disagree (the _b and _c scenes
+                              # still set their own, to show the versions the map does not use)
 
 STONE = B.TUFF_SMOOTH.block          # the white model's stone
 COPPER = B.VERDIGRIS                 # the dome shells, the time ball, the radio mast's beacon
