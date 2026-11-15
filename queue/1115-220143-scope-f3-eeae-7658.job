@@ -1,0 +1,3 @@
+branch=cursor/c164-scope-f3-eeae
+head=38fa8b4012efca114c400c9b0b5017b06c2b56cf
+args=--wip --always --tail 25 python tools/selfshots.py obs_mach_refractor --only north_b\,mount_north_b\,lamp_a\,lamp_b --out renders/_wip 
