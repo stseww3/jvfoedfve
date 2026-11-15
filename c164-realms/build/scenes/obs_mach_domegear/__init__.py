@@ -242,8 +242,8 @@ def shots():
     """V8 as the card asks (the gear in one picture with the tube), its twin north of the tube and
     V8 in the afterglow; then what a visitor sees from the floor (the room, the ring across it, the
     slit's foot from the hand chain, the weights, the hand gear); and four close views from a
-    ladder's height (the ring, the rack and its pinion, the slit's foot, a weight), in the
-    afterglow, the most light the room gets: these are for judging the parts."""
+    ladder's height (the ring, the pinion in the toothed ring from below, the slit's foot, a
+    weight), in the afterglow, the most light the room gets: these are for judging the parts."""
     out = []
 
     def shot(name, pos, look_at, time=TIME):
@@ -266,7 +266,7 @@ def shots():
     shot("hand_gear", (AX - 2.0, eye, AZ - 6.0), (gx + 0.3, STAND + 1.2, gz))
     shot("hand_gear_up", (AX - 3.0, eye, AZ - 6.5), (gx, STAND + 4.5, gz))
     shot("ring_near", (AX - 4.0, STAND + 7.0, AZ + 6.0), (AX - 7.95, STAND + 6.4, AZ + 7.95), GLOW)
-    shot("mesh", (AX - 2.5, STAND + 6.6, AZ - 5.5), (gx, dome.RING_Y - 0.15, gz), GLOW)
+    shot("mesh", (gx + 2.2, dome.RING_Y - 2.4, gz + 2.6), (gx - 0.2, dome.RING_Y - 0.2, gz - 0.3), GLOW)
     shot("slit_foot", (AX - 6.0, STAND + 7.3, AZ + 2.5), foot, GLOW)
     shot("weight_near", (AX - 6.0, STAND + 8.5, AZ), (AX - 9.5, STAND + 10.0, AZ + 3.0), GLOW)
     return out

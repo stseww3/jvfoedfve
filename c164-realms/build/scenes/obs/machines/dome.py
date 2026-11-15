@@ -8,10 +8,10 @@ Two trains, each to be read from the hand to the load.
   gores a truck with one flanged wheel carries the dome's ring girder over it, and the trucks hold
   a toothed ring, teeth inwards. In the north-west corner of the room a hand wheel turns a short
   shaft; its pinion drives a crown wheel on an upright shaft, which climbs the wall through two
-  bearings to a pinion in the toothed ring: 140 teeth to 8, seventeen and a half turns of the
-  upright shaft to one of the dome. The ring's teeth are coarse, half a block from one to the
-  next, and its pinion is a block and a half across: from the floor, seven blocks below, that is
-  the part of the train that must be read.
+  bearings to a pinion in the toothed ring: 160 teeth to 10, sixteen turns of the upright shaft
+  to one of the dome. The ring's teeth are coarse, upright bars not half a block apart, and its
+  pinion is a block and a half across: from the floor, seven blocks below, that is the part of
+  the train that must be read.
 
   Opening the slit (main/dome version a: two leaves that part sideways). Each leaf has an arm at
   its foot, bent over the sill into the room. An endless chain runs across the slit's foot over
@@ -85,19 +85,19 @@ SEG_SCALE = 2
 RING_SIDES = 3 * GORES                  # the ring is a polygon of sixty sides, three to a segment
 RAIL_R = S.DOME_ROOM_DIAM / 2.0 + 0.25  # 11.25: the rail's centre line; a circle that lies on the ledge all the way round
 CHEEK_IN = 5.0                          # px from the rail's centre line to the inner faces of a truck's cheeks
-RACK_TEETH = 7 * GORES                  # 140: seven teeth to a segment
+RACK_TEETH = 8 * GORES                  # 160: eight teeth to a segment
 RACK_BACK = 2.0                         # px: the ring the teeth stand on, against the trucks' inner cheeks
 RACK_Y = (10.0, 16.0)                   # px over the ledge: the toothed ring, up to the ring girder's underside
-TOOTH = (4.0, 3.0)                      # px: how wide a tooth of the ring is, and one of its pinion
+TOOTH = 3.0                             # px: how wide a tooth is, the ring's and its pinion's: an upright bar, twice as high
 ADDENDUM, DEDENDUM = 1.75, 2.25         # px: a tooth stands this far past the pitch circle and is rooted this far behind it
-# 10.67: the toothed ring's pitch circle; a tooth and a gap are 7.66 px
+# 10.67: the toothed ring's pitch circle; a tooth and a gap are 6.7 px
 RACK_R = RAIL_R - (CHEEK_IN + RACK_BACK + DEDENDUM) / PX
-PINION_TEETH = 8
-PINION_R = RACK_R * PINION_TEETH / RACK_TEETH   # 0.61: a wheel of a block and a half, to be seen from the floor
+PINION_TEETH = 10
+PINION_R = RACK_R * PINION_TEETH / RACK_TEETH   # 0.67: a wheel of a block and a half, to be seen from the floor
 RISER_R = RACK_R - PINION_R             # the upright shaft, from the dome's axis
 # degrees round the dome (0 = east, 90 = south): the middle of a gap of the toothed ring, in the
 # corner of the wall that interiors/domeroom keeps clear from the floor to the ledge (GEAR_SHAFT)
-RISER_DEG = 94 * 360.0 / RACK_TEETH
+RISER_DEG = 107 * 360.0 / RACK_TEETH
 RISER_TOP = (RING_Y - FLOOR_Y) * PX     # 112 px over the floor
 CROWN_PEGS = 8                          # the crown wheel on the upright shaft
 CROWN_R = 4.5                           # px: its pitch circle
@@ -284,19 +284,19 @@ def _segment():
     d.tube("x", (hub, 0.0), -5.5, 4.75, 1.0, IRON_D, sides=8)           # the axle
     for x0 in (-5.5, 4.25):
         d.tube("x", (hub, 0.0), x0, x0 + 0.5, 1.5, IRON, sides=8, seed=104)     # its nuts
+    d.tube("x", (hub, 0.0), -6.5, -5.5, 1.0, BRASS_D, sides=8)          # the oil cup on its end, towards the room
     for x0 in (-CHEEK_IN, 2.25):
         d.box((x0, 6.5, -2.0), (x0 + 2.0, 14.0, 2.0), IRON_D, seed=105)        # the truck's two cheeks
     d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)             # its saddle, under the ring girder
 
     pitch = RACK_R * PX
     y0, y1 = RACK_Y
-    d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0, IRON_D,
+    d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0 - 1.0, IRON_D,
            sides=RING_SIDES, arc=arc, seed=106)                         # the toothed ring's back, bolted to the trucks' inner cheeks
     x = pitch + axis[0]
-    for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis
+    for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis: a gap at either end
         deg = (j + 0.5) * 360.0 / RACK_TEETH - SEG_DEG / 2.0
-        d.box((x - ADDENDUM, y0 + 0.5, -TOOTH[0] / 2.0), (x + DEDENDUM + 0.25, y1 - 0.5, TOOTH[0] / 2.0), IRON_B,
-              rot=at(deg), seed=107)
+        d.box((x - ADDENDUM, y0, -TOOTH / 2.0), (x + DEDENDUM + 0.25, y1, TOOTH / 2.0), IRON_B, rot=at(deg), seed=107)
     return d
 
 
@@ -315,11 +315,11 @@ def _riser():
         d.tube("y", (0.0, 0.0), y0, y0 + 2.0, 2.5, IRON_D, sides=8, seed=112)
     y0, y1 = (RISER_TOP - RACK_Y[1] + y for y in RACK_Y)                        # the pinion, as high as the toothed ring
     root = PINION_R * PX - DEDENDUM
-    d.tube("y", (0.0, 0.0), y0, y1, root, IRON, sides=16)
-    d.tube("y", (0.0, 0.0), y0 - 1.5, y0, 3.0, IRON_D, sides=8, seed=114)       # its boss
+    d.tube("y", (0.0, 0.0), y0 + 0.5, y1, root, IRON_D, sides=20)
+    d.tube("y", (0.0, 0.0), y0 - 1.0, y0 + 0.5, 3.0, IRON, sides=8, seed=114)   # its boss
     for i in range(PINION_TEETH):                                               # the first tooth points away from the dome's axis, into the gap
         deg = RISER_DEG + i * 360.0 / PINION_TEETH
-        d.box((root - 0.25, y0 + 0.75, -TOOTH[1] / 2.0), (PINION_R * PX + ADDENDUM, y1 - 0.75, TOOTH[1] / 2.0), IRON_B,
+        d.box((root - 0.25, y0, -TOOTH / 2.0), (PINION_R * PX + ADDENDUM, y1 - 0.25, TOOTH / 2.0), IRON_B,
               rot=("y", -deg, (0.0, 0.0, 0.0)), seed=113)
     return d
 
