@@ -15,8 +15,10 @@ What is asked of the numbers:
               picture that holds both, differ by no more than 0.03
   ladder      on the east face the dial stands between the stone of the wall and the lit frosted
               window: stone < dial < window
-  ball        the time ball is lighter than the sky round it by 0.05 or more; seen from below, the
-              darkest tenth of its underside is not under 0.05 (no black cap of iron on it)
+  ball        the time ball is lighter than the sky round it by 0.05 or more (asked of the colour
+              that hangs on the tower, clock.BALL; of the other one the number is only printed);
+              seen from below, the darkest tenth of its underside is not under 0.05 (no black cap
+              of iron on it)
   sun         from V7 the orrery's sun is lighter than the master dial by 0.10 or more
   case        the darkest hundredth of the master clock's case is not under 0.03: no black hole
   foot        from V7, the pale floor in front of the clock's step against the same stone four
@@ -233,6 +235,7 @@ def time_ball(r):
     balls = [p for name, _tones in clock.BALL_TONES.values() for p in _where(r.canvas, name)]
     centre = _nearest(balls, (clock.BALL_AXIS[0], clock.BALL_HALF_Y, clock.BALL_AXIS[1]))
     rad = clock.BALL_R / 16.0
+    chosen = getattr(r.module, "BALL", clock.BALL) == clock.BALL
     print("the time ball")
     for shot in ("v1_tower", "tower_far", "top_close"):
         got = r.picture(shot)
@@ -243,8 +246,11 @@ def time_ball(r):
         sky = r.read(shot, "sky round the ball", disc(centre, right, up, 1.3 * rad, 2.2 * rad,
                                                      keep=lambda x, y: (np.abs(x) > 0.3 * rad) & (y > -np.abs(x))))
         if None not in (b, sky):
-            r.ask(b - sky >= BALL_OVER_SKY, f"{shot}: the ball {b:.3f} over the sky {sky:.3f} by {b - sky:.3f} "
-                                            f"({BALL_OVER_SKY:.2f} or more)")
+            text = f"{shot}: the ball {b:.3f} over the sky {sky:.3f} by {b - sky:.3f} ({BALL_OVER_SKY:.2f} or more)"
+            if chosen:
+                r.ask(b - sky >= BALL_OVER_SKY, text)
+            else:
+                print("  note " + text + ": the colour that was not chosen, nothing is asked of it")
     # from the foot of the tower the ball is seen from below: the collar and the sleeve under it
     # may not be a black cap on it (cr3, 11-16). The strip the mast runs through is left out.
     for shot in ("dial_close", "v5_up"):

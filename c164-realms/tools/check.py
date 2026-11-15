@@ -44,6 +44,10 @@ Each check prints PASS, WARN or FAIL; the exit code is 1 when one fails.
              picture's left third. Worked out from the blocks and the display entities, without
              drawing (tools/sightline.py). For the master scene, and for a test scene with a
              shot at V1
+  motion     what the scene registers as moving (scenes/obs/motion/_kit.py) makes a loop within
+             the budget: commands in the busiest tick and on average, function files, a chain's
+             length; a blinking lamp's other model and our sound events are in the pack; no two
+             parts of one name stand on one spot. Steps or limits set by hand are a warning
 
 What a script cannot judge (doors a player fits through, storey heights, the wording of signs,
 whether a repainted block is used for what it was repainted as) is read off the pictures and the
@@ -78,6 +82,7 @@ from artkit import mood as MOOD  # noqa: E402
 from scenes.obs.common import blocks as B  # noqa: E402
 from scenes.obs.common import palette as P  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
+from scenes.obs.motion import _kit as MOTION  # noqa: E402
 
 MODEL_NS = "c164"            # artkit.models.write_pack's namespace
 SHOWN = 12                   # lines of detail per finding before "... and N more"
@@ -217,6 +222,7 @@ def regen(rep, name, work):
         words = []
         if canvas is not None:
             manifest = X.export(canvas, data, "check")
+            MOTION.write(canvas, data, "check")
             words += [f"{manifest['blocks']} blocks", f"{manifest['entities']} entities"]
         else:
             words.append("no build(): a model gallery")
@@ -1280,6 +1286,12 @@ def commit():
     return "?"
 
 
+def motion(rep, got):
+    """The loop of what the scene registers as moving (plan/parts/motion.md 5 and 7)."""
+    status, summary, details = MOTION.check(got["canvas"], got["models"], got["pack"])
+    rep.add("motion", status, summary, clip(details))
+
+
 def workdir(ap, keep):
     """The folder the packs are generated in. A --keep folder is emptied first, so it is taken only
     if that loses nothing: new, empty, or marked as left by an earlier --keep."""
@@ -1325,7 +1337,8 @@ def main():
                            lambda: views(rep, got, args.shots or os.path.join(
                                BUILD, "scenes", args.scene, "shots.json")),
                            lambda: sight(rep, got, args.jar, args.shots or os.path.join(
-                               BUILD, "scenes", args.scene, "shots.json"))]
+                               BUILD, "scenes", args.scene, "shots.json")),
+                           lambda: motion(rep, got)]
             for check in checks:
                 try:
                     check()
