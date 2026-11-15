@@ -101,7 +101,7 @@ def shots():
          (cx + engine.CYL_X, FEET + 1.6, cz))
     shot("governor", (cx + engine.GOV_X - 0.6, FEET + 1.70, cz + 3.2),
          (cx + engine.GOV_X, FEET + 1.6, cz + 0.95))
-    shot("dynamo", (cx + engine.DYNAMO_X - 1.6, FEET + 2.1, cz + 3.8),
+    shot("dynamo", (cx + engine.DYNAMO_X + 0.6, FEET + 2.0, cz + 3.6),
          (cx + engine.DYNAMO_X, FEET + 1.7, cz))
     shot("belt", (cx + engine.DYNAMO_X - 3.0, FEET + 2.7, cz + 4.6),
          (cx + engine.WHEEL_X + 0.5, FEET + 2.6, cz))
