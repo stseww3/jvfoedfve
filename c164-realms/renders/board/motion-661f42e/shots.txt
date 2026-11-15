@@ -1,0 +1,20 @@
+# motion/loop in the game, assembly head 661f42e, code d0e4125 (tools/shoot.py; 1280x720)
+# Each pair is the same stand shot twice, the second 9 s after the first, back to back.
+# settle 9 s, not 12: three of the periods divide 12 exactly (the engine's 2.4 s five times,
+# the slider's 6 s twice) and the parts came back to where they started; 9 s is off every period.
+# ">30" is the share of the picture whose RGB sum differs by more than 30 of 765.
+shot	settle	s	>30	pair
+far	9	0.36
+wheels	9	2.35
+arm	9	2.58
+arm_pin	9	5.62
+arm_coarse	9	2.53
+arm_coarse_pin	9	7.81
+pendulums	9	1.77
+crank	9	2.80
+crank_pins	9	13.68
+slider	9	1.34
+lamp	9	0.00	the lamp plate is a fixed piece; identical is right here
+bar	9	1.10
+load far	9	5.79
+load near	9	6.78
