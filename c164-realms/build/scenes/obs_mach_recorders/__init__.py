@@ -70,7 +70,10 @@ def _room(c):
     # the work light of the test scene: one invisible source over the console, at the level the
     # room's own console pendant will be. A test scene must see what it judges (main/shell does the
     # same); the room itself is lit by sky/_lightkit when it is in the tree.
+    # a work light over the console and a second over the east pier the tube hangs on: one lamp left
+    # the tube's end of the room dark (cr3-M4)
     c.set(8, CEIL - 1, CONSOLE_Z + 1, f"{B.LIGHT}[level={WORK_LIGHT}]")
+    c.set(X1 - 2, CEIL - 1, int(SLOTS["tube"]["pos"][2]) + 1, f"{B.LIGHT}[level={WORK_LIGHT}]")
     return c
 
 
