@@ -80,6 +80,7 @@ class _World(T._Game):
         self.reloading = None       # the tick before which the load functions run
         self.players = {"C164Cam": [0.0, 0.0, 0.0, 0.0, 0.0]}
         self.modes = {}             # a player's game mode when he is not a spectator
+        self.frozen = False         # tick freeze
         self.forced = set()
         self.home = None            # the chunks the placed entities stand in
         self.held = []              # the entities, while their chunks are let go
@@ -203,6 +204,9 @@ class _World(T._Game):
             mean = sum(self.costs) / max(1, len(self.costs))
             ranked = sorted(self.costs) or [0.0]
             per = " ".join(f"P{p}: {ranked[min(len(ranked) - 1, len(ranked) * p // 100)]:.1f}ms" for p in (50, 95, 99))
+            if self.frozen:
+                return ("The game is frozenTarget tick rate: 20.0 per second.\n"
+                        f"Average time per tick: {mean:.1f}ms (Target: 50.0ms)Percentiles: {per}. Sample: {len(self.costs)}")
             if self.sprint:
                 return ("The game is sprintingTarget tick rate: 20.0 per second (ignored, reference only).\n"
                         f"Average time per tick: {mean:.1f}msPercentiles: {per}. Sample: {len(self.costs)}")
@@ -513,6 +517,31 @@ def test_real_not_running():
         assert code == 1 and _status(bench) == {"ready": "FAIL", "record": "-", "alive": "PASS"}, "\n".join(said)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_real_cannot_begin():
+    """A game that is frozen, a scene that does not stand where the script was told: the script
+    says so and stops; it types nothing that changes the world, and starts no loop."""
+    harmless = ("time query gametime", "tick query", "list")
+    for case in ("frozen", "elsewhere", "elsewhere and stopped"):
+        bench, world, said, tmp = _bench()
+        try:
+            if case == "frozen":
+                world.frozen = True
+            else:
+                bench = R.Bench(bench.server, T._board()[0], "t", (T.AT[0] + 64, T.AT[1], T.AT[2]), out=said.append)
+            if case == "elsewhere and stopped":
+                world.command("function c164art:t-motion/stop")
+            before = len(world.typed)
+            code = bench.run(_all(bench))
+            text = "\n".join(said)
+            assert code == 1 and _status(bench) == {"ready": "FAIL"}, (case, text)
+            assert ("the game is frozen" if case == "frozen" else "are not found") in text, (case, text)
+            assert "result: FAIL (ready); 0 checks passed" in said[-1], said[-1]
+            typed = [t for t in world.typed[before:] if t not in harmless]
+            assert all(t.startswith(("data get entity ", "scoreboard players get ")) for t in typed), (case, typed)
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 def test_real_out_of_time():

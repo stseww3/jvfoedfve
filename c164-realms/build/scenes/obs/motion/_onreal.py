@@ -328,6 +328,7 @@ class Bench:
         self.began = server.now()
         self.rows = []              # (check, status, what was found)
         self.undo = []              # (what, how): things to put back, the last first
+        self.leave = False          # the scene is not there to be checked: its loop is not to be started either
 
     # ---- the report ----
     def note(self, check, status, text, details=()):
@@ -431,10 +432,12 @@ class Bench:
         self.out(f"game time {g}; the game is {state}, {average} ms a tick on average; "
                  f"players: {', '.join(s.players()) or 'none'}")
         if state == "frozen":
+            self.leave = True
             self.note("ready", "FAIL", "the game is frozen (tick freeze): no loop runs, nothing can be checked")
             raise Stuck("the game is frozen")
         missing = [r.label for r, value in self.look()[2] if value is None]
         if missing:
+            self.leave = True
             self.note("ready", "FAIL", f"{len(missing)} of {len(self.readers)} parts are not found where the plan "
                       f"has them: {', '.join(missing[:8])}", [f"the first selector: {self.readers[0].selector}"])
             raise Stuck("the scene's parts are not there")
@@ -960,7 +963,7 @@ class Bench:
         finally:
             try:
                 self._put_back()
-                if self.server.score(MK.RUN) != self.number:
+                if not self.leave and self.server.score(MK.RUN) != self.number:
                     self.start()
                     self.out(f"{'':<18} the loop is started again, as the script found it")
             except Exception as e:          # the report is worth more than a clean ending
