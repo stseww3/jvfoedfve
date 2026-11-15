@@ -42,6 +42,8 @@ LIGHTS = [
     (11, 20, 5), (11, 20, -5), (-3, 20, 5), (-3, 20, -5), (6, 15, 2),               # the dome room, the stair's shaft
 ]
 LIGHT_LEVEL = 14                                                        # the light line's top level; never 15
+FLIGHT_LIGHTS = [(1, 4, -4), (1, 4, 4)]                                 # under the head of each side arch, where the star hall
+FLIGHT_LIGHT_LEVEL = 11                                                 # hangs a lamp at the foot of each flight: dimmer than the hall
 LIGHT_OVER_CUT = 2                                                      # a cut keeps the lights up to this far over its last row
 CLOCK_HIGH = 4                                                          # the mother clock on its plinth (A0, 11-15)
 
@@ -82,10 +84,11 @@ def build():
             if y <= top:
                 c.set(x, y, z + dz, state)
     stand_ins(c, DRESSED)
+    lights = [(cell, LIGHT_LEVEL) for cell in LIGHTS] + [(cell, FLIGHT_LIGHT_LEVEL) for cell in FLIGHT_LIGHTS]
     for dz, top in [(0, None), (DRESSED, None)] + list(CUTS.values()):
-        for x, y, z in LIGHTS:
+        for (x, y, z), level in lights:
             if top is None or y <= top + LIGHT_OVER_CUT:
-                c.set(x, y, z + dz, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
+                c.set(x, y, z + dz, f"{B.LIGHT}[level={level}]", keep=True)
     return c
 
 
