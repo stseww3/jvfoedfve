@@ -333,6 +333,9 @@ def _door_leaf():
 def _gate(width=3):
     """A side arch of the entrance, closed: the door's frame, an open iron fan in the head and a pair
     of barred leaves that repeat the door's kick plate and ledges, at scale 2 (anchor as door_frame).
+    The lower third of the leaves, up to the lock rail, is shut by a sheet behind the bars, as the
+    door's leaf is plate there: a gate reads as a gate by what is solid below, the bars above it and
+    the light behind them (c164 #21988, #22558).
     The fan has an even number of rays, none on the middle: the upright line of the two meeting
     stiles ends at the transom and does not run on to the crown, where transom and upright would
     stand against the light as a cross (c219, pre-review P9). Six rays from a hub 9 px in radius:
@@ -350,6 +353,7 @@ def _gate(width=3):
         for x in (2.5, 5.0, 7.5):                                                         # bars 2 px, lights 3 px
             span(x, x + 1.0, KICK, top - 1.0, IRON, grain="y")
         span(1.0, hw - 2.0, 0.0, KICK, IRON_D, zr, grain="x")                             # the kick plate
+        span(1.0, hw - 2.0, KICK - 0.25, LOCK[0] + 0.25, IRON, (zr[0] + 0.125, zr[1] - 0.125), grain="y")  # the sheet
         for y0, y1 in (LOCK, WAIST, (top - 1.0, top)):
             span(1.0, hw - 2.0, y0, y1, IRON_D, zr, grain="x")
         for x in (3.0, 5.5, 8.0):
