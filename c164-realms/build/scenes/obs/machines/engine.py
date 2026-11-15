@@ -46,8 +46,8 @@ What is blocks. The machines are placed before the rooms and a wheel cannot turn
 build() makes the set's own foundation: the pit (PIT: a slot one cell wide for the flywheel and
 the belt's lower run), lined, and the iron base plate the set stands on (BASE), level with the
 floor. The floor round it, the gratings and the rails at the pit are interiors/powerhouse's, which
-reads PIT, BASE, KEEP_CLEAR and ANCHORS (a display entity takes the light of the cell its anchor
-is in).
+reads PIT, BASE, KEEP_CLEAR and LIT_BY: the four cells the thirteen pieces take their light from
+(a display entity is lit by the cell its anchor is in), to be lit alike.
 """
 import contextlib
 import functools
@@ -107,7 +107,7 @@ VALVE_PIN = 4.9                         # where the eccentric rod takes the valv
 ECC_ROD = math.hypot(VALVE_PIN, ECC)    # the eccentric rod, from the sheave's middle to that pin
 GOV_X, GOV_Z = 7.05, 0.875              # the governor's spindle, over the middle of the chest
 GOV_Y = H + 1.0                         # where its turning part begins
-GOV_PULLEY = (GOV_X, H + 0.8125)        # the cord's small pulley on the governor's bracket
+GOV_PULLEY = (GOV_X, H + 0.875)         # the cord's pulley on the governor's bracket
 INLET = (7.9, H + 0.9375, GOV_Z)        # the middle of the steam flange, which looks up
 
 # --- the dynamo (same frame) ---------------------------------------------------------------------------
@@ -148,8 +148,11 @@ def _scene(p, origin=(0, 0, 0)):
 # --- for the others (scene coordinates, the set at origin (0, 0, 0)) ----------------------------------------
 STEAM_IN = _scene(INLET)                # (85.4, -3.6875, 35.875): the pipe comes down on it
 EXHAUST = _scene((GOV_X, 0.0, GOV_Z))   # where the exhaust goes into the floor: nothing to connect
-POWER_OUT = (_scene((DYN_X - 0.3125, YOKE_Y[1] + 0.3125, DYN_Z)),
-             _scene((DYN_X + 0.3125, YOKE_Y[1] + 0.3125, DYN_Z)))       # the two terminals' tops
+POWER_OUT = (_scene((DYN_X - LIMB, YOKE_Y[1] + 0.3125, DYN_Z)),
+             _scene((DYN_X + LIMB, YOKE_Y[1] + 0.3125, DYN_Z)))         # the two terminals' tops
+# for motion/sound: the stroke is heard at the cylinder, once a turn; the hum at the dynamo
+STROKE_AT = _scene(((CYL[0] + CYL[1]) / 2.0, H, 0.0))
+HUM_AT = _scene((DYN_X, DYN_H, DYN_Z))
 # Boxes (x0, y0, z0, x1, y1, z1) in which something of the set stands or moves: nothing else goes there.
 KEEP_CLEAR = (
     _scene((2.7, 0.0, -0.9)) + _scene((8.9, 2.6, 1.3)),             # bed, slide bars, cylinder, valve chest
@@ -194,28 +197,40 @@ class _Belting(Mat):
 LEATHER = _Belting("dark_wood~belting", P.RAMPS["dark_wood"], bevel=0, base=2)
 CORD = P.mat("dark_wood", kind="flat", bevel=0, base=3)
 STUD = P.mat("iron", kind="flat", bevel=0, base=5)
+EDGE = P.mat("iron", kind="flat", bevel=0, base=5)       # an edge turned bright: a wheel's rim
 STUD_BRASS = P.mat("brass", kind="flat", bevel=0, base=4)
 GLOW = K.flat("glow", 3)
 GLOW_DIM = K.flat("glow", 1)
 
-# where each piece's entity stands (the engine's frame): its model is drawn round this point, and it
-# takes the light of the cell this point is in
+# Where each piece's entity stands (the engine's frame); its model is drawn round this point. A
+# display entity is lit as a whole, by the cell its entity stands in, so pieces that touch must
+# stand in one cell or a step of light shows where they meet. A static piece may stand anywhere; a
+# piece that turns stands on its axis, a rod on the axis of its sliding pin. That leaves four cells
+# (LIT_BY): the engine's, at the crosshead; the governor's; the flywheel's, on the shaft; the
+# dynamo's. The room lights those four alike and the set is one machine.
+_ENGINE = (PIN, H, 0.5)
+_WHEEL = (0.0, H, WZ)
+_DYNAMO = (DYN_X, DYN_H, DYN_Z)
 AT = {
-    "bed": ((BED[0] + BED[1]) / 2.0, 0.0, 0.0),
-    "frame": (1.125, 0.0, 1.5),
-    "cylinder": (7.0, 0.0, 0.25),
-    "crosshead": (PIN, H, 0.0),
-    "rod": (PIN, H, 0.0),
-    "flywheel": (0.0, H, WZ),
-    "eccentric": (VALVE_PIN, H, VALVE_Z),
-    "valve": (VALVE_PIN, H, VALVE_Z),
-    "governor": (GOV_X, GOV_Y, GOV_Z),
-    "lap": (0.0, H, WZ),
-    "belt": (-3.5, 1.25, WZ),
-    "dynamo": (DYN_X, 0.0, DYN_Z),
-    "armature": (DYN_X, DYN_H, DYN_Z),
+    "bed": _ENGINE,
+    "cylinder": _ENGINE,
+    "crosshead": _ENGINE,
+    "rod": _ENGINE,
+    "eccentric": (VALVE_PIN, H, 0.5),
+    "valve": (VALVE_PIN, H, 0.5),
+    "governor": (GOV_X, H, GOV_Z),
+    "frame": _WHEEL,
+    "flywheel": _WHEEL,
+    "lap": _WHEEL,
+    "belt": _WHEEL,
+    "dynamo": _DYNAMO,
+    "armature": _DYNAMO,
 }
 ANCHORS = {name: _scene(p) for name, p in AT.items()}
+# the cells the pieces take their light from: {cell: the pieces that stand in it}
+LIT_BY = {}
+for _name, _p in ANCHORS.items():
+    LIT_BY.setdefault(tuple(int(math.floor(v)) for v in _p), []).append(_name)
 
 
 @contextlib.contextmanager
@@ -328,8 +343,8 @@ def _laps(runs):
 
 
 BELT = _tangents((0.0, H), WHEEL_R + BELT_T / 2.0, (DYN_X, DYN_H), PULLEY_R + BELT_T / 2.0)
-CORD_FROM = 0.3125                      # the cord's pulley on the crankshaft
-CORD_TO = 0.125                         # and the one on the governor
+CORD_FROM = 0.25                        # the cord's pulley on the crankshaft
+CORD_TO = 0.25                          # and the one on the governor: as big, so that the two runs are parallel
 CORD_RUNS = _tangents((0.0, H), CORD_FROM + PX / 2.0, GOV_PULLEY, CORD_TO + PX / 2.0)
 
 
@@ -341,7 +356,10 @@ def _flywheel():
     c = (0.0, H, WZ)
     with _lit_along((0.0, 0.0, -1.0)):
         face = IRON_L.variant(0, "along")                                             # the belt keeps the rim's face bright
-        d.ring("z", c, WHEEL_R - RIM_T / 2.0, RIM_T, RIM_W, IRON, sides=32, faces={"e": face})
+        side = IRON_L.variant(0, 0)
+        d.ring("z", c, WHEEL_R - RIM_T / 2.0, RIM_T, RIM_W, IRON, sides=32, faces={"e": face, "n": side, "s": side})
+        for s in (-1.0, 1.0):                                                         # the rim's edge, turned bright
+            d.ring("z", (0.0, H, WZ + s * (RIM_W / 2.0 + PX / 4)), WHEEL_R - PX / 2, PX, PX / 2, EDGE, sides=32)
         d.ring("z", c, WHEEL_R - RIM_T - PX, 2 * PX, 0.25, IRON_D, sides=32)           # the rib inside the rim
         for i in range(SPOKES):
             a = 30.0 + 360.0 * i / SPOKES
@@ -473,7 +491,11 @@ def _armature():
         d.tube("z", c, COMM[1], COMM[1] + 0.0625, 0.28125, BRASS_D, sides=12)
         # the pulley: a crowned face on six arms
         face = IRON_L.variant(0, "along")
-        d.ring("z", (DYN_X, DYN_H, WZ), PULLEY_R - 0.0625, 0.125, RIM_W, IRON, sides=20, faces={"e": face})
+        side = IRON_L.variant(0, 0)
+        d.ring("z", (DYN_X, DYN_H, WZ), PULLEY_R - 0.0625, 0.125, RIM_W, IRON, sides=20,
+               faces={"e": face, "n": side, "s": side})
+        for s in (-1.0, 1.0):
+            d.ring("z", (DYN_X, DYN_H, WZ + s * (RIM_W / 2.0 + PX / 4)), PULLEY_R - PX / 2, PX, PX / 2, EDGE, sides=20)
         for i in range(SPOKES):
             d.box((DYN_X + 0.1875, DYN_H - 0.0625, WZ - 0.0625), (DYN_X + PULLEY_R - 0.125, DYN_H + 0.0625, WZ + 0.0625),
                   IRON, rot=("z", 360.0 * i / SPOKES, (DYN_X, DYN_H, WZ)), grain="x")
@@ -602,16 +624,16 @@ def _cylinder():
     d.tube("y", (GOV_X, GOV_Z), 0.0625, H - 0.3125, 0.1875, IRON_D, sides=8)
     d.tube("y", (GOV_X, GOV_Z), 0.0, 0.0625, 0.28125, IRON, sides=8)
     # the throttle on the chest, the branch to the steam flange, the governor's bracket and column
-    d.tube("y", (GOV_X, GOV_Z), H + 0.3125, H + 0.75, 0.1875, IRON, sides=8)
+    d.tube("y", (GOV_X, GOV_Z), H + 0.3125, H + 0.8125, 0.1875, IRON, sides=8)
     d.tube("x", (H + 0.5625, GOV_Z), GOV_X, INLET[0] + 0.14, 0.140625, IRON, sides=8)
     d.tube("y", (INLET[0], GOV_Z), H + 0.5625, INLET[1] - 0.0625, 0.140625, IRON, sides=8)
     d.tube("y", (INLET[0], GOV_Z), INLET[1] - 0.0625, INLET[1], 0.25, IRON_L, sides=8)
-    d.box((GOV_X - 0.1875, H + 0.75, GOV_Z - 0.1875), (GOV_X + 0.1875, H + 0.875, CORD_Z - 0.0625), IRON)
+    d.box((GOV_X - 0.1875, H + 0.8125, GOV_Z - 0.1875), (GOV_X + 0.1875, H + 0.9375, CORD_Z - 0.0625), IRON)
     d.tube("z", GOV_PULLEY, GOV_Z, CORD_Z + 0.0625, 0.046875, STEEL, sides=4)
-    d.tube("z", GOV_PULLEY, CORD_Z - PX / 2, CORD_Z + PX / 2, CORD_TO, IRON_L, sides=8)
-    d.tube("y", (GOV_X, GOV_Z), H + 0.875, GOV_Y, 0.109375, BRASS_D, sides=8)
+    d.tube("z", GOV_PULLEY, CORD_Z - PX / 2, CORD_Z + PX / 2, CORD_TO, IRON_L, sides=12)
+    d.tube("y", (GOV_X, GOV_Z), H + 0.9375, GOV_Y, 0.109375, BRASS_D, sides=8)
     _lap, far = _laps(CORD_RUNS)
-    d.arc((GOV_PULLEY[0], GOV_PULLEY[1], CORD_Z), CORD_TO + PX / 2, PX, PX, far[0], far[1], CORD, steps=4)
+    d.arc((GOV_PULLEY[0], GOV_PULLEY[1], CORD_Z), CORD_TO + PX / 2, PX, PX, far[0], far[1], CORD, steps=8)
     return d
 
 
@@ -677,25 +699,24 @@ def _dynamo():
         for y in (DYN_H + 0.625, YOKE_Y[0] - 0.125):
             d.tube("y", (lx, DYN_Z), y, y + 0.0625, 0.375, BRASS_D, sides=12)
     d.box((DYN_X - 0.9375, YOKE_Y[0], DYN_Z - 0.3125), (DYN_X + 0.9375, YOKE_Y[1], DYN_Z + 0.3125), IRON)      # the yoke
-    for sx in (-LIMB, LIMB):
-        d.stud((DYN_X + sx, YOKE_Y[1], DYN_Z), "y", STUD, size=3 * PX)
     # the brush rocker at the commutator: a ring, a holder above and one below, their leads to the terminals
     zb = (COMM[0] + COMM[1]) / 2.0
     d.ring("z", (DYN_X, DYN_H, zb), 0.375, 0.0625, 0.0625, BRASS_D, sides=16)
     for s in (-1.0, 1.0):
         ya, yb = sorted((DYN_H + s * 0.25, DYN_H + s * 0.5))
         d.box((DYN_X - 0.0625, ya, zb - 0.09375), (DYN_X + 0.0625, yb, zb + 0.09375), BRASS)
-    # two stiff leads, one from each brush, up behind the commutator and over to the terminals
-    tx, zr = 0.3125, zb + 0.125
+    # the two leads lie on the machine: from each brush along the back of a pole piece, up the back
+    # of its limb's coil and over the yoke to the terminal that stands on that limb's head
     top = YOKE_Y[1]
+    zr = ARM[1] + PX / 2
     for s, y in ((-1.0, DYN_H + 0.5 + PX / 2), (1.0, DYN_H - 0.5 - PX / 2)):
-        _wire(d, [(DYN_X, y, zb), (DYN_X, y, zr), (DYN_X + s * tx, y, zr), (DYN_X + s * tx, top + 0.28125, zr),
-                  (DYN_X + s * tx, top + 0.28125, DYN_Z)])
-    # the terminal board on the yoke: two porcelain posts, the pilot lamp between them
-    d.box((DYN_X - 0.5, top, DYN_Z - 0.1875), (DYN_X + 0.5, top + 0.0625, DYN_Z + 0.1875), IRON_D)
+        _wire(d, [(DYN_X, y, zr), (DYN_X + s * LIMB, y, zr), (DYN_X + s * LIMB, top + PX / 2, zr),
+                  (DYN_X + s * LIMB, top + PX / 2, DYN_Z + 0.125)])
+    # the terminal board on the yoke: a porcelain post over each limb, the pilot lamp between them
+    d.box((DYN_X - 0.8125, top, DYN_Z - 0.1875), (DYN_X + 0.8125, top + 0.0625, DYN_Z + 0.1875), IRON_D)
     for s in (-1.0, 1.0):
-        d.tube("y", (DYN_X + s * tx, DYN_Z), top + 0.0625, top + 0.25, 0.09375, PORCELAIN, sides=8)
-        d.tube("y", (DYN_X + s * tx, DYN_Z), top + 0.25, top + 0.3125, 0.046875, BRASS, sides=4)
+        d.tube("y", (DYN_X + s * LIMB, DYN_Z), top + 0.0625, top + 0.25, 0.09375, PORCELAIN, sides=8)
+        d.tube("y", (DYN_X + s * LIMB, DYN_Z), top + 0.25, top + 0.3125, 0.046875, BRASS, sides=4)
     d.tube("y", (DYN_X, DYN_Z), top + 0.0625, top + 0.1875, 0.0625, BRASS_D, sides=4)
     k, c = d._line("y", (DYN_X, DYN_Z))
     K.glass_prism(d.m, "y", c, (top + 0.1875 - d.at[k]) * d.u, (top + 0.25 - d.at[k]) * d.u, 0.0625 * d.u, GLOW_DIM,

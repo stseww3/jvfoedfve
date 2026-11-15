@@ -6,8 +6,10 @@ Round the shell there is a slab of the lower platform and nothing else. The room
 the set: the boilers, the switchboard, the gratings and rails round the pit, the pipes and the
 lamps are other packages'. The floor is a stand-in for the room's (interiors/powerhouse), and the
 light is a stand-in as well: rows of invisible sources four blocks over the floor on either side
-of the engine, so that the models can be judged; the room's own lamps and the boilers' fire come
-with the interior and the sky line.
+of the engine, so that the models can be judged, and one source over each of the four cells the
+set takes its light from (engine.LIT_BY), so that all its pieces are lit alike, as the room is
+asked to light them; the room's own lamps and the boilers' fire come with the interior and the
+sky line.
 
 The house's glass is painted opaque, so the skeleton's V6, which looks at the house from the grand
 stair, sees nothing of the engine; what the yard does see is the slice of the room behind the open
@@ -37,6 +39,7 @@ ROCK = B.TUFF.block                             # under it: what the pit is dug 
 LIGHT_Y = int(engine.FLOOR) + 4                 # over the dynamo's terminals and clear of the flywheel's cell
 LIGHTS = ([(x, 32) for x in (71, 74, 77, 80, 83, 86)]
           + [(x, 39) for x in (71, 74, 77, 80, 83, 86)])
+OVER = sorted({(x, z) for x, _y, z in engine.LIT_BY})      # a source over each cell the pieces are lit by
 LIGHT_LEVEL = 15
 TIME = 14000                                    # light version A, the default
 
@@ -49,7 +52,7 @@ def build():
     c.box(SLAB[0], PAVING_Y, SLAB[1], SLAB[2], PAVING_Y, SLAB[3], FLOOR)
     shell = powerhouse.build(c, (0, 0, 0))          # its own entities: the lamp over the wicket
     n = engine.build(c, (0, 0, 0))
-    for x, z in LIGHTS:
+    for x, z in LIGHTS + OVER:
         c.set(x, LIGHT_Y, z, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
     c.entity_counts = {"machines": n, "site": int(shell or 0)}
     return c
@@ -95,5 +98,5 @@ def shots():
     shot("valve", (sx + 5.4, fy + EYE + 0.4, lz + 4.8), (sx + 6.4, h + 0.4, lz + 0.9))      # chest, governor, eccentric rod
     shot("brushes", (dx + 2.0, fy + EYE, dz + 2.6), (dx, fy + engine.DYN_H + 0.4, dz + 0.4))        # the commutator's end
     shot("above", (sx - 1.0, fy + 7.5, lz - 5.0), (sx - 0.5, fy, lz + 0.8))
-    shot("wicket", (74.3, fy + EYE, 17.5), (75.6, h, wz))                   # from the yard, through the open wicket
+    shot("wicket", (73.9, fy + EYE, 18.2), (76.9, h, wz))                   # from the yard, through the open wicket
     return out
