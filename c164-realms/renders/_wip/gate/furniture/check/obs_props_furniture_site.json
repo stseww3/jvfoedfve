@@ -1,0 +1,141 @@
+{
+ "scene": "obs_props_furniture_site",
+ "commit": "1b81b52",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "109284 blocks, 78 entities, 64 models, 835 resource-pack files, 66 data-pack files, look: 1 biomes, 1 timelines (1.8 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 834 files, no file written twice, the folders and the prefix of props are kept (3 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "185 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "631 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "71 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "78 display entities, 5 drawn out along one axis, 38 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "10 shots, most display entities in view: 74 (sunset_west), limit 600; counted without what walls hide; the game draws up to 78 (sunset_door): a display entity without width and height is drawn outside the view too",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "sunset_door",
+      "in_view": 4,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_door_c",
+      "in_view": 4,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_west",
+      "in_view": 74,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_row",
+      "in_view": 8,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_bench",
+      "in_view": 39,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_seat",
+      "in_view": 1,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_seat_outer",
+      "in_view": 1,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "sunset_plan",
+      "in_view": 24,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lookout_bench",
+      "in_view": 1,
+      "drawn": 78,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "lookout_v11",
+      "in_view": 65,
+      "drawn": 78,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "2 parts and 0 points on 2 chains, 20 function files; 6 commands in the busiest tick (limit 40), 1.0 a tick on average (limit 10)",
+   "details": [
+    "chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start",
+    "chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start",
+    "site_weather_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.08 blocks off the axis"
+   ]
+  }
+ ]
+}
