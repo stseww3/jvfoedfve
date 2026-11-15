@@ -116,7 +116,8 @@ def shots():
 
     cx, cz = _middle(S.WATER_TOWER["box"])              # (-17, -31)
     feet = S.WATER_TOWER["feet"]
-    shot("tower_near", (cx + 12.5, eye, cz + 8.5), (cx, feet + 7.0, cz))
+    # from the terrace by the west front; the tower shows between two piers of the railing
+    shot("tower_near", (cx + 13.4, eye, cz + 6.5), (cx, feet + 7.0, cz))
     shot("tower_mid", (cx - 21.0, feet + 7.0, cz - 25.0), (cx + 9.0, feet + 9.0, cz + 7.0))
 
     wx, wz = _middle(S.WEATHER_STATION["box"])          # (3, -46)
