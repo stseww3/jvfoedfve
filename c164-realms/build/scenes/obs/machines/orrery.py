@@ -10,9 +10,9 @@ Coordinates are the skeleton's (the card's old centre (7.5,0) and diameter 7 are
 
     ORRERY_CENTRE = (11.5, 0.5)   the hung centre (x, z)
     ORRERY_R      = 2.5           outer radius; the ring of planets keeps inside it
-    ORRERY_HANG_Y = 14.0          the ceiling's lower face: the hub seats on interiors' hang point
-    ORRERY_RING_Y = 8.5           the plane of the arms and the sun, at gallery eye height
-    ORRERY_BODY_Y = (8.0, 14.0)   the machine fills this; the floor below (y 0..8) stays walkable
+    ORRERY_HANG_Y = 14.0          the ceiling's lower face: the hub seats against starhall's roundel
+    ORRERY_RING_Y = 7.5           the plane of the arms and the sun, a block under the gallery's eye (A0 #357)
+    ORRERY_BODY_Y = (6.5, 14.0)   the machine fills this; the floor below (y 0..6.5) stays walkable
 
 Two versions stand side by side until the review picks one (card: both six planets, both turn slow):
   a  planar      the six arms share one plane, the gear train is open above them
@@ -22,8 +22,8 @@ The motion is A8's; this round places a still pose. The six arms are separate mo
 each on its own: EACH ARM'S ANCHOR IS THE CENTRE, AND ITS AXIS IS THE WORLD VERTICAL THROUGH THE
 CENTRE -- turning the display entity about that point sweeps the planet round its orbit. SPIN below
 gives a suggested rate per planet (six different, all slow); A8 settles the timing. The sun throws
-no light of its own; build() offers one warm source at its cell to A2, kept low (the hall's one warm
-core, bright area under a third).
+no light of its own; build() offers one warm source at its cell to A2, at level 12 (A0 #357: the
+mother clock's 11 is one below it).
 
 The combined pieces the card asked for -- gear() and grad_circle() -- live here, not in a shared
 machines/_kit.py (that file is not to be made yet); another machine imports them from this module.
@@ -63,7 +63,9 @@ HUB_DROP = 0.95                          # the hub hangs this far below the ceil
 STEM_TOP = HANG_Y - HUB_DROP - RING_Y    # blocks from the ring plane up to where the stem meets the hub
 
 SUN_R = 0.34                             # the sun's radius (a small warm core, not a dazzling globe)
-SUN_LIGHT = 10                           # the one warm source build() offers A2 (kept low; A2 aligns)
+SUN_LIGHT = 12                           # the one warm source build() offers A2: A0 #357 and c243 #531
+#                                          fix it at 12 in cell (11, 7, 0); the mother clock's 11 in the
+#                                          cell before it is "one below the sun", so the sun must be 12
 
 # planets, inner to outer: (name, orbit radius, planet radius, material, banded, ringed). The colours
 # set them apart with the palette's cast iron / brass / verdigris / old copper, and the sizes grow
