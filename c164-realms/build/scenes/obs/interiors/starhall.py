@@ -183,9 +183,8 @@ def _ceiling(put, st, pier):
                 continue
             beam = x in PIL_X or z in (H.Z0, H.Z1) or z == MERIDIAN_Z or x == H.EAST_GLASS - 1
             put(x, H.CEIL, z, st["beam"] if beam else st["coffer"])
-    put(ORRERY[0], H.CEIL, ORRERY[1], B.BRASS_PATTERN.block)                 # the boss the orrery hangs from
-    for dx, dz in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-        put(ORRERY[0] + dx, H.CEIL, ORRERY[1] + dz, B.BRASS_PLATE.block)     # a small rose round it
+    # the boss the orrery hangs from: one block, no arms round it (four made a cross: red line 8)
+    put(ORRERY[0], H.CEIL, ORRERY[1], B.BRASS_PATTERN.block)
     if st["star"]:
         for x in range(H.X0 + 1, H.X1, 2):
             for z in (H.Z0 + 2, H.Z1 - 2):
