@@ -6,7 +6,7 @@
 
 ## 目标
 
-从北端亭升起的报时塔，V5 的主角，V1、V2 天际线上右侧最高的那条竖线，彗星挂在它上面。北端亭的墙（y 0..17）由立面语法出（facade c321），屋面 y 17 归屋面（sdome c328），本卡做屋面以上（y 18 起）：塔身、四面钟盘的窝、望台、铜绿塔顶（2 版比选）、球杆、风杯和风向标、天线托架、通屋面走道的门。钟盘、针、报时球是 machines/clocks（c345）的模型；天线是 machines/radiomast（c346）的；灯光由 sky/lights（c331）落；风杯转由 motion/loop（a2 c322）的工具写。
+从北端亭升起的报时塔，V5 的主角，V1、V2 天际线上右侧最高的那条竖线，彗星挂在它上面。北端亭的墙（y 0..17）由立面语法出（facade c321），屋面 y 17 归屋面（sdome c328），本卡做屋面以上（y 18 起）：塔身、四面钟盘的窝、望台、铜绿塔顶（2 版比选）、球杆、风杯和风向标、通屋面走道的门。钟盘、针、报时球是 machines/clocks（c345）的模型；灯光由 sky/lights（c331）落；风杯转由 motion/loop（a2 c322）的工具写。无线电桅杆不往塔上挂天线（总监 11-16 06:01 定：杆身自己是天线），塔身上没有接天线的件。
 
 ## 交付的样子
 
@@ -20,7 +20,6 @@
 | y 30 | 檐口底下一行嵌板石的饰带（两头的转角石不断）。 |
 | y 31 | 塔身唯一的一道檐口：整行细石，外挂一圈主楼的石线脚（倒挂楼梯），占 x 9..17、z −34..−26。 |
 | y 18..19 | 西面正中 (10, −30) 一扇铁门，朝西，关着，门扇在墙的内侧面。塔里是空井，不请人进；游客本来也点不开（总监 #522）。 |
-| y 30 | 天线托架：东北转角石的北面、檐口底下，两格朝北的铁杆 (16, 30, −34)、(16, 30, −35)。radiomast 的天线进总装以前它是空的。 |
 | y 42..53 | 球杆，展示模型（见「模型」）。 |
 
 望台和塔顶两版（y 32..41）。比的是塔顶的形：甲尖，乙圆。两版的铜都从檐口起，檐口以下没有铜：檐口是屋面自己的线脚和檐沟（#265：铜只在塔顶和檐沟），从前庭和车站仰着看，看到的是檐口的底面，所以铜绿的塔顶从石头收住的地方开始。
@@ -49,20 +48,19 @@ build() 返回 2。
 ## 约束
 
 - 坐标（common/skeleton.py，LOCKED）：塔身 x 10..16、z −33..−27；塔身顶 CLOCK_SHAFT_TOP = 31；塔顶 CLOCK_TOP = 41；球杆 CLOCK_BALL_MAST = 52（这一行的顶是 53.0，杆尖到这里）。
-- 角色（common/blocks.py）：墙 ASHLAR_FINE；基座、转角石、乙的细柱和小尖柱 ASHLAR_ROUGH；窄窗的凹格、饰带、望台天花 ASHLAR_PANEL；窝底 IRON_PLATE；门 IRON_DOOR；托架 IRON_ROD；栏杆 IRON_BARS；灯 IRON_BULB；塔顶和檐口 VERDIGRIS_CUT、顶饰 VERDIGRIS_CAST；窗 WINDOW_FROSTED / WINDOW_DARK（灯光工具箱在树里时由它定）。
+- 角色（common/blocks.py）：墙 ASHLAR_FINE；基座、转角石、乙的细柱和小尖柱 ASHLAR_ROUGH；窄窗的凹格、饰带、望台天花 ASHLAR_PANEL；窝底 IRON_PLATE；门 IRON_DOOR；栏杆 IRON_BARS；灯 IRON_BULB；塔顶和檐口 VERDIGRIS_CUT、顶饰 VERDIGRIS_CAST；窗 WINDOW_FROSTED / WINDOW_DARK（灯光工具箱在树里时由它定）。
 - 线脚用 `_order.Laying.mould()`，状态里不写 shape。圆拱头照总监 #33834 自己写（两只楼梯夹上半砖）。
 - 没有大于 5×5 的平墙（`check.py` 的 flatwall 过）。
 - 实体：2 个，都是自己的模型，前缀 `bld_`。
 
 ## 接口（别的卡读的名字和数，改之前先说）
 
-第 3 班没有改这些数；只撤了 `CUPS_TAG`（树里没有人读它）。
+第 3 班没有改这些数；撤了两个名字：`CUPS_TAG`（树里没有人读它）和 `ANTENNA_ANCHOR`（总监定了不挂线，托架拆了；mast c346 现在的代码不读它，他自己留着一个同数的 `TOWER_HOOK` 给 clocks 的测试场景）。
 
 | 给谁 | 名字 | 数 |
 |---|---|---|
 | clocks（c345） | `DIAL_CENTRES` | 窝口中心：东 (17.0, 27.5, −29.5)、南 (13.5, 27.5, −26.0)、西 (10.0, 27.5, −29.5)、北 (13.5, 27.5, −33.0) |
 | clocks（c345） | `MAST_MODEL`、`AXIS`、`MAST_FOOT`、`MAST_STOP`、`MAST_TOP`、`MAST_THICK` | "bld_tower_mast"、(13.5, −29.5)、42.0、51.0、53.0、7/16。y 42 以上轴上没有方块，杆在不在看实体 |
-| mast（c346） | `ANTENNA_ANCHOR` | (16.5, 30.5, −35.0)：托架的端头 |
 | lights（c331） | `windows()` | front "tower"，bay 1 东、2 南、3 西、4 北，storey "shaft"；玻璃列在墙后一格，y 22..23。用工具箱的 `glazed()` 登记、玻璃问 `window_lit()`。现在的工具箱把东、西两个亮窗的光源放在玻璃后面（井里）那一格：(14, 22, −30)、(12, 22, −30)，9 级。工具箱不在树里时自己在东、西两个窗洞里放 7 级占位光 |
 | lights（c331） | 望台的灯 | IRON_BULB 在 (13, 36, −30)；向工具箱 `suggest` (13, 35, −30) 7 级、rank 3（"main/tower:cage"），现在落下来的就是这一格、7 级 |
 | a2（c322） | `CUPS_MODEL`、`CUPS_AT` | 见「模型」；已经登记 `MK.spin` |

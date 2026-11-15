@@ -34,9 +34,10 @@ Neither has a cross anywhere: the plans are a square and an octagon, and the mas
 pennant at its tip and the cup wheel lower down on the other side.
 
 Not here: the dials, their hands and the time ball are machines/clock, which finds the recesses and
-the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the antenna and its insulators
-are machines/radiomast (ANTENNA_ANCHOR is the end of the bracket it hangs on); the light of the lit
-slits and of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()).
+the mast by itself (DIAL_CENTRES and MAST_MODEL say where they are); the light of the lit slits and
+of the lookout's lamp is placed by sky/lights (windows(), and the kit's suggest()). The radio mast
+hangs no wire to the tower (the director, 11-16: the mast itself is the aerial), so the shaft
+carries no bracket or hook for one: its four faces are flush alike.
 
 The mast is two display models, the only ones of the main line: bld_tower_mast, the pole with all
 that is fixed to it, and bld_tower_cups, the cup wheel, a piece of its own so that the motion line
@@ -101,11 +102,6 @@ VANE_TAIL = 0.75                    # how long the tails are,
 VANE_HIGH = 0.75                    # and how high it is; its upper edge is the tip of the mast
 FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
 
-# --- the antenna's bracket ----------------------------------------------------------------------------
-HOOK_Y = SHAFT_TOP - 1              # 30: under the cornice
-HOOK_REACH = 2                      # blocks of rod north of the north face, out of the north-east quoin
-ANTENNA_ANCHOR = (X1 + 0.5, HOOK_Y + 0.5, float(Z0 - HOOK_REACH))       # (16.5, 30.5, -35.0): its end
-
 # --- light --------------------------------------------------------------------------------------------
 FRONT, STOREY = "tower", "shaft"    # the slits' keys for the light line; the bay is the face's number
 LIT_FACES = ("east", "west")        # the slits that are lit: opposite faces, never two neighbours
@@ -120,7 +116,7 @@ PANEL = B.ASHLAR_PANEL              # the field of the slits, the frieze
 PLATE = B.IRON_PLATE                # the back of the dial recesses
 BARS = B.IRON_BARS                  # the railing in the arches of version a
 CEILING = B.ASHLAR_PANEL            # pale, so that the lookout holds the glow of its lamp
-DOOR, ROD, BULB = B.IRON_DOOR, B.IRON_ROD, B.IRON_BULB
+DOOR, BULB = B.IRON_DOOR, B.IRON_BULB
 COPPER = B.VERDIGRIS_CUT
 FINIAL = B.VERDIGRIS_CAST
 
@@ -232,7 +228,7 @@ def _stone(i, y):
 
 def _shaft(c, o, s):
     """Base, quoins and wall; in every face the slit in its field and the dial's recess; the
-    frieze and the cornice; the door to the roof walk and the antenna's bracket."""
+    frieze and the cornice; the door to the roof walk."""
     for face in FACES:
         for i, (x, z) in enumerate(face.cells):
             for y in range(FOOT, SHAFT_TOP):
@@ -260,11 +256,6 @@ def _shaft(c, o, s):
     x, z = FACE["west"].cell(MID)
     for y, half in ((FOOT, "lower"), (FOOT + 1, "upper")):
         _set(c, o, x, y, z, st(DOOR, facing="west", half=half, hinge="left", open="false"))
-    # the bracket of the antenna: an iron rod out of the north-east quoin, under the cornice
-    north = FACE["north"]
-    for n in range(1, HOOK_REACH + 1):
-        x, z = north.cell(len(north.cells) - 1, -n)
-        _set(c, o, x, HOOK_Y, z, st(ROD, facing="north"))
 
 
 # --- the lookout and the top: version a ---------------------------------------------------------------------
