@@ -60,16 +60,20 @@ from outside. Its room side is therefore covered by a thin model that gives no l
     WINDOW_FURNACE   night glass, as WINDOW_LIT: the fires burn in the room
 
 Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
-the dome room; main/shell.py's room_at() says which. The blocks of a window are not touched, so a
-front shows what it showed without the linings; LINING switches them off, to prove that with two
-pictures. A lining is lit by the room, and a window's lining as one sheet: all its pieces take the
-light of the room's cell before the middle of the window (scenes/obs_mat_windows_in/placement.py
-holds line() to that, and to covering the glass).
+the dome room; main/shell.py's room_at() says which; and the boiler bays of the power house. The
+blocks of a window are not touched, so a front shows what it showed without the linings; LINING
+switches them off, to prove that with two pictures. A lining is lit by the room, and a window's
+lining as one sheet: all its pieces take the light of the room's cell before the middle of the
+window (scenes/obs_mat_windows_in/placement.py holds line() to that, and to covering the glass).
 
     build(canvas, origin)                         the master scene: the lit windows of the main
-                                                  building that have a room behind them
-    line(canvas, cells, inward, glass, origin)    one window, for a room's test scene or another
-                                                  building; returns the entities placed
+                                                  building that have a room behind them and the
+                                                  fire windows of the power house. The linings are
+                                                  this line's entities, and it alone hangs them
+                                                  there
+    line(canvas, cells, inward, glass, origin)    one window, for the test scene of a room or of
+                                                  a house; returns the entities placed. Not for a
+                                                  work package's build(): see line()
     models()                                      the lining models, names "mat_window_lining_..."
 """
 import contextlib
@@ -744,9 +748,25 @@ def _held_at(model, anchor):
     return held
 
 
+def _hung(canvas):
+    """The glass of a canvas that has its lining, {(x, y, z, dx, dz)}: the cell in the world and the
+    step into the room on whose side the lining hangs. Kept on the canvas, so that a window is
+    lined once however often it is asked for."""
+    try:
+        return canvas.__dict__.setdefault("_window_linings", set())
+    except AttributeError:
+        return set()            # a canvas that keeps nothing: every call lines
+
+
 def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
     """Line the room side of one window. Returns the number of display entities placed: 0 for a
-    window that is not lit, and for every window while LINING is off.
+    window that is not lit, for one that has its lining already, and for every window while LINING
+    is off.
+
+    For a scene that builds a room or a house by itself: its test scene. A work package does not
+    call this from its build(). In the master scene build() below lines every house, from the
+    houses' tables; and a scene that builds the package without the materials line has no model
+    for a lining to show (check.py fails it).
 
     cells    the glass of the window, [(x, y, z)]: whole blocks standing in one plane
     inward   the step from the glass into the room, (dx, dz): one block along x or along z
@@ -760,8 +780,7 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
     where two pieces meet (c219's reading, g2 #38437). Cells that do not touch are windows of
     their own, each with its own light.
 
-    The models are those of models(): a scene that calls this adds them to its build_models(). The
-    master scene needs no call, build() lines the main building there.
+    The models are those of models(): a scene that calls this adds them to its build_models().
     """
     kind = lining_of(glass)
     if not LINING or kind is None:
@@ -774,6 +793,11 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
     # every cell as (plane, along the wall, row): the wall runs along z where the room lies east or
     # west of the glass, along x where it lies north or south
     todo = {(int(x), int(z), int(y)) if dx else (int(z), int(x), int(y)) for x, y, z in cells}
+    # glass that has its lining on this side takes no second one: whoever asks again places nothing
+    hung = _hung(canvas)
+    sides = {(p, a, y): (ox + (p if dx else a), oy + y, oz + (a if dx else p)) + step for p, a, y in todo}
+    todo = {cell for cell, side in sides.items() if side not in hung}
+    hung.update(sides[cell] for cell in todo)
     low = {}
     for p, a, y in todo:
         a0, y0 = low.get(p, (a, y))
@@ -841,15 +865,20 @@ ROOM_BAYS = {("east", "main"): tuple(range(3, 16)), ("east", "base"): (8, 10),
              ("drum", "drum"): tuple(range(20))}
 
 
-def _main(name):
-    """A module of the main line; None while it is not in the tree."""
-    full = f"{__package__.rpartition('.')[0]}.main.{name}"
+def _package(line, name):
+    """A work package of another line ("main", "facade"); None while it is not in the tree."""
+    full = f"{__package__.rpartition('.')[0]}.{line}.{name}"
     try:
         return importlib.import_module(full)
     except ModuleNotFoundError as e:
         if e.name != full:
             raise               # it is there and fails to import something: say so
         return None
+
+
+def _main(name):
+    """A module of the main line; None while it is not in the tree."""
+    return _package("main", name)
 
 
 def _room_behind(window):
@@ -864,19 +893,33 @@ def _room_behind(window):
     return room_at(x + dx, (y0 + y1) // 2, z + dz) is not None
 
 
-def lined():
-    """The windows of the main building that are lined: those of main/facade.py's windows() that
-    are lit and have a room behind them, [dict(front, bay, storey, cells, inward, y, glass)]."""
-    table = getattr(_main("facade"), "windows", None)
-    if not LINING or table is None:
+def _fire_windows():
+    """The fire windows of the power house, as lined() gives a window: site/powerhouse.py's
+    windows() of the storey "furnace", the three glowing rows of a boiler bay. The stokers stand
+    behind them. Their lining is the fire window's, night glass, whichever glass stands in the
+    bay: the house puts the curtain glass there until it switches to the fire window."""
+    table = getattr(_package("site", "powerhouse"), "windows", None)
+    if table is None:
         return []
-    return [w for w in table() if lining_of(w["glass"]) and _room_behind(w)]
+    return [dict(w, glass=FURNACE[0]) for w in table() if w["storey"] == "furnace"]
+
+
+def lined():
+    """The windows that build() lines, [dict(front, bay, storey, cells, inward, y, glass)]: those
+    of main/facade.py's windows() that are lit and have a room behind them, and the fire windows
+    of the power house."""
+    if not LINING:
+        return []
+    table = getattr(_main("facade"), "windows", None)
+    main = [w for w in table() if lining_of(w["glass"]) and _room_behind(w)] if table else []
+    return main + _fire_windows()
 
 
 def build(canvas, origin=(0, 0, 0)):
-    """The master scene: line the lit windows of the main building that have a room behind them.
-    Returns the display entities placed. The materials are the first line to build, before any
-    wall stands, so the windows are read from the facade's table and not off the canvas."""
+    """The master scene: line the lit windows that have a room behind them, of the main building
+    and of the power house (lined()). Returns the display entities placed. The materials are the
+    first line to build, before any wall stands, so the windows are read from the houses' tables
+    and not off the canvas."""
     n = 0
     for w in lined():
         y0, y1 = w["y"]

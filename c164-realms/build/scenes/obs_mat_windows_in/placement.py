@@ -14,10 +14,13 @@ artkit/gamescene.py draws by). Held to:
     light    all the pieces of a window stand in one cell, the room's cell before the middle of
              the window. That cell lights them, so the lining is lit as one sheet (c219, g2 #38437);
     ends     of a curtain, the piece at the foot of its window carries the hem and the piece at
-             its head the rail, a window of one piece both, and no piece between them either.
+             its head the rail, a window of one piece both, and no piece between them either;
+    once     glass that has its lining takes no second one, whoever asks again and for whichever
+             glass: in the master scene the materials line lines every house (windows.build()),
+             and a house that asks for its own windows as well gets nothing more.
 
 The test scene's own windows are 3 by 6 and look one way; the sizes and the ways it does not show
-are held here.
+are held here. So is what build() lines in the master scene, as far as the houses are in the tree.
 """
 import sys
 
@@ -77,11 +80,14 @@ def check(step, windows, origin=ORIGIN, glass=B.WINDOW_LIT):
     c = _Entities()
     cells = [cell for first, w, h in windows for cell in _glass(step, first, w, h)]
     n = W.line(c, cells, step, glass, origin=origin)
+    again = W.line(c, cells, step, glass, origin=origin) + W.line(c, cells[:1], step, B.WINDOW_FROSTED, origin=origin)
     kind = W.lining_of(glass)
     bad = []
     want = sum(-(-w // W.PIECE) * -(-h // W.PIECE) for _, w, h in windows)
     if n != want or len(c.entities) != want:
         bad.append(f"{want} pieces expected, {len(c.entities)} placed, {n} returned")
+    if again:
+        bad.append(f"asked for again, the windows took {again} more pieces")
     face = PLANE + origin[normal] + (1 if inward > 0 else 0)            # the inner face of the glass
     covered, stood = {}, {}
     for x, y, z, nbt in c.entities:
@@ -138,6 +144,29 @@ def _hung(step, windows):
     return [f"as a curtain: {words}" for words in bad]
 
 
+def _master():
+    """What build() lines in the master scene, of the houses that are in the tree: every window of
+    lined() and no window twice, the fire windows of the power house with night glass, and nothing
+    more for a house that asks for its own windows after it. Returns what is wrong, and the words
+    for the table."""
+    c = _Entities()
+    table = W.lined()
+    fire = [w for w in table if w["front"].startswith("power.")]
+    n = W.build(c, ORIGIN)
+    bad = []
+    if n != len(c.entities) or n < len(table):
+        bad.append(f"{len(table)} windows to line, {len(c.entities)} pieces placed, {n} returned")
+    if W.build(c, ORIGIN):
+        bad.append("built a second time, the windows took more pieces")
+    for w in fire:
+        if W.lining_of(w["glass"]) != "lit":
+            bad.append(f"the fire window {w['front']} {w['bay']} is lined as {W.lining_of(w['glass'])}, not as night glass")
+        cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
+        if W.line(c, cells, w["inward"], B.WINDOW_CURTAIN, origin=ORIGIN):
+            bad.append(f"the power house asking for its fire window {w['front']} {w['bay']} after build() got a second lining")
+    return bad, f"{len(table)} windows, {len(fire)} of them fire windows of the power house, {n} pieces"
+
+
 def _report(room, what, pieces, bad, stood):
     """One line of the table, and what is wrong under it. Returns 1 for a window that fails."""
     print(f"{room:6} {what:>7} {pieces:6}  {', '.join(str(cell) for cell in stood)}" + ("   FAIL" if bad else ""))
@@ -158,11 +187,15 @@ def main():
         bad, stood = check(step, [(FIRST, 3, 6), (FIRST + 4, 3, 3)])
         bad += _hung(step, [(FIRST, 3, 6), (FIRST + 4, 3, 3)])
         failed += _report(room, "3x6+3x3", 3, bad, stood)
-    if failed:
-        print(f"\n{failed} windows are not lined as they should be")
+    bad, lines = _master()
+    print(f"\nbuild(), the master scene: {lines}" + ("   FAIL" if bad else ""))
+    for words in bad:
+        print(f"       {words}")
+    if failed or bad:
+        print(f"\n{failed} windows and {'the master scene' if bad else 'nothing else'} are not lined as they should be")
         return 1
-    print("\nevery window is covered once, its picture looks into the room, its pieces stand in one cell, "
-          "and a curtain has its rail at the head and its hem at the foot")
+    print("\nevery window is covered once and takes no second lining, its picture looks into the room, its pieces "
+          "stand in one cell, and a curtain has its rail at the head and its hem at the foot")
     return 0
 
 
