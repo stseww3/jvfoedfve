@@ -1,0 +1,40 @@
+a0job 1115-235327-lamps-elecsign-f3-0dde-29125: cursor/c164-lamps-elecsign-f3-0dde @ 1cf2ca2e on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.61 2.55 2.19, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_elecsign obs_props_elecsign_station obs_props_elecsign_room ---- exit 0, 82 s, last 30 lines of 50:
+  obs_props_elecsign: bell_near (tick 14000, 3 s)
+  obs_props_elecsign: flag (tick 14000, 1 s)
+  obs_props_elecsign: flag_near (tick 14000, 1 s)
+  obs_props_elecsign: flag_front (tick 14000, 1 s)
+renders/obs_props_elecsign/: 18 pictures of 1cf2ca2e drawn, 4.8 MB
+  obs_props_elecsign_station: 4567 blocks, 1 entities (0 s)
+  obs_props_elecsign_station: resource pack written to /tmp/c164pack-vsx5zsqd (1 s)
+  obs_props_elecsign_station: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_elecsign_station: grid 33 x 23 x 88, 4567 blocks, 5 entity boxes (1 s)
+  obs_props_elecsign_station: 35 states -> 49 looks, 132 boxes, 25 pictures (1 s)
+  obs_props_elecsign_station: light done (1 s)
+  obs_props_elecsign_station: board_near (tick 14000, 1 s)
+  obs_props_elecsign_station: board_gable (tick 14000, 0 s)
+  obs_props_elecsign_station: board_gable_deep (tick 18000, 0 s)
+  obs_props_elecsign_station: board_yard (tick 14000, 1 s)
+renders/obs_props_elecsign_station/: 4 pictures of 1cf2ca2e drawn, 0.4 MB
+  obs_props_elecsign_room: 244 blocks, 10 entities (0 s)
+  obs_props_elecsign_room: resource pack written to /tmp/c164pack-nhamza0f (1 s)
+  obs_props_elecsign_room: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_elecsign_room: grid 11 x 8 x 9, 244 blocks, 268 entity boxes (1 s)
+  obs_props_elecsign_room: 9 states -> 20 looks, 17 boxes, 28 pictures (1 s)
+  obs_props_elecsign_room: light done (1 s)
+  obs_props_elecsign_room: room (tick 14000, 3 s)
+  obs_props_elecsign_room: phone_near (tick 14000, 5 s)
+  obs_props_elecsign_room: phone_left (tick 14000, 6 s)
+  obs_props_elecsign_room: key_near (tick 14000, 3 s)
+  obs_props_elecsign_room: key_side (tick 14000, 5 s)
+  obs_props_elecsign_room: door_plates (tick 14000, 4 s)
+  obs_props_elecsign_room: way_near (tick 14000, 4 s)
+renders/obs_props_elecsign_room/: 7 pictures of 1cf2ca2e drawn, 1.0 MB
+==== NODEJOB RESULT ====
+exit=0 secs=85 host=cursor cores=4 head=1cf2ca2e commit=85bbbcbd pushed=yes branch=cursor/c164-lamps-elecsign-f3-0dde files=31
+a0job: exit=0 secs=86
