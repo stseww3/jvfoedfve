@@ -1,6 +1,9 @@
 """python -m scenes.obs_int_domeroom: the room as text (no game, no picture), then what the room must
 keep clear of, checked cell by cell against the same box without the room. Ends with status 1 if a
 check fails."""
+import json
+import math
+import os
 import sys
 
 from scenes.obs.common import blocks as B
@@ -132,6 +135,48 @@ for col in read.reach - read.gap:
 check("no copper shows indoors: every plate has its board or its iron on the inside", green)
 check("a light source sits in a free cell",
       [cell for cell, _level, _rank, _name in D.lights() if c.name(*cell) not in (None, B.LIGHT)])
+
+# --- the dome's skeleton ----------------------------------------------------------------------------
+skeleton = D.frame(read)
+if skeleton is None:
+    print("skip  the dome's skeleton: this dome has no slit to build the two arch girders beside")
+else:
+    def inside(p):
+        """Is the point inside a block of the dressed box (a light source is not one)?"""
+        return kind(int(math.floor(p[0])), int(math.floor(p[1])), int(math.floor(p[2]))) is not None
+
+    bars = skeleton.lines()
+    buried, in_slit = [], []
+    for a, b, half in bars:
+        n = max(2, int(math.dist(a, b) / 0.125) + 1)
+        for i in range(n + 1):
+            p = tuple(a[k] + (b[k] - a[k]) * i / n for k in range(3))
+            # a bar may end in what it stands against: its two ends are not asked
+            if 0.25 < math.dist(p, a) and 0.25 < math.dist(p, b) and inside(p):
+                buried.append(tuple(round(v, 2) for v in p))
+            col = (int(math.floor(p[0])), int(math.floor(p[2])))
+            if col in read.gap and p[1] > D.BASE_RING[1] + 1:
+                in_slit.append(tuple(round(v, 2) for v in p))
+    print("the skeleton: %d display entities, %d bars; the arch girders' underside keeps to the line from %s to %s"
+          % (len(skeleton.placed), len(bars), *("(%.3f, %.3f)" % (S.DOME_AXIS[0] - z, y) for z, y in skeleton.run())))
+    check("no bar of the skeleton runs through a block (the boards, the ring girder's blocks, the piers)", buried)
+    check("no bar of the skeleton crosses the open slit", in_slit)
+    check("the room's display entities stay within a room's share (%d)" % S.BUDGET_PER_ROOM,
+          [placed] if placed > S.BUDGET_PER_ROOM else [])
+    scope = D._other("machines", "scope")
+    if scope is None:
+        print("skip  the telescope's sweep: machines/scope is not in the tree")
+    else:
+        (sx, sy, sz), reach = scope.sweep()
+        check("the skeleton stays clear of everywhere the telescope can point (machines/scope.sweep)",
+              [tuple(round(v, 2) for v in p) for a, b, half in bars for p in (a, b)
+               if math.dist(p, (sx, sy, sz)) < reach + half])
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "shots.json"), encoding="utf-8") as fh:
+            v8 = next(shot for shot in json.load(fh) if shot["name"] == "v8")
+        at, look = scope.v8()
+        check("the camera of V8 stands and looks where machines/scope says",
+              [name for name, got, want in (("pos", v8["pos"], at), ("look_at", v8["look_at"], look))
+               if math.dist(got, want) > 0.05])
 
 print()
 print("FAILED: " + "; ".join(failed) if failed else "all checks pass")

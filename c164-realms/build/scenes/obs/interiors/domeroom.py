@@ -108,8 +108,9 @@ AROUND = ((1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1))
 # the observing floor (director, g2 #31564): east of the pier from its curb on, under the eyepiece of
 # either version of the telescope. Nothing of the room stands on it
 OBSERVING = (S.PIER_ENVELOPE[2] + 1, CZ - 1, S.PIER_ENVELOPE[2] + 5, CZ + 3)       # x 8..12, z -1..3
-# the eyepiece end of the telescope while machines/scope is not in the tree: its version on the axis
-EYEPIECE = (8.65, 19.79, 0.5)
+# the eyepiece end of the telescope while machines/scope is not in the tree: its version a (the
+# director's pick, 11-16), whose tube rides south of the dome's axis, in the plane z = 1.4
+EYEPIECE = (10.103, 19.703, 1.4)
 # bottom course first, from north to south; the instrument panels of the dome's drive (blocks.PANELS)
 BOARD = (("knife_switch", "bus_switch", "knife_switch"),
          ("dial", "pilot_lamps", "gauges"))
