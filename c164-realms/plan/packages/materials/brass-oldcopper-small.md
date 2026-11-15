@@ -42,3 +42,9 @@
 - **声音**：20 个 `block.bamboo_wood.*` 事件指到原版的 copper、copper_door、copper_trapdoor、stone_button、metal_pressure_plate 事件（`"type": "event"`），没有 .ogg。
 - **旧铜**：只重定向 `waxed_exposed_*`。测试场景里并排摆了未上蜡的 exposed 和 waxed_oxidized 的原版方块作证，所以 `check.py` 的 blocks 项有一条预期的黄（5 种不在占用表里的原版方块）。
 - 图在管理员电脑上出，收图夹前缀 `m1-obs_mat_brass-`；交付的图在 `renders/obs_mat_brass/`。
+- **11-15 交付，图待补**（管理员电脑离线，总监 11-15 公告：能交付的照常交付）。分支已含总装 142f3079。
+  - `tools/check.py --scene obs_mat_brass`：过，0 项失败，1 项黄（blocks 项那 5 种作证用的原版方块，见上）。
+  - `tools/delivery.py materials/brass-oldcopper-small`（对总装 142f3079）：过，0 项失败，1 项待看（pictures：25 个机位一张图都还没留）。
+  - 没有图，这一轮看的是贴图的平面拼图（云端几秒的脚本，不是渲染，不进仓库）：细线的直段、拐角、交叉、八角星都接得上，星不读成十字；黄铜板、花纹板、旧铜、切板、整格铜板、护墙板、活板门、搪瓷板各 8×8 平铺，没有看到条纹。
+  - 平面图判不了、等图的：打了光以后黄铜像不像一套、旧铜和原版 exposed 并排的差别、二十格外的平铺。等实机的：铁轨落地会不会自己转向。测试场景里的 130 格线逐格对过 S2 的三条规矩，没有违反的。
+  - 电脑上线以后：出 25 张图，看图改，图进 `renders/obs_mat_brass/`，再发一次【交付】。
