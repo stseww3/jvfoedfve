@@ -41,7 +41,7 @@ How it is made, from the seat up:
           the main building.
   aerial  one wire from the arm at the head to an iron rod on the clock tower (main/tower), a
           string of three porcelain discs at each end. The wire and the guys are two texels
-          thick and of the darkest iron, so that they hold as lines against the sky; the discs
+          thick and of dark iron, so that they hold as lines against the sky; the discs
           aloft are grey porcelain: white ones would be brighter than the night sky and read as
           stars beside the comet. White porcelain is kept for the foot and the guys, low down:
           the highest white piece is the guys' upper egg, at y 16.6.
@@ -71,6 +71,7 @@ read from this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, TOWER_HOOK.
 """
 import functools
 import math
+import os
 
 from artkit import models as M
 from artkit.blocks import st
@@ -160,6 +161,16 @@ EGG_LEN = 7.0
 EGG_DROP = 7.0                  # blocks from the leg down the guy to its upper egg: well clear of the shaft
 GUY_CLAMP = 0.5                 # units of the guy's model, which is drawn out seven times: 3.5 texels of clamp
 STRING_LEN = 20.0               # texels from the hook of a disc string to where the wire leaves its clamp
+# Drafts of the aerial, to be chosen from on pictures (C164_MAST_AERIAL picks one): "line" is one
+# wire; "cage" is three thin wires round small hoops, gathered into the disc strings at both ends;
+# "none" hangs nothing: the mast, insulated at the foot and fed there, is the aerial.
+AERIALS = ("line", "cage", "none")
+AERIAL = os.environ.get("C164_MAST_AERIAL", "line")
+CAGE_R = 2.0                    # texels from the cage's axis to the middle of each wire: the cage is 5 across
+CAGE_WIRES = (90.0, 210.0, 330.0)       # where the wires run round it, degrees from the model's x to its y:
+#                                         the same seen from either end, so one end piece serves both ends
+CAGE_CONE = 12.0                # texels over which the wires spread from a disc string's clamp to the first hoop
+CAGE_BAYS = 6                   # hoops: one at each end of the straight part and CAGE_BAYS - 1 between
 
 # ---- the lamp --------------------------------------------------------------------------------------
 # How the game lights a face of an item model: by the one of the six axes its normal lies nearest to
@@ -207,6 +218,7 @@ CABLE = _flat("iron", 1)                        # the guys
 WIRE = _flat("iron", 1)                         # the aerial
 LEAD = _flat("old_copper", 2)                   # the feed lead at the foot, seen from near only: a darker
 #                                                 step reads as a strip of wood at night
+CAGE = _flat("iron", 0)                         # the wires and hoops of the cage aerial: the darkest iron
 STUD = _flat("iron", 4)                         # rivet heads
 RED = [_flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
 
@@ -243,6 +255,12 @@ def aerial_eye():
     """The end of the arm at the head, where the aerial's upper string hooks on."""
     sx, sz = _corner(TOWER_HOOK)
     return AX + sx * HEAD_EYE[0] * U, HEAD_Y + HEAD_EYE[1] * U, AZ + sz * HEAD_EYE[0] * U
+
+
+def cage_ends():
+    """The two ends of the cage's straight part, where its first and its last hoop sit."""
+    eye, reach = aerial_eye(), (STRING_LEN + CAGE_CONE) / 16.0
+    return _along(eye, TOWER_HOOK, reach), _along(TOWER_HOOK, eye, reach)
 
 
 def lead_lug():
@@ -397,10 +415,11 @@ def _foot(name, legs, belts, reach):
     return m
 
 
-def _head():
+def _head(name, arm=True):
     """The head, from the top belt to the foot of the lamp. Anchor: on the axis, NODE under the top
-    belt's middle, where the uppermost piece of the shaft ends."""
-    m = M.Model(PREFIX + "head", px=float(SCALE))
+    belt's middle, where the uppermost piece of the shaft ends. arm: with the arm that holds the
+    aerial."""
+    m = M.Model(name, px=float(SCALE))
     _belts(m, NODE)
     _plates(m, NODE, PLATE_REACH["a"], 0.0, None)
     _collars(m, -1.75, 1.5)
@@ -417,9 +436,10 @@ def _head():
     # in patches
     m.tube("y", (0.0, 0.0), top, top + 0.25, 0.625, IRON_D)
     m.tube("y", (0.0, 0.0), top + 0.25, top + LAMP_HOLDER / SCALE, 1.125, IRON)
-    # the arm of the aerial, on the corner -x, +z: out and a little up from the collar
-    ex, ey = HEAD_EYE
-    m.beam((-LEG_U, 1.0, LEG_U), (-ex, ey, ex), 0.75, 0.75, IRON_D)
+    if arm:
+        # the arm of the aerial, on the corner -x, +z: out and a little up from the collar
+        ex, ey = HEAD_EYE
+        m.beam((-LEG_U, 1.0, LEG_U), (-ex, ey, ex), 0.75, 0.75, IRON_D)
     return m
 
 
@@ -503,18 +523,47 @@ def _stay():
     return m
 
 
-def _string():
+def _hoop(m, z, depth):
+    """A hoop of the cage at z along the model's z axis: six sides, a wire through the middle of
+    every other one; one texel thick in the round and `depth` along z."""
+    r0, r1 = CAGE_R - 0.5, CAGE_R + 0.5
+    half = r1 * math.tan(math.pi / 6.0)
+    for deg in range(30, 390, 60):
+        m.box((r0, -half, z - depth / 2.0), (r1, half, z + depth / 2.0), CAGE, rot=("z", float(deg), (0.0, 0.0, z)))
+
+
+def _cage():
+    """The straight part of the cage aerial: its wires along +z from the anchor, 48 units long, and
+    the hoops between its two ends. It is drawn out like a cable (M.between), so a hoop is made as
+    much thinner along z as the cage is drawn out, and comes out one texel thick."""
+    m = M.Model(PREFIX + "cage")
+    a, b = cage_ends()
+    drawn = math.dist(a, b) * 16.0 / 48.0
+    for deg in CAGE_WIRES:
+        m.box((CAGE_R - 0.5, -0.5, 0.0), (CAGE_R + 0.5, 0.5, 48.0), CAGE, rot=("z", deg, (0.0, 0.0, 0.0)), grain="z")
+    for i in range(1, CAGE_BAYS):
+        _hoop(m, 48.0 * i / CAGE_BAYS, 1.0 / drawn)
+    return m
+
+
+def _string(name, cage=False):
     """The string of three porcelain discs at each end of the aerial. Anchor: its hook, a shackle
     that takes in the end of the arm or of the tower's rod; +z runs along the wire, which leaves the
     clamp at STRING_LEN. Grey porcelain: the upper string hangs against the sky, beside the comet;
-    the lower one, by the tower's wall, is the same model."""
-    m = M.Model(PREFIX + "string")
+    the lower one, by the tower's wall, is the same model. cage: with the end of the cage aerial,
+    its wires spreading from the clamp to the first hoop, CAGE_CONE on."""
+    m = M.Model(name)
     m.box((-2.5, -2.5, -1.5), (2.5, 2.5, 1.5), IRON_D)
     m.tube("z", (0.0, 0.0), 1.5, STRING_LEN - 2.0, 0.75, IRON_D, sides=4)
     for z in (6.0, 11.0, 16.0):                 # the first one far enough down to hang clear of the arm
         m.tube("z", (0.0, 0.0), z - 1.0, z + 1.0, 3.5, GREY)
         m.tube("z", (0.0, 0.0), z + 1.0, z + 2.0, 1.75, GREY)
     m.box((-1.5, -1.5, STRING_LEN - 2.0), (1.5, 1.5, STRING_LEN + 1.0), IRON_D)
+    if cage:
+        for deg in CAGE_WIRES:
+            x, y = CAGE_R * math.cos(math.radians(deg)), CAGE_R * math.sin(math.radians(deg))
+            m.beam((0.0, 0.0, STRING_LEN), (x, y, STRING_LEN + CAGE_CONE), 1.0, 1.0, CAGE)
+        _hoop(m, STRING_LEN + CAGE_CONE, 1.0)
     return m
 
 
@@ -525,7 +574,8 @@ def _models():
         _lattice(PREFIX + "web", False, False, PLATE_REACH["b"]),
         _foot(PREFIX + "foot", True, True, PLATE_REACH["a"]),
         _foot(PREFIX + "foot_web", False, False, PLATE_REACH["b"]),
-        _head(),
+        _head(PREFIX + "head"),
+        _head(PREFIX + "head_bare", arm=False),
         _light(PREFIX + "light", True),
         _light(PREFIX + "light_off", False),
         _cable(PREFIX + "guy", CABLE, clamp=GUY_CLAMP),
@@ -533,7 +583,9 @@ def _models():
         _cable(PREFIX + "lead", LEAD),
         _insulator(),
         _stay(),
-        _string(),
+        _string(PREFIX + "string"),
+        _string(PREFIX + "cage_end", cage=True),
+        _cage(),
     ]
     return {m.name: m for m in built}
 
@@ -615,13 +667,18 @@ def _guys(canvas, origin):
 
 
 def _aerial(canvas, origin):
-    """The wire from the arm at the head to the tower's rod, a disc string at each end."""
+    """The wire, or the cage, from the arm at the head to the tower's rod, a disc string at each end."""
+    if AERIAL == "none":
+        return 0
     eye = aerial_eye()
-    n = _lay(canvas, "string", eye, TOWER_HOOK, origin)
-    n += _lay(canvas, "string", TOWER_HOOK, eye, origin)
-    n += _stretch(canvas, "antenna", _along(eye, TOWER_HOOK, STRING_LEN / 16.0),
-                  _along(TOWER_HOOK, eye, STRING_LEN / 16.0), origin)
-    return n
+    end = "cage_end" if AERIAL == "cage" else "string"
+    n = _lay(canvas, end, eye, TOWER_HOOK, origin)
+    n += _lay(canvas, end, TOWER_HOOK, eye, origin)
+    if AERIAL == "cage":
+        a, b = cage_ends()
+        return n + _stretch(canvas, "cage", a, b, origin)
+    return n + _stretch(canvas, "antenna", _along(eye, TOWER_HOOK, STRING_LEN / 16.0),
+                        _along(TOWER_HOOK, eye, STRING_LEN / 16.0), origin)
 
 
 def build(canvas, origin=(0, 0, 0), version=None):
@@ -630,8 +687,11 @@ def build(canvas, origin=(0, 0, 0), version=None):
     version = version or DEFAULT
     if version not in VERSIONS:
         raise ValueError(f"machines/mast has versions {', '.join(VERSIONS)}, not {version!r}")
+    if AERIAL not in AERIALS:
+        raise ValueError(f"machines/mast has the aerials {', '.join(AERIALS)}, not {AERIAL!r}")
     n = _shaft(canvas, origin, version)
-    n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE), yaw=_CORNER_YAW[_corner(TOWER_HOOK)])
+    n += _place(canvas, "head" if AERIAL != "none" else "head_bare", (AX, HEAD_Y, AZ), origin, scale=float(SCALE),
+                yaw=_CORNER_YAW[_corner(TOWER_HOOK)])
     n += _lamp(canvas, origin)
     n += _guys(canvas, origin)
     n += _aerial(canvas, origin)
