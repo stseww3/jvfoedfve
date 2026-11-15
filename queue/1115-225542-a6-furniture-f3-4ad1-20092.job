@@ -1,0 +1,3 @@
+branch=cursor/c164-a6-furniture-f3-4ad1
+head=e0f7cc15f682aec629d855a829c3dd72ca4f31af
+args=--tail 40 --limit 900 python\ tools/selfshots.py\ obs_props_furniture\ \&\&\ python\ tools/selfshots.py\ obs_props_furniture_site\ \&\&\ python\ tools/selfshots.py\ obs_props_seams\ \&\&\ cd\ build\ \&\&\ python\ -m\ scenes.obs_props_furniture_site\ --report 
