@@ -54,3 +54,8 @@
   4. **不写字**：算式、图注、图签都是长短不一的短线；抬头是搪瓷蓝星图条，**没有台徽**（台徽最小 16 像素，纸品抬头只有 1–2 像素高）。
   5. 待评审看图定的两处：黑板删线以后「轨道还读不读得出来」、大星图一对在回廊层 3×2 空墙上的分量（c289 还没回）。
 - 2026-11-16 凌晨 **合进总装**（s2 #48626，`1ae1fb20`；合并提交 ccbb4394）。s2 抽了 3 张在合并后的树上逐像素核，**3/3 全对**（far、star_chart_near、blueprint_near）——这是因为我先合总装再出图。`check.py --scene obs_props_paper` 在总装新头上重跑仍 **PASS 0 失 0 黄**。s2 的话记一句：黑板那道拱点线是我自己拿卡上第 4 条的规矩判出来删的，不是评审提的——以后这类「卡上写了硬规矩」的，交付前自己先按规矩过一遍图。
+- 2026-11-16 凌晨 **接口对完（c292 授时室）**（lamps）。c292 要三件：`logbook`（校表台，yaw east+8）、`logbook_shut`（报务台，yaw west−15）、`blueprint`（南墙卡片柜上方，facing north，图心离地 2.625）。把 `timeroom.py` 和本包 `paper.py` 放同一棵树跑 `build_timeroom()`：
+  1. **`blueprint` 直接立上**，坐标和尺寸对得上。
+  2. **两个 logbook 没立，原因不在本包**：他的 `PIECES` 给了 `on=("furniture","writing_desk")`，循环要读 `furniture.TOP["writing_desk"]` 才算高度，而**树里还没有 `props/furniture`**（ImportError），他的 `continue` 跳过了。家具进树就自动立上。
+  3. 他问的 `TOP` 是「支撑件那个包」提供的（`under.TOP[kind]`），不是本包的接口——本包 `place()` 不读高度，**不需要 `TOP`**，他那段代码是对的。
+  4. 实尺寸（格）：`logbook` 0.625×0.44×0.28、`logbook_shut` 0.375×0.5×0.5、`blueprint` 1.5×1（出墙 2，薄片，钉墙时不占柜子的格）。
