@@ -109,16 +109,34 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 TRIALS = {
     "card": dict(of="blue", tick=3100, moon_phase="new_moon"),
     "pink": dict(of="blue", tick=4100, glow="#e9706a"),
-    "near": dict(of="blue", tick=5100, fog_end=384.0),
-    "far": dict(of="blue", tick=7100, fog_end=1536.0),
+    "near": dict(of="blue", tick=5100, fog_end=384.0, cloud_fog_end=384.0),
+    "far": dict(of="blue", tick=7100, fog_end=1536.0, cloud_fog_end=1536.0),
 }
 TRIAL_HOLD, TRIAL_RAMP = 100, 50     # held from tick - 100 to tick + 100, blended over 50 ticks each side
+
+
+def _cloud_colour(name, v):
+    """The vanilla cloud layer's colour: the outermost step of the block sea, one per light version.
+
+    The director asked for one source (11-16, item 4): the layer and the block clouds must be the
+    same tone where they meet, so the number belongs to `sky/cloudsea`, which owns the sea, and this
+    module reads it. `cloudsea.OUTER` is keyed by look name and holds what that step shows in the
+    game under each version's light. While the cloudsea card is not in the tree yet -- or while a
+    look has no entry -- the value written in the look's own row stands.
+    """
+    base = name
+    if name not in LOOKS:                       # a trial: its colour is its look's
+        base = TRIALS[name]["of"]
+    try:
+        from .cloudsea import OUTER
+    except Exception:
+        OUTER = {}
+    return OUTER.get(base, v["cloud"])
 
 
 def _rgb(text):
     h = text.lstrip("#")
     return [int(h[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
-
 
 def _hex(rgb):
     return "#" + "".join(f"{max(0, min(255, int(round(c * 255.0)))):02x}" for c in rgb)
@@ -172,7 +190,8 @@ def values(name=DEFAULT):
         "sun_angle": v["sun_angle"], "moon_angle": MOON_ANGLE, "star_angle": STAR_ANGLE,
         "moon_phase": v["moon_phase"], "star_brightness": v["stars"],
         "sky_light_color": v["sky_light"], "sky_light_factor": v["sky_factor"],
-        "ambient_light_color": v["ambient"], "cloud_color": _argb(v["cloud"], v.get("cloud_alpha", CLOUD_ALPHA)),
+        "ambient_light_color": v["ambient"], "cloud_color": _argb(_cloud_colour(name, v),
+                                                                 v.get("cloud_alpha", CLOUD_ALPHA)),
         "block_light_tint": LAMP,
         "fog_start_distance": v.get("fog_start", FOG_START), "fog_end_distance": v.get("fog_end", FOG_END),
         "cloud_height": float(GROUND_Y + CLOUD_TOP - CLOUD_THICKNESS),
