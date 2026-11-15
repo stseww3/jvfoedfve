@@ -17,7 +17,9 @@ its twelve board views. The trip
   4. takes the pictures into renders/real/<scene>/ (realshots.py --take; pictures at another view
      distance than 12 go to renders/real-view<n>/<scene>/, they are not the board's) and draws
      sheet.jpg beside them; for the master scene also compare.jpg, each board view as the offline
-     renderer drew it (renders/board/<tag>/) beside the game's;
+     renderer drew it (renders/board/<tag>/) beside the game's -- when the offline board of that
+     commit is not drawn yet, boardrender.py draws the sheet as it comes, and a compare.jpg of an
+     earlier board is removed meanwhile;
   5. stops the game, the server and the display, whatever happened before;
   6. leaves the trip's log in renders/real/_trips/<time>-<tag>.log. The receipt of a node job is
      a retelling; what the trip really said comes home in this file, with the pictures.
@@ -232,12 +234,11 @@ def sheets(trip, scene, folder, tag, view, clouds):
     drawn = f"the game 26.3 on a node, view distance {view}, cloud range {clouds}"
     boardrender.sheet(folder, names, f"c164 {scene}, {drawn}, the code of {commits}", ext=".jpg")
     made = ["sheet.jpg"]
-    board = os.path.join(PROJECT, "renders", "board", tag)
-    if scene == MASTER and os.path.isdir(board):
-        boardrender.side_by_side(board, folder, names, f"c164 board of {commits}: offline (build/render.py) beside {drawn}",
-                                 os.path.join(folder, "compare.jpg"))
-        made.append(f"compare.jpg (beside renders/board/{tag}/)")
-    trip.say(f"{scene}: {', '.join(made)} in {os.path.relpath(folder, PROJECT)}/")
+    if scene == MASTER:
+        # beside the offline board of the same commit, if that is drawn already (else boardrender.py
+        # draws the sheet when it comes); never a sheet of an earlier board beside these pictures
+        made.append(boardrender.beside_game(tag, folder, drawn, stale_goes=True))
+    trip.say(f"{scene}: {', '.join(m for m in made if m)} in {os.path.relpath(folder, PROJECT)}/")
 
 
 def look_sheets(trip, scene, base, runs, commit, view, clouds):

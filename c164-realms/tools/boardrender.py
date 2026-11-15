@@ -26,6 +26,9 @@ What lands in the folder:
     shots.txt       for every view its tick, the commit of the code it shows and the first 16
                     digits of the picture file's SHA-256 (the note tools/selfshots.py writes)
     sheet.jpg       all twelve on one sheet, four across, each with its name
+and, when the real-machine pictures of the same commit are kept already (renders/real/obs/, a
+trip of tools/nodetrip.py), renders/real/obs/compare.jpg: every view as drawn here beside the
+game's picture of it. A trip that comes after the offline board draws that sheet itself.
 
 With --only the pictures named are drawn again and the others, the note's lines for them and the
 sheet's cells stay what they were.
@@ -183,6 +186,36 @@ def side_by_side(left, right, names, title, out, exts=(".png", ".jpg"), labels=(
     img.save(out, "JPEG", quality=88)
 
 
+def beside_game(tag, real=None, drawn=None, stale_goes=False):
+    """compare.jpg of the master scene's real-machine pictures: every board view as it is drawn
+    offline (renders/board/<tag>/) beside the game's picture of it. The two sets come from
+    different machines at different times, so whichever arrives second draws the sheet: this tool
+    after an offline board, tools/nodetrip.py after a trip. It is drawn only when both sets show
+    the same commit. `stale_goes` is for the trip, whose pictures are new: a sheet it cannot draw
+    again is one of an earlier board, and is removed rather than left beside pictures it does not
+    show. Returns what happened, in a few words ('' when there is nothing to say)."""
+    import realshots
+    real = real or os.path.join(realshots.KEPT, SCENE)
+    out = os.path.join(real, "compare.jpg")
+    board = os.path.join(PROJECT, "renders", "board", tag)
+    kept = realshots.read_kept(os.path.join(real, realshots.NOTE))
+    names = [shot for shot in kept if os.path.exists(os.path.join(real, shot + ".jpg"))]
+    of_game = sorted({kept[shot][1] for shot in names})
+    of_board = sorted({row[1] for row in read_note(os.path.join(board, NOTE)).values()})
+    if names and of_game == of_board:
+        if drawn is None:
+            distances = sorted({kept[shot][4] for shot in names if len(kept[shot]) > 4})
+            drawn = "the game 26.3 on a node" + (f" ({', '.join(distances)})" if distances else "")
+        side_by_side(board, real, names, f"c164 board of {', '.join(of_game)}: offline (build/render.py) beside {drawn}", out)
+        return f"compare.jpg (beside renders/board/{tag}/)"
+    if stale_goes and os.path.exists(out):
+        os.remove(out)
+        return (f"no compare.jpg (renders/board/{tag}/ " + ("is not drawn yet" if not of_board else
+                f"shows {', '.join(of_board)}, the game's pictures {', '.join(of_game) or 'nothing'}")
+                + "; the sheet of an earlier board is removed)")
+    return ""
+
+
 def cells(pictures, title, out, across=2, size=(960, 540)):
     """Pictures picked by hand on one sheet, in the order given: `pictures` is [(label, file)]."""
     font = _font()
@@ -266,6 +299,12 @@ def main():
     absent = [n for n in names if not os.path.exists(os.path.join(folder, n + ".png"))]
     if absent:
         print("still without a picture: " + ", ".join(absent))
+    try:
+        said = beside_game(tag)
+    except Exception as exc:            # the board is drawn and kept; this sheet is a convenience
+        said = f"compare.jpg could not be drawn ({exc})"
+    if said:
+        print(f"renders/real/{SCENE}/: {said}")
     return 0
 
 
