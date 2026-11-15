@@ -49,6 +49,7 @@ and how the slit is shut:
         collar of the same height. The slit is shut by a curtain of copper slats drawn up from
         its foot between two flush iron rails; its last slat is the iron bar the chains pull.
 """
+import functools
 import math
 
 from ..common import blocks as B
@@ -67,9 +68,9 @@ NICHE_SUNK = True                       # False: the panel stands in the wall fa
 CORBEL_Y = DRUM_TOP - 1                 # 22
 SKIRT_Y = S.DOME_SPRING                 # 24: the ring beam
 SILL_Y = SKIRT_Y + 1                    # 25: the slit opens above this row
-FOOT_ROWS = 3                           # rows of plates upright over the ring beam: y 25..27 (1: the bare ellipse)
 CROWN = S.DOME_APEX + 1.0               # 38.0: the plates' top face round the axis
 FOOT_R = R + 0.5                        # 13.5: the plates' face at the foot (ring 13's outer face)
+LIP = (13, 11)                          # the courses whose top row ends in a stair (see lips())
 PILASTER_OFF = 4.5                      # a pilaster stands at most this many degrees off its seam
 SLIT_HALF = S.SLIT_W // 2               # 2: the slit is z -2..2
 SLIT_HEAD = CX - 2                      # 2: the last column of the slit; the crown starts east of it
@@ -100,7 +101,12 @@ LEAF_W = SLIT_HALF + 1                  # 3: a leaf is its stile and two columns
 PARTED = {"closed": 0, "half": 2, "open": SLIT_HALF + 1}            # version a: how far each leaf has slid
 DRAWN = {"closed": 91.0, "half": 35.0, "open": 0.0}                 # version b: the curtain stands up to here (degrees)
 SLAT_DEG = 5.0                          # a slat of the curtain, in degrees along the meridian
-POSTS = 2 * GORES                       # the gallery's posts: over every seam and between
+# Version a: the courses, from the foot, that the run of the darker copper under seam k stains, by
+# k % 5 -- beside an axis, a main seam (where version b has a rib), a diagonal, a main seam, beside
+# an axis.
+RUNS = {"a": (1, 3, 2, 3, 1), "b": None}
+HEM = 0                                 # rows of the darker copper all round the foot, over the ring beam
+POSTS = 0                               # the gallery's posts (2 * GORES: over every seam and between)
 
 
 def _polar(x, z):
@@ -231,19 +237,27 @@ def _half(h):
     return math.floor(2.0 * h + 0.5) / 2.0
 
 
+def _ring(x, z):
+    """The ring of the raster circle a column lies in: its distance from the centre column, rounded
+    (O.disc counts the same way, so ring R is the dome's edge)."""
+    return int(math.hypot(x - CX, z - CZ) + 0.5)
+
+
+def course(ring):
+    """The top face of the plates of a ring: a half-ellipse FOOT_R wide at the ring beam's foot and
+    CROWN high on the axis, taken where the ring's middle is and rounded to the nearer half block."""
+    return _half(SKIRT_Y + (CROWN - SKIRT_Y) * math.sqrt(max(0.0, 1.0 - (ring / FOOT_R) ** 2)))
+
+
 def plates():
-    """{column: top face} of the dome's plates, the slit's columns included: a half-ellipse FOOT_R
-    wide at the ring beam's foot and CROWN high on the axis, rounded to the nearer half block, and
-    nowhere lower than FOOT_ROWS rows of plates over the ring beam. The ellipse is all but upright
-    at its foot (at y 28 it has come in by half a block), so the bare ellipse leaves the columns of
-    the dome's edge anything from one row to four high, the last column of every straight run of
-    the raster circle the lowest: a ragged foot. Upright for three rows, the edge is level."""
-    out = {}
-    for x, z in O.disc(CX, CZ, R):
-        d = math.hypot(x - CX, z - CZ)
-        h = SKIRT_Y + (CROWN - SKIRT_Y) * math.sqrt(max(0.0, 1.0 - (d / FOOT_R) ** 2))
-        out[(x, z)] = max(_half(h), SKIRT_Y + 1.0 + FOOT_ROWS)
-    return out
+    """{column: top face} of the dome's plates, the slit's columns included. The plates lie in
+    courses, one to a ring of the raster circle and level all the way round: 28 on the dome's edge
+    (three rows of plates upright over the ring beam), then 30.5, 32, 33.5, 34.5, 35.5 and by half
+    blocks up to 38 round the axis. Every level of the dome is then one of the round plans a ring
+    wide apart, and each course ends in one clean line. (Taken column by column from its own
+    distance, the ellipse gives the columns of one ring up to four different heights where it is
+    steep: from the roofs the dome's lower half was a bundle of pipes, not courses.)"""
+    return {(x, z): course(_ring(x, z)) for x, z in O.disc(CX, CZ, R)}
 
 
 def _in_slit(x, z):
@@ -255,14 +269,27 @@ def _railed(x, z, version):
     return version == "b" and abs(z - CZ) == SLIT_HALF + 1 and x <= SLIT_HEAD
 
 
-def _on(x, z, angles):
-    """Does the column lie on one of these meridians (a line one block wide)?"""
-    dx, dz = x - CX, z - CZ
-    for a in angles:
-        ux, uz = math.cos(math.radians(a)), math.sin(math.radians(a))
-        if dx * ux + dz * uz > 0 and abs(dx * uz - dz * ux) <= 0.5:
-            return True
-    return False
+@functools.lru_cache(maxsize=None)
+def meridians():
+    """{column: the number of the seam it lies on}: a seam's meridian takes one column of every
+    ring from the dome's edge up, the one closest to it of those that show a whole side to the
+    ring below -- so it is one block wide on every course and never skips one (a straight line one
+    block wide slips between the columns of a thin ring). On the dome's edge it is the column of
+    the seam's axle box."""
+    out = {}
+    for ring in range(1, R + 1):
+        body = O.disc(CX, CZ, ring)
+        face = [c for c in body if _ring(*c) == ring and any(O.step(c, d) not in body for d in O.SIDES)]
+        for k, a in enumerate(rib_angles()):
+            out.setdefault(_nearest(face, a)[0], k)
+    return out
+
+
+def _seam(x, z, version):
+    """The number of the seam the column lies on, of those the version draws; None for a column
+    on none."""
+    k = meridians().get((x, z))
+    return None if k is None or (version == "b" and k not in MAIN_RIBS) else k
 
 
 def _lined(x, z, version):
@@ -270,16 +297,23 @@ def _lined(x, z, version):
     collar itself? Not in the slit, on the rails or on the crown."""
     if (x, z) in CAP or _in_slit(x, z) or _railed(x, z, version):
         return False
-    ring = int(math.hypot(x - CX, z - CZ) + 0.5)
-    return ring == COLLAR[version] or (ring > COLLAR[version] and _on(x, z, ribs(version)))
+    ring = _ring(x, z)
+    return ring == COLLAR[version] or (ring > COLLAR[version] and _seam(x, z, version) is not None)
+
+
+def _stained(x, z, version):
+    """Is the column of a seam one of a run of the darker copper: the water that gathers along a
+    seam runs down it and stains its lower end, over more courses under some seams than others."""
+    reach = RUNS[version]
+    ring = _ring(x, z)
+    return reach is not None and ring != COLLAR[version] and ring > R - reach[_seam(x, z, version) % len(reach)]
 
 
 def _relief(x, z, version):
     """How far the column stands over the plates: a rib's or the collar's relief, else nothing."""
     if not _lined(x, z, version):
         return 0.0
-    ring = int(math.hypot(x - CX, z - CZ) + 0.5)
-    return (COLLAR_RELIEF if ring == COLLAR[version] else RELIEF)[version]
+    return (COLLAR_RELIEF if _ring(x, z) == COLLAR[version] else RELIEF)[version]
 
 
 def surface(version="a"):
@@ -292,6 +326,99 @@ def surface(version="a"):
         tops[c] = CROWN + 0.5
     tops[(CX, CZ)] = CROWN + 1.0
     return tops
+
+
+# --- the stairs that end a course -------------------------------------------------------------------
+QUARTERS = frozenset((sx, sz) for sx in (-1, 1) for sz in (-1, 1))      # of a column: (east or west, south or north)
+
+
+def _open_quarters(col, body):
+    """The quarters of a column that border a column outside `body`."""
+    x, z = col
+    return frozenset((sx, sz) for sx, sz in QUARTERS if not {(x + sx, z), (x, z + sz), (x + sx, z + sz)} <= body)
+
+
+def _towards(d):
+    """The quarters on the side of a column that looks in direction d."""
+    return frozenset(q for q in QUARTERS if (q[0] == d[0] if d[0] else q[1] == d[1]))
+
+
+def low_quarters(col, facing):
+    """The quarters the stair on a column leaves low, among stairs of one row turned as `facing`
+    says ({column: direction it climbs in}): the game's rule (StairBlock; artkit/shapes.py has it
+    for the pictures). A stair is the corner piece when the stair before or behind it is turned
+    across it, and the stair beside it does not carry straight on."""
+    f = facing[col]
+    back = (-f[0], -f[1])
+    high = _towards(f)
+
+    def other(side):
+        return facing.get(O.step(col, side))
+
+    def takes(side):
+        return other(side) != f
+
+    front = other(f)
+    if front is not None and (front[0] == 0) != (f[0] == 0) and takes((-front[0], -front[1])):
+        high = high & _towards(front)                                   # the outer corner: one quarter
+    else:
+        behind = other(back)
+        if behind is not None and (behind[0] == 0) != (f[0] == 0) and takes(behind):
+            high = high | (_towards(back) & _towards(behind))           # the inner corner: three quarters
+    return QUARTERS - high
+
+
+def lips(version="a"):
+    """{column: the direction its stair climbs in} of the stairs that end the courses of LIP: the
+    top row of such a course is stairs that climb towards the axis, so its edge is cut back by a
+    quarter of a block and the course above starts half a block further in -- the step from the
+    upright foot to the dome, and the one above the next course, are the two highest of the dome
+    and the two that show from the roofs.
+
+    A stair is to leave low exactly the quarters of its column that border the course below. Along
+    a straight run of the ring that is a stair turned to the axis; at a corner the game makes the
+    corner piece only where a stair turned across it stands before or behind, so the corners are
+    tried both ways. A corner that cannot be had keeps a quarter too many (a small tooth); a stair
+    that would cut into the course's own top is left a whole block. Not on a seam, a rib or a rail
+    (they run through), not where the leaves of version a lie or slide."""
+    out = {}
+    for ring in LIP:
+        body = O.disc(CX, CZ, ring)
+        want = {}
+        for col in body:
+            x, z = col
+            if _ring(x, z) != ring or _lined(x, z, version) or _railed(x, z, version):
+                continue
+            if x <= SLIT_HEAD and abs(z - CZ) <= SLIT_HALF + (LEAF_W if version == "a" else 0):
+                continue
+            want[col] = _open_quarters(col, body)
+        facing = {}
+        for col, low in want.items():
+            if len(low) == 2:
+                facing[col] = next(d for d in O.SIDES if _towards(d) == QUARTERS - low)
+        corners = sorted(col for col in want if col not in facing)
+        turns = {}
+        for (x, z) in corners:                              # a corner's stair climbs one of the two ways in
+            turns[(x, z)] = [d for d in ((CX - x, 0), (0, CZ - z)) if d != (0, 0)]
+            turns[(x, z)] = [(dx and dx // abs(dx), dz and dz // abs(dz)) for dx, dz in turns[(x, z)]]
+            longer = abs(x - CX) >= abs(z - CZ)             # a first guess: the outer corner along the longer axis
+            facing[(x, z)] = turns[(x, z)][0 if longer == (len(want[(x, z)]) == 3) else -1]
+
+        def miss(col, trial):
+            low = low_quarters(col, trial)
+            return (len(low - want[col]), len(want[col] - low))
+
+        for _ in range(3):
+            for col in corners:
+                facing[col] = min(turns[col], key=lambda d: (miss(col, {**facing, col: d}), d != facing[col]))
+        while True:
+            cut = [col for col in facing if miss(col, facing)[0]]
+            if not cut:
+                break
+            for col in cut:
+                del facing[col]
+        out.update(facing)
+    return out
 
 
 def _foot(tops, c):
@@ -341,11 +468,13 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
     ox, oy, oz = origin
     tops = surface(version)
     boxes = axle_boxes()
+    lip = lips(version)
     for (x, z) in sorted(tops):
         slit = _in_slit(x, z)
         rail = _railed(x, z, version)
         lined = _lined(x, z, version)
-        for y, slab in _cells(tops, (x, z)):
+        cells = _cells(tops, (x, z))
+        for y, slab in cells:
             if slit and y > SILL_Y:
                 break
             if y == SKIRT_Y:
@@ -354,8 +483,12 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
                 state = CAST
             elif rail and y > SILL_Y:
                 state = _state(LEAF, slab)
+            elif lined:
+                state = _state(RIB if _stained(x, z, version) else SEAM[version], slab)
+            elif (x, z) in lip and y == cells[-1][0] and not slab:
+                state = f"{PLATE.stairs}[facing={O.NAME[lip[(x, z)]]},half=bottom]"
             else:
-                state = _state(SEAM[version] if lined else PLATE, slab)
+                state = _state(RIB if y <= SKIRT_Y + HEM else PLATE, slab)
             canvas.set(ox + x, oy + y, oz + z, state)
 
 

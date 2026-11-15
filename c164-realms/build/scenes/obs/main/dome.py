@@ -23,7 +23,9 @@ both versions and the three states of the slit.
 """
 import sys
 
+from artkit import shapes
 from artkit.canvas import Canvas
+from artkit.shapes import Shaper
 
 from ..common import blocks as B
 from . import _dome
@@ -165,14 +167,49 @@ def check():
             for x, z in p.core:
                 if any(c.has(x, y, z) for y in range(D.ATTIC, D.SKIRT_Y + 1)):
                     out.append(f"{tag} room: something stands inside the inner leaf at ({x}, {z})")
-            # 9. the seams: version a draws them with the uncut sheet and has none of the darker
-            #    copper, version b the other way round
+            # 9. the seams: version a draws them with the uncut sheet, and has the darker copper
+            #    only where a run stains a seam; version b draws its ribs with the darker copper
+            #    and has no sheet
             names = set(c.count())
-            if version == "a" and (D.SHEET not in names or names & set(D.RIB.all())):
-                out.append(f"{tag} seams: version a does not draw them with the uncut sheet alone")
+            dark = set(D.RIB.all())
+            if version == "a":
+                astray = sorted((x, y, z) for (x, z), (rows, face) in cols.items() for y in rows
+                                if name(x, y, z) in dark and not (D._lined(x, z, "a") and D._stained(x, z, "a")))
+                if D.SHEET not in names or astray:
+                    out.append(f"{tag} seams: version a has no uncut sheet, or the darker copper off its runs: {astray[:6]}")
             if version == "b" and (D.RIB.block not in names or D.SHEET in names):
                 out.append(f"{tag} seams: version b does not draw its ribs with the darker copper alone")
+            # 10. the stairs that end a course: only on the top row of a course of D.LIP, and by the
+            #     game's rule none leaves low a quarter that does not border the course below
+            lip = D.lips(version)
+            shaper = Shaper(dict(c.b), lambda state: True)
+            for (x, z), (rows, face) in sorted(cols.items()):
+                for y in rows:
+                    if name(x, y, z) != D.PLATE.stairs:
+                        continue
+                    ring = D._ring(x, z)
+                    if (x, z) not in lip or y != int(D.course(ring)) - 1:
+                        out.append(f"{tag} lips: a stair at ({x}, {y}, {z}) that ends no course")
+                        continue
+                    props = shapes.full(c.get(x, y, z))[1]
+                    low = _low(props["facing"], shaper.stairs((x, y, z), props))
+                    if props["half"] != "bottom" or low - D._open_quarters((x, z), O.disc(D.CX, D.CZ, ring)):
+                        out.append(f"{tag} lips: the stair at ({x}, {y}, {z}) cuts into its own course")
     return out
+
+
+def _low(facing, shape):
+    """The quarters a stair leaves low, from its state as the game completes it."""
+    f = O.STEP[facing]
+    left = O.STEP[shapes.LEFT[facing]]
+    high = D._towards(f)
+    kind, _, hand = shape.partition("_")
+    side = D._towards(left if hand == "left" else (-left[0], -left[1]))
+    if kind == "outer":
+        high = high & side
+    elif kind == "inner":
+        high = high | side
+    return D.QUARTERS - high
 
 
 def _row(c, y):
