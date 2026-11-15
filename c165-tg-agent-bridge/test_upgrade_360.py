@@ -418,11 +418,11 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert bridge.device_row(dev_a["id"])["status"] == "active"
     assert bridge.device_row(dev_b["id"])["status"] == "active"
 
-    # 9b. Verify One-Prompt Auto-Spawning Worker Host (`mode="worker_host"` -> instant 0s join + auto-spawns isolated worker VMs via `w-...` codes)!
-    wh_join = await bridge.call_tool("join", {"mode": "worker_host", "main_key": mkey, "pool_size": 3})
+    # 9b. Verify One-Prompt Auto-Spawning Coordinator (`mode="coordinator"` -> instant 0s join, zero "算力" wording, auto-spawns isolated worker VMs via `w-...` codes)!
+    wh_join = await bridge.call_tool("join", {"mode": "coordinator", "main_key": mkey, "pool_size": 3})
     assert not wh_join.is_error
     wh_txt = text_of(wh_join)
-    assert "whost1" in wh_txt
+    assert "whost1" in wh_txt and "算力" not in wh_txt
     wh_ag = bridge.node_row("whost1")["agent"]
     # node1 was already online, so pool_size=3 must auto-enqueue node2 and node3 onto whost1!
     wh_inbox = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))

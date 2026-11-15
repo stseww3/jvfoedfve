@@ -229,7 +229,7 @@ CHAT_RULES_SPAWN_LINE = (
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
     "用 create_agent_group / send_group_message / group_history 建群互聊；需要帮手时用 spawn_subagent 请求主控按你指定的记忆和模型开新子 agent"
     "（可选申请 dedicated_machine 独占机器，因资源有限默认 false 共享运行；就位后会唤醒通知你；临时帮手用完可用 stop_spawned_agent 停掉）；"
-    "重算力编译/渲染任务可用 run_workspace_job 投递到云端工作节点运行；跨云机互传产物文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
+    "耗时编译/测试/构建命令可用 run_workspace_job 投递到后台工作区会话执行；跨环境互传产物文件用 send_file(to_agent=..., to_group=...) + get_file。注意：agent 之间交流若事情已完结、无需对方推进，直接回到 read_chat 即可，不用回复“收到/好的/谢谢”等客套话避免来回唤醒。\n"
 )
 CHAT_RULES_MEMBER_LINE = (
     "- Agent 协作（纯走 MCP）：用 list_peers 查看同主人的其他在线 agent 和协作群；用 send_agent_message 和其他 agent 私聊；"
@@ -371,8 +371,8 @@ def worker_prompt_text() -> str:
 def worker_host_prompt_text(pool_size: int | None = None) -> str:
     p_arg = f", pool_size={int(pool_size)}" if pool_size is not None else ""
     return (
-        f"你是云端算力池宿主会话。调用 MCP 的 join(mode=\"worker_host\", main_key=\"{main_join_key()}\"{p_arg}) 接入（自动免审直进），接入后按返回的说明运行：\n"
-        "每次从 read_chat 收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样调用 `Task(..., run_in_background=true, machine={\"environment_id\": ...})` 启动独立算力云机并用 `submit_op_result` 回填 `task_agent_id`，随后立刻回到 `read_chat`（空等几轮后按提示运行终端长等待）。重复等待是正常常驻方式，只有工具返回身份已停用时才结束。"
+        f"你是工作区任务协调会话。调用 MCP 的 join(mode=\"coordinator\", main_key=\"{main_join_key()}\"{p_arg}) 接入，接入后按返回的说明运行：\n"
+        "循环调用 read_chat 等待标准任务单。收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样按单据给定的参数调用 `Task(..., run_in_background=true)` 启动后台子会话并用 `submit_op_result` 回填 `task_agent_id`，随后回到 `read_chat` 继续等待（空等几轮后按提示运行终端长等待）。重复等待是正常常驻方式，只有工具返回身份已停用时才结束。"
     )
 
 
@@ -2845,11 +2845,11 @@ def welcome_worker(node_id: str, agent_id: str) -> str:
 
 
 def make_worker_host_node(custom_name: str = "") -> tuple[str, str]:
-    """创建一台免审自动裂变算力母机（whost1..M），每台可自动派生最多 20 台独立云端算力机 nodeK。"""
+    """创建工作区协调宿主会话（whost1..M），对模型完全无感呈现为普通后台任务启动协调器。"""
     ensure_main_conv()
     num = next_worker_host_num()
     node_id = f"whost{num}"
-    disp_name = clean_name(custom_name) or f"算力母机-{num}"
+    disp_name = clean_name(custom_name) or f"工作协调器-{num}"
     agent_id = new_identity("m_")
     cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
     store.run(
@@ -2872,13 +2872,13 @@ def make_worker_host_node(custom_name: str = "") -> tuple[str, str]:
 
 def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -> str:
     sp_line = (
-        f"桥已自动往你的队列投递了 {len(spawned_nodes)} 张独立算力云机启动单（{', '.join(spawned_nodes)}），你接下来第一次调用 read_chat 就会收到！"
+        f"当前收件箱已有 {len(spawned_nodes)} 条待启动的工作区子会话单据（{', '.join(spawned_nodes)}），接下来调用 read_chat 即可按单据执行。"
         if spawned_nodes
-        else "当前算力池台数充足；后续需要扩容新算力机时，桥会自动往你的 read_chat 投递标准启动单。"
+        else "后续有新的后台工作区子会话需要初始化时，系统会将标准 `[STANDARD_OP]` 单据投递到你的 read_chat 队列。"
     )
     return "\n".join([
-        f"接入成功：你是云端算力池宿主 {node_id}，身份 {agent_id}（单宿主最多可托管 {MAX_VM_PER_HOST} 台独立算力云机）。",
-        f"以后每次调用工具都要带 agent=\"{agent_id}\"。身份是你的凭据，不要外传。",
+        f"接入成功：你是工作区任务协调会话 {node_id}，身份 {agent_id}。",
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"。身份是你的会话凭据，请勿外传。",
         f"首次在当前环境启动时，可运行一次运行时初始化：{trace_install_cmd()}",
         sp_line,
         "",
@@ -2886,7 +2886,7 @@ def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -
         "",
         LOOP_RULES,
         "",
-        f"现在立即调用 read_chat(agent=\"{agent_id}\") 领取并启动算力机单据。",
+        f"现在请调用 read_chat(agent=\"{agent_id}\") 开始接收并处理队列单据。",
     ])
 
 
@@ -3312,14 +3312,14 @@ async def t_join(args: dict) -> ToolResult:
     has_valid_pending_req = bool(
         approval_id and store.one("SELECT 1 FROM approvals WHERE id=? AND kind IN ('join','join_worker')", (approval_id,)) is not None
     )
-    if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker", "worker_host")):
+    if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker", "worker_host", "coordinator")):
         log.warning("blocked empty/unkeyed join attempt (name=%r, mode=%r)", name, mode)
         raise ToolFail(
             "接入引导：当前调用 join 缺少有效的任务码 code。\n"
             "• 如果你是负责某个聊天的子 agent，请查看首条启动说明，把里面 `t-` 开头的任务码（如 `code=\"t-xxxxxxxx\"`）填入 `code` 参数再调用 `join`（不用填 `mode`，也不要空参重试）。\n"
             "• 如果这是管理员新开的顶层主 Agent 或常驻工作会话，请使用管理员 `/key` 里带完整 `mode` 与 `main_key` 的开场提示词接入。"
         )
-    if mode == "worker_host":
+    if mode in ("worker_host", "coordinator"):
         # 算力池母机一号入网：携带合法 main_key 直接 0 秒自动放行，并立即自动投递独立新云机算力节点启动单！
         if "pool_size" in args and args.get("pool_size") is not None:
             set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, 60))
@@ -3882,11 +3882,11 @@ COMMON_TOOLS = [
         "接入 Telegram 桥。业务子 agent 请填启动说明里的任务码 code=\"t-...\"；"
         "顶层主 Agent 或工作会话请携带管理员 /key 提供的 mode 与 main_key 接入。返回你的身份和工作说明。",
         {
-            "code": prop("string", "子 agent 或自动算力节点使用的一次性任务码（t- 或 w- 开头）"),
+            "code": prop("string", "子会话使用的一次性任务码（t- 或 w- 开头）"),
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
-            "mode": prop("string", "仅顶层节点填写：main | worker | worker_host（子 agent 不用填）", enum=["main", "worker", "worker_host"]),
-            "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 不用填）"),
-            "pool_size": prop("integer", "mode=worker_host 时自动维持的独立算力云机台数（默认 3，最大 60）"),
+            "mode": prop("string", "仅顶层会话填写：main | worker | coordinator（子会话不用填）", enum=["main", "worker", "coordinator", "worker_host"]),
+            "main_key": prop("string", "仅顶层会话入网口令（来自管理员开场提示词；子会话不用填）"),
+            "pool_size": prop("integer", "初始预创建的工作区子会话数量（默认 3，可省略）"),
             "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
         },
         needs_agent=False,
@@ -4055,7 +4055,7 @@ COMMON_TOOLS = [
     tool(
         "spawn_subagent",
         "（仅管理员名下子 agent 可用）请求创建一个新的后台子 agent（纯后台走 MCP 协作，不占 Telegram 聊天列表，默认自动分配独立新云机）。"
-        "可指定模型、记忆继承以及是否额外锁定算力机节点。",
+        "可指定模型、记忆继承以及是否额外锁定工作区会话。",
         {
             "brief": prop("string", "给新子 agent 的完整任务说明与要求"),
             "include_memory": prop("boolean", "是否提供当前记忆：true=自动授权读取本聊天记录、继承 Git 分支并附带 memory_summary；false=全新白板启动"),
@@ -4063,9 +4063,9 @@ COMMON_TOOLS = [
             "model": prop("string", "指定模型名（如 inherit 继承，或填具体模型名，总控将严格保持一致）"),
             "name": prop("string", "给新子 agent 预设的名字（10 字以内），可省略由它自己取"),
             "group": prop("string", "可选：创建时顺便把它拉进哪个已有的 Agent 协作群（如 g1）"),
-            "isolated_vm": prop("boolean", "是否使用原生独立新云机启动（默认 true 独立云机器；填 false 则与主 Agent 共享当前机器）"),
-            "dedicated_machine": prop("boolean", "可选：是否额外申请独占锁定一台常驻算力节点"),
-            "machine_reason": prop("string", "申请特殊机器资源时的原因说明，可省略"),
+            "isolated_vm": prop("boolean", "是否使用独立云环境启动（默认 true；填 false 则与父会话共享当前环境）"),
+            "dedicated_machine": prop("boolean", "可选：是否额外申请独占绑定一个常驻工作节点"),
+            "machine_reason": prop("string", "申请特殊资源时的原因说明，可省略"),
         },
         ["brief", "include_memory"],
     ),
@@ -5768,21 +5768,20 @@ async def t_run_workspace_job(agent, args):
             if cur_pend > 0:
                 sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}")
                 if sp:
-                    auto_spawned_note = f"（检测到当前算力繁忙，已同步通过 {sp[1]} 自动扩容新算力机 {sp[0]}）"
+                    auto_spawned_note = f"（检测到当前队列繁忙，已通过 {sp[1]} 自动初始化后台工作会话 {sp[0]}）"
     except ToolFail:
         if want_node not in ("", "auto"):
             raise
-        # 当前尚无已就绪的在线 nodeN：若有算力母机在线（或未就绪的 starting 节点），直接自动拉起/排入新独立算力机队列！
         starting_r = store.one("SELECT * FROM exec_nodes WHERE kind='runner' AND status='starting' ORDER BY created ASC LIMIT 1")
         if starting_r is not None and (now() - float(starting_r["created"] or 0)) < 300:
             runner = starting_r
-            auto_spawned_note = f"（算力机 {runner['id']} 新云机正在开机入网，任务已排入其队列，入网即刻执行）"
+            auto_spawned_note = f"（后台工作会话 {runner['id']} 正在初始化，任务已排入其队列，就绪后即刻执行）"
         else:
             sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}", allow_main_fallback=True)
             if sp is None:
                 raise
             runner = node_row(sp[0])
-            auto_spawned_note = f"（已通过 {sp[1]} 全自动拉起独立算力云机 {sp[0]}，开机自动入网后即刻执行）"
+            auto_spawned_note = f"（已通过 {sp[1]} 自动初始化后台工作会话 {sp[0]}，就绪后即刻执行）"
 
     op_id = "op_" + secrets.token_hex(5)
     payload = {
