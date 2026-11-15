@@ -47,17 +47,16 @@ TIME = 14000
 # skeleton does not carry that figure yet gets it here.
 V1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 EYE = S.EYE
-STAIR_X = S.GRAND_STAIR["x0"]   # 61: the grand stair's top step
 VIEWS = [
     ("v1", V1["pos"], V1["look_at"]),
     # the whole station from the corner where its two flights of steps meet, and back along the
     # axis line from the head of the west steps: who walks back to the car
     ("platform", (77.5, S.STATION_GROUND + EYE, -28.5), (88.5, -0.5, -35.5)),
     ("axis", (80.5, S.STATION_GROUND + EYE, -32.5), (92.0, 0.0, -33.5)),
-    # from the lower platform, and from the head of the grand stair on the upper terrace: its top
-    # step on the axis, clear of the newel posts on the stair's cheeks
+    # from the lower platform, and from the head of the grand stair: on the upper terrace's lip, on
+    # the axis, in the opening the railing leaves for the stair
     ("lower", (70.5, S.LOWER_GROUND + EYE, -20.5), (86.0, -1.0, -35.0)),
-    ("stair_head", (STAIR_X + 0.5, S.stair_top(STAIR_X) + EYE, 0.5), (86.0, -2.0, -33.0)),
+    ("stair_head", (S.EAST_EDGE_X + 0.5, S.GROUND + EYE, 0.5), (86.0, -2.0, -33.0)),
     # up into the glass roof: the west truss from the open platform, and the south girder on its
     # two columns from the bay
     ("canopy", (86.5, S.STATION_GROUND + EYE, -30.5), (90.0, 1.8, -33.0)),
