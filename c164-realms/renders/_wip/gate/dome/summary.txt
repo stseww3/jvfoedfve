@@ -1,0 +1,9 @@
+gate main/dome ad0c352b: the merged tree ad0c352b, the assembly as it was 3c93a88d
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 4 test scenes, 32 shots with a picture kept
+                    renders/obs_main_dome_b/: pictures of a scene that is not there
+check.py: 36 scenes in 21 s: 36 pass (28 with warnings)
+pictures: [PASS] selfshots obs_main_dome at ad0c352b: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_a at ad0c352b: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_slit at ad0c352b: 10 of 10 kept pictures are what the code draws
+result: PASS
