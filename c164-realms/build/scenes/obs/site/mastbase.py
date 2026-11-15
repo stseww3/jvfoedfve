@@ -6,17 +6,20 @@ The mast itself, its guys, insulators and the aerial to the clock tower are the 
 stand on and tie to, on the mast pad north of the court (S.MAST_PAD, level with the upper terrace;
 its kerb and railing are the terrain card's):
 
-  - a two-step podium of dark slate brick with a grey-white coping on each step, centred on the
-    mast's foot (S.RADIO_MAST["foot"]), with a riveted iron shoe let into the top;
+  - a podium centred on the mast's foot (S.RADIO_MAST["foot"]): a step of dark slate brick five
+    across under a grey-white coping, and on it the mast's seat, a riveted iron bed three across.
+    The seat is flat and bare, so a leg stands on it and takes no stone away: a coping round the
+    seat lost its four corners to the legs of a square mast and what was left of it was a pale
+    plus sign, seen from the tower and from the air;
   - a paved apron round it in the terrace's middle stone;
   - four guy anchors on the diagonals: a riveted iron block on a slate footing with an eye bolt;
   - a lead-in post on the podium's south-west corner, the corner that faces the clock tower: the
     aerial's down-lead and halyard tie off here.
 
 What the other cards read from this module (blocks they place later win over these):
-  TOP           the first free y above the upper step: the mast's legs or pole start here
-  SOCKET        the cell over the iron shoe, in the middle of the upper step
-  LEGS          the four corner cells of the upper step, for a four-legged mast
+  TOP           the first free y above the seat: the mast's legs or pole start here
+  SOCKET        the cell over the middle of the seat
+  LEGS          the cells over the seat's four corners, for a four-legged mast
   GUY_ANCHORS   the points (x, y, z) where a guy meets its eye bolt
   ANTENNA_HOOK  the point on top of the lead-in post
 Everything here stays under y 4: the arrival view (V1) looks over the terrace edge and sees nothing
@@ -28,18 +31,18 @@ from ..common import skeleton as S
 
 ORDER = 72      # after the terrain (10), the court (60) and the outbuildings (70)
 
-PLINTH = B.SLATE_BRICK.block            # the podium: dark slate brick
+PLINTH = B.SLATE_BRICK.block            # the podium's step: dark slate brick
 COPE = B.ASHLAR_PANEL.slab              # grey-white coping
-IRON = B.IRON_RIVETED.block            # riveted iron: the shoe, the anchors, the post
+IRON = B.IRON_RIVETED.block             # riveted iron: the seat, the anchors, the post
 ROD = B.IRON_ROD                        # eye bolts and the post's head
 
 FX, FZ = S.RADIO_MAST["foot"]           # (23, -40)
 G = S.MAST_PAD["feet"]                  # 0: where feet stand on the pad; the paving block is one below
-LOWER, UPPER = 2, 1                     # half-widths of the two steps: 5x5 under 3x3
-APRON = LOWER + 1                       # the paved apron, one cell round the lower step
+LOWER, UPPER = 2, 1                     # half-widths of the step and of the seat: 5x5 under 3x3
+APRON = LOWER + 1                       # the paved apron, one cell round the step
 REACH = 4                               # the anchors stand this far out on each diagonal
 
-TOP = G + 2
+TOP = G + 2                             # the seat's top face is at this y: nothing of this card is above it there
 SOCKET = (FX, TOP, FZ)
 LEGS = [(FX + sx * UPPER, TOP, FZ + sz * UPPER) for sx in (-1, 1) for sz in (-1, 1)]
 _ANCHOR_CELLS = [(FX + sx * REACH, FZ + sz * REACH) for sx in (-1, 1) for sz in (-1, 1)]
@@ -69,18 +72,16 @@ def build(canvas, origin=(0, 0, 0)):
             for y in (pave - 1, pave - 2):
                 _put(c, o, x, y, z, PLINTH, keep=True)
 
-    # the podium: two steps of slate brick, a grey-white coping on each, the iron shoe in the top
+    # the podium: a step of slate brick under a grey-white coping, and the iron seat in its middle,
+    # half a block proud of the coping and bare on top
     for dx in range(-LOWER, LOWER + 1):
         for dz in range(-LOWER, LOWER + 1):
             x, z = FX + dx, FZ + dz
             _put(c, o, x, G, z, PLINTH)
-            if max(abs(dx), abs(dz)) == LOWER:
+            if max(abs(dx), abs(dz)) > UPPER:
                 _put(c, o, x, G + 1, z, COPE + "[type=bottom]")
-            elif (dx, dz) != (0, 0):
-                _put(c, o, x, G + 1, z, PLINTH)
-                _put(c, o, x, G + 2, z, COPE + "[type=bottom]")
             else:
-                _put(c, o, x, G + 1, z, IRON)               # the shoe; the socket above it stays open
+                _put(c, o, x, G + 1, z, IRON)
 
     # four guy anchors on the diagonals: an iron block on a slate footing, an eye bolt on top
     for x, z in _ANCHOR_CELLS:
