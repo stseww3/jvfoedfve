@@ -94,8 +94,17 @@ def rail_top(x):
     return FEET - GRADE * max(0, x - X1 - LEVEL)
 
 
+def _slab(h):
+    """The cell and the half of it whose upper face is at height h."""
+    if h == int(h):
+        return int(h) - 1, "top"
+    return int(h // 1), "bottom"
+
+
 END = next(x for x in range(X1 + 1, X1 + 200) if rail_top(x) <= SINK)      # 141: the last column
-TOWERS = list(range(TOWER_FIRST, END, TOWER_STEP))
+# A tower stands where its bearers, the course under its first column's rails, are above the cloud:
+# x 98 .. 128. Past the last one the deck goes down into the cloud alone.
+TOWERS = [x for x in range(TOWER_FIRST, END, TOWER_STEP) if _slab(rail_top(x))[0] - 1 > CLOUD]
 
 # --- the houses along the north edge ------------------------------------------------------------------
 # How far west the tall house may come is the arrival view's right edge: a wall whose south face is
@@ -162,6 +171,7 @@ IRON_STAIR = B.IRON_RIVETED.stairs
 GLASS = B.SKYLIGHT.block
 GRATE = B.IRON_GRATE
 BARS = B.IRON_BARS
+PIPE = B.IRON_PIPE + "[axis=y]"         # a tower's legs in the cloud
 # A column's shaft is a wall post of dark slate. The iron of the table is whole blocks, stairs and
 # slabs, or bars, pipe and rod two and three pixels thick: four courses of those read as a wire, not
 # as what carries a girder. The post is half a block thick and of the roofs' stone, dark as the iron.
@@ -419,13 +429,6 @@ def _glass_roof(p):
             p.set(x, y, z, SHAFT)
 
 
-def _slab(h):
-    """The cell and the half of it whose upper face is at height h."""
-    if h == int(h):
-        return int(h) - 1, "top"
-    return int(h // 1), "bottom"
-
-
 def _trestle(p):
     """Two rails of riveted slabs with a tie in every second cell: a deck half a block thick, and
     under it, at every second straight run, a lattice tower. A tower is two cells along the
@@ -434,8 +437,9 @@ def _trestle(p):
     columns, which join into one lattice, down to a footing course on the ridge. The two columns
     of a tower stand in one straight run and its first is one whose rails are lower slabs, so
     the bearers lie in one course, under the rails of the first and level with those of the
-    second. Past the ridge's end the towers stand in the cloud: bars as far down as the cloud
-    is laid (bars reach out into the cloud beside them), from there four corner legs."""
+    second. Past the ridge's end the towers stand in the cloud. Bars would reach out into the
+    cloud that is laid beside them, so the lattice ends over it and its four corners go on down
+    as pipes, which join nothing: the same thin legs whether the cloud covers them or not."""
     for x in range(X1 + 1, END + 1):
         z = track_axis(x)
         y, half = _slab(rail_top(x))
@@ -465,7 +469,7 @@ def _trestle(p):
                     if y > CLOUD:
                         p.set(xx, y, z + dz, BARS)
                     elif dz:
-                        p.set(xx, y, z + dz, IRON)
+                        p.set(xx, y, z + dz, PIPE)
 
 
 def _light(canvas, origin):
