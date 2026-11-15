@@ -327,8 +327,10 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone, glass and iron the pieces are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone, glass and iron the pieces are judged against, and the pictures of the
+    map's sky: the slice stands in the map's hour (mood.py), and without them the game's own sun
+    lies on the open horizon behind the court."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 # ---- the cameras ------------------------------------------------------------------------------------------
