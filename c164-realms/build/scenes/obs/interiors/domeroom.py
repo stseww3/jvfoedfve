@@ -7,12 +7,19 @@ telescope is machines/refractor (c237), the track, rollers, chains and winch are
 (c196). Where the skin is and where it is open is read off the canvas, so the room follows the dome
 when its slit is changed.
 
+The plan (director, g2 #31564): the axis belongs to the telescope. East of the pier, on the axis, is
+the observing floor, where one ends up standing behind the eyepiece and looks along the tube; the
+ring stair comes up on the north side of the pier; the south side is kept for those who look at the
+comet past the tube (its tail leans north, so only from the south is all of it seen through the
+slit: sky/comet, c230), and the record desk stands there.
+
 What the room adds, from the floor up (rows; radii from the centre of column (4, 0)):
 
-    17       the floor's finish: a dark border along the wall, the observing floor at the eyepiece
-             (a rising floor at rest, level with the boards: an iron rim round dark boards)
-    18..22   an iron wall post under six ribs and under the two beams of the slit; an iron console
-             under the ring beam where the other ribs come down
+    17       the floor's finish: a dark border along the wall, the observing floor east of the pier
+             (a rising floor at rest, level with the boards: dark boards, an iron plate at each
+             corner over the rams)
+    18..22   an iron wall post under every second rib and under the two beams of the slit; an iron
+             console under the ring beam where the other ribs come down
     23       the ring beam: iron corbelled out from the wall's top, fixed to the stone (10.5..11.5)
     24       the ledge on the inner leaf, left empty: the track and its rollers (machines/domegear)
     25       the dome's base ring over that ledge (11.5..12.5): what turns, and what the ribs stand on
@@ -21,9 +28,7 @@ What the room adds, from the floor up (rows; radii from the centre of column (4,
 
 and what stands in the room: the switchboard of the dome's drive in the east niche, the instrument
 cabinet in the north niche, the sidereal clock in the south niche, the record desk with the small
-red lamp against the railing south of the pier, the observing chair. The observer, the recorder and
-the camera of V8 keep to the south of the tube: the comet's tail leans north, so only from there is
-all of it seen through the slit (sky/comet, c230).
+red lamp south-west of the pier, the observing chair pushed aside north-east of the observing floor.
 
 Light (plan 3.2): the sky in the slit is the cold base and the brightest thing; the warm points are
 the red lamp on the desk, the pilot lamps of the switchboard and the clock's dial, all third rank.
@@ -56,21 +61,33 @@ SKIN_FROM = LEDGE_Y + 2                         # 26: a block from here up is th
 RIBS = 20                                       # one under each rib of the dome outside
 RIB_DEG = 360.0 / RIBS
 COLLAR = (5.0, 6.0)                             # the ring the ribs run into, as outside
-POSTS = (27.0, 63.0, 117.0)                     # the ribs that come down on a wall post, and their
-#                                                 mirror images in the axis; the others get a console
+POSTS = (27.0, 63.0, 99.0, 135.0)               # the ribs that come down on a wall post (every second
+#                                                 one), and their mirror images in the axis; the others
+#                                                 get a console
+# columns of the wall kept clear from the floor to the ledge for machines/domegear (c196, g2 #31714):
+# the upright shaft of the hand gear that turns the dome, and its bearing in the row of the ring beam
+GEAR_SHAFT = ((-1, -9),)
+GEAR_STAND = ((0, -8), (1, -8), (0, -7), (1, -7))   # where one stands at its hand wheel: no furniture
 JAMB_DEPTH = 2                                  # rows the beams beside the slit hang below the skin
 HEAD_DEPTH = 1                                  # the beam across its head: no lower, the comet's tail
 #                                                 passes just under it (sky/comet)
 
 IRON = B.IRON_RIVETED
 WOOD = B.DARK_WOOD
+# what the dome's skin is made of. Only these count when the room looks for the skin: a machine
+# that stands in the slit (the telescope's tube, a chain) is not taken for a piece of the dome
+SKIN = frozenset([B.VERDIGRIS, B.VERDIGRIS_CAST, *B.VERDIGRIS_CUT.all(), *B.VERDIGRIS_STREAK.all()])
 
 # --- what stands in the room (cells) ---------------------------------------------------------------
-DESK = ((1, 5), (2, 5), (3, 5))                 # the record desk, against the railing south of the pier
-DESK_SEAT = (2, 6)                              # the recorder sits south of it and looks at the telescope
-RED_LAMP_ON = (1, 5)                            # the desk's west end
-CHAIR = ((10, -3), (11, -3))                    # the observing chair, pushed aside north-east of the eyepiece
-# bottom course first; the instrument panels of the dome's drive (blocks.PANELS)
+# the observing floor (director, g2 #31564): east of the pier from its curb on, under the eyepiece of
+# either version of the telescope
+OBSERVING = (S.PIER_ENVELOPE[2] + 1, CZ - 1, S.PIER_ENVELOPE[2] + 5, CZ + 3)       # x 8..12, z -1..3
+DESK = ((1, 6), (2, 6), (3, 6))                 # the record desk: south-west of the pier, a cell clear of
+#                                                 the railing round its opening
+DESK_SEAT = (2, 7)                              # the recorder sits south of it and looks at the telescope
+RED_LAMP_ON = (1, 6)                            # the desk's west end
+CHAIR = ((13, -3), (14, -3))                    # the observing chair, pushed aside north-east of the floor
+# bottom course first, from north to south; the instrument panels of the dome's drive (blocks.PANELS)
 BOARD = (("knife_switch", "bus_switch", "knife_switch"),
          ("dial", "pilot_lamps", "gauges"))
 
@@ -98,8 +115,14 @@ def envelope():
 
 
 def stair_exit():
-    """The cell one steps onto from the ring stair (main/shell.EXIT)."""
-    return (S.PIER_ENVELOPE[2] + 1, CZ)
+    """The cell one steps onto from the ring stair, on the curb of the pier's opening: main/shell's
+    EXIT once that module is in the tree, else None. It is on the north side, (4, -4) (c231, g2
+    #32860); that cell and the three above it are kept free."""
+    try:
+        from ..main import shell
+    except ImportError:
+        return None
+    return tuple(shell.EXIT) if getattr(shell, "EXIT", None) else None
 
 
 def niches():
@@ -107,8 +130,8 @@ def niches():
     {"east": [cells from low to high], ...}."""
     cells = room()
     xs, zs = [c[0] for c in cells], [c[1] for c in cells]
-    ends = {"east": max(xs), "west": min(xs), "south": max(zs), "north": min(zs)}
-    return {side: sorted(c for c in cells if c[side in ("south", "north")] == at) for side, at in ends.items()}
+    ends = {"east": (0, max(xs)), "west": (0, min(xs)), "south": (1, max(zs)), "north": (1, min(zs))}
+    return {side: sorted(c for c in cells if c[i] == at) for side, (i, at) in ends.items()}
 
 
 def doorways():
@@ -116,9 +139,9 @@ def doorways():
     behind the skeleton's door column, going straight in."""
     inside, out = room(), []
     for cell in S.DOME_ROOM_DOORS["cells"]:
-        step = (0, -1 if cell[1] > CZ else 1)
+        inward = (0, -1 if cell[1] > CZ else 1)
         while cell not in inside:
-            cell = O.step(cell, step)
+            cell = O.step(cell, inward)
         out.append(cell)
     return out
 
@@ -160,12 +183,9 @@ def eyepiece():
 
 
 def observing_floor():
-    """The columns of the observing floor, the rising floor at rest: four by four, east of the stair's
-    exit, from the tube's line southwards (where the comet is seen from). machines/refractor stands
-    its rams under the four corners."""
-    ex, _ey, ez = eyepiece()
-    x0, z0 = max(int(math.floor(ex)) + 1, stair_exit()[0] + 1), int(math.floor(ez)) - 1
-    return O.box(x0, z0, x0 + 3, z0 + 3) & (room() - envelope())
+    """The columns of the observing floor, the rising floor at rest. machines/refractor stands its
+    rams under the four corners."""
+    return O.box(*OBSERVING) & (room() - O.box(*S.PIER_ENVELOPE))
 
 
 class Shell:
@@ -180,11 +200,12 @@ class Shell:
         for x, z in self.reach:
             self.soffit[(x, z)] = None
             for y in range(SKIN_FROM, S.DOME_APEX + 4):
-                if c.has(ox + x, oy + y, oz + z):
+                name = c.name(ox + x, oy + y, oz + z)
+                if name is not None and name.rpartition(":")[2] in SKIN:
                     self.soffit[(x, z)] = y - 1
                     break
-        roofed = any(y is not None for y in self.soffit.values())
-        self.gap = {col for col, y in self.soffit.items() if y is None} if roofed else set()
+        self.roofed = any(y is not None for y in self.soffit.values())
+        self.gap = {col for col, y in self.soffit.items() if y is None} if self.roofed else set()
         self.frame = (O.ring(self.gap) & self.reach) - self.gap
 
     def touches_wall(self, col):
@@ -195,21 +216,21 @@ class Shell:
         cells = [e for e in self.edge if self.touches_wall(e)]
         return min(cells, key=lambda e: (round(_apart(_polar(*e)[1], angle), 3), abs(e[1] - CZ), abs(e[0] - CX), e))
 
+    def in_slit(self, angle):
+        """Does the rib at `angle` come down where the slit is?"""
+        return any(_on_meridian(g[0], g[1], angle) for g in self.gap & self.edge)
+
     def posts(self):
         """The columns of the wall posts: under the POSTS ribs on either side of the axis, and where
         the beams beside the slit meet the wall."""
         out = {self.at_angle(a) for angle in POSTS for a in (angle, 360.0 - angle)}
-        return out | {col for col in self.frame & self.edge if self.touches_wall(col)}
+        out |= {col for col in self.frame & self.edge if self.touches_wall(col)}
+        return out - set(GEAR_SHAFT)
 
     def consoles(self):
         """The columns where a rib comes down on the ring beam alone."""
-        taken = self.posts()
-        out = set()
-        for a in rib_angles():
-            col = self.at_angle(a)
-            if col not in taken and not any(_on_meridian(g[0], g[1], a) for g in self.gap & self.edge):
-                out.add(col)
-        return out
+        out = {self.at_angle(a) for a in rib_angles() if not self.in_slit(a)}
+        return out - self.posts() - set(GEAR_SHAFT)
 
 
 # --- the dress ------------------------------------------------------------------------------------
@@ -225,7 +246,7 @@ def dress(c, origin=(0, 0, 0)):
     _vault(put, shell)
     _wall(c, origin, put, shell)
     _floor(put, shell)
-    _furniture(put, shell)
+    _furniture(put)
     _offer(c, origin, lights())
     return 0
 
@@ -233,7 +254,7 @@ def dress(c, origin=(0, 0, 0)):
 def _vault(put, shell):
     """The dome's base ring, the beams round the slit, the ribs, the collar."""
     soffit, gap, frame = shell.soffit, shell.gap, shell.frame
-    if not any(y is not None for y in soffit.values()):
+    if not shell.roofed:
         return
     for x, z in shell.ledge:
         put(x, BASE_RING_Y, z, IRON.block)
@@ -241,40 +262,42 @@ def _vault(put, shell):
     def foot(col):
         return BASE_RING_Y + 1 if col in shell.ledge else SKIN_FROM
 
+    def fill(col, low):
+        for y in range(max(low, foot(col)), soffit[col] + 1):
+            put(col[0], y, col[1], IRON.block)
+
     for col in frame:
         top = soffit[col]
         beside = any(O.step(col, d) in gap for d in (O.NORTH, O.SOUTH))
         at_head = any(O.step(col, d) in gap for d in (O.EAST, O.WEST))
-        depth = HEAD_DEPTH if at_head and not beside else JAMB_DEPTH
-        near = [soffit[n] for n in (O.step(col, d) for d in O.SIDES) if n in frame]
-        low = max(foot(col), min([top - depth + 1] + [y + 1 for y in near]))
-        for y in range(low, top + 1):
-            put(col[0], y, col[1], IRON.block)
-
-    def run(cols):
-        """A rib under the skin along `cols` (ordered from the wall inwards): each column is filled up
-        to the skin from where the one before it stopped, so the rib is one unbroken line."""
-        last = None
-        for col in cols:
-            top = soffit[col]
-            low = foot(col) if last is None else max(foot(col), min(top, last + 1))
-            for y in range(low, top + 1):
-                put(col[0], y, col[1], IRON.block)
-            last = top
+        if at_head and not beside:
+            fill(col, top - HEAD_DEPTH + 1)
+        elif col in shell.ledge:
+            fill(col, foot(col))                    # at the wall the beam stands on the base ring
+        else:
+            near = [soffit[n] for n in (O.step(col, d) for d in O.SIDES) if n in frame]
+            fill(col, min([top - JAMB_DEPTH + 1] + near))
 
     free = shell.reach - gap - frame
     for a in rib_angles():
         cols = [col for col in free if _on_meridian(col[0], col[1], a) and _polar(*col)[0] >= COLLAR[1]]
-        run(sorted(cols, key=lambda col: -_polar(*col)[0]))
+        last = None
+        for col in sorted(cols, key=lambda col: -_polar(*col)[0]):      # from the wall inwards
+            top = soffit[col]
+            if last is None:
+                fill(col, foot(col) if col in shell.ledge else top)
+            else:
+                fill(col, min(top, last + 1))       # from where the column before stopped: one unbroken line
+            last = top
     for col in free:
         if COLLAR[0] <= _polar(*col)[0] < COLLAR[1]:
             put(col[0], soffit[col], col[1], IRON.block)
 
 
 def _wall(c, origin, put, shell):
-    """The ring beam under the wall's top, the posts, the consoles."""
+    """The ring beam under the wall's top, the consoles, the posts."""
     lay = O.Laying(c, None, origin, None)
-    lay.mould(shell.ledge, WALL_TOP, IRON.stairs, "top", only=shell.edge)
+    lay.mould(shell.ledge, WALL_TOP, IRON.stairs, "top", only=shell.edge - set(GEAR_SHAFT))
     lay.mould(shell.ledge, WALL_TOP - 1, IRON.stairs, "top", only=shell.consoles())
     for x, z in shell.posts():
         for y in range(FEET, WALL_TOP):
@@ -287,11 +310,12 @@ def _floor(put, shell):
         put(x, FLOOR_Y, z, WOOD.block)
     cells = observing_floor()
     for x, z in cells:
-        rim = any(O.step((x, z), d) not in cells for d in O.SIDES)
-        put(x, FLOOR_Y, z, IRON.block if rim else WOOD.block)
+        open_sides = [d for d in O.SIDES if O.step((x, z), d) not in cells]
+        corner = len(open_sides) == 2 and open_sides[0][0] != open_sides[1][0] and open_sides[0][1] != open_sides[1][1]
+        put(x, FLOOR_Y, z, IRON.block if corner else WOOD.block)
 
 
-def _furniture(put, shell):
+def _furniture(put):
     """What stands in the room. The switchboard and the cabinet are built into the niches, flush with
     the wall, and keep below the window; the rest are stand-ins in blocks."""
     n = niches()
@@ -315,7 +339,7 @@ def _furniture(put, shell):
 
 def lights():
     """[((x, y, z), level, rank, name)] the light sources the room asks for, in scene cells without
-    the origin: each sits in the cell of something that is seen to glow."""
+    the origin: each sits in the cell of something that is seen to glow, or right in front of it."""
     n = niches()
     bx, bz = n["east"][1]
     kx, kz = n["south"][1]
