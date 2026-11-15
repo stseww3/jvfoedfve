@@ -11,8 +11,6 @@ court, the props) could only hide more.
 Also told, for whoever wants to stand something on a roof later: from which height a point over
 each wing's ridge comes into each view.
 
-DRAFT: written while the machine was closed to Python, not run yet.
-
     python -m scenes.obs_main_smalldome.hidden      # from c164-realms/build; exit code 1 if anything is seen
 """
 import os
@@ -31,8 +29,7 @@ from scenes.obs import main, materials  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
 from scenes.obs.main import roof  # noqa: E402
 
-# the eyes of the three views; V2 is not in the skeleton yet, main/facade's test scene stands here
-VIEWS = {"V1": S.V1["pos"], "V2": getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5)))["pos"], "V11": S.V11["pos"]}
+VIEWS = {"V1": S.V1["pos"], "V2": S.V2["pos"], "V11": S.V11["pos"]}        # the eyes of the three views
 GRID = (0.1, 0.3, 0.5, 0.7, 0.9)        # the points a cell is tried at: these along each axis, 125 in all
 PROBE_UP = 4.0                          # how far over the ridge the probe looks for the views' lower edge
 PROBE_STEP = 1 / 16.0
