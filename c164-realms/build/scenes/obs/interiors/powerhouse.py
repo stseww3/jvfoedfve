@@ -92,6 +92,20 @@ WALK_Z = (IN_Z[0] + 1, IN_Z[0] + 2)         # 23, 24: the run in from the door
 WALK_X = (DOOR_X[0], 80)                    # 74..80: the run east past the machine's west end
 WALK_END_Z = min(z for _x, z in ENGINE_CELLS) - 1        # 26: one short of the machine's own cells
 
+# ---- the lamps -------------------------------------------------------------------------------
+# Caged lamps hung from the beams, the room's only warm light: the card asks for them, and without
+# them a box room with two furnace bays is a black hole (the offline renderer draws no ambient
+# bloom). Levels are the light line's third rank (props/lamps puts a cage at 7); this package only
+# names where they hang and offers them, and while sky/lights is not in the tree it puts them down.
+# Hung over the walkway and over the machine, so that every stand has one in frame.
+LAMPS = [(x, CEIL_Y - 1, z) for x, z in
+         ((WALK_X[0] + 2, WALK_Z[0]), (WALK_X[1] - 2, WALK_Z[0]),
+          (int(ENGINE_CENTRE[0]) - 3, int(ENGINE_CENTRE[1])), (int(ENGINE_CENTRE[0]) + 4, int(ENGINE_CENTRE[1])))]
+LAMP_LEVEL = 7                              # the third rank (a caged lamp), never above 8
+
+# ---- the light ------------------------------------------------------------------------------
+LIGHT = B.LIGHT                             # the invisible source a lamp offers
+
 
 def _inside(x, z):
     return IN_X[0] <= x <= IN_X[1] and IN_Z[0] <= z <= IN_Z[1]
@@ -173,6 +187,11 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, *, version="a"):
                 put(x, WALK_Y + 1, n[1], FRAME)
 
     lights = []
+    for x, y, z in LAMPS:
+        if _inside(x, z):
+            put(x, y, z, f"{LIGHT}[level={LAMP_LEVEL}]")
+            lights.append(((x, y, z), LAMP_LEVEL))
+
     n = 0
     return {"entities": n, "lights": lights, "reserved": sorted(RESERVED)}
 
