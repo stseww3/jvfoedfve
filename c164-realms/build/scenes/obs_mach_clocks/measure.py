@@ -37,6 +37,7 @@ from PIL import Image
 BUILD = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, BUILD)
 
+from scenes import obs_mach_clocks as first           # noqa: E402
 from scenes.obs.common import skeleton as S           # noqa: E402
 from scenes.obs.machines import clock                 # noqa: E402
 
@@ -137,6 +138,8 @@ class Reader:
         self._open = {}
 
     def picture(self, shot):
+        if shot not in self.shots:                      # the second scene holds the tower's shots only
+            return None
         if shot not in self._open:
             for name in (f"{shot}.png", f"{self.scene}-{shot}.png"):
                 path = os.path.join(self.folder, name)
@@ -203,7 +206,7 @@ def tower_dials(r):
     south_dial = disc(south + (0, 0, front), (1, 0, 0), (0, 1, 0), 0.0, rad)
     wall = S.CLOCK_SHAFT_X[1] + 1.0
     stone = patch((wall, 24.0, axis_z - 1.5), (0, 1.75, 0), (0, 0, 3.0))       # the plain courses under the recess
-    z0 = r.module.TCZ - 1
+    z0 = first.TCZ - 1
     window = patch((wall - 1.0, S.WINDOW[0], z0), (0, S.WINDOW[1] + 1 - S.WINDOW[0], 0), (0, 0, 3.0))
 
     print("the tower's dials")
