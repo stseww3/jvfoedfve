@@ -31,6 +31,13 @@ def _wall(name, foot, more=()):
     return (name, [(P + name, (0.0, foot, WALL_Z), {})] + list(more), (1.0, foot + 1.3, -4.6), (0.0, foot + 1.0, -7.3))
 
 
+def _edge_on(name, away):
+    """The celestial globe turned so that the camera stands in the plane of its meridian ring: the
+    ring is one upright line, the horizon ring one level band (red line 8, near and far)."""
+    turned = {"yaw": instruments.GLOBE_YAW - 90.0}
+    return (name, [(P + "celestial_globe", None, turned)], (0.0, 1.62, away), (0.0, 1.1, 0.0))
+
+
 _PIVOT = instruments.PENDULUM["pivot"]
 _PENDULUM = (P + "regulator_pendulum", (_PIVOT[0], 0.5 + _PIVOT[1], WALL_Z + _PIVOT[2]), {})
 
@@ -39,6 +46,8 @@ _PENDULUM = (P + "regulator_pendulum", (_PIVOT[0], 0.5 + _PIVOT[1], WALL_Z + _PI
 GALLERY = [
     _floor("tripod_scope", 2.0, turn=-90.0),
     _floor("celestial_globe", 2.0),
+    _edge_on("celestial_globe_edge", 3.5),
+    _edge_on("celestial_globe_edge_far", 9.0),
     _floor("globe", 1.0),
     _floor("sextant", 1.0),
     _wall("barometer", 1.0),

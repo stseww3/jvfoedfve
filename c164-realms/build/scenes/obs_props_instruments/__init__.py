@@ -15,6 +15,8 @@ the instruments are seen at the scale of the rooms; until then the wooden counte
 
 The shots are written from the numbers below:  python -m scenes.obs_props_instruments
 """
+import math
+
 from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
@@ -113,6 +115,11 @@ def shots():
     shot("globe_near", (gx + 1.3, 1.9, gz + 1.7), (gx, 1.2, gz))
     shot("globe_side", (gx - 2.6, 1.62, gz + 0.3), (gx, 1.1, gz))
     shot("globe_top", (gx + 0.5, 3.4, gz + 1.1), (gx, 1.2, gz))
+    # in the plane of the meridian ring, from the east, the evening sky behind: the ring is one upright
+    # line there and the horizon ring one level band (red line 8: a globe in its stand, or a cross?);
+    # the same view against a plain backdrop, near and far, is in the gallery (props.GALLERY)
+    a = math.radians(instruments.GLOBE_YAW)
+    shot("globe_edge", (gx + 3.0 * math.cos(a), 1.62, gz - 3.0 * math.sin(a)), (gx, 1.1, gz))
     shot("globe_desk", (gx + 1.4, 1.62, gz + 4.2), (gx + 1.3, 0.9, gz))
     bx, by, _ = BAROMETER
     shot("barometer", (bx + 0.5, by + 1.0, 2.6), (bx, by + 1.0, 0.0))

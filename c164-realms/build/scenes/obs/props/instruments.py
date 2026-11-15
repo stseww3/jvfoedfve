@@ -245,23 +245,23 @@ def _tripod_scope():
                 m.tube("y", (0, 0), 2.5, length, 1.0, WOOD, sides=4)                    # leg
                 m.tube("y", (0, 0), 10.0, 11.5, 1.25, BRASS_D, sides=4)                 # the clamp of the slide
     m.tube("y", (0, 0), hub - 1.5, hub + 0.5, 2.75, BRASS_D)                            # tripod head
-    m.tube("y", (0, 0), hub + 0.5, hub + 1.75, 1.5, IRON)                               # azimuth bearing
-    foot = hub + 1.75
-    m.box((-4.25, foot, -1.5), (4.25, foot + 1.25, 1.5), IRON)                          # yoke: foot and cheeks
-    for x in (-4.25, 3.0):
-        m.box((x, foot + 1.25, -1.25), (x + 1.25, SCOPE_PIVOT + 1.25, 1.25), IRON, grain="y")
-    m.tube("x", (SCOPE_PIVOT, 0), -5.75, -4.25, 1.5, BRASS_D, cap=KNOB)                 # clamp knob, on the left
+    m.tube("y", (0, 0), hub + 0.5, hub + 1.5, 1.5, IRON)                                # azimuth bearing
+    foot = hub + 1.5
+    m.box((-4.0, foot, -1.5), (4.0, foot + 1.0, 1.5), IRON)                             # yoke: foot and cheeks
+    for x in (-4.0, 3.0):
+        m.box((x, foot + 1.0, -1.5), (x + 1.0, SCOPE_PIVOT + 1.5, 1.5), IRON, grain="y")
+    m.tube("x", (SCOPE_PIVOT, 0), -5.5, -4.0, 1.5, BRASS_D, cap=KNOB)                   # clamp knob, on the left
     limb = _scale("first", 3, 1, 1)
     with m.turned(("x", -SCOPE_TILT), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
-        side, ends = 4.9, (101.25, 258.75)                                              # on the right the altitude
+        side, ends = 4.5, (101.25, 258.75)                                              # on the right the altitude
         m.ring("x", (side, SCOPE_PIVOT, 0), 5.5, 2.0, 0.75, BRASS, sides=16, arc=ends,
                faces={"w": limb, "e": limb})                                            # arc: a graduated sector
         for deg in ends:                                                                # hung from the axis
             a = math.radians(deg)
             m.beam((side, SCOPE_PIVOT, 0.0), (side, SCOPE_PIVOT + 4.75 * math.cos(a), 4.75 * math.sin(a)),
                    0.5, 1.0, BRASS_D)
-        m.tube("x", (SCOPE_PIVOT, 0), 4.25, 5.5, 1.25, BRASS_D, cap=KNOB)               # its boss
+        m.tube("x", (SCOPE_PIVOT, 0), 4.0, 5.25, 1.25, BRASS_D, cap=KNOB)               # its boss
         m.tube("z", c, -7.0, 12.0, 2.0, BRASS, sides=12)                                # main tube
         m.tube("z", c, -1.75, 1.75, 2.5, BRASS_D, sides=12)                             # cradle band
         m.tube("z", c, 6.5, 7.5, 2.25, BRASS_D, sides=12)
@@ -346,9 +346,9 @@ def _sextant():
         a = math.radians(deg)
         return (top[0] + radius * math.cos(a), top[1] + radius * math.sin(a), z)
 
-    m.box((-6.5, 0.0, -3.5), (6.5, 1.5, 3.5), WOOD_D)                                   # the cradle
-    for x in (-5.0, 3.5):
-        m.box((x, 1.5, -1.75), (x + 1.5, 4.0, 1.75), WOOD)
+    m.box((-6.5, 0.0, -3.5), (6.5, 2.0, 3.5), WOOD_D)                                   # the cradle
+    for x in (-5.5, 3.5):
+        m.box((x, 2.0, -1.5), (x + 2.0, 4.0, 1.5), WOOD)
     m.ring("z", top, reach, 2.0, 1.5, BRASS, sides=36, arc=(240.0, 300.0),
            faces={"s": _scale("last", 2, 0, 1), "n": _scale("first", 2, 0, 1)})         # the limb
     for deg in (240.0, 300.0):                                                          # the frame: no cross brace
@@ -377,51 +377,56 @@ BARO_DIAL_Y = 7.0       # height of the dial's centre above the piece's foot
 
 def _barometer():
     """A banjo barometer for the wall, two blocks tall: the round dial at the foot, a long neck with a
-    thermometer above it. The dial's marks glow. Anchor: the point on the wall behind the foot."""
+    thermometer above it. The dial's marks glow. 12 px wide, 32 px tall, 3.5 px off the wall. Anchor:
+    the point on the wall behind the foot."""
     m = M.Model(PREFIX + "barometer")
     y = BARO_DIAL_Y
-    m.tube("y", (0, 1.0), 0.0, 1.5, 1.0, WOOD_D)                                        # drop under the case
+    m.box((-1.5, 0.0, 0.0), (1.5, 1.0, 2.0), WOOD_D)                                    # drop under the case
     m.tube("z", (0, y), 0.0, 2.0, 6.0, WOOD, sides=16, cap=K.flat("dark_wood", 3))      # the round case
     m.ring("z", (0, y, 2.5), 5.0, 1.5, 1.0, BRASS, sides=16)                            # bezel
     _dial(m, "baro_dial", BARO_DIAL, (0.0, y), 2.5)
-    m.tube("z", (0, y - 6.0), 1.0, 2.75, 0.75, BRASS_D, cap=KNOB)                       # the knob of the set hand
-    m.box((-2.5, y + 5.0, 0.0), (2.5, 29.0, 1.5), WOOD, grain="y")                      # neck
-    m.box((-1.0, 15.5, 1.5), (1.0, 27.5, 1.75), K.flat("porcelain", 3), skip="nudew",
-          faces={"s": _sprite("baro_thermo", ["ct", "kt"] * 4 + ["cm", "km"] * 2, c=FACE, k=INK,
+    m.tube("z", (0, y - 5.0), 3.0, 3.5, 0.75, BRASS_D, cap=KNOB)                        # set-hand knob, on the bezel
+    m.box((-2.5, y + 5.0, 0.0), (2.5, 29.0, 1.0), WOOD, grain="y")                      # neck
+    m.box((-1.5, 15.0, 1.0), (1.5, 27.0, 1.25), K.flat("porcelain", 3), skip="nudew",
+          faces={"s": _sprite("baro_thermo", ["ctc", "ktc"] * 4 + ["cmc", "kmc"] * 2, c=FACE, k=INK,
                               t=P.RAMPS["porcelain"][4], m=P.RAMPS["iron"][5])})        # thermometer
-    for ty in (15.0, 27.5):
-        m.box((-1.5, ty, 1.5), (1.5, ty + 0.5, 2.25), BRASS_D)                          # its clips
-    m.box((-3.0, 29.0, 0.0), (3.0, 30.25, 2.0), WOOD_D)                                 # cap
-    m.tube("y", (0, 1.0), 30.25, 31.75, 1.0, BRASS_D, cap=KNOB)                         # finial
+    for ty in (14.0, 27.0):
+        m.box((-1.5, ty, 1.0), (1.5, ty + 1.0, 2.0), BRASS_D)                           # its clips
+    m.box((-3.5, 29.0, 0.0), (3.5, 30.0, 2.0), WOOD_D)                                  # cap
+    m.box((-1.5, 30.0, 0.0), (1.5, 32.0, 2.0), BRASS_D, faces={"u": KNOB})              # the urn on it
     return m
 
 
-CLOCK_DIAL_Y = 25.5     # height of the dial's centre above the case's foot
-PENDULUM_PIVOT = (0.0, 20.0, 2.5)       # model units from the clock's anchor
-PENDULUM_LENGTH = 14.5                  # pivot to the middle of the bob
+CLOCK_DIAL_Y = 24.5     # height of the dial's centre above the case's foot
+PENDULUM_PIVOT = (0.0, 24.5, 2.5)       # model units from the clock's anchor: behind the middle of the dial
+PENDULUM_LENGTH = 17.0                  # pivot to the middle of the bob: a seconds pendulum, a block long
 
 
 def _regulator_clock():
-    """A precision pendulum clock in a long case, two blocks tall and 12 px wide: the dial in the
-    hood, under it a glazed door with the beat scale behind the pendulum's tip. The pendulum is the
-    model regulator_pendulum. Anchor: the point on the wall behind the middle of the case's foot."""
+    """A precision pendulum clock in a long case, two blocks tall: the case 11 px wide, 13 px over the
+    plinth and the cornice, 6 px off the wall. The dial fills the hood; under it a glazed door, and
+    behind the glass the beat scale under the pendulum's tip. The pendulum is the model
+    regulator_pendulum and hangs behind the dial board, the whole of its bob clear of the door's
+    rails. Anchor: the point on the wall behind the middle of the case's foot.
+
+    The case is an odd number of pixels wide, like the dial, so that all of it lies on one grid."""
     m = M.Model(PREFIX + "regulator_clock")
-    m.box((-6.0, 1.5, 0.0), (6.0, 30.5, 1.0), WOOD_D)                                   # back board
-    for x in (-6.0, 5.0):
-        m.box((x, 1.5, 1.0), (x + 1.0, 30.5, 5.0), WOOD, grain="y")                     # sides
-    m.box((-6.5, 0.0, 0.0), (6.5, 1.5, 5.5), WOOD_D)                                    # plinth
-    m.box((-6.5, 30.5, 0.0), (6.5, 32.0, 5.5), WOOD_D)                                  # cornice
-    m.box((-5.0, 20.5, 1.0), (5.0, 30.5, 5.0), WOOD_L)                                  # hood: the dial board
+    m.box((-5.5, 2.0, 0.0), (5.5, 30.0, 1.0), WOOD_D)                                   # back board
+    for x in (-5.5, 4.5):
+        m.box((x, 2.0, 1.0), (x + 1.0, 30.0, 5.0), WOOD, grain="y")                     # sides
+    m.box((-6.5, 0.0, 0.0), (6.5, 2.0, 6.0), WOOD_D)                                    # plinth
+    m.box((-6.5, 30.0, 0.0), (6.5, 32.0, 6.0), WOOD_D)                                  # cornice
+    m.box((-4.5, 19.0, 4.0), (4.5, 30.0, 5.0), WOOD_L)                                  # hood: the dial board
     _dial(m, "clock_dial", _hands(CLOCK_DIAL, *CLOCK), (0.0, CLOCK_DIAL_Y), 5.25)
-    m.ring("z", (0, CLOCK_DIAL_Y, 5.25), 5.0, 1.0, 0.75, BRASS, sides=16)               # bezel
-    for x in (-5.0, 4.0):                                                               # the door: stiles and rails
-        m.box((x, 1.5, 4.0), (x + 1.0, 20.5, 5.0), WOOD_L, grain="y")
-    for y in (1.5, 19.5):
-        m.box((-4.0, y, 4.0), (4.0, y + 1.0, 5.0), WOOD_L, grain="x")
-    _pane(m, (-4.0, 2.5, 4.4), (4.0, 19.5, 4.5))                                        # the door's glass
+    m.ring("z", (0, CLOCK_DIAL_Y, 5.375), 5.0, 1.0, 0.75, BRASS, sides=16)              # bezel
+    for x in (-4.5, 3.5):                                                               # the door: stiles and rails
+        m.box((x, 2.0, 4.0), (x + 1.0, 19.0, 5.0), WOOD_L, grain="y")
+    for y in (2.0, 18.0):
+        m.box((-3.5, y, 4.0), (3.5, y + 1.0, 5.0), WOOD_L, grain="x")
+    _pane(m, (-3.5, 3.0, 4.65), (3.5, 18.0, 4.75))                                      # the door's glass
     m.box((-2.5, 3.0, 1.0), (2.5, 4.0, 1.25), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite("clock_beat", ["kckck"], c=FACE, k=INK)})                 # beat scale
-    m.box((4.5, 10.5, 4.75), (5.25, 12.0, 5.75), BRASS_D)                               # door knob
+    m.tube("z", (4.0, 11.0), 5.0, 6.0, 0.75, BRASS_D, cap=KNOB)                         # door knob
     return m
 
 
@@ -438,57 +443,57 @@ def _regulator_pendulum():
 
 def _louvre_box():
     """A thermometer screen: a white box louvred on all four sides under a pitched roof, on four legs
-    bolted to a stone slab; the door is on the +z side. Two blocks tall. Anchor: the ground under
-    its middle."""
+    bolted to a stone slab; the door is on the +z side. The slab 14 x 12 px, the roof 14 px long and
+    15 px over the eaves, 31 px tall. Anchor: the ground under its middle."""
     m = M.Model(PREFIX + "louvre_box")
     m.box((-7.0, 0.0, -6.0), (7.0, 2.0, 6.0), STONE)                                    # slab
     for x in (-6.0, 4.0):
         for z in (-5.0, 3.0):
-            m.box((x, 2.0, z), (x + 2.0, 16.0, z + 2.0), WHITE_D, grain="y")            # legs
-            m.box((x - 0.25, 2.0, z - 0.25), (x + 2.25, 2.75, z + 2.25), IRON_D)        # their iron feet
-    for x in (-5.5, 4.5):                                                               # rails between the legs
-        m.box((x, 6.0, -3.0), (x + 1.0, 7.5, 3.0), WHITE_D, grain="z")
-    m.box((-4.0, 6.0, -4.5), (4.0, 7.5, -3.5), WHITE_D, grain="x")
-    m.box((-6.0, 17.0, -5.0), (6.0, 26.0, 5.0), SLATS)                                  # the louvred body
+            m.box((x, 2.0, z), (x + 2.0, 3.0, z + 2.0), IRON_D)                         # iron shoes
+            m.box((x, 3.0, z), (x + 2.0, 16.0, z + 2.0), WHITE_D, grain="y")            # legs
+            m.box((x, 17.0, z), (x + 2.0, 26.0, z + 2.0), WHITE, grain="y")             # corner posts
+    for x in (-6.0, 5.0):                                                               # rails between the legs
+        m.box((x, 6.0, -3.0), (x + 1.0, 8.0, 3.0), WHITE_D, grain="z")
+    m.box((-4.0, 6.0, -5.0), (4.0, 8.0, -4.0), WHITE_D, grain="x")
+    m.box((-5.0, 17.0, -4.0), (5.0, 26.0, 4.0), SLATS)                                  # the louvred panels
     for y in (16.0, 26.0):
-        m.box((-6.5, y, -5.5), (6.5, y + 1.0, 5.5), WHITE)                              # bottom and top frame
-    for x in (-6.5, 5.5):
-        for z in (-5.5, 4.5):
-            m.box((x, 17.0, z), (x + 1.0, 26.0, z + 1.0), WHITE, grain="y")             # corner posts
-    m.box((-0.5, 17.0, 5.0), (0.5, 26.0, 5.5), WHITE, grain="y")                        # the meeting stile of the doors
-    m.tube("z", (1.5, 21.5), 5.0, 6.0, 0.75, BRASS_D, cap=KNOB)                         # door knob
-    for half, y0, y1 in ((3.5, 27.0, 28.0), (1.5, 28.0, 29.0)):                         # gables, under the boards
-        m.box((-6.5, y0, -half), (6.5, y1, half), WHITE)
+        m.box((-6.0, y, -5.0), (6.0, y + 1.0, 5.0), WHITE)                              # bottom and top frame
+    m.box((-1.0, 17.0, 4.0), (1.0, 26.0, 5.0), WHITE, grain="y")                        # the meeting stile of the doors
+    m.tube("z", (0.5, 21.5), 5.0, 6.0, 0.5, BRASS_D, sides=4, cap=KNOB)                 # door knob
+    for half, y0, y1 in ((3.0, 27.0, 28.0), (1.0, 28.0, 29.0)):                         # gables, under the boards
+        m.box((-6.0, y0, -half), (6.0, y1, half), WHITE)
     rise, run = 4.0, 7.5
     slope, pitch = math.hypot(rise, run), math.degrees(math.atan2(rise, run))
-    for side in (1.0, -1.0):                                                            # the two roof boards
-        with m.turned(("x", side * pitch), about=(0.0, 31.0, 0.0)):
+    for side in (1.0, -1.0):                                                            # the two roof boards: they
+        with m.turned(("x", side * pitch), about=(0.0, 30.5, 0.0)):                     # rest on the gables' corners
             lo, hi = sorted((0.0, side * slope))
-            m.box((-7.5, 30.0, lo), (7.5, 31.0, hi), WHITE_D, grain="x")
-    m.box((-7.75, 30.5, -0.75), (7.75, 31.5, 0.75), IRON_D, grain="x")                  # ridge
+            m.box((-7.0, 29.5, lo), (7.0, 30.5, hi), WHITE_D, grain="x")
+    m.box((-7.25, 30.0, -0.75), (7.25, 31.0, 0.75), IRON_D, grain="x")                  # ridge
     return m
 
 
 def _calc_machine():
-    """A hand-cranked calculating machine on a wooden board: an iron body, on it the slotted drum
-    with a brass setting lever standing in each slot, the result register in the carriage in front,
-    the crank on the right. 16 px wide with the crank, 10.5 px deep, 9 px tall. Anchor: the table
-    under its middle."""
+    """A hand-cranked calculating machine on a wooden board: the slotted drum between two iron side
+    plates with a brass setting lever standing in each slot, the result register in the carriage in
+    front, the crank on the right. 13 px wide, 15.5 px with the crank, 11 px deep, 9 px tall.
+    Anchor: the table under the middle of the board."""
     m = M.Model(PREFIX + "calc_machine")
-    m.box((-7.0, 0.0, -5.0), (7.0, 1.0, 5.5), WOOD_D)                                   # board
-    m.box((-6.5, 1.0, 1.5), (6.5, 3.5, 5.0), IRON_D)                                    # carriage
-    m.box((-5.5, 1.75, 5.0), (5.5, 2.75, 5.1), K.flat("porcelain", 3), skip="nudew",
-          faces={"s": _sprite("calc_register", ["ckckckckckc"], c=FACE, k=INK)})        # result windows
-    m.box((-5.25, 1.0, -4.0), (5.25, 5.0, 1.5), IRON)                                   # body
-    axis = (5.0, -1.25)                                                                 # (y, z) of the drum's axis
-    m.tube("x", axis, -5.5, 5.5, 3.0, DRUM, sides=12)                                   # the slotted drum
-    for x, deg in ((-4.0, 20.0), (-2.0, 55.0), (0.0, 35.0), (2.0, 70.0), (4.0, 45.0)):  # a lever in each slot
+    m.box((-6.5, 0.0, -5.0), (6.5, 1.0, 6.0), WOOD_D)                                   # board
+    m.box((-5.5, 1.0, 2.0), (5.5, 4.0, 5.0), IRON_D)                                    # carriage
+    m.box((-4.5, 2.0, 5.0), (4.5, 3.0, 5.1), K.flat("porcelain", 3), skip="nudew",
+          faces={"s": _sprite("calc_register", ["ckckckckc"], c=FACE, k=INK)})          # result windows
+    m.box((-5.5, 1.0, -4.0), (5.5, 3.0, 2.0), IRON)                                     # body
+    for x in (-5.5, 4.5):
+        m.box((x, 3.0, -4.0), (x + 1.0, 8.0, 2.0), IRON, grain="y")                     # side plates
+    axis = (5.0, -1.0)                                                                  # (y, z) of the drum's axis
+    m.tube("x", axis, -4.5, 4.5, 3.0, DRUM, sides=12)                                   # the slotted drum
+    for x, deg in ((-3.0, 20.0), (-1.0, 55.0), (1.0, 35.0), (3.0, 70.0)):               # a lever in each slot
         with m.turned(("x", deg), about=(0.0, axis[0], axis[1])):
             m.box((x - 0.5, axis[0] + 2.75, axis[1] - 0.5), (x + 0.5, axis[0] + 3.75, axis[1] + 0.5), KNOB)
     m.tube("x", axis, 5.5, 7.0, 0.75, BRASS_D)                                          # crank: axle, arm, grip
-    m.beam((6.75, 5.0, -1.25), (6.75, 8.0, 1.0), 0.75, 1.25, BRASS)
+    m.beam((6.5, 5.0, -1.0), (6.5, 8.0, 1.0), 1.0, 1.0, BRASS)
     m.tube("x", (8.0, 1.0), 6.5, 9.0, 0.75, WOOD_D, cap=K.flat("dark_wood", 3))
-    m.tube("x", (3.0, 3.25), -7.0, -6.5, 1.0, BRASS_D, cap=KNOB)                        # clearing knob on the carriage
+    m.tube("x", (2.5, 3.5), -6.5, -5.5, 1.0, BRASS_D, cap=KNOB)                         # clearing knob on the carriage
     return m
 
 
@@ -502,17 +507,22 @@ def _sunshine_recorder():
     deep. Anchor: the pedestal top under its middle."""
     m = M.Model(PREFIX + "sunshine_recorder")
     cy, r = 7.0, 3.0
-    m.box((-5.0, 0.0, -4.5), (5.0, 1.0, 3.5), IRON_D)                                   # base plate
+    m.box((-5.0, 0.0, -5.0), (5.0, 1.0, 4.0), IRON_D)                                   # base plate
     for x in (-4.0, 4.0):
-        m.tube("y", (x, 2.5), 1.0, 1.75, 0.75, BRASS_D, cap=KNOB)                       # levelling screws
-    m.tube("y", (0, 0), 1.0, 1.75, 2.0, BRASS_D)                                        # the foot of the pillar
-    m.tube("y", (0, 0), 1.75, cy - r + 0.25, 1.0, BRASS)                                # pillar: the ball sits on it
-    m.box((-0.75, 2.25, -2.75), (0.75, 3.25, -0.5), BRASS_D)                            # the arm that carries the bowl
+        m.tube("y", (x, 3.0), 1.0, 2.0, 0.75, BRASS_D, cap=KNOB)                        # levelling screws
+    m.tube("y", (0, 0), 1.0, 2.0, 2.0, BRASS_D)                                         # the foot of the pillar
+    m.tube("y", (0, 0), 2.0, cy - r + 0.25, 1.0, BRASS)                                 # pillar: the ball sits on it
+    m.box((-1.0, 2.0, -3.0), (1.0, 3.0, -0.5), BRASS_D)                                 # the arm that carries the bowl
     with m.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):                              # y is the polar axis in here
         m.ring("y", (0.0, cy, 0.0), r + 1.5, 1.0, 3.0, BRASS, sides=16, arc=(0.0, 180.0),
                faces={"w": _scale("last", 2, 0, 2, ramp="cream")})                      # the bowl and the card in it
     m.ball((0.0, cy, 0.0), r, LENS, sides=12, layers=6)                                 # the glass ball
-    m.box((-1.65, cy + 1.45, 1.55), (-0.65, cy + 2.45, 2.3), K.flat("porcelain", 4))    # and its glint
+    # its glint: one white pixel on the facet that looks up and to the left of the front (the second
+    # layer from the top, the facet 30 degrees round from +z towards -x), a hair proud of the glass
+    girth = r * math.sqrt(1.0 - 0.5 * 0.5)
+    with m.turned(("y", -30.0), about=(0.0, cy, 0.0)):
+        m.box((-0.5, cy + 1.0, girth), (0.5, cy + 2.0, girth + 0.1), K.flat("porcelain", 4), skip="nudew",
+              shade=False)
     return m
 
 
