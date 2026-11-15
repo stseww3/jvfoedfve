@@ -190,7 +190,7 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
     "v1": (V1["pos"], V1["look_at"]),                                              # the arrival view, 80 blocks
     "slant": ((S.WALL_E + 13.5, EYE, -10.5), (S.WALL_E + 1.0, 8.5, -23.0)),        # 45 degrees, 12 blocks off
     "surround": near(S.east_wall_x(SURROUND_BAY), SURROUND_BAY),
-    "door": ((FRONT_X + 9.5, EYE, AXIS + 4.0), (FRONT_X - 1.0, 4.5, AXIS)),
+    "door": ((FRONT_X + 9.5, EYE, AXIS + 2.0), (FRONT_X - 1.0, 4.5, AXIS)),                # before the middle arch
     "wash": ((S.WALL_E + 9.5, EYE, -16.5), (S.WALL_E + 1.0, 2.0, -10.0)),
     "west": ((APSE_X - 28.5, EYE, AXIS), (APSE_X, 10.0, AXIS)),                    # from the sunset platform
 }
