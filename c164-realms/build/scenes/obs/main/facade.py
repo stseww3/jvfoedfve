@@ -337,6 +337,25 @@ def _roofs(canvas, plan, origin):
 
 
 # --- the entrance's own stones ------------------------------------------------------------------------
+def _recesses(canvas, plan, origin):
+    """The great windows of the middle pavilion, from the hall's side. Where the front steps forward
+    beside a bay the lining of the return wall stands behind the bay's last column of glass, two
+    blocks deep (bays 8 and 10, z -5 and 5): from the hall the window was two columns wide and ran
+    into the corner. The lining is cut away there from the floor of the main storey to the window's
+    head, as doorway() cuts it in the rows of an arch. The string course's row stays under it as
+    the floor (the hall's galleries are level with it) and the frieze's row over it as the lintel."""
+    ox, oy, oz = origin
+    for bay in ARCADE:
+        op = plan.bays[("east", bay)]
+        for c in op.cells:
+            n = 2
+            while O.step(c, op.out, -n) in plan.leaf:
+                x, z = O.step(c, op.out, -n)
+                for y in range(S.PANEL, S.WINDOW[1] + 1):
+                    canvas.clear(ox + x, oy + y, oz + z)
+                n += 1
+
+
 def _arcade_keys(canvas, plan, origin):
     """Version B: the key of each arch stands in the string course over its crown, a whole block
     where the course's moulding runs. (A console hung under the course would stand in front of the
@@ -437,6 +456,7 @@ def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
     entrance = entrance or ENTRANCE
     plan = shell(entrance)
     O.build(canvas, plan, order(), origin, glass=glass)
+    _recesses(canvas, plan, origin)
     if entrance == "B":
         _arcade_keys(canvas, plan, origin)
     if EMBLEM:
@@ -549,6 +569,13 @@ def check(entrance=None):
                     out.append(f"entrance: bay {d['bay']} is open right through the building at z {z}, y {y}")
             if d["kind"] == "gate" and any(stands(n, y, z) for n in range(SCREEN_X + 1, x - 1) for y in range(d["y"][0], DOOR_TOP)):
                 out.append(f"entrance: bay {d['bay']}: something stands behind the gate at z {z}")
+    # 6. the great windows of the middle pavilion are as wide from the hall as from the court:
+    #    nothing stands behind their glass, from the floor of the main storey to the window's head
+    for bay in ARCADE:
+        glass_x = S.east_wall_x(bay) + S.DEPTH_GLASS
+        for z in P.window_rows(bay):
+            if any(c.has(x, y, z) for x in range(SCREEN_X + 1, glass_x) for y in range(S.PANEL, S.WINDOW[1] + 1)):
+                out.append(f"east bay {bay}: something stands behind the glass of the great window at z {z}")
     return out
 
 
@@ -579,5 +606,6 @@ if __name__ == "__main__":
         print()
     found = [f"{e}: {line}" for e in ENTRANCES for line in check(e)]
     print("\n".join(found) if found else
-          "self-check: three depths, cornice and emblem, windows, the window rules, doorways -- all as planned, entrances A, B, C")
+          "self-check: three depths, cornice and emblem, windows, the window rules, doorways, "
+          "the great windows from the hall -- all as planned, entrances A, B, C")
     sys.exit(1 if found else 0)
