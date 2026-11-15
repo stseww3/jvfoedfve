@@ -197,7 +197,39 @@ xdotool key --clearmodifiers keydown F3 key t keyup F3
 
 三版在同一座整楼、同一对机位下拍的，差别主要在彗星本身和它投的光：V1 里甲和乙有 1.47% 的像素不同、甲和丙 1.43%，差异散布在整幅画面上（彗星的亮部也在动），不只是彗星那一小块。
 
-## 13. 踩过的坑
+
+## 13. 云和视距：两个必须记住的数（11-16 夜量出来的）
+
+**`cloudRange` 的上限是 128。** 写 512 客户端会报
+`Error parsing option value 512 for option Cloud Distance: Value 512 outside of range [2:129]`，
+然后**用自己的默认值**——也就是说你以为设到最大，实际没设上。写 128。
+
+**`renderDistance` 默认 12，范围 2 到 32。** 这两个不是一回事：
+- `cloudRange`（云距离）最大 128，决定原版云层画多远。
+- `renderDistance`（视距）决定方块画多远。26.3 默认 **12**，也就是 192 格外**方块云不画**。
+
+所以：**看板真机图一律视距 12**（总监 11-16 定：玩家实际看到的样子）。视距 32 拍的图不能代表玩家看到的东西——192 格外的方块云在 12 里根本不存在，云层边界露不露完全不一样（实测 v12 那一个机位，视距 12 下 D384 和现状差 23.9%，和视距 32 下的数完全不同）。
+
+`shots.txt` 里要记上视距和 `cloudRange`。
+
+改这两处要同时改客户端和服务端：
+
+```
+# 客户端 /agent/realms-study/client26/game/options.txt
+renderClouds:"true"      # 高品质；"fast" 流畅；"false" 关
+cloudRange:128           # 上限就是 128
+renderDistance:12        # 玩家默认
+
+# 服务端 /agent/realms-study/server26/server.properties
+view-distance=12
+```
+
+两份都改完要**重启客户端**（options.txt 只在启动时读），服务端改 view-distance 也要重启。
+服务端视距开到 32 时堆要给到 3 GB（`MC_SERVER_HEAP=3G`）。
+
+**核过的方式**：`grep "Error parsing option value" client.log` 应该是空的；有这一行就说明某个值被系统拒了、游戏在用默认值。
+
+## 14. 踩过的坑
 
 1. `tools/winmc.py` 不能在这台机器上 `import`：`tools/win/deskstate.py` 第 18 行 `ctypes.WinDLL` 只有 Windows 有。Linux 上照第 4 节手写配置，不要绕着改它。
 2. `place.py` 第一次跑一定 biome 失败，要重启服务端再摆一遍（第 6 节）。
