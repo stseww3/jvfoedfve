@@ -21,13 +21,21 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
              under an iron girder so that the winch is seen from the car; nothing of it comes into
              the arrival view. West of it the waiting room, low and set back a row: it is the right
              edge of the arrival view, its eaves and its ridge running to the foot of the clock
-             tower, and it is kept dark on that side (the blinds are down). Its light is in the
-             gable, which looks at the observatory. Tuff brick on a polished course, slate roofs.
+             tower, and it is kept dark on that side (the blinds are down, the door is shut: the
+             room is a shell and nobody goes in). Tuff brick on a polished course, slate roofs.
+  windows    Three are lit, all of frosted glass and none of them towards the arrival view: the
+             waiting room's gable window, which looks at the observatory, and two tall lights in
+             the winch house's east wall, over the cliff. windows() lists the glass of both
+             houses; the sky line gives the lit ones their light (sky/_lightkit.glazed). The two
+             tall lights are whole blocks, flush with the wall: their room side is seen from the
+             platform through the opening, and the materials line covers it with the sheet that
+             shows frosted glass with the night behind it (materials/windows.line).
   glass roof Over the car and the spawn cell only: two iron frames with a glazed screen in each,
              glass between them in two pitches, an iron ridge. It lies between two girders, the
-             winch house's and one on two thin columns south of the car; the columns stand east of
-             the camera and the girder's end oversails the western one. Its underside is
-             S.CANOPY_CLEAR above the platform; seen from S.V1 it lies wholly above the picture.
+             winch house's and one on two slender columns south of the car: a stone pedestal, an
+             iron shaft, a cast head. The columns stand east of the camera and the girder's end
+             oversails the western one. Its underside is S.CANOPY_CLEAR above the platform; seen
+             from S.V1 it lies wholly above the picture.
   bay        The south-east corner stays level, railed, over the head of the trestle.
   trestle    East of the platform the track runs level for a few cells and then falls one in two,
              on iron bents that stand on the ridge the mountain keeps for it (site/_kit.py:
@@ -36,10 +44,13 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
              its top.
 
 What the other lines hang on (cells unless called a point): CAR, WINCH_ROOM, SLOT, SPAWN,
-track_axis(x), rail_top(x) for the car and the winch; SIGN, BENCHES, LUGGAGE, WAIT_ROOM for the
-props; LAMP_POINTS for the lamps; STEPS for the paths that meet the platform. Blocks only: no
-display entities, no models, no light sources.
+track_axis(x), rail_top(x) for the car and the winch; SIGN, BENCHES, LUGGAGE for the props;
+LAMP_POINTS for the lamps; windows() for the light; STEPS for the paths that meet the platform.
+The package sets blocks and has no models and no light sources of its own. build() returns the
+display entities placed for it: the sheets on the room side of the winch house's two lights.
 """
+import importlib
+
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
@@ -100,6 +111,7 @@ CANOPY = (HEAD, AXIS - 2, X1, AXIS + 2)             # x 88..91, z -35..-31: the 
 FRAMES_X = (CANOPY[0], CANOPY[2])       # 88, 91
 GIRDER_Z = CANOPY[3] + 1                # -30: the south girder's row
 COLUMNS = [(CANOPY[0] + 1, GIRDER_Z), (CANOPY[2], GIRDER_Z)]        # (89, -30), (91, -30): east of the eye
+PEDESTAL = 2                            # courses of stone under a column's shaft; its head is one course
 BAY = HEAD - 1                          # 87: from here east the south side is the railed bay
 
 # --- what the props and the lamps hang on (points) --------------------------------------------------------
@@ -142,16 +154,71 @@ GLASS = B.SKYLIGHT.block
 SCREEN = B.SKYLIGHT.pane
 GRATE = B.IRON_GRATE
 BARS = B.IRON_BARS
-PIPE = B.IRON_PIPE + "[axis=y]"
-POST = B.TUFF_SMOOTH.wall
+PIPE = B.IRON_PIPE + "[axis=y]"         # a column's shaft
+POST = B.TUFF_SMOOTH.wall               # its pedestal
+CAPITAL = B.IRON_CAST                   # its head
 FINIAL = B.IRON_ROD + "[facing=up]"
 TIE = B.IRON_HATCH + "[half=top]"
 DOOR = B.IRON_DOOR
-LIT = B.WINDOW_FROSTED.pane
-WARM = B.WINDOW_CURTAIN.pane
+LIT = B.WINDOW_FROSTED                  # the lit glass: panes in the waiting room's gable, whole blocks in
+#                                         the winch house's east wall (a lining lies on a block's face)
 DARK = B.WINDOW_DARK.pane
 SHUT = B.WINDOW_BLIND.pane
 FOOTING = B.TUFF_BRICK.block
+
+
+def windows():
+    """The glass of the two houses, as records sky/_lightkit.glazed() takes: front, bay (the cell
+    the window stands in along its wall; the first one of a wider window), storey, cells (the glass
+    columns (x, z)), inward (the step from the glass into the house), y (the bottom and the top row
+    of the glass). Two keys more for this package: glass, what stands in the window, and inside,
+    set where the room side of the glass is seen (the winch room is open to the platform).
+
+    Lit are the waiting room's gable window and the two lights of the winch house's east wall, a
+    pier between them. Everything on the front the arrival view sees is dark: two windows with
+    their blinds down and the light over the door."""
+    wx0, wz0, _, wz1 = WAIT
+    hx0, hz0, hx1, hz1 = WINCH
+    door = WAIT_ROOM["door"][0]
+    mid = (hz0 + hz1) // 2
+    low = (FEET + 1, FEET + 2)              # the waiting room's windows: two rows over the plinth course
+    tall = (FEET + 1, FEET + 4)             # the lights of the winch house's east wall
+    high = (FEET + 2, FEET + 4)             # the windows of its north wall
+    over = (FEET + 2, FEET + 2)             # the light over the door
+    apex = (WINCH_TOP + 1, WINCH_TOP + 1)
+
+    def window(front, bay, cells, inward, y, glass, storey="main", **more):
+        return dict(front=f"station.{front}", bay=bay, storey=storey, cells=cells, inward=inward, y=y,
+                    glass=glass, **more)
+
+    return [
+        # the waiting room: the lit window in its gable; its front, all dark; its back
+        window("west", wz0 + 1, [(wx0, z) for z in range(wz0 + 1, wz1)], (1, 0), low, LIT.pane),
+        window("south", door - 2, [(door - 2, wz1)], (0, -1), low, SHUT),
+        window("south", door, [(door, wz1)], (0, -1), over, DARK),
+        window("south", door + 2, [(door + 2, wz1)], (0, -1), low, SHUT),
+        window("north", door - 1, [(door - 1, wz0)], (0, 1), low, DARK),
+        window("north", door + 1, [(door + 1, wz0)], (0, 1), low, DARK),
+        # the winch house: the two lights of its east wall; the north wall's two windows, either
+        # side of the two columns of brick the winch's wall lamp hangs on (machines/cable); a small
+        # one in the west gable, which shows over the waiting room's roof
+        window("east", hz0 + 1, [(hx1, hz0 + 1)], (-1, 0), tall, LIT.block, inside=True),
+        window("east", hz1 - 1, [(hx1, hz1 - 1)], (-1, 0), tall, LIT.block, inside=True),
+        window("north", hx0 + 1, [(hx0 + 1, hz0)], (0, 1), high, DARK),
+        window("north", hx1 - 1, [(hx1 - 1, hz0)], (0, 1), high, DARK),
+        window("west", mid, [(hx0, mid)], (1, 0), apex, DARK, storey="gable"),
+    ]
+
+
+def _other(path):
+    """A module of another line ("sky._lightkit"); None while it is not in the tree."""
+    full = f"{__package__.rpartition('.')[0]}.{path}"
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if not e.name or not f"{full}.".startswith(f"{e.name}."):
+            raise               # it is there and cannot import something of its own: say so
+        return None
 
 
 class _Pen:
@@ -243,13 +310,9 @@ def _gable_roof(p, box, y, gables=None):
             p.set(x, y + half, z, ROOF_FLAT)
 
 
-def _window(p, cells, y0, y1, glass):
-    for x, z in cells:
-        for y in range(y0, y1 + 1):
-            p.set(x, y, z, glass)
-
-
 def _winch_house(p):
+    """The glass of its windows is set by _glaze: two tall lights in the east wall, two dark
+    windows in the north wall, a small dark one in the west gable."""
     x0, z0, x1, z1 = WINCH
     mid = (z0 + z1) // 2
     _shell(p, WINCH, FEET, WINCH_TOP)
@@ -263,40 +326,41 @@ def _winch_house(p):
         p.set(x, oy1 + 1, z1, IRON)
     p.set(ox0, oy1, z1, CORBEL + "[half=top,facing=west]")
     p.set(ox1, oy1, z1, CORBEL + "[half=top,facing=east]")
-    # two tall lit lights in the east wall, over the cliff; two dark ones in the north wall, either
-    # side of the two columns of brick the winch's wall lamp hangs on (machines/cable)
-    _window(p, [(x1, z0 + 1), (x1, z1 - 1)], FEET + 1, FEET + 4, LIT)
-    _window(p, [(x0 + 1, z0), (x1 - 1, z0)], FEET + 2, FEET + 4, DARK)
     _gable_roof(p, WINCH, WINCH_TOP + 1)
-    # the west gable shows over the waiting room's roof: a lit light in it, an apex stone and a rod
-    _window(p, [(x0, mid)], WINCH_TOP + 1, WINCH_TOP + 1, WARM)
+    # the west gable shows over the waiting room's roof: an apex stone and a rod
     p.set(x0, WINCH_TOP + 3, mid, COURSE)
     p.set(x0, WINCH_TOP + 4, mid, FINIAL)
 
 
 def _waiting_room(p):
-    """Built before the winch house, whose west wall closes its east end."""
+    """Built before the winch house, whose west wall closes its east end. The front, which the
+    arrival view sees: a door set back between two piers under a dark light, a window either
+    side with its blind down, all three heads under the top course; nothing lit. The door is
+    shut: a wall with a door's face, and nobody goes in. The gable, which looks at the
+    observatory, has the lit window under the name board's course (_glaze sets the glass)."""
     x0, z0, x1, z1 = WAIT
     door = WAIT_ROOM["door"][0]
     _shell(p, (x0, z0, x1 + 1, z1), FEET, WAIT_TOP)
-    # the front, which the arrival view sees: a door set back between two piers under a dark
-    # fanlight, a window either side with its blind down, all three heads under the top course.
-    # Nothing lit.
     p.set(door, FEET, z1, DOOR + "[half=lower,facing=south,hinge=left]")
     p.set(door, FEET + 1, z1, DOOR + "[half=upper,facing=south,hinge=left]")
-    p.set(door, FEET + 2, z1, DARK)
-    _window(p, [(door - 2, z1), (door + 2, z1)], FEET + 1, FEET + 2, SHUT)
-    # the gable, which looks at the observatory: the lit window, under the name board's course
-    _window(p, [(x0, z) for z in range(z0 + 1, z1)], FEET + 1, FEET + 2, LIT)
-    _window(p, [(door - 1, z0), (door + 1, z0)], FEET + 1, FEET + 2, DARK)      # the back
     _gable_roof(p, WAIT, WAIT_TOP + 1, gables=(x0,))
+
+
+def _glaze(p):
+    """The glass of windows(), when the walls and the gables stand."""
+    for w in windows():
+        for x, z in w["cells"]:
+            for y in range(w["y"][0], w["y"][1] + 1):
+                p.set(x, y, z, w["glass"])
 
 
 def _glass_roof(p):
     """Two iron frames (the stepped rafters of a gable, a glazed screen under them), glass in two
     pitches between them, an iron ridge: each pitch is one light with iron all round it, the frames
     at its ends, the ridge above and a girder at its foot. The north girder is the winch house's;
-    the south one lies on two thin columns and tapers where it oversails the western one."""
+    the south one lies on two columns and tapers where it oversails the western one. A column is
+    slender, and so that it reads as one and the girder does not hang on two wires it has a foot
+    and a head: a stone pedestal of two courses, a shaft of two, a cast block under the girder."""
     x0, z0, x1, z1 = CANOPY
     half = (z1 - z0) // 2
     for x in range(x0, x1 + 1):
@@ -310,9 +374,8 @@ def _glass_roof(p):
         p.set(x, EAVES + half, z0 + half, IRON_SLAB + "[type=bottom]")
         p.set(x, EAVES, GIRDER_Z, IRON if x > x0 else IRON_STAIR + "[half=top,facing=east]")
     for x, z in COLUMNS:
-        p.set(x, FEET, z, POST)
-        for y in range(FEET + 1, EAVES):
-            p.set(x, y, z, PIPE)
+        for y in range(FEET, EAVES):
+            p.set(x, y, z, POST if y < FEET + PEDESTAL else CAPITAL if y == EAVES - 1 else PIPE)
 
 
 def _slab(h):
@@ -355,14 +418,42 @@ def _trestle(p):
                     p.set(x, yy, z, BARS)
 
 
+def _light(canvas, origin):
+    """Hand the windows to the sky line, which gives the lit ones their light: a source in the
+    cell before the glass. While its kit is not in the tree they glow without it."""
+    glazed = getattr(_other("sky._lightkit"), "glazed", None)
+    if glazed is not None:
+        glazed(canvas, windows(), origin, group="station")
+
+
+def _lining(canvas, origin):
+    """The room side of the lit glass that is seen from a room. Lit glass glows on every face, and
+    from the platform one looks into the winch room at the back of its two lights; the materials
+    line covers that side with the sheet that goes with the glass (materials/windows.line:
+    frosted glass with the night behind it). The sheets are display entities. Returns how many
+    were placed: none while that module has no line()."""
+    line = getattr(_other("materials.windows"), "line", None)
+    if line is None:
+        return 0
+    n = 0
+    for w in windows():
+        if w.get("inside"):
+            cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
+            n += line(canvas, cells, w["inward"], w["glass"], origin=origin)
+    return n
+
+
 def build(canvas, origin=(0, 0, 0)):
+    """Returns the number of display entities placed: the sheets of _lining."""
     p = _Pen(canvas, origin)
     _platform(p)
     _track(p)
     _waiting_room(p)
     _winch_house(p)
+    _glaze(p)
     _glass_roof(p)
     _trestle(p)
     for y in (FEET, FEET + 1):          # the spawn cell stays empty
         p.clear(HEAD, y, AXIS)
-    return 0
+    _light(canvas, origin)
+    return _lining(canvas, origin)

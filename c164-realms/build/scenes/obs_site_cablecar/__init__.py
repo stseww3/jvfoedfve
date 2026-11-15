@@ -133,8 +133,10 @@ def build():
 
 
 def build_models():
+    """The models of the lines that are built here, and the materials line's: the sheets on the room
+    side of the winch house's two lights are its models (materials/windows.line)."""
     out = {}
-    for line in LINES:
+    for line in (materials,) + LINES:
         out.update(line.models() or {})
     return out
 
