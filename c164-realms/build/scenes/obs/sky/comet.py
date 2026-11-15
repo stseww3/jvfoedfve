@@ -8,8 +8,8 @@ table (STYLES):
              with stepped outlines, the way the vanilla sun and moon are drawn. The dust tail is a
              plume that opens all the way to a round end; its three tones lie in it one inside the
              other, each narrow at the head and round at its far end, the brightest a short stub
-             behind the head. The ion tail is a line one pixel wide, straight up, in the two
-             dimmer tones
+             behind the head. The ion tail is a line one pixel wide, straight up, in the dimmest
+             tone, drawn behind the plume
     c  bing  a wide fan: a short, wide dust tail with a firmer outline
 
 The anatomy is the same in all three: a nucleus of a few big pixels; a small coma; a dust tail that
