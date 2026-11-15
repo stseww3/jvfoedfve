@@ -8,21 +8,21 @@ its kerb and railing are the terrain card's):
 
   - a podium centred on the mast's foot (S.RADIO_MAST["foot"]): a step of dark slate brick five
     across under a grey-white coping, and on it the mast's seat, a riveted iron bed three across.
-    The seat is flat and bare. The mast (machines/radiomast, c239 #37036) gathers its four legs
-    into one base insulator in the bed's middle, on a plate a block and a quarter square, and the
-    rest of the bed shows round it. No stone lies on the bed: whatever stands on a coping takes
-    pieces out of it, and four pale pieces left round a dark middle are a plus sign, seen from
-    the tower and from the air;
+    The seat is flat and bare. The mast (machines/radiomast, c346 #56849) brings its four legs
+    straight down to the bed's four corners, each on a white porcelain seat of its own, and the
+    rest of the bed shows between them. No stone lies on the bed: whatever stands on a coping
+    takes pieces out of it, and four pale pieces left round a dark middle are a plus sign, seen
+    from the tower and from the air;
   - a paved apron round it in the terrace's middle stone;
   - four guy anchors on the diagonals: a riveted iron block on a slate footing with an eye bolt;
   - a lead-in post on the podium's south-west corner, the corner that faces the clock tower: the
     mast's copper feeder comes across to its head from the shoe at the mast's foot.
 
 What the other cards read from this module (blocks they place later win over these):
-  TOP           the first free y above the seat: the mast's base insulator stands here
+  TOP           the first free y above the seat: the mast's feet stand here
   SOCKET        the cell over the middle of the seat
-  LEGS          the cells over the seat's four corners, for a four-legged mast (the mast of
-                machines/radiomast leaves them free below y 8)
+  LEGS          the cells over the seat's four corners, for a four-legged mast (the legs of
+                machines/radiomast come down in them, each on a porcelain seat)
   GUY_ANCHORS   the points (x, y, z) where a guy meets its eye bolt
   ANTENNA_HOOK  the point on top of the lead-in post
 Everything here stays under y 4: the arrival view (V1) looks over the terrace edge and sees nothing
