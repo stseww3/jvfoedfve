@@ -13,7 +13,10 @@ things the card and c190's pre-review call for:
                blocks -- the rough below and the fine above must read as one stone across the course
                (c190 #2);
   - flight     a flight of fine stairs and a coping run, to be read from straight above: a tread and
-               a coping carry no bed joint (c190 #1);
+               a coping carry no bed joint (c190 #1); and from its foot, as someone about to climb
+               it sees the treads and the risers;
+  - paved      a field of the fine stone and one of the rough let into the floor: the ends of the
+               stones as a terrace and its kerbs show them, where an end that repeats would show;
   - lit        seven bays of the front, cut as the skeleton cuts it and built of the four stones,
                with the merged windows in them and one bracket lamp on a pilaster: the stone as the
                building will show it, cold under the night sky and warm where a lamp and a lit
@@ -30,6 +33,7 @@ from artkit.blocks import st
 from artkit.canvas import Canvas
 
 from scenes.obs import materials  # noqa: F401  (kept so the scene reads like its siblings)
+from scenes.obs import sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.materials import _board
@@ -46,6 +50,7 @@ VERSION = "a"       # the rough stone jointed all round; obs_mat_ashlar_b is the
 
 WALLS = (("rough", B.ASHLAR_ROUGH), ("fine", B.ASHLAR_FINE), ("panel", B.ASHLAR_PANEL), ("emblem", B.ASHLAR_EMBLEM))
 WALL, PITCH = 8, 10     # a wall is WALL by WALL; x from one wall to the next
+FLIGHT = 5              # the steps of the flight, and the length of the coping run beside it
 
 
 def walls(c, x, z):
@@ -85,20 +90,38 @@ def coursed(c, x, z):
 
 
 def flight(c, x, z):
-    """A flight of fine stairs climbing north and a coping run beside it, to be read from straight
-    above: the treads (fine) and the copings (fine, and a rough one to compare) carry no bed joint."""
-    for i in range(5):                                  # the flight, each step up and one north
-        zz = z - i
+    """A flight of fine stairs climbing north and a coping run beside it. Read from straight above,
+    the treads (fine) and the copings (fine, and a rough one to compare) carry no bed joint; from
+    the foot they are seen as someone about to climb them sees them.
+
+    The stage is laid first and the flight over it, in front of the backdrop. The first board ran
+    the flight north from z and laid the stage after it: the backdrop, two behind, stood across
+    the third step, and of five steps two were to be seen."""
+    _board.stage(c, x, x + 5, z, height=7)
+    for i in range(FLIGHT):                             # the flight, each step up and one north
+        zz = z + FLIGHT - 1 - i
         for dx in (0, 1):
-            c.set(x + dx, i, zz, st(B.ASHLAR_FINE.stairs, facing="south"))
+            c.set(x + dx, i, zz, st(B.ASHLAR_FINE.stairs, facing="north"))
         if i:
             c.box(x, 0, zz, x + 1, i - 1, zz, B.ASHLAR_FINE.block)
-    c.box(x + 3, 0, z - 4, x + 4, 1, z, B.ASHLAR_FINE.block)             # a low wall to cap
-    for dz in range(5):                                                  # the copings
-        c.set(x + 3, 2, z - dz, st(B.ASHLAR_FINE.slab, type="bottom"))
-        c.set(x + 4, 2, z - dz, st(B.ASHLAR_ROUGH.slab, type="bottom"))
-    _board.stage(c, x, x + 5, z, height=7)
+    c.box(x + 3, 0, z, x + 4, 1, z + FLIGHT - 1, B.ASHLAR_FINE.block)    # a low wall to cap
+    for dz in range(FLIGHT):                                             # the copings
+        c.set(x + 3, 2, z + dz, st(B.ASHLAR_FINE.slab, type="bottom"))
+        c.set(x + 4, 2, z + dz, st(B.ASHLAR_ROUGH.slab, type="bottom"))
     return x + 7
+
+
+def paved(c, x, z):
+    """Two fields of paving let into the floor, eight by eight like the walls, one of the fine stone
+    and one of the rough: the ends of the stones as a terrace, a kerb line or a run of copings shows
+    them, the variants lying together every way they can. A wall is where a side that repeats or
+    stripes would show; this is that for the ends, from eye height and from above."""
+    last = x + 2 * WALL + 1
+    _board.stage(c, x, last, z, height=3)
+    for i, family in enumerate((B.ASHLAR_FINE, B.ASHLAR_ROUGH)):
+        x0 = x + i * (WALL + 2)
+        c.box(x0, -1, z - 1, x0 + WALL - 1, -1, z + WALL - 2, family.block)
+    return last + 2
 
 
 # ---- the lit bays: the stone with windows in it and a lamp on it -----------------------------------------
@@ -174,7 +197,7 @@ def lamp_at(x, z):
 # name, how to build it, the free x before it. The lit bays stand sixteen blocks clear of the last
 # station, whose stage lamps reach fourteen: nothing but their own lamp and windows lights them.
 STATIONS = [("stones", _board.stone, 0), ("walls", walls, 2), ("coursed", coursed, 2), ("flight", flight, 2),
-            ("lit", lit, 16)]
+            ("paved", paved, 2), ("lit", lit, 16)]
 
 
 def layout(c=None):
@@ -192,6 +215,9 @@ def layout(c=None):
 def build():
     c = Canvas()
     layout(c)
+    # the bracket lamp only offers its light source; sky/lights places what the lines offered, last
+    # of all. Nothing of main's stands on this board, so it finds no window and no doorway of its own.
+    sky.build(c, (0, 0, 0))
     return c
 
 
@@ -209,8 +235,9 @@ def shots():
     eight-by-eight wall close, the four from twenty blocks and from thirty-six, the distance of the
     forecourt view (stripes, the lightness of the whole), and along their faces at a grazing angle
     (where joints run into streaks); the coursed band face-on (rough and fine as one stone) and its
-    string course from the ground; the fine treads and the copings from above; the lit bays from the
-    forecourt as someone walking up to them sees them, face-on, and close to the lamp."""
+    string course from the ground; the fine treads and the copings from above and the flight from
+    its foot; the paved fields from eye height and from above (an end that repeats); the lit bays
+    from the forecourt as someone walking up to them sees them, face-on, and close to the lamp."""
     spans = layout()
     out = []
 
@@ -248,10 +275,18 @@ def shots():
                 "time": TIME})
 
     xf = spans["flight"][0]
-    out.append({"name": "flight_treads", "pos": [xf + 1.0, 7.5, Z + 3.0], "look_at": [xf + 1.0, 1.0, Z - 3.0],
+    # the treads and the copings from straight above, where a joint on an end would show; and the
+    # flight from its foot at eye height: treads, risers and the coping run in the one view
+    out.append({"name": "flight_treads", "pos": [xf + 2.5, 9.0, Z + 2.9], "look_at": [xf + 2.5, 0.0, Z + 2.5],
                 "time": TIME})
-    out.append({"name": "flight_copings", "pos": [xf + 3.5, 6.5, Z + 2.5], "look_at": [xf + 3.5, 1.5, Z - 2.0],
+    out.append({"name": "flight_foot", "pos": [xf + 2.4, 1.6, Z + 8.2], "look_at": [xf + 2.2, 2.2, Z + 2.0],
                 "time": TIME})
+
+    xp = spans["paved"][0] + WALL + 1.0                         # between the two paved fields
+    # someone standing at the edge of a terrace, and the same paving from a roof: a repeat shows as
+    # a figure that comes round every block, close by, and as a lattice from above
+    out.append({"name": "paved", "pos": [xp, 1.6, Z + 8.5], "look_at": [xp, 0.0, Z + 3.5], "time": TIME})
+    out.append({"name": "paved_above", "pos": [xp, 11.0, Z + 3.6], "look_at": [xp, 0.0, Z + 3.0], "time": TIME})
 
     xl = spans["lit"][0]
     lx, ly, lz = lamp_at(xl, Z)
