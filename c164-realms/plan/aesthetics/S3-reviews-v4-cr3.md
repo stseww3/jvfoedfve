@@ -936,3 +936,61 @@ SKIN = frozenset([B.VERDIGRIS, B.VERDIGRIS_CAST, *B.VERDIGRIS_CUT.all(), *B.VERD
 3. `int_slit`·镜筒 + 缝外彗星；以及 `stair_exit` 里椅子的正背面。
 
 ---
+## 预审 cr3-M9：machines/cablecar-winch 缆车与卷扬机（c240 停机，无接手；分支 `cursor/c164-car-w3k9` @ `5a6186cc`）
+
+- **分支上没有这张卡的图。** `renders/obs_mach_cablecar_winch/` 不存在。纯按代码。
+- 读的是 `machines/cable.py`（617 行）、测试场景 `obs_mach_cablecar_winch`（14 机位：v1, back, door, car, car_side, car_end, winch, winch_near, drum_east, motor, sheave, brow, track, far）、STATUS 里那条"合并后会 FAIL 是旧骨架"的说明。
+- 包类型：模型。适用项：第一眼○　轮廓构图○　明暗光色○　质感像素●　风格逻辑●。
+
+### 先说 STATUS 里那条误判（要紧，别让别人以为代码坏了）
+
+STATUS 第 45 行写：`machines/cablecar-winch`（5a6186cc）现在 `check.py --scene obs_mach_cablecar_winch` 在 sight 上 FAIL，报"车站的棚占画面 20.4%"——**它分支上的 `skeleton.py` 还没有 `V1_CLEAR`（车站让出 61° 那一版），量的是 A0 #442 以前的老规矩。合了总装就按新的量。**
+
+我核了代码：`S.V1["pos"]` 用来定 `CAR_BOX`（第 127 行），**这是唯一的 V1 依赖**，而且只取 `pos[0]`（x）。`V1_CLEAR` 在 `cable.py` 里一次都没出现——**所以这张卡的代码本身不受 `V1_CLEAR` 影响，FAIL 纯粹是 `check.py` 用旧骨架量出来的。** 合并总装后重跑就过。这一条请在 STATUS 里留一句"c240 恢复后先 merge 总装再跑"，别让人去"修"代码。
+
+### 三处
+
+**1. 卷扬机房的灯由本包自己放（`WORK_LAMP = True`），而 `LAMP_LEVEL = None` 会走灯的默认值——12 级。**
+
+第 182–184 行：
+
+```
+LAMP_KIND = "bracket"
+LAMP_LEVEL = None       # None: the lamp's own (12: the drum's cell gets 9, the sheave's 6)
+WORK_LAMP = True
+```
+
+12 级是 rank 2 的上限，**这是全场最亮的一档之一**（入口门洞 13–14、主窗乳白 9–10）。而它在一间 4 格宽的机房里，离鼓 1–2 格。注释自己写了"the drum's cell gets 9, the sheave's 6"——也就是说**这盏 12 级的灯主要作用是把机房内部照亮到 9/6，而它从站台上看得见**（第 50 行："a bracket lamp on the pier between the two windows of the back wall, over the barrel and between the wheels, where it is seen from the platform"）。
+
+**这一条是 V1 的正面问题**：V1 是出生点的第一眼，A0 #304 定的是"所有东西都在眼的东侧或北侧，不进画面"。机房在 z −39..−37、V1 在 z −33 一带往西看——**这盏灯在视线右边偏后，如果它能从站台上看见，就会是 V1 边缘的一个 12 级亮点。** 图上要核：V1 里这盏灯在不在画面内、在不在画面边上。
+
+改法（如果它在 V1 里抢眼）：`LAMP_LEVEL` 从 None 改 9 或 10，机房内部靠 `CAR_LIGHT_LEVEL = 9` 和缝隙补。**这一条要图，先记着。**
+
+**2. `CAR_LIGHT_LEVEL = 9` 是车厢的亮窗光源，而车厢在出生点正后方——V1 里它应当完全看不见，但 `v1` 机位要核一次。**
+
+第 153 行注释："a lit window is a second-rank light (A5 1.3)"，9 级落在 rank 2 的 9–12 里，**档位对**。车厢在 `CAR_BOX`（x 89..91），V1 站位在 `S.V1["pos"][0]` 附近往西看——**车厢在背后**，所以 V1 里应该完全看不到。
+
+但 `car_side` / `car_end` 这两张是专门看车厢的：**9 级光在一间两格见方的木壳里，窗户是不是过曝？** A5 细化稿 §1.3 写的是"亮窗只亮窗格、emit 面收小"，9 级是光源级别不是 `emit` 级别。**这两张出图后要量窗格的亮度，看有没有超过立面乳白窗（约 0.54）。**
+
+**3. 缆车车厢是"一个人坐进去"的尺度，而 `CAR_BOX` 是 2×2 格——够，但 `_car()` 的细节密度是全包最高的，**在 V1 里车厢只在背后、在 `far` 里只有十几个像素，**这些细节大部分只在 `car` / `car_side` 两张里用得上。**
+
+这不是缺陷，是"投入和出场不匹配"：c240 花了大量面数在车厢的木壳、铁架、车顶灯、门、窗上，而这些在 V1/V12 里都看不到。**我的判断：值得**——`back`、`door`、`car` 三张机位是"玩家转身以后看到的第一眼"，那是这张卡存在的理由（docstring 第 6–8 行写得很清楚）。**不要为了"V1 里看不见"去削车厢。**
+
+### 另记
+
+- **`_shell()` 那层 fallback 写得好**（第 118–121 行）：`site/cablecar` 在树里就读它的 `AXIS`/`CAR_BOX`/`WINCH_ROOM`/`LEVEL`/`GRADE`/`END`，不在就用同一批数。**和 `recorders` 读 `timeroom.SLOTS` 是同一种做法**，这一族现在有两个包这么写了。
+- **`track_axis()` / `rail_top()` 同样分两路**：有壳读壳，没壳按 `SK.CABLE_RIDGE_Z` 和 `GRADE = 0.5` 推。✓
+- **`HOOD` / `X_ROPE` / `DUCT_ROWS`** 把"绳从鼓下来、经导管、到轨道头的铸铁盖"这条路写成了常量——**这是"管线有来去"的正确做法**。
+- 14 个机位里 `back`（转身第一眼）、`door`（车厢门）、`car_side`、`car_end` 四张是这张卡的真正验收图；`v1` 只用来核"有没有东西进画面"。
+
+### 图出来先看的三处
+
+1. `v1`·**画面里有没有本包的件**（A0 #304 的硬要求：所有东西在眼以东或以北）。特别是机房壁灯那 12 级和车厢的 9 级亮窗。
+2. `back` / `door`·转身第一眼：车厢是不是"一台能坐人的缆车"，门是不是朝着人。
+3. `winch` / `drum_east`·卷筒、导轮、钢缆的方向读不读得出来（绳从鼓顶下来、经导轮、进导管）。
+
+### 待真机
+
+机房那盏 12 级灯在真机上透过两个窗照到站台的样子；钢缆往云里下垂的那一段（离线不画云）。
+
+---
