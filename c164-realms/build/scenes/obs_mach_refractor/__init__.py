@@ -106,8 +106,8 @@ def shots():
     mount   the mount from the south, close; mount_north from the north
     tail    the tailpiece, the finder and the red lamp's back, close
     circle  the hour circle, the worm and the driving clock, from under the tube
-    lamp    the red lamp's glass, from the west: the one camera that stands on the side each
-            version hangs its lamp on
+    lamp    the red lamp's glass, from the west and below: the one camera that stands on the
+            side each version hangs its lamp on
     top     from under the dome's crown, down on the instrument
     slit    from outside, down the tube's own line through the slit at the objective
     """
@@ -134,8 +134,8 @@ def shots():
              (eyepiece[0] - 1.1, eyepiece[1] + 0.75, eyepiece[2] + 0.1))
         shot("circle", (7.9, eye_y + 0.6, 5.4), (4.8, cross[1] - 2.1, 1.9))
         lamp, side = scope._lamp_at(v)[0], scope._SPEC[v]["show"]
-        shot("lamp", (lamp[0] - 1.7, lamp[1] + 0.3, lamp[2] + side * 1.0),
-             (lamp[0] + 0.4, lamp[1] - 0.15, lamp[2] - side * 0.35))
+        shot("lamp", (lamp[0] - 1.3, lamp[1] - 0.45, lamp[2] + side * 0.4),
+             (lamp[0] + 0.3, lamp[1] + 0.1, lamp[2] - side * 0.1))
         shot("top", (7.5, 34.5, 3.0), (3.6, cross[1], 0.6))
         out_there = tuple(objective[i] + scope.SIGHT[i] * 11.0 for i in range(3))
         shot("slit", (out_there[0], out_there[1] + 1.2, out_there[2] + 1.6), objective)
