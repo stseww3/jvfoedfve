@@ -1,0 +1,20 @@
+sources placed: 67 (rank 1: 3, rank 2: 39, rank 3: 25); levels 14x3, 12x3, 10x4, 8x40, 7x9, 6x8
+windows main: dark 68, dim 3, lit 14, bright 1 (79% dark), 33 sources (1 of them behind the glass) and 4 lent by the brightest window to the windows beside it
+main's table under blue: dark 68, dim 3, lit 14, bright 1
+main's table under glow: dark 74, dim 3, lit 8, bright 1
+main's table under deep: dark 77, dim 3, lit 5, bright 1
+dressed: yes; doors: [(16, 1, 0)]; behind them: 3 sources; wash: 4 projectors; not placed here: 0; level 15: 0; isolated: 0
+
+sources by what throws them (9 kinds):
+  main/roof:walk                         6: 6x6   at (8, 20, 25) (8, 20, 20) (8, 20, 15) (8, 20, -15) (8, 20, -20) (8, 20, -25)
+  props/lamps:bracket_a                  2: 12x2   at (19, 4, 6) (19, 4, -6)
+  props/lamps:street                     2: 14x2   at (26, 4, 6) (26, 4, -6)
+  props/lamps:uplight                    4: 8x4   at (18, 0, 14) (18, 0, 10) (18, 0, -10) (18, 0, -14)
+  sky/lights:door                        1: 14x1   at (16, 1, 0)
+  sky/lights:hall                        3: 12x1, 10x2   at (12, 2, 0) (12, 2, 4) (12, 2, -4)
+  sky/lights:wash                       12: 8x8, 7x4   at (17, 4, 14) (17, 4, 10) (17, 4, -10) (17, 4, -14) (17, 2, 14) (17, 2, 10) (17, 2, -10) (17, 2, -14) ...
+  sky/lights:window                     33: 10x2, 8x28, 7x1, 6x2   at (17, 12, 0) (17, 9, 0) (16, 12, 32) (16, 12, -31) (16, 9, 32) (16, 9, -31) (15, 12, 20) (15, 12, 12) ...
+  sky/lights:window, lent                4: 7x4   at (17, 12, 3) (17, 12, -3) (17, 9, 3) (17, 9, -3)
+
+wall wash: 4 projectors at [(18, 0, -14), (18, 0, -10), (18, 0, 10), (18, 0, 14)]
+entrance: doorway [(16, 1, 0)]; behind it [(12, 2, -4), (12, 2, 0), (12, 2, 4)]

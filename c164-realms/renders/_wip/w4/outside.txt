@@ -1,0 +1,37 @@
+block light, cell by cell: a09556c5 -> 1e8b51a6
+before: sources placed: 153 (rank 1: 9, rank 2: 85, rank 3: 59); levels 14x9, 12x18, 10x64, 9x3, 8x56, 7x3
+after:  sources placed: 252 (rank 1: 12, rank 2: 138, rank 3: 102); levels 14x12, 12x12, 10x47, 8x108, 7x39, 6x34
+sources of sky/lights: 153 -> 252; 39 stand as they stood, 114 went, 213 came (a source whose level changed is counted in both)
+  main/roof:walk: went none; came 6x24
+  props/lamps:bracket_a: went none; came 12x2
+  props/lamps:street: went none; came 14x2
+  props/lamps:uplight: went 8x12; came 8x16
+  sky/lights:door: went none; came 14x1
+  sky/lights:hall: went none; came 12x1, 10x2
+  sky/lights:wash: went 8x24; came 8x20, 7x16
+  sky/lights:window: went 12x9, 10x58, 9x3, 8x8; came 10x39, 8x60, 7x4, 6x10
+  sky/lights:window, lent: went none; came 7x16
+
+blue: the two trees do not have the same windows here; not compared
+
+deep: the two trees do not have the same windows here; not compared
+
+glow: the two trees do not have the same windows here; not compared
+
+levels (origin (-600, 0, 0); cells are given from it): 2298 cells get light, 2058 the same as before, 240 not
+  in the glass column, darker: 120 cells, by up to 2; the brightest of them 11 before and 9 after; within reach of what changed: sky/lights:window
+      east 10 base (dim): 6 cells: 7>5 x1, 6>4 x3, 5>3 x2
+      east 10 main (dim): 18 cells: 7>5 x1, 6>4 x4, 5>3 x6, 4>2 x5, 3>1 x2
+      east 2 base (lit): 6 cells: 8>6 x1, 7>5 x3, 6>4 x2
+      east 2 main (lit): 18 cells: 8>6 x2, 7>5 x8, 6>4 x8
+      east 4 base (lit): 6 cells: 9>7 x1, 8>6 x3, 7>5 x2
+      east 4 main (lit): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+      east 6 base (lit): 6 cells: 11>9 x1, 10>8 x3, 9>7 x2
+      east 6 main (lit): 18 cells: 11>9 x2, 10>8 x8, 9>7 x8
+      east 8 base (bright): 6 cells: 9>7 x1, 8>6 x3, 7>5 x2
+      east 8 main (bright): 18 cells: 9>7 x2, 8>6 x8, 7>5 x8
+  behind the glass, darker: 120 cells, by up to 4; the brightest of them 12 before and 8 after; within reach of what changed: sky/lights:window
+      the brightest now: (13, 3, -12) 12>8, behind east 6 base (lit)
+  the recesses of the lit windows: every cell as before
+
+all stations: brighter before the glass: 0 cells; darker before the glass: 0 cells; in the recess of a lit window: 0 cells
