@@ -1,0 +1,30 @@
+a0job 1115-220200-m5-domegear-f3-b9c1-24864: cursor/c164-m5-domegear-f3-b9c1 @ 9b9882cc on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.30 1.14 0.49, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_domegear ---- exit 0, 47 s, last 30 lines of 20:
+  obs_mach_domegear: 4543 blocks, 33 entities (0 s)
+  obs_mach_domegear: resource pack written to /tmp/c164pack-dbs03ems (1 s)
+  obs_mach_domegear: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_domegear: grid 33 x 25 x 33, 4543 blocks, 1671 entity boxes (1 s)
+  obs_mach_domegear: 48 states -> 143 looks, 274 boxes, 46 pictures (1 s)
+  obs_mach_domegear: light done (2 s)
+  obs_mach_domegear: v8 (tick 14000, 2 s)
+  obs_mach_domegear: v8_north (tick 14000, 2 s)
+  obs_mach_domegear: v8_glow (tick 12900, 2 s)
+  obs_mach_domegear: room (tick 14000, 2 s)
+  obs_mach_domegear: ring_far (tick 14000, 2 s)
+  obs_mach_domegear: slit_foot_up (tick 14000, 3 s)
+  obs_mach_domegear: weights (tick 14000, 2 s)
+  obs_mach_domegear: hand_gear (tick 14000, 3 s)
+  obs_mach_domegear: hand_gear_up (tick 14000, 3 s)
+  obs_mach_domegear: ring_near (tick 12900, 3 s)
+  obs_mach_domegear: mesh (tick 12900, 3 s)
+  obs_mach_domegear: slit_foot (tick 12900, 5 s)
+  obs_mach_domegear: weight_near (tick 12900, 5 s)
+renders/obs_mach_domegear/: 13 pictures of 9b9882cc drawn, 4.3 MB
+==== NODEJOB RESULT ====
+exit=0 secs=50 host=cursor cores=4 head=9b9882cc commit=60074660 pushed=yes branch=cursor/c164-m5-domegear-f3-b9c1 files=14
+a0job: exit=0 secs=50
