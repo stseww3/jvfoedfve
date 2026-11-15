@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 04:50。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:12。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -33,7 +33,7 @@
 | ashlar | c353 | 合用 node46 | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石）；然后 machines/armillary（接 c246） | `cursor/c164-ashlar-2cc1` @ `f57e5576`；`cursor/c164-arm-7c2a` @ `724d26be` | `cursor/c164-ashlar-polish-f3-799b`、`cursor/c164-ashlar-armillary-f3-799b` |
 | facade | c321 | node35 | c206 | main/facade；main 牵头 | `cursor/c164-facade-229b` @ `2c482b37` | `cursor/c164-facade-facade-f3-81a0` |
 | shell | c325 | node39 | c231 | main/shell | `cursor/c164-shell-f063` @ `15b6cf2e` | `cursor/c164-shell-f3-3067` |
-| dome | c326 | node40 | c222 | main/dome；然后 machines/engine-dynamo（11-16 04:50 派，没有前任，从总装开；dome 被退回时它优先） | `cursor/c164-dome-0dab` @ `ecda0e1e` | `cursor/c164-dome-f3-a244` |
+| dome | c326 | node40 | c222 | main/dome；然后 machines/engine-dynamo（11-16 04:50 派，没有前任，从总装开；dome 被退回时它优先） | `cursor/c164-dome-0dab` @ `ecda0e1e` | `cursor/c164-dome-f3-a244`、`cursor/c164-dome-engine-f3-a244` |
 | tower | c327 | node41 | c223 | main/tower | `cursor/c164-tower-21fb` @ `951a1877` | `cursor/c164-tower-f3-c402` |
 | sdome | c328 | node42 | c224 | main/smalldome（含屋面）；然后 machines/meridian-astrograph（11-16 03:55 派，没有前任，从总装开；smalldome 被退回时它优先） | `cursor/c164-sdome-8013` @ `98d469e8` | `cursor/c164-sdome-f3-1fe7`、`cursor/c164-sdome-astro-f3-1fe7` |
 | a2 | c322 | node36 | c177 | sky/tones、motion/loop；sky 和 motion 牵头；然后 motion/smoke、再 motion/sound（11-16 04:12 派，没有前任；tones、loop 被退回或来图时它们优先） | `cursor/c164-a2-light-29fe` @ `b107652f` | `cursor/c164-a2-sky-f3-695d` |
