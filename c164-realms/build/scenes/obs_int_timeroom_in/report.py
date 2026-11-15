@@ -1,10 +1,8 @@
 """A look only (preview branch): the box stand-in against the real building, cell by cell, and the
 light the light line leaves in the room when the building is dressed.
 
-    cd build && python -m scenes.obs_int_timeroom_in.report [level behind the lit windows]
+    cd build && python -m scenes.obs_int_timeroom_in.report
 """
-import sys
-
 from artkit.canvas import Canvas
 
 from scenes import obs_int_timeroom_in as inside
@@ -43,13 +41,13 @@ def compare():
         print("  z%3d " % z + " | ".join(str(real.b.get((x, 4, z))).replace("minecraft:", "") for x in (2, 6, 9, 13)))
 
 
-def light(behind):
-    c = inside.build(behind)
+def light():
+    c = inside.build()
     r = c.light_report
-    box_ = (T.X0 - 1, T.FLOOR_Y, T.Z0 - 1, T.X1 + 1, T.CEIL_Y, T.Z1 + 1)
+    box_ = (T.X0 - 2, T.FLOOR_Y, T.Z0 - 1, T.X1 + 2, T.CEIL_Y, T.Z1 + 1)
     near = sorted((cell, v) for cell, v in r["placed"].items()
                   if box_[0] <= cell[0] <= box_[3] and box_[1] <= cell[1] <= box_[4] and box_[2] <= cell[2] <= box_[5])
-    print("sources placed in and round the room (behind the lit windows: %s):" % (behind or "the light line's own"))
+    print("sources placed in and round the room:")
     for cell, v in near:
         print("  ", cell, v)
     for key in ("rejected", "moved", "capped", "merged", "problems", "notes"):
@@ -66,5 +64,4 @@ def light(behind):
 
 if __name__ == "__main__":
     compare()
-    for arg in sys.argv[1:] or ["own"]:
-        light(int(arg) if arg.isdigit() else None)
+    light()
