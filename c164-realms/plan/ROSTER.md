@@ -30,15 +30,15 @@
 | stair | c272 | c225 | site/stair | `cursor/c164-stair-4aad` |
 | cable | c273 | c226 | site/cablecar | `cursor/c164-cable-a47d` |
 | m5 | c277 | c198 | materials/iron 二次交付 | `cursor/c164-m5-iron-8757` |
-| ashlar | — | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石） | `cursor/c164-ashlar-2cc1` |
+| ashlar | c283 | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石） | `cursor/c164-ashlar-2cc1` |
 | m3 | c282 | c218 | props/ironwork 打磨轮（退回过） | `cursor/c164-m3-ironwork-e6ba` |
 | a1 | c281 | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` |
 | dome | c279 | c222 | main/dome | `cursor/c164-dome-0dab` |
 | tower | c278 | c223 | main/tower | `cursor/c164-tower-21fb` |
 | sdome | c280 | c224 | main/smalldome（含屋面） | `cursor/c164-sdome-8013` |
-| power | — | c228 | site/powerhouse | `cursor/c164-power-f182` |
-| outb | — | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` |
-| cloud | — | c227 | sky/cloudsea | `cursor/c164-cloud-7d36`、`cursor/c164-cloud-wip-99a5` |
+| power | c285 | c228 | site/powerhouse | `cursor/c164-power-f182` |
+| outb | c284 | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` |
+| cloud | c286 | c227 | sky/cloudsea | `cursor/c164-cloud-7d36`、`cursor/c164-cloud-wip-99a5` |
 | orrery | — | c236 | machines/orrery | `cursor/c164-orrery-6491` |
 | scope | — | c237 | machines/refractor | `cursor/c164-scope-6e0f` |
 | clocks | — | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
@@ -49,7 +49,7 @@
 | pipes | — | c241 | props/pipes | `cursor/c164-pipes-9deb` |
 | elec | — | c242 | props/electrics-signs | `cursor/c164-elec-7be8` |
 | instr | — | c199 | props/instruments | `cursor/c164-instr-f5da` |
-| a6 | — | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` |
+| a6 | c287 | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` |
 | m4 | — | c197 | props/paper | `cursor/c164-m4-paper-7345` |
 | hall | — | c243 | interiors/starhall | `cursor/c164-hall-ddbd` |
 | a3 | — | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
