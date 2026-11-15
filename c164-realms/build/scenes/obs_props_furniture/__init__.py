@@ -3,10 +3,15 @@
 A wall of dressed stone looks south and the cameras stand south of it. The west end is a piece of
 terrace paving with two benches, one seen from the front and one end-on, so the slats and the cast
 end frame are both judged. The rest is a room floor with the pieces set as a room uses them: a study
-corner (coat stand, writing desk with a desk lamp, swivel chair, two card cabinets side by side and
-an instrument cabinet), a trunk and crates, the drafting table with its stool, a bookcase with the
-library ladder on its rail, a display case and a display table. Bracket lamps on the wall light the
-stage as lamps light a room.
+corner (coat stand, writing desk with a desk lamp, a swivel chair at the desk seen from behind and
+one pushed back that shows its seat, two card cabinets side by side and an instrument cabinet), the
+luggage as the cable station has it (furniture.luggage: the trunk along the wall, the small packing
+case on its lid), packing cases, the drafting table with its stool, a bookcase with the library
+ladder on its rail, a display case and a display table. Bracket lamps on the wall light the stage as
+lamps light a room.
+
+The furniture of the site (furniture.site: the benches of the sunset terrace, of the station and of
+the lookout) is judged where it stands, in the scene obs_props_furniture_site.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_furniture
 """
@@ -14,6 +19,7 @@ from artkit.canvas import Canvas
 
 from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
+from scenes.obs.common import skeleton as S
 from scenes.obs.props import furniture, lamps
 
 BIOME = "obs_blue"
@@ -32,11 +38,16 @@ BENCH = (3.0, 0.0, 1.5)         # seen from the front
 BENCH_END = (8.0, 0.0, 3.0)     # turned end-on to the cameras
 COAT = (12.7, 0.0, 0.8)
 DESK = (15.0, 0.0, 1.5)
-CHAIR = (15.2, 0.0, 3.3)
+CHAIR = (15.2, 0.0, 3.3)        # at the desk: the cameras see its back
+CHAIR_YAW = 155.0
+CHAIR_BACK = (13.3, 0.0, 3.1)   # pushed back and turned to the room: the cameras see its seat
+CHAIR_BACK_YAW = -20.0
 CABINETS = ((17.6, 0.0, 0.5), (18.6, 0.0, 0.5))
 INSTRUMENTS = (19.6, 0.0, 0.5)   # in one row with the card cabinets: same depth, plinth and cornice
-TRUNK = (21.9, 0.0, 1.0)
-CRATES = ((23.7, 0.0, 0.8), (24.5, 0.0, 2.2), (23.8, furniture.TOP["crate"], 0.9))
+LUGGAGE = (21.6, 0.0, FACE + 0.5)   # as site/cablecar gives it: a point half a block off a wall that looks south
+CRATES = ((23.9, 0.0, 0.9), (24.9, 0.0, 2.3))
+CRATE_YAWS = (0.0, 30.0)
+CRATE_SMALL = (23.95, furniture.TOP["crate"], 0.85)     # on the first of them
 DRAFT = (27.2, 0.0, 1.8)
 STOOL = (27.2, 0.0, 3.5)
 CASE_X = (30, 33)               # the bookcase: these cells along x, three high, one deep
@@ -58,13 +69,16 @@ def build():
     n += place(c, "coat_stand", COAT)
     n += place(c, "writing_desk", DESK)
     n += lamps.place(c, "desk_green", (DESK[0] - 0.6, furniture.TOP["writing_desk"], DESK[2] + 0.1))
-    n += place(c, "swivel_chair", CHAIR, yaw=155.0)
+    n += place(c, "swivel_chair", CHAIR, yaw=CHAIR_YAW)
+    n += place(c, "swivel_chair", CHAIR_BACK, yaw=CHAIR_BACK_YAW)
     for pos in CABINETS:
         n += place(c, "card_cabinet", pos)
     n += place(c, "instrument_cabinet", INSTRUMENTS)
-    n += place(c, "trunk", TRUNK, yaw=-12.0)
-    for i, pos in enumerate(CRATES):
-        n += place(c, "crate", pos, yaw=(0.0, 30.0, 8.0)[i])
+    for kind, pos, yaw in furniture.luggage(LUGGAGE):
+        n += place(c, kind, pos, yaw=yaw)
+    for pos, yaw in zip(CRATES, CRATE_YAWS):
+        n += place(c, "crate", pos, yaw=yaw)
+    n += place(c, "crate_small", CRATE_SMALL, yaw=-14.0)
     n += place(c, "drafting_table", DRAFT)
     n += place(c, "stool", STOOL)
     shelf_front = FACE + 1.0
@@ -85,35 +99,40 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras: the whole stage, the groups as a room shows them, and each piece from about
-    three blocks."""
+    """The cameras: the whole stage, the groups as a room shows them, and each piece from where
+    somebody stands who has walked up to it (the eye at standing height or a little under, one and
+    a half to two and a half blocks off: at three blocks a piece one block high is a fifth of the
+    picture's height, and what is judged is its texels)."""
     out = []
 
     def shot(name, pos, look_at):
         out.append({"name": name, "pos": [round(v, 2) for v in pos],
                     "look_at": [round(v, 2) for v in look_at], "time": TIME})
 
-    def near(name, at, height, back=3.0, side=1.2, up=1.0):
-        shot(name, (at[0] + side, at[1] + height + up, at[2] + back), (at[0], at[1] + height, at[2]))
+    def near(name, at, height, back, side, eye=S.EYE):
+        shot(name, (at[0] + side, at[1] + eye, at[2] + back), (at[0], at[1] + height, at[2]))
 
     mid = (WEST + EAST) / 2.0
     shot("far", (mid, 5.0, 26.0), (mid, 1.5, 0.0))
-    shot("terrace", (5.5, 2.2, 8.5), (5.5, 0.8, 2.0))
-    shot("study", (16.0, 2.4, 7.5), (16.0, 1.0, 1.0))
-    shot("stores", (22.0, 2.4, 7.5), (22.0, 1.0, 1.0))
-    shot("workroom", (29.0, 2.6, 8.5), (29.5, 1.2, 1.0))
-    near("bench", BENCH, 0.5)
-    near("bench_end", BENCH_END, 0.5, back=2.6, side=0.4)
-    near("coat_stand", COAT, 1.2, back=3.2, side=-0.8, up=0.5)
-    near("writing_desk", DESK, 0.7, back=3.4, side=1.6, up=1.2)
-    near("swivel_chair", CHAIR, 0.5, back=2.4, side=1.8, up=0.9)
-    near("card_cabinet", CABINETS[0], 1.0, back=3.2, side=1.6, up=0.6)
-    near("instrument_cabinet", INSTRUMENTS, 1.0, back=3.2, side=1.4, up=0.6)
-    near("trunk_crates", (23.2, 0.0, 1.2), 0.5, back=3.4, side=0.6, up=1.2)
-    near("drafting_table", DRAFT, 1.0, back=3.4, side=1.8, up=0.9)
-    near("drafting_side", DRAFT, 0.9, back=1.2, side=3.2, up=0.4)
-    near("stool", STOOL, 0.4, back=2.2, side=-1.4, up=0.9)
-    near("library_ladder", (LADDER_X, 0.0, 1.5), 1.5, back=4.2, side=1.8, up=0.3)
-    near("display_case", CASE, 0.9, back=3.0, side=1.4, up=0.8)
-    near("display_table", TABLE, 0.6, back=2.8, side=-1.2, up=1.3)
+    shot("terrace", (5.5, 2.0, 7.0), (5.5, 0.6, 2.0))
+    shot("study", (16.0, 2.2, 6.6), (16.0, 0.9, 1.0))
+    shot("stores", (23.2, 2.0, 5.6), (23.2, 0.6, 1.0))
+    shot("workroom", (29.0, 2.4, 7.6), (29.5, 1.1, 1.0))
+    shot("cases", (36.8, 2.0, 5.4), (36.8, 0.8, 1.2))
+    near("bench", BENCH, 0.45, back=1.9, side=0.9, eye=1.5)
+    near("bench_end", BENCH_END, 0.45, back=1.7, side=0.35, eye=1.1)
+    near("coat_stand", COAT, 1.0, back=2.3, side=-0.7, eye=1.5)
+    near("writing_desk", DESK, 0.6, back=2.3, side=1.3, eye=1.7)
+    near("swivel_chair", CHAIR, 0.5, back=1.6, side=0.9, eye=1.4)
+    near("swivel_chair_front", CHAIR_BACK, 0.5, back=1.7, side=-0.5, eye=1.4)
+    near("card_cabinet", (18.1, 0.0, 0.5), 1.0, back=2.5, side=-1.3, eye=1.5)
+    near("instrument_cabinet", INSTRUMENTS, 1.1, back=2.1, side=0.9, eye=1.5)
+    near("luggage", (21.95, 0.0, 0.45), 0.45, back=1.8, side=1.0, eye=1.45)
+    near("crates", (24.3, 0.0, 1.4), 0.5, back=2.5, side=1.2, eye=1.5)
+    near("drafting_table", DRAFT, 0.95, back=2.3, side=1.2, eye=1.65)
+    near("drafting_side", DRAFT, 0.9, back=0.8, side=2.6, eye=1.3)
+    near("stool", STOOL, 0.4, back=1.4, side=-1.0, eye=1.4)
+    near("library_ladder", (LADDER_X, 0.0, 1.0), 1.5, back=3.4, side=1.6, eye=1.6)
+    near("display_case", CASE, 0.8, back=1.9, side=1.0)
+    near("display_table", TABLE, 0.6, back=2.0, side=-1.1)
     return out

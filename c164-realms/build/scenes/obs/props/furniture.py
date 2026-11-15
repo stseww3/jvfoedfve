@@ -3,8 +3,9 @@ card plan/packages/props/furniture.md).
 
 One family, one motif: dark wood carried on cast iron, brass where a hand goes. The iron is always
 the same casting -- a flat bar bent in an S that ends in a rolled eye -- whether it is the end frame
-of a bench, of a desk, or one claw of a column foot. Brass is small: pulls, a rail, a hook, the
-edges of a glass case. Glass is not drawn; its glint is.
+of a bench, of a desk, or one claw of a column foot. Brass is small and bright where a hand goes
+(pulls, a rail, a hook); the edges of a glass case are the dull brass, so that what lies in the case
+is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane).
 
     bench            two blocks wide: slats on two cast end frames with arm rests (the terraces, the
                      cable-car station, the star hall)
@@ -12,7 +13,8 @@ edges of a glass case. Glass is not drawn; its glint is.
     display_table    two blocks wide, one high: a flat glazed case on the desk's frames (the star hall)
     drafting_table   two blocks wide: a board tilted on a cast A-frame and held by a brass quadrant,
                      a sheet pinned to it
-    swivel_chair     a wooden seat and bow back on a screw column and five claws
+    swivel_chair     a round wooden seat, a bow of arms that rises to a crest at the back, on a
+                     screw column and five claws
     stool            a tall screw stool: a round seat on the chair's column and three claws
     card_cabinet     two blocks tall: eighteen card drawers, each with its label and brass pull
     instrument_cabinet  two blocks tall and as deep as the card cabinet, so that they stand in one
@@ -21,7 +23,9 @@ edges of a glass case. Glass is not drawn; its glint is.
     ladder_rail      one block of that brass rail (rail() lays a run of it)
     coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
     trunk            a canvas travelling trunk with leather straps and brass corners
-    crate            a plank crate
+    crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
+                     every corner, a pasted label
+    crate_small      the same, small enough to stand on the trunk's lid
     display_case     one block square: a glazed brass case on a panelled base
 
 Every piece is one display entity at scale 1 (16 texels to the block), and whatever is square to the
@@ -52,13 +56,20 @@ PREFIX = "prop_furn_"
 WOOD = P.mat("dark_wood")                         # slats, case sides
 WOOD_L = P.mat("dark_wood", base=3)               # the lighter board: panels, drawer fronts
 WOOD_D = P.mat("dark_wood", base=1)               # frames, plinths, cornices
+DEAL = P.mat("dark_wood", base=4)                 # raw boards, the lightest wood there is: a packing case
 LEATHER = P.mat("dark_wood", kind="plain", noise=0.10, base=1)
 IRON = P.mat("iron", bevel="along")               # a cast bar: light and dark edge along it only
 IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
-CANVAS = P.mat("cream_cloth", base=1)
-SEAM = K.flat("cream", 0)
+BOLT = K.flat("iron", 4)                          # a bolt head in wood: a cool dot, no lighter than the wood
+# Painted canvas is the darkest cream with a worn edge, and the bed of a display case is one flat
+# tone a step under paper, with not a speck on it that could be taken for an exhibit. The woven
+# cream (cream_cloth) came out the whitest thing on the stage after the lamps, and mottled: a trunk
+# is not a flag.
+CANVAS = P.mat("cream", noise=0.12, bevel=1, base=0)
+SEAM = K.flat("ashlar", 0)                        # the binding of the trunk's lid: a step under its canvas
+LINING = K.flat("cream", 1)
 PAPER = K.flat("cream", 2)                        # a clean sheet: no speckle to be taken for pencil
 PENCIL, INK, LABEL = P.RAMPS["cream"][0], P.RAMPS["iron"][2], P.RAMPS["cream"][1]
 
@@ -71,21 +82,22 @@ RAIL_OUT = 1.0 / 16.0           # and how far its centre is off the bookcase fro
 # up like the cabinets', a rail board from 43 to 46 for the rail to be fixed to, a cornice above.
 SHELF_DEPTH = 6.0 / 16.0
 
-# what is pinned to the drafting board: a chart of a hemisphere, begun (pencil circle, inked stars,
-# a few ruled ticks beside it; no writing). The last row lies under the straightedge.
+# What is pinned to the drafting board: a chart being drawn, the seven stars of the Plough inked and
+# joined in pencil, three fainter stars about them; no writing. A pencil circle with five dots in it
+# read as the five of a die. The last row lies under the straightedge.
 SHEET = Sprite("furn_draft_sheet", [
     "..................",
-    ".....ppppp........",
-    "...pp.....pp......",
-    "..p....i....p..ll.",
-    "..p.i.......p.....",
-    "..p......i..p..ll.",
-    "..p..i......p.....",
-    "..p.......i.p..ll.",
-    "...pp.....pp......",
-    ".....ppppp........",
+    "...p..............",
+    "..............pi..",
+    "............pp.p..",
+    "......pippip...p..",
+    "....ip....p....p..",
+    "..pp.......p.ppi..",
+    ".i.........ip.....",
+    "........p.........",
+    "................p.",
     "..................",
-], {"p": PENCIL, "l": PENCIL, "i": INK}, back=PAPER)
+], {"p": PENCIL, "i": INK}, back=PAPER)
 
 
 # ---- the casting ---------------------------------------------------------------------------------
@@ -182,7 +194,7 @@ def _bench():
     for z0 in (-4.0, -1.0, 2.0):                                    # the seat: three slats
         m.box((-15.0, 6.0, z0), (15.0, 7.0, z0 + 2.0), WOOD, grain="x")
         for x in (-13.5, 13.5):
-            K.rivet(m, (x, 7.0, z0 + 1.5), out="y")
+            K.rivet(m, (x, 7.0, z0 + 1.5), out="y", mat=BOLT, proud=0.25)
     with m.turned(("x", -LEAN), about=(0.0, 6.0, -4.0)):            # the back leans with its uprights
         m.box((-15.0, 9.0, -4.0), (15.0, 11.0, -3.0), WOOD, grain="x")
         m.box((-15.0, 12.0, -4.0), (15.0, 15.0, -3.0), WOOD, grain="x")
@@ -192,7 +204,7 @@ def _bench():
             _eye(m, x, -4.5, 15.5, 1.0)
         for x in (-13.5, 13.5):
             for y in (10.5, 13.5):
-                K.rivet(m, (x, y, -3.0), out="z")
+                K.rivet(m, (x, y, -3.0), out="z", mat=BOLT, proud=0.25)
     for x in ends:
         y, z = _frame(m, x, -5.0, 5.0, 6.0)
         m.box((x - 1.0, 10.0, -5.5), (x + 1.0, 11.0, 5.0), IRON, grain="z")          # the arm rest
@@ -230,16 +242,17 @@ def _display_table():
     m.tube("x", (y, z), -11.0, 11.0, 0.5, IRON_D, sides=4)
     _boarded(m, (-14.0, 8.0, -6.0), (14.0, 10.0, 6.0), WOOD)        # the apron
     _boarded(m, (-15.0, 10.0, -7.0), (15.0, 11.0, 7.0), WOOD_D)     # the board the case stands on
-    m.box((-14.0, 11.0, -6.0), (14.0, 11.25, 6.0), CANVAS)          # the lining
+    m.box((-14.0, 11.0, -6.0), (14.0, 11.25, 6.0), LINING)          # the lining
     bars = (-15.0, -5.0, 4.0, 14.0)                                 # the same thirds as the desk's drawers
     for z0 in (-7.0, 6.0):
         for x0 in bars:
-            m.box((x0, 11.0, z0), (x0 + 1.0, 15.0, z0 + 1.0), BRASS, grain="y")
-        m.box((-15.0, 15.0, z0), (15.0, 16.0, z0 + 1.0), BRASS, grain="x")
+            m.box((x0, 11.0, z0), (x0 + 1.0, 15.0, z0 + 1.0), BRASS_D, grain="y")
+        m.box((-15.0, 15.0, z0), (15.0, 16.0, z0 + 1.0), BRASS_D, grain="x")
     for x0 in bars:
-        m.box((x0, 15.0, -6.0), (x0 + 1.0, 16.0, 6.0), BRASS, grain="z")
-    for x0, x1 in ((-14.0, -5.0), (-4.0, 4.0), (5.0, 14.0)):
-        K.pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u")
+        m.box((x0, 15.0, -6.0), (x0 + 1.0, 16.0, 6.0), BRASS_D, grain="z")
+    # a reflection in two of the three panes, and not the same one twice
+    for (x0, x1), sheen in zip(((-14.0, -5.0), (-4.0, 4.0), (5.0, 14.0)), (True, False, 2)):
+        K.pane(m, (x0, 15.5, -6.0), (x1, 15.75, 6.0), "u", sheen=sheen)
     return m
 
 
@@ -276,15 +289,19 @@ def _drafting_table():
 
 
 def _swivel_chair():
+    """A revolving desk chair. The seat is round and turned; the arms are one thin bow that rises to
+    a crest behind the sitter's back. A square seat under a bow two texels high all round read from
+    behind as a hooped tub: it is the crest that makes the outline a chair's."""
     m = M.Model(PREFIX + "swivel_chair")
     _claws(m, 5, 5.6, 3.2, turn=36.0)
     m.tube("y", (0.0, 0.0), 4.2, 5.0, 1.6, BRASS_D)                 # the wheel that sets the height
-    m.box((-3.0, 5.0, -3.0), (3.0, 6.0, 3.0), IRON_D)
-    m.box((-5.0, 6.0, -5.0), (5.0, 7.0, 5.0), WOOD, grain="x")      # the seat
-    m.ring("y", (0.0, 12.5, 0.0), 4.5, 1.0, 2.0, WOOD, sides=16, arc=(-20.0, 200.0))   # the bow back
-    for deg in (20.0, 55.0, 90.0, 125.0, 160.0):                    # its spindles
+    m.tube("y", (0.0, 0.0), 5.0, 6.0, 3.0, IRON_D)                  # the plate the seat turns on
+    m.tube("y", (0.0, 0.0), 6.0, 7.0, 5.0, WOOD)                    # the seat
+    m.ring("y", (0.0, 11.5, 0.0), 4.5, 1.0, 1.0, WOOD_D, sides=16, arc=(-20.0, 200.0))   # the bow of the arms
+    m.ring("y", (0.0, 13.0, 0.0), 4.5, 1.0, 2.0, WOOD, sides=16, arc=(45.0, 135.0))      # the crest
+    for deg in (20.0, 55.0, 90.0, 125.0, 160.0):                    # the spindles
         c, s = math.cos(math.radians(deg)), -math.sin(math.radians(deg))
-        m.rod((4.3 * c, 7.0, 4.3 * s), (4.5 * c, 11.6, 4.5 * s), 0.5, WOOD_D, sides=4)
+        m.rod((4.3 * c, 7.0, 4.3 * s), (4.5 * c, 11.0, 4.5 * s), 0.5, WOOD_D, sides=4)
     return m
 
 
@@ -340,8 +357,8 @@ def _instrument_cabinet():
     m.box((-1.0, 13.0, 5.0), (1.0, 27.0, 6.0), WOOD_D, grain="y")    # where the two glazed doors meet
     m.box((-6.0, 27.0, 5.0), (6.0, 28.0, 6.0), WOOD_D, grain="x")
     _pull(m, 0.0, 20.5, 6.0)
-    for x0 in (-6.0, 1.0):
-        K.pane(m, (x0, 13.0, 5.5), (x0 + 5.0, 27.0, 5.75), "s")
+    for x0, sheen in ((-6.0, 3), (1.0, True)):                       # the two doors' glass: not one stamp twice
+        K.pane(m, (x0, 13.0, 5.5), (x0 + 5.0, 27.0, 5.75), "s", sheen=sheen)
     _boarded(m, (-7.5, 28.0, -6.5), (7.5, 30.0, 6.5), WOOD_D)
     # on the shelves: eyepieces in brass, a cased lens, a porcelain jar
     for x, top in ((-4.5, 16.0), (-2.5, 15.0)):
@@ -408,32 +425,68 @@ def _trunk():
     for x0 in straps:                                                # two straps and their buckles
         m.box((x0, 1.0, -5.5), (x0 + 2.0, 11.5, 5.5), LEATHER, grain="y")
         m.box((x0, 4.0, 5.5), (x0 + 2.0, 6.0, 5.75), BRASS)
-    for x0 in (-11.25, 9.0):                                         # brass corners
+    for x0 in (-11.25, 9.0):                                         # the corners: dull brass, eight of them
         for z0 in (-5.25, 3.0):
             for y0 in (0.75, 9.0):
-                m.box((x0, y0, z0), (x0 + 2.25, y0 + 2.25, z0 + 2.25), BRASS)
-    m.box((-1.0, 6.0, 5.0), (1.0, 9.0, 5.5), BRASS)                  # the lock
+                m.box((x0, y0, z0), (x0 + 2.25, y0 + 2.25, z0 + 2.25), BRASS_D)
+    m.box((-1.0, 6.0, 5.0), (1.0, 9.0, 5.5), BRASS)                  # the lock: the one bright piece
     for x0 in (-11.5, 11.0):
         m.box((x0, 5.0, -2.0), (x0 + 0.5, 6.0, 2.0), LEATHER)        # end handles
     return m
 
 
-def _crate():
-    m = M.Model(PREFIX + "crate")
-    _boarded(m, (-5.5, 0.0, -5.5), (5.5, 11.0, 5.5), WOOD_L, skip="ud")
-    for x0 in (-6.0, 4.0):                                           # corner posts
-        for z0 in (-6.0, 4.0):
-            m.box((x0, 0.0, z0), (x0 + 2.0, 11.0, z0 + 2.0), WOOD_D, grain="y")
-    for y0 in (0.0, 9.0):                                            # battens between the posts, nailed
-        m.box((-4.0, y0, -6.0), (4.0, y0 + 2.0, 6.0), WOOD, grain="x", skip="ew")
-        m.box((-6.0, y0, -4.0), (6.0, y0 + 2.0, 4.0), WOOD, grain="z", skip="ns")
-        for a in (-2.5, 2.5):
-            for s in (-1.0, 1.0):
-                K.rivet(m, (a, y0 + 1.5, 6.0 * s), out="z" if s > 0 else "-z")
-                K.rivet(m, (6.0 * s, y0 + 1.5, a), out="x" if s > 0 else "-x")
-    for z0 in (-6.0, -2.0, 2.0):                                     # the lid: three boards
-        m.box((-6.0, 11.0, z0), (6.0, 12.0, z0 + 4.0), WOOD, grain="x")
+CASE_DARK = K.flat("dark_wood", 0)              # what shows between two boards of a packing case
+TICKET = K.flat("cream", 1)                     # the label pasted on it
+NAIL = P.RAMPS["iron"][2]
+BOARD = 3.0                                     # texels a board of a packing case is high; one texel between two
+
+
+def _cleat(boards, right):
+    """The outer face of a packing case's corner cleat, two texels wide: a nail where each board
+    crosses it, in the column next to the boards (the right one if `right`)."""
+    rows = []
+    for _ in range(boards):
+        rows += ["..", ".n" if right else "n.", "..", ".."]
+    return Sprite(f"furn_cleat_{boards}{'r' if right else 'l'}", rows[:-1], {"n": NAIL}, back=WOOD_L)
+
+
+def _packing_case(name, w, d, boards, ticket):
+    """A packing case w by d texels: `boards` rings of raw boards with a dark gap between them, an
+    upright cleat at every corner that the boards are nailed to and that stands a texel proud of
+    them, a boarded lid. A frame round a panel on every side read as a chest of dark wood; boards,
+    gaps and cleats are what a crate is. ticket = (x0, y0, rows): a label pasted on the front, its
+    lower left corner and its picture; it has two lines of faint writing (in ink they were a dark
+    blot in a white field: a socket) and no arrow (an arrow of three by five texels is a cross)."""
+    m = M.Model(PREFIX + name)
+    hx, hz = w / 2.0, d / 2.0
+    top = (BOARD + 1.0) * boards - 1.0
+    m.box((-hx + 1.25, 0.0, -hz + 1.25), (hx - 1.25, top, hz - 1.25), CASE_DARK, skip="u")
+    for i in range(boards):
+        y0 = (BOARD + 1.0) * i
+        _boarded(m, (-hx + 1.0, y0, -hz + 1.0), (hx - 1.0, y0 + BOARD, hz - 1.0), DEAL, skip="ud")
+    for sx in (-1.0, 1.0):
+        for sz in (-1.0, 1.0):
+            (xa, xb), (za, zb) = sorted((sx * hx, sx * (hx - 2.0))), sorted((sz * hz, sz * (hz - 2.0)))
+            # the nails are in the column towards the boards, whichever way the face is looked at
+            faces = {"s" if sz > 0 else "n": _cleat(boards, right=(sx < 0) == (sz > 0)),
+                     "e" if sx > 0 else "w": _cleat(boards, right=(sz > 0) == (sx > 0))}
+            m.box((xa, 0.0, za), (xb, top, zb), WOOD_L, grain="y", faces=faces)
+    for i in range(int(round(d / 4.0))):                             # the lid: boards four texels wide
+        m.box((-hx, top, -hz + 4.0 * i), (hx, top + 1.0, -hz + 4.0 * i + 4.0), DEAL, grain="x")
+    x0, y0, rows = ticket
+    picture = Sprite(f"furn_ticket_{name}", rows, {"i": PENCIL}, back=TICKET)
+    m.box((x0, y0, hz - 1.0), (x0 + len(rows[0]), y0 + len(rows), hz - 0.75), TICKET, skip="newud",
+          faces={"s": picture})
     return m
+
+
+def _crate():
+    return _packing_case("crate", 12.0, 12.0, 3, (-3.0, 5.0, [".....", ".iii.", ".ii..", "....."]))
+
+
+def _crate_small():
+    """Small enough for the lid of the trunk, which is ten texels deep."""
+    return _packing_case("crate_small", 10.0, 8.0, 2, (-2.0, 2.0, ["....", ".ii.", "...."]))
 
 
 def _display_case():
@@ -446,18 +499,19 @@ def _display_case():
         for z0 in (-7.0, 5.0):
             m.box((x0, 4.0, z0), (x0 + 2.0, 10.0, z0 + 2.0), WOOD_D, grain="y", skip="ud")
     _boarded(m, (-7.5, 10.0, -7.5), (7.5, 11.0, 7.5), WOOD_D)
-    m.box((-6.0, 11.0, -6.0), (6.0, 11.25, 6.0), CANVAS)             # the lining the exhibit lies on
-    for x0 in (-7.0, 6.0):                                           # the glass case: its brass edges
+    m.box((-6.0, 11.0, -6.0), (6.0, 11.25, 6.0), LINING)             # the lining the exhibit lies on
+    for x0 in (-7.0, 6.0):                                           # the glass case: its edges of dull brass
         for z0 in (-7.0, 6.0):
-            m.box((x0, 11.0, z0), (x0 + 1.0, 21.0, z0 + 1.0), BRASS, grain="y")
-        m.box((x0, 20.0, -6.0), (x0 + 1.0, 21.0, 6.0), BRASS, grain="z")
+            m.box((x0, 11.0, z0), (x0 + 1.0, 21.0, z0 + 1.0), BRASS_D, grain="y")
+        m.box((x0, 20.0, -6.0), (x0 + 1.0, 21.0, 6.0), BRASS_D, grain="z")
     for z0 in (-7.0, 6.0):
-        m.box((-6.0, 20.0, z0), (6.0, 21.0, z0 + 1.0), BRASS, grain="x")
+        m.box((-6.0, 20.0, z0), (6.0, 21.0, z0 + 1.0), BRASS_D, grain="x")
     K.pane(m, (-6.0, 11.0, 6.5), (6.0, 20.0, 6.75), "s")
     K.pane(m, (-6.0, 11.0, -6.75), (6.0, 20.0, -6.5), "n")
     K.pane(m, (6.5, 11.0, -6.0), (6.75, 20.0, 6.0), "e")
     K.pane(m, (-6.75, 11.0, -6.0), (-6.5, 20.0, 6.0), "w")
-    K.pane(m, (-6.0, 20.5, -6.0), (6.0, 20.75, 6.0), "u")
+    # the top is glass as well, and bare: what lies in the case is looked at through it
+    K.pane(m, (-6.0, 20.5, -6.0), (6.0, 20.75, 6.0), "u", sheen=False)
     return m
 
 
@@ -475,14 +529,17 @@ SPEC = {
     "coat_stand": dict(build=_coat_stand, mount="floor"),
     "trunk": dict(build=_trunk, mount="floor"),
     "crate": dict(build=_crate, mount="floor"),
+    "crate_small": dict(build=_crate_small, mount="floor"),
     "display_case": dict(build=_display_case, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
 # how high above its foot a piece carries what is put on it (blocks); the trunk's is its lid, of
-# which the two straps are half a texel proud
+# which the two straps are STRAP proud
 TOP = {"writing_desk": 12.0 / 16.0, "display_table": 11.25 / 16.0, "display_case": 11.25 / 16.0,
        "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.0 / 16.0,
-       "crate": 12.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
+       "crate": 12.0 / 16.0, "crate_small": 8.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0,
+       "stool": 12.0 / 16.0}
+STRAP = 0.5 / 16.0
 
 
 @functools.lru_cache(maxsize=None)
@@ -550,8 +607,9 @@ SUNSET_BENCHES = ((14.5, 4.0), (11.5, 10.0))    # (west of the terrace's middle,
 LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
                                 # half way between the rail's north corner and the pier at the prow's knuckle
 # the luggage: (kind, the offset from the point the station gives, yaw). The trunk stands along the
-# wall, clear of the door's jamb; the crate stands on the east end of its lid, a little askew
-LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate", (0.5, TOP["trunk"], -0.05), 6.0))
+# wall, clear of the door's jamb; the small packing case stands on the east end of its lid, on the
+# strap, a little askew (the big one is deeper than the lid and taller than the trunk)
+LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate_small", (0.5, TOP["trunk"] + STRAP, -0.05), 6.0))
 BENCH_ENDS = 0.8                # how far from its middle the floor under a bench is looked for
 
 # What the packages of the site reported in the group, for a tree in which a package is not merged
@@ -573,6 +631,13 @@ def _told(module, name):
         return _REPORTED[module, name]
 
 
+def luggage(point):
+    """The luggage set down at `point` (a point at the foot of a wall that looks south) as
+    [(kind, position, yaw)]; the first piece stands on the floor and carries the others."""
+    x, y, z = (float(v) for v in point)
+    return [(kind, (x + dx, y + dy, z + dz), yaw) for kind, (dx, dy, dz), yaw in LUGGAGE]
+
+
 def site_pieces():
     """The furniture of the site as (group, kind, point, yaw, foot). point is the middle of the
     piece's foot in scene coordinates before the origin; foot is the point whose floor decides
@@ -581,12 +646,9 @@ def site_pieces():
     for bench in _told("site.cablecar", "BENCHES").values():
         p = tuple(float(v) for v in bench["point"])
         out.append(("station", "bench", p, K.FACING[bench["facing"]], p))
-    x, y, z = _told("site.cablecar", "LUGGAGE")["point"]
-    foot = None
-    for kind, (dx, dy, dz), yaw in LUGGAGE:
-        p = (x + dx, y + dy, z + dz)
-        foot = foot or p                                # the first piece carries the others
-        out.append(("station", kind, p, yaw, foot))
+    pieces = luggage(_told("site.cablecar", "LUGGAGE")["point"])
+    for kind, p, yaw in pieces:
+        out.append(("station", kind, p, yaw, pieces[0][1]))
     cx, cz = S.SUNSET_PLATFORM["centre"]
     for west, off in SUNSET_BENCHES:
         for side in (-1.0, 1.0):
