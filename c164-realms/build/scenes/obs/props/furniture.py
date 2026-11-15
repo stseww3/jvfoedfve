@@ -13,21 +13,24 @@ edges of a glass case. Glass is not drawn; its glint is.
     drafting_table   two blocks wide: a board tilted on a cast A-frame and held by a brass quadrant,
                      a sheet pinned to it
     swivel_chair     a wooden seat and bow back on a screw column and five claws
-    stool            a tall round stool on three legs with a brass foot ring
+    stool            a tall screw stool: a round seat on the chair's column and three claws
     card_cabinet     two blocks tall: eighteen card drawers, each with its label and brass pull
     instrument_cabinet  two blocks tall and as deep as the card cabinet, so that they stand in one
                      row: a cupboard under glazed shelves of eyepieces (the dome room)
     library_ladder   three blocks tall, leans on a bookcase; its rollers ride on ladder_rail
     ladder_rail      one block of that brass rail (rail() lays a run of it)
-    coat_stand       two blocks tall: a turned post on three claws, brass hooks
+    coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
     trunk            a canvas travelling trunk with leather straps and brass corners
     crate            a plank crate
     display_case     one block square: a glazed brass case on a panelled base
 
 Every piece is one display entity at scale 1 (16 texels to the block), and whatever is square to the
 piece is drawn on that grid. Nothing here is spread over the building: the rooms and the site place
-what they need with place(); build() places nothing. No piece has four arms at right angles about
-its column: feet and hooks come in threes and fives.
+what they need with place(); build() places nothing.
+
+No piece shows a cross from any side. Feet and hooks come in threes and fives, never four at right
+angles; nothing has a bar across a post (the coat stand's hooks rise like a crown, the stool has no
+foot ring); a dark band never crosses another (the trunk's straps cross only the seam of its lid).
 
 The look is judged in the test scene build/scenes/obs_props_furniture.
 """
@@ -51,6 +54,7 @@ IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
 CANVAS = P.mat("cream_cloth", base=1)
+SEAM = K.flat("cream", 0)
 PAPER = K.flat("cream", 2)                        # a clean sheet: no speckle to be taken for pencil
 PENCIL, INK, LABEL = P.RAMPS["cream"][0], P.RAMPS["iron"][2], P.RAMPS["cream"][1]
 GLINT = P.RAMPS["porcelain"][4]
@@ -297,14 +301,13 @@ def _swivel_chair():
 
 
 def _stool():
+    """A screw stool: the chair's column, taller, on three claws."""
     m = M.Model(PREFIX + "stool")
-    m.tube("y", (0.0, 0.0), 10.0, 12.0, 3.5, WOOD)
+    _claws(m, 3, 4.6, 3.2, turn=60.0)
+    m.tube("y", (0.0, 0.0), 4.0, 8.0, 0.75, IRON)                   # the screw
+    m.tube("y", (0.0, 0.0), 8.0, 9.0, 1.6, BRASS_D)                 # the wheel that sets the height
     m.tube("y", (0.0, 0.0), 9.0, 10.0, 2.4, IRON_D)
-    for i in range(3):
-        a = math.radians(90.0 + 120.0 * i)
-        c, s = math.cos(a), math.sin(a)
-        m.rod((1.6 * c, 9.4, 1.6 * s), (3.4 * c, 0.0, 3.4 * s), 0.5, IRON, sides=4)
-    m.ring("y", (0.0, 4.0, 0.0), 2.7, 1.0, 1.0, BRASS, sides=12)    # the foot ring
+    m.tube("y", (0.0, 0.0), 10.0, 12.0, 3.5, WOOD)                  # the seat
     return m
 
 
@@ -391,38 +394,39 @@ def _ladder_rail():
 
 
 def _coat_stand():
+    """A turned post on three claws. Its five hooks are the family's casting in brass: they rise out
+    of a collar like a crown, so that from no side is there a bar across the post."""
     m = M.Model(PREFIX + "coat_stand")
     _claws(m, 3, 5.0, 3.2)
-    m.tube("y", (0.0, 0.0), 3.0, 27.0, 0.9, WOOD)
-    m.tube("y", (0.0, 0.0), 13.0, 14.5, 1.4, WOOD_D)
-    m.tube("y", (0.0, 0.0), 26.0, 27.5, 1.4, BRASS_D)
-    for i in range(3):
-        with m.turned(("y", 120.0 * i)):                            # the coat hooks
-            m.hose([(0.0, 26.8, 1.0), (0.0, 26.2, 3.4), (0.0, 27.8, 4.6)], 0.5, BRASS, sides=4)
-            m.box((-0.5, 27.6, 4.2), (0.5, 28.6, 5.2), BRASS)
-        with m.turned(("y", 60.0 + 120.0 * i)):                     # the hat pegs between them
-            m.hose([(0.0, 22.0, 0.7), (0.0, 21.4, 2.4), (0.0, 22.6, 3.2)], 0.5, BRASS_D, sides=4)
-    m.ball((0.0, 28.9, 0.0), 1.3, BRASS, sides=8, layers=4)
+    m.tube("y", (0.0, 0.0), 3.0, 25.0, 0.9, WOOD)
+    m.tube("y", (0.0, 0.0), 13.0, 14.5, 1.4, WOOD_D)                # a turned swell
+    m.tube("y", (0.0, 0.0), 24.0, 26.0, 1.4, BRASS_D)               # the collar the hooks spring from
+    for i in range(5):
+        with m.turned(("y", 36.0 + 72.0 * i)):
+            _cast(m, 0.0, [(0.9, 25.0), (2.6, 26.4), (3.3, 28.4), (4.4, 29.3)], width=1.0, mat=BRASS)
+            _eye(m, 0.0, 4.9, 29.1, 0.7, 1.0, BRASS_D)
+    m.ball((0.0, 26.9, 0.0), 1.1, WOOD_D, sides=8, layers=4)        # the knob that ends the post
     return m
 
 
 def _trunk():
     m = M.Model(PREFIX + "trunk")
-    for x in (-7.5, 7.5):                                            # runners
-        m.box((x - 1.0, 0.0, -5.5), (x + 1.0, 1.0, 5.5), WOOD_D, grain="z")
-    m.box((-11.0, 1.0, -5.5), (11.0, 7.5, 5.5), CANVAS, grain="x")
-    m.box((-11.25, 7.5, -5.75), (11.25, 11.0, 5.75), CANVAS, grain="x")
-    m.box((-11.3, 7.0, -5.8), (11.3, 8.0, 5.8), LEATHER, grain="x", skip="ud")     # the binding of the lid
-    for x in (-6.5, 5.0):                                            # two straps and their buckles
-        m.box((x, 0.9, -6.0), (x + 1.5, 11.25, 6.0), LEATHER, grain="y")
-        m.box((x - 0.25, 4.0, 6.0), (x + 1.75, 5.5, 6.3), BRASS)
-    for x in (-11.5, 10.0):
-        for z in (-6.0, 4.5):
-            m.box((x, 0.75, z), (x + 1.5, 2.25, z + 1.5), BRASS)
-            m.box((x, 9.75, z), (x + 1.5, 11.25, z + 1.5), BRASS)
-    m.box((-1.0, 6.0, 5.75), (1.0, 9.0, 6.3), BRASS)                 # the lock
-    for x in (-11.75, 11.25):
-        m.box((x, 4.5, -1.5), (x + 0.5, 5.5, 1.5), LEATHER)          # end handles
+    straps = (-7.0, 5.0)
+    for x0 in straps:                                                # runners
+        m.box((x0, 0.0, -5.0), (x0 + 2.0, 1.0, 5.0), WOOD_D, grain="z")
+    m.box((-11.0, 1.0, -5.0), (11.0, 11.0, 5.0), CANVAS, grain="x")
+    # the edge of the lid: a line of darker canvas and no more, so the straps cross nothing dark
+    m.box((-11.25, 7.0, -5.25), (11.25, 8.0, 5.25), SEAM, grain="x", skip="ud")
+    for x0 in straps:                                                # two straps and their buckles
+        m.box((x0, 1.0, -5.5), (x0 + 2.0, 11.5, 5.5), LEATHER, grain="y")
+        m.box((x0, 4.0, 5.5), (x0 + 2.0, 6.0, 5.75), BRASS)
+    for x0 in (-11.25, 9.0):                                         # brass corners
+        for z0 in (-5.25, 3.0):
+            for y0 in (0.75, 9.0):
+                m.box((x0, y0, z0), (x0 + 2.25, y0 + 2.25, z0 + 2.25), BRASS)
+    m.box((-1.0, 6.0, 5.0), (1.0, 9.0, 5.5), BRASS)                  # the lock
+    for x0 in (-11.5, 11.0):
+        m.box((x0, 5.0, -2.0), (x0 + 0.5, 6.0, 2.0), LEATHER)        # end handles
     return m
 
 
@@ -488,7 +492,7 @@ SPEC = {
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
 # how high above its foot a piece carries what is put on it (blocks)
 TOP = {"writing_desk": 12.0 / 16.0, "display_table": 11.25 / 16.0, "display_case": 11.25 / 16.0,
-       "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.25 / 16.0,
+       "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.5 / 16.0,
        "crate": 12.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
 
 
