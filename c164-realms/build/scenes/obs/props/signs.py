@@ -8,8 +8,8 @@ has to read as one mark in all of them. This module holds the standard figure an
 that draws it on a model:
 
     emblem_cells(16)    the figure on one block
-    emblem_cells(16, framed=True)   the same on a tile that has a border of its own (the cast
-                        panel of materials/iron, the nameplate of materials/panels)
+    emblem_cells(16, framed=True)   the same on a tile that has a border of its own (the
+                        nameplate of materials/panels)
     emblem_cells(48)    the figure on three blocks: the great piece over the entrance
     python -m scenes.obs.props.signs        prints them
 
@@ -96,7 +96,8 @@ def emblem_cells(n=16, framed=False):
         x 9..10, y 5..6: the one place where a dot of 2 x 2 stands as far to the right of the
         ring's middle as above it and a clear pixel off both the ring and the line.
     16, framed: for a tile that has a frame of its own, a border of one pixel with a rivet or a
-        screw in each corner (materials/iron's cast panel, materials/panels' nameplate): the ring
+        screw in each corner (materials/panels' nameplate; cast iron carries no emblem of its own
+        any more, ironwork that wants one hangs the brass roundel of this module): the ring
         a pixel smaller all round, twelve across (5.1 to 5.9 from the middle), the meridian from
         frame to frame (rows 1 to 14), a pixel out of the ring at each end, the star the same four
         pixels.
