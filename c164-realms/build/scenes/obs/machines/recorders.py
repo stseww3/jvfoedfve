@@ -75,8 +75,8 @@ DEFAULT_SLOTS = {
 
 # --- sizes in model units (16 to the block); the card's block sizes are in the comments
 DRUM_W, DRUM_D, DRUM_H = 24.0, 16.0, 24.0      # the recorder's case: 1.5 x 1.0 x 1.5 blocks
-DRUM_R = 6.4                                   # the drum: 0.4 blocks through, the star of the piece
-CHART_W = 12.0                                 # the drum's width along its axis: 0.75 blocks
+DRUM_R = 5.2                                   # the drum: 0.33 blocks through
+CHART_W = 9.0                                  # the drum's width along its axis: 0.56 blocks
 DRUM_AXIS = 17.0                               # the drum's axis height above the case's foot
 TELE_W, TELE_D, TELE_H = 16.0, 13.0, 12.0      # the register: 1.0 x 0.8 x 0.75 blocks
 TUBE_R = 2.6                                   # the pneumatic pipe: 0.16 blocks through
@@ -150,6 +150,12 @@ def _drum():
           BRASS_D, skip="d")
     m.box((-0.9, DRUM_R + 0.5, -hd * 0.48), (0.9, DRUM_R + 1.5, -hd * 0.04), BRASS, skip="d")
     m.box((-0.28, DRUM_R + 0.1, -hd * 0.20), (0.28, DRUM_R + 0.6, -hd * 0.02), IRON_D, skip="d")
+
+    # the crank on the east standard: a brass arm with a dark knob, the thing that says "this turns"
+    cx = half_chart + 2.9
+    m.box((cx - 0.35, -0.5, -0.35), (cx + 0.35, 4.6, 0.35), BRASS_D, skip="d")
+    m.box((cx - 0.30, 4.2, -2.4), (cx + 0.30, 4.9, 0.3), BRASS_D, skip="d")
+    m.box((cx - 0.45, 3.6, -2.9), (cx + 0.45, 5.4, -1.9), WOOD_D, skip="d")
 
     # the paper supply reel at the back, on its brass fork
     reel_y = DRUM_R + 0.6
