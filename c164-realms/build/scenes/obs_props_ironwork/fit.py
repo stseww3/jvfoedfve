@@ -22,6 +22,9 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
      an item's faces by where they look, whatever they emit (ironwork.TILT), so a glowing face
      that looks out of the wall has to be lit 0.9 at least, and none may lie on the edge between
      two of its model's axes, where the last bit of a sum decides how it is lit
+  9  the lower third of a gate's leaves is shut: iron from stone to stone from the floor up, for
+     a third of the rows under the transom at least (c164 #21988, #22558: a gate reads as a gate
+     by what is solid below, the bars above it and the light behind them)
 
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
@@ -339,6 +342,12 @@ def judge(view, kind, reach):
             inside += 1
     text.append(f"the round: radius {r:g} px about {mid:g} px from the left")
     if kind.startswith("gate"):
+        leaf = SPRING - ON_GLASS                        # the rows under the transom
+        solid = next((v for v in range(leaf) if v not in shut), leaf)
+        if 3 * solid < leaf:
+            found.append(f"the leaves are shut up to row {solid} only: less than a third of the {leaf} rows "
+                         "under the transom")
+        text.append(f"the leaves are shut from the floor for {solid} of the {leaf} rows under the transom")
         fan = view.holes(range(SPRING + ON_GLASS, view.h))
         slits = [piece for piece in fan if _square(piece) < SLIT]
         if slits:
