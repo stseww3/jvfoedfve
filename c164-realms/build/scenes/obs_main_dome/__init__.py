@@ -12,8 +12,8 @@ open.
 What the shots are for: v1 and v2_axis are the two main views (the dome is a stamp in the first and
 the top of the picture in the second: its outline has to be a clean round, the drum has to show its
 bays); v11 and aerial are the other two views it is in; roof, drum and gallery look at the drum,
-the gallery and the dome's foot from close by, ridge at the same from the roof of the south
-wing; top, slit and west at the crown and the slit.
+the gallery and the dome's foot from close by, ridge at the same from the walkway on the south
+wing's ridge; top, slit and west at the crown and the slit.
 
     python -m scenes.obs_main_dome        writes shots.json of the three scenes
 """
@@ -98,9 +98,9 @@ def shots():
     # the gutter going round, the ring beam and its axle boxes and the dome's foot on the right,
     # the court on the left
     shot("gallery", (cx + 11.5, spring + S.EYE, cz - 10.5), (cx + 16.2, spring + 0.2, cz - 2.5))
-    # from the ridge of the south wing's roof, six blocks short of the gallery: the drum's bays and
-    # the door of the dome room, the gallery from below, the dome over it (closer, under the
-    # gallery, one sees only its underside)
+    # standing on the ridge walkway of the south wing, six blocks short of the gallery: the drum's
+    # bays and the door of the dome room, the gallery from below, the dome over it (closer, under
+    # the gallery, one sees only its underside)
     shot("ridge", (cx + 4.0, S.ROOF_STAND + 2.0 + S.EYE, cz + 21.5), (cx + 5.0, spring + 1.5, cz + 9.0))
     # from above, as V12 comes over the building from the south-east
     shot("aerial", (cx + 36.0, 60.0, cz + 30.0), (cx + 2.0, 20.0, cz))
