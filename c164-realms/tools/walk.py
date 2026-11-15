@@ -9,6 +9,9 @@ sure that every round looks from the same places.
 
     walk.py check    <route.json>
         the route file's own mistakes; nothing is built
+    walk.py floors   --canvas <pickle> --box=x0,z0,x1,z1 [--levels=0,7,18] [--top=y0,y1] [--out <file>]
+        for writing a route: plans in characters of where feet find a floor in the built scene,
+        one for each level named, and with --top the highest floor of every column between two levels
     walk.py stations <route.json> --canvas <pickle> --out <stations.json>
         the station table of a route, the feet of every station put on the floor of the built scene
     walk.py shots    <stations.json> --out <shots.json> [--stations in-A01,in-B03] [--views f,l]
@@ -227,6 +230,64 @@ def plain_feet(cells, x, z, near_y, reach=REACH):
                     and (best is None or abs(level - near_y) < abs(best - near_y)):
                 best = level
     return best
+
+
+def column_floors(cells, x, z, y0, y1):
+    """Every level between y0 and y1 at which feet can stand in the column of (x, z), lowest first."""
+    bx, bz = math.floor(x), math.floor(z)
+    out = []
+    for by in range(math.floor(y0) - 1, math.floor(y1) + 1):
+        state = cells.get((bx, by, bz))
+        if not state:
+            continue
+        for top in _tops(state, x - bx, z - bz):
+            level = by + top
+            if y0 <= level <= y1 and all(_is_nothing(cells.get((bx, yy, bz), "air"))
+                                          for yy in range(by + 1, math.floor(level + 1.8 - 1e-9) + 1)):
+                out.append(level)
+    return out
+
+
+PLAN_MARKS = {0.0: "o", 0.5: "^", 1.0: '"', -0.5: ",", -1.0: "_"}
+
+
+def floor_plans(cells, box, levels=(), top=None):
+    """Plans in characters of where feet find a floor, as lines of text: one plan for each level
+    (a floor within a block of it, marked by how far over or under the level it lies), and one of
+    the highest floor of every column between the two levels of `top`. For writing a route."""
+    x0, z0, x1, z1 = box
+    ruler = "      " + "".join(str(abs(x) % 10) for x in range(x0, x1 + 1))
+    out = []
+    for level in levels:
+        out += [f"== feet near y {level:g}: x {x0}..{x1} left to right, rows z {z0}..{z1} (north on top). o on the "
+                'level, ^ half a block over it, " a block over, comma half a block under, _ a block under, '
+                "# a block and no floor, . nothing", ruler]
+        for z in range(z0, z1 + 1):
+            row = []
+            for x in range(x0, x1 + 1):
+                near = sorted(column_floors(cells, x + 0.5, z + 0.5, level - 1.0, level + 1.0), key=lambda v: abs(v - level))
+                if near:
+                    row.append(PLAN_MARKS.get(round((near[0] - level) * 2) / 2, "?"))
+                else:
+                    row.append("." if _is_nothing(cells.get((x, math.floor(level), z), "air")) else "#")
+            out.append(f"{z:5d} " + "".join(row))
+        out.append("")
+    if top:
+        ruler = "      " + "".join(f"{x:4d}" for x in range(x0, x1 + 1))
+        out += [f"== the highest floor of every column between y {top[0]:g} and {top[1]:g} (+ is half a block more): "
+                f"x {x0}..{x1}, rows z {z0}..{z1}", ruler]
+        for z in range(z0, z1 + 1):
+            row = []
+            for x in range(x0, x1 + 1):
+                found = column_floors(cells, x + 0.5, z + 0.5, top[0], top[1])
+                if not found:
+                    row.append("   .")
+                else:
+                    whole = math.floor(found[-1])
+                    row.append(f"{whole:3d}{'+' if found[-1] - whole >= 0.5 else ' '}")
+            out.append(f"{z:5d} " + "".join(row))
+        out.append("")
+    return out
 
 
 def feet_finder(cells):
@@ -516,6 +577,13 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("check")
     p.add_argument("route")
+    p = sub.add_parser("floors")
+    p.add_argument("--scene", default="obs")
+    p.add_argument("--canvas", help="the pickle build/render.py --canvas keeps; built and kept there if it is not")
+    p.add_argument("--box", required=True, help="x0,z0,x1,z1 (write --box=-12,-40,20,40: a value may start with a minus)")
+    p.add_argument("--levels", default="", help="comma separated levels: a plan of the floors near each")
+    p.add_argument("--top", help="y0,y1: a plan of the highest floor of every column between the two")
+    p.add_argument("--out", help="write the plans to this file instead of printing them")
     p = sub.add_parser("stations")
     p.add_argument("route")
     p.add_argument("--scene", default="obs")
@@ -551,6 +619,20 @@ def main():
             points = sum(len(s["points"]) for s in route["stretches"])
             print(f"walk: {args.route}: {len(route['stretches'])} stretches, {points} points, nothing wrong")
         return 1 if problems else 0
+
+    if args.cmd == "floors":
+        box = [int(v) for v in args.box.split(",")]
+        lines = floor_plans(scene_cells(args.scene, args.canvas), box,
+                            [float(v) for v in args.levels.split(",") if v],
+                            [float(v) for v in args.top.split(",")] if args.top else None)
+        if args.out:
+            os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+            with open(args.out, "w", encoding="utf-8") as fh:
+                fh.write("\n".join(lines) + "\n")
+            print(f"walk: {len(lines)} lines -> {args.out}")
+        else:
+            print("\n".join(lines))
+        return 0
 
     if args.cmd == "stations":
         route = load_route(args.route)
