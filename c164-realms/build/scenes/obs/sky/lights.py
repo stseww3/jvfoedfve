@@ -35,8 +35,8 @@ the canvas by then and places, in this order:
             when its cell is free and something that glows is within two cells of it.
 
 DRESS is the director's switch for everything that is laid over the whole building (group #20161).
-It is on since the review of this card has passed (cr2-#3; the director, 11-16: on, with 10
-behind the lit windows of the wings). Off, build() lights no window of main's table and no wall,
+It is on since the review of this card has passed (cr2-#3; the director, 11-16: on, and 12
+behind the lit windows of the wings, #58003). Off, build() lights no window of main's table and no wall,
 and the fronts of the master scene stay bare; the entrance is lit all the same (director, #21989:
 in the master scene the doorway is not to be a black hole), and so are the offers of the other
 lines and the windows a scene registers. A scene asks for the building's lights, or for the bare

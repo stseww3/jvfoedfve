@@ -19,8 +19,8 @@ Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nin
 is half white already.
 
     1   13-14   the open main door 14, canopy bulbs 13, street and stair lamps 14, the platform 13
-    2    9-12   behind a lit window 9-10 (12 behind the one over the main door), the bracket lamps
-                beside a door 12
+    2    9-12   behind a lit great window 12 (the wings' as the one over the main door; the director,
+                #58003), behind a lit small one 9, the bracket lamps beside a door 12
     3    5-8    wall wash 8, walkways 5-7, beside machines 6-8, fill for a caged lamp 6-7
 
 Light falls by one a cell, and a face is lit by the cell in front of it. A source of level n in the
@@ -159,7 +159,12 @@ FIXED = {
 }
 # The level of the sources behind the glass, by tier: (a tall window, a window up to three rows
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
-BEHIND = {BRIGHT: (12, 12), LIT: (10, 9), DIM: (8, 7)}
+# The lit great windows of the wings have 12, as the entrance's has. With 10 the stone round such a
+# window was lifted to a neutral grey and the window read as a bright sheet laid on a dark wall;
+# with 12 its jambs, head and sill take a warm light and it is a lit room set in the wall (the
+# director on real pictures of both, #58003: 12 and no higher; the three bays in the middle stay
+# the warmest and the brightest of the front).
+BEHIND = {BRIGHT: (12, 12), LIT: (12, 9), DIM: (8, 7)}
 TALL = 4                    # a window of this many rows or more is a tall one
 # Where the cell before the glass is free (the recess of the window) the source stands there, this
 # much lower. Light loses one in the glass and one more in that cell, so the stone round the window
