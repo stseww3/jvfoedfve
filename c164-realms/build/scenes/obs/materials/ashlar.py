@@ -55,7 +55,7 @@ VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
 GROOVES = (2, 5, 8, 11)     # the rows of the rough stone's tool marks: a groove, its lit lip the row below
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
-STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
+STAR = (9, 5)       # the emblem's star, a dot of two pixels by two: its upper left pixel
 
 
 def _a(n):
@@ -92,10 +92,15 @@ def _emblem_figure():
     The star is a dot of two pixels by two. A star with arms is, on this grid, a cross of five
     pixels, and from close by that read as a plus sign or a small cross and not as a star (c219's
     second look, g2 #313); from twenty blocks either is a dot. The ruling puts the star 0.4 of the
-    radius right of the ring's middle and as far above it. Of the dots about that place the nearest
-    stands with a corner on the ring and the one left of it against the lit lip of the meridian, a
-    flag on a staff; this one, a row lower, has a plain pixel between it and both: 0.46 of the
-    radius right of the middle and 0.31 above."""
+    radius right of the ring's middle and as far above it. On sixteen pixels the dot that is as
+    far right as up and a pixel clear of both the ring and the line is the one two pixels each
+    way, 0.31 of the radius: the next one out stands with a corner on the ring. These are the
+    pixels of the station's standard drawing (props/signs, c242's notice of 2026-11-15 in g2),
+    which the cast iron plate and the paper take as well.
+
+    Cut into stone, the pixel between the line and the star is the lit lip of the line: the star
+    stands against that lip, and still apart from the line. A column further right it would have
+    a plain pixel there, and would not be the figure the rest of the station carries."""
     lo, hi = RING
     ring = _cells(lambda dx, dy: lo <= math.hypot(dx, dy) <= hi)
     meridian = [(7, y) for y in range(TILE)]
@@ -216,45 +221,53 @@ def _rough_top(seed):
 
 
 # ============================================================ the fine stone and its ends ===
-# per variant: the stones of the upper course as (the x of the head joint that ends it, its tone),
-# and the x of the lower course's one head joint. No lower joint stands within two pixels of an
-# upper one (of this block or of a neighbour's edge), so no joint runs on from course to course.
-# A stone is A3 or A4, never A2: A2 is the head joint.
+# per variant its two courses, the upper one first, each drawn in sixteen characters:
+#     .  a stone of the base tone, A3      +  a stone a step lighter, A4      |  a head joint, A2
+#
+# The head joints stand at x 7, 8 or 15 in the upper course and at 3, 4, 11 or 12 in the lower:
+# whichever variants come to lie on or beside one another, a joint is three pixels or more from
+# every joint of the course above or below it, and none runs on from course to course.
+#
+# A stone that reaches the block's edge runs on into the next block, and that block chooses its
+# variant by itself. So such a stone is of the base tone in every variant, and only a stone
+# between two joints of one block is lighter: one in the upper course of one variant, one in the
+# lower course of another. Each of them needs a course broken twice in one block, and that makes
+# for short stones along a wall: with a quarter of it lighter, two stones in three would be
+# short ones, as many as when every block ended the upper course.
+#
+# Half the variants do not break the upper course on the block's edge. The first four all did:
+# every second course of a wall had a joint on every line of the grid of the blocks, and a string
+# course, which shows the upper course alone, read as a row of equal short stones; and their
+# lighter stones lay in the upper course only, nearly half of it, rows of light bars from twenty
+# blocks (c219's review, g2 #310).
 _FINE = (
-    (((15, 3),), 3),
-    (((7, 4), (15, 3)), 11),
-    (((15, 4),), 12),
-    (((7, 3), (15, 4)), 4),
+    ("...............|", "....|..........."),
+    (".......|+++++++|", "...........|...."),
+    ("........|.......", "...|............"),
+    (".......|........", "...|++++++++|..."),
+    ("...............|", "...........|...."),
+    ("........|.......", "............|..."),
 )
+SLIVER = 6          # a stone of the fine face is this many pixels long at the least
 
 
 def _fine(variant):
     """ASHLAR_FINE side: dressed walling in two courses of eight pixels, broken-coursed and
     lightly jointed. A bed joint under each course (rows 7 and 15), one step lighter than the
     drawing first had it (A1; the A0 is kept for the channel of the rough stone), head joints
-    lighter again (A2), every stone lit one step along its top arris, and the head joints at loose
-    places -- the upper course ends on the block's edge and is broken once more in half the
-    variants, the lower course is broken once, anywhere -- so the stones run from seven pixels to
-    twenty-five long.
+    lighter again (A2), every stone lit one step along its top arris, and the head joints at
+    loose places (_FINE), so that along a wall the stones run from six pixels to twenty-four.
 
     The first drawing, to the pixel of materials.md section 3 (a stone a block long in every
     course, half a block of break, A0 bed joints), read as a wall of enlarged grey brick from
-    fourteen blocks; this one was chosen over it on the first round's pictures.
-
-    Only a stone that ends on the block's own edge takes a tone of its own. The stones of the
-    lower course lie across two blocks, and two blocks choose their variants apart: a tone of its
-    own there would step in the middle of a stone at every block edge, one step above the other
-    all the way up a wall -- a stripe. The lower course is the base A3 in every variant."""
-    upper, lower = _FINE[variant]
+    fourteen blocks; this one was chosen over it on the first round's pictures."""
     px = _fill(3)
-    px[8, :, :3] = _a(4)                          # the lower course: the base, its arris lit
-    px[8:15, lower, :3] = _a(2)
-    x0 = 0
-    for cut, tone in upper:                       # the upper course, stone by stone
-        px[0:7, x0:cut, :3] = _a(tone)
-        px[0, x0:cut, :3] = _a(tone + 1)
-        px[0:7, cut, :3] = _a(2)
-        x0 = cut + 1
+    for y0, course in zip((0, 8), _FINE[variant]):
+        for x, what in enumerate(course):
+            tone = {"|": JOINT, ".": 3, "+": 4}[what]
+            px[y0:y0 + 7, x, :3] = _a(tone)
+            if what != "|":
+                px[y0, x, :3] = _a(tone + 1)      # the arris of the stone, lit
     px[7, :, :3] = _a(1)
     px[15, :, :3] = _a(1)
     return px
@@ -262,8 +275,9 @@ def _fine(variant):
 
 def _fine_top(seed):
     """ASHLAR_FINE end (and the panel/emblem ends): flat dressed stone, base A3 with a faint fleck
-    of tooling and no joint at all -- a tread, a coping or a soffit carries no seam. About one pixel in sixteen is a step lighter and one in twenty-five a step
-    darker: with a fifth of it lighter a coping read as pitted from close by (c219's pre-review).
+    of tooling and no joint at all -- a tread, a coping or a soffit carries no seam. About one
+    pixel in sixteen is a step lighter and one in twenty-five a step darker: with a fifth of it
+    lighter a coping read as pitted from close by (c219's pre-review).
 
     materials.md section 3 first worded this picture "flat, base A3, a shallow joint". The joint
     is left out on purpose: the card and c190's point 1 forbid a joint on a tread, and stairs keep
@@ -355,6 +369,23 @@ def _runs(row):
     return out
 
 
+def _course(s, y0):
+    """A course of the fine side read back from a picture's steps, y0 its top row: per column
+    JOINT where a head joint stands (joint tones from top to bottom), the tone of the stone where
+    one does (one tone, lighter than a joint, under an arris a step lighter), and -1 where the
+    column is neither."""
+    out = []
+    for x in range(TILE):
+        column = [int(tone) for tone in s[y0:y0 + 7, x]]
+        if 0 <= min(column) and max(column) <= JOINT:
+            out.append(JOINT)
+        elif min(column[1:]) == max(column[1:]) > JOINT and column[0] == column[1] + 1:
+            out.append(column[1])
+        else:
+            out.append(-1)
+    return out
+
+
 def _groups(cells):
     """Cells (x, y) sorted into groups that touch, corners counted."""
     left, out = set(cells), []
@@ -401,17 +432,24 @@ def faults(pictures, version=DEFAULT):
                      Both: the face is A2; a mark is a groove of A1, two or three pixels long, on
                      a row of GROOVES, over its lit lip of A3, and the face carries nothing else;
       - fine side    a bed joint, one joint tone unbroken, along rows 7 and 15, the same in every
-                     variant; every course has a head joint; no head joint runs on into the course
-                     above or below it, in a block or from the block above -- that is what stripes
-                     a wall; a stone is one tone from joint to joint, across the block's edge too;
+                     variant; every course has a head joint, but none at a column where every
+                     variant has one -- those stand in a row on the grid of the blocks; a head
+                     joint is three pixels or more from every joint of the course above or below
+                     it -- nearer, it runs on from course to course, and that stripes a wall; no
+                     stone is shorter than SLIVER; a stone is one tone from joint to joint, across
+                     the block's edge too, and lit a step along its arris; a stone that runs to
+                     the block's edge is of the base tone, and the lighter stones are no more than
+                     a quarter of a course;
       - the ends     no joint on the fine end, and no joint from side to side of the rough one: a
                      tread, a coping, a soffit carry none (c190's point 1); the lighter fleck of the
                      fine end is no more than a tenth of it;
       - the panel    one size of sunk field: were it given variants, their bevels and the walls of
                      the field would stand at the same pixels;
-      - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), inside
-                     the ring, with a plain pixel between it and the ring, the meridian and the lit
-                     lip of either; the meridian runs out of the ring at both ends.
+      - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), a
+                     pixel or more from the ring and from the meridian, inside the ring, as far
+                     right of its middle as above it -- on sixteen pixels that leaves the one
+                     place of the station's standard drawing; the meridian runs out of the ring at
+                     both ends.
 
     The steps of the ramp up to JOINT are the joint tones of the fine side: the face of a fine
     stone never takes them. On the ends A0 and A1 are."""
@@ -473,23 +511,50 @@ def faults(pictures, version=DEFAULT):
                            "the block's edge")
 
     fine = many("ashlar_fine")
-    heads = []                                    # per variant: the head joints of its upper course, of its lower
+    courses = []                                  # per variant: its upper course and its lower, column by column
     beds = {(int(s[7, 0]), int(s[15, 0])) for s in fine}
     if len(beds) > 1:
         out.append(f"ashlar_fine: the variants do not agree on the tone of the bed joints ({sorted(beds)})")
     for i, s in enumerate(fine):
         if not all((s[y] == s[y, 0]).all() and 0 <= s[y, 0] <= JOINT for y in (7, 15)):
             out.append(f"ashlar_fine{i}: no unbroken bed joint (A0..A{JOINT}) along rows 7 and 15")
-        upper, lower = ({x for x in range(TILE) if (s[y0:y0 + 7, x] <= JOINT).all()} for y0 in (0, 8))
-        heads.append((upper, lower))
-        if not (upper and lower):
-            out.append(f"ashlar_fine{i}: a course without a head joint")
-        if upper & lower:
-            out.append(f"ashlar_fine{i}: a head joint runs through both courses at x={sorted(upper & lower)}")
-    for i, (_, lower) in enumerate(heads):
-        for j, (upper, _) in enumerate(heads):
-            if lower & upper:
-                out.append(f"ashlar_fine{i} over ashlar_fine{j}: a head joint runs on at x={sorted(lower & upper)}")
+        courses.append([_course(s, y0) for y0 in (0, 8)])
+        for name, course in zip(("upper", "lower"), courses[-1]):
+            if -1 in course:
+                out.append(f"ashlar_fine{i}: at x={course.index(-1)} the {name} course is neither a head joint nor "
+                           "a stone of one tone under an arris a step lighter")
+            if JOINT not in course:
+                out.append(f"ashlar_fine{i}: a course without a head joint")
+            x = 0
+            for tone, n in _runs(course):
+                if tone > JOINT + 1 and (x == 0 or x + n == TILE):
+                    out.append(f"ashlar_fine{i}: a lighter stone of the {name} course runs to the block's edge "
+                               f"(x={x}..{x + n - 1}); the next block carries it on in a tone of its own")
+                x += n
+    for k, name in enumerate(("upper", "lower")):
+        every = [x for x in range(TILE) if all(c[k][x] == JOINT for c in courses)]
+        if every and len(courses) > 1:
+            out.append(f"ashlar_fine: every variant breaks the {name} course at x={every}; along a wall those "
+                       "joints stand in a row on the grid of the blocks")
+        light = sum(tone > JOINT + 1 for c in courses for tone in c[k]) / (TILE * len(courses))
+        if light > 0.25:
+            out.append(f"ashlar_fine: the lighter stones are {light:.0%} of the {name} course, more than a quarter: "
+                       "rows of light bars from afar")
+        for i, left in enumerate(courses):
+            for j, right in enumerate(courses):
+                at = [x for x, tone in enumerate(left[k] + right[k]) if tone == JOINT]
+                short = sorted({b - a - 1 for a, b in zip(at, at[1:]) if b - a - 1 < SLIVER})
+                if short:
+                    out.append(f"ashlar_fine{i} beside ashlar_fine{j}: stones of {short} pixels in the {name} "
+                               f"course; a stone is {SLIVER} long or more")
+    for i, (upper, _) in enumerate(courses):
+        for j, (_, lower) in enumerate(courses):
+            near = sorted((u, v) for u in range(TILE) for v in range(TILE)
+                          if upper[u] == lower[v] == JOINT and min((u - v) % TILE, (v - u) % TILE) < 3)
+            if near:
+                out.append(f"ashlar_fine{i} and ashlar_fine{j}: a head joint of the upper course of the one stands "
+                           f"within two pixels of one of the lower course of the other (x={near[0][0]} and "
+                           f"x={near[0][1]}); where the two meet, the joint runs on from course to course")
     for i, left in enumerate(fine):
         for j, right in enumerate(fine):
             pair = np.concatenate([left, right], axis=1)
@@ -526,11 +591,10 @@ def faults(pictures, version=DEFAULT):
         outside = _outside(max(cut, key=len))
         if any((x + dx, y + dy) in outside for x, y in star for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
             out.append(f"ashlar_emblem{i}: the star is not inside the ring")
-        own_lip = {(x + 1, y + 1) for x, y in star}
-        about = {(x + dx, y + dy) for x, y in star for dx in (-1, 0, 1) for dy in (-1, 0, 1)} - star - own_lip
-        if any(s[y, x] != 3 for x, y in about if 0 <= x < TILE and 0 <= y < TILE):
-            out.append(f"ashlar_emblem{i}: the star stands against the ring, the meridian or the lit lip of one of "
-                       "them; a plain pixel lies between")
+        right, up = x0 + 0.5 - (TILE - 1) / 2, (TILE - 1) / 2 - (y0 + 0.5)
+        if not right == up > 0:
+            out.append(f"ashlar_emblem{i}: the star is {right:g} pixels right of the ring's middle and {up:g} above "
+                       "it; the station's standard drawing has it as far right as up")
         if not ((s[0] == 1).any() and (s[-1] == 1).any()):
             out.append(f"ashlar_emblem{i}: the meridian does not run out of the ring at both ends")
     return out
