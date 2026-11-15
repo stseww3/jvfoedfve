@@ -33,9 +33,11 @@ build_models = obs.build_models
 write_pack = obs.write_pack
 
 
-def build():
+def build(near_pair=None):
+    """near_pair: False leaves out the court's pair of street lamps nearest the stair head, True
+    keeps it, None follows lamps.NEAR_PAIR (obs_props_lamps_site_nopair is this scene without it)."""
     c = Canvas()
-    lamps.dress(c)
+    lamps.dress(c, near_pair=near_pair)
     if L is not None:
         L.dress(c)
     counts = {}
