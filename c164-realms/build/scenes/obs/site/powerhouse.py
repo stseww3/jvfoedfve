@@ -16,9 +16,11 @@ between polished courses.
   windows   Iron-framed and dark. Only the two bays beside the chimney, where the boilers stand,
             glow in their lower three rows: the fire window, a block of its own for each row,
             brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in while the switch
-            FIRE is off). The sky line gives them their light (sky/_lightkit.glazed),
-            in the recess before the glass, which therefore stays empty; the materials line lines
-            their room side (materials/windows.line).
+            FIRE is off). The sky line gives them their light (sky/_lightkit.glazed): a source in
+            the room's first cell behind the glass, which the inside therefore leaves free. The
+            materials line lines their room side: in the master scene it reads windows() and
+            does so itself (materials/windows.build); a scene that builds the house without that
+            line calls lining().
   door      The second bay of the north front, from the yard: a riveted gate with a wicket. The
             wicket is the way into the house and stands open (A0, g2 #37124: a door that is to be
             walked through is not left for the visitor to open). A caged lamp on the gate's lintel
@@ -54,9 +56,8 @@ between polished courses.
             FITTINGS, the valve head and the straps on the main; DRAINS, the gutter's two
             rainwater pipes.
 
-The shell is blocks. The only display entities build() places are the linings of the two fire
-windows, which it asks the materials line for, and the lamp over the wicket, which it asks the
-props line for.
+The shell is blocks. The only display entity build() places is the lamp over the wicket, which it
+asks the props line for.
 """
 import importlib
 
@@ -596,12 +597,17 @@ def _light(canvas, origin, version):
                    f"{B.LIGHT}[level={FURNACE_LIGHT}]", keep=True)
 
 
-def _lining(canvas, origin, version):
+def lining(canvas, origin=(0, 0, 0), version=None):
     """The room side of the glowing glass. Lit glass glows on every face, and somebody can stand
     behind these windows; the materials line covers the room side of such a window with a sheet,
     the one that goes with its glass (materials/windows.line: for the fire window night glass, the
     fire is in the room and the window looks out at the night). The sheets are display entities.
-    Returns how many were placed: none while that module has no line()."""
+    Returns how many were placed: none while that module has no line().
+
+    build() does not call this. In the master scene the materials line lines the two windows
+    itself, from windows() (materials/windows.build), and a scene that builds the site line
+    without the materials line's models has nothing to show a sheet with (c350, #58341). It is for
+    a scene that shows the house by itself and packs those models: this package's test scenes."""
     line = getattr(_other("materials.windows"), "line", None)
     if line is None:
         return 0
@@ -626,7 +632,8 @@ def _lamp(canvas, origin):
 def build(canvas, origin=(0, 0, 0), version=None, run=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
     run: lay the main along the upper terrace (RUN when not given). Returns the number of display
-    entities placed: the linings of the fire windows (_lining) and the lamp over the wicket."""
+    entities placed: the lamp over the wicket. (The linings of the fire windows are the materials
+    line's to place, see lining().)"""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -637,4 +644,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return _lining(canvas, p.o, version) + _lamp(canvas, p.o)
+    return _lamp(canvas, p.o)

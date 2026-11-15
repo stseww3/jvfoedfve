@@ -86,6 +86,7 @@ def build(version=None, run=None):
             if line is sky:         # after the props line; before the light sources, which go last
                 _fit(c)
                 _lamps(c)
+                powerhouse.lining(c)    # the materials line is not built here: the fire windows' room side
             line.build(c, (0, 0, 0))
     return c
 
@@ -99,7 +100,7 @@ def build_models():
     except ImportError:
         windows = None
     if getattr(windows, "line", None) is not None:
-        out.update(windows.models())        # the linings of the fire windows (powerhouse._lining)
+        out.update(windows.models())        # the linings of the fire windows (powerhouse.lining)
     return out
 
 
