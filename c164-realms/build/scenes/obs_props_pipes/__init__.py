@@ -17,9 +17,19 @@ What it shows:
                                         into the building: the angle stop valve on the paving with
                                         its red handwheel to the court, the short length with the
                                         pressure gauge, the plate on the grating
+    the plinth of the south end wall    a SAMPLE, which pipes.dress() does not place: the heating
+                                        main in the smaller bore. It leaves the broad corner pier,
+                                        lies on the plinth's coping under the base windows, goes
+                                        through the pier between the two bays, passes a stop valve
+                                        whose handwheel looks out from the wall, and turns into the
+                                        wall before the next pier. It is here so that the pieces
+                                        that have no place on the east front -- plates, flanges, a
+                                        bracket, the straight valve, a bend -- are judged on the
+                                        real stones and in a line that begins and ends
 
-The other pieces of the family (bends, the straight valve, brackets, flanges, the two pieces for a
-main laid in blocks) have no place on this front; gallery.py shows them (props.GALLERY).
+The two pieces for a main laid in whole blocks (bonnet, band) go on site/powerhouse's pipe bridge,
+which is not in this scene; that package's test scenes show them there. gallery.py lays every model
+out on its own (props.GALLERY).
 
 The shots are written from the numbers below:  python -m scenes.obs_props_pipes
 """
@@ -43,8 +53,14 @@ TIME = 14000                    # light version A, the default (INTERFACE: 18000
 # ---- the plan: the skeleton's own columns ----------------------------------------------------------
 Z0 = S.pilaster_z(13)           # 18: the stretch is cut on a pilaster line of the south wing
 BACK = S.WALL_W + 2 * S.BAY     # 8: and on a pilaster line of the south end wall
-PAVING = (BACK - 3, Z0 - 5, S.WALL_E + 27, S.Z_SOUTH + 12)      # x0, z0, x1, z1 of the terrace laid round it
+PAVING = (BACK - 3, Z0 - 5, S.WALL_E + 27, S.Z_SOUTH + 24)      # x0, z0, x1, z1 of the terrace laid round it
 GLOW = {B.WINDOW_LIT.block: 10, B.WINDOW_FROSTED.block: 10, B.WINDOW_CURTAIN.block: 9}   # as materials/windows
+
+# ---- the sample line on the south end wall ---------------------------------------------------------
+SIZE = "m"                                              # the heating main: the smaller of the two bores
+LINE_Y = S.PLINTH[1] + 1 + pipes.STANDOFF[SIZE] / 16.0  # 2.25: its flanges stand on the plinth's coping
+LINE_Z = S.Z_SOUTH + 1 + pipes.STANDOFF[SIZE] / 16.0    # 35.25: and touch the wall face
+BEND_AT, CLIP_AT, VALVE_AT = 6.0, 17.0, 28.0            # texels east of the pier the stretch is cut on
 
 
 def footprint():
@@ -99,6 +115,33 @@ def _rooms(c, windows):
                 c.set(x + w["inward"][0], y, z + w["inward"][1], st(B.LIGHT, level=level))
 
 
+def _heating(c):
+    """The sample line on the south end wall (see the top of the file), east to west; returns the
+    number of display entities. The piers it meets: the broad corner pier, whose west face is at
+    x 15; the pier between the two bays, x 12..13; the pier the stretch is cut on, east face x 9."""
+    y, z, wall = LINE_Y, LINE_Z, S.Z_SOUTH + 1.0
+    west, mid, east = BACK + 1.0, float(BACK + S.BAY), P.east_face(S.Z_SOUTH) - 1.0
+    main, plate = "main_" + SIZE, "plate_" + SIZE
+    neck = (pipes.PLATE_NECK - 1.0) / 16.0              # a run starts this far inside a plate's neck,
+    port = (pipes.VALVE[SIZE] - 1.0) / 16.0             # stops this far from the middle of a valve
+    leg = (pipes.ELBOW[SIZE] - 1.0) / 16.0              # and from the corner of a bend: inside their flanges
+    valve, bend = west + VALVE_AT / 16.0, west + BEND_AT / 16.0
+    # the bay next to the corner: pier to pier, two lengths bolted together half way
+    n = pipes.mount(c, plate, (east, y, z), out="west")
+    n += pipes.run(c, (east - neck, y, z), (mid + 1.0 + neck, y, z), main)
+    n += pipes.place(c, "flange_" + SIZE, ((east + mid + 1.0) / 2.0, y, z), along="west", out="up")
+    n += pipes.mount(c, plate, (mid + 1.0, y, z), out="east")
+    # the next bay: out of the pier, the stop valve, a bracket, the bend into the wall
+    n += pipes.mount(c, plate, (mid, y, z), out="west")
+    n += pipes.run(c, (mid - neck, y, z), (valve + port, y, z), main)
+    n += pipes.place(c, "valve_" + SIZE, (valve, y, z), along="west", out="south")
+    n += pipes.run(c, (valve - port, y, z), (bend + leg, y, z), main)
+    n += pipes.mount(c, "clip_" + SIZE, (west + CLIP_AT / 16.0, y, wall), out="south")
+    n += pipes.place(c, "elbow_" + SIZE, (bend, y, z), along="east", out="north")
+    n += pipes.mount(c, plate, (bend, y, wall), out="south")
+    return n
+
+
 def build():
     c = Canvas()
     x0, z0, x1, z1 = PAVING
@@ -108,7 +151,7 @@ def build():
     x, y, z = pipes.INLET
     c.set(x, y, z, B.IRON_GRATE)        # main/facade sets this grating in the building (c206: PIPE_INLET)
     _rooms(c, windows)
-    n = pipes.dress(c)
+    n = pipes.dress(c) + _heating(c)
     sky.build(c, (0, 0, 0))             # A2's light sources go in last, when every piece is in place
     c.entity_counts = {"props": n}
     return c
@@ -151,4 +194,14 @@ def shots():
     shot("inlet_south", (sx - 0.3, 1.3, sz + 3.0), (sx - 0.3, sy + 0.15, sz))
     shot("inlet_walk", (sx + 2.5, S.EYE, sz - 3.4), (sx - 0.2, sy + 0.1, sz))
     shot("corner_far", (face + 15.0, S.EYE, S.Z_SOUTH + 10.0), (face + 1.0, 5.0, S.Z_SOUTH - 3.0))
+
+    hy, hz, wall = LINE_Y, LINE_Z, S.Z_SOUTH + 1.0      # the sample line's axis; the south wall's face
+    pier = BACK + S.BAY + 0.5                           # the middle of the pier between the two bays
+    vx, bx = BACK + 1.0 + VALVE_AT / 16.0, BACK + 1.5   # the valve; the cell the bend stands in
+    shot("heating_front", (pier - 0.5, S.EYE, wall + 20.0), (pier - 0.5, 3.0, wall))
+    shot("heating_oblique", (vx + 3.2, 3.1, hz + 3.2), (vx - 0.4, hy, hz))
+    shot("heating_along", (pier + 1.1, 2.7, wall + 2.3), (bx, hy, hz - 0.05))
+    shot("heating_valve", (vx + 0.9, 2.7, hz + 2.9), (vx - 0.1, hy + 0.05, hz))
+    shot("heating_bend", (bx + 0.7, 2.9, hz + 1.6), (bx - 0.05, hy, hz - 0.1))
+    shot("heating_pier", (pier + 2.0, 2.8, wall + 1.9), (pier + 0.5, hy, hz))
     return out
