@@ -10,7 +10,9 @@ Two materials, both the palette's:
     old copper   rainwater: the downpipe (3 px), its hopper head, clips and sleeves
     iron         steam and heating: the main in two bores, "l" (6 px) and "m" (4 px), with plates,
                  flanges, bends and stop valves; a valve's handwheel is the one red thing (signal),
-                 the gauge is brass with a cream dial and three phosphor marks
+                 the gauge is brass with a cream dial and three phosphor marks.
+                 Rainwater on a works building, whose gutter is iron: the drain (3 px), its head,
+                 clips and collar
 
 How a line is put together:
 
@@ -28,10 +30,13 @@ How a line is put together:
                                         band): `pos` is on that surface, `out` the way the surface looks.
 
     downpipe(canvas, corner, top, bottom, facing, side)   a whole rainwater pipe in a re-entrant corner
+    drain(canvas, at, top, bottom, facing)   a whole iron rainwater pipe on the open face of a pier
     inlet(canvas)                       where the power house's main enters the building
-    fittings(canvas)                    the valve head and the straps site/powerhouse asks for on its
-                                        pipe bridge, whose main is laid in whole blocks
-    dress(canvas)                       what the family puts into the master scene: all of the above
+    fittings(canvas)                    what site/powerhouse asks for in its tables: the valve head and
+                                        the straps on its pipe bridge, whose main is laid in whole
+                                        blocks, and the drains of its gutter
+    dress(canvas)                       what the family puts into the master scene: the downpipes of
+                                        the main building's east front, the inlet, the fittings
 
 Directions are names: "east", "west", "south", "north", "up", "down". All functions take scene
 coordinates plus `origin` and return the number of display entities they placed.
@@ -75,7 +80,7 @@ COPPER3 = _tones("old_copper")
 RED = P.mat("signal")
 MOUTH = K.flat("old_copper", 0)         # the dark inside of a hopper
 DIAL = K.flat("cream", 3)
-NEEDLE = K.flat("iron", 0)
+NEEDLE = K.flat("iron", 0)              # the gauge's needle; the dark inside of an iron head
 MARK = K.flat("phosphor", 2)
 PIN = K.flat("brass", 4)
 ABOVE = (0.0, 1.0, 0.0)                 # where the light on a level pipe comes from
@@ -198,11 +203,11 @@ def _works(m, size, y0, top=90.0):
 WORKS = 7.75            # a valve's works are this long, from the foot of the neck to the stem's end
 
 
-# ---- rainwater: old copper ------------------------------------------------------------------------
-def _down():
-    """The downpipe: along +z from the anchor, RUN long, to be drawn out between two points."""
-    m = M.Model(PREFIX + "down")
-    _even(m, "z", (0, 0), 0.0, RUN, DOWN_R, COPPER3)
+# ---- rainwater: old copper, and iron on a works building ------------------------------------------
+def _down(name, tones):
+    """A rainwater pipe: along +z from the anchor, RUN long, to be drawn out between two points."""
+    m = M.Model(PREFIX + name)
+    _even(m, "z", (0, 0), 0.0, RUN, DOWN_R, tones)
     return m
 
 
@@ -237,25 +242,48 @@ def _hopper(name, side):
 HOPPER_SOCKET = (-6.5, -4.0)    # the socket's underside and top, in texels from the hopper's anchor
 
 
-def _down_clip():
-    """A joint of the downpipe and the clip that holds it: the socket of the length below, and under
-    it an iron band bolted together in front. Wall-mounted, the anchor on the wall face behind the
-    axis at the height of the joint; the axis stands GAP + DOWN_R out."""
-    m = M.Model(PREFIX + "down_clip")
+def _down_clip(name, socket):
+    """A joint of a rainwater pipe and the clip that holds it: the socket of the length below, and
+    under it an iron band bolted together in front. Wall-mounted, the anchor on the wall face behind
+    the axis at the height of the joint; the axis stands GAP + DOWN_R out."""
+    m = M.Model(PREFIX + name)
     a = GAP + DOWN_R
-    m.tube("y", (0, a), 0.0, 2.0, a, K.COPPER.variant(1))
+    m.tube("y", (0, a), 0.0, 2.0, a, socket)
     m.tube("y", (0, a), -1.5, 0.0, a, K.IRON_D)
     m.box((-1.0, -1.5, 2.0 * a), (1.0, 0.0, 2.0 * a + 1.0), K.IRON)
     m.box((-0.5, -1.25, 2.0 * a + 1.0), (0.5, -0.25, 2.0 * a + 1.5), K.RIVET)
     return m
 
 
-def _down_sleeve():
-    """Where the downpipe goes through stone -- a string course, the plinth's coping: a collar on
-    the stone's face (the model's plane z = 0) round the pipe, which leaves along +z."""
-    m = M.Model(PREFIX + "down_sleeve")
-    m.tube("z", (0, 0), 0.0, 1.5, GAP + DOWN_R, K.COPPER.variant(-1))
+def _down_sleeve(name, mat):
+    """Where a rainwater pipe goes through stone -- a string course, the plinth's coping, the
+    ground: a collar on the stone's face (the model's plane z = 0) round the pipe, which leaves
+    along +z."""
+    m = M.Model(PREFIX + name)
+    m.tube("z", (0, 0), 0.0, 1.5, GAP + DOWN_R, mat)
     return m
+
+
+def _drain_head():
+    """The head of an iron rainwater pipe on the open face of a wall whose gutter lies on the wall's
+    head, flush with that face, half a block deep. Wall-mounted: the anchor is on the face behind
+    the pipe's axis, half a block under the gutter's underside (the middle of the cell, so the piece
+    is lit by the air it hangs in). Top to bottom: the nozzle that comes out of the gutter's side,
+    the open rim it empties into, the box, the funnel, the socket of the pipe, whose axis stands
+    GAP + DOWN_R out."""
+    m = M.Model(PREFIX + "drain_head")
+    a = GAP + DOWN_R
+    m.box((-1.5, 8.5, 0.0), (1.5, 12.0, 4.5), K.IRON_D)
+    m.box((-4.5, 7.0, 0.0), (4.5, 9.0, 7.0), K.IRON, faces={"u": NEEDLE})
+    m.box((-4.0, 2.0, 0.0), (4.0, 7.0, 6.5), K.IRON_D)
+    for x in (-2.5, 2.5):
+        K.rivet(m, (x, 5.5, 6.5))
+    m.box((-3.0, 0.0, 0.0), (3.0, 2.0, 5.0), K.IRON)
+    m.box((-2.0, -2.5, a - 2.0), (2.0, 0.0, a + 2.0), K.IRON_D)
+    return m
+
+
+DRAIN_SOCKET = (-2.5, 0.0)      # the socket's underside and top, in texels from the drain head's anchor
 
 
 # ---- steam and heating: iron ----------------------------------------------------------------------
@@ -414,11 +442,15 @@ def _clip(name, size):
 STANDOFF = {"l": 5.0, "m": 4.0}         # a main along a wall: its axis this far off the face, in texels
 
 SPEC = {
-    "down": dict(build=_down),
+    "down": dict(build=lambda: _down("down", COPPER3)),
     "down_hopper_left": dict(build=lambda: _hopper("down_hopper_left", -1.0)),
     "down_hopper_right": dict(build=lambda: _hopper("down_hopper_right", 1.0)),
-    "down_clip": dict(build=_down_clip),
-    "down_sleeve": dict(build=_down_sleeve),
+    "down_clip": dict(build=lambda: _down_clip("down_clip", K.COPPER.variant(1))),
+    "down_sleeve": dict(build=lambda: _down_sleeve("down_sleeve", K.COPPER.variant(-1))),
+    "drain": dict(build=lambda: _down("drain", IRON3)),
+    "drain_head": dict(build=_drain_head),
+    "drain_clip": dict(build=lambda: _down_clip("drain_clip", K.IRON)),
+    "drain_sleeve": dict(build=lambda: _down_sleeve("drain_sleeve", K.IRON_D)),
     "main_l": dict(build=lambda: _main("main_l", BORE["l"])),
     "main_m": dict(build=lambda: _main("main_m", BORE["m"])),
     "flange_l": dict(build=lambda: _flange("flange_l", "l")),
@@ -477,8 +509,8 @@ def mount(canvas, kind, pos, out="east", up="up", origin=(0, 0, 0), **opts):
 
 def run(canvas, a, b, kind="main_l", lit=None, origin=(0, 0, 0)):
     """One straight length of pipe from a to b, two points of its axis; returns 1. kind is "main_l",
-    "main_m" or "down". The entity stands at a, which must be in the air (it is lit from there);
-    b may lie inside a fitting or a stone.
+    "main_m", "down" or "drain". The entity stands at a, which must be in the air (it is lit from
+    there); b may lie inside a fitting or a stone.
 
     lit    the side the pipe's light tone looks to. Left out: up for a level run, north for an
            upright one. Only runs along an axis can say; a slanted run is lit from above."""
@@ -559,6 +591,51 @@ def downpipe(canvas, corner, top, bottom, facing="east", side=1, origin=(0, 0, 0
     return n
 
 
+LIT_SIDE = {"north": "west", "south": "west", "east": "north", "west": "north"}     # see drain()
+
+
+def drain(canvas, at, top, bottom, facing="north", origin=(0, 0, 0)):
+    """An iron rainwater pipe on the open face of a pier of a works building, whose gutter lies on
+    the wall's head flush with the face, half a block deep (site/powerhouse).
+
+    at       (x, z): the point of the plan on that face, behind the pipe's axis
+    facing   the way the face looks
+    top      y of the gutter's underside: the top of the wall's last course
+    bottom   y of the ground the pipe goes into
+
+    The head hangs before the wall's last course, under a nozzle that comes out of the gutter's
+    side; the pipe stands GAP clear of the face and ends in a collar on the ground; clips on the
+    face behind it hold it about every CLIP_EVERY blocks. Its light tone looks to the side the
+    models' light comes from (artkit.models.LIGHT: north-west), LIT_SIDE. Nothing is placed unless
+    the gutter, the wall under it and the ground are on the canvas and the pipe's way down is free.
+    Returns the number of display entities."""
+    out = DIRS[facing]
+    off = (GAP + DOWN_R) / 16.0 + K.NUDGE
+    ax, az = at[0] + out[0] * off, at[1] + out[2] * off         # the axis
+    ox, oy, oz = origin
+    cx, cz = int(math.floor(ax)), int(math.floor(az))           # the column the pipe stands in,
+    bx, bz = int(math.floor(at[0] - out[0] * 0.5)), int(math.floor(at[1] - out[2] * 0.5))       # the wall's behind it
+
+    def wall(y):
+        return _stone(canvas, bx + ox, int(math.floor(y)) + oy, bz + oz)
+
+    if not (wall(top) and wall(top - 1) and _stone(canvas, cx + ox, bottom - 1 + oy, cz + oz)):
+        return 0
+    if any(_stone(canvas, cx + ox, y + oy, cz + oz) for y in range(bottom, top + 1)):
+        return 0
+    n = mount(canvas, "drain_head", (at[0], top - 0.5, at[1]), out=facing, origin=origin)
+    head = top - 0.5 + DRAIN_SOCKET[0] / 16.0                   # the underside of the head's socket
+    n += run(canvas, (ax, head + 1.5 / 16.0, az), (ax, bottom + 1.0 / 32.0, az), "drain", lit=LIT_SIDE[facing],
+             origin=origin)
+    n += mount(canvas, "drain_sleeve", (ax, bottom, az), out="up", up=facing, origin=origin)
+    count = max(1, int(round((head - bottom) / CLIP_EVERY)))
+    for i in range(count):
+        y = round((bottom + (head - bottom) * (i + 0.5) / count) * 4.0) / 4.0
+        if wall(y):
+            n += mount(canvas, "drain_clip", (at[0], y, at[1]), out=facing, origin=origin)
+    return n
+
+
 def corners():
     """The re-entrant corners of the east front, where an end pavilion or the middle one stands
     forward of a wing: [((x, z), side)] as downpipe() takes them, north to south. The pipe stands
@@ -621,11 +698,15 @@ def _backed(canvas, pos, out, up, origin):
 
 
 def fittings(canvas, origin=(0, 0, 0)):
-    """What site/powerhouse asks for on the main of its pipe bridge, which is laid in whole blocks:
-    its table FITTINGS, in mount()'s own terms (c228, 11-15: the valve head with the bridge's one
-    red handwheel where the main turns down at the bridge head, a strap over the joint in each
-    plain length). A piece is left out where the main is not on the canvas behind it; nothing is
-    placed while that package is not in the tree. Returns the number of display entities."""
+    """What site/powerhouse asks this family for, in its own tables.
+
+    FITTINGS   on the main of its pipe bridge, which is laid in whole blocks: (kind, pos, keywords)
+               as mount() takes them (c228, 11-15: the valve head with the bridge's one red
+               handwheel where the main turns down at the bridge head, a strap over the joint in
+               each plain length). A piece is left out where the main is not on the canvas behind it.
+    DRAINS     the rainwater pipes of its iron gutter: the keywords of drain(), one dict a pipe.
+
+    Nothing is placed while that package is not in the tree. Returns the number of display entities."""
     try:
         from ..site import powerhouse
     except ImportError:
@@ -634,6 +715,8 @@ def fittings(canvas, origin=(0, 0, 0)):
     for kind, pos, how in getattr(powerhouse, "FITTINGS", ()):
         if PREFIX + kind in _models() and _backed(canvas, pos, how.get("out", "east"), how.get("up", "up"), origin):
             n += mount(canvas, kind, pos, origin=origin, **how)
+    for how in getattr(powerhouse, "DRAINS", ()):
+        n += drain(canvas, origin=origin, **how)
     return n
 
 

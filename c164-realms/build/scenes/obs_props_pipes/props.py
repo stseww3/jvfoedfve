@@ -33,6 +33,17 @@ def _downpipe():
             (1.9, 2.2, WALL + 4.2), (0.0, 1.9, WALL))
 
 
+def _drain():
+    """A whole iron drain, three blocks of it: the head (its nozzle comes out of a gutter that is not
+    there), the pipe hung from its socket down to a collar on the floor, a clip half way."""
+    top = LONG - (pipes.DRAIN_SOCKET[0] + 1.5) / 16.0   # the head's anchor: the pipe starts 1.5 texels up its socket
+    return ("drain", [(P + "drain_head", (0.0, top, WALL), {}),
+                      (P + "drain", (0.0, LONG, WALL + OUT), DOWN),
+                      (P + "drain_clip", (0.0, 1.5, WALL), {}),
+                      (P + "drain_sleeve", (0.0, 0.01, WALL + OUT), UP)],
+            (1.9, 2.2, WALL + 4.2), (0.0, 1.9, WALL))
+
+
 def _mains():
     """The two bores side by side along the floor, each with a pair of flanges half way."""
     parts = []
@@ -104,6 +115,7 @@ GALLERY = [
     _downpipe(),
     _wall("hoppers", [("down_hopper_left", -0.7, 2.0), ("down_hopper_right", 0.7, 2.0)], y=2.0),
     _wall("down_fixings", [("down_clip", -0.5, 1.6), ("down_sleeve", 0.5, 1.6)], y=1.6, back=2.2),
+    _drain(),
     _mains(),
     _wall("plates", [("plate_l", -0.6, 1.5), ("plate_m", 0.6, 1.5)]),
     _clips(),
