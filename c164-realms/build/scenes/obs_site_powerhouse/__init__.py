@@ -21,7 +21,6 @@ street lamps of the way in and the low lamps on the terrace's lip. Each appears 
 is in the tree.
 """
 import contextlib
-import os
 
 from artkit.canvas import Canvas
 
@@ -35,20 +34,18 @@ LINES = (site, main, props, sky)
 VERSION = "a"
 RUN = True
 FIRE = True     # both scenes: the boiler bays glow through the fire window, as the card wants them judged
-SHAFT = os.environ.get("C164_POWER_SHAFT")      # a trial of the chimney's shaft (powerhouse.SHAFT_FORM)
 
 
 @contextlib.contextmanager
 def _as(version, run):
     """The site line builds its packages itself and hands them no choices: set the package's own
     defaults for the time of the build and put them back."""
-    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.SHAFT_FORM
+    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE
     powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = version, run, FIRE
-    powerhouse.SHAFT_FORM = SHAFT or powerhouse.SHAFT_FORM
     try:
         yield
     finally:
-        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.SHAFT_FORM = was
+        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = was
 
 
 def _fit(c):
@@ -109,5 +106,7 @@ def build_models():
 
 def write_pack(pack_dir):
     """The power house paints nothing itself; it stands on the repainted blocks as the materials
-    line has them today (tuff, slate, cast iron, the window glasses)."""
-    return materials.pack(pack_dir)
+    line has them today (tuff, slate, cast iron, the window glasses), under the map's sky: the
+    scene stands in the map's hour, and without the sky's pack the game's own sun is a white and
+    yellow square on the western horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])

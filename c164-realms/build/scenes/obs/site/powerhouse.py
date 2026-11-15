@@ -28,10 +28,14 @@ between polished courses.
   chimney   In the north-east corner, wholly inside the box and outside the arrival view. Its foot
             is a tower six cells square, the corner pier, a bay and the next pier built solid, with
             a blind arch on each outer face; three courses above the eaves it steps in under a
-            weathering to a round shaft four cells across, hooped with iron every fourth course,
+            weathering to a square shaft four cells across, banded with iron every fourth course,
             with a polished necking under the head. The head is a corbel course under a weathered
-            coping, six across with the corners left out; over it the mouth is as narrow as the
-            shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
+            coping, six across and mitred at the corners like the weathering below; over it the
+            mouth is as narrow as the shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
+            The shaft was a round once, a cross of twelve cells, and each of its four corners a
+            notch one cell deep: on the diagonal, which is how V6 sees it, that was a black groove
+            from the shoulder to the head and the shaft two posts side by side (review cr2-#7).
+            A block cannot round a corner at this size, so the shaft is square and its faces whole.
   roof      Two versions (VERSION), and they differ in nothing else. Both show their profile to
             the yard in the north, where V6 stands, and their flank to the court.
             "a"  Five saw teeth, one to the bay of the north front, their ridges north-south: a
@@ -108,17 +112,7 @@ TOWER = (TX0, TZ0, TX1, TZ1)
 PED_TOP = EAVES + 3                                 # 6, the cornice of the square foot
 HOOP_STEP = 4                                       # an iron hoop every fourth course of the shaft
 FLUE_DEPTH = 6                                      # the courses the flue is open, from the rim down
-SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)
-         if (x in (TX0 + 1, TX1 - 1)) + (z in (TZ0 + 1, TZ1 - 1)) < 2]         # a round of four: 12 cells
-SHAFT_CORNERS = [(x, z) for x in (TX0 + 1, TX1 - 1) for z in (TZ0 + 1, TZ1 - 1)]
-# What stands in the four corners of the round. Left open, each is a notch a cell deep, and seen
-# on the diagonal (V6 looks straight at the north-west one) it is a black groove from the shoulder
-# to the head: the shaft reads as two square posts side by side (review cr2-#7, 3).
-#   "round"    nothing: the cross of twelve cells
-#   "rebated"  a brick wall post that joins the two cells beside it: the notch shrinks to a
-#              rebate a quarter of a cell deep; whole iron in the hoop courses
-#   "square"   the whole block: a square shaft of four
-SHAFT_FORM = "round"
+SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)]     # a square of four: 16 cells
 FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
 SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
 
@@ -163,9 +157,7 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
 BRICK_STAIRS = B.TUFF_BRICK.stairs
-BRICK_WALL = B.TUFF_BRICK.wall
 COURSE = B.TUFF_SMOOTH.block                        # plinth, sill, cornice
-COURSE_WALL = B.TUFF_SMOOTH.wall
 TABLE = B.TUFF_SMOOTH.stairs
 IRON = B.IRON_RIVETED.block
 IRON_STAIRS = B.IRON_RIVETED.stairs
@@ -433,7 +425,7 @@ def _tower(p):
         for z in range(TZ0, TZ1 + 1):
             facing = _ring_facing(x, z)
             p.put(x, y, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=bottom]")
-    # the shaft: round, hooped, the flue open in its top courses; under the head a polished necking
+    # the shaft: square, banded, the flue open in its top courses; under the head a polished necking
     for y in range(PED_TOP + 2, TOP - 2):
         hoop = (y - PED_TOP) % HOOP_STEP == 0
         necking = y == TOP - 3
@@ -441,29 +433,24 @@ def _tower(p):
             if y > TOP - FLUE_DEPTH and (x, z) in FLUE:
                 continue
             p.put(x, y, z, IRON if hoop else COURSE if necking else BODY)
-        for x, z in SHAFT_CORNERS if SHAFT_FORM != "round" else ():
-            if hoop or SHAFT_FORM == "square":
-                p.put(x, y, z, IRON if hoop else COURSE if necking else BODY)
-            else:
-                p.put(x, y, z, COURSE_WALL if necking else BRICK_WALL)
-    # the head: a bead six across with the corners left out, a corbel course under a weathered
-    # coping (a stair hung under a stair), and over it the iron rim on the mouth of the shaft alone.
-    # As wide as the foot for three courses it made the chimney a dumbbell (cr2, g2 #36637), and a
-    # course and a half of whole blocks still read as a lid in the pictures: now the full width is
-    # one course, half of the corbel and half of the coping.
+    # the head: a bead six across, a corbel course under a weathered coping (a stair hung under a
+    # stair), and over it the iron rim on the mouth of the shaft alone. The stairs of the four
+    # corners turn the corner of themselves, as those of the shoulder do: the corbel and the coping
+    # are mitred there. As wide as the foot for three courses it made the chimney a dumbbell (cr2,
+    # g2 #36637), and a course and a half of whole blocks still read as a lid in the pictures: now
+    # the full width is one course, half of the corbel and half of the coping.
     for x in range(TX0, TX1 + 1):
         for z in range(TZ0, TZ1 + 1):
-            if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
+            if (x, z) in FLUE:
                 continue
             facing = _ring_facing(x, z)
             if facing is None:
                 p.put(x, TOP - 2, z, BODY)
                 p.put(x, TOP - 1, z, COURSE)
+                p.put(x, TOP, z, IRON)
             else:
                 p.put(x, TOP - 2, z, f"{BRICK_STAIRS}[facing={facing},half=top]")
                 p.put(x, TOP - 1, z, f"{TABLE}[facing={facing},half=bottom]")
-            if (x, z) in SHAFT or (SHAFT_FORM == "square" and (x, z) in SHAFT_CORNERS):
-                p.put(x, TOP, z, IRON)
 
 
 # --- the roofs ----------------------------------------------------------------------------------------
