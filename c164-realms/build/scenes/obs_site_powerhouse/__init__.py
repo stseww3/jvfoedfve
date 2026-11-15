@@ -16,9 +16,10 @@ stand on the same walls in the same place, so they are shown from the same camer
 so the same pair of pictures also shows the terrace with and without the run.
 
 Both show what the finished site has round the house and the props line still keeps behind its
-switches: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, DRAINS), the
-street lamps of the way in and the low lamps on the terrace's lip. Each appears once its package
-is in the tree.
+switch: the fittings on the bridge and the gutter's pipes (powerhouse.FITTINGS, DRAINS), which
+appear once their package is in the tree. The lamps of the site are the props line's own by now
+(props/lamps.DRESS): the street lamps of the way in, two of which stand in the yard before the
+house, and the low lamps on the terrace's lip.
 """
 import contextlib
 
@@ -63,29 +64,13 @@ def _fit(c):
     return int(fittings(c, (0, 0, 0)) or 0)
 
 
-def _lamps(c):
-    """The lamps the finished site has in these pictures: the street lamps of the way in, one of
-    which stands in the yard before the chimney's foot, and the low lamps on the lip of the terrace,
-    two of which flank the bridge head. The view of the works is to be chosen with them in it (cr2
-    and c220, g2 #36637, #37080). props/lamps places a lamp once, so its own switch may be on or
-    off; nothing while it has no site()."""
-    try:
-        from scenes.obs.props import lamps
-    except ImportError:
-        return 0
-    site_lamps = getattr(lamps, "site", None)
-    if site_lamps is None:
-        return 0
-    return int(site_lamps(c, (0, 0, 0), groups=("way", "lip")) or 0)
-
-
 def build(version=None, run=None):
     c = Canvas()
     with _as(version or VERSION, RUN if run is None else run):
         for line in LINES:
             if line is sky:         # after the props line; before the light sources, which go last
                 _fit(c)
-                _lamps(c)
+                powerhouse.lining(c)    # the materials line is not built here: the fire windows' room side
             line.build(c, (0, 0, 0))
     return c
 
@@ -99,11 +84,13 @@ def build_models():
     except ImportError:
         windows = None
     if getattr(windows, "line", None) is not None:
-        out.update(windows.models())        # the linings of the fire windows (powerhouse._lining)
+        out.update(windows.models())        # the linings of the fire windows (powerhouse.lining)
     return out
 
 
 def write_pack(pack_dir):
     """The power house paints nothing itself; it stands on the repainted blocks as the materials
-    line has them today (tuff, slate, cast iron, the window glasses)."""
-    return materials.pack(pack_dir)
+    line has them today (tuff, slate, cast iron, the window glasses), under the map's sky: the
+    scene stands in the map's hour, and without the sky's pack the game's own sun is a white and
+    yellow square on the western horizon."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
