@@ -41,11 +41,18 @@ These pictures are not the board's: they are kept in renders/real-looks/<tag>/<l
 with <scene>-looks.jpg beside the folders, one row a view and one column a version
 (<scene>-looks-dressed.jpg for the versions with +dress).
 
+Scenes that cannot share a trip of the shuttle -- versions of one thing that want different
+files under one name in the resource pack -- are shot with --apart: one run of the shuttle a
+scene, the game opened anew where the pack changed. --beside <name> then draws the shots the
+scenes have in common side by side, one column a scene: renders/real/_beside/<name>.jpg.
+
     --at <commit>            the assembly commit the pictures are named after (default: its head);
                              with --branch, the commit of that branch to shoot (default: its head)
     --tag <name>             this checkout as it is, under this name
     --branch <name>          shoot the code of this branch instead of this checkout's
     --looks <a>,<b>[+dress]  the light versions the scenes are shot under, one after the other
+    --apart                  every scene in a run of the shuttle of its own
+    --beside <name>          the scenes' pictures of this trip side by side on one sheet
     --view <n> --clouds <n>  render distance and cloud range in chunks (12 and 128)
     --settle, --first-settle, --still   seconds, passed to the shuttle (10, 60, 60)
     --only, --shots, --gallery, --plot, --again   passed to the shuttle as they are
@@ -241,6 +248,21 @@ def look_sheets(trip, scene, base, runs, commit, view, clouds):
         trip.say(f"{scene}: {os.path.relpath(out, PROJECT)}, {len(names)} views under {len(columns)} light versions")
 
 
+def beside(trip, name, shot, tag, clouds, view):
+    """renders/real/_beside/<name>.jpg: what the scenes of this trip were shot of, one column a
+    scene, one row a shot. `shot` is [(scene, its folder, [shots taken])]."""
+    import boardrender
+    names = []
+    for _, _, taken in shot:
+        names += [n for n in taken if n not in names]
+    out = os.path.join(PROJECT, "renders", "real", "_beside", name + ".jpg")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    boardrender.in_columns([(scene, folder) for scene, folder, _ in shot], names,
+                           f"c164 {', '.join(scene for scene, _, _ in shot)} of {tag}: the game 26.3 on a node, "
+                           f"view distance {view}, cloud range {clouds}", out)
+    trip.say(f"{os.path.relpath(out, PROJECT)}: {len(names)} shots of {len(shot)} scenes side by side")
+
+
 def main():
     ap = argparse.ArgumentParser(description="one real-machine trip on a worker node")
     ap.add_argument("scenes", nargs="*", default=[MASTER])
@@ -258,22 +280,35 @@ def main():
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
     ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
     ap.add_argument("--looks", metavar="LOOK[+dress],...")
+    ap.add_argument("--apart", action="store_true")
+    ap.add_argument("--beside", metavar="NAME")
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--budget", type=float, default=2700.0)
     args = ap.parse_args()
-    if args.tag and (args.at or args.branch):
-        sys.exit("--tag names this checkout as it is; --at and --branch name a commit: one or the other")
-    runs = [(None, False)]              # (light version or None for the code as it builds, its own lights on)
-    if args.looks:
-        runs = [(name.partition("+")[0], name.endswith("+dress")) for name in args.looks.split(",") if name]
-        wrong = [name for name in args.looks.split(",") if name and name.partition("+")[2] not in ("", "dress")]
-        if wrong or not runs or len(set(runs)) != len(runs):
-            sys.exit(f"--looks {args.looks}: light versions by name, each once, +dress for the building's own lights")
-        if args.no_place:
-            sys.exit("--looks places the scenes anew for every light version; --no-place cannot go with it")
-
     import boardrender
     import realshots
+    if args.tag and (args.at or args.branch):
+        sys.exit("--tag names this checkout as it is; --at and --branch name a commit: one or the other")
+    per_scene = (("--only", args.only), ("--shots", args.shots), ("--gallery", args.gallery),
+                 ("--plot", args.plot), ("--again", args.again))
+    for name, values in per_scene:
+        for value in values:
+            if value.split("=", 1)[0] not in args.scenes:
+                sys.exit(f"{name} {value}: {value.split('=', 1)[0]} is not one of this trip's scenes")
+    # the runs of the shuttle: (light version or None for the code as it builds, its own lights on, the scenes)
+    runs = [(None, False, [scene]) for scene in args.scenes] if args.apart else [(None, False, args.scenes)]
+    if args.looks:
+        names = [name for name in args.looks.split(",") if name]
+        runs = [(name.partition("+")[0], name.endswith("+dress"), args.scenes) for name in names]
+        wrong = [name for name in names if name.partition("+")[2] not in ("", "dress")]
+        if wrong or not runs or len(set(names)) != len(names):
+            sys.exit(f"--looks {args.looks}: light versions by name, each once, +dress for the building's own lights")
+        if args.no_place or args.apart or args.beside:
+            sys.exit("--looks places the scenes anew for every light version and draws its own sheet: "
+                     "--no-place, --apart and --beside cannot go with it")
+    if args.beside and not realshots.NAME_OK.match(args.beside):
+        sys.exit(f"--beside {args.beside}: a name of letters, digits, - and _")
+
     project = None
     if args.branch:
         project, commit = other_code(args.branch, args.at)
@@ -306,31 +341,32 @@ def main():
             failed.append("the node could not be made ready")
         else:
             trip.stage("station", station, "status", budget=60)
-            options = ["--tag", tag, "--commit", commit, "--settle", args.settle,
-                       "--first-settle", args.first_settle, "--still", args.still]
-            for name, values in (("--only", args.only), ("--shots", args.shots), ("--gallery", args.gallery),
-                                 ("--plot", args.plot), ("--again", args.again)):
-                for value in values:
-                    options += [name, value]
+            common = ["--tag", tag, "--commit", commit, "--settle", args.settle,
+                      "--first-settle", args.first_settle, "--still", args.still]
             if args.no_place:
-                options.append("--no-place")
+                common.append("--no-place")
             if project:
-                options += ["--project", project]
-            for i, (look, dress) in enumerate(runs):
+                common += ["--project", project]
+            shot = []           # (scene, the folder its pictures are kept in, the shots of this trip)
+            for i, (look, dress, scenes) in enumerate(runs):
                 version = f"{look}{'-dressed' if dress else ''}" if look else ""
                 work = os.path.join(WORK, "looks", version) if look else WORK
-                under = ["--out", work]
+                options = common + ["--out", work]
+                for name, values in per_scene:
+                    for value in values:
+                        if value.split("=", 1)[0] in scenes:
+                            options += [name, value]
                 if look:
-                    under += ["--look", look] + (["--dress"] if dress else [])
+                    options += ["--look", look] + (["--dress"] if dress else [])
                 if i < len(runs) - 1:
-                    under.append("--keep-client")       # the game stays open for the next light version
-                name = f"shuttle, {version}" if look else "shuttle"
-                code, _ = trip.stage(name, os.path.join(HERE, "win", "shuttle.py"), *options, *under, *args.scenes,
+                    options.append("--keep-client")     # the game stays open for the next run, if the pack is the same
+                name = f"shuttle, {version}" if look else f"shuttle, {scenes[0]}" if args.apart else "shuttle"
+                code, _ = trip.stage(name, os.path.join(HERE, "win", "shuttle.py"), *options, *scenes,
                                      budget=trip.left() - 240, env=distances)
                 if code != 0:
                     failed.append(f"the {name} ended with {code}")
                 send = os.path.join(work, tag, "send")
-                for scene in args.scenes:
+                for scene in scenes:
                     if scene in args.gallery and not os.path.exists(os.path.join(send, f"{scene}-{tag}-real.txt")):
                         continue        # a scene of models alone that was not shot: the shuttle said why
                     into = os.path.join(looks_in, version) if look else own_in if scene == MASTER else kept_in
@@ -343,6 +379,8 @@ def main():
                     kept.append(f"{into}/{scene}/")
                     if look:
                         continue
+                    _, _, rows = realshots.read_sent(os.path.join(send, f"{scene}-{tag}-real.txt"))
+                    shot.append((scene, os.path.join(PROJECT, into, scene), [row[0] for row in rows]))
                     try:
                         sheets(trip, scene, os.path.join(PROJECT, into, scene), tag, args.view, args.clouds)
                     except Exception as exc:        # the pictures are kept; a sheet is a convenience
@@ -350,9 +388,15 @@ def main():
             if args.looks:
                 for scene in args.scenes:
                     try:
-                        look_sheets(trip, scene, os.path.join(PROJECT, looks_in), runs, commit, args.view, args.clouds)
+                        look_sheets(trip, scene, os.path.join(PROJECT, looks_in), [run[:2] for run in runs], commit,
+                                    args.view, args.clouds)
                     except Exception as exc:
                         trip.say(f"{scene}: the sheet of the light versions could not be drawn ({exc})")
+            if args.beside and shot:
+                try:
+                    beside(trip, args.beside, shot, tag, args.clouds, args.view)
+                except Exception as exc:
+                    trip.say(f"--beside {args.beside}: the sheet could not be drawn ({exc})")
     finally:
         trip.stage("close", station, "down", budget=180)
         where = ", ".join(kept) or "none"
