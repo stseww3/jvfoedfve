@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
-# Make a fresh cloud machine ready for c164 work. Since 11-15 every agent has a machine of its own,
-# and whatever lies outside the repository is gone when the machine is replaced, so everyone runs
-# this once after coming online. Running it again is harmless: what is in place is left alone.
+# Make a cloud machine ready for c164 work: the machine the sessions share, and every worker node
+# (tools/nodejob.sh runs this there). Whatever lies outside the repository is gone when a machine is
+# replaced, so everyone runs this once after coming online. Running it again is harmless: what is in
+# place is left alone.
 #
-#   bash c164-realms/tools/cloud_setup.sh [--no-smoke] [<code> <branch>]
+#   bash c164-realms/tools/cloud_setup.sh [--no-smoke] [<code> <branch> [<from>]]
 #
-# A new machine has the repository under /agent/repos/jvfoedfve on its main branch, which does not
-# hold this file. Take it from the assembly branch and run it, in one line:
+# The repository lies under /agent/repos/jvfoedfve on its main branch, which does not hold this
+# file. Take it from the assembly branch and run it, in one line:
 #
-#   cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c && git show FETCH_HEAD:c164-realms/tools/cloud_setup.sh | bash -s -- <code> <branch>
-#
-# (Until the merge-key holder has it in the assembly, the director's branch
-# cursor/c164-a0-pipeline-v4-7d36 has it: put that name in the line instead.)
+#   cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-assembly-fable-a9f5 && git show FETCH_HEAD:c164-realms/tools/cloud_setup.sh | bash -s -- <code> <branch> <from>
 #
 # What it leaves, at the paths the documents and the scripts already use:
 #
@@ -19,9 +17,14 @@
 #                                                         check.py, delivery.py and the offline renderer need)
 #   /agent/realms-study/client26/versions/26.3/26.3.jar   the game's client jar, from Mojang, SHA-1 checked
 #   /agent/realms-study/inbox/                            where pictures sent back from the admin's computer land
-#   /agent/repos/c164-<code>                              your working tree on <branch>, when both are given: the
-#                                                         branch as the remote has it, or a new one cut from the
-#                                                         assembly head when the remote has none of that name
+#   /agent/repos/<branch without cursor/>                 your working tree on <branch>, when code and branch are
+#                                                         given: the branch as the remote has it, or a new one cut
+#                                                         from <from> (a commit: the head your predecessor of the
+#                                                         first shift left) or, without <from>, from the assembly
+#   /tmp/c164_<code>/                                     your folder for temporary files
+#
+# Nothing of the second shift (plan/roles/HANDOVER.md, section 0) is built on: a branch or a <from>
+# with one of its commits in its history is refused, by the test tools/provenance.sh makes.
 #
 # It ends with a smoke test, tools/check.py --scene obs, on a clean copy of the assembly head: that
 # tests the machine, not the code on your branch. --no-smoke leaves it out.
@@ -29,7 +32,7 @@
 # Environment: MC_ROOT (default /agent/realms-study), C164_REPO (default /agent/repos/jvfoedfve).
 set -euo pipefail
 
-ASSEMBLY="cursor/c164-realms-map-b59c"
+ASSEMBLY="cursor/c164-assembly-fable-a9f5"
 VERSION="26.3"
 
 say() { printf '[cloud_setup %4ds] %s\n' "$SECONDS" "$*"; }
@@ -37,17 +40,30 @@ die() { printf '[cloud_setup] FAILED: %s\n' "$*" >&2; exit 1; }
 
 usage() {
   cat <<'EOF'
-cloud_setup.sh [--no-smoke] [<code> <branch>]
+cloud_setup.sh [--no-smoke] [<code> <branch> [<from>]]
   --no-smoke   skip the closing check.py --scene obs
-  <code>       your code name; the working tree is /agent/repos/c164-<code>
-  <branch>     your branch: taken from the remote, or cut from the assembly head if the remote has none
+  <code>       your code name; temporary files go to /tmp/c164_<code>/
+  <branch>     your branch; the working tree is /agent/repos/<branch without cursor/>. Taken from the
+               remote, or cut anew if the remote has none of that name
+  <from>       the commit a new branch is cut from (default: the assembly head)
 EOF
+}
+
+# Does the history of a commit hold a commit of the second shift? The test of tools/provenance.sh:
+# committed 2026-11-15 13:40 to 17:58 UTC, or listed in the assembly's plan/shift2-commits.txt.
+second_shift() {
+  local repo="$1" commit="$2" listed
+  listed="$(git -C "$repo" show "origin/$ASSEMBLY:c164-realms/plan/shift2-commits.txt" 2>/dev/null | awk '$1 !~ /^#/ {print $1}')"
+  git -C "$repo" log --format='%ct %H' "$commit" | awk -v lo=1794750000 -v hi=1794765480 -v listed="$listed" '
+    BEGIN { n = split(listed, w, "\n"); for (i = 1; i <= n; i++) if (w[i] != "") deny[w[i]] = 1 }
+    ($1 >= lo && $1 <= hi) || ($2 in deny) { hit = 1; exit }
+    END { exit hit ? 0 : 1 }'
 }
 
 # The body is one function called on the last line, so the whole file is read before anything runs:
 # piped into `bash -s`, a command that reads standard input could otherwise swallow the rest of it.
 main() {
-  local smoke=1 code="" branch=""
+  local smoke=1 code="" branch="" from=""
   while [ $# -gt 0 ]; do
     case "$1" in
       --no-smoke) smoke=0 ;;
@@ -55,6 +71,7 @@ main() {
       -*) usage >&2; die "unknown option $1" ;;
       *) if [ -z "$code" ]; then code="$1"
          elif [ -z "$branch" ]; then branch="$1"
+         elif [ -z "$from" ]; then from="$1"
          else usage >&2; die "too many arguments"; fi ;;
     esac
     shift
@@ -96,22 +113,6 @@ main() {
     "$py" -c "import $want" || die "the venv cannot import $want"
   fi
   say "python: $("$py" -c "import sys, numpy, PIL, nbtlib, numba; print(sys.version.split()[0], 'numpy', numpy.__version__, 'Pillow', PIL.__version__, 'numba', numba.__version__)")"
-
-  # 2b. the machine-wide queue for heavy jobs, in the venv itself so it holds for every worktree
-  #     (director, 11-16: worktrees that had not merged the assembly had no tools/_slots.py and their
-  #     jobs did not queue). The hook is read at interpreter start through a .pth file; it comes from
-  #     the assembly branch, so a fresh machine has it before its own tree exists.
-  local sp hook_src
-  sp="$("$py" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)" || sp=""
-  hook_src="c164-realms/tools/c164_slots_hook.py"
-  if [ -n "$sp" ] && [ -d "$sp" ] && git -C "$repo" show "origin/$ASSEMBLY:$hook_src" >/dev/null 2>&1; then
-    git -C "$repo" show "origin/$ASSEMBLY:$hook_src" > "$sp/c164_slots_hook.py.tmp" 2>/dev/null \
-      && mv "$sp/c164_slots_hook.py.tmp" "$sp/c164_slots_hook.py" 2>/dev/null || true
-    printf 'import c164_slots_hook\n' > "$sp/zzz_c164_slots.pth" 2>/dev/null || true
-    say "slots: heavy jobs queue in $sp (C164_SLOTS, default 3; check.py has slots of its own)"
-  else
-    say "slots: not installed (no site-packages, or the assembly has no $hook_src yet); jobs run without the queue"
-  fi
 
   # 3. the game's client jar
   local jar="$root/client26/versions/$VERSION/$VERSION.jar"
@@ -176,7 +177,8 @@ PYEOF
     || die "cannot fetch the assembly branch"
   local tree=""
   if [ -n "$code" ]; then
-    tree="$(dirname "$repo")/c164-$code"
+    mkdir -p "/tmp/c164_$code"
+    tree="$(dirname "$repo")/${branch#cursor/}"
     if [ -e "$tree/.git" ]; then
       say "tree: $tree exists, on $(git -C "$tree" rev-parse --abbrev-ref HEAD) @ $(git -C "$tree" rev-parse --short=8 HEAD); left as it is"
     else
@@ -185,6 +187,8 @@ PYEOF
       case "$found" in
         0) git -C "$repo" fetch -q origin "+refs/heads/$branch:refs/remotes/origin/$branch" </dev/null \
              || die "cannot fetch $branch"
+           second_shift "$repo" "origin/$branch" \
+             && die "$branch carries commits of the second shift, which are not built on. Give a new branch name (cursor/c164-<code>-<package>-f3) and, as the third argument, the head your predecessor of the first shift left (plan/ROSTER.md)"
            if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
              git -C "$repo" worktree add -q "$tree" "$branch" </dev/null \
                || die "cannot put $branch in $tree (is it checked out in another folder? see: git -C $repo worktree list)"
@@ -195,9 +199,22 @@ PYEOF
                || die "cannot put $branch in $tree"
            fi
            say "tree: $tree on $branch @ $(git -C "$tree" rev-parse --short=8 HEAD), as the remote has it" ;;
-        2) git -C "$repo" worktree add -q --no-track -b "$branch" "$tree" "origin/$ASSEMBLY" </dev/null \
+        2) local start="origin/$ASSEMBLY" what="the assembly head"
+           if [ -n "$from" ]; then
+             if ! git -C "$repo" rev-parse -q --verify "$from^{commit}" >/dev/null; then
+               say "tree: $from is not here yet, fetching the project's branches"
+               git -C "$repo" fetch -q origin '+refs/heads/cursor/c164-*:refs/remotes/origin/cursor/c164-*' </dev/null \
+                 || die "cannot fetch the project's branches"
+               git -C "$repo" rev-parse -q --verify "$from^{commit}" >/dev/null \
+                 || die "no commit $from on any of the project's branches"
+             fi
+             second_shift "$repo" "$from" \
+               && die "$from carries commits of the second shift, which are not built on. Take the head of the first shift from plan/ROSTER.md"
+             start="$from" what="$from"
+           fi
+           git -C "$repo" worktree add -q --no-track -b "$branch" "$tree" "$start" </dev/null \
              || die "cannot cut $branch into $tree"
-           say "tree: $tree on the new branch $branch, cut from the assembly head $(git -C "$tree" rev-parse --short=8 HEAD); push it with: git push -u origin $branch" ;;
+           say "tree: $tree on the new branch $branch, cut from $what ($(git -C "$tree" rev-parse --short=8 HEAD)); push it with: git push -u origin $branch" ;;
         *) die "cannot ask the remote about $branch" ;;
       esac
     fi

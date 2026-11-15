@@ -10,67 +10,92 @@
 4. `plan/reviews/R1-first-designs.md`：总监第一轮审稿结论（骨架数字、色板和占用表的决定、实体预算）。
 5. `plan/roles/INTERFACE.md`：各包怎么接进总场景和总资源包（拿合并钥匙的人写；没出来之前按现有测试场景 `build/scenes/kitcheck`、`skyobs` 的写法做）。
 6. `plan/aesthetics/RUBRIC.md`：评分标准。做东西之前先看一遍，知道会被怎么打分。
-7. 你是接手别人的活（11-15 夜换班以后来的都是）：`plan/roles/HANDOVER.md`，接手须知。
+7. `plan/roles/HANDOVER.md`：接手须知。**第 3 班（11-16 凌晨起）的每个人都是接手的，这一份最先读**：它第 0 节讲三班人是怎么回事，哪些东西不许用。
 
-## 0. 现在的做法（11-14 起；第 2、3 条 11-15 夜改过，11-16 凌晨又改：机器是合用的，消息默认私信）
+## 0. 现在的做法（11-16 凌晨第 3 班起）
 
 这一节和下面各节、和别的文档冲突时，以这一节为准。
 
 1. **先出东西。** 领卡后 20 分钟内要有第一个提交（粗模就行：体量、轮廓、主要洞口），提交完马上 push。卡片和文档放到交付前再补。接口没对完的地方按自己的默认做，默认写在提交说明里，不等回复；别人反对了再改。
-2. **离线图自己出，就在云端机器上**（11-15 夜起）。上线先跑一遍第 2 节的安装命令。`check.py`、`delivery.py`、`render.py`、`selfshots.py`（出图和 `--verify`）、整座 `obs` 都可以跑，之前的停机令作废。现在全队合用一台 4 核的云端机器，不是一人一台；总监量过（`check.py` 一次 3 秒、140 MB，一套 8 张图 16 秒、290 MB），撑得住，合用的规矩在第 2 节。下面说“自己机器上”的地方，指的就是这台机器上你自己的工作目录。云端出的离线图和管理员电脑上出的逐像素一样（总监验过：`obs_mat_ashlar` 存着的 17 张，`--verify` 全过），所以：
-   - 要进仓库的图，在自己 worktree 的 `c164-realms/` 下两条命令（代码先提交）：`tools/selfshots.py <场景> --out /tmp/c164_<代号>/shots` 出图，`tools/selfshots.py <场景> --take /tmp/c164_<代号>/shots` 核对后落进 `renders/<场景>/`。和已存的图逐像素一样的不换文件。发【交付】前提交一次，别每改一版都提交。
-   - 改到一半想看一眼：出图那条加 `--dirty`，用读文件的工具看 `/tmp` 里的图，不进 git。第一个提交 push 之后就出两三张图自己看。
-   - 要看别人的图：`fetch` 他的分支，在自己机器上照样出；评审和技检都这么做，不用等谁传图。
-   - `INTERFACE.md` 第 5 节的四步（同步到电脑、排队出图、传回收图夹）作废，别的文档里“云端不出图”的话也作废。
-3. **管理员的电脑不再用**（11-15 夜管理员定的：全部在线上做）。谁都不往那边发命令，`local_` 开头的工具不要调。真机图由拿出图钥匙的人在云端出（11-16 凌晨跑通了：游戏开在云端机器上，12 个看板视角 92 秒）。要真机图就发【真机】给他，写场景、机位、提交号；他攒一批开一次游戏，拍完就关。第 3 节作废，留着备查。
+2. **离线图自己出，在你自己的算力节点上出**（第 2 节）。`check.py`、`delivery.py`、`render.py`、`selfshots.py`（出图和 `--verify`）、整座 `obs` 都可以跑，11-14 的停机令早已作废。节点上出的离线图和别处出的逐像素一样，所以：
+   - 要进仓库的图：代码先提交、push，然后往节点投 `bash c164-realms/tools/nodejob.sh python tools/selfshots.py <场景>`。图落进 `renders/<场景>/`，节点替你提交并推回你的分支，你 `git pull`。整套图在交付前出一次，别每改一版都出整套。
+   - 改到一半想看一眼：`bash c164-realms/tools/nodejob.sh --wip python tools/selfshots.py <场景> --only a,b --out renders/_wip`，一次不超过 4 张。图推到草稿分支 `<你的分支>-wip`（不进你的分支，永远不合并），看图：`git fetch -q origin <你的分支>-wip && git show FETCH_HEAD:c164-realms/renders/_wip/<场景>-<机位>.png > /tmp/c164_<代号>/x.png`，再用读文件的工具看。第一个提交 push 之后就出两三张自己看。
+   - 要看别人的图：先看他分支里存的（`git show <提交>:c164-realms/renders/<场景>/<图>.png > /tmp/…`）；要核对就 `fetch` 他的分支，在自己的节点上照样出。
+   - `INTERFACE.md` 第 5 节的四步（同步到电脑、排队出图、传回收图夹）作废，别的文档和脚本说明里“云端不出图”“在管理员电脑上出”的话也作废。别的文档里说“在自己的机器上出图、跑检查”的地方，都读成“投到自己的节点上”。
+3. **管理员的电脑不再用**（11-15 夜管理员定的：全部在线上做）。谁都不往那边发命令，`local_` 开头的工具不要调。真机图由拿出图钥匙的人在他自己的节点上出：要真机图就私信他一条【真机】，写场景、机位、提交号；他攒一批开一次游戏，拍完就关。第 3 节作废，留着备查。
 4. **总监的拍板**开头是【总监·拍板】，发给有关的人和拿合并钥匙的人（关系到所有人的发【公告】），比卡片和细化稿新；拿合并钥匙的人把它们记在 `plan/STATUS.md` 的「总监定过的」一节。坐标一律读骨架 `build/scenes/obs/common/skeleton.py`，卡片里和它不一样的数作废。
 5. **往整座楼、整个场地上铺的东西带 `DRESS` 开关，默认关**，评审通过才打开。关着的时候总场景里不放它；测试场景里开着出图。
 6. **评审三个人**：review 管 materials、main、props；cr2 管 site、sky、motion；cr3 管 machines、interiors（现在各是谁看 `plan/ROSTER.md`）。离线图判不了的（发光、天空、云、玻璃反光、模型远看）评审标「待真机」，不卡合并。离线图不画余晖、不画朝西的雾色、不画原版云层：天空占了画面一大块的机位，判天空、发光、云只认真机图。
 7. **总监按 git 判断进度**：只认 push 上去的提交，不认消息里的计划。
-8. 现在谁在哪个岗位、哪张卡在谁手上，看 `plan/STATUS.md`。卡片里写的「点某某」找不到人时，点拿合并钥匙的人或者总监。
+8. 现在谁在哪个岗位、哪张卡在谁手上，看 `plan/ROSTER.md`（第 3 班的名单）和 `plan/STATUS.md`（卡的状态，停在 11-15 21:05，拿合并钥匙的人接着记）。卡片里写的「点某某」找不到人时，找拿合并钥匙的人或者总监。
+9. **第 2 班的东西不收**（管理员 11-16 定的，`HANDOVER.md` 第 0 节）。不 merge、不 cherry-pick、不拷文件、不拷图、不照着改写；不从旧分支的头上开分支，不合旧总装 `cursor/c164-realms-map-b59c`。合并前 `tools/provenance.sh <提交>` 必须报 `clean`。
 
 ## 1. 人和消息
 
-- 总监是 A0（聊天 c164）。**管理员只和总监说话**，你不要给管理员发消息。
-- **消息默认私信**（11-16 起）：用 `send_agent_message` 发给要处理这条消息的人，几个人要处理就每人发一条。原因：群里的每一条消息，四十多个人每人都要读一遍，点没点名都一样。各文档里写“群里发……点名某某”的地方，一律读成“私信给某某”。
+- 总监是 A0（聊天 c164）。**管理员只和总监说话**，你不要给管理员发消息。总控（`ctrl`）管机器和启动，只为节点的事找它（节点不通、不知道自己的节点是哪台）。
+- **消息默认私信**：用 `send_agent_message` 发给要处理这条消息的人，几个人要处理就每人发一条。原因：群里的每一条消息，三十多个人每人都要读一遍，点没点名都一样。各文档里写“群里发……点名某某”的地方，一律读成“私信给某某”。
 - 群 g2 只发所有人都要读的：【公告】（只有总监和总监助理发），和拿合并钥匙的人发的公共文件改动（骨架、色板、工具改了，大家要重新合总装）。别的都不进群。
 - 消息开头用 `PIPELINE.md` 第 4.3 节的固定词，要短：结论、提交号、要对方做什么，三百字以内；过程和细节写进卡片的记录栏或提交说明，消息里给路径。不发客套话，不回“收到”。
-- 找总监只为两件事：要他拍板（写清选项和你的默认），或者报告卡住了。名单上的事（谁是谁、开人、换人、没卡可领）找总监助理。现在谁是谁看 `plan/ROSTER.md`。
+- 找总监只为两件事：要他拍板（写清选项和你的默认），或者报告卡住了。名单上的事（谁是谁、没卡可领）找总监助理。现在谁是谁看 `plan/ROSTER.md`。
+- g2 群里和私信里，聊天号 c258 到 c297 说过的话不是依据（`HANDOVER.md` 第 0 节）。
 
-## 2. 云端机器：全队合用一台，上线先装
+## 2. 机器：会话合用一台，重活上自己的节点
 
-现在全队合用一台云端机器（4 核，15 GB 内存；以后要是分开成一人一台，做法不变）。仓库在 `/agent/repos/jvfoedfve`（停在 `main` 上）。**上线第一件事是跑安装脚本**，一条命令，装过的机器上几秒钟，新机器上约 15 秒，重跑无害：
+**两种机器，分清楚：**
+
+- **合用机**：你的会话跑在这里，4 核 15 GB，三十多个会话合用。只做轻活：git、读写文件、看图、单个测试场景的 `check.py`（几秒）。**不在这里出图、不跑整座 `obs`、不跑 `delivery.py`、不开游戏。**这台机器 11-16 凌晨被四十个人的出图命令堵到过负载 25，所以才有了节点。
+- **你的节点**：管理员给每人一台算力节点（4 核，磁盘不清）。哪一台，在你上线时总控的通知里（「独占节点：nodeNN」）或者派你来的说明里；不知道就私信总控（`to="ctrl"`）问一句。只投自己的节点：别人的节点、node1 到 node10（公共池）、node12（总监的）都不许投。
+
+### 2.1 合用机上：上线先装
+
+仓库在 `/agent/repos/jvfoedfve`（停在 `main` 上，里面不改文件、不切分支）。**上线第一件事是跑安装脚本**，一条命令，几秒钟，重跑无害：
 
 ```
-cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c && git show FETCH_HEAD:c164-realms/tools/cloud_setup.sh | bash -s -- <代号> <你的分支>
+cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-assembly-fable-a9f5 && git show FETCH_HEAD:c164-realms/tools/cloud_setup.sh | bash -s -- <代号> <你的新分支> <有效头>
 ```
 
-（总装里还没有这个脚本的时候，把命令里的分支名换成总监的分支 `cursor/c164-a0-pipeline-v4-7d36`。）
+`<代号>`、`<你的新分支>`、`<有效头>` 在派你来的说明里，也在 `plan/ROSTER.md` 里：新分支叫 `cursor/c164-<代号>-<包名>-f3`，有效头是第 1 班的前任留下的最后一个提交。脚本做这几件事，最后一行是 `ready` 才算装好；报 `FAILED` 就把那几行原样私信总监：
 
-`<代号>`、`<你的分支>` 在派你来的说明里。脚本做这几件事，最后一行是 `ready` 才算装好；报 `FAILED` 就把那几行原样私信总监助理：
-
-- Python：`/agent/realms-study/.venv/bin/python`，带 numpy、Pillow、nbtlib、numba。不许往里装别的包：代码要在每个人的机器上都能跑，缺什么向总监提。
+- Python：`/agent/realms-study/.venv/bin/python`，带 numpy、Pillow、nbtlib、numba。不许往里装别的包：代码要在每台节点上都能跑，缺什么向总监提。
 - 游戏文件：`/agent/realms-study/client26/versions/26.3/26.3.jar`（从 Mojang 取，核对 SHA-1；只读）。
-- 你的工作目录：`/agent/repos/c164-<代号>`，在你的分支上。远程有这个分支就接着它（接手别人的活就是这种情况），没有就从总装的头上新开；新开的分支第一次推用 `git push -u origin <你的分支>`。之后只在这个目录里干活，`/agent/repos/jvfoedfve` 里不改文件、不切分支。
+- 你的工作目录：`/agent/repos/<分支名去掉 cursor/>`（比如 `/agent/repos/c164-facade-facade-f3`），在你的新分支上，从有效头开出来。有效头带着第 2 班的提交的话脚本会拒绝。新分支第一次推用 `git push -u origin <你的新分支>`。有两张卡的人每张卡跑一遍这条命令，一张卡一条分支、一个目录。
 - 冒烟检查：在总装的头上跑一遍 `check.py --scene obs`，验的是机器，不是你的代码。
 
-合用一台机器的规矩：
+合用机上的规矩：
 
-- 只动自己的工作目录 `/agent/repos/c164-<代号>` 和 `/tmp/c164_<代号>/`。别人的目录、进程、tmux 会话都不碰；`/agent/realms-study/` 下的东西只读。
-- 出图和整座 `obs` 的命令，等待时间给够（180 秒）；同一时间自己只跑一条重的命令。命令变慢是机器忙，等它跑完，不要重复起，也不要杀了重跑。
-- 游戏（服务端、客户端）只有拿出图钥匙的人开。
-- **重命令全机排队**（11-16 凌晨，这台机器堵到过负载 25）：`render.py`、`selfshots.py`、`delivery.py`、`boardshots.py` 同一时间全机最多跑 3 个，`check.py` 另有 3 个名额。排队装在公共的 Python 环境里，谁的工作目录都绕不过；轮不到的时候屏幕上是 `waiting for a free slot`，等着就行。
-- **机器没加以前省着出图**（公告 #665）：
-  - 跑重命令之前先合总装（`git merge origin/cursor/c164-realms-map-b59c`），不然出的图和总装对不上。
-  - 干活的时候只出手上在改的那几张：`selfshots.py <场景> --only a,b`，一次不超过 4 张。整套图只在交付前出一次。
-  - 评审看作者分支里存的图（`git show <提交>:<路径>`），不整套重出；要核对，自己最多出 3 张。
-  - 技检的 `--verify` 抽查 3 张；全量回归一天只在没人排队的时候跑一次。
+- 只动自己的工作目录和 `/tmp/c164_<代号>/`。别人的目录、进程、tmux 会话都不碰；`/agent/realms-study/` 下的东西只读。`/agent/repos/` 下不带 `-f3` 的 `c164-*` 目录是前两班留下的，不看、不用、不删。
+- 命令变慢是机器忙，等它跑完，不要重复起，也不要杀了重跑。
 
-其余：
+### 2.2 节点上：重活这样投
 
-- 总装分支是 `cursor/c164-realms-map-b59c`，项目在分支里的 `c164-realms/`；脚本在 `c164-realms/build/` 或 `c164-realms/` 下运行，看各脚本的说明。
-- 跟上总装：每领一张新卡之前，`git fetch origin cursor/c164-realms-map-b59c`，再 `git merge origin/cursor/c164-realms-map-b59c`。
-- 要读别人的分支：`git fetch origin <分支>`，再 `git show`、`git diff`，或者 `git worktree add /tmp/c164_<代号>/<名字> origin/<分支>` 检出来跑。
+先 commit、push（节点看的是 GitHub 上你的分支，不是你的磁盘），然后调桥的工具：
+
+```
+run_workspace_job(agent=<你的身份>, node="<你的节点>", repo="stseww3/jvfoedfve", branch="<你的分支>", timeout_sec=1800,
+    command="bash c164-realms/tools/nodejob.sh python tools/selfshots.py <场景>")
+```
+
+`nodejob.sh` 在节点上把环境装好（头一回约 1 分钟，以后几秒），在 `c164-realms/` 下跑你的命令，把 `renders/` 下新出的东西提交、推回你的分支。命令照你在 `c164-realms/` 下手敲的样子写，比如：
+
+```
+bash c164-realms/tools/nodejob.sh python tools/check.py --scene obs
+bash c164-realms/tools/nodejob.sh python tools/selfshots.py <场景>
+bash c164-realms/tools/nodejob.sh --wip python tools/selfshots.py <场景> --only a,b --out renders/_wip
+bash c164-realms/tools/nodejob.sh --no-push python tools/selfshots.py <场景> --verify
+```
+
+- 回执几分钟后到你自己的 `read_chat`（投完就去等，或者接着干轻活）。回执最后一行在 `==== NODEJOB RESULT ====` 下面：`exit=0 … commit=… pushed=yes … files=…`。然后 `git pull`。
+- **回执是桥转述的，可能有出入**：以 `git pull` 拉到的提交和图为准；数字要紧的（检查通过没有、几条警告）让命令把结果写进 `renders/` 下的文件带回来，或者看回执里命令输出的最后 30 行（`--tail <n>` 可以加长）。
+- 一台节点一次只跑一单：上一单的回执没到，不投下一单。`timeout_sec` 最长 3600。
+- 命令失败时默认什么都不推（`--always` 照推）。别的选项看 `tools/nodejob.sh` 开头的说明。
+- 节点不往两条总装分支和 `main` 上推；图进总装只经过拿合并钥匙的人。
+- 游戏（服务端、客户端）只有拿出图钥匙的人开，开在他自己的节点上。
+
+### 2.3 其余
+
+- 总装分支是 `cursor/c164-assembly-fable-a9f5`，项目在分支里的 `c164-realms/`；脚本在 `c164-realms/build/` 或 `c164-realms/` 下运行，看各脚本的说明。旧总装 `cursor/c164-realms-map-b59c` 冻结了，是第 2 班的存档，不合、不读它的代码。
+- 跟上总装：每领一张新卡之前、每次投重命令之前，`git fetch origin cursor/c164-assembly-fable-a9f5`，再 `git merge origin/cursor/c164-assembly-fable-a9f5`。
+- 要读别人的分支：`git fetch origin <分支>`，再 `git show`、`git diff`，或者 `git worktree add /tmp/c164_<代号>/<名字> origin/<分支>` 检出来。读第 1 班的东西读有效头（`plan/ROSTER.md`），不读旧分支的头。
 - 临时文件放 `/tmp/c164_<代号>/`。
 - 不许打印 git 的远程地址（里面有凭据）。
 - 东西给别人，一律走 git：推到自己的分支，告诉对方提交号和路径。图和大文件不许用桥的 `send_file` 传：管理员的服务器小（11-15 夜他定的）。
@@ -78,7 +103,7 @@ cd /agent/repos/jvfoedfve && git fetch -q origin cursor/c164-realms-map-b59c && 
 
 ## 3. 管理员电脑上怎么跑
 
-**11-15 夜起这一节作废，留着备查**：管理员的电脑不再用（第 0 节第 3 条），离线图各人在自己的云端机器上出（第 0 节第 2 条）。
+**11-15 夜起这一节作废，留着备查**：管理员的电脑不再用（第 0 节第 3 条），离线图各人在自己的节点上出（第 0 节第 2 条）。
 
 管理员电脑是他自己在用的桌面机，他同时在上面跑自己的活。我们只在一个文件夹里活动：`workspaces\c164`（共用工作区）。你的本机命令默认落在你自己聊天的工作区里，所以**每条命令都这样开头**，先进到共用工作区：
 
