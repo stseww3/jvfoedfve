@@ -1,5 +1,5 @@
 """site/outbuildings: the four small ancillary buildings on the hilltop (plan/ART-PLAN.md 4, 5.3,
-card plan/packages/site/outbuildings.md). Shells and platforms only -- blocks, no display entities:
+card plan/packages/site/outbuildings.md). Shells and platforms only, all of blocks:
 
   - the meridian hut: a low stone hut over the brass meridian (skeleton MERIDIAN_HUT, centre (35,-30),
     9x9). The meridian cuts it in two: an open slot one block wide runs through the south gable (the
@@ -17,13 +17,29 @@ card plan/packages/site/outbuildings.md). Shells and platforms only -- blocks, n
     nothing on it stands in that picture's middle.
   - the three ways down from the upper terrace to the shelves.
 
-The instruments themselves -- the meridian circle, the anemometer and vane, the thermometers, the
-tripod telescope and the benches -- belong to the machines and props lines; this card leaves the
-shells, the sockets and the clear spots for them. The terrain card lays each shelf's flat rock and the
-neck that leads to it; these shells stand on the foot levels it gives (S.*["feet"], the stone block
-one below) and bring a short footing of their own, laid into air only, so nothing floats before the
-terrain is merged. Terrace edges use the site's one rail (site/_kit.rail).
+The instruments themselves -- the meridian circle, the anemometer and vane, the thermometer screen,
+the tripod telescope and the benches -- belong to the machines and props lines; this card leaves the
+shells, the sockets and the clear spots for them. Two of them are set on their spots from here, as
+the props line asks of whoever builds a terrace (props/instruments places nothing itself): the tripod
+telescope on the lookout's stand and the thermometer screen on the weather platform. While that
+package is not in the tree the stand is empty, a louvred shelter of blocks stands in for the screen
+and this card has no display entity at all.
+
+What the other cards read from this module (points are (x, y, z) in scene coordinates):
+  LAMP_POINTS   where a lamp may hang, one to a building (props/lamps)
+  HUT_AXIS      the middle of the transit circle: where its east-west axis crosses the meridian
+  HUT_PIERS     the two floor cells either side of the meridian where its piers stand
+  SCREEN        where the thermometer screen stands on the weather platform, the middle of its foot
+  PEDESTAL_TOP  the top of the free pedestal on the weather platform
+  SCOPE_STAND   where the tripod telescope stands on the lookout, the middle of its foot
+
+The terrain card lays each shelf's flat rock and the neck that leads to it; these shells stand on the
+foot levels it gives (S.*["feet"], the stone block one below) and bring a short footing of their own,
+laid into air only, so nothing floats before the terrain is merged. Terrace edges use the site's one
+rail (site/_kit.rail).
 """
+import importlib.util
+
 from artkit.canvas import Mix
 
 from . import _kit as K
@@ -31,6 +47,7 @@ from ..common import blocks as B
 from ..common import skeleton as S
 
 ORDER = 70      # after the terrain (10) and the court paving (60); the shells go on the finished ground
+INSTRUMENTS = True      # stand the props line's telescope and thermometer screen on their spots
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
 WALL = B.ASHLAR_ROUGH.block             # the darker, banded ashlar of the base storey: the hut's walls
@@ -63,13 +80,62 @@ LOOKOUT_WAY = (44, 46)      # x, through the terrace's south edge, on the lookou
 WEATHER_WAY = (2, 4)        # x, through the north edge
 TOWER_WAY = (-33, -31)      # z, through the west edge
 
+
+# --- where things stand, for the other cards (all from the skeleton) -------------------------------
+def _middle(box):
+    x0, z0, x1, z1 = box
+    return (x0 + x1) // 2, (z0 + z1) // 2
+
+
+def _lamp_points():
+    door_x, door_z = S.MERIDIAN_HUT["door"]
+    cx, cz = _middle(S.WATER_TOWER["box"])
+    return {
+        # the south gable, east of the slot, facing south: (37.5, 2.5, -25.0)
+        "hut_door": (door_x + 2.5, S.GROUND + 2.5, door_z + 1.0),
+        # the north-east leg's south face, over the lower girt, by the ladder: (-14.5, 1.5, -32.0)
+        "tower_foot": (cx + 2.5, S.WATER_TOWER["feet"] + 3.5, cz - 1.0),
+    }
+
+
 # Where a lamp may hang, one to a building and no more (A0 #22568: the small buildings on the hill
-# keep dark but for one lamp at the door). Points on a wall face, for the lights card to dress; the
+# keep dark but for one lamp at the door). Points on a wall face, for the lamps card to dress
+# (props/lamps reads this table). A wall lamp hangs in the cell in front of its point, so that cell
+# is kept free: the tower's lamp is a block over the lower girt, not on it (c220 #32102). The
 # lookout has none on purpose: V11 is taken from it and wants a dark foreground.
-LAMP_POINTS = {
-    "hut_door": (37.5, 2.5, -25.0),         # the south gable, east of the slot, facing south
-    "tower_foot": (-14.5, 0.5, -32.0),      # the north-east leg's south face, by the ladder
-}
+LAMP_POINTS = _lamp_points()
+
+# For the transit circle (machines/meridian-astrograph): the middle of the hut at the height of the
+# instrument's east-west axis, and the two floor cells either side of the meridian for its piers.
+# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the slate, 4 under the
+# shutters, open to the sky over the meridian's own column. The slot is one block wide.
+_HUT_X, _HUT_Z = S.MERIDIAN_HUT["centre"]
+HUT_AXIS = (_HUT_X + 0.5, S.GROUND + 2.0, _HUT_Z + 0.5)                         # (35.5, 2.0, -29.5)
+HUT_PIERS = [(_HUT_X - 2, S.GROUND, _HUT_Z), (_HUT_X + 2, S.GROUND, _HUT_Z)]    # (33, 0, -30), (37, 0, -30)
+
+
+def _station_spots():
+    """The cells (x, z) of what stands on the weather platform: the screen (the west one of the two
+    cells its stand-in of blocks takes), the wind mast, the rain gauge and the free pedestal."""
+    x0, z0, x1, z1 = S.WEATHER_STATION["box"]           # -2,-49,8,-43
+    return dict(screen=(x0 + 2, z0 + 3), mast=(x1 - 2, z0 + 2), gauge=(x1 - 2, z1 - 2),
+                pedestal=((x0 + x1) // 2, z0 + 2))
+
+
+def _scope_cell():
+    """The cell (x, z) of the telescope stand: on the lookout's middle line, in the prow."""
+    x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]             # 40,48,50,56
+    return (x0 + x1) // 2, z1 - 2
+
+
+_SPOTS = _station_spots()
+# the screen stands on the joint of its two cells, the pedestal's top is a slab over a post
+SCREEN = (_SPOTS["screen"][0] + 1.0, float(S.WEATHER_STATION["feet"]),
+          _SPOTS["screen"][1] + 0.5)                                            # (1.0, -4.0, -45.5)
+PEDESTAL_TOP = (_SPOTS["pedestal"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.5,
+                _SPOTS["pedestal"][1] + 0.5)                                    # (3.5, -2.5, -46.5)
+SCOPE_STAND = (_scope_cell()[0] + 0.5, float(S.SOUTH_LOOKOUT["feet"]),
+               _scope_cell()[1] + 0.5)                                          # (45.5, -5.0, 54.5)
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -82,6 +148,22 @@ def _fill(c, o, x0, y0, z0, x1, y1, z1, state, keep=False):
         for y in range(min(y0, y1), max(y0, y1) + 1):
             for z in range(min(z0, z1), max(z0, z1) + 1):
                 c.set(o[0] + x, o[1] + y, o[2] + z, state, keep=keep)
+
+
+def _place(c, o, kind, pos, facing):
+    """Stand one of the props line's instruments on its spot (props/instruments.place, the card
+    plan/packages/props/instruments.md). Returns the number of display entities: 0 while that
+    package or that piece is not in the tree, or with INSTRUMENTS off. A package that is in the
+    tree and does not load is an error and is not passed over."""
+    if not INSTRUMENTS:
+        return 0
+    name = __package__.rpartition(".")[0] + ".props.instruments"       # scenes.obs.props.instruments
+    if importlib.util.find_spec(name) is None:
+        return 0
+    instruments = importlib.import_module(name)
+    if kind not in getattr(instruments, "SPEC", {}):
+        return 0
+    return int(instruments.place(c, kind, pos, facing=facing, origin=o) or 0)
 
 
 def _ring(x0, z0, x1, z1):
@@ -260,23 +342,27 @@ def _weather_station(c, o):
     piers = {(x, z0) for x in K.spaced([x0, x1])} | {(bx, z) for bx in (x0, x1) for z in K.spaced([z0, z1])}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
 
-    # the instrument shelter (a Stevenson screen): a louvred box two cells long and two high on two
-    # iron posts, a thin cap; open inside for the thermometers (A5/A6)
-    sx, sz = x0 + 2, z0 + 3                             # (0, -46) and the cell east of it
-    for x in (sx, sx + 1):
-        _put(c, o, x, foot, sz, BARS)
-        _put(c, o, x, foot + 3, sz, IRON_SLAB + "[type=bottom]")
+    # the thermometer screen (a Stevenson screen): the props line's white louvred box on its four
+    # legs, the door to the north, as a screen's door is hung. Until that piece is in the tree a
+    # shelter of blocks stands in for it on the same spot: a louvred box two cells long and two
+    # high on two iron posts, under a thin cap
+    n = _place(c, o, "louvre_box", SCREEN, "north")
+    if not n:
+        sx, sz = _SPOTS["screen"]                       # (0, -46) and the cell east of it
+        for x in (sx, sx + 1):
+            _put(c, o, x, foot, sz, BARS)
+            _put(c, o, x, foot + 3, sz, IRON_SLAB + "[type=bottom]")
+            for y in (foot + 1, foot + 2):
+                _put(c, o, x, y, sz - 1, HATCH + "[facing=north,half=bottom,open=true]")
+                _put(c, o, x, y, sz + 1, HATCH + "[facing=south,half=bottom,open=true]")
         for y in (foot + 1, foot + 2):
-            _put(c, o, x, y, sz - 1, HATCH + "[facing=north,half=bottom,open=true]")
-            _put(c, o, x, y, sz + 1, HATCH + "[facing=south,half=bottom,open=true]")
-    for y in (foot + 1, foot + 2):
-        _put(c, o, sx - 1, y, sz, HATCH + "[facing=west,half=bottom,open=true]")
-        _put(c, o, sx + 2, y, sz, HATCH + "[facing=east,half=bottom,open=true]")
+            _put(c, o, sx - 1, y, sz, HATCH + "[facing=west,half=bottom,open=true]")
+            _put(c, o, sx + 2, y, sz, HATCH + "[facing=east,half=bottom,open=true]")
 
     # the wind mast: a riveted foot, a thin rod eight blocks up, and at its very head one arm to
     # the west for the anemometer and the vane (A5). One-sided on purpose: an upright with an arm
     # across it reads as a cross from afar, which the project does not allow.
-    wx, wz = x1 - 2, z0 + 2                             # (6, -47)
+    wx, wz = _SPOTS["mast"]                             # (6, -47)
     _put(c, o, wx, foot, wz, IRON)
     for y in range(foot + 1, foot + 9):
         _put(c, o, wx, y, wz, ROD + "[facing=up]")
@@ -284,12 +370,13 @@ def _weather_station(c, o):
     _put(c, o, wx - 2, foot + 8, wz, ROD + "[facing=west]")
 
     # the rain gauge: a short plate drum under a lid; and a free stone pedestal (sunshine recorder: A6)
-    gx, gz = x1 - 2, z1 - 2                             # (6, -45)
+    gx, gz = _SPOTS["gauge"]                            # (6, -45)
     _put(c, o, gx, foot, gz, PLATE)
     _put(c, o, gx, foot + 1, gz, HATCH + "[facing=north,half=bottom,open=false]")
-    px, pz = (x0 + x1) // 2, z0 + 2                     # (3, -47)
+    px, pz = _SPOTS["pedestal"]                         # (3, -47)
     _put(c, o, px, foot, pz, POST)
     _put(c, o, px, foot + 1, pz, COPE + "[type=bottom]")
+    return n
 
 
 # --- the south lookout (S.SOUTH_LOOKOUT, south ridge; V11) ----------------------------------------
@@ -301,10 +388,10 @@ def _south_lookout(c, o):
     cells = [(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1)
              if min(x - x0, x1 - x) + (z1 - z) >= cut]
     wx0, wx1 = LOOKOUT_WAY
-    tx, tz = (x0 + x1) // 2, z1 - 2                     # the telescope stand, on the middle line in the prow
+    tx, tz = _scope_cell()                              # (45, 54): the telescope stand, in the prow
 
     # the floor: dark slate, a walk in the middle stone from the steps to a round stand in the prow,
-    # where a riveted ring is let in for the tripod telescope (A5/A6); a footing into the slope
+    # where a riveted ring is let in for the tripod telescope; a footing into the slope
     for x, z in cells:
         walk = wx0 <= x <= wx1 and z < tz
         stand = abs(x - tx) + abs(z - tz) <= 2
@@ -323,11 +410,17 @@ def _south_lookout(c, o):
     piers = {(x0, z1 - cut), (x1, z1 - cut), (x0 + cut, z1), (x1 - cut, z1)}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
 
+    # the props line's tripod telescope on the stand, turned to the cloud sea. V11 is taken two
+    # blocks north of it, looking north-west: the telescope is behind that picture's back
+    return _place(c, o, "tripod_scope", SCOPE_STAND, "south")
+
 
 def build(canvas, origin=(0, 0, 0)):
+    """Places the four shells and the ways down; returns the number of display entities, which are
+    the props line's two instruments when that package is in the tree and none otherwise."""
     _meridian_hut(canvas, origin)
     _water_tower(canvas, origin)
-    _weather_station(canvas, origin)
-    _south_lookout(canvas, origin)
+    n = _weather_station(canvas, origin)
+    n += _south_lookout(canvas, origin)
     _ways_down(canvas, origin)
-    return 0
+    return n
