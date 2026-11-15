@@ -362,9 +362,12 @@ def _master():
     box((-12, 8, 0), (12, 10, 12), WOOD, skip="n", grain="x")
     # A line of brass round the head of the skirting and round the foot of the cap. From the door
     # the plinth stands in front of the slate at the pier's foot, which is as dark as its wood:
-    # the two lines are what draws it there (cr3, 11-16).
+    # the two lines are what draws it there (cr3, 11-16). A line is three strips a quarter of a
+    # pixel proud of the wood, closed above and below: the eye of someone standing looks down on them.
     for y in (1, 8):
-        box((-12.25, y, 0), (12.25, y + 1, 12.25), BRASS_LINE, skip="nud")
+        box((-12.25, y, 12), (12.25, y + 1, 12.25), BRASS_LINE, skip="n")
+        box((-12.25, y, 0), (-12, y + 1, 12), BRASS_LINE, skip="nse")
+        box((12, y, 0), (12.25, y + 1, 12), BRASS_LINE, skip="nsw")
 
     # the trunk: back board, two sides, the door's rails, its brass bead and its knob
     box((-7, 10, 0), (7, 38, 2), WOOD_DEEP, skip="nweud", grain="y")
