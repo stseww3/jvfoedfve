@@ -1,11 +1,11 @@
-# scenes/obs_mot_load/onreal.py of 3656b5f6, run after the shots of obs_mot_load (plot 23000 200 0), 2026-11-15 22:45: exit code 0, 25 s
+# scenes/obs_mot_load/onreal.py of 3656b5f6, run after the shots of obs_mot_load (plot 23000 200 0), 2026-11-15 23:09: exit code 1, 24 s
 obs_mot_load on the real machine, plot 23000 200 0: 200 parts and 0 points on 1 chains (c24 sets off 1 after start), 30 functions, the loop's number 27004793
-game time 20699; the game is running, 1.0 ms a tick on average; players: C164Cam
-ready     PASS     all 200 parts are found, #run is this scene's number
+game time 47312; the game is running, 0.5 ms a tick on average; players: C164Cam
+ready     FAIL     #run was 571309228, not this scene's 27004793: its loop was not the one that runs. Started now, to go on with the checks
 ended     PASS     the loop of obs_mot_loop, which ran in this world before this scene was started: its heartbeat does not beat, none of its 96 chain functions is queued (#run is 27004793, this scene's is 27004793)
-alive     PASS     the heartbeat came back after 17 ticks; 864 readings of 12 parts in 72 ticks: every one a pose of the plan and in step with its chain; every part moved. Clocks, ticks wide: c24 1
-cost      PASS     200 parts, 34.4 commands a tick on average, 36 in the busiest. Sprints of 2505 ticks, milliseconds a tick: loop running 0.798, 0.695, 0.627; stopped 0.106, 0.042, 0.042. The loop costs 0.653 ms a tick: 19.0 microseconds a command
-                   at that price the map's limits come to: 10 commands a tick on average 0.190 ms, 40 in the busiest tick 0.759 ms (a tick has 50 ms); this scene's own limits are 40 and 60
-                   at the game's normal pace, loop running: 1.0 ms a tick on average, P50 0.8, P95 3.2, P99 5.3 (running)
-                   at the game's normal pace, loop stopped: 0.2 ms a tick on average, P50 0.2, P95 0.3, P99 0.3 (running)
-result: PASS; 4 checks passed; 2513 commands in 25 s
+alive     PASS     the heartbeat came back after 5 ticks; 864 readings of 12 parts in 72 ticks: every one a pose of the plan and in step with its chain; every part moved. Clocks, ticks wide: c24 1
+cost      PASS     200 parts, 34.4 commands a tick on average, 36 in the busiest. Sprints of 2067 ticks, milliseconds a tick: loop running 0.842, 0.743, 0.649; stopped 0.125, 0.069, 0.070. The loop costs 0.673 ms a tick: 19.6 microseconds a command
+                   at that price the map's limits come to: 10 commands a tick on average 0.196 ms, 40 in the busiest tick 0.782 ms (a tick has 50 ms); this scene's own limits are 40 and 60
+                   at the game's normal pace, loop running: 0.9 ms a tick on average, P50 0.8, P95 1.0, P99 6.9 (running)
+                   at the game's normal pace, loop stopped: 0.3 ms a tick on average, P50 0.2, P95 0.4, P99 1.3 (running)
+result: FAIL (ready); 3 checks passed; 2374 commands in 24 s

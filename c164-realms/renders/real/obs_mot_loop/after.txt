@@ -1,15 +1,20 @@
-# scenes/obs_mot_loop/onreal.py of 3656b5f6, run after the shots of obs_mot_loop (plot 22000 200 0), 2026-11-15 22:42: exit code 0, 55 s
+# scenes/obs_mot_loop/onreal.py of 3656b5f6, run after the shots of obs_mot_loop (plot 22000 200 0), 2026-11-15 23:12: exit code 1, 62 s
 obs_mot_loop on the real machine, plot 22000 200 0: 12 parts and 0 points on 6 chains (c40 sets off 2 after start, c48 sets off 1 after start, c60 sets off 4 after start, c120 sets off 8 after start, c240 sets off 3 after start, c1200 sets off 6 after start), 102 functions, the loop's number 96859786
-game time 16509; the game is running, 0.3 ms a tick on average; players: C164Cam
-ready     PASS     all 12 parts are found, #run is this scene's number
-record    -        no record of an earlier run in this world: nothing to compare (a second trip with --no-place, after the server was down, shows whether the loop goes on where it was)
-alive     PASS     the heartbeat came back after 39 ticks; 3000 readings of 12 parts in 250 ticks: every one a pose of the plan and in step with its chain; every part moved. Clocks, ticks wide: c40 1, c48 1, c60 1, c120 1, c240 1, c1200 1
+game time 61924; the game is running, 0.3 ms a tick on average; players: C164Cam
+ready     FAIL     #run was 27004793, not this scene's 96859786: its loop was not the one that runs. Started now, to go on with the checks
+record    FAIL     the record is 43100 ticks of game time and 1734 s old; the parts are not where the record's clocks have them
+                   game time 61927..61927: mot_arm.1 shows step -1 (-1 is the rest pose), which its chain is not at
+                   game time 61927..61927: mot_arm.2 shows step -1 (-1 is the rest pose), which its chain is not at
+                   game time 61927..61927: mot_lamp shows step -1, 0 (-1 is the rest pose), which its chain is not at
+                   game time 61927..61927: mot_bar shows step -1 (-1 is the rest pose), which its chain is not at
+                   ... and 9 more
+alive     PASS     the heartbeat came back after 40 ticks; 3000 readings of 12 parts in 250 ticks: every one a pose of the plan and in step with its chain; every part moved. Clocks, ticks wide: c40 1, c48 1, c60 1, c120 1, c240 1, c1200 1
 steps     PASS     51 sprints of 24 ticks (2.7 s): all 125 steps of the 12 parts were read back as the plan has them; after the sprints every chain is where its clock had it
-reload    PASS     /reload held the server for 0.3 s; load had run 1 to 5 ticks later (the heartbeat's holder read 0), the heartbeat was back 34 to 38 ticks after that; 85 ticks on, past the watch of 60, every part is where its chain's clock had it before the reload: nothing set off anew
-broken    PASS     halt: nothing moved for 45 ticks and the heartbeat stayed away. /reload held the server for 0.2 s; load had run 1 tick later, and 59 ticks after that the loop was started again (the watch is 60); all chains set off from that one start and every part is where the plan has it since
+reload    PASS     /reload held the server for 0.7 s; load had run 1 to 13 ticks later (the heartbeat's holder read 0), the heartbeat was back 26 to 38 ticks after that; 85 ticks on, past the watch of 60, every part is where its chain's clock had it before the reload: nothing set off anew
+broken    PASS     halt: nothing moved for 45 ticks and the heartbeat stayed away. /reload held the server for 0.3 s; load had run 1 to 7 ticks later, and 53 to 59 ticks after that the loop was started again (the watch is 60); all chains set off from that one start and every part is where the plan has it since
 takeover  PASS     #run given to another number: 42 ticks later (one round of the quickest chain) nothing moved for 30 ticks, none of the scene's chain functions was queued, and the heartbeat's line after the guard was not run. Started again
-unload    PASS     63 chunks unmarked, 1 player(s) sent 640 blocks north: the entities were gone after 1 ticks; the heartbeat went on without them. Back after 100 ticks away: 7 of 12 parts were behind when they were found again, and every part was right at its next step (the slowest after 10 ticks)
-stop      PASS     stop: #run is 0; every part is back as it was placed (pose, scale and right rotation; the lamp its own model), nothing of the scene is queued. /reload (load had run 1 to 4 ticks later) and 70 ticks more: still stopped, every part as placed
+unload    PASS     0 chunks unmarked, 1 player(s) sent 640 blocks north: the entities were gone after 1 ticks; the heartbeat went on without them. Back after 100 ticks away: 7 of 12 parts were behind when they were found again, and every part was right at its next step (the slowest after 10 ticks)
+stop      PASS     stop: #run is 0; every part is back as it was placed (pose, scale and right rotation; the lamp its own model), nothing of the scene is queued. /reload (load had run 1 to 6 ticks later) and 70 ticks more: still stopped, every part as placed
 start     PASS     start: #run is this scene's; for 100 ticks every part was where its chain has it (1200 readings). Ticks after the start at which the chains set off, read / planned: c40 2/2, c48 1/1, c60 4/4, c120 8/8, c240 3/3, c1200 6/6
                    the clocks are noted in the world (objective c164t) for a later run to compare with
-result: PASS; 9 checks passed; 12739 commands in 55 s
+result: FAIL (ready, record); 8 checks passed; 14861 commands in 61 s
