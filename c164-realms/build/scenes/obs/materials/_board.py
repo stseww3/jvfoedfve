@@ -409,12 +409,13 @@ def ring(r):
     return cells
 
 
-def emblem(c, mx, y, az, r, star, z0, z1):
+def emblem(c, mx, y, az, r, star, z0, z1, middle=True):
     """The station's emblem in thin line, lying in the cells at y: the meridian at x = mx from z0 to
     z1, a ring of radius r about (mx, az) with a crossing where the meridian passes through it, and
-    the star `star` = (east, south) of the middle. The middle cell stays empty."""
+    the star `star` = (east, south) of the middle. middle=False leaves the middle cell empty, for
+    what stands on it (in the front court, the armillary)."""
     for z in range(z0, z1 + 1):
-        if z != az:
+        if middle or z != az:
             c.set(mx, y, z, st(B.BRASS_LINE, shape="north_south"))
     for (dx, dz), state in line(ring(r), closed=True).items():
         c.set(mx + dx, y, az + dz, st(B.BRASS_CROSS, shape="north_south") if dx == 0 else state)

@@ -32,6 +32,7 @@ import math
 from artkit.blocks import st
 from artkit.canvas import Canvas
 
+from scenes import obs_mat_panels as panels_scene
 from scenes.obs.common import blocks as B
 from scenes.obs.materials import _board
 from scenes.obs.materials import _kit as K
@@ -58,28 +59,34 @@ EMBLEM_STAR = (2, -2)           # east and south of the middle: inside the ring,
 RUN = 3                         # the meridian runs this far out of the seat, between its two flanks
 
 
+PILASTERS = (2, 5)              # the two pilaster lines of the wall that puts the stones together
+
+
 def together(c, x, y, z):
-    """The stones as a facade stacks them: slate plinth, two courses of rough stone, a projecting
-    string course, fine stone above with sunk panels and two emblem blocks."""
+    """The stones in the order the main front stacks them (main/facade), flat and small: slate
+    plinth, two courses of rough stone, the string course standing forward, fine stone above. On a
+    pilaster line the fine stone runs up to an emblem block, the only place the front has one;
+    between the lines a sunk panel under where a window stands, and the frieze of sunk panels."""
     c.box(x, y, z, x + N - 1, y, z, B.SLATE_BRICK.block)
     c.box(x, y + 1, z, x + N - 1, y + 2, z, B.ASHLAR_ROUGH.block)
-    c.box(x, y + 3, z, x + N - 1, y + 7, z, B.ASHLAR_FINE.block)
+    c.box(x, y + 3, z, x + N - 1, y + N - 1, z, B.ASHLAR_FINE.block)
     c.box(x, y + 3, z + 1, x + N - 1, y + 3, z + 1, st(B.ASHLAR_FINE.slab, type="top"))
-    for dx in (1, 2, 5, 6):
-        c.set(x + dx, y + 5, z, B.ASHLAR_PANEL.block)
-    for dx in (3, 4):
-        c.set(x + dx, y + 7, z, B.ASHLAR_EMBLEM)
+    for dx in range(N):
+        if dx in PILASTERS:
+            c.set(x + dx, y + N - 1, z, B.ASHLAR_EMBLEM)
+        else:
+            c.set(x + dx, y + 4, z, B.ASHLAR_PANEL.block)
+            c.set(x + dx, y + N - 1, z, B.ASHLAR_PANEL.block)
 
 
 def instruments(c, x, y, z):
-    """The sixteen panels twice over, as a cabinet wall: a riveted base, four rows of instruments,
-    plain plate above."""
-    names = list(B.PANELS)
+    """The sixteen panels as a cabinet wall: a riveted plinth, the bay that materials/panels sets
+    out in its test scene (every kind is in it; the rules it is set out by are in that scene's
+    note), plain plate above."""
+    assert panels_scene.WIDE == N and panels_scene.HIGH < N - 1
     c.box(x, y, z, x + N - 1, y, z, B.IRON_RIVETED.block)
-    c.box(x, y + 5, z, x + N - 1, y + N - 1, z, B.IRON_PLATE)
-    for i in range(4 * N):
-        name = names[(i * 5 + 3 * (i // 16)) % 16]        # each kind once in a pair of rows, shuffled
-        c.set(x + i % N, y + 1 + i // N, z, st(B.PANELS[name], facing="south"))
+    c.box(x, y + 1 + panels_scene.HIGH, z, x + N - 1, y + N - 1, z, B.IRON_PLATE)
+    panels_scene.bay(c, x, y + 1, z)
 
 
 def woods(c, x, y, z):
