@@ -1,0 +1,10 @@
+gate site/court ca810cc1: the merged tree ca810cc1, the assembly as it was be2e2b15
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    36 of 38 files are the card's own
+                    not this card's file: D build/scenes/obs/site/ground.py
+                    not this card's file: M build/scenes/obs/site/terrain.py
+check.py: 25 scenes in 13 s: 25 pass (11 with warnings)
+pictures: [PASS] selfshots obs_site_court at ca810cc1: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_site_terrain at ca810cc1: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_site_terrain_nosnow at ca810cc1: 4 of 4 kept pictures are what the code draws
+result: PASS
