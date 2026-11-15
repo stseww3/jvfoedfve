@@ -5,23 +5,26 @@ The wall is not a stand-in: eight bays of the entrance front, laid by A3's eleva
 east like the front itself. In the middle the three arches of the entrance; the iron is put on by
 the same two functions that dress the master scene (ironwork.windows, ironwork.doors), from tables
 of the same form as main/_plan gives. The heads of the three-wide arches are shut over the crown,
-as A3 builds them (facade.CROWN): see _crowns().
+as A3 builds them (facade.CROWN).
 
 Seen from the court, left to right (south to north):
 
-    bay 8   the control: a lit great window WITHOUT a frame; below it the grille as a model
-    bay 7   the same window framed; below it the base window as A3 builds it, bars as blocks
+    bay 8   the control: a lit great window WITHOUT a frame; below it the grille (the model on the
+            glass: the family's default)
+    bay 7   the same window framed; below it the other way to bar a base window, kept here to be
+            seen beside the grille: A3's bars as blocks in the wall plane
     bay 6   a side arch of the entrance: the gate, shut
     bay 5   the entrance: frame and fanlight, the leaves open against the reveals, the canopy on
             the two pilasters and its lamp; the brightest window above it, framed
     bay 4   the other gate
-    bay 3   a curtained window framed, the grille as a model
+    bay 3   a curtained window framed, the grille
     bay 2   a dark window framed, the bars as blocks
     bay 1   an end pavilion's two-wide window with the two-wide frame and grille
 
 South of the building a plain yard wall carries what has no place on the front: the west door's
-glazed leaves in a flat-headed doorway and the inspection ladder; on the paving stand a run of
-balustrade panels, the vent cowl and the floor grating.
+glazed leaves in a flat-headed doorway (a stand-in lamp in the doorway, or the shut leaves are
+black on black) and the inspection ladder; on the paving stand a run of balustrade panels, the
+vent cowl and the floor grating.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_ironwork
 """
@@ -49,7 +52,8 @@ Z1 = Z0 + S.BAY * BAYS
 NARROW = 1                      # an end pavilion's bay: its first column belongs to the broad pier
 GATES, DOOR = (4, 6), 5         # the three arches of the entrance, as bays 8 to 10 of the front
 CONTROL = 8                     # the great window left without a frame
-MODEL_GRILLES = (1, 3, 8)       # base windows that get the grille as a model; the others keep A3's bars
+BLOCK_GRILLES = (2, 7)          # base windows that keep A3's bars as blocks, for the comparison; the others
+                                # get the family's grille
 ARCH_TOP = S.BASE[1]            # the arches of the entrance are six high: y 0..5
 
 # which glass stands in a bay (the light line's letters): main storey, base storey
@@ -62,6 +66,7 @@ HALL_LAMP = 12                  # the hall behind the entrance
 YARD = (Z1 + 5, Z1 + 15)        # the yard wall's z, one block thick on the wall line, YARD_TOP high
 YARD_TOP = 8
 WEST_DOOR = YARD[0] + 3         # the middle column of the flat-headed doorway (three wide, y 0..3)
+YARD_LAMP = 10                  # a stand-in for the lamp the light line hangs at a door
 LADDER_Z = YARD[0] + 7          # the column the ladder climbs
 FLOOR_X = WALL + 12             # the cowl and the grating stand out here, clear of the wall's shots
 COWL_Z, GRATE_Z = YARD[0] + 6, YARD[0] + 2
@@ -101,7 +106,7 @@ def _glass(front, bay, storey):
 def plan():
     p = O.Plan(O.box(BACK, Z0, WALL, Z1), _classify)
     for bay in GATES + (DOOR,):
-        p.door("east", bay, S.GROUND, ARCH_TOP, arch=B.ASHLAR_ROUGH)
+        p.door("east", bay, S.GROUND, ARCH_TOP, arch=B.ASHLAR_ROUGH, crown=facade.CROWN)
     return p
 
 
@@ -139,25 +144,11 @@ def _rooms(c, windows):
         c.set(BACK + 1, y, 0, st(B.PANELS[name], facing="east"))
 
 
-def _crowns(c, windows):
-    """The head of every three-wide arch is shut over the crown: A3 hangs a slab between the two
-    corner stairs (facade.CROWN, the director's ruling of 11-15), and the iron ends where that
-    slab begins. Where the order in the tree has not laid the slab, it is hung here, so the family
-    is seen on the wall it is made for; where it lies already, nothing is done. Three-wide heads
-    only: in a two-wide one the two stairs meet."""
-    heads = [(x - w["inward"][0], w["y"][1], z - w["inward"][1], B.ASHLAR_FINE.slab)
-             for w in windows if w["storey"] == "main" and len(w["cells"]) == 3 and not w.get("blind")
-             for x, z in w["cells"][1:-1]]
-    heads += [(x, d["y"][1], z, B.ASHLAR_ROUGH.slab)
-              for d in door_table() if d["arch"] and len(d["cells"]) == 3 for x, z in d["cells"][1:-1]]
-    for x, y, z, slab in heads:
-        c.set(x, y, z, st(slab, type="top"), keep=True)
-
-
 def _yard(c):
     """The yard wall with its flat-headed doorway, and the pieces that stand on the paving."""
     c.box(WALL, S.GROUND, YARD[0], WALL, YARD_TOP, YARD[1], B.ASHLAR_FINE.block)
     c.carve(WALL, S.GROUND, WEST_DOOR - 1, WALL, 3, WEST_DOOR + 1)
+    c.set(WALL + 1, S.GROUND + 1, WEST_DOOR, st(B.LIGHT, level=YARD_LAMP))
     n = ironwork.ladder(c, (WALL + 1.0, float(S.GROUND), LADDER_Z + 0.5), 3, facing="east")
     for x in RAIL_X:
         n += ironwork.place(c, "railing_panel", (float(x), float(S.GROUND), RAIL_Z + 0.5), facing="south")
@@ -172,12 +163,11 @@ def build():
     c.box(WALL + 3, S.GROUND - 1, Z0 - 6, WALL + 3, S.GROUND - 1, RAIL_Z + 5, site.STRIP)
     p = plan()
     windows = O.build(c, p, facade.order(), glass=_glass)
-    _crowns(c, windows)
     for bay in GATES + (DOOR,):                         # A3's B entrance: a whole stone in the course over each arch
         c.set(WALL + 1, S.STRING, bay_z(bay)[1], B.ASHLAR_FINE.block)
     _rooms(c, windows)
     framed = [w for w in windows if not (w["storey"] == "main" and w["bay"] == CONTROL)]
-    n = ironwork.windows(c, framed, grilles=lambda w: w["bay"] in MODEL_GRILLES)
+    n = ironwork.windows(c, framed, grilles=lambda w: w["bay"] not in BLOCK_GRILLES)
     n += ironwork.doors(c, door_table())
     n += _yard(c)
     sky.build(c, (0, 0, 0))             # A2's light sources go in last, when every piece is in place
