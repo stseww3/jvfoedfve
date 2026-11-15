@@ -8,7 +8,9 @@ The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards
 Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
 grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
 is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
-taken over step for step into the iron ramp, their filament and slits into the glow ramp.
+taken over step for step into the iron ramp, their filament and slits into the glow ramp. One model
+is touched: the game shows a trapdoor's picture upside down, and the hatch's copies of its models
+turn it back (_upright).
 """
 import math
 
@@ -169,28 +171,43 @@ def _cast(seed, motif):
     return px
 
 
-def _hatch_lid(seed):
-    """IRON_HATCH variant 0: a riveted lid with a raised centre seam."""
-    px = _plate(seed, base=3, noise=0.11)
+def _hatch():
+    """IRON_HATCH: a riveted lid with a raised rib down its middle, the one picture of the block.
+
+    On edge it is a balustrade panel, lying it is a lid, a tie between rails, the blade of a
+    louvre, and a run of them has to be one thing. The block used to have a second picture, a
+    louvre, mixed in by position: half the panels of a balustrade came out louvred. It cannot go to
+    the lying states either: the game does not turn a lying trapdoor with its facing, so the slats
+    would run east-west on every wall of a belfry, along two of them and into the other two. A
+    louvre on a wall is the panels' (B.PANELS["louvre"]) or the lower half of the door."""
+    px = _plate(1, base=3, noise=0.11)
     _panel_frame(px)
     _rivets(px, _CORNERS + [(8, 1), (8, 14)])
-    for y in range(3, 13):                                  # a central lifting rib
+    for y in range(3, 13):                                  # the rib
         _put(px, 7, y, _i(5))
         _put(px, 8, y, _i(1))
     return px
 
 
-def _hatch_louvre(seed):
-    """IRON_HATCH variant 1: horizontal louvre slats in a riveted frame."""
-    px = _plate(seed, base=2, noise=0.08)
-    _panel_frame(px)
-    _rivets(px, _CORNERS)
-    for y in range(2, 14):
-        band = (y - 2) % 3
-        colour = _i(4) if band == 0 else _i(2) if band == 1 else _i(1)
-        for x in range(2, 14):
-            _put(px, x, y, colour)
-    return px
+def _upright(ref, flat):
+    """What redirect does to the game's trapdoor models before it maps the picture (its `edit`).
+
+    The game shows the picture upside down (uv 0,16,16,0) on the faces that count: both sides of a
+    standing trapdoor, and the top of a lying one, where it is turned against the tops of the
+    blocks round it. The lid's frame and rivets are lit from the top and the left like every other
+    plate's; upside down, a standing panel reads lit from below, its rivets' shadows over their
+    heads, next to plates lit from above. On those faces the flip goes. The edges are left as they
+    are: they read the picture's top three rows, the frame's lit lip and the rivets under it."""
+    turned = 0
+    for box in flat["elements"] or []:
+        for face in box["faces"].values():
+            if face.get("uv") == [0, 16, 16, 0]:
+                face["uv"] = [0, 0, 16, 16]
+                turned += 1
+    if not turned:
+        raise ValueError(f"{ref}: no face of this model shows the whole picture upside down any more; "
+                         "look at the game's trapdoor models again before the hatch is redirected")
+    return flat
 
 
 # the door's two plates carry the same six rivets, so down each side they pair up across the seam
@@ -221,8 +238,8 @@ def _door_top():
 
 
 def _door_bottom():
-    """IRON_DOOR lower half: the lower plate with a louvred vent (three slats, like the hatch's)
-    between two stiles, and a kick strip under it. The brushing's seed is one whose only streak
+    """IRON_DOOR lower half: the lower plate with a louvred vent (three slats) between two stiles,
+    and a kick strip under it. The brushing's seed is one whose only streak
     left in sight is a dark scuff along the kick strip: a streak beside the vent would run on
     from a slat's lip and read as a slat reaching the door's edge."""
     px = _plate(3, base=3, noise=0.10)
@@ -386,7 +403,7 @@ def pack(pack_dir):
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_cast", [_cast(1, "emblem"), _cast(2, "lozenge")])
     K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
-    K.paint(pack_dir, "iron_hatch", [_hatch_lid(1), _hatch_louvre(2)])
+    K.paint(pack_dir, "iron_hatch", _hatch())
     K.paint(pack_dir, "iron_door_bottom", _door_bottom())
     K.paint(pack_dir, "iron_door_top", _door_top())
     K.paint(pack_dir, "iron_bars", _bars())
@@ -399,10 +416,11 @@ def pack(pack_dir):
 
     for role, name in ((B.IRON_PLATE, "iron_plate"), (B.IRON_RIVETED, "iron_riveted"),
                        (B.IRON_CAST, "iron_cast"), (B.IRON_GRATE, "iron_grate"),
-                       (B.IRON_HATCH, "iron_hatch"), (B.IRON_BARS, "iron_bars"),
-                       (B.IRON_PIPE, "iron_chain"), (B.IRON_ROD, "iron_rod")):
+                       (B.IRON_BARS, "iron_bars"), (B.IRON_PIPE, "iron_chain"), (B.IRON_ROD, "iron_rod")):
         for block in K.blocks(role):
             out.append(K.redirect(pack_dir, block, _map(block, name)))
+    for block in K.blocks(B.IRON_HATCH):
+        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch"), edit=_upright))
     for block in K.blocks(B.IRON_DOOR):
         out.append(K.redirect(pack_dir, block, {ref: ("iron_door_top" if ref.endswith("_top") else "iron_door_bottom")
                                                  for ref in respack.block_pictures(K.game(), block)}))
