@@ -76,6 +76,9 @@ DOOR_Y = (0, 5)                             # the entrance, three wide
 JOINT_X = (S.PIER_SHAFT[0] - 1, int(S.MOTHER_CLOCK["back_x"]) + 1)      # 2..7: the grating ring round pier and step
 SUN_LIGHT = 12                              # the orrery's sun, the brightest thing in the hall (lights)
 V7 = getattr(S, "V7", dict(pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5)))      # A0, 11-15
+# The arrival view as A0 lifted it on 11-15: the dial, the ball and the comet stand one over the other
+# in it, and the colour of the ball is picked on it. A skeleton without V1_CLEAR still has the old look.
+V1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 
 # --- the tower ----------------------------------------------------------------------------------
 TX, TZ = S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z                   # 10..16, -33..-27
@@ -322,7 +325,7 @@ def shots():
     ax, az = clock.BALL_AXIS                        # the tower's axis
     east = S.CLOCK_SHAFT_X[1] + 1.0                 # its east face
     dial = clock.DIAL_Y
-    v1 = S.V1
+    v1 = V1
     shot("v1_tower", v1["pos"], v1["look_at"])
     shot("tower_far", (v1["pos"][0], v1["pos"][1], az), (east, dial, az))
     shot("v5_up", (44.5, 1.7, -22.5), (ax, 33.0, az))
