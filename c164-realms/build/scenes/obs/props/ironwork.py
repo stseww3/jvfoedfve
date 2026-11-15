@@ -44,6 +44,7 @@ DRESS = False                    # build() dresses the master scene only when on
 IRON, IRON_D = K.IRON, K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 GLASS_HOT, GLASS_MID, GLASS_DIM = K.GLOW_HOT, K.GLOW_MID, K.GLOW_DIM     # amber glass that glows
+GLASS_AMBER = K.flat("glow", 0)                                         # the same glass with no light behind it
 GLASS_COOL = K.flat("opal", 2)                                          # frosted canopy glass, not lit
 
 
@@ -119,7 +120,9 @@ def _head(m, width, jambs):
 
 def _frame(m, width, foot=True, jambs=JAMBS):
     """Jambs, transom and head of a `width`-block arched opening six blocks high; with `foot`, the
-    riveted plate over the bottom row of lights, its top edge on the pane's first level muntin."""
+    riveted plate over the bottom row of lights, its top edge on the pane's first level muntin.
+    A window's rivets sit where the pane's muntins meet the iron, a pixel beside the middle like the
+    net itself; a doorway has no pane behind it and its rivets are spaced about its own middle."""
     hw = width * 4.0
     left, right = jambs
     m.box((-hw, 0.0, 0.0), (-hw + left, SPRING, DEEP), IRON, grain="y")
@@ -127,10 +130,11 @@ def _frame(m, width, foot=True, jambs=JAMBS):
     m.box((-hw, SPRING - 1.0, 0.0), (hw, SPRING + 1.0, DEEP), IRON, grain="x")
     if foot:
         m.box((-hw + left, 0.0, 0.0), (hw - right, 4.0, SILL), IRON_D, grain="x")
-    for x in _muntins(hw):                                   # a rivet where a muntin meets the iron
-        K.rivet(m, (x + 0.5, SPRING, DEEP))
+    on_net = 0.5 if foot else 0.0
+    for x in _muntins(hw):
+        K.rivet(m, (x + on_net, SPRING, DEEP))
         if foot:
-            K.rivet(m, (x + 0.5, 2.0, SILL))
+            K.rivet(m, (x + on_net, 2.0, SILL))
     for y in (7.5, 15.5, 23.5):                              # the reveal faces of the jambs, on the block lines
         K.rivet(m, (-hw + left, y, DEEP / 2.0), out="x")
         K.rivet(m, (hw - right, y, DEEP / 2.0), out="-x")
@@ -176,10 +180,11 @@ def _ray(m, angle, r0, r1, wide, z, mat):
           rot=("z", angle, (0.0, SPRING, 0.0)) if angle else None, grain="x")
 
 
-def _fan(m, r, rays, wide, glass):
-    """What fills the half round over a doorway: an iron fan -- a hub on the transom, rays to the ring
-    and one arc half way out -- and with `glass` the amber glass behind it, which runs in under the
-    ring and is drawn as one-pixel rows in three tones, hot round the hub (the fanlight)."""
+def _fan(m, r, rays, wide, glass, hub=3.5, arc=7.0):
+    """What fills the half round over a doorway: an iron fan -- a hub on the transom (its radius
+    `hub`), rays from it to the ring and one arc between (its middle radius `arc`) -- and with
+    `glass` the amber glass behind it, which runs in under the ring and is drawn as one-pixel rows
+    in three tones, hot round the hub (the fanlight)."""
     if glass:
         m._n += 1
         seed, rg, y = m._n, r + 0.5, 1.0
@@ -195,22 +200,24 @@ def _fan(m, r, rays, wide, glass):
             y += 0.5
     z = (0.5, 1.5)
     for i in range(1, rays + 1):
-        _ray(m, 180.0 * i / (rays + 1), 3.0, r + 0.25, wide, z, IRON_D)
-    m.ring("z", (0.0, SPRING, 1.0), 7.0, wide, 1.0, IRON_D, sides=24, arc=(0.0, 180.0))
-    m.ring("z", (0.0, SPRING, 1.25), 1.75, 3.5, 1.5, IRON, sides=12, arc=(0.0, 180.0))       # the hub
-    K.rivet(m, (0.0, SPRING + 2.0, 2.0))
+        _ray(m, 180.0 * i / (rays + 1), hub - 0.5, r + 0.25, wide, z, IRON_D)
+    m.ring("z", (0.0, SPRING, 1.0), arc, wide, 1.0, IRON_D, sides=24, arc=(0.0, 180.0))
+    m.ring("z", (0.0, SPRING, 1.25), hub / 2.0, hub, 1.5, IRON, sides=12 if hub < 4.0 else 16, arc=(0.0, 180.0))
+    K.rivet(m, (0.0, SPRING + math.floor(hub + 1.0) / 2.0, 2.0))     # in the middle of what shows over the transom
 
 
 def _door_frame(width=3):
     """The iron frame of the entrance doorway with its fanlight, at scale 2 (anchor: the foot centre
     of the doorway, on the plane the glass of a window would stand in). The glass glows: with the
-    portholes it is the only lit iron of the family."""
+    lamp under the canopy it is all the light the family has of its own."""
     m = M.Model(PREFIX + "door_frame", px=2.0)
     _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=5, wide=0.5, glass=True)
     return m
 
 
 LEAF_W, LEAF_T = 12.0, 1.5      # a leaf: 1.5 blocks wide, a 3 px plate; what is fixed on it stands 1 px proud
+LEAF_ANCHOR = (0.5, 0.0, 0.0)   # a leaf's anchor: its foot, a pixel in from the hinge edge (x = 0), so that the
+                                # entity of a shut leaf stands in the doorway and not in the jamb (leaves())
 LEAF_H = SPRING - 1.0           # up to the underside of the transom
 KICK = 5.0                      # the kick plate
 LOCK = (8.5, 10.5)              # the lock rail: 0.30 of the height; the pull sits on it, 1.0 to 1.4 blocks up
@@ -248,9 +255,12 @@ def _pull(m, x, proud, y=7.5):
 
 def _door_leaf():
     """One leaf of the entrance door: riveted plate, a kick plate, two ledges, a brass pull and a
-    glazed porthole high up like a ship's, at scale 2 (anchor: the foot of the hinge edge; the leaf
-    runs along +x). Both faces are the same."""
-    m = M.Model(PREFIX + "door_leaf", px=2.0)
+    glazed porthole high up like a ship's, at scale 2 (the hinge edge is x = 0 and the leaf runs
+    along +x; anchor: LEAF_ANCHOR). Both faces are the same. The porthole's amber glass does not
+    glow: the leaves stand open against the stone of the reveals, and glass with a wall behind it
+    has no light of its own (c219, pre-review P9); it takes the light of the lamp under the canopy
+    like the iron."""
+    m = M.Model(PREFIX + "door_leaf", px=2.0, anchor=LEAF_ANCHOR)
     w, h, t = LEAF_W, LEAF_H, LEAF_T / 2.0
     m.box((0.0, 0.0, -t), (w, h, t), IRON, grain="y")
     top = (h - 3.0, h - 1.0)
@@ -262,7 +272,7 @@ def _door_leaf():
     _studs(m, [(x, y) for x in (1.5, 10.5) for y in (7.0, 12.5, 19.0, 22.5, 26.0)])
     cx, cy = w / 2.0, 22.5
     m.ring("z", (cx, cy, 0.0), 3.0, 1.0, LEAF_T + 1.5, BRASS, sides=16)                   # the porthole's rim
-    K.glass_prism(m, "z", (cx, cy), -t - 0.25, t + 0.25, 2.6, GLASS_MID, cap=GLASS_DIM, emit=15)
+    K.glass_prism(m, "z", (cx, cy), -t - 0.25, t + 0.25, 2.6, GLASS_AMBER, emit=0)
     _pull(m, 9.5, 0.5)
     _hinges(m, ((2.0, 4.5), LOCK, top))
     return m
@@ -273,9 +283,11 @@ def _gate(width=3):
     of barred leaves that repeat the door's kick plate and ledges, at scale 2 (anchor as door_frame).
     The fan has an even number of rays, none on the middle: the upright line of the two meeting
     stiles ends at the transom and does not run on to the crown, where transom and upright would
-    stand against the light as a cross (c219, pre-review P9)."""
+    stand against the light as a cross (c219, pre-review P9). Six rays from a hub 9 px in radius:
+    no opening between them is narrower than 2 px (eight from the fanlight's small hub left slits
+    of half a pixel round it, a smear in the pictures)."""
     m = M.Model(PREFIX + "gate", px=2.0)
-    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=8, wide=1.0, glass=False)
+    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=6, wide=1.0, glass=False, hub=4.5, arc=7.5)
     hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H      # no slit of light under the transom
     for sx in (-1.0, 1.0):
         def span(x0, x1, y0, y1, mat, zz=z, **kw):
@@ -305,9 +317,9 @@ _PANES = ("121", "111", "101", "112", "111")
 
 def _glazed_leaf():
     """One leaf of the west door: a riveted plate in the lower third, dark glass in 6 x 7 px lights
-    above it, at scale 2 (anchor: the foot of the hinge edge; the leaf runs along +x, 1.5 blocks
-    by 4). Both faces are the same."""
-    m = M.Model(PREFIX + "glazed_leaf", px=2.0)
+    above it, at scale 2 (the hinge edge is x = 0 and the leaf runs along +x, 1.5 blocks by 4;
+    anchor: LEAF_ANCHOR). Both faces are the same."""
+    m = M.Model(PREFIX + "glazed_leaf", px=2.0, anchor=LEAF_ANCHOR)
     w, h, t = LEAF_W, 32.0, LEAF_T / 2.0
     sill, head = 11.0, h - 1.5
     m.box((0.0, 0.0, -t), (w, sill, t), IRON, grain="y")
@@ -340,8 +352,8 @@ def _canopy(width=5, depth=3):
     string course, on which it lies (c164 #21442). Between the pilasters the roof runs one block
     further back, to the wall. Five lights across and two deep; a riveted valance in front and at
     the sides; under each end a quarter-round brace that springs from the pilaster three blocks
-    down and meets the front edge, a small scroll in its corner. The middle of the underside is
-    left free: canopy_lamp hangs there."""
+    down and meets the front edge (_brace). The middle of the underside is left free: canopy_lamp
+    hangs there."""
     m = M.Model(PREFIX + "canopy", px=2.0)
     hw, out, back, pil = width * 4.0, depth * 8.0, -8.0, 8.0
     bay = hw - pil                                           # half the width between the pilasters
@@ -371,16 +383,38 @@ def _canopy(width=5, depth=3):
         m.box((a, -3.0, pil), (b, 0.0, out - 0.5), IRON_D, grain="z")
         for z in (12.0, 16.0, 20.0):
             K.rivet(m, (sx * hw, -1.5, z), out="x" if sx > 0 else "-x")
-        x, r = sx * (hw - pil / 2.0), out                    # the brace, on the middle of the pilaster
-        m.box((x - 1.0, -r - 1.5, 0.0), (x + 1.0, -pil, 0.5), IRON_D, grain="y")           # its wall plate
-        # the arc's outer edge leaves the wall plate upright and meets the underside at the front edge
-        m.ring("x", (x, -r + 0.5, out), r - 1.0, 1.0, 1.0, IRON, sides=48, arc=(270.0, 360.0))
-        m.box((x - 0.5, -1.0, pil), (x + 0.5, 0.0, out - 1.0), IRON, grain="z")
-        m.ring("x", (x, -pil - 2.0, 2.5), 1.75, 0.5, 1.0, IRON, sides=12)                 # the scroll
-        m.ring("x", (x, -r - 1.5, 1.5), 1.0, 0.5, 1.0, IRON, sides=12, arc=(90.0, 360.0))  # the foot's curl
-        K.rivet(m, (x, -r + 2.0, 0.5))
-        K.rivet(m, (x, -pil - 5.0, 0.5))
+        _brace(m, sx * (hw - pil / 2.0), out - 1.0, pil)
     return m
+
+
+RIB = 3.0           # a brace's rib is 6 px deep: a plate between two flanges of 1 px, riveted down its middle
+
+
+def _brace(m, x, r, top):
+    """A brace of the canopy, on the middle of a pilaster (at x): a riveted plate rib bent to a
+    quarter round -- the family's riveted plate and its round head in one piece, and iron enough
+    under a roof of five blocks by three (a bar of 2 px read as a wire there). The rib's back, of
+    radius r, leaves the wall plate upright and meets the canopy's underside behind the front
+    valance, whose rail it carries. The wall plate ends under the string course, `top` below the
+    canopy; in the corner under that course a ring, the family's small scroll, and under the shoe
+    the rib stands in the plate's foot curls forward."""
+    cy, cz = -r, r + 0.5                                     # the rib turns about this point
+    web = r - RIB / 2.0
+    m.box((x - 1.5, cy - 2.5, 0.0), (x + 1.5, -top, 0.5), IRON_D, grain="y")              # the wall plate
+    m.ring("x", (x, cy, cz), web, RIB - 1.0, 1.0, IRON, sides=48, arc=(270.0, 360.0))
+    for q in (r - 0.25, r - RIB + 0.25):                                                  # the flanges
+        m.ring("x", (x, cy, cz), q, 0.5, 2.0, IRON_D, sides=48, arc=(270.0, 360.0))
+    for k in range(1, 9):
+        t = math.radians(270.0 + 10.0 * k)
+        y, z = cy + web * math.cos(t), cz + web * math.sin(t)
+        K.rivet(m, (x + 0.5, y, z), out="x")
+        K.rivet(m, (x - 0.5, y, z), out="-x")
+    m.box((x - 1.5, cy - 1.0, 0.5), (x + 1.5, cy, RIB + 1.0), IRON_D, grain="z")           # the shoe
+    m.ring("x", (x, cy - 2.25, 2.25), 1.25, 1.0, 1.0, IRON, sides=12, arc=(90.0, 360.0))   # the foot's curl
+    m.ring("x", (x, -top - 2.0, 2.5), 1.5, 1.0, 1.0, IRON, sides=12)                      # the scroll
+    for y in (-top - 2.0, -top - 6.5):                       # the plate's rivets, either side of the rib
+        for side in (-1.0, 1.0):
+            K.rivet(m, (x + side, y, 0.5))
 
 
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
@@ -563,8 +597,10 @@ def ladder(canvas, pos, lengths, facing="south", origin=(0, 0, 0), plain=1):
 
 
 OUT = {(1, 0): "east", (-1, 0): "west", (0, 1): "south", (0, -1): "north"}
-GRILLES = "blocks"      # the base-storey windows: A3's bars in the wall plane ("blocks") or this family's
-                        # grille on the glass ("model"); only one layer stays, the review says which
+GRILLES = "model"       # the base-storey windows: this family's grille on the glass ("model") or A3's bars
+                        # in the wall plane ("blocks"). Only one layer stays, and side by side on the real
+                        # wall it is the model: the blocks stand a block in front of the glass, their bars
+                        # miss the pane's muntins and slide over them as one walks -- two nets
 
 
 def _face(cells, inward, y):
@@ -619,14 +655,18 @@ def leaves(canvas, kind, pos, facing="east", origin=(0, 0, 0), swing=90.0, inset
     """Hang a pair of leaves (`kind`: "door_leaf" or "glazed_leaf") in a three-wide doorway. pos is
     the foot centre of the doorway on the plane the leaves close in, `facing` the way it looks.
     swing: 0 is shut, 90 is open outwards with each leaf along its reveal, `inset` off it; the hinge
-    line stands `out` in front of pos. Both leaves show the same face. Returns the entity count."""
+    line stands `out` in front of pos. Both leaves show the same face. Returns the entity count.
+    A leaf is lit by the cell its entity stands in. A shut leaf's hinge foot lies on the face of
+    the jamb, and on one side of the doorway that point counts to the jamb's stone -- a black
+    leaf; so the entity stands where the leaf's anchor is, a pixel along the leaf (LEAF_ANCHOR)."""
     base = K.FACING[facing]
     tan = K.turn(base, (1.0, 0.0, 0.0))                 # along the doorway, to the right of who looks at it
     fwd = K.turn(base, (0.0, 0.0, 1.0))
     model, scale = _models()[PREFIX + kind], SPEC[kind]["scale"]
     for side, yaw in ((-1.0, base + swing), (1.0, base + 180.0 - swing)):
         reach = side * (1.5 - inset)
-        at = tuple(pos[k] + origin[k] + reach * tan[k] + out * fwd[k] for k in range(3))
+        along = K.turn(yaw, (model.anchor[0] * scale / 16.0, 0.0, 0.0))
+        at = tuple(pos[k] + origin[k] + reach * tan[k] + out * fwd[k] + along[k] for k in range(3))
         canvas.add_entity(at[0], at[1], at[2], M.display(model, yaw=yaw, scale=scale))
     return 2
 
