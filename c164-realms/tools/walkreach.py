@@ -38,6 +38,11 @@ What is found, by how a place is reached from the start:
     trap   reached from the start, and no way back: 掉下去出不来
     void   a step off the lowest block of the scene, or out of the bounds looked at
 
+The finished map sends a visitor home who falls under a line in the cloud (the director's desk,
+11-16 06:08). So trap ground is told apart once more: the part with a way on down to that line
+(--line; a slope one slides off) and the part with none (a ledge, a pit: "stuck"), which that
+rule never sees.
+
 and besides: every piece reached by hopping only (a way that needs a jump is 走不通 for some), every
 standing place with less than two blocks over the head, every low gap beside the way that only
 head room closes, and the points named with --points (the route's landmarks) with how each is
@@ -492,6 +497,7 @@ class Reach:
             for nxt, kind, rise in edges or ():
                 back.setdefault(nxt, []).append((node, kind, rise))
         home = self._flood(lambda kind, rise: True, back=back)
+        self.back = back
         self.kind, self.steps = {}, {}
         for node in self.out:
             if node in walk:
@@ -502,6 +508,16 @@ class Reach:
                 self.kind[node], self.steps[node] = "fall", every[node]
             else:
                 self.kind[node], self.steps[node] = "trap", every[node]
+
+    def stuck(self, line):
+        """The trapped places from which there is no way down to `line` either (feet at or under it)
+        nor off the scene: whoever gets there stays there. The finished map sends a visitor home
+        who falls under a line in the cloud; these are the places over it that it never sees."""
+        low = [n for n in self.kind if n[2] <= int(round(line * Q))] + list(self.void)
+        if not low:
+            return {n for n, k in self.kind.items() if k == "trap"}
+        down = self._flood(lambda kind, rise: True, sources=low, back=self.back)
+        return {n for n, k in self.kind.items() if k == "trap" and n not in down}
 
     # -- asking -----------------------------------------------------------------------------------------
     def node_at(self, x, z, near_y=None, reach=1):
@@ -576,9 +592,10 @@ class Reach:
         out.sort(key=len, reverse=True)
         return out
 
-    def report(self, points=None, least=12):
+    def report(self, points=None, least=12, line=None):
         """What was found, as plain data (reach.json). points: {name: (x, y, z)} to look up. A piece
-        of fewer than `least` nodes (three square blocks) is counted, not listed."""
+        of fewer than `least` nodes (three square blocks) is counted, not listed. line: the height
+        at or under which a fallen visitor is sent home (None: nobody is)."""
         world = self.world
         count = {k: 0 for k in KINDS}
         for kind in self.kind.values():
@@ -616,7 +633,7 @@ class Reach:
                          drop=[round(min(drops[n] for n in rim), 2), round(max(drops[n] for n in rim), 2)])
                     for rim in self.pieces_by_kind(drops)]
             rims.sort(key=lambda r: (order[r["kinds"][0]], -r["nodes"]))
-            row["falls in from"] = rims[:8]
+            row["falls in from"] = rims
             row["edges in"] = len(rims)
             row["ways in"] = len(drops)
             row["rise to get out"] = self._way_out(piece)
@@ -624,6 +641,34 @@ class Reach:
         self.rim = {src for node in into for src, _ in into[node]}
         traps.sort(key=lambda t: (min([order[k] for r in t["falls in from"] for k in r["kinds"][:1]] or [9]), -t["nodes"]))
         out["traps"] = traps
+        # the trap ground by height, and the part of it nothing leads down from
+        bands = {}
+        for n in trapped:
+            band = int(math.floor(n[2] / float(Q) / 2.0)) * 2
+            bands[band] = bands.get(band, 0) + 1
+        out["trap ground by height (square blocks in each two blocks of height, from the top)"] = {
+            f"{b}..{b + 2}": round(v * GRID * GRID, 1) for b, v in sorted(bands.items(), reverse=True)}
+        legit = [n[2] / float(Q) for n, k in self.kind.items() if k in ("walk", "hop")]
+        out["lowest feet on walk or hop ground"] = round(min(legit), 2) if legit else None
+        self.fast = self.stuck(line) if line is not None else set(trapped)
+        out["line"] = line
+        fast = []
+        for piece in self.pieces(self.fast):
+            row = box_of(piece)
+            drops, slides = {}, 0
+            for n in piece:
+                for src, rise in into.get(n, ()):
+                    drops[src] = min(drops.get(src, math.inf), -rise)
+                slides += len([1 for src, _, _ in self.back.get(n, ()) if self.kind[src] == "trap" and src not in self.fast])
+            row["falls in from"] = sorted(
+                [dict(box_of(rim), kinds=sorted({self.kind[n] for n in rim}, key=order.get),
+                      drop=[round(min(drops[n] for n in rim), 2), round(max(drops[n] for n in rim), 2)])
+                 for rim in self.pieces_by_kind(drops)], key=lambda r: (order[r["kinds"][0]], -r["nodes"]))
+            row["ways in from trap ground that is not stuck"] = slides
+            row["rise to get out"] = self._way_out(piece)
+            fast.append(row)
+        fast.sort(key=lambda t: (0 if t["falls in from"] else 1, -t["nodes"]))
+        out["stuck (no way back and no way down to the line)"] = fast
         # the steps off the scene
         edge = self.pieces_by_kind(self.void)
         out["void"] = [dict(box_of(piece), kinds=sorted({self.kind[n] for n in piece})) for piece in edge
@@ -797,18 +842,23 @@ def box_of(nodes):
 COLOURS = {"walk": (70, 200, 90), "hop": (235, 205, 60), "fall": (70, 140, 235), "trap": (230, 60, 50)}
 VOID = (235, 70, 220)
 RIM = (120, 20, 20)
+STUCK = (255, 150, 30)
 
 
-def draw(reach, path, scale=4, grid=10):
+def draw(reach, path, scale=4, grid=10, line=None):
     """A plan of what is reached: one square a lattice point, the highest node at each; green walk,
     yellow hop, blue fall, red trap, lighter the higher; magenta where a step leads off the scene,
-    a dark red middle where a step drops into a trap. Lines every `grid` blocks, numbered along the
-    top and the left; north is up."""
+    a dark red middle where a step drops into a trap; with a line, orange the trap ground nothing
+    leads down to it from. Lines every `grid` blocks, numbered along the top and the left; north
+    is up."""
     from PIL import Image, ImageDraw
     rim = getattr(reach, "rim", None)
     if rim is None:
         rim = {n for n, edges in reach.out.items() if reach.kind[n] != "trap"
                and any(reach.kind[nxt] == "trap" for nxt, _, _ in edges or ())}
+    fast = getattr(reach, "fast", None)
+    if fast is None or line is None:
+        fast = set()
     top = {}
     for node in reach.kind:
         key = (node[0], node[1])
@@ -824,7 +874,7 @@ def draw(reach, path, scale=4, grid=10):
         shade = 0.45 + 0.55 * ((node[2] - lo) / float(max(hi - lo, 1)))
         if reach.kind[node] == "trap":
             shade = 0.8 + 0.2 * shade                   # a trap is seen however low it lies
-        colour = VOID if node in reach.void else tuple(int(c * shade) for c in COLOURS[reach.kind[node]])
+        colour = VOID if node in reach.void else STUCK if node in fast else tuple(int(c * shade) for c in COLOURS[reach.kind[node]])
         for a in range(scale):
             for b in range(scale):
                 px[pad + (i - i0) * scale + a, pad + (j - j0) * scale + b] = colour
@@ -913,6 +963,20 @@ def say(report):
                          f"{e['nodes']} nodes, a drop of {e['drop'][0]:g} to {e['drop'][1]:g}")
     if len(report["traps"]) > 12:
         lines.append(f"  ... and {len(report['traps']) - 12} more traps")
+    stuck = report.get("stuck (no way back and no way down to the line)") or []
+    if report.get("line") is not None:
+        lines.append(f"  a visitor at or under y {report['line']:g} is sent home; the lowest walk or hop ground is at "
+                     f"{report['lowest feet on walk or hop ground']}; trap ground with no way down to that line: "
+                     f"{sum(t['nodes'] for t in stuck) * GRID * GRID:g} square blocks in {len(stuck)} pieces")
+        for t in stuck[:16]:
+            ins = "; ".join(f"{'/'.join(e['kinds'])} ground at {e['at']} (drop {e['drop'][0]:g} to {e['drop'][1]:g})"
+                            for e in t["falls in from"][:3])
+            lines.append(f"      stuck: {t['nodes']} nodes at {t['at']}, x {t['x']}, z {t['z']}, y {t['y']}; out is "
+                         f"{t['rise to get out']} up; from " + (ins or "trap ground only")
+                         + (f"; and {t['ways in from trap ground that is not stuck']} ways from the slope"
+                            if t["ways in from trap ground that is not stuck"] else ""))
+        if len(stuck) > 16:
+            lines.append(f"      ... and {len(stuck) - 16} more")
     for v in report["void"][:8]:
         lines.append(f"  off the scene: {v['nodes']} nodes at {v['at']}, x {v['x']}, z {v['z']} ({', '.join(v['kinds'])})")
     for h in report["hop only"][:12]:
@@ -1074,6 +1138,8 @@ def main():
     ap.add_argument("--points", help="JSON file {name: [x, y, z]} of points to look up besides the route's landmarks")
     ap.add_argument("--bounds", help="x0,z0,x1,z1 of the ground looked at (default: the skeleton's masses and 40 more)")
     ap.add_argument("--scale", type=int, default=4, help="pixels a lattice point on the map")
+    ap.add_argument("--line", help="a visitor whose feet are at or under this height is sent home (default: the top "
+                                   "of the cloud sheet of site/terrain.py; 'none': nobody is)")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
     if args.selftest:
@@ -1092,7 +1158,14 @@ def main():
     cells = cells_of(args.scene, args.canvas)
     world = World(cells, bounds)
     reach = world.reach(start)
-    report = reach.report(points)
+    if args.line is None:
+        try:
+            line = float(importlib.import_module("scenes.obs.site.terrain").CLOUD_TOP + 1)
+        except Exception:  # noqa: BLE001  no such module, no such sheet: nobody is sent home
+            line = None
+    else:
+        line = None if args.line == "none" else float(args.line)
+    report = reach.report(points, line=line)
     report["scene"], report["bounds"] = args.scene, list(bounds)
     print(say(report))
     if args.out:
@@ -1102,7 +1175,7 @@ def main():
             fh.write("\n")
         with open(os.path.join(args.out, "reach.txt"), "w", encoding="utf-8", newline="\n") as fh:
             fh.write("\n".join(reach.plan()) + "\n")
-        size = draw(reach, os.path.join(args.out, "reach.png"), args.scale)
+        size = draw(reach, os.path.join(args.out, "reach.png"), args.scale, line=line)
         print(f"written: {args.out}/reach.json, reach.txt, reach.png ({size[0]}x{size[1]})")
     return 0
 
