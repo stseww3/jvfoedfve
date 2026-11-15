@@ -11,7 +11,8 @@ How it works, so that it can be read off the pieces:
 
   motor -> belt -> drum   An electric motor on the threshold of the winch house drives the west
                           wheel of the drum by a flat belt. The drum is a wide barrel between two
-                          spoked wheels three blocks across, the rope wound on it turn beside turn.
+                          spoked wheels three blocks across, the rope wound on it turn beside turn;
+                          it fills the room from wall to wall.
   drum -> lead sheave     The rope leaves the top of the barrel, comes forward and down over a
                           sheave one block across that stands on the threshold, and goes into
                           the floor through a collar.
@@ -47,6 +48,12 @@ are not split.
 Scale (A5 1.2: px = scale keeps 16 texels to the block): drum and frame 2, the rest 1 -- the
 car is under three blocks every way, so it is drawn texel for texel. 26 display entities, one of
 them the lamp family's wall lamp in the winch house (WORK_LAMP).
+
+Light: the car is lit within, a source of the second rank in the car that is offered to the sky
+line, which places it. The winch house has no lamp of the site's: the winch brings its own, a
+bracket lamp on the pier between the two windows of the back wall, over the barrel and between
+the wheels, where it is seen from the platform; the lamp reports its own source. Neither reaches
+the paving that the arrival view sees.
 """
 import functools
 import math
@@ -64,7 +71,7 @@ from ..site import _kit as SK           # read only: the line of the ridge under
 
 try:                                    # the station's shell, once site/cablecar is in the tree
     from ..site import cablecar as SHELL
-except ImportError:                     # until then its numbers as the group has them (c226, 275660c7)
+except ImportError:                     # until then its numbers as the group has them (c226, 37fc9574)
     SHELL = None
 
 PREFIX = "mach_cable_"
@@ -118,7 +125,7 @@ FEET = float(S.STATION_GROUND)                          # -4: the platform's flo
 AXIS = _shell("AXIS", SK.CABLE_RIDGE_Z)                 # -33: the row of the track's axis
 TRACK_Z = AXIS + 0.5                                    # the track's centre line in the station
 CAR_BOX = _shell("CAR", {"box": (int(S.V1["pos"][0]) + 1, AXIS - 1, X1, AXIS + 1)})["box"]     # x 89..91, z -34..-32
-ROOM = _shell("WINCH_ROOM", {"box": (X1 - 5, Z0 + 1, X1 - 1, Z0 + 3)})["box"]                  # x 86..90, z -39..-37
+ROOM = _shell("WINCH_ROOM", {"box": (X1 - 4, Z0 + 1, X1 - 1, Z0 + 3)})["box"]                  # x 87..90, z -39..-37
 LEVEL = _shell("LEVEL", 4)                              # cells of level track east of the platform
 GRADE = _shell("GRADE", 0.5)                            # then the rails fall this much with every cell
 
@@ -151,11 +158,14 @@ X_ROPE = CAR_BOX[0] + 0.25
 HOOD = (X_ROPE, FEET, TRACK_Z)
 DUCT_ROWS = list(range(ROOM[3] + 2, AXIS - 1))          # the paving between the house and the north rail: z -35
 
-# The winch fills the room: the drum's axle runs east-west through the middle of it, the wheels
+# The winch fills the room, which is four blocks wide and three deep: the drum's axle runs
+# east-west through the middle of it, the feet of its bearings against the side walls, the wheels
 # two texels clear of the floor and of the north wall. The threshold is the row of the south wall,
-# which is one opening: the motor and the lead sheave stand in it.
+# which is one opening: the motor stands in its west half, the lead sheave over the rope's duct,
+# the east third is free.
 WHEEL_R = 1.5                                           # the big wheels: three blocks across
-AXLE = (S.mid(ROOM[0], ROOM[2]), FEET + WHEEL_R + 2 * PX, ROOM[1] + WHEEL_R + 2 * PX)
+AXLE = (S.mid(ROOM[0], ROOM[2]), FEET + WHEEL_R + 2 * PX, ROOM[1] + WHEEL_R + 2 * PX)   # (89, -2.375, -37.375)
+DRUM_HALF = 16.0                                        # half the drum's length over its bearings, in its units: 2 blocks
 THRESHOLD_Z = ROOM[3] + 1.5
 DRUM_ROPE_R = 1.0                                       # from the axle to the middle of the rope on the barrel
 SHEAVE = (X_ROPE, FEET + 9 * PX, THRESHOLD_Z - 2 * PX)  # the lead sheave: one block across, a texel off the floor
@@ -164,8 +174,14 @@ WHEEL_X = 10.25                                         # the wheels' middle pla
 BELT_X = AXLE[0] - WHEEL_X * 2 * PX                     # the west wheel's, in blocks
 PULLEY = (BELT_X, FEET + 8 * PX, THRESHOLD_Z)           # the motor's belt pulley
 WHEEL_BELT_R, PULLEY_BELT_R = WHEEL_R + 0.5 * PX, 4.5 * PX      # to the middle of the belt's thickness
-LAMP = (AXLE[0], FEET + 3.5, float(ROOM[1]))            # on the north wall between its windows, over the barrel
-WORK_LAMP = True                                        # False once the site's lamps light the winch room
+
+# The winch's lamp: one of the lamp family, on the pier between the two windows of the back wall
+# (site/cablecar keeps those two columns of brick for it), its lantern out over the barrel between
+# the wheels. From the platform it is seen under the opening's girder, over the barrel.
+LAMP = (AXLE[0], FEET + 3.5, float(ROOM[1]))            # a point on the north wall's face: (89, -0.5, -39)
+LAMP_KIND = "bracket"
+LAMP_LEVEL = None                                       # None: the lamp's own (12: the drum's cell gets 9, the sheave's 6)
+WORK_LAMP = True                                        # False if the winch house is ever lit by a lamp of the site's
 
 
 def _runs(c1, r1, c2, r2):
@@ -370,7 +386,7 @@ def _drum():
     m = M.Model(PREFIX + "drum", px=2.0)
     live = (X_ROPE - AXLE[0]) * 8.0
     barrel = DRUM_ROPE_R * 8.0 - 0.5
-    m.tube("x", (0, 0), -17.0, 17.0, 1.0, IRON_D)                                  # the shaft, out through both bearings
+    m.tube("x", (0, 0), -DRUM_HALF, DRUM_HALF, 1.0, IRON_D)                        # the shaft, from wall to wall
     m.tube("x", (0, 0), -9.0, 9.0, barrel, IRON, sides=16)
     m.tube("x", (0, 0), -8.0, live + 0.5, barrel + 1.0, COIL, sides=16)            # the rope on it
     for s in (-1.0, 1.0):
@@ -384,13 +400,14 @@ def _drum():
 
 
 def _frame():
-    """What carries the drum: a bearing pedestal outside each wheel, bolted to the floor, and
-    the belt where it lies on the west wheel. Scale 2. Anchor: the middle of the drum's axle,
-    so that drum and frame stand on one point and take the same light."""
+    """What carries the drum: a bearing pedestal outside each wheel, bolted to the floor, its
+    foot plate out to DRUM_HALF, where the wall is; and the belt where it lies on the west wheel.
+    Scale 2. Anchor: the middle of the drum's axle, so that drum and frame stand on one point and
+    take the same light."""
     m = M.Model(PREFIX + "frame", px=2.0)
     floor = (FEET - AXLE[1]) * 8.0
     for s in (-1.0, 1.0):
-        a, b = sorted((12.5 * s, 15.5 * s))
+        a, b = sorted(((DRUM_HALF - 3.5) * s, (DRUM_HALF - 0.5) * s))
         x = (a + b) / 2.0
         m.box((a - 0.5, floor, -8.0), (b + 0.5, floor + 1.0, 8.0), IRON_D, grain="z")          # foot plate
         for t in (-1.0, 1.0):
@@ -407,22 +424,24 @@ def _frame():
 
 
 def _motor():
-    """The electric motor that drives the drum: a ribbed round body on a bed, the belt pulley on
-    its west end, a terminal box with the maker's plate, the conduit down into the floor.
+    """The electric motor that drives the drum: a short ribbed body between two end bells on a
+    bed, the belt pulley on its west end, a terminal box with the maker's plate on top, the
+    conduit back from it and down into the floor behind the motor. It is a short one: it shares
+    the threshold with the lead sheave, a block and a quarter east of its pulley.
     Anchor: the middle of the pulley; the shaft is the model's x axis, the body at +x."""
     m = M.Model(PREFIX + "motor")
     m.tube("x", (0, 0), -2.5, 2.5, 4.0, IRON, sides=12)                            # belt pulley
     m.tube("x", (0, 0), -3.0, 4.0, 1.0, IRON_D)                                    # shaft
     m.tube("x", (0, 0), 4.0, 6.0, 5.0, IRON_D, sides=12)                           # end bell
-    m.tube("x", (0, 0), 6.0, 20.0, 6.0, IRON, sides=12)                            # body
-    for x in (8.0, 11.0, 14.0, 17.0):
+    m.tube("x", (0, 0), 6.0, 13.0, 6.0, IRON, sides=12)                            # body
+    for x in (7.0, 9.0, 11.0):
         m.tube("x", (0, 0), x, x + 1.0, 7.0, IRON_D, sides=12, seed=_SPOKE + 1)    # cooling ribs
-    m.tube("x", (0, 0), 20.0, 22.0, 5.0, IRON_D, sides=12)
-    m.box((5.0, -8.0, -7.0), (21.0, -6.0, 7.0), IRON_D, grain="x")                 # bed
-    m.box((9.0, 5.0, -3.0), (17.0, 9.0, 3.0), IRON_D, grain="x")                   # terminal box
-    m.box((11.0, 6.0, 3.0), (15.0, 8.0, 3.5), BRASS, grain="x")                    # maker's plate, to the platform
-    m.hose([(16.0, 8.0, 0.0), (24.0, 8.0, 0.0), (24.0, -8.0, 0.0)], 0.75, IRON_D)  # conduit
-    m.tube("y", (24.0, 0.0), -8.0, -7.0, 2.0, IRON)                                # where it goes into the floor
+    m.tube("x", (0, 0), 13.0, 15.0, 5.0, IRON_D, sides=12)
+    m.box((5.0, -8.0, -7.0), (14.0, -6.0, 7.0), IRON_D, grain="x")                 # bed
+    m.box((7.0, 5.0, -3.0), (12.0, 9.0, 3.0), IRON_D, grain="x")                   # terminal box
+    m.box((8.0, 6.0, 3.0), (11.0, 8.0, 3.5), BRASS, grain="x")                     # maker's plate, to the platform
+    m.hose([(9.5, 7.0, -3.0), (9.5, 7.0, -9.0), (9.5, -8.0, -9.0)], 0.75, IRON_D)  # conduit
+    m.tube("y", (9.5, -9.0), -8.0, -7.0, 2.0, IRON)                                # where it goes into the floor
     span = BELT_LOW - BELT_UP
     m.ring("x", (0, 0, 0), PULLEY_BELT_R * 16.0, 1.0, 3.0, BELT, sides=_sides(span, 12), arc=(BELT_UP, BELT_LOW))
     return m
@@ -588,9 +607,11 @@ def build(canvas, origin=(0, 0, 0)):
     for a, b in zip(ROPE_LINE, ROPE_LINE[1:]):
         n += run("rope", a, b)
 
-    # the car is lit within: its light, where A2's tool wants it; and the winch room's working lamp
+    # The car is lit within: its source is offered to the sky line, which places it (PK.offer_lights
+    # hands it to sky/_lightkit, and puts it down itself in a tree without that). The winch's lamp
+    # reports its own.
     x, y, z = CAR_LIGHT
-    PK.offer_lights(canvas, [((x + ox, y + oy, z + oz), CAR_LIGHT_LEVEL)], "machines/cable: the car's windows")
+    PK.offer_lights(canvas, [((x + ox, y + oy, z + oz), CAR_LIGHT_LEVEL)], "machines/cable:car_windows")
     if WORK_LAMP:
-        n += lamps.place(canvas, "bracket", LAMP, facing="south", origin=origin)
+        n += lamps.place(canvas, LAMP_KIND, LAMP, facing="south", origin=origin, level=LAMP_LEVEL)
     return n
