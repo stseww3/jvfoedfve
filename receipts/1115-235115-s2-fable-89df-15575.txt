@@ -1,0 +1,51 @@
+a0job 1115-235115-s2-fable-89df-15575: cursor/c164-s2-fable-89df @ 95714f60 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.42 1.91 1.88, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gatestack.sh --until cd87ee52 cbd57b04 props/ironwork 8e6bc4a5 machines/clocks b026dd95 materials/board f2491bd4 ---- exit 0, 318 s, last 60 lines of 41:
+==== gatestack: props/ironwork 8e6bc4a5 on the tree b31bcf73, the assembly as it was cbd57b04 ====
+gate props/ironwork 8e6bc4a5: the merged tree b31bcf73, the assembly as it was cbd57b04
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 50 scenes in 33 s: 50 pass (33 with warnings)
+pictures: [PASS] selfshots obs_props_ironwork at b31bcf73: 23 of 23 kept pictures are what the code draws
+result: PASS
+==== gatestack: machines/clocks b026dd95 on the tree 803b70c4, the assembly as it was b31bcf73 ====
+gate machines/clocks b026dd95: the merged tree 803b70c4, the assembly as it was b31bcf73
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    25 of 26 files are the card's own
+                    not this card's file: M build/scenes/obs/machines/clock.py
+check.py: 50 scenes in 33 s: 50 pass (33 with warnings)
+pictures: obs_mach_clocks: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_clocks at 803b70c4: 9 of 15 kept pictures are what the code draws, 6 not
+    master_door: 48 of 921600 pixels are not what the code draws (off by up to 3 of 255)
+    v1_tower: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    tower_far: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    v5_up: 3767 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    tower_foot: 102 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+    dial_close: 6949 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+pictures: obs_mach_clocks_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_clocks_b at 803b70c4: 1 of 5 kept pictures are what the code draws, 4 not
+    v1_tower: 6988 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    tower_far: 5712 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    v5_up: 3767 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    tower_foot: 102 of 921600 pixels are not what the code draws (off by up to 1 of 255)
+result: PASS
+==== gatestack: materials/board f2491bd4 on the tree cd87ee52, the assembly as it was 803b70c4 ====
+gate materials/board f2491bd4: the merged tree cd87ee52, the assembly as it was 803b70c4
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 50 scenes in 34 s: 50 pass (33 with warnings)
+pictures: [PASS] selfshots obs_mat_board at cd87ee52: 35 of 35 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_ashlar_a at cd87ee52: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_ashlar_c at cd87ee52: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_windows_b at cd87ee52: 10 of 10 kept pictures are what the code draws
+result: PASS
+==== gatestack: 3 deliveries from cbd57b04 to cd87ee52 ====
+PASS props/ironwork 8e6bc4a5 on b31bcf73
+PASS machines/clocks b026dd95 on 803b70c4
+PASS materials/board f2491bd4 on cd87ee52
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=322 host=cursor cores=4 head=95714f60 commit=2fd93c4e pushed=yes branch=cursor/c164-s2-wip-89df files=321
+a0job: exit=0 secs=323
