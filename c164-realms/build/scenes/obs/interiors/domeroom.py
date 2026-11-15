@@ -51,12 +51,14 @@ import importlib
 import math
 
 from artkit import models as M
+from artkit.canvas import Canvas
 
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
 from ..main import _order as O
 from ..props import _kit as K
+from . import _domeframe as F
 
 ORDER = 80                  # after the shell and the dome (60)
 MOVED_IN = False
@@ -90,7 +92,10 @@ GEAR_SLIT = (
 )
 
 IRON = B.IRON_RIVETED
-WOOD = B.DARK_WOOD
+WOOD = B.DARK_WOOD                              # the floor's border, what stands in for furniture
+DEAL = B.FLOOR_WOOD                             # the boards of the vault and of the drum's lining: dark oak
+#                                                 is dead black where no lamp is (0.02 from below, the sky's
+#                                                 own light on it); these read as dark boards (0.04 to 0.08)
 # what the dome's skin is made of: the copper families, and riveted iron along the slit (the stiles
 # of its leaves or the rails of its shutter: main/dome). Only these count when the room looks for the
 # skin, and it looks from above: the machines are on the canvas before the room (the telescope's tube
@@ -320,7 +325,81 @@ def _models():
 
 
 def models():
-    return dict(_models())
+    out = dict(_models())
+    skeleton = frame()
+    if skeleton is not None:
+        out.update(skeleton.models)
+    return out
+
+
+# --- the dome's skeleton ------------------------------------------------------------------------------
+def ceilings(shell):
+    """{column of the room: the height of the underside over it once the vault is boarded}, None
+    under the open slit."""
+    out = {}
+    for col in shell.inside:
+        top, rows = shell.soffit[col], shell.vault.get(col)
+        out[col] = None if top is None else min(rows) if rows else top + 1
+    return out
+
+
+def _faces(shell):
+    """How far from the axis the ribs come up against the inner leaf (the ring girder's face over
+    it), and how far along their planes the arch girders do: the least of each."""
+    ax, az = S.DOME_AXIS
+
+    def out_to_leaf(dx, dz, z0):
+        d = 0.0
+        while (int(math.floor(ax + d * dx)), int(math.floor(az + z0 + d * dz))) not in shell.ledge:
+            d += 0.03125
+            if d > 2.0 * S.DOME_R:
+                raise ValueError("no inner leaf on the way out from the dome's axis")
+        return d
+
+    ribs = min(out_to_leaf(math.cos(math.radians(a)), math.sin(math.radians(a)), 0.0) for a in rib_angles())
+    sides = _sides(shell)
+    arches = min(out_to_leaf(dx, 0.0, side) for dx in (1.0, -1.0) for side in sides)
+    return ribs, arches
+
+
+def _sides(shell):
+    """Where the two arch planes stand, as z counted from the dome's axis: through the middle of
+    the columns beside the slit."""
+    return sorted({z + 0.5 - S.DOME_AXIS[1] for _x, z in shell.jambs})
+
+
+@functools.lru_cache(maxsize=1)
+def _default_shell():
+    """The dome as the tree builds it when nobody asks for anything else, on a canvas of its own:
+    what the skeleton's models are drawn for when they are asked for before a room is dressed."""
+    c = Canvas()
+    dome = _other("main", "dome")
+    if dome is None:
+        from ..main import _dome as dome
+    dome.build(c)
+    return Shell(c)
+
+
+_FRAMES = {}
+
+
+def frame(shell=None):
+    """The dome's skeleton (interiors/_domeframe.Frame) for the shell on the canvas, or without one
+    for the dome that was dressed last, else for the dome as the tree builds it. None where the
+    dome has no slit to build the two arch girders beside."""
+    if shell is None:
+        if "last" in _FRAMES:
+            return _FRAMES["last"]
+        shell = _default_shell()
+    if not shell.roofed or len(_sides(shell)) != 2:
+        return None
+    ceiling = ceilings(shell)
+    key = hash(frozenset(ceiling.items()))
+    if key not in _FRAMES:
+        _FRAMES[key] = F.Frame(PREFIX, ceiling, S.DOME_AXIS, _sides(shell), shell.arches & shell.inside,
+                               _faces(shell), BASE_RING[1], rib_angles())
+    _FRAMES["last"] = _FRAMES[key]
+    return _FRAMES[key]
 
 
 # --- the dress ------------------------------------------------------------------------------------
@@ -337,7 +416,7 @@ def dress(c, origin=(0, 0, 0)):
     _wall(c, origin, put, shell)
     _floor(put, shell)
     _fittings(put)
-    n = _furniture(c, origin, put)
+    n = _skeleton(c, origin, shell) + _furniture(c, origin, put)
     _offer(c, origin, lights())
     return n
 
@@ -354,7 +433,16 @@ def _vault(put, shell):
     iron = shell.frame | shell.arches
     for col, rows in shell.vault.items():
         for y in rows:
-            put(col[0], y, col[1], IRON.block if col in iron else WOOD.block)
+            put(col[0], y, col[1], IRON.block if col in iron else DEAL.block)
+
+
+def _skeleton(c, origin, shell):
+    """The iron skeleton under the boards; returns the number of display entities."""
+    skeleton = frame(shell)
+    if skeleton is None:
+        return 0
+    return sum(K.put(c, skeleton.models[name], pos, yaw=yaw, scale=F.SCALE, origin=origin)
+               for name, pos, yaw in skeleton.placed)
 
 
 def _wall(c, origin, put, shell):
@@ -368,7 +456,7 @@ def _wall(c, origin, put, shell):
         for y in range(FEET, WALL_TOP):
             if (col in doors and y0 <= y <= y1) or shell.glazed(col, y):
                 continue
-            put(col[0], y, col[1], WOOD.block)
+            put(col[0], y, col[1], DEAL.block)
 
 
 def _floor(put, shell):
