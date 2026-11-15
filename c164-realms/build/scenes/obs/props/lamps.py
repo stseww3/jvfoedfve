@@ -67,11 +67,11 @@ def _opal_globe(m, centre, radius, sides=8, squash=1.0, fine=False):
     if fine:
         bands = [(-1.0, -0.75, 1, GLOBE[0]), (-0.75, -0.5, 1, GLOBE[0]), (-0.5, -0.25, 1, GLOBE[1]),
                  (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
-                 (0.25, 0.5, 1, GLOBE[CREAM_MID + 1]), (0.5, 0.75, 1, GLOBE[1]), (0.75, 1.0, 1, GLOBE[0])]
+                 (0.25, 0.5, 1, GLOBE[CREAM_MID]), (0.5, 0.75, 1, GLOBE[1]), (0.75, 1.0, 1, GLOBE[0])]
     else:
         bands = [(-1.0, -0.65, 1, GLOBE[0]), (-0.65, -0.25, 1, GLOBE[1]),
                  (-0.25, 0.25, 1, GLOBE[CREAM_MID]),
-                 (0.25, 0.65, 1, GLOBE[CREAM_MID + 1]), (0.65, 1.0, 1, GLOBE[1])]
+                 (0.25, 0.65, 1, GLOBE[CREAM_MID]), (0.65, 1.0, 1, GLOBE[1])]
     return K.glass_ball(m, centre, radius, bands, sides=sides, squash=squash)
 
 
