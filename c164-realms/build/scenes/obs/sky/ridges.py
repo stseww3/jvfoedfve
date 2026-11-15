@@ -46,12 +46,19 @@ DISTANCE = 360.0                            # how far out the panels read, in bl
 WIDTH = 300.0                               # how much sky one panel covers, across, in blocks
 MAX_ANGLE = 6.0                             # the tallest peak's elevation, degrees (the card's ceiling)
 
-# The model's own units: the exporter writes a model unit as 1/32 of a block (a 16-pixel element
-# comes out 0.5 blocks wide), so the model's picture is WIDE units = WIDE/32 blocks across before
-# the entity's scale. WIDE is chosen so the unscaled picture is exactly one block: then the
-# entity's scale IS the panel's width in blocks.
-WIDE, TALL = 32.0, 5.0                      # model units: 1.0 block across, 0.156 blocks high
+# The model's own units: the exporter writes a model unit as 1/32 of a block, so the model has to
+# stay inside 48 units to export at all. The picture is WIDE units across and TALL units high.
+WIDE, TALL = 32.0, 5.0
 SCALE = WIDTH / (WIDE / 32.0)               # 300: the width in blocks over the model's own width
+# How finely the picture is drawn, in picture pixels to a model unit. What matters on screen is
+# picture pixels per world block: px * WIDE / WIDTH.  The integration lead worked out that a
+# 1280-pixel frame with a 70-degree field at 360 blocks puts one screen pixel on about 0.36 blocks,
+# so a faithful hill wants about 2.76 picture pixels to a block -- 828 across a 300-block panel.
+# The model exporter will not write a texture wider than 512, though, and 512 over 300 blocks is
+# 1.71 to the block: that is the ceiling this engine allows, 62% of an exact fit. Drawn at 1 the
+# panels came out at 0.11 to the block -- a smeared band with every jag lost -- so PX=16 (512
+# picture pixels, 1.71 to the block) is the most detail that can be had; the card records the gap.
+PX = 15.9375
 
 # The silhouettes: (share of the width, share of the height) turning points of the skyline, left to
 # right. Drawn as stepped shoulders, not straight lines, so the outline reads as rock.
@@ -70,7 +77,8 @@ SKYLINES = {
 # Which silhouette goes where, and what share of the tallest height its tallest point reaches.
 PANELS = [("a", "nw", 1.00), ("b", "nw", 0.72), ("b", "sw", 0.90), ("c", "sw", 1.00)]
 
-COLUMNS = 64                                # how finely the skyline is cut, across
+COLUMNS = 64                                # how many boxes one panel is cut into, across
+HEIGHTS = 24                                # how many distinct heights the skyline is taken to
 
 
 def _mat():
@@ -108,21 +116,35 @@ def _skyline(key, columns):
     return out
 
 
+def _skyline_steps(key, columns, steps):
+    """The skyline at `columns` columns with the heights taken to `steps` even steps. Quantising the
+    heights is what keeps the exporter's 512-pixel sheet within reach: every distinct height is one
+    patch there, so the picture is drawn with `steps` heights rather than one per column."""
+    raw = _skyline(key, columns)
+    top = max(raw)
+    return [max(0.25, round(h / top * steps) / steps * top) for h in raw]
+
+
 def _panel(key):
     """One ridge panel: a flat picture standing at the model's own z 0, its foot at y 0, facing
     +z. Its span along z is tiny on purpose -- the panel is carried out by the entity's
-    translation, so the model never comes near the 48-unit span limit."""
-    m = M.Model(PREFIX + key, px=1.0, anchor=(WIDE / 2.0, 0.0, 0.0))
+    translation, so the model never comes near the 48-unit span limit.
+
+    Drawn PX picture pixels to a model unit. The exporter packs the faces into a 512-pixel sheet
+    and gives every distinct (width, height) its own patch, so the picture is cut into COLUMNS
+    boxes of one width with the heights taken to HEIGHTS steps: that is COLUMNS x HEIGHTS patches
+    at most, each one a wide block of the panel's own resolution. At one pixel to the unit the
+    panel came out at 0.11 picture pixels to the block and every jag was lost; this is the most
+    detail the 512 sheet allows.
+    """
+    m = M.Model(PREFIX + key, px=PX, anchor=(WIDE / 2.0, 0.0, 0.0))
     mat = _mat()
-    height = _skyline(key, COLUMNS)
+    height = _skyline_steps(key, COLUMNS, HEIGHTS)
     step = WIDE / COLUMNS
     for i, top in enumerate(height):
         x0 = i * step
-        x1 = x0 + step
-        m.box((x0, 0.0, 0.0), (x1, top, 0.25), mat)                # the hill, a quarter unit thick
-        if i % 5 == 0 and top > TALL * 0.22:                       # a shoulder, a step behind
-            m.box((x0, 0.0, -0.25), (x1, top * 0.72, 0.0), mat)
-    m.box((0.0, 0.0, 0.0), (WIDE, 0.30, 0.25), mat)                # a foot band, no ridge floats
+        m.box((x0, 0.0, 0.0), (x0 + step, top, 0.25), mat)
+    m.box((0.0, 0.0, 0.0), (WIDE, 0.30, 0.25), mat)                 # a foot band, no ridge floats
     return m
 
 
