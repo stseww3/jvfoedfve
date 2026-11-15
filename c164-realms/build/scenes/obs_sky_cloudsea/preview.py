@@ -3,7 +3,7 @@ card sky/cloudsea for trying fog laws and shapes between two trips to the real c
 
     cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/pre
         [--scene obs_sky_cloudsea] [--only v12,sunset_west] [--laws blue,b768,s768]
-        [--clouds fancy,fast,off] [--chunks 12] [--size 1280x720]
+        [--clouds fancy,fast,off] [--chunks 12] [--size 1280x720] [--plan]
 
 build/render.py draws the blocks in fog but not the vanilla cloud layer, and this card is about
 the line where the two meet. Here the layer is laid into the ray tracer's picture by the game's
@@ -18,11 +18,14 @@ own arithmetic (26.3; clouds.vsh, clouds.fsh, CloudRenderer, AtmosphericFogEnvir
     distance measured from the eye. The layer is blended over what is drawn behind it: blocks below
     its top, or the fog colour and the stars where nothing is.
   - blocks: the ray tracer with the view distance set to 12 chunks (the board's; render.py takes
-    14), so the wall of fog between 172.8 and 192 blocks is where the real client has it.
+    14), so the wall of fog between 172.8 and 192 blocks is where the real client has it, and only
+    the chunks the game would have loaded round the camera are drawn (ChunkTrackingView).
 
 Not drawn, as in render.py: the afterglow and the fog's warm tint towards the west. The pictures
-are named <out>-<shot>-<law>[-fast|-off].png. They are no evidence: the card is settled on the real
-client's pictures. This only says beforehand what those should show.
+are named <out>-<shot>-<law>[-fast|-off].png. --plan adds <out>-plan.png: the sea from straight
+above without fog, the sheet's face and what stands out of it on the left, the deck under it on
+the right, with the rings where the board's aerial camera loses the blocks. They are no evidence:
+the card is settled on the real client's pictures. This only says beforehand what those should show.
 """
 import argparse
 import atexit
@@ -165,6 +168,63 @@ def _draw(w, above, cam, width, height, sheet, out):
             out[j, i, 2] = b
 
 
+def loaded(pos, lo, shape, chunks):
+    """Which columns of the grid the game has loaded round a camera (ChunkTrackingView.isWithinDistance)."""
+    cx, cz = math.floor(pos[0] / 16.0), math.floor(pos[2] / 16.0)
+    dx = np.maximum(np.abs(np.floor((np.arange(shape[0]) + lo[0]) / 16.0) - cx) - 1, 0)
+    dz = np.maximum(np.abs(np.floor((np.arange(shape[2]) + lo[2]) / 16.0) - cz) - 1, 0)
+    return dx[:, None] ** 2 + dz[None, :] ** 2 < chunks * chunks
+
+
+def plan(cells, look, path, aerial, chunks, scale=2):
+    """The sea from straight above, without fog: left the sheet's face (the tone it shows) with what
+    stands out of it, right the deck and what stands on it (the game's clouds switched off)."""
+    from scenes.obs.common import blocks as B
+    from scenes.obs.common import palette as P
+    from scenes.obs.sky import cloudsea
+    lit = look.lightmap[15][0]
+    tones = [np.clip(np.array(P.colour("cloud", i)) / 255.0 * lit, 0.0, 1.0) for i in range(len(B.CLOUD))]
+    index = {name: i for i, name in enumerate(B.CLOUD)}
+    x0, z0, nx, nz = cloudsea._grid()
+    high = np.full((2, nx, nz), -10 ** 6)
+    tone = np.full((2, nx, nz), -1)
+    counts = {"over the face": 0, "deck and below": 0}
+    for (x, y, z), state in cells.items():
+        i, j = x - x0, z - z0
+        if not (0 <= i < nx and 0 <= j < nz):
+            continue
+        t = index.get(state.partition("[")[0].split(":")[-1], -2)
+        if t >= 0:
+            counts["over the face" if y >= cloudsea.FACE else "deck and below"] += 1
+        for k in (0, 1):
+            if (k == 1 or t < 0 or y >= cloudsea.FACE) and y > high[k, i, j]:
+                high[k, i, j], tone[k, i, j] = y, t
+    face = np.array(P.colour("cloud", 3)) / 255.0 * lit
+    out = np.zeros((nx, 2 * nz, 3))
+    for k in (0, 1):
+        img = np.empty((nx, nz, 3))
+        img[...] = face if k == 0 else np.array([0.02, 0.02, 0.05])
+        land = (tone[k] == -2) & (high[k] >= (cloudsea.FACE if k == 0 else cloudsea.DECK_Y))
+        img[land] = (0.10, 0.10, 0.13)
+        for t, colour in enumerate(tones):
+            img[tone[k] == t] = colour
+        X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
+        ring = np.hypot(X + 0.5 - aerial[0], Z + 0.5 - aerial[2])
+        for r, colour in ((chunks * 16.0 * 0.9, (0.9, 0.6, 0.2)), (chunks * 16.0, (0.9, 0.3, 0.2))):
+            img[np.abs(ring - r) < 0.5] = colour
+        edge = loaded(aerial, (x0, 0, z0), (nx, 0, nz), chunks)
+        rim = edge & ~(np.roll(edge, 1, 0) & np.roll(edge, -1, 0) & np.roll(edge, 1, 1) & np.roll(edge, -1, 1))
+        img[rim] = (0.9, 0.9, 0.3)
+        out[:, k * nz:(k + 1) * nz] = img
+    # north up, west left: the picture's rows run along z, its columns along x
+    halves = [np.transpose(out[:, k * nz:(k + 1) * nz], (1, 0, 2)) for k in (0, 1)]
+    img = np.concatenate(halves, axis=1)
+    img = np.repeat(np.repeat(img, scale, axis=0), scale, axis=1)
+    Image.fromarray((np.clip(img, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8)).save(path)
+    print(f"{path}: {counts}, x {x0}..{x0 + nx - 1}, z {z0}..{z0 + nz - 1}, {scale} px a block; orange: the "
+          f"aerial camera's wall of fog begins, red: it is whole, yellow: its last loaded chunks")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--scene", default="obs_sky_cloudsea")
@@ -175,6 +235,7 @@ def main():
     ap.add_argument("--chunks", type=int, default=12, help="view distance in chunks")
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
+    ap.add_argument("--plan", action="store_true", help="also write <out>-plan.png")
     args = ap.parse_args()
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
 
@@ -196,20 +257,26 @@ def main():
     def look_at(tick):
         return gamelook.Look(tick, dimension, biome, lines, render_chunks=args.chunks)
 
+    views = {s["name"]: s for s in base.shots()}
+    if args.plan:
+        plan(cells, look_at(laws.tick("blue")), f"{args.out}-plan.png", views["v12"]["pos"], args.chunks)
     place = (0, 200, 0)
     world = gamescene.Scene(assets, cells, entities, look_at(6000), place=place,
                             say=lambda s: print(f"{s} ({time.time() - t0:.0f} s)"))
-    views = {s["name"]: s for s in base.shots()}
     names = args.only.split(",") if args.only else list(base.LAW_VIEWS)
     size = tuple(int(v) for v in args.size.split("x"))
     pixel = 2.0 * math.tan(math.radians(args.fov) / 2.0) / size[1]
     for name in names:
         shot = views[name]
         cam = np.ascontiguousarray(world.camera(shot["pos"], shot.get("look_at"), 0.0, 0.0, args.fov), dtype=np.float64)
+        there = loaded(shot["pos"], world.lo, world.grid.shape, args.chunks)
         for law in args.laws.split(","):
             tick = laws.tick(law)
             look = look_at(tick)
             w = world.world(look, pixel)
+            near = w.grid.copy()
+            near[~there[:, None, :] & np.ones((1, near.shape[1], 1), dtype=bool)] = 0
+            w = w._replace(grid=near)
             got = sheet_at(tick, dimension, biome, lines)
             for clouds in args.clouds.split(","):
                 t1 = time.time()

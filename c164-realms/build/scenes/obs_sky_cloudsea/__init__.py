@@ -3,21 +3,22 @@ hilltop rising out of the sea of clouds, seen from the cameras the card is judge
 
 The hilltop is a stand-in built from the skeleton's masses (the real mountain is site/terrain's, the
 building is main's): the upper terrace, the sunset platform, the lower platform with the station
-deck and the shelves, each a flat rock falling away into the cloud, a pale massing of the main
-building (a bar, a dome, a tower) so the silhouette over the sea can be judged, and the cable
-trestle running down from the station into the sea. Only enough to answer the card's questions:
-from V1, V11, V12, the sunset rail and close to the cloud face, is an edge of the sea seen
-anywhere, does the rock rise out of cloud rather than sit on a plate, and is the track lost in the
-cloud or does it end in a hole?
+deck and the shelves, each a flat rock falling away into the cloud as the real slopes do, a pale
+massing of the main building (a bar, a dome, a tower) so the silhouette over the sea can be judged,
+and the cable trestle running down from the station into the sea. Only enough to answer the card's
+questions: from V1, V11, V12, the sunset rail and close to the cloud face, does the sea lie out to
+the horizon without a rim or a ring anywhere, does the rock rise out of cloud rather than stand in
+a level cut, and is the track lost in the cloud or does it end in a hole?
 
 The three ways to make the sea are three scenes with the same hilltop and the same shots, compared
-picture by picture: this one is version "c" (block sea and vanilla layer, what the master scene
-builds), obs_sky_cloudsea_a is "a" (vanilla layer only), obs_sky_cloudsea_b is "b" (blocks only).
-The offline renderer draws the fog but not the vanilla layer, the afterglow or the warm fog towards
-the west, so offline "c" and "b" are one picture -- the block sea in fog -- and "a" is the bare
-hilltop. On the real client S1 renders each version, every camera with the cloud setting on fancy,
-fast and off, and this scene's trials.json besides: two of the cameras under the sky's trial
-moments (the vanilla layer in three colours, the fog ending sooner and later).
+picture by picture: this one is version "c" (the game's cloud layer as the sea's face, blocks for
+what stands out of it; what the master scene builds), obs_sky_cloudsea_a is "a" (the layer alone),
+obs_sky_cloudsea_b is "b" (blocks alone). The offline renderer draws the fog but not the cloud
+layer, the afterglow or the warm fog towards the west, so offline "c" and "b" are one picture --
+the blocks in fog over their deck -- and "a" is the bare hilltop. On the real client S1 renders
+each version, every camera with the cloud setting on fancy, fast and off, and this scene's
+trials.json besides: four of the cameras under the fog laws on trial (mood.LAWS). preview.py lays
+the cloud layer into the offline picture by the game's arithmetic, as a forecast of those.
 
     python -m scenes.obs_sky_cloudsea     # rewrites shots.json and trials.json
 """
@@ -41,8 +42,8 @@ BIOME_MARGIN_Y = 160
 VERSION = "c"
 
 # --- the placeholder mountain ------------------------------------------------------------------------
-SLOPE = 1.25                # blocks of fall per block out from a flat
-ROCK_FLOOR = -29            # the rock ends here, three below the cloud line (site's K.ROCK_FLOOR)
+SLOPE = 0.72                # blocks of fall per block out from a flat (site/terrain's)
+ROCK_FLOOR = -29            # the rock ends here, its last course under the sea's face (site's rim)
 SEED = 227
 SUN_C, SUN_R = S.SUNSET_PLATFORM["centre"], S.SUNSET_PLATFORM["radius"]
 # (x0, z0, x1, z1, y of the top block) of every flat the mountain carries
@@ -58,6 +59,7 @@ ROCK_HIGH = Mix({B.TUFF.block: 6, B.ROCK_ANDESITE.block: 3, B.ROCK_STONE.block: 
                 seed=SEED)
 ROCK_LOW = Mix({B.ROCK_DEEPSLATE: 6, B.ROCK_COBBLED.block: 3, B.TUFF.block: 2}, seed=SEED + 1)
 ROCK_SPLIT = -12            # the high mix above, the low mix below
+SUNK = cloudsea.DECK_Y - 1  # what is to be lost in the sea is carried down to here (-31)
 PAVE = B.SLATE_SMOOTH.block
 STONE = B.ASHLAR_FINE.block
 COPPER = B.VERDIGRIS_CUT.block
@@ -71,7 +73,7 @@ def _rock(x, y, z):
 def _mountain(c):
     """Every flat falls away at SLOPE with some crag; the highest wins. A watertight crust: a column
     is filled from its surface down to its lowest neighbour, the rim down to ROCK_FLOOR."""
-    x0, x1, z0, z1 = -64, 124, -84, 90
+    x0, x1, z0, z1 = -84, 138, -100, 104
     X, Z = np.meshgrid(np.arange(x0, x1 + 1), np.arange(z0, z1 + 1), indexing="ij")
     best = np.full(X.shape, -1e9)
     near = np.full(X.shape, 1e9)
@@ -150,16 +152,16 @@ def _massing(c):
 def _trestle(c):
     """A stand-in for the cable trestle, on site/cablecar's figures: two rails of riveted slabs leave
     the station deck in V1's row, run level for four cells and then fall one in two, a third of a
-    cell north for every cell east, until they are under the cloud. Every six cells a bent: a girder
-    across, two legs down to the rock or to the rock's floor, bars between the legs. The last bents
-    stand in the sea and the track ends in it: the card has to show how the cloud takes them."""
+    cell north for every cell east, until they are under the sea's deck. Every six cells a bent: a
+    girder across, two legs down to the rock or to under the deck, bars between the legs. The last
+    bents stand in the sea and the track ends under it: the card has to show how the cloud takes them."""
     x1, axis = S.CABLE_STATION[2], int(S.V1["pos"][2] // 1)          # 91, -33
     x = x1
     while True:
         x += 1
         top = S.STATION_GROUND - 0.5 * max(0, x - x1 - 4)            # the upper face of the rails
-        if top <= ROCK_FLOOR + 2:
-            break                                                     # under the cloud: the track ends
+        if top <= SUNK:
+            break                                                     # under the deck: the track ends
         z = int(round(axis - (x - x1 - 1) / 3.0))
         y, half = (int(top) - 1, "top") if top == int(top) else (int(top // 1), "bottom")
         for dz in (-1, 1):
@@ -169,7 +171,7 @@ def _trestle(c):
         cap = y if half == "top" else y - 1                           # a bent: x 98, 104 ..
         for dz in (-1, 0, 1):
             c.set(x, cap, z + dz, IRON.block)
-            for yy in range(cap - 1, ROCK_FLOOR - 1, -1):
+            for yy in range(cap - 1, SUNK - 1, -1):
                 if c.has(x, yy, z + dz):
                     break                                             # down to the rock
                 c.set(x, yy, z + dz, IRON.block if dz else B.IRON_BARS)
