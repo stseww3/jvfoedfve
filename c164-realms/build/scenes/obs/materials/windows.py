@@ -53,9 +53,10 @@ from outside. Its room side is therefore covered by a thin model that gives no l
 
     WINDOW_LIT       night glass in the net of the dark windows: the same window as the dark one
                      beside it
-    WINDOW_CURTAIN   the drawn curtain in its own colour by lamp light, warm and dark
-    WINDOW_FROSTED   the obscured glass with no light behind it: a cold grey a step lighter than
-                     night glass, no sky in it
+    WINDOW_CURTAIN   the drawn curtain in its own colour by lamp light, warm and dark: cloth in
+                     folds under its rail, with a hem (a), or the slats of a blind (b)
+    WINDOW_FROSTED   the obscured glass with no light behind it: the pale, cold grey of milk glass
+                     under the lamps of the room, no sky in it
     WINDOW_FURNACE   night glass, as WINDOW_LIT: the fires burn in the room
 
 Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
@@ -485,22 +486,37 @@ KINDS = {B.WINDOW_LIT: "lit", B.WINDOW_FROSTED: "frosted", B.WINDOW_CURTAIN: "cu
 # The furnace window is lined with night glass as well: the fires burn in the room, and from the
 # room its three rows are the dark window they stand under.
 KINDS.update((role, "lit") for role in FURNACE)
-VARIANTS = {"lit": 2, "frosted": 1, "curtain": 1}
+# The pieces of a kind, by what is added to the model's name. Night glass comes in two arrangements
+# of its pictures, so that the two halves of a tall window differ. A curtain's pieces differ by
+# where they hang: the piece at the foot of a window carries the hem, the one at its head the
+# rail, a window of one piece both, a piece between them neither.
+PIECES = {"lit": ("", "_alt"), "frosted": ("",), "curtain": ("", "_foot", "_head", "_whole")}
+VARIANTS = {kind: len(names) for kind, names in PIECES.items()}
 
-UNLIT = ("iron", 5)                     # obscured glass with no light behind it
-UNLIT_SOFT = ("iron", 4)                # the soft edge the bars throw on it
-CLOTH = ("brass", 1)                    # the curtain by lamp light
-CLOTH_SHADE = ("brass", 0)              # the side of a fold that is turned away
-CLOTH_DEEP = ("dark_wood", 1)           # the bottom of a fold
-_EDGE = {"lit": BAR, "frosted": BAR, "curtain": CLOTH_DEEP}     # the half pixel a lining is thick
+UNLIT = ("snow", 2)                     # obscured glass with no light behind it, by the lamps of the room
+UNLIT_SOFT = ("snow", 0)                # the soft edge the bars throw on it
+# The curtain of version a by lamp light, from the hollow of a fold to its ridge: the cloth that
+# shows deep orange with the lamp behind it is a faded red brown in front of it.
+CLOTH = (("dark_wood", 2), ("old_copper", 0), ("old_copper", 1), ("old_copper", 2))
+# The folds across it, each from its hollow over its ridge to the side turned away, as steps of
+# CLOTH. Round, not grooved: no fold has more than two pixels of one step side by side. Uneven,
+# and 48 pixels in all: the widest piece shows no fold twice.
+_FOLDS = ("0123221", "012321", "0122321", "01321", "013221", "012321", "01231", "012321")
+RAIL = (("brass", 1), ("brass", 3))     # what the curtain hangs from, and a ring on it
+# The blind of version b, a wooden slat from its face down: the face twice, where it turns under,
+# the shadow it throws on the next one.
+SLAT = (("brass", 1), ("brass", 1), ("brass", 0), ("dark_wood", 1))
+TAPE = 3                                # the two tapes a blind hangs in: so far in from its sides
+_EDGE = {"lit": BAR, "frosted": BAR, "curtain": CLOTH[0]}       # the half pixel a lining is thick
 
 
 def unlit_face(version="a"):
     """The room side of WINDOW_FROSTED: the obscured glass as the room sees it at night, with no
-    light behind it. A cold grey a step lighter than the night glass of a dark window, flat, no sky
-    in it; under and beside the bars the same soft edge as on the lit side, so that it is read as
-    the frosted window and not as a dark one. One picture: the broken surface of version b shows
-    by the light that falls through it, and none does."""
+    light behind it: the pale, cold grey of milk glass that only the lamps of the room fall on.
+    Lighter than the night glass of a dark window by far, no sky in it, and still under the stone
+    of the wall it stands in. Flat; under and beside the bars the same soft edge as on the lit
+    side. One picture: the broken surface of version b shows by the light that falls through it,
+    and none does."""
     px = _glass(UNLIT)
     for x0, y0, x1, y1 in _LIGHTS[version]:
         _fill(px, x0, y0, x1, y0, UNLIT_SOFT)
@@ -509,36 +525,81 @@ def unlit_face(version="a"):
     return _bars(px, version)
 
 
-def cloth_face(version="a"):
-    """The room side of WINDOW_CURTAIN: the drawn curtain in its own colour by lamp light, a warm
-    brown with no light of its own; its lightest tone (0.35 of white) stays under the paper, the
-    brass and the opal glass a lamp of the room shines on. a: the folds of the curtain's lit side
-    seen from behind, a ridge there is a hollow here. b: the slats of the blind, each with its
-    shadow under it. No glazing bars: the cloth hangs in front of them. One picture, so that a fold
-    runs unbroken down a window and a slat across it."""
-    px = _glass(CLOTH)
-    if version == "b":
-        for y in range(2, 15, 3):
-            _fill(px, 0, y, TILE - 1, y, CLOTH_SHADE)
-            if y + 1 < 15:
-                _fill(px, 0, y + 1, TILE - 1, y + 1, CLOTH_DEEP)
-    else:
-        for x in (1, 4, 9, 13):
-            _fill(px, x, 0, x, TILE - 1, CLOTH_DEEP)
-            _fill(px, x + 1, 0, x + 1, TILE - 1, CLOTH_SHADE)
+def _folds(width):
+    """The curtain across `width` pixels: for every column (the step of CLOTH it shows, 0 the
+    hollow of a fold to 3 its ridge; which fold it belongs to; whether the fold is at its widest
+    there or wider: the place where the cloth may hang a pixel fuller for a stretch)."""
+    out, k = [], 0
+    while len(out) < width:
+        fold = [int(c) for c in _FOLDS[k % len(_FOLDS)]]
+        ridge = fold.index(3)
+        out += [(step, k, i == ridge + 1 and step == 2) for i, step in enumerate(fold)]
+        k += 1
+    return out[:width]
+
+
+def _cloth(w, h, foot, head):
+    """A curtain w by h blocks, drawn as one sheet: no fold comes twice and none is cut at a block.
+    Cloth and not boards: a fold is round, from its hollow over the ridge that takes the light to
+    the side turned away, and hangs a pixel fuller here and there; the foot piece ends in a hem
+    that hangs in scallops just clear of the sill, the head piece is gathered under its rail."""
+    wide, high = TILE * w, TILE * h
+    px = np.zeros((high, wide, 4), np.uint8)
+    px[..., 3] = 255
+    stand = np.zeros((high, wide), int)
+    cols = _folds(wide)
+    for x, (step, k, fuller) in enumerate(cols):
+        stand[:, x] = step
+        if fuller:                                                 # the ridge two pixels wide for a stretch
+            first = 5 + (7 + 11 * k + (17 if head else 0)) % max(high - 18, 1)
+            stand[first:min(first + 6 + 3 * k % 5, high - 5), x] = 3
+    if head:
+        stand[2:4] = np.maximum(stand[2:4] - 1, 0)                 # gathered, in the shadow of the rail
+    if foot:
+        stand[high - 4] = np.maximum(stand[high - 4] - 1, 0)       # the seam of the hem
+        steps = np.array([step for step, _, _ in cols])
+        stand[high - 2] = np.where(steps >= 1, stand[high - 2], -1)    # the hem follows the folds:
+        stand[high - 1] = np.where(steps >= 2, stand[high - 1], -1)    # it hangs lowest where they stand out
+    for tone, colour in enumerate(CLOTH):
+        px[stand == tone, :3] = P.colour(*colour)
+    px[stand < 0, :3] = P.colour(*BAR)                             # under the hem: the foot of the window
+    if head:
+        px[0, :, :3] = P.colour(*CLOTH[0])
+        px[1, :, :3] = P.colour(*RAIL[0])
+        px[1, [x for x, (step, _, _) in enumerate(cols) if step == 3], :3] = P.colour(*RAIL[1])
+    return px
+
+
+def _blind(w, h, foot, head):
+    """A venetian blind w by h blocks, let down and closed: wooden slats of four pixels, each with
+    the shadow it throws on the next, and the two tapes it hangs in. The head piece begins with the
+    head rail, the foot piece ends in the bottom rail, just clear of the sill. A window wider than
+    a piece takes blinds side by side, each in its own tapes."""
+    wide, high = TILE * w, TILE * h
+    px = np.zeros((high, wide, 4), np.uint8)
+    px[..., 3] = 255
+    for y in range(high):
+        px[y, :, :3] = P.colour(*SLAT[y % len(SLAT)])
+    for x in (TAPE, wide - 1 - TAPE):
+        for y in range(high):
+            px[y, x, :3] = P.colour(*SLAT[min(y % len(SLAT) + 2, len(SLAT) - 1)])
+    if head:
+        px[0:3, :, :3] = P.colour(*SLAT[2])                        # the head rail, in its own shadow
+        px[3, :, :3] = P.colour(*SLAT[3])
+    if foot:
+        px[high - 1, :, :3] = P.colour(*BAR)                       # under the bottom rail: the foot of the window
     return px
 
 
 def lining_tiles(kind, version="a"):
-    """The pictures a lining is laid out of, one block face each. The lining of WINDOW_LIT is the
-    dark window itself, its four pictures: night glass in the same net."""
+    """The pictures a lining of glass is laid out of, one block face each. The lining of WINDOW_LIT
+    is the dark window itself, its four pictures: night glass in the same net. A curtain is not
+    laid out of blocks: see lining_picture()."""
     if kind == "lit":
         return dark_face(version)
     if kind == "frosted":
         return [unlit_face(version)]
-    if kind == "curtain":
-        return [cloth_face(version)]
-    raise ValueError(f"windows: no lining {kind!r}; there are {', '.join(VARIANTS)}")
+    raise ValueError(f"windows: no lining of glass {kind!r}; there are lit and frosted")
 
 
 # Which of a kind's pictures stands on which block of a piece: rows from the top, columns from the
@@ -548,8 +609,14 @@ _MIX = (((0, 2, 1), (3, 1, 0), (2, 0, 3)),
 
 
 def lining_picture(kind, w, h, variant=0, version="a"):
-    """The face of a piece w blocks wide and h high: the kind's pictures block by block, each the
-    way a block's face shows it, so the net runs on into the windows beside the lined one."""
+    """The face of a piece w blocks wide and h high. Glass: the kind's pictures block by block,
+    each the way a block's face shows it, so the net runs on into the windows beside the lined
+    one. A curtain: one sheet with no glazing bars, the cloth hangs in front of them; a: cloth in
+    folds, b: the slats of a blind. `variant` is the piece's place in PIECES."""
+    if kind == "curtain":
+        ends = PIECES[kind][variant]
+        draw = _blind if version == "b" else _cloth
+        return draw(w, h, foot=ends in ("_foot", "_whole"), head=ends in ("_head", "_whole"))
     tiles = lining_tiles(kind, version)
     px = np.zeros((TILE * h, TILE * w, 4), np.uint8)
     for j in range(h):
@@ -572,7 +639,7 @@ class _Shown:
 
 
 def lining_name(kind, w, h, variant=0):
-    return f"{MODEL}{kind}_{w}x{h}" + ("_alt" if variant else "")
+    return f"{MODEL}{kind}_{w}x{h}{PIECES[kind][variant]}"
 
 
 def _lining(kind, w, h, variant, version):
@@ -601,9 +668,10 @@ def _linings(version):
 
 
 def models(version=None):
-    """The lining models, {name: Model}: every kind in every size from 1 by 1 to 3 by 3 blocks, so
-    that a window of any size can be lined and the pack does not depend on which windows are lit.
-    Their net follows the version of the windows; names and shapes are the same in both."""
+    """The lining models, {name: Model}: every piece of every kind (PIECES) in every size from 1 by
+    1 to 3 by 3 blocks, 63 in all, so that a window of any size can be lined and the pack does not
+    depend on which windows are lit. Their net follows the version of the windows; names and
+    shapes are the same in both."""
     return dict(_linings(_version(version)))
 
 
@@ -716,7 +784,7 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
         face = p + (1 if dx + dz > 0 else 0) + NUDGE * (dx + dz)    # the inner face of the glass
         along, height = lamp_a + 0.5, lamp_y + 0.5                  # the middle of that cell
         x, z = (face, along) if dx else (along, face)
-        left = set(window)
+        left, glazed = set(window), set(window)
         while left:
             _, a0, y0 = min(left, key=lambda c: (c[2], c[1]))       # the lowest row first, along it
             run = 1
@@ -728,10 +796,17 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
                 rise += 1
             h = _first(rise)
             left -= {(p, a0 + i, y0 + j) for i in range(w) for j in range(h)}
-            # which piece this is, counted along the wall and upwards: neighbours take different
-            # arrangements of the pictures, like the squares of a chess board
-            across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
-            model = pieces[lining_name(kind, w, h, (across + up) % VARIANTS[kind])]
+            if kind == "curtain":
+                # which end of the window this piece is: nothing of the window under it, or over it
+                foot = not any((p, a0 + i, y0 - 1) in glazed for i in range(w))
+                head = not any((p, a0 + i, y0 + h) in glazed for i in range(w))
+                variant = PIECES[kind].index(("", "_foot", "_head", "_whole")[foot + 2 * head])
+            else:
+                # which piece this is, counted along the wall and upwards: neighbours take different
+                # arrangements of the pictures, like the squares of a chess board
+                across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
+                variant = (across + up) % VARIANTS[kind]
+            model = pieces[lining_name(kind, w, h, variant)]
             # where the entity stands, in the piece's own measures: from the middle of its foot,
             # and NUDGE before its back
             held = (right * (along - (a0 + w / 2.0)) * TILE, (height - y0) * TILE, NUDGE * TILE)

@@ -79,9 +79,21 @@ def table():
 
 # The linings (A0, g2 #32717): what a lit window shows to the room behind it. A lining gives no
 # light, so its figure is the picture in its own colours, and the room's lamps and the game's
-# shading only take from it. Held to: no colour of the two light ramps; every lining under the
-# dimmest lit window; the unlit frosted glass lighter than the night glass that lines WINDOW_LIT.
+# shading only take from it. Every piece of every kind is measured, in the largest size. Held to:
+#   - no colour of the two light ramps;
+#   - the night glass and the drawn curtain under the dimmest lit window;
+#   - the unlit frosted glass well lighter than the night glass that lines WINDOW_LIT, and under
+#     the darkest stone of the wall it stands in. Milk glass is pale under the lamps of a room: at
+#     the first rendering a grey under the dimmest lit window showed as dark as the night glass
+#     beside it and read as a plate of iron. Under the same lamps it cannot outshine the wall, so
+#     it is no light;
+#   - the pieces of a kind within a small step of each other: the rail and the hem of a curtain
+#     do not make its head or its foot a band of another brightness.
 LIGHT_RAMPS = ("glow", "opal")
+LINING_TOP = {"lit": TARGET["CURTAIN"][0], "curtain": TARGET["CURTAIN"][0],
+              "frosted": float(np.array(P.colour("ashlar", 0)) @ COEF) / 255.0}
+FROSTED_OVER = 0.12             # the unlit frosted glass is at least this much lighter than the night glass
+PIECES_WITHIN = 0.02
 
 
 def linings():
@@ -89,20 +101,25 @@ def linings():
     light = {P.colour(ramp, i) for ramp in LIGHT_RAMPS for i in range(len(P.RAMPS[ramp]))}
     for v in W.VERSIONS:
         whole = {}
-        for kind in W.VARIANTS:
-            px = W.lining_picture(kind, W.PIECE, W.PIECE, 0, v)
-            used = {tuple(int(c) for c in rgb) for rgb in np.unique(px[..., :3].reshape(-1, 3), axis=0)}
-            whole[kind] = luma(px)
-            ok = not (used & light) and whole[kind] < TARGET["CURTAIN"][0]
-            rows.append((v, kind, whole[kind], len(used), "ok" if ok else "OUT"))
-            if used & light:
-                bad.append(f"lining {v} {kind}: {len(used & light)} colours of the light ramps")
-            if whole[kind] >= TARGET["CURTAIN"][0]:
-                bad.append(f"lining {v} {kind}: whole {whole[kind]:.3f}, not under the dimmest lit window "
-                           f"({TARGET['CURTAIN'][0]:.2f})")
-        if not whole["lit"] < whole["frosted"]:
-            bad.append(f"lining {v}: frosted {whole['frosted']:.3f} is not lighter than the night glass "
-                       f"{whole['lit']:.3f}")
+        for kind, pieces in W.PIECES.items():
+            each = []
+            for variant, ends in enumerate(pieces):
+                px = W.lining_picture(kind, W.PIECE, W.PIECE, variant, v)
+                used = {tuple(int(c) for c in rgb) for rgb in np.unique(px[..., :3].reshape(-1, 3), axis=0)}
+                each.append(luma(px))
+                ok = not (used & light) and each[-1] < LINING_TOP[kind]
+                rows.append((v, kind + ends, each[-1], len(used), "ok" if ok else "OUT"))
+                if used & light:
+                    bad.append(f"lining {v} {kind}{ends}: {len(used & light)} colours of the light ramps")
+                if each[-1] >= LINING_TOP[kind]:
+                    bad.append(f"lining {v} {kind}{ends}: whole {each[-1]:.3f}, not under {LINING_TOP[kind]:.2f}")
+            whole[kind] = max(each)
+            if max(each) - min(each) > PIECES_WITHIN:
+                bad.append(f"lining {v} {kind}: its pieces run from {min(each):.3f} to {max(each):.3f}, "
+                           f"more than {PIECES_WITHIN} apart")
+        if whole["frosted"] - whole["lit"] < FROSTED_OVER:
+            bad.append(f"lining {v}: frosted {whole['frosted']:.3f} is not {FROSTED_OVER} lighter than the "
+                       f"night glass {whole['lit']:.3f}")
     return rows, bad
 
 
@@ -283,10 +300,10 @@ def main():
     rows, bad = table()
     for v, role, a, b, tgt, flag in rows:
         print(f"{v:3} {role:8} {a:12.3f} {b:12.3f}  {tgt:>11}  {flag}")
-    print(f"\n{'ver':3} {'lining':8} {'whole':>12} {'colours':>12}  flag")
+    print(f"\n{'ver':3} {'lining':14} {'whole':>6} {'colours':>12}  flag")
     lined, bad_lined = linings()
     for v, kind, whole, colours, flag in lined:
-        print(f"{v:3} {kind:8} {whole:12.3f} {colours:12d}  {flag}")
+        print(f"{v:3} {kind:14} {whole:6.3f} {colours:12d}  {flag}")
     print(f"\n{'ver':3} {'furnace':8} " + " ".join(f"{word:>6}" for word in
                                                  ("sill", "second", "third", "whole", "median", "head")) + "  flag")
     fired, bad_fired = furnace()

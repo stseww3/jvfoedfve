@@ -12,7 +12,9 @@ artkit/gamescene.py draws by). Held to:
     facing   a piece's picture looks into the room, and its right hand is the right hand of
              whoever looks at it;
     light    all the pieces of a window stand in one cell, the room's cell before the middle of
-             the window. That cell lights them, so the lining is lit as one sheet (c219, g2 #38437).
+             the window. That cell lights them, so the lining is lit as one sheet (c219, g2 #38437);
+    ends     of a curtain, the piece at the foot of its window carries the hem and the piece at
+             its head the rail, a window of one piece both, and no piece between them either.
 
 The test scene's own windows are 3 by 6 and look one way; the sizes and the ways it does not show
 are held here.
@@ -64,9 +66,9 @@ def _drawn(x, y, z, nbt, models):
     return np.minimum(*ends), np.maximum(*ends), g @ np.array([1.0, 0.0, 0.0]), g @ np.array([0.0, 0.0, 1.0])
 
 
-def check(step, windows, origin=ORIGIN):
-    """Line the windows [(first column, w, h)] of one wall in one call. Returns what is wrong, a
-    list of sentences, and the cells the entities stand in."""
+def check(step, windows, origin=ORIGIN, glass=B.WINDOW_LIT):
+    """Line the windows [(first column, w, h)] of one wall in one call, as windows of `glass`.
+    Returns what is wrong, a list of sentences, and the cells the entities stand in."""
     dx, dz = step
     inward = dx + dz
     normal = 0 if dx else 2             # the axis the glass looks along; the wall runs along the other
@@ -74,7 +76,8 @@ def check(step, windows, origin=ORIGIN):
     models = W.models()
     c = _Entities()
     cells = [cell for first, w, h in windows for cell in _glass(step, first, w, h)]
-    n = W.line(c, cells, step, B.WINDOW_LIT, origin=origin)
+    n = W.line(c, cells, step, glass, origin=origin)
+    kind = W.lining_of(glass)
     bad = []
     want = sum(-(-w // W.PIECE) * -(-h // W.PIECE) for _, w, h in windows)
     if n != want or len(c.entities) != want:
@@ -100,6 +103,14 @@ def check(step, windows, origin=ORIGIN):
         for a in range(a0, a1):
             for row in range(y0, y1):
                 covered[(a, row)] = covered.get((a, row), 0) + 1
+        if kind == "curtain":
+            sill = FOOT + origin[1]
+            tall = [h for first, w, h in windows if first <= a0 - origin[wall] < first + w]
+            ends = ("", "_foot", "_head", "_whole")[(y0 == sill) + 2 * (bool(tall) and y1 == sill + tall[0])]
+            name = nbt["item"]["components"]["minecraft:item_model"].split(":", 1)[-1]
+            if name != W.lining_name(kind, a1 - a0, y1 - y0, W.PIECES[kind].index(ends)):
+                bad.append(f"the piece over rows {y0 - sill} to {y1 - sill - 1} of its window is {name}, "
+                           f"not the piece {ends or 'between'!r}")
         cell = tuple(int(np.floor(v)) for v in (x, y, z))
         stood[cell] = stood.get(cell, 0) + 1
     glass = {(cell[wall] + origin[wall], cell[1] + origin[1]) for cell in cells}
@@ -121,6 +132,12 @@ def check(step, windows, origin=ORIGIN):
     return bad, sorted(stood)
 
 
+def _hung(step, windows):
+    """The same windows with the curtain drawn: what is wrong with them, said as such."""
+    bad, _ = check(step, windows, glass=B.WINDOW_CURTAIN)
+    return [f"as a curtain: {words}" for words in bad]
+
+
 def _report(room, what, pieces, bad, stood):
     """One line of the table, and what is wrong under it. Returns 1 for a window that fails."""
     print(f"{room:6} {what:>7} {pieces:6}  {', '.join(str(cell) for cell in stood)}" + ("   FAIL" if bad else ""))
@@ -135,14 +152,17 @@ def main():
     for room, step in STEPS.items():
         for w, h in SIZES:
             bad, stood = check(step, [(FIRST, w, h)])
+            bad += _hung(step, [(FIRST, w, h)])
             failed += _report(room, f"{w}x{h}", -(-w // W.PIECE) * -(-h // W.PIECE), bad, stood)
         # two windows of one wall given in one call, a pier between them: each has its own light
         bad, stood = check(step, [(FIRST, 3, 6), (FIRST + 4, 3, 3)])
+        bad += _hung(step, [(FIRST, 3, 6), (FIRST + 4, 3, 3)])
         failed += _report(room, "3x6+3x3", 3, bad, stood)
     if failed:
         print(f"\n{failed} windows are not lined as they should be")
         return 1
-    print("\nevery window is covered once, its picture looks into the room, and its pieces stand in one cell")
+    print("\nevery window is covered once, its picture looks into the room, its pieces stand in one cell, "
+          "and a curtain has its rail at the head and its hem at the foot")
     return 0
 
 
