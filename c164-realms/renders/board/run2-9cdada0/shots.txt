@@ -1,0 +1,20 @@
+# run2 at assembly head 9cdada0, shot in the game (tools/shoot.py, 1280x720)
+# cloud stands from c286's obs_sky_cloudsea list; comet from the board's V1 and V2; lamps from obs_props_lamps_site
+# <pair>  share of the picture differing by more than 30 of 765
+v12 768 vs now	18.03
+v12 768+shader vs now	41.33
+v12 768+shader vs 768	19.00
+v11 768 vs now	0.36
+v11 768+shader vs now	1.39
+v11 768+shader vs 768	1.03
+v1 768 vs now	0.64
+v1 768+shader vs now	1.79
+v1 768+shader vs 768	1.06
+sunset_west 768 vs now	4.09
+sunset_west 768+shader vs now	11.22
+sunset_west 768+shader vs 768	5.07
+skim 768 vs now	0.63
+skim 768+shader vs now	1.84
+skim 768+shader vs 768	1.14
+comet v01_arrival ap vs a	0.17	x 801..841 y 0..126
+comet v02_axis ap vs a	0.14	x 645..694 y 41..151
