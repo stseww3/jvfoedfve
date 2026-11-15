@@ -162,7 +162,11 @@ def _emblem(c, o):
     if LINE:
         whole = lambda role: role if "[" in role else role + "[shape=north_south]"     # noqa: E731
         for (x, z), shape in emblem_ring().items():
-            _put(c, o, x, ON, z, whole(CROSS) if x == MX else _line(shape))
+            # At the two cells where the meridian meets the ring the ring keeps its own line (it
+            # runs east and west there) and the meridian stops at its edge: a rail's cross model is
+            # a cross in the floor, which A0 #365 rules out (brass runs north and south only, and
+            # no cross on any floor). Set in a ring, a line that stops at it is what a meridian does.
+            _put(c, o, x, ON, z, _line(shape))
         _put(c, o, AX + STAR[0], ON, AZ + STAR[1], whole(STAR_MARK))
         return
     r = RING_R                                  # whole-cell brass: a ring one cell thick, a star of five cells
