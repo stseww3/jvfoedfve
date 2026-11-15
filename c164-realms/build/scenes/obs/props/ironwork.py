@@ -229,13 +229,14 @@ def _hinges(m, rows):
         m.tube("y", (-0.5, 0.0), y0, y1, 0.9, IRON_D, sides=8)
 
 
-def _pull(m, x, proud):
-    """A brass bar to pull a leaf by, on both faces: 1.0 to 1.4 blocks above the floor."""
+def _pull(m, x, proud, y=7.5):
+    """A brass bar to pull a leaf by, on both faces, half a block long from y up: 1.0 to 1.4 blocks
+    above the floor."""
     for s in (1.0, -1.0):
         z0 = s * (LEAF_T / 2.0 + proud)
-        for y in (7.5, 10.5):
-            m.box((x, y, s * LEAF_T / 2.0), (x + 1.0, y + 1.0, z0 + s * 1.0), BRASS_D)
-        m.box((x, 7.5, z0 + s * 0.5), (x + 1.0, 11.5, z0 + s * 1.0), BRASS, grain="y")
+        for foot in (y, y + 3.0):
+            m.box((x, foot, s * LEAF_T / 2.0), (x + 1.0, foot + 1.0, z0 + s * 1.0), BRASS_D)
+        m.box((x, y, z0 + s * 0.5), (x + 1.0, y + 4.0, z0 + s * 1.0), BRASS, grain="y")
 
 
 def _door_leaf():
@@ -316,8 +317,8 @@ def _glazed_leaf():
         _both(m, (0.0, y0), (w, y1), IRON_D, grain="x")
     across = (1.5, 4.5, 7.5, 10.5)
     _studs(m, [(x, KICK - 1.0) for x in across] + [(1.5, 1.0), (10.5, 1.0)] + [(x, sill - 1.0) for x in across[:3]], t + 0.5)
-    _studs(m, [(1.5, 7.0), (10.5, 7.0)])
-    _pull(m, 9.5, 0.5)
+    _studs(m, [(1.5, 6.0), (10.5, 6.0)])
+    _pull(m, 9.5, 0.5, y=sill - 4.0)                    # both its feet on the plate, none on the glass
     _hinges(m, ((2.0, 4.5), (14.0, 16.5), (27.0, 29.5)))
     return m
 
@@ -339,7 +340,7 @@ def _canopy(width=5, depth=3):
     m.box((-bay, 0.0, back), (bay, rim, back + 1.0), IRON, grain="x")
     for sx in (-1.0, 1.0):
         for x0, x1, z0, z1, grain in ((hw - 1.0, hw, 0.0, out - 1.0, "z"), (bay, hw - 1.0, 0.0, 1.0, "x"),
-                                      (bay - 1.0, bay, back + 1.0, 0.0, "z")):
+                                      (bay - 1.0, bay, back + 1.0, 1.0, "z")):     # the return, up to the glass
             a, b = sorted((sx * x0, sx * x1))
             m.box((a, 0.0, z0), (b, rim, z1), IRON, grain=grain)
     glass = dict(emit=0, grain="x")
