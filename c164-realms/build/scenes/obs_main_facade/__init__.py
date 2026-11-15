@@ -56,24 +56,36 @@ def _version(entrance, crown):
 #   C164_TRIAL=open      the stand-in left out, the light line as it is
 #   C164_TRIAL=openlit   the stand-in left out, the six sources of the shell's test scene in the hall
 #   C164_TRIAL=openpier  the stand-in left out, two sources before the pier's east face
+#   C164_LIGHTS="x,y,z,level;..."   with C164_TRIAL=open: these sources in the hall
+#   C164_DOOR=<level>    the light line's source in the doorway at this level (0: none)
 TRIAL = os.environ.get("C164_TRIAL", "")
 TRIAL_LIGHTS = {
     "openlit": [((9, 4, -3), 14), ((9, 4, 3), 14), ((13, 4, 0), 14), ((10, 11, 0), 14), ((13, 10, -3), 14), ((13, 10, 3), 14)],
     "openpier": [((8, 3, -2), 12), ((8, 3, 2), 12)],
+    "open": [((int(x), int(y), int(z)), int(level)) for x, y, z, level in
+             (cell.split(",") for cell in os.environ.get("C164_LIGHTS", "").split(";") if cell.strip())],
 }
 
 
 def build(entrance=None, crown=None):
     from scenes.obs.common import blocks as B
     from scenes.obs.main import shell
+    from scenes.obs.sky import lights
     c = Canvas()
-    with _version(entrance or ENTRANCE, crown):
-        with (shell.hall_open() if TRIAL.startswith("open") else contextlib.nullcontext()):
-            for line in LINES:
-                if line is sky:
-                    for (x, y, z), level in TRIAL_LIGHTS.get(TRIAL, []):
-                        c.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
-                line.build(c, (0, 0, 0))
+    door = os.environ.get("C164_DOOR")
+    was = lights.DOOR_LEVEL
+    if door is not None:
+        lights.DOOR_LEVEL = int(door)
+    try:
+        with _version(entrance or ENTRANCE, crown):
+            with (shell.hall_open() if TRIAL.startswith("open") else contextlib.nullcontext()):
+                for line in LINES:
+                    if line is sky:
+                        for (x, y, z), level in TRIAL_LIGHTS.get(TRIAL, []):
+                            c.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
+                    line.build(c, (0, 0, 0))
+    finally:
+        lights.DOOR_LEVEL = was
     return c
 
 
