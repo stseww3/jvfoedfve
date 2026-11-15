@@ -4,8 +4,9 @@ on the lower platform and the trestle that takes its track down into the cloud.
 The hill as it stands in the master scene: the site line whole, the main building above it, the
 machines (the car and the winch in the station are theirs), the props line and the sky line's light
 last. The lines are built whole, in the master scene's order, so the pictures keep up with them as
-their packages are merged. The lamp under the glass roof is one of the site's lamps, which the
-props line keeps switched off in the master scene for now; here it is asked for.
+their packages are merged. The station's lamp and its furniture belong to the props line, which
+keeps what it sets out on the site switched off in the master scene for now; here they are asked
+for (_dress).
 
 Two stand-ins, in this scene only, for what is still on other branches: the east flank of the
 mountain with the ridge the trestle stands on (site/terrain's second draft; the ridge by the figures
@@ -18,12 +19,13 @@ waiting room stands in it, as its right edge), the platform from its south-west 
 from the lower platform and from the head of the grand stair, the glass roof from below, the
 trestle from the bay, from the side and looking back up it, and two from above.
 """
+import importlib
+
 from artkit.canvas import Canvas, Mix
 
 from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.props import lamps
 from scenes.obs.site import _kit as K
 
 BIOME = "obs_blue"
@@ -96,12 +98,27 @@ def _standins(c):
                 c.set(x, y, z, CLOUD, keep=True)
 
 
-def _station_lamps(c):
-    """The lamp under the glass roof: props/lamps hangs it from site/cablecar.LAMP_POINTS (its group
-    "station"). A tree whose props/lamps does not place the site's lamps yet has none."""
-    hang = getattr(lamps, "site", None)
-    if hang is not None:
-        hang(c, (0, 0, 0), groups=("station",))
+def _prop(name):
+    """A package of the props line; None while it is not in the tree."""
+    full = f"{props.__name__}.{name}"
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if e.name != full:
+            raise               # it is there and fails to import something: say so
+        return None
+
+
+def _dress(c):
+    """What the props line sets out on the station, both under the group "station": the pendant
+    under the glass roof (props/lamps, on site/cablecar.LAMP_POINTS), the two benches and the
+    luggage against the waiting room (props/furniture, on BENCHES and LUGGAGE). Called after the
+    props line and before the sky line, which lays the lamps' light. A tree whose props line does
+    not set them out yet has none."""
+    for name in ("lamps", "furniture"):
+        set_out = getattr(_prop(name), "site", None)
+        if set_out is not None:
+            set_out(c, (0, 0, 0), groups=("station",))
 
 
 def build():
@@ -111,7 +128,7 @@ def build():
         if line is site:
             _standins(c)
         if line is props:
-            _station_lamps(c)
+            _dress(c)
     return c
 
 

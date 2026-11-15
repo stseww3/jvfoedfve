@@ -116,8 +116,9 @@ LUGGAGE = dict(point=(WAIT[2] - 0.5, float(FEET), WAIT[3] + 1.5))
 # Where a lamp hangs (the hanging point, on the underside of the glass roof's ridge): over the west
 # end of the car, its door. props/lamps hangs a pendant there (its group "station"); the two cells
 # under the point are kept empty for it. It is not in the arrival view, and at level 12 it leaves
-# the paving that is in it at 0 and the waiting room's front at 1. The winch house has no point:
-# the winch brings its own wall lamp (machines/cable), on the north wall between the windows.
+# the paving that is in it at 0, the waiting room's front at 1 and the end of its eaves, at the
+# picture's edge, at 3. The winch house has no point: the winch brings its own wall lamp
+# (machines/cable), on the north wall between the windows.
 LAMP_POINTS = {
     "car": (CANOPY[0] + 1.5, float(EAVES + 2), AXIS + 0.5),
 }
