@@ -66,6 +66,14 @@ DOOR_Y = 1                              # the source's row: the threshold gets 1
 HALL_LEVEL, SIDE_LEVEL = 12, 10         # against the back of the vestibule: behind the doorway, behind an arch
 HALL_Y = 2                              # the row of those sources: the middle of what a doorway shows of the wall
 HALL_DEPTH = 8                          # a wall this close behind the glass plane is the back of a vestibule
+# The hall as main/shell builds it, open from the entrance to the telescope pier, is lit from here
+# until the star hall moves in. main/facade asks for this word (hall_lit()) and leaves its stand-in
+# wall out when it is set and the shell is in the tree.
+OPEN_HALL = True
+HALL_REACH = 14                         # the face the doorway looks at is looked for this far behind the glass plane
+PIER_LEVEL, PIER_Y = 14, 3              # before that face (the pier's east face), in the row of the mother clock's dial
+FLIGHT_REACH = 18                       # the foot of a flight behind an arch beside the doorway, this far at most
+FLIGHT_LEVEL, FLIGHT_Y = 11, 4          # over that foot, under the head of the hall's west arcade
 WASH_PILASTERS = (5, 6, 11, 12)         # the skeleton's numbers: the two of either wing next to the entrance's corner
 WASH_OUT = 2                            # cells between the plinth and the projector's cell, counting it
 WASH_ROW = S.BASE[0]                    # where the beam lands: the foot of the shaft, the row over the plinth
@@ -398,11 +406,25 @@ def _entrance(canvas, r, origin):
         elif _stops(canvas, wall, DOOR_Y + oy, z):
             continue                                    # a bay with a wall in it: no arch
         back = next((x for x in range(glass - 1, glass - 1 - HALL_DEPTH, -1) if _stops(canvas, x, HALL_Y + oy, z)), None)
-        if back is None or back + 1 >= glass:
+        if back is not None:                            # a vestibule: against its back wall
+            if back + 1 >= glass:
+                continue
+            spot, level = (back + 1, HALL_Y + oy, z), HALL_LEVEL if bay == DOOR_BAY else SIDE_LEVEL
+        elif not OPEN_HALL:
             continue
-        cell = (back + 1, HALL_Y + oy, z)
-        if _put(canvas, r, cell, HALL_LEVEL if bay == DOOR_BAY else SIDE_LEVEL, HALL_WHY) != "taken":
-            r["hall"].append(cell)
+        elif bay == DOOR_BAY:                           # the open hall: before the face the doorway looks at
+            deep = range(glass - 1 - HALL_DEPTH, glass - 1 - HALL_REACH, -1)
+            face = next((x for x in deep if _stops(canvas, x, PIER_Y + oy, z)), None)
+            if face is None:
+                continue
+            spot, level = (face + 1, PIER_Y + oy, z), PIER_LEVEL
+        else:                                           # ... and over the foot of what rises behind an arch
+            foot = next((x for x in range(glass - 1, glass - 1 - FLIGHT_REACH, -1) if canvas.has(x, S.GROUND + oy, z)), None)
+            if foot is None:
+                continue
+            spot, level = (foot, FLIGHT_Y + oy, z), FLIGHT_LEVEL
+        if _put(canvas, r, spot, level, HALL_WHY) != "taken":
+            r["hall"].append(spot)
 
 
 # ---- the wall wash -----------------------------------------------------------------------------------
