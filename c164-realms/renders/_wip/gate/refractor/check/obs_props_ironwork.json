@@ -1,0 +1,163 @@
+{
+ "scene": "obs_props_ironwork",
+ "commit": "78fd640",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "1404 blocks, 13 entities, 10 models, 688 resource-pack files, 11 data-pack files, look: 1 biomes, 1 timelines (0.6 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 687 files, no file written twice, the folders and the prefix of props are kept (2 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "134 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "544 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "6 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of props: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "13 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "14 shots, most display entities in view: 13 (far), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 13,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arch_a",
+      "in_view": 2,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arch_a_head",
+      "in_view": 2,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arch_b",
+      "in_view": 3,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "arch_b_head",
+      "in_view": 3,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "grille",
+      "in_view": 5,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "entrance",
+      "in_view": 9,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "door_near",
+      "in_view": 5,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "fanlight_near",
+      "in_view": 5,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "canopy_near",
+      "in_view": 3,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "ladder_near",
+      "in_view": 6,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "railing",
+      "in_view": 6,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "vent",
+      "in_view": 8,
+      "drawn": 13,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "grate",
+      "in_view": 6,
+      "drawn": 13,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
