@@ -493,8 +493,11 @@ KINDS.update((role, "lit") for role in FURNACE)
 PIECES = {"lit": ("", "_alt"), "frosted": ("",), "curtain": ("", "_foot", "_head", "_whole")}
 VARIANTS = {kind: len(names) for kind, names in PIECES.items()}
 
-UNLIT = ("snow", 2)                     # obscured glass with no light behind it, by the lamps of the room
-UNLIT_SOFT = ("snow", 0)                # the soft edge the bars throw on it
+# Obscured glass with no light behind it, by the lamps of the room: the palest cold grey there is,
+# and the soft edge the bars throw on it. Cold: beside the stone of the piers a neutral or a warm
+# grey reads as slabs of that stone set in a grid, a cold one as glass with the night behind it.
+UNLIT = ("snow", 4)
+UNLIT_SOFT = ("snow", 2)
 # The curtain of version a by lamp light, from the hollow of a fold to its ridge: the cloth that
 # shows deep orange with the lamp behind it is a faded red brown in front of it.
 CLOTH = (("dark_wood", 2), ("old_copper", 0), ("old_copper", 1), ("old_copper", 2))
