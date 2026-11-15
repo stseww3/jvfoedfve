@@ -542,10 +542,13 @@ def downpipe(canvas, corner, top, bottom, facing="east", side=1, origin=(0, 0, 0
 
     The hopper fills the cell under the soffit; the pipe stands GAP clear of both walls. Where a
     course of stone crosses its way (the string course) the pipe goes through it, with a sleeve on
-    the stone above and below; it ends in a sleeve on the plinth. Clips hold it about every
-    CLIP_EVERY blocks; they are fixed to the return wall, which is solid all the way up (the wall
-    behind the pipe is a window's edge for most of its height). Nothing is placed where the canvas
-    has no walls or the hopper's cell is full. Returns the number of display entities."""
+    the stone above and below; it ends in a sleeve on the plinth. The pipe is one length to each
+    stretch between two stones: a display entity has one light, taken where it stands, and a single
+    length from the cornice to the plinth would carry the light of the lit windows beside its top
+    down to its foot (cr, 11-15). Clips hold it about every CLIP_EVERY blocks; they are fixed to
+    the return wall, which is solid all the way up (the wall behind the pipe is a window's edge for
+    most of its height). Nothing is placed where the canvas has no walls or the hopper's cell is
+    full. Returns the number of display entities."""
     out = DIRS[facing]
     right = _cross(DIRS["up"], out)                             # to the right of someone who looks at the wall
     back = tuple(int(side) * v for v in right)                  # towards the return wall
@@ -568,7 +571,6 @@ def downpipe(canvas, corner, top, bottom, facing="east", side=1, origin=(0, 0, 0
     n = mount(canvas, "down_hopper_" + ("right" if side > 0 else "left"), (wx, top - 0.5, wz), out=facing,
               origin=origin)
     head = top - 0.5 + HOPPER_SOCKET[0] / 16.0                  # the underside of the hopper's socket
-    n += run(canvas, (ax, head + 1.5 / 16.0, az), (ax, bottom + 1.0 / 32.0, az), "down", lit=clear, origin=origin)
     n += mount(canvas, "down_sleeve", (ax, bottom, az), out="up", up=facing, origin=origin)
     lengths, start = [], float(bottom)                          # the free lengths between the stones
     for y in range(bottom, top - 1):
@@ -583,6 +585,10 @@ def downpipe(canvas, corner, top, bottom, facing="east", side=1, origin=(0, 0, 0
     if head > start:
         lengths.append((start, head))
     for lo, hi in lengths:
+        # one entity to a length: it starts inside the hopper's socket or the sleeve under the stone
+        # above, and ends inside the sleeve on the stone below
+        up = hi + 1.5 / 16.0 if hi == head else hi - 1.0 / 32.0
+        n += run(canvas, (ax, up, az), (ax, lo + 1.0 / 32.0, az), "down", lit=clear, origin=origin)
         count = max(1, int(round((hi - lo) / CLIP_EVERY)))
         for i in range(count):
             y = round((lo + (hi - lo) * (i + 0.5) / count) * 4.0) / 4.0
