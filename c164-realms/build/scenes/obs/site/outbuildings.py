@@ -40,14 +40,25 @@ rail (site/_kit.rail).
 """
 import importlib.util
 
+from artkit import models as M
 from artkit.canvas import Mix
 
 from . import _kit as K
 from ..common import blocks as B
+from ..common import palette as P
 from ..common import skeleton as S
 
 ORDER = 70      # after the terrain (10) and the court paving (60); the shells go on the finished ground
 INSTRUMENTS = True      # stand the props line's instruments on their spots (see _place)
+VANE = True             # the wind vane at the head of the weather station's mast (see _wind_vane)
+
+# One wind for the whole map (A0 #569): from the north, so the vane's tail points south and the cups
+# turn whichever way they will. Read from the skeleton; the words are the ones the fallback uses
+# until those three names are in the assembly (they are on S2's branch 2f9df9f3, not yet merged).
+WIND_FROM = getattr(S, "WIND_FROM", "north")
+WIND_TO = getattr(S, "WIND_TO", "south")
+WIND = getattr(S, "WIND", (0, 0, 1))
+VANE_YAW = {"south": 0.0, "west": 90.0, "north": 180.0, "east": -90.0}[WIND_TO]
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
 WALL = B.ASHLAR_ROUGH.block             # the darker, banded ashlar of the base storey: the hut's walls
@@ -128,6 +139,28 @@ def _scope_cell():
     return (x0 + x1) // 2, z1 - 2
 
 
+VANE_MODEL = "site_wind_vane"
+
+
+def _vane():
+    """The weather station's wind vane, drawn with its tail toward +z (the model's own south at yaw
+    0), so that at VANE_YAW it points the way the whole map's one wind goes: the tail runs before
+    the wind and the pointer faces into it, north (A0 #569). A flat arrow in the vertical plane of
+    its own tail -- never a crossbar across the mast, which the project does not allow (A0 #22497):
+    a spindle on the mast's head, the shaft, a stepped point at the north end and a swallow tail
+    opening south. 11 units long, 4.5 tall. Anchor: the foot of the spindle, on the mast's head."""
+    m = M.Model(VANE_MODEL)
+    dark, iron = P.mat("iron_dark"), P.mat("iron")
+    m.tube("y", (0.0, 0.0), 0.0, 3.0, 0.5, dark, sides=4)                   # the spindle on the rod
+    m.tube("y", (0.0, 0.0), 0.0, 0.75, 0.9, iron, sides=4)                  # the bearing at its foot
+    m.tube("z", (0.0, 2.4), -5.0, 4.0, 0.25, dark, sides=4)                 # the shaft, point north
+    m.box((-0.75, 2.0, -5.0), (0.75, 2.8, -4.0), iron)                      # the point's shoulders
+    m.box((-0.25, 2.1, -6.0), (0.25, 2.7, -5.0), iron)                      # the point
+    m.beam((0.0, 2.55, 3.0), (0.0, 3.6, 5.0), 0.5, 0.7, iron)               # the swallow tail, opening
+    m.beam((0.0, 2.25, 3.0), (0.0, 1.2, 5.0), 0.5, 0.7, iron)               # south, either side
+    return m
+
+
 _SPOTS = _station_spots()
 # the screen stands on the joint of its two cells, the pedestal's top is a slab over a post
 SCREEN = (_SPOTS["screen"][0] + 1.0, float(S.WEATHER_STATION["feet"]),
@@ -136,6 +169,8 @@ PEDESTAL_TOP = (_SPOTS["pedestal"][0] + 0.5, S.WEATHER_STATION["feet"] + 1.5,
                 _SPOTS["pedestal"][1] + 0.5)                                    # (3.5, -2.5, -46.5)
 SCOPE_STAND = (_scope_cell()[0] + 0.5, float(S.SOUTH_LOOKOUT["feet"]),
                _scope_cell()[1] + 0.5)                                          # (45.5, -5.0, 54.5)
+# the middle of the weather mast's cell, where the vane stands on the rod's head: (6.5, -46.5)
+WEATHER_MAST = (_SPOTS["mast"][0] + 0.5, _SPOTS["mast"][1] + 0.5)
 
 
 # --- small helpers --------------------------------------------------------------------------------
@@ -148,6 +183,18 @@ def _fill(c, o, x0, y0, z0, x1, y1, z1, state, keep=False):
         for y in range(min(y0, y1), max(y0, y1) + 1):
             for z in range(min(z0, z1), max(z0, z1) + 1):
                 c.set(o[0] + x, o[1] + y, o[2] + z, state, keep=keep)
+
+
+def _wind_vane(c, o):
+    """The vane at the head of the weather station's mast, turned so its tail points downwind
+    (VANE_YAW, from the skeleton's WIND_TO). Returns 1, or 0 with VANE off."""
+    if not VANE:
+        return 0
+    wx, wz = _SPOTS["mast"]                             # (6, -47)
+    head = S.WEATHER_STATION["feet"] + 9                # 5: the cell over the rod's top
+    c.add_entity(o[0] + wx + 0.5, o[1] + head, o[2] + wz + 0.5,
+                 M.display(_vane(), yaw=VANE_YAW))
+    return 1
 
 
 def _place(c, o, kind, pos, facing):
@@ -369,6 +416,10 @@ def _weather_station(c, o):
     _put(c, o, wx - 1, foot + 8, wz, ROD + "[facing=west]")
     _put(c, o, wx - 2, foot + 8, wz, ROD + "[facing=west]")
 
+    # the wind vane at the mast's head, its tail south (A0 #569); the arm stays for the cups, so the
+    # two never meet: the vane is a flat arrow above the rod, the arm is level with its top
+    n += _wind_vane(c, o)
+
     # the rain gauge: a short plate drum under a lid; and a stone pedestal for the sunshine recorder
     gx, gz = _SPOTS["gauge"]                            # (6, -45)
     _put(c, o, gx, foot, gz, PLATE)
@@ -417,9 +468,14 @@ def _south_lookout(c, o):
     return _place(c, o, "tripod_scope", SCOPE_STAND, "south")
 
 
+def models():
+    return {VANE_MODEL: _vane()}
+
+
 def build(canvas, origin=(0, 0, 0)):
-    """Places the four shells and the ways down; returns the number of display entities, which are
-    the props line's three instruments when that package is in the tree and none otherwise."""
+    """Places the four shells and the ways down; returns the number of display entities: the wind
+    vane at the weather mast's head, and the props line's three instruments when that package is
+    in the tree (none of those while it is not)."""
     _meridian_hut(canvas, origin)
     _water_tower(canvas, origin)
     n = _weather_station(canvas, origin)
