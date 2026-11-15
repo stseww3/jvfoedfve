@@ -105,7 +105,11 @@ LAMPS = [(x, CEIL_Y - 1, z) for x, z in
          ((WALK_X[0] + 2, WALK_Z[0]), (WALK_X[1] - 2, WALK_Z[0]),
           (int(ENGINE_CENTRE[0]) - 3, int(ENGINE_CENTRE[1])), (int(ENGINE_CENTRE[0]) + 4, int(ENGINE_CENTRE[1])),
           (IN_X[0] + 3, IN_Z[1] - 3), (IN_X[1] - 3, IN_Z[1] - 3),
-          (IN_X[0] + 3, IN_Z[0] + 8), (IN_X[1] - 3, IN_Z[0] + 8))]
+          (IN_X[0] + 3, IN_Z[0] + 8), (IN_X[1] - 3, IN_Z[0] + 8),
+          # the four wall mid-heights: the truss bays are the darkest thing in the room and the
+          # card wants them read as iron, not as holes
+          (IN_X[0] + 1, IN_Z[0] + 6), (IN_X[1] - 1, IN_Z[0] + 6),
+          (IN_X[0] + 1, IN_Z[1] - 6), (IN_X[1] - 1, IN_Z[1] - 6))]
 LAMP_LEVEL = 8                              # the top of the third rank (a caged lamp); 7 left the
 #                                             room's corners black, and the card makes the furnace
 #                                             glow the room's main light, not its only one
