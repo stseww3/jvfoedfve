@@ -321,6 +321,7 @@ def _top_a(c, o, s, skirt=None, helm=None, eaves=None):
             s.put(face.cell(i, -1), y1, st(eaves.slab, type="top"))
     _fill(c, o, INSIDE, HEAD, CEILING.block)
     _helm(c, o, s, helm or HELM, skirt)
+    return HEAD
 
 
 # --- the lookout and the top: version b ---------------------------------------------------------------------
@@ -339,75 +340,69 @@ def _slope(c, o, cells, y):
         _set(c, o, x, y, z, state)
 
 
-def _dome(c, o, s):
-    """The kiosk's entablature and the dome on it. Half-widths on the axes by the half row from
-    y 37: 3.5 3.5 | 3.5 3.0 | 2.5 2.0 | 1.5 0.5 | 0.5 -- upright, 45 degrees, flat."""
-    _fill(c, o, OCT_WALL, HEAD, WALL.block)
-    _fill(c, o, OCT_IN, HEAD, CEILING.block)
-    s.mould(OCT, HEAD, WALL.stairs, "top")
-    y = ROOF[0]
-    _fill(c, o, OCT, y, COPPER.block)                   # 37: the upright foot
-    _fill(c, o, OCT_IN, y + 1, COPPER.block)            # 38: the first slope, on the kiosk's wall line
-    _slope(c, o, OCT_WALL, y + 1)
-    _fill(c, o, CROWN, y + 2, COPPER.block)             # 39: the second slope
-    _slope(c, o, OCT_IN - CROWN, y + 2)
-    _fill(c, o, CROWN, y + 3, st(COPPER.slab, type="bottom"))      # 40: the dome flattens
-    _set(c, o, CX, y + 3, CZ, COPPER.block)
+def _dome(c, o, s, head, eaves=None):
+    """The kiosk's entablature in row `head` and the dome on it: an upright foot on the kiosk's
+    wall line as far as y 37, two slopes of 45 degrees and a flat crown under the finial.
+    Half-widths on the axes by the half row from y 38: 3.5 3.0 | 2.5 2.0 | 1.5 0.5 | 0.5."""
+    _fill(c, o, OCT_WALL, head, WALL.block)
+    _fill(c, o, OCT_IN, head, CEILING.block)
+    s.mould(OCT, head, (eaves or WALL).stairs, "top")
+    y = APEX - 3
+    for row in range(head + 1, y):
+        _fill(c, o, OCT, row, COPPER.block)             # the upright foot
+    _fill(c, o, OCT_IN, y, COPPER.block)                # 38: the first slope, on the kiosk's wall line
+    _slope(c, o, OCT_WALL, y)
+    _fill(c, o, CROWN, y + 1, COPPER.block)             # 39: the second slope
+    _slope(c, o, OCT_IN - CROWN, y + 1)
+    _fill(c, o, CROWN, y + 2, st(COPPER.slab, type="bottom"))      # 40: the dome flattens
+    _set(c, o, CX, y + 2, CZ, COPPER.block)
     _set(c, o, CX, APEX, CZ, FINIAL)
 
 
-def _pinnacles(c, o):
-    """On each corner of the shaft a pedestal and a pinnacle, one row short of the kiosk's eaves."""
+def _pinnacles(c, o, posts):
+    """On each corner of the shaft a pedestal and on it a pinnacle of `posts` rows."""
     y0 = LOOKOUT[0]
     for x, z in CORNERS:
         _set(c, o, x, y0, z, QUOIN.block)
-        for y in range(y0 + 1, y0 + 3):
+        for y in range(y0 + 1, y0 + 1 + posts):
             _set(c, o, x, y, z, QUOIN.wall)
 
 
-def _top_b(c, o, s):
-    """Octagonal: a plinth one row high, on it eight colonnettes at the corners of the octagon (the
-    sky shows between them all round), on each corner of the shaft a pedestal with a pinnacle. The
-    eaves follow the octagon; the dome stands on the kiosk's wall line behind them."""
-    y0, y1 = LOOKOUT
-    _fill(c, o, OCT_WALL, y0, WALL.block)
-    for y in range(y0 + 1, y1 + 1):
+def _top_b(c, o, s, plinth=True, posts=2, eaves=None):
+    """Octagonal: eight colonnettes at the corners of the octagon (the sky shows between them all
+    round), on each corner of the shaft a pedestal with a pinnacle. The eaves follow the octagon;
+    the dome stands on the kiosk's wall line behind them. With a plinth the colonnettes stand on
+    a parapet one row high and the entablature lies in row 36; without it they stand on the
+    lookout's floor, the entablature lies one row lower and the dome's foot is a row taller.
+    Returns the row of the ceiling."""
+    y0 = LOOKOUT[0]
+    head = HEAD if plinth else HEAD - 1
+    if plinth:
+        _fill(c, o, OCT_WALL, y0, WALL.block)
+    for y in range(y0 + 1 if plinth else y0, head):
         _fill(c, o, OCT_PIERS, y, QUOIN.wall)
-    _pinnacles(c, o)
-    _dome(c, o, s)
-
-
-def _top_b2(c, o, s):
-    """Trial: four piers on the diagonals, an arch of three on each axis."""
-    y0, y1 = LOOKOUT
-    for y in range(y0, y1 + 1):
-        _fill(c, o, OCT_DIAG, y, WALL.block)
-    for x, z in OCT_WALL - OCT_DIAG:
-        dx, dz = x - CX, z - CZ
-        along, names = (dz, ("north", "south")) if abs(dx) == 3 else (dx, ("west", "east"))
-        _set(c, o, x, y0, z, BARS)
-        if along:
-            head = st(WALL.stairs, facing=names[0] if along < 0 else names[1], half="top")
-        else:
-            head = st(WALL.slab, type="top")
-        _set(c, o, x, y1, z, head)
-    _pinnacles(c, o)
-    _dome(c, o, s)
+    _pinnacles(c, o, posts)
+    _dome(c, o, s, head, eaves)
+    return head
 
 
 TOPS = {"a": _top_a, "b": _top_b,
-        "a2": functools.partial(_top_a, eaves=COPPER), "b2": _top_b2}
+        "a2": functools.partial(_top_a, eaves=COPPER),
+        "b2": functools.partial(_top_b, plinth=False, posts=1), "b3": functools.partial(_top_b, posts=1),
+        "b4": functools.partial(_top_b, posts=1, eaves=COPPER),
+        "b5": functools.partial(_top_b, plinth=False, posts=1, eaves=COPPER)}
 VERSION = "a"                       # what the master scene shows until the director has picked one
 
 
 # --- the lamp and the light -------------------------------------------------------------------------------
-def _lamp(c, o):
-    """A caged lamp let into the middle of the lookout's ceiling. The light it throws is the sky
-    line's to place: asked for through the kit, a stand-in source while the kit is not in the tree."""
+def _lamp(c, o, head):
+    """A caged lamp let into the middle of the lookout's ceiling, which lies in row `head`. The
+    light it throws is the sky line's to place: asked for through the kit, a stand-in source while
+    the kit is not in the tree."""
     if not LAMP:
         return
-    _set(c, o, CX, HEAD, CZ, st(BULB, lit="true"))
-    below = (o[0] + CX, o[1] + HEAD - 1, o[2] + CZ)
+    _set(c, o, CX, head, CZ, st(BULB, lit="true"))
+    below = (o[0] + CX, o[1] + head - 1, o[2] + CZ)
     suggest = getattr(_kit(), "suggest", None)
     if suggest is not None:
         suggest(c, below, LAMP_LEVEL, "main/tower:cage", rank=3)
@@ -513,8 +508,8 @@ def build(canvas, origin=(0, 0, 0), version=None):
     the shaft and the mast are the same for both. Returns the display entities placed: 2."""
     s = O.Laying(canvas, O.Plan(BODY), origin, None)
     _shaft(canvas, origin, s)
-    TOPS[version or VERSION](canvas, origin, s)
-    _lamp(canvas, origin)
+    head = TOPS[version or VERSION](canvas, origin, s)
+    _lamp(canvas, origin, head)
     _slit_lights(canvas, origin)
     return _mast(canvas, origin)
 
