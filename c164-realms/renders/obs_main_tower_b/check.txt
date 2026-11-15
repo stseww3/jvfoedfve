@@ -1,5 +1,5 @@
-check obs_main_tower_b at d69dc5f
-[PASS] regen     102883 blocks, 24 entities, 27 models, 724 resource-pack files, 57 data-pack files, look: 1 biomes, 1 timelines (1.2 s)
+check obs_main_tower_b at fb3c6f7
+[PASS] regen     102883 blocks, 24 entities, 27 models, 724 resource-pack files, 57 data-pack files, look: 1 biomes, 1 timelines (1.5 s)
 [PASS] conflicts the scene writes 723 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
 [PASS] strays    148 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
 [PASS] refs      557 block states, item definitions and models read, every model and picture they name is there
@@ -7,8 +7,8 @@ check obs_main_tower_b at d69dc5f
 [PASS] blocks    62 kinds of block placed, all in the occupancy table
 [PASS] flatwall  no wall face runs flat over more than 5x5
 [PASS] entities  24 display entities, 20 models never placed
-[PASS] views     10 shots, most display entities in view: 24 (north_west), limit 600; counted without what walls hide; the game draws up to 24 (v5_up): a display entity without width and height is drawn outside the view too
-[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 10.1% hidden (base storey 33%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.7 s)
+[PASS] views     11 shots, most display entities in view: 24 (north_west), limit 600; counted without what walls hide; the game draws up to 24 (v5_board): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 10.1% hidden (base storey 33%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.8 s)
 [PASS] motion    1 parts and 0 points on 1 chains, 12 function files; 4 commands in the busiest tick (limit 40), 0.6 a tick on average (limit 10)
                  chain of 24 ticks: 6 functions, 14 commands a cycle, starts 1 ticks after start
                  bld_tower_cups: 6 steps in 24 ticks, not aimed ahead: its middle lies 0.09 blocks off the axis
