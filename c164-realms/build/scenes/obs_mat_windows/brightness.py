@@ -15,6 +15,9 @@ c177's targets, whole window with the glazing bars counted in:
     DARK     ~0.08 shown (A),  ~0.05 (B)
     BLIND    ~0.073 shown (A)
 Both versions of the lit windows sit on the same ladder.
+
+The linings of the lit windows (materials/windows.py, the room side) are measured as well: their
+pictures in their own colours, held to what linings() says below.
 """
 import os
 import sys
@@ -72,6 +75,35 @@ def table():
     return rows, bad
 
 
+# The linings (A0, g2 #32717): what a lit window shows to the room behind it. A lining gives no
+# light, so its figure is the picture in its own colours, and the room's lamps and the game's
+# shading only take from it. Held to: no colour of the two light ramps; every lining under the
+# dimmest lit window; the unlit frosted glass lighter than the night glass that lines WINDOW_LIT.
+LIGHT_RAMPS = ("glow", "opal")
+
+
+def linings():
+    rows, bad = [], []
+    light = {P.colour(ramp, i) for ramp in LIGHT_RAMPS for i in range(len(P.RAMPS[ramp]))}
+    for v in W.VERSIONS:
+        whole = {}
+        for kind in W.VARIANTS:
+            px = W.lining_picture(kind, W.PIECE, W.PIECE, 0, v)
+            used = {tuple(int(c) for c in rgb) for rgb in np.unique(px[..., :3].reshape(-1, 3), axis=0)}
+            whole[kind] = luma(px)
+            ok = not (used & light) and whole[kind] < TARGET["CURTAIN"][0]
+            rows.append((v, kind, whole[kind], len(used), "ok" if ok else "OUT"))
+            if used & light:
+                bad.append(f"lining {v} {kind}: {len(used & light)} colours of the light ramps")
+            if whole[kind] >= TARGET["CURTAIN"][0]:
+                bad.append(f"lining {v} {kind}: whole {whole[kind]:.3f}, not under the dimmest lit window "
+                           f"({TARGET['CURTAIN'][0]:.2f})")
+        if not whole["lit"] < whole["frosted"]:
+            bad.append(f"lining {v}: frosted {whole['frosted']:.3f} is not lighter than the night glass "
+                       f"{whole['lit']:.3f}")
+    return rows, bad
+
+
 def main():
     print(f"glass glow[2]={P.RAMPS['glow'][2]}  opal[0]={P.RAMPS['opal'][0]}  "
           f"night_glass[3,4]={P.RAMPS['night_glass'][3]},{P.RAMPS['night_glass'][4]}  bar iron[1]={P.RAMPS['iron'][1]}")
@@ -79,12 +111,17 @@ def main():
     rows, bad = table()
     for v, role, a, b, tgt, flag in rows:
         print(f"{v:3} {role:8} {a:12.3f} {b:12.3f}  {tgt:>11}  {flag}")
+    print(f"\n{'ver':3} {'lining':8} {'whole':>12} {'colours':>12}  flag")
+    lined, bad_lined = linings()
+    for v, kind, whole, colours, flag in lined:
+        print(f"{v:3} {kind:8} {whole:12.3f} {colours:12d}  {flag}")
+    bad += bad_lined
     if bad:
         print("\nOUT OF LADDER:")
         for line in bad:
             print("  " + line)
         return 1
-    print("\nall three lit tiers on c177's ladder, both versions.")
+    print("\nall three lit tiers on c177's ladder, both versions; the linings give no light.")
     return 0
 
 

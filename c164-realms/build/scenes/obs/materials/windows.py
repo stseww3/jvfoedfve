@@ -40,9 +40,35 @@ Two versions of the lit windows are compared (version="a" / "b"):
 The dark windows are painted one way; their bars follow the version, so that lit and dark windows
 of one front share a net. Both nets cover the same share of the glass (60 of 256 pixels), which
 keeps the two versions on the same ladder of brightness.
+
+The lining (A0's ruling, group g2 #32717). A lit window glows on every face of its blocks, so from
+inside a room it would be a light box in the wall, while what it tells is a lamp in the room, seen
+from outside. Its room side is therefore covered by a thin model that gives no light:
+
+    WINDOW_LIT       night glass in the net of the dark windows: the same window as the dark one
+                     beside it
+    WINDOW_CURTAIN   the drawn curtain in its own colour by lamp light, warm and dark
+    WINDOW_FROSTED   the obscured glass with no light behind it: a cold grey a step lighter than
+                     night glass, no sky in it
+
+Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
+the dome room; main/shell.py's room_at() says which. The blocks of a window are not touched, so a
+front shows what it showed without the linings; LINING switches them off, to prove that with two
+pictures.
+
+    build(canvas, origin)                         the master scene: the lit windows of the main
+                                                  building that have a room behind them
+    line(canvas, cells, inward, glass, origin)    one window, for a room's test scene or another
+                                                  building; returns the entities placed
+    models()                                      the lining models, names "mat_window_lining_..."
 """
+import contextlib
+import functools
+import importlib
+
 import numpy as np
 
+from artkit import models as M
 from artkit import respack
 
 from ..common import blocks as B
@@ -311,3 +337,277 @@ def pack(pack_dir, version=None):
                      for ref in respack.block_pictures(K.game(), block)}
             out.append(K.redirect(pack_dir, block, shown, **how))
     return out
+
+
+# ---- the lining: a lit window as the room behind it sees it ----------------------------------------
+LINING = True                           # A0 #32717: on by default; unlined() builds without it
+THICK = 0.5                             # how far a lining stands in front of the glass, in pixels
+PIECE = 48 // TILE                      # a model reaches 48 pixels: a lining is cut into pieces of 3 blocks
+NUDGE = 0.01                            # blocks; puts the entity into the room's cell, which lights it
+MODEL = "mat_window_lining_"            # the category's prefix, and what the models are
+
+# what a lit window is lined with, and in how many arrangements its pictures come
+KINDS = {B.WINDOW_LIT: "lit", B.WINDOW_FROSTED: "frosted", B.WINDOW_CURTAIN: "curtain"}
+VARIANTS = {"lit": 2, "frosted": 1, "curtain": 1}
+
+UNLIT = ("iron", 5)                     # obscured glass with no light behind it
+UNLIT_SOFT = ("iron", 4)                # the soft edge the bars throw on it
+CLOTH = ("brass", 1)                    # the curtain by lamp light
+CLOTH_SHADE = ("brass", 0)              # the side of a fold that is turned away
+CLOTH_DEEP = ("dark_wood", 1)           # the bottom of a fold
+_EDGE = {"lit": BAR, "frosted": BAR, "curtain": CLOTH_DEEP}     # the half pixel a lining is thick
+
+
+def unlit_face(version="a"):
+    """The room side of WINDOW_FROSTED: the obscured glass as the room sees it at night, with no
+    light behind it. A cold grey a step lighter than the night glass of a dark window, flat, no sky
+    in it; under and beside the bars the same soft edge as on the lit side, so that it is read as
+    the frosted window and not as a dark one. One picture: the broken surface of version b shows
+    by the light that falls through it, and none does."""
+    px = _glass(UNLIT)
+    for x0, y0, x1, y1 in _LIGHTS[version]:
+        _fill(px, x0, y0, x1, y0, UNLIT_SOFT)
+        if version != "b":
+            _fill(px, x0, y0, x0, y1, UNLIT_SOFT)
+    return _bars(px, version)
+
+
+def cloth_face(version="a"):
+    """The room side of WINDOW_CURTAIN: the drawn curtain in its own colour by lamp light, a warm
+    brown with no light of its own; its lightest tone (0.35 of white) stays under the paper, the
+    brass and the opal glass a lamp of the room shines on. a: the folds of the curtain's lit side
+    seen from behind, a ridge there is a hollow here. b: the slats of the blind, each with its
+    shadow under it. No glazing bars: the cloth hangs in front of them. One picture, so that a fold
+    runs unbroken down a window and a slat across it."""
+    px = _glass(CLOTH)
+    if version == "b":
+        for y in range(2, 15, 3):
+            _fill(px, 0, y, TILE - 1, y, CLOTH_SHADE)
+            if y + 1 < 15:
+                _fill(px, 0, y + 1, TILE - 1, y + 1, CLOTH_DEEP)
+    else:
+        for x in (1, 4, 9, 13):
+            _fill(px, x, 0, x, TILE - 1, CLOTH_DEEP)
+            _fill(px, x + 1, 0, x + 1, TILE - 1, CLOTH_SHADE)
+    return px
+
+
+def lining_tiles(kind, version="a"):
+    """The pictures a lining is laid out of, one block face each. The lining of WINDOW_LIT is the
+    dark window itself, its four pictures: night glass in the same net."""
+    if kind == "lit":
+        return dark_face(version)
+    if kind == "frosted":
+        return [unlit_face(version)]
+    if kind == "curtain":
+        return [cloth_face(version)]
+    raise ValueError(f"windows: no lining {kind!r}; there are {', '.join(VARIANTS)}")
+
+
+# Which of a kind's pictures stands on which block of a piece: rows from the top, columns from the
+# left as the room sees them. Two arrangements, so that the two halves of a tall window differ.
+_MIX = (((0, 2, 1), (3, 1, 0), (2, 0, 3)),
+        ((1, 3, 2), (2, 0, 1), (0, 2, 3)))
+
+
+def lining_picture(kind, w, h, variant=0, version="a"):
+    """The face of a piece w blocks wide and h high: the kind's pictures block by block, each the
+    way a block's face shows it, so the net runs on into the windows beside the lined one."""
+    tiles = lining_tiles(kind, version)
+    px = np.zeros((TILE * h, TILE * w, 4), np.uint8)
+    for j in range(h):
+        for i in range(w):
+            px[TILE * j:TILE * (j + 1), TILE * i:TILE * (i + 1)] = tiles[_MIX[variant][j][i] % len(tiles)]
+    return px
+
+
+class _Shown:
+    """A painted picture as a material of artkit.models: the face it is given shows it as it is."""
+
+    def __init__(self, name, pixels):
+        self.name, self.pixels = name, pixels
+
+    def paint(self, w, h, grain="u", seed=0):
+        if self.pixels.shape[:2] != (h, w):
+            raise ValueError(f"{self.name}: a picture of {self.pixels.shape[1]}x{self.pixels.shape[0]} "
+                             f"on a face of {w}x{h}")
+        return self.pixels.copy()
+
+
+def lining_name(kind, w, h, variant=0):
+    return f"{MODEL}{kind}_{w}x{h}" + ("_alt" if variant else "")
+
+
+def _lining(kind, w, h, variant, version):
+    """One piece, w by h blocks: a slab THICK deep that lies with its back on the glass. The anchor
+    is the middle of the foot of its back. The picture is on the face that looks into the room,
+    the model's +z; +x is the right hand of whoever looks at it. The back has no face."""
+    name = lining_name(kind, w, h, variant)
+    ramp, step = _EDGE[kind]
+    m = M.Model(name)
+    m.box((-TILE * w / 2.0, 0.0, 0.0), (TILE * w / 2.0, float(TILE * h), THICK),
+          P.mat(ramp, kind="flat", base=step, bevel=0), skip="n",
+          faces={"s": _Shown(f"{name}_face", lining_picture(kind, w, h, variant, version))})
+    return m
+
+
+@functools.lru_cache(maxsize=None)
+def _linings(version):
+    out = {}
+    for kind, variants in VARIANTS.items():
+        for variant in range(variants):
+            for w in range(1, PIECE + 1):
+                for h in range(1, PIECE + 1):
+                    m = _lining(kind, w, h, variant, version)
+                    out[m.name] = m
+    return out
+
+
+def models(version=None):
+    """The lining models, {name: Model}: every kind in every size from 1 by 1 to 3 by 3 blocks, so
+    that a window of any size can be lined and the pack does not depend on which windows are lit.
+    Their net follows the version of the windows; names and shapes are the same in both."""
+    return dict(_linings(_version(version)))
+
+
+def lining_of(glass):
+    """The lining a glass takes ("lit", "frosted" or "curtain"); None for a glass that is not a lit
+    window. `glass` is a role of the occupancy table or a block name, with or without namespace and
+    state. Whole blocks only: a pane stands in the middle of its cell, a lining lies on a face."""
+    if isinstance(glass, B.Family):
+        glass = glass.block
+    name = str(glass or "").split(":", 1)[-1].partition("[")[0]
+    for role, kind in KINDS.items():
+        if name == role.block:
+            return kind
+    return None
+
+
+def _first(n):
+    """How many blocks the first piece takes of n in a row: as few pieces as PIECE allows, as even
+    as they come (6 -> 3 + 3, 4 -> 2 + 2, 5 -> 3 + 2)."""
+    pieces = -(-n // PIECE)
+    return -(-n // pieces)
+
+
+# the step from the glass into the room -> the yaw that points a model's +z that way
+_YAW = {(0, 1): 0.0, (-1, 0): 90.0, (0, -1): 180.0, (1, 0): -90.0}
+
+
+def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
+    """Line the room side of one window. Returns the number of display entities placed: 0 for a
+    window that is not lit, and for every window while LINING is off.
+
+    cells    the glass of the window, [(x, y, z)]: whole blocks standing in one plane
+    inward   the step from the glass into the room, (dx, dz): one block along x or along z
+    glass    what the glass is: a role of the occupancy table (B.WINDOW_LIT, ...) or a block name,
+             as main/facade.py's windows() gives it
+
+    The window is cut into pieces of at most 3 by 3 blocks; a great window of 3 by 6 takes two.
+    The models are those of models(): a scene that calls this adds them to its build_models(). The
+    master scene needs no call, build() lines the main building there.
+    """
+    kind = lining_of(glass)
+    if not LINING or kind is None:
+        return 0
+    step = (int(inward[0]), int(inward[1]))
+    if step not in _YAW:
+        raise ValueError(f"windows.line: inward is one step along x or z, not {inward!r}")
+    dx, dz = step
+    ox, oy, oz = origin
+    # every cell as (plane, along the wall, row): the wall runs along z where the room lies east or
+    # west of the glass, along x where it lies north or south
+    todo = {(int(x), int(z), int(y)) if dx else (int(z), int(x), int(y)) for x, y, z in cells}
+    low = {}
+    for p, a, y in todo:
+        a0, y0 = low.get(p, (a, y))
+        low[p] = (min(a0, a), min(y0, y))
+    pieces = _linings(_version(None))
+    n = 0
+    while todo:
+        p, a0, y0 = min(todo, key=lambda c: (c[0], c[2], c[1]))    # the lowest row first, along it
+        run = 1
+        while (p, a0 + run, y0) in todo:
+            run += 1
+        w = _first(run)
+        rise = 1
+        while all((p, a0 + i, y0 + rise) in todo for i in range(w)):
+            rise += 1
+        h = _first(rise)
+        todo -= {(p, a0 + i, y0 + j) for i in range(w) for j in range(h)}
+        # which piece this is, counted along the wall and upwards: neighbours take different
+        # arrangements of the pictures, like the squares of a chess board
+        across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
+        model = pieces[lining_name(kind, w, h, (across + up) % VARIANTS[kind])]
+        face = p + (1 if dx + dz > 0 else 0) + NUDGE * (dx + dz)    # the inner face of the glass
+        along = a0 + w / 2.0
+        x, z = (face, along) if dx else (along, face)
+        canvas.add_entity(ox + x, oy + y0, oz + z, M.display(model, yaw=_YAW[step]))
+        n += 1
+    return n
+
+
+@contextlib.contextmanager
+def unlined():
+    """`with windows.unlined():` builds without the linings. For the twin of a scene that proves
+    that a front looks the same with them and without."""
+    global LINING
+    was, LINING = LINING, False
+    try:
+        yield
+    finally:
+        LINING = was
+
+
+# Where somebody can stand behind a window of the main building, while main/shell.py is not in the
+# tree to be asked: {(front, storey): bays}, c231's reading of the shell (g2 #35461). The two wing
+# rooms and the star hall behind the east front, the wing rooms behind the west front, the stair
+# hall in the apse, the dome room behind the drum. Closed, and not lined: the end pavilions, the
+# gables, the ground floor of the wings.
+ROOM_BAYS = {("east", "main"): tuple(range(3, 16)), ("east", "base"): (8, 10),
+             ("west", "main"): (3, 4, 5, 13, 14, 15), ("apse", "main"): (-1, 0, 1),
+             ("drum", "drum"): tuple(range(20))}
+
+
+def _main(name):
+    """A module of the main line; None while it is not in the tree."""
+    full = f"{__package__.rpartition('.')[0]}.main.{name}"
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if e.name != full:
+            raise               # it is there and fails to import something: say so
+        return None
+
+
+def _room_behind(window):
+    """Whether somebody can stand behind a window of the main building: what shell.room_at() says
+    of the cell one step inside the glass, asked for the middle column (a column at a corner may
+    stand against a wall: c231, g2 #35461) and the middle row."""
+    room_at = getattr(_main("shell"), "room_at", None)
+    if room_at is None:
+        return window["bay"] in ROOM_BAYS.get((window["front"], window["storey"]), ())
+    cells, (dx, dz), (y0, y1) = window["cells"], window["inward"], window["y"]
+    x, z = cells[len(cells) // 2]
+    return room_at(x + dx, (y0 + y1) // 2, z + dz) is not None
+
+
+def lined():
+    """The windows of the main building that are lined: those of main/facade.py's windows() that
+    are lit and have a room behind them, [dict(front, bay, storey, cells, inward, y, glass)]."""
+    table = getattr(_main("facade"), "windows", None)
+    if not LINING or table is None:
+        return []
+    return [w for w in table() if lining_of(w["glass"]) and _room_behind(w)]
+
+
+def build(canvas, origin=(0, 0, 0)):
+    """The master scene: line the lit windows of the main building that have a room behind them.
+    Returns the display entities placed. The materials are the first line to build, before any
+    wall stands, so the windows are read from the facade's table and not off the canvas."""
+    n = 0
+    for w in lined():
+        y0, y1 = w["y"]
+        n += line(canvas, [(x, y, z) for x, z in w["cells"] for y in range(y0, y1 + 1)],
+                  w["inward"], w["glass"], origin)
+    return n
