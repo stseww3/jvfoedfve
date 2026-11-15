@@ -89,6 +89,9 @@ MAST_HOLD = 0.5                     # the entity stands this far above the foot:
 WIND = (S.WIND[0], S.WIND[2])       # (0, 1): one step downwind along x and z; the vane's tail points there
 CUPS_OUT = 0.875                    # the cup wheel's spindle stands this far upwind of the axis: north
 CUPS_AT = (AXIS[0] - CUPS_OUT * WIND[0], MAST_STOP + 0.4375, AXIS[1] - CUPS_OUT * WIND[1])   # (13.5, 51.4375, -30.375): its hub
+VANE_LONG = 2.0                     # the pennant of the wind vane: from the axis to the ends of its two tails,
+VANE_TAIL = 0.75                    # how long the tails are,
+VANE_HIGH = 0.75                    # and how high it is; its upper edge is the tip of the mast
 FAR = 4.0                           # view_range, as machines/clock gives the dials and the ball
 
 # --- the antenna's bracket ----------------------------------------------------------------------------
@@ -445,6 +448,7 @@ def _models():
     top = (MAST_TOP - MAST_FOOT) * u                    # 44.0
     out = CUPS_OUT * u                                  # 3.5
     on = (0.0, 0.0)                                     # the axis
+    long, tail, high = VANE_LONG * u, VANE_TAIL * u, VANE_HIGH * u      # 8.0, 3.0, 3.0
 
     # Units from the foot upwards. Between the boot and the stop collar the pole is plain: the time
     # ball of machines/clock and its sleeves (6 px in radius) travel there.
@@ -465,17 +469,18 @@ def _models():
     m.tube("y", on, 2.5, stop, MAST_THICK * u / 2.0, dark)                  # the pole, 7 px
     m.tube("y", on, stop, stop + 0.75, 1.375, iron)                         # the stop collar
     m.taper("y", on, stop + 0.75, stop + 3.0, 0.875, 0.375, dark, steps=3)  # the neck
-    m.tube("y", on, stop + 3.0, stop + 6.0, 0.375, dark, sides=4)           # the rod, 3 px
-    m.taper("y", on, stop + 6.0, top, 0.375, 0.25, dark, sides=4, steps=2)  # the tip, 2 px at the end
+    m.tube("y", on, stop + 3.0, top, 0.375, dark, sides=4)                  # the rod, 3 px, to the tip
     # the cup wheel's bracket, upwind: an arm out of the stop collar, the spindle upright on its end
     plate(-out - 0.25, -1.0, stop + 0.125, stop + 0.625)
     plate(-out - 0.25, -out + 0.25, stop + 0.125, stop + 1.5)
-    # the wind vane, downwind and three quarters of a block higher: a sleeve on the rod and a
-    # swallow-tailed flag. Arm and flag stand on opposite sides at different heights: no cross
-    m.tube("y", on, stop + 3.25, stop + 6.25, 0.5, iron)
-    plate(0.375, 3.5, stop + 3.5, stop + 6.0)
-    plate(3.5, 5.5, stop + 5.25, stop + 6.0)
-    plate(3.5, 5.5, stop + 3.5, stop + 4.25)
+    # the wind vane, downwind: a sleeve on the rod and a swallow-tailed pennant whose upper edge is
+    # the mast's tip. Nothing stands above it, and the cups hang three quarters of a block below
+    # it on the other side and reach less far: a flag on its pole from wherever it is seen, never
+    # a cross
+    m.tube("y", on, top - high - 0.25, top, 0.5, iron)
+    plate(0.375, long - tail, top - high, top)
+    plate(long - tail, long, top - 0.875, top)
+    plate(long - tail, long, top - high, top - high + 0.875)
 
     # The cup wheel, in pixels about its hub: three arms, never four. It turns about y through the
     # anchor; the box round the three cups has its middle 1.5 px north of that axis.
