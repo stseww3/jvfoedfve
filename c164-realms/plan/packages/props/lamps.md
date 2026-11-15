@@ -78,6 +78,6 @@
      - 甲版铁笼灯正对着看还是最弱的一个剪影（两道杠夹一块亮）。场地上两盏都斜着看，不碍事；评审不过的话退路是乙版（方罩加横档）。
   7. 图。本分支 `renders/obs_props_lamps/`（26 张）、`renders/obs_props_lamps_site/`（15 张，总装这棵树：只有 19 盏，`hut_door`、`tower_foot` 里还没有房子和灯，`way_axis`、`post_near` 里没有台阶上的灯）、`renders/obs_props_lamps_site_nearpair/`（6 张）。26 盏全立起来的 15 张在试合树 `cursor/c164-lamps-trial-f3-0dde` 的 `renders/trial/`（同目录 `site_light.txt` 是上面那张清单，`check_site.txt`、`check_obs.txt` 是两次 check）。stair、outb、cable 合进总装以后，`obs_props_lamps_site` 的图按 `tools/keptshots.py` 报的重出。画廊场景 `obs_props_lamps` 的资源包除了 materials 的，加上了 sky 的那一份（太阳的贴图涂黑，月亮的位置上是彗星）：舞台用的是地图的时刻，只带 materials 的包时游戏自带的太阳躺在西边空着的地平线上，26 张里有 9 张最亮的东西是它，不是灯。
   8. 还等着的：
-     - `DRESS` 仍然关着（总场景里只有入口两盏壁灯和门前一对路灯），开不开等总监。
+     - `DRESS` 开了（总监 #56091，看的是试合树 26 盏全立的 `v1`、`v2`、`v12`、`east_high`：V12 里两层平台上一串小光点、两排灯把人领到大台阶，V2 撤了第一对以后干净，V1 左边三盏不高过平台沿）。总场景和把 props 这条线整个建出来的测试场景（`obs_main_facade`、`obs_main_smalldome`、`obs_site_court`、`obs_site_terrain`、`obs_sky_lights`）从这次合并起带着场地灯，它们存的带真楼或场地的图过期，各家随下次交付重出。要一张不带场地灯的画布：`lamps.dress(canvas, False)`，在 props 这条线建之前调。
      - 真机图：球罩两截、地面光圈、远处斜撑闪不闪，三样都要在游戏里看。
      - 上面记录里留给 V6 的三件没动：下平台 (79.5, −6, 10.5) 那盏压着烟囱方座、边沿 (60, 26) 那盏留不留、发电房门口放不放一盏带罩的。

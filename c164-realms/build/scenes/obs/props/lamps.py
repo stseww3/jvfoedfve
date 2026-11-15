@@ -458,8 +458,10 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #
 # The doorway is the brightest thing on the site (14, sky/lights); the street lamps lead to it a
 # step under.
-DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
-                        # a test scene asks for the site's lamps with dress(canvas)
+DRESS = True            # the master scene carries the lamps of the site (A0, #56091, on v1, v2, v12 and
+                        # east_high of obs_props_lamps_site with all 26 standing). Off, build() places
+                        # the entrance's pair of wall lamps and the pair of street lamps nearest the door;
+                        # a canvas asks for itself with dress(canvas), or dress(canvas, False)
 NEAR_PAIR = False       # the court's pair midway between the stair head and the armillary's seat is left
                         # out (A0, #54472): it stood six cells before the eye of S.V2, half-way out to
                         # either edge of that picture, its globes on the small dome and on the foot of the
@@ -580,8 +582,9 @@ def _wall_facing(canvas, p, origin=(0, 0, 0)):
 
 
 def dress(canvas, on=True, near_pair=None):
-    """Ask for the lamps of the site on this canvas while the switch DRESS is off (a test scene).
-    near_pair: True or False puts this canvas above the switch NEAR_PAIR as well."""
+    """Ask for the lamps of the site on this canvas, or with on=False for a canvas without them,
+    whatever the switch DRESS says (a test scene). near_pair: True or False puts this canvas above
+    the switch NEAR_PAIR as well."""
     canvas.lamp_dress = bool(on)
     if near_pair is not None:
         canvas.lamp_near_pair = bool(near_pair)
@@ -644,7 +647,7 @@ def _feet_glow(canvas, origin=(0, 0, 0)):
 def build(canvas, origin=(0, 0, 0), version=VERSION):
     """What this package places in the master scene itself: the pair of bracket lamps that frames
     the entrance, on whatever front the main line has built there, and the lamps of the site
-    (site(); while the switch DRESS is off only the pair of street lamps nearest the door). Lamps
+    (site(); with the switch DRESS off only the pair of street lamps nearest the door). Lamps
     on a building or in a room are placed by the line that builds it, with place()."""
     n = 0
     front = S.east_wall_x(ENTRANCE_BAY)
