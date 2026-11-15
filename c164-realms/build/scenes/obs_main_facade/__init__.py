@@ -90,6 +90,8 @@ def shots(only=None):
         # V3: two bays of the south wing, close, with the corner of the middle pavilion
         dict(name="v3_near", pos=[wing + 10.5, 2.2, z3 + 3.0], look_at=[wing + 1.0, 6.5, z3 - 1.5], time=TIME),
         dict(name="oblique", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=TIME),
+        # V11: looking back from the south lookout -- the south end wall and the east front in three-quarter view
+        dict(name="v11_south", pos=[float(n) for n in S.V11["pos"]], look_at=[float(n) for n in S.V11["look_at"]], time=TIME),
         # from above: the roofs, the gable walls, the parapets and what stands on them
         dict(name="roofs", pos=[58.0, 44.0, 34.0], look_at=[8.0, 14.0, 0.0], time=TIME),
         dict(name="west", pos=[-34.0, 6.0, -30.0], look_at=[4.0, 14.0, 0.0], time=TIME),
