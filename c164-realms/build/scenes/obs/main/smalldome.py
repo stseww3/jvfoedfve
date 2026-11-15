@@ -65,6 +65,7 @@ RUNS = ((CX + 4, CZ + 1), (CX - 1, CZ + 4), (CX + 3, CZ - 3))   # the darker pla
 PLATE, RUN, CAST = B.VERDIGRIS_CUT, B.VERDIGRIS_STREAK, B.VERDIGRIS_CAST
 STONE, PANEL = B.ASHLAR_FINE, B.ASHLAR_PANEL
 IRON = B.IRON_RIVETED
+LEAF = RUN                                               # TRIAL (pictures decide): the shutter leaf in the darker copper
 SKIRT = IRON.block
 GLASS = B.WINDOW_DARK.pane                               # a pane: the glass stands back in a wall one block thick
 FRONT = "sdome"                                          # the front's name in windows()
@@ -171,7 +172,7 @@ def dome(canvas, origin=(0, 0, 0)):
     for (x, z), top in skin.items():
         ytop = math.ceil(top) - 1                       # the cell the top face lies in
         whole = top == ytop + 1
-        metal = IRON if _is_leaf(x, z) else PLATE
+        metal = LEAF if _is_leaf(x, z) else PLATE
         for y in range(min(ytop, _foot(skin, (x, z))), ytop + 1):
             if (x, z) == (CX, CZ):
                 state = CAST
