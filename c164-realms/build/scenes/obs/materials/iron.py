@@ -8,9 +8,9 @@ The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards
 Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
 grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
 is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
-taken over step for step into the iron ramp, their filament and slits into the glow ramp. One model
-is touched: the game shows a trapdoor's picture upside down, and the hatch's copies of its models
-turn it back (_upright).
+taken over step for step into the iron ramp, their filament and slits into the glow ramp. No model
+is touched: the copper trapdoor takes the game's copper template, which shows the picture the right
+way up on every face that matters.
 """
 import math
 
@@ -182,25 +182,14 @@ def _hatch():
     return px
 
 
-def _upright(ref, flat):
-    """What redirect does to the game's trapdoor models before it maps the picture (its `edit`).
-
-    The game shows the picture upside down (uv 0,16,16,0) on the faces that count: both sides of a
-    standing trapdoor, and the top of a lying one, where it is turned against the tops of the
-    blocks round it. The lid's frame and rivets are lit from the top and the left like every other
-    plate's; upside down, a standing panel reads lit from below, its rivets' shadows over their
-    heads, next to plates lit from above. On those faces the flip goes. The edges are left as they
-    are: they read the picture's top three rows, the frame's lit lip and the rivets under it."""
-    turned = 0
-    for box in flat["elements"] or []:
-        for face in box["faces"].values():
-            if face.get("uv") == [0, 16, 16, 0]:
-                face["uv"] = [0, 0, 16, 16]
-                turned += 1
-    if not turned:
-        raise ValueError(f"{ref}: no face of this model shows the whole picture upside down any more; "
-                         "look at the game's trapdoor models again before the hatch is redirected")
-    return flat
+# The hatch needs no model of its own. The copper trapdoor is not drawn like the wooden ones: it
+# takes minecraft:block/template_trapdoor_bottom/_top/_open, whose every face shows the picture the
+# right way up (uv 0,0,16,16 on both sides of a standing panel and on the top of a lying one), and
+# whose thin edges read the picture's bottom three rows. The wooden trapdoors take the orientable
+# template instead, which turns the picture over on exactly those faces; an earlier draft of this
+# module copied that flip from the wooden template's numbers and had the hatch's models undone, and
+# it never ran. The picture is drawn to the copper template: lit from the top and the left, as the
+# plate beside a standing panel is, with nothing turned.
 
 
 # the door's two plates carry the same six rivets, so down each side they pair up across the seam
@@ -413,7 +402,7 @@ def pack(pack_dir):
         for block in K.blocks(role):
             out.append(K.redirect(pack_dir, block, _map(block, name)))
     for block in K.blocks(B.IRON_HATCH):
-        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch"), edit=_upright))
+        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch")))
     for block in K.blocks(B.IRON_DOOR):
         out.append(K.redirect(pack_dir, block, {ref: ("iron_door_top" if ref.endswith("_top") else "iron_door_bottom")
                                                  for ref in respack.block_pictures(K.game(), block)}))
