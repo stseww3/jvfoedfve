@@ -1,8 +1,9 @@
 """A stand-in for site/cablecar while that package is not in the tree: the station's blocks by its
-own rule, copied from its second draft (c226, cursor/c164-cable-a47d 37fc9574) so that the car and
+own rule, copied from its second draft (c226, cursor/c164-cable-a47d 246a2de5) so that the car and
 the winch are tried in the shell they are made for and not in a box. Blocks only: no props, no
-lamps, no light. The cells the machines hang on are taken from machines/cable, which carries the
-same figures for a tree without the shell.
+lamps, no light, and not the sheets that package lays on the room side of the winch house's two
+lit lights (materials/windows.line): here their backs glow into the room. The cells the machines
+hang on are taken from machines/cable, which carries the same figures for a tree without the shell.
 
 This file goes when site/cablecar is merged: the scene then builds the real one.
 """
@@ -35,6 +36,7 @@ CANOPY = (HEAD, AXIS - 2, X1, AXIS + 2)             # x 88..91, z -35..-31
 FRAMES_X = (CANOPY[0], CANOPY[2])
 GIRDER_Z = CANOPY[3] + 1                # -30: the south girder's row
 COLUMNS = [(CANOPY[0] + 1, GIRDER_Z), (CANOPY[2], GIRDER_Z)]        # (89, -30), (91, -30)
+PEDESTAL = 2                            # courses of stone under a column's shaft; its head is one course
 BAY = HEAD - 1                          # 87: from here east the south side is the railed bay
 # where the site's lamp hangs: the underside of the glass roof's ridge, over the car's door
 LAMP_POINTS = {"car": (CANOPY[0] + 1.5, float(EAVES + 2), AXIS + 0.5)}
@@ -51,13 +53,14 @@ GLASS = B.SKYLIGHT.block
 SCREEN = B.SKYLIGHT.pane
 GRATE = B.IRON_GRATE
 BARS = B.IRON_BARS
-PIPE = B.IRON_PIPE + "[axis=y]"
-POST = B.TUFF_SMOOTH.wall
+PIPE = B.IRON_PIPE + "[axis=y]"         # a column's shaft
+POST = B.TUFF_SMOOTH.wall               # its pedestal
+CAPITAL = B.IRON_CAST                   # its head
 FINIAL = B.IRON_ROD + "[facing=up]"
 TIE = B.IRON_HATCH + "[half=top]"
 DOOR = B.IRON_DOOR
-LIT = B.WINDOW_FROSTED.pane
-WARM = B.WINDOW_CURTAIN.pane
+LIT = B.WINDOW_FROSTED.pane             # the lit glass of the waiting room's gable
+LIT_FLUSH = B.WINDOW_FROSTED.block      # and of the winch house's east wall: whole blocks, flush with the wall
 DARK = B.WINDOW_DARK.pane
 SHUT = B.WINDOW_BLIND.pane
 
@@ -164,12 +167,13 @@ def _winch_house(p):
         p.set(x, oy1 + 1, z1, IRON)
     p.set(ox0, oy1, z1, CORBEL + "[half=top,facing=west]")
     p.set(ox1, oy1, z1, CORBEL + "[half=top,facing=east]")
-    # two tall lit lights in the east wall; two dark ones in the north wall, either side of the
-    # two columns of brick the winch's wall lamp hangs on
-    _window(p, [(x1, z0 + 1), (x1, z1 - 1)], FEET + 1, FEET + 4, LIT)
+    # two tall lit lights in the east wall, a pier between them; two dark ones in the north wall,
+    # either side of the two columns of brick the winch's wall lamp hangs on; a small dark one in
+    # the west gable, under an apex stone and a rod
+    _window(p, [(x1, z0 + 1), (x1, z1 - 1)], FEET + 1, FEET + 4, LIT_FLUSH)
     _window(p, [(x0 + 1, z0), (x1 - 1, z0)], FEET + 2, FEET + 4, DARK)
     _gable_roof(p, WINCH, WINCH_TOP + 1)
-    _window(p, [(x0, mid)], WINCH_TOP + 1, WINCH_TOP + 1, WARM)
+    _window(p, [(x0, mid)], WINCH_TOP + 1, WINCH_TOP + 1, DARK)
     p.set(x0, WINCH_TOP + 3, mid, COURSE)
     p.set(x0, WINCH_TOP + 4, mid, FINIAL)
 
@@ -189,7 +193,8 @@ def _waiting_room(p):
 
 def _glass_roof(p):
     """Two iron frames with a glazed screen in each, glass in two pitches between them, an iron
-    ridge; the south girder lies on two thin columns and tapers where it oversails the western one."""
+    ridge; the south girder lies on two columns and tapers where it oversails the western one. A
+    column is a stone pedestal of two courses, an iron shaft of two, a cast block under the girder."""
     x0, z0, x1, z1 = CANOPY
     half = (z1 - z0) // 2
     for x in range(x0, x1 + 1):
@@ -203,9 +208,8 @@ def _glass_roof(p):
         p.set(x, EAVES + half, z0 + half, IRON_SLAB + "[type=bottom]")
         p.set(x, EAVES, GIRDER_Z, IRON if x > x0 else IRON_STAIR + "[half=top,facing=east]")
     for x, z in COLUMNS:
-        p.set(x, FEET, z, POST)
-        for y in range(FEET + 1, EAVES):
-            p.set(x, y, z, PIPE)
+        for y in range(FEET, EAVES):
+            p.set(x, y, z, POST if y < FEET + PEDESTAL else CAPITAL if y == EAVES - 1 else PIPE)
 
 
 def _slab(h):
