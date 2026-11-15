@@ -42,6 +42,8 @@ EYE = 1.62  # "pos" is where the camera's eye goes; /tp moves the feet
 # A shot that names no time is taken in look A, the blue hour (plan/roles/INTERFACE.md 3); the same
 # number as build/render.py's DEFAULT_TIME, so a shot list means the same picture in both.
 DEFAULT_TIME = 14000
+WIP = ".wip.png"        # after a picture's name while it is being taken; EARLIER, the one before it
+EARLIER = ".earlier.png"
 
 
 def angles(pos, target):
@@ -171,7 +173,7 @@ def until_still(take, path, patience, gap=3.0, share=0.01):
     """Take the picture at `path` again every `gap` seconds until two in a row are alike (no more
     than `share` of their pixels differ) or `patience` seconds have passed; the last one stays.
     Returns (seconds it took, the share that differed between the last two, did it stand still)."""
-    earlier = path + ".earlier.png"
+    earlier = path + EARLIER
     t0 = time.monotonic()
     try:
         while True:
@@ -277,6 +279,9 @@ def main():
         wanted = set(args.only.split(","))
         shots = [s for s in shots if s["name"] in wanted]
     os.makedirs(args.out, exist_ok=True)
+    for left in os.listdir(args.out):       # what a run that was cut short was working on
+        if left.endswith((WIP, EARLIER)):
+            os.remove(os.path.join(args.out, left))
     take = camera(args)
 
     with open(args.pw_file) as fh:
@@ -306,13 +311,18 @@ def main():
             rc.command(f"tp {args.player} {pos[0]:.2f} {pos[1] - EYE:.2f} {pos[2]:.2f} {yaw:.2f} {pitch:.2f}")
             time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
             path = os.path.join(args.out, shot["name"] + ".png")
-            take(path)
+            # A picture gets its name when it is done. A run that is cut short leaves no half
+            # file and no picture that was still waited for under a shot's name.
+            wip = path + WIP
+            take(wip)
             still = float(shot.get("still", args.still))
             if still > 0:
-                took, differ, stood = until_still(take, path, still)
+                took, differ, stood = until_still(take, wip, still)
+                os.replace(wip, path)
                 print(f"{path} ({'still' if stood else 'STILL CHANGING'} after {took:.0f} s more, "
                       f"{differ:.2%} of it moved between the last two)", flush=True)
             else:
+                os.replace(wip, path)
                 print(path, flush=True)
             made[take.last] += 1
     finally:

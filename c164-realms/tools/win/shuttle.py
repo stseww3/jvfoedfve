@@ -114,6 +114,31 @@ class Stop(Exception):
         self.code = code
 
 
+# Whoever runs the trip may say that its time is over (SIGTERM; tools/nodetrip.py does at the end
+# of the time a node job has). The scripts that run in our process group get the signal with us
+# and end; the trip then makes ready what was shot so far, closes the game and ends: pictures
+# that were taken are not lost with the ones that were not.
+OVER = threading.Event()
+APART = []                  # scripts in a session of their own (run(budget=...)): ended with us
+
+
+def kill(proc):
+    """End a script and what it started in a session of its own."""
+    try:
+        if hasattr(os, "killpg"):
+            os.killpg(proc.pid, signal.SIGKILL)
+        else:
+            proc.kill()
+    except OSError:
+        pass
+
+
+def asked_to_end(*_):
+    OVER.set()
+    for proc in list(APART):
+        kill(proc)
+
+
 def run(script, *args, check=True, env=None, budget=None, hide=None):
     """Run a Python script with this Python, from the shot code's build/; its output goes to ours,
     line by line as it comes. Returns (exit code, output). With `budget` the script and what it
@@ -127,18 +152,13 @@ def run(script, *args, check=True, env=None, budget=None, hide=None):
 
     def end():
         over.set()
-        try:
-            if hasattr(os, "killpg"):
-                os.killpg(proc.pid, signal.SIGKILL)
-            else:
-                proc.kill()
-        except OSError:
-            pass
+        kill(proc)
 
     timer = threading.Timer(budget, end) if budget is not None else None
     if timer:
         timer.daemon = True
         timer.start()
+        APART.append(proc)
     lines = []
     try:
         for line in proc.stdout:
@@ -149,6 +169,7 @@ def run(script, *args, check=True, env=None, budget=None, hide=None):
     finally:
         if timer:
             timer.cancel()
+            APART.remove(proc)
     if over.is_set():
         code = 124
     if check and code != 0:
@@ -440,8 +461,14 @@ def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's o
         if not os.path.exists(png):
             continue
         jpg = os.path.join(send, f"{stem}{shot['name']}.jpg")
-        with Image.open(png) as picture:
-            picture.convert("RGB").save(jpg, "JPEG", quality=JPEG_QUALITY, subsampling=0)
+        try:
+            with Image.open(png) as picture:
+                picture.convert("RGB").save(jpg, "JPEG", quality=JPEG_QUALITY, subsampling=0)
+        except OSError as exc:      # half a file, of a run that was cut short while it wrote it
+            say(f"{scene}: {shot['name']}.png cannot be read ({exc}); it is left out")
+            if os.path.exists(jpg):
+                os.remove(jpg)
+            continue
         with open(jpg, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:16]
         rows[shot["name"]] = (f"{shot['name']} {time if time is not None else shot.get('time', shoot.DEFAULT_TIME)} "
@@ -570,6 +597,7 @@ def main():
     work = os.path.join(os.path.abspath(args.out), "_trip")
     failed, taken, started = [], {}, False
     t0 = time.time()
+    signal.signal(signal.SIGTERM, asked_to_end)
     say(f"the code that is shot: {project} at {commit}; tag {args.tag}")
     try:
         shutil.rmtree(work, ignore_errors=True)
@@ -654,6 +682,8 @@ def main():
             raise Stop("the client did not come up", code)
         started = not running
         for scene, at, shots_file, shots in plan:
+            if OVER.is_set():
+                raise Stop(f"asked to end before {scene} was shot")
             if any(f.startswith(scene + ":") for f in failed):
                 continue
             target = os.path.join(out, scene)
@@ -684,11 +714,13 @@ def main():
             if got:
                 to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too),
                         when, windows, args.dress, args.look if windows != args.look else None)
+            if OVER.is_set():
+                raise Stop(f"asked to end while {scene} was shot; what was taken of it is ready")
             # ---- 6. what the scene's author wants asked of the server while the scene stands ----
             if scene in after:
                 failed += asked_after(scene, after[scene], at, args.after_budget, send, args.tag, commit)
     except Stop as stop:
-        say(f"stopped: {stop}")
+        say(f"stopped: {stop}" + (" (the trip was asked to end: its time was over)" if OVER.is_set() else ""))
         failed.append(str(stop))
     finally:
         if not args.keep_client and not args.no_shoot:

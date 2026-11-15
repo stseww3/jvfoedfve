@@ -88,19 +88,22 @@ ROOT = os.path.abspath(os.environ.get("MC_ROOT", "/agent/realms-study"))
 WORK = os.environ.get("C164_TRIP_DIR", "/tmp/c164_s1/real")
 MASTER = "obs"
 BOARD_VIEW = 12         # the view distance the board is judged at
+CLOSING = 120           # seconds of a trip's time that are kept for taking the pictures and closing down
 
 sys.path.insert(0, HERE)
 
 
-def end(proc):
-    """Stop a stage and what it started in its own process group: asked first, then killed. The
-    server, the game and the display are not of that group; nodemc.py down stops them."""
-    for sig in (signal.SIGTERM, signal.SIGKILL):
+def end(proc, patience=30.0):
+    """Stop a stage and what it started in its own process group: asked first, then killed after
+    `patience` seconds. The shuttle, asked, still makes ready what it has shot and closes the
+    game; that is what the patience is for. The server, the game and the display are not of that
+    group; nodemc.py down stops them."""
+    for sig, wait in ((signal.SIGTERM, patience), (signal.SIGKILL, 10.0)):
         try:
             os.killpg(proc.pid, sig)
         except OSError:
             return
-        for _ in range(20):
+        for _ in range(int(wait * 2)):
             if proc.poll() is not None:
                 return
             time.sleep(0.5)
@@ -346,9 +349,12 @@ def main():
     log_path = os.path.join(PROJECT, "renders", "real", "_trips", f"{time.strftime('%Y%m%d-%H%M', time.gmtime())}-{tag}.log")
     trip = Trip(log_path, args.budget)
 
-    def cut_short(*_):          # the job is being ended from outside: the closing steps still run
+    def cut_short(*_):
+        # The job is being ended from outside (nodejob.sh at its limit kills what it asked to stop
+        # 15 s later): no time for the pictures, but the closing steps are started at once, and
+        # `nodemc.py down`, once started, goes on by itself.
         if trip.running is not None:
-            end(trip.running)
+            end(trip.running, patience=4.0)
         sys.exit(143)
     signal.signal(signal.SIGTERM, cut_short)
     station = os.path.join(HERE, "nodemc.py")
@@ -386,8 +392,11 @@ def main():
                 if i < len(runs) - 1:
                     options.append("--keep-client")     # the game stays open for the next run, if the pack is the same
                 name = f"shuttle, {version}" if look else f"shuttle, {scenes[0]}" if args.apart else "shuttle"
+                # what is left after the shuttle is for the closing steps: the pictures are taken in a
+                # second and `down` took 2 s on node34; its worst case (a server that has to be killed)
+                # is about 115 s
                 code, _ = trip.stage(name, os.path.join(HERE, "win", "shuttle.py"), *options, *scenes,
-                                     budget=trip.left() - 240, env=distances)
+                                     budget=trip.left() - CLOSING, env=distances)
                 if code != 0:
                     failed.append(f"the {name} ended with {code}")
                 send = os.path.join(work, tag, "send")

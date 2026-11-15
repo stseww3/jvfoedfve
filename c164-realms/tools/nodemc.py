@@ -163,7 +163,12 @@ soundCategory_master:0.0
 
 
 def say(text):
-    print(f"[nodemc {time.strftime('%H:%M:%S')}] {text}", flush=True)
+    try:
+        print(f"[nodemc {time.strftime('%H:%M:%S')}] {text}", flush=True)
+    except OSError:
+        # nobody reads us any more: the trip that started this was killed. `down` goes on all the
+        # same, or the game would be left running on the node
+        pass
 
 
 # ---- processes -----------------------------------------------------------------------------------
