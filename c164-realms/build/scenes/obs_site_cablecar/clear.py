@@ -24,7 +24,9 @@ skeleton.in_v1_clear(), the skeleton's own word, and the two answers are compare
 Without --scene the station is measured as its package builds it on an empty canvas, a second's
 work. With --scene the whole test scene is built and everything that stands within the station's
 box and six cells round it is measured, whoever set it there: the car, the winch and its cable,
-lamps, benches, the name board. Ends with 1 when something stands in either block.
+lamps, benches, the name board; and the cells of the station that are not as its package set them
+are named (another package laid something over them, or the mountain stood there first). Ends with
+1 when something stands in either block.
 
 The table names, part by part, how near the station comes: under "A" the least elevation of what
 lies in A's bearings above the eye (clear when over 61) and the nearest bearing of what lies
@@ -279,10 +281,12 @@ def main():
         entities = [e for e in canvas.entities if inside(tuple(int(math.floor(v)) for v in e[:3]))]
         names = lambda cell: part_of(cell) if cell in own else "other packages"     # noqa: E731
         title = f"the test scene, within {REACH} cells of the station's box: {len(cells)} cells, {len(entities)} display entities"
+        altered = sorted((p, s, canvas.b.get(p)) for p, s in own.items() if canvas.b.get(p) != s)
     else:
         lights.build(alone, (0, 0, 0))          # the sources of the station's own windows
         canvas, cells, entities, names = alone, own, own_entities, part_of
         title = f"site/cablecar alone: {len(cells)} cells, {len(entities)} display entities"
+        altered = None
     light = block_light(canvas)
     sources = sorted((p, int(s.partition("level=")[2].rstrip("]"))) for p, s in canvas.b.items()
                      if p in light and s.startswith(B.LIGHT + "["))
@@ -356,6 +360,11 @@ def main():
     frame = max(seen["parts"].get(FRAME, {}).get("light", {0: 1.0}))
     print(f"frame light: {'within' if frame <= FRAME_LIGHT else 'OVER'} {FRAME_LIGHT} "
           f"(at most {frame} on what V1 sees of the {FRAME})")
+    if altered is not None:
+        print(f"the station's cells in the scene: {len(own) - len(altered)} of {len(own)} as its package sets them"
+              + "".join(f"\n  {part_of(p)} {p}: {was.partition('[')[0]} is {str(now).partition('[')[0]}"
+                        for p, was, now in altered[:20])
+              + (f"\n  ... and {len(altered) - 20} more" if len(altered) > 20 else ""))
     verdict = "CLEAR" if not hits and not disagree else "NOT CLEAR"
     print(f"result: {verdict} ({len(hits)} boxes in the view the station keeps clear)")
     if args.json:
@@ -366,6 +375,8 @@ def main():
                        "parts": {k: {kk: (list(vv) if isinstance(vv, tuple) else vv) for kk, vv in d.items()}
                                  for k, d in parts.items()},
                        "picture": seen, "frame_light": frame,
+                       "altered": None if altered is None else [dict(cell=list(p), set=was, stands=now)
+                                                                for p, was, now in altered],
                        "sources": [dict(cell=list(p), level=n) for p, n in sources]}, fh, indent=1, default=str)
     sys.exit(0 if verdict == "CLEAR" else 1)
 

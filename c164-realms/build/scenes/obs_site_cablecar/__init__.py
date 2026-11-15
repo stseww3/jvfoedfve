@@ -37,7 +37,7 @@ BIOME_MARGIN = 100
 BIOME_MARGIN_Y = 150
 LINES = (site, main, machines, props, sky)
 
-SEA = (61, -120, 200, -10)      # where the stand-in sea is drawn: east and north of the lower platform
+SEA = (61, -120, 200, 24)       # where the stand-in sea is drawn: east and north of the lower platform
 # the ring's own figures (site/terrain._cloud_sea, east of its middle), so that no seam shows where
 # the sheet takes over from it
 SEA_NOISE = dict(scale=0.08, seed=terrain.SEED + 20, octaves=2, lift=0.55)
@@ -64,7 +64,7 @@ VIEWS = [
     ("girder", (88.5, S.STATION_GROUND + EYE, -27.5), (89.5, 1.5, -33.0)),
     # the trestle: from the east edge of the lower platform, from the side over the cloud, and back
     # up it from the second tower
-    ("trestle", (90.5, S.LOWER_GROUND + EYE, -14.5), (112.0, -13.0, -38.0)),
+    ("trestle", (90.5, S.LOWER_GROUND + EYE, -16.5), (106.0, -12.0, -42.0)),
     ("trestle_side", (112.0, -6.0, -14.0), (112.0, -16.0, -40.0)),
     ("east", (104.5, -8.5 + EYE, -36.5), (91.0, -1.0, -34.0)),
     # from above: over the cloud to the south-east, and over the lower platform to the west
