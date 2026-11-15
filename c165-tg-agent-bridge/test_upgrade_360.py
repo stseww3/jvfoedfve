@@ -418,6 +418,22 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     assert bridge.device_row(dev_a["id"])["status"] == "active"
     assert bridge.device_row(dev_b["id"])["status"] == "active"
 
+    # 9b. Verify One-Prompt Auto-Spawning Worker Host (`mode="worker_host"` -> instant 0s join + auto-spawns isolated worker VMs via `w-...` codes)!
+    wh_join = await bridge.call_tool("join", {"mode": "worker_host", "main_key": mkey, "pool_size": 3})
+    assert not wh_join.is_error
+    wh_txt = text_of(wh_join)
+    assert "whost1" in wh_txt
+    wh_ag = bridge.node_row("whost1")["agent"]
+    # node1 was already online, so pool_size=3 must auto-enqueue node2 and node3 onto whost1!
+    wh_inbox = text_of(await bridge.call_tool("read_chat", {"agent": wh_ag, "wait_sec": 0}))
+    assert "node2" in wh_inbox and "node3" in wh_inbox and 'machine: {"environment_id":' in wh_inbox
+    w2_code = bridge.conv_row("node2")["task_code"]
+    assert w2_code.startswith("w-")
+    # Newly booted VM joins with `code=w2_code` in 0ms without approval!
+    n2_join = await bridge.call_tool("join", {"code": w2_code})
+    assert not n2_join.is_error and "node2" in text_of(n2_join)
+    assert bridge.node_row("node2")["status"] == "online"
+
     # Create an agent collaboration group g1 for Web Console testing
     a1_new = bridge.conv_row("c1")["agent"]
     grp_res = await bridge.call_tool(

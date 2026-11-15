@@ -368,6 +368,14 @@ def worker_prompt_text() -> str:
     )
 
 
+def worker_host_prompt_text(pool_size: int | None = None) -> str:
+    p_arg = f", pool_size={int(pool_size)}" if pool_size is not None else ""
+    return (
+        f"你是云端算力池宿主会话。调用 MCP 的 join(mode=\"worker_host\", main_key=\"{main_join_key()}\"{p_arg}) 接入（自动免审直进），接入后按返回的说明运行：\n"
+        "每次从 read_chat 收到 `[STANDARD_OP ... type=\"TASK_LAUNCH\"]` 单据时，原样调用 `Task(..., run_in_background=true, machine={\"environment_id\": ...})` 启动独立算力云机并用 `submit_op_result` 回填 `task_agent_id`，随后立刻回到 `read_chat`（空等几轮后按提示运行终端长等待）。重复等待是正常常驻方式，只有工具返回身份已停用时才结束。"
+    )
+
+
 NEED_JOIN = "先调用 join：子 agent 必须填启动提示词里的任务码 code=\"t-...\"；已经接入过的，把当时拿到的身份填进 agent 参数。"
 
 
@@ -621,7 +629,9 @@ def conv_row(conv_id: str):
     return store.one("SELECT * FROM convs WHERE id=?", (conv_id,))
 
 
-SYSTEM_CONV_RE = re.compile(r"^(?:main|ctrl|main\d+|node\d+)$")
+SYSTEM_CONV_RE = re.compile(r"^(?:main|ctrl|main\d+|node\d+|whost\d+)$")
+MAX_VM_PER_HOST = env_int("MAX_VM_PER_HOST", 20)
+DEFAULT_WORKER_POOL_SIZE = env_int("DEFAULT_WORKER_POOL_SIZE", 3)
 
 
 def is_system_conv_id(cid: str) -> bool:
@@ -634,6 +644,10 @@ def is_main_node_id(cid: str) -> bool:
 
 def is_worker_node_id(cid: str) -> bool:
     return bool(re.fullmatch(r"node\d+", (cid or "").strip().lower()))
+
+
+def is_worker_host_id(cid: str) -> bool:
+    return bool(re.fullmatch(r"whost\d+", (cid or "").strip().lower()))
 
 
 DEFAULT_CTRL_MODEL = os.environ.get("CTRL_MODEL", "deepseek max").strip()
@@ -2183,6 +2197,61 @@ def next_runner_num() -> int:
     return r + 1
 
 
+def next_worker_host_num() -> int:
+    r = int((store.one("SELECT IFNULL(MAX(num),0) AS n FROM exec_nodes WHERE kind='worker_host'") or {"n": 0})["n"] or 0)
+    return r + 1
+
+
+def worker_pool_target() -> int:
+    raw = (store.get("worker_pool_target") or "").strip()
+    if raw.lstrip("-").isdigit():
+        return max(0, min(60, int(raw)))
+    return DEFAULT_WORKER_POOL_SIZE
+
+
+def set_worker_pool_target(count: int) -> int:
+    val = max(0, min(60, int(count)))
+    store.set("worker_pool_target", str(val))
+    return val
+
+
+def host_active_vm_count(host_id: str) -> int:
+    """统计单个顶层会话（mainN 或 whostN）名下当前存活/启动中的独立新云机数量（Cursor 单父会话上限 20 台）。"""
+    rows = store.q(
+        "SELECT conv_id, payload_json, status, created_ts FROM dispatch_ops "
+        "WHERE target_node=? AND op_type='launch_subagent' AND status IN ('pending','done') "
+        "ORDER BY created_ts DESC",
+        (host_id,),
+    )
+    seen_convs: set[str] = set()
+    cnt = 0
+    for r in rows:
+        cid = (r["conv_id"] or "").strip()
+        if not cid or cid in seen_convs:
+            continue
+        seen_convs.add(cid)
+        try:
+            pay = json.loads(r["payload_json"] or "{}")
+        except Exception:
+            pay = {}
+        if not pay.get("isolated_vm"):
+            continue
+        crow = conv_row(cid)
+        if crow is None or crow["status"] != "open":
+            continue
+        if is_worker_node_id(cid):
+            nrow = node_row(cid)
+            if nrow is not None and (
+                node_is_online(nrow)
+                or (nrow["status"] == "starting" and (now() - float(nrow["created"] or 0)) < 300)
+            ):
+                cnt += 1
+        else:
+            if active_agent(crow) is not None or (crow["task_code"] and (now() - float(crow["task_ts"] or 0)) < 300):
+                cnt += 1
+    return cnt
+
+
 def node_row(node_id: str):
     return store.one("SELECT * FROM exec_nodes WHERE id=?", ((node_id or "").strip().lower(),))
 
@@ -2237,9 +2306,15 @@ def node_is_online(nrow) -> bool:
 
 
 def reap_offline_exec_nodes() -> list[str]:
-    """将已停用或长时间失联的 mainN / nodeN 自动标记为 offline，并取消指向离线节点的积压启动单，避免僵尸节点残留。"""
+    """将已停用或长时间失联的 mainN / nodeN / whostN 自动标记为 offline，并清理超时未接手的预创建节点。"""
     reaped: list[str] = []
-    for r in store.q("SELECT * FROM exec_nodes WHERE status='online'"):
+    for r in store.q("SELECT * FROM exec_nodes WHERE status IN ('online','starting')"):
+        if r["status"] == "starting":
+            if (now() - float(r["created"] or 0)) >= 300:
+                store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
+                store.run("UPDATE dispatch_ops SET status='cancelled' WHERE target_node=? AND status='pending'", (r["id"],))
+                reaped.append(r["id"])
+            continue
         ag = agent_row(r["agent"]) if r["agent"] else None
         if ag is None or ag["status"] != "active":
             store.run("UPDATE exec_nodes SET status='offline' WHERE id=?", (r["id"],))
@@ -2297,9 +2372,11 @@ def select_best_launcher(for_conv: str = "", require_idle_for_exclusive: bool = 
         m = node_metrics_dict(r)
         cpu_p = float(m.get("cpu_percent") or 0.0)
         usable_mb = float(m.get("mem_usable_mb") or 8192.0)
-        # 优先匹配该聊天专属/已授权机器，其次按活跃挂载数、CPU%、可用内存综合打分
+        # 若开启独立云机模式且该 mainN 名下独立 VM 已达 20 台上限，自动加高惩罚分分流到有额度的其他 mainM
+        vm_cnt = host_active_vm_count(r["id"]) if cursor_env_id() else 0
+        quota_penalty = 10000.0 if vm_cnt >= MAX_VM_PER_HOST else (vm_cnt * 12.0)
         preferred_bonus = -1000.0 if (cid and (cid == excl or cid in allowed)) else 0.0
-        score = preferred_bonus + mounted * 15.0 + cpu_p * 0.5 - (usable_mb / 1024.0) * 1.5
+        score = preferred_bonus + quota_penalty + mounted * 15.0 + cpu_p * 0.5 - (usable_mb / 1024.0) * 1.5
         candidates.append((score, r))
     if candidates:
         candidates.sort(key=lambda x: x[0])
@@ -2485,7 +2562,7 @@ def format_standard_workspace_job(op_id: str, runner_agent_id: str, payload: dic
         f"- 超时上限: {tsec} 秒\n"
         "- 执行命令:\n"
         f"```bash\n{cmd}\n```\n"
-        f"命令执行完毕后，立即调用 `submit_op_result(agent=\"{runner_agent_id}\", op_id=\"{op_id}\", status=\"ok\"或\"error\", output=退出码与关键输出摘要)`，随后立即回到 `read_chat` 继续监听。"
+        f"命令执行完毕后，立即调用 `submit_op_result(agent=\"{runner_agent_id or '你join拿到的agent身份'}\", op_id=\"{op_id}\", status=\"ok\"或\"error\", output=退出码与关键输出摘要)`，随后立即回到 `read_chat` 继续监听。"
     )
 
 
@@ -2767,6 +2844,149 @@ def welcome_worker(node_id: str, agent_id: str) -> str:
     ])
 
 
+def make_worker_host_node(custom_name: str = "") -> tuple[str, str]:
+    """创建一台免审自动裂变算力母机（whost1..M），每台可自动派生最多 20 台独立云端算力机 nodeK。"""
+    ensure_main_conv()
+    num = next_worker_host_num()
+    node_id = f"whost{num}"
+    disp_name = clean_name(custom_name) or f"算力母机-{num}"
+    agent_id = new_identity("m_")
+    cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
+    store.run(
+        "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
+        (agent_id, "main", node_id, "active", now(), now()),
+    )
+    reset_trace_for_new_agent(node_id, agent_id)
+    store.run(
+        "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,agent,in_tg) VALUES(?,0,?,'open',?,?,0,?,0) "
+        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, agent=excluded.agent, in_tg=0, alert='', alert_ts=0",
+        (node_id, disp_name, cur_max, now(), agent_id),
+    )
+    store.run(
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, agent=excluded.agent, status='online', last_seen=excluded.last_seen",
+        (node_id, "worker_host", num, 0, disp_name, agent_id, "online", now(), now()),
+    )
+    return node_id, agent_id
+
+
+def welcome_worker_host(node_id: str, agent_id: str, spawned_nodes: list[str]) -> str:
+    sp_line = (
+        f"桥已自动往你的队列投递了 {len(spawned_nodes)} 张独立算力云机启动单（{', '.join(spawned_nodes)}），你接下来第一次调用 read_chat 就会收到！"
+        if spawned_nodes
+        else "当前算力池台数充足；后续需要扩容新算力机时，桥会自动往你的 read_chat 投递标准启动单。"
+    )
+    return "\n".join([
+        f"接入成功：你是云端算力池宿主 {node_id}，身份 {agent_id}（单宿主最多可托管 {MAX_VM_PER_HOST} 台独立算力云机）。",
+        f"以后每次调用工具都要带 agent=\"{agent_id}\"。身份是你的凭据，不要外传。",
+        f"首次在当前环境启动时，可运行一次运行时初始化：{trace_install_cmd()}",
+        sp_line,
+        "",
+        MAIN_EXECUTOR_DUTY,
+        "",
+        LOOP_RULES,
+        "",
+        f"现在立即调用 read_chat(agent=\"{agent_id}\") 领取并启动算力机单据。",
+    ])
+
+
+def worker_spawn_task_text(code: str) -> str:
+    return (
+        "你是工作区常驻任务执行会话。\n"
+        f"1. 调用 MCP 的 join 工具接入：code=\"{code}\"。\n"
+        "2. 接入后按返回的说明运行：循环调用 read_chat 等待任务单；收到任务单后在当前工作区终端执行并通过 submit_op_result 提交结果，随后回到 read_chat 继续等待（空等几轮后按提示运行终端长等待）。只有工具返回身份已停用时才结束。"
+    )
+
+
+def precreate_auto_worker_slot() -> tuple[str, str]:
+    ensure_main_conv()
+    num = next_runner_num()
+    node_id = f"node{num}"
+    disp_name = f"工作会话-{num}"
+    w_code = "w-" + secrets.token_hex(8)
+    cur_max = int((store.one("SELECT IFNULL(MAX(id),0) AS n FROM messages") or {"n": 0})["n"] or 0)
+    store.run(
+        "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,task_code,task_ts,in_tg) VALUES(?,0,?,'open',?,?,0,?,?,0) "
+        "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, task_code=excluded.task_code, task_ts=excluded.task_ts, in_tg=0",
+        (node_id, disp_name, cur_max, now(), w_code, now()),
+    )
+    store.run(
+        "INSERT INTO exec_nodes(id,kind,num,cloud_num,name,agent,status,last_seen,created) VALUES(?,?,?,?,?,?,?,?,?) "
+        "ON CONFLICT(id) DO UPDATE SET name=excluded.name, status='starting', created=excluded.created",
+        (node_id, "runner", num, 0, disp_name, "", "starting", now(), now()),
+    )
+    return node_id, w_code
+
+
+def select_best_worker_spawner(allow_main_fallback: bool = False):
+    """挑选有剩余 20-VM 配额的算力母机 whost1..M（若显式要求也可回退空闲 mainN）。"""
+    whosts = [
+        r for r in store.q("SELECT * FROM exec_nodes WHERE kind='worker_host' AND status='online' ORDER BY num")
+        if node_is_online(r) and host_active_vm_count(r["id"]) < MAX_VM_PER_HOST
+    ]
+    if whosts:
+        whosts.sort(key=lambda r: host_active_vm_count(r["id"]))
+        return whosts[0]
+    if allow_main_fallback:
+        mains = [
+            r for r in store.q("SELECT * FROM exec_nodes WHERE kind='launcher' AND status='online' ORDER BY num")
+            if node_is_online(r) and not (r["exclusive_conv"] or "").strip() and host_active_vm_count(r["id"]) < MAX_VM_PER_HOST
+        ]
+        if mains:
+            mains.sort(key=lambda r: host_active_vm_count(r["id"]))
+            return mains[0]
+    return None
+
+
+def spawn_worker_vm_via_host(requester: str = "auto_pool", allow_main_fallback: bool = False) -> tuple[str, str, str] | None:
+    host = select_best_worker_spawner(allow_main_fallback=allow_main_fallback)
+    if host is None:
+        return None
+    env_id = cursor_env_id() or DEFAULT_CURSOR_ENV_ID
+    node_id, w_code = precreate_auto_worker_slot()
+    op_id = "op_" + secrets.token_hex(5)
+    prompt_body = worker_spawn_task_text(w_code)
+    payload = {
+        "conv_id": node_id,
+        "model": "",
+        "task_code": w_code,
+        "isolated_vm": True,
+        "environment_id": env_id,
+    }
+    store.run(
+        "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
+        (op_id, host["id"], "launch_subagent", node_id, requester, json.dumps(payload, ensure_ascii=False), "pending", now()),
+    )
+    msg_txt = format_standard_launch_op(op_id, host["agent"], node_id, prompt_body, "", isolated_vm=True, requester=requester)
+    system_note(host["id"], msg_txt, wake=1)
+    log.info("auto-spawned worker VM %s via %s (op_id=%s)", node_id, host["id"], op_id)
+    return node_id, host["id"], op_id
+
+
+def active_or_starting_runner_count() -> int:
+    rows = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status IN ('online','starting')")
+    cnt = 0
+    for r in rows:
+        if node_is_online(r):
+            cnt += 1
+        elif r["status"] == "starting" and (now() - float(r["created"] or 0)) < 300:
+            cnt += 1
+    return cnt
+
+
+def reconcile_worker_pool(min_target: int | None = None, requester: str = "auto_pool", allow_main_fallback: bool = False) -> list[str]:
+    target = worker_pool_target() if min_target is None else max(0, min(60, int(min_target)))
+    cur = active_or_starting_runner_count()
+    spawned: list[str] = []
+    while cur < target:
+        res = spawn_worker_vm_via_host(requester=requester, allow_main_fallback=allow_main_fallback)
+        if res is None:
+            break
+        spawned.append(res[0])
+        cur += 1
+    return spawned
+
+
 def welcome_ctrl(conv, agent_id: str) -> str:
     lines = [
         f"接手成功：你是全局唯一的【主控大脑（总控子 Agent：ctrl）】，身份 {agent_id}。",
@@ -3026,6 +3246,7 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     if conv is None:
         raise ToolFail("任务码不对、已经用过或已作废。不要不填 code 重试；请主控用 restart_agent 拿新的任务原文。")
     is_ctrl = conv["id"] == "ctrl"
+    is_auto_worker = is_worker_node_id(conv["id"])
     # 接入时不核对模型。actual_model / model_match 是旧版启动提示词里的参数：还在用旧提示词的子 agent 填了也照常接入，
     # actual_model 只当它自己的说法留作备注，不参与任何判断。
     actual_model = " ".join(str(args.get("actual_model") or "").split())[:120]
@@ -3033,7 +3254,7 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
     old = active_agent(conv)
     if old is not None:
         stop_identity(old["id"], "这个聊天已交给新的子 agent")
-    role_val = "ctrl" if is_ctrl else "chat"
+    role_val = "ctrl" if is_ctrl else ("runner" if is_auto_worker else "chat")
     agent_id = new_identity("a_")
     store.run(
         "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
@@ -3048,6 +3269,15 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
         "UPDATE convs SET agent=?, task_code='', actual_model=?, model_check='', alert='', alert_ts=0 WHERE id=?",
         (agent_id, actual_model, conv["id"]),
     )
+    if is_auto_worker:
+        store.run(
+            "UPDATE exec_nodes SET agent=?, status='online', last_seen=? WHERE id=?",
+            (agent_id, now(), conv["id"]),
+        )
+        log.info("auto-spawned worker node %s online as %s", conv["id"], agent_id)
+        system_note(route_control_target(), f"🖥 云端自动扩容算力机 `{conv['id']}` 已自动入网就绪（身份 {mask_identity(agent_id)}）。", wake=0)
+        return text_result(welcome_worker(conv["id"], agent_id))
+
     conv = conv_row(conv["id"])
     log.info("conv %s claimed by %s (%s, role=%s)", conv["id"], agent_id, conv["name"], role_val)
     if is_ctrl:
@@ -3082,13 +3312,27 @@ async def t_join(args: dict) -> ToolResult:
     has_valid_pending_req = bool(
         approval_id and store.one("SELECT 1 FROM approvals WHERE id=? AND kind IN ('join','join_worker')", (approval_id,)) is not None
     )
-    if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker")):
+    if not has_valid_pending_req and (not mkey or not hmac.compare_digest(mkey, main_join_key()) or mode not in ("main", "worker", "worker_host")):
         log.warning("blocked empty/unkeyed join attempt (name=%r, mode=%r)", name, mode)
         raise ToolFail(
             "接入引导：当前调用 join 缺少有效的任务码 code。\n"
             "• 如果你是负责某个聊天的子 agent，请查看首条启动说明，把里面 `t-` 开头的任务码（如 `code=\"t-xxxxxxxx\"`）填入 `code` 参数再调用 `join`（不用填 `mode`，也不要空参重试）。\n"
             "• 如果这是管理员新开的顶层主 Agent 或常驻工作会话，请使用管理员 `/key` 里带完整 `mode` 与 `main_key` 的开场提示词接入。"
         )
+    if mode == "worker_host":
+        # 算力池母机一号入网：携带合法 main_key 直接 0 秒自动放行，并立即自动投递独立新云机算力节点启动单！
+        if "pool_size" in args and args.get("pool_size") is not None:
+            set_worker_pool_target(arg_int(args, "pool_size", DEFAULT_WORKER_POOL_SIZE, 0, 60))
+        whost_id, whost_ag = make_worker_host_node(custom_name=name)
+        spawned_list = reconcile_worker_pool(requester=whost_id)
+        ensure_controller_alive()
+        system_note(
+            route_control_target(),
+            f"🚀 算力池母机 `{whost_id}` 已免审直连上线（最大可开 {MAX_VM_PER_HOST} 台独立算力云机）"
+            + (f"，并已自动触发拉起独立算力节点：{', '.join(spawned_list)}。" if spawned_list else "。"),
+            wake=0,
+        )
+        return text_result(welcome_worker_host(whost_id, whost_ag, spawned_list))
     if mode == "worker":
         # 算力机/工作会话入网：不打扰管理员弹窗，直接推给唯一总控 ctrl 审批放行！
         if not approval_id or store.one("SELECT 1 FROM approvals WHERE id=? AND kind='join_worker'", (approval_id,)) is None:
@@ -3638,10 +3882,11 @@ COMMON_TOOLS = [
         "接入 Telegram 桥。业务子 agent 请填启动说明里的任务码 code=\"t-...\"；"
         "顶层主 Agent 或工作会话请携带管理员 /key 提供的 mode 与 main_key 接入。返回你的身份和工作说明。",
         {
-            "code": prop("string", "子 agent 使用的一次性任务码（t- 开头）"),
+            "code": prop("string", "子 agent 或自动算力节点使用的一次性任务码（t- 或 w- 开头）"),
             "name": prop("string", "简短名称或备注说明（10 字以内），可省略"),
-            "mode": prop("string", "仅顶层节点填写：main | worker（子 agent 不用填）", enum=["main", "worker"]),
+            "mode": prop("string", "仅顶层节点填写：main | worker | worker_host（子 agent 不用填）", enum=["main", "worker", "worker_host"]),
             "main_key": prop("string", "仅顶层节点入网口令（来自管理员 /key 开场提示词；子 agent 不用填）"),
+            "pool_size": prop("integer", "mode=worker_host 时自动维持的独立算力云机台数（默认 3，最大 60）"),
             "request": prop("string", "等待审批再次轮询时带上的申请编号，可省略"),
         },
         needs_agent=False,
@@ -3890,6 +4135,7 @@ MAIN_TOOLS = [
                     "activate",
                     "remove",
                     "set_environment",
+                    "scale_workers",
                 ],
             ),
             "node_id": prop("string", "目标节点编号，如 main2 或 node1（approve_worker 时可填要替换的旧 nodeK，不填则新建）"),
@@ -3897,6 +4143,7 @@ MAIN_TOOLS = [
             "exclusive_chat": prop("string", "set_exclusive 时独占该机器的聊天编号，如 c164"),
             "chats": prop("array", "grant_access / revoke_access 时授权或收回机器使用权的聊天列表，如 [\"c188\", \"c189\"]", items={"type": "string"}),
             "environment_id": prop("string", "set_environment 时填入的 Cursor 云端环境 ID（填 off 切回共享机模式，填 default 恢复默认环境）"),
+            "count": prop("integer", "scale_workers 时目标独立算力机台数（如 4、8、20）"),
         },
         ["action"],
     ),
@@ -5110,12 +5357,20 @@ def render_cluster_overview() -> str:
             f"    📊 探针：{format_node_metrics(m)}"
         )
 
+    whosts = store.q("SELECT * FROM exec_nodes WHERE kind='worker_host' AND status!='removed' ORDER BY num")
+    if whosts:
+        lines.append(f"\n【算力池自动裂变母机（whost1..M，共 {len(whosts)} 台，目标常驻算力池={worker_pool_target()} 台）】")
+        for wh in whosts:
+            st_lbl = "🟢 在线" if node_is_online(wh) else f"⚪ {wh['status']}"
+            used_vm = host_active_vm_count(wh["id"])
+            lines.append(f"  - {wh['id']}「{wh['name']}」：{st_lbl} | 已开独立云机 {used_vm}/{MAX_VM_PER_HOST} 台")
+
     runners = store.q("SELECT * FROM exec_nodes WHERE kind='runner' AND status!='removed' ORDER BY num")
     lines.append(f"\n【云端工作节点池（算力机 node1..K，共 {len(runners)} 台）】")
     if not runners:
-        lines.append("  （暂无云端工作节点；新开会话调 join(mode=\"worker\") 由总控免打扰审批接入）")
+        lines.append("  （暂无云端工作节点；用算力母机提示词一条入网即可全自动批量拉起独立算力云机）")
     for r in runners:
-        st_lbl = "🟢 在线" if node_is_online(r) else f"⚪ {r['status']}"
+        st_lbl = "🟢 在线" if node_is_online(r) else ("🟡 启动中(新云机开机入网中)" if r["status"] == "starting" else f"⚪ {r['status']}")
         pend_ops = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (r["id"],))["n"]
         excl = f" | 🔒独占={r['exclusive_conv']}" if r["exclusive_conv"] else " | 共享池"
         allow = node_allowed_list(r)
@@ -5176,6 +5431,16 @@ async def t_manage_node(agent, args):
         pay.update({"agent_id": ag_id, "node_id": node_id})
         set_approval(req_id, "done", pay)
         return text_result(f"已批准工作会话入网：分配节点编号 {node_id}（云端模式，已接入算力池）。")
+
+    if action == "scale_workers":
+        cnt = arg_int(args, "count", worker_pool_target(), 0, 60)
+        new_target = set_worker_pool_target(cnt)
+        spawned = reconcile_worker_pool(min_target=new_target, requester=agent["conv"], allow_main_fallback=True)
+        cur_total = active_or_starting_runner_count()
+        return text_result(
+            f"已将常驻云端算力池目标台数设为 {new_target} 台（当前在线/启动中 {cur_total} 台）"
+            + (f"，本次自动触发拉起：{', '.join(spawned)}。" if spawned else "。")
+        )
 
     if action == "set_environment":
         raw_env = str(args.get("environment_id") or "").strip()
@@ -5493,7 +5758,32 @@ async def t_run_workspace_job(agent, args):
     workdir = str(args.get("workdir") or "").strip()[:300]
     timeout_sec = arg_int(args, "timeout_sec", 600, 10, 3600)
 
-    runner = select_best_runner(for_conv=caller_id, target_node=want_node)
+    runner = None
+    auto_spawned_note = ""
+    try:
+        runner = select_best_runner(for_conv=caller_id, target_node=want_node)
+        # 若选中的共享算力机已有排队任务，顺手后台自动扩容一台新独立算力机分担后续任务
+        if want_node in ("", "auto"):
+            cur_pend = store.one("SELECT COUNT(*) AS n FROM dispatch_ops WHERE target_node=? AND status='pending'", (runner["id"],))["n"]
+            if cur_pend > 0:
+                sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}")
+                if sp:
+                    auto_spawned_note = f"（检测到当前算力繁忙，已同步通过 {sp[1]} 自动扩容新算力机 {sp[0]}）"
+    except ToolFail:
+        if want_node not in ("", "auto"):
+            raise
+        # 当前尚无已就绪的在线 nodeN：若有算力母机在线（或未就绪的 starting 节点），直接自动拉起/排入新独立算力机队列！
+        starting_r = store.one("SELECT * FROM exec_nodes WHERE kind='runner' AND status='starting' ORDER BY created ASC LIMIT 1")
+        if starting_r is not None and (now() - float(starting_r["created"] or 0)) < 300:
+            runner = starting_r
+            auto_spawned_note = f"（算力机 {runner['id']} 新云机正在开机入网，任务已排入其队列，入网即刻执行）"
+        else:
+            sp = spawn_worker_vm_via_host(requester=f"autoscale:{caller_id}", allow_main_fallback=True)
+            if sp is None:
+                raise
+            runner = node_row(sp[0])
+            auto_spawned_note = f"（已通过 {sp[1]} 全自动拉起独立算力云机 {sp[0]}，开机自动入网后即刻执行）"
+
     op_id = "op_" + secrets.token_hex(5)
     payload = {
         "conv_id": caller_id,
@@ -5508,10 +5798,10 @@ async def t_run_workspace_job(agent, args):
         "INSERT INTO dispatch_ops(op_id,target_node,op_type,conv_id,requester,payload_json,status,created_ts) VALUES(?,?,?,?,?,?,?,?)",
         (op_id, runner["id"], "workspace_job", caller_id, caller_id, json.dumps(payload, ensure_ascii=False), "pending", now()),
     )
-    msg_txt = format_standard_workspace_job(op_id, runner["agent"], payload)
+    msg_txt = format_standard_workspace_job(op_id, runner["agent"] or "", payload)
     system_note(runner["id"], msg_txt, wake=1)
     return text_result(
-        f"已将工作区任务投递至云端节点 {runner['id']}（op_id={op_id}，超时 {timeout_sec}s）。\n"
+        f"已将工作区任务投递至云端节点 {runner['id']}（op_id={op_id}，超时 {timeout_sec}s）{auto_spawned_note}。\n"
         f"{runner['id']} 执行完毕后结果会自动推送到你的 read_chat 收件箱。"
     )
 
@@ -7221,7 +7511,18 @@ async def on_command(message: dict, command: str, rest: str, chat_id: int, chat_
         if not admin:
             await reply(chat_id, "只有管理员可以用这个命令。", en="Only the admin can use this command.")
             return
-        await reply(chat_id, render_cluster_overview() + f"\n\n🌐 Web 控制台：{PUBLIC_BASE}/web")
+        sub = rest.strip().split()
+        if len(sub) >= 2 and sub[0].lower() == "scale" and sub[1].lstrip("-").isdigit():
+            new_t = set_worker_pool_target(int(sub[1]))
+            sp = reconcile_worker_pool(min_target=new_t, requester="admin_tg", allow_main_fallback=True)
+            await reply(
+                chat_id,
+                f"✅ 已将常驻算力云机池目标设为 {new_t} 台"
+                + (f"，已自动下发启动单：{', '.join(sp)}" if sp else "（当前在线/启动中算力机已满足，或等待算力母机接入）")
+                + "。",
+            )
+            return
+        await reply(chat_id, render_cluster_overview() + f"\n\n💡 随时发 `/nodes scale 数量` 调整自动算力机台数\n🌐 Web 控制台：{PUBLIC_BASE}/web")
         return
 
     if command in ("/main", "/ctrl") or re.fullmatch(r"/(?:c|main)\d+", command):
