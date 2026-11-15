@@ -34,7 +34,7 @@
 | 包 | 代号（聊天） | 第 1 班前任、有效头 | 新分支 | 版本 | c235 的预审 | 状态（11-16 06:30） |
 | --- | --- | --- | --- | --- | --- | --- |
 | machines/orrery | orrery（c343） | c236，`cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7` | 甲 六臂共面／乙 分层碗状 | cr2-M1 | 预看 P1、P6；等交付 |
-| machines/refractor | scope（c344） | c237，`cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` | 甲 德式／乙 英式轭架 | cr2-M2 | 预看 P3、P6；等交付 |
+| machines/refractor | scope（c344） | c237，`cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` | 甲 德式／乙 英式轭架；总监 06:03 定甲 | cr2-M2 | 预看 P3、P6；等交付 |
 | machines/clocks | clocks（c345） | c238，`cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6` | 1 版；报时球总监定了旧铜 | cr2-M3 和重读 | cr3-#2 过（`1269f91`）；四处小修在做（头 `d2b2fcdd`），等补图 |
 | machines/radiomast | mast（c346） | c239，`cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` | 甲 全模型／乙 方块腿；总监终选甲 | cr2-M5 | cr3-#1 甲过（`e065bd8`）；cr3-#3 复审过（`7296128`），总监定了不挂线；三处小修 |
 | machines/cablecar-winch | cable（c338），site/cablecar 之后 | c240，`cursor/c164-car-w3k9` @ `5a6186cc` | — | 1 版 | 没有 | 还没开 |
@@ -299,6 +299,14 @@
 ## 记：共享池借节点（aide #61462，11-16 06:14）
 
 共享池 node4、5、6 借到了，全员有授权，上面一单一分钟上下就回。在总监机排在五名以后的、或者差一两单交付的，私信 aide「要牌」（几单、各多长），叫到了再投，没叫到不要自己投。node12 留给 s2 的关口和 s1 的真机。我要出图核对时照这个走。总控 #61987（06:24）：node47 按坏处理，上面的单作废（我在上面没有单）；单子等 c320 发牌，去 node4、5、6 或 node12，一次一单。
+
+## 记：总装 5959264e 这一批（s2 #62482，11-16 06:39）和 STATUS 里新定的
+
+- 进了总装：machines/radiomast（不挂线，二次交付 `8ff02862`）、machines/clocks（`7acc80db`，合的是 `1269f914`），还有 main/shell、site/stair、site/outbuildings、site/mastbase。大穹顶用乙（八条主肋，`dome.VERSION = "b"`）。
+- 天变了：a2 的蓝调改动进了（blue 的雾 128、余晖 0.35，deep 的星 0.80，星图转角 133），离线图的星星按亮度的平方画。**拍到天或者大穹顶的图都要重画**，随下次【交付】或【交付·补图】交。我这边的后果：§0 里「天约 0.13」这个参照数要在新图上重量；新旧两批图的天不一样，前后对比只比机器本身，不比天。
+- 场地灯链开着（`lamps.DRESS = True`），测试场景不要再自己调 `lamps.site()`；测试场景的 `write_pack` 要加 `sky.pack`。骨架有 `S.V6`，小穹顶顶点 26。
+- refractor：总监 06:03 定甲（德式赤道仪），乙留在分支和测试场景里，交付物只放甲。目镜旁的红灯加一个看火孔：灯罩朝东一个模型像素，信号红，自发光面，不加光源；V8 里是一个点（720p 下不超过 3×3 屏幕像素），读成一块就缩；全室的红仍只此一处。这一条交付时我量。
+- starhall：总监 05:05 定 V7 的次序是母钟钟面和墩的东面第一、日球是最暖的一点、地面第三；钟面提到 0.35 以上；台徽上的落点留着，级数降到地面正中低于钟面。
 
 ---
 
