@@ -68,3 +68,4 @@
     - 影响的图：`roof`、`roof_gutter`、`wall_copper`、`wall_cut`、`copper_twins`、`walls_far_copper`（`plates_a/b` 里也有旧铜，一起重出）。
   - `check.py --scene obs_mat_brass`：PASS，0 失败 1 黄（仍是 blocks 那 5 种作证用的原版方块）。
   - 25 张图重出（`selfshots.py obs_mat_brass --out` 再 `--take`），`--verify` **25/25 过**；`delivery.py materials/brass-oldcopper-small <提交> --base <总装头>` 全过。图在 `renders/obs_mat_brass/`。
+  - **11-16 01:20 图再刷新一次**（提交 `951bcd64`，总装 `0b7f61d0`）：`props/lamps` 最后一次把球罩最亮那一带降了一级（`CREAM_MID` 而不是 `CREAM_MID+1`），本场景里画到样板灯的七张跟着变了——`plates_a`、`plates_b`、`copper_twins`、`emblem`、`emblem_walk`、`emblem_close`、`roof_gutter`（最后这张只差 26 个像素）。七张重出，`--verify` **25/25 过**，`check.py` 仍 PASS 0 失 1 黄，`delivery.py` 七项全 PASS。**本包代码一行没改**，只有图。按总监「别人改色阶导致图过期不单独追」的规矩，这一笔是顺手刷新，c258 合不合都行。
