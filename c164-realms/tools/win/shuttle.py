@@ -49,6 +49,11 @@ For the scenes named the trip
     --again <scene>=<shot>[:<seconds>][,...]
                              the shot is taken once more, so many seconds (2.5) after its
                              picture and from the same place, as <shot>_again: for what moves
+    --step <scene>=<shot>[:<blocks>][,...]
+                             the shot is taken once more from so many blocks (0.5) to the
+                             camera's right, looking the same way, as <shot>_step: two stills a
+                             step apart, for thin things that may shimmer when one walks past
+                             (where a line breaks up differently in the two, it will)
     --no-place               the scenes stand already; only the pack and the pictures
     --no-shoot               everything but the game: place and write the pack
     --keep-client            leave the game running at the end (only with the owner's consent)
@@ -64,6 +69,7 @@ import filecmp
 import hashlib
 import importlib
 import json
+import math
 import os
 import re
 import shutil
@@ -83,6 +89,7 @@ MASTER = "obs"              # the master scene: its default shot list is the boa
 BOARD = "board"
 GALLERY_Z = 400             # a scene's gallery stands this far south of its plot's origin
 AGAIN = "_again"            # the name of a shot's second picture (--again)
+STEP = "_step"              # the name of a shot's picture from a step to the side (--step)
 JPEG_QUALITY = 90
 BUILD = None                # the build/ folder of the code that is shot; set in main()
 
@@ -264,7 +271,25 @@ def client_runs():
 
 
 # ---- shot lists and the pictures to send ---------------------------------------------------------------
-def shot_list(scene, lists, only, work, again=None):
+def stepped(shot, blocks):
+    """The shot from a place so many blocks to the camera's right, level, looking the same way."""
+    pos = shot["pos"]
+    if "look_at" in shot:
+        fx, fz = shot["look_at"][0] - pos[0], shot["look_at"][2] - pos[2]
+    else:
+        yaw = math.radians(shot.get("yaw", 0.0))        # the game's yaw: 0 looks along +z
+        fx, fz = -math.sin(yaw), math.cos(yaw)
+    n = math.hypot(fx, fz)
+    rx, rz = (-fz / n, fx / n) if n > 1e-9 else (1.0, 0.0)      # straight up or down: any side
+    moved = {**shot, "name": shot["name"] + STEP,
+             "pos": [round(pos[0] + rx * blocks, 3), pos[1], round(pos[2] + rz * blocks, 3)]}
+    if "look_at" in shot:
+        to = shot["look_at"]
+        moved["look_at"] = [round(to[0] + rx * blocks, 3), to[1], round(to[2] + rz * blocks, 3)]
+    return moved
+
+
+def shot_list(scene, lists, only, work, again=None, step=None):
     """The file with a scene's shots, and the shots that will be taken."""
     name = lists.get(scene, BOARD if scene == MASTER else os.path.join("scenes", scene, "shots.json"))
     if name == BOARD:
@@ -284,18 +309,23 @@ def shot_list(scene, lists, only, work, again=None):
         shots = [s for s in shots if s["name"] in only[scene]]
     if not shots:
         raise Stop(f"{scene}: the shot list {path} is empty")
-    if again and scene in again:
+    more = [(option, end, asked[scene]) for option, end, asked in (("--again", AGAIN, again), ("--step", STEP, step))
+            if asked and scene in asked]
+    if more:
         names = {s["name"] for s in shots}
-        wrong = [n for n in again[scene] if n not in names or n + AGAIN in names]
-        if wrong:
-            raise Stop(f"{scene}: --again names {', '.join(wrong)}, which is not one of the shots taken "
-                       f"(or there is a shot called {wrong[0]}{AGAIN} already)")
+        for option, end, asked in more:
+            wrong = [n for n in asked if n not in names or n + end in names]
+            if wrong:
+                raise Stop(f"{scene}: {option} names {', '.join(wrong)}, which is not one of the shots taken "
+                           f"(or there is a shot called {wrong[0]}{end} already)")
         twice = []
         for shot in shots:
             twice.append(shot)
-            if shot["name"] in again[scene]:
+            if again and shot["name"] in again.get(scene, {}):
                 # from the same place, so the camera does not move: only the wait, then one picture
                 twice.append({**shot, "name": shot["name"] + AGAIN, "settle": again[scene][shot["name"]], "still": 0})
+            if step and shot["name"] in step.get(scene, {}):
+                twice.append(stepped(shot, step[scene][shot["name"]]))
         path, shots = os.path.join(work, f"shots-{scene}.json"), twice
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(shots, fh, indent=1)
@@ -426,6 +456,7 @@ def main():
     ap.add_argument("--look")
     ap.add_argument("--dress", action="store_true")
     ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
+    ap.add_argument("--step", action="append", default=[], metavar="SCENE=SHOT[:BLOCKS]")
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--no-shoot", action="store_true")
     ap.add_argument("--keep-client", action="store_true")
@@ -446,16 +477,18 @@ def main():
 
     lists = pairs(args.shots, "shots")
     only = {scene: names.split(",") for scene, names in pairs(args.only, "only").items()}
-    again = {}
-    for scene, names in pairs(args.again, "again").items():
-        again[scene] = {}
-        for name in names.split(","):
-            shot, _, seconds = name.partition(":")
-            try:
-                again[scene][shot] = float(seconds or 2.5)
-            except ValueError:
-                raise SystemExit(f"--again {scene}={name}: {seconds!r} is not a number of seconds")
-    for scene in list(lists) + list(only) + list(again) + args.gallery:
+    again, step = {}, {}
+    for option, given, into, usual, unit in (("again", args.again, again, 2.5, "seconds"),
+                                             ("step", args.step, step, 0.5, "blocks")):
+        for scene, names in pairs(given, option).items():
+            into[scene] = {}
+            for name in names.split(","):
+                shot, _, number = name.partition(":")
+                try:
+                    into[scene][shot] = float(number or usual)
+                except ValueError:
+                    raise SystemExit(f"--{option} {scene}={name}: {number!r} is not a number of {unit}")
+    for scene in list(lists) + list(only) + list(again) + list(step) + args.gallery:
         if scene not in args.scenes:
             raise SystemExit(f"{scene} is not one of this trip's scenes")
     if args.dress and not args.look:
@@ -480,7 +513,7 @@ def main():
             if args.no_shoot or scene in models_only:
                 plan.append((scene, where[scene], None, []))
             else:
-                plan.append((scene, where[scene], *shot_list(scene, lists, only, work, again)))
+                plan.append((scene, where[scene], *shot_list(scene, lists, only, work, again, step)))
         when = windows = None
         if args.look:
             # the tick of that light version and the look whose windows it has, as the code that is
