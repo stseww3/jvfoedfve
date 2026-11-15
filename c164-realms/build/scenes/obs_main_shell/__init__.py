@@ -30,7 +30,8 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 60
 CUTS = {"ground": (100, 5), "main": (200, 13), "dome": (300, 19)}       # name: (z of the copy, last row kept)
 DRESSED = 400                                                           # z of the copy with the stand-ins
-GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # x -14..24, z -40..40
+GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 24, S.Z_SOUTH + 6)  # x -14..39, z -40..40: the view through
+#                                                                         the door stands on it, 19 before the wall
 LIGHTS = [
     (9, 4, -3), (9, 4, 3), (13, 4, 0), (10, 11, 0), (13, 10, -3), (13, 10, 3),      # the hall
     (-3, 3, 0), (-4, 10, 0), (-3, 10, -4), (-3, 10, 4), (0, 9, 0),                  # the stair hall
