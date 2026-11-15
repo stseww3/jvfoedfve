@@ -1,0 +1,59 @@
+gate materials/windows c8421e4e: the merged tree c8421e4e, the assembly as it was 2b59a510
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 37 scenes in 19 s: 27 pass (8 with warnings), 10 FAIL: obs_main_dome, obs_main_dome_b, obs_main_facade, obs_main_facade_a, obs_main_facade_c, obs_main_facade_nocrown, obs_main_smalldome, obs_site_court, obs_site_terrain, obs_site_
+    FAIL  obs_main_dome: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_dome_b: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_facade: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_facade_a: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_facade_c: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_facade_nocrown: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_main_smalldome: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_site_court: 1 failed, 1 with warnings, skipped: sight (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_site_terrain: 1 failed, 1 with warnings (3 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+    FAIL  obs_site_terrain_nosnow: 1 failed, 1 with warnings, skipped: sight (2 s)
+          [FAIL] entities: 6 display entities, 22 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+pictures: [PASS] selfshots obs_mat_windows at c8421e4e: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_b at c8421e4e: 26 of 26 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in at c8421e4e: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in_b at c8421e4e: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_windows_in_off at c8421e4e: 11 of 11 kept pictures are what the code draws
+result: FAIL
