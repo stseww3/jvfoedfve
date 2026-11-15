@@ -147,12 +147,16 @@ def _cast(seed, motif):
     _panel_frame(px)
     _rivets(px, _CORNERS)
     if motif == "emblem":
-        # the station emblem as the plan words it: a ring, the meridian down it, a star at upper right.
-        # The ring is the plain ten-pixel circle, one pixel thick all round; the star sits on its
-        # shoulder, so the circle runs into the star's arms instead of crowding the corner rivet.
-        ring = _cells(lambda dx, dy: 4.2 <= math.hypot(dx, dy) <= 4.9)
-        meridian = [(7, y) for y in range(3, 13)]
-        star = [(11, 4), (10, 4), (12, 4), (11, 3), (11, 5)]
+        # the station emblem as the director ruled it (g2 #294 item 3): a ring, the meridian through
+        # it and out of it at both ends, the star inside the ring on the upper right, as far right of
+        # the middle as above it, touching neither. It is the standard sixteen-pixel figure
+        # (props/signs emblem_cells) with the ring drawn twelve across instead of fourteen, so it
+        # stands inside the riveted frame: the meridian is the same column 7, here from frame to
+        # frame, and the star the same four pixels, a dot and not a cross (the reviewer's rule for
+        # small figures), a clear pixel off the ring and off the line.
+        ring = _cells(lambda dx, dy: 5.1 <= math.hypot(dx, dy) <= 5.9)
+        meridian = [(7, y) for y in range(1, TILE - 1)]
+        star = [(x, y) for y in (5, 6) for x in (9, 10)]
         _relief(px, ring + meridian, bright=star)
     else:
         # a raised lozenge (one pixel thick, ten across) round a domed boss
