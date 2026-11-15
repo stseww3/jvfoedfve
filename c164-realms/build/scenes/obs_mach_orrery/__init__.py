@@ -119,7 +119,9 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """The cameras, the same five for each version: through the front door looking up at the sun;
+    """The cameras, the same six for each version: the locked V7 (the star hall from outside the
+    door, the arch as its frame -- the view this machine is the star of, A0 #365); through the
+    doorway looking up at the sun, set a little off V7's own eye so a nudge of the orrery shows;
     straight below, looking up; level from the side gallery; from the ring stair's first flight, a
     little above the ring; and close, about three blocks from the planets."""
     out = []
@@ -130,7 +132,9 @@ def shots():
 
     for v, dz in VERSIONS.items():
         z = CZ + dz
-        shot(f"door_{v}", (WX[1] + 3.5, S.EYE, z), (CX, RING_Y, z))
+        shot(f"v7_{v}", (S.V7["pos"][0], S.V7["pos"][1], S.V7["pos"][2] + dz),
+             (S.V7["look_at"][0], S.V7["look_at"][1], S.V7["look_at"][2] + dz))
+        shot(f"door_{v}", (WX[1] + 3.5, S.EYE, z + 1.4), (CX, RING_Y, z))
         shot(f"under_{v}", (CX, S.EYE, z), (CX, RING_Y, z))
         shot(f"gallery_{v}", (CX, S.STAND + S.EYE, z + 5.0), (CX, RING_Y + 0.2, z))
         shot(f"stair_{v}", (5.5, 8.5 + S.EYE, z + 3.0), (CX, RING_Y + 0.4, z))

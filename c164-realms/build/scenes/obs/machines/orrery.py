@@ -50,6 +50,8 @@ IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
 VERDIGRIS = P.mat("verdigris")
 OLD_COPPER = P.mat("old_copper")
+CREAM = P.mat("cream")
+PORCELAIN = P.mat("porcelain")
 SUN = [P.mat("glow", kind="flat", base=i, bevel=0) for i in range(len(P.RAMPS["glow"]))]   # dark..light
 
 # --- where it hangs (all from the skeleton) -----------------------------------------------------
@@ -67,17 +69,21 @@ SUN_LIGHT = 12                           # the one warm source build() offers A2
 #                                          fix it at 12 in cell (11, 7, 0); the mother clock's 11 in the
 #                                          cell before it is "one below the sun", so the sun must be 12
 
-# planets, inner to outer: (name, orbit radius, planet radius, material, banded, ringed). The colours
-# set them apart with the palette's cast iron / brass / verdigris / old copper, and the sizes grow
-# outward (Mars, like the real one, a touch smaller than Earth); Saturn carries its ring, Jupiter
-# its band, so the six read as six worlds.  All radii keep the far edge inside R = 2.5.
+# planets, inner to outer: (name, orbit radius, planet radius, material, banded, ringed). Seen from
+# the door the machine is a knot of brass; a planet in brass against a brass arm vanishes, so the
+# three the review named change material (cr2-M1 3, cr3-M1 3): mercury to pale iron, Venus to
+# porcelain, Saturn's globe to cream, its rings still brass. Sizes are a step up from the first cut:
+# a ball had been no thicker than the arm it hangs on (2.2 to 4.8 pixels against the arm's 2.9), so
+# every globe is now over twice the arm. Mars, like the real one, a touch smaller than Earth; Jupiter
+# carries its band and Saturn its ring, so four of the six read by shape as well as colour. All radii
+# keep the far edge inside R = 2.5 (Saturn's 1.95 + 0.30 = 2.25).
 PLANETS = [
-    ("mercury", 0.72, 0.14, IRON_D, False, False),
-    ("venus", 0.98, 0.17, BRASS, False, False),
-    ("earth", 1.24, 0.20, VERDIGRIS, False, False),
-    ("mars", 1.48, 0.16, OLD_COPPER, False, False),
-    ("jupiter", 1.72, 0.30, BRASS_D, True, False),
-    ("saturn", 1.95, 0.22, BRASS, False, True),
+    ("mercury", 0.72, 0.18, IRON, False, False),
+    ("venus", 0.98, 0.22, PORCELAIN, False, False),
+    ("earth", 1.24, 0.26, VERDIGRIS, False, False),
+    ("mars", 1.48, 0.20, OLD_COPPER, False, False),
+    ("jupiter", 1.72, 0.38, BRASS_D, True, False),
+    ("saturn", 1.95, 0.30, CREAM, False, True),
 ]
 # the still pose: scattered orbital angles so the planets do not line up (a snapshot of the orbits)
 POSE = (18.0, 84.0, 152.0, 212.0, 288.0, 338.0)
@@ -167,12 +173,15 @@ def _hub():
 
 
 def _sun():
-    """The central sun: a small amber core. Only its own faces glow (emit, face kept small); the
-    light it casts is an invisible source build() offers A2. Anchor: the centre. Shown at scale 1."""
+    """The central sun: a small amber core, the hall's one warm note and the brightest thing in the
+    view. The whole globe is the ramp's near-white step with only the poles a step down: the first cut
+    banded it 1/3/1, whose poles came out darker than the window glass, so the eye went to the windows
+    first (cr3-M1 1). Only its own faces glow (emit, face kept small); the light it casts is an
+    invisible source build() offers A2. Anchor: the centre. Shown at scale 1."""
     u = 16.0
     m = M.Model(PREFIX + "sun", px=1.0)
     r = SUN_R * u
-    bands = [(-1.0, -0.45, 1, SUN[1]), (-0.45, 0.45, 1, SUN[3]), (0.45, 1.0, 1, SUN[1])]
+    bands = [(-1.0, -0.62, 1, SUN[3]), (-0.62, 0.62, 1, SUN[4]), (0.62, 1.0, 1, SUN[3])]
     for t0, t1, layers, mat in bands:
         m.ball((0, 0, 0), r, mat, sides=10, layers=layers, part=(t0, t1),
                faces={"n": mat, "s": mat, "u": mat, "d": mat}, emit=15, shade=False)
@@ -183,8 +192,14 @@ def _sun():
 # --- version a: planar, open gear train ---------------------------------------------------------
 def _stem_a():
     """The hanging shaft and the open gear train that drives the flat system. Three crown wheels on
-    the shaft and two idlers geared to them, teeth in the open (plan 2: gears where there is drive).
-    Anchor: the centre, at the ring plane; the model rises to the hub. Shown at scale 2."""
+    the shaft and two stepped countershafts geared to them, teeth in the open (plan 2: gears where
+    there is drive). Anchor: the centre, at the ring plane; the model rises to the hub. Scale 2.
+
+    Each countershaft stands at one centre distance from the main axis and carries two wheels: the
+    lower one (0.26, 9 teeth) meets the 18-tooth wheel, the upper (0.38, 13 teeth) meets the 14-tooth
+    one, and 0.26 + 0.52 = 0.38 + 0.40 = 0.78 is that distance, so both pairs mesh. The first cut put
+    a single 10-tooth idler at 0.60 -- too close to both, its teeth cut into theirs, and the train
+    read as a string of beads rather than as gears driving one another (cr2-M1 1, cr3-M1 2)."""
     u = 8.0
     m = M.Model(PREFIX + "a_stem", px=2.0)
     top = STEM_TOP
@@ -194,10 +209,15 @@ def _stem_a():
     gear(m, (0, 0), 0.92 * u, 1.14 * u, 0.52 * u, 18, BRASS, tooth=BRASS_D, hub_r=0.14 * u, hub_mat=IRON_D)
     gear(m, (0, 0), 1.36 * u, 1.56 * u, 0.40 * u, 14, BRASS_D, tooth=BRASS, hub_r=0.13 * u, hub_mat=IRON_D)
     gear(m, (0, 0), 1.80 * u, 1.98 * u, 0.30 * u, 12, BRASS, tooth=BRASS_D, hub_r=0.12 * u, hub_mat=IRON_D)
+    mesh = 0.78 * u                                                           # one distance for both pairs
     for ang in (40.0, 220.0):
-        ix, iz = math.cos(math.radians(ang)) * 0.60 * u, math.sin(math.radians(ang)) * 0.60 * u
-        gear(m, (ix, iz), 1.02 * u, 1.46 * u, 0.26 * u, 10, BRASS_D, tooth=BRASS, hub_r=0.09 * u, hub_mat=IRON_D)
-        m.rod((ix, 1.24 * u, iz), (0.0, 1.24 * u, 0.0), 0.05 * u, IRON_D)      # idler axle to the shaft
+        ix, iz = math.cos(math.radians(ang)) * mesh, math.sin(math.radians(ang)) * mesh
+        gear(m, (ix, iz), 0.92 * u, 1.14 * u, 0.26 * u, 9, BRASS_D, tooth=BRASS,   # lower: the 18-tooth wheel
+             hub_r=0.08 * u, hub_mat=IRON_D)
+        gear(m, (ix, iz), 1.30 * u, 1.56 * u, 0.38 * u, 13, BRASS, tooth=BRASS_D,  # upper: the 14-tooth wheel
+             hub_r=0.08 * u, hub_mat=IRON_D)
+        m.tube("y", (ix, iz), 0.86 * u, 1.62 * u, 0.055 * u, IRON_D, sides=6)     # the countershaft itself
+        m.rod((ix, 1.24 * u, iz), (0.0, 1.24 * u, 0.0), 0.05 * u, IRON_D)         # bracket to the main shaft
     m.tube("y", (0, 0), (top - 0.22) * u, top * u, 0.20 * u, BRASS_D, sides=12)
     return m
 
