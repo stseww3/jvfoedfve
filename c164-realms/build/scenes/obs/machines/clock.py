@@ -50,15 +50,17 @@ Models; px equals the scale each is shown at, so every texture is 16 pixels to t
   mach_clock_ball_red        the same in dark red                                              1
 18 display entities in all (master 5, tower 12, ball 1); the budget of this card is 40.
 
-Moving pieces, for motion (A8). This round places a still pose; each moving piece is its own
-entity and carries a tag:
+Moving pieces, for motion (A8). Only the pendulum moves in this version of the map (A0, 11-15: the
+sky is locked at eight in the evening, so the hands stand at 7:55 and the ball waits at half mast; a
+clock that ran would part from the sky). The hands and the ball are entities of their own all the
+same. The pose placed here is where a loop starts: the pendulum hangs plumb. Each piece has a tag:
+  c164_clock_pendulum   swings about the model's z axis through its anchor, PENDULUM_SWING degrees
+        each way, there and back in two seconds: transformation("pendulum", degrees).
   c164_clock_hand_h, c164_clock_hand_m   all five hour hands and all five minute hands. A hand
         turns about the model's z axis through its anchor, clockwise as the dial is looked at:
         transformation(name, -degrees) with degrees from hand_angles(hour, minute).
-  c164_clock_pendulum   swings about the model's z axis through its anchor, PENDULUM_SWING degrees
-        each way: transformation("pendulum", degrees).
-  c164_clock_ball       slides along the mast, y only: BALL_HALF_Y (the pose now), BALL_UP_Y two
-        minutes before the hour, BALL_REST_Y after the drop.
+  c164_clock_ball       slides along the mast, y only: BALL_HALF_Y (the pose now), BALL_UP_Y at
+        the top of the mast, BALL_REST_Y after the drop.
 transformation() gives the whole "transformation" of the entity for a turn, because the anchor of a
 hand or of the pendulum is not the middle of its model and the translation changes with the turn.
 
@@ -101,7 +103,7 @@ MASTER_DIAL_LIGHT = (0, 9)           # (sky, block) for the dial and its hands (
 # the hidden light in front of the dial: the cell and the level (lights, 11-15: (7, 3, 0), level 8)
 MASTER_LAMP = ((int(MASTER_AT[0]) + 1, int(MASTER_AT[1]) + 2, int(math.floor(MASTER_AT[2]))), 8)
 PENDULUM_SWING = 5.0                 # degrees each way (A8)
-PENDULUM_POSE = 4.0                  # the still pose: caught to one side
+PENDULUM_POSE = 0.0                  # the still pose is where the loop starts: plumb (motion, 11-15)
 
 # --- the tower clock ----------------------------------------------------------------------------
 SIDES = ("east", "south", "west", "north")
