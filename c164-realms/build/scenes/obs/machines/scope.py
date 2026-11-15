@@ -121,15 +121,18 @@ CELL_R = 15.0 / 16.0
 # its tube. The red lamp hangs on that side, the seams of the tube's plates run down it.
 # finder, weights, seam: where the finder, the weights that balance it and the seams ride, in
 # degrees round the tube from north over the top. The finder is seen over the tube's far edge
-# from the camera of V8; b's can only be square to the trunnions. rods: the two clamp rods, in
-# degrees round the tube from the upper end of the declination axis.
+# from the camera of V8; b's can only be square to the trunnions. Every ring of the tube is two
+# plates: its other seam is straight across. rods: the two clamp rods, in degrees round the tube
+# from the upper end of the declination axis.
 _SPEC = {
     "a": dict(rise=5.0, off=0.9 / DEC[2], back=6.39, show=-1.0,
               finder=90.0, weights=235.0, seam=(0.0, 30.0), rods=(158.0, 202.0)),
     "b": dict(rise=5.4, off=0.0, back=5.5, show=1.0,
               finder=37.0, weights=217.0, seam=(180.0, 150.0), rods=(-22.0, 22.0)),
 }
-V8_STAND = (13.2, 2.1)          # the camera of V8: x, and how far it stands from the tube's plane, to the side shown
+V8_STAND = (12.7, 2.1)          # the camera of V8: x, and how far it stands from the tube's plane, to the side shown
+OBSERVING = (S.PIER_ENVELOPE[2] + 1, S.DOME_CENTRE[1] - 1, S.PIER_ENVELOPE[2] + 5, S.DOME_CENTRE[1] + 3)
+#                                 the observing floor (A0, plan/STATUS.md domeroom): columns x 8..12, z -1..3
 V8_LOOK = (0.0, 25.2, 0.9)      # what it looks at: up the slit, under the comet's head
 
 
@@ -382,9 +385,9 @@ def _tube(version):
     # the tail: eyepiece, draw tube, the focusing sleeve with its pinion and two milled heads
     seg(0.25, 3, 2.0, BRASS_D, sides=8)
     seg(0, 0.25, 1.25, GLASS_D, sides=8, cap=GLASS_D)
-    seg(3, 9, 2.75, BRASS, sides=8)
-    seg(9, 19, 4.25, BRASS_D, sides=8)
-    seg(9, 10.5, 5.0, BRASS, sides=8)
+    seg(3, 9, 2.75, BRASS)
+    seg(9, 19, 4.25, BRASS_D)
+    seg(9, 10.5, 5.0, BRASS)
     with side(spec["finder"] + 180.0):
         d.box((-1.25, 3.5, z(17.0)), (1.25, 6.0, z(12.0)), BRASS_D)
         d.tube("x", (5.0, z(14.5)), -7.0, 7.0, 0.75, STEEL, sides=4)
@@ -406,8 +409,10 @@ def _tube(version):
     for i, s in enumerate(HOOPS):
         seg(s - 1.5, s + 1.5, HOOP_R, TUBE_STUD if i else BRASS_STUD, seed=HOOP_SEED)
     for i, (a, b) in enumerate(zip(HOOPS, HOOPS[1:] + (228.0,))):
-        with side(spec["seam"][i % 2]):
-            d.box((-1.5, BODY_R - 1.0, z(b)), (1.5, BODY_R + 0.5, z(a)), TUBE_SEAM, grain="z", seed=HOOP_SEED + 3)
+        for across in (0.0, 180.0):
+            with side(spec["seam"][i % 2] + across):
+                d.box((-1.5, BODY_R - 1.0, z(b)), (1.5, BODY_R + 0.5, z(a)), TUBE_SEAM, grain="z",
+                      seed=HOOP_SEED + 3)
     # the objective: an iron flange, the brass cell, the dark glass inside the lip of the dew cap
     seg(227, 230, 13.75, IRON_D_STUD)
     seg(230, 238, 15.0, BRASS)
@@ -731,7 +736,7 @@ def _piers_b():
     with d.turned(("x", -LATITUDE), about=south):
         d.box((-6.0, south[1] - 6.5, south[2] - 5.0), (6.0, south[1] - 4.0, south[2] + 5.0), IRON)
     # the north trestle: two legs on the cap's north edge, their heads cast into one block, tied
-    # twice with a ring between the ties, each braced back to the sleeper
+    # twice and open between the ties (the tube is seen through it), each braced back to the sleeper
     for sgn in (-1.0, 1.0):
         a, b = sorted((sgn * (foot[0] - 6.0), sgn * (foot[0] + 6.0)))
         d.box((a, 3.0, tz - 4.5), (b, foot[1] + 1.0, tz + 4.5), IRON_D_STUD)
@@ -745,9 +750,6 @@ def _piers_b():
         for sgn in (-1.0, 1.0):
             a, b = sorted((sgn * (x - 6.0), sgn * (x + 3.0)))
             d.box((a, y - 4.0, tz - 4.0), (b, y + 4.0, tz + 4.0), IRON_D_STUD)
-    d.ring("z", (0.0, 57.0, tz), 14.0, 3.0, 5.0, IRON_D, sides=16)
-    for y0, y1 in ((34.5, 42.0), (72.0, 79.5)):
-        d.box((-1.5, y0, tz - 2.0), (1.5, y1, tz + 2.0), IRON_D)
     d.box((-11.0, 106.0, tz - 3.5), (11.0, 122.0, tz + 3.5), IRON_D)
     d.box((-12.0, 108.0, tz - 4.25), (12.0, 110.0, tz + 4.25), IRON_D_STUD)
     d.box((-7.0, 122.0, tz - 3.0), (7.0, 124.0, tz + 3.0), IRON)
@@ -1054,6 +1056,12 @@ def report(version=None):
     if any(ex <= p[0] <= ex + 1 and ez <= p[2] <= ez + 1 and p[1] < FLOOR_Y + 3 for p in everything):
         problems.append("a corner is in the three cells over the ring stair's exit")
     half = S.SLIT_W / 2.0
+    stand = V8[version][0]
+    x0, z0, x1, z1 = OBSERVING
+    if not (x0 + 0.3 <= stand[0] <= x1 + 0.7 and z0 + 0.3 <= stand[2] <= z1 + 0.7):
+        problems.append(f"the camera of V8 at {stand} is not on the observing floor (x {x0}..{x1 + 1}, z {z0}..{z1 + 1})")
+    if abs(stand[2] - AXIS[1]) > half - 0.3:
+        problems.append(f"the camera of V8 at z {stand[2]} does not see the comet's head through the slit")
     wide = [p for p in points[f"{PREFIX}tube_{version}"] if abs(p[2] - AXIS[1]) > half]
     if wide:
         problems.append(f"the tube is wider than the slit: z {max(abs(p[2] - AXIS[1]) for p in wide):.2f} from the axis")

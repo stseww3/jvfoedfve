@@ -104,8 +104,10 @@ def shots():
     south   the whole instrument side on, from the south wall; north the same from the north
     east    from the east wall, the tube coming at the camera
     mount   the mount from the south, close; mount_north from the north
-    tail    the tailpiece, the finder and the red lamp, close
-    circle  the setting circles and the driving clock, close
+    tail    the tailpiece, the finder and the red lamp's back, close
+    circle  the hour circle, the worm and the driving clock, from under the tube
+    lamp    the red lamp's glass, from the west: the one camera that stands on the side each
+            version hangs its lamp on
     top     from under the dome's crown, down on the instrument
     slit    from outside, down the tube's own line through the slit at the objective
     """
@@ -121,8 +123,8 @@ def shots():
         mid = tuple((eyepiece[i] + objective[i]) / 2.0 for i in range(3))
         shot("v8", *scope.v8("b"))
         shot("v8_north", *scope.v8("a"))
-        shot("eye", (eyepiece[0] + 0.55, eye_y, eyepiece[2] + 1.5),
-             (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.2))
+        shot("eye", (eyepiece[0] + 1.0, eye_y, eyepiece[2] + 1.8),
+             (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.1))
         shot("south", (5.5, eye_y + 1.0, 11.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("north", (5.5, eye_y + 1.0, -10.3), (mid[0], cross[1] + 0.3, 0.5))
         shot("east", (13.6, eye_y, -1.2), (2.0, cross[1] + 1.5, 0.8))
@@ -130,7 +132,10 @@ def shots():
         shot("mount_north", (7.6, eye_y + 0.8, -6.2), (4.5, cross[1] - 1.0, 0.3))
         shot("tail", (eyepiece[0] + 1.3, eyepiece[1] + 0.25, eyepiece[2] + 2.3),
              (eyepiece[0] - 1.1, eyepiece[1] + 0.75, eyepiece[2] + 0.1))
-        shot("circle", (7.4, eye_y + 2.6, 4.4), (4.5, cross[1] - 0.6, 1.2))
+        shot("circle", (7.9, eye_y + 0.6, 5.4), (4.8, cross[1] - 2.1, 1.9))
+        lamp, side = scope._lamp_at(v)[0], scope._SPEC[v]["show"]
+        shot("lamp", (lamp[0] - 1.7, lamp[1] + 0.3, lamp[2] + side * 1.0),
+             (lamp[0] + 0.4, lamp[1] - 0.15, lamp[2] - side * 0.35))
         shot("top", (7.5, 34.5, 3.0), (3.6, cross[1], 0.6))
         out_there = tuple(objective[i] + scope.SIGHT[i] * 11.0 for i in range(3))
         shot("slit", (out_there[0], out_there[1] + 1.2, out_there[2] + 1.6), objective)
