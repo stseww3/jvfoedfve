@@ -1,0 +1,3 @@
+branch=cursor/c164-cloud-cloudsea-f3-ad5e
+head=d2c6c3d1a03e53cb4ea72eb6aee1cac84c3fb1bc
+args=--wip --always --limit 900 --tail 70 rm\ -f\ renders/_wip/\*.png\ renders/_wip/\*.txt\;\ cd\ build\ \&\&\ python\ -m\ scenes.obs_sky_cloudsea.preview\ --out\ ../renders/_wip/s4\ --only\ sunset_west\,skim\,north_out\ --laws\ k0\;\ python\ -m\ scenes.obs_sky_cloudsea.preview\ --out\ ../renders/_wip/s4\ --sheet\ 3\ --only\ v12\,roof_down\,station_east\,sunset_sw_down\,east\,v1\ --laws\ k768\;\ cd\ ..\ \&\&\ python\ tools/check.py\ --scene\ obs_sky_cloudsea\ 2\>\&1\ \|\ tail\ -13 
