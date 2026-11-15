@@ -1004,7 +1004,7 @@ def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
                     line = raw.decode("utf-8", errors="replace").strip()
                     if line:
                         last_line = line
-                        if any(tag in line for tag in ("【有新消息】", "【等到时】", "已停用", "身份不对")):
+                        if any(tag in line for tag in ("【有新消息】", "【续棒】", "【等到时】", "已停用", "身份不对")):
                             print(line, flush=True)
                             return 0
         except urllib.error.HTTPError as exc:
