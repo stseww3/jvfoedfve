@@ -144,9 +144,15 @@ def _drum():
     m.tube("x", (0.0, ay), -half_chart - 0.9, -half_chart + 0.2, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), half_chart - 0.2, half_chart + 0.9, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), -half_chart + 0.1, half_chart - 0.1, DRUM_R, CREAM_F, sides=14)
-    # the pen's trace: one raised line right round the paper, a step darker (a pixel proud)
-    m.box((-half_chart + 0.3, DRUM_R - 0.4, -DRUM_R - 0.14),
-          (half_chart - 0.3, DRUM_R + 0.6, DRUM_R + 0.14), CREAM_D, skip="d")
+    # the pen's trace: a one-pixel dark line round the paper with a few rises and falls, so the chart
+    # reads as a record being written (cr3-M4 -- without it the drum is a drum with paper on it)
+    trace = P.mat("iron", base=1, kind="flat", bevel=0)
+    seg = (CHART_W / 2.0 - 0.6) / 6.0
+    for i in range(6):
+        x0 = -half_chart + 0.6 + i * seg
+        hi = 0.9 if i % 2 else 0.2            # the wave: up on one segment, flat on the next
+        m.box((x0, DRUM_R + hi - 0.35, -DRUM_R - 0.16),
+              (x0 + seg, DRUM_R + hi + 0.35, DRUM_R + 0.16), trace, skip="d")
 
     # the pen carriage: the slide bar over the drum, its arm, the nib riding on the paper
     m.box((-hw * 0.88, DRUM_R + 1.4, -hd * 0.50), (hw * 0.88, DRUM_R + 2.3, -hd * 0.50 + 1.1),
