@@ -17,14 +17,22 @@ Rows, bottom to top:
               pavilion's terrace, its leaf set back to the wall's inner face.
     y 20      the head of the drum: a stone corbel (stairs hung upside down) that widens the body
               to the nine of the dome. Its lip is flush with the pavilion's wall faces.
-    y 21      the iron skirt, the ring the dome turns on.
+    y 21      the iron skirt, the ring the dome turns on: riveted plate with a cast axle box on each
+              axis and each diagonal, two plates between every two (the great dome's ring beam has
+              one under every seam).
     y 22..25  the dome: copper plates only, whole blocks and slabs, one block at the apex.
 
 What a dome nine blocks across can carry (c219 #23263, A0 #23752): no ribs -- eight ribs took half
 its surface and read as patches, four would draw a cross on its top from above; the top row is one
 cast block on the axis, the plates fall away from it by half blocks; a slit one block wide, from
 the skirt up to the apex block, and beside it the shutter leaf slid open to the south, riveted
-iron lying half a block proud of the plates; three darker plates in the first row over the skirt.
+iron; three darker plates in the first row over the skirt.
+
+The leaf lies in the plates' own face. It lay half a block proud of them until the first pictures
+(11-16): one block wide on a dome of nine it stood there as a black chimney from the terrace and
+as a black speck beside the apex from the court's side. Flush, the slit and its leaf read as one
+dark slot from the skirt to the apex and the outline stays round. (In the darker copper, proud, it
+read as a tan rib, and the slit beside it as a crease: the room is too small to be dark inside.)
 
 Not here: the pavilion walls and the deck under the drum (main/facade.py, c206); the astrograph
 (machines, A5); the terrace's gutters, the iron plate before the door, the roof light and the
@@ -58,15 +66,15 @@ FOOT = R + 0.25                                          # the half-ellipse the 
 RISE = APEX + 0.8 - SKIRT_Y                              # the skirt's foot, this high on the axis -- the
 #                                                          apex block alone reaches the top of row 25
 SLIT_X = (S.SMALL_DOME_X[0], CX - 1)                     # the slit: the west axis row, up to the apex block
-LEAF_Z = CZ + 1                                          # the shutter leaf lies south of the slit
-LEAF_PROUD = 0.0                                         # TRIAL: flush with the plates
+LEAF_Z = CZ + 1                                          # the shutter leaf: the row south of the slit
 RUNS = ((CX + 4, CZ + 1), (CX - 1, CZ + 4), (CX + 3, CZ - 3))   # the darker plates, in the row over the skirt
+BOX_WAYS = O.SIDES + ((1, 1), (-1, 1), (-1, -1), (1, -1))        # where the skirt's axle boxes sit
 
 PLATE, RUN, CAST = B.VERDIGRIS_CUT, B.VERDIGRIS_STREAK, B.VERDIGRIS_CAST
 STONE, PANEL = B.ASHLAR_FINE, B.ASHLAR_PANEL
-IRON = B.IRON_RIVETED
-LEAF = IRON                                              # TRIAL (pictures decide): the shutter leaf in riveted iron
+IRON = B.IRON_RIVETED                                    # the skirt's plates and the shutter leaf
 SKIRT = IRON.block
+AXLE_BOX = B.IRON_CAST                                   # as in the great dome's ring beam
 GLASS = B.WINDOW_DARK.pane                               # a pane: the glass stands back in a wall one block thick
 FRONT = "sdome"                                          # the front's name in windows()
 AXES = (O.EAST, O.SOUTH, O.WEST, O.NORTH)                # bay 0, 1, 2, 3
@@ -100,6 +108,16 @@ def windows():
             for bay, d in enumerate(AXES) if bay != DOOR_BAY]
 
 
+def axle_boxes():
+    """The eight columns of the skirt that hold an axle box: the outermost one on each axis and on
+    each diagonal. Round the ring two plates lie between every two of them."""
+    out = set()
+    for dx, dz in BOX_WAYS:
+        n = max(k for k in range(int(R) + 2) if (CX + dx * k, CZ + dz * k) in RING)
+        out.add((CX + dx * n, CZ + dz * n))
+    return out
+
+
 def drum(canvas, origin=(0, 0, 0), glass=None):
     """The stone body with its three small windows and the iron door, the corbel and the skirt;
     returns the windows. glass(front, bay, storey) may name another window role for a bay."""
@@ -122,8 +140,9 @@ def drum(canvas, origin=(0, 0, 0), glass=None):
     for (x, y, z), half in zip(door_cells(), ("lower", "upper")):         # on the cell's inner edge
         put(x, y, z, f"{B.IRON_DOOR}[facing=west,half={half},hinge=left,open=false]")
     O.Laying(canvas, None, origin, None).mould(BODY, HEAD_Y, STONE.stairs, "top")
+    boxes = axle_boxes()
     for x, z in RING:
-        put(x, SKIRT_Y, z, SKIRT)
+        put(x, SKIRT_Y, z, AXLE_BOX if (x, z) in boxes else SKIRT)
     return out
 
 
@@ -138,14 +157,11 @@ def _is_leaf(x, z):
 
 def _skin():
     """{column: top face} of the dome in half blocks: a half-ellipse FOOT wide at the skirt's foot
-    and RISE high, rounded to the nearer half; the shutter leaf lies LEAF_PROUD over it, but never
-    as high as the apex block."""
+    and RISE high, rounded to the nearer half. The shutter leaf lies in this face too."""
     out = {}
     for x, z in DOME:
         d = math.hypot(x - CX, z - CZ)
         top = round(2 * (SKIRT_Y + RISE * math.sqrt(1.0 - (d / FOOT) ** 2))) / 2.0
-        if _is_leaf(x, z):
-            top = min(top + LEAF_PROUD, APEX + 0.5)
         out[(x, z)] = max(top, SKIRT_Y + 1.5)
     return out
 
@@ -172,7 +188,7 @@ def dome(canvas, origin=(0, 0, 0)):
     for (x, z), top in skin.items():
         ytop = math.ceil(top) - 1                       # the cell the top face lies in
         whole = top == ytop + 1
-        metal = LEAF if _is_leaf(x, z) else PLATE
+        metal = IRON if _is_leaf(x, z) else PLATE
         for y in range(min(ytop, _foot(skin, (x, z))), ytop + 1):
             if (x, z) == (CX, CZ):
                 state = CAST
@@ -215,10 +231,18 @@ def check():
     high = [col for col, top in skin.items() if top > APEX + 0.5 and not _in_slit(*col)]
     if high != [(CX, CZ)] or name(CX, APEX, CZ) != CAST:
         out.append(f"apex: the columns that reach the top of row {APEX} are {sorted(high)}, not the cast block alone")
-    # 3. the slit is open from the skirt to the apex block, and the skirt runs on under it
+    # 3. the slit is open from the skirt to the apex block, and the skirt runs on under it; the leaf
+    #    beside it is riveted iron over the slit's whole length and lies in the plates' face: as
+    #    high as the plates across the slit, column for column
     for x in range(SLIT_X[0], SLIT_X[1] + 1):
         if any(c.has(x, y, CZ) for y in range(SKIRT_Y + 1, APEX + 1)):
             out.append(f"slit: something stands in the slit at x {x}")
+        leaf, across = _top(c, x, LEAF_Z), _top(c, x, 2 * CZ - LEAF_Z)
+        if leaf is None or leaf[1] not in (IRON.block, IRON.slab):
+            out.append(f"leaf: no riveted iron beside the slit at x {x}")
+        elif across is None or leaf[0] != across[0]:
+            out.append(f"leaf: at x {x} its face is at {leaf[0]}, the plates' across the slit at "
+                       f"{across[0] if across else 'nothing'}")
     # 4. the shell is closed everywhere else: seen from above no column is missing, and no step
     #    between two neighbours is higher than the blocks that stand under the upper one
     for col, top in skin.items():
@@ -242,9 +266,19 @@ def check():
     for y in range(BODY_Y[0], APEX - 1):
         if c.has(CX, y, CZ):
             out.append(f"room: something stands on the axis at y {y}")
-    # 6. the skirt is a closed iron ring, the corbel a closed stone one
-    if any(name(x, SKIRT_Y, z) != SKIRT for x, z in RING):
-        out.append(f"skirt: the ring at y {SKIRT_Y} is not riveted iron all round")
+    # 6. the skirt is a closed iron ring: riveted plate, an axle box on each axis and each diagonal
+    #    and two plates between every two of them along the dome's edge; the corbel a closed stone one
+    ring = {col: name(col[0], SKIRT_Y, col[1]) for col in RING}
+    if any(what not in (SKIRT, AXLE_BOX) for what in ring.values()):
+        out.append(f"skirt: the ring at y {SKIRT_Y} is not iron all round")
+    boxes = {col for col, what in ring.items() if what == AXLE_BOX}
+    if boxes != axle_boxes() or len(boxes) != len(BOX_WAYS):
+        out.append(f"skirt: {len(boxes)} axle boxes, not one on each axis and each diagonal")
+    edge = sorted((col for col in RING if any(O.step(col, d) not in DOME for d in O.SIDES)),
+                  key=lambda col: math.atan2(col[1] - CZ, col[0] - CX))
+    at = [k for k, col in enumerate(edge) if col in boxes]
+    if len(at) != len(boxes) or any((b - a) % len(edge) != 3 for a, b in zip(at, at[1:] + at[:1])):
+        out.append("skirt: the axle boxes do not stand at every third column of the dome's edge")
     if any(name(x, HEAD_Y, z) != STONE.stairs for x, z in RING):
         out.append(f"corbel: the ring at y {HEAD_Y} is not stone stairs all round")
     # 7. three dark windows and the door
@@ -257,19 +291,27 @@ def check():
     return out
 
 
+def _top(c, x, z):
+    """(the top face, the block it is the face of) of a column of the dome over the skirt; None
+    where nothing stands (the open slit)."""
+    top = max((y for y in range(SKIRT_Y + 1, APEX + 1) if c.has(x, y, z)), default=None)
+    if top is None:
+        return None
+    state = c.get(x, top, z)
+    return top + (0.5 if "slab" in state else 1.0), state.partition("[")[0]
+
+
 def _heights(c):
     """The dome from above: the top face of every column, in half blocks (. the open slit)."""
     lines = []
     for z in range(S.SMALL_DOME_Z[0], S.SMALL_DOME_Z[1] + 1):
         row = []
         for x in range(S.SMALL_DOME_X[0], S.SMALL_DOME_X[1] + 1):
-            top = max((y for y in range(SKIRT_Y + 1, APEX + 1) if c.has(x, y, z)), default=None)
+            top = _top(c, x, z)
             if top is None:
                 row.append("  .  " if (x, z) in DOME else "     ")
                 continue
-            state = c.get(x, top, z)
-            face = top + (0.5 if "slab" in state else 1.0)
-            row.append(f"{face:4.1f}{O.mark(state)}")
+            row.append(f"{top[0]:4.1f}{O.mark(top[1])}")
         lines.append(f"z {z}  " + " ".join(row))
     return "\n".join(lines)
 
@@ -286,12 +328,13 @@ def _plan(c, y):
 def _drawings():
     O.MARKS.setdefault(CAST, "A")
     O.MARKS.setdefault(B.IRON_DOOR, "J")
+    O.MARKS.setdefault(AXLE_BOX, "B")
     c = Canvas()
     build(c)
     xs = (S.SMALL_DOME_X[0] - 2, S.SMALL_DOME_X[1] + 2)
     zs = (S.SMALL_DOME_Z[0] - 2, S.SMALL_DOME_Z[1] + 2)
     ys = (BODY_Y[0] - 1, APEX + 1)
-    for y, what in ((WINDOW_Y, "the body at the windows"), (HEAD_Y, "the corbel")):
+    for y, what in ((WINDOW_Y, "the body at the windows"), (HEAD_Y, "the corbel"), (SKIRT_Y, "the skirt")):
         print(f"PLAN at y {y}, {what} (north up, x {S.SMALL_DOME_X[0]}..{S.SMALL_DOME_X[1]}):\n")
         print(_plan(c, y))
         print()
@@ -307,7 +350,7 @@ def _drawings():
     print(O.elevation(c, "south", xs, ys, zs[1], zs[0]))
     print("\nWEST ELEVATION, the slit and the door (north on the left):\n")
     print(O.elevation(c, "west", zs, ys, xs[0], xs[1]))
-    print("\nLetters: F dressed ashlar, P sunk panel, D dark window, J iron door, I riveted iron,")
+    print("\nLetters: F dressed ashlar, P sunk panel, D dark window, J iron door, I riveted iron, B axle box,")
     print("V verdigris plate, A cast block, X darker plate. Small letters are slabs and stairs.")
 
 
@@ -317,5 +360,5 @@ if __name__ == "__main__":
         print()
     found = check()
     print("\n".join(found) if found else
-          "self-check: footprint, apex, slit, shell, room, skirt and corbel, windows and door -- all good")
+          "self-check: footprint, apex, slit and leaf, shell, room, skirt and corbel, windows and door -- all good")
     sys.exit(1 if found else 0)
