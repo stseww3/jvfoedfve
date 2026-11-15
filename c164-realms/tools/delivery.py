@@ -4,6 +4,9 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
 
     delivery.py <category>/<package> <commit> [--base <commit>]      base: HEAD (the assembly copy)
 
+  shift     no commit of the second shift in the delivered commit's history. The rule is
+            tools/provenance.sh's (plan/roles/HANDOVER.md, section 0), asked here so that no
+            delivery is looked at without it: a delivery that fails it is not merged
   scope     the files changed, sorted into: the card's own (its module, the category's _helpers,
             its test scenes and their kept pictures, its card, the parts files), common files (only
             the merge-key holder changes those: agreed beforehand or not?), other cards' files,
@@ -35,6 +38,7 @@ import subprocess
 import sys
 import tempfile
 
+HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = "c164-realms/"
 ABBR = {"materials": "mat", "sky": "sky", "main": "main", "site": "site", "machines": "mach",
         "props": "props", "interiors": "int", "motion": "mot", "common": "common"}
@@ -185,6 +189,19 @@ def main():
     print(f"delivery {args.card}: {head[:7]} against {base[:7]} (forked at {fork[:7]}), "
           f"{len(commits)} commits, {len(pairs)} files")
     results = []
+
+    # ---- shift: the rule lives in tools/provenance.sh alone ----
+    asked = subprocess.run(("bash", os.path.join(HERE, "provenance.sh"), head), capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
+    said = (asked.stdout + asked.stderr).strip().splitlines()
+    if asked.returncode == 0:
+        results.append(say("PASS", "shift", "no commit of the second shift in its history (tools/provenance.sh)"))
+    elif asked.returncode == 1:
+        results.append(say("FAIL", "shift", "commits of the second shift in its history: not merged, not "
+                           "cherry-picked, not copied from (plan/roles/HANDOVER.md, section 0). The work is done "
+                           "again on a branch cut from the first shift's head (plan/ROSTER.md)", said))
+    else:
+        results.append(say("FAIL", "shift", "tools/provenance.sh could not test the commit", said))
 
     # ---- scope ----
     mine, common, director, others, outside = [], [], [], [], []
