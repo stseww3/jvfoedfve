@@ -1,4 +1,4 @@
-// Records the demo video of the round-2 interactions, one frame at a time.
+// Records a demo video of the site's interactions, one frame at a time.
 //
 // A real-time screen capture stutters on a busy machine, so the page runs on
 // a virtual clock instead: its timers, animation-frame callbacks, CSS
@@ -9,7 +9,9 @@
 // The arrow, the click ring and the caption bar under the page are added by
 // this script for the recording. They are not part of the site.
 //
-//   node record.mjs [output.mp4] [--keep-frames]
+//   node record.mjs <round2|tilt> [output.mp4] [--keep-frames]
+//
+// Without an output path the video goes to delivery/<name>-demo.mp4.
 
 import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
@@ -26,8 +28,8 @@ const FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
 
 const args = process.argv.slice(2);
 const keepFrames = args.includes("--keep-frames");
-const output = path.resolve(args.find((a) => !a.startsWith("--")) ?? path.join(ROOT, "delivery", "round2-demo.mp4"));
-const frameDir = path.join(os.tmpdir(), "dictionary-demo-frames");
+const [demo, outputArg] = args.filter((a) => !a.startsWith("--"));
+const frameDir = path.join(os.tmpdir(), `dictionary-demo-frames-${demo}`);
 
 /* ---- injected into the page before any of its scripts run ---- */
 
@@ -47,8 +49,30 @@ function installClock() {
   };
   window.cancelAnimationFrame = (id) => clock.frames.delete(id);
 
+  // The document timeline is frozen by the recorder, so an animation only
+  // moves when its time is set here. One seen for the first time starts now.
+  const advance = () => {
+    for (const animation of document.getAnimations()) {
+      let start = clock.started.get(animation);
+      if (start === undefined) {
+        start = clock.now;
+        clock.started.set(animation, start);
+      }
+      const time = clock.now - start;
+      const end = animation.effect ? animation.effect.getComputedTiming().endTime : 0;
+      if (time >= end) animation.finish();
+      else animation.currentTime = time;
+    }
+  };
+
   window.__tick = (dt) => {
     clock.now += dt;
+
+    // Same order as a browser frame: what is already running moves on first,
+    // then the page's own callbacks run. A transition that a callback
+    // re-aims every frame (the card following the pointer) then starts from
+    // where the last one had got to, instead of never getting anywhere.
+    advance();
 
     for (;;) {
       let next = null;
@@ -64,19 +88,7 @@ function installClock() {
     clock.frames.clear();
     for (const fn of callbacks) fn(clock.now);
 
-    // The document timeline is frozen by the recorder, so an animation only
-    // moves when its time is set here. One first seen on this frame starts now.
-    for (const animation of document.getAnimations()) {
-      let start = clock.started.get(animation);
-      if (start === undefined) {
-        start = clock.now;
-        clock.started.set(animation, start);
-      }
-      const time = clock.now - start;
-      const end = animation.effect ? animation.effect.getComputedTiming().endTime : 0;
-      if (time >= end) animation.finish();
-      else animation.currentTime = time;
-    }
+    advance();
   };
 }
 
@@ -227,7 +239,111 @@ class Recorder {
   }
 }
 
-/* ---- the demo ---- */
+/* ---- the demos ---- */
+
+const chip = (category) => `.chip[data-category="${category}"]`;
+
+const demos = {
+  // Category glide, term links, opening a link, light theme.
+  async round2(rec) {
+    await rec.newTab(LIVE_URL);
+    rec.caption("1   Switch category: the cards glide to their new places");
+    await rec.wait(1000);
+    await rec.moveToElement(chip("naming"), 750);
+    await rec.click();
+    await rec.wait(1500);
+    await rec.moveToElement(chip("all"), 550);
+    await rec.click();
+    await rec.wait(1500);
+    await rec.moveToElement(chip("security"), 600);
+    await rec.click();
+    await rec.wait(1400);
+    await rec.moveToElement(chip("naming"), 550);
+    await rec.click();
+    await rec.wait(1300);
+
+    rec.caption("2   Click a term to copy a link to it");
+    const og = await rec.point("#term-og");
+    await rec.scrollTo(Math.max(0, og.top + og.height / 2 - HEIGHT / 2), 650);
+    await rec.moveToElement("#term-og", 650, [0.6, 0.62]);
+    await rec.wait(250);
+    await rec.moveToElement("#term-og .term-link", 500, [0.35, 0.55]);
+    await rec.wait(450);
+    await rec.click();
+    rec.note("copied");
+    await rec.wait(2300);
+    const copied = await rec.page.evaluate(() => navigator.clipboard.readText());
+    if (copied !== `${LIVE_URL}#og`) throw new Error(`Clipboard holds "${copied}", expected the OG link`);
+
+    rec.caption("3   Open that link in a new tab: the page lands on the term");
+    rec.mouse = { x: 1190, y: 330 };
+    await rec.newTab(copied);
+    await rec.wait(2600);
+
+    rec.caption("Same in light mode");
+    await rec.moveToElement("#theme-toggle", 700);
+    await rec.click();
+    await rec.wait(1200);
+    await rec.scrollTo(0, 800);
+    await rec.moveToElement(chip("community"), 650);
+    await rec.click();
+    await rec.wait(1300);
+    await rec.moveToElement("#term-dnw", 600, [0.7, 0.6]);
+    await rec.moveToElement("#term-dnw .term-link", 500, [0.35, 0.55]);
+    await rec.wait(300);
+    await rec.click();
+    await rec.wait(1900);
+  },
+
+  // The card tilt: around one card, across its neighbours, a click on a
+  // leaning card, then the same in the light theme.
+  async tilt(rec) {
+    rec.mouse = { x: 640, y: 150 };
+    await rec.newTab(LIVE_URL);
+    rec.caption("Tilt: the card is pressed down where the pointer is");
+    await rec.wait(500);
+    // Two full rows of cards on screen.
+    const firstRow = await rec.point("#term-2fa");
+    await rec.scrollTo(firstRow.top - 56, 500);
+    await rec.moveToElement("#term-3c", 650, [0.5, 0.5]);
+    await rec.wait(250);
+    await rec.moveToElement("#term-3c", 550, [0.08, 0.5]);
+    await rec.moveToElement("#term-3c", 500, [0.2, 0.12]);
+    await rec.moveToElement("#term-3c", 550, [0.9, 0.15]);
+    await rec.moveToElement("#term-3c", 550, [0.92, 0.88]);
+    await rec.moveToElement("#term-3c", 550, [0.12, 0.85]);
+    await rec.wait(350);
+    await rec.moveToElement("#term-2fa", 700, [0.3, 0.3]);
+    await rec.moveToElement("#term-3l", 1100, [0.75, 0.35]);
+    await rec.moveToElement("#term-alt", 800, [0.7, 0.3]);
+    await rec.moveToElement("#term-4l", 750, [0.4, 0.3]);
+    await rec.moveToElement("#term-4c", 750, [0.75, 0.3]);
+
+    rec.caption("Links still work on a leaning card");
+    await rec.moveToElement("#term-4c .term-link", 600, [0.4, 0.55]);
+    await rec.wait(300);
+    await rec.click();
+    await rec.wait(1700);
+
+    rec.caption("Same in light mode");
+    await rec.moveToElement("#theme-toggle", 800);
+    await rec.click();
+    await rec.wait(1100);
+    await rec.moveToElement("#term-3l", 750, [0.8, 0.2]);
+    await rec.moveToElement("#term-3l", 600, [0.15, 0.8]);
+    await rec.moveToElement("#term-3c", 650, [0.2, 0.25]);
+    await rec.moveToElement("#term-2fa", 800, [0.85, 0.75]);
+    await rec.moveToElement("#term-2fa", 600, [0.1, 0.2]);
+    await rec.moveTo(60, 300, 500);
+    await rec.wait(600);
+  },
+};
+
+if (!(demo in demos)) {
+  console.error(`Usage: node record.mjs <${Object.keys(demos).join("|")}> [output.mp4] [--keep-frames]`);
+  process.exit(1);
+}
+const output = path.resolve(outputArg ?? path.join(ROOT, "delivery", `${demo}-demo.mp4`));
 
 await fs.rm(frameDir, { recursive: true, force: true });
 await fs.mkdir(frameDir, { recursive: true });
@@ -237,60 +353,8 @@ const context = await browser.createBrowserContext();
 await context.overridePermissions(LIVE_ORIGIN, ["clipboard-read", "clipboard-write"]);
 
 const rec = new Recorder(context);
-const chip = (category) => `.chip[data-category="${category}"]`;
 const started = Date.now();
-
-// 1. category glide
-await rec.newTab(LIVE_URL);
-rec.caption("1   Switch category: the cards glide to their new places");
-await rec.wait(1000);
-await rec.moveToElement(chip("naming"), 750);
-await rec.click();
-await rec.wait(1500);
-await rec.moveToElement(chip("all"), 550);
-await rec.click();
-await rec.wait(1500);
-await rec.moveToElement(chip("security"), 600);
-await rec.click();
-await rec.wait(1400);
-await rec.moveToElement(chip("naming"), 550);
-await rec.click();
-await rec.wait(1300);
-
-// 2. copy a term's link
-rec.caption("2   Click a term to copy a link to it");
-const og = await rec.point("#term-og");
-await rec.scrollTo(Math.max(0, og.top + og.height / 2 - HEIGHT / 2), 650);
-await rec.moveToElement("#term-og", 650, [0.6, 0.62]);
-await rec.wait(250);
-await rec.moveToElement("#term-og .term-link", 500, [0.35, 0.55]);
-await rec.wait(450);
-await rec.click();
-rec.note("copied");
-await rec.wait(2300);
-const copied = await rec.page.evaluate(() => navigator.clipboard.readText());
-if (copied !== `${LIVE_URL}#og`) throw new Error(`Clipboard holds "${copied}", expected the OG link`);
-
-// 3. open that link in a new tab
-rec.caption("3   Open that link in a new tab: the page lands on the term");
-rec.mouse = { x: 1190, y: 330 };
-await rec.newTab(copied);
-await rec.wait(2600);
-
-// 4. light theme
-rec.caption("Same in light mode");
-await rec.moveToElement("#theme-toggle", 700);
-await rec.click();
-await rec.wait(1200);
-await rec.scrollTo(0, 800);
-await rec.moveToElement(chip("community"), 650);
-await rec.click();
-await rec.wait(1300);
-await rec.moveToElement("#term-dnw", 600, [0.7, 0.6]);
-await rec.moveToElement("#term-dnw .term-link", 500, [0.35, 0.55]);
-await rec.wait(300);
-await rec.click();
-await rec.wait(1900);
+await demos[demo](rec);
 
 rec.captions.at(-1).to = rec.frame - 1;
 await browser.close();
