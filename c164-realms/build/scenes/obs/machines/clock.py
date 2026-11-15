@@ -40,9 +40,11 @@ at each pole and under the lower pole the collar it is caught by: half as wide a
 thick as it is proud, a step in the foot of the ball and never a bar across the mast (a cross is a
 red line). Nothing runs round the waist. The ball is turned about the mast (BALL_TURN) so that
 the game's two lamps light its four sides alike, and its roundness is painted on it: five tones
-round the place the moon lights it from, low in the east. Two colours until A0 picks one on the
-pictures: old copper (BALL, the default) and dark red. Where no mast stands yet (the white model)
-the ball lies at the foot of the mast.
+round the place the moon lights it from, low in the east. It is of old copper (BALL): A0 chose it
+on the V1 pictures (11-16), where it stands out of the sky by its lightness and is of one family
+with the verdigris roof under it, and the one red thing in that sky stays the lamp of the radio
+mast. The dark red ball is kept as a switch (tower(colour="red"), scene obs_mach_clocks_b). Where
+no mast stands yet (the white model) the ball lies at the foot of the mast.
 
 Models; px equals the scale each is shown at, so every texture is 16 pixels to the block:
   mach_clock_master          the case with its movement, coils and beat scale             scale 2
@@ -141,7 +143,7 @@ DIAL_LIGHT = {"east": (15, 9), "west": (15, 9), "south": (8, 6), "north": (8, 6)
 FAR = 4.0                        # view_range of everything on the tower: seen from the far platforms
 
 # --- the time ball ------------------------------------------------------------------------------
-BALL = "copper"                  # the colour tower() hangs: "copper" or "red"
+BALL = "copper"                  # the colour tower() hangs (A0, 11-16); "red" is the other one made
 BALL_AXIS = (S.mid(*S.CLOCK_SHAFT_X), S.mid(*S.CLOCK_SHAFT_Z))     # (13.5, -29.5): the mast
 MAST_MODEL = "bld_tower_mast"    # the model main/tower's mast is shown with: a rod 7 pixels thick, y 42.6..51
 BALL_R = 20.0                    # pixels: 2.5 blocks across (A0, 11-14)
