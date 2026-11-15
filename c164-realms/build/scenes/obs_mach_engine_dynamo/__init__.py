@@ -22,7 +22,7 @@ from artkit.canvas import Canvas
 from scenes.obs import materials
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.machines import engine
+from scenes.obs.machines import engine_dynamo as engine
 
 BIOME = "obs_blue"
 CATEGORY = "machines"
