@@ -81,6 +81,8 @@ PENDULUM = 20                      # one beat of the master clock
 ENGINE_STROKE = 24                 # one revolution of the flywheel, slow
 HUM_LOOP = 100                     # the dynamo's held tone, re-sent before its tail dies
 FIRE_LOOP = 160
+STEAM_EVERY = 60                   # the safety valve lifts every 3 seconds: motion/smoke's own figure,
+#                                    and the hiss below rides on it (the card: one period for both)
 WIND_LOOP = 240
 
 
@@ -174,8 +176,7 @@ def build(canvas, origin=(0, 0, 0), choice=None):
     if "boiler" in where:                              # the draught, a slow low loop
         _point(canvas, where["boiler"], "fire", FIRE_LOOP, (0,), origin, choice, reach=16.0)
     if "safety valve" in where:                        # the valve lifts now and then
-        _point(canvas, where["safety valve"], "hiss", FIRE_LOOP, (FIRE_LOOP - 24,), origin, choice,
-               reach=14.0)
+        _point(canvas, where["safety valve"], "hiss", STEAM_EVERY, (0,), origin, choice, reach=14.0)
     if "telegraph" in where:                           # a burst of clicks, then a rest
         _point(canvas, where["telegraph"], "telegraph", 40, (2, 6, 9, 14, 20), origin, choice,
                reach=12.0)
