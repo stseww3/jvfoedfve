@@ -12,10 +12,11 @@ skeleton is the one of this checkout, or of the build/ folder named in the envir
 C164_BUILD: the render station shoots other checkouts with its own tools (win/shuttle.py), and
 the board of a checkout is worked out from that checkout's skeleton.
 
-V1, V2 and V11 are the skeleton's own, LOCKED by A0. The other nine have no place in the skeleton
-yet: what stands here for them is the render station's proposal (PROPOSED below), for A0 to move
-on the pictures. A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=) and
-is read from there; the proposal here then no longer counts.
+V1, V2, V7 and V11 are A0's: read from the skeleton where it has them, and until then taken from
+his rulings (RULED below). The other eight have no place in the skeleton yet: what stands here for
+them is the render station's proposal (PROPOSED below), which A0 lets stand until he has seen the
+pictures (11-15). A view that gets fixed goes into the skeleton as V<n> = dict(pos=, look_at=) and
+is read from there; what stands here for it then no longer counts.
 
 All twelve are taken in look A (tick 14000). The picture is the game's: 16:9, 77 degrees high (the
 camera player flies, which widens the game's 70), as build/render.py and tools/check.py take it.
@@ -53,6 +54,8 @@ def _ruled():
 
 
 V1, V2 = _ruled()
+# Where A0's rulings are, for the views the skeleton may not hold yet.
+RULED = {"V1": "A0 #304", "V2": "A0 #304", "V7": "A0 #365"}
 
 # name, what the plan wants to see, the skeleton's name for it, the render station's proposal
 VIEWS = [
@@ -78,11 +81,10 @@ VIEWS = [
         pos=(S.GRAND_STAIR["x1"] + 2.5, S.LOWER_GROUND + EYE, S.GRAND_STAIR["z1"] - 5.5),
         look_at=(S.mid(HOUSE[0], HOUSE[2]), S.POWER_HOUSE["base_y"] + S.POWER_HOUSE["wall_h"] - 1.0,
                  S.mid(HOUSE[1], HOUSE[3])))),
-    # PROPOSED. On the south gallery, level with the ring of planets: the orrery in the well, the
-    # pier and the mother clock behind it, the floor below.
-    ("v07_hall", "the star hall and the orrery", "V7", dict(
-        pos=(S.east_wall_x(9) - 3.5, MAIN_EYE, S.STAR_HALL_Z[1] - 0.5),
-        look_at=(S.PIER_SHAFT[2] + 1.0, S.STAND - 1.0, S.STAR_HALL_Z[0] + 3.0))),
+    # A0, 11-15 (#365): from outside the door, on the axis, in through the open middle arch at the
+    # orrery. (The station's first proposal stood on the south gallery inside the hall.)
+    ("v07_hall", "the star hall and the orrery, in through the entrance", "V7", dict(
+        pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5))),
     # PROPOSED. On the dome-room floor east of the pier, inside the slit's width and beside the tube,
     # so that the line due west at the comet's height runs out through the slit.
     ("v08_dome_room", "the great refractor, the open slit, the comet beyond it", "V8", dict(
@@ -111,9 +113,11 @@ def views():
     out = []
     for name, shows, key, proposal in VIEWS:
         if key in ("V1", "V2"):
-            view, source = proposal, "skeleton" if hasattr(S, "V2") else "A0 #304, not in the skeleton yet"
+            view, source = proposal, "skeleton" if hasattr(S, "V2") else RULED[key] + ", not in the skeleton yet"
         elif hasattr(S, key):
             view, source = getattr(S, key), "skeleton"
+        elif key in RULED:
+            view, source = proposal, RULED[key] + ", not in the skeleton yet"
         else:
             view, source = proposal, "PROPOSED"
         shot = dict(name=name, pos=[round(float(v), 2) for v in view["pos"]],
