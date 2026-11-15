@@ -1,0 +1,139 @@
+{
+ "scene": "obs_mat_panels",
+ "commit": "8e6bc4a",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "1416 blocks, 0 entities, 0 models, 658 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 657 files; 10 files of sky are placeholders of the stand-ins, no file written twice, the folders and the prefix of materials are kept (7 packages run alone)",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "124 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "524 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "24 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of materials: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "0 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "WARN",
+   "summary": "10 shots, most display entities in view: 0 (wall), limit 600; counted without what walls hide",
+   "details": [
+    "the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.pack(d) or [])"
+   ],
+   "data": {
+    "shots": [
+     {
+      "name": "wall",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_left",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_right",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_far",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "wall_side",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "room",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "room_near",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "turn_se",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "turn_nw",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "animated",
+      "in_view": 0,
+      "drawn": 0,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  },
+  {
+   "check": "motion",
+   "status": "PASS",
+   "summary": "nothing moves",
+   "details": []
+  }
+ ]
+}
