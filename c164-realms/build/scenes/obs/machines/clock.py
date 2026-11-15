@@ -199,14 +199,17 @@ BALL_IRON_UNDER = K.flat("iron", 5)
 INK = P.colour("iron", 1)
 INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
-# The paint of the ball: the model's name, the ramp, its steps for the five zones from the far side
-# to the highlight, and the steps of the ledges that look up and of those that look down (the game
-# draws these at 1.0 and at 0.4 of the light, the sides at 0.65). Dark red stays in the three dark
-# steps of its ramp: the fourth is the pink of a lamp.
+# The paint of the ball: the model's name, the ramp and its steps for the five zones from the far
+# side to the highlight. Dark red stays in the three dark steps of its ramp: the fourth is the pink
+# of a lamp.
 BALL_TONES = {
-    "copper": ("ball", ("old_copper", (0, 1, 2, 3, 4), 1, 3)),
-    "red": ("ball_red", ("signal", (0, 0, 1, 1, 2), 1, 2)),
+    "copper": ("ball", ("old_copper", (0, 1, 2, 3, 4))),
+    "red": ("ball_red", ("signal", (0, 0, 1, 1, 2))),
 }
+# What the game draws the faces of the turned ball at: its sides, and the ledges between the layers
+# that look up and down. A ledge is painted in the step that comes out nearest to the side next to it.
+BALL_SIDE_SHADE = 0.65
+BALL_LEDGE_SHADE = {"u": 1.0, "d": 0.4}
 # what a piece is turned by where it stands, before any turn of its own
 _STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
 
@@ -457,15 +460,42 @@ def _ball_side(label, colours, r, y0, y1, turn, back):
     return _Picture(label, px)
 
 
+def _luma(colour):
+    return (0.299 * colour[0] + 0.587 * colour[1] + 0.114 * colour[2]) / 255.0
+
+
+def _ball_ledge(label, colours, r, y, turn, letter):
+    """The ledge of a layer, r from the axis at the height y, looking up ("u") or down ("d"): each
+    pixel in the tone of the ball's side at that place (colours are the ledge's own, by zone). The
+    picture lies as the game lays it on such a face: its top row at the north end of an upward
+    face and at the south end of a downward one."""
+    width = 2.0 * r * math.tan(math.pi / BALL_SIDES)
+    w, h = max(1, int(round(width))), max(1, int(round(2.0 * r)))
+    up = max(-1.0, min(1.0, y / BALL_R))
+    flat = math.sqrt(1.0 - up * up)
+    px = np.zeros((h, w, 4), dtype=np.uint8)
+    for j in range(h):
+        z = ((j + 0.5) / h - 0.5) * 2.0 * r * (1.0 if letter == "u" else -1.0)
+        for i in range(w):
+            x = ((i + 0.5) / w - 0.5) * width
+            at = math.atan2(x, z) + math.radians(turn + BALL_TURN)
+            px[j, i, :3] = colours[_ball_zone((flat * math.sin(at), up, flat * math.cos(at)))]
+            px[j, i, 3] = 255
+    return _Picture(label, px)
+
+
 def _ball(name, paint):
     """The ball about its anchor. Each layer is a prism of BALL_SIDES sides, half a side off the
-    model's axes so that no side is in doubt about the axis it is lit by. The sides are painted
-    for where the ball looks once the entity is turned BALL_TURN: the tones run round the light
-    in rings and cut across the layers, which is what makes a ball of a stack. The ledges between
-    the layers are one tone each. An iron sleeve at each pole where the mast goes through and the
-    collar under the lower one, their undersides a light iron: the ball is looked at from below."""
-    ramp, zones, up, down = paint
-    colours = [P.colour(ramp, step) for step in zones]
+    model's axes so that no side is in doubt about the axis it is lit by. Sides and ledges are
+    painted for where the ball looks once the entity is turned BALL_TURN: the tones run round the
+    light in rings and cut across the layers, which is what makes a ball of a stack. An iron sleeve
+    at each pole where the mast goes through and the collar under the lower one, their undersides
+    a light iron: the ball is looked at from below."""
+    ramp, zones = paint
+    tones = [P.colour(ramp, step) for step in range(max(zones) + 1)]
+    colours = [tones[step] for step in zones]
+    ledges = {letter: [min(tones, key=lambda c: abs(_luma(c) * shade - _luma(side) * BALL_SIDE_SHADE)) for side in colours]
+              for letter, shade in BALL_LEDGE_SHADE.items()}
     m = M.Model(PREFIX + name, px=1.0)
     half = math.tan(math.pi / BALL_SIDES)
     for sign in (1.0, -1.0):
@@ -477,10 +507,10 @@ def _ball(name, paint):
             for side in range(BALL_SIDES // 2):
                 turn = 360.0 * (side + 0.5) / BALL_SIDES
                 label = f"clock_{name}_{ledge}{layer}_{side}"
-                faces = {ledge: K.flat(ramp, up if sign > 0 else down),
+                faces = {ledge: _ball_ledge(label, ledges[ledge], r, sign * a1, turn, ledge),
                          "s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
                          "n": _ball_side(label + "n", colours, r, y0, y1, turn, True)}
-                m.box((-r * half, y0, -r), (r * half, y1, r), faces[ledge], rot=("y", turn, (0.0, 0.0, 0.0)),
+                m.box((-r * half, y0, -r), (r * half, y1, r), K.flat(ramp, zones[2]), rot=("y", turn, (0.0, 0.0, 0.0)),
                       skip="ew" + ("d" if sign > 0 else "u"), faces=faces, seed=1)
     top = BALL_LAYERS[-1]
     m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, BALL_IRON, sides=12)
