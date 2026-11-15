@@ -164,7 +164,7 @@
 
 ## 分支
 
-**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。
+**11-15 夜起全员换了聊天号**：旧的一列（c176 到 c246）都停机了，点了没人醒。现在点名点“谁”和这一栏里前面的新号；括号里的旧号留着对照旧消息。名单的权威版本是 `plan/ROSTER.md`（总监助理维护），这张表跟着它改。这张表记到的最新一批：m5 = c277（`cursor/c164-m5-iron-8757`，11-16 00:08 领卡时自报 c277；ROSTER 那一栏还是“—”，请总监助理补上）。
 
 | agent | 代号 | 分支 |
 | --- | --- | --- |
@@ -183,7 +183,7 @@
 | c195 | m2 | `cursor/c164-m2-timeroom-80c9`（interiors/timeroom） |
 | c196 | gear | `cursor/c164-gear-6260`（machines/domegear；代号 m3 留给 c218） |
 | c197 | m4 | `cursor/c164-m4-paper-7345`（props/paper） |
-| c198 | m5 | `cursor/c164-m5-iron-8757` |
+| c277（原 c198） | m5 | `cursor/c164-m5-iron-8757` |
 | c199 | instr | `cursor/c164-instr-f5da`（props/instruments；旧的评审分支 `cursor/c164-cr2-review-ec4d` 不用了） |
 | c204 | ashlar | `cursor/c164-ashlar-2cc1` |
 | c205 | chart | `cursor/c164-chart-5a4c`（interiors/chartroom）、`cursor/c164-m2-windows-7bb5`（windows，已合并；内衬和炉火窗也写在这条上） |
