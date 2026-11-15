@@ -14,7 +14,7 @@ cube on the pole.
 
     T1, with the look:      this scene, at tick 14000 (look A): the timeline holds the comet due west.
     T2, without the look:   the same blocks under the vanilla sky. The game's own moon stands where
-                            our look keeps it (48 degrees up, due west) at tick 20800, and it wears
+                            our look keeps it (48 degrees up, due west) at tick 20370, and it wears
                             the comet's picture from the pack; scenes/obs_export_probe_plain is that
                             scene, for its pictures.
 
@@ -38,7 +38,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 48               # the look is sampled where the viewer stands: the platform and some air
 BIOME_MARGIN_Y = 64
 TIME = 14000                    # light version A
-TIME_PLAIN = 20800              # the vanilla sky with the moon where the look's moon_angle (42) keeps it
+TIME_PLAIN = 20370              # the vanilla sky with its moon where the look's moon_angle (42) keeps ours
 
 HALF = 4                        # the platform: x and z from -4 to 4, its floor blocks at y 0
 FEET = 1.0                      # where feet stand on it
