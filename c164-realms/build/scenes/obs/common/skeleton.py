@@ -196,7 +196,8 @@ SMALL_DOME_X = (8, 16)
 SMALL_DOME_Z = (26, 34)
 SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
-SMALL_DOME_APEX = 25
+SMALL_DOME_APEX = 26            # 25 until 11-16: a flat lid on its iron hoop in V11, V2 and V1; 26 reads as a
+#                                 half sphere, the great dome's kin and a size smaller (A0 #57140, review #13)
 
 # --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
