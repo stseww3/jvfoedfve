@@ -12,14 +12,17 @@ behind it, the fan's colour shows through the cut-out and the ridge reads as a d
 against it. That is the design of plan/parts/sky.md section 5; on the real machine (fog, the fan,
 the clouds) it is what decides whether the idea stands at all.
 
-How a panel gets 360 blocks out while its entity stands on the terrace: the server sends an entity
-only to the players within 160 blocks of it, so the entity itself must stand where people walk.
-The model is drawn with its picture already pushed out along the model's own normal by PUSH units
-and the entity's uniform scale multiplies that offset along with the picture, so the panel lands
-PUSH * k blocks away while standing W x k blocks wide. The two are one number, so the ratio of the
-push to the picture's width is fixed by where the panel must stand and how much sky it covers:
+How a panel gets out to DISTANCE while its entity stands on the terrace: the server sends an
+entity only to the players within 160 blocks, so the anchor must stand where people walk. The
+picture is a flat model at the anchor; the entity's own `transformation.translation` carries it out
+along the bearing. The world matrix the game uses is
 
-    PUSH / WIDTH_UNITS == DISTANCE / WIDTH == 360 / 300
+    centre = anchor + Rotation @ translation
+
+so the local translation that lands the picture W blocks out in a given world direction d is
+`translation = rot_y(-yaw) @ (d * DISTANCE)`. The translation is applied in the model's frame, so
+it is NOT scaled by `scale`, which keeps the two independent: the model's scale sets the picture's
+size, the translation sets where it stands.
 
 The entity's bounding box is emptied (width and height 0) so the game does not cull the picture
 when the anchor leaves the screen, and view_range is raised so the terrace can see it.
@@ -41,14 +44,11 @@ PREFIX = "sky_ridge_"
 BEARINGS = {"nw": 305.0, "sw": 233.0}
 DISTANCE = 360.0                            # how far out the panels read, in blocks
 WIDTH = 300.0                               # how much sky one panel covers, across, in blocks
-TALL = 5.0                                  # the picture's height in the model's own units;
-                                            # times SCALE that is the tallest peak, about 47 blocks
 MAX_ANGLE = 6.0                             # the tallest peak's elevation, degrees (the card's ceiling)
 
-# The model's own units. Its picture is WIDE units across and TALL units high, its foot at y 0.
-WIDE = 32.0
-PUSH = WIDE * DISTANCE / WIDTH               # 38.4: the ratio is fixed by distance and width above
-SCALE = WIDTH / WIDE                         # 9.375: one number scales the picture and the push
+# The model's own units: its picture WIDE units across, TALL units high, its foot at y 0.
+WIDE, TALL = 32.0, 5.0
+SCALE = WIDTH / WIDE                        # 9.375 blocks a model unit: the panel's width
 
 # The silhouettes: (share of the width, share of the height) turning points of the skyline, left to
 # right. Drawn as stepped shoulders, not straight lines, so the outline reads as rock.
@@ -64,7 +64,7 @@ SKYLINES = {
           (0.27, 0.50), (0.32, 0.44), (0.37, 0.30), (0.42, 0.26), (0.47, 0.32), (0.52, 0.22),
           (0.58, 0.18), (0.65, 0.15), (0.73, 0.12), (0.82, 0.10), (1.00, 0.06)],
 }
-# Which silhouette goes where, and what share of TALLEST its tallest point reaches.
+# Which silhouette goes where, and what share of the tallest height its tallest point reaches.
 PANELS = [("a", "nw", 1.00), ("b", "nw", 0.72), ("b", "sw", 0.90), ("c", "sw", 1.00)]
 
 COLUMNS = 64                                # how finely the skyline is cut, across
@@ -93,21 +93,20 @@ def _skyline(key, columns):
 
 
 def _panel(key):
-    """One ridge panel: its foot at the model's y 0, its face at z = 0 looking towards +z (the way
-    the entity is turned), the picture pushed PUSH units out along -z, away from the terrace."""
+    """One ridge panel: a flat picture standing at the model's own z 0, its foot at y 0, facing
+    +z. Its span along z is tiny on purpose -- the panel is carried out by the entity's
+    translation, so the model never comes near the 48-unit span limit."""
     m = M.Model(PREFIX + key, px=1.0, anchor=(WIDE / 2.0, 0.0, 0.0))
     mat = _mat()
     height = _skyline(key, COLUMNS)
     step = WIDE / COLUMNS
-    z = -PUSH
     for i, top in enumerate(height):
         x0 = i * step
         x1 = x0 + step
-        m.box((x0, 0.0, z), (x1, top, z + 0.25), mat)              # the hill, a quarter unit thick
+        m.box((x0, 0.0, 0.0), (x1, top, 0.25), mat)                # the hill, a quarter unit thick
         if i % 5 == 0 and top > TALL * 0.22:                       # a shoulder, a step behind
-            m.box((x0, 0.0, z - 0.5), (x1, top * 0.72, z - 0.25), mat)
-    # a foot band, so no ridge floats free of the haze
-    m.box((0.0, 0.0, z), (WIDE, 0.30, z + 0.25), mat)
+            m.box((x0, 0.0, -0.25), (x1, top * 0.72, 0.0), mat)
+    m.box((0.0, 0.0, 0.0), (WIDE, 0.30, 0.25), mat)                # a foot band, no ridge floats
     return m
 
 
@@ -126,15 +125,29 @@ def models():
 
 
 def _place(canvas, key, bearing, share, origin=(0, 0, 0)):
-    """Stand one panel's anchor on the terrace and turn its face back towards the terrace centre."""
+    """Stand one panel's anchor on the terrace, its face turned back towards the terrace centre,
+    and carry the picture DISTANCE blocks out along that face's own normal."""
     b = math.radians(BEARINGS[bearing])
     cx, cz = S.WALL_E + 0.0, S.AXIS_Z
+    # the anchor stands a few cells off the centre on the bearing: on the terrace, in plain sight,
+    # so the server sends the entity to whoever walks there
     x = origin[0] + cx + math.sin(b) * 6.0
     z = origin[2] + cz + math.cos(b) * 6.0
     y = origin[1] + S.GROUND
     m = _models()[PREFIX + key]
-    k = SCALE * share                         # the height share too: TALLEST is set for share 1.0
-    nbt = M.display(m, yaw=(BEARINGS[bearing] + 180.0) % 360.0, scale=k)
+    k = SCALE * share
+    yaw = (BEARINGS[bearing] + 180.0) % 360.0          # the face looks back at the terrace
+    nbt = M.display(m, yaw=yaw, scale=k)
+    # the world offset we want, and its expression in the model's own frame. The game puts the
+    # picture's centre at  centre = anchor + rot_y(-Rotation) @ translation,  so
+    #   translation = rot_y(+Rotation) @ offset      (Rotation is the NBT's own number, 180 + yaw)
+    d = math.radians(BEARINGS[bearing])
+    off_x, off_z = math.sin(d) * DISTANCE, math.cos(d) * DISTANCE
+    R = (180.0 + yaw) % 360.0
+    r = math.radians(R)
+    tx = math.cos(r) * off_x + math.sin(r) * off_z
+    tz = -math.sin(r) * off_x + math.cos(r) * off_z
+    nbt["transformation"]["translation"] = [M.Float(tx), M.Float(0.0), M.Float(tz)]
     nbt["width"] = 0.0                        # not culled: the picture outlives the anchor's screen
     nbt["height"] = 0.0
     nbt["view_range"] = 600.0
@@ -152,8 +165,7 @@ def build(canvas, origin=(0, 0, 0)):
 
 def peaks():
     """For the checks: (silhouette, bearing, the tallest peak in world blocks, its elevation in
-    degrees). The entity's scale is uniform, so a model unit is SCALE * share blocks tall, the
-    same number that carries the push out to DISTANCE."""
+    degrees). The entity's scale is uniform, so a model unit is SCALE * share blocks tall."""
     out = []
     for key, bearing, share in PANELS:
         tall = max(v for _, v in SKYLINES[key]) * TALL * SCALE * share
