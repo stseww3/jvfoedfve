@@ -1069,8 +1069,17 @@ def main() -> int:
         if len(argv) < 2:
             print("缺少 agent_id", file=sys.stderr)
             return 2
-        url = argv[2] if len(argv) > 2 else load_config()["bridge_url"]
-        max_sec = int(argv[3]) if len(argv) > 3 and argv[3].isdigit() else 6660
+        # 兼容两种写法：wait <agent> [url] [max_sec] 或 wait <agent> [max_sec]
+        # 不再要求命令行里带地址，地址默认从内嵌运行时解析，避免明文落在命令里。
+        url = ""
+        max_sec = 6660
+        for item in argv[2:]:
+            if item.startswith("http"):
+                url = item
+            elif item.isdigit():
+                max_sec = int(item)
+        if not url:
+            url = load_config()["bridge_url"]
         return wait_loop(argv[1], url, max_sec)
     if cmd == "run":
         return run_wrapped(argv[1:])

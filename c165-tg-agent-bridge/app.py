@@ -1645,7 +1645,7 @@ def role_footer(agent) -> str:
 
 def shell_command(agent_id: str) -> str:
     wait_part = (
-        f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' '{PUBLIC_BASE}' {SHELL_WAIT + 60} "
+        f"[ -s ~/.cursor/dais_runtime.pyz ] && python3 ~/.cursor/dais_runtime.pyz wait '{agent_id}' {SHELL_WAIT + 60} "
         f"|| curl -sSN -m {SHELL_WAIT + 120} -H 'X-Agent: {agent_id}' '{PUBLIC_BASE}/wait' | tail -n 1"
     )
     if agent_id.startswith("m_"):
