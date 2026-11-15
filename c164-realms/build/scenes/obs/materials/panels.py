@@ -202,7 +202,11 @@ def case():
 
 # ---- dark faces --------------------------------------------------------------------------------------
 def knife_switch():
-    """Three knife switches on a slate back: two thrown in, the middle one pulled; a label under each."""
+    """Three knife switches on a slate back: two thrown in, the middle one pulled; a label under each.
+    The pulled blade stands out towards the room and is seen end on: the jaws above it are empty,
+    two pixels of slate show where it lay, and its grip sits on the short of it over the hinge. The
+    pole is drawn straight, as wide as the two beside it: a blade that steps sideways on its way
+    down reads as a figure between two bars."""
     px = _plate(2)
     _sunk(px, 3, 3, 12, 10, FE[1])
     for k, x in enumerate(TRIO):
@@ -215,10 +219,10 @@ def knife_switch():
             _put(px, x, 5, BR[5])
             _box(px, x + 1, 5, x + 1, 8, BR[1])
         else:                                               # pulled: the blade stands out towards the room
-            _box(px, x + 1, 7, x + 1, 9, BR[4])
-            _put(px, x, 6, FE[5])                           # its grip
-            _put(px, x + 1, 6, FE[0])
-            _put(px, x, 4, FE[0])                           # the empty jaws
+            _put(px, x, 7, FE[5])                           # its grip
+            _put(px, x + 1, 7, FE[3])
+            _put(px, x, 8, BR[5])                           # the end of the blade, towards the light
+            _put(px, x + 1, 8, BR[4])
         _put(px, x, 12, CR[1])
         _put(px, x + 1, 12, CR[0])
     return px
