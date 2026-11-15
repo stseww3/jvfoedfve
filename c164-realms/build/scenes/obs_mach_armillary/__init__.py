@@ -14,8 +14,7 @@ switch lamps.DRESS is off in the master scene for now. Until the tree has such a
 scene stands the same in their place: the ground projector on each of armillary.lamp_feet(), and a
 light of level GLOW.
 
-    python -m scenes.obs_mach_armillary      writes shots.json
-"""
+    python -m scenes.obs_mach_armillary      writes shots.json"""
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
@@ -102,6 +101,10 @@ def shots():
         shot("south_edge", (cx, 1.7, 29.5), (cx, cy - 0.3, cz)),
         shot("north_edge", (cx, 1.7, -28.5), (cx, cy - 0.3, cz)),
         shot("rings", (cx + 3.1, cy + 0.2, cz + 2.9), (cx, cy - 0.1, cz)),      # the scales and the joints
+        # level with the sphere's middle, from part-way down the steps: the two versions differ most in
+        # the rings of the upper half, which V2 (eye at 1.7, five blocks under the middle) flattens
+        # (cr3-M6, for choosing between a and b, not for the acceptance)
+        shot("compare", (cx + 18.5, cy, cz), (cx, cy, cz)),
         # stepping out of the entrance: against the sky. One step east of the skeleton's V7
         shot("door", (20.5, 1.62, cz), (cx, cy - 0.7, cz)),
     ]

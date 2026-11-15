@@ -17,28 +17,30 @@ same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring. The
 (35, 3, 0), stays empty: A2 (sky/lights) puts a hidden light there, with the four ground lamps.
 
 Two versions stand for the review (the base is the same):
-  a  classic     many thin rings: horizon, meridian, equator, the two tropics, one colure, the
-                 ecliptic band with its scale, the polar axis and a small earth. 9 entities.
+    a  classic     many thin rings: meridian, equator, the two tropics, one colure, the ecliptic
+                 band with its scale, the polar axis and a small earth. 8 entities.
   b  heavy       one great graduated meridian ring and a broad ecliptic band on a slim colure, the
                  axis and a larger earth. 5 entities.
 
 The view from due east decides between them (V2). There the meridian ring is a full circle; the
 polar axis and the equator are the two diagonals in it, one rising to the right and one to the
-left; the horizon ring is a level line; behind the circle are the lit entrance and the gold window
-over it.
+left; behind the circle are the lit entrance and the gold window over it.
 
-From due north or south, along the brass meridian that leads people that way, the meridian ring
-stands on edge, and in version a the horizon ring lies across it: an upright and a level bar of one
-length, a cross (red line). So the horizon ring is as thin as the other thin rings: a circle of
-wire, not a bar (director, 11-15). The test scene looks along the meridian from both edges of the
-court; if it still reads as a cross there, version a loses the ring: take "horizon" out of
-SPEC["a"]["parts"].
+    Version a had a horizon ring too, and lost it (director's fallback, 11-15, taken here). From due
+north or south, along the brass meridian that leads people that way, the meridian ring stands on
+edge: an upright bar. Level across it lay the horizon ring: a level bar of the same length, and the
+two of them a cross -- the red line. Thinning the ring to 0.19 of a block did not answer it: both
+court-edge shots still read the level bar as solid across the sphere's whole width for 3 pixels of
+its 82, while the upright runs all 82 (measured on the sphere's own pixels, taken by drawing the
+shot twice with the display entities' brightness at (15, 15) and at the scene's own and
+subtracting). With the ring taken out, the level bar is gone from both shots and the upright
+stands alone. What the ring did was hold the four quadrants of the sky in the frame; the meridian
+ring alone keeps the instrument reading as a sphere from every direction it is seen in.
 
 What does not turn (the frame), drawn the way it stands; +x east, +y up, +z south:
   stand      the iron saddle on the base that clamps the foot of the meridian ring
   meridian   upright, north-south, over the brass line in the paving; it carries the two bearings
              of the polar axis and the ball that ends it
-  horizon    level, at the middle of the sphere, held on the meridian ring north and south (a)
 
 What turns (the sphere proper), every piece ABOUT THE POLAR AXIS THROUGH THE ANCHOR. The axis lies
 in the meridian plane and rises LATITUDE degrees above the northern horizon; as a unit vector
@@ -95,22 +97,31 @@ LATITUDE = float(getattr(S, "LATITUDE", 45.0))
 OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
 HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
 POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
-BRIGHTNESS = None                   # None: the light of LIGHT_CELL (A2 lights that cell). Else (sky, block)
+# The rings stand in the darkest layer of V2 and are display entities, so they take one light value
+# for the whole instrument: the cell they stand in. Under the cell A2 lights (LIGHT_CELL - 1, level
+# 8) the brass comes out at 0.129 mean against 0.136 of the paving it stands on and 0.203 of the
+# doorway behind it -- the frame the entrance is composed through was the darkest thing in the
+# picture (cr3-M6). A2's source cannot be raised: props/lamps:uplight is a rank-3 lamp, whose top is
+# level 8, so asking for more only gets cut back to 8 (measured: asked 12, got 8). So the instrument
+# carries its own light: (15, 12) puts the brass at 0.177, a step over the paving and still well
+# under the doorway, so it reads as brass in the foreground rather than as a hole cut in the night.
+# Nothing else in the scene changes: this is the display entities' own brightness, not a light block.
+BRIGHTNESS = (15, 12)
 
 # The models are drawn 2 px to the unit and shown at twice their size: 16 px to the block, and a ring
 # 5 blocks across stays inside the 48 units a model may span. So below 1 unit = 2 px = 1/8 block.
 PX = 2.0
 FOOT = (CENTRE_Y - BASE_TOP) * 16.0 / PX        # 22: the top of the base, in units below the anchor
-R_BORE = 18.0                       # the bore of the meridian ring (and of the horizon ring)
+R_BORE = 18.0                       # the bore of the meridian ring (and of the unplaced horizon ring)
 R_CAGE = 17.5                       # what turns keeps inside this radius
 # A ring is (outer radius, radial size, width along its own axis); the tropic has the radius of the
 # sphere it lies on in the first place. studs: where on the colure the other rings cross it, in
 # degrees from the equator (the model's +x) towards the north pole (+y).
 SPEC = {
     "a": dict(
-        parts=("stand", "meridian", "horizon", "axis", "equator", "tropic", "ecliptic", "colure"),
+        parts=("stand", "meridian", "axis", "equator", "tropic", "ecliptic", "colure"),
         meridian=(20.0, 2.0, 2.0), meridian_scale=False,
-        horizon=(19.5, 1.5, 1.5),
+        horizon=(19.5, 1.5, 1.5),                                       # not placed in a: see _horizon
         equator=(16.75, 1.5, 2.0),
         tropic=(16.75, 1.5, 1.5),
         ecliptic=(17.0, 1.0, 3.0),
@@ -224,7 +235,12 @@ def _meridian(version):
 
 def _horizon(version):
     """The horizon ring: level, as thin as the other thin rings, held on the meridian ring by a
-    knuckle north and south."""
+    knuckle north and south.
+
+    Version a does not place it (director's fallback, 11-15): seen along the meridian the ring is a
+    level bar as long as the upright meridian ring beside it, and the two make a cross. Left here
+    with its builder and its numbers so that the ring is one line in SPEC["a"]["parts"] away if the
+    review ever wants it back."""
     s = SPEC[version]
     r_out, thick, w = s["horizon"]
     mr_out, _, mw = s["meridian"]
