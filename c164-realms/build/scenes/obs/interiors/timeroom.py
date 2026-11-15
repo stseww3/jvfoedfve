@@ -18,44 +18,64 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     the cornice and a course of drawers along the floor, as high as the wainscot.
                     rack_faults() says which rules the wall is laid by.
   standard clocks   the rack stops one cell short of each long wall, which leaves a recess one cell
-                    wide and one deep at each of its ends (x 2 and x 13), with the north wall's
-                    stone at its back. A regulator clock hangs in each, its foot on the sill line,
-                    a lamp over it: the two clocks the service keeps. From the door both dials are
-                    in full view (the rack's end hides a pixel and a half of each case), and the
-                    pendulums move on either side of the rack; from the middle of the room the
-                    rack's ends hide half of each clock, until one stands before a recess.
+                    wide and one deep at each of its ends (x 2 and x 13). The back of each is
+                    lined with a board of dark wood from the floor to the head course (the room's
+                    own model): the stone of the end wall is the lightest thing the room has, and
+                    beside the rack it would be looked at before the rack. A regulator clock
+                    hangs on each board, its foot on the sill line, a shaded lamp over it: the two
+                    clocks the service keeps. From the door both dials are in full view (the
+                    rack's end hides a pixel and a half of each case), and the pendulums move on
+                    either side of the rack; from the middle of the room the rack's ends hide half
+                    of each clock, until one stands before a recess.
   console           a wooden shelf in front of the middle bay and the two piers beside it: the drum
                     recorder, the telegraph and its key stand on it, the operator sits in front of
-                    it. One lamp hangs over it, the main light of the room. The two jack fields of
-                    the rack are the panels beside its ends, at the height of the hand; patch
-                    cords hang from them (the room's own models).
-  message desk      under bay 6 of the east wall; a lamp and the telephone on the pier north of it,
-                    the pneumatic tube on the pier south of it
-  rating bench      under bay 5 of the west wall; a lamp on the pier north of it, the barometer on
-                    the pier south of it. Two box chronometers stand open on it, sent in to be
-                    rated against the standard clocks (the room's own model), beside the log.
+                    it. Two drop lights hang over its two ends from the lip of the hood, each in
+                    front of a pier, as low as the middle of the rack: the main light of the room,
+                    on the faces at the height of the hand and on the shelf. The two jack fields
+                    of the rack are the panels beside its ends; patch cords hang from them (the
+                    room's own models).
+  message desk      under bay 6 of the east wall, a drop light on a long cord over it; the telephone
+                    on the pier north of it, the pneumatic tube on the pier south of it
+  rating bench      under bay 5 of the west wall, a drop light over it; the barometer on the pier
+                    south of it. Two box chronometers stand open on it, sent in to be rated
+                    against the standard clocks (the room's own model), beside the log.
   world clocks      five slave dials in a row on a dark board, on the blind stretch of the west wall
                     (the rotunda is behind it), over a low cabinet of drawers, a lamp over the
                     middle one. Their dials are level with the regulators'. They show the one time
                     every clock of the map is stopped at (the skeleton's CLOCK) in five places: the
                     hours differ, the minutes do not. These are the room's own models.
   south wall        card cabinets under a drawing west of the door, a coat stand east of it
+  panelling         dark panels on every solid stretch of wall, from the floor to under the head
+                    course (y 7..12): the piers between the windows, the blind stretch of the west
+                    wall, the south wall round the door; under the windows the one course below
+                    the sills. A corner cell holds one panel and two walls want one: the south-west
+                    corner is a cased riser (the lines to the building's slave dials go up in it),
+                    in the south-east one the panel of the south wall stands edge on to the glass.
   cable ducts       iron gratings in the floor: along the foot of the rack from wall to wall, and
-                    from its two ends down the foot of the long walls to under the two desks
+                    one from under each end of the console down the room, turning off to its desk.
+                    They are the two lines the floor has, they run to the console, and where a
+                    line turns a desk stands: nowhere do two of them cross.
   ceiling           riveted beams across the room on the pilaster rows, where the piers carry them
 
-The sill line (y 8) is the line the room hangs on: the wainscot and the rack's course of drawers
-run under it, the console top, the top of the world clocks' cabinet and the feet of the two
-regulators are on it, the desks stay below it.
+The sill line (y 8) is the line the room hangs on: the rack's course of drawers runs under it, the
+console top, the top of the world clocks' cabinet and the feet of the two regulators are on it,
+the desks stay below it.
 
-Light: the room is lit by its lamps and by nothing else. A window is not a light of the room: the
-ones the light line lights (sky/lights; bays 3 and 6 east, 3 and 5 west under the blue look) are
-lined on the room side by materials/windows and are unlit glass from inside. Each of them has a
-lamp of the room within two cells, so that a lit window is a lamp seen from outside: the lamps over
-the two regulators for the end windows, the lamps beside the two desks for the others. Every source
-is offered to the light line (sky/_lightkit); nothing is placed for good here. No block of the room
-stands in the first cell behind the glass of a window (clear_cells()): the lining lies on the glass
-there. The two recesses are such cells; what hangs in them is display entities.
+Light: the room is dark and is lit by its lamps where somebody works, and by nothing else. The
+lightmap takes little off a pale thing in the dark (a pale stone without a lamp is still lighter
+than dark wood under one), so what is to sink is made dark and what is to be seen is light, and
+only then lit: that is what the panelling and the boards in the recesses are for. Every lamp is a
+shaded one (LAMPS) and hangs low over what it is for; the rack gets the most (12 on the faces under
+the drop lights), a desk 8, a clock 7 to 8, the floor by the door none.
+A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
+east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
+unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
+is a lamp seen from outside: the lamps over the two regulators for the end windows, the drop
+lights over the two desks for the others. Every source is offered to the light line
+(sky/_lightkit); nothing is placed for good here. No block of the room stands in the first cell
+behind the glass of a window (clear_cells()): the lining of a lit one lies on the glass there. The
+two recesses are such cells; what hangs in them is display entities. The one block that does is
+the last panel of the south wall (CORNER), edge on to the glass of east bay 7, which no look lights.
 
 The room dresses the shell main/shell.py (c231) leaves and lays no wall, floor slab or ceiling
 slab. What other packages make is placed through them when they are in the tree (PIECES: the
@@ -140,21 +160,34 @@ REGULATOR_X = (S.mid(X0), S.mid(X1))                # 2.5 and 13.5
 REGULATOR_FOOT = float(SILL)                        # 8.0; the clock is two blocks tall
 REGULATOR_TOP = REGULATOR_FOOT + 2.0
 DIAL_Y = REGULATOR_FOOT + 25.5 * PX                 # 9.59: the middle of a regulator's dial (props/instruments), and of every dial of the room
+BACK_T = 1.5 * PX                                   # the board at the back of a recess, off the wall: a pixel of board, half a pixel of frame
+BACK = (3, 3, 1)                                    # blocks: the lengths that board is made of, from the floor to the ceiling: the panel the clock
+#                                                     hangs on, the panel its lamp hangs on, the frieze beside the rack's cornice
+BACK_HELD = DIAL_Y                                  # the height all the lengths of a board are held from: one cell lights the whole board
+NICHE = NORTH + BACK_T                              # the face a regulator and its lamp hang on
 
 # ---- along the long walls
 DESK_BAY, BENCH_BAY = 6, 5                          # the message desk's window (east), the rating bench's (west)
 WAINSCOT_T = 3 * PX                                 # a panel of the wainscot, off its wall
+PANEL_TOP = TOP - 1                                 # 12: the last row of the panelling; over it the head course of the walls, where the beams lie
+PANEL_E, PANEL_W, PANEL_S = EAST - WAINSCOT_T, WEST + WAINSCOT_T, SOUTH - WAINSCOT_T      # the faces of the panelling: what hangs on a panelled wall hangs on these
+DOOR_TOP = FEET + 2                                 # 9: the last row of the doorway
+RISER = (X0, Z1)                                    # the south-west corner cell: the cased riser
+CORNER = (X1, Z1)                                   # the south-east corner cell: the south wall's panel, not the east wall's
 DESK_DEEP = 14 * PX                                 # props/furniture's writing desk, back to front
-DESK_X = EAST - WAINSCOT_T - DESK_DEEP / 2          # 13.375: its back against the wainscot
-BENCH_X = WEST + WAINSCOT_T + DESK_DEEP / 2         # 2.625
+DESK_X = PANEL_E - DESK_DEEP / 2                    # 13.375: its back against the wainscot
+BENCH_X = PANEL_W + DESK_DEEP / 2                   # 2.625
 DESK_Z = S.mid(MP.window_rows(DESK_BAY)[0], MP.window_rows(DESK_BAY)[-1])       # -11.5: under the middle of its window
 BENCH_Z = S.mid(MP.window_rows(BENCH_BAY)[0], MP.window_rows(BENCH_BAY)[-1])    # -15.5
 SEAT = 1.075                                        # from the middle of a desk to the middle of its chair
 CABINET_Z = SOUTH - 0.6                             # -6.6: where a cabinet stands with its back to the south wall
+DUCT_X = (CONSOLE_X[0], CONSOLE_X[1])               # 6 and 9: the two lines of the floor, under the two ends of the console and in line with the two piers
 DUCTS = (                                           # runs of grating in the floor, cell to cell
-    ((X0, CONSOLE_Z), (X1, CONSOLE_Z)),                         # along the foot of the rack, wall to wall
-    ((X1, CONSOLE_Z), (X1, MP.window_rows(DESK_BAY)[1])),       # down the east wall to under the message desk
-    ((X0, CONSOLE_Z), (X0, MP.window_rows(BENCH_BAY)[1])),      # down the west wall to under the rating bench
+    ((X0, CONSOLE_Z), (X1, CONSOLE_Z)),                                         # along the foot of the rack, wall to wall
+    ((DUCT_X[0], CONSOLE_Z), (DUCT_X[0], MP.window_rows(BENCH_BAY)[1])),        # from the west end of the console down the room
+    ((DUCT_X[0], MP.window_rows(BENCH_BAY)[1]), (X0, MP.window_rows(BENCH_BAY)[1])),    # ... and west to under the rating bench
+    ((DUCT_X[1], CONSOLE_Z), (DUCT_X[1], MP.window_rows(DESK_BAY)[1])),         # from the east end of the console down the room
+    ((DUCT_X[1], MP.window_rows(DESK_BAY)[1]), (X1, MP.window_rows(DESK_BAY)[1])),      # ... and east to under the message desk
 )
 
 # ---- the world clocks: a row of slave dials on one board, on the blind stretch of the west wall, one to a cell
@@ -197,12 +230,18 @@ CHRONO_COLOURS = dict(w=P.RAMPS["dark_wood"][3], b=P.RAMPS["brass"][3], c=P.RAMP
 BOARD_TOP = 1.0                                     # blocks above the floor: the top of the board that stands in for a desk
 
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps models
-CONSOLE_LAMP = (11, 2)      # the pendant over the console: the main light, on the instrument wall
-DESK_LAMP = (10, 2)         # the bracket lamps on the piers beside the message desk and the rating bench
+LAMPS = "b"                 # every lamp of the room is the shaded one (props/lamps' version B, the enamel cone), whatever the
+#                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
+#                             is itself the lightest thing in a dark room, six times over
+CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
+DESK_LAMP = (9, 2)          # the drop lights over the message desk and the rating bench
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
-CLOCK_LAMP = (7, 3)         # the bracket lamp over the world clocks
-LAMP_Y = 10.5               # where a bracket is fixed on a pier
-OVER = 12 * PX              # a bracket's arm above the top of what it hangs over: 11 px of wall plate, one of air
+CLOCK_LAMP = (9, 2)         # the bracket lamp over the world clocks
+OVER = 12 * PX              # a bracket's arm above the top of what it hangs over: the shade and the bulb under it, one pixel of air
+CONSOLE_HANG = FEET + 4.25  # 11.25: where the drop lights of the console end and their lamps hang; the shades end at 10.3
+DESK_HANG = FEET + 3.25     # 10.25: the same over a desk; the shade ends at 9.3, a block and a half over the desk top
+LIP = 1 * PX                # the drop lights of the console hang this far inside the lip of the hood
+CORD = lamps.PREFIX + "wire"                        # the cord of a drop light: props/lamps' cable, stretched from where it is fixed
 
 
 def rack_faults(rows=None):
@@ -269,16 +308,16 @@ PIECES = (
     piece("furniture", "card_cabinet", (X0 + 3.5, FEET, CABINET_Z), facing="north"),
     piece("furniture", "coat_stand", (DOOR_X[1] + 1.6, FEET, CABINET_Z), facing="north"),
     # props/instruments (c199)
-    piece("instruments", "regulator_clock", (REGULATOR_X[0], REGULATOR_FOOT, NORTH), facing="south"),
-    piece("instruments", "regulator_clock", (REGULATOR_X[1], REGULATOR_FOOT, NORTH), facing="south"),
-    piece("instruments", "barometer", (WEST, SILL + 0.25, pier(BENCH_BAY, 1)), facing="east"),
+    piece("instruments", "regulator_clock", (REGULATOR_X[0], REGULATOR_FOOT, NICHE), facing="south"),
+    piece("instruments", "regulator_clock", (REGULATOR_X[1], REGULATOR_FOOT, NICHE), facing="south"),
+    piece("instruments", "barometer", (PANEL_W, SILL + 0.25, pier(BENCH_BAY, 1)), facing="east"),
     # props/electrics (c242)
     piece("electrics", "telegraph_key", (S.mid(KEY_X), float(SILL), CONSOLE_Z + 0.65), facing="south"),
-    piece("electrics", "wall_phone", (EAST, SILL + 0.2, pier(DESK_BAY, -1)), facing="west"),      # under the desk's lamp
+    piece("electrics", "wall_phone", (PANEL_E, SILL + 0.2, pier(DESK_BAY, -1)), facing="west"),   # on the pier north of the desk
     # props/paper (c197)
     piece("paper", "logbook", (BENCH_X + 0.125, FEET, BENCH_Z - 0.2), on=ON_DESK, yaw=K.FACING["east"] + 8.0),
     piece("paper", "logbook_shut", (DESK_X - 0.09375, FEET, DESK_Z - 0.2), on=ON_DESK, yaw=K.FACING["west"] - 15.0),
-    piece("paper", "blueprint", (X0 + 3.0, FEET + 2.625, SOUTH), facing="north"),                 # pinned over the card cabinets
+    piece("paper", "blueprint", (X0 + 3.0, FEET + 2.625, PANEL_S), facing="north"),               # pinned over the card cabinets
 )
 
 # ---- where the machines of machines/recorders go (scene coordinates; facing is the way the thing looks)
@@ -287,7 +326,7 @@ SLOTS = {
                  note="the drum recorder, on the console's east end; its drum turns"),
     "telegraph": dict(pos=(S.mid(CONSOLE_X[0]), float(SILL), S.mid(CONSOLE_Z)), facing="south",
                       note="sounder and tape reel, on the console west of the key; the tape runs east, to the drum"),
-    "tube": dict(pos=(EAST, float(SILL), pier(DESK_BAY, 1)), facing="west",
+    "tube": dict(pos=(PANEL_E, float(SILL), pier(DESK_BAY, 1)), facing="west",
                  note="the pneumatic tube: down the pier south of the message desk, from the ceiling to a terminal"),
 }
 
@@ -378,18 +417,41 @@ def _chronometer():
     return m
 
 
+def back_name(i):
+    return f"{PREFIX}back_{i}"
+
+
+def _back(i):
+    """One length of the board that lines the back of a recess, the i-th from the floor: a board of
+    dark wood as wide as the recess in a frame of stiles and rails, a panel of the wainscot as tall
+    as BACK says. All the lengths of a board are held from one point, the point on the wall behind
+    the middle of the regulator's dial: one cell lights the board from the floor to the ceiling,
+    and no step of light shows where two lengths meet. Anchor: that point."""
+    foot = (FEET + sum(BACK[:i]) - BACK_HELD) * 16.0
+    top = foot + BACK[i] * 16.0
+    board, frame = P.mat("dark_wood", base=1), P.mat("dark_wood", base=2)
+    m = M.Model(back_name(i))
+    m.box((-8.0, foot, 0.0), (8.0, top, 1.0), board, skip="n", grain="y")
+    for x in (-8.0, 6.0):
+        m.box((x, foot, 1.0), (x + 2.0, top, 1.5), frame, grain="y")            # the stiles
+    for y in (foot, top - 2.0):
+        m.box((-6.0, y, 1.0), (6.0, y + 2.0, 1.5), frame, grain="x")            # the rails
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
     out.update({cords_name(side): _cords(side) for side in CORDS})
+    out.update({back_name(i): _back(i) for i in range(len(BACK))})
     out[PREFIX + "chronometer"] = _chronometer()
     return out
 
 
 def models():
-    """The room's own models: the five world clocks, the patch cords of the two jack fields and
-    the chronometer of the rating bench. Its lamps are props/lamps', its machines
-    machines/recorders', the rest the packages' named in PIECES."""
+    """The room's own models: the five world clocks, the patch cords of the two jack fields, the
+    boards at the backs of the two recesses and the chronometer of the rating bench. Its lamps are
+    props/lamps', its machines machines/recorders', the rest the packages' named in PIECES."""
     return dict(_models())
 
 
@@ -454,11 +516,18 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
 
     def lamp(kind, pos, ask, why, **how):
         level, rank = ask
-        name = f"{kind}_{lamps.VERSION}" if kind in lamps.VERSIONED else kind
+        name = f"{kind}_{LAMPS}" if kind in lamps.VERSIONED else kind
         cell = K.light_cell(pos, K.FACING[how.get("facing", "south")], lamps.SPEC[name]["light"], origin)
         lights.append((cell, level, f"{NAME}:{why}"))
         _offer(c, cell, level, f"{NAME}:{why}", rank)
-        return lamps.place(c, kind, pos, origin=origin, light=False, **how)
+        return lamps.place(c, kind, pos, origin=origin, light=False, version=LAMPS, **how)
+
+    def drop(x, z, top, hang, ask, why):
+        """A drop light: a cord from where it is fixed, at the height `top`, down to `hang`, and a
+        pendant on its end."""
+        a, b = (ox + x, oy + top - K.NUDGE, oz + z), (ox + x, oy + hang, oz + z)
+        c.add_entity(*a, M.between(lamps.models()[CORD], a, b))
+        return 1 + lamp("pendant", (x, hang, z), ask, why)
 
     # ---- the instrument wall: six rows of panels, the cornice, the hood over the faces
     for j, row in enumerate(RACK[::-1]):
@@ -468,13 +537,15 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         put(x, CORNICE_Y, RACK_Z, roles.IRON_RIVETED.block)
         put(x, CORNICE_Y, CONSOLE_Z, st(roles.IRON_RIVETED.slab, type="top"))
 
-    # ---- the console, and what stands on it until machines/recorders and props/electrics bring the real things
+    # ---- the console, and what stands on it until machines/recorders and props/electrics bring the real
+    # things; its two drop lights hang from the lip of the hood
     for x in range(CONSOLE_X[0], CONSOLE_X[1] + 1):
         put(x, FEET, CONSOLE_Z, st(roles.DARK_WOOD.slab, type="top"))
-    put(DRUM_X, SILL, CONSOLE_Z, st(roles.BRASS_COLUMN, axis="x"))                          # the drum
+    put(DRUM_X, SILL, CONSOLE_Z, st(roles.BRASS_PLATE.slab, type="bottom"))                 # the drum
     if theirs("electrics") is None:
         put(KEY_X, SILL, CONSOLE_Z, st(roles.BRASS_BUTTON, face="floor", facing="north"))   # the key
-    n += lamp("pendant", (AXIS_X, CORNICE_Y + 0.5, S.mid(CONSOLE_Z)), CONSOLE_LAMP, "console")
+    for x, side in zip(DUCT_X, ("west", "east")):
+        n += drop(S.mid(x), CONSOLE_Z + 1.0 - LIP, CORNICE_Y + 0.5, CONSOLE_HANG, CONSOLE_LAMP, f"console {side}")
 
     # ---- the patch cords, on the faces of the two jack fields
     own = _models()
@@ -482,9 +553,11 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         side = "w" if x < AXIS_X else "e"
         n += K.put(c, own[cords_name(side)], (S.mid(x), y + 0.5, RACK_Z + 1.0), mount="wall", facing="south", origin=origin)
 
-    # ---- a lamp over each of the two standard clocks
+    # ---- the two recesses: the board at the back of each, the lamp over its standard clock
     for x, side in zip(REGULATOR_X, ("west", "east")):
-        n += lamp("bracket", (x, REGULATOR_TOP + OVER, NORTH), REGULATOR_LAMP, f"clock {side}", facing="south")
+        for i in range(len(BACK)):
+            n += K.put(c, own[back_name(i)], (x, BACK_HELD, NORTH), mount="wall", facing="south", origin=origin)
+        n += lamp("bracket", (x, REGULATOR_TOP + OVER, NICHE), REGULATOR_LAMP, f"clock {side}", facing="south")
 
     # ---- the cable ducts: a grating in the floor, an iron bed under it
     for x, z in duct_cells():
@@ -496,14 +569,14 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         for x in range(X0, X1 + 1):
             put(x, TOP, z, st(roles.IRON_RIVETED.slab, type="top"))
 
-    # ---- the message desk and the rating bench: a lamp on the pier north of each; a board under the
-    # window stands in for the desk while props/furniture is not in the tree
+    # ---- the message desk and the rating bench: a drop light over the middle of each, from the ceiling;
+    # a board under the window stands in for the desk while props/furniture is not in the tree
     if theirs("furniture") is None:
         for x, bay in ((X1, DESK_BAY), (X0, BENCH_BAY)):
             for z in MP.window_rows(bay):
                 put(x, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
-    n += lamp("bracket", (EAST, LAMP_Y, pier(DESK_BAY, -1)), DESK_LAMP, "message desk", facing="west")
-    n += lamp("bracket", (WEST, LAMP_Y, pier(BENCH_BAY, -1)), DESK_LAMP, "rating bench", facing="east")
+    n += drop(DESK_X, DESK_Z, CEIL_Y, DESK_HANG, DESK_LAMP, "message desk")
+    n += drop(BENCH_X, BENCH_Z, CEIL_Y, DESK_HANG, DESK_LAMP, "rating bench")
 
     # ---- the chronometers on the rating bench, or on the board that stands in for it
     bench_yaw = K.FACING["east"]
@@ -515,20 +588,25 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
-        n += K.put(c, own[clock_name(offset)], (WEST, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
-    n += lamp("bracket", (WEST, DIAL_Y + BOARD[1] * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", facing="east")
+        n += K.put(c, own[clock_name(offset)], (PANEL_W, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
+    n += lamp("bracket", (PANEL_W, DIAL_Y + BOARD[1] * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", facing="east")
 
-    # ---- the wainscot: one course under the sill line, round the room, where no block stands
-    def free(x, z):
-        return not c.has(ox + x, oy + FEET, oz + z)
+    # ---- the panelling: every solid stretch of wall where no block of the room stands, from the floor
+    # to under the head course; before a window only the course under its sill
+    clear = set(clear_cells())
 
-    for z in range(Z0, Z1 + 1):
-        for x, side in ((X1, "east"), (X0, "west")):
-            if free(x, z):
-                put(x, FEET, z, panel(side))
-    for x in range(X0 + 1, X1):
-        if not DOOR_X[0] <= x <= DOOR_X[1] and free(x, Z1):
-            put(x, FEET, Z1, panel("south"))
+    def free(x, y, z):
+        return not c.has(ox + x, oy + y, oz + z)
+
+    for y in range(FEET, PANEL_TOP + 1):
+        put(RISER[0], y, RISER[1], roles.DARK_WOOD.block)
+        for z in range(Z0, Z1 + 1):
+            for x, side in ((X1, "east"), (X0, "west")):
+                if (x, z) != CORNER and (x, y, z) not in clear and free(x, y, z):
+                    put(x, y, z, panel(side))
+        for x in range(X0 + 1, X1 + 1):
+            if not (DOOR_X[0] <= x <= DOOR_X[1] and y <= DOOR_TOP) and free(x, y, Z1):
+                put(x, y, Z1, panel("south"))
 
     # ---- the pieces of the other packages that are in the tree
     for p in PIECES:
