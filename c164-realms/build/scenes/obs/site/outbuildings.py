@@ -5,10 +5,10 @@ card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
     9x9). The meridian cuts it in two: an open slot one block wide runs through the south gable (the
     door), along the ridge and through the north gable, so the transit instrument (A5) sweeps the sky
     from horizon to horizon and the brass line runs out of the door into the court. Two low slopes of
-    old copper rise from the long walls to the slot; the two iron shutters lie open on the ridge
-    either side of it. It stands on the V1 sight line to the foot of the clock
-    tower, so it is kept low: the ridge is at y 5, which hides the front only up to the string course
-    and none of the great windows.
+    old copper rise from the long walls to a kerb either side of the slot; the two iron shutters lie
+    folded back on the roof beside the kerbs. It stands on the V1 sight line to the foot of the clock
+    tower, so it is kept low: nothing of it is higher than y 4.5, which hides the front only up to
+    the top course of the base storey and none of the great windows.
   - the water tower: four riveted legs on slate pads with one girt and knee braces, a thin gallery
     with an iron rail, a round riveted tank under a cone of old copper, a riser pipe with its valve
     and gauges and a ladder; north-west shoulder (S.WATER_TOWER). Its top stays a block under the
@@ -132,9 +132,9 @@ LAMP_POINTS = _lamp_points()
 
 # For the transit circle (machines/meridian-astrograph): the middle of the hut at the height of the
 # instrument's east-west axis, and the two floor cells either side of the meridian for its piers.
-# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the roof at the walls,
-# 4 a block further in, 4.8 under the shutters, open to the sky over the meridian's own column. The
-# slot is one block wide.
+# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the roof, 4 under the
+# kerbs either side of the slot, open to the sky over the meridian's own column. The slot is one
+# block wide.
 _HUT_X, _HUT_Z = S.MERIDIAN_HUT["centre"]
 HUT_AXIS = (_HUT_X + 0.5, S.GROUND + 2.0, _HUT_Z + 0.5)                         # (35.5, 2.0, -29.5)
 HUT_PIERS = [(_HUT_X - 2, S.GROUND, _HUT_Z), (_HUT_X + 2, S.GROUND, _HUT_Z)]    # (33, 0, -30), (37, 0, -30)
@@ -341,34 +341,33 @@ def _meridian_hut(c, o):
         for wz in (cz - 2, cz + 2):
             _put(c, o, wx, on + 2, wz, B.WINDOW_DARK.pane)
 
-    # The roof: two slopes of old copper in sheets that rise half a block a column from the eaves to
-    # the slot (slate was a black bar before the lit front in V1; the copper is the main cornice's
-    # gutter come down to a small roof). The last column either side of the slot is an iron shutter,
-    # slid open and lying level with the ridge. The gables are of stone to the roof's own line,
-    # their raking stones flush with the copper; the slot's jambs are dressed and carry the emblem
-    # at their heads. The ridge is at y 5.0 and the eaves at 3.5: from V1 the hut hides the front
-    # up to y 7.9 at the most, below the sills of the great windows (y 8).
+    # The roof, of old copper in sheets (slate was a black bar before the lit front in V1; the copper
+    # is the main cornice's gutter come down to a small roof): a course on each long wall, a flat a
+    # half block over it and a kerb another half block up along the slot. The two iron shutters are
+    # hinged on the kerbs and lie open on the flats beside them. The gables are of stone to the
+    # roof's own line; the slot's jambs are dressed, carry the emblem under a coping stone and stand
+    # as high as the kerbs. Nothing is higher than y 4.5, a block in from the wall: from V1 the hut
+    # hides the front up to y 7.2 and no more (the base storey's top course and the sills of the
+    # great windows show over it; check.py's sight counts the base storey, see the card).
+    lines = {4: (eave, "bottom"), 3: (eave, "top"), 2: (eave, "top"), 1: (eave + 1, "bottom")}
     for z in range(z0, z1 + 1):
         gable = z in (z0, z1)
         for x in range(x0, x1 + 1):
             d = abs(x - mx)
             if d == 0:
                 continue
-            k = h - d                                   # 0 on the wall, 3 at the slot
-            y, half = eave + k // 2, "bottom" if k % 2 == 0 else "top"
-            if gable:
-                for yy in range(eave, y):
-                    _put(c, o, x, yy, z, JAMB if d == 1 else WALL)
-                if d == 1:                              # dressed jambs with the emblem at their heads
-                    _put(c, o, x, on + 1, z, JAMB)
-                    _put(c, o, x, on + 2, z, JAMB)
-                    _put(c, o, x, y, z, EMBLEM)
-                else:
-                    _put(c, o, x, y, z, RAKE + "[type=bottom]" if half == "bottom" else WALL)
-            elif d == 1:
-                _put(c, o, x, y, z, HATCH + f"[facing={'east' if x < mx else 'west'},half=top,open=false]")
+            y, half = lines[d]
+            if gable and d == 1:                        # a jamb: dressed stone, the emblem, a coping
+                _put(c, o, x, on + 1, z, JAMB)
+                _put(c, o, x, on + 2, z, JAMB)
+                _put(c, o, x, eave, z, EMBLEM)
+                _put(c, o, x, y, z, COPE + f"[type={half}]")
+            elif gable:
+                _put(c, o, x, y, z, RAKE + "[type=bottom]" if half == "bottom" else WALL)
             else:
                 _put(c, o, x, y, z, COPPER_SLAB + f"[type={half}]")
+                if d == 2:                              # the shutter, folded back off the slot
+                    _put(c, o, x, y + 1, z, HATCH + f"[facing={'west' if x < mx else 'east'},half=bottom,open=false]")
 
 
 # --- the water tower (S.WATER_TOWER, north-west shoulder) -----------------------------------------
