@@ -257,14 +257,31 @@ def _grate(seed):
     return px
 
 
+_UPRIGHTS = (2, 7, 12)      # where the game's bars stand: its post and its end caps read columns 7 and 8
+
+
 def _bars():
-    """IRON_BARS: the game's bars in iron with one lit rail across them."""
-    px, _ = _recolour("block/oxidized_copper_bars")
-    seen = px[..., 3] > 0
-    for y in (7, 8):                                        # the horizontal rail
-        for x in range(TILE):
-            if seen[y, x]:
-                px[y, x, :3] = _i(4)
+    """IRON_BARS: a railing -- three thin uprights (I3 on the lit side, I2 on the other) under one
+    handrail along the top, its upper edge catching the light (I5); half way down each upright a
+    collar, a lit pixel over a shadowed one. The uprights stand where the game's own do, so the
+    post, the caps and the two half panes of its model still find them. The rail runs the full
+    width: a run of railing carries one unbroken handrail into its end posts, and bars set two
+    high in a window opening get a middle bar and a top bar.
+
+    Its tones average the plates' (2.8 against 2.9): the game's picture, taken over step for step,
+    stood a whole step lighter than the plate beside it (the cross-reading of the placeholders)."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
+    for x in _UPRIGHTS:
+        for y in range(TILE):
+            _put(px, x, y, _i(3))
+            _put(px, x + 1, y, _i(2))
+        _put(px, x, 8, _i(5))                               # the collar
+        _put(px, x + 1, 8, _i(3))
+        _put(px, x, 9, _i(2))
+        _put(px, x + 1, 9, _i(1))
+    for x in range(TILE):
+        _put(px, x, 0, _i(5))
+        _put(px, x, 1, _i(2))
     return px
 
 
