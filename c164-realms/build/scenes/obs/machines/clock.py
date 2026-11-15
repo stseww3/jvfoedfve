@@ -511,7 +511,8 @@ def _ball_side(label, colours, r, y0, y1, turn, back):
     mast; `back` is its far side (the box's north face), which is seen from the other way."""
     width = 2.0 * r * math.tan(math.pi / BALL_SIDES)
     w, h = max(1, int(round(width))), max(1, int(round(y1 - y0)))
-    first = int(round((turn + (180.0 if back else 0.0)) / 360.0 * BALL_SIDES)) * w     # columns count on round the layer
+    # the columns are counted on round the layer, so that the checks keep step from side to side
+    first = (int(turn / 360.0 * BALL_SIDES) + (BALL_SIDES // 2 if back else 0)) * w
     px = np.zeros((h, w, 4), dtype=np.uint8)
 
     def zone(i, j):
