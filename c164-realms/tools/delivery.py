@@ -22,8 +22,8 @@ should not be in the repository. The merge-key holder runs it; it only reads (gi
   merge     the branch merges into the base without conflicts; how far it is behind
 
 The technical checks of what the code generates are tools/check.py's (needs a checkout). Whether
-the kept pictures are what the delivered code draws is tools/selfshots.py --verify's, which draws
-and so runs on the admin's computer only.
+the kept pictures are what the delivered code draws is tools/selfshots.py --verify's; it draws, and
+runs on the merge-key holder's own cloud machine (COMMON.md section 0 item 2, from 11-15).
 """
 import argparse
 import hashlib
@@ -67,7 +67,7 @@ SECRETS = [
 ORIGIN = re.compile(r"(?i)copyright|all rights reserved|licen[cs]ed under|creative ?commons|\bCC[- ]BY\b|"
                     r"planetminecraft|curseforge|modrinth|textures\.com|freesound|opengameart|sketchfab|"
                     r"vanillatweaks|faithful|optifine")
-MESSAGE = re.compile(r"^c164(-[a-z0-9]+)?: ")
+MESSAGE = re.compile(r"^c164(-[a-z0-9]+)*: ")
 
 
 def git(*args, check=True):
@@ -162,8 +162,25 @@ def main():
     base = git("rev-parse", "--verify", args.base + "^{commit}").stdout.strip()
     fork = git("merge-base", base, head).stdout.strip()
     module = pkg.replace("-", "_")
+    # A card may deliver more than one module (props/electrics-signs is electrics.py and signs.py).
+    # Read the card's own "交付物" line for every <category>/<something>.py it names beside the card,
+    # and count those as the card's own too; the single-module rule stays the default.
+    extra = []
+    card_file = f"{ROOT}plan/packages/{cat}/{pkg}.md"
+    try:
+        with open(card_file, encoding="utf-8") as fh:
+            for line in fh:
+                if "交付物" in line:
+                    for name in re.findall(r"[A-Za-z0-9_/-]+\.py", line):
+                        short = os.path.basename(name)
+                        if short not in (f"{module}.py",) and short != "__init__.py":
+                            extra.append(f"build/scenes/obs/{cat}/{short}")
+                    break
+    except OSError:
+        pass
     own = (f"build/scenes/obs/{cat}/{module}.py", f"build/scenes/obs/{cat}/_",
-           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
+           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/",
+           "plan/parts/", *extra)
 
     # What the merge would change in the base: the base against the merged tree. (The branch against
     # the fork point would also show what the branch took over from the assembly branch on the way.)
@@ -356,7 +373,7 @@ def main():
                     notes.append(f"{scene}: {len(of)} pictures show {commit}; the card's code has changed since "
                                  f"({', '.join(os.path.basename(p) for p in since[:4])}"
                                  f"{' ...' if len(since) > 4 else ''}): draw them again")
-    notes = [f"{s}: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py {s} --out, "
+    notes = [f"{s}: no pictures kept (draw them on your own machine, INTERFACE 5: tools/selfshots.py {s} --out, "
              f"then --take here and commit renders/{s}/)" for s in without] + notes
     results.append(say("FAIL" if altered else "WARN" if notes else "PASS", "pictures",
                        "no test scene with a shot list is touched" if not scenes
@@ -375,6 +392,20 @@ def main():
     failed, warned = results.count("FAIL"), results.count("WARN")
     print(f"result: {'FAIL' if failed else 'PASS'} ({failed} failed, {warned} to look at)")
     sys.exit(1 if failed else 0)
+
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so
+# that a dozen pictures drawn at once cannot bury the machine. Neither is an error if it
+# cannot be done.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+try:
+    import _slots
+    _slots.take()
+except Exception:
+    pass
 
 
 if __name__ == "__main__":

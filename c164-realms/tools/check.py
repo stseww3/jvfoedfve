@@ -78,6 +78,7 @@ from artkit import mood as MOOD  # noqa: E402
 from scenes.obs.common import blocks as B  # noqa: E402
 from scenes.obs.common import palette as P  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
+from scenes.obs.motion import _kit as MOTION  # noqa: E402
 
 MODEL_NS = "c164"            # artkit.models.write_pack's namespace
 SHOWN = 12                   # lines of detail per finding before "... and N more"
@@ -215,8 +216,10 @@ def regen(rep, name, work):
         data = os.path.join(work, "datapack")
         os.makedirs(data, exist_ok=True)
         words = []
+        motion = None
         if canvas is not None:
             manifest = X.export(canvas, data, "check")
+            MOTION.write(canvas, data, "check")
             words += [f"{manifest['blocks']} blocks", f"{manifest['entities']} entities"]
         else:
             words.append("no build(): a model gallery")
@@ -771,6 +774,20 @@ def entities(rep, got):
     rep.add("entities", status, ", ".join(words), clip(fails) + clip(warns))
 
 
+# ---- motion ------------------------------------------------------------------------------------
+# The loops motion/_kit.py writes into the data pack: how many parts are registered, how many chains
+# and function files, the busiest tick against the budget, and whether every model and sound event a
+# part names is there. A scene with nothing registered passes as "nothing moves".
+def check_motion(got, rep, clip):
+    try:
+        status, summary, details = MOTION.check(got["canvas"], got["models"], got["pack"])
+    except Exception:
+        tail = traceback.format_exc().rstrip().splitlines()
+        rep.add("motion", "FAIL", "what is registered does not make a loop", tail[-6:])
+        return
+    rep.add("motion", status, summary, clip(details))
+
+
 # ---- views -------------------------------------------------------------------------------------
 # The cameras the skeleton locks (V1, V2, ...). A shot that stands at one of them is that camera, and
 # looks where the skeleton says, to within LOCKED_SAME (the cosine of a tenth of a degree).
@@ -838,7 +855,12 @@ def views(rep, got, shots_path):
                       & (np.abs(v @ u) <= depth * ty + 2.0))
             n = int(inside.sum())
             drawn = int((near & (inside | ~sized)).sum())
-            lost = int((inside & (np.hypot(v[:, 0], v[:, 2]) > TRACKED)).sum())
+            # An entity is sent to a player within min(160, view_range x 64) blocks of it, so an
+            # entity that sets its own view_range wider than 160 is not out of reach at 380 blocks:
+            # compare against the wider of the two tracking ranges, and only when it really is the
+            # game's 160 that applies.
+            tracked = np.maximum(reach, TRACKED)
+            lost = int((inside & (np.hypot(v[:, 0], v[:, 2]) > tracked)).sum())
         rows.append({"name": shot["name"], "in_view": n, "drawn": drawn, "beyond_tracking": lost})
         if n > S.ENTITY_PER_VIEW:
             over.append(f"{shot['name']}: {n} display entities in view, a view may have {S.ENTITY_PER_VIEW}")
@@ -1322,6 +1344,7 @@ def main():
                 checks += [lambda: blocks(rep, got),
                            lambda: flatwall(rep, got),
                            lambda: entities(rep, got),
+                           lambda: check_motion(got, rep, clip),
                            lambda: views(rep, got, args.shots or os.path.join(
                                BUILD, "scenes", args.scene, "shots.json")),
                            lambda: sight(rep, got, args.jar, args.shots or os.path.join(
@@ -1344,6 +1367,20 @@ def main():
             json.dump({"scene": args.scene, "commit": commit(), "result": verdict, "checks": rep.rows}, fh,
                       indent=1, ensure_ascii=False)
     sys.exit(1 if failed else 0)
+
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so
+# that a dozen pictures drawn at once cannot bury the machine. Neither is an error if it
+# cannot be done.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+try:
+    import _slots
+    _slots.take()
+except Exception:
+    pass
 
 
 if __name__ == "__main__":
