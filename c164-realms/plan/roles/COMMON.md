@@ -148,6 +148,7 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 ## 4. 代码和提交
 
 - 只改自己领的卡对应的文件（`PIPELINE.md` 第 4.2 节：代码按卡片的类别放，一个包一个模块）。公共的东西只有拿合并钥匙的人改；`plan/ART-PLAN.md`、`plan/PIPELINE.md`、`plan/roles/` 只有总监改。要改就在群里提。
+- **机器随时会没**（管理员 11-16 07:51；04:57 停掉的那批节点上的文件没了，07:07 总监机也被重置过）。本地不许留没推的东西：没做完的也推，推到你的 `-wip` 分支；节点上的结果由 `nodejob.sh` 推回，不要留在节点上等下一单用。
 - 每做完一步就提交并推到你自己的分支。提交说明以 `c164-<代号>: ` 开头，写清做了什么。不许强推，不许建合并请求，不许动别人的分支。合并由拿合并钥匙的人做。
 - 代码和注释用英文，文档和群消息用中文。不用表情符号。不估“几天、几周”。
 - 色板：`from scenes.obs.common.palette import mat, colour, RAMPS, strays`。方块：`from scenes.obs.common import blocks as B`，用角色名（比如 `B.ASHLAR_FINE.block`），不直接写被重画方块的原名。骨架：`from scenes.obs.common import skeleton`（正在写；没出来之前用审稿结论里的数，写成你文件顶上的常量，出来以后换掉）。不自己定义颜色；色板里缺颜色就在群里向总监提。
@@ -159,6 +160,8 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 3. 没有暴力和宗教内容，没有真实的品牌、机构、人名。地图里的文字只用数字、符号和少量英文。
 4. 只用色板里的颜色；16 像素一格，方块和模型一致；占用表之外的方块不重画，被占用的方块不按原意使用。
 5. 成品只靠原版、数据包、资源包。版本锁定 26.3（数据包格式 121，资源包格式 97）。
+   - **数据包里不许带注册表文件**（11-16 07:55 起）。Realms 不收「实验性设置」的存档，内容库的图也一样；游戏把任何不是原版包带来的注册表文件都算实验性。不许有的文件夹（维基 Data pack 条目里带星号的）：`worldgen/`（`biome` 在里面）、`dimension/`、`dimension_type/`、`timeline/`、`world_clock/`、`damage_type/`、`chat_type/`、`dialog/`、`enchantment/`、`enchantment_provider/`、`painting_variant/`、`banner_pattern/`、`instrument/`、`jukebox_song/`、`trim_material/`、`trim_pattern/`、`trial_spawner/`、`villager_trade/`、`trade_set/`、各种 `*_variant/`。数据包里能放的只有：函数、标签、结构、进度、战利品表、谓词、配方、物品修饰器。眼下唯一的例外是天的两个文件（`obs_blue`、`obs_looks`），a2 正在把它们挪进资源包的着色器，挪完就没有例外。
+   - 资源包里的核心着色器（`assets/minecraft/shaders/`）只有 a2 牵头的那一套，别人不加、不改；要它多管一件事，私信 a2。
 6. 不碰别的聊天、别的项目的任何东西：文件、进程、tmux 会话、仓库、分支，云端和管理员电脑都一样。
 
 ## 6. 不许空等
