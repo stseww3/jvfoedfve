@@ -85,7 +85,15 @@ PINION_TEETH = 10
 PINION_R = RACK_R * PINION_TEETH / RACK_TEETH
 RISER_R = RACK_R - PINION_R             # the upright shaft, from the dome's axis
 # degrees round the dome (0 = east, 90 = south): the middle of a gap of the toothed ring, in the
-# corner of the wall that interiors/domeroom keeps clear from the floor to the ledge (GEAR_SHAFT)
+# corner of the wall that interiors/domeroom keeps clear from the floor to the ledge (GEAR_SHAFT
+# (-1, -9)). Two things want this angle and they cannot both have it: the hand wheel is 0.91 blocks
+# across (rim 12.5 px plus a spoke) and a cell is 1.0, so the wheel's own rim must straddle a cell
+# wall wherever the shaft stands on the pitch circle -- the widest disc that stays inside (-1, -9)
+# at any meshing gap is 0.384 blocks, and the shaft at 240.43 already uses 0.375 of that for its
+# pinion. Kept at 240.43, where the shaft is where domeroom's GEAR_SLIT/GEAR_STAND were laid out for
+# it (g2 #38152, c290's own reading); the wheel reaches 0.03 blocks into the cell north of the
+# shaft's own. Reported to c290 and S2 rather than moved here: it is domeroom's table that has to
+# say which cells the hand wheel and the one turning it need.
 RISER_DEG = (13 * 14 + 5) * 360.0 / RACK_TEETH
 RISER_TOP = (RING_Y - FLOOR_Y) * PX     # 112 px over the floor
 CROWN_PEGS = 8                          # the crown wheel on the upright shaft
