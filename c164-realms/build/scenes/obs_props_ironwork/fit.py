@@ -348,6 +348,13 @@ def judge(view, kind, reach):
             found.append(f"the leaves are shut up to row {solid} only: less than a third of the {leaf} rows "
                          "under the transom")
         text.append(f"the leaves are shut from the floor for {solid} of the {leaf} rows under the transom")
+
+        def share(rows):
+            cells = [at for at in view.open if at[1] in rows]
+            return sum(1 for at in cells if at not in view.iron) / max(1, len(cells))
+
+        text.append(f"{share(range(view.h)):.0%} of the opening stays open: {share(range(leaf)):.0%} under the "
+                    f"transom, {share(range(SPRING + ON_GLASS, view.h)):.0%} over it")
         fan = view.holes(range(SPRING + ON_GLASS, view.h))
         slits = [piece for piece in fan if _square(piece) < SLIT]
         if slits:
