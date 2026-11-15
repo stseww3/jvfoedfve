@@ -280,16 +280,97 @@ async def run_cluster_and_device_tests() -> dict[str, str]:
     await bridge.watchdog_tick()
     assert bridge.conv_row("c3")["agent"] == a3, "Shell command was falsely killed as thinking-stuck!"
 
-    # Case B: c1 is in `thinking` for 6 minutes (360s > 300s) with active VM probe heartbeat -> MUST auto-restart!
-    bridge.store.run(
-        "INSERT OR REPLACE INTO agent_traces(conv,agent_id,phase,tool_name,summary,detail,started_ts,updated_ts,thought_ts,hb_ts) "
-        "VALUES(?,?,?,?,?,?,?,?,?,?)",
-        ("c1", a1, "thinking", "Thought", "卡在思考", "{}", now2 - 360, now2 - 360, now2 - 360, now2 - 5),
-    )
+    # Case B: c1's agent joined long ago, has made no bridge call for 6 minutes, and its own probe says it has been
+    # `thinking` for 6 minutes (360s > 300s) while the VM probe heartbeat is alive -> MUST auto-restart!
+    def put_trace(conv_id: str, agent_id: str, phase: str, age: float, hb_age: float | None) -> None:
+        t = bridge.now()
+        bridge.store.run(
+            "INSERT OR REPLACE INTO agent_traces(conv,agent_id,phase,tool_name,summary,detail,started_ts,updated_ts,thought_ts,hb_ts) "
+            "VALUES(?,?,?,?,?,?,?,?,?,?)",
+            (conv_id, agent_id, phase, "Thought", "卡在思考", "{}", t - age, t - age, t - age, 0 if hb_age is None else t - hb_age),
+        )
+
+    def stuck(conv_id: str) -> bool:
+        return bridge.check_thinking_stuck(
+            bridge.conv_row(conv_id), bridge.store.one("SELECT * FROM agent_traces WHERE conv=?", (conv_id,))
+        )[0]
+
+    bridge.store.run("UPDATE agents SET created=?, last_seen=? WHERE id=?", (now2 - 4000, now2 - 400, a1))
+    # B0: the probe has never sent a heartbeat for this row -> nothing to judge by, the agent is left alone.
+    put_trace("c1", a1, "thinking", 360, None)
+    assert not stuck("c1")
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(a1)["status"] == "active", "agent was stopped although its probe never reported a heartbeat"
+    # B1: the agent called a bridge tool a minute ago -> it is alive, the 5 minutes count from that call.
+    put_trace("c1", a1, "thinking", 360, 5)
+    bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 60, a1))
+    assert not stuck("c1")
+    # B2: genuinely stuck.
+    bridge.store.run("UPDATE agents SET last_seen=? WHERE id=?", (bridge.now() - 400, a1))
+    assert stuck("c1")
     await bridge.watchdog_tick()
     assert bridge.agent_row(a1)["status"] == "stopped", "5-minute thinking-stuck agent was NOT auto-restarted!"
+
+    # Case C: the replacement agent must not inherit the stopped agent's trace (the 2026-11-15 false-stop storm:
+    # 43 freshly joined agents were stopped as "thinking-stuck for 20-40 hours" at the first watchdog tick after join).
+    class _Req:
+        def __init__(self, body: dict):
+            self._body = body
+
+        async def json(self) -> dict:
+            return self._body
+
+    async def trace_event(**body) -> dict:
+        resp = await bridge.trace_post_event(_Req(body))
+        return json.loads(bytes(resp.body).decode("utf-8"))
+
+    # the stopped agent's row still says `thinking`, and its old session's probe keeps the heartbeat fresh
+    put_trace("c1", a1, "thinking", 30 * 3600, 5)
     # Re-join c1 after auto-restart so Web Console tests have an active c1
     await bridge.call_tool("join", {"code": bridge.conv_row("c1")["task_code"], "actual_model": "claude-fable-5-2-max", "model_match": True})
+    a1_re = bridge.conv_row("c1")["agent"]
+    assert a1_re != a1 and bridge.agent_row(a1_re)["status"] == "active"
+    bridge.store.run("UPDATE convs SET auto_restarted_ts=0 WHERE id='c1'")
+    # C1: join hands the trace row to the new agent and clears the previous agent's live state.
+    row_c1 = bridge.store.one("SELECT * FROM agent_traces WHERE conv='c1'")
+    assert row_c1["agent_id"] == a1_re and row_c1["phase"] == "" and float(row_c1["hb_ts"] or 0) == 0
+    assert row_c1["conversation_id"] == ""
+    assert not stuck("c1")
+    # C2: a row still owned by the previous agent (e.g. written just before it was stopped) is not held against the new one.
+    put_trace("c1", a1, "thinking", 30 * 3600, 5)
+    assert not stuck("c1")
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(a1_re)["status"] == "active", "new agent was stopped because of the previous agent's stale trace"
+    # C3: even under the new agent's name, time before it joined does not count as its thinking time.
+    put_trace("c1", a1_re, "thinking", 30 * 3600, 5)
+    assert not stuck("c1")
+    await bridge.watchdog_tick()
+    assert bridge.agent_row(a1_re)["status"] == "active", "new agent was charged with time from before it joined"
+    # C4: the stopped agent's old session (or its VM heartbeat daemon) keeps reporting -> ignored, the row stays the new agent's.
+    put_trace("c1", a1_re, "shell", 10, 5)
+    ev_old = await trace_event(agent_id=a1, conversation_id="conv-old-c1", event="afterAgentThought", phase="thinking", summary="旧会话还在上报")
+    assert ev_old.get("ignored") and not ev_old.get("bound_agent_id")
+    ev_old_hb = await trace_event(agent_id=a1, conversation_id="conv-old-c1", event="heartbeat", phase="thinking", heartbeat=True)
+    assert ev_old_hb.get("ignored")
+    row_c1 = bridge.store.one("SELECT * FROM agent_traces WHERE conv='c1'")
+    assert row_c1["agent_id"] == a1_re and row_c1["phase"] == "shell" and row_c1["conversation_id"] != "conv-old-c1"
+    # C5: a session that never reported an identity is not adopted into c1 just because its command mentions "c1".
+    ev_foreign = await trace_event(conversation_id="conv-foreign", conv_hint="c1", event="beforeShellExecution", phase="shell", summary="git checkout cursor/c1-foo")
+    assert ev_foreign["conv"] == "cid:conv-foreign" and ev_foreign["bound_agent_id"] == ""
+    assert bridge.store.one("SELECT conversation_id FROM agent_traces WHERE conv='c1'")["conversation_id"] != "conv-foreign"
+    # C6: the new agent's own session reports normally and is bound by its identity; a later event without the
+    # identity (same conversation) keeps that binding.
+    ev_new = await trace_event(agent_id=a1_re, conversation_id="conv-new-c1", event="afterAgentThought", phase="thinking", summary="新会话思考")
+    assert ev_new["conv"] == "c1" and ev_new["bound_agent_id"] == a1_re
+    ev_new2 = await trace_event(conversation_id="conv-new-c1", event="beforeShellExecution", phase="shell", summary="ls")
+    assert ev_new2["conv"] == "c1" and ev_new2["bound_agent_id"] == a1_re
+    row_c1 = bridge.store.one("SELECT * FROM agent_traces WHERE conv='c1'")
+    assert row_c1["agent_id"] == a1_re and row_c1["conversation_id"] == "conv-new-c1" and row_c1["phase"] == "shell"
+    # C7: a session wrongly recorded under another chat earlier is released once it reports its own identity.
+    bridge.store.run("UPDATE agent_traces SET conversation_id='conv-new-c1' WHERE conv='c3'")
+    await trace_event(agent_id=a1_re, conversation_id="conv-new-c1", event="afterAgentThought", phase="thinking", summary="继续")
+    assert bridge.store.one("SELECT conversation_id FROM agent_traces WHERE conv='c3'")["conversation_id"] == ""
+    assert bridge.agent_row(a1_re)["status"] == "active" and bridge.conv_row("c3")["agent"] == a3
 
     # 9. Verify multi-device `/device add` keeps both PCs active simultaneously!
     dev_a = await bridge.issue_device(7001, "Alpine", create_new=True, custom_label="台式工作站")

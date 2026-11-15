@@ -858,6 +858,16 @@ def stop_identity(agent_id: str, note: str) -> None:
     mark_menu_dirty()
 
 
+def reset_trace_for_new_agent(conv_id: str, agent_id: str) -> None:
+    """新的 agent 接手时，清掉上一个 agent 留在追踪记录里的实时状态，记录归到新 agent 名下。
+    detail 不动（里面记着上次实跑的模型）；阶段清空后，要等新 agent 自己上报了才会再参与卡死判定。"""
+    store.run(
+        "UPDATE agent_traces SET agent_id=?, conversation_id='', phase='', tool_name='join', summary='', "
+        "started_ts=?, updated_ts=?, output_ts=0, thought_ts=0, hb_ts=0 WHERE conv=?",
+        (agent_id, now(), now(), conv_id),
+    )
+
+
 def issue_task(conv_id: str) -> str:
     code = "t-" + secrets.token_hex(8)
     # 任务都交给现在的主控，子 agent 开在它的云端 agent 里：聊天跟着进它的 cloud
@@ -1238,6 +1248,7 @@ def check_thinking_stuck(conv, trow) -> tuple[bool, float]:
     2) 要求 VM 探针守护进程处于活跃上报状态（hb_ts 近 120s 内有心跳），防止探针离线时误杀正常工作的会话。"""
     if trow is None or trow["phase"] != "thinking":
         return False, 0.0
+    agent_floor = 0.0
     if conv is not None:
         ag = active_agent(conv)
         if ag is None or waiting.get(ag["id"]):
@@ -1245,13 +1256,18 @@ def check_thinking_stuck(conv, trow) -> tuple[bool, float]:
         # 若正在通过本地通道跑 Windows 命令，也不是云端思考卡死
         if (ag["last_tool"] or "") == "local_shell" and (now() - float(ag["last_seen"] or 0)) < 1800:
             return False, 0.0
+        # 只认当前这个 agent 自己上报的记录：上一个 agent 留下的旧记录（或别的会话写进来的）不能拿来判它卡死
+        if (trow["agent_id"] or "") != ag["id"]:
+            return False, 0.0
+        # 新 agent 从接入那一刻起算，最近一次调桥的工具也算有进展
+        agent_floor = max(float(ag["created"] or 0), float(ag["last_seen"] or 0))
     hb_ts = float(trow["hb_ts"] or 0) if "hb_ts" in trow.keys() else 0.0
     updated = float(trow["updated_ts"] or trow["started_ts"] or 0)
     thought_ts = float(trow["thought_ts"] or 0)
-    # 若该机器探针本身已超过 150s 无心跳，说明是探针未运行或网络断，不做僵尸/思考卡死误判
-    if hb_ts > 0 and (now() - hb_ts) > 150:
+    # 探针没有心跳（从没上报过，或已超过 150s 没上报）说明探针未运行或网络断，不做僵尸/思考卡死误判
+    if hb_ts <= 0 or (now() - hb_ts) > 150:
         return False, 0.0
-    last_think_progress = max(thought_ts, updated, float(trow["started_ts"] or 0))
+    last_think_progress = max(thought_ts, updated, float(trow["started_ts"] or 0), agent_floor)
     if last_think_progress <= 0:
         return False, 0.0
     stuck_sec = now() - last_think_progress
@@ -1271,8 +1287,8 @@ def trace_liveness(trow) -> tuple[bool, float, float]:
     last_active = max(updated, thought_ts, out_ts)
     if phase in ("idle_wait", "stopped", ""):
         return False, thought_ts, last_active
-    # 探针本身离线超过 150s 时熔断防误判（避免同 VM 钩子离线引发雪崩重启）
-    if hb_ts > 0 and (now() - hb_ts) > 150:
+    # 探针没有心跳（从没上报过，或离线超过 150s）时熔断防误判（避免同 VM 钩子离线引发雪崩重启）
+    if hb_ts <= 0 or (now() - hb_ts) > 150:
         return False, thought_ts, last_active
     if phase == "shell":
         # Shell 命令（如编译/渲染）无新思考完全正常，仅在超长 SHELL_STALL_SEC 完全无任何输出时告警
@@ -2525,6 +2541,7 @@ def make_main_node(replace_node: str = "", custom_name: str = "") -> tuple[str, 
         "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
         (agent_id, "main", node_id, "active", now(), now()),
     )
+    reset_trace_for_new_agent(node_id, agent_id)
     store.run(
         "INSERT INTO convs(id,num,name,status,read_cursor,created,cloud,agent,in_tg) VALUES(?,0,?,'open',?,?,?,?,1) "
         "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, agent=excluded.agent, cloud=excluded.cloud, alert='', alert_ts=0",
@@ -2562,6 +2579,7 @@ def make_worker_node(replace_node: str = "", custom_name: str = "") -> tuple[str
         "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
         (agent_id, "runner", node_id, "active", now(), now()),
     )
+    reset_trace_for_new_agent(node_id, agent_id)
     store.run(
         "INSERT INTO convs(id,num,name,status,read_cursor,created,local_enabled,agent,in_tg) VALUES(?,0,?,'open',?,?,0,?,0) "
         "ON CONFLICT(id) DO UPDATE SET status='open', name=excluded.name, local_enabled=0, agent=excluded.agent, in_tg=0, alert='', alert_ts=0",
@@ -2695,6 +2713,7 @@ def make_main(new_cloud: bool = False) -> str:
         "INSERT INTO agents(id,role,conv,status,created,last_seen) VALUES(?,?,?,?,?,?)",
         (agent_id, "main", "main", "active", now(), now()),
     )
+    reset_trace_for_new_agent("main", agent_id)
     store.run("UPDATE convs SET agent=?, alert='', alert_ts=0 WHERE id='main'", (agent_id,))
     mark_menu_dirty()
     return agent_id
@@ -2876,6 +2895,7 @@ async def join_by_code(code: str, args: dict) -> ToolResult:
         "INSERT INTO agents(id,role,conv,status,created,last_seen,last_tool) VALUES(?,?,?,?,?,?,?)",
         (agent_id, role_val, conv["id"], "active", now(), now(), "join"),
     )
+    reset_trace_for_new_agent(conv["id"], agent_id)
     name = clean_name(args.get("name"))
     if name and not conv["name"]:
         store.run("UPDATE convs SET name=? WHERE id=?", (name, conv["id"]))
@@ -8496,6 +8516,9 @@ async def watchdog_tick() -> None:
         info = conv_state(conv)
         state, key, text = info["state"], "", ""
         trow_w = store.one("SELECT * FROM agent_traces WHERE conv=?", (conv["id"],))
+        if trow_w is not None and info["agent"] is not None and (trow_w["agent_id"] or "") != info["agent"]["id"]:
+            # 追踪记录是上一个 agent 留下的，不代表现在这个 agent 的状态
+            trow_w = None
         think_stuck, stuck_sec = check_thinking_stuck(conv, trow_w)
         if think_stuck and not is_unowned(conv) and (now() - float(conv["auto_restarted_ts"] or 0)) >= THINK_STUCK_SEC:
             auto_restart_stuck_conv(conv, stuck_sec)
@@ -8772,7 +8795,6 @@ async def trace_post_event(request: Request) -> JSONResponse:
 
     agent_id = str(body.get("agent_id") or "").strip()
     cid = str(body.get("conversation_id") or "").strip()[:120]
-    conv_hint = parse_conv(str(body.get("conv_hint") or "").strip())
     event = str(body.get("event") or "update").strip()[:80]
     phase = str(body.get("phase") or "").strip()[:40]
     tool_name = str(body.get("tool_name") or "").strip()[:80]
@@ -8785,21 +8807,34 @@ async def trace_post_event(request: Request) -> JSONResponse:
     is_hb = bool(body.get("heartbeat", False))
 
     arow = agent_row(agent_id) if agent_id else None
+    if arow is not None and cid and arow["status"] == "active":
+        # 这个会话明确报了自己的身份：它以前要是被记到别的聊天名下，那边的绑定作废
+        stale_bind = store.one(
+            "SELECT 1 FROM agent_traces WHERE conversation_id=? AND conv!=? AND conv NOT LIKE 'cid:%' LIMIT 1",
+            (cid, arow["conv"]),
+        )
+        if stale_bind is not None:
+            store.run(
+                "UPDATE agent_traces SET conversation_id='' WHERE conversation_id=? AND conv!=? AND conv NOT LIKE 'cid:%'",
+                (cid, arow["conv"]),
+            )
     if arow is None and cid:
-        # 1) 之前已经绑定过该 conversation_id 的，直接找到对应 conv
-        prev = store.one("SELECT conv, agent_id FROM agent_traces WHERE conversation_id=? AND conv NOT LIKE 'cid:%'", (cid,))
+        # 之前带着身份上报过的会话（同一个 conversation_id），沿用那次绑定。
+        # 只认这一种：会话的命令、路径里出现 c165 这类字样不代表它是那个聊天的 agent（同一台机器上几十个会话共用仓库，
+        # 分支名、文件名里到处是别的聊天号），按字样认领会把别的会话的状态和未读提醒串到这个聊天上。
+        prev = store.one(
+            "SELECT conv, agent_id FROM agent_traces WHERE conversation_id=? AND conv NOT LIKE 'cid:%' "
+            "ORDER BY updated_ts DESC LIMIT 1",
+            (cid,),
+        )
         if prev is not None:
             agent_id = prev["agent_id"]
             arow = agent_row(agent_id) if agent_id else None
-    if arow is None and cid and conv_hint and conv_hint != "main":
-        # 2) 从工作目录/命令/文件路径自动识别出聊天编号（如 c161、c164），若该聊天正处于活跃且未被其他会话占用则自动归属！
-        hconv = conv_row(conv_hint)
-        hagent = active_agent(hconv) if hconv is not None and hconv["status"] == "open" else None
-        if hagent is not None:
-            htr = store.one("SELECT conversation_id, updated_ts FROM agent_traces WHERE conv=?", (conv_hint,))
-            if htr is None or not htr["conversation_id"] or htr["conversation_id"] == cid or now() - float(htr["updated_ts"] or 0) > 1800:
-                arow = hagent
-                agent_id = hagent["id"]
+
+    if arow is not None and arow["status"] != "active":
+        # 已停用的 agent（旧会话还没退干净，或它那台机器上的心跳进程还在跑）不再改写这个聊天的追踪记录：
+        # 聊天可能已经有新 agent 接手，旧的上报会把新 agent 的状态盖成「一直在思考」，看门狗就会误判卡死
+        return JSONResponse({"ok": True, "ignored": True, "stopped": True})
 
     if arow is not None:
         conv_key = arow["conv"]
@@ -8818,9 +8853,10 @@ async def trace_post_event(request: Request) -> JSONResponse:
     prev_updated = float(existing["updated_ts"] or started_ts) if existing is not None else now()
     prev_thought = float(existing["thought_ts"] or 0) if existing is not None else 0.0
     if not prev_thought and not conv_key.startswith("cid:"):
+        # 只找当前 agent 接入之后的思考记录，上一个 agent 的思考时间不算
         last_tev = store.one(
-            "SELECT ts FROM agent_trace_events WHERE conv=? AND event='afterAgentThought' ORDER BY id DESC LIMIT 1",
-            (conv_key,),
+            "SELECT ts FROM agent_trace_events WHERE conv=? AND event='afterAgentThought' AND ts>=? ORDER BY id DESC LIMIT 1",
+            (conv_key, float(arow["created"] or 0) if arow is not None else 0.0),
         )
         if last_tev is not None:
             prev_thought = float(last_tev["ts"] or 0)

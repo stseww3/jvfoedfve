@@ -407,7 +407,8 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
         assert c1_trace["last_thought_time"] != "" and c1_trace["last_thought_ago_sec"] is not None
         assert len(c1_trace["recent_events"]) >= 4
 
-        # 5. Verify path-based auto-binding (conv_hint: /tmp/c2_work/ -> c2) AND auto inbox delivery on BOTH MCP tools & Shell!
+        # 5. A session is only tied to a chat once it has reported its own identity. A path or command that merely
+        #    mentions "c2" (shared repos are full of other chats' numbers) must NOT bind the session to c2's agent.
         cid_c2 = "conv-uuid-auto-c2"
         fire_hook({
             "hook_event_name": "beforeShellExecution",
@@ -415,6 +416,26 @@ def run_http_and_hook_tests(ids: dict[str, str]) -> None:
             "command": "python3 /tmp/c2_work/migrate.py",
             "cwd": "/tmp/c2_work",
         })
+        st_unbound = json.loads((HOME_DIR / ".cursor" / "agent_trace_state.json").read_text(encoding="utf-8"))
+        assert cid_c2 not in st_unbound.get("conv_to_agent", {}), "session was bound to a chat just because its path mentions c2"
+        c2_trace = bridge.store.one("SELECT conversation_id FROM agent_traces WHERE conv='c2'")
+        assert c2_trace is None or c2_trace["conversation_id"] != cid_c2, "foreign session wrote into c2's trace row"
+        assert bridge.store.one("SELECT 1 FROM agent_traces WHERE conv=?", (f"cid:{cid_c2}",)) is not None
+        # The session binds itself the normal way: its first bridge call carries its own identity.
+        fire_hook({
+            "hook_event_name": "preToolUse",
+            "conversation_id": cid_c2,
+            "tool_name": "CallDynamicTool",
+            "tool_input": {"namespace": "dais", "toolName": "list_peers", "arguments": {"agent": ids["a2"]}},
+        })
+        fire_hook({
+            "hook_event_name": "beforeShellExecution",
+            "conversation_id": cid_c2,
+            "command": "python3 /tmp/c2_work/migrate.py",
+            "cwd": "/tmp/c2_work",
+        })
+        assert bridge.store.one("SELECT conversation_id FROM agent_traces WHERE conv='c2'")["conversation_id"] == cid_c2
+        assert bridge.store.one("SELECT 1 FROM agent_traces WHERE conv=?", (f"cid:{cid_c2}",)) is None
         # Now send an urgent message to c2 (from c1 via MCP) while c2 is running shell / MCP tools!
         asyncio.run(bridge.call_tool(
             "send_agent_message",
