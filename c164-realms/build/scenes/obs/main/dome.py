@@ -23,9 +23,7 @@ both versions and the three states of the slit.
 """
 import sys
 
-from artkit import shapes
 from artkit.canvas import Canvas
-from artkit.shapes import Shaper
 
 from ..common import blocks as B
 from . import _dome
@@ -179,37 +177,7 @@ def check():
                     out.append(f"{tag} seams: version a has no uncut sheet, or the darker copper off its runs: {astray[:6]}")
             if version == "b" and (D.RIB.block not in names or D.SHEET in names):
                 out.append(f"{tag} seams: version b does not draw its ribs with the darker copper alone")
-            # 10. the stairs that end a course: only on the top row of a course of D.LIP, and by the
-            #     game's rule none leaves low a quarter that does not border the course below
-            lip = D.lips(version)
-            shaper = Shaper(dict(c.b), lambda state: True)
-            for (x, z), (rows, face) in sorted(cols.items()):
-                for y in rows:
-                    if name(x, y, z) != D.PLATE.stairs:
-                        continue
-                    ring = D._ring(x, z)
-                    if (x, z) not in lip or y != int(D.course(ring)) - 1:
-                        out.append(f"{tag} lips: a stair at ({x}, {y}, {z}) that ends no course")
-                        continue
-                    props = shapes.full(c.get(x, y, z))[1]
-                    low = _low(props["facing"], shaper.stairs((x, y, z), props))
-                    if props["half"] != "bottom" or low - D._open_quarters((x, z), O.disc(D.CX, D.CZ, ring)):
-                        out.append(f"{tag} lips: the stair at ({x}, {y}, {z}) cuts into its own course")
     return out
-
-
-def _low(facing, shape):
-    """The quarters a stair leaves low, from its state as the game completes it."""
-    f = O.STEP[facing]
-    left = O.STEP[shapes.LEFT[facing]]
-    high = D._towards(f)
-    kind, _, hand = shape.partition("_")
-    side = D._towards(left if hand == "left" else (-left[0], -left[1]))
-    if kind == "outer":
-        high = high & side
-    elif kind == "inner":
-        high = high | side
-    return D.QUARTERS - high
 
 
 def _row(c, y):

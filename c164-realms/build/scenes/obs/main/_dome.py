@@ -70,7 +70,6 @@ SKIRT_Y = S.DOME_SPRING                 # 24: the ring beam
 SILL_Y = SKIRT_Y + 1                    # 25: the slit opens above this row
 CROWN = S.DOME_APEX + 1.0               # 38.0: the plates' top face round the axis
 FOOT_R = R + 0.5                        # 13.5: the plates' face at the foot (ring 13's outer face)
-LIP = (13, 11)                          # the courses whose top row ends in a stair (see lips())
 PILASTER_OFF = 4.5                      # a pilaster stands at most this many degrees off its seam
 SLIT_HALF = S.SLIT_W // 2               # 2: the slit is z -2..2
 SLIT_HEAD = CX - 2                      # 2: the last column of the slit; the crown starts east of it
@@ -328,99 +327,6 @@ def surface(version="a"):
     return tops
 
 
-# --- the stairs that end a course -------------------------------------------------------------------
-QUARTERS = frozenset((sx, sz) for sx in (-1, 1) for sz in (-1, 1))      # of a column: (east or west, south or north)
-
-
-def _open_quarters(col, body):
-    """The quarters of a column that border a column outside `body`."""
-    x, z = col
-    return frozenset((sx, sz) for sx, sz in QUARTERS if not {(x + sx, z), (x, z + sz), (x + sx, z + sz)} <= body)
-
-
-def _towards(d):
-    """The quarters on the side of a column that looks in direction d."""
-    return frozenset(q for q in QUARTERS if (q[0] == d[0] if d[0] else q[1] == d[1]))
-
-
-def low_quarters(col, facing):
-    """The quarters the stair on a column leaves low, among stairs of one row turned as `facing`
-    says ({column: direction it climbs in}): the game's rule (StairBlock; artkit/shapes.py has it
-    for the pictures). A stair is the corner piece when the stair before or behind it is turned
-    across it, and the stair beside it does not carry straight on."""
-    f = facing[col]
-    back = (-f[0], -f[1])
-    high = _towards(f)
-
-    def other(side):
-        return facing.get(O.step(col, side))
-
-    def takes(side):
-        return other(side) != f
-
-    front = other(f)
-    if front is not None and (front[0] == 0) != (f[0] == 0) and takes((-front[0], -front[1])):
-        high = high & _towards(front)                                   # the outer corner: one quarter
-    else:
-        behind = other(back)
-        if behind is not None and (behind[0] == 0) != (f[0] == 0) and takes(behind):
-            high = high | (_towards(back) & _towards(behind))           # the inner corner: three quarters
-    return QUARTERS - high
-
-
-def lips(version="a"):
-    """{column: the direction its stair climbs in} of the stairs that end the courses of LIP: the
-    top row of such a course is stairs that climb towards the axis, so its edge is cut back by a
-    quarter of a block and the course above starts half a block further in -- the step from the
-    upright foot to the dome, and the one above the next course, are the two highest of the dome
-    and the two that show from the roofs.
-
-    A stair is to leave low exactly the quarters of its column that border the course below. Along
-    a straight run of the ring that is a stair turned to the axis; at a corner the game makes the
-    corner piece only where a stair turned across it stands before or behind, so the corners are
-    tried both ways. A corner that cannot be had keeps a quarter too many (a small tooth); a stair
-    that would cut into the course's own top is left a whole block. Not on a seam, a rib or a rail
-    (they run through), not where the leaves of version a lie or slide."""
-    out = {}
-    for ring in LIP:
-        body = O.disc(CX, CZ, ring)
-        want = {}
-        for col in body:
-            x, z = col
-            if _ring(x, z) != ring or _lined(x, z, version) or _railed(x, z, version):
-                continue
-            if x <= SLIT_HEAD and abs(z - CZ) <= SLIT_HALF + (LEAF_W if version == "a" else 0):
-                continue
-            want[col] = _open_quarters(col, body)
-        facing = {}
-        for col, low in want.items():
-            if len(low) == 2:
-                facing[col] = next(d for d in O.SIDES if _towards(d) == QUARTERS - low)
-        corners = sorted(col for col in want if col not in facing)
-        turns = {}
-        for (x, z) in corners:                              # a corner's stair climbs one of the two ways in
-            turns[(x, z)] = [d for d in ((CX - x, 0), (0, CZ - z)) if d != (0, 0)]
-            turns[(x, z)] = [(dx and dx // abs(dx), dz and dz // abs(dz)) for dx, dz in turns[(x, z)]]
-            longer = abs(x - CX) >= abs(z - CZ)             # a first guess: the outer corner along the longer axis
-            facing[(x, z)] = turns[(x, z)][0 if longer == (len(want[(x, z)]) == 3) else -1]
-
-        def miss(col, trial):
-            low = low_quarters(col, trial)
-            return (len(low - want[col]), len(want[col] - low))
-
-        for _ in range(3):
-            for col in corners:
-                facing[col] = min(turns[col], key=lambda d: (miss(col, {**facing, col: d}), d != facing[col]))
-        while True:
-            cut = [col for col in facing if miss(col, facing)[0]]
-            if not cut:
-                break
-            for col in cut:
-                del facing[col]
-        out.update(facing)
-    return out
-
-
 def _foot(tops, c):
     """The lowest row a column of a shell has to fill so that no gap opens under it: down to the
     top face of its lowest neighbour, and to the ring beam where it stands on the dome's edge."""
@@ -468,13 +374,11 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
     ox, oy, oz = origin
     tops = surface(version)
     boxes = axle_boxes()
-    lip = lips(version)
     for (x, z) in sorted(tops):
         slit = _in_slit(x, z)
         rail = _railed(x, z, version)
         lined = _lined(x, z, version)
-        cells = _cells(tops, (x, z))
-        for y, slab in cells:
+        for y, slab in _cells(tops, (x, z)):
             if slit and y > SILL_Y:
                 break
             if y == SKIRT_Y:
@@ -485,8 +389,6 @@ def dome(canvas, origin=(0, 0, 0), version="a"):
                 state = _state(LEAF, slab)
             elif lined:
                 state = _state(RIB if _stained(x, z, version) else SEAM[version], slab)
-            elif (x, z) in lip and y == cells[-1][0] and not slab:
-                state = f"{PLATE.stairs}[facing={O.NAME[lip[(x, z)]]},half=bottom]"
             else:
                 state = _state(RIB if y <= SKIRT_Y + HEM else PLATE, slab)
             canvas.set(ox + x, oy + y, oz + z, state)

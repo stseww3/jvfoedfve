@@ -7,7 +7,7 @@ rm -rf $L
 mkdir -p $L renders/_wip
 rm -f renders/_wip/*.png
 SHOTS=build/scenes/obs_main_dome/shots.json
-ONLY=v1,v2_axis,v11,roof,drum,slit,aerial,top,west
+ONLY=v1,v2_axis,v11,roof,drum,slit,aerial,top
 
 draw() {
     mkdir -p $L/$1
@@ -15,21 +15,21 @@ draw() {
         || { tail -20 $L/$1.log; exit 1; }
 }
 
-draw A1 "version=a" &
-draw A2 "version=a;LIP=()" &
+draw A2 "version=a" &
 draw A3 "version=a;RUNS={'a': None, 'b': None}" &
+draw A5 "version=a;RUNS={'a': None, 'b': None};HEM=3" &
 wait
-draw A4 "version=a;HEM=1" &
+draw A6 "version=a;HEM=3" &
 draw B1 "version=b" &
-draw B2 "version=b;HEM=1" &
+draw B3 "version=b;HEM=3" &
 wait
-ALL="$L/A1 $L/A2 $L/A3 $L/A4 $L/B1 $L/B2"
+ALL="$L/A2 $L/A3 $L/A5 $L/A6 $L/B1 $L/B3"
 cd build
-python -m scenes.obs_main_dome.sheet $L/far1.png $ALL --only v1 --crop 500,290,800,440 --scale 2
-python -m scenes.obs_main_dome.sheet $L/far2.png $ALL --only v2_axis --crop 470,190,810,360 --scale 2
-python -m scenes.obs_main_dome.sheet $L/far3.png $ALL --only v11 --crop 150,60,470,260 --scale 2
+python -m scenes.obs_main_dome.sheet $L/far1.png $ALL --only v1 --crop 480,280,800,460 --scale 2
+python -m scenes.obs_main_dome.sheet $L/far2.png $ALL --only v2_axis --crop 480,190,800,370 --scale 2
+python -m scenes.obs_main_dome.sheet $L/far3.png $ALL --only v11 --crop 160,40,480,220 --scale 2
 python -m scenes.obs_main_dome.sheet ../renders/_wip/lab-near.png $ALL --only roof,drum,slit --scale 0.5
-python -m scenes.obs_main_dome.sheet ../renders/_wip/lab-above.png $ALL --only aerial,top,west --scale 0.5
+python -m scenes.obs_main_dome.sheet ../renders/_wip/lab-above.png $ALL --only aerial,top --scale 0.5
 python - <<PY
 from PIL import Image
 tiles = [Image.open("$L/far%d.png" % n) for n in (1, 2, 3)]
@@ -40,4 +40,4 @@ for t in tiles:
     y += t.height
 sheet.save("../renders/_wip/lab-far.png")
 PY
-cp $L/A1/A1-roof.png ../renders/_wip/lab-a1-roof.png
+cp $L/A2/A2-roof.png ../renders/_wip/lab-a2-roof.png
