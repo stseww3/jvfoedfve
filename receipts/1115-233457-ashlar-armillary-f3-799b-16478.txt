@@ -1,0 +1,38 @@
+a0job 1115-233457-ashlar-armillary-f3-799b-16478: cursor/c164-ashlar-armillary-f3-799b @ 6273ba9d on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.98 2.36 1.91, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- set -o pipefail; mkdir -p /tmp/c164_ashlar && echo IiIiV2hpY2ggb2YgVjEncyBzaWdodCBsaW5lcyB0byB0aGUgYmFzZSBzdG9yZXkgYW5kIHRoZSBncmVhdCB3aW5kb3dzIGFyZSBoaWRkZW4gYnkgZXZlcnl0aGluZwpidXQgdGhlIGFybWlsbGFyeT8gIFJ1biBpbiBjMTY0LXJlYWxtcy8gb24g
+blocks 109019 entities 30 zs 138 from -33.75 step 0.5
+base: 509 of 1104 hidden
+base y  4.25 3fffffe043f0001f8800fc218fe00843fff
+base y  4.75 3ffffff043f0001f9800fc218fe00843ffe
+base y  5.25 3fffffe043f0001f9800fc278fe00843ffe
+base y  5.75 3fffffe043f0001f9800fc218fe00843f40
+base y  6.25 3fffffe043f0003f8001fc211fe00847f60
+base y  6.75 3fffffe003f8003fc001fe061ff00007fe0
+base y  7.25 30003fc003f8003fc001fe061ff00007fe0
+base y  7.75 00003e0001f8000fc0007e0603f00000fe0
+   base z 9..16.5: oxidized_copper_bars x 60..60 y 0..0 z -16..-15 (2 cells)
+   base z 9..16.5: model c164:prop_lamp_street x 26..44 y 0..0 z -6..6 (2 cells)
+   base z 9..16.5: sandstone_wall x 60..60 y 0..0 z -14..-14 (1 cells)
+   base z 9..16.5: sandstone_slab x 60..60 y 1..1 z -14..-14 (1 cells)
+windows: 28 of 1656 hidden
+windows y  8.25 0000000000c0000000003006000000000e0
+windows y  8.75 0000000000c000000000300f000000000f0
+windows y  9.25 000000000000000000002006000000000e0
+windows y  9.75 00000000000000000000000000000000040
+windows y 10.25 00000000000000000000000000000000000
+windows y 10.75 00000000000000000000000000000000000
+windows y 11.25 00000000000000000000000000000000000
+windows y 11.75 00000000000000000000000000000000000
+windows y 12.25 00000000000000000000000000000000000
+windows y 12.75 00000000000000000000000000000000000
+windows y 13.25 00000000000000000000000000000000000
+windows y 13.75 00000000000000000000000000000000000
+   windows z 9..16.5: model c164:prop_lamp_street x 44..44 y 0..0 z -6..-6 (1 cells)
+==== NODEJOB RESULT ====
+exit=0 secs=3 host=cursor cores=4 head=6273ba9d commit=none pushed=no branch=cursor/c164-ashlar-armillary-f3-799b files=0
+a0job: exit=0 secs=4
