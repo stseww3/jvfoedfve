@@ -11,6 +11,8 @@ their iron backs and the mast stands bare until the clock is in the assembly.
 
 The shots are written from the skeleton's numbers:  python -m scenes.obs_main_tower
 """
+import os
+
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
@@ -21,7 +23,7 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 160
 LINES = (site, main, props, sky)
-TOP = "a"
+TOP = os.environ.get("C164_TOWER_TOP", "a")      # trial tops, while the versions are being settled
 TIME = 14000                    # the blue hour, the default look
 
 
@@ -54,9 +56,6 @@ def shots():
     face = tower.X1 + 1.0                           # its east face
     dial = tower.DIAL_CENTRES["east"][1]
     foot = float(tower.FOOT)
-    # the arrival view as the director has it now: it looks up, at y 34. The skeleton that knows
-    # V1_CLEAR has that number; the one before it still looks at y 14
-    v1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 
     def shot(name, pos, look_at):
         return {"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at], "time": TIME}
@@ -65,8 +64,10 @@ def shots():
         # V5, the up-view from the court: dial, lookout, top, ball and mast in one line
         shot("v5_up", (44.5, 1.7, -22.5), (cx, 33.0, cz)),
         shot("v5_far", (58.5, 1.7, -30.5), (cx, 30.0, cz)),
-        # V1, the arrival view from the station platform, eye and look-at as they are fixed
-        shot("v1_stamp", v1["pos"], v1["look_at"]),
+        # V1, the arrival view from the station platform, and V2, the court's axis: eye and look-at
+        # are the skeleton's. The tower is the right-hand high point of both skylines
+        shot("v1_stamp", S.V1["pos"], S.V1["look_at"]),
+        shot("v2_axis", S.V2["pos"], S.V2["look_at"]),
         # close on a dial's recess, on the top from above and level with the lookout, and on where
         # the tower meets the building
         shot("dial_close", (face + 13.0, 22.0, cz + 6.0), (face, dial, cz)),
