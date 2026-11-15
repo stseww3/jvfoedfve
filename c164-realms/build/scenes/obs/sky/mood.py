@@ -32,10 +32,16 @@ from artkit import mood as M
 GROUND_Y = 200              # world y of the scene origin (place.py --at); every plot uses it
 CLOUD_TOP = -28             # scene y of the top of the vanilla cloud layer; the block clouds of
 CLOUD_THICKNESS = 4         # sky/cloudsea lie on it with their sheet top at -26
-CLOUD_ALPHA = 0.94
-CLOUD_FOG_END = 768.0       # the layer fades to nothing at this distance
+CLOUD_ALPHA = 1.0           # the cloud layer is opaque: it must fade by fog like the blocks do
+# One distance for both fade laws (director, 11-16; the card sky/cloudsea's seam). Vanilla fades the
+# block clouds' colour into fog over 60..192 and the cloud LAYER's alpha over 0..768, so where the
+# two meet the layer and the blocks stood at different tones and the join read as a rim. The block
+# clouds, the fog and the layer now all fade over the same 0..768. The number is the layer's own
+# (FogCloudsEnd); the players' default render distance is 12 chunks = 192 blocks, where the game
+# also draws its own 19-block render-distance fade, so anything shorter left a hard ring.
+FOG_END = 768.0
+FOG_START = 0.0             # no crisp zone: the blocks fade from the eye, as the layer does
 LAMP = "#ffb45e"            # the one lamp colour (tint of block light)
-FOG_START, FOG_END = 60.0, 192.0   # crisp nearby; from 60 blocks on things melt into the horizon colour
 MOON_ANGLE = 42.0           # the comet sits in the moon's slot: sprite centre 48 degrees up in the west
 STAR_ANGLE = 0.0
 WATER = "#1f3a6e"
@@ -93,28 +99,18 @@ STEPS = [(0, "blue"), (12300, "glow"), (13400, "blue"), (15500, "deep"), (21500,
 #         cool) -- 0.16 of brightness and a whole warm-to-cool turn apart, which reads as a dark
 #         blue disc holding the mountain up. fogged's #383a74 lands on 0.22 and cannot close it;
 #         glowed's #755064 is the number to reach.
+#
+# The five trials that chased this seam (mist, veil, fogged, glowed and the three D moments) are
+# gone: the seam was two fade laws, not a colour (see FOG_END above and sky-notes 7b), and the
+# director settled it -- fog and layer fade over the same 0..768 in all three versions. What is left
+# here is the small set that is still needed to READ something in the game rather than to choose a
+# colour: the test card that says which way the moon picture is drawn, the second afterglow, and the
+# nearer and farther fog (a way of seeing where the fog ends).
 TRIALS = {
     "card": dict(of="blue", tick=3100, moon_phase="new_moon"),
     "pink": dict(of="blue", tick=4100, glow="#e9706a"),
-    "near": dict(of="blue", tick=5100, fog_end=144.0),
-    "far": dict(of="blue", tick=7100, fog_end=256.0),
-    "mist": dict(of="blue", tick=8100, cloud="#42457c"),
-    "veil": dict(of="blue", tick=9100, cloud="#474c7a"),
-    "fogged": dict(of="blue", tick=10100, cloud="#383a74"),
-    "glowed": dict(of="blue", tick=11100, cloud="#755064"),
-    # the seam test (director, 11-16): make the block clouds fade exactly as the vanilla layer does.
-    # The layer does not mix colour -- it multiplies its alpha by (1 - distance/768) and what shows
-    # through is the void, which is the fog colour. The block clouds instead mix colour towards fog
-    # from 60 to 192. Two different laws, so the join shows. These three trials put the block clouds
-    # on the layer's law: no near fog, fade over the whole 0..D, opaque cloud colour (alpha 1.0), and
-    # the colour is the outermost step of the block sea as the game shows it in A (third step
-    # #474c7a). D is the layer's own 768, half of it, and twice it.
-    "deep384": dict(of="blue", tick=22500, fog_start=0.0, fog_end=384.0, cloud_fog_end=384.0,
-                    cloud_alpha=1.0, cloud="#474c7a"),
-    "deep768": dict(of="blue", tick=23100, fog_start=0.0, fog_end=768.0, cloud_fog_end=768.0,
-                    cloud_alpha=1.0, cloud="#474c7a"),
-    "deep1536": dict(of="blue", tick=23700, fog_start=0.0, fog_end=1536.0, cloud_fog_end=1536.0,
-                     cloud_alpha=1.0, cloud="#474c7a"),
+    "near": dict(of="blue", tick=5100, fog_end=384.0),
+    "far": dict(of="blue", tick=7100, fog_end=1536.0),
 }
 TRIAL_HOLD, TRIAL_RAMP = 100, 50     # held from tick - 100 to tick + 100, blended over 50 ticks each side
 
@@ -180,7 +176,7 @@ def values(name=DEFAULT):
         "block_light_tint": LAMP,
         "fog_start_distance": v.get("fog_start", FOG_START), "fog_end_distance": v.get("fog_end", FOG_END),
         "cloud_height": float(GROUND_Y + CLOUD_TOP - CLOUD_THICKNESS),
-        "cloud_fog_end_distance": v.get("cloud_fog_end", CLOUD_FOG_END),
+        "cloud_fog_end_distance": v.get("cloud_fog_end", FOG_END),   # one distance, both laws
     }
 
 
