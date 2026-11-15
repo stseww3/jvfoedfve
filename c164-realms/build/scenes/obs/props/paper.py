@@ -296,16 +296,18 @@ def _blueprint_face():
     long main building on its ground line, its piers standing between eaves and ground and the
     door in the middle; the great dome on its drum over the door; the small dome on the south
     corner, to the left; the time tower with its clock at the north end, to the right. Under the
-    ground line a scale and the title block."""
+    ground line a scale and the title block. What stands on the roof rises behind the front, so
+    no wall of a dome or of the tower comes down on a pier: a line that ran on through the eaves
+    would be a cross."""
     rows = ["bbbbbbbbbbbbbbbbbbbbbbbb",
             "bbbbbbbbbbwwwwbbbbbbwbbb",
             "bbbbbbbbbwbbbbwbbbbwwwbb",
-            "bbbwbbbbwbbbbbbwbbbwmwbb",
-            "bbwbwbbbwwwwwwwwbbbwbwbb",
+            "bbbwbbbbwbbbbbbwbbbwbwbb",
+            "bbwbwbbbwwwwwwwwbbbwmwbb",
             "bbwbwbbbwbbbbbbwbbbwbwbb",
             "bbwwwwwwwwwwwwwwwwwwwwbb",
-            "bbwbwbwbwbbmmbbwbwbwbwbb",
-            "bbwbwbwbwbbmmbbwbwbwbwbb",
+            "bbwbbwbwbwbmmbwbwbwbbwbb",
+            "bbwbbwbwbwbmmbwbwbwbbwbb",
             "bwwwwwwwwwwwwwwwwwwwwwwb",
             "bbbbbbbbbbbbbbbbbbbbbbbb",
             "bbwwllwwllwwbbbmmwwwmmmb",
