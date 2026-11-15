@@ -3,7 +3,7 @@
 # and whatever lies outside the repository is gone when the machine is replaced, so everyone runs
 # this once after coming online. Running it again is harmless: what is in place is left alone.
 #
-#   bash c164-realms/tools/cloud_setup.sh [--render] [--no-smoke] [<code> <branch>]
+#   bash c164-realms/tools/cloud_setup.sh [--no-smoke] [<code> <branch>]
 #
 # A new machine has the repository under /agent/repos/jvfoedfve on its main branch, which does not
 # hold this file. Take it from the assembly branch and run it, in one line:
@@ -15,8 +15,8 @@
 #
 # What it leaves, at the paths the documents and the scripts already use:
 #
-#   /agent/realms-study/.venv                             Python with numpy, Pillow and nbtlib
-#                                                         (--render adds numba, which build/render.py needs)
+#   /agent/realms-study/.venv                             Python with numpy, Pillow, nbtlib and numba (what
+#                                                         check.py, delivery.py and the offline renderer need)
 #   /agent/realms-study/client26/versions/26.3/26.3.jar   the game's client jar, from Mojang, SHA-1 checked
 #   /agent/realms-study/inbox/                            where pictures sent back from the admin's computer land
 #   /agent/repos/c164-<code>                              your working tree on <branch>, when both are given: the
@@ -37,8 +37,7 @@ die() { printf '[cloud_setup] FAILED: %s\n' "$*" >&2; exit 1; }
 
 usage() {
   cat <<'EOF'
-cloud_setup.sh [--render] [--no-smoke] [<code> <branch>]
-  --render     also install numba, for the offline renderer build/render.py
+cloud_setup.sh [--no-smoke] [<code> <branch>]
   --no-smoke   skip the closing check.py --scene obs
   <code>       your code name; the working tree is /agent/repos/c164-<code>
   <branch>     your branch: taken from the remote, or cut from the assembly head if the remote has none
@@ -48,10 +47,9 @@ EOF
 # The body is one function called on the last line, so the whole file is read before anything runs:
 # piped into `bash -s`, a command that reads standard input could otherwise swallow the rest of it.
 main() {
-  local render=0 smoke=1 code="" branch=""
+  local smoke=1 code="" branch=""
   while [ $# -gt 0 ]; do
     case "$1" in
-      --render) render=1 ;;
       --no-smoke) smoke=0 ;;
       -h|--help) usage; return 0 ;;
       -*) usage >&2; die "unknown option $1" ;;
@@ -75,8 +73,7 @@ main() {
   mkdir -p "$root/inbox" "$root/client26/versions/$VERSION"
 
   # 2. Python
-  local py="$root/.venv/bin/python" want="numpy, PIL, nbtlib" pkgs=("nbtlib==2.0.4" "numpy>=2.0" "Pillow")
-  if [ "$render" = 1 ]; then want="$want, numba"; pkgs+=("numba"); fi
+  local py="$root/.venv/bin/python" want="numpy, PIL, nbtlib, numba" pkgs=("nbtlib==2.0.4" "numpy>=2.0" "Pillow" "numba")
   if [ -x "$py" ] && "$py" -c "import $want" >/dev/null 2>&1; then
     say "python: $root/.venv already has $want"
   else
@@ -98,7 +95,7 @@ main() {
       || die "pip could not install ${pkgs[*]}"
     "$py" -c "import $want" || die "the venv cannot import $want"
   fi
-  say "python: $("$py" -c "import sys, numpy, PIL, nbtlib; print(sys.version.split()[0], 'numpy', numpy.__version__, 'Pillow', PIL.__version__)")"
+  say "python: $("$py" -c "import sys, numpy, PIL, nbtlib, numba; print(sys.version.split()[0], 'numpy', numpy.__version__, 'Pillow', PIL.__version__, 'numba', numba.__version__)")"
 
   # 3. the game's client jar
   local jar="$root/client26/versions/$VERSION/$VERSION.jar"
