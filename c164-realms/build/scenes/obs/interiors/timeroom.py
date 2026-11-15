@@ -200,7 +200,8 @@ DRUM_X = CONSOLE_X[1]                               # 9: the drum recorder's
 REGULATOR_X = (S.mid(X0), S.mid(X1))                # 2.5 and 13.5
 REGULATOR_FOOT = float(SILL)                        # 8.0; the clock is two blocks tall
 REGULATOR_TOP = REGULATOR_FOOT + 2.0
-DIAL_Y = REGULATOR_FOOT + 25.5 * PX                 # 9.59: the middle of a regulator's dial (props/instruments), and of every dial of the room
+REGULATOR_DIAL = 24.5                               # px: the middle of a regulator's dial above its foot (props/instruments' CLOCK_DIAL_Y)
+DIAL_Y = REGULATOR_FOOT + REGULATOR_DIAL * PX       # 9.53: the middle of a regulator's dial, and of every dial of the room
 BACK_T = 1.5 * PX                                   # the board at the back of a recess, off the wall: a pixel of board, half a pixel of frame
 BACK = (3, 3, 1)                                    # blocks: the lengths that board is made of, from the floor to the ceiling: the panel the clock
 #                                                     hangs on, the panel its lamp hangs on, the frieze beside the rack's cornice
@@ -238,6 +239,8 @@ WORLD = (5, 2, 0, -3, -5)                           # hours off the station's ti
 CASE_R = 6.0                                        # px: the radius of a world clock's case
 BOARD = (16.0, 9.0, 11.0)                           # px: the length of board behind one dial: as wide as a cell, so far above the dial's middle, so far below it
 INK = P.RAMPS["iron"][1]
+MARK = P.RAMPS["iron"][5]                           # what is printed on a dial, as props/instruments prints its regulator's: lighter than
+#                                                     the hands, so that the hands are what is read
 DIAL = (                                            # nine pixels across: twelve marks and the hub; the face of
     "..kckck..",                                    # props/instruments' regulator without its luminous quarters
     ".ccccccc.",
@@ -249,7 +252,7 @@ DIAL = (                                            # nine pixels across: twelve
     ".dcccccd.",
     "..kdkdk..",
 )
-DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=INK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3])
+DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=MARK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3])
 
 # ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
 JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
@@ -718,6 +721,8 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     n += K.put(c, own[PREFIX + "mug"], (MUG[0], float(SILL), MUG[1]), yaw=MUG[2], origin=origin)
 
     # ---- the two recesses: the board at the back of each, the lamp over its standard clock
+    assert getattr(theirs("instruments"), "CLOCK_DIAL_Y", REGULATOR_DIAL) == REGULATOR_DIAL, \
+        "props/instruments has moved its regulator's dial: the dials of the room hang at its height (REGULATOR_DIAL)"
     for x, side, at in zip(REGULATOR_X, ("west", "east"), REGULATOR_LIGHT):
         for i in range(len(BACK)):
             n += K.put(c, own[back_name(i)], (x, BACK_HELD, NORTH), mount="wall", facing="south", origin=origin)
