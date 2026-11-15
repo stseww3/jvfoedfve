@@ -6,7 +6,7 @@ lamps、furniture 的数是从模型里读出来的（数每个模型带 `emit` 
 
 ## 1. 「亮」在模型里是怎么写的
 
-- 该亮的面一律是模型元素上的 `light_emission: 15`（`artkit.models.Model.box(emit=15)`，`K.glass_ball`、`K.glass_prism`、`K.bulb` 默认就是 15）。props 里没有别的级数：要么 15，要么不写。
+- 该亮的面一律是模型元素上的 `light_emission: 15`（`artkit.models.Model.box(emit=15)`，`K.glass_ball`、`K.glass_prism`、`K.bulb` 默认就是 15）。已经在总装或已经交付的 props 里没有别的级数：要么 15，要么不写。唯一的例外在没交付的 pipes 里（下面有），低于 15，本来就不算发光面。
 - 同一批元素还带 `shade_direction_override: "up"`（`shade=False` 导出成这个）。物品这条路游戏不读它（评审 #20「核过游戏」），着色器要是想认它也认不到，顶点里没有这一项。
 - props 没有一只展示实体写 `brightness`（lamps、furniture、ironwork、instruments、paper 的 `place` 都只是把这个参数传下去，没有人传）。所以实体自己的块光就是它站的那一格的块光。
 - 一个模型里亮的和不亮的元素混在同一只实体里（球罩和托架是一只）。所以只能按面分，不能按实体分；按「这个面的块光是不是 15」分正好分得开：亮的面 15，同一只实体上别的面是那一格的块光。
@@ -38,9 +38,15 @@ lamps、furniture 的数是从模型里读出来的（数每个模型带 `emit` 
 
 ### props/ironwork（`ironwork.py`，c342；交付的是 8e6bc4a5，总装里还是上一版）
 
+这一段 c342 照 8e6bc4a5 的代码对过（#65029），没有错。
+
 - `fanlight` 门头扇形窗：玻璃条全亮（15），铁框不亮。
 - `canopy_lamp` 雨棚吊灯：球罩亮（15）。8e6bc4a5 里为了躲开按朝向打暗，球罩拆成五只实体（四只斜架各管一面，一只滑移框管朝下的面），铁件在朝外的那一只上，不亮。着色器成了以后这五只照样对（亮的面不再看法线），只是多占四只实体，c342 可以并回一只。
 - 不亮、而且是故意的：`door_leaf` 门扇上那只舷窗的琥珀玻璃（8e6bc4a5 里写的是 `emit=0`：门扇开着贴在门洞的石头上，背后是墙的玻璃自己没有光；总装里的上一版还是 15，合并以后就没有了）、`canopy` 雨棚的磨砂玻璃、西门玻璃扇的深色玻璃。
+
+### props/pipes（`pipes.py`，c342，在做，未进总装；这一段是 c342 自己报的，#65035）
+
+- 只有 `gauge` 压力表盘上三个 1 像素的夜光刻度带 `emit`，是 10，不到 15：着色器把它当普通面，照旧按朝向打暗，这是对的（预审 P12：暗处要是只剩三个绿点还要从 10 降到 6，等他的图）。别的都不亮。
 
 ### props/instruments（`instruments.py`，c335，分支头 94b79e2c，未进总装）
 
@@ -52,7 +58,7 @@ lamps、furniture 的数是从模型里读出来的（数每个模型带 `emit` 
 
 ### props/furniture（`furniture.py`，a6）
 
-- 没有发光的面。两种展柜的玻璃只画一道反光，不亮。
+- 没有发光的面。两种展柜的玻璃只画一道反光，不亮；第二轮加的带展品的展台（`display_table_plates`、`display_table_lenses`）里，底片、透镜、目镜的玻璃都写的是 `emit=0`。
 
 ## 3. 请 a2 留神的两处
 
