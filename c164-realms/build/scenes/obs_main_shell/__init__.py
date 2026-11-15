@@ -5,8 +5,9 @@ The main line built whole (walls, drum and dome, the shell inside them) five tim
   at z 0      as it stands, with a few invisible lights inside so the rooms can be seen (they are
               this scene's only: the rooms get their lamps and their light from the interiors and
               the light line);
-  at z 100    cut off above y 5: the ground floor from above -- the hall, the west arcade, the two
-              flights, the way to the west door, the foot of the pier;
+  at z 100    cut off above y 4, under the heads of the arches: the ground floor from above -- the
+              hall, the west arcade as its piers and three openings, the two flights, the way to
+              the west door, the foot of the pier;
   at z 200    cut off above y 13: the main floor -- galleries, mezzanine, the well, the wing rooms,
               the first turn of the ring stair;
   at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top
@@ -30,7 +31,7 @@ from scenes.obs.main import shell
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
-CUTS = {"ground": (100, 5), "main": (200, 13), "dome": (300, 19)}       # name: (z of the copy, last row kept)
+CUTS = {"ground": (100, 4), "main": (200, 13), "dome": (300, 19)}       # name: (z of the copy, last row kept)
 DRESSED = 400                                                           # z of the copy with the stand-ins
 GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 24, S.Z_SOUTH + 6)  # x -14..39, z -40..40: the view through
 #                                                                         the door stands on it, 19 before the wall
