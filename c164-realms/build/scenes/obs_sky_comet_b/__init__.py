@@ -1,9 +1,12 @@
 """Version b of the comet (hard pixels on the 64 grid) over the white model of obs_sky_comet: the same blocks, the
 same shots.
 
+Kept for the record: the director settled on a-plus (comet.DEFAULT_STYLE) on 11-16 and b is not in
+the map. The scene stays so that the version can still be looked at beside the one the map paints.
+
 The moon's slot holds one picture per light, so the versions cannot hang in one sky. They are
 compared picture by picture: every shot of this scene has its twins of the same name in
-obs_sky_comet (version a) and in the scene of the third version.
+obs_sky_comet (the version the map paints) and in the scene of the third version.
 
     python -m scenes.obs_sky_comet_b      writes shots.json, prints where the comet stands
 """

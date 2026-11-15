@@ -26,7 +26,7 @@ The station's own tools are the copy in agents/s1/repo, not the code that is sho
 branch with older tools, or none, can be photographed. That copy changes only when asked:
 --tools <ref> brings it to a branch or commit first (the integration branch once the tools are in it).
 
-    --shots, --only, --plot, --no-place, --no-shoot, --settle, --first-settle
+    --shots, --only, --plot, --gallery, --no-place, --no-shoot, --settle, --first-settle
                       go to the shuttle as they are (see tools/win/shuttle.py)
     --no-send         leave the pictures in agents/s1/out/real/<tag>/send
     --send-only       only step 5, for a trip whose pictures did not get through (--tag is needed)
@@ -122,6 +122,7 @@ def main():
     ap.add_argument("--shots", action="append", default=[])
     ap.add_argument("--only", action="append", default=[])
     ap.add_argument("--plot", action="append", default=[])
+    ap.add_argument("--gallery", action="append", default=[])
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--no-shoot", action="store_true")
     ap.add_argument("--settle")
@@ -171,7 +172,7 @@ def main():
 
             # ---- 3. the shuttle ----
             options = []
-            for name in ("shots", "only", "plot"):
+            for name in ("shots", "only", "plot", "gallery"):
                 for value in getattr(args, name):
                     options += [f"--{name}", value]
             for name in ("no_place", "no_shoot", "keep_client"):
