@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """A scene's own pictures, drawn offline and kept in the repository (plan/roles/INTERFACE.md 5, 6).
 
-Pictures are drawn on the admin's computer, through bin\\job.py, and never on the cloud machine
-(the admin's ruling, 2026-11-14). A round goes:
+Pictures are drawn on your own cloud machine, in your own checkout (COMMON.md section 0 item 2,
+from the night of 11-15; the admin's computer is the render-key holder's and takes real-game
+pictures only). A round goes:
 
-  on the computer   selfshots.py <scene> [--only a,b] --out @out/shots
+  selfshots.py <scene> [--only a,b] --out /tmp/c164_<code>/shots
                         draws the shots of build/scenes/<scene>/shots.json with build/render.py
                         (1280x720, every shot at its own time) into that folder, as
-                        <scene>-<shot>.png beside a note <scene>-shots.txt; bin\\send.py sends them
-  on the cloud      selfshots.py <scene> --take [<folder>] [--prefix m2-]
-                        puts the pictures that came back (default folder: the inbox) into
-                        renders/<scene>/ of this checkout, each checked against the note; commit
-                        and push them. Pictures drawn with plain build/render.py (no note; sent
-                        as <code>-<commit>-<shot>.png) are taken with --prefix <code>-<commit>-
-  on the computer   selfshots.py <scene> [<scene> ...] --verify [--only a,b]
+                        <scene>-<shot>.png beside a note <scene>-shots.txt
+  selfshots.py <scene> --take /tmp/c164_<code>/shots  [--prefix m2-]
+                        puts those pictures into renders/<scene>/ of this checkout, each checked
+                        against the note; commit and push them. Pictures drawn with plain
+                        build/render.py (no note; sent as <code>-<commit>-<shot>.png) are taken
+                        with --prefix <code>-<commit>-
+  selfshots.py <scene> [<scene> ...] --verify [--only a,b]
                         draws again and compares pixel by pixel: are the kept pictures what the
-                        code draws? The merge-key holder runs it on the delivered commit.
+                        code draws? The merge-key holder runs it on the merged tree.
 
 Without --out the pictures go straight into renders/<scene>/ of the checkout the tool runs in.
 
@@ -54,7 +55,7 @@ _GIT = []
 
 
 def git_program():
-    """git on the path, or the portable one of the shared workspace on the admin's computer."""
+    """git on the path, or a portable git beside the checkout (the Windows workspace carries one)."""
     if not _GIT:
         found = shutil.which("git")
         if not found:
@@ -222,8 +223,7 @@ def write(project, scene, only, dirty, jar, out):
           + ("" if status is not None else " (no git here: uncommitted changes were not looked for)")
           + (f"; removed (no such shot any more): {', '.join(gone)}" if gone else ""))
     if out:
-        print(f"                next: send {scene}-* from that folder (bin\\send.py), then on the cloud "
-              f"tools/selfshots.py {scene} --take")
+        print(f"                next: tools/selfshots.py {scene} --take {out}   (no sending: pictures go by git)")
     else:
         absent = [n for n in names if not os.path.exists(os.path.join(folder, n + ".png"))]
         if absent:
@@ -321,7 +321,7 @@ def arrivals(project, scene, source, prefix, names):
 
 
 def take(project, scene, source, prefix):
-    """Pictures drawn on the admin's computer, as they arrived in the folder `source`, into this
+    """Pictures drawn with --out on one's own machine, as they arrived in the folder `source`, into this
     checkout's renders/<scene>/. Nothing is copied unless every picture named is there, whole, and
     (drawn with --out) the very file its note describes."""
     _, names = shot_list(project, scene)
@@ -500,6 +500,20 @@ def main():
             done = write(project, scene, only, args.dirty, args.jar, os.path.abspath(args.out) if args.out else None)
         good = done and good
     sys.exit(0 if good else 1)
+
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so
+# that a dozen pictures drawn at once cannot bury the machine. Neither is an error if it
+# cannot be done.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+try:
+    import _slots
+    _slots.take()
+except Exception:
+    pass
 
 
 if __name__ == "__main__":
