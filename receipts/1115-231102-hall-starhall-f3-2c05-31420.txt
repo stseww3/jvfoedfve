@@ -1,0 +1,23 @@
+a0job 1115-231102-hall-starhall-f3-2c05-31420: cursor/c164-hall-starhall-f3-2c05 @ fb792e92 on the director's machine
+(the branch moved after the job was sent: it ran on fb792e92, not on 1d181132)
+  [cloud_setup    0s] machine: 4 cores, load 1.34 1.49 0.96, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_int_starhall --only v7,v7_in,west,floor --out renders/_wip/r10 ---- exit 0, 17 s, last 30 lines of 12:
+  obs_int_starhall: 19890 blocks, 43 entities (0 s)
+  obs_int_starhall: resource pack written to /tmp/c164pack-0erqylh5 (1 s)
+  obs_int_starhall: water: 0 sources, 0 cells of running water (1 s)
+  obs_int_starhall: grid 47 x 46 x 83, 19890 blocks, 1754 entity boxes (2 s)
+  obs_int_starhall: 132 states -> 284 looks, 606 boxes, 92 pictures (2 s)
+  obs_int_starhall: light done (2 s)
+  obs_int_starhall: v7 (tick 14000, 2 s)
+  obs_int_starhall: v7_in (tick 14000, 4 s)
+  obs_int_starhall: west (tick 14000, 3 s)
+  obs_int_starhall: floor (tick 14000, 3 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/r10/obs_int_starhall-*: 4 pictures of fb792e92 drawn, 1.3 MB
+                for a look only: nothing went into renders/obs_int_starhall/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=22 host=cursor cores=4 head=fb792e92 commit=eb250892 pushed=yes branch=cursor/c164-hall-starhall-f3-2c05-wip files=5
+a0job: exit=0 secs=22
