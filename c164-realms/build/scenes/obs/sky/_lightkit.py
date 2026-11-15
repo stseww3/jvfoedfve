@@ -39,13 +39,13 @@ tiers and the brightest is kept for the entrance; a front must not turn warm all
 
 The colours say where the entrance is. The curtain is the most saturated colour of the building, so
 it is kept for the entrance: the two great windows beside the brightest one (orange, gold, orange)
-and the fixed windows of the base storey. A wing shows a few opal windows and dark ones, nothing
-else; no look hands out a curtain.
+and the one fixed window of the base storey, at the foot of the clock tower. A wing shows a few
+opal windows and dark ones, nothing else; no look hands out a curtain.
 
 What no look changes (FIXED) is three places on the entrance front: the foot of the clock tower, the
 entrance, the foot of the small dome, the middle one the brightest. The bays next to a fixed window
 stay dark, so each of the three stands apart. Between them a wing shows two lit windows at the most,
-and the base storey is a dark band under the great windows that shows its fixed windows only (SHARE,
+and the base storey is a dark band under the great windows that shows its one fixed window only (SHARE,
 LOW_SHARE, MOST, LOW_MOST: by storey). The drum of the dome stays dark: the dome room is kept dark
 for observing, and what shows of its light comes through the slit (HUSHED).
 
@@ -120,7 +120,7 @@ SEED = 3667                 # picked on main's table (the card says by what): th
 # Per look: of the windows that may be lit, the share that is. The low storeys have shares of their
 # own: the base storey is a dark band that carries the row of great windows; the director allows it
 # one lit window to a wing under the fullest look at the most, and it never shows more lit windows
-# than the storey over it. With the curtain kept for the entrance it shows its fixed windows only.
+# than the storey over it. With the curtain kept for the entrance it shows its one fixed window only.
 SHARE = {"blue": 0.9, "glow": 0.4, "deep": 0.15}
 LOW = ("base",)
 LOW_SHARE = {"blue": 0.0, "glow": 0.0, "deep": 0.0}
@@ -133,14 +133,15 @@ ALWAYS = ("tower",)         # fronts whose windows that may be lit are lit in ev
 HUSHED = ("drum",)          # fronts that no look lights: the dome room is kept dark for observing
 RINGS = ("drum",)           # fronts that close on themselves: the last bay stands next to the first
 # What no look changes. The entrance: the window over the door is the brightest of the map, the two
-# beside it glow behind curtains, and so do the small windows under those two where the front has
-# them (an arcade of three arches has none). The foot of the clock tower (bays 1 and 2 of the east
-# front): the great window lit, the small one next to it under a curtain, crosswise, so that no two
-# lit ones are neighbours; across the front from it the foot of the small dome (bay 17). The apse
-# over the west door, which the sunset platform looks at: its middle window.
+# beside it glow behind curtains. The small windows under those two, where the front has them (the
+# entrance with a single doorway; an arcade of three arches has none), are dark like the rest of
+# the base storey: lit, the doorway between them loses to them (director #22559, 4.3). The foot of
+# the clock tower (bays 1 and 2 of the east front): the great window lit, the small one next to it
+# under a curtain, crosswise, so that no two lit ones are neighbours; across the front from it the
+# foot of the small dome (bay 17). The apse over the west door, which the sunset platform looks at:
+# its middle window.
 FIXED = {
     ("east", 9, "main"): BRIGHT, ("east", 8, "main"): DIM, ("east", 10, "main"): DIM,
-    ("east", 8, "base"): DIM, ("east", 10, "base"): DIM,
     ("east", 1, "main"): LIT, ("east", 2, "base"): DIM,
     ("east", 17, "main"): LIT,
     ("apse", 0, "main"): LIT,

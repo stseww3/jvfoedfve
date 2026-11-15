@@ -430,7 +430,7 @@ def _survey(canvas, r):
                                  f"for the window over the main door")
         if tier == L.DIM and not group and (front, bay, storey) not in L.FIXED:
             r["problems"].append(f"{front} {bay} {storey} is glazed with the curtain, which is kept for the "
-                                 f"entrance and the fixed windows of the base storey")
+                                 f"entrance and the fixed window at the foot of the clock tower")
     for w in r["windows"].values():
         w["pairs"] = []
     for (group, origin, front), tiers in sorted(fronts.items(), key=str):
