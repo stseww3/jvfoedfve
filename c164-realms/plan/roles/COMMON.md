@@ -5,11 +5,24 @@
 必读，按顺序：
 
 1. `plan/ART-PLAN.md`：美术方案（风格、色板、光、场地、材质、模型、室内）。管理员批过，不许自己改。
-2. `plan/PIPELINE.md`：流水线第 3 版。活在任务池里，工序固定，人通用。第 3 节是现在的排班。
+2. `plan/PIPELINE.md`：流水线第 3 版。活在任务池里，工序固定，人通用。它第 3 节的排班已经过时，现在的排班看 `plan/STATUS.md`；做法上和下面第 0 节不一样的地方，以第 0 节为准。
 3. `plan/roles/` 里你的岗位那一份：工人读 `LINE.md`；常驻出图读 `S1-render.md`；常驻合并读 `S2-integrator.md`；常驻评审读 `S3-critic.md`。
 4. `plan/reviews/R1-first-designs.md`：总监第一轮审稿结论（骨架数字、色板和占用表的决定、实体预算）。
 5. `plan/roles/INTERFACE.md`：各包怎么接进总场景和总资源包（拿合并钥匙的人写；没出来之前按现有测试场景 `build/scenes/kitcheck`、`skyobs` 的写法做）。
 6. `plan/aesthetics/RUBRIC.md`：评分标准。做东西之前先看一遍，知道会被怎么打分。
+
+## 0. 现在的做法（11-14 起）
+
+这一节和下面各节、和别的文档冲突时，以这一节为准。
+
+1. **先出东西。** 领卡后 20 分钟内要有第一个提交（粗模就行：体量、轮廓、主要洞口），提交完马上 push。卡片和文档放到交付前再补。接口没对完的地方按自己的默认做，默认写在提交说明里，不等回复；别人反对了再改。
+2. **出图只在管理员电脑上**（管理员定的）。云端不出图，不跑 `--verify`，不生成整座 `obs`。云端只跑 `git`、`check.py`（只查自己的测试场景）、`delivery.py`、`selfshots.py --take`。要进仓库的图按 `INTERFACE.md` 第 5 节的四步走。第一个提交 push 之后就出两三张图，在群里说图在收图夹的哪个前缀下。
+3. **桥上的本机命令**：`timeout_sec` 设到 900。桥等 60 秒没等到结果会报 `Request timed out`，这不是失败，电脑上的命令还在跑。不要重跑；过一会儿去看 `agents\<代号>\logs` 和 `out` 里有没有结果，或者直接跑下一步。`timeout_sec` 设小了，命令到点会被掐掉。
+4. **总监的拍板在群里**，开头是【总监·拍板】，比卡片和细化稿新；拿合并钥匙的人把它们记在 `plan/STATUS.md` 的「总监定过的」一节。坐标一律读骨架 `build/scenes/obs/common/skeleton.py`，卡片里和它不一样的数作废。
+5. **往整座楼、整个场地上铺的东西带 `DRESS` 开关，默认关**，评审通过才打开。关着的时候总场景里不放它；测试场景里开着出图。
+6. **评审两个人**：一个管 materials、main、props，一个管 site、sky、machines、interiors。离线图判不了的（发光、天空、云、玻璃反光、模型远看）评审标「待真机」，不卡合并。
+7. **总监按 git 判断进度**：只认 push 上去的提交，不认群里的计划。
+8. 现在谁在哪个岗位、哪张卡在谁手上，看 `plan/STATUS.md`。卡片里写的「点某某」找不到人时，点拿合并钥匙的人或者总监。
 
 ## 1. 人和群
 
@@ -19,12 +32,12 @@
 
 ## 2. 云端机器上的路径
 
-- 总装仓库：`/agent/repos/jvfoedfve-c164`，分支 `cursor/c164-realms-map-b59c`，项目在里面的 `c164-realms/`。**只读**：不许在这个目录里改文件、切分支、提交。
-- 你自己的工作目录，第一次这样建（`<代号>` 见 `PIPELINE.md` 第 3 节）：
+- 仓库的主目录：`/agent/repos/jvfoedfve`。它是别的项目在用的检出，**不许在里面改文件、切分支、提交**，只用它来 `fetch` 和建你自己的工作目录。总装分支是 `cursor/c164-realms-map-b59c`，项目在分支里的 `c164-realms/`。
+- 你自己的工作目录，第一次这样建（`<代号>` 是派你来的说明里给的）：
 
 ```
-git -C /agent/repos/jvfoedfve-c164 fetch -q origin cursor/c164-realms-map-b59c
-git -C /agent/repos/jvfoedfve-c164 worktree add -b <你的分支> /agent/repos/c164-<代号> origin/cursor/c164-realms-map-b59c
+git -C /agent/repos/jvfoedfve fetch -q origin cursor/c164-realms-map-b59c
+git -C /agent/repos/jvfoedfve worktree add -b <你的分支> /agent/repos/c164-<代号> origin/cursor/c164-realms-map-b59c
 ```
 
   分支名按你自己的命名规则起，中间带 `c164-<代号>`。之后只在 `/agent/repos/c164-<代号>` 里干活。
@@ -53,7 +66,7 @@ python3 c164-realms/tools/inbox.py /agent/realms-study/inbox --port 8765    # �
 - 临时文件放 `/tmp/c164_<代号>/`。
 - 不许打印 git 的远程地址（里面有凭据）。
 
-**云端机器只有 4 核，十几个 agent 共用，还有别的项目在上面。** 在它上面只做轻的事：改代码、`git`、语法检查、几秒钟的小脚本，命令前面加 `nice`。不许在它上面出图、生成大场景、跑循环、开服务。这些一律去管理员电脑。
+**云端机器只有 4 核，几十个 agent 共用，还有别的项目在上面。** 在它上面只做轻的事：改代码、`git`、语法检查、几秒钟的小脚本，命令前面加 `nice`。不许在它上面出图、生成大场景、跑循环、开服务。这些一律去管理员电脑。
 
 ## 3. 管理员电脑上怎么跑
 
@@ -83,7 +96,7 @@ Set-Location (Join-Path (Split-Path (Get-Location) -Parent) 'c164')
 
 - `job.py` 在你的 `agents\<代号>\repo\c164-realms\build` 里运行脚本，`@out` 会换成 `agents\<代号>\out`。它负责排队、限线程、降优先级、记日志（`agents\<代号>\logs\`）。退出码 75 表示重任务名额一直被占着，过一会儿再试。
 - 离线渲染第一次运行要编译约半分钟，之后每张 1 到 5 秒（室外）；室内的图慢得多，分辨率和张数省着用。离线渲染不画粒子、方块实体和原版的云。
-- 你的本机命令默认超时很短，出图时把超时设到 900 秒以上。
+- 你的本机命令默认超时很短，出图时把 `timeout_sec` 设到 900。桥自己 60 秒就会报超时，电脑上的命令照样跑完（第 0 节第 3 条）。
 - 工作区里的脚本版本由拿出图钥匙的人维护。命令报“part must be …”之类的错，说明脚本还没更新，在群里点名他。
 
 规矩，没有例外：
