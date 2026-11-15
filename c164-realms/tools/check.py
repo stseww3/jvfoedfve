@@ -855,7 +855,12 @@ def views(rep, got, shots_path):
                       & (np.abs(v @ u) <= depth * ty + 2.0))
             n = int(inside.sum())
             drawn = int((near & (inside | ~sized)).sum())
-            lost = int((inside & (np.hypot(v[:, 0], v[:, 2]) > TRACKED)).sum())
+            # An entity is sent to a player within min(160, view_range x 64) blocks of it, so an
+            # entity that sets its own view_range wider than 160 is not out of reach at 380 blocks:
+            # compare against the wider of the two tracking ranges, and only when it really is the
+            # game's 160 that applies.
+            tracked = np.maximum(reach, TRACKED)
+            lost = int((inside & (np.hypot(v[:, 0], v[:, 2]) > tracked)).sum())
         rows.append({"name": shot["name"], "in_view": n, "drawn": drawn, "beyond_tracking": lost})
         if n > S.ENTITY_PER_VIEW:
             over.append(f"{shot['name']}: {n} display entities in view, a view may have {S.ENTITY_PER_VIEW}")
