@@ -24,7 +24,7 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
     coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
     trunk            a canvas travelling trunk with leather straps and brass corners
     crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
-                     every corner, a pasted label
+                     every corner, a line of stencilled marks
     crate_small      the same, small enough to stand on the trunk's lid
     display_case     one block square: a glazed brass case on a panelled base
 
@@ -63,13 +63,14 @@ IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
 BOLT = K.flat("iron", 4)                          # a bolt head in wood: a cool dot, no lighter than the wood
-# Painted canvas is the darkest cream with a worn edge, and the bed of a display case is one flat
-# tone a step under paper, with not a speck on it that could be taken for an exhibit. The woven
-# cream (cream_cloth) came out the whitest thing on the stage after the lamps, and mottled: a trunk
-# is not a flag.
-CANVAS = P.mat("cream", noise=0.12, bevel=1, base=0)
-SEAM = K.flat("ashlar", 0)                        # the binding of the trunk's lid: a step under its canvas
-LINING = K.flat("cream", 1)
+# A travelling trunk is covered in tan canvas: the dull brown of old copper, painted as cloth (no
+# streaks, a worn edge). The woven cream the card named (cream_cloth) came out the whitest thing on
+# the stage after the lamps, and mottled; the darkest plain cream still read as a box painted white.
+CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=2)
+SEAM = K.flat("old_copper", 1)                    # the binding of the trunk's lid: a step under its canvas
+# the bed of a display case: one flat tone, the darkest cream, so that paper laid on it is lighter
+# than the bed and brass is not lost in it; not a speck on it that could be taken for an exhibit
+LINING = K.flat("cream", 0)
 PAPER = K.flat("cream", 2)                        # a clean sheet: no speckle to be taken for pencil
 PENCIL, INK, LABEL = P.RAMPS["cream"][0], P.RAMPS["iron"][2], P.RAMPS["cream"][1]
 
@@ -436,8 +437,8 @@ def _trunk():
 
 
 CASE_DARK = K.flat("dark_wood", 0)              # what shows between two boards of a packing case
-TICKET = K.flat("cream", 1)                     # the label pasted on it
-NAIL = P.RAMPS["iron"][2]
+NAIL = P.RAMPS["dark_wood"][0]                  # a nail head in raw wood: iron came out a blue stud
+STENCIL = P.RAMPS["dark_wood"][1]               # marks stencilled on a board
 BOARD = 3.0                                     # texels a board of a packing case is high; one texel between two
 
 
@@ -450,20 +451,25 @@ def _cleat(boards, right):
     return Sprite(f"furn_cleat_{boards}{'r' if right else 'l'}", rows[:-1], {"n": NAIL}, back=WOOD_L)
 
 
-def _packing_case(name, w, d, boards, ticket):
+def _packing_case(name, w, d, boards, marks):
     """A packing case w by d texels: `boards` rings of raw boards with a dark gap between them, an
     upright cleat at every corner that the boards are nailed to and that stands a texel proud of
     them, a boarded lid. A frame round a panel on every side read as a chest of dark wood; boards,
-    gaps and cleats are what a crate is. ticket = (x0, y0, rows): a label pasted on the front, its
-    lower left corner and its picture; it has two lines of faint writing (in ink they were a dark
-    blot in a white field: a socket) and no arrow (an arrow of three by five texels is a cross)."""
+    gaps and cleats are what a crate is. marks = (board, row): what is stencilled on the front, as
+    one row of texels in the middle of that board (counted from the floor): a line of lettering too
+    small to read, dots more than dashes (a row of dashes is a row of slits). No pasted label (a pale ticket with writing on it read as a socket, and three
+    cases side by side showed it three times) and no arrow (three by five texels of arrow is a
+    cross)."""
     m = M.Model(PREFIX + name)
     hx, hz = w / 2.0, d / 2.0
     top = (BOARD + 1.0) * boards - 1.0
     m.box((-hx + 1.25, 0.0, -hz + 1.25), (hx - 1.25, top, hz - 1.25), CASE_DARK, skip="u")
     for i in range(boards):
         y0 = (BOARD + 1.0) * i
-        _boarded(m, (-hx + 1.0, y0, -hz + 1.0), (hx - 1.0, y0 + BOARD, hz - 1.0), DEAL, skip="ud")
+        faces = {}
+        if i == marks[0]:
+            faces["s"] = Sprite(f"furn_stencil_{name}", ["", marks[1], ""], {"i": STENCIL}, back=DEAL)
+        _boarded(m, (-hx + 1.0, y0, -hz + 1.0), (hx - 1.0, y0 + BOARD, hz - 1.0), DEAL, skip="ud", faces=faces)
     for sx in (-1.0, 1.0):
         for sz in (-1.0, 1.0):
             (xa, xb), (za, zb) = sorted((sx * hx, sx * (hx - 2.0))), sorted((sz * hz, sz * (hz - 2.0)))
@@ -473,20 +479,16 @@ def _packing_case(name, w, d, boards, ticket):
             m.box((xa, 0.0, za), (xb, top, zb), WOOD_L, grain="y", faces=faces)
     for i in range(int(round(d / 4.0))):                             # the lid: boards four texels wide
         m.box((-hx, top, -hz + 4.0 * i), (hx, top + 1.0, -hz + 4.0 * i + 4.0), DEAL, grain="x")
-    x0, y0, rows = ticket
-    picture = Sprite(f"furn_ticket_{name}", rows, {"i": PENCIL}, back=TICKET)
-    m.box((x0, y0, hz - 1.0), (x0 + len(rows[0]), y0 + len(rows), hz - 0.75), TICKET, skip="newud",
-          faces={"s": picture})
     return m
 
 
 def _crate():
-    return _packing_case("crate", 12.0, 12.0, 3, (-3.0, 5.0, [".....", ".iii.", ".ii..", "....."]))
+    return _packing_case("crate", 12.0, 12.0, 3, (1, ".i.ii.i."))
 
 
 def _crate_small():
     """Small enough for the lid of the trunk, which is ten texels deep."""
-    return _packing_case("crate_small", 10.0, 8.0, 2, (-2.0, 2.0, ["....", ".ii.", "...."]))
+    return _packing_case("crate_small", 10.0, 8.0, 2, (0, ".ii.i."))
 
 
 def _display_case():
