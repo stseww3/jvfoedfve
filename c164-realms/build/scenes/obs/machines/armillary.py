@@ -96,7 +96,7 @@ LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
 # telescope, the transit instrument and this sphere read one number), until then the same 45
 LATITUDE = float(getattr(S, "LATITUDE", 45.0))
 OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
-HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
+HOUR = -15.0                        # the still pose: how far the sphere is turned about the polar axis
 POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
 BRIGHTNESS = None                   # None: the light of LIGHT_CELL (A2 lights that cell). Else (sky, block)
 
