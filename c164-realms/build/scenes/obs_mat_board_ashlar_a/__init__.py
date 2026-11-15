@@ -8,14 +8,13 @@ twin of the same name in obs_mat_board (the whole board in its three lights, and
 
     python -m scenes.obs_mat_board_ashlar_a      writes shots.json
 """
-from scenes.obs.materials import _kit as K
-from scenes.obs_mat_board import BIOME, TIME, build, build_models, compare  # noqa: F401
+from scenes.obs_mat_board import BIOME, TIME, build, build_models, compare, pack  # noqa: F401
 
 VERSIONS = {"ashlar": "a"}
 
 
 def write_pack(pack_dir):
-    return K.pack_with(pack_dir, **VERSIONS)
+    return pack(pack_dir, **VERSIONS)
 
 
 def shots():

@@ -31,7 +31,7 @@ lamplight() counts what lamp light can come to them.
                                           and the lamp light on snow and cloud
 
 Versions are compared by scenes of their own (obs_mat_board_<tag>): the same board, the shots of
-compare(), with write_pack() calling materials._kit.pack_with() for the versions wanted.
+compare(), with write_pack() calling pack() for the versions wanted.
 """
 import math
 
@@ -39,6 +39,7 @@ from artkit.blocks import st
 from artkit.canvas import Canvas
 
 from scenes import obs_mat_panels as panels_scene
+from scenes.obs import sky
 from scenes.obs.common import blocks as B
 from scenes.obs.materials import _board
 from scenes.obs.materials import _kit as K
@@ -298,7 +299,14 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    return K.pack_with(pack_dir, **VERSIONS)
+    return pack(pack_dir, **VERSIONS)
+
+
+def pack(pack_dir, **versions):
+    """The materials in the versions wanted, and the sky's pack with them: the board stands in the
+    map's hour, and without the sky's pack the game's own sun is in its sky, a white and yellow
+    square low in the west."""
+    return list(K.pack_with(pack_dir, **versions) or []) + list(sky.pack(pack_dir) or [])
 
 
 def lacking(c=None):
