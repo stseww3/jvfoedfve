@@ -302,21 +302,40 @@ def _bars():
     return px
 
 
+_FLANGE = 4     # a flange ring every four pixels down the thin pipe
+
+
 def _chain():
-    """IRON_PIPE (the chain block): a thin cable with a flange ring every few pixels."""
-    px, _ = _recolour("block/oxidized_copper_chain")
-    seen = px[..., 3] > 0
+    """IRON_PIPE (the chain block): a thin pipe, no links -- I4 down its middle, I2 on the side that
+    takes the light and I1 on the other, a flange ring of I5 across it every four pixels, so the
+    rings carry on evenly from one block into the next. The game's chain is two crossed strips,
+    each three pixels wide and the full height (columns 0 to 2 for one, 3 to 5 for the other);
+    both get the same solid strip, so the pipe is the same from every side."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
     for y in range(TILE):
-        if y % 4 == 0:                                      # the flange rings
-            for x in range(TILE):
-                if seen[y, x]:
-                    px[y, x, :3] = _i(5)
+        tones = (5, 5, 5) if y % _FLANGE == 0 else (2, 4, 1)
+        for strip in (0, 3):
+            for k, tone in enumerate(tones):
+                _put(px, strip + k, y, _i(tone))
     return px
 
 
 def _rod():
-    """IRON_ROD: the lightning-rod shape as a plain iron rod, bright down its centre."""
-    px, _ = _recolour("block/oxidized_lightning_rod")
+    """IRON_ROD (the lightning rod's shape): a plain rod, lit down one side (I5) and dark down the
+    other (I1) -- its shaft is two pixels thick, so "bright down the middle, dark at the edge"
+    comes to those two columns -- under a small square cap with a lit corner. The game's model
+    reads the cap from the top-left four by four and the shaft from columns 0 and 1 below it."""
+    px = np.zeros((TILE, TILE, 4), dtype=np.uint8)
+    cap = ((4, 4, 4, 2),
+           (4, 5, 4, 2),
+           (4, 4, 3, 2),
+           (2, 2, 2, 1))
+    for y, row in enumerate(cap):
+        for x, tone in enumerate(row):
+            _put(px, x, y, _i(tone))
+    for y in range(len(cap), TILE):
+        _put(px, 0, y, _i(5))
+        _put(px, 1, y, _i(1))
     return px
 
 
