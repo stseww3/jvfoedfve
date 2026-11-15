@@ -1,0 +1,24 @@
+a0job 1115-225950-shell-f3-3067-28785: cursor/c164-shell-f3-3067 @ d28ad00a on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.03 1.62 1.61, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- rm -rf renders/_wip && mkdir -p renders/_wip && python tools/check.py --scene obs_main_shell > renders/_wip/shell-check.txt 2>&1; echo check=$? >> renders/_wip/shell-check.txt; echo IyBPbmUtb2ZmIGxvb2ssIGtlcHQgbm93aGVyZTogdGhlIHBvc3RzI
+water: 0 sources, 0 cells of running water (1 s)
+grid 56 x 46 x 683, 102312 blocks, 0 entity boxes (1 s)
+121 states -> 299 looks, 715 boxes, 64 pictures (1 s)
+light done (1 s)
+../renders/_wip/rodlamp-stair_foot.png (tick 6000, 1 s)
+../renders/_wip/rodlamp-stair_top.png (tick 6000, 1 s)
+102312 blocks, 0 entities (0 s)
+resource pack written to /tmp/c164pack-baf_0ct6 (0 s)
+water: 0 sources, 0 cells of running water (0 s)
+grid 56 x 46 x 683, 102312 blocks, 0 entity boxes (1 s)
+122 states -> 300 looks, 716 boxes, 64 pictures (1 s)
+light done (1 s)
+../renders/_wip/brasslamp-stair_foot.png (tick 6000, 1 s)
+../renders/_wip/brasslamp-stair_top.png (tick 6000, 1 s)
+==== NODEJOB RESULT ====
+exit=0 secs=12 host=cursor cores=4 head=d28ad00a commit=4035559c pushed=yes branch=cursor/c164-shell-f3-wip-3067 files=5
+a0job: exit=0 secs=13
