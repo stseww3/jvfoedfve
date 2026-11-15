@@ -21,9 +21,10 @@
 #   --always        commit and push even when the command fails (default: only when it exits 0)
 #   --no-push       run only, commit nothing
 #   --tail <n>      closing lines of the command's output to print (default 30)
-#   --limit <sec>   stop the command after this many seconds and still send the receipt (default
-#                   1700, or $C164_JOB_LIMIT). A longer job says so: --limit 3400 with timeout_sec=3600.
-#                   Keep it under the timeout_sec you send, so the receipt comes from here.
+#   --limit <sec>   the job's time, all of it: set-up, the command and the push home (default 1700,
+#                   or $C164_JOB_LIMIT). When it runs out, the command and everything it started
+#                   are stopped and the receipt still comes (exit=124). A longer job says so:
+#                   --limit 3500 with timeout_sec=3600. Keep it 100 s under the timeout_sec you send.
 #
 # Push your own commits before you send the job: the node sees GitHub, not your disk. The command
 # runs under `bash -c` in c164-realms/ with the node's venv first on PATH, so write it as you would
@@ -33,39 +34,37 @@
 # made once per node. A node runs one job at a time. Nothing is ever pushed to an assembly branch
 # or to main from here: pictures reach the assembly through the merge-key holder.
 #
-# Nothing in here waits for ever. On 11-16 a node went silent on a job that was past its timeout
-# with the machine idle, and a node that never answers is lost to everyone: the command, the
-# set-up and every fetch and push now run under a time limit, and the receipt says which one hit it.
+# Nothing in here waits for ever. On 11-16 eight nodes went silent within ten minutes, each on a
+# job that never came back, with the machine idle; a node that never answers is lost to everyone.
+# So the whole job has a time (--limit), every step runs inside it under a watch, a fetch or a
+# push gets three minutes at most, nothing waits for the keyboard, and the receipt says what was
+# stopped.
 set -uo pipefail
 
 ASSEMBLY="cursor/c164-assembly-fable-a9f5"
 OLD_ASSEMBLY="cursor/c164-realms-map-b59c"   # frozen on 11-16: the archive of the shift whose work was not accepted
 
-usage() { sed -n '2,34p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,35p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
-# cap <seconds> <command...>: the command, stopped (TERM, then KILL 15 s later) when it runs over.
-# --foreground keeps it in this script's process group: whoever stops the job by its group still
-# stops everything.
-cap() {
-  local s="$1"; shift
-  if command -v timeout >/dev/null 2>&1; then timeout --foreground -k 15 "$s" "$@"; else "$@"; fi
-}
 # kin <pid>: every process below this one, parents before their children.
 kin() {
   local p
-  for p in $(ps -o pid= --ppid "$1" 2>/dev/null); do echo "$p"; kin "$p"; done
+  for p in $(ps -o pid= --ppid "$1" 2>/dev/null || cat "/proc/$1/task/"*/children 2>/dev/null); do
+    echo "$p"; kin "$p"
+  done
 }
 # run <seconds> <command...>: the command with a watch beside it, both in this script's own process
-# group. At the limit the watch stops the command and everything it started (the list is taken
-# before the first signal, while the family tree is still whole; TERM, then KILL 15 s later).
+# group, so whoever stops the job by its group still stops everything. At the limit the watch
+# stops the command and everything it started (the list is taken before the first signal, while
+# the family tree is still whole; TERM, then KILL 15 s later). The command reads from /dev/null.
 # Returns the command's status; HIT_LIMIT is 1 when the watch stopped it (the status is then 124).
 HIT_LIMIT=0
 run() {
   local limit="$1"; shift
   local mark code=0 t0=$SECONDS cmd watch
-  mark="$(mktemp -u /tmp/c164_nodejob_mark.XXXXXX)"
+  mark="/tmp/c164_nodejob_mark.$$.$RANDOM"
   HIT_LIMIT=0
-  "$@" &
+  "$@" </dev/null &
   cmd=$!
   (
     until [ $((SECONDS - t0)) -ge "$limit" ]; do
@@ -89,8 +88,18 @@ run() {
   if [ -e "$mark" ]; then rm -f "$mark"; HIT_LIMIT=1; return 124; fi
   return "$code"
 }
+# within <seconds> [<held back>]: <seconds>, or what is left of the job's time less what is held
+# back for the steps still to come, whichever is smaller; never less than 1.
+within() {
+  local s="$1" l=$((limit - SECONDS - ${2:-0}))
+  if [ "$l" -lt "$s" ]; then s="$l"; fi
+  if [ "$s" -lt 1 ]; then s=1; fi
+  echo "$s"
+}
 GIT_LIMIT=180       # one fetch or one push
 SETUP_LIMIT=1200    # cloud_setup.sh: a new node downloads the client and builds the venv once
+PUSH_HOLD=90        # kept back from the command's time for the commit and the push home (a quarter of the job's time at most)
+export GIT_TERMINAL_PROMPT=0   # git asks nobody for a password: it fails instead
 
 keep=() to="" push=1 always=0 tail_n=30 wip=0 limit="${C164_JOB_LIMIT:-1700}"
 while [ $# -gt 0 ]; do
@@ -142,9 +151,13 @@ result() {   # the last lines of the receipt: one line a reader, or a script, ca
 head="?" commit="none" pushed="no" files=0
 case "$repo" in
   /tmp/dais_jobs/*)
-    if [ "$branch" != "HEAD" ] && cap "$GIT_LIMIT" git -C "$repo" fetch -q origin "$branch" >/dev/null 2>&1; then
-      git -C "$repo" reset -q --hard FETCH_HEAD >/dev/null 2>&1
-      git -C "$repo" clean -q -fd -- c164-realms >/dev/null 2>&1
+    if [ "$branch" != "HEAD" ]; then
+      if run "$(within "$GIT_LIMIT")" git -C "$repo" fetch -q origin "$branch" >/dev/null 2>&1; then
+        git -C "$repo" reset -q --hard FETCH_HEAD >/dev/null 2>&1
+        git -C "$repo" clean -q -fd -- c164-realms >/dev/null 2>&1
+      else
+        note="the fetch of $branch did not go through: the tree is as the node had it"
+      fi
     fi ;;
   *) note="not a node's job folder: the tree was used as it stands" ;;
 esac
@@ -152,14 +165,13 @@ head="$(git -C "$repo" rev-parse --short=8 HEAD)"
 
 # 2. the machine
 setup_log="$(mktemp /tmp/c164_nodejob_setup.XXXXXX)"
-rc=0
-run "$SETUP_LIMIT" env C164_REPO="$repo" MC_ROOT="$root" bash "$here/cloud_setup.sh" --no-smoke >"$setup_log" 2>&1 || rc=$?
+rc=0 s0=$SECONDS
+run "$(within "$SETUP_LIMIT")" env C164_REPO="$repo" MC_ROOT="$root" bash "$here/cloud_setup.sh" --no-smoke >"$setup_log" 2>&1 || rc=$?
 if [ "$rc" != 0 ]; then
-  tail -n 25 "$setup_log"
-  note="cloud_setup.sh failed; the command was not run"
-  if [ "$HIT_LIMIT" = 1 ]; then
-    note="cloud_setup.sh was stopped at its time limit of $SETUP_LIMIT s; the command was not run"
-  fi
+  tail -n 25 "$setup_log" | cut -c1-240
+  why="cloud_setup.sh failed"
+  if [ "$HIT_LIMIT" = 1 ]; then why="cloud_setup.sh was stopped after $((SECONDS - s0)) s (it gets $SETUP_LIMIT s at most, inside the job's $limit s)"; fi
+  note="${note:+$note; }$why; the command was not run"
   result 3; exit 3
 fi
 grep -E 'machine:|python: [0-9]|ready' "$setup_log" | sed 's/^/  /'
@@ -171,11 +183,14 @@ mkdir -p "$NUMBA_CACHE_DIR" 2>/dev/null || true
 out="$(mktemp /tmp/c164_nodejob_out.XXXXXX)"
 code=0
 t0=$SECONDS
+hold=5
+if [ "$push" = 1 ]; then hold=$PUSH_HOLD; fi
+if [ "$hold" -gt $((limit / 4)) ]; then hold=$((limit / 4)); fi
 in_proj() { cd "$proj" && exec bash -c "$*"; }
-run "$limit" in_proj "$@" >"$out" 2>&1 || code=$?
+run "$(within "$limit" "$hold")" in_proj "$@" >"$out" 2>&1 || code=$?
 took=$((SECONDS - t0))
 if [ "$HIT_LIMIT" = 1 ]; then
-  note="${note:+$note; }the command was stopped at the time limit of $limit s (--limit <seconds> gives it longer)"
+  note="${note:+$note; }the command was stopped after $took s: the job's time is $limit s (--limit <seconds> gives it longer)"
 fi
 echo "---- $* ---- exit $code, $took s, last $tail_n lines of $(wc -l <"$out"):"
 tail -n "$tail_n" "$out" | cut -c1-240
@@ -195,20 +210,26 @@ if [ "$push" = 1 ] && { [ "$code" = 0 ] || [ "$always" = 1 ]; }; then
       -m "c164-node: $(printf '%s' "$*" | cut -c1-140)" \
       -m "Run by tools/nodejob.sh on a worker node from $head; exit $code, $took s, $files files." >/dev/null 2>&1
     commit="$(git -C "$repo" rev-parse --short=8 HEAD)"
+    late=0
     for attempt in 1 2 3 4; do
-      if cap "$GIT_LIMIT" git -C "$repo" push -q origin "HEAD:refs/heads/$to" >/dev/null 2>&1; then pushed="yes"; break; fi
+      if [ $((limit - SECONDS)) -lt 3 ]; then late=1; break; fi
+      if run "$(within "$GIT_LIMIT")" git -C "$repo" push -q origin "HEAD:refs/heads/$to" >/dev/null 2>&1; then pushed="yes"; break; fi
       # The branch moved meanwhile: take theirs in, never force. A scratch branch (--wip) holds the
       # last look only: what was there becomes history and this job's tree stands.
       how=()
       if [ "$wip" = 1 ]; then how=(-s ours); fi
-      if cap "$GIT_LIMIT" git -C "$repo" fetch -q origin "$to" >/dev/null 2>&1; then
+      if run "$(within "$GIT_LIMIT")" git -C "$repo" fetch -q origin "$to" >/dev/null 2>&1; then
         git -C "$repo" "${ident[@]}" merge -q "${how[@]}" -m "c164-node: take in $to, which moved while the job ran" FETCH_HEAD >/dev/null 2>&1 \
           || { git -C "$repo" merge --abort >/dev/null 2>&1; note="${note:+$note; }the branch moved and does not merge cleanly"; break; }
         commit="$(git -C "$repo" rev-parse --short=8 HEAD)"
       fi
-      sleep $((2 ** attempt))
+      if [ "$attempt" -lt 4 ]; then sleep "$(within $((2 ** attempt)))"; fi
     done
-    if [ "$pushed" != "yes" ]; then note="${note:+$note; }the push did not go through; the commit is on the node only"; fi
+    if [ "$pushed" != "yes" ]; then
+      why="the push did not go through"
+      if [ "$late" = 1 ]; then why="the job's time ran out before the push went through"; fi
+      note="${note:+$note; }$why; the commit is on the node only"
+    fi
   fi
 elif [ "$push" = 1 ]; then
   note="${note:+$note; }the command failed, so nothing was committed (--always to push anyway)"

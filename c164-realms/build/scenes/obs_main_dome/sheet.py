@@ -11,7 +11,7 @@ nothing of it goes into the map.
         [--grey]                without colour, to judge the values
 
 A folder holds <scene>-<shot>.png as selfshots.py --out leaves them; several folders are laid shot
-by shot, so that a shot of obs_main_dome stands beside its twin of obs_main_dome_b.
+by shot, so that a shot of obs_main_dome stands beside its twin of obs_main_dome_a.
 """
 import argparse
 import os
