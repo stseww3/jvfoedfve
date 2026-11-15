@@ -438,11 +438,15 @@ COMET_TILT = 41.0       # where the director has the comet's head: due west, thi
 
 def comet_tilt():
     """Degrees above the horizon of the comet's head, which stands due west for every viewer. The
-    sky's own numbers while they can be read (the comet is painted into the moon's slot: sky/mood,
-    sky/comet), else COMET_TILT; no higher than the fork allows."""
+    sky's own number while it can be read (the comet is painted into the moon's slot; sky/comet
+    works the head's elevation out for telescopes and cameras), else COMET_TILT; no higher than
+    the fork allows."""
     try:
         from ..sky import comet, mood
-        tilt = 90.0 - float(mood.MOON_ANGLE) - float(comet.HEAD_BELOW)
+        if hasattr(comet, "HEAD_ELEVATION"):
+            tilt = float(comet.HEAD_ELEVATION)
+        else:
+            tilt = 90.0 - float(mood.MOON_ANGLE) - float(comet.HEAD_BELOW)
     except (ImportError, AttributeError, TypeError, ValueError):
         tilt = COMET_TILT
     return min(tilt, SCOPE_TILT_MAX)
