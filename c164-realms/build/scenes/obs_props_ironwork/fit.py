@@ -15,6 +15,9 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
   5  a grille's bars ride on the upright bars of the net: every light keeps five pixels
   6  the iron stays in the reveal: in front of the glass, behind the wall face, between the jambs
      (the ring of a window may run a pixel into the stone beside its narrower jamb)
+  7  the open fan in the head of a gate: every opening between its rays holds a square of two
+     pixels at least (a slit of one pixel smears at any distance), and the fan is the same left
+     and right
 
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
@@ -44,6 +47,7 @@ TILE = 16
 SPRING = 4 * TILE                       # an opening six high springs its arch four blocks up
 ON_GLASS = 2                            # what a jamb or the ring may cover of the glass, in texels
 LIGHT = 5                               # the narrowest a light may be left
+SLIT = 2                                # an opening of a gate's fan holds a square of this side at least
 GLASSY = {f.block for f in B.LIT_WINDOWS + B.DARK_WINDOWS}
 GLASS_RAMPS = ("glow", "opal", "night_glass")
 WAY = {name: step for step, name in ironwork.OUT.items()}
@@ -139,19 +143,12 @@ class View:
     def pieces(self, rows):
         """The lights that lie in `rows`, each one a set of texels: glass that hangs together, with
         the glazing bars and the members between the lights left out."""
-        todo = {(u, v) for u in range(self.w) for v in rows if self.light((u, v))}
-        out = []
-        while todo:
-            stack, piece = [todo.pop()], set()
-            while stack:
-                u, v = at = stack.pop()
-                piece.add(at)
-                for near in ((u + 1, v), (u - 1, v), (u, v + 1), (u, v - 1)):
-                    if near in todo:
-                        todo.remove(near)
-                        stack.append(near)
-            out.append(piece)
-        return out
+        return _pieces({(u, v) for u in range(self.w) for v in rows if self.light((u, v))})
+
+    def holes(self, rows):
+        """The openings that lie in `rows`, each one a set of texels: what neither stone nor iron
+        covers and hangs together."""
+        return _pieces({(u, v) for u in range(self.w) for v in rows if self.clear((u, v))})
 
     def shut(self, v):
         """True where iron closes row v from stone to stone."""
@@ -168,6 +165,30 @@ class View:
             return "+" if at in self.bar else "." if at in self.glass else " "
 
         return "\n".join("".join(mark((u, v)) for u in range(self.w)) for v in reversed(range(self.h)))
+
+
+def _pieces(todo):
+    """A set of texels as the pieces that hang together (side by side or one over the other)."""
+    todo, out = set(todo), []
+    while todo:
+        stack, piece = [todo.pop()], set()
+        while stack:
+            u, v = at = stack.pop()
+            piece.add(at)
+            for near in ((u + 1, v), (u - 1, v), (u, v + 1), (u, v - 1)):
+                if near in todo:
+                    todo.remove(near)
+                    stack.append(near)
+        out.append(piece)
+    return out
+
+
+def _square(piece):
+    """The side of the largest square of texels that lies in a piece."""
+    side = 1
+    while any(all((u + a, v + b) in piece for a in range(side + 1) for b in range(side + 1)) for u, v in piece):
+        side += 1
+    return side
 
 
 def _hull(points):
@@ -238,7 +259,7 @@ def _spans(rows):
     return ", ".join(str(a) if a == b else f"{a}-{b}" for a, b in out) or "none"
 
 
-def _cut(pieces):
+def _cut(pieces, what="the head keeps {} lights"):
     """The lights of a head as text: how many there are of each size, and how far the smallest reach."""
     if not pieces:
         return "no light in the head"
@@ -249,7 +270,7 @@ def _cut(pieces):
     spans = sorted({(max(u for u, _ in piece) - min(u for u, _ in piece) + 1,
                      max(v for _, v in piece) - min(v for _, v in piece) + 1)
                     for piece in pieces if len(piece) == least})
-    return (f"the head keeps {len(pieces)} lights: "
+    return (what.format(len(pieces)) + ": "
             + ", ".join(f"{sizes[px]} of {px} px" for px in sorted(sizes, reverse=True))
             + f"; the smallest lie in {', '.join(f'{w} x {h}' for w, h in spans)} px")
 
@@ -309,7 +330,18 @@ def judge(view, kind, reach):
             inside += 1
     text.append(f"the round: radius {r:g} px about {mid:g} px from the left")
     if kind.startswith("gate"):
-        text.append("the head is an open fan")
+        fan = view.holes(range(SPRING + ON_GLASS, view.h))
+        slits = [piece for piece in fan if _square(piece) < SLIT]
+        if slits:
+            found.append(f"{len(slits)} openings of the fan are slits ({sum(map(len, slits))} px): "
+                         f"no square of {SLIT} px lies in them")
+        odd = sum(1 for u in range(view.w) for v in range(SPRING + ON_GLASS, view.h)
+                  if view.clear((u, v)) != view.clear((view.w - 1 - u, v)))
+        if odd:
+            found.append(f"{odd} px of the fan's openings have no mirror image about the middle of the gate")
+        text.append(_cut(fan, "the head is an open fan of {} openings")
+                    + f", none without a square of {min(map(_square, fan), default=0)} px; "
+                    + f"{seen} px open of the round's {round_}")
     else:
         what = "glass" if glazed else "hole"
         if leak:
