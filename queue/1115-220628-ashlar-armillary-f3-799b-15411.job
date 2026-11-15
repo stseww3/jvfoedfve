@@ -1,0 +1,3 @@
+branch=cursor/c164-ashlar-armillary-f3-799b
+head=4ac98a36c226797cd97888b729010ee39184c670
+args=--tail 70 set\ -o\ pipefail\;\ for\ s\ in\ obs_mach_armillary\ obs_mach_armillary_b\ obs_mach_armillary_ah\;\ do\ python\ tools/selfshots.py\ \$s\ \|\|\ exit\ 1\;\ done\;\ for\ s\ in\ obs_mach_armillary\ obs_mach_armillary_b\ obs_mach_armillary_ah\;\ do\ python\ tools/check.py\ --scene\ \$s\ \|\ tail\ -n\ 16\ \|\|\ exit\ 1\;\ done 
