@@ -1,0 +1,32 @@
+gate site/stair 769e2fb5: the merged tree 5153338b, the assembly as it was 3b6cb26d
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 31 s: 49 pass (33 with warnings)
+pictures: obs_site_stair: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair at 5153338b: 0 of 12 kept pictures are what the code draws, 12 not
+    v1: 11950 of 921600 pixels are not what the code draws (off by up to 113 of 255)
+    stair_axis: 10393 of 921600 pixels are not what the code draws (off by up to 42 of 255)
+    stair_foot: 7222 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    look_back: 1903 of 921600 pixels are not what the code draws (off by up to 12 of 255)
+    wall_near: 3497 of 921600 pixels are not what the code draws (off by up to 42 of 255)
+    cheek_side: 3959 of 921600 pixels are not what the code draws (off by up to 173 of 255)
+    pedestal: 6271 of 921600 pixels are not what the code draws (off by up to 136 of 255)
+    yard_south: 2999 of 921600 pixels are not what the code draws (off by up to 149 of 255)
+    v6: 17004 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    aerial: 4093 of 921600 pixels are not what the code draws (off by up to 72 of 255)
+    axis_high: 9185 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+    v12_aerial: 9315 of 921600 pixels are not what the code draws (off by up to 152 of 255)
+pictures: obs_site_stair_noband: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair_noband at 5153338b: 0 of 5 kept pictures are what the code draws, 5 not
+    v1: 11950 of 921600 pixels are not what the code draws (off by up to 113 of 255)
+    stair_axis: 10393 of 921600 pixels are not what the code draws (off by up to 42 of 255)
+    look_back: 1903 of 921600 pixels are not what the code draws (off by up to 12 of 255)
+    aerial: 4093 of 921600 pixels are not what the code draws (off by up to 72 of 255)
+    axis_high: 9185 of 921600 pixels are not what the code draws (off by up to 9 of 255)
+pictures: obs_site_stair_nolamps: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair_nolamps at 5153338b: 0 of 5 kept pictures are what the code draws, 5 not
+    v1: 8618 of 921600 pixels are not what the code draws (off by up to 37 of 255)
+    stair_axis: 7793 of 921600 pixels are not what the code draws (off by up to 36 of 255)
+    look_back: 1903 of 921600 pixels are not what the code draws (off by up to 12 of 255)
+    aerial: 2998 of 921600 pixels are not what the code draws (off by up to 4 of 255)
+    axis_high: 8930 of 921600 pixels are not what the code draws (off by up to 7 of 255)
+result: PASS
