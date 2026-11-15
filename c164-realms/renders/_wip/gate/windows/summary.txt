@@ -1,0 +1,147 @@
+gate materials/windows b3d3ce6d: the merged tree b3d3ce6d, the assembly as it was 00ff361a
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 5 test scenes, 85 shots with a picture kept
+                    obs_mat_windows: 26 pictures show a5e2c4f2; the card's code has changed since (windows.py): draw them again
+                    obs_mat_windows_b: 26 pictures show a5e2c4f2; the card's code has changed since (windows.py): draw them again
+                    obs_mat_windows_in: 11 pictures show aa9d1a3e; the card's code has changed since (windows.py, placement.py): draw them again
+                    obs_mat_windows_in_b: 11 pictures show aa9d1a3e; the card's code has changed since (windows.py): draw them again
+                    obs_mat_windows_in_off: 11 pictures show aa9d1a3e; the card's code has changed since (windows.py): draw them again
+check.py: 39 scenes in 27 s: 29 pass (22 with warnings), 10 FAIL: obs_main_dome, obs_main_dome_b, obs_main_facade, obs_main_facade_a, obs_main_facade_c, obs_main_facade_nocrown, obs_main_smalldome, obs_site_court, obs_site_terrain, obs_site
+    FAIL  obs_main_dome: 1 failed, 2 with warnings (19 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 11 shots, most display entities in view: 24 (top), limit 600; counted without what walls hide; the game draws up to 24 (v1): a display entity without width and height is drawn outs
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_dome_b: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 11 shots, most display entities in view: 24 (top), limit 600; counted without what walls hide; the game draws up to 24 (v1): a display entity without width and height is drawn outs
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_facade: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 10 shots, most display entities in view: 24 (west), limit 600; counted without what walls hide; the game draws up to 24 (v2_axis): a display entity without width and height is draw
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_facade_a: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 4 shots, most display entities in view: 18 (v1_far), limit 600; counted without what walls hide; the game draws up to 24 (v2_axis): a display entity without width and height is dra
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_facade_c: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 4 shots, most display entities in view: 18 (v1_far), limit 600; counted without what walls hide; the game draws up to 24 (v2_axis): a display entity without width and height is dra
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_facade_nocrown: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 5 shots, most display entities in view: 18 (v1_far), limit 600; counted without what walls hide; the game draws up to 24 (v2_axis): a display entity without width and height is dra
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_main_smalldome: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 18 shots, most display entities in view: 24 (west_high), limit 600; counted without what walls hide; the game draws up to 24 (v11): a display entity without width and height is dra
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_site_court: 1 failed, 2 with warnings, skipped: sight (2 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 9 shots, most display entities in view: 23 (aerial), limit 600; counted without what walls hide; the game draws up to 24 (v2_axis): a display entity without width and height is dra
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_site_terrain: 1 failed, 2 with warnings (3 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 9 shots, most display entities in view: 24 (sunset_terrace), limit 600; counted without what walls hide; the game draws up to 24 (v1_arrival): a display entity without width and he
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+    FAIL  obs_site_terrain_nosnow: 1 failed, 2 with warnings, skipped: sight (2 s)
+          [FAIL] entities: 24 display entities, 20 models never placed
+              2 display entities show 'c164:mat_window_lining_curtain_3x3_whole', which the pack does not have
+          [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+              oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+          [WARN] views: 4 shots, most display entities in view: 24 (west_prow), limit 600; counted without what walls hide; the game draws up to 24 (v11_sunset): a display entity without width and height 
+              the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+pictures: obs_mat_windows: the kept pictures are NOT what the delivered commit b3d3ce6d draws (it goes back):
+    [FAIL] selfshots obs_mat_windows at b3d3ce6d: 0 of 26 kept pictures are what the code draws, 26 not
+    front: 202059 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    front_b: 195132 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    front_c: 206071 of 921600 pixels are not what the code draws (off by up to 33 of 255)
+    far: 24152 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    slant: 103372 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    near_main: 215452 of 921600 pixels are not what the code draws (off by up to 31 of 255)
+    near_base: 148939 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    walls_lit: 50166 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    walls_dark: 70038 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    close_lit: 78963 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    close_frosted: 94853 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    close_curtain: 104428 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+pictures: obs_mat_windows_b: the kept pictures are NOT what the delivered commit b3d3ce6d draws (it goes back):
+    [FAIL] selfshots obs_mat_windows_b at b3d3ce6d: 0 of 26 kept pictures are what the code draws, 26 not
+    front: 202059 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    front_b: 195132 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    front_c: 206071 of 921600 pixels are not what the code draws (off by up to 33 of 255)
+    far: 24152 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    slant: 103371 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    near_main: 215452 of 921600 pixels are not what the code draws (off by up to 31 of 255)
+    near_base: 148939 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    walls_lit: 50166 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    walls_dark: 69904 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    close_lit: 78963 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    close_frosted: 94853 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    close_curtain: 104428 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+pictures: obs_mat_windows_in: the kept pictures are NOT what the delivered commit b3d3ce6d draws (it goes back):
+    [FAIL] selfshots obs_mat_windows_in at b3d3ce6d: 0 of 11 kept pictures are what the code draws, 11 not
+    in_wall: 58247 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_wall_b: 58247 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    in_wall_c: 58247 of 921600 pixels are not what the code draws (off by up to 24 of 255)
+    in_lit: 109006 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_frosted: 88382 of 921600 pixels are not what the code draws (off by up to 15 of 255)
+    in_curtain: 99933 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    in_near: 45600 of 921600 pixels are not what the code draws (off by up to 21 of 255)
+    in_slant: 76495 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    out_front: 80948 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_slant: 122024 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_near: 163321 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+pictures: obs_mat_windows_in_b: the kept pictures are NOT what the delivered commit b3d3ce6d draws (it goes back):
+    [FAIL] selfshots obs_mat_windows_in_b at b3d3ce6d: 0 of 11 kept pictures are what the code draws, 11 not
+    in_wall: 58247 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_wall_b: 58247 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    in_wall_c: 58247 of 921600 pixels are not what the code draws (off by up to 24 of 255)
+    in_lit: 109006 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_frosted: 88382 of 921600 pixels are not what the code draws (off by up to 15 of 255)
+    in_curtain: 99933 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    in_near: 45600 of 921600 pixels are not what the code draws (off by up to 21 of 255)
+    in_slant: 76495 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    out_front: 80948 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_slant: 122024 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_near: 163321 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+pictures: obs_mat_windows_in_off: the kept pictures are NOT what the delivered commit b3d3ce6d draws (it goes back):
+    [FAIL] selfshots obs_mat_windows_in_off at b3d3ce6d: 0 of 11 kept pictures are what the code draws, 11 not
+    in_wall: 58653 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_wall_b: 58653 of 921600 pixels are not what the code draws (off by up to 20 of 255)
+    in_wall_c: 58653 of 921600 pixels are not what the code draws (off by up to 24 of 255)
+    in_lit: 109850 of 921600 pixels are not what the code draws (off by up to 22 of 255)
+    in_frosted: 89365 of 921600 pixels are not what the code draws (off by up to 15 of 255)
+    in_curtain: 100579 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    in_near: 47355 of 921600 pixels are not what the code draws (off by up to 21 of 255)
+    in_slant: 77633 of 921600 pixels are not what the code draws (off by up to 19 of 255)
+    out_front: 80948 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_slant: 122024 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    out_near: 163321 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+result: FAIL
