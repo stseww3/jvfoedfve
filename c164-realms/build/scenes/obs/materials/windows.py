@@ -507,8 +507,9 @@ CLOTH = (("dark_wood", 2), ("old_copper", 0), ("old_copper", 1), ("old_copper", 
 _FOLDS = ("0123221", "012321", "0122321", "01321", "013221", "012321", "01231", "012321")
 RAIL = (("brass", 1), ("brass", 3))     # what the curtain hangs from, and a ring on it
 # The blind of version b, a wooden slat from its face down: the face twice, where it turns under,
-# the shadow it throws on the next one.
-SLAT = (("brass", 1), ("brass", 1), ("brass", 0), ("dark_wood", 1))
+# the shadow it throws on the next one. Dark wood: in brass the blind was the one saturated thing
+# on the wall and read as if the lamp behind it still came through.
+SLAT = (("dark_wood", 4), ("dark_wood", 4), ("dark_wood", 3), ("dark_wood", 1))
 TAPE = 3                                # the two tapes a blind hangs in: so far in from its sides
 _EDGE = {"lit": BAR, "frosted": BAR, "curtain": CLOTH[0]}       # the half pixel a lining is thick
 
