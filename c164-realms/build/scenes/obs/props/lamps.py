@@ -543,12 +543,19 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
     "doors"). A lamp is only placed where it has something to stand on or to hang from on the canvas
     as it is, so a tree without one of the site's packages has fewer lamps and no floating ones;
     what was left out is kept in canvas.lamps_left_out as (group, kind, point). With the lamps at
-    the armillary's feet goes the light they throw on its rings (_feet_glow). Returns the number of
-    display entities."""
+    the armillary's feet goes the light they throw on its rings (_feet_glow). A lamp is placed
+    once: a second call, for the same groups or for more of them, adds what does not stand yet
+    (a test scene may ask for one group, whether the switch DRESS has placed it already or not).
+    Returns the number of display entities placed by this call."""
     n, left, feet = 0, [], 0
+    origin = tuple(origin)
+    placed = getattr(canvas, "lamps_placed", None)
+    if placed is None:
+        placed = canvas.lamps_placed = set()
     for group, kind, p, level, aim in site_lamps():
-        if groups is not None and group not in groups:
+        if (groups is not None and group not in groups) or (kind, tuple(p), origin) in placed:
             continue
+        before = n
         name = f"{kind}_{version or VERSION}" if kind in VERSIONED else kind
         if SPEC[name]["mount"] == "wall":
             facing = _wall_facing(canvas, p, origin)
@@ -562,9 +569,15 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
             yaw = None if aim is None else math.degrees(math.atan2(-(aim[0] - p[0]), aim[2] - p[2]))
             n += place(canvas, kind, p, origin=origin, level=level, yaw=yaw)
             feet += group == "feet"
+        if n > before:
+            placed.add((kind, tuple(p), origin))
     if feet:
         _feet_glow(canvas, origin)
-    canvas.lamps_left_out = list(getattr(canvas, "lamps_left_out", [])) + left
+    out = []
+    for entry in list(getattr(canvas, "lamps_left_out", [])) + left:
+        if entry not in out and (entry[1], tuple(entry[2]), origin) not in placed:
+            out.append(entry)
+    canvas.lamps_left_out = out
     return n
 
 
