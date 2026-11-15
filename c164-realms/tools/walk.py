@@ -22,13 +22,15 @@ sure that every round looks from the same places.
     walk.py sheets   <stations.json> --pictures <prefix> --out <folder>
         contact sheets of pictures drawn as <prefix>-<shot name>.png
     walk.py round    <route.json> --round <the assembly commit, 7 digits> [--stations <stations.json>]
-                     [--only A,B] [--no-pictures]
+                     [--only A,B] [--no-pictures] [--as-kept]
         all of it, on a worker node: build the scene once, take the station table (the one given,
         or a new one of the route), ask the blocks how each station is reached, draw every shot,
         lay out the sheets. What is kept goes to plan/reviews/walk/<round>/: <prefix>-stations.json,
         <prefix>-reach.json and <prefix>-sheet-<stretch>-<n>.jpg. The single pictures stay in the
         work folder (--work, default /tmp/c164_walk) and are not kept. --only draws the stretches
-        named and no others (a round in several jobs); --no-pictures stops before the drawing.
+        named and no others (a round in several jobs); --no-pictures stops before the drawing;
+        --as-kept draws from the table the round has kept already and does not look for the ways
+        again (the later jobs of such a round: the first one, with --no-pictures, is pushed first).
 
         bash c164-realms/tools/nodejob.sh --keep c164-realms/plan/reviews/walk \\
             python tools/walk.py round plan/reviews/walk/in-route.json --round db1ec43
@@ -105,6 +107,7 @@ import pickle
 import re
 import subprocess
 import sys
+import time
 from collections import deque
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -586,6 +589,40 @@ def scene_cells(scene, canvas):
     return built.b
 
 
+PICTURE_LINE = re.compile(r"\(tick -?\d+, (\d+) s\)\s*$")       # build/render.py's line for a picture drawn
+
+
+def draw(scene, shot_file, pictures, size, fov, canvas, say=print, every=25):
+    """Draw the shots with build/render.py, in a process of its own, as <pictures>-<shot name>.png.
+    What it says of the scene is passed on as it comes, of the pictures every twenty-fifth line,
+    and at the end how long a picture took. Returns its exit code."""
+    cmd = [sys.executable, "-u", "render.py", scene, "--shots", shot_file, "--out", pictures,
+           "--size", f"{size[0]}x{size[1]}", "--fov", str(fov), "--canvas", canvas]
+    start, first, took, tail = time.time(), None, [], []
+    with subprocess.Popen(cmd, cwd=BUILD, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
+        for line in proc.stdout:
+            line = line.rstrip()
+            tail = (tail + [line])[-12:]
+            found = PICTURE_LINE.search(line)
+            if not found:
+                say(line, flush=True)
+                continue
+            if first is None:
+                first = time.time() - float(found.group(1))
+            took.append(float(found.group(1)))
+            if len(took) % every == 1:
+                say(f"{line}   [{len(took)} drawn, {time.time() - start:.0f} s]", flush=True)
+        code = proc.wait()
+    if took:
+        spent = time.time() - first
+        say(f"walk: {len(took)} pictures in {spent:.0f} s, {spent / len(took):.1f} s each (the slowest "
+            f"{max(took):.0f} s), after {first - start:.0f} s of setting the scene up", flush=True)
+    if code:
+        say(f"walk: build/render.py stopped with exit code {code}; its last lines:", flush=True)
+        say("\n".join("  " + line for line in tail), flush=True)
+    return code
+
+
 def make_table(route, cells, **facts):
     feet, source = feet_finder(cells)
     return table_of(route, stations_of(route, feet, room_finder()), floor_from=source, **facts)
@@ -821,6 +858,9 @@ def main():
     p.add_argument("--out", help="default plan/reviews/walk/<round>/")
     p.add_argument("--only", help="comma separated stretch ids: draw these stretches only")
     p.add_argument("--no-pictures", action="store_true", help="the station table and the ways only: nothing is drawn")
+    p.add_argument("--as-kept", action="store_true",
+                   help="draw from the round's kept station table as it is: the ways are not looked for again "
+                        "(the later jobs of a round drawn in several)")
     args = ap.parse_args()
 
     if args.cmd == "check":
@@ -893,22 +933,29 @@ def main():
     work = os.path.join(args.work, f"{prefix}-{args.round}")
     os.makedirs(work, exist_ok=True)
     canvas = os.path.join(args.work, f"{args.scene}-{args.round}.pkl")
-    cells = scene_cells(args.scene, canvas)
-    if args.stations:
-        table = load_table(args.stations)
-        table["round"] = args.round
-    else:
-        table = make_table(route, cells, scene=args.scene, round=args.round, route_file=os.path.basename(args.route))
-    found = survey(table, cells)
     kept = os.path.join(out, f"{prefix}-stations.json")
-    write_table(kept, table)
-    if found is not None:
-        write_found(os.path.join(out, f"{prefix}-reach.json"), found)
-    del cells, found                        # the drawing reads the scene again, in a process of its own
-    walkreach = _walkreach()
-    if walkreach is not None:
-        walkreach._WORLDS.clear()
-    gc.collect()
+    if args.as_kept:
+        if not os.path.exists(kept):
+            print(f"walk: --as-kept: there is no {os.path.relpath(kept, PROJECT)} yet; the round's first job makes it")
+            return 2
+        table = load_table(kept)
+    else:
+        cells = scene_cells(args.scene, canvas)
+        if args.stations:
+            table = load_table(args.stations)
+            table["round"] = args.round
+        else:
+            table = make_table(route, cells, scene=args.scene, round=args.round,
+                               route_file=os.path.basename(args.route))
+        found = survey(table, cells)
+        write_table(kept, table)
+        if found is not None:
+            write_found(os.path.join(out, f"{prefix}-reach.json"), found)
+        del cells, found                    # the drawing reads the scene again, in a process of its own
+        walkreach = _walkreach()
+        if walkreach is not None:
+            walkreach._WORLDS.clear()
+        gc.collect()
     if args.no_pictures:
         print("\n".join(report(table)))
         print(f"walk: {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}; nothing drawn")
@@ -921,16 +968,12 @@ def main():
     shot_file = os.path.join(work, "shots.json")
     write_shots(shot_file, shots)
     print(f"walk: {len(table['stations'])} stations, {len(shots)} shots; drawing", flush=True)
-    width, height = table.get("size", SIZE)
     pictures = os.path.join(work, "p")
-    done = subprocess.run([sys.executable, "render.py", args.scene, "--shots", shot_file, "--out", pictures,
-                           "--size", f"{width}x{height}", "--fov", str(table.get("fov", FOV)), "--canvas", canvas],
-                          cwd=BUILD, capture_output=True, text=True)
-    print("\n".join((done.stdout + done.stderr).strip().splitlines()[-6:]), flush=True)
+    code = draw(args.scene, shot_file, pictures, table.get("size", SIZE), table.get("fov", FOV), canvas)
     written, light = sheets_of(table, pictures, out)
     print("\n".join(report(table, light)))
     print(f"walk: {len(written)} sheets and {os.path.basename(kept)} -> {os.path.relpath(out, PROJECT)}")
-    return 0 if done.returncode == 0 else 1
+    return 0 if code == 0 else 1
 
 
 if __name__ == "__main__":
