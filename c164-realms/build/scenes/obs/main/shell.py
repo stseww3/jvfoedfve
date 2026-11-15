@@ -280,11 +280,13 @@ def _layout(entrance):
     # stair's first landing rests on, at the corner where the north gallery meets the cross gallery
     # (the landing and the step before it). Where half a block of air is left under the slab, the
     # railing closes the deck. Else the railing follows the drop: on a cheek it starts where the
-    # flight is a block below the deck
+    # flight is a block below the deck, and at the cheek's east end it turns the corner into the
+    # railing over the flight (bars do not join corner to corner: without the corner cell one
+    # walks between the two posts into the well)
     under = {(x, z): top - 0.5 for x, z, _y, _half, top in ring_stair() if top - 0.5 < S.STAND + HEADROOM}
     L.plinth = {c for c, y in under.items() if c in L.deck and y == S.STAND + 1}
     L.rail = ((L.gallery_edge - {BRIDGE}) | L.notch | over_flights | (set(under) & L.deck)
-              | {c for c in L.cheek if LANDING_X + 1 < c[0] < ARCADE_X[0] - 1}) - L.plinth
+              | {c for c in L.cheek if LANDING_X + 1 < c[0] < ARCADE_X[0]}) - L.plinth
     L.walk = L.deck - L.rail - L.plinth                                   # where feet stand at 7
     # the window niches the facade cuts into its own lining in the hall's two east corners, behind
     # the last column of glass of the great windows beside the entrance (facade._recesses, counted
@@ -720,6 +722,16 @@ def check():
         for y in range(S.STAND, S.STAND + HEADROOM):        # and nothing hangs into the way of whoever walks on one
             if solid(x, y, z):
                 out.append(f"main floor: no head room on the deck at ({x}, {z}), y {y}")
+    #    nor slips between two railings that meet corner to corner: bars and panels are thin and do
+    #    not join across a corner, so the cell in the corner has to be closed too
+    thin = lambda n: c.name(n[0], S.STAND, n[1]) in (RAIL, PANEL)
+    drop = lambda n: (n in L.hall and n not in L.deck
+                      and not any(solid(n[0], y, n[1]) for y in range(DECK_Y - 1, S.STAND + 1)))
+    for x, z in L.walk:
+        for dx, dz in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+            if drop((x + dx, z + dz)) and thin((x + dx, z)) and thin((x, z + dz)):
+                out.append(f"main floor: from the deck at ({x}, {z}) one slips between two railings into the drop at "
+                           f"({x + dx}, {z + dz})")
     for x, z in L.niches:                                   # the facade's niches are what room_at() takes them for
         if not solid(x, DECK_Y, z) or any(solid(x, y, z) for y in range(S.PANEL, S.WINDOW[1] + 1)):
             out.append(f"main floor: the window niche at ({x}, {z}) is not a floor at the galleries' level with air to the window's head")
