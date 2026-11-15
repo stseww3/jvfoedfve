@@ -51,9 +51,10 @@ version VERSION of it. For the other lines:
     n += signs.great(canvas, seat, "emblem", origin)        # or "clock"; a seat as facade.emblem()'s
     n += signs.place(canvas, "emblem", (x, y, z), facing="east", origin=origin)
     n += signs.plate(canvas, "220V", (x, y, z), facing="east", origin=origin)
-    n += signs.flagpole(canvas, (x, y, z), height=7, facing="east", origin=origin)
+    n += signs.flagpole(canvas, (x, y, z), height=7, origin=origin)
 
-Mounting, materials and lights are _kit's. The test scene is build/scenes/obs_props_elecsign
+A flag has no facing to choose: the map has one wind (the skeleton's WIND_TO) and every flag flies
+with it. Mounting, materials and lights are _kit's. The test scene is build/scenes/obs_props_elecsign
 (shared with props/electrics).
 """
 import functools
@@ -455,6 +456,9 @@ def _plate(label):
 # ---- the flag and its pole ------------------------------------------------------------------------------
 FLAG = (24, 16)                 # the cloth in pixels: a block and a half by a block
 FLAG_WAVE = (16.0, -20.0, 14.0)     # how its three widths hang turned against each other, in degrees
+# One wind for the whole map, a north wind (A0, g2 11-15): the skeleton's WIND_TO is the side every
+# flag flies to, in the words used for facing; south while the skeleton in the tree does not say.
+WIND_TO = getattr(S, "WIND_TO", "south")
 POLE = K.flat("iron", 3)
 POLE_R = 1.0                    # the pole is two pixels thick
 POLE_FOOT, POLE_HEAD = 1.0, 0.75    # what the foot and the head take of a pole's height, in blocks
@@ -629,12 +633,15 @@ def great(canvas, seat, kind="emblem", origin=(0, 0, 0), light=True, **opts):
     return place(canvas, "great_" + kind, pos, facing=seat["out"], origin=origin, light=light, **opts)
 
 
-def flagpole(canvas, foot, height=7.0, facing="south", origin=(0, 0, 0), flag=True):
+def flagpole(canvas, foot, height=7.0, origin=(0, 0, 0), flag=True):
     """A flagpole standing on the ground at `foot` (the middle of its foot), `height` blocks to
-    the top of its ball, the flag under the ball. `facing` is the way the flag's face looks; the
-    cloth flies to the left of whoever stands before it. Returns the number of display entities
-    (four: foot, pole, head, flag)."""
-    yaw = K.FACING[facing]
+    the top of its ball, the flag under the ball. The cloth flies with the map's one wind, to
+    WIND_TO, a block and a half from the pole; nobody who puts up a pole chooses that. With the
+    north wind the cloth lies north to south and shows a whole face to the east and to the west:
+    from the east the hoist is on the right, from the west on the left, and the emblem reads
+    the right way round from both. Returns the number of display entities (four: foot, pole,
+    head, flag)."""
+    yaw = K.FACING[WIND_TO] + 90.0          # the cloth flies along the model's +x: turn that to WIND_TO
     built = _models()
     x, y, z = (foot[i] + origin[i] for i in range(3))
     n = K.put(canvas, built[PREFIX + "pole_foot"], foot, yaw=yaw, origin=origin)
