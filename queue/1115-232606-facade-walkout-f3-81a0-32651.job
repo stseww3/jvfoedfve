@@ -1,0 +1,3 @@
+branch=cursor/c164-facade-walkout-f3-81a0
+head=ad9d38073f528c16c6db6e3dff3dbab52bb8a300
+args=--always --keep c164-realms/plan/reviews/walk --tail 120 mkdir\ -p\ /tmp/c164_walk\ plan/reviews/walk/5959264\;\ P=/tmp/c164_walk/obs-5959264.pkl\;\ python\ tools/walkreach.py\ obs\ --canvas\ \$P\ --out\ plan/reviews/walk/5959264\ --name\ out-reach-spawn\ --bounds=-90\,-110\,140\,112\ \|\ tail\ -75\;\ python\ tools/walkreach.py\ obs\ --canvas\ \$P\ --out\ plan/reviews/walk/5959264\ --name\ out-reach-court\ --bounds=-90\,-110\,140\,112\ --start\ \"court\,\ on\ the\ axis\ by\ the\ armillary\"\ \|\ tail\ -3\;\ python\ tools/walk.py\ round\ plan/reviews/walk/out-route.json\ --round\ 5959264\ --only\ A\,B\,C\,D 
