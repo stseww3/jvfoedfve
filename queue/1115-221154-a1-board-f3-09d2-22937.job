@@ -1,0 +1,3 @@
+branch=cursor/c164-a1-board-f3-09d2
+head=07bf48084967fe994f209899d6528c947fa860cc
+args=--wip --always --tail 80 bash tools/gate.sh materials/board 07bf4808 --base e5d14d2a 
