@@ -59,6 +59,7 @@ STONE = P.mat("ashlar")
 WHITE = P.mat("cream", base=2, bevel=1)           # white paint on wood: the thermometer screen
 WHITE_D = P.mat("cream", base=1, bevel=1)
 LENS = K.flat("night_glass", 2)                   # the glass of an objective: dark, it holds the sky
+MIRROR = K.flat("night_glass", 4)                 # a silvered glass: it gives the sky back
 EYECUP = K.flat("iron", 1)
 KNOB = K.flat("brass", 4)                         # the bright end of a knurled knob
 ROD = K.flat("brass", 3)                          # a rod one pixel thick: one clean line, no edges
@@ -610,9 +611,9 @@ def _sextant():
     c = at(arm, reach, 1.25)
     m.box((c[0] - 1.25, c[1] - 1.25, 0.75), (c[0] + 1.25, c[1] + 1.25, 2.0), BRASS_D)   # its clamp and vernier
     m.tube("z", (c[0], c[1]), 2.0, 3.0, 0.75, BRASS_D, cap=KNOB)
-    m.box((-0.5, top[1] - 0.25, 2.25), (0.5, top[1] + 2.5, 3.5), LENS)                  # index glass
+    m.box((-0.5, top[1] - 0.25, 2.25), (0.5, top[1] + 2.5, 3.5), MIRROR)                # index glass
     g = at(240.0, 5.5)
-    m.box((g[0] - 0.5, g[1] - 1.25, 0.75), (g[0] + 0.5, g[1] + 1.25, 3.0), LENS)        # horizon glass
+    m.box((g[0] - 0.5, g[1] - 1.25, 0.75), (g[0] + 0.5, g[1] + 1.25, 3.0), MIRROR)      # horizon glass
     t = at(300.0, 5.5)
     m.tube("x", (t[1], 1.75), t[0] - 0.5, t[0] + 4.5, 1.0, BRASS, cap=LENS)             # telescope
     m.tube("x", (t[1], 1.75), t[0] + 0.5, t[0] + 1.5, 1.25, BRASS_D)                    # and its collar
