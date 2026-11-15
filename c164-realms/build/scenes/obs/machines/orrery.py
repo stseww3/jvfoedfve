@@ -119,8 +119,11 @@ TOOTH = 4 * PX                           # the pitch of every wheel: a tooth of 
 # teeth of (the wheel on the planet's sleeve, the wheel on the lay shaft that turns it). Every pair
 # adds up to 20 teeth: one distance between the two shafts for all six pairs
 TEETH = dict(mercury=(5, 15), venus=(7, 13), earth=(8, 12), mars=(9, 11), jupiter=(13, 7), saturn=(15, 5))
-LAY_TURN = 3600.0                        # ticks the lay shaft takes for a turn; the planets follow from it
-PERIOD = {k: LAY_TURN * a / b for k, (a, b) in TEETH.items()}        # 1200 .. 10800 ticks
+LAY_TURN = 3003                          # ticks the lay shaft takes for a turn (3 x 7 x 11 x 13, so that
+#                                          every planet's turn is a whole number of ticks too)
+PERIOD = {k: LAY_TURN * a // b for k, (a, b) in TEETH.items()}       # 1001, 1617, 2002, 2457, 5577, 9009:
+#                                          Mercury in 50 seconds, Saturn in seven and a half minutes
+assert all(PERIOD[k] * b == LAY_TURN * a for k, (a, b) in TEETH.items())
 SPIN = {k: PERIOD["mercury"] / PERIOD[k] for k in PLANETS}           # rate against Mercury's: 1 .. 0.11
 SLEEVE = dict(mercury=0.0625, venus=0.08, earth=0.10, mars=0.12, jupiter=0.14, saturn=0.16)   # radius
 
@@ -830,8 +833,8 @@ def _report():
               f"{len(gaps)} pairs, {len(tight)} closer than {TIGHT:.3f}")
         for gap, a, b in gaps[:10]:
             print(f"    {gap:6.3f}  {a} / {b}")
-    print("teeth and turns: " + ", ".join(f"{k} {TEETH[k][0]}:{TEETH[k][1]} {PERIOD[k]:.0f}" for k in PLANETS)
-          + f"; lay shaft {LAY_TURN:.0f} the other way")
+    print("teeth and turns: " + ", ".join(f"{k} {TEETH[k][0]}:{TEETH[k][1]} {PERIOD[k]}" for k in PLANETS)
+          + f"; lay shaft {LAY_TURN} the other way")
     return ok
 
 
