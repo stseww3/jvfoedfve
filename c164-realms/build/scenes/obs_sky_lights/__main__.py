@@ -1,7 +1,8 @@
 """python -m scenes.obs_sky_lights (in build/): writes this scene's shots.json and that of its twin
 obs_sky_lights_nolend, then prints what the lights came to: the report of sky/lights, the lighting
 map of each look, and the block light that reaches the stone round the windows of the levels board,
-round the entrance (with and without what the brightest window lends) and at the wall wash."""
+round a lit window of a wing (with 10 and with 12 behind the glass), round the entrance (with and
+without what the brightest window lends) and on the washed pilasters."""
 import json
 import os
 
@@ -10,7 +11,7 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.sky import _lightkit as L
 from scenes.obs.sky import lights
 
-from . import BOARD, BOARD_LEVELS, NOLEND_LOOKS, NOLEND_SHOTS, STATIONS, WING_X, build, shots
+from . import BOARD, BOARD_LEVELS, NOLEND_LOOKS, NOLEND_SHOTS, STATIONS, SURROUND_BAY, VARIANTS, WING_X, build, shots
 
 
 def surround(canvas, o, wall, bay):
@@ -64,6 +65,10 @@ def main():
         print(f"  {level} behind the glass: "
               + "; ".join(f"{k} {v}" for k, v in surround(canvas, BOARD, WING_X, bay).items()))
     o = STATIONS["blue"]
+    stood = [("blue", o)] + [(name, at) for name, (_, at, _) in VARIANTS.items()]
+    for name, at in stood:
+        print(f"  {name + ', bay ' + str(SURROUND_BAY) + ':':<22} "
+              + "; ".join(f"{k} {v}" for k, v in surround(canvas, at, S.east_wall_x(SURROUND_BAY), SURROUND_BAY).items()))
     wall = S.east_wall_x(9)
     print("  blue, over the door:   " + "; ".join(f"{k} {v}" for k, v in surround(canvas, o, wall, 9).items()))
     beside = lights.ENTRANCE_BAYS[-1]       # its jamb and pilaster side of surround() are the ones towards the door

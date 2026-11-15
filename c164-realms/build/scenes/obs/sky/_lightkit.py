@@ -13,6 +13,7 @@ lines. Those call this module and nothing else of the light:
     L.glazed(canvas, windows, origin)       # the windows of a front that main's table does not list
     L.dress(canvas)                         # a test scene: light the building although the switch is off
     with L.under("deep"): ...               # a test scene: what is built inside is glazed for that look
+    with L.trying(LENDS=()): ...            # a test scene: a variant of the sources beside the building as it is
 
 Ranks: the levels of the invisible sources. 15 is never used: light of 15 is nine parts white and 13
 is half white already.
@@ -218,6 +219,25 @@ def under(look):
         yield
     finally:
         _UNDER.pop()
+
+
+_TRIED = ("BEHIND", "THROUGH", "LENDS")     # the numbers of the sources; which windows are lit is not tried here
+
+
+@contextlib.contextmanager
+def trying(**numbers):
+    """Place the sources of what sky/lights.build() lights inside the block by other numbers than
+    this module has: trying(LENDS=()), trying(BEHIND={...}). They are put back when the block closes.
+    For a test scene that shows a variant beside the building as it is; the master scene never does."""
+    unknown = sorted(set(numbers) - set(_TRIED))
+    if unknown:
+        raise ValueError(f"trying() changes {', '.join(_TRIED)}, not {', '.join(unknown)}")
+    kept = {name: globals()[name] for name in numbers}
+    globals().update(numbers)
+    try:
+        yield
+    finally:
+        globals().update(kept)
 
 
 def _look(look):
