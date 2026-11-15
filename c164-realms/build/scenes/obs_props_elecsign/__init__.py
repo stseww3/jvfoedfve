@@ -18,8 +18,10 @@ On it:
   a number plate on every pilaster of the two wings, 1 to 8 from the south;
   on the north wing a bell and the small brass emblem, each over a number plate;
   the flag on its pole in the court, flying with the map's wind.
-The wall telephone and the telegraph key are pieces for a room: the time room places them, and
-props.py shows them in the gallery.
+The wall telephone and the telegraph key are pieces for a room: the time room places them, the
+test scene obs_props_elecsign_room shows them with the way plates beside a door, and props.py
+shows them in the gallery. The cable station's name board hangs on a copy of its gable in
+obs_props_elecsign_station.
 
 Light. Once sky/lights is in the tree it lights the slice as it lights the building: the slice
 stands where the building does, so main's table of windows, the doorway and the wall wash all
@@ -358,11 +360,14 @@ def shots():
     ex, ey, ez = tablet["face_x"], (min(ys) + max(ys) + 1) / 2.0, S.AXIS_Z      # the great emblem's middle
     shot("v2_axis", V2["pos"], V2["look_at"])
     shot("emblem_front", (ex + 6.0, ey, ez), (ex, ey, ez))
-    shot("emblem_court", (ex + 20.0, eye, ez), (ex, ey, ez))
-    shot("emblem_court_deep", (ex + 20.0, eye, ez), (ex, ey, ez), TIME_DEEP)
-    shot("emblem_court_glow", (ex + 20.0, eye, ez), (ex, ey, ez), TIME_GLOW)
+    # from the court the eye is held a little under the emblem, so that the two street lamps
+    # before the door stand in the picture from foot to globe
+    court = (ex, ey - 3.5, ez)
+    shot("emblem_court", (ex + 20.0, eye, ez), court)
+    shot("emblem_court_deep", (ex + 20.0, eye, ez), court, TIME_DEEP)
+    shot("emblem_court_glow", (ex + 20.0, eye, ez), court, TIME_GLOW)
     shot("emblem_oblique", (ex + 14.0, eye, ez + 14.0), (ex, ey, ez))
-    shot("entrance", (ex + 14.0, eye, ez), (ex - 1.0, 9.0, ez))
+    shot("entrance", (ex + 16.5, eye, ez), (ex - 1.0, 7.5, ez))
 
     box_x, box_z = _pilaster(LINE[0])
     end_x, end_z = _pilaster(LINE[-1])
@@ -377,7 +382,7 @@ def shots():
     north_z = (_pilaster(NUMBERED[4])[1] + _pilaster(NUMBERED[7])[1]) / 2.0
     shot("plates_far", (PILASTER + 12.0, eye, north_z), (PILASTER, PLATE_Y, north_z))
     x, z = _pilaster(ROUNDEL[0])
-    shot("plate_near", (x + 3.0, eye, z + 0.9), (x, 3.0, z))
+    shot("plate_near", (x + 2.4, eye, z + 0.8), (x, 3.0, z))    # the bell, a bay south, stays out of the picture
     x, z = _pilaster(BELL[0])
     shot("bell_near", (x + 2.6, 3.3, z + 1.3), (x, BELL[1] + 0.1, z))
 

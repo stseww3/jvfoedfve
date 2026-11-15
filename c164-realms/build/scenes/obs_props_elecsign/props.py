@@ -80,6 +80,7 @@ GALLERY = [
     ("great_clock", [(G + "great_clock", GREAT, {})], (0.0, 4.0, -1.0), GREAT),
     ("plates", _plates(), (0.0, 3.5, -4.4), (0.0, 3.5, WALL_Z)),
     ("plates_volt", VOLTS, (0.0, 3.6, -5.4), (0.0, 3.5, WALL_Z)),
+    ("station_board", [(G + "station_board", (0.0, 3.5, WALL_Z), {})], (0.0, 3.6, -4.9), (0.0, 3.5, WALL_Z)),
     ("line", _line(), (0.0, 3.9, -3.3), (0.0, 3.8, WALL_Z)),
     ("riser", _riser(), (1.9, 3.2, -3.6), (0.0, 3.2, WALL_Z)),
     _hung("insulator", E + "insulator", cam=(0.9, 3.8, -6.3)),
