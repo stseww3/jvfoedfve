@@ -7,7 +7,7 @@ seen over the entrance, in the paving of the court, on the iron gates and on the
 has to read as one mark in all of them. This module holds the standard figure and is the one place
 that draws it on a model:
 
-    emblem_cells(16)    the figure on one block: materials/ashlar's emblem block draws these pixels
+    emblem_cells(16)    the figure on one block
     emblem_cells(16, framed=True)   the same on a tile that has a border of its own (the cast
                         panel of materials/iron, the nameplate of materials/panels)
     emblem_cells(48)    the figure on three blocks: the great piece over the entrance
@@ -23,6 +23,10 @@ that draws it on a model:
              the same star as materials/brass paints for the floor. Never two bars crossing.
   never mirrored: the star is on the upper right for whoever looks at it, on both sides of a flag;
   in the paving north is up (site/court).
+  cut in stone (materials/ashlar's emblem block): the ring and the meridian are these pixels; every
+  cut has a lit lip a pixel to its right and below, as bright against the stone as the cut is dark,
+  so the lip is part of the line and the star stands a column further right, x 10..11, to keep a
+  plain pixel between itself and the meridian's lip. The same rule, not another figure.
 
 The pieces (16 texels to the block, px = scale; a wall piece is hung by the middle of its back):
 
@@ -132,11 +136,14 @@ def emblem_rows(n=16, framed=False):
     return ["".join(row) for row in grid]
 
 
-def emblem_faults(n=16, framed=False, cells=None):
+def emblem_faults(n=16, framed=False, cells=None, lip=False):
     """What is wrong with the figure as a drawing: a list of sentences, empty when it keeps the
     rules above. Run by the test scene, so a change to the figure that breaks them is noticed.
     cells: another drawing of the figure on n pixels to be held against the same rules, as
-    dict(ring, meridian, star)."""
+    dict(ring, meridian, star).
+    lip: that drawing is cut with a lit lip a pixel to the right of every cut and below it (the
+    stone of materials/ashlar). The lips of the ring and of the meridian then count as part of
+    them, and the star may stand a pixel further right than up to stay clear of them."""
     fig = emblem_cells(n, framed) if cells is None else cells
     name = f"emblem {n}" + (" framed" if framed else "")
     out = []
@@ -145,7 +152,10 @@ def emblem_faults(n=16, framed=False, cells=None):
     k = n // 16
     if star & (ring | line):
         out.append(f"{name}: the star lies on the ring or on the meridian")
-    gap = min(max(abs(a - x), abs(b - y)) for a, b in star for x, y in ring | line) - 1
+    drawn = ring | line
+    if lip:
+        drawn = drawn | {(x + 1, y + 1) for x, y in drawn}
+    gap = min(max(abs(a - x), abs(b - y)) for a, b in star for x, y in drawn) - 1
     need = 1 if k == 1 else 2
     if gap < need:
         out.append(f"{name}: the star stands {gap} clear pixels off the ring or the line, less than {need}")
@@ -153,7 +163,7 @@ def emblem_faults(n=16, framed=False, cells=None):
         out.append(f"{name}: the star is not inside the ring")
     mx = sum(x for x, _ in star) / len(star) - c
     my = c - sum(y for _, y in star) / len(star)
-    if mx <= 0 or my <= 0 or abs(mx - my) > 0.01:
+    if mx <= 0 or my <= 0 or not -0.01 <= mx - my <= (k if lip else 0) + 0.01:
         out.append(f"{name}: the star is not as far right of the middle as above it ({mx:g}, {my:g})")
     top, foot = min(y for _, y in ring), max(y for _, y in ring)
     if not {y for _, y in line} >= set(range(top - 1, foot + 2)):
