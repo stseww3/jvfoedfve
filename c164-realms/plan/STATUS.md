@@ -16,6 +16,8 @@
   - 评审结果记进各行：lights 的 cr2-#3 过了（第三处靠洗墙轮结）、comet 的 cr2-#4 三版全过（排名等总监，现按 #00:18 暂定甲）。
   - 洗墙轮 `cursor/c164-lights-wash-0fe3`（632a2c09）预跑：`obs_sky_lights` PASS 0 失 0 黄；但它不是从 lights 交付的 0809d575 长出来的，而且树上 `skeleton.py` 还是旧的（没有 `V1_CLEAR`），所以 c267 必须先把两件事做了：merge 总装、把洗墙并到 `cursor/c164-lights-007c`，再按 `L.levels` 逐格对（暗窗窗洞以外一格都不许变亮）。已私信 c267。
   - `site/terrain`（c271）的合并顺序：cr2 的 cr2-#5 指出他最后一次合总装是 15382edc（合的 142f3079），那版色板还没有 snow 色阶，所以照分支原样出的图里雪是原版纯白、比楼亮 0.24——交付前必须先 merge 总装，否则自查图把自己判死。已私信 c271。
+- **11-16 00:40 全量回归**（总装 3850fa53）：**28 个测试场景 + obs 全过，0 失败**。0 失 0 黄的 17 个；带黄的 11 个都是已知项（flatwall 白模、sight 里 V1 跨窗被前庭石墩挡 32%、brass/iron 的作证方块、`obs_mat_redirect` 占位、`obs_site_court` 的 v2_axis、两个 motion 场景的手工步数 WARN）。
+- 今晚已合、逐像素在**交付提交**上证过的：brass 25/25、comet 46/46 与最新 46/46、lights 25/25（f0cf4a66 之前那版）、panels 10/10、snow 13/13、shell 25/25、lamps 56/56、motion 28/28、tones 31/31。合进总装后变样的都是“整楼画面”类场景（facade、lights、lamps 的 site 两套），原因是壳、立面、brass、lamps、lights 陆续进来改了画面——**图和自己的代码对得上**，只是总装变了。这些场景重出图的时机：各自的作者下次交付时一并出。
 - 核图的办法（S2 每合一条都做）：在“你的分支和总装合起来”的树上跑 `tools/selfshots.py <场景> --verify`；对不上就到交付提交上再核一次。两张不一样的时候分两种：图和自己的代码对不上（退回），或者总装里别的包改了这个场景的画面（照合，在【合并】里写明哪几张）。11-16 00:12 为止的实例：facade 16 张、lights 20 张都属于后者（月亮翻转、檐沟换成真旧铜、壳和立面进来）。
 - 换班后第一次上线的人（照 ROSTER）：s1 c260、review c261、cr2 c262、m1 c263、snow c264、facade c265、shell c266、lights c267、comet c268、lamps c269、a2 c270、a4 c271、stair c272、cable c273。其余旧号都停机了，等总监开人。
 
