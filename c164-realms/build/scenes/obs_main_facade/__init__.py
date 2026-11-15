@@ -129,6 +129,9 @@ def shots(only=None):
         # V3: two bays of the south wing, close, with the corner of the middle pavilion
         dict(name="v3_near", pos=[wing + 10.5, 2.2, z3 + 3.0], look_at=[wing + 1.0, 6.5, z3 - 1.5], time=TIME),
         dict(name="v7", pos=[float(n) for n in S.V7["pos"]], look_at=[float(n) for n in S.V7["look_at"]], time=TIME),
+        # TRIAL ONLY: V7 from between the open leaves and from the door's own plane, behind their hinges
+        dict(name="v7_mid", pos=[18.3, 1.62, axis], look_at=[float(n) for n in S.V7["look_at"]], time=TIME),
+        dict(name="v7_in", pos=[17.2, 1.62, axis], look_at=[float(n) for n in S.V7["look_at"]], time=TIME),
         dict(name="oblique", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=TIME),
         # V11: looking back from the south lookout -- the south end wall and the east front in three-quarter view
         dict(name="v11_south", pos=[float(n) for n in S.V11["pos"]], look_at=[float(n) for n in S.V11["look_at"]], time=TIME),
