@@ -32,7 +32,8 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
   message desk      under bay 6 of the east wall; a lamp and the telephone on the pier north of it,
                     the pneumatic tube on the pier south of it
   rating bench      under bay 5 of the west wall; a lamp on the pier north of it, the barometer on
-                    the pier south of it
+                    the pier south of it. Two box chronometers stand open on it, sent in to be
+                    rated against the standard clocks (the room's own model), beside the log.
   world clocks      five slave dials in a row on a dark board, on the blind stretch of the west wall
                     (the rotunda is behind it), over a low cabinet of drawers, a lamp over the
                     middle one. Their dials are level with the regulators'. They show the one time
@@ -186,6 +187,14 @@ CORDS = {                                           # for a field: the two jacks
 }
 CORD_R = 0.5                                        # px: half the thickness of a cord
 PLUG = 2.0                                          # px: how far a plug stands out of its jack
+
+# ---- the chronometers on the rating bench, sent in to be rated against the standard clocks
+CHRONOMETERS = ((-11.5, 0.5, 4.0), (-5.5, 0.5, -3.0))       # px along the bench from its middle (the sitter's left is minus), px towards the sitter, degrees turned
+CHRONO_BOX = (5.0, 3.0)                             # px: a chronometer's box, square, and its height
+CHRONO_DIAL = ("wbbbw", "bcccb", "bckcb", "bcccb", "wbbbw")     # looked into from above: the dial in its brass bowl
+CHRONO_LID = ("wwwww", "wlllw", "wlllw", "wlllw", "wwwww")      # the inside of the open lid: the rating certificate
+CHRONO_COLOURS = dict(w=P.RAMPS["dark_wood"][3], b=P.RAMPS["brass"][3], c=P.RAMPS["porcelain"][3], k=INK, l=P.RAMPS["cream"][2])
+BOARD_TOP = 1.0                                     # blocks above the floor: the top of the board that stands in for a desk
 
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps models
 CONSOLE_LAMP = (11, 2)      # the pendant over the console: the main light, on the instrument wall
@@ -354,17 +363,33 @@ def _cords(side):
     return m
 
 
+def _chronometer():
+    """A box chronometer standing open on the bench: a square wooden box, in it the dial in its
+    brass bowl, looking up; the lid stands open at the back with the rating certificate inside it.
+    Anchor: the middle of its foot; its front is the side the lid opens to."""
+    name = PREFIX + "chronometer"
+    side, high = CHRONO_BOX
+    half = side / 2.0
+    wood = P.mat("dark_wood", base=3)
+    m = M.Model(name)
+    m.box((-half, 0.0, -half), (half, high, half), wood, faces={"u": Sprite(name + "_dial", CHRONO_DIAL, CHRONO_COLOURS)})
+    m.box((-half, high, -half - 0.5), (half, high + side, -half), wood,
+          faces={"s": Sprite(name + "_lid", CHRONO_LID, CHRONO_COLOURS)})                           # the lid
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
     out.update({cords_name(side): _cords(side) for side in CORDS})
+    out[PREFIX + "chronometer"] = _chronometer()
     return out
 
 
 def models():
-    """The room's own models: the five world clocks and the patch cords of the two jack fields.
-    Its lamps are props/lamps', its machines machines/recorders', the rest the packages' named in
-    PIECES."""
+    """The room's own models: the five world clocks, the patch cords of the two jack fields and
+    the chronometer of the rating bench. Its lamps are props/lamps', its machines
+    machines/recorders', the rest the packages' named in PIECES."""
     return dict(_models())
 
 
@@ -479,6 +504,13 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
                 put(x, FEET, z, st(roles.DARK_WOOD.slab, type="top"))
     n += lamp("bracket", (EAST, LAMP_Y, pier(DESK_BAY, -1)), DESK_LAMP, "message desk", facing="west")
     n += lamp("bracket", (WEST, LAMP_Y, pier(BENCH_BAY, -1)), DESK_LAMP, "rating bench", facing="east")
+
+    # ---- the chronometers on the rating bench, or on the board that stands in for it
+    bench_yaw = K.FACING["east"]
+    bench_top = FEET + (BOARD_TOP if theirs("furniture") is None else theirs("furniture").TOP["writing_desk"])
+    for along, out, twist in CHRONOMETERS:
+        dx, _, dz = K.turn(bench_yaw, (along * PX, 0.0, out * PX))
+        n += K.put(c, own[PREFIX + "chronometer"], (BENCH_X + dx, bench_top, BENCH_Z + dz), yaw=bench_yaw + twist, origin=origin)
 
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
