@@ -292,23 +292,6 @@ await rec.wait(300);
 await rec.click();
 await rec.wait(1900);
 
-// 5. the optional tilt, back in the default dark theme
-await rec.page.evaluate(() => localStorage.setItem("theme", "dark"));
-rec.caption("Optional, your call: a slight 3D tilt toward the cursor");
-rec.mouse = { x: 90, y: 560 };
-await rec.newTab(`${LIVE_URL}?tilt`);
-await rec.wait(900);
-await rec.moveToElement("#term-2fa", 700, [0.2, 0.25]);
-await rec.moveToElement("#term-2fa", 900, [0.85, 0.8]);
-await rec.moveToElement("#term-3c", 700, [0.5, 0.5]);
-rec.note("resting: settles flat");
-await rec.wait(1100);
-await rec.moveToElement("#term-3c", 600, [0.85, 0.2]);
-await rec.moveToElement("#term-3l", 800, [0.75, 0.75]);
-await rec.moveToElement("#term-4l", 900, [0.25, 0.3]);
-await rec.moveToElement("#term-4c", 800, [0.3, 0.75]);
-await rec.wait(900);
-
 rec.captions.at(-1).to = rec.frame - 1;
 await browser.close();
 console.log(`${rec.frame} frames in ${((Date.now() - started) / 1000).toFixed(0)}s`);

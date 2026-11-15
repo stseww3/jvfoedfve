@@ -443,39 +443,6 @@ async function shareTerm(link) {
 const LIGHT_REACH = 320;
 const light = { x: 0, y: 0, frame: 0, on: false, cards: new WeakSet() };
 
-/* ---- card tilt (trial) ----
-   Off unless the page is opened with ?tilt. The card under the pointer leans
-   a few degrees toward it, then settles flat as soon as the pointer rests, so
-   the text is sharp again by the time it is being read. */
-
-const TILT_MAX = 3;
-const TILT_REST_MS = 550;
-const tilt = {
-  on: new URLSearchParams(location.search).has("tilt"),
-  card: null,
-  timer: 0,
-};
-
-function settleTilt() {
-  clearTimeout(tilt.timer);
-  if (!tilt.card) return;
-  tilt.card.style.removeProperty("--rx");
-  tilt.card.style.removeProperty("--ry");
-  tilt.card = null;
-}
-
-function leanCard(card, rect) {
-  if (tilt.card !== card) settleTilt();
-  if (!card) return;
-  const px = (light.x - rect.left) / rect.width - 0.5;
-  const py = (light.y - rect.top) / rect.height - 0.5;
-  card.style.setProperty("--rx", `${(py * 2 * TILT_MAX).toFixed(2)}deg`);
-  card.style.setProperty("--ry", `${(-px * 2 * TILT_MAX).toFixed(2)}deg`);
-  tilt.card = card;
-  clearTimeout(tilt.timer);
-  tilt.timer = setTimeout(settleTilt, TILT_REST_MS);
-}
-
 function paintLight() {
   light.frame = 0;
   if (!light.on) return;
@@ -484,7 +451,6 @@ function paintLight() {
   const rects = new Array(cards.length);
   for (let i = 0; i < cards.length; i++) rects[i] = cards[i].getBoundingClientRect();
 
-  let under = -1;
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i];
     const r = rects[i];
@@ -498,15 +464,12 @@ function paintLight() {
       card.style.setProperty("--mx", `${Math.round(light.x - r.left)}px`);
       card.style.setProperty("--my", `${Math.round(light.y - r.top)}px`);
       light.cards.add(card);
-      if (light.x >= r.left && light.x <= r.right && light.y >= r.top && light.y <= r.bottom) under = i;
     } else if (light.cards.has(card)) {
       card.style.removeProperty("--mx");
       card.style.removeProperty("--my");
       light.cards.delete(card);
     }
   }
-
-  if (tilt.on) leanCard(under < 0 ? null : cards[under], rects[under]);
 }
 
 function requestLight() {
@@ -514,8 +477,6 @@ function requestLight() {
 }
 
 function initPointerLight() {
-  els.grid.classList.toggle("tilt", tilt.on);
-
   els.grid.addEventListener("pointermove", (e) => {
     if (e.pointerType === "touch" || prefersReduced()) return;
     light.x = e.clientX;
@@ -530,7 +491,6 @@ function initPointerLight() {
   els.grid.addEventListener("pointerleave", () => {
     light.on = false;
     els.grid.classList.remove("lit");
-    settleTilt();
   });
 
   // The page can scroll under a pointer that is not moving.

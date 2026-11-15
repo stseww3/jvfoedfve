@@ -4,9 +4,6 @@
 //   node check.mjs          the working copy, served at the live address
 //                           inside the test browser only
 //   node check.mjs --live   the deployed site itself
-//
-// The card tilt is a trial that only exists behind ?tilt; its checks are
-// skipped automatically when the build under test has no tilt code.
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -538,65 +535,6 @@ async function reducedChecks(context) {
   await page.close();
 }
 
-/* ---- card tilt (trial) ---- */
-
-async function tiltChecks(context) {
-  const hasTilt = live
-    ? await (await fetch(`${LIVE_URL}app.js`)).text().then((t) => t.includes("TILT_MAX"))
-    : (await fs.readFile(path.join(ROOT, "app.js"), "utf8")).includes("TILT_MAX");
-  if (!hasTilt) {
-    console.log("SKIP  tilt: this build has no tilt code");
-    return;
-  }
-
-  const lean = async (page) => {
-    const box = await page.evaluate(() => {
-      const b = document.getElementById("term-3c").getBoundingClientRect();
-      return { left: b.left, top: b.top, width: b.width, height: b.height };
-    });
-    await page.mouse.move(box.left + box.width * 0.5, box.top + box.height * 0.5);
-    await page.mouse.move(box.left + box.width * 0.25, box.top + box.height * 0.25, { steps: 4 });
-    await sleep(120);
-    return page.evaluate(() => {
-      const card = document.getElementById("term-3c");
-      return {
-        on: document.getElementById("grid").classList.contains("tilt"),
-        rx: card.style.getPropertyValue("--rx"),
-        ry: card.style.getPropertyValue("--ry"),
-      };
-    });
-  };
-
-  let page = await openPage(context);
-  await settle(page);
-  let r = await lean(page);
-  check("tilt: off by default (no ?tilt, no lean)", !r.on && r.rx === "" && r.ry === "", JSON.stringify(r));
-  await page.close();
-
-  page = await openPage(context, { suffix: "?tilt" });
-  await settle(page);
-  r = await lean(page);
-  check(
-    "tilt (?tilt): the card leans toward the pointer, at most 3 degrees",
-    r.on && Math.abs(parseFloat(r.rx) + 1.5) < 0.35 && Math.abs(parseFloat(r.ry) - 1.5) < 0.35,
-    JSON.stringify(r)
-  );
-  await sleep(900);
-  const rested = await page.evaluate(() => document.getElementById("term-3c").style.getPropertyValue("--rx"));
-  check("tilt (?tilt): the card settles flat once the pointer rests", rested === "", `--rx '${rested}'`);
-  await lean(page);
-  await page.mouse.move(640, 60);
-  await sleep(150);
-  const left = await page.evaluate(() => document.getElementById("term-3c").style.getPropertyValue("--rx"));
-  check("tilt (?tilt): leaving the grid flattens the card", left === "", `--rx '${left}'`);
-  await page.hover("#term-3c");
-  await page.click("#term-3c .term-link");
-  const copied = await clipboard(page);
-  check("tilt (?tilt): a copied link leaves the ?tilt switch out", copied === `${LIVE_URL}#3c`, copied);
-  quiet(page, "tilt");
-  await page.close();
-}
-
 /* ---- earlier behaviour that must still hold ---- */
 
 async function regressionChecks(context) {
@@ -637,10 +575,11 @@ async function regressionChecks(context) {
       lit: document.getElementById("grid").classList.contains("lit"),
       mx: card.style.getPropertyValue("--mx"),
       lift: new DOMMatrix(getComputedStyle(card).transform).m42,
+      flat: new DOMMatrix(getComputedStyle(card).transform).is2D,
     };
   });
   check("pointer light: still follows the mouse over the cards", lit.lit && lit.mx.endsWith("px"), JSON.stringify(lit));
-  check("hover: the card under the pointer still lifts 3px", Math.abs(lit.lift + 3) < 0.2, `translateY ${lit.lift}`);
+  check("hover: the card under the pointer still lifts 3px and stays flat (no tilt)", Math.abs(lit.lift + 3) < 0.2 && lit.flat, JSON.stringify(lit));
 
   await page.click("#theme-toggle");
   await page.waitForFunction(() => document.documentElement.dataset.theme === "light" && !document.documentElement.classList.contains("theme-switching"), { timeout: 10000 });
@@ -727,7 +666,7 @@ if (!live) await sourceRules();
 const desktop = await launch({ mouse: true });
 const context = await desktop.createBrowserContext();
 await context.overridePermissions(LIVE_ORIGIN, ["clipboard-read", "clipboard-write"]);
-for (const group of [loadChecks, glideChecks, shareChecks, linkChecks, reducedChecks, tiltChecks]) {
+for (const group of [loadChecks, glideChecks, shareChecks, linkChecks, reducedChecks]) {
   await group(context);
 }
 // A fresh context: the theme checks write to localStorage.

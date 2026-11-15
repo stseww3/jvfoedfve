@@ -486,12 +486,6 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
   position: absolute;
 }
 
-/* ---- card tilt (trial, only when the page is opened with ?tilt) ---- */
-
-.grid.tilt .card:hover {
-  transform: perspective(900px) translateY(-3px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-}
-
 /* ---- theme switch: circular reveal (progressive enhancement) ---- */
 
 ::view-transition-old(root),
