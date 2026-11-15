@@ -394,20 +394,43 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
   margin-bottom: 1.5rem;
 }
 
+/* The card is the still box: it answers the pointer, takes focus and holds
+   its place in the grid. The face inside it is what is drawn, and the only
+   part that lifts or tilts. So an edge that has just moved away from the
+   pointer can never drop the hover and flicker. */
 .card {
   position: relative;
-  isolation: isolate;
-  background-color: var(--surface);
-  border: 1px solid var(--border-soft);
+  display: grid;
   border-radius: var(--radius-lg);
-  padding: 1.1rem 1.15rem;
-  transition: border-color 150ms linear, transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
 }
 
 .card:hover {
+  z-index: 1;
+}
+
+.card-face {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  background-color: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: inherit;
+  padding: 1.1rem 1.15rem;
+  transition: border-color 150ms linear, transform 250ms var(--ease-out), box-shadow 220ms var(--ease-out);
+}
+
+.card:hover .card-face {
   border-color: var(--border);
   transform: translateY(-3px);
   box-shadow: var(--shadow-lift);
+}
+
+/* ---- card tilt ----
+   app.js marks the card under the pointer and gives it an axis and an angle;
+   the face is pressed down on the pointer's side. */
+
+.card.lean:hover .card-face {
+  transform: perspective(400px) translateY(-3px) rotate3d(var(--tilt-x, 0), var(--tilt-y, 0), 0, var(--tilt, 0deg));
 }
 
 /* ---- pointer light ----
@@ -415,8 +438,8 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
    it as "current" (and brushes the borders of its neighbours). app.js sets
    --mx / --my per card; without them the light sits off-canvas. */
 
-.card::before,
-.card::after {
+.card-face::before,
+.card-face::after {
   content: "";
   position: absolute;
   border-radius: inherit;
@@ -425,7 +448,7 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
   transition: opacity 260ms linear;
 }
 
-.card::before {
+.card-face::before {
   inset: -1px;
   padding: 1px;
   background: radial-gradient(
@@ -440,7 +463,7 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
   z-index: 1;
 }
 
-.card::after {
+.card-face::after {
   inset: 0;
   background: radial-gradient(
     340px circle at var(--mx, -999px) var(--my, -999px),
@@ -450,8 +473,8 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
   z-index: -1;
 }
 
-.grid.lit .card::before,
-.grid.lit .card:hover::after {
+.grid.lit .card-face::before,
+.grid.lit .card:hover .card-face::after {
   opacity: 1;
 }
 
@@ -465,7 +488,7 @@ input[type="search"]:not(:placeholder-shown) ~ .search-kbd {
 /* The card the address bar points at (#slug): opened from a shared link, or
    the one whose link was just copied. Listed after :hover so it keeps the
    accent border while hovered. */
-.card.is-target {
+.card.is-target .card-face {
   border-color: var(--accent);
 }
 

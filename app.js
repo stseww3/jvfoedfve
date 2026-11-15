@@ -140,13 +140,15 @@ function cardHtml(term, query) {
 
   return `
     <article class="card${term.slug === state.target ? " is-target" : ""}" id="term-${term.slug}" data-slug="${term.slug}">
-      <div class="card-head">
-        <h2 class="card-term"><a class="term-link" href="#${term.slug}" title="Copy link to ${escapeHtml(term.term)}">${highlight(term.term, query)}</a></h2>
-        <span class="badge">${escapeHtml(CATEGORY_LABELS[term.category] || term.category)}</span>
+      <div class="card-face">
+        <div class="card-head">
+          <h2 class="card-term"><a class="term-link" href="#${term.slug}" title="Copy link to ${escapeHtml(term.term)}">${highlight(term.term, query)}</a></h2>
+          <span class="badge">${escapeHtml(CATEGORY_LABELS[term.category] || term.category)}</span>
+        </div>
+        <p class="card-full">${highlight(term.full, query)}</p>
+        <p class="card-def">${highlight(term.definition, query)}</p>
+        ${aliases ? `<ul class="aliases">${aliases}</ul>` : ""}
       </div>
-      <p class="card-full">${highlight(term.full, query)}</p>
-      <p class="card-def">${highlight(term.definition, query)}</p>
-      ${aliases ? `<ul class="aliases">${aliases}</ul>` : ""}
     </article>
   `;
 }
@@ -443,6 +445,45 @@ async function shareTerm(link) {
 const LIGHT_REACH = 320;
 const light = { x: 0, y: 0, frame: 0, on: false, cards: new WeakSet() };
 
+/* ---- card tilt ----
+   After the owner's reference, codepen.io/tahazsh/pen/wvQwqYv: the card
+   under the pointer is pressed down where the pointer is, and the further
+   the pointer is from the card's centre, the steeper it leans. styles.css
+   turns --tilt-x / --tilt-y / --tilt into a rotate3d() on the card's face.
+   The card itself never moves, so the area that answers the pointer stays
+   put under it. Rides on the pointer light and shares its limits: mouse
+   only, off under reduced motion. */
+
+const TILT_MAX = 10;
+const tilt = { card: null };
+
+function dropTilt() {
+  if (!tilt.card) return;
+  tilt.card.classList.remove("lean");
+  for (const name of ["--tilt-x", "--tilt-y", "--tilt"]) tilt.card.style.removeProperty(name);
+  tilt.card = null;
+}
+
+function leanCard(card, rect) {
+  if (tilt.card !== card) dropTilt();
+  if (!card) return;
+
+  const halfW = rect.width / 2;
+  const halfH = rect.height / 2;
+  const dx = light.x - (rect.left + halfW);
+  const dy = light.y - (rect.top + halfH);
+  const reach = Math.max(halfW, halfH);
+  const degrees = Math.min(1, Math.hypot(dx, dy) / reach) * TILT_MAX;
+
+  // The axis lies flat in the card, at right angles to the line from the
+  // card's centre to the pointer: that is what makes the pointer's side dip.
+  card.style.setProperty("--tilt-x", (-dy / reach).toFixed(3));
+  card.style.setProperty("--tilt-y", (dx / reach).toFixed(3));
+  card.style.setProperty("--tilt", `${degrees.toFixed(2)}deg`);
+  card.classList.add("lean");
+  tilt.card = card;
+}
+
 function paintLight() {
   light.frame = 0;
   if (!light.on) return;
@@ -451,6 +492,7 @@ function paintLight() {
   const rects = new Array(cards.length);
   for (let i = 0; i < cards.length; i++) rects[i] = cards[i].getBoundingClientRect();
 
+  let under = -1;
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i];
     const r = rects[i];
@@ -464,12 +506,15 @@ function paintLight() {
       card.style.setProperty("--mx", `${Math.round(light.x - r.left)}px`);
       card.style.setProperty("--my", `${Math.round(light.y - r.top)}px`);
       light.cards.add(card);
+      if (light.x >= r.left && light.x <= r.right && light.y >= r.top && light.y <= r.bottom) under = i;
     } else if (light.cards.has(card)) {
       card.style.removeProperty("--mx");
       card.style.removeProperty("--my");
       light.cards.delete(card);
     }
   }
+
+  leanCard(under < 0 ? null : cards[under], rects[under]);
 }
 
 function requestLight() {
@@ -491,6 +536,7 @@ function initPointerLight() {
   els.grid.addEventListener("pointerleave", () => {
     light.on = false;
     els.grid.classList.remove("lit");
+    dropTilt();
   });
 
   // The page can scroll under a pointer that is not moving.
