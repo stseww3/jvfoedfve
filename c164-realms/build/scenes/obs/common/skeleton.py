@@ -38,6 +38,18 @@ LOWER_DROP = 6      # LOCKED (A0 #171, 11-14; it was 9). the lower platform is t
 LOWER_GROUND = GROUND - LOWER_DROP      # -6, where feet stand on the lower platform
 LOWER_PAVING_Y = PAVING_Y - LOWER_DROP  # -7, its paving block
 
+# --- where on the earth, and when ---------------------------------------------------------------
+# LOCKED (A0 #442, 11-15). The observatory's latitude, north, in degrees: the polar axes of the great
+# telescope, of the meridian circle and of the armillary sphere rise at this angle towards the north
+# (-z). The three machines read it here.
+LATITUDE = 45.0
+# LOCKED (A0, 11-15 19:10). What every clock of the observatory shows, (hour, minute): five minutes
+# before the eight o'clock signal. The blue hour of the map is 20:00 by the game's clock, and the
+# time ball stands at half mast, where it waits for the last five minutes before it drops: the
+# clocks, the ball and the sky tell the same moment. The tower clock and the mother clock read this;
+# the world clocks of the time room count their differences from it.
+CLOCK = (7, 55)
+
 # --- the bay grid of the main-building family (main building, clock tower, small dome, meridian hut) -
 BAY = 4             # LOCKED. one bay = pilaster (1) + window (3)
 N_BAYS = 17         # LOCKED. 18 pilasters enclose 17 bays
