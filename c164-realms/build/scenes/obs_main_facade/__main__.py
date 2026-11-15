@@ -2,7 +2,8 @@
 python -m scenes.obs_main_facade light    builds the scene and prints the light of the entrance as it
                                           stands in it: who placed the sources (sky/lights, once it is
                                           in the tree; the shell's own stand-in until then), where, how
-                                          bright, and whether those are the stand-in's cells and levels
+                                          bright, and, while the stand-in wall is built, whether those
+                                          are the stand-in's cells and levels
 """
 import json
 import os
@@ -38,6 +39,9 @@ def light():
         got = {cell: state for cell, state in _sources(canvas).items() if cell in cells}
     for cell, state in sorted(got.items()):
         print(f"  {cell}: {state}")
+    if not facade.screened():
+        print("the stand-in behind the entrance is not built: the hall is the shell's and its light the light line's own")
+        return 0
     same = got == want
     print("the entrance's sources are the stand-in's, cell for cell and level for level" if same else
           f"the entrance's sources are NOT the stand-in's: {sorted(want.items())}")
