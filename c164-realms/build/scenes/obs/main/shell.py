@@ -24,7 +24,10 @@ and its inner leaf it touches only the floor of the doorways):
     a wall is stone; where it hangs free its edge is a riveted girder, and the railing stands on it;
   * the telescope pier: a shaft 3 x 3 on a footing of its own, a cap 5 x 5 in the dome-room floor.
     Nothing of the building touches it: an iron grating round its foot, an open slot at the
-    gallery, an open ring in the ceiling and in the dome-room floor;
+    gallery, an open ring in the ceiling and in the dome-room floor. The mother clock hangs on the
+    pier and stands on the pier's footing: the three cells before the east face are the pier's
+    stone, level with the floor (the star hall stands the clock's plinth on them), and the grating
+    goes round them too;
   * the ring stair (A0 #20004; the steps are c206's count, #20483; the way out is A0's ruling of
     11-15, #31594: north of the cap, never east of it -- that side is the eyepiece's): 22
     half-block steps and three landings on the outermost ring of the envelope, one whole turn
@@ -232,6 +235,11 @@ def _layout(entrance):
     L.gap = L.cap - L.shaft                                               # the ring nothing stands in
     L.track = L.envelope - L.cap                                          # the ring the stair runs on
     L.curb = O.ring(L.envelope)                                           # one block outside the envelope
+    # the mother clock hangs on the pier's east face (S.MOTHER_CLOCK) and stands on the pier's footing,
+    # not on the building's floor: the cells before that face are the pier's, and the joint in the
+    # floor -- the grating -- goes round the shaft and them
+    L.seat = {(S.PIER_SHAFT[2] + 1, z) for z in range(S.PIER_SHAFT[1], S.PIER_SHAFT[3] + 1)}
+    L.joint = O.ring(L.shaft | L.seat)
     # walls
     L.cross = {c for c in core if abs(c[1]) == CROSS_Z}
     L.doors = {(x, s * CROSS_Z) for x in ROOM_DOOR_X for s in (-1, 1)}
@@ -348,16 +356,17 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.clear(ox + c[0], oy + y, oz + c[1])
 
     # the ground floor of the hall (the star hall lays its own over its part when it moves in), the
-    # plinth's stone in the doorways. The pier goes down through the floor to a footing of its own;
-    # a grating bridges the joint
+    # plinth's stone in the doorways. The pier goes down through the floor to a footing of its own,
+    # the seat of the mother clock with it; a grating bridges the joint round the two
     east = max(x for x, z in L.hall if z == CZ)
-    for c in L.hall - L.cap:
+    foot = L.shaft | L.seat
+    for c in L.hall - foot - L.joint:
         put(c, S.PAVING_Y, floor_block(c, east))
     for c in L.sills:
         put(c, S.PAVING_Y, SILL)
-    for c in L.cap:
+    for c in foot | L.joint:
         put(c, S.PAVING_Y - 1, pier_block(S.PAVING_Y - 1))
-        put(c, S.PAVING_Y, pier_block(S.PAVING_Y) if c in L.shaft else GRATING)
+        put(c, S.PAVING_Y, GRATING if c in L.joint else pier_block(S.PAVING_Y))
 
     # walls: the cross walls with the doors of the wing rooms, the walls that close the wing rooms
     # (up to the cornice row: the drum's stone and the gables stand on the row above)
@@ -450,7 +459,8 @@ LEGEND = [
     ("D", "door opening (on the ground floor: a doorway of the facade, its sill)"),
     (".", "floor or deck"), ("o", "open to the level below"), ("x", "closed space"),
     ("r", "railing on the edge of a deck"), ("T", "telescope pier (the cap, at the dome room)"),
-    ("=", "iron grating round the pier's foot"), ("<", "grand stair, rising west"),
+    ("=", "iron grating round the pier's foot"), ("m", "the mother clock's seat: the pier's footing, level with the floor"),
+    ("<", "grand stair, rising west"),
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
 ]
@@ -469,7 +479,9 @@ def drawing(level):
         g[c] = "x"
     if level == "ground":
         for c in L.hall:
-            g[c] = "=" if c in L.gap else "."
+            g[c] = "=" if c in L.joint else "."
+        for c in L.seat:
+            g[c] = "m"
         for c in L.sills:
             g[c] = "D"
         for c in L.cross | L.partition | L.west | L.cheek | L.arcade | L.landing:
