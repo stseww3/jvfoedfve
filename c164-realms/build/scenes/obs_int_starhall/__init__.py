@@ -95,8 +95,9 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    """The hall paints nothing; it stands on the repainted blocks as the materials line has them."""
-    return materials.pack(pack_dir)
+    """The hall paints nothing; it stands on the repainted blocks as the materials line has them,
+    under the sky's pictures (the scene stands in the map's hour)."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
@@ -119,7 +120,7 @@ def shots():
     shot("west", (13.5, eye, cz), (4.0, 3.6, cz))                       # the pier and the clock, the arcade behind
     shot("clock", (9.6, eye, cz + 0.9), (6.2, 2.9, cz))
     shot("orrery", (14.2, eye, cz + 2.2), (cx, 9.0, cz))                # from the floor up into it, the boss over it
-    shot("ceiling", (cx + 0.1, eye, cz + 3.4), (cx, 14.0, cz - 0.6))
+    shot("ceiling", (cx, gallery, 5.3), (cx, starhall.CEIL + 0.25, cz))  # from the south gallery up to the boss
     shot("floor", (cx, shell.DECK_Y + 0.4, cz), yaw=90.0, pitch=90.0)   # the plan of the floor, west at the top
     shot("gallery", (15.3, gallery, 5.4), (3.0, 7.2, -1.6))             # along the hall from the south gallery's east end
     shot("rail", (cx, gallery, 4.9), (cx, 0.0, -1.2))                   # over the south railing: the orrery over its roundel

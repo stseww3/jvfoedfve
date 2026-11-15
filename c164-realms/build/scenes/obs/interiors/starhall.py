@@ -77,7 +77,7 @@ CEILING_LIGHT = 9           # the level the panels in the boards are shown at: t
 # light: the hierarchy the director set (sun 12 and clock 11 are offered by the machines)
 AISLE_LEVELS = (7, 8, 7)    # the three pilaster lamps of an aisle, from the pier to the door
 AISLE_LAMP_Y = 3.5
-GALLERY_LEVEL = 6
+GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
 GALLERY_LAMP_Y = 10.5
 BOARD_LEVEL = 5
 SUN_POOL = None             # asked of A0: a source of this level a cell over the roundel's middle, where the
@@ -428,21 +428,31 @@ def _charts(canvas, origin):
 
 
 # ---- the lamps ------------------------------------------------------------------------------------------------
+def gallery_lamp_xs():
+    """Where the lamps of a gallery wall hang: over the wing door, on the meridian, and as far west
+    of the door as the meridian is east of it, which is over the head of the bridge to the ring
+    stair. West to east."""
+    doors = sorted({x for x, _ in shell.layout().doors})
+    door = (doors[0] + doors[-1] + 1) / 2.0
+    meridian = CX + 0.5
+    return (2.0 * door - meridian, door, meridian)
+
+
 def _lamps(canvas, origin, version):
-    """Caged lamps on the aisle face of every pilaster, under the gallery, and one over each wing
-    door on the gallery."""
+    """Caged lamps on the aisle face of every pilaster, under the gallery, and three along each
+    gallery wall. The westernmost is a level over the others: it shows the boards over the far end
+    of the gallery, which from the door are the top of the picture."""
     n = 0
     for x, level in zip(beam_xs(), AISLE_LEVELS):
         n += lamps.place(canvas, "cage", (x + 0.5, AISLE_LAMP_Y, Z0 + 1.0), facing="south", origin=origin,
                          version=version, level=level)
         n += lamps.place(canvas, "cage", (x + 0.5, AISLE_LAMP_Y, Z1), facing="north", origin=origin,
                          version=version, level=level)
-    doors = sorted({x for x, _ in shell.layout().doors})
-    mid = (doors[0] + doors[-1] + 1) / 2.0
-    n += lamps.place(canvas, "cage", (mid, GALLERY_LAMP_Y, Z0), facing="south", origin=origin, version=version,
-                     level=GALLERY_LEVEL)
-    n += lamps.place(canvas, "cage", (mid, GALLERY_LAMP_Y, Z1 + 1.0), facing="north", origin=origin,
-                     version=version, level=GALLERY_LEVEL)
+    for x, level in zip(gallery_lamp_xs(), GALLERY_LEVELS):
+        n += lamps.place(canvas, "cage", (x, GALLERY_LAMP_Y, Z0), facing="south", origin=origin, version=version,
+                         level=level)
+        n += lamps.place(canvas, "cage", (x, GALLERY_LAMP_Y, Z1 + 1.0), facing="north", origin=origin,
+                         version=version, level=level)
     return n
 
 
