@@ -57,8 +57,6 @@ DOOR_ROWS = (FEET, FEET + 1)                                 # -6, -5: the openi
 _BED = ENGINE.BED_SECTIONS * ENGINE.BED_SECTION / 16.0                       # 5.5 blocks
 _HALF_BED = _BED / 2.0
 ENGINE_CENTRE = (ENGINE.CX, ENGINE.CZ)                                      # (76.0, 31.0)
-# the set runs east from the cylinder's far end to the dynamo's far end; south, it is the bed's
-# depth, widened by the wheel and the governor standing off it
 ENGINE_SPAN_X = (-(_HALF_BED + 0.35), ENGINE.WHEEL_X + ENGINE.DYNAMO_X + ENGINE.DYNAMO_W / 32.0)
 ENGINE_SPAN_Z = (-(_HALF_BED / 2.0 + 1.0), _HALF_BED / 2.0 + 1.0)
 # the cells the machine may stand in, with a cell of working room round it: this package puts
@@ -69,9 +67,28 @@ ENGINE_CELLS = {(x, z) for x in range(math.floor(ENGINE_CENTRE[0] + ENGINE_SPAN_
                 for z in range(math.floor(ENGINE_CENTRE[1] + ENGINE_SPAN_Z[0]) - 1,
                                math.ceil(ENGINE_CENTRE[1] + ENGINE_SPAN_Z[1]) + 1)
                 if IN_X[0] <= x <= IN_X[1] and IN_Z[0] <= z <= IN_Z[1]}
-# the switchboard and the boilers are not in the tree yet; their owner names the cells and this
-# package widens ENGINE_CELLS then. Until it does, the east half of the room is left empty too.
-RESERVED = {c for c in ENGINE_CELLS}
+# the switchboard and the boiler, from their owner's figures (machines/switchboard-boiler, c264,
+# g2 #46872). These are points in blocks, not cells: the room keeps clear every cell they touch.
+#    boiler     centre (85.6, 27.5), drum 3 across, 4 tall from the floor: x 84.1..87.1, z 26.0..29.0
+#               its furnace door looks west, and its east side stands against the east wall
+#    fittings   the safety valve and the two gauges on the boiler's north side, about z 25.4..26.0
+#    board      against the west wall, centre (68.2, 29.0), 3 wide along z 27.5..30.5, face east
+BOILER = (84.1, 26.0, 87.1, 29.0)           # x0, z0, x1, z1 in blocks
+BOILER_FITTINGS_Z = 25.4                     # the fittings reach this far north of the drum
+SWITCHBOARD = (67.9, 27.5, 68.5, 30.5)      # x0, z0, x1, z1 in blocks
+
+
+def _cells_of(x0, z0, x1, z1):
+    """Every cell a block-space rectangle touches, clipped to the clear floor."""
+    return {(x, z) for x in range(math.floor(x0), math.ceil(x1) + 1)
+            for z in range(math.floor(z0), math.ceil(z1) + 1)
+            if IN_X[0] <= x <= IN_X[1] and IN_Z[0] <= z <= IN_Z[1]}
+
+
+MACHINE_CELLS = (ENGINE_CELLS
+                 | _cells_of(BOILER[0], BOILER_FITTINGS_Z, BOILER[2], BOILER[3])
+                 | _cells_of(*SWITCHBOARD))
+RESERVED = {c for c in MACHINE_CELLS}
 
 # ---- the floor -------------------------------------------------------------------------------
 FLOOR = B.FLOOR_WOOD.block
@@ -149,7 +166,8 @@ def wall_cells():
 
 def walk_cells():
     """The grating's cells: in from the door along the north side, then south to the machine's
-    front. Nothing in the machines' own cells."""
+    front. Nothing in the machines' own cells, and nothing in the boiler's: it stops short of
+    them (c264, g2 #46872 asked for exactly that)."""
     out = set()
     for x in range(WALK_X[0], WALK_X[1] + 1):
         for z in WALK_Z:
@@ -157,7 +175,7 @@ def walk_cells():
     for x in (WALK_X[1] - 1, WALK_X[1]):
         for z in range(WALK_Z[1] + 1, WALK_END_Z + 1):
             out.add((x, z))
-    return {c for c in out if _inside(*c) and c not in ENGINE_CELLS}
+    return {c for c in out if _inside(*c) and c not in MACHINE_CELLS}
 
 
 def beam_cells():
