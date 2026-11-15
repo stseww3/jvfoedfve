@@ -39,8 +39,8 @@ def write_pack(pack_dir):
 
 
 def shots():
-    """V11 from the south lookout (the distance view), the dome from the court, from the roofs and
-    from above; the way over the roofs as one walks it from the dome room's south door to the small
+    """V11 from the south lookout (the distance view), V1 and V2 (the two views whose skyline the
+    dome ends on the south), the dome from the court, from the roofs and from above; the way over the roofs as one walks it from the dome room's south door to the small
     dome; both wings' roofs from above, and the north one from the height of the tower's lookout."""
     cx = (S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0 + 0.5        # the dome's axis, a point
     cz = (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) / 2.0 + 0.5
@@ -56,6 +56,8 @@ def shots():
                     "look_at": [round(v, 2) for v in look_at], "time": TIME})
 
     shot("v11", S.V11["pos"], S.V11["look_at"])
+    shot("v1", S.V1["pos"], S.V1["look_at"])                        # the skyline's south end as one arrives
+    shot("v2", S.V2["pos"], S.V2["look_at"])                        # and from the court's axis
     shot("v11_dome", (cx + 22.0, 4.0, cz + 15.0), (cx, spring, cz))
     shot("court", (cx + 26.0, 1.7, cz - 6.0), (cx, spring - 1.0, cz))
     shot("corner", (cx + 12.0, spring + 4.0, cz + 12.0), (cx, spring, cz))
