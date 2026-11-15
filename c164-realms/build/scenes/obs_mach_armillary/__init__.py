@@ -8,9 +8,11 @@ placed. Version b stands on the same spot, so it has a scene of its own with the
 obs_mach_armillary_b: the two are compared picture by picture.
 
 What lights the brass is A2's (sky/lights, props/lamps): four ground lamps on armillary.LAMP_CELLS
-and a hidden light of level GLOW in the cell under armillary.LIGHT_CELL. Until the props line in the
-tree places them (it then has lamps.FEET_GLOW), the scene stands the same in their place: the props
-line's ground projector on each of armillary.lamp_feet(), and that light (LAMP_STANDINS).
+and a hidden light in the cell under armillary.LIGHT_CELL. A props line that has them (it then has
+lamps.FEET_GLOW) is asked for that one group of the site's lamps, lamps.site(groups=("feet",)): its
+switch lamps.DRESS is off in the master scene for now. Until the tree has such a props line the
+scene stands the same in their place: the ground projector on each of armillary.lamp_feet(), and a
+light of level GLOW.
 
     python -m scenes.obs_mach_armillary      writes shots.json
 """
@@ -27,12 +29,24 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
 TIME = 14000
-LAMP_STANDINS = not hasattr(lamps, "FEET_GLOW")
-GLOW = 8                # A2's figure (c220, 11-15): level 8 under the sphere gives the brass level 7
+GLOW = 8                # the stand-in's level, A2's figure (c220, 11-15): the brass over it gets 7
 
 # the two fixed cameras: the skeleton's once it has them (director, 11-14), until then the same numbers
 V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+
+
+def _feet_lamps(c):
+    """The four ground lamps and the light under the sphere. The brass has to stand on the canvas
+    already: the props line gives that light only where the rings are."""
+    if hasattr(lamps, "FEET_GLOW"):
+        # a lamp is placed once: with lamps.DRESS on, props.build() has placed these and this adds nothing
+        lamps.site(c, (0, 0, 0), groups=("feet",))
+        return
+    for foot, yaw in armillary.lamp_feet():
+        lamps.place(c, "uplight", foot, yaw=yaw)
+    x, y, z = armillary.LIGHT_CELL
+    K.offer_lights(c, [((x, y - 1, z), GLOW)], "machines/armillary: stand-in for props/lamps")
 
 
 def scene(version):
@@ -41,11 +55,7 @@ def scene(version):
     main.build(c, (0, 0, 0))
     armillary.build(c, (0, 0, 0), version=version)
     props.build(c, (0, 0, 0))
-    if LAMP_STANDINS:
-        for foot, yaw in armillary.lamp_feet():
-            lamps.place(c, "uplight", foot, yaw=yaw)
-        x, y, z = armillary.LIGHT_CELL
-        K.offer_lights(c, [((x, y - 1, z), GLOW)], "machines/armillary: stand-in for sky/lights")
+    _feet_lamps(c)
     sky.build(c, (0, 0, 0))
     return c
 
