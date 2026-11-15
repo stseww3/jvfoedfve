@@ -37,7 +37,12 @@ CLOUD_FOG_END = 768.0       # the layer fades to nothing at this distance
 LAMP = "#ffb45e"            # the one lamp colour (tint of block light)
 FOG_START, FOG_END = 60.0, 192.0   # crisp nearby; from 60 blocks on things melt into the horizon colour
 MOON_ANGLE = 42.0           # the comet sits in the moon's slot: sprite centre 48 degrees up in the west
-STAR_ANGLE = 0.0
+# The stars are one fixed field turned about the north-south axis. One pair of them overlaps, and a
+# star adds its light to what is behind it, so the pair shows as a single star of twice the light:
+# unturned it stood 23 degrees north of the comet's head, the second brightest point of the sky.
+# Turned by 133 degrees the pair lies 67 degrees below the horizon and no star stands within 6.8
+# degrees of the head (plan/parts/figs/sky_stars.py --scan).
+STAR_ANGLE = 133.0
 WATER = "#1f3a6e"
 
 # What is seen in each version. zenith/horizon: the sky overhead and the band at the horizon when
@@ -48,16 +53,31 @@ WATER = "#1f3a6e"
 #
 # The three have to be told apart at the size of a stamp, so they differ in everything at once:
 #   blue  the plan's values: cool blue-grey walls under a deep blue sky, a rose band in the west
-#   deep  the walls sink to dark navy and the lamps carry the picture; near-black sky, every star,
-#         the brightest comet, only an ember left in the west
+#   deep  the walls sink to dark navy and the lamps carry the picture; near-black sky, the
+#         strongest stars, the brightest comet, only an ember left in the west
 #   glow  the walls take a mauve light and stand brighter than the lamps' wash; violet sky that
 #         burns orange in the west, hardly a star, a faint comet
+#
+# The west of the blue hour was set on the real machine (the director, 11-16, on V1, V2 and V12).
+# Facing west the game draws the whole fog colour towards the afterglow, and the sky takes that
+# fog by elevation. With the sky's fog ending at 96 and the afterglow at 0.45 the west stood
+# purple up to 40 degrees (#332942 at 30) where the plan wants blue-violet. Ending at 128 the
+# share of the fog at 30 degrees falls from 0.45 to 0.33, and with the afterglow at 0.35 the sky
+# is blue-violet from 30 degrees up (#26233e) and keeps its rose band along the horizon. Zenith
+# and horizon are solved for again: away from the west the two ends are what they were, and the
+# gradient between them is steeper (the sky is darker at middle heights on every side).
+#
+# stars: the game adds the square of star_brightness to the sky behind a star (colour and opacity
+# are both the brightness). 0.60 adds 0.36; 0.15 adds 0.02, which no one sees: the comet stands
+# alone in the dusk. The comet's head is to be the brightest point of the sky: its core is white
+# and the glow round it 0.84, so deep's stars add 0.64 and come to 0.70, under that glow. At 1.0
+# they were as white and as large as the core.
 LOOKS = {
-    "blue": dict(tick=14000, zenith="#0d1433", horizon="#383a74", sky_fog_end=96.0,
-                 glow="#e97c4c", glow_alpha=0.45, sun_angle=92.0, moon_phase="full_moon", stars=0.60,
+    "blue": dict(tick=14000, zenith="#0d1433", horizon="#383a74", sky_fog_end=128.0,
+                 glow="#e97c4c", glow_alpha=0.35, sun_angle=92.0, moon_phase="full_moon", stars=0.60,
                  sky_light="#7f93d8", sky_factor=0.40, ambient="#161a2c", cloud="#565c8c"),
     "deep": dict(tick=18000, zenith="#05081a", horizon="#191c40", sky_fog_end=128.0,
-                 glow="#c8553a", glow_alpha=0.15, sun_angle=97.0, moon_phase="waning_gibbous", stars=1.0,
+                 glow="#c8553a", glow_alpha=0.15, sun_angle=97.0, moon_phase="waning_gibbous", stars=0.80,
                  sky_light="#6a80d8", sky_factor=0.14, ambient="#141829", cloud="#2c3160"),
     "glow": dict(tick=12900, zenith="#1c1e50", horizon="#5a4a86", sky_fog_end=80.0,
                  glow="#f0864f", glow_alpha=0.85, sun_angle=90.0, moon_phase="third_quarter", stars=0.15,

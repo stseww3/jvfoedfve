@@ -6,8 +6,9 @@ from the rotunda's cornice up (y 16), the gallery, the dome and what shuts the s
 thick: the room inside is interiors', the track's rollers and the shutter's chains are machines',
 the round frames of the windows are props', the two door leaves the roof's.
 
-Two versions (VERSION), compared in the test scenes obs_main_dome, obs_main_dome_b and
-obs_main_dome_slit:
+Two versions (VERSION); the map is built with b, the director's choice of 11-16, and a is kept.
+The test scene obs_main_dome shows the map's version, obs_main_dome_a the other, obs_main_dome_slit
+the slit of both:
 
     a   twenty flush seams, the foot of each stained where the water runs off it; two leaves
         that part sideways
@@ -34,7 +35,7 @@ from . import _order as O
 D = _dome
 
 ORDER = 60                  # after the shell and the roof terraces: the drum stands on them
-VERSION = "a"
+VERSION = D.VERSION         # "b"
 SLIT = "open"
 
 
