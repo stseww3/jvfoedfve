@@ -30,8 +30,9 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
              tall lights are whole blocks, flush with the wall: their room side is seen from the
              platform through the opening, and the materials line covers it with the sheet that
              shows frosted glass with the night behind it (materials/windows.line).
-  glass roof Over the car and the spawn cell only: two iron frames with a glazed screen in each,
-             glass between them in two pitches, an iron ridge. It lies between two girders, the
+  glass roof Over the car and the spawn cell only: two iron trusses (rafters, a tie, one light of
+             glass over the tie), glass between them in two pitches, an iron ridge. Who arrives
+             walks out under the western truss. It lies between two girders, the
              winch house's and one on two slender columns south of the car: a stone pedestal, an
              iron shaft, a cast head. The columns stand east of the camera and the girder's end
              oversails the western one. Its underside is S.CANOPY_CLEAR above the platform; seen
@@ -358,12 +359,14 @@ def _glaze(p):
 
 
 def _glass_roof(p):
-    """Two iron frames (the stepped rafters of a gable, a glazed screen under them), glass in two
-    pitches between them, an iron ridge: each pitch is one light with iron all round it, the frames
-    at its ends, the ridge above and a girder at its foot. The north girder is the winch house's;
-    the south one lies on two columns and tapers where it oversails the western one. A column is
-    slender, and so that it reads as one and the girder does not hang on two wires it has a foot
-    and a head: a stone pedestal of two courses, a shaft of two, a cast block under the girder."""
+    """Two iron frames, glass in two pitches between them, an iron ridge: each pitch is one light
+    with iron all round it, the frames at its ends, the ridge above and a girder at its foot. A
+    frame is a truss: the stepped rafters of a gable, a tie from foot to foot (the upper half of
+    the eaves course: the girders' underside stays the lowest of the roof) and one light of glass
+    in the triangle over the tie. The north girder is the winch house's; the south one lies on
+    two columns and tapers where it oversails the western one. A column is slender, and so that
+    it reads as one and the girder does not hang on two wires it has a foot and a head: a stone
+    pedestal of two courses, a shaft of two, a cast block under the girder."""
     x0, z0, x1, z1 = CANOPY
     half = (z1 - z0) // 2
     for x in range(x0, x1 + 1):
@@ -373,7 +376,7 @@ def _glass_roof(p):
             p.set(x, EAVES + i, z1 - i, IRON_STAIR + "[facing=north]" if frame else GLASS)
             if frame:
                 for z in range(z0 + i + 1, z1 - i):
-                    p.set(x, EAVES + i, z, SCREEN)
+                    p.set(x, EAVES + i, z, SCREEN if i else IRON_SLAB + "[type=top]")
         p.set(x, EAVES + half, z0 + half, IRON_SLAB + "[type=bottom]")
         p.set(x, EAVES, GIRDER_Z, IRON if x > x0 else IRON_STAIR + "[half=top,facing=east]")
     for x, z in COLUMNS:
