@@ -263,11 +263,12 @@ def window_wall(c, role, x, y, z, frame, n=8):
 
 
 def hung(c, x, y, z):
-    """The two signs that hang from a bracket on the side of a post: brass on its left, enamel on
-    its right. Three cells wide."""
-    c.box(x + 1, y, z, x + 1, y + 2, z, BASE)
-    c.set(x, y + 1, z, st(B.BRASS_SIGN[3], facing="south"))
-    c.set(x + 2, y + 1, z, st(B.ENAMEL_SIGN[3], facing="south"))
+    """The two signs that hang from a bracket on the side of a post, brass and enamel: each on the
+    left of a post of its own, a cell between the two. On the two sides of one post the far sign is
+    half behind the post's corner for whoever does not stand straight in front. Five cells wide."""
+    for dx, sign in ((0, B.BRASS_SIGN[3]), (3, B.ENAMEL_SIGN[3])):
+        c.set(x + dx, y + 1, z, st(sign, facing="south"))
+        c.box(x + dx + 1, y, z, x + dx + 1, y + 2, z, BASE)
 
 
 # ---- the mountain: natural rock and what lies on it ------------------------------------------------

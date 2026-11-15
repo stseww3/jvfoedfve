@@ -190,15 +190,13 @@ def ground(c, x, y, z):
 
 
 def pieces(c, x, y, z):
-    """The shaped blocks, each on its own two cells, in front of a fine stone wall: iron, the two
-    vanilla iron pieces for comparison, then the brass family and the signs."""
+    """The shaped blocks in front of a fine stone wall, each on its own two cells: the iron pieces in
+    two groups, then the brass family and the signs. A vanilla iron piece stands a cell from the
+    repainted one it is compared with."""
     c.box(x, y, z - 1, x + width(), y + 3, z - 1, B.ASHLAR_FINE.block)
     lifted = _Lifted(c, y)
-    for i, (put, block) in enumerate([
-            (_board.door, B.IRON_DOOR), (_board.hatch, B.IRON_HATCH), (_board.run, B.IRON_BARS),
-            (_board.pipe, B.IRON_PIPE), (_board.rod, B.IRON_ROD), (_board.bulb, B.IRON_BULB),
-            (_board.lantern, B.IRON_LANTERN), (_board.run, B.VANILLA_BARS), (_board.pipe, B.VANILLA_CHAIN)]):
-        put(lifted, block, x + 2 + 4 * i, z)
+    for dx, put, block in IRON:
+        put(lifted, block, x + dx, z)
     _board.brass(lifted, x + BRASS_AT, z, staged=False)
     _board.hung(c, x + HUNG_AT, y, z)
     for lx in range(x + 1, x + width(), 4):
@@ -250,7 +248,13 @@ ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out b
 # windows), which leaves the furnace window a place of its own at the far end from the lamps of the
 # instrument wall; the skylight, the instruments and the woods stand where a PITCH puts them.
 PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6 * PITCH, 7 * PITCH)}
-BRASS_AT = 40                   # x where the brass pieces start in the row of small things
+# The row of small things: x of each. The groups stand apart by what a close shot needs to hold one
+# whole and nothing of the next: the lines and the openings, the bars and the lamps, the brass.
+IRON = ((2, _board.door, B.IRON_DOOR), (6, _board.hatch, B.IRON_HATCH), (10, _board.rod, B.IRON_ROD),
+        (14, _board.pipe, B.IRON_PIPE), (17, _board.pipe, B.VANILLA_CHAIN),
+        (23, _board.run, B.IRON_BARS), (26, _board.run, B.VANILLA_BARS), (30, _board.bulb, B.IRON_BULB),
+        (34, _board.lantern, B.IRON_LANTERN))
+BRASS_AT = 42                   # where the brass pieces start
 HUNG_AT = BRASS_AT + 31         # ... and the two signs on a bracket, after them
 
 
@@ -378,10 +382,14 @@ def shots():
         for i in sorted({max(i, 0) for i in range(len(walls) - 2, -2, -2)}):
             x = (xs[i] + xs[i + 1] + N) / 2.0                              # between the two walls
             shot(f"{tier}_{walls[i][0]}", (x, y + 4.5, z + 8.5), (x, y + 4.0, z))
+    # The small things close, a group to a picture, all from the same distance: the nearest that holds
+    # the signs. Each stands where its group is whole and nothing of the next group is in the picture;
+    # only the brass hatch and the wall the signs are on stand a single cell apart, and each picture
+    # of the two has an edge of the other's.
     y, z = at("pieces")
-    for name, x in (("pieces_iron", 10.0), ("pieces_iron_2", 28.0), ("pieces_brass", BRASS_AT + 8.0),
-                    ("pieces_signs", BRASS_AT + 25.0)):
-        shot(name, (x, y + 2.6, z + 7.5), (x, y + 1.5, z))
+    for name, x in (("pieces_iron", 10.5), ("pieces_iron_2", 30.2), ("pieces_brass", BRASS_AT + 7.8),
+                    ("pieces_signs", BRASS_AT + 27.0)):
+        shot(name, (x, y + 2.6, z + 8.0), (x, y + 1.5, z))
     return out
 
 
