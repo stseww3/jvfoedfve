@@ -165,11 +165,16 @@ def check():
             for x, z in p.core:
                 if any(c.has(x, y, z) for y in range(D.ATTIC, D.SKIRT_Y + 1)):
                     out.append(f"{tag} room: something stands inside the inner leaf at ({x}, {z})")
-            # 9. the seams: version a draws them with the uncut sheet and has none of the darker
-            #    copper, version b the other way round
+            # 9. the seams: version a draws them with the uncut sheet, and has the darker copper
+            #    only where a run stains a seam; version b draws its ribs with the darker copper
+            #    and has no sheet
             names = set(c.count())
-            if version == "a" and (D.SHEET not in names or names & set(D.RIB.all())):
-                out.append(f"{tag} seams: version a does not draw them with the uncut sheet alone")
+            dark = set(D.RIB.all())
+            if version == "a":
+                astray = sorted((x, y, z) for (x, z), (rows, face) in cols.items() for y in rows
+                                if name(x, y, z) in dark and not (D._lined(x, z, "a") and D._stained(x, z, "a")))
+                if D.SHEET not in names or astray:
+                    out.append(f"{tag} seams: version a has no uncut sheet, or the darker copper off its runs: {astray[:6]}")
             if version == "b" and (D.RIB.block not in names or D.SHEET in names):
                 out.append(f"{tag} seams: version b does not draw its ribs with the darker copper alone")
     return out
