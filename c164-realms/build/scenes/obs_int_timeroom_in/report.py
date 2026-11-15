@@ -32,7 +32,12 @@ def compare():
     if not diff:
         print("  no cell differs")
     for (a, b), cells in sorted(diff.items(), key=lambda kv: -len(kv[1])):
-        print("  %4d  real %-44s box %-44s e.g. %s" % (len(cells), a, b, cells[:5]))
+        print("  %4d  real %-44s box %-44s" % (len(cells), a, b))
+        for x in sorted({cell[0] for cell in cells}):
+            ys = sorted({cell[1] for cell in cells if cell[0] == x})
+            for y in ys:
+                zs = sorted(cell[2] for cell in cells if cell[0] == x and cell[1] == y)
+                print("          x %2d y %2d z %s" % (x, y, " ".join(str(z) for z in zs)))
     print("the real building under the room, y 5, rows z -25, -24, -16, -12 (x 2..13):")
     for z in (-25, -24, -16, -12):
         print("  z%3d " % z + " | ".join(str(real.b.get((x, 5, z))).replace("minecraft:", "") for x in (2, 6, 9, 13)))
