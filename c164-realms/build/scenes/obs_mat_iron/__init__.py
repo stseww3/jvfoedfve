@@ -17,6 +17,11 @@ railing is of one tone with the plates behind it, whether a floor of gratings re
 with the ground seen through it, whether the door's porthole meets the eye of someone standing in
 front of it, and whether pipe, rod and railing can still be made out from twenty blocks.
 
+The balustrade shows the hatch a run at a time, the way the buildings use it: on edge as the panels
+of a balustrade, lying one above the other as the blades of a louvre. It is there to see that every
+panel and every blade is the same lid, and that a standing one is lit from above like the plate it
+stands on.
+
     python -m scenes.obs_mat_iron        writes shots.json from the layout below
 """
 from artkit.blocks import st
@@ -76,8 +81,28 @@ def gallery(c, x, z):
     return x1 + 2
 
 
+RAIL_WIDE = 8           # the balustrade: so many hatches on edge, x .. x + 7
+BLADES = 4              # the louvre beside it: so many lying hatches one above the other, two wide
+
+
+def balustrade(c, x, z):
+    """Eight hatches on edge in a row along the far side of a course of riveted plate, seen across
+    its top the way the panels of the ring stair are seen from the treads; and beside it a louvre
+    as the belfry has it, lying hatches one above the other between two posts."""
+    x1 = x + RAIL_WIDE - 1
+    c.box(x, 0, z, x1, 0, z, B.IRON_RIVETED.block)
+    # a standing hatch stands on the side it turns its back to: these on the north, away from the viewer
+    c.box(x, 1, z, x1, 1, z, st(B.IRON_HATCH, facing="south", half="bottom", open="true"))
+    post0, post1 = x1 + 2, x1 + 5
+    for px in (post0, post1):
+        c.box(px, 0, z, px, BLADES - 1, z, B.IRON_RIVETED.block)
+    c.box(post0 + 1, 0, z, post1 - 1, BLADES - 1, z, st(B.IRON_HATCH, facing="south", half="bottom", open="false"))
+    _board.stage(c, x, post1, z)
+    return post1 + 2
+
+
 STATIONS = [("plates", _board.twins_plates), ("shapes", _board.twins_shapes), ("walls", walls),
-            ("gallery", gallery)]
+            ("gallery", gallery), ("balustrade", balustrade)]
 
 
 def layout(c=None):
@@ -110,7 +135,7 @@ def shots():
     and the lamp glow), each eight-by-eight wall close (rivets, seams, brushing), the riveted treads
     from above, and both walls from twenty blocks (stripes); the gallery from the front, from the
     eye of someone standing before its door, from above down through the gratings, and from twenty
-    blocks."""
+    blocks; the balustrade and its louvre at reading distance."""
     spans = layout()
     out = []
 
@@ -138,4 +163,6 @@ def shots():
     out.append({"name": "gallery_door", "pos": [mid, eye, Z + 3.7], "look_at": [mid, eye, Z + 1.0], "time": TIME})
     out.append({"name": "gallery_floor", "pos": [mid, 8.0, Z + 8.0], "look_at": [mid, 2.5, Z + 2.5], "time": TIME})
     out.append({"name": "gallery_far", "pos": [mid, 5.0, Z + 21.0], "look_at": [mid, 4.0, Z + 1.0], "time": TIME})
+    x0, x1 = spans["balustrade"]
+    front("balustrade", x0, x1 - 2)
     return out
