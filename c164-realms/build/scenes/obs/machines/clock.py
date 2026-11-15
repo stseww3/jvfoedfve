@@ -360,6 +360,11 @@ def _master():
     box((-11, 2, 0), (11, 8, 11), WOOD, skip="nud", grain="y", faces={"s": WOOD_FRONT})
     box((-8, 3, 11), (8, 7, 11.5), WOOD_FRONT, skip="n", grain="x")
     box((-12, 8, 0), (12, 10, 12), WOOD, skip="n", grain="x")
+    # A line of brass round the head of the skirting and round the foot of the cap. From the door
+    # the plinth stands in front of the slate at the pier's foot, which is as dark as its wood:
+    # the two lines are what draws it there (cr3, 11-16).
+    for y in (1, 8):
+        box((-12.25, y, 0), (12.25, y + 1, 12.25), BRASS_LINE, skip="nud")
 
     # the trunk: back board, two sides, the door's rails, its brass bead and its knob
     box((-7, 10, 0), (7, 38, 2), WOOD_DEEP, skip="nweud", grain="y")
