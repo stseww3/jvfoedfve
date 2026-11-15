@@ -15,10 +15,14 @@ at the head stands across a whole bay of the front in the arrival view, up to th
 (tools/check.py, sight).
 
 The views: V1 as the skeleton fixes it (the arrival view the package is judged on: the wall is the
-band under the building, the stair comes down on the left), the stair on its axis from the yard,
-the look back down it from the terrace, the wall and a cheek from near, and two from above.
+band under the building, the stair comes down on the left); the stair on its axis, from the block
+where the axis begins on the yard's east edge (from there the yard's lamps stand whole in the
+picture, two pairs before the stair, and the terrace's lip hides least of the front); the look
+back down it from its head; the stair from its foot; the wall and a cheek from near, and the wall's
+length from the yard's north end; and three from above, one of them on the axis, the way a car of
+the cableway comes in: the line from the yard's edge to the door.
 
-Two more scenes show the same hill with one thing left out, on the three views that are judged
+Two more scenes show the same hill with one thing left out, on the views that are judged
 (JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chooses on the
 pictures) and obs_site_stair_nolamps without the lamps of the way (c235's review).
 
@@ -47,16 +51,17 @@ LOW = S.LOWER_GROUND + S.EYE        # -4.38: the eye of a person on the lower pl
 HIGH = S.GROUND + S.EYE             # 1.62: on the upper terrace
 VIEWS = [
     ("v1", V1["pos"], V1["look_at"]),
-    ("stair_axis", (86.5, LOW, 0.5), (17, 12, 0.5)),
-    ("stair_foot", (77.5, LOW, 3.5), (56, 3, 0.5)),
-    ("look_back", (57.5, HIGH, 0.5), (92, -9, 0.5)),
+    ("stair_axis", (lowerplatform.START_X + 1.5, LOW, 0.5), (17, 12, 0.5)),
+    ("stair_foot", (76.5, LOW, 3.5), (56, 3, 0.5)),
+    ("look_back", (stair.EDGE_X + 0.5, HIGH, 0.5), (84, -9, 0.5)),
     ("wall_near", (70.5, LOW, -27.5), (60.5, -3.4, -17)),
     ("cheek_side", (75.5, LOW, -19.5), (65, -3, -8.5)),
-    ("yard_south", (64.5, LOW, -40.5), (68, -5, 0.5)),
+    ("yard_south", (72.5, LOW, -40.5), (62, -3.5, -4)),
     ("aerial", (108, 34, 34), (66, -6, 0.5)),
+    ("axis_high", (110, 16, 0.5), (40, -4, 0.5)),
     ("v12_aerial", (66, 72, 58), (8, -2, 0)),
 ]
-JUDGED = ("v1", "stair_axis", "aerial")
+JUDGED = ("v1", "stair_axis", "look_back", "aerial", "axis_high")
 
 
 def shots(names=None):

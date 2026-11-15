@@ -11,8 +11,9 @@ head, half a block: every block of solid height on that edge hides about three o
 And nothing here is as bright as the front: only the building is (A0 #268, #28839). The faces S.V1
 sees of the stair look north and up, and the game shades those less than the front, which looks
 east; the same pale stone would show a third brighter here than on the building. So the stair is
-slate, dressed with the middle tone of the site's floors, polished tuff; the one pale stone left
-is the cap of a pedestal, half a block, as on the piers of every railing.
+slate, dressed with the middle tone of the site's floors, polished tuff, and has no pale stone at
+all: a pedestal's cap of the railings' ashlar, right under its lamp, showed in S.V1 at twice the
+front's brightness (the card has the numbers).
 
   wall       Column x 60, from under the kerb course of the terrace (y -1, site/court's) down to
              the lower paving: slate brick between a polished plinth course and a polished band
@@ -28,16 +29,20 @@ is the cap of a pedestal, half a block, as on the piers of every railing.
              pilasters, rows z -2..2, one line from the yard's east edge to the door. A switch
              (A0 #28839), on by default: BAND, or build(band=...).
   cheeks     A wall on each side, outside the 17 (rows z -9 and 9, in line with the end piers of
-             the terrace railing): slate brick like the retaining wall it grows out of, under one
-             course of coping that rakes with the stair, one block above the treads.
-  pedestals  Where a cheek ends: slate brick, a die of the coping's stone, a pale cap. At the head
-             (x 61) one block square, the cheek's own top end. At the foot two blocks square,
-             beyond the last riser (x 72..73) and standing out from the cheek away from the stair,
-             so the 17 stay clear and the outer rows (z -10 and 10) are pilaster lines. They are
-             the lamp bases: LAMP_POINTS names the middle of the top of each for the props line
-             (the lamp) and the sky line (its light). No block is set above them. A lamp at the
-             head stands on the lip, before the front for the arrival view: props/lamps gives a
-             point above S.GROUND the lip's low lamp, not a pole.
+             the terrace railing): slate brick like the retaining wall it grows out of and on the
+             same plinth course, under one course of coping that rakes with the stair, one block
+             above the treads.
+  pedestals  Where a cheek ends, in the coping's stone, so that the coping's line ends in them: a
+             die and a cap on the plinth course. At the head (x 61) one block square, the cheek's
+             own top end under a slab. At the foot two blocks square, beyond the last riser
+             (x 72..73) and standing out from the cheek away from the stair, so the 17 stay clear
+             and the outer rows (z -10 and 10) are pilaster lines; the cap there is four stair
+             blocks laid as a hip: a slab as large as the pedestal, and in its middle a socle one
+             block square, the size of a lamp's foot. They are the lamp bases: LAMP_POINTS names
+             the middle of the top of each for the props line (the lamp) and the sky line (its
+             light). No block is set above them. A lamp at the head stands on the lip, before the
+             front for the arrival view: props/lamps gives a point above S.GROUND the lip's low
+             lamp, not a pole.
 
 Blocks only, no display entities.
 """
@@ -65,13 +70,14 @@ SPLASH = B.SLATE_SMOOTH.slab + "[type=bottom]"
 WEATHERING = B.SLATE_BRICK.stairs + "[facing=west,half=bottom]"     # the high side against the wall
 TREAD = B.SLATE_SMOOTH.block
 TREAD_SLAB = B.SLATE_SMOOTH.slab + "[type=bottom]"
-DRESSING = B.TUFF_SMOOTH            # the middle tone (site/_kit.STRIP is its block): band, coping, dies
+DRESSING = B.TUFF_SMOOTH            # the middle tone (site/_kit.STRIP is its block): band, coping, pedestals
 BAND_TREAD = DRESSING.block
 BAND_SLAB = DRESSING.slab + "[type=bottom]"
 COPING = DRESSING.block
 COPING_SLAB = DRESSING.slab + "[type=bottom]"
 DIE = DRESSING.block
-CAP = B.ASHLAR_ROUGH.slab + "[type=bottom]"         # the stone of the railings' pier caps (site/_kit)
+CAP_SLAB = DRESSING.slab + "[type=bottom]"
+CAP_STAIRS = DRESSING.stairs
 GRATE = B.IRON_GRATE
 
 # The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
@@ -86,7 +92,7 @@ BUTTRESS_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) >= _CLEAR and (abs(z) - _CLE
 DRAIN_Z = [z for z in K.beat(WZ0, WZ1) if abs(z) > _CLEAR and (abs(z) - _CLEAR) % (2 * K.BEAT) == K.BEAT]
 
 HEAD_TOP = S.GROUND + 0.5           # the cap of a head pedestal: its slab alone stands above the terrace floor
-FOOT_TOP = FEET + 2.5               # the cap of a foot pedestal: a block above the cheek's low end
+FOOT_TOP = FEET + 3.0               # the socle on a foot pedestal's cap: a block and a half above the cheek's low end
 FOOT_SIZE = 2                       # a foot pedestal is this many blocks square
 
 
@@ -163,24 +169,33 @@ def _tread(c, o, x, z, walk):
 
 
 def _cheek(c, o, x, z):
-    """Slate brick under one course of coping: the top whole block, or the slab alone where the
-    rake ends in a half."""
+    """The wall's plinth course and slate brick under one course of coping: the top whole block, or
+    the slab alone where the rake ends in a half."""
     k, half = _levels(S.stair_top(x) + PARAPET)
     for y in range(FEET, k):
-        _put(c, o, x, y, z, BRICK if half or y < k - 1 else COPING)
+        _put(c, o, x, y, z, COPING if not half and y == k - 1 else SMOOTH if y == FEET else BRICK)
     if half:
         _put(c, o, x, k, z, COPING_SLAB)
 
 
-def _pedestal(c, o, cells, top, cap_stone=None):
-    """Die and cap over `cells`, the cap's top at `top`; slate brick under the die down to the
-    paving."""
-    cap = int(math.floor(top))
+def _hip(cells):
+    """{cell: facing} for four stair blocks over a square of four cells, laid as a pinwheel: each
+    has the next one before it, so the game gives every one of them its outer corner, the high
+    quarter at the square's middle. Together: a slab the size of the square under a socle one
+    block square."""
+    x, z = min(x for x, _ in cells), min(z for _, z in cells)
+    return {(x, z): "east", (x + 1, z): "south", (x + 1, z + 1): "west", (x, z + 1): "north"}
+
+
+def _pedestal(c, o, cells, top):
+    """The wall's plinth course, the die and the cap over `cells`, the cap's top at `top`. One cell
+    is capped with a slab; four with a hip of stair blocks, whose socle carries the lamp."""
+    cap = int(math.ceil(top)) - 1
+    hip = _hip(cells) if len(cells) == 4 else None
     for x, z in cells:
-        for y in range(FEET, cap - 1):
-            _put(c, o, x, y, z, BRICK)
-        _put(c, o, x, cap - 1, z, DIE)
-        _put(c, o, x, cap, z, cap_stone or CAP)
+        for y in range(FEET, cap):
+            _put(c, o, x, y, z, SMOOTH if y == FEET else DIE if y == cap - 1 else BRICK)
+        _put(c, o, x, cap, z, f"{CAP_STAIRS}[facing={hip[x, z]},half=bottom]" if hip else CAP_SLAB)
 
 
 def build(canvas, origin=(0, 0, 0), band=None):
@@ -197,11 +212,8 @@ def build(canvas, origin=(0, 0, 0), band=None):
             _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
         for z in CHEEK_Z:
             _cheek(c, o, x, z)
-    # TRIAL, for one look on the node and no more: the cap in the die's stone on the north pair,
-    # in polished slate on the south pair. One of the two stays; the next commit takes this out.
-    trial = (COPING_SLAB, TREAD_SLAB)
-    for cells, cap_stone in zip(HEAD_PEDESTALS, trial):
-        _pedestal(c, o, cells, HEAD_TOP, cap_stone)
-    for cells, cap_stone in zip(FOOT_PEDESTALS, trial):
-        _pedestal(c, o, cells, FOOT_TOP, cap_stone)
+    for cells in HEAD_PEDESTALS:
+        _pedestal(c, o, cells, HEAD_TOP)
+    for cells in FOOT_PEDESTALS:
+        _pedestal(c, o, cells, FOOT_TOP)
     return 0
