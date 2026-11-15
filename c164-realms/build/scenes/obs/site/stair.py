@@ -172,7 +172,7 @@ def _cheek(c, o, x, z):
         _put(c, o, x, k, z, COPING_SLAB)
 
 
-def _pedestal(c, o, cells, top):
+def _pedestal(c, o, cells, top, cap_stone=None):
     """Die and cap over `cells`, the cap's top at `top`; slate brick under the die down to the
     paving."""
     cap = int(math.floor(top))
@@ -180,7 +180,7 @@ def _pedestal(c, o, cells, top):
         for y in range(FEET, cap - 1):
             _put(c, o, x, y, z, BRICK)
         _put(c, o, x, cap - 1, z, DIE)
-        _put(c, o, x, cap, z, CAP)
+        _put(c, o, x, cap, z, cap_stone or CAP)
 
 
 def build(canvas, origin=(0, 0, 0), band=None):
@@ -197,8 +197,11 @@ def build(canvas, origin=(0, 0, 0), band=None):
             _tread(c, o, x, z, band and WALK_Z[0] <= z <= WALK_Z[1])
         for z in CHEEK_Z:
             _cheek(c, o, x, z)
-    for cells in HEAD_PEDESTALS:
-        _pedestal(c, o, cells, HEAD_TOP)
-    for cells in FOOT_PEDESTALS:
-        _pedestal(c, o, cells, FOOT_TOP)
+    # TRIAL, for one look on the node and no more: the cap in the die's stone on the north pair,
+    # in polished slate on the south pair. One of the two stays; the next commit takes this out.
+    trial = (COPING_SLAB, TREAD_SLAB)
+    for cells, cap_stone in zip(HEAD_PEDESTALS, trial):
+        _pedestal(c, o, cells, HEAD_TOP, cap_stone)
+    for cells, cap_stone in zip(FOOT_PEDESTALS, trial):
+        _pedestal(c, o, cells, FOOT_TOP, cap_stone)
     return 0
