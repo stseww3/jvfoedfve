@@ -132,11 +132,15 @@ DOME_AXIS = (mid(DOME_CENTRE[0]), mid(DOME_CENTRE[1]))   # (4.5, 0.5), a point: 
 # The telescope pier is an independent column on the dome centre, from the ground to the dome room.
 # LOCKED by A0 (#20004, 11-14). The shaft is thin, 3 x 3, and runs straight up from y 0; its cap
 # widens to 5 x 5 in the course of the dome-room floor to carry the equatorial foot (PIER_TOP_Y is
-# the cap's top). The ring stair winds round the shaft inside the envelope, clockwise, from the
-# gallery level (STAND, reached by a small bridge) up through the star-hall ceiling to the dome room,
-# and comes out east or south of the cap, never under the tube, which points west. The ground floor
-# of the star hall (y 0..6) carries no stair at all: it is kept for the orrery, the meridian and the
-# mother clock. The dome-room floor leaves the envelope open for the stair and the pier.
+# the cap's top). The ring stair winds round the shaft inside the envelope from the gallery level
+# (STAND, reached by a small bridge) up through the star-hall ceiling to the dome room. It comes out
+# north of the cap (A0 #388, 11-15; south is the fallback, east is not allowed): east of the pier, on
+# the axis, is the place of the eyepiece and of the person who looks along the tube at the comet, the
+# end of the map's one axis, and the south side is kept for those who watch the comet through the
+# slit. So the stair turns counterclockwise (c231 #32862: on at the north bridge, once round, off to
+# the north again). The ground floor of the star hall (y 0..6) carries no stair at all: it is kept
+# for the orrery, the meridian and the mother clock. The dome-room floor leaves the envelope open for
+# the stair and the pier.
 PIER_CENTRE = DOME_CENTRE
 PIER_SHAFT = (DOME_CENTRE[0] - 1, DOME_CENTRE[1] - 1, DOME_CENTRE[0] + 1, DOME_CENTRE[1] + 1)   # x 3..5, z -1..1
 PIER_CAP = (DOME_CENTRE[0] - 2, DOME_CENTRE[1] - 2, DOME_CENTRE[0] + 2, DOME_CENTRE[1] + 2)     # x 2..6, z -2..2
@@ -314,7 +318,9 @@ ORRERY_BODY_Y = (6.5, ORRERY_HANG_Y)    # the machine fills this height; the gro
 # Telescope: the equatorial foot (diameter <= 5) sits on the pier cap, centred on DOME_AXIS (4.5, 0.5).
 PIER_TOP_Y = float(ROOF_STAND)          # 18.0, the pier cap top; the foot stands on the cap, clear of the
 #                                         joint between the pier and the dome-room floor
-RING_STAIR = dict(y0=STAND, y1=ROOF_STAND, turn="clockwise")   # feet at 7 on the bridge, at 18 in the dome room
+RING_STAIR = dict(y0=STAND, y1=ROOF_STAND, turn="counterclockwise", exit="north")
+#                                         feet at 7 on the bridge, at 18 in the dome room; the cells of the
+#                                         bridge and of the exit are main/shell's (shell.BRIDGE, shell.EXIT)
 # Mother clock: wall-mounted on the pier's east face, on the axis (c193 #95, A0 #86.7, #20004): a box
 # about 1.5 wide x 0.75 thick x 4 high, facing east. Its back is the east face of the shaft.
 MOTHER_CLOCK = dict(back_x=float(PIER_SHAFT[2] + 1), z=AXIS_Z, y=(1.0, 5.0), facing="east")   # x 6.0, z 0.5
