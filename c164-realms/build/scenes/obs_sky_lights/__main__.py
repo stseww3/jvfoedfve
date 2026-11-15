@@ -79,14 +79,21 @@ def main():
         print(f"blue, {what} (x {x}), rows y 6..0, z -6..6:")
         for y in range(6, -1, -1):
             print("   " + " ".join(f"{lv.get((o[0] + x, o[1] + y, o[2] + z), 0):>2}" for z in range(-6, 7)))
-    bay = lights.WASH_BAYS[0]
-    wall, zc = S.east_wall_x(bay), S.bay_center_z(bay)
-    lv = L.levels(canvas, (o[0] + wall - 2, o[1] - 1, o[2] + zc - 6), (o[0] + wall + 6, o[1] + 9, o[2] + zc + 6))
-    print(f"blue, the wall wash of bay {bay}, block light before the wall (x {wall + 1}), rows y 7..0, z {zc - 2}..{zc + 2} "
-          f"(the pilasters' rows show the light before their fronts, x {wall + 2}):")
-    for y in range(7, -1, -1):
-        cells = [(wall + (2 if abs(dz) == 2 else 1), y, zc + dz) for dz in range(-2, 3)]
-        print("   " + " ".join(f"{lv.get((o[0] + x, o[1] + yy, o[2] + z), 0):>2}" for x, yy, z in cells))
+    north = [S.pilaster_z(k) for k in lights.WASH_PILASTERS if k < lights.DOOR_BAY]
+    z0, z1 = min(north) - 2, S.pilaster_z(lights.DOOR_BAY - 2)      # from the bay beyond the wash to the entrance's corner
+    wall, top = S.east_wall_x(lights.WASH_PILASTERS[0]), S.WINDOW[0] + 3
+    lv = L.levels(canvas, (o[0] + wall - 2, o[1] - 1, o[2] + z0 - 6), (o[0] + wall + 8, o[1] + top + 4, o[2] + z1 + 6))
+    print(f"blue, the wall wash of the north wing: the block light on the front's faces (the cell before the "
+          f"outermost block of each line: stone, the bars of a small window, the glass of a great one), "
+          f"rows y {top}..0, z {z0}..{z1}; pilasters at z "
+          f"{', '.join(str(z) for z in range(z0, z1 + 1) if (z - S.PIL_Z0) % S.BAY == 0)}:")
+    for y in range(top, -1, -1):
+        row = []
+        for z in range(z0, z1 + 1):
+            line = [(o[0] + x, o[1] + y, o[2] + z) for x in range(wall + 6, wall - 3, -1)]
+            face = next((i for i, cell in enumerate(line) if canvas.has(*cell) and canvas.name(*cell) != B.LIGHT), None)
+            row.append(" ." if not face else f"{lv.get(line[face - 1], 0):>2}")
+        print(f"   y {y:>2}  " + " ".join(row))
 
 
 if __name__ == "__main__":
