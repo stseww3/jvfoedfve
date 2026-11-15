@@ -32,8 +32,10 @@ and its inner leaf it touches only the floor of the doorways):
     11-15, #31594: north of the cap, never east of it -- that side is the eyepiece's): 22
     half-block steps and three landings on the outermost ring of the envelope, one whole turn
     counter-clockwise. One steps on from a bridge off the north gallery at (4, -4) and off onto the
-    dome-room floor at (4, -4), eleven blocks above. A balustrade of iron panels on both sides,
-    the inner one in the steps' own cells so the ring stays empty;
+    dome-room floor at (4, -4), eleven blocks above. A balustrade of iron panels on both sides:
+    the inner one in the steps' own cells so the ring stays empty, the outer one two rows high,
+    one unbroken band from the gallery to the trimmer. The west run, which crosses the well,
+    hangs by four rods from the beam over it;
   * the wing rooms of the main floor (time-service room north, star-chart room south): floor,
     ceiling, the wall towards the rotunda, the wall towards the end pavilion;
   * the dome-room floor, with the envelope left open, an iron curb and a railing round it.
@@ -100,7 +102,9 @@ RAIL = B.IRON_BARS
 GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
 PANEL = B.IRON_HATCH                            # an iron hatch on edge: the thin balustrade panel
+HANGER = f"{B.IRON_ROD}[facing=up]"             # a thin rod from the trimmer down to the ring stair's balustrade
 TRIM = B.IRON_RIVETED.block                     # the iron curb round the stair's opening, ceiling to floor
+HEADROOM = 2                                    # rows that stay free over a deck one walks on
 
 ROOMS = {
     # the clear inside of each room: box (x0, z0, x1, z1), where feet stand, the ceiling block's row
@@ -298,17 +302,24 @@ def panel(side):
 
 def stair_panels():
     """The ring stair's balustrades: [((x, y, z), side, inner)] -- an iron hatch on edge (3 pixels
-    thick) in that cell, standing on that side of it, in the row over the step's slab.
+    thick) in that cell, standing on that side of it.
 
     Inner side: a block in the open ring would touch the pier, so the panel stands in the step's own
-    cell, on its inner edge; where the stair turns, the two neighbours' panels meet at the corner.
-    Outer side: in the cell beside the step, against it. build() leaves a panel out where the
-    building already stands beside the step (the ceiling, the curb, the dome-room floor and its
-    railing, the pier's corbel and cap). The ring goes on beyond the first step and beyond the
-    last one; a panel in the step's own cell would narrow the way on and off, so each end is closed
-    by a panel in the ring's next cell: two rows high at the foot (down to the deck's level), one
-    at the head."""
+    cell, on its inner edge, in the row over the step's slab; where the stair turns, the two
+    neighbours' panels meet at the corner.
+    Outer side: in the cell beside the step, against it, two rows high: the row over the slab and
+    the slab's own row. Two steps share a row, so each pair's plate laps the next pair's by a block
+    and the outer side is one unbroken band from the gallery to the trimmer -- the stringer and the
+    balustrade in one, and what the stair reads by from the hall; the half block under the
+    panel of every other step is shut with it. The lower row is left out where it would hang less
+    than two blocks over a deck one walks on (the cross gallery under the first landing). build()
+    leaves a panel out where the building already stands beside the step (a railing, the ceiling,
+    the curb, the dome-room floor, the pier's corbel and cap).
+    The ring goes on beyond the first step and beyond the last one; a panel in the step's own cell
+    would narrow the way on and off, so each end is closed by a panel in the ring's next cell: two
+    rows high at the foot (down to the deck's level), one at the head."""
     x0, z0, x1, z1 = S.PIER_ENVELOPE
+    walk = layout().walk
     stair = ring_stair()
     cells = [(x, z) for x, z, _y, _half, _top in stair]
     side_of = lambda a, b: next(s for s, d in SIDE.items() if d == (b[0] - a[0], b[1] - a[1]))   # the side of a on which b lies
@@ -320,12 +331,28 @@ def stair_panels():
                 continue
             if x0 <= n[0] <= x1 and z0 <= n[1] <= z1:               # towards the pier, or along the ring
                 out.append(((x, y + 1, z), side, True))
-            else:
-                out.append(((n[0], y + 1, n[1]), OPPOSITE[side], False))
+                continue
+            out.append(((n[0], y + 1, n[1]), OPPOSITE[side], False))
+            if not (n in walk and y < S.STAND + HEADROOM):
+                out.append(((n[0], y, n[1]), OPPOSITE[side], False))
     for (x, z, y, _half, _top), beyond, rows in ((stair[0], cells[-2], (0, 1)), (stair[-1], cells[1], (1,))):
         out = [p for p in out if (p[0], p[1]) != ((x, y + 1, z), side_of((x, z), beyond))]
         out += [((beyond[0], y + dy, beyond[1]), side_of(beyond, (x, z)), False) for dy in rows]
     return out
+
+
+def stair_hangers():
+    """The rods the ring stair's west run hangs by: [(x, y0, y1, z)], a rod in every row y0..y1 of
+    that column. The north run stands on the edge of the north gallery and the south run closes up
+    under the trimmer; between them the west run crosses the well seven cells long, four blocks over
+    the cross gallery, and would read as floating. The beam that frames the opening on that side
+    (x 0) runs right over its outer balustrade: from it a rod comes down onto the balustrade's top
+    at every other cell, from the first landing to the corner. They shorten as the stair climbs
+    (four blocks, three, two, one), and stand clear of the stair and of the gallery under it."""
+    x0, z0, _x1, z1 = S.PIER_ENVELOPE
+    y_of = {(x, z): y for x, z, y, _half, _top in ring_stair() if y < CEIL_Y}
+    return [(x0 - 1, y_of[(x0, z)] + 2, CEIL_Y - 1, z) for z in range(z0, z1 + 1, 2)
+            if y_of[(x0, z)] + 2 <= CEIL_Y - 1]
 
 
 @contextlib.contextmanager
@@ -441,7 +468,7 @@ def build(canvas, origin=(0, 0, 0)):
     for c in L.cap:
         put(c, ROOF_Y, B.ASHLAR_FINE.block)
 
-    # the ring stair: the steps and the panels on both sides of them
+    # the ring stair: the steps, the panels on both sides of them, the rods the west run hangs by
     for x, z, y, half, _top in ring_stair():
         put((x, z), y, f"{TREAD.slab}[type={half}]")
     for (x, y, z), side, inner in stair_panels():
@@ -449,6 +476,9 @@ def build(canvas, origin=(0, 0, 0)):
         if canvas.has(ox + x, oy + y, oz + z) or (inner and canvas.has(ox + x + dx, oy + y, oz + z + dz)):
             continue
         put((x, z), y, panel(side))
+    for x, y0, y1, z in stair_hangers():
+        for y in range(y0, y1 + 1):
+            put((x, z), y, HANGER)
     return 0
 
 
@@ -604,6 +634,14 @@ def check():
                 continue
             if not solid(n[0], y + 1, n[1]) and c.get(x, y + 1, z) != panel(side):
                 out.append(f"ring stair: step ({x}, {z}) is open to the {side}")
+    #    and the west run hangs: every rod runs unbroken from the balustrade's top to a beam
+    for x, y0, y1, z in stair_hangers():
+        if c.name(x, y0 - 1, z) != PANEL:
+            out.append(f"ring stair: the hanger at ({x}, {z}) does not come down onto the balustrade")
+        if c.get(x, y1 + 1, z) != GIRDER:
+            out.append(f"ring stair: the hanger at ({x}, {z}) does not hang from a beam")
+        if any(c.get(x, y, z) != HANGER for y in range(y0, y1 + 1)):
+            out.append(f"ring stair: the hanger at ({x}, {z}) is broken")
     # 4. the grand stair: three blocks of air over every step
     for cells in L.flights.values():
         for x, y, z in cells:
@@ -650,6 +688,9 @@ def check():
                 if n == FOOT or (n[0], n[1]) in {(fx, fz) for cells in L.flights.values() for fx, fy, fz in cells if fy == DECK_Y}:
                     continue                                # the first step of the ring stair; the top step of a flight
                 out.append(f"main floor: deck ({x}, {z}) is open to the drop at {n}")
+        for y in range(S.STAND, S.STAND + HEADROOM):        # and nothing hangs into the way of whoever walks on one
+            if solid(x, y, z):
+                out.append(f"main floor: no head room on the deck at ({x}, {z}), y {y}")
     # 6. the dome-room floor is closed but for the envelope
     for x, z in L.dome_floor:
         if c.name(x, ROOF_Y, z) != (TRIM if (x, z) in L.curb else ROOM_FLOOR):
