@@ -1,0 +1,29 @@
+a0job 1115-220221-m2-timeroom-preview-364e-22367: cursor/c164-m2-timeroom-preview-364e @ a886f172 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.78 1.82 1.06, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_int_timeroom --out renders/_wip ---- exit 0, 55 s, last 30 lines of 19:
+  obs_int_timeroom: 2060 blocks, 55 entities (0 s)
+  obs_int_timeroom: resource pack written to /tmp/c164pack-wscib68t (1 s)
+  obs_int_timeroom: water: 0 sources, 0 cells of running water (1 s)
+  obs_int_timeroom: grid 22 x 13 x 27, 2060 blocks, 1461 entity boxes (2 s)
+  obs_int_timeroom: 38 states -> 63 looks, 76 boxes, 80 pictures (2 s)
+  obs_int_timeroom: light done (2 s)
+  obs_int_timeroom: v10 (tick 14000, 5 s)
+  obs_int_timeroom: v10_deep (tick 18000, 4 s)
+  obs_int_timeroom: v10_glow (tick 12900, 4 s)
+  obs_int_timeroom: int_wall (tick 14000, 4 s)
+  obs_int_timeroom: int_record (tick 14000, 8 s)
+  obs_int_timeroom: int_regulator (tick 14000, 2 s)
+  obs_int_timeroom: int_desk (tick 14000, 3 s)
+  obs_int_timeroom: int_bench (tick 14000, 4 s)
+  obs_int_timeroom: int_clocks (tick 14000, 5 s)
+  obs_int_timeroom: int_back (tick 14000, 4 s)
+  obs_int_timeroom: int_door (tick 14000, 4 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_int_timeroom-*: 11 pictures of a886f172 drawn, 2.1 MB
+                for a look only: nothing went into renders/obs_int_timeroom/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=59 host=cursor cores=4 head=a886f172 commit=9d8fed6b pushed=yes branch=cursor/c164-m2-timeroom-preview-364e-wip files=12
+a0job: exit=0 secs=59
