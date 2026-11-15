@@ -9,9 +9,10 @@ clock and the time ball at their places in the skeleton, among stand-ins of what
               back on the pier. The box is lit by the orrery's sun and by the clock's own hidden
               light, nothing else.
   the tower   the shaft of the time tower as one piece of masonry from the ground (in the map it
-              stands on the north pavilion): a dark recess three blocks wide on each face for the
-              dial, a belfry, a stepped roof and a stand-in mast, a thick post below and a thin rod
-              above. The lit frosted window in the east face, well under the dial, is the measure
+              stands on the north pavilion): on each face the recess main/tower leaves for the
+              dial (three wide, y 26..28, one deep, an iron plate at its back), a belfry, a stepped
+              roof and a stand-in mast (a post as thick as main/tower's rod up to y 51, a thin rod
+              on top). The lit frosted window in the east face, well under the dial, is the measure
               the dial is held against: the dial has to stay the darker of the two.
   the yard    the paving the cameras stand on.
   the mast    the radio mast (machines/mast) on a plain seat north of the tower, as soon as that
@@ -60,8 +61,8 @@ IRON = B.IRON_RIVETED.block
 GRATE = B.IRON_GRATE
 RAIL = B.IRON_BARS + "[east=true,west=true]"
 ROOF = B.VERDIGRIS_CUT.block
-POST = B.SLATE_SMOOTH.wall                  # a post 8 pixels thick: the lower mast
-ROD = B.IRON_ROD + "[facing=up]"            # 4 pixels thick: the mast above the ball
+POST = B.SLATE_SMOOTH.wall                  # a post 8 pixels thick: the mast the ball rides on
+ROD = B.IRON_ROD + "[facing=up]"            # 4 pixels thick: the top of the mast
 
 FLOOR_Y = S.PAVING_Y                        # -1, the floor block; feet at y 0
 
@@ -79,8 +80,9 @@ V7 = getattr(S, "V7", dict(pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5)))      
 TX, TZ = S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z                   # 10..16, -33..-27
 TCX, TCZ = (TX[0] + TX[1]) // 2, (TZ[0] + TZ[1]) // 2       # the axis column (13, -30)
 NICHE = (26, 28)                            # the rows of the dial's recess: three wide, one block deep
+NICHE_BACK = B.IRON_PLATE                   # its back, as main/tower builds it (c223, 11-15)
 BELFRY = (S.CLOCK_SHAFT_TOP + 1, 36)        # 32..36
-MAST_THICK = 47                             # the last cell of the thick post; the ball hides the joint
+MAST_THICK = 50                             # the last cell of the post: main/tower's rod ends at y 51
 WINDOW_LIGHT = 10                           # behind the frosted window, as the front has it
 
 # --- the pair -----------------------------------------------------------------------------------
@@ -197,11 +199,11 @@ def _tower(c):
                 if dx:
                     x = x1 if dx > 0 else x0
                     c.clear(x, y, TCZ + a)
-                    c.set(x - dx, y, TCZ + a, DARK_STONE)
+                    c.set(x - dx, y, TCZ + a, NICHE_BACK)
                 else:
                     z = z1 if dz > 0 else z0
                     c.clear(TCX + a, y, z)
-                    c.set(TCX + a, y, z - dz, DARK_STONE)
+                    c.set(TCX + a, y, z - dz, NICHE_BACK)
 
     # the measure: a lit frosted window in the east face, made as the front makes its great windows
     # (the opening, the glass one block in, a free cell behind it that holds the two hidden lights)
@@ -220,7 +222,8 @@ def _tower(c):
     c.box(x0 + 2, top - 1, z0 + 2, x1 - 2, top - 1, z1 - 2, ROOF)
     c.set(TCX, top, TCZ, ROOF)
 
-    # the mast: thick below, thin above, its tip at CLOCK_BALL_MAST
+    # the mast: a post where main/tower has its rod (a model 7 pixels thick, y 42.6..51), a thin
+    # rod above it for what stands on the top there
     for y in range(top + 1, S.CLOCK_BALL_MAST):
         c.set(TCX, y, TCZ, POST if y <= MAST_THICK else ROD)
 
