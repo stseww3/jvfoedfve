@@ -6,11 +6,14 @@ What it builds, inside the walls main/facade.py lays (it fills facade.shell().co
 and its inner leaf it touches only the floor of the doorways):
 
   * the star hall and the apse as one room, two storeys high (feet 0, ceiling 14): the cross walls
-    on z -6 and 6, a ceiling of dark boards between iron beams, and the floor as A0 ruled it for
-    the star hall (ART-PLAN 8, #30479): a band of pale stone three wide on the axis from the
-    entrance to the west door, a line of slate either side of it, black and white squares of two
-    by two beyond. Where a doorway of the facade cuts the wall, the plinth's stone lies in the
-    floor as its sill;
+    on z -6 and 6, and the floor as A0 ruled it for the star hall (ART-PLAN 8, #30479): a band of
+    pale stone three wide on the axis from the entrance to the west door, a line of slate either
+    side of it, black and white squares of two by two beyond. Where a doorway of the facade cuts
+    the wall, the plinth's stone lies in the floor as its sill;
+  * its ceiling (A0 #35810): iron beams from cross wall to cross wall and dark boards lying on
+    them, half a block up. The beams run north-south only: the two that frame the stair's opening
+    and every third column from them (x 0, -3, -6 and 8, 11, 14). The one on x 11 passes over the
+    orrery, which hangs from it; no beam runs along the axis to cross it there;
   * the west arcade (x 0..1): three arches as wide as the three of the entrance, their heads
     shut over the crown where the entrance's are (facade.CROWN). The middle one leads under the
     mezzanine to the west door, a vaulted way; a flight of the grand stair rises west through
@@ -21,7 +24,10 @@ and its inner leaf it touches only the floor of the doorways):
     a wall is stone; where it hangs free its edge is a riveted girder, and the railing stands on it;
   * the telescope pier: a shaft 3 x 3 on a footing of its own, a cap 5 x 5 in the dome-room floor.
     Nothing of the building touches it: an iron grating round its foot, an open slot at the
-    gallery, an open ring in the ceiling and in the dome-room floor;
+    gallery, an open ring in the ceiling and in the dome-room floor. The mother clock hangs on the
+    pier and stands on the pier's footing: the three cells before the east face are the pier's
+    stone, level with the floor (the star hall stands the clock's plinth on them), and the grating
+    goes round them too;
   * the ring stair (A0 #20004; the steps are c206's count, #20483; the way out is A0's ruling of
     11-15, #31594: north of the cap, never east of it -- that side is the eyepiece's): 22
     half-block steps and three landings on the outermost ring of the envelope, one whole turn
@@ -79,8 +85,8 @@ EXIT = BRIDGE                                   # (4, -4): the dome-room floor o
 LANDINGS = ((S.PIER_ENVELOPE[0], S.PIER_ENVELOPE[1]),       # the corners of the ring that are landings: north-west,
             (S.PIER_ENVELOPE[2], S.PIER_ENVELOPE[3]),       # south-east (level with the ceiling's lower face)
             (S.PIER_ENVELOPE[2], S.PIER_ENVELOPE[1]))       # and north-east; the south-west one is a step
-BEAM_X = (S.PIER_ENVELOPE[0] - 1, S.BAY)        # the ceiling's cross beams: the two that frame the stair's opening
-#                                                 (x 0 and 8) and every fourth column from them
+BEAM_STEP = 3                                   # the ceiling's beams: the two that frame the stair's opening (x 0 and
+#                                                 8) and every third column from them, west and east (A0 #35810)
 
 FLOOR = B.ASHLAR_FINE.block                     # the hall's floor: the white square
 FLOOR_DARK = B.SLATE_SMOOTH.block               # and the black one
@@ -88,7 +94,8 @@ SILL = B.SLATE_BRICK.block                      # the plinth's stone, in the flo
 DECK = B.ASHLAR_FINE.block                      # galleries, mezzanine, landings
 GIRDER = B.IRON_RIVETED.block                   # the free edge of a deck, the ceiling's beams
 ROOM_FLOOR = B.FLOOR_WOOD.block                 # wing rooms and the dome room
-CEILING = B.DARK_WOOD.block
+CEILING = B.DARK_WOOD.block                     # the wing rooms' ceiling
+BOARDS = f"{B.DARK_WOOD.slab}[type=top]"        # the hall's: boards on the beams, their lower face half a block up
 RAIL = B.IRON_BARS
 GRATING = B.IRON_GRATE
 TREAD = B.IRON_RIVETED
@@ -99,7 +106,8 @@ ROOMS = {
     # the clear inside of each room: box (x0, z0, x1, z1), where feet stand, the ceiling block's row
     "star hall": dict(box=(S.ROOM_X[0], -HALL_Z, 15, HALL_Z), feet=S.GROUND, ceiling=CEIL_Y,
                       note="open to the apse on the west; galleries at feet 7 on z -5 and 5; "
-                           "the wall's lining stands in the two east corners, x 14..15 on z -5 and 5"),
+                           "the wall's lining stands in the two east corners, x 14..15 on z -5 and 5; "
+                           "ceiling beams on x 8, 11, 14 (lower face 14.0), the boards between them half a block up"),
     "stair hall": dict(box=(-7, -HALL_Z, ARCADE_X[1], HALL_Z), feet=S.GROUND, ceiling=CEIL_Y,
                        note="the apse: the two flights, the way to the west door, the mezzanine over it"),
     "time room": dict(box=(S.ROOM_X[0], -WING_Z[1], S.ROOM_X[1], -WING_Z[0]), feet=S.STAND, ceiling=CEIL_Y,
@@ -227,6 +235,11 @@ def _layout(entrance):
     L.gap = L.cap - L.shaft                                               # the ring nothing stands in
     L.track = L.envelope - L.cap                                          # the ring the stair runs on
     L.curb = O.ring(L.envelope)                                           # one block outside the envelope
+    # the mother clock hangs on the pier's east face (S.MOTHER_CLOCK) and stands on the pier's footing,
+    # not on the building's floor: the cells before that face are the pier's, and the joint in the
+    # floor -- the grating -- goes round the shaft and them
+    L.seat = {(S.PIER_SHAFT[2] + 1, z) for z in range(S.PIER_SHAFT[1], S.PIER_SHAFT[3] + 1)}
+    L.joint = O.ring(L.shaft | L.seat)
     # walls
     L.cross = {c for c in core if abs(c[1]) == CROSS_Z}
     L.doors = {(x, s * CROSS_Z) for x in ROOM_DOOR_X for s in (-1, 1)}
@@ -262,10 +275,13 @@ def _layout(entrance):
     L.walk = L.deck - L.rail                                              # where feet stand at 7
     # a deck that lies on a wall or an arch is stone; the edge that hangs free is a girder
     L.girder = L.gallery_edge | over_flights | {c for c in L.notch if c[0] > ARCADE_X[1]}
-    # above
+    # above: the ceiling's beams run north-south only, every third column west of the stair's
+    # opening and east of it (x 0, -3, -6 and 8, 11, 14), and the trimmers close the opening between
+    # the two that frame it. None runs along the axis: the one on x 11 passes over the orrery alone
     L.ceiling = L.hall - L.envelope
-    L.beams = ({c for c in L.ceiling if (c[0] - BEAM_X[0]) % BEAM_X[1] == 0 or c[1] == CZ}
-               | (L.curb & L.ceiling))                                    # and the trimmers between the two
+    x0, _z0, x1, _z1 = S.PIER_ENVELOPE
+    L.beams = ({c for c in L.ceiling if (c[0] < x0 and (x0 - 1 - c[0]) % BEAM_STEP == 0)
+                or (c[0] > x1 and (c[0] - x1 - 1) % BEAM_STEP == 0)} | (L.curb & L.ceiling))
     L.dome_floor = O.shrink(O.shrink(O.disc(CX, CZ, S.DOME_R))) - L.envelope
     L.dome_rail = L.curb - {EXIT}
     return L
@@ -340,16 +356,17 @@ def build(canvas, origin=(0, 0, 0)):
         canvas.clear(ox + c[0], oy + y, oz + c[1])
 
     # the ground floor of the hall (the star hall lays its own over its part when it moves in), the
-    # plinth's stone in the doorways. The pier goes down through the floor to a footing of its own;
-    # a grating bridges the joint
+    # plinth's stone in the doorways. The pier goes down through the floor to a footing of its own,
+    # the seat of the mother clock with it; a grating bridges the joint round the two
     east = max(x for x, z in L.hall if z == CZ)
-    for c in L.hall - L.cap:
+    foot = L.shaft | L.seat
+    for c in L.hall - foot - L.joint:
         put(c, S.PAVING_Y, floor_block(c, east))
     for c in L.sills:
         put(c, S.PAVING_Y, SILL)
-    for c in L.cap:
+    for c in foot | L.joint:
         put(c, S.PAVING_Y - 1, pier_block(S.PAVING_Y - 1))
-        put(c, S.PAVING_Y, pier_block(S.PAVING_Y) if c in L.shaft else GRATING)
+        put(c, S.PAVING_Y, GRATING if c in L.joint else pier_block(S.PAVING_Y))
 
     # walls: the cross walls with the doors of the wing rooms, the walls that close the wing rooms
     # (up to the cornice row: the drum's stone and the gables stand on the row above)
@@ -398,10 +415,11 @@ def build(canvas, origin=(0, 0, 0)):
     for c in L.gallery:
         put(c, DECK_Y - 1, f"{B.ASHLAR_FINE.stairs}[facing={'north' if c[1] < 0 else 'south'},half=top]")
 
-    # the ceiling of the hall: boards between iron beams, a trimmer round the stair's opening and
-    # the curb that stands on it up to the dome-room floor
+    # the ceiling of the hall: iron beams, and the boards lying on them half a block up (the beams'
+    # lower face is the ceiling's level, 14.0: what hangs, hangs from a beam); a trimmer round the
+    # stair's opening and the curb that stands on it up to the dome-room floor
     for c in L.ceiling:
-        put(c, CEIL_Y, GIRDER if c in L.beams else CEILING)
+        put(c, CEIL_Y, GIRDER if c in L.beams else BOARDS)
     for c in L.curb:
         for y in range(CEIL_Y + 1, ROOF_Y):
             put(c, y, TRIM)
@@ -441,7 +459,8 @@ LEGEND = [
     ("D", "door opening (on the ground floor: a doorway of the facade, its sill)"),
     (".", "floor or deck"), ("o", "open to the level below"), ("x", "closed space"),
     ("r", "railing on the edge of a deck"), ("T", "telescope pier (the cap, at the dome room)"),
-    ("=", "iron grating round the pier's foot"), ("<", "grand stair, rising west"),
+    ("=", "iron grating round the pier's foot"), ("m", "the mother clock's seat: the pier's footing, level with the floor"),
+    ("<", "grand stair, rising west"),
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
 ]
@@ -460,7 +479,9 @@ def drawing(level):
         g[c] = "x"
     if level == "ground":
         for c in L.hall:
-            g[c] = "=" if c in L.gap else "."
+            g[c] = "=" if c in L.joint else "."
+        for c in L.seat:
+            g[c] = "m"
         for c in L.sills:
             g[c] = "D"
         for c in L.cross | L.partition | L.west | L.cheek | L.arcade | L.landing:
@@ -636,6 +657,29 @@ def check():
     for x, z in L.track:
         if solid(x, ROOF_Y, z) and (x, z, ROOF_Y) not in {(sx, sz, sy) for sx, sz, sy, _h, _t in stair}:
             out.append(f"dome room: the envelope is not open at ({x}, {z})")
+    # 7. the hall's ceiling (A0 #35810): the orrery hangs from a beam, and no second beam crosses
+    #    that one over it; a beam is a whole block, a board the upper half of one
+    hx, hz = int(S.ORRERY_CENTRE[0] - 0.5), int(S.ORRERY_CENTRE[1] - 0.5)
+    if c.get(hx, CEIL_Y, hz) != GIRDER:
+        out.append(f"ceiling: no beam over the orrery at ({hx}, {hz})")
+    if any(c.get(hx + dx, CEIL_Y, hz) == GIRDER for dx in (-1, 1)):
+        out.append(f"ceiling: a second beam crosses the one over the orrery at ({hx}, {hz})")
+    for x, z in L.ceiling:
+        if c.get(x, CEIL_Y, z) != (GIRDER if (x, z) in L.beams else BOARDS):
+            out.append(f"ceiling: neither beam nor board at ({x}, {z})")
+    # 8. with the facade's stand-in behind the entrance gone, the hall still has a back: in every row
+    #    of every doorway of the entrance front something of the shell stands inside the walls (the
+    #    pier on the axis, the flights and their landings beside it), so nobody looks through a
+    #    doorway and straight out the far side (the facade's own check 5 keeps the stand-in; c206, 11-15)
+    stands = lambda x, y, z: c.has(x, y, z) and c.name(x, y, z) != B.LIGHT
+    for d in (facade.doors() if hasattr(facade, "doors") else ()):
+        if d.get("front") != "east":
+            continue
+        for x, z in d["cells"]:
+            inside = [n for n in range(S.WALL_W - S.DOME_R, x) if (n, z) in L.hall]
+            for y in range(d["y"][0], d["y"][1] + 1):
+                if inside and not any(stands(n, y, z) for n in inside):
+                    out.append(f"entrance: one looks right through the hall at z {z}, y {y}")
     return out
 
 
