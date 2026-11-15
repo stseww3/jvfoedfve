@@ -435,12 +435,18 @@ def entrance_pilasters(canvas, origin=(0, 0, 0)):
 #   feet    four dim ground lamps at the feet of the armillary, looking up at its rings, and what
 #           they throw on the brass: one source under the cell the rings take their light from.
 #   doors   everything else is dark, but for one caged lamp at the door of a small building.
+#   station where the way begins: a pendant under the ridge of the glass roof over the car and one
+#           under the winch house's ridge, on site/cablecar's hanging points. Both hang behind
+#           the arrival view, and the paving that is in it keeps to level 1 (c226, g2 #36405).
+#           No pole at the foot of the station's steps: one there stands in the arrival view,
+#           and the first pair of the way is eight cells on.
 #
 # The doorway is the brightest thing on the site (14, sky/lights); the street lamps lead to it a
 # step under.
 DRESS = False           # off in the master scene until the director has seen obs_props_lamps_site;
                         # a test scene asks for the site's lamps with dress(canvas)
 STREET_LEVEL = 13
+STATION_LEVEL = 12      # the pendants of the cable station: the top of a pendant's rank
 AIM_UP = 3.0            # a ground lamp at the armillary's feet looks at its middle, this far above the ground
 FEET_GLOW = 8           # the source under the armillary's light cell: the brass gets one less, what the
                         # paving beside a ground lamp gets. Under every lit window, so that the rings stay
@@ -456,6 +462,8 @@ _REPORTED = {
     ("site.court", "lip_lamps"): [(60, -18), (60, -26), (60, -34), (60, 18), (60, 26), (60, 34)],
     ("site._kit", "PIER_TOP"): 1.5,
     ("site.outbuildings", "LAMP_POINTS"): {"hut_door": (37.5, 2.5, -25.0), "tower_foot": (-14.5, 0.5, -32.0)},
+    # c226, g2 #36405: the hanging points under the two ridges of the cable station
+    ("site.cablecar", "LAMP_POINTS"): {"car": (89.5, 3.0, -32.5), "winch": (88.5, 5.0, -37.5)},
     # c246, g2 #33389: the cells off the corners of the armillary's base, and the cell its brass is lit by
     ("machines.armillary", "LAMP_CELLS"): [(S.ARMILLARY[0] + dx, S.ARMILLARY[1] + dz)
                                            for dx in (-2, 2) for dz in (-2, 2)],
@@ -502,6 +510,8 @@ def site_lamps():
         out.append(("feet", "uplight", (S.mid(x), float(S.GROUND), S.mid(z)), None, middle))
     for p in _told("site.outbuildings", "LAMP_POINTS").values():
         out.append(("doors", "cage", tuple(p), None, None))
+    for p in _told("site.cablecar", "LAMP_POINTS").values():
+        out.append(("station", "pendant", tuple(p), STATION_LEVEL, None))
     return out
 
 
@@ -512,6 +522,15 @@ def _stands(canvas, p, origin=(0, 0, 0)):
     x, y, z = (p[i] + origin[i] for i in range(3))
     cx, cz, under = math.floor(x), math.floor(z), math.ceil(y) - 1
     return canvas.has(cx, under, cz) and not canvas.has(cx, under + 1, cz)
+
+
+def _hangs(canvas, p, origin=(0, 0, 0)):
+    """True when a hanging lamp fixed at p has something over it on the canvas and room under it:
+    the cell whose underside the point lies on (a block's, or a slab's in its upper or lower half)
+    is taken and the next one down is free."""
+    x, y, z = (p[i] + origin[i] for i in range(3))
+    cx, cz, over = math.floor(x), math.floor(z), math.floor(y + 1e-6)
+    return canvas.has(cx, over, cz) and not canvas.has(cx, over - 1, cz)
 
 
 def _wall_facing(canvas, p, origin=(0, 0, 0)):
@@ -539,8 +558,8 @@ def dress(canvas, on=True):
 
 
 def site(canvas, origin=(0, 0, 0), groups=None, version=None):
-    """Place the lamps of the site (site_lamps()), or of the groups named ("way", "lip", "feet",
-    "doors"). A lamp is only placed where it has something to stand on or to hang from on the canvas
+    """Place the lamps of the site (site_lamps()), or of the groups named ("way", "lip", "feet", "doors",
+    "station"). A lamp is only placed where it has something to stand on or to hang from on the canvas
     as it is, so a tree without one of the site's packages has fewer lamps and no floating ones;
     what was left out is kept in canvas.lamps_left_out as (group, kind, point). With the lamps at
     the armillary's feet goes the light they throw on its rings (_feet_glow). A lamp is placed
@@ -557,17 +576,18 @@ def site(canvas, origin=(0, 0, 0), groups=None, version=None):
             continue
         before = n
         name = f"{kind}_{version or VERSION}" if kind in VERSIONED else kind
-        if SPEC[name]["mount"] == "wall":
+        mount = SPEC[name]["mount"]
+        if mount == "wall":
             facing = _wall_facing(canvas, p, origin)
             if facing is None:
                 left.append((group, kind, p))
                 continue
             n += place(canvas, kind, p, facing=facing, origin=origin, version=version, level=level)
-        elif not _stands(canvas, p, origin):
+        elif not (_hangs if mount == "ceiling" else _stands)(canvas, p, origin):
             left.append((group, kind, p))
         else:
             yaw = None if aim is None else math.degrees(math.atan2(-(aim[0] - p[0]), aim[2] - p[2]))
-            n += place(canvas, kind, p, origin=origin, level=level, yaw=yaw)
+            n += place(canvas, kind, p, origin=origin, version=version, level=level, yaw=yaw)
             feet += group == "feet"
         if n > before:
             placed.add((kind, tuple(p), origin))
