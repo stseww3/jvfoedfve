@@ -31,7 +31,11 @@ BIOME_MARGIN_Y = 120
 
 def write_pack(pack_dir):
     """The sky's pictures and the repainted blocks the board is built of."""
-    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+    from scenes.obs.sky import _seam
+    out = list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])
+    if _seam.wanted():
+        out += _seam.pack(pack_dir)
+    return out
 
 
 PAVING = B.TUFF_SMOOTH.block

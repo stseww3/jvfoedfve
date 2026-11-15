@@ -102,6 +102,19 @@ TRIALS = {
     "veil": dict(of="blue", tick=9100, cloud="#474c7a"),
     "fogged": dict(of="blue", tick=10100, cloud="#383a74"),
     "glowed": dict(of="blue", tick=11100, cloud="#755064"),
+    # the seam test (director, 11-16): make the block clouds fade exactly as the vanilla layer does.
+    # The layer does not mix colour -- it multiplies its alpha by (1 - distance/768) and what shows
+    # through is the void, which is the fog colour. The block clouds instead mix colour towards fog
+    # from 60 to 192. Two different laws, so the join shows. These three trials put the block clouds
+    # on the layer's law: no near fog, fade over the whole 0..D, opaque cloud colour (alpha 1.0), and
+    # the colour is the outermost step of the block sea as the game shows it in A (third step
+    # #474c7a). D is the layer's own 768, half of it, and twice it.
+    "deep384": dict(of="blue", tick=22500, fog_start=0.0, fog_end=384.0, cloud_fog_end=384.0,
+                    cloud_alpha=1.0, cloud="#474c7a"),
+    "deep768": dict(of="blue", tick=23100, fog_start=0.0, fog_end=768.0, cloud_fog_end=768.0,
+                    cloud_alpha=1.0, cloud="#474c7a"),
+    "deep1536": dict(of="blue", tick=23700, fog_start=0.0, fog_end=1536.0, cloud_fog_end=1536.0,
+                     cloud_alpha=1.0, cloud="#474c7a"),
 }
 TRIAL_HOLD, TRIAL_RAMP = 100, 50     # held from tick - 100 to tick + 100, blended over 50 ticks each side
 
@@ -163,11 +176,11 @@ def values(name=DEFAULT):
         "sun_angle": v["sun_angle"], "moon_angle": MOON_ANGLE, "star_angle": STAR_ANGLE,
         "moon_phase": v["moon_phase"], "star_brightness": v["stars"],
         "sky_light_color": v["sky_light"], "sky_light_factor": v["sky_factor"],
-        "ambient_light_color": v["ambient"], "cloud_color": _argb(v["cloud"], CLOUD_ALPHA),
+        "ambient_light_color": v["ambient"], "cloud_color": _argb(v["cloud"], v.get("cloud_alpha", CLOUD_ALPHA)),
         "block_light_tint": LAMP,
         "fog_start_distance": v.get("fog_start", FOG_START), "fog_end_distance": v.get("fog_end", FOG_END),
         "cloud_height": float(GROUND_Y + CLOUD_TOP - CLOUD_THICKNESS),
-        "cloud_fog_end_distance": CLOUD_FOG_END,
+        "cloud_fog_end_distance": v.get("cloud_fog_end", CLOUD_FOG_END),
     }
 
 
