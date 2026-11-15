@@ -80,8 +80,8 @@ PANEL = 1.75                # blocks: the side of a panel between two beams; ove
 STRIP = 0.75                # that wide, as long as a panel
 PANEL_GAP = 0.25            # between two panels of a row
 PANEL_LIGHTS = (9, 8, 7)    # the level a panel is shown at: beside the boss, at the end of its row, over a
-#                             gallery's end. No source reaches the boards, a face that looks down is drawn at
-#                             half, and dark boards with nothing on them come out dead black from the door
+#                             gallery's end. No source reaches the boards, a block's face that looks down is
+#                             drawn at half, and dark boards with nothing on them come out dead black from the door
 AISLE_LAMP = ("bracket", "b")   # the enamel cone in both versions: its bulb is inside the shade. A caged lamp's
 #                                 glass is drawn at full light where it looks up and was brighter in the picture
 #                                 than the orrery's sun, which the door sees from below (cr3, #58794)
@@ -121,7 +121,8 @@ STYLE = {
         corbel=B.ASHLAR_FINE.stairs, dado=True, panel="sky", board=BOARD_A,
         # a bench's back is 7.25 px behind its middle and the wainscot 3 px thick: 5.35 clears it by a hair
         furniture=(("bench", (10.0, 5.35), "north"), ("bench", (13.0, 5.35), "north"),
-                   ("display_table", (10.0, -4.36), "south"), ("display_table", (13.0, -4.36), "south"),
+                   ("display_table_plates", (10.0, -4.36), "south"),
+                   ("display_table_lenses", (13.0, -4.36), "south"),
                    ("coat_stand", (15.5, 5.3), "north")),
     ),
     "b": dict(
@@ -423,7 +424,7 @@ def _stand_in(canvas, origin, kind, pos, facing):
     wide = (x - 1, x) if pos[0] == int(pos[0]) else (x,)
     if kind == "bench":
         state = st(B.DARK_WOOD.stairs, facing=ACROSS[facing], half="bottom")
-    elif kind in ("display_table", "writing_desk", "drafting_table"):
+    elif kind.startswith("display_table") or kind in ("writing_desk", "drafting_table"):
         state = st(B.DARK_WOOD.slab, type="top")
     elif kind in ("card_cabinet", "instrument_cabinet"):
         state = B.DARK_WOOD.block
@@ -438,13 +439,19 @@ def _stand_in(canvas, origin, kind, pos, facing):
 
 
 def _furnish(canvas, origin, style):
+    """What stands along the aisle walls. a's two display tables show star-field plates with a
+    measuring rule and a glass (by the pier) and lenses and eyepieces laid out by size (by the
+    door): table and exhibits are one piece of props/furniture's (a6, #61626), and the empty table
+    stands there until the family has them."""
     furniture = _optional("props.furniture")
     n = 0
     for kind, (x, z), facing in style["furniture"]:
         if furniture is None:
             _stand_in(canvas, origin, kind, (x, z), facing)
-        else:
-            n += furniture.place(canvas, kind, (x, FEET, z), facing=facing, origin=origin)
+            continue
+        if kind not in furniture.SPEC:
+            kind = kind.rpartition("_")[0]
+        n += furniture.place(canvas, kind, (x, FEET, z), facing=facing, origin=origin)
     return n
 
 
@@ -569,28 +576,27 @@ SKY_STARS = ((-4.5, -4.0, 1.0), (2.0, -5.0, 0.5), (4.5, -1.5, 0.5), (-1.0, -0.5,
 def _panel(name, kind):
     """A panel let into the boards, shown at scale 2 (units are eighths of a block); `kind` is
     "panel", square, or "strip", as long and STRIP wide, its length along x. Anchor: the middle
-    of its upper face, on the boards. No face of it is shaded: it looks down, and is shown at a
-    level of its own.
+    of its upper face, on the boards. It looks down, and a display entity's face that does is drawn
+    at four tenths of its light, so it is shown at a level of its own (PANEL_LIGHTS).
     sky    blue enamel in a brass bead with a few brass stars: a piece of the sky over the orrery
     plate  an iron plate riveted to the boards, a row of rivets along each edge"""
     m = M.Model(f"{PREFIX}{name}_{kind}", px=2.0)
     w, d = PANEL * 4.0, (PANEL if kind == "panel" else STRIP) * 4.0
-    flat = dict(shade=False)
     if name == "sky":
-        m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="x", **flat)
+        m.box((-w, -0.5, -d), (w, 0.0, d), K.ENAMEL, grain="x")
         for s in (-1.0, 1.0):
-            m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z", **flat)
-            m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x", **flat)
+            m.box((s * w - 0.5, -0.75, -d - 0.5), (s * w + 0.5, 0.0, d + 0.5), K.BRASS_D, grain="z")
+            m.box((-w + 0.5, -0.75, s * d - 0.5), (w - 0.5, 0.0, s * d + 0.5), K.BRASS_D, grain="x")
         for x, z, size in SKY_STARS:
             if abs(z) + size / 2.0 < d - 0.5:
-                m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS, **flat)
+                m.box((x - size / 2.0, -0.75, z - size / 2.0), (x + size / 2.0, -0.5, z + size / 2.0), K.BRASS)
     else:
-        m.box((-w, -0.5, -d), (w, 0.0, d), K.IRON, grain="x", **flat)
+        m.box((-w, -0.5, -d), (w, 0.0, d), K.IRON, grain="x")
         for s in (-1.0, 1.0):
-            m.box((s * w - 0.5, -0.75, -d), (s * w + 0.5, -0.5, d), K.IRON_D, grain="z", **flat)
+            m.box((s * w - 0.5, -0.75, -d), (s * w + 0.5, -0.5, d), K.IRON_D, grain="z")
             for k in range(-3, 4):
-                m.box((2.0 * k - 0.25, -0.75, s * (d - 0.75) - 0.25), (2.0 * k + 0.25, -0.5, s * (d - 0.75) + 0.25),
-                      K.RIVET, **flat)
+                z = s * (d - 0.75)
+                m.box((2.0 * k - 0.25, -0.75, z - 0.25), (2.0 * k + 0.25, -0.5, z + 0.25), K.RIVET)
     return m
 
 
