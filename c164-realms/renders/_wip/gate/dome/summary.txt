@@ -1,0 +1,21 @@
+gate main/dome 4734497f: the merged tree ec9ac975, the assembly as it was e8af28a3
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 34 scenes in 17 s: 34 pass (18 with warnings)
+pictures: obs_main_dome: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome at ec9ac975: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 29648 of 921600 pixels are not what the code draws (off by up to 206 of 255)
+    v11: 10823 of 921600 pixels are not what the code draws (off by up to 74 of 255)
+    gallery: 24650 of 921600 pixels are not what the code draws (off by up to 222 of 255)
+    aerial: 1242 of 921600 pixels are not what the code draws (off by up to 57 of 255)
+    top: 25426 of 921600 pixels are not what the code draws (off by up to 68 of 255)
+    slit: 2048 of 921600 pixels are not what the code draws (off by up to 68 of 255)
+pictures: obs_main_dome_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome_b at ec9ac975: 5 of 11 kept pictures are what the code draws, 6 not
+    v1: 29648 of 921600 pixels are not what the code draws (off by up to 206 of 255)
+    v11: 10823 of 921600 pixels are not what the code draws (off by up to 74 of 255)
+    gallery: 24650 of 921600 pixels are not what the code draws (off by up to 222 of 255)
+    aerial: 1242 of 921600 pixels are not what the code draws (off by up to 57 of 255)
+    top: 25426 of 921600 pixels are not what the code draws (off by up to 68 of 255)
+    slit: 1965 of 921600 pixels are not what the code draws (off by up to 68 of 255)
+pictures: [PASS] selfshots obs_main_dome_slit at ec9ac975: 10 of 10 kept pictures are what the code draws
+result: PASS
