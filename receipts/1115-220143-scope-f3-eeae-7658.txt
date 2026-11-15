@@ -1,0 +1,22 @@
+a0job 1115-220143-scope-f3-eeae-7658: cursor/c164-scope-f3-eeae @ 38fa8b40 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 0.12 0.35 0.18, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_refractor --only north_b,mount_north_b,lamp_a,lamp_b --out renders/_wip ---- exit 0, 35 s, last 25 lines of 12:
+  obs_mach_refractor: 9496 blocks, 10 entities (0 s)
+  obs_mach_refractor: resource pack written to /tmp/c164pack-84fwy85o (1 s)
+  obs_mach_refractor: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_refractor: grid 33 x 29 x 73, 9496 blocks, 1275 entity boxes (1 s)
+  obs_mach_refractor: 59 states -> 178 looks, 407 boxes, 45 pictures (1 s)
+  obs_mach_refractor: light done (2 s)
+  obs_mach_refractor: lamp_a (tick 14000, 13 s)
+  obs_mach_refractor: north_b (tick 14000, 2 s)
+  obs_mach_refractor: mount_north_b (tick 14000, 3 s)
+  obs_mach_refractor: lamp_b (tick 14000, 11 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_mach_refractor-*: 4 pictures of 38fa8b40 drawn, 1.6 MB
+                for a look only: nothing went into renders/obs_mach_refractor/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=40 host=cursor cores=4 head=38fa8b40 commit=4383b360 pushed=yes branch=cursor/c164-scope-f3-eeae-wip files=5
+a0job: exit=0 secs=40
