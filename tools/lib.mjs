@@ -40,11 +40,16 @@ export function launch({ mouse = true } = {}) {
 // page then runs with the real origin and path: a secure context (so the
 // clipboard works) and copied links that read exactly as they will once
 // deployed. The live site itself is never touched.
-export async function mountLocal(page) {
+//
+// holdFonts is a promise: the web font files are held back until it resolves.
+// That stages a first-time visitor, whose font arrives after the page has
+// rendered, at a moment the test chooses.
+export async function mountLocal(page, { holdFonts = null } = {}) {
   await page.setRequestInterception(true);
   page.on("request", async (request) => {
     const url = new URL(request.url());
     if (url.origin !== LIVE_ORIGIN || !url.pathname.startsWith(LIVE_BASE)) {
+      if (holdFonts && url.hostname === "fonts.gstatic.com") await holdFonts;
       request.continue();
       return;
     }

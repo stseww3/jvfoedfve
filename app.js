@@ -343,6 +343,26 @@ function goToTarget(smooth) {
   card.focus({ preventScroll: true });
 }
 
+// Arriving from a shared link. A first-time visitor has no cached web font:
+// it lands after the first jump, the filter row takes one line less, and the
+// card ends up a line off centre. So the jump is repeated once the fonts are
+// in, unless the reader has taken over by then.
+function landOnTarget() {
+  goToTarget(false);
+  if (!document.fonts) return;
+
+  let handsOff = true;
+  const takeOver = () => {
+    handsOff = false;
+  };
+  for (const type of ["wheel", "touchstart", "pointerdown", "keydown"]) {
+    window.addEventListener(type, takeOver, { once: true, passive: true });
+  }
+  document.fonts.ready.then(() => {
+    if (handsOff && state.target) goToTarget(false);
+  });
+}
+
 // The address changed under an open page (edited by hand, or back/forward).
 function openHashTarget() {
   const slug = hashSlug();
@@ -645,7 +665,7 @@ async function init() {
     renderFilters();
     bindEvents();
     render();
-    if (state.target) goToTarget(false);
+    if (state.target) landOnTarget();
     enterCards();
   } catch (err) {
     console.error(err);

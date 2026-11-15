@@ -20,7 +20,10 @@ function check(name, ok, detail = "") {
   console.log(`${ok ? "PASS" : "FAIL"}  ${name}${ok || !detail ? "" : `  [${detail}]`}`);
 }
 
-async function openPage(context, { suffix = "", viewport, reduced = false, scheme = "dark", phone = false } = {}) {
+async function openPage(
+  context,
+  { suffix = "", viewport, reduced = false, scheme = "dark", phone = false, holdFonts = null, waitUntil = "networkidle0" } = {}
+) {
   const page = await context.newPage();
   page.problems = [];
   page.on("console", (m) => {
@@ -31,7 +34,7 @@ async function openPage(context, { suffix = "", viewport, reduced = false, schem
   page.on("response", (r) => {
     if (r.status() >= 400) page.problems.push(`${r.status()}: ${r.url()}`);
   });
-  if (!live) await mountLocal(page);
+  if (!live) await mountLocal(page, { holdFonts });
   if (phone) {
     await page.emulate({
       viewport: viewport ?? { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
@@ -45,7 +48,7 @@ async function openPage(context, { suffix = "", viewport, reduced = false, schem
     { name: "prefers-color-scheme", value: scheme },
     { name: "prefers-reduced-motion", value: reduced ? "reduce" : "no-preference" },
   ]);
-  await page.goto(LIVE_URL + suffix, { waitUntil: "networkidle0" });
+  await page.goto(LIVE_URL + suffix, { waitUntil });
   await page.waitForSelector("#grid .card");
   return page;
 }
@@ -254,6 +257,7 @@ async function shareChecks(context) {
   await page.click("#term-3l .term-link");
   const toast = await toastText(page);
   const copied = await clipboard(page);
+  await sleep(400);
   const after = await page.evaluate(() => ({
     hash: location.hash,
     targets: [...document.querySelectorAll(".card.is-target")].map((c) => c.id).join(","),
@@ -423,6 +427,88 @@ async function linkChecks(context) {
   check("link removed from the address: the mark is cleared", true);
   quiet(page, "link change");
   await page.close();
+}
+
+/* ---- a web font that arrives after the page has rendered ---- */
+
+// A first-time visitor has no cached font. When it lands, the filter row
+// above the grid takes one line less and everything below moves up by it.
+// These checks hold the font back, let the page render, then let it through.
+// Working copy only: the hold needs the staged requests.
+async function lateFontChecks(browser) {
+  const open = async (slug) => {
+    let release;
+    const holdFonts = new Promise((resolve) => (release = resolve));
+    const context = await browser.createBrowserContext();
+    const page = await openPage(context, { suffix: `#${slug}`, holdFonts, waitUntil: "domcontentloaded" });
+    const read = () =>
+      page.evaluate((id) => {
+        const b = document.getElementById(id).getBoundingClientRect();
+        return {
+          off: Math.round(Math.abs((b.top + b.bottom) / 2 - innerHeight / 2)),
+          y: Math.round(scrollY),
+          height: document.documentElement.scrollHeight,
+        };
+      }, `term-${slug}`);
+    const fontIn = async () => {
+      release();
+      await page.evaluate(() => document.fonts.ready.then(() => new Promise((r) => requestAnimationFrame(r))));
+      return read();
+    };
+    return { context, page, read, fontIn };
+  };
+  const says = (before, after) => `off centre ${before.off}px, then ${after.off}px; page ${before.height}px tall, then ${after.height}px`;
+
+  // Near the top the filter row itself is on screen, so the browser has no
+  // anchor below the reflow and would leave the card a line off centre.
+  let t = await open("2fa");
+  let before = await t.read();
+  let after = await t.fontIn();
+  check(
+    "late font, link to a card near the top: centred before the font and still centred after it",
+    before.off < 40 && after.off < 40 && after.height < before.height,
+    says(before, after)
+  );
+  await t.context.close();
+
+  // Font lands while the first-paint fade is still running on the cards.
+  t = await open("semi-og");
+  before = await t.read();
+  after = await t.fontIn();
+  check(
+    "late font, link to a card far down, font lands during the first-paint fade: still centred",
+    before.off < 40 && after.off < 40 && after.height < before.height,
+    says(before, after)
+  );
+  await t.context.close();
+
+  // Font lands after everything has come to rest: the browser keeps the card
+  // in place by itself, and the second jump must not add a second correction.
+  t = await open("semi-og");
+  await settle(t.page);
+  before = await t.read();
+  after = await t.fontIn();
+  check(
+    "late font, link to a card far down, font lands on a page at rest: centred, no double correction",
+    before.off < 40 && after.off < 40 && after.height < before.height,
+    says(before, after)
+  );
+  await t.context.close();
+
+  t = await open("semi-og");
+  await t.page.mouse.move(640, 400);
+  await t.page.mouse.wheel({ deltaY: -700 });
+  await sleep(500);
+  before = await t.read();
+  after = await t.fontIn();
+  await sleep(200);
+  const rested = await t.read();
+  check(
+    "late font, reader has already scrolled away: the page does not pull them back to the card",
+    before.off > 300 && Math.abs(rested.y - before.y) < 80 && rested.off > 300,
+    `scrolled to ${before.y}, font in at ${after.y}, rests at ${rested.y}`
+  );
+  await t.context.close();
 }
 
 /* ---- reduced motion ---- */
@@ -648,6 +734,7 @@ for (const group of [loadChecks, glideChecks, shareChecks, linkChecks, reducedCh
 const themed = await desktop.createBrowserContext();
 await themed.overridePermissions(LIVE_ORIGIN, ["clipboard-read", "clipboard-write"]);
 await regressionChecks(themed);
+if (!live) await lateFontChecks(desktop);
 await desktop.close();
 
 const phone = await launch({ mouse: false });
