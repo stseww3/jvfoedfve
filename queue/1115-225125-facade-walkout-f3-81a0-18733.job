@@ -1,0 +1,3 @@
+branch=cursor/c164-facade-walkout-f3-81a0
+head=4133f9e115bbcc992d1bc293dbef034af65e1359
+args=--wip --always --tail 150 mkdir\ -p\ /tmp/c164_walk\ renders/_wip/walk/5959264\;\ P=/tmp/c164_walk/obs-5959264.pkl\;\ python\ tools/walkreach.py\ obs\ --canvas\ \$P\ --out\ renders/_wip/walk/5959264\ --name\ reach-spawn\ --bounds=-90\,-110\,140\,112\;\ python\ tools/walkreach.py\ obs\ --canvas\ \$P\ --out\ renders/_wip/walk/5959264\ --name\ reach-court\ --bounds=-90\,-110\,140\,112\ --start\ \"court\,\ on\ the\ axis\ by\ the\ armillary\"\;\ cd\ build\ \&\&\ python\ render.py\ obs\ --shots\ ../plan/reviews/walk/out-overview.json\ --out\ ../renders/_wip/walk/5959264/site\ --size\ 1200x1200\ --canvas\ \$P 
