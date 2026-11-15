@@ -22,9 +22,10 @@ back down it from its head; the stair from its foot; the wall, a cheek and a foo
 near, and the wall's length from the yard's north end; the board's view of the power house (V6),
 which stands on the stair's south half since A0's ruling of 11-16: the south cheek and its foot
 pedestal are that picture's foreground and the yard its floor, and the house is in it once its
-package is merged; and three from above: from the north-east, where neither the power house nor
-its chimney stands before the stair and the whole hill is in the picture; on the axis, the way a
-car of the cableway comes in, the line from the yard's edge to the door; and the board's V12.
+package is merged; and three from above: from the north by east, where neither the power house
+nor its chimney stands before the stair, the whole hill is in the picture and the offline sky's
+low sun is out of it; on the axis, the way a car of the cableway comes in, the line from the
+yard's edge to the door; and the board's V12.
 
 Two more scenes show the same hill with one thing left out, on the views that are judged
 (JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chose on the
@@ -66,7 +67,7 @@ VIEWS = [
     ("pedestal", (76.5, LOW, -12.5), (72.8, -3.6, -8.8)),
     ("yard_south", (72.5, LOW, -40.5), (62, -3.5, -4)),
     ("v6", V6["pos"], V6["look_at"]),
-    ("aerial", (114, 42, -34), (58, 6, 2)),
+    ("aerial", (104, 50, -58), (60, 0, 6)),
     ("axis_high", (110, 16, 0.5), (40, -4, 0.5)),
     ("v12_aerial", (66, 72, 58), (8, -2, 0)),
 ]
