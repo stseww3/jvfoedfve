@@ -16,7 +16,8 @@
   - 评审结果记进各行：lights 的 cr2-#3 过了（第三处靠洗墙轮结）、comet 的 cr2-#4 三版全过（排名等总监，现按 01:03 暂定甲；**甲加已做**（`STYLES["ap"]`）：评审量出 506 个亮像素对甲的 509，尾巴在甲已经收完的地方还有 25 宽）。
   - 洗墙轮 `cursor/c164-lights-wash-0fe3`（632a2c09）预跑：`obs_sky_lights` PASS 0 失 0 黄；但它不是从 lights 交付的 0809d575 长出来的，而且树上 `skeleton.py` 还是旧的（没有 `V1_CLEAR`），所以 c267 必须先把两件事做了：merge 总装、把洗墙并到 `cursor/c164-lights-007c`，再按 `L.levels` 逐格对（暗窗窗洞以外一格都不许变亮）。已私信 c267。
   - `site/terrain`（c271）的合并顺序：cr2 的 cr2-#5 指出他最后一次合总装是 15382edc（合的 142f3079），那版色板还没有 snow 色阶，所以照分支原样出的图里雪是原版纯白、比楼亮 0.24——交付前必须先 merge 总装，否则自查图把自己判死。已私信 c271。
-- **11-16 00:52 全量回归**（总装 612bd8a8）：**32 个测试场景 + obs 全过，0 失败**（比上一轮多了 `obs_props_lamps_cage`、`obs_main_dome`、`obs_main_dome_b`、`obs_main_dome_slit`）。
+- **11-16 01:38 全量回归**（总装 1ae1fb20）：**51 个测试场景 + obs 全过，0 失败**。比上一轮多出来的 19 个是今晚新进的卡自己的场景（dome 三套、smalldome、domegear、engine-dynamo、switchboard-boiler、recorders、meridian-astrograph、powerhouse 内室、elecsign、paper、ironwork 新场景、motion 两套、comet_b/c 等）。
+- 11-16 00:52 全量回归（总装 612bd8a8）：**32 个测试场景 + obs 全过，0 失败**（比上一轮多了 `obs_props_lamps_cage`、`obs_main_dome`、`obs_main_dome_b`、`obs_main_dome_slit`）。
 - 11-16 00:40 全量回归（总装 3850fa53）：**28 个测试场景 + obs 全过，0 失败**。0 失 0 黄的 17 个；带黄的 11 个都是已知项（flatwall 白模、sight 里 V1 跨窗被前庭石墩挡 32%、brass/iron 的作证方块、`obs_mat_redirect` 占位、`obs_site_court` 的 v2_axis、两个 motion 场景的手工步数 WARN）。
 - 今晚已合、逐像素在**交付提交**上证过的：brass 25/25、comet 46/46 与最新 46/46、lights 25/25（f0cf4a66 之前那版）、panels 10/10、snow 13/13、shell 25/25、lamps 56/56、motion 28/28、tones 31/31。合进总装后变样的都是“整楼画面”类场景（facade、lights、lamps 的 site 两套），原因是壳、立面、brass、lamps、lights 陆续进来改了画面——**图和自己的代码对得上**，只是总装变了。这些场景重出图的时机：各自的作者下次交付时一并出。
 - **11-16 01:00 图的时效盘点**（S2 在总装 6123902d 上，每场景抽查头两个机位）：
