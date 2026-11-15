@@ -31,7 +31,7 @@ hall is fitted out) is left out: the scene shows the hall as it is without it.
 from artkit import arch
 from artkit.canvas import Canvas
 
-from scenes.obs import main, materials
+from scenes.obs import main, materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.main import shell
@@ -110,5 +110,7 @@ def build_models():
 
 
 def write_pack(pack_dir):
-    """The shell paints nothing; it stands on the repainted blocks as the materials line has them."""
-    return materials.pack(pack_dir)
+    """The shell paints nothing; it stands on the repainted blocks as the materials line has them,
+    under the sky line's sky: the scene takes the map's hour, and without the sky's pictures the
+    game's own sun lies on the western horizon in every shot that sees the open sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
