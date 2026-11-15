@@ -537,10 +537,13 @@ def _pole_head():
 #   shown   the light the piece is shown in, (sky, block): that of the bracket lamps beside the
 #           door (the light line's second rank, 12). A front that looks east shows at half of it,
 #           so the dial stays under the frosted windows and the brass under the curtained ones.
-#   light   a source offered to the light line for the stone round the piece: where (blocks, in
-#           the model's frame: at the foot of the piece, in the air before the wall) and how
-#           bright (the third rank, a wall wash). The light line may leave it out.
+#   light   a source registered with the light line for the stone round the piece: where (blocks,
+#           in the model's frame: at the foot of the piece, in the air before the wall) and how
+#           bright. The light line takes it (c220, g2 11-15): a wall wash, the third rank, under
+#           the name WASH; no lamp is hung for it. It lifts the tablet's lowest row to 8 and 7,
+#           one less for each row above.
 GREAT_SHOWN = (15, 12)
+WASH = ("props/signs:emblem", 3)        # what the wash is registered as, and its rank
 SPEC = {
     "emblem": dict(build=_emblem, mount="wall", scale=1.0),
     "great_emblem": dict(build=_great_emblem, mount="wall", scale=3.0, shown=GREAT_SHOWN,
@@ -567,12 +570,27 @@ def models():
     return dict(_models())
 
 
+def _wash(canvas, cell, level):
+    """Register the wash of a great piece with the light line (sky/_lightkit.suggest, with its
+    rank). While that tool is not in the tree the kit puts the source down itself."""
+    why, rank = WASH
+    try:
+        from ..sky import _lightkit
+        suggest = getattr(_lightkit, "suggest", None)
+    except ImportError:
+        suggest = None
+    if suggest is None:
+        K.offer_lights(canvas, [(cell, level)], why)
+    else:
+        suggest(canvas, cell, level, why, rank=rank)
+
+
 def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), light=True, yaw=None, **opts):
     """Place one piece: a wall piece by the middle of its back at pos (a point of the wall's face),
     `facing` the way that face looks; a floor piece by the middle of its foot. A great piece is
     shown in the light of the entrance (brightness=None leaves it to the cell it hangs in) and
-    offers a wash for the stone round it to the light line unless light=False. Returns the number
-    of display entities."""
+    registers a wash for the stone round it with the light line unless light=False. Returns the
+    number of display entities."""
     spec = SPEC[kind]
     yaw = K.FACING[facing] if yaw is None else yaw
     if spec.get("shown") is not None:
@@ -580,8 +598,7 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), light=True, yaw=N
     n = K.put(canvas, _models()[PREFIX + kind], pos, mount=spec["mount"], yaw=yaw, scale=spec["scale"],
               origin=origin, **opts)
     if light and spec.get("light") is not None:
-        K.offer_lights(canvas, [(K.light_cell(pos, yaw, spec["light"], origin), spec["level"])],
-                       f"props/signs:{kind}")
+        _wash(canvas, K.light_cell(pos, yaw, spec["light"], origin), spec["level"])
     return n
 
 
