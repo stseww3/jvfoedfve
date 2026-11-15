@@ -8,8 +8,10 @@ Two trains, each to be read from the hand to the load.
   gores a truck with one flanged wheel carries the dome's base ring over it, and the trucks hold
   a toothed ring, teeth inwards. In the north-west corner of the room a hand wheel turns a short
   shaft; its pinion drives a crown wheel on an upright shaft, which climbs the wall through two
-  bearings to a pinion in the toothed ring: 280 teeth to 10, twenty-eight turns of the upright
-  shaft to one of the dome.
+  bearings to a pinion in the toothed ring: 140 teeth to 8, seventeen and a half turns of the
+  upright shaft to one of the dome. The ring's teeth are coarse, half a block from one to the
+  next, and its pinion is a block and a half across: from the floor, seven blocks below, that is
+  the part of the train that must be read.
 
   Opening the slit (main/dome version a: two leaves that part sideways). Each leaf has an arm at
   its foot, bent over the sill into the room. An endless chain runs across the slit's foot over
@@ -41,7 +43,6 @@ Sizes inside the models are in sixteenths of a block (px) whatever scale a model
 import functools
 import importlib
 import math
-import os
 
 from artkit import models as M
 
@@ -53,18 +54,18 @@ MOVED_IN = False            # the master scene gets the gear once the dome and i
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
+IRON_B = P.mat("iron", base=4)          # bright: where iron runs on iron (a tread, the rail's head, a tooth, a sheave)
 COPPER = P.mat("old_copper")
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
-# Every piece takes the light of the cell its entity stands in, like the blocks round it, and
-# pieces that touch stand in one cell or in two next to each other. The ring's twenty segments
-# cannot: by hand, in the sky light that falls through the slit, two neighbours differ by a fifth
-# at most. Should the joints show all the same, this gives all twenty one light, (sky, block)
-RING_LIGHT = None
-# a trial, to be taken out again: one light for every piece, "sky,block" in the environment
-_TRIAL = os.environ.get("C164_GEAR_LIGHT", "")
-TRIAL_LIGHT = tuple(int(v) for v in _TRIAL.split(",")) if _TRIAL else None
+# (sky, block): the light every piece is shown in, the open sky's and no lamp's: what falls through
+# the slit. Left alone a piece takes the light of the cell its entity stands in, and round the ring
+# that falls off with the distance from the slit: in the pictures of 11-16 the half of the ring
+# away from the slit could not be told from the dark of its slot. The sky's light follows the hour
+# and the light version as the blocks' does; a lamp's does not, and it turns the iron brown
+# ((10, 7), the telescope's light, made a rope of the toothed ring)
+LIGHT = (15, 0)
 
 PX = 16.0                   # px to a block
 LINK = 4.0                  # px: a chain link; links are 3 x 2 px, every other one turned a quarter
@@ -83,14 +84,20 @@ SEG_DEG = 360.0 / GORES
 SEG_SCALE = 2
 RING_SIDES = 3 * GORES                  # the ring is a polygon of sixty sides, three to a segment
 RAIL_R = S.DOME_ROOM_DIAM / 2.0 + 0.25  # 11.25: the rail's centre line; a circle that lies on the ledge all the way round
-RACK_TEETH = 14 * GORES                 # 280
-RACK_R = RAIL_R - 0.5                   # 10.75: the toothed ring's pitch circle; a tooth and a gap are 3.86 px
-PINION_TEETH = 10
-PINION_R = RACK_R * PINION_TEETH / RACK_TEETH
+CHEEK_IN = 5.0                          # px from the rail's centre line to the inner faces of a truck's cheeks
+RACK_TEETH = 7 * GORES                  # 140: seven teeth to a segment
+RACK_BACK = 2.0                         # px: the ring the teeth stand on, against the trucks' inner cheeks
+RACK_Y = (10.0, 16.0)                   # px over the ledge: the toothed ring, up to the base ring's underside
+TOOTH = (4.0, 3.0)                      # px: how wide a tooth of the ring is, and one of its pinion
+ADDENDUM, DEDENDUM = 1.75, 2.25         # px: a tooth stands this far past the pitch circle and is rooted this far behind it
+# 10.67: the toothed ring's pitch circle; a tooth and a gap are 7.66 px
+RACK_R = RAIL_R - (CHEEK_IN + RACK_BACK + DEDENDUM) / PX
+PINION_TEETH = 8
+PINION_R = RACK_R * PINION_TEETH / RACK_TEETH   # 0.61: a wheel of a block and a half, to be seen from the floor
 RISER_R = RACK_R - PINION_R             # the upright shaft, from the dome's axis
 # degrees round the dome (0 = east, 90 = south): the middle of a gap of the toothed ring, in the
 # corner of the wall that interiors/domeroom keeps clear from the floor to the ledge (GEAR_SHAFT)
-RISER_DEG = (13 * 14 + 5) * 360.0 / RACK_TEETH
+RISER_DEG = 94 * 360.0 / RACK_TEETH
 RISER_TOP = (RING_Y - FLOOR_Y) * PX     # 112 px over the floor
 CROWN_PEGS = 8                          # the crown wheel on the upright shaft
 CROWN_R = 4.5                           # px: its pitch circle
@@ -262,27 +269,30 @@ def _segment():
         return ("y", -deg, axis)
 
     d.ring("y", (axis[0], 1.0, 0.0), RAIL_R * PX, 6.0, 2.0, IRON_D, sides=RING_SIDES, arc=arc, seed=101)   # the rail's foot
-    d.ring("y", (axis[0], 3.0, 0.0), RAIL_R * PX, 2.0, 2.0, IRON, sides=RING_SIDES, arc=arc, seed=102)     # and its head
+    d.ring("y", (axis[0], 3.0, 0.0), RAIL_R * PX, 2.0, 2.0, IRON_B, sides=RING_SIDES, arc=arc, seed=102)   # and its head
     for deg in (-7.5, -4.5, 4.5, 7.5):                                  # the chairs that hold it down
         for x in (-2.0, 2.0):
             d.box((x - 1.0, 2.0, -1.5), (x + 1.0, 3.0, 1.5), IRON, rot=at(deg), seed=103)
 
     hub = 8.5                                                           # the axle over the ledge: the tread stands on the rail's head
-    d.tube("x", (hub, 0.0), -2.5, 1.0, 4.5, IRON, sides=12)             # the wheel's tread
-    d.tube("x", (hub, 0.0), 1.0, 2.0, 5.25, IRON_D, sides=12)           # its flange, on the wall's side of the rail
+    d.tube("x", (hub, 0.0), -2.5, 1.0, 4.5, IRON_B, sides=12)           # the wheel's tread
+    d.tube("x", (hub, 0.0), 1.0, 2.0, 5.25, IRON, sides=12)             # its flange, on the wall's side of the rail
     d.tube("x", (hub, 0.0), -5.5, 4.75, 1.0, IRON_D, sides=8)           # the axle
     for x0 in (-5.5, 4.25):
         d.tube("x", (hub, 0.0), x0, x0 + 0.5, 1.5, IRON, sides=8, seed=104)     # its nuts
-    for x0 in (-5.0, 2.25):
+    for x0 in (-CHEEK_IN, 2.25):
         d.box((x0, 6.5, -2.0), (x0 + 2.0, 14.0, 2.0), IRON_D, seed=105)        # the truck's two cheeks
-    d.box((-5.0, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)                  # its saddle, under the base ring
+    d.box((-CHEEK_IN, 14.0, -7.0), (4.25, 16.0, 7.0), IRON)             # its saddle, under the base ring
 
     pitch = RACK_R * PX
-    d.ring("y", (axis[0], 13.375, 0.0), pitch + 2.0, 2.0, 5.25, IRON_D, sides=RING_SIDES, arc=arc, seed=106)   # the toothed ring's back,
-    x = pitch + axis[0]                                                 # bolted to the trucks' inner cheeks
-    for j in range(RACK_TEETH // GORES):
+    y0, y1 = RACK_Y
+    d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0, IRON_D,
+           sides=RING_SIDES, arc=arc, seed=106)                         # the toothed ring's back, bolted to the trucks' inner cheeks
+    x = pitch + axis[0]
+    for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis
         deg = (j + 0.5) * 360.0 / RACK_TEETH - SEG_DEG / 2.0
-        d.box((x - 1.0, 11.0, -1.0), (x + 1.5, 15.75, 1.0), IRON, rot=at(deg), seed=107)
+        d.box((x - ADDENDUM, y0 + 0.5, -TOOTH[0] / 2.0), (x + DEDENDUM + 0.25, y1 - 0.5, TOOTH[0] / 2.0), IRON_B,
+              rot=at(deg), seed=107)
     return d
 
 
@@ -291,19 +301,21 @@ def _riser():
     """The upright shaft: the crown wheel at its foot, a collar under and over each bearing, the
     pinion in the toothed ring at its top. Turns about its own axis."""
     d = _Draw("riser", 3, anchor=(0.0, HAND_H, 0.0))
-    d.tube("y", (0.0, 0.0), 5.0, RISER_TOP, 1.5, IRON, sides=8)
+    d.tube("y", (0.0, 0.0), 5.0, RISER_TOP - 0.5, 1.5, IRON, sides=8)
     d.tube("y", (0.0, 0.0), 9.0, 11.0, 2.5, IRON_D, sides=8)                    # the crown wheel: its hub,
     d.tube("y", (0.0, 0.0), 11.0, PEG_Y[0], 5.5, IRON, sides=16)                # its disc
     for i in range(CROWN_PEGS):                                                 # and its pegs; a gap looks east
         a = math.radians((i + 0.5) * 360.0 / CROWN_PEGS)
-        d.tube("y", (CROWN_R * math.cos(a), CROWN_R * math.sin(a)), PEG_Y[0], PEG_Y[1], 0.75, IRON_D, sides=8, seed=111)
+        d.tube("y", (CROWN_R * math.cos(a), CROWN_R * math.sin(a)), PEG_Y[0], PEG_Y[1], 0.75, IRON_B, sides=8, seed=111)
     for y0 in (50.0, 60.0, 86.0, 96.0):
         d.tube("y", (0.0, 0.0), y0, y0 + 2.0, 2.5, IRON_D, sides=8, seed=112)
-    y0 = RISER_TOP - 5.0
-    d.tube("y", (0.0, 0.0), y0, RISER_TOP, PINION_R * PX - 1.2, IRON_D, sides=12)
+    y0, y1 = (RISER_TOP - RACK_Y[1] + y for y in RACK_Y)                        # the pinion, as high as the toothed ring
+    root = PINION_R * PX - DEDENDUM
+    d.tube("y", (0.0, 0.0), y0, y1, root, IRON, sides=16)
+    d.tube("y", (0.0, 0.0), y0 - 1.5, y0, 3.0, IRON_D, sides=8, seed=114)       # its boss
     for i in range(PINION_TEETH):                                               # the first tooth points away from the dome's axis, into the gap
         deg = RISER_DEG + i * 360.0 / PINION_TEETH
-        d.box((PINION_R * PX - 1.35, y0 + 0.25, -0.875), (PINION_R * PX + 0.8, RISER_TOP - 0.25, 0.875), IRON,
+        d.box((root - 0.25, y0 + 0.75, -TOOTH[1] / 2.0), (PINION_R * PX + ADDENDUM, y1 - 0.75, TOOTH[1] / 2.0), IRON_B,
               rot=("y", -deg, (0.0, 0.0, 0.0)), seed=113)
     return d
 
@@ -329,7 +341,7 @@ def _handwheel():
     d.tube("x", (HAND_H, 0.0), 3.25, 13.0, 1.0, IRON_D, sides=8)
     d.tube("x", (HAND_H, 0.0), CROWN_R - 0.75, CROWN_R + 0.75, HAND_R - 1.0, IRON, sides=12)
     for i in range(HAND_TEETH):                                                 # one tooth straight down, between two pegs
-        d.box((CROWN_R - 0.625, HAND_H - HAND_R - 0.875, -0.875), (CROWN_R + 0.625, HAND_H - HAND_R + 1.2, 0.875), IRON,
+        d.box((CROWN_R - 0.625, HAND_H - HAND_R - 0.875, -0.875), (CROWN_R + 0.625, HAND_H - HAND_R + 1.2, 0.875), IRON_B,
               rot=("x", i * 360.0 / HAND_TEETH, (CROWN_R, HAND_H, 0.0)), seed=131)
     rim = 10.75
     d.ring("x", (rim, HAND_H, 0.0), 6.25, 2.0, 2.0, BRASS, sides=16)
@@ -366,7 +378,7 @@ def _foot():
         z = side * IDLER_Z
         d.box((FACE, -2.0, z - 2.0), (FACE + 1.0, 2.0, z + 2.0), IRON_D, seed=401)
         d.tube("x", (0.0, z), FACE + 1.0, 1.5, PIN, IRON_D, sides=8, seed=402)
-        d.tube("x", (0.0, z), -0.75, 0.75, SPROCKET_R, IRON, sides=8, seed=403)
+        d.tube("x", (0.0, z), -0.75, 0.75, SPROCKET_R, IRON_B, sides=8, seed=403)
         d.ring("x", (0.0, 0.0, z), STRAND, BAND, WRAP, IRON_D, sides=8,
                arc=(0.0, 180.0) if side > 0 else (180.0, 360.0), seed=404)
     for y in (STRAND, -STRAND):
@@ -379,8 +391,8 @@ def _drive():
     Turns about the shaft, which runs along x."""
     d = _Draw("drive", 1)
     d.tube("x", (0.0, 0.0), -1.5, WHEEL_X + 1.75, PIN, IRON_D, sides=8)
-    d.tube("x", (0.0, 0.0), -0.75, 0.75, SPROCKET_R, IRON, sides=8)
-    d.ring("x", (WHEEL_X, 0.0, 0.0), WHEEL_R - 1.25, 2.0, 2.0, IRON, sides=16)  # the rim, under the hand chain
+    d.tube("x", (0.0, 0.0), -0.75, 0.75, SPROCKET_R, IRON_B, sides=8)
+    d.ring("x", (WHEEL_X, 0.0, 0.0), WHEEL_R - 1.25, 2.0, 2.0, IRON_B, sides=16)    # the rim, under the hand chain
     for i in range(3):                                                          # three spokes
         d.box((WHEEL_X - 0.5, 0.0, -1.0), (WHEEL_X + 0.5, WHEEL_R - 2.0, 1.0), IRON_D,
               rot=("x", 30.0 + 120.0 * i, (WHEEL_X, 0.0, 0.0)), seed=421)
@@ -438,7 +450,7 @@ def _run(side):
         for s0 in (STOP - 3.0, FLANGE[1] - 3.0):                                # a stop at either end, on both sides of the web
             for z0 in (-3.0, 1.0):
                 d.box((s0, -FLANGE_D[0], z0), (s0 + 3.0, 2.0 - FLANGE_D[0], z0 + 2.0), IRON_D, seed=201)
-        d.tube("y", (foot_s, zs), -UP_D - 0.75, -UP_D + 0.75, FOOT_R - 0.5, IRON, sides=12)
+        d.tube("y", (foot_s, zs), -UP_D - 0.75, -UP_D + 0.75, FOOT_R - 0.5, IRON_B, sides=12)
         d.tube("y", (foot_s, zs), -UP_D - 1.5, -1.0, PIN, IRON_D, sides=8)      # its pin, up into the foot
         d.ring("y", (foot_s, -UP_D, zs), FOOT_R, BAND, WRAP, IRON_D, sides=8,
                arc=(180.0, 270.0) if side > 0 else (90.0, 180.0), seed=202)
@@ -446,7 +458,7 @@ def _run(side):
         d.box((KNEE_S - 4.0, -WEB_D - 0.5, -3.25), (KNEE_S + 4.0, -1.0, 3.25), IRON)    # the hanger of the top sheave, clamped on the web
         for z0 in (-3.25, 1.75):
             d.box((KNEE_S - 3.0, -knee_d - 4.0, z0), (KNEE_S + 3.0, -WEB_D - 0.5, z0 + 1.5), IRON_D, seed=203)
-        d.tube("z", (KNEE_S, -knee_d), -0.75, 0.75, knee_r - 0.5, IRON, sides=12)
+        d.tube("z", (KNEE_S, -knee_d), -0.75, 0.75, knee_r - 0.5, IRON_B, sides=12)
         d.tube("z", (KNEE_S, -knee_d), -3.75, 3.75, PIN, IRON_D, sides=8)
         d.ring("z", (KNEE_S, -knee_d, 0.0), knee_r, BAND, WRAP, IRON_D, sides=12, arc=(-90.0, 90.0), seed=204)
         _chain(d, "x", (-DOWN_D, 0.0), WEIGHT_S0 + W_HALF + 2.0, KNEE_S, 212)
@@ -469,7 +481,7 @@ def _weight():
     axle = W_WHEEL_R - FLANGE_D[0]
     for x in (-W_WHEEL, W_WHEEL):
         for z0 in (-2.75, 1.25):
-            d.tube("z", (x, axle), z0, z0 + 1.5, W_WHEEL_R, IRON, sides=8, seed=301)
+            d.tube("z", (x, axle), z0, z0 + 1.5, W_WHEEL_R, IRON_B, sides=8, seed=301)
         for z0 in (-4.25, 1.25):
             d.tube("z", (x, axle), z0, z0 + 3.0, 0.5, IRON_D, sides=4, seed=302)
     for z0 in (-4.25, 3.25):
@@ -522,9 +534,8 @@ def place(canvas, origin=(0, 0, 0), version=None):
     n = 0
     for name, (x, y, z), yaw, turns in layout(version):
         d = _drawn()[name]
-        light = TRIAL_LIGHT if TRIAL_LIGHT is not None else RING_LIGHT if name == "seg" else None
         canvas.add_entity(ox + AX + x, oy + y, oz + AZ + z,
-                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=light))
+                          M.display(d.m, yaw=yaw, scale=d.scale, turns=turns, brightness=LIGHT))
         n += 1
     return n
 
