@@ -1,0 +1,30 @@
+a0job 1115-233741-dome-engine-f3-a244-15228: cursor/c164-dome-engine-f3-a244 @ b39450e0 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.63 2.25 1.88, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mach_engine_dynamo --out renders/_wip ---- exit 0, 65 s, last 30 lines of 20:
+  obs_mach_engine_dynamo: 6761 blocks, 14 entities (0 s)
+  obs_mach_engine_dynamo: resource pack written to /tmp/c164pack-bt0s3ji8 (1 s)
+  obs_mach_engine_dynamo: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_engine_dynamo: grid 37 x 36 x 34, 6761 blocks, 904 entity boxes (1 s)
+  obs_mach_engine_dynamo: 37 states -> 51 looks, 79 boxes, 39 pictures (1 s)
+  obs_mach_engine_dynamo: light done (1 s)
+  obs_mach_engine_dynamo: door (tick 14000, 2 s)
+  obs_mach_engine_dynamo: whole (tick 14000, 3 s)
+  obs_mach_engine_dynamo: flywheel (tick 14000, 4 s)
+  obs_mach_engine_dynamo: rods (tick 14000, 7 s)
+  obs_mach_engine_dynamo: cylinder (tick 14000, 6 s)
+  obs_mach_engine_dynamo: dynamo (tick 14000, 4 s)
+  obs_mach_engine_dynamo: belt (tick 14000, 7 s)
+  obs_mach_engine_dynamo: south (tick 14000, 6 s)
+  obs_mach_engine_dynamo: valve (tick 14000, 6 s)
+  obs_mach_engine_dynamo: brushes (tick 14000, 4 s)
+  obs_mach_engine_dynamo: above (tick 14000, 6 s)
+  obs_mach_engine_dynamo: wicket (tick 14000, 1 s)
+/tmp/dais_jobs/c164a0/c164-realms/renders/_wip/obs_mach_engine_dynamo-*: 12 pictures of b39450e0 drawn, 3.8 MB
+                for a look only: nothing went into renders/obs_mach_engine_dynamo/ (tools/nodejob.sh --wip pushes renders/_wip to your scratch branch)
+==== NODEJOB RESULT ====
+exit=0 secs=71 host=cursor cores=4 head=b39450e0 commit=c66f75dc pushed=yes branch=cursor/c164-dome-engine-f3-a244-wip files=13
+a0job: exit=0 secs=72
