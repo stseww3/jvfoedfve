@@ -33,6 +33,7 @@ CEIL = FEET + PH["wall_h"]
 FLOOR = FEET - 1
 WALL = B.TUFF_BRICK.block
 WORK_LIGHT = 14
+BOARD_LIGHT = 6                     # rank 3, the figure starhall's board light uses
 
 
 def _room(c):
@@ -54,6 +55,9 @@ def _room(c):
     # the door on the south wall, for the room view
     c.carve(int(SB.BOILER_C[0]) - 1, FEET, Z1, int(SB.BOILER_C[0]) + 1, FEET + 2, Z1)
     c.set(int(SB.BOILER_C[0]) - 2, CEIL - 1, int(SB.BOILER_C[2]), f"{B.LIGHT}[level={WORK_LIGHT}]")
+    # a light in front of the switchboard's face, so the board's phosphor and pilot lamps can be seen
+    # (cr3: the board had no bright point at all)
+    c.set(int(SB.BOARD_AT[0]) + 2, CEIL - 2, int(SB.BOARD_AT[2]), f"{B.LIGHT}[level={BOARD_LIGHT}]")
     return c
 
 
@@ -86,9 +90,9 @@ def shots():
 
     bx_, bz = SB.BOILER_C[0], SB.BOILER_C[2]
     eye = FEET + 1.62
-    shot("fire_door", (bx_ - 4.2, eye, bz), (bx_ - 1.4, FEET + 1.5, bz))
-    shot("fire_slant", (bx_ - 4.8, FEET + 2.2, bz + 2.8), (bx_ - 1.4, FEET + 1.5, bz))
-    shot("fire_far", (bx_ - 7.5, FEET + 1.7, bz - 1.2), (bx_ - 1.4, FEET + 1.4, bz))
+    shot("fire_door", (bx_ - 5.0, eye, bz), (bx_, FEET + 1.5, bz))
+    shot("fire_slant", (bx_ - 4.6, FEET + 2.0, bz + 3.0), (bx_, FEET + 1.5, bz))
+    shot("fire_far", (bx_ - 8.0, FEET + 1.7, bz - 1.2), (bx_, FEET + 1.4, bz))
     bx, _, bz2 = SB.BOARD_AT
     shot("board", (bx + 3.4, FEET + 1.9, bz2), (bx, FEET + 1.8, bz2))
     shot("board_slant", (bx + 4.6, FEET + 2.1, bz2 + 3.4), (bx, FEET + 1.8, bz2))

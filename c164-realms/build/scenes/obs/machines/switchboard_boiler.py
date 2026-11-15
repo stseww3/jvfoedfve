@@ -75,7 +75,7 @@ BOILER_LOWER = 2.2                  # the lower section's height in blocks; the 
 BOILER_C = (X1 - 3.4, FEET, BOILER_Z_MID)         # 3.4 blocks in from the east wall
 
 # where the switchboard stands: on the west wall, its face looking east into the room
-BOARD_W, BOARD_T, BOARD_H = 3.0, 0.5, 2.75        # the card says 3; 2.75 leaves the cornice inside 48 units
+BOARD_W, BOARD_T, BOARD_H = 3.0, 0.5, 2.375       # the card says 3; the cornice and the conduit must fit 48 units
 BOARD_HALF = BOARD_W / 2.0                         # each half of the slab: 1.5 blocks (a model may span 3)
 BOARD_AT = (X0 + 1.2, FEET, Z0 + 9.0)             # against the west wall, mid-room
 
@@ -120,6 +120,10 @@ def _frame():
     for x in (-hw + 3.0, hw - 3.0):                                          # the cornice's rivets
         m.box((x - 0.6, top + 1.0, hd * 0.8), (x + 0.6, top + 2.2, hd * 0.8 + 0.5), BRASS_D, skip="d")
     m.box((-1.2, 1.6, -hd - 2.0), (1.2, 4.0, -hd), IRON, skip="d")          # the bracket
+    # the conduit off the crown, into the wall: a switchboard with no feed does not read as fed
+    m.tube("y", (0.0, 0.0), top + 3.0, top + 5.5, 1.1, IRON_D, sides=8)
+    m.tube("z", (0.0, top + 4.6, 0.0), -hd - 1.6, -hd + 0.2, 1.1, IRON_D, sides=8)
+    m.ring("y", (0.0, top + 4.4, 0.0), 1.5, 1.0, 0.8, BRASS_D, sides=10)
     return m
 
 
@@ -294,7 +298,7 @@ def boiler(canvas, origin=(0, 0, 0), centre=None):
     n += _place(canvas, _models()[BPREFIX + "body_top"], (cx, FEET + BOILER_LOWER, cz), origin, yaw,
                 BOILER_SCALE)
     # the door on the drum's north face
-    door_x = cx - BOILER_R / 16.0 * BOILER_SCALE
+    door_x = cx - BOILER_R / 16.0 * BOILER_SCALE - 0.16     # proud of the drum, so the mouth shows
     n += _place(canvas, _models()[BPREFIX + "door"], (door_x, FEET + 1.7, cz), origin, yaw,
                 BOILER_SCALE)
     # the valve and gauges on the drum's west side, clear of the door
