@@ -54,8 +54,9 @@ MOVED_IN = False            # the master scene gets the gear once the dome and i
 
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
-IRON_B = P.mat("iron", base=4)          # bright: where iron runs on iron (a tread, the rail's head, a tooth, a sheave)
-COPPER = P.mat("old_copper")
+IRON_B = P.mat("iron", base=4)          # bright: where iron runs on iron (a tread, the rail's head, a peg, a sheave)
+TOOTH_IRON = P.mat("iron", base=4, bevel="ends")    # a tooth of the ring or its pinion: a bar with a lit top, no frame
+COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the old-copper blocks' faces
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 
@@ -296,7 +297,8 @@ def _segment():
     x = pitch + axis[0]
     for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis: a gap at either end
         deg = (j + 0.5) * 360.0 / RACK_TEETH - SEG_DEG / 2.0
-        d.box((x - ADDENDUM, y0, -TOOTH / 2.0), (x + DEDENDUM + 0.25, y1, TOOTH / 2.0), IRON_B, rot=at(deg), seed=107)
+        d.box((x - ADDENDUM, y0, -TOOTH / 2.0), (x + DEDENDUM + 0.25, y1, TOOTH / 2.0), TOOTH_IRON, rot=at(deg),
+              grain="y", seed=107)
     return d
 
 
@@ -319,8 +321,8 @@ def _riser():
     d.tube("y", (0.0, 0.0), y0 - 1.0, y0 + 0.5, 3.0, IRON, sides=8, seed=114)   # its boss
     for i in range(PINION_TEETH):                                               # the first tooth points away from the dome's axis, into the gap
         deg = RISER_DEG + i * 360.0 / PINION_TEETH
-        d.box((root - 0.25, y0, -TOOTH / 2.0), (PINION_R * PX + ADDENDUM, y1 - 0.25, TOOTH / 2.0), IRON_B,
-              rot=("y", -deg, (0.0, 0.0, 0.0)), seed=113)
+        d.box((root - 0.25, y0, -TOOTH / 2.0), (PINION_R * PX + ADDENDUM, y1 - 0.25, TOOTH / 2.0), TOOTH_IRON,
+              rot=("y", -deg, (0.0, 0.0, 0.0)), grain="y", seed=113)
     return d
 
 
