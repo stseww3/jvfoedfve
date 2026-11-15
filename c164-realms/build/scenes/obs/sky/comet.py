@@ -5,7 +5,9 @@ table (STYLES):
 
     a  jia   a soft long tail: a small coma and long smooth tails; only the nucleus is big pixels
     b  yi    hard pixels: the whole sprite on the 64 grid in five levels of brightness, flat tones
-             with stepped outlines, the way the vanilla sun and moon are drawn
+             with stepped outlines, the way the vanilla sun and moon are drawn. The dust tail's
+             three tones end at a third, at two thirds and at the tip, where its outline closes
+             to a point; the ion tail is a line one pixel wide in the two dimmer tones
     c  bing  a wide fan: a short, wide dust tail with a firmer outline
 
 The anatomy is the same in all three: a nucleus of a few big pixels; a small coma; a dust tail that
@@ -110,17 +112,22 @@ HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL
 #               sky may read as a cross (A0 #22487)
 #   steps, tones, cooling   version b only: the light at which each level begins, the grey each
 #               level shows, and how far towards the cool end each level of the dust tail stands
+#   end, taper, snap        optional. end: the share of a tail's length over which it melts away,
+#               instead of END (b dims by its fall alone and stops short, so that its three levels
+#               end at a third, two thirds and the tip and not all near the tip); taper: the last
+#               share of the dust tail over which its outline closes to a point; snap: the ion
+#               tail's centre line is held on whole pixels of the grid
 _SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
 STYLES = {
     "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
               curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
               ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
               nucleus=_SQUARE),
-    "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.36, 1.25), flare=1.0, lean=0.12,
-              curve=0.013, edge=2.4, skew=0.2, spine=0.0, dust_fall=1.0, dust_amp=0.36, cool=1.0,
-              ion_len=11.5, ion_w=(0.15, 0.17), ion_lean=-0.035, ion_fall=0.9, ion_amp=0.20,
-              nucleus=_SQUARE,
-              steps=(0.07, 0.12, 0.20), tones=(0.14, 0.24, 0.38), cooling=(0.9, 0.5, 0.1)),
+    "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.36, 1.25), flare=1.0, lean=0.15,
+              curve=0.013, edge=2.4, skew=0.2, spine=0.0, dust_fall=1.7, dust_amp=0.36, cool=1.0,
+              ion_len=13.0, ion_w=(0.15, 0.17), ion_lean=-0.07, ion_fall=0.8, ion_amp=0.22,
+              nucleus=_SQUARE, end=0.12, taper=0.30, snap=True,
+              steps=(0.07, 0.12, 0.20), tones=(0.13, 0.26, 0.46), cooling=(1.0, 0.6, 0.15)),
     "c": dict(coma=0.80, coma_amp=0.34, dust_len=11.0, dust_w=(0.55, 2.35), flare=0.8, lean=0.20,
               curve=0.012, edge=4.5, skew=0.45, spine=0.15, dust_fall=1.0, dust_amp=0.36, cool=1.0,
               ion_len=11.0, ion_w=(0.16, 0.36), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.15,
@@ -174,20 +181,26 @@ def _fields(p, tail, m):
     up = np.clip(y, 0.0, None)
     far = np.hypot(x, up)
 
+    end = p.get("end", END)
     t = np.clip(far / (p["dust_len"] * tail), 0.0, 1.0)
     off = x - (p["lean"] * up + p["curve"] * up * up)
     w0, w1 = p["dust_w"]
     rise = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)             # the tail opens upwards only
     width = (w0 + (w1 - w0) * rise ** p["flare"]) * np.where(off > 0.0, 1.0 + p["skew"], 1.0 - 0.5 * p["skew"])
+    if "taper" in p:                                                  # the outline closes to a point over this last share
+        width = width * (1.0 - 0.85 * _ramp(t, 1.0 - p["taper"], 1.0))
     across = np.abs(off / width)
     dust = (1.0 - p["spine"]) * np.exp(-0.5 * across ** p["edge"]) + p["spine"] * np.exp(-0.5 * (across / 0.4) ** 2)
     dust *= np.exp(-p["dust_fall"] * t)
-    dust *= _ramp(1.0 - t, 0.0, END) * _ramp(y, -0.35, 0.35)
+    dust *= _ramp(1.0 - t, 0.0, end) * _ramp(y, -0.35, 0.35)
 
     s = np.clip(far / (p["ion_len"] * tail), 0.0, 1.0)
     i0, i1 = p["ion_w"]
-    ion = np.exp(-0.5 * ((x - p["ion_lean"] * up) / (i0 + (i1 - i0) * s)) ** 2)
-    ion *= np.exp(-p["ion_fall"] * s) * _ramp(1.0 - s, 0.0, END) * _ramp(y, 0.0, 0.7)
+    line = p["ion_lean"] * up
+    if p.get("snap"):                                                 # a line of whole pixels, never two half-lit
+        line = np.round(line / (SPAN / m)) * (SPAN / m)
+    ion = np.exp(-0.5 * ((x - line) / (i0 + (i1 - i0) * s)) ** 2)
+    ion *= np.exp(-p["ion_fall"] * s) * _ramp(1.0 - s, 0.0, end) * _ramp(y, 0.0, 0.7)
 
     coma = np.exp(-(np.hypot(x, np.where(y > 0.0, 0.8 * y, y)) / p["coma"]) ** 1.5)
     return p["coma_amp"] * coma * edge, p["dust_amp"] * dust * edge, p["ion_amp"] * ion * edge, t
@@ -225,13 +238,15 @@ def _smooth(p, strength, tail, n):
 
 def _stepped(p, strength, tail, n):
     """Version b: the smooth comet read at the centres of the big pixels and rounded down to the
-    level it reaches; under the first step nothing is drawn. Each level is one flat tone."""
+    level it reaches; under the first step nothing is drawn. Each level is one flat tone; where
+    the ion tail is the stronger of the two the tone is its blue, and never the brightest one,
+    so that beside the body the line does not light up as a spike."""
     coma, dust, ion, _ = _fields(p, tail, GRID)
     body = coma + dust
     level = np.searchsorted(np.array(p["steps"]), body + ion, side="right")      # 0 nothing, 1.. the levels
     warm, cool = _unit(WARM), _unit(COOL)
     tones = [np.zeros(3)] + [(warm * (1.0 - c) + cool * c) * g for g, c in zip(p["tones"], p["cooling"])]
-    blues = [np.zeros(3)] + [cool * g for g in p["tones"]]
+    blues = [np.zeros(3)] + [cool * g for g in p["tones"][:-1]] + [cool * p["tones"][-2]]    # never the brightest tone
     small = np.where((ion > body)[..., None], np.array(blues)[level], np.array(tones)[level])
     cell = n // GRID
     return _hold(np.repeat(np.repeat(small, cell, axis=0), cell, axis=1) * strength)
