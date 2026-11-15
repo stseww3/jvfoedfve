@@ -231,9 +231,10 @@ WINTER = dict(
 )
 
 # The summer half: the three bright stars of the summer triangle, the Milky Way running down
-# through it to the Scorpion with his red heart and hooked tail; the Keystone, the Crown, the lone
-# bright star in the west, the Great Square rising in the east and the lone star of autumn under
-# it. Here the ecliptic sags, through the Scorpion's brow.
+# through it to the Scorpion with his bright heart and hooked tail; the Keystone, the Crown, the
+# lone bright star in the west, the Great Square rising in the east and the lone star of autumn
+# under it. Here the ecliptic sags, through the Scorpion's brow: three stars in a bow, left
+# unjoined, because a line through them would stand across the end of the body.
 SUMMER = dict(
     band=[(15, 19), (15, 19), (15, 20), (16, 20), (16, 20), (16, 21), (16, 21), (17, 21), (17, 22), (17, 22),
           (17, 22), (18, 23), (18, 23), (18, 23), (18, 24), (19, 24), (19, 25), (19, 25), (19, 26), (20, 26),
@@ -244,14 +245,14 @@ SUMMER = dict(
         [(28, 4), (32, 5), (31, 9), (28, 8), (28, 4)],                                  # the Keystone
         [(35, 3), (36, 6), (38, 7), (40, 6), (41, 3)],                                  # the Crown
         [(3, 4), (8, 3), (9, 8), (4, 9), (3, 4)],                                       # the Great Square
-        [(37, 15), (37, 18), (36, 21)], [(36, 18), (33, 19)],                           # the Scorpion
+        [(36, 18), (33, 19)],                                                           # the Scorpion
         [(30, 21), (29, 23), (28, 25), (26, 27), (23, 27), (21, 25), (22, 23)],
     ],
     bright=[(16, 3), (24, 4), (19, 13), (31, 19), (41, 10), (5, 23)],
     stars=[(28, 4), (32, 5), (31, 9), (28, 8),
            (35, 3), (36, 6), (38, 7), (40, 6), (41, 3),
            (3, 4), (8, 3), (9, 8), (4, 9),
-           (37, 15), (37, 18), (36, 21), (29, 23), (28, 25), (26, 27), (23, 27), (21, 25), (22, 23),
+           (36, 15), (37, 18), (36, 21), (29, 23), (28, 25), (26, 27), (23, 27), (21, 25), (22, 23),
            (13, 10), (10, 20), (16, 26), (39, 24), (28, 13), (23, 21)],
     faint=[(11, 7), (4, 18), (14, 23), (12, 26), (37, 12), (42, 25), (43, 19), (33, 12), (26, 10), (30, 2),
            (19, 2), (20, 8), (21, 16), (25, 22), (26, 24), (24, 25)],
@@ -259,20 +260,21 @@ SUMMER = dict(
 
 
 def _blueprint_face():
-    """The blueprint, 24 x 14 above the rolled foot: the great dome cut through, the refractor on
-    its pier under it and the observing floor; the same dome in plan with the pier in the middle;
-    the title block in the corner."""
+    """The blueprint, 24 x 14 above the rolled foot: the great dome cut through with its slit
+    open, the refractor on its pier looking out of it (the pier a solid mass standing on the
+    ground: no floor is drawn across it, a line through a post is a cross); the same dome in plan
+    with the pier in the middle; the title block in the corner."""
     rows = ["bbbbbbbbbbbbbbbbbbbbbbbb",
             "bbbbbbbbbbbbbbbbbwwwbbbb",
-            "bbbbbwwwwwbbbbbbwbbbwbbb",
-            "bbbwwbbbbbwwbbbwbbbbbwbb",
+            "bbbbbwwwwbbbbbbbwbbbwbbb",
+            "bbbwwbbbbbbwbbbwbbbbbwbb",
             "bbbwbbbbwbbwbbbwbbwbbwbb",
             "bbwbbbbwbbbbwbbwbbbbbwbb",
-            "bbwbbbwmbbbbwbbbwbbbwbbb",
-            "bbwbbwbmbbbbwbbbbwwwbbbb",
-            "bbwmmmmmmmmmwbbbbbbbbbbb",
-            "bbwbbbbmbbbbwbbmmmmmmmmb",
-            "bbwbbbbmbbbbwbbmbwwwbbmb",
+            "bbwbbbwbbbbbwbbbwbbbwbbb",
+            "bbwbbwmmbbbbwbbbbwwwbbbb",
+            "bbwbwbmmbbbbwbbbbbbbbbbb",
+            "bbwbbbmmbbbbwbbmmmmmmmmb",
+            "bbwbbbmmbbbbwbbmbwwwbbmb",
             "bwwwwwwwwwwwwwbmbbbbbbmb",
             "bbbbbbbbbbbbbbbmmmmmmmmb",
             "bbbbbbbbbbbbbbbbbbbbbbbb"]
