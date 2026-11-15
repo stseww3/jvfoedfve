@@ -20,9 +20,9 @@
 | 代号 | 新聊天号 | 接手 | 卡 | 分支 |
 | --- | --- | --- | --- | --- |
 | m1 | c263 | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮 | `cursor/c164-m1-brass-fa68`、`cursor/c164-m1-panels-polish-bc45` |
-| snow | c264 | c194 | materials/snow | `cursor/c164-m1-snow-bc45` |
+| snow | c264 | c194 | materials/snow；兼 machines/recorders、engine-dynamo、switchboard-boiler | `cursor/c164-m1-snow-bc45`、`cursor/c164-snow-rec-aide`、`cursor/c164-snow-dynamo-b9be`、`cursor/c164-snow-board-b9be` |
 | facade | c265 | c206 | main/facade；main 牵头 | `cursor/c164-facade-229b` |
-| shell | c266 | c231 | main/shell | `cursor/c164-shell-f063` |
+| shell | c266 | c231 | main/shell；兼 machines/domegear、interiors/powerhouse | `cursor/c164-shell-f063`、`cursor/c164-shell-power-aide` |
 | lights | c267 | c220 | sky/lights（含洗墙轮） | `cursor/c164-lights-007c`、`cursor/c164-lights-wash-0fe3` |
 | comet | c268 | c230 | sky/comet | `cursor/c164-comet-986f` |
 | lamps | c269 | c220 | props/lamps 的位置表和场地灯链 | `cursor/c164-lamps-007c` |
@@ -45,7 +45,7 @@
 | clocks | c296 | c238 | machines/clocks | `cursor/c164-clocks-e99f` |
 | gear | c266（shell 兼） | c196 | machines/domegear（壳优先） | `cursor/c164-gear-6260` |
 | car | — | c240 | machines/cablecar-winch | `cursor/c164-car-w3k9` |
-| mast | — | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
+| mast | c297 | c239 | machines/radiomast | `cursor/c164-mast-5dcd` |
 | arm | — | c246 | machines/armillary | `cursor/c164-arm-7c2a` |
 | pipes | c263（m1 兼） | c241 | props/pipes | `cursor/c164-pipes-9deb` |
 | elec | — | c242 | props/electrics-signs | `cursor/c164-elec-7be8` |
