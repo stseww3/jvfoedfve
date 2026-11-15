@@ -73,8 +73,9 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone the papers are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone the papers are judged against, and the map's own sky: without it the
+    game's sun stands in the open west of this corner."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
