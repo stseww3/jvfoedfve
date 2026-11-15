@@ -130,6 +130,7 @@ BRACE, BRACE_T = 0.75, 0.5      # a diagonal: 3 texels wide in the face, 2 thick
 PLATE_H = 1.75                  # a joint plate: 7 texels high, 1 thick, half a texel proud of the leg
 PLATE_REACH = {"a": 2.25, "b": 2.75}    # ... and this long from the leg's outer edge inwards; in b it reaches
 #                                         the end of the belt block, which stops half a block short of the leg
+PLATE_RIVET = 0.5               # its two rivets sit on the leg's middle line, this far over and under the belt's
 KNOT, KNOT_T = 1.0, 0.25        # the plate where two diagonals cross: 4 texels square, 1 thick
 RIVET = 0.25                    # ... and the head of the rivet through it: 1 texel
 COLLAR = 0.875                  # half the width of the collars that close a leg's two ends
@@ -141,6 +142,8 @@ FOOT_BELTS = (math.floor(BASE_Y) + 1.5, KNEE_Y - BAY)   # 3.5 and 5.5: the two b
 FOOT_POT = (0.5, 2.5, 3.0, 4.5)         # under each leg, in units over the seat: a base plate up to here, the
 #                                         porcelain, its iron cap, the shoe that takes the leg
 FOOT_LUG = (5.0, 3.5)           # the terminal of the feed lead on a shoe: distance from the axis in x and z, height
+GAP_OUT, GAP_Y = 1.5, 2.0       # the spark gap: this far outside its leg's axis in x and z, its middle this high
+GAP_BALL, GAP_AIR = 0.5, 0.5    # its two balls are 4 texels across and stand 2 texels apart
 HEAD_EYE = (5.5, 2.5)           # the end of the aerial's arm: distance from the axis in x and z, height
 LAMP_H = 10                     # texels: the lamp from the foot of its holder on the pole to its top
 LAMP_Y = TIP_Y - LAMP_H / 16.0  # 61.375
@@ -198,9 +201,12 @@ def _flat(name, step):
     return P.mat(name, kind="flat", base=step, bevel=0)
 
 
-CABLE = _flat("iron", 0)                        # the guys
-WIRE = _flat("iron", 0)                         # the aerial
-LEAD = _flat("old_copper", 1)                   # the feed lead at the foot, seen from near only
+# the lines are the iron ramp's second step: on a face that looks down or away from the game's two
+# lamps the darkest step comes out all but black
+CABLE = _flat("iron", 1)                        # the guys
+WIRE = _flat("iron", 1)                         # the aerial
+LEAD = _flat("old_copper", 2)                   # the feed lead at the foot, seen from near only: a darker
+#                                                 step reads as a strip of wood at night
 STUD = _flat("iron", 4)                         # rivet heads
 RED = [_flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
 
@@ -304,6 +310,16 @@ def _plates(m, node, reach, lo=None, hi=None):
         for t in (-1, 1):
             m.box((t * a, y0, s * p0), (t * b, y1, s * p1), IRON_D, grain="x", seed=PLATE_SEED)
             m.box((s * p0, y0, t * a), (s * p1, y1, t * b), IRON_D, grain="z", seed=PLATE_SEED)
+    # two rivets through each plate into its leg, one over the belt and one under it; where a piece
+    # ends between the two, each piece draws the one on its side
+    r, p2 = RIVET / 2.0, p1 + RIVET
+    for y in (node - PLATE_RIVET, node + PLATE_RIVET):
+        if (lo is not None and y - r < lo) or (hi is not None and y + r > hi):
+            continue
+        for s in (-1, 1):
+            for t in (-1, 1):
+                m.box((t * LEG_U - r, y - r, s * p1), (t * LEG_U + r, y + r, s * p2), STUD, seed=STUD_SEED)
+                m.box((s * p1, y - r, t * LEG_U - r), (s * p2, y + r, t * LEG_U + r), STUD, seed=STUD_SEED)
 
 
 def _collars(m, y0, y1):
@@ -368,12 +384,16 @@ def _foot(name, legs, belts, reach):
     # the terminal of the lead to the lead-in post, on the outer corner of the shoe -x, +z
     lx, ly = FOOT_LUG
     m.box((-lx - 0.5, ly - 0.5, lx - 0.5), (-lx + 0.5, ly + 0.5, lx + 0.5), BRASS)
-    # the spark gap across the insulator of the next leg (+x, +z; both corners look at the court): a
-    # horn down from the shoe, a stub up from the seat, a brass ball on each, three texels of air between
-    m.rod((LEG_U + 0.7, cap + 0.4, LEG_U + 0.7), (LEG_U + 1.475, pot + 0.1, LEG_U + 1.475), 0.25, IRON_D, sides=4)
-    m.box((LEG_U + 1.1, 1.9, LEG_U + 1.1), (LEG_U + 1.85, 2.65, LEG_U + 1.85), BRASS)
-    m.box((LEG_U + 1.1, 0.4, LEG_U + 1.1), (LEG_U + 1.85, 1.15, LEG_U + 1.85), BRASS)
-    m.box((LEG_U + 1.225, 0.0, LEG_U + 1.225), (LEG_U + 1.725, 0.5, LEG_U + 1.725), IRON_D)
+    # the spark gap across the insulator of the next leg (+x, +z; both corners look at the court): two
+    # brass balls one over the other, two texels of air between them, the lower one on a pin that
+    # stands on the seat, the upper one on a horn that comes down from the shoe
+    g = LEG_U + GAP_OUT
+    low, high = GAP_Y - GAP_AIR / 2.0 - GAP_BALL, GAP_Y + GAP_AIR / 2.0 + GAP_BALL
+    m.box((g - 0.25, 0.0, g - 0.25), (g + 0.25, 0.25, g + 0.25), IRON_D)
+    m.rod((g, 0.25, g), (g, low - GAP_BALL + 0.1, g), 0.125, IRON_D, sides=4)
+    m.rod((LEG_U + COLLAR - 0.1, shoe - 0.5, LEG_U + COLLAR - 0.1), (g, high + GAP_BALL - 0.1, g), 0.125, IRON_D, sides=4)
+    for y in (low, high):
+        m.ball((g, y, g), GAP_BALL, BRASS, sides=8, layers=4)
     return m
 
 
