@@ -1,8 +1,8 @@
-check obs_main_smalldome at 3b30028
-[PASS] regen     68734 blocks, 4 entities, 24 models, 655 resource-pack files, 28 data-pack files, look: 1 biomes, 1 timelines (1.4 s)
-[PASS] conflicts the scene writes 654 files, no file written twice, the packages of main write nothing into the pack
-[PASS] strays    134 pictures, every colour in the palette
-[PASS] refs      511 block states, item definitions and models read, every model and picture they name is there
+check obs_main_smalldome at 66bf620
+[PASS] regen     68734 blocks, 4 entities, 24 models, 649 resource-pack files, 28 data-pack files, look: 1 biomes, 1 timelines (1.4 s)
+[PASS] conflicts the scene writes 648 files, no file written twice, the packages of main write nothing into the pack
+[PASS] strays    132 pictures, every colour in the palette
+[PASS] refs      507 block states, item definitions and models read, every model and picture they name is there
 [PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
 [PASS] blocks    46 kinds of block placed, all in the occupancy table
 [WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
