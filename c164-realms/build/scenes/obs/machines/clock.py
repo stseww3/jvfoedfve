@@ -224,6 +224,13 @@ BALL_TONES = {
 # that look up and down. A ledge is painted in the step that comes out nearest to the side next to it.
 BALL_SIDE_SHADE = 0.65
 BALL_LEDGE_SHADE = {"u": 1.0, "d": 0.4}
+# The ledges that look down are most of what the ball shows to the ground, and at four tenths no
+# step of the ramp is light enough for them beside a light side: they lay round the lower half as
+# dark hoops (the pictures of 11-16). They are elements of their own that take the top of the light
+# table (BALL_UNDER_EMIT), which at the map's hour is BALL_UNDER_GAIN times what BALL_LIGHT gives,
+# and they are painted for that.
+BALL_UNDER_EMIT = 15
+BALL_UNDER_GAIN = 1.28
 # what a piece is turned by where it stands, before any turn of its own
 _STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
 
@@ -572,8 +579,9 @@ def _ball(name, paint):
     ramp, zones = paint
     tones = [P.colour(ramp, step) for step in range(max(zones) + 1)]
     colours = [tones[step] for step in zones]
+    drawn = {"u": BALL_LEDGE_SHADE["u"], "d": BALL_LEDGE_SHADE["d"] * BALL_UNDER_GAIN}
     ledges = {letter: [min(tones, key=lambda c: abs(_luma(c) * shade - _luma(side) * BALL_SIDE_SHADE)) for side in colours]
-              for letter, shade in BALL_LEDGE_SHADE.items()}
+              for letter, shade in drawn.items()}
     m = M.Model(PREFIX + name, px=1.0)
     half = math.tan(math.pi / BALL_SIDES)
     for sign in (1.0, -1.0):
@@ -585,11 +593,16 @@ def _ball(name, paint):
             for side in range(BALL_SIDES // 2):
                 turn = 360.0 * (side + 0.5) / BALL_SIDES
                 label = f"clock_{name}_{ledge}{layer}_{side}"
-                faces = {ledge: _ball_ledge(label, ledges[ledge], r, sign * a1, turn, ledge),
-                         "s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
+                face = {ledge: _ball_ledge(label, ledges[ledge], r, sign * a1, turn, ledge)}
+                sides = {"s": _ball_side(label + "s", colours, r, y0, y1, turn, False),
                          "n": _ball_side(label + "n", colours, r, y0, y1, turn, True)}
-                m.box((-r * half, y0, -r), (r * half, y1, r), K.flat(ramp, zones[2]), rot=("y", turn, (0.0, 0.0, 0.0)),
-                      skip="ew" + ("d" if sign > 0 else "u"), faces=faces, seed=1)
+                box = dict(rot=("y", turn, (0.0, 0.0, 0.0)), seed=1)
+                lo, hi, paint = (-r * half, y0, -r), (r * half, y1, r), K.flat(ramp, zones[2])
+                if sign > 0:
+                    m.box(lo, hi, paint, skip="ewd", faces={**face, **sides}, **box)
+                else:
+                    m.box(lo, hi, paint, skip="ewud", faces=sides, **box)
+                    m.box(lo, hi, paint, skip="ewsnu", faces=face, emit=BALL_UNDER_EMIT, **box)
     top = BALL_LAYERS[-1]
     m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, BALL_IRON, sides=12)
     m.tube("y", (0.0, 0.0), -top - 2.0, -top, BALL_PLATE, BALL_IRON, sides=16, cap=BALL_IRON_UNDER)
