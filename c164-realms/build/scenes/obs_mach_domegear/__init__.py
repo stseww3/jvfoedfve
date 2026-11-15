@@ -263,7 +263,7 @@ def shots():
     shot("ring_far", (AX + 8.0, eye, AZ + 3.0), (AX - 8.0, STAND + 6.5, AZ + 8.0))
     shot("slit_foot_up", (AX - 6.5, eye, AZ + 1.5), foot)
     shot("weights", (AX - 3.0, eye, AZ + 6.5), (AX - 9.0, STAND + 10.5, AZ + 3.0))
-    shot("hand_gear", (AX - 2.0, eye, AZ - 6.0), (gx + 0.3, STAND + 1.2, gz))
+    shot("hand_gear", (gx + 1.9, eye, gz + 2.1), (gx + 0.2, STAND + 1.3, gz))
     shot("hand_gear_up", (AX - 3.0, eye, AZ - 6.5), (gx, STAND + 4.5, gz))
     shot("ring_near", (AX - 4.0, STAND + 7.0, AZ + 6.0), (AX - 7.95, STAND + 6.4, AZ + 7.95), GLOW)
     shot("mesh", (gx + 2.2, dome.RING_Y - 2.4, gz + 2.6), (gx - 0.2, dome.RING_Y - 0.2, gz - 0.3), GLOW)

@@ -56,6 +56,7 @@ IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
 IRON_B = P.mat("iron", base=4)          # bright: where iron runs on iron (a tread, the rail's head, a peg, a sheave)
 TOOTH_IRON = P.mat("iron", base=4, bevel="ends")    # a tooth of the ring or its pinion: a bar with a lit top, no frame
+ROOT_IRON = P.mat("iron_dark", base=1)              # what the teeth stand on: the gaps between them are to read as gaps
 COPPER = P.mat("old_copper", base=1)    # the weights' slabs: the tone of the old-copper blocks' faces
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
@@ -292,7 +293,7 @@ def _segment():
 
     pitch = RACK_R * PX
     y0, y1 = RACK_Y
-    d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0 - 1.0, IRON_D,
+    d.ring("y", (axis[0], (y0 + y1) / 2.0, 0.0), pitch + DEDENDUM + RACK_BACK / 2.0, RACK_BACK, y1 - y0 - 1.0, ROOT_IRON,
            sides=RING_SIDES, arc=arc, seed=106)                         # the toothed ring's back, bolted to the trucks' inner cheeks
     x = pitch + axis[0]
     for j in range(RACK_TEETH // GORES):                                # its teeth, towards the dome's axis: a gap at either end
@@ -317,7 +318,7 @@ def _riser():
         d.tube("y", (0.0, 0.0), y0, y0 + 2.0, 2.5, IRON_D, sides=8, seed=112)
     y0, y1 = (RISER_TOP - RACK_Y[1] + y for y in RACK_Y)                        # the pinion, as high as the toothed ring
     root = PINION_R * PX - DEDENDUM
-    d.tube("y", (0.0, 0.0), y0 + 0.5, y1, root, IRON_D, sides=20)
+    d.tube("y", (0.0, 0.0), y0 + 0.5, y1, root, ROOT_IRON, sides=20)
     d.tube("y", (0.0, 0.0), y0 - 1.0, y0 + 0.5, 3.0, IRON, sides=8, seed=114)   # its boss
     for i in range(PINION_TEETH):                                               # the first tooth points away from the dome's axis, into the gap
         deg = RISER_DEG + i * 360.0 / PINION_TEETH
