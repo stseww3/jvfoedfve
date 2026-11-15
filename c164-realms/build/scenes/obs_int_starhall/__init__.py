@@ -1,29 +1,99 @@
-"""obs_int_starhall: the box test scene of the entrance hall (work package interiors/starhall).
+"""Test scene of the work package interiors/starhall (plan/packages/interiors/starhall.md): the
+hall in version a, "academy". Its twin obs_int_starhall_b shows version b, "workshop", from the
+same cameras under the same names, so the two can be compared blind.
 
-The two versions stand side by side, each in a stand-in of the shell on the skeleton's coordinates:
-version a (academic) at the scene origin, version b (workshop) SPACING blocks to the south, far enough
-that neither shows in the other's views. The shot names carry the version (a_*, b_*).
+The scene is laid the way the master scene lays it: the main line whole (walls, shell, dome), the
+two machines of the hall, the hall's own dress, and the light line last, which settles the sources
+everybody offered and lights the doorway as it does in the master scene. No light is set by hand.
 
-The resource pack is the materials line's (the hall repaints only its blocks and places no model of its
-own), so the room is seen in the same stone, iron, brass and wood it will wear once it moves in.
+The orrery and the mother clock are the real ones as soon as machines/orrery and machines/clock
+are in the tree; until then standins.py shows their envelope and offers their two lights.
+
+shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
 """
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import main, materials, sky
+from scenes.obs.common import blocks as B
+from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import starhall
+from scenes.obs.main import shell
+from scenes.obs.props import lamps
+
+from . import standins
 
 BIOME = "obs_blue"
-CATEGORY = "interiors"
-SPACING = 40
-ORIGINS = {"a": (0, 0, 0), "b": (0, 0, SPACING)}
+BIOME_MARGIN = 60
+VERSION = "a"
+GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # paving under and before the building
+ORIGIN = (0, 0, 0)
+OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture")    # packages whose models the hall shows
 
 
-def build():
+def _machines(c, version):
+    """The orrery and the mother clock: machines' own when they are in the tree."""
+    n = 0
+    orrery = starhall._optional("machines.orrery")
+    n += orrery.build(c, ORIGIN) if orrery is not None else standins.orrery(c, ORIGIN)
+    clock = starhall._optional("machines.clock")
+    n += clock.master(c, ORIGIN) if clock is not None else standins.clock(c, ORIGIN)
+    return n
+
+
+def build(version=VERSION):
     c = Canvas()
-    for version, origin in ORIGINS.items():
-        starhall.build_box(c, origin, version)
+    x0, z0, x1, z1 = GROUND
+    c.box(x0, S.PAVING_Y, z0, x1, S.PAVING_Y, z1, B.SLATE_SMOOTH.block)
+    counts = {"materials": materials.build(c, ORIGIN)}
+    with shell.hall_open():
+        counts["main"] = main.build(c, ORIGIN)
+    counts["machines"] = _machines(c, version)
+    counts["interiors"] = starhall.dress(c, ORIGIN, version)
+    counts["sky"] = sky.build(c, ORIGIN)
+    c.entity_counts = {k: int(v or 0) for k, v in counts.items()}
     return c
 
 
+def build_models():
+    out = {}
+    parts = [main.models(), materials.models(), sky.models(), lamps.models(), starhall.models(), standins.models()]
+    for name in OPTIONAL:
+        module = starhall._optional(name)
+        if module is not None:
+            parts.append(module.models())
+    for part in parts:
+        out.update(part or {})
+    return out
+
+
 def write_pack(pack_dir):
+    """The hall paints nothing; it stands on the repainted blocks as the materials line has them."""
     return materials.pack(pack_dir)
+
+
+def shots():
+    """The cameras, the same for both versions. v7 is the skeleton's locked view from outside the
+    door, v7_in its second from inside the doorway (A0 #365)."""
+    eye = S.EYE
+    gallery = shell.DECK_Y + 1 + eye
+    cx, cz = S.ORRERY_CENTRE
+    out = []
+
+    def shot(name, pos, look_at):
+        out.append({"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at]})
+
+    shot("v7", S.V7["pos"], S.V7["look_at"])
+    shot("v7_in", (16.5, eye, cz), (8.0, 5.0, cz))
+    shot("west", (13.5, eye, cz), (4.0, 3.6, cz))                       # the pier and the clock, the arcade behind
+    shot("clock", (9.6, eye, cz + 0.9), (6.2, 2.9, cz))
+    shot("orrery", (14.2, eye, cz + 2.2), (cx, 9.0, cz))                # from the floor up into it, the boss over it
+    shot("ceiling", (cx + 0.1, eye, cz + 3.4), (cx, 14.0, cz - 0.6))
+    shot("emblem", (cx, 3.4, cz - 4.6), (cx, 0.0, cz + 0.6))            # the ring, the meridian and the star
+    shot("gallery", (12.6, gallery, 5.4), (10.4, 4.2, -1.2))            # from the south gallery down across the orrery
+    shot("gallery_w", (2.6, gallery, -4.6), (13.0, 6.5, 2.5))           # from the gallery's west end to the entrance wall
+    shot("door", (8.4, eye, cz), (16.0, 4.6, cz))                       # back to the doorway: the second emblem
+    shot("aisle_n", (14.6, eye, -2.4), (4.0, 2.2, -4.4))
+    shot("aisle_s", (14.6, eye, 3.4), (4.0, 2.2, 5.4))
+    shot("stair_n", (6.6, eye, -3.4), (-3.5, 3.2, -3.6))                # through the side arch to the stair foot
+    shot("mezzanine", (1.4, gallery, cz), (-7.0, 9.6, cz))              # the two lamps beside the great west window
+    return out
