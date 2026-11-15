@@ -24,11 +24,12 @@ heads and then nothing by the scatter radius, so its end is a ragged line of far
 and never a circle; it reaches further towards the west, where the afterglow would show any end of
 it.
 
-Only empty cells are filled. The sea lies right against the bare rock and snow of the mountain
-(ROCK), so no slit shows a level line round the mountain's foot; from everything else -- what is
-built: iron, masonry, timber, rope -- it keeps CLEAR empty cells, so no bar or wall joins on to a
-cloud, and a sunk floor of cloud lies under a gap that is left there, so the eye never drops
-through.
+Only empty cells are filled. The sea lies right against whatever stands in it: the mountain's bare
+rock and snow (ROCK, COVER), so no slit shows a level line round the mountain's foot, and what is
+built -- the legs and girders of the cable trestle, piers, steps -- so a track that runs down into
+the cloud is lost in it and does not end in a trench. The one exception is what would grow a thick
+arm towards a cloud beside it when the scene is placed (walls and fences, JOINS): from those it
+keeps CLEAR empty cells, with a sunk floor of cloud under the gap so the eye never drops through.
 
 The five tones are the occupancy roles B.CLOUD (dark to light, palette RAMPS["cloud"]). This package
 paints them (A0's exception to "only materials paints blocks": the cloud colour is tuned with the
@@ -37,7 +38,9 @@ BLOCKS names them. The pictures are flat tones named sky_cloud_0..4 and the game
 is turned off (shade=False, ao=False): which tone a block wears is baked here from the shape, lit
 from the west where the afterglow is. The calm sea is the middle tone, its hollows one darker; on a
 head the tone climbs with the height, the crown and the west side lightest, the lee side and the
-foot darkest. There is no dither: the tones lie in clean bands, as pixel art shades a ball.
+foot darkest. There is no dither: the tones lie in clean bands, as pixel art shades a ball. Towards
+its end the sea sinks into the horizon (HAZE): the tones close in on the one nearest the fog's
+colour, so the last heads are grey shapes for the fog to take, not light ones against the dark.
 """
 import numpy as np
 
@@ -65,13 +68,33 @@ HEAP = 3.3                      # a head of cloud stands this far out of the sea
 PILE = 6.2                      # the few big piles (to y -20, card)
 PILES = 16                      # how many of those in the whole sea
 PEAK = -20                      # nothing is higher than this
-FLOOR_Y = -31                   # the sunk floor under a gap beside something built
-CLEAR = 1                       # empty cells kept between the sea and anything built
+FLOOR_Y = -31                   # the sunk floor under a gap beside a wall or a fence
+CLEAR = 1                       # empty cells kept between the sea and what would join on to it
 SEED = 41
 
-# What the sea lies right against: the mountain's bare rock and snow, whole blocks that nothing
-# joins on to. Every other block is something built and is given CLEAR cells of room.
+# What stands in the sea. ROCK is the mountain's bare rock and snow: whole blocks, which hide the
+# cloud that lies behind them. COVER lies on the rock in thin layers and hides nothing. JOINS (by the
+# ending of the name) are the built things that grow a thick arm towards a whole block beside them
+# when a scene is placed: the game shapes them from their neighbours. The sea keeps CLEAR cells away
+# from those and lies right against everything else. Bars and panes join on as well, but with a thin
+# arm at the cloud's own level that ends in the cloud's face; a well round every leg of the trestle
+# would show far more.
 ROCK = (B.ROCK_STONE.block, B.ROCK_ANDESITE.block, B.ROCK_DEEPSLATE, B.ROCK_COBBLED.block, B.TUFF.block, B.SNOW)
+COVER = (B.SNOW_LAYER,)
+JOINS = ("_wall", "_fence")
+
+# The far sea sinks into the horizon. Past HAZE[0] (measured as the edge is: further out in the west)
+# the tones close in on HORIZON, the light of the tone nearest the fog's colour in the blue hour
+# (tone 1 shows #393e69 against the horizon's #383a74); from HAZE[1] on a head keeps HAZE_KEEP of its
+# shading. The sea is closed out to 174 (where the density falls to 0.7). To the east, north and
+# south that is 110 to 125 blocks from where people stand, where the fog has taken less than half,
+# and light heads against the dark beyond would draw the sea's end; so the tones begin to sink about
+# where the fog begins for someone at the mountain's edge. In the west the fog is thick before the
+# sea ends and the lit faces of the far ranges carry the afterglow: HAZE_WEST of it is left out there.
+HAZE = (130.0, 185.0)
+HORIZON = 0.27
+HAZE_KEEP = 0.25
+HAZE_WEST = 0.75
 
 # The vanilla cloud sheet (clouds.png): 256x256, one pixel is a 12x12x4-block cell, the same colour
 # everywhere; it tiles on all four edges. Repainted as an almost closed deck (vanilla covers 27.6%)
@@ -192,28 +215,37 @@ def _reach(passable):
 
 
 def _others(canvas, origin, lo, shape, y0):
-    """(occ, rock): the cells of the box that hold a block of somebody else, and which of those are
-    the mountain's bare rock (box indices; the box starts at scene (lo[0], y0, lo[1]))."""
+    """(occ, rock, whole, joins): the cells of the box that hold a block of somebody else; which of
+    those are the mountain's rock and snow; which of these are whole blocks, hiding what is behind
+    them; and which cells hold something that would join on to a cloud (box indices; the box starts
+    at scene (lo[0], y0, lo[1]))."""
     ox, oy, oz = origin
     nx, ny, nz = shape
     x0, z0 = lo
-    occ, rock = np.zeros(shape, dtype=bool), np.zeros(shape, dtype=bool)
+    occ, rock, whole, joins = (np.zeros(shape, dtype=bool) for _ in range(4))
     keys = np.array(list(canvas.b.keys()), dtype=np.int64).reshape(-1, 3)
     if len(keys):
         a, b, c = keys[:, 0] - ox - x0, keys[:, 1] - oy - y0, keys[:, 2] - oz - z0
         ok = (a >= 0) & (a < nx) & (b >= 0) & (b < ny) & (c >= 0) & (c < nz)
         occ[a[ok], b[ok], c[ok]] = True
         for key, i, j, k in zip(keys[ok].tolist(), a[ok].tolist(), b[ok].tolist(), c[ok].tolist()):
-            if canvas.b[tuple(key)].partition("[")[0].split(":")[-1] in ROCK:
+            name = canvas.b[tuple(key)].partition("[")[0].split(":")[-1]
+            if name in ROCK:
+                rock[i, j, k] = whole[i, j, k] = True
+            elif name in COVER:
                 rock[i, j, k] = True
-    return occ, rock
+            elif name.endswith(JOINS):
+                joins[i, j, k] = True
+    return occ, rock, whole, joins
 
 
 def _field(seed, land):
-    """The sea as a height field: (top, level, deck). ``top`` is the continuous height of the cloud
-    top per column (-inf where there is none), ``level`` the calm sea's height there, ``deck`` says
-    where the sea is closed (beyond it there are single heads only). ``land`` marks the columns where
-    something stands in the cloud: the sea heaps up along it and keeps its big piles away from it."""
+    """The sea as a height field: (top, level, deck, haze). ``top`` is the continuous height of the
+    cloud top per column (-inf where there is none), ``level`` the calm sea's height there, ``deck``
+    says where the sea is closed (beyond it there are single heads only), ``haze`` how far the sea
+    has sunk into the horizon there (0 near the mountain, 1 at the sea's end). ``land`` marks the
+    columns where something stands in the cloud: the sea heaps up along it and keeps its big piles
+    away from it."""
     x0, z0, nx, nz = _grid()
     cx, cz = CENTRE
     X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
@@ -221,7 +253,9 @@ def _field(seed, land):
     r = np.hypot(X - cx, Z - cz)
     west = np.clip((cx - X) / np.maximum(r, 1.0), 0.0, 1.0)            # 1 due west of the centre
     wobble = N.fbm2(X / 47.0, Z / 47.0, seed + 5, octaves=3) * 20.0    # the edge is not a circle
-    density = N.smoothstep(SCATTER, FILL, (r - wobble) / (1.0 + WEST * west ** 1.5))
+    reach = (r - wobble) / (1.0 + WEST * west ** 1.5)                  # the radius the edge is drawn by
+    density = N.smoothstep(SCATTER, FILL, reach)
+    haze = N.smoothstep(HAZE[0], HAZE[1], reach) * (1.0 - HAZE_WEST * west ** 1.5)
     # where the cloud piles up: ranges that lie north-south, bent a little, about three quarters of
     # the sea; 1 in a range, 0 in the lanes of calm sea that wind between them
     bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 26.0
@@ -315,7 +349,7 @@ def _field(seed, land):
     deck = density > 0.7
     top = np.where(deck, np.maximum(top, level), top)                  # closed between the heads
     top = np.minimum(top, PEAK + 0.45)
-    return top, level, deck
+    return top, level, deck, haze
 
 
 def _shade(top, has, level):
@@ -352,41 +386,46 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     x0, z0, nx, nz = _grid()
     y0, y1 = FLOOR_Y - 1, PEAK + 2
     ny = y1 - y0 + 1
-    occ, rock = _others(canvas, origin, (x0, z0), (nx, ny, nz), y0)
-    built = _grow(occ & ~rock, CLEAR)               # what is built, and the room it is given
+    occ, rock, whole, joins = _others(canvas, origin, (x0, z0), (nx, ny, nz), y0)
+    kept = _grow(joins, CLEAR)                      # the room given to what would join on to a cloud
 
-    # The land: columns where somebody's block stands in the cloud band, and what those wall in (the
-    # hollow of the mountain; what merely has a bridge over it is not walled in and keeps its cloud).
+    # The land: columns where somebody's block stands in the cloud band, and what those wall in: the
+    # hollow of the mountain. What merely has a bridge over it is not walled in and keeps its cloud,
+    # and so does a pocket less than five columns across (the slot between two rails, a cleft in the
+    # shore): the hollow is what is left of the walled-in columns after two are taken off every rim.
     band = occ[:, SHEET_BOTTOM - y0:, :].any(axis=1)
-    inside = ~band & ~_reach(~band)
-    top, level, deck = _field(seed, band | inside)
+    shut = ~band & ~_reach(~band)
+    inside = shut & _grow(~_grow(~shut, 2), 2)
+    top, level, deck, haze = _field(seed, band | inside)
     has = np.isfinite(top) & ~inside
     tops = np.where(has, np.rint(top), y0 - 1).astype(np.int64)
 
-    # only empty cells, clear of what is built, and not in the hollow under a crust of rock
+    # only empty cells, clear of what would join on, and not in the hollow under a crust of rock
     ys = np.arange(ny)[None, :, None] + y0
-    solid = has[:, None, :] & (ys >= SHEET_BOTTOM) & (ys <= tops[:, None, :]) & ~occ & ~built
+    solid = has[:, None, :] & (ys >= SHEET_BOTTOM) & (ys <= tops[:, None, :]) & ~occ & ~kept
     solid &= ~np.flip(np.logical_or.accumulate(np.flip(rock, 1), axis=1), 1)
 
-    # the sunk floor: where the sea was opened beside something built and nothing stands in the
+    # the sunk floor: where the sea was opened beside a wall or a fence and nothing stands in the
     # column, the eye would drop through to the void; a dark course of cloud lies there, low in the gap
     floor = np.zeros_like(solid)
     floor[:, FLOOR_Y - y0, :] = deck & ~inside & ~solid.any(axis=1) & ~occ.any(axis=1)
-    floor &= ~built
+    floor &= ~kept
 
-    # only what can be seen from above or from the side is placed: a cell with cloud or rock over it
-    # and on all four sides is left out, and so is the unseen underside of the sea
-    p = np.pad(solid | occ, 1)
+    # only what can be seen from above or from the side is placed: a cell with cloud or whole rock
+    # over it and on all four sides is left out, and so is the unseen underside of the sea. What is
+    # built hides nothing (a rail, a bar, a step lets the eye past), nor does a thin layer of snow.
+    p = np.pad(solid | whole, 1)
     west_open, east_open = ~p[:-2, 1:-1, 1:-1], ~p[2:, 1:-1, 1:-1]
     side_open = ~p[1:-1, 1:-1, :-2] | ~p[1:-1, 1:-1, 2:]
     up_open = ~p[1:-1, 2:, 1:-1]
     skin = solid & (up_open | west_open | east_open | side_open)
 
     # a cell seen from the side only takes its column's light, more of it facing west, less facing
-    # east, and less the further down the side it lies
+    # east, and less the further down the side it lies; then the far sea sinks into the horizon
     light = _shade(top, has, level)[:, None, :] + np.zeros((1, ny, 1), dtype=np.float32)
     turn = np.where(west_open, 0.10, np.where(side_open, -0.06, -0.16))
     light = np.where(up_open, light, light + turn - 0.05 * np.clip(tops[:, None, :] - ys, 0, 8))
+    light = light + (HORIZON - light) * ((1.0 - HAZE_KEEP) * haze)[:, None, :]
 
     ox, oy, oz = origin
     last = len(names) - 1

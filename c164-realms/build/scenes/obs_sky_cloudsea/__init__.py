@@ -3,10 +3,12 @@ hilltop rising out of the sea of clouds, seen from the cameras the card is judge
 
 The hilltop is a stand-in built from the skeleton's masses (the real mountain is site/terrain's, the
 building is main's): the upper terrace, the sunset platform, the lower platform with the station
-deck and the shelves, each a flat rock falling away into the cloud, and a pale massing of the main
-building (a bar, a dome, a tower) so the silhouette over the sea can be judged. Only enough to
-answer the card's questions: from V1, V11, V12, the sunset rail and close to the cloud face, is an
-edge of the sea seen anywhere, and does the rock rise out of cloud rather than sit on a plate?
+deck and the shelves, each a flat rock falling away into the cloud, a pale massing of the main
+building (a bar, a dome, a tower) so the silhouette over the sea can be judged, and the cable
+trestle running down from the station into the sea. Only enough to answer the card's questions:
+from V1, V11, V12, the sunset rail and close to the cloud face, is an edge of the sea seen
+anywhere, does the rock rise out of cloud rather than sit on a plate, and is the track lost in the
+cloud or does it end in a hole?
 
 The three ways to make the sea are three scenes with the same hilltop and the same shots, compared
 picture by picture: this one is version "c" (block sea and vanilla layer, what the master scene
@@ -56,6 +58,7 @@ ROCK_SPLIT = -12            # the high mix above, the low mix below
 PAVE = B.SLATE_SMOOTH.block
 STONE = B.ASHLAR_FINE.block
 COPPER = B.VERDIGRIS_CUT.block
+IRON = B.IRON_RIVETED
 
 
 def _rock(x, y, z):
@@ -141,11 +144,40 @@ def _massing(c):
         c.set(cx, y, cz, B.IRON_ROD)
 
 
+def _trestle(c):
+    """A stand-in for the cable trestle, on site/cablecar's figures: two rails of riveted slabs leave
+    the station deck in V1's row, run level for four cells and then fall one in two, a third of a
+    cell north for every cell east, until they are under the cloud. Every six cells a bent: a girder
+    across, two legs down to the rock or to the rock's floor, bars between the legs. The last bents
+    stand in the sea and the track ends in it: the card has to show how the cloud takes them."""
+    x1, axis = S.CABLE_STATION[2], int(S.V1["pos"][2] // 1)          # 91, -33
+    x = x1
+    while True:
+        x += 1
+        top = S.STATION_GROUND - 0.5 * max(0, x - x1 - 4)            # the upper face of the rails
+        if top <= ROCK_FLOOR + 2:
+            break                                                     # under the cloud: the track ends
+        z = int(round(axis - (x - x1 - 1) / 3.0))
+        y, half = (int(top) - 1, "top") if top == int(top) else (int(top // 1), "bottom")
+        for dz in (-1, 1):
+            c.set(x, y, z + dz, IRON.slab + f"[type={half}]")
+        if (x - x1 - 7) % 6:
+            continue
+        cap = y if half == "top" else y - 1                           # a bent: x 98, 104 ..
+        for dz in (-1, 0, 1):
+            c.set(x, cap, z + dz, IRON.block)
+            for yy in range(cap - 1, ROCK_FLOOR - 1, -1):
+                if c.has(x, yy, z + dz):
+                    break                                             # down to the rock
+                c.set(x, yy, z + dz, IRON.block if dz else B.IRON_BARS)
+
+
 def build(version=VERSION):
     c = Canvas()
     _mountain(c)
     _paving(c)
     _massing(c)
+    _trestle(c)
     cloudsea.build(c, (0, 0, 0), version=version)
     return c
 
@@ -168,6 +200,11 @@ VIEWS = {
     "east": ((-92, -14, 0.5), (10, 10, 0.5), 14000),              # from over the sea, the rock rising
     "skim": ((-58, -19.4, 24.5), (-118, -23, -8), 14000),         # low, skimming the cloud face
     "roof_down": ((1.5, S.ROOF_STAND + S.EYE, -20.5), (-52, -26, -34), 14000),   # from the roof terrace
+    # outwards where the sea ends nearest to where people stand: is its end seen?
+    "station_east": ((S.CABLE_STATION[2] - 0.5, S.STATION_GROUND + S.EYE, -29.5),
+                     (S.CABLE_STATION[2] + 110, -27, -52), 14000),                # down the trestle
+    "north_out": ((3.5, S.WEATHER_STATION["feet"] + S.EYE, S.WEATHER_STATION["box"][1] + 0.5),
+                  (3.5, -26, -174), 14000),                                       # from the weather station
 }
 
 
