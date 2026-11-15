@@ -97,6 +97,22 @@ main() {
   fi
   say "python: $("$py" -c "import sys, numpy, PIL, nbtlib, numba; print(sys.version.split()[0], 'numpy', numpy.__version__, 'Pillow', PIL.__version__, 'numba', numba.__version__)")"
 
+  # 2b. the machine-wide queue for heavy jobs, in the venv itself so it holds for every worktree
+  #     (director, 11-16: worktrees that had not merged the assembly had no tools/_slots.py and their
+  #     jobs did not queue). The hook is read at interpreter start through a .pth file; it comes from
+  #     the assembly branch, so a fresh machine has it before its own tree exists.
+  local sp hook_src
+  sp="$("$py" -c 'import site; print(site.getsitepackages()[0])' 2>/dev/null)" || sp=""
+  hook_src="c164-realms/tools/c164_slots_hook.py"
+  if [ -n "$sp" ] && [ -d "$sp" ] && git -C "$repo" show "origin/$ASSEMBLY:$hook_src" >/dev/null 2>&1; then
+    git -C "$repo" show "origin/$ASSEMBLY:$hook_src" > "$sp/c164_slots_hook.py.tmp" 2>/dev/null \
+      && mv "$sp/c164_slots_hook.py.tmp" "$sp/c164_slots_hook.py" 2>/dev/null || true
+    printf 'import c164_slots_hook\n' > "$sp/zzz_c164_slots.pth" 2>/dev/null || true
+    say "slots: heavy jobs queue in $sp (C164_SLOTS, default 3; check.py has slots of its own)"
+  else
+    say "slots: not installed (no site-packages, or the assembly has no $hook_src yet); jobs run without the queue"
+  fi
+
   # 3. the game's client jar
   local jar="$root/client26/versions/$VERSION/$VERSION.jar"
   "$py" - "$VERSION" "$jar" <<'PYEOF' || die "the client jar is not in place"
