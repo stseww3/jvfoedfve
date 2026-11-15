@@ -59,3 +59,10 @@
   2. **两个 logbook 没立，原因不在本包**：他的 `PIECES` 给了 `on=("furniture","writing_desk")`，循环要读 `furniture.TOP["writing_desk"]` 才算高度，而**树里还没有 `props/furniture`**（ImportError），他的 `continue` 跳过了。家具进树就自动立上。
   3. 他问的 `TOP` 是「支撑件那个包」提供的（`under.TOP[kind]`），不是本包的接口——本包 `place()` 不读高度，**不需要 `TOP`**，他那段代码是对的。
   4. 实尺寸（格）：`logbook` 0.625×0.44×0.28、`logbook_shut` 0.375×0.5×0.5、`blueprint` 1.5×1（出墙 2，薄片，钉墙时不占柜子的格）。
+- 2026-11-16 凌晨 **接口对完（c289 星厅）**（lamps）。c289 要三件，甲乙两版不同。把他的 `starhall.py` 和本包 `paper.py` 放同一棵树跑 `dress()`：
+  1. **甲版**：`paper_star_chart`（南墙，图心 4.75, 3.5, 6.0，facing north）+ `paper_sky_map`（回廊北墙冬半，11.5, 10.5, −5.0，facing south）。
+  2. **乙版**：再加 `paper_blueprint`（南墙星图旁边同高）+ `paper_sky_map_b`（回廊南墙夏半，11.5, 10.5, 6.0，facing north）。
+  3. **两版的 `missing` 里 paper 一件不剩**；三件坐标和他的数一字不差，贴墙面自动缩 0.01 格不埋进墙。
+  4. 他的 `piece()` 有一道 `kind in peer.SPEC` 的闸——本包 `SPEC` 里 11 件全在，所以全部认得出。**这是三个房间（星厅、星图室、授时室）里唯一用 `SPEC` 判的，以后改 `KINDS` 必须同步改 `SPEC`。**
+  5. 两件本子（`logbook`／`logbook_shut`）他自己按家具 TOP 放，本包只要 `place()` 接 `yaw=`，已满足。
+  6. 星厅不要 `photo_plate`、`blackboard`、`moon_map`（黑板和月面图归星图室）。
