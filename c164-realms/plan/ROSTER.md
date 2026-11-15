@@ -31,11 +31,11 @@
 | cable | c273 | c226 | site/cablecar | `cursor/c164-cable-a47d` |
 | m5 | c277 | c198 | materials/iron 二次交付 | `cursor/c164-m5-iron-8757` |
 | ashlar | — | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石） | `cursor/c164-ashlar-2cc1` |
-| m3 | — | c218 | props/ironwork 打磨轮（退回过） | `cursor/c164-m3-ironwork-e6ba` |
-| a1 | — | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` |
-| dome | — | c222 | main/dome | `cursor/c164-dome-0dab` |
-| tower | — | c223 | main/tower | `cursor/c164-tower-21fb` |
-| sdome | — | c224 | main/smalldome（含屋面） | `cursor/c164-sdome-8013` |
+| m3 | c282 | c218 | props/ironwork 打磨轮（退回过） | `cursor/c164-m3-ironwork-e6ba` |
+| a1 | c281 | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` |
+| dome | c279 | c222 | main/dome | `cursor/c164-dome-0dab` |
+| tower | c278 | c223 | main/tower | `cursor/c164-tower-21fb` |
+| sdome | c280 | c224 | main/smalldome（含屋面） | `cursor/c164-sdome-8013` |
 | power | — | c228 | site/powerhouse | `cursor/c164-power-f182` |
 | outb | — | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` |
 | cloud | — | c227 | sky/cloudsea | `cursor/c164-cloud-7d36`、`cursor/c164-cloud-wip-99a5` |
