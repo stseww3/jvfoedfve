@@ -39,6 +39,11 @@ RAMPS = {
     # provisional (A0, 2026-11-14): the cloud sea's five flat tones, one per blocks.CLOUD block; settled
     # on the real-game pictures of the cloudsea card
     "cloud": ("#6d6679", "#8d8491", "#b0a1a8", "#d5c4c1", "#fce6d7"),
+    # snow lying in the shade of the blue hour (A0, 2026-11-15): the game's white snow came out the
+    # brightest surface of the night, brighter than the lit front (0.59 against 0.38 in V11). The top
+    # step is set so that snow under the sky alone stays just below the front's stone; the mountain's
+    # coldest, lightest surface is still the snow, the picture's is still the building
+    "snow": ("#687082", "#747d8f", "#7f889b", "#8992a5", "#929bae"),
 }
 
 # name: (ramp, how it is painted). Names without an entry here are painted "plain" with the defaults.
@@ -66,6 +71,7 @@ _MATS = {
     "porcelain": ("porcelain", dict(kind="plain", noise=0.05, bevel=1, base=3)),
     "opal": ("opal", dict(kind="glow", bevel=0, base=2)),
     "cloud": ("cloud", dict(kind="flat", bevel=0, base=2)),                       # one flat tone; base picks which
+    "snow": ("snow", dict(kind="plain", noise=0.08, bevel=0, base=2)),            # a quiet field, no grain
 }
 _CHANGEABLE = {"kind", "noise", "bevel", "base", "alpha"}
 _cache = {}
