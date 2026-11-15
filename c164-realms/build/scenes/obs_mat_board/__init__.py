@@ -280,10 +280,12 @@ def shots():
             shot("ground_left", (x, y + 7.0, z + 16.5), (x, y + 2.5, z))
             x = (INLAY_AT + w) / 2.0                                        # the paving and the cloud
             shot("ground_right", (x, y + 11.0, z + 24.0), (x, y + 1.0, z + 5.0))
-            shot("ground_rock", (LEDGES_AT - 1.0, y + 4.5, z + 9.5), (LEDGES_AT - 1.0, y + 3.5, z))
-            shot("ground_snow", (SNOW_AT + N / 2.0, y + 3.5, z + N + 3.0), (SNOW_AT + N / 2.0, y + 2.5, z))
+            # far and high enough to have the snow at the cliff's foot in the picture, and the wall's top
+            shot("ground_rock", (LEDGES_AT - 1.0, y + 5.5, z + 10.5), (LEDGES_AT - 1.0, y + 3.0, z))
+            # from above: the drift down to its last thin layer on the rock, and the wall behind it
+            shot("ground_snow", (SNOW_AT + N / 2.0, y + 8.5, z + N + 3.0), (SNOW_AT + N / 2.0, y + 1.0, z + 2.0))
             mx, az = INLAY_AT + EMBLEM_R + 3.5, z + EMBLEM_R + 3.5
-            shot("ground_inlay", (mx, y + 11.0, az + 11.0), (mx, y, az + 0.5))
+            shot("ground_inlay", (mx, y + 11.0, az + 12.0), (mx, y, az + 1.0))
             shot("ground_inlay_walk", (mx + 3.0, y + 1.7, az + EMBLEM_R + 3.5), (mx - 0.5, y, az))
             x = CLOUD_AT + (w - CLOUD_AT) / 2.0
             shot("ground_cloud", (x, y + 8.0, z + 18.0), (x, y + 1.5, z + 3.0))
