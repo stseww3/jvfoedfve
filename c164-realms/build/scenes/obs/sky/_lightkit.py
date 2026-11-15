@@ -122,6 +122,11 @@ BLIND_SHARE = 0.3           # of the dark windows, how many show a lowered blind
 DARK_SHARE = 0.2            # the director's floor: this share of a front's windows is dark
 DARK_FROM = 5               # a front with fewer windows is only counted in the building's total
 SEED = 3667                 # picked on main's table (the card says by what): the wings differ and none is left dark
+# The west front draws its lit windows with a seed of its own. With the building's its two wings came
+# out as mirror images of each other (bays 3 and 5 against 13 and 15 under the fullest look), which
+# a row of lit windows never is; this one lights 3 and 5 against 14 and 16, and 3 against 14 under
+# the afterglow (review cr2-#3). Which dark window shows a blind is left as it was.
+FRONT_SEED = {"west": 5051}
 # Per look: of the windows that may be lit, the share that is. The low storeys have shares of their
 # own: the base storey is a dark band that carries the row of great windows; the director allows it
 # one lit window to a wing under the fullest look at the most, and it never shows more lit windows
@@ -195,8 +200,9 @@ def tier_of(name):
 def _h(key, salt):
     """A fixed number in [0, 1) for a window."""
     front, bay, storey = key
+    seed = SEED if salt == _BLIND else FRONT_SEED.get(str(front), SEED)
     return hash3(int(bay), zlib.crc32(str(storey).encode()) & 0xFFFF, zlib.crc32(str(front).encode()) & 0xFFFF,
-                 SEED + salt)
+                 seed + salt)
 
 
 _UNDER = []                 # the looks of the under() blocks that are open, the innermost last
