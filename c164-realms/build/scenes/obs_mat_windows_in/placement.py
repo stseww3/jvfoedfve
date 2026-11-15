@@ -84,8 +84,10 @@ def check(step, windows, origin=ORIGIN):
     for x, y, z, nbt in c.entities:
         lo, hi, right, front = _drawn(x, y, z, nbt, models)
         back, out = sorted((lo[normal], hi[normal]), key=lambda v: (v - face) * inward)
-        if abs(back - (face + W.NUDGE * inward)) > EPS or abs(abs(out - back) - W.THICK / 16.0) > EPS:
+        if abs(back - face) > EPS or abs(abs(out - back) - W.THICK / 16.0) > EPS:
             bad.append(f"a piece lies from {back:.4f} to {out:.4f}, the glass ends at {face}")
+        if not 0 < ((x, y, z)[normal] - face) * inward < 1:
+            bad.append(f"an entity stands at {(x, y, z)[normal]:.4f}, not in the room's cell before the glass at {face}")
         if not np.allclose(front, (dx, 0, dz), atol=EPS):
             bad.append(f"a picture looks along {np.round(front, 3)}, the room lies along {(dx, 0, dz)}")
         if not np.allclose(right, (dz, 0, -dx), atol=EPS):

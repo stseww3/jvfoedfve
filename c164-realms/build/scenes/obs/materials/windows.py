@@ -429,7 +429,11 @@ def pack(pack_dir, version=None):
 LINING = True                           # A0 #32717: on by default; unlined() builds without it
 THICK = 0.5                             # how far a lining stands in front of the glass, in pixels
 PIECE = 48 // TILE                      # a model reaches 48 pixels: a lining is cut into pieces of 3 blocks
-NUDGE = 0.01                            # blocks; puts the entity into the room's cell, which lights it
+# Blocks. The entity stands this far inside the room's cell, which lights it; the model is held
+# back by as much, so its back lies on the glass itself. With a gap between the two, a line of
+# sight along the wall passes behind the lining's edge and shows a hair of the lit glass: at the
+# first rendering that was a bright line down the side of every lined window.
+NUDGE = 0.01
 MODEL = "mat_window_lining_"            # the category's prefix, and what the models are
 
 # what a lit window is lined with, and in how many arrangements its pictures come
@@ -684,8 +688,9 @@ def line(canvas, cells, inward, glass, origin=(0, 0, 0)):
             # arrangements of the pictures, like the squares of a chess board
             across, up = -((low[p][0] - a0) // PIECE), -((low[p][1] - y0) // PIECE)
             model = pieces[lining_name(kind, w, h, (across + up) % VARIANTS[kind])]
-            # where the entity stands, in the piece's own measures: from the middle of its foot
-            held = (right * (along - (a0 + w / 2.0)) * TILE, (height - y0) * TILE, 0.0)
+            # where the entity stands, in the piece's own measures: from the middle of its foot,
+            # and NUDGE before its back
+            held = (right * (along - (a0 + w / 2.0)) * TILE, (height - y0) * TILE, NUDGE * TILE)
             canvas.add_entity(ox + x, oy + height, oz + z, M.display(_held_at(model, held), yaw=_YAW[step]))
             n += 1
     return n
