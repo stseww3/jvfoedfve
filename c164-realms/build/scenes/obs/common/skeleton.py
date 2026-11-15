@@ -250,15 +250,26 @@ EYE = 1.62          # the eye of a standing person, above where the feet stand
 # The camera is tilted up by about 22 degrees (A0 #304, 11-14; look_at was at y 14): the whole comet
 # is in the picture, the building fills the lower half of it and the sky the upper.
 V1 = dict(pos=(88.5, STATION_GROUND + EYE, -32.5), look_at=(8, 34, 0.5))    # the eye at y -2.38
-# What the station leaves free of V1 (A0 #304; the rule of #19629 that let the canopy take the top
-# eighth of the picture is void). Seen from V1's eye, between the two ends of the main building and
-# from the level of the eye up to V1_CLEAR degrees, nothing of the cable station may stand: canopy,
-# beam, post and cable alike. The comet's head stands 41 degrees up due west and its tails end
-# between 49 and 55 (sky/comet), so a person who steps out from under the canopy has the building
-# and the comet before him at once. v1_clear_span() gives the two bearings, in_v1_clear() tells
-# whether a point lies in the block; tools/check.py tests it with the other sight lines of V1 (the
-# check "sight").
-V1_CLEAR = 55.0
+# What the station leaves free of V1 (A0 #442, 11-15, in place of the 55 degrees of #304; the rule
+# of #19629 that let the canopy take the top eighth of the picture is void). The picture's top edge
+# stands 61.2 degrees up in its middle (22.7 of tilt and 38.5, half the field of view), and the
+# camera looks 22 degrees off the building's axis, so the edge of a canopy would cross the picture
+# askew: nothing of the station comes into this part of the picture at all. Seen from V1's eye,
+# nothing of the cable station may stand, canopy, beam, post and cable alike,
+#   - between the two ends of the main building, from the level of the eye up to V1_CLEAR degrees;
+#   - north of that as far as V1_COMET["north"] degrees north of due west, from V1_COMET["low"]
+#     degrees up to V1_CLEAR: there hangs the comet, its head 41 degrees up due west and its dust
+#     tail leaning north (sky/comet). Below that the waiting room may stand as the picture's right
+#     edge.
+# A thing whose underside is at y may so reach (y + 2.38) / tan 61 from the eye, measured level:
+# 2.98 blocks at y 3, 3.54 at y 4, 4.09 at y 5, 4.65 at y 6. A person who steps out from under the
+# canopy has the building and the comet before him at once. v1_clear_span() gives the bearings of
+# the building's two ends, in_v1_clear() tells whether a point lies in either block; tools/check.py
+# tests both with the other sight lines of V1 (the check "sight"). South of the building's south end
+# as far as 70 degrees south of west (the left third of the picture) no post stands the full height
+# under the canopy: the check names one.
+V1_CLEAR = 61.0
+V1_COMET = dict(north=15.0, low=35.0)
 # V2, the court on its axis (A0 #304): from the head of the grand stair, on the axis of the entrance,
 # west at the entrance and the great dome, tilted up like V1. The comet hangs right over the top of
 # the dome: the picture the map is known by. The eye's height is A0's figure.
@@ -287,12 +298,18 @@ def v1_clear_span():
 
 
 def in_v1_clear(x, y, z):
-    """Does the point (x, y, z) lie in the block of V1's view that the cable station keeps clear:
-    between the two ends of the main building, from the level of the eye up to V1_CLEAR degrees?"""
+    """Does the point (x, y, z) lie in the part of V1's view that the cable station keeps clear:
+    between the two ends of the main building from the level of the eye up to V1_CLEAR degrees, or
+    in the comet's block north of that (V1_COMET)?"""
     ex, ey, ez = V1["pos"]
     north, south = v1_clear_span()
+    bearing = v1_bearing(x, z)
     up = math.degrees(math.atan2(y - ey, math.hypot(ex - x, z - ez)))
-    return north <= v1_bearing(x, z) <= south and 0.0 <= up <= V1_CLEAR
+    if up > V1_CLEAR:
+        return False
+    if north <= bearing <= south:
+        return up >= 0.0
+    return -V1_COMET["north"] <= bearing < north and up >= V1_COMET["low"]
 
 # PROPOSED by A4 again:
 MERIDIAN_X = WALL_E + 20        # 35. the brass meridian runs north-south through the court in this column
