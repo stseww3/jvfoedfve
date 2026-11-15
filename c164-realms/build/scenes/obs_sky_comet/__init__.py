@@ -10,13 +10,17 @@ the other two over the same blocks with the same shots, each under all three lig
 White models in plain vanilla blocks of the occupancy table, enough to judge where the comet stands
 and what hides it: the two terraces and the station platform (so that the eye stands somewhere),
 the main bar, the drum and the great dome with its west slit open and the floor of the dome room,
-the clock tower with the time-ball mast, the small dome.
+the clock tower with the time-ball mast, the small dome, the radio mast on its pad.
 
 The comet is always due west of the viewer, its head HEAD_ELEVATION up. It stands over the great
 dome only for someone on the axis (V2, the lower platform); from the cable station (V1) due west
 runs through the clock tower and the comet stands over the time-ball mast (A0 #19551). Both hero
 views look up by about 22 degrees: as they were framed before, the top of the picture cut the comet
 (V1: the head a tenth of the picture below its top edge, half of the tails outside).
+
+In V1 the comet has two neighbours: the time-ball mast below its head and a little to the south,
+and the radio mast to the north, whose beacon stands 6 degrees from the head and 3 degrees higher,
+beside the lower part of the dust tail. around() measures both for the version shown.
 
 The offline pictures prove position and what hides the comet; its colour and brightness against the
 real sky are judged on the pictures from the game.
@@ -39,8 +43,8 @@ BIOME_MARGIN_Y = 150
 STYLE = "a"                 # the version this scene shows; the _b and _c scenes set their own
 
 STONE = B.TUFF_SMOOTH.block          # the white model's stone
-COPPER = B.VERDIGRIS                 # the dome shells and the time ball
-DARK = B.SLATE_SMOOTH.block          # the ground, darker than the walls, and the mast
+COPPER = B.VERDIGRIS                 # the dome shells, the time ball, the radio mast's beacon
+DARK = B.SLATE_SMOOTH.block          # the ground, darker than the walls, and the two masts
 
 FOV = 77.0                  # what the pictures are taken at: the option's 70, a tenth wider because
 ASPECT = 16.0 / 9.0         # the camera player is flying (render.py, tools/shoot.py)
@@ -161,6 +165,26 @@ def _small_dome(c):
     _dome(c, cx, cz, S.SMALL_DRUM_BASE, S.SMALL_DOME_APEX, profile, COPPER)
 
 
+def _radio_mast(c):
+    """The radio mast (machines/mast) as its four legs with a belt every six blocks, the needle and
+    the beacon, on its pad: from V1 it stands a little north of due west and reaches as high as the
+    comet's head, so it is the comet's neighbour in that picture. The real legs are thinner (bars)
+    and the lattice between them is open; whatever these blocks leave free, the real mast does too."""
+    x0, z0, x1, z1 = S.MAST_PAD["box"]
+    feet = S.MAST_PAD["feet"]
+    c.box(x0, S.LOWER_GROUND - 1, z0, x1, feet - 1, z1, DARK)
+    fx, fz = S.RADIO_MAST["foot"]
+    top = feet + S.RADIO_MAST["height"]
+    for y in range(feet, top - 2):
+        for x in (fx - 1, fx + 1):                 # the legs stand in cells x 22/24, z -42/-40
+            for z in (fz - 2, fz):
+                c.set(x, y, z, DARK)
+        if (y - feet) % 6 == 0 and y > feet:
+            c.box(fx - 1, y, fz - 2, fx + 1, y, fz, DARK)
+    c.set(fx, top - 2, fz - 1, DARK)               # the needle
+    c.set(fx, top - 1, fz - 1, COPPER)             # the beacon
+
+
 def build():
     c = Canvas()
     _ground(c)
@@ -168,6 +192,7 @@ def build():
     _rotunda_and_dome(c)
     _clock_tower(c)
     _small_dome(c)
+    _radio_mast(c)
     c.entity_counts = {}
     return c
 
@@ -270,6 +295,39 @@ def where(style=None, canvas=None):
     return out
 
 
+def _tops():
+    """The highest point of whatever reaches up towards the comet in the hero views."""
+    fx, fz = S.RADIO_MAST["foot"]
+    (x0, x1), (z0, z1) = S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z
+    return {
+        "radio mast, beacon": (fx + 0.5, S.MAST_PAD["feet"] + S.RADIO_MAST["height"] - 0.5, fz - 0.5),
+        "time-ball mast": ((x0 + x1) // 2 + 0.5, S.CLOCK_BALL_MAST + 1.0, (z0 + z1) // 2 + 0.5),
+        "great dome, apex": (S.DOME_AXIS[0], S.DOME_APEX + 1.0, S.DOME_AXIS[1]),
+    }
+
+
+def around(style=None, cameras=("v1", "v2")):
+    """The comet's neighbours in the hero views. For every camera and every top of _tops(): how far
+    north of due west it stands and how high (degrees), how far it is from the comet's head, and
+    how far from the nearest of the comet's light at its longest (look deep). A list of dicts."""
+    style = style or STYLE
+    lit = _square(comet.SIZE)[comet.luma(comet.comet(style, comet.STRENGTH["deep"], comet.TAIL["deep"])) >= comet.SEEN]
+    lit = lit / np.linalg.norm(lit, axis=-1, keepdims=True)
+    head = _west(np.array(comet.HEAD_ELEVATION))
+    out = []
+    for camera in cameras:
+        eye = np.array(CAMERAS[camera][0], dtype=float)
+        for name, point in _tops().items():
+            d = np.array(point, dtype=float) - eye
+            d /= np.linalg.norm(d)
+            out.append(dict(
+                camera=camera, name=name, north=math.degrees(math.atan2(-d[2], -d[0])),
+                up=math.degrees(math.asin(d[1])),
+                head=math.degrees(math.acos(min(1.0, float(d @ head)))),
+                light=math.degrees(math.acos(min(1.0, float((lit @ d).max()))))))
+    return out
+
+
 def tell(style, folder):
     """What python -m <scene> does: write the scene's shots.json and print where the comet stands."""
     path = os.path.join(folder, "shots.json")
@@ -285,3 +343,6 @@ def tell(style, folder):
         print(f"{r['camera']:8s} {r['look']:5s}  {head:28s} {r['room']:5.1f} deg        "
               f"{100 * r['seen']:3.0f}% / {100 * r['hidden']:3.0f}% / {100 * r['cut']:3.0f}%"
               f"        {100 * r['bright']:.3f}%, {100 * r['lit']:.3f}%")
+    print("the comet's neighbours   north of due west, up   from the head   from the comet's light (look deep)")
+    for r in around(style):
+        print(f"{r['camera']:8s} {r['name']:20s} {r['north']:6.1f}  {r['up']:5.1f} deg     {r['head']:5.1f} deg       {r['light']:5.1f} deg")
