@@ -121,9 +121,9 @@ for col in read.wall:
             bare_stone.append((col[0], y, col[1]))
 check("no stone shows indoors: the lining stands in front of the drum, but for the doors, the windows' "
       "reveals and the shaft's column", bare_stone)
-check("every window the room sees keeps its reveal",
+check("every window the room sees keeps its reveal, with a shutter in it and nothing else",
       [(col[0], y, col[1]) for col in read.wall for y in range(D.FEET, D.WALL_TOP)
-       if read.glazed(col, y) and kind(col[0], y, col[1]) is not None])
+       if read.glazed(col, y) and kind(col[0], y, col[1]) != D.SHUTTER])
 green = []
 for col in read.reach - read.gap:
     if read.soffit[col] is None:

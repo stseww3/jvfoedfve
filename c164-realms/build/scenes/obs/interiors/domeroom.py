@@ -92,6 +92,7 @@ GEAR_SLIT = (
 )
 
 IRON = B.IRON_RIVETED
+SHUTTER = B.WAINSCOT                            # a framed panel of dark wood, three texels thick
 WOOD = B.DARK_WOOD                              # the floor's border, what stands in for furniture
 DEAL = B.FLOOR_WOOD                             # the boards of the vault and of the drum's lining: dark oak
 #                                                 is dead black where no lamp is (0.02 from below, the sky's
@@ -288,10 +289,17 @@ class Shell:
                     if any(self.skin(x + dx, y + dy, z + dz) for dx, dy, dz in AROUND)]
         return [y for y in rows if self.name(x, y, z) is None]
 
+    def window(self, col, y):
+        """The side on which the cell looks at a window of the drum (one of O.SIDES), else None."""
+        for d in O.SIDES:
+            x, z = O.step(col, d)
+            if (x, z) in self.ledge and _glass(self.name(x, y, z)):
+                return d
+        return None
+
     def glazed(self, col, y):
         """Does the cell look at a window of the drum?"""
-        return any(O.step(col, d) in self.ledge and _glass(self.name(O.step(col, d)[0], y, O.step(col, d)[1]))
-                   for d in O.SIDES)
+        return self.window(col, y) is not None
 
 
 # --- the room's own models --------------------------------------------------------------------------
@@ -437,15 +445,15 @@ def dress(c, origin=(0, 0, 0)):
 
 
 def _vault(put, shell):
-    """The dome's ring girder and the inside of its skin: boards, and iron along the slit and the
-    two arch lines."""
+    """The blocks of the dome's ring girder over the inner leaf, and the inside of the skin: boards,
+    and an iron curb round the slit (its reveal: the one place where the lining's edge is seen)."""
     if not shell.roofed:
         return
     for col in shell.ledge:
         for y in BASE_RING if shell.soffit[col] is not None else BASE_RING[:1]:
             if shell.name(col[0], y, col[1]) is None:
                 put(col[0], y, col[1], IRON.block)
-    iron = shell.frame | shell.arches
+    iron = shell.frame
     for col, rows in shell.vault.items():
         for y in rows:
             put(col[0], y, col[1], IRON.block if col in iron else DEAL.block)
@@ -472,17 +480,31 @@ def _skeleton(c, origin, shell):
 
 
 def _wall(c, origin, put, shell):
-    """The drum's lining and the ring beam on top of it."""
+    """The drum's lining, its cornice and the shutters of the windows.
+
+    The cornice is the lining's own: a moulding of the same boards that widens upwards. Where a
+    column of the lining has stone on two sides the moulding's hollow would open onto the second,
+    so that column is a whole block. A window the room sees keeps its reveal, the depth of the
+    lining, and in it a shutter of dark panelling stands shut, flush with the boards: the drum's
+    windows are dark at night from both sides."""
     lay = O.Laying(c, None, origin, None)
     cols = shell.wall - set(GEAR_SHAFT)
-    lay.mould(shell.ledge, WALL_TOP, IRON.stairs, "top", only=cols)
+    lay.mould(shell.ledge, WALL_TOP, DEAL.stairs, "top", only=cols)
+    for col in cols:
+        if sum(O.step(col, d) in shell.ledge for d in O.SIDES) > 1:
+            put(col[0], WALL_TOP, col[1], DEAL.block)
     doors = set(doorways())
     y0, y1 = S.DOME_ROOM_DOORS["y"]
     for col in cols:
         for y in range(FEET, WALL_TOP):
-            if (col in doors and y0 <= y <= y1) or shell.glazed(col, y):
+            if col in doors and y0 <= y <= y1:
                 continue
-            put(col[0], y, col[1], DEAL.block)
+            out = shell.window(col, y)
+            if out is None:
+                put(col[0], y, col[1], DEAL.block)
+            else:
+                # an open trapdoor stands on the side of its cell its facing points away from
+                put(col[0], y, col[1], f"{SHUTTER}[facing={O.NAME[out]},half=bottom,open=true]")
 
 
 def _floor(put, shell):
