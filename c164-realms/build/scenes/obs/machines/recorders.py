@@ -13,8 +13,9 @@ room's console and east wall.
                       armature on two posts over it, the tape reel on a spindle and the tape running
                       out of it. On the console west of the telegraph key.
   mach_rec_tube       the pneumatic tube terminal: the cast-iron back plate on the east wall's pier,
-                      the brass terminal body with its carrier door and index dial, the pipe up to
-                      the ceiling.
+                      the brass terminal body with its carrier door and index dial, and the pipe: a
+                      16-unit section of tube stretched from the terminal's foot to the ceiling
+                      (models.between -- a model may span 3 blocks at most, A5 1.2).
 
 Sizes are the card's: 1.5 x 1.0 x 1.5 blocks (drum), 1.0 x 0.8 x 0.5 (telegraph). Models are drawn
 in model units -- 16 units to the block, which is what M.display divides by -- with px = 1, so a
@@ -81,6 +82,8 @@ DRUM_AXIS = 15.2                               # the drum's axis height above th
 TELE_W, TELE_D, TELE_H = 16.0, 13.0, 12.0      # the register: 1.0 x 0.8 x 0.75 blocks
 TUBE_R = 2.6                                   # the pneumatic pipe: 0.16 blocks through
 TUBE_LIFT = 1.6                                # blocks from the sill to the tube body's centre
+TUBE_TOP = 6.0                                 # the room's ceiling above the sill (time room: y 14)
+TUBE_FOOT = 1.2                                # the terminal's bottom above the sill (y 9.2)
 
 # the recorder's chart lamp: the console's warm point (offered to A2; a third-rank light)
 LAMP_LEVEL = 7
@@ -228,14 +231,16 @@ def _tube():
     r = TUBE_R
 
     # the back plate on the pier, its boss and the two arms that hold the pipe
-    m.box((-1.8, -11.0, -0.35), (1.8, 17.0, 0.0), IRON_D, skip="d")
+    m.box((-1.8, -8.0, -0.35), (1.8, 10.0, 0.0), IRON_D, skip="d")
     m.box((-1.1, -1.6, 0.0), (1.1, 0.7, 2.4), IRON, skip="d")
-    for y in (3.4, 13.0):
+    for y in (2.6, 9.0):
         m.box((-0.7, y - 0.32, 0.0), (0.7, y + 0.32, 2.1), IRON, skip="d")
 
-    # the pipe up to the ceiling and its brass collar
-    m.tube("y", (0.0, 0.0), 2.1, 18.0, r, BRASS_F, sides=12)
-    m.tube("y", (0.0, 0.0), 15.6, 16.8, r * 1.30, BRASS_D, sides=12)
+    # the terminal's own length of pipe: from a hand under the body up past the body, 2.6 blocks, so
+    # the body is not left floating on a bare stub (the long run to the ceiling is the pipe model)
+    m.tube("y", (0.0, 0.0), -5.0, 36.0, r, BRASS_F, sides=12)
+    for y in (34.0, -3.0):
+        m.tube("y", (0.0, 0.0), y - 0.7, y + 0.7, r * 1.30, BRASS_D, sides=12)
 
     # the terminal body: a brass drum standing out from the pier
     m.tube("z", (0.0, 0.0), 0.0, 7.0, 3.8, BRASS_F, sides=14,
@@ -258,12 +263,21 @@ def _tube():
 # ==================================================================================================
 # the registry
 # ==================================================================================================
+def _pipe():
+    """One 3-block section of the pneumatic pipe, running up from its anchor: the tube() call with
+    cap=None so the two ends meet the next section without a lid."""
+    m = M.Model(PREFIX + "pipe", px=1.0, anchor=(0.0, 0.0, 0.0))
+    m.tube("y", (0.0, 0.0), 0.0, 48.0, TUBE_R, BRASS_F, sides=10, cap=None)
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
     return {
         PREFIX + "drum": _drum(),
         PREFIX + "telegraph": _telegraph(),
         PREFIX + "tube": _tube(),
+        PREFIX + "pipe": _pipe(),
     }
 
 
@@ -327,13 +341,29 @@ def telegraph(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
     return _place(canvas, _models()[PREFIX + "telegraph"], anchor, origin, yaw)
 
 
-def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None):
+def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None):
     """Place the pneumatic tube terminal. `pos` is the sill point on the pier, as the room's table
-    gives it; the body's centre sits TUBE_LIFT above that and the pipe runs up from it. Returns the
-    display-entity count."""
+    gives it; the body's centre sits TUBE_LIFT above that, and the pipe is stretched from a hand
+    under the body up to `top` (the ceiling's y; TUBE_TOP + the sill by default). Returns the count
+    of display entities: the terminal and the pipe, 2."""
     yaw = FACING[facing] if yaw is None else yaw
+    ox, oy, oz = origin
+    foot = pos[1] + TUBE_FOOT
+    ceil = (pos[1] + TUBE_TOP) if top is None else float(top)
     anchor = (pos[0], pos[1] + TUBE_LIFT, pos[2])
-    return _place(canvas, _models()[PREFIX + "tube"], anchor, origin, yaw)
+    n = _place(canvas, _models()[PREFIX + "tube"], anchor, origin, yaw)
+    # the run to the ceiling: one 3-block section at a time (a model may span 3 blocks at most, and
+    # stacking sections keeps 16 pixels to the block where a stretch would smear them)
+    pipe = _models()[PREFIX + "pipe"]
+    y, i = foot, 0
+    while y < ceil - 0.01:
+        span = min(3.0, ceil - y)
+        canvas.add_entity(pos[0] + ox, y + oy, pos[2] + oz,
+                          M.display(pipe, scale=(1.0, span / 3.0, 1.0), view=5.0))
+        n += 1
+        y += span
+        i += 1
+    return n
 
 
 def build(canvas, origin=(0, 0, 0), slots=None):
