@@ -236,3 +236,18 @@ view-distance=12
 3. Xvfb 下 OpenGL 后端必然失败，靠的是 Vulkan llvmpipe；`mesa-vulkan-drivers` 装不装是分水岭。
 4. `shoot.py` 要 `import` 命令，即 `imagemagick`。
 5. 时钟：`shoot.py` 会 `advance_time false`。手动查图时如果自己 `tp`，记得也关，否则等 6 秒画面就换了天。
+
+## 15. 交接给别人的文件：起干净提交
+
+`tools/cloud_game.sh` 合进总装时，S2 核了 **115 个文件**——不是这一个脚本，是我那次合并顺带带进去的全部工具和看板图。他把整条分支逐一核完合了，但提醒过：**下次要合单个文件，单独起一个干净提交。**
+
+做法：从一个只有那个文件的工作树里提交，或者
+
+```
+git checkout -b cursor/c164-s1-<要合的东西>-9df7 origin/cursor/c164-realms-map-b59c
+git checkout <你的分支> -- <那个文件>
+git commit -m "c164-s1: <那个文件>（只有这一个文件）"
+git push -u origin cursor/c164-s1-<要合的东西>-9df7
+```
+
+这样 S2 一看 diff 就一个文件，不用把整条分支翻一遍。合工具、脚本、公共文件时都这么做。
