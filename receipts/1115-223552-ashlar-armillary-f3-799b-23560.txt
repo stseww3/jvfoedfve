@@ -1,0 +1,62 @@
+a0job 1115-223552-ashlar-armillary-f3-799b-23560: cursor/c164-ashlar-armillary-f3-799b @ 81f277d2 on the director's machine
+  obs_mach_armillary: v2_entrance (tick 14000, 1 s)
+  obs_mach_armillary: v1_arrival (tick 14000, 1 s)
+  obs_mach_armillary: aerial (tick 14000, 1 s)
+  obs_mach_armillary: plan (tick 14000, 1 s)
+  obs_mach_armillary: oblique (tick 14000, 2 s)
+  obs_mach_armillary: meridian (tick 14000, 2 s)
+  obs_mach_armillary: south_edge (tick 14000, 1 s)
+  obs_mach_armillary: north_edge (tick 14000, 1 s)
+  obs_mach_armillary: rings (tick 14000, 3 s)
+  obs_mach_armillary: door (tick 14000, 2 s)
+renders/obs_mach_armillary/: 11 pictures of 81f277d2 drawn, 4.6 MB
+  obs_mach_armillary_b: 102850 blocks, 27 entities (0 s)
+  obs_mach_armillary_b: resource pack written to /tmp/c164pack-wjirhtw9 (1 s)
+  obs_mach_armillary_b: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_armillary_b: grid 213 x 73 x 213, 102850 blocks, 1515 entity boxes (2 s)
+  obs_mach_armillary_b: 170 states -> 346 looks, 721 boxes, 95 pictures (2 s)
+  obs_mach_armillary_b: light done (2 s)
+  obs_mach_armillary_b: v2_axis (tick 14000, 2 s)
+  obs_mach_armillary_b: v2_entrance (tick 14000, 1 s)
+  obs_mach_armillary_b: v1_arrival (tick 14000, 1 s)
+  obs_mach_armillary_b: aerial (tick 14000, 1 s)
+  obs_mach_armillary_b: plan (tick 14000, 1 s)
+  obs_mach_armillary_b: oblique (tick 14000, 2 s)
+  obs_mach_armillary_b: meridian (tick 14000, 2 s)
+  obs_mach_armillary_b: south_edge (tick 14000, 1 s)
+  obs_mach_armillary_b: north_edge (tick 14000, 1 s)
+  obs_mach_armillary_b: rings (tick 14000, 2 s)
+  obs_mach_armillary_b: door (tick 14000, 2 s)
+renders/obs_mach_armillary_b/: 11 pictures of 81f277d2 drawn, 4.6 MB
+  obs_mach_armillary_ah: 102850 blocks, 31 entities (0 s)
+  obs_mach_armillary_ah: resource pack written to /tmp/c164pack-vhu9ek1r (1 s)
+  obs_mach_armillary_ah: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_armillary_ah: grid 213 x 73 x 213, 102850 blocks, 1649 entity boxes (2 s)
+  obs_mach_armillary_ah: 170 states -> 346 looks, 721 boxes, 98 pictures (2 s)
+  obs_mach_armillary_ah: light done (2 s)
+  obs_mach_armillary_ah: v2_axis (tick 14000, 2 s)
+  obs_mach_armillary_ah: v2_entrance (tick 14000, 1 s)
+  obs_mach_armillary_ah: meridian (tick 14000, 2 s)
+  obs_mach_armillary_ah: south_edge (tick 14000, 1 s)
+  obs_mach_armillary_ah: north_edge (tick 14000, 1 s)
+renders/obs_mach_armillary_ah/: 5 pictures of 81f277d2 drawn, 1.7 MB
+== obs_mach_armillary
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 12.3% hidden (base storey 37%, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; th
+e whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.8 s)
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; 
+model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 more kinds; a lamp post takes less than 25% of a bay
+result: PASS (0 failed, 2 with warnings)
+== obs_mach_armillary_b
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 12.5% hidden (base storey 37%, great windows 4.6%); skyline clear; comet's head 26% below the top edge, clear; th
+e whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 0.7 s)
+                 the great windows, bay 12: 39% hidden (y 8 to 11) by model c164:mach_armillary_b_colure at x 35, y 4, z 0; model c164:mach_armillary_b_ecliptic at x 35, y 4, z 0; 
+model c164:mach_armillary_b_meridian at x 35, y 4, z 0; 1 more kinds; a lamp post takes less than 25% of a bay
+result: PASS (0 failed, 2 with warnings)
+== obs_mach_armillary_ah
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+result: PASS (0 failed, 1 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=76 host=cursor cores=4 head=81f277d2 commit=35bb5af4 pushed=yes branch=cursor/c164-ashlar-armillary-f3-799b files=17
+a0job: exit=0 secs=76
