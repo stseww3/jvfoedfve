@@ -126,9 +126,10 @@ def shots():
     shot("telegraph", (6.5, FEET + 2.40, -21.7), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
     shot("telegraph_down", (6.5, FEET + 3.60, -22.1), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
     shot("telegraph_side", (4.2, FEET + 2.35, -22.6), (6.5, FEET + 1.92, CONSOLE_Z + 0.5))
-    # the pneumatic tube on the east wall's pier: from the room, and from below up the pipe
-    shot("tube", (10.6, FEET + 2.05, -16.5), (X1 + 0.4, FEET + 2.00, -16.5))
-    shot("tube_up", (11.6, FEET + 1.35, -16.5), (X1 + 0.4, FEET + 3.60, -16.5))
+    # the pneumatic tube on the east wall's pier (m2 puts it at z -9.5): the terminal from the room,
+    # and the whole run up to the ceiling from a couple of steps back
+    shot("tube", (10.4, FEET + 2.30, -9.5), (X1 + 0.4, FEET + 2.90, -9.5))
+    shot("tube_up", (10.0, FEET + 1.30, -9.5), (X1 + 0.4, FEET + 4.60, -9.5))
     # the whole console run from the south-west, so the pieces read as one room
     shot("all", (3.6, FEET + 2.55, -12.6), (10.0, FEET + 2.05, CONSOLE_Z + 0.6))
     return out
