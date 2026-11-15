@@ -17,10 +17,10 @@ from scenes.obs.sky import mood as look
 
 # name: (the numbers of sky/lights it is lit by, sources laid by hand on top: ((x, y, z), level))
 TRIES = {
-    "k1": (dict(), ()),
-    "k2": (dict(DOOR_LEVEL=12), ()),
-    "k3": (dict(), (((9, 4, -4), 11), ((9, 4, 4), 11))),
-    "k4": (dict(DOOR_LEVEL=12, FLIGHT_LEVEL=12), (((9, 4, -4), 11), ((9, 4, 4), 11), ((6, 8, 0), 11))),
+    "k1": (dict(OPEN_DOOR_LEVEL=14), ()),                                   # 14 in the doorway as well (as it was)
+    "k2": (dict(), ()),                                                     # as sky/lights has it: nothing in the doorway
+    "k3": (dict(PIER_Y=5, FLIGHT_LEVEL=8), ()),                             # the pier lit two rows higher; the flights at 8
+    "k4": (dict(), (((10, 3, -4), 10), ((10, 3, 4), 10))),                  # k2 and a source under either gallery
 }
 VIEWS = ("axis", "door", "v7", "front")
 
@@ -52,6 +52,7 @@ def build(only=None):
         with numbers(**values):
             base._station(c, "blue", o)
         for (x, y, z), level in more:
+            assert not c.has(x + o[0], y + o[1], z + o[2]), f"{name}: the cell {(x, y, z)} is taken"
             c.set(x + o[0], y + o[1], z + o[2], L.light(level))
     return c
 
