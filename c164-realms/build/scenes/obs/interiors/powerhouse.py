@@ -98,9 +98,14 @@ WALK_END_Z = min(z for _x, z in ENGINE_CELLS) - 1        # 26: one short of the 
 # bloom). Levels are the light line's third rank (props/lamps puts a cage at 7); this package only
 # names where they hang and offers them, and while sky/lights is not in the tree it puts them down.
 # Hung over the walkway and over the machine, so that every stand has one in frame.
+# Hung over the walkway and over the machine, in a ring round the room: a 19 by 19 box with ten
+# courses of tuff needs more than four lamps to keep its corners off the dead-black floor (measured:
+# four left 20 to 37 per cent of a stand under 0.03, which is RUBRIC's red line 6).
 LAMPS = [(x, CEIL_Y - 1, z) for x, z in
          ((WALK_X[0] + 2, WALK_Z[0]), (WALK_X[1] - 2, WALK_Z[0]),
-          (int(ENGINE_CENTRE[0]) - 3, int(ENGINE_CENTRE[1])), (int(ENGINE_CENTRE[0]) + 4, int(ENGINE_CENTRE[1])))]
+          (int(ENGINE_CENTRE[0]) - 3, int(ENGINE_CENTRE[1])), (int(ENGINE_CENTRE[0]) + 4, int(ENGINE_CENTRE[1])),
+          (IN_X[0] + 3, IN_Z[1] - 3), (IN_X[1] - 3, IN_Z[1] - 3),
+          (IN_X[0] + 3, IN_Z[0] + 8), (IN_X[1] - 3, IN_Z[0] + 8))]
 LAMP_LEVEL = 7                              # the third rank (a caged lamp), never above 8
 
 # ---- the light ------------------------------------------------------------------------------
