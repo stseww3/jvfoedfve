@@ -1,0 +1,3 @@
+branch=cursor/c164-facade-facade-f3-81a0
+head=5509c545ac94187e474543d3c62289b0cdcbffac
+args=--tail 120 python\ tools/selfshots.py\ obs_main_facade\ obs_main_facade_a\ obs_main_facade_c\ obs_main_facade_nocrown\ 2\>\&1\ \|\ tail\ -8\;\ for\ s\ in\ obs_main_facade\ obs_main_facade_a\ obs_main_facade_c\ obs_main_facade_nocrown\;\ do\ echo\ \"==\ check\ \$s\"\;\ python\ tools/check.py\ --scene\ \$s\ 2\>\&1\ \|\ grep\ -E\ \"\^\ \*\(PASS\|WARN\|FAIL\)\|exit\|Traceback\|Error\"\ \|\ cut\ -c1-230\;\ done 
