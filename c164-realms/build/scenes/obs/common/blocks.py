@@ -10,6 +10,7 @@ sides can then work without waiting for each other.
     B.ASHLAR_FINE.stairs     "smooth_sandstone_stairs"   (None where the family has no such shape)
     B.IRON_RIVETED.slab      "oxidized_cut_copper_slab"
     B.WINDOW_LIT.pane        "yellow_stained_glass_pane"
+    B.WINDOW_FURNACE[0].block  "red_stained_glass"       (the bottom row of the three that glow)
     B.PANELS["dial"]         "white_glazed_terracotta"
     B.CLOUD[2]               "dead_bubble_coral_block"   (the middle one of the five cloud tones)
 
@@ -74,6 +75,12 @@ WINDOW_BLIND = Family("black_stained_glass", pane="black_stained_glass_pane")   
 SKYLIGHT = Family("light_gray_stained_glass", pane="light_gray_stained_glass_pane")      # iron-framed roof light
 LIT_WINDOWS = (WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED)
 DARK_WINDOWS = (WINDOW_DARK, WINDOW_BLIND)
+# The glow of a boiler's fire behind dirty glass and iron glazing bars (A0, 11-15, g2 #522): for the
+# two boiler bays of the power house and nowhere else. A bay glows over three rows as one sheet,
+# brightest at the sill and close to a dark window at the top, so the role is three glasses, one for
+# each row, the bottom row first: B.WINDOW_FURNACE[row - bottom_row].block. Whole blocks only, there
+# is no pane. It is not one of the three levels of light of LIT_WINDOWS.
+WINDOW_FURNACE = (Family("red_stained_glass"), Family("brown_stained_glass"), Family("purple_stained_glass"))
 
 # --- repainted: instrument panels (glazed terracotta; the panel shows on the side named by facing) --
 PANELS = {
@@ -166,7 +173,7 @@ LIGHT = "light"                                                 # the invisible 
 
 REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE, IRON_RIVETED, IRON_CAST,
              IRON_GRATE, IRON_DOOR, IRON_HATCH, IRON_BARS, IRON_PIPE, IRON_ROD, IRON_BULB, IRON_LANTERN,
-             WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT,
+             WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT, *WINDOW_FURNACE,
              *PANELS.values(), BRASS_PLATE, BRASS_PATTERN, BRASS_COLUMN, BRASS_RAIL, BRASS_GATE, BRASS_DOOR,
              BRASS_HATCH, BRASS_BUTTON, *BRASS_SIGN, BRASS_SHELF, OLD_COPPER, OLD_COPPER_CUT, WAINSCOT,
              BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, SNOW, SNOW_LAYER, *CLOUD]
