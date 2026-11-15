@@ -105,18 +105,18 @@ def _flywheel():
     """The big flywheel: a heavy rim, eight spokes and a hub, with the crank pin standing out of the
     rim's west face. Anchor: the middle of the wheel, on its axle (the axle runs along z)."""
     m = M.Model(PREFIX + "flywheel", px=WHEEL_SCALE, anchor=(0.0, 0.0, 0.0))
-    rim_t = 3.8                                  # the rim's thickness, radially
-    hub_r = 3.9
+    rim_t = 2.6                                  # the rim's thickness, radially
+    hub_r = 2.4
     # the rim, then a second, narrower flange at its west edge (a flywheel reads by its weight)
     m.ring("z", (0.0, 0.0, 0.0), WHEEL_R - rim_t / 2.0 - 0.6, rim_t, WHEEL_W, IRON, sides=24)
-    m.ring("z", (0.0, 0.0, WHEEL_W / 2.0 - 0.4), WHEEL_R - rim_t / 2.0 - 0.6, rim_t * 1.35, 1.0, IRON_D, sides=24)
+    m.ring("z", (0.0, 0.0, WHEEL_W / 2.0 - 0.4), WHEEL_R - rim_t / 2.0, rim_t * 1.25, 0.8, IRON_D, sides=24)
     # the hub and the spokes
     m.tube("z", (0.0, 0.0), -WHEEL_W / 2.0 - 0.8, WHEEL_W / 2.0 + 0.8, hub_r, IRON_D, sides=12)
     for i in range(WHEEL_SPOKES):
         a = 2.0 * math.pi * i / WHEEL_SPOKES
         tip = (math.cos(a) * (WHEEL_R - rim_t), math.sin(a) * (WHEEL_R - rim_t))
         root = (math.cos(a) * hub_r, math.sin(a) * hub_r)
-        m.beam((root[0], root[1], 0.0), (tip[0], tip[1], 0.0), 1.6, 1.4, IRON)
+        m.beam((root[0], root[1], 0.0), (tip[0], tip[1], 0.0), 1.1, 0.9, IRON)
     # the crank pin: a brass boss standing out of the rim on the west face, off centre
     pin_a = math.radians(214.0)
     px, py = math.cos(pin_a) * (WHEEL_R - rim_t * 1.4), math.sin(pin_a) * (WHEEL_R - rim_t * 1.4)

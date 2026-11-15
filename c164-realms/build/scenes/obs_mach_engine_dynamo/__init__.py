@@ -89,16 +89,18 @@ def shots():
     eye = FEET + 1.62
     shot("set", (cx, eye, Z1 - 2.0), (cx, FEET + 1.6, cz - 1.0))
     shot("set_east", (X1 - 2.0, eye, cz + 6.0), (cx - 1.0, FEET + 1.6, cz))
-    shot("flywheel", (cx + engine.WHEEL_X + 0.2, FEET + 2.8, cz + 5.2),
-         (cx + engine.WHEEL_X, FEET + 2.4, cz))
-    shot("flywheel_near", (cx + engine.WHEEL_X - 0.4, FEET + 2.4, cz + 3.2),
-         (cx + engine.WHEEL_X, FEET + 2.4, cz))
-    shot("cylinder", (cx + engine.CYL_X + 1.6, FEET + 2.2, cz + 3.4),
-         (cx + engine.CYL_X, FEET + 1.5, cz))
-    shot("governor", (cx + engine.GOV_X, FEET + 1.62, cz + 3.4),
-         (cx + engine.GOV_X, FEET + 1.5, cz + 0.95))
-    shot("dynamo", (cx + engine.DYNAMO_X - 1.2, FEET + 2.0, cz + 3.6),
-         (cx + engine.DYNAMO_X, FEET + 1.6, cz))
-    shot("belt", (cx + engine.DYNAMO_X - 2.6, FEET + 2.6, cz + 4.4),
+    # the wheel: three-quarter from the room's south-west, where the spokes and crank pin read; the
+    # side view looks along the room's long axis at the rim
+    shot("flywheel", (cx + engine.WHEEL_X - 2.2, FEET + 3.0, cz + 5.6),
          (cx + engine.WHEEL_X, FEET + 2.5, cz))
+    shot("flywheel_side", (X1 - 2.0, FEET + 2.6, cz - 3.4),
+         (cx + engine.WHEEL_X, FEET + 2.5, cz))
+    shot("cylinder", (cx + engine.CYL_X + 1.2, FEET + 2.3, cz + 3.8),
+         (cx + engine.CYL_X, FEET + 1.6, cz))
+    shot("governor", (cx + engine.GOV_X - 0.6, FEET + 1.70, cz + 3.2),
+         (cx + engine.GOV_X, FEET + 1.6, cz + 0.95))
+    shot("dynamo", (cx + engine.DYNAMO_X - 1.6, FEET + 2.1, cz + 3.8),
+         (cx + engine.DYNAMO_X, FEET + 1.7, cz))
+    shot("belt", (cx + engine.DYNAMO_X - 3.0, FEET + 2.7, cz + 4.6),
+         (cx + engine.WHEEL_X + 0.5, FEET + 2.6, cz))
     return out
