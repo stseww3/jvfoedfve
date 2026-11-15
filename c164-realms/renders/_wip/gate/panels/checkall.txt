@@ -1,0 +1,148 @@
+PASS  obs: 0 failed, 1 with warnings, skipped: views (4 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_mach_clocks: 0 failed, 0 with warnings (3 s)
+PASS  obs_mach_clocks_b: 0 failed, 0 with warnings (3 s)
+PASS  obs_mach_radiomast: 0 failed, 0 with warnings (3 s)
+PASS  obs_mach_radiomast_b: 0 failed, 0 with warnings (2 s)
+PASS  obs_main_dome: 0 failed, 1 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_main_dome_a: 0 failed, 1 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_main_dome_slit: 0 failed, 0 with warnings, skipped: sight (2 s)
+PASS  obs_main_facade: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 10 shots, most display entities in view: 27 (west), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is draw
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_main_facade_a: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 4 shots, most display entities in view: 26 (v1_far), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is dra
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_main_facade_c: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 4 shots, most display entities in view: 26 (v1_far), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is dra
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_main_facade_nocrown: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 5 shots, most display entities in view: 26 (v1_far), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is dra
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_main_shell: 0 failed, 2 with warnings, skipped: sight (2 s)
+      [WARN] flatwall: 16 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 29 shots, most display entities in view: 0 (plan_ground), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_main_smalldome: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 18 shots, most display entities in view: 30 (v12), limit 600; counted without what walls hide; the game draws up to 30 (v11): a display entity without width and height is drawn out
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_ashlar_c: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] views: 19 shots, most display entities in view: 1 (walls_graze), limit 600; counted without what walls hide; the game draws up to 1 (stones_a): a display entity without width and height i
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_board: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_board_ashlar_a: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_board_ashlar_c: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_board_windows_b: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_brass: 0 failed, 2 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] blocks: 56 kinds of block placed, 5 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 25 shots, most display entities in view: 0 (brass_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_iron: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] blocks: 41 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_panels: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_mat_redirect: 0 failed, 2 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] blocks: 105 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+      [WARN] views: 16 shots, most display entities in view: 0 (plates_a), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_snow: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] views: 13 shots, most display entities in view: 0 (order), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 22 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mat_windows_b: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 22 shots, most display entities in view: 0 (front), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_mot_load: 0 failed, 2 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] views: 4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 200 parts and 0 points on 1 chains, 30 function files; 36 commands in the busiest tick (limit 60), 34.4 a tick on average (limit 40)
+          the scene sets its own limits (60 in a tick, 40 on average, not 40 and 10): a load test
+PASS  obs_mot_loop: 0 failed, 2 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] views: 24 shots, most display entities in view: 16 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+      [WARN] motion: 12 parts and 0 points on 6 chains, 102 function files; 9 commands in the busiest tick (limit 40), 2.1 a tick on average (limit 10)
+          mot_wheel: 4 steps in 48 ticks set by hand (lead 0); its model strays 0.00 pixels from its arc
+PASS  obs_props_ironwork: 0 failed, 1 with warnings, skipped: flatwall, sight (2 s)
+      [WARN] views: 14 shots, most display entities in view: 13 (far), limit 600; counted without what walls hide
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_props_lamps: 0 failed, 0 with warnings, skipped: flatwall, sight (2 s)
+PASS  obs_props_lamps_site: 0 failed, 0 with warnings, skipped: flatwall (4 s)
+PASS  obs_props_lamps_site_nearpair: 0 failed, 0 with warnings, skipped: flatwall (4 s)
+PASS  obs_site_court: 0 failed, 2 with warnings, skipped: sight (2 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 9 shots, most display entities in view: 30 (aerial), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is dra
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_mastbase: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 6 shots, most display entities in view: 29 (aerial), limit 600; counted without what walls hide; the game draws up to 30 (base_near): a display entity without width and height is d
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_outbuildings: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 14 shots, most display entities in view: 30 (tower_mid), limit 600; counted without what walls hide; the game draws up to 30 (v1_arrival): a display entity without width and height
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_powerhouse: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 13 shots, most display entities in view: 30 (aerial_back), limit 600; counted without what walls hide; the game draws up to 30 (door_axis): a display entity without width and heigh
+          stair_south: stands at skeleton.V6 and does not look where it looks, at (74.4, 8, 33.2); the locked cameras are read from the skeleton, not copied by hand (A0 #304)
+PASS  obs_site_powerhouse_b: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 13 shots, most display entities in view: 30 (aerial_back), limit 600; counted without what walls hide; the game draws up to 30 (door_axis): a display entity without width and heigh
+          stair_south: stands at skeleton.V6 and does not look where it looks, at (74.4, 8, 33.2); the locked cameras are read from the skeleton, not copied by hand (A0 #304)
+PASS  obs_site_stair: 0 failed, 1 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_site_stair_noband: 0 failed, 1 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_site_stair_nolamps: 0 failed, 1 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_site_terrain: 0 failed, 2 with warnings (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 9 shots, most display entities in view: 30 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 30 (v1_arrival): a display entity without width and height
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_site_terrain_nosnow: 0 failed, 2 with warnings, skipped: sight (2 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 4 shots, most display entities in view: 30 (v12_aerial), limit 600; counted without what walls hide; the game draws up to 30 (v11_sunset): a display entity without width and height
+          the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(mat
+PASS  obs_sky_comet: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_comet_b: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_comet_c: 0 failed, 0 with warnings, skipped: flatwall (1 s)
+PASS  obs_sky_lights: 0 failed, 1 with warnings, skipped: flatwall (3 s)
+      [WARN] views: 25 shots, most display entities in view: 20 (blue_axis), limit 600; counted without what walls hide; the game draws up to 40 (blue_west): a display entity without width and height 
+          blue_axis: 6 of the 20 in view stand more than 160 blocks from the camera, measured level; the server sends those to no player there
+PASS  obs_sky_look: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+49 scenes in 30 s: 49 pass (32 with warnings)
