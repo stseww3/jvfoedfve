@@ -399,12 +399,16 @@ def cross(name, anchor, girder, ties, reach):
     return piece
 
 
-def ring(name, radius, rows, arc, closed=False):
+def ring(name, radius, rows, arc, cheek=None):
     """A length of the ring girder, `arc` degrees of it about the dome's axis in flats of about
     FACET degrees: each a web plate from rows[0] to rows[1] with its front `radius` from the axis,
     an angle along its top and one along its bottom; a stiffener on every joint between two flats.
-    The model's origin is PULL in front of the web's middle, half way up. closed: a plate at either
-    end, back to the blocks."""
+    The model's origin is PULL in front of the web's middle, half way up.
+
+    cheek: (side, swing, pier) for a length that ends at a pier of the slit, at its end on the side
+    of +x (1) or of -x (-1): a plate from the girder's end straight back to the pier's face, which
+    stands `pier` from the axis along the slit; the slit runs `swing` degrees off the radius
+    through that end."""
     m = M.Model(name, px=SCALE)
     facets = max(1, int(round(arc / FACET)))
     each = arc / facets
@@ -423,12 +427,17 @@ def ring(name, radius, rows, arc, closed=False):
                 for k in range(4):
                     x, y = (k - 1.5) * half / 2.0, (lap[0] + lap[1]) / 2.0
                     m.box((x - t / 2.0, y - t / 2.0, front - 1.5 * t), (x + t / 2.0, y + t / 2.0, front - t), RIVET, seed=99)
-    for i in range(facets + 1):
+    for i in range(1, facets):
         with m.turned(("y", (i - facets / 2.0) * each), about=axis):
-            if 0 < i < facets:
-                m.box((-t / 2.0, y0 + f, front - 0.1875 * UNIT), (t / 2.0, y1 - f, front), BAR, seed=64)
-            elif closed:
-                m.box((-t / 2.0, y0, front - f), (t / 2.0, y1, front + 0.75 * UNIT), PLATE, seed=65)
+            m.box((-t / 2.0, y0 + f, front - 0.1875 * UNIT), (t / 2.0, y1 - f, front), BAR, seed=64)
+    if cheek is not None:
+        side, swing, pier = cheek
+        corner = radius / math.cos(math.radians(each / 2.0))            # the web's last corner, from the axis
+        a, b = math.radians(arc / 2.0), math.radians(arc / 2.0 + swing)
+        x, z = side * corner * math.sin(a) * UNIT, axis[2] + corner * math.cos(a) * UNIT
+        dx, dz = side * math.sin(b), math.cos(b)
+        length = (pier - corner * math.cos(math.radians(swing)) + TEXEL / 2.0) * UNIT
+        m.beam((x - dx * f, 0.0, z - dz * f), (x + dx * length, 0.0, z + dz * length), t, y1 - y0, PLATE, seed=65)
     return m
 
 
@@ -543,25 +552,28 @@ class Frame:
                                     -90.0 if sill[0] < 0.0 else 90.0))
                 self.head = (-sill[0] * at, top, low)
 
-        # the ring girder: one length to a gore, left out where the sill and its two piers are
+        # the ring girder: one length to a gore. It is left out between the two piers of the slit's
+        # foot, and the two lengths that end there go back to the piers with a cheek plate that lies
+        # against a pier's outer face
         mid = (rows[0] + rows[1]) / 2.0
         name = prefix + "ring"
         if sill is not None:
-            cut = math.degrees(math.asin(sill[1] / faces[0]))
+            cut = math.degrees(math.asin((sill[1] + TEXEL * 0.75) / faces[0]))
             middle = 180.0 if sill[0] < 0.0 else 0.0
         gores = sorted(a % 360.0 for a in angles)
         for a0, a1 in zip(gores, gores[1:] + [gores[0] + 360.0]):
-            length, at, arc = name, (a0 + a1) / 2.0, a1 - a0
+            length, at, arc, cheek = name, (a0 + a1) / 2.0, a1 - a0, None
             if sill is not None:
                 off = (at - middle + 180.0) % 360.0 - 180.0         # the gore's middle, from the sill's
                 lo, hi = abs(off) - arc / 2.0, abs(off) + arc / 2.0
                 if hi <= cut + 1e-6:
                     continue
                 if lo < cut:
-                    length, arc = name + "_end", hi - cut
-                    at = middle + math.copysign((cut + hi) / 2.0, off)
+                    side = math.copysign(1.0, off)                  # the pier is on the side the azimuth falls: +x
+                    length, arc, cheek = name + ("_endp" if side > 0.0 else "_endm"), hi - cut, (side, cut, faces[1])
+                    at = middle + side * (cut + hi) / 2.0
             if length not in self.models:
-                self.models[length] = ring(length, faces[0], rows, arc, closed=length != name)
+                self.models[length] = ring(length, faces[0], rows, arc, cheek)
             r = math.radians(at)
             self.placed.append((length, (ax + (faces[0] - PULL) * math.cos(r), mid, az + (faces[0] - PULL) * math.sin(r)),
                                 at - 90.0))
