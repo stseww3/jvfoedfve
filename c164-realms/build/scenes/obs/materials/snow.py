@@ -25,6 +25,8 @@ What was tried and dropped, on flat sheets of ten by ten tiles (the card has it)
 than a mark. A soft drift to a tile reads as a grid of glyphs, thin wisps on one diagonal as rain,
 swells with hollows beside them as hammered metal.
 """
+import os
+
 import numpy as np
 
 from ..common import blocks as B
@@ -149,12 +151,34 @@ def faults(drawn):
     return wrong
 
 
+# TRIAL (not for delivery): how the sides of the layers are lit, picked by the environment so that one
+# commit draws every candidate.  "" as the game does; a: sides lit like the top, corners darkened;
+# b1: sides lit like the top, no darkening of corners; b3: sides lit like a north face, no darkening
+_TRY = os.environ.get("C164_SNOW_TRY", "")
+SIDE_SHADE = {"a": "up", "b1": "up", "b3": "north"}.get(_TRY)
+CORNERS = False if _TRY in ("b1", "b3") else None
+SIDES = ("north", "south", "east", "west")
+
+
 def _layer_sides(ref, model):
-    """The sides of the models of the layers show snow_side, whatever the game's model shows there."""
+    """The sides of the models of the layers show snow_side, whatever the game's model shows there,
+    and stand in a box of their own, so that they can be lit otherwise than the game lights a side."""
+    boxes = []
     for el in model["elements"] or []:
-        for name, face in el["faces"].items():
-            if name in ("north", "south", "east", "west"):
-                face["texture"] = f"{K.NS}:block/snow_side"
+        sides = {name: face for name, face in el["faces"].items() if name in SIDES}
+        if not sides:
+            boxes.append(el)
+            continue
+        for face in sides.values():
+            face["texture"] = f"{K.NS}:block/snow_side"
+        rest = {name: face for name, face in el["faces"].items() if name not in SIDES}
+        if rest:
+            boxes.append(dict(el, faces=rest))
+        side = dict(el, faces=sides)
+        if SIDE_SHADE:
+            side["shade_direction_override"] = SIDE_SHADE
+        boxes.append(side)
+    model["elements"] = boxes
     return model
 
 
@@ -165,5 +189,5 @@ def pack(pack_dir):
         raise AssertionError("snow breaks its own rules:\n  " + "\n  ".join(wrong))
     for name, versions in drawn.items():
         K.paint(pack_dir, name, [_picture(lv) for lv in versions])
-    return [K.redirect(pack_dir, B.SNOW, {"block/snow": "snow"}),
-            K.redirect(pack_dir, B.SNOW_LAYER, {"block/snow": "snow"}, edit=_layer_sides)]
+    return [K.redirect(pack_dir, B.SNOW, {"block/snow": "snow"}, ao=CORNERS),
+            K.redirect(pack_dir, B.SNOW_LAYER, {"block/snow": "snow"}, edit=_layer_sides, ao=CORNERS)]
