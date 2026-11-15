@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "tools"))
 from artkit import export as X  # noqa: E402
 from artkit import mood as MOOD  # noqa: E402
 from rcon import Rcon  # noqa: E402
+from scenes.obs.motion import _kit as MOTION  # noqa: E402
 
 WORLD_Y = (-64, 319)
 
@@ -132,7 +133,10 @@ def main():
     print(f"built {len(canvas.b)} blocks, {len(canvas.entities)} entities in {time.time() - t0:.1f}s")
     t0 = time.time()
     man = X.export(canvas, pack, args.scene)
+    after = MOTION.write(canvas, pack, args.scene, at=tuple(args.at), namespace=man["namespace"])
     print(f"exported {man['tiles']} tiles ({man['solid']} + {man['detail']} blocks) in {time.time() - t0:.1f}s")
+    if after:
+        print(f"motion: {len(after)} command(s) to run once the scene stands")
     if args.no_place:
         return
 
@@ -174,6 +178,8 @@ def main():
         rc.command("tick unfreeze")
     if biome:
         fill_biome(rc, (ox, oy, oz), man["min"], man["max"], biome, margin, margin_y)
+    for cmd in after:
+        print("  motion:", cmd, "->", rc.command(cmd).strip()[:120])
     with open(state_file, "w") as fh:
         json.dump({"at": [ox, oy, oz], "min": man["min"], "max": man["max"]}, fh)
     rc.close()

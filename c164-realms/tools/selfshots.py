@@ -223,8 +223,7 @@ def write(project, scene, only, dirty, jar, out):
           + ("" if status is not None else " (no git here: uncommitted changes were not looked for)")
           + (f"; removed (no such shot any more): {', '.join(gone)}" if gone else ""))
     if out:
-        print(f"                next: send {scene}-* from that folder (bin\\send.py), then on the cloud "
-              f"tools/selfshots.py {scene} --take")
+        print(f"                next: tools/selfshots.py {scene} --take {out}   (no sending: pictures go by git)")
     else:
         absent = [n for n in names if not os.path.exists(os.path.join(folder, n + ".png"))]
         if absent:
@@ -501,6 +500,20 @@ def main():
             done = write(project, scene, only, args.dirty, args.jar, os.path.abspath(args.out) if args.out else None)
         good = done and good
     sys.exit(0 if good else 1)
+
+# The machine is shared with other projects on it (COMMON.md section 2): drop this process's
+# priority so they go first, and take one of the few heavy-job slots (tools/_slots.py) so
+# that a dozen pictures drawn at once cannot bury the machine. Neither is an error if it
+# cannot be done.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+try:
+    import _slots
+    _slots.take()
+except Exception:
+    pass
 
 
 if __name__ == "__main__":
