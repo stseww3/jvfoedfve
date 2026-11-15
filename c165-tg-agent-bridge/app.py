@@ -3582,20 +3582,26 @@ COMMON_TOOLS = [
     ),
     tool(
         "send_file",
-        "发文件到 Telegram。内容三选一：content_base64（二进制）、text（纯文本内容）、url（服务器去下载）。",
+        "发文件到 Telegram，或跨云机直接传给其他 agent / 协作群（不刷 Telegram）。"
+        "内容三选一：content_base64（二进制）、text（纯文本内容）、url（服务器去下载）。"
+        "大文件也可用 curl -fsS -H 'X-Agent: 你的身份' --data-binary @本地路径 服务器/files/upload?filename=文件名 上传拿 file_id。",
         {
             "filename": prop("string", "文件名，例如 report.pdf"),
             "content_base64": prop("string", "文件内容的 base64"),
             "text": prop("string", "纯文本文件内容"),
             "url": prop("string", "文件下载地址"),
-            "caption": prop("string", "附言"),
-            "chat_id": prop("integer", "目标 Telegram chat，可省略"),
+            "caption": prop("string", "附言或说明"),
+            "chat_id": prop("integer", "发往 Telegram 时的目标 chat，可省略"),
+            "to_agent": prop("string", "可选：直接通过 MCP 传给同主人的某个聊天 agent（如 c188），不发 Telegram"),
+            "to_group": prop("string", "可选：直接通过 MCP 发进某个 Agent 协作群（如 g2），不发 Telegram"),
+            "store_only": prop("boolean", "可选：填 true 仅上传到桥文件库并返回 f_xxx 文件编号与下载链接，不自动发消息"),
+            "wake": prop("boolean", "传给 to_agent 时是否立刻唤醒对方（默认 true）"),
         },
         ["filename"],
     ),
     tool(
         "get_file",
-        "取用户发来的文件（消息里的 [文件 f_xxx ...]）。默认返回下载链接，可以在终端里 curl 下载；"
+        "取用户或其他 agent 发来的文件（消息里的 [文件 f_xxx ...]）。默认返回签名下载链接，可在任意云机终端 curl 下载；"
         "inline=true 时直接返回内容（文本或图片，5MB 以内）。",
         {"file_id": prop("string", "f_ 开头的文件 id"), "inline": prop("boolean", "是否直接返回内容")},
         ["file_id"],
@@ -3665,10 +3671,11 @@ COMMON_TOOLS = [
     ),
     tool(
         "send_agent_message",
-        "给另一个 agent 发纯 MCP 私聊消息（不发到 Telegram）。对方会在 read_chat 收到。注意：若事情已完结无需推进，不要发“收到/好的”客套话以免死循环。",
+        "给另一个 agent 发纯 MCP 私聊消息（不发到 Telegram）。对方会在 read_chat 收到。可附带 file_ids 跨机器传文件。注意：若事情已完结无需推进，不要发“收到/好的”客套话以免死循环。",
         {
             "to": prop("string", "目标聊天编号，例如 c166（或 main 给主控留说明）"),
             "text": prop("string", "消息内容"),
+            "file_ids": prop("array", "可选：要一并附带共享的 f_xxx 文件编号列表", items={"type": "string"}),
             "wake": prop("boolean", "是否立刻唤醒对方（默认 true；仅同步背景不打断对方时可填 false）"),
         },
         ["to", "text"],
@@ -3696,10 +3703,11 @@ COMMON_TOOLS = [
     ),
     tool(
         "send_group_message",
-        "在 Agent 协作群（如 g1）里发言（纯走 MCP）。默认唤醒群里其他所有成员；也可通过 mentions 只唤醒指定成员或填 [] 静默记录。",
+        "在 Agent 协作群（如 g1）里发言（纯走 MCP），可附带 file_ids 跨机器共享文件。默认唤醒群里其他所有成员；也可通过 mentions 只唤醒指定成员或填 [] 静默记录。",
         {
             "group": prop("string", "协作群编号，例如 g1"),
             "text": prop("string", "发言内容"),
+            "file_ids": prop("array", "可选：要一并附带共享给群成员的 f_xxx 文件编号列表", items={"type": "string"}),
             "mentions": prop("array", "要唤醒的对象，如 [\"all\"]、[\"c2\",\"c3\"] 或 []（不唤醒）；不填默认唤醒群内所有其他成员", items={"type": "string"}),
         },
         ["group", "text"],
@@ -3917,6 +3925,69 @@ async def t_send_message(agent, args):
     return text_result(f"已存着：管理员现在没在看这个聊天，切到 /{conv['id']} 时会自动补发。不用重发，继续工作或回到 read_chat。")
 
 
+AGENT_FILE_LIMIT = 100 * 1024 * 1024
+
+
+def store_shared_agent_file(agent, filename: str, content: bytes, mime: str = "") -> tuple[str, str]:
+    """将 agent 上传的文件存入桥文件库并绑定到当前主人作用域（owner:<uid>），返回 (file_id, signed_url)。"""
+    clean_name = re.sub(r"[\\/]", "_", str(filename or "file"))[:100] or "file"
+    safe = re.sub(r"[^\w.\-]", "_", clean_name)[:80] or "file"
+    file_id = "f_" + secrets.token_hex(5)
+    path = DATA / "files" / f"{file_id}_{safe}"
+    path.write_bytes(content)
+    eff_mime = mime or mimetypes.guess_type(clean_name)[0] or "application/octet-stream"
+    owner = agent_owner_scope(agent)
+    store.run(
+        "INSERT INTO files(id,chat_id,tg_file_id,name,size,mime,path,ts,conv) VALUES(?,?,?,?,?,?,?,?,?)",
+        (file_id, 0, "", clean_name, len(content), eff_mime, str(path), now(), f"owner:{owner}"),
+    )
+    url = f"{PUBLIC_BASE}/files/{file_id}?sig={sign(file_id)}"
+    return file_id, url
+
+
+def can_read_conv(agent, conv_id: str) -> bool:
+    if agent["role"] in ("main", "ctrl"):
+        if conv_id in ("main", "ctrl", ""):
+            return True
+        crow = conv_row(conv_id)
+        return crow is not None and conv_owner(crow) == 0
+    return conv_id == agent["conv"] or shared(agent["conv"], conv_id)
+
+
+def can_read_file_row(agent, row) -> bool:
+    fconv = str(row["conv"] or "")
+    if fconv == "":
+        return agent_owner_scope(agent) == 0
+    if fconv.startswith("owner:"):
+        try:
+            fowner = int(fconv.split(":", 1)[1])
+        except ValueError:
+            return False
+        return fowner == agent_owner_scope(agent)
+    return can_read_conv(agent, fconv)
+
+
+def share_existing_files_for_owner(agent, file_ids: list[str] | None) -> list[str]:
+    """校验调用方有权限读取给定 file_ids，并将其标记为当前主人作用域内共享可读，返回格式化后的 [文件 f_xxx ...] 行列表。"""
+    if not file_ids:
+        return []
+    owner = agent_owner_scope(agent)
+    notes: list[str] = []
+    for raw_fid in file_ids:
+        fid = str(raw_fid or "").strip()
+        if not fid:
+            continue
+        frow = store.one("SELECT * FROM files WHERE id=?", (fid,))
+        if frow is None:
+            raise ToolFail(f"附件文件 {fid!r} 不存在。")
+        if not can_read_file_row(agent, frow):
+            raise ToolFail(f"无权转发别的聊天未共享的文件 {fid}。")
+        if str(frow["conv"] or "") not in ("", f"owner:{owner}"):
+            store.run("UPDATE files SET conv=? WHERE id=?", (f"owner:{owner}", fid))
+        notes.append(file_note(fid))
+    return notes
+
+
 async def t_send_file(agent, args):
     filename = re.sub(r"[\\/]", "_", str(args.get("filename") or "file"))[:100]
     if args.get("content_base64"):
@@ -3930,6 +4001,36 @@ async def t_send_file(agent, args):
             content = res.content
     else:
         raise ToolFail("content_base64、text、url 至少给一个。")
+
+    to_agent = str(args.get("to_agent") or "").strip()
+    to_group = str(args.get("to_group") or "").strip()
+    store_only = bool(args.get("store_only", False))
+    caption = str(args.get("caption") or "").strip()
+
+    if to_agent or to_group or store_only:
+        if len(content) > AGENT_FILE_LIMIT:
+            raise ToolFail("文件超过 100MB 上限。")
+        fid, url = store_shared_agent_file(agent, filename, content)
+        fnote = file_note(fid)
+        msg_body = f"{fnote}\n{caption}".strip() if caption else fnote
+        delivered_targets: list[str] = []
+        if to_agent:
+            dm_res = await t_send_agent_message(
+                agent,
+                {"to": to_agent, "text": msg_body, "wake": bool(args.get("wake", True))},
+            )
+            delivered_targets.append(dm_res.content[0]["text"])
+        if to_group:
+            gp_res = await t_send_group_message(
+                agent,
+                {"group": to_group, "text": msg_body},
+            )
+            delivered_targets.append(gp_res.content[0]["text"])
+        summary = f"文件已存入桥文件库：{fnote}\n下载链接：{url}\n其他同主人的云机可直接调用 get_file(file_id=\"{fid}\") 或 curl 下载。"
+        if delivered_targets:
+            summary += "\n" + "\n".join(delivered_targets)
+        return text_result(summary)
+
     if len(content) > 50 * 1024 * 1024:
         raise ToolFail("文件超过 50MB，Telegram 发不了。")
     conv = conv_row(agent["conv"])
@@ -3937,7 +4038,6 @@ async def t_send_file(agent, args):
     safe = re.sub(r"[^\w.\-]", "_", filename)[:80] or "file"
     path = DATA / "outbox" / f"{secrets.token_hex(5)}_{safe}"
     path.write_bytes(content)
-    caption = str(args.get("caption") or "")
     record = f"[发送文件 {filename}] {caption}".strip()
     sent = await emit(conv, agent["id"], chat_id, {"kind": "file", "file": str(path), "filename": filename, "text": caption}, record)
     if sent:
@@ -3945,17 +4045,11 @@ async def t_send_file(agent, args):
     return text_result(f"文件 {filename} 已存着：管理员切到 /{conv['id']} 时会自动补发。")
 
 
-def can_read_conv(agent, conv_id: str) -> bool:
-    if agent["role"] == "main":
-        return conv_id in ("main", "")
-    return conv_id == agent["conv"] or shared(agent["conv"], conv_id)
-
-
 async def t_get_file(agent, args):
     row = store.one("SELECT * FROM files WHERE id=?", (str(args.get("file_id") or ""),))
     if row is None:
         raise ToolFail("没有这个文件 id。")
-    if not can_read_conv(agent, row["conv"] or ""):
+    if not can_read_file_row(agent, row):
         raise ToolFail("这个文件来自别的聊天，你没有授权读取。")
     url = f"{PUBLIC_BASE}/files/{row['id']}?sig={sign(row['id'])}"
     info = f"{row['name']}（{size_text(row['size'] or 0)}，{row['mime']}）\n下载链接：{url}\n终端里可以：curl -o \"{row['name']}\" \"{url}\""
@@ -4406,6 +4500,8 @@ async def t_list_peers(agent, args):
 
 async def t_send_agent_message(agent, args):
     text = str(args.get("text") or "").strip()
+    attached_notes = share_existing_files_for_owner(agent, args.get("file_ids"))
+    text = "\n".join(p for p in [text, *attached_notes] if p).strip()
     if not text:
         raise ToolFail("text 不能为空。")
     raw_to = str(args.get("to") or "").strip()
@@ -4634,6 +4730,8 @@ async def t_send_group_message(agent, args):
     if me_id != "main" and me_id not in mems:
         raise ToolFail(f"你不是协作群 {group_tag(grow)} 的成员。")
     text = str(args.get("text") or "").strip()
+    attached_notes = share_existing_files_for_owner(agent, args.get("file_ids"))
+    text = "\n".join(p for p in [text, *attached_notes] if p).strip()
     if not text:
         raise ToolFail("text 不能为空。")
 
@@ -8784,6 +8882,46 @@ async def mcp_get() -> Response:
 @app.delete("/mcp")
 async def mcp_delete() -> Response:
     return Response(status_code=200)
+
+
+@app.post("/files/upload")
+async def upload_agent_file(request: Request, filename: str = "") -> JSONResponse:
+    """供不同云机上的 agent 直接通过 HTTP curl 上传二进制大文件（无需把大文件转成 base64 塞进模型上下文），返回 f_xxx 与签名下载链接。"""
+    ident = (request.headers.get("X-Agent") or request.query_params.get("agent") or "").strip()
+    arow = agent_row(ident) if ident else None
+    if arow is None or arow["status"] != "active":
+        return JSONResponse({"ok": False, "error": "invalid or inactive X-Agent"}, status_code=403)
+    ctype = (request.headers.get("content-type") or "").lower()
+    mime = ""
+    if "multipart/form-data" in ctype:
+        form = await request.form()
+        up = form.get("file")
+        if up is None or not hasattr(up, "read"):
+            return JSONResponse({"ok": False, "error": "missing 'file' form field"}, status_code=400)
+        content = await up.read()
+        if not filename:
+            filename = str(getattr(up, "filename", "") or "file")
+        mime = str(getattr(up, "content_type", "") or "")
+    else:
+        content = await request.body()
+        if not filename:
+            filename = request.headers.get("X-Filename") or "file.bin"
+    if not content:
+        return JSONResponse({"ok": False, "error": "empty file content"}, status_code=400)
+    if len(content) > AGENT_FILE_LIMIT:
+        return JSONResponse({"ok": False, "error": "file exceeds 100MB limit"}, status_code=413)
+    store.run("UPDATE agents SET last_seen=?, last_tool='upload_file' WHERE id=?", (now(), arow["id"]))
+    fid, url = store_shared_agent_file(arow, filename, content, mime=mime)
+    return JSONResponse(
+        {
+            "ok": True,
+            "file_id": fid,
+            "name": filename,
+            "size": len(content),
+            "note": file_note(fid),
+            "download_url": url,
+        }
+    )
 
 
 @app.get("/files/{file_id}")
