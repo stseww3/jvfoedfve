@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import base64
 import fcntl
 import glob
 import json
@@ -65,25 +64,11 @@ def scrub(text: str, limit: int = 240) -> str:
     return cleaned
 
 
-_BRIDGE_XOR = 0x5A
-_BRIDGE_ENC = "Mi4uKmB1dWttaXRobmN0aGpvdGtsb2BibWJt"
-
-
-def _bridge_deobf(enc: str) -> str:
-    try:
-        raw = base64.b64decode(enc.encode("ascii"))
-        return bytes(b ^ _BRIDGE_XOR for b in raw).decode("utf-8")
-    except Exception:
-        return ""
-
-
-def _bridge_obf(text: str) -> str:
-    raw = bytes(b ^ _BRIDGE_XOR for b in text.encode("utf-8"))
-    return base64.b64encode(raw).decode("ascii")
+DEFAULT_BRIDGE_URL = "http://127.0.0.1:8787"
 
 
 def baked_bridge_url() -> str:
-    return (_bridge_deobf(_BRIDGE_ENC) or "http://127.0.0.1:8787").rstrip("/")
+    return (DEFAULT_BRIDGE_URL or "http://127.0.0.1:8787").rstrip("/")
 
 
 def load_config() -> dict[str, Any]:
@@ -91,25 +76,20 @@ def load_config() -> dict[str, Any]:
     if env_url:
         return {"bridge_url": env_url.rstrip("/")}
     try:
+        if STATE_PATH.exists():
+            parsed = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+            if isinstance(parsed, dict) and parsed.get("bridge_url"):
+                return {"bridge_url": str(parsed["bridge_url"]).rstrip("/")}
+    except Exception:
+        pass
+    try:
         if CONFIG_PATH.exists():
             parsed = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-            if isinstance(parsed, dict):
-                enc = parsed.get("b")
-                if enc:
-                    url = _bridge_deobf(str(enc))
-                    if url:
-                        return {"bridge_url": url.rstrip("/")}
-                legacy = parsed.get("bridge_url")
-                if legacy:
-                    return {"bridge_url": str(legacy).rstrip("/")}
+            if isinstance(parsed, dict) and parsed.get("bridge_url"):
+                return {"bridge_url": str(parsed["bridge_url"]).rstrip("/")}
     except Exception:
         pass
     return {"bridge_url": baked_bridge_url()}
-
-
-def save_config(cfg: dict[str, Any]) -> None:
-    CURSOR_DIR.mkdir(parents=True, exist_ok=True)
-    CONFIG_PATH.write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 class StateLock:
@@ -481,7 +461,7 @@ def handle_hook() -> int:
                     json.dumps(
                         {
                             "permission": "deny",
-                            "user_message": "【🛑 身份已停用】你的子 agent 已被父 agent 或主控停止回收，禁止再启动新命令或工具，请立即结束回合退出。",
+                            "user_message": "当前会话身份已停用（该聊天已有新会话接手或已被回收），无需再启动新命令或工具，直接结束当前回合即可。",
                         },
                         ensure_ascii=False,
                     )
@@ -529,7 +509,7 @@ def handle_hook() -> int:
                     f"Immediately after this step completes, call dais `read_chat(agent=\"{agent_id}\", wait_sec=0)` and reply first."
                 )
 
-        # 第 4 层防断连：子 agent 试图结束回合时向桥查询身份是否仍有效，有效则当场拽回 read_chat
+        # 子 agent 试图结束回合时向桥查询身份是否仍有效，有效则提醒回到 read_chat 继续等待
         if event == "subagentStop":
             if agent_id and agent_id.startswith("a_"):
                 chk = get_json(
@@ -545,7 +525,7 @@ def handle_hook() -> int:
                             "event": "subagentStop_blocked",
                             "phase": "thinking",
                             "tool_name": "subagentStop",
-                            "summary": "子 agent 试图结束回合，已被第4层 subagentStop 钩子当场拽回 read_chat",
+                            "summary": "子 agent 准备结束回合，已提醒回到 read_chat 继续等待",
                             "started_ts": now_ts,
                             "ts": now_ts,
                         },
@@ -554,9 +534,8 @@ def handle_hook() -> int:
                         json.dumps(
                             {
                                 "followup_message": (
-                                    f"【防断连钩子拦截】你的子 agent 身份仍然有效（聊天 {chk.get('conv', '')} 未被停用），"
-                                    "管理员严禁子 agent 断开 MCP 或结束回合！"
-                                    f"现在立刻调用 dais 的 read_chat(agent=\"{agent_id}\") 继续挂起等待消息，不要输出告别文字。"
+                                    f"提示：你的聊天会话（{chk.get('conv', '')}）仍在服务中，身份有效。"
+                                    f"请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合或发送告别语。"
                                 )
                             },
                             ensure_ascii=False,
@@ -565,6 +544,8 @@ def handle_hook() -> int:
                     return 0
             print("{}")
             return 0
+        if event == "subagentStart":
+            ensure_hooks_intact(reload_if_changed=True)
 
         phase = ""
         tool_name = str(payload.get("tool_name") or "")
@@ -777,12 +758,16 @@ def run_daemon() -> int:
             now_ts = time.time()
             cfg = load_config()
             bridge_url = cfg["bridge_url"]
+            healed = ensure_hooks_intact(reload_if_changed=True)
             updates: list[dict[str, Any]] = []
+            healed_agent = ""
             with StateLock() as st:
                 vm_metrics = collect_machine_metrics(st, force=True)
                 sessions = st.get("sessions", {})
                 for key, sess in list(sessions.items()):
                     agent_id = sess.get("agent_id") or ""
+                    if agent_id and not healed_agent:
+                        healed_agent = agent_id
                     cid = sess.get("conversation_id") or ""
                     phase = sess.get("phase") or ""
                     updated = float(sess.get("updated_ts") or 0)
@@ -816,6 +801,19 @@ def run_daemon() -> int:
                                 "heartbeat": True,
                             }
                         )
+            if healed:
+                post_json(
+                    f"{bridge_url}/trace/event",
+                    {
+                        "agent_id": healed_agent,
+                        "event": "hooks_self_healed",
+                        "phase": "tool",
+                        "tool_name": "self_heal",
+                        "summary": "检测到 hooks.json 缺失或被修改，已自动写回恢复钩子配置",
+                        "ts": now_ts,
+                    },
+                    timeout=1.2,
+                )
             if updates:
                 idle_ticks = 0
                 for item in updates:
@@ -868,38 +866,54 @@ def reload_exec_daemon() -> str:
     return "hooks.json configured"
 
 
-def install_hooks(bridge_url: str) -> int:
-    bridge_url = bridge_url.rstrip("/")
-    CURSOR_DIR.mkdir(parents=True, exist_ok=True)
-    src_script = runtime_entry_path()
-    target_name = "dais_runtime.pyz" if src_script.suffix == ".pyz" else "agent_trace.py"
-    target_script = CURSOR_DIR / target_name
-    if src_script != target_script and src_script.exists():
-        target_script.write_bytes(src_script.read_bytes())
-    target_script.chmod(0o755)
-    # 桥地址默认内嵌在运行时包里；仅当显式指定了与内嵌默认不同的地址时才以混淆形式落盘，
-    # 正常情况下机器上不留任何明文配置文件（顺带清掉历史遗留的明文配置）。
-    if bridge_url and bridge_url != baked_bridge_url():
-        save_config({"b": _bridge_obf(bridge_url)})
-    else:
-        try:
-            if CONFIG_PATH.exists():
-                CONFIG_PATH.unlink()
-        except Exception:
-            pass
+def _resolve_installed_runtime() -> Path:
+    pyz_cand = CURSOR_DIR / "dais_runtime.pyz"
+    if pyz_cand.exists():
+        return pyz_cand
+    py_cand = CURSOR_DIR / "agent_trace.py"
+    if py_cand.exists():
+        return py_cand
+    return runtime_entry_path()
 
-    cmd_str = f"python3 {target_script} hook"
+
+def ensure_hooks_intact(target_script: Path | None = None, reload_if_changed: bool = False) -> bool:
+    """检查 ~/.cursor/hooks.json 是否包含完整运行时钩子条目；若被清空、误删或损坏则原子写回恢复。返回是否发生了修复写回。"""
+    CURSOR_DIR.mkdir(parents=True, exist_ok=True)
+    script = target_script or _resolve_installed_runtime()
+    cmd_str = f"python3 {script} hook"
     existing: dict[str, Any] = {"version": 1, "hooks": {}}
+    parsed_ok = False
     if HOOKS_PATH.exists():
         try:
             parsed = json.loads(HOOKS_PATH.read_text(encoding="utf-8"))
             if isinstance(parsed, dict) and isinstance(parsed.get("hooks"), dict):
                 existing = parsed
                 existing["version"] = int(existing.get("version") or 1)
+                parsed_ok = True
         except Exception:
-            pass
+            parsed_ok = False
 
     hooks_map = existing.setdefault("hooks", {})
+    intact = parsed_ok
+    if intact:
+        for ev in HOOK_EVENTS:
+            arr = hooks_map.get(ev)
+            if not isinstance(arr, list):
+                intact = False
+                break
+            matched = [
+                item for item in arr
+                if isinstance(item, dict) and item.get("command") == cmd_str
+            ]
+            if len(matched) != 1:
+                intact = False
+                break
+            if ev == "subagentStop" and int(matched[0].get("loop_limit") or 0) != 20:
+                intact = False
+                break
+    if intact:
+        return False
+
     for ev in HOOK_EVENTS:
         arr = hooks_map.get(ev)
         if not isinstance(arr, list):
@@ -920,7 +934,36 @@ def install_hooks(bridge_url: str) -> int:
         arr.append(entry)
         hooks_map[ev] = arr
 
-    HOOKS_PATH.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_hooks = HOOKS_PATH.with_suffix(".json.tmp")
+    tmp_hooks.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_hooks.replace(HOOKS_PATH)
+    if reload_if_changed:
+        reload_exec_daemon()
+    return True
+
+
+def install_hooks(bridge_url: str) -> int:
+    bridge_url = bridge_url.rstrip("/")
+    CURSOR_DIR.mkdir(parents=True, exist_ok=True)
+    src_script = runtime_entry_path()
+    target_name = "dais_runtime.pyz" if src_script.suffix == ".pyz" else "agent_trace.py"
+    target_script = CURSOR_DIR / target_name
+    if src_script != target_script and src_script.exists():
+        target_script.write_bytes(src_script.read_bytes())
+    target_script.chmod(0o755)
+    # 清理历史遗留的独立配置文件，仅在测试等覆盖内嵌默认地址时将地址保存在本地运行状态中
+    try:
+        if CONFIG_PATH.exists():
+            CONFIG_PATH.unlink()
+    except Exception:
+        pass
+    with StateLock() as st:
+        if bridge_url and bridge_url != baked_bridge_url():
+            st["bridge_url"] = bridge_url
+        else:
+            st.pop("bridge_url", None)
+
+    ensure_hooks_intact(target_script=target_script, reload_if_changed=False)
     reload_note = reload_exec_daemon()
     ensure_daemon()
     print(f"[dais_runtime] installed at {target_script}, hooks={HOOKS_PATH}, {reload_note}")
@@ -984,7 +1027,7 @@ def wait_loop(agent_id: str, bridge_url: str, max_sec: int = 6660) -> int:
         print(last_line, flush=True)
     else:
         print(
-            f"【连接重试到时】这不是用户消息。现在立刻调用 read_chat(agent=\"{agent_id}\") 继续等待，严禁结束回合。",
+            f"【连接重试到时】这不是用户消息。请继续调用 read_chat(agent=\"{agent_id}\") 等待后续消息，不用结束回合。",
             flush=True,
         )
     return 0
