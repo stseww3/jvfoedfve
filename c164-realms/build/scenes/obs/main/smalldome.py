@@ -22,7 +22,8 @@ Rows, bottom to top:
               one under every seam).
     y 22..26  the dome: copper plates only, in level courses, one to a ring of the raster circle
               as on the great dome: two rows upright over the skirt (the edge ring, its top a
-              level line at 24), then 25.5, then the cap at 26.5 and one cast block on the axis.
+              level line at 24), then 25.5, 26 and 26.5, half a block to a ring, and one cast
+              block on the axis.
 
 What a dome nine blocks across can carry (c219 #23263, A0 #23752): no ribs -- eight ribs took half
 its surface and read as patches, four would draw a cross on its top from above; the top row is one
@@ -68,8 +69,10 @@ HEAD_Y = BODY_Y[1] + 1                                   # 20: the corbel
 SKIRT_Y = HEAD_Y + 1                                     # 21: the iron skirt; the dome's curve starts at its foot
 APEX = S.SMALL_DOME_APEX                                 # 26: the last row anything stands in
 FOOT = R + 0.25                                          # the half-ellipse the plates follow: this wide at
-RISE = APEX + 0.8 - SKIRT_Y                              # the skirt's foot, this high on the axis -- the
-#                                                          apex block alone reaches the top of row 26
+RISE = APEX + 0.75 - SKIRT_Y                             # the skirt's foot, this high on the axis -- the
+#                                                          apex block alone reaches the top of row 26,
+#                                                          and every ring inside the edge lies half a
+#                                                          block under the one it rings
 SLIT_X = (S.SMALL_DOME_X[0], CX - 1)                     # the slit: the west axis row, up to the apex block
 LEAF_Z = CZ + 1                                          # the shutter leaf: the row south of the slit
 BOX_WAYS = O.SIDES + ((1, 1), (-1, 1), (-1, -1), (1, -1))        # where the skirt's axle boxes sit
