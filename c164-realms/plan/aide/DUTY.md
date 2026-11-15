@@ -27,6 +27,21 @@ cd /agent/repos/c164-aide/c164-realms/build && time nice -n 10 /agent/realms-stu
 
 **先派空出来的人，不够才新开。** 谁交付完、手上没有被退回的卡，就从没开的名单里挑一张和他做过的东西挨着的派给他（做过材料的接小件 pipes、elec、m4、instr；做过主楼的接室内 a3、chart、m2；做过场地和铁活的接机器）。派了就改 ROSTER，那个代号不再新开人。每派一张不用报总监，写进两小时一次的【进度】。
 
+## 1b. 机器拥堵（11-16 00:44 总监公告 #665）
+
+总监公告的六条，我盯着执行：
+
+1. 跑任何重命令（check.py、selfshots.py、render.py、delivery.py）之前先合总装：`git merge origin/cursor/c164-realms-map-b59c`。没合的工作树里没有 `tools/_slots.py`，等于插队。
+2. 干活只出手上在改的那几张：`selfshots.py <场景> --only a,b`，一次不超过 4 张。整套图只在交付前出一次。
+3. 评审看作者分支里存的图（`git show <提交>:<路径>`），不整套重出；要核对自己最多出 3 张。
+4. 技检的 `--verify` 抽查 3 张（c258 挑）。
+5. 一个人同一时间只跑一条重命令；在排队就等着，不要再开第二条，也不要杀了重跑。
+6. 名额保持 3 个，不抬。
+
+**绕不过排队**：c258 要在公共 venv 里加 `sitecustomize` 强制排队（旧工作树的 `render.py` 不调 `_slots`，拷文件没用）。
+
+**开人门**（总监 00:45）：**强制排队装上以后**再量，**连着两次（隔 10 分钟）都在 60 秒以内**才继续按原来的门开。
+
 ## 2. 派单的固定写法
 
 `spawn_subagent`：`include_memory=false`、`model="inherit"`、`group="g2"`、`name="c164-<代号>"`。`isolated_vm=true` **无效**（试过，返回仍是共享机），不要写。
