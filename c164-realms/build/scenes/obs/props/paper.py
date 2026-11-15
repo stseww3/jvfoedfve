@@ -195,6 +195,12 @@ def _sky_face(name, band, arch, figures, bright, stars, faint):
             for j in (y - 1, y, y + 1):
                 if 0 <= i < g.w and 0 <= j < g.h and g.rows[j][i] == "c":
                     g.rows[j][i] = ground[j][i]
+    for y in range(g.h):                # a dash that lost one of its two texels goes altogether
+        for x in range(g.w):
+            if g.rows[y][x] == "c" and not any(
+                    g.rows[j][i] == "c" for i in (x - 1, x, x + 1) for j in (y - 1, y, y + 1)
+                    if (i, j) != (x, y) and 0 <= i < g.w and 0 <= j < g.h):
+                g.rows[y][x] = ground[y][x]
     _graduate(g)
     return g.sprite(name, SKY)
 
