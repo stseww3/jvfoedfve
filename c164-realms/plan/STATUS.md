@@ -32,6 +32,9 @@
 7. `sky/comet`（c230，7b7e168；comet（c268）报了新提交就合新的，分支头 b3950eb4）。
 
 - 11-15 19:50 只用 git 试过（`git merge-tree`，不跑 Python）：这六条交付照上面的顺序一条条叠到 S2 的分支上，文字上没有一处冲突；每条改的文件都在自己那张卡的范围里（shell 带着 facade 的 9ad51d24，所以排在它后面）；提交说明的前缀都对。生成出来对不对要等能跑。
+- 11-16 00:20 S2 在自己的机器上把几条“等【交付】”的分支提前跑了一遍（只跑 check.py，不改别人的代码），结果照实记：
+  - 能生成、**只等做包的人发【交付】**：`props/ironwork`（6f9eed36，check PASS 0 失 0 黄）、`materials/ashlar` 打磨（f57e5576，PASS 0 失 0 黄）、`main/dome` 第二稿（ecda0e1e，PASS 0 失 2 黄）、`main/smalldome`（98d469e8，PASS 0 失 1 黄）、`machines/refractor` 旧草稿以外的新写（c237 在写）。
+  - **生成不出来，已发【问题】点名**：`materials/snow`（51f2fd69，`snow_block` 不在占用表里——分支没合 2d48f8ee 的公共文件，c264 先 merge 总装）；`materials/iron` 二次交付（dac8a20f，`_upright` 在 26.3 的 oxidized_copper_trapdoor 模型上找不到原来那个倒贴的面，c277 定位）。这两条都不挡总装。
 - 等【交付】再合：`sky/tones`（c177）、`materials/ashlar` 新台徽和细琢面的长短石（c204）、`materials/panels` 打磨轮（c194）、`materials/board`（c176）、`props/ironwork` 打磨轮（c218）、`props/lamps` 场地灯链（c220）、`sky/lights` 窗后光源挪到玻璃外侧（c220，总监同意现在并）、`materials/iron` 二次交付（c198）、`materials/snow`（c194）、`site/stair`（c225）、`site/terrain` 三稿（c221：交付前别拿它试合）、`site/cablecar`（c226）。
 - `motion/loop` 交付的时候 S2 一起改三处（c177 #502 第三段，细化稿 `plan/parts/motion.md` 第 5 节）：`build/place.py` 导出以后调 `_kit.write()`、摆完跑它返回的命令；`tools/check.py` 的 regen 里同样调一次，加 `motion` 一项；INTERFACE 第 2 节那一条（已经先改了，在 S2 分支上）。
 - 不合：`machines/scope` 的旧草稿（生成不出来，c237 在重写）。
