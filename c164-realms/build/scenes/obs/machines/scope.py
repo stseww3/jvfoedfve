@@ -116,14 +116,18 @@ TUBE_R = 0.75                   # the body; the objective's cell is CELL_R
 CELL_R = 15.0 / 16.0
 # rise: the height of the axes' crossing over the cap. off: how far the tube's axis is from the
 # crossing, along the declination axis. back: from the declination axis to the eyepiece's end.
-# finder, rods: where the finder and the two clamp rods ride, in degrees round the tube from the
-# upper end of the declination axis. seam: where the seam of rivets runs, degrees round the tube
-# from north over the top. show: the side the version shows the camera of V8, 1 the south, -1 the
-# north: the mount of a is north of its tube (which is off the axis, in the plane z = 1.40), the
-# pedestal of b south of its tube. The seam, the finder and the red lamp are on that side.
+# show: the side the version shows the camera of V8, 1 the south, -1 the north: the mount of a is
+# north of its tube (which is off the axis, in the plane z = 1.40), the pedestal of b south of
+# its tube. The red lamp hangs on that side, the seams of the tube's plates run down it.
+# finder, weights, seam: where the finder, the weights that balance it and the seams ride, in
+# degrees round the tube from north over the top. The finder is seen over the tube's far edge
+# from the camera of V8; b's can only be square to the trunnions. rods: the two clamp rods, in
+# degrees round the tube from the upper end of the declination axis.
 _SPEC = {
-    "a": dict(rise=5.0, off=0.9 / DEC[2], back=6.39, finder=-90.0, seam=0.0, rods=(158.0, 202.0), show=-1.0),
-    "b": dict(rise=5.4, off=0.0, back=5.5, finder=90.0, seam=180.0, rods=(-22.0, 22.0), show=1.0),
+    "a": dict(rise=5.0, off=0.9 / DEC[2], back=6.39, show=-1.0,
+              finder=90.0, weights=235.0, seam=(0.0, 30.0), rods=(158.0, 202.0)),
+    "b": dict(rise=5.4, off=0.0, back=5.5, show=1.0,
+              finder=37.0, weights=217.0, seam=(180.0, 150.0), rods=(-22.0, 22.0)),
 }
 V8_STAND = (11.8, 1.7)          # the camera of V8: x, and how far it stands from the tube's plane, to the side shown
 V8_LOOK = (0.0, 25.2, 0.9)      # what it looks at: up the slit, under the comet's head
@@ -256,15 +260,17 @@ def _flat(name, step):
 IRON, IRON_D = P.mat("iron"), P.mat("iron_dark")
 BRASS, BRASS_D = P.mat("brass"), P.mat("brass_dark")
 COPPER = P.mat("old_copper")
-STEEL = P.mat("iron", base=4)                           # bright shafts and journals
+TUBE = P.mat("iron", base=4)                            # the tube's plates: a step lighter than the castings
+STEEL = P.mat("iron", base=5)                           # bright shafts and journals
 WOOD = P.mat("dark_wood")                               # grips
 IRON_STUD = _as(Studded, IRON, "stud")
 IRON_D_STUD = _as(Studded, IRON_D, "stud")
 IRON_SEAM = _as(Studded, IRON, "seam", pitch=4)
+TUBE_STUD = _as(Studded, TUBE, "stud")
+TUBE_SEAM = _as(Studded, TUBE, "seam", pitch=4)
 BRASS_STUD = _as(Studded, BRASS_D, "stud")
 BRASS_TICK = _as(Ticked, P.mat("brass", bevel=0), "tick")
 IRON_TOOTH = _as(Ticked, P.mat("iron_dark", bevel=0), "tooth", long=0)
-STEEL_RACK = _as(Ticked, P.mat("iron", base=4, bevel=0), "rack", long=0)
 GLASS = _flat("night_glass", 2)
 GLASS_D = _flat("night_glass", 0)
 RED = _flat("signal", 1)                                # red paint: the governor's collar
@@ -344,8 +350,10 @@ def _circle(d, axis, centre, radius, n=4, band=3.0, thick=1.5, hub=3.0):
 # ---- the tube ----------------------------------------------------------------------------------------
 BODY_R, HOOP_R = 12.0, 13.0             # texels
 HOOPS = tuple(41.5 + 23.0 * i for i in range(9))        # their middles, texels from the eyepiece's end
-FINDER_OFF, FINDER_R = 19.0, 4.0
-TAIL_PLATE = (20.0, 24.0, 8.5)          # from, to (texels from the eyepiece's end) and radius
+FINDER_OFF, FINDER_R = 18.0, 3.5
+FINDER = (16.0, 80.0)                   # the finder's tube: from, to (texels from the eyepiece's end)
+TAIL_PLATE = (19.0, 23.0, 9.0)          # from, to (texels from the eyepiece's end) and radius
+HAND_RING = (15.0, 10.0)                # the ring the observer swings the tube by: where, radius
 
 
 def _dec_angle():
@@ -370,34 +378,35 @@ def _tube(version):
         """A frame whose y points out of the tube at `angle` degrees round it (0 north, 90 over)."""
         return d.turned(("z", angle - 90.0))
 
-    # the tail: eyepiece, draw tube, the position circle, the focusing tube with its rack and wheels
+    # the tail: eyepiece, draw tube, the focusing sleeve with its pinion and two milled heads
     seg(0.25, 3, 2.0, BRASS_D, sides=8)
     seg(0, 0.25, 1.25, GLASS_D, sides=8, cap=GLASS_D)
-    seg(3, 8, 2.75, BRASS, sides=8)
-    _circle(d, "z", (0.0, 0.0, z(8.75)), 7.0, n=6, band=2.0, thick=1.0, hub=3.25)
-    seg(9.5, 19, 4.25, BRASS_D, sides=8)
-    seg(10.5, 12, 5.0, BRASS, sides=8)
-    seg(19, 20.5, 5.5, BRASS, sides=8)
-    d.box((-0.75, 3.75, z(19.0)), (0.75, 5.25, z(12.0)), STEEL_RACK, grain="z")
-    d.tube("x", (4.5, z(15.5)), -7.5, 7.5, 0.75, STEEL, sides=4)
-    for sgn in (-1.0, 1.0):
-        d.tube("x", (4.5, z(15.5)), sgn * 6.0, sgn * 8.0, 2.5, BRASS, sides=8)
+    seg(3, 9, 2.75, BRASS, sides=8)
+    seg(9, 19, 4.25, BRASS_D, sides=8)
+    seg(9, 10.5, 5.0, BRASS, sides=8)
+    with side(spec["finder"] + 180.0):
+        d.box((-1.25, 3.5, z(17.0)), (1.25, 6.0, z(12.0)), BRASS_D)
+        d.tube("x", (5.0, z(14.5)), -7.0, 7.0, 0.75, STEEL, sides=4)
+        for a, b in ((-7.5, -5.5), (5.5, 7.5)):
+            d.tube("x", (5.0, z(14.5)), a, b, 2.25, BRASS, sides=8)
     s0, s1, plate_r = TAIL_PLATE
     seg(s0, s1, plate_r, IRON_D)
     seg(s0 + 1.0, s1 - 1.0, plate_r + 0.75, IRON_D_STUD)
-    # the ring of grips the observer swings the tube by
-    d.ring("z", (0.0, 0.0, z(17.0)), 10.5, 1.5, 1.5, BRASS, sides=16)
-    _spokes(d, "z", (0.0, 0.0, z(17.0)), 5.0, 10.0, 6, BRASS_D, wide=1.5, thick=1.0, start=30.0)
-    for i in range(6):
-        with side(60.0 * i + 30.0):
-            d.box((-0.75, 11.0, z(17.75)), (0.75, 14.0, z(16.25)), WOOD)
-    # cone and body: nine riveted hoops, one seam of rivets down the side the room sees
-    d.taper("z", (0.0, 0.0), z(s1), z(40.0), plate_r - 0.5, BODY_R, IRON, sides=12, steps=4)
-    seg(40, 228, BODY_R, IRON)
-    for s in HOOPS:
-        seg(s - 1.5, s + 1.5, HOOP_R, IRON_STUD, seed=HOOP_SEED)
-    with side(spec["seam"]):
-        d.box((-1.5, BODY_R - 1.0, z(226.0)), (1.5, BODY_R + 0.5, z(43.0)), IRON_SEAM, grain="z")
+    # the hand ring, on three stays from the tail plate
+    ring_s, ring_r = HAND_RING
+    d.ring("z", (0.0, 0.0, z(ring_s)), ring_r, 1.25, 1.25, BRASS, sides=16)
+    for i in range(3):
+        with side(spec["finder"] + 60.0 + 120.0 * i):
+            d.rod((0.0, plate_r - 1.5, z(s0)), (0.0, ring_r, z(ring_s)), 0.6, BRASS_D, sides=4)
+    # cone and body: rings of plate, each lapped and riveted to the next under a hoop, the seams
+    # of neighbouring rings a facet apart; a brass hoop where the cone ends
+    d.taper("z", (0.0, 0.0), z(s1), z(40.0), plate_r - 0.5, BODY_R, TUBE, sides=12, steps=4)
+    seg(40, 228, BODY_R, TUBE)
+    for i, s in enumerate(HOOPS):
+        seg(s - 1.5, s + 1.5, HOOP_R, TUBE_STUD if i else BRASS_STUD, seed=HOOP_SEED)
+    for i, (a, b) in enumerate(zip(HOOPS, HOOPS[1:] + (228.0,))):
+        with side(spec["seam"][i % 2]):
+            d.box((-1.5, BODY_R - 1.0, z(b)), (1.5, BODY_R + 0.5, z(a)), TUBE_SEAM, grain="z", seed=HOOP_SEED + 3)
     # the objective: an iron flange, the brass cell, the dark glass inside the lip of the dew cap
     seg(227, 230, 13.75, IRON_D_STUD)
     seg(230, 238, 15.0, BRASS)
@@ -406,33 +415,36 @@ def _tube(version):
     d.tube("z", (0.0, 0.0), z(238.9), z(238.75), 6.0, GLASS_D, sides=8, cap=GLASS_D)
     d.ring("z", (0.0, 0.0, z(239.0)), 14.0, 2.0, 2.0, BRASS_D, sides=16)
 
-    # the finder, square to the declination axis, where the yoke and the saddle never come
-    with side(phi + spec["finder"]):
+    # the finder rides where neither the saddle nor the yoke ever comes
+    f0, f1 = FINDER
+    with side(spec["finder"]):
         c = (0.0, FINDER_OFF)
-        d.tube("z", c, z(80.0), z(16.0), FINDER_R, BRASS, sides=8)
-        d.tube("z", c, z(82.0), z(77.0), FINDER_R + 0.75, BRASS_D, sides=8)
-        d.tube("z", c, z(82.5), z(82.0), FINDER_R - 0.5, GLASS, sides=8, cap=GLASS)
-        d.tube("z", c, z(16.0), z(11.0), 2.5, BRASS_D, sides=8)
-        d.tube("z", c, z(11.0), z(8.5), 1.5, BRASS, sides=8)
-        for s in (27.0, 66.0):
+        d.tube("z", c, z(f1), z(f0), FINDER_R, BRASS, sides=8)
+        d.tube("z", c, z(f1 + 2.0), z(f1 - 3.0), FINDER_R + 0.75, BRASS_D, sides=8)
+        d.tube("z", c, z(f1 + 2.5), z(f1 + 2.0), FINDER_R - 0.5, GLASS, sides=8, cap=GLASS)
+        d.tube("z", c, z(f0), z(f0 - 5.0), 2.25, BRASS_D, sides=8)
+        d.tube("z", c, z(f0 - 5.0), z(f0 - 7.5), 1.5, BRASS, sides=8)
+        for s in (f0 + 11.0, f1 - 14.0):
             d.tube("z", c, z(s + 1.5), z(s - 1.5), FINDER_R + 1.25, IRON_D, sides=8)
-            d.box((-2.0, 10.0, z(s + 1.5)), (2.0, FINDER_OFF - FINDER_R, z(s - 1.5)), IRON_D)
-    # two sliding weights on a rod, opposite the finder: they balance it
-    with side(phi + spec["finder"] + 180.0):
+            d.box((-2.0, BODY_R - 2.0, z(s + 1.5)), (2.0, FINDER_OFF - FINDER_R, z(s - 1.5)), IRON_D)
+    # two sliding weights on a rod balance it
+    with side(spec["weights"]):
         d.tube("z", (0.0, 16.0), z(64.0), z(27.0), 0.75, STEEL, sides=4)
         for s in (30.0, 61.0):
-            d.box((-1.0, 10.0, z(s + 1.0)), (1.0, 16.5, z(s - 1.0)), IRON_D)
+            d.box((-1.0, BODY_R - 2.0, z(s + 1.0)), (1.0, 16.5, z(s - 1.0)), IRON_D)
         for s in (40.0, 46.5):
             d.tube("z", (0.0, 16.0), z(s + 2.5), z(s - 2.5), 3.0, BRASS_D, sides=8)
 
-    # the clamp and slow-motion rods run from the declination axis down to the observer's hand
+    # the clamp and the slow motion: two rods from the declination axis down to a handwheel each,
+    # either side of the tail plate
     reach = 104.0 if version == "a" else 78.0
     for swing in spec["rods"]:
         with side(phi + swing):
-            d.tube("z", (0.0, 15.5), z(reach), z(21.0), 0.6, BRASS, sides=4)
-            d.tube("z", (0.0, 15.5), z(21.0), z(17.5), 1.5, WOOD, sides=8)
+            d.tube("z", (0.0, 15.5), z(reach), z(18.0), 0.6, BRASS, sides=4)
+            d.tube("z", (0.0, 15.5), z(19.5), z(18.0), 3.0, BRASS, sides=8)
+            d.tube("z", (0.0, 15.5), z(18.0), z(17.0), 1.25, BRASS_D, sides=8)
             for s in (30.0, 58.0, reach - 2.0):
-                d.box((-0.75, 9.5 if s < 40 else 11.5, z(s + 0.75)), (0.75, 16.5, z(s - 0.75)), IRON_D)
+                d.box((-0.75, BODY_R - 2.5 if s < 40 else BODY_R - 0.5, z(s + 0.75)), (0.75, 16.5, z(s - 0.75)), IRON_D)
 
     if version == "b":
         # the band the two trunnions are cast on; they run into the yoke's bearings
@@ -440,10 +452,11 @@ def _tube(version):
         for s in (back - 7.5, back + 7.5):
             seg(s - 1.0, s + 1.0, 14.25, IRON_STUD, seed=HOOP_SEED + 2)
         with side(phi):
-            for sgn in (-1.0, 1.0):
-                d.tube("y", (0.0, 0.0), sgn * 12.5, sgn * 16.5, 5.5, IRON_D, sides=8)
+            for a, b in ((-16.5, -12.5), (12.5, 16.5)):
+                d.tube("y", (0.0, 0.0), a, b, 5.5, IRON_D, sides=8)
                 for zz in (-4.0, 4.0):
-                    d.box((-1.0, sgn * 12.0, zz - 0.75), (1.0, sgn * 15.0, zz + 0.75), IRON_STUD)
+                    lo, hi = sorted((math.copysign(12.0, a), math.copysign(15.0, a)))
+                    d.box((-1.0, lo, zz - 0.75), (1.0, hi, zz + 0.75), IRON_STUD)
     else:
         # the saddle on the end of the declination axis and the two straps that hold the tube in it
         with side(phi):
@@ -454,7 +467,8 @@ def _tube(version):
             for zz in (-15.0, 15.0):
                 d.tube("z", (0.0, 0.0), zz - 2.0, zz + 2.0, 13.4, IRON_STUD, seed=HOOP_SEED + 2)
                 for sgn in (-1.0, 1.0):
-                    d.box((sgn * 12.5, -9.0, zz - 1.5), (sgn * 15.5, -6.0, zz + 1.5), IRON_D)
+                    a, b = sorted((sgn * 12.5, sgn * 15.5))
+                    d.box((a, -9.0, zz - 1.5), (b, -6.0, zz + 1.5), IRON_D)
                     d.tube("y", (sgn * 14.0, zz), -10.5, -4.5, 0.75, BRASS, sides=4)
     return d.m
 

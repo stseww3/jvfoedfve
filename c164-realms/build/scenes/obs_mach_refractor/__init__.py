@@ -121,6 +121,8 @@ def shots():
         mid = tuple((eyepiece[i] + objective[i]) / 2.0 for i in range(3))
         shot("v8", *scope.v8("b"))
         shot("v8_north", *scope.v8("a"))
+        side = -1.0 if v == "a" else 1.0
+        shot("v8_back", (14.5, eye_y, scope.pivot(v)[2] + side * 2.0), (0.0, 25.2, 0.9))
         shot("eye", (eyepiece[0] + 0.55, eye_y, eyepiece[2] + 1.5),
              (eyepiece[0] - 7.5, eye_y + 6.6, eyepiece[2] - 0.2))
         shot("south", (5.5, eye_y + 1.0, 11.3), (mid[0], cross[1] + 0.3, 0.5))
