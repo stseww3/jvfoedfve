@@ -25,8 +25,9 @@ edges of a glass case. Glass is not drawn; its glint is.
     display_case     one block square: a glazed brass case on a panelled base
 
 Every piece is one display entity at scale 1 (16 texels to the block), and whatever is square to the
-piece is drawn on that grid. Nothing here is spread over the building: the rooms and the site place
-what they need with place(); build() places nothing.
+piece is drawn on that grid. Indoors nothing is placed from here: every room places what it needs
+with place(). Out of doors the benches and the station's luggage are placed by site(), which
+build() calls once the switch DRESS is on.
 
 No piece shows a cross from any side. Feet and hooks come in threes and fives, never four at right
 angles; nothing has a bar across a post (the coat stand's hooks rise like a crown, the stool has no
@@ -35,12 +36,15 @@ foot ring); a dark band never crosses another (the trunk's straps cross only the
 The look is judged in the test scene build/scenes/obs_props_furniture.
 """
 import functools
+import importlib
 import math
 
 from artkit import models as M
 from artkit.pixelart import Sprite
 
+from ..common import blocks as B
 from ..common import palette as P
+from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_furn_"
@@ -474,9 +478,10 @@ SPEC = {
     "display_case": dict(build=_display_case, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
-# how high above its foot a piece carries what is put on it (blocks)
+# how high above its foot a piece carries what is put on it (blocks); the trunk's is its lid, of
+# which the two straps are half a texel proud
 TOP = {"writing_desk": 12.0 / 16.0, "display_table": 11.25 / 16.0, "display_case": 11.25 / 16.0,
-       "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.5 / 16.0,
+       "card_cabinet": 30.0 / 16.0, "instrument_cabinet": 30.0 / 16.0, "trunk": 11.0 / 16.0,
        "crate": 12.0 / 16.0, "bench": 7.0 / 16.0, "swivel_chair": 7.0 / 16.0, "stool": 12.0 / 16.0}
 
 
@@ -522,6 +527,121 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
     return n
 
 
+# ---- the site --------------------------------------------------------------------------------------------
+# Indoors every room places its own furniture. Out of doors it is placed from here: the packages of
+# the site are blocks only and say where (site/cablecar: BENCHES, LUGGAGE), or leave the place and
+# the choice to this package (the sunset terrace, the south lookout). Three groups:
+#   station   two benches against the waiting room of the cable station, one under its lit gable
+#             window and one at the foot of its front, and somebody's luggage set down by its door:
+#             a trunk along the wall and a crate on the trunk.
+#   sunset    four benches on the sunset terrace, their backs to the building, looking west over the
+#             rail at the afterglow: a pair either side of the walk from the west door, on the band
+#             of small stones between the walk and the strips, and a pair further out and further
+#             back, so that the row follows the curve of the rail. Two blocks are left to walk in
+#             between a bench and the rail.
+#   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
+#             the observatory on the right. The view back (S.V11) is taken from the walk in the
+#             middle of the lookout and looks north-west: the bench is behind its right edge.
+DRESS = False           # off in the master scene until the family has passed review; a test scene asks
+                        # for the site's furniture with dress(canvas), or calls site() for its group
+SUNSET_BENCHES = ((15.5, 4.0), (13.5, 10.0))    # (west of the terrace's middle, off the axis): a pair each
+LOOKOUT_BENCH = (0.6, -1.0)     # in from the face of the east rail's kerb; from the lookout's middle row
+# the luggage: (kind, the offset from the point the station gives, yaw). The trunk stands along the
+# wall, clear of the door's jamb; the crate stands on the east end of its lid, a little askew
+LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate", (0.5, TOP["trunk"], -0.05), 6.0))
+BENCH_ENDS = 0.8                # how far from its middle the floor under a bench is looked for
+
+# What the packages of the site reported in the group, for a tree in which a package is not merged
+# yet. Once it is, its own table is read instead: _told().
+_REPORTED = {
+    # c226, g2 #506. point: the middle of the piece's foot; a bench stands 0.45 off the wall behind it
+    ("site.cablecar", "BENCHES"): {"gable": dict(point=(79.55, -4.0, -38.0), facing="west"),
+                                   "front": dict(point=(81.5, -4.0, -35.55), facing="south")},
+    ("site.cablecar", "LUGGAGE"): dict(point=(84.5, -4.0, -35.5)),
+}
+
+
+def _told(module, name):
+    """What a package of the site says about its furniture, or the numbers it reported while it is
+    not in the tree."""
+    try:
+        return getattr(importlib.import_module(f"..{module}", __package__), name)
+    except (ImportError, AttributeError):
+        return _REPORTED[module, name]
+
+
+def site_pieces():
+    """The furniture of the site as (group, kind, point, yaw, foot). point is the middle of the
+    piece's foot in scene coordinates before the origin; foot is the point whose floor decides
+    whether the piece is placed: its own, or that of the piece it stands on."""
+    out = []
+    for bench in _told("site.cablecar", "BENCHES").values():
+        p = tuple(float(v) for v in bench["point"])
+        out.append(("station", "bench", p, K.FACING[bench["facing"]], p))
+    x, y, z = _told("site.cablecar", "LUGGAGE")["point"]
+    foot = None
+    for kind, (dx, dy, dz), yaw in LUGGAGE:
+        p = (x + dx, y + dy, z + dz)
+        foot = foot or p                                # the first piece carries the others
+        out.append(("station", kind, p, yaw, foot))
+    cx, cz = S.SUNSET_PLATFORM["centre"]
+    for west, off in SUNSET_BENCHES:
+        for side in (-1.0, 1.0):
+            p = (S.mid(cx) - west, float(S.GROUND), S.mid(cz) + side * off)
+            out.append(("sunset", "bench", p, K.FACING["west"], p))
+    x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]
+    p = (x1 - LOOKOUT_BENCH[0], float(S.SOUTH_LOOKOUT["feet"]), S.mid(z0, z1) + LOOKOUT_BENCH[1])
+    out.append(("lookout", "bench", p, K.FACING["west"], p))
+    return out
+
+
+def _stands(canvas, kind, foot, yaw, origin=(0, 0, 0)):
+    """True when the piece has a floor under it on the canvas as it is, and room to stand in: under
+    the middle of its foot, and for a bench under both its ends as well, the cell below is taken and
+    the cell above that is free (a light source in it does not count)."""
+    for along in ((-BENCH_ENDS, 0.0, BENCH_ENDS) if kind == "bench" else (0.0,)):
+        dx, _, dz = K.turn(yaw, (along, 0.0, 0.0))
+        x, z = math.floor(foot[0] + dx + origin[0]), math.floor(foot[2] + dz + origin[2])
+        y = math.ceil(foot[1] + origin[1])
+        if not canvas.has(x, y - 1, z) or canvas.name(x, y, z) not in (None, B.LIGHT):
+            return False
+    return True
+
+
+def dress(canvas, on=True):
+    """Ask for the furniture of the site on this canvas while the switch DRESS is off (a test scene).
+    Call it before the lines are built."""
+    canvas.furniture_dress = bool(on)
+
+
+def site(canvas, origin=(0, 0, 0), groups=None):
+    """Place the furniture of the site (site_pieces()), or of the groups named ("station", "sunset",
+    "lookout"). A piece is only placed where its floor is on the canvas as it is, so a tree without
+    one of the site's packages has fewer pieces and none that floats; what was left out is kept in
+    canvas.furniture_left_out as (group, kind, point). A piece is placed once: a second call, for
+    the same groups or for more of them, adds what does not stand yet. Returns the number of
+    display entities placed by this call."""
+    origin = tuple(origin)
+    placed = getattr(canvas, "furniture_placed", None)
+    if placed is None:
+        placed = canvas.furniture_placed = set()
+    n, left = 0, list(getattr(canvas, "furniture_left_out", []))
+    for group, kind, p, yaw, foot in site_pieces():
+        if (groups is not None and group not in groups) or (kind, p, origin) in placed:
+            continue
+        if _stands(canvas, kind, foot, yaw, origin):
+            n += place(canvas, kind, p, yaw=yaw, origin=origin)
+            placed.add((kind, p, origin))
+        elif (group, kind, p) not in left:
+            left.append((group, kind, p))
+    canvas.furniture_left_out = [e for e in left if (e[1], e[2], origin) not in placed]
+    return n
+
+
 def build(canvas, origin=(0, 0, 0)):
-    """Furniture is placed by the rooms and the site, each piece where it is used: nothing here."""
+    """What this package places in the master scene itself: the furniture of the site (site()), once
+    the switch DRESS is on or a test scene has asked for it (dress()). Indoors the furniture is
+    placed by the rooms, each piece where it is used, with place()."""
+    if getattr(canvas, "furniture_dress", DRESS):
+        return site(canvas, origin)
     return 0
