@@ -55,6 +55,7 @@ from artkit.canvas import Canvas
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 from . import _order as O
 
 # --- the footprint (skeleton, LOCKED): 7 x 7, the east face flush with the pavilion's wall ----------
@@ -85,8 +86,7 @@ APEX = S.CLOCK_TOP                  # 41: the finial block
 
 # --- the mast (points, in blocks) ---------------------------------------------------------------------
 MAST_MODEL = "bld_tower_mast"       # machines/clock looks for a display of this model: the mast stands
-CUPS_MODEL = "bld_tower_cups"
-CUPS_TAG = "c164_tower_cups"        # the cup wheel's own tag, for the motion line
+CUPS_MODEL = "bld_tower_cups"       # the cup wheel: the motion line turns it (its tag is the kit's, m.<model>)
 MAST_FOOT = APEX + 1.0              # 42.0: the top of the finial
 MAST_STOP = S.CLOCK_BALL_MAST - 1.0  # 51.0: up to here the pole is plain and the ball's to travel on
 MAST_TOP = S.CLOCK_BALL_MAST + 1.0  # 53.0: the tip, the top of the skeleton's last row
@@ -470,13 +470,13 @@ def models():
 
 
 def _mast(c, o):
-    """Stand the mast on the finial and the cup wheel on its spindle. Returns the entities placed."""
+    """Stand the mast on the finial and the cup wheel on its spindle, and register the wheel with the
+    motion line: it turns about its spindle. Returns the entities placed."""
     kit = _models()
     c.add_entity(o[0] + AXIS[0], o[1] + MAST_FOOT + MAST_HOLD, o[2] + AXIS[1],
                  M.display(kit[MAST_MODEL], scale=MAST_SCALE, view=FAR))
-    cups = M.display(kit[CUPS_MODEL], view=FAR)
-    cups["Tags"].append(CUPS_TAG)
-    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], cups)
+    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], M.display(kit[CUPS_MODEL], view=FAR))
+    MK.spin(c, "y", MK.ANEMOMETER_REV)
     return 2
 
 
