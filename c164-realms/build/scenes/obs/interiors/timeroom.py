@@ -31,11 +31,11 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     the pneumatic tube on the pier south of it
   rating bench      under bay 5 of the west wall; a lamp on the pier north of it, the barometer on
                     the pier south of it
-  world clocks      five slave dials in a row on the blind stretch of the west wall (the rotunda is
-                    behind it), over a low cabinet of drawers, a lamp over the middle one. Their
-                    dials are level with the regulators'. They show the one time every clock of
-                    the map is stopped at (the skeleton's CLOCK) in five places: the hours differ,
-                    the minutes do not. These are the room's own models.
+  world clocks      five slave dials in a row on a dark board, on the blind stretch of the west wall
+                    (the rotunda is behind it), over a low cabinet of drawers, a lamp over the
+                    middle one. Their dials are level with the regulators'. They show the one time
+                    every clock of the map is stopped at (the skeleton's CLOCK) in five places: the
+                    hours differ, the minutes do not. These are the room's own models.
   south wall        card cabinets under a drawing west of the door, a coat stand east of it
   cable ducts       iron gratings in the floor: along the foot of the rack from wall to wall, and
                     from its two ends down the foot of the long walls to under the two desks
@@ -154,11 +154,12 @@ DUCTS = (                                           # runs of grating in the flo
     ((X0, CONSOLE_Z), (X0, MP.window_rows(BENCH_BAY)[1])),      # down the west wall to under the rating bench
 )
 
-# ---- the world clocks: a row of slave dials on the blind stretch of the west wall, one to a cell
+# ---- the world clocks: a row of slave dials on one board, on the blind stretch of the west wall, one to a cell
 CLOCK = getattr(S, "CLOCK", (7, 55))                # the time every clock of the map is stopped at (A0, g2 #34136)
 CLOCK_Z = (BLIND_Z[0] + 1, BLIND_Z[1] - 1)          # -12..-8
 WORLD = (5, 2, 0, -3, -5)                           # hours off the station's time, from the north end of the row: seen from the room the west is on the left
 CASE_R = 6.0                                        # px: the radius of a world clock's case
+BOARD = (16.0, 9.0, 11.0)                           # px: the length of board behind one dial: as wide as a cell, so far above the dial's middle, so far below it
 INK = P.RAMPS["iron"][1]
 DIAL = (                                            # nine pixels across: twelve marks and the hub; the face of
     "..kckck..",                                    # props/instruments' regulator without its luminous quarters
@@ -294,18 +295,22 @@ def clock_name(offset):
 
 
 def _world_clock(offset):
-    """A world clock: a round slave dial for the wall, made like the head of props/instruments'
-    barometer (a turned wooden case, a brass bezel, the nine-pixel dial) with a brass label under
-    it for the place whose time it keeps. Its hands stand at the map's one time, `offset` hours
-    on. Anchor: the point on the wall behind the middle of the dial."""
+    """A world clock: a round slave dial on its length of the clock board. The dial is made like the
+    head of props/instruments' barometer (a turned wooden case, a brass bezel, the nine-pixel
+    dial). The board is as wide as a cell, so the clocks of a row stand on one board: the stone of
+    the wall is as light as the porcelain, and it is the dark board that shows the dials. Under
+    the dial a brass label for the place whose time it keeps. The hands stand at the map's one
+    time, `offset` hours on. Anchor: the point on the wall behind the middle of the dial."""
     name = clock_name(offset)
+    wide, up, down = BOARD
     m = M.Model(name)
-    m.tube("z", (0, 0), 0.0, 2.0, CASE_R, P.mat("dark_wood"), sides=16, cap=K.flat("dark_wood", 3))     # the case
-    m.ring("z", (0, 0, 2.5), 5.0, 1.5, 1.0, K.BRASS, sides=16)                                         # the bezel
+    m.box((-wide / 2.0, -down, 0.0), (wide / 2.0, up, 1.0), P.mat("dark_wood", base=1), skip="n", grain="x")   # the board
+    m.tube("z", (0, 0), 0.0, 3.0, CASE_R, P.mat("dark_wood"), sides=16, cap=K.flat("dark_wood", 3))            # the case
+    m.ring("z", (0, 0, 3.5), 5.0, 1.5, 1.0, K.BRASS, sides=16)                                                # the bezel
     half = len(DIAL) / 2.0
     face = Sprite(name + "_dial", hands(DIAL, CLOCK[0] + offset, CLOCK[1]), DIAL_COLOURS)
-    m.box((-half, -half, 2.25), (half, half, 2.5), K.flat("porcelain", 3), skip="nudew", faces={"s": face})
-    m.box((-2.5, -CASE_R - 3.5, 0.0), (2.5, -CASE_R - 1.5, 0.5), K.BRASS_D, grain="x")                 # the label
+    m.box((-half, -half, 3.25), (half, half, 3.5), K.flat("porcelain", 3), skip="nudew", faces={"s": face})
+    m.box((-2.5, -CASE_R - 3.5, 1.0), (2.5, -CASE_R - 1.5, 1.5), K.BRASS_D, grain="x")                        # the label
     return m
 
 
@@ -426,12 +431,12 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     n += lamp("bracket", (EAST, LAMP_Y, pier(DESK_BAY, -1)), DESK_LAMP, "message desk", facing="west")
     n += lamp("bracket", (WEST, LAMP_Y, pier(BENCH_BAY, -1)), DESK_LAMP, "rating bench", facing="east")
 
-    # ---- the world clocks over their cabinet of drawers, and the lamp over the middle one
+    # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
     own = _models()
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
         n += K.put(c, own[clock_name(offset)], (WEST, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
-    n += lamp("bracket", (WEST, DIAL_Y + CASE_R * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", facing="east")
+    n += lamp("bracket", (WEST, DIAL_Y + BOARD[1] * PX + OVER, S.mid(*CLOCK_Z)), CLOCK_LAMP, "world clocks", facing="east")
 
     # ---- the wainscot: one course under the sill line, round the room, where no block stands
     def free(x, z):
