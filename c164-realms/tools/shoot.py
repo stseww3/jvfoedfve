@@ -8,7 +8,9 @@ shots.json is a list of shots:
     {"name": "wide", "pos": [x, y, z], "look_at": [x, y, z]}          camera (eye) aimed at a point
     {"name": "front", "pos": [x, y, z], "yaw": 180, "pitch": 10}      explicit angles
 Optional per shot: "time" (e.g. "noon", "midnight" or a tick number; without it the shot is taken
-at 14000, look A, as build/render.py does), "settle" (seconds to wait).
+at 14000, look A, as build/render.py does), "settle" (seconds to wait), "still" (seconds, instead
+of --still; 0: the first picture after the wait is the one). --time <tick> takes every shot at
+that time, whatever the list says: a scene built for another light version is shot at its tick.
 
 How long the game needs after a move depends on the machine: a graphics card has the new view in
 a second or two, a software renderer on a worker node may need many. --still <seconds> therefore
@@ -264,6 +266,7 @@ def main():
     ap.add_argument("--still", type=float, default=0.0, metavar="SECONDS",
                     help="after settling, take each picture again until two in a row are alike, this long at most")
     ap.add_argument("--only", help="comma separated shot names")
+    ap.add_argument("--time", help="every shot is taken at this time, whatever the list says")
     ap.add_argument("--origin", type=float, nargs=3, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"),
                     help="added to every pos/look_at, for shot lists written in scene coordinates")
     args = ap.parse_args()
@@ -296,7 +299,7 @@ def main():
                 yaw, pitch = angles(pos, [shot["look_at"][k] + args.origin[k] for k in range(3)])
             else:
                 yaw, pitch = shot.get("yaw", 0.0), shot.get("pitch", 0.0)
-            when = shot.get("time", DEFAULT_TIME)
+            when = args.time if args.time is not None else shot.get("time", DEFAULT_TIME)
             if when != last_time:
                 rc.command(f"time set {when}")
                 last_time = when
@@ -304,8 +307,9 @@ def main():
             time.sleep(shot.get("settle", args.first_settle if i == 0 else args.settle))
             path = os.path.join(args.out, shot["name"] + ".png")
             take(path)
-            if args.still > 0:
-                took, differ, stood = until_still(take, path, args.still)
+            still = float(shot.get("still", args.still))
+            if still > 0:
+                took, differ, stood = until_still(take, path, still)
                 print(f"{path} ({'still' if stood else 'STILL CHANGING'} after {took:.0f} s more, "
                       f"{differ:.2%} of it moved between the last two)", flush=True)
             else:

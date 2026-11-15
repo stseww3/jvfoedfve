@@ -38,6 +38,16 @@ For the scenes named the trip
                              beside the scene's plot) and shoot each bay by day: gal_<bay>. A
                              scene that has models but no shot list is shown by its gallery alone
     --plot <scene>=<n>       the plot of a scene the table does not hold yet
+    --look <name>            the scenes are built for this light version (blue, deep, glow) and
+                             every shot is taken at its tick, whatever the list says: its table
+                             says which windows are lit, and windows are blocks
+                             (tools/placelook.py; the scenes of the observatory, whose fronts ask
+                             the sky line's light kit). The note says so
+    --dress                  with --look: the building's own lights are on as well, which the
+                             code keeps off (sky/lights DRESS). The note says so
+    --again <scene>=<shot>[:<seconds>][,...]
+                             the shot is taken once more, so many seconds (2.5) after its
+                             picture and from the same place, as <shot>_again: for what moves
     --no-place               the scenes stand already; only the pack and the pictures
     --no-shoot               everything but the game: place and write the pack
     --keep-client            leave the game running at the end (only with the owner's consent)
@@ -71,6 +81,7 @@ NAMESPACE = "c164art"
 MASTER = "obs"              # the master scene: its default shot list is the board
 BOARD = "board"
 GALLERY_Z = 400             # a scene's gallery stands this far south of its plot's origin
+AGAIN = "_again"            # the name of a shot's second picture (--again)
 JPEG_QUALITY = 90
 BUILD = None                # the build/ folder of the code that is shot; set in main()
 
@@ -252,7 +263,7 @@ def client_runs():
 
 
 # ---- shot lists and the pictures to send ---------------------------------------------------------------
-def shot_list(scene, lists, only, work):
+def shot_list(scene, lists, only, work, again=None):
     """The file with a scene's shots, and the shots that will be taken."""
     name = lists.get(scene, BOARD if scene == MASTER else os.path.join("scenes", scene, "shots.json"))
     if name == BOARD:
@@ -272,6 +283,21 @@ def shot_list(scene, lists, only, work):
         shots = [s for s in shots if s["name"] in only[scene]]
     if not shots:
         raise Stop(f"{scene}: the shot list {path} is empty")
+    if again and scene in again:
+        names = {s["name"] for s in shots}
+        wrong = [n for n in again[scene] if n not in names or n + AGAIN in names]
+        if wrong:
+            raise Stop(f"{scene}: --again names {', '.join(wrong)}, which is not one of the shots taken "
+                       f"(or there is a shot called {wrong[0]}{AGAIN} already)")
+        twice = []
+        for shot in shots:
+            twice.append(shot)
+            if shot["name"] in again[scene]:
+                # from the same place, so the camera does not move: only the wait, then one picture
+                twice.append({**shot, "name": shot["name"] + AGAIN, "settle": again[scene][shot["name"]], "still": 0})
+        path, shots = os.path.join(work, f"shots-{scene}.json"), twice
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(shots, fh, indent=1)
     return path, shots
 
 
@@ -319,7 +345,8 @@ def how_made(*said):
     return "pictures taken off the client's display" if off else "the game's own screenshots"
 
 
-def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's own screenshots"):
+def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's own screenshots", time=None,
+            look=None, dress=False):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
     some of the scene's shots were taken, what an earlier trip under this tag left stays."""
@@ -352,12 +379,16 @@ def to_send(scene, tag, commit, at, shots, target, send, some, how="the game's o
             picture.convert("RGB").save(jpg, "JPEG", quality=JPEG_QUALITY, subsampling=0)
         with open(jpg, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:16]
-        rows[shot["name"]] = f"{shot['name']} {shot.get('time', shoot.DEFAULT_TIME)} {commit} {digest}"
+        rows[shot["name"]] = (f"{shot['name']} {time if time is not None else shot.get('time', shoot.DEFAULT_TIME)} "
+                              f"{commit} {digest}")
     head = ["# real-machine pictures (tools/win/shuttle.py): shot, tick, commit of the code the picture shows, "
             "first 16 of the picture file's sha256",
             f"# scene {scene}, tag {tag}, plot {at[0]} {at[1]} {at[2]}, taken "
             f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}, {how} as JPEG {JPEG_QUALITY}",
             f"# distances: {distances()}"]
+    if look:
+        head.append(f"# windows: lit by the table of look {look} (the scene was built for that light version)"
+                    + ("; the building's own lights on (sky/lights DRESS, which the code keeps off)" if dress else ""))
     with open(note, "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(head + list(rows.values())) + "\n")
     return len(rows)
@@ -390,6 +421,9 @@ def main():
     ap.add_argument("--only", action="append", default=[], metavar="SCENE=A,B")
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
     ap.add_argument("--gallery", action="append", default=[], metavar="SCENE")
+    ap.add_argument("--look")
+    ap.add_argument("--dress", action="store_true")
+    ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--no-shoot", action="store_true")
     ap.add_argument("--keep-client", action="store_true")
@@ -410,9 +444,21 @@ def main():
 
     lists = pairs(args.shots, "shots")
     only = {scene: names.split(",") for scene, names in pairs(args.only, "only").items()}
-    for scene in list(lists) + list(only) + args.gallery:
+    again = {}
+    for scene, names in pairs(args.again, "again").items():
+        again[scene] = {}
+        for name in names.split(","):
+            shot, _, seconds = name.partition(":")
+            try:
+                again[scene][shot] = float(seconds or 2.5)
+            except ValueError:
+                raise SystemExit(f"--again {scene}={name}: {seconds!r} is not a number of seconds")
+    for scene in list(lists) + list(only) + list(again) + args.gallery:
         if scene not in args.scenes:
             raise SystemExit(f"{scene} is not one of this trip's scenes")
+    if args.dress and not args.look:
+        raise SystemExit("--dress goes with --look <name> (blue is the default light version)")
+    placelook = os.path.join(TOOLS, "placelook.py")
     # a scene that is only a set of models (no shot list, a gallery asked for) is not placed
     models_only = {scene for scene in args.gallery if scene not in lists and scene != MASTER
                    and not os.path.exists(os.path.join(BUILD, "scenes", scene, "shots.json"))}
@@ -432,7 +478,13 @@ def main():
             if args.no_shoot or scene in models_only:
                 plan.append((scene, where[scene], None, []))
             else:
-                plan.append((scene, where[scene], *shot_list(scene, lists, only, work)))
+                plan.append((scene, where[scene], *shot_list(scene, lists, only, work, again)))
+        when = None
+        if args.look:
+            # the tick of that light version, as the code that is shot has it; an unknown look stops here
+            _, text = run(placelook, "--tick", args.look)
+            when = text.strip().splitlines()[-1].strip()
+            say(f"look {args.look}: shot at tick {when}")
 
         # ---- 1. the look ----
         look = one_look(args.scenes)
@@ -465,8 +517,10 @@ def main():
             for scene, at, _, _ in plan:
                 if scene in models_only:
                     continue
-                say(f"placing {scene} at {at[0]} {at[1]} {at[2]}")
-                _, text = run(os.path.join(BUILD, "place.py"), scene, "--world", world(),
+                say(f"placing {scene} at {at[0]} {at[1]} {at[2]}" + (f", built for look {args.look}" if args.look else ""))
+                place = [placelook, args.look] + (["--dress"] if args.dress else []) if args.look \
+                    else [os.path.join(BUILD, "place.py")]
+                _, text = run(*place, scene, "--world", world(),
                               "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--at", *at)
                 if "look files changed" in text:
                     raise Stop(f"{scene} changed the look while it was placed; the trip's look was not the scene's")
@@ -509,7 +563,8 @@ def main():
                               "--pw-file", os.path.join(SERVER, ".rcon_pw"),
                               "--out", target, "--origin", *at, "--settle", args.settle,
                               "--first-settle", args.first_settle, "--still", args.still,
-                              *(["--only", ",".join(only[scene])] if scene in only else []), check=False)
+                              *(["--time", when] if when is not None else []),
+                              *(["--only", ",".join(s["name"] for s in shots)] if scene in only else []), check=False)
             if scene in args.gallery:
                 bays_file, bays = gallery(scene, at, work)
                 say(f"shooting {scene}'s gallery: {len(bays)} bays")
@@ -524,7 +579,8 @@ def main():
                 failed.append(f"{scene}: {got} of {len(shots)} pictures")
             # ---- 5. ready to be sent ----
             if got:
-                to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too))
+                to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too),
+                        when, args.look, args.dress)
     except Stop as stop:
         say(f"stopped: {stop}")
         failed.append(str(stop))

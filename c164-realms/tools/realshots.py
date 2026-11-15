@@ -15,7 +15,9 @@ itself; from the admin's computer they arrived in the inbox of the cloud machine
 sent) and then puts them into renders/real/<scene>/<shot>.jpg of this checkout, with the scene's
 own note renders/real/<scene>/real.txt: shot, tick, commit, SHA-256, when it was taken, and the
 distances it was drawn at (view12,clouds128: 12 chunks of view, the smaller of the client's render
-distance and the server's view distance, and a cloud range of 128 chunks). When a
+distance and the server's view distance, and a cloud range of 128 chunks; after them windows-deep
+when the scene was built for a light version named to the shuttle, here "deep", and dressed when
+the building's own lights were turned on for the picture, which the code keeps off). When a
 picture of a scene is missing or is not the file the note describes, nothing of that scene is
 touched and it says which; send again (bin/trip.py --send-only) and take again. A trip that shot
 only some of a scene's shots replaces those and leaves the others, each with its own commit in the
@@ -67,7 +69,11 @@ def read_sent(path):
                     taken = f"{m.group(1)}T{m.group(2)}"
                 m = re.search(r"render distance (\d+), server view distance (\d+), cloud range (\d+)", line)
                 if m:
-                    view = f"view{min(int(m.group(1)), int(m.group(2)))},clouds{m.group(3)}"
+                    view = ",".join(filter(None, [f"view{min(int(m.group(1)), int(m.group(2)))},clouds{m.group(3)}", view]))
+                m = re.match(r"# windows: lit by the table of look (\w+)", line)
+                if m:
+                    view = ",".join(filter(None, [view, f"windows-{m.group(1)}",
+                                                  "dressed" if "the building's own lights on" in line else None]))
                 continue
             parts = line.split()
             if len(parts) == 4 and NAME_OK.match(parts[0]):

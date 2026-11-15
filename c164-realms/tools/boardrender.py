@@ -145,10 +145,10 @@ def _font():
         return ImageFont.load_default()
 
 
-def _cell(img, pen, font, at, path, label):
+def _cell(img, pen, font, at, path, label, size=CELL):
     if os.path.exists(path):
         with Image.open(path) as picture:
-            img.paste(picture.convert("RGB").resize(CELL, Image.LANCZOS), at)
+            img.paste(picture.convert("RGB").resize(size, Image.LANCZOS), at)
     box = pen.textbbox((at[0] + 5, at[1] + 2), label, font=font)
     pen.rectangle((at[0], at[1], box[2] + 5, box[3] + 4), fill=(0, 0, 0))
     pen.text((at[0] + 5, at[1] + 2), label, fill=(255, 255, 255), font=font)
@@ -180,6 +180,21 @@ def side_by_side(left, right, names, title, out, exts=(".png", ".jpg"), labels=(
         x, y = i % 2 * 2 * CELL[0], band + i // 2 * CELL[1]
         _cell(img, pen, font, (x, y), os.path.join(left, name + exts[0]), f"{name}  {labels[0]}")
         _cell(img, pen, font, (x + CELL[0], y), os.path.join(right, name + exts[1]), f"{name}  {labels[1]}")
+    img.save(out, "JPEG", quality=88)
+
+
+def in_columns(columns, names, title, out, ext=".jpg", size=(960, 540)):
+    """One row a view, one column a folder: `columns` is [(label, folder)]. The same views under
+    several light versions, to be told apart at a glance."""
+    font = _font()
+    band = 34
+    img = Image.new("RGB", (size[0] * len(columns), band + size[1] * len(names)), (16, 16, 20))
+    pen = ImageDraw.Draw(img)
+    pen.text((8, 5), title, fill=(230, 230, 230), font=font)
+    for row, name in enumerate(names):
+        for col, (label, folder) in enumerate(columns):
+            _cell(img, pen, font, (col * size[0], band + row * size[1]), os.path.join(folder, name + ext),
+                  f"{name}  {label}", size)
     img.save(out, "JPEG", quality=88)
 
 
