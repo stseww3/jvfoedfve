@@ -153,7 +153,11 @@ VIEWS = {   # name: (eye, looks at), scene coordinates
 }
 EVERY_LOOK = ("wall_near", "wall_mid", "wall_far", "cards", "west", "comet", "zenith")
 DEFAULT_ONLY = ("wall_side", "posts", "east", "south")
-TRIAL_VIEWS = {"card": ("comet",), "pink": ("west", "wall_mid"), "near": ("posts",), "far": ("posts",)}
+TRIAL_VIEWS = {"card": ("comet",), "pink": ("west", "wall_mid"), "near": ("posts",), "far": ("posts",),
+               # the seam trials (director, 11-16): the join reads at the horizon, so the views that
+               # look at the layer's far edge, the way down, and the sky overhead
+               "deep384": ("west", "posts", "wall_far"), "deep768": ("west", "posts", "wall_far"),
+               "deep1536": ("west", "posts", "wall_far")}
 
 
 def shots():
