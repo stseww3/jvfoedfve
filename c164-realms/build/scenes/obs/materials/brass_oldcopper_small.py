@@ -106,6 +106,22 @@ def _worn(steps, body, seed, w=TILE, h=TILE, light=0.0, pits=0.0):
     return px
 
 
+def _single(px, body, near=4):
+    """Wear is single pixels. Dice thrown cell by cell now and then land marks side by side, and
+    three pits in a row are a scratch that one plate in three carries: on a wall it can be counted.
+    Where two marks (cells that are not the tone `body`) touch -- by a side, with near=8 by a corner
+    too -- the later one in reading order goes back to the body tone."""
+    h, w = px.shape[:2]
+    back = ((-1, 0), (0, -1)) + (((-1, -1), (1, -1)) if near == 8 else ())
+    marked = (px[..., :3] != np.asarray(body, dtype=np.uint8)).any(axis=2)
+    for y in range(h):
+        for x in range(w):
+            if marked[y, x] and any(0 <= x + i < w and 0 <= y + j < h and marked[y + j, x + i] for i, j in back):
+                marked[y, x] = False
+                px[y, x, :3] = body
+    return px
+
+
 def _raised(px, x0, y0, x1, y1, light, dark):
     """The rim of x0..x1-1, y0..y1-1 as a plate standing proud: light along its top and left, dark
     along its bottom and right. The two corners where light meets dark keep what is there. With the
@@ -348,12 +364,19 @@ def _plaque(w, h):
 
 
 # ---- old copper ----------------------------------------------------------------------------------------
+# The face of old copper is the ramp's second step, its lit edge the third, its shadowed edge and
+# its pits the lowest (the director, 11-16). On the ramp's middle step a sheet is as light as the
+# stone beside it: a pink tile under a lamp, a mauve slab under the sky. A step down it is the brown
+# of an old coin, and a gutter is a deep line between the roof and the cornice.
+_COPPER = 1
+
+
 def _copper(seed):
     """OLD_COPPER: one dull brown sheet with a shallow raised edge: copper that has stood outdoors,
-    not polished. The face is one even tone with a few pits and rubbed spots; patches of stain
-    read as fired clay, not as metal. Three versions."""
-    px = _worn(C, 2, seed, pits=0.04, light=0.015)
-    _raised(px, 0, 0, TILE, TILE, C[3], C[1])
+    not polished. The face is one even tone with a few pits and rubbed spots, each a single pixel;
+    patches of stain read as fired clay, not as metal. Three versions."""
+    px = _single(_worn(C, _COPPER, seed, pits=0.04, light=0.015), C[_COPPER])
+    _raised(px, 0, 0, TILE, TILE, C[_COPPER + 1], C[_COPPER - 1])
     return px
 
 
@@ -366,8 +389,8 @@ def _copper_cut(seed):
     versions differ by their pits."""
     px = np.zeros((TILE, TILE, 4), np.uint8)
     for n, (x, y) in enumerate(((0, 0), (8, 0), (0, 8), (8, 8))):
-        px[y:y + 8, x:x + 8] = _worn(C, 2, seed * 4 + n, 8, 8, pits=0.03, light=0.01)
-        _raised(px, x, y, x + 8, y + 8, C[3], C[1])
+        px[y:y + 8, x:x + 8] = _single(_worn(C, _COPPER, seed * 4 + n, 8, 8, pits=0.03, light=0.01), C[_COPPER])
+        _raised(px, x, y, x + 8, y + 8, C[_COPPER + 1], C[_COPPER - 1])
     return px
 
 
@@ -388,8 +411,19 @@ def _inlay(seed):
     """BRASS_INLAY: the brass let into the paving. The low end of the ramp, flat, with a few
     pixels pitted dark and a few worn bright where feet pass; no edge and no direction of its own,
     so a line and a ring of it are unbroken whichever way they run. Under the night sky it is a
-    dark metal, warmer than the slate and between the slate and its tuff flanks in brightness."""
-    return _worn(R, 1, seed, pits=0.05, light=0.025)
+    dark metal, warmer than the slate and between the slate and its tuff flanks in brightness.
+    The wear is as sparse as the wall plate's and no worn pixel lies against a pit: sprinkled
+    evenly and close, the two are the grain of cork and not the marks on a trodden plate."""
+    return _single(_worn(R, 1, seed, pits=0.015, light=0.008), R[1], near=8)
+
+
+def _sunk(ref, model):
+    """The game lays a carpet a pixel proud of the ground, and its side is a dark line all round it:
+    a mat on the floor. The plate is let into the paving, as high as the line beside it (_flush)."""
+    for box in model["elements"]:
+        if box["from"][1] == 0 and box["to"][1] == 1 and not box.get("rotation"):
+            box["to"][1] = 0.25
+    return model
 
 
 # The line in the floor (A0, 11-14): metal trodden dark, no lighter than the lightest paving beside
@@ -487,15 +521,26 @@ _STANDING = {"faces": ((0, 2, 24, 14), (0, 16, 24, 28)),
              "post": ((28, 0, 30, 14), (30, 0, 32, 14), (28, 16, 30, 30), (30, 16, 32, 30), (28, 30, 30, 32))}
 _HANGING = {"faces": ((2, 16, 16, 26), (18, 16, 32, 26)),
             "edges": ((2, 14, 16, 16), (2, 26, 16, 28), (0, 16, 2, 26), (16, 16, 18, 26)),
-            "post": ()}
+            "post": (), "chain": ((20, 0, 32, 14),)}
 
 
-def _sheet(ref, layout, face, edge, hardware, base, post=None):
+def _sheet(ref, layout, face, edge, hardware, base, post=None, chain=None):
     """A sign's sheet: the game's cut-out, the board's two faces drawn by face(w, h), its edges in
     `edge`, its post a rod two pixels thick in the colours `post` (lit side, far side), and the
-    rest of it (the bar and the chains of a hanging sign) toned into the ramp `hardware`."""
+    rest of it (the bar and the chains of a hanging sign) toned into the ramp `hardware`.
+
+    The game draws its chains far darker than its boards. Toned with the rest of the sheet every
+    link lands on the ramp's lowest step, and two links over a plaque are two black buckles. With
+    `chain` = (ramp, step) the links are toned by themselves: their middle tone is that step, the
+    lit side of a link a step above it and the far side a step below."""
     src = _vanilla(ref)
     px = _tone(src, hardware, base)
+    for x0, y0, x1, y1 in layout.get("chain", ()) if chain else ():
+        links = np.zeros_like(src)
+        links[y0:y1, x0:x1] = src[y0:y1, x0:x1]
+        if not (links[..., 3] > 0).any():
+            raise ValueError(f"{ref}: the sign's chains are not where this package tones them ({x0}, {y0}, {x1}, {y1})")
+        px[y0:y1, x0:x1] = _tone(links, *chain, spread=2.0)[y0:y1, x0:x1]
     for x0, y0, x1, y1 in layout["faces"] + layout["edges"] + layout["post"]:
         if not (src[y0:y1, x0:x1, 3] > 0).all():
             raise ValueError(f"{ref}: the sign is not where this package draws it ({x0}, {y0}, {x1}, {y1})")
@@ -548,6 +593,7 @@ SHOWS = {
 
 
 _LINES = K.blocks(B.BRASS_LINE, B.BRASS_CROSS, B.BRASS_STAR)
+_INLAYS = K.blocks(B.BRASS_INLAY)
 
 
 def pack(pack_dir):
@@ -569,7 +615,9 @@ def pack(pack_dir):
     paint("brass_door_top", _door_top())
     paint("brass_door_bottom", _door_bottom())
     paint("brass_sign", _sheet("block/bamboo_sign", _STANDING, _plaque, R[2], "brass", 1, post=(R[2], R[0])))
-    paint("brass_hanging_sign", _sheet("block/bamboo_hanging_sign", _HANGING, _plaque, R[2], "iron", 3))
+    # a brass plaque hangs by brass chains from an iron bar; the links' middle tone is the plaque's edge
+    paint("brass_hanging_sign", _sheet("block/bamboo_hanging_sign", _HANGING, _plaque, R[2], "iron", 3,
+                                       chain=("brass", 2)))
     # old copper
     paint("old_copper", [_copper(s) for s in (1, 2, 3)])
     paint("old_copper_cut", [_copper_cut(s) for s in (1, 2, 3)])
@@ -582,13 +630,15 @@ def pack(pack_dir):
     paint("brass_line_star", _line_star())
     paint("enamel_plate", _brushed("enamel", 32, noise=0.04))
     paint("enamel_sign", _sheet("block/oak_sign", _STANDING, _nameplate, E[0], "iron", 3, post=(I[4], I[2])))
-    paint("enamel_hanging_sign", _sheet("block/oak_hanging_sign", _HANGING, _nameplate, E[0], "iron", 3))
+    # the enamel plate keeps iron chains, a step above the bar: lighter than a dark wall behind them
+    paint("enamel_hanging_sign", _sheet("block/oak_hanging_sign", _HANGING, _nameplate, E[0], "iron", 3,
+                                        chain=("iron", 4)))
 
     out = []
     for block in BLOCKS:
         shows = {ref: SHOWS[ref.rpartition("/")[2]] for ref in respack.block_pictures(K.game(), block)}
         # a block is mixed in as many versions as the least varied of its pictures has
         out.append(K.redirect(pack_dir, block, shows, variants=min(versions[name] for name in shows.values()),
-                              edit=_flush if block in _LINES else None))
+                              edit=_flush if block in _LINES else _sunk if block in _INLAYS else None))
     out.append(K.sounds(pack_dir, {event: [{"name": to, "type": "event"}] for event, to in SOUNDS.items()}))
     return out
