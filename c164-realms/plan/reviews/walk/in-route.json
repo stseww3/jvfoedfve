@@ -6,7 +6,7 @@
     {"at": [20.5, 0, -3.5], "node": "before the north gate", "look": [16.5, 2.5, -3.5]},
     {"at": [20.5, 0, 4.5], "node": "before the south gate", "look": [16.5, 2.5, 4.5]},
     {"at": [20.5, 0, 0.5], "node": "before the middle arch", "look": [10.5, 2.5, 0.5]},
-    {"at": [17.5, 0, 0.5], "node": "under the middle arch"}
+    {"at": [16.5, 0, 0.5], "node": "under the middle arch"}
   ]},
   {"id": "B", "name": "the star hall, ground floor", "points": [
     {"at": [15.5, 0, 0.5], "node": "inside the entrance"},
@@ -21,9 +21,9 @@
   {"id": "C", "name": "the way to the west door", "points": [
     {"at": [2.5, 0, 0.5], "node": "before the middle arch of the west arcade", "hop": true},
     {"at": [0.5, 0, 0.5], "node": "under the middle arch of the west arcade"},
-    {"at": [-5.5, 0, 0.5]},
-    {"at": [-7.5, 0, 0.5], "node": "inside the west door"},
-    {"at": [-10.5, 0, 0.5], "node": "outside the west door"}
+    {"at": [-4.5, 0, 0.5], "node": "inside the west door"},
+    {"at": [-7.5, 0, 0.5], "node": "in the west door"},
+    {"at": [-10.5, 0, 0.5], "node": "outside the west door, on the sunset terrace"}
   ]},
   {"id": "D", "name": "the grand stair, both flights", "points": [
     {"at": [2.5, 0, -3.5], "node": "the foot of the north flight", "hop": true},
@@ -83,29 +83,41 @@
     {"at": [-3.5, 18, 0.5], "node": "the dome room, west (under the slit)"},
     {"at": [-1.2, 18, -5.2]}
   ]},
-  {"id": "J", "name": "the south roofs: corner terrace, ridge walk, the small dome's terrace", "points": [
-    {"at": [10.5, 18, 8.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5], "hop": true},
+  {"id": "J", "name": "the south roofs: corner terrace, ridge walk, the end terrace, the small dome", "points": [
+    {"at": [11.5, 18, 6.5], "node": "inside the dome room's south door", "look": [12.5, 19, 10.5], "hop": true},
+    {"at": [12.5, 18, 8.5]},
     {"at": [12.5, 18, 10.5], "node": "in the dome room's south door"},
-    {"at": [13.5, 18, 12.5], "node": "the south corner terrace"},
-    {"at": [13.5, 18, 15.5], "node": "where the south way climbs to the ridge"},
-    {"at": [8.5, 20, 15.5], "node": "the south ridge's near end"},
+    {"at": [12.5, 18, 12.5], "node": "the south corner terrace"},
+    {"at": [13.5, 18, 14.5], "node": "where the south way crosses the inner gable"},
+    {"at": [12.5, 18, 15.5]},
+    {"at": [10.5, 19, 15.5]},
+    {"at": [8.5, 20, 16.5], "node": "the south ridge's near end"},
     {"at": [8.0, 20, 25.5], "node": "the south ridge's far end"},
+    {"at": [5.5, 19, 25.5]},
     {"at": [2.5, 18, 25.5], "node": "the foot of the south way down"},
-    {"at": [2.5, 18, 27.5], "node": "the south end terrace's corner"},
-    {"at": [2.5, 18, 30.5], "node": "the south end terrace on its axis"},
-    {"at": [8.0, 18, 30.5], "node": "before the small dome's door"}
+    {"at": [2.5, 18, 27.5], "node": "the south end terrace's near corner"},
+    {"at": [2.5, 18, 32.5], "node": "the south end terrace's far corner"},
+    {"at": [8.5, 18, 30.5], "node": "before the small dome's door", "look": [9.5, 19, 30.5]},
+    {"at": [10.5, 18, 30.5], "node": "inside the small dome's door"},
+    {"at": [12.5, 18, 30.5], "node": "the small dome's floor, the middle"}
   ]},
-  {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the clock tower's foot", "points": [
-    {"at": [10.5, 18, -7.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5], "hop": true},
+  {"id": "K", "name": "the north roofs: corner terrace, ridge walk, the end terrace, the clock tower's foot", "points": [
+    {"at": [11.5, 18, -5.5], "node": "inside the dome room's north door", "look": [12.5, 19, -9.5], "hop": true},
+    {"at": [12.5, 18, -7.5]},
     {"at": [12.5, 18, -9.5], "node": "in the dome room's north door"},
-    {"at": [13.5, 18, -11.5], "node": "the north corner terrace"},
-    {"at": [13.5, 18, -14.5], "node": "where the north way climbs to the ridge"},
-    {"at": [8.5, 20, -14.5], "node": "the north ridge's near end"},
+    {"at": [12.5, 18, -11.5], "node": "the north corner terrace"},
+    {"at": [13.5, 18, -13.5], "node": "where the north way crosses the inner gable"},
+    {"at": [12.5, 18, -14.5]},
+    {"at": [10.5, 19, -14.5]},
+    {"at": [8.5, 20, -15.5], "node": "the north ridge's near end"},
     {"at": [8.0, 20, -24.5], "node": "the north ridge's far end"},
+    {"at": [5.5, 19, -24.5]},
     {"at": [2.5, 18, -24.5], "node": "the foot of the north way down"},
-    {"at": [2.5, 18, -26.5], "node": "the north end terrace's corner"},
-    {"at": [2.5, 18, -29.5], "node": "the north end terrace on its axis"},
-    {"at": [9.0, 18, -29.5], "node": "before the clock tower's door"}
+    {"at": [2.5, 18, -26.5], "node": "the north end terrace's near corner"},
+    {"at": [2.5, 18, -31.5], "node": "the north end terrace's far corner"},
+    {"at": [9.5, 18, -29.5], "node": "before the clock tower's door", "look": [10.5, 19, -29.5]},
+    {"at": [11.5, 18, -29.5], "node": "inside the clock tower's door"},
+    {"at": [13.5, 18, -29.5], "node": "the clock tower's floor, the middle"}
   ]}
  ]
 }
