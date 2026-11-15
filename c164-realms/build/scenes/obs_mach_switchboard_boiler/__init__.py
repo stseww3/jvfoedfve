@@ -4,7 +4,7 @@ The power house's box with the boiler against the north wall -- its fire door on
 that glows in the house's own window table (north bay 4, x 81..83, y -3..-1) -- and the marble
 switchboard on the west wall. The room is x 67..89, z 20..42, feet at y -6, walls ten high.
 
-  fire_north      the boiler's fire door from inside the room, straight on
+  fire_east       the boiler's fire door from inside the room, straight on
   fire_slant      the same from an angle, so the drum, its hoops and the mouth read together
   fire_far        the mouth from the far side of the room, the way V6 sees it through the window
   board           the switchboard face on the west wall
@@ -47,13 +47,13 @@ def _room(c):
         for z in range(Z0, Z1 + 1):
             c.set(X0, y, z, WALL)
             c.set(X1, y, z, WALL)
-    # the fire window in the north wall, cut open so the glow can be seen from outside
-    for x in range(SB.FIRE_AXIS["x"][0], SB.FIRE_AXIS["x"][1] + 1):
+    # the fire window in the east wall, cut open so the glow can be seen from outside
+    for z in range(SB.FIRE_AXIS["cells"][0], SB.FIRE_AXIS["cells"][1] + 1):
         for y in range(SB.FIRE_AXIS["y"][0], SB.FIRE_AXIS["y"][1] + 1):
-            c.carve(x, y, Z0, x, y, Z0)
+            c.carve(X1, y, z, X1, y, z)
     # the door on the south wall, for the room view
-    c.carve(int(SB.FIRE_MID_X) - 1, FEET, Z1, int(SB.FIRE_MID_X) + 1, FEET + 2, Z1)
-    c.set(int(SB.FIRE_MID_X), CEIL - 1, int(SB.BOILER_C[2]) + 2, f"{B.LIGHT}[level={WORK_LIGHT}]")
+    c.carve(int(SB.BOILER_C[0]) - 1, FEET, Z1, int(SB.BOILER_C[0]) + 1, FEET + 2, Z1)
+    c.set(int(SB.BOILER_C[0]) - 2, CEIL - 1, int(SB.BOILER_C[2]), f"{B.LIGHT}[level={WORK_LIGHT}]")
     return c
 
 
@@ -84,14 +84,13 @@ def shots():
         out.append({"name": name, "pos": [round(v, 2) for v in pos], "look_at": [round(v, 2) for v in look_at],
                     "time": time})
 
-    fx = SB.FIRE_MID_X
-    bz = SB.BOILER_C[2]
+    bx_, bz = SB.BOILER_C[0], SB.BOILER_C[2]
     eye = FEET + 1.62
-    shot("fire_north", (fx, eye, bz + 4.6), (fx, FEET + 1.5, bz - 1.4))
-    shot("fire_slant", (fx + 3.2, FEET + 2.2, bz + 4.4), (fx, FEET + 1.5, bz - 1.4))
-    shot("fire_far", (fx, FEET + 1.7, Z1 - 3.0), (fx, FEET + 1.3, bz + 1.0))
+    shot("fire_east", (bx_ - 4.4, eye, bz), (bx_ + 1.0, FEET + 1.5, bz))
+    shot("fire_slant", (bx_ - 3.6, FEET + 2.2, bz + 3.0), (bx_ + 1.0, FEET + 1.5, bz))
+    shot("fire_far", (bx_ - 7.5, FEET + 1.7, bz - 1.2), (bx_ + 1.0, FEET + 1.4, bz))
     bx, _, bz2 = SB.BOARD_AT
     shot("board", (bx + 3.4, FEET + 1.9, bz2), (bx, FEET + 1.8, bz2))
     shot("board_slant", (bx + 4.6, FEET + 2.1, bz2 + 3.4), (bx, FEET + 1.8, bz2))
-    shot("room", (fx - 1.0, eye, Z1 - 2.2), (bx + 1.0, FEET + 1.7, bz))
+    shot("room", (bx_ - 2.0, eye, Z1 - 2.6), (bx + 1.0, FEET + 1.7, bz))
     return out

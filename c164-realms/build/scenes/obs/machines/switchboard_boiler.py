@@ -59,8 +59,10 @@ WALL_H = PH["wall_h"]               # 10
 EAVES = FEET + WALL_H - 1           # 3
 
 # site/powerhouse.windows() storey "furnace": north bay 4 at x 81..83, east bay 2 at z 26..28, y -3..-1
-FIRE_AXIS = dict(front="north", x=(81, 83), z=Z0, y=(-3, -1))
-FIRE_MID_X = (FIRE_AXIS["x"][0] + FIRE_AXIS["x"][1] + 1) / 2.0     # 82.5, the window's centre
+FIRE_AXES = dict(north=dict(cells=(81, 83), y=(-3, -1)), east=dict(cells=(26, 28), y=(-3, -1)))
+# the east window is the one the door aims at: it is on the wall the boiler stands against
+FIRE_AXIS = dict(front="east", cells=(26, 28), y=(-3, -1))
+FIRE_MID_Z = (FIRE_AXIS["cells"][0] + FIRE_AXIS["cells"][1] + 1) / 2.0     # 27.5, the window's centre
 
 # where the boiler stands: its fire door on the window's axis, the drum back from the north wall so
 # the mouth looks straight at the glass
@@ -68,7 +70,7 @@ BOILER_R = 21.0                     # drawn radius: an 18-sided tube spans a lit
 BOILER_SCALE = 3.0 * 16.0 / (2.0 * BOILER_R)      # 1.09: 44 units draw 3 blocks
 BOILER_H = 4.0                      # the drum's height, blocks (the card)
 BOILER_LOWER = 2.2                  # the lower section's height in blocks; the rest is the upper one
-BOILER_C = (FIRE_MID_X, FEET, Z0 + 3.2)           # its centre: 3.2 blocks into the room from the wall
+BOILER_C = (X1 - 3.4, FEET, FIRE_MID_Z)           # 3.4 blocks in from the east wall, on the window's axis
 
 # where the switchboard stands: on the west wall, its face looking east into the room
 BOARD_W, BOARD_T, BOARD_H = 3.0, 0.5, 2.75        # the card says 3; 2.75 leaves the cornice inside 48 units
@@ -285,22 +287,22 @@ def boiler(canvas, origin=(0, 0, 0), centre=None):
     axis; the default puts the mouth on the window's axis. Returns (entities, lights)."""
     cx, cz = centre if centre else (BOILER_C[0], BOILER_C[2])
     n, lights = 0, []
-    yaw = FACING["south"]                     # the door's glowing face (+z) looks into the room
+    yaw = FACING["east"]                      # the door's glowing face (+z) looks at the east fire window
     n += _place(canvas, _models()[BPREFIX + "body"], (cx, FEET, cz), origin, yaw, BOILER_SCALE)
     n += _place(canvas, _models()[BPREFIX + "body_top"], (cx, FEET + BOILER_LOWER, cz), origin, yaw,
                 BOILER_SCALE)
     # the door on the drum's north face
-    door_z = cz + BOILER_R / 16.0 * BOILER_SCALE
-    n += _place(canvas, _models()[BPREFIX + "door"], (cx, FEET + 1.7, door_z), origin, yaw,
+    door_x = cx + BOILER_R / 16.0 * BOILER_SCALE
+    n += _place(canvas, _models()[BPREFIX + "door"], (door_x, FEET + 1.7, cz), origin, yaw,
                 BOILER_SCALE)
     # the valve and gauges on the drum's west side, clear of the door
     n += _place(canvas, _models()[BPREFIX + "gauge"],
-                (cx - BOILER_R / 16.0 * BOILER_SCALE - 0.2, FEET, cz), origin, FACING["west"],
+                (cx, FEET, cz - BOILER_R / 16.0 * BOILER_SCALE - 0.2), origin, FACING["north"],
                 GAUGE_SCALE)
     # the fire light: one cell inside the mouth, at the middle of the mouth's height
     if LIGHTS_ON:
         # the fire light: the cell just inside the mouth
-        lights.append(((int(cx), int(FEET + 1.4), int(door_z) - 1), FIRE_LEVEL))
+        lights.append(((int(door_x) - 1, int(FEET + 1.4), int(cz)), FIRE_LEVEL))
     return n, lights
 
 
