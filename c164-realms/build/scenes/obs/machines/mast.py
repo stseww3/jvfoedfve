@@ -20,8 +20,9 @@ How it is made, from the seat up:
   head    the legs gather to a pole that carries the lamp; an arm on the corner that looks at the
           clock tower holds the aerial. No yard and no gallery: nothing crosses the upright.
   lamp    one small red globe, lit steadily (A0 #36376: it does not blink, the comet is the one
-          thing in the sky that may draw the eye). Its brightest tone is the signal ramp's second
-          lightest, level with the orange windows: a warning lamp, not one more star. Its entity is
+          thing in the sky that may draw the eye). Its brightest tone is the signal ramp's third
+          step, #e8402e, level with the orange windows; the lightest step (#ff8a6a) would read as
+          one more star. A warning lamp, not a light. Its entity is
           tagged c164_signal and mach_mast_light_off is its dark twin, kept for the motion line.
           It throws no light: nothing stands near it to be lit, and a source up there would only
           pale the iron under it.
@@ -116,14 +117,18 @@ TOP_Y = KNEE_Y + BAYS * BAY     # 56.5: the top belt
 GUY_BELT = 5                    # the belt the guys leave from: y 23.5
 GUY_OUT = 0.25                  # ... this far outside the leg's axis in x and in z: just off the joint's corner
 
-# sizes of the members in units of the lattice models (a unit is 4 texels)
+# sizes of the members in units of the lattice models (a unit is 4 texels). Legs and belts keep the
+# sizes cr2 asked for (5 and 3 texels: a leg has to survive as a line at 95 blocks); what is thinned is
+# the web -- the diagonals and the joint and knot plates -- and the tone is lifted, because measured on
+# the second draft's V11 picture the shaft covered 59 per cent of its own width at 57 per cent of the
+# sky's brightness: from far it read as a solid black bar (A0: too black and too heavy).
 LEG_W = 1.25                    # a leg, 5 texels square
 BELT = 0.75                     # a belt, 3 texels square
-BRACE, BRACE_T = 0.75, 0.5      # a diagonal: 3 texels wide in the face, 2 thick
-PLATE_H = 1.75                  # a joint plate: 7 texels high, 1 thick, half a texel proud of the leg
-PLATE_REACH = {"a": 2.25, "b": 2.75}    # ... and this long from the leg's outer edge inwards; in b it reaches
+BRACE, BRACE_T = 0.5, 0.375     # a diagonal: 2 texels wide in the face, 1.5 thick
+PLATE_H = 1.25                  # a joint plate: 5 texels high, 1 thick, half a texel proud of the leg
+PLATE_REACH = {"a": 1.75, "b": 2.25}    # ... and this long from the leg's outer edge inwards; in b it reaches
 #                                         the end of the belt block, which stops half a block short of the leg
-KNOT, KNOT_T = 1.0, 0.25        # the plate where two diagonals cross: 4 texels square, 1 thick
+KNOT, KNOT_T = 0.75, 0.25       # the plate where two diagonals cross: 3 texels square, 1 thick
 RIVET = 0.25                    # ... and the head of the rivet through it: 1 texel
 COLLAR = 0.875                  # half the width of the collars that close a leg's two ends
 LEG_U, BAY_U = LEG / U, BAY / U         # 4 and 12 units
@@ -154,8 +159,12 @@ VIEW = 8.0                      # view range: 512 blocks at the client's normal 
 BRIGHT = (15, 0)                # (sky, block): what a piece takes under the open sky with no lamp near
 
 IRON = P.mat("iron")                            # fittings
-IRON_D = P.mat("iron_dark")                     # the lattice: legs, belts, plates
-IRON_F = P.mat("iron_flat")                     # the diagonals: the lattice's tone without speckle or edge
+# The lattice is drawn one ramp step lighter than the second draft's (#303844 instead of #252b34):
+# measured against the sky in the V11 picture the second draft came out at 57 per cent of the sky's
+# brightness, which is what read as a black bar. One step up keeps it darker than the sky -- it still
+# holds as a silhouette -- without cutting a hole in the night (A0: not much darker than the sky).
+IRON_D = P.mat("iron", noise=0.12, bevel=1, base=4)     # the lattice: legs, belts, plates
+IRON_F = P.mat("iron", kind="flat", bevel=0, base=4)    # the diagonals: the lattice's tone without speckle or edge
 PORCELAIN = P.mat("porcelain")                  # white: the foot, the guys
 GREY = P.mat("porcelain", base=0, noise=0.0)    # the ramp's two darkest steps: the discs aloft
 BRASS = P.mat("brass")
@@ -374,8 +383,9 @@ def _glass_ball(m, centre, radius, bands, emit):
 
 def _light(name, lit):
     """The lamp: a red globe half a block across in an iron holder. Anchor: its foot, on the pole's
-    top. Lit, its belly is the signal ramp's second lightest tone and its two ends the third; the
-    lightest, an orange pink as bright as a golden window, is not used."""
+    top. Lit, its belly is the signal ramp's third step (0.440, #e8402e) and its two ends the second
+    (0.276, #a3201a). The ramp's top step (0.664, #ff8a6a) is not used: an orange pink as bright as a
+    golden window would read as one more star beside the comet. A warning lamp, not a light."""
     m = M.Model(name)
     m.tube("y", (0.0, 0.0), 0.0, 1.5, 2.5, IRON_D)
     m.tube("y", (0.0, 0.0), 1.5, 2.5, 1.5, IRON)
