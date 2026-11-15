@@ -4,8 +4,9 @@
     walkreach.py <scene> [--canvas <pickle>] [--out <folder>] [--start x,y,z] [--points <file>]
         builds the scene (or reads the pickle build/render.py --canvas wrote; a whole `obs` is built
         on a worker node, never on the shared machine), works out where a person can stand and how
-        he gets from one place to the next, and writes <folder>/reach.json (what was found) and
-        <folder>/reach.png (a map). Without --out it only says what it found.
+        he gets from one place to the next, and writes <folder>/reach.json (what was found),
+        <folder>/reach.png (a map) and <folder>/reach.txt (the same as two plans in characters, a
+        block a character, to read coordinates from). Without --out it only says what it found.
     walkreach.py --selftest
         the arithmetic on small worlds built by hand; needs no scene.
 
@@ -40,7 +41,7 @@ What is found, by how a place is reached from the start:
 and besides: every piece reached by hopping only (a way that needs a jump is 走不通 for some), every
 standing place with less than two blocks over the head, every low gap beside the way that only
 head room closes, and the points named with --points (the route's landmarks) with how each is
-reached. The shapes are the game's collision shapes of the blocks the occupancy table allows
+reached and what kind of way leads from each to the next. The shapes are the game's collision shapes of the blocks the occupancy table allows
 (build/scenes/obs/common/blocks.py); a block whose shape is not written down here counts as a
 whole cube and is named in the report, so nothing passes unseen for a guess.
 """
@@ -530,8 +531,9 @@ class Reach:
             return None
         return self.way(self.start, goal, kinds)
 
-    def way(self, a, b, kinds=("walk", "jump", "drop")):
-        """The shortest way between two nodes along steps of these kinds, as points; None: none."""
+    def way(self, a, b, kinds=("walk", "jump", "drop"), drop=None):
+        """The shortest way between two nodes along steps of these kinds (no drop deeper than `drop`
+        when that is given), as points; None: none."""
         seen, todo = {a: None}, deque([a])
         while todo:
             node = todo.popleft()
@@ -541,8 +543,8 @@ class Reach:
                     out.append(point(node))
                     node = seen[node]
                 return out[::-1]
-            for nxt, kind, _ in self.out.get(node) or ():
-                if nxt not in seen and kind in kinds:
+            for nxt, kind, rise in self.out.get(node) or ():
+                if nxt not in seen and kind in kinds and not (drop is not None and kind == "drop" and -rise > drop + EPS):
                     seen[nxt] = node
                     todo.append(nxt)
         return None
@@ -659,6 +661,60 @@ class Reach:
                 named[name] = dict(point=[x, y, z], reached=self.kind[node], at=box_of([node])["at"],
                                    blocks=round(self.steps[node] * GRID, 1))
             out["points"] = named
+            out["legs"] = self.legs(points)
+        return out
+
+    def legs(self, points, slack=0.75):
+        """The way from each point to the next, in the order given: the easiest kind of way there is
+        ("walk"; "hop" with jumps and short drops; "fall" with any drop; "no"), its length in
+        blocks and its line, thinned to the points that keep it within `slack` blocks."""
+        tries = (("walk", ("walk",), None), ("hop", ("walk", "jump", "drop"), JUMP), ("fall", ("walk", "jump", "drop"), None))
+        out, names = [], list(points)
+        for a, b in zip(names, names[1:]):
+            na = self.node_at(points[a][0], points[a][2], points[a][1], reach=2)
+            nb = self.node_at(points[b][0], points[b][2], points[b][1], reach=2)
+            leg = {"from": a, "to": b, "kind": "no"}
+            if na is not None and nb is not None:
+                for kind, steps, drop in tries:
+                    line = self.way(na, nb, steps, drop)
+                    if line:
+                        leg.update(kind=kind, blocks=round((len(line) - 1) * GRID, 1),
+                                   line=[[x, round(y, 2), z] for x, y, z in thin(line, slack)])
+                        break
+            out.append(leg)
+        return out
+
+    def plan(self, box=None):
+        """Two plans in characters, a block a character, north on top: how the block's middle is
+        reached (W walk, h hop, f fall, T trap, . not at all; the highest place reached counts) and
+        how high the feet stand there (0-9 as they are, a-z for -1 to -26, + for more than 9; a half
+        block counts with the whole below it)."""
+        if box is None:
+            xs = [n[0] for n in self.kind]
+            zs = [n[1] for n in self.kind]
+            box = (min(xs) // 2 - 1, min(zs) // 2 - 1, max(xs) // 2 + 1, max(zs) // 2 + 1)
+        x0, z0, x1, z1 = box
+        top = {}
+        for node in self.kind:
+            if node[0] % 2 and node[1] % 2:
+                key = (node[0] // 2, node[1] // 2)
+                if key not in top or node[2] > top[key][2]:
+                    top[key] = node
+        mark = {"walk": "W", "hop": "h", "fall": "f", "trap": "T"}
+        tens = "      " + "".join((str(abs(x) // 10 % 10) if x % 10 == 0 else " ") for x in range(x0, x1 + 1))
+        ones = "      " + "".join(str(abs(x) % 10) for x in range(x0, x1 + 1))
+
+        def level(node):
+            y = math.floor(node[2] / float(Q) + EPS)
+            return str(y) if 0 <= y <= 9 else "+" if y > 9 else chr(ord("a") - y - 1) if y >= -26 else "-"
+
+        out = [f"== how each block is reached: x {x0}..{x1} left to right (a ruler of tens and ones on top), rows z {z0}..{z1}",
+               tens, ones]
+        for z in range(z0, z1 + 1):
+            out.append(f"{z:5d} " + "".join(mark[self.kind[top[(x, z)]]] if (x, z) in top else "." for x in range(x0, x1 + 1)))
+        out += ["", f"== how high the feet stand there (0-9, a-z for -1 to -26, + over 9): x {x0}..{x1}, rows z {z0}..{z1}", tens, ones]
+        for z in range(z0, z1 + 1):
+            out.append(f"{z:5d} " + "".join(level(top[(x, z)]) if (x, z) in top else "." for x in range(x0, x1 + 1)))
         return out
 
     def pieces_by_kind(self, marked):
@@ -698,6 +754,33 @@ class Reach:
                     if self.kind.get(node, "trap") != "trap" and top > h and (best is None or top - h < best):
                         best = top - h
         return None if best is None else round(best, 2)
+
+
+def thin(line, slack=0.75):
+    """A line of points (x, y, z) with only the points kept that hold it within `slack` blocks of
+    where it ran (the height counts as a distance too)."""
+    if len(line) < 3:
+        return list(line)
+    keep = [0, len(line) - 1]
+    todo = [(0, len(line) - 1)]
+    while todo:
+        a, b = todo.pop()
+        if b - a < 2:
+            continue
+        pa, pb = line[a], line[b]
+        d = [pb[k] - pa[k] for k in range(3)]
+        dd = sum(v * v for v in d)
+        far, at = 0.0, None
+        for n in range(a + 1, b):
+            v = [line[n][k] - pa[k] for k in range(3)]
+            t = 0.0 if dd < EPS else max(0.0, min(1.0, sum(v[k] * d[k] for k in range(3)) / dd))
+            off = math.sqrt(sum((v[k] - t * d[k]) ** 2 for k in range(3)))
+            if off > far:
+                far, at = off, n
+        if at is not None and far > slack:
+            keep.append(at)
+            todo += [(a, at), (at, b)]
+    return [line[n] for n in sorted(set(keep))]
 
 
 def box_of(nodes):
@@ -780,36 +863,40 @@ def cells_of(scene, canvas=None):
 
 
 def landmarks():
-    """The landmarks of the outdoor route (walk.md), from the skeleton: {name: (x, feet, z)}."""
+    """The landmarks of the outdoor route (walk.md) in the order it visits them, from the skeleton:
+    {name: (x, feet, z)}."""
     from scenes.obs.common import skeleton as S
     house = S.POWER_HOUSE["box"]
     hut = S.MERIDIAN_HUT
     sunset = S.SUNSET_PLATFORM
-    out = {
+
+    def shelf(part):
+        box = part["box"]
+        return S.mid(box[0], box[2]), part["feet"], S.mid(box[1], box[3])
+
+    return {
         "spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
         "lower platform, before the stair": (S.GRAND_STAIR["x1"] + 3.5, S.LOWER_GROUND, S.AXIS_Z),
         "stair head": (S.EAST_EDGE_X - 1.5, S.GROUND, S.AXIS_Z),
         "court, on the axis by the armillary": (S.ARMILLARY[0] + 3.5, S.GROUND, S.AXIS_Z),
-        "court, north end of the meridian": (S.MERIDIAN_X + 0.5, S.GROUND, hut["door"][1] + 2.5),
         "court, south end of the meridian": (S.MERIDIAN_X + 0.5, S.GROUND, S.MERIDIAN_Z[1] - 0.5),
+        "court, south-west corner": (S.WALL_E + 4.5, S.GROUND, S.FRONT_COURT[3] - 1.5),
         "before the main door": (S.east_wall_x(9) + 3.5, S.GROUND, S.AXIS_Z),
         "court, north-west corner": (S.WALL_E + 4.5, S.GROUND, S.FRONT_COURT[1] + 2.5),
-        "court, south-west corner": (S.WALL_E + 4.5, S.GROUND, S.FRONT_COURT[3] - 1.5),
+        "court, north end of the meridian": (S.MERIDIAN_X + 0.5, S.GROUND, hut["door"][1] + 2.5),
         "meridian hut, before its door": (hut["door"][0] + 0.5, S.GROUND, hut["door"][1] + 1.5),
         "mast pad": (S.mid(S.MAST_PAD["box"][0], S.MAST_PAD["box"][2]), S.MAST_PAD["feet"], S.MAST_PAD["box"][3] - 0.5),
+        "weather station": shelf(S.WEATHER_STATION),
+        "water tower": shelf(S.WATER_TOWER),
         "west side, north": (S.WALL_W - 4.5, S.GROUND, S.Z_NORTH + 10.5),
-        "west side, south": (S.WALL_W - 4.5, S.GROUND, S.Z_SOUTH - 9.5),
         "sunset platform, west edge": (sunset["centre"][0] - sunset["radius"] + 2.5, S.GROUND, S.AXIS_Z),
-        "power house, north side": (S.mid(house[0], house[2]), S.LOWER_GROUND, house[1] - 2.5),
+        "west side, south": (S.WALL_W - 4.5, S.GROUND, S.Z_SOUTH - 9.5),
+        "south lookout": (S.V11["pos"][0], S.SOUTH_LOOKOUT["feet"], S.V11["pos"][2]),
         "power house, west side": (house[0] - 2.5, S.LOWER_GROUND, S.mid(house[1], house[3])),
+        "power house, north side": (S.mid(house[0], house[2]), S.LOWER_GROUND, house[1] - 2.5),
         "lower platform, south-east": (S.LOWER_PLATFORM[2] - 1.5, S.LOWER_GROUND, S.LOWER_PLATFORM[3] - 0.5),
+        "back at the spawn": (S.V1["pos"][0], S.STATION_GROUND, S.V1["pos"][2]),
     }
-    for name, shelf in (("weather station", S.WEATHER_STATION), ("water tower", S.WATER_TOWER),
-                        ("south lookout", S.SOUTH_LOOKOUT)):
-        box = shelf["box"]
-        out[name] = (S.mid(box[0], box[2]), shelf["feet"], S.mid(box[1], box[3]))
-    out["south lookout"] = (S.V11["pos"][0], S.SOUTH_LOOKOUT["feet"], S.V11["pos"][2])
-    return out
 
 
 def say(report):
@@ -838,6 +925,9 @@ def say(report):
     for name, p in (report.get("points") or {}).items():
         lines.append(f"  {name}: " + (f"{p['reached']}, {p['blocks']:g} blocks from the start, at {p['at']}"
                                       if p["reached"] != "no" else f"NOT REACHED ({p['note']})"))
+    for leg in report.get("legs") or ():
+        lines.append(f"  {leg['from']} -> {leg['to']}: " + ("NO WAY" if leg["kind"] == "no" else
+                     f"{leg['kind']}, {leg['blocks']:g} blocks"))
     guess = report["shapes guessed as whole cubes"]
     if guess:
         lines.append("  taken as whole cubes without a rule: " + ", ".join(f"{k} x{v}" for k, v in list(guess.items())[:20]))
@@ -1010,8 +1100,10 @@ def main():
         with open(os.path.join(args.out, "reach.json"), "w", encoding="utf-8", newline="\n") as fh:
             json.dump(report, fh, ensure_ascii=False, indent=1)
             fh.write("\n")
+        with open(os.path.join(args.out, "reach.txt"), "w", encoding="utf-8", newline="\n") as fh:
+            fh.write("\n".join(reach.plan()) + "\n")
         size = draw(reach, os.path.join(args.out, "reach.png"), args.scale)
-        print(f"written: {args.out}/reach.json, reach.png ({size[0]}x{size[1]})")
+        print(f"written: {args.out}/reach.json, reach.txt, reach.png ({size[0]}x{size[1]})")
     return 0
 
 
