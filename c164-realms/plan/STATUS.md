@@ -19,6 +19,10 @@
 - **11-16 00:52 全量回归**（总装 612bd8a8）：**32 个测试场景 + obs 全过，0 失败**（比上一轮多了 `obs_props_lamps_cage`、`obs_main_dome`、`obs_main_dome_b`、`obs_main_dome_slit`）。
 - 11-16 00:40 全量回归（总装 3850fa53）：**28 个测试场景 + obs 全过，0 失败**。0 失 0 黄的 17 个；带黄的 11 个都是已知项（flatwall 白模、sight 里 V1 跨窗被前庭石墩挡 32%、brass/iron 的作证方块、`obs_mat_redirect` 占位、`obs_site_court` 的 v2_axis、两个 motion 场景的手工步数 WARN）。
 - 今晚已合、逐像素在**交付提交**上证过的：brass 25/25、comet 46/46 与最新 46/46、lights 25/25（f0cf4a66 之前那版）、panels 10/10、snow 13/13、shell 25/25、lamps 56/56、motion 28/28、tones 31/31。合进总装后变样的都是“整楼画面”类场景（facade、lights、lamps 的 site 两套），原因是壳、立面、brass、lamps、lights 陆续进来改了画面——**图和自己的代码对得上**，只是总装变了。这些场景重出图的时机：各自的作者下次交付时一并出。
+- **11-16 01:00 图的时效盘点**（S2 在总装 6123902d 上，每场景抽查头两个机位）：
+  - **还准的**（场景自己不摆整楼，别的包进不来）：`obs_sky_comet`（2/2）、`obs_mat_brass`（2/2）、`obs_mat_panels`（2/2）、`obs_mat_snow`（2/2）、`obs_mach_recorders`（2/2）、`obs_mach_domegear`（2/2）。
+  - **全过期**（0/2）：`obs_main_facade`、`obs_main_shell`、`obs_main_dome`／`_b`／`_slit`、`obs_sky_lights`、`obs_props_lamps_site`、`obs_site_terrain`、`obs_site_court`。原因是 **`facade.CROWN` 默认开了**（c265 的 844d419c，A0 #442 第五条）——大拱窗和入口三拱的头从 3、2、1 变成 3、2、封口，凡是画到整面立面的场景全变；其次 `_order.mould()` 改了 16 格朝向、lamps 球罩换了 cream、brass 旧铜起绿。
+  - 处置：这些场景**不用现在追着重出**（它们对自己的代码是对的，在各自交付提交上全过）。谁下次要改自己那张卡时一并重出；**CROWN 这一件要在所有整楼场景上都看到一次**（尤其 facade 已重出、dome 我已在催 c279），否则看板图会混着两版立面。
 - 核图的办法（S2 每合一条都做）：在“你的分支和总装合起来”的树上跑 `tools/selfshots.py <场景> --verify`；对不上就到交付提交上再核一次。两张不一样的时候分两种：图和自己的代码对不上（退回），或者总装里别的包改了这个场景的画面（照合，在【合并】里写明哪几张）。11-16 00:12 为止的实例：facade 16 张、lights 20 张都属于后者（月亮翻转、檐沟换成真旧铜、壳和立面进来）。
 - 换班后第一次上线的人（照 ROSTER）：s1 c260、review c261、cr2 c262、m1 c263、snow c264、facade c265、shell c266、lights c267、comet c268、lamps c269、a2 c270、a4 c271、stair c272、cable c273。其余旧号都停机了，等总监开人。
 
