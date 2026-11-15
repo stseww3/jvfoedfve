@@ -9,7 +9,9 @@ The main line built whole (walls, drum and dome, the shell inside them) five tim
               flights, the way to the west door, the foot of the pier;
   at z 200    cut off above y 13: the main floor -- galleries, mezzanine, the well, the wing rooms,
               the first turn of the ring stair;
-  at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top;
+  at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top
+              (each cut keeps the lights of the storeys it shows, so the plans read by the same
+              light as the rooms and not by the sky's alone);
   at z 400    whole and lit like the first, with plain blocks standing in for the two things the
               hall is the background of: the orrery hung from the ceiling and the mother clock on
               the pier. The board's view of the star hall (V7, from outside the door) is taken here.
@@ -34,11 +36,12 @@ GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 24, S.Z_SOUTH + 6)  # x -14..
 #                                                                         the door stands on it, 19 before the wall
 LIGHTS = [
     (9, 4, -3), (9, 4, 3), (13, 4, 0), (10, 11, 0), (13, 10, -3), (13, 10, 3),      # the hall
-    (-3, 3, 0), (-4, 10, 0), (-3, 10, -4), (-3, 10, 4), (0, 9, 0),                  # the stair hall
+    (-3, 3, 0), (-4, 10, 0), (-3, 10, -4), (-3, 10, 4), (-1, 9, 0),                 # the stair hall
     (7, 10, -11), (7, 10, -20), (7, 10, 11), (7, 10, 20),                           # the wing rooms
     (11, 20, 5), (11, 20, -5), (-3, 20, 5), (-3, 20, -5), (6, 15, 2),               # the dome room, the stair's shaft
 ]
 LIGHT_LEVEL = 14                                                        # the light line's top level; never 15
+LIGHT_OVER_CUT = 2                                                      # a cut keeps the lights up to this far over its last row
 CLOCK_HIGH = 4                                                          # the mother clock on its plinth (A0, 11-15)
 
 
@@ -78,9 +81,10 @@ def build():
             if y <= top:
                 c.set(x, y, z + dz, state)
     stand_ins(c, DRESSED)
-    for dz in (0, DRESSED):
+    for dz, top in [(0, None), (DRESSED, None)] + list(CUTS.values()):
         for x, y, z in LIGHTS:
-            c.set(x, y, z + dz, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
+            if top is None or y <= top + LIGHT_OVER_CUT:
+                c.set(x, y, z + dz, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
     return c
 
 
