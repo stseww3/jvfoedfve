@@ -7,11 +7,14 @@
 # on your own machine), runs your command in c164-realms/, commits what it wrote under renders/
 # and pushes that to your branch. The receipt arrives in your own read_chat; then `git pull`.
 #
-#   run_workspace_job(agent=<you>, node="node7", repo="stseww3/jvfoedfve", branch="<your branch>",
+#   run_workspace_job(agent=<you>, node="<your node>", repo="stseww3/jvfoedfve", branch="<your branch>",
 #       timeout_sec=1800,
-#       command="bash c164-realms/tools/nodejob.sh python tools/selfshots.py obs_main_facade --only a,b,c,d")
+#       command="bash c164-realms/tools/nodejob.sh python tools/selfshots.py obs_main_facade")
 #
 # Options, before the command:
+#   --wip           pictures for a look, not for keeping: commit c164-realms/renders/_wip only and
+#                   push it to the scratch branch <your branch>-wip, which is never merged anywhere.
+#                   Draw into that folder:  --wip python tools/selfshots.py <scene> --only a,b --out renders/_wip
 #   --keep <path>   commit this path afterwards (repeatable, from the repository root;
 #                   default c164-realms/renders)
 #   --to <branch>   push to this branch instead of the one the job runs on (made if it is new)
@@ -24,17 +27,19 @@
 # type it there:  python tools/check.py --scene obs   or   cd build && python render.py obs ...
 #
 # A node keeps its disk between jobs, so the venv, the client jar and the compiled renderer are
-# made once per node. A node runs one job at a time. Nothing is ever pushed to the assembly branch
+# made once per node. A node runs one job at a time. Nothing is ever pushed to an assembly branch
 # or to main from here: pictures reach the assembly through the merge-key holder.
 set -uo pipefail
 
-ASSEMBLY="cursor/c164-realms-map-b59c"
+ASSEMBLY="cursor/c164-assembly-fable-a9f5"
+OLD_ASSEMBLY="cursor/c164-realms-map-b59c"   # frozen on 11-16: the archive of the shift whose work was not accepted
 
-usage() { sed -n '2,27p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,30p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
 
-keep=() to="" push=1 always=0 tail_n=30
+keep=() to="" push=1 always=0 tail_n=30 wip=0
 while [ $# -gt 0 ]; do
   case "$1" in
+    --wip) wip=1; shift ;;
     --keep) keep+=("${2:?--keep needs a path}"); shift 2 ;;
     --to) to="${2:?--to needs a branch}"; shift 2 ;;
     --always) always=1; shift ;;
@@ -47,6 +52,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 if [ $# -eq 0 ]; then usage >&2; exit 2; fi
+if [ "$wip" = 1 ] && [ ${#keep[@]} -eq 0 ]; then keep=("c164-realms/renders/_wip"); fi
 if [ ${#keep[@]} -eq 0 ]; then keep=("c164-realms/renders"); fi
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -54,13 +60,14 @@ proj="$(dirname "$here")"
 repo="$(git -C "$proj" rev-parse --show-toplevel 2>/dev/null)" || { echo "nodejob: not inside a git repository" >&2; exit 2; }
 root="${MC_ROOT:-/agent/realms-study}"
 branch="$(git -C "$repo" rev-parse --abbrev-ref HEAD)"
+if [ "$wip" = 1 ] && [ -z "$to" ] && [ "$branch" != "HEAD" ]; then to="$branch-wip"; fi
 if [ -z "$to" ]; then to="$branch"; fi
 if [ "$push" = 1 ] && [ "$to" = "HEAD" ]; then
   echo "nodejob: the tree is on no branch; say where to push with --to <branch>, or --no-push" >&2; exit 2
 fi
 note=""
 case "$to" in
-  main|master|"$ASSEMBLY")
+  main|master|"$ASSEMBLY"|"$OLD_ASSEMBLY")
     if [ "$push" = 1 ]; then push=0; note="nothing is pushed to $to from a node"; fi ;;
 esac
 
@@ -120,9 +127,12 @@ if [ "$push" = 1 ] && { [ "$code" = 0 ] || [ "$always" = 1 ]; }; then
     commit="$(git -C "$repo" rev-parse --short=8 HEAD)"
     for attempt in 1 2 3 4; do
       if git -C "$repo" push -q origin "HEAD:refs/heads/$to" >/dev/null 2>&1; then pushed="yes"; break; fi
-      # someone pushed to the branch meanwhile: take theirs in, never force
+      # The branch moved meanwhile: take theirs in, never force. A scratch branch (--wip) holds the
+      # last look only: what was there becomes history and this job's tree stands.
+      how=()
+      if [ "$wip" = 1 ]; then how=(-s ours); fi
       if git -C "$repo" fetch -q origin "$to" >/dev/null 2>&1; then
-        git -C "$repo" "${ident[@]}" merge -q --no-edit FETCH_HEAD >/dev/null 2>&1 \
+        git -C "$repo" "${ident[@]}" merge -q --no-edit "${how[@]}" FETCH_HEAD >/dev/null 2>&1 \
           || { git -C "$repo" merge --abort >/dev/null 2>&1; note="${note:+$note; }the branch moved and does not merge cleanly"; break; }
         commit="$(git -C "$repo" rev-parse --short=8 HEAD)"
       fi
