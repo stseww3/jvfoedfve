@@ -101,7 +101,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 全部 `redirect_block`。`mat("iron")` / `iron_dark` / `iron_flat`，色阶 I0–I6。逐项像素规则进 `iron` 卡；要点：
 - `IRON_PLATE`(oxidized_copper，无同族)：平铁板，无铆钉，base I3，轻刷纹，浅 bevel。3 变体。机壳/水箱。
 - `IRON_RIVETED`(oxidized_cut_copper+stairs/slab)：铆接板，边框 I4/I1，铆钉 1px I6 高光+下 1px I1 阴影，固定 8 点（四角+四边中），贴边使相邻块连成行。3 变体（仅刷纹变化、铆钉固定）。变体覆盖楼梯台阶。大面积平铺要在 8×8 墙上查：不起贯穿的条纹，明暗够（S3 预评第 3 条）。
-- `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心凸花（小台徽/菱形），I5/I1。2 变体。
+- `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心菱形凸花，I5/I1，一张图。（原来写的是“小台徽/菱形，2 变体”，两张按位置混排；整块方块没有状态可分，穹顶的二十只轴箱会有一半带台徽。台徽只出现在有意放的地方，从这个方块上撤了；铁件上要台徽，挂道具的黄铜圆徽 `props/signs` 的 `emblem`。）
 - `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格条 I3、交点 I5，网孔 alpha=0。2 变体。
 - `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，上半舷窗（`brass` 圈 + `glow` 中心，圆心在上半张图正中略偏上，对玩家眼高 1.62；发光 M2 定）；下半百叶气窗。（原来写的是下半舷窗、上半气窗，实机舷窗在膝盖高，总监 #116 裁定对调。）
 - `IRON_HATCH`(oxidized_copper_trapdoor)：带中肋的铆接盖板，一张图，立着（栏板）、平躺（盖板、轨枕、百叶的叶片）都是它；游戏把活板门的图上下颠倒着贴，模型副本里翻正。（原来写的是“铆接盖 / 横百叶，2 变体”，两张按位置混排，一圈栏板会一半盖板一半百叶；百叶撤了，墙上的百叶用面板的 `louvre` 或门的下半。）
