@@ -33,18 +33,19 @@ BIOME_MARGIN_Y = 150
 LINES = (site, main, props, sky)
 VERSION = "a"
 RUN = True
+FIRE = True     # both scenes: the boiler bays glow through the fire window, as the card wants them judged
 
 
 @contextlib.contextmanager
 def _as(version, run):
     """The site line builds its packages itself and hands them no choices: set the package's own
     defaults for the time of the build and put them back."""
-    was = powerhouse.VERSION, powerhouse.RUN
-    powerhouse.VERSION, powerhouse.RUN = version, run
+    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE
+    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = version, run, FIRE
     try:
         yield
     finally:
-        powerhouse.VERSION, powerhouse.RUN = was
+        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = was
 
 
 def _fit(c):

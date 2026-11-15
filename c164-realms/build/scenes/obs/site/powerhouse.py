@@ -80,6 +80,7 @@ TABLE_Y = FEET + 1                                  # -5, the plinth's weatherin
 SILL_Y = FEET + 2                                   # -4
 GLASS_Y = (FEET + 3, EAVES - 1)                     # -3..2, six rows of glass
 ARCH_Y = EAVES - 1                                  # 2, the arch hangs in the top row of the opening
+IMPOST_Y = ARCH_Y - 1                               # 1, the polished course of a pier the arches spring from
 FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow in a boiler bay
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
@@ -99,6 +100,16 @@ SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)
          if (x in (TX0 + 1, TX1 - 1)) + (z in (TZ0 + 1, TZ1 - 1)) < 2]         # a round of four: 12 cells
 FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
 SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
+
+# the roofs stand on the plane of the glass, one cell inside the box
+RX0, RZ0, RX1, RZ1 = X0 + 1, Z0 + 1, X1 - 1, Z1 - 1     # x 68..88, z 21..41
+VX0, VX1 = RX0, TX0                                 # x 68..84, version b: the vault over the hall. Its middle is
+#                                                     the middle pier of the four bays the yard sees; east of
+#                                                     it, behind the chimney, is the boiler house's flat
+# The vault's top above the eaves course, in half blocks, from its foot (0) to the crown (8): a
+# segment of a circle of radius 9.7 that rises 5 over the span of 17.
+VAULT = (1.0, 2.0, 3.0, 3.5, 4.0, 4.5, 5.0, 5.0, 5.0)
+LIGHT_MULLION = 3                                   # the end screen's two mullions stand this far from the middle
 
 # the pipe bridge
 PIPE_Z = Z0 + CORNER + 3 * BAY - 1                  # 33, the third pier of the west front. props/lamps reads
@@ -131,7 +142,6 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
 BRICK_STAIRS = B.TUFF_BRICK.stairs
-BRICK_KEY = B.TUFF_BRICK.slab + "[type=top]"        # the middle of an arch: the head's upper half
 COURSE = B.TUFF_SMOOTH.block                        # plinth, sill, cornice
 TABLE = B.TUFF_SMOOTH.stairs
 IRON = B.IRON_RIVETED.block
@@ -143,6 +153,7 @@ DARK = B.WINDOW_DARK.block
 GLOW = B.WINDOW_CURTAIN.block                       # stands in for the fire window: _glow()
 ROOF_GLASS = B.SKYLIGHT.block
 SLATE = B.SLATE_TILE.stairs
+VERGE_CAP = B.TUFF_SMOOTH.slab + "[type=bottom]"    # the stone on the point of a saw tooth's gable
 
 # --- the fronts -------------------------------------------------------------------------------------
 STEP = {"north": (0, -1), "south": (0, 1), "west": (-1, 0), "east": (1, 0)}
@@ -245,12 +256,12 @@ def windows(version=None):
             else:
                 out.append(dict(common, storey="main", y=GLASS_Y))
     if (version or VERSION) == "b":
-        mid = (Z0 + Z1) // 2
-        for front in (FRONTS["west"], FRONTS["east"]):
-            x = front.at(0, 1)[0]
+        mid = (VX0 + VX1) // 2
+        for front in (FRONTS["north"], FRONTS["south"]):
+            z = front.at(0, 1)[1]
             out.append(dict(front=f"power.{front.name}", bay=0, storey="gable",
-                            cells=[(x, z) for z in range(mid - 2, mid + 3)], inward=STEP[front.inward],
-                            y=(EAVES + 2, EAVES + 4)))
+                            cells=[(x, z) for x in range(mid - LIGHT_MULLION + 1, mid + LIGHT_MULLION)],
+                            inward=STEP[front.inward], y=(EAVES + 2, EAVES + 4)))
     return out
 
 
@@ -274,7 +285,7 @@ def _pier(p, x0, z0, x1, z1):
     # against the two south corners, at (X0, FEET, Z1) and (X1, FEET, Z1) (site/lowerplatform).
     p.put(x0, PLINTH_Y, z0, COURSE)
     for y in range(TABLE_Y, EAVES):
-        p.put(x0, y, z0, BODY)
+        p.put(x0, y, z0, COURSE if y == IMPOST_Y else BODY)
     p.put(x0, EAVES, z0, COURSE)
     if _inside(x1, z1):
         for y in range(PLINTH_Y, EAVES + 1):
@@ -282,16 +293,15 @@ def _pier(p, x0, z0, x1, z1):
 
 
 def _recess(p, front, x, z, first, last, plinth=True):
-    """One column of a bay in the pier plane: the plinth and its weathering, the opening, the arch
-    (a stair hung from the cornice at either end, its solid quarter towards the jamb, and the
-    upper half of the head between them), the cornice."""
+    """One column of a bay in the pier plane: the plinth and its weathering, the opening, the arch,
+    the cornice. The arch is the main building's (main/_order.arch): a stair hung from the cornice
+    at either end of the opening, its solid quarter towards the jamb, and nothing between them, so
+    that the head steps in by half a block twice: over three cells that is a half circle."""
     if plinth:
         p.put(x, PLINTH_Y, z, COURSE)
         p.put(x, TABLE_Y, z, f"{TABLE}[facing={front.inward},half=bottom]")
     if first or last:
         p.put(x, ARCH_Y, z, f"{BRICK_STAIRS}[facing={front.back if first else front.along},half=top]")
-    else:
-        p.put(x, ARCH_Y, z, BRICK_KEY)
     p.put(x, EAVES, z, COURSE)
 
 
@@ -369,11 +379,14 @@ def _tower(p):
     for front, t0 in ((FRONTS["north"], SPAN - width), (FRONTS["east"], 0)):
         for s in range(1, width - 1):
             x, z = front.at(t0 + s, 0)
-            for y in range(SILL_Y, ARCH_Y):
+            for y in range(SILL_Y, ARCH_Y + 1):
                 p.clear(x, y, z)
             _recess(p, front, x, z, s == 1, s == width - 2)
             bx, bz = front.at(t0 + s, 1)
             p.put(bx, SILL_Y, bz, COURSE)
+        for s in (0, width - 1):
+            x, z = front.at(t0 + s, 0)
+            p.put(x, IMPOST_Y, z, COURSE)
     # the soot door in the north arch: a cast plate two cells square
     for x in (TX0 + 2, TX0 + 3):
         for y in (SILL_Y + 1, SILL_Y + 2):
@@ -384,102 +397,116 @@ def _tower(p):
         for z in range(TZ0, TZ1 + 1):
             facing = _ring_facing(x, z)
             p.put(x, y, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=bottom]")
-    # the shaft: round, hooped, the flue open in its top courses
+    # the shaft: round, hooped, the flue open in its top courses; under the head a polished necking
     for y in range(PED_TOP + 2, TOP - 2):
         hoop = (y - PED_TOP) % HOOP_STEP == 0
         for x, z in SHAFT:
             if y > TOP - FLUE_DEPTH and (x, z) in FLUE:
                 continue
-            p.put(x, y, z, IRON if hoop else BODY)
-    # the head: a corbel course and a polished band, six across with the corners left out, and
-    # over them the iron rim on the mouth of the shaft alone. As wide as the foot for three courses
-    # it made the chimney a dumbbell (cr2, g2 #36637); now its widest is a course and a half.
+            p.put(x, y, z, IRON if hoop else COURSE if y == TOP - 3 else BODY)
+    # the head: a bead six across with the corners left out, a corbel course under a weathered
+    # coping (a stair hung under a stair), and over it the iron rim on the mouth of the shaft alone.
+    # As wide as the foot for three courses it made the chimney a dumbbell (cr2, g2 #36637), and a
+    # course and a half of whole blocks still read as a lid in the pictures: now the full width is
+    # one course, half of the corbel and half of the coping.
     for x in range(TX0, TX1 + 1):
         for z in range(TZ0, TZ1 + 1):
             if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
                 continue
             facing = _ring_facing(x, z)
-            p.put(x, TOP - 2, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=top]")
-            p.put(x, TOP - 1, z, COURSE)
+            if facing is None:
+                p.put(x, TOP - 2, z, BODY)
+                p.put(x, TOP - 1, z, COURSE)
+            else:
+                p.put(x, TOP - 2, z, f"{BRICK_STAIRS}[facing={facing},half=top]")
+                p.put(x, TOP - 1, z, f"{TABLE}[facing={facing},half=bottom]")
             if (x, z) in SHAFT:
                 p.put(x, TOP, z, IRON)
 
 
 # --- the roofs ----------------------------------------------------------------------------------------
+# Both roofs show their profile to the yard. V6 and the three other standpoints it may be given all
+# look at the north front, and a roof that turns its profile east and west is a level line from
+# there, the saw as much as the vault (the first pictures, b5078551): so the saw's ridges and the
+# vault's axis run north-south, and the court looks at their flank.
 def _roof_a(p):
-    """The saw teeth. A tooth is one bay of the long sides: in its first row the light (a girder, two
-    rows of glass between iron mullions on the pier lines, a ridge roll), behind it three courses
-    of slate that fall south into the valley before the next light. The end walls close the
-    profile; the last row is the south wall's coping."""
-    xa, xb, za, zb = X0 + 1, X1 - 1, Z0 + 1, Z1 - 1
+    """The saw teeth. A tooth is one bay of the north front: on its pier line the light, which
+    looks west over the court (a girder, two rows of glass between iron mullions on the west
+    front's pier lines, a ridge roll), and east of it three courses of slate that fall into the
+    valley before the next light. The north and south walls close the profile, each tooth a gable
+    of brick under a verge of polished stone; the last row is the east wall's coping."""
     y = EAVES + 1
-    for z0 in range(za, zb, BAY):
-        for x in range(xa, xb + 1):
-            gable = x in (xa, xb)
-            if not _in_tower(x, z0):
-                p.put(x, y, z0, BODY if gable else IRON)
+    for x0 in range(RX0, RX1, BAY):
+        for z in range(RZ0, RZ1 + 1):
+            gable = z in (RZ0, RZ1)
+            if not _in_tower(x0, z):
+                p.put(x0, y, z, BODY if gable else IRON)
                 for h in (1, 2):
-                    p.put(x, y + h, z0, BODY if gable else IRON if (x - xa) % BAY == 0 else ROOF_GLASS)
-                p.put(x, y + 3, z0, IRON_LOW)
+                    p.put(x0, y + h, z, BODY if gable else IRON if (z - RZ0) % BAY == 0 else ROOF_GLASS)
+                p.put(x0, y + 3, z, VERGE_CAP if gable else IRON_LOW)
             for i in (1, 2, 3):
-                if _in_tower(x, z0 + i):
+                if _in_tower(x0 + i, z):
                     continue
                 top = y + 3 - i
-                p.put(x, top, z0 + i, f"{SLATE}[facing=north,half=bottom]")
+                p.put(x0 + i, top, z, f"{TABLE if gable else SLATE}[facing=west,half=bottom]")
                 if gable:
                     for fill in range(y, top):
-                        p.put(x, fill, z0 + i, BODY)
-    for x in range(xa, xb + 1):
-        p.put(x, y, zb, COURSE)
-
-
-# The vault's top above the eaves course, in half blocks, from a long wall (0) to the crown (10):
-# a segment of a circle of radius 13.5 that rises 5 over the span of 21.
-VAULT = (0.5, 1.5, 2.5, 3.0, 3.5, 4.0, 4.5, 4.5, 5.0, 5.0, 5.0)
-LIGHT_REACH = (0, 6, 5, 2)      # the gable window: how far from the middle its glass goes, row by row
-LIGHT_MULLION = 3               # its two iron mullions stand this far from the middle
+                        p.put(x0 + i, fill, z, BODY)
+    for z in range(RZ0, RZ1 + 1):
+        if not _in_tower(RX1, z):
+            p.put(RX1, y, z, COURSE)
 
 
 def _lunette(h, d):
-    """The gable under the vault, h rows above its first course and d cells from the middle: a
-    three-light window under the arch, brick below and beside it."""
-    if h == 0 or d > LIGHT_REACH[h]:
-        return BODY
-    return IRON if d == LIGHT_MULLION else DARK
+    """The screen under the vault's end, h rows above its tie beam and d cells from the middle: a
+    window of three lights, the middle one five cells wide, between two iron mullions."""
+    return IRON if h == 0 or d == LIGHT_MULLION else DARK
 
 
 def _roof_b(p):
-    """The barrel vault: riveted plates, a whole block under the top wherever the top is a course
-    or more above the eaves, so that a column closes against the next. The monitor stands on the
-    crown between the second pier line from either end, open to the house below."""
-    xa, xb, za, zb = X0 + 1, X1 - 1, Z0 + 1, Z1 - 1
+    """The barrel vault over the hall: riveted plates, a whole block under the top of every column,
+    so that a column closes against the next. Where the curve climbs a whole course from one
+    column to the next (the three columns at either foot) the plate is a stair, and the curve comes
+    out of the gutter in half steps; above them it rises by half a block at a time. A rib half a
+    block proud of the plates lies on every pier line of the long sides. An end is an iron screen,
+    glazed, under the vault's own last row. The monitor rides the crown between the second pier
+    line from either end, open to the house below. East of the vault, behind the chimney, the
+    boiler house has a flat of plates under the same ribs."""
     base = EAVES + 1
-    mid = (za + zb) // 2
-    m0, m1 = xa + BAY, xb - BAY
-    for z in range(za, zb + 1):
-        rise = VAULT[min(z - za, zb - z)]
+    mid = (VX0 + VX1) // 2
+    m0, m1 = RZ0 + BAY, RZ1 - BAY
+    for x in range(VX0, VX1 + 1):
+        d = min(x - VX0, VX1 - x)
+        rise = VAULT[d]
         k = int(rise)
-        for x in range(xa, xb + 1):
+        top = base + k - 1
+        steep = rise - (VAULT[d - 1] if d else 0.0) >= 1.0
+        plate = f"{IRON_STAIRS}[facing={'east' if x < mid else 'west'},half=bottom]" if steep else IRON
+        for z in range(RZ0, RZ1 + 1):
             if _in_tower(x, z):
                 continue
-            lowest = base + k
-            if k >= 1:
-                lowest = base + k - 1
-                if not (z == mid and m0 < x < m1):
-                    p.put(x, lowest, z, IRON)
+            rib = RZ0 < z < RZ1 and (z - RZ0) % BAY == 0 and not (abs(x - mid) <= 1 and m0 <= z <= m1)
+            if not (x == mid and m0 < z < m1):
+                p.put(x, top, z, IRON if rib else plate)
             if rise > k:
-                p.put(x, base + k, z, IRON_LOW)
-            if x in (xa, xb):
-                for y in range(base, lowest):
-                    p.put(x, y, z, _lunette(y - base, abs(z - mid)))
+                p.put(x, top + 1, z, IRON if rib else IRON_LOW)
+            elif rib and not steep:
+                p.put(x, top + 1, z, IRON_LOW)
+            if z in (RZ0, RZ1):
+                for y in range(base, top):
+                    p.put(x, y, z, _lunette(y - base, abs(x - mid)))
     y = base + int(VAULT[-1])
-    for x in range(m0, m1 + 1):
-        for z in (mid - 1, mid, mid + 1):
-            if x in (m0, m1):
+    for z in range(m0, m1 + 1):
+        for x in (mid - 1, mid, mid + 1):
+            if z in (m0, m1):
                 p.put(x, y, z, IRON)
-            elif z != mid:
+            elif x != mid:
                 p.put(x, y, z, B.IRON_GRATE)
             p.put(x, y + 1, z, IRON_LOW)
+    for x in range(VX1 + 1, RX1 + 1):
+        for z in range(RZ0, RZ1 + 1):
+            if not _in_tower(x, z):
+                p.put(x, base, z, IRON if RZ0 < z and (z - RZ0) % BAY == 0 else IRON_LOW)
 
 
 ROOFS = {"a": _roof_a, "b": _roof_b}
