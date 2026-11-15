@@ -21,9 +21,9 @@ The mountain is an outline and a base, never a subject: nothing of it rises abov
     each bay between two buttresses the rock at its foot is level, and from bay to bay it steps,
     so the wall is two courses high where a ridge leaves the terrace and five at the head of a
     gully.
-  - snow. Lies on about a third of the shelves, in ragged drifts against the feet of the cliffs:
-    one layer thin at its edge, thicker towards the cliff, none on the brink of a drop or on a
-    knob of rock. It draws the shelves; it must not outshine the building (its colour is
+  - snow. Lies in ragged drifts against the feet of the cliffs, along about a third of their
+    length (a fifth of the shelves' area): one layer thin at its edge, thicker towards the cliff,
+    none on the brink of a drop or on a knob of rock. It draws the shelves; it must not outshine the building (its colour is
     materials/snow's). SNOW_ON switches it off for the pictures without it.
 
 The upper terrace outside the front court is paved here with the court's own three stones (the
@@ -170,12 +170,15 @@ SEAM = COBBLED                  # what stands in a light bed's place where the b
 LENS_OUT = -0.02                # ... which is where the bed's own slow noise is below this: a little under half of it
 
 # --- snow ---------------------------------------------------------------------------------------------
-# Review cr2-#2 and A0 #330: about a third of the shelves, ragged edges, one layer at the edge and
-# thicker towards the cliff, none on a knob of rock. How light it is belongs to materials/snow.
+# Review cr2-#2 and A0 #330: less of it (the second draft had it on a quarter of the shelves' area, in
+# slabs), ragged edges, one layer at the edge and thicker towards the cliff, none on a knob of rock.
+# How light it is belongs to materials/snow.
 SNOW_ON = True                  # False: no snow at all (the pictures taken with and without it)
 SNOW_BELOW = -7                 # none on the rock just under the terraces: it starts below the rim wall's foot
 SNOW_ABOVE = -24                # ... and none within two blocks of the cloud (CLOUD_TOP): the sea's edge is the cloud's own light line
-SNOW_DRIFT = 0.10               # it lies in drifts: where a slow noise is above this, about a third of the mountain
+SNOW_DRIFT = -0.15              # it lies in drifts: where a slow noise is above this. With the rules below that leaves a
+#                                 drift at the foot of a third of the cliffs' length, on a fifth of the shelves' area (at
+#                                 0.10, the first guess, it was a twelfth of the length: eight puddles on the whole mountain)
 SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
 SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
 SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
