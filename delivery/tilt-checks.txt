@@ -1,0 +1,94 @@
+Checking the working copy (served at the live address in the test browser): https://iraqies.github.io/dictionary/
+
+PASS  source: no em dash in any shipped file (R-02)
+PASS  source: no outline:none / outline:0 (R-32)
+PASS  source: styles.css and app.js carry the same cache version
+PASS  load: 50 cards and the count reads '50 of 50 terms'
+PASS  load: loading state is hidden once terms are in
+PASS  load: every term is a link to its own #slug with a 'Copy link to' title
+PASS  load: card ids are unique
+PASS  load: cards are in alphabetical order
+PASS  load: still exactly one h1; toast is an empty role=status region
+PASS  load (mouse): the '#' hint is hidden until a card is hovered
+PASS  load: console is clean
+PASS  glide All -> Names: count updates at once ('9 of 50 terms')
+PASS  glide All -> Names: removed cards on screen fade out in an inert layer
+PASS  glide All -> Names: cards that were on screen start exactly where they stood, and move
+PASS  glide All -> Names: cards from far down the page come in from just below the fold, not from thousands of px away
+PASS  glide All -> Names: cards nobody can see (off screen before and after) are not animated
+PASS  glide All -> Names: lands on the 9 name cards in order
+PASS  glide All -> Names: after landing nothing is transformed, faded or left behind
+PASS  glide Names -> All: the name cards on screen leave from where they stood
+PASS  glide Names -> All: cards new to the screen start transparent and fade up
+PASS  glide: five category changes 45ms apart end in a clean final state
+PASS  glide: the sliding outline rests on the active chip
+PASS  glide: a keyboard category change works and keeps focus on the chip
+PASS  glide: console is clean
+PASS  share: hovering a card reveals the '#' next to its term
+PASS  share: clicking a term copies its link to the clipboard
+PASS  share: the toast says 'Link copied' and shows the link
+PASS  share: the address bar follows (#3l) and only that card is marked
+PASS  share: the marked card carries the accent border
+PASS  share: copying does not scroll the page
+PASS  share: the toast hides by itself and is emptied
+PASS  share: Enter on a focused term copies its link, moves the mark, keeps focus
+PASS  share: Ctrl+click is left to the browser (new tab), nothing is copied
+PASS  share: without the async clipboard the fallback still copies and hands focus back
+PASS  share: when copying is impossible the toast says so and the link is in the address bar
+PASS  share: console is clean
+PASS  link #semi-og: opens scrolled to that card, centred on screen
+PASS  link #semi-og: the card takes focus and shows a ring that follows its corners
+PASS  link #semi-og: all 50 terms are still on the page
+PASS  link #semi-og: console is clean
+PASS  link #vouch (last card): fully on screen even though it cannot be centred
+PASS  link #2fa (first card): fully on screen
+PASS  link #NFA: capital letters in the link still resolve
+PASS  link #semi%2Dog: a percent-encoded link still resolves
+PASS  link #nope: an unknown link opens the normal page, no error
+PASS  link #%E0%A4%A: an unknown link opens the normal page, no error
+PASS  link #: an unknown link opens the normal page, no error
+PASS  link change on an open page: filter and search are reset so the linked term is reachable
+PASS  link removed from the address: the mark is cleared
+PASS  link change: console is clean
+PASS  reduced motion: a shared link still lands on its term
+PASS  reduced motion: a category change swaps the cards with no glide and no fade
+PASS  reduced motion: the pointer light stays off
+PASS  reduced motion: console is clean
+PASS  tilt: the card under the pointer leans, steeper the further the pointer is from its centre
+PASS  tilt: the card is pressed down on the pointer's side and rises on the far side
+PASS  tilt: only the face moves; the card's own box stays exactly where it was
+PASS  tilt: at the very edge the card leans its most (10 degrees at the outside) and the hover holds, no flicker
+PASS  tilt: moving on to the next card hands the lean over and leaves nothing behind on the old one
+PASS  tilt: leaving the grid lays every card flat again
+PASS  tilt: console is clean
+PASS  tilt: off under reduced motion
+PASS  search: '/' jumps to the search field
+PASS  search: typing filters at once, highlights matches, and does not animate
+PASS  search: no match shows the empty state
+PASS  search: Escape clears the query and restores all 50
+PASS  pointer light: still follows the mouse over the cards
+PASS  hover: the card under the pointer still lifts 3px
+PASS  theme: the toggle switches to light and is remembered
+PASS  theme (light): the marked card uses the light accent and the toast the light surface
+PASS  theme: light survives a reload
+PASS  regression: console is clean
+PASS  late font, link to a card near the top: centred before the font and still centred after it
+PASS  late font, link to a card far down, font lands during the first-paint fade: still centred
+PASS  late font, link to a card far down, font lands on a page at rest: centred, no double correction
+PASS  late font, reader has already scrolled away: the page does not pull them back to the card
+PASS  phone 390px: no sideways scroll
+PASS  phone 390px: every term and its category tag fit on one line inside the card
+PASS  phone 390px: every term link is at least 44 x 44 px to tap
+PASS  phone 390px: the '#' is always visible (no hover on touch)
+PASS  phone 390px: tapping a term copies the link; the toast fits on screen
+PASS  phone 390px: no pointer light and no tilt on touch
+PASS  phone 390px: console is clean
+PASS  phone 320px: no sideways scroll
+PASS  phone 320px: every term and its category tag fit on one line inside the card
+PASS  phone 320px: every term link is at least 44 x 44 px to tap
+PASS  phone 320px: the '#' is always visible (no hover on touch)
+PASS  phone 320px: tapping a term copies the link; the toast fits on screen
+PASS  phone 320px: no pointer light and no tilt on touch
+PASS  phone 320px: console is clean
+
+90 of 90 checks passed.
