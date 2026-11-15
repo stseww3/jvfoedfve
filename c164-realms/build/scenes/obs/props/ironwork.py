@@ -15,7 +15,9 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
                          brass pull and a glazed porthole; both faces alike. leaves() hangs a pair
                          open against the reveals, so a player walks through.
     gate                 a side arch of the entrance, shut: the same frame, an open fan, barred leaves.
-    glazed_leaf          one leaf of the west door: riveted below, dark glass above.
+                         doors() gives it the collision a model has not: a barrier behind the leaves.
+    glazed_leaf          one leaf of the west door: riveted below, dark glass above. leaves() hangs a
+                         pair open like the entrance's: the door leads to the sunset terrace.
     canopy, canopy_lamp  the glazed canopy over the middle arch on two quarter-round braces, and the
                          opal lamp under it (canopy_lamp_in, _left, _right: the quarters of its globe
                          that look at the wall and along it).
@@ -728,14 +730,18 @@ def windows(canvas, table, origin=(0, 0, 0), grilles=None):
 
 LEAF_OFF = 0.30         # an open leaf stands this far off the reveal: its ledges and its pull are between
 LEAF_OUT = 7.0 / 16.0   # the hinge line of the entrance leaves: just in front of the frame's 6 px
+WALK = 2                # the rows of a doorway a player fills: what stands in them stops him or lets him by
+BARRIER = getattr(B, "BARRIER", "barrier")      # the collision of a shut gate, which a model has not: doors()
 CANOPY_LAMP = 1.5       # the lamp hangs this far in front of the pilasters, under the middle glazing bar
 
 
-def leaves(canvas, kind, pos, facing="east", origin=(0, 0, 0), swing=90.0, inset=LEAF_OFF, out=LEAF_OUT):
+def leaves(canvas, kind, pos, facing="east", origin=(0, 0, 0), swing=90.0, inset=None, out=LEAF_OUT):
     """Hang a pair of leaves (`kind`: "door_leaf" or "glazed_leaf") in a three-wide doorway. pos is
     the foot centre of the doorway on the plane the leaves close in, `facing` the way it looks.
-    swing: 0 is shut, 90 is open outwards with each leaf along its reveal, `inset` off it; the hinge
-    line stands `out` in front of pos. Both leaves show the same face. Returns the entity count.
+    swing: 0 is shut, 90 is open outwards with each leaf along its reveal, `inset` off it (left
+    out: as far as the leaf has swung towards the reveal, LEAF_OFF when it lies along it and
+    nothing when it is shut, so that a shut pair meets in the middle); the hinge line stands `out`
+    in front of pos. Both leaves show the same face. Returns the entity count.
     A leaf is lit by the cell its entity stands in. A shut leaf's hinge foot lies on the face of
     the jamb, and on one side of the doorway that point counts to the jamb's stone -- a black
     leaf; so the entity stands where the leaf's anchor is, a pixel along the leaf (LEAF_ANCHOR)."""
@@ -743,6 +749,8 @@ def leaves(canvas, kind, pos, facing="east", origin=(0, 0, 0), swing=90.0, inset
     tan = K.turn(base, (1.0, 0.0, 0.0))                 # along the doorway, to the right of who looks at it
     fwd = K.turn(base, (0.0, 0.0, 1.0))
     model, scale = _models()[PREFIX + kind], SPEC[kind]["scale"]
+    if inset is None:
+        inset = LEAF_OFF * abs(math.sin(math.radians(swing)))
     for side, yaw in ((-1.0, base + swing), (1.0, base + 180.0 - swing)):
         reach = side * (1.5 - inset)
         along = K.turn(yaw, (model.anchor[0] * scale / 16.0, 0.0, 0.0))
@@ -751,14 +759,23 @@ def leaves(canvas, kind, pos, facing="east", origin=(0, 0, 0), swing=90.0, inset
     return 2
 
 
-def doors(canvas, table, origin=(0, 0, 0), west_swing=0.0):
+def doors(canvas, table, origin=(0, 0, 0), west_swing=90.0):
     """Dress the doorways of a table as main/_plan.doors() gives it -- [dict(front, bay, cells,
     inward, y, arch, kind)], cells the columns of the wall line; the iron stands one step inward,
     where a window's glass would. An arched doorway six high: kind "door" gets the frame with its
     fanlight, a pair of riveted leaves open against the reveals, and -- where a pilaster stands on
-    either side -- the canopy and its lamp; kind "gate" gets the barred gate, shut, and whatever
-    stands in its plane is cleared first (A3's stand-in bars). A flat-headed doorway four high (the
-    west door) gets a pair of glazed leaves, shut unless west_swing opens them. Returns the count."""
+    either side -- the canopy and its lamp; kind "gate" gets the barred gate, shut. A flat-headed
+    doorway four high (the west door) gets a pair of glazed leaves, open against the reveals like
+    the entrance's (west_swing: 90; 0 would shut them). Returns the entity count.
+
+    A door people are to walk through stands open, and a shut one is a wall (c164 #522): the
+    entrance and the west door, which leads to the sunset terrace, are hung open. A gate is shut,
+    but a model stops nobody; so whatever stands in the plane behind its leaves is cleared (A3's
+    stand-in bars) and the bottom two rows of that plane are filled with barriers, as wide as the
+    leaves and no wider (the director's desk, 11-16 05:07: a barrier may stand in a shut model
+    door or gate, and nowhere else). They fill the wall's inner layer under the arch: who comes
+    from the court walks into the reveal and stands against the bars, who comes from the hall
+    cannot step into the recess."""
     n = 0
     for d in table:
         inward = tuple(d["inward"])
@@ -770,6 +787,9 @@ def doors(canvas, table, origin=(0, 0, 0), west_swing=0.0):
         if d.get("arch") and y1 - y0 == 5:
             if kind == "gate":
                 _empty(canvas, cells, y0, y1, origin)
+                for x, z in cells:
+                    for y in range(y0, y0 + WALK):
+                        canvas.set(origin[0] + x, origin[1] + y, origin[2] + z, BARRIER)
                 n += place(canvas, "gate", pos, facing=facing, origin=origin)
                 continue
             n += place(canvas, "door_frame", pos, facing=facing, origin=origin)
@@ -777,8 +797,7 @@ def doors(canvas, table, origin=(0, 0, 0), west_swing=0.0):
             n += leaves(canvas, "door_leaf", pos, facing=facing, origin=origin)
             n += canopy(canvas, pos, y1 + 2.0, facing=facing, origin=origin)
         elif not d.get("arch") and y1 - y0 == 3:
-            n += leaves(canvas, "glazed_leaf", pos, facing=facing, origin=origin, swing=west_swing,
-                        inset=0.0, out=LEAF_OFF)
+            n += leaves(canvas, "glazed_leaf", pos, facing=facing, origin=origin, swing=west_swing, out=LEAF_OFF)
     return n
 
 

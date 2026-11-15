@@ -25,6 +25,12 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
   9  the lower third of a gate's leaves is shut: iron from stone to stone from the floor up, for
      a third of the rows under the transom at least (c164 #21988, #22558: a gate reads as a gate
      by what is solid below, the bars above it and the light behind them)
+ 10  who walks (c164 #522: a door people are to walk through stands open, a shut one is a wall;
+     the director's desk, 11-16 05:07: a barrier may stand in a shut model door or gate and
+     nowhere else): a gate stops him -- the bottom two rows of the plane behind its leaves are
+     barriers, as wide as the leaves, and the scene holds no other barrier; a doorway lets him
+     by -- nothing stands in its bottom two rows, in the wall line or behind it, and its leaves
+     lie along the reveals, not across the opening
 
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
@@ -446,6 +452,48 @@ def lights(found):
             found.append(f"{kind}: glass that looks out of the wall is lit {lo:.2f}, under {BRIGHT}")
 
 
+def _block(canvas, at):
+    """The name of the block at a cell, or None where nothing stands (a light source is nothing)."""
+    name = (canvas.get(*at) or "").partition("[")[0].split(":")[-1]
+    return None if name in ("", "air", B.LIGHT) else name
+
+
+def passage(canvas, doors, found):
+    """One line for every doorway of the table: what who walks into it meets (rule 10)."""
+    leaves = [(x, z, K.turn(float(nbt["Rotation"][0]) - 180.0, (1.0, 0.0, 0.0)))
+              for x, _, z, nbt in canvas.entities
+              if nbt.get("item", {}).get("components", {}).get("minecraft:item_model", "").endswith("_leaf")]
+    barriers = 0
+    for d in doors:
+        name = f"{d['kind']}way, {d['front']} front, bay {d['bay']}"
+        inward, rows = tuple(d["inward"]), range(d["y"][0], d["y"][0] + ironwork.WALK)
+        line = [(x, y, z) for x, z in d["cells"] for y in rows]
+        behind = [(x + inward[0], y, z + inward[1]) for x, y, z in line]
+        if d["kind"] == "gate":
+            barriers += len(behind)
+            wrong = [at for at in behind if _block(canvas, at) != ironwork.BARRIER]
+            wrong += [at for at in line if _block(canvas, at)]
+            if wrong:
+                found.append(f"{name}: not shut by barriers behind its leaves and by nothing else: {wrong}")
+            print(f"{name}: shut to who walks by {len(behind) - len(wrong)} barriers behind the leaves, "
+                  f"rows {_spans(rows)}")
+            continue
+        wrong = [(at, _block(canvas, at)) for at in line + behind if _block(canvas, at)]
+        if wrong:
+            found.append(f"{name}: something stands in the way of who walks through: {wrong}")
+        xs, zs = [x for x, z in d["cells"]], [z for x, z in d["cells"]]
+        mine = [way for x, z, way in leaves
+                if min(xs) - 2.0 <= x <= max(xs) + 3.0 and min(zs) - 2.0 <= z <= max(zs) + 3.0]
+        across = sum(1 for way in mine if abs(way[0] * inward[0] + way[2] * inward[1]) < math.sqrt(0.5))
+        if across:
+            found.append(f"{name}: {across} of its {len(mine)} leaves lie across the opening")
+        print(f"{name}: open to who walks, nothing in rows {_spans(rows)}; "
+              f"{len(mine) - across} of its {len(mine)} leaves lie along the reveals")
+    placed = sum(n for state, n in canvas.count().items() if state.partition("[")[0].split(":")[-1] == ironwork.BARRIER)
+    if placed != barriers:
+        found.append(f"the scene holds {placed} barriers, the gates ask for {barriers}")
+
+
 def openings(windows, doors):
     """Every opening of the scene's tables as (name, glass columns, inward, (y0, y1))."""
     for w in windows:
@@ -469,10 +517,10 @@ def _pieces_at(canvas, cells, inward, y0):
     return out
 
 
-def survey():
+def survey(canvas=None):
     """[(name, kind, view, text, findings)] for every opening of the scene that carries a piece,
     and the names of those left bare (the control window, the base windows that keep A3's bars)."""
-    canvas = build()
+    canvas = canvas or build()
     windows = O.build(Canvas(), plan(), facade.order(), glass=_glass)
     models = ironwork.models()
     out, bare = [], []
@@ -492,7 +540,8 @@ def survey():
 
 
 def main(args):
-    rows, bare = survey()
+    canvas = build()
+    rows, bare = survey(canvas)
     found, drawn = [], set()
     for name, kind, view, text, wrong in rows:
         if "check" not in args and kind not in drawn:
@@ -502,6 +551,7 @@ def main(args):
         print(f"{name}: {kind}. {text}")
         found += [f"{name}, {kind}: {line}" for line in wrong]
     print(f"left bare: {'; '.join(bare) or 'none'}")
+    passage(canvas, door_table(), found)
     lights(found)
     print("\n".join(found) if found else f"fit: {len(rows)} dressed openings, nothing found")
     return 1 if found else 0

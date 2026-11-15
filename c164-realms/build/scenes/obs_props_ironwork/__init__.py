@@ -13,7 +13,8 @@ Seen from the court, left to right (south to north):
             A3's bars as blocks in the wall plane, kept here to be seen beside the grille
     bay 7   the same window framed; below it the grille (the model on the glass: the family's way
             to bar a base window)
-    bay 6   a side arch of the entrance: the gate, shut
+    bay 6   a side arch of the entrance: the gate, shut (barriers behind its leaves stop who
+            walks into it)
     bay 5   the entrance: frame and fanlight, the leaves open against the reveals, the canopy on
             the two pilasters and its lamp; the brightest window above it, framed
     bay 4   the other gate
@@ -22,10 +23,11 @@ Seen from the court, left to right (south to north):
     bay 1   an end pavilion's two-wide window with the two-wide frame and grille
 
 South of the building a plain yard wall carries what has no place on the front: the west door's
-glazed leaves in a flat-headed doorway (a stand-in lamp in the doorway, or the shut leaves are
-black on black) and the inspection ladder; on the paving stand a run of balustrade panels, the
-vent cowl and the floor grating, each by a stand-in for a lamp of the terrace (dark iron on dark
-paving at night is a silhouette and no more).
+glazed leaves in a flat-headed doorway, open against the reveals as on the apse -- a pilaster
+either side of the doorway, the wall two deep, a lit room behind it and a stand-in for the lamp
+the light line hangs at a door -- and the inspection ladder; on the paving stand a run of
+balustrade panels, the vent cowl and the floor grating, each by a stand-in for a lamp of the
+terrace (dark iron on dark paving at night is a silhouette and no more).
 
 The shots are written from the numbers below:  python -m scenes.obs_props_ironwork
 """
@@ -67,6 +69,8 @@ HALL_LAMP = 12                  # the hall behind the entrance
 YARD = (Z1 + 5, Z1 + 15)        # the yard wall's z, one block thick on the wall line, YARD_TOP high
 YARD_TOP = 8
 WEST_DOOR = YARD[0] + 3         # the middle column of the flat-headed doorway (three wide, y 0..3)
+WEST_DOOR_TOP = 3
+LOBBY = 4                       # the room behind the doorway is this deep, the wall's inner layer counted in
 YARD_LAMP = 10                  # a stand-in for the lamp the light line hangs at a door
 LADDER_Z = YARD[0] + 7          # the column the ladder climbs
 FLOOR_X = WALL + 12             # the cowl and the grating stand out here, clear of the wall's shots
@@ -120,7 +124,7 @@ def door_table():
                 y=(S.GROUND, ARCH_TOP), arch=True, kind="door" if bay == DOOR else "gate")
            for bay in sorted(GATES + (DOOR,))]
     out.append(dict(front="yard", bay=0, cells=[(WALL, WEST_DOOR + d) for d in (-1, 0, 1)], inward=(-1, 0),
-                    y=(S.GROUND, 3), arch=False, kind="door"))
+                    y=(S.GROUND, WEST_DOOR_TOP), arch=False, kind="door"))
     return out
 
 
@@ -149,9 +153,16 @@ def _rooms(c, windows):
 
 
 def _yard(c):
-    """The yard wall with its flat-headed doorway, and the pieces that stand on the paving."""
-    c.box(WALL, S.GROUND, YARD[0], WALL, YARD_TOP, YARD[1], B.ASHLAR_FINE.block)
-    c.carve(WALL, S.GROUND, WEST_DOOR - 1, WALL, 3, WEST_DOOR + 1)
+    """The yard wall with its flat-headed doorway, and the pieces that stand on the paving. The
+    doorway stands as the apse's west door does: between two pilasters a block proud of the wall,
+    through a wall two deep, a lit room behind it."""
+    fine = B.ASHLAR_FINE.block
+    c.box(WALL, S.GROUND, YARD[0], WALL, YARD_TOP, YARD[1], fine)
+    c.box(WALL - 1 - LOBBY, S.GROUND, WEST_DOOR - 2, WALL - 1, WEST_DOOR_TOP + 2, WEST_DOOR + 2, fine)
+    c.carve(WALL - LOBBY, S.GROUND, WEST_DOOR - 1, WALL, WEST_DOOR_TOP, WEST_DOOR + 1)
+    for z in (WEST_DOOR - 2, WEST_DOOR + 2):
+        c.box(WALL + 1, S.GROUND, z, WALL + 1, YARD_TOP, z, fine)
+    c.set(WALL - LOBBY + 1, S.GROUND + 2, WEST_DOOR, st(B.LIGHT, level=HALL_LAMP))
     c.set(WALL + 1, S.GROUND + 1, WEST_DOOR, st(B.LIGHT, level=YARD_LAMP))
     n = ironwork.ladder(c, (WALL + 1.0, float(S.GROUND), LADDER_Z + 0.5), 3, facing="east")
     for x in RAIL_X:
@@ -215,7 +226,7 @@ def shots():
     shot("canopy_below", (face + 5.6, 1.7, e + 3.2), (face + 2.2, 6.9, e - 0.4))
     shot("canopy_side", (face + 2.6, 5.2, e + 8.5), (face + 2.6, 5.6, e))
     shot("gate_near", (face + 4.6, 2.4, g + 1.6), (face - 1.0, 2.8, g))
-    shot("west_door", (face + 5.5, 2.2, WEST_DOOR + 0.5), (face - 1.0, 2.0, WEST_DOOR + 0.5))
+    shot("west_door", (face + 4.6, 2.0, WEST_DOOR + 4.1), (face - 0.6, 1.9, WEST_DOOR + 0.1))
     shot("ladder", (face + 8.0, 4.6, LADDER_Z + 0.5), (face, 4.6, LADDER_Z + 0.5))
     shot("ladder_up", (face + 2.4, 1.7, LADDER_Z + 2.6), (face + 0.4, 6.2, LADDER_Z + 0.5))
     shot("railing", (RAIL_X[1], 1.6, RAIL_Z + 4.5), (RAIL_X[1], 0.8, RAIL_Z + 0.5))
