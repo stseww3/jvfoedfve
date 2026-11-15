@@ -269,11 +269,12 @@ def shots():
     for k, (tier, walls) in enumerate(TIERS):
         y, z = at(k)
         if tier == "ground":
-            shot("ground_left", (SNOW_AT + N - PITCH / 2.0 - 1, y + 7.0, z + 16.5), (SNOW_AT + N - PITCH / 2.0 - 1, y + 2.5, z))
-            x = (INLAY_AT + w) / 2.0
+            x = (SNOW_AT + N) / 2.0                                         # the mountain: rock, ledges, snow
+            shot("ground_left", (x, y + 7.0, z + 16.5), (x, y + 2.5, z))
+            x = (INLAY_AT + w) / 2.0                                        # the paving and the cloud
             shot("ground_right", (x, y + 11.0, z + 24.0), (x, y + 1.0, z + 5.0))
             shot("ground_rock", (LEDGES_AT - 1.0, y + 4.5, z + 9.5), (LEDGES_AT - 1.0, y + 3.5, z))
-            shot("ground_snow", (SNOW_AT + N / 2.0, y + 5.0, z + 14.0), (SNOW_AT + N / 2.0, y + 2.5, z))
+            shot("ground_snow", (SNOW_AT + N / 2.0, y + 3.5, z + N + 3.0), (SNOW_AT + N / 2.0, y + 2.5, z))
             mx, az = INLAY_AT + EMBLEM_R + 3.5, z + EMBLEM_R + 3.5
             shot("ground_inlay", (mx, y + 11.0, az + 11.0), (mx, y, az + 0.5))
             shot("ground_inlay_walk", (mx + 3.0, y + 1.7, az + EMBLEM_R + 3.5), (mx - 0.5, y, az))
