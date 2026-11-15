@@ -10,7 +10,8 @@ lights as well (_lightkit.dress), because the lamps are judged against the lit f
 What the pictures are for (A0 #22559 three): the way in reads as a chain of pairs from the cable
 station to the door; the pools of light do not run into one sheet; the lip's pier lamps are a rank
 under the street lamps; the foreground of V1 stays darker than the building; everything else is
-dark but for one lamp at a door.
+dark but for one lamp at a door. The last picture is the director's view of the power house
+(S.V6): the bridge head free of the lip's lamps.
 """
 import importlib
 
@@ -77,6 +78,11 @@ VIEWS = {   # name: (eye, looks at)
     "hut_door": ((41.0, UP, -18.0), (37.5, 2.3, -25.0)),
     "tower_foot": ((-10.0, UP, -26.5), (-14.5, 1.0, -32.0)),
 }
+if hasattr(S, "V6"):
+    # the director's view of the power house, from the south half of the grand stair: the street
+    # lamp of the stair's foot stands near on the left, the lip's piers run to the bridge head on
+    # the right, and no lamp of the lip may stand on that head (lamps.BRIDGE_CLEAR)
+    VIEWS["v6"] = (S.V6["pos"], S.V6["look_at"])
 
 
 def shots():
