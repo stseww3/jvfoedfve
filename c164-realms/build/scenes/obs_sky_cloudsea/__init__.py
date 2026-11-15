@@ -217,9 +217,14 @@ VIEWS = {
 #                        than the block sea beside it and draws the sea's outline.
 #   near, far            the fog ending at 144 and at 256 instead of 192: how much of the sea's end
 #                        it hides.
+#   glowed               the end the director ruled for (11-16 00:33): the vanity layer drawn at the
+#                        colour the void actually shows in the real game, #755064 -- the fog colour
+#                        with the afterglow fan over it, measured off 4ef326f's v12_aerial by a2. The
+#                        block sea sinks to #383a74 there and the two read a brightness and a whole
+#                        warm-to-cool turn apart; this moment shows the join with that closed.
 # The ticks are sky/mood's; the numbers here stand in for a trial that is not in the tree yet (the
 # picture is then the plain blue hour).
-TRIALS = {"mist": 8100, "veil": 9100, "fogged": 10100, "near": 5100, "far": 7100}
+TRIALS = {"mist": 8100, "veil": 9100, "fogged": 10100, "glowed": 11100, "near": 5100, "far": 7100}
 TRIAL_VIEWS = ("v12", "station_east")
 
 
