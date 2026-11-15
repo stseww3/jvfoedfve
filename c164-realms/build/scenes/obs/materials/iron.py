@@ -121,11 +121,32 @@ def _plain(variant):
     return px
 
 
-def _riveted(seed):
-    """IRON_RIVETED: a bolted plate, the bevel and eight rivets fixed, only the brushing varies."""
-    px = _plate(seed, base=3, noise=0.11)
+# the riveted plate's brushing, laid out as the plain plate's is; every mark keeps two clear pixels
+# from each rivet and its shadow, which leaves it rows 5 to 11 and columns 4 to 11
+_BRUSHED_RIVETED = (((5, 4, 4, 1), (9, 7, 4, -1)),
+                    ((6, 8, 3, -1), (10, 4, 4, 1)),
+                    ((5, 9, 3, 1), (8, 4, 3, -1), (11, 7, 4, 1)),
+                    ((7, 6, 4, 1), (11, 4, 3, -1)),
+                    (),
+                    ())
+
+
+def _riveted(variant):
+    """IRON_RIVETED: a bolted plate, the frame and eight rivets fixed, only the brushing varies. Six
+    variants: four carry two or three short marks in the field between the rivets, each on a row of
+    its own with two clear rows to the next and no two variants' in the same place, and two carry
+    none.
+
+    The marks used to be the palette's own (noise 0.11, on its grid of five pixels), three variants
+    of them, and they ran into the rivets and the frame: a bar beside a rivet's shadow, a bar along
+    the top rivets' row. Review 15 of 11-16 (wall_riveted) asked for them to be laid by hand, as
+    the plain plate's are."""
+    px = _plate(1, base=3, noise=0.0)
     _panel_frame(px)
     _rivets(px)
+    for y, x0, n, step in _BRUSHED_RIVETED[variant]:
+        for x in range(x0, x0 + n):
+            _put(px, x, y, _i(3 + step))
     return px
 
 
@@ -481,7 +502,7 @@ def _map(block, name):
 def pack(pack_dir):
     out = []
     K.paint(pack_dir, "iron_plate", [_plain(v) for v in range(len(_BRUSHED))])
-    K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
+    K.paint(pack_dir, "iron_riveted", [_riveted(v) for v in range(len(_BRUSHED_RIVETED))])
     K.paint(pack_dir, "iron_cast", _cast())
     K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
     K.paint(pack_dir, "iron_hatch", _hatch())
