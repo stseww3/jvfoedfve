@@ -401,8 +401,9 @@ def main():
         if look is not None:
             if not os.path.exists(os.path.join(data, "pack.mcmeta")):
                 # a world that never held a scene: the data pack has to exist before the server
-                # starts, or the look in it is not read
-                run(os.path.join(BUILD, "place.py"), args.scenes[0], "--world", world(),
+                # starts, or the look in it is not read. A scene that carries the look writes it.
+                first = next(scene for scene in args.scenes if look_of(scene) is not None)
+                run(os.path.join(BUILD, "place.py"), first, "--world", world(),
                     "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--no-place")
                 restart = True
             changed = MOOD.write(data, NAMESPACE, look[0], look[1])
