@@ -80,6 +80,7 @@ TABLE_Y = FEET + 1                                  # -5, the plinth's weatherin
 SILL_Y = FEET + 2                                   # -4
 GLASS_Y = (FEET + 3, EAVES - 1)                     # -3..2, six rows of glass
 ARCH_Y = EAVES - 1                                  # 2, the arch hangs in the top row of the opening
+IMPOST_Y = ARCH_Y - 1                               # 1, the polished course of a pier the arches spring from
 FURNACE_Y = (GLASS_Y[0], GLASS_Y[0] + 2)            # -3..-1, the rows that glow in a boiler bay
 GATE_ROWS = 4                                       # the door bay: a gate this high, a lintel, glass
 FURNACE_LIGHT = 5                                   # the source before a boiler bay's glow while the sky line's kit
@@ -98,6 +99,7 @@ FLUE_DEPTH = 6                                      # the courses the flue is op
 SHAFT = [(x, z) for x in range(TX0 + 1, TX1) for z in range(TZ0 + 1, TZ1)
          if (x in (TX0 + 1, TX1 - 1)) + (z in (TZ0 + 1, TZ1 - 1)) < 2]         # a round of four: 12 cells
 FLUE = [(x, z) for x in (TX0 + 2, TX0 + 3) for z in (TZ0 + 2, TZ0 + 3)]
+LADDER = [(TX0 + 2, TZ0), (TX0 + 3, TZ0)]           # the climbing irons before the shaft's north face
 SMOKE = (TX0 + 3.0, TOP + 1.0, TZ0 + 3.0)           # the middle of the flue's mouth, for the motion line's smoke
 
 # the pipe bridge
@@ -131,7 +133,6 @@ DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FE
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
 BRICK_STAIRS = B.TUFF_BRICK.stairs
-BRICK_KEY = B.TUFF_BRICK.slab + "[type=top]"        # the middle of an arch: the head's upper half
 COURSE = B.TUFF_SMOOTH.block                        # plinth, sill, cornice
 TABLE = B.TUFF_SMOOTH.stairs
 IRON = B.IRON_RIVETED.block
@@ -274,7 +275,7 @@ def _pier(p, x0, z0, x1, z1):
     # against the two south corners, at (X0, FEET, Z1) and (X1, FEET, Z1) (site/lowerplatform).
     p.put(x0, PLINTH_Y, z0, COURSE)
     for y in range(TABLE_Y, EAVES):
-        p.put(x0, y, z0, BODY)
+        p.put(x0, y, z0, COURSE if y == IMPOST_Y else BODY)
     p.put(x0, EAVES, z0, COURSE)
     if _inside(x1, z1):
         for y in range(PLINTH_Y, EAVES + 1):
@@ -282,16 +283,15 @@ def _pier(p, x0, z0, x1, z1):
 
 
 def _recess(p, front, x, z, first, last, plinth=True):
-    """One column of a bay in the pier plane: the plinth and its weathering, the opening, the arch
-    (a stair hung from the cornice at either end, its solid quarter towards the jamb, and the
-    upper half of the head between them), the cornice."""
+    """One column of a bay in the pier plane: the plinth and its weathering, the opening, the arch,
+    the cornice. The arch is the main building's (main/_order.arch): a stair hung from the cornice
+    at either end of the opening, its solid quarter towards the jamb, and nothing between them, so
+    that the head steps in by half a block twice: over three cells that is a half circle."""
     if plinth:
         p.put(x, PLINTH_Y, z, COURSE)
         p.put(x, TABLE_Y, z, f"{TABLE}[facing={front.inward},half=bottom]")
     if first or last:
         p.put(x, ARCH_Y, z, f"{BRICK_STAIRS}[facing={front.back if first else front.along},half=top]")
-    else:
-        p.put(x, ARCH_Y, z, BRICK_KEY)
     p.put(x, EAVES, z, COURSE)
 
 
@@ -369,11 +369,14 @@ def _tower(p):
     for front, t0 in ((FRONTS["north"], SPAN - width), (FRONTS["east"], 0)):
         for s in range(1, width - 1):
             x, z = front.at(t0 + s, 0)
-            for y in range(SILL_Y, ARCH_Y):
+            for y in range(SILL_Y, ARCH_Y + 1):
                 p.clear(x, y, z)
             _recess(p, front, x, z, s == 1, s == width - 2)
             bx, bz = front.at(t0 + s, 1)
             p.put(bx, SILL_Y, bz, COURSE)
+        for s in (0, width - 1):
+            x, z = front.at(t0 + s, 0)
+            p.put(x, IMPOST_Y, z, COURSE)
     # the soot door in the north arch: a cast plate two cells square
     for x in (TX0 + 2, TX0 + 3):
         for y in (SILL_Y + 1, SILL_Y + 2):
@@ -384,23 +387,34 @@ def _tower(p):
         for z in range(TZ0, TZ1 + 1):
             facing = _ring_facing(x, z)
             p.put(x, y, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=bottom]")
-    # the shaft: round, hooped, the flue open in its top courses
+    # the shaft: round, hooped, the flue open in its top courses; under the head a polished necking
     for y in range(PED_TOP + 2, TOP - 2):
         hoop = (y - PED_TOP) % HOOP_STEP == 0
         for x, z in SHAFT:
             if y > TOP - FLUE_DEPTH and (x, z) in FLUE:
                 continue
-            p.put(x, y, z, IRON if hoop else BODY)
-    # the head: a corbel course and a polished band, six across with the corners left out, and
-    # over them the iron rim on the mouth of the shaft alone. As wide as the foot for three courses
-    # it made the chimney a dumbbell (cr2, g2 #36637); now its widest is a course and a half.
+            p.put(x, y, z, IRON if hoop else COURSE if y == TOP - 3 else BODY)
+    # the climbing irons up the north face, from the shoulder to the head: two cells of bars, which
+    # join each other and the brick behind them
+    for x, z in LADDER:
+        for y in range(PED_TOP + 2, TOP - 2):
+            p.put(x, y, z, B.IRON_BARS)
+    # the head: a bead six across with the corners left out, a corbel course under a weathered
+    # coping (a stair hung under a stair), and over it the iron rim on the mouth of the shaft alone.
+    # As wide as the foot for three courses it made the chimney a dumbbell (cr2, g2 #36637), and a
+    # course and a half of whole blocks still read as a lid in the pictures: now the full width is
+    # one course, half of the corbel and half of the coping.
     for x in range(TX0, TX1 + 1):
         for z in range(TZ0, TZ1 + 1):
             if (x in (TX0, TX1) and z in (TZ0, TZ1)) or (x, z) in FLUE:
                 continue
             facing = _ring_facing(x, z)
-            p.put(x, TOP - 2, z, BODY if facing is None else f"{BRICK_STAIRS}[facing={facing},half=top]")
-            p.put(x, TOP - 1, z, COURSE)
+            if facing is None:
+                p.put(x, TOP - 2, z, BODY)
+                p.put(x, TOP - 1, z, COURSE)
+            else:
+                p.put(x, TOP - 2, z, f"{BRICK_STAIRS}[facing={facing},half=top]")
+                p.put(x, TOP - 1, z, f"{TABLE}[facing={facing},half=bottom]")
             if (x, z) in SHAFT:
                 p.put(x, TOP, z, IRON)
 
@@ -469,6 +483,9 @@ def _roof_b(p):
                     p.put(x, lowest, z, IRON)
             if rise > k:
                 p.put(x, base + k, z, IRON_LOW)
+            # a rib on every pier line and on the two gables: half a block proud of the plates
+            if (x - xa) % BAY == 0 and not (m0 <= x <= m1 and abs(z - mid) <= 1):
+                p.put(x, base + k, z, IRON if rise > k else IRON_LOW)
             if x in (xa, xb):
                 for y in range(base, lowest):
                     p.put(x, y, z, _lunette(y - base, abs(z - mid)))
