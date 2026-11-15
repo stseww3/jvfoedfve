@@ -37,11 +37,15 @@ def shots():
     # bars filled the frame; it steps in past them and looks back at the machine
     shot("door_in", (DOOR_X, EYE, Z0 - 4.0), (WHEEL[0], WHEEL[1] - 0.5, WHEEL[2]))
     shot("door_step", (DOOR_X, EYE, Z0 + 5.0), (E.CX, FEET + 1.2, E.CZ))
-    # the walkway. A stand down inside the run filled half the frame with the grating's own bars;
-    # these stand in the room beside it at a standing height, looking along it, so the grating, its
-    # frame and the machine it leads to read as one line (that is what the card asks of the view).
-    shot("walkway", (PH.WALK_X[0] + 6.0, EYE, PH.WALK_Z[0] - 4.0), (PH.WALK_X[0] + 1, FEET + 0.6, PH.WALK_END_Z - 2))
-    shot("walkway_in", (PH.WALK_X[1] + 3.0, EYE, PH.WALK_Z[0] - 3.0), (PH.WALK_X[0] + 2, FEET + 1.0, PH.WALK_END_Z))
+    # the walkway. Every stand off the run has failed the same way: the grating sits one course up
+    # behind a one-course curb, so from the room's own eye height there is no grating to see at all,
+    # and a stand down inside the run put the camera in the bars. These two stand on the grating, a
+    # body's height over it, which is the only place the walk reads as the corridor it is.
+    DECK = PH.WALK_Y + 1.0              # -4: the grating's top face, where a walker's feet are
+    WALK_EYE = DECK + S.EYE
+    MID_Z = (PH.WALK_Z[0] + PH.WALK_Z[1]) / 2.0 + 0.5
+    shot("walkway", (PH.WALK_X[0] + 0.4, WALK_EYE, MID_Z), (PH.WALK_X[1] + 1.0, DECK + 0.2, MID_Z + 1.0))
+    shot("walkway_in", (PH.WALK_X[1], WALK_EYE, PH.WALK_END_Z - 0.6), (PH.WALK_X[0] + 0.2, DECK + 0.6, MID_Z - 0.2))
     # the room itself: the walls, the trusses, the ceiling
     shot("room", (X1 - 2.5, EYE, Z1 - 2.5), (X0 + 3.0, FEET + 3.0, Z0 + 3.0))
     shot("ceiling", (X0 + 9.0, FEET + 1.0, Z0 + 16.0), (X0 + 9.0, FEET + 9.0, Z0 + 8.0))
