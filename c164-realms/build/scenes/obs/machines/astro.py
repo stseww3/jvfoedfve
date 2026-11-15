@@ -181,16 +181,18 @@ def _tube():
     seg(-FRONT + 3.5, -FRONT + 11.0, CELL_R, BRASS)
     seg(-FRONT + 6.0, -FRONT + 8.0, CELL_R + 0.25, K.BRASS_STUD, seed=K.HOOP_SEED + 1)
     seg(-FRONT + 11.0, BODY[0], CELL_R + 0.5, K.IRON_D_STUD, seed=K.HOOP_SEED + 2)
-    # the body: rings of plate, each lapped and riveted to the next under a hoop, the seams of
-    # neighbouring rings a facet apart; the tail cone and its bolted flange
+    # the body: rings of two plates, each ring lapped and riveted to the next under a hoop, a
+    # seam of rivets down either side of it, the seams of neighbouring rings a facet apart (the
+    # great refractor's rule); the tail cone and its bolted flange
     seg(BODY[0], BODY[1], BODY_R, PLATE)
     for z in HOOPS:
         seg(z - 1.5, z + 1.5, HOOP_R, K.BRASS_STUD if z == HOOPS[-1] else K.PLATE_STUD, seed=K.HOOP_SEED)
     laps = (BODY[0],) + HOOPS
     for i, (a, b) in enumerate(zip(laps, laps[1:])):
-        with side(SEAMS[i % 2]):
-            d.box((-1.5, BODY_R - 1.0, a + 1.5), (1.5, BODY_R + 0.5, b - 1.5), K.PLATE_SEAM, grain="z",
-                  seed=K.HOOP_SEED + 3)
+        for opposite in (0.0, 180.0):
+            with side(SEAMS[i % 2] + opposite):
+                d.box((-1.5, BODY_R - 1.0, a + 1.5), (1.5, BODY_R + 0.5, b - 1.5), K.PLATE_SEAM, grain="z",
+                      seed=K.HOOP_SEED + 3)
     d.taper("z", (0.0, 0.0), BODY[1], TAIL - 2.0, BODY_R, 8.0, PLATE, sides=12, steps=2)
     seg(TAIL - 2.0, TAIL, 9.25, K.IRON_D_STUD, seed=K.HOOP_SEED + 2)
 
