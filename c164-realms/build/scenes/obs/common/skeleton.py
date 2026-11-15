@@ -49,6 +49,15 @@ LATITUDE = 45.0
 # clocks, the ball and the sky tell the same moment. The tower clock and the mother clock read this;
 # the world clocks of the time room count their differences from it.
 CLOCK = (7, 55)
+# LOCKED (A0, 11-15 20:47). One wind for the whole map, a north wind: it blows from the north to the
+# south, so the power house stands downwind of the great dome and its smoke does not cross the
+# telescope. WIND_FROM is the side the wind comes from and WIND_TO the side it blows to, in the words
+# used for facing; WIND is one block of its way, (dx, dy, dz). The tail of a wind vane points to
+# WIND_TO, flags and wind socks fly to WIND_TO, smoke and steam lean that way. Which way the wind
+# cups turn does not depend on it.
+WIND_FROM = "north"
+WIND_TO = "south"
+WIND = (0, 0, 1)
 
 # --- the bay grid of the main-building family (main building, clock tower, small dome, meridian hut) -
 BAY = 4             # LOCKED. one bay = pilaster (1) + window (3)
