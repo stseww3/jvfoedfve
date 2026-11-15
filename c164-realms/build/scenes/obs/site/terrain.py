@@ -7,9 +7,9 @@ The mountain is an outline and a base, never a subject: nothing of it rises abov
 
   - form. Not an even slope: bands of cliff with shelves between them. The rock lies in beds that
     undulate and dip a little; the hard beds stand as cliffs four to eight blocks high, the shelves
-    at their feet are a few blocks wide where the mountain is steep and wide on the ridges. Six
-    ridges run out from the terraces and six gullies cut in between them, so no two sides have the
-    same outline: long spurs to the north and south, the lower platform cut into the east side
+    at their feet are a few blocks wide where the mountain is steep and wide on the ridges. Ridges
+    run out from the terraces and gullies cut in between them, so no two sides have the same
+    outline: long spurs to the north and south, the lower platform cut into the east side
     with one ridge beyond it for the cable track, and on the west, under the sunset terrace, a
     prow with benches of its own (review cr2-#2): no two of them run round it together. A wide
     bench close under the wall on the south-west, a sheer face down to a wide bench on the
