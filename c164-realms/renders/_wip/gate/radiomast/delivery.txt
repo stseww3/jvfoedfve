@@ -1,0 +1,14 @@
+delivery machines/radiomast: d98865b against dd61614 (forked at 8781ac4), 33 commits, 41 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[FAIL] scope    37 of 41 files are the card's own
+                the director's file: M plan/roles/COMMON.md
+                common file (merge-key holder's; agreed beforehand?): M tools/nodejob.sh
+                not this card's file: M build/scenes/obs/machines/mast.py
+                not this card's file: M plan/ROSTER.md
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 2 test scenes, 28 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 167 commits behind the base
+result: FAIL (1 failed, 0 to look at)

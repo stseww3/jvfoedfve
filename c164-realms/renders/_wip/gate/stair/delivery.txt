@@ -1,0 +1,11 @@
+delivery site/stair: 8e30245 against 173cd6b (forked at a4d2c37), 36 commits, 38 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[WARN] scope    37 of 38 files are the card's own
+                not this card's file: A build/scenes/obs/site/lowerplatform.py
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[PASS] pictures 3 test scenes, 22 shots with a picture kept; every shot has one, each the file its note describes
+[PASS] merge    merges cleanly; 150 commits behind the base
+result: PASS (0 failed, 1 to look at)

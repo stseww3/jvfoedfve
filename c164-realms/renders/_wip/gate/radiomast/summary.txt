@@ -1,0 +1,31 @@
+gate machines/radiomast d98865b7: the merged tree 8ff02862, the assembly as it was dd61614d
+delivery.py: FAIL (1 failed, 0 to look at)
+    [FAIL] scope    37 of 41 files are the card's own
+                    the director's file: M plan/roles/COMMON.md
+                    common file (merge-key holder's; agreed beforehand?): M tools/nodejob.sh
+                    not this card's file: M build/scenes/obs/machines/mast.py
+                    not this card's file: M plan/ROSTER.md
+check.py: 46 scenes in 29 s: 46 pass (35 with warnings)
+pictures: obs_mach_radiomast: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_radiomast at 8ff02862: 5 of 14 kept pictures are what the code draws, 9 not
+    v1: 2054 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    v2: 1637 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    skyline: 793 of 921600 pixels are not what the code draws (off by up to 81 of 255)
+    aerial: 63 of 921600 pixels are not what the code draws (off by up to 5 of 255)
+    far70: 811 of 921600 pixels are not what the code draws (off by up to 99 of 255)
+    far70_deep: 811 of 921600 pixels are not what the code draws (off by up to 51 of 255)
+    far70_glow: 811 of 921600 pixels are not what the code draws (off by up to 115 of 255)
+    seat: 3666 of 921600 pixels are not what the code draws (off by up to 46 of 255)
+    stay: 12337 of 921600 pixels are not what the code draws (off by up to 46 of 255)
+pictures: obs_mach_radiomast_b: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_mach_radiomast_b at 8ff02862: 5 of 14 kept pictures are what the code draws, 9 not
+    v1: 2054 of 921600 pixels are not what the code draws (off by up to 107 of 255)
+    v2: 1637 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+    skyline: 793 of 921600 pixels are not what the code draws (off by up to 81 of 255)
+    aerial: 63 of 921600 pixels are not what the code draws (off by up to 5 of 255)
+    far70: 811 of 921600 pixels are not what the code draws (off by up to 99 of 255)
+    far70_deep: 811 of 921600 pixels are not what the code draws (off by up to 51 of 255)
+    far70_glow: 811 of 921600 pixels are not what the code draws (off by up to 115 of 255)
+    seat: 3666 of 921600 pixels are not what the code draws (off by up to 46 of 255)
+    stay: 12337 of 921600 pixels are not what the code draws (off by up to 46 of 255)
+result: FAIL

@@ -1,0 +1,18 @@
+gate site/outbuildings 5c2b6ec9: the merged tree 173cd6b3, the assembly as it was f54bf237
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 43 scenes in 25 s: 43 pass (32 with warnings)
+pictures: obs_site_outbuildings: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_outbuildings at 173cd6b3: 0 of 14 kept pictures are what the code draws, 14 not
+    v1_arrival: 132895 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    v11_lookback: 54919 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    hut_near: 76440 of 921600 pixels are not what the code draws (off by up to 238 of 255)
+    hut_mid: 166637 of 921600 pixels are not what the code draws (off by up to 238 of 255)
+    hut_slit: 70588 of 921600 pixels are not what the code draws (off by up to 180 of 255)
+    hut_inside: 77442 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    lookout_near: 18526 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    lookout_mid: 37212 of 921600 pixels are not what the code draws (off by up to 130 of 255)
+    tower_near: 23186 of 921600 pixels are not what the code draws (off by up to 239 of 255)
+    tower_mid: 50083 of 921600 pixels are not what the code draws (off by up to 67 of 255)
+    weather_near: 40516 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    weather_mid: 56886 of 921600 pixels are not what the code draws (off by up to 136 of 255)
+result: PASS

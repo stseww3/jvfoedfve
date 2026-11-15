@@ -1,0 +1,25 @@
+gate site/stair 8e302456: the merged tree dd61614d, the assembly as it was 173cd6b3
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    37 of 38 files are the card's own
+                    not this card's file: A build/scenes/obs/site/lowerplatform.py
+check.py: 46 scenes in 28 s: 46 pass (35 with warnings)
+pictures: obs_site_stair: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair at dd61614d: 7 of 12 kept pictures are what the code draws, 5 not
+    v1: 991 of 921600 pixels are not what the code draws (off by up to 144 of 255)
+    stair_axis: 196 of 921600 pixels are not what the code draws (off by up to 90 of 255)
+    aerial: 6399 of 921600 pixels are not what the code draws (off by up to 134 of 255)
+    axis_high: 3017 of 921600 pixels are not what the code draws (off by up to 136 of 255)
+    v12_aerial: 9595 of 921600 pixels are not what the code draws (off by up to 74 of 255)
+pictures: obs_site_stair_noband: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair_noband at dd61614d: 1 of 5 kept pictures are what the code draws, 4 not
+    v1: 991 of 921600 pixels are not what the code draws (off by up to 144 of 255)
+    stair_axis: 196 of 921600 pixels are not what the code draws (off by up to 90 of 255)
+    aerial: 6399 of 921600 pixels are not what the code draws (off by up to 134 of 255)
+    axis_high: 3017 of 921600 pixels are not what the code draws (off by up to 136 of 255)
+pictures: obs_site_stair_nolamps: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_stair_nolamps at dd61614d: 1 of 5 kept pictures are what the code draws, 4 not
+    v1: 991 of 921600 pixels are not what the code draws (off by up to 144 of 255)
+    stair_axis: 222 of 921600 pixels are not what the code draws (off by up to 90 of 255)
+    aerial: 5967 of 921600 pixels are not what the code draws (off by up to 72 of 255)
+    axis_high: 2773 of 921600 pixels are not what the code draws (off by up to 81 of 255)
+result: PASS

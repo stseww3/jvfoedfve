@@ -1,0 +1,18 @@
+gate main/shell 4336bc18: the merged tree f54bf237, the assembly as it was 7acc80db
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 43 scenes in 26 s: 43 pass (32 with warnings)
+pictures: obs_main_shell: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_shell at f54bf237: 17 of 29 kept pictures are what the code draws, 12 not
+    plan_ground: 39 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    plan_main: 127 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    plan_dome: 145 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    cut_ground: 136 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    cut_main: 231 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    cut_main_west: 167 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    cut_dome: 302 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    section_long: 232 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    west_way: 8 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    dome_room: 39 of 921600 pixels are not what the code draws (off by up to 62 of 255)
+    stair_top: 6 of 921600 pixels are not what the code draws (off by up to 61 of 255)
+    through_door: 3673 of 921600 pixels are not what the code draws (off by up to 160 of 255)
+result: PASS
