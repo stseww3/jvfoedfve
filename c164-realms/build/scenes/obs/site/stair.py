@@ -11,8 +11,8 @@ head, half a block: every block of solid height on that edge hides about three o
 And nothing here is as bright as the front: only the building is (A0 #268, #28839). The faces S.V1
 sees of the stair look north and up, and the game shades those less than the front, which looks
 east; the same pale stone would show a third brighter here than on the building. So the stair is
-slate, dressed with the middle tone of the site's floors, polished tuff; the one pale stone left
-is the cap of a pedestal, half a block, as on the piers of every railing.
+slate, dressed with the middle tone of the site's floors, polished tuff. The only pale stone left is
+the cap of a head pedestal, half a block, as on the piers of every railing.
 
   wall       Column x 60, from under the kerb course of the terrace (y -1, site/court's) down to
              the lower paving: slate brick between a polished plinth course and a polished band
@@ -30,12 +30,17 @@ is the cap of a pedestal, half a block, as on the piers of every railing.
   cheeks     A wall on each side, outside the 17 (rows z -9 and 9, in line with the end piers of
              the terrace railing): slate brick like the retaining wall it grows out of, under one
              course of coping that rakes with the stair, one block above the treads.
-  pedestals  Where a cheek ends: slate brick, a die of the coping's stone, a pale cap. At the head
-             (x 61) one block square, the cheek's own top end. At the foot two blocks square,
-             beyond the last riser (x 72..73) and standing out from the cheek away from the stair,
-             so the 17 stay clear and the outer rows (z -10 and 10) are pilaster lines. They are
-             the lamp bases: LAMP_POINTS names the middle of the top of each for the props line
-             (the lamp) and the sky line (its light). No block is set above them. A lamp at the
+  pedestals  Where a cheek ends: slate brick, a die of the coping's stone, a cap. At the head
+             (x 61) one block square, the cheek's own top end, capped in the pale stone of the
+             railings' piers (site/_kit): it stands among those piers, half a block over the terrace
+             floor. At the foot two blocks square, beyond the last riser (x 72..73) and standing out
+             from the cheek away from the stair, so the 17 stay clear and the outer rows (z -10 and
+             10) are pilaster lines. Their cap is the middle tone, not the pale one: measured on v1
+             the pale cap read 0.35 to 0.38 against the front's stone at 0.21, so those pedestals
+             were the brightest thing in the arrival view (c235's review named it). Nothing on this
+             edge is to be brighter than the front -- only the building is (A0 #268).
+             They are the lamp bases: LAMP_POINTS names the middle of the top of each for the props
+             line (the lamp) and the sky line (its light). No block is set above them. A lamp at the
              head stands on the lip, before the front for the arrival view: props/lamps gives a
              point above S.GROUND the lip's low lamp, not a pole.
 
@@ -72,6 +77,13 @@ COPING = DRESSING.block
 COPING_SLAB = DRESSING.slab + "[type=bottom]"
 DIE = DRESSING.block
 CAP = B.ASHLAR_ROUGH.slab + "[type=bottom]"         # the stone of the railings' pier caps (site/_kit)
+# The foot pedestals carry the street lamps of the way (level 13) and their caps turn to the sky, which
+# the game lights at 1.0: the railings' pale cap read 0.35 to 0.38 there where the front's stone read
+# 0.21, so the foot pedestals were the brightest thing in the arrival view (c235's review; the card's
+# threshold is 0.17 to 0.21, and its recorded fallback is: over it, the cap goes to the die's stone and
+# the lamp is not moved). The head pedestals keep the railings' cap: they stand among the railing's own
+# piers on the lip, half a block above the terrace floor, and are of that family (A0 #171).
+FOOT_CAP = DRESSING.slab + "[type=bottom]"
 GRATE = B.IRON_GRATE
 
 # The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
@@ -172,15 +184,15 @@ def _cheek(c, o, x, z):
         _put(c, o, x, k, z, COPING_SLAB)
 
 
-def _pedestal(c, o, cells, top):
-    """Die and cap over `cells`, the cap's top at `top`; slate brick under the die down to the
+def _pedestal(c, o, cells, top, cap=CAP):
+    """Die and `cap` over `cells`, the cap's top at `top`; slate brick under the die down to the
     paving."""
-    cap = int(math.floor(top))
+    k = int(math.floor(top))
     for x, z in cells:
-        for y in range(FEET, cap - 1):
+        for y in range(FEET, k - 1):
             _put(c, o, x, y, z, BRICK)
-        _put(c, o, x, cap - 1, z, DIE)
-        _put(c, o, x, cap, z, CAP)
+        _put(c, o, x, k - 1, z, DIE)
+        _put(c, o, x, k, z, cap)
 
 
 def build(canvas, origin=(0, 0, 0), band=None):
@@ -200,5 +212,5 @@ def build(canvas, origin=(0, 0, 0), band=None):
     for cells in HEAD_PEDESTALS:
         _pedestal(c, o, cells, HEAD_TOP)
     for cells in FOOT_PEDESTALS:
-        _pedestal(c, o, cells, FOOT_TOP)
+        _pedestal(c, o, cells, FOOT_TOP, FOOT_CAP)
     return 0
