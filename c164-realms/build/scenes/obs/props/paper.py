@@ -386,7 +386,7 @@ MOON = [".....hhhhhh.....",
         "...hhhhtthhhh...",
         ".....hhhhhh....."]
 # The printer's ink is the warm grey one step under the cream ramp: on the cream ramp alone the
-# seas stood 26 levels off the disc under a lamp and the Moon was a smudge.
+# seas stood some 25 levels off the disc under a lamp and the Moon was a smudge.
 MOON_INK = {"p": CR[3], "e": EN[1], "g": EN[3], "o": AS[0], "i": AS[0],
             "h": CR[2], "t": CR[3], "s": CR[0], "k": AS[0]}
 
