@@ -412,9 +412,12 @@ def vulkan():
     """What Vulkan the machine offers, in a line: the device and its driver, as vulkaninfo names them."""
     if not shutil.which("vulkaninfo"):
         return "not asked (no vulkaninfo)"
+    # asked without a display: with one, vulkaninfo opens a window on it first, and a node's own
+    # desktop refuses that
+    env = {key: value for key, value in os.environ.items() if key not in ("DISPLAY", "WAYLAND_DISPLAY")}
     try:
         got = subprocess.run(["vulkaninfo", "--summary"], capture_output=True, text=True, timeout=60,
-                             env={**os.environ, **software()})
+                             env={**env, **software()})
     except (OSError, subprocess.SubprocessError) as exc:
         return f"vulkaninfo failed ({exc})"
     found = re.findall(r"^\s*(deviceName|driverInfo|apiVersion)\s*=\s*(.+)$", got.stdout, re.M)
