@@ -1,0 +1,44 @@
+a0job 1115-220402-cloud-cloudsea-f3-ad5e-235: cursor/c164-cloud-cloudsea-f3-ad5e @ b914f6f1 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.44 2.18 1.46, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- rm -f renders/_wip/*.png renders/_wip/*.txt; cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/s2 --plan --sheet 3 --only v12,sunset_west,roof_down,station_east,sunset_sw_down,skim --laws b768; python -m scene
+../renders/_wip/s2-plan.png: {'over the face': 23261, 'bodies': 11942, 'deck': 88030}, x -247..309, z -267..274, 2 px a block; orange: the aerial camera's wall of fog begins, red: it is whole, yellow: its last loaded chunks
+grid 432 x 90 x 419, 160089 blocks, 0 entity boxes (2 s)
+28 states -> 46 looks, 127 boxes, 28 pictures (2 s)
+light done (3 s)
+../renders/_wip/s2-v12-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 43 s)
+../renders/_wip/s2-sunset_west-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2-roof_down-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2-station_east-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2-sunset_sw_down-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2-skim-b768 (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2-sheet.png: 6 views, 3 to a row
+grid 432 x 90 x 419, 160089 blocks, 0 entity boxes (2 s)
+28 states -> 46 looks, 127 boxes, 28 pictures (2 s)
+light done (2 s)
+../renders/_wip/s2m-v12-b768-fast (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-v12-b768-off (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-sunset_west-b768-fast (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-sunset_west-b768-off (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-station_east-b768-fast (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-station_east-b768-off (tick 2600, fog 0..768, layer alpha 1.00 to 768, 1 s)
+../renders/_wip/s2m-sheet.png: 6 views, 3 to a row
+check obs_sky_cloudsea at b914f6f
+[PASS] regen     160089 blocks, 0 entities, 0 models, 644 resource-pack files, 82 data-pack files, look: 1 biomes, 1 timelines (1.9 s)
+[PASS] conflicts the scene writes 643 files, no file written twice, the folders and the prefix of sky are kept (2 packages run alone)
+[PASS] strays    121 pictures, every colour in the palette; 10 sky pictures not checked (drawn by adding light)
+[PASS] refs      503 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    18 kinds of block placed, all in the occupancy table
+[SKIP] flatwall  a test scene of sky: its sample walls and backdrops are meant to be flat
+[PASS] entities  0 display entities
+[PASS] views     11 shots, most display entities in view: 0 (v1), limit 600; counted without what walls hide
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.0% hidden (base storey 0%, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the st
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=67 host=cursor cores=4 head=b914f6f1 commit=2417d8af pushed=yes branch=cursor/c164-cloud-cloudsea-f3-ad5e-wip files=4
+a0job: exit=0 secs=67
