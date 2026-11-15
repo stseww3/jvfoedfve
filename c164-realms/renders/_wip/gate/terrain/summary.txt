@@ -1,0 +1,32 @@
+gate site/terrain ca810cc1: the merged tree 8b7735eb, the assembly as it was 2f597026
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] scope    36 of 38 files are the card's own
+                    not this card's file: M build/scenes/obs/site/court.py
+                    not this card's file: D build/scenes/obs/site/ground.py
+check.py: 26 scenes in 13 s: 26 pass (12 with warnings)
+pictures: obs_site_court: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_court at 8b7735eb: 2 of 9 kept pictures are what the code draws, 7 not
+    v2_axis: 6927 of 921600 pixels are not what the code draws (off by up to 182 of 255)
+    v2_high: 6977 of 921600 pixels are not what the code draws (off by up to 189 of 255)
+    court_oblique: 12583 of 921600 pixels are not what the code draws (off by up to 90 of 255)
+    meridian_north: 155 of 921600 pixels are not what the code draws (off by up to 3 of 255)
+    meridian_near: 770 of 921600 pixels are not what the code draws (off by up to 10 of 255)
+    lamp_pool: 3654 of 921600 pixels are not what the code draws (off by up to 52 of 255)
+    aerial: 23260 of 921600 pixels are not what the code draws (off by up to 104 of 255)
+pictures: obs_site_terrain: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_terrain at 8b7735eb: 1 of 9 kept pictures are what the code draws, 8 not
+    v1_arrival: 2031 of 921600 pixels are not what the code draws (off by up to 44 of 255)
+    v1_stamp: 2751 of 921600 pixels are not what the code draws (off by up to 60 of 255)
+    v11_sunset: 6028 of 921600 pixels are not what the code draws (off by up to 65 of 255)
+    v12_aerial: 6276 of 921600 pixels are not what the code draws (off by up to 89 of 255)
+    sunset_terrace: 394 of 921600 pixels are not what the code draws (off by up to 26 of 255)
+    west_prow: 2033 of 921600 pixels are not what the code draws (off by up to 64 of 255)
+    north_flank: 935 of 921600 pixels are not what the code draws (off by up to 49 of 255)
+    south_flank: 10395 of 921600 pixels are not what the code draws (off by up to 66 of 255)
+pictures: obs_site_terrain_nosnow: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_site_terrain_nosnow at 8b7735eb: 0 of 4 kept pictures are what the code draws, 4 not
+    v11_sunset: 6028 of 921600 pixels are not what the code draws (off by up to 65 of 255)
+    v12_aerial: 6276 of 921600 pixels are not what the code draws (off by up to 89 of 255)
+    west_prow: 2033 of 921600 pixels are not what the code draws (off by up to 64 of 255)
+    south_flank: 10395 of 921600 pixels are not what the code draws (off by up to 66 of 255)
+result: PASS
