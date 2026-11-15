@@ -211,9 +211,10 @@ def _door():
     m.box((-w / 2.0, -h / 2.0, 0.0), (w / 2.0, h / 2.0, 1.6), IRON, skip="d")     # the door
     m.box((-w / 2.0 - 1.0, -h / 2.0 - 1.0, 0.0), (w / 2.0 + 1.0, -h / 2.0, 2.0), IRON_D, skip="d")
     m.box((-w / 2.0, h / 2.0, 0.0), (w / 2.0, h / 2.0 + 1.6, 2.0), IRON_D, skip="d")   # the lintel
-    m.box((-3.0, 2.0, 1.6), (3.0, 8.0, 1.8), GLOW[2], skip="d")                    # the fire mouth
+    m.box((-3.0, 2.0, 1.6), (3.0, 8.0, 1.8), GLOW[2], skip="d", emit=15, shade=False)   # the fire mouth
     for i in range(3):                                                            # the draught slots
-        m.box((-3.4, -5.4 + i * 1.6, 1.6), (3.4, -4.6 + i * 1.6, 1.8), GLOW[1], skip="d")
+        m.box((-3.4, -5.4 + i * 1.6, 1.6), (3.4, -4.6 + i * 1.6, 1.8), GLOW[1], skip="d",
+              emit=11, shade=False)
     m.box((w / 2.0 - 3.0, -1.0, 1.6), (w / 2.0 - 1.4, 1.0, 2.6), BRASS_D, skip="d")   # the latch
     m.box((-w / 2.0, 1.0, 1.6), (-w / 2.0 + 7.0, 2.2, 2.0), BRASS_D, skip="d")        # the hinge strap
     return m
