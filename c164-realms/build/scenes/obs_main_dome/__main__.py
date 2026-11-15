@@ -8,7 +8,7 @@ from . import shots
 
 if __name__ == "__main__":
     here = os.path.dirname(__file__)
-    for folder, listed in ((here, shots()), (here + "_b", shots()), (here + "_slit", obs_main_dome_slit.shots())):
+    for folder, listed in ((here, shots()), (here + "_a", shots()), (here + "_slit", obs_main_dome_slit.shots())):
         path = os.path.join(folder, "shots.json")
         with open(path, "w", encoding="utf-8", newline="\n") as f:
             f.write("[\n" + ",\n".join(" " + json.dumps(s) for s in listed) + "\n]\n")
