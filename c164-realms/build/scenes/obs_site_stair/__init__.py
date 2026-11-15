@@ -18,9 +18,9 @@ The views: V1 as the skeleton fixes it (the arrival view the package is judged o
 band under the building, the stair comes down on the left); the stair on its axis, from the block
 where the axis begins on the yard's east edge (from there the yard's lamps stand whole in the
 picture, two pairs before the stair, and the terrace's lip hides least of the front); the look
-back down it from its head; the stair from its foot; the wall and a cheek from near, and the wall's
-length from the yard's north end; and three from above, one of them on the axis, the way a car of
-the cableway comes in: the line from the yard's edge to the door.
+back down it from its head; the stair from its foot; the wall, a cheek and a foot pedestal from
+near, and the wall's length from the yard's north end; and three from above, one of them on the
+axis, the way a car of the cableway comes in: the line from the yard's edge to the door.
 
 Two more scenes show the same hill with one thing left out, on the views that are judged
 (JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chooses on the
@@ -54,8 +54,9 @@ VIEWS = [
     ("stair_axis", (lowerplatform.START_X + 1.5, LOW, 0.5), (17, 12, 0.5)),
     ("stair_foot", (76.5, LOW, 3.5), (56, 3, 0.5)),
     ("look_back", (stair.EDGE_X + 0.5, HIGH, 0.5), (84, -9, 0.5)),
-    ("wall_near", (70.5, LOW, -27.5), (60.5, -3.4, -17)),
+    ("wall_near", (70.5, LOW, -27.5), (62, -3.4, -15.5)),
     ("cheek_side", (75.5, LOW, -19.5), (65, -3, -8.5)),
+    ("pedestal", (76.5, LOW, -12.5), (72.8, -3.6, -8.8)),
     ("yard_south", (72.5, LOW, -40.5), (62, -3.5, -4)),
     ("aerial", (108, 34, 34), (66, -6, 0.5)),
     ("axis_high", (110, 16, 0.5), (40, -4, 0.5)),
