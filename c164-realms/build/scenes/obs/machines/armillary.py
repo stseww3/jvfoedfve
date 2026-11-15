@@ -5,7 +5,7 @@ middle of the emblem roundel that site/court lays there, and it is the foregroun
 V2: from the head of the grand stair the lit entrance and the great dome are seen through its rings.
 
     centre cell      skeleton.ARMILLARY = (35, 0); the centre line of the sphere is (35.5, 0.5)
-    stone base       blocks, x 34..36, z -1..1, y 0..1: a ring of deepslate stairs (two half-block
+    stone base       blocks, x 34..36, z -1..1, y 0..1: a square of deepslate stairs (two half-block
                      steps) round a core, and one block of wall stone on it; 3 wide, 2 high
     sphere           its middle at y 4.75; the bore of the meridian ring is 4.5 blocks
     top              y 7.25 (version a), y 7.44 (version b): the crown of the meridian ring, a plain
@@ -13,15 +13,26 @@ V2: from the head of the grand stair the lit entrance and the great dome are see
 
 The brass work is display entities, one model to the ring. Every model has its anchor in the middle
 of the sphere and every entity stands on that one point, so they all take their light from the
-same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring.
+same cell, LIGHT_CELL = (35, 4, 0): no step in brightness from ring to ring. The cell under it,
+(35, 3, 0), stays empty: A2 (sky/lights) puts a hidden light there, with the four ground lamps.
 
 Two versions stand for the review (the base is the same):
   a  classic     many thin rings: horizon, meridian, equator, the two tropics, one colure, the
                  ecliptic band with its scale, the polar axis and a small earth. 9 entities.
   b  heavy       one great graduated meridian ring and a broad ecliptic band on a slim colure, the
-                 axis and a larger earth. 5 entities. No level ring: from due north or south version
-                 a shows an upright bar (the meridian ring on edge) crossed by a level one (the
-                 horizon ring), version b only the upright one.
+                 axis and a larger earth. 5 entities.
+
+The view from due east decides between them (V2). There the meridian ring is a full circle; the
+polar axis and the equator are the two diagonals in it, one rising to the right and one to the
+left; the horizon ring is a level line; behind the circle are the lit entrance and the gold window
+over it.
+
+From due north or south, along the brass meridian that leads people that way, the meridian ring
+stands on edge, and in version a the horizon ring lies across it: an upright and a level bar of one
+length, a cross (red line). So the horizon ring is as thin as the other thin rings: a circle of
+wire, not a bar (director, 11-15). The test scene looks along the meridian from both edges of the
+court; if it still reads as a cross there, version a loses the ring: take "horizon" out of
+SPEC["a"]["parts"].
 
 What does not turn (the frame), drawn the way it stands; +x east, +y up, +z south:
   stand      the iron saddle on the base that clamps the foot of the meridian ring
@@ -34,21 +45,22 @@ in the meridian plane and rises LATITUDE degrees above the northern horizon; as 
 (east, up, south) it is POLE = (0, sin LATITUDE, -cos LATITUDE). These models are drawn in the
 sphere's own frame, with +y along the polar axis, and each is placed with the two turns
 (("y", hour), ("x", LATITUDE - 90)): the first spins it about its own axis, the second tips that
-axis onto the pole. To move one, change `hour` only (pieces() gives the turns for any hour; the
+axis onto the pole. To move one, change `hour` only; pieces() gives the turns for any hour (the
 southern tropic has a half turn about z in front). The sky's daily motion is the negative sense.
   axis       the rod and the earth on it
   equator    square to the axis (a)
-  tropic     the same model twice, north and south of the equator (a)
+  tropic     the same model twice, OBLIQUITY degrees north and south of the equator (a)
   ecliptic   the band, OBLIQUITY degrees off the equator, a mark every 10 degrees and a long one
              every 30 (the twelve signs)
-  colure     the one ring through both poles that carries the others (the solstitial colure). Only
-             one: two would cross at the pole.
+  colure     the one ring through both poles that carries the others (the solstitial colure), with
+             a bolt head where each of them crosses it. Only one: two would cross at the pole.
 This round places a still pose, HOUR; the motion is A8's.
 
-Brass: old and dark (the palette's brass_dark), one step lighter where a face looks up, and only
-the scale marks, the bolts and the ball on the axis go brighter. Nothing glows. At night the four
+Brass: old and dark (the palette's brass_dark), one step lighter where a face looks up; only the
+scale marks, the bolt heads and the ball on the axis go brighter. Nothing glows. At night the four
 small ground lamps at the corners of the base light it; lamps and light sources are A2's
-(sky/lights), this module only says where they go: LAMP_CELLS, lamp_feet().
+(sky/lights), which reads LAMP_CELLS and LIGHT_CELL from here; lamp_feet() gives the same four
+places as points, with the yaw towards the sphere.
 
     from scenes.obs.machines import armillary
     n = armillary.build(canvas, origin, version="a")      # base and brass; returns the entity count
@@ -76,27 +88,33 @@ LIGHT_CELL = (CX, int(math.floor(CENTRE_Y)), CZ)    # the cell every brass piece
 LAMP_CELLS = tuple((CX + dx, CZ + dz) for dx in (-2, 2) for dz in (-2, 2))
 
 # --- the instrument's own numbers -----------------------------------------------------------------
-LATITUDE = 45.0                     # the pole's height over the northern horizon (no skeleton number yet)
+# the pole's height over the northern horizon: the skeleton's once it has it (director, 11-15: the
+# telescope, the transit instrument and this sphere read one number), until then the same 45
+LATITUDE = float(getattr(S, "LATITUDE", 45.0))
 OBLIQUITY = 23.5                    # the ecliptic's tilt to the equator
 HOUR = -35.0                        # the still pose: how far the sphere is turned about the polar axis
 POLE = (0.0, math.sin(math.radians(LATITUDE)), -math.cos(math.radians(LATITUDE)))
-BRIGHTNESS = None                   # None: the light of LIGHT_CELL. (sky, block) fixes it, if A2 asks
+BRIGHTNESS = None                   # None: the light of LIGHT_CELL (A2 lights that cell). Else (sky, block)
 
 # The models are drawn 2 px to the unit and shown at twice their size: 16 px to the block, and a ring
 # 5 blocks across stays inside the 48 units a model may span. So below 1 unit = 2 px = 1/8 block.
 PX = 2.0
 FOOT = (CENTRE_Y - BASE_TOP) * 16.0 / PX        # 22: the top of the base, in units below the anchor
 R_BORE = 18.0                       # the bore of the meridian ring (and of the horizon ring)
-# A ring is (outer radius, radial size, width along its own axis). What turns keeps inside 17.25.
+R_CAGE = 17.5                       # what turns keeps inside this radius
+# A ring is (outer radius, radial size, width along its own axis); the tropic has the radius of the
+# sphere it lies on in the first place. studs: where on the colure the other rings cross it, in
+# degrees from the equator (the model's +x) towards the north pole (+y).
 SPEC = {
     "a": dict(
         parts=("stand", "meridian", "horizon", "axis", "equator", "tropic", "ecliptic", "colure"),
         meridian=(20.0, 2.0, 2.0), meridian_scale=False,
-        horizon=(21.5, 3.5, 1.5),
+        horizon=(19.5, 1.5, 1.5),
         equator=(16.75, 1.5, 2.0),
-        tropic=(16.75, 1.5, 1.5),               # (radius of the sphere it lies on, radial size, width)
+        tropic=(16.75, 1.5, 1.5),
         ecliptic=(17.0, 1.0, 3.0),
         colure=(16.5, 1.5, 1.5),
+        studs=(0.0, OBLIQUITY, 180.0 - OBLIQUITY, 180.0, 180.0 + OBLIQUITY, -OBLIQUITY),
         rod=0.75, earth=2.5, boss=1.5, knob=1.75,
     ),
     "b": dict(
@@ -104,6 +122,7 @@ SPEC = {
         meridian=(21.5, 3.5, 2.5), meridian_scale=True,
         ecliptic=(17.0, 1.5, 5.0),
         colure=(16.5, 1.5, 2.0),
+        studs=(OBLIQUITY, 180.0 + OBLIQUITY),
         rod=1.0, earth=3.5, boss=1.75, knob=2.0,
     ),
 }
@@ -111,7 +130,8 @@ POLAR = ("axis", "equator", "tropic", "ecliptic", "colure")     # the pieces tha
 
 # --- materials (palette only) ---------------------------------------------------------------------
 BRASS = P.mat("brass_dark")                 # the body of every ring
-WORN = P.mat("brass", base=2)               # one step up: bolt heads, collars, the ball on the axis
+WORN = P.mat("brass", base=2)               # one step up: bolts, collars, the ball on the axis
+HEAD = P.mat("brass_flat")                  # the end of a bolt: that step, flat
 IRON = P.mat("iron")
 EARTH = P.mat("verdigris")                  # the small globe in the middle: the dome's copper green
 MARK = P.RAMPS["brass"][3]                  # the scale marks: two steps over the body, no brighter
@@ -171,17 +191,18 @@ def _new(version, part):
 def _stand(version):
     """The saddle: an iron foot on the stone and two cheeks that clamp the lowest eighth of the
     meridian ring between them, bolted through. It lies in the meridian plane, so that from above
-    nothing shows across the meridian line."""
+    nothing shows across the meridian line. The ring's foot is sunk in the iron."""
     r_out, _, w = SPEC[version]["meridian"]
     m = _new(version, "stand")
-    m.box((-3.0, -FOOT, -4.0), (3.0, -FOOT + 2.0, 4.0), IRON)
+    m.box((-3.0, -FOOT, -4.0), (3.0, -FOOT + 2.5, 4.0), IRON)
     cheek = r_out + 0.5
     for side in (-1.0, 1.0):
         m.ring("x", (side * (w / 2.0 + 0.5), 0.0, 0.0), (R_BORE + cheek) / 2.0, cheek - R_BORE, 1.0, IRON,
                sides=32, arc=(157.5, 202.5))
     for a in (-15.0, 15.0):
         with m.turned(("x", a)):
-            m.tube("x", (-(R_BORE + cheek) / 2.0, 0.0), -(w / 2.0 + 1.5), w / 2.0 + 1.5, 0.5, WORN, sides=4)
+            m.tube("x", (-(R_BORE + cheek) / 2.0, 0.0), -(w / 2.0 + 1.5), w / 2.0 + 1.5, 0.5, WORN, sides=4,
+                   cap=HEAD)
     return m
 
 
@@ -201,13 +222,13 @@ def _meridian(version):
 
 
 def _horizon(version):
-    """The horizon ring: a flat level band with the azimuth scale on both faces (it is seen from
-    below), held on the meridian ring by a knuckle north and south."""
+    """The horizon ring: level, as thin as the other thin rings, held on the meridian ring by a
+    knuckle north and south."""
     s = SPEC[version]
     r_out, thick, w = s["horizon"]
     mr_out, _, mw = s["meridian"]
     m = _new(version, "horizon")
-    _hoop(m, "y", r_out, thick, w, BRASS, 36, scale="flat")
+    m.ring("y", (0.0, 0.0, 0.0), r_out - thick / 2.0, thick, w, BRASS, sides=32)
     for end in (-1.0, 1.0):
         m.box((-(mw / 2.0 + 0.75), -(w / 2.0 + 0.5), end * (R_BORE - 0.5)),
               (mw / 2.0 + 0.75, w / 2.0 + 0.5, end * (mr_out + 0.5)), BRASS)
@@ -235,8 +256,8 @@ def _equator(version):
 
 
 def _tropic(version):
-    """One tropic: the circle OBLIQUITY degrees north of the equator. Turned upside down it is the
-    southern one."""
+    """The northern tropic: the circle OBLIQUITY degrees north of the equator. Turned upside down it
+    is the southern one."""
     r, thick, w = SPEC[version]["tropic"]
     e = math.radians(OBLIQUITY)
     m = _new(version, "tropic")
@@ -256,13 +277,17 @@ def _ecliptic(version):
 
 def _colure(version):
     """The colure: the ring through both poles and the two highest points of the ecliptic (the
-    model's x-y plane), with a hub at each pole where it turns on the rod."""
+    model's x-y plane), with a hub at each pole where it turns on the rod, and a bolt through it
+    where the equator, the tropics and the ecliptic cross it: the head shows outside them."""
     s = SPEC[version]
     r_out, thick, w = s["colure"]
     m = _new(version, "colure")
     m.ring("z", (0.0, 0.0, 0.0), r_out - thick / 2.0, thick, w, BRASS, sides=32)
     for end in (-1.0, 1.0):
         m.tube("y", (0.0, 0.0), end * (r_out - thick - 0.5), end * (r_out + 0.5), s["rod"] + 0.75, BRASS, sides=8)
+    for a in s["studs"]:
+        with m.turned(("z", a)):
+            m.tube("x", (0.0, 0.0), r_out - thick - 0.5, R_CAGE, 0.5, WORN, sides=4, cap=HEAD)
     return m
 
 

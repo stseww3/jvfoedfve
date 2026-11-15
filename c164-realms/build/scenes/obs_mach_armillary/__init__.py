@@ -7,8 +7,10 @@ in the master scene's order, as in obs_site_court; of the machines line only the
 placed. Version b stands on the same spot, so it has a scene of its own with the same shots,
 obs_mach_armillary_b: the two are compared picture by picture.
 
-Until A2's table places the four ground lamps at the foot of the base, the scene stands a stand-in
-of the props line's ground projector on each of armillary.lamp_feet() (LAMP_STANDINS).
+What lights the brass is A2's (sky/lights, props/lamps): four ground lamps on armillary.LAMP_CELLS
+and a hidden light of level GLOW in the cell under armillary.LIGHT_CELL. Until the props line in the
+tree places them (it then has lamps.FEET_GLOW), the scene stands the same in their place: the props
+line's ground projector on each of armillary.lamp_feet(), and that light (LAMP_STANDINS).
 
     python -m scenes.obs_mach_armillary      writes shots.json
 """
@@ -17,6 +19,7 @@ from artkit.canvas import Canvas
 from scenes.obs import main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.machines import armillary
+from scenes.obs.props import _kit as K
 from scenes.obs.props import lamps
 
 VERSION = "a"
@@ -24,7 +27,8 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
 TIME = 14000
-LAMP_STANDINS = True
+LAMP_STANDINS = not hasattr(lamps, "FEET_GLOW")
+GLOW = 8                # A2's figure (c220, 11-15): level 8 under the sphere gives the brass level 7
 
 # the two fixed cameras: the skeleton's once it has them (director, 11-14), until then the same numbers
 V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
@@ -40,6 +44,8 @@ def scene(version):
     if LAMP_STANDINS:
         for foot, yaw in armillary.lamp_feet():
             lamps.place(c, "uplight", foot, yaw=yaw)
+        x, y, z = armillary.LIGHT_CELL
+        K.offer_lights(c, [((x, y - 1, z), GLOW)], "machines/armillary: stand-in for sky/lights")
     sky.build(c, (0, 0, 0))
     return c
 
@@ -64,19 +70,28 @@ def write_pack(pack_dir):
 
 def shots():
     cx, cy, cz = S.mid(armillary.CX), armillary.CENTRE_Y, S.mid(armillary.CZ)
+    v2x, v2y, v2z = V2["pos"]
 
     def shot(name, pos, look_at):
-        return {"name": name, "pos": [float(v) for v in pos], "look_at": [float(v) for v in look_at], "time": TIME}
+        return {"name": name, "pos": [round(float(v), 3) for v in pos],
+                "look_at": [round(float(v), 3) for v in look_at], "time": TIME}
 
     return [
-        shot("v2_axis", V2["pos"], V2["look_at"]),                              # the view it is made for
-        shot("v2_entrance", V2["pos"], (17, 11, 0.5)),                          # the same eye, level with the brief
-        shot("axis_near", (cx + 12, 1.7, cz), (17, 8, 0.5)),                    # half way: the entrance through the rings
+        # the two pictures the versions are chosen on (director, 11-15). v2_entrance looks level at the
+        # entrance, as the brief's V2 did; it stands one step in front of V2, because a shot on V2's own
+        # spot looks where the skeleton says (tools/check.py, views)
+        shot("v2_axis", V2["pos"], V2["look_at"]),
+        shot("v2_entrance", (v2x - 1, v2y, v2z), (17, 11, 0.5)),
         shot("v1_arrival", V1["pos"], V1["look_at"]),
         shot("aerial", (46.0, 62.0, 30.0), (30.0, 0.0, 0.5)),                   # obs_site_court's bird's-eye view
-        shot("plan", (cx, 26.0, cz), (cx, 0.0, cz)),                            # straight down: ring and meridian
+        shot("plan", (cx, 17.0, cz + 9), (cx, 0.0, cz)),                        # obs_site_court's emblem_top, north up
         shot("oblique", (cx + 5.5, 1.7, cz + 5.5), (cx, cy - 0.5, cz)),         # on foot, from the south-east
-        shot("meridian", (cx, 1.7, cz + 12), (cx, cy - 0.3, cz)),               # due south: the meridian ring on edge
+        # along the brass meridian, the meridian ring on edge: is it a cross? (reviewer cr2 and
+        # director, 11-15). Near, and from the south and the north edge of the court
+        shot("meridian", (cx, 1.7, cz + 12), (cx, cy - 0.3, cz)),
+        shot("south_edge", (cx, 1.7, 29.5), (cx, cy - 0.3, cz)),
+        shot("north_edge", (cx, 1.7, -28.5), (cx, cy - 0.3, cz)),
         shot("rings", (cx + 3.1, cy + 0.2, cz + 2.9), (cx, cy - 0.1, cz)),      # the scales and the joints
-        shot("door", (19.5, 1.62, 0.5), (cx, cy - 0.7, cz)),                    # stepping out of the entrance
+        # stepping out of the entrance: against the sky. One step east of the skeleton's V7
+        shot("door", (20.5, 1.62, cz), (cx, cy - 0.7, cz)),
     ]
