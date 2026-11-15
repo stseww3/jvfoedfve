@@ -2,7 +2,7 @@
 card sky/cloudsea for trying fog laws and shapes between two trips to the real client.
 
     cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/pre
-        [--scene obs_sky_cloudsea] [--only v12,sunset_west] [--laws blue,b768,s768]
+        [--scene obs_sky_cloudsea] [--mood <scene>] [--only v12,sunset_west] [--laws blue,b768,k0]
         [--clouds fancy,fast,off] [--chunks 12] [--size 1280x720] [--plan] [--sheet 3]
         [--set "SEEN=(170, 185)" ...]
 
@@ -294,6 +294,8 @@ def plan(cells, look, path, aerial, chunks, scale=2):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--scene", default="obs_sky_cloudsea")
+    ap.add_argument("--mood", help="the scene whose look is drawn (default: the scene's own): the master scene "
+                                   "knows no laws, --scene obs --mood obs_sky_cloudsea draws it under them")
     ap.add_argument("--out", required=True, help="prefix of the pictures: <out>-<shot>-<law>.png")
     ap.add_argument("--only", help="comma separated shot names (default: the scene's LAW_VIEWS)")
     ap.add_argument("--laws", default="blue", help="comma separated: laws of the scene's mood, looks or trials of the sky's")
@@ -317,7 +319,7 @@ def main():
         setattr(sea, key.strip(), eval(value, {"sea": sea}))
         print(f"sky/cloudsea.{key.strip()} = {getattr(sea, key.strip())!r} for this run")
     scene = importlib.import_module(f"scenes.{args.scene}")
-    look_mod = importlib.import_module(f"scenes.{args.scene}.mood")
+    look_mod = importlib.import_module(f"scenes.{args.mood or args.scene}.mood")
     base = importlib.import_module("scenes.obs_sky_cloudsea")
     laws = importlib.import_module("scenes.obs_sky_cloudsea.mood")
     canvas = scene.build()
