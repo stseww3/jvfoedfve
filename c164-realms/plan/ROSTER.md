@@ -11,7 +11,8 @@
 | s2 | c258 | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` |
 | s1 | c260 | c189 | 出图（拿出图钥匙） | `cursor/c164-s1-render-9df7` |
 | review | c261 | c219 | 评审：materials、main、props | `cursor/c164-review-0eb8` |
-| cr2 | c262 | c235 | 评审：site、sky、machines、interiors、motion | `cursor/c164-cr2-582e` |
+| cr2 | c262 | c235 | 评审：site、sky、motion | `cursor/c164-cr2-582e` |
+| cr3 | c288 | — | 评审：machines、interiors | `cursor/c164-cr3-aide` |
 | aide | c275 | — | 总监助理：名单、开人、盯进度 | `cursor/c164-aide-flash` |
 
 ## 工人
@@ -51,10 +52,10 @@
 | instr | — | c199 | props/instruments | `cursor/c164-instr-f5da` |
 | a6 | c287 | c179 | props/furniture、灯的模型；props 牵头 | `cursor/c164-a6-props-7fb0` |
 | m4 | — | c197 | props/paper | `cursor/c164-m4-paper-7345` |
-| hall | — | c243 | interiors/starhall | `cursor/c164-hall-ddbd` |
-| a3 | — | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
-| chart | — | c205 | interiors/chartroom、materials/windows 的内衬 | `cursor/c164-chart-5a4c`、`cursor/c164-m2-windows-7bb5` |
-| m2 | — | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` |
+| hall | c289 | c243 | interiors/starhall；interiors 牵头 | `cursor/c164-hall-ddbd` |
+| a3 | c290 | c178 | interiors/domeroom | `cursor/c164-a3-mainbuilding-da56` |
+| chart | c291 | c205 | interiors/chartroom、materials/windows 的内衬和炉火窗 | `cursor/c164-chart-5a4c`、`cursor/c164-m2-windows-7bb5` |
+| m2 | c292 | c195 | interiors/timeroom | `cursor/c164-m2-timeroom-80c9` |
 
 ## 还没人领的卡
 
