@@ -88,4 +88,11 @@
      - 图（`c10f3a88`）：`renders/obs_props_ironwork/` 23 张，1280×720，tick 14000，机位是场景自己 shots.json 的 23 个（旧样板墙那 14 张连同它们的机位一起退场）。`selfshots.py --out` 再 `--take`。
      - 图上对着 c219 P9 列的几处：栅门 8 根辐条正中无辐条，缩成邮票也没有十字（`gate_near`、`entrance`、`front`）；铁扇的毂边 0.4–2.5px 那道缝在 1280 宽的图上糊进了毂和弧，没有读成噪点；雨棚只罩正中一拱、吊灯笼子转 45°（正面、侧面都是球两边各一根，`canopy_below`、`canopy_side`）；拱头封口以后圈顶没有方缺口、石头自己收成圆头（`frame_head`、`bays_front`）；拱头里被圈切出来的小灯在 20 格和 3.5 格的机位上都没读成噪点，**不封**。
      - 留着等评审的：门扇贴壁敞着、舷窗背后是墙却自己发光（`leaf_near`，好看，留）；暗窗的框和夜色玻璃分不开（`frame_dark`，按 c219 说的没关系）；栅门竖栅在 V2 上闪不闪要真机。
+  11. 总装合到 `4a36b592`（m3 的最后一笔，01:48 全组停手令之前）：`facade.CROWN`（844d419c）和 c206 的 `_order.mould()` 朝向修正（633d9400）都已进总装。**这两件都会改真墙样板上的画，所以 `renders/obs_props_ironwork/` 的 23 张在这个头以后是过期的**（图对自己那张交付提交 `ada91628` 仍然全对，S2 在交付提交上核过 3/3）。停手令到的时候正在跑抽查 `--verify --only frame_head,gate_near,canopy_below`，没等出结果就停了——接手的人跑一遍 `selfshots.py obs_props_ironwork --verify --only frame_head,gate_near,canopy_below` 看哪几张变，再决定整套重出。
+     - 合完在 `4a36b592` 上补跑过两项，都过：`check.py --scene obs_props_ironwork` PASS 0 失 0 黄（645 个资源包文件、23 机位）；`fit.py check` 13 个洞口 `nothing found`（栅门行数 0–9、17–20、29–32、60–65 不变，半径/圆心一个数没变）。
+     - 停手前已进总装：整族在 `151499c4`（S2 的【合并】，delivery 七项全 PASS、`obs_props_ironwork` 0 失 0 黄、交付提交上 3/3 逐像素对，`fit.py` 他自己跑也是 13 个洞口 nothing found）。开关 `DRESS` 仍关着，整座楼上一个框都没套。
+  12. 交给接手的人三句：
+     - **别把 `fit.py` 那条判据改回去**：拱圈是接在两根边梃内沿上的，边梃内沿要从直段所有行读（7f592040），不能只读中横档下面那一行——栅门那里那一行是门扇的上冒头，全是铁。
+     - **拱头小灯别封**：20 格和 3.5 格两档机位上看都没读成噪点，封了反而把玻璃的轮廓切成台阶。
+     - **图要重出**：`facade.CROWN` 和 `mould()` 都改了真墙，重出时先 `git merge origin/cursor/c164-realms-map-b59c`，再 `selfshots.py obs_props_ironwork --out …` + `--take …`；重出以后 `fit.py check` 和 `check.py` 都要在同一棵树上再跑一遍。
 
