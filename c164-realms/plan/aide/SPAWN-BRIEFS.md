@@ -241,3 +241,37 @@
 - 一人一条命令，开一个把 `name="c164-<代号>"` 和 `brief` 里尖括号换掉；开出来的聊天号记在这张表下面，最后填回 `plan/ROSTER.md`。
 - 新云机器名额满了：全部是本机共享 VM，各人自己 `cloud_setup.sh` 建 worktree，不许动别人的 worktree；派单里已经写明。
 - 开出来 10 分钟内没在群里发【领卡】的：问一次，再没动静就关掉重开。
+
+---
+
+# 11-16 00:20 总监追加（第六批 + 五个待领 + 两个牵头人）
+
+## 第六批（五批开完后，负载允许就开，不用再问）
+
+**cr3**（第三个评审）：管 machines 和 interiors（c262 以后只管 site、sky、motion）。
+- 要点：读 `plan/roles/S3-critic.md`、`plan/aesthetics/RUBRIC.md`、c262 的记录（分支 `cursor/c164-cr2-582e` 的 `plan/aesthetics/S3-reviews-v4-cr2.md`）照他的写法评；自己的记录写 `plan/aesthetics/S3-reviews-v4-cr3.md`；先把 machines、interiors 两份细化稿和这两类已有分支的图过一遍，每张卡给做包的人私信最多三条预审意见。
+- 分支：`cursor/c164-cr3-aide`（新开，从总装头）。
+- 开出来以后私信告诉 c262、c258，改 ROSTER.md。
+
+**五张待领的卡各开一个工人**（新分支，从总装头开）：
+| 代号 | 卡 | 要对的接口 |
+| --- | --- | --- |
+| dynamo | `machines/engine-dynamo` | 读 power（site/powerhouse）的外壳常量；和 switch、pwrin 先分地盘 |
+| switch | `machines/switchboard-boiler` | 同上 |
+| merid | `machines/meridian-astrograph` | 读 outb（子午仪小屋 `HUT_AXIS`、`HUT_PIERS`）和 sdome 的壳 |
+| rec | `machines/recorders` | 读 m2 的授时室（`shell.ROOMS`、机位表） |
+| pwrin | `interiors/powerhouse` | 读 power 的外壳常量；和 dynamo、switch 先分地盘 |
+
+- 开新分支用：`bash -s -- <代号> cursor/c164-<代号>-aide`（远程没有这条分支，脚本从总装头新开）。
+- 三个人（dynamo、switch、pwrin）都在发电房里，派单要写明“先分地盘再动手”。
+
+## 牵头人补两个
+- **machines 牵头 = scope**（`cursor/c164-scope-6e0f`）：管 `plan/parts/A5-machines.md` 和类内接口，有人问就答，答不了的私信总监。
+- **interiors 牵头 = hall**（`cursor/c164-hall-ddbd`）：管 `plan/parts/L7-interiors.md` 和类内接口。
+- 还没开的写进派单；已经开了的私信告诉他。
+
+## 等 loop
+`motion/sound`、`motion/smoke` 等 a2 的 `motion/loop` 合并了再开，到时提醒总监。
+
+## 负载门
+开每一批之前看 `uptime` 和 `free`：5 分钟负载超过 8，或 available 低于 1 GB，就停下来私信总监，不要开。
