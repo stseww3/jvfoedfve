@@ -8,10 +8,10 @@ their packages are merged. The station's lamp and its furniture belong to the pr
 keeps what it sets out on the site switched off in the master scene for now; here they are asked
 for (_dress).
 
-Two stand-ins, in this scene only, for what is still on other branches: the east flank of the
-mountain with the ridge the trestle stands on (site/terrain's second draft; the ridge by the figures
-of site/_kit.py) and a sheet of cloud round its foot (sky/cloudsea). They fill empty cells only, and
-go when the real ones are merged.
+One stand-in, in this scene only, for what is still on another branch: the sea of cloud beyond the
+ring that site/terrain lays round the mountain's foot (sky/cloudsea takes both over). The ring ends
+at x 129 on the track's line and the track goes on down to x 141. The sheet fills empty cells
+only, in the ring's courses and tones, and goes when the real sea is merged.
 
 The views (shots(); python -m scenes.obs_site_cablecar writes them to shots.json): V1 as the
 skeleton fixes it (the station keeps the building's part of it and the comet's clear, and only the
@@ -22,23 +22,25 @@ side and looking back up it, and two from above.
 """
 import importlib
 
-from artkit.canvas import Canvas, Mix
+import numpy as np
+
+from artkit import noise as N
+from artkit.canvas import Canvas
 
 from scenes.obs import machines, main, materials, props, site, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
-from scenes.obs.site import _kit as K
+from scenes.obs.site import terrain
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 100
 BIOME_MARGIN_Y = 150
 LINES = (site, main, machines, props, sky)
 
-ROCK = Mix({B.TUFF.block: 5, B.ROCK_ANDESITE.block: 3, B.ROCK_COBBLED.block: 2, B.ROCK_DEEPSLATE: 3}, seed=226)
-CLOUD = Mix({B.CLOUD[1]: 2, B.CLOUD[2]: 3, B.CLOUD[3]: 2}, seed=227)
-CLOUD_Y = (-27, -26)            # the block cloud's two courses; its top face is at y -25
-FLANK = (61, -62, 112, -18)     # where the stand-in mountain is drawn
-SEA = (61, -96, 176, -10)       # where the stand-in cloud is drawn
+SEA = (61, -120, 200, -10)      # where the stand-in sea is drawn: east and north of the lower platform
+# the ring's own figures (site/terrain._cloud_sea, east of its middle), so that no seam shows where
+# the sheet takes over from it
+SEA_NOISE = dict(scale=0.08, seed=terrain.SEED + 20, octaves=2, lift=0.55)
 
 TIME = 14000
 # The arrival view is the skeleton's. It looks up at (8, 34, 0.5) since A0 #304; a tree whose
@@ -78,32 +80,20 @@ def shots(names=None):
             for name, pos, look_at in VIEWS if names is None or name in names]
 
 
-def _crust(c, x, z, top, thick=3):
-    for y in range(top, max(top - thick, K.ROCK_FLOOR) - 1, -1):
-        c.set(x, y, z, ROCK, keep=True)
-
-
 def _standins(c):
-    lx0, lz0, lx1, lz1 = S.LOWER_PLATFORM
-    for x in range(FLANK[0], FLANK[2] + 1):             # the slope below the lower platform's edges
-        for z in range(FLANK[1], FLANK[3] + 1):
-            d = max(lx0 - x, x - lx1, lz0 - z, z - lz1)
-            if d > 0:
-                top = int(round(S.LOWER_PAVING_Y - 1 - 1.6 * (d - 1)))
-                if top >= K.ROCK_FLOOR:
-                    _crust(c, x, z, top)
-    for x in range(K.CABLE_RIDGE_X[0], K.CABLE_RIDGE_X[1] + 1):     # the ridge, falling two in one each side
-        z, y = K.cable_ridge(x)
-        for k in range(0, 14):
-            top = y - 2 * max(0, k - 1)
-            if top < K.ROCK_FLOOR:
-                break
-            for zz in {z - k, z + k}:
-                _crust(c, x, zz, top)
-    for x in range(SEA[0], SEA[2] + 1):
-        for z in range(SEA[1], SEA[3] + 1):
-            for y in CLOUD_Y:
-                c.set(x, y, z, CLOUD, keep=True)
+    """The sheet of cloud over SEA, in the empty cells of the ring's three courses."""
+    xs = np.arange(SEA[0], SEA[2] + 1)
+    zs = np.arange(SEA[1], SEA[3] + 1)
+    X, Z = np.meshgrid(xs.astype(float), zs.astype(float), indexing="ij")
+    k = SEA_NOISE
+    n = N.fbm2(X * k["scale"], Z * k["scale"], k["seed"], octaves=k["octaves"])
+    tone = np.rint(np.clip(0.5 + 0.5 * n + 0.6 * (k["lift"] - 0.75), 0.0, 1.0) * (len(B.CLOUD) - 1)).astype(int)
+    for i, x in enumerate(xs):
+        for j, z in enumerate(zs):
+            rock = terrain.top(int(x), int(z))
+            if rock is None or rock < terrain.CLOUD_TOP:        # the ring's rule: not where the mountain stands out
+                for y in range(terrain.CLOUD_TOP, terrain.CLOUD_BOTTOM - 1, -1):
+                    c.set(int(x), y, int(z), B.CLOUD[tone[i, j]], keep=True)
 
 
 def _prop(name):
