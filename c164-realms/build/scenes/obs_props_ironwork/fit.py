@@ -18,6 +18,10 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
   7  the open fan in the head of a gate: every opening between its rays holds a square of two
      pixels at least (a slit of one pixel smears at any distance), and the fan is the same left
      and right
+  8  glass that glows shows its tones as painted to who stands before the wall: the game lights
+     an item's faces by where they look, whatever they emit (ironwork.TILT), so a glowing face
+     that looks out of the wall has to be lit 0.9 at least, and none may lie on the edge between
+     two of its model's axes, where the last bit of a sum decides how it is lit
 
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
@@ -33,6 +37,7 @@ import sys
 
 from artkit import models as M
 from artkit.canvas import Canvas
+from artkit.gamescene import LAMPS
 
 from scenes.obs.common import blocks as B
 from scenes.obs.main import _order as O
@@ -223,14 +228,18 @@ def _corners(part):
                 yield tuple(c[i] + v[i] for i in range(3))
 
 
-def cover(model, scale, view):
+def cover(model, scale, view, turns=()):
     """Lay a wall model on a view, its anchor on the foot centre of the opening: every texel at
     least half covered gets (kind, how far out of the glass face in texels) of the nearest part
-    over it; kind is "iron", "rivet" or "glass" (the model's own, a fanlight's). Returns the
+    over it; kind is "iron", "rivet" or "glass" (the model's own, a fanlight's). `turns` are those
+    its display is placed with (a piece drawn in the tilted frame, ironwork.TILT). Returns the
     model's reach in texels: (left, right) of the opening's middle, (behind, before) the glass face."""
     across, deep = [], []
+    q = M.IDENT
+    for axis, deg in turns:
+        q = M._qmul(M.quat(axis, deg), q)
     for part in model.parts:
-        pts = [(x * scale + view.w / 2.0, y * scale, z * scale) for x, y, z in _corners(part)]
+        pts = [(x * scale + view.w / 2.0, y * scale, z * scale) for x, y, z in (M._qrot(q, p) for p in _corners(part))]
         across += [p[0] - view.w / 2.0 for p in pts]
         deep += [p[2] for p in pts]
         near = max(p[2] for p in pts)
@@ -364,6 +373,63 @@ def judge(view, kind, reach):
     return "; ".join(text), found
 
 
+AXIS = ((0.0, -1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, -1.0), (0.0, 0.0, 1.0), (-1.0, 0.0, 0.0), (1.0, 0.0, 0.0))
+LOOKS = ("out of the wall", "into the wall", "along the wall", "up", "down")
+BRIGHT = 0.9                            # a glowing face that looks out of the wall is lit this much at least
+
+
+def _dot(a, b):
+    return sum(u * v for u, v in zip(a, b))
+
+
+def glow(model, turns, facing="east"):
+    """How the game lights the glowing faces of a piece on a wall that looks `facing`:
+    ({where a face looks: (the least it is lit, the most, faces)}, faces on an edge).
+    A face is lit as if it looked along the axis of its model nearest to its normal -- the first of
+    down, up, north, south, west, east where two are equally near (FaceBakery.findClosestDirection)
+    -- turned as the display turns the model; by the two lamps of gamescene.LAMPS, 0.4 at least
+    (the item shader)."""
+    q = M.IDENT
+    for axis, deg in turns:
+        q = M._qmul(M.quat(axis, deg), q)
+    yaw = K.FACING[facing]
+    seen, edge = {}, 0
+    for part in model.parts:
+        if not part["emit"]:
+            continue
+        own = part["rot"][0] if part["rot"] else M.IDENT
+        for letter, normal in M.NORMAL.items():
+            if letter in part["skip"]:
+                continue
+            n = M._qrot(own, normal)
+            near = sorted(((_dot(n, a), -i) for i, a in enumerate(AXIS)), reverse=True)
+            edge += near[0][0] - near[1][0] < 1e-3
+            lit_as = K.turn(yaw, M._qrot(q, AXIS[-near[0][1]]))
+            shade = min(1.0, 0.4 + 0.6 * sum(max(0.0, _dot(lit_as, lamp)) for lamp in LAMPS))
+            x, y, z = M._qrot(q, n)                         # where it looks, in the wall's frame: z out of it
+            looks = max(((z, 0), (-z, 1), (abs(x), 2), (y, 3), (-y, 4)))[1]
+            lo, hi, count = seen.get(looks, (1.0, 0.0, 0))
+            seen[looks] = (min(lo, shade), max(hi, shade), count + 1)
+    return seen, edge
+
+
+def lights(found):
+    """One line for every piece of the family that glows; what is wrong goes to `found`."""
+    models = ironwork.models()
+    for kind, spec in ironwork.SPEC.items():
+        seen, edge = glow(models[ironwork.PREFIX + kind], spec.get("turns", ()))
+        if not seen:
+            continue
+        print(f"{kind} glows: " + ", ".join(
+            f"{LOOKS[k]} lit {lo:.2f}" + ("" if hi - lo < 0.005 else f" to {hi:.2f}") + f" ({count} faces)"
+            for k, (lo, hi, count) in sorted(seen.items())))
+        if edge:
+            found.append(f"{kind}: {edge} glowing faces lie on the edge between two axes of the model")
+        lo = seen.get(0, (1.0,))[0]
+        if lo < BRIGHT:
+            found.append(f"{kind}: glass that looks out of the wall is lit {lo:.2f}, under {BRIGHT}")
+
+
 def openings(windows, doors):
     """Every opening of the scene's tables as (name, glass columns, inward, (y0, y1))."""
     for w in windows:
@@ -374,15 +440,17 @@ def openings(windows, doors):
             yield f"{d['kind']}way, bay {d['bay']}", [(x + inward[0], z + inward[1]) for x, z in d["cells"]], inward, d["y"]
 
 
-def _piece(canvas, cells, inward, y0):
-    """The wall piece of this family that is anchored on an opening's glass face, or None."""
+def _pieces_at(canvas, cells, inward, y0):
+    """The wall pieces of this family that are anchored on an opening's glass face, as they were
+    placed: the frame first, then what stands in it (a doorway's fanlight glass)."""
     pos, _ = ironwork._face(cells, inward, y0)
     at = (pos[0] - K.NUDGE * inward[0], pos[1], pos[2] - K.NUDGE * inward[1])
+    out = []
     for x, y, z, nbt in canvas.entities:
         name = nbt["item"]["components"]["minecraft:item_model"].partition(":")[2]
         if name.startswith(ironwork.PREFIX) and max(abs(x - at[0]), abs(y - at[1]), abs(z - at[2])) < 1e-6:
-            return name[len(ironwork.PREFIX):]
-    return None
+            out.append(name[len(ironwork.PREFIX):])
+    return out
 
 
 def survey():
@@ -393,14 +461,17 @@ def survey():
     models = ironwork.models()
     out, bare = [], []
     for name, cells, inward, (y0, y1) in openings(windows, door_table()):
-        kind = _piece(canvas, cells, inward, y0)
-        if kind is None:
+        kinds = _pieces_at(canvas, cells, inward, y0)
+        if not kinds:
             bare.append(name)
             continue
         view = View(canvas, cells, inward, y0, y1)
-        key = ironwork.PREFIX + kind
-        reach = cover(models[key], ironwork.SCALE[key], view)
-        out.append((name, kind, view) + judge(view, kind, reach))
+        reach = []
+        for kind in kinds:
+            key = ironwork.PREFIX + kind
+            reach.append(cover(models[key], ironwork.SCALE[key], view, ironwork.SPEC[kind].get("turns", ())))
+        reach = tuple((min(r[k][0] for r in reach), max(r[k][1] for r in reach)) for k in (0, 1))
+        out.append((name, kinds[0], view) + judge(view, kinds[0], reach))
     return out, bare
 
 
@@ -415,6 +486,7 @@ def main(args):
         print(f"{name}: {kind}. {text}")
         found += [f"{name}, {kind}: {line}" for line in wrong]
     print(f"left bare: {'; '.join(bare) or 'none'}")
+    lights(found)
     print("\n".join(found) if found else f"fit: {len(rows)} dressed openings, nothing found")
     return 1 if found else 0
 
