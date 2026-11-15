@@ -4,17 +4,26 @@ under trial cut into the morning as further plateaus.
 Why a law is tried (plan/roles/A0-director.md 4; the game's fog.glsl, clouds.fsh and
 AtmosphericFogEnvironment, 26.3): a block is mixed towards the fog colour by
 (distance - fog_start) / (fog_end - fog_start); the vanilla cloud layer takes no fog colour, its
-opacity is multiplied by 1 - distance / cloud_fog_end and what lies behind it -- the fog colour,
-below the horizon -- shows through. With fog_start = 0 and fog_end = cloud_fog_end = D a block and
-the layer beside it sink into the horizon by the same law, d / D, and a block cloud of the layer's
-colour is not told from the layer at any distance. The layer has to be opaque for that (alpha 1.0;
-0.94 lets a sixteenth of the dark behind it through close by).
+opacity is multiplied by 1 - distance / cloud_fog_end and what lies behind it -- the fog colour and
+the afterglow, below the horizon -- shows through. With fog_start = 0 and fog_end = cloud_fog_end
+= D a block and the layer beside it sink into the horizon by the same law, d / D, and a block cloud
+of the layer's colour is not told from the layer at any distance. The layer has to be opaque for
+that (alpha 1.0; 0.94 lets a sixteenth of what is behind it through close by).
+
+Since the layer is the sea's face (sky/cloudsea), its own law counts by itself: the board's aerial
+camera looks 118 blocks down on it and along it for 1500, and where the layer has faded the
+afterglow under the horizon is seen instead of a sea. The game builds the layer 2048 blocks out and
+no law can make it reach further, so the k laws let it fade over all of that and set the blocks'
+fog apart from it.
 
     LAWS    name -> the look it varies, its tick, and the four numbers
     b<D>    fog_start 0, fog_end = cloud_fog_end = D: the two laws are one
-    s<D>    fog_start stays 60 (nothing nearer than 60 blocks changes in anybody's pictures),
+    s768    fog_start stays 60 (nothing nearer than 60 blocks changes in anybody's pictures),
             fog_end = 60 + 0.6 D: the block law crosses the layer's at 150 blocks and stays within
             60 / D of it nearer by
+    k0      the layer opaque and fading over 2048, the blocks' fog as the sky has it (60..192):
+            nobody's blocks change at all
+    k<D>    the same layer, the blocks' fog from 0 to D
 
 Each is held for 200 ticks like the sky's own trials (ticks ending in 600, the sky's end in 100),
 so changing the time puts one law beside the other on the same blocks. The numbers the director
@@ -33,10 +42,14 @@ def _law(of, tick, fog_start, fog_end, cloud_fog_end, alpha=1.0):
                 cloud_fog_end=float(cloud_fog_end), alpha=alpha)
 
 
+FAR = 2048.0                # as far as the game builds the layer (the cloud distance option's upper end)
 LAWS = {}
 for _i, _d in enumerate((384, 512, 768, 2048)):
     LAWS[f"b{_d}"] = _law("blue", 600 + 1000 * _i, 0.0, _d, _d)
-    LAWS[f"s{_d}"] = _law("blue", 4600 + 1000 * _i, sky.FOG_START, sky.FOG_START + 0.6 * _d, _d)
+LAWS["k0"] = _law("blue", 4600, sky.FOG_START, sky.FOG_END, FAR)
+LAWS["k384"] = _law("blue", 5600, 0.0, 384, FAR)
+LAWS["s768"] = _law("blue", 6600, sky.FOG_START, sky.FOG_START + 0.6 * 768, 768)
+LAWS["k768"] = _law("blue", 7600, 0.0, 768, FAR)
 
 
 def tick(name):
