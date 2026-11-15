@@ -196,7 +196,8 @@ SMALL_DOME_X = (8, 16)
 SMALL_DOME_Z = (26, 34)
 SMALL_DRUM_BASE = 18
 SMALL_DOME_R = 4.5
-SMALL_DOME_APEX = 25
+SMALL_DOME_APEX = 26            # 25 until 11-16: a flat lid on its iron hoop in V11, V2 and V1; 26 reads as a
+#                                 half sphere, the great dome's kin and a size smaller (A0 #57140, review #13)
 
 # --- site masses ----------------------------------------------------------------------------------
 # Cells. Each is (x0, z0, x1, z1) on the upper terrace unless a y is given. East (+x) is the arrival side.
@@ -295,6 +296,11 @@ V1_COMET = dict(north=15.0, low=35.0)
 # west at the entrance and the great dome, tilted up like V1. The comet hangs right over the top of
 # the dome: the picture the map is known by. The eye's height is A0's figure.
 V2 = dict(pos=(58.5, 1.7, AXIS_Z), look_at=(17, 19, AXIS_Z))
+# V6, the power house from the grand stair (A0 #55097, 11-16: picked from four candidates on the
+# pictures of site/powerhouse, whose test scenes call it stair_south): a person on the south half of
+# the grand stair, the feet three blocks above the lower platform, looks south-east at the power
+# house, whose saw-tooth roof shows its profile to this side.
+V6 = dict(pos=(66.5, LOWER_GROUND + 3 + EYE, 6.5), look_at=(76.5, 8.0, 32.5))   # the eye at y -1.38
 # V7, the star hall from outside the door (A0 #365, 11-15), the entrance arch as its frame: the
 # orrery overhead, the mother clock on the pier straight ahead, the floor underfoot. The camera in
 # the doorway stays as a second one; the test scenes call it v7_in.
