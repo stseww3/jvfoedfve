@@ -1,0 +1,3 @@
+branch=cursor/c164-cable-cablecar-f3-9cf7
+head=1f732aac3c4a8e5994b8bd04bc91e388d32b339c
+args=--wip --always --tail 70 mkdir\ -p\ renders/_wip/r1\ \&\&\ python\ tools/check.py\ --scene\ obs_site_cablecar\ --shots\ build/scenes/obs_site_cablecar/shots.json\ \>\ renders/_wip/r1/check.txt\ 2\>\&1\;\ tail\ -14\ renders/_wip/r1/check.txt\;\ \(cd\ build\ \&\&\ python\ -m\ scenes.obs_site_cablecar.clear\ --scene\ --json\ ../renders/_wip/r1/clear.json\ \>\ ../renders/_wip/r1/clear.txt\ 2\>\&1\)\;\ tail\ -24\ renders/_wip/r1/clear.txt\;\ python\ tools/selfshots.py\ obs_site_cablecar\ --only\ v1\,platform\,canopy\,stair_head\ --out\ renders/_wip/r1 
