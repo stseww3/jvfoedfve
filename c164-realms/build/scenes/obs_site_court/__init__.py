@@ -31,5 +31,6 @@ def build_models():
 
 def write_pack(pack_dir):
     """The court paints nothing itself; it stands on the repainted blocks as the materials line has
-    them today (ashlar, brass inlay, cast iron)."""
-    return materials.pack(pack_dir)
+    them today (ashlar, slate, the thin brass line, cast iron), under the sky line's own sky (the
+    scene takes the map's hour: without the sky's pictures the game's own sun is in it)."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])

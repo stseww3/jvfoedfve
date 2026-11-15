@@ -9,6 +9,8 @@ them as their packages merge.
 The views are the three the card is judged on -- V1 (arrival: the skeleton's eye and aim), V11 (from
 the south lookout, three-quarter, afterglow in the west) and V12 (the plateau from above) -- with a
 postage stamp of V1 for the silhouette, the sunset terrace and the prow under it, and the two flanks.
+All of them in the map's hour (14000: the light is locked on the blue version), the hour the real
+pictures of the board are taken in.
 
 obs_site_terrain_nosnow is the same hill without its snow, on the four views the snow is judged
 on: the review measures the snow by the difference between the two pictures of a view.
@@ -47,5 +49,7 @@ def build_models():
 
 def write_pack(pack_dir):
     """The terrain paints nothing itself; it stands on the repainted blocks as the materials line
-    has them today (ashlar, slate and the cloud stand-ins)."""
-    return materials.pack(pack_dir)
+    has them today (ashlar, slate, snow and the cloud stand-ins), under the sky line's own sky: the
+    scene takes the map's hour, and without the sky's pictures the game's own sun would stand as a
+    square on the western horizon of every shot that looks west."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
