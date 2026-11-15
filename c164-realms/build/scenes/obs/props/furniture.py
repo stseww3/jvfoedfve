@@ -536,16 +536,19 @@ def rail(canvas, pos, blocks, facing="south", origin=(0, 0, 0)):
 #             a trunk along the wall and a crate on the trunk.
 #   sunset    four benches on the sunset terrace, their backs to the building, looking west over the
 #             rail at the afterglow: a pair either side of the walk from the west door, on the band
-#             of small stones between the walk and the strips, and a pair further out and further
-#             back, so that the row follows the curve of the rail. Two blocks are left to walk in
-#             between a bench and the rail.
+#             of small stones between the walk and the strips, and a pair further out and three
+#             blocks further back, so that the row follows the curve of the rail. The rail stands
+#             on the whole outline of the terrace, the cells inside its corners as well (c221, g2
+#             #37541): the benches are set so far back that in front of every row of a bench two
+#             whole blocks are free to walk in.
 #   lookout   one bench on the south lookout, its back to the east rail. Who sits there looks west,
 #             the observatory on the right. The view back (S.V11) is taken from the walk in the
 #             middle of the lookout and looks north-west: the bench is behind its right edge.
 DRESS = False           # off in the master scene until the family has passed review; a test scene asks
                         # for the site's furniture with dress(canvas), or calls site() for its group
-SUNSET_BENCHES = ((15.5, 4.0), (13.5, 10.0))    # (west of the terrace's middle, off the axis): a pair each
-LOOKOUT_BENCH = (0.6, -1.0)     # in from the face of the east rail's kerb; from the lookout's middle row
+SUNSET_BENCHES = ((14.5, 4.0), (11.5, 10.0))    # (west of the terrace's middle, off the axis): a pair each
+LOOKOUT_BENCH = (0.6, -1.5)     # in from the face of the east rail's kerb; from the lookout's middle row:
+                                # half way between the rail's north corner and the pier at the prow's knuckle
 # the luggage: (kind, the offset from the point the station gives, yaw). The trunk stands along the
 # wall, clear of the door's jamb; the crate stands on the east end of its lid, a little askew
 LUGGAGE = (("trunk", (0.25, 0.0, -0.05), -5.0), ("crate", (0.5, TOP["trunk"], -0.05), 6.0))
