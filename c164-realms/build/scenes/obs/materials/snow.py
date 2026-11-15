@@ -13,9 +13,10 @@ blue-grey that stays below the stone of the front and above the rock. Two blocks
                  a single pixel a step darker, each well clear of the next. No grain and no edge:
                  a drift is one surface from cell to cell.
     snow_side    the four sides of a layer. A layer shows the lowest two rows of it for every eighth
-                 it is deep: the field again, a step darker along the foot. The lowest row is the
-                 only place where the darkest step of the ramp is used: the rim of thin snow, where
-                 it thins out on the rock.
+                 it is deep. Above the foot it is the step below the field's, as flat as the field
+                 and with fewer marks: the shade of a side is painted, not left to the game (below).
+                 The foot, the lowest two rows, is the rim of thin snow, where it thins out on the
+                 rock: the lowest row is the only place where the darkest step of the ramp is used.
 
 The lightest step of the ramp is kept back (A0): it comes in only if the pictures show the snow too
 dull. Each picture has three versions, and every version has the same number of pixels of each
@@ -24,25 +25,29 @@ step, so a field of them has no lighter and no darker cells.
 How a layer is lit. The game lights the side of a layer as it lights the side of any block: 0.8 of
 the top to north and south, 0.6 to east and west, and darker again towards the foot, where the corner
 against the ground is darkened. A drift that rises a layer a block then shows a step two pixels high
-at every block, half as bright as the snow around it: a pile of blue slabs with dark joints, and at a
-distance, where a step is thinner than a pixel of the screen, a flicker. Snow in the shade has no
-such steps -- light from the whole sky, thrown back by the snow all round, leaves a drift one
-surface. So:
+at every block, half as bright as the snow around it and as dark as the rock: a pile of blue slabs
+with dark joints. Snow in the shade has no such steps -- light from the whole sky, thrown back by the
+snow all round, leaves a drift nearly one surface. With no step at all, though, a drift seen from
+above is a flat patch of the sky's own colour, and reads as a hole in the rock. So the layers
+(1 to 8) are lit by this package and not by the game:
 
-    1 to 4 layers   the sheet: the sides are lit like the top and no corner is darkened. A drift is
-                    one surface; what shows of its depth is its outline and the rim the side picture
-                    paints along its foot. (The mountain lays 1 to 4 layers: site/terrain.)
-    5 to 7 layers   a body: the sides are lit like a north face on all four sides (0.8), so that a
-                    deep pile that stands free still shows which face is its top. No corner darkened.
-    8 layers, and   as the game lights a block.
-    the whole block
+    the top       as the game lights it, without the darkening of corners.
+    the sides     lit like the top, on all four sides alike, and painted one step of the ramp darker:
+                  0.92 of the top on the screen. A step between two layers is a faint line, a pile
+                  that stands free still shows which face is its top.
+    the foot      the lowest two pixels of every side, where the snow lies on the rock, are lit like
+                  a north face (0.8): the rim is in the shade of the drift, about as dark as the rock
+                  it thins out on.
 
-What was tried and dropped, on flat sheets of ten by ten tiles (the card has it): anything larger
-than a mark. A soft drift to a tile reads as a grid of glyphs, thin wisps on one diagonal as rain,
-swells with hollows beside them as hammered metal.
+The whole block stays as the game lights a block: it is for walls and masses, not for drifts.
+
+What was tried and dropped. On flat sheets of ten by ten tiles: anything larger than a mark -- a
+soft drift to a tile reads as a grid of glyphs, thin wisps on one diagonal as rain, swells with
+hollows beside them as hammered metal. In pictures of the test scene and of the mountain: sides lit
+like the top and painted like it (the hole in the rock), every side lit like a north face (the
+steps read as stacked plates again), the game's light with the corners left dark (the slabs).
+The card has the numbers.
 """
-import os
-
 import numpy as np
 
 from ..common import blocks as B
@@ -58,21 +63,18 @@ VERSIONS = 3
 RIM, HOLLOW, FIELD, SWELL, KEPT_BACK = range(5)     # the steps of the ramp, dark to light
 # the marks of one picture, (step, pixels): nine pixels in 256
 MARKS = ((SWELL, 2), (SWELL, 2), (SWELL, 1), (SWELL, 1), (HOLLOW, 1), (HOLLOW, 1), (HOLLOW, 1))
-SIDE_MARKS = ((SWELL, 2), (SWELL, 1), (HOLLOW, 1), (HOLLOW, 1))     # the side has ten rows to put them in
+SIDE = HOLLOW       # the step of the side above its foot
+SIDE_MARKS = ((FIELD, 2), (FIELD, 1), (FIELD, 1))   # the side has ten rows to put them in: a step lighter only
 PAIRS = ((1, 0), (1, -1))   # the second pixel of a mark of two: beside the first, or up to the right of it
 APART = 4           # pixels from one mark to the next, at the least (over the tile's edge too)
 FOOT = 2            # the lowest rows of the side: what one layer shows
 CLEAN = 4           # rows of the side above the foot that carry no mark: the edge of thin snow is plain
 FOOT_RIM = 11       # pixels of the lowest row that take the darkest step, in runs
-FOOT_FIELD = 5      # pixels of the row above it that stay the field's step, in runs
+FOOT_FIELD = 5      # pixels of the row above it that take the field's step, in runs
 
-
-# TRIAL (not for delivery): C164_SNOW_TRY picks how the sides are lit, so that one commit draws every candidate.
-#   ""  1 to 4 layers lit like the top, 5 to 7 like a north face (what the last commit has)
-#   n   every side lit like a north face
-#   r   the foot (the lowest two pixels) lit like a north face, the side above it like the top
-#   p   as r, and the side above the foot painted a step darker than the top
-_TRY = os.environ.get("C164_SNOW_TRY", "")
+SIDES = ("north", "south", "east", "west")
+SIDE_LIT = "up"     # the sides above the foot are lit like this face of a block, all four alike
+FOOT_LIT = "north"  # ... and the foot like this one
 
 
 def _wrapped(d):
@@ -80,10 +82,10 @@ def _wrapped(d):
     return abs((d + TILE // 2) % TILE - TILE // 2)
 
 
-def _set_down(rng, rows, marks):
+def _set_down(rng, rows, marks, base):
     """One try at a field: the marks set down one after another, each where it keeps APART from
     those before it. None when one of them finds no room."""
-    lv = np.full((rows, TILE), FIELD, dtype=np.int32)
+    lv = np.full((rows, TILE), base, dtype=np.int32)
     taken = []
     for step, pixels in marks:
         for _ in range(200):
@@ -104,12 +106,12 @@ def _set_down(rng, rows, marks):
     return lv
 
 
-def _field(rng, rows=TILE, marks=MARKS):
-    """The steps of the field. On a whole tile the distance between two marks counts over the edge,
-    so they keep apart from tile to tile as well; on the first `rows` rows only (the side) nothing
-    joins top to foot."""
+def _field(rng, rows=TILE, marks=MARKS, base=FIELD):
+    """The steps of a field of `base` with its marks. On a whole tile the distance between two marks
+    counts over the edge, so they keep apart from tile to tile as well; on the first `rows` rows
+    only (the side) nothing joins top to foot."""
     for _ in range(200):
-        lv = _set_down(rng, rows, marks)
+        lv = _set_down(rng, rows, marks, base)
         if lv is not None:
             return lv
     raise AssertionError(f"snow: {len(marks)} marks do not fit {rows} rows {APART} apart")
@@ -126,15 +128,12 @@ def _runs(rng, count):
 
 
 def _side(rng):
-    """The steps of the side picture: the field, and along the foot the rim of thin snow -- the
-    lowest row the darkest step for most of its length, the row above it a hollow's step, both
-    broken, so the rim is not a ruled line."""
-    lv = np.full((TILE, TILE), FIELD, dtype=np.int32)
+    """The steps of the side picture: the side's own step, a few marks high up on it, and along the
+    foot the rim of thin snow -- the lowest row the darkest step for most of its length, the row
+    above it broken by the field's step, so the rim is not a ruled line."""
+    lv = np.full((TILE, TILE), SIDE, dtype=np.int32)
     marked = TILE - FOOT - CLEAN
-    lv[:marked] = _field(rng, marked, SIDE_MARKS)
-    if _TRY == "p":     # TRIAL: the side painted a step darker than the top
-        above = lv[:TILE - FOOT]
-        lv[:TILE - FOOT] = np.where(above == SWELL, FIELD, HOLLOW)
+    lv[:marked] = _field(rng, marked, SIDE_MARKS, SIDE)
     lv[TILE - FOOT:] = HOLLOW
     lv[TILE - 1, _runs(rng, FOOT_RIM)] = RIM
     lv[TILE - 2, _runs(rng, FOOT_FIELD)] = FIELD
@@ -161,72 +160,53 @@ def textures():
 
 def faults(drawn):
     """What breaks the rules the director set for the snow (A0 #29065), read off the steps of the
-    pictures: [] when nothing does."""
+    pictures: [] when nothing does. The side is held to them a step lower: its shade is painted."""
     wrong = []
     counts = {name: [np.bincount(lv.ravel(), minlength=5) for lv in versions] for name, versions in drawn.items()}
     for name, versions in drawn.items():
         for v, lv in enumerate(versions):
-            body = lv if name == "snow" else lv[:TILE - FOOT]       # the side's foot has its own rule
+            # the side's foot has its own rule
+            body, base = (lv, FIELD) if name == "snow" else (lv[:TILE - FOOT], SIDE)
             if (lv == KEPT_BACK).any():
                 wrong.append(f"{name}{v}: the lightest step is kept back, and it is used")
             if (body == RIM).any() or (lv[:TILE - 1] == RIM).any():
                 wrong.append(f"{name}{v}: the darkest step outside the lowest row of the side")
-            if (body == FIELD).sum() < 0.95 * body.size:
-                wrong.append(f"{name}{v}: only {(body == FIELD).sum()} of {body.size} pixels are the field's step")
+            if (body == base).sum() < 0.95 * body.size:
+                wrong.append(f"{name}{v}: only {(body == base).sum()} of {body.size} pixels are its own step")
             if any((counts[name][v] != other).any() for other in counts[name]):
                 wrong.append(f"{name}{v}: not as many pixels of each step as the other versions")
     return wrong
 
 
-SIDES = ("north", "south", "east", "west")
-SHEET = 4           # layers up to which the snow is one sheet: its sides are lit like its top
-SIDE_LIT = {True: "up", False: "north"}     # how the sides are lit: of the sheet, of a deeper pile
-
-
-def _layers(ref):
-    """How many layers a model of the game shows ("minecraft:block/snow_height6" -> 3); 8 for the
-    whole block, which is what the game shows for eight layers."""
-    _, found, height = ref.rpartition("snow_height")
-    return int(height) // 2 if found else 8
-
-
 def _layer_sides(ref, model):
-    """The sides of the models of the layers show snow_side, whatever the game's model shows there.
-    Below eight layers they stand in a box of their own, which is lit as SIDE_LIT says, and no corner
-    of the model is darkened. The game's own second box (the underside, seen from within) is left
-    as it is."""
-    layers = _layers(ref)
+    """A model of the layers as this package lights it. Its sides show snow_side, whatever the game's
+    model shows there, and stand in two boxes of their own: the foot, lit as FOOT_LIT says, and what
+    rises above it, lit as SIDE_LIT says. No corner of the model is darkened. The game's own second
+    box of the thinnest layer (the underside, seen from within) is left as it is."""
     boxes = []
     for el in model["elements"] or []:
-        sides = {name: face for name, face in el["faces"].items() if name in SIDES}
-        for face in sides.values():
-            face["texture"] = f"{K.NS}:block/snow_side"
-        if not sides or layers == 8:
+        sides = {name: dict(face, texture=f"{K.NS}:block/snow_side")
+                 for name, face in el["faces"].items() if name in SIDES}
+        if not sides:
             boxes.append(el)
             continue
-        rest = {name: face for name, face in el["faces"].items() if name not in SIDES}
-        if rest:
-            boxes.append(dict(el, faces=rest))
-        if _TRY in ("r", "p"):
-            (x0, y0, z0), (x1, y1, z1) = el["from"], el["to"]
-            foot = {name: dict(face, uv=[0, TILE - FOOT, TILE, TILE]) for name, face in sides.items()}
-            boxes.append(dict(el, to=[x1, FOOT, z1], faces=foot, shade_direction_override="north"))
-            if y1 > FOOT:
-                above = {name: dict(face, uv=[0, TILE - y1, TILE, TILE - FOOT]) for name, face in sides.items()}
-                boxes.append(dict(el, **{"from": [x0, FOOT, z0]}, faces=above, shade_direction_override="up"))
-        elif _TRY == "n":
-            boxes.append(dict(el, faces=sides, shade_direction_override="north"))
-        else:
-            boxes.append(dict(el, faces=sides, shade_direction_override=SIDE_LIT[layers <= SHEET]))
+        (x0, y0, z0), (x1, y1, z1) = el["from"], el["to"]
+        if (x0, y0, z0, x1, z1) != (0, 0, 0, TILE, TILE) or not FOOT <= y1 <= TILE or len(sides) != len(SIDES):
+            raise AssertionError(f"snow: {ref} is not a layer from the ground up over the whole cell ({el['from']} to {el['to']})")
+        boxes.append(dict(el, faces={name: face for name, face in el["faces"].items() if name not in SIDES}))
+        foot = {name: dict(face, uv=[0, TILE - FOOT, TILE, TILE]) for name, face in sides.items()}
+        boxes.append(dict(el, to=[x1, FOOT, z1], faces=foot, shade_direction_override=FOOT_LIT))
+        if y1 > FOOT:
+            above = {name: dict(face, uv=[0, TILE - y1, TILE, TILE - FOOT]) for name, face in sides.items()}
+            boxes.append(dict(el, **{"from": [x0, FOOT, z0]}, faces=above, shade_direction_override=SIDE_LIT))
     model["elements"] = boxes
-    if layers < 8:
-        model["ambientocclusion"] = False
+    model["ambientocclusion"] = False
     return model
 
 
 def pack(pack_dir):
     drawn = levels()
-    wrong = [] if _TRY else faults(drawn)
+    wrong = faults(drawn)
     if wrong:
         raise AssertionError("snow breaks its own rules:\n  " + "\n  ".join(wrong))
     for name, versions in drawn.items():
