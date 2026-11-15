@@ -1,6 +1,7 @@
 """Test scene for the card sky/ridges: the far ridges seen from where people stand.
 
-    python -m scenes.obs_sky_ridges     writes shots.json and prints what every shot holds
+    python -m scenes.obs_sky_ridges             writes shots.json and prints what every shot holds
+    python -m scenes.obs_sky_ridges.sheet DIR   a preview of the shots by the game's own arithmetic
 
 A stand-in for the site in plain vanilla blocks, enough to stand on and to hide what the real site
 hides: the upper terrace with the half-round sunset platform at its west end, the main building
@@ -11,7 +12,9 @@ display entities of scenes.obs.sky.ridges, which stand in the middle of the terr
 The offline pictures cannot show the ridges: the offline renderer follows a ray as far as the game
 draws blocks (192 blocks at 12 chunks) and it has no afterglow. They show where the cameras
 stand. Whether the game draws a sheet that far out, in which colour and without flicker, is only
-seen in the game: the card's first question (sky-notes.md 10.5).
+seen in the game: the card's first question (sky-notes.md 10.5). Until the game has answered,
+sheet.py draws what the game's arithmetic gives for the same cameras; it is a tool to shape the
+ridges with, not evidence.
 
 The shots (the card's list):
   west, northwest, southwest   from the west rail of the sunset platform, where the view is open
@@ -21,7 +24,10 @@ The shots (the card's list):
   back_west                    from the east edge of the terrace, 87 blocks further back: the ridges
                                on either side of the main building; set against `west` it shows how
                                far the ridge line shifts against the horizon when a person walks
-  v11                          the skeleton's V11
+  v11                          the skeleton's V11: it looks north-north-west with the afterglow at its
+                               left edge, and the strip of horizon it has left of the terrace is the
+                               gap between the two ranges, moved north by the 52 blocks the lookout
+                               lies south of the axis; no ridge shows there, and none should
 """
 import json
 import math
@@ -107,16 +113,16 @@ def build():
 def seen(pos, name):
     """A sheet's ridge line as a camera sees it: for each of its columns (bearing north of due west,
     degrees up, distance), only where the ridge stands out of the cloud layer."""
-    line = ridges.crest(name)
+    ridge = ridges.crest(name)
     low_left, low_right = ridges.corners(name)[:2]
     out = []
     for i in range(ridges.WIDTH):
         p = low_left + (low_right - low_left) * ((i + 0.5) / ridges.WIDTH)
-        if line[i] <= mood.CLOUD_TOP:
+        if ridge[i] <= ridges.SEA:
             continue
         dx, dz = p[0] - pos[0], p[2] - pos[2]
         reach = math.hypot(dx, dz)
-        out.append((math.degrees(math.atan2(-dz, -dx)), math.degrees(math.atan2(line[i] - pos[1], reach)), reach))
+        out.append((math.degrees(math.atan2(-dz, -dx)), math.degrees(math.atan2(ridge[i] - pos[1], reach)), reach))
     return out
 
 
@@ -141,6 +147,7 @@ def _inside(pos, at, bearing, up):
 
 
 def describe():
+    """What the frame of every shot holds of the ridges; the stand-in's blocks in front are not counted."""
     lines = list(ridges.report())
     for name, (pos, at, look) in CAMERAS.items():
         alpha = mood.look(look)["glow_alpha"]
@@ -153,7 +160,7 @@ def describe():
             fan = max(ridges.fan(abs(b), max(u, 0.0), alpha) for b, u, _ in line)
             parts.append(f"{sheet} {min(p[0] for p in line):.0f} to {max(p[0] for p in line):.0f}, "
                          f"up to {top[1]:.1f} degrees at {top[0]:.0f} ({top[2]:.0f} blocks), afterglow to {fan:.2f}")
-        lines.append(f"{name:10s} ({look}) " + ("; ".join(parts) if parts else "no ridge in the picture"))
+        lines.append(f"{name:10s} ({look}) " + ("; ".join(parts) if parts else "no ridge in the frame"))
     return lines
 
 
