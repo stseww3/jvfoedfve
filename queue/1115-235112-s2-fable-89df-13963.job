@@ -1,0 +1,3 @@
+branch=cursor/c164-s2-fable-89df
+head=95714f608ebeb14d549d1507f22b708930d32f95
+args=--wip --to cursor/c164-s2-wip-89df --always --tail 40 --limit 400 mkdir\ -p\ renders/_wip/s2\ \&\&\ python\ tools/check.py\ --scene\ obs_site_stair\ --json\ renders/_wip/s2/stair.json\ \>\ renders/_wip/s2/stair.txt\ 2\>\&1\;\ echo\ stair-exit=\$\?\;\ python\ tools/check.py\ --scene\ obs\ --json\ renders/_wip/s2/obs.json\ \>\ renders/_wip/s2/obs.txt\ 2\>\&1\;\ echo\ obs-exit=\$\?\;\ grep\ -h\ -A8\ \'\ sight\'\ renders/_wip/s2/stair.txt\ renders/_wip/s2/obs.txt\ \|\ cut\ -c1-700 
