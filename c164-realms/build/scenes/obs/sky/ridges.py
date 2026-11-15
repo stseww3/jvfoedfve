@@ -53,11 +53,12 @@ SCALE = WIDTH / (WIDE / 32.0)               # 300: the width in blocks over the 
 # How finely the picture is drawn, in picture pixels to a model unit. What matters on screen is
 # picture pixels per world block: px * WIDE / WIDTH.  The integration lead worked out that a
 # 1280-pixel frame with a 70-degree field at 360 blocks puts one screen pixel on about 0.36 blocks,
-# so a faithful hill wants about 2.76 picture pixels to a block -- 828 across a 300-block panel.
+# so an exact fit wants about 2.76 picture pixels to a block -- 828 across a 300-block panel.
 # The model exporter will not write a texture wider than 512, though, and 512 over 300 blocks is
-# 1.71 to the block: that is the ceiling this engine allows, 62% of an exact fit. Drawn at 1 the
-# panels came out at 0.11 to the block -- a smeared band with every jag lost -- so PX=16 (512
-# picture pixels, 1.71 to the block) is the most detail that can be had; the card records the gap.
+# 1.71 to the block; a 32-unit panel with padding takes PX = 15.9375 and no more, which comes to
+# 0.85 to the block, 31% of an exact fit. Drawn at 1 the panels came out at 0.05 to the block -- a
+# smeared band with every jag lost -- so this is the most detail the engine allows. The card
+# records the gap.
 PX = 15.9375
 
 # The silhouettes: (share of the width, share of the height) turning points of the skyline, left to
