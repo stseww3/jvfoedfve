@@ -121,6 +121,7 @@ class _Ribs(pixelart.Mat):
 
 SKY = P.mat("enamel", kind="flat", bevel=0, base=1)          # the ground of the celestial globe
 SEA = P.mat("verdigris", kind="flat", bevel=0, base=1)       # and of the table globe
+GLASS = P.mat("night_glass", kind="flat", bevel=0, base=2)   # a glass ball that is not lit from inside
 SLATS = _Slats("cream_slats", P.RAMPS["cream"], kind="flat", bevel=0, base=3)
 DRUM = _Ribs("iron_slots", P.RAMPS["iron"], kind="flat", bevel=0, base=3)
 
@@ -200,40 +201,87 @@ def _pane(m, lo, hi):
     m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"glint_{w}x{h}", ["".join(row) for row in rows], g=GLINT)})
 
 
-def _ball(m, name, centre, radius, mat, sides, layers, paint):
-    """A ball with a picture on it: the stack of prisms of Model.ball, standing level whichever way
-    the globe's axis leans, every upright face with its own sprite. paint(points) is given the unit
-    vectors from the centre to every pixel of those faces (the model's frame, an array n x 3) and
-    returns for each None (the ground, mat's own tone), a number (so many steps of mat's ramp above
-    the ground) or a colour.
+def _ball(m, name, centre, radius, mat, sides, bands, paint, swing=0.0, crown=False, depth=1.5):
+    """A ball with a picture on it, as a solid of flat facets: `bands` level rings of `sides` facets,
+    each a thin box that lies against the sphere and leans as the sphere does there, the top and
+    bottom rings closing on the poles. `radius` is the height of the poles over the centre, the
+    facets lie against a sphere a little smaller; `swing` turns the whole about the vertical. The
+    rings stand level whichever way a globe's axis leans: it is the picture that is turned.
 
-    The ground is one tone all over, and no lighter or darker patches are painted where the faces
-    look towards the light or away from it as Model.ball does: they would be taken for the picture.
-    The game shades the faces by the way they look. The level faces between the layers carry
-    nothing: the six slabs of a layer lie over one another there, and what one had painted and the
-    next had not would flicker."""
+    Why not the stack of prisms of Model.ball: the game lights a face by the axis it looks along
+    most, so every step of a stack is a bright ring over a dark riser and a ball of twenty pixels
+    is a pile of plates. Here a ring that leans less than 45 degrees takes the light of a wall and
+    one that leans more that of a floor, the same all the way round, and the ball has a lit crown,
+    a girdle and a dark foot. For that no ring may lean by 45 degrees (bands is not 2, 6, 10...),
+    and no facet may look half way between x and z (swing).
+
+    A facet is as wide as the wider of its two edges, so towards a pole its corners run a little
+    over its neighbours (under a sixth of a pixel proud of them) and cut a sliver out of the pixels
+    beside the seam. paint(points, clear) is given the unit vectors from the centre to every pixel
+    of the facets (the model's frame, an array n x 3) and which of them are seen whole; it returns
+    for each pixel None (the ground, mat's own tone), a number (so many steps of mat's ramp above
+    the ground) or a colour. A mark that has to stay one whole pixel, a star, goes on a clear pixel.
+    The ground is one tone all over: nothing is painted lighter or darker for the light, it would
+    be taken for the picture.
+
+    The ring round a pole is all corners. With `crown` four square plates lie over it there like
+    the sides of a low pyramid, a corner of each on the pole, and take its place in the picture:
+    pixels seen whole on the top of the ball, where a globe on the floor is looked at most."""
+    half = math.pi / (2.0 * bands)                      # half the angle a ring covers, pole to pole
     k = math.tan(math.pi / sides)
-    faces, points = [], []
-    for i in range(layers):
-        t0, t1 = 2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0
-        tm = (t0 + t1) / 2.0
-        r = radius * math.sqrt(max(0.0, 1.0 - tm * tm))
-        w, h = max(1, int(round(2.0 * r * k))), max(1, int(round(radius * (t1 - t0))))
-        for s in range(sides // 2):
-            turn = math.radians(360.0 * s / sides)
-            sin, cos = math.sin(turn), math.cos(turn)
-            for letter, sign in (("s", 1.0), ("n", -1.0)):          # the pictures run left to right as seen
-                faces.append((i, s, letter, w, h))
-                for row in range(h):
-                    y = radius * (t1 - (row + 0.5) / h * (t1 - t0))
-                    for col in range(w):
-                        x, z = sign * r * k * ((2.0 * col + 1.0) / w - 1.0), sign * r
-                        p = (x * cos + z * sin, y, z * cos - x * sin)
-                        size = math.sqrt(sum(v * v for v in p))
-                        points.append(tuple(v / size for v in p))
-    marks = iter(paint(np.array(points)))
-    sprites = {}
-    for i, s, letter, w, h in faces:
+    inner = radius * math.cos(half)                     # the sphere the facets lie against
+    reach = inner * math.tan(half)                      # half the height of a facet
+    patches, points, clear = [], [], []
+
+    def patch(x0, x1, y0, y1, z, spin, lean, yaw, whole):
+        """A box whose face that looks +z, at z, is the rectangle x0..x1 by y0..y1 with the picture
+        on it; it is turned `spin` degrees in its own plane about its middle, then leaned up by
+        `lean` and swung round by `yaw`. whole(x, y, dx, dy) tells of a pixel, by its middle and
+        half its size, whether it is seen whole."""
+        w, h = max(1, int(round(x1 - x0))), max(1, int(round(y1 - y0)))
+        dx, dy = (x1 - x0) / (2.0 * w), (y1 - y0) / (2.0 * h)
+        q = M._qmul(M.quat("y", yaw), M.quat("x", -lean))
+        sin, cos = math.sin(math.radians(spin)), math.cos(math.radians(spin))
+        for row in range(h):
+            for col in range(w):
+                x, y = dx * (2.0 * col + 1.0 - w), dy * (h - 2.0 * row - 1.0)
+                clear.append(whole(x + (x0 + x1) / 2.0, y + (y0 + y1) / 2.0, dx, dy))
+                p = M._qrot(q, ((x0 + x1) / 2.0 + x * cos - y * sin, (y0 + y1) / 2.0 + x * sin + y * cos, z))
+                size = math.sqrt(sum(v * v for v in p))
+                points.append(tuple(v / size for v in p))
+        patches.append((x0, x1, y0, y1, z, spin, lean, yaw, w, h))
+
+    for i in range(bands):
+        lean = (2 * i + 1) * half - math.pi / 2.0       # the latitude the ring lies against the sphere at
+        foot, head = (inner * math.cos(lean) + s * reach * math.sin(lean) for s in (1.0, -1.0))
+        wide = max(foot, head) * k                      # half the width of the box
+
+        def whole(x, y, dx, dy, lean=lean, wide=wide):
+            # the box runs `over` beyond the facet's own edge, most at the pixel's end nearer the pole;
+            # the neighbour's corner lies over the strip from wide - 2 over to wide - over
+            over = max(wide - (inner * math.cos(lean) - (y + s * dy) * math.sin(lean)) * k for s in (1.0, -1.0))
+            a, b = max(0.0, abs(x) - dx), abs(x) + dx
+            return wide > 2.0 * over and min(b, wide - over) - max(a, wide - 2.0 * over) <= 0.12
+
+        polar = crown and i in (0, bands - 1)
+        for s in range(sides):
+            if polar:           # under the plates only the half next to the ring below is wanted
+                patch(-wide, wide, min(0.0, math.copysign(reach, -lean)), max(0.0, math.copysign(reach, -lean)),
+                      inner, 0.0, math.degrees(lean), swing + 360.0 * s / sides, lambda *_: False)
+            else:
+                patch(-wide, wide, -reach, reach, inner, 0.0, math.degrees(lean), swing + 360.0 * s / sides, whole)
+        if polar:
+            # the plates: square, a corner on the pole, the opposite one on the ring's far edge; a
+            # hair proud of the ring, whose ridges would show through them otherwise
+            apex = inner * math.cos(lean) / math.sin(lean)
+            far = (inner * math.cos(lean) - max(foot, head)) / math.sin(lean)
+            side = abs(apex - far) / math.sqrt(2.0)
+            for s in range(4):
+                patch(-side / 2.0, side / 2.0, (apex + far - side) / 2.0, (apex + far + side) / 2.0, inner + 0.08,
+                      45.0, math.degrees(lean), 45.0 + 90.0 * s, lambda *_: True)
+    marks = iter(paint(np.array(points), np.array(clear)))
+    seed = m._seed({})
+    for n, (x0, x1, y0, y1, z, spin, lean, yaw, w, h) in enumerate(patches):
         rows, chars = [], {}
         for _ in range(h):
             row = ""
@@ -244,16 +292,12 @@ def _ball(m, name, centre, radius, mat, sides, layers, paint):
                     mark = "#%02x%02x%02x" % tuple(int(v) for v in mark)
                 row += chars.setdefault(mark, chr(ord("a") + len(chars)))
             rows.append(row)
-        sprites[i, s, letter] = Sprite(f"{PREFIX}{name}_{i}_{s}{letter}", rows, {ch: c for c, ch in chars.items()})
-    for i in range(layers):
-        t0, t1 = 2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0
-        r = radius * math.sqrt(max(0.0, 1.0 - ((t0 + t1) / 2.0) ** 2))
-        lo = (centre[0] - r * k, centre[1] + radius * t0, centre[2] - r)
-        hi = (centre[0] + r * k, centre[1] + radius * t1, centre[2] + r)
-        for s in range(sides // 2):
-            angle = 360.0 * s / sides
-            m.box(lo, hi, mat, rot=("y", angle, tuple(centre)) if angle else None, skip="ew", grain="x",
-                  faces={"s": sprites[i, s, "s"], "n": sprites[i, s, "n"]})
+        sprite = Sprite(f"{PREFIX}{name}_{n}", rows, {ch: c for c, ch in chars.items()})
+        lo = (centre[0] + x0, centre[1] + y0, centre[2] + z - depth)
+        hi = (centre[0] + x1, centre[1] + y1, centre[2] + z)
+        with m.turned(("x", -lean), ("y", yaw), about=tuple(centre)):
+            m.box(lo, hi, mat, rot=("z", spin, tuple((a + b) / 2.0 for a, b in zip(lo, hi))) if spin else None,
+                  skip="n", seed=seed, faces={"s": sprite})
 
 
 def _leaned(tilt, yaw=0.0):
@@ -315,19 +359,21 @@ def _sky_point(hours, degrees, lean):
 
 def _stars(lean):
     """paint() for _ball: the sky of the celestial globe. Each star of STARS is one pixel, the pixel
-    that lies nearest to it; where two would stand side by side the fainter one is left out, so the
-    figures stay figures of single points. The Milky Way is the ground one step lighter."""
-    def paint(points):
+    that lies nearest to it among those clear of the facets' corners; where two would stand side by
+    side the fainter one is left out, so the figures stay figures of single points. The Milky Way
+    is the ground one step lighter."""
+    def paint(points, clear):
         marks = [None] * len(points)
         north = np.array(_sky_point(MILKY_WAY[0], MILKY_WAY[1], lean))
         for n in np.nonzero(np.abs(points @ north) < math.sin(math.radians(MILKY_WAY[2])))[0]:
             marks[n] = 1
+        free = np.nonzero(clear)[0]
         taken = []
         for hours, degrees, rank, warm in sorted(STARS, key=lambda star: star[2]):
             at = np.array(_sky_point(hours, degrees, lean))
-            n = int(np.argmax(points @ at))
-            if float(points[n] @ at) < math.cos(math.radians(9.0)):
-                continue                # it lies on a level face, the flat of the crown or of the foot
+            n = int(free[np.argmax(points[free] @ at)])
+            if float(points[n] @ at) < math.cos(math.radians(7.0)):
+                continue                # no clear pixel near it: it lies right on a pole
             # a pixel is a little under 6 degrees: nearer than 1.3 pixels is side by side
             if all(float(points[n] @ points[other]) < math.cos(math.radians(7.4)) for other in taken):
                 taken.append(n)
@@ -349,13 +395,25 @@ LANDS = (
 
 def _lands(lean):
     """paint() for _ball: the map of the table globe, the lands two steps lighter than the seas."""
-    def paint(points):
+    def paint(points, clear):
         land = np.zeros(len(points), dtype=bool)
         for lon, lat, radius in LANDS:
             a, d = math.radians(lon), math.radians(lat)
             at = np.array(M._qrot(lean, (math.cos(d) * math.sin(a), math.sin(d), math.cos(d) * math.cos(a))))
             land |= points @ at > math.cos(math.radians(radius))
         return [2 if on else None for on in land]
+    return paint
+
+
+def _glass(tones, glint):
+    """paint() for _ball: a ball of glass in level rings of tone, `tones` from the foot to the crown
+    in steps from the ground, and its glint, one white pixel where the ball looks along `glint`."""
+    def paint(points, clear):
+        marks = [tones[min(len(tones) - 1, int((math.asin(max(-1.0, min(1.0, y))) / math.pi + 0.5) * len(tones)))]
+                 for y in points[:, 1]]
+        free = np.nonzero(clear)[0]
+        marks[int(free[np.argmax(points[free] @ (np.array(glint) / np.linalg.norm(glint)))])] = GLINT
+        return marks
     return paint
 
 
@@ -485,7 +543,7 @@ def _celestial_globe():
     m.ring("y", (0, cy, 0), 12.5, 3.0, 2.0, WOOD, sides=24,
            faces={"u": _scale("first", 2, 1, 1, long=(4, 1))})                          # horizon ring
     lean = _leaned(GLOBE_TILT, GLOBE_YAW)
-    _ball(m, "sky", (0, cy, 0), r, SKY, 12, 10, _stars(lean))
+    _ball(m, "sky", (0, cy, 0), r, SKY, 16, 8, _stars(lean), swing=11.25, crown=True)
     with m.turned(("y", GLOBE_YAW)):
         for z in (-1.75, 0.75):                                                         # the cradle under the meridian
             m.box((-1.5, 6.5, z), (1.5, 8.75, z + 1.0), BRASS_D)
@@ -500,8 +558,9 @@ def _celestial_globe():
 
 
 def _globe():
-    """A table globe a block tall: a verdigris ball 10 px across, its axis leaning 23.5 degrees, in
-    a graduated brass half meridian on a turned wooden foot. Anchor: the table under its middle."""
+    """A table globe 18 px tall: a verdigris ball 10 px across with its lands a lighter green, its
+    axis leaning 23.5 degrees, in a graduated brass half meridian on a turned wooden foot. Anchor:
+    the table under its middle."""
     m = M.Model(PREFIX + "globe")
     cy, r, tilt = 11.0, 5.0, 23.5
     m.tube("y", (0, 0), 0.0, 1.0, 4.0, WOOD_D)                                          # foot
@@ -510,8 +569,8 @@ def _globe():
     m.tube("y", (0, 0), 3.75, 5.0, 1.75, BRASS_D)                                       # the socket of the meridian
     north = 90.0 - tilt
     m.ring("z", (0, cy, 0), r + 1.25, 1.5, 1.25, BRASS, sides=24, arc=(north - 187.5, north + 7.5),
-           faces={"s": _scale("first", 2, 0, 1), "n": _scale("last", 2, 0, 1)})         # half meridian
-    _ball(m, "earth", (0, cy, 0), r, SEA, 12, 5, _lands(_leaned(tilt)))
+           faces={"s": _scale("first", 2, 0, 1, ink=2), "n": _scale("last", 2, 0, 1, ink=2)})   # half meridian
+    _ball(m, "earth", (0, cy, 0), r, SEA, 12, 8, _lands(_leaned(tilt)))
     with m.turned(("z", -tilt), about=(0, cy, 0)):
         for a0, a1 in ((cy - r - 2.25, cy - r + 1.0), (cy + r - 1.0, cy + r + 2.25)):
             m.tube("y", (0, 0), a0, a1, 0.75, BRASS_D, cap=KNOB)
@@ -534,7 +593,7 @@ def _sextant():
     for x in (-5.5, 3.5):
         m.box((x, 2.0, -1.5), (x + 2.0, 4.0, 1.5), WOOD)
     m.ring("z", top, reach, 2.0, 1.5, BRASS, sides=36, arc=(240.0, 300.0),
-           faces={"s": _scale("first", 2, 0, 1), "n": _scale("last", 2, 0, 1)})         # the limb
+           faces={"s": _scale("first", 2, 0, 1, ink=2), "n": _scale("last", 2, 0, 1, ink=2)})   # the limb
     for deg in (240.0, 300.0):                                                          # the frame: no cross brace
         m.beam(top, at(deg, reach - 0.5), 1.25, 1.5, BRASS_D)
     m.tube("z", (top[0], top[1]), -0.75, 2.25, 1.5, BRASS, cap=KNOB)                    # pivot
@@ -697,18 +756,11 @@ def _sunshine_recorder():
     with m.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):                              # y is the polar axis in here
         m.ring("y", (0.0, cy, 0.0), r + 1.5, 1.0, 3.0, BRASS, sides=16, arc=(0.0, 180.0),
                faces={"w": _scale("last", 2, 0, 2, ramp="cream", ink=0, rim=False)})    # the bowl and the card in it
-    # the glass ball, in bands of tone like the lamps' glass (_kit.glass_ball) but unlit: the sky on
-    # its crown, the light it gathers low down, dark where one looks through it and where it rests
-    for i, step in enumerate((1, 3, 2, 2, 3, 4)):
-        glass = K.flat("night_glass", step)
-        m.ball((0.0, cy, 0.0), r, glass, sides=12, layers=1, part=(i / 3.0 - 1.0, (i + 1) / 3.0 - 1.0),
-               faces={"n": glass, "s": glass, "u": glass, "d": glass}, shade=False)
-    # its glint: one white pixel on the facet that looks up and to the left of the front (the second
-    # layer from the top, the facet 30 degrees round from +z towards -x), a hair proud of the glass
-    girth = r * math.sqrt(1.0 - 0.5 * 0.5)
-    with m.turned(("y", -30.0), about=(0.0, cy, 0.0)):
-        m.box((-0.5, cy + 1.0, girth), (0.5, cy + 2.0, girth + 0.1), K.flat("porcelain", 4), skip="nudew",
-              shade=False)
+    # the glass ball, five rings of ten facets two pixels square. From the foot up: dark where it
+    # rests, the light it gathers low down, dark where one looks through it, and the sky on its
+    # crown; the game lights the crown and shades the foot besides. Its glint is one white pixel up
+    # and to the left of the front
+    _ball(m, "glass", (0.0, cy, 0.0), r + 0.15, GLASS, 10, 5, _glass((-1, 2, -1, 0, 1), (-0.5, 0.62, 0.6)))
     return m
 
 
