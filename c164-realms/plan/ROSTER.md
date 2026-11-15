@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 07:52。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 07:55。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -29,7 +29,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | a1 | c324 | node38（冻住） | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` @ `db5682e9` | `cursor/c164-a1-board-f3-09d2` |
 | m1 | c335 | node49（冻住） | c194 | materials/brass-oldcopper-small（补图）、materials/panels 打磨轮；然后 props/instruments（接 c199） | `cursor/c164-m1-brass-fa68` @ `a2370b00`、`cursor/c164-m1-panels-polish-bc45` @ `baccd973`；`cursor/c164-instr-f5da` @ `97398871` | `cursor/c164-m1-brass-f3-c367`、`cursor/c164-m1-panels-f3-c367`、`cursor/c164-m1-instruments-f3-c367` |
-| snow | c336 | node50（冻住） | c194 | materials/snow；然后 props/paper（接 c197；11-16 07:49 交付）；然后 interiors/batteryroom（P3，11-16 07:52 派，接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330` 的半张草图和三处对口；先交一页草图给总监；paper 被退回时它优先） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | `cursor/c164-snow-f3-17de`、`cursor/c164-snow-paper-f3-17de` |
+| snow | c336 | node50（冻住） | c194 | materials/snow；然后 props/paper（接 c197；11-16 07:49 交付）；然后 interiors/batteryroom（P3，11-16 07:52 派，接 stair 留在 `cursor/c164-stair-batteryroom-f3-b330` 的半张草图和三处对口；先交一页草图给总监；paper 被退回时它优先） | `cursor/c164-m1-snow-bc45` @ `51f2fd69`；`cursor/c164-m4-paper-7345` @ `b3ff0866` | `cursor/c164-snow-f3-17de`、`cursor/c164-snow-paper-f3-17de`、`cursor/c164-snow-batteryroom-f3-17de` |
 | m5 | c352 | 合用 node12 | c198 | materials/iron 二次交付；然后 machines/domegear（接 c196） | `cursor/c164-m5-iron-8757` @ `3c2120de`；`cursor/c164-gear-6260` @ `c7045d80` | `cursor/c164-m5-iron-f3-b9c1`、`cursor/c164-m5-domegear-f3-b9c1` |
 | ashlar | c353 | 合用 node46（冻住） | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石）；然后 machines/armillary（接 c246） | `cursor/c164-ashlar-2cc1` @ `f57e5576`；`cursor/c164-arm-7c2a` @ `724d26be` | `cursor/c164-ashlar-polish-f3-799b`、`cursor/c164-ashlar-armillary-f3-799b` |
 | facade | c321 | node35（冻住） | c206 | main/facade；main 牵头；然后 common/walk 的 walk-out（室外走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-facade-229b` @ `2c482b37` | `cursor/c164-facade-facade-f3-81a0`、`cursor/c164-facade-walkout-f3-81a0` |
