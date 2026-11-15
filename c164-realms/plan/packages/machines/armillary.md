@@ -16,6 +16,7 @@
   - 不转的：`stand` 铁托座，`meridian` 子午环（带极轴两端的轴承和北端的球），`horizon` 地平环（甲）。
   - 转的：`axis` 极轴和地球，`equator` 赤道圈（甲），`tropic` 回归线（甲，同一个模型放两次），`ecliptic` 黄道带，`colure` 过极圈。都绕过锚点（球心）的极轴转。极轴在子午面里，北端仰角 `LATITUDE`（读 `S.LATITUDE`，45°）；单位向量（东、上、南）是 `POLE` = (0, sin, −cos)。
   - 这些模型画在球自己的坐标里（+y 是极轴），摆放时转两步：`("y", hour)` 绕自己的轴转，`("x", LATITUDE − 90)` 把轴扳到极轴上。要它转只改 hour；`armillary.pieces(version, hour)` 给出每件的 turns（南回归线前面多一步绕 z 转 180°）。天球的周日运动是 hour 减小的方向。这一轮只摆静止姿态 `HOUR` = −35。
+  - 登记（`plan/parts/motion.md` 第 2、4 节的规矩；motion/loop 进总装以后才写，这一版默认不动）：看得出在转的只有 `ecliptic`、`colure`、`axis` 三件，各一行 `MK.spin(canvas, "y", −周期, model=…)`，同一个周期，负号是周日运动的方向。三件的锚点和包围盒中心都在球心，在轴上。赤道圈和两道回归线是绕极轴旋转对称的素圈，转不转看不出，不登记。
 - 交付物：`build/scenes/obs/machines/armillary.py`（`build(canvas, origin, version)` 返回实体数，`models()`，`pieces()`，`lamp_feet()`）；测试场景 `build/scenes/obs_mach_armillary/`（甲）和 `build/scenes/obs_mach_armillary_b/`（乙）：按总场景的顺序整条建 site、main、props、sky，machines 只放浑天仪；两个场景 11 个同名机位，时间 14000。
 - 验收：
   - `v2_axis`、`v2_entrance`（甲乙在这两张上定）：读成石座上的一个圆环仪器，是剪影加黄铜亮边；门洞和金窗的光从环的空隙里透过来。

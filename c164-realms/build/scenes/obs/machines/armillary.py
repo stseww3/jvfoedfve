@@ -54,7 +54,8 @@ southern tropic has a half turn about z in front). The sky's daily motion is the
              every 30 (the twelve signs)
   colure     the one ring through both poles that carries the others (the solstitial colure), with
              a bolt head where each of them crosses it. Only one: two would cross at the pole.
-This round places a still pose, HOUR; the motion is A8's.
+This round places a still pose, HOUR; the motion is A8's. Only the axis, the ecliptic and the colure
+show that they turn: the equator and the tropics are plain rings about the axis.
 
 Brass: old and dark (the palette's brass_dark), one step lighter where a face looks up; only the
 scale marks, the bolt heads and the ball on the axis go brighter. Nothing glows. At night the four
