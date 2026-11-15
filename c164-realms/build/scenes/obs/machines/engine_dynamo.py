@@ -242,6 +242,22 @@ def _base():
 
 
 # ==================================================================================================
+# the belt
+# ==================================================================================================
+BELT_SCALE = 1.0                    # the belt is drawn at its real size: a 3-block run of band
+
+
+def _belt():
+    """One run of the driving belt, 3 blocks long, running up from its anchor: a dark leather band
+    a hand wide. The card has the belt's movement as an animated picture (A1); this round it is the
+    still band that carries the eye from the flywheel to the dynamo's pulley."""
+    m = M.Model(PREFIX + "belt", px=1.0, anchor=(0.0, 0.0, 0.0))
+    band = P.mat("dark_wood", base=1, kind="flat", bevel=0)
+    m.box((-1.2, 0.0, -2.4), (1.2, 48.0, 2.4), band, skip="d")
+    return m
+
+
+# ==================================================================================================
 # the registry
 # ==================================================================================================
 @functools.lru_cache(maxsize=None)
@@ -254,6 +270,7 @@ def _models():
         PREFIX + "governor": _governor(),
         PREFIX + "dynamo": _dynamo(),
         PREFIX + "armature": _armature(),
+        PREFIX + "belt": _belt(),
     }
 
 
@@ -331,6 +348,28 @@ def build(canvas, origin=(0, 0, 0), facing=FACING_ROOM, centre=None):
     n += _place(canvas, _models()[PREFIX + "dynamo"], at(DYNAMO_X, 0.0, 0.0), origin, yaw)
     n += _place(canvas, _models()[PREFIX + "armature"], at(DYNAMO_X, 0.0, DYNAMO_H / 16.0 * 0.55),
                 origin, yaw + 90.0)
+
+    # the belt: two straight runs, one on each side, between the wheel's rim and the dynamo pulley.
+    # The run's length is the distance between the two centres, and its ends sit on the two rims.
+    wheel_c = at(WHEEL_X, 0.0, WHEEL_BLOCKS / 2.0)
+    dyn_c = at(DYNAMO_X, 0.0, DYNAMO_H / 16.0 * 0.55)
+    belt_parts = _models()[PREFIX + "belt"]
+    for side in (-1.0, 1.0):
+        a = (wheel_c[0], wheel_c[1] + side * (WHEEL_BLOCKS / 2.0 - 0.1), wheel_c[2])
+        b = (dyn_c[0], dyn_c[1] + side * (4.2 / 16.0), dyn_c[2])
+        span = math.dist(a, b)
+        if span > 0.05:
+            # a 48-unit band stretched along its length keeps the density (thick scales the two
+            # across-axis directions, the length axis is set by the distance)
+            d = [b[i] - a[i] for i in range(3)]
+            yaw_b = math.degrees(math.atan2(-d[0], d[2]))
+            pitch = math.degrees(math.atan2(d[1], math.hypot(d[0], d[2])))
+            mid = tuple((a[i] + b[i]) / 2.0 for i in range(3))
+            canvas.add_entity(mid[0] + origin[0], mid[1] + origin[1], mid[2] + origin[2],
+                              M.display(belt_parts, yaw=yaw_b,
+                                        scale=(1.0, 1.0, span * 16.0 / 48.0),
+                                        turns=(("x", -pitch),), view=6.0))
+            n += 1
 
     lights = []
     if LAMP:
