@@ -22,11 +22,13 @@ Five tiers, each stepped back and up so that one picture holds them all; from th
 Repainted blocks show whatever the material packages paint today (stand-ins until a family is
 painted); the other blocks are the game's. A lamp row stands at the foot of every tier except in
 front of the windows, so each wall runs from lamp light at its base to sky light at its top. On
-the ground tier only the bare rock and the far half of the emblem have lamps: snow and cloud are
-seen under the sky alone, as they lie on the mountain.
+the ground tier there are two lamps: one at the far end of the bare rock, one before the marker
+stone of the emblem. Snow and cloud are seen under the sky alone, as they lie on the mountain:
+lamplight() counts what lamp light can come to them.
 
     python -m scenes.obs_mat_board        writes shots.json from the layout below
-    python -m scenes.obs_mat_board plan   prints the ground tier from above and what the board lacks
+    python -m scenes.obs_mat_board plan   prints the ground tier from above, what the board lacks
+                                          and the lamp light on snow and cloud
 
 Versions are compared by scenes of their own (obs_mat_board_<tag>): the same board, the shots of
 compare(), with write_pack() calling materials._kit.pack_with() for the versions wanted.
@@ -143,10 +145,12 @@ def inlay(c, x, y, z):
     """The paving and the thin brass line in it: the emblem (ring, meridian, star) on a seat of the
     darkest slate bordered with the light stone, the meridian running on out of the seat between two
     flanks of the light stone, as the front court lays it. Where the line ends at the back stands
-    the court's marker stone; beside it the paving stone's own stairs, slabs and low walls. Two
-    lamps at the back: the far half of the emblem is lamp-lit, the near half lies under the sky.
-    Three whole cells of brass plate beside the seat, to compare. Two walls wide. The seat is deeper
-    than the tier's floor: the floor comes forward under it as a tongue, a cell clear of it."""
+    the court's marker stone; beside it the paving stone's own stairs, slabs and low walls. One
+    lamp, before the marker, on the meridian: the far half of the emblem is lamp-lit, the near half
+    lies under the sky, and the lamp's light is spent where it comes to the snow on one side and
+    the cloud on the other (lamplight()). Three whole cells of brass plate beside the seat, to
+    compare. Two walls wide. The seat is deeper than the tier's floor: the floor comes forward
+    under it as a tongue, a cell clear of it."""
     half = EMBLEM_R + 2                         # the ring, a clear cell, the border
     mx, az = x + half + 1, z + half + 1
     c.box(mx - half - 1, y - 1, z + SHELF + 1, mx + half + 1, y - 1, z + FRONT, FLOOR)
@@ -163,8 +167,7 @@ def inlay(c, x, y, z):
         c.set(mx + dx, y, z, st(B.SLATE_SMOOTH.slab, type="bottom"))
     c.set(mx + 4, y, z, st(B.SLATE_SMOOTH.wall, east="low", up="true"))
     c.set(mx + 5, y, z, st(B.SLATE_SMOOTH.wall, west="low", up="true"))
-    for dx in (-3, 3):
-        c.set(mx + dx, y + 1, z + 2, st(B.LIGHT, level=LAMP))
+    c.set(mx, y + 1, z + 2, st(B.LIGHT, level=LAMP - 1))     # a level under a wall's lamp: at 13, two come to the drift
 
 
 def ground(c, x, y, z):
@@ -183,8 +186,7 @@ def ground(c, x, y, z):
         c.box(x + TONES_AT + TONE * i, y - 1, z + SHELF - 2, x + TONES_AT + TONE * (i + 1) - 1, y - 1, z + SHELF - 1, block)
     inlay(c, x + INLAY_AT, y, z)
     _board.bank(c, x + CLOUD_AT, y, z, 3 * PITCH - 2, SHELF - 1)
-    for dx in (1, 5):
-        c.set(x + ROCK_AT + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
+    c.set(x + ROCK_AT, y + 1, z + 4, st(B.LIGHT, level=LAMP))        # one, at the end away from the snow
 
 
 def pieces(c, x, y, z):
@@ -200,7 +202,7 @@ def pieces(c, x, y, z):
     _board.brass(lifted, x + BRASS_AT, z, staged=False)
     _board.hung(c, x + HUNG_AT, y, z)
     for lx in range(x + 1, x + width(), 4):
-        c.set(lx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
+        c.set(lx, y + 1, z + 3, st(B.LIGHT, level=LAMP))     # no further forward: the snow wall's top is below
 
 
 class _Lifted:
@@ -301,6 +303,32 @@ def lacking(c=None):
     placed = {state.partition("[")[0] for state in (c or build()).b.values()}
     return ([b for b in B.ids(B.REPAINTED) if b not in placed],
             [b for b in B.ids(B.VANILLA) if b not in placed])
+
+
+GLOWS = {B.LIGHT: None, B.IRON_LANTERN: 15, B.IRON_BULB: 15}    # what gives light: the most it gives (None: its level)
+
+
+def lamplight(c=None):
+    """(level, cell): the most lamp light that can come to snow or cloud. Counted for every cell of
+    either and the six cells beside it, whole blocks of stone, snow and cloud left out (no light is
+    in them); a level less for every cell from the lamp, as if nothing stood in the light's way: so
+    it is never less than what the game gives, and on the open ground tier it is what the game
+    gives. The board keeps it at 1 or less, which no picture shows (4 levels warm the snow by a
+    quarter in red, 1 by a twentieth): snow and cloud are seen under the sky alone, as they lie on
+    the mountain."""
+    c = c or build()
+    pale = set(B.CLOUD) | {B.SNOW, B.SNOW_LAYER}
+    whole = {e.block for e in B.VANILLA + B.REPAINTED[:3] if isinstance(e, B.Family)} | {B.ROCK_DEEPSLATE, B.SNOW, *B.CLOUD}
+    lamps, cells = [], set()
+    for (x, y, z), state in c.b.items():
+        name, _, props = state.partition("[")
+        if name in GLOWS:
+            lamps.append((x, y, z, GLOWS[name] or int(props.partition("level=")[2].rstrip("]"))))
+        elif name in pale:
+            cells.update(((x, y, z), (x - 1, y, z), (x + 1, y, z), (x, y - 1, z), (x, y + 1, z), (x, y, z - 1), (x, y, z + 1)))
+    cells = [cell for cell in cells if c.name(*cell) not in whole]
+    return max(((level - abs(x - lx) - abs(y - ly) - abs(z - lz), (x, y, z))
+                for x, y, z in cells for lx, ly, lz, level in lamps), default=(0, None))
 
 
 def shots():
