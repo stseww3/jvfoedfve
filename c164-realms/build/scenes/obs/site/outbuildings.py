@@ -19,18 +19,18 @@ card plan/packages/site/outbuildings.md). Shells and platforms only, all of bloc
 
 The instruments themselves -- the meridian circle, the anemometer and vane, the thermometer screen,
 the tripod telescope and the benches -- belong to the machines and props lines; this card leaves the
-shells, the sockets and the clear spots for them. Two of them are set on their spots from here, as
+shells, the sockets and the clear spots for them. Three of them are set on their spots from here, as
 the props line asks of whoever builds a terrace (props/instruments places nothing itself): the tripod
-telescope on the lookout's stand and the thermometer screen on the weather platform. While that
-package is not in the tree the stand is empty, a louvred shelter of blocks stands in for the screen
-and this card has no display entity at all.
+telescope on the lookout's stand, the thermometer screen and the sunshine recorder on the weather
+platform. While that package is not in the tree the stand and the pedestal are empty, a louvred
+shelter of blocks stands in for the screen and this card has no display entity at all.
 
 What the other cards read from this module (points are (x, y, z) in scene coordinates):
   LAMP_POINTS   where a lamp may hang, one to a building (props/lamps)
   HUT_AXIS      the middle of the transit circle: where its east-west axis crosses the meridian
   HUT_PIERS     the two floor cells either side of the meridian where its piers stand
   SCREEN        where the thermometer screen stands on the weather platform, the middle of its foot
-  PEDESTAL_TOP  the top of the free pedestal on the weather platform
+  PEDESTAL_TOP  the top of the pedestal on the weather platform, where the sunshine recorder stands
   SCOPE_STAND   where the tripod telescope stands on the lookout, the middle of its foot
 
 The terrain card lays each shelf's flat rock and the neck that leads to it; these shells stand on the
@@ -47,7 +47,7 @@ from ..common import blocks as B
 from ..common import skeleton as S
 
 ORDER = 70      # after the terrain (10) and the court paving (60); the shells go on the finished ground
-INSTRUMENTS = True      # stand the props line's telescope and thermometer screen on their spots
+INSTRUMENTS = True      # stand the props line's instruments on their spots (see _place)
 
 # --- materials (occupancy-table roles only) -------------------------------------------------------
 WALL = B.ASHLAR_ROUGH.block             # the darker, banded ashlar of the base storey: the hut's walls
@@ -369,13 +369,15 @@ def _weather_station(c, o):
     _put(c, o, wx - 1, foot + 8, wz, ROD + "[facing=west]")
     _put(c, o, wx - 2, foot + 8, wz, ROD + "[facing=west]")
 
-    # the rain gauge: a short plate drum under a lid; and a free stone pedestal (sunshine recorder: A6)
+    # the rain gauge: a short plate drum under a lid; and a stone pedestal for the sunshine recorder
     gx, gz = _SPOTS["gauge"]                            # (6, -45)
     _put(c, o, gx, foot, gz, PLATE)
     _put(c, o, gx, foot + 1, gz, HATCH + "[facing=north,half=bottom,open=false]")
     px, pz = _SPOTS["pedestal"]                         # (3, -47)
     _put(c, o, px, foot, pz, POST)
     _put(c, o, px, foot + 1, pz, COPE + "[type=bottom]")
+    # the props line's sunshine recorder on the pedestal, its glass ball to the south (c199 #34880)
+    n += _place(c, o, "sunshine_recorder", PEDESTAL_TOP, "south")
     return n
 
 
@@ -417,7 +419,7 @@ def _south_lookout(c, o):
 
 def build(canvas, origin=(0, 0, 0)):
     """Places the four shells and the ways down; returns the number of display entities, which are
-    the props line's two instruments when that package is in the tree and none otherwise."""
+    the props line's three instruments when that package is in the tree and none otherwise."""
     _meridian_hut(canvas, origin)
     _water_tower(canvas, origin)
     n = _weather_station(canvas, origin)
