@@ -79,17 +79,11 @@ def console_top(x, z=None):
     return float(FEET + 2)
 
 
-# the anchors: the drum's is its axis (17 units = 1.06 blocks above the machine's foot), the
-# telegraph's is its armature pivot (12 units = 0.75 blocks up), the tube's is its body centre.
-def drum_axis_y(y):
-    """The y of the drum's axis when the recorder stands on `y`."""
-    return y + recorders.DRUM_AXIS / 16.0
-
-
+# the slots are c292's own table (interiors/timeroom.py @ a14a1f37): the point each piece STANDS on
 SLOTS = {
-    "drum": dict(pos=(9.5, drum_axis_y(console_top(9)), CONSOLE_Z + 0.5), facing="south"),
+    "drum": dict(pos=(9.5, console_top(9), CONSOLE_Z + 0.5), facing="south"),
     "telegraph": dict(pos=(6.5, console_top(6), CONSOLE_Z + 0.5), facing="south"),
-    "tube": dict(pos=(float(X1 + 1), float(FEET + 1.6), -16.5), facing="west"),
+    "tube": dict(pos=(float(X1 + 1), float(FEET), -9.5), facing="west"),
 }
 
 

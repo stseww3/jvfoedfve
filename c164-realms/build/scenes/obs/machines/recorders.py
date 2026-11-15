@@ -63,10 +63,14 @@ KEY_X = 7                 # the telegraph key's cell; the register stands just w
 EAST = 14                 # the east wall: x of the first air cell west of it
 DESK_PIER_Z = -16         # the pier south of the message desk
 
+# c292's own table (interiors/timeroom.py, cursor/c164-m2-timeroom-80c9 @ a14a1f37), which is what
+# build() is given when that module is in the tree. Note the anchor heights: the drum's is its axis
+# (DRUM_AXIS/16 = 1.06 above the console), the telegraph's is its armature pivot (TELE_H/16 = 0.75),
+# the tube's is its body centre (1.6 above the sill, its pipe running up from there).
 DEFAULT_SLOTS = {
-    "drum": dict(pos=(DRUM_X + 0.5, float(SILL), CONSOLE_Z + 0.5), facing="south"),
-    "telegraph": dict(pos=(KEY_X - 1.5, float(SILL), CONSOLE_Z + 0.5), facing="south"),
-    "tube": dict(pos=(float(EAST), float(SILL), DESK_PIER_Z + 0.5), facing="west"),
+    "drum": dict(pos=(9.5, float(SILL), CONSOLE_Z + 0.5), facing="south"),
+    "telegraph": dict(pos=(6.5, float(SILL), CONSOLE_Z + 0.5), facing="south"),
+    "tube": dict(pos=(float(EAST), float(SILL), -9.5), facing="west"),
 }
 
 # --- sizes in model units (16 to the block); the card's block sizes are in the comments
@@ -76,6 +80,7 @@ CHART_W = 12.0                                 # the drum's width along its axis
 DRUM_AXIS = 17.0                               # the drum's axis height above the case's foot
 TELE_W, TELE_D, TELE_H = 16.0, 13.0, 12.0      # the register: 1.0 x 0.8 x 0.75 blocks
 TUBE_R = 2.6                                   # the pneumatic pipe: 0.16 blocks through
+TUBE_LIFT = 1.6                                # blocks from the sill to the tube body's centre
 
 # the recorder's chart lamp: the console's warm point (offered to A2; a third-rank light)
 LAMP_LEVEL = 7
@@ -295,9 +300,12 @@ def _offer_lights(canvas, lights, why):
         canvas.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
 
 
-def drum(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
-    """Place the drum recorder; `pos` is the drum's axis in blocks. Returns (entities, the light)."""
+def drum(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None, on_axis=False):
+    """Place the drum recorder. `pos` is the point the recorder STANDS on (the console top) unless
+    on_axis, in which case it is the drum's axis itself. Returns (entities, the light's cell)."""
     yaw = FACING[facing] if yaw is None else yaw
+    anchor = (pos[0], pos[1] + (0.0 if on_axis else DRUM_AXIS / 16.0), pos[2])
+    pos = anchor
     n = _place(canvas, _models()[PREFIX + "drum"], pos, origin, yaw)
     above = (DRUM_R + 1.0) / 16.0 + LAMP_ABOVE
     d = _turn(yaw, (0.0, above, 0.0))
@@ -306,16 +314,20 @@ def drum(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
 
 
 def telegraph(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
-    """Place the telegraph register; `pos` is the armature's pivot in blocks. Returns the count."""
+    """Place the telegraph register. `pos` is the point it STANDS on (the console top); the model's
+    anchor is its armature pivot, above that. Returns the display-entity count."""
     yaw = FACING[facing] if yaw is None else yaw
-    return _place(canvas, _models()[PREFIX + "telegraph"], pos, origin, yaw)
+    anchor = (pos[0], pos[1] + TELE_H / 16.0, pos[2])
+    return _place(canvas, _models()[PREFIX + "telegraph"], anchor, origin, yaw)
 
 
 def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None):
-    """Place the pneumatic tube terminal; `pos` is the middle of its body in blocks. Returns the
-    count. The piece runs its own pipe up above the anchor."""
+    """Place the pneumatic tube terminal. `pos` is the sill point on the pier, as the room's table
+    gives it; the body's centre sits TUBE_LIFT above that and the pipe runs up from it. Returns the
+    display-entity count."""
     yaw = FACING[facing] if yaw is None else yaw
-    return _place(canvas, _models()[PREFIX + "tube"], pos, origin, yaw)
+    anchor = (pos[0], pos[1] + TUBE_LIFT, pos[2])
+    return _place(canvas, _models()[PREFIX + "tube"], anchor, origin, yaw)
 
 
 def build(canvas, origin=(0, 0, 0), slots=None):
