@@ -22,33 +22,37 @@ tall one; the glass roof is short, over the car alone, and west of it the platfo
              the arrival view. West of it the waiting room, low and set back a row: it is the right
              edge of the arrival view, its eaves and its ridge running to the foot of the clock
              tower, and it is kept dark on that side (the blinds are down, the door is shut: the
-             room is a shell and nobody goes in). Tuff brick on a polished course, slate roofs.
+             room is a shell and nobody goes in). Tuff brick on a polished course, slate roofs; a
+             chimney stands in the waiting room's back wall, out of the arrival view.
   windows    Three are lit, all of frosted glass and none of them towards the arrival view: the
              waiting room's gable window, which looks at the observatory, and two tall lights in
              the winch house's east wall, over the cliff. windows() lists the glass of both
              houses; the sky line gives the lit ones their light (sky/_lightkit.glazed). The two
              tall lights are whole blocks, flush with the wall: their room side is seen from the
              platform through the opening, and the materials line covers it with the sheet that
-             shows frosted glass with the night behind it (materials/windows.line).
-  glass roof Over the car and the spawn cell only: two iron trusses (rafters, a tie, one light of
-             glass over the tie), glass between them in two pitches, an iron ridge. Who arrives
-             walks out under the western truss. It lies between two girders, the
-             winch house's and one on two slender columns south of the car: a stone pedestal, an
-             iron shaft, a cast head. The columns stand east of the camera and the girder's end
-             oversails the western one. Its underside is S.CANOPY_CLEAR above the platform; seen
-             from S.V1 it lies wholly above the picture.
+             shows frosted glass with the night behind it (materials/windows.line). The waiting
+             room's front is walled up behind its blinds and its door, so that no light of the
+             room gets out on the side the arrival view sees, wherever its source stands.
+  glass roof Over the car and the spawn cell only: two iron trusses (stepped rafters and a tie
+             rod, the gable open), glass between them in two pitches, an iron ridge. Who arrives
+             walks out under the western truss. It lies between two girders, the winch house's
+             and one on two slender columns south of the car: a stone base, a shaft, a cast
+             bearing block in the girder. The columns stand east of the camera and the girder's
+             end oversails the western one. Its underside is S.CANOPY_CLEAR above the platform;
+             seen from S.V1 it lies wholly above the picture.
   bay        The south-east corner stays level, railed, over the head of the trestle.
   trestle    East of the platform the track runs level for a few cells and then falls one in two,
-             on iron bents that stand on the ridge the mountain keeps for it (site/_kit.py:
-             cable_ridge), a third of a cell north for every cell east. The ridge falls faster than
-             the track, so the bents grow; the last ones stand in the cloud and the track ends below
-             its top.
+             a thin deck on lattice towers that stand on the ridge the mountain keeps for it
+             (site/_kit.py: cable_ridge), a third of a cell north for every cell east. The ridge
+             falls faster than the track, so the towers grow; the last ones stand in the cloud and
+             the track ends below its top.
 
 What the other lines hang on (cells unless called a point): CAR, WINCH_ROOM, SLOT, SPAWN,
 track_axis(x), rail_top(x) for the car and the winch; SIGN, BENCHES, LUGGAGE for the props;
-LAMP_POINTS for the lamps; windows() for the light; STEPS for the paths that meet the platform.
-The package sets blocks and has no models and no light sources of its own. build() returns the
-display entities placed for it: the sheets on the room side of the winch house's two lights.
+LAMP_POINTS for the lamps; windows() for the light; SMOKE for the motion line; STEPS for the paths
+that meet the platform. The package sets blocks and has no models and no light sources of its
+own. build() returns the display entities placed for it: the sheets on the room side of the
+winch house's two lights.
 """
 import importlib
 
@@ -71,7 +75,8 @@ SPAWN = (HEAD + 0.5, float(FEET), AXIS + 0.5)                       # a point: (
 SLOT = dict(cells=[(x, AXIS) for x in range(HEAD, X1 + 1)], y=TOP)  # the grating over the cable
 LEVEL = 4                               # cells of level track east of the platform
 GRADE = 0.5                             # then half a block down with every cell
-BENT_FIRST, BENT_STEP = X1 + 7, 6       # x 98, 104 ..: the middle cell of every second straight run
+TOWER_FIRST, TOWER_STEP = X1 + 7, 6     # x 98, 104 ..: a tower under the last two cells of every second
+#                                         straight run, this column and the next
 SINK = K.ROCK_FLOOR + 2                 # -27: the track ends when its rails are this low, under the cloud
 CLOUD = K.ROCK_FLOOR + 5                # -24: the cloud is laid round the legs up to here (sky/cloudsea)
 
@@ -90,7 +95,7 @@ def rail_top(x):
 
 
 END = next(x for x in range(X1 + 1, X1 + 200) if rail_top(x) <= SINK)      # 141: the last column
-BENTS = list(range(BENT_FIRST, END, BENT_STEP))
+TOWERS = list(range(TOWER_FIRST, END, TOWER_STEP))
 
 # --- the houses along the north edge ------------------------------------------------------------------
 # How far west the tall house may come is the arrival view's right edge: a wall whose south face is
@@ -105,6 +110,10 @@ WINCH_ROOM = dict(box=(WINCH[0] + 1, WINCH[1] + 1, WINCH[2] - 1, WINCH[3] - 1), 
                                                   y=(FEET, FEET + 4)))
 WAIT_ROOM = dict(box=(WAIT[0] + 1, WAIT[1] + 1, WAIT[2], WAIT[3] - 1), floor=FEET, ceiling=WAIT_TOP,
                  door=((WAIT[0] + WAIT[2] + 1) // 2, WAIT[3]))      # x 81..85, z -39..-38; the door (83, -37)
+# the waiting room's chimney, in its back wall behind the door: the cell, its lowest and its highest
+# course (the pot), and the middle of the pot's mouth (a point)
+STACK = dict(cell=(WAIT_ROOM["door"][0], WAIT[1]), y=(WAIT_TOP + 1, WAIT_TOP + 4))      # (83, -40), y 0..3
+SMOKE = (STACK["cell"][0] + 0.5, STACK["y"][1] + 1.0, STACK["cell"][1] + 0.5)           # (83.5, 4.0, -39.5)
 
 # --- the glass roof over the car ------------------------------------------------------------------------
 EAVES = FEET + S.CANOPY_CLEAR           # 1: its lowest course, level with the winch house's girder
@@ -112,7 +121,6 @@ CANOPY = (HEAD, AXIS - 2, X1, AXIS + 2)             # x 88..91, z -35..-31: the 
 FRAMES_X = (CANOPY[0], CANOPY[2])       # 88, 91
 GIRDER_Z = CANOPY[3] + 1                # -30: the south girder's row
 COLUMNS = [(CANOPY[0] + 1, GIRDER_Z), (CANOPY[2], GIRDER_Z)]        # (89, -30), (91, -30): east of the eye
-PEDESTAL = 2                            # courses of stone under a column's shaft; its head is one course
 BAY = HEAD - 1                          # 87: from here east the south side is the railed bay
 
 # --- what the props and the lamps hang on (points) --------------------------------------------------------
@@ -152,13 +160,16 @@ IRON = B.IRON_RIVETED.block
 IRON_SLAB = B.IRON_RIVETED.slab
 IRON_STAIR = B.IRON_RIVETED.stairs
 GLASS = B.SKYLIGHT.block
-SCREEN = B.SKYLIGHT.pane
 GRATE = B.IRON_GRATE
 BARS = B.IRON_BARS
-PIPE = B.IRON_PIPE + "[axis=y]"         # a column's shaft
-POST = B.TUFF_SMOOTH.wall               # its pedestal
-CAPITAL = B.IRON_CAST                   # its head
-FINIAL = B.IRON_ROD + "[facing=up]"
+# A column's shaft is a wall post of dark slate. The iron of the table is whole blocks, stairs and
+# slabs, or bars, pipe and rod two and three pixels thick: four courses of those read as a wire, not
+# as what carries a girder. The post is half a block thick and of the roofs' stone, dark as the iron.
+SHAFT = B.SLATE_SMOOTH.wall
+CAPITAL = B.IRON_CAST                   # the bearing block over a column, in the girder's course
+ROD = B.IRON_ROD                        # a truss's tie
+FINIAL = ROD + "[facing=up]"
+POT = B.SLATE_SMOOTH.wall               # the chimney's pot
 TIE = B.IRON_HATCH + "[half=top]"
 DOOR = B.IRON_DOOR
 LIT = B.WINDOW_FROSTED                  # the lit glass: panes in the waiting room's gable, whole blocks in
@@ -174,9 +185,10 @@ def windows():
     columns (x, z)), inward (the step from the glass into the house), y (the bottom and the top row
     of the glass). Two keys more for this package: glass, what stands in the window, and lined,
     set where the room side of the glass is seen (the winch room is open to the platform) and
-    takes a lining. None of the kit's own keys is set: no window asks for a level of its own, and
-    none keeps its sources behind the glass ("inside"), where they would light a room whose
-    light gets out on the front the arrival view sees.
+    takes a lining. None of the kit's own keys is set: no window asks for a level of its own.
+    Where the source of a lit window stands, behind the glass or before it, is the kit's to say;
+    the waiting room is built so that either way its light stays off the front the arrival view
+    sees (_waiting_room).
 
     Lit are the waiting room's gable window and the two lights of the winch house's east wall, a
     pier between them. Everything on the front the arrival view sees is dark: two windows with
@@ -341,13 +353,33 @@ def _waiting_room(p):
     arrival view sees: a door set back between two piers under a dark light, a window either
     side with its blind down, all three heads under the top course; nothing lit. The door is
     shut: a wall with a door's face, and nobody goes in. The gable, which looks at the
-    observatory, has the lit window under the name board's course (_glaze sets the glass)."""
+    observatory, has the lit window under the name board's course (_glaze sets the glass).
+
+    Glass panes and a door let light through. The row behind the front is therefore walled up
+    where the front has an opening: behind the two blinds, behind the door and the light over
+    it. Whatever lights the gable window from within, a source behind its glass or a lamp one
+    day, none of it reaches the side the arrival view sees; the blinds and the door look the
+    same, nothing shows through them.
+
+    The chimney stands in the back wall, on the door's axis: two courses of brick through the
+    eaves, a polished cap, a pot. From the arrival view it is out of the picture, north of the
+    comet's part of the sky; from the upper terrace it tells the low roof apart as a house."""
     x0, z0, x1, z1 = WAIT
     door = WAIT_ROOM["door"][0]
     _shell(p, (x0, z0, x1 + 1, z1), FEET, WAIT_TOP)
     p.set(door, FEET, z1, DOOR + "[half=lower,facing=south,hinge=left]")
     p.set(door, FEET + 1, z1, DOOR + "[half=upper,facing=south,hinge=left]")
+    for w in windows():
+        if w["front"] == "station.south":       # the waiting room's: the winch house's south side is open
+            dx, dz = w["inward"]
+            for x, z in w["cells"]:
+                for y in range(FEET if x == door else w["y"][0], w["y"][1] + 1):
+                    p.set(x + dx, y, z + dz, WALL)
     _gable_roof(p, WAIT, WAIT_TOP + 1, gables=(x0,))
+    sx, sz = STACK["cell"]
+    low, top = STACK["y"]
+    for y in range(low, top + 1):
+        p.set(sx, y, sz, POT if y == top else COURSE if y == top - 1 else WALL)
 
 
 def _glaze(p):
@@ -361,12 +393,13 @@ def _glaze(p):
 def _glass_roof(p):
     """Two iron frames, glass in two pitches between them, an iron ridge: each pitch is one light
     with iron all round it, the frames at its ends, the ridge above and a girder at its foot. A
-    frame is a truss: the stepped rafters of a gable, a tie from foot to foot (the upper half of
-    the eaves course: the girders' underside stays the lowest of the roof) and one light of glass
-    in the triangle over the tie. The north girder is the winch house's; the south one lies on
-    two columns and tapers where it oversails the western one. A column is slender, and so that
-    it reads as one and the girder does not hang on two wires it has a foot and a head: a stone
-    pedestal of two courses, a shaft of two, a cast block under the girder."""
+    frame is a truss: the stepped rafters of a gable and a tie rod from foot to foot, at half the
+    height of the eaves course (the girders' underside stays the lowest of the roof); the gable
+    over the rod is open. The rod's three pieces turn their heads to the rafters' feet and to
+    one joint between them: two shoes and a coupling. The north girder is the winch house's; the
+    south one lies on two columns and tapers where it oversails the western one. A column is a
+    base stone, a slender shaft, and in the girder's own course a cast block where it bears:
+    the girder runs on over the columns and nothing hangs under it."""
     x0, z0, x1, z1 = CANOPY
     half = (z1 - z0) // 2
     for x in range(x0, x1 + 1):
@@ -374,14 +407,16 @@ def _glass_roof(p):
         for i in range(half):
             p.set(x, EAVES + i, z0 + i, IRON_STAIR + "[facing=south]" if frame else GLASS)
             p.set(x, EAVES + i, z1 - i, IRON_STAIR + "[facing=north]" if frame else GLASS)
-            if frame:
-                for z in range(z0 + i + 1, z1 - i):
-                    p.set(x, EAVES + i, z, SCREEN if i else IRON_SLAB + "[type=top]")
+        if frame:
+            for z in range(z0 + 1, z1):
+                p.set(x, EAVES, z, f"{ROD}[facing={'north' if z <= z0 + half else 'south'}]")
         p.set(x, EAVES + half, z0 + half, IRON_SLAB + "[type=bottom]")
-        p.set(x, EAVES, GIRDER_Z, IRON if x > x0 else IRON_STAIR + "[half=top,facing=east]")
+        p.set(x, EAVES, GIRDER_Z, CAPITAL if (x, GIRDER_Z) in COLUMNS else IRON if x > x0
+              else IRON_STAIR + "[half=top,facing=east]")
     for x, z in COLUMNS:
-        for y in range(FEET, EAVES):
-            p.set(x, y, z, POST if y < FEET + PEDESTAL else CAPITAL if y == EAVES - 1 else PIPE)
+        p.set(x, FEET, z, COURSE)
+        for y in range(FEET + 1, EAVES):
+            p.set(x, y, z, SHAFT)
 
 
 def _slab(h):
@@ -392,9 +427,15 @@ def _slab(h):
 
 
 def _trestle(p):
-    """Two rails of riveted slabs with a tie in every second cell, on bents: a cap girder across,
-    two legs on footings on the ridge (or down into the cloud), bars and struts between the legs.
-    In the cloud the legs stand bare but for the struts: bars would reach out into it."""
+    """Two rails of riveted slabs with a tie in every second cell: a deck half a block thick, and
+    under it, at every second straight run, a lattice tower. A tower is two cells along the
+    track and three across: under the rails four bearers and a cross girder between the first
+    pair (the second pair has the track's own tie between it), then iron bars in all six
+    columns, which join into one lattice, down to a footing course on the ridge. The two columns
+    of a tower stand in one straight run and its first is one whose rails are lower slabs, so
+    the bearers lie in one course, under the rails of the first and level with those of the
+    second. Past the ridge's end the towers stand in the cloud: bars as far down as the cloud
+    is laid (bars reach out into the cloud beside them), from there four corner legs."""
     for x in range(X1 + 1, END + 1):
         z = track_axis(x)
         y, half = _slab(rail_top(x))
@@ -406,27 +447,30 @@ def _trestle(p):
     for y in range(K.cable_ridge(x)[1] + 1, TOP):
         for dz in (-1, 0, 1):
             p.set(x, y, track_axis(x) + dz, FOOTING)
-    for x in BENTS:
+    for x in TOWERS:
         z = track_axis(x)
-        y, half = _slab(rail_top(x))
-        cap = y - 1 if half == "bottom" else y
-        ridge = K.cable_ridge(x)
-        foot = ridge[1] + 1 if ridge else K.ROCK_FLOOR
-        for dz in (-1, 0, 1):
-            p.set(x, cap, z + dz, IRON)
-        for yy in range(cap - 1, foot - 1, -1):
+        if _slab(rail_top(x))[1] != "bottom" or track_axis(x + 1) != z:
+            raise ValueError(f"no tower at x {x}: its two columns are not in one run, or the first has upper slabs")
+        cap = _slab(rail_top(x))[0] - 1
+        p.set(x, cap, z, IRON_SLAB + "[type=top]")
+        for xx in (x, x + 1):
             for dz in (-1, 1):
-                p.set(x, yy, z + dz, FOOTING if ridge and yy == foot else IRON)
-            if yy > foot:
-                if (cap - yy) % 3 == 0:
-                    p.set(x, yy, z, IRON_SLAB + "[type=top]")
-                elif yy > CLOUD:
-                    p.set(x, yy, z, BARS)
+                p.set(xx, cap, z + dz, IRON)
+            ridge = K.cable_ridge(xx)
+            foot = ridge[1] + 1 if ridge else K.ROCK_FLOOR - 1
+            for dz in (-1, 0, 1):
+                if ridge:
+                    p.set(xx, foot, z + dz, FOOTING)
+                for y in range(cap - 1, foot, -1):
+                    if y > CLOUD:
+                        p.set(xx, y, z + dz, BARS)
+                    elif dz:
+                        p.set(xx, y, z + dz, IRON)
 
 
 def _light(canvas, origin):
-    """Hand the windows to the sky line, which gives the lit ones their light: a source in the
-    cell before the glass. While its kit is not in the tree they glow without it."""
+    """Hand the windows to the sky line, which gives the lit ones their light: a source at the
+    glass, on the side its kit puts it. While the kit is not in the tree they glow without it."""
     glazed = getattr(_other("sky._lightkit"), "glazed", None)
     if glazed is not None:
         glazed(canvas, windows(), origin, group="station")

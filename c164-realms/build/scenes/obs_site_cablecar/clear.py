@@ -29,7 +29,11 @@ lamps, benches, the name board. Ends with 1 when something stands in either bloc
 The table names, part by part, how near the station comes: under "A" the least elevation of what
 lies in A's bearings above the eye (clear when over 61) and the nearest bearing of what lies
 outside them; under "B" the same for the comet's block. The last lines say how much of V1's
-picture the station takes, and where.
+picture the station takes, and where, and how much block light lies on what is seen of it: the
+waiting room is the picture's right edge and is kept dark (the reviewer's figure: no cell of it
+in the picture above FRAME_LIGHT). The light is spread as the sky line's kit spreads it, from the
+sources that stand on the canvas: without --scene those of the station's own windows, with it
+everybody's.
 """
 import argparse
 import json
@@ -49,8 +53,11 @@ from artkit.canvas import Canvas  # noqa: E402
 from artkit.gameassets import Assets  # noqa: E402
 from artkit.shapes import Shaper  # noqa: E402
 from scenes.obs import materials  # noqa: E402
+from scenes.obs.common import blocks as B  # noqa: E402
 from scenes.obs.common import skeleton as S  # noqa: E402
 from scenes.obs.site import cablecar as C  # noqa: E402
+from scenes.obs.sky import _lightkit as L  # noqa: E402
+from scenes.obs.sky import lights  # noqa: E402
 
 EYE = np.array(S.V1["pos"], dtype=float)
 NORTH, SOUTH = S.v1_clear_span()
@@ -60,6 +67,8 @@ REACH = 6                       # as tools/check.py: what belongs to the station
 TOL = 1e-9
 FOV, ASPECT = 77.0, 16.0 / 9.0  # the billboard pictures (build/render.py, tools/check.py)
 GRID = (480, 270)               # sight lines over V1's picture, for the station's share of it
+FRAME_LIGHT = 4                 # the most block light on what V1 sees of the waiting room (card, record 5)
+FRAME = "waiting room"
 
 
 def bearing(x, z):
@@ -153,6 +162,8 @@ def part_of(cell):
     wx0, wz0, wx1, wz1 = C.WAIT
     hx0, hz0, hx1, hz1 = C.WINCH
     cx0, cz0, cx1, cz1 = C.CANOPY
+    if (x, z) == C.STACK["cell"] and y >= C.STACK["y"][0]:
+        return "chimney"
     if y >= C.FEET and hx0 <= x <= hx1 and hz0 <= z <= hz1:
         return "winch house"
     if y >= C.FEET and wx0 <= x <= wx1 and wz0 <= z <= wz1:
@@ -174,13 +185,20 @@ def _pack():
 
 
 def station_cells(canvas=None):
-    """{cell: state} of the station as its package builds it (on `canvas`, or on an empty one), and
-    the display entities it placed."""
+    """{cell: state} of the station as its package builds it (on `canvas`, or on an empty one), the
+    display entities it placed, and the canvas."""
     c = Canvas() if canvas is None else canvas
     before = len(c.entities)
     seen = dict(c.b)
     C.build(c, (0, 0, 0))
-    return {p: s for p, s in c.b.items() if seen.get(p) != s}, c.entities[before:]
+    return {p: s for p, s in c.b.items() if seen.get(p) != s}, c.entities[before:], c
+
+
+def block_light(canvas):
+    """{cell: level} round the station, from the sources that stand on `canvas`."""
+    x0, z0, x1, z1 = S.CABLE_STATION
+    return L.levels(canvas, (x0 - 2 * REACH, S.STATION_GROUND - 4, z0 - 2 * REACH),
+                    (x1 + 2 * REACH, S.STATION_GROUND + 16, z1 + 2 * REACH))
 
 
 def boxes_of(cells, entities, shapes, names):
@@ -201,9 +219,12 @@ def boxes_of(cells, entities, shapes, names):
     return out
 
 
-def picture(cells, entities, shapes, names):
+def picture(cells, entities, shapes, names, light=None):
     """How much of V1's picture the given blocks take, part by part, and where: sight lines through
-    a grid over the picture, against these blocks alone."""
+    a grid over the picture, against these blocks alone. With `light` ({cell: level}) also the
+    block light on what each sight line meets: that of the cell the line is in when it arrives,
+    which is the cell before a whole block's face and a thin block's own cell, as the game lights
+    them. Per part: light, {level: share of the part's sight lines}."""
     lo = np.array([min(p[i] for p in cells) for i in range(3)]) - 1
     hi = np.array([max(p[i] for p in cells) for i in range(3)]) + 1
     lo, hi = np.minimum(lo, np.floor(EYE).astype(int) - 1), np.maximum(hi, np.floor(EYE).astype(int) + 1)
@@ -219,11 +240,16 @@ def picture(cells, entities, shapes, names):
     out = {"share": float(hit.mean()), "parts": {}}
     for i in np.nonzero(hit)[0]:
         name = names(tuple(int(v) for v in cell[i]))
-        d = out["parts"].setdefault(name, dict(n=0, left=1.0, right=0.0, top=1.0, bottom=0.0))
+        d = out["parts"].setdefault(name, dict(n=0, left=1.0, right=0.0, top=1.0, bottom=0.0, light={}))
         d["n"] += 1
         d["left"], d["right"] = min(d["left"], cols[i] / w), max(d["right"], (cols[i] + 1) / w)
         d["top"], d["bottom"] = min(d["top"], rows[i] / h), max(d["bottom"], (rows[i] + 1) / h)
+        if light is not None:
+            before = tuple(int(v) for v in np.floor(EYE + rays[i] * (first[i] - 1e-4)))
+            level = int(light.get(before, 0))
+            d["light"][level] = d["light"].get(level, 0) + 1
     for d in out["parts"].values():
+        d["light"] = {k: v / float(d["n"]) for k, v in sorted(d["light"].items())}
         d["share"] = d.pop("n") / float(len(rays))
     return out
 
@@ -242,7 +268,7 @@ def main():
     args = ap.parse_args()
 
     shapes = SL.Shapes(Assets(args.jar, packs=(_pack(),)))
-    own, own_entities = station_cells()
+    own, own_entities, alone = station_cells()
     if args.scene:
         from scenes import obs_site_cablecar as scene
         canvas = scene.build()
@@ -254,8 +280,12 @@ def main():
         names = lambda cell: part_of(cell) if cell in own else "other packages"     # noqa: E731
         title = f"the test scene, within {REACH} cells of the station's box: {len(cells)} cells, {len(entities)} display entities"
     else:
-        cells, entities, names = own, own_entities, part_of
+        lights.build(alone, (0, 0, 0))          # the sources of the station's own windows
+        canvas, cells, entities, names = alone, own, own_entities, part_of
         title = f"site/cablecar alone: {len(cells)} cells, {len(entities)} display entities"
+    light = block_light(canvas)
+    sources = sorted((p, int(s.partition("level=")[2].rstrip("]"))) for p, s in canvas.b.items()
+                     if p in light and s.startswith(B.LIGHT + "["))
 
     rows, parts, hits, disagree = [], {}, [], []
     for what, part, cell, lo, hi in boxes_of(cells, entities, shapes, names):
@@ -315,11 +345,17 @@ def main():
         print(f"  ... and {len(hits) - 40} more")
     if disagree:
         print(f"  skeleton.in_v1_clear() names {len(disagree)} boxes this measure lets through: {disagree[:6]}")
-    seen = picture(cells, entities, shapes, names)
+    seen = picture(cells, entities, shapes, names, light)
     print(f"V1's picture: {100 * seen['share']:.1f}% of it is what was measured")
     for part, d in sorted(seen["parts"].items(), key=lambda kv: -kv[1]["share"]):
+        levels = ", ".join(f"{k}: {100 * v:.0f}%" for k, v in d["light"].items())
         print(f"  {part:15s} {100 * d['share']:5.2f}%  across {100 * d['left']:.0f}..{100 * d['right']:.0f}%, "
-              f"down {100 * d['top']:.0f}..{100 * d['bottom']:.0f}%")
+              f"down {100 * d['top']:.0f}..{100 * d['bottom']:.0f}%; block light {levels}")
+    print(f"  the light is that of {len(sources)} sources round the station: "
+          + ", ".join(f"{n} at {p}" for p, n in sources[:12]) + (" ..." if len(sources) > 12 else ""))
+    frame = max(seen["parts"].get(FRAME, {}).get("light", {0: 1.0}))
+    print(f"frame light: {'within' if frame <= FRAME_LIGHT else 'OVER'} {FRAME_LIGHT} "
+          f"(at most {frame} on what V1 sees of the {FRAME})")
     verdict = "CLEAR" if not hits and not disagree else "NOT CLEAR"
     print(f"result: {verdict} ({len(hits)} boxes in the view the station keeps clear)")
     if args.json:
@@ -329,7 +365,8 @@ def main():
                               for w, p, c, _, _, m in hits],
                        "parts": {k: {kk: (list(vv) if isinstance(vv, tuple) else vv) for kk, vv in d.items()}
                                  for k, d in parts.items()},
-                       "picture": seen}, fh, indent=1, default=str)
+                       "picture": seen, "frame_light": frame,
+                       "sources": [dict(cell=list(p), level=n) for p, n in sources]}, fh, indent=1, default=str)
     sys.exit(0 if verdict == "CLEAR" else 1)
 
 

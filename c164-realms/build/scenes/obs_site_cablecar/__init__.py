@@ -44,17 +44,20 @@ TIME = 14000
 # skeleton does not carry that figure yet gets it here.
 V1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
 EYE = S.EYE
+STAIR_X = S.GRAND_STAIR["x0"]   # 61: the grand stair's top step
 VIEWS = [
     ("v1", V1["pos"], V1["look_at"]),
     # the whole station from the corner where its two flights of steps meet
     ("platform", (77.5, S.STATION_GROUND + EYE, -28.5), (88.5, -0.5, -35.5)),
-    # from the lower platform, and from the head of the grand stair on the upper terrace
+    # from the lower platform, and from the head of the grand stair on the upper terrace: its top
+    # step on the axis, clear of the newel posts on the stair's cheeks
     ("lower", (70.5, S.LOWER_GROUND + EYE, -20.5), (86.0, -1.0, -35.0)),
-    ("stair_head", (59.5, S.GROUND + EYE, -5.5), (87.0, -2.0, -34.0)),
+    ("stair_head", (STAIR_X + 0.5, S.stair_top(STAIR_X) + EYE, 0.5), (86.0, -2.0, -33.0)),
     # up into the glass roof from the bay: the girder's end, a column, the west frame, the car's place
     ("canopy", (87.5, S.STATION_GROUND + EYE, -29.5), (90.0, 1.2, -33.0)),
-    # the trestle: down it from the bay, from the side, and back up it from the second bent
-    ("trestle", (90.5, S.STATION_GROUND + EYE, -27.5), (118.0, -18.0, -42.0)),
+    # the trestle: down it leaning on the bay's east rail, from the side, and back up it from the
+    # second tower
+    ("trestle", (91.1, S.STATION_GROUND + EYE, -26.6), (112.0, -11.0, -40.0)),
     ("trestle_side", (112.0, -6.0, -14.0), (112.0, -16.0, -40.0)),
     ("east", (104.5, -8.5 + EYE, -36.5), (91.0, -1.0, -34.0)),
     # from above: over the cloud to the south-east, and over the lower platform to the west
