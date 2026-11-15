@@ -1,0 +1,381 @@
+[trip 23:01:17 +0s] trip of obs: the code of 2a26eeaa (tag 2a26eea), under the light versions blue,deep, view distance 12, cloud range 128; 4 cores, 600 s at most
+[trip 23:01:17 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 23:01:17 +0s] clean: exit 0, 0 s
+[trip 23:01:17 +0s] setup: nodemc.py setup  (up to 300 s)
+    [nodemc 23:01:17] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 23:01:17] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 23:01:17] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 23:01:17] settings written: nothing, all there; view distance 12, cloud range 128
+[trip 23:01:17 +0s] setup: exit 0, 0 s
+[trip 23:01:17 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 12, cloudRange 128
+    machine: 4 cores, load 0.19, 9007 MB of memory available, 239 GB of disk free under /agent/realms-study
+[trip 23:01:17 +0s] station: exit 0, 0 s
+[trip 23:01:17 +0s] shuttle, blue: shuttle.py --tag 2a26eea --commit 2a26eeaa --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real/looks/blue --only obs=v01_arrival,v02_axis,v08_dome_room,v11_lookout --look blue --keep-client obs  (up to 480 s)
+    [shuttle 23:01:17] the code that is shot: /tmp/dais_jobs/c319/c164-realms at 2a26eeaa; tag 2a26eea
+        written: /tmp/c164_s1/real/looks/blue/_trip/board-obs.json (12 views; skeleton: /tmp/dais_jobs/c319/c164-realms/build/scenes/obs/common)
+        14000 blue
+    [shuttle 23:01:17] look blue: shot at tick 14000
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 0.19, 8996 MB of memory available, 239 GB of disk free under /agent/realms-study
+        [nodemc 23:01:24] server is up (6 s)
+    [shuttle 23:01:24] placing obs at 0 200 0, built for look blue
+        built for look blue (shot at tick 14000): the windows are lit by that look's table
+        built 109237 blocks, 69 entities in 0.7s
+        exported 24 tiles (108341 + 896 blocks) in 0.2s
+        motion: 2 parts and 0 points registered, the loop is started once the scene stands
+        Reloading!
+        cleared previous placement (49 fills)
+        placed in 0.6s, 0 failed
+        biome c164art:obs_blue: 0 cells set in 4 boxes, x -149..221 y 11..319 z -184..186
+        function c164art:obs-motion/start -> Running function c164art:obs-motion/start
+        site_weather_head   34 elements,  45 texture patches, sheet 64px
+        site_weather_cups   16 elements,  33 texture patches, sheet 32px
+        site_weather_gauge  12 elements,  14 texture patches, sheet 32px
+        mach_clock_master   60 elements,  79 texture patches, sheet 128px
+        mach_clock_master_dial  17 elements,   6 texture patches, sheet 32px
+        mach_clock_master_hand_h   3 elements,   8 texture patches, sheet 16px
+        mach_clock_master_hand_m   6 elements,   9 texture patches, sheet 16px
+        mach_clock_pendulum  12 elements,  17 texture patches, sheet 32px
+        mach_clock_face     37 elements,  10 texture patches, sheet 64px
+        mach_clock_hand_h    9 elements,  13 texture patches, sheet 32px
+        mach_clock_hand_m    7 elements,  12 texture patches, sheet 32px
+        mach_clock_ball    132 elements, 349 texture patches, sheet 256px
+        mach_clock_ball_red 132 elements, 349 texture patches, sheet 256px
+        mach_mast_segment  188 elements,  23 texture patches, sheet 256px
+        mach_mast_web      168 elements,  20 texture patches, sheet 128px
+        mach_mast_foot     216 elements, 160 texture patches, sheet 256px
+        mach_mast_foot_web 204 elements, 157 texture patches, sheet 128px
+        mach_mast_head      41 elements,  38 texture patches, sheet 128px
+        mach_mast_light     24 elements,  31 texture patches, sheet 32px
+        mach_mast_light_off  24 elements,  31 texture patches, sheet 32px
+        mach_mast_guy        2 elements,   6 texture patches, sheet 64px
+        mach_mast_lead       1 elements,   3 texture patches, sheet 64px
+        mach_mast_insulator  20 elements,  20 texture patches, sheet 32px
+        mach_mast_stay      30 elements,  40 texture patches, sheet 32px
+        prop_iron_window_arch_a  20 elements,  30 texture patches, sheet 128px
+        prop_iron_window_arch_b  33 elements,  92 texture patches, sheet 128px
+        prop_iron_window_grille  53 elements,  73 texture patches, sheet 128px
+        prop_iron_fanlight  44 elements,  58 texture patches, sheet 128px
+        prop_iron_door_leaf  70 elements, 149 texture patches, sheet 128px
+        prop_iron_canopy    20 elements,  43 texture patches, sheet 128px
+        prop_iron_railing_panel  54 elements,  38 texture patches, sheet 64px
+        prop_iron_ladder    65 elements,  46 texture patches, sheet 64px
+        prop_iron_vent_cowl  54 elements,  33 texture patches, sheet 64px
+        prop_iron_grate_hatch  29 elements,  32 texture patches, sheet 64px
+        prop_lamp_street    86 elements,  75 texture patches, sheet 128px
+        prop_lamp_post      41 elements,  34 texture patches, sheet 32px
+        prop_lamp_bracket_a  58 elements,  42 texture patches, sheet 64px
+        prop_lamp_bracket_b  55 elements,  65 texture patches, sheet 64px
+        prop_lamp_cage_a    52 elements,  37 texture patches, sheet 32px
+        prop_lamp_cage_b    29 elements,  55 texture patches, sheet 64px
+        prop_lamp_pendant_a  65 elements,  46 texture patches, sheet 64px
+        prop_lamp_pendant_b  58 elements,  65 texture patches, sheet 64px
+        prop_lamp_desk_green  21 elements,  37 texture patches, sheet 32px
+        prop_lamp_signal    41 elements,  36 texture patches, sheet 32px
+        prop_lamp_signal_off  41 elements,  36 texture patches, sheet 32px
+        prop_lamp_uplight   23 elements,  25 texture patches, sheet 32px
+        prop_lamp_wire       1 elements,   3 texture patches, sheet 64px
+        prop_lamp_bulb      12 elements,  11 texture patches, sheet 16px
+        prop_lamp_hanger     3 elements,   8 texture patches, sheet 16px
+        sandstone: 1 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_stairs: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_slab: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_wall: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        smooth_sandstone: 1 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_stairs: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_slab: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        cut_sandstone: 1 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        cut_sandstone_slab: 3 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        chiseled_sandstone: 1 models x 3 -> ashlar_emblem, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        bamboo_planks: 1 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_stairs: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_slab: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_mosaic: 1 models x 1 -> brass_tread
+        bamboo_mosaic_stairs: 3 models x 1 -> brass_tread
+        bamboo_mosaic_slab: 3 models x 1 -> brass_tread
+        bamboo_block: 3 models x 1 -> brass_pipe, brass_pipe_end
+        bamboo_fence: 5 models x 1 -> brass_plate0, brass_rail
+        bamboo_fence_gate: 4 models x 1 -> brass_gate, brass_plate0
+        bamboo_door: 8 models x 1 -> brass_door_bottom, brass_door_top
+        bamboo_trapdoor: 3 models x 1 -> brass_hatch
+        bamboo_button: 2 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_sign: 4 models x 1 -> brass_plate0, brass_sign
+        bamboo_wall_sign: 1 models x 1 -> brass_plate0, brass_sign
+        bamboo_hanging_sign: 8 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_wall_hanging_sign: 1 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_shelf: 6 models x 1 -> brass_plate0, brass_shelf
+        waxed_exposed_copper: 1 models x 3 -> old_copper0, old_copper1, old_copper2
+        waxed_exposed_cut_copper: 1 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_stairs: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_slab: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        dark_oak_trapdoor: 3 models x 1 -> wainscot
+        yellow_carpet: 1 models x 3 -> brass_inlay0, brass_inlay1, brass_inlay2
+        rail: 4 models x 3 -> brass_line0, brass_line1, brass_line2, brass_line_corner0, brass_line_corner1, brass_line_corner2
+        activator_rail: 6 models x 1 -> brass_line_cross
+        detector_rail: 6 models x 1 -> brass_line_star
+        oak_sign: 4 models x 1 -> enamel_plate, enamel_sign
+        oak_wall_sign: 1 models x 1 -> enamel_plate, enamel_sign
+        oak_hanging_sign: 8 models x 1 -> enamel_hanging_sign, enamel_plate
+        oak_wall_hanging_sign: 1 models x 1 -> enamel_hanging_sign, enamel_plate
+        sounds.json: 20 events redirected
+        oxidized_copper: 1 models x 6 -> iron_plate0, iron_plate1, iron_plate2, iron_plate3, iron_plate4, iron_plate5
+        oxidized_cut_copper: 1 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_stairs: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_slab: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_chiseled_copper: 1 models x 1 -> iron_cast
+        oxidized_copper_grate: 1 models x 2 -> iron_grate0, iron_grate1
+        oxidized_copper_bars: 6 models x 1 -> iron_bars
+        oxidized_copper_chain: 1 models x 1 -> iron_chain
+        oxidized_lightning_rod: 2 models x 1 -> iron_rod
+        oxidized_copper_trapdoor: 3 models x 1 -> iron_hatch
+        oxidized_copper_door: 8 models x 1 -> iron_door_bottom, iron_door_top
+        oxidized_copper_bulb: 4 models x 1 -> iron_bulb, iron_bulb_lit
+        oxidized_copper_lantern: 2 models x 1 -> iron_lantern
+        white_glazed_terracotta: 1 models x 2 -> panel_case, panel_dial0, panel_dial1
+        orange_glazed_terracotta: 1 models x 1 -> panel_case, panel_knife_switch
+        magenta_glazed_terracotta: 1 models x 1 -> panel_case, panel_tubes, panel_tubes_glow
+        light_blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_scope, panel_scope_glow
+        yellow_glazed_terracotta: 1 models x 1 -> panel_case, panel_counter
+        lime_glazed_terracotta: 1 models x 1 -> panel_case, panel_patch_panel
+        pink_glazed_terracotta: 1 models x 1 -> panel_case, panel_fuses
+        gray_glazed_terracotta: 1 models x 1 -> panel_bell, panel_case
+        light_gray_glazed_terracotta: 1 models x 1 -> panel_case, panel_pilot_lamps, panel_pilot_lamps_glow
+        cyan_glazed_terracotta: 1 models x 1 -> panel_case, panel_louvre
+        purple_glazed_terracotta: 1 models x 1 -> panel_case, panel_drawers
+        blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_nameplate
+        brown_glazed_terracotta: 1 models x 1 -> panel_case, panel_relays
+        green_glazed_terracotta: 1 models x 1 -> panel_bus_switch, panel_case
+        red_glazed_terracotta: 1 models x 1 -> panel_case, panel_gauges
+        black_glazed_terracotta: 1 models x 1 -> panel_case, panel_recorder
+        snow_block: 1 models x 3 -> snow0, snow1, snow2
+        snow: 8 models x 3 -> snow0, snow1, snow2, snow_side0, snow_side1, snow_side2
+        windows: version a
+        yellow_stained_glass: 1 models x 1 -> window_lit
+        yellow_stained_glass_pane: 5 models x 1 -> window_came, window_lit
+        white_stained_glass: 1 models x 1 -> window_frosted
+        white_stained_glass_pane: 5 models x 1 -> window_came, window_frosted
+        orange_stained_glass: 1 models x 1 -> window_curtain
+        orange_stained_glass_pane: 5 models x 1 -> window_came, window_curtain
+        gray_stained_glass: 1 models x 4 -> window_dark0, window_dark1, window_dark2, window_dark3
+        gray_stained_glass_pane: 5 models x 4 -> window_came, window_dark0, window_dark1, window_dark2, window_dark3
+        black_stained_glass: 1 models x 1 -> window_blind
+        black_stained_glass_pane: 5 models x 1 -> window_blind, window_came
+        light_gray_stained_glass: 1 models x 4 -> window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        light_gray_stained_glass_pane: 5 models x 4 -> window_came, window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        stand-in cloud: 5 blocks (dead_horn_coral_block, dead_fire_coral_block, dead_bubble_coral_block, dead_brain_coral_block, dead_tube_coral_block)
+        stand-in glow: 1 blocks (red_stained_glass)
+        stand-in dark_wood: 2 blocks (brown_stained_glass, purple_stained_glass)
+        materials audit: 91 block states, 412 models, 121 pictures, nothing wrong
+        comet (a) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+    [shuttle 23:01:31] resource pack: 790 files, the client has it already
+        [nodemc 23:01:41] C164Cam is online (10 s)
+        [nodemc 23:01:41] game: [23:01:36] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 23:01:41] game: [23:01:36] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 23:01:41] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 23:01:41] game: [23:01:36] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 23:01:41] game: [23:01:36] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 23:01:41] pictures: saved by the game itself (helper)
+    [shuttle 23:01:41] shooting obs: 4 shots of board-obs.json
+        /tmp/c164_s1/real/looks/blue/2a26eea/obs/v01_arrival.png (still after 3 s more, 0.01% of it moved between the last two)
+        /tmp/c164_s1/real/looks/blue/2a26eea/obs/v02_axis.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/looks/blue/2a26eea/obs/v08_dome_room.png (still after 4 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/looks/blue/2a26eea/obs/v11_lookout.png (still after 3 s more, 0.03% of it moved between the last two)
+        pictures: 4 saved by the game itself, 0 taken off the display
+    [shuttle 23:03:27] obs: 4 of 4 pictures in /tmp/c164_s1/real/looks/blue/2a26eea/obs
+    [shuttle 23:03:27] trip done (129 s, the game was opened once and is closed again)
+[trip 23:03:27 +130s] shuttle, blue: exit 0, 129 s
+[trip 23:03:27 +130s] obs: 4 pictures of 2a26eeaa in renders/real-looks/2a26eea/blue/obs/
+[trip 23:03:27 +130s] shuttle, deep: shuttle.py --tag 2a26eea --commit 2a26eeaa --settle 10.0 --first-settle 60.0 --still 60.0 --after-budget 300.0 --out /tmp/c164_s1/real/looks/deep --only obs=v01_arrival,v02_axis,v08_dome_room,v11_lookout --look deep obs  (up to 350 s)
+    [shuttle 23:03:27] the code that is shot: /tmp/dais_jobs/c319/c164-realms at 2a26eeaa; tag 2a26eea
+        written: /tmp/c164_s1/real/looks/deep/_trip/board-obs.json (12 views; skeleton: /tmp/dais_jobs/c319/c164-realms/build/scenes/obs/common)
+        18000 deep
+    [shuttle 23:03:27] look deep: shot at tick 18000
+        server: There are 1 of a max of 10 players online: C164Cam
+        client: process 1307000
+        pictures: saved by the game itself (helper)
+        display: Xvfb :164, process 1306978
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 3.04, 6620 MB of memory available, 239 GB of disk free under /agent/realms-study
+        [nodemc 23:03:27] server is up
+    [shuttle 23:03:27] placing obs at 0 200 0, built for look deep
+        built for look deep (shot at tick 18000): the windows are lit by that look's table
+        built 109237 blocks, 69 entities in 0.7s
+        exported 24 tiles (108341 + 896 blocks) in 0.2s
+        motion: 2 parts and 0 points registered, the loop is started once the scene stands
+        Reloading!
+        cleared previous placement (49 fills)
+        placed in 0.7s, 0 failed
+        biome c164art:obs_blue: 0 cells set in 4 boxes, x -149..221 y 11..319 z -184..186
+        function c164art:obs-motion/start -> Running function c164art:obs-motion/start
+        site_weather_head   34 elements,  45 texture patches, sheet 64px
+        site_weather_cups   16 elements,  33 texture patches, sheet 32px
+        site_weather_gauge  12 elements,  14 texture patches, sheet 32px
+        mach_clock_master   60 elements,  79 texture patches, sheet 128px
+        mach_clock_master_dial  17 elements,   6 texture patches, sheet 32px
+        mach_clock_master_hand_h   3 elements,   8 texture patches, sheet 16px
+        mach_clock_master_hand_m   6 elements,   9 texture patches, sheet 16px
+        mach_clock_pendulum  12 elements,  17 texture patches, sheet 32px
+        mach_clock_face     37 elements,  10 texture patches, sheet 64px
+        mach_clock_hand_h    9 elements,  13 texture patches, sheet 32px
+        mach_clock_hand_m    7 elements,  12 texture patches, sheet 32px
+        mach_clock_ball    132 elements, 349 texture patches, sheet 256px
+        mach_clock_ball_red 132 elements, 349 texture patches, sheet 256px
+        mach_mast_segment  188 elements,  23 texture patches, sheet 256px
+        mach_mast_web      168 elements,  20 texture patches, sheet 128px
+        mach_mast_foot     216 elements, 160 texture patches, sheet 256px
+        mach_mast_foot_web 204 elements, 157 texture patches, sheet 128px
+        mach_mast_head      41 elements,  38 texture patches, sheet 128px
+        mach_mast_light     24 elements,  31 texture patches, sheet 32px
+        mach_mast_light_off  24 elements,  31 texture patches, sheet 32px
+        mach_mast_guy        2 elements,   6 texture patches, sheet 64px
+        mach_mast_lead       1 elements,   3 texture patches, sheet 64px
+        mach_mast_insulator  20 elements,  20 texture patches, sheet 32px
+        mach_mast_stay      30 elements,  40 texture patches, sheet 32px
+        prop_iron_window_arch_a  20 elements,  30 texture patches, sheet 128px
+        prop_iron_window_arch_b  33 elements,  92 texture patches, sheet 128px
+        prop_iron_window_grille  53 elements,  73 texture patches, sheet 128px
+        prop_iron_fanlight  44 elements,  58 texture patches, sheet 128px
+        prop_iron_door_leaf  70 elements, 149 texture patches, sheet 128px
+        prop_iron_canopy    20 elements,  43 texture patches, sheet 128px
+        prop_iron_railing_panel  54 elements,  38 texture patches, sheet 64px
+        prop_iron_ladder    65 elements,  46 texture patches, sheet 64px
+        prop_iron_vent_cowl  54 elements,  33 texture patches, sheet 64px
+        prop_iron_grate_hatch  29 elements,  32 texture patches, sheet 64px
+        prop_lamp_street    86 elements,  75 texture patches, sheet 128px
+        prop_lamp_post      41 elements,  34 texture patches, sheet 32px
+        prop_lamp_bracket_a  58 elements,  42 texture patches, sheet 64px
+        prop_lamp_bracket_b  55 elements,  65 texture patches, sheet 64px
+        prop_lamp_cage_a    52 elements,  37 texture patches, sheet 32px
+        prop_lamp_cage_b    29 elements,  55 texture patches, sheet 64px
+        prop_lamp_pendant_a  65 elements,  46 texture patches, sheet 64px
+        prop_lamp_pendant_b  58 elements,  65 texture patches, sheet 64px
+        prop_lamp_desk_green  21 elements,  37 texture patches, sheet 32px
+        prop_lamp_signal    41 elements,  36 texture patches, sheet 32px
+        prop_lamp_signal_off  41 elements,  36 texture patches, sheet 32px
+        prop_lamp_uplight   23 elements,  25 texture patches, sheet 32px
+        prop_lamp_wire       1 elements,   3 texture patches, sheet 64px
+        prop_lamp_bulb      12 elements,  11 texture patches, sheet 16px
+        prop_lamp_hanger     3 elements,   8 texture patches, sheet 16px
+        sandstone: 1 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_stairs: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_slab: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        sandstone_wall: 3 models x 3 -> ashlar_rough0, ashlar_rough1, ashlar_rough2, ashlar_rough_top0, ashlar_rough_top1, ashlar_rough_top2
+        smooth_sandstone: 1 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_stairs: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        smooth_sandstone_slab: 3 models x 6 -> ashlar_fine0, ashlar_fine1, ashlar_fine2, ashlar_fine3, ashlar_fine4, ashlar_fine5, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        cut_sandstone: 1 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        cut_sandstone_slab: 3 models x 3 -> ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2, ashlar_panel
+        chiseled_sandstone: 1 models x 3 -> ashlar_emblem, ashlar_fine_top0, ashlar_fine_top1, ashlar_fine_top2
+        bamboo_planks: 1 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_stairs: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_slab: 3 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_mosaic: 1 models x 1 -> brass_tread
+        bamboo_mosaic_stairs: 3 models x 1 -> brass_tread
+        bamboo_mosaic_slab: 3 models x 1 -> brass_tread
+        bamboo_block: 3 models x 1 -> brass_pipe, brass_pipe_end
+        bamboo_fence: 5 models x 1 -> brass_plate0, brass_rail
+        bamboo_fence_gate: 4 models x 1 -> brass_gate, brass_plate0
+        bamboo_door: 8 models x 1 -> brass_door_bottom, brass_door_top
+        bamboo_trapdoor: 3 models x 1 -> brass_hatch
+        bamboo_button: 2 models x 3 -> brass_plate0, brass_plate1, brass_plate2
+        bamboo_sign: 4 models x 1 -> brass_plate0, brass_sign
+        bamboo_wall_sign: 1 models x 1 -> brass_plate0, brass_sign
+        bamboo_hanging_sign: 8 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_wall_hanging_sign: 1 models x 1 -> brass_hanging_sign, brass_plate0
+        bamboo_shelf: 6 models x 1 -> brass_plate0, brass_shelf
+        waxed_exposed_copper: 1 models x 3 -> old_copper0, old_copper1, old_copper2
+        waxed_exposed_cut_copper: 1 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_stairs: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        waxed_exposed_cut_copper_slab: 3 models x 3 -> old_copper_cut0, old_copper_cut1, old_copper_cut2
+        dark_oak_trapdoor: 3 models x 1 -> wainscot
+        yellow_carpet: 1 models x 3 -> brass_inlay0, brass_inlay1, brass_inlay2
+        rail: 4 models x 3 -> brass_line0, brass_line1, brass_line2, brass_line_corner0, brass_line_corner1, brass_line_corner2
+        activator_rail: 6 models x 1 -> brass_line_cross
+        detector_rail: 6 models x 1 -> brass_line_star
+        oak_sign: 4 models x 1 -> enamel_plate, enamel_sign
+        oak_wall_sign: 1 models x 1 -> enamel_plate, enamel_sign
+        oak_hanging_sign: 8 models x 1 -> enamel_hanging_sign, enamel_plate
+        oak_wall_hanging_sign: 1 models x 1 -> enamel_hanging_sign, enamel_plate
+        sounds.json: 20 events redirected
+        oxidized_copper: 1 models x 6 -> iron_plate0, iron_plate1, iron_plate2, iron_plate3, iron_plate4, iron_plate5
+        oxidized_cut_copper: 1 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_stairs: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_cut_copper_slab: 3 models x 3 -> iron_riveted0, iron_riveted1, iron_riveted2
+        oxidized_chiseled_copper: 1 models x 1 -> iron_cast
+        oxidized_copper_grate: 1 models x 2 -> iron_grate0, iron_grate1
+        oxidized_copper_bars: 6 models x 1 -> iron_bars
+        oxidized_copper_chain: 1 models x 1 -> iron_chain
+        oxidized_lightning_rod: 2 models x 1 -> iron_rod
+        oxidized_copper_trapdoor: 3 models x 1 -> iron_hatch
+        oxidized_copper_door: 8 models x 1 -> iron_door_bottom, iron_door_top
+        oxidized_copper_bulb: 4 models x 1 -> iron_bulb, iron_bulb_lit
+        oxidized_copper_lantern: 2 models x 1 -> iron_lantern
+        white_glazed_terracotta: 1 models x 2 -> panel_case, panel_dial0, panel_dial1
+        orange_glazed_terracotta: 1 models x 1 -> panel_case, panel_knife_switch
+        magenta_glazed_terracotta: 1 models x 1 -> panel_case, panel_tubes, panel_tubes_glow
+        light_blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_scope, panel_scope_glow
+        yellow_glazed_terracotta: 1 models x 1 -> panel_case, panel_counter
+        lime_glazed_terracotta: 1 models x 1 -> panel_case, panel_patch_panel
+        pink_glazed_terracotta: 1 models x 1 -> panel_case, panel_fuses
+        gray_glazed_terracotta: 1 models x 1 -> panel_bell, panel_case
+        light_gray_glazed_terracotta: 1 models x 1 -> panel_case, panel_pilot_lamps, panel_pilot_lamps_glow
+        cyan_glazed_terracotta: 1 models x 1 -> panel_case, panel_louvre
+        purple_glazed_terracotta: 1 models x 1 -> panel_case, panel_drawers
+        blue_glazed_terracotta: 1 models x 1 -> panel_case, panel_nameplate
+        brown_glazed_terracotta: 1 models x 1 -> panel_case, panel_relays
+        green_glazed_terracotta: 1 models x 1 -> panel_bus_switch, panel_case
+        red_glazed_terracotta: 1 models x 1 -> panel_case, panel_gauges
+        black_glazed_terracotta: 1 models x 1 -> panel_case, panel_recorder
+        snow_block: 1 models x 3 -> snow0, snow1, snow2
+        snow: 8 models x 3 -> snow0, snow1, snow2, snow_side0, snow_side1, snow_side2
+        windows: version a
+        yellow_stained_glass: 1 models x 1 -> window_lit
+        yellow_stained_glass_pane: 5 models x 1 -> window_came, window_lit
+        white_stained_glass: 1 models x 1 -> window_frosted
+        white_stained_glass_pane: 5 models x 1 -> window_came, window_frosted
+        orange_stained_glass: 1 models x 1 -> window_curtain
+        orange_stained_glass_pane: 5 models x 1 -> window_came, window_curtain
+        gray_stained_glass: 1 models x 4 -> window_dark0, window_dark1, window_dark2, window_dark3
+        gray_stained_glass_pane: 5 models x 4 -> window_came, window_dark0, window_dark1, window_dark2, window_dark3
+        black_stained_glass: 1 models x 1 -> window_blind
+        black_stained_glass_pane: 5 models x 1 -> window_blind, window_came
+        light_gray_stained_glass: 1 models x 4 -> window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        light_gray_stained_glass_pane: 5 models x 4 -> window_came, window_skylight0, window_skylight1, window_skylight2, window_skylight3
+        stand-in cloud: 5 blocks (dead_horn_coral_block, dead_fire_coral_block, dead_bubble_coral_block, dead_brain_coral_block, dead_tube_coral_block)
+        stand-in glow: 1 blocks (red_stained_glass)
+        stand-in dark_wood: 2 blocks (brown_stained_glass, purple_stained_glass)
+        materials audit: 91 block states, 412 models, 121 pictures, nothing wrong
+        comet (a) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+    [shuttle 23:03:34] resource pack: 790 files, the client has it already
+        [nodemc 23:03:34] C164Cam is online (0 s)
+        [nodemc 23:03:34] game: [23:01:36] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 23:03:34] game: [23:01:36] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 23:03:34] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 23:03:34] game: [23:01:36] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 23:03:34] game: [23:01:36] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 23:03:34] pictures: saved by the game itself (helper)
+    [shuttle 23:03:34] shooting obs: 4 shots of board-obs.json
+        /tmp/c164_s1/real/looks/deep/2a26eea/obs/v01_arrival.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/looks/deep/2a26eea/obs/v02_axis.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/looks/deep/2a26eea/obs/v08_dome_room.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/looks/deep/2a26eea/obs/v11_lookout.png (still after 3 s more, 0.01% of it moved between the last two)
+        pictures: 4 saved by the game itself, 0 taken off the display
+        [nodemc 23:05:19] client stopped
+    [shuttle 23:05:19] obs: 4 of 4 pictures in /tmp/c164_s1/real/looks/deep/2a26eea/obs
+    [shuttle 23:05:19] trip done (113 s)
+[trip 23:05:19 +242s] shuttle, deep: exit 0, 113 s
+[trip 23:05:19 +242s] obs: 4 pictures of 2a26eeaa in renders/real-looks/2a26eea/deep/obs/
+[trip 23:05:20 +242s] obs: renders/real-looks/2a26eea/obs-looks.jpg, 4 views under 2 light versions
+[trip 23:05:20 +242s] close: nodemc.py down  (up to 180 s)
+    [nodemc 23:05:21] server stopped
+[trip 23:05:21 +244s] close: exit 0, 2 s
+[trip 23:05:21 +244s] trip done; pictures kept: renders/real-looks/2a26eea/blue/obs/, renders/real-looks/2a26eea/deep/obs/; log renders/real/_trips/20261115-2301-2a26eea.log
