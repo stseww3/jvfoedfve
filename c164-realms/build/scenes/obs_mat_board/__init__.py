@@ -313,9 +313,9 @@ def lamplight(c=None):
     either and the six cells beside it, whole blocks of stone, snow and cloud left out (no light is
     in them); a level less for every cell from the lamp, as if nothing stood in the light's way: so
     it is never less than what the game gives, and on the open ground tier it is what the game
-    gives. The board keeps it at 1 or less, which no picture shows (4 levels warm the snow by a
-    quarter in red, 1 by a twentieth): snow and cloud are seen under the sky alone, as they lie on
-    the mountain."""
+    gives. The board keeps it at 1 or less, which no picture shows (with 4 levels on it the drift
+    measured a quarter more red at that end; with 1 its two ends measure the same): snow and cloud
+    are seen under the sky alone, as they lie on the mountain."""
     c = c or build()
     pale = set(B.CLOUD) | {B.SNOW, B.SNOW_LAYER}
     whole = {e.block for e in B.VANILLA + B.REPAINTED[:3] if isinstance(e, B.Family)} | {B.ROCK_DEEPSLATE, B.SNOW, *B.CLOUD}
