@@ -186,7 +186,7 @@ def shots():
       hut_court     from the court, due south of the door: the hut and what shows in its slot
 
     The dome:
-      dome_door     in the west doorway: the column and its clock, the tube overhead
+      dome_door     a step inside the west door (its leaf is shut): the column and its clock, the tube overhead
       dome_south    from the south wall: the tube side on, the mount behind it
       dome_north    from the north wall: the mount, the counterweights, the circles
       dome_plate    close, by the east wall: the camera back and the plate holder
@@ -231,7 +231,7 @@ def shots():
     p = astro.pivot()
     floor = astro.FLOOR
     door = smalldome.door_cells()[0]
-    shot("dome_door", (door[0] + 0.55, floor + eye, door[2] + 0.5), off(astro.head(), dx=0.3, dy=0.25))
+    shot("dome_door", (door[0] + 1.3, floor + eye, door[2] + 0.5), off(astro.head(), dx=0.3, dy=0.25))
     shot("dome_south", (p[0] + 0.3, floor + eye, p[2] + 2.2), off(p, dx=-0.4, dy=0.2))
     shot("dome_north", (p[0] - 0.2, floor + eye, p[2] - 2.2), off(p, dx=-0.5, dy=-0.2))
     back = astro.plate()
