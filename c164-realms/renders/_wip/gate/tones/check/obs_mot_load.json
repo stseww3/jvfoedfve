@@ -1,0 +1,95 @@
+{
+ "scene": "obs_mot_load",
+ "commit": "a7493ed",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "672 blocks, 200 entities, 1 models, 580 resource-pack files, 10 data-pack files, look: 1 biomes, 1 timelines (0.5 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 579 files, no file written twice, the packages of motion write nothing into the pack",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "109 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "461 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "3 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "SKIP",
+   "summary": "a test scene of motion: its sample walls and backdrops are meant to be flat",
+   "details": []
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "200 display entities",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "4 shots, most display entities in view: 200 (far), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "far",
+      "in_view": 200,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near",
+      "in_view": 96,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "far_again",
+      "in_view": 200,
+      "drawn": 200,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "near_again",
+      "in_view": 96,
+      "drawn": 200,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  }
+ ]
+}
