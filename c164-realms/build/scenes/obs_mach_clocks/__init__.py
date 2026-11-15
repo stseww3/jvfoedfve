@@ -14,6 +14,9 @@ clock and the time ball at their places in the skeleton, among stand-ins of what
               above. The lit frosted window in the east face, well under the dial, is the measure
               the dial is held against: the dial has to stay the darker of the two.
   the yard    the paving the cameras stand on.
+  the mast    the radio mast (machines/mast) on a plain seat north of the tower, as soon as that
+              package is in the tree: from V1 its red lamp stands close to the ball and the comet,
+              and the ball's colour is chosen with the lamp in the picture. Until then: nothing.
   the pair    west of the hall, out of sight of every other shot: the two colours of the time ball
               side by side on two short masts (A0 picks one).
 
@@ -31,6 +34,15 @@ from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.machines import clock
+
+try:
+    from scenes.obs.machines import mast as radiomast       # c239: its red lamp stands by the ball in V1
+except ImportError:
+    radiomast = None
+try:
+    from scenes.obs.site import mastbase                    # c229: the stone foot of that mast
+except ImportError:
+    mastbase = None
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80               # the look has to reach the far cameras, 42 blocks east of the paving
@@ -213,6 +225,33 @@ def _tower(c):
         c.set(TCX, y, TCZ, POST if y <= MAST_THICK else ROD)
 
 
+def _radiomast(c):
+    """The radio mast north of the tower, as soon as machines/mast is in the tree: from V1 its red
+    lamp stands close to the time ball and the comet, and the colour of the ball is chosen with the
+    lamp in the picture (A0, cr2). Its stone foot is site/mastbase when that is in the tree; until
+    then a plain seat, four anchor blocks and a post, and at the tower the bracket the aerial hooks
+    on to. Returns the entity count."""
+    if radiomast is None:
+        return 0
+    x0, z0, x1, _z1 = S.MAST_PAD["box"]
+    c.box(x0, FLOOR_Y, z0, x1, FLOOR_Y, TZ[0] - 4, DARK_STONE)
+    if mastbase is not None:
+        mastbase.build(c, (0, 0, 0))
+    else:
+        fx, fz = S.RADIO_MAST["foot"]
+        c.box(fx - 1, 0, fz - 1, fx + 1, int(math.ceil(radiomast.BASE_Y)) - 1, fz + 1, SLATE)
+        for ax, ay, az in radiomast.GUY_ANCHORS:
+            x, z = int(math.floor(ax)), int(math.floor(az))
+            c.box(x, 0, z, x, int(math.ceil(ay)) - 1, z, SLATE)
+        px, py, pz = radiomast.LEAD_POST
+        x, z = int(math.floor(px)), int(math.floor(pz))
+        c.box(x, 0, z, x, int(math.ceil(py)) - 1, z, ROD)
+    hx, hy, hz = (int(math.floor(v)) for v in radiomast.TOWER_HOOK)
+    for x in range(min(TX[1], hx), hx + 1):
+        c.set(x, hy - 1, hz, B.IRON_BARS, keep=True)
+    return radiomast.build(c, (0, 0, 0))
+
+
 def _pair(c):
     """The two colours of the ball on two short masts; returns the entity count."""
     n = 0
@@ -236,6 +275,7 @@ def build(ball=None):
     else:
         n = clock.master(c) + clock.tower(c, colour=ball)
     n += _pair(c)
+    n += _radiomast(c)
     sky.build(c, (0, 0, 0))                         # the sky line's light sources go in last
     c.entity_counts = {"machines": n}
     return c
