@@ -14,9 +14,11 @@ between polished courses.
             bay is a recess a block deep. The corners are piers two cells square. The clear floor
             inside is ROOM.
   windows   Iron-framed and dark. Only the two bays beside the chimney, where the boilers stand,
-            glow in their lower three rows (the curtain glass, the dimmest of the lit ones); the
-            sky line gives them their light (sky/_lightkit.glazed), in the recess before the glass,
-            which therefore stays empty.
+            glow in their lower three rows: the fire window, a block of its own for each row,
+            brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in until the
+            occupancy table has it). The sky line gives them their light (sky/_lightkit.glazed),
+            in the recess before the glass, which therefore stays empty; the materials line lines
+            their room side (materials/windows.line).
   door      The second bay of the north front, from the yard: a riveted gate with a wicket. The
             wicket is the way into the house and stands open (A0, g2 #37124: a door that is to be
             walked through is not left for the visitor to open).
@@ -38,14 +40,19 @@ between polished courses.
             of two iron posts carries, over the terrace's railing without touching it (the girder's
             underside is half a block above the bars), to a shoe on the terrace, where it turns
             down into the ground. A cable runs over it. The row is south of the court and never
-            crosses the axis. The valve head and the straps on the main are the props line's
-            (props/pipes); FITTINGS says where they go.
+            crosses the axis.
   run       RUN lays the main on along the ground of the upper terrace to the foot of the main
             building. Off by default: the master scene shows the main going into the ground at the
             bridge head and nothing more of it up there.
+  fittings  What hangs on the shell and is the props line's to make and to place (props/pipes):
+            FITTINGS, the valve head and the straps on the main; DRAINS, the gutter's two
+            rainwater pipes.
 
-Blocks only, no display entities.
+The shell is blocks. The only display entities build() places are the linings of the two fire
+windows, which it asks the materials line for.
 """
+import importlib
+
 from ..common import blocks as B
 from ..common import skeleton as S
 from . import _kit as K
@@ -110,6 +117,13 @@ CROSSING = (43, 47)                                 # there the path to the sout
 FITTINGS = ([("bonnet", (float(HEAD_X), S.GROUND + 1.5, PIPE_Z + 0.5), dict(out="west"))]
             + [("band", (float(x), PIPE_Y + 1.0, PIPE_Z + 0.5), dict(out="up", up="east"))
                for x in range(HEAD_X + 2, X0, JOINT_STEP)])
+# Where the gutter's rainwater pipes come down, as props/pipes.drain() takes them (c241, g2 #37478):
+# `at` is the point of the wall face behind the pipe, right under a slab of the gutter; `top` is
+# the gutter's row, `bottom` the ground the pipe goes into. Two on the north front, the one the
+# yard looks at: on the corner pier and on the last pier before the boiler bay. East of that the
+# gutter runs on over the glowing window to the chimney's foot, where nothing can hang.
+DRAINS = [dict(at=(x + 0.5, float(Z0)), facing="north", top=EAVES + 1, bottom=FEET)
+          for x in (X0, X0 + CORNER + 3 * BAY - 1)]
 
 # --- materials (the occupancy table's roles) --------------------------------------------------------
 BODY = B.TUFF_BRICK.block
@@ -123,7 +137,7 @@ IRON_TOP = B.IRON_RIVETED.slab + "[type=top]"
 IRON_LOW = B.IRON_RIVETED.slab + "[type=bottom]"
 PLATE = B.IRON_PLATE
 DARK = B.WINDOW_DARK.block
-GLOW = B.WINDOW_CURTAIN.block
+GLOW = B.WINDOW_CURTAIN.block                       # stands in for the fire window: _glow()
 ROOF_GLASS = B.SKYLIGHT.block
 SLATE = B.SLATE_TILE.stairs
 
@@ -184,6 +198,27 @@ def _in_tower(x, z):
 def _inside(x, z):
     """Whether a column lies behind the pier plane of all four fronts."""
     return X0 < x < X1 and Z0 < z < Z1
+
+
+def _other(path):
+    """A module of another line ("sky._lightkit"); None while it is not in the tree."""
+    full = f"{__package__.rpartition('.')[0]}.{path}"
+    try:
+        return importlib.import_module(full)
+    except ModuleNotFoundError as e:
+        if not e.name or not f"{full}.".startswith(f"{e.name}."):
+            raise               # it is there and cannot import something of its own: say so
+        return None
+
+
+def _glow(row):
+    """The glass of a glowing row of a boiler bay, `row` counted up from the sill: the fire window
+    (c205, g2 #37654: B.WINDOW_FURNACE, a role for each of the three rows, the sill's first) once
+    the occupancy table has it, the curtain glass until then."""
+    fire = getattr(B, "WINDOW_FURNACE", None)
+    if isinstance(fire, (tuple, list)) and len(fire) == FURNACE_Y[1] - FURNACE_Y[0] + 1:
+        return fire[row].block
+    return GLOW
 
 
 def windows(version=None):
@@ -298,7 +333,8 @@ def _walls(p):
                 p.put(x1, TABLE_Y, z1, BODY)
                 p.put(x1, SILL_Y, z1, COURSE)
                 for y in range(GLASS_Y[0], GLASS_Y[1] + 1):
-                    p.put(x1, y, z1, GLOW if kind == FURNACE and y <= FURNACE_Y[1] else DARK)
+                    glows = kind == FURNACE and y <= FURNACE_Y[1]
+                    p.put(x1, y, z1, _glow(y - FURNACE_Y[0]) if glows else DARK)
             p.put(x1, EAVES, z1, BODY)
         for t in range(SPAN):
             x, z = front.at(t, 0)
@@ -500,11 +536,7 @@ def _light(canvas, origin, version):
     not in the tree a dim source stands in for it here, as the sky line places its own: in the
     recess before the middle of the glowing rows, never over a block."""
     table = windows(version)
-    try:
-        from ..sky import _lightkit as kit
-        glazed = getattr(kit, "glazed", None)
-    except ImportError:
-        glazed = None
+    glazed = getattr(_other("sky._lightkit"), "glazed", None)
     if glazed is not None:
         glazed(canvas, table, origin, group="power")
         return
@@ -518,9 +550,27 @@ def _light(canvas, origin, version):
                    f"{B.LIGHT}[level={FURNACE_LIGHT}]", keep=True)
 
 
+def _lining(canvas, origin, version):
+    """The room side of the glowing glass. Lit glass glows on every face, and somebody can stand
+    behind these windows; the materials line covers the room side of such a window with a sheet,
+    the one that goes with its glass (materials/windows.line: for the fire window night glass, the
+    fire is in the room and the window looks out at the night). The sheets are display entities.
+    Returns how many were placed: none while that module has no line()."""
+    line = getattr(_other("materials.windows"), "line", None)
+    if line is None:
+        return 0
+    n = 0
+    for w in windows(version):
+        if w["storey"] == "furnace":
+            cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
+            n += line(canvas, cells, w["inward"], _glow(0), origin=origin)
+    return n
+
+
 def build(canvas, origin=(0, 0, 0), version=None, run=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
-    run: lay the main along the upper terrace (RUN when not given). Returns 0: no display entity."""
+    run: lay the main along the upper terrace (RUN when not given). Returns the number of display
+    entities placed: the linings of the fire windows (_lining)."""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -531,4 +581,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return 0
+    return _lining(canvas, p.o, version)
