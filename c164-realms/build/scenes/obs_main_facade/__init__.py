@@ -87,6 +87,8 @@ def shots(only=None):
         dict(name="v1_far", pos=[float(n) for n in V1["pos"]], look_at=[float(n) for n in V1["look_at"]], time=TIME),
         # the arcade from beside the axis, close: how deep the arches are
         dict(name="arcade", pos=[face + 10.5, 1.7, 11.5], look_at=[face + 0.5, 4.5, axis - 0.5], time=TIME),
+        # V7: from outside the door, the middle arch as the frame of what stands behind it
+        dict(name="v7_door", pos=[float(n) for n in S.V7["pos"]], look_at=[float(n) for n in S.V7["look_at"]], time=TIME),
         # V3: two bays of the south wing, close, with the corner of the middle pavilion
         dict(name="v3_near", pos=[wing + 10.5, 2.2, z3 + 3.0], look_at=[wing + 1.0, 6.5, z3 - 1.5], time=TIME),
         dict(name="oblique", pos=[47.0, 5.0, 31.0], look_at=[14.0, 10.0, -2.0], time=TIME),
