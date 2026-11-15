@@ -5,12 +5,12 @@ a blue-black ramp (I0..I6), rivets hugging the edges so neighbouring plates read
 a cast diamond point, an open grating, a riveted door with a brass porthole, and the two lamps that glow.
 The waxed_oxidized_* twins stay verdigris (common/blocks.py; _kit.PROTECT guards them).
 
-Every picture but the two lamps' is drawn here from nothing. The thin pieces (bars, pipe, rod,
+Every picture but the lantern's is drawn here from nothing. The thin pieces (bars, pipe, rod,
 grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
-is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
-taken over step for step into the iron ramp, their filament and slits into the glow ramp. One model
-is touched: the thin edges of the game's trapdoor read the bottom rows of its picture upside down,
-and the hatch's copies of its models show the picture's lit top rows there instead (_lips).
+is noted at each -- so the models stay the game's; the lantern keeps the game's picture, taken
+over step for step into the iron ramp, its slits into the glow ramp. One model is touched: the
+thin edges of the game's trapdoor read the bottom rows of its picture upside down, and the hatch's
+copies of its models show the picture's lit top rows there instead (_lips).
 """
 import numpy as np
 
@@ -94,11 +94,30 @@ def _cells(inside):
 
 
 # ---- the flat plates (designed) ----------------------------------------------------------------------
-def _plain(seed):
-    """IRON_PLATE: a plain plate for casings and tanks -- brushed, no rivets, a shallow bevel so a
-    wall of them reads as butted plates instead of going flat. Three variants, the brushing only."""
-    px = _plate(seed, base=3, noise=0.14)
+# the plain plate's brushing, a variant to the row: (row, first column, length, a step lighter or darker)
+_BRUSHED = (((3, 9, 4, 1), (8, 3, 5, -1), (12, 8, 3, 1)),
+            ((5, 3, 3, -1), (10, 9, 4, 1)),
+            ((2, 4, 5, -1), (6, 10, 3, -1), (10, 2, 4, 1), (13, 9, 3, -1)),
+            ((4, 7, 4, 1), (9, 2, 3, 1), (13, 4, 4, -1)),
+            (),
+            ())
+
+
+def _plain(variant):
+    """IRON_PLATE: a plain plate for casings and tanks -- no rivets, a shallow bevel so a wall of
+    them reads as butted plates instead of going flat, and a few short brush marks. Six variants,
+    the brushing only: four carry two to four marks, each on a row of its own with at least two
+    clear rows to the next and no two variants' in the same place, and two carry none.
+
+    The marks used to be the palette's own (noise 0.14: nine to the plate, on its grid of five
+    pixels), three variants of them: they came to lie over one another to the right of the middle
+    on all three, and from eight blocks a wall of plates was a wall of squares each stamped with
+    the same three short bars (review 12 of 11-16, wall_plate)."""
+    px = _plate(1, base=3, noise=0.0)
     _bevel(px)
+    for y, x0, n, step in _BRUSHED[variant]:
+        for x in range(x0, x0 + n):
+            _put(px, x, y, _i(3 + step))
     return px
 
 
@@ -411,10 +430,40 @@ def _rod():
     return px
 
 
+_CAGE = (5, 10)     # the bulb's guard: a bar across and a bar down at each, panes of three, four and three pixels
+
+
 def _bulb(lit):
-    """IRON_BULB: a caged bulb; lit sends the filament to the amber glow ramp."""
-    ref = "block/oxidized_copper_bulb_lit" if lit else "block/oxidized_copper_bulb"
-    px, _ = _recolour(ref, lamp=lit)
+    """IRON_BULB: a caged lamp -- the cast plate's body (its raised border, its four corner rivets)
+    round a glass of twelve pixels, and before the glass a guard of two bars across and two down,
+    one pixel each: nine panes. Lit, the eight outer panes are one amber (G1), the middle one a
+    step lighter with the filament in its heart (G4), the bars dark against them (I1). Unlit, the
+    panes are dark glass that holds the night (night_glass, the middle one a step lighter, the
+    dead bulb in it) and the bars take the body's tone.
+
+    The picture used to be the game's, taken over into the iron ramp: its guard is one bar across
+    and one down through the middle, and before the lit glass that was a dark plus on an orange
+    square at any distance (review 12 of 11-16, red line 8). The outer panes share one tone, so
+    that the lighter ones do not draw a plus of light round the middle either: at stamp size the
+    lamp is an amber square with a light heart and a faint grid over it."""
+    px = _plate(1, base=3, noise=0.0)
+    _panel_frame(px)
+    _rivets(px, _CORNERS)
+    if lit:
+        pane, middle, heart, bar = _glow(1), _glow(2), _glow(4), _i(1)
+    else:
+        pane, middle, heart = (P.colour("night_glass", n) for n in range(3))
+        bar = _i(3)
+    lo, hi = _CAGE
+    for y in range(2, TILE - 2):
+        for x in range(2, TILE - 2):
+            if x in _CAGE or y in _CAGE:
+                rgb = bar
+            elif lo < x < hi and lo < y < hi:
+                rgb = heart if lo + 1 < x < hi - 1 and lo + 1 < y < hi - 1 else middle
+            else:
+                rgb = pane
+            _put(px, x, y, rgb)
     return px
 
 
@@ -431,7 +480,7 @@ def _map(block, name):
 
 def pack(pack_dir):
     out = []
-    K.paint(pack_dir, "iron_plate", [_plain(s) for s in (1, 2, 3)])
+    K.paint(pack_dir, "iron_plate", [_plain(v) for v in range(len(_BRUSHED))])
     K.paint(pack_dir, "iron_riveted", [_riveted(s) for s in (1, 2, 3)])
     K.paint(pack_dir, "iron_cast", _cast())
     K.paint(pack_dir, "iron_grate", [_grate(0), _grate(1)])
