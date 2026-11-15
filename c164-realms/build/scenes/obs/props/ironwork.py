@@ -9,15 +9,16 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
                          plate over the bottom row of lights, a transom on the 4.0 line, a half
                          round head, riveted sheet in the spandrels.
     window_grille, _2    the barred grille of a base-storey window: a bar on every upright muntin.
-    door_frame           the entrance doorway's frame (the window's, without the foot plate) and its
-                         fanlight: an iron fan over amber glass.
+    door_frame, fanlight the entrance doorway's frame (the window's, without the foot plate) with an
+                         iron fan in its head, and the amber glass behind that fan.
     door_leaf            one leaf of the entrance door: riveted plate, kick plate, two ledges, a
                          brass pull and a glazed porthole; both faces alike. leaves() hangs a pair
                          open against the reveals, so a player walks through.
     gate                 a side arch of the entrance, shut: the same frame, an open fan, barred leaves.
     glazed_leaf          one leaf of the west door: riveted below, dark glass above.
     canopy, canopy_lamp  the glazed canopy over the middle arch on two quarter-round braces, and the
-                         opal lamp under it.
+                         opal lamp under it (canopy_lamp_back: the side of its globe that looks at the
+                         wall).
     railing_panel        a cast scroll panel for the terrace balustrade, between two posts.
     ladder, ladder_cage  a three-block length of the inspection ladder, bare and caged; they stack.
     vent_cowl            a roof vent: a flanged pipe, a bent neck and a bell mouth.
@@ -25,6 +26,8 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
 
 Everything is placed through _kit (mounting, materials, rivets, glowing glass). windows() and
 doors() dress a wall from the tables main/_plan gives; build() does that for the main building.
+Glass that glows is a piece of its own, drawn in a tilted frame (TILT): only so does a face that
+looks out of an east wall show its picture as painted.
 
 The look is judged on texture and on style, so the test scene is build/scenes/obs_props_ironwork.
 """
@@ -46,6 +49,44 @@ BRASS, BRASS_D = K.BRASS, K.BRASS_D
 GLASS_HOT, GLASS_MID, GLASS_DIM = K.GLOW_HOT, K.GLOW_MID, K.GLOW_DIM     # amber glass that glows
 GLASS_AMBER = K.flat("glow", 0)                                         # the same glass with no light behind it
 GLASS_COOL = K.flat("opal", 2)                                          # frosted canopy glass, not lit
+
+# ---- glass that glows: the tilted frame ---------------------------------------------------------------
+# The game lights every item by two lamps fixed in the world, whatever the item emits (the item
+# shader's minecraft_mix_light; artkit.gamescene draws the same): a face that looks up shows its
+# picture as painted, one that looks north or south 0.74 of it, one that looks east or west 0.50, one
+# that looks down 0.40. The front of the observatory looks east, so a lamp's globe and a fanlight were
+# seen from the court at half their tones, greyer than any lit window (those are blocks, which can
+# switch the shading off: A2 #14980; an item cannot, shade_direction_override is read for blocks only).
+# But a face is lit as if it looked along the axis of its model that lies nearest to its normal
+# (FaceBakery.calculateFacing), and that axis is turned with the display (VertexConsumer.putBakedQuad).
+# So a piece that glows is drawn in a frame tilted about the wall's own line, and its display turns it
+# back: it stands where it stood, and a face that looks out of the wall is lit as one that looks 40
+# degrees up -- 1.00. Up stays 1.00, along the wall 0.74, down 0.40; into the wall falls to 0.40.
+TILT = 40.0
+
+
+def _tilted(m, back=False):
+    """`with _tilted(m):` draws in the tilted frame; the piece is placed with turns=_turns(back).
+    `back` tilts the other way, for the faces that look into the wall."""
+    return m.turned(("x", -TILT if back else TILT))
+
+
+def _turns(back=False):
+    return (("x", TILT if back else -TILT),)
+
+
+def _facing(m, first, back=False):
+    """Of the parts drawn since `first` in the tilted frame, keep the faces that look out of the wall
+    or along it, up or down; with `back`, those that look into the wall. So the two halves of a
+    round thing, each in its own frame, make it whole without a face drawn twice."""
+    out = M._qrot(M.quat("x", -TILT if back else TILT), (0.0, 0.0, 1.0))
+    for part in m.parts[first:]:
+        q = part["rot"][0] if part["rot"] else M.IDENT
+        for letter, normal in M.NORMAL.items():
+            along = sum(a * b for a, b in zip(M._qrot(q, normal), out))
+            if (along > -1e-6) if back else (along < -1e-6):
+                part["skip"].add(letter)
+    m.parts[first:] = [part for part in m.parts[first:] if len(part["skip"]) < 6]
 
 
 # ---- the arched window frame ------------------------------------------------------------------------
@@ -180,14 +221,39 @@ def _ray(m, angle, r0, r1, wide, z, mat):
           rot=("z", angle, (0.0, SPRING, 0.0)) if angle else None, grain="x")
 
 
-def _fan(m, r, rays, wide, glass, hub=3.5, arc=7.0):
+def _fan(m, r, rays, wide, hub=3.5, arc=7.0):
     """What fills the half round over a doorway: an iron fan -- a hub on the transom (its radius
-    `hub`), rays from it to the ring and one arc between (its middle radius `arc`) -- and with
-    `glass` the amber glass behind it, which runs in under the ring and is drawn as one-pixel rows
-    in three tones, hot round the hub (the fanlight)."""
-    if glass:
+    `hub`), rays from it to the ring and one arc between (its middle radius `arc`)."""
+    z = (0.5, 1.5)
+    for i in range(1, rays + 1):
+        _ray(m, 180.0 * i / (rays + 1), hub - 0.5, r + 0.25, wide, z, IRON_D)
+    m.ring("z", (0.0, SPRING, 1.0), arc, wide, 1.0, IRON_D, sides=24, arc=(0.0, 180.0))
+    m.ring("z", (0.0, SPRING, 1.25), hub / 2.0, hub, 1.5, IRON, sides=12 if hub < 4.0 else 16, arc=(0.0, 180.0))
+    K.rivet(m, (0.0, SPRING + math.floor(hub + 1.0) / 2.0, 2.0))     # in the middle of what shows over the transom
+
+
+DOOR_JAMBS = (1.0, 1.0)         # a doorway's jambs: 2 px either side, no pane to stand on
+
+
+def _door_frame(width=3):
+    """The iron frame of the entrance doorway and the fan in its head, at scale 2 (anchor: the foot
+    centre of the doorway, on the plane the glass of a window would stand in). The glass behind the
+    fan is the piece `fanlight`."""
+    m = M.Model(PREFIX + "door_frame", px=2.0)
+    _fan(m, _frame(m, width, foot=False, jambs=DOOR_JAMBS), rays=5, wide=0.5)
+    return m
+
+
+def _fanlight(width=3):
+    """The amber glass of the doorway's fanlight, at scale 2 (anchor as door_frame): it fills the
+    half round behind the iron fan, runs in a pixel under the ring and is drawn as one-pixel rows in
+    three tones, hot round the hub. It glows -- with the lamp under the canopy it is all the light
+    the family has of its own -- so it is drawn in the tilted frame."""
+    m = M.Model(PREFIX + "fanlight", px=2.0)
+    rg = width * 4.0 - sum(DOOR_JAMBS) / 2.0 + 0.5
+    with _tilted(m):
         m._n += 1
-        seed, rg, y = m._n, r + 0.5, 1.0
+        seed, y = m._n, 1.0
         while y < rg:
             mid, hot = (math.floor(2.0 * math.sqrt(max(0.0, q * q - y * y))) / 2.0 for q in (9.0, 6.0))
             edge = math.sqrt(rg * rg - y * y)
@@ -198,20 +264,6 @@ def _fan(m, r, rays, wide, glass, hub=3.5, arc=7.0):
                     m.box((x0, SPRING + y, 0.0), (x1, SPRING + y + 0.5, 0.5), mat, emit=15, shade=False,
                           grain="x", seed=seed)
             y += 0.5
-    z = (0.5, 1.5)
-    for i in range(1, rays + 1):
-        _ray(m, 180.0 * i / (rays + 1), hub - 0.5, r + 0.25, wide, z, IRON_D)
-    m.ring("z", (0.0, SPRING, 1.0), arc, wide, 1.0, IRON_D, sides=24, arc=(0.0, 180.0))
-    m.ring("z", (0.0, SPRING, 1.25), hub / 2.0, hub, 1.5, IRON, sides=12 if hub < 4.0 else 16, arc=(0.0, 180.0))
-    K.rivet(m, (0.0, SPRING + math.floor(hub + 1.0) / 2.0, 2.0))     # in the middle of what shows over the transom
-
-
-def _door_frame(width=3):
-    """The iron frame of the entrance doorway with its fanlight, at scale 2 (anchor: the foot centre
-    of the doorway, on the plane the glass of a window would stand in). The glass glows: with the
-    lamp under the canopy it is all the light the family has of its own."""
-    m = M.Model(PREFIX + "door_frame", px=2.0)
-    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=5, wide=0.5, glass=True)
     return m
 
 
@@ -287,7 +339,7 @@ def _gate(width=3):
     no opening between them is narrower than 2 px (eight from the fanlight's small hub left slits
     of half a pixel round it, a smear in the pictures)."""
     m = M.Model(PREFIX + "gate", px=2.0)
-    _fan(m, _frame(m, width, foot=False, jambs=(1.0, 1.0)), rays=6, wide=1.0, glass=False, hub=4.5, arc=7.5)
+    _fan(m, _frame(m, width, foot=False, jambs=DOOR_JAMBS), rays=6, wide=1.0, hub=4.5, arc=7.5)
     hw, z, zr, top = width * 4.0, (0.75, 1.75), (1.0, 1.5), LEAF_H      # no slit of light under the transom
     for sx in (-1.0, 1.0):
         def span(x0, x1, y0, y1, mat, zz=z, **kw):
@@ -420,23 +472,29 @@ def _brace(m, x, r, top):
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
 
 
-def _canopy_lamp():
+def _canopy_lamp(back=False):
     """The lamp under the canopy, the brightest point of the entrance (c164 #21442): an opal globe in
     an iron cage on a rod, at scale 1. Anchor: the point under the canopy it hangs from; the foot of
-    the lamp is 28.5 px below it."""
-    m = M.Model(PREFIX + "canopy_lamp", px=1.0)
-    m.tube("y", (0.0, 0.0), -1.0, 0.0, 2.5, IRON_D)
-    m.tube("y", (0.0, 0.0), -12.0, -1.0, 0.5, IRON, sides=4)
-    m.tube("y", (0.0, 0.0), -7.0, -6.0, 1.0, IRON_D, sides=4)
-    m.taper("y", (0.0, 0.0), -12.0, -15.0, 1.5, 5.0, IRON, sides=8, steps=3)              # the hood
-    m.tube("y", (0.0, 0.0), -16.0, -15.0, 6.0, IRON_D, sides=8)
+    the lamp is 28.5 px below it. The lamp is drawn in the tilted frame, so the globe shows its tones
+    to the court as painted; `back` is the piece with the faces of the globe that look at the wall,
+    tilted the other way, for who comes out of the door."""
+    m = M.Model(PREFIX + ("canopy_lamp_back" if back else "canopy_lamp"), px=1.0)
     bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
              (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
-    K.glass_ball(m, (0.0, -21.0, 0.0), 5.0, bands, sides=12, squash=1.0)
-    for angle in (45.0, 135.0, 225.0, 315.0):           # the cage: no bar before the middle of the globe,
-        m.box((5.5, -26.0, -0.5), (6.5, -16.0, 0.5), IRON, rot=("y", angle, (0.0, 0.0, 0.0)), grain="y")   # front or side
-    m.ring("y", (0.0, -26.5, 0.0), 5.75, 1.0, 1.0, IRON_D, sides=8)
-    m.tube("y", (0.0, 0.0), -28.5, -25.5, 1.0, IRON, sides=4)
+    with _tilted(m, back):
+        K.glass_ball(m, (0.0, -21.0, 0.0), 5.0, bands, sides=12, squash=1.0)
+        _facing(m, 0, back)
+        if back:
+            return m
+        m.tube("y", (0.0, 0.0), -1.0, 0.0, 2.5, IRON_D)
+        m.tube("y", (0.0, 0.0), -12.0, -1.0, 0.5, IRON, sides=4)
+        m.tube("y", (0.0, 0.0), -7.0, -6.0, 1.0, IRON_D, sides=4)
+        m.taper("y", (0.0, 0.0), -12.0, -15.0, 1.5, 5.0, IRON, sides=8, steps=3)              # the hood
+        m.tube("y", (0.0, 0.0), -16.0, -15.0, 6.0, IRON_D, sides=8)
+        for angle in (45.0, 135.0, 225.0, 315.0):       # the cage: no bar before the middle of the globe,
+            m.box((5.5, -26.0, -0.5), (6.5, -16.0, 0.5), IRON, rot=("y", angle, (0.0, 0.0, 0.0)), grain="y")   # front or side
+        m.ring("y", (0.0, -26.5, 0.0), 5.75, 1.0, 1.0, IRON_D, sides=8)
+        m.tube("y", (0.0, 0.0), -28.5, -25.5, 1.0, IRON, sides=4)
     return m
 
 
@@ -542,11 +600,15 @@ SPEC = {
     "window_grille": dict(build=_window_grille, mount="wall", scale=1.0, light=None),
     "window_grille_2": dict(build=lambda: _window_grille(2), mount="wall", scale=1.0, light=None),
     "door_frame": dict(build=_door_frame, mount="wall", scale=2.0, light=(0.0, 4.6, 0.3), level=9),
+    "fanlight": dict(build=_fanlight, mount="wall", scale=2.0, light=None, turns=_turns()),
     "door_leaf": dict(build=_door_leaf, mount="floor", scale=2.0, light=None),
     "gate": dict(build=_gate, mount="wall", scale=2.0, light=None),
     "glazed_leaf": dict(build=_glazed_leaf, mount="floor", scale=2.0, light=None),
     "canopy": dict(build=_canopy, mount="wall", scale=2.0, light=None),
-    "canopy_lamp": dict(build=_canopy_lamp, mount="ceiling", scale=1.0, light=(0.0, -1.3, 0.0), level=13),
+    "canopy_lamp": dict(build=_canopy_lamp, mount="ceiling", scale=1.0, light=(0.0, -1.3, 0.0), level=13,
+                        turns=_turns()),
+    "canopy_lamp_back": dict(build=lambda: _canopy_lamp(True), mount="ceiling", scale=1.0, light=None,
+                             turns=_turns(True)),
     "railing_panel": dict(build=_railing_panel, mount="floor", scale=1.0, light=None),
     "ladder": dict(build=_ladder, mount="wall", scale=1.0, light=None),
     "ladder_cage": dict(build=lambda: _ladder(True), mount="wall", scale=1.0, light=None),
@@ -576,6 +638,8 @@ def place(canvas, kind, pos, facing="south", origin=(0, 0, 0), width=None, light
     opts     go to artkit.models.display (brightness, view)."""
     key = _sized(kind, width)
     spec = SPEC[key]
+    if spec.get("turns"):                               # a piece drawn in the tilted frame is turned back
+        opts.setdefault("turns", spec["turns"])
     n = K.put(canvas, _models()[PREFIX + key], pos, mount=spec["mount"], facing=facing, yaw=yaw,
               scale=spec["scale"], origin=origin, **opts)
     if light and spec.get("light") is not None:
@@ -693,6 +757,7 @@ def doors(canvas, table, origin=(0, 0, 0), west_swing=0.0):
                 n += place(canvas, "gate", pos, facing=facing, origin=origin)
                 continue
             n += place(canvas, "door_frame", pos, facing=facing, origin=origin)
+            n += place(canvas, "fanlight", pos, facing=facing, origin=origin)
             n += leaves(canvas, "door_leaf", pos, facing=facing, origin=origin)
             n += canopy(canvas, pos, y1 + 2.0, facing=facing, origin=origin)
         elif not d.get("arch") and y1 - y0 == 3:
@@ -716,7 +781,9 @@ def canopy(canvas, pos, y, facing="east", origin=(0, 0, 0)):
     face = tuple(pos[k] + 2.0 * fwd[k] for k in range(3))
     n = place(canvas, "canopy", (face[0], y, face[2]), facing=facing, origin=origin)
     lamp = tuple(face[k] + CANOPY_LAMP * fwd[k] for k in range(3))
-    return n + place(canvas, "canopy_lamp", (lamp[0], y, lamp[2]), facing=facing, origin=origin)
+    for kind in ("canopy_lamp", "canopy_lamp_back"):
+        n += place(canvas, kind, (lamp[0], y, lamp[2]), facing=facing, origin=origin)
+    return n
 
 
 def _plan():
