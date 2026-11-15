@@ -40,6 +40,7 @@ WALL = B.TUFF_BRICK.block if hasattr(B, "TUFF_BRICK") else B.TUFF.block
 CONSOLE_Z = recorders.CONSOLE_Z         # -24, the console runs along the foot of the rack
 CONSOLE_H = 1.0                         # props/furniture's console is a hand or so high
 CONSOLE_DEEP = 1.0
+WORK_LIGHT = 14                         # the test scene's work light: the light line's top, never 15
 
 
 def _room(c):
@@ -65,6 +66,11 @@ def _room(c):
     for x in range(6, 11):
         c.set(x, FEET, CONSOLE_Z, B.WAINSCOT)
         c.set(x, FEET + 1, CONSOLE_Z, B.WAINSCOT)     # one block high; the pieces stand on top
+
+    # the work light of the test scene: one invisible source over the console, at the level the
+    # room's own console pendant will be. A test scene must see what it judges (main/shell does the
+    # same); the room itself is lit by sky/_lightkit when it is in the tree.
+    c.set(8, CEIL - 1, CONSOLE_Z + 1, f"{B.LIGHT}[level={WORK_LIGHT}]")
     return c
 
 
@@ -73,10 +79,17 @@ def console_top(x, z=None):
     return float(FEET + 2)
 
 
+# the anchors: the drum's is its axis (17 units = 1.06 blocks above the machine's foot), the
+# telegraph's is its armature pivot (12 units = 0.75 blocks up), the tube's is its body centre.
+def drum_axis_y(y):
+    """The y of the drum's axis when the recorder stands on `y`."""
+    return y + recorders.DRUM_AXIS / 16.0
+
+
 SLOTS = {
-    "drum": dict(pos=(9.5, console_top(9), CONSOLE_Z + 0.5), facing="south"),
+    "drum": dict(pos=(9.5, drum_axis_y(console_top(9)), CONSOLE_Z + 0.5), facing="south"),
     "telegraph": dict(pos=(6.5, console_top(6), CONSOLE_Z + 0.5), facing="south"),
-    "tube": dict(pos=(float(X1 + 1), float(FEET + 2), -16.5), facing="west"),
+    "tube": dict(pos=(float(X1 + 1), float(FEET + 1.6), -16.5), facing="west"),
 }
 
 
@@ -109,19 +122,19 @@ def shots():
                     "time": time})
 
     # V10's line: from the doorway, along the room's long axis at the instrument wall
-    shot("v10_door", (7.5, FEET + 1.62, Z1 - 1.0), (7.5, FEET + 1.4, Z0))
-    shot("console", (8.0, FEET + 1.62, -20.0), (8.0, FEET + 1.55, CONSOLE_Z))
-    # the drum, from where the operator stands, then from above and from the side
-    shot("drum", (9.5, FEET + 2.45, -21.4), (9.5, FEET + 2.32, CONSOLE_Z + 0.3))
-    shot("drum_down", (9.5, FEET + 3.6, -21.9), (9.5, FEET + 2.3, CONSOLE_Z + 0.4))
-    shot("drum_side", (11.4, FEET + 2.35, -22.6), (9.5, FEET + 2.28, CONSOLE_Z + 0.4))
-    # the telegraph, same three ways
-    shot("telegraph", (6.5, FEET + 2.30, -21.4), (6.5, FEET + 2.18, CONSOLE_Z + 0.3))
-    shot("telegraph_down", (6.5, FEET + 3.3, -21.9), (6.5, FEET + 2.18, CONSOLE_Z + 0.4))
-    shot("telegraph_side", (4.6, FEET + 2.25, -22.5), (6.5, FEET + 2.16, CONSOLE_Z + 0.4))
-    # the tube on the east wall's pier: from the room, and from below looking up the pipe
-    shot("tube", (11.0, FEET + 1.62, -16.5), (X1 + 1, FEET + 1.75, -16.5))
-    shot("tube_up", (12.2, FEET + 1.3, -16.5), (X1 + 1.0, FEET + 3.4, -16.5))
-    # the whole console run, from the south-west, so the three read as one room
-    shot("all", (4.0, FEET + 2.2, -12.0), (10.0, FEET + 2.1, CONSOLE_Z + 0.5))
+    shot("v10_door", (7.5, FEET + 1.62, Z1 - 1.0), (7.5, FEET + 1.55, Z0))
+    shot("console", (8.0, FEET + 2.10, -20.0), (8.0, FEET + 2.05, CONSOLE_Z + 0.5))
+    # the drum recorder, from where the operator stands: the drum's axis is at y 10.13
+    shot("drum", (9.5, FEET + 2.75, -21.6), (9.5, FEET + 2.05, CONSOLE_Z + 0.5))
+    shot("drum_down", (9.5, FEET + 4.10, -22.0), (9.5, FEET + 2.00, CONSOLE_Z + 0.5))
+    shot("drum_side", (11.9, FEET + 2.60, -22.8), (9.5, FEET + 2.00, CONSOLE_Z + 0.5))
+    # the telegraph register, same three ways (it is a lower piece: top at y 9.5)
+    shot("telegraph", (6.5, FEET + 2.40, -21.7), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
+    shot("telegraph_down", (6.5, FEET + 3.60, -22.1), (6.5, FEET + 1.95, CONSOLE_Z + 0.5))
+    shot("telegraph_side", (4.2, FEET + 2.35, -22.6), (6.5, FEET + 1.92, CONSOLE_Z + 0.5))
+    # the pneumatic tube on the east wall's pier: from the room, and from below up the pipe
+    shot("tube", (10.6, FEET + 2.05, -16.5), (X1 + 0.4, FEET + 2.00, -16.5))
+    shot("tube_up", (11.6, FEET + 1.35, -16.5), (X1 + 0.4, FEET + 3.60, -16.5))
+    # the whole console run from the south-west, so the pieces read as one room
+    shot("all", (3.6, FEET + 2.55, -12.6), (10.0, FEET + 2.05, CONSOLE_Z + 0.6))
     return out

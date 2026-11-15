@@ -5,64 +5,63 @@ The card's fourth piece, the world-clock wall, was dropped before this round: th
 its own five stopped slave dials (A0 #529), so what is left here is three standing things on the
 room's console and east wall.
 
-  mach_rec_drum       the drum recorder: a brass drum on a dark-wood base, cream chart paper round
-                      the drum, a pen carriage on a brass slide above it, a paper supply reel at the
-                      back and a tray at the front. Sits on the console's east end.
-  mach_rec_telegraph  the telegraph register: a brass sounder with its armature and coil box, a
-                      paper-tape reel on a spindle, the tape leaving east towards the drum.
-  mach_rec_tube       the pneumatic tube terminal: a brass mouthpiece and dial on a cast-iron
-                      bracket down the pier, the carrier door, the pipe stub going up to the ceiling.
+  mach_rec_drum       the drum recorder: a brass drum lying on its axis across a dark-wood case,
+                      cream chart paper wound round the drum with the pen's trace on it, the pen
+                      carriage on a slide over the drum, the paper supply reel behind and a drawer
+                      in the front. On the console's east end.
+  mach_rec_telegraph  the telegraph register: the coil box hooped with brass, the sounder's
+                      armature on two posts over it, the tape reel on a spindle and the tape running
+                      out of it. On the console west of the telegraph key.
+  mach_rec_tube       the pneumatic tube terminal: the cast-iron back plate on the east wall's pier,
+                      the brass terminal body with its carrier door and index dial, the pipe up to
+                      the ceiling.
 
-THE ONE THING TO KNOW about the sizes: every model is drawn at px = scale, so the texture keeps
-16 pixels to the block at any scale, the same density as the blocks and the other models (A5 1.2).
+Sizes are the card's: 1.5 x 1.0 x 1.5 blocks (drum), 1.0 x 0.8 x 0.5 (telegraph). Models are drawn
+in model units -- 16 units to the block, which is what M.display divides by -- with px = 1, so a
+picture is 16 pixels to the block, the same density as the blocks and other models (A5 1.2).
 
-Axis points for A8 (this round everything is still; A0 #505 -- the drum and the tape do not turn).
-The pieces are still cut apart and anchored on their turning centres, so switching them on later is
-a matter of turning the entity, not redrawing it:
+AXES FOR A8. Everything is still this round (A0 #505: the drum and the tape do not turn), but each
+piece is anchored where it would turn, so switching them on later is a matter of turning the entity:
 
-  mach_rec_drum        anchor = the drum's axis, at the middle of the drum, axis horizontal along x
-                       (the drum's flat faces look east and west). A turn about x spins the drum.
-  mach_rec_tape_out    anchor = the paper reel's axis, same way; a turn about x runs the tape.
-  mach_rec_telegraph   anchor = the sounder's armature pivot (top of the coil box, on its centre
-                       line); a small turn about x makes the armature clack.
+  mach_rec_drum        anchor = the drum's axis at the middle of the drum; the axis runs along x,
+                       so a turn about x spins the drum.
+  mach_rec_telegraph   anchor = the sounder's armature pivot, on the coil box's centre line; a
+                       small turn about x makes the armature clack.
 
-The light: the drum's chart lamp is the room's warm point on the console, offered to A2 through
-sky/_lightkit.take, level 7 (a recorder's lamp is a third-rank light, below a window).
+The recorder's chart lamp is offered to A2 through sky/_lightkit.take at level 7 (a recorder's lamp,
+a third-rank light, below a window).
 
-Placing: build(canvas, origin, slots) takes the time room's own SLOTS table when it is in the tree
-(interiors/timeroom.SLOTS: "drum", "telegraph", "tube"), and falls back to the same cells read from
-the room's geometry when it is not:
-  drum       (9.5, 8.0, -23.5) facing south     -- the console's east end
-  telegraph  (7.5, 8.0, -23.5) facing south     -- the console just west of the telegraph key
-  tube       (14.0, 8.0, <the pier south of the message desk>) facing west
-Each piece can also be placed alone by its own function, which is what the room will call.
+PLACING. build(canvas, origin, slots) takes the time room's own SLOTS table when it is in the tree
+(interiors/timeroom.SLOTS: "drum", "telegraph", "tube") and falls back to the same cells read from
+the room's geometry when it is not. Each piece can also be placed alone by its own function:
+
+    from scenes.obs.machines import recorders
+    n = recorders.build(canvas, origin, slots=timeroom.SLOTS)
+    n += recorders.drum(canvas, (9.5, 8.0, -23.5), facing="south")
+    n += recorders.telegraph(canvas, (7.5, 8.0, -23.5), facing="south")
+    n += recorders.tube(canvas, (14.0, 8.0, -16.5), facing="west")
 """
 import functools
 import math
 
-import numpy as np
-
 from artkit import models as M
-from artkit import pixelart as A
 
 from ..common import blocks as B
 from ..common import palette as P
 
 PREFIX = "mach_rec_"
+NAME = "machines/recorders"
 
-# the way a piece looks -> the yaw that points its +z that way (same table as props/_kit and clock.py)
+# the way a piece looks -> the yaw that points its +z that way (same table as props/_kit, clock.py)
 FACING = {"south": 0.0, "west": 90.0, "north": 180.0, "east": -90.0}
 
-# --- the room's cells, as interiors/timeroom.py has them (used when that module is not in the tree)
+# --- the room's cells, as interiors/timeroom.py has them (the fallback when that module is absent)
 SILL = 8                  # the sill line: what stands on the console stands on this y
-ROOM_X = (2, 13)          # the room's clear width
 CONSOLE_Z = -24           # the console runs along the foot of the instrument wall
 DRUM_X = 9                # the drum recorder's cell (the console's east end)
-KEY_X = 7                 # the telegraph key's cell; the telegraph sits just west of it
-EAST = 14                 # the east wall's face: x of the first air cell west of it
-DESK_PIER_Z = -16         # the pier south of the message desk: the tube runs down this one
-TUBE_TOP = 14             # the ceiling block: the pipe leaves the room here
-TUBE_FOOT = 9.2           # the terminal's bottom, a hand above the sill
+KEY_X = 7                 # the telegraph key's cell; the register stands just west of it
+EAST = 14                 # the east wall: x of the first air cell west of it
+DESK_PIER_Z = -16         # the pier south of the message desk
 
 DEFAULT_SLOTS = {
     "drum": dict(pos=(DRUM_X + 0.5, float(SILL), CONSOLE_Z + 0.5), facing="south"),
@@ -70,99 +69,92 @@ DEFAULT_SLOTS = {
     "tube": dict(pos=(float(EAST), float(SILL), DESK_PIER_Z + 0.5), facing="west"),
 }
 
-# --- sizes, in blocks (the room must leave these clear; the card's own numbers follow A5 2.10)
-DRUM_W, DRUM_D, DRUM_H = 0.95, 0.72, 0.62     # the case under the drum
-DRUM_R = 0.20                                  # the drum's radius; it lies across the machine
-CHART_W = 0.30                                 # the drum's width, along its axis
-TELE_W, TELE_D, TELE_H = 0.62, 0.44, 0.30     # the telegraph's base and its coil box
-TUBE_R = 0.11                                  # the pneumatic pipe's radius
+# --- sizes in model units (16 to the block); the card's block sizes are in the comments
+DRUM_W, DRUM_D, DRUM_H = 24.0, 16.0, 24.0      # the recorder's case: 1.5 x 1.0 x 1.5 blocks
+DRUM_R = 6.4                                   # the drum: 0.4 blocks through, the star of the piece
+CHART_W = 12.0                                 # the drum's width along its axis: 0.75 blocks
+DRUM_AXIS = 17.0                               # the drum's axis height above the case's foot
+TELE_W, TELE_D, TELE_H = 16.0, 13.0, 12.0      # the register: 1.0 x 0.8 x 0.75 blocks
+TUBE_R = 2.6                                   # the pneumatic pipe: 0.16 blocks through
 
-# the recorder's lamp: the console's one warm point (offered to A2; a third-rank light)
+# the recorder's chart lamp: the console's warm point (offered to A2; a third-rank light)
 LAMP_LEVEL = 7
-LAMP_ABOVE = 0.9                               # above the drum's axis, on its east side
+LAMP_ABOVE = 0.55                              # blocks above the top of the drum
 
 # --- materials (palette only) ---------------------------------------------------------------------
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
-BRASS_F = P.mat("brass_flat")
+BRASS_F = P.mat("brass", kind="flat", bevel=0)
 IRON = P.mat("iron")
 IRON_D = P.mat("iron_dark")
-COPPER = P.mat("old_copper")
 WOOD = P.mat("dark_wood")
 WOOD_D = P.mat("dark_wood", base=1)
 WOOD_L = P.mat("dark_wood", base=3)
 CREAM = P.mat("cream")
 CREAM_F = P.mat("cream", kind="flat", bevel=0)
+CREAM_D = P.mat("cream", base=1, kind="flat", bevel=0)
 PORCELAIN = P.mat("porcelain")
 
 
 # ==================================================================================================
 # the drum recorder
 # ==================================================================================================
-def _chart(rng, w, h):
-    """A chart's worth of pen trace: one slow wave across the paper, drawn a pixel wide in a darker
-    step of the cream ramp. Reads as a record being written, from a few blocks away."""
-    grid = [["p" for _ in range(w)] for _ in range(h)]
-    for x in range(w):
-        y = h / 2 + 2.6 * math.sin(2 * math.pi * (x / float(w)) * 1.15 + 0.4) \
-            + 0.9 * math.sin(2 * math.pi * (x / float(w)) * 3.4)
-        yi = int(round(min(max(y, 1), h - 2)))
-        grid[yi][x] = "t"
-    return ["".join(row) for row in grid]
-
-
 def _drum():
-    """The drum recorder: a dark-wood case, the brass drum on its axis across the machine, cream
-    chart paper wound round it, a pen carriage on a slide over the drum, the paper reel behind and
-    a drawer under. Anchor: the drum's axis, middle of the drum, axis along x."""
-    m = M.Model(PREFIX + "drum", px=1.0, anchor=(0.0, 0.0, 0.0))
-    hw, hd = DRUM_W / 2, DRUM_D / 2
+    """The drum recorder. A low dark-wood case with a drawer, two brass standards carrying the
+    drum's shaft, and the drum itself -- brass end flanges, cream chart paper between them -- lying
+    across the machine, with the pen carriage on its slide above and the paper reel behind.
 
-    # the case: a plinth, then the body with a moulded top edge; the drawer face and its pull
-    m.box((-hw, 0.0, -hd), (hw, 0.07, hd), WOOD_D, skip="d")
-    m.box((-hw, 0.07, -hd), (hw, DRUM_H - 0.12, hd), WOOD, skip="d")
-    m.box((-hw - 0.015, DRUM_H - 0.12, -hd - 0.015), (hw + 0.015, DRUM_H - 0.08, hd + 0.015), WOOD_L, skip="d")
-    # the drawer under the drum, with a brass pull
-    m.box((-hw * 0.72, 0.13, hd - 0.004), (hw * 0.72, 0.30, hd + 0.004), WOOD_D, skip="d")
-    m.box((-0.05, 0.20, hd), (0.05, 0.225, hd + 0.022), BRASS, skip="d")
+    Anchor: the drum's axis, at the middle of the drum, so the entity turns about that axis.
+    """
+    m = M.Model(PREFIX + "drum", px=1.0, anchor=(0.0, DRUM_AXIS, 0.0))
+    hw, hd = DRUM_W / 2, DRUM_D / 2             # 12, 8
+    ay = 0.0                                    # the model's own frame puts the axis at y 0
+    case_top = -7.5                             # the case stops well below the drum's axis
+    half_chart = CHART_W / 2                    # 6
 
-    # the two brass standards that carry the drum's shaft, left and right
+    # the case: a plinth on four feet, the body, a moulded top edge; the drawer face and its pull
     for sx in (-1, 1):
-        x0 = sx * (CHART_W / 2 + 0.055)
-        x1 = x0 + sx * 0.045
-        m.box((min(x0, x1), DRUM_H - 0.10, -0.055), (max(x0, x1), DRUM_H + DRUM_R + 0.10, 0.055), BRASS, skip="d")
-        # the bearing block the shaft runs in
-        m.box((min(x0, x1), DRUM_H + DRUM_R - 0.015, -0.045),
-              (max(x0, x1), DRUM_H + DRUM_R + 0.045, 0.045), BRASS_D, skip="d")
+        for sz in (-1, 1):
+            m.box((sx * hw - 1.7, -17.0, sz * hd - 1.7), (sx * hw + 1.7, -15.5, sz * hd + 1.7),
+                  WOOD_D, skip="d")
+    m.box((-hw, -15.5, -hd), (hw, -13.8, hd), WOOD_D, skip="d")
+    m.box((-hw, -13.8, -hd), (hw, case_top, hd), WOOD, skip="d")
+    m.box((-hw - 0.5, case_top, -hd - 0.5), (hw + 0.5, case_top + 1.4, hd + 0.5), WOOD_L, skip="d")
+    m.box((-hw * 0.66, -12.6, hd - 0.15), (hw * 0.66, -8.8, hd + 0.15), WOOD_D, skip="d")
+    m.box((-1.9, -11.1, hd + 0.15), (1.9, -10.3, hd + 0.75), BRASS, skip="d")
 
-    # the shaft, then the drum itself with its chart paper; the paper is a tube one pixel proud
-    m.tube("x", (0.0, DRUM_H + DRUM_R), -CHART_W / 2 - 0.075, CHART_W / 2 + 0.075, 0.028, BRASS_D, sides=8)
-    m.tube("x", (0.0, DRUM_H + DRUM_R), -CHART_W / 2, CHART_W / 2, DRUM_R, BRASS_F, sides=12)
-    chart = P.mat("cream", kind="flat", base=2, bevel=0)
-    m.tube("x", (0.0, DRUM_H + DRUM_R), -CHART_W / 2 + 0.004, CHART_W / 2 - 0.004, DRUM_R + 0.006,
-           chart, sides=12, cap=None)
-    # the chart's pen trace, a thin raised band on the paper (16 px to the block: one pixel is 1/16)
-    px = 1 / 16.0
-    for i in range(6):
-        y = DRUM_H + DRUM_R + (i - 2.5) * px * 1.6
-        m.box((-CHART_W / 2 + 0.01, y, DRUM_R + 0.004), (CHART_W / 2 - 0.01, y + px, DRUM_R + 0.012),
-              P.mat("cream", base=0, kind="flat", bevel=0), skip="d")
-
-    # the pen carriage: a slide bar over the drum and the pen arm hanging from it
-    m.box((-hw * 0.92, DRUM_H + DRUM_R * 2 + 0.045, -hd * 0.55),
-          (hw * 0.92, DRUM_H + DRUM_R * 2 + 0.075, -hd * 0.55 + 0.030), BRASS_D, skip="d")
-    m.box((-0.028, DRUM_H + DRUM_R + 0.02, -hd * 0.52), (0.028, DRUM_H + DRUM_R * 2 + 0.050, -hd * 0.30), BRASS, skip="d")
-    # the pen itself, a dark nib just touching the paper at the top of the drum
-    m.box((-0.008, DRUM_H + DRUM_R * 2 - 0.004, -hd * 0.34), (0.008, DRUM_H + DRUM_R * 2 + 0.030, -hd * 0.30),
-          IRON_D, skip="d")
-
-    # the paper supply reel at the back, on its own brass fork, and the paper running to the drum
-    reel_z = -hd + 0.10
+    # the two brass standards that carry the shaft, rising past the drum's axis on each side
     for sx in (-1, 1):
-        m.box((sx * (CHART_W / 2 + 0.02), DRUM_H - 0.02, reel_z - 0.02),
-              (sx * (CHART_W / 2 + 0.02) - 0.03 if sx > 0 else sx * (CHART_W / 2 + 0.02) + 0.03,
-               DRUM_H + 0.20, reel_z + 0.02), BRASS_D, skip="d")
-    m.tube("x", (0.0, DRUM_H + 0.10), -CHART_W / 2 - 0.01, CHART_W / 2 + 0.01, 0.075, CREAM_F, sides=10)
+        x0 = sx * (half_chart + 1.0)
+        x1 = x0 + sx * 1.5
+        m.box((min(x0, x1), case_top, -1.5), (max(x0, x1), ay + DRUM_R + 1.0, 1.5), BRASS, skip="d")
+        m.box((min(x0, x1), ay + DRUM_R - 0.5, -1.3), (max(x0, x1), ay + DRUM_R + 0.9, 1.3),
+              BRASS_D, skip="d")
+
+    # the shaft, the drum's brass end flanges, and the chart paper wound between them
+    m.tube("x", (0.0, ay), -half_chart - 2.4, half_chart + 2.4, 0.8, BRASS_D, sides=8)
+    m.tube("x", (0.0, ay), -half_chart - 0.9, -half_chart + 0.2, DRUM_R + 0.5, BRASS, sides=14)
+    m.tube("x", (0.0, ay), half_chart - 0.2, half_chart + 0.9, DRUM_R + 0.5, BRASS, sides=14)
+    m.tube("x", (0.0, ay), -half_chart + 0.1, half_chart - 0.1, DRUM_R, CREAM_F, sides=14)
+    # the pen's trace: one raised line right round the paper, a step darker (a pixel proud)
+    m.box((-half_chart + 0.3, DRUM_R - 0.4, -DRUM_R - 0.14),
+          (half_chart - 0.3, DRUM_R + 0.6, DRUM_R + 0.14), CREAM_D, skip="d")
+
+    # the pen carriage: the slide bar over the drum, its arm, the nib riding on the paper
+    m.box((-hw * 0.88, DRUM_R + 1.4, -hd * 0.50), (hw * 0.88, DRUM_R + 2.3, -hd * 0.50 + 1.1),
+          BRASS_D, skip="d")
+    m.box((-0.9, DRUM_R + 0.5, -hd * 0.48), (0.9, DRUM_R + 1.5, -hd * 0.04), BRASS, skip="d")
+    m.box((-0.28, DRUM_R + 0.1, -hd * 0.20), (0.28, DRUM_R + 0.6, -hd * 0.02), IRON_D, skip="d")
+
+    # the paper supply reel at the back, on its brass fork
+    reel_y = DRUM_R + 0.6
+    reel_z = -hd + 2.2
+    for sx in (-1, 1):
+        x_in = sx * (half_chart * 0.55)
+        x_out = x_in + sx * 0.9
+        m.box((min(x_in, x_out), -1.0, reel_z - 0.6), (max(x_in, x_out), reel_y + 1.6, reel_z + 0.6),
+              BRASS_D, skip="d")
+    m.tube("x", (0.0, reel_y), -half_chart * 0.55 - 0.4, half_chart * 0.55 + 0.4, 2.0, CREAM_F, sides=10)
     return m
 
 
@@ -170,40 +162,44 @@ def _drum():
 # the telegraph register
 # ==================================================================================================
 def _telegraph():
-    """The telegraph: a wooden base, the coil box, the sounder's armature over it on two posts, the
-    tape reel on a brass spindle at the east end and the tape leaving it. Anchor: the armature's
-    pivot (the top of the coil box's centre line)."""
-    m = M.Model(PREFIX + "telegraph", px=1.0, anchor=(0.0, TELE_H, 0.0))
-    hw, hd = TELE_W / 2, TELE_D / 2
+    """The telegraph register: a wooden base, the coil box hooped with brass, the sounder's armature
+    on two posts over it, the tape reel on a brass fork at the east end and the tape running out.
 
-    m.box((-hw, 0.0, -hd), (hw, 0.035, hd), WOOD_D, skip="d")                    # base
-    m.box((-hw * 0.86, 0.035, -hd * 0.86), (hw * 0.86, TELE_H - 0.09, hd * 0.86), WOOD, skip="d")
+    Anchor: the armature's pivot -- the top of the coil box, on its centre line.
+    """
+    m = M.Model(PREFIX + "telegraph", px=1.0, anchor=(0.0, 0.0, 0.0))
+    hw, hd = TELE_W / 2, TELE_D / 2             # 8, 6.5
+    base_h = 2.0
+    coil_h = 4.6
+    top = base_h + 2.2 + coil_h
 
-    # the coil box, ribbed with two brass hoops, and the two posts that carry the armature
-    m.box((-0.13, TELE_H - 0.13, -0.10), (0.13, TELE_H - 0.055, 0.10), IRON_D, skip="d")
-    for zz in (-0.055, 0.055):
-        m.box((-0.135, TELE_H - 0.125, zz - 0.012), (0.135, TELE_H - 0.060, zz + 0.012), BRASS, skip="d")
+    m.box((-hw, 0.0, -hd), (hw, base_h, hd), WOOD_D, skip="d")                    # the base
+    m.box((-hw * 0.80, base_h, -hd * 0.80), (hw * 0.80, base_h + 2.2, hd * 0.80), WOOD, skip="d")
+
+    # the coil box hooped with brass; the two posts beside it carry the armature
+    m.box((-4.6, base_h + 2.2, -3.4), (4.6, top, 3.4), IRON_D, skip="d")
+    for zz in (-2.0, 2.0):
+        m.box((-4.8, base_h + 2.4, zz - 0.5), (4.8, top - 0.4, zz + 0.5), BRASS, skip="d")
     for sx in (-1, 1):
-        m.box((sx * 0.135 - 0.014, TELE_H - 0.09, -0.014), (sx * 0.135 + 0.014, TELE_H - 0.012, 0.014),
-              BRASS_D, skip="d")
+        m.box((sx * 5.0 - 0.5, base_h + 2.6, -0.5), (sx * 5.0 + 0.5, top + 1.6, 0.5), BRASS_D, skip="d")
 
-    # the armature: a brass bar across the posts with the stop above it and the adjusting screw
-    m.box((-0.16, TELE_H - 0.018, -0.020), (0.16, TELE_H + 0.004, 0.020), BRASS, skip="d")
-    m.box((-0.16, TELE_H + 0.030, -0.016), (0.16, TELE_H + 0.048, 0.016), BRASS_D, skip="d")
-    m.box((-0.012, TELE_H + 0.004, -0.012), (0.012, TELE_H + 0.032, 0.012), IRON_D, skip="d")
+    # the armature: the brass bar across the posts, the stop above it, the adjusting screw between
+    m.box((-6.0, top + 0.2, -0.8), (6.0, top + 1.1, 0.8), BRASS, skip="d")
+    m.box((-6.0, top + 2.3, -0.65), (6.0, top + 3.1, 0.65), BRASS_D, skip="d")
+    m.box((-0.5, top + 1.1, -0.5), (0.5, top + 2.4, 0.5), IRON_D, skip="d")
 
-    # the tape reel at the east end: a brass spool on a fork, cream tape wound on it
-    rx = hw * 0.60
-    for zz in (-0.045, 0.045):
-        m.box((rx - 0.012, TELE_H - 0.16, zz - 0.010), (rx + 0.012, TELE_H - 0.05, zz + 0.010), BRASS_D, skip="d")
-    m.tube("z", (rx, TELE_H - 0.115), -0.036, 0.036, 0.052, CREAM_F, sides=10)
-    m.tube("z", (rx, TELE_H - 0.115), -0.042, 0.042, 0.016, BRASS_D, sides=6)
-    # the tape leaving the reel eastwards, a thin cream band just above the base's top
-    m.box((rx + 0.04, TELE_H - 0.150, -0.022), (hw + 0.02, TELE_H - 0.128, 0.022), CREAM_F, skip="d")
+    # the tape reel east of the sounder, on a brass fork: a cream spool with a brass spindle
+    rx = hw * 0.52
+    for zz in (-2.2, 2.2):
+        m.box((rx - 0.5, base_h + 1.0, zz - 0.45), (rx + 0.5, base_h + 6.0, zz + 0.45), BRASS_D, skip="d")
+    m.tube("z", (rx, base_h + 3.6), -1.7, 1.7, 2.1, CREAM_F, sides=12)
+    m.tube("z", (rx, base_h + 3.6), -2.0, 2.0, 0.65, BRASS_D, sides=6)
+    # the tape leaving the reel eastwards, a thin cream band just over the base
+    m.box((rx + 1.6, base_h + 1.3, -0.9), (hw + 0.9, base_h + 1.8, 0.9), CREAM_F, skip="d")
 
-    # the key's own two terminals on the west end, waiting for props/electrics' key beside it
-    for zz in (-0.05, 0.05):
-        m.box((-hw * 0.72 - 0.014, TELE_H - 0.075, zz - 0.014), (-hw * 0.72 + 0.014, TELE_H - 0.020, zz + 0.014),
+    # the two lead terminals at the west end, where the key beside it ties in
+    for zz in (-2.0, 2.0):
+        m.box((-hw * 0.70 - 0.6, base_h + 0.2, zz - 0.6), (-hw * 0.70 + 0.6, base_h + 2.4, zz + 0.6),
               BRASS, skip="d")
     return m
 
@@ -212,38 +208,39 @@ def _telegraph():
 # the pneumatic tube terminal
 # ==================================================================================================
 def _tube():
-    """The pneumatic tube: the cast-iron bracket on the pier, the brass terminal body with its
-    carrier door and index dial, the pipe stub going up. The length of pipe to the ceiling is placed
-    by the room (it knows its own ceiling height), so this model stops a hand above the bracket.
-    Anchor: the middle of the terminal body, on the pier's face."""
+    """The pneumatic tube: the cast-iron back plate on the pier, the brass terminal body standing out
+    from it with the carrier door and the index dial, and the pipe going up to the ceiling.
+
+    Anchor: the middle of the terminal body, on the pier's face.
+    """
     m = M.Model(PREFIX + "tube", px=1.0, anchor=(0.0, 0.0, 0.0))
     r = TUBE_R
 
-    # the bracket: a back plate on the pier, a boss, and the two arms that hold the pipe
-    m.box((-0.075, -0.02, -0.014), (0.075, 0.62, 0.0), IRON_D, skip="d")
-    m.box((-0.048, 0.20, 0.0), (0.048, 0.26, 0.10), IRON, skip="d")
-    for y in (0.30, 0.56):
-        m.box((-0.030, y - 0.014, 0.0), (0.030, y + 0.014, 0.085), IRON, skip="d")
+    # the back plate on the pier, its boss and the two arms that hold the pipe
+    m.box((-1.8, -11.0, -0.35), (1.8, 17.0, 0.0), IRON_D, skip="d")
+    m.box((-1.1, -1.6, 0.0), (1.1, 0.7, 2.4), IRON, skip="d")
+    for y in (3.4, 13.0):
+        m.box((-0.7, y - 0.32, 0.0), (0.7, y + 0.32, 2.1), IRON, skip="d")
 
-    # the pipe stub and its brass collar where it leaves this piece
-    m.tube("y", (0.0, 0.0), 0.10, 1.10, r, BRASS_F, sides=12)
-    m.tube("y", (0.0, 0.0), 0.96, 1.02, r * 1.28, BRASS_D, sides=12)
+    # the pipe up to the ceiling and its brass collar
+    m.tube("y", (0.0, 0.0), 2.1, 18.0, r, BRASS_F, sides=12)
+    m.tube("y", (0.0, 0.0), 15.6, 16.8, r * 1.30, BRASS_D, sides=12)
 
-    # the terminal body: a brass drum with a dark carrier door and its handle
-    m.tube("z", (0.0, 0.62), 0.0, 0.30, 0.155, BRASS_F, sides=14,
+    # the terminal body: a brass drum standing out from the pier
+    m.tube("z", (0.0, 0.0), 0.0, 7.0, 3.8, BRASS_F, sides=14,
            cap=P.mat("brass", kind="flat", base=3, bevel=1))
-    m.tube("z", (0.0, 0.62), 0.30, 0.315, 0.105, IRON_D, sides=12)          # the door, set in
-    m.box((-0.020, 0.60, 0.315), (0.020, 0.640, 0.345), BRASS_D, skip="d")   # its handle
+    # the carrier door set in its face, with its handle
+    m.tube("z", (0.0, 0.0), 7.0, 7.4, 2.6, IRON_D, sides=12)
+    m.box((-0.45, -0.45, 7.4), (0.45, 0.45, 8.1), BRASS_D, skip="d")
 
-    # the index dial above the door: a cream face with brass rim and a still pointer
-    m.tube("z", (0.0, 0.62), 0.30, 0.312, 0.185, BRASS_D, sides=14)
-    m.tube("z", (0.0, 0.62), 0.312, 0.318, 0.150, PORCELAIN, sides=14)
-    m.box((-0.006, 0.62, 0.318), (0.006, 0.755, 0.324), IRON_D, skip="d")     # the pointer, up
-    # the four station ticks on the dial
-    for yy in (0.62 + 0.135, 0.62 - 0.135):
-        m.box((-0.008, yy - 0.008, 0.318), (0.008, yy + 0.008, 0.322), BRASS_D, skip="d")
-    for xx in (0.135, -0.135):
-        m.box((xx - 0.008, 0.612, 0.318), (xx + 0.008, 0.628, 0.322), BRASS_D, skip="d")
+    # the index dial above the door: brass rim, porcelain face, a still pointer and four ticks
+    m.tube("z", (0.0, 0.0), 7.0, 7.35, 4.5, BRASS_D, sides=14)
+    m.tube("z", (0.0, 0.0), 7.35, 7.5, 3.7, PORCELAIN, sides=14)
+    m.box((-0.16, 0.0, 7.5), (0.16, 3.3, 7.66), IRON_D, skip="d")
+    for dy in (3.2, -3.2):
+        m.box((-0.2, dy - 0.2, 7.5), (0.2, dy + 0.2, 7.6), BRASS_D, skip="d")
+    for dx in (3.2, -3.2):
+        m.box((dx - 0.2, -0.2, 7.5), (dx + 0.2, 0.2, 7.6), BRASS_D, skip="d")
     return m
 
 
@@ -266,11 +263,18 @@ def models():
 # ==================================================================================================
 # placing
 # ==================================================================================================
-def _place(canvas, model, pos, origin, yaw, scale, brightness=None):
-    """Place one display entity; pos is the piece's anchor in scene coordinates. Returns 1."""
+def _place(canvas, model, pos, origin, yaw):
+    """Place one display entity; `pos` is the piece's anchor in blocks, in scene coordinates."""
     x, y, z = (pos[i] + origin[i] for i in range(3))
-    canvas.add_entity(x, y, z, M.display(model, yaw=yaw, scale=scale, brightness=brightness))
+    canvas.add_entity(x, y, z, M.display(model, yaw=yaw, scale=1.0, view=5.0))
     return 1
+
+
+def _turn(yaw, v):
+    """An offset in a piece's own frame as a world offset."""
+    r = math.radians(yaw)
+    c, s = math.cos(r), math.sin(r)
+    return (v[0] * c - v[2] * s, v[1], v[0] * s + v[2] * c)
 
 
 def _offer_lights(canvas, lights, why):
@@ -291,58 +295,44 @@ def _offer_lights(canvas, lights, why):
         canvas.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
 
 
-def _turn(yaw, v):
-    """An offset in a piece's own frame as a world offset."""
-    r = math.radians(yaw)
-    c, s = math.cos(r), math.sin(r)
-    return (v[0] * c - v[2] * s, v[1], v[0] * s + v[2] * c)
-
-
 def drum(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
-    """Place the drum recorder with its anchor at `pos`. Returns (entities, the light cell)."""
+    """Place the drum recorder; `pos` is the drum's axis in blocks. Returns (entities, the light)."""
     yaw = FACING[facing] if yaw is None else yaw
-    n = _place(canvas, _models()[PREFIX + "drum"], pos, origin, yaw, 1.0)
-    # the chart lamp: a warm point above the drum, offered to A2
-    d = _turn(yaw, (0.0, DRUM_H + DRUM_R + LAMP_ABOVE, 0.0))
+    n = _place(canvas, _models()[PREFIX + "drum"], pos, origin, yaw)
+    above = (DRUM_R + 1.0) / 16.0 + LAMP_ABOVE
+    d = _turn(yaw, (0.0, above, 0.0))
     cell = tuple(int(math.floor(pos[i] + origin[i] + d[i])) for i in range(3))
     return n, (cell, LAMP_LEVEL)
 
 
 def telegraph(canvas, pos, facing="south", origin=(0, 0, 0), yaw=None):
-    """Place the telegraph register with its anchor at `pos`. Returns the entity count."""
+    """Place the telegraph register; `pos` is the armature's pivot in blocks. Returns the count."""
     yaw = FACING[facing] if yaw is None else yaw
-    return _place(canvas, _models()[PREFIX + "telegraph"], pos, origin, yaw, 1.0)
+    return _place(canvas, _models()[PREFIX + "telegraph"], pos, origin, yaw)
 
 
-def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None, top=None, foot=None):
-    """Place the pneumatic tube terminal with its anchor at `pos`; the pipe is run up to `top` (the
-    ceiling block) from `foot`, so the room can give its own ceiling. Returns the entity count."""
+def tube(canvas, pos, facing="west", origin=(0, 0, 0), yaw=None):
+    """Place the pneumatic tube terminal; `pos` is the middle of its body in blocks. Returns the
+    count. The piece runs its own pipe up above the anchor."""
     yaw = FACING[facing] if yaw is None else yaw
-    return _place(canvas, _models()[PREFIX + "tube"], pos, origin, yaw, 1.0)
+    return _place(canvas, _models()[PREFIX + "tube"], pos, origin, yaw)
 
 
 def build(canvas, origin=(0, 0, 0), slots=None):
     """Place all three pieces at the time room's slots (interiors/timeroom.SLOTS when given, else the
     cells read from the room's geometry here). Returns the display-entity count."""
     slots = slots or DEFAULT_SLOTS
-    built = _models()
     n, lights = 0, []
-
     for name, fn in (("drum", drum), ("telegraph", telegraph), ("tube", tube)):
         slot = slots.get(name)
         if not slot:
             continue
         pos = tuple(float(v) for v in slot["pos"])
-        facing = slot.get("facing", "south")
         if name == "drum":
-            got, light = fn(canvas, pos, facing, origin)
+            got, light = fn(canvas, pos, slot.get("facing", "south"), origin)
             n += got
             lights.append(light)
         else:
-            n += fn(canvas, pos, facing, origin)
-
+            n += fn(canvas, pos, slot.get("facing", "south"), origin)
     _offer_lights(canvas, lights, NAME)
     return n
-
-
-NAME = "machines/recorders"
