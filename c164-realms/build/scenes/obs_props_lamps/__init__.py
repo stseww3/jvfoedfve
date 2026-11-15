@@ -5,7 +5,8 @@ version A of the shade-and-bracket motif (three bracket lamps in a row at the sp
 the caged lamp on iron plate, the pendant under an iron canopy), the same in version B, then the
 lamps both versions share (signal lamp lit and dark, desk lamp, wall-washing uplight, a festoon
 under a canopy). One street lamp stands by itself on the paving east of the wall, so its pool of
-light and its outline are seen on their own.
+light and its outline are seen on their own, and beyond it a parapet pier with the low pier lamp on
+its cap.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_lamps
 """
@@ -25,6 +26,8 @@ SET_X = {"a": 0, "b": 22}       # where the set of each version starts; a set is
 SHARED_X = 44
 WALL_END = SHARED_X + 21
 STREET = (WALL_END + 9.5, 0.0, 8.5)
+PIER = (WALL_END + 13, 0, 3)    # the cell of a parapet pier as site/_kit.rail builds one: wall block, cap slab
+PIER_TOP = 1.5                  # the cap's top above the ground
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
 
@@ -61,6 +64,10 @@ def build():
         n += _set(c, x0, version)
     n += _shared(c, SHARED_X)
     n += lamps.place(c, "street", STREET)
+    px, py, pz = PIER
+    c.set(px, py, pz, B.ASHLAR_ROUGH.wall)
+    c.set(px, py + 1, pz, B.ASHLAR_ROUGH.slab)
+    n += lamps.place(c, "post", (px + 0.5, py + PIER_TOP, pz + 0.5))
     sky.build(c, (0, 0, 0))         # A2's light sources go in last, when every lamp is in place
     c.entity_counts = {"props": n}
     return c
@@ -99,4 +106,7 @@ def shots():
     shot("street", (sx + 4.0, 2.6, sz + 6.0), (sx, 3.0, sz))
     shot("street_head", (sx + 1.8, 4.3, sz + 2.1), (sx, 4.45, sz))
     shot("street_far", (sx - 8.5, 2.0, sz + 13.5), (sx - 2.5, 3.0, sz - 2.5))
+    px, pz = PIER[0] + 0.5, PIER[2] + 0.5
+    shot("post", (px + 2.4, 2.1, pz + 3.0), (px, 1.3, pz))
+    shot("post_near", (px + 0.9, 2.15, pz + 1.3), (px, 1.8, pz))
     return out
