@@ -29,14 +29,14 @@
 2. **光的主次**：每个机位只有一个主暖光池，其余压成三级的暗点；去色后亮区不过画面三分之一、最暗 1% 不低于 0.03。**星厅里日球是唯一的暖核**（日球 12、母钟低一级、壁灯 6 到 7）。
 3. **像不像有人在这里工作**：墙面、台面、地面三层小件；摊开的本子、拉出一半的抽屉、挪过的椅子这类用过的痕迹；东西摆在用得到的地方，不是沿墙码一圈。
 
-## 2. 我管的包和人（照 11-16 05:52 的 `plan/ROSTER.md`；节点 05:26 起大面积冻住，我合用的 node47 也冻住了，要出图先报 aide 排 node12）
+## 2. 我管的包和人（照 11-16 06:12 的 `plan/ROSTER.md`；节点 05:26 起大面积冻住，我合用的 node47 06:24 按坏处理，要出图先向 aide 要牌，去 node4、5、6 或 node12）
 
-| 包 | 代号（聊天） | 第 1 班前任、有效头 | 新分支 | 版本 | c235 的预审 | 状态（11-16 06:00） |
+| 包 | 代号（聊天） | 第 1 班前任、有效头 | 新分支 | 版本 | c235 的预审 | 状态（11-16 06:30） |
 | --- | --- | --- | --- | --- | --- | --- |
 | machines/orrery | orrery（c343） | c236，`cursor/c164-orrery-6491` @ `f3a7e462` | `cursor/c164-orrery-f3-46d7` | 甲 六臂共面／乙 分层碗状 | cr2-M1 | 预看 P1、P6；等交付 |
 | machines/refractor | scope（c344） | c237，`cursor/c164-scope-6e0f` @ `5c674377` | `cursor/c164-scope-f3-eeae` | 甲 德式／乙 英式轭架 | cr2-M2 | 预看 P3、P6；等交付 |
-| machines/clocks | clocks（c345） | c238，`cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6` | 1 版；报时球总监定了旧铜 | cr2-M3 和重读 | cr3-#2 过（`1269f91`）；四处小修，等补图 |
-| machines/radiomast | mast（c346） | c239，`cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` | 甲 全模型／乙 方块腿；总监终选甲 | cr2-M5 | cr3-#1 甲过（`e065bd8`）；等天线三版草图和补图 |
+| machines/clocks | clocks（c345） | c238，`cursor/c164-clocks-e99f` @ `abfd8079` | `cursor/c164-clocks-f3-00d6` | 1 版；报时球总监定了旧铜 | cr2-M3 和重读 | cr3-#2 过（`1269f91`）；四处小修在做（头 `d2b2fcdd`），等补图 |
+| machines/radiomast | mast（c346） | c239，`cursor/c164-mast-5dcd` @ `ffcb474c` | `cursor/c164-mast-f3-fc27` | 甲 全模型／乙 方块腿；总监终选甲 | cr2-M5 | cr3-#1 甲过（`e065bd8`）；cr3-#3 复审过（`7296128`），总监定了不挂线；三处小修 |
 | machines/cablecar-winch | cable（c338），site/cablecar 之后 | c240，`cursor/c164-car-w3k9` @ `5a6186cc` | — | 1 版 | 没有 | 还没开 |
 | machines/domegear | m5（c352），materials/iron 之后 | c196，`cursor/c164-gear-6260` @ `c7045d80` | `cursor/c164-m5-domegear-f3-b9c1` | 跟 main/dome（总监定了乙，八肋） | 没有 | 还没开 |
 | machines/armillary | ashlar（c353），materials/ashlar 之后 | c246，`cursor/c164-arm-7c2a` @ `724d26be` | `cursor/c164-ashlar-armillary-f3-799b` | 甲 环多而细／乙 大子午环加黄道带 | cr2-M4 | 还没开 |
@@ -48,8 +48,10 @@
 | interiors/timeroom | m2（c351） | c195，`cursor/c164-m2-timeroom-80c9` @ `6275b60b` | `cursor/c164-m2-timeroom-f3-364e` | 1 版 | 没有（c195 请过，没排到） | 预看 P1、预审 P4；等交付 |
 | interiors/powerhouse | power（c339），site/powerhouse 之后（04:14 派） | 没有前任 | `cursor/c164-power-interior-f3-2e4a` | — | 没有 | 还没开 |
 | interiors/astroroom | sdome（c328），照相仪交付以后（P3，先交一页草图给总监） | 没有前任 | — | — | 没有 | 还没开 |
+| machines/switchboard-boiler | mast（c346），radiomast 之后（P2，06:08 派） | 没有前任，从总装开 | `cursor/c164-mast-switchboard-f3-fc27` | — | 没有 | 还没开 |
+| interiors/batteryroom | stair（c337），site/stair 之后（P3，06:03 派；先交一页草图给总监） | 没有前任，从总装开 | `cursor/c164-stair-batteryroom-f3-b330` | — | 没有 | 还没开 |
 
-没人领的：`machines/switchboard-boiler`、`machines/recorders`（留给下一个交了卡的机器岗）；第二批 P3 的新房 `interiors/batteryroom`、`interiors/platevault`、`interiors/clockroom`。
+没人领的：`machines/recorders`（留给下一个交了卡的机器岗）；第二批 P3 的新房 `interiors/platevault`、`interiors/clockroom`。
 
 ## 3. 各包图一到先核的（从 c235 的预审和总监的拍板里摘的，细节看原文）
 
