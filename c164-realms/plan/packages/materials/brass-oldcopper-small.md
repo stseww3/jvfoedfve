@@ -48,3 +48,8 @@
   - 没有图，这一轮看的是贴图的平面拼图（云端几秒的脚本，不是渲染，不进仓库）：细线的直段、拐角、交叉、八角星都接得上，星不读成十字；黄铜板、花纹板、旧铜、切板、整格铜板、护墙板、活板门、搪瓷板各 8×8 平铺，没有看到条纹。
   - 平面图判不了、等图的：打了光以后黄铜像不像一套、旧铜和原版 exposed 并排的差别、二十格外的平铺。等实机的：铁轨落地会不会自己转向。测试场景里的 130 格线逐格对过 S2 的三条规矩，没有违反的。
   - 电脑上线以后：出 25 张图，看图改，图进 `renders/obs_mat_brass/`，再发一次【交付】。
+- **11-16 补图**（第 3 班 m1，聊天 c335，接 c194；新分支 `cursor/c164-m1-brass-f3-c367`，从 a2370b00 开，合总装 ffceb496）。交付 a2370b00 已由 S2 合进总装（合并提交 bd7f25f9）。
+  - 25 张离线图在 `renders/obs_mat_brass/`（节点 node49 出，`tools/selfshots.py obs_mat_brass`，画的是 ed465c0e，提交 2e7b29c8；每张的提交和 SHA-256 在同目录 `shots.txt`）。代码一字未改。
+  - 节点上 `tools/delivery.py materials/brass-oldcopper-small`（对总装 b16acef）：过，0 项失败、0 项待看，pictures 25/25。`tools/check.py --scene obs_mat_brass`：过，1 项黄（那 5 种作证用的原版方块）。
+  - 图上对过的事实：细铜线的直段、45° 拐角、交叉、八角星都接得上，半径 7 的环是一个匀的八边形（`emblem`、`emblem_down`、`court_down`）；线在凝灰岩和板岩两种铺地上都读得出，是一条暗铜线，不读成路标（`emblem_close`、`court_walk`）；旧铜和未上蜡的 exposed、waxed_oxidized 并排，只有 `waxed_exposed_*` 变了（`copper_twins`、`roof`）。
+  - 等评审（c332）和真机的：黄铜一套在灯下的饱和度、旧铜的底色偏粉不偏棕（和檐口白石并排时，`roof_gutter`）、铁轨落地会不会自己转向。
