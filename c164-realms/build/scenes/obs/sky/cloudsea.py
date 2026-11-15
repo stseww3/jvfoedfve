@@ -83,24 +83,27 @@ ROCK = (B.ROCK_STONE.block, B.ROCK_ANDESITE.block, B.ROCK_DEEPSLATE, B.ROCK_COBB
 COVER = (B.SNOW_LAYER,)
 JOINS = ("_wall", "_fence")
 
-# The far sea sinks into the horizon. Past HAZE[0] (measured as the edge is: further out in the west)
-# the tones close in on HORIZON, the light of the tone nearest the fog's colour in the blue hour
-# (tone 1 shows #393e69 against the horizon's #383a74); from HAZE[1] on a head keeps HAZE_KEEP of its
-# shading. The sea is closed out to 174 (where the density falls to 0.7). To the east, north and
-# south that is 110 to 125 blocks from where people stand, where the fog has taken less than half,
-# and light heads against the dark beyond would draw the sea's end; so the tones begin to sink about
-# where the fog begins for someone at the mountain's edge. In the west the fog is thick before the
-# sea ends and the lit faces of the far ranges carry the afterglow: HAZE_WEST of it is left out there.
+# The far sea closes out on one tone, and it is the tone the vanilla sheet shows where the two meet,
+# so the last heads and the flat sheet beside them are one colour and the join has no seam at all
+# (A0, 11-16 01:21: the new fog law no longer hides the far sea, so the end may not be drawn by fog).
+# Past HAZE[0] (measured as the edge is: further out in the west) the tones close in on the edge tone
+# and land on it: the last cells wear it flat. sky/mood.py reads EDGE_SHOWN and paints the vanilla
+# sheet that colour, so the two layers meet in one value.
+TONE_EDGE = 2                    # the tone of RAMPS["cloud"] the far sea and the vanilla sheet share
+HORIZON = TONE_EDGE / 4.0        # that tone as the light value the shading rounds to
+# What that tone actually shows as in the blue hour, under the map's own light (a2's measurement off
+# c260's real-game pictures: tone 2's texture #b0a1a8 on a cloud top displays as #474c7a). mood.py
+# reads this to paint the vanilla layer, so the two layers meet in one value.
+EDGE_SHOWN = "#474c7a"
 HAZE = (130.0, 185.0)
-HORIZON = 0.27
-HAZE_KEEP = 0.25
-HAZE_WEST = 0.75
+HAZE_KEEP = 0.0                  # the far sea lands flat on the edge tone (no shading kept)
+HAZE_WEST = 0.0                  # and does so all round: the west would otherwise show a seam of its own
 
 # The vanilla cloud sheet (clouds.png): 256x256, one pixel is a 12x12x4-block cell, the same colour
-# everywhere; it tiles on all four edges. Repainted as an almost closed deck (vanilla covers 27.6%)
-# cut by thin winding cracks that run north-south, so from the hilltop it reads as banks of cloud
-# lying across the way to the afterglow. Blank for "b".
-SHEET = dict(cover=0.90, cracks=(26, 110), holes=9, seed=SEED + 2)
+# everywhere; it tiles on all four edges. Closed: no cracks and no holes (A0, 11-16 01:21 -- the
+# cracks let the afterglow-stained void through as bright squares and the layer drifts, so the cracks
+# slide past the still block sea). Blank for "b".
+SHEET = dict(cover=1.0)
 
 GRAIN = 0.08                    # share of a tone's pixels nudged one step, within the cloud ramp
 
@@ -121,35 +124,14 @@ def _tone(i, seed=SEED):
 # --- the vanilla sheet -------------------------------------------------------------------------------
 def _clouds_sheet(blank=False):
     """A 256x256 cloud sheet for the vanilla layer: white where there is cloud (the game tints it by
-    cloud_color), transparent where there is not. Seamless on every edge."""
+    cloud_color), transparent where there is not. Closed, one cell of cover over the whole sheet: no
+    cracks and no holes (A0, 11-16 01:21). Seamless on every edge. Blank for "b"."""
     n = 256
     out = np.zeros((n, n, 4), dtype=np.uint8)
     out[..., :3] = 255
     if blank:
         return out                                  # the vanilla layer off (version "b")
-    rng = np.random.default_rng(SHEET["seed"])
-    gap = np.zeros((n, n), dtype=bool)              # [row = z, column = x]
-    want = int(round((1.0 - SHEET["cover"]) * n * n))
-    for _ in range(SHEET["holes"]):                 # a few small round holes
-        cx, cz, rad = rng.uniform(0, n), rng.uniform(0, n), rng.uniform(1.2, 2.6)
-        for dz in range(-3, 4):
-            for dx in range(-3, 4):
-                if dx * dx + dz * dz <= rad * rad:
-                    gap[int(cz + dz) % n, int(cx + dx) % n] = True
-    while gap.sum() < want:                         # cracks: walks southwards that wander east and west
-        x, z = rng.uniform(0, n), int(rng.integers(0, n))
-        drift, wide = 0.0, rng.uniform() < 0.18
-        for _ in range(int(rng.integers(*SHEET["cracks"]))):
-            drift = float(np.clip(0.82 * drift + rng.normal(0.0, 0.33), -1.0, 1.0))
-            x += drift
-            gap[z % n, int(x) % n] = True
-            if wide and rng.uniform() < 0.5:
-                gap[z % n, (int(x) + 1) % n] = True
-            if rng.uniform() < 0.035:               # a short side crack
-                for k in range(1, int(rng.integers(2, 6))):
-                    gap[z % n, (int(x) + k) % n] = True
-            z += 1
-    out[..., 3] = np.where(gap, 0, 255)
+    out[..., 3] = 255 if SHEET["cover"] >= 1.0 else 0
     return out
 
 
@@ -461,5 +443,5 @@ def pack(pack_dir, version=DEFAULT):
     respack.texture(pack_dir, "environment/clouds", sheet)
     cover = float((sheet[..., 3] > 0).mean())
     out.append("clouds.png: " + ("blanked (block clouds only)" if blank
-                                 else f"{cover * 100:.1f}% cover, thin north-south cracks"))
+                                 else f"{cover * 100:.1f}% cover, closed (no cracks: A0 11-16 01:21)"))
     return out
