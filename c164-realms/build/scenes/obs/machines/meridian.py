@@ -12,8 +12,8 @@ middle of the hut (site/outbuildings), under the slot in the roof:
   the tube     a cast cube in the middle; two cones of riveted plate bolted to it, the object glass
                in a brass cell at one end and the micrometer eyepiece at the other; the two halves
                of the axis bolted to its sides, cast cones that end in steel pivots.
-  the circles  one either side of the tube, three blocks across: a graduated brass band on six
-               spokes, a long division every fifteen degrees.
+  the circles  one either side of the tube, two and three quarter blocks across, as large as the
+               hut's low roof lets them turn: a graduated brass band on six spokes.
   the lamp     a small brass lantern on the west pier, level with the axis: it shines through the
                hollow pivot onto the wires. The one light in the hut.
 
@@ -308,12 +308,13 @@ def size_findings(models, scales):
 AXIS_Y = 32.0                   # texels: the axis over the floor (two blocks, site/outbuildings HUT_AXIS)
 PIER_OFF = 32.0                 # the piers' middles from the meridian (HUT_PIERS)
 CIRCLE_OFF = 14.5               # the circles' planes from the meridian
-CIRCLE_R = 24.0                 # three blocks across
+CIRCLE_R = 22.0                 # two and three quarter blocks across: two texels under the hut's roof
 HALF = 30.0                     # the tube from the axis to either end: it passes the floor
 ALTITUDE = S.LATITUDE           # the pole star: due north, as high as the latitude
 TUBE_SCALE = CIRCLE_SCALE = PIER_SCALE = 2.0
 LAMP_SCALE = 1.0
 LAMP_PIER = -1                  # the lantern hangs on the west pier
+HUT_ROOF = 3.5                  # blocks: the underside of the hut's roof over the floor, off the meridian
 
 _A = math.radians(ALTITUDE)
 SIGHT = (0.0, math.sin(_A), -math.cos(_A))              # the way the tube looks: north and up
@@ -421,7 +422,7 @@ PIER = [                        # the casing's sections: y0, y1, half size (texe
     (22.5, 27.0, 6.0),
 ]
 PIER_CAP = (27.0, 28.5, 7.0)
-SCOPE_AT = 22.0                 # the reading microscopes look at the band this far from the axis
+SCOPE_AT = 20.0                 # the reading microscopes look at the band this far from the axis
 SCOPE_ANGLE = 45.0              # ... and this many degrees either side of straight up
 ARM_X = 5.0                     # the plane of the forked arm, texels from the pier's middle towards the tube
 
@@ -528,16 +529,15 @@ def build(canvas, origin=(0, 0, 0), lamp=True, brightness=BRIGHTNESS):
 
 # ---- the rules the numbers are held to ---------------------------------------------------------------------
 def _hut_clear(p):
-    """Is a point inside the hut's room (site/outbuildings: clear from wall to wall, the roof 3.5
-    high at the walls, 4 a block further in, 4.8 under the shutters, open over the meridian)?"""
+    """Is a point inside the hut's room (site/outbuildings: clear from wall to wall, x 32..38 and
+    z -33..-27, 3.5 high under the flat roof, open to the sky over the meridian's own column)?"""
     cx, cz = S.MERIDIAN_HUT["centre"]
     h = S.MERIDIAN_HUT["size"] // 2
     x, y, z = p
     if not (cx - h + 1 <= x <= cx + h and cz - h + 1 <= z <= cz + h and y >= S.GROUND):
         return False
     d = abs(int(math.floor(x)) - cx)
-    roof = {0: 99.0, 1: S.GROUND + 4.8, 2: S.GROUND + 4.0}.get(d, S.GROUND + 3.5)
-    return y <= roof
+    return d == 0 or y <= S.GROUND + HUT_ROOF
 
 
 def check():

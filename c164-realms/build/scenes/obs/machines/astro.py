@@ -20,8 +20,8 @@ great refractor: tonight it takes the comet's plate.
   the back    the camera: a wooden box with brass corners behind the tail flange, the plate
               holder in its frame, the dark slide half drawn.
 
-The room decides its size (the card asked for a tube six blocks long): the drum is five blocks
-across inside and seven under the dome, so the tube is 5.3 blocks from the dew cap to the plate
+The room decides its size (the card asks for a tube six blocks long): the drum is five blocks
+across inside and seven under the dome, so the tube is 5.8 blocks from the dew cap to the plate
 holder and 1.1 across. The object glass stands just inside the slit, where it shows from the
 terrace; the plate holder is at the height of the observer's chest in the east half of the room.
 The tube is on the east side of the pier and the counterweights hang to the west and north, the
@@ -112,7 +112,7 @@ DOME_AXIS = ((S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0 + 0.5,
              (S.SMALL_DOME_Z[0] + S.SMALL_DOME_Z[1]) / 2.0 + 0.5)       # (12.5, 30.5), a point
 RISE = 40.0                     # texels: the tube's pivot over the floor
 OFF = 18.0                      # from the polar axis to the tube's axis, along the declination axis
-FRONT, TAIL, BACK = 51.0, 26.0, 33.5    # from the pivot: to the dew cap's lip, the tail flange, the plate holder's back
+FRONT, TAIL, BACK = 60.0, 26.0, 33.5    # from the pivot: to the dew cap's lip, the tail flange, the plate holder's back
 HOLD = 8.0                      # from the head down the polar axis to the bolt the cheeks hold the sleeve by
 TUBE_SCALE, MOUNT_SCALE, AXIS_SCALE, BACK_SCALE = 2.0, 1.0, 1.0, 1.0
 
@@ -149,11 +149,11 @@ def sweep(origin=(0, 0, 0)):
 
 # ---- the tube -----------------------------------------------------------------------------------------
 BODY_R, HOOP_R, CELL_R = 9.0, 10.0, 10.0
-BODY = (-38.0, 16.0)            # the rings of plate: from, to (texels from the pivot; the plate is at +)
+BODY = (-47.0, 16.0)            # the rings of plate: from, to (texels from the pivot; the plate is at +)
 HOOPS = (-31.0, -15.0, 16.0)    # the hoops' middles; the last, where the tail cone starts, is brass
 STRAPS = (-7.5, 7.5)            # the saddle's two straps
 GUIDE_OFF, GUIDE_R = 13.25, 2.75
-GUIDE = (-38.0, 24.0)           # the guiding telescope's tube: from, to
+GUIDE = (-44.0, 24.0)           # the guiding telescope's tube: from, to
 SEAMS = (215.0, 245.0)          # where the seams of rivets run: degrees round the tube (0 north, 90 over)
 ROD = (175.0, 2.0, 22.0)        # the slow-motion rod: degrees round the tube, from, to
 
