@@ -1,0 +1,141 @@
+[trip 19:53:11 +0s] trip of obs_sky_comet, obs_sky_comet_b, obs_sky_comet_c: the code of c992a3ae (tag c992a3a), view distance 12, cloud range 128; 4 cores, 2700 s at most
+[trip 19:53:11 +0s] clean: nodemc.py down  (up to 180 s)
+[trip 19:53:11 +0s] clean: exit 0, 0 s
+[trip 19:53:11 +0s] setup: nodemc.py setup  (up to 1500 s)
+    [nodemc 19:53:11] vulkan: apiVersion 1.4.318, deviceName llvmpipe (LLVM 20.1.2, 256 bits), driverInfo Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+    [nodemc 19:53:11] java: /agent/realms-study/jdk/jdk-25.0.5+8-jre/bin/java
+    [nodemc 19:53:11] game files: whole ({"version": "26.3", "system": "linux", "mainClass": "net.minecraft.client.main.Main", "assetIndex": "34", "files": 5124, "downloaded": 5123, "assets_skipped": 9)
+    [nodemc 19:53:11] settings written: nothing, all there; view distance 12, cloud range 128
+[trip 19:53:11 +0s] setup: exit 0, 0 s
+[trip 19:53:11 +0s] station: nodemc.py status  (up to 60 s)
+    server: no answer
+    client: not running
+    display: none
+    distances: client renderDistance 12, server view-distance 12, cloudRange 128
+    machine: 4 cores, load 1.57, 4946 MB of memory available, 242 GB of disk free under /agent/realms-study
+[trip 19:53:11 +0s] station: exit 0, 0 s
+[trip 19:53:11 +0s] shuttle, obs_sky_comet: shuttle.py --tag c992a3a --commit c992a3ae --settle 10.0 --first-settle 60.0 --still 60.0 --out /tmp/c164_s1/real --only obs_sky_comet=v1_deep,v2_deep,v1_blue,v2_blue,v1_glow,v2_glow,sky_card,sky_deep --keep-client obs_sky_comet  (up to 2460 s)
+    [shuttle 19:53:11] the code that is shot: /tmp/dais_jobs/c319/c164-realms at c992a3ae; tag c992a3a
+        server: no answer
+        client: not running
+        display: none
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 1.57, 4946 MB of memory available, 242 GB of disk free under /agent/realms-study
+        [nodemc 19:53:19] server is up (8 s)
+    [shuttle 19:53:19] placing obs_sky_comet at 18000 200 0
+        built 18579 blocks, 0 entities in 0.0s
+        exported 6 tiles (18579 + 0 blocks) in 0.0s
+        Reloading!
+        placed in 0.2s, 0 failed
+        biome c164art:obs_blue: 499660 cells set in 4 boxes, x 17870..18211 y 43..319 z -166..163
+        comet (a) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+    [shuttle 19:53:23] resource pack: 10 files written to client26/game/resourcepacks/c164art
+        [nodemc 19:53:33] C164Cam is online (10 s)
+        [nodemc 19:53:33] game: [19:53:28] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 19:53:33] game: [19:53:28] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 19:53:33] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 19:53:33] game: [19:53:28] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 19:53:33] game: [19:53:28] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 19:53:33] pictures: saved by the game itself (helper)
+    [shuttle 19:53:33] shooting obs_sky_comet: 8 shots of scenes/obs_sky_comet/shots.json
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v1_blue.png (still after 3 s more, 0.01% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v1_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v1_glow.png (still after 3 s more, 0.01% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v2_blue.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v2_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/v2_glow.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/sky_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet/sky_card.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 8 saved by the game itself, 0 taken off the display
+    [shuttle 19:56:12] obs_sky_comet: 8 of 8 pictures in /tmp/c164_s1/real/c992a3a/obs_sky_comet
+    [shuttle 19:56:12] trip done (181 s, the game was opened once and is closed again)
+[trip 19:56:12 +181s] shuttle, obs_sky_comet: exit 0, 181 s
+[trip 19:56:12 +181s] obs_sky_comet: 8 pictures of c992a3ae in renders/real/obs_sky_comet/
+[trip 19:56:12 +182s] obs_sky_comet: sheet.jpg in renders/real/obs_sky_comet/
+[trip 19:56:12 +182s] shuttle, obs_sky_comet_b: shuttle.py --tag c992a3a --commit c992a3ae --settle 10.0 --first-settle 60.0 --still 60.0 --out /tmp/c164_s1/real --only obs_sky_comet_b=v1_deep,v2_deep,v1_blue,v2_blue,v1_glow,v2_glow,sky_deep --keep-client obs_sky_comet_b  (up to 2278 s)
+    [shuttle 19:56:12] the code that is shot: /tmp/dais_jobs/c319/c164-realms at c992a3ae; tag c992a3a
+        server: There are 1 of a max of 10 players online: C164Cam
+        client: process 400189
+        pictures: saved by the game itself (helper)
+        display: Xvfb :164, process 400167
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 1.99, 2718 MB of memory available, 242 GB of disk free under /agent/realms-study
+        [nodemc 19:56:13] server is up
+    [shuttle 19:56:13] placing obs_sky_comet_b at 19000 200 0
+        built 18579 blocks, 0 entities in 0.0s
+        exported 6 tiles (18579 + 0 blocks) in 0.1s
+        Reloading!
+        placed in 0.1s, 0 failed
+        biome c164art:obs_blue: 499660 cells set in 4 boxes, x 18870..19211 y 43..319 z -166..163
+        comet (b) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+        [nodemc 19:56:16] client stopped
+    [shuttle 19:56:16] resource pack: 10 files written to client26/game/resourcepacks/c164art
+        [nodemc 19:56:26] C164Cam is online (10 s)
+        [nodemc 19:56:26] game: [19:56:21] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 19:56:26] game: [19:56:21] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 19:56:26] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 19:56:26] game: [19:56:21] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 19:56:26] game: [19:56:21] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 19:56:26] pictures: saved by the game itself (helper)
+    [shuttle 19:56:26] shooting obs_sky_comet_b: 7 shots of scenes/obs_sky_comet_b/shots.json
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v1_blue.png (still after 3 s more, 0.02% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v1_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v1_glow.png (still after 3 s more, 0.03% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v2_blue.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v2_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/v2_glow.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_b/sky_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 7 saved by the game itself, 0 taken off the display
+    [shuttle 19:58:52] obs_sky_comet_b: 7 of 7 pictures in /tmp/c164_s1/real/c992a3a/obs_sky_comet_b
+    [shuttle 19:58:52] trip done (160 s, the game was opened once and is closed again)
+[trip 19:58:52 +341s] shuttle, obs_sky_comet_b: exit 0, 160 s
+[trip 19:58:52 +341s] obs_sky_comet_b: 7 pictures of c992a3ae in renders/real/obs_sky_comet_b/
+[trip 19:58:52 +342s] obs_sky_comet_b: sheet.jpg in renders/real/obs_sky_comet_b/
+[trip 19:58:52 +342s] shuttle, obs_sky_comet_c: shuttle.py --tag c992a3a --commit c992a3ae --settle 10.0 --first-settle 60.0 --still 60.0 --out /tmp/c164_s1/real --only obs_sky_comet_c=v1_deep,v2_deep,v1_blue,v2_blue,v1_glow,v2_glow,sky_deep obs_sky_comet_c  (up to 2118 s)
+    [shuttle 19:58:52] the code that is shot: /tmp/dais_jobs/c319/c164-realms at c992a3ae; tag c992a3a
+        server: There are 1 of a max of 10 players online: C164Cam
+        client: process 400362
+        pictures: saved by the game itself (helper)
+        display: Xvfb :164, process 400167
+        distances: client renderDistance 12, server view-distance 12, cloudRange 128
+        machine: 4 cores, load 2.18, 2386 MB of memory available, 242 GB of disk free under /agent/realms-study
+        [nodemc 19:58:53] server is up
+    [shuttle 19:58:53] placing obs_sky_comet_c at 20000 200 0
+        built 18579 blocks, 0 entities in 0.0s
+        exported 6 tiles (18579 + 0 blocks) in 0.0s
+        Reloading!
+        placed in 0.1s, 0 failed
+        biome c164art:obs_blue: 499660 cells set in 4 boxes, x 19870..20211 y 43..319 z -166..163
+        comet (c) -> 8 moon phase pictures, test card in new_moon
+        sun picture blanked
+        [nodemc 19:58:56] client stopped
+    [shuttle 19:58:56] resource pack: 10 files written to client26/game/resourcepacks/c164art
+        [nodemc 19:59:06] C164Cam is online (10 s)
+        [nodemc 19:59:06] game: [19:59:01] [Render thread/INFO]: Backend library: LWJGL version 3.4.3+4
+        [nodemc 19:59:06] game: [19:59:01] [Render thread/ERROR]: Failed to create backend OpenGL
+        [nodemc 19:59:06] game: com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+        [nodemc 19:59:06] game: [19:59:01] [Render thread/INFO]: Using graphics backend Vulkan, using drivers: 1.4.318 llvmpipe Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+        [nodemc 19:59:06] game: [19:59:01] [Render thread/INFO]: Using graphics device: llvmpipe (LLVM 20.1.2, 256 bits) (0x10005)
+        [nodemc 19:59:06] pictures: saved by the game itself (helper)
+    [shuttle 19:59:06] shooting obs_sky_comet_c: 7 shots of scenes/obs_sky_comet_c/shots.json
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v1_blue.png (still after 3 s more, 0.02% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v1_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v1_glow.png (still after 3 s more, 0.01% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v2_blue.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v2_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/v2_glow.png (still after 3 s more, 0.00% of it moved between the last two)
+        /tmp/c164_s1/real/c992a3a/obs_sky_comet_c/sky_deep.png (still after 3 s more, 0.00% of it moved between the last two)
+        pictures: 7 saved by the game itself, 0 taken off the display
+        [nodemc 20:01:33] client stopped
+    [shuttle 20:01:33] obs_sky_comet_c: 7 of 7 pictures in /tmp/c164_s1/real/c992a3a/obs_sky_comet_c
+    [shuttle 20:01:33] trip done (160 s, the game was opened once and is closed again)
+[trip 20:01:33 +502s] shuttle, obs_sky_comet_c: exit 0, 160 s
+[trip 20:01:33 +502s] obs_sky_comet_c: 7 pictures of c992a3ae in renders/real/obs_sky_comet_c/
+[trip 20:01:33 +502s] obs_sky_comet_c: sheet.jpg in renders/real/obs_sky_comet_c/
+[trip 20:01:33 +502s] renders/real/_beside/comet-abc.jpg: 8 shots of 3 scenes side by side
+[trip 20:01:33 +502s] close: nodemc.py down  (up to 180 s)
+    [nodemc 20:01:34] server stopped
+[trip 20:01:35 +504s] close: exit 0, 2 s
+[trip 20:01:35 +504s] trip done; pictures kept: renders/real/obs_sky_comet/, renders/real/obs_sky_comet_b/, renders/real/obs_sky_comet_c/; log renders/real/_trips/20261115-1953-c992a3a.log
