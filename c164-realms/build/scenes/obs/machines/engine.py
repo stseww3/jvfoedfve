@@ -97,7 +97,8 @@ CYL_R = 0.625                           # the lagged barrel: 20 px across
 BED = (2.8, 8.7)                        # the bed under the slide bars and the cylinder, along x
 BED_HALF = 0.75                         # half its width
 BED_TOP = 0.625
-CHEST = (6.0, 8.1)                      # the valve chest along x, on the side away from the door
+CHEST = (6.0625, 8.0375)                # the valve chest along x, on the side away from the door: from the
+#                                         middle of one of the barrel's bands to the middle of the other
 CHEST_Z = (0.5625, 1.1875)
 VALVE_Z = (ECC_Z[0] + ECC_Z[1]) / 2.0   # 1.031: the plane of the eccentric rod and the valve spindle
 ECC = 0.1875                            # the eccentric's throw
@@ -171,7 +172,6 @@ STEEL = P.mat("iron", base=5, noise=0.10)       # bright steel: rods, shaft, sli
 BRASS = P.mat("brass")
 BRASS_D = P.mat("brass_dark")
 COPPER = P.mat("old_copper")
-WOUND = P.mat("old_copper", kind="wood", bevel=0)       # windings: the wire runs with the grain
 PORCELAIN = P.mat("porcelain")
 RED = P.mat("signal")
 
@@ -194,7 +194,21 @@ class _Belting(Mat):
         return lv + (across[:, None] if grain == "u" else across[None, :])
 
 
+class _Winding(Mat):
+    """Wire wound close, turn beside turn: one texel a turn, light and dark by turns, the wire
+    running with the grain. Nothing else on it: a coil is the same all the way round."""
+
+    def levels(self, w, h, grain, seed):
+        lv = np.full((h, w), self.base, dtype=np.int32)
+        if grain == "cap":
+            return lv
+        turns = np.arange(h if grain == "u" else w, dtype=np.int32) % 2
+        return lv + (turns[:, None] if grain == "u" else turns[None, :])
+
+
 LEATHER = _Belting("dark_wood~belting", P.RAMPS["dark_wood"], bevel=0, base=2)
+WOUND = _Winding("old_copper~wound", P.RAMPS["old_copper"], bevel=0, base=1)     # varnished coils
+BARS = _Winding("old_copper~bars", P.RAMPS["old_copper"], bevel=0, base=3)       # the commutator, worn bright
 CORD = P.mat("dark_wood", kind="flat", bevel=0, base=3)
 STUD = P.mat("iron", kind="flat", bevel=0, base=5)
 EDGE = P.mat("iron", kind="flat", bevel=0, base=5)       # an edge turned bright: a wheel's rim
@@ -380,20 +394,23 @@ def _flywheel():
         for i in range(SPOKES):
             a = math.radians(360.0 * i / SPOKES)
             d.stud((0.375 * math.cos(a), H + 0.375 * math.sin(a), WZ - 0.25), "-z", STUD)
-        d.tube("z", (0.0, H), WEB[0], OUTER[1] + 0.125, SHAFT_R, STEEL, sides=8)
-        d.tube("z", (0.0, H), CORD_Z - PX / 2, CORD_Z + PX / 2, CORD_FROM, IRON_L, sides=12)     # the cord's pulley
+        d.tube("z", (0.0, H), WEB[0] - PX / 2, OUTER[1] + 0.125, SHAFT_R, STEEL, sides=8)  # its end shows in the crank
+        d.tube("z", (0.0, H), CORD_Z - PX, CORD_Z + PX, CORD_FROM, IRON_L, sides=12)             # the cord's pulley
         # the eccentric: a sheave that sits off the axis, before the crank
         a = math.radians(ECC_LEAD)
         d.tube("z", (ECC * math.cos(a), H + ECC * math.sin(a)), ECC_Z[0] + PX / 2, ECC_Z[1] - PX / 2, ECC_R, IRON_L,
                sides=12)
-        # the crank: a web from the shaft to the pin, a balance weight behind the shaft
+        # the crank: a web from the shaft to the pin, a balance weight behind the shaft. The two
+        # bosses stand proud of the web and of the weight, and the weight's middle of its wings:
+        # no two of their faces lie in one plane
         z0, z1 = WEB
-        d.box((0.0, H - 0.25, z0), (CRANK, H + 0.25, z1), IRON, grain="x")
+        q = PX / 4
+        d.box((0.0, H - 0.21875, z0 + q), (CRANK, H + 0.21875, z1 - q), IRON, grain="x")
         d.tube("z", (0.0, H), z0, z1, 0.34375, IRON, sides=12)
         d.tube("z", (CRANK, H), z0, z1, 0.25, IRON, sides=12)
-        for turn in (-28.0, 0.0, 28.0):                                               # the weight: a fan of three
-            d.box((-0.8125, H - 0.21875, z0), (-0.1875, H + 0.21875, z1), IRON_D, rot=("z", turn, (0.0, H, 0.0)),
-                  grain="x")
+        for turn, inset in ((-28.0, 2 * q), (0.0, q), (28.0, 3 * q)):                 # the weight: a fan of three
+            d.box((-0.8125, H - 0.21875, z0 + inset), (-0.1875, H + 0.21875, z1 - inset), IRON_D,
+                  rot=("z", turn, (0.0, H, 0.0)), grain="x")
         d.tube("z", (CRANK, H), -0.1875, z0, 0.125, STEEL, sides=8)                   # the pin
         d.tube("z", (CRANK, H), -0.25, -0.1875, 0.1875, BRASS, sides=8)               # its collar
     return d
@@ -425,7 +442,7 @@ def _crosshead():
         za, zb = sorted((s * 0.1875, s * 0.4375))
         d.box((PIN - 0.3125, H - 0.25, za), (PIN + 0.3125, H + 0.25, zb), IRON_L)
         d.tube("z", (PIN, H), *sorted((s * 0.4375, s * 0.5)), 0.09375, BRASS, sides=8)    # the pin's ends
-    d.oil_cup(PIN, H + 0.25, 0.3125)
+    d.oil_cup(PIN, H + 0.25, 0.0)                                                     # between the two upper bars
     d.tube("x", (H, 0.0), PIN + 0.28125, PIN + 2.7, 0.09375, STEEL, sides=8)          # the piston rod
     d.tube("x", (H, 0.0), PIN + 0.28125, PIN + 0.40625, 0.15625, IRON, sides=8)       # its boss on the crosshead
     return d
@@ -438,7 +455,7 @@ def _eccentric():
     d = _Draw("eccentric")
     a = math.radians(ECC_LEAD)
     ex, ey = ECC * math.cos(a), H + ECC * math.sin(a)                                 # the sheave's middle, at rest
-    d.ring("z", (ex, ey, VALVE_Z), ECC_R + PX / 2, PX, ECC_Z[1] - ECC_Z[0], BRASS, sides=16)
+    d.ring("z", (ex, ey, VALVE_Z), ECC_R + 0.625 * PX, 1.25 * PX, ECC_Z[1] - ECC_Z[0], BRASS, sides=16)
     tilt = math.degrees(math.atan2(H - ey, VALVE_PIN - ex))
     with d.m.turned(("z", tilt), about=d.p((ex, ey, VALVE_Z))):
         d.box((ex + ECC_R + PX, ey - 0.09375, VALVE_Z - 0.0625), (ex + ECC_R + 0.25, ey + 0.09375, VALVE_Z + 0.0625), IRON_L)
@@ -483,11 +500,11 @@ def _armature():
     d = _Draw("armature")
     c = (DYN_X, DYN_H)
     with _lit_along((0.0, 0.0, -1.0)):
-        d.tube("z", c, WZ - 0.3125, D_FAR[1] + 0.0625, 0.09375, STEEL, sides=8)
+        d.tube("z", c, WZ - 0.3125, D_FAR[1] + 0.09375, 0.09375, STEEL, sides=8)
         d.tube("z", c, ARM[0] + PX, ARM[1] - PX, ARM_R, WOUND, sides=12, grain="z")   # the wound drum
         for z in (ARM[0] + 0.125, ARM[1] - 0.1875):
             d.tube("z", c, z, z + 0.0625, ARM_R + PX / 2, BRASS_D, sides=12)          # its binding bands
-        d.tube("z", c, COMM[0], COMM[1], 0.25, WOUND, sides=12, grain="z")            # the commutator's bars
+        d.tube("z", c, COMM[0], COMM[1], 0.25, BARS, sides=12, grain="z")             # the commutator's bars
         d.tube("z", c, COMM[1], COMM[1] + 0.0625, 0.28125, BRASS_D, sides=12)
         # the pulley: a crowned face on six arms
         face = IRON_L.variant(0, "along")
@@ -530,13 +547,14 @@ def _bed():
         for s in (-1.0, 1.0):
             za, zb = sorted((s * (w - 0.125), s * (w - PX)))
             d.box((x - PX, 0.125, za), (x + PX, BED_TOP - 0.125, zb), IRON)
-            d.stud((x, 0.125, s * (w - PX)), "y")
+            za, zb = sorted((s * (w - PX), s * w))
+            d.box((x - PX, 0.125, za), (x + PX, 0.125 + PX / 2, zb), STUD)            # the bolt at the rib's foot
     # the four slide bars and the yoke that holds their crank end
     gx = (BED[0] + 0.0625, CYL[0] - 0.125)
     for s in (-1.0, 1.0):
         za, zb = sorted((s * 0.21875, s * 0.46875))
         for y0, y1 in ((H + 0.25, H + 0.375), (H - 0.375, H - 0.25)):
-            d.box((gx[0], y0, za), (gx[1], y1, zb), STEEL, grain="x")
+            d.box((gx[0] + 0.125, y0, za), (gx[1], y1, zb), STEEL, grain="x")         # from the yoke's post
         d.box((gx[0] - 0.0625, BED_TOP, za), (gx[0] + 0.125, H + 0.4375, zb), IRON)   # a post of the yoke
         d.box((gx[1] - 0.25, BED_TOP, za), (gx[1], H - 0.375, zb), IRON)              # a block under the cylinder end
     d.box((gx[0] - 0.0625, H + 0.4375, -0.46875), (gx[0] + 0.125, H + 0.5625, 0.46875), IRON)     # the yoke's head
@@ -554,7 +572,7 @@ def _plummer(d, z0, z1):
     d.box((-0.625, 0.0, z0 - PX), (0.625, 0.125, z1 + PX), IRON_D)
     d.box((-0.5, 0.125, z0), (0.5, 0.5, z1), IRON)
     d.box((-0.375, 0.5, z0), (0.375, H - 0.125, z1), IRON)
-    d.tube("z", (0.0, H), z0, z1, 0.375, IRON, sides=12)                              # the housing
+    d.tube("z", (0.0, H), z0 - PX / 2, z1 + PX / 2, 0.375, IRON, sides=12)            # the housing, proud of its foot
     d.tube("z", (0.0, H), z0 - PX, z1 + PX, 0.28125, BRASS, sides=12)                 # the brasses show at its ends
     d.box((-0.3125, H + 0.3125, z0 + PX), (0.3125, H + 0.4375, z1 - PX), IRON_L)      # the cap
     for sx in (-0.21875, 0.21875):
@@ -570,7 +588,7 @@ def _frame():
     _plummer(d, *MAIN)
     _plummer(d, *OUTER)
     z0, z1 = MAIN
-    d.box((0.5, 0.0, z0 - PX), (BED[0] + 0.0625, 0.125, z1 + PX), IRON_D)
+    d.box((0.625, 0.0, z0 - PX), (BED[0], 0.125, z1 + PX), IRON_D)                    # between the two soles
     d.box((0.5, 0.125, z0 + PX), (BED[0] + 0.0625, 0.75, z1 - PX), IRON)
     d.box((0.5, 0.75, z0), (BED[0] + 0.0625, 0.875, z1), IRON_L)
     for x in (1.0, 1.6, 2.2):
@@ -605,10 +623,17 @@ def _cylinder():
     xm = (x0 + x1) / 2.0
     d.box((xm + 0.25, H - 0.125, -CYL_R - PX / 2), (xm + 0.875, H + 0.125, -CYL_R + PX), BRASS)
     d.box((xm + 0.3125, H - 0.0625, -CYL_R - PX), (xm + 0.8125, H + 0.0625, -CYL_R - PX / 2), BRASS_D)
-    for x in (x0 + 0.1875, x1 - 0.1875):
-        d.tube("y", (x, -0.25), H - CYL_R - 0.1875, H - CYL_R + 0.0625, 0.046875, BRASS, sides=4)
-        d.box((x - 0.03125, H - CYL_R - 0.15625, -0.4375), (x + 0.03125, H - CYL_R - 0.09375, -0.25), BRASS_D)
-    d.tube("x", (H - CYL_R - 0.21875, -0.25), x0 + 0.1875, x1 - 0.1875, 0.03125, COPPER, sides=4)
+    # under each end of the barrel a drain cock, its lever towards the door; their pipe lies along
+    # the bed's edge and goes down its side into the floor
+    zc, zp = -0.375, -BED_HALF + 0.09375
+    ends = (x0 + 0.09375, x1 - 0.09375)
+    for x in ends:
+        d.tube("y", (x, zc), BED_TOP + 0.0625, H - 0.46875, 0.046875, BRASS, sides=4)
+        d.box((x - 0.03125, BED_TOP + 0.15625, zc - 0.21875), (x + 0.03125, BED_TOP + 0.21875, zc - 0.046875), BRASS_D)
+        d.box((x - 0.03125, BED_TOP, zp + 0.03125), (x + 0.03125, BED_TOP + 0.0625, zc + 0.046875), COPPER)
+    d.box((ends[0] - 0.03125, BED_TOP, zp - 0.03125), (ends[1] + 0.03125, BED_TOP + 0.0625, zp + 0.03125), COPPER)
+    d.box((ends[1] - 0.03125, BED_TOP, -BED_HALF - 0.0625), (ends[1] + 0.03125, BED_TOP + 0.0625, zp - 0.03125), COPPER)
+    d.box((ends[1] - 0.03125, 0.0, -BED_HALF - 0.0625), (ends[1] + 0.03125, BED_TOP, -BED_HALF), COPPER)
     # the oiler on the barrel
     d.oil_cup(x0 + 0.65, H + CYL_R, 0.0)
     # the valve chest and its cover
@@ -626,11 +651,11 @@ def _cylinder():
     # the throttle on the chest, the branch to the steam flange, the governor's bracket and column
     d.tube("y", (GOV_X, GOV_Z), H + 0.3125, H + 0.8125, 0.1875, IRON, sides=8)
     d.tube("x", (H + 0.5625, GOV_Z), GOV_X, INLET[0] + 0.14, 0.140625, IRON, sides=8)
-    d.tube("y", (INLET[0], GOV_Z), H + 0.5625, INLET[1] - 0.0625, 0.140625, IRON, sides=8)
+    d.tube("y", (INLET[0], GOV_Z), H + 0.6875, INLET[1] - 0.0625, 0.140625, IRON, sides=8)       # from the branch's top
     d.tube("y", (INLET[0], GOV_Z), INLET[1] - 0.0625, INLET[1], 0.25, IRON_L, sides=8)
     d.box((GOV_X - 0.1875, H + 0.8125, GOV_Z - 0.1875), (GOV_X + 0.1875, H + 0.9375, CORD_Z - 0.0625), IRON)
-    d.tube("z", GOV_PULLEY, GOV_Z, CORD_Z + 0.0625, 0.046875, STEEL, sides=4)
-    d.tube("z", GOV_PULLEY, CORD_Z - PX / 2, CORD_Z + PX / 2, CORD_TO, IRON_L, sides=12)
+    d.tube("z", GOV_PULLEY, GOV_Z, CORD_Z + 0.09375, 0.046875, STEEL, sides=4)
+    d.tube("z", GOV_PULLEY, CORD_Z - PX, CORD_Z + PX, CORD_TO, IRON_L, sides=12)
     d.tube("y", (GOV_X, GOV_Z), H + 0.9375, GOV_Y, 0.109375, BRASS_D, sides=8)
     _lap, far = _laps(CORD_RUNS)
     d.arc((GOV_PULLEY[0], GOV_PULLEY[1], CORD_Z), CORD_TO + PX / 2, PX, PX, far[0], far[1], CORD, steps=8)
@@ -657,9 +682,17 @@ def _lap():
 
 
 def _wire(d, points, mat=COPPER):
-    """A stiff lead through the points, every leg of it along an axis: square, a texel thick."""
-    for a, b in zip(points, points[1:]):
-        d.box([min(a[i], b[i]) - PX / 2 for i in range(3)], [max(a[i], b[i]) + PX / 2 for i in range(3)], mat)
+    """A stiff lead through the points, every leg of it along an axis: square, a texel thick. A leg
+    owns the corner it ends in and the next one begins beyond it, so no two legs share a face."""
+    h = PX / 2
+    for n, (a, b) in enumerate(zip(points, points[1:])):
+        k = max(range(3), key=lambda i: abs(b[i] - a[i]))
+        lo, hi = [min(a[i], b[i]) - h for i in range(3)], [max(a[i], b[i]) + h for i in range(3)]
+        if n and b[k] > a[k]:
+            lo[k] = a[k] + h
+        elif n:
+            hi[k] = a[k] - h
+        d.box(lo, hi, mat)
 
 
 def _pedestal(d, z0, z1, foot):
@@ -667,7 +700,7 @@ def _pedestal(d, z0, z1, foot):
     zm = (z0 + z1) / 2.0
     d.box((DYN_X - 0.3125, foot, z0), (DYN_X + 0.3125, foot + 0.125, z1), IRON_D)
     d.box((DYN_X - 0.1875, foot + 0.125, z0), (DYN_X + 0.1875, DYN_H - 0.125, z1), IRON)
-    d.tube("z", (DYN_X, DYN_H), z0, z1, 0.21875, IRON, sides=8)
+    d.tube("z", (DYN_X, DYN_H), z0 - PX / 2, z1 + PX / 2, 0.21875, IRON, sides=8)
     d.tube("z", (DYN_X, DYN_H), z0 - PX, z1 + PX, 0.15625, BRASS, sides=8)
     d.oil_cup(DYN_X, DYN_H + 0.21875, zm)
 
@@ -706,12 +739,16 @@ def _dynamo():
         ya, yb = sorted((DYN_H + s * 0.25, DYN_H + s * 0.5))
         d.box((DYN_X - 0.0625, ya, zb - 0.09375), (DYN_X + 0.0625, yb, zb + 0.09375), BRASS)
     # the two leads lie on the machine: from each brush along the back of a pole piece, up the back
-    # of its limb's coil and over the yoke to the terminal that stands on that limb's head
+    # of its limb's coil and over the yoke as far as the terminal board, under the post on that limb
     top = YOKE_Y[1]
     zr = ARM[1] + PX / 2
     for s, y in ((-1.0, DYN_H + 0.5 + PX / 2), (1.0, DYN_H - 0.5 - PX / 2)):
         _wire(d, [(DYN_X, y, zr), (DYN_X + s * LIMB, y, zr), (DYN_X + s * LIMB, top + PX / 2, zr),
-                  (DYN_X + s * LIMB, top + PX / 2, DYN_Z + 0.125)])
+                  (DYN_X + s * LIMB, top + PX / 2, DYN_Z + 0.1875 + PX / 2)])
+    # the maker's plate, on the pole piece that looks at the engine
+    xe = DYN_X + 1.0
+    d.box((xe - PX, DYN_H - 0.0625, DYN_Z - 0.25), (xe + PX / 2, DYN_H + 0.1875, DYN_Z + 0.25), BRASS)
+    d.box((xe + PX / 2, DYN_H, DYN_Z - 0.1875), (xe + PX, DYN_H + 0.125, DYN_Z + 0.1875), BRASS_D)
     # the terminal board on the yoke: a porcelain post over each limb, the pilot lamp between them
     d.box((DYN_X - 0.8125, top, DYN_Z - 0.1875), (DYN_X + 0.8125, top + 0.0625, DYN_Z + 0.1875), IRON_D)
     for s in (-1.0, 1.0):
