@@ -86,7 +86,7 @@ from ..props import _kit as K
 PREFIX = "mach_clock_"
 
 # What every dial shows: the hour and the minute. S2 keeps the number in the skeleton (A0, 11-15).
-TIME = tuple(getattr(S, "CLOCK", (7, 55)))
+TIME = tuple(S.CLOCK)
 
 TAG_HOUR, TAG_MINUTE = "c164_clock_hand_h", "c164_clock_hand_m"
 TAG_PENDULUM, TAG_BALL = "c164_clock_pendulum", "c164_clock_ball"

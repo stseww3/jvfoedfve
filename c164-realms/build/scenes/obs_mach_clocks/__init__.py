@@ -75,10 +75,10 @@ CEIL_Y = S.STAR_HALL_CEIL                   # 14, the ceiling block
 DOOR_Y = (0, 5)                             # the entrance, three wide
 JOINT_X = (S.PIER_SHAFT[0] - 1, int(S.MOTHER_CLOCK["back_x"]) + 1)      # 2..7: the grating ring round pier and step
 SUN_LIGHT = 12                              # the orrery's sun, the brightest thing in the hall (lights)
-V7 = getattr(S, "V7", dict(pos=(19.5, 1.62, 0.5), look_at=(10, 5.5, 0.5)))      # A0, 11-15
+V7 = S.V7                                   # the star hall from outside the door (A0, 11-15)
 # The arrival view as A0 lifted it on 11-15: the dial, the ball and the comet stand one over the other
-# in it, and the colour of the ball is picked on it. A skeleton without V1_CLEAR still has the old look.
-V1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+# in it, and the colour of the ball is picked on it.
+V1 = S.V1
 
 # --- the tower ----------------------------------------------------------------------------------
 TX, TZ = S.CLOCK_SHAFT_X, S.CLOCK_SHAFT_Z                   # 10..16, -33..-27
