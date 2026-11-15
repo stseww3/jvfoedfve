@@ -2,7 +2,10 @@
 
 It stands on the skeleton's coordinates, so the dressing is written once, in the coordinates it
 will have in the building. Every block of it was read off the real walls (main/facade and
-main/shell of c231's branch 4b9d320b, built and read cell by cell). Whose every part is:
+main/shell of c231's branch 4b9d320b, built and read cell by cell). When the shell was in the
+assembly (18c28fb9, 11-16) the box was held against the real building once more, cell by cell: the
+heads of the window openings had been shut since and are shut here now, and the pictures of the
+room dressed in the real building and dressed in this box came out the same. Whose every part is:
 
   main/shell (c231)    the floor and the ceiling of the room, the cross wall on z -6 with the door
                        to the gallery, the wall towards the end pavilion on z -26, the stretch of
@@ -101,8 +104,9 @@ def build(c, origin=(0, 0, 0)):
                 shell = x == gw and z >= T.PIER_Z[-1]       # the shell's own stretch of the west wall
                 put(x, y, z, wall_block(y) if shell else B.ASHLAR_FINE.block)
 
-    # the windows: glass in the inner leaf, the stone leaf open in front of it; the sources of a lit
-    # one stand in that opening, its lining lies on the room side of its glass
+    # the windows: glass in the inner leaf, the stone leaf open in front of it, the head of that
+    # opening shut by a stair hung in each top corner and a slab between the two (facade.CROWN); the
+    # sources of a lit one stand in the opening, its lining lies on the room side of its glass
     for front, bays, glass_x, face_x, inward in (("east", T.EAST_BAYS, ge, xe, (-1, 0)), ("west", T.WEST_BAYS, gw, xw, (1, 0))):
         for bay in bays:
             rows = MP.window_rows(bay)
@@ -111,6 +115,10 @@ def build(c, origin=(0, 0, 0)):
             for x, y, z in panes:
                 put(x, y, z, glass)
                 cut(face_x, y, z)
+            put(face_x, S.WINDOW[1], rows[0], st(B.ASHLAR_FINE.stairs, facing="north", half="top"))
+            put(face_x, S.WINDOW[1], rows[-1], st(B.ASHLAR_FINE.stairs, facing="south", half="top"))
+            for z in rows[1:-1]:
+                put(face_x, S.WINDOW[1], z, st(B.ASHLAR_FINE.slab, type="top"))
             if lit(front, bay):
                 middle = rows[len(rows) // 2]
                 sources += [((face_x, y, middle), OUTSIDE) for y in (S.WINDOW[0] + 1, S.WINDOW[1] - 1)]
