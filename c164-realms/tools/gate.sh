@@ -72,6 +72,10 @@ git -C "$repo" merge-base --is-ancestor "$full" HEAD \
   || { echo "gate: ${full:0:8} is not merged into HEAD; the gate looks at the merged tree" >&2; exit 2; }
 
 py="$(command -v python || command -v python3)"
+# The kept helper class (tools/win/helper) is what javac 25.0.5 builds; a node's own javac is 21 and
+# lays the same bytes out otherwise. Where the node has the 25.0.5 one, delivery.py is given it.
+jdk="${MC_ROOT:-/agent/realms-study}/jdk/jdk-25.0.5+8/bin/javac"
+if [ -z "${JAVAC:-}" ] && [ -x "$jdk" ]; then export JAVAC="$jdk"; fi
 out="$proj/renders/_wip/gate/$pkg"
 rm -rf "$out"; mkdir -p "$out"
 sum="$out/summary.txt"
@@ -85,7 +89,8 @@ if [ "$others" = 1 ]; then
   (cd "$proj" && "$py" tools/delivery.py "$card" "$full" --base "$base") >"$out/delivery.txt" 2>&1 || code=$?
   if grep -q '^result: ' "$out/delivery.txt"; then
     say "delivery.py: $(grep '^result: ' "$out/delivery.txt" | tail -n 1 | cut -c9-)"
-    grep -A3 -E '^\[(FAIL|WARN)\]' "$out/delivery.txt" | grep -v '^--$' | cut -c1-230 | sed 's/^/    /' >>"$sum"
+    awk '/^\[(FAIL|WARN)\]/ { on = 1; n = 0; print; next } /^[^ ]/ { on = 0 } on && n < 6 { n++; print }' \
+      "$out/delivery.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
   else
     say "delivery.py: ended with $code and no result"
     tail -n 5 "$out/delivery.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
@@ -96,7 +101,8 @@ if [ "$others" = 1 ]; then
   code=0
   (cd "$proj" && "$py" tools/checkall.py --out "$out/check") >"$out/checkall.txt" 2>&1 || code=$?
   say "check.py: $(tail -n 1 "$out/checkall.txt" | cut -c1-230)"
-  grep -A4 -E '^FAIL ' "$out/checkall.txt" | grep -v '^--$' | cut -c1-230 | sed 's/^/    /' >>"$sum"
+  awk '/^FAIL / { on = 1; n = 0; print; next } /^[^ ]/ { on = 0 } on && n < 8 { n++; print }' \
+    "$out/checkall.txt" | cut -c1-230 | sed 's/^/    /' >>"$sum"
   [ "$code" = 0 ] || bad=1
 fi
 
