@@ -9,16 +9,16 @@ as A3 builds them (facade.CROWN).
 
 Seen from the court, left to right (south to north):
 
-    bay 8   the control: a lit great window WITHOUT a frame; below it the grille (the model on the
-            glass: the family's default)
-    bay 7   the same window framed; below it the other way to bar a base window, kept here to be
-            seen beside the grille: A3's bars as blocks in the wall plane
+    bay 8   the control, the wall as A3 leaves it: a lit great window WITHOUT a frame; below it
+            A3's bars as blocks in the wall plane, kept here to be seen beside the grille
+    bay 7   the same window framed; below it the grille (the model on the glass: the family's way
+            to bar a base window)
     bay 6   a side arch of the entrance: the gate, shut
     bay 5   the entrance: frame and fanlight, the leaves open against the reveals, the canopy on
             the two pilasters and its lamp; the brightest window above it, framed
     bay 4   the other gate
     bay 3   a curtained window framed, the grille
-    bay 2   a dark window framed, the bars as blocks
+    bay 2   a dark window framed, the grille
     bay 1   an end pavilion's two-wide window with the two-wide frame and grille
 
 South of the building a plain yard wall carries what has no place on the front: the west door's
@@ -52,7 +52,7 @@ Z1 = Z0 + S.BAY * BAYS
 NARROW = 1                      # an end pavilion's bay: its first column belongs to the broad pier
 GATES, DOOR = (4, 6), 5         # the three arches of the entrance, as bays 8 to 10 of the front
 CONTROL = 8                     # the great window left without a frame
-BLOCK_GRILLES = (2, 7)          # base windows that keep A3's bars as blocks, for the comparison; the others
+BLOCK_GRILLES = (CONTROL,)      # base windows that keep A3's bars as blocks, for the comparison; the others
                                 # get the family's grille
 ARCH_TOP = S.BASE[1]            # the arches of the entrance are six high: y 0..5
 
@@ -201,7 +201,7 @@ def shots():
     shot("frame_dark", (face + 6.0, win, d), (face - 1.0, win, d))
     shot("narrow", (face + 7.0, 7.0, mid_z(NARROW)), (face - 1.0, 7.0, mid_z(NARROW)))
     shot("grilles", (face + 6.0, 3.6, pair), (face - 1.0, 4.0, pair))
-    shot("grille_near", (face + 2.6, 4.3, pair - 0.5), (face - 1.0, 4.0, mid_z(CONTROL)))
+    shot("grille_near", (face + 2.6, 4.3, pair + 0.5), (face - 1.0, 4.0, f))
     shot("entrance", (face + 15.0, 3.2, e), (face, 4.4, e))
     shot("entrance_oblique", (face + 9.0, 1.7, e + 9.0), (face, 3.8, e))
     shot("leaf_near", (face + 3.0, 2.0, e + 1.0), (face + 0.2, 2.2, e - 1.3))
