@@ -370,7 +370,10 @@ def shots():
         left = [x for x in xs if x + N / 2.0 < w / 2.0]                    # the walls of the left half
         for half, group in (("left", left), ("right", xs[len(left):])):
             x = (group[0] + group[-1] + N) / 2.0                           # the middle of its walls
-            shot(f"{tier}_{half}", (x, y + 5.0, z + 15.5), (x, y + 4.0, z))
+            # ... from where all of them are in the picture, a cell to spare each side: four walls
+            # a PITCH apart are from 15.5, the glass tier's five of the left half from further
+            reach = ((group[-1] + N - group[0]) / 2.0 + 1.0) / (math.tan(math.radians(FOV) / 2.0) * ASPECT)
+            shot(f"{tier}_{half}", (x, y + 5.0, z + max(15.5, math.ceil(2.0 * (reach + 1.0)) / 2.0)), (x, y + 4.0, z))
         # two by two, counted from the right; with an odd number the first wall is seen beside the second
         for i in sorted({max(i, 0) for i in range(len(walls) - 2, -2, -2)}):
             x = (xs[i] + xs[i + 1] + N) / 2.0                              # between the two walls
