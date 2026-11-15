@@ -201,7 +201,7 @@ def shots():
     shot("frame_dark", (face + 6.0, win, d), (face - 1.0, win, d))
     shot("narrow", (face + 7.0, 7.0, mid_z(NARROW)), (face - 1.0, 7.0, mid_z(NARROW)))
     shot("grilles", (face + 6.0, 3.6, pair), (face - 1.0, 4.0, pair))
-    shot("grille_near", (face + 2.6, 4.3, pair + 0.5), (face - 1.0, 4.0, f))
+    shot("grille_near", (face + 2.4, 4.4, f - 1.3), (face - 1.0, 4.0, f + 0.2))
     shot("entrance", (face + 15.0, 3.2, e), (face, 4.4, e))
     shot("entrance_oblique", (face + 9.0, 1.7, e + 9.0), (face, 3.8, e))
     shot("leaf_near", (face + 3.0, 2.0, e + 1.0), (face + 0.2, 2.2, e - 1.3))
