@@ -61,9 +61,12 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     one the panel of the south wall stands edge on to the glass.
   cable ducts       in the floor: a grating along the foot of the rack from wall to wall, and a
                     line of riveted cover plates from under each end of the console down the
-                    room, turning off to its desk, a grating where it turns. They are the two
-                    lines the floor has, they run to the console, and where a line turns a desk
-                    stands: nowhere do two of them cross.
+                    room, turning off to its desk. They are the two lines the floor has, they
+                    run to the console, and where a line turns a desk stands: nowhere do two of
+                    them cross. Under the grating lies an iron bed, one row down (y 5): the
+                    cable trough the battery room below has under its ceiling along its north
+                    wall, where its two risers come up at x 6 and x 9 (interiors/batteryroom,
+                    c337); nothing else of the room reaches below its floor.
   ceiling           riveted beams across the room on the pilaster rows; each end sits in an iron
                     shoe at the head of its pier, the capital of the panelled pilaster
 
@@ -78,8 +81,8 @@ only then lit: that is what the panelling and the boards in the recesses are for
 shaded one (LAMPS) and hangs low over what it is for. A shade throws its light down, so the source
 of a lamp is not offered at its bulb but under it, at the height of what it lights: over the shelf
 of the console, in the cell a desk stands in, at the dial of a clock. The light lies in pools on
-the floor and on the lower half of the walls; the heads of the windows and the linings of the lit
-ones stay out of it. The rack gets the most (12 on the faces at the height of the hand, 9 on its
+the floor and on the lower half of the walls; the heads of the windows stay out of it, and the
+linings of the lit ones have what their own sources give them. The rack gets the most (12 on the faces at the height of the hand, 9 on its
 frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is hardly
 darker than one at 10), so the pools are kept small and far apart: the floor rises from nothing at
 the door to 3 between the desks and to 9 before the console, and leads to the rack. And the floor
@@ -89,9 +92,12 @@ middle of the room, less towards the door and before the rack's own light, enoug
 and boards to be seen and not to be a black lid.
 A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
 east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
-unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
-is a lamp seen from outside: the lamps over the two regulators for the end windows, the drop
-lights over the two desks for the others. Every source is offered to the light line
+unlit glass from inside. The light line's sources of a lit window stand outside its glass, in the
+opening of the stone leaf (10 there; c331): what comes through is 8 in the first cell behind the
+glass and 3 on the room's long axis, no more than the lamp of the room that stands at that window
+gives. For each of them has a lamp of the room within two cells, so that a lit window is a lamp
+seen from outside: the lamps over the two regulators for the end windows, the drop lights over the
+two desks for the others. Every source is offered to the light line
 (sky/_lightkit); nothing is placed for good here. No block of the room stands in the first cell
 behind the glass of a window (clear_cells()): the lining of a lit one lies on the glass there. The
 two recesses are such cells; what hangs in them is display entities. The one block that does is
@@ -217,14 +223,13 @@ BENCH_Z = S.mid(MP.window_rows(BENCH_BAY)[0], MP.window_rows(BENCH_BAY)[-1])    
 SEAT = 1.075                                        # from the middle of a desk to the middle of its chair
 CABINET_Z = SOUTH - 0.6                             # -6.6: where a cabinet stands with its back to the south wall
 DUCT_X = (CONSOLE_X[0], CONSOLE_X[1])               # 6 and 9: the two lines of the floor, under the two ends of the console and in line with the two piers
-DUCTS = (                                           # runs of grating in the floor, cell to cell
+DUCTS = (                                           # runs of duct in the floor, cell to cell; the two lines turn off to their desks at (6, -16) and (9, -12)
     ((X0, CONSOLE_Z), (X1, CONSOLE_Z)),                                         # along the foot of the rack, wall to wall
     ((DUCT_X[0], CONSOLE_Z), (DUCT_X[0], MP.window_rows(BENCH_BAY)[1])),        # from the west end of the console down the room
     ((DUCT_X[0], MP.window_rows(BENCH_BAY)[1]), (X0, MP.window_rows(BENCH_BAY)[1])),    # ... and west to under the rating bench
     ((DUCT_X[1], CONSOLE_Z), (DUCT_X[1], MP.window_rows(DESK_BAY)[1])),         # from the east end of the console down the room
     ((DUCT_X[1], MP.window_rows(DESK_BAY)[1]), (X1, MP.window_rows(DESK_BAY)[1])),      # ... and east to under the message desk
 )
-BENDS = (DUCTS[1][1], DUCTS[3][1])                  # (6, -16) and (9, -12): where the two lines turn off to their desks
 
 # ---- the world clocks: a row of slave dials on one board, on the blind stretch of the west wall, one to a cell
 CLOCK = getattr(S, "CLOCK", (7, 55))                # the time every clock of the map is stopped at (A0, g2 #34136)
@@ -626,8 +631,10 @@ def duct_cells():
 
 def grated(cell):
     """Is a cell of the ducts an open grating? The run at the foot of the rack is, where the cables
-    come up into it, and the two bends; the rest lies under riveted cover plates."""
-    return cell[1] == CONSOLE_Z or cell in BENDS
+    come up into it; the rest lies under riveted cover plates. (The two bends were gratings too,
+    each with a block of iron bed under it: two lone blocks under the ceiling of the battery room,
+    over its racks, which read as nothing from below -- c337, 11-16.)"""
+    return cell[1] == CONSOLE_Z
 
 
 def clear_cells():
