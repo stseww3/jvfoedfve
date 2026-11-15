@@ -1,10 +1,12 @@
 """Test scene of the work package props/paper: the whole paper family in one room corner.
 
-A wall looks south and the cameras stand south of it, under a wooden ceiling with two pendant
-lamps, so the pieces are seen in lamp light as they will be indoors. The west half of the wall is
-dressed stone and the east half dark wood, the two grounds the rooms have: the wall pieces hang on
-both. In front of the stone stands a desk with the log books and a blueprint laid flat; in front of
-the wood a light table (a stand-in: lit frosted glass) with the glass negatives spread on it.
+A wall looks south and the cameras stand south of it, under a wooden ceiling with three pendant
+lamps, so the pieces are seen in lamp light as they will be indoors. The west part of the wall is
+dressed stone and the east part dark wood, the two grounds the rooms have: the wall pieces hang on
+both. At the west end hang the pair of great charts, side by side as they never will in the hall
+(there they face each other across it). In front of the stone stands a desk with the log books and
+a blueprint laid flat; in front of the wood a light table (a stand-in: lit frosted glass) with the
+glass negatives spread on it.
 
 The shots are written from the numbers below:  python -m scenes.obs_props_paper
 """
@@ -24,16 +26,17 @@ GLASS = B.WINDOW_FROSTED.block
 WALL_Z = -1
 FACE = WALL_Z + 1.0             # the wall face: a wall piece's anchor lies on it
 WALL_H = 5
-STONE_X = (-2, 9)               # the two halves of the wall, first and last block
+STONE_X = (-11, 9)              # the two parts of the wall, first and last block
 WOOD_X = (10, 21)
 EYE = 2.5                       # the height the wall pieces are centred on
 # the middle of each wall piece along the wall; every piece hangs once on stone and once on wood
 HANG = {"star_chart": (1.0, 16.0), "blueprint": (4.25, 19.25), "moon_map": (7.25, 12.75)}
 BOARD_X = (-1.0, None)          # the blackboard hangs on stone only
+GREAT = {"sky_map": -8.5, "sky_map_b": -4.5}    # the pair of great charts, on stone
 DESK_X, DESK_Z = (2, 6), (2, 3)
 TABLE_X, TABLE_Z = (14, 17), (2, 3)
 TOP = 1.0                       # the top of the desk and of the light table
-LAMPS = ((4.5, 2.5), (15.5, 2.5))
+LAMPS = ((-6.5, 2.5), (4.5, 2.5), (15.5, 2.5))
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
 ON_DESK = (("logbook", (3.0, 2.8), 12.0, {}), ("logbook_shut", (4.2, 3.3), -24.0, {}),
@@ -56,6 +59,8 @@ def build():
         for x in xs:
             n += paper.place(c, kind, (x, EYE, FACE))
     n += paper.place(c, "blackboard", (BOARD_X[0], EYE - 0.25, FACE))
+    for kind, x in GREAT.items():
+        n += paper.place(c, kind, (x, EYE, FACE))
     for kind, (x, z), yaw, how in ON_DESK + ON_TABLE:
         n += paper.place(c, kind, (x, TOP, z), yaw=yaw, **how)
     for x, z in LAMPS:
@@ -89,6 +94,11 @@ def shots():
     shot("star_chart_wood", (x - 0.9, EYE + 0.1, 2.6), (x, EYE, 0.0))
     shot("blackboard_near", (BOARD_X[0] + 1.2, EYE, 3.0), (BOARD_X[0], EYE - 0.25, 0.0))
     shot("blackboard_side", (BOARD_X[0] + 2.4, EYE - 0.6, 1.3), (BOARD_X[0], EYE - 0.6, 0.0))
+    pair = sum(GREAT.values()) / 2.0
+    shot("sky_maps", (pair, 2.0, 7.0), (pair, EYE, 0.0))
+    for kind, x in GREAT.items():
+        shot(f"{kind}_near", (x + 1.2, EYE + 0.1, 3.4), (x, EYE, 0.0))
+    shot("sky_map_below", (GREAT["sky_map"] + 0.5, 0.4, 2.2), (GREAT["sky_map"], EYE, 0.0))
     shot("desk", (4.5, 2.9, 5.6), (4.5, TOP, 2.9))
     shot("logbook_near", (3.4, 2.1, 4.4), (3.5, TOP, 2.9))
     shot("blueprint_flat", (6.1, 2.4, 4.6), (5.75, TOP, 3.0))
