@@ -34,18 +34,19 @@ LINES = (site, main, props, sky)
 VERSION = "a"
 RUN = True
 FIRE = True     # both scenes: the boiler bays glow through the fire window, as the card wants them judged
+LAMP = True     # the trial branch only: the lamp over the wicket, to be seen in V6 and V1
 
 
 @contextlib.contextmanager
 def _as(version, run):
     """The site line builds its packages itself and hands them no choices: set the package's own
     defaults for the time of the build and put them back."""
-    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE
-    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = version, run, FIRE
+    was = powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DOOR_LAMP
+    powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DOOR_LAMP = version, run, FIRE, LAMP
     try:
         yield
     finally:
-        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE = was
+        powerhouse.VERSION, powerhouse.RUN, powerhouse.FIRE, powerhouse.DOOR_LAMP = was
 
 
 def _fit(c):

@@ -199,6 +199,13 @@ FILL = {
 # The wicket: the cell of its leaf and the rows of the opening. It stands open; the way in is
 # through this cell, so the room's cell behind it is to stay clear.
 DOOR_AT = dict(front="north", bay=2, cell=FRONTS["north"].at(CORNER + BAY + 1, 1), y=(FEET, FEET + 1))
+# A lamp over the wicket: the props line's caged wall lamp on the outer face of the gate's lintel,
+# in its middle, low enough for its conduit to turn into the lintel and not into the glass over
+# it. The lamp offers its own light source, at the level the sky line gave that lamp. Off: the
+# director wants V6 and V1 seen with and without it first.
+DOOR_LAMP = False
+LAMP_AT = dict(kind="cage", version="a", facing="north",
+               pos=(DOOR_AT["cell"][0] + 0.5, FEET + GATE_ROWS + 0.3125, float(DOOR_AT["cell"][1])))
 
 
 def _bay(t):
@@ -603,10 +610,20 @@ def _lining(canvas, origin, version):
     return n
 
 
+def _lamp(canvas, origin):
+    """The lamp over the wicket (LAMP_AT), while DOOR_LAMP is on and the props line has its lamps.
+    Returns the number of display entities placed."""
+    place = getattr(_other("props.lamps"), "place", None) if DOOR_LAMP else None
+    if place is None:
+        return 0
+    return int(place(canvas, LAMP_AT["kind"], LAMP_AT["pos"], facing=LAMP_AT["facing"], origin=origin,
+                     version=LAMP_AT["version"]) or 0)
+
+
 def build(canvas, origin=(0, 0, 0), version=None, run=None):
     """Build the shell at `origin`. version: the roof, "a" or "b" (VERSION when not given);
     run: lay the main along the upper terrace (RUN when not given). Returns the number of display
-    entities placed: the linings of the fire windows (_lining)."""
+    entities placed: the linings of the fire windows (_lining) and the lamp over the wicket."""
     version = version or VERSION
     if version not in ROOFS:
         raise ValueError(f"no roof version {version!r}; there are {', '.join(sorted(ROOFS))}")
@@ -617,4 +634,4 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
-    return _lining(canvas, p.o, version)
+    return _lining(canvas, p.o, version) + _lamp(canvas, p.o)
