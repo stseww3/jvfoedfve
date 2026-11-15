@@ -72,10 +72,12 @@ than dark wood under one), so what is to sink is made dark and what is to be see
 only then lit: that is what the panelling and the boards in the recesses are for. Every lamp is a
 shaded one (LAMPS) and hangs low over what it is for. A shade throws its light down, so the source
 of a lamp is not offered at its bulb but under it, at the height of what it lights: over the shelf
-of the console, at the chair of a desk, at the dial of a clock. The light lies in pools on the
-floor and on the lower half of the walls; the ceiling, the heads of the windows and the linings of
-the lit ones stay out of it. The rack gets the most (12 on the faces at the height of the hand, 9
-on its frieze), a desk and its chair 9 to 10, a clock 9, the floor by the door none.
+of the console, in the cell a desk stands in, at the dial of a clock. The light lies in pools on
+the floor and on the lower half of the walls; the ceiling, the heads of the windows and the linings
+of the lit ones stay out of it. The rack gets the most (12 on the faces at the height of the hand,
+9 on its frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor at 6 is
+hardly darker than one at 10), so the pools are kept small and far apart: the floor rises from
+nothing at the door to 3 between the desks and to 9 before the console, and leads to the rack.
 A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
 east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
 unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
@@ -262,9 +264,10 @@ LAMPS = "b"                 # every lamp of the room is the shaded one (props/la
 #                             map's default: a shade keeps a lamp's glow to what is under it, and the opal globe of version A
 #                             is itself the lightest thing in a dark room, six times over
 CONSOLE_LAMP = (12, 2)      # the two drop lights over the ends of the console: the main light, on the instrument wall
-DESK_LAMP = (10, 2)         # the drop lights over the message desk and the rating bench
+DESK_LAMP = (8, 3)          # the drop lights over the message desk and the rating bench: 8 on the desk, 7 at its chair, and five
+#                             cells on, on the room's long axis, 3 (at 10 the whole floor was lit, as light as the rack)
 REGULATOR_LAMP = (9, 2)     # the bracket lamps over the two standard clocks
-CLOCK_LAMP = (10, 2)        # the bracket lamp over the world clocks: 9 on the middle dial, 7 on the end ones
+CLOCK_LAMP = (9, 2)         # the bracket lamp over the world clocks: 8 on the middle dial, 6 on the end ones
 OVER = 20 * PX              # a bracket's arm above the top of what it hangs over: the shade ends half a block over it, a lamp
 #                             over a clock and not a hat on it (at 12 px the pale inside of the shade sat on the dial's rim)
 CONSOLE_HANG = FEET + 3.5   # 10.5: where the drop lights of the console end and their lamps hang; the shades end at 9.56, a block
@@ -277,8 +280,10 @@ CORD = lamps.PREFIX + "wire"                        # the cord of a drop light: 
 # where the source of each lamp is offered (the room's cells): under the shade, at what the lamp is for
 CONSOLE_LIGHT = tuple((x, SILL + 1, CONSOLE_Z) for x in DUCT_X)                     # (6, 9, -24), (9, 9, -24): over the shelf, at the height of the hand
 REGULATOR_LIGHT = tuple((int(math.floor(x)), SILL, Z0) for x in REGULATOR_X)        # (2, 8, -25), (13, 8, -25): the cell the clock hangs in
-DESK_LIGHT = (int(math.floor(DESK_X - SEAT)), FEET, int(math.floor(DESK_Z)))        # (12, 7, -12): where the sitter's chair stands
-BENCH_LIGHT = (int(math.floor(BENCH_X + SEAT)), FEET, int(math.floor(BENCH_Z)))     # (3, 7, -16)
+DESK_LIGHT = (int(math.floor(DESK_X)), FEET, int(math.floor(DESK_Z)))               # (13, 7, -12): the cell the desk stands in, against its wall and
+BENCH_LIGHT = (int(math.floor(BENCH_X)), FEET, int(math.floor(BENCH_Z)))            # (2, 7, -16)    as far from the middle of the room as a cell is
+#                                                                                     (while a board stands in for a desk that cell is
+#                                                                                     taken, and the light line puts the source at the chair)
 CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z))))   # (3, 9, -10): before the middle dial (a panel stands in the dial's own cell)
 
 
