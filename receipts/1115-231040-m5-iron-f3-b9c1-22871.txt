@@ -1,0 +1,31 @@
+a0job 1115-231040-m5-iron-f3-b9c1-22871: cursor/c164-m5-iron-f3-b9c1 @ 636ad212 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.20 1.47 0.94, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_mat_iron ---- exit 0, 17 s, last 30 lines of 21:
+  obs_mat_iron: 2436 blocks, 0 entities (0 s)
+  obs_mat_iron: resource pack written to /tmp/c164pack-z5a0lsyn (1 s)
+  obs_mat_iron: water: 0 sources, 0 cells of running water (1 s)
+  obs_mat_iron: grid 123 x 12 x 12, 2436 blocks, 0 entity boxes (1 s)
+  obs_mat_iron: 72 states -> 91 looks, 198 boxes, 51 pictures (1 s)
+  obs_mat_iron: light done (1 s)
+  obs_mat_iron: plates_a (tick 14000, 1 s)
+  obs_mat_iron: plates_b (tick 14000, 1 s)
+  obs_mat_iron: shapes_a (tick 14000, 1 s)
+  obs_mat_iron: shapes_b (tick 14000, 1 s)
+  obs_mat_iron: shapes_lamps (tick 14000, 1 s)
+  obs_mat_iron: wall_riveted (tick 14000, 1 s)
+  obs_mat_iron: wall_plate (tick 14000, 1 s)
+  obs_mat_iron: wall_treads (tick 14000, 1 s)
+  obs_mat_iron: walls_far (tick 14000, 1 s)
+  obs_mat_iron: gallery_front (tick 14000, 1 s)
+  obs_mat_iron: gallery_door (tick 14000, 1 s)
+  obs_mat_iron: gallery_floor (tick 14000, 1 s)
+  obs_mat_iron: gallery_far (tick 14000, 1 s)
+  obs_mat_iron: balustrade (tick 14000, 1 s)
+renders/obs_mat_iron/: 14 pictures of 636ad212 drawn, 3.2 MB
+==== NODEJOB RESULT ====
+exit=0 secs=19 host=cursor cores=4 head=636ad212 commit=1cfacae0 pushed=yes branch=cursor/c164-m5-iron-f3-b9c1 files=14
+a0job: exit=0 secs=19
