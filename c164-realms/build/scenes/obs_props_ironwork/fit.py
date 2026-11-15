@@ -19,6 +19,9 @@ the iron to what the review asked of it (plan/aesthetics/S3-reviews-v4.md, revie
 A rivet head on the reveal face of a jamb stands a pixel into the light beside it; that is the
 head seen from the side, not a member, and is counted on its own.
 
+In the head of a window the ring cuts the net's lights; they are counted by their size. Whether
+the small ones read as noise is for a picture to tell: closing them would step the round of glass.
+
     python -m scenes.obs_props_ironwork.fit            # drawings, numbers, findings
     python -m scenes.obs_props_ironwork.fit check      # numbers and findings (exit code 1 on a finding)
 """
@@ -129,6 +132,23 @@ class View:
             high |= runs(self.light((u, v)) for v in rows)
         return sorted(wide), sorted(high)
 
+    def pieces(self, rows):
+        """The lights that lie in `rows`, each one a set of texels: glass that hangs together, with
+        the glazing bars and the members between the lights left out."""
+        todo = {(u, v) for u in range(self.w) for v in rows if self.light((u, v))}
+        out = []
+        while todo:
+            stack, piece = [todo.pop()], set()
+            while stack:
+                u, v = at = stack.pop()
+                piece.add(at)
+                for near in ((u + 1, v), (u - 1, v), (u, v + 1), (u, v - 1)):
+                    if near in todo:
+                        todo.remove(near)
+                        stack.append(near)
+            out.append(piece)
+        return out
+
     def shut(self, v):
         """True where iron closes row v from stone to stone."""
         row = [(u, v) for u in range(self.w) if (u, v) in self.open]
@@ -214,6 +234,22 @@ def _spans(rows):
     return ", ".join(str(a) if a == b else f"{a}-{b}" for a, b in out) or "none"
 
 
+def _cut(pieces):
+    """The lights of a head as text: how many there are of each size, and how far the smallest reach."""
+    if not pieces:
+        return "no light in the head"
+    sizes = {}
+    for piece in pieces:
+        sizes[len(piece)] = sizes.get(len(piece), 0) + 1
+    least = min(sizes)
+    spans = sorted({(max(u for u, _ in piece) - min(u for u, _ in piece) + 1,
+                     max(v for _, v in piece) - min(v for _, v in piece) + 1)
+                    for piece in pieces if len(piece) == least})
+    return (f"the head keeps {len(pieces)} lights: "
+            + ", ".join(f"{sizes[px]} of {px} px" for px in sorted(sizes, reverse=True))
+            + f"; the smallest lie in {', '.join(f'{w} x {h}' for w, h in spans)} px")
+
+
 def judge(view, kind, reach):
     """The numbers of one dressed opening and what is wrong with it: (text, [findings])."""
     found = []
@@ -279,6 +315,7 @@ def judge(view, kind, reach):
                 found.append(f"{odd} px of the glass in sight have no mirror image about the middle of the net")
             text.append(f"{seen} px of glass in sight in it (the whole round is {round_}), {leak} outside the ring, "
                         f"{odd} not mirrored")
+            text.append(_cut(view.pieces(range(SPRING + ON_GLASS, view.h))))
         else:
             if seen:
                 found.append(f"{seen} px of the doorway's head are a hole")
