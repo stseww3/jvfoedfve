@@ -36,6 +36,8 @@ stands in for the screen.
 Three small things of the weather station are this card's own display models (models(), 16 pixels to
 the block): the head of the wind mast with its vane, the cup wheel beside it and the rain gauge. The
 vane's tail points where the skeleton's wind blows to (S.WIND, A0 #569: one wind for the whole site).
+The cup wheel is the one thing here that moves: it is registered with the motion kit (motion/_kit,
+a turn about its own upright axis in MK.ANEMOMETER_REV ticks) and stands as placed while no loop runs.
 
 What the other cards read from this module (points are (x, y, z) in scene coordinates):
   LAMP_POINTS   where a lamp may hang, one to a building (props/lamps)
@@ -45,7 +47,6 @@ What the other cards read from this module (points are (x, y, z) in scene coordi
   PEDESTAL_TOP  the top of the pedestal on the weather platform, where the sunshine recorder stands
   SCOPE_STAND   where the tripod telescope stands on the lookout, the middle of its foot
   MAST_HEAD     the top of the wind mast's pole, where the vane's spindle stands
-  CUPS_TAG      the tag of the cup wheel's entity, for the motion line (it turns about its own y)
 
 The terrain card lays each shelf's flat rock and the neck that leads to it; these shells stand on the
 foot levels it gives (S.*["feet"], the stone block one below) and bring a short footing of their own,
@@ -63,6 +64,7 @@ from . import _kit as K
 from ..common import blocks as B
 from ..common import palette as P
 from ..common import skeleton as S
+from ..motion import _kit as MK
 
 ORDER = 70      # after the terrain (10) and the court paving (60); the shells go on the finished ground
 INSTRUMENTS = True      # stand the props line's instruments on their spots (see _place)
@@ -172,7 +174,6 @@ GAUGE = (_SPOTS["gauge"][0] + 0.5, float(S.WEATHER_STATION["feet"]),
 MODEL_HEAD = "site_weather_head"        # the head of the wind mast: collar, cup arm, spindle and vane
 MODEL_CUPS = "site_weather_cups"        # the cup wheel, a piece of its own so that it can turn
 MODEL_GAUGE = "site_weather_gauge"      # the rain gauge
-CUPS_TAG = "c164_weather_cups"
 CUPS_ARM = 10.0                         # pixels west of the pole's axis: where the cup wheel's spindle stands
 CUPS_UP = 2.5                           # pixels over the top of the pole: the middle of the wheel's hub
 CUPS_AT = (MAST_HEAD[0] - CUPS_ARM / 16.0, MAST_HEAD[1] + CUPS_UP / 16.0, MAST_HEAD[2])     # (5.875, 5.156, -46.5)
@@ -478,9 +479,8 @@ def _weather_station(c, o):
         _put(c, o, wx, y, wz, ROD + "[facing=up]")
     kit = _models()
     c.add_entity(o[0] + MAST_HEAD[0], o[1] + MAST_HEAD[1], o[2] + MAST_HEAD[2], M.display(kit[MODEL_HEAD]))
-    cups = M.display(kit[MODEL_CUPS])
-    cups["Tags"].append(CUPS_TAG)
-    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], cups)
+    c.add_entity(o[0] + CUPS_AT[0], o[1] + CUPS_AT[1], o[2] + CUPS_AT[2], M.display(kit[MODEL_CUPS]))
+    MK.spin(c, "y", MK.ANEMOMETER_REV)                  # the cups go round in the wind
 
     # the rain gauge, a copper can on the floor (this card's model too), and a stone pedestal for
     # the sunshine recorder

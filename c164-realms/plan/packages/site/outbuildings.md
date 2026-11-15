@@ -47,10 +47,10 @@
     - 观景台：望远镜位的铁方环换成前庭那种细黄铜线围的一圈（`BRASS_LINE`，八格），别的没动。
   - 展示实体（卡上原写 0，现在本包自己 3 个，模型名 `site_weather_head`、`site_weather_cups`、`site_weather_gauge`，16 像素一格，料是 `iron_dark`、`iron`、`old_copper`、`brass`）：
     - 依据：`plan/STATUS.md`「读风向的各线」一条把气象站风杆上的风向标点给了 outb；总监 #569 一：全场一个风向，风向标的尾朝南。props/instruments 那一族里没有风向标和风速计，方块搭的杆头只能是一个铁块加一根横臂，远看近看都不像。
-    - 风向标：一根转轴立在杆顶，箭身沿 `S.WIND`，黄铜箭头朝北（迎风），旧铜燕尾朝南（`S.WIND_TO`）。风杯轮：三只杯，不是四只；挂在杆头向西伸出的一根短臂上，比杆顶低。从东西看风向标平躺在杆顶上，从南北看横臂只有一边，哪一面都不是十字（红线）。风杯轮单独一个实体，标签 `c164_weather_cups`（`CUPS_TAG`），位置 `CUPS_AT`，绕自己的 y 轴转，motion 那条线要转它就按标签找。
+    - 风向标：一根转轴立在杆顶，箭身沿 `S.WIND`，黄铜箭头朝北（迎风），旧铜燕尾朝南（`S.WIND_TO`）。风杯轮：三只杯，不是四只；挂在杆头向西伸出的一根短臂上，比杆顶低。从东西看风向标平躺在杆顶上，从南北看横臂只有一边，哪一面都不是十字（红线）。风杯轮单独一个实体，位置 `CUPS_AT`，是本包唯一会动的件：`motion/loop` 进了总装以后照 `plan/parts/motion.md` 第 4 节登记了一行 `MK.spin(c, "y", MK.ANEMOMETER_REV)`，原来自己加的标签 `c164_weather_cups`（`CUPS_TAG`）撤了。工具把一圈切成 6 步、每步 4 刻、不多给那 2 刻（三只杯的包围盒中心偏轴 1.25 像素）；`check.py` 的 motion 一项：1 件、1 条链、12 个函数文件，最忙一刻 4 条命令、平均每刻 0.6 条。循环不开时它停在摆下去的姿态上，离线图画的就是这个姿态；转起来像不像等真机。
     - 雨量筒：地上一只旧铜筒、黄铜口，在 `GAUGE` (6.5, −4.0, −44.5)。
     - 总监或评审不要这三件就说一声：撤掉以后杆头只剩一根光杆，本包回到 0 个实体。
-  - 对外的数（第 1 班的名字和数一个没变）：`LAMP_POINTS`、`HUT_AXIS`、`HUT_PIERS`、`SCREEN`、`PEDESTAL_TOP`、`SCOPE_STAND`、三条踏步的口子。新加：`MAST_HEAD`、`MAST_RODS`、`GAUGE`、`CUPS_AT`、`CUPS_TAG`、三个模型名。小屋室内净空改了一处：屋面底下一律 3.5 格（原来盖板下 4 格），子午线那一列照旧通天。
+  - 对外的数（第 1 班的名字和数一个没变）：`LAMP_POINTS`、`HUT_AXIS`、`HUT_PIERS`、`SCREEN`、`PEDESTAL_TOP`、`SCOPE_STAND`、三条踏步的口子。新加：`MAST_HEAD`、`MAST_RODS`、`GAUGE`、`CUPS_AT`、三个模型名。小屋室内净空改了一处：屋面底下一律 3.5 格（原来盖板下 4 格），子午线那一列照旧通天。
   - 测试场景 14 个机位（加了 `hut_inside`：进门一步往北看缝；`weather_head`：杆头近景）。合了山体第三稿以后上平台北缘和西缘有了栏杆和墩，`weather_near` 改成站在踏步口上往下看，`tower_near` 挪了两格让水塔落在两根墩之间，`lookout_near` 改成站在踏步半腰。
   - 图：`renders/obs_site_outbuildings/` 14 张，节点 node54 出的，哪个提交看旁边的 `shots.txt`。
-  - 留给后面的：子午环（machines/meridian-astrograph）；风杯轮转起来（motion，标签见上）；灯由 props/lamps 按 `LAMP_POINTS` 挂，长椅由 props/furniture 摆，三件仪器等 props/instruments 进总装后自动出现，那时这个场景的图要重出。
+  - 留给后面的：子午环（machines/meridian-astrograph）；风杯轮转得像不像等真机看（周期是 motion 的 `ANEMOMETER_REV`，要调在那边调一处）；灯由 props/lamps 按 `LAMP_POINTS` 挂，长椅由 props/furniture 摆，三件仪器等 props/instruments 进总装后自动出现，那时这个场景的图要重出。
