@@ -30,4 +30,6 @@ def build():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    """The materials' pack and the sky's: the scene stands in the map's hour, and without the
+    sky's pictures the game's own sun would hang in the windows."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])

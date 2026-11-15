@@ -161,7 +161,7 @@ class _Spines:
         out[..., 3] = 255
         x = 0
         while x < w:
-            width = rnd.choice((1, 2, 2, 2, 3))
+            width = min(rnd.choice((1, 2, 2, 2, 3)), w - x)
             if rnd.random() > self.full:
                 x += width
                 continue
