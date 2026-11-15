@@ -1,0 +1,3 @@
+branch=cursor/c164-s2-fable-89df
+head=95714f608ebeb14d549d1507f22b708930d32f95
+args=--wip --to cursor/c164-s2-wip-89df --always --tail 60 --limit 1100 bash tools/gatestack.sh --until d55813f0 cd87ee52 props/furniture 1b81b52f main/dome ff4e9287 props/paper 73294400 
