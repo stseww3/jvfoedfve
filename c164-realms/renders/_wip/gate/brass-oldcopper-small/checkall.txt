@@ -1,0 +1,33 @@
+PASS  obs: 0 failed, 2 with warnings, skipped: views (3 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] sight: V1 at (88.5, -2.38, -32.5): the front from y 4 up 11.3% hidden (base storey 36%, great windows 2.6%); skyline clear; comet's head 26% below the top edge, clear; the station keeps c
+          the great windows, bay 16: 32% hidden (y 8 to 10.5) by cut_sandstone_slab at x 60, y 2, z -9; sandstone at x 60, y 1, z -9; a lamp post takes less than 25% of a bay
+PASS  obs_mat_ashlar: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_ashlar_b: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_ashlar_c: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_board: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_brass: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] blocks: 56 kinds of block placed, 5 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_iron: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] blocks: 41 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_panels: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_redirect: 0 failed, 1 with warnings, skipped: flatwall, sight (1 s)
+      [WARN] blocks: 105 kinds of block placed, 12 not in the occupancy table (add them to the table through S2, or use a block of the table)
+          waxed_oxidized_copper_grate x6
+PASS  obs_mat_windows: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_mat_windows_b: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_props_ironwork: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_props_lamps: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+PASS  obs_site_court: 0 failed, 2 with warnings, skipped: sight (2 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+      [WARN] views: 9 shots, most display entities in view: 4 (v2_axis), limit 600; counted without what walls hide
+          v2_axis: stands at skeleton.V2 and does not look where it looks, at (17, 19, 0.5); the locked cameras are read from the skeleton, not copied by hand (A0 #304)
+PASS  obs_site_terrain: 0 failed, 1 with warnings, skipped: sight (2 s)
+      [WARN] flatwall: 8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+          oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+PASS  obs_sky_look: 0 failed, 0 with warnings, skipped: flatwall, sight (1 s)
+16 scenes in 6 s: 16 pass (6 with warnings)

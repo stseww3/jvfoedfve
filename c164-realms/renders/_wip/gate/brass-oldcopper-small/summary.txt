@@ -1,0 +1,10 @@
+gate materials/brass-oldcopper-small a2370b00: the merged tree bd7f25f9, the assembly as it was 6fb91d41
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 1 test scene, 0 shots with a picture kept
+                    obs_mat_brass: no pictures kept (drawn on the admin's computer, INTERFACE 5: tools/selfshots.py obs_mat_brass --out, then --take here and commit renders/obs_mat_brass/)
+    [PASS] merge    merges cleanly; 35 commits behind the base
+    result: PASS (0 failed, 1 to look at)
+check.py: 16 scenes in 6 s: 16 pass (6 with warnings)
+pictures: obs_mat_brass keeps none
+pictures: nothing to verify (no test scene of the delivery keeps pictures)
+result: PASS
