@@ -1,5 +1,5 @@
 """Version "a" of the sea of clouds on the hilltop of obs_sky_cloudsea: the vanilla cloud layer
-alone, repainted denser, no block clouds. The same hilltop, the same shots; every picture has its
+alone, painted shut, no block clouds. The same hilltop, the same shots; every picture has its
 twin of the same name in obs_sky_cloudsea ("c") and obs_sky_cloudsea_b ("b").
 
 The offline renderer does not draw the vanilla layer, so offline this is the bare hilltop in fog --

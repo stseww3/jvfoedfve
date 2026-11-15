@@ -1,6 +1,7 @@
-"""Version "b" of the sea of clouds on the hilltop of obs_sky_cloudsea: the block sea alone, the
-vanilla cloud layer blanked, the far distance left to the fog. The same hilltop, the same shots;
-every picture has its twin of the same name in obs_sky_cloudsea ("c") and obs_sky_cloudsea_a ("a").
+"""Version "b" of the sea of clouds on the hilltop of obs_sky_cloudsea: the blocks alone -- the
+banks and the deck they stand on -- with the vanilla cloud layer blanked and the far distance left
+to the fog. The same hilltop, the same shots; every picture has its twin of the same name in
+obs_sky_cloudsea ("c") and obs_sky_cloudsea_a ("a").
 
 The offline renderer does not draw the vanilla layer, so offline this is the same picture as "c".
 It is judged on the real client, where it is also what "c" becomes when the player switches the

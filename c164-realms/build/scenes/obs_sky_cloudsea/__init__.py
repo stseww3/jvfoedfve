@@ -59,7 +59,9 @@ ROCK_HIGH = Mix({B.TUFF.block: 6, B.ROCK_ANDESITE.block: 3, B.ROCK_STONE.block: 
                 seed=SEED)
 ROCK_LOW = Mix({B.ROCK_DEEPSLATE: 6, B.ROCK_COBBLED.block: 3, B.TUFF.block: 2}, seed=SEED + 1)
 ROCK_SPLIT = -12            # the high mix above, the low mix below
-SUNK = cloudsea.DECK_Y - 1  # what is to be lost in the sea is carried down to here (-31)
+TRACK_END = -27             # site/cablecar's SINK: the upper face of the rails in the track's last column
+BARS_FROM = -23             # site/cablecar: a tower is bars from here up and four thin pipes below
+SUNK = cloudsea.BODY_Y - 1  # the legs go down to the rock or to here (-31), into the body of the surf
 PAVE = B.SLATE_SMOOTH.block
 STONE = B.ASHLAR_FINE.block
 COPPER = B.VERDIGRIS_CUT.block
@@ -152,29 +154,33 @@ def _massing(c):
 def _trestle(c):
     """A stand-in for the cable trestle, on site/cablecar's figures: two rails of riveted slabs leave
     the station deck in V1's row, run level for four cells and then fall one in two, a third of a
-    cell north for every cell east, until they are under the sea's deck. Every six cells a bent: a
-    girder across, two legs down to the rock or to under the deck, bars between the legs. The last
-    bents stand in the sea and the track ends under it: the card has to show how the cloud takes them."""
+    cell north for every cell east, and end where their upper face is one block over the sea's face
+    (x 141). Every six cells, as far as x 128, a tower: a girder across, two legs down to the rock or
+    into the surf, bars as far down as y -23 and thin pipes below. The last towers stand in the sea
+    and the track ends just over it: the card has to show how the cloud takes them."""
     x1, axis = S.CABLE_STATION[2], int(S.V1["pos"][2] // 1)          # 91, -33
     x = x1
     while True:
         x += 1
         top = S.STATION_GROUND - 0.5 * max(0, x - x1 - 4)            # the upper face of the rails
-        if top <= SUNK:
-            break                                                     # under the deck: the track ends
         z = int(round(axis - (x - x1 - 1) / 3.0))
         y, half = (int(top) - 1, "top") if top == int(top) else (int(top // 1), "bottom")
         for dz in (-1, 1):
             c.set(x, y, z + dz, IRON.slab + f"[type={half}]")
-        if (x - x1 - 7) % 6:
+        if top <= TRACK_END:
+            break                                                     # the track's last column
+        cap = y if half == "top" else y - 1
+        if (x - x1 - 7) % 6 or cap - 1 <= cloudsea.LOW:
             continue
-        cap = y if half == "top" else y - 1                           # a bent: x 98, 104 ..
-        for dz in (-1, 0, 1):
+        for dz in (-1, 0, 1):                                         # a tower: x 98, 104 .. 128
             c.set(x, cap, z + dz, IRON.block)
             for yy in range(cap - 1, SUNK - 1, -1):
                 if c.has(x, yy, z + dz):
                     break                                             # down to the rock
-                c.set(x, yy, z + dz, IRON.block if dz else B.IRON_BARS)
+                if yy >= BARS_FROM:
+                    c.set(x, yy, z + dz, B.IRON_BARS)
+                elif dz:
+                    c.set(x, yy, z + dz, B.IRON_PIPE + "[axis=y]")
 
 
 def build(version=VERSION):

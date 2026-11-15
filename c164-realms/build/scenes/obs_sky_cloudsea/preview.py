@@ -3,7 +3,8 @@ card sky/cloudsea for trying fog laws and shapes between two trips to the real c
 
     cd build && python -m scenes.obs_sky_cloudsea.preview --out ../renders/_wip/pre
         [--scene obs_sky_cloudsea] [--only v12,sunset_west] [--laws blue,b768,s768]
-        [--clouds fancy,fast,off] [--chunks 12] [--size 1280x720] [--plan]
+        [--clouds fancy,fast,off] [--chunks 12] [--size 1280x720] [--plan] [--sheet 3]
+        [--set "SEEN=(170, 185)" ...]
 
 build/render.py draws the blocks in fog but not the vanilla cloud layer, and this card is about
 the line where the two meet. Here the layer is laid into the ray tracer's picture by the game's
@@ -22,10 +23,13 @@ own arithmetic (26.3; clouds.vsh, clouds.fsh, CloudRenderer, AtmosphericFogEnvir
     the chunks the game would have loaded round the camera are drawn (ChunkTrackingView).
 
 Not drawn, as in render.py: the afterglow and the fog's warm tint towards the west. The pictures
-are named <out>-<shot>-<law>[-fast|-off].png. --plan adds <out>-plan.png: the sea from straight
-above without fog, the sheet's face and what stands out of it on the left, the deck under it on
-the right, with the rings where the board's aerial camera loses the blocks. They are no evidence:
-the card is settled on the real client's pictures. This only says beforehand what those should show.
+are named <out>-<shot>-<law>[-fast|-off].png; with --sheet N they are laid side by side, N to a
+row and half the size, in one picture <out>-sheet.png instead. --plan adds <out>-plan.png: the
+sea from straight above without fog, the sheet's face and what stands out of it on the left, the
+blocks alone on the right, with the rings where the board's aerial camera loses the blocks.
+--set NAME=VALUE changes a constant of sky/cloudsea for this run, to try a shape without a commit.
+They are no evidence: the card is settled on the real client's pictures. This only says beforehand
+what those should show.
 """
 import argparse
 import atexit
@@ -38,7 +42,7 @@ import time
 
 import numpy as np
 from numba import njit, prange
-from PIL import Image
+from PIL import Image, ImageDraw
 
 import render as offline
 from artkit import gamelook, gamescene
@@ -188,14 +192,14 @@ def plan(cells, look, path, aerial, chunks, scale=2):
     x0, z0, nx, nz = cloudsea._grid()
     high = np.full((2, nx, nz), -10 ** 6)
     tone = np.full((2, nx, nz), -1)
-    counts = {"over the face": 0, "deck and below": 0}
+    counts = {"over the face": 0, "bodies": 0, "deck": 0}
     for (x, y, z), state in cells.items():
         i, j = x - x0, z - z0
         if not (0 <= i < nx and 0 <= j < nz):
             continue
         t = index.get(state.partition("[")[0].split(":")[-1], -2)
         if t >= 0:
-            counts["over the face" if y >= cloudsea.FACE else "deck and below"] += 1
+            counts["over the face" if y >= cloudsea.FACE else "bodies" if y > cloudsea.DECK_Y else "deck"] += 1
         for k in (0, 1):
             if (k == 1 or t < 0 or y >= cloudsea.FACE) and y > high[k, i, j]:
                 high[k, i, j], tone[k, i, j] = y, t
@@ -236,10 +240,20 @@ def main():
     ap.add_argument("--size", default="1280x720")
     ap.add_argument("--fov", type=float, default=77.0)
     ap.add_argument("--plan", action="store_true", help="also write <out>-plan.png")
+    ap.add_argument("--sheet", type=int, default=0, help="one picture <out>-sheet.png, this many views to a row")
+    ap.add_argument("--set", action="append", default=[], metavar="NAME=VALUE",
+                    help="a constant of scenes.obs.sky.cloudsea for this run (a Python expression)")
     args = ap.parse_args()
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
 
     t0 = time.time()
+    sea = importlib.import_module("scenes.obs.sky.cloudsea")
+    for item in args.set:
+        key, _, value = item.partition("=")
+        if not hasattr(sea, key.strip()):
+            raise SystemExit(f"--set {item}: sky/cloudsea has no {key.strip()}")
+        setattr(sea, key.strip(), eval(value, {"sea": sea}))
+        print(f"sky/cloudsea.{key.strip()} = {getattr(sea, key.strip())!r} for this run")
     scene = importlib.import_module(f"scenes.{args.scene}")
     look_mod = importlib.import_module(f"scenes.{args.scene}.mood")
     base = importlib.import_module("scenes.obs_sky_cloudsea")
@@ -266,6 +280,7 @@ def main():
     names = args.only.split(",") if args.only else list(base.LAW_VIEWS)
     size = tuple(int(v) for v in args.size.split("x"))
     pixel = 2.0 * math.tan(math.radians(args.fov) / 2.0) / size[1]
+    tiles = []
     for name in names:
         shot = views[name]
         cam = np.ascontiguousarray(world.camera(shot["pos"], shot.get("look_at"), 0.0, 0.0, args.fov), dtype=np.float64)
@@ -288,10 +303,23 @@ def main():
                                   min(CLOUD_RANGE * 16.0, got["cloud_fog_end_distance"]), CLOUD_RANGE * 16.0])
                 out = np.zeros((size[1], size[0], 3))
                 _draw(w, w._replace(grid=grid), cam, size[0], size[1], sheet, out)
-                path = f"{args.out}-{name}-{law}" + ("" if clouds == "fancy" else f"-{clouds}") + ".png"
-                Image.fromarray((np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8)).save(path)
-                print(f"{path} (tick {tick}, fog {look.fog_start:g}..{look.fog_end:g}, layer "
+                label = f"{name}-{law}" + ("" if clouds == "fancy" else f"-{clouds}")
+                picture = Image.fromarray((np.clip(out, 0.0, 1.0) * 255.0 + 0.5).astype(np.uint8))
+                if args.sheet:
+                    tiles.append((label, picture.resize((size[0] // 2, size[1] // 2), Image.LANCZOS)))
+                else:
+                    picture.save(f"{args.out}-{label}.png")
+                print(f"{args.out}-{label} (tick {tick}, fog {look.fog_start:g}..{look.fog_end:g}, layer "
                       f"alpha {colour[3]:.2f} to {sheet[5]:g}, {time.time() - t1:.0f} s)")
+    if tiles:
+        w, h = tiles[0][1].size
+        rows = -(-len(tiles) // args.sheet)
+        page = Image.new("RGB", (args.sheet * w, rows * h))
+        for n, (label, tile) in enumerate(tiles):
+            page.paste(tile, ((n % args.sheet) * w, (n // args.sheet) * h))
+            ImageDraw.Draw(page).text(((n % args.sheet) * w + 6, (n // args.sheet) * h + 4), label, fill=(255, 255, 255))
+        page.save(f"{args.out}-sheet.png")
+        print(f"{args.out}-sheet.png: {len(tiles)} views, {args.sheet} to a row")
 
 
 if __name__ == "__main__":

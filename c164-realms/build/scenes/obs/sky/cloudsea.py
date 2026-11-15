@@ -9,16 +9,27 @@ the game cuts it where rock or iron stands in it, so it lies against everything 
 sheet is the calm sea, out to the horizon. Blocks are only what the sheet cannot be:
 
     the surf    cloud heaped against whatever stands in the sea: a lip all the way round, high in
-                the gullies and low on the capes, so the line where rock and sea meet is cloud and
-                is never the sheet's level cut;
+                the gullies and low on the capes, higher where the wind comes from, so the line
+                where rock and sea meet is cloud and is never the sheet's level cut;
     the heads   cumulus standing out of the face to y -24: steep round domes, the bigger ones with
-                smaller ones crowded on them, packed side by side in banks that lie north-south,
-                across the way to the afterglow, with the calm sea between;
+                smaller ones crowded on them, packed side by side in banks with calm sea between;
     the piles   a few towers in the banks, to y -20;
-    the deck    one course of cloud under the face (its top a block lower, lower again in its
-                hollows). Nobody sees it through the sheet. It is the sea for a player who has
-                switched the game's clouds off, and it keeps the stars from showing through the
-                sheet near the mountain.
+    the bodies  what the heads stand on: under every bank a shelf of cloud whose top is one block
+                under the face, stepping down at its rim;
+    the deck    one course of cloud far below the face (its top five blocks under it, lower again
+                in its hollows), out to DECK_REACH from where people stand.
+
+Nobody sees bodies or deck through the sheet. They are the sea for the players who do not have the
+sheet where it is drawn here:
+
+    clouds "fast"   the game draws the layer as one flat face at its underside, y -32. The bodies
+                    stand three blocks out of that face as low banks with the heads on them, and
+                    the face still runs to the horizon over the deck.
+    clouds off      the deck is the sea, five blocks lower, dark towards its end; the banks stand
+                    on it.
+
+No block of cloud ever has its top in one of the two faces (top blocks at y -29 and -33 are not
+laid), and a block of somebody else that has is given a block of cloud on it, so nothing flickers.
 
 Three versions, compared on the real client (the offline renderer draws the fog but neither the
 cloud layer nor the afterglow; scenes/obs_sky_cloudsea/preview.py lays the layer into its picture
@@ -26,35 +37,34 @@ by the game's arithmetic, as a forecast; the card is settled on S1's pictures):
 
     "a"  the sheet alone   no blocks. Rock and track meet the sheet's level cut, and with the
                            player's clouds off nothing is left.
-    "b"  blocks alone      the deck is the sea, its face a block lower; clouds.png is blanked and
-                           the distance is left to the fog.
-    "c"  both (default)    what the master scene builds. With the player's clouds off it is "b";
-                           on "fast" the game draws the sheet four blocks lower, under the deck,
-                           and the deck is the sea as far as it reaches.
+    "b"  blocks alone      clouds.png is blanked: what "c" is with the player's clouds off.
+    "c"  both (default)    what the master scene builds.
 
-Where the blocks may stand is ruled by the view distance (12 chunks: the board's). The game takes
+Where a head may stand is ruled by the view distance (12 chunks: the board's). The game takes
 blocks into the fog colour between 172.8 and 192 blocks whatever the fog is set to, and draws none
-beyond the last loaded chunk; the sheet it goes on drawing. So a head must never stand where
-somebody sees it from further than that:
+beyond the last loaded chunk; the sheet it goes on drawing, lighter than the fog. A head in that
+wall is a dark blot on the sea, and a rim of them is a ring. So a head never stands where somebody
+sees it from further than that:
 
   - from the ground (SEEN): for every column, how far away the farthest person stands who can see a
     head there, worked out from the skeleton's flats and a plain model of the slopes between them.
-    The banks thin out where that passes 150 blocks and end by 166.
+    The banks thin out where that passes 156 blocks and end by 170. That leaves the sea its banks
+    for some forty to seventy blocks from the shore; beyond is the sheet alone, as a level deck of
+    cloud lies beyond the heads a mountain raises in it.
   - from the air (AERIAL): the board's camera V12 stands so far out that the far shore is at its
     wall of fog. A lane of calm sea lies where that camera loses the blocks (LOST), so that it sees
     no head darken there and none cut off at a chunk's edge; the banks beyond the lane it does not
     load, and the people on the west rail do.
-  - the deck is laid REACH blocks out from where anyone can stand, so its end is behind the wall of
-    fog from every flat; under the sheet it could end anywhere.
 
-Only empty cells are filled. The sea lies right against whatever stands in it: the mountain's rock
-and snow (ROCK, COVER), and what is built -- the legs and girders of the cable trestle, piers,
-steps -- so a track that runs down into the cloud is lost in it. A track or a wall that is to be
-lost in the sea has to be carried down to y -31, under the deck. The one exception is what would
-grow a thick arm towards a cloud beside it when the scene is placed (walls and fences, JOINS): from
-those the sea keeps CLEAR empty cells, with a sunk floor of cloud under the gap. A block whose top
-would lie in the sheet's face (y -29: the mountain's sunk rim) gets a block of cloud on it, so the
-two faces never flicker in each other.
+Only empty cells are filled, and none under a whole block of somebody else. The sea lies right
+against whatever stands in it: the mountain's rock and snow, and what is built -- the legs and
+girders of the cable trestle, piers, steps. Where something built ends low in the sea (its top
+within two blocks over the face: the last cells of the cable track) the sea heaps a head over it,
+so the track runs into cloud and is not seen to end on the sheet; near anything that stands in
+the sea no cloud is higher than y -24 (LOW: the trestle's bars begin above that), the piles keep
+well away. The one exception to lying against everything is what would grow a thick arm towards a
+cloud beside it when the scene is placed (walls and fences, JOINS): from those the sea keeps CLEAR
+empty cells, with a sunk floor of cloud under the gap.
 
 The five tones are the occupancy roles B.CLOUD (dark to light, palette RAMPS["cloud"]). This package
 paints them (A0's exception to "only materials paints blocks": the cloud colour is tuned with the
@@ -62,10 +72,10 @@ light of the sky), through materials/_kit like everyone else. The pictures are f
 sky_cloud_0..4 and the game's own face shading is turned off (shade=False, ao=False): which tone a
 block wears is baked here from the shape, lit from the west where the afterglow is. The sheet shows
 the second lightest tone (sky/mood's cloud colour is that tone as the blue hour lights it), so that
-is what low cloud wears and where a head's lit foot melts into the sea; the crown and the west side
-of a head are the lightest, its lee side and its creases the two below. There is no dither: the
-tones lie in clean bands, as pixel art shades a ball. The deck wears the sheet's tone near the
-mountain and sinks to the tone nearest the fog's by its end.
+is what level cloud wears, the top of a head as much as the deck. What faces west is the lightest
+tone, what faces east the two below, the creases at a head's foot the darkest; the crowns of the
+piles catch the light as well. There is no dither: the tones lie in clean bands, as pixel art
+shades a ball. The deck sinks to the tone nearest the fog's by its end.
 """
 import math
 from functools import lru_cache
@@ -89,10 +99,13 @@ VERSIONS = ("a", "b", "c")
 DEFAULT = "c"
 
 FACE = mood.CLOUD_TOP           # -28: scene y of the sea's face, the upper face of the game's cloud layer
+LOW_FACE = FACE - mood.CLOUD_THICKNESS      # -32: where the game draws the layer on "fast": its underside
 FOOT = FACE - 0.5               # a height field at or over this puts a block above the face
-DECK_Y = FACE - 2               # the deck's blocks: their top is one block under the face
+BODY_Y = FACE - 2               # the top blocks of a bank's body: their top is one block under the face
+DECK_Y = LOW_FACE - 2           # the deck's blocks: their top is one block under the fast face
 HOLLOW_Y = DECK_Y - 1           # ... and one lower in the deck's hollows
 FLOOR_Y = DECK_Y - 2            # the sunk floor under a gap beside a wall or a fence
+RIM = ((1.5, BODY_Y), (2.5, BODY_Y - 1), (3.5, BODY_Y - 2))    # a body: this far round its heads, this high
 HEAP = 4.6                      # a head of cloud stands this far out of the face (to y -24)
 PILE = 8.0                      # the few big piles (to y -20, card)
 PILES = 7                       # how many of those
@@ -100,23 +113,31 @@ PEAK = -20                      # nothing is higher than this
 CLEAR = 1                       # empty cells kept between the sea and what would join on to it
 SEED = 41
 
-# What stands in the sea. ROCK is the mountain's bare rock and snow: whole blocks, which hide the
-# cloud that lies behind them. COVER lies on the rock in thin layers and hides nothing. JOINS (by the
-# ending of the name) are the built things that grow a thick arm towards a whole block beside them
-# when a scene is placed: the game shapes them from their neighbours. The sea keeps CLEAR cells away
-# from those and lies right against everything else. Bars and panes join on as well, but with a thin
-# arm at the cloud's own level that ends in the cloud's face; a well round every leg of the trestle
-# would show far more.
-ROCK = (B.ROCK_STONE.block, B.ROCK_ANDESITE.block, B.ROCK_DEEPSLATE, B.ROCK_COBBLED.block, B.TUFF.block, B.SNOW)
-COVER = (B.SNOW_LAYER,)
+# What stands in the sea. A whole block of somebody else -- rock, snow, masonry, a girder -- hides
+# the cloud behind it and under it. THIN (by the ending of the name, or the whole name) is what
+# hides nothing: a slab, a step, a rail, a pipe, a layer of snow. JOINS are the thin things that
+# grow a thick arm towards a whole block beside them when a scene is placed: the game shapes them
+# from their neighbours. The sea keeps CLEAR cells away from those and lies right against
+# everything else. Bars and panes join on as well, but with a thin arm at the cloud's own level
+# that ends in the cloud's face; a well round every leg of the trestle would show far more.
+THIN = ("_slab", "_stairs", "_wall", "_fence", "_fence_gate", "_bars", "_chain", "_rod", "_pane", "_glass", "_grate",
+        "_trapdoor", "_door", "_carpet", "_button", "_sign", "_torch", "_lantern", "_rail", "_candle", "_head")
+THIN_NAMES = (B.SNOW_LAYER, "chain", "lantern", "ladder", "rail", "glass", "torch", "lever", "scaffolding")
 JOINS = ("_wall", "_fence")
+# What is built and runs down into the sea -- a track, a stair -- is heaped over where its top comes
+# this near the face: the cloud stands at least two blocks over it, and the track is lost in a head
+# of cloud instead of ending on the sheet.
+SUNK = (FACE - 1, FACE + 2)     # the block y of such a top: -29 .. -26 (lower, it is under the face anyway)
+COVERED = 6.5                   # the head over it is this wide
+LOW = FACE + 4                  # -24: no cloud is higher than this block within SHY of what stands in the sea
+SHY = 28                        # ... the piles keep this far away from it (site/cablecar's bars begin at -23)
 
 # The view distance the map is shown at and what follows from it (26.3: fog.glsl, FogRenderer,
 # ChunkTrackingView). Blocks: the fog of the view distance runs from 90% of it to all of it, by the
 # distance in plan; chunks are loaded at most a chunk further.
 VIEW = 12 * 16.0                # 192
-REACH = VIEW + 12.0             # the deck ends this far from where anyone can stand
-SEEN = (150.0, 166.0)           # the banks thin out between these distances to their farthest onlooker
+DECK_REACH = 150.0              # the deck ends this far from where anyone can stand
+SEEN = (156.0, 170.0)           # the banks thin out between these distances to their farthest onlooker
 HEAD_Y = FACE + 6               # a head counts as seen when the eye reaches this height over its column
 FALL = 0.72                     # the mountain's slopes in the sight model: blocks down per block out (site/terrain)
 CRAG = 2.0                      # ... taken this much lower: gullies let the eye past
@@ -126,6 +147,7 @@ CRAG = 2.0                      # ... taken this much lower: gullies let the eye
 AERIAL = tuple(float(v) for v in getattr(S, "V12", {}).get("pos", (S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0)))[::2]
 LOST = (VIEW - 6.0, VIEW + 22.0)
 LOST_EDGE = 7.0                 # the lane's banks: the heads thin out over this much on either side
+WIND = {"north": (0.0, -1.0), "south": (0.0, 1.0), "west": (-1.0, 0.0), "east": (1.0, 0.0)}[S.WIND_FROM]
 
 GRAIN = 0.08                    # share of a tone's pixels nudged one step, within the cloud ramp
 
@@ -204,10 +226,10 @@ def _eyes(step=6.0):
 
 
 def _grid():
-    """The columns the sea may use, (x0, z0, nx, nz): out to the deck's end and a margin."""
+    """The columns the sea may use, (x0, z0, nx, nz): as far as anybody sees a block, and a margin."""
     (cx, cz), r = S.SUNSET_PLATFORM["centre"], S.SUNSET_PLATFORM["radius"]
     flats = _flats()
-    pad = int(REACH) + 14
+    pad = int(VIEW) + 26
     x0, x1 = min([cx - r] + [f[0] for f in flats]) - pad, max(f[2] for f in flats) + pad
     z0, z1 = min([cz - r] + [f[1] for f in flats]) - pad, max([cz + r] + [f[3] for f in flats]) + pad
     return x0, z0, x1 - x0 + 1, z1 - z0 + 1
@@ -326,49 +348,52 @@ def _reach(passable):
 
 
 def _others(canvas, origin, lo, shape, y0):
-    """(occ, rock, whole, joins): the cells of the box that hold a block of somebody else; which of
-    those are the mountain's rock and snow; which of these are whole blocks, hiding what is behind
-    them; and which cells hold something that would join on to a cloud (box indices; the box starts
-    at scene (lo[0], y0, lo[1]))."""
+    """(occ, whole, joins, high): the cells of the box that hold a block of somebody else; which of
+    those are whole blocks, hiding what is behind them; which hold something that would join on to
+    a cloud (box indices; the box starts at scene (lo[0], y0, lo[1])); and per column the scene y
+    of the highest block of somebody else at any height (far below the box where there is none)."""
     ox, oy, oz = origin
     nx, ny, nz = shape
     x0, z0 = lo
-    occ, rock, whole, joins = (np.zeros(shape, dtype=bool) for _ in range(4))
+    occ, whole, joins = (np.zeros(shape, dtype=bool) for _ in range(3))
+    high = np.full((nx, nz), -10 ** 6, dtype=np.int64)
     keys = np.array(list(canvas.b.keys()), dtype=np.int64).reshape(-1, 3)
     if len(keys):
         a, b, c = keys[:, 0] - ox - x0, keys[:, 1] - oy - y0, keys[:, 2] - oz - z0
-        ok = (a >= 0) & (a < nx) & (b >= 0) & (b < ny) & (c >= 0) & (c < nz)
+        col = (a >= 0) & (a < nx) & (c >= 0) & (c < nz)
+        np.maximum.at(high, (a[col], c[col]), b[col] + y0)
+        ok = col & (b >= 0) & (b < ny)
         occ[a[ok], b[ok], c[ok]] = True
         for key, i, j, k in zip(keys[ok].tolist(), a[ok].tolist(), b[ok].tolist(), c[ok].tolist()):
             name = canvas.b[tuple(key)].partition("[")[0].split(":")[-1]
-            if name in ROCK:
-                rock[i, j, k] = whole[i, j, k] = True
-            elif name in COVER:
-                rock[i, j, k] = True
-            elif name.endswith(JOINS):
+            if name.endswith(JOINS):
                 joins[i, j, k] = True
-    return occ, rock, whole, joins
+            elif not (name.endswith(THIN) or name in THIN_NAMES):
+                whole[i, j, k] = True
+    return occ, whole, joins, high
 
 
-def _field(seed, land):
-    """The block sea as height fields: (top, hollow, deck, dusk). ``top`` is the continuous height
-    of what stands out of the face per column (-inf where nothing does), ``hollow`` says where the
-    deck lies a block lower, ``deck`` where there is deck at all, ``dusk`` how far the deck has sunk
-    towards the fog's tone there (0 near the mountain, 1 at its end). ``land`` marks the columns
-    where something stands in the cloud: the sea heaps up along it and keeps its piles away from it."""
+def _field(seed, land, sunk=()):
+    """What stands out of the face, and the deck: (top, hollow, deck, dusk). ``top`` is the
+    continuous height per column of the heads, the surf and the piles (-inf where the face is
+    calm), ``hollow`` says where the deck lies a block lower, ``deck`` where there is deck at all,
+    ``dusk`` how far the deck has sunk towards the fog's tone there (0 near the mountain, 1 at its
+    end). ``land`` marks the columns where something stands in the cloud: the sea heaps up along it
+    and keeps its piles away from it. ``sunk`` lists what is built and ends low in the sea, as
+    (column, column, y of its top block): the sea heaps over those."""
     x0, z0, nx, nz = _grid()
     X, Z = np.meshgrid(np.arange(nx) + x0, np.arange(nz) + z0, indexing="ij")
 
     hull = _hull(X, Z)
     wobble = N.fbm2(X / 47.0, Z / 47.0, seed + 5, octaves=3)           # no edge is a ruled line
-    deck = hull - 14.0 * wobble < REACH
-    dusk = N.smoothstep(96.0, 168.0, hull - 22.0 * wobble)
+    deck = hull - 14.0 * wobble < DECK_REACH
+    dusk = N.smoothstep(0.36 * DECK_REACH, 0.76 * DECK_REACH, hull - 22.0 * wobble)
     hollow = N.fbm2(X / 58.0, Z / 58.0, seed + 2, octaves=2) < -0.16
     amount = _amount(X, Z)
-    # where the cloud piles up: banks that lie north-south, bent a little, about half of the sea;
-    # 1 in a bank, 0 in the calm sea that winds between them
-    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 26.0
-    core = N.smoothstep(-0.10, 0.08, N.fbm2((X + bend) / 60.0, Z / 100.0, seed + 1, octaves=2))
+    # where the cloud piles up: banks, longer north-south than they are wide, about two thirds of
+    # the sea that may carry any; 1 in a bank, 0 in the calm water that winds between them
+    bend = N.fbm2(X / 90.0, Z / 90.0, seed + 7, octaves=2) * 22.0
+    core = N.smoothstep(-0.20, 0.04, N.fbm2((X + bend) / 44.0, Z / 70.0, seed + 1, octaves=2))
     # how hard it boils: the heads stand high here and lie low and woolly there
     vigour = N.smoothstep(-0.25, 0.25, N.fbm2(X / 44.0, Z / 44.0, seed + 3, octaves=2))
 
@@ -399,8 +424,9 @@ def _field(seed, land):
     # their place in the list of sites tried): when somebody builds or digs at the shore, or the
     # board's camera moves, the sea changes there and stays as it was everywhere else.
 
-    # the heads: packed side by side in the banks, a few standing alone in the calm sea. They do
-    # not look at the land, so they stand where they stand whatever is built.
+    # the heads: packed side by side in the banks, a few standing alone in the calm water. They do
+    # not look at the land, so they stand where they stand whatever is built. Towards the end of
+    # where a head may stand they grow few, small and low.
     cell = 8
     gxs, gzs = range(0, nx, cell), range(0, nz, cell)
     draws = np.random.default_rng((seed, 0)).uniform(size=(len(gxs), len(gzs), 6)).tolist()
@@ -410,17 +436,17 @@ def _field(seed, land):
             px, pz = gx + fx * cell, gz + fz * cell
             ix, iz = cell_of(px, pz)
             d, c = amount[ix, iz], core[ix, iz]
-            if d <= 0.0 or u > d ** 0.8 * (0.02 + 0.88 * c):
-                continue                            # thinned out in the calm sea and towards the banks' end
+            if d <= 0.0 or u > d ** 0.8 * (0.05 + 0.90 * c):
+                continue
             rad = (3.0 + 4.4 * v ** 1.5) * (0.8 + 0.2 * d) * (0.85 + 0.3 * c)
-            if c > 0.8 and t > 0.88:
-                rad = 8.0 + 28.0 * (t - 0.88)       # the broad cushions in the heart of a bank
-            high = HEAP * (0.45 + 0.55 * vigour[ix, iz]) * (0.7 + 0.3 * w)
+            if c > 0.7 and d > 0.6 and t > 0.80:
+                rad = 8.0 + 30.0 * (t - 0.80)       # the broad cushions in the heart of a bank
+            high = HEAP * (0.45 + 0.55 * vigour[ix, iz]) * (0.7 + 0.3 * w) * (0.55 + 0.45 * d)
             head(np.random.default_rng((seed, 0, i, j)), px, pz, rad, min(high, rad * (0.55 + 0.35 * w)))
 
     # the few big piles, well apart, in the banks, away from the mountain: broad shoulders, a
     # narrower tower standing out of them, smaller domes on its flanks
-    away = ~_grow(land, 28)
+    away = ~_grow(land, SHY)
     sites = np.random.default_rng((seed, 1)).uniform(size=(4000, 2)) * (nx, nz)
     piles = []
     for i, (px, pz) in enumerate(sites.tolist()):
@@ -445,6 +471,11 @@ def _field(seed, land):
         shore = _distance(land, 14)                 # 0 on the land, how far out to sea
         coast = land & (_distance(~land, 3) <= 2.5)                     # the land's own last columns
         fold = _blur(land.astype(np.float32), 6)    # over a half in a gully, a tenth off a cape
+        # 1 on a shore that faces the wind, -1 in the lee: the cloud is driven up the one and
+        # sinks away from the other
+        gx_, gz_ = np.gradient(_blur(land.astype(np.float32), 9))
+        windward = -(gx_ * WIND[0] + gz_ * WIND[1]) / np.maximum(np.hypot(gx_, gz_), 1e-6)
+        swell = 0.25 * np.maximum(windward, 0.0) - 0.12 * np.maximum(-windward, 0.0)
         surf = N.fbm2(X / 23.0, Z / 23.0, seed + 9, octaves=2)
         # the lip: at least one block of cloud against the land all the way round, and on the
         # land's own last columns where they lie under the face
@@ -473,12 +504,10 @@ def _field(seed, land):
                 ix, iz = cell_of(px, pz)
                 if not zone[ix, iz]:
                     continue
-                a = float(np.clip(0.5 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28), 0.0, 1.0))
+                a = float(np.clip(0.5 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28) + swell[ix, iz], 0.0, 1.0))
                 if u > 0.6 + 0.4 * a:
                     continue
                 rise = 1.5 + (HEAP - 1.5) * a * (0.75 + 0.25 * w)
-                if a > 0.8 and w > 0.35:
-                    rise += 1.9 * w * (a - 0.8) / 0.2                   # the highest, to about y -22
                 head(np.random.default_rng((seed, 2, i, j)), px, pz, min(6.4, 3.3 + 2.8 * v + 1.2 * a), rise)
         # where the surf stands high the cloud banks up further out as well: broad cushions with a
         # crowd of domes on them, a few to a bay, and none where a head may not stand
@@ -493,29 +522,37 @@ def _field(seed, land):
                 ix, iz = cell_of(px, pz)
                 if shore[ix, iz] < 2.5 or shore[ix, iz] > 13.0:
                     continue
-                a = float(np.clip(0.5 + 1.9 * bank[ix, iz] + 1.2 * (fold[ix, iz] - 0.28), 0.0, 1.0))
+                a = float(np.clip(0.5 + 1.9 * bank[ix, iz] + 1.2 * (fold[ix, iz] - 0.28) + 1.4 * swell[ix, iz], 0.0, 1.0))
                 if u > a * a * amount[ix, iz]:
                     continue
                 head(np.random.default_rng((seed, 4, i, j)), px, pz, 7.0 + 4.5 * v, (2.6 + (HEAP - 2.6) * a) * (0.8 + 0.2 * w))
+
+        # what is built and ends low in the sea is heaped over: a head on every such column, two
+        # blocks over it or more, so a row of them is one long head
+        for i, k, y in sunk:
+            crest = min(y + 3, LOW) + 0.4
+            _stamp(top, i + 0.5, k + 0.5, FOOT - 0.25, crest - (FOOT - 0.25), COVERED, 0.6)
+        top = np.where(away, top, np.minimum(top, LOW + 0.45))
 
     top = np.minimum(top, PEAK + 0.45)
     return top, hollow, deck, dusk
 
 
-def _shade(top, has):
-    """Light 0..1 per column from the continuous height field, lit from the west and from above. Low
-    cloud takes the face's own light (0.75: the tone the sheet shows); on a head the light climbs
-    with the height, more on the west side, less on the lee side and in the creases."""
-    h = np.where(has, top, FACE - 0.2).astype(np.float32)
+def _shade(h):
+    """Light 0..1 per column from the height of its top block, lit from the west, low. Level cloud
+    takes the face's own light (0.75: the tone the sheet shows), whatever its height; what faces
+    west takes more, what faces east less, a little of that again for the lie of the whole bank;
+    a crest has a breath more than a crease, and the crowns of the piles catch the light."""
+    h = (h - DECK_Y).astype(np.float32)             # the blur reads zero outside the grid: the deck's level
 
     def westward(a):                                # rising eastwards = facing west
         p = np.pad(a, 1, mode="edge")
         return (p[2:, 1:-1] - p[:-2, 1:-1]) * 0.5
 
-    crest = h - _blur(h, 3)                                            # over its surroundings or under
-    alt = np.clip((h - FOOT) / HEAP, 0.0, 1.6)
-    return (0.66 + 0.22 * alt + 0.30 * np.tanh(1.1 * westward(h)) + 0.12 * np.tanh(2.5 * westward(_blur(h, 5)))
-            + 0.12 * np.tanh(1.4 * crest))
+    crest = h - _blur(h, 3)                                             # over its surroundings or under
+    crown = np.clip((h - (FACE - DECK_Y) - 3.0) / 5.0, 0.0, 1.0)
+    return (0.75 + 0.30 * np.tanh(1.3 * westward(h)) + 0.10 * np.tanh(2.5 * westward(_blur(h, 5)))
+            + 0.05 * np.tanh(1.2 * crest) + 0.12 * crown)
 
 
 def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
@@ -534,37 +571,54 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     x0, z0, nx, nz = _grid()
     y0, y1 = FLOOR_Y - 1, PEAK + 2
     ny = y1 - y0 + 1
-    occ, rock, whole, joins = _others(canvas, origin, (x0, z0), (nx, ny, nz), y0)
+    occ, whole, joins, high = _others(canvas, origin, (x0, z0), (nx, ny, nz), y0)
     kept = _grow(joins, CLEAR)                      # the room given to what would join on to a cloud
 
-    # The land: columns where somebody's block stands in the cloud band, and what those wall in: the
-    # hollow of the mountain. What merely has a bridge over it is not walled in and keeps its cloud,
-    # and so does a pocket less than five columns across (the slot between two rails, a cleft in the
-    # shore): the hollow is what is left of the walled-in columns after two are taken off every rim.
-    band = occ[:, DECK_Y - y0:, :].any(axis=1)
+    # The land: columns where somebody's block stands in the cloud, from the bodies' level up, and
+    # what those wall in: the hollow of the mountain. What merely has a bridge over it is not walled
+    # in and keeps its cloud, and so does a pocket less than five columns across (the slot between
+    # two rails, a cleft in the shore): the hollow is what is left of the walled-in columns after
+    # two are taken off every rim. Under the land the sea goes on for a few columns only: far
+    # enough in to lie under a trestle or a landing stage, and no further under the mountain.
+    band = occ[:, BODY_Y - y0:, :].any(axis=1)
     shut = ~band & ~_reach(~band)
     inside = shut & _grow(~_grow(~shut, 2), 2)
-    top, hollow, deck, dusk = _field(seed, band | inside)
-    has = (top >= FOOT) & ~inside
-    tops = np.where(has, np.floor(top + 0.5), y0 - 1).astype(np.int64)
-    floor_y = np.where(hollow, HOLLOW_Y, DECK_Y)
-    deck = deck & ~inside
+    land = band | inside
+    dry = inside | (land & (_distance(~land, 6) > 4.5))
+    # what is built and ends low in the sea: the columns whose highest block is a thin one near the face
+    j = np.clip(high - y0, 0, ny - 1)
+    thin = occ[np.arange(nx)[:, None], j, np.arange(nz)[None, :]] & ~whole[np.arange(nx)[:, None], j, np.arange(nz)[None, :]]
+    sunk = thin & (high >= SUNK[0]) & (high <= SUNK[1]) & ~dry
+    top, hollow, deck, dusk = _field(seed, land, [(i, k, int(high[i, k])) for i, k in zip(*np.nonzero(sunk))])
 
-    # only empty cells, clear of what would join on, and not in the hollow under a crust of rock:
-    # what stands out of the face, down to the deck's hollows, and the deck's one course
+    # The top block of every column: a head where the field stands out of the face; round the heads
+    # their body, stepping down; the deck everywhere else, and a strip of it round every body.
+    cap = (top >= FOOT) & ~dry
+    near = _distance(cap, 6)
+    floor_y = np.where(hollow, HOLLOW_Y, DECK_Y)
+    level = np.full((nx, nz), y0 - 1, dtype=np.int64)                   # nothing
+    sea = (deck | (near <= 5.5)) & ~dry
+    level[sea] = floor_y[sea]
+    for reach, y in reversed(RIM):
+        level[(near <= reach) & ~dry] = y
+    level[cap] = np.floor(top[cap] + 0.5).astype(np.int64)
+
+    # only empty cells, clear of what would join on, and none under a whole block of somebody else
     ys = np.arange(ny)[None, :, None] + y0
-    heap = has[:, None, :] & (ys >= HOLLOW_Y) & (ys <= tops[:, None, :])
-    solid = (heap | (deck[:, None, :] & (ys == floor_y[:, None, :]))) & ~occ & ~kept
-    solid &= ~np.flip(np.logical_or.accumulate(np.flip(rock, 1), axis=1), 1)
-    # a block of somebody else whose top lies in the sheet's face is covered
-    f = FACE - y0
-    awash = occ[:, f - 1, :] & ~occ[:, f:, :].any(axis=1) & ~inside
-    solid[:, f, :] |= awash & ~kept[:, f, :]
+    solid = (ys >= floor_y[:, None, :]) & (ys <= level[:, None, :]) & ~occ & ~kept
+    solid &= ~np.flip(np.logical_or.accumulate(np.flip(whole, 1), axis=1), 1)
+    # nothing has its top in one of the game's two faces: a block of cloud that would is left out,
+    # a block of somebody else that has is covered
+    for face in (FACE, LOW_FACE):
+        f = face - y0
+        solid[:, f - 1, :] &= solid[:, f, :] | occ[:, f, :]
+        awash = occ[:, f - 1, :] & ~occ[:, f:, :].any(axis=1) & ~dry
+        solid[:, f, :] |= awash & ~kept[:, f, :]
 
     # the sunk floor: where the deck was opened beside a wall or a fence and nothing stands in the
     # column, the eye would drop through to the void; a dark course of cloud lies there, low in the gap
     floor = np.zeros_like(solid)
-    floor[:, FLOOR_Y - y0, :] = deck & ~solid.any(axis=1) & ~occ.any(axis=1)
+    floor[:, FLOOR_Y - y0, :] = sea & ~solid.any(axis=1) & ~occ.any(axis=1)
     floor &= ~kept
 
     # only what can be seen from above or from the side is placed: a cell with cloud or whole rock
@@ -576,14 +630,18 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     up_open = ~p[1:-1, 2:, 1:-1]
     skin = solid & (up_open | west_open | east_open | side_open)
 
-    # a cell seen from the side only takes its column's light, more of it facing west, less facing
-    # east, and less the further down the side it lies. The deck: the face's light, a tone less in
-    # its hollows, and both sinking to the fog's tone towards its end.
-    light = _shade(top, has)[:, None, :] + np.zeros((1, ny, 1), dtype=np.float32)
+    # The light of a column is that of its top block; the land counts as level with the face, so the
+    # lip is lit by the side the sea lies on. The deck is a tone darker in its hollows and sinks to
+    # the fog's tone towards its end. A cell seen from the side only takes its column's light, more
+    # of it facing west, less facing east, and less the further down the side it lies.
+    here = level > y0 - 1
+    height = np.where(cap, top, np.where(land, FACE, np.where(here, level, DECK_Y)))
+    light = _shade(height)
+    low = here & (level <= DECK_Y)
+    light = np.where(low, np.clip(light - 0.25 * (level == HOLLOW_Y) - 0.5 * dusk, 0.25, 1.0), light)
+    light = light[:, None, :] + np.zeros((1, ny, 1), dtype=np.float32)
     turn = np.where(west_open, 0.10, np.where(side_open, -0.06, -0.16))
-    light = np.where(up_open, light, light + turn - 0.05 * np.clip(tops[:, None, :] - ys, 0, 8))
-    calm = np.clip(0.75 - 0.25 * hollow - 0.5 * dusk, 0.25, 0.75)
-    light = np.where(has[:, None, :] | (ys > floor_y[:, None, :]), light, calm[:, None, :])
+    light = np.where(up_open, light, light + turn - 0.05 * np.clip(level[:, None, :] - ys, 0, 8))
 
     ox, oy, oz = origin
     last = len(names) - 1
