@@ -13,7 +13,8 @@ Five tiers, each stepped back and up so that one picture holds them all; from th
               puts them together as a facade does (plinth, rough base, string course, fine wall
               with sunk panels and emblems)
     metal     cast iron, verdigris, old copper, brass
-    glass     the six windows, the instrument panels, the woods
+    glass     the furnace window as the power house has it; the six windows shoulder to shoulder
+              in one front of fine stone; the instrument panels; the woods
 
 Repainted blocks show whatever the material packages paint today (stand-ins until a family is
 painted); the other blocks are the game's. A lamp row stands at the foot of every tier except in
@@ -44,6 +45,7 @@ DOWN = 27.0                     # the picture of the whole board looks this far 
 #                                 board fills the picture both ways and the far walls are largest
 N = 8                           # a wall is N by N
 PITCH = N + 2                   # x from one wall to the next
+WALLS = 8                       # the board is this many walls wide
 RISE, BACK = 10, 12             # each tier stands this much higher and further back
 FRONT = 20                      # the ground tier's floor comes this far forward of its walls
 FLOOR = B.SLATE_SMOOTH.block    # dark and plain: floors and the risers behind the walls
@@ -77,6 +79,18 @@ def together(c, x, y, z):
         else:
             c.set(x + dx, y + 4, z, B.ASHLAR_PANEL.block)
             c.set(x + dx, y + N - 1, z, B.ASHLAR_PANEL.block)
+
+
+def furnace(c, x, y, z):
+    """The furnace window as a boiler bay of the power house has it (site/powerhouse), flat and
+    small: tuff brick, a sill of polished tuff, the three rows that glow as one sheet, the sill row
+    first, under three rows of dark glass. There are no panes of it."""
+    rows = len(B.WINDOW_FURNACE)
+    c.box(x, y, z, x + N - 1, y + N - 1, z, B.TUFF_BRICK.block)
+    c.box(x + 1, y, z, x + N - 2, y, z, B.TUFF_SMOOTH.block)
+    for row, glass in enumerate(B.WINDOW_FURNACE):
+        c.box(x + 1, y + 1 + row, z, x + N - 2, y + 1 + row, z, glass.block)
+    c.box(x + 1, y + 1 + rows, z, x + N - 2, y + N - 2, z, B.WINDOW_DARK.block)
 
 
 def instruments(c, x, y, z):
@@ -208,12 +222,18 @@ TIERS = [
                ("iron_cast", _block(B.IRON_CAST), True), ("iron_grate", _block(B.IRON_GRATE), True),
                ("verdigris", verdigris, True), ("old_copper", copper, True),
                ("brass_plate", _block(B.BRASS_PLATE), True), ("brass_pattern", _block(B.BRASS_PATTERN), True)]),
-    ("glass", [("window_lit", _window(B.WINDOW_LIT), False), ("window_curtain", _window(B.WINDOW_CURTAIN), False),
+    ("glass", [("furnace", furnace, False),
+               ("window_lit", _window(B.WINDOW_LIT), False), ("window_curtain", _window(B.WINDOW_CURTAIN), False),
                ("window_frosted", _window(B.WINDOW_FROSTED), False), ("window_dark", _window(B.WINDOW_DARK), False),
                ("window_blind", _window(B.WINDOW_BLIND), False), ("skylight", _window(B.SKYLIGHT), False),
                ("instruments", instruments, True), ("woods", woods, True)]),
 ]
 ROWS = {"ground": ground, "pieces": pieces}      # the tiers that are laid out by a function of their own
+# x of each wall of a tier that does not stand its walls a PITCH apart. The glass tier holds nine: the
+# six windows stand shoulder to shoulder as one front (frame against frame, a pier of two between two
+# windows), which leaves the furnace window a place of its own at the far end from the lamps of the
+# instrument wall; the skylight, the instruments and the woods stand where a PITCH puts them.
+PLACES = {"glass": (0,) + tuple(PITCH + N * i for i in range(5)) + (5 * PITCH, 6 * PITCH, 7 * PITCH)}
 BRASS_AT = 40                   # x where the brass pieces start in the row of small things
 HUNG_AT = BRASS_AT + 31         # ... and the two signs on a bracket, after them
 
@@ -225,7 +245,15 @@ def at(tier):
 
 
 def width():
-    return max(len(walls) for _, walls in TIERS) * PITCH - 2
+    return WALLS * PITCH - 2
+
+
+def places(tier):
+    """x of each wall of a tier, left to right."""
+    name, walls = TIERS[tier] if isinstance(tier, int) else next(t for t in TIERS if t[0] == tier)
+    xs = PLACES.get(name) or tuple(i * PITCH for i in range(len(walls)))
+    assert len(xs) == len(walls) and all(b - a >= N for a, b in zip(xs, xs[1:] + (width() + 2,))), name
+    return xs
 
 
 def build():
@@ -237,11 +265,11 @@ def build():
         c.box(-1, y, z - 1, w, y + RISE - 2, z - 1, FLOOR)                              # the riser behind the walls
         if name in ROWS:
             ROWS[name](c, 0, y, z)
-        for i, (_, put, lamp) in enumerate(walls):
-            put(c, i * PITCH, y, z)
+        for x, (_, put, lamp) in zip(places(k), walls):
+            put(c, x, y, z)
             if lamp:
                 for dx in (1, 5):
-                    c.set(i * PITCH + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
+                    c.set(x + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
     return c
 
 
@@ -290,10 +318,14 @@ def shots():
             x = CLOUD_AT + (w - CLOUD_AT) / 2.0
             shot("ground_cloud", (x, y + 8.0, z + 18.0), (x, y + 1.5, z + 3.0))
             continue
-        for half, x in (("left", w / 4.0 - 0.5), ("right", 3 * w / 4.0 + 0.5)):
+        xs = places(k) or tuple(i * PITCH for i in range(WALLS))            # a row of small things: as if of walls
+        left = [x for x in xs if x + N / 2.0 < w / 2.0]                    # the walls of the left half
+        for half, group in (("left", left), ("right", xs[len(left):])):
+            x = (group[0] + group[-1] + N) / 2.0                           # the middle of its walls
             shot(f"{tier}_{half}", (x, y + 5.0, z + 15.5), (x, y + 4.0, z))
-        for i in range(0, len(walls), 2):
-            x = i * PITCH + PITCH - 1.0                                    # between the two walls
+        # two by two, counted from the right; with an odd number the first wall is seen beside the second
+        for i in sorted({max(i, 0) for i in range(len(walls) - 2, -2, -2)}):
+            x = (xs[i] + xs[i + 1] + N) / 2.0                              # between the two walls
             shot(f"{tier}_{walls[i][0]}", (x, y + 4.5, z + 8.5), (x, y + 4.0, z))
     y, z = at("pieces")
     for name, x in (("pieces_iron", 10.0), ("pieces_iron_2", 28.0), ("pieces_brass", BRASS_AT + 8.0),
