@@ -1,24 +1,31 @@
 #!/usr/bin/env python3
 """Real-machine pictures, as they come back from the render station, into the repository.
 
-    realshots.py --take <tag> [<scene> ...] [--from <folder>]
-    realshots.py --list [<scene> ...]
+    realshots.py --take <tag> [<scene> ...] [--from <folder>] [--into <folder>]
+    realshots.py --list [<scene> ...] [--into <folder>]
 
-A trip of the render station (bin/trip.py on the admin's computer, tools/win/shuttle.py) sends for
-every scene <scene>-<tag>-<shot>.jpg, the game's own screenshots, and a note <scene>-<tag>-real.txt
-that says for every shot its tick, the commit of the code it shows and the first 16 digits of the
-picture file's SHA-256. They arrive in the inbox of the cloud machine, which is emptied whenever
-that machine is started anew; pictures that are to be looked at later have to be in git.
+A trip of the render station (tools/nodetrip.py on a worker node, bin/trip.py on the admin's
+computer; both run tools/win/shuttle.py) leaves for every scene <scene>-<tag>-<shot>.jpg, the game's
+own screenshots, and a note <scene>-<tag>-real.txt that says for every shot its tick, the commit of
+the code it shows and the first 16 digits of the picture file's SHA-256, and in its heading the
+distances the game drew at. On a node they lie in the trip's folder and nodetrip.py takes them
+itself; from the admin's computer they arrived in the inbox of the cloud machine.
 
 --take checks every picture of a scene against the note (did it arrive, is it the file that was
 sent) and then puts them into renders/real/<scene>/<shot>.jpg of this checkout, with the scene's
-own note renders/real/<scene>/real.txt: shot, tick, commit, SHA-256, when it was taken. When a
+own note renders/real/<scene>/real.txt: shot, tick, commit, SHA-256, when it was taken, and the
+distances it was drawn at (view12,clouds128: 12 chunks of view, the smaller of the client's render
+distance and the server's view distance, and a cloud range of 128 chunks). When a
 picture of a scene is missing or is not the file the note describes, nothing of that scene is
 touched and it says which; send again (bin/trip.py --send-only) and take again. A trip that shot
 only some of a scene's shots replaces those and leaves the others, each with its own commit in the
 note. Then commit and push: that is the render station's to do.
 
 --list says what is kept: for every scene the shots and the commits they show.
+
+--into names another folder of this checkout than renders/real: pictures drawn at another view
+distance than the board's 12 chunks are kept apart (renders/real-view32/<scene>/), so that they
+never stand in for the pictures the board is judged by.
 
 Real-machine pictures are the look of the finished thing: fog, particles, the game's clouds, the
 light as the client draws it. The pictures a package keeps of itself (renders/<scene>/, drawn
@@ -38,7 +45,7 @@ ROOT = os.environ.get("MC_ROOT", "/agent/realms-study")
 KEPT = os.path.join(PROJECT, "renders", "real")
 NOTE = "real.txt"
 HEAD = "# real-machine pictures (tools/realshots.py): shot, tick, commit of the code the picture shows, " \
-       "first 16 of the picture file's sha256, when it was taken"
+       "first 16 of the picture file's sha256, when it was taken, view distance and cloud range in chunks"
 NAME_OK = re.compile(r"[A-Za-z0-9_.\-]+\Z")
 
 
@@ -48,8 +55,9 @@ def digest(path):
 
 
 def read_sent(path):
-    """A trip's note for one scene: (when the pictures were taken, [(shot, tick, commit, sha)])."""
-    taken, rows = "?", []
+    """A trip's note for one scene: (when the pictures were taken, the distances they were drawn
+    at or None when the note does not say, [(shot, tick, commit, sha)])."""
+    taken, view, rows = "?", None, []
     with open(path, encoding="utf-8") as fh:
         for line in fh:
             line = line.strip()
@@ -57,37 +65,41 @@ def read_sent(path):
                 m = re.search(r"taken (\d{4}-\d\d-\d\d) (\d\d:\d\d)", line)
                 if m:
                     taken = f"{m.group(1)}T{m.group(2)}"
+                m = re.search(r"render distance (\d+), server view distance (\d+), cloud range (\d+)", line)
+                if m:
+                    view = f"view{min(int(m.group(1)), int(m.group(2)))},clouds{m.group(3)}"
                 continue
             parts = line.split()
             if len(parts) == 4 and NAME_OK.match(parts[0]):
                 rows.append(tuple(parts))
             elif parts:
                 raise SystemExit(f"{path}: a line that is not 'shot tick commit sha256': {line[:80]}")
-    return taken, rows
+    return taken, view, rows
 
 
 def read_kept(path):
-    """The note kept with a scene's pictures: {shot: (tick, commit, sha, taken)}, in the file's order."""
+    """The note kept with a scene's pictures: {shot: (tick, commit, sha, taken[, distances])}, in the
+    file's order. Pictures taken before 11-16 carry no distances."""
     kept = {}
     try:
         with open(path, encoding="utf-8") as fh:
             for line in fh:
                 parts = line.split()
-                if len(parts) == 5 and not line.startswith("#"):
+                if len(parts) in (5, 6) and not line.startswith("#"):
                     kept[parts[0]] = tuple(parts[1:])
     except OSError:
         pass
     return kept
 
 
-def take(source, tag, scene):
+def take(source, tag, scene, kept_in=None):
     """Put one scene's pictures of one trip into renders/real/<scene>/. Returns (taken?, what to
     say); a scene that cannot be taken whole is left as it was."""
     stem = f"{scene}-{tag}-"
     note = os.path.join(source, stem + "real.txt")
     if not os.path.exists(note):
         return False, [f"{scene}: no note {stem}real.txt in {source} (not sent yet, or another tag)"]
-    taken, rows = read_sent(note)
+    taken, view, rows = read_sent(note)
     if not rows:
         return False, [f"{scene}: the note names no picture"]
     wrong = []
@@ -99,7 +111,7 @@ def take(source, tag, scene):
             wrong.append(f"{shot}.jpg is not the file that was sent")
     if wrong:
         return False, [f"{scene}: nothing taken: " + "; ".join(wrong)]
-    folder = os.path.join(KEPT, scene)
+    folder = os.path.join(kept_in or KEPT, scene)
     os.makedirs(folder, exist_ok=True)
     kept = read_kept(os.path.join(folder, NOTE))
     new, same = [], 0
@@ -109,28 +121,31 @@ def take(source, tag, scene):
             continue
         shutil.copyfile(os.path.join(source, f"{stem}{shot}.jpg"), os.path.join(folder, shot + ".jpg"))
         new.append(shot)
-        kept[shot] = (tick, commit, sha, taken)
+        kept[shot] = (tick, commit, sha, taken) + ((view,) if view else ())
     with open(os.path.join(folder, NOTE), "w", encoding="utf-8", newline="\n") as fh:
         fh.write(HEAD + "\n" + "".join(f"{shot} {' '.join(row)}\n" for shot, row in kept.items()))
     commits = sorted({row[2] for row in rows})
-    said = [f"{scene}: {len(rows)} pictures of {', '.join(commits)} in renders/real/{scene}/"
+    said = [f"{scene}: {len(rows)} pictures of {', '.join(commits)} in {os.path.relpath(folder, PROJECT)}/"
             + (f" ({len(new)} new or changed, {same} as they were)" if same else "")]
     return True, said
 
 
-def listing(scenes):
-    found = sorted(os.listdir(KEPT)) if os.path.isdir(KEPT) else []
+def listing(scenes, kept_in=None):
+    where = kept_in or KEPT
+    # folders that begin with "_" are not scenes (_trips holds the logs of the node's trips)
+    found = sorted(d for d in os.listdir(where) if not d.startswith("_") and os.path.isdir(os.path.join(where, d))) \
+        if os.path.isdir(where) else []
     for scene in scenes or found:
-        kept = read_kept(os.path.join(KEPT, scene, NOTE))
+        kept = read_kept(os.path.join(where, scene, NOTE))
         if not kept:
             print(f"{scene}: nothing kept")
             continue
         by_commit = {}
-        for shot, (_, commit, _, taken) in kept.items():
-            by_commit.setdefault((commit, taken), []).append(shot)
+        for shot, row in kept.items():
+            by_commit.setdefault((row[1], row[3], row[4] if len(row) > 4 else "distances not noted"), []).append(shot)
         print(f"{scene}: {len(kept)} pictures")
-        for (commit, taken), shots in by_commit.items():
-            print(f"    {commit}, taken {taken}: {', '.join(shots)}")
+        for (commit, taken, view), shots in by_commit.items():
+            print(f"    {commit}, taken {taken}, {view}: {', '.join(shots)}")
 
 
 def main():
@@ -139,9 +154,11 @@ def main():
     ap.add_argument("--take", metavar="TAG")
     ap.add_argument("--from", dest="source", default=os.path.join(ROOT, "inbox"), metavar="FOLDER")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--into", metavar="FOLDER", help="keep them in this folder of the checkout instead of renders/real")
     args = ap.parse_args()
+    kept_in = os.path.join(PROJECT, args.into) if args.into else None
     if args.list:
-        listing(args.scenes)
+        listing(args.scenes, kept_in)
         return 0
     if not args.take:
         ap.error("--take <tag> or --list")
@@ -154,7 +171,7 @@ def main():
             return 1
     failed = 0
     for scene in scenes:
-        ok, said = take(args.source, args.take, scene)
+        ok, said = take(args.source, args.take, scene, kept_in)
         failed += not ok
         print("\n".join(said))
     return 1 if failed else 0
