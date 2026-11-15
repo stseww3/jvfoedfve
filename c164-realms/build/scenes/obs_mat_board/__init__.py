@@ -5,8 +5,11 @@ the light of the sky line.
 Five tiers, each stepped back and up so that one picture holds them all; from the front:
 
     ground    what the observatory stands on: the mountain's rock, snow lying on it, the paving
-              with the emblem let into it in thin brass line, the tones of the cloud sea. The one
-              tier whose floor is part of the show, so it is the lowest: the camera looks down on it
+              with the emblem let into it in thin brass line, the tones of the cloud sea (a bank
+              of them, and a row of them let into the mountain's rock where the snow ends).
+              The one tier whose floor is part of the show, so it is the lowest: the camera looks
+              down on it. It has floor only where something lies on it: a shelf as deep as the
+              mountain and the bank, and under the emblem a tongue as long as the meridian runs
     pieces    doors, hatches, bars, pipes, lamps, the brass pieces, signs: against fine stone, as
               they stand on the building
     stone     the four grey-white stones, the stones used as the game draws them, and one wall that
@@ -47,7 +50,7 @@ N = 8                           # a wall is N by N
 PITCH = N + 2                   # x from one wall to the next
 WALLS = 8                       # the board is this many walls wide
 RISE, BACK = 10, 12             # each tier stands this much higher and further back
-SHELF = 11                      # the ground tier's floor comes this far forward of its walls ...
+SHELF = 12                      # the ground tier's floor comes this far forward of its walls ...
 FRONT = 20                      # ... and under the emblem this far: there is floor only where something lies on it
 FLOOR = B.SLATE_SMOOTH.block    # dark and plain: floors and the risers behind the walls
 LAMP = 13
@@ -55,7 +58,7 @@ VERSIONS = {}                   # material package -> version; the default of ev
 
 # the ground tier: x of each thing
 ROCK_AT, LEDGES_AT, SNOW_AT, INLAY_AT, CLOUD_AT = 0, PITCH, 2 * PITCH, 3 * PITCH, 5 * PITCH
-TONES_AT, TONE = 9, 4           # the row of cloud tones at the mountain's foot: its first x, a tone's width
+TONES_AT, TONE = 8, 4           # the row of cloud tones in the mountain's rock: its first x, a tone's width
 STRIP = B.TUFF_SMOOTH.block     # the paving's light stone: the meridian's flanks, the seat's border
 SEAT = B.SLATE_TILE.block       # its darkest: under the emblem
 EMBLEM_R = 5                    # the smallest ring that keeps a clear cell between ring, meridian and star
@@ -166,18 +169,20 @@ def inlay(c, x, y, z):
 
 def ground(c, x, y, z):
     """The mountain (rock, a cliff with snow on its ledges, snow), the paving, the cloud sea. The
-    mountain stands on its own rock, not on the board's floor. Along the front edge of that rock the
-    five tones of the cloud lie flat in a row, dark to light, the lightest two before the end of the
-    drift: snow, rock and cloud side by side under the sky alone, as the mountain has them where it
-    goes down into the sea."""
+    mountain stands on its own rock, not on the board's floor. Near the front edge of that rock the
+    five tones of the cloud are let into it in a row, dark to light, the lightest two before the end
+    of the drift: snow, rock and cloud in one plane under the sky alone, as the mountain has them
+    where it goes down into the sea. Let in, not laid on: the tones have no shading of their own, so
+    a block of one standing on the rock shows as a bent chip, and level with the rock as a plain
+    patch of its tone, with rock on all four sides to read it against."""
     c.box(x - 1, y - 1, z, x + SNOW_AT + N, y - 1, z + SHELF, B.ROCK_COBBLED.block)
     _board.rock(c, x + ROCK_AT, y, z)
     _board.ledges(c, x + LEDGES_AT, y, z)
     _board.snow(c, x + SNOW_AT, y, z, N)
     for i, block in enumerate(B.CLOUD):
-        c.box(x + TONES_AT + TONE * i, y, z + SHELF - 1, x + TONES_AT + TONE * (i + 1) - 1, y, z + SHELF, block)
+        c.box(x + TONES_AT + TONE * i, y - 1, z + SHELF - 2, x + TONES_AT + TONE * (i + 1) - 1, y - 1, z + SHELF - 1, block)
     inlay(c, x + INLAY_AT, y, z)
-    _board.bank(c, x + CLOUD_AT, y, z, 3 * PITCH - 2, 10)
+    _board.bank(c, x + CLOUD_AT, y, z, 3 * PITCH - 2, SHELF - 1)
     for dx in (1, 5):
         c.set(x + ROCK_AT + dx, y + 1, z + 4, st(B.LIGHT, level=LAMP))
 
@@ -313,22 +318,23 @@ def shots():
     for k, (tier, walls) in enumerate(TIERS):
         y, z = at(k)
         if tier == "ground":
-            # the mountain on its rock, from the face's top to the row of cloud tones along the rock's edge
+            # the mountain on its rock, from the faces' top to the rock's front edge, the row of cloud
+            # tones in it: steep enough to keep the tier above out of it but for its rim
             x = (SNOW_AT + N) / 2.0
-            shot("ground_left", (x, y + 11.5, z + SHELF + 8.5), (x, y + 3.5, z + 1.0))
+            shot("ground_left", (x, y + 13.0, z + SHELF + 5.5), (x, y + 3.0, z + 5.0))
             # the paving and the cloud, from above: the whole seat and the whole bank
             x = (INLAY_AT + w) / 2.0 - 1.0
             shot("ground_right", (x, y + 16.0, z + FRONT + 7.0), (x, y, z + 7.0))
             # far and high enough to have the snow at the cliff's foot in the picture, and the wall's top
             shot("ground_rock", (LEDGES_AT - 1.0, y + 5.5, z + 10.5), (LEDGES_AT - 1.0, y + 3.0, z))
             # snow between rock and cloud: the wall, the drift down to its last thin layer, the bare
-            # rock it ends on, the cloud's two lightest tones before it
-            shot("ground_snow", (SNOW_AT + N / 2.0, y + 7.0, z + SHELF + 3.5), (SNOW_AT + N / 2.0, y + 2.5, z + 7.0))
+            # rock it ends on, the cloud's two lightest tones before it and the rock again
+            shot("ground_snow", (SNOW_AT + N / 2.0, y + 6.0, z + SHELF + 4.0), (SNOW_AT + N / 2.0, y + 0.5, z + 5.5))
             mx, az = INLAY_AT + EMBLEM_R + 3.5, z + EMBLEM_R + 3.5
             shot("ground_inlay", (mx, y + 9.0, z + FRONT + 2.0), (mx, y, z + FRONT - 6.0))     # seat and tongue, from above
             shot("ground_inlay_walk", (mx + 3.0, y + 1.7, az + EMBLEM_R + 3.5), (mx - 0.5, y, az))
             x = CLOUD_AT + (w - CLOUD_AT) / 2.0
-            shot("ground_cloud", (x, y + 8.0, z + 18.0), (x, y + 1.5, z + 3.0))
+            shot("ground_cloud", (x, y + 8.0, z + SHELF + 7.0), (x, y + 1.5, z + 4.0))
             continue
         xs = places(k) or tuple(i * PITCH for i in range(WALLS))            # a row of small things: as if of walls
         left = [x for x in xs if x + N / 2.0 < w / 2.0]                    # the walls of the left half
