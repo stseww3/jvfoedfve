@@ -300,7 +300,7 @@ def pictures(style=DEFAULT_STYLE):
 
 def pack(pack_dir, style=DEFAULT_STYLE):
     for phase, px in pictures(style).items():
-        respack.texture(pack_dir, "environment/celestial/moon/" + phase, px)
+        respack.texture(pack_dir, "environment/celestial/moon/" + phase, px * 0)
     respack.texture(pack_dir, "environment/celestial/sun", np.zeros((SUN_SIZE, SUN_SIZE, 3), dtype=np.uint8))
     return [f"comet ({style}) -> {len(PHASES)} moon phase pictures, test card in {CARD_PHASE}",
             "sun picture blanked"]
