@@ -45,4 +45,5 @@ GALLERY = [
     _floor("louvre_box", 2.0),
     _wall("regulator_clock", 0.5, more=[_PENDULUM]),
     _floor("calc_machine", 0.6),
+    _floor("sunshine_recorder", 0.6),
 ]

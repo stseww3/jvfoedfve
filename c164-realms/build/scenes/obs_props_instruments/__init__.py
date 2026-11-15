@@ -3,7 +3,8 @@
 The cameras stand south and look north. From west to east:
 
     the terrace (open paving west of the wall, one street lamp, the sky behind)
-        the tripod telescope side-on, looking west, and the louvre box
+        the tripod telescope side-on, looking west, the louvre box, and on a stone pedestal the
+        sunshine recorder
     the hall (a wall of dressed stone that looks south, a wooden floor, bracket lamps)
         the celestial globe; on the wall the barometer, the regulator clock and, beside it, its
         pendulum once more by itself and swung out, to show the part that moves and its pivot; on
@@ -36,6 +37,8 @@ TERRACE_X0 = -17                                # the paving runs west to here
 SCOPE = (-12.5, 0.0, 4.5)
 STREET = (-10.5, 0.0, 4.5)                      # 8.5 blocks clear of the wall's end (lamps.STREET_CLEARANCE)
 LOUVRE = (-8.5, 0.0, 4.5)
+PEDESTAL = (-6, 4)                              # the cell of a one-block stone pedestal
+SUNSHINE = (PEDESTAL[0] + 0.5, 1.0, PEDESTAL[1] + 0.5)
 GLOBE = (2.5, 0.0, 2.0)
 DESK = (5.0, 0.0, 2.2)                          # the writing desk beside the globe, when there is one
 BAROMETER = (7.0, 1.0, 0.0)                     # wall pieces: the point on the wall behind their foot
@@ -56,11 +59,13 @@ def build():
     c.box(WALL_X0 + 1, -1, 0, WALL_X1 - 1, -1, 6, FLOOR)
     c.box(WALL_X0, 0, -1, WALL_X1, WALL_H - 1, -1, STONE)
     c.box(COUNTER_X, 0, 1, COUNTER_X + 3, 0, 1, WOOD)
+    c.box(PEDESTAL[0], 0, PEDESTAL[1], PEDESTAL[0], 0, PEDESTAL[1], STONE)
     n = lamps.place(c, "street", STREET)
     for x in HALL_LAMPS:
         n += lamps.place(c, "bracket", (x, LAMP_Y, 0.0))
     n += instruments.place(c, "tripod_scope", SCOPE, facing="west")
     n += instruments.place(c, "louvre_box", LOUVRE)
+    n += instruments.place(c, "sunshine_recorder", SUNSHINE)
     n += instruments.place(c, "celestial_globe", GLOBE)
     n += instruments.place(c, "barometer", BAROMETER)
     n += instruments.place(c, "regulator_clock", CLOCK)
@@ -98,6 +103,9 @@ def shots():
     shot("scope_behind", (sx + 2.4, 1.8, sz + 0.9), (sx - 0.4, 1.6, sz))
     shot("louvre", (lx + 0.9, 1.62, lz + 3.2), (lx, 1.2, lz))
     shot("louvre_near", (lx + 1.3, 1.8, lz + 1.5), (lx, 1.35, lz))
+    px, py, pz = SUNSHINE
+    shot("sunshine", (px + 0.6, py + 0.9, pz + 2.2), (px, py + 0.35, pz))
+    shot("sunshine_near", (px - 0.7, py + 0.75, pz + 1.0), (px, py + 0.4, pz))
     mid = (WALL_X0 + WALL_X1 + 1) / 2.0
     shot("hall", (mid, 2.2, 11.0), (mid, 1.4, 0.5))
     gx, _, gz = GLOBE

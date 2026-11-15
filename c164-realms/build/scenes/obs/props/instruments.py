@@ -13,6 +13,8 @@ wood, cast iron or stone. Phosphor green is on dials only and nothing else glows
     regulator_clock    a precision pendulum clock in a long glazed case, two blocks tall; its
                        pendulum is the separate model regulator_pendulum (see PENDULUM)
     calc_machine       a hand-cranked calculating machine on a board, for a table
+    sunshine_recorder  a glass ball before a brass bowl, for the stone pedestal of the weather station
+                       (not on the card: site/outbuildings keeps a pedestal for it)
 
 Every piece is one display entity at scale 1 (16 texels to the block), the clock two. For the other
 lines:
@@ -39,6 +41,7 @@ from artkit import pixelart
 from artkit.pixelart import Sprite
 
 from ..common import palette as P
+from ..common import skeleton as S
 from . import _kit as K
 
 PREFIX = "prop_inst_"
@@ -150,23 +153,57 @@ BARO_DIAL = [
     ".dcccccd.",
     "..ddddd..",
 ]
-# the clock: twelve marks, the quarters luminous, the hands at ten past ten
+# the clock: twelve marks, the quarters luminous; the hands are drawn in by _hands()
 CLOCK_DIAL = [
     "..kcgck..",
     ".ccccccc.",
-    "kccccchck",
-    "ccchchccc",
+    "kccccccck",
+    "ccccccccc",
     "gcccbcccg",
     "ccccccccc",
     "kccccccck",
     ".dcccccd.",
     "..kdgdk..",
 ]
+# every clock on the hill is stopped at one time, five minutes before the time ball drops (director,
+# g2 #34140): the skeleton's CLOCK once it has it
+CLOCK = getattr(S, "CLOCK", (7, 55))
+
+
+def _hands(rows, hour, minute):
+    """A nine-pixel dial with its hands drawn in from the middle: the hour hand two pixels long, the
+    minute hand three, one pixel to each step along the way the hand leans most."""
+    grid = [list(row) for row in rows]
+    mid = len(rows) // 2
+    for turn, length in (((hour % 12 + minute / 60.0) / 12.0, 2), (minute / 60.0, 3)):
+        dx, dy = math.sin(2.0 * math.pi * turn), -math.cos(2.0 * math.pi * turn)
+        for i in range(1, length + 1):
+            if abs(dx) > abs(dy):
+                x, y = mid + (i if dx > 0 else -i), int(round(mid + i * dy / abs(dx)))
+            else:
+                x, y = int(round(mid + i * dx / abs(dy))), mid + (i if dy > 0 else -i)
+            grid[y][x] = "h"
+    return ["".join(row) for row in grid]
 
 
 def _lume(rows):
     """Only the luminous marks of a dial, for the plate that glows in front of it."""
     return ["".join(ch if ch == "g" else "." for ch in row) for row in rows]
+
+
+GLINT = P.RAMPS["porcelain"][4]
+STROKES = ((3, 1), (2, 2), (1, 3), (4, 3), (3, 4))      # the same two strokes as furniture._pane (c179, g2 #33282)
+
+
+def _pane(m, lo, hi):
+    """A pane of glass that looks +z, drawn the way the furniture draws its glass: the glass is
+    left out and its glint says it is there, two short white strokes in the upper left corner."""
+    w, h = int(round(hi[0] - lo[0])), int(round(hi[1] - lo[1]))
+    rows = [["."] * w for _ in range(h)]
+    for i, j in STROKES:
+        if i < w and j < h:
+            rows[j][i] = "g"
+    m.box(lo, hi, BRASS, skip="nudew", faces={"s": _sprite(f"glint_{w}x{h}", ["".join(row) for row in rows], g=GLINT)})
 
 
 def _sphere(m, centre, radius, mat, sides, layers):
@@ -217,9 +254,9 @@ def _tripod_scope():
     limb = _scale("first", 3, 1, 1)
     with m.turned(("x", -SCOPE_TILT), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
-        side, ends = 4.9, (101.25, 258.75)                                              # the altitude arc, on the right:
+        side, ends = 4.9, (101.25, 258.75)                                              # on the right the altitude
         m.ring("x", (side, SCOPE_PIVOT, 0), 5.5, 2.0, 0.75, BRASS, sides=16, arc=ends,
-               faces={"w": limb, "e": limb})                                            # a graduated sector
+               faces={"w": limb, "e": limb})                                            # arc: a graduated sector
         for deg in ends:                                                                # hung from the axis
             a = math.radians(deg)
             m.beam((side, SCOPE_PIVOT, 0.0), (side, SCOPE_PIVOT + 4.75 * math.cos(a), 4.75 * math.sin(a)),
@@ -375,16 +412,13 @@ def _regulator_clock():
     m.box((-6.5, 0.0, 0.0), (6.5, 1.5, 5.5), WOOD_D)                                    # plinth
     m.box((-6.5, 30.5, 0.0), (6.5, 32.0, 5.5), WOOD_D)                                  # cornice
     m.box((-5.0, 20.5, 1.0), (5.0, 30.5, 5.0), WOOD_L)                                  # hood: the dial board
-    _dial(m, "clock_dial", CLOCK_DIAL, (0.0, CLOCK_DIAL_Y), 5.25)
+    _dial(m, "clock_dial", _hands(CLOCK_DIAL, *CLOCK), (0.0, CLOCK_DIAL_Y), 5.25)
     m.ring("z", (0, CLOCK_DIAL_Y, 5.25), 5.0, 1.0, 0.75, BRASS, sides=16)               # bezel
     for x in (-5.0, 4.0):                                                               # the door: stiles and rails
         m.box((x, 1.5, 4.0), (x + 1.0, 20.5, 5.0), WOOD_L, grain="y")
     for y in (1.5, 19.5):
         m.box((-4.0, y, 4.0), (4.0, y + 1.0, 5.0), WOOD_L, grain="x")
-    m.box((-4.0, 2.5, 4.4), (4.0, 19.5, 4.5), K.flat("night_glass", 3), skip="nudew",
-          faces={"s": _sprite("clock_glass", ["........"] * 2 + [".....w..", "....w...", "...w....", "........",
-                                              "......w.", ".....w..", "........"] + ["........"] * 8,
-                              w=P.RAMPS["night_glass"][4])})                            # glints on the glass
+    _pane(m, (-4.0, 2.5, 4.4), (4.0, 19.5, 4.5))                                        # the door's glass
     m.box((-2.5, 3.0, 1.0), (2.5, 4.0, 1.25), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite("clock_beat", ["kckck"], c=FACE, k=INK)})                 # beat scale
     m.box((4.5, 10.5, 4.75), (5.25, 12.0, 5.75), BRASS_D)                               # door knob
@@ -458,6 +492,30 @@ def _calc_machine():
     return m
 
 
+LATITUDE = getattr(S, "LATITUDE", 45.0)         # how high the polar axis stands (the skeleton's, once it has it)
+
+
+def _sunshine_recorder():
+    """A sunshine recorder for a stone pedestal: a glass ball on a brass pillar burns the sun's track
+    into the card that lies in the brass bowl behind and below it, a half ring square to the polar
+    axis. The ball is seen from the front (+z, the side of the sun). 10 px wide, 10 px tall, 9 px
+    deep. Anchor: the pedestal top under its middle."""
+    m = M.Model(PREFIX + "sunshine_recorder")
+    cy, r = 7.0, 3.0
+    m.box((-5.0, 0.0, -4.5), (5.0, 1.0, 3.5), IRON_D)                                   # base plate
+    for x in (-4.0, 4.0):
+        m.tube("y", (x, 2.5), 1.0, 1.75, 0.75, BRASS_D, cap=KNOB)                       # levelling screws
+    m.tube("y", (0, 0), 1.0, 1.75, 2.0, BRASS_D)                                        # the foot of the pillar
+    m.tube("y", (0, 0), 1.75, cy - r + 0.25, 1.0, BRASS)                                # pillar: the ball sits on it
+    m.box((-0.75, 2.25, -2.75), (0.75, 3.25, -0.5), BRASS_D)                            # the arm that carries the bowl
+    with m.turned(("x", -LATITUDE), about=(0.0, cy, 0.0)):                              # y is the polar axis in here
+        m.ring("y", (0.0, cy, 0.0), r + 1.5, 1.0, 3.0, BRASS, sides=16, arc=(0.0, 180.0),
+               faces={"w": _scale("last", 2, 0, 2, ramp="cream")})                      # the bowl and the card in it
+    m.ball((0.0, cy, 0.0), r, LENS, sides=12, layers=6)                                 # the glass ball
+    m.box((-1.65, cy + 1.45, 1.55), (-0.65, cy + 2.45, 2.3), K.flat("porcelain", 4))    # and its glint
+    return m
+
+
 # name -> how it is mounted; "table" pieces stand on a floor too
 SPEC = {
     "tripod_scope": dict(build=_tripod_scope, mount="floor"),
@@ -469,6 +527,7 @@ SPEC = {
     "regulator_clock": dict(build=_regulator_clock, mount="wall"),
     "regulator_pendulum": dict(build=_regulator_pendulum, mount="wall"),
     "calc_machine": dict(build=_calc_machine, mount="floor"),
+    "sunshine_recorder": dict(build=_sunshine_recorder, mount="floor"),
 }
 SCALE = {PREFIX + name: 1.0 for name in SPEC}
 # what motion needs to swing the pendulum: the entity carries the tag, stands on the pivot and turns
