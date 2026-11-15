@@ -92,7 +92,8 @@ FLOOR = FEET - 1                                # -1: the floor block
 CX, CZ = (int(math.floor(v)) for v in S.ORRERY_CENTRE)      # (11, 0): the cell under the orrery
 RING_R = 3                                      # the emblem's ring is seven across
 BEAM_X = tuple(range(S.PIER_ENVELOPE[2] + 1, X1 + 1, shell.BEAM_STEP))      # 8, 11, 14: the ceiling's beams
-PILASTER_X = tuple(x for x in BEAM_X if x != CX)                             # 8, 14: a pilaster under each but the middle one
+# the pilasters stand under the beams that frame the hall's east half; x 11 is the orrery's, not one
+PILASTER_X = tuple(x for x in BEAM_X if x != CX)                             # 8, 14
 WALL_Z = {"north": Z0, "south": Z1}             # the row of cells along each cross wall
 FACE_Z = {"north": float(Z0), "south": float(Z1 + 1)}       # points: the faces of the cross walls, -5.0 and 6.0
 LOOKS = {"north": "south", "south": "north"}    # the way each of those faces looks
@@ -152,14 +153,14 @@ BACK = {"display_table": 7.0, "writing_desk": 7.0, "bench": 7.25, "trunk": 6.5}
 # how high a piece carries what lies on it, where props/furniture does not say (its TOP)
 TOP = {"display_table": 11.25 * PX, "writing_desk": 12.0 * PX, "trunk": 11.0 * PX}
 
-# --- light: the level asked for, and the rank where the name of the source does not tell it ------------------
-ASK_SUN = (12, 2)           # the orrery's sun (c220 #38744)
-ASK_CLOCK = (11, 2)         # before the mother clock's dial (A0 #37312)
+# --- light: every ask is (level, rank), the same shape everywhere (cr3-I2) -----------------------------------
+ASK_SUN = (12, 2)           # the orrery's sun (c220 #38744, A0 #491)
+ASK_CLOCK = (11, 2)         # before the mother clock's dial (A0 #526, c238's MASTER_LAMP)
 ASK_AISLE = (8, 7)          # on a pilaster: the lamp that looks east, a lamp that looks west
-ASK_DOOR = 6                # over a door of the gallery
+ASK_DOOR = 6                # over a door of the gallery: the third rank
 ASK_BOARD = (5, 3)          # the switchboard's pilot lamps
-ASK_STAIR = 8               # under a side arch of the west arcade: 7 does not show the steps (c220 #38744)
-ASK_MEZZANINE = 7           # beside the west window
+ASK_STAIR = (8, 3)          # under a side arch of the west arcade: 7 does not show the steps (c220 #559)
+ASK_MEZZANINE = (7, 3)      # beside the west window, and under it the stairs' first steps
 SUN_CELL = (CX, int(math.floor(S.ORRERY_RING_Y)), CZ)                                       # (11, 7, 0)
 CLOCK_CELL = (int(S.MOTHER_CLOCK["back_x"]) + 1, int(S.MOTHER_CLOCK["y"][0]) + 2, CZ)       # (7, 3, 0)
 LAMP_Y = FEET + 3.5         # the middle of a lamp on a pilaster
@@ -385,20 +386,23 @@ def _lit(canvas, cell):
     return any(tuple(offer[0]) in cells for offer in getattr(canvas, "light_offers", ()))
 
 
-def _wall_lamp(canvas, origin, version, pos, facing, level, asked, what):
+def _wall_lamp(canvas, origin, version, pos, facing, ask, asked, what):
     """One caged lamp on a wall face (a point; `facing` the way the face looks). props/lamps hands
-    its source over."""
+    its source over; `ask` is the (level, rank) this hall wants it at."""
+    level, rank = ask
     out = lamps.SPEC[f"cage_{version}"]["light"]
     asked.append((K.light_cell(pos, K.FACING[facing], out, origin), level, what))
-    return lamps.place(canvas, "cage", pos, facing=facing, origin=origin, version=version, level=level)
+    return lamps.place(canvas, "cage", pos, facing=facing, origin=origin, version=version,
+                       level=level)
 
 
-def _soffit_lamp(canvas, origin, version, pos, yaw, level, asked, what):
+def _soffit_lamp(canvas, origin, version, pos, yaw, ask, asked, what):
     """The same lamp turned face down under a soffit (pos: the point of the soffit it is fixed to):
     its conduit, which on a wall runs up, runs level along the soffit the way `yaw` says (0 south,
     180 north) and enters the stone there. The source goes into the first free cell under the lamp:
-    under an arch's crown the lamp's own cell is the crown's slab."""
+    under an arch's crown the lamp's own cell is the crown's slab. `ask` is (level, rank)."""
     ox, oy, oz = origin
+    level, rank = ask
     name = f"cage_{version}"
     n = K.put(canvas, lamps.models()[lamps.PREFIX + name], pos, mount="ceiling", yaw=yaw, origin=origin,
               turns=(("x", 90.0),))
@@ -422,19 +426,25 @@ def _soffit(canvas, origin, x, z):
 
 
 def _lamps(canvas, origin, version, L, asked):
-    """The lamps of the hall and of the stair hall; returns the number of display entities."""
+    """The lamps of the hall and of the stair hall; returns the number of display entities.
+
+    Every lamp is a caged one of the third rank. The two at the foot of the stairs are the level
+    c220 ruled (8, not 7: at 7 the steps read as dark as the wall beside them, #559); the two on the
+    mezzanine are a level under them (A0 #541: the stair hall is a step darker than the star hall,
+    one warm point leading the eye, not a second lit hall)."""
     n = 0
     east, west = ASK_AISLE
     for wall, _s in SIDES:                      # under the galleries: on the pilasters' sides
         z = S.mid(WALL_Z[wall])
         for x, facing, level in ((PILASTER_X[0] + 1.0, "east", east), (float(PILASTER_X[0]), "west", west),
                                  (float(PILASTER_X[-1]), "west", west)):
-            n += _wall_lamp(canvas, origin, version, (x, LAMP_Y, z), facing, level, asked, "aisle")
+            n += _wall_lamp(canvas, origin, version, (x, LAMP_Y, z), facing, (level, 3), asked, "aisle")
     for door in shell.doors():                  # on the galleries: over the doors of the wing rooms
         xs = [x for x, _z in door["cells"]]
         row, north = door["cells"][0][1], door["inward"][1] < 0
         pos = (S.mid(min(xs), max(xs)), door["y"][1] + 1.5, float(row + 1 if north else row))
-        n += _wall_lamp(canvas, origin, version, pos, "south" if north else "north", ASK_DOOR, asked, "door")
+        n += _wall_lamp(canvas, origin, version, pos, "south" if north else "north", (ASK_DOOR, 3),
+                        asked, "door")
     # the stair hall. At the foot of each flight: under the crown of the arcade's side arch, in its
     # middle, the conduit running away from the axis (c231 #38506: from the door the lamp hangs on
     # the opening's centre line, and the steps are lit evenly)
