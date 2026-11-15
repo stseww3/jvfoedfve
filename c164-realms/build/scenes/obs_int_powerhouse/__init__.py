@@ -39,8 +39,25 @@ GLASS = B.WINDOW_DARK.block
 
 
 def shell(c):
-    """The stand-in shell: four walls two cells thick, a plinth and a cornice, the pier rhythm of
-    the front, the wicket, and the two furnace bays."""
+    """The shell of the room: site/powerhouse's own when it is in the tree, else the stand-in by
+    its rule."""
+    real = _real_shell()
+    if real is not None:
+        return real
+    return _stand_in_shell(c)
+
+
+def _real_shell():
+    """site/powerhouse's module, if the assembly has it."""
+    try:
+        from scenes.obs.site import powerhouse as SITE
+    except ModuleNotFoundError:
+        return None
+    return SITE
+
+
+def _stand_in_shell(c):
+    """The stand-in, by the shell package's rule (site/powerhouse, c285)."""
     # the four walls: the pier plane at the box, the lining one cell in
     for d in (0, 1):
         for x in range(X0 + d, X1 - d + 1):
@@ -92,7 +109,9 @@ def machines(c, origin=(0, 0, 0)):
 
 def build():
     c = Canvas()
-    shell(c)
+    modules = shell(c)
+    if modules is not None:
+        modules.build(c)
     powerhouse.build_powerhouse(c)
     machines(c)
     return c

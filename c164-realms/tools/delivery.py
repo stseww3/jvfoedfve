@@ -162,8 +162,25 @@ def main():
     base = git("rev-parse", "--verify", args.base + "^{commit}").stdout.strip()
     fork = git("merge-base", base, head).stdout.strip()
     module = pkg.replace("-", "_")
+    # A card may deliver more than one module (props/electrics-signs is electrics.py and signs.py).
+    # Read the card's own "交付物" line for every <category>/<something>.py it names beside the card,
+    # and count those as the card's own too; the single-module rule stays the default.
+    extra = []
+    card_file = f"{ROOT}plan/packages/{cat}/{pkg}.md"
+    try:
+        with open(card_file, encoding="utf-8") as fh:
+            for line in fh:
+                if "交付物" in line:
+                    for name in re.findall(r"[A-Za-z0-9_/-]+\.py", line):
+                        short = os.path.basename(name)
+                        if short not in (f"{module}.py",) and short != "__init__.py":
+                            extra.append(f"build/scenes/obs/{cat}/{short}")
+                    break
+    except OSError:
+        pass
     own = (f"build/scenes/obs/{cat}/{module}.py", f"build/scenes/obs/{cat}/_",
-           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/", "plan/parts/")
+           f"build/scenes/obs_{ABBR[cat]}_", f"renders/obs_{ABBR[cat]}_", f"plan/packages/{cat}/",
+           "plan/parts/", *extra)
 
     # What the merge would change in the base: the base against the merged tree. (The branch against
     # the fork point would also show what the branch took over from the assembly branch on the way.)
