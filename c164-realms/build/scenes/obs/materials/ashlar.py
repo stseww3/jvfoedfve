@@ -53,6 +53,7 @@ BLOCKS = K.blocks(B.ASHLAR_ROUGH, B.ASHLAR_FINE, B.ASHLAR_PANEL, B.ASHLAR_EMBLEM
 DEFAULT = "b"
 VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
+STONE = 3           # the tone of a stone of the fine face, every one of them; its arris is a step lighter
 GROOVES = (2, 5, 8, 11)     # the rows of the rough stone's tool marks: a groove, its lit lip the row below
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
 STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
@@ -224,33 +225,39 @@ def _rough_top(seed):
 
 # ============================================================ the fine stone and its ends ===
 # per variant its two courses, the upper one first, each drawn in sixteen characters:
-#     .  a stone of the base tone, A3      +  a stone a step lighter, A4      |  a head joint, A2
+#     .  stone, the base tone A3      |  a head joint, A2
 #
-# The head joints stand at x 7, 8 or 15 in the upper course and at 3, 4, 11 or 12 in the lower:
-# whichever variants come to lie on or beside one another, a joint is three pixels or more from
-# every joint of the course above or below it, and none runs on from course to course.
+# Every course of every variant is broken once. The head joints stand at x 7, 8 or 15 in the upper
+# course and at 3, 4 or 11 in the lower, two variants to each place: whichever variants come to lie
+# on or beside one another, a joint is three pixels or more from every joint of the course above
+# or below it (four or more inside a block), and none runs on from course to course. A stone runs
+# from the joint of one block to the joint of the next, so along a wall the stones are 7 or 8
+# pixels long, or 14 to 16, or 22 or 23: two in nine short, two in nine long, in both courses.
 #
-# A stone that reaches the block's edge runs on into the next block, and that block chooses its
-# variant by itself. So such a stone is of the base tone in every variant, and only a stone
-# between two joints of one block is lighter: one in the upper course of one variant, one in the
-# lower course of another. Each of them needs a course broken twice in one block, and that makes
-# for short stones along a wall: with a quarter of it lighter, two stones in three would be
-# short ones, as many as when every block ended the upper course.
+# Two blocks in three do not break the upper course on the block's edge. The first four variants
+# all did: every second course of a wall had a joint on every line of the grid of the blocks, and
+# a string course, which shows the upper course alone, read as a row of equal short stones (c219's
+# review, g2 #310).
 #
-# Half the variants do not break the upper course on the block's edge. The first four all did:
-# every second course of a wall had a joint on every line of the grid of the blocks, and a string
-# course, which shows the upper course alone, read as a row of equal short stones; and their
-# lighter stones lay in the upper course only, nearly half of it, rows of light bars from twenty
-# blocks (c219's review, g2 #310).
+# Every stone is of the one tone. The first four variants had lighter stones in the upper course,
+# nearly half of it: rows of light bars from twenty blocks (the same review). The six that
+# followed kept two, in one course in twelve each. A stone that reaches the block's edge runs on
+# into the next block, which chooses its variant by itself, so only a stone between two joints of
+# one block can be lighter, and that is a short one, about as long as it is high. On the pictures
+# (walls_far, walls_v2, coursed_course, lit_front at 06a6fd50) those read as pale squares strewn
+# over the wall, as dots from thirty-seven blocks, and they pied a pilaster and a string course;
+# so they went, as the reviewer had ruled for that case (c219, g2 #453), and with them the two
+# courses broken twice that carried them, which had made three stones in seven short ones.
 _FINE = (
     ("...............|", "....|..........."),
-    (".......|+++++++|", "...........|...."),
+    (".......|........", "...........|...."),
     ("........|.......", "...|............"),
-    (".......|........", "...|++++++++|..."),
+    (".......|........", "...|............"),
     ("...............|", "...........|...."),
-    ("........|.......", "............|..."),
+    ("........|.......", "....|..........."),
 )
 SLIVER = 6          # a stone of the fine face is this many pixels long at the least
+SHORT = 9           # a stone under this is a short one: about as long as its course is high
 
 
 def _fine(variant):
@@ -258,18 +265,18 @@ def _fine(variant):
     lightly jointed. A bed joint under each course (rows 7 and 15), one step lighter than the
     drawing first had it (A1; the A0 is kept for the channel of the rough stone), head joints
     lighter again (A2), every stone lit one step along its top arris, and the head joints at
-    loose places (_FINE), so that along a wall the stones run from six pixels to twenty-four.
+    loose places (_FINE), so that along a wall the stones run from seven pixels to twenty-three.
 
     The first drawing, to the pixel of materials.md section 3 (a stone a block long in every
     course, half a block of break, A0 bed joints), read as a wall of enlarged grey brick from
     fourteen blocks; this one was chosen over it on the first round's pictures."""
-    px = _fill(3)
+    px = _fill(STONE)
     for y0, course in zip((0, 8), _FINE[variant]):
         for x, what in enumerate(course):
-            tone = {"|": JOINT, ".": 3, "+": 4}[what]
-            px[y0:y0 + 7, x, :3] = _a(tone)
-            if what != "|":
-                px[y0, x, :3] = _a(tone + 1)      # the arris of the stone, lit
+            if what == "|":
+                px[y0:y0 + 7, x, :3] = _a(JOINT)
+            else:
+                px[y0, x, :3] = _a(STONE + 1)     # the arris of the stone, lit
     px[7, :, :3] = _a(1)
     px[15, :, :3] = _a(1)
     return px
@@ -438,10 +445,10 @@ def faults(pictures, version=DEFAULT):
                      variant has one -- those stand in a row on the grid of the blocks; a head
                      joint is three pixels or more from every joint of the course above or below
                      it -- nearer, it runs on from course to course, and that stripes a wall; no
-                     stone is shorter than SLIVER; a stone is one tone from joint to joint, across
-                     the block's edge too, and lit a step along its arris; a stone that runs to
-                     the block's edge is of the base tone, and the lighter stones are no more than
-                     a quarter of a course;
+                     stone is shorter than SLIVER, and no more than a third of the stones of a
+                     course are short ones (under SHORT); every stone is of the one tone STONE
+                     from joint to joint and lit a step along its arris -- a stone of another
+                     tone can only be a short one, and those are dots on a wall;
       - the ends     no joint on the fine end, and no joint from side to side of the rough one: a
                      tread, a coping, a soffit carry none (c190's point 1); the lighter fleck of the
                      fine end is no more than a tenth of it;
@@ -525,28 +532,29 @@ def faults(pictures, version=DEFAULT):
                            "a stone of one tone under an arris a step lighter")
             if JOINT not in course:
                 out.append(f"ashlar_fine{i}: a course without a head joint")
-            x = 0
-            for tone, n in _runs(course):
-                if tone > JOINT + 1 and (x == 0 or x + n == TILE):
-                    out.append(f"ashlar_fine{i}: a lighter stone of the {name} course runs to the block's edge "
-                               f"(x={x}..{x + n - 1}); the next block carries it on in a tone of its own")
-                x += n
+            odd = sorted({tone for tone in course if tone > JOINT and tone != STONE})
+            if odd:
+                out.append(f"ashlar_fine{i}: a stone of the {name} course is A{odd[0]}; every stone is A{STONE} -- "
+                           "one of another tone can only be a short one, a dot on the wall from afar")
     for k, name in enumerate(("upper", "lower")):
         every = [x for x in range(TILE) if all(c[k][x] == JOINT for c in courses)]
         if every and len(courses) > 1:
             out.append(f"ashlar_fine: every variant breaks the {name} course at x={every}; along a wall those "
                        "joints stand in a row on the grid of the blocks")
-        light = sum(tone > JOINT + 1 for c in courses for tone in c[k]) / (TILE * len(courses))
-        if light > 0.25:
-            out.append(f"ashlar_fine: the lighter stones are {light:.0%} of the {name} course, more than a quarter: "
-                       "rows of light bars from afar")
+        lengths = []                              # of the stones that begin in the left block of a pairing
         for i, left in enumerate(courses):
             for j, right in enumerate(courses):
                 at = [x for x, tone in enumerate(left[k] + right[k]) if tone == JOINT]
-                short = sorted({b - a - 1 for a, b in zip(at, at[1:]) if b - a - 1 < SLIVER})
+                stones = [(a, b - a - 1) for a, b in zip(at, at[1:])]
+                short = sorted({n for _, n in stones if n < SLIVER})
                 if short:
                     out.append(f"ashlar_fine{i} beside ashlar_fine{j}: stones of {short} pixels in the {name} "
                                f"course; a stone is {SLIVER} long or more")
+                lengths += [n for a, n in stones if a < TILE]
+        squat = sum(n < SHORT for n in lengths)
+        if squat * 3 > len(lengths):
+            out.append(f"ashlar_fine: {squat} in {len(lengths)} stones of the {name} course are short ones (under "
+                       f"{SHORT} pixels), more than a third: a course broken twice in a block makes them")
     for i, (upper, _) in enumerate(courses):
         for j, (_, lower) in enumerate(courses):
             near = sorted((u, v) for u in range(TILE) for v in range(TILE)
