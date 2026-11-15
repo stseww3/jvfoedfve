@@ -1,0 +1,11 @@
+delivery main/dome: ad0c352 against 2092f41 (forked at 3c93a88), 8 commits, 57 files
+[PASS] shift    no commit of the second shift in its history (tools/provenance.sh)
+[PASS] scope    57 of 57 files are the card's own
+[PASS] files    nothing that should not be in the repository
+[PASS] secrets  nothing that looks like a token, a key or a password
+[PASS] origin   no mention of licences or asset sites
+[PASS] commits  commit messages are in form
+[WARN] pictures 4 test scenes, 32 shots with a picture kept
+                renders/obs_main_dome_b/: pictures of a scene that is not there
+[PASS] merge    merges cleanly; 207 commits behind the base
+result: PASS (0 failed, 1 to look at)

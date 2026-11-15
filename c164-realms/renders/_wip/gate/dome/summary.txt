@@ -1,0 +1,44 @@
+gate main/dome ad0c352b: the merged tree 2a26eeaa, the assembly as it was 2092f41c
+delivery.py: PASS (0 failed, 1 to look at)
+    [WARN] pictures 4 test scenes, 32 shots with a picture kept
+                    renders/obs_main_dome_b/: pictures of a scene that is not there
+check.py: 46 scenes in 28 s: 46 pass (34 with warnings)
+pictures: obs_main_dome: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome at 2a26eeaa: 0 of 11 kept pictures are what the code draws, 11 not
+    v1: 770066 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    v2_axis: 484732 of 921600 pixels are not what the code draws (off by up to 184 of 255)
+    v11: 608943 of 921600 pixels are not what the code draws (off by up to 185 of 255)
+    roof: 125868 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    drum: 101046 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    gallery: 204401 of 921600 pixels are not what the code draws (off by up to 191 of 255)
+    ridge: 286784 of 921600 pixels are not what the code draws (off by up to 103 of 255)
+    aerial: 93864 of 921600 pixels are not what the code draws (off by up to 140 of 255)
+    top: 68584 of 921600 pixels are not what the code draws (off by up to 120 of 255)
+    slit: 247519 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    west: 453019 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+pictures: obs_main_dome_a: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome_a at 2a26eeaa: 0 of 11 kept pictures are what the code draws, 11 not
+    v1: 770094 of 921600 pixels are not what the code draws (off by up to 174 of 255)
+    v2_axis: 484842 of 921600 pixels are not what the code draws (off by up to 184 of 255)
+    v11: 608964 of 921600 pixels are not what the code draws (off by up to 185 of 255)
+    roof: 125868 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    drum: 101732 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+    gallery: 205948 of 921600 pixels are not what the code draws (off by up to 191 of 255)
+    ridge: 288975 of 921600 pixels are not what the code draws (off by up to 103 of 255)
+    aerial: 93867 of 921600 pixels are not what the code draws (off by up to 140 of 255)
+    top: 68428 of 921600 pixels are not what the code draws (off by up to 120 of 255)
+    slit: 244794 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    west: 452773 of 921600 pixels are not what the code draws (off by up to 110 of 255)
+pictures: obs_main_dome_slit: the kept pictures are what the delivered commit draws; in the merged tree they are out of date, to be drawn again:
+    [FAIL] selfshots obs_main_dome_slit at 2a26eeaa: 0 of 10 kept pictures are what the code draws, 10 not
+    a_closed: 234821 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    a_half: 233828 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    a_open: 235110 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    b_closed: 237193 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    b_half: 237641 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    b_open: 237693 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    a_row: 335675 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    a_top: 20498 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+    b_row: 335681 of 921600 pixels are not what the code draws (off by up to 111 of 255)
+    b_top: 20681 of 921600 pixels are not what the code draws (off by up to 92 of 255)
+result: PASS
