@@ -15,8 +15,8 @@ between polished courses.
             inside is ROOM.
   windows   Iron-framed and dark. Only the two bays beside the chimney, where the boilers stand,
             glow in their lower three rows: the fire window, a block of its own for each row,
-            brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in until the
-            occupancy table has it). The sky line gives them their light (sky/_lightkit.glazed),
+            brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in while the switch
+            FIRE is off). The sky line gives them their light (sky/_lightkit.glazed),
             in the recess before the glass, which therefore stays empty; the materials line lines
             their room side (materials/windows.line).
   door      The second bay of the north front, from the yard: a riveted gate with a wicket. The
@@ -61,6 +61,8 @@ ORDER = 70      # after the lower platform (20), the retaining wall (25) and the
 
 VERSION = "a"   # the roof that build() makes when it is not told: "a" the saw teeth, "b" the vault
 RUN = False     # the main's run along the ground of the upper terrace (see above)
+FIRE = False    # the boiler bays glow through the fire window. Off, and the curtain glass in its place,
+#                 until the role is in the assembly and materials/windows paints it (c188, g2 #37714)
 
 # --- where it stands --------------------------------------------------------------------------------
 X0, Z0, X1, Z1 = S.POWER_HOUSE["box"]               # x 67..89, z 20..42: the pier plane
@@ -213,12 +215,10 @@ def _other(path):
 
 def _glow(row):
     """The glass of a glowing row of a boiler bay, `row` counted up from the sill: the fire window
-    (c205, g2 #37654: B.WINDOW_FURNACE, a role for each of the three rows, the sill's first) once
-    the occupancy table has it, the curtain glass until then."""
-    fire = getattr(B, "WINDOW_FURNACE", None)
-    if isinstance(fire, (tuple, list)) and len(fire) == FURNACE_Y[1] - FURNACE_Y[0] + 1:
-        return fire[row].block
-    return GLOW
+    (B.WINDOW_FURNACE, a role for each of the three rows, the sill's first) when FIRE is on and the
+    occupancy table has it, the curtain glass otherwise."""
+    fire = getattr(B, "WINDOW_FURNACE", None) if FIRE else None
+    return GLOW if fire is None else fire[row].block
 
 
 def windows(version=None):
