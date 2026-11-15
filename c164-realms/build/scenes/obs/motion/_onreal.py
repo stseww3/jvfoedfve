@@ -991,6 +991,11 @@ def connect(argv=None, what=""):
     here = os.path.dirname(os.path.abspath(__file__))
     sys.path.append(os.path.normpath(os.path.join(here, "..", "..", "..", "..", "tools")))
     from rcon import Rcon
-    with open(args.pw_file) as fh:
-        secret = fh.read().strip()
-    return args, Server(Rcon(args.host, args.port, secret, timeout=60.0))
+    try:
+        with open(args.pw_file) as fh:
+            secret = fh.read().strip()
+        return args, Server(Rcon(args.host, args.port, secret, timeout=60.0))
+    except (OSError, ConnectionError) as e:     # PermissionError, a login that is turned down, is an OSError
+        print(f"stopped: the server's console is not reached ({type(e).__name__}: {e})")
+        print("result: NOT FINISHED; 0 checks passed; 0 commands in 0 s")
+        raise SystemExit(2)
