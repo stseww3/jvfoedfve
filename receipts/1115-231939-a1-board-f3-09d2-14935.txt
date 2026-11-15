@@ -1,0 +1,18 @@
+a0job 1115-231939-a1-board-f3-09d2-14935: cursor/c164-a1-board-f3-09d2 @ fd01296b on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.04 1.72 1.38, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    0s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh materials/board fd01296b --base 636ad212 ---- exit 0, 82 s, last 80 lines of 8:
+gate materials/board fd01296b: the merged tree fd01296b, the assembly as it was 636ad212
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 32 s: 49 pass (33 with warnings)
+pictures: [PASS] selfshots obs_mat_board at fd01296b: 35 of 35 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_ashlar_a at fd01296b: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_ashlar_c at fd01296b: 9 of 9 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_mat_board_windows_b at fd01296b: 10 of 10 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=86 host=cursor cores=4 head=fd01296b commit=f4d98a76 pushed=yes branch=cursor/c164-a1-board-f3-09d2-wip files=106
+a0job: exit=0 secs=86
