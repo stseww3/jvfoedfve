@@ -59,7 +59,10 @@ ARCADE = (P.AISLE_BAY - 1, P.AISLE_BAY, P.AISLE_BAY + 1)
 DOOR_TOP = S.STRING - 1                 # 5: the arches of B, the door of C
 # The seat of the station's emblem (A0: one of its kind, 3 x 3, in the frieze of the middle bay): a
 # tablet between the two pilasters of the entrance, in their plane, through frieze and cornice and
-# one row above, so the cornice breaks round it. The emblem itself is not stone: emblem() says where.
+# one row above, so the cornice breaks round it. The tablet is plain dressed stone, all nine blocks
+# (c219, review 7: nine sunk panels read as a waffle from close by and as more frieze from the
+# court, and a small emblem in the middle would show behind the great one). The emblem itself is
+# not stone: emblem() says where props/signs hangs it.
 EMBLEM = True
 EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
@@ -346,18 +349,16 @@ def emblem():
 
 
 def _emblem(canvas, origin):
-    """Set the tablet and break the cornice round it: no moulding and no gutter in front of it, a
-    coping on top."""
+    """Set the tablet, nine blocks of plain dressed stone, and break the cornice round it: no
+    moulding and no gutter in front of it, a coping on top."""
     ox, oy, oz = origin
     seat = emblem()
     for x, y, z in seat["cells"]:
-        canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_PANEL.block)
+        canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_FINE.block)
     for x, z in {(x, z) for x, _, z in seat["cells"]}:
         for y in (S.CORNICE, S.CORNICE + 1):
             canvas.clear(ox + x + 1, oy + y, oz + z)
         canvas.set(ox + x, oy + EMBLEM_Y[1] + 1, oz + z, f"{B.ASHLAR_FINE.slab}[type=bottom]")
-    x, y, z = seat["cells"][-1]
-    canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_EMBLEM)
 
 
 def _screen(canvas, origin):
@@ -482,8 +483,9 @@ def check(entrance=None):
     for z in range(S.Z_NORTH, S.Z_SOUTH + 1):
         x = max(P.east_face(n) for n in (z - 1, z, z + 1) if S.Z_NORTH <= n <= S.Z_SOUTH) + S.DEPTH_CORNICE
         if z in seat:
-            if c.has(x, S.CORNICE, z) or name(x - 1, S.CORNICE, z) not in (B.ASHLAR_PANEL.block, B.ASHLAR_EMBLEM):
-                out.append(f"emblem: the cornice does not break round the tablet at z {z}")
+            tablet = [name(x - 1, y, z) for y in range(EMBLEM_Y[0], EMBLEM_Y[1] + 1)]
+            if c.has(x, S.CORNICE, z) or any(stone != B.ASHLAR_FINE.block for stone in tablet):
+                out.append(f"emblem: the cornice does not break round a plain tablet at z {z}")
         elif name(x, S.CORNICE, z) != B.ASHLAR_FINE.stairs or name(x, S.CORNICE + 1, z) != B.OLD_COPPER_CUT.slab:
             out.append(f"cornice: not two blocks out with its gutter at z {z}")
     # 3. the windows are the ones of c178's plan (a bay that is a doorway has no small window)
