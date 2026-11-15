@@ -1,14 +1,14 @@
-check obs_main_tower at 6fd57d5
-[PASS] regen     109375 blocks, 71 entities, 51 models, 796 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (1.5 s)
-[PASS] conflicts the scene writes 795 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
-[PASS] strays    172 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
-[PASS] refs      605 block states, item definitions and models read, every model and picture they name is there
+check obs_main_tower at c009441
+[PASS] regen     109432 blocks, 73 entities, 62 models, 853 resource-pack files, 65 data-pack files, look: 1 biomes, 1 timelines (1.8 s)
+[PASS] conflicts the scene writes 852 files, no file written twice, the folders and the prefix of main are kept (1 package run alone)
+[PASS] strays    186 pictures, every colour in the palette; 9 sky pictures not checked (drawn by adding light)
+[PASS] refs      648 block states, item definitions and models read, every model and picture they name is there
 [PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
-[PASS] blocks    72 kinds of block placed, all in the occupancy table
+[PASS] blocks    70 kinds of block placed, all in the occupancy table
 [PASS] flatwall  no wall face runs flat over more than 5x5
-[PASS] entities  71 display entities, 5 drawn out along one axis, 24 models never placed
-[PASS] views     11 shots, most display entities in view: 67 (v1_stamp), limit 600; counted without what walls hide; the game draws up to 71 (v5_board): a display entity without width and height is drawn outside the view too
-[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.0 s)
+[PASS] entities  73 display entities, 5 drawn out along one axis, 32 models never placed
+[PASS] views     10 shots, most display entities in view: 69 (v1_stamp), limit 600; counted without what walls hide; the game draws up to 73 (v5_board): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 13.9% hidden (base storey 46%, great windows 1.7%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the station keeps clear of the view up to 61 degrees (63647 sight lines, 1.1 s)
 [PASS] motion    3 parts and 0 points on 2 chains, 20 function files; 7 commands in the busiest tick (limit 40), 1.3 a tick on average (limit 10)
                  chain of 24 ticks: 6 functions, 20 commands a cycle, starts 1 ticks after start
                  chain of 40 ticks: 8 functions, 17 commands a cycle, starts 2 ticks after start
