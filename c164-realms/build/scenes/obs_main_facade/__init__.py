@@ -59,7 +59,10 @@ def _version(entrance, crown):
 #   C164_LIGHTS="x,y,z,level;..."   with C164_TRIAL=open: these sources in the hall
 #   C164_DOOR=<level>    the light line's source in the doorway at this level (0: none)
 #   C164_IRON=1          props/ironwork dresses the building (its DRESS switch on)
+#   C164_HALL=1          the star hall moved in (interiors/starhall, with its test scene's stand-in
+#                        machines); unset, the hall is not moved in, whatever starhall.MOVED_IN says
 TRIAL = os.environ.get("C164_TRIAL", "")
+HALL = bool(os.environ.get("C164_HALL"))
 TRIAL_LIGHTS = {
     "openlit": [((9, 4, -3), 14), ((9, 4, 3), 14), ((13, 4, 0), 14), ((10, 11, 0), 14), ((13, 10, -3), 14), ((13, 10, 3), 14)],
     "openpier": [((8, 3, -2), 12), ((8, 3, 2), 12)],
@@ -77,21 +80,34 @@ def build(entrance=None, crown=None):
     door = os.environ.get("C164_DOOR")
     was = lights.DOOR_LEVEL
     dressed = ironwork.DRESS
-    if door is not None:
+    if door is not None and int(door) > 0:
         lights.DOOR_LEVEL = int(door)
     if os.environ.get("C164_IRON"):                 # TRIAL ONLY: the ironwork on the real building
         ironwork.DRESS = True
+    from scenes.obs import interiors
+    from scenes.obs.interiors import starhall
+    moved = starhall.MOVED_IN
+    starhall.MOVED_IN = HALL
     try:
         with _version(entrance or ENTRANCE, crown):
             with (shell.hall_open() if TRIAL.startswith("open") else contextlib.nullcontext()):
                 for line in LINES:
+                    if line is props and HALL:      # the master scene's order: machines, interiors, props
+                        from scenes.obs_int_starhall import standins
+                        standins.orrery(c, (0, 0, 0))
+                        standins.clock(c, (0, 0, 0))
+                        interiors.build(c, (0, 0, 0))
                     if line is sky:
                         for (x, y, z), level in TRIAL_LIGHTS.get(TRIAL, []):
                             c.set(x, y, z, f"{B.LIGHT}[level={level}]", keep=True)
                     line.build(c, (0, 0, 0))
+                if door is not None and int(door) == 0:
+                    for cell in lights.report(c)["doors"]:
+                        c.clear(*cell)
     finally:
         lights.DOOR_LEVEL = was
         ironwork.DRESS = dressed
+        starhall.MOVED_IN = moved
     return c
 
 
@@ -99,6 +115,11 @@ def build_models():
     out = {}
     for line in LINES:
         out.update(line.models() or {})
+    if HALL:
+        from scenes.obs import interiors
+        from scenes.obs_int_starhall import standins
+        out.update(interiors.models() or {})
+        out.update(standins.models() or {})
     return out
 
 
