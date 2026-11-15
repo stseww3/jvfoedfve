@@ -85,7 +85,9 @@ PANEL_LIGHTS = (9, 8, 7)    # the level a panel is shown at: beside the boss, at
 AISLE_LAMP = ("bracket", "b")   # the enamel cone in both versions: its bulb is inside the shade. A caged lamp's
 #                                 glass is drawn at full light where it looks up and was brighter in the picture
 #                                 than the orrery's sun, which the door sees from below (cr3, #58794)
-AISLE_LEVELS = (7, 8, 7)        # the three lamps of an aisle wall, from the pier to the door
+AISLE_LEVELS = (7, 8, 7, 8)     # the four lamps of an aisle wall, from the pier to the door. The last is in the
+#                                 bay behind the entrance's side arch: what the forecourt sees first through that
+#                                 arch is to stand at 7 or more, and the lamps for it are the hall's (A0 #526)
 AISLE_LAMP_Y = 3.25             # where the bracket is fixed: its shade clears a cabinet two blocks tall, and its
 #                                 source is in the third cell over the floor, one nearer the dado than before
 BOARD_LAMP_Y = 4.5              # the same over the switchboard, whose top is at three and a half
@@ -471,11 +473,13 @@ def _charts(canvas, origin):
 
 # ---- the lamps ------------------------------------------------------------------------------------------------
 def aisle_lamp_xs():
-    """Where the lamps of an aisle wall are fixed: in the middle of each bay between two pilasters,
-    over what stands there, and west of the first pilaster over the switchboard's middle, which on
-    the south side is between the two charts. West to east."""
+    """Where the lamps of an aisle wall are fixed: in the middle of each bay, over what stands
+    there. West of the first pilaster that is over the switchboard's middle, which on the south
+    side is between the two charts; east of the last it is the bay behind the entrance's side
+    arch. West to east."""
     beams = beam_xs()
-    return [BOARD_MID_X + 0.5] + [(a + 1 + b) / 2.0 for a, b in zip(beams, beams[1:])]
+    return ([BOARD_MID_X + 0.5] + [(a + 1 + b) / 2.0 for a, b in zip(beams, beams[1:])]
+            + [(beams[-1] + 1 + X1 + 1) / 2.0])
 
 
 def gallery_lamp_xs():

@@ -37,7 +37,7 @@ from . import standins
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
 VERSION = "a"
-GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # paving under and before the building
+GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 15, S.Z_SOUTH + 6)  # paving under and before the building
 ORIGIN = (0, 0, 0)
 OPTIONAL = ("machines.orrery", "machines.clock", "props.furniture")    # packages whose models the hall shows
 DOOR_ENV, POOL_ENV = "C164_HALL_DOOR", "C164_HALL_POOL"
@@ -132,4 +132,5 @@ def shots():
     shot("aisle_s", (14.6, eye, 3.4), (4.0, 2.2, 5.4))
     shot("stair_n", (6.6, eye, -3.4), (-3.5, 3.2, -3.6))                # through the side arch to the stair foot
     shot("mezzanine", (0.5, gallery, cz + 2.2), (-7.0, 9.4, cz))        # the two lamps beside the great west window
+    shot("arches", (S.V7["pos"][0] + 9.0, eye, cz), (16.0, 3.4, cz))    # the three arches from the forecourt's axis
     return out
