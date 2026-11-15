@@ -21,6 +21,7 @@ def _hung(name):
 # camera, look-at; the backdrop wall is 7.5 blocks north of the bay's centre
 GALLERY = [
     ("street", [(P + "street", None, {})], (3.5, 2.8, 5.5), (0.0, 2.8, 0.0)),
+    ("post", [(P + "post", None, {})], (1.0, 0.9, 1.4), (0.0, 0.3, 0.0)),
     _wall("bracket_a"), _wall("bracket_b"),
     _wall("cage_a"), _wall("cage_b"),
     _hung("pendant_a"), _hung("pendant_b"),
