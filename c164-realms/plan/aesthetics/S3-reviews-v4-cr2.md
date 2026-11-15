@@ -1778,8 +1778,9 @@ c268 把乙降下来以后，**甲成了三版里蓝调版第二、深色版第�
 ## 评审批次 cr2-S7：site/powerhouse 屋顶甲乙比选（c285，总装 `7b7a26cd` 上的两个场景）——按离线图
 
 - 图源：`git show 7b7a26cd:c164-realms/renders/obs_site_powerhouse/*.png` 与 `..._b/*.png` 同名机位，
-  读的是存着的图，**我没有重出**（照总监 #45022 第 3 条）。两套各 6 张对得上：
-  `aerial`、`chimney_up`、`stair_axis`、`stair_south`、`v6_power`、`yard_west`。
+  读的是存着的图，**我没有重出**（照总监 #45022 第 3 条）。两边各有 **12 张**（`aerial`、`aerial_back`、
+  `bridge_head`、`bridge_near`、`chimney_up`、`court_back`、`lip_south`、`lookout_east`、`stair_axis`、
+  `stair_south`、`v6_power`、`yard_west`），**十二张我全量了**。
 - **按离线图判**。发光、云、粒子这类离线判不了的，本文不动，另标「待真机」。
 - 包类型：场地（工业外壳）。适用项：第一眼○　轮廓构图●　明暗光色●　质感像素—　风格逻辑○。V6 主角。
 - 场景代码：`build/scenes/obs/site/powerhouse.py` @ 总装 `7b7a26cd`，`ROOFS = {"a": _roof_a, "b": _roof_b}`。
