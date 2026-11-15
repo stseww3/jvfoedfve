@@ -53,7 +53,7 @@ BLOCKS = K.blocks(B.ASHLAR_ROUGH, B.ASHLAR_FINE, B.ASHLAR_PANEL, B.ASHLAR_EMBLEM
 DEFAULT = "b"
 VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
-GROOVES = (3, 6, 9, 12)     # the rows of the rough stone's tool marks: a groove, its lit lip the row above
+GROOVES = (2, 5, 8, 11)     # the rows of the rough stone's tool marks: a groove, its lit lip the row below
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
 STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
 
@@ -105,34 +105,71 @@ def _emblem_figure():
 
 
 # ====================================================================== the rough stone ===
-def _marks(px, rng, x0, x1):
+def _places(x0, x1):
+    """The places of the rough stone's tool marks over the columns x0..x1, as (row, place, y, x,
+    room): four rows (GROOVES), a place of four pixels to a mark, every other row two pixels
+    along; a mark has `room` pixels from x, three, or two where the last place of a row is cut
+    short by x1."""
+    for i, y in enumerate(GROOVES):
+        for k, x in enumerate(range(x0 + 2 * (i % 2), x1, 4)):
+            yield i, k, y, x, min(3, x1 + 1 - x)
+
+
+def _marks(px, rng, x0, x1, bare=()):
     """The tooling of the rough stone over the columns x0..x1: rows of short marks, each a dark
-    groove (A1) under a lit lip (A3), two or three pixels long, a place of four pixels to each,
-    every other row two pixels along. Nothing but A1 and A3 on the base: no pits, no glints.
+    groove (A1) over its lit lip (A3), two or three pixels long. Nothing but A1 and A3 on the
+    base: no pits, no glints.
+
+    A mark is a cut: its upper side is in shadow and the lower one catches the light, as on the
+    channel of the banded stone and on the emblem. The first two rounds had the lip above the
+    groove, and with a mark in every place the face read as raised bars in a net, a tread plate
+    and nothing a chisel leaves (c219's review, g2 #310).
 
     The rows and the places are the same in every variant; a variant chooses where in its place a
-    mark sits and how long it is. So across a wall the rows run on from block to block, and no
-    stone carries a figure of its own -- thrown down anywhere, a dozen marks gathered in the middle
-    of the block and read as a sign carved on it, a different sign on every stone."""
-    for i, y in enumerate(GROOVES):
-        for x in range(x0 + 2 * (i % 2), x1, 4):
-            room = min(3, x1 + 1 - x)                   # the last place of a row may be two pixels
-            at = int(rng.integers(0, room - 1))
-            length = int(rng.integers(2, room - at + 1))
+    mark sits and how long it is, and which places (`bare`, as (row, place)) it leaves untooled.
+    So across a wall the rows run on from block to block, and no stone carries a figure of its
+    own -- thrown down anywhere, a dozen marks gathered in the middle of the block and read as a
+    sign carved on it, a different sign on every stone."""
+    for i, k, y, x, room in _places(x0, x1):
+        at = int(rng.integers(0, room - 1))
+        length = int(rng.integers(2, room - at + 1))
+        if (i, k) not in bare:
             px[y, x + at:x + at + length, :3] = _a(1)
-            px[y - 1, x + at:x + at + length, :3] = _a(3)
+            px[y + 1, x + at:x + at + length, :3] = _a(3)
 
 
-def _rough_ring(seed):
+# per variant of the banded stone, the places it leaves untooled, as (row, place): one in each
+# row, four of the sixteen, so that the marks are no net with a mark in every mesh.
+#
+# Two bare places that touch -- side by side in a row, or corner to corner in rows that follow
+# one another -- are a bare patch, a figure on the wall. So none touch within a variant, and none
+# across the edge of a block either, whichever two variants lie side by side there: where one
+# leaves the last place of a row bare, none leaves bare the first place of that row, nor of the
+# row above or below where that place reaches under it. And no place is bare in two variants, or
+# that spot would be thin all over the wall.
+#
+# Twelve places are bare in one variant each; the four that never are lie at the right end of the
+# two upper rows and at the left end of the two lower. Of three variants with four places each
+# there are eight such tables, all of them with the middle variant here, a zigzag; this is the
+# one whose other two variants are no zigzag.
+_BARE = (
+    ((0, 0), (1, 1), (2, 3), (3, 1)),
+    ((0, 1), (1, 2), (2, 1), (3, 2)),
+    ((0, 2), (1, 0), (2, 2), (3, 3)),
+)
+
+
+def _rough_ring(variant):
     """ASHLAR_ROUGH side for version a: a stone to a block, jointed all round as materials.md
     section 3 first had it -- a one-pixel A0 joint on every edge, so two stones meet in a two-pixel
     groove; inside it a chamfer, lit A3 along the top and the left, shadowed A1 along the bottom
-    and the right; the face, base A2, tooled in rows (twelve marks).
+    and the right; the face, base A2, tooled in rows (twelve marks, one in every place: inside a
+    frame of joints a few bare places would be a figure on each stone again).
 
     Kept to be set beside b. Every block's joints stand where its neighbours' do, above and below
     as well, so a wall of it is a net of squares: facing tiles, not masonry (c219's pre-review)."""
     px = _fill(2)
-    _marks(px, np.random.default_rng(seed), 2, 13)
+    _marks(px, np.random.default_rng(variant + 1), 2, 13)
     px[1, 1:15, :3] = _a(3)
     px[1:15, 1, :3] = _a(3)
     px[14, 1:15, :3] = _a(1)
@@ -144,7 +181,7 @@ def _rough_ring(seed):
     return px
 
 
-def _rough_band(seed):
+def _rough_band(variant):
     """ASHLAR_ROUGH side for version b, the default: banded rustication, the ground storey of a
     public building of the last century but one. A channel runs along the foot of every course --
     A0 on row 15, the stone above it shadowed A1 on row 14, the arris of the course below lit A3
@@ -152,10 +189,11 @@ def _rough_band(seed):
     that can carry the pilasters over it; round a pilaster or a corner the courses run on as
     rings, and at a window they die into the opening.
 
-    The face, base A2, is tooled in rows from edge to edge (sixteen marks). No margin is left
-    plain: a plain margin would draw the outline of the block again."""
+    The face, base A2, is tooled in rows from edge to edge: sixteen places, of which a variant
+    leaves four untooled (_BARE). No margin is left plain: a plain margin would draw the outline
+    of the block again."""
     px = _fill(2)
-    _marks(px, np.random.default_rng(seed), 0, TILE - 1)
+    _marks(px, np.random.default_rng(variant + 1), 0, TILE - 1, _BARE[variant])
     px[0, :, :3] = _a(3)
     px[14, :, :3] = _a(1)
     px[15, :, :3] = _a(0)
@@ -289,7 +327,7 @@ def textures(version=DEFAULT):
         raise ValueError(f"ashlar draws no version {version!r}; it draws a and b (c is the vanilla stone)")
     rough = _rough_ring if version == "a" else _rough_band
     return {
-        "ashlar_rough": [rough(s) for s in (1, 2, 3)],
+        "ashlar_rough": [rough(v) for v in range(len(_BARE))],
         "ashlar_rough_top": _rough_top(10),
         "ashlar_fine": [_fine(v) for v in range(len(_FINE))],
         "ashlar_fine_top": _fine_top(30),
@@ -352,10 +390,16 @@ def faults(pictures, version=DEFAULT):
     round's pictures, checked for every way two variants can come to lie beside or above one
     another (a wall takes its variants by position, so every pairing happens somewhere):
 
-      - rough side   a: the one-pixel A0 joint runs all round (two stones meet in two pixels);
+      - rough side   a: the one-pixel A0 joint runs all round (two stones meet in two pixels), and
+                     every place of the face is tooled;
                      b: the channel runs from side to side (row 14 A1, row 15 A0, row 0 A3), no
-                     upright joint, and no margin of the face is left plain.
-                     Both: the face is A2 with marks of A1 and A3 only, two or three pixels long;
+                     upright joint, and no margin of the face is left plain; about four of the
+                     sixteen places are left untooled, no two of them touching -- side by side in
+                     a row, or corner to corner in rows that follow one another -- within the
+                     block or across its edge, whichever variants meet there; and no place is
+                     bare in two variants.
+                     Both: the face is A2; a mark is a groove of A1, two or three pixels long, on
+                     a row of GROOVES, over its lit lip of A3, and the face carries nothing else;
       - fine side    a bed joint, one joint tone unbroken, along rows 7 and 15, the same in every
                      variant; every course has a head joint; no head joint runs on into the course
                      above or below it, in a block or from the block above -- that is what stripes
@@ -376,6 +420,9 @@ def faults(pictures, version=DEFAULT):
         return [_steps(p) for p in (got if isinstance(got, list) else [got])]
 
     out = []
+    top, x0, x1 = (2, 2, 13) if version == "a" else (1, 0, TILE - 1)     # where the tooled face lies
+    spans = {(r, k): x for r, k, _, x, _ in _places(x0, x1)}
+    bare = []                                     # per variant: the places it leaves untooled
     for i, s in enumerate(many("ashlar_rough")):
         if version == "a":
             face = s[2:14, 2:14]
@@ -394,6 +441,36 @@ def faults(pictures, version=DEFAULT):
         marks = [n for row in face for tone, n in _runs(row) if tone != 2]
         if not marks or min(marks) < 2 or max(marks) > 3:
             out.append(f"ashlar_rough{i}: a tool mark that is not two or three pixels long")
+        grooves = np.zeros(face.shape, dtype=bool)
+        rows = [y - top for y in GROOVES]
+        grooves[rows] = face[rows] == 1
+        if ((face == 1) != grooves).any() or ((face == 3) != np.roll(grooves, 1, axis=0)).any():
+            out.append(f"ashlar_rough{i}: a tool mark that is not a groove (A1) on a row of GROOVES over its lit "
+                       "lip (A3): a cut is dark above and lit below")
+        bare.append({(r, k) for r, k, y, x, room in _places(x0, x1) if not (s[y, x:x + room] == 1).any()})
+    last = max(k for _, k in spans)
+
+    def corners(b, c, apart=0):
+        """Do a place of b and a place of c, `apart` pixels to its right, touch corner to corner?"""
+        return any(abs(p[0] - q[0]) == 1 and abs(spans[p] - spans[q] - apart) < 4 for p in b for q in c)
+
+    for i, b in enumerate(bare):
+        if version == "a":
+            if b:
+                out.append(f"ashlar_rough{i}: {len(b)} places untooled inside the joints: a figure on the stone")
+            continue
+        if not 3 <= len(b) <= 5:
+            out.append(f"ashlar_rough{i}: {len(b)} of the {len(spans)} places untooled; about four are")
+        if any((r, k + 1) in b for r, k in b):
+            out.append(f"ashlar_rough{i}: two untooled places side by side in a row")
+        if corners(b, b):
+            out.append(f"ashlar_rough{i}: two untooled places corner to corner: a bare patch")
+        for j, c in enumerate(bare):
+            if j > i and b & c:
+                out.append(f"ashlar_rough{i} and ashlar_rough{j}: both leave the places {sorted(b & c)} untooled")
+            if any(k == last and (r, 0) in c for r, k in b) or corners(b, c, TILE):
+                out.append(f"ashlar_rough{i} with ashlar_rough{j} on its right: two untooled places touch across "
+                           "the block's edge")
 
     fine = many("ashlar_fine")
     heads = []                                    # per variant: the head joints of its upper course, of its lower
