@@ -26,7 +26,9 @@ What stands where (plan cells; north is -z, the camera of V10 looks north):
                     rack's ends hide half of each clock, until one stands before a recess.
   console           a wooden shelf in front of the middle bay and the two piers beside it: the drum
                     recorder, the telegraph and its key stand on it, the operator sits in front of
-                    it. One lamp hangs over it, the main light of the room.
+                    it. One lamp hangs over it, the main light of the room. The two jack fields of
+                    the rack are the panels beside its ends, at the height of the hand; patch
+                    cords hang from them (the room's own models).
   message desk      under bay 6 of the east wall; a lamp and the telephone on the pier north of it,
                     the pneumatic tube on the pier south of it
   rating bench      under bay 5 of the west wall; a lamp on the pier north of it, the barometer on
@@ -174,6 +176,17 @@ DIAL = (                                            # nine pixels across: twelve
 )
 DIAL_COLOURS = dict(c=P.RAMPS["porcelain"][3], d=P.RAMPS["porcelain"][2], k=INK, h=P.RAMPS["iron"][0], b=P.RAMPS["brass"][3])
 
+# ---- the patch cords: at the jack fields of the rack, which are the panels beside the two ends of the console
+JACK_FIELDS = tuple((RACK_X[0] + i, CORNICE_Y - 1 - j)                              # (5, 8) and (10, 8): the cells, x and y
+                    for j, row in enumerate(RACK) for i, name in enumerate(row) if name == "patch_panel")
+JACKS = (-4.0, 0.0, 4.0)                            # px: a field's three columns of jacks, and its three rows, about the middle of its face (materials/panels)
+CORDS = {                                           # for a field: the two jacks a cord is looped between and how far it sags, the jack a cord hangs from and how long it is (px)
+    "w": dict(loop=(JACKS[0], JACKS[1], 7.0), drop=(JACKS[2], 13.0)),
+    "e": dict(loop=(JACKS[2], JACKS[1], 5.0), drop=(JACKS[0], 9.0)),
+}
+CORD_R = 0.5                                        # px: half the thickness of a cord
+PLUG = 2.0                                          # px: how far a plug stands out of its jack
+
 # ---- light: what the room asks of the light line (level, rank); the lamps are props/lamps models
 CONSOLE_LAMP = (11, 2)      # the pendant over the console: the main light, on the instrument wall
 DESK_LAMP = (10, 2)         # the bracket lamps on the piers beside the message desk and the rating bench
@@ -314,14 +327,44 @@ def _world_clock(offset):
     return m
 
 
+def cords_name(side):
+    return PREFIX + "cords_" + side
+
+
+def _cords(side):
+    """The patch cords of one jack field, for the face of its panel: in the field's lowest row a
+    cord looped from one jack to the next, and a cord hanging from the third jack with its free
+    plug at its end, on the side of the console. They are the cream of the cord painted on the
+    panel. Anchor: the middle of the panel's face."""
+    (xa, xb, sag), (xd, length) = CORDS[side]["loop"], CORDS[side]["drop"]
+    cord, sleeve = K.flat("cream", 1), K.flat("cream", 3)
+    row, z = JACKS[0], PLUG + CORD_R
+    top = row - 1.5                                 # where a cord has turned down out of its plug
+    m = M.Model(cords_name(side))
+    for x in (xa, xb, xd):
+        m.box((x - 1.0, row - 1.0, 0.0), (x + 1.0, row + 1.0, PLUG), sleeve)                        # a plug in its jack
+    mid, half = (xa + xb) / 2.0, (xb - xa) / 2.0
+    loop = [(mid + half * math.sin(math.radians(a)), top - sag * math.cos(math.radians(a)), z) for a in range(-90, 91, 30)]
+    m.hose([(xa, row, PLUG)] + loop + [(xb, row, PLUG)], CORD_R, cord, sides=4)
+    lean = 0.4 if xd > 0 else -0.4                  # the hanging cord leans a little out of the field, towards the console
+    foot = row - length
+    m.hose([(xd, row, PLUG), (xd + lean / 2.0, top, z), (xd + lean, (row + foot) / 2.0, z), (xd + lean, foot, z)], CORD_R, cord, sides=4)
+    m.tube("y", (xd + lean, z), foot - 3.0, foot, 1.0, sleeve)                                      # its free plug
+    m.tube("y", (xd + lean, z), foot - 4.5, foot - 3.0, 0.5, K.BRASS)                               # the plug's tip
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def _models():
-    return {clock_name(offset): _world_clock(offset) for offset in WORLD}
+    out = {clock_name(offset): _world_clock(offset) for offset in WORLD}
+    out.update({cords_name(side): _cords(side) for side in CORDS})
+    return out
 
 
 def models():
-    """The room's own models: the five world clocks. Its lamps are props/lamps', its machines
-    machines/recorders', the rest the packages' named in PIECES."""
+    """The room's own models: the five world clocks and the patch cords of the two jack fields.
+    Its lamps are props/lamps', its machines machines/recorders', the rest the packages' named in
+    PIECES."""
     return dict(_models())
 
 
@@ -408,6 +451,12 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
         put(KEY_X, SILL, CONSOLE_Z, st(roles.BRASS_BUTTON, face="floor", facing="north"))   # the key
     n += lamp("pendant", (AXIS_X, CORNICE_Y + 0.5, S.mid(CONSOLE_Z)), CONSOLE_LAMP, "console")
 
+    # ---- the patch cords, on the faces of the two jack fields
+    own = _models()
+    for x, y in JACK_FIELDS:
+        side = "w" if x < AXIS_X else "e"
+        n += K.put(c, own[cords_name(side)], (S.mid(x), y + 0.5, RACK_Z + 1.0), mount="wall", facing="south", origin=origin)
+
     # ---- a lamp over each of the two standard clocks
     for x, side in zip(REGULATOR_X, ("west", "east")):
         n += lamp("bracket", (x, REGULATOR_TOP + OVER, NORTH), REGULATOR_LAMP, f"clock {side}", facing="south")
@@ -432,7 +481,6 @@ def build_timeroom(c, origin=(0, 0, 0), roles=B):
     n += lamp("bracket", (WEST, LAMP_Y, pier(BENCH_BAY, -1)), DESK_LAMP, "rating bench", facing="east")
 
     # ---- the world clocks on their board over a cabinet of drawers, and the lamp over the middle one
-    own = _models()
     for z, offset in zip(range(CLOCK_Z[0], CLOCK_Z[1] + 1), WORLD):
         put(X0, FEET, z, st(roles.PANELS["drawers"], facing="east"))
         n += K.put(c, own[clock_name(offset)], (WEST, DIAL_Y, S.mid(z)), mount="wall", facing="east", origin=origin)
