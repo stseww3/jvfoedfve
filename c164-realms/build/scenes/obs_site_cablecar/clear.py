@@ -1,0 +1,337 @@
+"""python -m scenes.obs_site_cablecar.clear [--scene] [--json FILE] (in build/): the cable station
+against the part of the arrival view it keeps clear (skeleton.V1_CLEAR, V1_COMET; A0 #442),
+measured exactly.
+
+A0's rule leaves no margin: seen from V1's eye nothing of the station stands between the two ends
+of the main building from the level of the eye up to 61 degrees (block A), nor where the comet
+hangs north of that (block B). tools/check.py tests it with sight lines a quarter of a degree
+apart and skeleton.in_v1_clear() tells of one point; a sliver between two sight lines or two
+points passes both. Here nothing is sampled. Every box of every block (the game's own models, read
+from the jar and from the materials line's pack, joined to their neighbours as the game joins
+them) is cut by the planes of a block of the view, and what is left of the box is a convex solid:
+
+  A  the wedge of bearings between the building's two ends, above the eye's level. A cone of
+     directions higher than 61 degrees is convex, so the solid lies wholly above 61 degrees when
+     all its corners do: it is in A when one corner is at 61 degrees or lower.
+  B  the wedge from 15 degrees north of west to the building's north end. The solid is connected,
+     so it is in B when its corners reach from 61 degrees or lower to 35 degrees or higher. (The
+     highest point of a box cut by a wedge that leaves out due west is one of its corners.)
+
+A point on a block's boundary counts as in it. Display entities are measured by the box round
+each of their pieces, which is larger than the piece. The corners are also put to
+skeleton.in_v1_clear(), the skeleton's own word, and the two answers are compared.
+
+Without --scene the station is measured as its package builds it on an empty canvas, a second's
+work. With --scene the whole test scene is built and everything that stands within the station's
+box and six cells round it is measured, whoever set it there: the car, the winch and its cable,
+lamps, benches, the name board. Ends with 1 when something stands in either block.
+
+The table names, part by part, how near the station comes: under "A" the least elevation of what
+lies in A's bearings above the eye (clear when over 61) and the nearest bearing of what lies
+outside them; under "B" the same for the comet's block. The last lines say how much of V1's
+picture the station takes, and where.
+"""
+import argparse
+import json
+import math
+import os
+import sys
+import tempfile
+from itertools import combinations
+
+import numpy as np
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..", "..", "tools")))
+
+import sightline as SL  # noqa: E402
+from artkit.canvas import Canvas  # noqa: E402
+from artkit.gameassets import Assets  # noqa: E402
+from artkit.shapes import Shaper  # noqa: E402
+from scenes.obs import materials  # noqa: E402
+from scenes.obs.common import skeleton as S  # noqa: E402
+from scenes.obs.site import cablecar as C  # noqa: E402
+
+EYE = np.array(S.V1["pos"], dtype=float)
+NORTH, SOUTH = S.v1_clear_span()
+TOP = float(S.V1_CLEAR)
+COMET_NORTH, COMET_LOW = -float(S.V1_COMET["north"]), float(S.V1_COMET["low"])
+REACH = 6                       # as tools/check.py: what belongs to the station stays within this of its box
+TOL = 1e-9
+FOV, ASPECT = 77.0, 16.0 / 9.0  # the billboard pictures (build/render.py, tools/check.py)
+GRID = (480, 270)               # sight lines over V1's picture, for the station's share of it
+
+
+def bearing(x, z):
+    return math.degrees(math.atan2(z - EYE[2], EYE[0] - x))
+
+
+def elevation(p):
+    r = math.hypot(EYE[0] - p[0], p[2] - EYE[2])
+    if r < TOL:
+        return 90.0 if p[1] > EYE[1] + TOL else -90.0 if p[1] < EYE[1] - TOL else 0.0
+    return math.degrees(math.atan2(p[1] - EYE[1], r))
+
+
+def _wedge(a, b):
+    """The two half-spaces n . p <= c of the bearings a .. b (degrees south of west, b - a < 180)."""
+    sa, ca = math.sin(math.radians(a)), math.cos(math.radians(a))
+    sb, cb = math.sin(math.radians(b)), math.cos(math.radians(b))
+    return [((-sa, 0.0, -ca), -(EYE[0] * sa + EYE[2] * ca)),
+            ((sb, 0.0, cb), EYE[0] * sb + EYE[2] * cb)]
+
+
+WEDGE_A = _wedge(NORTH, SOUTH) + [((0.0, -1.0, 0.0), -EYE[1])]      # and not below the eye
+WEDGE_B = _wedge(COMET_NORTH, NORTH)
+_TRIPLES = {}
+
+
+def corners(lo, hi, cut):
+    """The corners of the box lo .. hi cut by the half-spaces `cut`: (k, 3), empty when nothing of
+    the box is left. Every three of the planes are met; a meeting point that lies within all of
+    them is a corner."""
+    normals = [(-1.0, 0, 0), (1.0, 0, 0), (0, -1.0, 0), (0, 1.0, 0), (0, 0, -1.0), (0, 0, 1.0)]
+    consts = [-lo[0], hi[0], -lo[1], hi[1], -lo[2], hi[2]]
+    n = np.array(normals + [c[0] for c in cut], dtype=float)
+    c = np.array(consts + [c[1] for c in cut], dtype=float)
+    m = len(c)
+    idx = _TRIPLES.get(m)
+    if idx is None:
+        idx = _TRIPLES[m] = np.array(list(combinations(range(m), 3)))
+    a, rhs = n[idx], c[idx]
+    det = np.linalg.det(a)
+    ok = np.abs(det) > 1e-12
+    if not ok.any():
+        return np.zeros((0, 3))
+    pts = np.linalg.solve(a[ok], rhs[ok][..., None])[..., 0]
+    inside = np.all(pts @ n.T <= c[None, :] + TOL, axis=1)
+    return pts[inside]
+
+
+def measure(lo, hi):
+    """One box against the two blocks. Returns a dict: in_a, in_b; a_low, the least elevation of
+    the part of it in A's bearings above the eye (None when it has none); b_span, the least and
+    the greatest elevation of the part in B's bearings; span, the bearings of its plan; above,
+    does any of it stand above the eye's level."""
+    out = dict(in_a=False, in_b=False, a_low=None, b_span=None, above=bool(hi[1] >= EYE[1] - TOL))
+    plan = [(x, z) for x in (lo[0], hi[0]) for z in (lo[2], hi[2])]
+    if lo[0] - TOL <= EYE[0] <= hi[0] + TOL and lo[2] - TOL <= EYE[2] <= hi[2] + TOL:
+        out["span"] = (-180.0, 180.0)           # the box stands over or under the eye
+    else:
+        mid = bearing((lo[0] + hi[0]) / 2.0, (lo[2] + hi[2]) / 2.0)
+        rel = [(bearing(x, z) - mid + 180.0) % 360.0 - 180.0 for x, z in plan]
+        out["span"] = (mid + min(rel), mid + max(rel))
+    if not out["above"]:
+        return out
+    pa = corners(lo, hi, WEDGE_A)
+    if len(pa):
+        up = [elevation(p) for p in pa]
+        out["a_low"] = min(up)
+        out["in_a"] = min(up) <= TOP + TOL
+        out["a_at"] = [round(float(v), 3) for v in pa[int(np.argmin(up))]]
+    pb = corners(lo, hi, WEDGE_B)
+    if len(pb):
+        up = [elevation(p) for p in pb]
+        out["b_span"] = (min(up), max(up))
+        out["in_b"] = min(up) <= TOP + TOL and max(up) >= COMET_LOW - TOL
+    return out
+
+
+def by_skeleton(lo, hi):
+    """skeleton.in_v1_clear() at the box's corners and at the corners of what the two wedges leave
+    of it: the skeleton's own answer, to hold against measure()'s."""
+    pts = [np.array([x, y, z]) for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])]
+    pts += list(corners(lo, hi, WEDGE_A)) + list(corners(lo, hi, WEDGE_B))
+    return any(S.in_v1_clear(*(float(v) for v in p)) for p in pts)
+
+
+def part_of(cell):
+    """Which part of the station a cell of site/cablecar belongs to."""
+    x, y, z = cell
+    if x > C.X1:
+        return "trestle"
+    wx0, wz0, wx1, wz1 = C.WAIT
+    hx0, hz0, hx1, hz1 = C.WINCH
+    cx0, cz0, cx1, cz1 = C.CANOPY
+    if y >= C.FEET and hx0 <= x <= hx1 and hz0 <= z <= hz1:
+        return "winch house"
+    if y >= C.FEET and wx0 <= x <= wx1 and wz0 <= z <= wz1:
+        return "waiting room"
+    if y >= C.EAVES and cx0 <= x <= cx1 and cz0 <= z <= C.GIRDER_Z:
+        return "glass roof"
+    if y >= C.FEET and (x, z) in C.COLUMNS:
+        return "columns"
+    if y >= C.FEET:
+        return "rails, buffers"
+    return "platform"
+
+
+def _pack():
+    """The materials line's pack, for the models of the repainted blocks."""
+    d = tempfile.mkdtemp(prefix="c164_clear_")
+    materials.pack(d)
+    return d
+
+
+def station_cells(canvas=None):
+    """{cell: state} of the station as its package builds it (on `canvas`, or on an empty one), and
+    the display entities it placed."""
+    c = Canvas() if canvas is None else canvas
+    before = len(c.entities)
+    seen = dict(c.b)
+    C.build(c, (0, 0, 0))
+    return {p: s for p, s in c.b.items() if seen.get(p) != s}, c.entities[before:]
+
+
+def boxes_of(cells, entities, shapes, names):
+    """[(what, part, cell, lo, hi)] in scene coordinates: the boxes of the blocks `cells` (joined to
+    their neighbours) and the boxes round the pieces of the display entities."""
+    cells = dict(cells)
+    Shaper(cells, shapes.is_cube).run()
+    out = []
+    for cell, state in sorted(cells.items()):
+        base = np.array(cell, dtype=float)
+        for lo, hi, _ in shapes.state(state)[1]:
+            out.append((state.partition("[")[0], names(cell), cell, base + lo, base + hi))
+    for x, y, z, nbt in entities:
+        cell = tuple(int(math.floor(v)) for v in (x, y, z))
+        for inv, off, blo, bhi, _, label in SL.entity_boxes(shapes, x, y, z, nbt):
+            world = (SL._corners(blo, bhi) - off) @ np.linalg.inv(inv).T
+            out.append((label, names(cell), cell, world.min(axis=0), world.max(axis=0)))
+    return out
+
+
+def picture(cells, entities, shapes, names):
+    """How much of V1's picture the given blocks take, part by part, and where: sight lines through
+    a grid over the picture, against these blocks alone."""
+    lo = np.array([min(p[i] for p in cells) for i in range(3)]) - 1
+    hi = np.array([max(p[i] for p in cells) for i in range(3)]) + 1
+    lo, hi = np.minimum(lo, np.floor(EYE).astype(int) - 1), np.maximum(hi, np.floor(EYE).astype(int) + 1)
+    bl = SL.Blockers(dict(cells), entities, shapes, lo, hi)
+    cam = SL.frame(EYE, S.V1["look_at"])
+    w, h = GRID
+    rays = SL.picture_rays(cam, FOV, ASPECT, w, h).reshape(-1, 3)
+    got = bl.cast(EYE, rays, 400.0)
+    first = np.minimum(got["t"], got["thru_t"])
+    hit = np.isfinite(first)
+    cell = np.where((got["t"] <= got["thru_t"])[:, None], got["cell"], got["thru_cell"])
+    rows, cols = np.divmod(np.arange(len(rays)), w)
+    out = {"share": float(hit.mean()), "parts": {}}
+    for i in np.nonzero(hit)[0]:
+        name = names(tuple(int(v) for v in cell[i]))
+        d = out["parts"].setdefault(name, dict(n=0, left=1.0, right=0.0, top=1.0, bottom=0.0))
+        d["n"] += 1
+        d["left"], d["right"] = min(d["left"], cols[i] / w), max(d["right"], (cols[i] + 1) / w)
+        d["top"], d["bottom"] = min(d["top"], rows[i] / h), max(d["bottom"], (rows[i] + 1) / h)
+    for d in out["parts"].values():
+        d["share"] = d.pop("n") / float(len(rays))
+    return out
+
+
+def _deg(v):
+    return "due west" if abs(v) < 0.005 else f"{abs(v):.2f} {'S' if v > 0 else 'N'}"
+
+
+def main():
+    ap = argparse.ArgumentParser(description="the cable station against the view it keeps clear of V1")
+    ap.add_argument("--scene", action="store_true", help="build the whole test scene and measure all that "
+                    "stands within the station's box and its reach")
+    ap.add_argument("--json", help="write the figures here as well")
+    ap.add_argument("--jar", default=os.environ.get("MC_JAR") or os.path.join(
+        os.environ.get("MC_ROOT", "/agent/realms-study"), "client26", "versions", "26.3", "26.3.jar"))
+    args = ap.parse_args()
+
+    shapes = SL.Shapes(Assets(args.jar, packs=(_pack(),)))
+    own, own_entities = station_cells()
+    if args.scene:
+        from scenes import obs_site_cablecar as scene
+        canvas = scene.build()
+        x0, z0, x1, z1 = S.CABLE_STATION
+        inside = lambda p: (x0 - REACH <= p[0] <= x1 + REACH and z0 - REACH <= p[2] <= z1 + REACH   # noqa: E731
+                            and p[1] >= S.STATION_GROUND - 1)
+        cells = {p: s for p, s in canvas.b.items() if inside(p) or p in own}
+        entities = [e for e in canvas.entities if inside(tuple(int(math.floor(v)) for v in e[:3]))]
+        names = lambda cell: part_of(cell) if cell in own else "other packages"     # noqa: E731
+        title = f"the test scene, within {REACH} cells of the station's box: {len(cells)} cells, {len(entities)} display entities"
+    else:
+        cells, entities, names = own, own_entities, part_of
+        title = f"site/cablecar alone: {len(cells)} cells, {len(entities)} display entities"
+
+    rows, parts, hits, disagree = [], {}, [], []
+    for what, part, cell, lo, hi in boxes_of(cells, entities, shapes, names):
+        m = measure(lo, hi)
+        rows.append((what, part, cell, lo, hi, m))
+        d = parts.setdefault(part, dict(boxes=0, in_a=0, in_b=0, a_low=None, a_side=None, b_low=None, b_side=None))
+        d["boxes"] += 1
+        if m["in_a"] or m["in_b"]:
+            hits.append((what, part, cell, lo, hi, m))
+            d["in_a"] += m["in_a"]
+            d["in_b"] += m["in_b"]
+        if by_skeleton(lo, hi) and not (m["in_a"] or m["in_b"]):
+            disagree.append((what, cell))
+        if not m["above"]:
+            continue
+        s0, s1 = m["span"]
+        if m["a_low"] is not None and (d["a_low"] is None or m["a_low"] < d["a_low"][0]):
+            d["a_low"] = (m["a_low"], what, cell, m["a_at"])
+        if m["a_low"] is None:      # beside A: how far in bearing
+            gap = NORTH - s1 if s1 < NORTH else s0 - SOUTH
+            if d["a_side"] is None or gap < d["a_side"][0]:
+                d["a_side"] = (gap, "north" if s1 < NORTH else "south", what, cell)
+        if m["b_span"] is not None:
+            low, up = m["b_span"]
+            gap = low - TOP if low > TOP else COMET_LOW - up        # over the block, or under it
+            if d["b_low"] is None or gap < d["b_low"][0]:
+                d["b_low"] = (gap, "over" if low > TOP else "under", what, cell)
+        elif s1 < COMET_NORTH or s0 > NORTH:
+            gap = COMET_NORTH - s1 if s1 < COMET_NORTH else s0 - NORTH
+            if d["b_side"] is None or gap < d["b_side"][0]:
+                d["b_side"] = (gap, "north" if s1 < COMET_NORTH else "south", what, cell)
+
+    print(f"V1's eye ({EYE[0]:g}, {EYE[1]:g}, {EYE[2]:g}); {title}; {len(rows)} boxes")
+    print(f"  A  between the two ends of the main building: {_deg(NORTH)} to {_deg(SOUTH)} of west, "
+          f"from the eye's level to {TOP:g} degrees up")
+    print(f"  B  where the comet hangs: {_deg(COMET_NORTH)} to {_deg(NORTH)} of west, {COMET_LOW:g} to {TOP:g} degrees up")
+    for part, d in sorted(parts.items()):
+        words = [f"{d['boxes']} boxes", f"{d['in_a']} in A", f"{d['in_b']} in B"]
+        if d["a_low"]:
+            up, what, cell, at = d["a_low"]
+            words.append(f"in A's bearings from {up:.2f} degrees up ({what} {cell}, at {tuple(at)})")
+        if d["a_side"]:
+            gap, side, what, cell = d["a_side"]
+            words.append(f"beside A {gap:.2f} degrees {side} of it ({what} {cell})")
+        if d["b_low"]:
+            gap, side, what, cell = d["b_low"]
+            words.append(f"in B's bearings {gap:.2f} degrees {side} it ({what} {cell})")
+        if d["b_side"]:
+            gap, side, what, cell = d["b_side"]
+            words.append(f"beside B {gap:.2f} degrees {side} of it ({what} {cell})")
+        print(f"  {part:15s} " + "; ".join(words))
+    for what, part, cell, lo, hi, m in hits[:40]:
+        where = " and ".join(k for k, v in (("A", m["in_a"]), ("B", m["in_b"])) if v)
+        print(f"  IN {where}: {what} at {cell} ({part}), box {tuple(round(float(v), 3) for v in lo)} .. "
+              f"{tuple(round(float(v), 3) for v in hi)}")
+    if len(hits) > 40:
+        print(f"  ... and {len(hits) - 40} more")
+    if disagree:
+        print(f"  skeleton.in_v1_clear() names {len(disagree)} boxes this measure lets through: {disagree[:6]}")
+    seen = picture(cells, entities, shapes, names)
+    print(f"V1's picture: {100 * seen['share']:.1f}% of it is what was measured")
+    for part, d in sorted(seen["parts"].items(), key=lambda kv: -kv[1]["share"]):
+        print(f"  {part:15s} {100 * d['share']:5.2f}%  across {100 * d['left']:.0f}..{100 * d['right']:.0f}%, "
+              f"down {100 * d['top']:.0f}..{100 * d['bottom']:.0f}%")
+    verdict = "CLEAR" if not hits and not disagree else "NOT CLEAR"
+    print(f"result: {verdict} ({len(hits)} boxes in the view the station keeps clear)")
+    if args.json:
+        with open(args.json, "w", encoding="utf-8") as fh:
+            json.dump({"eye": list(EYE), "what": title, "result": verdict, "boxes": len(rows),
+                       "in": [dict(what=w, part=p, cell=list(c), a=bool(m["in_a"]), b=bool(m["in_b"]))
+                              for w, p, c, _, _, m in hits],
+                       "parts": {k: {kk: (list(vv) if isinstance(vv, tuple) else vv) for kk, vv in d.items()}
+                                 for k, d in parts.items()},
+                       "picture": seen}, fh, indent=1, default=str)
+    sys.exit(0 if verdict == "CLEAR" else 1)
+
+
+if __name__ == "__main__":
+    main()
