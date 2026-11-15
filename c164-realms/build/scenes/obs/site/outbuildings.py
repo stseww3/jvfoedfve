@@ -132,7 +132,7 @@ LAMP_POINTS = _lamp_points()
 
 # For the transit circle (machines/meridian-astrograph): the middle of the hut at the height of the
 # instrument's east-west axis, and the two floor cells either side of the meridian for its piers.
-# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the slate at the walls,
+# The room is clear from wall to wall (x 32..38, z -33..-27): 3.5 high under the roof at the walls,
 # 4 a block further in, 4.8 under the shutters, open to the sky over the meridian's own column. The
 # slot is one block wide.
 _HUT_X, _HUT_Z = S.MERIDIAN_HUT["centre"]

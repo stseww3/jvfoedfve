@@ -106,6 +106,7 @@ def shots():
     shot("hut_near", (hx + 9.5, eye, hz + 12.5), (hx + 0.5, 3.0, hz))
     shot("hut_mid", (hx + 22.5, eye + 0.9, hz + 15.5), (hx - 11.0, 9.0, hz))
     shot("hut_slit", (hx + 0.5, eye, hz + 15.5), (hx + 0.5, 3.0, hz))       # on the meridian, looking north
+    shot("hut_inside", (hx + 0.5, eye, hz + 3.2), (hx + 0.5, 2.7, hz - 3.5))    # a step inside the door
 
     x0, z0, x1, z1 = S.SOUTH_LOOKOUT["box"]             # 40,48,50,56
     mx = _middle(S.SOUTH_LOOKOUT["box"])[0] + 0.5
