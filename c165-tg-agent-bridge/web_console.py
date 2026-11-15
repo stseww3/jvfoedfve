@@ -1126,16 +1126,16 @@ def register_web_console(app: FastAPI, bridge: Any) -> None:
             body = await request.json()
         except Exception:
             return JSONResponse({"ok": False, "error": "请求格式错误"}, status_code=400)
-        gname = bridge.clean_name((body or {}).get("name"), limit=20) or "协作群"
+        gname = re.sub(r"\s+", " ", str((body or {}).get("name") or "")).strip()[:20] or "协作群"
         topic = str((body or {}).get("topic") or "").strip()[:500]
         welcome = str((body or {}).get("welcome") or "").strip()[:1000]
         conv_members = [bridge.parse_conv(x) for x in _parse_id_list((body or {}).get("members")) if bridge.parse_conv(x)]
         web_users_list = [u for u in _parse_id_list((body or {}).get("web_users")) if u and u != SUPERADMIN_USER]
 
-        gnum = bridge.next_group_num()
+        gnum = int((store.one("SELECT IFNULL(MAX(num),0) AS n FROM agent_groups") or {"n": 0})["n"] or 0) + 1
         gid = f"g{gnum}"
         store.run(
-            "INSERT INTO agent_groups(id,num,name,topic,creator,owner,status,created) VALUES(?,?,?,?,?,'0','open',?)",
+            "INSERT INTO agent_groups(id,num,name,topic,creator,owner,status,streak,streak_ts,created) VALUES(?,?,?,?,?,0,'open',0,0.0,?)",
             (gid, gnum, gname, topic, "zwt", _now()),
         )
         valid_convs = []
