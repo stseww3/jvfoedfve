@@ -18,12 +18,18 @@ the canvas by then and places, in this order:
             window lends each of its sources to the recesses of the two windows beside it, where
             those are lit themselves, three levels lower: the entrance's three windows stand in
             one light (_lightkit.LENDS).
-  entrance  as long as the star hall has not moved in (main/facade.furnished()): one source of
-            level 14 in the main doorway, when it stands open; and, where a wall stands close
-            behind the doorway, a source of 12 against that wall, so that the doorway reads as a
-            warm bright face and not as a hole (10 behind the arches beside the doorway, where
-            the entrance is an arcade). They stand in for the hall's lamps and go when it moves
-            in, the one in the doorway too (the director, #58129).
+  entrance  as long as the star hall has not moved in (main/facade.furnished()), the sources that
+            stand in for the hall's lamps; no lamp is shown for any of them. Where a wall stands
+            close behind the doorway (a vestibule, the facade's stand-in wall): one source of
+            level 14 in the main doorway, when it stands open, and one of 12 against that wall,
+            so that the doorway reads as a warm bright face and not as a hole (10 behind the
+            arches beside the doorway, where the entrance is an arcade). Where the hall stands
+            open behind the arches (OPEN_HALL, with main/shell in the tree; the director's
+            ruling D): one source of 14 before the telescope pier's east face, in the row of the
+            mother clock's dial, and one of 11 over the foot of the flight behind either side
+            arch; none in the doorway, whose frame stays darker than the pier it frames. All of
+            them go when the star hall moves in, the one in the doorway too (the director,
+            #58129).
   wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
             a bracket lamp): at the foot of each a small projector two cells before the plinth
             (props' model, lamps "uplight", with the source of level 8 it brings), and where its
@@ -72,6 +78,10 @@ HALL_DEPTH = 8                          # a wall this close behind the glass pla
 OPEN_HALL = True
 HALL_REACH = 14                         # the face the doorway looks at is looked for this far behind the glass plane
 PIER_LEVEL, PIER_Y = 14, 3              # before that face (the pier's east face), in the row of the mother clock's dial
+# The doorway of the open hall gets no source (0): what one sees through the middle arch is the lit
+# pier, and the frame of the doorway has to stay darker than what it frames. With 14 in the doorway
+# its reveals stood at 0.42 against a pier's face that does not get past 0.36.
+OPEN_DOOR_LEVEL = 0
 FLIGHT_REACH = 18                       # the foot of a flight behind an arch beside the doorway, this far at most
 FLIGHT_LEVEL, FLIGHT_Y = 11, 4          # over that foot, under the head of the hall's west arcade
 WASH_PILASTERS = (5, 6, 11, 12)         # the skeleton's numbers: the two of either wing next to the entrance's corner
@@ -105,8 +115,10 @@ def report(canvas):
                  undressed: lit windows of main's table left without a source while DRESS is off
       table      {look: [dark, dim, lit, bright]}   what each look lights of main's table
       dressed    bool                       were the building's own lights asked for (DRESS, dress())
-      doors      [cell]                     the sources in open main doorways (one to an origin)
-      hall       [cell]                     the sources against the back of the vestibule behind them
+      doors      [cell]                     the sources in open main doorways (one to an origin; none
+                                            where the hall stands open behind the doorway)
+      hall       [cell]                     the sources behind them: against the back of a vestibule, or
+                                            in the open hall (before the pier, over the flights' feet)
       wash       [cell]                     the cells of the projectors of the wall wash
       fifteen    [cell]                     sources of level 15 on the canvas (whoever placed them)
       foreign    n                          sources on the canvas that this module did not place
@@ -118,7 +130,7 @@ def report(canvas):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
             windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], fifteen=[], foreign=0, isolated=[],
-            notes=[], problems=[], _seen=set(), _records=[], _before=set())
+            notes=[], problems=[], _seen=set(), _records=[], _before=set(), _entered=set())
     return canvas.light_report
 
 
@@ -381,49 +393,55 @@ def _entrance(canvas, r, origin):
     behind it: where a wall closes the view through the doorway within HALL_DEPTH cells of the
     glass plane, a source stands against it; the same, two steps lower, behind the arches beside
     the doorway when the entrance is an arcade.
+    Where no wall closes the view and the hall stands open behind the arches (OPEN_HALL, with
+    main/shell in the tree), the light is in the hall and not in the doorway: a source before the
+    face the doorway looks at, the telescope pier's east face, and one over the foot of the flight
+    behind either arch beside the doorway. The doorway itself gets OPEN_DOOR_LEVEL, nothing: its
+    frame stays darker than the pier it frames (the director's ruling D: from the court the
+    brightest thing in the middle arch is the pier's east face, and the arches beside it are darker).
     Once the star hall has moved in, nothing of this is placed: the hall's own lamps light what
     the arches show, and the source in the doorway, which made the door's frame the brightest thing
     seen from inside the hall, goes with the hall's moving in (the director, #58129)."""
     ox, oy, oz = origin
-    if _furnished():
+    if _furnished() or tuple(origin) in r["_entered"]:
         return
     for bay in ENTRANCE_BAYS:
         wall = S.east_wall_x(bay) + ox
         z = S.bay_center_z(bay) + oz
         glass = wall + S.DEPTH_GLASS
-        if bay == DOOR_BAY:
+        door = bay == DOOR_BAY
+        if door:
             cell = (glass, DOOR_Y + oy, z)
-            if cell in r["doors"]:
-                return
             through = all(not canvas.has(x, y + oy, z) or (x, y + oy, z) in r["placed"]
                           for x in range(glass, wall + S.DEPTH_PILASTER + 1) for y in range(0, 3))
             jambs = _stops(canvas, wall, 1 + oy, z - 2) and _stops(canvas, wall, 1 + oy, z + 2)
             head = any(_stops(canvas, wall, y + oy, z) for y in range(3, S.FRIEZE + 1))
             ground = canvas.has(wall, S.PAVING_Y + oy, z)
-            if not (through and jambs and head and ground) or _put(canvas, r, cell, DOOR_LEVEL, DOOR_WHY) == "taken":
+            if not (through and jambs and head and ground):
                 return
-            r["doors"].append(cell)
         elif _stops(canvas, wall, DOOR_Y + oy, z):
             continue                                    # a bay with a wall in it: no arch
         back = next((x for x in range(glass - 1, glass - 1 - HALL_DEPTH, -1) if _stops(canvas, x, HALL_Y + oy, z)), None)
+        spot, level, in_door = None, 0, DOOR_LEVEL
         if back is not None:                            # a vestibule: against its back wall
-            if back + 1 >= glass:
-                continue
-            spot, level = (back + 1, HALL_Y + oy, z), HALL_LEVEL if bay == DOOR_BAY else SIDE_LEVEL
+            if back + 1 < glass:
+                spot, level = (back + 1, HALL_Y + oy, z), HALL_LEVEL if door else SIDE_LEVEL
         elif not OPEN_HALL:
-            continue
-        elif bay == DOOR_BAY:                           # the open hall: before the face the doorway looks at
+            pass
+        elif door:                                      # the open hall: before the face the doorway looks at
             deep = range(glass - 1 - HALL_DEPTH, glass - 1 - HALL_REACH, -1)
             face = next((x for x in deep if _stops(canvas, x, PIER_Y + oy, z)), None)
-            if face is None:
-                continue
-            spot, level = (face + 1, PIER_Y + oy, z), PIER_LEVEL
+            if face is not None:
+                spot, level, in_door = (face + 1, PIER_Y + oy, z), PIER_LEVEL, OPEN_DOOR_LEVEL
         else:                                           # ... and over the foot of what rises behind an arch
             foot = next((x for x in range(glass - 1, glass - 1 - FLIGHT_REACH, -1) if canvas.has(x, S.GROUND + oy, z)), None)
-            if foot is None:
-                continue
-            spot, level = (foot, FLIGHT_Y + oy, z), FLIGHT_LEVEL
-        if _put(canvas, r, spot, level, HALL_WHY) != "taken":
+            if foot is not None:
+                spot, level = (foot, FLIGHT_Y + oy, z), FLIGHT_LEVEL
+        if door:
+            r["_entered"].add(tuple(origin))
+            if in_door and _put(canvas, r, cell, in_door, DOOR_WHY) != "taken":
+                r["doors"].append(cell)
+        if spot is not None and _put(canvas, r, spot, level, HALL_WHY) != "taken":
             r["hall"].append(spot)
 
 
