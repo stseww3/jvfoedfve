@@ -76,10 +76,12 @@ VIEWS = [
         pos=(TOWER[0] + 15.0, S.GROUND + EYE, TOWER[1] + 15.0),
         look_at=(TOWER[0], S.CLOCK_SHAFT_TOP - 3.0, TOWER[1]))),
     # PROPOSED. On the lower platform, east of the stair's foot: the north front of the power house,
-    # the chimney over it, the pipe bridge going off to the terrace on the right.
+    # the chimney over it, the pipe bridge going off to the terrace on the right. Tilted so that the
+    # chimney's crown (rim y 23, site/powerhouse) has sky over it and the wall's foot is still in:
+    # looking a block below the eaves cut the crown off (c228, 11-15).
     ("v06_power", "the power house: chimney, pipe bridge, the glowing windows", "V6", dict(
         pos=(S.GRAND_STAIR["x1"] + 2.5, S.LOWER_GROUND + EYE, S.GRAND_STAIR["z1"] - 5.5),
-        look_at=(S.mid(HOUSE[0], HOUSE[2]), S.POWER_HOUSE["base_y"] + S.POWER_HOUSE["wall_h"] - 1.0,
+        look_at=(S.mid(HOUSE[0], HOUSE[2]), S.POWER_HOUSE["base_y"] + S.POWER_HOUSE["wall_h"] + 2.0,
                  S.mid(HOUSE[1], HOUSE[3])))),
     # A0, 11-15 (#365): from outside the door, on the axis, in through the open middle arch at the
     # orrery. (The station's first proposal stood on the south gallery inside the hall.)
