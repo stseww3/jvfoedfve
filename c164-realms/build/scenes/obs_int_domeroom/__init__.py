@@ -6,13 +6,13 @@ stand-ins for what other packages bring -- the floor, the opening round the pier
 (machines/refractor, c237). The stand-ins use the skeleton's numbers and are dropped one by one as
 those packages are merged.
 
-    python -m scenes.obs_int_domeroom      the room as text (two sections, four plans) and its checks
+    python -m scenes.obs_int_domeroom      the room as text (three sections, seven plans) and its checks
 """
 import math
 
 from artkit.canvas import Canvas
 
-from scenes.obs import materials
+from scenes.obs import materials, sky
 from scenes.obs.common import blocks as B
 from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import domeroom
@@ -26,9 +26,11 @@ BIOME_MARGIN_Y = 32
 
 FLOOR_Y = S.ROOF_FLOOR
 UNDER_Y = S.DRUM_BASE - 4       # the box's bottom: the pier's opening looks down on it
-# where the ring stair comes out, until main/shell says (director, g2 #31564: on the north side)
+# where the ring stair comes out, until main/shell is in the tree (c231, g2 #32860)
 EXIT = domeroom.stair_exit() or (S.DOME_CENTRE[0], S.PIER_ENVELOPE[1] - 1)
-TUBE_FRONT = 10.0               # stand-in tube: this far from the axes' crossing to the objective
+# the stand-in tube (c237, g2 #33181): its elevation, and how far the eyepiece end and the objective
+# are from where the axes cross
+TUBE_ELEVATION, TUBE_BACK, TUBE_FRONT = 41.05, 5.5, 9.5
 
 
 def _shell_standin(c):
@@ -66,10 +68,9 @@ def _doors_standin(c):
 def _scope_standin(c):
     """A line of iron plate where the tube is, a column of it for the mount on the pier."""
     ex, ey, ez = domeroom.eyepiece()
-    ax, az = S.DOME_AXIS
-    elev = math.radians(41.0)
-    cross = (ax, ey + (ex - ax) * math.tan(elev), az)
-    front = (ax - TUBE_FRONT * math.cos(elev), cross[1] + TUBE_FRONT * math.sin(elev), az)
+    elev = math.radians(TUBE_ELEVATION)
+    cross = (ex - TUBE_BACK * math.cos(elev), ey + TUBE_BACK * math.sin(elev), ez)
+    front = (cross[0] - TUBE_FRONT * math.cos(elev), cross[1] + TUBE_FRONT * math.sin(elev), ez)
 
     def cell(p):
         return (int(math.floor(p[0])), int(math.floor(p[1])), int(math.floor(p[2])))
@@ -90,13 +91,31 @@ def shell():
     return c
 
 
-def build():
+def dressed():
+    """The box with the room in it, before the light line has been over it, and the number of
+    display entities the room placed: what the checks of __main__ compare with shell()."""
     c = shell()
-    domeroom.dress(c)
+    return c, domeroom.dress(c)
+
+
+def build():
+    c, n = dressed()
+    sky.build(c, (0, 0, 0))         # the light line's sources go in last, when every piece is in place
+    c.entity_counts = {"interiors": n}
     return c
 
 
+def build_models():
+    """The room's own models, and those of the shared pieces it places when they are in the tree."""
+    out = dict(domeroom.models())
+    for name in ("furniture", "paper", "instruments"):
+        module = domeroom._other("props", name)
+        if module is not None:
+            out.update(module.models())
+    return out
+
+
 def write_pack(pack_dir):
-    """The room paints nothing itself; it stands on the repainted blocks as the materials line has
-    them today."""
-    return materials.pack(pack_dir)
+    """The room paints nothing itself: the comet in the slit is the sky line's picture, the blocks
+    are repainted as the materials line has them today."""
+    return list(sky.pack(pack_dir) or []) + list(materials.pack(pack_dir) or [])

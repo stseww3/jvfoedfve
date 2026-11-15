@@ -8,9 +8,9 @@ from scenes.obs.common import skeleton as S
 from scenes.obs.interiors import domeroom as D
 from scenes.obs.main import _order as O
 
-from . import EXIT, build, shell
+from . import EXIT, dressed, shell
 
-bare, c = shell(), build()
+bare, (c, placed) = shell(), dressed()
 cx, cz = S.DOME_CENTRE
 print("section along the axis (z = %d), looking north" % cz)
 print(O.section(c, "z", cz, (cx - 15, cx + 15), (S.DRUM_BASE, S.DOME_APEX + 2)))
@@ -49,16 +49,19 @@ def cells(cols, rows):
 
 
 print()
-print("the room set %d cells (%d of them light)" % (len(added), len(added) - len(solid)))
+print("the room set %d cells (%d of them light) and placed %d display entities"
+      % (len(added), len(added) - len(solid), placed))
 check("the room takes nothing away", gone)
 check("every cell lies in a column of the room or of the inner leaf, from the floor up",
-      [k for k in added if (k[0], k[2]) not in room | leaf or k[1] < D.FLOOR_Y])
+      [k for k in solid if (k[0], k[2]) not in room | leaf or k[1] < D.FLOOR_Y])
 check("over the inner leaf only the base ring and what hangs under the skin (rows %d and up)" % D.BASE_RING_Y,
-      [k for k in added if (k[0], k[2]) in leaf and k[1] < D.BASE_RING_Y])
+      [k for k in solid if (k[0], k[2]) in leaf and k[1] < D.BASE_RING_Y])
 check("row %d is left to the track and the rollers (machines/domegear)" % D.LEDGE_Y,
-      [k for k in added if k[1] == D.LEDGE_Y])
+      [k for k in solid if k[1] == D.LEDGE_Y])
+check("row %d holds the base ring over the inner leaf and nothing in the room's columns" % D.BASE_RING_Y,
+      [k for k in solid if k[1] == D.BASE_RING_Y and (k[0], k[2]) not in leaf])
 check("the opening round the pier and its curb: only the observing floor's boards, in the floor's row",
-      [k for k in added if (k[0], k[2]) in D.envelope() and k[1] <= D.WALL_TOP
+      [k for k in solid if (k[0], k[2]) in D.envelope() and k[1] <= D.WALL_TOP
        and not (k[1] == D.FLOOR_Y and (k[0], k[2]) in floor)])
 check("the two doorways and the cells round them are free to walk through",
       solid & cells({n for door in D.doorways() for n in O.grow({door})}, head))
@@ -67,7 +70,7 @@ check("the stair's exit, the three cells above it and the cells round it are fre
 check("the observing floor is free to stand on", solid & cells(floor, range(D.FEET, D.FEET + 3)))
 check("the gear's shaft keeps its column of the wall, and its hand wheel the floor in front",
       solid & (cells(D.GEAR_SHAFT, range(D.FEET, D.LEDGE_Y + 1)) | cells(D.GEAR_STAND, head)))
-check("nothing stands in the open slit", [k for k in added if (k[0], k[2]) in read.gap and k[1] >= D.SKIN_FROM])
+check("nothing stands in the open slit", [k for k in solid if (k[0], k[2]) in read.gap and k[1] >= D.SKIN_FROM])
 check("the niches keep their windows: nothing between the furniture and the ring beam",
       [k for k in solid for side in D.niches().values()
        if (k[0], k[2]) in side and D.FEET + 2 <= k[1] < D.WALL_TOP])
