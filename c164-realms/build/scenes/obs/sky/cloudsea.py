@@ -608,11 +608,11 @@ def build(canvas, origin=(0, 0, 0), version=DEFAULT, *, seed=SEED):
     solid = (ys >= floor_y[:, None, :]) & (ys <= level[:, None, :]) & ~occ & ~kept
     solid &= ~np.flip(np.logical_or.accumulate(np.flip(whole, 1), axis=1), 1)
     # nothing has its top in one of the game's two faces: a block of cloud that would is left out,
-    # a block of somebody else that has is covered
+    # a block of somebody else that has is covered, under an overhang as well
     for face in (FACE, LOW_FACE):
         f = face - y0
         solid[:, f - 1, :] &= solid[:, f, :] | occ[:, f, :]
-        awash = occ[:, f - 1, :] & ~occ[:, f:, :].any(axis=1) & ~dry
+        awash = occ[:, f - 1, :] & ~occ[:, f, :] & ~dry
         solid[:, f, :] |= awash & ~kept[:, f, :]
 
     # the sunk floor: where the deck was opened beside a wall or a fence and nothing stands in the
