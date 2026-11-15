@@ -30,7 +30,7 @@ STONE_X = (-11, 9)              # the two parts of the wall, first and last bloc
 WOOD_X = (10, 21)
 EYE = 2.5                       # the height the wall pieces are centred on
 # the middle of each wall piece along the wall; every piece hangs once on stone and once on wood
-HANG = {"star_chart": (1.0, 16.0), "blueprint": (4.25, 19.25), "moon_map": (7.25, 12.75)}
+HANG = {"star_chart": (2.0, 16.0), "blueprint": (4.75, 19.25), "moon_map": (7.25, 12.75)}
 BOARD_X = (-1.0, None)          # the blackboard hangs on stone only
 GREAT = {"sky_map": -8.5, "sky_map_b": -4.5}    # the pair of great charts, on stone
 DESK_X, DESK_Z = (2, 6), (2, 3)
