@@ -28,6 +28,7 @@
        - `SCREEN` (1.0, −4.0, −45.5)：百叶箱脚底正中；`PEDESTAL_TOP` (3.5, −2.5, −46.5)：石座顶，放日照计；`SCOPE_STAND` (45.5, −5.0, 54.5)：观景台望远镜脚底正中。
     3. 三件仪器由本包摆（props/instruments 的约定是谁的平台谁摆，那张卡的「被依赖」里也写着 site 气象站）：观景台放 `tripod_scope`，物镜朝南对云海；气象站放 `louvre_box`，门朝北；空石座上放 `sunshine_recorder`，玻璃球朝南（这一件是 c199 #34880 加进那一族的，总监不要就撤）。props/instruments 不在树里时，望远镜位和石座空着，百叶箱用原来那只方块搭的顶替，本包实体数是 0；在树里时本包 3 个实体，模型是 props 的。开关 `outbuildings.INSTRUMENTS`，默认开。和 c199 对过（#452、#34880）：由本包摆，开关留着；百叶箱放在两格接缝上、门朝北不用改；望远镜三只脚踩在铁环上。
     4. 测试场景的机位改由 `shots()` 生成（在 build/ 里跑 `python -m scenes.obs_site_outbuildings`）：V1、V11 读骨架，其余挂在骨架的几个盒子上，数和原来一样。shots.json 等恢复后重新生成。
+    5. 测试场景把两处灯位的灯挂上（照 site/stair 场景的做法）：props/lamps 有全场灯位表时用 `lamps.dress` 让它挂，没有时场景自己在 `LAMP_POINTS` 上各挂一盏铁笼灯。图里看到的是小屋和水塔夜里的样子；总场景里这两盏灯还是归 props/lamps 的开关管。
   - 和山体对过代码（c221 三稿，cursor/c164-a4-site-2af2 @ 15382edc，没试合）：三处踏步每一级的高度和他的 `neck_steps()` 一格不差；三块缓台的范围、脚面和他的 `SHELVES` 一致。观景台南面还连着一道山脊，船头底下不是空的，所以做不成真的悬挑，保持带栏杆的船头形石台。
   - 要别人动的一处：c221 的测试场景 obs_site_terrain 不带 props 这条线。本包和 props/instruments 都进总装以后，那个场景会有三个实体找不到模型，`check.py` 的 entities 判 FAIL；把 props 加进它的 LINES 就好（#452 已告诉 c221）。
   - 图：库里还没有这个包的自查图。云端不出图，等管理员电脑上线。图待补。

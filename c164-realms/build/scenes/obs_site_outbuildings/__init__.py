@@ -5,12 +5,21 @@ main building behind them (the white model, until the main line's shell is merge
 the ground, and the sky line's light sources last. The lines are built whole, in the master scene's
 order, so the picture keeps up with them as their packages are merged.
 
+The one lamp each small building may carry (outbuildings.LAMP_POINTS: the hut's door, the water
+tower's foot). The package names the points; the props line hangs the lamps with the site's other
+lamps. Where props/lamps has that table the scene asks for it (lamps.dress); what that leaves out
+the scene hangs itself, so the pictures show the hut and the tower as they will stand at night.
+
 shots.json is written from shots():  python -m scenes.obs_site_outbuildings  (in build/).
 """
+import math
+
 from artkit.canvas import Canvas
 
 from scenes.obs import main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
+from scenes.obs.props import lamps
+from scenes.obs.site import outbuildings
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 80
@@ -19,9 +28,22 @@ LINES = (site, main, props, sky)
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
 
 
+def _door_lamps(c):
+    """Hang the lamps of the small buildings that nobody has hung yet (see the module's text). Both
+    points lie on a face that looks south: the hut's south gable, the south face of a tower leg."""
+    for p in outbuildings.LAMP_POINTS.values():
+        if any(math.dist(p, e[:3]) < 0.5 for e in c.entities):
+            continue
+        lamps.place(c, "cage", p, facing="south")
+
+
 def build():
     c = Canvas()
+    if hasattr(lamps, "dress"):
+        lamps.dress(c)
     for line in LINES:
+        if line is sky:
+            _door_lamps(c)          # before the sky line turns the offered lights into light
         line.build(c, (0, 0, 0))
     return c
 
