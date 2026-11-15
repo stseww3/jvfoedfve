@@ -1,0 +1,3 @@
+branch=cursor/c164-shell-f3-3067
+head=d28ad00a5607d4238e1de41cebd292558ac882c3
+args=--wip --always --to cursor/c164-shell-f3-wip-3067 --tail 8 rm\ -rf\ renders/_wip\ \&\&\ mkdir\ -p\ renders/_wip\ \&\&\ python\ tools/selfshots.py\ obs_main_shell\ --only\ dome_room\,stair_exit\,cut_dome\,section_long\ --out\ renders/_wip 
