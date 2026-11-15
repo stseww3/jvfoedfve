@@ -9,8 +9,10 @@ the round frames of the windows are props', the two door leaves the roof's.
 Two versions (VERSION), compared in the test scenes obs_main_dome, obs_main_dome_b and
 obs_main_dome_slit:
 
-    a   twenty flush seams, two leaves that part sideways
-    b   eight main ribs half a block proud, a slatted curtain drawn up from the slit's foot
+    a   twenty flush seams, the foot of each stained where the water runs off it; two leaves
+        that part sideways
+    b   eight main ribs of the darker copper, half a block proud on the dome's steep foot and
+        flush above it; a slatted curtain drawn up from the slit's foot
 
 The slit looks west and stands open (SLIT; ART-PLAN 5.2: the telescope looks out of it); "half" and
 "closed" are there for whoever animates or photographs it.
@@ -87,11 +89,17 @@ def check():
             high = sorted(col for col, (rows, face) in cols.items() if face is not None and face > D.CROWN + 0.5)
             if high != [(D.CX, D.CZ)] or name(D.CX, TOP_ROW, D.CZ) != D.CAST:
                 out.append(f"{tag} apex: higher than the crown's plates are {high}, not the cast block alone")
-            # 3. the outline: nothing stands more than half a block over the plates (the boss a whole one)
+            # 3. the outline: nothing stands more than half a block over the plates (the boss a whole
+            #    one); above the foot's steep courses nothing stands over them at all but the crown
+            #    and, west of it, what shuts the slit -- that is the top line of V1, V2 and V11
+            flush = D.R - D.PROUD_COURSES[version]
             for col, (rows, face) in sorted(cols.items()):
                 over = 1.0 if col == (D.CX, D.CZ) else 0.5
                 if face is not None and face > plates[col] + over:
                     out.append(f"{tag} outline: column {col} stands {face - plates[col]} over the plates")
+                elif (face is not None and face > plates[col] and D._ring(*col) <= flush
+                      and col not in D.CAP and col[0] > D.SLIT_HEAD):
+                    out.append(f"{tag} outline: column {col} stands over the plates above the foot's courses")
             # 4. the slit: open above its sill, shut all the way, or the half of it that the state says
             if state == "open" and shut:
                 out.append(f"{tag} slit: something stands in the open slit at {sorted(shut)[:6]}")

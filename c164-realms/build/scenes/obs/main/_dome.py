@@ -23,14 +23,16 @@ Rows, from the main cornice (y 15) up:
              the door of the dome room instead (the skeleton's DOME_ROOM_DOORS)
     22       a corbel course; it breaks forward over the pilasters
     23       the gallery: the top of the wall is the iron track, in front of it the copper gutter,
-             sunk half a block, and outside that an iron cove whose top is the walkway; a post
-             stands on it every nine degrees (y 24), no mesh between them
+             sunk half a block, and outside that an iron cove whose top is the walkway. Nothing
+             stands on it: the roofs of this house have no railings, and posts without a rail
+             between them read as a ring of nails (POSTS)
     24       the ring beam of the dome, riveted iron, an axle box under every seam
-    25..27   the dome's foot: three rows of plates upright over the ring beam all the way round,
-             so its edge is a level line at y 28 (sixteen columns, where the raster circle steps,
-             stand half a block or one higher); the first row is the sill of the slit
-    28..37   the plates: a half-ellipse rounded to the nearer half block, whole blocks and slabs;
-             the slit, 5 wide, looks west and is open from the sill to the crown
+    25..37   the dome's plates, whole blocks and slabs, in courses: one to a ring of the raster
+             circle and level all the way round, as high as a half-ellipse is there, to the nearer
+             half block. The first stands three rows upright over the ring beam (its first row is
+             the sill of the slit) and ends in a level line at y 28; the next ones end at 30.5,
+             32, 33.5, 34.5, 35.5 and then every half block up to 38. The slit, 5 wide, looks
+             west and is open from the sill to the crown
     38       the crown: eight plates half a block over the top round one cast block on the axis,
              the only highest point of the dome (the slit stops west of it)
 
@@ -40,14 +42,18 @@ and how the slit is shut:
 
     a   twenty fine seams, one between every two gores, flush with the plates and of the same
         copper: a strip of the uncut sheet between the plates' joints, to be seen from close by
-        and one colour with the dome from afar (twenty lines of the darker copper would read as
-        stripes: the pre-review of the second cut). They die into a flush collar. The slit is
-        shut by two leaves that part sideways, an iron stile and two columns of plate each, lying
-        half a block over the plates; open they lie on the dome beside the slit.
-    b   eight main ribs, the pair beside each of the four axes, of the darker copper and half a
-        block over the plates; the twelve seams between them are not drawn. They die into a
-        collar of the same height. The slit is shut by a curtain of copper slats drawn up from
-        its foot between two flush iron rails; its last slat is the iron bar the chains pull.
+        (twenty lines of the darker copper would read as stripes: the pre-review of the second
+        cut). What shows of them from afar is where the water runs off: the foot of every seam
+        is stained with the darker copper, one course high and two under the main seams (RUNS).
+        They die into a flush collar. The slit is shut by two leaves that part sideways, an iron
+        stile and two columns of plate each, lying half a block over the plates; open they lie
+        on the dome beside the slit.
+    b   eight main ribs, the pair beside each of the four axes, of the darker copper; the twelve
+        seams between them are not drawn. On the three steep courses of the foot they stand half
+        a block over the plates, from there up they lie flush (PROUD_COURSES: proud, they would
+        notch the top line of V1 and V2) and die into a flush collar. The slit is shut by a
+        curtain of copper slats drawn up from its foot between two flush iron rails; its last
+        slat is the iron bar the chains pull.
 """
 import functools
 import math
@@ -94,17 +100,22 @@ STATES = ("open", "half", "closed")
 MAIN_RIBS = tuple(k for k in range(GORES) if k % 5 in (1, 3))       # version b: 27, 63, 117, 153 ... degrees
 COLLAR = {"a": 6, "b": 5}               # the ring the seams run into: its radius in blocks
 RELIEF = {"a": 0.0, "b": 0.5}           # how far the seams stand over the plates
-COLLAR_RELIEF = {"a": 0.0, "b": 0.5}    # how far their collar does
+# ... and on how many courses, from the foot: on the three that stand steep (to y 32). Higher up a rib
+# half a block proud shows over the dome's top line from where one stands below (3 to 4 pixels where
+# the ribs at +-27 degrees cross the shoulder in V2, 2 to 3 in V1 and V11), and the outline is the
+# dome's first task; there the ribs lie flush and are drawn by their copper alone.
+PROUD_COURSES = {"a": 0, "b": 3}
+COLLAR_RELIEF = {"a": 0.0, "b": 0.0}    # how far their collar does: it is the top line of V1
 PROUD = 0.5                             # how far a leaf lies over the plates
 LEAF_W = SLIT_HALF + 1                  # 3: a leaf is its stile and two columns of plate
 PARTED = {"closed": 0, "half": 2, "open": SLIT_HALF + 1}            # version a: how far each leaf has slid
 DRAWN = {"closed": 91.0, "half": 35.0, "open": 0.0}                 # version b: the curtain stands up to here (degrees)
 SLAT_DEG = 5.0                          # a slat of the curtain, in degrees along the meridian
-# Version a: the courses, from the foot, that the run of the darker copper under seam k stains, by
-# k % 5 -- beside an axis, a main seam (where version b has a rib), a diagonal, a main seam, beside
-# an axis.
+# Version a: how many courses, from the foot, the darker copper stains under seam k, by k % 5 --
+# beside an axis, a main seam (where version b has a rib), a diagonal, a main seam, beside an axis.
+# One course is the three rows over the ring beam, two reach y 30.5.
 RUNS = {"a": (1, 2, 1, 2, 1), "b": None}
-POSTS = 0                               # the gallery's posts (2 * GORES: over every seam and between)
+POSTS = 0                               # the gallery's posts: none (2 * GORES would be one over every seam and between)
 
 
 def _polar(x, z):
@@ -199,8 +210,8 @@ def niches(p):
 
 
 def posts(p):
-    """The columns of the gallery's walkway that carry a post: the one closest to each seam and to
-    the middle of each gore, where the walkway touches the gutter by a whole side."""
+    """The columns of the gallery's walkway that carry a post, POSTS of them at equal angles, each
+    where the walkway touches the gutter by a whole side."""
     edge = [c for c in p.far if any(O.step(c, d) in p.front for d in O.SIDES)]
     return sorted({_nearest(edge, k * 360.0 / POSTS)[0] for k in range(POSTS)})
 
@@ -308,10 +319,14 @@ def _stained(x, z, version):
 
 
 def _relief(x, z, version):
-    """How far the column stands over the plates: a rib's or the collar's relief, else nothing."""
+    """How far the column stands over the plates: a rib's relief on the courses where it is proud,
+    the collar's, else nothing."""
     if not _lined(x, z, version):
         return 0.0
-    return (COLLAR_RELIEF if _ring(x, z) == COLLAR[version] else RELIEF)[version]
+    ring = _ring(x, z)
+    if ring == COLLAR[version]:
+        return COLLAR_RELIEF[version]
+    return RELIEF[version] if ring > R - PROUD_COURSES[version] else 0.0
 
 
 def surface(version="a"):
