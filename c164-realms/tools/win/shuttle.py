@@ -29,6 +29,9 @@ For the scenes named the trip
                              the twelve board views, worked out from the project's skeleton by
                              tools/boardshots.py; it is the default for the master scene, obs
     --only <scene>=<a,b>     only these shots of a scene
+    --gallery <scene>        also lay out the scene's models in a row of bays (build/gallery.py,
+                             beside the scene's plot) and shoot each bay by day: gal_<bay>. A
+                             scene that has models but no shot list is shown by its gallery alone
     --plot <scene>=<n>       the plot of a scene the table does not hold yet
     --no-place               the scenes stand already; only the pack and the pictures
     --no-shoot               everything but the game: place and write the pack
@@ -59,6 +62,7 @@ RCON_PORT = 25598
 NAMESPACE = "c164art"
 MASTER = "obs"              # the master scene: its default shot list is the board
 BOARD = "board"
+GALLERY_Z = 400             # a scene's gallery stands this far south of its plot's origin
 JPEG_QUALITY = 90
 BUILD = None                # the build/ folder of the code that is shot; set in main()
 
@@ -262,6 +266,22 @@ def shot_list(scene, lists, only, work):
     return path, shots
 
 
+def gallery(scene, at, work):
+    """Lay out a scene's gallery beside its plot. Returns the shot list's file and its shots: one a
+    bay, by day, in the world's coordinates."""
+    path = os.path.join(work, f"gallery-{scene}.json")
+    run(os.path.join(BUILD, "gallery.py"), scene, "--pw-file", os.path.join(SERVER, ".rcon_pw"),
+        "--at", at[0], at[1], at[2] + GALLERY_Z, "--shots", path)
+    with open(path, encoding="utf-8") as fh:
+        bays = json.load(fh)
+    for bay in bays:
+        bay["name"] = "gal_" + bay["name"]
+        bay.setdefault("time", "noon")
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(bays, fh, indent=1)
+    return path, bays
+
+
 def to_send(scene, tag, commit, at, shots, target, send, some):
     """Turn a scene's pictures into the files that go back to the cloud machine: JPEGs under the
     names the pipeline gives real-machine pictures, and the note that goes with them. When only
@@ -305,6 +325,11 @@ def to_send(scene, tag, commit, at, shots, target, send, some):
     return len(rows)
 
 
+def shown(path):
+    """A file's path as the log shows it: from build/ when it is the project's, else its name."""
+    return os.path.relpath(path, BUILD) if path.startswith(BUILD + os.sep) else os.path.basename(path)
+
+
 def pairs(items, what, number=False):
     out = {}
     for item in items:
@@ -325,6 +350,7 @@ def main():
     ap.add_argument("--shots", action="append", default=[], metavar="SCENE=FILE")
     ap.add_argument("--only", action="append", default=[], metavar="SCENE=A,B")
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
+    ap.add_argument("--gallery", action="append", default=[], metavar="SCENE")
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--no-shoot", action="store_true")
     ap.add_argument("--keep-client", action="store_true")
@@ -344,9 +370,12 @@ def main():
 
     lists = pairs(args.shots, "shots")
     only = {scene: names.split(",") for scene, names in pairs(args.only, "only").items()}
-    for scene in list(lists) + list(only):
+    for scene in list(lists) + list(only) + args.gallery:
         if scene not in args.scenes:
             raise SystemExit(f"{scene} is not one of this trip's scenes")
+    # a scene that is only a set of models (no shot list, a gallery asked for) is not placed
+    models_only = {scene for scene in args.gallery if scene not in lists and scene != MASTER
+                   and not os.path.exists(os.path.join(BUILD, "scenes", scene, "shots.json"))}
     commit = commit_of(os.path.dirname(project))
     out = os.path.join(os.path.abspath(args.out), args.tag)
     send = os.path.join(out, "send")
@@ -360,7 +389,7 @@ def main():
         where = plots(args.scenes, pairs(args.plot, "plot", number=True))
         plan = []
         for scene in args.scenes:
-            if args.no_shoot:
+            if args.no_shoot or scene in models_only:
                 plan.append((scene, where[scene], None, []))
             else:
                 plan.append((scene, where[scene], *shot_list(scene, lists, only, work)))
@@ -393,6 +422,8 @@ def main():
             # what earlier trips kept loaded is let go; place.py loads what it places
             rcon("forceload remove all")
             for scene, at, _, _ in plan:
+                if scene in models_only:
+                    continue
                 say(f"placing {scene} at {at[0]} {at[1]} {at[2]}")
                 _, text = run(os.path.join(BUILD, "place.py"), scene, "--world", world(),
                               "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--at", *at)
@@ -430,11 +461,21 @@ def main():
             target = os.path.join(out, scene)
             if scene not in only:
                 shutil.rmtree(target, ignore_errors=True)
-            say(f"shooting {scene}: {len(shots)} shots of {os.path.relpath(shots_file, BUILD)}")
-            code, _ = run(os.path.join(TOOLS, "shoot.py"), shots_file, "--pw-file", os.path.join(SERVER, ".rcon_pw"),
-                          "--out", target, "--origin", *at, "--settle", args.settle,
-                          "--first-settle", args.first_settle,
-                          *(["--only", ",".join(only[scene])] if scene in only else []), check=False)
+            code = 0
+            if shots_file:
+                say(f"shooting {scene}: {len(shots)} shots of {shown(shots_file)}")
+                code, _ = run(os.path.join(TOOLS, "shoot.py"), shots_file,
+                              "--pw-file", os.path.join(SERVER, ".rcon_pw"),
+                              "--out", target, "--origin", *at, "--settle", args.settle,
+                              "--first-settle", args.first_settle,
+                              *(["--only", ",".join(only[scene])] if scene in only else []), check=False)
+            if scene in args.gallery:
+                bays_file, bays = gallery(scene, at, work)
+                say(f"shooting {scene}'s gallery: {len(bays)} bays")
+                again, _ = run(os.path.join(TOOLS, "shoot.py"), bays_file,
+                               "--pw-file", os.path.join(SERVER, ".rcon_pw"), "--out", target,
+                               "--settle", args.settle, "--first-settle", args.first_settle, check=False)
+                code, shots = code or again, shots + bays
             got = len([s for s in shots if os.path.exists(os.path.join(target, s["name"] + ".png"))])
             taken[scene] = (got, len(shots))
             if code != 0 or got != len(shots):
