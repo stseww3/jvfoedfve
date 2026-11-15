@@ -269,6 +269,34 @@ class _Pen:
         self.c.clear(self.o[0] + x, self.o[1] + y, self.o[2] + z)
 
 
+TURNED = {"north": "west", "west": "south", "south": "east", "east": "north"}
+
+
+class _Turned:
+    """A pen for a roof: it sets what it is given a number of quarter turns round the middle of the
+    house (the box is square), north to west, and leaves out what would stand in the chimney's foot.
+    The roofs are written with their lights and gables where turn 0 has them."""
+
+    def __init__(self, pen, turns):
+        self.p, self.n = pen, turns % 4
+
+    def put(self, x, y, z, state):
+        cx, cz = (X0 + X1) // 2, (Z0 + Z1) // 2
+        dx, dz = x - cx, z - cz
+        for _ in range(self.n):
+            dx, dz = dz, -dx
+            for a, b in TURNED.items():
+                if f"facing={a}" in state:
+                    state = state.replace(f"facing={a}", f"facing={b}")
+                    break
+            for a, b in (("x", "z"), ("z", "x")):
+                if f"axis={a}" in state:
+                    state = state.replace(f"axis={a}", f"axis={b}")
+                    break
+        if not _in_tower(cx + dx, cz + dz):
+            self.p.put(cx + dx, y, cz + dz, state)
+
+
 # --- the walls ----------------------------------------------------------------------------------------
 def _pier(p, x0, z0, x1, z1):
     # The plinth of a pier is a whole block. The lower platform's railing counts on it: it ends
@@ -430,14 +458,11 @@ def _roof_a(p):
     for z0 in range(za, zb, BAY):
         for x in range(xa, xb + 1):
             gable = x in (xa, xb)
-            if not _in_tower(x, z0):
-                p.put(x, y, z0, BODY if gable else IRON)
-                for h in (1, 2):
-                    p.put(x, y + h, z0, BODY if gable else IRON if (x - xa) % BAY == 0 else ROOF_GLASS)
-                p.put(x, y + 3, z0, IRON_LOW)
+            p.put(x, y, z0, BODY if gable else IRON)
+            for h in (1, 2):
+                p.put(x, y + h, z0, BODY if gable else IRON if (x - xa) % BAY == 0 else ROOF_GLASS)
+            p.put(x, y + 3, z0, IRON_LOW)
             for i in (1, 2, 3):
-                if _in_tower(x, z0 + i):
-                    continue
                 top = y + 3 - i
                 p.put(x, top, z0 + i, f"{SLATE}[facing=north,half=bottom]")
                 if gable:
@@ -474,8 +499,6 @@ def _roof_b(p):
         rise = VAULT[min(z - za, zb - z)]
         k = int(rise)
         for x in range(xa, xb + 1):
-            if _in_tower(x, z):
-                continue
             lowest = base + k
             if k >= 1:
                 lowest = base + k - 1
@@ -500,6 +523,7 @@ def _roof_b(p):
 
 
 ROOFS = {"a": _roof_a, "b": _roof_b}
+TURN = {"a": 1, "b": 1}     # trial: the saw's lights look west and the vault's gable north, towards V6
 
 
 # --- the pipe bridge ----------------------------------------------------------------------------------
@@ -595,7 +619,7 @@ def build(canvas, origin=(0, 0, 0), version=None, run=None):
     p = _Pen(canvas, origin)
     canvas.carve(p.o[0] + X0, p.o[1] + FEET, p.o[2] + Z0, p.o[0] + X1, p.o[1] + EAVES + 8, p.o[2] + Z1)
     _walls(p)
-    ROOFS[version](p)
+    ROOFS[version](_Turned(p, TURN[version]))
     _tower(p)
     _bridge(p, RUN if run is None else run)
     _light(canvas, p.o, version)
