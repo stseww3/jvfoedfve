@@ -144,15 +144,26 @@ def _drum():
     m.tube("x", (0.0, ay), -half_chart - 0.9, -half_chart + 0.2, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), half_chart - 0.2, half_chart + 0.9, DRUM_R + 0.5, BRASS, sides=14)
     m.tube("x", (0.0, ay), -half_chart + 0.1, half_chart - 0.1, DRUM_R, CREAM_F, sides=14)
-    # the pen's trace: a one-pixel dark line round the paper with a few rises and falls, so the chart
-    # reads as a record being written (cr3-M4 -- without it the drum is a drum with paper on it)
+    # the pen's trace: the drum turns, so the trace runs AROUND the paper, not across its top. It is
+    # drawn as a helix: a ring of small marks at every step along the drum's axis, the whole line
+    # drifting a little so it reads as a record being written rather than a hoop (cr3-M4 again: the
+    # first go put the line on the top of the cylinder, where only a camera overhead could see it).
+    # A recorder's chart carries ONE line, not a pattern of pins: one turn of the drum, one line of
+    # the pen. So the trace is a single ring round the paper at the pen's own height, one pixel
+    # wide, and a second, shorter one below it, so the paper reads as written on.
     trace = P.mat("iron", base=1, kind="flat", bevel=0)
-    seg = (CHART_W / 2.0 - 0.6) / 6.0
-    for i in range(6):
-        x0 = -half_chart + 0.6 + i * seg
-        hi = 0.9 if i % 2 else 0.2            # the wave: up on one segment, flat on the next
-        m.box((x0, DRUM_R + hi - 0.35, -DRUM_R - 0.16),
-              (x0 + seg, DRUM_R + hi + 0.35, DRUM_R + 0.16), trace, skip="d")
+    for row, (frac, span) in enumerate(((0.52, 0.92), (0.30, 0.55))):
+        steps = 72
+        for i in range(steps):
+            a = 2.0 * math.pi * i / steps
+            x0 = -half_chart * span
+            x1 = half_chart * span
+            # the line sits at the pen's height, a hair proud of the paper
+            rr = DRUM_R + 0.10
+            cy, cz = math.sin(a + frac * math.pi) * rr, math.cos(a + frac * math.pi) * rr
+            seg = (x1 - x0) / steps
+            m.box((x0 + seg * i, cy - 0.22, cz - 0.22), (x0 + seg * (i + 1), cy + 0.22, cz + 0.22),
+                  trace, skip="d")
 
     # the pen carriage: the slide bar over the drum, its arm, the nib riding on the paper
     m.box((-hw * 0.88, DRUM_R + 1.4, -hd * 0.50), (hw * 0.88, DRUM_R + 2.3, -hd * 0.50 + 1.1),
