@@ -58,7 +58,9 @@ def build():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    """The repainted blocks the plates hang on, and the pictures of the map's sky: the row stands in
+    the map's hour (mood.py), and without them the game's own sun and moon are in its sky."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
