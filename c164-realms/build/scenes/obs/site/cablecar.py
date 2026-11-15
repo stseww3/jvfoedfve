@@ -171,8 +171,11 @@ def windows():
     """The glass of the two houses, as records sky/_lightkit.glazed() takes: front, bay (the cell
     the window stands in along its wall; the first one of a wider window), storey, cells (the glass
     columns (x, z)), inward (the step from the glass into the house), y (the bottom and the top row
-    of the glass). Two keys more for this package: glass, what stands in the window, and inside,
-    set where the room side of the glass is seen (the winch room is open to the platform).
+    of the glass). Two keys more for this package: glass, what stands in the window, and lined,
+    set where the room side of the glass is seen (the winch room is open to the platform) and
+    takes a lining. None of the kit's own keys is set: no window asks for a level of its own, and
+    none keeps its sources behind the glass ("inside"), where they would light a room whose
+    light gets out on the front the arrival view sees.
 
     Lit are the waiting room's gable window and the two lights of the winch house's east wall, a
     pier between them. Everything on the front the arrival view sees is dark: two windows with
@@ -202,8 +205,8 @@ def windows():
         # the winch house: the two lights of its east wall; the north wall's two windows, either
         # side of the two columns of brick the winch's wall lamp hangs on (machines/cable); a small
         # one in the west gable, which shows over the waiting room's roof
-        window("east", hz0 + 1, [(hx1, hz0 + 1)], (-1, 0), tall, LIT.block, inside=True),
-        window("east", hz1 - 1, [(hx1, hz1 - 1)], (-1, 0), tall, LIT.block, inside=True),
+        window("east", hz0 + 1, [(hx1, hz0 + 1)], (-1, 0), tall, LIT.block, lined=True),
+        window("east", hz1 - 1, [(hx1, hz1 - 1)], (-1, 0), tall, LIT.block, lined=True),
         window("north", hx0 + 1, [(hx0 + 1, hz0)], (0, 1), high, DARK),
         window("north", hx1 - 1, [(hx1 - 1, hz0)], (0, 1), high, DARK),
         window("west", mid, [(hx0, mid)], (1, 0), apex, DARK, storey="gable"),
@@ -437,7 +440,7 @@ def _lining(canvas, origin):
         return 0
     n = 0
     for w in windows():
-        if w.get("inside"):
+        if w.get("lined"):
             cells = [(x, y, z) for x, z in w["cells"] for y in range(w["y"][0], w["y"][1] + 1)]
             n += line(canvas, cells, w["inward"], w["glass"], origin=origin)
     return n
