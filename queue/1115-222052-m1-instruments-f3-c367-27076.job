@@ -1,0 +1,3 @@
+branch=cursor/c164-m1-instruments-f3-c367
+head=15ca52651c2905cedddc5868cef3522ee75f949f
+args=--tail 40 python\ tools/check.py\ --scene\ obs_props_instruments\ \&\&\ python\ tools/selfshots.py\ obs_props_instruments 
