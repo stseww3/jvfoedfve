@@ -1,0 +1,3 @@
+branch=cursor/c164-a1-board-f3-09d2
+head=d1360cadea8f65ca9874828d25533a0998411e44
+args=--tail 30 for\ s\ in\ obs_mat_board\ obs_mat_board_ashlar_a\ obs_mat_board_ashlar_c\ obs_mat_board_windows_b\;\ do\ python\ tools/selfshots.py\ \$s\ \|\|\ exit\ 1\;\ done\;\ for\ s\ in\ obs_mat_board\ obs_mat_board_ashlar_a\ obs_mat_board_ashlar_c\ obs_mat_board_windows_b\;\ do\ python\ tools/check.py\ --scene\ \$s\ \|\ tail\ -1\;\ done 
