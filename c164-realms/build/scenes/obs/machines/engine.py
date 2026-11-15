@@ -34,6 +34,8 @@ What moves (scenes/obs/motion/_kit.py; nothing runs every tick):
                away from the cylinder
     rod        the connecting rod: slides with the crosshead and tilts to stay on the crank pin
     crosshead  with the piston rod: slides
+    eccentric  the eccentric's strap and rod: a small crank a quarter turn before the main one
+    valve      the valve spindle the eccentric rod pushes: slides, a quarter of a stroke ahead
     governor   about its spindle, once in MK.GOVERNOR_REV
     armature   with commutator and pulley, once in MK.DYNAMO_REV, the way the belt takes it
 The rest pose is the dead centre, the crank pin towards the cylinder, as the motion kit wants it.
@@ -395,7 +397,8 @@ def _flywheel():
             a = math.radians(360.0 * i / SPOKES)
             d.stud((0.375 * math.cos(a), H + 0.375 * math.sin(a), WZ - 0.25), "-z", STUD)
         d.tube("z", (0.0, H), WEB[0] - PX / 2, OUTER[1] + 0.125, SHAFT_R, STEEL, sides=8)  # its end shows in the crank
-        d.tube("z", (0.0, H), CORD_Z - PX, CORD_Z + PX, CORD_FROM, IRON_L, sides=12)             # the cord's pulley
+        # the cord's pulley: its far cheek inside the wheel's boss, its near one short of the eccentric's strap
+        d.tube("z", (0.0, H), CORD_Z - 0.75 * PX, CORD_Z + PX, CORD_FROM, IRON_L, sides=12)
         # the eccentric: a sheave that sits off the axis, before the crank
         a = math.radians(ECC_LEAD)
         d.tube("z", (ECC * math.cos(a), H + ECC * math.sin(a)), ECC_Z[0] + PX / 2, ECC_Z[1] - PX / 2, ECC_R, IRON_L,
@@ -558,10 +561,12 @@ def _bed():
         d.box((gx[0] - 0.0625, BED_TOP, za), (gx[0] + 0.125, H + 0.4375, zb), IRON)   # a post of the yoke
         d.box((gx[1] - 0.25, BED_TOP, za), (gx[1], H - 0.375, zb), IRON)              # a block under the cylinder end
     d.box((gx[0] - 0.0625, H + 0.4375, -0.46875), (gx[0] + 0.125, H + 0.5625, 0.46875), IRON)     # the yoke's head
-    # the guide of the valve spindle, on an arm from the bed's far side
-    d.box((VALVE_PIN + 0.3125, BED_TOP - 0.125, w), (VALVE_PIN + 0.5, BED_TOP, VALVE_Z + 0.125), IRON)
-    d.box((VALVE_PIN + 0.3125, BED_TOP, VALVE_Z - 0.125), (VALVE_PIN + 0.5, H + 0.125, VALVE_Z + 0.125), IRON)
-    d.tube("x", (H, VALVE_Z), VALVE_PIN + 0.28125, VALVE_PIN + 0.53125, 0.09375, BRASS, sides=8)
+    # the guide of the valve spindle, on an arm from the bed's far side: beyond where the spindle's
+    # fork comes to at the end of its travel (the pin goes ECC either way)
+    gv = VALVE_PIN + 0.21875 + ECC + 0.09375
+    d.box((gv, BED_TOP - 0.125, w), (gv + 0.1875, BED_TOP, VALVE_Z + 0.125), IRON)
+    d.box((gv, BED_TOP, VALVE_Z - 0.125), (gv + 0.1875, H + 0.125, VALVE_Z + 0.125), IRON)
+    d.tube("x", (H, VALVE_Z), gv - 0.03125, gv + 0.21875, 0.09375, BRASS, sides=8)
     _cord(d, BED[0] + 0.0625, 99.0)
     return d
 
@@ -792,15 +797,14 @@ def _move_armature(canvas):
     return MK.spin(canvas, SHAFT, MK.DYNAMO_REV)
 
 
-# The eccentric is a crank of its own, ECC_LEAD before the engine's, and the motion kit's crank()
-# starts from the dead centre only. The motion line is giving it `start=`; until that is in the
-# tree the eccentric rod and the valve spindle stand still, and these two are not in PARTS:
-#
-#     def _move_eccentric(canvas):
-#         return MK.crank(canvas, SHAFT, STROKE, ECC, ECC_ROD, MK.ENGINE_REV, start=ECC_LEAD)
-#
-#     def _move_valve(canvas):
-#         return MK.crank(canvas, SHAFT, STROKE, ECC, ECC_ROD, MK.ENGINE_REV, turn=False, start=ECC_LEAD)
+# The eccentric is a crank of its own, ECC_LEAD before the engine's: its rod and the valve spindle
+# are drawn as they stand with the main crank at the dead centre, and start= says so.
+def _move_eccentric(canvas):
+    return MK.crank(canvas, SHAFT, STROKE, ECC, ECC_ROD, MK.ENGINE_REV, start=ECC_LEAD)
+
+
+def _move_valve(canvas):
+    return MK.crank(canvas, SHAFT, STROKE, ECC, ECC_ROD, MK.ENGINE_REV, turn=False, start=ECC_LEAD)
 
 
 # name: (what draws it, what registers its motion)
@@ -811,8 +815,8 @@ PARTS = {
     "crosshead": (_crosshead, _move_crosshead),
     "rod": (_rod, _move_rod),
     "flywheel": (_flywheel, _move_flywheel),
-    "eccentric": (_eccentric, None),            # _move_eccentric, when crank() takes start=
-    "valve": (_valve, None),                    # _move_valve
+    "eccentric": (_eccentric, _move_eccentric),
+    "valve": (_valve, _move_valve),
     "governor": (_governor, _move_governor),
     "lap": (_lap, None),
     "belt": (_belt, None),
