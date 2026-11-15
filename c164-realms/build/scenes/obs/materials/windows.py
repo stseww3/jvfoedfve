@@ -12,6 +12,12 @@ Six windows, each a full glass block and a glass pane:
     WINDOW_BLIND     a lowered blind behind dark glass
     SKYLIGHT         the one glass that is seen through (half opaque), in the net of the other five
 
+  the furnace window (A0's ruling, group g2 #37112; the two boiler bays of the power house only):
+    WINDOW_FURNACE   the glow of the fires behind dirty glass: no curtain, no flame. Three blocks,
+                     one to a row from the sill up, painted as one sheet: about 0.39 along the
+                     sill, 0.32 in the second row, 0.18 in the third, whose head is near a dark
+                     window (whole window ~0.30; the median pixel is a brown of 0.32)
+
 The numbers are the grey of the whole picture, glazing bars included, on a scale of 0 to 1: what a
 lit window shows on the screen, since it is drawn at full emission (agreed with c177, group g2 #82,
 #89, #90).
@@ -50,6 +56,7 @@ from outside. Its room side is therefore covered by a thin model that gives no l
     WINDOW_CURTAIN   the drawn curtain in its own colour by lamp light, warm and dark
     WINDOW_FROSTED   the obscured glass with no light behind it: a cold grey a step lighter than
                      night glass, no sky in it
+    WINDOW_FURNACE   night glass, as WINDOW_LIT: the fires burn in the room
 
 Only where somebody can stand behind the window: the star hall, the stair hall, the two wing rooms,
 the dome room; main/shell.py's room_at() says which. The blocks of a window are not touched, so a
@@ -77,8 +84,14 @@ from . import _kit as K
 
 TILE = K.TILE                           # 16: one block face
 
+# The furnace window's three roles, the sill row first; empty while the occupancy table does not
+# have them, and then its pictures are painted for nobody.
+FURNACE = tuple(getattr(B, "WINDOW_FURNACE", ()))
+FURNACE_ROWS = 3
+
 # The blocks this package paints; while it does, the stand-ins drop them (materials/_standin.py).
-BLOCKS = K.blocks(B.WINDOW_LIT, B.WINDOW_CURTAIN, B.WINDOW_FROSTED, B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT)
+BLOCKS = K.blocks(B.WINDOW_LIT, B.WINDOW_CURTAIN, B.WINDOW_FROSTED, B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT,
+                  *FURNACE)
 
 VERSIONS = ("a", "b")
 VERSION = "a"                           # what the master scene shows until the review picks one
@@ -214,6 +227,72 @@ def curtain_face(version="a"):
     return _bars(px, version)
 
 
+# ---- the furnace window: the fires of the boilers behind dirty glass ---------------------------------
+# From the fire up into the soot: the two deepest ambers, the dark wood, the darkest iron (A0, g2
+# #37112: no new colour, no signal red). A pixel stands between two neighbours of this ladder, and
+# the dither decides which of the two it shows.
+_HEAT = (("glow", 1), ("glow", 0), ("dark_wood", 4), ("dark_wood", 3), ("dark_wood", 2), ("dark_wood", 1),
+         ("dark_wood", 0), ("iron", 0))
+# Where a row of pixels stands on the ladder, by its height in pixels above the sill, 0 to 47: the
+# paler amber only as a few points along the sill; plain amber through the first block; amber
+# thinning into brown through the second; brown sinking into soot through the third, whose last row
+# is all but the darkest iron, next to the dark glass that stands over it.
+_RISE = ((0, 0.6), (3, 1.0), (13, 1.0), (31, 2.0), (39, 4.0), (47, 7.0))
+# Dirty glass: a light now and then stands this much further up the ladder than its height says.
+# For each row of blocks from the sill up its two pictures, and for each picture its lights in the
+# order of _LIGHTS.
+_SOOT = {
+    "a": (((0.0, 0.3, 0.0, 0.0), (0.2, 0.0, 0.0, 0.15)),
+          ((0.0, 0.0, 0.35, 0.0), (0.0, 0.4, 0.0, 0.0)),
+          ((0.5, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.5))),
+    "b": (((0.0, 0.2), (0.25, 0.0)),
+          ((0.3, 0.0), (0.0, 0.35)),
+          ((0.0, 0.5), (0.5, 0.0))),
+}
+_GRIME = 1.0                            # the corners of a light, where the soot sits: a whole step further up
+
+
+def _heat(height, soot=0.0):
+    """Where a pixel `height` pixels above the sill stands on _HEAT: (the step, how many sevenths
+    of the way to the next)."""
+    v = float(np.interp(height, [h for h, _ in _RISE], [v for _, v in _RISE])) + soot
+    v = min(v, len(_HEAT) - 1.0)
+    return int(v), int(round((v - int(v)) * 7))
+
+
+def _furnace(version, row, variant):
+    """One picture of the furnace window: the block `row` rows above the sill, in its `variant`.
+    Its tones hang on the height above the sill and on nothing else, so the three rows join into one
+    sheet and two pictures of a row stand side by side without a seam."""
+    px = _glass(BAR)
+    for n, (x0, y0, x1, y1) in enumerate(_LIGHTS[version]):
+        soot = _SOOT[version][row][variant][n]
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                grime = _GRIME if x in (x0, x1) and y in (y0, y1) else 0.0
+                step, sevenths = _heat(TILE * (row + 1) - 1 - y, soot + grime)
+                # The dither. A row of a light holds each of seven ranks once and a column holds
+                # them equally often, so a tone thins out evenly: no fold runs down the glass and
+                # no slat across it. Each light starts the count somewhere else.
+                rank = (4 * (x - x0) + 5 * (y - y0) + 3 * n + 2 * variant + row) % 7
+                px[y, x, :3] = P.colour(*_HEAT[min(step + (rank < sevenths), len(_HEAT) - 1)])
+    return _bars(px, version)
+
+
+def furnace_face(version="a"):
+    """WINDOW_FURNACE: the pictures of its three blocks, [row][picture], the sill row first and two
+    pictures to a row, which the game mixes by position so that the three columns of a bay are not
+    one stamp.
+
+    The fires are low, behind the glass, and the glass is sooted: amber along the sill, thinning
+    into brown and sinking into soot towards the head, where the third row meets the dark glass of
+    the same bay. The three rows are one sheet (A0, g2 #37112): no block runs from light to dark by
+    itself, which would show as three stripes. The soot is dither between neighbouring tones, a
+    corner pixel in every light, and a light here and there that is dirtier than its height. The
+    net is that of the other windows. No curtain, no slat, no shape of a flame."""
+    return [[_furnace(version, row, variant) for variant in range(2)] for row in range(FURNACE_ROWS)]
+
+
 # ---- dark windows: holding the sky -------------------------------------------------------------------
 # What each light of the four pictures shows: the tone of its glass (a step of night_glass) and, for
 # some, a glancing stroke one step lighter as (x, y, length): it starts x, y pixels right of and below
@@ -307,13 +386,16 @@ def came():
 # ---- what each role shows ----------------------------------------------------------------------------
 NAMES = {B.WINDOW_LIT: "window_lit", B.WINDOW_FROSTED: "window_frosted", B.WINDOW_CURTAIN: "window_curtain",
          B.WINDOW_DARK: "window_dark", B.WINDOW_BLIND: "window_blind", B.SKYLIGHT: "window_skylight"}
+FURNACE_NAMES = ("window_furnace_low", "window_furnace_mid", "window_furnace_high")
+NAMES.update(zip(FURNACE, FURNACE_NAMES))
 CAME = "window_came"
 
 
 def faces(version=None):
-    """{role: (the picture or the pictures mixed by position, how it is redirected)} for a version."""
+    """{role: (the picture or the pictures mixed by position, how it is redirected)} for a version.
+    The furnace window is in it once the occupancy table has its roles."""
     v = _version(version)
-    return {
+    out = {
         B.WINDOW_LIT: (lit_face(v), LIT),
         B.WINDOW_FROSTED: (frosted_face(v), LIT),
         B.WINDOW_CURTAIN: (curtain_face(v), LIT),
@@ -321,12 +403,15 @@ def faces(version=None):
         B.WINDOW_BLIND: (blind_face(v), DARK),
         B.SKYLIGHT: (skylight_face(v), DARK),
     }
+    out.update((role, (pictures, LIT)) for role, pictures in zip(FURNACE, furnace_face(v)))
+    return out
 
 
 def pack(pack_dir, version=None):
-    """Paint the six windows and redirect their block and their pane to them (parts/materials.md 5):
-    the face picture on every glass face, the came on the edge of a pane. Lit windows at emission 15
-    with the game's shading and corner darkening off; dark windows as the game draws a block."""
+    """Paint the windows and redirect their block and their pane to them (parts/materials.md 5):
+    the face picture on every glass face, the came on the edge of a pane. Lit windows and the
+    furnace window at emission 15 with the game's shading and corner darkening off; dark windows as
+    the game draws a block."""
     v = _version(version)
     out = [f"windows: version {v}"]
     K.paint(pack_dir, CAME, came())
@@ -348,6 +433,9 @@ MODEL = "mat_window_lining_"            # the category's prefix, and what the mo
 
 # what a lit window is lined with, and in how many arrangements its pictures come
 KINDS = {B.WINDOW_LIT: "lit", B.WINDOW_FROSTED: "frosted", B.WINDOW_CURTAIN: "curtain"}
+# The furnace window is lined with night glass as well: the fires burn in the room, and from the
+# room its three rows are the dark window they stand under.
+KINDS.update((role, "lit") for role in FURNACE)
 VARIANTS = {"lit": 2, "frosted": 1, "curtain": 1}
 
 UNLIT = ("iron", 5)                     # obscured glass with no light behind it
@@ -473,7 +561,10 @@ def models(version=None):
 def lining_of(glass):
     """The lining a glass takes ("lit", "frosted" or "curtain"); None for a glass that is not a lit
     window. `glass` is a role of the occupancy table or a block name, with or without namespace and
-    state. Whole blocks only: a pane stands in the middle of its cell, a lining lies on a face."""
+    state; the furnace window may be given as its three roles together or as any one of them.
+    Whole blocks only: a pane stands in the middle of its cell, a lining lies on a face."""
+    if isinstance(glass, (tuple, list)):
+        glass = glass[0] if glass else None
     if isinstance(glass, B.Family):
         glass = glass.block
     name = str(glass or "").split(":", 1)[-1].partition("[")[0]
