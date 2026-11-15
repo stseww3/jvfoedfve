@@ -259,7 +259,7 @@ async function shareChecks(context) {
     hash: location.hash,
     targets: [...document.querySelectorAll(".card.is-target")].map((c) => c.id).join(","),
     scrollY,
-    border: getComputedStyle(document.getElementById("term-3l")).borderTopColor,
+    border: getComputedStyle(document.querySelector("#term-3l .card-face")).borderTopColor,
   }));
   check("share: clicking a term copies its link to the clipboard", copied === `${LIVE_URL}#3l`, copied);
   check("share: the toast says 'Link copied' and shows the link", toast[0] === "Link copied" && toast[1] === "iraqies.github.io/dictionary/#3l", toast.join(" / "));
@@ -535,6 +535,116 @@ async function reducedChecks(context) {
   await page.close();
 }
 
+/* ---- card tilt ---- */
+
+async function tiltChecks(context) {
+  let page = await openPage(context);
+  await settle(page);
+
+  const box = await page.evaluate(() => {
+    const b = document.getElementById("term-3c").getBoundingClientRect();
+    return { left: b.left, top: b.top, width: b.width, height: b.height };
+  });
+  const at = (fx, fy) => [box.left + box.width * fx, box.top + box.height * fy];
+  const read = (p = page) =>
+    p.evaluate(() => {
+      const card = document.getElementById("term-3c");
+      const face = card.querySelector(".card-face");
+      const m = new DOMMatrix(getComputedStyle(face).transform);
+      const w = face.offsetWidth / 2;
+      const h = face.offsetHeight / 2;
+      // After the transform, w above 1 means the corner has moved away from
+      // the viewer, below 1 that it has come closer.
+      const depth = (x, y) => m.transformPoint(new DOMPoint(x, y, 0, 1)).w;
+      const b = card.getBoundingClientRect();
+      return {
+        lean: card.classList.contains("lean"),
+        hovered: card.matches(":hover"),
+        degrees: parseFloat(card.style.getPropertyValue("--tilt")) || 0,
+        flat: m.is2D,
+        topLeft: depth(-w, -h),
+        bottomRight: depth(w, h),
+        left: depth(-w, 0),
+        right: depth(w, 0),
+        box: { left: b.left, top: b.top, width: b.width, height: b.height },
+        leaning: document.querySelectorAll("#grid .card.lean").length,
+      };
+    });
+  const expected = (fx, fy) => {
+    const reach = Math.max(box.width, box.height) / 2;
+    return Math.min(1, Math.hypot((fx - 0.5) * box.width, (fy - 0.5) * box.height) / reach) * 10;
+  };
+
+  await page.mouse.move(...at(0.5, 0.5));
+  await page.mouse.move(...at(0.25, 0.25), { steps: 4 });
+  await sleep(450);
+  let r = await read();
+  check(
+    "tilt: the card under the pointer leans, steeper the further the pointer is from its centre",
+    r.lean && !r.flat && Math.abs(r.degrees - expected(0.25, 0.25)) < 0.3,
+    `${r.degrees} degrees, expected ${expected(0.25, 0.25).toFixed(2)}`
+  );
+  check(
+    "tilt: the card is pressed down on the pointer's side and rises on the far side",
+    r.topLeft > 1.01 && r.bottomRight < 0.99,
+    `corner under the pointer ${r.topLeft.toFixed(3)}, far corner ${r.bottomRight.toFixed(3)}`
+  );
+  check(
+    "tilt: only the face moves; the card's own box stays exactly where it was",
+    Math.abs(r.box.left - box.left) < 0.5 && Math.abs(r.box.top - box.top) < 0.5 && Math.abs(r.box.width - box.width) < 0.5 && Math.abs(r.box.height - box.height) < 0.5,
+    JSON.stringify(r.box)
+  );
+
+  // The left edge is where the face moves furthest away from the pointer.
+  const edge = at(0, 0.5);
+  await page.mouse.move(edge[0] + 2, edge[1], { steps: 4 });
+  await sleep(450);
+  const held = [];
+  for (let i = 0; i < 6; i++) {
+    await page.mouse.move(edge[0] + 2, edge[1] + (i % 2));
+    await sleep(60);
+    r = await read();
+    held.push(r.hovered && r.lean && r.left > 1.03);
+  }
+  check(
+    "tilt: at the very edge the card leans its most (10 degrees at the outside) and the hover holds, no flicker",
+    held.every(Boolean) && r.degrees <= 10.001 && r.degrees > 9.5,
+    `${held.join(",")} at ${r.degrees} degrees`
+  );
+
+  const next = await page.evaluate(() => {
+    const b = document.getElementById("term-3l").getBoundingClientRect();
+    return { x: b.left + b.width * 0.7, y: b.top + b.height * 0.4 };
+  });
+  await page.mouse.move(next.x, next.y, { steps: 6 });
+  await sleep(450);
+  r = await read();
+  const moved = await page.evaluate(() => ({
+    lean: document.getElementById("term-3l").classList.contains("lean"),
+    old: document.getElementById("term-3c").getAttribute("style") || "",
+  }));
+  check(
+    "tilt: moving on to the next card hands the lean over and leaves nothing behind on the old one",
+    !r.lean && r.leaning === 1 && moved.lean && !moved.old.includes("--tilt"),
+    JSON.stringify({ ...moved, leaning: r.leaning })
+  );
+
+  await page.mouse.move(640, 60, { steps: 4 });
+  await settle(page);
+  r = await read();
+  check("tilt: leaving the grid lays every card flat again", r.leaning === 0 && r.flat, JSON.stringify({ leaning: r.leaning, flat: r.flat }));
+  quiet(page, "tilt");
+  await page.close();
+
+  page = await openPage(context, { reduced: true });
+  await page.mouse.move(...at(0.5, 0.5));
+  await page.mouse.move(...at(0.25, 0.25), { steps: 4 });
+  await sleep(200);
+  r = await read(page);
+  check("tilt: off under reduced motion", r.leaning === 0 && r.flat, JSON.stringify({ leaning: r.leaning, flat: r.flat }));
+  await page.close();
+}
+
 /* ---- earlier behaviour that must still hold ---- */
 
 async function regressionChecks(context) {
@@ -574,12 +684,11 @@ async function regressionChecks(context) {
     return {
       lit: document.getElementById("grid").classList.contains("lit"),
       mx: card.style.getPropertyValue("--mx"),
-      lift: new DOMMatrix(getComputedStyle(card).transform).m42,
-      flat: new DOMMatrix(getComputedStyle(card).transform).is2D,
+      lift: new DOMMatrix(getComputedStyle(card.querySelector(".card-face")).transform).m42,
     };
   });
   check("pointer light: still follows the mouse over the cards", lit.lit && lit.mx.endsWith("px"), JSON.stringify(lit));
-  check("hover: the card under the pointer still lifts 3px and stays flat (no tilt)", Math.abs(lit.lift + 3) < 0.2 && lit.flat, JSON.stringify(lit));
+  check("hover: the card under the pointer still lifts 3px", Math.abs(lit.lift + 3) < 0.2, JSON.stringify(lit));
 
   await page.click("#theme-toggle");
   await page.waitForFunction(() => document.documentElement.dataset.theme === "light" && !document.documentElement.classList.contains("theme-switching"), { timeout: 10000 });
@@ -587,7 +696,7 @@ async function regressionChecks(context) {
   await toastText(page);
   await sleep(400);
   const light = await page.evaluate(() => ({
-    border: getComputedStyle(document.getElementById("term-3c")).borderTopColor,
+    border: getComputedStyle(document.querySelector("#term-3c .card-face")).borderTopColor,
     toastBg: getComputedStyle(document.getElementById("toast")).backgroundColor,
     stored: localStorage.getItem("theme"),
   }));
@@ -619,7 +728,8 @@ async function phoneChecks(browser) {
         overflow: document.documentElement.scrollWidth - innerWidth,
         headsFit: cards.every((c) => {
           const head = c.querySelector(".card-head");
-          const inner = c.getBoundingClientRect().right - parseFloat(getComputedStyle(c).paddingRight);
+          const face = c.querySelector(".card-face");
+          const inner = face.getBoundingClientRect().right - parseFloat(getComputedStyle(face).paddingRight);
           return head.scrollWidth <= head.clientWidth && c.querySelector(".badge").getBoundingClientRect().right <= inner + 0.5;
         }),
         oneLine: cards.every((c) => c.querySelector(".card-head").getBoundingClientRect().height < 50),
@@ -642,6 +752,7 @@ async function phoneChecks(browser) {
         inside: b.left >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && b.top >= 0,
         clip: await navigator.clipboard.readText(),
         lit: document.getElementById("grid").classList.contains("lit"),
+        leaning: document.querySelectorAll("#grid .card.lean").length,
         overflow: document.documentElement.scrollWidth - innerWidth,
       };
     });
@@ -650,7 +761,7 @@ async function phoneChecks(browser) {
       toast[0] === "Link copied" && placed.clip === `${LIVE_URL}#demigrated` && placed.inside && placed.overflow <= 0,
       `${toast.join(" / ")} ${JSON.stringify(placed)}`
     );
-    check(`phone ${width}px: no pointer light on touch`, !placed.lit);
+    check(`phone ${width}px: no pointer light and no tilt on touch`, !placed.lit && placed.leaning === 0);
     quiet(page, `phone ${width}px`);
     await page.close();
   }
@@ -666,7 +777,7 @@ if (!live) await sourceRules();
 const desktop = await launch({ mouse: true });
 const context = await desktop.createBrowserContext();
 await context.overridePermissions(LIVE_ORIGIN, ["clipboard-read", "clipboard-write"]);
-for (const group of [loadChecks, glideChecks, shareChecks, linkChecks, reducedChecks]) {
+for (const group of [loadChecks, glideChecks, shareChecks, linkChecks, reducedChecks, tiltChecks]) {
   await group(context);
 }
 // A fresh context: the theme checks write to localStorage.
