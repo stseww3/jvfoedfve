@@ -37,8 +37,16 @@ and the chains  c<period>/<n>. One loop runs in a world at a time: a chain of an
 itself at the start of its next cycle, so two scenes placed on the same spot one after the other
 do not both pull at the same entities.
 
-Nothing here has been seen in the game yet; plan/parts/motion.md section 10 lists what the real
-machine has to show.
+What the client does with a pose was read off the game's classes (26.3, world/entity/Display and
+com/mojang/math/Transformation): every merge that changes the entity starts the way anew, from
+what the client shows at that moment to the pose the entity now has; the two turns go along their
+arcs the short way round, shift and scale along straight lines; a way of 0 ticks is a jump. A
+merge that changes something else and leaves the pose alone starts the way anew all the same, so
+the part is seen to go the last stretch once more: nothing but this module should merge into an
+entity that is registered here, and no step repeats the pose of the step before it.
+
+_kit_test.py plays the written functions back on that understanding. Nothing here has been seen
+in the game yet; plan/parts/motion.md section 10 lists what the real machine has to show.
 """
 import json
 import math
@@ -414,7 +422,10 @@ def spin(canvas, axis, period, *, entity=None, model=None, name=None, phase=0, k
              neither: the one placed last
     name     the part's tag is "m." + name; by default the model's name. Two parts on one spot
              need different names
-    phase    ticks the part starts late, to put two alike out of step
+    phase    ticks the part is behind, to put two alike out of step: half the period for the
+             second of two pendulums. start() puts every part in the pose it was placed in, so a
+             part with a phase needs up to a cycle to fall into step, and a wheel may begin with
+             a turn the wrong way; a part that only turns is better placed turned than given a phase
     keys, lead   the number of steps in a turn and the lead, set by hand: for test scenes that
              show what a coarse step looks like. The limits on the wobble are not applied then.
 
@@ -511,6 +522,10 @@ def slide(canvas, axis, moves, cycle, *, entity=None, model=None, name=None, pha
             raise ValueError(f"{part.name}: the move at tick {start} sets off before the one before it has ended")
         if travel < 1:
             raise ValueError(f"{part.name}: a move takes at least one tick")
+        if abs(offset - here) < 1e-6:
+            # the same pose given twice makes the client show the way to it once more, from the start
+            raise ValueError(f"{part.name}: the move at tick {start} goes nowhere (the part is at {here:g} "
+                             f"already); a part stands still between two moves by itself")
         n = -(-travel // MAX_STEP)
         cuts = [start + (k * travel + n // 2) // n for k in range(n + 1)]
         for k in range(n):
