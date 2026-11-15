@@ -107,6 +107,8 @@ HOLLOW_Y = DECK_Y - 1           # ... and one lower in the deck's hollows
 FLOOR_Y = DECK_Y - 2            # the sunk floor under a gap beside a wall or a fence
 RIM = ((1.5, BODY_Y), (2.5, BODY_Y - 1), (3.5, BODY_Y - 2))    # a body: this far round its heads, this high
 HEAP = 4.6                      # a head of cloud stands this far out of the face (to y -24)
+SMALLEST = 1.6                  # ... and never less than this: two blocks in its middle, or it is a floe
+FOOTING = 2.5                   # a head's lowest step reaches this far round the step above it, no further
 PILE = 8.0                      # the few big piles (to y -20, card)
 PILES = 7                       # how many of those
 PEAK = -20                      # nothing is higher than this
@@ -347,6 +349,33 @@ def _reach(passable):
             return reach
 
 
+def _open2(mask):
+    """The cells of a 2D mask that lie in a square of two by two cells of it."""
+    sq = mask[:-1, :-1] & mask[1:, :-1] & mask[:-1, 1:] & mask[1:, 1:]
+    out = np.zeros_like(mask)
+    out[:-1, :-1] |= sq
+    out[1:, :-1] |= sq
+    out[:-1, 1:] |= sq
+    out[1:, 1:] |= sq
+    return out
+
+
+def _tidy(top, lip):
+    """The heads as blocks show them, cleaned as a sprite is: no step of a head is narrower than
+    two cells (one block on a head is a pimple, a row of them a fence), and the lowest step is a
+    foot and not a floe: it reaches FOOTING round the step above it and no further, and a patch
+    one block high with nothing on it goes. The lip along the land (``lip``) stays as it is.
+    Returns the height field with those cells lowered or taken out."""
+    lvl = np.where(top >= FOOT, np.floor(top + 0.5), FACE - 1).astype(np.int64)
+    out = np.full(top.shape, FACE - 1, dtype=np.int64)
+    for y in range(FACE, int(lvl.max()) + 1):
+        there = lvl >= y
+        ok = (_open2(there) | (lip & there)) & (out == y - 1)
+        out[ok] = y
+    out[(out == FACE) & ~lip & (_distance(out > FACE, 4) > FOOTING)] = FACE - 1
+    return np.where(out >= FACE, np.minimum(top, out + 0.45), -np.inf)
+
+
 def _others(canvas, origin, lo, shape, y0):
     """(occ, whole, joins, high): the cells of the box that hold a block of somebody else; which of
     those are whole blocks, hiding what is behind them; which hold something that would join on to
@@ -403,31 +432,36 @@ def _field(seed, land, sunk=()):
         return min(nx - 1, max(0, int(px))), min(nz - 1, max(0, int(pz)))
 
     def dome(g, px, pz, rad, rise, bulge=None):     # rooted a little under the face
-        _stamp(top, px, pz, FOOT - 0.25, rise + 0.25, rad, g.uniform(0.5, 0.8) if bulge is None else bulge)
+        _stamp(top, px, pz, FOOT - 0.25, rise + 0.25, rad, g.uniform(0.5, 0.62) if bulge is None else bulge)
 
     def head(g, px, pz, rad, rise):
-        """A head of cloud, shaped by the random numbers of ``g``. A small one is one dome; a
-        middling one carries smaller domes on its flanks; a big one is a low cushion with a crowd
-        of domes on it, so no top is a table."""
-        if rad < 4.5:
-            kids, spread, size, high = int(g.integers(0, 2)), (0.6, 1.0), (0.5, 0.75), (0.55, 0.9)
-        elif rad < 6.5:
-            kids, spread, size, high = int(g.integers(1, 4)), (0.5, 1.0), (0.45, 0.75), (0.6, 1.0)
+        """A head of cloud, shaped by the random numbers of ``g``: half a ball, about as high as
+        its foot is wide, so its side stands steep out of the face and its top is round. A small
+        one is one dome; the bigger it is, the more smaller ones crowd on its flanks, each half a
+        ball again and lower than the one it leans on."""
+        dome(g, px, pz, rad, rise)
+        if rad < 3.4:
+            kids = int(g.integers(0, 2))
+        elif rad < 4.8:
+            kids = int(g.integers(1, 4))
+        elif rad < 6.0:
+            kids = int(g.integers(2, 5))
         else:
-            kids, spread, size, high = int(g.integers(5, 9)), (0.1, 0.9), (0.3, 0.5), (0.8, 1.0)
-        dome(g, px, pz, rad, rise if rad < 6.5 else 0.66 * rise)
+            kids = int(g.integers(4, 8))
         for _ in range(kids):
-            a, s = g.uniform(0.0, 2.0 * np.pi), g.uniform(*spread)
-            dome(g, px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, rad * g.uniform(*size), rise * g.uniform(*high))
+            a, s = g.uniform(0.0, 2.0 * np.pi), g.uniform(0.55, 1.0)
+            r = max(2.2, rad * g.uniform(0.42, 0.68))
+            dome(g, px + np.cos(a) * s * rad, pz + np.sin(a) * s * rad, r,
+                 min(rise * g.uniform(0.6, 0.95), r * g.uniform(0.8, 1.05)))
 
     # Every head has random numbers of its own, by the cell of the grid it is drawn in (the piles by
     # their place in the list of sites tried): when somebody builds or digs at the shore, or the
     # board's camera moves, the sea changes there and stays as it was everywhere else.
 
-    # the heads: packed side by side in the banks, a few standing alone in the calm water. They do
-    # not look at the land, so they stand where they stand whatever is built. Towards the end of
-    # where a head may stand they grow few, small and low.
-    cell = 8
+    # the heads: packed side by side in the banks, so close that they lean on one another, and none
+    # in the calm water between the banks. They do not look at the land, so they stand where they
+    # stand whatever is built. Towards the end of where a head may stand they grow few, small and low.
+    cell = 7
     gxs, gzs = range(0, nx, cell), range(0, nz, cell)
     draws = np.random.default_rng((seed, 0)).uniform(size=(len(gxs), len(gzs), 6)).tolist()
     for i, gx in enumerate(gxs):
@@ -436,13 +470,14 @@ def _field(seed, land, sunk=()):
             px, pz = gx + fx * cell, gz + fz * cell
             ix, iz = cell_of(px, pz)
             d, c = amount[ix, iz], core[ix, iz]
-            if d <= 0.0 or u > d ** 0.8 * (0.05 + 0.90 * c):
+            if d <= 0.0 or u > d ** 0.8 * 0.95 * c:
                 continue
-            rad = (3.0 + 4.4 * v ** 1.5) * (0.8 + 0.2 * d) * (0.85 + 0.3 * c)
-            if c > 0.7 and d > 0.6 and t > 0.80:
-                rad = 8.0 + 30.0 * (t - 0.80)       # the broad cushions in the heart of a bank
-            high = HEAP * (0.45 + 0.55 * vigour[ix, iz]) * (0.7 + 0.3 * w) * (0.55 + 0.45 * d)
-            head(np.random.default_rng((seed, 0, i, j)), px, pz, rad, min(high, rad * (0.55 + 0.35 * w)))
+            rad = (3.0 + 3.2 * v ** 1.3) * (0.8 + 0.2 * d)
+            if c > 0.7 and d > 0.6 and t > 0.82:
+                rad = 6.2 + 9.0 * (t - 0.82)        # the big heads in the heart of a bank
+            lift = (0.72 + 0.28 * vigour[ix, iz]) * (0.6 + 0.4 * d)
+            head(np.random.default_rng((seed, 0, i, j)), px, pz, rad,
+                 max(SMALLEST, min(HEAP, rad * (0.72 + 0.28 * w)) * lift))
 
     # the few big piles, well apart, in the banks, away from the mountain: broad shoulders, a
     # narrower tower standing out of them, smaller domes on its flanks
@@ -479,8 +514,9 @@ def _field(seed, land, sunk=()):
         surf = N.fbm2(X / 23.0, Z / 23.0, seed + 9, octaves=2)
         # the lip: at least one block of cloud against the land all the way round, and on the
         # land's own last columns where they lie under the face
-        top = np.where(coast | ((shore > 0.0) & (shore <= 1.5)), np.maximum(top, FOOT + 0.55), top)
-        # small lobes along it, so the lip is no ribbon
+        lip = coast | ((shore > 0.0) & (shore <= 1.5))
+        top = np.where(lip, np.maximum(top, FOOT + 0.55), top)
+        # small round lobes along it, so the lip is no ribbon
         step = 3
         gxs, gzs = range(0, nx, step), range(0, nz, step)
         draws = np.random.default_rng((seed, 3)).uniform(size=(len(gxs), len(gzs), 5)).tolist()
@@ -491,8 +527,9 @@ def _field(seed, land, sunk=()):
                 ix, iz = cell_of(px, pz)
                 if land[ix, iz] or shore[ix, iz] > 3.2 or u > 0.72:
                     continue
-                _stamp(top, px, pz, FOOT - 0.25, 0.85 + 1.1 * w + 0.25, 1.7 + 1.7 * v, 0.55)
-        # the heads of the surf, high where the land folds round them
+                rad = 2.0 + 1.6 * v
+                _stamp(top, px, pz, FOOT - 0.25, rad * (0.6 + 0.4 * w) + 0.25, rad, 0.55)
+        # the heads of the surf, big where the land folds round them and small off a cape
         zone = (shore > 0.0) & (shore <= 6.5)
         step = 6
         gxs, gzs = range(0, nx, step), range(0, nz, step)
@@ -507,10 +544,10 @@ def _field(seed, land, sunk=()):
                 a = float(np.clip(0.5 + surf[ix, iz] + 1.5 * (fold[ix, iz] - 0.28) + swell[ix, iz], 0.0, 1.0))
                 if u > 0.6 + 0.4 * a:
                     continue
-                rise = 1.5 + (HEAP - 1.5) * a * (0.75 + 0.25 * w)
-                head(np.random.default_rng((seed, 2, i, j)), px, pz, min(6.4, 3.3 + 2.8 * v + 1.2 * a), rise)
-        # where the surf stands high the cloud banks up further out as well: broad cushions with a
-        # crowd of domes on them, a few to a bay, and none where a head may not stand
+                rad = 2.8 + 1.4 * v + 2.2 * a
+                head(np.random.default_rng((seed, 2, i, j)), px, pz, rad, min(HEAP, rad * (0.7 + 0.3 * w)))
+        # where the surf stands high the cloud banks up further out as well: big heads with a
+        # crowd of smaller ones on them, a few to a bay, and none where a head may not stand
         bank = N.fbm2(X / 41.0, Z / 41.0, seed + 13, octaves=2)
         step = 12
         gxs, gzs = range(0, nx, step), range(0, nz, step)
@@ -525,7 +562,9 @@ def _field(seed, land, sunk=()):
                 a = float(np.clip(0.5 + 1.9 * bank[ix, iz] + 1.2 * (fold[ix, iz] - 0.28) + 1.4 * swell[ix, iz], 0.0, 1.0))
                 if u > a * a * amount[ix, iz]:
                     continue
-                head(np.random.default_rng((seed, 4, i, j)), px, pz, 7.0 + 4.5 * v, (2.6 + (HEAP - 2.6) * a) * (0.8 + 0.2 * w))
+                rad = 5.4 + 2.4 * v
+                head(np.random.default_rng((seed, 4, i, j)), px, pz, rad,
+                     min(HEAP, 0.75 * rad) * (0.8 + 0.2 * w) * (0.7 + 0.3 * a))
 
         # what is built and ends low in the sea is heaped over: a head on every such column, two
         # blocks over it or more, so a row of them is one long head
@@ -533,9 +572,11 @@ def _field(seed, land, sunk=()):
             crest = min(y + 3, LOW) + 0.4
             _stamp(top, i + 0.5, k + 0.5, FOOT - 0.25, crest - (FOOT - 0.25), COVERED, 0.6)
         top = np.where(away, top, np.minimum(top, LOW + 0.45))
+    else:
+        lip = land
 
     top = np.minimum(top, PEAK + 0.45)
-    return top, hollow, deck, dusk
+    return _tidy(top, lip), hollow, deck, dusk
 
 
 def _shade(h):

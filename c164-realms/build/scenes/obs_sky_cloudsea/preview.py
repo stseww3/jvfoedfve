@@ -211,7 +211,10 @@ def _draw(w, above, cam, width, height, sheet, glow, out):
             r, g, b = R.trace(w, cam[0], cam[1], cam[2], dx, dy, dz)
             sr, sg, sb = R.sky_colour(w, dx, dy, dz)
             r0, g0, b0 = r, g, b
-            if glow[3] > 0.0 and r == sr and g == sg and b == sb:
+            # the afterglow lies behind everything: a block that the fog has taken whole is drawn
+            # over it in the fog's colour, and only the open sky shows it
+            if (glow[3] > 0.0 and r == sr and g == sg and b == sb
+                    and _first_solid(w.grid, w.pal_flags, cam[0], cam[1], cam[2], dx, dy, dz, 8192.0) >= R.BIG):
                 f = glow[3] * _afterglow(dx, dy, dz, glow[3], glow[4])
                 r, g, b = r + (glow[0] - r) * f, g + (glow[1] - g) * f, b + (glow[2] - b) * f
             if alpha > 0.0 and dy < -1e-9 and cam[1] > plane:
