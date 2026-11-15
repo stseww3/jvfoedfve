@@ -26,12 +26,9 @@ BIOME_MARGIN_Y = 140
 LINES = (site, main, props, sky)
 ENTRANCE = None                 # None: the package's default
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C; noon draws as A)
-# The two main views are the skeleton's. The director raised both on 11-14 (group, 13:21: they look
-# up about 22 degrees, the building in the lower half of the picture, the comet whole in the upper)
-# and had V2 written into the skeleton; a skeleton that has no V2 yet is older than that ruling,
-# and the ruling's own numbers stand in for it.
-V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
-V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+# The two main views are the skeleton's (the director raised both on 11-14: they look up about 22
+# degrees, the building in the lower half of the picture, the comet whole in the upper).
+V1, V2 = S.V1, S.V2
 
 
 # The shots in which the versions of the entrance differ, and those in which the two heads do
