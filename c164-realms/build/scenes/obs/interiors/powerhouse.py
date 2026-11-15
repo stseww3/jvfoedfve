@@ -109,6 +109,10 @@ LAMPS = [(x, CEIL_Y - 1, z) for x, z in
 LAMP_LEVEL = 8                              # the top of the third rank (a caged lamp); 7 left the
 #                                             room's corners black, and the card makes the furnace
 #                                             glow the room's main light, not its only one
+LAMP_DROP = 2                               # a lamp's second source this far under its hanger:
+#                                             the block light does not carry ten courses, and with
+#                                             one source a lamp at the beam row still left the
+#                                             upper third of a stand under 0.03 (RUBRIC red line 6)
 
 # ---- the light ------------------------------------------------------------------------------
 LIGHT = B.LIGHT                             # the invisible source a lamp offers
@@ -196,8 +200,9 @@ def build_powerhouse(c, origin=(0, 0, 0), roles=B, *, version="a"):
     lights = []
     for x, y, z in LAMPS:
         if _inside(x, z):
-            put(x, y, z, f"{LIGHT}[level={LAMP_LEVEL}]")
-            lights.append(((x, y, z), LAMP_LEVEL))
+            for dy in (0, -LAMP_DROP):
+                put(x, y + dy, z, f"{LIGHT}[level={LAMP_LEVEL}]")
+                lights.append(((x, y + dy, z), LAMP_LEVEL))
 
     n = 0
     return {"entities": n, "lights": lights, "reserved": sorted(RESERVED)}
