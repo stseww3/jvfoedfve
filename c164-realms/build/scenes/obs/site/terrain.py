@@ -175,11 +175,12 @@ LENS_OUT = -0.02                # ... which is where the bed's own slow noise is
 SNOW_ON = True                  # False: no snow at all (the pictures taken with and without it)
 SNOW_BELOW = -7                 # none on the rock just under the terraces: it starts below the rim wall's foot
 SNOW_ABOVE = -24                # ... and none within two blocks of the cloud (CLOUD_TOP): the sea's edge is the cloud's own light line
-SNOW_DRIFT = 0.10               # it lies in drifts: where a slow noise is above this, about a third of the mountain
+SNOW_DRIFT = -0.32              # it lies in drifts: where a slow noise is above this, about a third of the mountain
 SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
 SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
 SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
 SNOW_RUN = 4                    # no edge of it runs straight for more blocks than this (not under 4: see _notches)
+SNOW_RUN_UNDER = 3              # ... and against the foot of a cliff, where the eye reads a straight line too, this
 SNOW_PASSES = 6                 # how often the straight edges are looked for again after breaking them
 SNOW_PATCH = 12                 # no patch of fewer blocks than this
 SNOW_DEEP = 4                   # layers (eighths of a block) at the most; one layer at an edge
@@ -601,14 +602,15 @@ def _tidy(snow):
     return snow
 
 
-def _notches(n, a, b, side):
+def _notches(n, a, b, side, limit=SNOW_RUN):
     """Which cells of a straight edge n long are taken out, counted from its start: after every two
     or three that stay, one or two -- by the cell, not in a rhythm -- and so that at least two stay
-    at the end. What is left of the edge are teeth two to four long (SNOW_RUN is not under 4, or
+    at the end. What is left of the edge are teeth two to `limit` long (the limit is not under 4, or
     the last tooth could be a single cell, which _tidy takes off: the edge would only move back)."""
     out = []
     i = 0
-    while n - i > max(SNOW_RUN, 4):
+    limit = max(limit, 4)
+    while n - i > limit:
         left = n - i
         stay = 3 if left >= 6 and hash3(a, b + i, side, SEED + 64) < 0.5 else 2
         take = 2 if left - stay >= 4 and hash3(a, b + i, side, SEED + 65) < 0.4 else 1
@@ -619,22 +621,27 @@ def _notches(n, a, b, side):
 
 def _straight(snow, hi):
     """The cells to take out of the snow so that none of its edges runs straight for more than
-    SNOW_RUN blocks. An edge is where bare rock no higher than the snow lies beside it; against
-    the foot of a cliff the snow may run as straight as the cliff does."""
+    SNOW_RUN blocks -- nor for more than SNOW_RUN_UNDER where the snow ends against the foot of a
+    cliff, which the eye reads as a straight edge too (cr2-#5 item 1: in west_prow the snow's top
+    edge lay on one row for 50 columns). Against a cliff the edge may follow it a little longer: the
+    snow there is lying against rock it cannot cover."""
     cut = np.zeros(snow.shape, dtype=bool)
     for side, (axis, step) in enumerate(((0, 1), (0, -1), (1, 1), (1, -1))):
-        edge = snow & ~np.roll(snow, step, axis=axis) & (np.roll(hi, step, axis=axis) <= hi)
-        rows = edge if axis == 0 else edge.T            # an edge that faces along x runs along z, and the other way round
-        for a in np.flatnonzero(rows.any(axis=1)):
-            on = np.flatnonzero(rows[a])
-            ends = np.flatnonzero(np.diff(on) > 1)      # the last cell of every run but the last run
-            for first, last in zip(np.concatenate(([0], ends + 1)), np.concatenate((ends, [len(on) - 1]))):
-                b = int(on[first])
-                for j in _notches(int(last - first + 1), int(a), b, side):
-                    if axis == 0:
-                        cut[a, b + j] = True
-                    else:
-                        cut[b + j, a] = True
+        beside = np.roll(hi, step, axis=axis)
+        for under, limit in ((False, SNOW_RUN), (True, SNOW_RUN_UNDER)):
+            edge = snow & ~np.roll(snow, step, axis=axis) & (
+                (beside <= hi) if not under else (beside > hi))
+            rows = edge if axis == 0 else edge.T        # an edge that faces along x runs along z, and the other way round
+            for a in np.flatnonzero(rows.any(axis=1)):
+                on = np.flatnonzero(rows[a])
+                ends = np.flatnonzero(np.diff(on) > 1)      # the last cell of every run but the last run
+                for first, last in zip(np.concatenate(([0], ends + 1)), np.concatenate((ends, [len(on) - 1]))):
+                    b = int(on[first])
+                    for j in _notches(int(last - first + 1), int(a), b, side, limit):
+                        if axis == 0:
+                            cut[a, b + j] = True
+                        else:
+                            cut[b + j, a] = True
     return cut
 
 
