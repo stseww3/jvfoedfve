@@ -10,9 +10,11 @@ mountain with the ridge the trestle stands on (site/terrain's second draft; the 
 of site/_kit.py) and a sheet of cloud round its foot (sky/cloudsea). They fill empty cells only, and
 go when the real ones are merged.
 
-The views: V1 as the skeleton fixes it (nothing of the station may stand in it), the platform from
-the head of its steps, the station from the lower platform and from the head of the grand stair,
-the canopy from below, the trestle from the platform's corner and from the side, and one from above.
+The views (shots(); python -m scenes.obs_site_cablecar writes them to shots.json): V1 as the
+skeleton fixes it (the station keeps the building's part of it and the comet's clear, and only the
+waiting room stands in it, as its right edge), the platform from its south-west corner, the station
+from the lower platform and from the head of the grand stair, the glass roof from below, the
+trestle from the bay, from the side and looking back up it, and two from above.
 """
 from artkit.canvas import Canvas, Mix
 
@@ -31,6 +33,36 @@ CLOUD = Mix({B.CLOUD[1]: 2, B.CLOUD[2]: 3, B.CLOUD[3]: 2}, seed=227)
 CLOUD_Y = (-27, -26)            # the block cloud's two courses; its top face is at y -25
 FLANK = (61, -62, 112, -18)     # where the stand-in mountain is drawn
 SEA = (61, -96, 176, -10)       # where the stand-in cloud is drawn
+
+TIME = 14000
+# The arrival view is the skeleton's. It looks up at (8, 34, 0.5) since A0 #304; a tree whose
+# skeleton does not carry that figure yet gets it here.
+V1 = S.V1 if hasattr(S, "V1_CLEAR") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+EYE = S.EYE
+VIEWS = [
+    ("v1", V1["pos"], V1["look_at"]),
+    # the whole station from the corner where its two flights of steps meet
+    ("platform", (77.5, S.STATION_GROUND + EYE, -28.5), (88.5, -0.5, -35.5)),
+    # from the lower platform, and from the head of the grand stair on the upper terrace
+    ("lower", (70.5, S.LOWER_GROUND + EYE, -20.5), (86.0, -1.0, -35.0)),
+    ("stair_head", (59.5, S.GROUND + EYE, -5.5), (87.0, -2.0, -34.0)),
+    # up into the glass roof from the bay: the girder's end, a column, the west frame, the car's place
+    ("canopy", (87.5, S.STATION_GROUND + EYE, -29.5), (90.0, 1.2, -33.0)),
+    # the trestle: down it from the bay, from the side, and back up it from the second bent
+    ("trestle", (90.5, S.STATION_GROUND + EYE, -27.5), (118.0, -18.0, -42.0)),
+    ("trestle_side", (112.0, -6.0, -14.0), (112.0, -16.0, -40.0)),
+    ("east", (104.5, -8.5 + EYE, -36.5), (91.0, -1.0, -34.0)),
+    # from above: over the cloud to the south-east, and over the lower platform to the west
+    ("aerial", (114.0, 26.0, -2.0), (94.0, -8.0, -36.0)),
+    ("aerial_west", (64.0, 14.0, -12.0), (86.0, -4.0, -34.0)),
+]
+
+
+def shots(names=None):
+    """The shot list, or the views of it that are named."""
+    return [{"name": name, "pos": [round(float(v), 2) for v in pos],
+             "look_at": [round(float(v), 2) for v in look_at], "time": TIME}
+            for name, pos, look_at in VIEWS if names is None or name in names]
 
 
 def _crust(c, x, z, top, thick=3):
