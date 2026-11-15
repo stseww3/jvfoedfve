@@ -1,0 +1,63 @@
+a0job 1115-220628-ashlar-armillary-f3-799b-15411: cursor/c164-ashlar-armillary-f3-799b @ 9fda9e55 on the director's machine
+(the branch moved after the job was sent: it ran on 9fda9e55, not on 4ac98a36)
+  obs_mach_armillary_ah: water: 0 sources, 0 cells of running water (1 s)
+  obs_mach_armillary_ah: grid 213 x 73 x 213, 102850 blocks, 1649 entity boxes (2 s)
+  obs_mach_armillary_ah: 170 states -> 346 looks, 721 boxes, 98 pictures (2 s)
+  obs_mach_armillary_ah: light done (2 s)
+  obs_mach_armillary_ah: v2_axis (tick 14000, 2 s)
+  obs_mach_armillary_ah: v2_entrance (tick 14000, 1 s)
+  obs_mach_armillary_ah: meridian (tick 14000, 2 s)
+  obs_mach_armillary_ah: south_edge (tick 14000, 1 s)
+  obs_mach_armillary_ah: north_edge (tick 14000, 1 s)
+renders/obs_mach_armillary_ah/: 5 pictures of 9fda9e55 drawn, 1.7 MB
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  30 display entities, 26 models never placed
+[WARN] views     11 shots, most display entities in view: 30 (aerial), limit 600; counted without what walls hide; the game draws up to 30 (v2_axis): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 12.3% hidden (base storey 37%, great windows 4.1%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the 
+                 the great windows, bay 12: 33% hidden (y 8 to 11) by model c164:mach_armillary_a_colure at x 35, y 4, z 0; model c164:mach_armillary_a_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_a_equator at x 35, y 4, z 0; 2 mor
+[PASS] motion    nothing moves
+result: PASS (0 failed, 3 with warnings)
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  27 display entities, 28 models never placed
+[WARN] views     11 shots, most display entities in view: 27 (aerial), limit 600; counted without what walls hide; the game draws up to 27 (v2_axis): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.
+[WARN] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 12.5% hidden (base storey 37%, great windows 4.6%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the 
+                 the great windows, bay 12: 39% hidden (y 8 to 11) by model c164:mach_armillary_b_colure at x 35, y 4, z 0; model c164:mach_armillary_b_ecliptic at x 35, y 4, z 0; model c164:mach_armillary_b_meridian at x 35, y 4, z 0; 1 mo
+[PASS] motion    nothing moves
+result: PASS (0 failed, 3 with warnings)
+[PASS] blocks    61 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  31 display entities, 25 models never placed
+[WARN] views     5 shots, most display entities in view: 26 (south_edge), limit 600; counted without what walls hide; the game draws up to 31 (v2_axis): a display entity without width and height is drawn outside the view too
+                 the scene stands in the map's hour (mood.py) and its pack leaves the game's own sun in the sky, a white and yellow square on an open western horizon: write_pack adds the sky's pack, list(materials.pack(d) or []) + list(sky.
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+[PASS] motion    nothing moves
+result: PASS (0 failed, 2 with warnings)
+==== NODEJOB RESULT ====
+exit=0 secs=76 host=cursor cores=4 head=9fda9e55 commit=0634e8b0 pushed=yes branch=cursor/c164-ashlar-armillary-f3-799b files=30
+a0job: exit=0 secs=77
