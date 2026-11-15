@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:21。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 05:27。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -41,7 +41,7 @@
 | comet | c330 | node44 | c230 | sky/comet | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d` |
 | cloud | c329 | node43 | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e` |
 | a4 | c323 | node37 | c221 | site/terrain、site/court 打磨；site 牵头 | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824` |
-| stair | c337 | node51 | c225 | site/stair | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
+| stair | c337 | node51（11-16 05:26 掉线，总控让先投共享池 node4） | c225 | site/stair | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
 | cable | c338 | node52 | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7` |
 | power | c339 | node53 | c228 | site/powerhouse；然后 interiors/powerhouse（11-16 04:14 派，没有前任；外壳被退回时它优先） | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a`、`cursor/c164-power-interior-f3-2e4a` |
 | outb | c340 | node54 | c229 | site/outbuildings、site/mastbase | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8` |
@@ -59,9 +59,12 @@
 
 ## 还没人领的卡
 
-`machines/switchboard-boiler`、`machines/recorders`、`sky/ridges`（总监 11-16 05:20 提到 P2；领的人先找 cloud c329 对云海的高度）。照这个顺序发。谁手上的卡都交付了，私信总监助理领。
+谁手上的卡都交付了，私信总监助理领。总监 11-16 05:24 定了次序（细则在 `roles/A0-director.md` 第 4 节最后一条），照这个发：
 
-第二批卡总监在写（走查两张：沿游客的路连拍找毛病，室外、室内各一；成品地图导出一张；新房间四张：两翼底层、报时塔、小穹顶里面），写好进 `plan/packages/` 再发。写好以前手上空了、池子里也没有卡的人，先照自己那一包的评审意见和真机看板做打磨。
+1. 第一批剩下的三张：`machines/switchboard-boiler`、`machines/recorders`、`sky/ridges`（提到 P2；领的人先找 cloud c329 对云海的高度）。
+2. 第二批的 P1（卡在 `plan/packages/common/`）：`common/walk` 两张，`walk-out`（室外走查）、`walk-in`（室内和屋顶走查），各一人，不等任何一包交付，现在就能开；`common/export`（成品地图导出，现在空跑）。
+3. 上面都发完了、手上又空的人：照自己那一包的评审意见和真机看板打磨。
+4. 第二批的四间新房，P3：`interiors/batteryroom`（北翼底层蓄电池室）、`interiors/platevault`（南翼底层底片库和暗房）、`interiors/clockroom`（报时塔钟室）、`interiors/astroroom`（小穹顶室，先问 sdome c328）。每间先交一页草图给总监看过再铺开，不许拖第一批。
 
 ## 派单（只有总监开人）
 
