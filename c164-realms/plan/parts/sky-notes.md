@@ -14,8 +14,10 @@
 ## 2. 时间
 
 - `time set <刻数 | 命名时刻>`；命名时刻写在时间线的 `time_markers` 里：`{"c164art:blue": {"show_in_commands": true, "ticks": 14000}}`。
-- 出图的驱动：`place.py` 摆完执行 `tick freeze`，并且已经设了 `advance_weather false`、`weather clear`；`tools/shoot.py` 先 `gamerule advance_time false`，每个镜头 `time set <shots.json 里的 time，默认 noon>`。离线的 `render.py` 只认原版的时刻名和数字，所以 `shots.json` 里写数字。
-- 云的漂移用的是游戏时间（每刻向西 0.03 格），不是昼夜时钟：只停昼夜（`advance_time false`）云还在飘；`tick freeze` 下云不动。
+- 出图的驱动：`place.py` 设了 `advance_weather false`、`weather clear`，只在摆的那一段 `tick freeze`，摆完就 `tick unfreeze`（11-15 夜重读代码改的这一句；原来写的“摆完执行 `tick freeze`”不对）；`tools/shoot.py` 先 `gamerule advance_time false`，每个镜头 `time set <shots.json 里的 time>`（没写的按 A 版的 14000），不冻。所以真机拍图时游戏是走着的。离线的 `render.py` 只认原版的时刻名和数字，所以 `shots.json` 里写数字。
+- 云的漂移用的是游戏时间（每刻向西 0.03 格，一秒 0.6 格），不是昼夜时钟：只停昼夜（`advance_time false`）云还在飘；`tick freeze` 下云不动。方向和速度游戏写死，资源包和数据包都改不了。两个后果：
+  - 同一个机位先后拍的两张图，云层的位置不一样。拿 `_tones.py` 比两张图的云色时探针取大块（云图的一块有 12 格宽），不比单个像素；`--diff` 的脚印里露出云层的地方不算。S2 要给 `place.py` 加的 `--still`（c188 #39830）只是摆完不起 motion 的循环，云照样飘。
+  - 全场定的是北风（总监 #39156），云层却往西：会动的东西里只有它不跟风。c227 #40048 的默认是不管它，理由和看得出多少记在 `motion.md` 第 9 节。
 
 ## 3. 天空的颜色
 
