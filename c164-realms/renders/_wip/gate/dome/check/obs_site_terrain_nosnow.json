@@ -1,0 +1,108 @@
+{
+ "scene": "obs_site_terrain_nosnow",
+ "commit": "4734497",
+ "result": "PASS",
+ "checks": [
+  {
+   "check": "regen",
+   "status": "PASS",
+   "summary": "99395 blocks, 4 entities, 24 models, 649 resource-pack files, 36 data-pack files, look: 1 biomes, 1 timelines (1.1 s)",
+   "details": []
+  },
+  {
+   "check": "conflicts",
+   "status": "PASS",
+   "summary": "the scene writes 648 files, no file written twice, the packages of site write nothing into the pack",
+   "details": []
+  },
+  {
+   "check": "strays",
+   "status": "PASS",
+   "summary": "132 pictures, every colour in the palette",
+   "details": []
+  },
+  {
+   "check": "refs",
+   "status": "PASS",
+   "summary": "507 block states, item definitions and models read, every model and picture they name is there",
+   "details": []
+  },
+  {
+   "check": "repaint",
+   "status": "PASS",
+   "summary": "91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table",
+   "details": []
+  },
+  {
+   "check": "blocks",
+   "status": "PASS",
+   "summary": "54 kinds of block placed, all in the occupancy table",
+   "details": []
+  },
+  {
+   "check": "flatwall",
+   "status": "WARN",
+   "summary": "8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)",
+   "details": [
+    "oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)",
+    "oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)",
+    "oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)",
+    "oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)",
+    "smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)",
+    "smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)",
+    "smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)",
+    "smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)"
+   ],
+   "data": {
+    "largest": 7,
+    "faces": 8
+   }
+  },
+  {
+   "check": "entities",
+   "status": "PASS",
+   "summary": "4 display entities, 22 models never placed",
+   "details": []
+  },
+  {
+   "check": "views",
+   "status": "PASS",
+   "summary": "4 shots, most display entities in view: 4 (v11_sunset), limit 600; counted without what walls hide",
+   "details": [],
+   "data": {
+    "shots": [
+     {
+      "name": "v11_sunset",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "v12_aerial",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "west_prow",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     },
+     {
+      "name": "south_flank",
+      "in_view": 4,
+      "drawn": 4,
+      "beyond_tracking": 0
+     }
+    ]
+   }
+  },
+  {
+   "check": "sight",
+   "status": "SKIP",
+   "summary": "no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view",
+   "details": []
+  }
+ ]
+}
