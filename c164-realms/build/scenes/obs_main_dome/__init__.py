@@ -4,10 +4,15 @@ The rotunda where it stands in the master scene: the site under it, the whole ma
 props line's lamps and the sky line's light sources last. The lines are built whole, in the master
 scene's order, so the pictures keep up with them as their packages are merged.
 
-The dome is version a here (twenty fine ribs, two leaves that part sideways), its slit open as in
+The dome is version a here (twenty flush seams, two leaves that part sideways), its slit open as in
 the master scene. obs_main_dome_b is this scene with version b; every shot has its twin of the same
 name there. obs_main_dome_slit stands both versions side by side with the slit shut, half open and
 open.
+
+What the shots are for: v1 and v2_axis are the two main views (the dome is a stamp in the first and
+the top of the picture in the second: its outline has to be a clean round, the drum has to show its
+bays); v11 and aerial are the other two views it is in; roof, drum and gallery look at the drum,
+the gallery and the dome's foot from close by; top, slit and west at the crown and the slit.
 
     python -m scenes.obs_main_dome        writes shots.json of the three scenes
 """
@@ -26,6 +31,12 @@ LINES = (site, main, props, sky)
 VERSION = "a"
 SLIT = "open"
 TIME = 14000                    # light version A, the default (INTERFACE: 18000 is B, 12900 is C)
+# The two main views are the skeleton's. The director raised both (group #304: V1 looks at
+# (8, 34, 0.5), V2 stands at (58.5, 1.7, 0.5) and looks at (17, 19, 0.5)) and had V2 written into
+# the skeleton; a skeleton that has no V2 yet is older than that ruling, and the ruling's own
+# numbers stand in for it.
+V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
+V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
 
 
 @contextlib.contextmanager
@@ -65,22 +76,24 @@ def shots():
     cx, cz = S.DOME_CENTRE
     axis = cz + 0.5
     spring = float(S.DOME_SPRING)
-    court = S.EAST_EDGE_X - 1.5                         # the east edge of the court, on the axis
     out = []
 
     def shot(name, pos, look_at):
-        out.append({"name": name, "pos": [round(v, 2) for v in pos],
-                    "look_at": [round(v, 2) for v in look_at], "time": TIME})
+        out.append({"name": name, "pos": [round(float(v), 2) for v in pos],
+                    "look_at": [round(float(v), 2) for v in look_at], "time": TIME})
 
     # V1, the arrival: the dome is a stamp in it, and has to read as a round
-    shot("v1", S.V1["pos"], S.V1["look_at"])
+    shot("v1", V1["pos"], V1["look_at"])
     # V2: the court's axis at eye height, the entrance front and the dome over it
-    shot("v2_axis", (court, 1.7, axis), (17.0, 11.0, axis))
+    shot("v2_axis", V2["pos"], V2["look_at"])
     # V11: back from the south lookout, three quarters
     shot("v11", S.V11["pos"], S.V11["look_at"])
-    # the roofs' level: the drum, the gallery and the feet of the ribs, from over the south wing
+    # the roofs' level: the drum, the gallery and the dome's foot, from over the south wing
     shot("roof", (cx + 16.0, spring + 3.0, cz + 16.0), (cx + 4.0, spring, cz + 4.0))
-    # standing in the gallery's gutter on the east side: the ring beam, the axle boxes, the railing
+    # the drum's bays, level with them, from the air in front of the building: pilasters, niches and
+    # windows, the corbel course and the gallery's cove from below
+    shot("drum", (cx + 22.0, spring - 2.0, cz + 12.0), (cx + 10.0, spring - 3.5, cz + 6.0))
+    # standing in the gallery's gutter on the east side: the ring beam, the axle boxes, the posts
     shot("gallery", (cx + 14.5, spring - 0.5 + S.EYE, cz - 3.5), (cx + 9.5, spring + 2.0, cz + 8.0))
     # from above, as V12 comes over the building from the south-east
     shot("aerial", (cx + 36.0, 60.0, cz + 30.0), (cx + 2.0, 20.0, cz))
