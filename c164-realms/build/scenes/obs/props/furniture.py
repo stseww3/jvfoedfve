@@ -22,7 +22,7 @@ is looked at and not its frame. Glass is not drawn; its reflection is (_kit.pane
     library_ladder   three blocks tall, leans on a bookcase; its rollers ride on ladder_rail
     ladder_rail      one block of that brass rail (rail() lays a run of it)
     coat_stand       two blocks tall: a turned post on three claws, a crown of five brass hooks
-    trunk            a canvas travelling trunk with leather straps and brass corners
+    trunk            a travelling trunk in brown hide with darker straps and brass corners
     crate            a packing case of raw deal: boards with gaps between them, nailed to a cleat at
                      every corner, a line of stencilled marks
     crate_small      the same, small enough to stand on the trunk's lid
@@ -64,26 +64,14 @@ IRON_D = K.IRON_D
 BRASS, BRASS_D = K.BRASS, K.BRASS_D
 PIN = K.flat("brass", 4)
 BOLT = K.flat("iron", 4)                          # a bolt head in wood: a cool dot, no lighter than the wood
-# A travelling trunk is covered in brown canvas: the old-coin brown of the copper plates (the ramp's
-# second step, as materials has it since A0's ruling), painted as cloth: no streaks, a worn edge. The
-# woven cream the card named (cream_cloth) came out the whitest thing on the stage after the lamps,
-# and mottled; the darkest plain cream still read as a box painted white, and the ramp's middle step
-# of old copper as a pink one under a lamp.
-CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=1)
-SEAM = K.flat("old_copper", 0)                    # the binding of the trunk's lid: a step under its canvas
-TRUNK_STRAP = LEATHER
-# trial, not for delivery: C164_TRUNK_TRY picks the trunk's canvas for a look on the node
-_TRY = __import__("os").environ.get("C164_TRUNK_TRY", "")
-if _TRY in ("n1", "n2"):                          # navy canvas, tan straps
-    CANVAS = P.mat("enamel", kind="plain", noise=0.06, bevel=1, base=int(_TRY[1]))
-    SEAM = K.flat("enamel", 0)
-    TRUNK_STRAP = P.mat("dark_wood", kind="plain", noise=0.10, base=4)
-elif _TRY == "w":                                 # canvas the brown of the lightest wood
-    CANVAS = P.mat("dark_wood", kind="plain", noise=0.06, bevel=1, base=4)
-    SEAM = K.flat("dark_wood", 2)
-elif _TRY == "c":                                 # the darkest old copper
-    CANVAS = P.mat("old_copper", kind="plain", noise=0.06, bevel=1, base=0)
-    SEAM = K.flat("dark_wood", 1)
+# A travelling trunk is covered in brown hide: the brown of the lightest wood, laid on flat, with no
+# grain and a worn edge, so that it is leather beside the boards of a packing case. What else was
+# tried: the woven cream the card named (cream_cloth) came out the whitest thing on the stage after
+# the lamps, and mottled; the darkest plain cream still read as a box painted white; old copper as a
+# pink box under a lamp on the ramp's middle step and as a lilac one under the sky a step lower;
+# enamel blue with tan straps as the loudest thing in the room.
+HIDE = P.mat("dark_wood", kind="plain", noise=0.06, bevel=1, base=4)
+SEAM = K.flat("dark_wood", 2)                     # the edge of the trunk's lid: two steps under its hide
 # The bed of a display case is blue velvet: one flat tone of the night glass, the house's blue under
 # its brass. Brass and paper laid on it are both far lighter than the bed (the darkest cream was as
 # light as a wall of stone, and a sheet of paper on it was lost); not a speck on it that could be
@@ -438,11 +426,11 @@ def _trunk():
     straps = (-7.0, 5.0)
     for x0 in straps:                                                # runners
         m.box((x0, 0.0, -5.0), (x0 + 2.0, 1.0, 5.0), WOOD_D, grain="z")
-    m.box((-11.0, 1.0, -5.0), (11.0, 11.0, 5.0), CANVAS, grain="x")
-    # the edge of the lid: a line of darker canvas and no more, so the straps cross nothing dark
+    m.box((-11.0, 1.0, -5.0), (11.0, 11.0, 5.0), HIDE, grain="x")
+    # the edge of the lid: a darker line and no more, so the straps cross nothing dark
     m.box((-11.25, 7.0, -5.25), (11.25, 8.0, 5.25), SEAM, grain="x", skip="ud")
     for x0 in straps:                                                # two straps and their buckles
-        m.box((x0, 1.0, -5.5), (x0 + 2.0, 11.5, 5.5), TRUNK_STRAP, grain="y")
+        m.box((x0, 1.0, -5.5), (x0 + 2.0, 11.5, 5.5), LEATHER, grain="y")
         m.box((x0, 4.0, 5.5), (x0 + 2.0, 6.0, 5.75), BRASS)
     for x0 in (-11.25, 9.0):                                         # the corners: dull brass, eight of them
         for z0 in (-5.25, 3.0):
@@ -450,7 +438,7 @@ def _trunk():
                 m.box((x0, y0, z0), (x0 + 2.25, y0 + 2.25, z0 + 2.25), BRASS_D)
     m.box((-1.0, 6.0, 5.0), (1.0, 9.0, 5.5), BRASS)                  # the lock: the one bright piece
     for x0 in (-11.5, 11.0):
-        m.box((x0, 5.0, -2.0), (x0 + 0.5, 6.0, 2.0), TRUNK_STRAP)    # end handles
+        m.box((x0, 5.0, -2.0), (x0 + 0.5, 6.0, 2.0), LEATHER)        # end handles
     return m
 
 
