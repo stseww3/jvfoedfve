@@ -23,8 +23,8 @@ near, and the wall's length from the yard's north end; and three from above, one
 axis, the way a car of the cableway comes in: the line from the yard's edge to the door.
 
 Two more scenes show the same hill with one thing left out, on the views that are judged
-(JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chooses on the
-pictures) and obs_site_stair_nolamps without the lamps of the way (c235's review).
+(JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chose on the
+pictures: the band stays) and obs_site_stair_nolamps without the lamps of the way (c235's review).
 
     python -m scenes.obs_site_stair      writes shots.json for the three scenes
 """

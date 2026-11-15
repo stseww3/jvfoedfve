@@ -27,7 +27,9 @@ front's brightness (the card has the numbers).
   band       The walk of the court above comes down the middle of the treads in its own stone and
              goes on across the lower platform (site/lowerplatform): the door bay with its two
              pilasters, rows z -2..2, one line from the yard's east edge to the door. A switch
-             (A0 #28839), on by default: BAND, or build(band=...).
+             (A0 #28839): BAND, or build(band=...). On: the director kept the band on the pictures
+             (11-16). With it that line is unbroken; from the yard it is a paler runner up the
+             middle of the treads and does not cut the stair in three.
   cheeks     A wall on each side, outside the 17 (rows z -9 and 9, in line with the end piers of
              the terrace railing): slate brick like the retaining wall it grows out of and on the
              same plinth course, under one course of coping that rakes with the stair, one block
@@ -82,7 +84,7 @@ GRATE = B.IRON_GRATE
 
 # The court's walk (site/court) is the door bay with its two pilasters. The band on the treads and
 # the walk across the lower platform (site/lowerplatform) keep its rows.
-BAND = True                         # the switch (A0 #28839): the walk's band lies on the treads
+BAND = True                         # the switch (A0 #28839; kept on the pictures, 11-16): the walk's band lies on the treads
 WALK_Z = (S.pilaster_z(S.CENTRE_BAYS[1] - 1), S.pilaster_z(S.CENTRE_BAYS[1]))       # rows -2..2
 
 # The piers of the terrace railing stand on the pilaster lines (K.beat). The first line clear of a
