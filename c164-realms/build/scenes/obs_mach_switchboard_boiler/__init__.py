@@ -55,9 +55,11 @@ def _room(c):
     # the door on the south wall, for the room view
     c.carve(int(SB.BOILER_C[0]) - 1, FEET, Z1, int(SB.BOILER_C[0]) + 1, FEET + 2, Z1)
     c.set(int(SB.BOILER_C[0]) - 2, CEIL - 1, int(SB.BOILER_C[2]), f"{B.LIGHT}[level={WORK_LIGHT}]")
-    # a light in front of the switchboard's face, so the board's phosphor and pilot lamps can be seen
-    # (cr3: the board had no bright point at all)
-    c.set(int(SB.BOARD_AT[0]) + 2, CEIL - 2, int(SB.BOARD_AT[2]), f"{B.LIGHT}[level={BOARD_LIGHT}]")
+    # the light in front of the switchboard's face: ONE block out and at the face's own middle, not
+    # up by the ceiling. A rank-3 lamp loses a level a block, so at CEIL-2 (eight blocks up) it lit
+    # nothing at all (cr3 measured the board before and after as identical).
+    c.set(int(SB.BOARD_AT[0]) + 1, int(FEET + 1.5), int(SB.BOARD_AT[2]),
+          f"{B.LIGHT}[level={BOARD_LIGHT}]")
     return c
 
 
