@@ -1,0 +1,42 @@
+a0job 1115-223949-snow-paper-f3-17de-9442: cursor/c164-snow-paper-f3-17de @ 3cb04190 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.82 1.62 1.55, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_paper ---- exit 0, 84 s, last 34 lines of 32:
+  obs_props_paper: 873 blocks, 27 entities (0 s)
+  obs_props_paper: resource pack written to /tmp/c164pack-jarsnmi_ (1 s)
+  obs_props_paper: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_paper: grid 42 x 9 x 13, 873 blocks, 468 entity boxes (1 s)
+  obs_props_paper: 5 states -> 11 looks, 9 boxes, 26 pictures (1 s)
+  obs_props_paper: light done (1 s)
+  obs_props_paper: far (tick 14000, 2 s)
+  obs_props_paper: wall_great (tick 14000, 3 s)
+  obs_props_paper: wall_stone (tick 14000, 2 s)
+  obs_props_paper: wall_wood (tick 14000, 4 s)
+  obs_props_paper: star_charts (tick 14000, 2 s)
+  obs_props_paper: blueprints (tick 14000, 5 s)
+  obs_props_paper: star_charts_wood (tick 14000, 4 s)
+  obs_props_paper: blueprints_wood (tick 14000, 4 s)
+  obs_props_paper: star_chart_near (tick 14000, 2 s)
+  obs_props_paper: star_chart_b_near (tick 14000, 2 s)
+  obs_props_paper: blueprint_near (tick 14000, 2 s)
+  obs_props_paper: blueprint_b_near (tick 14000, 2 s)
+  obs_props_paper: moon_map_near (tick 14000, 2 s)
+  obs_props_paper: moon_map_wood (tick 14000, 4 s)
+  obs_props_paper: blackboard_near (tick 14000, 4 s)
+  obs_props_paper: blackboard_side (tick 14000, 3 s)
+  obs_props_paper: sky_maps (tick 14000, 4 s)
+  obs_props_paper: sky_map_near (tick 14000, 4 s)
+  obs_props_paper: sky_map_b_near (tick 14000, 2 s)
+  obs_props_paper: sky_map_below (tick 14000, 1 s)
+  obs_props_paper: desk (tick 14000, 3 s)
+  obs_props_paper: logbook_near (tick 14000, 3 s)
+  obs_props_paper: blueprint_flat (tick 14000, 3 s)
+  obs_props_paper: light_table (tick 14000, 3 s)
+  obs_props_paper: plates_near (tick 14000, 2 s)
+renders/obs_props_paper/: 25 pictures of 3cb04190 drawn, 3.2 MB
+==== NODEJOB RESULT ====
+exit=0 secs=87 host=cursor cores=4 head=3cb04190 commit=5a0bb6c5 pushed=yes branch=cursor/c164-snow-paper-f3-17de files=26
+a0job: exit=0 secs=87
