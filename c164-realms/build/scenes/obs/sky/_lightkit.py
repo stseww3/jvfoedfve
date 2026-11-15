@@ -160,6 +160,15 @@ TALL = 4                    # a window of this many rows or more is a tall one
 # way through the room: the recess of another window of the same room, which is dark glass or has
 # a source of its own.
 THROUGH = 2
+# That way through the room is kept for the brightest window. Behind the glass its sources lit the
+# recesses of the two windows beside it as if no pier stood between: the stone round the curtained
+# windows of the entrance stands in the gold one's light (6 to 7 on their inner jambs; 4 to 5 from
+# their own source), and that is the entrance as the director has seen it. So each source of such a
+# window lends one to the window on either side: in the column nearest to it, in its own row, as
+# many levels lower as the two columns are cells apart. The other tiers lend nothing. Beside a lit
+# window of a wing stands a dark one; it had up to 5 in its recess from the room behind it, which
+# a dark room does not give, and keeps what the front gives it.
+LENDS = (BRIGHT,)
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
