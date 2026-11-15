@@ -1,19 +1,19 @@
 """Test scene of the work package machines/mast (card machines/radiomast): the radio mast where it
-stands in the map, with stand-ins for what it stands on, ties to and is seen behind.
+stands in the map, with stand-ins for what it stands on and is seen beside and behind.
 
-This scene shows version a, the default: the whole shaft is display models. Its twin
+This scene shows version a, the default: foot and shaft are display models. Its twin
 obs_mach_radiomast_b shows version b (legs and belts of the thin iron pipe block, the models carry
 the diagonals) from the same cameras, so the two sets of pictures can be laid side by side shot by
 shot; the pairs that decide are v1, skyline, aerial and far70.
 
 Stand-ins, each only as far as the mast needs it:
-  - the stone foot, the four guy anchors and the lead-in post are c229's (site/mastbase). When that
+  - the stone foot, the four guy anchors and the lead-in post are site/mastbase's. When that
     module is in the tree it is built as it is; until then the same blocks are put down here from
     the numbers the mast reads;
   - the pad and a strip of the terrace south of it, one flat course;
-  - the clock tower (c223's) as a banded shaft on the skeleton's footprint, with its lowest
-    cornice, a rod for the time-ball mast and the iron rod the aerial hooks on to;
-  - the meridian hut (c229's) as a low box: V2 sees the mast rise from behind it.
+  - the clock tower (main/tower) as a banded shaft on the skeleton's footprint, with its lowest
+    cornice and a rod for the time-ball mast: V1, V2 and V5 see the mast beside it;
+  - the meridian hut as a low box: V2 sees the mast rise from behind it.
 
 The shots are written from the numbers below:  python -m scenes.obs_mach_radiomast
 """
@@ -45,10 +45,10 @@ SEAT = B.IRON_RIVETED.block
 BOLT = st(B.IRON_ROD, facing="up")
 TOWER = (B.ASHLAR_FINE.block, B.ASHLAR_ROUGH.block)     # in bands three courses high: no face is flat over 5 x 5
 CORNICE = st(B.ASHLAR_FINE.slab, type="top")
-CORNICE_Y = 31                  # c223's lowest cornice: one cell out all round at this y; the aerial's rod is under it
+CORNICE_Y = 31                  # the tower's lowest cornice: one cell out all round at this y
 HUT_WALL = B.ASHLAR_ROUGH.block
 HUT_ROOF = st(B.SLATE_TILE.slab, type="bottom")
-HUT_EAVES = 3                   # c229's hut: three courses of wall, the roof on them
+HUT_EAVES = 3                   # the hut: three courses of wall, the roof on them
 
 # the cameras of the board that have the mast in them; the skeleton's own where it has them. V5 and
 # V12 are not in the skeleton yet: until they are, the render station's proposals stand here, worked
@@ -64,8 +64,8 @@ V12 = getattr(S, "V12", dict(pos=(S.EAST_EDGE_X + 20.0, 90.0, S.Z_SOUTH + 46.0),
 
 
 def _foot(c):
-    """c229's foot of the mast from the numbers the mast reads: the step and its coping, the iron
-    seat, the four anchors with their eye bolts, the lead-in post."""
+    """The stone foot of the mast from the numbers the mast reads: the step and its coping, the
+    iron seat, the four anchors with their eye bolts, the lead-in post."""
     fx, fz, g = mast.FX, mast.FZ, int(mast.G)
     for dx in range(-2, 3):
         for dz in range(-2, 3):
@@ -82,8 +82,8 @@ def _foot(c):
 
 
 def _tower(c):
-    """The clock tower as far as the aerial needs it: the shaft, its lowest cornice, the time-ball
-    mast, and the rod that runs north from the wall to the aerial's hook."""
+    """The clock tower as far as the mast is seen beside it: the shaft, its lowest cornice and the
+    time-ball mast."""
     x0, x1 = S.CLOCK_SHAFT_X
     z0, z1 = S.CLOCK_SHAFT_Z
     for y in range(0, S.CLOCK_TOP + 1):
@@ -94,9 +94,6 @@ def _tower(c):
                 c.set(x, CORNICE_Y, z, CORNICE)
     cx, cz = (x0 + x1) // 2, (z0 + z1) // 2
     c.box(cx, S.CLOCK_TOP + 1, cz, cx, S.CLOCK_BALL_MAST - 1, cz, BOLT)
-    hx, hy, hz = mast.TOWER_HOOK
-    for z in range(int(round(hz)), z0):
-        c.set(int(math.floor(hx)), int(math.floor(hy)), z, st(B.IRON_ROD, facing="north"))
 
 
 def _hut(c):
@@ -142,8 +139,8 @@ def write_pack(pack_dir):
 def shots():
     """The cameras. From far: the board's V1, V2, V5, V11 (skyline) and V12 (aerial), and the whole
     mast from 70 blocks under the three lights. From near: the lattice where the guys meet it, the
-    look up from the pad, the foot on the seat, the same from the clock tower's top, one anchor with
-    its guy, the aerial's end at the tower, the head and its lamp."""
+    look up from the pad, the foot on the seat, the same from above, one anchor with its guy, the
+    head and its lamp."""
     out = []
 
     def shot(name, pos, look_at, time=TIME):
@@ -168,7 +165,5 @@ def shots():
     shot("seat", (ax + 12.0, mast.BASE_Y + 17.0, az + 12.0), (ax, mast.BASE_Y + 0.5, az))
     sx, sy, sz = max(mast.GUY_ANCHORS, key=lambda p: (p[0], p[2]))              # the south-east anchor,
     shot("stay", (sx + 1.9, sy + 0.8, sz - 1.9), (sx - 0.1, sy + 1.0, sz - 0.1))        # its guy seen from the side
-    hx, hy, hz = mast.TOWER_HOOK
-    shot("tower", (hx + 3.5, hy + 1.0, hz - 4.0), (hx + 0.1, hy + 0.6, hz - 0.1))
     shot("head", (ax + 4.5, mast.TOP_Y + 4.0, az + 5.5), (ax - 0.3, mast.TOP_Y + 2.1, az + 0.2))
     return out

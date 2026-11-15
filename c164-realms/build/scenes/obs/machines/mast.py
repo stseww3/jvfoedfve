@@ -2,69 +2,76 @@
 plan/packages/machines/radiomast.md).
 
 The tallest upright of the skyline: an iron lattice mast on the stone foot north of the court
-(site/mastbase, c229), the top of its lamp 62 blocks over the pad. It is seen from far more than
-from near: the arrival view V1 stands 65 blocks from it, V2 53, V11 95 and the bird's eye V12 about
-132, so what counts is that it is there at those distances, one unbroken dark line against the sky,
-and reads as a lattice mast.
+(site/mastbase), the top of its lamp 62 blocks over the pad. It is seen from far more than from
+near: the arrival view V1 stands 65 blocks from it, V2 53, V11 95 and the bird's eye V12 about 132,
+so what counts is that it is there at those distances, one unbroken dark line against the sky, and
+reads as a lattice mast.
 
 How it is made, from the seat up:
 
-  foot    the four legs run together over one porcelain insulator on the iron seat: the mast
-          stands on a point and is fed there (a copper lead to c229's lead-in post, a spark gap
-          across the insulator). That is why it has guys, and why the guys are broken by eggs of
-          porcelain.
+  foot    the four legs come straight down to the four corners of the iron seat, and each stands
+          on a porcelain pot of its own: the whole mast is the radiator and is insulated from the
+          ground. It is fed at one shoe (a copper lead to the lead-in post of site/mastbase), and
+          a spark gap bridges the pot of the next leg. That is why the guys are broken by eggs of
+          porcelain. Two belts and two bays of diagonals tie the legs over the shoes: the shaft
+          goes on to the seat, square. It does not run to a point over one base insulator: V1
+          sees nothing under y 3 and would see the lattice thin out to nothing on the terrace's
+          edge, and a lattice that is thin at both ends is the jib of a crane.
   shaft   square and not tapered, the leg axes 2 blocks apart, a belt every 3 blocks, 16 bays of
           crossed diagonals with a plate at every joint and where the diagonals cross: y 8.5 to
           56.5. Four pieces of 12 blocks, shown four times their size (px = 4 keeps 16 texels to
           the block): 12 blocks are the 48 units a model may span.
-  head    the legs gather to a pole that carries the lamp; an arm on the corner that looks at the
-          clock tower holds the aerial. No yard and no gallery: nothing crosses the upright.
-  lamp    one small red globe, lit steadily (A0 #36376: it does not blink, the comet is the one
+  head    the legs gather to a pole that carries the lamp. No yard, no gallery, no arm: nothing
+          crosses the upright.
+  lamp    one small red lantern, lit steadily (A0 #36376: it does not blink, the comet is the one
           thing in the sky that may draw the eye). Its brightest tone is the signal ramp's second
           lightest, level with the orange windows: a warning lamp, not one more star. Its entity is
           tagged c164_signal and mach_mast_light_off is its dark twin, kept for the motion line.
           It throws no light: nothing stands near it to be lit, and a source up there would only
-          pale the iron under it.
-  guys    c229's four anchors stand on the diagonals, 4 blocks out, so the guys go four ways (the
-          card said three), one from each anchor to the leg that looks at it, at belt 5 (y 23.5).
-          The anchors are close to the foot: a guy to the top would run within 5 degrees of its
-          leg and read from far as the mast seen double, so they stop low, where the four of them
-          make a tent that stands clear of the shaft. At the anchor a clamp on the eye bolt, a
-          bottle screw and an egg; at the leg a clamp on the corner of the joint; one more egg a
-          third of the way down from there; the cable between is drawn out. All of it keeps north
-          of z -35: nothing crosses the court or the sight lines of V1 and V2 to the main building.
-  aerial  one wire from the arm at the head to an iron rod on the clock tower (main/tower, c223),
-          a string of three porcelain discs at each end. The wire and the guys are two texels
-          thick and of the darkest iron, so that they hold as lines against the sky; the discs
-          aloft are grey porcelain: white ones would be brighter than the night sky and read as
-          stars beside the comet. White porcelain is kept for the foot and the guys, low down.
+          pale the iron under it. Its glass lies in a frame of its own, turned so that the game
+          gives every one of its faces the same light from wherever it is seen (see LAMP_FRAME).
+  guys    the four anchors of site/mastbase stand on the diagonals, 4 blocks out, so the guys go
+          four ways (the card said three), one from each anchor to the leg that looks at it, at
+          belt 5 (y 23.5). The anchors are close to the foot: a guy to the top would run within 5
+          degrees of its leg and read from far as the mast seen double, so they stop low, where
+          the four of them make a tent that stands clear of the shaft. At the anchor a clamp on
+          the eye bolt, a bottle screw and an egg; at the leg a clamp on the corner of the joint;
+          one more egg a third of the way down from there; the cable between is drawn out, two
+          texels thick and of dark iron, so that it holds as a line against the sky. All of it
+          keeps north of z -35: nothing crosses the court or the sight lines of V1 and V2 to the
+          main building. White porcelain is kept for the foot and the guys, low down: the highest
+          white piece is the guys' upper egg, at y 16.6. Aloft it would be brighter than the
+          night sky and read as a star beside the comet.
+  aerial  the mast itself. It hangs no wire: one from its head down to the clock tower was drawn
+          and dropped. The board's wide views tilt the mast, and a thin line that hangs straight
+          down from the tip of a tilted lattice is the hoist rope of a crane's jib; a cage of
+          thin wires in its place breaks up into dashes at those distances.
 
 All pieces are given one brightness, the open sky's: each would otherwise take the light of the
 cell its anchor is in, and a lamp near the foot would show as a step where two pieces meet.
 
-Two ways to build the shaft, to be compared on pictures from near and from far (the test scenes
-obs_mach_radiomast and obs_mach_radiomast_b show them from the same cameras):
+Two ways to build the foot and the shaft, to be compared on pictures from near and from far (the
+test scenes obs_mach_radiomast and obs_mach_radiomast_b show them from the same cameras):
 
   a   all of it display models: legs 5 texels square, belts and diagonals 3. Inside each model leg
       stands a column of the thin iron pipe block (B.IRON_PIPE), hidden by it. The server sends a
       display entity to a player within 160 blocks at the most and never farther than its view
       distance; all cameras of the board are nearer than that, but should the models ever fall
-      away, four thin legs still stand.
+      away, four thin legs still stand. The columns are also all of the mast that a player
+      cannot walk through.
   b   legs and belts are that pipe block, 3 texels thick and partly open; the models carry the
-      diagonals and the plates only.
+      diagonals, the plates and the pots only.
 
-a is the default until the pictures say otherwise: legs, belts and diagonals are drawn one way and
-take the same light, and from V1 a leg of 5 texels is about two pixels wide in a 720p picture, the
-pipe block little more than one.
+a is the default: legs, belts and diagonals are drawn one way and take the same light, and from V1
+a leg of 5 texels is about two pixels wide in a 720p picture, the pipe block little more than one.
 
-What this module reads from its neighbours, each with the same numbers as a fallback while the
-neighbour is not in the tree: site.mastbase.TOP, GUY_ANCHORS and ANTENNA_HOOK; main.tower.
-ANTENNA_ANCHOR, the point where the aerial's lower string hooks on. What the clocks' test scenes
-(c238) read from this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, TOWER_HOOK.
+What this module reads from its neighbour site.mastbase, with the same numbers as a fallback while
+it is not in the tree: TOP, GUY_ANCHORS and ANTENNA_HOOK. What the clocks' test scenes read from
+this one: build, models, BASE_Y, GUY_ANCHORS, LEAD_POST, and TOWER_HOOK, which is kept for them
+alone (see there).
 """
 import functools
 import math
-import os
 
 from artkit import models as M
 from artkit.blocks import st
@@ -74,13 +81,9 @@ from ..common import palette as P
 from ..common import skeleton as S
 
 try:
-    from ..site import mastbase as _base        # c229: the stone foot, the guy anchors, the lead-in post
+    from ..site import mastbase as _base        # the stone foot, the guy anchors, the lead-in post
 except ImportError:
     _base = None
-try:
-    from ..main import tower as _tower          # c223: the rod on the clock tower that the aerial hooks on to
-except ImportError:
-    _tower = None
 
 PREFIX = "mach_mast_"
 VERSIONS = ("a", "b")
@@ -89,20 +92,17 @@ DEFAULT = "a"
 # ---- where it stands -------------------------------------------------------------------------------
 FX, FZ = S.RADIO_MAST["foot"]                   # (23, -40): the cell the mast's axis stands in
 G = float(S.MAST_PAD["feet"])                   # 0.0: where feet stand on the pad
-AX, AZ = FX + 0.5, FZ + 0.5                     # the axis, (23.5, -39.5): the middle of c229's seat
+AX, AZ = FX + 0.5, FZ + 0.5                     # the axis, (23.5, -39.5): the middle of the seat
 TIP_Y = G + float(S.RADIO_MAST["height"])       # 62.0: the top of the lamp
 
 BASE_Y = float(getattr(_base, "TOP", G + 2.0))  # 2.0: the top face of the seat
 GUY_ANCHORS = [tuple(float(v) for v in p) for p in getattr(
     _base, "GUY_ANCHORS", [(FX + sx * 4 + 0.5, G + 2.0, FZ + sz * 4 + 0.5) for sx in (-1, 1) for sz in (-1, 1)])]
 LEAD_POST = tuple(float(v) for v in getattr(_base, "ANTENNA_HOOK", (FX - 1.5, G + 4.0, FZ + 2.5)))
-# Where the aerial's lower string hooks on to the tower. The wire comes down steeply, 76 degrees from
-# the level, so the point has to stand clear of the tower's cornices: a third of a block or more
-# outside their outer edge. The fallback is c223's own number (#37220): the end of an iron rod that
-# sticks two blocks north out of the tower's north-east corner, in the course under the cornice at
-# y 31.
-TOWER_HOOK = tuple(float(v) for v in getattr(
-    _tower, "ANTENNA_ANCHOR", (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)))      # (16.5, 30.5, -35.0)
+# Where the wire to the clock tower hooked on to it, two blocks north of the tower's north-east
+# corner under the cornice at y 31. The mast hangs no wire any more and does not use the point; the
+# name stays until the clocks' test scene has stopped reading it.
+TOWER_HOOK = (S.CLOCK_SHAFT_X[1] + 0.5, 30.5, S.CLOCK_SHAFT_Z[0] - 2.0)         # (16.5, 30.5, -35.0)
 
 # ---- the lattice -----------------------------------------------------------------------------------
 SCALE = 4                       # the lattice pieces are shown this large; px = SCALE keeps 16 texels to the block
@@ -112,7 +112,7 @@ BAY = 3.0                       # a belt every three blocks
 BAYS = 16
 SEG_BAYS = 4                    # bays to a piece: 12 blocks, the 48 units a model may span
 SEGS = BAYS // SEG_BAYS
-KNEE_Y = math.floor(BASE_Y) + 6.5       # 8.5: the lowest belt, where the tapered foot turns into the square shaft
+KNEE_Y = math.floor(BASE_Y) + 6.5       # 8.5: the lowest belt of the shaft's pieces; the foot carries the shaft on below
 TOP_Y = KNEE_Y + BAYS * BAY     # 56.5: the top belt
 GUY_BELT = 5                    # the belt the guys leave from: y 23.5
 GUY_OUT = 0.25                  # ... this far outside the leg's axis in x and in z: just off the joint's corner
@@ -124,6 +124,7 @@ BRACE, BRACE_T = 0.75, 0.5      # a diagonal: 3 texels wide in the face, 2 thick
 PLATE_H = 1.75                  # a joint plate: 7 texels high, 1 thick, half a texel proud of the leg
 PLATE_REACH = {"a": 2.25, "b": 2.75}    # ... and this long from the leg's outer edge inwards; in b it reaches
 #                                         the end of the belt block, which stops half a block short of the leg
+PLATE_RIVET = 0.5               # its two rivets sit on the leg's middle line, this far over and under the belt's
 KNOT, KNOT_T = 1.0, 0.25        # the plate where two diagonals cross: 4 texels square, 1 thick
 RIVET = 0.25                    # ... and the head of the rivet through it: 1 texel
 COLLAR = 0.875                  # half the width of the collars that close a leg's two ends
@@ -131,17 +132,12 @@ LEG_U, BAY_U = LEG / U, BAY / U         # 4 and 12 units
 NODE = BELT / 2.0               # a piece starts this far under its lowest belt's middle: the belt lies wholly in it
 SEG_Y = KNEE_Y - NODE * U       # 8.40625: the bottom of the lowest piece
 HEAD_Y = SEG_Y + BAYS * BAY     # 56.40625: where the head takes over
-FOOT = os.environ.get("C164_MAST_FOOT") or "legs"       # how the mast stands on the seat: FOOT_KINDS
-FOOT_KINDS = ("point", "squat", "legs")
-FOOT_TOE = 0.75                 # point, squat: the legs meet the shoe this far from the axis ...
-FOOT_TOE_Y = 8.75               # ... and this high over the seat (units of the foot model)
-FOOT_RING_Y = 17.5              # point: the one belt of the tapered foot
-FOOT_BAY_Y = (KNEE_Y - BAY - BASE_Y) / U        # squat, legs: the belt one bay under the knee, 14 units up (y 5.5)
-FOOT_BASE_Y = 4.0               # legs: the belt that ties the four shoes, a block over the seat (y 3.0)
-FOOT_POT = (0.5, 2.5, 3.0, 4.5)         # legs: under each leg a base plate up to here, porcelain, an iron cap, the shoe
-FOOT_LUG = {"point": (1.75, 8.75), "squat": (1.75, 8.75), "legs": (5.0, 3.5)}[FOOT]
-#                                 the terminal of the feed lead: distance from the axis in x and z, height
-HEAD_EYE = (5.5, 2.5)           # the end of the aerial's arm: distance from the axis in x and z, height
+FOOT_BELTS = (math.floor(BASE_Y) + 1.5, KNEE_Y - BAY)   # 3.5 and 5.5: the two belts of the foot, under the knee's
+FOOT_POT = (0.5, 2.5, 3.0, 4.5)         # under each leg, in units over the seat: a base plate up to here, the
+#                                         porcelain, its iron cap, the shoe that takes the leg
+FOOT_LUG = (5.0, 3.5)           # the terminal of the feed lead on a shoe: distance from the axis in x and z, height
+GAP_OUT, GAP_Y = 1.5, 2.0       # the spark gap: this far outside its leg's axis in x and z, its middle this high
+GAP_BALL, GAP_AIR = 0.5, 0.5    # its two balls are 4 texels across and stand 2 texels apart
 LAMP_H = 10                     # texels: the lamp from the foot of its holder on the pole to its top
 LAMP_Y = TIP_Y - LAMP_H / 16.0  # 61.375
 LAMP_HOLDER = 1.5               # texels of that which are the iron holder: a neck and a plate
@@ -150,13 +146,12 @@ GLASS_Y = LAMP_Y + LAMP_HOLDER / 16.0   # 61.46875: the foot of the glass
 LEG_CELLS = [(FX + sx, FZ + sz) for sx in (-1, 1) for sz in (-1, 1)]
 BELT_CELLS = [(FX, FZ - 1, "x"), (FX, FZ + 1, "x"), (FX - 1, FZ, "z"), (FX + 1, FZ, "z")]
 
-# ---- guys and aerial -------------------------------------------------------------------------------
+# ---- guys ------------------------------------------------------------------------------------------
 STAY_CABLE = 13.0               # texels from the eye bolt to where the cable leaves the bottle screw's jaw
 STAY_EGG = 19.0                 # ... and to the guy's lower egg
 EGG_LEN = 7.0
 EGG_DROP = 7.0                  # blocks from the leg down the guy to its upper egg: well clear of the shaft
 GUY_CLAMP = 0.5                 # units of the guy's model, which is drawn out seven times: 3.5 texels of clamp
-STRING_LEN = 20.0               # texels from the hook of a disc string to where the wire leaves its clamp
 
 # ---- the lamp --------------------------------------------------------------------------------------
 # How the game lights a face of an item model: by the one of the six axes its normal lies nearest to
@@ -188,9 +183,7 @@ BRIGHT = (15, 0)                # (sky, block): what a piece takes under the ope
 IRON = P.mat("iron")                            # fittings
 IRON_D = P.mat("iron_dark")                     # the lattice: legs, belts, plates
 IRON_F = P.mat("iron_flat")                     # the diagonals: the lattice's tone without speckle or edge
-PORCELAIN = P.mat("porcelain")                  # white: the foot, the guys
-GREY = P.mat("porcelain", base=0, noise=0.0)    # the ramp's two darkest steps: the discs aloft
-POT = PORCELAIN                                 # the four insulators the legs stand on
+PORCELAIN = P.mat("porcelain")                  # white: the four insulators the legs stand on, the guys' eggs
 BRASS = P.mat("brass")
 
 
@@ -199,9 +192,11 @@ def _flat(name, step):
     return P.mat(name, kind="flat", base=step, bevel=0)
 
 
-CABLE = _flat("iron", 0)                        # the guys
-WIRE = _flat("iron", 0)                         # the aerial
-LEAD = _flat("old_copper", 1)                   # the feed lead at the foot, seen from near only
+CABLE = _flat("iron", 1)                        # the guys: the iron ramp's second step. On a face that looks
+#                                                 down or away from the game's two lamps the darkest step
+#                                                 comes out all but black
+LEAD = _flat("old_copper", 2)                   # the feed lead at the foot, seen from near only: a darker
+#                                                 step reads as a strip of wood at night
 STUD = _flat("iron", 4)                         # rivet heads
 RED = [_flat("signal_glow", i) for i in range(len(P.RAMPS["signal"]))]
 
@@ -215,8 +210,8 @@ def _corner(p):
     return (1 if p[0] >= AX else -1), (1 if p[2] >= AZ else -1)
 
 
-# The foot and the head are drawn with their one-sided part (the terminal, the aerial's arm) on the
-# corner -x, +z; this turns that corner to another.
+# The foot is drawn with its one-sided parts (the terminal, the spark gap) for the corner -x, +z;
+# this turns that corner to another.
 _CORNER_YAW = {(-1, 1): 0.0, (-1, -1): 90.0, (1, -1): 180.0, (1, 1): 270.0}
 
 
@@ -234,14 +229,8 @@ def guy_end(anchor):
     return AX + sx * (LEG + GUY_OUT), KNEE_Y + GUY_BELT * BAY, AZ + sz * (LEG + GUY_OUT)
 
 
-def aerial_eye():
-    """The end of the arm at the head, where the aerial's upper string hooks on."""
-    sx, sz = _corner(TOWER_HOOK)
-    return AX + sx * HEAD_EYE[0] * U, HEAD_Y + HEAD_EYE[1] * U, AZ + sz * HEAD_EYE[0] * U
-
-
 def lead_lug():
-    """The terminal on the foot's shoe, where the lead to c229's post starts."""
+    """The terminal on a shoe of the foot, where the lead to the lead-in post starts."""
     sx, sz = _corner(LEAD_POST)
     return AX + sx * FOOT_LUG[0] * U, BASE_Y + FOOT_LUG[1] * U, AZ + sz * FOOT_LUG[0] * U
 
@@ -305,6 +294,16 @@ def _plates(m, node, reach, lo=None, hi=None):
         for t in (-1, 1):
             m.box((t * a, y0, s * p0), (t * b, y1, s * p1), IRON_D, grain="x", seed=PLATE_SEED)
             m.box((s * p0, y0, t * a), (s * p1, y1, t * b), IRON_D, grain="z", seed=PLATE_SEED)
+    # two rivets through each plate into its leg, one over the belt and one under it; where a piece
+    # ends between the two, each piece draws the one on its side
+    r, p2 = RIVET / 2.0, p1 + RIVET
+    for y in (node - PLATE_RIVET, node + PLATE_RIVET):
+        if (lo is not None and y - r < lo) or (hi is not None and y + r > hi):
+            continue
+        for s in (-1, 1):
+            for t in (-1, 1):
+                m.box((t * LEG_U - r, y - r, s * p1), (t * LEG_U + r, y + r, s * p2), STUD, seed=STUD_SEED)
+                m.box((s * p1, y - r, t * LEG_U - r), (s * p2, y + r, t * LEG_U + r), STUD, seed=STUD_SEED)
 
 
 def _collars(m, y0, y1):
@@ -335,107 +334,50 @@ def _lattice(name, legs, belts, reach):
     return m
 
 
-def _pivot(m):
-    """point, squat: what the four legs run together over, in the middle of the seat."""
-    # the bed plate on the seat and the pedestal
-    m.box((-2.5, 0.0, -2.5), (2.5, 0.5, 2.5), IRON_D)
-    m.tube("y", (0.0, 0.0), 0.5, 1.5, 1.5, IRON)
-    # the base insulator: a porcelain column with three sheds; the whole mast stands on it
-    m.tube("y", (0.0, 0.0), 1.5, 6.75, 1.0, PORCELAIN)
-    for y in (1.75, 3.5, 5.25):
-        m.tube("y", (0.0, 0.0), y, y + 1.0, 2.0, PORCELAIN)
-    # its iron cap, the pivot and the shoe the four legs run into
-    m.tube("y", (0.0, 0.0), 6.75, 7.5, 1.25, IRON)
-    m.tube("y", (0.0, 0.0), 7.5, 8.0, 0.5, IRON_D)
-    m.box((-1.5, 8.0, -1.5), (1.5, 9.5, 1.5), IRON_D)
-    # the terminal of the lead to the lead-in post, on the shoe's corner -x, +z
-    lx, ly = FOOT_LUG
-    m.box((-lx - 0.5, ly - 0.5, lx - 0.5), (-lx + 0.5, ly + 0.5, lx + 0.5), BRASS)
-    # the spark gap across the insulator, on the next corner (+x, +z; both look at the court): a horn
-    # down from the shoe, one up from the bed plate, a brass ball on each, three texels of air between
-    m.rod((1.25, 8.5, 1.25), (2.75, 6.25, 2.75), 0.25, IRON_D, sides=4)
-    m.rod((2.0, 0.5, 2.0), (2.75, 4.0, 2.75), 0.25, IRON_D, sides=4)
-    m.box((2.25, 5.5, 2.25), (3.25, 6.5, 3.25), BRASS)
-    m.box((2.25, 3.75, 2.25), (3.25, 4.75, 3.25), BRASS)
-
-
-def _carry_down(m, leg0, belts, knee):
-    """squat, legs: the shaft carried on below its lowest piece. Legs from leg0 up to that piece; at
-    each height of `belts` a belt and the plates of its joints; crossed diagonals with their knots
-    from each belt to the next and from the uppermost to the knee; and the lower part of the knee's
-    plates, which the piece above cuts off."""
-    top = knee - NODE
-    _legs(m, leg0, top)
-    nodes = list(belts) + [knee]
-    for i, y in enumerate(belts):
-        _belts(m, y)
-        _plates(m, y, PLATE_REACH["a"])
-        _braces(m, y, nodes[i + 1], flip=-1 if (len(belts) - i) % 2 else 1)
-        _knots(m, y, nodes[i + 1])
-    _plates(m, knee, PLATE_REACH["a"], None, top)
-
-
-def _foot_point(m, knee):
-    """The four legs run together over the lowest six blocks and stand on one base insulator."""
-    def out(y):
-        """How far a leg's axis stands from the mast's at height y."""
-        return FOOT_TOE + (LEG_U - FOOT_TOE) * (y - FOOT_TOE_Y) / (knee - FOOT_TOE_Y)
-
-    _pivot(m)
-    for sx in (-1, 1):
-        for sz in (-1, 1):
-            m.rod((sx * FOOT_TOE, FOOT_TOE_Y, sz * FOOT_TOE), (sx * LEG_U, knee, sz * LEG_U), LEG_W / 2.0, IRON_D,
-                  sides=4, seed=LEG_SEED)
-    # one belt half way up, crossed diagonals from it to the knees
-    _belts(m, FOOT_RING_Y, out(FOOT_RING_Y))
-    _braces(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
-    _knots(m, FOOT_RING_Y, knee, out(FOOT_RING_Y), LEG_U)
-    _collars(m, knee - 2.25, knee + 0.5)
-
-
-def _foot_squat(m, knee):
-    """The shaft comes down square to the belt at y 5.5; under it four short struts run together and
-    stand on one base insulator."""
-    _pivot(m)
-    for sx in (-1, 1):
-        for sz in (-1, 1):
-            m.rod((sx * FOOT_TOE, FOOT_TOE_Y, sz * FOOT_TOE), (sx * LEG_U, FOOT_BAY_Y, sz * LEG_U), LEG_W / 2.0,
-                  IRON_D, sides=4, seed=STRUT_SEED)
-    _carry_down(m, FOOT_BAY_Y - NODE, [FOOT_BAY_Y], knee)
-    _collars(m, FOOT_BAY_Y - 1.5, FOOT_BAY_Y - NODE)
-
-
-def _foot_legs(m, knee):
-    """The four legs come straight down to the seat's four corners. Each stands on its own insulator:
-    a base plate, a porcelain pot with two sheds, an iron cap and the shoe that takes the leg. A
-    belt ties the four shoes."""
+def _foot(name, legs, belts, reach):
+    """The foot, from the seat to the lowest piece of the shaft. The four legs come straight down to
+    the seat's four corners and each stands on an insulator of its own: a base plate, a porcelain pot
+    with two sheds, an iron cap and the shoe that takes the leg. Over the shoes the shaft goes on as
+    above: a belt at each of FOOT_BELTS, crossed diagonals from belt to belt and to the knee, plates
+    at the joints. Anchor: the middle of the seat's top. With legs and belts it is version a's foot;
+    without them it is the web that version b hangs between its blocks, and the pots under them."""
+    m = M.Model(name, px=float(SCALE))
+    knee = (KNEE_Y - BASE_Y) / U                                    # 26 units up: the lowest belt of the piece above
+    top = knee - NODE                                               # ... which starts here
     plate, pot, cap, shoe = FOOT_POT
     for sx in (-1, 1):
         for sz in (-1, 1):
             x, z = sx * LEG_U, sz * LEG_U
             m.box((x - 1.25, 0.0, z - 1.25), (x + 1.25, plate, z + 1.25), IRON_D)
-            m.tube("y", (x, z), plate, pot, 0.75, POT)
+            m.tube("y", (x, z), plate, pot, 0.75, PORCELAIN)
             for y in (plate + 0.25, plate + 1.25):
-                m.tube("y", (x, z), y, y + 0.5, 1.25, POT)
+                m.tube("y", (x, z), y, y + 0.5, 1.25, PORCELAIN)
             m.tube("y", (x, z), pot, cap, 1.0, IRON)
-            m.box((x - COLLAR, cap, z - COLLAR), (x + COLLAR, shoe, z + COLLAR), IRON_D)
-    _carry_down(m, FOOT_BASE_Y, [FOOT_BASE_Y, FOOT_BAY_Y], knee)
+    _collars(m, cap, shoe)
+    if legs:
+        _legs(m, shoe - 0.5, top)
+    nodes = [(y - BASE_Y) / U for y in FOOT_BELTS] + [knee]
+    for i, node in enumerate(nodes[:-1]):
+        if belts:
+            _belts(m, node)
+        _plates(m, node, reach)
+        # the piece above starts with flip = 1: the bays go on taking turns downwards
+        _braces(m, node, nodes[i + 1], flip=1 if (len(nodes) - i) % 2 else -1)
+        _knots(m, node, nodes[i + 1])
+    _plates(m, knee, reach, None, top)          # the lower part of the knee's plates: the piece above cuts them off
     # the terminal of the lead to the lead-in post, on the outer corner of the shoe -x, +z
     lx, ly = FOOT_LUG
     m.box((-lx - 0.5, ly - 0.5, lx - 0.5), (-lx + 0.5, ly + 0.5, lx + 0.5), BRASS)
-    # the spark gap across the insulator of the next leg (+x, +z; both corners look at the court): a
-    # horn down from the shoe, a stub up from the seat, a brass ball on each, three texels of air between
-    m.rod((LEG_U + 0.7, cap + 0.4, LEG_U + 0.7), (LEG_U + 1.475, pot + 0.1, LEG_U + 1.475), 0.25, IRON_D, sides=4)
-    m.box((LEG_U + 1.1, 1.9, LEG_U + 1.1), (LEG_U + 1.85, 2.65, LEG_U + 1.85), BRASS)
-    m.box((LEG_U + 1.1, 0.4, LEG_U + 1.1), (LEG_U + 1.85, 1.15, LEG_U + 1.85), BRASS)
-    m.box((LEG_U + 1.225, 0.0, LEG_U + 1.225), (LEG_U + 1.725, 0.5, LEG_U + 1.725), IRON_D)
-
-
-def _foot():
-    """The foot, from the seat to the lowest piece of the shaft. Anchor: the middle of the seat's top."""
-    m = M.Model(PREFIX + "foot", px=float(SCALE))
-    knee = (KNEE_Y - BASE_Y) / U                                    # 26 units up: the lowest belt's middle
-    {"point": _foot_point, "squat": _foot_squat, "legs": _foot_legs}[FOOT](m, knee)
+    # the spark gap across the insulator of the next leg (+x, +z; both corners look at the court): two
+    # brass balls one over the other, two texels of air between them, the lower one on a pin that
+    # stands on the seat, the upper one on a horn that comes down from the shoe
+    g = LEG_U + GAP_OUT
+    low, high = GAP_Y - GAP_AIR / 2.0 - GAP_BALL, GAP_Y + GAP_AIR / 2.0 + GAP_BALL
+    m.box((g - 0.25, 0.0, g - 0.25), (g + 0.25, 0.25, g + 0.25), IRON_D)
+    m.rod((g, 0.25, g), (g, low - GAP_BALL + 0.1, g), 0.125, IRON_D, sides=4)
+    m.rod((LEG_U + COLLAR - 0.1, shoe - 0.5, LEG_U + COLLAR - 0.1), (g, high + GAP_BALL - 0.1, g), 0.125, IRON_D, sides=4)
+    for y in (low, high):
+        m.ball((g, y, g), GAP_BALL, BRASS, sides=8, layers=4)
     return m
 
 
@@ -459,9 +401,6 @@ def _head():
     # in patches
     m.tube("y", (0.0, 0.0), top, top + 0.25, 0.625, IRON_D)
     m.tube("y", (0.0, 0.0), top + 0.25, top + LAMP_HOLDER / SCALE, 1.125, IRON)
-    # the arm of the aerial, on the corner -x, +z: out and a little up from the collar
-    ex, ey = HEAD_EYE
-    m.beam((-LEG_U, 1.0, LEG_U), (-ex, ey, ex), 0.75, 0.75, IRON_D)
     return m
 
 
@@ -545,36 +484,20 @@ def _stay():
     return m
 
 
-def _string():
-    """The string of three porcelain discs at each end of the aerial. Anchor: its hook, a shackle
-    that takes in the end of the arm or of the tower's rod; +z runs along the wire, which leaves the
-    clamp at STRING_LEN. Grey porcelain: the upper string hangs against the sky, beside the comet;
-    the lower one, by the tower's wall, is the same model."""
-    m = M.Model(PREFIX + "string")
-    m.box((-2.5, -2.5, -1.5), (2.5, 2.5, 1.5), IRON_D)
-    m.tube("z", (0.0, 0.0), 1.5, STRING_LEN - 2.0, 0.75, IRON_D, sides=4)
-    for z in (6.0, 11.0, 16.0):                 # the first one far enough down to hang clear of the arm
-        m.tube("z", (0.0, 0.0), z - 1.0, z + 1.0, 3.5, GREY)
-        m.tube("z", (0.0, 0.0), z + 1.0, z + 2.0, 1.75, GREY)
-    m.box((-1.5, -1.5, STRING_LEN - 2.0), (1.5, 1.5, STRING_LEN + 1.0), IRON_D)
-    return m
-
-
 @functools.lru_cache(maxsize=None)
 def _models():
     built = [
         _lattice(PREFIX + "segment", True, True, PLATE_REACH["a"]),
         _lattice(PREFIX + "web", False, False, PLATE_REACH["b"]),
-        _foot(),
+        _foot(PREFIX + "foot", True, True, PLATE_REACH["a"]),
+        _foot(PREFIX + "foot_web", False, False, PLATE_REACH["b"]),
         _head(),
         _light(PREFIX + "light", True),
         _light(PREFIX + "light_off", False),
         _cable(PREFIX + "guy", CABLE, clamp=GUY_CLAMP),
-        _cable(PREFIX + "antenna", WIRE),
         _cable(PREFIX + "lead", LEAD),
         _insulator(),
         _stay(),
-        _string(),
     ]
     return {m.name: m for m in built}
 
@@ -612,26 +535,26 @@ def _lay(canvas, name, a, b, origin):
 
 
 def _pipes(canvas, origin, belts):
-    """The pipe blocks: a column in each of the four leg cells from the lowest belt to the top one,
-    and for version b a belt of them in the cells between the legs at every joint but the top one,
-    which the head carries."""
+    """The pipe blocks: a column in each of the four leg cells from the seat to the top belt, and for
+    version b a belt of them in the cells between the legs at every joint but the top one, which the
+    head carries. On the seat the columns stand inside the insulators."""
     ox, oy, oz = (int(round(v)) for v in origin)
     knee, top = int(math.floor(KNEE_Y)), int(math.floor(TOP_Y))
-    # where the foot carries the shaft's legs on downwards, the columns go down inside them as well
-    low = {"point": knee, "squat": int(math.ceil(BASE_Y + FOOT_BAY_Y * U)), "legs": int(math.ceil(BASE_Y + FOOT_BASE_Y * U))}[FOOT]
     for x, z in LEG_CELLS:
-        for y in range(low, top):
+        for y in range(int(math.floor(BASE_Y)), top):
             canvas.set(ox + x, oy + y, oz + z, st(B.IRON_PIPE, axis="y"))
     if belts:
-        for y in range(knee, top, int(BAY)):
+        for y in [int(math.floor(v)) for v in FOOT_BELTS] + list(range(knee, top, int(BAY))):
             for x, z, axis in BELT_CELLS:
                 canvas.set(ox + x, oy + y, oz + z, st(B.IRON_PIPE, axis=axis))
 
 
 def _shaft(canvas, origin, version):
+    """The pipe blocks, the foot and the pieces over it. The foot is drawn with its one-sided parts
+    for the corner that looks at the lead-in post."""
     _pipes(canvas, origin, belts=version == "b")
-    piece = "segment" if version == "a" else "web"
-    n = 0
+    foot, piece = ("foot", "segment") if version == "a" else ("foot_web", "web")
+    n = _place(canvas, foot, (AX, BASE_Y, AZ), origin, scale=float(SCALE), yaw=_CORNER_YAW[_corner(LEAD_POST)])
     for i in range(SEGS):
         n += _place(canvas, piece, (AX, SEG_Y + i * SEG_BAYS * BAY, AZ), origin, scale=float(SCALE))
     return n
@@ -655,27 +578,15 @@ def _guys(canvas, origin):
     return n
 
 
-def _aerial(canvas, origin):
-    """The wire from the arm at the head to the tower's rod, a disc string at each end."""
-    eye = aerial_eye()
-    n = _lay(canvas, "string", eye, TOWER_HOOK, origin)
-    n += _lay(canvas, "string", TOWER_HOOK, eye, origin)
-    n += _stretch(canvas, "antenna", _along(eye, TOWER_HOOK, STRING_LEN / 16.0),
-                  _along(TOWER_HOOK, eye, STRING_LEN / 16.0), origin)
-    return n
-
-
 def build(canvas, origin=(0, 0, 0), version=None):
-    """Place the radio mast; returns the number of display entities (23). version "a" or "b" picks
+    """Place the radio mast; returns the number of display entities (20). version "a" or "b" picks
     how the shaft is made (see the top of the module); left out it is DEFAULT."""
     version = version or DEFAULT
     if version not in VERSIONS:
         raise ValueError(f"machines/mast has versions {', '.join(VERSIONS)}, not {version!r}")
     n = _shaft(canvas, origin, version)
-    n += _place(canvas, "foot", (AX, BASE_Y, AZ), origin, scale=float(SCALE), yaw=_CORNER_YAW[_corner(LEAD_POST)])
-    n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE), yaw=_CORNER_YAW[_corner(TOWER_HOOK)])
+    n += _place(canvas, "head", (AX, HEAD_Y, AZ), origin, scale=float(SCALE))
     n += _lamp(canvas, origin)
     n += _guys(canvas, origin)
-    n += _aerial(canvas, origin)
     n += _stretch(canvas, "lead", lead_lug(), LEAD_POST, origin)        # the feed lead from the shoe to the post
     return n
