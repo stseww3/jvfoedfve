@@ -17,8 +17,8 @@ All cast and riveted iron on the common palette, 16 texels to the block (px = sc
     gate                 a side arch of the entrance, shut: the same frame, an open fan, barred leaves.
     glazed_leaf          one leaf of the west door: riveted below, dark glass above.
     canopy, canopy_lamp  the glazed canopy over the middle arch on two quarter-round braces, and the
-                         opal lamp under it (canopy_lamp_back: the side of its globe that looks at the
-                         wall).
+                         opal lamp under it (canopy_lamp_in, _left, _right: the quarters of its globe
+                         that look at the wall and along it).
     railing_panel        a cast scroll panel for the terrace balustrade, between two posts.
     ladder, ladder_cage  a three-block length of the inspection ladder, bare and caged; they stack.
     vent_cowl            a roof vent: a flanged pipe, a bent neck and a bell mouth.
@@ -62,29 +62,41 @@ GLASS_COOL = K.flat("opal", 2)                                          # froste
 # So a piece that glows is drawn in a frame tilted about the wall's own line, and its display turns it
 # back: it stands where it stood, and a face that looks out of the wall is lit as one that looks 40
 # degrees up -- 1.00. Up stays 1.00, along the wall 0.74, down 0.40; into the wall falls to 0.40.
+# A flat piece on the wall needs no more (the back of a fanlight is seen from the hall, against the
+# night: 0.40 is right for it). A round one that is seen from all sides -- the lamp's globe -- is
+# drawn in four pieces, each in the frame tilted for the faces that look its way: out of the wall,
+# into it, and along it to the right and to the left (about the line that runs out of the wall).
 TILT = 40.0
+# the way the faces of a piece look -> (the turn of its frame, that way in the model: x along the wall, z out of it)
+WAYS = {"out": (("x", TILT), (0.0, 0.0, 1.0)), "in": (("x", -TILT), (0.0, 0.0, -1.0)),
+        "right": (("z", -TILT), (1.0, 0.0, 0.0)), "left": (("z", TILT), (-1.0, 0.0, 0.0))}
 
 
-def _tilted(m, back=False):
-    """`with _tilted(m):` draws in the tilted frame; the piece is placed with turns=_turns(back).
-    `back` tilts the other way, for the faces that look into the wall."""
-    return m.turned(("x", -TILT if back else TILT))
+def _tilted(m, way="out"):
+    """`with _tilted(m, way):` draws in the frame tilted for the faces that look `way`; the piece
+    is placed with turns=_turns(way)."""
+    return m.turned(WAYS[way][0])
 
 
-def _turns(back=False):
-    return (("x", TILT if back else -TILT),)
+def _turns(way="out"):
+    axis, angle = WAYS[way][0]
+    return ((axis, -angle),)
 
 
-def _facing(m, first, back=False):
-    """Of the parts drawn since `first` in the tilted frame, keep the faces that look out of the wall
-    or along it, up or down; with `back`, those that look into the wall. So the two halves of a
-    round thing, each in its own frame, make it whole without a face drawn twice."""
-    out = M._qrot(M.quat("x", -TILT if back else TILT), (0.0, 0.0, 1.0))
+def _facing(m, first, way="out"):
+    """Of the parts drawn since `first` in the frame tilted for `way`, keep the faces that look
+    more that way than any other of the four; those that look straight up or down stay with "out".
+    So the four quarters of a round thing, each in its own frame, make it whole without a face
+    drawn twice."""
+    turn = M.quat(*WAYS[way][0])
+    ways = {name: M._qrot(turn, d) for name, (_, d) in WAYS.items()}
     for part in m.parts[first:]:
         q = part["rot"][0] if part["rot"] else M.IDENT
         for letter, normal in M.NORMAL.items():
-            along = sum(a * b for a, b in zip(M._qrot(q, normal), out))
-            if (along > -1e-6) if back else (along < -1e-6):
+            n = M._qrot(q, normal)
+            along = {name: round(sum(a * b for a, b in zip(n, d)), 9) for name, d in ways.items()}
+            best = max(along, key=along.get)                # of equals the first: "out" before "in" ...
+            if (best if along[best] > 1e-6 else "out") != way:
                 part["skip"].add(letter)
     m.parts[first:] = [part for part in m.parts[first:] if len(part["skip"]) < 6]
 
@@ -474,21 +486,22 @@ def _brace(m, x, r, top):
 
 
 OPAL = [K.flat("opal", i) for i in range(len(P.RAMPS["opal"]))]
+LAMP_QUARTERS = ("in", "left", "right")       # the pieces of the lamp that are glass alone (_canopy_lamp)
 
 
-def _canopy_lamp(back=False):
+def _canopy_lamp(way="out"):
     """The lamp under the canopy, the brightest point of the entrance (c164 #21442): an opal globe in
     an iron cage on a rod, at scale 1. Anchor: the point under the canopy it hangs from; the foot of
-    the lamp is 28.5 px below it. The lamp is drawn in the tilted frame, so the globe shows its tones
-    to the court as painted; `back` is the piece with the faces of the globe that look at the wall,
-    tilted the other way, for who comes out of the door."""
-    m = M.Model(PREFIX + ("canopy_lamp_back" if back else "canopy_lamp"), px=1.0)
+    the lamp is 28.5 px below it. The lamp is four pieces (WAYS), each drawn in the frame tilted for
+    its quarter of the globe, so the globe shows its tones as painted from wherever one comes: the
+    piece that looks out of the wall has the iron as well, the other three are glass alone."""
+    m = M.Model(PREFIX + "canopy_lamp" + ("" if way == "out" else "_" + way), px=1.0)
     bands = [(-1.0, -0.75, 1, OPAL[0]), (-0.75, -0.5, 1, OPAL[1]), (-0.5, -0.25, 1, OPAL[2]),
              (-0.25, 0.25, 1, OPAL[4]), (0.25, 0.5, 1, OPAL[3]), (0.5, 0.75, 1, OPAL[2]), (0.75, 1.0, 1, OPAL[1])]
-    with _tilted(m, back):
+    with _tilted(m, way):
         K.glass_ball(m, (0.0, -21.0, 0.0), 5.0, bands, sides=12, squash=1.0)
-        _facing(m, 0, back)
-        if back:
+        _facing(m, 0, way)
+        if way != "out":
             return m
         m.tube("y", (0.0, 0.0), -1.0, 0.0, 2.5, IRON_D)
         m.tube("y", (0.0, 0.0), -12.0, -1.0, 0.5, IRON, sides=4)
@@ -502,7 +515,6 @@ def _canopy_lamp(back=False):
     return m
 
 
-# ---- the terrace balustrade scroll panel ----------------------------------------------------------
 def _railing_panel(width=2, height=1):
     """A cast scroll panel between two posts, at scale 1 (anchor: the foot centre, it stands on the
     floor)."""
@@ -611,8 +623,8 @@ SPEC = {
     "canopy": dict(build=_canopy, mount="wall", scale=2.0, light=None),
     "canopy_lamp": dict(build=_canopy_lamp, mount="ceiling", scale=1.0, light=(0.0, -1.3, 0.0), level=13,
                         turns=_turns()),
-    "canopy_lamp_back": dict(build=lambda: _canopy_lamp(True), mount="ceiling", scale=1.0, light=None,
-                             turns=_turns(True)),
+    **{"canopy_lamp_" + way: dict(build=lambda way=way: _canopy_lamp(way), mount="ceiling", scale=1.0,
+                                  light=None, turns=_turns(way)) for way in LAMP_QUARTERS},
     "railing_panel": dict(build=_railing_panel, mount="floor", scale=1.0, light=None),
     "ladder": dict(build=_ladder, mount="wall", scale=1.0, light=None),
     "ladder_cage": dict(build=lambda: _ladder(True), mount="wall", scale=1.0, light=None),
@@ -785,7 +797,7 @@ def canopy(canvas, pos, y, facing="east", origin=(0, 0, 0)):
     face = tuple(pos[k] + 2.0 * fwd[k] for k in range(3))
     n = place(canvas, "canopy", (face[0], y, face[2]), facing=facing, origin=origin)
     lamp = tuple(face[k] + CANOPY_LAMP * fwd[k] for k in range(3))
-    for kind in ("canopy_lamp", "canopy_lamp_back"):
+    for kind in ["canopy_lamp"] + ["canopy_lamp_" + way for way in LAMP_QUARTERS]:
         n += place(canvas, kind, (lamp[0], y, lamp[2]), facing=facing, origin=origin)
     return n
 
