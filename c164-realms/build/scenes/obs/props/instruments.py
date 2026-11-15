@@ -114,9 +114,22 @@ class _Slats(pixelart.Mat):
         return out
 
 
+class _Ribs(pixelart.Mat):
+    """Slots cut across the grain, every other pixel along it: the drum of the calculating machine."""
+
+    def paint(self, w, h, grain="u", seed=0):
+        out = super().paint(w, h, grain, seed)
+        if grain == "u":
+            out[:, 1::2, :3] = self.ramp[0]
+        elif grain == "v":
+            out[1::2, :, :3] = self.ramp[0]
+        return out
+
+
 SKY = _Stars("enamel_stars", P.RAMPS["enamel"], kind="plain", noise=0.0, bevel=0, base=1)
 LANDS = _Lands("verdigris_lands", P.RAMPS["verdigris"], kind="plain", noise=0.0, bevel=0, base=1)
 SLATS = _Slats("cream_slats", P.RAMPS["cream"], kind="flat", bevel=0, base=3)
+DRUM = _Ribs("iron_slots", P.RAMPS["iron"], kind="flat", bevel=0, base=3)
 
 
 def _sprite(name, rows, **colours):
@@ -156,6 +169,14 @@ def _lume(rows):
     return ["".join(ch if ch == "g" else "." for ch in row) for row in rows]
 
 
+def _sphere(m, centre, radius, mat, sides, layers):
+    """A ball with a pattern on it, every face its own piece of the picture. m.ball() alone gives
+    the layers of one girth the same pictures: each painted star would stand over its twin."""
+    for i in range(layers):
+        m.ball(centre, radius, mat, sides=sides, layers=1, patchy=True,
+               part=(2.0 * i / layers - 1.0, 2.0 * (i + 1) / layers - 1.0))
+
+
 def _dial(m, name, rows, centre, z):
     """A round dial nine pixels across on a face that looks +z: the painted face, and in front of it
     a plate with only its luminous marks, which glows in the dark."""
@@ -174,9 +195,10 @@ SCOPE_HUB = 20.5        # height of the tripod head
 
 
 def _tripod_scope():
-    """A brass refractor on a wooden tripod, two blocks tall. It looks along +z and up by SCOPE_TILT;
-    one leg stands forward under the objective and the observer steps between the other two.
-    Anchor: the floor under the middle of the tripod."""
+    """A brass refractor on a wooden tripod, 34 px tall and 30 px long. It looks along +z and up by
+    SCOPE_TILT; one leg stands forward under the objective and the observer steps between the other
+    two (the feet are 8.5 px from the middle). On the right of the fork the graduated altitude
+    sector, on the left the clamp. Anchor: the floor under the middle of the tripod."""
     m = M.Model(PREFIX + "tripod_scope")
     hub = SCOPE_HUB
     for turn in (0.0, 120.0, 240.0):
@@ -191,12 +213,18 @@ def _tripod_scope():
     m.box((-4.25, foot, -1.5), (4.25, foot + 1.25, 1.5), IRON)                          # yoke: foot and cheeks
     for x in (-4.25, 3.0):
         m.box((x, foot + 1.25, -1.25), (x + 1.25, SCOPE_PIVOT + 1.25, 1.25), IRON, grain="y")
-    m.tube("x", (SCOPE_PIVOT, 0), 4.25, 5.75, 1.5, BRASS_D, cap=KNOB)                   # clamp knob
+    m.tube("x", (SCOPE_PIVOT, 0), -5.75, -4.25, 1.5, BRASS_D, cap=KNOB)                 # clamp knob, on the left
     limb = _scale("first", 3, 1, 1)
     with m.turned(("x", -SCOPE_TILT), about=(0, SCOPE_PIVOT, 0)):
         c = (0, SCOPE_PIVOT)
-        m.ring("x", (-4.9, SCOPE_PIVOT, 0), 4.0, 2.0, 0.75, BRASS, sides=12, arc=(105, 255),
-               faces={"w": limb, "e": limb})                                            # altitude arc
+        side, ends = 4.9, (101.25, 258.75)                                              # the altitude arc, on the right:
+        m.ring("x", (side, SCOPE_PIVOT, 0), 5.5, 2.0, 0.75, BRASS, sides=16, arc=ends,
+               faces={"w": limb, "e": limb})                                            # a graduated sector
+        for deg in ends:                                                                # hung from the axis
+            a = math.radians(deg)
+            m.beam((side, SCOPE_PIVOT, 0.0), (side, SCOPE_PIVOT + 4.75 * math.cos(a), 4.75 * math.sin(a)),
+                   0.5, 1.0, BRASS_D)
+        m.tube("x", (SCOPE_PIVOT, 0), 4.25, 5.5, 1.25, BRASS_D, cap=KNOB)               # its boss
         m.tube("z", c, -7.0, 12.0, 2.0, BRASS, sides=12)                                # main tube
         m.tube("z", c, -1.75, 1.75, 2.5, BRASS_D, sides=12)                             # cradle band
         m.tube("z", c, 6.5, 7.5, 2.25, BRASS_D, sides=12)
@@ -241,7 +269,7 @@ def _celestial_globe():
         m.ring("z", (0, cy, 0), r + 1.5, 2.0, 1.5, BRASS, sides=24,
                faces={"s": _scale("last", 3, 1, 1), "n": _scale("first", 3, 1, 1)})     # meridian ring
     with m.turned(("z", -GLOBE_TILT), ("y", GLOBE_YAW), about=(0, cy, 0)):
-        m.ball((0, cy, 0), r, SKY, sides=12, layers=10, patchy=True)
+        _sphere(m, (0, cy, 0), r, SKY, sides=12, layers=10)
         m.tube("y", (0, 0), cy + r + 0.1, cy + r + 0.6, 2.5, BRASS_D)                   # hour circle
         for a0, a1 in ((cy - r - 3.25, cy - r), (cy + r, cy + r + 3.25)):               # the pins at the poles
             m.tube("y", (0, 0), a0, a1, 0.75, BRASS)
@@ -263,7 +291,7 @@ def _globe():
     m.ring("z", (0, cy, 0), r + 1.25, 1.5, 1.25, BRASS, sides=24, arc=(north - 187.5, north + 7.5),
            faces={"s": _scale("last", 2, 0, 1), "n": _scale("first", 2, 0, 1)})         # half meridian
     with m.turned(("z", -tilt), about=(0, cy, 0)):
-        m.ball((0, cy, 0), r, LANDS, sides=12, layers=5, patchy=True)
+        _sphere(m, (0, cy, 0), r, LANDS, sides=12, layers=5)
         for a0, a1 in ((cy - r - 2.25, cy - r), (cy + r, cy + r + 2.25)):
             m.tube("y", (0, 0), a0, a1, 0.75, BRASS_D, cap=KNOB)
     return m
@@ -272,7 +300,7 @@ def _globe():
 def _sextant():
     """A sextant standing in a wooden cradle, the limb down: a brass sector of sixty degrees with a
     graduated arc, the index arm with its clamp, the two glasses, a short telescope and the wooden
-    grip behind. 13 px wide, 16 px tall. Anchor: the table under its middle."""
+    grip behind the right arm. 14 px wide, 17 px tall, 7 px deep. Anchor: the table under its middle."""
     m = M.Model(PREFIX + "sextant")
     top = (0.0, 14.5, 0.0)                              # the pivot of the index arm
     reach = 10.5                                        # radius of the limb's middle line
@@ -288,20 +316,22 @@ def _sextant():
            faces={"s": _scale("last", 2, 0, 1), "n": _scale("first", 2, 0, 1)})         # the limb
     for deg in (240.0, 300.0):                                                          # the frame: no cross brace
         m.beam(top, at(deg, reach - 0.5), 1.25, 1.5, BRASS_D)
-    m.tube("z", (top[0], top[1]), -0.75, 1.75, 1.5, BRASS, cap=KNOB)                    # pivot
-    m.beam(at(288.0, 0.5, 1.25), at(288.0, reach + 0.5, 1.25), 1.0, 1.25, BRASS)        # index arm
-    c = at(288.0, reach, 1.25)
-    m.box((c[0] - 1.5, c[1] - 1.25, 0.75), (c[0] + 1.5, c[1] + 1.25, 2.0), BRASS_D)     # its clamp and vernier
+    m.tube("z", (top[0], top[1]), -0.75, 2.25, 1.5, BRASS, cap=KNOB)                    # pivot
+    arm = 280.0                                         # the index arm: off the middle, clear of the cradle
+    m.beam(at(arm, 0.5, 1.25), at(arm, reach + 0.5, 1.25), 1.0, 1.25, BRASS)
+    c = at(arm, reach, 1.25)
+    m.box((c[0] - 1.25, c[1] - 1.25, 0.75), (c[0] + 1.25, c[1] + 1.25, 2.0), BRASS_D)   # its clamp and vernier
     m.tube("z", (c[0], c[1]), 2.0, 3.0, 0.75, BRASS_D, cap=KNOB)
-    m.box((-0.5, top[1] - 0.25, 1.75), (0.5, top[1] + 2.5, 3.5), LENS)                  # index glass
+    m.box((-0.5, top[1] - 0.25, 2.25), (0.5, top[1] + 2.5, 3.5), LENS)                  # index glass
     g = at(240.0, 5.5)
     m.box((g[0] - 0.5, g[1] - 1.25, 0.75), (g[0] + 0.5, g[1] + 1.25, 3.0), LENS)        # horizon glass
     t = at(300.0, 5.5)
     m.tube("x", (t[1], 1.75), t[0] - 0.5, t[0] + 4.5, 1.0, BRASS, cap=LENS)             # telescope
     m.tube("x", (t[1], 1.75), t[0] + 0.5, t[0] + 1.5, 1.25, BRASS_D)                    # and its collar
-    for y in (7.0, 11.5):                                                               # the grip behind
-        m.box((-0.5, y - 0.5, -2.25), (0.5, y + 0.5, -0.75), BRASS_D)
-    m.box((-1.0, 6.0, -3.5), (1.0, 12.5, -2.0), WOOD, grain="y")
+    m.beam(at(300.0, 3.0, -2.75), at(300.0, 9.5, -2.75), 1.5, 2.0, WOOD)                # the grip, behind the right arm
+    for radius in (4.0, 8.5):                                                           # on its two posts
+        p = at(300.0, radius)
+        m.box((p[0] - 0.5, p[1] - 0.5, -2.25), (p[0] + 0.5, p[1] + 0.5, -0.5), BRASS_D)
     return m
 
 
@@ -339,7 +369,7 @@ def _regulator_clock():
     hood, under it a glazed door with the beat scale behind the pendulum's tip. The pendulum is the
     model regulator_pendulum. Anchor: the point on the wall behind the middle of the case's foot."""
     m = M.Model(PREFIX + "regulator_clock")
-    m.box((-6.0, 0.0, 0.0), (6.0, 32.0, 1.0), WOOD_D)                                   # back board
+    m.box((-6.0, 1.5, 0.0), (6.0, 30.5, 1.0), WOOD_D)                                   # back board
     for x in (-6.0, 5.0):
         m.box((x, 1.5, 1.0), (x + 1.0, 30.5, 5.0), WOOD, grain="y")                     # sides
     m.box((-6.5, 0.0, 0.0), (6.5, 1.5, 5.5), WOOD_D)                                    # plinth
@@ -392,7 +422,7 @@ def _louvre_box():
         for z in (-5.5, 4.5):
             m.box((x, 17.0, z), (x + 1.0, 26.0, z + 1.0), WHITE, grain="y")             # corner posts
     m.box((-0.5, 17.0, 5.0), (0.5, 26.0, 5.5), WHITE, grain="y")                        # the meeting stile of the doors
-    m.tube("z", (2.0, 21.5), 5.5, 6.25, 0.75, BRASS_D, cap=KNOB)                        # door knob
+    m.tube("z", (1.5, 21.5), 5.0, 6.0, 0.75, BRASS_D, cap=KNOB)                         # door knob
     for half, y0, y1 in ((3.5, 27.0, 28.0), (1.5, 28.0, 29.0)):                         # gables, under the boards
         m.box((-6.5, y0, -half), (6.5, y1, half), WHITE)
     rise, run = 4.0, 7.5
@@ -401,26 +431,27 @@ def _louvre_box():
         with m.turned(("x", side * pitch), about=(0.0, 31.0, 0.0)):
             lo, hi = sorted((0.0, side * slope))
             m.box((-7.5, 30.0, lo), (7.5, 31.0, hi), WHITE_D, grain="x")
-    m.box((-7.5, 30.5, -0.75), (7.5, 31.5, 0.75), IRON_D, grain="x")                    # ridge
+    m.box((-7.75, 30.5, -0.75), (7.75, 31.5, 0.75), IRON_D, grain="x")                  # ridge
     return m
 
 
 def _calc_machine():
-    """A hand-cranked calculating machine on a wooden board: an iron body with the setting levers in
-    their slots on the sloping top, the result register in the carriage in front, the crank on the
-    right. 15 px wide, 9 px tall. Anchor: the table under its middle."""
+    """A hand-cranked calculating machine on a wooden board: an iron body, on it the slotted drum
+    with a brass setting lever standing in each slot, the result register in the carriage in front,
+    the crank on the right. 16 px wide with the crank, 10.5 px deep, 9 px tall. Anchor: the table
+    under its middle."""
     m = M.Model(PREFIX + "calc_machine")
     m.box((-7.0, 0.0, -5.0), (7.0, 1.0, 5.5), WOOD_D)                                   # board
     m.box((-6.5, 1.0, 1.5), (6.5, 3.5, 5.0), IRON_D)                                    # carriage
     m.box((-5.5, 1.75, 5.0), (5.5, 2.75, 5.1), K.flat("porcelain", 3), skip="nudew",
           faces={"s": _sprite("calc_register", ["ckckckckckc"], c=FACE, k=INK)})        # result windows
-    m.box((-5.5, 1.0, -4.0), (5.5, 5.0, 1.5), IRON)                                     # body
-    m.tube("x", (5.0, -1.25), -5.5, 5.5, 3.0, IRON, sides=12)                           # the drum cover
-    with m.turned(("x", 45.0), about=(0.0, 5.0, -1.25)):                                # the slotted plate on the drum
-        m.box((-4.5, 8.0, -3.25), (4.5, 8.1, 0.75), K.flat("iron", 3), skip="dnsew",
-              faces={"u": _sprite("calc_levers", ["s.s.s.s.s", "b.s.b.s.s", "s.b.s.s.b", "s.s.s.b.s"],
-                                  s=P.RAMPS["iron"][0], b=P.RAMPS["brass"][4])})
-    m.tube("x", (5.0, -1.25), 5.5, 7.0, 0.75, BRASS_D)                                  # crank: axle, arm, grip
+    m.box((-5.25, 1.0, -4.0), (5.25, 5.0, 1.5), IRON)                                   # body
+    axis = (5.0, -1.25)                                                                 # (y, z) of the drum's axis
+    m.tube("x", axis, -5.5, 5.5, 3.0, DRUM, sides=12)                                   # the slotted drum
+    for x, deg in ((-4.0, 20.0), (-2.0, 55.0), (0.0, 35.0), (2.0, 70.0), (4.0, 45.0)):  # a lever in each slot
+        with m.turned(("x", deg), about=(0.0, axis[0], axis[1])):
+            m.box((x - 0.5, axis[0] + 2.75, axis[1] - 0.5), (x + 0.5, axis[0] + 3.75, axis[1] + 0.5), KNOB)
+    m.tube("x", axis, 5.5, 7.0, 0.75, BRASS_D)                                          # crank: axle, arm, grip
     m.beam((6.75, 5.0, -1.25), (6.75, 8.0, 1.0), 0.75, 1.25, BRASS)
     m.tube("x", (8.0, 1.0), 6.5, 9.0, 0.75, WOOD_D, cap=K.flat("dark_wood", 3))
     m.tube("x", (3.0, 3.25), -7.0, -6.5, 1.0, BRASS_D, cap=KNOB)                        # clearing knob on the carriage
