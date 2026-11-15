@@ -1,22 +1,32 @@
 """Test scene of the work package main/shell (plan/packages/main/shell.md).
 
-The main line built whole (walls, drum and dome, the shell inside them) five times over:
+The main line built whole (walls, drum and dome, the shell inside them) seven times over:
 
   at z 0      as it stands, with a few invisible lights inside so the rooms can be seen (they are
               this scene's only: the rooms get their lamps and their light from the interiors and
               the light line);
-  at z 100    cut off above y 5: the ground floor from above -- the hall, the west arcade, the two
-              flights, the way to the west door, the foot of the pier;
+  at z 100    cut off above y 4, under the heads of the arches: the ground floor from above -- the
+              hall, the west arcade as its piers and three openings, the two flights, the way to
+              the west door, the foot of the pier;
   at z 200    cut off above y 13: the main floor -- galleries, mezzanine, the well, the wing rooms,
               the first turn of the ring stair;
   at z 300    cut off above y 19: the dome-room floor, the opening round the pier, the stair's top;
   at z 400    whole and lit like the first, with plain blocks standing in for the two things the
               hall is the background of: the orrery hung from the ceiling and the mother clock on
-              the pier. The board's view of the star hall (V7, from outside the door) is taken here.
+              the pier. The board's view of the star hall (V7, from outside the door) is taken here;
+  at z 500    cut off east of x 2, between the pier and the arcade: the cross section, looking
+              west -- the three arches side by side as no one standing in the hall sees them (the
+              pier stands before the middle one), a flight in each of the outer two, the cross
+              gallery on them, the ring stair's west run hung over it, the galleries and the
+              wing rooms cut through;
+  at z 600    cut off south of z 1: the long section, looking north -- entrance, hall, pier and
+              the stair winding up round it, arcade, the way to the west door under the
+              mezzanine, the apse, and the dome room on top.
 
-A slab of paving lies under each so the cuts do not look into the void. The facade's stand-in
-behind the entrance (a pale wall across the hall, until the hall is fitted out) is left out: the
-scene shows the hall as it is without it.
+Each cut keeps the lights of what it shows, so the plans and sections read by the same light as
+the rooms and not by the sky's alone. A slab of paving lies under each so the cuts do not look
+into the void. The facade's stand-in behind the entrance (a pale wall across the hall, until the
+hall is fitted out) is left out: the scene shows the hall as it is without it.
 """
 from artkit import arch
 from artkit.canvas import Canvas
@@ -28,16 +38,22 @@ from scenes.obs.main import shell
 
 BIOME = "obs_blue"
 BIOME_MARGIN = 60
-CUTS = {"ground": (100, 5), "main": (200, 13), "dome": (300, 19)}       # name: (z of the copy, last row kept)
+CUTS = {"ground": (100, 4), "main": (200, 13), "dome": (300, 19)}       # name: (z of the copy, last row kept)
 DRESSED = 400                                                           # z of the copy with the stand-ins
-GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 9, S.Z_SOUTH + 6)   # x -14..24, z -40..40
+SECTIONS = {"cross": (500, 0, 2), "long": (600, 2, 1)}                  # name: (z of the copy, axis cut across (0 x, 2 z),
+#                                                                         last column kept): east of x 2 and south of z 1 are gone
+GROUND = (S.WALL_W - 14, S.Z_NORTH - 6, S.WALL_E + 24, S.Z_SOUTH + 6)  # x -14..39, z -40..40: the view through
+#                                                                         the door stands on it, 19 before the wall
 LIGHTS = [
     (9, 4, -3), (9, 4, 3), (13, 4, 0), (10, 11, 0), (13, 10, -3), (13, 10, 3),      # the hall
-    (-3, 3, 0), (-4, 10, 0), (-3, 10, -4), (-3, 10, 4), (0, 9, 0),                  # the stair hall
+    (-3, 3, 0), (-4, 10, 0), (-3, 10, -4), (-3, 10, 4), (-1, 9, 0),                 # the stair hall
     (7, 10, -11), (7, 10, -20), (7, 10, 11), (7, 10, 20),                           # the wing rooms
     (11, 20, 5), (11, 20, -5), (-3, 20, 5), (-3, 20, -5), (6, 15, 2),               # the dome room, the stair's shaft
 ]
 LIGHT_LEVEL = 14                                                        # the light line's top level; never 15
+FLIGHT_LIGHTS = [(1, 4, -4), (1, 4, 4)]                                 # under the head of each side arch, where the star hall
+FLIGHT_LIGHT_LEVEL = 11                                                 # hangs a lamp at the foot of each flight: dimmer than the hall
+LIGHT_OVER_CUT = 2                                                      # a cut keeps the lights up to this far beyond its last row or column
 CLOCK_HIGH = 4                                                          # the mother clock on its plinth (A0, 11-15)
 
 
@@ -62,24 +78,30 @@ def stand_ins(c, dz):
     c.set(x, y0 + CLOCK_HIGH - 2, z + dz, f"{B.PANELS['dial']}[facing=east]")
 
 
+def copies():
+    """Every copy of the building as (z of the copy, axis, last kept): what lies beyond `last kept`
+    along that axis (0 x, 1 y, 2 z) is left out; axis None is the building whole."""
+    return ([(0, None, None), (DRESSED, None, None)] + [(dz, 1, top) for dz, top in CUTS.values()]
+            + list(SECTIONS.values()))
+
+
 def build():
     whole = Canvas()
     with shell.hall_open():
         main.build(whole, (0, 0, 0))
     c = Canvas()
     x0, z0, x1, z1 = GROUND
-    for dz in [0, DRESSED] + [z for z, _top in CUTS.values()]:
+    lights = [(cell, LIGHT_LEVEL) for cell in LIGHTS] + [(cell, FLIGHT_LIGHT_LEVEL) for cell in FLIGHT_LIGHTS]
+    for dz, axis, last in copies():
         c.box(x0, S.PAVING_Y, z0 + dz, x1, S.PAVING_Y, z1 + dz, B.SLATE_SMOOTH.block)
-    for (x, y, z), state in whole.b.items():
-        c.set(x, y, z, state)
-        c.set(x, y, z + DRESSED, state)
-        for dz, top in CUTS.values():
-            if y <= top:
-                c.set(x, y, z + dz, state)
+        for cell, state in whole.b.items():
+            if axis is None or cell[axis] <= last:
+                c.set(cell[0], cell[1], cell[2] + dz, state)
     stand_ins(c, DRESSED)
-    for dz in (0, DRESSED):
-        for x, y, z in LIGHTS:
-            c.set(x, y, z + dz, f"{B.LIGHT}[level={LIGHT_LEVEL}]", keep=True)
+    for dz, axis, last in copies():
+        for cell, level in lights:
+            if axis is None or cell[axis] <= last + LIGHT_OVER_CUT:
+                c.set(cell[0], cell[1], cell[2] + dz, f"{B.LIGHT}[level={level}]", keep=True)
     return c
 
 
