@@ -4,9 +4,9 @@ on the lower platform and the trestle that takes its track down into the cloud.
 The hill as it stands in the master scene: the site line whole, the main building above it, the
 machines (the car and the winch in the station are theirs), the props line and the sky line's light
 last. The lines are built whole, in the master scene's order, so the pictures keep up with them as
-their packages are merged. The station's lamp and its furniture belong to the props line, which
-keeps what it sets out on the site switched off in the master scene for now; here they are asked
-for (_dress).
+their packages are merged. The station's lamp and its furniture belong to the props line. The
+lamp hangs in the master scene (props/lamps.DRESS); what the line keeps switched off there is
+asked for here (_dress), and what stands already is not set out twice.
 
 One stand-in, in this scene only, for what is still on another branch: the sea of cloud beyond the
 ring that site/terrain lays round the mountain's foot (sky/cloudsea takes both over). The ring ends
@@ -140,5 +140,7 @@ def build_models():
 
 def write_pack(pack_dir):
     """The station paints nothing itself; it stands on the repainted blocks as the materials line
-    has them today (cast iron, the roof light, the lit and dark windows)."""
-    return materials.pack(pack_dir)
+    has them today (cast iron, the roof light, the lit and dark windows), under the map's sky: the
+    scene keeps the map's hour (mood.py), and V1 looks west over an open horizon, where the game's
+    own sun would lie without the sky's pictures."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])

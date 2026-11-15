@@ -36,6 +36,10 @@ waiting room is the picture's right edge and is kept dark (the reviewer's figure
 in the picture above FRAME_LIGHT). The light is spread as the sky line's kit spreads it, from the
 sources that stand on the canvas: without --scene those of the station's own windows, with it
 everybody's.
+
+--picture FILE reads a drawn picture of V1 (the kept v1.png) as well: how bright the waiting
+room's wall, its shut windows and the sky beside it are in it, against the reviewer's figures for
+a frame that neither glares nor goes black (TONES). It tells; it does not change the result.
 """
 import argparse
 import json
@@ -71,6 +75,13 @@ FOV, ASPECT = 77.0, 16.0 / 9.0  # the billboard pictures (build/render.py, tools
 GRID = (480, 270)               # sight lines over V1's picture, for the station's share of it
 FRAME_LIGHT = 4                 # the most block light on what V1 sees of the waiting room (card, record 5)
 FRAME = "waiting room"
+# The same record's figures for a drawn picture of V1, in the picture's own brightness (0 .. 1):
+# the wall's median within `apart` of the sky's beside it and not over `wall`, the shut windows'
+# not under `blind`.
+TONES = dict(apart=0.05, wall=0.19, blind=0.03)
+TONE_GRID = (640, 360)          # sight lines over the picture, for what each of its pixels shows
+SKY_ROWS = (0.18, 0.60)         # the rows of the picture where the room's edge stands against the sky
+SKY_BAND = (2, 30)              # the sight lines left of that edge that are taken for the sky beside it
 
 
 def bearing(x, z):
@@ -256,6 +267,60 @@ def picture(cells, entities, shapes, names, light=None):
     return out
 
 
+def _name(state):
+    return state.partition("[")[0]
+
+
+def tones(path, canvas, own, shapes):
+    """The reviewer's figures for V1's right edge, read off a drawn picture of V1 (16:9, any size):
+    the median brightness (Rec. 709 luma of the picture's own values, 0 .. 1) of the waiting room's
+    wall, of its shut windows, of its roof and of the sky just left of it. What a pixel shows is
+    told by a sight line through it against all that stands on `canvas`. The wall is the room's
+    stone (its door and the dark light over it are left out); the sky is where the SKY_BAND sight
+    lines left of the room meet nothing, in the rows SKY_ROWS. Returns {wall, blind, roof, sky:
+    (median or None, sight lines)} and the picture's size."""
+    from PIL import Image
+
+    im = np.asarray(Image.open(path).convert("RGB"), dtype=float) / 255.0
+    ph, pw = im.shape[:2]
+    if abs(pw / float(ph) - ASPECT) > 0.01:
+        sys.exit(f"{path}: {pw} x {ph} is not a picture of V1 (16:9)")
+    luma = im @ np.array([0.2126, 0.7152, 0.0722])
+    w, h = TONE_GRID
+    pts = np.array(list(canvas.b), dtype=np.int64)
+    lo = np.minimum(pts.min(axis=0), np.floor(EYE).astype(int)) - 1
+    hi = np.maximum(pts.max(axis=0), np.floor(EYE).astype(int)) + 1
+    bl = SL.Blockers(canvas.b, canvas.entities, shapes, lo, hi)
+    rays = SL.picture_rays(SL.frame(EYE, S.V1["look_at"]), FOV, ASPECT, w, h).reshape(-1, 3)
+    got = bl.cast(EYE, rays, 600.0)
+    hit = np.isfinite(np.minimum(got["t"], got["thru_t"]))
+    cell = np.where((got["t"] <= got["thru_t"])[:, None], got["cell"], got["thru_cell"])
+    kinds = {_name(state): kind for kind, states in (("wall", (C.WALL, C.COURSE, C.CORBEL)),
+                                                     ("roof", (C.ROOF, C.ROOF_FLAT)), ("blind", (C.SHUT,)))
+             for state in states}
+    wx0, wz0, wx1, wz1 = C.WAIT
+    near = hit & (cell[:, 0] >= wx0) & (cell[:, 0] <= wx1) & (cell[:, 2] >= wz0) & (cell[:, 2] <= wz1)
+    what = np.full(len(rays), "", dtype=object)
+    for i in np.nonzero(near)[0]:
+        p = tuple(int(v) for v in cell[i])
+        state = own.get(p)
+        if state is not None and canvas.b.get(p) == state and part_of(p) == FRAME:
+            what[i] = kinds.get(_name(state), "other")
+    what, hit = what.reshape(h, w), hit.reshape(h, w)
+    rows = ((np.arange(h) + 0.5) * ph / h).astype(int)
+    cols = ((np.arange(w) + 0.5) * pw / w).astype(int)
+    seen = luma[np.ix_(rows, cols)]
+    room = what != ""
+    sky = np.zeros((h, w), dtype=bool)
+    for j in range(int(SKY_ROWS[0] * h), int(SKY_ROWS[1] * h)):
+        at = np.nonzero(room[j])[0]
+        if len(at):
+            sky[j, max(0, at[0] - SKY_BAND[1]):max(0, at[0] - SKY_BAND[0])] = True
+    sky &= ~hit
+    masks = (("wall", what == "wall"), ("blind", what == "blind"), ("roof", what == "roof"), ("sky", sky))
+    return {k: (float(np.median(seen[m])) if m.any() else None, int(m.sum())) for k, m in masks}, (pw, ph)
+
+
 def _deg(v):
     return "due west" if abs(v) < 0.005 else f"{abs(v):.2f} {'S' if v > 0 else 'N'}"
 
@@ -265,6 +330,8 @@ def main():
     ap.add_argument("--scene", action="store_true", help="build the whole test scene and measure all that "
                     "stands within the station's box and its reach")
     ap.add_argument("--json", help="write the figures here as well")
+    ap.add_argument("--picture", help="a drawn picture of V1 (renders/obs_site_cablecar/v1.png): tell how bright "
+                    "the waiting room and the sky beside it are in it")
     ap.add_argument("--jar", default=os.environ.get("MC_JAR") or os.path.join(
         os.environ.get("MC_ROOT", "/agent/realms-study"), "client26", "versions", "26.3", "26.3.jar"))
     args = ap.parse_args()
@@ -360,6 +427,25 @@ def main():
     frame = max(seen["parts"].get(FRAME, {}).get("light", {0: 1.0}))
     print(f"frame light: {'within' if frame <= FRAME_LIGHT else 'OVER'} {FRAME_LIGHT} "
           f"(at most {frame} on what V1 sees of the {FRAME})")
+    read = None
+    if args.picture:
+        got, size = tones(args.picture, canvas, own, shapes)
+        wall, blind, sky = got["wall"][0], got["blind"][0], got["sky"][0]
+        apart = None if wall is None or sky is None else wall - sky
+        over = [words for bad, words in (
+            (apart is not None and abs(apart) > TONES["apart"], "the wall is too far from the sky"),
+            (wall is not None and wall > TONES["wall"], "the wall is too bright"),
+            (blind is not None and blind < TONES["blind"], "the shut windows are too dark")) if bad]
+        print(f"V1's right edge in {os.path.basename(args.picture)} ({size[0]} x {size[1]}), the picture's "
+              f"brightness 0 .. 1, medians: "
+              + ", ".join(f"{label} {'not seen' if got[k][0] is None else format(got[k][0], '.3f')}"
+                          f" ({got[k][1]} sight lines)" for k, label in (
+                              ("wall", "wall"), ("blind", "shut windows"), ("roof", "roof"), ("sky", "the sky beside it"))))
+        print(f"frame tones: {'OVER, ' + ', '.join(over) if over else 'within'} (the wall against the sky "
+              f"{'not read' if apart is None else format(apart, '+.3f')}, {TONES['apart']} either way; the wall at most "
+              f"{TONES['wall']}; the shut windows at least {TONES['blind']})")
+        read = dict(picture=os.path.basename(args.picture), size=list(size), within=not over,
+                    **{k: dict(median=v[0], lines=v[1]) for k, v in got.items()})
     if altered is not None:
         print(f"the station's cells in the scene: {len(own) - len(altered)} of {len(own)} as its package sets them"
               + "".join(f"\n  {part_of(p)} {p}: {was.partition('[')[0]} is {str(now).partition('[')[0]}"
@@ -374,7 +460,7 @@ def main():
                               for w, p, c, _, _, m in hits],
                        "parts": {k: {kk: (list(vv) if isinstance(vv, tuple) else vv) for kk, vv in d.items()}
                                  for k, d in parts.items()},
-                       "picture": seen, "frame_light": frame,
+                       "picture": seen, "frame_light": frame, "tones": read,
                        "altered": None if altered is None else [dict(cell=list(p), set=was, stands=now)
                                                                 for p, was, now in altered],
                        "sources": [dict(cell=list(p), level=n) for p, n in sources]}, fh, indent=1, default=str)
