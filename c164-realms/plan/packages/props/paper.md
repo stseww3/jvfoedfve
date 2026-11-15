@@ -53,7 +53,7 @@
   - 月面图：圆圈、深的月海、图注用 `ashlar` 最深一级（比 `cream` 最深一级再深一级的暖灰），浅的月海用 `cream` 最深一级。原来全在 `cream` 四级里，月海和盘面在灯下只差 25 级上下，近看是一团灰；现在差 40 级上下。
 - 桌面件现在认 `facing`：读的人站的那一边（默认 `south`，书头朝北）；`yaw` 照旧可以随意转。原来桌面件的 `facing` 是不管用的。
 - 测试场景重排：墙加宽（石墙 x −12..12，木墙 x 12..26），成对的件并排挂，两种底子上各挂一遍；灯台换成本场景自己的占位模型 `prop_paper_stage_table`（深色木箱加一块发光的乳白玻璃面，玻璃面用的就是 `P.mat("opal")`；星图室的真灯台归 chartroom），原来的乳白窗方块带黑窗棂，底片在上面没法看；五盏吊灯，25 个机位；资源包带上天空（检查新加的一条）。
-- 图：`renders/obs_props_paper/` 25 张，离线图，画的是 a907b4f0 的代码（已合总装 cef161c5）。远看一张（`far`）；三段墙各一张（`wall_great`、`wall_stone`、`wall_wood`）；成对的件在石墙和木墙上各一张（`star_charts`、`blueprints`、`sky_maps` 和带 `_wood` 的）；每件近看（`*_near`、`sky_map_below`、`blackboard_side`）；桌面一组（`desk`、`logbook_near`、`blueprint_flat`）；灯台一组（`light_table`、`plates_near`）。
+- 图：`renders/obs_props_paper/` 25 张，离线图，画的是 bb53ccea 的代码（已合总装 023786e5）。远看一张（`far`）；三段墙各一张（`wall_great`、`wall_stone`、`wall_wood`）；成对的件在石墙和木墙上各一张（`star_charts`、`blueprints`、`sky_maps` 和带 `_wood` 的）；每件近看（`*_near`、`sky_map_below`、`blackboard_side`）；桌面一组（`desk`、`logbook_near`、`blueprint_flat`）；灯台一组（`light_table`、`plates_near`）。
 - 自查（对着这 25 张，评分标准五项）：第一眼 4（参）、轮廓构图 4（参）、明暗光色 4（参）、质感像素 4、风格逻辑 4；红线没有（色板外的颜色 0，十字 0，没有字）。最弱的三处：
   1. `star_charts`、`star_chart_near` · 小星图的银河：灯下芯比底只亮 10 到 25 级，三格以内看得出是一条河，六格以外只剩星点。色板上比它亮的蓝只有连线用的那一级，再提银河就盖住连线，没有再动；真机图上要是比离线图还暗，改法是把底子降到 `enamel` 最深一级（银河、芯、连线都不动，整块板更黑）。
   2. `blueprint_near` · 立面左端的小穹顶：三像素宽，画出来是一个尖顶，不像圆顶。要圆得四像素宽，右边那道墙线就落在一根壁柱上（十字），得连壁柱的间距一起改，立面就不对称了；现在留着尖顶。
