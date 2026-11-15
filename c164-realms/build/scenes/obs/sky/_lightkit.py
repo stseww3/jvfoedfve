@@ -516,9 +516,9 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
 
 
 def dress(canvas, on=True):
-    """Ask for the building's own lights on this canvas while the switch sky/lights.DRESS is off: the
-    sources behind the windows of main's table, in the main doorway, and the wall wash. For a test
-    scene that shows a front under its lights; the master scene follows the switch."""
+    """Ask for the building's own lights on this canvas whatever the switch sky/lights.DRESS says:
+    the sources of the windows of main's table and the wall wash; on=False asks for the fronts
+    without them. For a test scene; the master scene follows the switch."""
     canvas.light_dress = bool(on)
 
 
