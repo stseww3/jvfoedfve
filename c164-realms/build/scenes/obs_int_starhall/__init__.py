@@ -11,10 +11,13 @@ are in the tree; until then standins.py shows their envelope and offers their tw
 
 shots.json is written by  python -m scenes.obs_int_starhall  (both scenes read the same file).
 
-For the two questions about V7's light put to the director, the scene can be built otherwise;
-unset, which is how the kept pictures are drawn, it is lit as the master scene lights it:
-  C164_HALL_DOOR=<level>   the doorway's own source (sky/lights) at this level; 0: none
-  C164_HALL_POOL=<level>   starhall.SUN_POOL, the source where the sun's light lands on the roundel
+The doorway. A0 ruled (11-16) that the doorway's own source, which the light line sets while the
+hall stands empty, goes when the hall moves in. sky/lights does that itself from its commit
+d78e4151 on (_entrance asks facade.furnished()); until that is in the tree this scene takes the
+source away after the light line has run, which comes to the same. The two pictures the ruling
+was made on can still be drawn:
+  C164_HALL_DOOR=<level>   the doorway's source back, at this level (the light line's is 14)
+  C164_HALL_POOL=<level>   starhall.SUN_POOL at another level; 0: none
 """
 import os
 
@@ -51,13 +54,12 @@ def _machines(c, version):
 
 
 def _door(c):
-    """The comparison of the docstring: the doorway's source at the level the environment names."""
-    level = os.environ.get(DOOR_ENV)
-    if level is None:
-        return
+    """The doorway's source goes with the hall moved in (the docstring); the environment puts it
+    back at a level of its choosing."""
+    level = int(os.environ.get(DOOR_ENV, "0"))
     for cell in lights.report(c)["doors"]:
-        if int(level) > 0:
-            c.set(*cell, L.light(int(level)))
+        if level > 0:
+            c.set(*cell, L.light(level))
         else:
             c.clear(*cell)
 

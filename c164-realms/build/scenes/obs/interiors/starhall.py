@@ -80,8 +80,9 @@ AISLE_LAMP_Y = 3.5
 GALLERY_LEVELS = (7, 6, 6)  # the three lamps of a gallery wall, from its west end to the meridian
 GALLERY_LAMP_Y = 10.5
 BOARD_LEVEL = 5
-SUN_POOL = None             # asked of A0: a source of this level a cell over the roundel's middle, where the
-#                             sun's light lands (the game's light thins by the cell and the sun hangs seven up)
+SUN_POOL = 8                # where the sun's light lands: a source a cell over the roundel's middle. The sun's
+#                             own 12 is 5 by the time it is down there. A0, 11-16: it may stay as long as the
+#                             floor's middle is darker than the mother clock's dial, which with 10 it was not
 STAIR_FOOT_LEVEL = 8        # 7 shows nothing of the risers through the side arches (lights, #559)
 MEZZANINE_LEVEL = 7
 MEZZANINE_LAMP_Y = 9.5
@@ -219,11 +220,12 @@ def star_at():
 
 # ---- the floor --------------------------------------------------------------------------------------------
 def _dark_square(x):
-    """The aisles' chequer, squares two by two, mirrored about the meridian: under it a pale panel
-    three wide, then dark and pale by turns. True where the square is dark. The pilasters beside
-    the meridian's (x 8 and 14) stand on dark squares, which meet the ring at its four slants."""
+    """The aisles' chequer, squares two by two, mirrored about the meridian. Under the meridian the
+    square is dark and three wide: with the ring's band it is the emblem's own figure in stone, a
+    ring and the line through it, and the brass runs along its middle from pilaster to pilaster.
+    Next to it a pale square, so that nothing else touches the ring. True where the square is dark."""
     k = abs(x - CX)
-    return k > 1 and ((k - 2) // 2) % 2 == 0
+    return ((k + 2) // 2) % 2 == 1
 
 
 def _lay_a(x, z):

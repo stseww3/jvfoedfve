@@ -1,8 +1,10 @@
 """Plain stand-ins for the two machines the star hall is the room of, used by the hall's test
 scenes only while machines/orrery and machines/clock are not in the tree: the orrery as its
 envelope (a small warm sun, flat orbits five blocks across at the ring's height, the shaft up to
-the boss) and the mother clock as a dark case with a pale dial on the hall's plinth. They offer the
-two lights the real machines offer, at the cells and levels the director set.
+the boss) and the mother clock as machines/clock builds it (a dark case on the hall's plinth; the
+dial a piece of its own with a fixed light, a step over what the case gets; the hands at the
+skeleton's time). They offer the two lights the real machines offer, at the cells and levels the
+director set.
 """
 import functools
 import math
@@ -17,6 +19,9 @@ from scenes.obs.sky import _lightkit as L
 
 PREFIX = "int_starhall_standin_"
 SUN_LEVEL, CLOCK_LEVEL = 12, 11
+CLOCK_DIAL = (0, 13)      # (sky, block) the dial is shown at. A0, 11-16: in V7 the dial reads 0.35 or more and
+#                           is the first thing seen; at 11, machines/clock's number so far, it read under 0.3
+DIAL_Y = 25.5             # eighths of a block over the case's foot: where machines/clock has its dial
 SUN_R = 2.75              # eighths of a block: the size of the sun machines/orrery is making
 WOOD_D = P.mat("dark_wood", base=1)
 # orbit radius (eighths of a block), where the planet stands on it (degrees), its radius, its material
@@ -47,18 +52,27 @@ def _clock():
     m.box((-6, 0, -3), (6, 30, 3), P.mat("dark_wood"), grain="y")
     m.box((-6.5, 0, -3.5), (6.5, 2, 3.5), WOOD_D, grain="x")
     m.box((-6.5, 30, -3.5), (6.5, 32, 3.5), WOOD_D, grain="x")
-    m.tube("z", (0, 23.0), 3.0, 3.5, 5.0, K.BRASS_D, sides=16)
-    m.tube("z", (0, 23.0), 3.5, 3.75, 4.25, K.CREAM, sides=16)
-    m.box((-0.25, 23.0, 3.75), (0.25, 26.5, 4.0), K.IRON_D, rot=("z", -25.0, (0, 23.0, 3.75)))
-    m.box((-0.25, 23.0, 3.75), (0.25, 25.5, 4.0), K.IRON_D, rot=("z", 115.0, (0, 23.0, 3.75)))
     m.box((-2.5, 4, 3), (2.5, 15, 3.25), P.mat("night_glass", base=1))
     m.tube("z", (0, 7.0), 3.25, 3.5, 1.5, K.BRASS, sides=8)
     return m
 
 
+def _clock_dial():
+    """The dial, its bezel and its two hands at the skeleton's time. Shown at scale 2. Anchor: the
+    middle of its back."""
+    m = M.Model(PREFIX + "clock_dial", px=2.0)
+    hour, minute = S.CLOCK
+    ink = K.flat("iron", 1)
+    m.tube("z", (0, 0), 0.0, 0.25, 4.5, K.flat("cream", 3), sides=16)
+    m.ring("z", (0, 0, 0.375), 4.75, 0.5, 0.75, K.BRASS, sides=16)
+    m.box((-0.5, -0.5, 0.25), (0.5, 2.75, 0.5), ink, rot=("z", -((hour % 12) + minute / 60.0) * 30.0, (0, 0, 0.25)))
+    m.box((-0.375, -0.75, 0.5), (0.375, 3.75, 0.75), ink, rot=("z", -minute * 6.0, (0, 0, 0.5)))
+    return m
+
+
 @functools.lru_cache(maxsize=None)
 def models():
-    return {m.name: m for m in (_orrery(), _clock())}
+    return {m.name: m for m in (_orrery(), _clock(), _clock_dial())}
 
 
 def orrery(canvas, origin=(0, 0, 0)):
@@ -75,8 +89,12 @@ def orrery(canvas, origin=(0, 0, 0)):
 def clock(canvas, origin=(0, 0, 0)):
     ox, oy, oz = origin
     back, z, (y0, _) = S.MOTHER_CLOCK["back_x"], S.MOTHER_CLOCK["z"], S.MOTHER_CLOCK["y"]
-    n = K.put(canvas, models()[PREFIX + "clock"], (back + 0.375, y0, z), facing=S.MOTHER_CLOCK["facing"],
-              scale=2.0, origin=origin, brightness=(0, CLOCK_LEVEL))
+    facing = S.MOTHER_CLOCK["facing"]
+    # the case gets what the cell beside the lamp gets, as machines/clock's does
+    n = K.put(canvas, models()[PREFIX + "clock"], (back + 0.375, y0, z), facing=facing, scale=2.0, origin=origin,
+              brightness=(0, CLOCK_LEVEL - 1))
+    n += K.put(canvas, models()[PREFIX + "clock_dial"], (back + 0.75 + K.NUDGE, y0 + DIAL_Y / 8.0, z), facing=facing,
+               scale=2.0, origin=origin, brightness=CLOCK_DIAL)
     L.suggest(canvas, (ox + int(back) + 1, oy + int(y0) + 2, oz + int(math.floor(z))), CLOCK_LEVEL,
               "machines/clock:master", rank=2)
     return n
