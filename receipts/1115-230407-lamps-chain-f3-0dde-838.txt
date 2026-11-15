@@ -1,0 +1,40 @@
+a0job 1115-230407-lamps-chain-f3-0dde-838: cursor/c164-lamps-chain-f3-0dde @ f910f470 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.53 1.44 0.76, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_lamps obs_props_lamps_site obs_props_lamps_site_nearpair ---- exit 0, 109 s, last 30 lines of 69:
+  obs_props_lamps_site: v1 (tick 14000, 2 s)
+  obs_props_lamps_site: v2 (tick 14000, 1 s)
+  obs_props_lamps_site: v12 (tick 14000, 1 s)
+  obs_props_lamps_site: v1_deep (tick 18000, 1 s)
+  obs_props_lamps_site: v2_deep (tick 18000, 1 s)
+  obs_props_lamps_site: v12_deep (tick 18000, 1 s)
+  obs_props_lamps_site: way_link (tick 14000, 2 s)
+  obs_props_lamps_site: way_axis (tick 14000, 1 s)
+  obs_props_lamps_site: east_high (tick 14000, 1 s)
+  obs_props_lamps_site: court_side (tick 14000, 1 s)
+  obs_props_lamps_site: lip (tick 14000, 1 s)
+  obs_props_lamps_site: post_near (tick 14000, 2 s)
+  obs_props_lamps_site: feet (tick 14000, 2 s)
+  obs_props_lamps_site: hut_door (tick 14000, 1 s)
+  obs_props_lamps_site: tower_foot (tick 14000, 1 s)
+  obs_props_lamps_site: v6 (tick 14000, 1 s)
+renders/obs_props_lamps_site/: 16 pictures of f910f470 drawn, 5.6 MB
+  obs_props_lamps_site_nearpair: 109285 blocks, 74 entities (1 s)
+  obs_props_lamps_site_nearpair: resource pack written to /tmp/c164pack-mp_zovbj (1 s)
+  obs_props_lamps_site_nearpair: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_lamps_site_nearpair: grid 213 x 93 x 213, 109285 blocks, 3652 entity boxes (3 s)
+  obs_props_lamps_site_nearpair: 201 states -> 436 looks, 904 boxes, 118 pictures (3 s)
+  obs_props_lamps_site_nearpair: light done (3 s)
+  obs_props_lamps_site_nearpair: v1 (tick 14000, 2 s)
+  obs_props_lamps_site_nearpair: v2 (tick 14000, 2 s)
+  obs_props_lamps_site_nearpair: v12 (tick 14000, 1 s)
+  obs_props_lamps_site_nearpair: v1_deep (tick 18000, 1 s)
+  obs_props_lamps_site_nearpair: v2_deep (tick 18000, 2 s)
+  obs_props_lamps_site_nearpair: v12_deep (tick 18000, 1 s)
+renders/obs_props_lamps_site_nearpair/: 6 pictures of f910f470 drawn, 2.2 MB
+==== NODEJOB RESULT ====
+exit=0 secs=112 host=cursor cores=4 head=f910f470 commit=4946aaa4 pushed=yes branch=cursor/c164-lamps-chain-f3-0dde files=50
+a0job: exit=0 secs=112
