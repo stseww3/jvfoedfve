@@ -1,0 +1,3 @@
+branch=cursor/c164-sdome-astro-f3-1fe7
+head=f78968564448f47b220deb23cab02fe9be2b5273
+args=--wip --always --tail 8 python tools/selfshots.py obs_mach_meridian_astrograph --only bench_astro\,bench_meridian\,hut_door\,dome_door --out renders/_wip 
