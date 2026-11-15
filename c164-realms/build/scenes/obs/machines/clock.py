@@ -268,12 +268,15 @@ def _disc(size, radius, shade):
     return px
 
 
-def _marks(px, quarter, other):
-    """Twelve hour marks in ink. quarter and other are (from, to, half width) in pixels, measured
-    out from the centre and across the mark: the marks at twelve, three, six and nine, and the rest."""
+def _marks(px, quarter, other=None):
+    """Hour marks in ink. quarter and other are (from, to, half width) in pixels, measured out from
+    the centre and across the mark: the marks at twelve, three, six and nine, and the rest (left
+    out without `other`)."""
     size = px.shape[0]
     c = size / 2.0
     for hour in range(12):
+        if hour % 3 and other is None:
+            continue
         s, k = math.sin(math.radians(30.0 * hour)), math.cos(math.radians(30.0 * hour))
         lo, hi, half = other if hour % 3 else quarter
         for j in range(size):
@@ -284,17 +287,41 @@ def _marks(px, quarter, other):
                     px[j, i, 3] = 255
 
 
+# The eight marks between the quarters of the tower dial are placed by hand: a square of two
+# pixels a side against the inside of the minute track. Turned by 30 and 60 degrees and put on
+# the grid, such a square came out a small plus lying on the track (cr3, 11-16). TOWER_MARK is the
+# lower left pixel of the one at one o'clock, counted from the centre in whole pixels (to the right,
+# upwards): it hangs from the track by its upper right pixel, 29.7 degrees past twelve. The mark at
+# two o'clock is its mirror in the diagonal, the other six are these two in the other quadrants.
+TOWER_MARK = (7, 13)
+
+
+def _squares(px, corner):
+    """A square of two pixels a side with its lower left pixel at `corner`, its mirror in the
+    diagonal, and both again in each of the other three quadrants."""
+    c = px.shape[0] // 2
+    for a in (0, 1):
+        for b in (0, 1):
+            for right, up in ((corner[0] + a, corner[1] + b), (corner[1] + b, corner[0] + a)):
+                for i in (c + right, c - 1 - right):
+                    for j in (c - 1 - up, c + up):
+                        px[j, i, :3] = INK
+                        px[j, i, 3] = 255
+
+
 def _tower_dial():
-    """The tower dial, 40 pixels across inside its rim. From the rim in: a line all round and a bar
-    hanging from it at every hour, two pixels wide, longer at the quarters. The disc is drawn a
-    little under the rim so that no gap shows at the corners of the many-sided ring."""
+    """The tower dial, 40 pixels across inside its rim. From the rim in: a line all round (the
+    minute track), a bar of two pixels by four hanging from it at each quarter and a square of two
+    by two at each of the other hours. The disc is drawn a little under the rim so that no gap
+    shows at the corners of the many-sided ring."""
     size, c = 40, 20.0
     px = _disc(size, 20.7, 18.6)
     for j in range(size):
         for i in range(size):
             if 17.5 < math.hypot(i + 0.5 - c, c - (j + 0.5)) <= 18.5:
                 px[j, i, :3] = INK
-    _marks(px, (13.5, 17.5, 1.0), (15.5, 17.5, 1.0))
+    _marks(px, (13.5, 17.5, 1.0))
+    _squares(px, TOWER_MARK)
     return _Picture("clock_tower_dial", px)
 
 
