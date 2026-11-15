@@ -39,6 +39,9 @@ tiers and the brightest is kept for the entrance; a front must not turn warm all
     tier 2  lit      B.WINDOW_FROSTED                                     the lit window of a wing
     tier 3  bright   B.WINDOW_LIT, the entrance only
 
+The furnace window of the power house (B.WINDOW_FURNACE) is none of these and stands on no front
+of the main building; for its light it counts as tier 1.
+
 The colours say where the entrance is. The curtain is the most saturated colour of the building, so
 it is kept for the entrance: the two great windows beside the brightest one (orange, gold, orange)
 and the one fixed window of the base storey, at the foot of the clock tower. A wing shows a few
@@ -173,6 +176,12 @@ LENDS = (BRIGHT,)
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
 _TIER_OF.update({block: DARK for role in (B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT) for block in role.all()})
+# The furnace window of the power house (A0, group #37116; in the occupancy table as three whole
+# blocks, one to a row of the window, the sill's first) is none of the three tiers and no look hands
+# it out. It glows, so it counts as the dimmest lit tier: it gets the source of a curtained window.
+_FURNACE = getattr(B, "WINDOW_FURNACE", ())
+_TIER_OF.update({block: DIM for family in (_FURNACE if isinstance(_FURNACE, (tuple, list)) else (_FURNACE,))
+                 for block in family.all() if block not in _TIER_OF})
 
 
 def tier_of(name):

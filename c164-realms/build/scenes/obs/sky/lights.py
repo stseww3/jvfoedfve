@@ -346,14 +346,26 @@ def _windows(canvas, r, origin):
 
 
 # ---- the entrance -------------------------------------------------------------------------------------
+def _furnished():
+    """Has the star hall moved into the shell (main/facade.furnished(), once the facade has it)?
+    What the arches show is the hall itself then, and the hall's own lamps light it."""
+    try:
+        from ..main import facade
+    except ImportError:
+        return False
+    return bool(getattr(facade, "furnished", lambda: False)())
+
+
 def _entrance(canvas, r, origin):
     """The light of the entrance. One source in the open main doorway, where a doorway stands: open
     from the glass plane to the pilaster plane, a jamb on either side, something over it, ground
     under it. And the vestibule behind it, which nobody has furnished yet: where a wall closes the
     view through the doorway within HALL_DEPTH cells of the glass plane, a source stands against
     it; the same, two steps lower, behind the arches beside the doorway when the entrance is an
-    arcade. When the hall is built its walls stand further back, and its own lamps take over."""
+    arcade. When the hall is built its walls stand further back, and its own lamps take over: once
+    the star hall has moved in, nothing is placed behind the arches, whatever stands there."""
     ox, oy, oz = origin
+    furnished = _furnished()
     for bay in ENTRANCE_BAYS:
         wall = S.east_wall_x(bay) + ox
         z = S.bay_center_z(bay) + oz
@@ -372,6 +384,8 @@ def _entrance(canvas, r, origin):
             r["doors"].append(cell)
         elif _stops(canvas, wall, DOOR_Y + oy, z):
             continue                                    # a bay with a wall in it: no arch
+        if furnished:
+            continue                                    # a case or a pillar of the hall is no back wall
         back = next((x for x in range(glass - 1, glass - 1 - HALL_DEPTH, -1) if _stops(canvas, x, HALL_Y + oy, z)), None)
         if back is None or back + 1 >= glass:
             continue
