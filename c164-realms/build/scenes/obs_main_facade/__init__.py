@@ -5,9 +5,9 @@ the props line's lamps on it and the sky line's light sources last. The lines ar
 the master scene's order, so the pictures keep up with them as their packages are merged.
 
 The entrance is the version the package builds by default (facade.ENTRANCE). obs_main_facade_a
-and obs_main_facade_c are this scene with the other two versions, obs_main_facade_crown is this
-scene with the heads of the great windows and of the arches shut over the crown (facade.CROWN);
-every shot of theirs has its twin of the same name here.
+and obs_main_facade_c are this scene with the other two versions, obs_main_facade_nocrown is this
+scene with the heads of the great windows and of the arches left open over the crown, as they
+were (facade.CROWN off); every shot of theirs has its twin of the same name here.
 
     python -m scenes.obs_main_facade        writes shots.json of the four scenes
 """

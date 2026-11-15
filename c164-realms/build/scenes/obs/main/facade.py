@@ -65,14 +65,14 @@ DOOR_TOP = S.STRING - 1                 # 5: the arches of B, the door of C
 # not stone: emblem() says where props/signs hangs it.
 EMBLEM = True
 EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
-# The heads of the great windows and of the entrance's arches: False, a stair hung in each top
-# corner and the middle column open to the lintel (three wide, two, one: read from afar the head
-# is pointed, and a round iron frame set into it leaves a slot over its crown); True, a slab hung
-# between the two stairs as well (three wide, two, shut: the half blocks of the half round the
-# iron frames of props/ironwork draw, radius 1.5, crown half a block under the lintel). Off until
-# the director has seen the two side by side (the test scene obs_main_facade_crown builds with it
-# on; every shot of it has its twin in obs_main_facade).
-CROWN = False
+# The heads of the great windows and of the entrance's arches (A0, 11-15: shut). True: a stair hung
+# in each top corner and a slab hung between the two, so the opening is three wide, two, shut --
+# the half blocks of the half round the iron frames of props/ironwork draw, radius 1.5, crown half
+# a block under the lintel. False: the two stairs alone, the middle column open to the lintel
+# (three wide, two, one): from afar the head is pointed, and a round frame set into it leaves a
+# slot over its crown. That one is kept for comparison only (the test scene
+# obs_main_facade_nocrown), it is not a candidate any more.
+CROWN = True
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
 # looks through the doorway at the sky behind the building, and the doorway is not a black hole:
 # its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
