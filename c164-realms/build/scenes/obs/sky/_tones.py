@@ -3,7 +3,7 @@ plan/packages/sky/tones.md; ART-PLAN 11, row A2: the sky darkest, the walls in t
 and lamps brightest, nothing dead black; RUBRIC 3).
 
     python scenes/obs/sky/_tones.py <picture> [<picture> ...] [--out <folder>]
-                                    [--probe wall=0.42,0.35,0.55,0.60 ...] [--ladder]
+                                    [--probe wall=0.42,0.35,0.55,0.60 ...] [--diff <picture>] [--ladder]
 
 Takes any picture, a screenshot of the game or an offline rendering. It judges nothing: it gives
 the numbers and the pictures a reviewer reads the picture's values from. The lines are the
@@ -15,15 +15,21 @@ Per picture, printed and, with --out, drawn onto one sheet (<name>-tones.jpg):
   warmth   which pixels are warm (redder than blue), which cool, and at which level they sit
   bright   the area brighter than 0.6: its share, its centre of gravity, how gathered it is
   dead     the area darker than 0.03: its share and the largest patch of it
-  probes   named rectangles (--probe, --probes): mean, median, the brightest hundredth, the mean
-           colour; listed from dark to bright, so "sky < wall < window" is read off one line
+  probes   named areas (--probe, --probes): how many pixels, mean, median, the brightest and the
+           darkest hundredth, the mean colour; listed from dark to bright, so "sky < wall <
+           window" is read off one line. Four numbers are a rectangle x0,y0,x1,y1; six or more
+           are the corners of a polygon, x,y each (a sloping kerb, a flight of steps)
+  differs  with --diff <picture>, a second picture of the same view (a switch on and off, two
+           versions): the pixels whose brightness is further apart than 0.02 (--diff-over) are
+           the footprint of what changed; their share, and what they hold in this picture and in
+           the other. Each probe also says what changed within it
   stamps   the picture, grey and levels at 96 pixels wide
 
 Brightness is Rec.601 luma of the picture's own values, 0 to 1 (what PIL's "L" gives). Where dark
 ends and the middle begins depends on the light version (SPLIT; A blue, B deep, C glow): it is
 taken from --look, else from the shots.txt beside a kept picture or from --shots, else it is A's.
-Rectangles are x0,y0,x1,y1 in pixels, or in fractions of the picture when no number is above 1;
-the sheet's first panel has a tick at every tenth to read them from.
+A probe's numbers are pixels, or fractions of the picture when none of them is above 1; the
+sheet's first panel has a tick at every tenth to read them from.
 
 Needs numpy and Pillow only and takes about a second a picture. The leading underscore keeps the
 module out of the scene's packages. --ladder also prints what the plan expects of the light
@@ -43,6 +49,7 @@ DEAD = 0.03            # darker than this is dead black (card)
 BRIGHT = 0.60          # brighter than this is the bright area (card, rubric)
 WHITE = 0.97           # blown out
 WARMTH = 0.03          # red above blue by this much is warm, blue above red by it cool
+DIFFER = 0.02          # two pictures differ where their brightness is further apart than this
 # Where dark ends and the middle begins, per light version: between the sky over the roofs and a
 # wall the sky alone lights (sky/look's record: blue 0.13 and 0.24, deep 0.05 and 0.17, glow 0.20
 # and 0.29).
@@ -55,7 +62,9 @@ RED = (214, 40, 57)
 MARK = (255, 196, 0)
 INK, PAPER = (235, 235, 235), (16, 18, 28)
 WARM, COOL = np.array([1.0, 0.62, 0.20]), np.array([0.30, 0.55, 1.0])
+MORE, LESS = np.array([1.0, 0.59, 0.16]), np.array([0.27, 0.55, 1.0])     # brighter, darker than the other picture
 LEVELS = ("dark", "middle", "bright")
+PROBE = "a probe is name=x0,y0,x1,y1 (a rectangle) or name=x,y,x,y,x,y,... (the corners of a polygon, three or more)"
 
 
 def look_at(tick):
@@ -81,6 +90,26 @@ def _box(numbers, size):
     y0, y1 = sorted((int(round(y0)), int(round(y1))))
     x0, y0 = max(0, min(size[0] - 1, x0)), max(0, min(size[1] - 1, y0))
     return x0, y0, max(x0 + 1, min(size[0], x1)), max(y0 + 1, min(size[1], y1))
+
+
+def region(numbers, size):
+    """(mask, corners) of a probe: the pixels it covers, height x width, and its corners in pixels.
+    Four numbers are a rectangle x0, y0, x1, y1; six or more are the corners of a polygon, x then
+    y. Numbers none of which is above 1 are fractions of the picture."""
+    w, h = size
+    numbers = [float(v) for v in numbers]
+    if len(numbers) == 4:
+        x0, y0, x1, y1 = _box(numbers, size)
+        mask = np.zeros((h, w), dtype=bool)
+        mask[y0:y1, x0:x1] = True
+        return mask, [(x0, y0), (x1 - 1, y0), (x1 - 1, y1 - 1), (x0, y1 - 1)]
+    if len(numbers) < 6 or len(numbers) % 2:
+        raise ValueError(PROBE)
+    sx, sy = (float(w), float(h)) if max(numbers) <= 1.0 else (1.0, 1.0)
+    corners = [(numbers[i] * sx, numbers[i + 1] * sy) for i in range(0, len(numbers), 2)]
+    drawn = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(drawn).polygon(corners, fill=255)
+    return np.asarray(drawn) > 0, corners
 
 
 def luma(rgb):
@@ -119,21 +148,24 @@ def patches(mask):
     return count, largest / float(gh * gw)
 
 
-def probe(rgb, box):
-    """What a rectangle of the picture holds."""
-    h, w = rgb.shape[:2]
-    x0, y0, x1, y1 = _box(box, (w, h))
-    part = rgb[y0:y1, x0:x1].reshape(-1, 3)
-    y = np.sort(luma(part))
-    edge = max(1, len(y) // 100)
-    warmth = part[:, 0] - part[:, 2]
-    return dict(box=(x0, y0, x1, y1), mean=float(y.mean()), median=float(np.median(y)),
-                top=float(y[-edge:].mean()), low=float(y[:edge].mean()), colour=_hex(part.mean(axis=0)),
+def stats(pixels):
+    """What a set of pixels (n x 3) holds. The brightest and the darkest hundredth are means of
+    that many pixels, one pixel at least: with few pixels they are a single one's value."""
+    n = len(pixels)
+    if not n:
+        return dict(pixels=0)
+    y = np.sort(luma(pixels))
+    edge = max(1, n // 100)
+    warmth = pixels[:, 0] - pixels[:, 2]
+    return dict(pixels=int(n), mean=float(y.mean()), median=float(np.median(y)),
+                top=float(y[-edge:].mean()), low=float(y[:edge].mean()), colour=_hex(pixels.mean(axis=0)),
                 warm=float((warmth > WARMTH).mean()), cool=float((warmth < -WARMTH).mean()))
 
 
-def measure(rgb, split, probes=None):
-    """The numbers of one picture. probes: {name: (x0, y0, x1, y1)}."""
+def measure(rgb, split, probes=None, other=None, differ=DIFFER):
+    """The numbers of one picture. probes: {name: numbers as region() takes them}. other: a second
+    picture of the same size; then also what differs between the two, in the whole picture and
+    within each probe."""
     y = luma(rgb)
     h, w = y.shape
     dark, bright = y < split, y > BRIGHT
@@ -164,7 +196,19 @@ def measure(rgb, split, probes=None):
     }
     for level, where in levels.items():
         out[f"{level}_luma"] = float(y[where].mean()) if where.any() else None
-    out["probes"] = {name: probe(rgb, box) for name, box in (probes or {}).items()}
+    regions = {name: region(numbers, (w, h)) for name, numbers in (probes or {}).items()}
+    out["probes"] = {name: dict(stats(rgb[mask]), corners=[(float(cx), float(cy)) for cx, cy in corners])
+                     for name, (mask, corners) in regions.items()}
+    if other is not None:
+        gap = y - luma(other)
+        changed = np.abs(gap) > differ
+        count, largest = patches(changed)
+        out["diff"] = dict(over=differ, share=float(changed.mean()), more=float((gap > differ).mean()),
+                           less=float((gap < -differ).mean()), patches=count, largest=largest,
+                           here=stats(rgb[changed]), there=stats(other[changed]))
+        for name, (mask, _) in regions.items():
+            both = mask & changed
+            out["probes"][name]["changed"] = dict(here=stats(rgb[both]), there=stats(other[both]))
     return out
 
 
@@ -203,6 +247,17 @@ def warmth_picture(rgb):
     return Image.fromarray(np.uint8(np.round(np.clip(out, 0.0, 1.0) * 255.0)), "RGB")
 
 
+def change_picture(rgb, other, differ=DIFFER):
+    """The footprint of what differs from the other picture: orange where this picture is the
+    brighter, blue where it is the darker, on this picture dimmed to grey."""
+    y = luma(rgb)
+    gap = y - luma(other)
+    out = np.repeat((0.10 + 0.35 * y)[..., None], 3, axis=2)
+    out[gap > differ] = MORE
+    out[gap < -differ] = LESS
+    return Image.fromarray(np.uint8(np.round(np.clip(out, 0.0, 1.0) * 255.0)), "RGB")
+
+
 def histogram_picture(rgb, split, size=(512, 96)):
     counts, _ = np.histogram(luma(rgb), bins=256, range=(0.0, 1.0))
     w, h = size
@@ -238,13 +293,18 @@ def lines(name, n):
     def tone(v):
         return "  -  " if v is None else f"{v:.2f}"
 
-    def patched(what):
-        count, largest = n[f"{what}_patches"], n[f"{what}_largest"]
+    def patched(count, largest, share):
         if not count:
             cell = max(1, round(n["width"] / GRID))
-            return f"in specks only, none fills a square of {cell} pixels" if n[what] > 0.0 else "none"
+            return f"in specks only, none fills a square of {cell} pixels" if share > 0.0 else "none"
         return (f"{count} patch{'es' if count > 1 else ''}, the largest {largest * 100.0:.2f}% of the picture "
                 f"(as a square, {int(round((largest * n['width'] * n['height']) ** 0.5))} pixels a side)")
+
+    def held(s):
+        if not s["pixels"]:
+            return "no pixels"
+        return (f"{s['pixels']} px  mean {s['mean']:.2f}  median {s['median']:.2f}  brightest 1% {s['top']:.2f}  "
+                f"darkest 1% {s['low']:.2f}  {s['colour']}  warm {_pc(s['warm']).strip()}  cool {_pc(s['cool']).strip()}")
 
     out = [
         f"{name}  {n['width']}x{n['height']}",
@@ -256,27 +316,44 @@ def lines(name, n):
         cx, cy = n["bright_centre"]
         x0, y0, x1, y1 = n["bright_box"]
         out.append(f"  bright  centre x {cx:.2f} y {cy:.2f} (0 0 = top left)   nine tenths of it within x {x0:.2f}..{x1:.2f}, y {y0:.2f}..{y1:.2f}")
-        out.append(f"          {patched('bright')}")
+        out.append(f"          {patched(n['bright_patches'], n['bright_largest'], n['bright'])}")
     else:
         out.append("  bright  none")
-    out.append(f"  white   above {WHITE:.2f}: {_pc(n['white'])}   {patched('white')}")
-    out.append(f"  dead    below {DEAD:.2f}: {_pc(n['dead'])}   {patched('dead')}")
+    out.append(f"  white   above {WHITE:.2f}: {_pc(n['white'])}   {patched(n['white_patches'], n['white_largest'], n['white'])}")
+    out.append(f"  dead    below {DEAD:.2f}: {_pc(n['dead'])}   {patched(n['dead_patches'], n['dead_largest'], n['dead'])}")
     t = n["table"]
     out.append(f"  warmth  warm {_pc(n['warm'])}   cool {_pc(n['cool'])}   neutral {_pc(1.0 - n['warm'] - n['cool'])}")
     for level in LEVELS:
         out.append(f"          {level:<7} warm {_pc(t[level]['warm'])}   cool {_pc(t[level]['cool'])}   neutral {_pc(t[level]['neutral'])}")
+    d = n.get("diff")
+    if d:
+        out.append(f"  differs from {d.get('against', 'the other picture')} by more than {d['over']:.2f}: {_pc(d['share']).strip()} of the picture "
+                   f"(brighter here {_pc(d['more']).strip()}, darker here {_pc(d['less']).strip()})   {patched(d['patches'], d['largest'], d['share'])}")
+        out.append(f"          here   {held(d['here'])}")
+        out.append(f"          there  {held(d['there'])}")
     if n["probes"]:
-        ordered = sorted(n["probes"].items(), key=lambda item: item[1]["mean"])
+        ordered = sorted(((label, p) for label, p in n["probes"].items() if p["pixels"]), key=lambda item: item[1]["mean"])
         width = max(len(label) for label in n["probes"])
         for label, p in ordered:
-            out.append(f"  probe   {label:<{width}}  mean {p['mean']:.2f}  median {p['median']:.2f}  brightest 1% {p['top']:.2f}  darkest 1% {p['low']:.2f}  "
-                       f"{p['colour']}  warm {_pc(p['warm']).strip()}  cool {_pc(p['cool']).strip()}")
-        out.append("  order   " + " < ".join(f"{label} {p['mean']:.2f}" for label, p in ordered))
+            out.append(f"  probe   {label:<{width}}  {held(p)}")
+        for label, p in n["probes"].items():
+            if not p["pixels"]:
+                out.append(f"  probe   {label:<{width}}  no pixels")
+        if len(ordered) > 1:
+            out.append("  order   " + " < ".join(f"{label} {p['mean']:.2f}" for label, p in ordered) + "   (means)")
+        if d:
+            for label, p in n["probes"].items():
+                c = p["changed"]
+                share = c["here"]["pixels"] / float(p["pixels"]) if p["pixels"] else 0.0
+                out.append(f"  differs within {label}: {_pc(share).strip()} of it")
+                if c["here"]["pixels"]:
+                    out.append(f"          here   {held(c['here'])}")
+                    out.append(f"          there  {held(c['there'])}")
     return out
 
 
 def _ticks(picture):
-    """A tick at every tenth along the top and the left edge, to read rectangles from."""
+    """A tick at every tenth along the top and the left edge, to read probes from."""
     draw = ImageDraw.Draw(picture)
     w, h = picture.size
     font = _font(10)
@@ -289,8 +366,9 @@ def _ticks(picture):
         draw.text((7, y - 6), f".{i}", fill=MARK, font=font)
 
 
-def sheet(name, rgb, n):
-    """One picture to pass round: the picture, grey, levels, warmth; numbers; histogram; stamps."""
+def sheet(name, rgb, n, other=None):
+    """One picture to pass round: the picture, grey, levels, warmth (and, measured against another
+    picture, that one and the footprint of what differs); numbers; histogram; stamps."""
     h, w = rgb.shape[:2]
     pw = 640
     ph = int(round(h * pw / float(w)))
@@ -299,35 +377,50 @@ def sheet(name, rgb, n):
     original = Image.fromarray(np.uint8(np.round(rgb * 255.0)), "RGB")
     first = original.resize((pw, ph), Image.LANCZOS)
     draw = ImageDraw.Draw(first)
+    k = pw / float(w)
     for label, p in n["probes"].items():
-        x0, y0, x1, y1 = (v * pw / float(w) for v in p["box"])
-        draw.rectangle((x0, y0, x1, y1), outline=MARK)
-        draw.text((x0 + 2, y0 + 1 if y1 - y0 > line_h else y1 + 1), label, fill=MARK, font=_font(11))
+        corners = [(cx * k, cy * k) for cx, cy in p["corners"]]
+        draw.polygon(corners, outline=MARK)
+        left, top, low = min(c[0] for c in corners), min(c[1] for c in corners), max(c[1] for c in corners)
+        draw.text((left + 2, top + 1 if low - top > line_h else low + 1), label, fill=MARK, font=_font(11))
     _ticks(first)
-    panels = [first, grey_picture(rgb), levels_picture(rgb, n["split"], n), warmth_picture(rgb)]
-    labels = ["picture", "grey", f"levels: dark < {n['split']:.2f} < middle < {BRIGHT:.2f} < bright; red: dead black; cross: centre of the bright area",
-              "warmth: orange warm, blue cool, grey neither"]
+    # (panel, drawn smooth when made smaller, label)
+    panels = [
+        (first, True, "picture"),
+        (grey_picture(rgb), True, "grey"),
+        (levels_picture(rgb, n["split"], n), False,
+         f"levels: dark < {n['split']:.2f} < middle < {BRIGHT:.2f} < bright; red: dead black; cross: centre of the bright area"),
+        (warmth_picture(rgb), False, "warmth: orange warm, blue cool, grey neither"),
+    ]
+    if other is not None and "diff" in n:
+        d = n["diff"]
+        panels += [
+            (Image.fromarray(np.uint8(np.round(other * 255.0)), "RGB"), True, f"the other picture: {d.get('against', '')}"),
+            (change_picture(rgb, other, d["over"]), False,
+             f"differs by more than {d['over']:.2f}: orange brighter here, blue darker here"),
+        ]
+    rows = len(panels) // 2
     text = lines(name, n)
     stamp = (96, int(round(96.0 * h / w)))
     side = 3 * (stamp[0] + 8) + 8                      # the stamps' column on the right
     foot = max(line_h * len(text), 96 + 8 + stamp[1]) + 16
-    out = Image.new("RGB", (pw * 2, ph * 2 + foot), PAPER)
+    out = Image.new("RGB", (pw * 2, ph * rows + foot), PAPER)
     draw = ImageDraw.Draw(out)
-    for i, (panel, label) in enumerate(zip(panels, labels)):
+    for i, (panel, smooth, label) in enumerate(panels):
         x, y = (i % 2) * pw, (i // 2) * ph
         if panel.size != (pw, ph):
-            panel = panel.resize((pw, ph), Image.LANCZOS if i == 1 else Image.NEAREST)
+            panel = panel.resize((pw, ph), Image.LANCZOS if smooth else Image.NEAREST)
         out.paste(panel, (x, y))
         draw.rectangle((x, y, x + 8 + int(draw.textlength(label, font=font)), y + line_h), fill=PAPER)
         draw.text((x + 4, y + 1), label, fill=INK, font=font)
-    y0 = ph * 2 + 8
+    y0 = ph * rows + 8
     for i, row in enumerate(text):
         draw.text((8, y0 + i * line_h), row, fill=INK, font=font)
     # right of the numbers: the histogram, and under it the picture at the size of a stamp, shown
     # at that size (a picture has to read as one shape and three values when it is this small)
     x0 = pw * 2 - side
     out.paste(histogram_picture(rgb, n["split"], (side - 8, 96)), (x0, y0))
-    for i, panel in enumerate((original, panels[1], panels[2])):
+    for i, panel in enumerate((original, panels[1][0], panels[2][0])):
         out.paste(panel.resize(stamp, Image.LANCZOS if i < 2 else Image.BOX), (x0 + i * (stamp[0] + 8), y0 + 96 + 8))
     return out
 
@@ -337,11 +430,14 @@ def summary(rows):
     versions of a package)."""
     width = max(len(name) for name, _ in rows)
     shares = ("dark", "middle", "bright", "dead", "white", "warm", "cool")
-    out = [f"{'':<{width}}  {'mean':>6}" + "".join(f"{c:>8}" for c in shares) + "   largest dead patch   centre of the bright area"]
+    differs = any("diff" in n for _, n in rows)
+    out = [f"{'':<{width}}  {'mean':>6}" + "".join(f"{c:>8}" for c in shares) + "   largest dead patch"
+           + ("   differs" if differs else "") + "   centre of the bright area"]
     for name, n in rows:
         centre = "x %.2f y %.2f" % n["bright_centre"] if "bright_centre" in n else "-"
         out.append(f"{name:<{width}}  {n['mean']:>6.2f}" + "".join(f"{_pc(n[c]).strip():>8}" for c in shares)
-                   + f"   {n['dead_largest'] * 100.0:>17.2f}%   {centre}")
+                   + f"   {n['dead_largest'] * 100.0:>17.2f}%"
+                   + (f"   {_pc(n['diff']['share']).strip():>7}" if differs else "") + f"   {centre}")
     return out
 
 
@@ -406,18 +502,21 @@ def _look(text):
 
 
 def _probes(args, stem):
-    """The rectangles asked for one picture: --probe for every picture, --probes by picture."""
+    """The areas asked for one picture: --probe for every picture, --probes by picture."""
     out = {}
     if args.probes:
         table = json.loads(Path(args.probes).read_text())
         for key in ("*", stem):
-            out.update({name: tuple(box) for name, box in table.get(key, {}).items()})
+            out.update({name: tuple(numbers) for name, numbers in table.get(key, {}).items()})
     for spec in args.probe or []:
         name, _, numbers = spec.partition("=")
-        box = tuple(float(v) for v in numbers.split(","))
-        if not name or len(box) != 4:
-            raise SystemExit(f"--probe wants name=x0,y0,x1,y1, got {spec!r}")
-        out[name] = box
+        try:
+            out[name] = tuple(float(v) for v in numbers.split(","))
+        except ValueError:
+            out[name] = ()
+    for name, numbers in out.items():
+        if not name or len(numbers) < 4 or len(numbers) == 5 or (len(numbers) > 4 and len(numbers) % 2):
+            raise SystemExit(f"{PROBE}; got {name}={','.join(str(v) for v in numbers)}")
     return out
 
 
@@ -430,8 +529,11 @@ def main(argv=None):
                                                                   "(default: read from shots.txt or --shots, else A)")
     ap.add_argument("--shots", help="the scene's shots.json: a picture whose name ends in a shot's name takes its time, so its light version")
     ap.add_argument("--split", type=float, help="where dark ends and the middle begins (default: by light version)")
-    ap.add_argument("--probe", action="append", metavar="NAME=X0,Y0,X1,Y1", help="measure a rectangle (pixels, or fractions when no number is above 1); may be given several times")
-    ap.add_argument("--probes", help='rectangles by picture: {"<picture or *>": {"<name>": [x0, y0, x1, y1]}}')
+    ap.add_argument("--probe", action="append", metavar="NAME=X0,Y0,X1,Y1", help="measure an area: a rectangle, or with six numbers or more the corners "
+                    "of a polygon (pixels, or fractions when no number is above 1); may be given several times")
+    ap.add_argument("--probes", help='areas by picture: {"<picture or *>": {"<name>": [x0, y0, x1, y1]}}; longer lists are polygons')
+    ap.add_argument("--diff", metavar="PICTURE", help="a second picture of the same view and size: also measure what differs between the two")
+    ap.add_argument("--diff-over", type=float, default=DIFFER, metavar="X", help=f"how far apart in brightness counts as different (default {DIFFER})")
     ap.add_argument("--crop", type=float, nargs=4, metavar=("X0", "Y0", "X1", "Y1"), help="look at this part of the picture only")
     ap.add_argument("--ladder", action="store_true", help="print what the plan expects of each light version met (run inside build/)")
     ap.add_argument("--json", help="write every number to this file")
@@ -440,6 +542,7 @@ def main(argv=None):
     if out:
         out.mkdir(parents=True, exist_ok=True)
     times = _times(args.shots) if args.shots else None
+    other = load(args.diff, args.crop) if args.diff else None
     stems = [Path(p).stem for p in args.pictures]
     rows, everything = [], {}
     for path in args.pictures:
@@ -448,19 +551,26 @@ def main(argv=None):
         look = args.look or look_of(path, times) or "blue"
         split = args.split if args.split is not None else SPLIT[look]
         rgb = load(path, args.crop)
-        n = measure(rgb, split, _probes(args, stem))
+        if other is not None and other.shape != rgb.shape:
+            raise SystemExit(f"--diff: {args.diff} is {other.shape[1]}x{other.shape[0]} and {path} is {rgb.shape[1]}x{rgb.shape[0]}; "
+                             "the two have to be the same size")
+        n = measure(rgb, split, _probes(args, stem), other, args.diff_over)
+        if other is not None:
+            n["diff"]["against"] = Path(args.diff).stem
         title = f"{name} [{LETTER[look]} {look}]"
         print("\n".join(lines(title, n)))
         rows.append((title, n))
         everything[name] = dict(n, look=look, picture=str(path))
         if out:
             target = out / f"{name}-tones.jpg"
-            sheet(title, rgb, n).save(target, quality=85)
+            sheet(title, rgb, n, other).save(target, quality=85)
             print(f"  sheet   {target}")
             if args.parts:
                 grey_picture(rgb).save(out / f"{name}-grey.png")
                 levels_picture(rgb, split, n).save(out / f"{name}-levels.png")
                 warmth_picture(rgb).save(out / f"{name}-warmth.png")
+                if other is not None:
+                    change_picture(rgb, other, args.diff_over).save(out / f"{name}-differs.png")
     if len(rows) > 1:
         print("\n" + "\n".join(summary(rows)))
     if args.ladder:
