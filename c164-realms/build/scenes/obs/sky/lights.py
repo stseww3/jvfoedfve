@@ -9,8 +9,11 @@ the canvas by then and places, in this order:
             at `origin`) and those a scene registered with _lightkit.glazed(). The glass that
             stands in a window decides, not the table: B.WINDOW_LIT, _FROSTED and _CURTAIN get a
             source, dark glass gets none, a window that is not glazed yet is passed over. The
-            source stands in the first cell behind the glass of the middle column; a tall lit
-            window has two, one row above the sill and one row below the head.
+            source stands in the cell before the glass of the middle column (the window's
+            recess), two levels under the level the window has behind its glass: outside that is
+            the same light, and the room behind the window keeps to its own lamps. Where that
+            cell is taken (the bars of a base window) the source stands behind the glass. A tall
+            lit window has two, one row above the sill and one row below the head.
   entrance  one source of level 14 in the main doorway, when it stands open; and, as long as the
             hall behind it is an empty room with a wall close behind the doorway, a source of 12
             against that wall, so that the doorway reads as a warm bright face and not as a hole
@@ -68,16 +71,18 @@ def report(canvas):
     """canvas.light_report, made on the first call:
 
       placed     {cell: (level, why)}      every source this module placed
-      ranks      {1: n, 2: n, 3: n}        how many of them in each rank
-      levels     {level: n}
+      ranks      {1: n, 2: n, 3: n}        how many of them in each rank; a window's source before the
+                                           glass counts as the source behind the glass it stands for
+      levels     {level: n}                the levels as they are placed
       rejected   [(cell, level, why, reason)]   offers that got no source
       capped     [(cell, asked, given, why)]    offers cut down to the top of their rank
       merged     [(cell, level, why)]           offers that lost their cell to a brighter one
       moved      [(asked, cell, why)]           offers whose cell was taken, placed next to it
-      windows    {group: {"glass": [dark, dim, lit, bright], "sources": n, "unglazed": n,
+      windows    {group: {"glass": [dark, dim, lit, bright], "sources": n, "before": n, "unglazed": n,
                  "undressed": n, "by_hand": n, "pairs": [(front, storey, bay, bay)],
                  "fronts": {front: [..4..]}}}
                  the windows as they are glazed on the canvas, group by group ("" is main's table);
+                 before: how many of the sources stand before the glass (the others behind it);
                  undressed: lit windows of main's table left without a source while DRESS is off
       table      {look: [dark, dim, lit, bright]}   what each look lights of main's table
       dressed    bool                       were the building's own lights asked for (DRESS, dress())
@@ -94,7 +99,7 @@ def report(canvas):
         canvas.light_report = dict(
             placed={}, ranks={1: 0, 2: 0, 3: 0}, levels={}, rejected=[], capped=[], merged=[], moved=[],
             windows={}, table={}, dressed=False, doors=[], hall=[], wash=[], fifteen=[], foreign=0, isolated=[],
-            notes=[], problems=[], _seen=set(), _records=[])
+            notes=[], problems=[], _seen=set(), _records=[], _before=set())
     return canvas.light_report
 
 
@@ -112,6 +117,7 @@ def summary(canvas):
         total = sum(g)
         out.append(f"windows {group or 'main'}: dark {g[0]}, dim {g[1]}, lit {g[2]}, bright {g[3]} "
                    f"({100.0 * g[0] / total:.0f}% dark), {w['sources']} sources"
+                   + (f" ({w['sources'] - w['before']} of them behind the glass)" if w["sources"] > w["before"] else "")
                    + (f", {w['undressed']} left without (not dressed)" if w["undressed"] else "")
                    + (f", {w['unglazed']} not glazed" if w["unglazed"] else "")
                    + (f", {w['by_hand']} lit by hand" if w["by_hand"] else "")
@@ -188,6 +194,7 @@ def _put(canvas, r, cell, level, why):
             r["placed"][cell] = (level, why)
             if old_why != why:
                 r["merged"].append((cell, old, old_why))
+                r["_before"].discard(cell)
             return "raised"
         if old_why != why:
             r["merged"].append((cell, level, why))
@@ -227,8 +234,10 @@ def _glass(canvas, w):
 
 
 def _behind(canvas, r, w, tier):
-    """Place the sources behind a lit window. Returns how many stand there, or None when the scene
-    has put a source of its own behind this glass."""
+    """Place the sources of a lit window: in the cell before the glass, L.THROUGH under the level
+    the window has behind it, or, where no column has that cell free, behind the glass at that
+    level. Returns how many stand there, or None when the scene has put a source of its own next
+    to this glass."""
     ox, oy, oz = w["origin"]
     y0, y1 = w["y"]
     rows = y1 - y0 + 1
@@ -239,18 +248,28 @@ def _behind(canvas, r, w, tier):
     mid = len(w["cells"]) // 2
     columns = sorted(range(len(w["cells"])), key=lambda i: (abs(i - mid), i))
     why = f"{WINDOW_WHY} {w['group'] + ' ' if w['group'] else ''}{w['front']} {w['bay']} {w['storey']}"
-    behind = [(x + ox + dx, y + oy, z + oz + dz) for x, z in w["cells"] for y in range(y0, y1 + 1)]
-    if any(canvas.name(*c) == B.LIGHT and c not in r["placed"] for c in behind):
+    beside = [(x + ox + s * dx, y + oy, z + oz + s * dz)
+              for s in (1, -1) for x, z in w["cells"] for y in range(y0, y1 + 1)]
+    if any(canvas.name(*c) == B.LIGHT and c not in r["placed"] for c in beside):
         return None
     n = 0
     for y in ys:
-        for i in columns:
-            x, z = w["cells"][i]
-            if _put(canvas, r, (x + ox + dx, y + oy, z + oz + dz), level, why) != "taken":
-                n += 1
-                break
+        spots = []
+        if level > L.THROUGH:
+            spots += [((x + ox - dx, y + oy, z + oz - dz), level - L.THROUGH, True)
+                      for x, z in (w["cells"][i] for i in columns)]
+        spots += [((x + ox + dx, y + oy, z + oz + dz), level, False)
+                  for x, z in (w["cells"][i] for i in columns)]
+        for cell, given, before in spots:
+            done = _put(canvas, r, cell, given, why)
+            if done == "taken":
+                continue
+            if before and done != "kept":
+                r["_before"].add(cell)
+            n += 1
+            break
         else:
-            r["notes"].append(f"{why}: no free cell behind the glass in row {y + oy}")
+            r["notes"].append(f"{why}: no free cell before or behind the glass in row {y + oy}")
     return n
 
 
@@ -261,8 +280,8 @@ def _windows(canvas, r, origin):
         if key in r["_seen"]:
             continue
         r["_seen"].add(key)
-        group = r["windows"].setdefault(w["group"], dict(glass=[0, 0, 0, 0], sources=0, unglazed=0, undressed=0,
-                                                         by_hand=0, pairs=[], fronts={}))
+        group = r["windows"].setdefault(w["group"], dict(glass=[0, 0, 0, 0], sources=0, before=0, unglazed=0,
+                                                         undressed=0, by_hand=0, pairs=[], fronts={}))
         tier = _glass(canvas, w)
         if tier is None:
             group["unglazed"] += 1
@@ -273,11 +292,13 @@ def _windows(canvas, r, origin):
         if tier > L.DARK and w["table"] and not r["dressed"]:
             group["undressed"] += 1
         elif tier > L.DARK:
+            outside = len(r["_before"])
             n = _behind(canvas, r, w, tier)
             if n is None:
                 group["by_hand"] += 1
             else:
                 group["sources"] += n
+                group["before"] += len(r["_before"]) - outside
 
 
 # ---- the entrance -------------------------------------------------------------------------------------
@@ -416,7 +437,7 @@ def _survey(canvas, r):
         level = F.emission(*AB.parse(state))
         ours = cell in r["placed"]
         if ours:
-            r["ranks"][L.rank(level)] += 1
+            r["ranks"][L.rank(level + L.THROUGH if cell in r["_before"] else level)] += 1
             r["levels"][level] = r["levels"].get(level, 0) + 1
         else:
             r["foreign"] += 1

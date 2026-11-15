@@ -26,7 +26,9 @@ Light falls by one a cell, and a face is lit by the cell in front of it. A sourc
 first cell behind the glass leaves n-3 on the jambs, n-2 to n-3 on the sill, n-4 on the sides of the
 pilasters and n-6 on their fronts. Under the blue look stone is lifted out of the blue to a neutral
 grey at 7 and turns warm from 9 on: 10 behind the glass makes a window's surround lighter, 12 makes
-it warm.
+it warm. The levels of the windows are given as that source behind the glass (BEHIND); what is
+placed is a source of n-2 in the cell before the glass, which is the same light outside and leaves
+the room behind the window to its own lamps (THROUGH).
 
 Windows (the director's rules, group #15317, #19277 and #21989): at least a fifth of the windows
 of a front are dark; two neighbouring bays of one storey are never both lit; lit windows come in
@@ -150,6 +152,14 @@ FIXED = {
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
 BEHIND = {BRIGHT: (12, 12), LIT: (10, 9), DIM: (8, 7)}
 TALL = 4                    # a window of this many rows or more is a tall one
+# Where the cell before the glass is free (the recess of the window) the source stands there, this
+# much lower. Light loses one in the glass and one more in that cell, so the stone round the window
+# gets what the source behind the glass gave it, level for level, and the room behind the window
+# four levels less: a lit window is no lamp of the room it belongs to (cr2, group #32778; A0 #32721).
+# Outside nothing gets more than before. Less gets only what the old source reached by a shorter
+# way through the room: the recess of another window of the same room, which is dark glass or has
+# a source of its own.
+THROUGH = 2
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
