@@ -21,11 +21,11 @@ picture, two pairs before the stair, and the terrace's lip hides least of the fr
 back down it from its head; the stair from its foot; the wall, a cheek and a foot pedestal from
 near, and the wall's length from the yard's north end; the board's view of the power house (V6),
 which stands on the stair's south half since A0's ruling of 11-16: the south cheek and its foot
-pedestal are that picture's foreground and the yard its floor, and the house is in it once its
-package is merged; and three from above: from the north by east, where neither the power house
-nor its chimney stands before the stair, the whole hill is in the picture and the offline sky's
-low sun is out of it; on the axis, the way a car of the cableway comes in, the line from the
-yard's edge to the door; and the board's V12.
+pedestal with its lamp are that picture's foreground, the yard and the walk to the house's door
+its floor; and three from above: from the north by east, where neither the power house nor its
+chimney stands before the stair, the whole hill is in the picture and the offline sky's low sun
+is out of it; on the axis, the way a car of the cableway comes in, the line from the yard's edge
+to the door; and the board's V12.
 
 Two more scenes show the same hill with one thing left out, on the views that are judged
 (JUDGED): obs_site_stair_noband without the walk's band on the treads (A0 #28839 chose on the
@@ -49,12 +49,10 @@ LINES = (site, main, props, sky)
 TIME = 14000
 STREET_LEVEL = 13       # the lamps of the way are a step under the doorway (props/lamps)
 
-# The arrival view is the skeleton's. A0 #304 aims it higher, at the comet over the dome; until the
-# skeleton has that aim (it comes together with S.V2) it is put here.
-V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
-# The board's view of the power house stands on the tread of column x 66, three rows inside the south
-# cheek (A0, 11-16; site/powerhouse's scene calls it stair_south). The skeleton's once it is there.
-V6 = getattr(S, "V6", dict(pos=(66.5, S.stair_top(66) + S.EYE, 6.5), look_at=(76.5, 8.0, 32.5)))
+# The board's views are the skeleton's: the arrival view (A0 #304 aims it at the comet over the dome),
+# and the view of the power house, which stands on the tread of column x 66, three rows inside the
+# south cheek (A0, 11-16; site/powerhouse's scene calls it stair_south).
+V1, V6 = S.V1, S.V6
 LOW = S.LOWER_GROUND + S.EYE        # -4.38: the eye of a person on the lower platform
 HIGH = S.GROUND + S.EYE             # 1.62: on the upper terrace
 VIEWS = [
