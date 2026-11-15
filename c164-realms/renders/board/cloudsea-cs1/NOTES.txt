@@ -1,0 +1,34 @@
+# The cloud-sea batch (director, 11-16 00:55), shot in the game on this cloud machine.
+#
+# Branch: this branch with cursor/c164-cloud-7d36 (c286's version c) and
+#         cursor/c164-a2-light-29fe (a2's three moments and the clouds.fsh switch) merged in.
+# The six stands are c286's: build/scenes/obs_sky_cloudsea/shots.json  v12 v11 v1 sunset_west skim east
+# every picture 1280x720, look A except the D trials which set their own tick.
+#
+#   group-a          tick 14000, clouds high quality            the state of things now
+#   group-d384       tick 22500  D = 384
+#   group-d768       tick 23100  D = 768
+#   group-d1536      tick 23700  D = 1536
+#   group-b-shader   tick 14000 with a2's clouds.fsh override in the pack (C164_SEAM_SHADER=1)
+#   group-fast       clouds fast, v12 and sunset_west only
+#   group-false      clouds off,  v12 and sunset_west only
+#
+# sheet-<stand>.png is the five-cell strip the director asked for: now / 384 / 768 / 1536 / shader,
+# each cell 640 wide. sheet-<stand>-cloudset.png is now / fast / false.
+#
+# Share of the picture differing from group-a by more than 30 of 765:
+#   v12          d384 15.4%   d768 17.6%   d1536 57.6%   shader 25.8%
+#   v11          d384  0.7%   d768  0.4%   d1536  1.6%   shader  1.1%
+#   v1           d384  1.1%   d768  0.7%   d1536  1.9%   shader  1.1%
+#   sunset_west  d384  7.0%   d768  3.9%   d1536 10.3%   shader  9.7%
+#   skim         d384  0.6%   d768  0.6%   d1536  2.1%   shader  1.2%
+#   east         d384  1.0%   d768  1.9%   d1536  3.3%   shader  0.4%
+#
+# Two things found while setting this up, both worth knowing before the next batch:
+#
+# 1. cloudRange's largest accepted value is 128, not 512. At 512 the client logs
+#    "Error parsing option value 512 for option Cloud Distance: Value 512 outside of range [2:129]"
+#    and keeps its own default, so a batch shot at "max" silently is not at max. It is 128 here.
+# 2. renderDistance 32 and the server's view-distance 32 are what these are shot at. Cloud Distance
+#    and render distance are different options and neither one reaches the 1536-block trial; that
+#    trial moves only what the fog law does.
