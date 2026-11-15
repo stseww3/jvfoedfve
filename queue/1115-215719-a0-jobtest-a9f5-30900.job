@@ -1,0 +1,3 @@
+branch=cursor/c164-a0-jobtest-a9f5
+head=a758fa9fc96756985944866f2aa3ab9b1167a524
+args=--no-push echo\ hello\ from\ \$\(hostname\)\;\ python\ -c\ \"import\ numpy\,\ numba\;\ print\(numpy.__version__\,\ numba.__version__\)\" 
