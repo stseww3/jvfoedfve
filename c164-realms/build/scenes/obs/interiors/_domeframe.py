@@ -21,6 +21,8 @@ set down four times.
 """
 import math
 
+import numpy as np
+
 from artkit import models as M
 
 from ..common import palette as P
@@ -69,32 +71,39 @@ def tips(ceiling, reach):
     return out
 
 
-def concave(points):
+def concave(points, step=TEXEL / 2.0, most=2.0):
     """The chain through points = [(x, y)], x rising, let down where it has to be so that it bends
-    one way only (never upwards) and passes on or under every point. The first point keeps its
-    height. It starts as the highest straight line from the first point that clears them all;
-    then every point is lifted as far as its neighbours allow, until nothing moves."""
-    xs, ys = [p[0] for p in points], [p[1] for p in points]
+    one way only (never upwards) and passes on or under every point; the first point keeps its
+    height. Every point may be let down by a whole number of steps; of all the chains that bend
+    the right way the one is kept whose gaps, squared, add up to the least: a few small gaps
+    rather than one large one."""
+    xs = np.array([p[0] for p in points], dtype=float)
+    ys = np.array([p[1] for p in points], dtype=float)
     n = len(points)
-    slope = min((ys[i] - ys[0]) / (xs[i] - xs[0]) for i in range(1, n))
-    h = [ys[0] + slope * (x - xs[0]) for x in xs]
-
-    def line(a, b, x):
-        return h[a] + (h[b] - h[a]) * (x - xs[a]) / (xs[b] - xs[a])
-
-    for _ in range(1000):
-        moved = 0.0
-        for i in range(1, n):
-            top = ys[i]
-            if i >= 2:
-                top = min(top, line(i - 2, i - 1, xs[i]))
-            if i <= n - 3:
-                top = min(top, line(i + 2, i + 1, xs[i]))
-            moved = max(moved, top - h[i])
-            h[i] = max(h[i], top)
-        if moved < 1e-9:
-            break
-    return list(zip(xs, h))
+    if n < 3:
+        return list(points)
+    drop = np.arange(int(round(most / step)) + 1) * step
+    k = len(drop)
+    huge = 1e18
+    cost = np.full((k, k), huge)            # [how far point i - 1 is let down, how far point i]
+    cost[0, :] = drop ** 2
+    came = []
+    for i in range(1, n - 1):
+        before = ((ys[i] - drop)[None, :] - (ys[i - 1] - drop)[:, None]) / (xs[i] - xs[i - 1])
+        after = ((ys[i + 1] - drop)[None, :] - (ys[i] - drop)[:, None]) / (xs[i + 1] - xs[i])
+        allowed = before[:, :, None] >= after[None, :, :] - 1e-9
+        via = np.where(allowed, cost[:, :, None], huge)
+        came.append(via.argmin(axis=0))
+        cost = via.min(axis=0) + (drop ** 2)[None, :]
+    if cost.min() >= huge:
+        raise ValueError("no chain that bends one way passes under these corners")
+    b, c = np.unravel_index(cost.argmin(), cost.shape)
+    drops = [c, b]
+    for back in reversed(came):
+        b, c = back[b, c], b
+        drops.append(b)
+    drops.reverse()
+    return [(float(x), float(y - drop[d])) for x, y, d in zip(xs, ys, drops)]
 
 
 def rounded(points, rounds=3):
