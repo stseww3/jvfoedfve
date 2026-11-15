@@ -182,8 +182,9 @@ def panels(c, x, z):
     return x + 14
 
 
-def brass(c, x, z):
-    """The brass family (bamboo) and the small pieces."""
+def brass(c, x, z, staged=True):
+    """The brass family (bamboo) and the small pieces. staged=False leaves floor, backdrop and lamps
+    to the caller."""
     start = x
     family(c, B.BRASS_PLATE, x, z)
     family(c, B.BRASS_PATTERN, x + 2, z)
@@ -210,7 +211,8 @@ def brass(c, x, z):
     c.set(x + 28, 1, z, st(B.BRASS_SIGN[2], rotation="0"))
     c.set(x + 29, 1, z, st(B.ENAMEL_SIGN[2], rotation="0"))
     c.box(x + 5, 0, z + 2, x + 16, 0, z + 2, B.BRASS_INLAY)
-    stage(c, start, x + 29, z)
+    if staged:
+        stage(c, start, x + 29, z)
     return x + 32
 
 
@@ -224,3 +226,35 @@ def clouds(c, x, z):
         c.box(x0 + i, i, z - 1, x0 + 2 * tones - 2 - i, i, z + tones - 1 - i, block)
     stage(c, x, x0 + 2 * tones - 2, z, lamps=False)
     return x0 + 2 * tones + 1
+
+
+# ---- the material board: walls of eight by eight ------------------------------------------------------
+def steps(c, fam, x, y, z):
+    """The shaped blocks of a family in a row of eight at the foot of its wall: two stairs to climb
+    towards the wall, two slabs, two pieces of its low wall."""
+    if fam.stairs:
+        c.set(x + 1, y, z, st(fam.stairs, facing="north"))
+        c.set(x + 2, y, z, st(fam.stairs, facing="north"))
+    if fam.slab:
+        c.set(x + 4, y, z, st(fam.slab, type="bottom"))
+        c.set(x + 5, y, z, st(fam.slab, type="bottom"))
+    if fam.wall:
+        c.set(x + 6, y, z + 1, st(fam.wall, east="low", up="true"))
+        c.set(x + 7, y, z + 1, st(fam.wall, west="low", up="true"))
+
+
+def wall(c, what, x, y, z, n=8):
+    """An n by n wall of a block, or of a family with its shaped blocks at the foot."""
+    fam = what if isinstance(what, B.Family) else None
+    c.box(x, y, z, x + n - 1, y + n - 1, z, fam.block if fam else what)
+    if fam:
+        steps(c, fam, x, y, z + 1)
+
+
+def window_wall(c, role, x, y, z, frame, n=8):
+    """A window of six by six glass blocks in a stone frame, and a small screen of its panes."""
+    c.box(x, y, z, x + n - 1, y + n - 1, z, frame)
+    c.box(x + 1, y + 1, z, x + n - 2, y + n - 2, z, role.block)
+    for dy in (0, 1):
+        c.set(x + 3, y + dy, z + 2, st(role.pane, east="true"))
+        c.set(x + 4, y + dy, z + 2, st(role.pane, west="true"))

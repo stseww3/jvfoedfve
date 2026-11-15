@@ -1,7 +1,7 @@
-"""Framework demo work package: the M3 white-model massing. The plain volumes of the main building,
-rotunda, dome, clock tower and small dome in the dressed-stone / dome materials on the skeleton
-grid, so the silhouette ("one bar, one circle, one spire") and proportions can be judged in the
-first render. A3 replaces this with the real shells (elevation grammar, three-depth section)."""
+"""Framework demo work package: the M3 white-model massing. The plain volumes of the clock tower
+and the small dome in the dressed-stone / dome materials on the skeleton grid, so the silhouette
+("one bar, one circle, one spire") keeps its spire until those two have their own packages. The
+main building, the rotunda and the great dome are no longer here: main/facade.py builds them."""
 import math
 
 from ..common import blocks as B
@@ -55,25 +55,10 @@ def _dome(c, o, cx, cz, y0, y1, radius_at, block):
 def build(canvas, origin=(0, 0, 0)):
     c, o = canvas, origin
 
-    # the long main building: perimeter walls and a roof slab. The east (front) wall steps with the
-    # five-part projection; the west wall and the two ends are plain.
-    _wall(c, o, S.WALL_W, S.Z_NORTH, S.WALL_E, S.Z_SOUTH, S.GROUND, S.CORNICE, WALL)
-    for j in range(1, S.N_BAYS + 1):
-        za, zb = S.pilaster_z(j - 1), S.pilaster_z(j)
-        xe = S.east_wall_x(j)
-        for z in range(za, zb + 1):
-            for y in range(S.GROUND, S.CORNICE + 1):
-                c.set(o[0] + xe, o[1] + y, o[2] + z, WALL)
-    _slab(c, o, S.WALL_W, S.Z_NORTH, S.WALL_E, S.Z_SOUTH, S.ROOF_FLOOR, ROOF)
-
-    # the rotunda and great dome: a grounded drum ring, then the verdigris shell
-    cx, cz = S.DOME_CENTRE
-    _cylinder(c, o, cx, cz, S.DOME_R, S.GROUND, S.DOME_SPRING - 1, WALL)
-    _dome(c, o, cx, cz, S.DOME_SPRING, S.DOME_APEX, S.dome_profile, DOME)
-
-    # the clock tower (north) and small dome (south)
+    # the clock tower (north) and small dome (south), from the roof up: below it main/facade.py
+    # has the walls
     _wall(c, o, S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1],
-          S.GROUND, S.CLOCK_SHAFT_TOP, WALL)
+          S.ROOF_STAND, S.CLOCK_SHAFT_TOP, WALL)
     _wall(c, o, S.CLOCK_SHAFT_X[0], S.CLOCK_SHAFT_Z[0], S.CLOCK_SHAFT_X[1], S.CLOCK_SHAFT_Z[1],
           S.CLOCK_SHAFT_TOP + 1, S.CLOCK_TOP, IRON)
     scx = (S.SMALL_DOME_X[0] + S.SMALL_DOME_X[1]) / 2.0

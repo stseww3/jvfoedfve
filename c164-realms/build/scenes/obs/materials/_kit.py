@@ -25,6 +25,7 @@ from PIL import Image
 from artkit import respack
 from artkit.gameassets import Assets
 
+from ..common import assembly
 from ..common import blocks as B
 from ..common import palette as P
 
@@ -117,6 +118,22 @@ def redirect(pack_dir, block, textures, **kw):
     kw.setdefault("protect", PROTECT)
     got = respack.redirect_block(pack_dir, game(), block, textures, ns=NS, **kw)
     return f"{block}: {got['models']} models x {got['variants']} -> {', '.join(p.rpartition('/')[2] for p in got['pictures'])}"
+
+
+def pack_with(pack_dir, **versions):
+    """The pack of the whole category with chosen versions of some packages: pack_with(d, ashlar="b")
+    calls ashlar.pack(d, version="b") and every other package's pack(d). For scenes that compare
+    versions; the master scene always takes each package's default."""
+    parts = assembly.category(__package__).parts()
+    unknown = set(versions) - {m.__name__.rpartition(".")[2] for m in parts}
+    if unknown:
+        raise ValueError(f"no material package is called {', '.join(sorted(unknown))}")
+    out = []
+    for module in parts:
+        f, name = getattr(module, "pack", None), module.__name__.rpartition(".")[2]
+        if f is not None:
+            out += (f(pack_dir, version=versions[name]) if name in versions else f(pack_dir)) or []
+    return out
 
 
 def drawn_by_code(block):

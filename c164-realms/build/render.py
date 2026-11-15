@@ -4,10 +4,11 @@
     render.py skyobs --shots shots.json --out /tmp/skyobs [--only hero,low] [--size 1280x720]
 
 Takes the same shot lists as tools/shoot.py (camera positions in scene coordinates, "time" per
-shot). The scene's resource pack is written to a temporary directory and read back together with
-the game's own files from the client jar, so blocks show the game's models and textures, display
-entities show the scene's models, and light, shade, fog and sky follow the game's arithmetic
-(artkit/raytrace.py). The first run compiles the ray tracer, which takes a few minutes.
+shot; a shot without one is taken at 14000, look A). The scene's resource pack is written to a
+temporary directory and read back together with the game's own files from the client jar, so blocks
+show the game's models and textures, display entities show the scene's models, and light, shade,
+fog and sky follow the game's arithmetic (artkit/raytrace.py). The first run compiles the ray
+tracer, which takes a few minutes.
 
 What it does not draw: particles, block entities (chests, signs, banners), mobs, clouds of the
 vanilla kind, and the slope of running water. Final pictures still come from the game; this is for
@@ -28,25 +29,20 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import makepack  # noqa: E402
 from artkit import gamelook, gamescene, water  # noqa: E402
-from artkit import models as M  # noqa: E402
 from artkit.gameassets import Assets  # noqa: E402
 
 ROOT = os.environ.get("MC_ROOT", "/agent/realms-study")
 DATA = "data/minecraft/"
+# A shot that names no time is taken in look A, the blue hour (plan/roles/INTERFACE.md 3).
+# tools/shoot.py has the same default, so a shot list means the same picture offline and in the game.
+DEFAULT_TIME = 14000
 
 
 def write_pack(scene_name, out):
     """The same files makepack.py writes."""
-    scene_mod = importlib.import_module(f"scenes.{scene_name}")
-    # prefer a scene-level build_models() (the multi-line obs scene), fall back to props (skyobs)
-    builder = getattr(scene_mod, "build_models", None)
-    if builder is None:
-        builder = importlib.import_module(f"scenes.{scene_name}.props").build_models
-    M.write_pack(out, list(builder().values()))
-    extra = getattr(scene_mod, "write_pack", None)
-    if extra:
-        extra(out)
+    makepack.write(scene_name, out)
 
 
 def timelines(assets, tag="in_overworld"):
@@ -148,7 +144,7 @@ def main():
     size = tuple(int(v) for v in args.size.split("x"))
     for shot in shots:
         t1 = time.time()
-        tick = tick_of(args.time if args.time is not None else shot.get("time", "noon"), markers)
+        tick = tick_of(args.time if args.time is not None else shot.get("time", DEFAULT_TIME), markers)
         cam = world.camera(shot["pos"], shot.get("look_at"), shot.get("yaw", 0.0), shot.get("pitch", 0.0), args.fov)
         img = world.picture(look_at(tick), cam, size, args.ss, args.fov)
         path = f"{args.out}-{shot['name']}.png"
