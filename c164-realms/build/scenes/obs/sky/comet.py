@@ -65,7 +65,7 @@ SIZE = 256
 GRID = 64                    # the big pixels: the nucleus in every version, all of version b
 SPAN = 22.62                 # degrees across the moon's square (half-size 20 at distance 100)
 HEAD_BELOW = 7.0             # the head sits this far below the centre of the square; tails go up
-DEFAULT_STYLE = "b"          # the version pack() paints for the map; the review settles it
+DEFAULT_STYLE = "c"          # the version pack() paints for the map; the review settles it
 
 # brightness and length of the comet in each light version: deep is the brightest and longest, glow
 # the faintest and shortest, so that the three are told apart at the size of a stamp
