@@ -1,0 +1,3 @@
+branch=cursor/c164-clocks-f3-00d6
+head=b026dd9513b855b03be3279120f27bb1babed1cf
+args=--wip --always --tail 80 bash tools/gate.sh machines/clocks b026dd9513b855b03be3279120f27bb1babed1cf --base 636ad212 
