@@ -1,6 +1,6 @@
 # 名单：第 3 班（11-16 凌晨起）
 
-总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 07:41。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
+总监助理（代号 aide，聊天 c320）维护，最近一次更新 11-16 07:47。点名只点「聊天号」一栏；聊天号“—”是还没开出来，节点“未报”是人到了、节点号还没报来（拿到以后私信 c320 一行）。前两班的聊天号（c176 到 c246，c258 到 c297）都停了，点了没人醒。
 
 - 总监：A0，聊天 c164。只为两件事找他：要他拍板，或者报告卡住了。
 - 总监助理：aide，聊天 c320。名单上的事找他：谁是谁、找谁对接口、新分支和节点号报给他、手上的卡都交付了领下一张。
@@ -16,7 +16,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | s2 | c318 | node33（冻住） | c188 | 技检和合并（拿合并钥匙），common 牵头 | `cursor/c164-s2-integrator-927e` @ `8f626b20` | `cursor/c164-s2-fable-89df` |
 | s1 | c319 | node34（冻住） | c189 | 出图（拿出图钥匙）：整座的看板图、真机图；`common/plots-shuttle`、`common/offline-sky` | `cursor/c164-s1-render-9df7` @ `9cbe672b` | `cursor/c164-s1-render-f3-fd9c` |
-| review | c332 | node46（冻住） | c219 | 评审：materials、main、props（总监 11-16 07:30：materials/iron 打磨轮、props/lamps 补交这两件挪给 cr4） | `cursor/c164-review-0eb8` @ `ef09c638` | `cursor/c164-review-f3-3c69` |
+| review | c332 | node46（冻住） | c219 | 评审：materials、main、props（总监 11-16 07:30 加了 cr4：props/instruments、props/furniture 这两件头一轮的归 cr4） | `cursor/c164-review-0eb8` @ `ef09c638` | `cursor/c164-review-f3-3c69` |
 | cr2 | c333 | node47（冻住，05:20 前后起没有回执） | c235 | 评审：site、sky、motion（总监 11-16 07:30：sky/tones、site/stair 这两件挪给 cr3） | `cursor/c164-cr2-582e` @ `47be4fe6` | `cursor/c164-cr2-f3-ccff` |
 | cr3 | c347 | 合用 node47（冻住） | （新岗位） | 评审：machines、interiors；总监 11-16 07:30 起另评 cr2 挪来的 sky/tones、site/stair | 从总装开 | `cursor/c164-cr3-f3-998d` |
 | aide | c320 | 不用节点 | （新岗位） | 总监助理：名单、谁闲了给谁派下一张卡、每小时一份进度 | 从总装开 | `cursor/c164-aide-f3-b9ab` |
@@ -42,7 +42,7 @@
 | comet | c330 | node44（冻住） | c230 | sky/comet；然后 sky/ridges（P2，11-16 05:30 总监派，没有前任，从总装开；先找 cloud c329 对云海的高度；手上的打磨先收尾） | `cursor/c164-comet-986f` @ `b3950eb4` | `cursor/c164-comet-f3-793d`、`cursor/c164-comet-ridges-f3-793d` |
 | cloud | c329 | node43（冻住） | c227 | sky/cloudsea | `cursor/c164-cloud-wip-99a5` @ `55daddce` | `cursor/c164-cloud-cloudsea-f3-ad5e` |
 | a4 | c323 | node37（冻住） | c221 | site/terrain、site/court 打磨；site 牵头；然后 common/walk 的 walk-in（室内和屋顶走查，P1，11-16 05:30 总监派；手上的短活先收尾） | `cursor/c164-a4-site-2af2` @ `7a18bacc` | `cursor/c164-a4-site-f3-6824`、`cursor/c164-a4-walkin-f3-6824` |
-| stair | c337 | node51（冻住；共享池 node4 他空着时借给排队的人） | c225 | site/stair（两次交付都过了关口）；**11-16 07:30 起转第四评审，代号 cr4**（总监定，评审排队过三件）：读 `roles/S3-critic.md`，先评 review 队里的 materials/iron 打磨轮、props/lamps 补交，不评自己做过的包；site/stair 被退回时它优先。interiors/batteryroom 没动过，退回待领 | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
+| stair | c337 | node51（冻住；共享池 node4 他空着时借给排队的人） | c225 | site/stair（两次交付都过了关口）；**11-16 07:30 起转第四评审，代号 cr4**（总监定，评审排队过三件）：读 `roles/S3-critic.md`，先评 props/instruments、props/furniture（头一轮的两件，从 review 队里分来），不评自己做过的包；site/stair 被退回时它优先。interiors/batteryroom 没动过，退回待领 | `cursor/c164-stair-4aad` @ `36220ac4` | `cursor/c164-stair-f3-b330` |
 | cable | c338 | node52（冻住） | c226 | site/cablecar；然后 machines/cablecar-winch（接 c240） | `cursor/c164-cable-a47d` @ `4af8406b`；`cursor/c164-car-w3k9` @ `5a6186cc` | `cursor/c164-cable-cablecar-f3-9cf7` |
 | power | c339 | node53（冻住） | c228 | site/powerhouse；然后 interiors/powerhouse（11-16 04:14 派，没有前任；外壳被退回时它优先） | `cursor/c164-power-f182` @ `5ae1738e` | `cursor/c164-power-f3-2e4a`、`cursor/c164-power-interior-f3-2e4a` |
 | outb | c340 | node54（06:00 不在线） | c229 | site/outbuildings、site/mastbase；然后 common/export（成品地图导出，现在空跑，P1，11-16 05:46 派，没有前任，从总装开；两张卡被退回时它们优先；**两个试传存档排最前**：蓝调的天用的注册表文件会让存档带「实验性」标记、Realms 不支持，总监 06:54 定为头号风险，要节点和真机先给他） | `cursor/c164-outb-0198` @ `6d320dd0` | `cursor/c164-outb-f3-f4b8`、`cursor/c164-outb-export-f3-f4b8` |
