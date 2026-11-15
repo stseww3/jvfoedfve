@@ -1,20 +1,55 @@
 """The pictures in the sky: the comet in the moon's slot, the sun's slot blanked.
 
-PLACEHOLDER written with the look (card sky/look) so that every early picture has a plausible sky;
-the card sky/comet replaces the painting with the three versions to choose from. What stays is how
-the slots are used:
+Card plan/packages/sky/comet.md. Three versions to choose from, painted by one function from one
+table (STYLES):
 
-    moon/<phase>.png   eight slots, the timeline's moon_phase picks one (mood.LOOKS): one comet per
-                       light version, longer and brighter in the deep night, short and faint in the
-                       strong afterglow
-    moon/new_moon.png  a test card for a few ticks in the morning (mood.TRIALS["card"]), to check on
-                       the real client which way up the game draws these pictures
+    a  jia   a soft long tail: a small coma and long smooth tails; only the nucleus is big pixels
+    b  yi    hard pixels: the whole sprite on the 64 grid in five levels of brightness, flat tones
+             with stepped outlines, the way the vanilla sun and moon are drawn. The dust tail is a
+             plume that opens all the way to a round end; its three tones lie in it one inside the
+             other, each narrow at the head and round at its far end, the brightest a short stub
+             behind the head. The ion tail is a line one pixel wide, straight up, in the dimmest
+             tone, drawn behind the plume
+    c  bing  a wide fan: a short, wide dust tail with a firmer outline
+
+The anatomy is the same in all three: a nucleus of a few big pixels; a small coma; a dust tail that
+leans and curves north, warm white at the head and cooling towards its tip; a thin straight blue
+ion tail that parts from it on the south side.
+
+How the moon's slots are used:
+
+    moon/<phase>.png   eight slots; the timeline's moon_phase picks one (mood.LOOKS). pack() paints
+                       one version into all of them: brighter and longer in the deep night, fainter
+                       and shorter in the strong afterglow (STRENGTH, TAIL), the other five as in
+                       the blue hour. The versions are compared scene by scene (obs_sky_comet,
+                       obs_sky_comet_b, obs_sky_comet_c), each under all three lights.
+    moon/new_moon.png  a test card for a few ticks in the morning (mood.TRIALS["card"]): which way
+                       up the game draws the picture is read off it
     sun.png            black: the textures are added onto the sky, black draws nothing. The hour is
                        after sunset; whatever is ever painted here must not read as a sun's disc.
 
-The moon's square is 22.6 degrees wide (the sun's 33.4) and always due west of the viewer at the
-elevation 90 - moon_angle. Pictures are painted the way the player sees them facing west (up is up,
-right is north) and turned into the file's orientation by seen_to_moon_file().
+Where it stands. The moon's square is 22.6 degrees wide and always due west of the viewer, its
+centre 90 - moon_angle up. The head sits 7 degrees below the centre (HEAD_ELEVATION, 41 degrees with
+moon_angle 42: 4.5 above the top line of the great dome as V2 sees it, which is the dome's near
+shoulder and not its apex; measured on the white model of obs_sky_comet), the tails go up and end
+inside the square in every light (the longest, in the deep night, 4 degrees short of its top edge).
+directions(), light() and reach() say where its light is on the sky of any viewer; whatever checks
+what stands in front of the comet reads them and does not work the square's attitude out again.
+
+Which way up. The comet is painted as the player sees it facing west (up is up, right is north)
+and turned into the file's orientation by seen_to_moon_file(). Read off the 26.3 client's
+SkyRenderer: sun and moon stand at height 100 under rotateY(-90) rotateX(angle), which carries the
+quad's +x to the south (the viewer's left) and its +z towards the horizon; buildMoonPhases gives
+x = -1 the sprite's U1 and z = -1 its V1, so the moon's file shows upside down and not mirrored
+(the sun's file shows mirrored and not upside down). The test card is there to see it in the game.
+
+How bright. The values are light added onto the sky. Outside the nucleus nothing adds more than
+CEILING, so that on the darkest sky the comet stays under the lit windows (0.79 on the ladder of
+plan/parts/sky.md section 4); report() measures it for every version and light.
+
+Colours: the nucleus takes the two brightest glow steps, the dust tail runs from the warm white of
+glow to the brightest night_glass step, which is also the ion tail's blue. The palette has no
+blue-violet of its own; the dust's cool end is asked for in the group if this one will not do.
 """
 import math
 
@@ -22,56 +57,218 @@ import numpy as np
 
 from artkit import respack
 
+from scenes.obs.common import palette as P
+
 from . import mood
 
 SIZE = 256
-SPAN = 22.62                 # degrees across the moon's square
-HEAD_BELOW = 7.0             # the head sits this far below the centre of the square, tails go up
-STRENGTH = {"blue": 1.0, "deep": 1.5, "glow": 0.55}        # how bright each look's comet is
-TAIL = {"blue": 1.0, "deep": 1.25, "glow": 0.7}             # and how long its tails
+GRID = 64                    # the big pixels: the nucleus in every version, all of version b
+SPAN = 22.62                 # degrees across the moon's square (half-size 20 at distance 100)
+HEAD_BELOW = 7.0             # the head sits this far below the centre of the square; tails go up
+DEFAULT_STYLE = "a"          # the version pack() paints for the map; the review settles it
+
+# brightness and length of the comet in each light version: deep is the brightest and longest, glow
+# the faintest and shortest, so that the three are told apart at the size of a stamp
+STRENGTH = {"blue": 1.0, "deep": 1.45, "glow": 0.6}
+TAIL = {"blue": 1.0, "deep": 1.15, "glow": 0.72}
+
+LIT_WINDOW = 0.79            # the lit windows on the brightness ladder (grey 0..1, look blue)
+WASHED = 0.31                # the washed walls on the same ladder: what counts as the comet's bright part
+SEEN = 0.03                  # the least added light the eye makes out against the sky
+SHARE = 0.005                # of a picture at fov 70 the comet's bright part may take (the card)
+CEILING = 0.70               # the most light anything outside the nucleus adds
+KNEE = 0.45                  # light above this is eased towards the ceiling
+END = 0.50                   # a tail dims evenly along its length and melts away over this last share
+
 PHASES = ("full_moon", "waning_gibbous", "third_quarter", "waning_crescent", "new_moon",
           "waxing_crescent", "first_quarter", "waxing_gibbous")
-WHITE, CREAM, BLUE = "#fff8dc", "#ffe9a6", "#7f93d8"
 CARD_PHASE = mood.TRIALS["card"]["moon_phase"]
+SUN_SIZE = 128
+
+HOT, WARM = P.RAMPS["glow"][-1], P.RAMPS["glow"][-2]    # the nucleus; warm is also coma and dust
+COOL = P.RAMPS["night_glass"][-1]                       # the ion tail; what the dust cools to
+
+_CELL = SIZE // GRID
+HEAD_ROW = int((SIZE * 0.5 + HEAD_BELOW / (SPAN / SIZE)) // _CELL)      # grid cell of the nucleus
+HEAD_COL = GRID // 2
+
+
+def _above_centre(rows_px):
+    """Degrees above the centre of the square for a height in the picture (the quad is flat)."""
+    return math.degrees(math.atan((SIZE * 0.5 - rows_px) / (SIZE * 0.5) * 0.2))
+
+
+# elevation of the head, due west, for every viewer: telescopes and cameras read it here
+HEAD_ELEVATION = 90.0 - mood.MOON_ANGLE + _above_centre((HEAD_ROW + 0.5) * _CELL)
+
+# One table for the three versions. Lengths and widths in degrees; a width is the sigma across the
+# tail, given at the head and at the tip. Amplitudes are grey (luma) added at strength 1.
+#   coma        radius where the coma has fallen to 1/e      coma_amp   its light at the nucleus
+#   dust_len    how far from the head the dust tail ends     dust_w     (at the head, at the tip)
+#   flare       how the width grows along the tail (1 evenly, less: early)
+#   lean, curve the tail's centre line north of the head: lean * up + curve * up^2
+#   edge        2 a Gaussian across the tail; more: a flatter middle and a firmer outline
+#   skew        0 the same on both sides; more: the north side wider and softer, the south side tighter
+#   spine       share of the dust's light gathered in a narrow bright core along its centre line
+#   dust_fall   how fast it dims along its length           cool       how late it cools (1 evenly)
+#   ion_*       the same for the straight ion tail; ion_lean negative: it parts to the south
+#   nucleus     big pixels (rows up, columns north, brightness); 0.9 and more take the hottest step.
+#               A small square, hottest at its lower south corner, never a plus: nothing in this
+#               sky may read as a cross (A0 #22487)
+#   steps, tones, cooling   version b only: the light at which each level begins, the grey each
+#               level shows, and how far towards the cool end each level of the dust tail stands
+#   end         optional: the share of a tail's length over which it melts away, instead of END
+#   slim        optional: how far the dust tail's width goes with its length from light to light
+#               (0, the default: not at all; 1: in proportion, the tail keeps its shape)
+#
+# Version b is the smooth comet cut into levels, so its shape is in these numbers. Each level ends
+# where the tail's light, dimming along its length by dust_fall alone (end is short), falls under
+# that level's step: the brightest a sixth of the way up, the middle one past half way, the dimmest
+# at the tip. edge 4 gives the tail a flat middle across, so a level keeps nearly the whole width
+# up to its end and ends there in a round front: narrow at the head, widest at its far end, as the
+# light of a comet's tail lies. (With a bell across, edge 2.4, every level closed to a point and
+# the levels sat in each other like the cones of a flame; drawn so until 11-16.) Its ion tail does
+# not lean: the centre line stays on the nucleus's south column, a line of whole pixels without a
+# kink.
+_SQUARE = ((0, 0, 1.0), (1, 0, .72), (0, 1, .72), (1, 1, .50))
+STYLES = {
+    "a": dict(coma=0.60, coma_amp=0.32, dust_len=14.5, dust_w=(0.30, 1.40), flare=1.0, lean=0.12,
+              curve=0.012, edge=2.0, skew=0.30, spine=0.35, dust_fall=1.5, dust_amp=0.50, cool=1.2,
+              ion_len=15.0, ion_w=(0.12, 0.30), ion_lean=-0.03, ion_fall=1.1, ion_amp=0.15,
+              nucleus=_SQUARE),
+    "b": dict(coma=0.62, coma_amp=0.36, dust_len=13.5, dust_w=(0.30, 1.75), flare=1.0, lean=0.15,
+              curve=0.013, edge=4.0, skew=0.35, spine=0.0, dust_fall=1.7, dust_amp=0.36, cool=1.0,
+              ion_len=10.5, ion_w=(0.15, 0.17), ion_lean=0.0, ion_fall=0.8, ion_amp=0.13,
+              nucleus=_SQUARE, end=0.12, slim=1.0,
+              steps=(0.07, 0.14, 0.27), tones=(0.13, 0.25, 0.44), cooling=(0.9, 0.55, 0.2)),
+    "c": dict(coma=0.80, coma_amp=0.34, dust_len=11.0, dust_w=(0.55, 2.35), flare=0.8, lean=0.20,
+              curve=0.012, edge=4.5, skew=0.45, spine=0.15, dust_fall=1.0, dust_amp=0.36, cool=1.0,
+              ion_len=11.0, ion_w=(0.16, 0.36), ion_lean=-0.06, ion_fall=1.2, ion_amp=0.15,
+              nucleus=_SQUARE),
+}
+
+_LUMA = np.array([0.299, 0.587, 0.114])
 
 
 def _rgb(text):
     return np.array([int(text[i:i + 2], 16) for i in (1, 3, 5)], dtype=float) / 255.0
 
 
-def seen_to_moon_file(seen):
-    """The moon's quad shows its file upside down to a viewer facing west (derived from the vertex
-    order in SkyRenderer; the test card is there to confirm it)."""
-    return seen[::-1].copy()
+def _unit(text):
+    """A palette colour scaled to grey 1: amplitudes then say how much light, the colour which."""
+    c = _rgb(text)
+    return c / (c @ _LUMA)
 
 
-def _grid(n=SIZE):
-    deg = SPAN / n
-    rows, cols = np.meshgrid(np.arange(n) + 0.5, np.arange(n) + 0.5, indexing="ij")
-    x = (cols - n * 0.5) * deg                       # degrees right (north) of the head
-    y = (n * 0.5 - rows) * deg + HEAD_BELOW          # degrees above the head
-    edge = np.minimum(np.minimum(cols, n - cols), np.minimum(rows, n - rows)) / (n * 0.06)
+def luma(picture):
+    return picture @ _LUMA
+
+
+def seen_to_moon_file(picture):
+    """The moon's quad shows its file upside down to a viewer facing west (the module's notes)."""
+    return picture[::-1].copy()
+
+
+def _grid(m):
+    """Degrees north of the head and above it at the centres of an m x m grid, and the fade that
+    keeps the outer 6 percent of the square black. One degree is one at the square's centre."""
+    deg = SPAN / m
+    k = m / GRID
+    rows, cols = np.meshgrid(np.arange(m) + 0.5, np.arange(m) + 0.5, indexing="ij")
+    x = (cols - (HEAD_COL + 0.5) * k) * deg
+    y = ((HEAD_ROW + 0.5) * k - rows) * deg
+    edge = np.minimum(np.minimum(cols, m - cols), np.minimum(rows, m - rows)) / (m * 0.06)
     return x, y, np.clip(edge, 0.0, 1.0)
 
 
-def comet(strength=1.0, tail=1.0, n=SIZE):
-    """A plain comet as seen: a small bright head, one dust tail leaning north, a thin blue ion
-    tail. Floats 0..1, (n, n, 3); the amounts are light added onto the sky."""
-    x, y, edge = _grid(n)
-    t = np.clip(y / (16.0 * tail), 0.0, 1.2)
-    centre = math.tan(math.radians(12.0)) * y + 2.2 * t * t
-    dust = np.exp(-0.5 * ((x - centre) / (0.55 + 2.3 * t)) ** 2) * np.exp(-2.6 * t) * (y > -0.3)
-    dust *= np.clip((1.15 - t) / 0.25, 0.0, 1.0)
-    ion = np.exp(-0.5 * ((x + math.tan(math.radians(4.0)) * y) / 0.32) ** 2) * np.exp(-1.7 * np.clip(y / (18.0 * tail), 0.0, 2.0))
-    ion *= (y > 0.2) * np.clip((18.0 * tail - y) / 3.0, 0.0, 1.0)
-    coma = np.exp(-np.hypot(x, y) / 0.9)
-    out = _rgb(CREAM) * (0.62 * dust)[..., None] + _rgb(BLUE) * (0.45 * ion)[..., None] + _rgb(WHITE) * (0.9 * coma)[..., None]
-    cell = n // 64                                   # the nucleus: a few hard pixels of the 64 grid
-    row, col = int((n * 0.5 + HEAD_BELOW / (SPAN / n)) // cell), int((n * 0.5) // cell)
-    for dr, dc, a in ((0, 0, 1.0), (-1, 0, 0.8), (1, 0, 0.8), (0, -1, 0.8), (0, 1, 0.8), (-2, 0, 0.5), (-2, 1, 0.36)):
-        r0, c0 = (row + dr) * cell, (col + dc) * cell
-        out[r0:r0 + cell, c0:c0 + cell] = np.maximum(out[r0:r0 + cell, c0:c0 + cell], _rgb(WHITE) * a)
-    return np.clip(out * strength * edge[..., None], 0.0, 1.0)
+def _ramp(v, lo, hi):
+    s = np.clip((v - lo) / (hi - lo), 0.0, 1.0)
+    return s * s * (3.0 - 2.0 * s)
+
+
+def _fields(p, tail, m):
+    """The smooth comet on an m x m grid: the grey added by coma, dust tail and ion tail, and how
+    far along the dust tail each point lies (0 at the head, 1 at the tip). A tail's length is
+    counted from the head, so its end is an arc about the head and not a level cut."""
+    x, y, edge = _grid(m)
+    up = np.clip(y, 0.0, None)
+    far = np.hypot(x, up)
+
+    end = p.get("end", END)
+    t = np.clip(far / (p["dust_len"] * tail), 0.0, 1.0)
+    off = x - (p["lean"] * up + p["curve"] * up * up)
+    w0, w1 = (w * tail ** p.get("slim", 0.0) for w in p["dust_w"])
+    rise = np.clip(up / (p["dust_len"] * tail), 0.0, 1.0)             # the tail opens upwards only
+    width = (w0 + (w1 - w0) * rise ** p["flare"]) * np.where(off > 0.0, 1.0 + p["skew"], 1.0 - 0.5 * p["skew"])
+    across = np.abs(off / width)
+    dust = (1.0 - p["spine"]) * np.exp(-0.5 * across ** p["edge"]) + p["spine"] * np.exp(-0.5 * (across / 0.4) ** 2)
+    dust *= np.exp(-p["dust_fall"] * t)
+    dust *= _ramp(1.0 - t, 0.0, end) * _ramp(y, -0.35, 0.35)
+
+    s = np.clip(far / (p["ion_len"] * tail), 0.0, 1.0)
+    i0, i1 = p["ion_w"]
+    ion = np.exp(-0.5 * ((x - p["ion_lean"] * up) / (i0 + (i1 - i0) * s)) ** 2)
+    ion *= np.exp(-p["ion_fall"] * s) * _ramp(1.0 - s, 0.0, end) * _ramp(y, 0.0, 0.7)
+
+    coma = np.exp(-(np.hypot(x, np.where(y > 0.0, 0.8 * y, y)) / p["coma"]) ** 1.5)
+    return p["coma_amp"] * coma * edge, p["dust_amp"] * dust * edge, p["ion_amp"] * ion * edge, t
+
+
+def _hold(picture):
+    """Ease whatever adds more than KNEE towards CEILING, keeping its colour."""
+    grey = luma(picture)
+    room = CEILING - KNEE
+    held = np.where(grey > KNEE, KNEE + room * (1.0 - np.exp(-(grey - KNEE) / room)), grey)
+    return picture * (held / np.maximum(grey, 1e-9))[..., None]
+
+
+def _nucleus_cells(p):
+    return [(HEAD_ROW - up, HEAD_COL + north, b) for up, north, b in p["nucleus"]]
+
+
+def _nucleus(picture, p, strength):
+    """The few big pixels of the head, laid over the rest where they are the brighter."""
+    cell = picture.shape[0] // GRID
+    for row, col, b in _nucleus_cells(p):
+        colour = _rgb(HOT if b >= 0.9 else WARM) * min(1.0, b * math.sqrt(strength))
+        at = (slice(row * cell, (row + 1) * cell), slice(col * cell, (col + 1) * cell))
+        picture[at] = np.maximum(picture[at], colour)
+    return picture
+
+
+def _smooth(p, strength, tail, n):
+    coma, dust, ion, t = _fields(p, tail, n)
+    warm, cool = _unit(WARM), _unit(COOL)
+    mix = (t ** p["cool"])[..., None]
+    out = (warm * (1.0 - mix) + cool * mix) * dust[..., None] + cool * ion[..., None] + warm * coma[..., None]
+    return _hold(out * strength)
+
+
+def _stepped(p, strength, tail, n):
+    """Version b: the smooth comet read at the centres of the big pixels and rounded down to the
+    level it reaches; under the first step nothing is drawn. Each level is one flat tone. The ion
+    tail is a layer of its own behind the body: it shows only where the body draws nothing, in
+    the blue of its own level and never in the brightest tone, so that the line neither lights up
+    as a spike beside the body nor stains the body's edge. What shape the levels take is said at
+    STYLES."""
+    coma, dust, ion, _ = _fields(p, tail, GRID)
+    steps = np.array(p["steps"])
+    body = np.searchsorted(steps, coma + dust, side="right")                     # 0 nothing, 1.. the levels
+    line = np.minimum(np.searchsorted(steps, ion, side="right"), len(steps) - 1)
+    warm, cool = _unit(WARM), _unit(COOL)
+    tones = np.array([np.zeros(3)] + [(warm * (1.0 - c) + cool * c) * g for g, c in zip(p["tones"], p["cooling"])])
+    blues = np.array([np.zeros(3)] + [cool * g for g in p["tones"]])
+    small = np.where((body > 0)[..., None], tones[body], blues[line])
+    cell = n // GRID
+    return _hold(np.repeat(np.repeat(small, cell, axis=0), cell, axis=1) * strength)
+
+
+def comet(style=DEFAULT_STYLE, strength=1.0, tail=1.0, n=SIZE):
+    """One version of the comet as seen (up is up, right is north). Floats 0..1, (n, n, 3); the
+    values are light added onto the sky."""
+    p = STYLES[style]
+    out = (_stepped if "steps" in p else _smooth)(p, strength, tail, n)
+    return np.clip(_nucleus(out, p, strength), 0.0, 1.0)
 
 
 def test_card(n=SIZE):
@@ -81,29 +278,124 @@ def test_card(n=SIZE):
     u = n // 32
     out[:u], out[-u:], out[:, :u], out[:, -u:] = 0.25, 0.25, 0.25, 0.25
     mid = n // 2
-    out[8 * u:26 * u, mid - u:mid + u] = _rgb(WHITE)                 # shaft
+    out[8 * u:26 * u, mid - u:mid + u] = _rgb(HOT)                   # shaft
     for k in range(6 * u):                                           # head
-        out[4 * u + k, mid - k:mid + k + 1] = _rgb(WHITE)
-    out[14 * u:18 * u, mid + 6 * u:mid + 10 * u] = _rgb("#ffb45e")   # dot on the north side
+        out[4 * u + k, mid - k:mid + k + 1] = _rgb(HOT)
+    out[14 * u:18 * u, mid + 6 * u:mid + 10 * u] = _rgb(P.RAMPS["glow"][2])   # dot on the north side
     return out
 
 
-def pictures():
+def seen(style=DEFAULT_STYLE):
+    """{phase: (n, n, 3) floats as seen}: the comet of each light in its phase, the blue hour's in
+    the phases no light uses, the test card in its own."""
+    by_look = {v["moon_phase"]: comet(style, STRENGTH[name], TAIL[name]) for name, v in mood.LOOKS.items()}
+    default = by_look[mood.LOOKS[mood.DEFAULT]["moon_phase"]]
+    return {phase: test_card() if phase == CARD_PHASE else by_look.get(phase, default) for phase in PHASES}
+
+
+def pictures(style=DEFAULT_STYLE):
     """{phase: (n, n, 3) uint8 in the file's orientation}."""
-    by_phase = {v["moon_phase"]: comet(STRENGTH[name], TAIL[name]) for name, v in mood.LOOKS.items()}
-    default = by_phase[mood.LOOKS[mood.DEFAULT]["moon_phase"]]
-    out = {}
-    for phase in PHASES:
-        seen = test_card() if phase == CARD_PHASE else by_phase.get(phase, default)
-        out[phase] = (seen_to_moon_file(seen) * 255.0 + 0.5).astype(np.uint8)
-    return out
+    return {phase: (seen_to_moon_file(px) * 255.0 + 0.5).astype(np.uint8) for phase, px in seen(style).items()}
 
 
-def pack(pack_dir):
-    out = []
-    for phase, px in pictures().items():
+def pack(pack_dir, style=DEFAULT_STYLE):
+    for phase, px in pictures(style).items():
         respack.texture(pack_dir, "environment/celestial/moon/" + phase, px)
-    out.append(f"comet (placeholder) -> {len(PHASES)} moon phase pictures, test card in {CARD_PHASE}")
-    respack.texture(pack_dir, "environment/celestial/sun", np.zeros((16, 16, 3), dtype=np.uint8))
-    out.append("sun picture blanked")
+    respack.texture(pack_dir, "environment/celestial/sun", np.zeros((SUN_SIZE, SUN_SIZE, 3), dtype=np.uint8))
+    return [f"comet ({style}) -> {len(PHASES)} moon phase pictures, test card in {CARD_PHASE}",
+            "sun picture blanked"]
+
+
+def sky_behind(look, elevation=None):
+    """Grey of the sky where the comet stands (sky.fsh: the sky colour overhead takes the fog
+    colour by distance over a disc 16 blocks up; mood states what is seen at zenith and horizon)."""
+    v = mood.LOOKS[look]
+    e = math.radians(HEAD_ELEVATION if elevation is None else elevation)
+    reach = 16.0 / math.tan(e)
+    f = min(1.0, (16.0 + 496.25 * reach / 512.0) / v["sky_fog_end"])
+    z = 16.0 / v["sky_fog_end"]
+    zenith, horizon = _rgb(v["zenith"]), _rgb(v["horizon"])
+    return float((zenith + (horizon - zenith) * (f - z) / (1.0 - z)) @ _LUMA)
+
+
+def directions(n=SIZE):
+    """Unit vectors (n, n, 3) from the viewer towards the centres of an n x n grid over the moon's
+    square as seen: row 0 is its top, column 0 its south side; +x east, +y up, -z north. The square
+    goes with the viewer, so the vectors are the same wherever he stands. The quad is flat,
+    half-size 20 at distance 100 (SkyRenderer), its centre 90 - moon_angle up, due west."""
+    th = math.radians(mood.MOON_ANGLE)
+    centre = np.array([-math.sin(th), math.cos(th), 0.0])
+    north, up = np.array([0.0, 0.0, -1.0]), np.array([math.cos(th), math.sin(th), 0.0])
+    k = ((np.arange(n) + 0.5) / n * 2.0 - 1.0) * 0.2
+    d = centre + k[None, :, None] * north + (-k)[:, None, None] * up
+    return d / np.linalg.norm(d, axis=-1, keepdims=True)
+
+
+def light(style=DEFAULT_STYLE, look="deep"):
+    """Where the comet's light is on the sky of every viewer: (unit vectors (k, 3), grey (k,)) of
+    the pixels that add SEEN and more in one light. deep is the brightest and longest."""
+    grey = luma(comet(style, STRENGTH[look], TAIL[look]))
+    lit = grey >= SEEN
+    return directions()[lit], grey[lit]
+
+
+def reach(style=DEFAULT_STYLE, look="deep"):
+    """The box of sky the comet's light takes, in degrees: (south, north, low, high). south and
+    north are counted from due west towards the north, so south is negative; low and high are
+    elevations. What may stand in front of the comet is measured against this (the station's roof
+    seen from V1, the slit of the great dome)."""
+    d, _ = light(style, look)
+    north = np.degrees(np.arctan2(-d[:, 2], -d[:, 0]))
+    up = np.degrees(np.arcsin(d[:, 1]))
+    return float(north.min()), float(north.max()), float(up.min()), float(up.max())
+
+
+def report(style):
+    """What the card asks of the picture, measured for every light: a list of dicts.
+
+    peak        the most grey added outside the nucleus      on_sky   that plus the sky behind it
+    tip         elevation where the tails end                 margin   degrees left to the top edge
+    area        square degrees adding SEEN and more: all of the comet that the eye makes out
+    bright      square degrees that stand on the sky as bright as a washed wall (WASHED) or brighter
+    frame, whole   bright and area as shares of a 16:9 picture at fov 70 with the comet in its
+                middle. The card allows the bright part 0.5 percent; the whole comet is held under
+                it as well, so that the rule is kept however the bright part is counted.
+    border      True when the outer 3 percent of the square is black
+    ok          all of it holds
+    """
+    cell = SIZE // GRID
+    deg2 = (SPAN / SIZE) ** 2
+    frame = 4.0 * math.tan(math.radians(35.0)) ** 2 * 16.0 / 9.0 * math.degrees(1.0) ** 2
+    rim = int(SIZE * 0.03)
+    inner = np.zeros((SIZE, SIZE), dtype=bool)
+    inner[rim:-rim, rim:-rim] = True
+    out = []
+    for look in mood.LOOKS:
+        grey = luma(comet(style, STRENGTH[look], TAIL[look]))
+        body = grey.copy()
+        for row, col, _ in _nucleus_cells(STYLES[style]):
+            body[row * cell:(row + 1) * cell, col * cell:(col + 1) * cell] = 0.0
+        top = _above_centre(float(np.nonzero((grey >= SEEN).any(axis=1))[0][0]))
+        sky = sky_behind(look)
+        r = dict(look=look, peak=float(body.max()), on_sky=float(body.max()) + sky,
+                 tip=90.0 - mood.MOON_ANGLE + top, margin=SPAN * 0.5 - top,
+                 area=float((grey >= SEEN).sum() * deg2), bright=float((grey + sky >= WASHED).sum() * deg2),
+                 border=bool(grey[~inner].max() < 1.0 / 255.0))
+        r["frame"], r["whole"] = r["bright"] / frame, r["area"] / frame
+        r["ok"] = r["on_sky"] < LIT_WINDOW and r["border"] and r["frame"] < SHARE and r["whole"] < SHARE
+        out.append(r)
     return out
+
+
+if __name__ == "__main__":
+    print(f"head {HEAD_ELEVATION:.2f} degrees up, due west; lit windows {LIT_WINDOW}, washed walls {WASHED}")
+    for name in STYLES:
+        for r in report(name):
+            print(f"{name} {r['look']:5s} peak {r['peak']:.2f} on sky {r['on_sky']:.2f}  tip {r['tip']:.1f} "
+                  f"(margin {r['margin']:4.1f})  bright {r['bright']:4.1f} deg2 = {100 * r['frame']:.3f}%, whole comet "
+                  f"{r['area']:4.1f} deg2 = {100 * r['whole']:.3f}% of the frame  border "
+                  f"{'black' if r['border'] else 'LIT'}  {'ok' if r['ok'] else 'FAIL'}")
+    for name in STYLES:
+        south, north, low, high = reach(name)
+        print(f"{name} deep  its light lies from {south:+.1f} to {north:+.1f} degrees north of due west, "
+              f"{low:.1f} to {high:.1f} up")
