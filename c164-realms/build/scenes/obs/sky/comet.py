@@ -28,8 +28,10 @@ How the moon's slots are used:
 
 Where it stands. The moon's square is 22.6 degrees wide and always due west of the viewer, its
 centre 90 - moon_angle up. The head sits 7 degrees below the centre (HEAD_ELEVATION, 41 degrees with
-moon_angle 42: 8 above the apex of the great dome seen from V2), the tails go up and end inside the
-square in every light (the longest, in the deep night, 1.4 degrees short of its top edge).
+moon_angle 42: 6 above the top of the great dome seen from V2), the tails go up and end inside the
+square in every light (the longest, in the deep night, 4 degrees short of its top edge).
+directions(), light() and reach() say where its light is on the sky of any viewer; whatever checks
+what stands in front of the comet reads them and does not work the square's attitude out again.
 
 Which way up. The comet is painted as the player sees it facing west (up is up, right is north)
 and turned into the file's orientation by seen_to_moon_file(). Read off the 26.3 client's
@@ -307,6 +309,38 @@ def sky_behind(look, elevation=None):
     return float((zenith + (horizon - zenith) * (f - z) / (1.0 - z)) @ _LUMA)
 
 
+def directions(n=SIZE):
+    """Unit vectors (n, n, 3) from the viewer towards the centres of an n x n grid over the moon's
+    square as seen: row 0 is its top, column 0 its south side; +x east, +y up, -z north. The square
+    goes with the viewer, so the vectors are the same wherever he stands. The quad is flat,
+    half-size 20 at distance 100 (SkyRenderer), its centre 90 - moon_angle up, due west."""
+    th = math.radians(mood.MOON_ANGLE)
+    centre = np.array([-math.sin(th), math.cos(th), 0.0])
+    north, up = np.array([0.0, 0.0, -1.0]), np.array([math.cos(th), math.sin(th), 0.0])
+    k = ((np.arange(n) + 0.5) / n * 2.0 - 1.0) * 0.2
+    d = centre + k[None, :, None] * north + (-k)[:, None, None] * up
+    return d / np.linalg.norm(d, axis=-1, keepdims=True)
+
+
+def light(style=DEFAULT_STYLE, look="deep"):
+    """Where the comet's light is on the sky of every viewer: (unit vectors (k, 3), grey (k,)) of
+    the pixels that add SEEN and more in one light. deep is the brightest and longest."""
+    grey = luma(comet(style, STRENGTH[look], TAIL[look]))
+    lit = grey >= SEEN
+    return directions()[lit], grey[lit]
+
+
+def reach(style=DEFAULT_STYLE, look="deep"):
+    """The box of sky the comet's light takes, in degrees: (south, north, low, high). south and
+    north are counted from due west towards the north, so south is negative; low and high are
+    elevations. What may stand in front of the comet is measured against this (the station's roof
+    seen from V1, the slit of the great dome)."""
+    d, _ = light(style, look)
+    north = np.degrees(np.arctan2(-d[:, 2], -d[:, 0]))
+    up = np.degrees(np.arcsin(d[:, 1]))
+    return float(north.min()), float(north.max()), float(up.min()), float(up.max())
+
+
 def report(style):
     """What the card asks of the picture, measured for every light: a list of dicts.
 
@@ -352,3 +386,7 @@ if __name__ == "__main__":
                   f"(margin {r['margin']:4.1f})  bright {r['bright']:4.1f} deg2 = {100 * r['frame']:.3f}%, whole comet "
                   f"{r['area']:4.1f} deg2 = {100 * r['whole']:.3f}% of the frame  border "
                   f"{'black' if r['border'] else 'LIT'}  {'ok' if r['ok'] else 'FAIL'}")
+    for name in STYLES:
+        south, north, low, high = reach(name)
+        print(f"{name} deep  its light lies from {south:+.1f} to {north:+.1f} degrees north of due west, "
+              f"{low:.1f} to {high:.1f} up")

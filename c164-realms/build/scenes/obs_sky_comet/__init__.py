@@ -11,8 +11,9 @@ draws the picture.
 
 White models in plain vanilla blocks of the occupancy table, enough to judge where the comet stands
 and what hides it: the two terraces and the station platform (so that the eye stands somewhere),
-the main bar, the drum and the great dome with its west slit open and the floor of the dome room,
-the clock tower with the time-ball mast, the small dome, the radio mast on its pad.
+the main bar, the drum and the great dome (its skin, crown and west slit by main/dome's numbers)
+with the floor of the dome room, the clock tower with the time-ball mast, the small dome, the radio
+mast on its stone foot.
 
 The comet is always due west of the viewer, its head HEAD_ELEVATION up. It stands over the great
 dome only for someone on the axis (V2, the lower platform); from the cable station (V1) due west
@@ -51,12 +52,16 @@ DARK = B.SLATE_SMOOTH.block          # the ground, darker than the walls, and th
 FOV = 77.0                  # what the pictures are taken at: the option's 70, a tenth wider because
 ASPECT = 16.0 / 9.0         # the camera player is flying (render.py, tools/shoot.py)
 
-# The observing slit as main/_dome builds it: its sill is the row y 25, it is open from the row
-# above, and its last column eastwards is two past the apex. The head is being moved west of the
-# apex (main/dome, A0's ruling that the dome keeps one apex on the axis); sky_in_slit() says what
-# each column costs the comet.
+# The great dome as main/dome builds it (c222, group 11-15). Its skin is a half-ellipse 13.5 wide at
+# the foot and 14 high over the centre cell. The observing slit takes z -2..2 and every column as
+# far east as x 2; its sill is the row y 25, it is open from the row above. Over the nine columns
+# about the axis lies the crown: a cover half a block thick in the row y 38 and, on the axis cell,
+# the one block that stands highest on the whole dome (top face 39.0). Under the cover the nine
+# columns are open, so the slit's head, seen from the room, is the western edge of the cover.
 SLIT_SILL = S.DOME_SPRING + 1
-SLIT_HEAD = S.DOME_CENTRE[0] + 2
+SLIT_HEAD = 2
+CROWN_Y = S.DOME_APEX + 1
+CROWN_COVER = B.VERDIGRIS_CUT.slab + "[type=bottom]"
 
 # The two hero views look up by about 22 degrees, so that the whole comet is in the picture and the
 # building takes the lower half (A0 #24227, 11-14): V1 keeps its place and looks at (8, 34, 0.5), V2
@@ -150,19 +155,39 @@ def _main_bar(c):
     _slab(c, (S.WALL_W, S.Z_NORTH, S.WALL_E, S.Z_SOUTH), S.ROOF_FLOOR, STONE)
 
 
-def _rotunda_and_dome(c, slit_head=None):
-    slit_head = SLIT_HEAD if slit_head is None else slit_head
+def _great_dome(c):
+    """The shell of the great dome in whole blocks, one block thick: every column reaches up to the
+    skin (to the nearer side) and down to the top of its lowest neighbour. Then the crown and the
+    west observing slit, SLIT_W wide on the axis, open above its sill as far as its head."""
+    cx, cz = S.DOME_CENTRE
+    foot, r, rise = S.DOME_SPRING, S.DOME_R + 0.5, S.DOME_APEX + 1.0 - S.DOME_SPRING
+    tops = {}
+    for x in range(cx - S.DOME_R - 1, cx + S.DOME_R + 2):
+        for z in range(cz - S.DOME_R - 1, cz + S.DOME_R + 2):
+            d = math.hypot(x - cx, z - cz)
+            if d < r:
+                tops[(x, z)] = int(math.floor(foot + rise * math.sqrt(1.0 - (d / r) ** 2) - 0.5))
+    for (x, z), top in tops.items():
+        if max(abs(x - cx), abs(z - cz)) <= 1:              # open under the crown
+            continue
+        lows = [tops.get(n, foot - 1) for n in ((x - 1, z), (x + 1, z), (x, z - 1), (x, z + 1))]
+        for y in range(max(foot, min(top, min(lows) + 1)), top + 1):
+            c.set(x, y, z, COPPER)
+    for x in range(cx - 1, cx + 2):
+        for z in range(cz - 1, cz + 2):
+            c.set(x, CROWN_Y, z, COPPER if (x, z) == (cx, cz) else CROWN_COVER)
+    half = S.SLIT_W // 2
+    c.carve(cx - S.DOME_R - 1, SLIT_SILL + 1, cz - half, SLIT_HEAD, CROWN_Y, cz + half)
+
+
+def _rotunda_and_dome(c):
     cx, cz = S.DOME_CENTRE
     _ring(c, cx, cz, S.DOME_R, S.GROUND, S.DOME_SPRING - 1, STONE)
-    _dome(c, cx, cz, S.DOME_SPRING, S.DOME_APEX, S.dome_profile, COPPER)
     for x in range(cx - S.DOME_R, cx + S.DOME_R + 1):       # the floor of the dome room
         for z in range(cz - S.DOME_R, cz + S.DOME_R + 1):
             if math.hypot(x - cx, z - cz) < S.DOME_R - 0.5:
                 c.set(x, S.ROOF_FLOOR, z, STONE)
-    # the west observing slit, SLIT_W wide on the axis, open above its sill as far as its head
-    half = S.SLIT_W // 2
-    z0, z1 = round(S.DOME_AXIS[1]) - half, round(S.DOME_AXIS[1]) + half
-    c.carve(cx - S.DOME_R - 1, SLIT_SILL + 1, z0, slit_head, S.DOME_APEX + 1, z1)
+    _great_dome(c)
 
 
 def _clock_tower(c):
@@ -211,11 +236,11 @@ def _radio_mast(c):
     c.set(fx, top - 1, fz, COPPER)                 # the beacon
 
 
-def build(slit_head=None):
+def build():
     c = Canvas()
     _ground(c)
     _main_bar(c)
-    _rotunda_and_dome(c, slit_head)
+    _rotunda_and_dome(c)
     _clock_tower(c)
     _small_dome(c)
     _radio_mast(c)
@@ -248,16 +273,6 @@ def _on_screen(cam, d):
 def _west(elevation):
     e = np.radians(elevation)
     return np.stack([-np.cos(e), np.sin(e), np.zeros_like(e)], axis=-1)
-
-
-def _square(n):
-    """Directions through the centres of an n x n grid over the moon's square, as seen: row 0 is its
-    top, column 0 its south side. The quad is flat, half-size 20 at distance 100 (SkyRenderer)."""
-    th = math.radians(mood.MOON_ANGLE)
-    centre = np.array([-math.sin(th), math.cos(th), 0.0])
-    north, up = np.array([0.0, 0.0, -1.0]), np.array([math.cos(th), math.sin(th), 0.0])
-    k = ((np.arange(n) + 0.5) / n * 2.0 - 1.0) * 0.2
-    return centre + k[None, :, None] * north + (-k)[:, None, None] * up
 
 
 def _solid(c):
@@ -294,8 +309,7 @@ def where(style=None, canvas=None):
     everything, the comet with it). A list of dicts; nothing is drawn."""
     style = style or STYLE
     solid = _solid(canvas or build())
-    n = comet.SIZE
-    d = _square(n)
+    d = comet.directions()
     head = _west(np.array(comet.HEAD_ELEVATION))
     above = _west(comet.HEAD_ELEVATION + np.arange(0.0, 30.0, 0.05))
     out = []
@@ -330,7 +344,7 @@ def _tops():
     return {
         "radio mast, beacon": (fx + 0.5, S.MAST_PAD["feet"] + S.RADIO_MAST["height"] - 0.5, fz + 0.5),
         "time-ball mast": ((x0 + x1) // 2 + 0.5, S.CLOCK_BALL_MAST + 1.0, (z0 + z1) // 2 + 0.5),
-        "great dome, apex": (S.DOME_AXIS[0], S.DOME_APEX + 1.0, S.DOME_AXIS[1]),
+        "great dome, crown": (S.DOME_AXIS[0], CROWN_Y + 1.0, S.DOME_AXIS[1]),
     }
 
 
@@ -339,8 +353,7 @@ def around(style=None, cameras=("v1", "v2")):
     north of due west it stands and how high (degrees), how far it is from the comet's head, and
     how far from the nearest of the comet's light at its longest (look deep). A list of dicts."""
     style = style or STYLE
-    lit = _square(comet.SIZE)[comet.luma(comet.comet(style, comet.STRENGTH["deep"], comet.TAIL["deep"])) >= comet.SEEN]
-    lit = lit / np.linalg.norm(lit, axis=-1, keepdims=True)
+    lit, _ = comet.light(style)
     head = _west(np.array(comet.HEAD_ELEVATION))
     out = []
     for camera in cameras:
@@ -357,47 +370,58 @@ def around(style=None, cameras=("v1", "v2")):
 
 
 SLIT_EYES = (-1.5, -1.0, -0.5, 0.0, 0.5, 1.5, 2.5, 3.0)       # z of an eye in the dome room, across the slit
+ROOM_EYES = (8.5, 10.5, 12.5, 14.5)        # x of an eye in the dome room, from the pier to the east wall
+ROOM_REACH = 2.0 * S.DOME_R + 8.0          # from an eye in the room, nothing farther hides the sky
+# where the V8 camera may stand beside the tube, (x, z), as machines/refractor proposes for its two
+# versions (c237, group 11-15)
+V8_SPOTS = {"yoke, south of the tube": (9.2, 2.0), "German mount, on the axis": (10.6, 0.2)}
+
+
+def _longest(style):
+    """The comet at its longest (look deep), every second pixel: directions and grey of the lit ones."""
+    grey = comet.luma(comet.comet(style, comet.STRENGTH["deep"], comet.TAIL["deep"]))[::2, ::2]
+    lit = grey >= comet.SEEN
+    return comet.directions()[::2, ::2][lit], grey[lit]
+
+
+def _from_room(solid, eye, d, grey):
+    """(share of the comet's light seen, head seen) for an eye in the dome room."""
+    hidden = _hidden(solid, eye, d, reach=ROOM_REACH)
+    head = _west(np.array(comet.HEAD_ELEVATION))[None]
+    return float(grey[~hidden].sum() / grey.sum()), not bool(_hidden(solid, eye, head, reach=ROOM_REACH)[0])
 
 
 def through_slit(style=None, canvas=None):
     """How much of the comet's light at its longest (look deep) an eye in the dome room sees through
     the slit, standing at the height and x of the camera 'slit' but off the axis: [(z, share seen,
     head seen)]. The slit is SLIT_W wide; the dust tail leans north, so the room is on the south."""
-    style = style or STYLE
     solid = _solid(canvas or build())
-    grey = comet.luma(comet.comet(style, comet.STRENGTH["deep"], comet.TAIL["deep"]))[::2, ::2]
-    lit = grey >= comet.SEEN
-    d, grey = _square(comet.SIZE)[::2, ::2][lit], grey[lit]
-    head = _west(np.array(comet.HEAD_ELEVATION))[None]
+    d, grey = _longest(style or STYLE)
     x, y, _ = CAMERAS["slit"][0]
-    out = []
-    for z in SLIT_EYES:
-        eye = np.array([x, y, z])
-        hidden = _hidden(solid, eye, d, reach=2.0 * S.DOME_R + 8.0)
-        out.append((z, float(grey[~hidden].sum() / grey.sum()),
-                    not bool(_hidden(solid, eye, head, reach=2.0 * S.DOME_R + 8.0)[0])))
-    return out
+    return [(z,) + _from_room(solid, np.array([x, y, z]), d, grey) for z in SLIT_EYES]
 
 
-SLIT_HEADS = (0, 1, 2, 3, SLIT_HEAD)       # last open column of the slit; the apex stands in column 4
-ROOM_EYES = (8.5, 10.5, 12.5, 14.5)        # x of an eye in the dome room, from the pier to the east wall
+def from_v8(style=None, canvas=None):
+    """The same for the places of V8_SPOTS, at the same eye height: [(name, share seen, head seen)].
+    The white model has no telescope: this is what the slit lets through, not what the tube hides."""
+    solid = _solid(canvas or build())
+    d, grey = _longest(style or STYLE)
+    y = CAMERAS["slit"][0][1]
+    return [(name,) + _from_room(solid, np.array([x, y, z]), d, grey) for name, (x, z) in V8_SPOTS.items()]
 
 
-def sky_in_slit(heads=SLIT_HEADS, eyes=ROOM_EYES):
+def sky_in_slit(eyes=ROOM_EYES, canvas=None):
     """How high the sky is seen through the slit, due west, by an eye on the axis at V8's height:
-    {last open column of the slit: [highest elevation seen, for each x of eyes]}. The comet's tails
-    end at comet.report()'s tip; a slit that stops short of the apex cuts them for an eye far east."""
+    [highest elevation seen, for each x of eyes]. The comet's tails end at comet.report()'s tip; a
+    slit whose head stood lower would cut them for an eye far east in the room."""
+    solid = _solid(canvas or build())
     up = np.arange(comet.HEAD_ELEVATION, 90.0, 0.25)
     d = _west(up)
     _, y, z = CAMERAS["slit"][0]
-    out = {}
-    for head in heads:
-        solid = _solid(build(slit_head=head))
-        row = []
-        for x in eyes:
-            hidden = _hidden(solid, np.array([x, y, z]), d, step=0.1, reach=2.0 * S.DOME_R + 8.0)
-            row.append(float(up[np.argmax(hidden)]) if hidden.any() else 90.0)
-        out[head] = row
+    out = []
+    for x in eyes:
+        hidden = _hidden(solid, np.array([x, y, z]), d, step=0.1, reach=ROOM_REACH)
+        out.append(float(up[np.argmax(hidden)]) if hidden.any() else 90.0)
     return out
 
 
@@ -410,7 +434,8 @@ def tell(style, folder, shots=shots):
     print(f"version {style}; head {comet.HEAD_ELEVATION:.2f} degrees up, due west; pictures at fov {FOV:g}")
     print("camera   light  head: from left, from top    sky above the head   light: seen / hidden / cut off"
           "   bright part, whole comet (share of the picture)")
-    for r in where(style):
+    canvas = build()
+    for r in where(style, canvas):
         head = (f"{100 * r['head_x']:3.0f}%  {100 * r['head_y']:3.0f}%" + (" behind blocks" if r["head_hidden"] else "")
                 if r["head_in"] else "outside the picture")
         print(f"{r['camera']:8s} {r['look']:5s}  {head:28s} {r['room']:5.1f} deg        "
@@ -420,9 +445,12 @@ def tell(style, folder, shots=shots):
     for r in around(style):
         print(f"{r['camera']:8s} {r['name']:20s} {r['north']:6.1f}  {r['up']:5.1f} deg     {r['head']:5.1f} deg       {r['light']:5.1f} deg")
     print("through the slit, the eye off the axis (axis z 0.5; look deep): z of the eye, share of the comet's light seen")
-    print("   " + "   ".join(f"{z:+.1f}: {100 * seen:3.0f}%" + ("" if head else " head hidden") for z, seen, head in through_slit(style)))
+    print("   " + "   ".join(f"{z:+.1f}: {100 * seen:3.0f}%" + ("" if head else " head hidden")
+                             for z, seen, head in through_slit(style, canvas)))
+    print("from where the V8 camera may stand beside the tube (x, z): share of the comet's light the slit lets through")
+    print("   " + "   ".join(f"{name} {V8_SPOTS[name]}: {100 * seen:3.0f}%" + ("" if head else " head hidden")
+                             for name, seen, head in from_v8(style, canvas)))
     tips = ", ".join(f"{r['look']} {r['tip']:.1f}" for r in comet.report(style))
-    print(f"the sky in the slit, due west: the highest elevation seen (the tails end at {tips})")
-    print("slit open as far as x     " + "".join(f"eye at x {x:<8g}" for x in ROOM_EYES))
-    for head, row in sky_in_slit().items():
-        print(f"{head:>12d}{' (now)' if head == SLIT_HEAD else '      '}        " + "".join(f"{e:5.1f} deg        " for e in row))
+    print(f"the sky in the slit (open as far as x {SLIT_HEAD}), due west, from the axis: the highest elevation seen "
+          f"(the tails end at {tips})")
+    print("   " + "   ".join(f"eye at x {x:g}: {e:.1f} deg" for x, e in zip(ROOM_EYES, sky_in_slit(canvas=canvas))))
