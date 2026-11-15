@@ -25,11 +25,10 @@ the canvas by then and places, in this order:
             so that the doorway reads as a warm bright face and not as a hole (10 behind the
             arches beside the doorway, where the entrance is an arcade). Where the hall stands
             open behind the arches (OPEN_HALL, with main/shell in the tree; the director's
-            ruling D): one source of 14 before the telescope pier's east face, in the row of the
-            mother clock's dial, and one of 11 over the foot of the flight behind either side
-            arch; none in the doorway, whose frame stays darker than the pier it frames. All of
-            them go when the star hall moves in, the one in the doorway too (the director,
-            #58129).
+            ruling D): one source of 14 before the telescope pier's east face, where the mother
+            clock will hang, and one of 11 over the foot of the flight behind either side arch;
+            none in the doorway, whose frame stays darker than the pier it frames. All of them
+            go when the star hall moves in, the one in the doorway too (the director, #58129).
   wash      on either wing, the two pilasters next to the entrance's corner pilaster (which carries
             a bracket lamp): at the foot of each a small projector two cells before the plinth
             (props' model, lamps "uplight", with the source of level 8 it brings), and where its
@@ -77,13 +76,20 @@ HALL_DEPTH = 8                          # a wall this close behind the glass pla
 # wall out when it is set and the shell is in the tree.
 OPEN_HALL = True
 HALL_REACH = 14                         # the face the doorway looks at is looked for this far behind the glass plane
-PIER_LEVEL, PIER_Y = 14, 3              # before that face (the pier's east face), in the row of the mother clock's dial
+# Before that face, the telescope pier's east one, where the mother clock will hang (y 1 to 5). The
+# row is the one that serves the court and the doorway both: from the court the middle arch shows
+# the face at 0.31 to 0.32 with the source in row 3 or 4 and at 0.28 to 0.29 with it in row 5; seen
+# from the doorway the pale floor before the pier stands at 0.34 beside a face of 0.34 with row 3,
+# at 0.31 beside 0.33 with row 4.
+PIER_LEVEL, PIER_Y = 14, 4
 # The doorway of the open hall gets no source (0): what one sees through the middle arch is the lit
 # pier, and the frame of the doorway has to stay darker than what it frames. With 14 in the doorway
 # its reveals stood at 0.42 against a pier's face that does not get past 0.36.
 OPEN_DOOR_LEVEL = 0
 FLIGHT_REACH = 18                       # the foot of a flight behind an arch beside the doorway, this far at most
-FLIGHT_LEVEL, FLIGHT_Y = 11, 4          # over that foot, under the head of the hall's west arcade
+# Over that foot, under the head of the hall's west arcade. At 11 the flights are warm and a step
+# under the pier (0.21 against 0.33), which gives the hall its depth; at 9 or 8 they turn grey.
+FLIGHT_LEVEL, FLIGHT_Y = 11, 4
 WASH_PILASTERS = (5, 6, 11, 12)         # the skeleton's numbers: the two of either wing next to the entrance's corner
 WASH_OUT = 2                            # cells between the plinth and the projector's cell, counting it
 WASH_ROW = S.BASE[0]                    # where the beam lands: the foot of the shaft, the row over the plinth
