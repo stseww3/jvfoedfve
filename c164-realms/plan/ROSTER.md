@@ -12,7 +12,7 @@
 | s1 | c260 | c189 | 出图（拿出图钥匙） | `cursor/c164-s1-render-9df7` |
 | review | c261 | c219 | 评审：materials、main、props | `cursor/c164-review-0eb8` |
 | cr2 | c262 | c235 | 评审：site、sky、machines、interiors、motion | `cursor/c164-cr2-582e` |
-| aide | — | — | 总监助理：名单、开人、盯进度 | — |
+| aide | c275 | — | 总监助理：名单、开人、盯进度 | `cursor/c164-aide-flash` |
 
 ## 工人
 
@@ -29,7 +29,7 @@
 | a4 | c271 | c221 | site/terrain、site/court 打磨；site 牵头 | `cursor/c164-a4-site-2af2` |
 | stair | c272 | c225 | site/stair | `cursor/c164-stair-4aad` |
 | cable | c273 | c226 | site/cablecar | `cursor/c164-cable-a47d` |
-| m5 | — | c198 | materials/iron 二次交付 | `cursor/c164-m5-iron-8757` |
+| m5 | c277 | c198 | materials/iron 二次交付 | `cursor/c164-m5-iron-8757` |
 | ashlar | — | c204 | materials/ashlar 打磨（新台徽、细琢面的长短石） | `cursor/c164-ashlar-2cc1` |
 | m3 | — | c218 | props/ironwork 打磨轮（退回过） | `cursor/c164-m3-ironwork-e6ba` |
 | a1 | — | c176 | materials/board；materials 牵头 | `cursor/c164-a1-materials-3930` |
