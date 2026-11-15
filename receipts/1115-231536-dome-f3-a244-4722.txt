@@ -1,0 +1,17 @@
+a0job 1115-231536-dome-f3-a244-4722: cursor/c164-dome-f3-a244 @ ff4e9287 on the director's machine
+  [cloud_setup    1s] machine: 4 cores, load 1.64 1.53 1.07, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh main/dome ff4e92871824db34e9d122a1e540deae3f6bed91 --base 636ad21290c33f22577314532f35c93f15015717 ---- exit 0, 65 s, last 80 lines of 7:
+gate main/dome ff4e9287: the merged tree ff4e9287, the assembly as it was 636ad212
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 49 scenes in 31 s: 49 pass (33 with warnings)
+pictures: [PASS] selfshots obs_main_dome at ff4e9287: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_a at ff4e9287: 11 of 11 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_main_dome_slit at ff4e9287: 10 of 10 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=69 host=cursor cores=4 head=ff4e9287 commit=629148bf pushed=yes branch=cursor/c164-dome-f3-a244-wip files=105
+a0job: exit=0 secs=70
