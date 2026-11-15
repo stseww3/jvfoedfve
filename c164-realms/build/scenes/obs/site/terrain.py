@@ -716,12 +716,13 @@ def _patches(snow):
 def _showing(snow, deep, noise):
     """Rock showing through the big patches: the cells to take out of the snow. In a patch of
     SNOW_OPEN blocks or more two places, in one of SNOW_OPEN_MORE three, each one or two blocks,
-    well inside it (snow on all four sides, and the patch's edge not next to them) and apart from
-    each other; where, a fine noise says. The snow thins to one layer round them (_layers)."""
+    inside it (snow on all eight sides) and apart from each other; where the snow lies three
+    layers deep before where it lies two, and among those where a fine noise says. The snow thins
+    to one layer round them (_layers)."""
     out = np.zeros(snow.shape, dtype=bool)
-    inside = snow & (deep >= 2)
-    for n in _neighbours(snow & (deep >= 2)):
-        inside &= n
+    inside = snow.copy()
+    for step in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)):
+        inside &= np.roll(snow, step, axis=(0, 1))
     seen = np.zeros(snow.shape, dtype=bool)
     for i, k in zip(*np.nonzero(snow)):
         if seen[i, k]:
@@ -739,7 +740,7 @@ def _showing(snow, deep, noise):
             continue
         want = 3 if len(patch) >= SNOW_OPEN_MORE else 2
         places = []
-        for a, b in sorted((p for p in patch if inside[p]), key=lambda p: -noise[p]):
+        for a, b in sorted((p for p in patch if inside[p]), key=lambda p: (-min(int(deep[p]), 3), -noise[p])):
             if all(max(abs(a - p), abs(b - q)) >= SNOW_OPEN_APART for p, q in places):
                 places.append((a, b))
                 out[a, b] = True
