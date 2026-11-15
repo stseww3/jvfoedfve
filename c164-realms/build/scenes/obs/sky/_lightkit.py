@@ -26,7 +26,9 @@ Light falls by one a cell, and a face is lit by the cell in front of it. A sourc
 first cell behind the glass leaves n-3 on the jambs, n-2 to n-3 on the sill, n-4 on the sides of the
 pilasters and n-6 on their fronts. Under the blue look stone is lifted out of the blue to a neutral
 grey at 7 and turns warm from 9 on: 10 behind the glass makes a window's surround lighter, 12 makes
-it warm.
+it warm. The levels of the windows are given as that source behind the glass (BEHIND); what is
+placed is a source of n-2 in the cell before the glass, which is the same light outside and leaves
+the room behind the window to its own lamps (THROUGH).
 
 Windows (the director's rules, group #15317, #19277 and #21989): at least a fifth of the windows
 of a front are dark; two neighbouring bays of one storey are never both lit; lit windows come in
@@ -36,6 +38,9 @@ tiers and the brightest is kept for the entrance; a front must not turn warm all
     tier 1  dim      B.WINDOW_CURTAIN, a lamp behind a drawn curtain      fixed windows only
     tier 2  lit      B.WINDOW_FROSTED                                     the lit window of a wing
     tier 3  bright   B.WINDOW_LIT, the entrance only
+
+The furnace window of the power house (B.WINDOW_FURNACE) is none of these and stands on no front
+of the main building; for its light it counts as tier 1.
 
 The colours say where the entrance is. The curtain is the most saturated colour of the building, so
 it is kept for the entrance: the two great windows beside the brightest one (orange, gold, orange)
@@ -150,10 +155,33 @@ FIXED = {
 # high). A tall lit window has two of them, one row above the sill and one row below the head.
 BEHIND = {BRIGHT: (12, 12), LIT: (10, 9), DIM: (8, 7)}
 TALL = 4                    # a window of this many rows or more is a tall one
+# Where the cell before the glass is free (the recess of the window) the source stands there, this
+# much lower. Light loses one in the glass and one more in that cell, so the stone round the window
+# gets what the source behind the glass gave it, level for level, and the room behind the window
+# four levels less: a lit window is no lamp of the room it belongs to (cr2, group #32778; A0 #32721).
+# Outside nothing gets more than before. Less gets only what the old source reached by a shorter
+# way through the room: the recess of another window of the same room, which is dark glass or has
+# a source of its own.
+THROUGH = 2
+# That way through the room is kept for the brightest window. Behind the glass its sources lit the
+# recesses of the two windows beside it as if no pier stood between: the stone round the curtained
+# windows of the entrance stands in the gold one's light (6 to 7 on their inner jambs; 4 to 5 from
+# their own source), and that is the entrance as the director has seen it. So each source of such a
+# window lends one to the window on either side: in the column nearest to it, in its own row, as
+# many levels lower as the two columns are cells apart. The other tiers lend nothing. Beside a lit
+# window of a wing stands a dark one; it had up to 5 in its recess from the room behind it, which
+# a dark room does not give, and keeps what the front gives it.
+LENDS = (BRIGHT,)
 
 _PRIORITY, _WAKE, _BLIND = 0, 1, 3      # salts of the hash; 2 was the curtains', handed out by look once
 _TIER_OF = {block: tier for tier, role in ROLE.items() for block in role.all()}
 _TIER_OF.update({block: DARK for role in (B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT) for block in role.all()})
+# The furnace window of the power house (A0, group #37116; in the occupancy table as three whole
+# blocks, one to a row of the window, the sill's first) is none of the three tiers and no look hands
+# it out. It glows, so it counts as the dimmest lit tier: it gets the source of a curtained window.
+_FURNACE = getattr(B, "WINDOW_FURNACE", ())
+_TIER_OF.update({block: DIM for family in (_FURNACE if isinstance(_FURNACE, (tuple, list)) else (_FURNACE,))
+                 for block in family.all() if block not in _TIER_OF})
 
 
 def tier_of(name):
@@ -458,6 +486,12 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
     windows   records as in main's table: front, bay, storey, cells (the glass columns (x, z)),
               inward (the step from the glass into the building), y (the glass's bottom and top
               row). A record marked blind is left out; "level" asks for another level behind it.
+              "inside" keeps the sources behind the glass, at the full level. That is for a
+              window of panes: a pane shows the light of its own cell, not that of the cell
+              before it as a block of glass does on its face, and with the source before it, it
+              is no brighter than the wall beside it. The room behind it gets the full level
+              then: only where nobody looks into it, and where its light gets out by no other
+              window or door onto a face that has to stay dark.
     origin    what is added to the cells and rows
     group     a name for the building, to keep its fronts apart from another's in the report
     look      the look the front was glazed for, when it is not the one build() is called with
@@ -470,7 +504,7 @@ def glazed(canvas, windows, origin=(0, 0, 0), group="", look=None):
         canvas.light_windows.append(dict(
             group=str(group), origin=tuple(int(v) for v in origin), front=w["front"], bay=w["bay"],
             storey=w["storey"], cells=[tuple(c) for c in w["cells"]], inward=tuple(w["inward"]),
-            y=tuple(w["y"]), level=w.get("level"), look=look))
+            y=tuple(w["y"]), level=w.get("level"), inside=bool(w.get("inside")), look=look))
 
 
 def dress(canvas, on=True):
