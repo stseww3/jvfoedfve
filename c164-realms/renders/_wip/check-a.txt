@@ -1,0 +1,22 @@
+check obs_site_powerhouse at 6c661b0
+[PASS] regen     71296 blocks, 4 entities, 24 models, 653 resource-pack files, 28 data-pack files, look: 1 biomes, 1 timelines (1.5 s)
+[PASS] conflicts the scene writes 652 files, no file written twice, the packages of site write nothing into the pack
+[PASS] strays    133 pictures, every colour in the palette
+[PASS] refs      510 block states, item definitions and models read, every model and picture they name is there
+[PASS] repaint   91 block states, 0 vanilla block models, 0 vanilla block pictures replaced, all within the occupancy table
+[PASS] blocks    46 kinds of block placed, all in the occupancy table
+[WARN] flatwall  8 wall faces run flat over more than 5x5 (one block, no relief; the white model is plain on purpose, an elevation is not)
+                 oxidized_copper facing east: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing north: flat over 7x7, the square's top corner at (16, 38, -33)
+                 oxidized_copper facing south: flat over 7x7, the square's top corner at (16, 38, -27)
+                 oxidized_copper facing west: flat over 7x7, the square's top corner at (10, 38, -27)
+                 smooth_sandstone facing east: flat over 7x7, the square's top corner at (16, 23, -27)
+                 smooth_sandstone facing north: flat over 7x7, the square's top corner at (16, 24, -33)
+                 smooth_sandstone facing south: flat over 7x7, the square's top corner at (16, 26, -27)
+                 smooth_sandstone facing west: flat over 7x7, the square's top corner at (10, 24, -27)
+[PASS] entities  4 display entities, 22 models never placed
+[WARN] views     12 shots, most display entities in view: 4 (aerial_back), limit 600; counted without what walls hide; the game draws up to 4 (v6_power): a display entity without width and height is drawn outside the view too
+                 lookout_east: stands at skeleton.V11 and does not look where it looks, at (6, 14, 0.5); the locked cameras are read from the skeleton, not copied by hand (A0 #304)
+[SKIP] sight     no shot of this scene stands at V1 (skeleton.V1), so it is not held to the arrival view
+result: PASS (0 failed, 2 with warnings)
+exit=0
