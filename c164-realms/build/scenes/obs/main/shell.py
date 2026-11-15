@@ -109,8 +109,9 @@ HEADROOM = 2                                    # rows that stay free over a dec
 ROOMS = {
     # the clear inside of each room: box (x0, z0, x1, z1), where feet stand, the ceiling block's row
     "star hall": dict(box=(S.ROOM_X[0], -HALL_Z, 15, HALL_Z), feet=S.GROUND, ceiling=CEIL_Y,
-                      note="open to the apse on the west; galleries at feet 7 on z -5 and 5; "
-                           "the wall's lining stands in the two east corners, x 14..15 on z -5 and 5; "
+                      note="open to the apse on the west; galleries at feet 7 on z -5 and 5; in the two "
+                           "east corners, x 14..15 on z -5 and 5, the wall's lining stands on the ground floor "
+                           "and is a window niche from the galleries' floor to the window's head (y 7..13); "
                            "ceiling beams on x 8, 11, 14 (lower face 14.0), the boards between them half a block up"),
     "stair hall": dict(box=(-7, -HALL_Z, ARCADE_X[1], HALL_Z), feet=S.GROUND, ceiling=CEIL_Y,
                        note="the apse: the two flights, the way to the west door, the mezzanine over it"),
@@ -139,10 +140,13 @@ def room_at(x, y, z):
     ground floor of the wings, the end pavilions, the pockets beside the cross walls) and whatever
     is not the inside of the shell. For whoever has to know whether somebody can stand behind a
     window (A0 #32732): ask for the cell one step inside the glass. The apse is the stair hall:
-    the flights, the landings and the mezzanine are in it."""
+    the flights, the landings and the mezzanine are in it. The two window niches the facade cuts
+    into its lining at the east end of the galleries (layout().niches) are the star hall's."""
     L = layout()
     if (x, z) in L.hall and S.GROUND <= y < CEIL_Y:
         return "stair hall" if x <= ARCADE_X[1] else "star hall"
+    if (x, z) in L.niches and S.PANEL <= y <= S.WINDOW[1]:
+        return "star hall"                      # a window niche at the end of a gallery
     for name, cells in L.rooms.items():
         if (x, z) in cells and S.STAND <= y < CEIL_Y:
             return name
@@ -271,12 +275,28 @@ def _layout(entrance):
     over_flights = {(ARCADE_X[0] - 1, z) for rows in FLIGHT_ROWS.values() for z in rows}
     L.deck = (L.mezzanine | L.cross_deck | L.gallery | L.gallery_edge | L.landing | L.notch
               | {c for c in L.cheek})
-    # the railing follows the drop: on a cheek it starts where the flight is a block below the deck.
-    # It also closes the deck under the ring stair's first steps, where nobody can stand upright
-    low = {(x, z) for x, z, _y, _half, top in ring_stair() if top - 0.5 < S.STAND + 2}
-    L.rail = ((L.gallery_edge - {BRIDGE}) | L.notch | over_flights | (low & L.deck)
-              | {c for c in L.cheek if LANDING_X + 1 < c[0] < ARCADE_X[0] - 1})
-    L.walk = L.deck - L.rail                                              # where feet stand at 7
+    # Under the ring stair's first steps nobody can stand upright. Where a step's slab lies in the
+    # row right over the deck, a block of the walls' foot course stands under it: the plinth the
+    # stair's first landing rests on, at the corner where the north gallery meets the cross gallery
+    # (the landing and the step before it). Where half a block of air is left under the slab, the
+    # railing closes the deck. Else the railing follows the drop: on a cheek it starts where the
+    # flight is a block below the deck
+    under = {(x, z): top - 0.5 for x, z, _y, _half, top in ring_stair() if top - 0.5 < S.STAND + HEADROOM}
+    L.plinth = {c for c, y in under.items() if c in L.deck and y == S.STAND + 1}
+    L.rail = ((L.gallery_edge - {BRIDGE}) | L.notch | over_flights | (set(under) & L.deck)
+              | {c for c in L.cheek if LANDING_X + 1 < c[0] < ARCADE_X[0] - 1}) - L.plinth
+    L.walk = L.deck - L.rail - L.plinth                                   # where feet stand at 7
+    # the window niches the facade cuts into its own lining in the hall's two east corners, behind
+    # the last column of glass of the great windows beside the entrance (facade._recesses, counted
+    # here as there): the galleries' floor runs on into them
+    L.niches = set()
+    for bay in getattr(facade, "ARCADE", ()):
+        op = walls.bays.get(("east", bay))
+        for c in (op.cells if op else ()):
+            c = O.step(c, op.out, -2)                                     # past the wall line and the glass
+            while c in walls.leaf:
+                L.niches.add(c)
+                c = O.step(c, op.out, -1)
     # a deck that lies on a wall or an arch is stone; the edge that hangs free is a girder
     L.girder = L.gallery_edge | over_flights | {c for c in L.notch if c[0] > ARCADE_X[1]}
     # above: the ceiling's beams run north-south only, every third column west of the stair's
@@ -439,6 +459,8 @@ def build(canvas, origin=(0, 0, 0)):
         put(c, DECK_Y, GIRDER if c in L.girder else DECK)
     for c in L.rail:
         put(c, S.STAND, RAIL)
+    for c in L.plinth:
+        put(c, S.STAND, wall_block(S.STAND))
     for c in L.gallery:
         put(c, DECK_Y - 1, f"{B.ASHLAR_FINE.stairs}[facing={'north' if c[1] < 0 else 'south'},half=top]")
 
@@ -492,6 +514,7 @@ LEGEND = [
     ("=", "iron grating round the pier's foot"), ("m", "the mother clock's seat: the pier's footing, level with the floor"),
     ("<", "grand stair, rising west"),
     ("s", "ring stair"), ("S", "ring stair passing over a deck or its railing"),
+    ("P", "ring stair resting on its plinth"), ("n", "window niche of the facade, its floor level with the galleries"),
     ("b", "the bridge onto the ring stair"), ("e", "where the ring stair lets one off"),
 ]
 
@@ -538,7 +561,9 @@ def drawing(level):
             g[c] = "D"
         for x, z, y, _half, _top in ring_stair():
             if y < CEIL_Y:
-                g[(x, z)] = "S" if (x, z) in L.deck else "s"
+                g[(x, z)] = "P" if (x, z) in L.plinth else "S" if (x, z) in L.deck else "s"
+        for c in L.niches:
+            g[c] = "n"
         g[BRIDGE] = "b"
     else:
         d = O.disc(CX, CZ, S.DOME_R)
@@ -634,6 +659,10 @@ def check():
                 continue
             if not solid(n[0], y + 1, n[1]) and c.get(x, y + 1, z) != panel(side):
                 out.append(f"ring stair: step ({x}, {z}) is open to the {side}")
+    #    its first landing rests on the plinth
+    for x, z in L.plinth:
+        if c.get(x, S.STAND, z) != wall_block(S.STAND) or c.name(x, S.STAND + 1, z) != TREAD.slab:
+            out.append(f"ring stair: no plinth under the step at ({x}, {z})")
     #    and the west run hangs: every rod runs unbroken from the balustrade's top to a beam
     for x, y0, y1, z in stair_hangers():
         if c.name(x, y0 - 1, z) != PANEL:
@@ -691,6 +720,11 @@ def check():
         for y in range(S.STAND, S.STAND + HEADROOM):        # and nothing hangs into the way of whoever walks on one
             if solid(x, y, z):
                 out.append(f"main floor: no head room on the deck at ({x}, {z}), y {y}")
+    for x, z in L.niches:                                   # the facade's niches are what room_at() takes them for
+        if not solid(x, DECK_Y, z) or any(solid(x, y, z) for y in range(S.PANEL, S.WINDOW[1] + 1)):
+            out.append(f"main floor: the window niche at ({x}, {z}) is not a floor at the galleries' level with air to the window's head")
+        if not any(O.step((x, z), d) in L.gallery | L.niches for d in O.SIDES):
+            out.append(f"main floor: the window niche at ({x}, {z}) does not open off a gallery")
     # 6. the dome-room floor is closed but for the envelope
     for x, z in L.dome_floor:
         if c.name(x, ROOF_Y, z) != (TRIM if (x, z) in L.curb else ROOM_FLOOR):
