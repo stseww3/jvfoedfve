@@ -98,8 +98,10 @@ def build():
 
 
 def write_pack(pack_dir):
-    """The repainted stone and iron plate the lamps are judged against."""
-    return materials.pack(pack_dir)
+    """The repainted stone and iron plate the lamps are judged against, and the pictures of the
+    map's sky: the stage stands in the map's hour (mood.py), and without them the game's own sun
+    lies on the open western horizon, the brightest thing in every picture that looks that way."""
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
 
 
 def shots():
