@@ -5,10 +5,12 @@ main/_plan.py keeps the walls) and the package that builds it.
 What it builds, inside the walls main/facade.py lays (it fills facade.shell().core; of the wall
 and its inner leaf it touches only the floor of the doorways):
 
-  * the star hall and the apse as one room, two storeys high (feet 0, ceiling 14): a floor of
-    black and white squares (ART-PLAN 8), the cross walls on z -6 and 6, a ceiling of dark boards
-    between iron beams. Where a doorway of the facade cuts the wall, the plinth's stone lies in
-    the floor as its sill;
+  * the star hall and the apse as one room, two storeys high (feet 0, ceiling 14): the cross walls
+    on z -6 and 6, a ceiling of dark boards between iron beams, and the floor as A0 ruled it for
+    the star hall (ART-PLAN 8, #30479): a band of pale stone three wide on the axis from the
+    entrance to the west door, a line of slate either side of it, black and white squares of two
+    by two beyond. Where a doorway of the facade cuts the wall, the plinth's stone lies in the
+    floor as its sill;
   * the west arcade (x 0..1): three arches as wide as the three of the entrance. The middle one
     leads under the mezzanine to the west door, a vaulted way; a flight of the grand stair rises
     west through each of the others (seven steps, feet 0 -> 7) to a landing against the apse wall;
@@ -119,6 +121,23 @@ def doors():
             for room, s in (("time room", -1), ("chart room", 1))]
 
 
+def room_at(x, y, z):
+    """The room a cell lies in -- a key of ROOMS -- or None: the closed parts of the building (the
+    ground floor of the wings, the end pavilions, the pockets beside the cross walls) and whatever
+    is not the inside of the shell. For whoever has to know whether somebody can stand behind a
+    window (A0 #32732): ask for the cell one step inside the glass. The apse is the stair hall:
+    the flights, the landings and the mezzanine are in it."""
+    L = layout()
+    if (x, z) in L.hall and S.GROUND <= y < CEIL_Y:
+        return "stair hall" if x <= ARCADE_X[1] else "star hall"
+    for name, cells in L.rooms.items():
+        if (x, z) in cells and S.STAND <= y < CEIL_Y:
+            return name
+    if ((x, z) in L.dome_floor or (x, z) in L.envelope) and y >= S.ROOF_STAND:
+        return "dome room"
+    return None
+
+
 # --- the plan -------------------------------------------------------------------------------------
 def wall_block(y):
     """The stone of an inside wall, in the bands of the fronts: plinth, base storey, a sunk course
@@ -136,6 +155,18 @@ def pier_block(y):
     if y <= S.PLINTH[1]:
         return B.SLATE_BRICK.block
     return B.ASHLAR_ROUGH.block if y <= S.BASE[1] else B.ASHLAR_FINE.block
+
+
+def floor_block(c, east):
+    """The stone of the hall's floor in a column: pale on the axis, three wide; a line of slate on
+    the pilaster lines either side of it (the lines the arcade's piers and the cheeks stand on);
+    beyond, squares of two by two counted from the entrance wall (east: its last column of floor)."""
+    d = abs(c[1] - CZ)
+    if d < CHEEK_Z:
+        return FLOOR
+    if d == CHEEK_Z:
+        return FLOOR_DARK
+    return FLOOR if ((east - c[0]) // 2 + (d - CHEEK_Z - 1) // 2) % 2 == 0 else FLOOR_DARK
 
 
 def grand_stair():
@@ -302,10 +333,12 @@ def build(canvas, origin=(0, 0, 0)):
     def clear(c, y):
         canvas.clear(ox + c[0], oy + y, oz + c[1])
 
-    # the ground floor of the hall: black and white squares, the plinth's stone in the doorways.
-    # The pier goes down through it to a footing of its own; a grating bridges the joint
+    # the ground floor of the hall (the star hall lays its own over its part when it moves in), the
+    # plinth's stone in the doorways. The pier goes down through the floor to a footing of its own;
+    # a grating bridges the joint
+    east = max(x for x, z in L.hall if z == CZ)
     for c in L.hall - L.cap:
-        put(c, S.PAVING_Y, FLOOR if (c[0] + c[1]) % 2 == 0 else FLOOR_DARK)
+        put(c, S.PAVING_Y, floor_block(c, east))
     for c in L.sills:
         put(c, S.PAVING_Y, SILL)
     for c in L.cap:
