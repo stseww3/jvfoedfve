@@ -11,9 +11,10 @@ and its inner leaf it touches only the floor of the doorways):
     entrance to the west door, a line of slate either side of it, black and white squares of two
     by two beyond. Where a doorway of the facade cuts the wall, the plinth's stone lies in the
     floor as its sill;
-  * the west arcade (x 0..1): three arches as wide as the three of the entrance. The middle one
-    leads under the mezzanine to the west door, a vaulted way; a flight of the grand stair rises
-    west through each of the others (seven steps, feet 0 -> 7) to a landing against the apse wall;
+  * the west arcade (x 0..1): three arches as wide as the three of the entrance, their heads
+    shut over the crown where the entrance's are (facade.CROWN). The middle one leads under the
+    mezzanine to the west door, a vaulted way; a flight of the grand stair rises west through
+    each of the others (seven steps, feet 0 -> 7) to a landing against the apse wall;
   * the main floor round the well: the mezzanine over the way to the west door, the cross gallery
     on the arcade, a gallery along each cross wall (z -5 and 5, its railing on z -4 and 4) from the
     arcade to the entrance wall, a door from each gallery into its wing room. A deck that lies on
@@ -239,6 +240,9 @@ def _layout(entrance):
     L.arcade = {(x, s * CHEEK_Z) for x in ARCADE_X for s in (-1, 1)}
     L.arches = [(-5, -3), (-1, 1), (3, 5)]                                # rows of the three openings
     L.vault = {c for c in L.hall if c[0] < ARCADE_X[0] and abs(c[1]) == CHEEK_Z - 1}     # the way to the west door: its springing
+    # the crown of the three arches and of the vault: shut where the facade shuts its heads (facade.CROWN)
+    L.crown = ({(x, z) for z0, z1 in L.arches for z in range(z0 + 1, z1) for x in ARCADE_X}
+               | {c for c in L.hall if c[0] < ARCADE_X[0] and c[1] == CZ})
     # decks of the main floor
     L.mezzanine = {c for c in L.hall if c[0] < ARCADE_X[0] - 1 and abs(c[1]) < CHEEK_Z}
     L.cross_deck = O.box(ARCADE_X[0] - 1, -HALL_Z, ARCADE_X[1], HALL_Z)
@@ -250,8 +254,10 @@ def _layout(entrance):
     over_flights = {(ARCADE_X[0] - 1, z) for rows in FLIGHT_ROWS.values() for z in rows}
     L.deck = (L.mezzanine | L.cross_deck | L.gallery | L.gallery_edge | L.landing | L.notch
               | {c for c in L.cheek})
-    # the railing follows the drop: on a cheek it starts where the flight is a block below the deck
-    L.rail = ((L.gallery_edge - {BRIDGE}) | L.notch | over_flights
+    # the railing follows the drop: on a cheek it starts where the flight is a block below the deck.
+    # It also closes the deck under the ring stair's first steps, where nobody can stand upright
+    low = {(x, z) for x, z, _y, _half, top in ring_stair() if top - 0.5 < S.STAND + 2}
+    L.rail = ((L.gallery_edge - {BRIDGE}) | L.notch | over_flights | (low & L.deck)
               | {c for c in L.cheek if LANDING_X + 1 < c[0] < ARCADE_X[0] - 1})
     L.walk = L.deck - L.rail                                              # where feet stand at 7
     # a deck that lies on a wall or an arch is stone; the edge that hangs free is a girder
@@ -370,6 +376,9 @@ def build(canvas, origin=(0, 0, 0)):
             put((x, z1), ARCH_Y, f"{B.ASHLAR_ROUGH.stairs}[facing=south,half=top]")
     for c in L.vault:                           # the middle arch runs on as a vault to the west door
         put(c, ARCH_Y, f"{B.ASHLAR_ROUGH.stairs}[facing={'north' if c[1] < 0 else 'south'},half=top]")
+    if getattr(facade, "CROWN", False):         # the heads as the entrance has them (A0, 11-15): a slab between
+        for c in L.crown:                       # the two stairs, three wide, two wide, shut
+            put(c, ARCH_Y, f"{B.ASHLAR_ROUGH.slab}[type=top]")
 
     # the grand stair: solid under the steps and under the landings
     for cells in L.flights.values():
