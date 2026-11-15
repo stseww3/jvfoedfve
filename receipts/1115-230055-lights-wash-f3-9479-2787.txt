@@ -1,0 +1,34 @@
+a0job 1115-230055-lights-wash-f3-9479-2787: cursor/c164-lights-wash-f3-9479 @ 360a963d on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.26 0.42 0.15, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_sky_lights > /tmp/lk1.txt 2>&1; echo shots=$?; tail -n 2 /tmp/lk1.txt; python tools/selfshots.py obs_sky_lights_nolend > /tmp/lk2.txt 2>&1; echo nolend=$?; tail -n 2 /tmp/lk2.txt; (cd build && python -m sc
+renders/obs_sky_lights/: 27 pictures of 360a963d drawn, 9.6 MB
+nolend=0
+  obs_sky_lights_nolend: blue_door (tick 14000, 1 s)
+renders/obs_sky_lights_nolend/: 3 pictures of 360a963d drawn, 1.4 MB
+report=0
+check=0
+[PASS] views     27 shots, most display entities in view: 8 (blue_front), limit 600; counted without what walls hide; the game draws up to 16 (blue_west): a display entity without width and height is drawn outside the view too
+[PASS] sight     V1 at (88.5, -2.38, -32.5): the front from y 4 up 0.4% hidden (base storey 1%, great windows 0.0%); skyline clear; comet's head 26% below the top edge, clear; the whole comet lies in the view the station keeps clear; the st
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+check_nolend=0
+[PASS] motion    nothing moves
+result: PASS (0 failed, 0 with warnings)
+master=0
+wall wash: 4 projectors at [(18, 0, -14), (18, 0, -10), (18, 0, 10), (18, 0, 14)]
+entrance: doorway not lit; behind it [(1, 4, -4), (1, 4, 4), (6, 4, 0)]
+ M renders/obs_sky_lights/blue_axis.png
+ M renders/obs_sky_lights/blue_door.png
+ M renders/obs_sky_lights/blue_front.png
+ M renders/obs_sky_lights/blue_slant.png
+ M renders/obs_sky_lights/blue_surround.png
+ M renders/obs_sky_lights/blue_v1.png
+ M renders/obs_sky_lights/blue_wash.png
+ M renders/obs_sky_lights/blue_west.png
+==== NODEJOB RESULT ====
+exit=0 secs=91 host=cursor cores=4 head=360a963d commit=522243cf pushed=yes branch=cursor/c164-lights-wash-f3-9479 files=36
+a0job: exit=0 secs=92
