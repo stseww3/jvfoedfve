@@ -97,7 +97,7 @@ def shots():
     # standing on the gallery's walkway, north-east, looking along it to the south: the walkway and
     # the gutter going round, the ring beam and its axle boxes and the dome's foot on the right,
     # the court on the left
-    shot("gallery", (cx + 10.5, spring + S.EYE, cz - 10.5), (cx + 17.2, spring + 0.2, cz - 2.5))
+    shot("gallery", (cx + 11.5, spring + S.EYE, cz - 10.5), (cx + 16.2, spring + 0.2, cz - 2.5))
     # from the ridge of the south wing's roof, six blocks short of the gallery: the drum's bays and
     # the door of the dome room, the gallery from below, the dome over it (closer, under the
     # gallery, one sees only its underside)
