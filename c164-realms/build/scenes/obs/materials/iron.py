@@ -9,8 +9,8 @@ Every picture but the two lamps' is drawn here from nothing. The thin pieces (ba
 grating) are drawn onto the pixels the game's own models read -- which columns and rows those are
 is noted at each -- so the models stay the game's; the bulb and the lantern keep the game's picture,
 taken over step for step into the iron ramp, their filament and slits into the glow ramp. One model
-is touched: the game shows a trapdoor's picture upside down, and the hatch's copies of its models
-turn it back (_upright).
+is touched: the thin edges of the game's trapdoor read the bottom rows of its picture upside down,
+and the hatch's copies of its models show the picture's lit top rows there instead (_lips).
 """
 import math
 
@@ -182,23 +182,25 @@ def _hatch():
     return px
 
 
-def _upright(ref, flat):
+def _lips(ref, flat):
     """What redirect does to the game's trapdoor models before it maps the picture (its `edit`).
 
-    The game shows the picture upside down (uv 0,16,16,0) on the faces that count: both sides of a
-    standing trapdoor, and the top of a lying one, where it is turned against the tops of the
-    blocks round it. The lid's frame and rivets are lit from the top and the left like every other
-    plate's; upside down, a standing panel reads lit from below, its rivets' shadows over their
-    heads, next to plates lit from above. On those faces the flip goes. The edges are left as they
-    are: they read the picture's top three rows, the frame's lit lip and the rivets under it."""
+    Where it counts the game shows the whole picture the right way up (uv 0,0,16,16 in the 26.3
+    models): on both sides of a standing trapdoor and on the top of a lying one. A standing panel
+    is therefore lit from the top and the left like the plate it stands on, and nothing is turned
+    there. The thin edges are another matter: the four edges of a lying trapdoor and the top edge
+    of a standing one read the picture's bottom three rows upside down (uv 0,16,16,13), which puts
+    the frame's dark lower lip uppermost -- an edge lit from below, and the edge is all that a
+    louvre of lying hatches shows. Those edges read the top three rows the right way up instead:
+    the frame's lit lip, the rivets under it, their shadows."""
     turned = 0
     for box in flat["elements"] or []:
         for face in box["faces"].values():
-            if face.get("uv") == [0, 16, 16, 0]:
-                face["uv"] = [0, 0, 16, 16]
+            if face.get("uv") == [0, 16, 16, 13]:
+                face["uv"] = [0, 0, 16, 3]
                 turned += 1
     if not turned:
-        raise ValueError(f"{ref}: no face of this model shows the whole picture upside down any more; "
+        raise ValueError(f"{ref}: no edge of this model reads the picture's bottom rows upside down any more; "
                          "look at the game's trapdoor models again before the hatch is redirected")
     return flat
 
@@ -413,7 +415,7 @@ def pack(pack_dir):
         for block in K.blocks(role):
             out.append(K.redirect(pack_dir, block, _map(block, name)))
     for block in K.blocks(B.IRON_HATCH):
-        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch"), edit=_upright))
+        out.append(K.redirect(pack_dir, block, _map(block, "iron_hatch"), edit=_lips))
     for block in K.blocks(B.IRON_DOOR):
         out.append(K.redirect(pack_dir, block, {ref: ("iron_door_top" if ref.endswith("_top") else "iron_door_bottom")
                                                  for ref in respack.block_pictures(K.game(), block)}))
