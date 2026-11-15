@@ -84,17 +84,24 @@ def _sheet(m, hw, cx, r_out, r_in, top, mat=PLATE):
     m.box((-hw, SPRING + y, 0.0), (hw, top, SHEET), mat, seed=seed, grain="x")
 
 
-# rivets on the spandrel sheet, where the stone head leaves it in sight: the slot under the crown and
-# the corners beside the ring (x, y in units; the stone head steps in at 5.0 and at 5.5 blocks)
+# The stone head over the iron (A3, main/_order.arch): a stair hung in each top corner narrows the
+# opening by half a block either side at 5.0 blocks, and at 5.5 blocks it is shut -- a slab hung
+# between the two stairs of a three-wide head (facade.CROWN, the director's ruling of 11-15), the
+# two stairs themselves in a two-wide one. So the iron ends at 5.5 blocks: nothing of it is made to
+# hide behind stone, and the ring's crown stands right under the stone's.
+SHUT = 44.0
+# rivets on the spandrel sheet where the stone head leaves it in sight, in the corners beside the
+# ring (x, y in units)
 SHEET_RIVETS = {
-    3: [(-3.0, 46.0), (0.0, 46.0), (3.0, 46.0), (-7.0, 43.0), (7.0, 43.0), (-11.0, 39.0), (11.0, 39.0)],
+    3: [(-7.0, 43.0), (7.0, 43.0), (-11.0, 39.0), (11.0, 39.0)],
     2: [(-2.5, 42.0), (0.0, 42.0), (2.5, 42.0), (-6.5, 38.5), (6.5, 38.5)],
 }
 
 
-def _head(m, width, jambs, top=48.0):
+def _head(m, width, jambs):
     """The round head the windows and the doorways share: a half ring, 6 px deep, that springs from
-    the 4.0 line and carries on the inner edges of the two jambs, and riveted sheet in the spandrels.
+    the 4.0 line and carries on the inner edges of the two jambs, and riveted sheet in the spandrels
+    up to where the stone head is shut.
     So the round of glass is centred on what the jambs leave: with a window's unequal jambs that is
     the middle of the pane's net, half a pixel beside the middle of the stone, and the lights the
     ring cuts come out the same left and right. The ring is as wide as the wider jamb; beside the
@@ -104,7 +111,7 @@ def _head(m, width, jambs, top=48.0):
     cx, r, wide = (left - right) / 2.0, hw - (left + right) / 2.0, max(left, right)
     sides = 32 if width >= 3 else 24
     m.ring("z", (cx, SPRING, DEEP / 2.0), r + wide / 2.0, wide, DEEP, IRON, sides=sides, arc=(0.0, 180.0))
-    _sheet(m, hw, cx, r + wide, r / math.cos(math.pi / sides), top)
+    _sheet(m, hw, cx, r + wide, r / math.cos(math.pi / sides), SHUT)
     for x, y in SHEET_RIVETS[width]:
         K.rivet(m, (x, y, SHEET))
     return r

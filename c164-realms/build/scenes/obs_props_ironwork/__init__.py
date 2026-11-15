@@ -4,7 +4,8 @@ The wall is not a stand-in: eight bays of the entrance front, laid by A3's eleva
 (main/_order) with the main building's own order (main/facade.order()) on a straight plan, looking
 east like the front itself. In the middle the three arches of the entrance; the iron is put on by
 the same two functions that dress the master scene (ironwork.windows, ironwork.doors), from tables
-of the same form as main/_plan gives.
+of the same form as main/_plan gives. The heads of the three-wide arches are shut over the crown,
+as A3 builds them (facade.CROWN): see _crowns().
 
 Seen from the court, left to right (south to north):
 
@@ -138,6 +139,21 @@ def _rooms(c, windows):
         c.set(BACK + 1, y, 0, st(B.PANELS[name], facing="east"))
 
 
+def _crowns(c, windows):
+    """The head of every three-wide arch is shut over the crown: A3 hangs a slab between the two
+    corner stairs (facade.CROWN, the director's ruling of 11-15), and the iron ends where that
+    slab begins. Where the order in the tree has not laid the slab, it is hung here, so the family
+    is seen on the wall it is made for; where it lies already, nothing is done. Three-wide heads
+    only: in a two-wide one the two stairs meet."""
+    heads = [(x - w["inward"][0], w["y"][1], z - w["inward"][1], B.ASHLAR_FINE.slab)
+             for w in windows if w["storey"] == "main" and len(w["cells"]) == 3 and not w.get("blind")
+             for x, z in w["cells"][1:-1]]
+    heads += [(x, d["y"][1], z, B.ASHLAR_ROUGH.slab)
+              for d in door_table() if d["arch"] and len(d["cells"]) == 3 for x, z in d["cells"][1:-1]]
+    for x, y, z, slab in heads:
+        c.set(x, y, z, st(slab, type="top"), keep=True)
+
+
 def _yard(c):
     """The yard wall with its flat-headed doorway, and the pieces that stand on the paving."""
     c.box(WALL, S.GROUND, YARD[0], WALL, YARD_TOP, YARD[1], B.ASHLAR_FINE.block)
@@ -156,6 +172,7 @@ def build():
     c.box(WALL + 3, S.GROUND - 1, Z0 - 6, WALL + 3, S.GROUND - 1, RAIL_Z + 5, site.STRIP)
     p = plan()
     windows = O.build(c, p, facade.order(), glass=_glass)
+    _crowns(c, windows)
     for bay in GATES + (DOOR,):                         # A3's B entrance: a whole stone in the course over each arch
         c.set(WALL + 1, S.STRING, bay_z(bay)[1], B.ASHLAR_FINE.block)
     _rooms(c, windows)
