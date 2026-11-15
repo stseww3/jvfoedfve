@@ -237,7 +237,7 @@ VIEWS = {   # name: (eye, looks at), from a building's origin
     "west": ((APSE_X - 28.5, EYE, AXIS), (APSE_X, 10.0, AXIS)),                    # from the sunset platform
 }
 EVERY_LOOK = ("front", "axis", "v1", "slant", "surround")
-SOME_LOOKS = {"blue": ("v3", "door", "wash", "west"), "deep": ("door", "wash")}
+SOME_LOOKS = {"blue": ("v3", "door", "v7", "wash", "west"), "deep": ("door", "wash")}
 NOLEND_LOOKS = ("blue",)                                    # what obs_sky_lights_nolend puts up and shows
 NOLEND_SHOTS = ("blue_front", "blue_axis", "blue_door")
 BOARD_MID = (S.pilaster_z(BOARD_BAYS[0] - 1) + S.pilaster_z(BOARD_BAYS[-1])) / 2.0 + 0.5
