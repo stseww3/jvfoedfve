@@ -1,0 +1,37 @@
+a0job 1115-234352-m3-pipes-f3-8e52-1359: cursor/c164-m3-pipes-f3-8e52 @ d66e9107 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 1.36 2.10 1.98, Python 3.12.3
+  [cloud_setup    0s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    0s] python: 3.12.3 numpy 2.5.5 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    3s] ready. Python: /agent/realms-study/.venv/bin/python
+---- python tools/selfshots.py obs_props_pipes ---- exit 0, 56 s, last 30 lines of 27:
+  obs_props_pipes: 4181 blocks, 24 entities (0 s)
+  obs_props_pipes: resource pack written to /tmp/c164pack-lsmn4mae (1 s)
+  obs_props_pipes: water: 0 sources, 0 cells of running water (1 s)
+  obs_props_pipes: grid 40 x 23 x 48, 4181 blocks, 424 entity boxes (1 s)
+  obs_props_pipes: 33 states -> 81 looks, 154 boxes, 47 pictures (1 s)
+  obs_props_pipes: light done (1 s)
+  obs_props_pipes: front (tick 14000, 1 s)
+  obs_props_pipes: front_foot (tick 14000, 1 s)
+  obs_props_pipes: oblique (tick 14000, 2 s)
+  obs_props_pipes: hopper_up (tick 14000, 1 s)
+  obs_props_pipes: hopper_near (tick 14000, 2 s)
+  obs_props_pipes: string_above (tick 14000, 1 s)
+  obs_props_pipes: string_below (tick 14000, 2 s)
+  obs_props_pipes: clip_near (tick 14000, 2 s)
+  obs_props_pipes: foot (tick 14000, 2 s)
+  obs_props_pipes: inlet (tick 14000, 3 s)
+  obs_props_pipes: inlet_east (tick 14000, 3 s)
+  obs_props_pipes: inlet_south (tick 14000, 3 s)
+  obs_props_pipes: inlet_walk (tick 14000, 3 s)
+  obs_props_pipes: corner_far (tick 14000, 1 s)
+  obs_props_pipes: heating_front (tick 14000, 1 s)
+  obs_props_pipes: heating_oblique (tick 14000, 3 s)
+  obs_props_pipes: heating_along (tick 14000, 3 s)
+  obs_props_pipes: heating_valve (tick 14000, 5 s)
+  obs_props_pipes: heating_bend (tick 14000, 6 s)
+  obs_props_pipes: heating_pier (tick 14000, 3 s)
+renders/obs_props_pipes/: 20 pictures of d66e9107 drawn, 3.3 MB
+==== NODEJOB RESULT ====
+exit=0 secs=60 host=cursor cores=4 head=d66e9107 commit=2ee0b4ae pushed=yes branch=cursor/c164-m3-pipes-f3-8e52 files=21
+a0job: exit=0 secs=61
