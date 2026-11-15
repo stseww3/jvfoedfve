@@ -11,6 +11,7 @@ sides can then work without waiting for each other.
     B.IRON_RIVETED.slab      "oxidized_cut_copper_slab"
     B.WINDOW_LIT.pane        "yellow_stained_glass_pane"
     B.PANELS["dial"]         "white_glazed_terracotta"
+    B.CLOUD[2]               "dead_bubble_coral_block"   (the middle one of the five cloud tones)
 
 Block states are added by the caller: B.ASHLAR_FINE.stairs + "[half=top,facing=east]".
 
@@ -19,7 +20,7 @@ Rules that come with the table:
   - verdigris is always the waxed_ family; every oxidized_* block without waxed_ is cast iron;
   - blocks that are not listed are used as the vanilla game draws them, or not at all.
 
-A0 keeps this file. A change is asked for in the group.
+S2 (assembly) keeps this file. A change is asked for in the group and approved by A0.
 """
 
 
@@ -112,8 +113,24 @@ OLD_COPPER_CUT = _family("waxed_exposed_cut_copper", "stairs slab")   # gutters,
 
 # --- repainted: small pieces --------------------------------------------------------------------------
 WAINSCOT = "dark_oak_trapdoor"                                  # wall panelling indoors
-BRASS_INLAY = "yellow_carpet"                                   # brass line in the floor (the meridian)
+BRASS_INLAY = "yellow_carpet"                                   # a whole square of brass let into the floor
+# The thin line of worn, dark brass let into the paving (A0, 11-14: the court's meridian and emblem;
+# the whole-square carpet above read as a yellow road marking). Flat, open (the stone below shows
+# through), nothing to walk into; it lies in the cell above the paving and needs a solid block below.
+# These are the game's rails, and a rail set down in the world turns itself to join the rails beside
+# it: give every cell the shape that joins its two neighbours, and keep a line one cell clear of any
+# other. No real track is laid with these three any more.
+BRASS_LINE = "rail"             # shape=north_south | east_west: a straight run; south_east |
+#                                 south_west | north_west | north_east: a corner, named by the two
+#                                 sides it joins (two corners in a row draw a diagonal)
+BRASS_CROSS = "activator_rail"  # [shape=north_south] where two lines cross (the meridian through the ring)
+BRASS_STAR = "detector_rail"    # [shape=north_south] the emblem's star, one cell
 ENAMEL_SIGN = ("oak_sign", "oak_wall_sign", "oak_hanging_sign", "oak_wall_hanging_sign")
+
+# --- repainted: the cloud sea built of blocks (five flat tones, dark to light like RAMPS["cloud"]) ----
+# Provisional (A0, 2026-11-14): the family is settled on the real-game pictures of the cloudsea card.
+CLOUD = ("dead_horn_coral_block", "dead_fire_coral_block", "dead_bubble_coral_block",
+         "dead_brain_coral_block", "dead_tube_coral_block")
 
 # --- used as the vanilla game draws them ---------------------------------------------------------------
 VERDIGRIS = "waxed_oxidized_copper"
@@ -126,6 +143,15 @@ SLATE_SMOOTH = _family("polished_deepslate", "stairs slab wall")
 TUFF_BRICK = _family("tuff_bricks", "stairs slab wall", stem="tuff_brick")              # lower terrace, power house
 TUFF_SMOOTH = _family("polished_tuff", "stairs slab wall")
 TUFF = _family("tuff", "stairs slab wall")
+# natural rock and snow (A0 #171, 11-14): the mountain, its cliffs and what lies on them, with TUFF
+# above as the fifth rock. Not for walls, plinths or paving: what is built is ashlar, slate or tuff
+# brick, so the eye can tell the mountain from the masonry that stands on it
+ROCK_STONE = _family("stone", "stairs slab")
+ROCK_ANDESITE = _family("andesite", "stairs slab wall")
+ROCK_DEEPSLATE = "deepslate"                                    # (axis: the bedding runs across it)
+ROCK_COBBLED = _family("cobbled_deepslate", "stairs slab wall")
+SNOW = "snow_block"
+SNOW_LAYER = "snow"                                             # snow[layers=1..8], an eighth of a block each
 DARK_WOOD = _family("dark_oak_planks", "stairs slab", stem="dark_oak")                  # indoors: panelling, furniture
 FLOOR_WOOD = _family("spruce_planks", "stairs slab", stem="spruce")                     # indoor floors
 PALE_WOOD = _family("pale_oak_planks", "stairs slab", stem="pale_oak")                  # light wood where one is needed
@@ -138,9 +164,10 @@ REPAINTED = [ASHLAR_ROUGH, ASHLAR_FINE, ASHLAR_PANEL, ASHLAR_EMBLEM, IRON_PLATE,
              WINDOW_LIT, WINDOW_CURTAIN, WINDOW_FROSTED, WINDOW_DARK, WINDOW_BLIND, SKYLIGHT,
              *PANELS.values(), BRASS_PLATE, BRASS_PATTERN, BRASS_COLUMN, BRASS_RAIL, BRASS_GATE, BRASS_DOOR,
              BRASS_HATCH, BRASS_BUTTON, *BRASS_SIGN, BRASS_SHELF, OLD_COPPER, OLD_COPPER_CUT, WAINSCOT,
-             BRASS_INLAY, *ENAMEL_SIGN]
+             BRASS_INLAY, BRASS_LINE, BRASS_CROSS, BRASS_STAR, *ENAMEL_SIGN, *CLOUD]
 VANILLA = [VERDIGRIS, VERDIGRIS_CUT, VERDIGRIS_CAST, VERDIGRIS_STREAK, SLATE_BRICK, SLATE_TILE, SLATE_SMOOTH,
-           TUFF_BRICK, TUFF_SMOOTH, TUFF, DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
+           TUFF_BRICK, TUFF_SMOOTH, TUFF, ROCK_STONE, ROCK_ANDESITE, ROCK_DEEPSLATE, ROCK_COBBLED, SNOW,
+           SNOW_LAYER, DARK_WOOD, FLOOR_WOOD, PALE_WOOD, VANILLA_BARS, VANILLA_CHAIN, LIGHT]
 
 
 def ids(entries):

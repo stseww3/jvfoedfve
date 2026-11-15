@@ -36,6 +36,9 @@ RAMPS = {
     "night_glass": ("#141a36", "#1c2548", "#27335f", "#3a4a80", "#5a6ea8"),                     # dark windows holding the sky
     "porcelain": ("#7b7d77", "#a2a49d", "#c6c7c0", "#e2e3dc", "#f5f5ef"),                       # insulators, fuses, dials
     "opal": ("#bfae8c", "#dccba6", "#f0e2c0", "#fbf2d8", "#fffbee"),                            # lit opal glass, frosted windows
+    # provisional (A0, 2026-11-14): the cloud sea's five flat tones, one per blocks.CLOUD block; settled
+    # on the real-game pictures of the cloudsea card
+    "cloud": ("#6d6679", "#8d8491", "#b0a1a8", "#d5c4c1", "#fce6d7"),
 }
 
 # name: (ramp, how it is painted). Names without an entry here are painted "plain" with the defaults.
@@ -62,6 +65,7 @@ _MATS = {
     "night_glass": ("night_glass", dict(kind="plain", noise=0.08, bevel=0, base=1)),
     "porcelain": ("porcelain", dict(kind="plain", noise=0.05, bevel=1, base=3)),
     "opal": ("opal", dict(kind="glow", bevel=0, base=2)),
+    "cloud": ("cloud", dict(kind="flat", bevel=0, base=2)),                       # one flat tone; base picks which
 }
 _CHANGEABLE = {"kind", "noise", "bevel", "base", "alpha"}
 _cache = {}

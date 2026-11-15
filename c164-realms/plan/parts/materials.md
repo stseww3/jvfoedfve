@@ -2,7 +2,7 @@
 
 牵头人：a1（c176）。对应方案 `ART-PLAN.md` 第 6 节（全部）、3.1 色板、5.1、第 10 节验证、第 12 节红线。
 已按 `plan/reviews/R1-first-designs.md` 第 2 节修订（石材重写、色板走公共、面板用色、旧铜第二批、自查用 strays）。
-状态：技术路线 R1 已通过，**石材一节已按要求重写**。本稿是类别参考；逐项像素规则进各卡片，卡片在 `plan/packages/materials/`。
+状态：技术路线 R1 已通过，**石材一节已按要求重写**；底座（`respack-redirect`）已做完，第 2、7 节按做出来的样子改过（2026-11-14）。本稿是类别参考；逐项像素规则进各卡片，卡片在 `plan/packages/materials/`。
 
 版本锁定 26.3（数据包 121，资源包 97，Java 25）。代码放 `build/scenes/obs/materials/`，测试场景 `build/scenes/obs_mat_<包名>/`。
 
@@ -13,7 +13,8 @@
 - **一条主线技术**：被占用的方块绝大多数不能"只换同名贴图"，要**重定向方块状态 + 模型到 `c164:` 新贴图**。原因有二：
   - 铸铁族：非蜡 `oxidized_*` 和它的 `waxed_` 同胞共用同一套 model/贴图，只能靠改**非蜡的 blockstate** 分家（非蜡→铸铁，蜡封→铜绿）。
   - 石材族（R1 指出）：`smooth_sandstone` 是 `cube_all` 指向 `sandstone_top`，根本没有 `smooth_sandstone.png`；而 `sandstone_top` 被 sandstone 顶面、cut/chiseled 两端、全族楼梯台阶顶面共用。换一张图四种石材一起变。所以石材也走重定向。
-- **一个公共工具** `redirect_block()`（R1 批准，单独提交请 c188 优先合并）：从游戏文件读 blockstate+模型，生成 `c164:` 副本并重写**被占用方块**的 blockstate，保留全部状态与旋转，带自查。石材族、铸铁族、16 面板、旧铜、黄铜都用它。
+- **一个公共工具** `artkit.respack.redirect_block()`（R1 批准）：从游戏文件读 blockstate+模型，生成 `c164:` 副本并重写**被占用方块**的 blockstate，保留全部状态与旋转，带自查。石材族、铸铁族、16 面板、旧铜、黄铜都用它。材质包不直接调它，走 `materials/_kit.py` 的 `paint()` 和 `redirect()`。
+- **占位先行**：占用表里每一个重画方块从第一天起就已重定向成占位色（原版图套进该材质的色阶，图名 `ph_` 开头），别的类别不用等材质画完就能出图；真画一族替一族，成品里不许剩 `ph_`。
 - **色板唯一来源** `build/scenes/obs/common/palette.py`（A0 发布）：`mat(name)`、`colour(name,i)`、`strays(pixels)`。我不自建 palette。每张生成的贴图都过 `strays()`，不得有色板外颜色。
 - **占用表唯一来源** `build/scenes/obs/common/blocks.py`（A0 发布）：只用角色名（`B.ASHLAR_FINE`、`B.IRON_RIVETED`、`B.PANELS["dial"]`…），不写原版方块名。
 - 自查用离线渲染（管理员电脑的出图工位，`COMMON.md` 第 3 节）；`place.py`/打包到客户端只有出图工位能跑。云端只写码、提交、跑几秒的小脚本（画贴图、`strays`、平铺预览）。
@@ -38,18 +39,21 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 ### B1. 重定向 + 和 `waxed_` 分家（主线）
 - **已查实**：全部非蜡 `oxidized_*`（copper / cut_copper±stairs±slab / chiseled / grate / door / trapdoor / bars / chain / lightning_rod / bulb / lantern）的 `waxed_` 同胞 blockstate 都引用**同一套** `block/oxidized_*` 模型/贴图。只能改**非蜡的 blockstate**。
 - **已查实**：砂岩族顶面/端面共用 `sandstone_top`（见第 3 节映射表），必须整族重定向。
-- **做法**：`redirect_block(pack, block, tex_map, variants=N, ns="c164")`
-  - 用 `artkit.gameassets.Assets` 读 `blockstates/<block>.json` 及其引用的全部 model（含 parent 链）。
-  - `tex_map`：{vanilla 贴图引用 → c164 贴图基名}，例如 `{"minecraft:block/oxidized_cut_copper":"block/iron_riveted"}`。对每个引用到该贴图的 model，生成 `c164:` 副本（保留 parent 与其它纹理键），把纹理键指到 `c164:` 新图。
-  - `variants=N`：每个 model 出 N 份副本（`…__v0..vN-1`，贴图用 `f"{基名}{v}"`），blockstate 里**每个状态键**的 apply 改成 N 个副本的加权表（楼梯/台阶/墙的所有状态都带变体，不只整块）。
-  - 重写 `blockstates/<block>.json`，逐状态把 `model` 换成 `c164:` 副本，**原样保留** `facing/half/shape/type/axis/lit/powered/hinge/open` 与 `x/y/uvlock/weight`。
-  - **自查**：只写 `blockstates/<block>.json` 和 `c164:` 下的文件；绝不写 vanilla 贴图、vanilla 模型、也不写 `waxed_oxidized_*`/`waxed_weathered_*` 的任何文件（旧铜的 `waxed_exposed_*` 是显式单独调用，见第 6 节）。断言输出文件名集合符合预期。
-- **验**：材质板上把"被占用块"和它该保持原状的同胞（铸铁↔`waxed_oxidized_*` 铜绿、旧铜↔`waxed_weathered` 暗铜）并排；离线出图确认分家、每状态正确、颜色全在色阶内。
-- **档位**：方案第 10 节第二档（状态改指向，没在我们包里试过）。M1 第一时间实测。
+- **做法**（已做完，细节见卡 `respack-redirect`）：`K.redirect(pack_dir, 方块, textures, **kw)` → `artkit.respack.redirect_block`
+  - 读 `blockstates/<方块>.json` 和它引用的全部模型，把继承链**拍平**成不带 `parent` 的独立模型，写到 `assets/c164/models/block/<方块>/`。
+  - `textures`：`{原版贴图引用: 图名 | {面: 图名}}`，例如 `{"minecraft:block/sandstone_top": {"end": "ashlar_fine_top", "side": "ashlar_fine"}}`。按面映射，所以原版同一张图可以按面换成不同的图；漏说一个面直接报错。
+  - 变体：图存成 `<名>0..k-1` 就是 k 个变体，blockstate 里**每个状态**的每个模型都出 k 份（楼梯/台阶/墙/门的所有状态都带变体，不只整块）。
+  - 重写 `blockstates/<方块>.json`，**原样保留**每个状态键、multipart 的 `when`、`x/y/uvlock/weight`。
+  - `emit`（`light_emission`）、`shade=False`（不按朝向打阴影）、`ao=False`（不要角落变暗）、`edit`（映射前改模型，仪表盘用它去掉釉陶面上的旋转）。
+  - **自查**：只写这个方块的状态文件和它自己的模型文件夹；绝不写原版贴图、原版模型，也不写 `waxed_oxidized_*`/`waxed_weathered_*` 和所有“照原样用”的方块的任何文件。类别最后再跑一遍总检查 `K.audit()`。
+- **验**：测试场景 `obs_mat_redirect` 把"被占用块"和它该保持原状的同胞（铸铁↔`waxed_oxidized_*` 铜绿、旧铜↔未上蜡 exposed 铜）并排；离线图已确认分家、每状态正确、颜色全在色阶内（`tools/check.py` 全过）。
+- **档位**：方案第 10 节第二档（状态改指向）。离线渲染已通；真机图等 S1。
+- **边界**：重定向只改摆在世界里的方块；物品栏图标和 `item_display` 里的这个方块还是原版样子（展示实体里要用重画的方块，用 `block_display`）。
 
 ### C. 自发光 `light_emission`（元素级 0–15）
 - **已查实**：原版 `cross_emissive` 系在用，元素级字段；离线渲染器 `raytrace.py` 已支持（`el_emit`）。只让该元素渲染变亮，不发世界光（世界照明由 A2 的隐形 `light` 方块给）。
 - **用在**：亮窗玻璃（块+板各元素）、`IRON_BULB`/`IRON_LANTERN` 发光件、门舷窗（M2 再定整扇低亮 vs 窗后 light）。
+- **亮窗要贴图原色**（A2，群 #14980）：主立面朝东，东西面的面阴影是 0.6，只加发光的话黄玻璃还是暗一截。所以亮窗 = `emit=15` + `shade=False`（26.x 没有 `"shade": false`，写的是 `shade_direction_override: "up"`）+ `ao=False`，明暗变化全画在贴图里。
 - **验**：全黑环境离线出图，发光件自亮、颜色对；与不加字段/备选（窗后常亮片）并排。
 
 ### D. 动画贴图 `.mcmeta`
@@ -69,22 +73,24 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 
 | 角色（占用块+同族） | vanilla 模型用的贴图键 → 我画的 c164 贴图 |
 | --- | --- |
-| `ASHLAR_ROUGH` = sandstone + stairs/slab/wall | 侧 `sandstone`→`ashlar_rough`；顶 `sandstone_top`→`ashlar_rough_top`；底 `sandstone_bottom`→`ashlar_rough_top`；wall 用 `sandstone`→`ashlar_rough` |
-| `ASHLAR_FINE` = smooth_sandstone + stairs/slab | 全面 `sandstone_top`→`ashlar_fine`（统一一张，和原版 smooth 一致；两层通缝图案在竖面读得对，顶面作接缝线可接受） |
+| `ASHLAR_ROUGH` = sandstone + stairs/slab/wall | 侧 `sandstone`→`ashlar_rough`；顶 `sandstone_top`→`ashlar_rough_top`；底 `sandstone_bottom`→`ashlar_rough_top`；wall 侧面 `sandstone`→`ashlar_rough`、上下面→`ashlar_rough_top` |
+| `ASHLAR_FINE` = smooth_sandstone + stairs/slab | `sandstone_top` 按面分：立面→`ashlar_fine`，上下面→`ashlar_fine_top`（踏面和压顶上不许有砖缝，S3 预评第 1 条；原稿“全面统一一张”作废） |
 | `ASHLAR_PANEL` = cut_sandstone + slab | 侧 `cut_sandstone`→`ashlar_panel`；端 `sandstone_top`→`ashlar_fine_top` |
 | `ASHLAR_EMBLEM` = chiseled_sandstone | 侧 `chiseled_sandstone`→`ashlar_emblem`；端 `sandstone_top`→`ashlar_fine_top` |
 
 因为每块各出自己的 `c164:` 模型副本，同一个 vanilla 引用（如 `sandstone_top`）在不同块里可指向不同 c164 图，互不干扰；vanilla `sandstone_top.png` 始终不动。
 
-像素规则（`mat("ashlar")`，色阶 A0–A5；精确到像素）：
-- `ashlar_rough`（粗琢面侧，3 变体，比选要 3 版）：一石一格；**四边各 1px 深缝 A0，拼起来 2px 宽缝**（R1 同意，材质板确认）；主面 base A2，约 12 条 2–3px 凿痕（上沿 A3 亮、下沿 A1 暗）；上/左内缘 +1、下/右内缘 −1。
-- `ashlar_rough_top`：粗石顶/底，弱横向层理，base A2。
-- `ashlar_fine`（细琢面，4 变体）：一格两层各 8px；两层通缝 1px A0（第 7、15 行）；竖缝每层一条、两层错开半格（下层 x=7、上层 x=15），**1px A1**；每层整体 ±1（base A3）。4 变体循环，8×8 平铺竖缝错开不起条纹。
-- `ashlar_fine_top`：细琢面端面（给 panel/emblem 端），平整 base A3、浅接缝。
-- `ashlar_panel`（凹板，2 变体）：居中下沉方板，外框 top/left A4、bottom/right A1，沉底 A2，底行 A0。
-- `ashlar_emblem`（台徽块，2 变体）：台徽浮雕（圆环+子午竖线+右上星）居中，底=细琢面，环/星 A5、阴影 A1。
+像素规则（`mat("ashlar")`，色阶 A0–A5；精确到像素）。**11-14 第一轮图之后按总监的拍板改过**（g2 #215、#231，依据 c219 的三版预审 #228）。下面是现在建成的规则，`ashlar.py` 的 `faults()` 逐条查，不过就不写包；改掉的原规则在每条末尾注明。
+- `ashlar_rough`（粗琢面侧，3 变体）：base A2。**默认（版本 b）是只有通长横槽的粗琢**：第 15 行 A0（槽底），第 14 行 A1（槽口上沿的影），第 0 行 A3（这一层的亮棱）；**没有竖缝**，一块一道横槽。一段基座读成一道道横带，壁柱和转角上是一圈圈的带，遇到洞口断在洞口边。凿痕：一条是一段 A1 暗槽，它上面一行是 A3 亮唇，长 2–3px；固定四行（暗槽在第 3、6、9、12 行），每行每 4px 一个位置，隔行错开 2px，从 x=0 排到 x=15，四周不留素边（素边会把方块的轮廓再画一遍）；石面上只有 A1、A2、A3。三个变体只差每条凿痕在自己位置里靠左靠右和长短，行和位置不变：凿痕在墙上连成行，单块上不成图形。**版本 a（只作对照）**是原规则：一石一格，四边各 1px A0 缝（拼起来 2px），上/左内缘 A3、下/右内缘 A1，凿痕同样四行（12 条，x 2..13）。原规则作废的原因：每块的缝都和上下左右对齐，整面墙是一张方格网，读成贴面砖不是砌体。
+- `ashlar_rough_top`：粗石顶/底，弱横向层理，base A2：A3 的麻点约 12%，A1 约 19%（麻点加第 5、11 行两道断续的层理线）；没有从一边通到另一边的缝。
+- `ashlar_fine`（细琢面，4 变体）：一格两层各 8px，base A3。两层通缝 1px **A1**（第 7、15 行；A0 只留给粗琢面的横槽）。竖缝 **A2**，位置不固定：上层的石头到方块边为止（竖缝在 x=15），其中两个变体在 x=7 再断一次；下层每块只有一条竖缝（四个变体分别在 x=3、11、12、4），所以下层的石头跨两块。石长 6–24px。每块石头上沿亮一阶：上层的石头是 A3 或 A4，下层一律 A3（下层的石头跨块，单给明度会在块边错成一条竖线）。任何两个变体上下、左右相邻，竖缝都不连过一层，石头不在没缝的地方变色（`faults()` 对所有配对查）。原规则（每层一石一格、上下错半格、A0 通缝、A1 竖缝）作废：14 格外读成放大的灰砖墙。
+- `ashlar_fine_top`：细琢面的上下面，也是 panel/emblem 的端面和台徽块的底子。平整，base A3，**没有任何缝**；约 8% 的像素亮一阶（A4）、3% 暗一阶（A2），亮点不超过 10%（多了近看是一片麻点）。原稿写“浅接缝”，不画：踏面、压顶、挑檐底面上不许有缝，而且楼梯转向时贴图不跟着转（uvlock），沿一条边画的缝在朝北的梯段上落在踏步前沿，在朝东的梯段上横在踏面中间。
+- `ashlar_panel`（凹板，**一张图，不设变体**）：居中下沉方板，下沉的部分 10×10px（第 3..12 行、列）。外框 top/left A4、bottom/right A1，框面 A3；沉底 A2，沉底的上壁、左壁 A1（背光），右壁 A4（受光），底行 A0。只留一种内框：两种大小随机上墙，窗下三格会一大一小。
+- `ashlar_emblem`（台徽块，2 变体）：台徽**阴刻**在细琢面的底子上：刻线 A1，刻线右下一像素是受光的 A5 亮唇。图形：1px 圆环（圆心在贴图正中，半径 4.2–4.9px）、子午竖线（x=7，y 3..12）、右上一颗五像素的十字星，**星心 (13,2)**，和环隔开一格（原来星在环的肩上，五个像素里两个和环重合，读成环上的毛刺）。两个变体图形相同（徽不镜像，星总在右上），只差底子的麻点；环里面和图形周围一像素不落麻点。图形由 `ashlar._emblem_figure()` 给出，铺地、模型要和它对齐就读这个函数。原规则是浮雕（环/星 A5、阴影 A1）。
 
-**石材退路**（方案 15 风险）：`ashlar` 卡做 3 版比选，其中一版是"原版砂岩直接用"的对照，M1 给管理员并排挑。
+**石材退路**（方案 15 风险）：`ashlar` 卡做 3 版比选，其中一版是"原版砂岩直接用"的对照，M1 给管理员并排挑。现在三版是：a 粗琢面四边缝（对照）、b 粗琢面通长横槽（默认，`ashlar.DEFAULT`）、c 原版砂岩；a 和 b 的细琢面、凹板、台徽、端面相同。
+
+粗琢面（通长横槽）和细琢面（轻缝）并排要读成同一种石头的两种加工（S3 预评第 2 条）：同一段色阶，基准明度相邻（粗 A2、细 A3，粗的整体暗一阶），交界由腰线盖住；`ashlar` 的样板上要有一段“下粗上细、中间一道腰线”的墙。
 
 线脚（腰线/檐口/柱础柱头）由 A3（main）用本族楼梯/台阶几何承载这些贴图实现；几何不足再加一张 `ashlar_course`，与 A3 对接。
 
@@ -94,7 +100,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 
 全部 `redirect_block`。`mat("iron")` / `iron_dark` / `iron_flat`，色阶 I0–I6。逐项像素规则进 `iron` 卡；要点：
 - `IRON_PLATE`(oxidized_copper，无同族)：平铁板，无铆钉，base I3，轻刷纹，浅 bevel。3 变体。机壳/水箱。
-- `IRON_RIVETED`(oxidized_cut_copper+stairs/slab)：铆接板，边框 I4/I1，铆钉 1px I6 高光+下 1px I1 阴影，固定 8 点（四角+四边中），贴边使相邻块连成行。3 变体（仅刷纹变化、铆钉固定）。变体覆盖楼梯台阶。
+- `IRON_RIVETED`(oxidized_cut_copper+stairs/slab)：铆接板，边框 I4/I1，铆钉 1px I6 高光+下 1px I1 阴影，固定 8 点（四角+四边中），贴边使相邻块连成行。3 变体（仅刷纹变化、铆钉固定）。变体覆盖楼梯台阶。大面积平铺要在 8×8 墙上查：不起贯穿的条纹，明暗够（S3 预评第 3 条）。
 - `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心凸花（小台徽/菱形），I5/I1。2 变体。
 - `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格条 I3、交点 I5，网孔 alpha=0。2 变体。
 - `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，下半舷窗（`brass` 圈 + `glow` 中心，发光 M2 定）；上半气窗。
@@ -110,8 +116,8 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 ## 5. 窗（WINDOW_*/SKYLIGHT，六种）
 
 玻璃无 `waxed_` 问题，但自发光要改模型（做法 C）。窗棂一律在贴图里画（8px 一格窗格，窗棂 1px `colour("iron",1)`，四边无缝，拼成网；3 格宽拱窗横显 6 列）。
-- 亮窗（自发光，加 `light_emission≈10`）：`WINDOW_LIT`（黄，暖亮 `glow`）、`WINDOW_CURTAIN`（橙，上亮下压暗作半帘）、`WINDOW_FROSTED`（白，`opal` 柔光、格影弱）。亮窗卡做 2 版比选。
-- 暗窗（不发光，映天色 `night_glass`）：`WINDOW_DARK`（灰，斜向冷反光）、`WINDOW_BLIND`（黑，近全黑+弱反光）、`SKYLIGHT`（浅灰，偏亮+大铁框格 12px）。
+- 亮窗（自发光：`emit=15`、不打面阴影、不要角落变暗，显示贴图原色；贴图不透明）：`WINDOW_LIT`（黄，暖亮 `glow`）、`WINDOW_CURTAIN`（橙，上亮下压暗作半帘）、`WINDOW_FROSTED`（白，`opal` 柔光、格影弱）。亮窗始终是灯丝琥珀色、磨砂是暖白；亮度和 A2 的墙面亮度对齐；立面上至少两成暗窗、相邻跨不同时亮（点亮哪扇、几档亮度由 sky/lights 的 `window_lit` 给，S3 预评第 4 条、总监 #15316）。亮窗卡做 2 版比选。
+- 暗窗（不发光，映天色 `night_glass`）：`WINDOW_DARK`（灰，斜向冷反光）、`WINDOW_BLIND`（黑，近全黑+弱反光）、`SKYLIGHT`（浅灰，半透明、能看进屋；窗棂和另五种窗是同一套细网，粗铁框不画进贴图——只在整扇天窗的外圈，由屋面围一圈铁件做。评审 #1 后改，原写“偏亮+大铁框格 12px”，A0 11-14 定）。
 - 两种形状：**整块玻璃** `*_stained_glass`（齐平大拱窗幕墙，贴图平铺成窗棂网，无缝）；**玻璃板** `*_stained_glass_pane`（凹窗/小窗/薄剖面，重定向 post/side/side_alt/noside/noside_alt 五模型，面贴图=`*_stained_glass`、边贴图=`*_stained_glass_pane_top`，亮窗同样加 `light_emission`，保留 `force_translucent`）。
 - 模型窗框分工（R1 与 A6）：玻璃贴图只画细窗棂；A6 的模型窗框只做拱头/外框/一道中横档或中竖梃，压在我的窗棂线上，不另起网格。
 
@@ -132,7 +138,8 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 ## 7. 接口与依赖
 
 - 色板 `common/palette.py`（A0）；占用表 `common/blocks.py`（A0）；骨架 `common/skeleton`（c188/common 在写，没出来前用 R1 第 0.3 节的数写成模块顶常量）。
-- 资源包组装：材质部分暴露 `write_pack(pack_dir)`，由总场景 `obs` 调；贴图/模型放 `c164:` 命名空间 materials 子目录，不与别包写同名文件（`tools/check.py` 会查）。
+- 资源包组装（`INTERFACE.md`）：每个材质包是 `materials/<包名>.py`，定义 `BLOCKS`（真画了的方块）和 `pack(pack_dir)`；`materials/__init__.py` 是 S2 的固定样板，自动发现各包。图在 `assets/c164/textures/block/`，模型副本在 `assets/c164/models/block/<方块>/`，方块状态在 `assets/minecraft/blockstates/`；不与别包写同名文件（`tools/check.py` 会查）。`respack_redirect.py`（`ORDER = 99`）最后铺占位、跑总检查。
+- 明文例外（总监 #15512）：云海的五个方块（`B.CLOUD`）由 sky/cloudsea 画，也走 `_kit.paint()`/`_kit.redirect()`；它开工之前是 materials 的占位（平色、不打面阴影）。
 - A2（sky）：亮窗/灯的隐形世界光源摆放与分级；定稿光线（材质板要在定稿光下出图）。
 - A6（props）：门扇/窗框/灯具模型用 `common/palette` 取色，16px 一致；windows 卡与 A6 对窗棂分工。materials↔props 互为交叉看。
 - A3（main）：线脚几何承载石材贴图；门洞留洞与挂点。
@@ -146,7 +153,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 
 | 包 | 内容 | 优先级 | 版本 | 依赖 |
 | --- | --- | --- | --- | --- |
-| `respack-redirect` | `redirect_block` 工具 + 材质 `write_pack` 组装 + `sounds.json` 脚手架 | P1 | 1 | palette/blocks(已就位) |
+| `respack-redirect` | `redirect_block` 工具 + 材质共用工具 `_kit`（画图、重定向、声音、总检查）+ 占位材质 + 对比样板 | P1 | 1 | palette/blocks(已就位) |
 | `ashlar` | 灰白石四种（重定向，逐面贴图，变体覆盖楼梯台阶墙）+ 原版砂岩对照 | P1 | 3（含原版对照） | respack-redirect |
 | `windows` | 亮窗暗窗六种（块+板，窗棂，发光 vs 映天色） | P1 | 亮窗 2 | respack-redirect, C |
 | `iron` | 铸铁十二种（重定向 + 灯件发光） | P2（样板段要用，偏高） | 1 | respack-redirect |
@@ -167,7 +174,7 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 - [x] 查实非蜡↔蜡封共享、砂岩族顶面共享、light_emission、pane/terracotta 模板、脚步声事件
 - [x] 对齐 R1：石材改为重定向（第 3 节重写）；取色走 common；面板用色；旧铜第二批；strays 自查；测试场景改 `obs_mat_*`
 - [x] 交细化稿（本文件）
-- [ ] 切卡并发【立项】；领 `respack-redirect` 开工
-- [ ] `redirect_block` + 材质 `write_pack`（公共工具单独提交请 c188 优先合并）
-- [ ] `ashlar`（3 版）、`windows`（亮窗 2 版）出 M1 材质板
-- [ ] `iron`、`panels`、`brass-oldcopper-small`
+- [x] 切卡并发【立项】；领 `respack-redirect` 开工
+- [x] `redirect_block` + 材质共用工具 + 占位 + 对比样板（公共工具单独提交请 c188 优先合并）
+- [ ] `windows`（c195 在做，亮窗 2 版）、`iron`（c198 在做）、`ashlar`（3 版）出 M1 材质板
+- [ ] `panels`、`brass-oldcopper-small`
