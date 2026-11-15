@@ -175,11 +175,11 @@ LENS_OUT = -0.02                # ... which is where the bed's own slow noise is
 SNOW_ON = True                  # False: no snow at all (the pictures taken with and without it)
 SNOW_BELOW = -7                 # none on the rock just under the terraces: it starts below the rim wall's foot
 SNOW_ABOVE = -24                # ... and none within two blocks of the cloud (CLOUD_TOP): the sea's edge is the cloud's own light line
-SNOW_DRIFT = -0.32              # it lies in drifts: where a slow noise is above this, about a third of the mountain
+SNOW_DRIFT = -0.22              # it lies in drifts: where a slow noise is above this, about a third of the mountain
 SNOW_FRAY = 0.25                # ... with this much of a fine noise on top, so that a drift has no smooth outline
-SNOW_REACH = 0.62               # out from the cliff's foot it covers this much of a shelf's width
+SNOW_REACH = 0.85               # out from the cliff's foot it covers this much of a shelf's width
 SNOW_SWING = 0.9                # ... more here and less there, by a noise of this weight
-SNOW_RUN = 4                    # no edge of it runs straight for more blocks than this (not under 4: see _notches)
+SNOW_RUN = 3                    # no edge of it runs straight for more blocks than this (not under 4: see _notches)
 SNOW_RUN_UNDER = 3              # ... and against the foot of a cliff, where the eye reads a straight line too, this
 SNOW_PASSES = 6                 # how often the straight edges are looked for again after breaking them
 SNOW_PATCH = 12                 # no patch of fewer blocks than this
@@ -609,7 +609,7 @@ def _notches(n, a, b, side, limit=SNOW_RUN):
     the last tooth could be a single cell, which _tidy takes off: the edge would only move back)."""
     out = []
     i = 0
-    limit = max(limit, 4)
+    limit = max(limit, 2)
     while n - i > limit:
         left = n - i
         stay = 3 if left >= 6 and hash3(a, b + i, side, SEED + 64) < 0.5 else 2
