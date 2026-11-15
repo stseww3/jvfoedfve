@@ -179,6 +179,10 @@ def other_code(branch, at):
     if git("fetch", "-q", "origin", branch) is None:
         sys.exit(f"--branch {branch}: cannot be fetched from origin")
     head = git("rev-parse", "FETCH_HEAD")
+    if git("rev-parse", "--is-shallow-repository") == "true":
+        # the test of provenance reads the whole history: a clone cut short would pass anything
+        if git("fetch", "-q", "--unshallow", "origin", branch) is None:
+            sys.exit(f"--branch {branch}: this clone is cut short and its history could not be fetched")
     commit = head
     if at:
         commit = git("rev-parse", "--verify", "--quiet", at + "^{commit}")
@@ -244,7 +248,8 @@ def look_sheets(trip, scene, base, runs, commit, view, clouds):
         out = os.path.join(base, f"{scene}-looks{'-dressed' if dressed else ''}.jpg")
         boardrender.in_columns(columns, names, f"c164 {scene} of {commit}, the game 26.3 on a node, view distance {view}, "
                                f"cloud range {clouds}: each light version at its tick, the windows lit by its table"
-                               + (", the building's own lights on (DRESS, off in the code)" if dressed else ""), out)
+                               + (", the building's own lights on (DRESS, off in the code)" if dressed else ""), out,
+                               size=(960, 540) if len(columns) <= 3 else (640, 360))
         trip.say(f"{scene}: {os.path.relpath(out, PROJECT)}, {len(names)} views under {len(columns)} light versions")
 
 
