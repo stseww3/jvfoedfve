@@ -141,7 +141,12 @@ CLOCK_LIFT = 0.5                                # the regulator clock (props/ins
 # --- light: (level, rank); sky/lights decides where the invisible blocks really go -----------------
 PILOT_LAMPS = (5, 3)
 CLOCK_DIAL = (4, 3)
-
+# the record desk's green-shaded lamp (director, 11-16): the room's one warm pool, and the only light
+# in here besides the eyepiece's red lamp (machines/refractor). It lights the desk, the observing
+# chair and the lower half of the pier, not the dome: the slit's cold light stays the picture's base
+DESK_LAMP = (6, 3)
+LAMP_KIND = "desk_green"                        # props/lamps' green desk lamp, its own level 6
+LAMP_AT = (2.0, 6.5)                            # (x, z) on the desk, at the end away from the logbook
 OPPOSITE = {"north": "south", "south": "north", "east": "west", "west": "east"}
 
 
@@ -465,8 +470,22 @@ def _furniture(c, origin, put):
     if furniture is not None and paper is not None:
         top = FEET + furniture.TOP[DESK[0]]
         n += paper.place(c, "logbook", (LOGBOOK[0], top, LOGBOOK[1]), facing=DESK[2], origin=origin)
+    n += _desk_lamp(c, origin, put)
     n += K.put(c, _models()[PREFIX + "chair"], (CHAIR[0], FEET, CHAIR[1]), yaw=CHAIR_YAW, origin=origin)
     return n
+
+
+def _desk_lamp(c, origin, put):
+    """The green desk lamp on the record desk (director, 11-16): props/lamps' own piece, which brings
+    its own source at level 6. While props/lamps is not in the tree, a green-shaded stand-in that the
+    room's own light offer then lights. Returns the number of display entities."""
+    lamps = _other("props", "lamps")
+    top = FEET + (_other("props", "furniture").TOP[DESK[0]] if _other("props", "furniture") else 1)
+    if lamps is not None:
+        return lamps.place(c, LAMP_KIND, (LAMP_AT[0], top, LAMP_AT[1]), facing="south", origin=origin)
+    put(int(math.floor(LAMP_AT[0])), top - 1, int(math.floor(LAMP_AT[1])), f"{WOOD.block}")
+    put(int(math.floor(LAMP_AT[0])), top, int(math.floor(LAMP_AT[1])), B.PANELS["dial"])
+    return 0
 
 
 def _standin(put, kind, cell, facing):
@@ -493,14 +512,19 @@ def _standin(put, kind, cell, facing):
 
 def lights():
     """[((x, y, z), level, rank, name)] the light sources the room asks for, in scene cells without
-    the origin: each sits right in front of something that is seen to glow."""
+    the origin: each sits right in front of something that is seen to glow. The desk lamp brings its
+    own source (props/lamps), so only its stand-in is listed here."""
     n = niches()
     bx, bz = n["east"][len(n["east"]) // 2]
     kx, kz = n["south"][len(n["south"]) // 2]
     if _other("props", "instruments") is None:
         kz -= 1                                 # the stand-in clock fills the niche: the cell in front of it
-    return [((bx - 1, FEET + 1, bz), *PILOT_LAMPS, "pilot_lamps"),
-            ((kx, FEET + 1, kz), *CLOCK_DIAL, "clock_dial")]
+    out = [((bx - 1, FEET + 1, bz), *PILOT_LAMPS, "pilot_lamps"),
+           ((kx, FEET + 1, kz), *CLOCK_DIAL, "clock_dial")]
+    if _other("props", "lamps") is None:
+        out.append(((int(math.floor(LAMP_AT[0])), FEET + 2, int(math.floor(LAMP_AT[1]))),
+                    *DESK_LAMP, "desk_lamp"))
+    return out
 
 
 def _offer(c, origin, wanted):
