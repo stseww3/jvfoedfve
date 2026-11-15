@@ -13,7 +13,7 @@ What it builds:
   * the roofs that close it: plain decks over the three pavilions (stand-ins: terraces() names
     them for the package that finishes them), slate between gable walls over the wings;
   * the drum and the dome above (_dome.py), as massing, until main/dome.py is in the tree;
-  * a pale wall behind the entrance, a stand-in until the interiors are in.
+  * a pale wall behind the entrance, a stand-in until the star hall has moved in (furnished()).
 
 Every number comes from the skeleton; which column is a pier and which a window comes from
 _plan.py (c178's block-by-block plan). The glass stands one block behind the wall face as whole
@@ -46,7 +46,7 @@ DECK_Y = S.ROOF_FLOOR
 DECK = B.SLATE_SMOOTH.block             # the terraces and the dome-room floor, until they are finished
 ROOF = B.SLATE_TILE
 
-# --- the entrance (A0, 11-14: three versions, chosen on the pictures; B until then) --------------------
+# --- the entrance (A0, 11-14: three versions; 11-15, on the pictures: B, the other two stay behind the switch) ---
 #   A   one doorway in the middle bay, 3 wide, up through the string course
 #   B   an arcade: the three bays of the middle pavilion open as arches from the ground to under
 #       the string course; the middle one leads into the star hall, an iron gate stands in the
@@ -59,12 +59,24 @@ ARCADE = (P.AISLE_BAY - 1, P.AISLE_BAY, P.AISLE_BAY + 1)
 DOOR_TOP = S.STRING - 1                 # 5: the arches of B, the door of C
 # The seat of the station's emblem (A0: one of its kind, 3 x 3, in the frieze of the middle bay): a
 # tablet between the two pilasters of the entrance, in their plane, through frieze and cornice and
-# one row above, so the cornice breaks round it. The emblem itself is not stone: emblem() says where.
+# one row above, so the cornice breaks round it. The tablet is plain dressed stone, all nine blocks
+# (c219, review 7: nine sunk panels read as a waffle from close by and as more frieze from the
+# court, and a small emblem in the middle would show behind the great one). The emblem itself is
+# not stone: emblem() says where props/signs hangs it.
 EMBLEM = True
 EMBLEM_Y = (S.FRIEZE, S.CORNICE + 1)    # 14..16
+# The heads of the great windows and of the entrance's arches (A0, 11-15: shut). True: a stair hung
+# in each top corner and a slab hung between the two, so the opening is three wide, two, shut --
+# the half blocks of the half round the iron frames of props/ironwork draw, radius 1.5, crown half
+# a block under the lintel. False: the two stairs alone, the middle column open to the lintel
+# (three wide, two, one): from afar the head is pointed, and a round frame set into it leaves a
+# slot over its crown. That one is kept for comparison only (the test scene
+# obs_main_facade_nocrown), it is not a candidate any more.
+CROWN = True
 # A wall of dressed stone behind the entrance and the hall's two cross walls up to it (A0: nobody
 # looks through the doorway at the sky behind the building, and the doorway is not a black hole:
-# its light falls on a pale wall). A stand-in: it goes when main/shell and the star hall are in.
+# its light falls on a pale wall). A stand-in for a hall that is fitted out and lit: it is built
+# until the star hall has moved into the shell (furnished() below), and not after that.
 SCREEN = True
 SCREEN_X = S.east_wall_x(P.AISLE_BAY) - 6
 # The stand-in is lit, the same in all three versions (A0, 11-14): it stands for a hall with its
@@ -183,16 +195,17 @@ def _portal(s, op, y):
 
 
 @functools.lru_cache(maxsize=None)
-def _shell(entrance):
+def _shell(entrance, crown):
     body = footprint()
     front = O.ring(body)
     pilasters = [c for c in P.apse_pilasters() if c in front]
     plan = O.Plan(body, _classify(), pilasters=pilasters)
     if entrance == "A":
-        plan.door("east", P.AISLE_BAY, S.GROUND, S.STRING, arch=B.ASHLAR_FINE)
+        plan.door("east", P.AISLE_BAY, S.GROUND, S.STRING, arch=B.ASHLAR_FINE, crown=crown)
     elif entrance == "B":
         for bay in ARCADE:
-            plan.door("east", bay, S.GROUND, DOOR_TOP, arch=B.ASHLAR_ROUGH, leaf=None if bay == P.AISLE_BAY else _gate)
+            plan.door("east", bay, S.GROUND, DOOR_TOP, arch=B.ASHLAR_ROUGH, crown=crown,
+                      leaf=None if bay == P.AISLE_BAY else _gate)
     elif entrance == "C":
         plan.door("east", P.AISLE_BAY, S.GROUND, S.PANEL, leaf=_portal)
     else:
@@ -204,7 +217,7 @@ def _shell(entrance):
 def shell(entrance=None):
     """The plan of the walls: O.Plan with the entrance (the default version, or the one named) and
     the west door cut."""
-    return _shell(entrance or ENTRANCE)
+    return _shell(entrance or ENTRANCE, CROWN)
 
 
 def doors(entrance=None):
@@ -213,13 +226,15 @@ def doors(entrance=None):
 
     cells are the columns of the wall line the doorway goes through (x, z), inward the step into
     the building, y its (bottom, top) rows. arch is True where the two top corners are rounded
-    like a great window's (a stair hung in each, in the wall plane), False for a flat head. kind
-    is "door" where people walk through, "gate" where an iron gate closes the arch. The glass
-    plane, where a leaf hangs, is one step inward of cells; a gate's arch has a stand-in of bars
-    there, which whoever hangs the real gate clears first."""
+    like a great window's (a stair hung in each, in the wall plane), False for a flat head; crown
+    is True where a slab between the two stairs shuts the head half a block under the lintel
+    (CROWN). kind is "door" where people walk through, "gate" where an iron gate closes the arch.
+    The glass plane, where a leaf hangs, is one step inward of cells; a gate's arch has a stand-in
+    of bars there, which whoever hangs the real gate clears first."""
     return [dict(front=op.front, bay=op.bay, cells=list(op.cells), inward=op.inward,
                  y=(op.door[0], DOOR_TOP if op.door[3] is _portal else op.door[1]),
-                 arch=op.door[2] is not None, kind="gate" if op.door[3] is _gate else "door")
+                 arch=op.door[2] is not None, crown=op.door[2] is not None and op.crown,
+                 kind="gate" if op.door[3] is _gate else "door")
             for op in shell(entrance).openings if op.door]
 
 
@@ -261,7 +276,7 @@ def order(site=True):
         O.Storey(S.BASE, "base", wall=rough, pier=rough, window=O.Window(P.BASE_WINDOW, grille=B.IRON_BARS)),
         O.Course(S.STRING, fine),
         O.Storey((S.PANEL, S.WINDOW[1]), "main", wall=fine, pier=fine, capital=True,
-                 window=O.Window(S.WINDOW, head="arch", apron=panel, blind=panel)),
+                 window=O.Window(S.WINDOW, head="round" if CROWN else "arch", apron=panel, blind=panel)),
         O.Frieze(S.FRIEZE, panel, fine, crest=B.ASHLAR_EMBLEM, key=fine, keys=_key),
         O.Cornice(S.CORNICE, fine, gutter=B.OLD_COPPER_CUT),
         parapet,
@@ -322,6 +337,25 @@ def _roofs(canvas, plan, origin):
 
 
 # --- the entrance's own stones ------------------------------------------------------------------------
+def _recesses(canvas, plan, origin):
+    """The great windows of the middle pavilion, from the hall's side. Where the front steps forward
+    beside a bay the lining of the return wall stands behind the bay's last column of glass, two
+    blocks deep (bays 8 and 10, z -5 and 5): from the hall the window was two columns wide and ran
+    into the corner. The lining is cut away there from the floor of the main storey to the window's
+    head, as doorway() cuts it in the rows of an arch. The string course's row stays under it as
+    the floor (the hall's galleries are level with it) and the frieze's row over it as the lintel."""
+    ox, oy, oz = origin
+    for bay in ARCADE:
+        op = plan.bays[("east", bay)]
+        for c in op.cells:
+            n = 2
+            while O.step(c, op.out, -n) in plan.leaf:
+                x, z = O.step(c, op.out, -n)
+                for y in range(S.PANEL, S.WINDOW[1] + 1):
+                    canvas.clear(ox + x, oy + y, oz + z)
+                n += 1
+
+
 def _arcade_keys(canvas, plan, origin):
     """Version B: the key of each arch stands in the string course over its crown, a whole block
     where the course's moulding runs. (A console hung under the course would stand in front of the
@@ -346,18 +380,16 @@ def emblem():
 
 
 def _emblem(canvas, origin):
-    """Set the tablet and break the cornice round it: no moulding and no gutter in front of it, a
-    coping on top."""
+    """Set the tablet, nine blocks of plain dressed stone, and break the cornice round it: no
+    moulding and no gutter in front of it, a coping on top."""
     ox, oy, oz = origin
     seat = emblem()
     for x, y, z in seat["cells"]:
-        canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_PANEL.block)
+        canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_FINE.block)
     for x, z in {(x, z) for x, _, z in seat["cells"]}:
         for y in (S.CORNICE, S.CORNICE + 1):
             canvas.clear(ox + x + 1, oy + y, oz + z)
         canvas.set(ox + x, oy + EMBLEM_Y[1] + 1, oz + z, f"{B.ASHLAR_FINE.slab}[type=bottom]")
-    x, y, z = seat["cells"][-1]
-    canvas.set(ox + x, oy + y, oz + z, B.ASHLAR_EMBLEM)
 
 
 def _screen(canvas, origin):
@@ -385,6 +417,18 @@ def lit():
     return importlib.util.find_spec(__package__.rpartition(".")[0] + ".sky.lights") is not None
 
 
+def furnished():
+    """True when the star hall has moved into the shell (interiors/starhall.MOVED_IN, that
+    package's own switch: main/shell is in the master scene, the hall is fitted out and its lamps
+    are placed). What one sees through the arches is the hall itself then, and the stand-in would
+    stand across it."""
+    try:
+        from ..interiors import starhall
+    except ImportError:
+        return False
+    return bool(getattr(starhall, "MOVED_IN", False))
+
+
 def _screen_lights(canvas, entrance, origin):
     """The light of the stand-in (see DOOR_LIGHT): one source in the open doorway, one before the
     back wall behind it, a dimmer one behind each arch that has a gate."""
@@ -406,10 +450,13 @@ def crowned():
 
 
 # --- the package --------------------------------------------------------------------------------------
-def build(canvas, origin=(0, 0, 0), entrance=None):
+def build(canvas, origin=(0, 0, 0), entrance=None, screen=None):
+    """screen: whether the stand-in behind the entrance is built; left out, SCREEN says, until the
+    star hall has moved in (furnished())."""
     entrance = entrance or ENTRANCE
     plan = shell(entrance)
     O.build(canvas, plan, order(), origin, glass=glass)
+    _recesses(canvas, plan, origin)
     if entrance == "B":
         _arcade_keys(canvas, plan, origin)
     if EMBLEM:
@@ -417,7 +464,7 @@ def build(canvas, origin=(0, 0, 0), entrance=None):
     x, y, z = PIPE_INLET
     canvas.set(origin[0] + x, origin[1] + y, origin[2] + z, B.IRON_GRATE)
     _roofs(canvas, plan, origin)
-    if SCREEN:
+    if (SCREEN and not furnished()) if screen is None else screen:
         _screen(canvas, origin)
         if not lit():
             _screen_lights(canvas, entrance, origin)
@@ -456,7 +503,7 @@ def check(entrance=None):
     out = []
     entrance = entrance or ENTRANCE
     c = Canvas()
-    build(c, entrance=entrance)
+    build(c, entrance=entrance, screen=SCREEN)      # the package on its own: with its stand-in, whoever has moved in
     name = lambda x, y, z: (c.get(x, y, z) or "air").partition("[")[0]
     glassy = {f.block for f in B.LIT_WINDOWS + B.DARK_WINDOWS}
     doorways = {d["bay"] for d in doors(entrance) if d["front"] == "east"}
@@ -482,8 +529,9 @@ def check(entrance=None):
     for z in range(S.Z_NORTH, S.Z_SOUTH + 1):
         x = max(P.east_face(n) for n in (z - 1, z, z + 1) if S.Z_NORTH <= n <= S.Z_SOUTH) + S.DEPTH_CORNICE
         if z in seat:
-            if c.has(x, S.CORNICE, z) or name(x - 1, S.CORNICE, z) not in (B.ASHLAR_PANEL.block, B.ASHLAR_EMBLEM):
-                out.append(f"emblem: the cornice does not break round the tablet at z {z}")
+            tablet = [name(x - 1, y, z) for y in range(EMBLEM_Y[0], EMBLEM_Y[1] + 1)]
+            if c.has(x, S.CORNICE, z) or any(stone != B.ASHLAR_FINE.block for stone in tablet):
+                out.append(f"emblem: the cornice does not break round a plain tablet at z {z}")
         elif name(x, S.CORNICE, z) != B.ASHLAR_FINE.stairs or name(x, S.CORNICE + 1, z) != B.OLD_COPPER_CUT.slab:
             out.append(f"cornice: not two blocks out with its gutter at z {z}")
     # 3. the windows are the ones of c178's plan (a bay that is a doorway has no small window)
@@ -521,6 +569,13 @@ def check(entrance=None):
                     out.append(f"entrance: bay {d['bay']} is open right through the building at z {z}, y {y}")
             if d["kind"] == "gate" and any(stands(n, y, z) for n in range(SCREEN_X + 1, x - 1) for y in range(d["y"][0], DOOR_TOP)):
                 out.append(f"entrance: bay {d['bay']}: something stands behind the gate at z {z}")
+    # 6. the great windows of the middle pavilion are as wide from the hall as from the court:
+    #    nothing stands behind their glass, from the floor of the main storey to the window's head
+    for bay in ARCADE:
+        glass_x = S.east_wall_x(bay) + S.DEPTH_GLASS
+        for z in P.window_rows(bay):
+            if any(c.has(x, y, z) for x in range(SCREEN_X + 1, glass_x) for y in range(S.PANEL, S.WINDOW[1] + 1)):
+                out.append(f"east bay {bay}: something stands behind the glass of the great window at z {z}")
     return out
 
 
@@ -551,5 +606,6 @@ if __name__ == "__main__":
         print()
     found = [f"{e}: {line}" for e in ENTRANCES for line in check(e)]
     print("\n".join(found) if found else
-          "self-check: three depths, cornice and emblem, windows, the window rules, doorways -- all as planned, entrances A, B, C")
+          "self-check: three depths, cornice and emblem, windows, the window rules, doorways, "
+          "the great windows from the hall -- all as planned, entrances A, B, C")
     sys.exit(1 if found else 0)
