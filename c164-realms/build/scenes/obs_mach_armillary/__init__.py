@@ -8,12 +8,10 @@ placed. Version b stands on the same spot, so it has a scene of its own with the
 obs_mach_armillary_b: the two are compared picture by picture. obs_mach_armillary_ah is version a
 with the horizon ring it has lost, on five of these shots, until the director has ruled on it.
 
-What lights the brass is A2's (sky/lights, props/lamps): four ground lamps on armillary.LAMP_CELLS
-and a hidden light in the cell under armillary.LIGHT_CELL. A props line that has them (it then has
-lamps.FEET_GLOW) is asked for that one group of the site's lamps, lamps.site(groups=("feet",)): its
-switch lamps.DRESS is off in the master scene for now. Until the tree has such a props line the
-scene stands the same in their place: the ground projector on each of armillary.lamp_feet(), and a
-light of level GLOW.
+What lights the brass is the props line's (props/lamps, group "feet" of the site's lamps): four
+ground lamps on armillary.LAMP_CELLS and a hidden light in the cell under armillary.LIGHT_CELL.
+props.build() places them with the rest of the site's lamps while lamps.DRESS is on; the scene asks
+for that one group besides, so that the brass is lit the same should the switch go off.
 
     python -m scenes.obs_mach_armillary      writes shots.json
 """
@@ -22,7 +20,6 @@ from artkit.canvas import Canvas
 from scenes.obs import main, materials, props, site, sky
 from scenes.obs.common import skeleton as S
 from scenes.obs.machines import armillary
-from scenes.obs.props import _kit as K
 from scenes.obs.props import lamps
 
 VERSION = "a"
@@ -30,24 +27,15 @@ BIOME = "obs_blue"
 BIOME_MARGIN = 80
 BIOME_MARGIN_Y = 140
 TIME = 14000
-GLOW = 8                # the stand-in's level, A2's figure (c220, 11-15): the brass over it gets 7
 
-# the two fixed cameras: the skeleton's once it has them (director, 11-14), until then the same numbers
-V1 = S.V1 if hasattr(S, "V2") else dict(pos=S.V1["pos"], look_at=(8, 34, 0.5))
-V2 = getattr(S, "V2", dict(pos=(58.5, 1.7, 0.5), look_at=(17, 19, 0.5)))
+V1, V2 = S.V1, S.V2
 
 
 def _feet_lamps(c):
     """The four ground lamps and the light under the sphere. The brass has to stand on the canvas
-    already: the props line gives that light only where the rings are."""
-    if hasattr(lamps, "FEET_GLOW"):
-        # a lamp is placed once: with lamps.DRESS on, props.build() has placed these and this adds nothing
-        lamps.site(c, (0, 0, 0), groups=("feet",))
-        return
-    for foot, yaw in armillary.lamp_feet():
-        lamps.place(c, "uplight", foot, yaw=yaw)
-    x, y, z = armillary.LIGHT_CELL
-    K.offer_lights(c, [((x, y - 1, z), GLOW)], "machines/armillary: stand-in for props/lamps")
+    already: the props line gives that light only where the rings are. A lamp is placed once: what
+    props.build() has placed is not placed again."""
+    lamps.site(c, (0, 0, 0), groups=("feet",))
 
 
 def scene(version):
@@ -99,10 +87,11 @@ def shots():
         shot("plan", (cx, 17.0, cz + 9), (cx, 0.0, cz)),                        # obs_site_court's emblem_top, north up
         shot("oblique", (cx + 5.5, 1.7, cz + 5.5), (cx, cy - 0.5, cz)),         # on foot, from the south-east
         # along the brass meridian, the meridian ring on edge: is it a cross? (reviewer cr2 and
-        # director, 11-15). Near, and from the south and the north edge of the court
+        # director, 11-15). Near, from the south edge of the court, and from the north, stepping out of
+        # the meridian hut's door (the hut stands over the court's north edge)
         shot("meridian", (cx, 1.7, cz + 12), (cx, cy - 0.3, cz)),
         shot("south_edge", (cx, 1.7, 29.5), (cx, cy - 0.3, cz)),
-        shot("north_edge", (cx, 1.7, -28.5), (cx, cy - 0.3, cz)),
+        shot("north_edge", (cx, 1.7, S.MERIDIAN_HUT["door"][1] + 1.5), (cx, cy - 0.3, cz)),
         # the scales and the joints, from the north-east and a little below: there the ecliptic turns
         # the rim with its scale to the camera in both versions (from the south-east it showed none)
         shot("rings", (cx + 3.5, cy - 1.15, cz - 2.7), (cx, cy, cz)),
