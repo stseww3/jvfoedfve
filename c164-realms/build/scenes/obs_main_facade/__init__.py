@@ -58,6 +58,7 @@ def _version(entrance, crown):
 #   C164_TRIAL=openpier  the stand-in left out, two sources before the pier's east face
 #   C164_LIGHTS="x,y,z,level;..."   with C164_TRIAL=open: these sources in the hall
 #   C164_DOOR=<level>    the light line's source in the doorway at this level (0: none)
+#   C164_IRON=1          props/ironwork dresses the building (its DRESS switch on)
 TRIAL = os.environ.get("C164_TRIAL", "")
 TRIAL_LIGHTS = {
     "openlit": [((9, 4, -3), 14), ((9, 4, 3), 14), ((13, 4, 0), 14), ((10, 11, 0), 14), ((13, 10, -3), 14), ((13, 10, 3), 14)],
@@ -72,10 +73,14 @@ def build(entrance=None, crown=None):
     from scenes.obs.main import shell
     from scenes.obs.sky import lights
     c = Canvas()
+    from scenes.obs.props import ironwork
     door = os.environ.get("C164_DOOR")
     was = lights.DOOR_LEVEL
+    dressed = ironwork.DRESS
     if door is not None:
         lights.DOOR_LEVEL = int(door)
+    if os.environ.get("C164_IRON"):                 # TRIAL ONLY: the ironwork on the real building
+        ironwork.DRESS = True
     try:
         with _version(entrance or ENTRANCE, crown):
             with (shell.hall_open() if TRIAL.startswith("open") else contextlib.nullcontext()):
@@ -86,6 +91,7 @@ def build(entrance=None, crown=None):
                     line.build(c, (0, 0, 0))
     finally:
         lights.DOOR_LEVEL = was
+        ironwork.DRESS = dressed
     return c
 
 
