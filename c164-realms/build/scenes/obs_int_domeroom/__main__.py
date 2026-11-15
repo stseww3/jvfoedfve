@@ -33,6 +33,10 @@ read = D.Shell(bare)
 room, leaf = D.room(), D.leaf()
 floor = D.observing_floor()
 head = (D.FEET, D.FEET + 1)                                         # the two rows a person takes up
+doors = D.doorways()
+door_rows = range(S.DOME_ROOM_DOORS["y"][0], S.DOME_ROOM_DOORS["y"][1] + 1)
+STONE = frozenset([*B.ASHLAR_ROUGH.all(), *B.ASHLAR_FINE.all(), *B.ASHLAR_PANEL.all(), B.ASHLAR_EMBLEM])
+COPPER = D.SKIN - frozenset(B.IRON_RIVETED.all())
 failed = []
 
 
@@ -48,22 +52,48 @@ def cells(cols, rows):
     return {(x, y, z) for x, z in cols for y in rows}
 
 
+def kind(x, y, z):
+    """The block of a cell of the dressed box without its state; None for a free cell (a light
+    source counts as free)."""
+    name = c.name(x, y, z)
+    name = None if name is None else name.rpartition(":")[2]
+    return None if name == B.LIGHT else name
+
+
+def walk(start):
+    """The columns of the room one reaches on foot from `start`."""
+    def open_(col):
+        return (col in room and kind(col[0], D.FLOOR_Y, col[1]) is not None
+                and all(kind(col[0], y, col[1]) is None for y in head))
+    seen, todo = {start}, [start]
+    while todo:
+        col = todo.pop()
+        for d in O.SIDES:
+            n = O.step(col, d)
+            if n not in seen and open_(n):
+                seen.add(n)
+                todo.append(n)
+    return seen
+
+
 print()
 print("the room set %d cells (%d of them light) and placed %d display entities"
       % (len(added), len(added) - len(solid), placed))
 check("the room takes nothing away", gone)
 check("every cell lies in a column of the room or of the inner leaf, from the floor up",
       [k for k in solid if (k[0], k[2]) not in room | leaf or k[1] < D.FLOOR_Y])
-check("over the inner leaf only the base ring and what hangs under the skin (rows %d and up)" % D.BASE_RING_Y,
-      [k for k in solid if (k[0], k[2]) in leaf and k[1] < D.BASE_RING_Y])
+check("over the inner leaf only the ring girder and the vault (rows %d and up)" % D.BASE_RING[0],
+      [k for k in solid if (k[0], k[2]) in leaf and k[1] < D.BASE_RING[0]])
 check("row %d is left to the track and the rollers (machines/domegear)" % D.LEDGE_Y,
       [k for k in solid if k[1] == D.LEDGE_Y])
-check("row %d holds the base ring over the inner leaf and nothing in the room's columns" % D.BASE_RING_Y,
-      [k for k in solid if k[1] == D.BASE_RING_Y and (k[0], k[2]) not in leaf])
+check("row %d holds the ring girder over the inner leaf and nothing in the room's columns" % D.BASE_RING[0],
+      [k for k in solid if k[1] == D.BASE_RING[0] and (k[0], k[2]) not in leaf])
 check("the opening round the pier, its curb and its railing are left as main/shell lays them",
       [k for k in solid if (k[0], k[2]) in D.envelope() and k[1] <= D.WALL_TOP])
-check("the two doorways and the cells round them are free to walk through",
-      solid & cells({n for door in D.doorways() for n in O.grow({door})}, head))
+check("the two doorways are free to walk through", solid & cells(doors, door_rows))
+targets = {EXIT} | (floor - D.envelope()) | set(D.GEAR_STAND)
+check("from either door one walks to the stair's exit, over the observing floor's boards and to the hand wheel",
+      [(door, t) for door in doors for t in targets - walk(door)])
 check("the stair's exit, the three cells above it and the cells round it are free",
       solid & (cells({EXIT}, range(D.FEET, D.FEET + 3)) | cells(O.grow({EXIT}), head)))
 check("the observing floor is free to stand on", solid & cells(floor, range(D.FEET, D.FEET + 3)))
@@ -71,27 +101,37 @@ check("the gear's shaft keeps its column of the wall, and its hand wheel the flo
       solid & (cells(D.GEAR_SHAFT, range(D.FEET, D.LEDGE_Y + 1)) | cells(D.GEAR_STAND, head)))
 dome = D._other("main", "dome")
 if (getattr(dome, "VERSION", None), getattr(dome, "SLIT", None)) == ("a", "open"):
-    check("the gear of the slit's leaves keeps its cells at the slit's foot and under the beams beside it",
+    check("the gear of the slit's leaves keeps its cells at the slit's foot and under the girders beside it",
           solid & D.gear_cells())
 else:
     print("skip  the gear of the slit's leaves: its cells are laid out for main/dome's version a with the "
           "slit open, and that is not the dome in this box")
 check("nothing stands in the open slit", [k for k in solid if (k[0], k[2]) in read.gap and k[1] >= D.SKIN_FROM])
-check("the niches keep their windows: nothing between the furniture and the ring beam",
-      [k for k in solid for side in D.niches().values()
-       if (k[0], k[2]) in side and D.FEET + 2 <= k[1] < D.WALL_TOP])
+bare_stone = []
+for col in read.wall:
+    for y in range(D.FEET, D.WALL_TOP):
+        if kind(col[0], y, col[1]) is not None or read.glazed(col, y):
+            continue
+        if col in D.GEAR_SHAFT or (col in doors and y in door_rows):
+            continue
+        if any(O.step(col, d) in leaf and kind(O.step(col, d)[0], y, O.step(col, d)[1]) in STONE for d in O.SIDES):
+            bare_stone.append((col[0], y, col[1]))
+check("no stone shows indoors: the lining stands in front of the drum, but for the doors, the windows' "
+      "reveals and the shaft's column", bare_stone)
+check("every window the room sees keeps its reveal",
+      [(col[0], y, col[1]) for col in read.wall for y in range(D.FEET, D.WALL_TOP)
+       if read.glazed(col, y) and kind(col[0], y, col[1]) is not None])
+green = []
+for col in read.reach - read.gap:
+    if read.soffit[col] is None:
+        continue
+    for y in range(D.LEDGE_Y, read.soffit[col] + 1):
+        if kind(col[0], y, col[1]) is None and any(kind(col[0] + dx, y + dy, col[1] + dz) in COPPER
+                                                   for dx, dy, dz in D.AROUND):
+            green.append((col[0], y, col[1]))
+check("no copper shows indoors: every plate has its board or its iron on the inside", green)
 check("a light source sits in a free cell",
       [cell for cell, _level, _rank, _name in D.lights() if c.name(*cell) not in (None, B.LIGHT)])
-
-ribs = [a for a in D.rib_angles() if not read.in_slit(a)]
-missing = []
-for a in ribs:
-    line = {col for col in read.reach if D._on_meridian(col[0], col[1], a) and D._polar(*col)[0] >= D.COLLAR[1]}
-    if not any((k[0], k[2]) in line and k[1] >= D.SKIN_FROM for k in solid):
-        missing.append(a)
-print("%d ribs under the skin, %d meridians taken by the slit" % (len(ribs) - len(missing), D.RIBS - len(ribs)))
-check("every rib outside the slit has its rib inside", missing)
-check("the slit is open and takes two ribs", [] if read.gap and len(ribs) == D.RIBS - 2 else [len(ribs)])
 
 print()
 print("FAILED: " + "; ".join(failed) if failed else "all checks pass")
