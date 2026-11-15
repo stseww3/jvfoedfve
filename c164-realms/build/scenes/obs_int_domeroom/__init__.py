@@ -81,10 +81,20 @@ def _scope_standin(c):
         c.set(mx, y, mz, B.IRON_PLATE)
 
 
+def _rotunda(c):
+    """The drum and the dome: main/dome in its default version once that package is in the tree
+    (c222), else the massing the master scene has today."""
+    dome = domeroom._other("main", "dome")
+    if dome is not None:
+        dome.build(c)
+    else:
+        _dome.build(c)
+
+
 def shell():
     """The box without the room: what the room is laid into."""
     c = Canvas()
-    _dome.build(c)
+    _rotunda(c)
     _shell_standin(c)
     _doors_standin(c)
     _scope_standin(c)
