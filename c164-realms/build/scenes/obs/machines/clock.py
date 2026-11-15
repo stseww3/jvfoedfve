@@ -25,9 +25,10 @@ in the hall.
 The tower clock (time tower). Four equal dials, one in the middle of each face of the shaft, centre
 at y 27.5, 2.75 blocks across: white enamel, a thin brass rim, a mark at every hour (no numerals:
 at 44 pixels they do not fit) and two heavy dark hands. Nothing glows and no light source goes with
-it (A0, 11-14: a dial may not be brighter than the frosted windows of the front). The warm tone of
-the dial at night is the fixed light its entities are given (DIAL_LIGHT, block light only, set for
-each facing so that the four dials are equally bright). main/tower leaves a dark recess, three
+it (A0, 11-14: a dial may not be brighter than the frosted windows of the front). The white of the
+dial at night is the fixed light its entities are given (DIAL_LIGHT: the light of the sky, which
+the wall round it has as well, and block light on top of it until the blue is out of the enamel;
+set for each facing so that the four dials are alike). main/tower leaves a dark recess, three
 blocks wide, for each dial. tower() reads the canvas: the dial sits DIAL_INSET inside the mouth of
 the recess as it is built, never behind its back, and on a flush wall it is fixed to the surface.
 The dial is smaller than the recess, so a dark ring stays round it. A drum behind the dial carries
@@ -35,10 +36,13 @@ it from the back of the recess; in a flush wall the drum is buried and not seen.
 
 The time ball. A ball 2.5 blocks across, threaded on the mast of the tower (the mast, a display
 model 7 pixels thick, and the cups and the vane above y 51 are main/tower's), with an iron sleeve
-at each pole and a catch plate tight under it, narrower than the ball: the plate travels with the
-ball, so it never stands alone on the mast as a bar (a cross is a red line). Two colours until A0
-picks one on the pictures: old copper (BALL, the default) and dark red. Where no mast stands yet
-(the white model) the ball lies at the foot of the mast.
+at each pole and under the lower pole the collar it is caught by: half as wide as the ball and as
+thick as it is proud, a step in the foot of the ball and never a bar across the mast (a cross is a
+red line). Nothing runs round the waist. The ball is turned about the mast (BALL_TURN) so that
+the game's two lamps light its four sides alike, and its roundness is painted on it: five tones
+round the place the moon lights it from, low in the east. Two colours until A0 picks one on the
+pictures: old copper (BALL, the default) and dark red. Where no mast stands yet (the white model)
+the ball lies at the foot of the mast.
 
 Models; px equals the scale each is shown at, so every texture is 16 pixels to the block:
   mach_clock_master          the case with its movement, coils and beat scale             scale 2
@@ -63,7 +67,8 @@ same. The pose placed here is where a loop starts: the pendulum hangs plumb. Eac
         turns about the model's z axis through its anchor, clockwise as the dial is looked at:
         transformation(name, -degrees) with degrees from hand_angles(hour, minute).
   c164_clock_ball       slides along the mast, y only: BALL_HALF_Y (the pose now), BALL_UP_Y at
-        the top of the mast, BALL_REST_Y after the drop.
+        the top of the mast, BALL_REST_Y after the drop. It keeps its turn about the mast:
+        transformation("ball") has it.
 transformation() gives the whole "transformation" of the entity for a turn, because the anchor of a
 hand or of the pendulum is not the middle of its model and the translation changes with the turn.
 
@@ -125,12 +130,14 @@ _SCAN = 5                        # cells looked through for the wall, from one p
 DIAL_Y = 27.5                    # the centre of every dial
 DIAL_INSET = 0.25                # how far the dial's back plane sits inside the mouth of its recess
 DIAL_DRUM = 0.75                 # the drum behind the dial, in blocks
-# The east and west faces of a display entity are drawn at 0.50 of the light it is given, the north
-# and south faces at 0.74. With these two values the white of the four dials comes out alike: by the
-# light table about 0.32 of full white, between the stone of the walls (0.19) and the orange windows
-# (0.42), far below the frosted windows (0.54). Start low; raise it on the pictures if the dial does
-# not read (cr2). Block light 8 on an east face would be 0.25.
-DIAL_LIGHT = {"east": (0, 11), "west": (0, 11), "south": (0, 7), "north": (0, 7)}
+# (sky, block) for the dial and its hands. The east and west faces of a display entity are drawn at
+# 0.50 of the light it is given, the north and south faces at 0.74, and block light alone is orange:
+# at (0, 11) the enamel came out tan (#634f3d on the pictures of 11-16), a lit parchment and not a
+# white dial. The dial takes the sky's light as the wall round it does and block light on top until
+# the blue is gone: (15, 9) on an east face and (8, 6) on a south face are the same warm white
+# (#645858, 0.36 of full white) to within a hundredth, between the stone of the wall (0.22) and
+# the lit frosted window (0.54). scenes/obs_mach_clocks/measure.py reads all of it off the pictures.
+DIAL_LIGHT = {"east": (15, 9), "west": (15, 9), "south": (8, 6), "north": (8, 6)}
 FAR = 4.0                        # view_range of everything on the tower: seen from the far platforms
 
 # --- the time ball ------------------------------------------------------------------------------
@@ -138,16 +145,35 @@ BALL = "copper"                  # the colour tower() hangs: "copper" or "red"
 BALL_AXIS = (S.mid(*S.CLOCK_SHAFT_X), S.mid(*S.CLOCK_SHAFT_Z))     # (13.5, -29.5): the mast
 MAST_MODEL = "bld_tower_mast"    # the model main/tower's mast is shown with: a rod 7 pixels thick, y 42.6..51
 BALL_R = 20.0                    # pixels: 2.5 blocks across (A0, 11-14)
-BALL_PLATE = 14.0                # the catch plate's radius: under eight tenths of the ball's (cr2)
-# The seam of dark brass round the waist. Off, if in the close pictures it makes a cross with the
-# mast (cr2, 11-15); from the platforms it is under a pixel and not seen either way.
-BALL_SEAM = True
+BALL_SIDES = 16
+# One half of the ball from the waist to the pole, in pixels above the centre: the layers it is
+# stacked of, thick at the waist and thin towards the pole, so that the outline steps by one or two
+# pixels like a circle drawn by hand. The last pixel of the pole is inside the sleeve.
+BALL_LAYERS = (0.0, 4.0, 8.0, 11.0, 13.0, 15.0, 17.0, 19.0)
+BALL_SLEEVE = 6.0                # the radius of the iron sleeve at each pole (the mast's is 3.5)
+BALL_PLATE = 10.0                # the collar under the lower pole: half the ball's radius (cr2: under eight tenths)
 BALL_FOOT = BALL_R + 3.5         # from the ball's centre down to the foot of its lower sleeve
+# The game lights a display entity from two lamps fixed in the world and takes every face for the
+# nearest axis of its model: sides that look east or west are drawn at 0.50, north or south at
+# 0.74. On a round thing that is a hard line from pole to pole, and with anything round the waist
+# a cross (the pictures of 11-16). Turned by this angle about the mast, the four sides of the
+# model look where both lamps light them alike (0.65 each) and the line is gone.
+BALL_TURN = math.degrees(math.atan2(0.7, 0.2)) - 45.0      # 29.05
+# The roundness is painted instead. Where the light comes from, in the scene (east, up, south): the
+# moon, low in the east at this hour, a little to the south so that from the cable station (V1 looks
+# west) the light side is the upper left. BALL_SKY is what the sky adds from above. A face takes
+# its tone from the cosine between the ball's surface there and the light: BALL_ZONES are the four
+# values at which one tone ends and the next begins, from the far side to the highlight.
+BALL_MOON = (0.80, 0.42, 0.42)
+BALL_SKY = 0.12
+BALL_ZONES = (-0.15, 0.25, 0.60, 0.92)
 MAST_FOOT_Y = S.CLOCK_TOP + 1.0                      # 42.0: the tip of the roof, where the mast starts
 BALL_HALF_Y = S.CLOCK_BALL_MAST - 4.5                # 47.5: half-way up, five minutes before the hour
 BALL_UP_Y = S.CLOCK_BALL_MAST - 2.75                 # 49.25: at the top, 1.5 blocks of mast above it
 BALL_REST_Y = MAST_FOOT_Y + BALL_FOOT / 16.0         # 43.46875: dropped, on the foot of the mast
-BALL_LIGHT = (0, 10)
+# (sky, block): block light only, which is warm, so that copper stays copper and red stays red
+# against the blue of the sky. cr2: the ball is to stand lighter than the sky behind it.
+BALL_LIGHT = (0, 12)
 
 # --- materials (palette only) -------------------------------------------------------------------
 WOOD = P.mat("dark_wood")
@@ -166,12 +192,18 @@ COPPER = P.mat("old_copper")
 CREAM = P.mat("cream")
 
 INK = P.colour("iron", 1)
+INK_FLAT = K.flat("iron", 1)                 # the hands of the small dial: one tone, like its marks
 ENAMEL = [P.colour("cream", i) for i in range(len(P.RAMPS["cream"]))]      # dark to light
-# the paint of the ball, three flat tones from its underside to its crown
+# The paint of the ball: the model's name, the ramp, its steps for the five zones from the far side
+# to the highlight, and the steps of the ledges that look up and of those that look down (the game
+# draws these at 1.0 and at 0.4 of the light, the sides at 0.65). Dark red stays in the three dark
+# steps of its ramp: the fourth is the pink of a lamp.
 BALL_TONES = {
-    "copper": ("ball", [K.flat("old_copper", i) for i in (1, 2, 3)]),
-    "red": ("ball_red", [K.flat("signal", i) for i in (0, 1, 1)]),
+    "copper": ("ball", ("old_copper", (0, 1, 2, 3, 4), 1, 3)),
+    "red": ("ball_red", ("signal", (0, 0, 1, 1, 2), 1, 2)),
 }
+# what a piece is turned by where it stands, before any turn of its own
+_STANDING = {name: (("y", BALL_TURN),) for name, _paint in BALL_TONES.values()}
 
 SCALE = {}                       # model name -> the scale it is shown at (filled by _models())
 
@@ -291,21 +323,25 @@ def _master():
     box((-6, 12, 8.25), (6, 13, 9.25), BRASS_LINE, skip="we")
     box((-6, 35, 8.25), (6, 36, 9.25), BRASS_LINE, skip="we")
     box((7, 23, 9), (9, 25, 9.75), BRASS, skip="n")
-    glass = Sprite("clock_glass", _rows(12, 22, {"a": [(8, 7), (7, 8), (6, 9), (5, 10), (4, 11)],
-                                                 "b": [(9, 10), (8, 11), (7, 12)]}),
-                   {"a": P.RAMPS["night_glass"][4], "b": P.RAMPS["night_glass"][3]})
-    box((-6, 13, 8.4), (6, 35, 8.5), WOOD, skip="nweud", faces={"s": glass})    # a few glints; the rest is clear
+    # The glass of the door is clear and nothing is drawn on it: a glint has to be lighter than
+    # what is behind it, and behind it is brass (the dark ones of the first draft read as dirt).
 
     # inside, from the bottom: the beat scale, the coils and their yoke, the movement
     scale = Sprite("clock_beat_scale", ["#.#.##.#.#", "....##...."], {"#": P.RAMPS["iron"][1]}, back=CREAM)
     box((-5, 13, 2), (5, 15, 2.5), CREAM, skip="n", faces={"s": scale})
+    # a coil is wound wire: rings of two tones between two iron cheeks (the upper cheek is the yoke)
+    wire = Sprite("clock_coil", ["aa", "bb", "aa", "bb"], {"a": P.RAMPS["old_copper"][3], "b": P.RAMPS["old_copper"][1]},
+                  back=COPPER)
     for x in (-4.5, 4.5):
-        tube("y", (x, 4.0), 24, 28, 1.5, COPPER, sides=8)
-    box((-6, 28, 2.5), (6, 29, 5.5), IRON_DARK, grain="x")
+        tube("y", (x, 4.0), 24, 28, 2.0, wire, sides=8, cap=K.flat("iron", 1))
+        tube("y", (x, 4.0), 23, 24, 2.5, IRON_DARK, sides=8)
+    box((-6.5, 28, 1.5), (6.5, 29, 6.5), IRON_DARK, grain="x")
     box((-5, 30, 2), (5, 36, 3), BRASS_DARK, skip="n", grain="x")
-    tube("z", (-1.5, 32.5), 3, 4, 2.5, BRASS_LIGHT, sides=12)
-    tube("z", (2.5, 33.5), 3, 4.5, 1.5, BRASS_BRIGHT, sides=8)
-    box((-2, 32, 4), (-1, 33, 4.5), IRON_DARK)
+    # the great wheel: a light rim round a darker web, the arbor in the middle; the small wheel beside it
+    tube("z", (-1.5, 33.0), 3, 3.5, 2.0, BRASS, sides=12)
+    m.ring("z", (-0.75, 16.5, 1.875), 1.25, 0.5, 0.75, BRASS_BRIGHT, sides=12)
+    tube("z", (2.5, 33.5), 3, 4.5, 1.5, BRASS_LIGHT, sides=8)
+    box((-2, 32.5, 3.5), (-1, 33.5, 4.5), IRON_DARK)
     box((2, 33, 4.5), (3, 34, 5), IRON_DARK)
 
     # the hood: neck, the panel the dial hangs on, the cornice
@@ -328,11 +364,14 @@ def _master_hand(kind):
     heavy for its dial as the tower's hands, so that the clock still reads from the front door."""
     m = M.Model(PREFIX + "master_hand_" + kind, px=1.0)
     if kind == "h":
-        m.box((-1.5, -1.0, 0.75), (1.5, 4.0, 1.25), IRON_DARK, grain="y")
-        m.box((-0.5, 4.0, 0.75), (0.5, 5.0, 1.25), IRON_DARK, skip="d")
+        # a spear: three wide at the boss, two, and a point of one
+        m.box((-1.5, -1.0, 0.75), (1.5, 2.5, 1.25), INK_FLAT)
+        m.box((-1.0, 2.5, 0.75), (1.0, 4.0, 1.25), INK_FLAT, skip="d")
+        m.box((-0.5, 4.0, 0.75), (0.5, 5.5, 1.25), INK_FLAT, skip="d")
     else:
-        m.box((-1.0, -1.5, 1.5), (1.0, 6.5, 2.0), IRON_DARK, grain="y")
-        m.box((-0.5, 6.5, 1.5), (0.5, 7.5, 2.0), IRON_DARK, skip="d")
+        # two wide as far as the hour hand reaches, one from there to the marks
+        m.box((-1.0, -1.5, 1.5), (1.0, 4.5, 2.0), INK_FLAT)
+        m.box((-0.5, 4.5, 1.5), (0.5, 7.5, 2.0), INK_FLAT, skip="d")
         m.tube("z", (0.0, 0.0), 1.5, 2.5, 1.25, BRASS_LIGHT, sides=8)
     return m
 
@@ -385,22 +424,41 @@ def _hand(kind):
 
 
 # --- the time ball's models ---------------------------------------------------------------------
-def _ball(name, tones):
-    """The ball about its anchor: thin layers at the poles and thick ones at the waist, so that the
-    outline steps like a drawn circle, painted in three flat tones from the underside to the crown;
-    a seam of dark brass round the waist; an iron sleeve at each pole where the mast goes through;
-    the catch plate tight under the ball, between it and the lower sleeve."""
-    low, mid, high = tones
+def _ball_zone(normal):
+    """Which of the five tones the ball has where its surface looks along `normal` (in the scene)."""
+    size = math.sqrt(sum(v * v for v in BALL_MOON))
+    light = sum(n * v for n, v in zip(normal, BALL_MOON)) / size + BALL_SKY * normal[1]
+    return sum(1 for edge in BALL_ZONES if light >= edge)
+
+
+def _ball(name, paint):
+    """The ball about its anchor. Each layer is a prism of BALL_SIDES sides, half a side off the
+    model's axes so that no side is in doubt about the axis it is lit by. Every side is one flat
+    tone, picked by where that piece of the ball looks once the entity is turned BALL_TURN; so the
+    tones run round the light in rings and cut across the layers, which is what makes a ball of a
+    stack. An iron sleeve at each pole where the mast goes through; the collar under the lower one."""
+    ramp, zones, up, down = paint
     m = M.Model(PREFIX + name, px=1.0)
-    for t0, t1, layers, mat in ((-1.0, -0.8, 2, low), (-0.8, -0.4, 2, low), (-0.4, 0.4, 4, mid),
-                                (0.4, 0.8, 2, high), (0.8, 1.0, 2, high)):
-        m.ball((0.0, 0.0, 0.0), BALL_R, mat, sides=16, layers=layers, part=(t0, t1),
-               faces={"n": mat, "s": mat, "u": mat, "d": mat})
-    if BALL_SEAM:
-        m.tube("y", (0.0, 0.0), -1.0, 1.0, BALL_R + 0.4, BRASS_DARK, sides=16)
-    m.tube("y", (0.0, 0.0), BALL_R - 1.5, BALL_R + 2.5, 6.0, IRON_DARK, sides=12)
-    m.tube("y", (0.0, 0.0), -BALL_R - 1.5, -BALL_R, BALL_PLATE, IRON_DARK, sides=16)
-    m.tube("y", (0.0, 0.0), -BALL_FOOT, -BALL_R - 1.5, 6.0, IRON_DARK, sides=12)
+    half = math.tan(math.pi / BALL_SIDES)
+    for sign in (1.0, -1.0):
+        ledge = "u" if sign > 0 else "d"
+        for y0, y1 in zip(BALL_LAYERS, BALL_LAYERS[1:]):
+            mid = sign * (y0 + y1) / 2.0
+            r = math.sqrt(BALL_R * BALL_R - mid * mid)
+            for side in range(BALL_SIDES // 2):
+                turn = 360.0 * (side + 0.5) / BALL_SIDES
+                faces = {ledge: K.flat(ramp, up if sign > 0 else down)}
+                for letter, at in (("s", turn), ("n", turn + 180.0)):
+                    w = math.radians(at + BALL_TURN)
+                    normal = (r * math.sin(w) / BALL_R, mid / BALL_R, r * math.cos(w) / BALL_R)
+                    faces[letter] = K.flat(ramp, zones[_ball_zone(normal)])
+                m.box((-r * half, min(sign * y0, sign * y1), -r), (r * half, max(sign * y0, sign * y1), r),
+                      faces["s"], rot=("y", turn, (0.0, 0.0, 0.0)), skip="ew" + ("d" if sign > 0 else "u"),
+                      faces=faces, seed=1)
+    top = BALL_LAYERS[-1]
+    m.tube("y", (0.0, 0.0), top - 0.5, BALL_R + 2.5, BALL_SLEEVE, IRON_DARK, sides=12)
+    m.tube("y", (0.0, 0.0), -top - 2.0, -top, BALL_PLATE, IRON_DARK, sides=16)
+    m.tube("y", (0.0, 0.0), -BALL_FOOT, -top - 2.0, BALL_SLEEVE, IRON_DARK, sides=12)
     return m
 
 
@@ -410,7 +468,7 @@ def _models():
     out = {}
     made = [(_master(), 2.0), (_master_dial_model(), 1.0), (_master_hand("h"), 1.0), (_master_hand("m"), 1.0),
             (_pendulum(), 1.0), (_face(), 2.0), (_hand("h"), 1.0), (_hand("m"), 1.0)]
-    made += [(_ball(name, tones), 1.0) for name, tones in BALL_TONES.values()]
+    made += [(_ball(name, paint), 1.0) for name, paint in BALL_TONES.values()]
     for model, scale in made:
         out[model.name] = model
         SCALE[model.name] = scale
@@ -426,7 +484,8 @@ def transformation(name, turn=0.0):
     "master_hand_h", "pendulum", ...) turned `turn` degrees about its model's z axis: positive is
     anticlockwise as the dial is looked at, so a hand at `a` degrees past twelve is turn = -a."""
     model = _models()[PREFIX + name]
-    return M.display(model, scale=SCALE[model.name], turns=(("z", turn),))["transformation"]
+    turns = _STANDING.get(name, ()) + (("z", turn),)
+    return M.display(model, scale=SCALE[model.name], turns=turns)["transformation"]
 
 
 # --- placing ------------------------------------------------------------------------------------
@@ -550,8 +609,8 @@ def mast_stands(canvas, origin=(0, 0, 0)):
 
 def ball(canvas, pos, colour=None, origin=(0, 0, 0)):
     """One time ball with its centre at pos; colour is "copper" or "red" (BALL when left out)."""
-    name, _tones = BALL_TONES[colour or BALL]
-    return _put(canvas, name, pos, origin, tag=TAG_BALL, brightness=BALL_LIGHT, view=FAR)
+    name, _paint = BALL_TONES[colour or BALL]
+    return _put(canvas, name, pos, origin, tag=TAG_BALL, brightness=BALL_LIGHT, view=FAR, turns=_STANDING[name])
 
 
 def tower(canvas, origin=(0, 0, 0), time=None, sides=SIDES, colour=None):
