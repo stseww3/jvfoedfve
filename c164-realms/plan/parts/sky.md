@@ -93,7 +93,7 @@
 - **materials**：云的 5 张平色贴图（无面阴影）；亮窗见上面第 7 条。
 - **main**：玻璃面后第一格留空；亮暗窗用 `window_lit()`。**props**：路灯灯头高 4 到 5 格；要一个洗墙用的小地灯；摆灯时调 `suggest()`。**interiors**：同一个工具、同一张表。**site**：给出山体在 y −26 的轮廓；落日平台朝西不要挡。
 - **别的包在读的天空的数**（改名字、改数以前先在群里告诉读的人）：
-  - 彗头的仰角 = 90 − `mood.MOON_ANGLE` − `comet.HEAD_BELOW`，现在是 41 度，正西。`props/instruments` 落日平台那架望远镜（c199 #38608）照这个数抬镜筒。
+  - 彗头的仰角 = 90 − `mood.MOON_ANGLE` − `comet.HEAD_BELOW`，现在是 41 度，正西。读它的有两处：`props/instruments` 落日平台那架望远镜（c199 #38608）照这个数抬镜筒；`tools/check.py` 的 `_comet_head()`（到达视角的 `sight` 一项）。
 
 ## 8. 卡片（`plan/packages/sky/`）
 
