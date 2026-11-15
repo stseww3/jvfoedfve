@@ -26,7 +26,10 @@ stand at S.LOWER_GROUND; the paving course is S.LOWER_PAVING_Y.
           lamps are the props line's to place; here each only has its pad of polished tuff.
   edge    North, east and south the platform ends over the mountain. The edge is finished as every
           terrace edge is (site/_kit.rail): kerb, piers, bars. On the east edge the piers stand on
-          the pilaster lines. The cable station closes its own stretch of the east edge.
+          the pilaster lines. The cable station closes its own stretch of the east edge. The power
+          house's south wall stands in the row next to the south edge and leaves no ground to rail
+          off: under it the kerb runs on alone, and the railing ends on the cell past either
+          corner of the house, where its last bar is let into the plinth of the corner pier.
   wall    Under the kerb a slate wall goes down the face of the mountain. It only fills air: it
           shows where the rock (site/terrain) falls away from the platform and is lost in it
           elsewhere.
@@ -45,6 +48,7 @@ X0, Z0, X1, Z1 = S.LOWER_PLATFORM       # x 61..91, z -42..43
 PY = S.LOWER_PAVING_Y                   # -7
 FEET = S.LOWER_GROUND                   # -6
 CX0, CZ0, CX1, CZ1 = S.CABLE_STATION    # x 75..91, z -40..-26
+HX0, HZ0, HX1, HZ1 = S.POWER_HOUSE["box"]       # x 67..89, z 20..42
 
 FIELD = K.EDGE                          # slate setts
 BAND = K.STRIP                          # polished tuff
@@ -68,6 +72,12 @@ _LINK_LAMP_X = (LINK_X[0] - 2, LINK_X[1] + 2)                   # 80 and 86: a c
 LAMP_CELLS = ([(x, z) for x in _GATE_X for z in COURT_Z]
               + [(x, COURT_Z[0] - LAMP_STEP) for x in _LINK_LAMP_X])
 LAMP_POINTS = [(x + 0.5, FEET, z + 0.5) for x, z in LAMP_CELLS]     # the middle of a lamp's foot, on the paving
+
+# --- the edge -------------------------------------------------------------------------------------
+# The cells of the south edge that get no railing: the power house's wall stands against them (c228
+# #35515). The cells past its two corners (HX0 and HX1) keep a bar, which joins the corner pier's
+# plinth (site/powerhouse: a whole block of polished tuff at FEET in (HX0, HZ1) and (HX1, HZ1)).
+BARE = [(x, Z1) for x in range(HX0 + 1, HX1)] if HZ1 == Z1 - 1 else []
 
 
 def _in(x, z, box):
@@ -103,12 +113,21 @@ def _rim():
     return north + east + south
 
 
+def _south_piers():
+    """The x of the piers on the south edge: spaced like the north edge's where the railing runs from
+    corner to corner. Where the power house parts it in two, each run is spaced from its corner
+    pier to the cell where it meets the house, and that cell keeps its bar."""
+    if not BARE:
+        return K.spaced([X0, X1])
+    return K.spaced([X0, HX0])[:-1] + K.spaced([HX1, X1])[1:]
+
+
 def _piers():
-    """North and south the piers are spaced evenly from corner to corner; east they stand on the
-    pilaster lines, and the last line gives way to the corner pier (no two closer than K.BEAT)."""
-    xs = K.spaced([X0, X1])
+    """North the piers are spaced evenly from corner to corner; east they stand on the pilaster
+    lines, and the last line gives way to the corner pier (no two closer than K.BEAT)."""
     zs = [z for z in K.beat(Z0, Z1) if Z1 - z >= K.BEAT] + [Z1]
-    return {(x, z) for x in xs for z in (Z0, Z1)} | {(X1, z) for z in zs}
+    return ({(x, Z0) for x in K.spaced([X0, X1])} | {(x, Z1) for x in _south_piers()}
+            | {(X1, z) for z in zs})
 
 
 def _outer_wall(c, o):
@@ -124,5 +143,8 @@ def build(canvas, origin=(0, 0, 0)):
         for z in range(Z0, Z1 + 1):
             c.set(o[0] + x, o[1] + PY, o[2] + z, _stone(x, z))
     _outer_wall(c, o)
-    K.rail(c, o, [p for p in _rim() if not _in(p[0], p[1], S.CABLE_STATION)], _piers(), y=FEET, kerb=True)
+    railed = [p for p in _rim() if p not in BARE and not _in(p[0], p[1], S.CABLE_STATION)]
+    K.rail(c, o, railed, _piers(), y=FEET, kerb=True)
+    for x, z in BARE:
+        c.set(o[0] + x, o[1] + PY, o[2] + z, K.KERB)
     return 0
