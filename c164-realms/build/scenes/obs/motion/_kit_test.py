@@ -180,7 +180,7 @@ def test_write():
     c.add_entity(6.5, 64.0, 0.5, _display("mot_lamp"))
     MK.blink(c, "mot_lamp_dark", *MK.BLINK)
     MK.sound(c, (3.5, 65.0, 0.5), "minecraft:block.note_block.hat", MK.PENDULUM, at=(10, 30), volume=0.3)
-    MK.puff(c, (9.0, 70.0, 0.0), "campfire_signal_smoke", 10, count=0, spread=(0.0, 0.07, 0.0), speed=1.0, far=True)
+    MK.puff(c, (9.0, 70.0, 0.0), "campfire_signal_smoke", 10, count=0, spread=MK.downwind(), speed=0.07, far=True)
     assert MK.registered(c) == (3, 2)
     assert "m.mot_wheel" in c.entities[0][3]["Tags"]
     status, summary, details = MK.check(c)
@@ -211,7 +211,7 @@ def test_write():
         assert first[0].startswith("execute unless score #run c164m matches ") and first[0].endswith("t-motion/halt")
         assert first[1] == "schedule function c164art:t-motion/c10/0 10t replace"
         assert first[2] == "scoreboard players set #t c164m 1"
-        assert first[3] == "particle minecraft:campfire_signal_smoke 19.0 134.0 -3.0 0.0 0.07 0.0 1.0 0 force"
+        assert first[3] == "particle minecraft:campfire_signal_smoke 19.0 134.0 -3.0 0.0 1.0 0.1763 0.07 0 force"
         assert any("x=10.5,y=128.0,z=-2.5,distance=..0.05,tag=m.mot_wheel,limit=1]" in ln for ln in lines("c48/0"))
         assert any(ln.startswith("playsound minecraft:block.note_block.hat block @a[x=13.5,y=129.0,z=-2.5,"
                                  "distance=..16.0] 13.5 129.0 -2.5 0.3 1.0") for ln in lines("c40/2"))
@@ -223,6 +223,14 @@ def test_write():
         assert not os.path.exists(os.path.join(tmp, "data", "minecraft", "tags", "function", "load.json"))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_downwind():
+    """The wind blows south: a puff that rises leans towards +z, ten degrees off the upright."""
+    x, y, z = MK.downwind()
+    assert x == 0.0 and y == 1.0 and abs(math.degrees(math.atan2(z, y)) - MK.WIND_LEAN) < 1e-9
+    assert _close(MK.downwind(45.0, 2.0), (0.0, 2.0, 2.0))
+    assert MK.downwind(0.0) == (0.0, 1.0, 0.0)
 
 
 def test_same_spot():

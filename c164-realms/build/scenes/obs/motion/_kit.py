@@ -68,6 +68,13 @@ BLINK = (30, 30)                # a lamp that blinks: ticks lit, ticks dark (no 
 FLAG_SWAY = 120                 # a flag there and back
 ANEMOMETER_REV = 24             # the wind cups
 
+# ---- the wind -----------------------------------------------------------------------------------
+# One wind for the whole place, from the north (the director, group message 39156): vanes point
+# their tails south, flags fly south, smoke and steam lean south. The skeleton is to get a constant
+# for where the wind comes from; WIND_TO will read it once it has a name.
+WIND_TO = (0.0, 0.0, 1.0)       # the way the wind blows, level and of length 1: south
+WIND_LEAN = 10.0                # degrees a puff that rises leans with it
+
 # ---- limits -------------------------------------------------------------------------------------
 WOBBLE = 1.0 / 64.0             # blocks a model's middle may stray from its arc: a quarter pixel
 WOBBLE_MOST = 1.0 / 32.0        # what a fast part is let off with when it cannot keep to WOBBLE
@@ -573,12 +580,22 @@ def sound(canvas, pos, event, cycle, at=(0,), *, volume=1.0, pitch=1.0, reach=16
     return 0
 
 
+def downwind(lean=WIND_LEAN, rise=1.0):
+    """The way a puff goes that rises and leans with the wind, `lean` degrees off the upright: the
+    spread= of a puff of count 0, whose speed= is then how fast it rises (blocks a tick)."""
+    if not 0.0 <= lean < 90.0:
+        raise ValueError(f"a lean of {lean} degrees")
+    over = math.tan(math.radians(lean)) * rise
+    return (WIND_TO[0] * over, float(rise), WIND_TO[2] * over)
+
+
 def puff(canvas, pos, particle, cycle, at=(0,), *, count=1, spread=(0.0, 0.0, 0.0), speed=0.0, far=False,
          origin=(0, 0, 0), phase=0):
     """Particles at `pos` (scene coordinates, plus origin) on the ticks `at` of every `cycle` ticks.
 
     count, spread, speed   as the game's particle command takes them. count 0 sends one particle
-             with the velocity spread * speed: a puff that rises.
+             with the velocity spread * speed: a puff that rises, and with spread=downwind() one
+             that leans with the wind as it does.
     far      True: seen from afar too (the game's "force"), for the chimney's smoke
     """
     cycle = int(cycle)
