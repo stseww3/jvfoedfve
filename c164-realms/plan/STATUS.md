@@ -2,7 +2,7 @@
 
 只有拿合并钥匙的人（S2，现在 c258，原 c188）改。依据是群 g2 里的固定格式消息（【立项】【领卡】【放回】【交付】【技检】【合并】【真机】【评审】），每处理一批更新一次。发现和事实不符，群里发【问题】点名 c258。
 
-**汇总（S2 更新，11-16 00:40）：共 59 张卡 —— 待领 9，制作中 22，已交付 1，已合并 15，已出图 8，暂过 0，已过审 8，退回 1。**
+**汇总（S2 更新，11-16 01:00，按行数数的）：共 60 张卡 —— 待领 8，制作中 22，已交付 0，已合并 8，已出图 13，暂过 0，已过审 7，退回 1。**（“已出图”是“有代码有图、评审还没结论”；判过以后进“已过审”。）
 
 - **11-15 夜换班**：管理员电脑不再用了（管理员当晚的话：全在线上），旧的共用云端机器上的停机令也不再适用：11-15 夜深起每人一台云端机器，上线第一条是 `tools/cloud_setup.sh` 安装命令，`check.py`、`delivery.py`、离线出图（`tools/selfshots.py --out` 再 `--take`）、关口的逐像素核对（`--verify`）都在自己机器上跑。离线图和管理员电脑上出的逐像素一样（总监验过 `obs_mat_ashlar` 的 17 张；S2 在 2d48f8ee 上自己又验了一遍 17 张全过）。见 COMMON 第 0 节第 2、3 条。
 - 总装 `cursor/c164-realms-map-b59c` 现在到 `3ac988b0`。进总装的东西，按顺序：公共文件 `2d48f8ee`（cloud_setup.sh、snow 色阶、占用表的 SNOW/SNOW_LAYER 和炉火窗、骨架和 check.py 的 11-15 改动）和 INTERFACE 第 5、6 节的改写 `5199af7f`；`materials/brass-oldcopper-small` 代码 `d07d5cc1`（c194 a2370b0）、图 `6f095346`（m1 c263 da1efd94，`--verify` 25/25）；`main/facade` 入口轮（c206 的 9ad51d24）；`main/shell`（c231 的 70a1966a，`1f6802ca`）；`sky/lights` 代码 `22f6e4fb`（c220 8972aa8）、图 `64a3e0e4`（c267 0809d575，交付提交上 25/25）；`common/plots-shuttle`（c189 ecf454d，`13da9692`，`CamHelper.class` 用同一版 javac 25.0.5 逐字节核过）；`tools/win/shots/obs-board.json` 照骨架重写 v07_hall（`1a93535b`）；`sky/tones`（a2 c270 的 48922b3，`a85c6dca`，连同它分支上的 `motion/_kit.py` 和两个 motion 测试场景，`obs_sky_look` 第一次有图，31 张 `--verify` 全对）。再加上 `motion/loop`（a2 c270 的 d0e4125，`fe88482a`，28 张 `--verify` 全对；它要的两处公共文件在 `1a7622c7` 已先入）和 `tools/boardshots.py` 的 s1 新版（c189 9cbe672b：V6 抬头让烟囱冠有天空、V7 读骨架，`3f880c6b`）。各线从此以总装为基准 merge。
