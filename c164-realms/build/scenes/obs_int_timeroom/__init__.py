@@ -30,4 +30,6 @@ def build():
 
 
 def write_pack(pack_dir):
-    return materials.pack(pack_dir)
+    # the sky's pack too: the scene stands in the map's hour, and through its windows the game's own
+    # sun would be a white and yellow square on the horizon
+    return list(materials.pack(pack_dir) or []) + list(sky.pack(pack_dir) or [])
