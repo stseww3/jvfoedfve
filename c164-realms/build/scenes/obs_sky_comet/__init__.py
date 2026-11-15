@@ -281,12 +281,53 @@ def _west(elevation):
     return np.stack([-np.cos(e), np.sin(e), np.zeros_like(e)], axis=-1)
 
 
+# the four half columns of a block as (x, z), 0 the west or north half; where a stair's high side is
+_COLUMNS = ((0, 0), (0, 1), (1, 0), (1, 1))
+_SIDE = {"north": (None, 0), "south": (None, 1), "west": (0, None), "east": (1, None)}
+_LEFT = {"north": "west", "east": "north", "south": "east", "west": "south"}
+_RIGHT = {"north": "east", "east": "south", "south": "west", "west": "north"}
+
+
+def _on(side, x, z):
+    hx, hz = _SIDE[side]
+    return (hx is None or x == hx) and (hz is None or z == hz)
+
+
+def _halves(state):
+    """Which of a block's eight half cells it fills, as (x, y, z) with 0 the west, lower or north
+    half. Slabs and stairs by their states: a real roof is rounded with them, and counted as whole
+    cells the real great dome's shoulder read 36.9 degrees from V2 instead of 36.7. Anything else
+    counts as its whole cell, whatever its shape."""
+    name, _, rest = state.partition("[")
+    states = dict(pair.split("=") for pair in rest.rstrip("]").split(",") if "=" in pair)
+    if name.endswith("_slab"):
+        layers = {"bottom": (0,), "top": (1,)}.get(states.get("type", "bottom"), (0, 1))
+        return [(x, y, z) for x, z in _COLUMNS for y in layers]
+    if name.endswith("_stairs"):
+        facing, shape = states.get("facing", "north"), states.get("shape", "straight")
+        high = [(x, z) for x, z in _COLUMNS if _on(facing, x, z)]
+        if shape != "straight":
+            side = (_LEFT if shape.endswith("left") else _RIGHT)[facing]
+            if shape.startswith("outer"):
+                high = [(x, z) for x, z in high if _on(side, x, z)]
+            else:
+                high += [(x, z) for x, z in _COLUMNS if not _on(facing, x, z) and _on(side, x, z)]
+        full, part = (1, 0) if states.get("half", "bottom") == "top" else (0, 1)
+        return [(x, full, z) for x, z in _COLUMNS] + [(x, part, z) for x, z in high]
+    return [(x, y, z) for x, z in _COLUMNS for y in (0, 1)]
+
+
 def _solid(c):
+    """Where the scene's blocks are, in half cells (two to a block each way; _halves())."""
     (x0, y0, z0), (x1, y1, z1) = c.bounds()
     lo = np.array([x0, y0, z0])
-    grid = np.zeros((x1 - x0 + 1, y1 - y0 + 1, z1 - z0 + 1), dtype=bool)
-    for (x, y, z) in c.b:
-        grid[x - x0, y - y0, z - z0] = True
+    grid = np.zeros((2 * (x1 - x0 + 1), 2 * (y1 - y0 + 1), 2 * (z1 - z0 + 1)), dtype=bool)
+    shapes = {}
+    for (x, y, z), state in c.b.items():
+        if state not in shapes:
+            shapes[state] = _halves(state)
+        for i, j, k in shapes[state]:
+            grid[2 * (x - x0) + i, 2 * (y - y0) + j, 2 * (z - z0) + k] = True
     return lo, grid
 
 
@@ -298,9 +339,9 @@ def _hidden(solid, eye, d, step=0.2, reach=None):
     d = d / np.linalg.norm(d, axis=-1, keepdims=True)
     hit = np.zeros(d.shape[:-1], dtype=bool)
     if reach is None:
-        reach = float(np.linalg.norm(shape)) + float(np.linalg.norm(np.maximum(lo - eye, 0.0))) + 8.0
+        reach = float(np.linalg.norm(shape)) * 0.5 + float(np.linalg.norm(np.maximum(lo - eye, 0.0))) + 8.0
     for t in np.arange(0.5, reach, step):
-        cell = np.floor(eye + d * t).astype(int) - lo
+        cell = np.floor((eye + d * t) * 2.0).astype(int) - 2 * lo
         inside = ((cell >= 0) & (cell < shape)).all(axis=-1)
         at = np.where(inside[..., None], cell, 0)
         hit |= inside & grid[at[..., 0], at[..., 1], at[..., 2]]
