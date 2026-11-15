@@ -6,8 +6,7 @@ switchboard on the west wall. The room is x 67..89, z 20..42, feet at y -6, wall
 
   fire_north      the boiler's fire door from inside the room, straight on
   fire_slant      the same from an angle, so the drum, its hoops and the mouth read together
-  through_window  from outside the north wall's fire window, where V6 sees the glow: the point of the
-                  whole piece (the wall is cut away here so the ray reaches the mouth)
+  fire_far        the mouth from the far side of the room, the way V6 sees it through the window
   board           the switchboard face on the west wall
   board_slant     the board from the room's middle, with the boiler behind it
   room            both families in one view from the door
@@ -90,7 +89,7 @@ def shots():
     eye = FEET + 1.62
     shot("fire_north", (fx, eye, bz + 4.6), (fx, FEET + 1.5, bz - 1.4))
     shot("fire_slant", (fx + 3.2, FEET + 2.2, bz + 4.4), (fx, FEET + 1.5, bz - 1.4))
-    shot("through_window", (fx, FEET + 1.7, Z0 - 3.2), (fx, FEET + 1.7, bz))
+    shot("fire_far", (fx, FEET + 1.7, Z1 - 3.0), (fx, FEET + 1.3, bz + 1.0))
     bx, _, bz2 = SB.BOARD_AT
     shot("board", (bx + 3.4, FEET + 1.9, bz2), (bx, FEET + 1.8, bz2))
     shot("board_slant", (bx + 4.6, FEET + 2.1, bz2 + 3.4), (bx, FEET + 1.8, bz2))

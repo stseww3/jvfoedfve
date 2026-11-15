@@ -285,13 +285,13 @@ def boiler(canvas, origin=(0, 0, 0), centre=None):
     axis; the default puts the mouth on the window's axis. Returns (entities, lights)."""
     cx, cz = centre if centre else (BOILER_C[0], BOILER_C[2])
     n, lights = 0, []
-    yaw = FACING["north"]                     # the door looks north (the model's +z turned to -z)
+    yaw = FACING["south"]                     # the door's glowing face (+z) looks into the room
     n += _place(canvas, _models()[BPREFIX + "body"], (cx, FEET, cz), origin, yaw, BOILER_SCALE)
     n += _place(canvas, _models()[BPREFIX + "body_top"], (cx, FEET + BOILER_LOWER, cz), origin, yaw,
                 BOILER_SCALE)
     # the door on the drum's north face
-    door_far = cz - BOILER_R / 16.0 * BOILER_SCALE
-    n += _place(canvas, _models()[BPREFIX + "door"], (cx, FEET + 1.7, door_far), origin, yaw,
+    door_z = cz + BOILER_R / 16.0 * BOILER_SCALE
+    n += _place(canvas, _models()[BPREFIX + "door"], (cx, FEET + 1.7, door_z), origin, yaw,
                 BOILER_SCALE)
     # the valve and gauges on the drum's west side, clear of the door
     n += _place(canvas, _models()[BPREFIX + "gauge"],
@@ -299,7 +299,8 @@ def boiler(canvas, origin=(0, 0, 0), centre=None):
                 GAUGE_SCALE)
     # the fire light: one cell inside the mouth, at the middle of the mouth's height
     if LIGHTS_ON:
-        lights.append(((int(cx), int(FEET + 1.7), int(door_far) - 1), FIRE_LEVEL))
+        # the fire light: the cell just inside the mouth
+        lights.append(((int(cx), int(FEET + 1.4), int(door_z) - 1), FIRE_LEVEL))
     return n, lights
 
 
