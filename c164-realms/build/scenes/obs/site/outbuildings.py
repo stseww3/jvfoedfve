@@ -5,13 +5,14 @@ card plan/packages/site/outbuildings.md). Shells and platforms, of blocks:
     9x9). The meridian cuts it in two: an open slot one block wide runs through the south gable (the
     door), along the ridge and through the north gable, so the transit instrument (A5) sweeps the sky
     from horizon to horizon and the brass line runs out of the door into the court. Two low slopes of
-    slate rise to the slot from an old-copper gutter along each eave; the two iron shutters lie open
+    slate rise to the slot from an old-copper gutter on each long wall; the two iron shutters lie open
     on the ridge either side of the slot. It stands on the V1 sight line to the foot of the clock
     tower, so it is kept low: the ridge is at y 5, which hides the front only up to the string course
     and none of the great windows.
-  - the water tower: four riveted legs on slate pads with one girt and knee braces, a round riveted
-    tank wider than the frame under a low cone of old copper, a riser pipe with its valve and gauges
-    and a ladder; north-west shoulder (S.WATER_TOWER). Its top stays two blocks under the cornice.
+  - the water tower: four riveted legs on slate pads with one girt and knee braces, a thin gallery
+    with an iron rail, a round riveted tank under a cone of old copper, a riser pipe with its valve
+    and gauges and a ladder; north-west shoulder (S.WATER_TOWER). Its top stays a block under the
+    cornice.
   - the weather station: a fenced instrument enclosure on the north slope (S.WEATHER_STATION) with a
     louvred shelter (a Stevenson screen), a wind mast, a rain gauge and a free pedestal.
   - the south lookout: a stone terrace with a prow toward the cloud sea (S.SOUTH_LOOKOUT), the site's
@@ -76,7 +77,8 @@ PLINTH = B.SLATE_BRICK.block            # dark plinths, footings, the steps' lan
 POST = B.SLATE_BRICK.wall               # a slate post
 ROOF_SLAB = B.SLATE_TILE.slab           # dark slate roof
 COPPER = B.OLD_COPPER_CUT.block         # old copper in sheets, as in the gutter of the main cornice
-COPPER_SLAB = B.OLD_COPPER_CUT.slab     # the hut's gutters, the cap of the tank
+COPPER_SLAB = B.OLD_COPPER_CUT.slab     # the hut's gutters
+COPPER_STAIR = B.OLD_COPPER_CUT.stairs  # the cone over the tank
 BOARD = B.PALE_WOOD.block               # pale boards: the stand-in thermometer screen
 BOARD_SLAB = B.PALE_WOOD.slab
 GAUGES = B.PANELS["gauges"]             # a pair of pressure gauges on a casing: the riser's valve box
@@ -91,7 +93,7 @@ PLATE = B.IRON_PLATE                    # plain plate: the tank
 BARS = B.IRON_BARS                      # ladders and trestles of iron (stone edges: K.rail)
 HATCH = B.IRON_HATCH                    # hatch, shutter: the riveted leaves on the hut's ridge (c198 #36725)
 ROD = B.IRON_ROD                        # thin rod: finials, the wind mast
-PIPE = B.IRON_PIPE                      # thin pipe: the riser, the hut's downpipes
+PIPE = B.IRON_PIPE                      # thin pipe: the riser
 
 # a dark broken mix for the shelves' own floors so none reads as one flat sheet
 FOOTING = Mix({B.SLATE_BRICK.block: 10, B.SLATE_TILE.block: 3, B.SLATE_SMOOTH.block: 3}, seed=2292)
@@ -340,16 +342,14 @@ def _meridian_hut(c, o):
         for wz in (cz - 2, cz + 2):
             _put(c, o, wx, on + 2, wz, B.WINDOW_DARK.pane)
 
-    # The roof: from an old-copper gutter along each eave two slopes of slate rise half a block a
-    # column to the slot; the last column either side of it is an iron shutter, slid open and lying
-    # level with the ridge. The gables are of stone to the roof's own line, their raking stones flush
-    # with the slate; the slot's jambs are dressed and carry the emblem at their heads. The ridge is
-    # at y 5.0 and the eaves at 3.5: from V1 the hut hides the front up to y 7.9 at the most, below
-    # the sills of the great windows (y 8).
+    # The roof: two slopes that rise half a block a column from the eaves to the slot. The course on
+    # each long wall is the gutter, of old copper; then slate; the last column either side of the
+    # slot is an iron shutter, slid open and lying level with the ridge. The gables are of stone to
+    # the roof's own line, their raking stones flush with the slate; the slot's jambs are dressed and
+    # carry the emblem at their heads. The ridge is at y 5.0 and the eaves at 3.5: from V1 the hut
+    # hides the front up to y 7.9 at the most, below the sills of the great windows (y 8).
     for z in range(z0, z1 + 1):
         gable = z in (z0, z1)
-        for x in (x0 - 1, x1 + 1):
-            _put(c, o, x, eave, z, COPPER_SLAB + "[type=bottom]")
         for x in range(x0, x1 + 1):
             d = abs(x - mx)
             if d == 0:
@@ -368,12 +368,7 @@ def _meridian_hut(c, o):
             elif d == 1:
                 _put(c, o, x, y, z, HATCH + f"[facing={'east' if x < mx else 'west'},half=top,open=false]")
             else:
-                _put(c, o, x, y, z, ROOF_SLAB + f"[type={half}]")
-
-    # a downpipe from the north end of each gutter into the ground
-    for x in (x0 - 1, x1 + 1):
-        for y in range(on, eave):
-            _put(c, o, x, y, z0, PIPE + "[axis=y]")
+                _put(c, o, x, y, z, (COPPER_SLAB if k == 0 else ROOF_SLAB) + f"[type={half}]")
 
 
 # --- the water tower (S.WATER_TOWER, north-west shoulder) -----------------------------------------
@@ -382,7 +377,8 @@ def _water_tower(c, o):
     foot = S.WATER_TOWER["feet"]                        # -2, where the legs stand
     cx, cz = (x0 + x1) // 2, (z0 + z1) // 2             # -17, -31
     legs = [(cx + sx * 2, cz + sz * 2) for sx in (-1, 1) for sz in (-1, 1)]
-    tank_lo, tank_hi = foot + 9, foot + 11              # 7..9; the cap ends at 12, the rod at 13
+    deck_y = foot + 9                                   # 7
+    tank_lo, tank_hi = deck_y + 1, deck_y + 3           # 8..10; the cone ends at 13, the rod at 14
 
     # until the terrain card's shelf is merged the shelf is a flat slab laid only where there is
     # nothing yet; the site's rail on the three sides over the drop, the uphill (east) side open
@@ -392,44 +388,55 @@ def _water_tower(c, o):
     piers = {(x, bz) for bz in (z0, z1) for x in K.spaced([x0, x1])} | {(x0, z) for z in K.spaced([z0, z1])}
     K.rail(c, o, edge, piers, y=foot, kerb=True)
 
-    # four riveted legs, each on a slate pad; one thin girt half-way up; a knee brace under the tank
+    # four riveted legs, each on a slate pad; one thin girt half-way up; a knee brace under the deck
     # either side of every leg
     for lx, lz in legs:
         _put(c, o, lx, foot - 1, lz, PLINTH)
         _put(c, o, lx, foot - 2, lz, PLINTH, keep=True)
         _put(c, o, lx, foot, lz, PLINTH)
-        _fill(c, o, lx, foot + 1, lz, lx, tank_lo - 1, lz, IRON)
+        _fill(c, o, lx, foot + 1, lz, lx, deck_y - 1, lz, IRON)
         tx, tz = (1 if lx < cx else -1), (1 if lz < cz else -1)
-        _put(c, o, lx + tx, tank_lo - 1, lz, IRON_STAIR + f"[facing={'west' if tx > 0 else 'east'},half=top]")
-        _put(c, o, lx, tank_lo - 1, lz + tz, IRON_STAIR + f"[facing={'north' if tz > 0 else 'south'},half=top]")
+        _put(c, o, lx + tx, deck_y - 1, lz, IRON_STAIR + f"[facing={'west' if tx > 0 else 'east'},half=top]")
+        _put(c, o, lx, deck_y - 1, lz + tz, IRON_STAIR + f"[facing={'north' if tz > 0 else 'south'},half=top]")
     for x, z in _ring(cx - 2, cz - 2, cx + 2, cz + 2):
         if (x, z) not in legs:
             _put(c, o, x, foot + 4, z, IRON_SLAB + "[type=top]")
 
-    # The tank: a round riveted drum seven across, a block wider than the frame all round, so that
-    # the legs stand under its four slanting sides; a riveted band at its foot and at its head, plain
-    # plate between. Its cap is a low cone of old copper in four rings, half a block each, and a rod
-    # on the point.
+    # the deck: a riveted floor on the legs' heads, and round it a thin gallery with an iron rail
+    for x in range(cx - 3, cx + 4):
+        for z in range(cz - 3, cz + 4):
+            if max(abs(x - cx), abs(z - cz)) == 3:
+                _put(c, o, x, deck_y, z, IRON_SLAB + "[type=top]")
+                _put(c, o, x, deck_y + 1, z, BARS)
+            else:
+                _put(c, o, x, deck_y, z, IRON)
+
+    # The tank: a round riveted drum five across, a riveted band at its foot and at its head, plain
+    # plate between. Its cap is a cone of old copper, two rings of steps and a rod on the point.
     for y in range(tank_lo, tank_hi + 1):
-        for x, z in _round(cx, cz, 3):
+        for x, z in _round(cx, cz, 2):
             _put(c, o, x, y, z, IRON if y in (tank_lo, tank_hi) else PLATE)
-    for i in range(4):
-        inner = set(_round(cx, cz, 2 - i)) if i < 3 else set()
-        for x, z in _round(cx, cz, 3 - i):
-            if (x, z) not in inner:
-                _put(c, o, x, tank_hi + 1 + i // 2, z,
-                     COPPER if i == 3 else COPPER_SLAB + f"[type={'bottom' if i % 2 == 0 else 'top'}]")
+    for r in (2, 1):
+        y = tank_hi + 3 - r
+        for x, z in _round(cx, cz, r):
+            ddx, ddz = x - cx, z - cz
+            if max(abs(ddx), abs(ddz)) < r:
+                _put(c, o, x, y, z, COPPER)             # the filling under the next ring, the point
+            else:                                       # a step that rises towards the middle
+                facing = ("south" if ddz < 0 else "north") if abs(ddz) == r else ("east" if ddx < 0 else "west")
+                _put(c, o, x, y, z, COPPER_STAIR + f"[facing={facing},half=bottom]")
     _put(c, o, cx, tank_hi + 3, cz, ROD + "[facing=up]")
 
     # the riser from its valve box on the ground (a pair of gauges on the side the steps arrive at)
     # up into the tank, and a ladder up the north-east leg, where the way down from the terrace
-    # arrives, and on up the tank in the corner between two of its sides
+    # arrives, to a hatch in the gallery
     _put(c, o, cx, foot, cz, GAUGES + "[facing=east]")
-    for y in range(foot + 1, tank_lo):
+    for y in range(foot + 1, deck_y):
         _put(c, o, cx, y, cz, PIPE + "[axis=y]")
     lx, lz = cx + 2, cz - 2
-    for y in range(foot, tank_hi + 1):
+    for y in range(foot, deck_y):
         _put(c, o, lx + 1, y, lz, BARS)
+    _put(c, o, lx + 1, deck_y, lz, HATCH + "[facing=west,half=top,open=true]")
 
 
 # --- the weather station (S.WEATHER_STATION, north slope) -----------------------------------------
