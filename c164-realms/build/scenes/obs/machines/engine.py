@@ -609,6 +609,12 @@ def _lap():
     return d
 
 
+def _wire(d, points, mat=COPPER):
+    """A stiff lead through the points, every leg of it along an axis: square, a texel thick."""
+    for a, b in zip(points, points[1:]):
+        d.box([min(a[i], b[i]) - PX / 2 for i in range(3)], [max(a[i], b[i]) + PX / 2 for i in range(3)], mat)
+
+
 def _pedestal(d, z0, z1, foot):
     """A bearing of the dynamo's shaft between z0 and z1, standing on `foot`."""
     zm = (z0 + z1) / 2.0
@@ -654,15 +660,13 @@ def _dynamo():
     for s in (-1.0, 1.0):
         ya, yb = sorted((DYN_H + s * 0.25, DYN_H + s * 0.5))
         d.box((DYN_X - 0.0625, ya, zb - 0.09375), (DYN_X + 0.0625, yb, zb + 0.09375), BRASS)
-    tx = 0.3125
-    d.rod((DYN_X, DYN_H + 0.5, zb), (DYN_X - tx, YOKE_Y[1] + 0.0625, DYN_Z + 0.25), 0.03125, COPPER, sides=4)
-    d.rod((DYN_X, DYN_H - 0.5, zb), (DYN_X + 0.4375, DYN_H - 0.5, zb + 0.1875), 0.03125, COPPER, sides=4)
-    d.rod((DYN_X + 0.4375, DYN_H - 0.5, zb + 0.1875), (DYN_X + 1.0625, YOKE_Y[0], DYN_Z + 0.375), 0.03125, COPPER,
-          sides=4)
-    d.rod((DYN_X + 1.0625, YOKE_Y[0], DYN_Z + 0.375), (DYN_X + tx, YOKE_Y[1] + 0.0625, DYN_Z + 0.25), 0.03125, COPPER,
-          sides=4)
-    # the terminal board on the yoke: two porcelain posts, the pilot lamp between them
+    # two stiff leads, one from each brush, up behind the commutator and over to the terminals
+    tx, zr = 0.3125, zb + 0.125
     top = YOKE_Y[1]
+    for s, y in ((-1.0, DYN_H + 0.5 + PX / 2), (1.0, DYN_H - 0.5 - PX / 2)):
+        _wire(d, [(DYN_X, y, zb), (DYN_X, y, zr), (DYN_X + s * tx, y, zr), (DYN_X + s * tx, top + 0.28125, zr),
+                  (DYN_X + s * tx, top + 0.28125, DYN_Z)])
+    # the terminal board on the yoke: two porcelain posts, the pilot lamp between them
     d.box((DYN_X - 0.5, top, DYN_Z - 0.1875), (DYN_X + 0.5, top + 0.0625, DYN_Z + 0.1875), IRON_D)
     for s in (-1.0, 1.0):
         d.tube("y", (DYN_X + s * tx, DYN_Z), top + 0.0625, top + 0.25, 0.09375, PORCELAIN, sides=8)
