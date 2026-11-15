@@ -114,7 +114,7 @@ def shots():
     eye = MA.HUT_FEET + 1.62
     shot("meridian_hut", (mx - 0.5, eye, mz + 3.2), (mx + 0.3, MA.HUT_FEET + 1.5, mz - 0.3))
     shot("meridian_tube", (mx - 2.2, MA.HUT_FEET + 1.75, mz + 2.6), (mx + 0.6, MA.HUT_FEET + 1.55, mz))
-    shot("slit", (mx, MA.HUT_FEET + 1.35, mz + 2.8), (mx, MA.HUT_FEET + 5.4, mz - 1.6))
+    shot("slit", (mx + 0.2, MA.HUT_FEET + 1.75, mz + 2.4), (mx, MA.HUT_FEET + 4.6, mz - 2.2))
     ax, az = MA.DOME_CX, MA.DOME_CZ
     aeye = MA.DOME_FLOOR + 1.62
     shot("astro", (ax - 2.0, aeye, az + 2.6), (ax, MA.DOME_FLOOR + 2.4, az))
