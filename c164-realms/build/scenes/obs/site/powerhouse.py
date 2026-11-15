@@ -38,7 +38,7 @@ between polished courses.
             "b"  An iron barrel vault over the hall, its axis north-south, rising five over a
                  span of 17 (x 68..84): its middle is the middle pier of the four bays the yard
                  sees beside the chimney. Its ends are iron screens with a three-light window; a
-                 louvred monitor rides the crown. East of it, behind the chimney, the boiler
+                 glazed monitor rides the crown. East of it, behind the chimney, the boiler
                  house lies under a flat of plates.
   bridge    The steam main leaves the west front through the pier in row PIPE_Z, a course under
             the cornice, and runs west in that one row: over the alley on a girder that a portal
@@ -476,8 +476,8 @@ def _roof_b(p):
     out of the gutter in half steps; above them it rises by half a block at a time. A rib half a
     block proud of the plates lies on every pier line of the long sides. An end is an iron screen,
     glazed, under the vault's own last row. The monitor rides the crown between the second pier
-    line from either end, open to the house below. East of the vault, behind the chimney, the
-    boiler house has a flat of plates under the same ribs."""
+    line from either end, glazed, open to the house below. East of the vault, behind the chimney,
+    the boiler house has a flat of plates under the same ribs."""
     base = EAVES + 1
     mid = (VX0 + VX1) // 2
     m0, m1 = RZ0 + BAY, RZ1 - BAY
@@ -501,13 +501,15 @@ def _roof_b(p):
             if z in (RZ0, RZ1):
                 for y in range(base, top):
                     p.put(x, y, z, _lunette(y - base, abs(x - mid)))
+    # the monitor: a lantern along the crown, glazed on its long sides between iron posts on the
+    # pier lines, under a lid of plates. From the court it is the one line of glass on the flank.
     y = base + int(VAULT[-1])
     for z in range(m0, m1 + 1):
         for x in (mid - 1, mid, mid + 1):
             if z in (m0, m1):
                 p.put(x, y, z, IRON)
             elif x != mid:
-                p.put(x, y, z, B.IRON_GRATE)
+                p.put(x, y, z, IRON if (z - RZ0) % BAY == 0 else ROOF_GLASS)
             p.put(x, y + 1, z, IRON_LOW)
     for x in range(VX1 + 1, RX1 + 1):
         for z in range(RZ0, RZ1 + 1):
