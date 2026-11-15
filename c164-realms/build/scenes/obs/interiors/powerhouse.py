@@ -106,7 +106,9 @@ LAMPS = [(x, CEIL_Y - 1, z) for x, z in
           (int(ENGINE_CENTRE[0]) - 3, int(ENGINE_CENTRE[1])), (int(ENGINE_CENTRE[0]) + 4, int(ENGINE_CENTRE[1])),
           (IN_X[0] + 3, IN_Z[1] - 3), (IN_X[1] - 3, IN_Z[1] - 3),
           (IN_X[0] + 3, IN_Z[0] + 8), (IN_X[1] - 3, IN_Z[0] + 8))]
-LAMP_LEVEL = 7                              # the third rank (a caged lamp), never above 8
+LAMP_LEVEL = 8                              # the top of the third rank (a caged lamp); 7 left the
+#                                             room's corners black, and the card makes the furnace
+#                                             glow the room's main light, not its only one
 
 # ---- the light ------------------------------------------------------------------------------
 LIGHT = B.LIGHT                             # the invisible source a lamp offers
