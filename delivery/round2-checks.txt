@@ -54,18 +54,12 @@ PASS  reduced motion: a shared link still lands on its term
 PASS  reduced motion: a category change swaps the cards with no glide and no fade
 PASS  reduced motion: the pointer light stays off
 PASS  reduced motion: console is clean
-PASS  tilt: off by default (no ?tilt, no lean)
-PASS  tilt (?tilt): the card leans toward the pointer, at most 3 degrees
-PASS  tilt (?tilt): the card settles flat once the pointer rests
-PASS  tilt (?tilt): leaving the grid flattens the card
-PASS  tilt (?tilt): a copied link leaves the ?tilt switch out
-PASS  tilt: console is clean
 PASS  search: '/' jumps to the search field
 PASS  search: typing filters at once, highlights matches, and does not animate
 PASS  search: no match shows the empty state
 PASS  search: Escape clears the query and restores all 50
 PASS  pointer light: still follows the mouse over the cards
-PASS  hover: the card under the pointer still lifts 3px
+PASS  hover: the card under the pointer still lifts 3px and stays flat (no tilt)
 PASS  theme: the toggle switches to light and is remembered
 PASS  theme (light): the marked card uses the light accent and the toast the light surface
 PASS  theme: light survives a reload
@@ -89,4 +83,4 @@ PASS  phone 320px: tapping a term copies the link; the toast fits on screen
 PASS  phone 320px: no pointer light on touch
 PASS  phone 320px: console is clean
 
-88 of 88 checks passed.
+82 of 82 checks passed.
