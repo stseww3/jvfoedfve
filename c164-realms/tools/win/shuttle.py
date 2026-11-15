@@ -54,6 +54,13 @@ For the scenes named the trip
                              camera's right, looking the same way, as <shot>_step: two stills a
                              step apart, for thin things that may shimmer when one walks past
                              (where a line breaks up differently in the two, it will)
+    --after <scene>=<script> after the scene's shots, while it stands, the server runs and the
+                             game is open, a script of the code that is shot (a path from its
+                             build/) is run as <script> --pw-file <file> --port <n> --origin X Y Z:
+                             what no picture shows, commands typed on the server and scoreboards
+                             read. What it prints goes into <out>/<tag>/send/<scene>-<tag>-after.txt;
+                             it has --after-budget seconds (300), and an exit code other than 0
+                             counts as a failure of the trip. It must leave the server running
     --no-place               the scenes stand already; only the pack and the pictures
     --no-shoot               everything but the game: place and write the pack
     --keep-client            leave the game running at the end (only with the owner's consent)
@@ -73,8 +80,10 @@ import math
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
+import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -105,18 +114,43 @@ class Stop(Exception):
         self.code = code
 
 
-def run(script, *args, check=True, env=None):
+def run(script, *args, check=True, env=None, budget=None, hide=None):
     """Run a Python script with this Python, from the shot code's build/; its output goes to ours,
-    line by line as it comes. Returns (exit code, output)."""
+    line by line as it comes. Returns (exit code, output). With `budget` the script and what it
+    started are ended when so many seconds are over; the exit code is then 124. `hide` is a word
+    that must not show in the output, whatever the script prints."""
     proc = subprocess.Popen([sys.executable, "-u", script, *[str(a) for a in args]], cwd=BUILD, text=True,
                             encoding="utf-8", errors="replace", stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                            stdin=subprocess.DEVNULL, start_new_session=budget is not None,
                             env={**os.environ, "PYTHONIOENCODING": "utf-8", **(env or {})})
+    over = threading.Event()
+
+    def end():
+        over.set()
+        try:
+            if hasattr(os, "killpg"):
+                os.killpg(proc.pid, signal.SIGKILL)
+            else:
+                proc.kill()
+        except OSError:
+            pass
+
+    timer = threading.Timer(budget, end) if budget is not None else None
+    if timer:
+        timer.daemon = True
+        timer.start()
     lines = []
-    for line in proc.stdout:
-        lines.append(line.rstrip("\n"))
-        print("    " + lines[-1])
-        sys.stdout.flush()
-    code = proc.wait()
+    try:
+        for line in proc.stdout:
+            lines.append(line.rstrip("\n").replace(hide, "***") if hide else line.rstrip("\n"))
+            print("    " + lines[-1])
+            sys.stdout.flush()
+        code = proc.wait()
+    finally:
+        if timer:
+            timer.cancel()
+    if over.is_set():
+        code = 124
     if check and code != 0:
         raise Stop(f"{os.path.basename(script)} {' '.join(str(a) for a in args[:1])} ended with {code}", code)
     return code, "\n".join(lines)
@@ -431,6 +465,36 @@ def shown(path):
     return os.path.relpath(path, BUILD) if path.startswith(BUILD + os.sep) else os.path.basename(path)
 
 
+def asked_after(scene, script, at, budget, send, tag, commit):
+    """Run a script of the code that is shot while its scene stands, the server runs and the game
+    is open: what no picture shows (commands typed on the server, scoreboards read). It is run as
+    <script> --pw-file <file> --port <n> --origin X Y Z from the shot code's build/, with that
+    folder, the station's tools and the shot code's own on its Python path. What it prints is kept
+    beside the pictures to send. Returns what went wrong, as a list."""
+    project = os.path.dirname(BUILD)
+    path = os.path.normpath(os.path.join(BUILD, script))
+    if os.path.isabs(script) or not path.startswith(project + os.sep) or not os.path.isfile(path):
+        return [f"{scene}: no script {script} in the code that is shot (--after wants a path from its build/)"]
+    secret_file = os.path.join(SERVER, ".rcon_pw")
+    try:
+        with open(secret_file) as fh:
+            secret = fh.read().strip()
+    except OSError:
+        secret = ""
+    say(f"{scene}: the scene's own script {shown(path)}, {budget:.0f} s at most")
+    t0 = time.time()
+    # whatever the script prints, the server's password stays on this machine
+    code, text = run(path, "--pw-file", secret_file, "--port", RCON_PORT, "--origin", *at, check=False, budget=budget,
+                     hide=secret, env={"PYTHONPATH": os.pathsep.join([BUILD, TOOLS, os.path.join(project, "tools")])})
+    os.makedirs(send, exist_ok=True)
+    with open(os.path.join(send, f"{scene}-{tag}-after.txt"), "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(f"# {shown(path)} of {commit}, run after the shots of {scene} (plot {at[0]} {at[1]} {at[2]}), "
+                 f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}: exit code {code}, {time.time() - t0:.0f} s"
+                 + (f"; it was stopped, its {budget:.0f} s were over" if code == 124 else "") + "\n" + text + "\n")
+    say(f"{scene}: {os.path.basename(path)} ended with {code} after {time.time() - t0:.0f} s")
+    return [] if code == 0 else [f"{scene}: {os.path.basename(path)} ended with {code}"]
+
+
 def pairs(items, what, number=False):
     out = {}
     for item in items:
@@ -457,6 +521,8 @@ def main():
     ap.add_argument("--dress", action="store_true")
     ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
     ap.add_argument("--step", action="append", default=[], metavar="SCENE=SHOT[:BLOCKS]")
+    ap.add_argument("--after", action="append", default=[], metavar="SCENE=SCRIPT")
+    ap.add_argument("--after-budget", type=float, default=300.0)
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--no-shoot", action="store_true")
     ap.add_argument("--keep-client", action="store_true")
@@ -488,7 +554,8 @@ def main():
                     into[scene][shot] = float(number or usual)
                 except ValueError:
                     raise SystemExit(f"--{option} {scene}={name}: {number!r} is not a number of {unit}")
-    for scene in list(lists) + list(only) + list(again) + list(step) + args.gallery:
+    after = pairs(args.after, "after")
+    for scene in list(lists) + list(only) + list(again) + list(step) + list(after) + args.gallery:
         if scene not in args.scenes:
             raise SystemExit(f"{scene} is not one of this trip's scenes")
     if args.dress and not args.look:
@@ -617,6 +684,9 @@ def main():
             if got:
                 to_send(scene, args.tag, commit, at, shots, target, send, scene in only, how_made(said, said_too),
                         when, windows, args.dress, args.look if windows != args.look else None)
+            # ---- 6. what the scene's author wants asked of the server while the scene stands ----
+            if scene in after:
+                failed += asked_after(scene, after[scene], at, args.after_budget, send, args.tag, commit)
     except Stop as stop:
         say(f"stopped: {stop}")
         failed.append(str(stop))

@@ -53,9 +53,17 @@ scenes have in common side by side, one column a scene: renders/real/_beside/<na
     --looks <a>,<b>[+dress]  the light versions the scenes are shot under, one after the other
     --apart                  every scene in a run of the shuttle of its own
     --beside <name>          the scenes' pictures of this trip side by side on one sheet
+    --sheet <name>           this trip's pictures on one sheet, renders/real/_sheets/<name>.jpg, in
+                             the order --only names them, --across <n> a row (2): a few shots picked
+                             for a comparison
     --view <n> --clouds <n>  render distance and cloud range in chunks (12 and 128)
     --settle, --first-settle, --still   seconds, passed to the shuttle (10, 60, 60)
     --only, --shots, --gallery, --plot, --again, --step   passed to the shuttle as they are
+    --after <scene>=<script> a script of the code that is shot (a path from its build/), run after
+                             the scene's shots while the scene stands, the server runs and the game
+                             is open: commands typed on the server, scoreboards read. What it prints
+                             is kept as after.txt beside the scene's pictures; --after-budget
+                             seconds at most (300)
     --no-place               the scenes stand from an earlier trip of the same code
     --budget <seconds>       the trip stops what it is doing after this long, takes what there is
                              and closes down (2700: a job's hour less the node's own start and
@@ -65,6 +73,7 @@ Exit code 0: every scene's pictures were all taken and are kept.
 """
 import argparse
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -285,9 +294,13 @@ def main():
     ap.add_argument("--plot", action="append", default=[], metavar="SCENE=N")
     ap.add_argument("--again", action="append", default=[], metavar="SCENE=SHOT[:SECONDS]")
     ap.add_argument("--step", action="append", default=[], metavar="SCENE=SHOT[:BLOCKS]")
+    ap.add_argument("--after", action="append", default=[], metavar="SCENE=SCRIPT")
+    ap.add_argument("--after-budget", type=float, default=300.0)
     ap.add_argument("--looks", metavar="LOOK[+dress],...")
     ap.add_argument("--apart", action="store_true")
     ap.add_argument("--beside", metavar="NAME")
+    ap.add_argument("--sheet", metavar="NAME")
+    ap.add_argument("--across", type=int, default=2)
     ap.add_argument("--no-place", action="store_true")
     ap.add_argument("--budget", type=float, default=2700.0)
     args = ap.parse_args()
@@ -296,7 +309,7 @@ def main():
     if args.tag and (args.at or args.branch):
         sys.exit("--tag names this checkout as it is; --at and --branch name a commit: one or the other")
     per_scene = (("--only", args.only), ("--shots", args.shots), ("--gallery", args.gallery),
-                 ("--plot", args.plot), ("--again", args.again), ("--step", args.step))
+                 ("--plot", args.plot), ("--again", args.again), ("--step", args.step), ("--after", args.after))
     for name, values in per_scene:
         for value in values:
             if value.split("=", 1)[0] not in args.scenes:
@@ -309,11 +322,14 @@ def main():
         wrong = [name for name in names if name.partition("+")[2] not in ("", "dress")]
         if wrong or not runs or len(set(names)) != len(names):
             sys.exit(f"--looks {args.looks}: light versions by name, each once, +dress for the building's own lights")
-        if args.no_place or args.apart or args.beside:
+        if args.no_place or args.apart or args.beside or args.sheet:
             sys.exit("--looks places the scenes anew for every light version and draws its own sheet: "
-                     "--no-place, --apart and --beside cannot go with it")
-    if args.beside and not realshots.NAME_OK.match(args.beside):
-        sys.exit(f"--beside {args.beside}: a name of letters, digits, - and _")
+                     "--no-place, --apart, --beside and --sheet cannot go with it")
+    for option, name in (("--beside", args.beside), ("--sheet", args.sheet)):
+        if name and not realshots.NAME_OK.match(name):
+            sys.exit(f"{option} {name}: a name of letters, digits, - and _")
+    if args.sheet and (args.across < 1 or (args.branch and MASTER in args.scenes)):
+        sys.exit("--sheet draws test scenes and the assembly's master scene, --across <n> pictures a row (1 or more)")
 
     project = None
     if args.branch:
@@ -348,7 +364,8 @@ def main():
         else:
             trip.stage("station", station, "status", budget=60)
             common = ["--tag", tag, "--commit", commit, "--settle", args.settle,
-                      "--first-settle", args.first_settle, "--still", args.still]
+                      "--first-settle", args.first_settle, "--still", args.still, "--after-budget", args.after_budget]
+            scripted = {value.split("=", 1)[0] for value in args.after}
             if args.no_place:
                 common.append("--no-place")
             if project:
@@ -376,6 +393,12 @@ def main():
                     if scene in args.gallery and not os.path.exists(os.path.join(send, f"{scene}-{tag}-real.txt")):
                         continue        # a scene of models alone that was not shot: the shuttle said why
                     into = os.path.join(looks_in, version) if look else own_in if scene == MASTER else kept_in
+                    answer = os.path.join(send, f"{scene}-{tag}-after.txt")
+                    if scene in scripted and os.path.exists(answer):
+                        # what the scene's own script said (--after) is kept beside its pictures
+                        os.makedirs(os.path.join(PROJECT, into, scene), exist_ok=True)
+                        shutil.copyfile(answer, os.path.join(PROJECT, into, scene, "after.txt"))
+                        trip.say(f"{scene}: what its script said is in {into}/{scene}/after.txt")
                     ok, said = realshots.take(send, tag, scene, os.path.join(PROJECT, into))
                     for line in said:
                         trip.say(line)
@@ -403,6 +426,19 @@ def main():
                     beside(trip, args.beside, shot, tag, args.clouds, args.view)
                 except Exception as exc:
                     trip.say(f"--beside {args.beside}: the sheet could not be drawn ({exc})")
+            if args.sheet and shot:
+                # this trip's pictures on one sheet, in the order --only names them (else the list's)
+                asked = {value.split("=", 1)[0]: value.split("=", 1)[1].split(",") for value in args.only}
+                picked = [f"{scene}:{name}" for scene, _, taken in shot
+                          for name in asked.get(scene, taken) if name in taken]
+                try:
+                    realshots.sheet(args.sheet, picked, args.across,
+                                    f"c164 {', '.join(scene for scene, _, _ in shot)} of {commit}: the game 26.3 on a "
+                                    f"node, view distance {args.view}, cloud range {args.clouds}",
+                                    kept_in=os.path.join(PROJECT, kept_in))
+                    trip.say(f"{kept_in}/_sheets/{args.sheet}.jpg: {len(picked)} pictures, {args.across} a row")
+                except (Exception, SystemExit) as exc:
+                    trip.say(f"--sheet {args.sheet}: the sheet could not be drawn ({exc})")
     finally:
         trip.stage("close", station, "down", budget=180)
         where = ", ".join(kept) or "none"
