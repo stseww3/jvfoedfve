@@ -9,10 +9,10 @@ grammar in the lower platform's stone: a pier of one cell and a window of three 
 between polished courses.
 
   walls     Two planes. The pier plane is the edge of the box: a polished plinth course with a
-            weathering, brick piers, a segmental arch over every bay, a polished cornice, an iron
-            gutter. One cell behind it stands the glass, six rows of it over a polished sill: every
-            bay is a recess a block deep. The corners are piers two cells square. The clear floor
-            inside is ROOM.
+            weathering, brick piers with a polished impost, a round arch over every bay (the main
+            building's: main/_order.arch), a polished cornice, an iron gutter. One cell behind it
+            stands the glass, six rows of it over a polished sill: every bay is a recess a block
+            deep. The corners are piers two cells square. The clear floor inside is ROOM.
   windows   Iron-framed and dark. Only the two bays beside the chimney, where the boilers stand,
             glow in their lower three rows: the fire window, a block of its own for each row,
             brightest at the sill (B.WINDOW_FURNACE; the curtain glass stands in while the switch
@@ -25,16 +25,21 @@ between polished courses.
   chimney   In the north-east corner, wholly inside the box and outside the arrival view. Its foot
             is a tower six cells square, the corner pier, a bay and the next pier built solid, with
             a blind arch on each outer face; three courses above the eaves it steps in under a
-            weathering to a round shaft four cells across, hooped with iron every fourth course.
-            The head is a corbel course and a polished band, six across; over them the mouth is
-            as narrow as the shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
-  roof      Two versions (VERSION), and they differ in nothing else.
-            "a"  Five saw teeth, one to the bay of the long sides: a light of two rows of glass
-                 that looks north over an iron girder, a slate slope of 45 degrees behind it. The
-                 saw is seen in profile from the court.
-            "b"  An iron barrel vault, its axis east-west, rising five over the 21 of the span;
-                 the gable towards the court is an arch with a three-light iron window; a louvred
-                 monitor rides the crown.
+            weathering to a round shaft four cells across, hooped with iron every fourth course,
+            with a polished necking under the head. The head is a corbel course under a weathered
+            coping, six across with the corners left out; over it the mouth is as narrow as the
+            shaft again and rimmed with iron, at y 23 (S.POWER_HOUSE).
+  roof      Two versions (VERSION), and they differ in nothing else. Both show their profile to
+            the yard in the north, where V6 stands, and their flank to the court.
+            "a"  Five saw teeth, one to the bay of the north front, their ridges north-south: a
+                 light of two rows of glass that looks west over an iron girder, a slate slope of
+                 45 degrees behind it. The north and south walls close the saw with brick gables
+                 under a stone verge. (A north light it is not: the profile went to V6.)
+            "b"  An iron barrel vault over the hall, its axis north-south, rising five over a
+                 span of 17 (x 68..84): its middle is the middle pier of the four bays the yard
+                 sees beside the chimney. Its ends are iron screens with a three-light window; a
+                 glazed monitor rides the crown. East of it, behind the chimney, the boiler
+                 house lies under a flat of plates.
   bridge    The steam main leaves the west front through the pier in row PIPE_Z, a course under
             the cornice, and runs west in that one row: over the alley on a girder that a portal
             of two iron posts carries, over the terrace's railing without touching it (the girder's
@@ -239,8 +244,9 @@ def windows(version=None):
     from the glass into the house) and y (the bottom and top row of the glass).
 
     storey "main" is dark glass; "furnace" is the lower three rows of a boiler bay, which glow
-    (the dark rows over them are that bay's "main"); "gable" is the middle light of version b's
-    gable window. Offsets are the skeleton's: add the origin the house is built at."""
+    (the dark rows over them are that bay's "main"); "gable" is the middle light of the screen at
+    either end of version b's vault, on the north and the south front (bay 0). Offsets are the
+    skeleton's: add the origin the house is built at."""
     out = []
     for front in FRONTS.values():
         name = f"power.{front.name}"
@@ -470,8 +476,8 @@ def _roof_b(p):
     out of the gutter in half steps; above them it rises by half a block at a time. A rib half a
     block proud of the plates lies on every pier line of the long sides. An end is an iron screen,
     glazed, under the vault's own last row. The monitor rides the crown between the second pier
-    line from either end, open to the house below. East of the vault, behind the chimney, the
-    boiler house has a flat of plates under the same ribs."""
+    line from either end, glazed, open to the house below. East of the vault, behind the chimney,
+    the boiler house has a flat of plates under the same ribs."""
     base = EAVES + 1
     mid = (VX0 + VX1) // 2
     m0, m1 = RZ0 + BAY, RZ1 - BAY
@@ -495,13 +501,15 @@ def _roof_b(p):
             if z in (RZ0, RZ1):
                 for y in range(base, top):
                     p.put(x, y, z, _lunette(y - base, abs(x - mid)))
+    # the monitor: a lantern along the crown, glazed on its long sides between iron posts on the
+    # pier lines, under a lid of plates. From the court it is the one line of glass on the flank.
     y = base + int(VAULT[-1])
     for z in range(m0, m1 + 1):
         for x in (mid - 1, mid, mid + 1):
             if z in (m0, m1):
                 p.put(x, y, z, IRON)
             elif x != mid:
-                p.put(x, y, z, B.IRON_GRATE)
+                p.put(x, y, z, IRON if (z - RZ0) % BAY == 0 else ROOF_GLASS)
             p.put(x, y + 1, z, IRON_LOW)
     for x in range(VX1 + 1, RX1 + 1):
         for z in range(RZ0, RZ1 + 1):
