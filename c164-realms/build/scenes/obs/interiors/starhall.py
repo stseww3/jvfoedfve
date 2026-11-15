@@ -323,14 +323,13 @@ def _heart_model():
 
 def _ceiling(canvas, origin, asked):
     """The hall's half of the ceiling: the rose at the hanging point, and the four enamel-blue hearts
-    in the boards between the beams. The beams and the boards are the shell's (A0 #491); the hall
-    lays nothing in a beam's cell, so both are read off shell.layout().beams before they go in."""
+    in the boards between the beams. The beams and the boards are the shell's (A0 #491). The rose
+    hangs under the beam that runs over the orrery, so its own cell is a beam's; each heart goes only
+    where its whole crossing is boards, never where the shell has a beam or the stair's opening."""
     ox, oy, oz = origin
     cx, cz = S.ORRERY_CENTRE
     L = shell.layout()
-    n = 0
-    if (int(math.floor(cx)), int(math.floor(cz))) not in L.beams:
-        n += K.put(canvas, _rose_model(), (cx, ROSE_FACE, cz), mount="ceiling", origin=origin)
+    n = K.put(canvas, _rose_model(), (cx, ROSE_FACE, cz), mount="ceiling", origin=origin)
     heart = _heart_model()
     for xa, xb in BOARD_X:
         for za, zb in HEART_Z:
