@@ -17,8 +17,10 @@ c177's targets, whole window with the glazing bars counted in:
 Both versions of the lit windows sit on the same ladder.
 
 The linings of the lit windows (materials/windows.py, the room side) are measured as well: their
-pictures in their own colours, held to what linings() says below.
+pictures in their own colours, held to what linings() says below. So is the furnace window, the
+three rows of it stacked as a bay shows them: see furnace().
 """
+import itertools
 import os
 import sys
 
@@ -104,6 +106,62 @@ def linings():
     return rows, bad
 
 
+# The furnace window (A0, g2 #37112): three blocks from the sill up that show as one sheet. The game
+# mixes the two pictures of a row by position, so every way of stacking them is measured. Held to:
+#   - the mean and the median of the whole window not over the drawn curtain's 0.40;
+#   - no colour but the two deepest ambers, the dark wood, the darkest iron and the bar;
+#   - the paler amber only in the three lowest rows of pixels;
+#   - the glass darker band after band from the sill to the head, a band being the lower or the
+#     upper half of a block's glass: across the joints of the blocks as within them, which is what
+#     makes three rows one sheet and not three stripes (a light that is dirtier than its height
+#     does not upset it; a block that ran from light to dark by itself would);
+#   - the last row of pixels under the head near a dark window.
+FURNACE_TOP = 0.40
+FURNACE_HEAD = 0.12
+FURNACE_TONES = ([("glow", 0), ("glow", 1), ("iron", 0), W.BAR]
+                 + [("dark_wood", i) for i in range(len(P.RAMPS["dark_wood"]))])
+PALE_ROWS = 3
+
+
+def furnace():
+    rows, bad = [], []
+    allowed = {P.colour(*tone) for tone in FURNACE_TONES}
+    pale = np.array(P.colour("glow", 1))
+    for v in W.VERSIONS:
+        faces = W.furnace_face(v)                                   # [row][picture], the sill row first
+        n = len(faces)
+        glass = ~_bars(v)
+        ys = [y for y in range(W.TILE) if glass[y].any()]           # the rows of glass in a block, head first
+        xs = glass[ys[0]]                                           # its columns of glass
+        halves = [ys[len(ys) // 2:], ys[:len(ys) // 2]]             # a block's glass: the lower half, the upper half
+        for pick in itertools.product(*[range(len(row)) for row in faces]):
+            label = f"furnace {v} {''.join(str(k) for k in pick)}"
+            sheet = np.vstack([faces[r][pick[r]] for r in reversed(range(n))])      # one column of blocks, head first
+            lum = (sheet[..., :3].astype(float) @ COEF) / 255.0
+            whole, median = float(lum.mean()), float(np.median(lum))
+            blocks = [luma(faces[r][pick[r]]) for r in range(n)]
+            bands = [float(lum[[W.TILE * (n - 1 - r) + y for y in half]][:, xs].mean())
+                     for r in range(n) for half in halves]
+            head = float(lum[ys[0]][xs].mean())
+            faults = []
+            if whole > FURNACE_TOP or median > FURNACE_TOP:
+                faults.append(f"mean {whole:.3f}, median {median:.3f}: over {FURNACE_TOP:.2f}")
+            used = {tuple(int(c) for c in rgb) for rgb in np.unique(sheet[..., :3].reshape(-1, 3), axis=0)}
+            if used - allowed:
+                faults.append(f"{len(used - allowed)} colours that are not the furnace's")
+            high = np.argwhere((sheet[..., :3] == pale).all(axis=-1))
+            if len(high) and high[:, 0].min() < sheet.shape[0] - PALE_ROWS:
+                faults.append(f"the paler amber {sheet.shape[0] - 1 - high[:, 0].min()} pixels above the sill")
+            if any(a <= b for a, b in zip(bands, bands[1:])):
+                faults.append("bands " + " ".join(f"{g:.3f}" for g in bands) + " do not darken upwards")
+            if head > FURNACE_HEAD:
+                faults.append(f"head {head:.3f}: not near a dark window ({FURNACE_HEAD:.2f})")
+            if len(set(pick)) == 1:                                 # the table shows the two unmixed stacks
+                rows.append((v, pick[0], blocks, whole, median, head, "OUT" if faults else "ok"))
+            bad += [f"{label}: {fault}" for fault in faults]
+    return rows, bad
+
+
 def main():
     print(f"glass glow[2]={P.RAMPS['glow'][2]}  opal[0]={P.RAMPS['opal'][0]}  "
           f"night_glass[3,4]={P.RAMPS['night_glass'][3]},{P.RAMPS['night_glass'][4]}  bar iron[1]={P.RAMPS['iron'][1]}")
@@ -115,13 +173,19 @@ def main():
     lined, bad_lined = linings()
     for v, kind, whole, colours, flag in lined:
         print(f"{v:3} {kind:8} {whole:12.3f} {colours:12d}  {flag}")
-    bad += bad_lined
+    print(f"\n{'ver':3} {'furnace':8} {'sill':>6} {'second':>6} {'third':>6} {'whole':>6} {'median':>6} {'head':>6}  flag")
+    fired, bad_fired = furnace()
+    for v, k, blocks, whole, median, head, flag in fired:
+        print(f"{v:3} {'stack ' + str(k):8} " + " ".join(f"{b:6.3f}" for b in blocks)
+              + f" {whole:6.3f} {median:6.3f} {head:6.3f}  {flag}")
+    bad += bad_lined + bad_fired
     if bad:
         print("\nOUT OF LADDER:")
         for line in bad:
             print("  " + line)
         return 1
-    print("\nall three lit tiers on c177's ladder, both versions; the linings give no light.")
+    print("\nall three lit tiers on c177's ladder, both versions; the linings give no light; "
+          "the furnace window is one sheet under the curtain's level.")
     return 0
 
 

@@ -84,10 +84,8 @@ from . import _kit as K
 
 TILE = K.TILE                           # 16: one block face
 
-# The furnace window's three roles, the sill row first; empty while the occupancy table does not
-# have them, and then its pictures are painted for nobody.
-FURNACE = tuple(getattr(B, "WINDOW_FURNACE", ()))
-FURNACE_ROWS = 3
+FURNACE = tuple(B.WINDOW_FURNACE)       # the furnace window's three roles, the sill row first
+FURNACE_ROWS = len(FURNACE)             # 3
 
 # The blocks this package paints; while it does, the stand-ins drop them (materials/_standin.py).
 BLOCKS = K.blocks(B.WINDOW_LIT, B.WINDOW_CURTAIN, B.WINDOW_FROSTED, B.WINDOW_DARK, B.WINDOW_BLIND, B.SKYLIGHT,
@@ -392,8 +390,8 @@ CAME = "window_came"
 
 
 def faces(version=None):
-    """{role: (the picture or the pictures mixed by position, how it is redirected)} for a version.
-    The furnace window is in it once the occupancy table has its roles."""
+    """{role: (the picture or the pictures mixed by position, how it is redirected)} for a version;
+    the furnace window's three roles each with the pictures of their row."""
     v = _version(version)
     out = {
         B.WINDOW_LIT: (lit_face(v), LIT),
