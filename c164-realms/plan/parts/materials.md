@@ -101,12 +101,12 @@ R1 已澄清：我之前提的占用表两条"勘误"是译名误会——方案
 全部 `redirect_block`。`mat("iron")` / `iron_dark` / `iron_flat`，色阶 I0–I6。逐项像素规则进 `iron` 卡；要点：
 - `IRON_PLATE`(oxidized_copper，无同族)：平铁板，无铆钉，base I3，轻刷纹，浅 bevel。3 变体。机壳/水箱。
 - `IRON_RIVETED`(oxidized_cut_copper+stairs/slab)：铆接板，边框 I4/I1，铆钉 1px I6 高光+下 1px I1 阴影，固定 8 点（四角+四边中），贴边使相邻块连成行。3 变体（仅刷纹变化、铆钉固定）。变体覆盖楼梯台阶。大面积平铺要在 8×8 墙上查：不起贯穿的条纹，明暗够（S3 预评第 3 条）。
-- `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心凸花（小台徽/菱形），I5/I1。2 变体。
-- `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格条 I3、交点 I5，网孔 alpha=0。2 变体。
-- `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，下半舷窗（`brass` 圈 + `glow` 中心，发光 M2 定）；上半气窗。
-- `IRON_HATCH`(oxidized_copper_trapdoor)：铆接盖 / 横百叶，2 变体。
+- `IRON_CAST`(oxidized_chiseled_copper)：铸花板，外框铆接+中心菱形凸花，一张图。凸花是实心的四棱尖（钻石尖）：10 像素菱形，四个斜面各一个平色，受光面 I5、两侧 I4/I3、背光面 I1，右下一像素投影；板面无刷纹、base I2。（第一版是单线菱框套一颗带高光的圆钮，门上排一行读成一排眼睛，11-15 对着图改成实心尖。）（原来写的是“小台徽/菱形，2 变体”，两张按位置混排；整块方块没有状态可分，穹顶的二十只轴箱会有一半带台徽。台徽只出现在有意放的地方，从这个方块上撤了；铁件上要台徽，挂道具的黄铜圆徽 `props/signs` 的 `emblem`。）
+- `IRON_GRATE`(oxidized_copper_grate，镂空)：4px 网格（节距 4：条 2px，亮侧 I3、暗侧 I2），交点受光的一角 I4，网孔 alpha=0。2 变体。（交点原来写 I5；格栅地面的侧边平着看是一排亮点，11-15 对着图降了一级。）
+- `IRON_DOOR`(oxidized_copper_door)：`iron_door_top`+`iron_door_bottom`（各 16×16 对齐成 2 格）；铆钉包边，上半舷窗（`brass` 圈 + `glow` 中心，圆心在上半张图正中略偏上，对玩家眼高 1.62；发光 M2 定）；下半百叶气窗。舷窗 10 像素、逐格画：1 像素旧黄铜圈（左上亮、右下暗，四角各一颗螺栓）、圈里 1 像素内沿（明暗反过来）、玻璃左上压在圈的影子里、往右下渐亮，不画高光点；图的第 0 列是铰链边，上下两半各一道 3 像素的铰链带，把手在另一边。（原来写的是下半舷窗、上半气窗，实机舷窗在膝盖高，总监 #116 裁定对调。）
+- `IRON_HATCH`(oxidized_copper_trapdoor)：带中肋的铆接盖板，一张图，板面不带刷纹（一圈栏板是同一张图，刷纹会在每块的同一处重复、读成开槽），立着（栏板）、平躺（盖板、轨枕、百叶的叶片）都是它。26.3 的活板门模型大面是正着贴的（立着的两面、平躺的顶面），不用翻；颠倒的只有 3 像素厚的侧边（读图最下面三行、上下倒着），模型副本里改成正着读最上面三行：边框的亮唇和一排铆钉（`_lips`）。（原来写的是“铆接盖 / 横百叶，2 变体”，两张按位置混排，一圈栏板会一半盖板一半百叶；百叶撤了，墙上的百叶用面板的 `louvre` 或门的下半。）
 - `IRON_BARS`(oxidized_copper_bars，multipart)：细竖铁条 I2–I3、高光 I5 + 一道横档。
-- `IRON_PIPE`(oxidized_copper_chain，axis)：细管/绞合电缆，中列 I4、两侧 I1–I2、每 4px 法兰环 I5。
+- `IRON_PIPE`(oxidized_copper_chain，axis)：细管/绞合电缆，中列 I4、两侧 I1–I2；一格一节，两头各一圈法兰（图的第 15 行 I5、第 0 行比管身亮一级），两格相接处是一对法兰，中间不再有横件。（原来写的是每 4px 一道法兰环 I5：近看像梯子，二十格外是一串亮点，比旁边的板还亮，11-15 对着图改的。）
 - `IRON_ROD`(oxidized_lightning_rod，facing)：细金属杆，中亮 I5、边 I1。
 - `IRON_BULB`(oxidized_copper_bulb，lit/powered)：铁笼罩+琥珀灯泡，lit 加 `glow`+`light_emission`；**点亮发光度 4**，正好做三级弱光。
 - `IRON_LANTERN`(oxidized_copper_lantern，hanging/standing)：铁皮灯罩+`glow` 透光缝，发光度 15，加 `light_emission`。
