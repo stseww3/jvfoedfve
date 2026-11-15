@@ -315,7 +315,11 @@ def build():
     _entrance(c, p)
     _tablet(c)
     _inside(c, p)
-    n = lamps.build(c)              # the entrance's pair on the pilasters beside the arcade, two street lamps
+    # The entrance's pair on the pilasters beside the arcade and the pair of street lamps nearest
+    # the door, whatever the switch of props/lamps says: the lamps further out on the way and the
+    # ground lamps at the armillary's feet belong to a court this slice does not have
+    lamps.dress(c, False)
+    n = lamps.build(c)
     n += signs.great(c, seat(), signs.VERSIONS[signs.VERSION])
     n += _line(c)
     n += _plates(c)
