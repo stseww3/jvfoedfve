@@ -151,6 +151,13 @@ def main():
         Image.fromarray(img).save(path)
         print(f"{path} (tick {tick}, {time.time() - t1:.0f} s)")
 
+# The machine is shared with other projects (COMMON.md section 2): run at a lower priority so they
+# go first. Linux and the other Unix-likes only; a refusal is not an error.
+try:
+    os.nice(10)
+except (AttributeError, OSError):
+    pass
+
 
 if __name__ == "__main__":
     main()
