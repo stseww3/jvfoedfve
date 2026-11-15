@@ -5,6 +5,8 @@ Everything stands on a floor at y = -1 in a row along x at one z, and is seen fr
 specimen is at most two blocks wide; a pair is a repainted block with, right beside it, the vanilla
 block it shares its model and texture files with -- the one that must not have changed.
 """
+import math
+
 from artkit.blocks import st
 
 from ..common import blocks as B
@@ -258,3 +260,164 @@ def window_wall(c, role, x, y, z, frame, n=8):
     for dy in (0, 1):
         c.set(x + 3, y + dy, z + 2, st(role.pane, east="true"))
         c.set(x + 4, y + dy, z + 2, st(role.pane, west="true"))
+
+
+def hung(c, x, y, z):
+    """The two signs that hang from a bracket on the side of a post, brass and enamel: each on the
+    left of a post of its own, a cell between the two. On the two sides of one post the far sign is
+    half behind the post's corner for whoever does not stand straight in front. Five cells wide."""
+    for dx, sign in ((0, B.BRASS_SIGN[3]), (3, B.ENAMEL_SIGN[3])):
+        c.set(x + dx, y + 1, z, st(sign, facing="south"))
+        c.box(x + dx + 1, y, z, x + dx + 1, y + 2, z, BASE)
+
+
+# ---- the mountain: natural rock and what lies on it ------------------------------------------------
+ROCKS = {"d": B.ROCK_DEEPSLATE, "c": B.ROCK_COBBLED.block, "t": B.TUFF.block, "s": B.ROCK_STONE.block,
+         "a": B.ROCK_ANDESITE.block}
+# A face of the mountain, top row first: beds one to three blocks thick, the dark rock below, the
+# lighter above, a bed here and there running out in a lens.
+STRATA = ("ssssaaaa",
+          "tttttttt",
+          "ttaaattt",
+          "tttttttt",
+          "cccddddd",
+          "dddddddd",
+          "ddcccccc",
+          "dddddddd")
+SHAPED_ROCKS = (B.ROCK_COBBLED, B.TUFF, B.ROCK_STONE, B.ROCK_ANDESITE)
+
+
+def strata(c, x, y, z, rows=STRATA, shift=0):
+    """A wall of the mountain's rock, its beds as the letters of `rows` have them (top row first);
+    shift slides the beds sideways, so that two faces side by side are not the same picture."""
+    for dy, row in enumerate(reversed(rows)):
+        for dx in range(len(row)):
+            c.set(x + dx, y + dy, z, ROCKS[row[(dx + shift) % len(row)]])
+
+
+def rock(c, x, y, z):
+    """Eight by eight of the mountain, and at its foot the shaped blocks of the four rocks that have
+    them: a slab before a stair of each, climbing to the face; three pieces of low wall."""
+    strata(c, x, y, z)
+    for dx, fam in enumerate(SHAPED_ROCKS):
+        c.set(x + dx, y, z + 1, st(fam.stairs, facing="north"))
+        c.set(x + dx, y, z + 2, st(fam.slab, type="bottom"))
+    walls = [fam.wall for fam in SHAPED_ROCKS if fam.wall]
+    for i, block in enumerate(walls):
+        sides = {"up": "true"}
+        if i > 0:
+            sides["west"] = "low"
+        if i < len(walls) - 1:
+            sides["east"] = "low"
+        c.set(x + 8 - len(walls) + i, y, z + 1, st(block, **sides))
+
+
+# snow on a ledge: one figure per cell along x -- 0 bare rock, 1..7 that many layers, 8 a whole block
+LEDGES = (
+    # (cells out from the face, blocks of rock under the ledge, the snow of each row from the face out)
+    (2, 4, ("88888840", "66543200")),
+    (2, 2, ("00368888", "00135665")),
+    (1, 0, ("00000232",)),
+)
+
+
+def snow_on(c, x, y, z, depth):
+    """A cell of lying snow, `depth` eighths of a block deep."""
+    if depth >= 8:
+        c.set(x, y, z, B.SNOW)
+    elif depth > 0:
+        c.set(x, y, z, st(B.SNOW_LAYER, layers=depth))
+
+
+def ledges(c, x, y, z):
+    """The mountain as the site builds it, small: a cliff coming forward in two ledges, snow lying
+    on each in one large patch that thins towards its edge, bare rock beside it. Six cells deep."""
+    strata(c, x, y, z, shift=3)
+    out = 1
+    for depth, height, snow in LEDGES:
+        for dz in range(depth):
+            if height:
+                for dy in range(height):
+                    row = STRATA[len(STRATA) - 1 - dy]
+                    for dx in range(8):
+                        c.set(x + dx, y + dy, z + out + dz, ROCKS[row[(dx + 3 + 2 * (out + dz)) % 8]])
+            for dx, figure in enumerate(snow[dz]):
+                snow_on(c, x + dx, y + height, z + out + dz, int(figure))
+        out += depth
+
+
+def snow(c, x, y, z, n=8):
+    """Snow as a wall of n by n, for its sides, and a drift at its foot for its top: n rows of lying
+    snow, eight layers deep against the wall and one layer at the far edge."""
+    c.box(x, y, z, x + n - 1, y + n - 1, z, B.SNOW)
+    for row in range(n):
+        for dx in range(n):
+            snow_on(c, x + dx, y, z + 1 + row, max(1, 8 - row * 8 // n))
+
+
+def bank(c, x, y, z, wide, deep):
+    """The tones of the cloud sea as a bank: the darkest at the foot, the lightest on the crest, each
+    a step of two cells. No lamp belongs near it: a cloud is lit by the sky alone."""
+    for i, block in enumerate(B.CLOUD):
+        if wide - 4 * i > 0 and deep - 2 * i > 0:
+            c.box(x + 2 * i, y + i, z, x + wide - 1 - 2 * i, y + i, z + deep - 1 - 2 * i, block)
+
+
+# ---- the thin brass line let into the paving --------------------------------------------------------
+# line() and ring() are c194's (the test scene of materials/brass-oldcopper-small, where the rules of
+# laying a line are written out): a cell of BRASS_LINE joins two of its sides and its shape names
+# them; the cell under a line is a whole block; a cell of line has line in exactly the two neighbours
+# its shape names, so two lines never lie side by side and the star keeps a cell clear of any line.
+_SIDES = {(0, -1): "north", (0, 1): "south", (-1, 0): "west", (1, 0): "east"}
+_ACROSS = {"north": "south", "south": "north", "west": "east", "east": "west"}
+_SHAPES = {frozenset(pair): "_".join(pair) for pair in (("north", "south"), ("east", "west"), ("south", "east"),
+                                                          ("south", "west"), ("north", "west"), ("north", "east"))}
+
+
+def line(cells, closed=False):
+    """The thin brass line along `cells`, a path of (x, z) in which every cell touches the next by a
+    side: {(x, z): block state}. The end of an open path runs straight out of its cell."""
+    out = {}
+    for i, (x, z) in enumerate(cells):
+        sides = set()
+        for j in (i - 1, i + 1):
+            if closed or 0 <= j < len(cells):
+                other = cells[j % len(cells)]
+                sides.add(_SIDES[(other[0] - x, other[1] - z)])
+        if len(sides) == 1:
+            sides.add(_ACROSS[min(sides)])
+        out[(x, z)] = st(B.BRASS_LINE, shape=_SHAPES[frozenset(sides)])
+    return out
+
+
+def ring(r):
+    """A ring of radius r about (0, 0) as a closed path of cells that touch by their sides: an
+    octagon, a straight run across each axis and between two runs a path that steps sideways and
+    onwards by turns, which the corners of the line draw as one slant."""
+    h = max(0, round(r * math.tan(math.pi / 8) - 0.5))      # the straight run: cells -h..h
+    quarter = [(r, z) for z in range(h + 2)]                # the east side, from the axis to its corner cell
+    x, z = r, h + 1
+    while (x, z) != (h + 1, r):
+        x -= 1
+        quarter.append((x, z))
+        z += 1
+        quarter.append((x, z))
+    quarter += [(x, r) for x in range(h, 0, -1)]            # the south side, back to the axis
+    cells = []
+    for _ in range(4):
+        cells += quarter
+        quarter = [(-z, x) for x, z in quarter]             # a quarter turn on
+    return cells
+
+
+def emblem(c, mx, y, az, r, star, z0, z1, middle=True):
+    """The station's emblem in thin line, lying in the cells at y: the meridian at x = mx from z0 to
+    z1, a ring of radius r about (mx, az) with a crossing where the meridian passes through it, and
+    the star `star` = (east, south) of the middle. middle=False leaves the middle cell empty, for
+    what stands on it (in the front court, the armillary)."""
+    for z in range(z0, z1 + 1):
+        if middle or z != az:
+            c.set(mx, y, z, st(B.BRASS_LINE, shape="north_south"))
+    for (dx, dz), state in line(ring(r), closed=True).items():
+        c.set(mx + dx, y, az + dz, st(B.BRASS_CROSS, shape="north_south") if dx == 0 else state)
+    c.set(mx + star[0], y, az + star[1], st(B.BRASS_STAR, shape="north_south"))
