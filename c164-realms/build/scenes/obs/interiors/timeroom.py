@@ -84,8 +84,9 @@ frieze), a desk 8 and its chair 7, a clock 8 to 9. The lightmap is flat (a floor
 darker than one at 10), so the pools are kept small and far apart: the floor rises from nothing at
 the door to 3 between the desks and to 9 before the console, and leads to the rack. And the floor
 is relaid in dark boards: in the shell's pale ones it was the lightest large thing of the room,
-lit or not. The ceiling gets what the pools throw back and no more (BOUNCE): 2 to 5 along the
-room, enough for its beams and boards to be seen and not to be a black lid.
+lit or not. The ceiling gets what the pools throw back and no more (BOUNCE): 3 to 5 over the
+middle of the room, less towards the door and before the rack's own light, enough for its beams
+and boards to be seen and not to be a black lid.
 A window is not a light of the room: the ones the light line lights (sky/lights; bays 3 and 6
 east, 3 and 5 west under the blue look) are lined on the room side by materials/windows and are
 unlit glass from inside. Each of them has a lamp of the room within two cells, so that a lit window
@@ -97,10 +98,10 @@ two recesses are such cells; what hangs in them is display entities. The one blo
 the last panel of the south wall (CORNER), edge on to the glass of east bay 7, which no look lights.
 
 The room dresses the shell main/shell.py (c231) leaves: it lays no wall and no ceiling, and of the
-floor only the boards anew, in the shell's own row. What other packages make is placed through them when they are in the tree (PIECES: the
-furniture, the regulators and the barometer, the key and the telephone, the books and the drawing)
-and is left out, or stood in for by a block, until then. SLOTS says where the machines of
-machines/recorders go.
+floor only the boards anew, in the shell's own row. What other packages make is placed through
+them when they are in the tree (PIECES: the furniture, the regulators and the barometer, the key
+and the telephone, the books and the drawing) and is left out, or stood in for by a block, until
+then. SLOTS says where the machines of machines/recorders go.
 
 build() is what the master scene calls; it places nothing until MOVED_IN is set (the shell in the
 master scene and the room past review). Until then the room lives in its box test scene,
@@ -307,12 +308,18 @@ CLOCK_LIGHT = (X0 + 1, int(math.floor(DIAL_Y)), int(math.floor(S.mid(*CLOCK_Z)))
 # What a lit desk and a lit clock board throw back at the ceiling: a weak source in the row under the ceiling, two
 # cells out from the wall the lamp is at. With every source low the boards and the beams over the middle of the
 # room were dead black (under 0.03 on four tenths of the ceiling of V10; review cr3-P4); these leave the ceiling
-# dark and its beams to be seen, 2 to 5 along the room's axis. Each is 3 cells or more from the lining of a lit
-# window, which they leave at what its own sources give it.
+# dark and its beams to be seen: along the room's axis 3 to 5 between the two desks, 1 to 2 at the next beam
+# towards the rack, 7 at the rack with the console's own light. The two desks stand in neighbouring bays, one
+# at each long wall, and their two sources stand either side of the beam between those bays: the beam over the
+# middle of the room, the one V10 has overhead, is lit from the west on its north side and from the east on its
+# south side. Each is 3 cells or more from the lining of a lit window, which they leave at what its own sources
+# give it.
 BOUNCE = (8, 3)             # over the message desk and over the rating bench
 CLOCK_BOUNCE = (7, 3)       # over the world clocks
-DESK_BOUNCE = (X1 - 2, TOP, int(math.floor(DESK_Z)) - 1)                            # (11, 13, -13): a row towards the rack from the desk's middle
-BENCH_BOUNCE = (X0 + 2, TOP, int(math.floor(BENCH_Z)) - 1)                          # (4, 13, -17)
+assert DESK_BAY == BENCH_BAY + 1, "the two desks stand in neighbouring bays"
+MID_BEAM = S.pilaster_z(BENCH_BAY)                                                  # -14: the beam between the two desks' bays
+DESK_BOUNCE = (X1 - 2, TOP, MID_BEAM + 1)                                           # (11, 13, -13)
+BENCH_BOUNCE = (X0 + 2, TOP, MID_BEAM - 1)                                          # (4, 13, -15)
 CLOCKS_BOUNCE = (X0 + 2, TOP, int(math.floor(S.mid(*CLOCK_Z))) + 1)                 # (4, 13, -9)
 assert not {cell[2] for cell in (DESK_BOUNCE, BENCH_BOUNCE, CLOCKS_BOUNCE)} & set(PIER_Z), "a beam lies in a pier's row"
 
