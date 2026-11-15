@@ -1,0 +1,17 @@
+a0job 1115-223235-comet-f3-793d-27502: cursor/c164-comet-f3-793d @ 77f812e5 on the director's machine
+  [cloud_setup    0s] machine: 4 cores, load 2.06 1.32 1.45, Python 3.12.3
+  [cloud_setup    1s] python: /agent/realms-study/.venv already has numpy, PIL, nbtlib, numba
+  [cloud_setup    1s] python: 3.12.3 numpy 2.5.4 Pillow 13.0.0 numba 0.68.1
+  jar: already there, SHA-1 e877b6a07acd633fb3bb475002175cec036e7b87
+  [cloud_setup    1s] ready. Python: /agent/realms-study/.venv/bin/python
+---- bash tools/gate.sh sky/comet 77f812e5 --base 3c93a88d ---- exit 0, 54 s, last 80 lines of 7:
+gate sky/comet 77f812e5: the merged tree 77f812e5, the assembly as it was 3c93a88d
+delivery.py: PASS (0 failed, 0 to look at)
+check.py: 36 scenes in 25 s: 36 pass (29 with warnings)
+pictures: [PASS] selfshots obs_sky_comet at 77f812e5: 16 of 16 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_sky_comet_b at 77f812e5: 15 of 15 kept pictures are what the code draws
+pictures: [PASS] selfshots obs_sky_comet_c at 77f812e5: 15 of 15 kept pictures are what the code draws
+result: PASS
+==== NODEJOB RESULT ====
+exit=0 secs=59 host=cursor cores=4 head=77f812e5 commit=c5a21bab pushed=yes branch=cursor/c164-comet-f3-793d-wip files=79
+a0job: exit=0 secs=59
