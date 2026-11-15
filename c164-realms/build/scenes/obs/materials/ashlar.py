@@ -55,7 +55,7 @@ VERSIONS = ("a", "b", "c")
 JOINT = 2           # the lightest step of the ramp that is a joint on the fine face; its stones are lighter
 GROOVES = (3, 6, 9, 12)     # the rows of the rough stone's tool marks: a groove, its lit lip the row above
 RING = (5.9, 6.8)   # the emblem's ring: the pixels this far from the middle of the tile -- fourteen across
-STAR = (10, 5)      # the middle of the emblem's star: inside the ring, 0.4 of its radius right of and above its middle
+STAR = (10, 5)      # the emblem's star, a dot of two pixels by two: its upper left pixel
 
 
 def _a(n):
@@ -81,19 +81,26 @@ def _emblem_figure():
     director's ruling of 2026-11-14 in g2, on #286/#288): a star about to cross the meridian in the
     eyepiece of a transit instrument -- the trade of an observatory that keeps the time. A
     one-pixel ring; the meridian down through it and out of it at both ends; a star inside the
-    ring, right of its middle and above it by 0.4 of the radius each way, touching neither the ring
-    nor the line. Returns (ring+meridian cells, star cells).
+    ring, right of its middle and above it, touching neither the ring nor the line. Returns
+    (ring+meridian cells, star cells).
 
     On sixteen pixels the ring is the circle fourteen across (6.5 from the middle of the tile to
-    the middle of its pixels): a smaller one leaves no room inside it for a star of five pixels
-    that stands clear. So the meridian runs the height of the tile, a pixel out of the ring at
-    either end. The first drawings had a ring ten across with the star outside it, on its shoulder
-    and then off it."""
+    the middle of its pixels): a smaller one leaves no room inside it for a star that stands
+    clear. So the meridian runs the height of the tile, a pixel out of the ring at either end. The
+    first drawings had a ring ten across with the star outside it, on its shoulder and then off it.
+
+    The star is a dot of two pixels by two. A star with arms is, on this grid, a cross of five
+    pixels, and from close by that read as a plus sign or a small cross and not as a star (c219's
+    second look, g2 #313); from twenty blocks either is a dot. The ruling puts the star 0.4 of the
+    radius right of the ring's middle and as far above it. Of the dots about that place the nearest
+    stands with a corner on the ring and the one left of it against the lit lip of the meridian, a
+    flag on a staff; this one, a row lower, has a plain pixel between it and both: 0.46 of the
+    radius right of the middle and 0.31 above."""
     lo, hi = RING
     ring = _cells(lambda dx, dy: lo <= math.hypot(dx, dy) <= hi)
     meridian = [(7, y) for y in range(TILE)]
     x, y = STAR
-    star = [(x, y), (x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
+    star = [(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)]
     return ring + meridian, star
 
 
@@ -216,9 +223,8 @@ def _fine(variant):
 
 
 def _fine_top(seed):
-    """ASHLAR_FINE end (and the panel/emblem ends, and the emblem's ground): flat dressed stone,
-    base A3 with a faint fleck of tooling and no joint at all -- a tread, a coping or a soffit
-    carries no seam. About one pixel in sixteen is a step lighter and one in twenty-five a step
+    """ASHLAR_FINE end (and the panel/emblem ends): flat dressed stone, base A3 with a faint fleck
+    of tooling and no joint at all -- a tread, a coping or a soffit carries no seam. About one pixel in sixteen is a step lighter and one in twenty-five a step
     darker: with a fifth of it lighter a coping read as pitted from close by (c219's pre-review).
 
     materials.md section 3 first worded this picture "flat, base A3, a shallow joint". The joint
@@ -255,17 +261,19 @@ def _panel():
     return px
 
 
-def _emblem(seed):
+def _emblem():
     """ASHLAR_EMBLEM side: the emblem incised into a dressed ground -- cut A1, with a lit A5 lip
-    where the far side of the cut catches the light (below it and to its right). One figure in
-    every variant (a badge is not mirrored: the star stays on the upper right); the variants differ
-    in the fleck of the ground, which is kept out of the ring and a pixel clear of the figure."""
-    px = _fine_top(seed)
+    where the far side of the cut catches the light (below it and to its right) -- and the ground
+    plain A3, the face of a dressed stone.
+
+    One picture, no variants: a badge is not mirrored (the star stays on the upper right), and
+    there is nothing else to vary. While the ring was ten pixels across the ground round it took
+    the fleck of the fine end, two ways; the ring of fourteen left five specks of that in the
+    corners, and they read as dirt on a badge (c219's review, g2 #310)."""
+    px = _fill(3)
     body, star = _emblem_figure()
     figure = set(body) | set(star)
     lip = {(x + 1, y + 1) for x, y in figure if x + 1 < TILE and y + 1 < TILE} - figure
-    for x, y in figure | lip | set(_cells(lambda dx, dy: math.hypot(dx, dy) < RING[0])):
-        px[max(y - 1, 0):y + 2, max(x - 1, 0):x + 2, :3] = _a(3)
     for x, y in lip:
         px[y, x, :3] = _a(5)
     for x, y in figure:
@@ -286,7 +294,7 @@ def textures(version=DEFAULT):
         "ashlar_fine": [_fine(v) for v in range(len(_FINE))],
         "ashlar_fine_top": _fine_top(30),
         "ashlar_panel": _panel(),
-        "ashlar_emblem": [_emblem(0), _emblem(1)],
+        "ashlar_emblem": _emblem(),
     }
 
 
@@ -357,8 +365,9 @@ def faults(pictures, version=DEFAULT):
                      fine end is no more than a tenth of it;
       - the panel    one size of sunk field: were it given variants, their bevels and the walls of
                      the field would stand at the same pixels;
-      - the emblem   the star is five pixels of its own, clear of the ring and of the meridian, and
-                     inside the ring; the meridian runs out of the ring at both ends.
+      - the emblem   the star is a dot of two pixels by two of its own (no cross: red line 8), inside
+                     the ring, with a plain pixel between it and the ring, the meridian and the lit
+                     lip of either; the meridian runs out of the ring at both ends.
 
     The steps of the ramp up to JOINT are the joint tones of the fine side: the face of a fine
     stone never takes them. On the ends A0 and A1 are."""
@@ -431,14 +440,20 @@ def faults(pictures, version=DEFAULT):
 
     for i, s in enumerate(many("ashlar_emblem")):
         cut = _groups((int(x), int(y)) for y, x in np.argwhere(s == 1))
-        if sorted(len(g) for g in cut)[:1] != [5] or len(cut) != 2:
-            out.append(f"ashlar_emblem{i}: the star is not five pixels of its own, clear of the ring and of the "
-                       f"meridian (the cut is in groups of {sorted(len(g) for g in cut)})")
+        star = min(cut, key=len) if cut else set()
+        x0, y0 = min(star) if star else (0, 0)
+        if len(cut) != 2 or star != {(x0, y0), (x0 + 1, y0), (x0, y0 + 1), (x0 + 1, y0 + 1)}:
+            out.append(f"ashlar_emblem{i}: the star is not a dot of two pixels by two of its own, apart from the "
+                       f"ring and the meridian (the cut is in groups of {sorted(len(g) for g in cut)})")
             continue
-        star, rest = sorted(cut, key=len)
-        outside = _outside(rest)
+        outside = _outside(max(cut, key=len))
         if any((x + dx, y + dy) in outside for x, y in star for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
             out.append(f"ashlar_emblem{i}: the star is not inside the ring")
+        own_lip = {(x + 1, y + 1) for x, y in star}
+        about = {(x + dx, y + dy) for x, y in star for dx in (-1, 0, 1) for dy in (-1, 0, 1)} - star - own_lip
+        if any(s[y, x] != 3 for x, y in about if 0 <= x < TILE and 0 <= y < TILE):
+            out.append(f"ashlar_emblem{i}: the star stands against the ring, the meridian or the lit lip of one of "
+                       "them; a plain pixel lies between")
         if not ((s[0] == 1).any() and (s[-1] == 1).any()):
             out.append(f"ashlar_emblem{i}: the meridian does not run out of the ring at both ends")
     return out
